@@ -9635,5 +9635,71 @@ window.apcToggleSub=apcToggleSub;
 </script>
 
 
+
+<!-- ===== BOOKMARK FEATURE (preview) ===== -->
+<style id="bm-style">
+#bm-progress{position:fixed;top:0;left:224px;right:0;height:2px;width:auto;z-index:400;pointer-events:none;}
+#bm-progress i{display:block;height:100%;width:0;
+  background:linear-gradient(90deg,#C13636,#E77016,#E8B830,#4CD9A0,#37A0E6,#4681D8,#B060E0);
+  transition:width .12s ease-out;}
+#bm-pill{position:fixed;right:28px;bottom:28px;z-index:400;display:flex;align-items:center;
+  background:#080807;color:#F0EAE0;border:1px solid rgba(201,168,76,.3);border-radius:30px;
+  height:52px;width:52px;cursor:pointer;overflow:hidden;
+  box-shadow:0 6px 24px rgba(0,0,0,.22);font-family:'Space Mono',ui-monospace,monospace;
+  transition:width .35s cubic-bezier(.22,1,.36,1),background .25s;}
+#bm-pill:hover{background:#100f0d;width:auto;padding-right:22px;}
+#bm-pill .rib{min-width:52px;width:52px;height:52px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+#bm-pill .rib svg{width:18px;height:18px;}
+#bm-pill .rib svg path{fill:none;stroke:#C9A84C;stroke-width:2;transition:fill .25s;}
+#bm-pill.saved .rib svg path{fill:#C9A84C;}
+#bm-pill .lbl{white-space:nowrap;font-size:11px;letter-spacing:.12em;text-transform:uppercase;opacity:0;transition:opacity .2s;}
+#bm-pill:hover .lbl{opacity:1;}
+#bm-toast{position:fixed;right:28px;bottom:90px;z-index:400;background:#080807;color:#F0EAE0;
+  font-family:'Space Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.1em;
+  padding:10px 16px;border-radius:8px;border:1px solid rgba(201,168,76,.3);
+  opacity:0;transform:translateY(8px);transition:opacity .3s,transform .3s;pointer-events:none;}
+#bm-toast.show{opacity:1;transform:translateY(0);}
+#bm-resume{position:fixed;left:calc(50% + 112px);top:18px;transform:translateX(-50%) translateY(-90px);z-index:410;
+  background:#080807;color:#F0EAE0;font-family:'Space Mono',ui-monospace,monospace;display:flex;align-items:center;gap:14px;
+  padding:12px 12px 12px 20px;border-radius:40px;border:1px solid rgba(201,168,76,.3);
+  box-shadow:0 8px 30px rgba(0,0,0,.25);transition:transform .45s cubic-bezier(.22,1,.36,1);}
+#bm-resume.show{transform:translateX(-50%) translateY(0);}
+#bm-resume .t{font-size:12px;letter-spacing:.04em;}
+#bm-resume .t b{color:#C9A84C;font-weight:400;}
+#bm-resume button{font-family:'Space Mono',ui-monospace,monospace;}
+#bm-resume .go{font-size:11px;letter-spacing:.1em;text-transform:uppercase;background:#C9A84C;color:#1a1408;border:none;border-radius:30px;padding:8px 16px;cursor:pointer;}
+#bm-resume .x{background:none;color:#F0EAE0;opacity:.5;border:none;cursor:pointer;font-size:15px;padding:6px 8px;}
+@media(max-width:760px){#bm-progress{left:0;}#bm-resume{left:50%;}}
+</style>
+<div id="bm-progress"><i></i></div>
+<div id="bm-pill" title="Set bookmark"><span class="rib"><svg viewBox="0 0 24 24"><path d="M6 3 h12 a1 1 0 0 1 1 1 v17 l-7 -5 -7 5 v-17 a1 1 0 0 1 1 -1 z"/></svg></span><span class="lbl">Bookmark</span></div>
+<div id="bm-resume"><span class="t">Resume at <b id="bm-where"></b></span><button class="go" id="bm-go">Take me back</button><button class="x" id="bm-x">&times;</button></div>
+<div id="bm-toast">Bookmark set</div>
+<script>
+(function(){
+  var KEY='mob_bookmark_v1';
+  var fill=document.querySelector('#bm-progress i');
+  var pill=document.getElementById('bm-pill');
+  var toast=document.getElementById('bm-toast');
+  var resume=document.getElementById('bm-resume');
+  var where=document.getElementById('bm-where');
+  var heads=[].slice.call(document.querySelectorAll('.ch-title'));
+  function dh(){return Math.max(document.body.scrollHeight,document.documentElement.scrollHeight)-window.innerHeight;}
+  function pct(){var h=dh();return h>0?Math.min(1,window.scrollY/h):0;}
+  function curHead(){var y=window.scrollY+90,f=heads[0];for(var i=0;i<heads.length;i++){var el=heads[i];var top=el.getBoundingClientRect().top+window.scrollY;if(top<=y)f=el;}return f;}
+  function onScroll(){fill.style.width=(pct()*100)+'%';}
+  window.addEventListener('scroll',onScroll,{passive:true});onScroll();
+  pill.addEventListener('click',function(){
+    var h=curHead();var d={y:window.scrollY,name:h?h.textContent.trim():'',p:Math.round(pct()*100)};
+    try{localStorage.setItem(KEY,JSON.stringify(d));}catch(e){}
+    pill.classList.add('saved');toast.textContent='Saved \u00b7 '+d.p+'% in';toast.classList.add('show');
+    setTimeout(function(){toast.classList.remove('show');},1600);
+  });
+  var saved=null;try{saved=JSON.parse(localStorage.getItem(KEY));}catch(e){}
+  if(saved&&typeof saved.y==='number'){pill.classList.add('saved');where.textContent=saved.name||(saved.p+'%');setTimeout(function(){resume.classList.add('show');},700);}
+  document.getElementById('bm-go').addEventListener('click',function(){window.scrollTo({top:saved.y,behavior:'smooth'});resume.classList.remove('show');});
+  document.getElementById('bm-x').addEventListener('click',function(){resume.classList.remove('show');});
+})();
+</script>
 </body>
 </html>
