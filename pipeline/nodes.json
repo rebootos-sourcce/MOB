@@ -1,0 +1,956 @@
+[
+ {
+  "n": 1,
+  "charge": "Fear",
+  "nerve": "Lumbar Plexus",
+  "domain": "Instinct, threat",
+  "wrong": "Avoidance",
+  "band": "Root",
+  "plain": "low back and pelvis"
+ },
+ {
+  "n": 2,
+  "charge": "Shame",
+  "nerve": "Pudendal Nerve",
+  "domain": "Worth, embodiment",
+  "wrong": "Self-rejection",
+  "band": "Root",
+  "plain": "low back and pelvis"
+ },
+ {
+  "n": 3,
+  "charge": "Guilt",
+  "nerve": "Inferior Hypogastric Plexus",
+  "domain": "Responsibility",
+  "wrong": "Overcompensation",
+  "band": "Root",
+  "plain": "low back and pelvis"
+ },
+ {
+  "n": 4,
+  "charge": "Control",
+  "nerve": "Sacral Nerves",
+  "domain": "Safety through force",
+  "wrong": "Domination",
+  "band": "Root",
+  "plain": "low back and pelvis"
+ },
+ {
+  "n": 5,
+  "charge": "Insecurity",
+  "nerve": "Pelvic Nerve",
+  "domain": "Belonging",
+  "wrong": "Dependency",
+  "band": "Root",
+  "plain": "low back and pelvis"
+ },
+ {
+  "n": 6,
+  "charge": "Victimhood",
+  "nerve": "Coccygeal Plexus",
+  "domain": "Agency",
+  "wrong": "Blame",
+  "band": "Root",
+  "plain": "low back and pelvis"
+ },
+ {
+  "n": 7,
+  "charge": "Scarcity",
+  "nerve": "Iliac Nerve Branch",
+  "domain": "Resources",
+  "wrong": "Hoarding",
+  "band": "Root",
+  "plain": "low back and pelvis"
+ },
+ {
+  "n": 8,
+  "charge": "Entitlement",
+  "nerve": "Cauda Equina",
+  "domain": "Privilege",
+  "wrong": "Deservingness",
+  "band": "Root",
+  "plain": "low back and pelvis"
+ },
+ {
+  "n": 9,
+  "charge": "Possession",
+  "nerve": "Gluteal Nerve",
+  "domain": "Attachment",
+  "wrong": "Control of objects",
+  "band": "Root",
+  "plain": "low back and pelvis"
+ },
+ {
+  "n": 10,
+  "charge": "Lethargy",
+  "nerve": "Obturator Nerve",
+  "domain": "Momentum",
+  "wrong": "Stagnation",
+  "band": "Root",
+  "plain": "low back and pelvis"
+ },
+ {
+  "n": 11,
+  "charge": "Resistance",
+  "nerve": "Perineal Branch",
+  "domain": "Change",
+  "wrong": "Holding on",
+  "band": "Root",
+  "plain": "low back and pelvis"
+ },
+ {
+  "n": 12,
+  "charge": "Compulsion",
+  "nerve": "Pelvic Floor Nerves",
+  "domain": "Safety rituals",
+  "wrong": "Fixation",
+  "band": "Root",
+  "plain": "low back and pelvis"
+ },
+ {
+  "n": 13,
+  "charge": "Disconnection",
+  "nerve": "Sacral Root Ganglia",
+  "domain": "Presence",
+  "wrong": "Numbness",
+  "band": "Root",
+  "plain": "low back and pelvis"
+ },
+ {
+  "n": 14,
+  "charge": "Escapism",
+  "nerve": "Sciatic Nerve",
+  "domain": "Facing pain",
+  "wrong": "Running",
+  "band": "Root",
+  "plain": "low back and pelvis"
+ },
+ {
+  "n": 15,
+  "charge": "Panic",
+  "nerve": "Lumbar Sympathetic Chain",
+  "domain": "Reaction",
+  "wrong": "Unconsciousness",
+  "band": "Root",
+  "plain": "low back and pelvis"
+ },
+ {
+  "n": 16,
+  "charge": "Collapse",
+  "nerve": "Spinal Cord Base",
+  "domain": "Structure",
+  "wrong": "Abandoning Self",
+  "band": "Root",
+  "plain": "low back and pelvis"
+ },
+ {
+  "n": 17,
+  "charge": "Addiction",
+  "nerve": "Sacral Plexus",
+  "domain": "Craving",
+  "wrong": "Obsession",
+  "band": "Sacral",
+  "plain": "below the navel, front and back"
+ },
+ {
+  "n": 18,
+  "charge": "Lust",
+  "nerve": "Genitofemoral Nerve",
+  "domain": "Desire",
+  "wrong": "Objectification",
+  "band": "Sacral",
+  "plain": "below the navel, front and back"
+ },
+ {
+  "n": 19,
+  "charge": "Envy",
+  "nerve": "Internal Pudendal Nerve",
+  "domain": "Lack",
+  "wrong": "Hatred of others' joy",
+  "band": "Sacral",
+  "plain": "below the navel, front and back"
+ },
+ {
+  "n": 20,
+  "charge": "Jealousy",
+  "nerve": "Obturator Nerve",
+  "domain": "Possessiveness",
+  "wrong": "Paranoia",
+  "band": "Sacral",
+  "plain": "below the navel, front and back"
+ },
+ {
+  "n": 21,
+  "charge": "Co-Dependency",
+  "nerve": "Pelvic Splanchnic Nerves",
+  "domain": "Neediness",
+  "wrong": "Self-abandonment",
+  "band": "Sacral",
+  "plain": "below the navel, front and back"
+ },
+ {
+  "n": 22,
+  "charge": "Shame of Desire",
+  "nerve": "Hypogastric Plexus",
+  "domain": "Repression",
+  "wrong": "Suppression",
+  "band": "Sacral",
+  "plain": "below the navel, front and back"
+ },
+ {
+  "n": 23,
+  "charge": "Hypersexuality",
+  "nerve": "Pudendal Plexus",
+  "domain": "Validation",
+  "wrong": "Dissociation",
+  "band": "Sacral",
+  "plain": "below the navel, front and back"
+ },
+ {
+  "n": 24,
+  "charge": "Avoidance of Pleasure",
+  "nerve": "Pelvic Nerve",
+  "domain": "Sensuality",
+  "wrong": "Denial of life",
+  "band": "Sacral",
+  "plain": "below the navel, front and back"
+ },
+ {
+  "n": 25,
+  "charge": "Manipulation Through Emotion",
+  "nerve": "Uterovaginal Plexus",
+  "domain": "Control",
+  "wrong": "Emotional blackmail",
+  "band": "Sacral",
+  "plain": "below the navel, front and back"
+ },
+ {
+  "n": 26,
+  "charge": "Oversensitivity",
+  "nerve": "Inferior Hypogastric Plexus",
+  "domain": "Pain threshold",
+  "wrong": "Victim reactivity",
+  "band": "Sacral",
+  "plain": "below the navel, front and back"
+ },
+ {
+  "n": 27,
+  "charge": "Fantasy",
+  "nerve": "Splanchnic Root",
+  "domain": "Escapism",
+  "wrong": "Delusion",
+  "band": "Sacral",
+  "plain": "below the navel, front and back"
+ },
+ {
+  "n": 28,
+  "charge": "Infatuation",
+  "nerve": "Lumbar-Sacral Overlap",
+  "domain": "Projection",
+  "wrong": "Idealization",
+  "band": "Sacral",
+  "plain": "below the navel, front and back"
+ },
+ {
+  "n": 29,
+  "charge": "Obsession",
+  "nerve": "Pelvic Ganglia",
+  "domain": "Focus",
+  "wrong": "Fixation",
+  "band": "Sacral",
+  "plain": "below the navel, front and back"
+ },
+ {
+  "n": 30,
+  "charge": "Guilt of Pleasure",
+  "nerve": "Sacral Outflow",
+  "domain": "Joy",
+  "wrong": "Self-denial",
+  "band": "Sacral",
+  "plain": "below the navel, front and back"
+ },
+ {
+  "n": 31,
+  "charge": "Need for Approval",
+  "nerve": "Iliac Branches",
+  "domain": "Identity in others",
+  "wrong": "Conformity",
+  "band": "Sacral",
+  "plain": "below the navel, front and back"
+ },
+ {
+  "n": 32,
+  "charge": "Excess Emotion",
+  "nerve": "Urogenital Nerve",
+  "domain": "Drama",
+  "wrong": "Flooding",
+  "band": "Sacral",
+  "plain": "below the navel, front and back"
+ },
+ {
+  "n": 33,
+  "charge": "Pride",
+  "nerve": "Celiac Plexus",
+  "domain": "Self-importance",
+  "wrong": "Superiority",
+  "band": "Solar Plexus",
+  "plain": "just under the ribs, centre"
+ },
+ {
+  "n": 34,
+  "charge": "Arrogance",
+  "nerve": "Greater Splanchnic Nerve",
+  "domain": "Ego",
+  "wrong": "Inflated Self",
+  "band": "Solar Plexus",
+  "plain": "just under the ribs, centre"
+ },
+ {
+  "n": 35,
+  "charge": "Competition",
+  "nerve": "Aortic Plexus",
+  "domain": "Comparison",
+  "wrong": "Division",
+  "band": "Solar Plexus",
+  "plain": "just under the ribs, centre"
+ },
+ {
+  "n": 36,
+  "charge": "Anger",
+  "nerve": "Celiac Plexus",
+  "domain": "Power misused",
+  "wrong": "Attack",
+  "band": "Solar Plexus",
+  "plain": "just under the ribs, centre"
+ },
+ {
+  "n": 37,
+  "charge": "Judgment",
+  "nerve": "Splanchnic Plexus",
+  "domain": "Othering",
+  "wrong": "Projection",
+  "band": "Solar Plexus",
+  "plain": "just under the ribs, centre"
+ },
+ {
+  "n": 38,
+  "charge": "Entitlement (Will-based)",
+  "nerve": "Renal Plexus",
+  "domain": "Control of outcomes",
+  "wrong": "Deserving",
+  "band": "Solar Plexus",
+  "plain": "just under the ribs, centre"
+ },
+ {
+  "n": 39,
+  "charge": "Rebellion",
+  "nerve": "Renal Ganglia",
+  "domain": "Defiance",
+  "wrong": "Misalignment",
+  "band": "Solar Plexus",
+  "plain": "just under the ribs, centre"
+ },
+ {
+  "n": 40,
+  "charge": "Perfectionism",
+  "nerve": "Mesenteric Plexus",
+  "domain": "Idealism",
+  "wrong": "Rigidity",
+  "band": "Solar Plexus",
+  "plain": "just under the ribs, centre"
+ },
+ {
+  "n": 41,
+  "charge": "Force",
+  "nerve": "Splenic Plexus",
+  "domain": "Control over flow",
+  "wrong": "Overpowering",
+  "band": "Solar Plexus",
+  "plain": "just under the ribs, centre"
+ },
+ {
+  "n": 42,
+  "charge": "Rigidity",
+  "nerve": "Pancreatic Plexus",
+  "domain": "Will",
+  "wrong": "Inflexibility",
+  "band": "Solar Plexus",
+  "plain": "just under the ribs, centre"
+ },
+ {
+  "n": 43,
+  "charge": "Resentment",
+  "nerve": "Suprarenal Plexus",
+  "domain": "Grudge",
+  "wrong": "Recycled anger",
+  "band": "Solar Plexus",
+  "plain": "just under the ribs, centre"
+ },
+ {
+  "n": 44,
+  "charge": "Unworthiness",
+  "nerve": "Inferior Mesenteric Plexus",
+  "domain": "Confidence",
+  "wrong": "Minimization",
+  "band": "Solar Plexus",
+  "plain": "just under the ribs, centre"
+ },
+ {
+  "n": 45,
+  "charge": "Anxiety",
+  "nerve": "Adrenal Medulla",
+  "domain": "Control of outcomes",
+  "wrong": "Future fear",
+  "band": "Solar Plexus",
+  "plain": "just under the ribs, centre"
+ },
+ {
+  "n": 46,
+  "charge": "Self-Judgment",
+  "nerve": "Epigastric Branches",
+  "domain": "Inner war",
+  "wrong": "Invalidation",
+  "band": "Solar Plexus",
+  "plain": "just under the ribs, centre"
+ },
+ {
+  "n": 47,
+  "charge": "Need to Win",
+  "nerve": "Vagus-Liver Plexus",
+  "domain": "Ego",
+  "wrong": "Domination",
+  "band": "Solar Plexus",
+  "plain": "just under the ribs, centre"
+ },
+ {
+  "n": 48,
+  "charge": "Superiority",
+  "nerve": "Hepatic Nerve",
+  "domain": "Hierarchy",
+  "wrong": "Distinction",
+  "band": "Solar Plexus",
+  "plain": "just under the ribs, centre"
+ },
+ {
+  "n": 49,
+  "charge": "Hatred",
+  "nerve": "Cardiac Plexus",
+  "domain": "Forgiveness",
+  "wrong": "Vengeance",
+  "band": "Heart",
+  "plain": "centre chest and upper back"
+ },
+ {
+  "n": 50,
+  "charge": "Grudge",
+  "nerve": "Thoracic Nerves",
+  "domain": "Holding pain",
+  "wrong": "Withholding love",
+  "band": "Heart",
+  "plain": "centre chest and upper back"
+ },
+ {
+  "n": 51,
+  "charge": "Self-Punishment / Shame",
+  "nerve": "Vagus Nerve",
+  "domain": "Grace",
+  "wrong": "Harshness",
+  "band": "Heart",
+  "plain": "centre chest and upper back"
+ },
+ {
+  "n": 52,
+  "charge": "Betrayal",
+  "nerve": "Thoracic Plexus",
+  "domain": "Trust",
+  "wrong": "Abandonment",
+  "band": "Heart",
+  "plain": "centre chest and upper back"
+ },
+ {
+  "n": 53,
+  "charge": "Separation",
+  "nerve": "Pericardial Nerve",
+  "domain": "Unity",
+  "wrong": "Isolation",
+  "band": "Heart",
+  "plain": "centre chest and upper back"
+ },
+ {
+  "n": 54,
+  "charge": "Martyrdom",
+  "nerve": "Intercostal Nerves",
+  "domain": "Self-sacrifice",
+  "wrong": "Guilt-driven love",
+  "band": "Heart",
+  "plain": "centre chest and upper back"
+ },
+ {
+  "n": 55,
+  "charge": "Longing",
+  "nerve": "Cardiac Nerve Plexus",
+  "domain": "Presence",
+  "wrong": "Fantasy",
+  "band": "Heart",
+  "plain": "centre chest and upper back"
+ },
+ {
+  "n": 56,
+  "charge": "Closed Heart",
+  "nerve": "Costal Branches",
+  "domain": "Vulnerability",
+  "wrong": "Armor",
+  "band": "Heart",
+  "plain": "centre chest and upper back"
+ },
+ {
+  "n": 57,
+  "charge": "Manipulative Kindness",
+  "nerve": "Phrenic Nerve",
+  "domain": "Motive",
+  "wrong": "Transactional giving",
+  "band": "Heart",
+  "plain": "centre chest and upper back"
+ },
+ {
+  "n": 58,
+  "charge": "Expectation",
+  "nerve": "Pulmonary Nerve Plexus",
+  "domain": "Outcome",
+  "wrong": "Contractual love",
+  "band": "Heart",
+  "plain": "centre chest and upper back"
+ },
+ {
+  "n": 59,
+  "charge": "Blame",
+  "nerve": "Thoracic Ganglia",
+  "domain": "Responsibility",
+  "wrong": "Externalization",
+  "band": "Heart",
+  "plain": "centre chest and upper back"
+ },
+ {
+  "n": 60,
+  "charge": "False Love",
+  "nerve": "Anterior Thoracic Roots",
+  "domain": "Image",
+  "wrong": "Projection",
+  "band": "Heart",
+  "plain": "centre chest and upper back"
+ },
+ {
+  "n": 61,
+  "charge": "Rejection",
+  "nerve": "Vagal Branches",
+  "domain": "Inclusion",
+  "wrong": "Othering",
+  "band": "Heart",
+  "plain": "centre chest and upper back"
+ },
+ {
+  "n": 62,
+  "charge": "Avoidance of Grief",
+  "nerve": "Great Cardiac Nerve",
+  "domain": "Loss",
+  "wrong": "Suppression",
+  "band": "Heart",
+  "plain": "centre chest and upper back"
+ },
+ {
+  "n": 63,
+  "charge": "Need to Be Needed",
+  "nerve": "Coronary Plexus",
+  "domain": "Identity",
+  "wrong": "Validation",
+  "band": "Heart",
+  "plain": "centre chest and upper back"
+ },
+ {
+  "n": 64,
+  "charge": "Deceit",
+  "nerve": "Cervical Plexus",
+  "domain": "Honesty",
+  "wrong": "Manipulation",
+  "band": "Throat",
+  "plain": "throat and back of the neck"
+ },
+ {
+  "n": 65,
+  "charge": "Self-Silencing",
+  "nerve": "Vagus Nerve",
+  "domain": "Voice",
+  "wrong": "Withholding",
+  "band": "Throat",
+  "plain": "throat and back of the neck"
+ },
+ {
+  "n": 66,
+  "charge": "People Pleasing",
+  "nerve": "Superior Laryngeal Nerve",
+  "domain": "Approval",
+  "wrong": "Inauthenticity",
+  "band": "Throat",
+  "plain": "throat and back of the neck"
+ },
+ {
+  "n": 67,
+  "charge": "Lying",
+  "nerve": "Recurrent Laryngeal Nerve",
+  "domain": "Integrity",
+  "wrong": "Protection",
+  "band": "Throat",
+  "plain": "throat and back of the neck"
+ },
+ {
+  "n": 68,
+  "charge": "Interrupting",
+  "nerve": "Pharyngeal Nerve",
+  "domain": "Listening",
+  "wrong": "Imposition",
+  "band": "Throat",
+  "plain": "throat and back of the neck"
+ },
+ {
+  "n": 69,
+  "charge": "Comparison",
+  "nerve": "Accessory Nerve",
+  "domain": "Voice Identity",
+  "wrong": "Envy",
+  "band": "Throat",
+  "plain": "throat and back of the neck"
+ },
+ {
+  "n": 70,
+  "charge": "Excuse",
+  "nerve": "Glossopharyngeal Nerve",
+  "domain": "Ownership",
+  "wrong": "Victimization",
+  "band": "Throat",
+  "plain": "throat and back of the neck"
+ },
+ {
+  "n": 71,
+  "charge": "Stage Performing",
+  "nerve": "Laryngeal Plexus",
+  "domain": "Image",
+  "wrong": "Persona",
+  "band": "Throat",
+  "plain": "throat and back of the neck"
+ },
+ {
+  "n": 72,
+  "charge": "Speaking to Be Right",
+  "nerve": "Cervical Ganglia",
+  "domain": "Ego",
+  "wrong": "Righteousness",
+  "band": "Throat",
+  "plain": "throat and back of the neck"
+ },
+ {
+  "n": 73,
+  "charge": "Manic Expression",
+  "nerve": "Spinal Accessory Nerve",
+  "domain": "Over-talking",
+  "wrong": "Energy discharge",
+  "band": "Throat",
+  "plain": "throat and back of the neck"
+ },
+ {
+  "n": 74,
+  "charge": "Talking to Avoid Feeling",
+  "nerve": "Subclavian Nerve",
+  "domain": "Presence",
+  "wrong": "Avoidance",
+  "band": "Throat",
+  "plain": "throat and back of the neck"
+ },
+ {
+  "n": 75,
+  "charge": "Using Spiritual Language to Manipulate",
+  "nerve": "Brachial Plexus",
+  "domain": "Belonging",
+  "wrong": "Performance",
+  "band": "Throat",
+  "plain": "throat and back of the neck"
+ },
+ {
+  "n": 76,
+  "charge": "Delusion",
+  "nerve": "Optic Nerve",
+  "domain": "Truth",
+  "wrong": "Illusion",
+  "band": "Third Eye",
+  "plain": "brow and behind the eyes"
+ },
+ {
+  "n": 77,
+  "charge": "Cynicism",
+  "nerve": "Oculomotor Nerve",
+  "domain": "Clarity",
+  "wrong": "Dismissal",
+  "band": "Third Eye",
+  "plain": "brow and behind the eyes"
+ },
+ {
+  "n": 78,
+  "charge": "Distrust",
+  "nerve": "Abducens Nerve",
+  "domain": "Faith",
+  "wrong": "Suspicion",
+  "band": "Third Eye",
+  "plain": "brow and behind the eyes"
+ },
+ {
+  "n": 79,
+  "charge": "Hypervigilance",
+  "nerve": "Optic Chiasm",
+  "domain": "Control",
+  "wrong": "Overthinking",
+  "band": "Third Eye",
+  "plain": "brow and behind the eyes"
+ },
+ {
+  "n": 80,
+  "charge": "Dogma",
+  "nerve": "Pineal Gland",
+  "domain": "Belief",
+  "wrong": "Rigidity",
+  "band": "Third Eye",
+  "plain": "brow and behind the eyes"
+ },
+ {
+  "n": 81,
+  "charge": "Overanalysis",
+  "nerve": "Trigeminal Nerve",
+  "domain": "Clarity",
+  "wrong": "Paralysis",
+  "band": "Third Eye",
+  "plain": "brow and behind the eyes"
+ },
+ {
+  "n": 82,
+  "charge": "Projection",
+  "nerve": "Visual Cortex",
+  "domain": "Othering",
+  "wrong": "Blame",
+  "band": "Third Eye",
+  "plain": "brow and behind the eyes"
+ },
+ {
+  "n": 83,
+  "charge": "Paranoia",
+  "nerve": "Lateral Geniculate",
+  "domain": "Fear",
+  "wrong": "Narrative spinning",
+  "band": "Third Eye",
+  "plain": "brow and behind the eyes"
+ },
+ {
+  "n": 84,
+  "charge": "Distortion",
+  "nerve": "Occipital Nerve",
+  "domain": "Reality",
+  "wrong": "Mis-seeing",
+  "band": "Third Eye",
+  "plain": "brow and behind the eyes"
+ },
+ {
+  "n": 85,
+  "charge": "Doubt",
+  "nerve": "Cortical Visual Pathway",
+  "domain": "Intuition",
+  "wrong": "Dismissal",
+  "band": "Third Eye",
+  "plain": "brow and behind the eyes"
+ },
+ {
+  "n": 86,
+  "charge": "Idealism",
+  "nerve": "Supraoptic Nucleus",
+  "domain": "Fantasy",
+  "wrong": "Denial of reality",
+  "band": "Third Eye",
+  "plain": "brow and behind the eyes"
+ },
+ {
+  "n": 87,
+  "charge": "Lack of Discernment",
+  "nerve": "Thalamus",
+  "domain": "Perception",
+  "wrong": "Blind trust",
+  "band": "Third Eye",
+  "plain": "brow and behind the eyes"
+ },
+ {
+  "n": 88,
+  "charge": "Doubt of God",
+  "nerve": "Corpus Callosum",
+  "domain": "Faith",
+  "wrong": "Separation",
+  "band": "Crown",
+  "plain": "top and back of the head"
+ },
+ {
+  "n": 89,
+  "charge": "Hubris",
+  "nerve": "Prefrontal Cortex",
+  "domain": "Alignment",
+  "wrong": "Ego-God complex",
+  "band": "Crown",
+  "plain": "top and back of the head"
+ },
+ {
+  "n": 90,
+  "charge": "Spiritual Pride",
+  "nerve": "Pineal-Hypothalamic Axis",
+  "domain": "Insight",
+  "wrong": "Superiority",
+  "band": "Crown",
+  "plain": "top and back of the head"
+ },
+ {
+  "n": 91,
+  "charge": "Nihilism",
+  "nerve": "Parietal Cortex",
+  "domain": "Meaning",
+  "wrong": "Apathy",
+  "band": "Crown",
+  "plain": "top and back of the head"
+ },
+ {
+  "n": 92,
+  "charge": "Spiritual Escapism",
+  "nerve": "Dorsal Raphe Nucleus",
+  "domain": "Presence",
+  "wrong": "Bypass",
+  "band": "Crown",
+  "plain": "top and back of the head"
+ },
+ {
+  "n": 93,
+  "charge": "False Humility",
+  "nerve": "Frontal Lobe",
+  "domain": "Disguise",
+  "wrong": "Manipulation",
+  "band": "Crown",
+  "plain": "top and back of the head"
+ },
+ {
+  "n": 94,
+  "charge": "Seeking Validation",
+  "nerve": "Cerebral Cortex",
+  "domain": "Ego",
+  "wrong": "Worship addiction",
+  "band": "Crown",
+  "plain": "top and back of the head"
+ },
+ {
+  "n": 95,
+  "charge": "Savior Complex",
+  "nerve": "Posterior Cingulate",
+  "domain": "Responsibility",
+  "wrong": "Overreach",
+  "band": "Crown",
+  "plain": "top and back of the head"
+ },
+ {
+  "n": 96,
+  "charge": "Condemnation",
+  "nerve": "Reticular Formation",
+  "domain": "Mercy",
+  "wrong": "Judgment",
+  "band": "Crown",
+  "plain": "top and back of the head"
+ },
+ {
+  "n": 97,
+  "charge": "Need to Be Special",
+  "nerve": "Anterior Cingulate",
+  "domain": "Identity",
+  "wrong": "Distinction",
+  "band": "Crown",
+  "plain": "top and back of the head"
+ },
+ {
+  "n": 98,
+  "charge": "Knowing Better Than God",
+  "nerve": "Default Mode Network",
+  "domain": "Will",
+  "wrong": "Arrogance",
+  "band": "Crown",
+  "plain": "top and back of the head"
+ },
+ {
+  "n": 99,
+  "charge": "Unworthy of God",
+  "nerve": "Pineal-Amygdala Axis",
+  "domain": "Divinity",
+  "wrong": "Disbelief",
+  "band": "Crown",
+  "plain": "top and back of the head"
+ },
+ {
+  "n": 100,
+  "charge": "Denial of Truth",
+  "nerve": "Medial Forebrain Bundle",
+  "domain": "Insight",
+  "wrong": "Resistance",
+  "band": "Crown",
+  "plain": "top and back of the head"
+ },
+ {
+  "n": 101,
+  "charge": "Rejection of Spirit",
+  "nerve": "Posterior Commissure",
+  "domain": "Divinity",
+  "wrong": "Abandonment",
+  "band": "Crown",
+  "plain": "top and back of the head"
+ },
+ {
+  "n": 102,
+  "charge": "Fear of God",
+  "nerve": "Temporal Lobe",
+  "domain": "Love",
+  "wrong": "Dread",
+  "band": "Crown",
+  "plain": "top and back of the head"
+ },
+ {
+  "n": 103,
+  "charge": "Anger at God",
+  "nerve": "Hypothalamus",
+  "domain": "Trust",
+  "wrong": "Rebellion",
+  "band": "Crown",
+  "plain": "top and back of the head"
+ },
+ {
+  "n": 104,
+  "charge": "Forgetfulness",
+  "nerve": "Hippocampus",
+  "domain": "Identity",
+  "wrong": "Amnesia",
+  "band": "Crown",
+  "plain": "top and back of the head"
+ },
+ {
+  "n": 105,
+  "charge": "Denial of Light",
+  "nerve": "Epithalamus",
+  "domain": "Revelation",
+  "wrong": "Avoidance",
+  "band": "Crown",
+  "plain": "top and back of the head"
+ },
+ {
+  "n": 106,
+  "charge": "Rejection of Unity",
+  "nerve": "Neocortex",
+  "domain": "Connection",
+  "wrong": "Separation",
+  "band": "Crown",
+  "plain": "top and back of the head"
+ }
+]
