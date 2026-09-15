@@ -19,7 +19,8 @@ The most formalised, and the only register with measurable rules.
   behaving, acting, and feeling that I am…` and `I am embracing the truth that I am…`
 - Booklet fetters run as a single unbroken comma-chain with no full stop until
   the end.
-- **Opening words are polarised.** Across all 2,400 fragments, limiting ones open
+- **Opening words are polarised.** Across the 2,400 Subject-format fragments,
+  limiting ones open
   with *too / unable / undeserving / afraid / incapable / unworthy / stuck /
   ashamed / destined / scared*; empowered ones with *deserving / confident /
   trusting / worthy / free / capable / secure / proud / empowered / brave / open*.

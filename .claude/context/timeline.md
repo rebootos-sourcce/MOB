@@ -15,7 +15,7 @@ knowing which document is newer decides which reading wins.
 | **13 Nov 2023** | `Tula Text Test.txt` | The doctrine, dictated in full. Three pillars, eight chakras, chakras-as-split-nerves, the 0–10 scale. Names *the Tula Way*. |
 | **19–21 Dec 2023** | `How You Work Art/` | Illustration set for the *How You Work* book proposed in the Nov thread. |
 | **1 Jul 2025** | `SC - Audience AI` + `AI Audience Must Do` | Separate track: the Audience Intelligence AI white paper. |
-| **21 Jul 2025** | `SoulCraft Development (Tish & Steve).docx` | CQ assessment, 116 patterns, 2400 fragments, 39 decks. Self-worth is now the **cure**. |
+| **21 Jul 2025** | `SoulCraft Development (Tish & Steve).docx` | CQ assessment, 116 patterns, 40 decks in two formats, 3,147 fragments. Self-worth is now the **cure**. |
 | **28 Aug 2025** | `SoulCraft Childrens Book.pdf` | Book 1: Mind. 20 of 21 chapters. Discover→Play→Flow→Embody. |
 | **4–9 Oct 2025** | Six Little Books + the build spec | **Re**programming. Seven specified, six shipped. |
 | **6 Apr 2026** | `Tula - Parasite Cleanse & Detox` | Separate business line. |
