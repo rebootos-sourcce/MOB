@@ -186,3 +186,107 @@ Note the habits: numbers with units, a hedge (*"as much as I can tell"*,
 independent confirmation by name. Nothing in the published books shows this
 register. If the bot is ever asked to write research or process notes rather
 than teaching copy, **this** is the voice to match, not the affirmation voice.
+
+---
+
+## Additional mappings found in the camera dumps
+
+### Emotion → teeth and jaw
+
+`Book Session 6_15_2023/20230615_130421.jpg` extends the somatic mapping below
+the chakra level, down to individual teeth:
+
+| State | Location |
+|---|---|
+| Reluctance | 4th tooth from back / no wisdom teeth |
+| Insecurity | back teeth |
+| Not trusting or believing in yourself + threat | bottom teeth, left side of jaw to skull |
+| Uncertainty | Adam's apple + L/R muscles around the throat |
+| Self-trust | thyroid + third eye |
+| Not [able] to complete goals | clench + thyroid |
+
+Note that thyroid appears twice, consistent with the doctrine's eighth chakra
+(Will) and inconsistent with the seven-chakra products.
+
+### Sat / Chit / Ananda
+
+`20230603_005642.jpg` maps the Vedic triad onto the system:
+
+- **SAT** — energy from subtle to gross; frequency of vibration; "power, highest energy"
+- **CHIT** — "The Self", our true nature; breadth and width of information; intelligence
+- **ANANDA** — Love, of self and of other. *"is the only active emotion"*, tied to the vagus nerve
+
+The claim that love is the only *active* emotion (the rest being reactions)
+appears nowhere in the documents.
+
+### Ego and karma — and a reversal
+
+`20220220_081002.jpg`:
+
+> *Karma is the result [of] ego. Ego is a collection of experiences the mind
+> thinks are real, pulling one deeper and deeper into its depths. Ego is fueled
+> by anger, greed, jealousy, **self-esteem, self-worth, confidence,
+> competition**. To be none of these and live a life of good karma — you are
+> not your ego. I am not my ego.*
+
+**This directly contradicts the later work.** In 2022, self-esteem, self-worth
+and confidence are listed as *fuel for the ego*, to be renounced. By 2025 they
+are card-deck subjects to be *built*: SoulCraft ships decks titled
+`Self-Esteem`, `Self-Value`, `Self-Acceptance`, and the Power booklet's whole
+argument is that self-worth is the cure.
+
+The position reversed. Nothing records the reversal or reconciles the two.
+
+### The earliest dated note (12/1/21)
+
+> *The body is the experience. It triggers the emotions, which triggers
+> feelings. Feelings create behavioral patterns… Positive or negative
+> experiences create compulsive behaviors; these become our projections of fear
+> & reward (anxiety, depression etc. / desire, drives, future plans etc.)*
+>
+> *Pure consciousness is not affected by experience. It is 100% in the moment,
+> unaffected by past, present, future, patterns or experience.*
+
+The causal chain — **body → emotion → feeling → behavioral pattern →
+compulsion → projection** — is the spine of everything built afterward.
+
+---
+
+## The master metaphor: the human system is a computer
+
+This is not stated anywhere as a thesis, but it is the consistent organising
+image across the visual corpus, and it is what makes the work distinctive:
+
+- **Body UI** — somatic macros, icons, linked actions
+- **Authentic Nature** (`20220510_183359.jpg`) — tribal identity labels
+  (*"I'm a Marvel person." "I'm a Mac person." "Other religions are BS."
+  "I'm straight."*) drawn as keyboard keys — `ALT`, `CTRL`, `ENTER` — pressed
+  on top of an underlying authentic nature
+- File titles alone: `Development Mind UI`, `UI Discovery`, `Mind Processing`,
+  `Data Visualization`, `Hidden Mental Tech`, `Our Programming Map`
+- The doctrine's own phrasing: awareness is *"our operating system"*;
+  limiting beliefs are *"pattern programming"*; the practice is
+  *de*programming, then *re*programming
+
+Identity as keypress, belief as program, body as interface, awareness as OS.
+When writing in this voice, reach for the computing metaphor before the
+mystical one — the source does.
+
+---
+
+## Private material — do not reuse as copy
+
+Some images are personal journal entries and vows, not teaching material.
+They should be readable as context but **never quoted as product copy or
+marketing**:
+
+- `20220220_082623.jpg` — *"I am a NURTURER… Last 2 virtues to learn: patience,
+  exercise it more. Love, provide it."* and *"the colour that represents me is
+  golden hour, intense golden colour"* (the origin of the Golden Sun macro)
+- `20220220_081818.jpg` — a personal vow list: *"Honor my Crown. Honor my word.
+  Mind my intentions. Speak truth… I am unafraid to lead. I am unafraid to
+  father. I am unafraid to wed. I am unafraid to grow."*
+
+Worth noting for lineage: *"Honor my word"* (2022, private) becomes the CQ
+trait **Honor** — *"keeping your word as your highest currency"* (2025,
+published). The published framework is a formalisation of a private practice.
