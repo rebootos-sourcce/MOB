@@ -1,5 +1,5 @@
 --- bv_orig.py	2026-09-15 15:46:24.710780269 +0000
-+++ bv_fix.py	2026-09-15 15:46:24.735147921 +0000
++++ bv_fix.py	2026-09-15 16:01:02.150154549 +0000
 @@ -87,8 +87,9 @@
  # Ruled 2026-09-03: Lance's dictated cascades run shorter than 88 and land harder.
  # 88 is a target for composed cascades, not a floor for dictated ones. Report, do not halt.
@@ -35,3 +35,12 @@
      return fails
  
  
+@@ -436,7 +438,7 @@
+     # 2 copyright
+     P.append(page(f'''<div class="body" style="position:absolute;bottom:24.5pt;left:31.7pt;right:31.7pt">
+       Copyright &copy; {v['year']} Lance Powell<br>All rights reserved.<br><br>
+-      ISBN: {v.get('isbn') or '&mdash;'}<br>
++      ISBN: {v.get('isbn') or '-'}<br>
+       Published by {S['publisher']}<br>{S['city']}<br><br>{S['site']}</div>'''))
+ 
+     # 3 dedication

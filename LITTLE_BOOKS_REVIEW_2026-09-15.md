@@ -55,10 +55,48 @@ Everything below is what could be done without them, and it is not nothing.
 
 # 1 · WHAT THE FIVE PASSES FOUND
 
-Eight defects. Two are in the shipped manuscript. Three are in the
-generator. Three are contradictions across the documents.
+Twelve defects. One is in the shipped manuscript. Seven are in the
+generator. Four are contradictions across the documents.
 
-Ranked by what they cost.
+Ranked by what they cost. Findings 1.0 and 1.9 through 1.11 were added on
+the second intake, after reading `build_volume.py` end to end rather than
+by structure.
+
+---
+
+## 1.0 · EVERY VOLUME SHIPS AN EM DASH ON ITS COPYRIGHT PAGE
+
+**Severity: the one absolute voice rule, broken in all eleven books.**
+
+`build_volume.py` line 439, inside the copyright page:
+
+```python
+ISBN: {v.get('isbn') or '&mdash;'}<br>
+```
+
+`&mdash;` is U+2014. The em dash. Confirmed by unescaping it.
+
+The rule has no exceptions anywhere in the doc set. The handshake states it
+first among the voice rules. *No em dashes, ever. Use a single dash or
+commas.* The README repeats it as a hard rule.
+
+**And the fallback fires on every volume.** Canon rules digital first, no
+ISBN purchased. So `v.get('isbn')` is falsy in all eleven specs, the `or`
+branch is taken every time, and an em dash renders on the copyright page of
+every book in the series.
+
+This is the sharpest finding in the review. The manuscript holds zero em
+dashes across 91,603 words, which is genuinely hard. The generator then
+inserts one into all eleven derivative volumes, from a default nobody would
+think to look at, on the one page nobody reads.
+
+**Fix applied in the patch.** A single dash, which is what the rule names as
+the permitted substitute.
+
+There is a better answer and it is Lance's, not mine. `ISBN: -` reads like a
+missing value. Given the ruling is deliberately no ISBN, the cleaner move is
+to drop the line entirely when the field is empty. That changes the page
+layout, so I have not done it.
 
 ---
 
@@ -315,15 +353,129 @@ the wrong day to discover it.
 ---
 ---
 
+## 1.9 · THE 132 CEILING IS ALSO MEASURING SHORT
+
+**Severity: same root cause as 1.2, second site.**
+
+The overflow gate at line 250 reuses `CHARGE_STEM`:
+
+```python
+for side, stem in (("charge_text", CHARGE_STEM), ("install_text", INSTALL_STEM)):
+    n = cascade_words(p[side], stem)
+    if n > MAX_CASCADE:
+```
+
+So the six channel stem does not only soften the 88 floor. It softens the
+132 ceiling by the same three words. A charge of 135 true words measures
+132 and passes.
+
+The ceiling exists for a physical reason. Above it the impact line collides
+with the foot rule. A cascade three words over does not fail a gate, it
+fails on the page.
+
+**Fixed by the same one line change as 1.2.** The patch closes both.
+
+---
+
+## 1.10 · THE INSTALL STEM IS NOT FIXED, BUT THE GATE TREATS IT AS FIXED
+
+**Severity: the install measurement is wrong for two of three openings.**
+
+```python
+INSTALL_STEM = "I know that I am"
+```
+
+`cascade_words` documents its own assumption. *The stem is furniture, not
+content.* That holds for the charge. Every charge opens the same way.
+
+It does not hold for the install. The cascade grammar rules three openings
+and says all three are his:
+
+- `I know that I am [state].` The default.
+- `I'm not [charge], because...` Negation first.
+- `Because...` Runs straight on from the charge.
+
+Only the first carries `I know that I am`. The gate subtracts four words
+from all three, so installs opening on negation or on `because` measure four
+words shorter than they are.
+
+In practice this is currently harmless. Installs run 45 to 92 words against
+a 132 ceiling, so four words of slack changes nothing today.
+
+**Not fixed in the patch, deliberately.** There are two defensible answers.
+Subtract nothing from installs, which makes the gate fail safe. Or detect
+the opening and subtract accordingly. Which one is right is a ruling about
+how installs are measured, not a defect with a single obvious repair.
+
+---
+
+## 1.11 · THE COVER IS BUILT TWICE FROM DUPLICATED LOGIC
+
+**Severity: latent. The two covers can silently diverge.**
+
+The cover exists in two places. `cover_html` at line 277 makes the
+standalone cover PDF. `cover_page` at line 322 makes page one of the
+interior, and its docstring states the requirement plainly: *same art as
+the standalone file.*
+
+Both derive the palette independently, and the lines are identical:
+
+```
+282  cream = "#4A3400" if inv else "#F3E2C4"     # cover_html
+328  cream = "#4A3400" if inv else "#F3E2C4"     # cover_page
+```
+
+Three colour lines, duplicated. Plus the inset, the keyline, the hairline
+width, the seal size and the crown placement, expressed once in CSS and
+once inline.
+
+Nothing is wrong today. The two agree. But the requirement is that they
+always agree, and it is enforced by nobody. A colour change made in one
+produces an interior whose page one no longer matches the cover it ships
+behind, and no gate looks at that. The handshake rule is *render and look
+at the output before claiming it works*, and this is a defect that survives
+looking at either file alone.
+
+**Fix:** lift the palette into one function both call. Not done here,
+because it touches the render path and I cannot render to check it.
+
+---
+
+## 1.12 · THE FOOT PARSE HAS NO GUARD
+
+**Severity: low. A crash after all five gates report green.**
+
+Line 495:
+
+```python
+foot_reading(p['foot'].split(' · ')[1])
+```
+
+The foot format is `node · nerve · plain location`, so index 1 is the
+nerve. Correct for well formed data.
+
+There is no length check. A foot missing its separator, or carrying a
+different one, raises `IndexError` at render, which is after all five gates
+have passed and printed clean. The build dies with a traceback pointing at
+a split, not at the pair that caused it.
+
+**Fix:** guard the index and name the offending runhead. Cheap, and it
+turns a traceback into a message.
+
+---
+
 # 2 · WHAT PASSED
 
 Checks run that found nothing. Worth stating, because a review that only
 reports faults is not a measurement.
 
-**The em dash rule holds, completely.** Zero em dashes in 91,603 words.
-Zero en dashes. Checked the rendered text and the raw HTML, including
-`&mdash;` and `&#8212;` entities. Nothing. This is the hardest voice rule
-to hold at length and it is held.
+**The em dash rule holds in the manuscript, completely.** Zero em dashes
+in 91,603 words. Zero en dashes. Checked the rendered text and the raw
+HTML, including `&mdash;` and `&#8212;` entities. Nothing. This is the
+hardest voice rule to hold at length and it is held.
+
+It does not hold in the generator. See finding 1.0. The manuscript is
+clean and the eleven volumes extracted from it are not.
 
 **The arithmetic is consistent everywhere it appears.**
 
@@ -439,7 +591,8 @@ Re-stated with what each one is truly blocked on.
 **Blocked only on the files arriving.** These need no ruling from him.
 
 - The 108 fix in the Pattern Catalog. Source file needed, not the built HTML.
-- The three generator fixes. 1.2, 1.3, 1.4 above. Ten minutes once `bodymap.py` is present.
+- The four generator fixes. 1.0, 1.2, 1.3, 1.4 above, in `generator_gate_fixes.patch`. Ten minutes once `bodymap.py` is present.
+- The three left unfixed. 1.10 needs a ruling, 1.11 and 1.12 need a render to verify.
 - Cluster groupings from address overlap.
 - Propagate the two complexes and the two poles into Atüned.
 - Full print wraps, front, spine and back as one file.
@@ -466,9 +619,14 @@ and that is the remaining work.*
 
 Two corrections to it, from this review.
 
-**The gates are five, and one of them is measuring three words short.**
-Finding 1.2. It has been reporting green on cascades that do not clear the
-floor. The number of affected cascades is unknown until the specs arrive.
+**The gates are five, and two of them are measuring three words short.**
+Findings 1.2 and 1.9, one root cause. The floor has been running at 85 and
+the ceiling at 135. The number of affected cascades is unknown until the
+specs arrive.
+
+**The voice rule is broken in the built product, not in the source.**
+Finding 1.0. Eleven copyright pages carry an em dash. It is one character
+and it is the one rule stated as absolute.
 
 **Nothing reads PENDING, and that remains the right claim.** It is worth
 protecting. A flagged gap and a composed placeholder look identical on a
@@ -485,10 +643,11 @@ One archive. The working directory containing `generator/` with
 `bodymap.py`, `compose/` and `volumes/`, plus `assets/`, `plates/` and the
 `LETGO_*` corpus files.
 
-With those present, in order: the three generator fixes, then the gate
-re-run across all eleven to find what 1.2 has been hiding, then the full
-print wraps and the cluster groupings, then the pair reselection against
-the marked direct hits.
+With those present, in order: apply `generator_gate_fixes.patch`, then the
+gate re-run across all eleven to find what 1.2 and 1.9 have been hiding,
+then rebuild so the em dash leaves the eleven copyright pages, then the
+full print wraps and the cluster groupings, then the pair reselection
+against the marked direct hits.
 
 The cascades, energy pages, back covers and impact lines wait for Lance.
 They are not craft problems and no amount of composition will close them.
