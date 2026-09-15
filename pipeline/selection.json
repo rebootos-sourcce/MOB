@@ -1,0 +1,574 @@
+[
+ {
+  "volume": "ANXIETY",
+  "band": "Root",
+  "field": "#6B1F1F",
+  "picks": [
+   {
+    "entry": "Public expression",
+    "words": 112,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Swarm",
+    "words": 146,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "The truth",
+    "words": 167,
+    "tier": "OBSERVED"
+   },
+   {
+    "entry": "Go be exhausted vehicle responsibility",
+    "words": 240,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Fear speaking my needs",
+    "words": 275,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Life's experiences",
+    "words": 123,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Fear of responsibility and",
+    "words": 95,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Afraid of everything",
+    "words": 71,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Conflict",
+    "words": 68,
+    "tier": "DERIVED"
+   }
+  ]
+ },
+ {
+  "volume": "SHAME",
+  "band": "Root",
+  "field": "#A02E2E",
+  "picks": [
+   {
+    "entry": "Shame from the past",
+    "words": 228,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Ashamed disappointing people",
+    "words": 102,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Life difficult",
+    "words": 146,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Embarrassed",
+    "words": 117,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Blame",
+    "words": 61,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Voice",
+    "words": 223,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Money",
+    "words": 104,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Need help",
+    "words": 119,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Broke",
+    "words": 83,
+    "tier": "DERIVED"
+   }
+  ]
+ },
+ {
+  "volume": "MONEY",
+  "band": "Sacral",
+  "field": "#E06A0E",
+  "picks": [
+   {
+    "entry": "Money",
+    "words": 214,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Finances",
+    "words": 242,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Finances",
+    "words": 175,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Truly desire",
+    "words": 143,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Despair",
+    "words": 97,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Blessings.",
+    "words": 131,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Against me",
+    "words": 73,
+    "tier": "OBSERVED"
+   },
+   {
+    "entry": "Deep shame",
+    "words": 148,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Ruining experience of life",
+    "words": 66,
+    "tier": "DERIVED"
+   }
+  ]
+ },
+ {
+  "volume": "ANGER",
+  "band": "Solar",
+  "field": "#7A5406",
+  "picks": [
+   {
+    "entry": "Anger",
+    "words": 208,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Discouraged",
+    "words": 112,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Easily",
+    "words": 76,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Thinking the 90s sucked",
+    "words": 52,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Temptation",
+    "words": 1134,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Fucking pissed",
+    "words": 79,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Demands",
+    "words": 52,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Temper",
+    "words": 178,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Defiance",
+    "words": 106,
+    "tier": "DERIVED"
+   }
+  ]
+ },
+ {
+  "volume": "BURNOUT",
+  "band": "Solar",
+  "field": "#8C7A45",
+  "picks": [
+   {
+    "entry": "Overwhelmed",
+    "words": 106,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Physically tired",
+    "words": 112,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Shouldering responsibility",
+    "words": 119,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "No one's coming to save me",
+    "words": 408,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Overwhelmed",
+    "words": 90,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Life's a burden",
+    "words": 101,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "That I'm not in control of my life",
+    "words": 114,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Doing things Don't Want to do",
+    "words": 178,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Life",
+    "words": 416,
+    "tier": "DERIVED"
+   }
+  ]
+ },
+ {
+  "volume": "DRIVE",
+  "band": "Solar",
+  "field": "#B0870C",
+  "picks": [
+   {
+    "entry": "Completing projects",
+    "words": 891,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Completing projects",
+    "words": 365,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Avoidant",
+    "words": 220,
+    "tier": "OBSERVED"
+   },
+   {
+    "entry": "project success.",
+    "words": 1371,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Commitment",
+    "words": 110,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Lie",
+    "words": 183,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Self-doubt",
+    "words": 113,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Can't do it",
+    "words": 93,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Resistance",
+    "words": 133,
+    "tier": "OBSERVED"
+   }
+  ]
+ },
+ {
+  "volume": "WORTH",
+  "band": "Solar",
+  "field": "#D2A410",
+  "picks": [
+   {
+    "entry": "Self-confidence",
+    "words": 63,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "I;m letting of believing i;m lazy",
+    "words": 287,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Confidence in selling",
+    "words": 128,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Self suppression",
+    "words": 98,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Luck Dynamics",
+    "words": 58,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "30 years of training and practicing e",
+    "words": 346,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Rejected from authority",
+    "words": 109,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Stand ground",
+    "words": 108,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Keeping one's word",
+    "words": 99,
+    "tier": "DERIVED"
+   }
+  ]
+ },
+ {
+  "volume": "GRIEF",
+  "band": "Heart",
+  "field": "#1B6353",
+  "picks": [
+   {
+    "entry": "Grieving",
+    "words": 198,
+    "tier": "OBSERVED"
+   },
+   {
+    "entry": "Grieving",
+    "words": 97,
+    "tier": "OBSERVED"
+   },
+   {
+    "entry": "Maximum abandonment",
+    "words": 108,
+    "tier": "OBSERVED"
+   },
+   {
+    "entry": "God abandoned",
+    "words": 101,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Suppressed and repressed sadness",
+    "words": 99,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Abandoned",
+    "words": 149,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Low grade depression",
+    "words": 100,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Life's not fair",
+    "words": 117,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Honor",
+    "words": 153,
+    "tier": "DERIVED"
+   }
+  ]
+ },
+ {
+  "volume": "VOICE",
+  "band": "Throat",
+  "field": "#12708F",
+  "picks": [
+   {
+    "entry": "Rigid",
+    "words": 124,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Shy and insecure",
+    "words": 99,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Letting go of caring with people say",
+    "words": 886,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Letting go of caring with people say",
+    "words": 887,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Inside voice",
+    "words": 128,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Somebody go booty I'm insecure of death",
+    "words": 76,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Uncomfortable expressing self",
+    "words": 160,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Public speaking",
+    "words": 206,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Scared look stupid or dumb",
+    "words": 306,
+    "tier": "DERIVED"
+   }
+  ]
+ },
+ {
+  "volume": "CONTROL",
+  "band": "Solar",
+  "field": "#6E4A0A",
+  "picks": [
+   {
+    "entry": "Negative",
+    "words": 122,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Self Control",
+    "words": 57,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Control",
+    "words": 47,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Obsessing",
+    "words": 152,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Impulse control",
+    "words": 48,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Life",
+    "words": 71,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Standards",
+    "words": 158,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Goals and tasks",
+    "words": 175,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Memorial believe me I'm not organized",
+    "words": 92,
+    "tier": "DERIVED"
+   }
+  ]
+ },
+ {
+  "volume": "DUTY",
+  "band": "Crown",
+  "field": "#4A4C5E",
+  "picks": [
+   {
+    "entry": "Man of my word",
+    "words": 236,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Responsibility",
+    "words": 159,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Senses",
+    "words": 232,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Deception",
+    "words": 94,
+    "tier": "OBSERVED"
+   },
+   {
+    "entry": "Tall Poppy",
+    "words": 82,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Ego",
+    "words": 230,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "And letting go of my victim mask",
+    "words": 246,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Suicide",
+    "words": 54,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Self Drive",
+    "words": 384,
+    "tier": "DERIVED"
+   }
+  ]
+ }
+]

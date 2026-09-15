@@ -6,11 +6,10 @@
  "section": "The Nine Charges",
  "circuit_title": "The Root Circuit",
  "energy_title": "Root Energy",
- "time_half": "future",
  "energy": [
-  "[ENERGY PAGE PENDING. Lance dictation.]"
+  "[ENERGY PAGE PENDING. Author dictation.]"
  ],
- "affirmation": "I show courage over fear.",
+ "affirmation": "I am steadiness.",
  "author": "Lance Powell is a somatic engineer. Thirty years a creative director in film and games, on Oscar, Emmy and Game of the Year winning teams. He co-authored peer-reviewed work in Endoscopy, Thieme.",
  "evidence": {
   "title": "The Evidence",
@@ -20,10 +19,10 @@
    "Three credentialed physicians have reviewed this work and recommended clinical trials."
   ]
  },
- "back_cover": "[BACK COVER PENDING. Lance dictation, in the shape of the one he dictated.]",
+ "back_cover": "[BACK COVER PENDING. Author dictation.]",
  "front": {
-  "preface": "[PREFACE PENDING RECOVERY. Lance dictated all eleven.]",
-  "circuit": "[CIRCUIT PAGE PENDING RECOVERY. Lance wrote ten of eleven.]",
+  "preface": "[PREFACE PENDING. Author dictation.]",
+  "circuit": "[CIRCUIT PAGE PENDING. Author dictation.]",
   "howto_intro": "Letting go is the deliberate integration of what the body learned and never unlearned. Read it slowly. Do not perform it.",
   "howto_steps": [
    "Recognise your awareness as the witness of the experience.",
@@ -37,116 +36,115 @@
    "Let the new state settle before you stand up."
   ]
  },
- "_schema": "Derived from build_volume.py parser 2026-09-15. No invented keys.",
- "_state": "STRUCTURE VALID. Prose pending recovery.",
  "pairs": [
   {
-   "runhead": "FEAR",
-   "charge": "Fear",
+   "runhead": "PUBLIC EXPRESSION",
+   "charge": "Public expression",
    "install": "Steadiness",
-   "charge_text": "I'm letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, voicing that I am [CASCADE PENDING RECOVERY]",
-   "install_text": "I know that I am [INSTALL PENDING RECOVERY]",
-   "charge_impact": "[impact pending]",
-   "install_impact": "[impact pending]",
-   "foot": "node 1 · Lumbar Plexus · low back and pelvis",
-   "saboteur_line": "",
-   "_source": "STRUCTURE ONLY. Lance dictation 2026-09-03 not recovered."
-  },
-  {
-   "runhead": "SHAME",
-   "charge": "Shame",
-   "install": "Steadiness",
-   "charge_text": "I'm letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, voicing that I am [CASCADE PENDING RECOVERY]",
-   "install_text": "I know that I am [INSTALL PENDING RECOVERY]",
-   "charge_impact": "[impact pending]",
-   "install_impact": "[impact pending]",
+   "charge_text": "I'm letting go believing I'm tired scared tense stressed nervous insecure shy anxious pissed off bothered irritated annoyed shy insecure heavily embarrassed embarrassed of publicly expressing myself I'm letting go of being afraid that I will be judged not dismissed if I publicly express myself letting go of being nervous shy insecure scared of publicly expressing myself I'm letting go of being afraid to look foolish scared insecure shy on camera or when expressing myself in public and letting go of being scared to look dumb in public I'm letting go of not being scared not being shy not being secure and secure not being nervous when I express myself in public",
+   "install_text": "I am safe in this body. I am grounded in this moment. The ground holds me. The threat has passed.",
+   "charge_impact": "[impact pending, four physical observations]",
+   "install_impact": "[impact pending, four physical observations]",
    "foot": "node 2 · Pudendal Nerve · low back and pelvis",
    "saboteur_line": "",
-   "_source": "STRUCTURE ONLY. Lance dictation 2026-09-03 not recovered."
+   "_source": "LANCE DICTATION. address DERIVED. install AXIS."
   },
   {
-   "runhead": "GUILT",
-   "charge": "Guilt",
+   "runhead": "SWARM",
+   "charge": "Swarm",
    "install": "Steadiness",
-   "charge_text": "I'm letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, voicing that I am [CASCADE PENDING RECOVERY]",
-   "install_text": "I know that I am [INSTALL PENDING RECOVERY]",
-   "charge_impact": "[impact pending]",
-   "install_impact": "[impact pending]",
-   "foot": "node 3 · Inferior Hypogastric Plexus · low back and pelvis",
+   "charge_text": "I'm letting go of believing perceiving thinking behaving acting feeling speaking saying voicing that I'm worried about the judgments of others nervous about the judgments Brothers worried about their opinions critiques of others worried about what they're going to say about going to say I'm worried about what they're going to think of me I'm going to go to size secure worried bothered embarrassing me machine guilty depressed so sad about some post has been in London movies I'm going to be really scared wow that was a big hit I'm going to be really scared of believe me I am shy or no I'm breaking anything notice or insecure he doesn't know I'm super confident I got nothing to do no emotion to control how we feel I'm letting go of believing she's an authority a boss the leader because I'm solving from all men",
+   "install_text": "I am safe in this body. I am grounded in this moment. The ground holds me. The threat has passed.",
+   "charge_impact": "[impact pending, four physical observations]",
+   "install_impact": "[impact pending, four physical observations]",
+   "foot": "Lumbar Plexus (L1-L4) · derived",
    "saboteur_line": "",
-   "_source": "STRUCTURE ONLY. Lance dictation 2026-09-03 not recovered."
+   "_source": "LANCE DICTATION. address DERIVED. install AXIS."
   },
   {
-   "runhead": "CONTROL",
-   "charge": "Control",
+   "runhead": "THE TRUTH",
+   "charge": "The truth",
    "install": "Steadiness",
-   "charge_text": "I'm letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, voicing that I am [CASCADE PENDING RECOVERY]",
-   "install_text": "I know that I am [INSTALL PENDING RECOVERY]",
-   "charge_impact": "[impact pending]",
-   "install_impact": "[impact pending]",
-   "foot": "node 4 · Sacral Nerves · low back and pelvis",
+   "charge_text": "I'm going to go leaving perceiving thinking behaving acting feeling speaking saying voicing that I'm nervous until the truth scared to tell the truth uncomfortable and tell the truth afraid to tell the truths terrified to tell the truth paralyzed until the truth overcome to tell the truth fearful to tell the truth embarrassing guilty ashamed television bracing to tell the truth racing to receive the truth scared to receive the truth terrified her feet is truth shy to receive the truth shy to tell the truth insecure to tell the truth shy to tell the truth nervous to tell the truth worried to tell the truth cautious and concern to tell the truth piss to tell the truth angry tell the truth annoy to tell the truth bothered to tell the truth tense to tell the truth stress stressed intelligent well Goldman this is all brachial plexus for me it's going across the traps the rhomboid the scapula horizontally and now it's moving up the neck",
+   "install_text": "I am safe in this body. I am grounded in this moment. The ground holds me. The threat has passed.",
+   "charge_impact": "[impact pending, four physical observations]",
+   "install_impact": "[impact pending, four physical observations]",
+   "foot": "brachial plexus, traps, rhomboid, scapula, then up the neck · observed",
    "saboteur_line": "",
-   "_source": "STRUCTURE ONLY. Lance dictation 2026-09-03 not recovered."
+   "_source": "LANCE DICTATION. address OBSERVED. install AXIS."
   },
   {
-   "runhead": "INSECURITY",
-   "charge": "Insecurity",
+   "runhead": "GO BE EXHAUSTED VEHICLE RE",
+   "charge": "Go be exhausted vehicle respon",
    "install": "Steadiness",
-   "charge_text": "I'm letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, voicing that I am [CASCADE PENDING RECOVERY]",
-   "install_text": "I know that I am [INSTALL PENDING RECOVERY]",
-   "charge_impact": "[impact pending]",
-   "install_impact": "[impact pending]",
-   "foot": "node 5 · Pelvic Nerve · low back and pelvis",
+   "charge_text": "Letting go of meeting more responsibility I'm letting go of being anxious scared bothered worried concern with more responsibility I'm letting go of believing perceiving thinking behaving acting feeling that I'm tired exhausted run down petered out tuckered out with more responsibility more commitment more duties I'm letting go of not wanting to be responsible I'm going to go being uncomfortable with responsibility I'm letting go being terrified with responsibility I'm letting go of my fear of failure with more responsibility I'm letting go of being nervous with more responsibility I'm letting go of being afraid to face life on my own I'm letting go of being scared to face life correctly 0 I'm letting go being scared to face life directly I'm letting go of being scared to take on life challenge I'm letting go of not doing what I say I'm going to do I'm letting go of not completing what I say I'm going to complete I'm letting go of not completing things to the thoroughness they desire and require I'm letting go of not doing what I say I'm going to do I'm letting go of not being aware when I give my word I'm letting go not considering what I'm doing when I give my word I'm letting go I'm being blind to my own desires I'm going to go being blind to my own intentions I'm letting go of being blind to my values",
+   "install_text": "I am safe in this body. I am grounded in this moment. The ground holds me. The threat has passed.",
+   "charge_impact": "[impact pending, four physical observations]",
+   "install_impact": "[impact pending, four physical observations]",
+   "foot": "Lumbar Plexus (L1-L4) · derived",
    "saboteur_line": "",
-   "_source": "STRUCTURE ONLY. Lance dictation 2026-09-03 not recovered."
+   "_source": "LANCE DICTATION. address DERIVED. install AXIS."
   },
   {
-   "runhead": "VICTIMHOOD",
-   "charge": "Victimhood",
+   "runhead": "FEAR SPEAKING MY NEEDS",
+   "charge": "Fear speaking my needs",
    "install": "Steadiness",
-   "charge_text": "I'm letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, voicing that I am [CASCADE PENDING RECOVERY]",
-   "install_text": "I know that I am [INSTALL PENDING RECOVERY]",
-   "charge_impact": "[impact pending]",
-   "install_impact": "[impact pending]",
-   "foot": "node 6 · Coccygeal Plexus · low back and pelvis",
+   "charge_text": "I'm letting go of the fear of speaking my truth I'm going to go fear of being honest I'm letting go of the fear of being judged when speaking honestly I'm letting go of the belief that I have to do it all by myself I'm going to go to the resentment that I have to do it all by myself I'm letting go of the frustration that I have to do all by myself I'm letting go the anger that I have to do it all by myself I'm letting go of the rage that I have to do it all by myself I'm letting go of the guilt when feeling I have to do all by myself I'm letting go of my fear of pain I'm letting go of being scared of pain I'm letting go of being anxious of pain I'm letting go of avoiding pain I'm letting go that my actions will lead me to harm I'm letting go of my fear that I will get hurt I'm letting go of being scared that I will be hurt I am letting go of the concept of pain I'm letting you go to my actions will leave today I'm letting go of my concept of time I'm going to go with my concept up tomorrow I'm letting go of my concept of yesterday I'm letting go of my concept of right now I'm letting go of my concept now I'm letting of my concept of I'm letting go of my concept of fear, fear is a construct of the past expressed as fear of a future event, the past does not exist",
+   "install_text": "I am safe in this body. I am grounded in this moment. The ground holds me. The threat has passed.",
+   "charge_impact": "[impact pending, four physical observations]",
+   "install_impact": "[impact pending, four physical observations]",
+   "foot": "Suprarenal Plexus, recycled anger running on a loop · derived",
    "saboteur_line": "",
-   "_source": "STRUCTURE ONLY. Lance dictation 2026-09-03 not recovered."
+   "_source": "LANCE DICTATION. address DERIVED. install AXIS."
   },
   {
-   "runhead": "SCARCITY",
-   "charge": "Scarcity",
+   "runhead": "LIFE'S EXPERIENCES",
+   "charge": "Life's experiences",
    "install": "Steadiness",
-   "charge_text": "I'm letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, voicing that I am [CASCADE PENDING RECOVERY]",
-   "install_text": "I know that I am [INSTALL PENDING RECOVERY]",
-   "charge_impact": "[impact pending]",
-   "install_impact": "[impact pending]",
-   "foot": "node 7 · Iliohypogastric Nerve (L1) · low back and pelvis",
+   "charge_text": "I'm letting go of being afraid of life's experiences I'm going to go be terrified to jump I'm letting go of being terrified to take a leap of faith I'm letting go just believing God's got my back I'm letting go of being afraid to be seen I'm letting go of being nervous to be seen And letting go of being insecure to be seen I'm going to go being embarrassed to be seen I'm letting go of being scared to try I'm going to go being nervous insecure shy terrified worried bothered annoyed irritated frustrated pissed off to try I'm letting go of being shy whiny insecure, bingo. And letting go believing I'm insecure to try I'm letting out believing it's difficult",
+   "install_text": "I am safe in this body. I am grounded in this moment. The ground holds me. The threat has passed.",
+   "charge_impact": "[impact pending, four physical observations]",
+   "install_impact": "[impact pending, four physical observations]",
+   "foot": "node 2 · Pudendal Nerve · low back and pelvis",
    "saboteur_line": "",
-   "_source": "STRUCTURE ONLY. Lance dictation 2026-09-03 not recovered."
+   "_source": "LANCE DICTATION. address DERIVED. install AXIS."
   },
   {
-   "runhead": "ENTITLEMENT",
-   "charge": "Entitlement",
+   "runhead": "FEAR OF RESPONSIBILITY AND",
+   "charge": "Fear of responsibility and",
    "install": "Steadiness",
-   "charge_text": "I'm letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, voicing that I am [CASCADE PENDING RECOVERY]",
-   "install_text": "I know that I am [INSTALL PENDING RECOVERY]",
-   "charge_impact": "[impact pending]",
-   "install_impact": "[impact pending]",
-   "foot": "node 8 · Cauda Equina · low back and pelvis",
+   "charge_text": "I'm letting go believing perceiving thinking behaving acting feeling that I'm nervous or uncomfortable or scared or shy or insecure about assuming a full adult responsibility for my actions and accountability for every step that I take and letting go of being uncomfortable uncertain nervous anxious worried that'll be judged I can't handle responsibility that I can't handle the accountability that I cannot face the repercussions that I'm not responsible and terrified responsibility that paralyzer for responsibility over myself my life and others and fully accountable and responsible for my life every step of ranch",
+   "install_text": "I am safe in this body. I am grounded in this moment. The ground holds me. The threat has passed.",
+   "charge_impact": "[impact pending, four physical observations]",
+   "install_impact": "[impact pending, four physical observations]",
+   "foot": "Solar Plexus / Celiac Plexus · derived",
    "saboteur_line": "",
-   "_source": "STRUCTURE ONLY. Lance dictation 2026-09-03 not recovered."
+   "_source": "LANCE DICTATION. address DERIVED. install AXIS."
   },
   {
-   "runhead": "POSSESSION",
-   "charge": "Possession",
+   "runhead": "AFRAID OF EVERYTHING",
+   "charge": "Afraid of everything",
    "install": "Steadiness",
-   "charge_text": "I'm letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, voicing that I am [CASCADE PENDING RECOVERY]",
-   "install_text": "I know that I am [INSTALL PENDING RECOVERY]",
-   "charge_impact": "[impact pending]",
-   "install_impact": "[impact pending]",
-   "foot": "node 9 · Gluteal Nerve · low back and pelvis",
+   "charge_text": "I'm letting go of believing perceiving behaving acting and feeling and speaking saying and voicing and doing that I'm afraid of everything and letting go believe I'm afraid of everything I'm letting go of believing and afraid of everything letting go believing I'm scared of everything and letting go believing and cautious of everything and letting go believing I'm nervous about everything I'm letting you know believing I'm worrying about everything",
+   "install_text": "I am safe in this body. I am grounded in this moment. The ground holds me. The threat has passed.",
+   "charge_impact": "[impact pending, four physical observations]",
+   "install_impact": "[impact pending, four physical observations]",
+   "foot": "Lumbar Plexus (L1-L4) · derived",
    "saboteur_line": "",
-   "_source": "STRUCTURE ONLY. Lance dictation 2026-09-03 not recovered."
+   "_source": "LANCE DICTATION. address DERIVED. install AXIS."
+  },
+  {
+   "runhead": "CONFLICT",
+   "charge": "Conflict",
+   "install": "Steadiness",
+   "charge_text": "I'm letting go of believing I'm afraid of conflict I want to go blazing I'm scared of conflict Let me go believing and anxious about conflict I'm letting go of believing and concerned about conflict I'm going to go sleeping I'm nervous about conflict You want to go breathing perceiving being acting and feeling and I'm afraid terrified nervous or uncomfortable or shy or secure our own comfort",
+   "install_text": "I am safe in this body. I am grounded in this moment. The ground holds me. The threat has passed.",
+   "charge_impact": "[impact pending, four physical observations]",
+   "install_impact": "[impact pending, four physical observations]",
+   "foot": "Lumbar Plexus (L1-L4) · derived",
+   "saboteur_line": "",
+   "_source": "LANCE DICTATION. address DERIVED. install AXIS."
   }
- ]
+ ],
+ "_built": "pipeline/build_volumes.py. Charges are the author's dictation."
 }
