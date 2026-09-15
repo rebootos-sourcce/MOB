@@ -1,0 +1,37 @@
+--- bv_orig.py	2026-09-15 15:46:24.710780269 +0000
++++ bv_fix.py	2026-09-15 15:46:24.735147921 +0000
+@@ -87,8 +87,9 @@
+ # Ruled 2026-09-03: Lance's dictated cascades run shorter than 88 and land harder.
+ # 88 is a target for composed cascades, not a floor for dictated ones. Report, do not halt.
+ MIN_CASCADE = 88
+-DICTATED_EXEMPT = True
+-CHARGE_STEM = "I'm letting go of believing, perceiving, thinking, behaving, acting, feeling that I am"
++DICTATED_EXEMPT = True   # False halts the build on Lance's short cascades too
++# Ruled in CASCADE_GRAMMAR_v1.md: nine channels, not six. Measured from Lance's nine.
++CHARGE_STEM = "I'm letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, voicing that I am"
+ INSTALL_STEM = "I know that I am"
+ 
+ 
+@@ -107,7 +108,7 @@
+         if c < MIN_CASCADE:
+             fails.append((p["runhead"], "charge", c, MIN_CASCADE - c))
+     if fails:
+-        print(f"\n  CASCADE GATE: {len(fails)} of {len(v['pairs'])*2} below {MIN_CASCADE} words")
++        print(f"\n  CASCADE GATE: {len(fails)} of {len(v['pairs'])} charges below {MIN_CASCADE} words")
+         for name, side, n, short in fails:
+             print(f"    {name:<26} {side:<8} {n:>3}w   short {short}")
+         dictated = [n for n, side, w, sh in fails
+@@ -115,10 +116,11 @@
+                            for p in v["pairs"])]
+         if dictated:
+             print(f"    {len(dictated)} of these are Lance's dictation. Canon. Not a defect.")
+-        if strict and len(dictated) < len(fails):
++        exempt = len(dictated) if DICTATED_EXEMPT else 0
++        if strict and exempt < len(fails):
+             raise SystemExit("\n  BUILD HALTED. Extend the composed cascades.\n")
+     else:
+-        print(f"  CASCADE GATE: all {len(v['pairs'])*2} clear {MIN_CASCADE} words")
++        print(f"  CASCADE GATE: all {len(v['pairs'])} charges clear {MIN_CASCADE} words")
+     return fails
+ 
+ 
