@@ -1,0 +1,722 @@
+[
+ {
+  "nerve": "Accessory Nerve",
+  "theme": "Fear of overburdening",
+  "belief": "I am responsible for everyone\u2019s load."
+ },
+ {
+  "nerve": "Abducens Nerve",
+  "theme": "Inability to focus on new directions",
+  "belief": "I can\u2019t direct my focus where it needs to go."
+ },
+ {
+  "nerve": "Anterior Interosseous Nerve",
+  "theme": "Hesitancy with precision",
+  "belief": "I\u2019m afraid to fully master my abilities."
+ },
+ {
+  "nerve": "Auriculotemporal Nerve",
+  "theme": "Fear of hearing criticism",
+  "belief": "I avoid listening to negative feedback."
+ },
+ {
+  "nerve": "Axillary Nerve",
+  "theme": "Fear of taking up space",
+  "belief": "I shouldn\u2019t assert my presence."
+ },
+ {
+  "nerve": "Buccal Nerve",
+  "theme": "Reluctance to communicate openly",
+  "belief": "I must filter my words to be accepted."
+ },
+ {
+  "nerve": "Cavernous Nerves",
+  "theme": "Fear of taking control in sensitive matters",
+  "belief": "I can\u2019t handle sensitive responsibilities well."
+ },
+ {
+  "nerve": "Deep Temporal Nerves",
+  "theme": "Difficulty in processing experiences",
+  "belief": "I am afraid to face past events head-on."
+ },
+ {
+  "nerve": "Deep Branch of Radial Nerve",
+  "theme": "Reluctance in taking precise steps",
+  "belief": "I fear failing if I act precisely."
+ },
+ {
+  "nerve": "Frontal Nerve",
+  "theme": "Difficulty with forward-thinking",
+  "belief": "I can\u2019t see beyond the immediate."
+ },
+ {
+  "nerve": "Lacrimal Nerve",
+  "theme": "Resisting emotional release",
+  "belief": "I must hold back my tears."
+ },
+ {
+  "nerve": "Long Thoracic Nerve",
+  "theme": "Insecurity in personal strength",
+  "belief": "I can\u2019t fully support myself."
+ },
+ {
+  "nerve": "Masseteric Nerve",
+  "theme": "Suppression of frustration",
+  "belief": "I should suppress my frustration."
+ },
+ {
+  "nerve": "Median Nerve",
+  "theme": "Insecurity in balanced actions",
+  "belief": "I struggle to act without fear."
+ },
+ {
+  "nerve": "Mental Nerve",
+  "theme": "Inhibited self-assertion",
+  "belief": "I\u2019m afraid to express my truth."
+ },
+ {
+  "nerve": "Oculomotor Nerve",
+  "theme": "Reluctance to shift focus",
+  "belief": "I avoid looking in new directions."
+ },
+ {
+  "nerve": "Optic Nerve",
+  "theme": "Fear of clarity",
+  "belief": "I avoid looking at the truth."
+ },
+ {
+  "nerve": "Ophthalmic Nerve",
+  "theme": "Hesitation to see new perspectives",
+  "belief": "I resist change in my views."
+ },
+ {
+  "nerve": "Radial Nerve",
+  "theme": "Fear of extending beyond comfort",
+  "belief": "I\u2019m hesitant to reach beyond familiar limits."
+ },
+ {
+  "nerve": "Supraclavicular Nerves",
+  "theme": "Discomfort in high-stress areas",
+  "belief": "I\u2019m too exposed under pressure."
+ },
+ {
+  "nerve": "Temporal Branches of Facial Nerve",
+  "theme": "Fear of expressing warmth",
+  "belief": "I\u2019m afraid to be too open with others."
+ },
+ {
+  "nerve": "Common Fibular Nerve",
+  "theme": "Insecurity in walking one\u2019s chosen path",
+  "belief": "I\u2019m unsure of my footing in life."
+ },
+ {
+  "nerve": "Femoral Nerve",
+  "theme": "Fear of forward movement",
+  "belief": "I can\u2019t confidently move ahead."
+ },
+ {
+  "nerve": "Genital Branch of Genitofemoral Nerve",
+  "theme": "Difficulty in sexual self-expression",
+  "belief": "I\u2019m hesitant to express my desires."
+ },
+ {
+  "nerve": "Obturator Nerve",
+  "theme": "Resistance to inner exploration and balance",
+  "belief": "I avoid connecting deeply with myself."
+ },
+ {
+  "nerve": "Patellar Plexus",
+  "theme": "Insecurity in foundational decisions",
+  "belief": "I worry about my base being stable."
+ },
+ {
+  "nerve": "Perineal Branches of Posterior Femoral Cutaneous Nerve",
+  "theme": "Holding back in intimate relationships",
+  "belief": "I\u2019m afraid of vulnerability in closeness."
+ },
+ {
+  "nerve": "Saphenous Nerve",
+  "theme": "Fear of standing firm in decisions",
+  "belief": "I am hesitant to commit fully."
+ },
+ {
+  "nerve": "Sciatic Nerve",
+  "theme": "Insecurity with personal strength",
+  "belief": "I worry I lack power in challenges."
+ },
+ {
+  "nerve": "Tibial Nerve",
+  "theme": "Reluctance to carry weight of responsibilities",
+  "belief": "I fear being weighed down by life\u2019s demands."
+ },
+ {
+  "nerve": "Accessory Obturator Nerve",
+  "theme": "Fear of exploring alternative approaches",
+  "belief": "I worry about diverging from the expected."
+ },
+ {
+  "nerve": "Inferior Gluteal Nerve",
+  "theme": "Reluctance to move toward goals",
+  "belief": "I am hesitant to push myself forward."
+ },
+ {
+  "nerve": "Lateral Plantar Nerve",
+  "theme": "Insecurity in taking steps in new areas",
+  "belief": "I feel uncertain exploring new directions."
+ },
+ {
+  "nerve": "Lumbar Plexus",
+  "theme": "Fear of asserting foundational beliefs",
+  "belief": "I struggle to stand firm in my core values."
+ },
+ {
+  "nerve": "Lumbar Splanchnic Nerves",
+  "theme": "Reluctance to handle deep-rooted issues",
+  "belief": "I prefer to avoid confronting complex problems."
+ },
+ {
+  "nerve": "Medial Plantar Nerve",
+  "theme": "Fear of rooting oneself firmly",
+  "belief": "I worry about being too grounded and immovable."
+ },
+ {
+  "nerve": "Perineal Nerve",
+  "theme": "Fear of intimate connections",
+  "belief": "I\u2019m wary of becoming too close with others."
+ },
+ {
+  "nerve": "Prostatic Plexus",
+  "theme": "Insecurity regarding masculine identity",
+  "belief": "I feel uncertain in expressing my masculinity."
+ },
+ {
+  "nerve": "Sacral Plexus",
+  "theme": "Fear of taking grounded action",
+  "belief": "I\u2019m uncomfortable making decisions with permanence."
+ },
+ {
+  "nerve": "Thoraco-Abdominal Nerves",
+  "theme": "Insecurity in core stability",
+  "belief": "I feel weak at my center."
+ },
+ {
+  "nerve": "Accessory Nerve",
+  "theme": "Resentment in carrying others\u2019 burdens",
+  "belief": "I shouldn\u2019t have to bear this weight alone."
+ },
+ {
+  "nerve": "Brachial Plexus",
+  "theme": "Resistance to expansive responsibilities",
+  "belief": "I feel overburdened by obligations."
+ },
+ {
+  "nerve": "Greater Occipital Nerve",
+  "theme": "Difficulty releasing mental stress",
+  "belief": "I\u2019m always tense and guarded."
+ },
+ {
+  "nerve": "Phrenic Nerve",
+  "theme": "Insecurity in breathing freely",
+  "belief": "I\u2019m afraid to let go and relax."
+ },
+ {
+  "nerve": "Thoracodorsal Nerve",
+  "theme": "Reluctance to show strength openly",
+  "belief": "I fear being perceived as domineering."
+ },
+ {
+  "nerve": "Upper Subscapular Nerve",
+  "theme": "Holding back in expressing assertive power",
+  "belief": "I feel guilty for asserting strength."
+ },
+ {
+  "nerve": "Deep Branch of Radial Nerve",
+  "theme": "Reluctance to reach out",
+  "belief": "I fear reaching beyond my limits."
+ },
+ {
+  "nerve": "Dorsal Scapular Nerve",
+  "theme": "Difficulty with self-protection boundaries",
+  "belief": "I feel I can\u2019t shield myself."
+ },
+ {
+  "nerve": "Esophageal Plexus",
+  "theme": "Insecurity in expressing opinions",
+  "belief": "I\u2019m hesitant to speak up strongly."
+ },
+ {
+  "nerve": "Intermediate Cutaneous Nerve",
+  "theme": "Fear of shouldering added burdens",
+  "belief": "I can\u2019t take on more responsibility."
+ },
+ {
+  "nerve": "Long Thoracic Nerve",
+  "theme": "Fear of external judgment on capability",
+  "belief": "I worry I\u2019m seen as weak."
+ },
+ {
+  "nerve": "Posterior Auricular Nerve",
+  "theme": "Insecurity in auditory perception",
+  "belief": "I avoid hearing negative things about myself."
+ },
+ {
+  "nerve": "Spinal Accessory Nerve",
+  "theme": "Fear of others relying on oneself too heavily",
+  "belief": "I don\u2019t want to carry everyone\u2019s weight."
+ },
+ {
+  "nerve": "Suprascapular Nerve",
+  "theme": "Fear of appearing vulnerable",
+  "belief": "I must hide my weaknesses to maintain respect."
+ },
+ {
+  "nerve": "Third Occipital Nerve",
+  "theme": "Difficulty in letting go of mental tension",
+  "belief": "I can\u2019t release my mental stress."
+ },
+ {
+  "nerve": "Transverse Cervical Nerve",
+  "theme": "Fear of shifting perspectives",
+  "belief": "I avoid changing my viewpoint."
+ },
+ {
+  "nerve": "Deep Fibular Nerve",
+  "theme": "Insecurity with grounding and balance",
+  "belief": "I worry about staying centered."
+ },
+ {
+  "nerve": "Genitofemoral Nerve",
+  "theme": "Difficulty with masculinity or assertive identity",
+  "belief": "I\u2019m uncomfortable with my assertiveness."
+ },
+ {
+  "nerve": "Posterior Branch of Spinal Nerve",
+  "theme": "Resentment toward repetitive burdens",
+  "belief": "I\u2019m tired of carrying the same issues."
+ },
+ {
+  "nerve": "Sacral Plexus",
+  "theme": "Reluctance to stand one\u2019s ground",
+  "belief": "I avoid taking a firm stance."
+ },
+ {
+  "nerve": "Sural Nerve",
+  "theme": "Hesitancy in firm grounding in values",
+  "belief": "I struggle to stand firmly in my beliefs."
+ },
+ {
+  "nerve": "Anococcygeal Nerve",
+  "theme": "Fear of anchoring oneself too strongly",
+  "belief": "I\u2019m afraid to set down roots."
+ },
+ {
+  "nerve": "Coccygeal Nerve",
+  "theme": "Insecurity in creating stability",
+  "belief": "I worry I can\u2019t maintain balance."
+ },
+ {
+  "nerve": "Iliohypogastric Nerve",
+  "theme": "Difficulty with boundary setting",
+  "belief": "I\u2019m unsure of my own limits."
+ },
+ {
+  "nerve": "Inferior Gluteal Nerve",
+  "theme": "Reluctance to take steps in line with core beliefs",
+  "belief": "I hesitate to act from my foundation."
+ },
+ {
+  "nerve": "Lumbosacral Plexus",
+  "theme": "Fear of anchoring decisions firmly",
+  "belief": "I avoid making decisions I can\u2019t change."
+ },
+ {
+  "nerve": "Obturator Nerve",
+  "theme": "Fear of balancing personal strength",
+  "belief": "I\u2019m wary of being assertive yet grounded."
+ },
+ {
+  "nerve": "Pelvic Splanchnic Nerves",
+  "theme": "Insecurity around lower core identity",
+  "belief": "I struggle with feeling secure in who I am."
+ },
+ {
+  "nerve": "Pudendal Nerve",
+  "theme": "Fear of embracing personal identity fully",
+  "belief": "I feel uncertain in my foundational identity."
+ },
+ {
+  "nerve": "Sacral Splanchnic Nerves",
+  "theme": "Reluctance to engage in firm actions",
+  "belief": "I avoid definitive actions that are hard to undo."
+ },
+ {
+  "nerve": "Sciatic Nerve",
+  "theme": "Insecurity in personal resilience",
+  "belief": "I\u2019m unsure if I can withstand life\u2019s pressures."
+ },
+ {
+  "nerve": "Thoraco-Abdominal Nerves",
+  "theme": "Insecurity in emotional stability",
+  "belief": "I feel unbalanced within myself."
+ },
+ {
+  "nerve": "Inferior Hypogastric Plexus",
+  "theme": "Fear of commitment to deep foundational values",
+  "belief": "I\u2019m afraid to ground myself too deeply."
+ },
+ {
+  "nerve": "Perforating Cutaneous Nerve",
+  "theme": "Insecurity in physical space and boundaries",
+  "belief": "I\u2019m not comfortable asserting my physical space."
+ },
+ {
+  "nerve": "Auriculotemporal Nerve",
+  "theme": "Fear of hearing criticism",
+  "belief": "I avoid listening to negative feedback."
+ },
+ {
+  "nerve": "Buccal Branch of Facial Nerve",
+  "theme": "Reluctance to express personal views",
+  "belief": "I fear rejection if I speak my mind."
+ },
+ {
+  "nerve": "Cervical Branch of Facial Nerve",
+  "theme": "Fear of appearing vulnerable",
+  "belief": "I\u2019m uncomfortable showing sensitivity."
+ },
+ {
+  "nerve": "Infraorbital Nerve",
+  "theme": "Difficulty with self-image and appearance",
+  "belief": "I\u2019m self-conscious about how others see me."
+ },
+ {
+  "nerve": "Lingual Nerve",
+  "theme": "Reluctance to taste life fully",
+  "belief": "I avoid new, potentially painful experiences."
+ },
+ {
+  "nerve": "Marginal Mandibular Branch of Facial Nerve",
+  "theme": "Fear of expressing deeper emotions",
+  "belief": "I feel I must keep my sadness hidden."
+ },
+ {
+  "nerve": "Nasopalatine Nerve",
+  "theme": "Difficulty allowing emotional intimacy",
+  "belief": "I\u2019m afraid of letting others get too close."
+ },
+ {
+  "nerve": "Supratrochlear Nerve",
+  "theme": "Resistance to seeing others\u2019 perspectives",
+  "belief": "I find it difficult to empathize fully."
+ },
+ {
+  "nerve": "Anterior Superior Alveolar Nerve",
+  "theme": "Fear of smiling openly",
+  "belief": "I feel exposed when I show happiness."
+ },
+ {
+  "nerve": "Infraorbital Plexus",
+  "theme": "Reluctance in being seen authentically",
+  "belief": "I avoid showing my true self."
+ },
+ {
+  "nerve": "Greater Auricular Nerve",
+  "theme": "Fear of vulnerability in communication",
+  "belief": "I struggle with openness."
+ },
+ {
+  "nerve": "Hypoglossal Nerve",
+  "theme": "Hesitation in expressing true feelings",
+  "belief": "I worry others won\u2019t understand my emotions."
+ },
+ {
+  "nerve": "Mandibular Nerve",
+  "theme": "Fear of verbal expression",
+  "belief": "I hold back my opinions."
+ },
+ {
+  "nerve": "Zygomatic Branches of Facial Nerve",
+  "theme": "Difficulty in smiling freely",
+  "belief": "I feel self-conscious showing joy."
+ },
+ {
+  "nerve": "Zygomaticofacial Nerve",
+  "theme": "Reluctance in facial expressions",
+  "belief": "I fear showing too much emotion."
+ },
+ {
+  "nerve": "Ethmoidal Nerves",
+  "theme": "Fear of sensory overload",
+  "belief": "I worry about experiencing too much at once."
+ },
+ {
+  "nerve": "Cervical Plexus",
+  "theme": "Fear of voicing needs",
+  "belief": "I feel hesitant to ask for support."
+ },
+ {
+  "nerve": "Olfactory Nerve",
+  "theme": "Fear of sensing deeply",
+  "belief": "I avoid experiencing life\u2019s full range."
+ },
+ {
+  "nerve": "Inferior Hypogastric Plexus",
+  "theme": "Fear of emotional vulnerability in relationships",
+  "belief": "I avoid opening up emotionally."
+ },
+ {
+  "nerve": "Pelvic Splanchnic Nerves",
+  "theme": "Reluctance to embrace feminine identity",
+  "belief": "I feel uncomfortable in my femininity."
+ },
+ {
+  "nerve": "Pudendal Nerve",
+  "theme": "Insecurity in expressing sexual needs",
+  "belief": "I worry I\u2019ll be judged for my desires."
+ },
+ {
+  "nerve": "Saphenous Nerve",
+  "theme": "Hesitancy to step forward in relationships",
+  "belief": "I\u2019m cautious of moving forward in intimacy."
+ },
+ {
+  "nerve": "Iliohypogastric Nerve",
+  "theme": "Reluctance in personal boundaries",
+  "belief": "I struggle to set emotional boundaries."
+ },
+ {
+  "nerve": "Ilioinguinal Nerve",
+  "theme": "Fear of expressing true desires",
+  "belief": "I keep my personal needs hidden."
+ },
+ {
+  "nerve": "Inferior Gluteal Nerve",
+  "theme": "Insecurity with physical grounding",
+  "belief": "I feel unstable in my foundation."
+ },
+ {
+  "nerve": "Perineal Nerve",
+  "theme": "Hesitation in close relationships",
+  "belief": "I\u2019m cautious about letting people too close."
+ },
+ {
+  "nerve": "Vesical Nervous Plexus",
+  "theme": "Reluctance to release emotional attachments",
+  "belief": "I struggle to let go of past ties."
+ },
+ {
+  "nerve": "Renal Plexus",
+  "theme": "Fear of trusting deeply",
+  "belief": "I feel uncertain in relying on others."
+ },
+ {
+  "nerve": "Uterovaginal Plexus",
+  "theme": "Hesitation in fully embracing femininity",
+  "belief": "I\u2019m wary of expressing my full self."
+ },
+ {
+  "nerve": "Sacral Splanchnic Nerves",
+  "theme": "Reluctance to trust emotions",
+  "belief": "I\u2019m cautious about feeling too deeply."
+ },
+ {
+  "nerve": "Anococcygeal Nerve",
+  "theme": "Insecurity in laying personal foundations",
+  "belief": "I\u2019m uncertain of my roots."
+ },
+ {
+  "nerve": "Coccygeal Nerve",
+  "theme": "Reluctance to establish grounding",
+  "belief": "I avoid setting firm personal boundaries."
+ },
+ {
+  "nerve": "Obturator Nerve",
+  "theme": "Fear of deep emotional balance",
+  "belief": "I avoid my emotional depths."
+ },
+ {
+  "nerve": "Abdominal Aortic Plexus",
+  "theme": "Fear of internal stability",
+  "belief": "I worry my emotional core isn\u2019t strong enough."
+ },
+ {
+  "nerve": "Genitofemoral Nerve",
+  "theme": "Insecurity in assertive expression",
+  "belief": "I\u2019m cautious about my strength in relationships."
+ },
+ {
+  "nerve": "Inferior Mesenteric Plexus",
+  "theme": "Reluctance in inner self-discovery",
+  "belief": "I avoid deep emotional exploration."
+ },
+ {
+  "nerve": "Inferior Anal Nerves",
+  "theme": "Fear of emotional release",
+  "belief": "I struggle with letting go of held emotions."
+ },
+ {
+  "nerve": "Perforating Cutaneous Nerve",
+  "theme": "Insecurity in personal boundaries",
+  "belief": "I find it difficult to assert my space."
+ },
+ {
+  "nerve": "Greater Petrosal Nerve",
+  "theme": "Fear of processing unresolved grief",
+  "belief": "I avoid revisiting my past hurts."
+ },
+ {
+  "nerve": "Lesser Occipital Nerve",
+  "theme": "Difficulty confronting subconscious fears",
+  "belief": "I resist facing my hidden fears."
+ },
+ {
+  "nerve": "Posterior Auricular Nerve",
+  "theme": "Insecurity about what is said about oneself",
+  "belief": "I feel self-conscious of others\u2019 opinions."
+ },
+ {
+  "nerve": "Stylohyoid Branch of Facial Nerve",
+  "theme": "Reluctance to speak from the heart",
+  "belief": "I\u2019m wary of showing my true feelings."
+ },
+ {
+  "nerve": "Pharyngeal Branch of Vagus Nerve",
+  "theme": "Fear of swallowing emotions",
+  "belief": "I hold back my words."
+ },
+ {
+  "nerve": "Cavernous Plexus",
+  "theme": "Hesitation in embracing emotional depths",
+  "belief": "I struggle to explore my emotional side."
+ },
+ {
+  "nerve": "Pharyngeal Plexus",
+  "theme": "Insecurity in letting emotions be expressed",
+  "belief": "I feel uncomfortable with emotional openness."
+ },
+ {
+  "nerve": "Esophageal Plexus",
+  "theme": "Difficulty in releasing unspoken words",
+  "belief": "I struggle with saying what\u2019s on my mind."
+ },
+ {
+  "nerve": "Superior Hypogastric Plexus",
+  "theme": "Fear of letting go of emotional burdens",
+  "belief": "I\u2019m afraid to unburden my heart."
+ },
+ {
+  "nerve": "Internal Laryngeal Nerve",
+  "theme": "Reluctance to communicate openly",
+  "belief": "I avoid deep, honest conversations."
+ },
+ {
+  "nerve": "Palatine Nerves",
+  "theme": "Fear of expressing oneself fully",
+  "belief": "I feel hesitant to speak my truth."
+ },
+ {
+  "nerve": "Vestibulocochlear Nerve",
+  "theme": "Insecurity in trusting emotions heard",
+  "belief": "I worry about interpreting others\u2019 words accurately."
+ },
+ {
+  "nerve": "Cochlear Nerve",
+  "theme": "Fear of hearing inner voice",
+  "belief": "I resist listening to my intuition."
+ },
+ {
+  "nerve": "Sphenopalatine Nerves",
+  "theme": "Fear of encountering discomfort",
+  "belief": "I avoid facing unpleasant realities."
+ },
+ {
+  "nerve": "Inferior Gluteal Nerve",
+  "theme": "Insecurity with physical grounding",
+  "belief": "I feel unstable in my foundation."
+ },
+ {
+  "nerve": "Sacral Plexus",
+  "theme": "Reluctance to claim personal space",
+  "belief": "I worry about asserting boundaries in relationships."
+ },
+ {
+  "nerve": "Pudendal Plexus",
+  "theme": "Hesitancy in expressing pleasure",
+  "belief": "I\u2019m uncomfortable embracing my full desires."
+ },
+ {
+  "nerve": "Uterovaginal Plexus",
+  "theme": "Fear of showing authentic self",
+  "belief": "I\u2019m cautious about expressing my genuine feelings."
+ },
+ {
+  "nerve": "Vesical Nervous Plexus",
+  "theme": "Reluctance to release attachments",
+  "belief": "I avoid letting go of past connections."
+ },
+ {
+  "nerve": "Renal Plexus",
+  "theme": "Insecurity in exploring inner depths",
+  "belief": "I\u2019m wary of my emotional depths."
+ },
+ {
+  "nerve": "Perineal Nerve",
+  "theme": "Reluctance to form close bonds",
+  "belief": "I hesitate to let others in."
+ },
+ {
+  "nerve": "Inferior Anal Nerves",
+  "theme": "Fear of emotional release",
+  "belief": "I struggle to let go of internal burdens."
+ },
+ {
+  "nerve": "Sacral Splanchnic Nerves",
+  "theme": "Insecurity in embracing femininity",
+  "belief": "I feel uncomfortable with my womanhood."
+ },
+ {
+  "nerve": "Inferior Hypogastric Plexus",
+  "theme": "Reluctance to embrace lower instincts",
+  "belief": "I avoid acknowledging my primal needs."
+ },
+ {
+  "nerve": "Anococcygeal Nerve",
+  "theme": "Fear of setting down emotional roots",
+  "belief": "I\u2019m cautious about forming lasting connections."
+ },
+ {
+  "nerve": "Pelvic Splanchnic Nerves",
+  "theme": "Fear of intimacy",
+  "belief": "I\u2019m reluctant to open myself fully to others."
+ },
+ {
+  "nerve": "Pudendal Nerve",
+  "theme": "Insecurity with self-expression in intimacy",
+  "belief": "I worry about being judged for my true self."
+ },
+ {
+  "nerve": "Pancreatic Plexus",
+  "theme": "Fear of emotional processing",
+  "belief": "I find it difficult to handle intense feelings."
+ },
+ {
+  "nerve": "Inferior Mesenteric Plexus",
+  "theme": "Insecurity in deeper self-connection",
+  "belief": "I feel uncertain exploring my inner world."
+ },
+ {
+  "nerve": "Subcostal Nerve",
+  "theme": "Fear of settling down emotionally",
+  "belief": "I\u2019m hesitant to establish lasting ties."
+ },
+ {
+  "nerve": "Inferior Anal Nerves",
+  "theme": "Reluctance to let go of emotions",
+  "belief": "I hold onto emotions, fearing instability."
+ },
+ {
+  "nerve": "Lumbosacral Plexus",
+  "theme": "Insecurity in personal grounding",
+  "belief": "I\u2019m wary of fully grounding myself emotionally."
+ }
+]

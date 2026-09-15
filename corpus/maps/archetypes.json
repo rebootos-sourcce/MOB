@@ -1,0 +1,182 @@
+[
+ {
+  "archetype": "Warrior",
+  "saboteur": "Control Freak",
+  "chakra": "Solar Plexus",
+  "beliefs": [
+   "I must dominate",
+   "Vulnerability is weakness",
+   "I'm always right"
+  ]
+ },
+ {
+  "archetype": "Caregiver",
+  "saboteur": "Pleaser",
+  "chakra": "Heart",
+  "beliefs": [
+   "I'm not enough",
+   "I need to be needed",
+   "Self-care is selfish"
+  ]
+ },
+ {
+  "archetype": "Creator",
+  "saboteur": "Stickler",
+  "chakra": "Throat",
+  "beliefs": [
+   "Perfection or nothing",
+   "Creativity is frivolous",
+   "I must do it alone"
+  ]
+ },
+ {
+  "archetype": "Sage",
+  "saboteur": "Hyper-Rational",
+  "chakra": "Third Eye",
+  "beliefs": [
+   "Feelings are irrelevant",
+   "I must know everything",
+   "Ignorance is intolerable"
+  ]
+ },
+ {
+  "archetype": "Jester",
+  "saboteur": "Avoider",
+  "chakra": "Sacral",
+  "beliefs": [
+   "Life should be easy",
+   "Seriousness is a threat",
+   "Avoid conflict at all costs"
+  ]
+ },
+ {
+  "archetype": "Lover",
+  "saboteur": "Hyper-Vigilant",
+  "chakra": "Heart",
+  "beliefs": [
+   "Love is conditional",
+   "Intimacy is dangerous",
+   "Self-sufficiency is key"
+  ]
+ },
+ {
+  "archetype": "Magician",
+  "saboteur": "Victim",
+  "chakra": "Crown",
+  "beliefs": [
+   "I am powerless",
+   "It's not my fault",
+   "Life is unfair"
+  ]
+ },
+ {
+  "archetype": "Innocent",
+  "saboteur": "Restless",
+  "chakra": "Root",
+  "beliefs": [
+   "The world is unsafe",
+   "I must be cautious",
+   "I'm undeserving"
+  ]
+ },
+ {
+  "archetype": "Outlaw",
+  "saboteur": "Judge",
+  "chakra": "Solar Plexus",
+  "beliefs": [
+   "Rules don't apply to me",
+   "I'm better alone",
+   "Others are fools"
+  ]
+ },
+ {
+  "archetype": "Ruler",
+  "saboteur": "Hyper-Achiever",
+  "chakra": "Crown",
+  "beliefs": [
+   "I must win",
+   "Status is everything",
+   "Failure is not an option"
+  ]
+ },
+ {
+  "archetype": "Explorer",
+  "saboteur": "Avoider",
+  "chakra": "Sacral",
+  "beliefs": [
+   "Routine is death",
+   "I need freedom",
+   "Commitment traps me"
+  ]
+ },
+ {
+  "archetype": "Orphan",
+  "saboteur": "Worrywart",
+  "chakra": "Root",
+  "beliefs": [
+   "I'm alone",
+   "No one understands me",
+   "I'm not good enough"
+  ]
+ },
+ {
+  "archetype": "Hero",
+  "saboteur": "Hyper-Achiever",
+  "chakra": "Solar Plexus",
+  "beliefs": [
+   "I can't show weakness",
+   "Success at any cost",
+   "I must protect everyone"
+  ]
+ },
+ {
+  "archetype": "Everyman",
+  "saboteur": "Pleaser",
+  "chakra": "Heart",
+  "beliefs": [
+   "I must fit in",
+   "Standing out is risky",
+   "Conformity is comfort"
+  ]
+ },
+ {
+  "archetype": "Mentor",
+  "saboteur": "Stickler",
+  "chakra": "Third Eye",
+  "beliefs": [
+   "Only my wisdom matters",
+   "Others should listen to me",
+   "I know best"
+  ]
+ },
+ {
+  "archetype": "Shadow",
+  "saboteur": "Judge",
+  "chakra": "Solar Plexus",
+  "beliefs": [
+   "Others are beneath me",
+   "I am misunderstood",
+   "I must control my image"
+  ]
+ },
+ {
+  "archetype": "Shapeshifter",
+  "saboteur": "Restless",
+  "chakra": "Sacral",
+  "beliefs": [
+   "Identity is fluid",
+   "I must adapt to survive",
+   "Consistency is boring"
+  ]
+ },
+ {
+  "archetype": "Healer",
+  "saboteur": "Hyper-Vigilant",
+  "chakra": "Heart",
+  "beliefs": [
+   "I must fix others",
+   "I'm only good if I help",
+   "Others' pain is my responsibility"
+  ]
+ }
+]
