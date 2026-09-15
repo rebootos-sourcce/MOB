@@ -13,6 +13,7 @@ from collections import defaultdict
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 from reframe import reframe
 from trim import trim_charge, trim_install
+from format_pair import build_charge, build_install, impacts
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 E = json.loads((ROOT / "corpus/LETGO_ENTRY_INDEX.json").read_text())
@@ -133,15 +134,20 @@ def write_specs(specs):
             n = bynerve.get(str(addr).lower())
             foot = (f"node {n['n']} · {n['nerve']} · {n['plain']}" if n
                     else f"{addr} · {x['address_tier'].lower()}")
-            itext, isrc = install_for(x, vol)
+            band_k = (x.get("derived_address") or {}).get("band") or s["band"]
+            if band_k == "Solar": band_k = "Solar Plexus"
+            ctext = build_charge(x["text"], band_k)
+            itext = build_install(band_k)
+            ic, ii = impacts(band_k)
+            isrc = "ORIGINAL-FORMAT"
             pairs.append({
                 "runhead": x["entry"].upper()[:26],
                 "charge": x["entry"].strip().rstrip('.')[:30],
                 "install": state,
-                "charge_text": trim_charge(x.get("charge_text") or x["text"]),
-                "install_text": trim_install(itext),
-                "charge_impact": "[impact pending, four physical observations]",
-                "install_impact": "[impact pending, four physical observations]",
+                "charge_text": ctext,
+                "install_text": itext,
+                "charge_impact": ic,
+                "install_impact": ii,
                 "foot": foot,
                 "saboteur_line": "",
                 "_source": f"LANCE DICTATION. address {x['address_tier']}. install {isrc}.",
