@@ -32,7 +32,7 @@ and once in the generator's ISBN fallback reaching all eleven volumes. It
 fails in shared boilerplate nobody re-reads, which is exactly what an
 automated check is for.
 
-**Node count.** Says 108 where it means nodes. Canon is 114.
+**Node count.** Says 114, which is superseded. Canon is 112: 108 in-body, 4 field.
 
 **Address.** Any named nerve, plexus, ganglia, cortex, nucleus or axis must
 exist in the node map. **This is the one that matters most.** Never
@@ -59,7 +59,7 @@ The evidence pass is a human job and stays one.
 
 | Type | Count | Source |
 |---|---|---|
-| address | 106 | Appendix B, one per node |
+| address | 106 | ch.36, one per in-body node with a confirmed address |
 | correction | 8 | category assumptions the manuscript overturns |
 | mechanism | 7 | the nine emotional architectures |
 | case | 3 | real sessions, already anonymous in the manuscript |
@@ -67,7 +67,7 @@ The evidence pass is a human job and stays one.
 
 216 posts over 12 weeks, none newly written. The manuscript is 91,603 words
 and the extraction has barely touched it. Address posts alone cover 106 of
-the 114 nodes.
+the 112 nodes.
 
 ## Adding more
 
