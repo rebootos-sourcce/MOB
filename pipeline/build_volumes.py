@@ -8,8 +8,10 @@ Charge text is Lance's, always. Install priority:
   2. The axis install from the nine emotional architectures (canon)
   3. Flagged as PENDING                                     (never invented)
 """
-import json, re, pathlib
+import json, re, pathlib, sys
 from collections import defaultdict
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+from reframe import reframe
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 E = json.loads((ROOT / "corpus/LETGO_ENTRY_INDEX.json").read_text())
@@ -57,6 +59,10 @@ VOL_STATE = {
 def install_for(x, volume=None):
     if x.get("install_text"):
         return x["install_text"], "LANCE"
+    band = (x.get("derived_address") or {}).get("band") or "Root"
+    r = reframe(x["text"], x["entry"], band, VOL_STATE.get(volume, "Steadiness"))
+    if len(r.split()) >= 24:
+        return r, "REFRAME"
     ax = VOL_AXIS.get(volume)
     if ax and ax in AXIS_INSTALL:
         return AXIS_INSTALL[ax][1], "AXIS"
