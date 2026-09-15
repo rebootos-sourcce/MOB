@@ -60,7 +60,7 @@ Public claim: **four books, one series of eleven, and a set of tools.**
 
 **The Road Map** is structured mind, then body, then energy, in three gated stages. It is the only book a newcomer can enter through, and the only one a practitioner could teach from.
 
-**The Compendium** holds 114 addresses, 41 clusters, 10 complexes, 6 hypercomplexes, 32 saboteurs, 12 archetypes, 18 domains, and a 0-to-10 intensity scale. It also holds the clinical concordance described in section 6.
+**The Compendium** holds 112 addresses, 41 clusters, 10 complexes, 6 hypercomplexes, 32 saboteurs, 12 archetypes, 18 domains, and a 0-to-10 intensity scale. It also holds the clinical concordance described in section 6.
 
 ---
 ---

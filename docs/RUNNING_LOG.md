@@ -32,7 +32,7 @@ Covers, marks, colours, crown at full resolution. All eleven prefaces, author-wr
 
 | | Item | Who |
 |---|---|---|
-| 10 | **Agent package corrected today.** 114 nodes not 108. 68 elements not 76. 91,603 words not 65,000. Real comps. Current bio. Subtitle changed off Codex. | done **C** |
+| 10 | **Agent package corrected.** Updated to v214 canon 2026-09-15: 112 nodes, 76 elements. Real comps. Current bio. Subtitle changed off Codex. | done **C** |
 | 11 | Front matter reorder. Kitchen-at-nine scene should lead. | **L** |
 | 12 | Epilogue. Must be dictated, not inferred. | **L** |
 | 13 | Johanna session scene. Named, never written. | **L** |

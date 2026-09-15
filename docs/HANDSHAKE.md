@@ -33,7 +33,7 @@ Lance Powell. Somatic engineer. Thirty years creative director in film and games
 **Working rules.**
 - Search the threads and project files before asking him anything. He has usually already ruled it.
 - Never interpolate a somatic address. Ever. If it is not in canon or dictated, it does not go in.
-- The node count is **114**. Never say 108.
+- The node count is **112**. 108 in-body, 4 field. Ruled v214, 2026-09-15.
 - Every build turn ends with the file presented and its MD5 stated.
 - Render and look at the output before claiming it works.
 

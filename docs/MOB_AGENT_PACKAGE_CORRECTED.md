@@ -8,8 +8,8 @@
 
 | Was | Now | Why |
 |---|---|---|
-| 108 nodes | **114** | Canon. Appeared four times in the old package. |
-| 76 elements | **68 across 7 layers** | Canon. |
+| 108 nodes | **112** | Canon as of v214. 108 in-body plus 4 field nodes. |
+| 68 elements | **76 across 7 layers** | Canon as of v214. |
 | 65,000 to 80,000 words | **91,603** | Actual. Different category, different production cost. |
 | *The Body Keeps the Score*, *The Untethered Soul* | **The Secret Language of the Body**, **The Nervous System Reset** | Both 2024, HarperOne and Bluebird, same shelf, provable. The old comps are category giants and invite a comparison you cannot win. |
 | Executive creative director, visual systems architect | **The current bio** | Oscar, Emmy, Game of the Year. Fifteen thousand releases. Peer-reviewed publication. |
@@ -31,7 +31,7 @@ For thousands of years the pursuit of the human spirit has been treated as philo
 
 **The Mechanics of Being: The Architecture of the Soul** translates ancient spiritual practice into applied physical mechanics. It maps the causal loop of consciousness at five resolutions, from the metaphysical down to named nerve tissue, and it argues that the states the great teachers reached were not anomalies. Rama anchored duty. Musashi forged discipline. Buddha held peace. Jesus anchored love. Each of them emerged during a cultural collapse and held one frequency against the entropy of their age. That is not mysticism. It is what an unobstructed biological circuit does under pressure.
 
-The manuscript runs 91,603 words. It maps **114 nodes** where charge is stored, presents the **Harmonic Table of Consciousness, 68 elements across 7 layers**, gives the Coherence Quotient as **CQ = (Intention × Integrity) / Resistance**, and delivers a repeatable protocol for clearing somatic interference.
+The manuscript runs 91,603 words. It maps **112 nodes** where charge is stored, presents the **Harmonic Table of Consciousness, 76 elements across 7 layers**, gives the Coherence Quotient as **CQ = (Intention × Integrity) / Resistance**, and delivers a repeatable protocol for clearing somatic interference.
 
 It is not theory. The system was built by running it on myself first: **fifteen thousand releases over five years, six thousand of them recorded**, then taught to others. I have co-authored peer-reviewed work with a physician in *Endoscopy*, Thieme, DOI 10.1055/a-2013-1820. Three credentialed physicians have reviewed this work and recommended clinical trials.
 

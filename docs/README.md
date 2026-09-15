@@ -24,7 +24,7 @@ SKIP_GATE=1 python3 generator/build_volume.py generator/volumes/anxiety.json
 ## Hard rules
 
 - No em dashes, ever
-- Node count is 114, never 108
+- Node count is 112. 108 in-body, 4 field. Ruled v214.
 - Never interpolate a somatic address
 - Render and look before claiming it works
 - State the MD5 on every delivery
