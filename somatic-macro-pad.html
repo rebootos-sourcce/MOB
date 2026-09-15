@@ -1,0 +1,456 @@
+<title>Somatic Macro Pad</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --ground:#EEEFF2; --panel:#F8F9FB; --panel-2:#E4E6EC; --edge:#CFD2DC;
+  --ink:#14161D; --ink-2:#4A4F5E; --ink-3:#7A8090;
+  --slot:#DCDFE7; --slot-edge:#C2C6D2;
+  --shadow:0 1px 2px rgba(20,22,29,.08),0 8px 24px rgba(20,22,29,.06);
+  --c-red:#D6453D; --c-orange:#DE7430; --c-gold:#C99A24;
+  --c-green:#41905C; --c-cyan:#2E8AA0; --c-indigo:#5560A6; --c-violet:#7A54A0;
+  --mono:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+  --sans:'IBM Plex Sans',system-ui,-apple-system,Segoe UI,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#0E1014; --panel:#171A21; --panel-2:#1F232C; --edge:#2B303B;
+  --ink:#EDEFF4; --ink-2:#A8AEBE; --ink-3:#6F7687;
+  --slot:#13161C; --slot-edge:#272C36;
+  --shadow:0 1px 2px rgba(0,0,0,.5),0 10px 30px rgba(0,0,0,.35);
+  --c-red:#E8655C; --c-orange:#EE8F4C; --c-gold:#E0B646;
+  --c-green:#5FB37B; --c-cyan:#4AABC2; --c-indigo:#7B86C9; --c-violet:#9C74C2;
+}}
+:root[data-theme="dark"]{
+  --ground:#0E1014; --panel:#171A21; --panel-2:#1F232C; --edge:#2B303B;
+  --ink:#EDEFF4; --ink-2:#A8AEBE; --ink-3:#6F7687;
+  --slot:#13161C; --slot-edge:#272C36;
+  --shadow:0 1px 2px rgba(0,0,0,.5),0 10px 30px rgba(0,0,0,.35);
+  --c-red:#E8655C; --c-orange:#EE8F4C; --c-gold:#E0B646;
+  --c-green:#5FB37B; --c-cyan:#4AABC2; --c-indigo:#7B86C9; --c-violet:#9C74C2;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--sans);
+  font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+.wrap{max-width:880px;margin:0 auto;padding-inline:16px;padding-block:28px 64px}
+h1{font-size:22px;font-weight:700;letter-spacing:-.02em;margin:0;text-wrap:balance}
+.lede{color:var(--ink-2);margin:6px 0 0;max-width:62ch;font-size:14px}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+header{display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end;justify-content:space-between;margin-bottom:22px}
+.meter{font-family:var(--mono);font-size:12px;color:var(--ink-2);white-space:nowrap;font-variant-numeric:tabular-nums}
+
+/* pads */
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media(max-width:700px){.grid{grid-template-columns:repeat(2,1fr)}}
+.pad{position:relative;aspect-ratio:1;border-radius:14px;border:1px solid var(--slot-edge);
+  background:var(--slot);display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:10px;cursor:pointer;font:inherit;color:var(--ink);padding:14px;
+  transition:transform .12s ease,box-shadow .12s ease,border-color .12s}
+.pad:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
+.pad:active{transform:translateY(0) scale(.985)}
+.pad:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+.pad.empty{border-style:dashed;background:transparent}
+.pad.empty .plus{font-family:var(--mono);font-size:26px;color:var(--ink-3);line-height:1}
+.pad.empty .lbl{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
+.pad .glyph{width:52%;max-width:74px;aspect-ratio:1;display:block}
+.pad .name{font-weight:600;font-size:14px;text-align:center;line-height:1.25}
+.pad .rel{font-family:var(--mono);font-size:10.5px;color:var(--ink-3);letter-spacing:.06em;font-variant-numeric:tabular-nums}
+.tag{position:absolute;top:8px;right:9px;font-family:var(--mono);font-size:9px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-3);border:1px solid var(--edge);border-radius:4px;padding:1px 5px}
+.ring{position:absolute;inset:0;border-radius:14px;pointer-events:none}
+
+/* overlay */
+.ov{position:fixed;inset:0;background:color-mix(in srgb,var(--ground) 86%,transparent);
+  backdrop-filter:blur(6px);display:flex;align-items:flex-start;justify-content:center;
+  overflow-y:auto;z-index:40;padding:24px 16px calc(40px + env(safe-area-inset-bottom,0px))}
+.sheet{width:100%;max-width:560px;background:var(--panel);border:1px solid var(--edge);
+  border-radius:16px;box-shadow:var(--shadow);padding:22px}
+.steps{display:flex;gap:6px;margin-bottom:18px}
+.stepdot{flex:1;height:3px;border-radius:2px;background:var(--panel-2)}
+.stepdot.on{background:var(--ink)}
+.stepdot.done{background:var(--ink-3)}
+h2{font-size:18px;margin:0 0 4px;font-weight:700;letter-spacing:-.01em}
+.hint{color:var(--ink-2);font-size:13.5px;margin:0 0 16px;max-width:56ch}
+label{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--ink-3);margin:0 0 6px}
+input[type=text],textarea{width:100%;font:inherit;font-size:15px;color:var(--ink);
+  background:var(--ground);border:1px solid var(--edge);border-radius:9px;padding:10px 12px}
+textarea{min-height:92px;resize:vertical;line-height:1.5}
+input:focus,textarea:focus{outline:2px solid var(--ink);outline-offset:-1px;border-color:transparent}
+.field{margin-bottom:16px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chip{font-family:var(--mono);font-size:11px;border:1px solid var(--edge);background:transparent;
+  color:var(--ink-2);border-radius:20px;padding:4px 10px;cursor:pointer}
+.chip:hover{border-color:var(--ink-3);color:var(--ink)}
+
+.picker{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
+@media(max-width:440px){.picker{grid-template-columns:repeat(4,1fr)}}
+.sym{aspect-ratio:1;border:1px solid var(--edge);border-radius:10px;background:var(--ground);
+  display:grid;place-items:center;cursor:pointer;padding:9px}
+.sym svg{width:100%;height:100%}
+.sym.sel{border-color:var(--ink);border-width:2px}
+.swatches{display:flex;gap:8px;flex-wrap:wrap}
+.sw{width:34px;height:34px;border-radius:50%;border:2px solid transparent;cursor:pointer;
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)}
+.sw.sel{border-color:var(--ink)}
+
+/* timer */
+.timer{text-align:center;padding:14px 0 6px}
+.clock{font-family:var(--mono);font-size:46px;font-weight:500;letter-spacing:-.02em;
+  font-variant-numeric:tabular-nums;line-height:1}
+.cue{color:var(--ink-2);font-size:14px;min-height:22px;margin-top:8px;transition:opacity .4s}
+.adj{display:flex;gap:8px;justify-content:center;margin-top:14px}
+
+/* big symbol for test */
+.stage{display:grid;place-items:center;padding:26px 0 10px}
+.stage svg{width:170px;height:170px;max-width:60vw}
+.count{font-family:var(--mono);font-size:12px;color:var(--ink-3);margin-top:12px;font-variant-numeric:tabular-nums}
+
+/* scale */
+.scale{display:grid;grid-template-columns:repeat(11,1fr);gap:4px;margin-top:6px}
+.sc{aspect-ratio:1;border:1px solid var(--edge);background:var(--ground);border-radius:6px;
+  font-family:var(--mono);font-size:11px;color:var(--ink-2);cursor:pointer;display:grid;place-items:center;padding:0}
+.sc:hover{border-color:var(--ink-3)}
+.sc.sel{background:var(--ink);color:var(--ground);border-color:var(--ink)}
+.scends{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;
+  color:var(--ink-3);margin-top:6px;letter-spacing:.06em}
+
+.row{display:flex;gap:10px;justify-content:flex-end;margin-top:20px;flex-wrap:wrap}
+button.btn{font:inherit;font-weight:600;font-size:14px;border-radius:9px;padding:9px 16px;cursor:pointer;
+  border:1px solid var(--edge);background:transparent;color:var(--ink)}
+button.btn:hover{border-color:var(--ink-3)}
+button.btn.pri{background:var(--ink);color:var(--ground);border-color:var(--ink)}
+button.btn.pri:disabled{opacity:.35;cursor:not-allowed}
+button.btn.ghost{border-color:transparent;color:var(--ink-3)}
+.hold{width:100%;border:1px solid var(--edge);background:var(--ground);border-radius:11px;
+  padding:16px;font:inherit;font-weight:600;cursor:pointer;color:var(--ink);position:relative;overflow:hidden}
+.hold .fill{position:absolute;inset:0;width:0;opacity:.25}
+.hold span{position:relative}
+.cues{display:grid;gap:8px}
+.cues input{font-family:var(--mono);font-size:13px}
+.log{font-family:var(--mono);font-size:11.5px;color:var(--ink-2);display:grid;gap:5px;
+  max-height:190px;overflow-y:auto;font-variant-numeric:tabular-nums}
+.log div{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid var(--edge);padding-bottom:4px}
+.spark{display:flex;gap:3px;align-items:flex-end;height:38px;margin:10px 0 4px}
+.spark i{flex:1;background:var(--ink-3);border-radius:1px;min-height:2px}
+.note{font-size:12.5px;color:var(--ink-3);margin-top:16px;border-top:1px solid var(--edge);padding-top:12px}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<div class="wrap">
+  <header>
+    <div>
+      <div class="eyebrow">Body UI</div>
+      <h1>Somatic Macro Pad</h1>
+      <p class="lede">Six symbols. Install a charge into each one, then test it cold every day until the symbol fires the state on its own.</p>
+    </div>
+    <div class="meter" id="meter">0 / 6 installed</div>
+  </header>
+  <div class="grid" id="grid"></div>
+  <p class="note" id="note"></p>
+</div>
+
+<div class="ov" id="ov" hidden><div class="sheet" id="sheet"></div></div>
+
+<script>
+const SYMBOLS={
+ circle:'<circle cx="24" cy="24" r="16"/>',
+ ring:'<circle cx="24" cy="24" r="15" fill="none" stroke-width="4"/>',
+ triangle:'<path d="M24 7 L41 39 L7 39 Z"/>',
+ square:'<rect x="9" y="9" width="30" height="30" rx="2"/>',
+ diamond:'<path d="M24 6 L42 24 L24 42 L6 24 Z"/>',
+ spiral:'<path d="M24 24 m0 0 a4 4 0 1 1 -4 4 a9 9 0 1 0 9 -9 a14 14 0 1 0 -14 14" fill="none" stroke-width="3.5" stroke-linecap="round"/>',
+ cross:'<path d="M20 6h8v14h14v8H28v14h-8V28H6v-8h14z"/>',
+ star:'<path d="M24 5 L29 19 L44 19 L32 28 L37 42 L24 33 L11 42 L16 28 L4 19 L19 19 Z"/>',
+ crescent:'<path d="M32 6a19 19 0 1 0 0 36a15 15 0 1 1 0-36z"/>',
+ wave:'<path d="M5 30c6-12 12-12 19 0s13 12 19 0" fill="none" stroke-width="4" stroke-linecap="round"/>',
+ arrow:'<path d="M24 6 L40 26 H31 V42 H17 V26 H8 Z"/>',
+ eye:'<path d="M4 24s8-13 20-13 20 13 20 13-8 13-20 13S4 24 4 24z" fill="none" stroke-width="3.5"/><circle cx="24" cy="24" r="5.5"/>'
+};
+const COLORS=[['red','--c-red'],['orange','--c-orange'],['gold','--c-gold'],['green','--c-green'],
+              ['cyan','--c-cyan'],['indigo','--c-indigo'],['violet','--c-violet']];
+const CV=n=>getComputedStyle(document.documentElement).getPropertyValue(COLORS.find(c=>c[0]===n)[1]).trim();
+const svg=(k,col,cls='')=>`<svg class="${cls}" viewBox="0 0 48 48" fill="${col}" stroke="${col}" aria-hidden="true">${SYMBOLS[k]}</svg>`;
+
+const EXAMPLES=[
+ {slot:0,state:'Confidence',symbol:'triangle',color:'gold',example:true,
+  story:'Walking off stage after the talk nobody thought I could give.',
+  cues:['chest lifts','breath deepens','core warms','eyes steady'],
+  tests:[{at:d(-4),score:4},{at:d(-3),score:6},{at:d(-2),score:6},{at:d(-1),score:8}]},
+ {slot:1,state:'Calm',symbol:'wave',color:'cyan',example:true,
+  story:'The river at dusk, the week I stopped checking my phone.',
+  cues:['jaw softens','shoulders drop','breath evens','hands still'],
+  tests:[{at:d(-2),score:5},{at:d(-1),score:7}]}
+];
+function d(n){const t=new Date();t.setDate(t.getDate()+n);return t.toISOString()}
+
+let icons=new Array(6).fill(null), DB=null, usingExamples=false;
+
+/* ---------- storage: db when granted, localStorage otherwise ---------- */
+const store={
+  async init(){
+    try{DB=await window.claude?.use?.('db')}catch(e){DB=null}
+    let loaded=null;
+    if(DB){try{
+      const snap=await DB.collection('pads').get?.();
+      if(snap&&snap.length){loaded=new Array(6).fill(null);snap.forEach(r=>{const v=r.data||r;if(v&&v.slot!=null)loaded[v.slot]=v})}
+    }catch(e){}}
+    if(!loaded){try{const raw=localStorage.getItem('macropad');if(raw)loaded=JSON.parse(raw)}catch(e){}}
+    if(loaded&&loaded.some(Boolean)){icons=loaded}
+    else{usingExamples=true;EXAMPLES.forEach(e=>icons[e.slot]=e)}
+    render();
+  },
+  async save(){
+    usingExamples=false;
+    try{localStorage.setItem('macropad',JSON.stringify(icons))}catch(e){}
+    if(DB){for(let i=0;i<6;i++){try{
+      if(icons[i])await DB.doc('pads/slot'+i).set(icons[i]);
+      else await DB.doc('pads/slot'+i).delete?.();
+    }catch(e){}}}
+  }
+};
+
+/* ---------- render ---------- */
+const rel=ic=>{if(!ic?.tests?.length)return null;const t=ic.tests.slice(-7);
+  return Math.round(t.reduce((a,b)=>a+b.score,0)/t.length*10)};
+function render(){
+  const g=document.getElementById('grid');g.innerHTML='';
+  icons.forEach((ic,i)=>{
+    const b=document.createElement('button');b.className='pad'+(ic?'':' empty');b.type='button';
+    if(ic){
+      const c=CV(ic.color),r=rel(ic);
+      b.innerHTML=`${ic.example?'<span class="tag">example</span>':''}
+        ${svg(ic.symbol,c,'glyph')}
+        <span class="name">${esc(ic.state)}</span>
+        <span class="rel">${r===null?'not tested':'fires '+r+'%'} · ${ic.tests.length} test${ic.tests.length===1?'':'s'}</span>`;
+      b.style.borderColor=c+'55';
+      b.setAttribute('aria-label',`Test ${ic.state}`);
+      b.onclick=()=>openTest(i);
+    }else{
+      b.innerHTML=`<span class="plus">+</span><span class="lbl">Install</span>`;
+      b.setAttribute('aria-label','Install a charge in slot '+(i+1));
+      b.onclick=()=>openInstall(i);
+    }
+    g.appendChild(b);
+  });
+  const n=icons.filter(Boolean).length;
+  document.getElementById('meter').textContent=n+' / 6 installed';
+  document.getElementById('note').textContent = usingExamples
+    ? 'Two pads are filled with examples so you can see the shape of it. Installing your own replaces them.'
+    : 'Test cold: look at the symbol before you remember what is in it. The score is whether the charge arrived, not whether you liked it.';
+}
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+/* ---------- overlay plumbing ---------- */
+const ov=document.getElementById('ov'),sheet=document.getElementById('sheet');
+let tick=null;
+function close(){clearInterval(tick);tick=null;ov.hidden=true;sheet.innerHTML='';render()}
+ov.addEventListener('click',e=>{if(e.target===ov)close()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!ov.hidden)close()});
+const open=html=>{sheet.innerHTML=html;ov.hidden=false;ov.scrollTop=0};
+const dots=(n,of_=4)=>`<div class="steps">${Array.from({length:of_},(_,i)=>
+  `<div class="stepdot ${i<n?'done':''} ${i===n?'on':''}"></div>`).join('')}</div>`;
+
+/* ---------- INSTALL: Discover → Play → Flow → Embody ---------- */
+const STATES=['Confidence','Calm','Happy','Courage','Focus','Warmth','Steadiness','Clarity','Playfulness','Resolve'];
+function openInstall(slot){
+  const draft={slot,state:'',story:'',symbol:'triangle',color:'gold',cues:['','','',''],tests:[]};
+  discover();
+
+  function discover(){
+    open(`${dots(0)}
+      <div class="eyebrow">Step 1 — Discover</div>
+      <h2>What should this pad summon?</h2>
+      <p class="hint">Then find a time you actually felt it. Not the idea of it — a real episode, in your body. An abstraction has no charge to install.</p>
+      <div class="field"><label for="st">The state</label>
+        <input id="st" type="text" placeholder="Confidence" value="${esc(draft.state)}">
+        <div class="chips">${STATES.map(s=>`<button class="chip" data-s="${s}">${s}</button>`).join('')}</div>
+      </div>
+      <div class="field"><label for="sy">When was it true?</label>
+        <textarea id="sy" placeholder="Where were you. What you could see. What your body was doing.">${esc(draft.story)}</textarea>
+      </div>
+      <div class="row"><button class="btn ghost" id="x">Cancel</button>
+        <button class="btn pri" id="go" disabled>Build the charge</button></div>`);
+    const st=sheet.querySelector('#st'),sy=sheet.querySelector('#sy'),go=sheet.querySelector('#go');
+    const chk=()=>go.disabled=!(st.value.trim()&&sy.value.trim().length>8);
+    st.oninput=sy.oninput=chk;chk();
+    sheet.querySelectorAll('.chip').forEach(c=>c.onclick=()=>{st.value=c.dataset.s;chk();st.focus()});
+    sheet.querySelector('#x').onclick=close;
+    go.onclick=()=>{draft.state=st.value.trim();draft.story=sy.value.trim();play()};
+  }
+
+  function play(){
+    let secs=300,running=false;
+    const CUES=['Put yourself back there.','What can you see from where you stand?','Let it get stronger.',
+      'Stay with it. Don\'t narrate it — feel it.','Let it fill more of you than it did.','Hold it at full strength.'];
+    open(`${dots(1)}
+      <div class="eyebrow">Step 2 — Play</div>
+      <h2>Run the story until the charge is real</h2>
+      <p class="hint">Live it, don't recall it. When the feeling is unmistakably in your body, stop the clock and choose the symbol.</p>
+      <div class="timer"><div class="clock" id="ck">5:00</div><div class="cue" id="cu">Ready when you are.</div>
+        <div class="adj"><button class="btn" id="m1">−1 min</button><button class="btn" id="p1">+1 min</button>
+        <button class="btn pri" id="run">Start</button></div></div>
+      <div class="row"><button class="btn ghost" id="bk">Back</button>
+        <button class="btn pri" id="nx">Charge is up →</button></div>`);
+    const ck=sheet.querySelector('#ck'),cu=sheet.querySelector('#cu');
+    const fmt=s=>Math.floor(s/60)+':'+String(s%60).padStart(2,'0');
+    const paint=()=>ck.textContent=fmt(Math.max(0,secs));
+    sheet.querySelector('#m1').onclick=()=>{secs=Math.max(60,secs-60);paint()};
+    sheet.querySelector('#p1').onclick=()=>{secs+=60;paint()};
+    sheet.querySelector('#run').onclick=e=>{
+      if(running){clearInterval(tick);tick=null;running=false;e.target.textContent='Resume';return}
+      running=true;e.target.textContent='Pause';let i=0;cu.textContent=CUES[0];
+      tick=setInterval(()=>{secs--;paint();
+        if(secs%50===0){i=(i+1)%CUES.length;cu.style.opacity=0;
+          setTimeout(()=>{cu.textContent=CUES[i];cu.style.opacity=1},380)}
+        if(secs<=0){clearInterval(tick);tick=null;running=false;cu.textContent='Charge is up. Choose the symbol.';
+          sheet.querySelector('#run').textContent='Done'}},1000);
+    };
+    sheet.querySelector('#bk').onclick=()=>{clearInterval(tick);tick=null;discover()};
+    sheet.querySelector('#nx').onclick=()=>{clearInterval(tick);tick=null;symbol()};
+  }
+
+  function symbol(){
+    open(`${dots(1)}
+      <div class="eyebrow">Step 2 — Play</div>
+      <h2>Choose the symbol, then press the charge into it</h2>
+      <p class="hint">Pick something you can rebuild behind your eyes in one second. Simple beats beautiful. Colour sets how hot it runs — red is loudest, violet the quietest.</p>
+      <div class="field"><label>Symbol</label><div class="picker" id="pk"></div></div>
+      <div class="field"><label>Colour — intensity</label><div class="swatches" id="sws"></div></div>
+      <div class="field"><label>Link</label>
+        <button class="hold" id="hold"><span class="fill" id="fill"></span><span id="ht">Hold for 5 seconds — see the symbol, push the feeling into it</span></button></div>
+      <div class="row"><button class="btn ghost" id="bk">Back</button>
+        <button class="btn pri" id="nx" disabled>Linked →</button></div>`);
+    const pk=sheet.querySelector('#pk'),sws=sheet.querySelector('#sws'),nx=sheet.querySelector('#nx');
+    const drawPk=()=>{pk.innerHTML=Object.keys(SYMBOLS).map(k=>
+      `<button class="sym ${k===draft.symbol?'sel':''}" data-k="${k}" aria-label="${k}">${svg(k,CV(draft.color))}</button>`).join('');
+      pk.querySelectorAll('.sym').forEach(s=>s.onclick=()=>{draft.symbol=s.dataset.k;drawPk();drawFill()})};
+    const drawSw=()=>{sws.innerHTML=COLORS.map(([n])=>
+      `<button class="sw ${n===draft.color?'sel':''}" data-c="${n}" style="background:${CV(n)}" aria-label="${n}"></button>`).join('');
+      sws.querySelectorAll('.sw').forEach(s=>s.onclick=()=>{draft.color=s.dataset.c;drawSw();drawPk();drawFill()})};
+    const drawFill=()=>sheet.querySelector('#fill').style.background=CV(draft.color);
+    drawPk();drawSw();drawFill();
+    const hold=sheet.querySelector('#hold'),fill=sheet.querySelector('#fill'),ht=sheet.querySelector('#ht');
+    let t0=null,raf=null;
+    const start=()=>{t0=Date.now();const step=()=>{const p=Math.min(1,(Date.now()-t0)/5000);
+      fill.style.width=(p*100)+'%';
+      if(p>=1){ht.textContent='Linked.';nx.disabled=false;hold.style.borderColor=CV(draft.color);return}
+      raf=requestAnimationFrame(step)};step()};
+    const stop=()=>{cancelAnimationFrame(raf);if(nx.disabled){fill.style.width='0%'}};
+    hold.addEventListener('pointerdown',start);
+    ['pointerup','pointerleave','pointercancel'].forEach(e=>hold.addEventListener(e,stop));
+    sheet.querySelector('#bk').onclick=play;
+    sheet.querySelector('#nx').onclick=flow;
+  }
+
+  function flow(){
+    open(`${dots(2)}
+      <div class="eyebrow">Step 3 — Flow</div>
+      <h2>Where does it sit?</h2>
+      <p class="hint">Four places, each one a body part and what it does. This is how you'll know the pad fired — the cues are the test, not the mood.</p>
+      <div class="field"><label>Four somatic cues</label><div class="cues">
+        ${[0,1,2,3].map(i=>`<input type="text" id="c${i}" value="${esc(draft.cues[i])}"
+          placeholder="${['chest lifts','breath deepens','core warms','eyes steady'][i]}">`).join('')}
+      </div></div>
+      <div class="row"><button class="btn ghost" id="bk">Back</button>
+        <button class="btn pri" id="nx" disabled>Seal it →</button></div>`);
+    const ins=[0,1,2,3].map(i=>sheet.querySelector('#c'+i)),nx=sheet.querySelector('#nx');
+    const chk=()=>nx.disabled=!ins.every(i=>i.value.trim());
+    ins.forEach(i=>i.oninput=chk);chk();
+    sheet.querySelector('#bk').onclick=symbol;
+    nx.onclick=()=>{draft.cues=ins.map(i=>i.value.trim());embody()};
+  }
+
+  function embody(){
+    let phase='look',left=5,score=null;
+    const paint=()=>{
+      if(phase==='look'){
+        open(`${dots(3)}
+          <div class="eyebrow">Step 4 — Embody</div>
+          <h2>Test it now, cold</h2>
+          <p class="hint">Look at the symbol. Don't reach for the story — see whether the charge comes on its own.</p>
+          <div class="stage">${svg(draft.symbol,CV(draft.color))}<div class="count" id="ct">${left}</div></div>`);
+        tick=setInterval(()=>{left--;const c=sheet.querySelector('#ct');
+          if(c)c.textContent=left;if(left<=0){clearInterval(tick);tick=null;phase='rate';paint()}},1000);
+      }else{
+        open(`${dots(3)}
+          <div class="eyebrow">Step 4 — Embody</div>
+          <h2>Did the charge fire?</h2>
+          <p class="hint">0 is nothing arrived. 10 is the full state, as strong as the memory. First-day scores are usually low — that's the baseline, not a failure.</p>
+          <div class="field"><div class="scale" id="sc">${Array.from({length:11},(_,i)=>
+            `<button class="sc" data-v="${i}">${i}</button>`).join('')}</div>
+            <div class="scends"><span>NOTHING</span><span>FULL STATE</span></div></div>
+          <div class="row"><button class="btn pri" id="sv" disabled>Install pad</button></div>`);
+        const sv=sheet.querySelector('#sv');
+        sheet.querySelectorAll('.sc').forEach(b=>b.onclick=()=>{
+          sheet.querySelectorAll('.sc').forEach(x=>x.classList.remove('sel'));
+          b.classList.add('sel');score=+b.dataset.v;sv.disabled=false});
+        sv.onclick=async()=>{
+          if(usingExamples){icons=new Array(6).fill(null);usingExamples=false}
+          draft.tests=[{at:new Date().toISOString(),score}];
+          draft.installedAt=new Date().toISOString();
+          icons[slot]=draft;await store.save();close();
+        };
+      }
+    };
+    paint();
+  }
+}
+
+/* ---------- DAILY TEST ---------- */
+function openTest(slot){
+  const ic=icons[slot];let left=5,score=null;
+  const look=()=>{
+    open(`<div class="eyebrow">Daily test</div>
+      <h2>Cold read</h2>
+      <p class="hint">Look at it. Don't name it, don't reach for the story.</p>
+      <div class="stage">${svg(ic.symbol,CV(ic.color))}<div class="count" id="ct">${left}</div></div>
+      <div class="row"><button class="btn ghost" id="hs">History</button></div>`);
+    sheet.querySelector('#hs').onclick=()=>{clearInterval(tick);tick=null;history()};
+    tick=setInterval(()=>{left--;const c=sheet.querySelector('#ct');
+      if(c)c.textContent=left;if(left<=0){clearInterval(tick);tick=null;rate()}},1000);
+  };
+  const rate=()=>{
+    open(`<div class="eyebrow">Daily test — ${esc(ic.state)}</div>
+      <h2>Did the charge fire?</h2>
+      <p class="hint">Check the cues, not the mood: <strong>${ic.cues.map(esc).join(' · ')}</strong></p>
+      <div class="field"><div class="scale">${Array.from({length:11},(_,i)=>
+        `<button class="sc" data-v="${i}">${i}</button>`).join('')}</div>
+        <div class="scends"><span>NOTHING</span><span>FULL STATE</span></div></div>
+      <div class="row"><button class="btn ghost" id="sk">Skip</button>
+        <button class="btn pri" id="sv" disabled>Log it</button></div>`);
+    const sv=sheet.querySelector('#sv');
+    sheet.querySelectorAll('.sc').forEach(b=>b.onclick=()=>{
+      sheet.querySelectorAll('.sc').forEach(x=>x.classList.remove('sel'));
+      b.classList.add('sel');score=+b.dataset.v;sv.disabled=false});
+    sheet.querySelector('#sk').onclick=close;
+    sv.onclick=async()=>{
+      if(ic.example){ic.example=false}
+      ic.tests.push({at:new Date().toISOString(),score});await store.save();history();
+    };
+  };
+  const history=()=>{
+    const t=ic.tests,r=rel(ic),mx=10;
+    open(`<div class="eyebrow">${esc(ic.state)}</div>
+      <h2>${r===null?'Not tested yet':'Fires '+r+'% of the time'}</h2>
+      <p class="hint">${esc(ic.story)}</p>
+      <div class="spark">${t.slice(-24).map(x=>
+        `<i style="height:${Math.max(6,x.score/mx*100)}%;background:${CV(ic.color)}"></i>`).join('')}</div>
+      <div class="field"><label>Cues</label>
+        <div class="log"><div><span>${ic.cues.map(esc).join(' · ')}</span></div></div></div>
+      <div class="field"><label>Log</label><div class="log">${t.slice().reverse().map(x=>
+        `<div><span>${new Date(x.at).toLocaleDateString(undefined,{month:'short',day:'numeric'})}</span>
+         <span>${x.score} / 10</span></div>`).join('')}</div></div>
+      <div class="row"><button class="btn ghost" id="rm">Clear pad</button>
+        <button class="btn" id="cl">Close</button>
+        <button class="btn pri" id="ag">Test again</button></div>`);
+    sheet.querySelector('#cl').onclick=close;
+    sheet.querySelector('#ag').onclick=()=>{left=5;score=null;look()};
+    sheet.querySelector('#rm').onclick=async()=>{icons[slot]=null;await store.save();close()};
+  };
+  look();
+}
+
+store.init();
+</script>
