@@ -16,7 +16,7 @@ BAND_PLAIN = {
  "Root":"the low back and pelvis","Sacral":"below the navel, front and back",
  "Solar Plexus":"just under the ribs, centre","Heart":"the centre chest and upper back",
  "Throat":"the throat and back of the neck","Third Eye":"the brow and behind the eyes",
- "Crown":"the top and back of the head"}
+ "Crown":"the top and back of the head","Anchor":"the crown and deep spinal axis"}
 
 def mob_text():
     import html as H
@@ -29,20 +29,21 @@ def mob_text():
 
 units = []
 
-# ---- 1. ADDRESS POSTS. One per node. The backbone of the feed.
-for n in NODES:
+# ---- 1. ADDRESS POSTS. One per in-body node with a confirmed address.
+# Field nodes have no somatic address. Nodes 99 and 108 were struck 2026-09-08
+# and print ADDRESS PENDING. Neither becomes a post. Never interpolate.
+for n in [x for x in NODES if not x.get("field") and not x.get("pending")]:
     plain = BAND_PLAIN[n["band"]]
     text = (f"{n['charge']} has an address.\n\n"
             f"Node {n['n']}. The {n['nerve']}. {plain.capitalize()}.\n\n"
-            f"It governs {n['domain'].lower()}. When it carries charge, "
-            f"the behaviour it makes cheap is {n['wrong'].lower()}.\n\n"
+            f"It governs {n['domain'].lower()}.\n\n"
             f"Put a hand on {plain}. Bring {n['charge'].lower()} to mind and hold it "
             f"for ninety seconds. If the area warms, tightens, goes cold or starts to hum, "
             f"that is the node answering.\n\n"
             f"Ninety seconds. You do not have to believe anything to run it.")
     units.append({"type":"address","band":n["band"],"node":n["n"],
                   "title":f"{n['charge']} · node {n['n']}",
-                  "text":text,"source":"MOB Appendix B, The 114 Nodes",
+                  "text":text,"source":"MOB v214 ch.36, The 112 Nodes",
                   "channels":["instagram","tiktok","threads"]})
 
 # ---- 2. MECHANISM POSTS. Pulled from the nine emotional architectures.

@@ -13,8 +13,18 @@ import json, re, sys, pathlib
 # Canon nerve names, parsed from the manuscript. An address not in here
 # is an interpolated address, which is the one unforgivable defect.
 NODES = json.loads((pathlib.Path(__file__).parent / "nodes.json").read_text())
-NERVES = {n["nerve"].lower() for n in NODES}
+def _base(x):
+    """Drop parentheticals and qualifiers so 'Iliohypogastric Nerve (L1)'
+    also matches as 'Iliohypogastric Nerve'."""
+    x = re.sub(r"\s*\([^)]*\)", "", x)
+    x = x.split("\u00b7")[0]
+    # drop trailing vertebral levels: T7-T11, L1, C6-C7, S2-S4
+    x = re.sub(r"\s+[CTLS]\d{1,2}(\s*[-\u2013]\s*[CTLS]?\d{1,2})?\s*$", "", x)
+    return re.sub(r"\s+", " ", x).strip().lower()
+
+NERVES = {n["nerve"].lower() for n in NODES} | {_base(n["nerve"]) for n in NODES}
 CHARGES = {n["charge"].lower() for n in NODES}
+PENDING = {n["n"] for n in NODES if n.get("pending")}
 
 # Band names and gross anatomy are legitimate in prose and are not node addresses.
 BANDS_OK = {"solar plexus", "root", "sacral", "heart", "throat", "third eye",
@@ -50,9 +60,10 @@ def check(unit):
     if "—" in text or "&mdash;" in text or "&#8212;" in text:
         rejects.append("em dash present")
 
-    # NODE COUNT GATE. Canon: 114, never 108.
-    if re.search(r"\b108\b", text) and "node" in low:
-        rejects.append("says 108 nodes, canon is 114")
+    # NODE COUNT GATE. Canon as of v214: 108 in-body, 4 field, 112 total.
+    # 114 is the superseded count and must not ship.
+    if re.search(r"\b114\b", text) and "node" in low:
+        rejects.append("says 114 nodes, canon is 112 (108 in-body + 4 field)")
 
     # ADDRESS GATE. Any nerve named must exist in the map.
     for m in re.finditer(r"\b((?:[A-Z][a-z]+[-\s]+)*[A-Z][a-z]+\s+(?:Plexus|Nerve|Ganglia|Cortex|Nucleus|Chain|Column|Axis|Branch|Branches|Roots))\b", text):
@@ -63,8 +74,10 @@ def check(unit):
     nm = re.search(r"\bnode\s+(\d{1,3})\b", low)
     if nm:
         num = int(nm.group(1))
-        if num > 114:
-            rejects.append(f"node {num} out of range, map is 114")
+        if num > 112:
+            rejects.append(f"node {num} out of range, map is 112")
+        elif num in PENDING:
+            rejects.append(f"node {num} address struck 2026-09-08, pending a ruling")
         else:
             row = next((n for n in NODES if n["n"] == num), None)
             if row and row["charge"].lower() not in low:
