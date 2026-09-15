@@ -1,0 +1,787 @@
+{
+ "abandonment sensitivity": {
+  "address": "Lumbar Plexus (L1-L4)",
+  "pole": "Safety",
+  "src": "Axis 01"
+ },
+ "addiction": {
+  "address": "Sacral Plexus",
+  "band": "Sacral",
+  "node": 17,
+  "src": "node 17"
+ },
+ "anger": {
+  "address": "Solar Plexus / Celiac Plexus",
+  "pole": "Calm",
+  "src": "Axis 02"
+ },
+ "anger at god": {
+  "address": "Hypothalamus",
+  "band": "Crown",
+  "node": 103,
+  "src": "node 103"
+ },
+ "annoyed": {
+  "address": "Solar Plexus / Celiac Plexus",
+  "pole": "Calm",
+  "src": "anger family"
+ },
+ "anticipation": {
+  "address": "Just below the heart as anxiety; next to it and a little higher as excitement",
+  "pole": "Pole pending",
+  "src": "Axis 09"
+ },
+ "anxiety": {
+  "address": "Adrenal Medulla",
+  "band": "Solar Plexus",
+  "node": 45,
+  "src": "node 45"
+ },
+ "anxious": {
+  "address": "Lumbar Plexus (L1-L4)",
+  "pole": "Safety",
+  "src": "anxiety family"
+ },
+ "apathy": {
+  "address": "Shoulder girdle + Throat (coupled will system) \u00b7 Source: Upper cardiac plexus",
+  "pole": "Joy",
+  "src": "Axis 05"
+ },
+ "arrogance": {
+  "address": "Greater Splanchnic Nerve",
+  "band": "Solar Plexus",
+  "node": 34,
+  "src": "node 34"
+ },
+ "ashamed": {
+  "address": "Pudendal Nerve",
+  "pole": "Worth",
+  "src": "shame family"
+ },
+ "avoidance of grief": {
+  "address": "Inferior Cervical Cardiac Nerve",
+  "band": "Heart",
+  "node": 62,
+  "src": "node 62"
+ },
+ "avoidance of pleasure": {
+  "address": "Pelvic Nerve",
+  "band": "Sacral",
+  "node": 24,
+  "src": "node 24"
+ },
+ "betrayal": {
+  "address": "Thoracic Plexus",
+  "band": "Heart",
+  "node": 52,
+  "src": "node 52"
+ },
+ "blame": {
+  "address": "Thoracic Ganglia",
+  "band": "Heart",
+  "node": 59,
+  "src": "node 59"
+ },
+ "bothered": {
+  "address": "Lumbar Plexus (L1-L4)",
+  "pole": "Safety",
+  "src": "anxiety family"
+ },
+ "closed heart": {
+  "address": "Costal Branches",
+  "band": "Heart",
+  "node": 56,
+  "src": "node 56"
+ },
+ "closed off": {
+  "address": "Solar Plexus / Celiac Plexus",
+  "pole": "Calm",
+  "src": "anger family"
+ },
+ "co-dependency": {
+  "address": "Pelvic Splanchnic Nerves",
+  "band": "Sacral",
+  "node": 21,
+  "src": "node 21"
+ },
+ "collapse": {
+  "address": "spinal cord base",
+  "src": "cluster node"
+ },
+ "comparison": {
+  "address": "Accessory Nerve",
+  "band": "Throat",
+  "node": 69,
+  "src": "node 69"
+ },
+ "competition": {
+  "address": "Aortic Plexus",
+  "band": "Solar Plexus",
+  "node": 35,
+  "src": "node 35"
+ },
+ "compulsion": {
+  "address": "Pelvic Floor Nerves",
+  "band": "Root",
+  "node": 12,
+  "src": "node 12"
+ },
+ "concerned": {
+  "address": "Lumbar Plexus (L1-L4)",
+  "pole": "Safety",
+  "src": "anxiety family"
+ },
+ "condemnation": {
+  "address": "Reticular Formation",
+  "band": "Crown",
+  "node": 96,
+  "src": "node 96"
+ },
+ "control": {
+  "address": "Sacral Nerves",
+  "band": "Root",
+  "node": 4,
+  "src": "node 4"
+ },
+ "cynicism": {
+  "address": "Oculomotor Nerve",
+  "band": "Third Eye",
+  "node": 77,
+  "src": "node 77"
+ },
+ "deceit": {
+  "address": "Cervical Plexus",
+  "band": "Throat",
+  "node": 64,
+  "src": "node 64"
+ },
+ "delusion": {
+  "address": "Optic Nerve",
+  "band": "Third Eye",
+  "node": 76,
+  "src": "node 76"
+ },
+ "denial of light": {
+  "address": "Epithalamus",
+  "band": "Crown",
+  "node": 105,
+  "src": "node 105"
+ },
+ "denial of truth": {
+  "address": "Medial Forebrain Bundle",
+  "band": "Crown",
+  "node": 100,
+  "src": "node 100"
+ },
+ "disconnection": {
+  "address": "Sacral Root Ganglia",
+  "src": "cluster node"
+ },
+ "disgust": {
+  "address": "Sacral / Solar Plexus / Dermis, front-to-back tug system",
+  "pole": "Acceptance",
+  "src": "Axis 04"
+ },
+ "distortion": {
+  "address": "Greater Occipital Nerve",
+  "band": "Third Eye",
+  "node": 84,
+  "src": "node 84"
+ },
+ "distrust": {
+  "address": "Abducens Nerve",
+  "band": "Third Eye",
+  "node": 78,
+  "src": "node 78"
+ },
+ "dogma": {
+  "address": "Nervus Conarii \u00b7 pineal gland as organ presentation",
+  "band": "Third Eye",
+  "node": 80,
+  "src": "node 80"
+ },
+ "doubt": {
+  "address": "Lumbar Plexus (L1-L4)",
+  "pole": "Safety",
+  "src": "Axis 01"
+ },
+ "doubt of god": {
+  "address": "Corpus Callosum",
+  "band": "Crown",
+  "node": 88,
+  "src": "node 88"
+ },
+ "earth star": {
+  "address": "Field \u00b7 no somatic address",
+  "band": "Field",
+  "node": 110,
+  "src": "node 110"
+ },
+ "embarrassed": {
+  "address": "Pudendal Nerve",
+  "pole": "Worth",
+  "src": "shame family"
+ },
+ "endless seeking": {
+  "address": "ADDRESS PENDING \u00b7 struck 2026-09-08",
+  "band": "Anchor",
+  "node": 108,
+  "src": "node 108"
+ },
+ "entitlement": {
+  "address": "Cauda Equina",
+  "band": "Root",
+  "node": 8,
+  "src": "node 8"
+ },
+ "entitlement (will-based)": {
+  "address": "Renal Plexus",
+  "band": "Solar Plexus",
+  "node": 38,
+  "src": "node 38"
+ },
+ "envy": {
+  "address": "Internal Pudendal",
+  "src": "cluster node"
+ },
+ "escapism": {
+  "address": "sciatic nerve, the impulse to run encoded in the largest nerve in the body",
+  "src": "cluster node"
+ },
+ "excess emotion": {
+  "address": "Perineal Nerve",
+  "band": "Sacral",
+  "node": 32,
+  "src": "node 32"
+ },
+ "excuse": {
+  "address": "Glossopharyngeal Nerve",
+  "band": "Throat",
+  "node": 70,
+  "src": "node 70"
+ },
+ "expectation": {
+  "address": "Pulmonary Nerve Plexus",
+  "band": "Heart",
+  "node": 58,
+  "src": "node 58"
+ },
+ "false humility": {
+  "address": "Frontal Lobe",
+  "band": "Crown",
+  "node": 93,
+  "src": "node 93"
+ },
+ "false love": {
+  "address": "Anterior Thoracic Roots",
+  "band": "Heart",
+  "node": 60,
+  "src": "node 60"
+ },
+ "fantasy": {
+  "address": "Splanchnic Root",
+  "band": "Sacral",
+  "node": 27,
+  "src": "node 27"
+ },
+ "fear": {
+  "address": "Lumbar Plexus (L1-L4)",
+  "pole": "Safety",
+  "src": "Axis 01"
+ },
+ "fear of god": {
+  "address": "Temporal Lobe",
+  "band": "Crown",
+  "node": 102,
+  "src": "node 102"
+ },
+ "force": {
+  "address": "Splenic Plexus",
+  "band": "Solar Plexus",
+  "node": 41,
+  "src": "node 41"
+ },
+ "forgetfulness": {
+  "address": "Memory Center (Hippocampus)",
+  "band": "Crown",
+  "node": 104,
+  "src": "node 104"
+ },
+ "frustrated": {
+  "address": "Lumbar Plexus (L1-L4)",
+  "pole": "Safety",
+  "src": "anxiety family"
+ },
+ "gaia gateway": {
+  "address": "Field \u00b7 no somatic address",
+  "band": "Field",
+  "node": 109,
+  "src": "node 109"
+ },
+ "grudge": {
+  "address": "Thoracic Nerves",
+  "band": "Heart",
+  "node": 50,
+  "src": "node 50"
+ },
+ "guilt": {
+  "address": "Inferior Hypogastric Plexus",
+  "band": "Root",
+  "node": 3,
+  "src": "node 3"
+ },
+ "guilt of pleasure": {
+  "address": "Sacral Outflow",
+  "band": "Sacral",
+  "node": 30,
+  "src": "node 30"
+ },
+ "guilty": {
+  "address": "Pudendal Nerve",
+  "pole": "Worth",
+  "src": "shame family"
+ },
+ "hatred": {
+  "address": "Cardiac Plexus",
+  "band": "Heart",
+  "node": 49,
+  "src": "node 49"
+ },
+ "hubris": {
+  "address": "Prefrontal Cortex",
+  "band": "Crown",
+  "node": 89,
+  "src": "node 89"
+ },
+ "humiliated": {
+  "address": "Pudendal Nerve",
+  "pole": "Worth",
+  "src": "shame family"
+ },
+ "hypersexuality": {
+  "address": "Pudendal Plexus",
+  "band": "Sacral",
+  "node": 23,
+  "src": "node 23"
+ },
+ "hypervigilance": {
+  "address": "Lumbar Plexus (L1-L4)",
+  "pole": "Safety",
+  "src": "Axis 01"
+ },
+ "idealism": {
+  "address": "Supraoptic Nucleus",
+  "band": "Third Eye",
+  "node": 86,
+  "src": "node 86"
+ },
+ "infatuation": {
+  "address": "Lumbosacral Trunk (L4-L5)",
+  "band": "Sacral",
+  "node": 28,
+  "src": "node 28"
+ },
+ "insecure": {
+  "address": "Solar Plexus / Celiac Plexus",
+  "pole": "Calm",
+  "src": "anger family"
+ },
+ "insecurity": {
+  "address": "Pelvic Nerve",
+  "band": "Root",
+  "node": 5,
+  "src": "node 5"
+ },
+ "interrupting": {
+  "address": "Pharyngeal Nerve",
+  "band": "Throat",
+  "node": 68,
+  "src": "node 68"
+ },
+ "introverted": {
+  "address": "Solar Plexus / Celiac Plexus",
+  "pole": "Calm",
+  "src": "anger family"
+ },
+ "irritated": {
+  "address": "Lumbar Plexus (L1-L4)",
+  "pole": "Safety",
+  "src": "anxiety family"
+ },
+ "jealousy": {
+  "address": "Obturator Nerve",
+  "band": "Sacral",
+  "node": 20,
+  "src": "node 20"
+ },
+ "judgment": {
+  "address": "Splanchnic, disgust intellectualized",
+  "src": "cluster node"
+ },
+ "knowing better than god": {
+  "address": "ADDRESS PENDING \u00b7 struck 2026-09-08",
+  "band": "Crown",
+  "node": 99,
+  "src": "node 99"
+ },
+ "lack of confidence": {
+  "address": "Lumbar Plexus (L1-L4)",
+  "pole": "Safety",
+  "src": "Axis 01"
+ },
+ "lack of discernment": {
+  "address": "Thalamus",
+  "band": "Third Eye",
+  "node": 87,
+  "src": "node 87"
+ },
+ "lethargy": {
+  "address": "Obturator Nerve",
+  "src": "cluster node"
+ },
+ "longing": {
+  "address": "Cardiac Nerve Plexus",
+  "band": "Heart",
+  "node": 55,
+  "src": "node 55"
+ },
+ "lust": {
+  "address": "Genitofemoral Nerve",
+  "band": "Sacral",
+  "node": 18,
+  "src": "node 18"
+ },
+ "lying": {
+  "address": "Recurrent Laryngeal Nerve",
+  "band": "Throat",
+  "node": 67,
+  "src": "node 67"
+ },
+ "manic expression": {
+  "address": "Spinal Accessory Nerve",
+  "band": "Throat",
+  "node": 73,
+  "src": "node 73"
+ },
+ "manipulation through emotion": {
+  "address": "Inferior Hypogastric Plexus",
+  "band": "Sacral",
+  "node": 25,
+  "src": "node 25"
+ },
+ "manipulative kindness": {
+  "address": "Phrenic Nerve",
+  "band": "Heart",
+  "node": 57,
+  "src": "node 57"
+ },
+ "martyrdom": {
+  "address": "Intercostal Nerves",
+  "band": "Heart",
+  "node": 54,
+  "src": "node 54"
+ },
+ "need for approval": {
+  "address": "Iliac Branches",
+  "band": "Sacral",
+  "node": 31,
+  "src": "node 31"
+ },
+ "need to be needed": {
+  "address": "Coronary Plexus",
+  "band": "Heart",
+  "node": 63,
+  "src": "node 63"
+ },
+ "need to be special": {
+  "address": "Anterior Cingulate",
+  "band": "Crown",
+  "node": 97,
+  "src": "node 97"
+ },
+ "need to win": {
+  "address": "Hepatic Plexus",
+  "band": "Solar Plexus",
+  "node": 47,
+  "src": "node 47"
+ },
+ "nervous": {
+  "address": "Lumbar Plexus (L1-L4)",
+  "pole": "Safety",
+  "src": "anxiety family"
+ },
+ "nihilism": {
+  "address": "Parietal Cortex, crown-level cousin of apathy, meaning itself collapsed",
+  "src": "cluster node"
+ },
+ "obsession": {
+  "address": "Pelvic Ganglia",
+  "band": "Sacral",
+  "node": 29,
+  "src": "node 29"
+ },
+ "overanalysis": {
+  "address": "Trigeminal Nerve",
+  "band": "Third Eye",
+  "node": 81,
+  "src": "node 81"
+ },
+ "oversensitivity": {
+  "address": "Inferior Hypogastric Plexus",
+  "band": "Sacral",
+  "node": 26,
+  "src": "node 26"
+ },
+ "panic": {
+  "address": "lumbar sympathetic chain",
+  "src": "cluster node"
+ },
+ "paranoia": {
+  "address": "Lateral Geniculate",
+  "band": "Third Eye",
+  "node": 83,
+  "src": "node 83"
+ },
+ "people pleasing": {
+  "address": "Superior Laryngeal Nerve",
+  "band": "Throat",
+  "node": 66,
+  "src": "node 66"
+ },
+ "perfectionism": {
+  "address": "Mesenteric Plexus, anger turned inward against own output",
+  "src": "cluster node"
+ },
+ "pissed off": {
+  "address": "Solar Plexus / Celiac Plexus",
+  "pole": "Calm",
+  "src": "anger family"
+ },
+ "possession": {
+  "address": "Gluteal Nerve",
+  "band": "Root",
+  "node": 9,
+  "src": "node 9"
+ },
+ "pride": {
+  "address": "Celiac Plexus",
+  "band": "Solar Plexus",
+  "node": 33,
+  "src": "node 33"
+ },
+ "pride/arrogance": {
+  "address": "Celiac/Greater Splanchnic",
+  "src": "cluster node"
+ },
+ "projection": {
+  "address": "Visual Cortex",
+  "band": "Third Eye",
+  "node": 82,
+  "src": "node 82"
+ },
+ "rebellion": {
+  "address": "Renal Ganglia",
+  "band": "Solar Plexus",
+  "node": 39,
+  "src": "node 39"
+ },
+ "rejection": {
+  "address": "Vagal Branches",
+  "band": "Heart",
+  "node": 61,
+  "src": "node 61"
+ },
+ "rejection of spirit": {
+  "address": "Posterior Commissure",
+  "band": "Crown",
+  "node": 101,
+  "src": "node 101"
+ },
+ "rejection of unity": {
+  "address": "Neocortex",
+  "band": "Crown",
+  "node": 106,
+  "src": "node 106"
+ },
+ "rejection sensitivity": {
+  "address": "Lumbar Plexus (L1-L4)",
+  "pole": "Safety",
+  "src": "Axis 01"
+ },
+ "resentment": {
+  "address": "Suprarenal Plexus, recycled anger running on a loop",
+  "src": "cluster node"
+ },
+ "resistance": {
+  "address": "Perineal Branch",
+  "band": "Root",
+  "node": 11,
+  "src": "node 11"
+ },
+ "rigidity": {
+  "address": "Pancreatic Plexus",
+  "band": "Solar Plexus",
+  "node": 42,
+  "src": "node 42"
+ },
+ "sad": {
+  "address": "Inferior anterior cardiac nerves / Superficial cardiac plexus",
+  "pole": "Happy",
+  "src": "Axis 07"
+ },
+ "savior complex": {
+  "address": "Posterior Cingulate",
+  "band": "Crown",
+  "node": 95,
+  "src": "node 95"
+ },
+ "scarcity": {
+  "address": "Iliohypogastric Nerve (L1)",
+  "band": "Root",
+  "node": 7,
+  "src": "node 7"
+ },
+ "seeking validation": {
+  "address": "Cerebral Cortex",
+  "band": "Crown",
+  "node": 94,
+  "src": "node 94"
+ },
+ "self-exclusion": {
+  "address": "Vertex convergence \u00b7 greater occipital and V1",
+  "band": "Anchor",
+  "node": 107,
+  "src": "node 107"
+ },
+ "self-judgment": {
+  "address": "Epigastric Branches",
+  "src": "cluster node"
+ },
+ "self-punishment / shame": {
+  "address": "Vagus Nerve",
+  "band": "Heart",
+  "node": 51,
+  "src": "node 51"
+ },
+ "self-silencing": {
+  "address": "Vagus, throat component of will failing alone",
+  "src": "cluster node"
+ },
+ "separation": {
+  "address": "Pericardial Nerve",
+  "band": "Heart",
+  "node": 53,
+  "src": "node 53"
+ },
+ "shame": {
+  "address": "Pudendal Nerve",
+  "pole": "Worth",
+  "src": "Axis 03"
+ },
+ "shame of desire": {
+  "address": "Hypogastric, disgust turned on own sacral impulses",
+  "src": "cluster node"
+ },
+ "shock": {
+  "address": "Prefrontal cortex \u00b7 Dermis (full skin surface)",
+  "pole": "Pole pending",
+  "src": "Axis 06"
+ },
+ "shy": {
+  "address": "Solar Plexus / Celiac Plexus",
+  "pole": "Calm",
+  "src": "anger family"
+ },
+ "small": {
+  "address": "Solar Plexus / Celiac Plexus",
+  "pole": "Calm",
+  "src": "anger family"
+ },
+ "sol star": {
+  "address": "Field \u00b7 no somatic address",
+  "band": "Field",
+  "node": 111,
+  "src": "node 111"
+ },
+ "speaking to be right": {
+  "address": "Cervical Ganglia",
+  "band": "Throat",
+  "node": 72,
+  "src": "node 72"
+ },
+ "spiritual escapism": {
+  "address": "Dorsal Raphe Nucleus",
+  "band": "Crown",
+  "node": 92,
+  "src": "node 92"
+ },
+ "spiritual pride": {
+  "address": "Pineal-Hypothalamic Axis",
+  "band": "Crown",
+  "node": 90,
+  "src": "node 90"
+ },
+ "stage performing": {
+  "address": "Laryngeal Plexus",
+  "band": "Throat",
+  "node": 71,
+  "src": "node 71"
+ },
+ "stellar gateway": {
+  "address": "Field \u00b7 no somatic address",
+  "band": "Field",
+  "node": 112,
+  "src": "node 112"
+ },
+ "stressed": {
+  "address": "Lumbar Plexus (L1-L4)",
+  "pole": "Safety",
+  "src": "anxiety family"
+ },
+ "superiority": {
+  "address": "Splenic Plexus",
+  "band": "Solar Plexus",
+  "node": 48,
+  "src": "node 48"
+ },
+ "talking to avoid feeling": {
+  "address": "Subclavian Nerve",
+  "band": "Throat",
+  "node": 74,
+  "src": "node 74"
+ },
+ "tense": {
+  "address": "Lumbar Plexus (L1-L4)",
+  "pole": "Safety",
+  "src": "anxiety family"
+ },
+ "unworthiness": {
+  "address": "Inferior Mesenteric Plexus",
+  "band": "Solar Plexus",
+  "node": 44,
+  "src": "node 44"
+ },
+ "unworthy of god": {
+  "address": "Pineal-Amygdala Axis",
+  "band": "Crown",
+  "node": 98,
+  "src": "node 98"
+ },
+ "using spiritual language to manipulate": {
+  "address": "Brachial Plexus",
+  "band": "Throat",
+  "node": 75,
+  "src": "node 75"
+ },
+ "victimhood": {
+  "address": "Coccygeal Plexus",
+  "band": "Root",
+  "node": 6,
+  "src": "node 6"
+ },
+ "worried": {
+  "address": "Lumbar Plexus (L1-L4)",
+  "pole": "Safety",
+  "src": "anxiety family"
+ }
+}
