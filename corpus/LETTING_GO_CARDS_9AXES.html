@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Letting Go Cards -- 9 Axes</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600&family=Poppins:wght@300;400;500;600;700&family=Space+Mono&display=swap');
+
+:root {
+  --bg: #080807;
+  --surface: #0f0f0e;
+  --surface2: #161614;
+  --off-white: #F0EAE0;
+  --gold: #C9A84C;
+  --gold-dim: rgba(201,168,76,0.1);
+  --gold-line: rgba(201,168,76,0.25);
+  --text-dim: #5a5a58;
+  --text-mid: #9a9690;
+  --border: #252523;
+  --decoherent: #d4a4a4;
+  --coherent: #82c49a;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--off-white);
+  font-family: "Poppins", sans-serif;
+  font-weight: 300;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.page-header {
+  padding: 48px 52px 32px;
+  border-bottom: 1px solid var(--border);
+}
+
+.header-eyebrow {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 10px;
+}
+
+.header-title {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 38px;
+  font-weight: 300;
+  color: var(--off-white);
+  line-height: 1.1;
+}
+
+.header-sub {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: 16px;
+  color: var(--text-mid);
+  margin-top: 6px;
+  max-width: 580px;
+}
+
+/* CARD LAYOUT */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border);
+  padding: 0;
+}
+
+.card {
+  background: var(--bg);
+  padding: 0;
+  cursor: pointer;
+  transition: background 0.15s;
+  display: flex;
+  flex-direction: column;
+}
+
+.card:hover { background: var(--surface); }
+
+.card-top {
+  padding: 24px 24px 16px;
+  flex: 1;
+}
+
+.card-axis-num {
+  font-family: "Space Mono", monospace;
+  font-size: 9px;
+  color: var(--text-dim);
+  letter-spacing: 0.08em;
+  margin-bottom: 10px;
+}
+
+.card-poles {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.pole-decoherent {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--decoherent);
+  line-height: 1;
+}
+
+.pole-arrow { color: var(--text-dim); font-size: 14px; }
+
+.pole-coherent {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--coherent);
+  line-height: 1;
+}
+
+.card-address {
+  font-family: "Space Mono", monospace;
+  font-size: 9px;
+  color: var(--text-dim);
+  margin-bottom: 12px;
+}
+
+.card-track {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: 14px;
+  color: var(--gold);
+  margin-bottom: 12px;
+  line-height: 1.4;
+}
+
+/* RELEASE STATEMENT */
+.release-block {
+  padding: 16px 24px;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+}
+
+.release-label {
+  font-size: 8.5px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 8px;
+}
+
+.release-text {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 14px;
+  color: var(--off-white);
+  line-height: 1.65;
+}
+
+.release-text em { color: var(--decoherent); }
+.release-text strong { color: var(--coherent); }
+
+/* INSTALL BLOCK */
+.install-block {
+  padding: 14px 24px;
+  background: rgba(130,196,154,0.05);
+  border-top: 1px solid rgba(130,196,154,0.15);
+}
+
+.install-label {
+  font-size: 8.5px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--coherent);
+  margin-bottom: 6px;
+}
+
+.install-text {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 14px;
+  color: var(--off-white);
+  line-height: 1.6;
+}
+
+/* INSTRUCTION BLOCK */
+.instruction-block {
+  padding: 32px 52px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(201,168,76,0.03);
+}
+
+.instruction-title {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--gold);
+  margin-bottom: 12px;
+}
+
+.instruction-text {
+  font-size: 12px;
+  color: var(--text-mid);
+  max-width: 680px;
+  line-height: 1.75;
+}
+
+.instruction-steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.step {
+  padding: 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+
+.step-num {
+  font-family: "Space Mono", monospace;
+  font-size: 9px;
+  color: var(--gold);
+  margin-bottom: 4px;
+}
+
+.step-text {
+  font-size: 11px;
+  color: var(--text-mid);
+  line-height: 1.5;
+}
+
+/* FULL STATEMENT */
+.full-statement {
+  padding: 32px 52px;
+  border-bottom: 1px solid var(--border);
+}
+
+.statement-title {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 16px;
+}
+
+.statement-block {
+  background: var(--surface);
+  border: 1px solid var(--border-gold, rgba(201,168,76,0.2));
+  border-radius: 6px;
+  padding: 24px;
+  max-width: 760px;
+}
+
+.statement-text {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 16px;
+  color: var(--off-white);
+  line-height: 1.8;
+}
+
+.gate {
+  display: inline-block;
+  color: var(--gold);
+  font-weight: 600;
+}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="header-eyebrow">The Mechanics of Being -- Lance Powell</div>
+  <div class="header-title">The Letting Go Cards</div>
+  <div class="header-sub">Nine axes. Nine release statements. Nine installation targets. The release protocol at the address level.</div>
+</div>
+
+<!-- INSTRUCTION -->
+<div class="instruction-block">
+  <div class="instruction-title">How to Use</div>
+  <div class="instruction-text">Each card names the emotional axis, its anatomical address, the track statement (what the pattern says), the release statement (what you direct to the node), and the installation target (what you are building toward). The Letting Go Statement is a release command sent through nine logic gates simultaneously. Each gate corresponds to a chakra region. Run the full nine-gate statement below, with the axis-specific track word substituted in the blank.</div>
+
+  <div class="instruction-steps">
+    <div class="step">
+      <div class="step-num">STEP 01</div>
+      <div class="step-text">Find the axis that is active. Feel the address. Make contact with the charge before speaking.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">STEP 02</div>
+      <div class="step-text">Run the full nine-gate statement below. Speak it or sub-vocalize it. The body does not require volume -- it requires direction.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">STEP 03</div>
+      <div class="step-text">After the release, state the installation. Not as an affirmation -- as a somatic claim. Hold it at the address until the body confirms it.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">STEP 04</div>
+      <div class="step-text">Run the snowball technique: bring to mind every memory, every person, every situation that carries this charge. Release each in sequence. The chain builds momentum.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">STEP 05</div>
+      <div class="step-text">The release is complete when the body settles. Breath deepens. Vision may clear. The Saran wrap sensation dissolves. That is the signal.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">BILATERAL NOTE</div>
+      <div class="step-text">All releases run bilaterally -- 50 left / 50 right simultaneously. The right side is the outward expression channel. The left side is the inner world channel. Both must clear.</div>
+    </div>
+  </div>
+</div>
+
+<!-- THE NINE-GATE STATEMENT -->
+<div class="full-statement">
+  <div class="statement-title">The Full Nine-Gate Letting Go Statement</div>
+  <div class="statement-block">
+    <div class="statement-text">
+      I am letting go of <span class="gate">believing</span> ___.<br>
+      I am letting go of <span class="gate">perceiving</span> ___.<br>
+      I am letting go of <span class="gate">thinking</span> ___.<br>
+      I am letting go of <span class="gate">feeling</span> ___.<br>
+      I am letting go of <span class="gate">speaking</span> ___.<br>
+      I am letting go of <span class="gate">acting from</span> ___.<br>
+      I am letting go of <span class="gate">relating through</span> ___.<br>
+      I am letting go of <span class="gate">creating from</span> ___.<br>
+      I am letting go of <span class="gate">being</span> ___.
+    </div>
+  </div>
+  <p style="font-size:11px;color:var(--text-dim);margin-top:12px;max-width:680px;line-height:1.65;">Substitute the track word from each axis card into the blank. Each gate corresponds to a chakra region from crown to root. All nine gates fire simultaneously. The pattern cannot reboot through an unaddressed gate.</p>
+</div>
+
+<!-- THE 9 CARDS -->
+<div class="cards-grid" id="cards-grid"></div>
+
+<script>
+const AXES = [
+  {
+    num:"01",
+    dyspole:"Fear",
+    copole:"Safety",
+    address:"Lumbar Plexus (L1-L4)",
+    track:"I am stuck. I am trapped.",
+    release:"I am letting go of believing, perceiving, thinking, feeling, speaking, acting from, relating through, creating from, and being afraid. I am letting go of the belief that I am trapped. I am letting go of the survival program running at this address.",
+    install:"I am safe in this body. I am grounded in this moment. The ground holds me. The threat has passed. My nervous system is free to conduct without the alarm."
+  },
+  {
+    num:"02",
+    dyspole:"Anger",
+    copole:"Calm",
+    address:"Solar Plexus / Celiac Plexus",
+    track:"This is wrong. Move.",
+    release:"I am letting go of believing, perceiving, thinking, feeling, speaking, acting from, relating through, creating from, and being angry. I am letting go of the compressed will at this address. I am letting go of the belief that I must force the result.",
+    install:"I have power available without force. I can see the options in this situation clearly. I can move with discernment, not with pressure. My will is calm and direct."
+  },
+  {
+    num:"03",
+    dyspole:"Shame",
+    copole:"Worth",
+    address:"Pudendal Nerve",
+    track:"I am not worthy.",
+    release:"I am letting go of believing, perceiving, thinking, feeling, speaking, acting from, relating through, creating from, and being ashamed. I am letting go of the collapse at this address. I am letting go of the story that my presence requires justification.",
+    install:"I am worthy of taking up space. I am worthy of being seen. My worth is not earned through performance. It is present at this address right now."
+  },
+  {
+    num:"04",
+    dyspole:"Disgust",
+    copole:"Acceptance",
+    address:"Sacral + Dermis front-to-back",
+    track:"Things are not as they should be.",
+    release:"I am letting go of believing, perceiving, thinking, feeling, speaking, acting from, relating through, creating from, and being in rejection. I am letting go of the recoil at this address. I am letting go of the standard that makes reality wrong.",
+    install:"What is here is what is here. I can be present with what is present without contracting. I can engage without rejection. The dermis is warm and open."
+  },
+  {
+    num:"05",
+    dyspole:"Receiving blocked",
+    copole:"Gratitude",
+    address:"Inferior anterior heart",
+    track:"I am too small to be seen.",
+    release:"I am letting go of believing, perceiving, thinking, feeling, speaking, acting from, relating through, creating from, and being closed to receiving. I am letting go of the smallness at this address. I am letting go of the belief that what is present cannot be for me.",
+    install:"I am large enough to receive what is present. What is here is here for me. I can take in what is offered without diminishing it or deflecting it. The heart is open to receive."
+  },
+  {
+    num:"06",
+    dyspole:"Grief",
+    copole:"Renewal",
+    address:"Center chest, bilateral, lung influence",
+    track:"I cannot move forward.",
+    release:"I am letting go of believing, perceiving, thinking, feeling, speaking, acting from, relating through, creating from, and being in grief. I am letting go of the weight at this address. I am letting go of the hold on what was or what never came to be.",
+    install:"I can move forward from here. What was, was. What is, is. The loss is real and the life continues. My chest can expand fully. I can breathe the present moment."
+  },
+  {
+    num:"07",
+    dyspole:"Apathy",
+    copole:"Joy",
+    address:"Shoulder girdle + Throat",
+    track:"What is the point.",
+    release:"I am letting go of believing, perceiving, thinking, feeling, speaking, acting from, relating through, creating from, and being in apathy. I am letting go of the collapsed will at this address. I am letting go of the question that assumes the answer is nothing.",
+    install:"My will is active and available. My shoulders are open and lifted. My throat is clear. The point is here. It has always been here. I can feel it moving through me right now."
+  },
+  {
+    num:"08",
+    dyspole:"Shock",
+    copole:"Anticipation",
+    address:"Dermis (full skin surface)",
+    track:"This should not be happening.",
+    release:"I am letting go of believing, perceiving, thinking, feeling, speaking, acting from, relating through, creating from, and being in shock. I am letting go of the bracing at the surface. I am letting go of the record that says reality must always be a threat.",
+    install:"My skin is warm. The surface is open. What is happening can be met without recoil. I am ready for what comes. My nervous system can be curious rather than alarmed."
+  },
+  {
+    num:"09",
+    dyspole:"Sad",
+    copole:"Happy",
+    address:"Inferior anterior cardiac nerves",
+    track:"I cannot have what I want.",
+    release:"I am letting go of believing, perceiving, thinking, feeling, speaking, acting from, relating through, creating from, and being in sadness. I am letting go of the weight at the inferior heart. I am letting go of the old flags that were never updated. I am letting go of the version of the future that was set in stone at an earlier age.",
+    install:"What I have is real. What is here now is enough to work with. The cardiac plexus at the top of my heart is open. Joy is available. I can feel what is good in what is present right now."
+  }
+];
+
+const grid = document.getElementById("cards-grid");
+AXES.forEach(axis => {
+  const card = document.createElement("div");
+  card.className = "card";
+  card.innerHTML = `
+    <div class="card-top">
+      <div class="card-axis-num">AXIS ${axis.num}</div>
+      <div class="card-poles">
+        <span class="pole-decoherent">${axis.dyspole}</span>
+        <span class="pole-arrow">→</span>
+        <span class="pole-coherent">${axis.copole}</span>
+      </div>
+      <div class="card-address">${axis.address}</div>
+      <div class="card-track">"${axis.track}"</div>
+    </div>
+    <div class="release-block">
+      <div class="release-label">Release</div>
+      <div class="release-text">${axis.release}</div>
+    </div>
+    <div class="install-block">
+      <div class="install-label">Install</div>
+      <div class="install-text">${axis.install}</div>
+    </div>
+  `;
+  grid.appendChild(card);
+});
+</script>
+</body>
+</html>
