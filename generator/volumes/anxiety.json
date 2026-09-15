@@ -1,0 +1,152 @@
+{
+ "volume": "ANXIETY",
+ "year": 2026,
+ "band": "Root",
+ "field": "#6B1F1F",
+ "section": "The Nine Charges",
+ "circuit_title": "The Root Circuit",
+ "energy_title": "Root Energy",
+ "time_half": "future",
+ "energy": [
+  "[ENERGY PAGE PENDING. Lance dictation.]"
+ ],
+ "affirmation": "I show courage over fear.",
+ "author": "Lance Powell is a somatic engineer. Thirty years a creative director in film and games, on Oscar, Emmy and Game of the Year winning teams. He co-authored peer-reviewed work in Endoscopy, Thieme.",
+ "evidence": {
+  "title": "The Evidence",
+  "body": [
+   "Powell L, Guzik P. Endoscopy, Thieme. DOI 10.1055/a-2013-1820.",
+   "A co-authored peer-reviewed publication with a named physician.",
+   "Three credentialed physicians have reviewed this work and recommended clinical trials."
+  ]
+ },
+ "back_cover": "[BACK COVER PENDING. Lance dictation, in the shape of the one he dictated.]",
+ "front": {
+  "preface": "[PREFACE PENDING RECOVERY. Lance dictated all eleven.]",
+  "circuit": "[CIRCUIT PAGE PENDING RECOVERY. Lance wrote ten of eleven.]",
+  "howto_intro": "Letting go is the deliberate integration of what the body learned and never unlearned. Read it slowly. Do not perform it.",
+  "howto_steps": [
+   "Recognise your awareness as the witness of the experience.",
+   "Read without taking the words personally. They are mirrors, not judgments.",
+   "When emotion rises, do not resist it. Resistance is the block.",
+   "Observe the sensation without labelling it.",
+   "Breathe with the energy.",
+   "Turn the senses inward and feel what the body does as the emotion moves.",
+   "Stay with it until the charge drops.",
+   "Read the replacement aloud.",
+   "Let the new state settle before you stand up."
+  ]
+ },
+ "_schema": "Derived from build_volume.py parser 2026-09-15. No invented keys.",
+ "_state": "STRUCTURE VALID. Prose pending recovery.",
+ "pairs": [
+  {
+   "runhead": "FEAR",
+   "charge": "Fear",
+   "install": "Steadiness",
+   "charge_text": "I'm letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, voicing that I am [CASCADE PENDING RECOVERY]",
+   "install_text": "I know that I am [INSTALL PENDING RECOVERY]",
+   "charge_impact": "[impact pending]",
+   "install_impact": "[impact pending]",
+   "foot": "node 1 · Lumbar Plexus · low back and pelvis",
+   "saboteur_line": "",
+   "_source": "STRUCTURE ONLY. Lance dictation 2026-09-03 not recovered."
+  },
+  {
+   "runhead": "SHAME",
+   "charge": "Shame",
+   "install": "Steadiness",
+   "charge_text": "I'm letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, voicing that I am [CASCADE PENDING RECOVERY]",
+   "install_text": "I know that I am [INSTALL PENDING RECOVERY]",
+   "charge_impact": "[impact pending]",
+   "install_impact": "[impact pending]",
+   "foot": "node 2 · Pudendal Nerve · low back and pelvis",
+   "saboteur_line": "",
+   "_source": "STRUCTURE ONLY. Lance dictation 2026-09-03 not recovered."
+  },
+  {
+   "runhead": "GUILT",
+   "charge": "Guilt",
+   "install": "Steadiness",
+   "charge_text": "I'm letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, voicing that I am [CASCADE PENDING RECOVERY]",
+   "install_text": "I know that I am [INSTALL PENDING RECOVERY]",
+   "charge_impact": "[impact pending]",
+   "install_impact": "[impact pending]",
+   "foot": "node 3 · Inferior Hypogastric Plexus · low back and pelvis",
+   "saboteur_line": "",
+   "_source": "STRUCTURE ONLY. Lance dictation 2026-09-03 not recovered."
+  },
+  {
+   "runhead": "CONTROL",
+   "charge": "Control",
+   "install": "Steadiness",
+   "charge_text": "I'm letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, voicing that I am [CASCADE PENDING RECOVERY]",
+   "install_text": "I know that I am [INSTALL PENDING RECOVERY]",
+   "charge_impact": "[impact pending]",
+   "install_impact": "[impact pending]",
+   "foot": "node 4 · Sacral Nerves · low back and pelvis",
+   "saboteur_line": "",
+   "_source": "STRUCTURE ONLY. Lance dictation 2026-09-03 not recovered."
+  },
+  {
+   "runhead": "INSECURITY",
+   "charge": "Insecurity",
+   "install": "Steadiness",
+   "charge_text": "I'm letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, voicing that I am [CASCADE PENDING RECOVERY]",
+   "install_text": "I know that I am [INSTALL PENDING RECOVERY]",
+   "charge_impact": "[impact pending]",
+   "install_impact": "[impact pending]",
+   "foot": "node 5 · Pelvic Nerve · low back and pelvis",
+   "saboteur_line": "",
+   "_source": "STRUCTURE ONLY. Lance dictation 2026-09-03 not recovered."
+  },
+  {
+   "runhead": "VICTIMHOOD",
+   "charge": "Victimhood",
+   "install": "Steadiness",
+   "charge_text": "I'm letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, voicing that I am [CASCADE PENDING RECOVERY]",
+   "install_text": "I know that I am [INSTALL PENDING RECOVERY]",
+   "charge_impact": "[impact pending]",
+   "install_impact": "[impact pending]",
+   "foot": "node 6 · Coccygeal Plexus · low back and pelvis",
+   "saboteur_line": "",
+   "_source": "STRUCTURE ONLY. Lance dictation 2026-09-03 not recovered."
+  },
+  {
+   "runhead": "SCARCITY",
+   "charge": "Scarcity",
+   "install": "Steadiness",
+   "charge_text": "I'm letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, voicing that I am [CASCADE PENDING RECOVERY]",
+   "install_text": "I know that I am [INSTALL PENDING RECOVERY]",
+   "charge_impact": "[impact pending]",
+   "install_impact": "[impact pending]",
+   "foot": "node 7 · Iliohypogastric Nerve (L1) · low back and pelvis",
+   "saboteur_line": "",
+   "_source": "STRUCTURE ONLY. Lance dictation 2026-09-03 not recovered."
+  },
+  {
+   "runhead": "ENTITLEMENT",
+   "charge": "Entitlement",
+   "install": "Steadiness",
+   "charge_text": "I'm letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, voicing that I am [CASCADE PENDING RECOVERY]",
+   "install_text": "I know that I am [INSTALL PENDING RECOVERY]",
+   "charge_impact": "[impact pending]",
+   "install_impact": "[impact pending]",
+   "foot": "node 8 · Cauda Equina · low back and pelvis",
+   "saboteur_line": "",
+   "_source": "STRUCTURE ONLY. Lance dictation 2026-09-03 not recovered."
+  },
+  {
+   "runhead": "POSSESSION",
+   "charge": "Possession",
+   "install": "Steadiness",
+   "charge_text": "I'm letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, voicing that I am [CASCADE PENDING RECOVERY]",
+   "install_text": "I know that I am [INSTALL PENDING RECOVERY]",
+   "charge_impact": "[impact pending]",
+   "install_impact": "[impact pending]",
+   "foot": "node 9 · Gluteal Nerve · low back and pelvis",
+   "saboteur_line": "",
+   "_source": "STRUCTURE ONLY. Lance dictation 2026-09-03 not recovered."
+  }
+ ]
+}

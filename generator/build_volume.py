@@ -1,0 +1,582 @@
+#!/usr/bin/env python3
+"""
+THE SOMATIC BOOKS OF REPROGRAMMING
+Master volume generator. One shell, ten volumes.
+
+Usage:  python3 build_volume.py volumes/anxiety.json
+Output: <SLUG>_interior.pdf + <SLUG>_cover.pdf in /mnt/user-data/outputs
+
+Locked constants live in SERIES. Per-volume content lives in the JSON.
+Nothing in this file should change when a new volume is added.
+"""
+import json, sys, os, base64, subprocess, hashlib
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from bodymap import foot_reading
+
+OUT = Path(os.environ.get("OUT_DIR", Path(__file__).resolve().parent / "out"))
+ASSETS = Path(__file__).resolve().parent / "assets"
+
+# ----------------------------------------------------------------------
+# SERIES CONSTANTS  ·  ruled 2026-09-02, do not edit per volume
+# ----------------------------------------------------------------------
+SERIES = {
+    "line_a": "The Somatic Book of",
+    "line_b": "REPROGRAMMING",
+    "strap":  "Every pattern has an address in the body.<br>This is the map.",
+    "trim_w_pt": 306,          # 4.25 in
+    "trim_h_pt": 492,          # 6.83 in
+    "body_pt": 12.0,
+    "leading": 13.7,
+    "css_ratio": 1.3333,       # 96dpi -> 72pt. Body CSS must be 16pt to render 12pt.
+    "ink": "#25211d",
+    "muted": "#4a453f",
+    "foot": "#8f867b",
+    "rule": "#ded7cb",
+    "gold": "#C9A84C",
+    "publisher": "Tula Unified LLC",
+    "city": "Los Angeles, California",
+    "site": "sharinghuman.com",
+    # CREATE on ice 2026-09-03, no corpus. MONEY and DUTY added on corpus demand.
+    "series_list": ["ANXIETY","ANGER","SHAME","GRIEF","BURNOUT",
+                    "WORTH","DRIVE","CONTROL","VOICE","MONEY","DUTY"],
+}
+
+# band -> volume colour, ruled 2026-09-02
+BANDS = {
+    "ANXIETY": ("Root",      "#6B1F1F"),
+    "SHAME":   ("Root",      "#A02E2E"),
+    "CREATE":  ("Sacral",    "#E06A0E"),
+    "ANGER":   ("Solar",     "#7A5406"),
+    "BURNOUT": ("Solar",     "#8C7A45"),
+    "DRIVE":   ("Solar",     "#B0870C"),
+    "WORTH":   ("Solar",     "#D2A410"),
+    "GRIEF":   ("Heart",     "#1B6353"),   # complex: Solar, Heart, Throat
+    "MONEY":   ("Sacral",    "#E06A0E"),   # takes the sacral slot CREATE vacated
+    "DUTY":    ("Crown",     "#4A4C5E"),   # Crown is Duty. The crown affirmation names it.
+    "VOICE":   ("Throat",    "#12708F"),
+    "CONTROL": ("Solar",     "#6E4A0A"),   # moved from Crown 2026-09-03, Duty holds Crown
+}
+
+# volume mark, single weight, no fill, mechanism not mood
+MARKS = {
+    "ANXIETY": ("M40 14 A19 19 0 1 0 44 44 C36 40 27 38 24 30", ""),
+    "SHAME":   ("M9 26 A23 23 0 1 1 32 49 A13 13 0 1 1 45 36", ""),
+    "CREATE":  ("M30 56 V38 M30 38 C30 30 24 27 17 22 M30 38 C31 27 37 22 43 10 M30 38 C32 33 41 31 52 30", ""),
+    # MONEY: a channel that was pinched, now open. Flow restored.
+    "MONEY":   ("M10 20 C24 20 24 44 38 44 M10 34 C22 34 26 30 38 30 M46 30 L54 34 L46 38", ""),
+    # DUTY: a line given, and the same line arriving. The word kept.
+    "DUTY":    ("M10 24 H40 M34 18 L40 24 L34 30 M54 40 H24 M30 34 L24 40 L30 46", ""),
+    "ANGER":   ("M32 8 V25 L50 32 L32 39 V56", "stroke-linejoin:miter"),
+    "BURNOUT": ("M6 32 C9 10 14 10 17 32 C20 52 25 52 28 32 C30.5 17 34.5 17 37 32 C39 43 42 43 44 32 C45.5 26 48 26 49 32 H58", ""),
+    "DRIVE":   ("M8 14 V50 M56 14 V50 M8 32 H15 L19 20 L23 44 L27 20 L31 44 L35 20 L39 44 L43 32 H56", ""),
+    "WORTH":   ("M32 8 V38 M32 38 L25 44 L32 55 L39 44 Z", ""),
+    "GRIEF":   ("M28 8 V28 M36 37 V57", ""),
+    "VOICE":   ("M24 53 H36 M26 48 L18 22 M34 48 L50 9", ""),
+    "CONTROL": ("M32 9 V55 M18 21 L11 32 L18 43 M46 21 L53 32 L46 43", ""),
+}
+
+# volumes whose field is too bright for cream type
+INVERT = {"WORTH"}
+
+
+
+# ----------------------------------------------------------------------
+# CASCADE LENGTH GATE  ·  minimum 88 words, ruled 2026-09-02
+# ----------------------------------------------------------------------
+# Ruled 2026-09-03: Lance's dictated cascades run shorter than 88 and land harder.
+# 88 is a target for composed cascades, not a floor for dictated ones. Report, do not halt.
+MIN_CASCADE = 88
+DICTATED_EXEMPT = True   # False halts the build on Lance's short cascades too
+# Ruled in CASCADE_GRAMMAR_v1.md: nine channels, not six. Measured from Lance's nine.
+CHARGE_STEM = "I'm letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, voicing that I am"
+INSTALL_STEM = "I know that I am"
+
+
+def cascade_words(text, stem):
+    """Cascade length excludes the fixed stem. The stem is furniture, not content."""
+    return len(text.split()) - len(stem.split())
+
+
+def audit(v, strict=True):
+    """Every cascade must clear MIN_CASCADE. Returns list of failures."""
+    fails = []
+    # Ruled 2026-09-03 from Lance's nine: the floor applies to the charge only.
+    # His installs measure 45 to 92 words and run about 60 percent of the charge.
+    for p in v["pairs"]:
+        c = cascade_words(p["charge_text"], CHARGE_STEM)
+        if c < MIN_CASCADE:
+            fails.append((p["runhead"], "charge", c, MIN_CASCADE - c))
+    if fails:
+        print(f"\n  CASCADE GATE: {len(fails)} of {len(v['pairs'])} charges below {MIN_CASCADE} words")
+        for name, side, n, short in fails:
+            print(f"    {name:<26} {side:<8} {n:>3}w   short {short}")
+        dictated = [n for n, side, w, sh in fails
+                    if any(p["runhead"] == n and str(p.get("_source", "")).startswith("LANCE")
+                           for p in v["pairs"])]
+        if dictated:
+            print(f"    {len(dictated)} of these are Lance's dictation. Canon. Not a defect.")
+        exempt = len(dictated) if DICTATED_EXEMPT else 0
+        if strict and exempt < len(fails):
+            raise SystemExit("\n  BUILD HALTED. Extend the composed cascades.\n")
+    else:
+        print(f"  CASCADE GATE: all {len(v['pairs'])} charges clear {MIN_CASCADE} words")
+    return fails
+
+
+
+# ----------------------------------------------------------------------
+# TENSE GATE  ·  ruled 2026-09-03
+# Every volume sits on one half of its bell curve. Future-facing volumes
+# carry no completed action. Past-facing volumes carry no projection.
+# ----------------------------------------------------------------------
+import re as _re
+
+# "left" only counts as departed, not as remaining. "gave" only as handed over.
+PAST_MARKERS = _re.compile(
+    r"\b(said|sounded|took|went|held|assumed|invented|flinched|sat|saw|"
+    r"accused|built|happened to me|i did|i was|had been)\b"
+    r"|\bi left\b|\bthey left\b|\bwho left\b", _re.I)
+# "will" only as a modal, never as the noun. "before" only in a time sense.
+FUTURE_MARKERS = _re.compile(
+    r"\b(going to|about to|expecting|anticipating|braced for|braced to|"
+    r"waiting to|waiting for|not knowing)\b"
+    r"|\bwill\s+(?!finally\s+gives)[a-z]+\b"
+    r"|\bbefore\s+(it|they|anyone|the answer|the door)\b", _re.I)
+# arbitrary figures compete with canon numbers. Node numbers live in the foot, not the prose.
+NUMERAL = _re.compile(r"\b(two|three|four|five|six|seven|eight|nine|ten|\d+)\b", _re.I)
+
+
+def tense_audit(v, strict=True):
+    half = v.get("time_half")            # "future", "past", "present", or absent
+    if not half:
+        return []
+    bad = []
+    for p in v["pairs"]:
+        # Lance's dictation is canon. It does not get audited against my rules.
+        if str(p.get("_source", "")).startswith("LANCE"):
+            continue
+        t = p["charge_text"]
+        if half == "future":
+            # The shame gate looks back at having carried the charge, in every volume.
+            # Lance's own ANXIETY reads "ashamed that I was anxious". Exempt it.
+            t2 = _re.sub(r"\b(embarrassed|humiliated|ashamed|guilty)[^,]*", "", t, flags=_re.I)
+            hits = [m.group(0) for m in PAST_MARKERS.finditer(t2)]
+            if hits:
+                bad.append((p["runhead"], "past clause in a future volume", hits))
+        elif half == "past":
+            hits = [m.group(0) for m in FUTURE_MARKERS.finditer(t)]
+            if hits:
+                bad.append((p["runhead"], "projection in a past volume", hits))
+    if bad:
+        print(f"\n  TENSE GATE ({half}): {len(bad)} cascades off-half")
+        for name, why, hits in bad:
+            print(f"    {name:<26} {why}: {', '.join(hits[:4])}")
+        if strict:
+            raise SystemExit("\n  BUILD HALTED on tense.\n")
+    else:
+        print(f"  TENSE GATE ({half}): clean")
+    return bad
+
+
+def numeral_audit(v):
+    """Report only. A figure in prose reads as a system value."""
+    found = []
+    for p in v["pairs"]:
+        for side in ("charge_text", "install_text"):
+            for m in NUMERAL.finditer(p[side]):
+                found.append((p["runhead"], side, m.group(0)))
+    if found:
+        print(f"  NUMERAL AUDIT: {len(found)} figures in prose")
+        for n, s, f in found[:8]:
+            print(f"    {n:<26} {s:<13} {f}")
+    else:
+        print("  NUMERAL AUDIT: clean")
+    return found
+
+
+
+# ----------------------------------------------------------------------
+# STEM GATE  ·  ruled 2026-09-03
+# The stem is "...feeling that I am ___". Every clause must complete it.
+# A future volume cannot say "I am embarrassed"; the charge word leads and
+# the outcome is projected: "worried I will be embarrassed".
+# ----------------------------------------------------------------------
+# The defect is a descent rung carried by a non-charge lead-in, which states an
+# outcome as a present fact. "already embarrassed", "braced to be humiliated".
+# Correct is the charge word leading: "worried I will be embarrassed".
+# Legitimate and not flagged: "ashamed of the worry" (recursive, present about present)
+# and "scared I will be ashamed" (projected through a charge word).
+RUNG = r"(embarrassed|humiliated|ashamed|guilty|blamed|judged|dismissed|worthless|inferior)"
+BARE_OUTCOME = _re.compile(
+    r"\balready\s+" + RUNG
+    + r"|\bbraced\s+to\s+be\s+" + RUNG
+    + r"|\bwaiting\s+to\s+be\s+" + RUNG
+    + r"|\bexpecting\s+to\s+be\s+" + RUNG
+    + r"|\bsure\s+I\s+will\s+be\s+" + RUNG, _re.I)
+
+
+def stem_audit(v, strict=True):
+    """In a future volume, a descent rung may not stand as a present state."""
+    if v.get("time_half") != "future":
+        return []
+    bad = []
+    for p in v["pairs"]:
+        if str(p.get("_source", "")).startswith("LANCE"):
+            continue
+        hits = [m.group(0) for m in BARE_OUTCOME.finditer(p["charge_text"])]
+        if hits:
+            bad.append((p["runhead"], hits))
+    if bad:
+        print(f"\n  STEM GATE: {len(bad)} cascades state an outcome as a present fact")
+        for name, hits in bad:
+            print(f"    {name:<26} {', '.join(hits[:5])}")
+        if strict:
+            raise SystemExit("\n  BUILD HALTED on stem grammar.\n")
+    else:
+        print("  STEM GATE: clean")
+    return bad
+
+
+
+# ----------------------------------------------------------------------
+# OVERFLOW GATE  ·  the trim is finite. A cascade past the ceiling collides
+# with the impact line and the foot rule. Measured against the built page.
+# ----------------------------------------------------------------------
+MAX_CASCADE = 132
+
+
+def overflow_audit(v, strict=True):
+    bad = []
+    for p in v["pairs"]:
+        for side, stem in (("charge_text", CHARGE_STEM), ("install_text", INSTALL_STEM)):
+            n = cascade_words(p[side], stem)
+            if n > MAX_CASCADE:
+                bad.append((p["runhead"], side, n, n - MAX_CASCADE))
+    if bad:
+        print(f"\n  OVERFLOW GATE: {len(bad)} cascades past {MAX_CASCADE} words")
+        for name, side, n, over in bad:
+            print(f"    {name:<26} {side:<13} {n:>3}w   over by {over}")
+        if strict:
+            raise SystemExit("\n  BUILD HALTED. The page cannot hold it.\n")
+    else:
+        print(f"  OVERFLOW GATE: all cascades inside {MAX_CASCADE} words")
+    return bad
+
+
+def crown_b64(light=True):
+    """On a dark cover field the crown's near-black base disappears. The light
+    variant lifts that base into the gold family so the whole mark reads."""
+    p = ASSETS / ("crown_light.png" if light else "crown.png")
+    if not p.exists():
+        p = ASSETS / "crown.png"
+    return base64.b64encode(p.read_bytes()).decode() if p.exists() else ""
+
+
+# ----------------------------------------------------------------------
+# COVER
+# ----------------------------------------------------------------------
+def cover_html(v):
+    name = v["volume"]
+    band, field = BANDS[name]
+    path, style = MARKS[name]
+    inv = name in INVERT
+    cream = "#4A3400" if inv else "#F3E2C4"
+    word = "#3A2900" if inv else "#FFFFFF"
+    ink = "#6B4E00" if inv else "#E4C57E"
+    crown = crown_b64()
+    crown_tag = f'<img src="data:image/png;base64,{crown}">' if crown else ""
+    return f"""<!DOCTYPE html><html><head><meta charset="utf-8"><style>
+@page {{ size:{SERIES['trim_w_pt']}pt {SERIES['trim_h_pt']}pt; margin:0; }}
+* {{ box-sizing:border-box; }}
+html,body {{ margin:0; padding:0; width:{SERIES['trim_w_pt']}pt; height:{SERIES['trim_h_pt']}pt;
+  background:{field}; font-family:"Crimson Pro",Georgia,serif; -webkit-print-color-adjust:exact; }}
+.keyline {{ position:absolute; inset:5.6%; border:0.5pt solid {cream}; opacity:.5; }}
+.stack {{ position:absolute; inset:5.6%; display:flex; flex-direction:column;
+  align-items:center; justify-content:space-between; padding:6.2% 4%; text-align:center; }}
+.a {{ display:block; font-size:11pt; color:{cream}; }}
+.b {{ display:block; font-family:Helvetica,Arial,sans-serif; font-weight:700;
+  letter-spacing:.055em; font-size:11.5pt; color:{cream}; }}
+.word {{ font-size:35pt; line-height:1; letter-spacing:.012em; color:{word}; }}
+.hair {{ width:52pt; border-top:0.5pt solid {cream}; opacity:.75; }}
+.strap {{ font-style:italic; font-size:9.5pt; line-height:1.5; color:{cream}; }}
+.seal svg {{ display:block; width:76pt; height:76pt; }}
+.gm {{ fill:none; stroke:{ink}; stroke-width:2.1; stroke-linecap:round; stroke-linejoin:round; }}
+.crown {{ position:absolute; right:9.4%; bottom:8.4%; }}
+.crown img {{ display:block; width:32pt; opacity:.95; }}
+</style></head><body>
+<div class="keyline"></div>
+<div class="stack">
+  <div><span class="a">{SERIES['line_a']}</span><span class="b">{SERIES['line_b']}</span></div>
+  <div class="word">{name}</div>
+  <div class="hair"></div>
+  <div class="strap">{SERIES['strap']}</div>
+  <div class="seal"><svg viewBox="0 0 64 64"><g class="gm" style="{style}"><path d="{path}"/></g></svg></div>
+</div>
+<div class="crown">{crown_tag}</div>
+</body></html>"""
+
+
+# ----------------------------------------------------------------------
+# INTERIOR
+# ----------------------------------------------------------------------
+
+def cover_page(v):
+    """The cover, rendered as page one of the interior. Same art as the standalone file."""
+    name = v["volume"]
+    band, field = BANDS[name]
+    path, style = MARKS[name]
+    inv = name in INVERT
+    cream = "#4A3400" if inv else "#F3E2C4"
+    word = "#3A2900" if inv else "#FFFFFF"
+    ink = "#6B4E00" if inv else "#E4C57E"
+    crown = crown_b64()
+    crown_tag = f'<img src="data:image/png;base64,{crown}">' if crown else ""
+    return (f'<div class="page cover" style="background:{field}">'
+            f'<div class="cvkey" style="border-color:{cream}"></div>'
+            f'<div class="cvstack">'
+            f'<div><span class="cva" style="color:{cream}">{SERIES["line_a"]}</span>'
+            f'<span class="cvb" style="color:{cream}">{SERIES["line_b"]}</span></div>'
+            f'<div class="cvword" style="color:{word}">{name}</div>'
+            f'<div class="cvhair" style="border-color:{cream}"></div>'
+            f'<div class="cvstrap" style="color:{cream}">{SERIES["strap"]}</div>'
+            f'<div class="cvseal"><svg viewBox="0 0 64 64">'
+            f'<g style="fill:none;stroke:{ink};stroke-width:2.1;stroke-linecap:round;'
+            f'stroke-linejoin:round;{style}"><path d="{path}"/></g></svg></div></div>'
+            f'<div class="cvcrown">{crown_tag}</div></div>')
+
+
+def interior_css(field=None):
+    """Chromium honours pt directly, unlike wkhtmltopdf which needs the 1.3333
+    inflation. All sizes below are TRUE POINTS as they appear on the trimmed page."""
+    S = SERIES
+    ink = field or S['gold']          # the volume's own field colour carries the mark
+    rule = (field or S['gold']) + '55'  # same hue, 33 percent, for the foot hairline
+    return f"""
+@page {{ size:{S['trim_w_pt']}pt {S['trim_h_pt']}pt; margin:0; }}
+* {{ box-sizing:border-box; }}
+html,body {{ margin:0; padding:0; font-family:"Crimson Pro",Georgia,serif;
+  color:{S['ink']}; -webkit-print-color-adjust:exact; }}
+.page {{ position:relative; width:{S['trim_w_pt']}pt; height:{S['trim_h_pt']}pt;
+  padding:75.6pt 32.4pt 40pt; page-break-after:always; overflow:hidden; }}
+.page:last-child {{ page-break-after:auto; }}
+.body {{ font-size:{S['body_pt']}pt; line-height:{S['leading']}pt; }}
+.center {{ text-align:center; }}
+.mark {{ text-align:center; margin-bottom:8pt; }}
+.mark svg {{ display:inline-block; width:12pt; height:12pt; }}
+.gm {{ fill:none; stroke:{ink}; stroke-width:3.6; stroke-linecap:round; stroke-linejoin:round; }}
+.runhead {{ text-align:center; font-size:8.6pt; letter-spacing:.24em;
+  text-transform:uppercase; margin-bottom:20pt; }}
+.h1 {{ text-align:center; font-size:19.5pt; letter-spacing:.12em; margin:0; }}
+.h2 {{ text-align:center; font-size:9.8pt; letter-spacing:.22em;
+  text-transform:uppercase; margin:0 0 20pt; }}
+.label {{ font-size:14.2pt; margin:0 0 8pt; }}
+.impact {{ font-style:italic; margin-top:16pt; }}
+.foot {{ position:absolute; left:32.4pt; right:32.4pt; bottom:20pt;
+  border-top:0.5pt solid {S['rule']}; padding-top:6pt;
+  font-size:8.2pt; text-align:center; color:{S['foot']}; }}
+.sab {{ position:absolute; left:32.4pt; right:32.4pt; bottom:74pt;
+  font-size:8.8pt; line-height:1.4; color:#8f867b; }}
+.read {{ font-size:7.2pt; line-height:1.45; color:#a89e90; margin-top:4pt;
+  letter-spacing:.02em; }}
+.mid {{ position:absolute; top:50%; left:32.4pt; right:32.4pt; transform:translateY(-50%); }}
+.plaque p {{ margin:0 0 7.5pt; }}
+.seal-lg {{ text-align:center; margin-top:30pt; }}
+.seal-lg svg {{ width:40pt; height:40pt; }}
+.gm-lg {{ fill:none; stroke:{ink}; stroke-width:2.3; stroke-linecap:round; stroke-linejoin:round; }}
+.small {{ font-size:9.8pt; color:{S['muted']}; }}
+.cover {{ padding:0; }}
+.cvkey {{ position:absolute; inset:5.6%; border:0.5pt solid; opacity:.5; }}
+.cvstack {{ position:absolute; inset:5.6%; display:flex; flex-direction:column;
+  align-items:center; justify-content:space-between; padding:6.2% 4%; text-align:center; }}
+.cva {{ display:block; font-size:11pt; }}
+.cvb {{ display:block; font-family:Helvetica,Arial,sans-serif; font-weight:700;
+  letter-spacing:.055em; font-size:11.5pt; }}
+.cvword {{ font-size:35pt; line-height:1; letter-spacing:.012em; }}
+.cvhair {{ width:52pt; border-top:0.5pt solid; opacity:.75; }}
+.cvstrap {{ font-style:italic; font-size:9.5pt; line-height:1.5; }}
+.cvseal svg {{ display:block; width:76pt; height:76pt; }}
+.cvcrown {{ position:absolute; right:9.4%; bottom:8.4%; }}
+.cvcrown img {{ display:block; width:32pt; opacity:.95; }}
+.fmprose p {{ margin:0 0 11pt; }}
+.fmprose p:last-child {{ margin-bottom:0; }}
+.fg {{ margin-top:24pt; }}
+.fgline {{ margin:0 0 11pt; }}
+.fgclose {{ margin-top:26pt; font-style:italic; }}
+.backcopy p {{ margin:0 0 8.5pt; font-size:11.4pt; line-height:15pt; }}
+.steps {{ margin:14pt 0 0; padding-left:16pt; }}
+.steps li {{ margin-bottom:7pt; padding-left:3pt; }}
+.serieslist {{ text-align:center; line-height:1.95; letter-spacing:.16em; }}
+"""
+
+
+def mark_svg(name, cls="gm"):
+    path, style = MARKS[name]
+    return (f'<svg viewBox="0 0 64 64"><g class="{cls}" style="{style}">'
+            f'<path d="{path}"/></g></svg>')
+
+
+def page(inner, cls=""):
+    return f'<div class="page {cls}">{inner}</div>'
+
+
+def interior_html(v):
+    name = v["volume"]
+    S = SERIES
+    P = []
+
+    # 1 the cover, in colour
+    P.append(cover_page(v))
+
+    # 2 title
+    P.append(page(f'''<div class="mid center">
+      <div class="body" style="margin-bottom:8pt">{S['line_a']}</div>
+      <div class="h2" style="margin-bottom:34pt">{S['line_b']}</div>
+      <div class="h1">{name}</div>
+      <div class="seal-lg">{mark_svg(name,"gm-lg")}</div></div>'''))
+
+    # 2 copyright
+    P.append(page(f'''<div class="body" style="position:absolute;bottom:24.5pt;left:31.7pt;right:31.7pt">
+      Copyright &copy; {v['year']} Lance Powell<br>All rights reserved.<br><br>
+      ISBN: {v.get('isbn') or '-'}<br>
+      Published by {S['publisher']}<br>{S['city']}<br><br>{S['site']}</div>'''))
+
+    # 3 dedication
+    P.append(page('<div class="mid center"><div class="h2" style="margin:0">For You</div></div>'))
+
+    # 4-5 front matter prose. Blank lines are real paragraph breaks.
+    # A preface longer than the page runs to a second page rather than being cut.
+    PAGE_WORDS = 190
+    for key, head in [("preface","Preface"), ("circuit", v['circuit_title'])]:
+        txt = v["front"][key]
+        paras = [x.strip() for x in txt.split("\n\n")] if "\n\n" in txt else [txt]
+        spreads, cur, n = [], [], 0
+        for para in paras:
+            w = len(para.split())
+            if cur and n + w > PAGE_WORDS:
+                spreads.append(cur); cur, n = [], 0
+            cur.append(para); n += w
+        if cur:
+            spreads.append(cur)
+        for i, group in enumerate(spreads):
+            body = "".join(f"<p>{x}</p>" for x in group)
+            title = head if i == 0 else "&nbsp;"
+            P.append(page(f'<div class="h2">{title}</div>'
+                          f'<div class="body fmprose">{body}</div>'))
+
+    # 6 how to use, numbered
+    steps = "".join(f'<li>{s}</li>' for s in v["front"]["howto_steps"])
+    P.append(page(f'<div class="h2">How to Use This Book</div>'
+                  f'<div class="body">{v["front"]["howto_intro"]}'
+                  f'<ol class="steps">{steps}</ol></div>'))
+
+    # 7 section title
+    P.append(page(f'''<div class="mid center"><div class="h1">{v['section']}</div>
+      <div class="seal-lg">{mark_svg(name,"gm-lg")}</div></div>'''))
+
+    # 8 energy page. Overflow guard: this page has no foot, so a long plaque
+    # silently runs past the trim. Tighten the copy rather than the leading.
+    P.append(page(f'<div class="h2">{v["energy_title"]}</div>'
+                  f'<div class="body plaque center">'
+                  + "".join(f"<p>{l}</p>" for l in v["energy"]) + '</div>'))
+
+    # 9 affirmation
+    P.append(page(f'''<div class="mark">{mark_svg(name)}</div>
+      <div class="mid center"><div class="h2">Affirm 10 Times:</div>
+      <div class="body">{v["affirmation"]}</div></div>'''))
+
+    # 10+ pairs
+    for p in v["pairs"]:
+        P.append(page(f'''<div class="mark">{mark_svg(name)}</div>
+          <div class="runhead">{p['runhead']}</div>
+          <div class="body"><div class="label">{p['charge']}</div>
+          {p['charge_text']}
+          <div class="impact">Impact of {p['charge']}: {p['charge_impact']}.</div></div>
+          <div class="sab">{p.get('saboteur_line','')}</div>
+          <div class="foot">{p['foot']}
+            <div class="read">{foot_reading(p['foot'].split(' · ')[1]) or ''}</div>
+          </div>'''))
+        P.append(page(f'''<div class="mark">{mark_svg(name)}</div>
+          <div class="runhead">&nbsp;</div>
+          <div class="body"><div class="label">{p['install']}</div>
+          {p['install_text']}
+          <div class="impact">Impact of {p['install']}: {p['install_impact']}.</div></div>'''))
+
+    # forgiveness section, where a volume carries one
+    if v.get("forgiveness"):
+        fg = v["forgiveness"]
+        lines = "".join(f'<p class="fgline">{l}</p>' for l in fg["lines"])
+        P.append(page(f'<div class="h2">{fg["title"]}</div>'
+                      f'<div class="body">{fg["intro"]}</div>'))
+        P.append(page(f'<div class="mark">{mark_svg(name)}</div>'
+                      f'<div class="body center fg">{lines}'
+                      f'<p class="fgclose">{fg["close"]}</p></div>'))
+
+    # evidence, before the bio, where a skeptic looks
+    if v.get("evidence"):
+        ev = v["evidence"]
+        body = "".join(f"<p>{x}</p>" for x in ev["body"])
+        P.append(page(f'<div class="h2">{ev["title"]}</div>'
+                      f'<div class="body fmprose">{body}</div>'))
+
+    # about
+    P.append(page(f'<div class="h2">About the Author</div><div class="body">{v["author"]}</div>'))
+
+    # also in this series
+    others = "<br>".join(n for n in S["series_list"] if n != name)
+    P.append(page(f'''<div class="h2">Also in This Series</div>
+      <div class="body serieslist">{others}<br><br>
+      <span class="small">SOURCE &middot; the complete map</span><br><br>
+      <span class="small">{S['site']}</span></div>'''))
+
+    # back cover copy last, so it reads as the object's back, not an interior page
+    if v.get("back_cover"):
+        paras = "".join(f"<p>{x}</p>" for x in v["back_cover"].split("\n\n"))
+        P.append(page(f'<div class="body backcopy" style="margin-top:0">{paras}</div>'))
+
+    return (f'<!DOCTYPE html><html><head><meta charset="utf-8">'
+            f'<style>{interior_css(BANDS[name][1])}</style></head><body>'
+            + "".join(P) + '</body></html>')
+
+
+# ----------------------------------------------------------------------
+def render(html, out_pdf):
+    from playwright.sync_api import sync_playwright
+    tmp = OUT / "_render.html"
+    tmp.write_text(html)
+    with sync_playwright() as p:
+        exe = os.environ.get("CHROME_EXE", "/opt/pw-browsers/chromium-1194/chrome-linux/chrome")
+        b = p.chromium.launch(executable_path=exe, args=["--no-sandbox"]) if Path(exe).exists() \
+            else p.chromium.launch(args=["--no-sandbox"])
+        pg = b.new_page()
+        pg.goto(f"file://{tmp}")
+        pg.wait_for_timeout(400)
+        pg.pdf(path=str(out_pdf),
+               width=f"{SERIES['trim_w_pt']/72:.4f}in",
+               height=f"{SERIES['trim_h_pt']/72:.4f}in",
+               print_background=True, prefer_css_page_size=True,
+               margin={"top":"0","bottom":"0","left":"0","right":"0"})
+        b.close()
+
+
+def main(spec_path):
+    v = json.loads(Path(spec_path).read_text())
+    strict = os.environ.get("SKIP_GATE") != "1"
+    audit(v, strict=strict)
+    tense_audit(v, strict=strict)
+    stem_audit(v, strict=strict)
+    overflow_audit(v, strict=strict)
+    numeral_audit(v)
+    slug = v["volume"].lower()
+    OUT.mkdir(parents=True, exist_ok=True)
+    ipdf = OUT / f"SOMATIC_{v['volume']}_interior.pdf"
+    cpdf = OUT / f"SOMATIC_{v['volume']}_cover.pdf"
+    render(interior_html(v), ipdf)
+    render(cover_html(v), cpdf)
+    for f in (ipdf, cpdf):
+        print(f"{f.name}  {hashlib.md5(f.read_bytes()).hexdigest()}")
+    return ipdf, cpdf
+
+
+if __name__ == "__main__":
+    main(sys.argv[1] if len(sys.argv) > 1 else str(Path(__file__).resolve().parent / "volumes/anxiety.json"))
