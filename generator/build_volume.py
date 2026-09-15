@@ -23,7 +23,10 @@ ASSETS = Path(__file__).resolve().parent / "assets"
 SERIES = {
     "line_a": "The Somatic Book of",
     "line_b": "REPROGRAMMING",
-    "strap":  "Every pattern has an address in the body.<br>This is the map.",
+    # Observed on the printed COURAGE and WONDER covers, 2026-09-15.
+    # Supersedes "Every pattern has an address in the body. This is the map."
+    # which is the marketing line, not the cover strap.
+    "strap":  "A key to unlocking tension stored in the body<br>and restoring natural presence",
     "trim_w_pt": 306,          # 4.25 in
     "trim_h_pt": 492,          # 6.83 in
     "body_pt": 12.0,
