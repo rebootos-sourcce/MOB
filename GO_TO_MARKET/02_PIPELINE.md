@@ -119,7 +119,7 @@ Automated, before a human sees it.
 | Address | address present and matches canon | reject on mismatch |
 | Claim | claim in the cleared list | flag |
 | Voice | sentence length, banned words (*apprehensive, fearful, panic-stricken*) | flag |
-| Node | node count says 114, never 108 | reject |
+| Node | node count says 114 (superseded) | reject |
 
 ## Stage 4 · Human pass
 Lance or the line editor approves in batch. **Ten minutes for a week of

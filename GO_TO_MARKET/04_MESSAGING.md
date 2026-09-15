@@ -76,7 +76,7 @@ practice, intake, modality.
 *Lead with:* the map's completeness and the fact that it is addressed.
 *Never say:* anything that implies they need certifying by us.
 
-> 114 addresses, each with a nerve and a domain. Nine emotional architectures
+> 112 addresses, 108 of them in the body, each with a nerve and a domain. Nine emotional architectures
 > with a dysregulated and a coherent pole. Use it as a map alongside what you
 > already run. No certification, no gatekeeping, no permission needed.
 
