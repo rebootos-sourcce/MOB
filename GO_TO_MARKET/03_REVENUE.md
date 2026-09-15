@@ -101,6 +101,12 @@ to 1,470 imported contacts fixes it.
 
 # 3 · THE ANSWER TO THE AUDIENCE QUESTION
 
+> **SUPERSEDED 2026-09-15. Lance ruled publishing direct. See `RULINGS.md` R1.**
+> The analysis below stands as the record of why licensing was recommended.
+> The measured conditions in it are not in dispute and are exactly what the
+> acquisition work now has to beat. The rebuilt direct model is section 5A.
+
+
 `ANSWER_SHEET.md` E1 asks: publishing business or licensing business. It
 says do not answer quickly and let it sit a week. It has been twelve days.
 
@@ -189,7 +195,76 @@ list underneath it, replace the numbers with this document.
 ---
 ---
 
+# 5A · THE DIRECT MODEL
+**Rebuilt on ruling R1, publishing direct. 2026-09-15.**
+
+Under direct, revenue is a function of one variable: **how fast the list
+grows with people who actually opted in.**
+
+Everything else is already solved. The product exists. The price ladder is
+easy. The conversion rate is knowable. Acquisition is the whole game.
+
+## The growth requirement
+
+| Today | Needed for a real business |
+|---|---|
+| 10 organic subscribers in 6 months | 200 to 400 net new per month |
+
+That is the number. It is a 100x change in acquisition rate and it is the
+only number that matters in the direct model.
+
+## What gets there, ranked by cost per subscriber
+
+| Channel | Why it works here | Needs |
+|---|---|---|
+| **Podcast guesting** | Highest conversion available to a founder with no audience. A peer-reviewed citation and a thirty-year story is a bookable guest. No gatekeeper, no follower count, no budget. | 2 bookings/month from Lance |
+| **The free Diagnostic** | The only door the largest segment walks through. Returns a person's own address map, which is inherently shareable. | Build it |
+| **Daily atomic content** | 300+ units already extractable from existing material | Approval, 10 min/week |
+| **YouTube long-form** | Only channel that compounds in search | 1/week |
+| **Paid, small tests** | Buys certainty about message, not scale | $500/mo test budget |
+
+**Podcast guesting is the single highest-leverage thing Lance can do under
+this ruling.** It is the no-gatekeeper channel that actually reaches
+strangers, and it requires no audience to already exist.
+
+## Direct projection, 12 months
+
+Assumes the list reaches 5,000 by month 12, averaging ~3,200 across the
+year. That requires roughly 300 net new per month, which is the growth
+requirement above and is not yet proven.
+
+| Line | Assumption | Revenue |
+|---|---|---|
+| 4 launches | avg list 3,200, 1% conv., blended $45 | $5,760 |
+| Evergreen funnel | 3,000 diagnostic runs, 3% to $19 | $1,710 |
+| Practitioner-priced SKU | 8 sales at $497, no gatekeeper | $3,976 |
+| Services, existing flow | 2 readings/mo at $333, 1 coaching | $10,991 |
+| **Direct total, year 1** | | **$22,437** |
+
+**Read this honestly.** Services are $11,000 of it. The books and funnel add
+roughly $11,400. The path to a bigger number is acquisition velocity and
+nothing else.
+
+**If the list does not grow, this drops to the Floor case below, around
+$12,000, most of it services.** That is the real risk in the direct model and
+it is worth naming clearly rather than discovering in month nine.
+
+## Revised kill conditions, direct model
+
+| If | By | Then |
+|---|---|---|
+| Deliverability under 92% | day 30 | stop sending, fix the list |
+| Organic net new under 50/month | day 60 | the content channel is not working, change the unit or the channel |
+| Fewer than 4 podcasts booked | day 60 | the highest-leverage channel is not being worked |
+| Organic net new under 150/month | day 120 | direct-only will not clear $25k, revisit the practitioner SKU weighting |
+
+---
+---
+
 # 5 · THE PROJECTION
+*Retained for comparison. Base case assumed licensing and is superseded by
+5A. Floor and Stretch still read correctly.*
+
 
 Three cases. Every assumption stated. Twelve months from first launch.
 
