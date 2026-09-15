@@ -93,6 +93,12 @@ think to look at, on the one page nobody reads.
 **Fix applied in the patch.** A single dash, which is what the rule names as
 the permitted substitute.
 
+**This has happened before.** Four of the five original little books carry
+the same rule break, two em dashes each, in a shared How-to page. Courage
+alone was cleaned. Both times the break sat in boilerplate nobody re-read,
+and both times a grep closes it. See `ORIGINAL_LITTLE_BOOKS_INTAKE.md`
+section 4.
+
 There is a better answer and it is Lance's, not mine. `ISBN: -` reads like a
 missing value. Given the ruling is deliberately no ISBN, the cleaner move is
 to drop the line entirely when the field is empty. That changes the page
@@ -157,6 +163,13 @@ CHARGE_STEM = "I'm letting go of believing, perceiving, thinking, behaving, acti
 
 That is six channels. Thirteen words.
 
+**Corrected 2026-09-15, after reading the five original little books.**
+This is not a typo. Every cascade in *The Little Book of Reprogramming*
+opens on exactly those six channels. The generator inherited the stem from
+the earlier series, where it was correct. The defect is that the grammar
+ruling landed later and the generator was never updated. See
+`ORIGINAL_LITTLE_BOOKS_INTAKE.md` section 3.
+
 `CASCADE_GRAMMAR_v1.md` rules nine, under Measured Constants:
 
 > **Nine channels, not six.** Believing, perceiving, thinking, behaving,
@@ -171,17 +184,29 @@ def cascade_words(text, stem):
     return len(text.split()) - len(stem.split())
 ```
 
-**Every charge is measured three words longer than it is.** A cascade of
-85 true words reports as 88 and passes. The floor is operating at 85.
+**There is a fork here and it cannot be closed without `volumes/*.json`.**
 
-This matters most exactly where it should not. The composed cascades are
-the ones the floor exists to catch, and they are the 144 awaiting a keep
-or replace mark. Three words of slack across eight volumes is the
-difference between a gate and a formality.
+**Branch one.** The eleven carry nine channel stems. Then the gate
+subtracts three words too few, every charge measures three words longer
+than it is, a cascade of 85 true words reports as 88, and the floor has
+been operating at 85. This is the branch the patch assumes.
 
-**Fix:** one line. Set `CHARGE_STEM` to the nine channel form. Then re-run
-the gate across all eleven and expect new failures. Those failures are the
-gate working, not a regression.
+**Branch two.** The eleven still carry six channel stems, inherited from
+the originals. Then the gate is calibrated correctly and **the volumes
+themselves are off-canon**, which is the worse finding of the two.
+
+One of these is true. Both are settled by opening a single spec file and
+reading one `charge_text`.
+
+Under branch one this matters most exactly where it should not. The
+composed cascades are the ones the floor exists to catch, and they are the
+144 awaiting a keep or replace mark. Three words of slack across eight
+volumes is the difference between a gate and a formality.
+
+**Fix, and it is the fix under either branch:** set `CHARGE_STEM` to the
+nine channel form, because nine is canon. Then re-run the gate across all
+eleven. Under branch one the new failures are the gate working. Under
+branch two every volume fails, and that failure is the real finding.
 
 ---
 
