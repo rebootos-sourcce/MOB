@@ -17,6 +17,18 @@ svg("eye", size=64)     # fixed pixel size
 | `eye` | Seeing without scanning for threat. Open, not guarding. |
 | `triangle` | Intention, integrity, resistance. The three terms, and the line through them. |
 | `portal` | The door. The line crosses it and keeps going, so the threshold is not an end. |
+| `eye_closed` | Closed. The line is still there, riding above the lid, unseen and running. |
+| `circle` | One field. The line enters, crosses, and leaves without breaking. |
+| `bolt` | Discharge. The charge leaves in one stroke and the line runs on through it. |
+
+## The pair
+
+`eye` and `eye_closed` are one set, not two marks. They carry the
+**when closed / when open** structure the energy pages are built on. Open,
+the line runs through the pupil and the eye is seeing rather than scanning.
+Closed, the line rides above the lid, still running, unwatched.
+
+Use them together wherever that pair is the point.
 
 ## The system
 
@@ -36,6 +48,22 @@ be traced. The geometry was rebuilt by eye and rendered to check.
 They are accurate enough for screen, social and layout. **Replace them with
 the authored vectors before anything goes to print.** If the original AI, EPS
 or SVG files exist, those win.
+
+## Cover typography, from the printed COURAGE
+
+Observed from the real cover, not invented.
+
+```
+The Little Book of        serif, roman, small
+REPROGRAMMING             serif, letterspaced caps, medium
+COURAGE                   serif, caps, very large, in the band colour
+[mark]                    gold, centred, lower third
+```
+
+White ground. The title carries the band colour, red for Root. Everything
+else is near-black. The mark sits alone in the lower third with air around
+it. Trim is 396 x 612 pt, 5.5 x 8.5 in, which is the Little Books trim and
+not the 306 x 492 used by the eleven volumes.
 
 ## Not the same system as the eleven volumes
 

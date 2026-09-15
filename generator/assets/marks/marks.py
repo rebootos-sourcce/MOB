@@ -90,6 +90,38 @@ MARKS = {
     "transform_last": "translate(0,333)",
     "meaning": "The door. The line crosses it and keeps going, so the threshold is not an end.",
   },
+  # 6 · the closed eye. The pair to `eye`. Lashes down, line riding above the lid.
+  "eye_closed": {
+    "viewBox": "0 0 816 640",
+    "paths": [
+      ("M70 300 C200 470 300 520 408 520 C516 520 616 470 746 300", 30),
+      ("M112 372 L54 452 M214 448 L170 540 M330 494 L312 590 "
+       "M486 494 L504 590 M602 448 L646 540 M704 372 L762 452", 30),
+      (SIGNATURE, 2.2),
+    ],
+    "transform_last": "translate(0,120) scale(0.82,1) translate(90,0)",
+    "meaning": "Closed. The line is still there, riding above the lid, unseen and running.",
+  },
+  # 7 · the single ring. One field, not three.
+  "circle": {
+    "viewBox": "0 0 816 816",
+    "paths": [
+      ("M408 56 A352 352 0 1 1 407 56 Z", 24),
+      (SIGNATURE, 2.4),
+    ],
+    "transform_last": "translate(0,333)",
+    "meaning": "One field. The line enters, crosses, and leaves without breaking.",
+  },
+  # 8 · the bolt. Discharge. The moment the charge leaves.
+  "bolt": {
+    "viewBox": "0 0 816 1000",
+    "paths": [
+      ("M470 60 L232 470 L400 470 L176 940 L634 400 L452 400 L640 60 Z", 22),
+      (SIGNATURE, 2.6),
+    ],
+    "transform_last": "translate(0,430) scale(0.9,1) translate(45,0)",
+    "meaning": "Discharge. The charge leaves in one stroke and the line runs on through it.",
+  },
 }
 
 
