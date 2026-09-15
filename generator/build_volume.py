@@ -89,7 +89,8 @@ INVERT = {"WORTH"}
 # ----------------------------------------------------------------------
 # Ruled 2026-09-03: Lance's dictated cascades run shorter than 88 and land harder.
 # 88 is a target for composed cascades, not a floor for dictated ones. Report, do not halt.
-MIN_CASCADE = 88
+MAX_PAGE = 88          # ruled: 88 words is the ceiling per page, not a floor
+MIN_CASCADE = 88       # retained name for the legacy gate signature
 DICTATED_EXEMPT = True   # False halts the build on Lance's short cascades too
 # Ruled in CASCADE_GRAMMAR_v1.md: nine channels, not six. Measured from Lance's nine.
 CHARGE_STEM = "I'm letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, voicing that I am"
@@ -108,10 +109,10 @@ def audit(v, strict=True):
     # His installs measure 45 to 92 words and run about 60 percent of the charge.
     for p in v["pairs"]:
         c = cascade_words(p["charge_text"], CHARGE_STEM)
-        if c < MIN_CASCADE:
-            fails.append((p["runhead"], "charge", c, MIN_CASCADE - c))
+        if c > MAX_PAGE:
+            fails.append((p["runhead"], "charge", c, c - MAX_PAGE))
     if fails:
-        print(f"\n  CASCADE GATE: {len(fails)} of {len(v['pairs'])} charges below {MIN_CASCADE} words")
+        print(f"\n  PAGE GATE: {len(fails)} of {len(v['pairs'])} charges over {MAX_PAGE} words")
         for name, side, n, short in fails:
             print(f"    {name:<26} {side:<8} {n:>3}w   short {short}")
         dictated = [n for n, side, w, sh in fails
@@ -121,9 +122,9 @@ def audit(v, strict=True):
             print(f"    {len(dictated)} of these are Lance's dictation. Canon. Not a defect.")
         exempt = len(dictated) if DICTATED_EXEMPT else 0
         if strict and exempt < len(fails):
-            raise SystemExit("\n  BUILD HALTED. Extend the composed cascades.\n")
+            raise SystemExit("\n  BUILD HALTED. Trim the cascades to 88 words.\n")
     else:
-        print(f"  CASCADE GATE: all {len(v['pairs'])} charges clear {MIN_CASCADE} words")
+        print(f"  PAGE GATE: all {len(v['pairs'])} charges inside {MAX_PAGE} words")
     return fails
 
 

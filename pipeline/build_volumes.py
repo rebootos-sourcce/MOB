@@ -12,6 +12,7 @@ import json, re, pathlib, sys
 from collections import defaultdict
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 from reframe import reframe
+from trim import trim_charge, trim_install
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 E = json.loads((ROOT / "corpus/LETGO_ENTRY_INDEX.json").read_text())
@@ -74,7 +75,7 @@ def main():
     for name, band, field, keys in VOLUMES:
         ranked = sorted(
             [x for x in pool if id(x) not in used],
-            key=lambda x: (-score(x, keys), 0 if x.get("install_text") else 1, abs(len(x["text"].split()) - 110)))
+            key=lambda x: (-score(x, keys), 0 if x.get("install_text") else 1, abs(len(x["text"].split()) - 95)))
         picks = [x for x in ranked if score(x, keys) > 0][:9]
         if len(picks) < 9:
             picks += [x for x in ranked if x not in picks][:9 - len(picks)]
@@ -137,8 +138,8 @@ def write_specs(specs):
                 "runhead": x["entry"].upper()[:26],
                 "charge": x["entry"].strip().rstrip('.')[:30],
                 "install": state,
-                "charge_text": x.get("charge_text") or x["text"],
-                "install_text": itext,
+                "charge_text": trim_charge(x.get("charge_text") or x["text"]),
+                "install_text": trim_install(itext),
                 "charge_impact": "[impact pending, four physical observations]",
                 "install_impact": "[impact pending, four physical observations]",
                 "foot": foot,

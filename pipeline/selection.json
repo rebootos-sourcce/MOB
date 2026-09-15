@@ -30,11 +30,6 @@
     "tier": "DERIVED"
    },
    {
-    "entry": "Life's experiences",
-    "words": 123,
-    "tier": "DERIVED"
-   },
-   {
     "entry": "Fear of responsibility and",
     "words": 95,
     "tier": "DERIVED"
@@ -47,6 +42,11 @@
    {
     "entry": "Conflict",
     "words": 68,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Life's experiences",
+    "words": 123,
     "tier": "DERIVED"
    }
   ]
@@ -92,13 +92,13 @@
     "tier": "DERIVED"
    },
    {
-    "entry": "Need help",
-    "words": 119,
+    "entry": "Broke",
+    "words": 83,
     "tier": "DERIVED"
    },
    {
-    "entry": "Broke",
-    "words": 83,
+    "entry": "Need help",
+    "words": 119,
     "tier": "DERIVED"
    }
   ]
@@ -134,23 +134,23 @@
     "tier": "DERIVED"
    },
    {
-    "entry": "Blessings.",
-    "words": 131,
-    "tier": "DERIVED"
-   },
-   {
     "entry": "Against me",
     "words": 73,
     "tier": "OBSERVED"
    },
    {
-    "entry": "Deep shame",
-    "words": 148,
+    "entry": "Ruining experience of life",
+    "words": 66,
     "tier": "DERIVED"
    },
    {
-    "entry": "Ruining experience of life",
-    "words": 66,
+    "entry": "Blessings.",
+    "words": 131,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Suicide",
+    "words": 54,
     "tier": "DERIVED"
    }
   ]
@@ -295,19 +295,19 @@
     "tier": "DERIVED"
    },
    {
-    "entry": "Self-doubt",
-    "words": 113,
-    "tier": "DERIVED"
-   },
-   {
     "entry": "Can't do it",
     "words": 93,
     "tier": "DERIVED"
    },
    {
-    "entry": "Resistance",
-    "words": 133,
-    "tier": "OBSERVED"
+    "entry": "Regret",
+    "words": 79,
+    "tier": "DERIVED"
+   },
+   {
+    "entry": "Self-doubt",
+    "words": 113,
+    "tier": "DERIVED"
    }
   ]
  },
@@ -347,8 +347,8 @@
     "tier": "DERIVED"
    },
    {
-    "entry": "Rejected from authority",
-    "words": 109,
+    "entry": "Keeping one's word",
+    "words": 99,
     "tier": "DERIVED"
    },
    {
@@ -357,8 +357,8 @@
     "tier": "DERIVED"
    },
    {
-    "entry": "Keeping one's word",
-    "words": 99,
+    "entry": "Rejected from authority",
+    "words": 109,
     "tier": "DERIVED"
    }
   ]
@@ -384,13 +384,13 @@
     "tier": "OBSERVED"
    },
    {
-    "entry": "God abandoned",
-    "words": 101,
+    "entry": "Suppressed and repressed sadness",
+    "words": 99,
     "tier": "DERIVED"
    },
    {
-    "entry": "Suppressed and repressed sadness",
-    "words": 99,
+    "entry": "God abandoned",
+    "words": 101,
     "tier": "DERIVED"
    },
    {
@@ -404,13 +404,13 @@
     "tier": "DERIVED"
    },
    {
-    "entry": "Life's not fair",
-    "words": 117,
+    "entry": "Deep shame",
+    "words": 148,
     "tier": "DERIVED"
    },
    {
-    "entry": "Honor",
-    "words": 153,
+    "entry": "Life's not fair",
+    "words": 117,
     "tier": "DERIVED"
    }
   ]
@@ -441,13 +441,13 @@
     "tier": "DERIVED"
    },
    {
-    "entry": "Inside voice",
-    "words": 128,
+    "entry": "Somebody go booty I'm insecure of death",
+    "words": 76,
     "tier": "DERIVED"
    },
    {
-    "entry": "Somebody go booty I'm insecure of death",
-    "words": 76,
+    "entry": "Inside voice",
+    "words": 128,
     "tier": "DERIVED"
    },
    {
@@ -473,6 +473,11 @@
   "field": "#6E4A0A",
   "picks": [
    {
+    "entry": "Resistance",
+    "words": 133,
+    "tier": "OBSERVED"
+   },
+   {
     "entry": "Negative",
     "words": 122,
     "tier": "DERIVED"
@@ -488,13 +493,13 @@
     "tier": "DERIVED"
    },
    {
-    "entry": "Obsessing",
-    "words": 152,
+    "entry": "Impulse control",
+    "words": 48,
     "tier": "DERIVED"
    },
    {
-    "entry": "Impulse control",
-    "words": 48,
+    "entry": "Obsessing",
+    "words": 152,
     "tier": "DERIVED"
    },
    {
@@ -511,11 +516,6 @@
     "entry": "Goals and tasks",
     "words": 175,
     "tier": "DERIVED"
-   },
-   {
-    "entry": "Memorial believe me I'm not organized",
-    "words": 92,
-    "tier": "DERIVED"
    }
   ]
  },
@@ -524,6 +524,11 @@
   "band": "Crown",
   "field": "#4A4C5E",
   "picks": [
+   {
+    "entry": "Honor",
+    "words": 153,
+    "tier": "DERIVED"
+   },
    {
     "entry": "Man of my word",
     "words": 236,
@@ -557,11 +562,6 @@
    {
     "entry": "And letting go of my victim mask",
     "words": 246,
-    "tier": "DERIVED"
-   },
-   {
-    "entry": "Suicide",
-    "words": 54,
     "tier": "DERIVED"
    },
    {
