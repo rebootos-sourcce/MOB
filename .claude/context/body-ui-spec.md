@@ -38,7 +38,7 @@ Each of these is inherited from something already established, not invented:
 
 | Principle | Inherited from |
 |---|---|
-| An icon must resolve to **four** somatic cues, body-part + verb | The one rule the corpus never breaks |
+| An icon must resolve to **four** somatic cues, body-part + verb | Five of the six books (Will uses three) |
 | A run moves Discover → Play → Flow → Embody | The children's book, all 20 chapters |
 | Colour carries intensity | Body UI, explicit |
 | The block is named before it is released | Charge of Words: identify → defuse → inject |

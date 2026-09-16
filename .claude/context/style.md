@@ -27,11 +27,16 @@ The most formalised, and the only register with measurable rules.
 - Each set closes on an inversion of its own opening:
   `fundamentally incapable of feeling safe, calm, or grounded` ↔
   `fundamentally safe, calm, and grounded in who I am`
-- **Impact cues run exactly four, body-part + verb, with the truth inverting the
-  fetter literally.** No exceptions across all six booklets — the most consistent
-  pattern in the corpus.
+- **Impact cues are body-part + verb, and the truth inverts the fetter literally.**
   > `Jaw tight, brow furrows, breath shallow, heart restless.`
   > `Jaw softens, brow smooths, breath deepens, chest opens.`
+
+  **Count is four in five of the six books — but Will uses three.** Courage,
+  Wonder, Power, Love and Insight run four cues throughout. Will runs three
+  from pair 2 to pair 16 (`rigid shoulders, tight diaphragm, cold neck.`),
+  with only its first pair at four. The spec permits 3–5, so Will is compliant
+  with the spec and inconsistent with its five siblings. Match four unless
+  deliberately writing in Will's register.
 
 ### 2. Narrative — the children's book
 
