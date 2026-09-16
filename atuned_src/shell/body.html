@@ -1,0 +1,95 @@
+<body>
+<canvas id="bgaura" aria-hidden="true"></canvas>
+<div class="app">
+ <div class="glass top">
+  <div class="brand">At&uuml;ned</div>
+  <div id="tabbar" style="display:flex;gap:5px"></div>
+  <div class="spacer"></div>
+  <label for="psel" class="toplab">Whose field</label>
+  <select id="psel"></select>
+  <div class="seg" id="themes"></div>
+  <button class="vt" id="legible" type="button" aria-pressed="false"
+   title="Atkinson Hyperlegible. Maximum character distinction.">Aa</button>
+ </div>
+ <div class="glass subbar" id="subbar"><div id="vbar" style="display:flex;gap:5px"></div></div>
+ <div class="mid">
+
+  <!-- ============ LEFT RAIL ============ -->
+  <div class="col"><div class="glass card sc">
+   <div class="lsec open" data-sec="soul">
+    <button class="lsec-hd" type="button"><span>Awareness</span><i></i></button>
+    <div class="lsec-bd">
+     <div class="tier1">0 &middot; Lean <span>benign against malignant, moved by the story</span></div>
+     <div class="polbar" id="polbar"></div><p class="polnote" id="polnote"></p>
+     <div class="tier1" style="margin-top:18px">1 &middot; Root domains <span>four, the mode you operate in</span></div>
+     <div style="display:flex;gap:5px;margin-bottom:14px" id="roots"></div>
+     <div class="tier1">2 &middot; Blueprint domains <span>nineteen, five per root cluster</span></div>
+     <div class="gdom" id="doms"></div><div class="cap" id="capD"></div>
+     <div class="tier1" style="margin-top:18px">3 &middot; Archetypes <span>twelve, how the blueprint expresses</span></div>
+     <div class="g6" id="ar1"></div>
+     <div class="sub" style="margin-top:16px">Secondary and beyond</div>
+     <div class="g6" id="ar2"></div><div class="cap" id="capA"></div>
+    </div>
+   </div>
+   <div class="lsec" data-sec="fetters">
+    <button class="lsec-hd" type="button"><span>Child fetters</span><i></i></button>
+    <div class="lsec-bd">
+     <div class="tier1">4 &middot; Child fetters <span>nine poled axes, held state then coherent opposite</span></div>
+     <div class="bulk"><label for="allCh">held</label><input type="range" id="allCh" min="0" max="10" step="0.5" value="3"></div>
+     <div class="bulk"><label for="allRep">opposite</label><input type="range" id="allRep" min="0" max="10" step="0.5" value="0"></div>
+     <div id="chg"></div>
+    </div>
+   </div>
+   <div class="lsec" data-sec="diag">
+    <button class="lsec-hd" type="button"><span>Diagnostic, 21 &times; 3</span><i></i></button>
+    <div class="lsec-bd"><div id="iq" class="iq iqleft"></div></div>
+   </div>
+   <div class="lsec" data-sec="spirit">
+    <button class="lsec-hd" type="button"><span>Spiritual states</span><i></i></button>
+    <div class="lsec-bd"><div id="spirit"></div></div>
+   </div>
+   <div class="lsec" data-sec="matrix">
+    <button class="lsec-hd" type="button"><span>The matrix</span><i></i></button>
+    <div class="lsec-bd">
+     <div class="lbl">19 domains &times; 9 child fetters</div>
+     <div class="mx" id="mx"></div>
+     <div class="mxk" id="mxk"></div>
+    </div>
+   </div>
+  </div></div>
+
+  <!-- ============ STAGE ============ -->
+  <div class="glass stage" id="stage">
+   <canvas id="cv" role="img" aria-label="The field wheel. Every element is also listed in the panels either side."></canvas>
+   <div id="emap" class="emap"></div>
+   <div id="story" class="iq"></div>
+   <div id="sum" class="iq"></div>
+   <div id="ana" class="iq"></div>
+   <div id="rel" class="rel"></div>
+   <div id="rit" class="rel"></div>
+   <div class="key" id="key"></div>
+   <div class="tl"><b id="tier">-</b><div id="pol"></div></div>
+   <div class="probe" id="probe"></div>
+   <div class="howto" id="howto"></div>
+   <div class="acc" id="acc"></div>
+   <div class="pol2" id="pol2"></div>
+  </div>
+
+  <!-- ============ RIGHT RAIL ============ -->
+  <div class="col"><div class="glass card sc">
+   <!-- the energy shelf. the original computed this every frame and then
+        dropped it on the floor, because no element with this id existed. -->
+   <div id="eshelf"></div>
+   <div id="run"></div>
+   <div id="rdrill" style="display:none"></div>
+   <div class="person" id="person"></div>
+   <div class="rows" id="rows"></div>
+   <div id="fire" style="margin-top:14px;padding-top:12px;border-top:1px solid var(--edge)"></div>
+   <div class="lbl" style="margin-top:20px">21 laws of integrity</div>
+   <div class="bulk"><label for="allLaw">all</label><input type="range" id="allLaw" min="0" max="10" step="0.5" value="6"></div>
+   <div id="laws"></div>
+   <div style="display:flex;gap:7px;margin-top:14px"><button class="btn pri" id="bRel">Run a release</button></div>
+  </div></div>
+ </div>
+</div>
+<script>

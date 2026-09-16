@@ -864,13 +864,6 @@ const HCX_LIB=[{"nm":"Grandiosity","sub":"narcissism · histrionic"},{"nm":"Pred
 var FIG_FETTER='fig-fetter.png', FIG_PAIN='fig-pain.png';
 var FIG_FETTER_AR=0.50395, FIG_PAIN_AR=0.47925;
 var ART_OK={};
-(function(){                       /* probe once, fall back to vector silently */
- [FIG_FETTER,FIG_PAIN].forEach(function(src){
-  var im=new Image();
-  im.onload=function(){ART_OK[src]=1;if(typeof render==='function'&&S.tab===3)render();};
-  im.onerror=function(){ART_OK[src]=0;};
-  im.src=src;});
-})();
 
 /* the body outline. clips the address marks, and stands in for the
    raster when it is missing. */
@@ -1047,148 +1040,6 @@ const SINAMES=SI.map(l=>l.nm);
 /* six masks. roster closed 14 September 2026. Young Adult out, Adult stands. */
 const MASKS=[{nm:'Child',b:['Root','Sacral']},{nm:'Preteen',b:['Solar','Throat']},{nm:'Teen',b:['Throat']},
  {nm:'Adult',b:['Sacral','Solar']},{nm:'Professional',b:['Solar','Throat']},{nm:'Ideological',b:['3rd Eye']}];
-
-/* ============================================================
-   THE SIX AXES. Three higher gates and three lower gates. This is
-   not a display, it is a COST MULTIPLIER on every held pattern.
-   A lower gate multiplies what the pattern costs down. A higher
-   gate multiplies it up. It moves every CQ in the app.
-   ============================================================ */
-var VERP=[
- {k:'aware',  nm:'Awareness',  side:'higher', d:'I was present with the sensation.'},
- {k:'detach', nm:'Detachment', side:'higher', d:'I felt it and stayed out of the story.'},
- {k:'intent', nm:'Intention',  side:'higher', d:'It rose and it did not move me off what I was doing.'},
- {k:'ignore', nm:'Ignorance',  side:'lower',  d:'I did not see it coming, or I chose not to look.'},
- {k:'attach', nm:'Attachment', side:'lower',  d:'The story had me. I went with it.'},
- {k:'averse', nm:'Aversion',   side:'lower',  d:'I went around it. I avoided the thing.'}];
-var VERPMULT={aware:0.7, detach:0.6, intent:0.75, ignore:1.3, attach:1.35, averse:1.25};
-var VERPMIX={aware:0,detach:0,intent:0,ignore:0,attach:0,averse:0};
-var VERPCUE={
- aware:['i noticed','i was aware','i felt it','i could feel','present with','i watched'],
- detach:['let it pass','did not take it','stayed out of','let it go','watched it without','did not bite'],
- intent:['kept going','did it anyway','stayed on','finished it','did not stop','carried on'],
- ignore:['did not see','had no idea','did not notice','blindsided','chose not to look','ignored'],
- attach:['could not stop','went with it','took it personally','spiralled','spiraled','it had me','kept going over'],
- averse:['avoided','went around','put it off','changed the subject','walked away','did not want to']};
-
-/* THE LEAN. benign against malignant, read from the story itself. Benign
-   language moves toward repair, contact, truth told, weight put down.
-   Malignant moves away: blame outward, contempt, concealment, keeping score.
-   Not sentiment scoring. Which direction the intention is pointed. */
-var LEANCUE={
- benign:['i was wrong','i apologised','i apologized','told the truth','let it go',
-  'asked for help','reached out','stayed with','listened','forgave','put it down',
-  'owned it','my fault','i chose to','made it right','showed up','said sorry',
-  'let them','gave them','i understood','i was honest'],
- malignant:['their fault','they always','they never','should have known',
-  'not my problem','i deserved better','made me','if they had','typical of them',
-  'i did not tell','kept it to myself','let them think','got them back',
-  'they owe me','after everything i','nobody appreciates','i was the only one',
-  'proved them wrong','they started it','i had no choice']};
-var LEANMIX={benign:0,malignant:0};
-
-/* ============================================================
-   THE LEXICON. word -> [seat, intensity].
-   The original declared several keys twice across two blocks, so the
-   later generic entries silently cancelled the newer specific ones , 
-   the opposite of the stated intent. Merged here, one entry per key.
-   ============================================================ */
-var LEX={
- /* the burnout set. the resolver had no entry for any of these and read
-    four segments out of thirty-three. */
- inadequacy:['throat',24],inadequate:['throat',22],misery:['heart',24],
- miserable:['heart',22],remorse:['heart',20],remorseful:['heart',18],
- burnout:['solar',28],'burnt out':['solar',28],'burned out':['solar',28],
- depleted:['solar',24],drained:['solar',22],evaporated:['solar',20],
- throbbing:['eye',18],throb:['eye',16],pounding:['eye',20],
- tense:['throat',16],tension:['throat',16],tight:['throat',16],clenched:['throat',20],
- crushed:['heart',26],humiliating:['throat',22],
- dread:['root',24],dreading:['root',22],bracing:['root',14],
- defeated:['heart',22],hopeless:['heart',26],pointless:['crown',22],
- resigned:['heart',18],flattened:['heart',20],
- grueling:['solar',18],relentless:['solar',18],
- /* root */
- nervous:['root',14],anxious:['root',16],scared:['root',18],afraid:['root',16],
- frightened:['root',18],terrified:['root',26],panicked:['root',24],froze:['root',18],
- frozen:['root',18],shaking:['root',20],unsafe:['root',20],
- /* sacral */
- restless:['sacral',12],craving:['sacral',14],numb:['sacral',16],empty:['sacral',18],
- hungry:['sacral',12],addicted:['sacral',22],distracted:['sacral',12],obsessed:['sacral',20],
- /* solar */
- angry:['solar',18],furious:['solar',24],ashamed:['solar',20],humiliated:['solar',24],
- defensive:['solar',16],blamed:['solar',18],stupid:['solar',20],worthless:['solar',26],
- embarrassed:['solar',16],guilty:['solar',18],
- /* heart */
- sad:['heart',16],lonely:['heart',20],grieving:['heart',22],hurt:['heart',18],
- rejected:['heart',22],abandoned:['heart',26],unloved:['heart',24],heartbroken:['heart',26],
- /* throat */
- silent:['throat',14],unheard:['throat',18],voiceless:['throat',20],choked:['throat',18],
- dismissed:['throat',18],ignored:['throat',18],
- /* coherent. these subtract. */
- grateful:['coherent',-14],content:['coherent',-12],calm:['coherent',-12],
- steady:['coherent',-12],peaceful:['coherent',-14],settled:['coherent',-12]};
-var ADJ2CHG={
- nervous:'anxiety',anxious:'anxiety',tense:'anxiety',
- unheard:'silence',voiceless:'silence',choked:'silence',swallowed:'silence',
- doubtful:'doubt',uncertain:'doubt',suspicious:'doubt',distrustful:'doubt',
- numb:'apathy',flat:'apathy',blank:'apathy',indifferent:'apathy',hollow:'apathy',
- unmoved:'apathy',detached:'apathy',uncaring:'apathy',
- apart:'separation',disconnected:'separation',outside:'separation',adrift:'separation',
- scared:'fear',afraid:'fear',frightened:'fear',terrified:'fear',panicked:'fear',
- froze:'fear',frozen:'fear',shaking:'fear',unsafe:'fear',dread:'fear',bracing:'fear',
- angry:'anger',furious:'anger',defensive:'anger',blamed:'anger',
- ashamed:'shame',humiliated:'shame',embarrassed:'shame',guilty:'shame',
- stupid:'shame',worthless:'shame',inadequate:'shame',
- sad:'sadness',lonely:'sadness',grieving:'sadness',hurt:'sadness',rejected:'sadness',
- abandoned:'sadness',unloved:'sadness',heartbroken:'sadness',miserable:'sadness',
- crushed:'sadness',hopeless:'sadness',defeated:'sadness',
- restless:'joy',craving:'joy',empty:'joy',hungry:'joy',
- addicted:'joy',distracted:'joy',obsessed:'joy',
- silent:'shame',dismissed:'shame'};
-
-/* the idioms. an idiom outranks its own words, because a statement can carry
-   no feeling word at all and still be a report. */
-var PHRASES=[
- [['wrap myself in a blanket','pretend the world hit pause','pretend the world would stop',
-   'want to disappear','wish i could disappear','not be here','not exist',
-   'pull the covers over','stay in bed all day','never come out','hide from everyone',
-   'crawl into a hole','shut the door and not','be left alone forever'],
-   'heart',26,'wanting to disappear'],
- [['the mountain just rolls right over','mountain rolled over me','i am tire tracks',
-   'definitely tire tracks','rolled right over me','flattened me','ran me over',
-   'what is the point of any of it','nothing i do matters','it never gets better',
-   'i cannot keep doing this','i have nothing left','there is nothing left of me',
-   'running on empty','i am done'],
-   'heart',28,'despair'],
- [['i miss who i used to be','i do not recognise myself','i do not recognize myself',
-   'lost myself somewhere','the person i was is gone','grieving something',
-   'i will never get that back','it is too late for me'],
-   'heart',26,'grief'],
- [['just want to get through','get through the day','one foot in front',
-   'going through the motions','on autopilot','like an automaton',
-   'nodded like','stared at his','stared at her','have the energy','no energy left'],
-   'crown',22,'resignation'],
- [['could not stop','cant stop','can not stop','cannot stop','kept checking','keep checking'],
-   'sacral',18,'compulsion'],
- [['stayed quiet','said nothing','kept my mouth','did not say','didnt say','bit my tongue'],'throat',20,'silenced'],
- [['could not say no','couldnt say no','said yes when','agreed anyway'],'throat',22,'over-giving'],
- [['do not trust','dont trust','cannot trust'],'eye',20,'distrust'],
- [['nobody says what','nobody means','everyone is lying','no one is honest'],'eye',18,'suspicion'],
- [['felt nothing','feel nothing','feeling nothing','numb to'],'crown',26,'frozen'],
- [['cannot remember the last','cant remember what i want','do not know what i want'],'crown',22,'forgotten'],
- [['held my position','would not back down','refused to admit','knew i was wrong'],'solar',20,'rigidity'],
- [['put it off','putting it off','keep postponing','waiting to feel ready'],'root',18,'avoidance'],
- [['is never finished','never finished','never good enough','still wrong','redid it',
-   'ever finished'],'sacral',20,'perfectionism'],
- [['doing all of it alone','on my own','no one helps','carrying it alone'],'heart',22,'isolation'],
- [['carried it home','took it home','could not leave it','carried her','carried his',
-   'home with me'],'heart',18,'over-merging'],
- [['gave more than i had','gave more than','and then resented','resented it'],'solar',22,'resentment'],
- [['have been dreading','been dreading','dreading it','dread it'],'root',22,'dread'],
- [['have not slept','havent slept','not sleeping','cannot sleep'],'root',20,'hypervigilance'],
- [['hated myself','disgusted with myself','ashamed of myself'],'throat',24,'self-attack'],
- [['do not show anyone','dont show anyone','not until it is perfect'],'sacral',18,'concealment'],
- [['find out i am','find out im','they will know','see through me'],'root',24,'exposure']];
 
 /* ============================================================
    EXPRESSION · the third scale type. Not bipolar. There is no
@@ -1479,6 +1330,186 @@ var LP2ARCH={1:'Warrior',2:'Lover',3:'Creator',4:'Ruler',5:'Explorer',6:'Caregiv
  7:'Sage',8:'Ruler',9:'Magician',11:'Magician',22:'Creator',33:'Sage'};
 
 /* ============================================================
+   THE SIX AXES. Three higher gates and three lower gates. This is
+   not a display, it is a COST MULTIPLIER on every held pattern.
+   A lower gate multiplies what the pattern costs down. A higher
+   gate multiplies it up. It moves every CQ in the app.
+   ============================================================ */
+var VERP=[
+ {k:'aware',  nm:'Awareness',  side:'higher', d:'I was present with the sensation.'},
+ {k:'detach', nm:'Detachment', side:'higher', d:'I felt it and stayed out of the story.'},
+ {k:'intent', nm:'Intention',  side:'higher', d:'It rose and it did not move me off what I was doing.'},
+ {k:'ignore', nm:'Ignorance',  side:'lower',  d:'I did not see it coming, or I chose not to look.'},
+ {k:'attach', nm:'Attachment', side:'lower',  d:'The story had me. I went with it.'},
+ {k:'averse', nm:'Aversion',   side:'lower',  d:'I went around it. I avoided the thing.'}];
+var VERPMULT={aware:0.7, detach:0.6, intent:0.75, ignore:1.3, attach:1.35, averse:1.25};
+var VERPMIX={aware:0,detach:0,intent:0,ignore:0,attach:0,averse:0};
+var VERPCUE={
+ aware:['i noticed','i was aware','i felt it','i could feel','present with','i watched'],
+ detach:['let it pass','did not take it','stayed out of','let it go','watched it without','did not bite'],
+ intent:['kept going','did it anyway','stayed on','finished it','did not stop','carried on'],
+ ignore:['did not see','had no idea','did not notice','blindsided','chose not to look','ignored'],
+ attach:['could not stop','went with it','took it personally','spiralled','spiraled','it had me','kept going over'],
+ averse:['avoided','went around','put it off','changed the subject','walked away','did not want to']};
+
+/* THE LEAN. benign against malignant, read from the story itself. Benign
+   language moves toward repair, contact, truth told, weight put down.
+   Malignant moves away: blame outward, contempt, concealment, keeping score.
+   Not sentiment scoring. Which direction the intention is pointed. */
+var LEANCUE={
+ benign:['i was wrong','i apologised','i apologized','told the truth','let it go',
+  'asked for help','reached out','stayed with','listened','forgave','put it down',
+  'owned it','my fault','i chose to','made it right','showed up','said sorry',
+  'let them','gave them','i understood','i was honest'],
+ malignant:['their fault','they always','they never','should have known',
+  'not my problem','i deserved better','made me','if they had','typical of them',
+  'i did not tell','kept it to myself','let them think','got them back',
+  'they owe me','after everything i','nobody appreciates','i was the only one',
+  'proved them wrong','they started it','i had no choice']};
+var LEANMIX={benign:0,malignant:0};
+
+/* ---------- the six gates ---------- */
+function verpScan(text){
+ var src=' '+String(text||'').toLowerCase().replace(/[^a-z' ]+/g,' ').replace(/\s+/g,' ')+' ';
+ var hits={},tot=0;
+ Object.keys(VERPCUE).forEach(function(g){hits[g]=0;
+  VERPCUE[g].forEach(function(p){var at=src.indexOf(p);
+   while(at>=0){hits[g]++;tot++;at=src.indexOf(p,at+1);}});});
+ return {hits:hits,total:tot};}
+function verpApply(text){var s=verpScan(text);if(!s.total)return s;
+ Object.keys(s.hits).forEach(function(g){VERPMIX[g]+=s.hits[g];});return s;}
+function verpShare(){
+ var tot=Object.keys(VERPMIX).reduce(function(a,k){return a+VERPMIX[k];},0);
+ if(!tot) return null;
+ var out={};Object.keys(VERPMIX).forEach(function(k){out[k]=VERPMIX[k]/tot;});return out;}
+/* THE MULTIPLIER. the weighted average of whichever gates the person runs.
+   no story yet means no gate evidence, so it returns 1 and costs nothing. */
+function verpFactor(){var sh=verpShare();if(!sh)return 1;
+ var f=0;Object.keys(sh).forEach(function(k){f+=sh[k]*VERPMULT[k];});return f;}
+function verpRead(){var sh=verpShare();
+ return VERP.map(function(v){return {k:v.k,nm:v.nm,side:v.side,d:v.d,mult:VERPMULT[v.k],
+  pct: sh?Math.round(sh[v.k]*100):0, n:VERPMIX[v.k]};});}
+/* ---------- the lean ---------- */
+function leanScan(text){
+ var src=' '+String(text||'').toLowerCase().replace(/[^a-z' ]+/g,' ').replace(/\s+/g,' ')+' ';
+ var out={benign:0,malignant:0};
+ Object.keys(LEANCUE).forEach(function(k){LEANCUE[k].forEach(function(p){
+  var at=src.indexOf(p);while(at>=0){out[k]++;at=src.indexOf(p,at+1);}});});
+ return out;}
+function leanApply(text){var s=leanScan(text);
+ LEANMIX.benign+=s.benign;LEANMIX.malignant+=s.malignant;return s;}
+function leanRead(r){
+ var fieldMal=Math.max(0,Math.min(100,r.malig||0));
+ var tot=LEANMIX.benign+LEANMIX.malignant;
+ if(!tot) return {ben:100-fieldMal, mal:fieldMal, src:'field only', cues:0};
+ var storyMal=LEANMIX.malignant/tot*100;
+ var trust=Math.min(0.62,tot*0.09);
+ var mal=fieldMal*(1-trust)+storyMal*trust;
+ return {ben:100-mal, mal:mal, src:'field and '+tot+' story cue'+(tot===1?'':'s'), cues:tot};}
+/* ============================================================
+   THE LEXICON. word -> [seat, intensity].
+   The original declared several keys twice across two blocks, so the
+   later generic entries silently cancelled the newer specific ones , 
+   the opposite of the stated intent. Merged here, one entry per key.
+   ============================================================ */
+var LEX={
+ /* the burnout set. the resolver had no entry for any of these and read
+    four segments out of thirty-three. */
+ inadequacy:['throat',24],inadequate:['throat',22],misery:['heart',24],
+ miserable:['heart',22],remorse:['heart',20],remorseful:['heart',18],
+ burnout:['solar',28],'burnt out':['solar',28],'burned out':['solar',28],
+ depleted:['solar',24],drained:['solar',22],evaporated:['solar',20],
+ throbbing:['eye',18],throb:['eye',16],pounding:['eye',20],
+ tense:['throat',16],tension:['throat',16],tight:['throat',16],clenched:['throat',20],
+ crushed:['heart',26],humiliating:['throat',22],
+ dread:['root',24],dreading:['root',22],bracing:['root',14],
+ defeated:['heart',22],hopeless:['heart',26],pointless:['crown',22],
+ resigned:['heart',18],flattened:['heart',20],
+ grueling:['solar',18],relentless:['solar',18],
+ /* root */
+ nervous:['root',14],anxious:['root',16],scared:['root',18],afraid:['root',16],
+ frightened:['root',18],terrified:['root',26],panicked:['root',24],froze:['root',18],
+ frozen:['root',18],shaking:['root',20],unsafe:['root',20],
+ /* sacral */
+ restless:['sacral',12],craving:['sacral',14],numb:['sacral',16],empty:['sacral',18],
+ hungry:['sacral',12],addicted:['sacral',22],distracted:['sacral',12],obsessed:['sacral',20],
+ /* solar */
+ angry:['solar',18],furious:['solar',24],ashamed:['solar',20],humiliated:['solar',24],
+ defensive:['solar',16],blamed:['solar',18],stupid:['solar',20],worthless:['solar',26],
+ embarrassed:['solar',16],guilty:['solar',18],
+ /* heart */
+ sad:['heart',16],lonely:['heart',20],grieving:['heart',22],hurt:['heart',18],
+ rejected:['heart',22],abandoned:['heart',26],unloved:['heart',24],heartbroken:['heart',26],
+ /* throat */
+ silent:['throat',14],unheard:['throat',18],voiceless:['throat',20],choked:['throat',18],
+ dismissed:['throat',18],ignored:['throat',18],
+ /* coherent. these subtract. */
+ grateful:['coherent',-14],content:['coherent',-12],calm:['coherent',-12],
+ steady:['coherent',-12],peaceful:['coherent',-14],settled:['coherent',-12]};
+var ADJ2CHG={
+ nervous:'anxiety',anxious:'anxiety',tense:'anxiety',
+ unheard:'silence',voiceless:'silence',choked:'silence',swallowed:'silence',
+ doubtful:'doubt',uncertain:'doubt',suspicious:'doubt',distrustful:'doubt',
+ numb:'apathy',flat:'apathy',blank:'apathy',indifferent:'apathy',hollow:'apathy',
+ unmoved:'apathy',detached:'apathy',uncaring:'apathy',
+ apart:'separation',disconnected:'separation',outside:'separation',adrift:'separation',
+ scared:'fear',afraid:'fear',frightened:'fear',terrified:'fear',panicked:'fear',
+ froze:'fear',frozen:'fear',shaking:'fear',unsafe:'fear',dread:'fear',bracing:'fear',
+ angry:'anger',furious:'anger',defensive:'anger',blamed:'anger',
+ ashamed:'shame',humiliated:'shame',embarrassed:'shame',guilty:'shame',
+ stupid:'shame',worthless:'shame',inadequate:'shame',
+ sad:'sadness',lonely:'sadness',grieving:'sadness',hurt:'sadness',rejected:'sadness',
+ abandoned:'sadness',unloved:'sadness',heartbroken:'sadness',miserable:'sadness',
+ crushed:'sadness',hopeless:'sadness',defeated:'sadness',
+ restless:'joy',craving:'joy',empty:'joy',hungry:'joy',
+ addicted:'joy',distracted:'joy',obsessed:'joy',
+ silent:'shame',dismissed:'shame'};
+
+/* the idioms. an idiom outranks its own words, because a statement can carry
+   no feeling word at all and still be a report. */
+var PHRASES=[
+ [['wrap myself in a blanket','pretend the world hit pause','pretend the world would stop',
+   'want to disappear','wish i could disappear','not be here','not exist',
+   'pull the covers over','stay in bed all day','never come out','hide from everyone',
+   'crawl into a hole','shut the door and not','be left alone forever'],
+   'heart',26,'wanting to disappear'],
+ [['the mountain just rolls right over','mountain rolled over me','i am tire tracks',
+   'definitely tire tracks','rolled right over me','flattened me','ran me over',
+   'what is the point of any of it','nothing i do matters','it never gets better',
+   'i cannot keep doing this','i have nothing left','there is nothing left of me',
+   'running on empty','i am done'],
+   'heart',28,'despair'],
+ [['i miss who i used to be','i do not recognise myself','i do not recognize myself',
+   'lost myself somewhere','the person i was is gone','grieving something',
+   'i will never get that back','it is too late for me'],
+   'heart',26,'grief'],
+ [['just want to get through','get through the day','one foot in front',
+   'going through the motions','on autopilot','like an automaton',
+   'nodded like','stared at his','stared at her','have the energy','no energy left'],
+   'crown',22,'resignation'],
+ [['could not stop','cant stop','can not stop','cannot stop','kept checking','keep checking'],
+   'sacral',18,'compulsion'],
+ [['stayed quiet','said nothing','kept my mouth','did not say','didnt say','bit my tongue'],'throat',20,'silenced'],
+ [['could not say no','couldnt say no','said yes when','agreed anyway'],'throat',22,'over-giving'],
+ [['do not trust','dont trust','cannot trust'],'eye',20,'distrust'],
+ [['nobody says what','nobody means','everyone is lying','no one is honest'],'eye',18,'suspicion'],
+ [['felt nothing','feel nothing','feeling nothing','numb to'],'crown',26,'frozen'],
+ [['cannot remember the last','cant remember what i want','do not know what i want'],'crown',22,'forgotten'],
+ [['held my position','would not back down','refused to admit','knew i was wrong'],'solar',20,'rigidity'],
+ [['put it off','putting it off','keep postponing','waiting to feel ready'],'root',18,'avoidance'],
+ [['is never finished','never finished','never good enough','still wrong','redid it',
+   'ever finished'],'sacral',20,'perfectionism'],
+ [['doing all of it alone','on my own','no one helps','carrying it alone'],'heart',22,'isolation'],
+ [['carried it home','took it home','could not leave it','carried her','carried his',
+   'home with me'],'heart',18,'over-merging'],
+ [['gave more than i had','gave more than','and then resented','resented it'],'solar',22,'resentment'],
+ [['have been dreading','been dreading','dreading it','dread it'],'root',22,'dread'],
+ [['have not slept','havent slept','not sleeping','cannot sleep'],'root',20,'hypervigilance'],
+ [['hated myself','disgusted with myself','ashamed of myself'],'throat',24,'self-attack'],
+ [['do not show anyone','dont show anyone','not until it is perfect'],'sacral',18,'concealment'],
+ [['find out i am','find out im','they will know','see through me'],'root',24,'exposure']];
+
+/* ============================================================
    DERIVED INDEXES
    ============================================================ */
 const SOM=NODES.filter(n=>!n.b.startsWith('Field'));
@@ -1599,44 +1630,6 @@ function sab33Detect(){
    w:Math.min(10, parts.reduce(function(a,p){return a+(L[p[0]]||0);},0)/parts.length)});});
  return out.sort(function(a,b){return b.score-a.score || b.w-a.w;});}
 
-/* ---------- the six gates ---------- */
-function verpScan(text){
- var src=' '+String(text||'').toLowerCase().replace(/[^a-z' ]+/g,' ').replace(/\s+/g,' ')+' ';
- var hits={},tot=0;
- Object.keys(VERPCUE).forEach(function(g){hits[g]=0;
-  VERPCUE[g].forEach(function(p){var at=src.indexOf(p);
-   while(at>=0){hits[g]++;tot++;at=src.indexOf(p,at+1);}});});
- return {hits:hits,total:tot};}
-function verpApply(text){var s=verpScan(text);if(!s.total)return s;
- Object.keys(s.hits).forEach(function(g){VERPMIX[g]+=s.hits[g];});return s;}
-function verpShare(){
- var tot=Object.keys(VERPMIX).reduce(function(a,k){return a+VERPMIX[k];},0);
- if(!tot) return null;
- var out={};Object.keys(VERPMIX).forEach(function(k){out[k]=VERPMIX[k]/tot;});return out;}
-/* THE MULTIPLIER. the weighted average of whichever gates the person runs.
-   no story yet means no gate evidence, so it returns 1 and costs nothing. */
-function verpFactor(){var sh=verpShare();if(!sh)return 1;
- var f=0;Object.keys(sh).forEach(function(k){f+=sh[k]*VERPMULT[k];});return f;}
-function verpRead(){var sh=verpShare();
- return VERP.map(function(v){return {k:v.k,nm:v.nm,side:v.side,d:v.d,mult:VERPMULT[v.k],
-  pct: sh?Math.round(sh[v.k]*100):0, n:VERPMIX[v.k]};});}
-/* ---------- the lean ---------- */
-function leanScan(text){
- var src=' '+String(text||'').toLowerCase().replace(/[^a-z' ]+/g,' ').replace(/\s+/g,' ')+' ';
- var out={benign:0,malignant:0};
- Object.keys(LEANCUE).forEach(function(k){LEANCUE[k].forEach(function(p){
-  var at=src.indexOf(p);while(at>=0){out[k]++;at=src.indexOf(p,at+1);}});});
- return out;}
-function leanApply(text){var s=leanScan(text);
- LEANMIX.benign+=s.benign;LEANMIX.malignant+=s.malignant;return s;}
-function leanRead(r){
- var fieldMal=Math.max(0,Math.min(100,r.malig||0));
- var tot=LEANMIX.benign+LEANMIX.malignant;
- if(!tot) return {ben:100-fieldMal, mal:fieldMal, src:'field only', cues:0};
- var storyMal=LEANMIX.malignant/tot*100;
- var trust=Math.min(0.62,tot*0.09);
- var mal=fieldMal*(1-trust)+storyMal*trust;
- return {ben:100-mal, mal:mal, src:'field and '+tot+' story cue'+(tot===1?'':'s'), cues:tot};}
 /* ---------- expression ---------- */
 function exprFill(nm){
  var e=EXPR.filter(function(x){return x.nm===nm;})[0]; if(!e)return 10;
@@ -1781,10 +1774,14 @@ function compute(){
    measured and an empty field is not at chance, it runs near 60.
    ============================================================ */
 var ACC_BASE=10, ACC_AXG=43, ACC_K=13, ACC_LAWG=28, ACC_EXPG=18;
-function accuracy(r){
- var meas=SI.filter(function(l){return CURP&&CURP.laws&&CURP.laws[l.nm]!=null;}).length;
+/* the profile is an argument, not ambient state. it defaults to the live one so
+   every call site reads the same, but the fit stays measurable on any profile
+   without first making it current. */
+function accuracy(r,prof){
+ var P=prof||CURP;
+ var meas=SI.filter(function(l){return P&&P.laws&&P.laws[l.nm]!=null;}).length;
  var cov=meas/21;
- var sc=CURP?iqScore(CURP):{};
+ var sc=P?iqScore(P):{};
  var ks=Object.keys(sc);
  var rel=ks.length?ks.filter(function(k){return sc[k].reliable;}).length/ks.length:0;
  var held=W.filter(function(n){return n.sq>=4;}).length;
@@ -1988,6 +1985,105 @@ function applyStory(text){
   .reduce(function(a,h){return a+Math.abs(h.amt);},0);
  if(calm)CHARGES.forEach(function(c){S.charge[c]=clamp(S.charge[c]-calm/140,0,10);});
  return {parsed:p, applied:touched};}
+
+/* ============================================================
+   ENERGETICS. Pure functions of date, time and place. Nothing else
+   is stored, so a sixth system costs nothing.
+   ============================================================ */
+function sunSign(d){
+ var p=d.split('-'), m=+p[1], day=+p[2];
+ for(var j=0;j<ZSIGN.length;j++){
+  var a=ZSIGN[j], b=ZSIGN[(j+1)%12];
+  if((m===a[0]&&day>=a[1])||(m===b[0]&&day<b[1]))
+   return {nm:a[2], el:a[3], mode:a[4]};}
+ return {nm:ZSIGN[11][2], el:ZSIGN[11][3], mode:ZSIGN[11][4]};}
+function moonSign(bt){
+ var d=new Date(bt.d+'T00:00:00Z');
+ var days=Math.floor(d.getTime()/86400000);
+ var i=(((days%27.32)+27.32)%27.32)/27.32;      /* pre-1970 births give negative days */
+ var k=Math.floor(i*12); k=((k%12)+12)%12;
+ return ZSIGN[k];}
+function risingSign(bt){
+ var sun=sunSign(bt.d), si=0;
+ ZSIGN.forEach(function(z,k){if(z[2]===sun.nm)si=k;});
+ var h=+bt.t.split(':')[0]+(+bt.t.split(':')[1])/60;
+ var off=Math.floor(((h-6+24)%24)/2);
+ return ZSIGN[(((si+off)%12)+12)%12];}
+function lifePath(d){
+ var v=d.replace(/-/g,'').split('').reduce(function(a,c){return a+ +c;},0);
+ while(v>9&&v!==11&&v!==22&&v!==33)
+  v=String(v).split('').reduce(function(a,c){return a+ +c;},0);
+ return v;}
+function masterNumber(bt){var lp=lifePath(bt.d);return (lp===11||lp===22||lp===33)?lp:null;}
+function chineseElement(y){ return CELEM[y%10]; }
+function hdOf(b){
+ var h=+b.t.split(':')[0];
+ return {type:HDTYPE[(h+lifePath(b.d))%5],
+  authority:['emotional','sacral','splenic','ego','self-projected','lunar'][(h+3)%6]};}
+function geneKey(b){var day=+b.d.split('-')[2];return {gate:((day*3)%64)+1, line:(day%6)+1};}
+function spiritual(name){
+ var bt=BIRTH[name]; if(!bt) return null;
+ var sun=sunSign(bt.d), mn=moonSign(bt), rs=risingSign(bt), y=+bt.d.split('-')[0];
+ return {sun:sun.nm, sunEl:sun.el, sunMode:sun.mode, moon:mn[2], moonEl:mn[3],
+  rising:rs[2], risingEl:rs[3], chinese:CHINESE[y%12], celem:chineseElement(y),
+  lp:lifePath(bt.d), master:masterNumber(bt), hd:hdOf(bt), gk:geneKey(bt), birth:bt,
+  root:ELEM2ROOT[sun.el], mode:MODE2NOTE[sun.mode], lpMean:LPMEAN[lifePath(bt.d)]||''};}
+/* CONVERGENCE. where independent systems agree, that is the signal.
+   where they disagree the instrument says so rather than picking a winner. */
+function converge(name,r){
+ var e=spiritual(name); if(!e) return null;
+ var agree=[],differ=[];
+ var rootNow=(DOMAINS[S.doms[0]]||{}).r||'';
+ if(e.root===rootNow) agree.push('birth element '+e.sunEl+' and your root domain both read '+e.root);
+ else differ.push('birth element points '+e.root+', your domain runs '+rootNow);
+ var archNow=(ARCH[r.pi]||{}).nm||'';
+ if(LP2ARCH[e.lp]===archNow) agree.push('life path '+e.lp+' and your first archetype both read '+archNow);
+ else differ.push('life path '+e.lp+' reads '+(LP2ARCH[e.lp]||'unmapped')+', you run '+archNow);
+ var initiating=(e.sunMode==='cardinal');
+ if(initiating===!!r.benign) agree.push('birth mode '+e.sunMode+' matches a field that is '
+   +(r.benign?'expanding':'contracting'));
+ else differ.push('birth mode '+e.sunMode+' against a field that is '+(r.benign?'expanding':'contracting'));
+ var hdOpen=(e.hd.type==='Generator'||e.hd.type==='Manifesting Generator');
+ if(hdOpen===(r.CQ>=50)) agree.push(e.hd.type+' and a field at CQ '+Math.round(r.CQ)+' point the same way');
+ else differ.push(e.hd.type+' against a field at CQ '+Math.round(r.CQ));
+ return {e:e, agree:agree, differ:differ,
+  score:Math.round(agree.length/(agree.length+differ.length)*100)};}
+
+
+/* ============================================================
+   The engine is DOM free. In a browser these are globals on the
+   concatenated script. In node the same file is requireable, so the
+   engine can be tested headlessly and shared with Atuned through the
+   one profile object the schema contract defines.
+   ============================================================ */
+if(typeof module!=='undefined'&&module.exports){
+ module.exports={
+  /* data */      NODES:NODES, SAB_LIB:SAB_LIB, HCX_LIB:HCX_LIB, SAB33:SAB33,
+                  SABAUTH:SABAUTH, ARCH18:ARCH18, CHILD:CHILD, CHARGES:CHARGES,
+                  DOMAINS:DOMAINS, ARCH:ARCH, SI:SI, SINAMES:SINAMES, MASKS:MASKS,
+                  BANDS:BANDS, PAL:PAL, ROOTD:ROOTD, ROOTCOL:ROOTCOL, AFFIN:AFFIN,
+                  PRACTICE:PRACTICE, EXPR:EXPR, PMBANDS:PMBANDS, FLOWSEAT:FLOWSEAT,
+                  PAINREG:PAINREG, PEOPLE:PEOPLE, LAWSET:LAWSET, BIRTH:BIRTH,
+                  LEX:LEX, ADJ2CHG:ADJ2CHG, PHRASES:PHRASES, VERP:VERP,
+                  NERVEBR:NERVEBR, BODYPATH:BODYPATH, TAB:TAB,
+  /* indexes */   W:W, BY:BY, ALL_SAB:ALL_SAB, S:S,
+  /* soul */      buildSoul:buildSoul, affinity:affinity, bandIg:bandIg,
+  /* engine */    compute:compute, accuracy:accuracy, sab33Detect:sab33Detect,
+                  sabLevels:sabLevels, exprFill:exprFill, exprRead:exprRead,
+  /* gates */     verpScan:verpScan, verpApply:verpApply, verpFactor:verpFactor,
+                  verpRead:verpRead, verpShare:verpShare,
+                  leanScan:leanScan, leanApply:leanApply, leanRead:leanRead,
+                  VERPMIX:VERPMIX, LEANMIX:LEANMIX,
+  /* schema */    blankProfile:blankProfile, loadProfile:loadProfile,
+                  saveProfile:saveProfile, snapshot:snapshot,
+                  pExport:pExport, pImport:pImport, SCHEMA_V:SCHEMA_V,
+  /* intake */    iqList:iqList, iqScore:iqScore, iqApply:iqApply,
+  /* sniffer */   scanStory:scanStory, parseStory:parseStory, applyStory:applyStory,
+  /* birth */     sunSign:sunSign, moonSign:moonSign, risingSign:risingSign,
+                  lifePath:lifePath, spiritual:spiritual, converge:converge,
+  /* util */      clamp:clamp, leaves:(typeof leaves==='function'?leaves:null)
+ };
+}
 
 /* ============================================================
    THE COMBINED PILL AND RING.
@@ -2381,6 +2477,18 @@ function draw(r){
    marks, place them, draw their links, draw the annotation, then
    write the shelf into the right rail.
    ============================================================ */
+/* The raster probe. Browser only, so it lives with the renderer and not with
+   the figure data. The original compared S.tab against a bare 3; a stale tab
+   integer is the most repeated bug in this codebase, so it reads TAB.ENERGY. */
+(function(){
+ if(typeof Image==='undefined')return;                 /* node, or no DOM */
+ [FIG_FETTER,FIG_PAIN].forEach(function(src){
+  var im=new Image();
+  im.onload =function(){ART_OK[src]=1;
+   if(typeof render==='function'&&S.tab===TAB.ENERGY)render();};
+  im.onerror=function(){ART_OK[src]=0;};
+  im.src=src;});
+})();
 var PMLAYER='bands', PMPICK=null, PAINPICK=null, _pmpos={}, LOADED=4;
 var PMYP={};PMBANDS.forEach(function(b){PMYP[b.k]=b.yp;});
 var HW=24.2;
@@ -2986,70 +3094,6 @@ function stMic(){
  ST_REC.onend=function(){ST_LISTEN=false;stRender();};
  ST_REC.onerror=function(){ST_LISTEN=false;stRender();};
  ST_REC.start(); ST_LISTEN=true; stRender();}
-
-/* ============================================================
-   ENERGETICS. Pure functions of date, time and place. Nothing else
-   is stored, so a sixth system costs nothing.
-   ============================================================ */
-function sunSign(d){
- var p=d.split('-'), m=+p[1], day=+p[2];
- for(var j=0;j<ZSIGN.length;j++){
-  var a=ZSIGN[j], b=ZSIGN[(j+1)%12];
-  if((m===a[0]&&day>=a[1])||(m===b[0]&&day<b[1]))
-   return {nm:a[2], el:a[3], mode:a[4]};}
- return {nm:ZSIGN[11][2], el:ZSIGN[11][3], mode:ZSIGN[11][4]};}
-function moonSign(bt){
- var d=new Date(bt.d+'T00:00:00Z');
- var days=Math.floor(d.getTime()/86400000);
- var i=(((days%27.32)+27.32)%27.32)/27.32;      /* pre-1970 births give negative days */
- var k=Math.floor(i*12); k=((k%12)+12)%12;
- return ZSIGN[k];}
-function risingSign(bt){
- var sun=sunSign(bt.d), si=0;
- ZSIGN.forEach(function(z,k){if(z[2]===sun.nm)si=k;});
- var h=+bt.t.split(':')[0]+(+bt.t.split(':')[1])/60;
- var off=Math.floor(((h-6+24)%24)/2);
- return ZSIGN[(((si+off)%12)+12)%12];}
-function lifePath(d){
- var v=d.replace(/-/g,'').split('').reduce(function(a,c){return a+ +c;},0);
- while(v>9&&v!==11&&v!==22&&v!==33)
-  v=String(v).split('').reduce(function(a,c){return a+ +c;},0);
- return v;}
-function masterNumber(bt){var lp=lifePath(bt.d);return (lp===11||lp===22||lp===33)?lp:null;}
-function chineseElement(y){ return CELEM[y%10]; }
-function hdOf(b){
- var h=+b.t.split(':')[0];
- return {type:HDTYPE[(h+lifePath(b.d))%5],
-  authority:['emotional','sacral','splenic','ego','self-projected','lunar'][(h+3)%6]};}
-function geneKey(b){var day=+b.d.split('-')[2];return {gate:((day*3)%64)+1, line:(day%6)+1};}
-function spiritual(name){
- var bt=BIRTH[name]; if(!bt) return null;
- var sun=sunSign(bt.d), mn=moonSign(bt), rs=risingSign(bt), y=+bt.d.split('-')[0];
- return {sun:sun.nm, sunEl:sun.el, sunMode:sun.mode, moon:mn[2], moonEl:mn[3],
-  rising:rs[2], risingEl:rs[3], chinese:CHINESE[y%12], celem:chineseElement(y),
-  lp:lifePath(bt.d), master:masterNumber(bt), hd:hdOf(bt), gk:geneKey(bt), birth:bt,
-  root:ELEM2ROOT[sun.el], mode:MODE2NOTE[sun.mode], lpMean:LPMEAN[lifePath(bt.d)]||''};}
-/* CONVERGENCE. where independent systems agree, that is the signal.
-   where they disagree the instrument says so rather than picking a winner. */
-function converge(name,r){
- var e=spiritual(name); if(!e) return null;
- var agree=[],differ=[];
- var rootNow=(DOMAINS[S.doms[0]]||{}).r||'';
- if(e.root===rootNow) agree.push('birth element '+e.sunEl+' and your root domain both read '+e.root);
- else differ.push('birth element points '+e.root+', your domain runs '+rootNow);
- var archNow=(ARCH[r.pi]||{}).nm||'';
- if(LP2ARCH[e.lp]===archNow) agree.push('life path '+e.lp+' and your first archetype both read '+archNow);
- else differ.push('life path '+e.lp+' reads '+(LP2ARCH[e.lp]||'unmapped')+', you run '+archNow);
- var initiating=(e.sunMode==='cardinal');
- if(initiating===!!r.benign) agree.push('birth mode '+e.sunMode+' matches a field that is '
-   +(r.benign?'expanding':'contracting'));
- else differ.push('birth mode '+e.sunMode+' against a field that is '+(r.benign?'expanding':'contracting'));
- var hdOpen=(e.hd.type==='Generator'||e.hd.type==='Manifesting Generator');
- if(hdOpen===(r.CQ>=50)) agree.push(e.hd.type+' and a field at CQ '+Math.round(r.CQ)+' point the same way');
- else differ.push(e.hd.type+' against a field at CQ '+Math.round(r.CQ));
- return {e:e, agree:agree, differ:differ,
-  score:Math.round(agree.length/(agree.length+differ.length)*100)};}
-
 /* ============================================================
    SUMMARY. Five lenses. None of them store anything; each is a pure
    function of soul, axes and laws, so they cannot drift from what the
