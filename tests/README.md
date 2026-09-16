@@ -12,17 +12,42 @@ contract rather than today's numbers, so a legitimate tuning change passes and a
 broken invariant does not.
 
     ./atuned_src/BUILD-engine.sh
-    node tests/engine.js       147 checks in 15 groups
+    node tests/engine.js       165 checks in 17 groups
 
-The 15 groups: data integrity, determinism, the poled binary (jouissance begins
+The 17 groups: data integrity, determinism, the poled binary (jouissance begins
 at 6), monotonicity, CQ bounds and ceiling, saboteur charge ranges are bands and
 not floors, the six gates multiply resistance, the lean, schema round trip,
 partial intake scoring, the sniffer, the expression deficit model, accuracy,
-the chain compounding in order, and every persona computing.
+the chain compounding in order, every persona computing, the front door, and the
+host seam.
 
-`BUILD-engine.sh` also greps the concatenated engine for `document`, `window`,
-`navigator`, `requestAnimationFrame` and `new Image`, and fails if it finds one.
-The engine is not allowed to reach for a document.
+`BUILD-engine.sh` then runs `atuned_src/hostfree.py`, which strips comments and
+string literals and fails on `document`, `window`, `navigator`, `localStorage`,
+`sessionStorage`, `requestAnimationFrame`, `alert`, `fetch`, `XMLHttpRequest` or
+`new Image`. The engine is not allowed to reach for its host. Stripping first
+matters: a comment naming `localStorage` is not a call to it, and the lexicon
+data legitimately contains the word window.
+
+## The front door
+
+The engine has one entrance and the three surfaces are separable, so each can be
+tested on its own.
+
+    read(profile, opts)     all three at once. what callers want.
+      input(profile, opts)  one profile in. it is the only input.
+      throughput(profile)   the chain, in the one order it runs in.
+      output(profile)       the field written back as schema.
+
+    opts.story              text to apply once before computing
+    opts.write              also write the field back into the profile
+
+`read()` is repeatable: twice on one profile gives identical numbers. The chain
+underneath was not, because the gate mixes accumulate, and this module is the
+only thing permitted to zero them.
+
+The engine ships with a no-op profile store, so a headless run persists nothing
+and never throws. A host binds its own with `bindStore(get, set)`. `ui/ui.js`
+binds `localStorage`.
 
 ## The browser gates
 

@@ -7,8 +7,6 @@ OUT="${1:-../engine.js}"
 MODS=$(grep '^engine/' MANIFEST)
 for f in $MODS; do node --check "$f" || exit 1; done
 cat $MODS > "$OUT"
-# it must not reach for a document
-if grep -nE '\b(document|window|navigator|requestAnimationFrame|new Image)\b' "$OUT"; then
-  echo "engine touches the DOM, see above" >&2; exit 1
-fi
+python3 hostfree.py "$OUT"
+
 node -e "var e=require('$OUT');console.log('engine ok, %d exports',Object.keys(e).length)"

@@ -1406,6 +1406,30 @@ function leanRead(r){
  var trust=Math.min(0.62,tot*0.09);
  var mal=fieldMal*(1-trust)+storyMal*trust;
  return {ben:100-mal, mal:mal, src:'field and '+tot+' story cue'+(tot===1?'':'s'), cues:tot};}
+
+/* ---------- the gates as schema ----------
+   VERPMIX and LEANMIX are inputs, not derived numbers, so they belong in the
+   profile. They live here rather than with the schema because the schema
+   loads after this file and a forward reference would only work by accident
+   of hoisting. */
+/* The gate mixes accumulate with +=, so a second pass would count the
+   same cues a second time. Zeroing is what makes a read repeatable. */
+function gatesClear(){
+ Object.keys(VERPMIX).forEach(function(k){VERPMIX[k]=0;});
+ LEANMIX.benign=0; LEANMIX.malignant=0;
+ return {verp:VERPMIX, lean:LEANMIX};}
+
+function gatesLoad(p){
+ gatesClear();
+ var g=p&&p.gates; if(!g)return null;
+ if(g.verp)Object.keys(VERPMIX).forEach(function(k){VERPMIX[k]=g.verp[k]||0;});
+ if(g.lean){LEANMIX.benign=g.lean.benign||0; LEANMIX.malignant=g.lean.malignant||0;}
+ return g;}
+
+function gatesSave(p){
+ var v={}; Object.keys(VERPMIX).forEach(function(k){v[k]=VERPMIX[k];});
+ p.gates={verp:v, lean:{benign:LEANMIX.benign, malignant:LEANMIX.malignant}};
+ return p.gates;}
 /* ============================================================
    THE LEXICON. word -> [seat, intensity].
    The original declared several keys twice across two blocks, so the
@@ -1807,13 +1831,21 @@ function accuracy(r,prof){
    Every number in the app derives from this and nothing else.
    Versioned so a v2 can migrate rather than break.
    ============================================================ */
-var SCHEMA_V=1;
+/* v2 adds gates. The VERP mix is a cost multiplier of 0.60 to 1.35 on every
+   held pattern, and in v1 it was never written down, so a reload silently
+   moved every CQ in the app. A v1 profile still loads: gates absent reads as
+   zeroes, which is exactly what no story evidence means. Saving upgrades it.
+   This touches the cross-compatibility contract with SOURCE, so the bump is
+   flagged for his ruling in REVIEW-source.md. */
+var SCHEMA_V=2, PKEY='source.profiles';
 function blankProfile(name){
  var p={v:SCHEMA_V, id:'p'+Date.now().toString(36)+Math.random().toString(36).slice(2,6),
   name:name||'New profile', created:new Date().toISOString(), updated:null,
   soul:{doms:[0], arcs:[0,1], roots:[]},            /* the invariant */
   axes:{},                                          /* nine poled child fetters */
   laws:{}, intake:{answers:{}, done:[], startedAt:null, completedAt:null},
+  gates:{verp:{aware:0,detach:0,intent:0,ignore:0,attach:0,averse:0},
+         lean:{benign:0,malignant:0}},   /* the cost multiplier, v2 */
   story:{entries:[]}, rituals:[], history:[]};
  CHILD.forEach(function(c){p.axes[c.nm]={held:3,opp:0};});
  SI.forEach(function(l){p.laws[l.nm]=null;});        /* null = not yet measured */
@@ -1824,11 +1856,13 @@ function loadProfile(p){
  CHILD.forEach(function(c){var a=p.axes[c.nm]||{};
   S.charge[c.nm]=a.held!=null?a.held:3; S.replace[c.nm]=a.opp||0;});
  SI.forEach(function(l){S.law[l.nm]=(p.laws[l.nm]!=null)?p.laws[l.nm]:6;});
+ gatesLoad(p);   /* absent on a v1 profile, which reads as no story evidence */
  return p;}
 function saveProfile(p){
  p.soul={doms:S.doms.slice(),arcs:S.arcs.slice(),roots:S.roots.slice()};
  CHILD.forEach(function(c){p.axes[c.nm]={held:S.charge[c.nm],opp:S.replace[c.nm]||0};});
  SI.forEach(function(l){if(S.law[l.nm]!=null)p.laws[l.nm]=S.law[l.nm];});
+ gatesSave(p);
  p.updated=new Date().toISOString(); p.v=SCHEMA_V;
  return p;}
 /* a snapshot is what Analytics plots. derived only, never inputs. */
@@ -1840,8 +1874,15 @@ function snapshot(p){
   loaded:r.loaded.length, sab:r.sabs.length, cx:r.cxs.length, hy:r.hys.length, ch:r.sups.length,
   dark:r.darkB, tier:r.tier, arch:ARCH[r.pi].nm};}
 var PROFILES=[], CURP=null;
-function pStore(){ try{ return JSON.parse(localStorage.getItem('source.profiles')||'[]'); }catch(e){ return []; } }
-function pPersist(){ try{ localStorage.setItem('source.profiles',JSON.stringify(PROFILES)); }catch(e){} }
+/* The engine does not know what a browser is. The host binds a store. With none
+   bound the profiles last as long as the process, which is what a headless run
+   wants. ui/ui.js binds localStorage. */
+var STORE={get:function(){return null;}, set:function(){}};
+/* a host binds its own. exported, because module.exports captures the value of
+   STORE and not the binding, so an outside caller cannot assign to it. */
+function bindStore(get,set){ STORE={get:get,set:set}; return STORE; }
+function pStore(){ try{ return JSON.parse(STORE.get(PKEY)||'[]'); }catch(e){ return []; } }
+function pPersist(){ try{ STORE.set(PKEY,JSON.stringify(PROFILES)); }catch(e){} }
 function pNew(name){ var p=blankProfile(name); PROFILES.push(p); CURP=p; pPersist(); return p; }
 function pSave(){ if(!CURP)return null; saveProfile(CURP); pPersist(); return CURP; }
 function pSnap(){ if(!CURP)return null; CURP.history.push(snapshot(CURP)); pPersist(); return CURP; }
@@ -2051,6 +2092,63 @@ function converge(name,r){
 
 
 /* ============================================================
+   THE FRONT DOOR. Input, throughput, output, and nothing else.
+
+     input(profile, opts)   one profile in. it is the only input.
+     throughput(profile)    the chain, in the one order it runs in.
+     output(profile)        the field back out as schema, plus the reading.
+     read(profile, opts)    all three in one call. what callers want.
+
+   Why this module exists. The chain underneath runs on shared field
+   state: S, DOMAIN, VERPMIX, LEANMIX. compute() takes no arguments and
+   reads all four. That was the ported design and it stays, because the
+   ruling was port and not rebuild. So this is the only place permitted
+   to touch that state. It touches it in one fixed order, and it zeroes
+   what accumulates. Call read() twice on one profile and the numbers
+   come back identical. That was not true of the chain on its own.
+   ============================================================ */
+
+/* ---------- INPUT ----------
+   The profile is the only input. A story that has not been applied yet
+   is the one thing not in it, so it comes separately and is applied once.
+   p.story.entries is a log of stories already baked into p.axes by a
+   previous save. Replaying it here would double count, so it is not read. */
+function input(prof,opts){
+ var p=prof||blankProfile('unnamed'), o=opts||{};
+ loadProfile(p);            /* soul, nine axes, laws, gate evidence. builds the soul */
+ if(p.intake&&p.intake.answers)iqApply(p);    /* a measured law beats the default 6 */
+ if(o.story){                                 /* new text, not yet in the axes */
+  applyStory(o.story); verpApply(o.story); leanApply(o.story);}
+ return p;}
+
+/* ---------- THROUGHPUT ----------
+   The profile is passed only so accuracy can report against it. Every
+   number here comes off the field that input() placed. */
+function throughput(prof){
+ var r=compute();
+ r.accuracy  = accuracy(r,prof);
+ r.gates     = verpRead();
+ r.lean      = leanRead(r);
+ r.expression= exprRead();
+ r.sab33     = sab33Detect();
+ return r;}
+
+/* ---------- OUTPUT ----------
+   Two things come out. The profile, written back in schema shape so it
+   can be stored or handed to SOURCE. And a snapshot, which is derived
+   only and is what Analytics plots. */
+function output(prof){
+ return saveProfile(prof);}
+
+/* ---------- the whole door ----------
+   opts.story   text to apply once before computing
+   opts.write   true to write the field back into the profile as well */
+function read(prof,opts){
+ var o=opts||{}, p=input(prof,o), r=throughput(p);
+ if(o.write)output(p);
+ return {profile:p, reading:r, snapshot:snapshot(p)};}
+
+/* ============================================================
    The engine is DOM free. In a browser these are globals on the
    concatenated script. In node the same file is requireable, so the
    engine can be tested headlessly and shared with Atuned through the
@@ -2074,9 +2172,12 @@ if(typeof module!=='undefined'&&module.exports){
                   verpRead:verpRead, verpShare:verpShare,
                   leanScan:leanScan, leanApply:leanApply, leanRead:leanRead,
                   VERPMIX:VERPMIX, LEANMIX:LEANMIX,
+  /* the door */  read:read, input:input, throughput:throughput, output:output,
+                  gatesClear:gatesClear, gatesLoad:gatesLoad, gatesSave:gatesSave,
   /* schema */    blankProfile:blankProfile, loadProfile:loadProfile,
                   saveProfile:saveProfile, snapshot:snapshot,
                   pExport:pExport, pImport:pImport, SCHEMA_V:SCHEMA_V,
+                  bindStore:bindStore, PKEY:PKEY,
   /* intake */    iqList:iqList, iqScore:iqScore, iqApply:iqApply,
   /* sniffer */   scanStory:scanStory, parseStory:parseStory, applyStory:applyStory,
   /* birth */     sunSign:sunSign, moonSign:moonSign, risingSign:risingSign,
@@ -4524,6 +4625,10 @@ function loop(ts){
  requestAnimationFrame(loop);}
 
 /* ---- init ---- */
+/* the engine ships with a no-op store. this is the browser's one. */
+try{ localStorage.getItem(PKEY);
+ STORE={get:function(k){return localStorage.getItem(k);},
+        set:function(k,v){localStorage.setItem(k,v);}}; }catch(e){}
 layout(); mxKey(); wireSections(); loadP(0); setTab(TAB.FIELD);
 requestAnimationFrame(loop);
 </script></body></html>

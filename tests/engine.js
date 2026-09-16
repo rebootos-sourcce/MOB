@@ -254,5 +254,64 @@ ok(ref('Ana').CQ>ref('Gordon').CQ,'and mid-crisis reads higher than the collapse
 ok(ref('Rosa').loaded.length===0,'Rosa holds nothing');
 ok(ref('Gordon').loaded.length>90,'Gordon holds nearly everything');
 
+
+g('16 · the front door');
+{
+ const {read,input,throughput,output,blankProfile,gatesClear}=E;
+ /* a profile in, a reading out. no ambient setup, no globals touched. */
+ const p=blankProfile('door');
+ const a=read(p);
+ ok(a.profile&&a.reading&&a.snapshot,'read returns profile, reading and snapshot');
+ ok(typeof a.reading.CQ==='number','the reading carries a CQ');
+ ok(a.reading.accuracy&&typeof a.reading.accuracy.pct==='number','and its own accuracy');
+ ok(a.reading.gates.length===6,'and the six gates');
+ ok(a.reading.expression.length===10,'and the ten expressions');
+
+ /* the whole point: twice on one profile is the same answer. the chain
+    alone was not repeatable, because the gate mixes accumulate. */
+ const b=read(blankProfile('door'));
+ ok(Math.abs(a.reading.CQ-b.reading.CQ)<1e-9,'two reads of one field agree');
+
+ /* a story is applied once and only once */
+ const st='i could not stop going over it and it was their fault';
+ const s1=read(blankProfile('s'),{story:st});
+ const s2=read(blankProfile('s'),{story:st});
+ ok(Math.abs(s1.reading.CQ-s2.reading.CQ)<1e-9,'a story applied twice reads once');
+ ok(s1.reading.vf!==1,'story cues move the gate factor off neutral');
+ ok(s1.reading.CQ!==a.reading.CQ,'and the story changes the reading');
+
+ /* gate evidence survives the round trip. this was the v1 defect: the
+    multiplier moved every CQ and was never written to the schema. */
+ const w=read(blankProfile('w'),{story:st,write:true});
+ ok(w.profile.gates&&w.profile.gates.verp.attach>0,'the gates are written to the profile');
+ const json=JSON.stringify(w.profile);
+ gatesClear();
+ const back=read(JSON.parse(json));
+ ok(Math.abs(back.reading.vf-w.reading.vf)<1e-9,'and reload restores the same multiplier');
+ ok(back.profile.v===2,'schema v2');
+
+ /* input and throughput are separable, which is what makes them testable */
+ const q=input(blankProfile('q'),{});
+ ok(q&&q.axes,'input returns the loaded profile');
+ const r=throughput(q);
+ ok(typeof r.CQ==='number','throughput computes off what input placed');
+ ok(output(q).v===2,'output writes the field back as schema');
+}
+
+g('17 · the host seam');
+{
+ const {bindStore,PKEY,blankProfile,pImport,pExport}=E;
+ /* the engine ships with a no-op store, so a headless run persists nothing
+    and never throws. binding one is the host's job. */
+ const mem={};
+ bindStore(k=>mem[k]===undefined?null:mem[k],(k,v)=>{mem[k]=v;});
+ const p=blankProfile('host'); E.read(p,{write:true});
+ const txt=JSON.stringify(p);
+ ok(pImport(txt)!==null,'a profile imports through the bound store');
+ ok(mem[PKEY]!==undefined,'and the store was written to');
+ ok(JSON.parse(pExport()).v===2,'export round trips at v2');
+ bindStore(()=>null,()=>{});          /* leave it as we found it */
+}
+
 console.log('\n===== '+P+' passed, '+F+' failed =====');
 process.exit(F?1:0);

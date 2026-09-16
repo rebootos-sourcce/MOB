@@ -222,5 +222,9 @@ function loop(ts){
  requestAnimationFrame(loop);}
 
 /* ---- init ---- */
+/* the engine ships with a no-op store. this is the browser's one. */
+try{ localStorage.getItem(PKEY);
+ STORE={get:function(k){return localStorage.getItem(k);},
+        set:function(k,v){localStorage.setItem(k,v);}}; }catch(e){}
 layout(); mxKey(); wireSections(); loadP(0); setTab(TAB.FIELD);
 requestAnimationFrame(loop);

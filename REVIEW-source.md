@@ -298,3 +298,60 @@ while I was doing this: one boundary landed inside the `LEANCUE` object literal,
 so `lexicon.js` began mid-array. Concatenation would have hidden it forever. And
 the three browser gates run against the rebuilt file, not the hand-written one:
 241 functional, 40 collision, 16 of 17 design, the one failure environmental.
+
+## The front door, and the two inputs nobody wrote down
+
+The engine had no entrance. It exported 84 names and `compute()` took no
+arguments, so the only way to get a reading was to reach in, mutate `S`,
+`DOMAIN`, `VERPMIX` and `LEANMIX` in the right order, and then call it. The
+order was real and undocumented. Nothing outside the engine could hand it a
+profile and get a number back.
+
+There is one entrance now, in `engine/read.js`, and it is the three surfaces:
+
+    read(profile, opts)     all three at once
+      input(profile, opts)  one profile in. it is the only input.
+      throughput(profile)   the chain, in the one order it runs in.
+      output(profile)       the field written back as schema.
+
+The chain underneath keeps its bodies and its signatures, because the ruling was
+port and not rebuild, and `tools/equiv.py` can still prove the arithmetic did not
+move. What changed is that this module is now the only thing permitted to touch
+the shared field state, it does so in one fixed order, and it zeroes what
+accumulates.
+
+That last part was a defect, not a tidy-up. The gate mixes accumulate with `+=`.
+Calling the chain twice counted the same story cues twice, so a reading was not
+repeatable. `read()` is: two reads of one profile return identical numbers, and a
+story applied twice reads once. Both are asserted.
+
+Building the door found the more serious one. The VERP mix is a cost multiplier
+of 0.60 to 1.35 on every held pattern, which is to say it moves every CQ in the
+app, and the schema never stored it. Neither was the lean. A reload silently
+changed every number a person had been looking at. Schema v2 adds
+`gates:{verp,lean}`, `loadProfile` and `saveProfile` read and write it, and a v1
+profile still loads: gates absent reads as zero evidence, which is exactly what
+no story means. Saving upgrades it in place.
+
+**This touches the cross-compatibility contract with SOURCE, so the version bump
+is his call.** The change is additive and a v1 profile is still readable, so
+nothing breaks either way. If he would rather hold v1, the fix reverts to a
+one-line version pin and the gates ride along as an ignored field.
+
+Two smaller things fell out of the same work. `accuracy()` read the live profile
+as a free variable, so the fit could only ever be measured against whichever
+profile happened to be current; it takes the profile as an argument now. And the
+engine was reaching for `localStorage` in `pStore` and `pPersist`, which my own
+DOM gate missed because the gate was a bare grep for five other names. The store
+is injectable now, `bindStore(get,set)`, and the gate is `atuned_src/hostfree.py`,
+which strips comments and string literals before checking so it can screen ten
+host names without tripping over prose that mentions them.
+
+What is still owed, stated plainly rather than left to be discovered. The core is
+still impure: `compute()`, `buildSoul()`, `exprRead()`, `sabLevels()`,
+`sab33Detect()`, `bandIg()` and `snapshot()` all read shared state and several
+write it. The door hides that from callers, it does not remove it. Making them
+take the field as an argument is the honest fix and it kills the bug class rather
+than containing it, but it rewrites the signatures of the core, which the
+handshake rules against, and every one of them would have to be re-proved by the
+gate alone. It belongs in its own change, once the interface has settled.

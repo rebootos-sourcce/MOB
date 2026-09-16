@@ -4,13 +4,21 @@
    Every number in the app derives from this and nothing else.
    Versioned so a v2 can migrate rather than break.
    ============================================================ */
-var SCHEMA_V=1;
+/* v2 adds gates. The VERP mix is a cost multiplier of 0.60 to 1.35 on every
+   held pattern, and in v1 it was never written down, so a reload silently
+   moved every CQ in the app. A v1 profile still loads: gates absent reads as
+   zeroes, which is exactly what no story evidence means. Saving upgrades it.
+   This touches the cross-compatibility contract with SOURCE, so the bump is
+   flagged for his ruling in REVIEW-source.md. */
+var SCHEMA_V=2, PKEY='source.profiles';
 function blankProfile(name){
  var p={v:SCHEMA_V, id:'p'+Date.now().toString(36)+Math.random().toString(36).slice(2,6),
   name:name||'New profile', created:new Date().toISOString(), updated:null,
   soul:{doms:[0], arcs:[0,1], roots:[]},            /* the invariant */
   axes:{},                                          /* nine poled child fetters */
   laws:{}, intake:{answers:{}, done:[], startedAt:null, completedAt:null},
+  gates:{verp:{aware:0,detach:0,intent:0,ignore:0,attach:0,averse:0},
+         lean:{benign:0,malignant:0}},   /* the cost multiplier, v2 */
   story:{entries:[]}, rituals:[], history:[]};
  CHILD.forEach(function(c){p.axes[c.nm]={held:3,opp:0};});
  SI.forEach(function(l){p.laws[l.nm]=null;});        /* null = not yet measured */
@@ -21,11 +29,13 @@ function loadProfile(p){
  CHILD.forEach(function(c){var a=p.axes[c.nm]||{};
   S.charge[c.nm]=a.held!=null?a.held:3; S.replace[c.nm]=a.opp||0;});
  SI.forEach(function(l){S.law[l.nm]=(p.laws[l.nm]!=null)?p.laws[l.nm]:6;});
+ gatesLoad(p);   /* absent on a v1 profile, which reads as no story evidence */
  return p;}
 function saveProfile(p){
  p.soul={doms:S.doms.slice(),arcs:S.arcs.slice(),roots:S.roots.slice()};
  CHILD.forEach(function(c){p.axes[c.nm]={held:S.charge[c.nm],opp:S.replace[c.nm]||0};});
  SI.forEach(function(l){if(S.law[l.nm]!=null)p.laws[l.nm]=S.law[l.nm];});
+ gatesSave(p);
  p.updated=new Date().toISOString(); p.v=SCHEMA_V;
  return p;}
 /* a snapshot is what Analytics plots. derived only, never inputs. */
@@ -37,8 +47,15 @@ function snapshot(p){
   loaded:r.loaded.length, sab:r.sabs.length, cx:r.cxs.length, hy:r.hys.length, ch:r.sups.length,
   dark:r.darkB, tier:r.tier, arch:ARCH[r.pi].nm};}
 var PROFILES=[], CURP=null;
-function pStore(){ try{ return JSON.parse(localStorage.getItem('source.profiles')||'[]'); }catch(e){ return []; } }
-function pPersist(){ try{ localStorage.setItem('source.profiles',JSON.stringify(PROFILES)); }catch(e){} }
+/* The engine does not know what a browser is. The host binds a store. With none
+   bound the profiles last as long as the process, which is what a headless run
+   wants. ui/ui.js binds localStorage. */
+var STORE={get:function(){return null;}, set:function(){}};
+/* a host binds its own. exported, because module.exports captures the value of
+   STORE and not the binding, so an outside caller cannot assign to it. */
+function bindStore(get,set){ STORE={get:get,set:set}; return STORE; }
+function pStore(){ try{ return JSON.parse(STORE.get(PKEY)||'[]'); }catch(e){ return []; } }
+function pPersist(){ try{ STORE.set(PKEY,JSON.stringify(PROFILES)); }catch(e){} }
 function pNew(name){ var p=blankProfile(name); PROFILES.push(p); CURP=p; pPersist(); return p; }
 function pSave(){ if(!CURP)return null; saveProfile(CURP); pPersist(); return CURP; }
 function pSnap(){ if(!CURP)return null; CURP.history.push(snapshot(CURP)); pPersist(); return CURP; }

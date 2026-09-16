@@ -76,3 +76,27 @@ function leanRead(r){
  var trust=Math.min(0.62,tot*0.09);
  var mal=fieldMal*(1-trust)+storyMal*trust;
  return {ben:100-mal, mal:mal, src:'field and '+tot+' story cue'+(tot===1?'':'s'), cues:tot};}
+
+/* ---------- the gates as schema ----------
+   VERPMIX and LEANMIX are inputs, not derived numbers, so they belong in the
+   profile. They live here rather than with the schema because the schema
+   loads after this file and a forward reference would only work by accident
+   of hoisting. */
+/* The gate mixes accumulate with +=, so a second pass would count the
+   same cues a second time. Zeroing is what makes a read repeatable. */
+function gatesClear(){
+ Object.keys(VERPMIX).forEach(function(k){VERPMIX[k]=0;});
+ LEANMIX.benign=0; LEANMIX.malignant=0;
+ return {verp:VERPMIX, lean:LEANMIX};}
+
+function gatesLoad(p){
+ gatesClear();
+ var g=p&&p.gates; if(!g)return null;
+ if(g.verp)Object.keys(VERPMIX).forEach(function(k){VERPMIX[k]=g.verp[k]||0;});
+ if(g.lean){LEANMIX.benign=g.lean.benign||0; LEANMIX.malignant=g.lean.malignant||0;}
+ return g;}
+
+function gatesSave(p){
+ var v={}; Object.keys(VERPMIX).forEach(function(k){v[k]=VERPMIX[k];});
+ p.gates={verp:v, lean:{benign:LEANMIX.benign, malignant:LEANMIX.malignant}};
+ return p.gates;}
