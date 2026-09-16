@@ -31,6 +31,7 @@ if(typeof module!=='undefined'&&module.exports){
                   bindStore:bindStore, PKEY:PKEY,
   /* intake */    iqList:iqList, iqScore:iqScore, iqApply:iqApply,
   /* sniffer */   scanStory:scanStory, parseStory:parseStory, applyStory:applyStory,
+                  pathOf:pathOf, seatOf:seatOf, SEATXY:SEATXY, PATHSEAT:PATHSEAT,
   /* birth */     sunSign:sunSign, moonSign:moonSign, risingSign:risingSign,
                   lifePath:lifePath, spiritual:spiritual, converge:converge,
   /* util */      clamp:clamp, leaves:(typeof leaves==='function'?leaves:null)

@@ -12,14 +12,14 @@ contract rather than today's numbers, so a legitimate tuning change passes and a
 broken invariant does not.
 
     ./atuned_src/BUILD-engine.sh
-    node tests/engine.js       165 checks in 17 groups
+    node tests/engine.js       198 checks in 18 groups
 
 The 17 groups: data integrity, determinism, the poled binary (jouissance begins
 at 6), monotonicity, CQ bounds and ceiling, saboteur charge ranges are bands and
 not floors, the six gates multiply resistance, the lean, schema round trip,
 partial intake scoring, the sniffer, the expression deficit model, accuracy,
-the chain compounding in order, every persona computing, the front door, and the
-host seam.
+the chain compounding in order, every persona computing, the front door, the host
+seam, and the path.
 
 `BUILD-engine.sh` then runs `atuned_src/hostfree.py`, which strips comments and
 string literals and fails on `document`, `window`, `navigator`, `localStorage`,
@@ -65,6 +65,25 @@ repo root.
 `design.js` reports one expected failure in a sandbox with no outbound network:
 Google Fonts cannot be fetched and the two optional figure rasters are absent.
 Both are environmental. The vector figure is inline and always renders.
+
+## The path simulation
+
+The engine gate asserts the path's contract. The simulation attacks it, by
+generating stories out of the app's own vocabulary and checking invariants that
+would catch the path being an artifact of scan order, of punctuation, or of
+nothing at all.
+
+    node tools/simulate-path.js [stories] [seed]     default 4000, seeded
+
+Roughly 18 assertions per story: determinism, case and punctuation invariance,
+unknown words at the ends not moving the route, reversal reversing the route and
+flipping the direction while preserving the distance, a different order being a
+different route, joined stories concatenating, the geometry not contradicting
+itself, every step sitting on a measured seat, and the path moving no number in
+the app. The seed is printed, so a failure is reproducible from its seed alone.
+
+It found two defects in the sniffer underneath and three in its own invariants.
+Both kinds are worth the run.
 
 ## Equivalence
 

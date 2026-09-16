@@ -355,3 +355,61 @@ take the field as an argument is the honest fix and it kills the bug class rathe
 than containing it, but it rewrites the signatures of the core, which the
 handshake rules against, and every one of them would have to be re-proved by the
 gate alone. It belongs in its own change, once the interface has settled.
+
+## The path, and the third of the lexicon that was never landing
+
+`scanStory` records `at`, the character offset of every hit, and sorts by it.
+`parseStory` then collapsed everything into per band totals. The route a sentence
+takes through the body was computed once per parse and discarded. It is kept now.
+
+Every step sits at a measured position. `SEATXY` is the centroid of each seat's
+own traced branches in `NERVEBR`, derived and not declared. They come out in
+anatomical order without being told to, crown at y 7.9 down to root at 72.5,
+which is the check that the tracing is coherent. No invented anatomy, and no
+frequency: the quantity is distance along the figure, which the file can support.
+
+A step is a word occurrence, not a lexicon match. One word can hit a phrase, a
+`LEX` entry and an adjective at once, and those are one event in the body rather
+than three. The first version made them three steps, which reported a 30 unit
+journey for the single word "anxious" and let the ordering depend on which of the
+three scan loops ran first. Match precedence is written down now, so the route is
+a property of the text instead of a property of the loops.
+
+The path reports both a `kink` and a `floor`. He named that open question and
+said he did not know which end the block sits at. The app had already answered
+it: `parseStory` sorts by susceptibility and takes the top, which assumes the
+highest charge. Nobody ruled that, it fell out of a sort order. Both ends are
+reported now so it can be ruled from data.
+
+The path is a record and not an input. `applyStory` does not read it and no
+number moves because of it. That is deliberate. The claim it encodes is not
+measured yet, and an unmeasured claim must not reach the arithmetic.
+
+### What the simulation found
+
+`tools/simulate-path.js` generates stories from the app's own vocabulary and
+checks about eighteen invariants per story. Roughly 580,000 assertions across six
+seeds now pass. Three of the first failures were bad invariants of mine, and they
+are worth recording because each looked like a code bug: padding a sentence with
+unknown words splits the 124 multi word phrases, reversing a sentence breaks them
+too, and several steps sitting at one seat is a legitimate span of zero, not a
+contradiction. The corpus generator was also cycling on a 32 bit LCG, so the run
+was testing far fewer distinct stories than it claimed.
+
+One failure was real, and it was not in the new code.
+
+The suppression that makes an idiom outrank its own words tested
+`at < h.at + h.t.length + 2`. A match of `' w '` occupies `at` to `at+len+2`, but
+its trailing space **is** the next word's leading space, so the next word starts
+at `at+len+1` and fell inside the window. Keys are scanned longest first, so any
+word directly following a longer one was silently dropped. On text built from
+lexicon words back to back, **32.7 percent of legitimate matches never landed**.
+On realistic mixed text the fix recovers 11.3 percent more hits and 13 percent
+more imprints, and 58 percent of stories now read differently than they did.
+
+That is a behaviour change and not a one to one rebuild, which is the right
+outcome: the previous reading was wrong. The idiom still outranks the words
+inside it, asserted both in the gate and in the simulation.
+
+The declaration diff against the previous build is six new names and two changed
+bodies, `scanStory` and `parseStory`. Nothing else in the engine moved.

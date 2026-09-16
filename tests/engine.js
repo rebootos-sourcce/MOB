@@ -313,5 +313,72 @@ g('17 · the host seam');
  bindStore(()=>null,()=>{});          /* leave it as we found it */
 }
 
+g('18 · the path');
+{
+ const {parseStory,scanStory,SEATXY,NERVEBR,LEX,PHRASES}=E;
+ /* the seats are measured off the artwork, not declared. anatomical order is
+    the check that the tracing is coherent. */
+ const order=['crown','eye','throat','heart','solar','sacral','root'];
+ ok(order.every(s=>SEATXY[s]),'every seat has a measured centroid');
+ ok(order.every((s,i)=>i===0||SEATXY[s].y>SEATXY[order[i-1]].y),
+  'the centroids fall in anatomical order, crown to root');
+ ok(order.reduce((a,s)=>a+SEATXY[s].n,0)===NERVEBR.reduce((a,b)=>a+b.p.length,0),
+  'every traced point belongs to exactly one seat');
+
+ const P=t=>parseStory(t).path;
+ const route=p=>p.steps.filter(s=>s.seat).map(s=>s.word+'>'+s.seats.join('+')).join(' ');
+
+ /* a step is a word occurrence, not a lexicon match. one word reaching two
+    seats is one event in the body, not two. */
+ const one=P('i felt anxious');
+ ok(one.steps.filter(s=>s.seat).length===1,'one word is one step');
+ ok(one.seats===undefined&&one.steps[0].seats.length===2,'and it can name two seats');
+ ok(one.span===0,'a single word travels nowhere');
+
+ /* order is the whole point of keeping the path */
+ const a=P('i was furious then i felt hollow');
+ const b=P('i was hollow then i felt furious');
+ ok(a.start!==a.end,'a two seat sentence has a route');
+ ok(a.start===b.end&&a.end===b.start,'reversing the order reverses the route');
+ ok(Math.abs(a.net+b.net)<1e-9,'and flips the direction');
+ ok(Math.abs(a.span-b.span)<1e-9,'the distance travelled is the same either way');
+
+ /* the geometry cannot lie about itself */
+ ['i was ashamed and numb and furious','i felt nothing at all','',
+  'panicked frightened defeated worthless'].forEach(t=>{
+  const p=P(t), d=new Set(p.steps.filter(s=>s.seat).map(s=>s.seat)).size;
+  ok(p.span>=Math.abs(p.net)-1e-9,'span is at least the net displacement: '+t);
+  ok((d<2)===(p.span===0),'span is zero exactly when the route stays at one seat: '+t);
+  ok(p.drop>=0&&p.rise<=0,'drop is downward and rise is upward: '+t);
+  ok((p.kink===null)===(p.scored===0),'a kink exists exactly when something is scored: '+t);});
+
+ /* both ends are reported. the app had silently assumed the highest. */
+ const k=P('i was furious and a little tired');
+ ok(k.kink&&k.floor,'the path reports a kink and a floor');
+ ok(k.kink.amt>=k.floor.amt,'and the kink is never below the floor');
+
+ /* determinism, and no ambient state */
+ const t='i was humiliated then i went numb';
+ ok(JSON.stringify(P(t))===JSON.stringify(P(t)),'the path is deterministic');
+
+ /* the suppression window. it claimed t.length+2, but a match of " w "
+    shares its trailing space with the next word's leading space, so every
+    word following a longer one was dropped. a third of them never landed. */
+ const solo=Object.keys(LEX).filter(w=>!w.includes(' ')).slice(0,40);
+ ok(scanStory(solo.join(' ')).filter(h=>h.kind==='word').length===solo.length,
+  'no single word entry is swallowed by its neighbour');
+ /* and the idiom still outranks the words inside it */
+ ok(scanStory('i felt flattened me afterwards').some(h=>h.kind==='phrase'),
+  'a phrase still matches');
+ ok(!scanStory('i felt flattened me afterwards').some(h=>h.kind==='word'&&h.t==='flattened'),
+  'and still outranks its own words');
+
+ /* the path is a record, not an input. no number may move because of it. */
+ reset(5,0,6);
+ const before=JSON.stringify(compute());
+ P('i was furious then hollow then ashamed');
+ ok(JSON.stringify(compute())===before,'parsing a path moves no number in the app');
+}
+
 console.log('\n===== '+P+' passed, '+F+' failed =====');
 process.exit(F?1:0);
