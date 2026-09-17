@@ -23,9 +23,24 @@ const TABS=[['story',0],['summary',1],['field',2],['energy',3],['analytics',4]];
  await p.evaluate(()=>{loadP(3);setTab(2);render&&render();});
  await p.waitForTimeout(800);
  await p.screenshot({path:`${OUT}/${W}-field-loaded.png`});
- await p.evaluate(()=>{S.theme='light';document.documentElement.setAttribute('data-theme','light');render&&render();});
+ /* The light theme is 'snow', and switching it needs three things done
+    together: S.theme, a body.snow class, and rebuildSwatches(). They exist
+    only inside the button's click handler, so there is no applyTheme() to
+    call. Clicking the real control is therefore the only honest capture.
+    Setting S.theme alone leaves the palette dark, and the first version of
+    this harness wrote that to disk as the light theme. The assert below
+    fails the run rather than shipping the lie again. */
+ const bg=()=>p.evaluate(()=>getComputedStyle(document.body).backgroundColor);
+ const darkPx=await bg();
+ const clicked=await p.evaluate(()=>{
+  const b=[...document.querySelectorAll('#themes button')].find(x=>/snow/i.test(x.textContent));
+  if(!b)return false; b.click(); return true;});
+ if(!clicked){console.error('no snow button found in #themes');process.exit(1);}
+ await p.waitForTimeout(800);
+ const lightPx=await bg();
+ if(darkPx===lightPx){console.error('theme did not change: body stayed '+darkPx);process.exit(1);}
  await p.waitForTimeout(600);
- await p.screenshot({path:`${OUT}/${W}-light.png`});
- console.log('wrote '+(TABS.length+2)+' shots to '+OUT+(errs.length?'  JS ERRORS: '+errs.join(' | '):'  no JS errors'));
+ await p.screenshot({path:`${OUT}/${W}-snow.png`});
+ console.log('wrote '+(TABS.length+2)+' shots to '+OUT+'  dark '+darkPx+' -> snow '+lightPx+(errs.length?'  JS ERRORS: '+errs.join(' | '):'  no JS errors'));
  await b.close();
 })();
