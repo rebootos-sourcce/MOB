@@ -1,0 +1,66 @@
+name: Build MOB Recorder (Windows)
+
+on:
+  workflow_dispatch:
+  push:
+    tags: ['recorder-v*']
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+    defaults:
+      run:
+        working-directory: recorder
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: recorder/package-lock.json
+
+      - name: Install
+        run: npm ci --no-audit --no-fund
+
+      - name: Syntax check
+        run: npm run check
+
+      - name: Build installer + portable EXE
+        run: npm run dist
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: "false"
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Read version
+        id: ver
+        shell: bash
+        run: echo "version=$(node -p "require('./package.json').version")" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: MOB-Recorder-windows
+          path: |
+            recorder/dist/*.exe
+          if-no-files-found: error
+
+      - name: Publish release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: recorder-v${{ steps.ver.outputs.version }}-build${{ github.run_number }}
+          name: MOB Recorder ${{ steps.ver.outputs.version }} (build ${{ github.run_number }})
+          target_commitish: ${{ github.sha }}
+          make_latest: true
+          body: |
+            Windows 10/11 64-bit.
+
+            **Download `MOB-Recorder-${{ steps.ver.outputs.version }}-portable.exe`** below and double-click it. No install needed.
+            (`-setup.exe` is the installer version if you'd rather have a Start-menu entry.)
+
+            The file is unsigned, so Windows SmartScreen will say "Windows protected your PC" the first time.
+            Click **More info → Run anyway**.
+          files: |
+            recorder/dist/*.exe

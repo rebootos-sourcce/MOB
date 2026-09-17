@@ -40,11 +40,16 @@
             "x64"
           ]
         }
-      ]
+      ],
+      "signAndEditExecutable": false
     },
     "nsis": {
       "oneClick": false,
-      "allowToChangeInstallationDirectory": true
+      "allowToChangeInstallationDirectory": true,
+      "artifactName": "MOB-Recorder-${version}-setup.exe"
+    },
+    "portable": {
+      "artifactName": "MOB-Recorder-${version}-portable.exe"
     }
   },
   "devDependencies": {
