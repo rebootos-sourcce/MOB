@@ -103,9 +103,21 @@ VIEWS.forEach(function(v,i){
   $('vbar').querySelectorAll('.vt').forEach(function(x,j){x.setAttribute('aria-pressed',j===i);});
   render();});
  $('vbar').appendChild(b);});
+/* The three themes were three text buttons and took more width than the
+   tab bar. A crescent for dark, a six point flake for snow, and for punch
+   a circle with one half solid. Punch is the one place a fill is the
+   message rather than a decoration: the theme is the absence of outlines,
+   so the icon says it by being half solid. */
+const THEMEICON={
+ dark:'M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z',
+ snow:'M12 3v18M4.2 7.5l15.6 9M19.8 7.5l-15.6 9M12 7l-2.6-2.6M12 7l2.6-2.6M12 17l-2.6 2.6M12 17l2.6 2.6',
+ punch:'M12 4a8 8 0 0 1 0 16zM12 12m-8 0a8 8 0 1 0 16 0a8 8 0 1 0-16 0'};
 [['dark','Dark'],['snow','Snow'],['punch','Punch']].forEach(function(t,i){
  var b=document.createElement('button');b.type='button';
- b.setAttribute('aria-pressed',i===0);b.textContent=t[1];
+ b.setAttribute('aria-pressed',i===0);
+ b.className='seg-i'; b.title=t[1]; b.setAttribute('aria-label',t[1]+' theme');
+ b.innerHTML='<svg viewBox="0 0 24 24" width="19" height="19" aria-hidden="true">'
+  +'<path d="'+THEMEICON[t[0]]+'"/></svg>';
  b.addEventListener('click',function(){S.theme=t[0];
   document.body.classList.toggle('snow',t[0]==='snow');
   document.body.classList.toggle('punch',t[0]==='punch');

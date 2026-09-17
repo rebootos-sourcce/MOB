@@ -33,7 +33,7 @@ const TABS=[['story',0],['summary',1],['field',2],['energy',3],['analytics',4]];
  const bg=()=>p.evaluate(()=>getComputedStyle(document.body).backgroundColor);
  const darkPx=await bg();
  const clicked=await p.evaluate(()=>{
-  const b=[...document.querySelectorAll('#themes button')].find(x=>/snow/i.test(x.textContent));
+  const b=[...document.querySelectorAll("#themes button")].find(x=>/snow/i.test(x.getAttribute("aria-label")||x.textContent));
   if(!b)return false; b.click(); return true;});
  if(!clicked){console.error('no snow button found in #themes');process.exit(1);}
  await p.waitForTimeout(800);
