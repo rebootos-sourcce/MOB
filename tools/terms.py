@@ -14,6 +14,11 @@ for f in ui:
         if not v or not re.search(r'[a-z]{3}',v): continue
         if re.match(r'^[\w.#\-\[\]]+$',v): continue          # selectors, ids, classes
         if 'px' in v or v.startswith('rgba') or v.startswith('var(') or '<' in v: continue
+        # markup and style fragments are not copy. fill="none" is not the word
+        # "none" any more than display:none is. the first version of this tool
+        # counted them and reported 15 uses of an empty state phrase that
+        # occurred once.
+        if '="' in v or re.search(r'[a-z-]+:[a-z0-9]', v) or v.endswith('/>'): continue
         txt.append((f.replace(SRC+'/',''),v))
 # also the static shell copy
 for f in [SRC+'/shell/body.html']:
@@ -34,7 +39,9 @@ SETS={
 }
 print()
 for concept,words in SETS.items():
-    found=[(w,blob.count(w)) for w in words if blob.count(w)>0]
+    def n(w):
+        return len(re.findall(r'(?<![a-z])'+re.escape(w)+r'(?![a-z])',blob))
+    found=[(w,n(w)) for w in words if n(w)>0]
     if len(found)>1:
         print('  %-18s %s'%(concept,'  '.join('%s x%d'%(w,c) for w,c in sorted(found,key=lambda x:-x[1]))))
 print()
