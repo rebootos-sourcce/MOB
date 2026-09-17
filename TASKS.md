@@ -85,29 +85,83 @@ Content, not code.
 
 ---
 
-## B. Needs an architecture this project does not have.
+## B. The funnel, and the small service behind it.
 
-`CLAUDE.md` states no backend, no accounts, no network, no telemetry. Each of
-these needs at least one. Part one of the recording is this conversation: its
-audio confirmed web portal, mobile app, email address, log in, download, free
-version, database, cloud, users, managers, results, take the test, paying,
-desktop version.
+Part B described this properly, and one instinct in it changes the size of the
+work: keep the quiz store separate from the app rather than making the app
+talk to a backend. That is the right call and it is worth saying why.
 
-- **B1.** Notification pings, a set number of patterns a day at a chosen time
-- **B2.** Streaks
-- **B3.** Community feed, or a curated community
-- **B4.** Seeing other people's progress
-- **B5.** Cloud stored results, manager reporting, admin portal
-- **B6.** Mobile client sharing a login with a web portal
-- **B7.** Paid desktop tier against a free pattern only tier
-- **B8.** The free CQ quiz as a public funnel, collecting email
+**The funnel as described**
 
-These are one decision, not eight. Taking any of them means becoming a
-different kind of system, and the privacy posture is currently part of the
-product given what this data is. Worth noting that B8 is the cheapest entry
-point and the one that forces the rest.
+1. The ad does not say download the app. It says take the test, learn your CQ.
+2. The quiz runs on the web. All the questions.
+3. At the end the person enters an email. The answers are keyed to it.
+4. To see the score they download at least the free app.
+5. They sign up with the same email, and the answers come down with them.
 
----
+**What actually has to exist**
+
+Measured against the real schema, not estimated:
+
+    questions in the quiz        63
+    answers payload             432 bytes
+    laws payload                304 bytes
+    one quiz record, keyed      1.1 KB      512 bytes gzipped
+    100,000 people              about 49 MB total
+
+That is the entire service. A key value store holding half a kilobyte per
+person, a write when the quiz completes, and a read when the app asks. It is
+not a backend for the app. The app stays a single file and gains exactly one
+capability: fetch a record by email, once, at sign in. Every other item in the
+old version of this section assumed far more than that.
+
+**B1. The web quiz.** A separate build from the same `atuned_src/`. It runs the
+63 questions and nothing else, so it shares the intake and the schema and
+carries none of the renderers.
+*Medium. Mostly reuse.*
+
+**B2. The record store.** Email keyed, versioned with the same `SCHEMA_V`, one
+write and one read. Separate from anything else by design, per part B, so it
+can be moved or replaced without touching the app.
+*Small, and smaller than it sounds at 0.5 KB a record.*
+
+**B3. Claim on first run.** The app asks for an email at sign in and pulls the
+record down once. After that the profile is local again, which keeps the
+privacy posture everywhere except the handoff.
+*Small.*
+
+**B4. Desktop and app talking.** Same mechanism as B3. No new surface.
+
+**Two things the design as described does not yet handle**
+
+*The email is the only key.* As stated, anything that knows an address can
+retrieve that person's somatic and psychological profile. That is not a
+hypothetical, it is what "ping the email address and get the answers" means. A
+one time code sent to the address, or a signed claim link, closes it and costs
+very little. Given what this data is, it is not optional.
+
+*Data leaving the device changes the legal position.* While everything stayed
+in the browser there was no controller and no processor. A stored quiz record
+keyed to an email is personal data held by someone, so access, deletion and
+breach obligations attach. Worth one hour with someone who knows the ground
+before the first record is written, not after.
+
+**Still a fork, but a much narrower one**
+
+The old version of this section listed pings, streaks, a community feed and
+manager reporting as one decision with the funnel. They are not. The funnel
+needs 0.5 KB a person and one read. Engagement mechanics need identity,
+sessions, social graph and a notification channel. Taking the funnel does not
+commit to any of the rest.
+
+**Deferred, and genuinely separate**
+
+- Notification pings and a chosen practice time
+- Streaks
+- Community feed, curated or open
+- Seeing other people's progress
+- Manager reporting and an admin portal
+- Paid desktop tier against a free pattern only tier
 
 ## C. Already open, his call, unchanged by this review.
 
@@ -134,8 +188,14 @@ point and the one that forces the rest.
 
 A4 and A6 first: both small, both protect everything else, neither touches
 design. Then A2, because layer isolation is the complaint that arrived from a
-person and from a measurement at the same time. Then A1, which is the one with
-evidence but needs a ruling first. A3 is small enough to ride along with A2.
+person and from a measurement at the same time. A3 is small enough to ride
+along with A2.
+
+Then A1, and it is worth seeing that A1 and B1 are the same work. The funnel's
+quiz IS the full intake. Building the gate inside the app and building the web
+quiz are one job done twice if they are scheduled apart, and one job done once
+if they are scheduled together. That is the strongest argument for doing the
+intake next rather than later.
 
 A11 and A9 are blocked on one question each. Answering both costs a minute of
 looking and would unblock real work.
