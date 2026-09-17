@@ -90,17 +90,38 @@ only. Muted palette argued from autonomic response. Icons are ring, not fill.
 
 **Port, do not rebuild.** The arithmetic core keeps its bodies and signatures.
 
-## What this project is not
+## What this project is becoming
 
-No backend, no accounts, no app store, no telemetry, and no network except the
-Google Fonts link noted below, which is the one thing contradicting that
-sentence. Storage is
-the person's own browser and can vanish, which is why save failures must be
-reported rather than swallowed. Do not propose microservices, serverless,
-scaling tiers, ASO or analytics SDKs. They have no surface to attach to here,
-and the privacy posture is deliberate.
+**The fork is called. This becomes an accounts product.** Ruled by the owner.
+A web quiz as its own product flow, a record store, sign in, a practitioner
+who can be granted sight of a person's data, paid tiers, and push
+notifications for ritual accountability.
+
+That does not license building it all at once, and it does not retire the
+engineering posture. What holds:
+
+- `source.html` stays one file with no dependencies. The app gains network at
+  exactly one seam, fetching a record at sign in.
+- The engine stays host free. No `fetch` in `engine/`.
+- Storage is still the person's own browser for everything except the quiz
+  record, so save failures still must be reported rather than swallowed.
+- A practitioner seeing somatic and psychological self report is a
+  consequential grant. It needs explicit consent, a visible list of who has
+  sight, and revocation. Never a silent default.
+- Records off device mean a controller exists. Access, deletion and breach
+  obligations attach.
+
+What is now in scope that was not: auth, paywall and tiers, push
+notifications, a points and badge ladder, and a practitioner view. Each still
+needs designing before building.
 
 ## Open, and whose call
+
+**Decided this round.** Strong default rather than a hard gate on the intake.
+A new tab exposes every question in the centre, taken out of the left rail. A
+third theme called Punch, where nothing is outlined and everything is solid.
+The fork goes to accounts. Situational questions modelled on the Ultima virtue
+dilemmas, pending the format ruling.
 
 **Google Fonts contradicts the privacy posture.** `source.html` links
 `fonts.googleapis.com` and `fonts.gstatic.com`, so every load sends the
