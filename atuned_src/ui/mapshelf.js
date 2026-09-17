@@ -19,7 +19,7 @@ function renderShelf(r,seats,speed,stop,dom,loadedTot,marks){
   +'<div class="pm-side"><div class="pm-eye">Heaviest seat</div>'
   +'<div class="pm-dom" style="color:'+(loadedTot?PMC[K2B[dom.p.k]]:'var(--dim)')+'">'
   +(loadedTot?dom.p.n:'nothing held')+'</div>'
-  +'<div class="pm-sub">'+loadedTot+' of '+NODES.length+' held</div></div></div>';
+  +'<div class="pm-sub">'+(loadedTot?loadedTot+' held':'')+'</div></div></div>';
 
  var beads=marks.filter(function(m){return m.kind==='bead';}).sort(function(a,b){return a.rank-b.rank;});
  var layerNm=PML.filter(function(L){return L[0]===PMLAYER;})[0][1];
@@ -135,7 +135,7 @@ function renderShelf(r,seats,speed,stop,dom,loadedTot,marks){
    +'<div class="pm-dn">'+sd.n+'</div><div class="pm-dm"><b>'+sd.nv+'</b><br>vritti '+sd.vt
    +'<br>seated at '+sd.seat+'</div>'
    +'<div class="pm-grid"><span>passes</span><b>'+Math.round(ss.pass*100)+'%</b>'
-   +'<span>held</span><b>'+ss.hot+' of '+ss.tot+'</b>'
+   +'<span>held</span><b>'+ss.hot+'</b>'
    +'<span>mean SQ</span><b>'+ss.mean.toFixed(1)+'</b>'
    +'<span>integrity</span><b>'+bandIg(bnd).toFixed(1)+'</b></div>'
    +'<div class="pm-eye" style="margin-top:12px">Laws seated here</div><div class="pm-chips">'

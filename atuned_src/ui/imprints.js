@@ -36,7 +36,10 @@ function impPill(n,maxW,IX,ghost){
     sniffer has found and nothing has committed. */
  var installed=(!ghost && n.sq<4 && n.pole>=4);
  var c=installed?seatCol('Heart'):seatCol(n.b);
- var rel=(ghost?2:(installed?n.pole:n.sq))/Math.max(1,maxW);
+ /* An installed node scales by its pole, which can exceed the held
+    maximum when nothing is held, so the ratio is clamped. Unclamped it
+    produced a 34px pill for a profile with poles of 7 and no held SQ. */
+ var rel=Math.min(1,(ghost?2:(installed?n.pole:n.sq))/Math.max(1,maxW));
  var fs=(13+rel*4).toFixed(1), pad=(6+rel*5).toFixed(0);
  var opp=(CHILD.filter(function(x){return x.nm===n.cf;})[0]||{}).opp||'';
  var on=!!IMP_PICK[n.i], hot=n.sq>=9;

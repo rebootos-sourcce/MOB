@@ -77,8 +77,13 @@ body.punch .seg{background:var(--sunk)}
 /* Two rules hardcoded a colour instead of the edge token, so they leaked
    through the theme. The writing box focus ring was literal gold; the
    imprint pill mixed its seat colour into a border. Both become fills. */
-body.punch .st-ta,body.punch .st-ta:focus{border-color:transparent;box-shadow:none}
+body.punch .st-ta,body.punch .st-ta:focus{border-color:transparent}
 body.punch .st-ta:focus{background:var(--panel-2)}
+/* Punch has no outlines, so the keyboard focus ring on a field becomes a
+   solid bar down the left edge. Same job, no ring. Buttons keep the ring
+   because a bar on a pill reads as a glyph. */
+body.punch textarea:focus-visible,body.punch input:focus-visible,body.punch select:focus-visible{
+ outline:none;box-shadow:inset 4px 0 0 var(--gold)}
 body.punch .ip{border-color:transparent;background:color-mix(in srgb,var(--c) 22%,var(--panel-2))}
 body.punch .ip.ghost{border-style:solid;border-color:transparent;background:var(--sunk);opacity:.72}
 /* The open section header was a solid gold slab and out-shouted the primary
@@ -3190,7 +3195,7 @@ function renderShelf(r,seats,speed,stop,dom,loadedTot,marks){
   +'<div class="pm-side"><div class="pm-eye">Heaviest seat</div>'
   +'<div class="pm-dom" style="color:'+(loadedTot?PMC[K2B[dom.p.k]]:'var(--dim)')+'">'
   +(loadedTot?dom.p.n:'nothing held')+'</div>'
-  +'<div class="pm-sub">'+loadedTot+' of '+NODES.length+' held</div></div></div>';
+  +'<div class="pm-sub">'+(loadedTot?loadedTot+' held':'')+'</div></div></div>';
 
  var beads=marks.filter(function(m){return m.kind==='bead';}).sort(function(a,b){return a.rank-b.rank;});
  var layerNm=PML.filter(function(L){return L[0]===PMLAYER;})[0][1];
@@ -3306,7 +3311,7 @@ function renderShelf(r,seats,speed,stop,dom,loadedTot,marks){
    +'<div class="pm-dn">'+sd.n+'</div><div class="pm-dm"><b>'+sd.nv+'</b><br>vritti '+sd.vt
    +'<br>seated at '+sd.seat+'</div>'
    +'<div class="pm-grid"><span>passes</span><b>'+Math.round(ss.pass*100)+'%</b>'
-   +'<span>held</span><b>'+ss.hot+' of '+ss.tot+'</b>'
+   +'<span>held</span><b>'+ss.hot+'</b>'
    +'<span>mean SQ</span><b>'+ss.mean.toFixed(1)+'</b>'
    +'<span>integrity</span><b>'+bandIg(bnd).toFixed(1)+'</b></div>'
    +'<div class="pm-eye" style="margin-top:12px">Laws seated here</div><div class="pm-chips">'
@@ -3364,7 +3369,10 @@ function impPill(n,maxW,IX,ghost){
     sniffer has found and nothing has committed. */
  var installed=(!ghost && n.sq<4 && n.pole>=4);
  var c=installed?seatCol('Heart'):seatCol(n.b);
- var rel=(ghost?2:(installed?n.pole:n.sq))/Math.max(1,maxW);
+ /* An installed node scales by its pole, which can exceed the held
+    maximum when nothing is held, so the ratio is clamped. Unclamped it
+    produced a 34px pill for a profile with poles of 7 and no held SQ. */
+ var rel=Math.min(1,(ghost?2:(installed?n.pole:n.sq))/Math.max(1,maxW));
  var fs=(13+rel*4).toFixed(1), pad=(6+rel*5).toFixed(0);
  var opp=(CHILD.filter(function(x){return x.nm===n.cf;})[0]||{}).opp||'';
  var on=!!IMP_PICK[n.i], hot=n.sq>=9;
@@ -4882,7 +4890,7 @@ function railTop(r){
  var e=document.getElementById('railtop'); if(!e)return;
  /* "18 of 112 held" read as a score out of a total, which is a test rather
     than a mirror. Coherence and the tier it names are the line. The count
-    lives once, in Summary, where a count belongs. */
+    was cut everywhere a count read against a total. */
  e.innerHTML=cr(r.darkB, r.CQ, {size:'sm', label:'coherence'})
   +'<span class="rt-t">'+esc(r.tier)+'</span>';}
 function render(){
@@ -4941,13 +4949,13 @@ function render(){
    +'<div class="pm-eye" style="margin-top:14px">Archetypes</div>'+ah
    +'<div class="pm-eye" style="margin-top:12px">Domains</div>'+dsh
    +'<div class="pm-eye" style="margin-top:12px">Field</div>'
-   +row('Held',held+' of '+NODES.length,(held?Math.round(held/NODES.length*100):0)+'%')
-   +row('Installed',inst+' addresses',(inst?Math.round(inst/NODES.length*100):0)+'%')
+   +row('Held',held?held+' addresses':'nothing','')
+   +row('Installed',inst?inst+' addresses':'nothing','')
    +row('Darkest',r.darkB,r.darkV.toFixed(1))
    +row('Law shut',r.weakL.nm,'at the '+r.weakL.b.toLowerCase());})();
- $('rows').innerHTML='<span class="k">Stack</span><br>addresses <b>'+r.loaded.length+'</b> of '+NODES.length
+ $('rows').innerHTML='<span class="k">Stack</span><br>addresses <b>'+r.loaded.length+'</b>'
   +'<br>saboteurs <b>'+r.sabs.length+'</b><br>complexes <b>'+r.cxs.length+'</b>'
-  +'<br>hyper <b>'+r.hys.length+'</b> of 12<br>character <b>'+r.sups.length+'</b>'
+  +'<br>hyper <b>'+r.hys.length+'</b><br>character <b>'+r.sups.length+'</b>'
   +'<br><br><span class="k">Instruments</span><br>'
   +'integrity <b>'+r.Ig.toFixed(1)+'</b><br>intention <b>'+r.It.toFixed(1)+'</b><br>'
   +'pole in <b>'+r.poleMean.toFixed(2)+'</b><br>jouissance <b>'+r.JQ.toFixed(2)+'</b>'

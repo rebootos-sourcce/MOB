@@ -77,8 +77,13 @@ body.punch .seg{background:var(--sunk)}
 /* Two rules hardcoded a colour instead of the edge token, so they leaked
    through the theme. The writing box focus ring was literal gold; the
    imprint pill mixed its seat colour into a border. Both become fills. */
-body.punch .st-ta,body.punch .st-ta:focus{border-color:transparent;box-shadow:none}
+body.punch .st-ta,body.punch .st-ta:focus{border-color:transparent}
 body.punch .st-ta:focus{background:var(--panel-2)}
+/* Punch has no outlines, so the keyboard focus ring on a field becomes a
+   solid bar down the left edge. Same job, no ring. Buttons keep the ring
+   because a bar on a pill reads as a glyph. */
+body.punch textarea:focus-visible,body.punch input:focus-visible,body.punch select:focus-visible{
+ outline:none;box-shadow:inset 4px 0 0 var(--gold)}
 body.punch .ip{border-color:transparent;background:color-mix(in srgb,var(--c) 22%,var(--panel-2))}
 body.punch .ip.ghost{border-style:solid;border-color:transparent;background:var(--sunk);opacity:.72}
 /* The open section header was a solid gold slab and out-shouted the primary

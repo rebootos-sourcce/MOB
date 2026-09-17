@@ -117,7 +117,7 @@ function railTop(r){
  var e=document.getElementById('railtop'); if(!e)return;
  /* "18 of 112 held" read as a score out of a total, which is a test rather
     than a mirror. Coherence and the tier it names are the line. The count
-    lives once, in Summary, where a count belongs. */
+    was cut everywhere a count read against a total. */
  e.innerHTML=cr(r.darkB, r.CQ, {size:'sm', label:'coherence'})
   +'<span class="rt-t">'+esc(r.tier)+'</span>';}
 function render(){
@@ -176,13 +176,13 @@ function render(){
    +'<div class="pm-eye" style="margin-top:14px">Archetypes</div>'+ah
    +'<div class="pm-eye" style="margin-top:12px">Domains</div>'+dsh
    +'<div class="pm-eye" style="margin-top:12px">Field</div>'
-   +row('Held',held+' of '+NODES.length,(held?Math.round(held/NODES.length*100):0)+'%')
-   +row('Installed',inst+' addresses',(inst?Math.round(inst/NODES.length*100):0)+'%')
+   +row('Held',held?held+' addresses':'nothing','')
+   +row('Installed',inst?inst+' addresses':'nothing','')
    +row('Darkest',r.darkB,r.darkV.toFixed(1))
    +row('Law shut',r.weakL.nm,'at the '+r.weakL.b.toLowerCase());})();
- $('rows').innerHTML='<span class="k">Stack</span><br>addresses <b>'+r.loaded.length+'</b> of '+NODES.length
+ $('rows').innerHTML='<span class="k">Stack</span><br>addresses <b>'+r.loaded.length+'</b>'
   +'<br>saboteurs <b>'+r.sabs.length+'</b><br>complexes <b>'+r.cxs.length+'</b>'
-  +'<br>hyper <b>'+r.hys.length+'</b> of 12<br>character <b>'+r.sups.length+'</b>'
+  +'<br>hyper <b>'+r.hys.length+'</b><br>character <b>'+r.sups.length+'</b>'
   +'<br><br><span class="k">Instruments</span><br>'
   +'integrity <b>'+r.Ig.toFixed(1)+'</b><br>intention <b>'+r.It.toFixed(1)+'</b><br>'
   +'pole in <b>'+r.poleMean.toFixed(2)+'</b><br>jouissance <b>'+r.JQ.toFixed(2)+'</b>'
