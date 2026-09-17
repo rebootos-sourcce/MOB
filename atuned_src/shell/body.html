@@ -4,6 +4,9 @@
  <div class="glass top">
   <div class="brand">At&uuml;ned</div>
   <div id="tabbar" style="display:flex;gap:5px;flex-wrap:wrap"></div>
+  <!-- One status region for the whole app. Polite so it does not interrupt,
+       and it carries the message rather than a button lying about it. -->
+  <div id="status" role="status" aria-live="polite"></div>
   <div class="spacer"></div>
   <label for="psel" class="toplab">Whose field</label>
   <select id="psel"></select>

@@ -75,11 +75,15 @@ function renderIntake(){
  if(nb)nb.onclick=function(){var n=prompt('Profile name','Profile '+(PROFILES.length+1));
   if(n){pNew(n);loadProfile(CURP);IQ_OPEN=null;syncCh();syncLw();syncSoul();renderIntake();render();}};
  var sb=document.getElementById('iqsave');
- if(sb)sb.onclick=function(){pSave();pSnap();sb.textContent='Saved';
-  setTimeout(function(){sb.textContent='Save';},900);};
+ /* The button used to read "Saved" whether or not anything was written. It
+    reports what happened now, and the status region carries the detail. */
+ if(sb)sb.onclick=function(){pSave();pSnap();
+  var ok=statusSaved();
+  sb.textContent=ok?'Saved':'Not saved';
+  setTimeout(function(){sb.textContent='Save';},ok?900:2600);};
  var eb=document.getElementById('iqexp');
  if(eb)eb.onclick=function(){var t=pExport();
-  try{navigator.clipboard.writeText(t);eb.textContent='Copied';}
+  try{navigator.clipboard.writeText(t);eb.textContent='Copied';status('Profile copied to the clipboard.');}
   catch(e){eb.textContent=t.length+' bytes';}
   setTimeout(function(){eb.textContent='Export';},1200);};}
 

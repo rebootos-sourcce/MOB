@@ -68,6 +68,27 @@ const GOLDC=()=>hx(LIGHT()?'#8A6D18':'#DFCC7E');
 function bc(b){return hx(LIGHT()?PAL_LIGHT[b]:PAL[b]);}
 function nodeCol(n){const base=bc(n.b),ld=clamp(n.disp/10,0,1);
  return mixc(mixc(base,LIGHT()?[238,236,230]:[150,160,180],.74),base,Math.pow(ld,.55));}
+/* ---- the one status writer ----
+   Every surface reports through here so the wording, the timing and the
+   announcement behave the same way wherever they come from. A failure stays
+   on screen until something replaces it. A confirmation clears after 2.4s,
+   which is past the point a person has read it and before it becomes
+   furniture. */
+var _stT=null;
+function status(msg,kind){
+ var e=document.getElementById('status'); if(!e)return;
+ clearTimeout(_stT);
+ e.textContent=msg||'';
+ if(kind)e.setAttribute('data-kind',kind); else e.removeAttribute('data-kind');
+ if(msg&&kind!=='fail')_stT=setTimeout(function(){
+  e.textContent='';e.removeAttribute('data-kind');},2400);}
+/* saving is the case that was lying, so it gets its own wording */
+function statusSaved(){
+ var st=(typeof saveState==='function')?saveState():{ok:true};
+ if(st.ok)status('Saved.');
+ else status('Not saved. Storage is full or blocked, so this session will not survive a reload.','fail');
+ return st.ok;}
+
 function layout(){const b=cv.parentElement.getBoundingClientRect();
  DPR=Math.min(devicePixelRatio||1,2);cv.width=b.width*DPR;cv.height=b.height*DPR;
  CW=b.width;CH=b.height;CX=CW/2;CY=CH/2;U=Math.min(CW,CH)/2;

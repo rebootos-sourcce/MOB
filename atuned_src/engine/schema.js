@@ -55,7 +55,15 @@ var STORE={get:function(){return null;}, set:function(){}};
    STORE and not the binding, so an outside caller cannot assign to it. */
 function bindStore(get,set){ STORE={get:get,set:set}; return STORE; }
 function pStore(){ try{ return JSON.parse(STORE.get(PKEY)||'[]'); }catch(e){ return []; } }
-function pPersist(){ try{ STORE.set(PKEY,JSON.stringify(PROFILES)); }catch(e){} }
+/* The empty catch here meant a save that failed on quota or blocked storage
+   told nobody, and the intake button said "Saved" regardless. The engine still
+   does not render anything: it reports, and the UI decides what to show. */
+var SAVE_OK=true, SAVE_ERR=null;
+function pPersist(){
+ try{ STORE.set(PKEY,JSON.stringify(PROFILES)); SAVE_OK=true; SAVE_ERR=null; }
+ catch(e){ SAVE_OK=false; SAVE_ERR=(e&&e.name)||'error'; }
+ return SAVE_OK; }
+function saveState(){ return {ok:SAVE_OK, err:SAVE_ERR}; }
 function pNew(name){ var p=blankProfile(name); PROFILES.push(p); CURP=p; pPersist(); return p; }
 function pSave(){ if(!CURP)return null; saveProfile(CURP); pPersist(); return CURP; }
 function pSnap(){ if(!CURP)return null; CURP.history.push(snapshot(CURP)); pPersist(); return CURP; }

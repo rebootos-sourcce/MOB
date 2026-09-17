@@ -80,6 +80,13 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
 .top{display:flex;align-items:center;gap:9px;row-gap:7px;padding:9px 13px;flex:0 0 auto;
  flex-wrap:wrap;scrollbar-width:none}
 .top::-webkit-scrollbar{display:none}
+/* The status region. Silent and zero height until something needs saying, so
+   it never occupies space it has not earned. Failures hold; confirmations
+   clear themselves, because a confirmation nobody dismissed is noise. */
+#status{flex:0 0 100%;min-height:0;font-family:var(--sans);font-size:13px;
+ line-height:1.4;color:var(--mid);transition:.2s}
+#status:empty{display:none}
+#status[data-kind="fail"]{color:var(--hot,#c0392b);font-weight:500}
 .brand{font-size:17px;font-weight:600;letter-spacing:-.01em;padding-right:6px;white-space:nowrap}
 .brand em{font-style:normal;color:var(--gold);font-weight:400}
 .spacer{flex:1 1 auto;min-width:8px}

@@ -28,7 +28,7 @@ if(typeof module!=='undefined'&&module.exports){
   /* schema */    blankProfile:blankProfile, loadProfile:loadProfile,
                   saveProfile:saveProfile, snapshot:snapshot,
                   pExport:pExport, pImport:pImport, SCHEMA_V:SCHEMA_V,
-                  bindStore:bindStore, PKEY:PKEY,
+                  bindStore:bindStore, PKEY:PKEY, pPersist:pPersist, saveState:saveState,
   /* intake */    iqList:iqList, iqScore:iqScore, iqApply:iqApply,
   /* sniffer */   scanStory:scanStory, parseStory:parseStory, applyStory:applyStory,
                   pathOf:pathOf, seatOf:seatOf, SEATXY:SEATXY, PATHSEAT:PATHSEAT,

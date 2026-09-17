@@ -80,6 +80,13 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
 .top{display:flex;align-items:center;gap:9px;row-gap:7px;padding:9px 13px;flex:0 0 auto;
  flex-wrap:wrap;scrollbar-width:none}
 .top::-webkit-scrollbar{display:none}
+/* The status region. Silent and zero height until something needs saying, so
+   it never occupies space it has not earned. Failures hold; confirmations
+   clear themselves, because a confirmation nobody dismissed is noise. */
+#status{flex:0 0 100%;min-height:0;font-family:var(--sans);font-size:13px;
+ line-height:1.4;color:var(--mid);transition:.2s}
+#status:empty{display:none}
+#status[data-kind="fail"]{color:var(--hot,#c0392b);font-weight:500}
 .brand{font-size:17px;font-weight:600;letter-spacing:-.01em;padding-right:6px;white-space:nowrap}
 .brand em{font-style:normal;color:var(--gold);font-weight:400}
 .spacer{flex:1 1 auto;min-width:8px}
@@ -768,6 +775,9 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
  <div class="glass top">
   <div class="brand">At&uuml;ned</div>
   <div id="tabbar" style="display:flex;gap:5px;flex-wrap:wrap"></div>
+  <!-- One status region for the whole app. Polite so it does not interrupt,
+       and it carries the message rather than a button lying about it. -->
+  <div id="status" role="status" aria-live="polite"></div>
   <div class="spacer"></div>
   <label for="psel" class="toplab">Whose field</label>
   <select id="psel"></select>
@@ -1916,7 +1926,15 @@ var STORE={get:function(){return null;}, set:function(){}};
    STORE and not the binding, so an outside caller cannot assign to it. */
 function bindStore(get,set){ STORE={get:get,set:set}; return STORE; }
 function pStore(){ try{ return JSON.parse(STORE.get(PKEY)||'[]'); }catch(e){ return []; } }
-function pPersist(){ try{ STORE.set(PKEY,JSON.stringify(PROFILES)); }catch(e){} }
+/* The empty catch here meant a save that failed on quota or blocked storage
+   told nobody, and the intake button said "Saved" regardless. The engine still
+   does not render anything: it reports, and the UI decides what to show. */
+var SAVE_OK=true, SAVE_ERR=null;
+function pPersist(){
+ try{ STORE.set(PKEY,JSON.stringify(PROFILES)); SAVE_OK=true; SAVE_ERR=null; }
+ catch(e){ SAVE_OK=false; SAVE_ERR=(e&&e.name)||'error'; }
+ return SAVE_OK; }
+function saveState(){ return {ok:SAVE_OK, err:SAVE_ERR}; }
 function pNew(name){ var p=blankProfile(name); PROFILES.push(p); CURP=p; pPersist(); return p; }
 function pSave(){ if(!CURP)return null; saveProfile(CURP); pPersist(); return CURP; }
 function pSnap(){ if(!CURP)return null; CURP.history.push(snapshot(CURP)); pPersist(); return CURP; }
@@ -2315,7 +2333,7 @@ if(typeof module!=='undefined'&&module.exports){
   /* schema */    blankProfile:blankProfile, loadProfile:loadProfile,
                   saveProfile:saveProfile, snapshot:snapshot,
                   pExport:pExport, pImport:pImport, SCHEMA_V:SCHEMA_V,
-                  bindStore:bindStore, PKEY:PKEY,
+                  bindStore:bindStore, PKEY:PKEY, pPersist:pPersist, saveState:saveState,
   /* intake */    iqList:iqList, iqScore:iqScore, iqApply:iqApply,
   /* sniffer */   scanStory:scanStory, parseStory:parseStory, applyStory:applyStory,
                   pathOf:pathOf, seatOf:seatOf, SEATXY:SEATXY, PATHSEAT:PATHSEAT,
@@ -2394,6 +2412,27 @@ const GOLDC=()=>hx(LIGHT()?'#8A6D18':'#DFCC7E');
 function bc(b){return hx(LIGHT()?PAL_LIGHT[b]:PAL[b]);}
 function nodeCol(n){const base=bc(n.b),ld=clamp(n.disp/10,0,1);
  return mixc(mixc(base,LIGHT()?[238,236,230]:[150,160,180],.74),base,Math.pow(ld,.55));}
+/* ---- the one status writer ----
+   Every surface reports through here so the wording, the timing and the
+   announcement behave the same way wherever they come from. A failure stays
+   on screen until something replaces it. A confirmation clears after 2.4s,
+   which is past the point a person has read it and before it becomes
+   furniture. */
+var _stT=null;
+function status(msg,kind){
+ var e=document.getElementById('status'); if(!e)return;
+ clearTimeout(_stT);
+ e.textContent=msg||'';
+ if(kind)e.setAttribute('data-kind',kind); else e.removeAttribute('data-kind');
+ if(msg&&kind!=='fail')_stT=setTimeout(function(){
+  e.textContent='';e.removeAttribute('data-kind');},2400);}
+/* saving is the case that was lying, so it gets its own wording */
+function statusSaved(){
+ var st=(typeof saveState==='function')?saveState():{ok:true};
+ if(st.ok)status('Saved.');
+ else status('Not saved. Storage is full or blocked, so this session will not survive a reload.','fail');
+ return st.ok;}
+
 function layout(){const b=cv.parentElement.getBoundingClientRect();
  DPR=Math.min(devicePixelRatio||1,2);cv.width=b.width*DPR;cv.height=b.height*DPR;
  CW=b.width;CH=b.height;CX=CW/2;CY=CH/2;U=Math.min(CW,CH)/2;
@@ -3007,10 +3046,14 @@ function renderShelf(r,seats,speed,stop,dom,loadedTot,marks){
   +'<div><div class="pm-eye">Flow through</div>'
   +cr(K2B[dom.p.k], speed*100, {size:'lg',label:'flow through'})
   +'<div class="pm-sub">'+(stop?('stops at the '+stop.p.n.toLowerCase())
-    :(loadedTot?'passing every seat':'nothing is held'))+'</div></div>'
-  +'<div class="pm-side"><div class="pm-eye">'+(loadedTot?'Heaviest seat':'Field clear')+'</div>'
+    :(loadedTot?'passing every seat':'nothing held'))+'</div></div>'
+  /* The label used to swap identity with the state, reading "Heaviest seat"
+     when loaded and "Field clear" when not, while the value swapped too. A
+     slot keeps its label; the value carries the state. And the empty state is
+     said one way across the app: "nothing held". */
+  +'<div class="pm-side"><div class="pm-eye">Heaviest seat</div>'
   +'<div class="pm-dom" style="color:'+(loadedTot?PMC[K2B[dom.p.k]]:'var(--dim)')+'">'
-  +(loadedTot?dom.p.n:'None')+'</div>'
+  +(loadedTot?dom.p.n:'nothing held')+'</div>'
   +'<div class="pm-sub">'+loadedTot+' of '+NODES.length+' held</div></div></div>';
 
  var beads=marks.filter(function(m){return m.kind==='bead';}).sort(function(a,b){return a.rank-b.rank;});
@@ -3797,11 +3840,15 @@ function renderIntake(){
  if(nb)nb.onclick=function(){var n=prompt('Profile name','Profile '+(PROFILES.length+1));
   if(n){pNew(n);loadProfile(CURP);IQ_OPEN=null;syncCh();syncLw();syncSoul();renderIntake();render();}};
  var sb=document.getElementById('iqsave');
- if(sb)sb.onclick=function(){pSave();pSnap();sb.textContent='Saved';
-  setTimeout(function(){sb.textContent='Save';},900);};
+ /* The button used to read "Saved" whether or not anything was written. It
+    reports what happened now, and the status region carries the detail. */
+ if(sb)sb.onclick=function(){pSave();pSnap();
+  var ok=statusSaved();
+  sb.textContent=ok?'Saved':'Not saved';
+  setTimeout(function(){sb.textContent='Save';},ok?900:2600);};
  var eb=document.getElementById('iqexp');
  if(eb)eb.onclick=function(){var t=pExport();
-  try{navigator.clipboard.writeText(t);eb.textContent='Copied';}
+  try{navigator.clipboard.writeText(t);eb.textContent='Copied';status('Profile copied to the clipboard.');}
   catch(e){eb.textContent=t.length+' bytes';}
   setTimeout(function(){eb.textContent='Export';},1200);};}
 

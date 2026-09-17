@@ -11,10 +11,14 @@ function renderShelf(r,seats,speed,stop,dom,loadedTot,marks){
   +'<div><div class="pm-eye">Flow through</div>'
   +cr(K2B[dom.p.k], speed*100, {size:'lg',label:'flow through'})
   +'<div class="pm-sub">'+(stop?('stops at the '+stop.p.n.toLowerCase())
-    :(loadedTot?'passing every seat':'nothing is held'))+'</div></div>'
-  +'<div class="pm-side"><div class="pm-eye">'+(loadedTot?'Heaviest seat':'Field clear')+'</div>'
+    :(loadedTot?'passing every seat':'nothing held'))+'</div></div>'
+  /* The label used to swap identity with the state, reading "Heaviest seat"
+     when loaded and "Field clear" when not, while the value swapped too. A
+     slot keeps its label; the value carries the state. And the empty state is
+     said one way across the app: "nothing held". */
+  +'<div class="pm-side"><div class="pm-eye">Heaviest seat</div>'
   +'<div class="pm-dom" style="color:'+(loadedTot?PMC[K2B[dom.p.k]]:'var(--dim)')+'">'
-  +(loadedTot?dom.p.n:'None')+'</div>'
+  +(loadedTot?dom.p.n:'nothing held')+'</div>'
   +'<div class="pm-sub">'+loadedTot+' of '+NODES.length+' held</div></div></div>';
 
  var beads=marks.filter(function(m){return m.kind==='bead';}).sort(function(a,b){return a.rank-b.rank;});
