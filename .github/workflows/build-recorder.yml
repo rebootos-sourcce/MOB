@@ -49,13 +49,16 @@ jobs:
             recorder/dist/*.exe
           if-no-files-found: error
 
-      - name: Publish release
+      # Two separate upload steps so a transient failure on one file
+      # never blocks the other; each step retries on its own.
+      - name: Publish release (portable EXE)
         uses: softprops/action-gh-release@v2
         with:
           tag_name: recorder-v${{ steps.ver.outputs.version }}-build${{ github.run_number }}
           name: MOB Recorder ${{ steps.ver.outputs.version }} (build ${{ github.run_number }})
           target_commitish: ${{ github.sha }}
           make_latest: true
+          fail_on_unmatched_files: true
           body: |
             Windows 10/11 64-bit.
 
@@ -64,5 +67,11 @@ jobs:
 
             The file is unsigned, so Windows SmartScreen will say "Windows protected your PC" the first time.
             Click **More info → Run anyway**.
-          files: |
-            recorder/dist/*.exe
+          files: recorder/dist/MOB-Recorder-*-portable.exe
+
+      - name: Publish release (installer)
+        uses: softprops/action-gh-release@v2
+        continue-on-error: true
+        with:
+          tag_name: recorder-v${{ steps.ver.outputs.version }}-build${{ github.run_number }}
+          files: recorder/dist/MOB-Recorder-*-setup.exe
