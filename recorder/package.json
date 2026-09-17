@@ -8,8 +8,8 @@
   "license": "MIT",
   "scripts": {
     "start": "electron .",
-    "dist": "electron-builder --win",
-    "dist:portable": "electron-builder --win portable",
+    "dist": "electron-builder --win --publish never",
+    "dist:portable": "electron-builder --win portable --publish never",
     "check": "node --check src/main/main.js && node --check src/main/windows.js && node --check src/main/settings.js && node --check src/main/ffmpeg.js && node --check src/main/recording-files.js && node --check src/preload/preload.js && node --check src/shared/shapes.js",
     "smoke": "node scripts/smoke.js"
   },
@@ -58,5 +58,10 @@
   },
   "dependencies": {
     "ffmpeg-static": "^5.2.0"
+  },
+  "author": "MOB",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rebootos-sourcce/MOB.git"
   }
 }
