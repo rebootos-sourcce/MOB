@@ -35,31 +35,67 @@ Built with Electron. Everything runs on your laptop.
 ## Requirements
 
 - Windows 10 version 2004 or newer (21H1/21H2 is fine), 64-bit. Windows 11 works too.
+- Camera and microphone access enabled for desktop apps (see **First run on Windows**).
 - [Node.js](https://nodejs.org) 18 or newer (only to run from source or build the installer).
 - A webcam and microphone. Bluetooth headsets: pair in Windows Settings first; they then
   appear in the Microphone dropdown.
 
-## Run it
+## First run on Windows
+
+### "Windows protected your PC"
+
+You will see this once. It is SmartScreen, and it appears because the file is
+**unsigned** and carries a "downloaded from the internet" mark. It is not a virus
+warning and no package format avoids it — installer, portable EXE, ZIP and MSI all
+trigger it the same way.
+
+Two ways past it:
+
+- **Click through it once.** Click **More info**, then **Run anyway**. Windows
+  remembers the choice for that file.
+- **Remove the mark first** (no warning at all). Right-click the downloaded `.exe`
+  → **Properties** → tick **Unblock** at the bottom → **OK**. Then run it normally.
+  The PowerShell equivalent is `Unblock-File .\MOB-Recorder-0.1.0-portable.exe`.
+
+The only permanent fix is a code signing certificate, which costs roughly $200–600
+a year. An EV certificate earns SmartScreen trust immediately; a cheaper OV one still
+warns until the file builds download reputation. For a tool you use yourself, that is
+not worth paying for — unblock the file once and move on.
+
+### Camera and microphone access
+
+Windows 10 does **not** prompt desktop apps for the camera the way a browser does.
+Access is controlled by one global switch, and when it is off `getUserMedia` simply
+fails with no explanation. The app detects this and shows a banner with a button that
+opens the right Settings page.
+
+To set it manually: **Settings → Privacy → Camera**, turn on *Allow apps to access your
+camera*, then scroll to the bottom and turn on **Allow desktop apps to access your
+camera**. That second switch is the one that matters and it is easy to miss. Repeat
+under **Privacy → Microphone**.
+
+### If a camera stops working
+
+Webcams — especially a second or external one — sometimes wedge until the device is
+reset. The app will say `Can't open "…"` with a **Try again** button. If that does not
+help:
+
+1. Close anything else that might hold the camera (Teams, Zoom, the Windows Camera app,
+   a browser tab). Only one app can own some webcams at a time.
+2. Unplug and replug a USB camera, then press the **↻** button next to the ready badge
+   to re-scan.
+3. Failing that, reboot. A driver in a bad state usually needs it.
+
+Use the **↻** button any time you plug in or pair a new camera, headset or microphone —
+it re-reads permissions and the device list without restarting the app.
+
+## Run it from source
 
 ```powershell
 cd recorder
 npm install
 npm start
 ```
-
-The first launch asks for camera and microphone access. Windows 10 does not prompt for
-screen recording; if you get "Permission denied", open **Settings → Privacy → Camera /
-Microphone** and make sure *Allow desktop apps to access your camera / microphone* is on.
-
-## Build an installer / portable EXE
-
-```powershell
-npm run dist            # installer + portable EXE in recorder/dist/
-npm run dist:portable   # portable EXE only
-```
-
-The EXE is unsigned, so SmartScreen will show "Windows protected your PC" the first time.
-Click **More info → Run anyway**. That's expected for a personal build.
 
 ## Hotkeys
 
@@ -148,7 +184,8 @@ for 4 seconds, finalizes to MP4, and exits 0 on success. `MOB_SMOKE_SHAPE=hexago
 records with a given bubble shape so the overlay can be checked.
 
 `npm run shot` captures PNGs of the control panel and bubble for layout review.
-`MOB_SHOT_STATES=output,compact,shapes` adds variants. Both harnesses run against a
+`MOB_SHOT_STATES=output,compact,shapes,perm` adds variants, and `MOB_NO_FAKE=1` drops
+the synthetic devices so the no-camera error states render. Both harnesses run against a
 throwaway settings profile, so they never inherit your real configuration. On Linux
 wrap either with `xvfb-run`.
 

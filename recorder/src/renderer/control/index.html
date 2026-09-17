@@ -29,15 +29,30 @@
       <section class="card">
         <div class="card-head">
           <h2><span class="step">1</span> Check yourself</h2>
+          <button id="btnRescan" class="mini" title="Re-scan cameras and microphones">↻</button>
           <span id="readyBadge" class="badge">checking…</span>
+        </div>
+
+        <div id="permBanner" class="perm-banner" hidden>
+          <div id="permText"></div>
+          <div class="row">
+            <button id="permOpenCam" class="primary" hidden>Open camera settings</button>
+            <button id="permOpenMic" class="primary" hidden>Open mic settings</button>
+            <button id="permRetry" class="ghost">Retry</button>
+          </div>
         </div>
 
         <div class="preview-wrap">
           <div id="previewShape">
             <div id="previewInner">
               <video id="preview" autoplay muted playsinline></video>
-              <div id="previewEmpty">No camera</div>
             </div>
+          </div>
+          <!-- Sits over the whole preview box, not inside the clipped shape,
+               so the message stays readable whatever the bubble shape is. -->
+          <div id="previewEmpty">
+            <div id="previewEmptyText">No camera</div>
+            <button id="previewAction" class="ghost mini-action" hidden></button>
           </div>
           <span id="previewInfo" class="res-badge" hidden></span>
         </div>

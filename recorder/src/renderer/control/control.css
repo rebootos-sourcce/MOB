@@ -69,7 +69,19 @@ details.card > summary::after { margin-left: 8px; }
 #preview.mirror { transform: scaleX(-1); }
 #preview.flipv { transform: scaleY(-1); }
 #preview.mirror.flipv { transform: scale(-1, -1); }
-#previewEmpty { position: absolute; inset: 0; display: grid; place-items: center; background: #1c1f25; color: var(--muted); font-size: 12px; text-align: center; padding: 8px; }
+#previewEmpty { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center;
+  justify-content: center; gap: 8px; background: #0d0f12; border-radius: 8px;
+  color: var(--muted); font-size: 12px; text-align: center; padding: 10px; }
+#previewEmptyText { white-space: pre-line; line-height: 1.35; }
+.mini-action { padding: 3px 9px; font-size: 11.5px; }
+button.mini { padding: 2px 7px; font-size: 12px; line-height: 1.2; color: var(--muted); }
+button.mini:hover { color: var(--text); }
+
+/* Permission banner: Windows 10 blocks desktop apps silently, so say so. */
+.perm-banner { background: #2a2418; border: 1px solid #5c4a1f; color: #ffd489;
+  border-radius: 8px; padding: 9px 10px; margin-bottom: 9px; font-size: 12px; }
+.perm-banner .row { margin-top: 8px; }
+.perm-banner button { font-size: 12px; padding: 4px 10px; }
 .res-badge { position: absolute; right: 8px; bottom: 8px; font: 10px/1 ui-monospace, Consolas, monospace;
   background: rgba(0,0,0,.66); border: 1px solid var(--line); color: var(--muted); padding: 3px 6px; border-radius: 5px; }
 

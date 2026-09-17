@@ -1,6 +1,6 @@
 'use strict';
 const path = require('path');
-const { app, BrowserWindow, ipcMain, desktopCapturer, screen, dialog, shell, globalShortcut, Menu } = require('electron');
+const { app, BrowserWindow, ipcMain, desktopCapturer, screen, dialog, shell, globalShortcut, Menu, systemPreferences } = require('electron');
 const settings = require('./settings');
 const ffmpeg = require('./ffmpeg');
 const { RawRecording, sweepOldRaw } = require('./recording-files');
@@ -427,6 +427,30 @@ ipcMain.handle('dialog:chooseSaveDir', async () => {
   settings.set({ recording: { saveDir: res.filePaths[0] } });
   return res.filePaths[0];
 });
+/**
+ * Windows 10 has no per-app camera prompt for desktop apps: access is governed
+ * by one global "Allow desktop apps to access your camera" switch. When it is
+ * off, getUserMedia fails with no explanation, so we read the real status and
+ * can deep-link straight to the right Settings page.
+ */
+ipcMain.handle('permissions:get', () => {
+  const read = (kind) => {
+    try { return systemPreferences.getMediaAccessStatus(kind); } catch (_) { return 'unknown'; }
+  };
+  return { camera: read('camera'), microphone: read('microphone'), platform: process.platform };
+});
+
+ipcMain.handle('permissions:openSettings', (_e, kind) => {
+  if (process.platform === 'win32') {
+    return shell.openExternal(kind === 'microphone' ? 'ms-settings:privacy-microphone' : 'ms-settings:privacy-webcam');
+  }
+  if (process.platform === 'darwin') {
+    const node = kind === 'microphone' ? 'Privacy_Microphone' : 'Privacy_Camera';
+    return shell.openExternal('x-apple.systempreferences:com.apple.preference.security?' + node);
+  }
+  return null;
+});
+
 ipcMain.handle('shell:openPath', (_e, p) => shell.openPath(p));
 ipcMain.handle('shell:showItemInFolder', (_e, p) => shell.showItemInFolder(p));
 ipcMain.handle('window:minimize', () => control && control.minimize());

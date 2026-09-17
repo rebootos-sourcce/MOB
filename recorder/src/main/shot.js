@@ -52,6 +52,20 @@ function install({ settings, getWindows, setCompact }) {
         await wait(400);
       }
 
+      if (states.includes('perm')) {
+        // Force the blocked-permission banner so its layout can be reviewed on
+        // a machine where the real status can't be set.
+        await wins.control.webContents.executeJavaScript(`
+          document.getElementById('permBanner').hidden = false;
+          document.getElementById('permText').textContent =
+            'Windows is blocking camera access for desktop apps. Turn it on, then hit Retry.';
+          document.getElementById('permOpenCam').hidden = false;
+          document.getElementById('permOpenMic').hidden = true;
+        `);
+        await wait(350);
+        await capture(wins.control, 'control-perm.png');
+      }
+
       if (states.includes('compact')) {
         setCompact(true);
         await wait(600);

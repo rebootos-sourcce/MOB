@@ -18,6 +18,7 @@
   let shapes = null;
   let recState = { state: 'idle', micEnabled: true, elapsedMs: 0 };
   let sources = [];
+  let perms = { camera: 'unknown', microphone: 'unknown' };
 
   const fmtTime = (ms) => {
     const s = Math.max(0, Math.floor(ms / 1000));
@@ -71,6 +72,26 @@
     $('preview').srcObject = null;
   }
 
+  /** Friendly label for the camera currently selected, for error messages. */
+  function currentCamLabel() {
+    const sel = $('camSelect');
+    const opt = sel.options[sel.selectedIndex];
+    return opt && opt.value !== 'default' ? `"${opt.textContent}"` : 'your camera';
+  }
+
+  /** Shows the preview's empty state with an action the user can actually take. */
+  function showPreviewProblem(text, actionLabel, onAction) {
+    $('preview').srcObject = null;
+    $('previewEmpty').hidden = false;
+    $('previewEmptyText').textContent = text;
+    const btn = $('previewAction');
+    btn.hidden = !actionLabel;
+    if (actionLabel) {
+      btn.textContent = actionLabel;
+      btn.onclick = onAction;
+    }
+  }
+
   async function openPreview(force) {
     if (!previewWanted) return;
     const id = settings.camera.deviceId;
@@ -86,24 +107,67 @@
       $('preview').srcObject = previewStream;
       $('previewEmpty').hidden = true;
       const track = previewStream.getVideoTracks()[0];
+      // A camera can disconnect or fail mid-session; surface that instead of
+      // leaving a frozen last frame on screen.
+      track.addEventListener('ended', () => {
+        if (!previewWanted) return;
+        previewStream = null;
+        showPreviewProblem('Camera disconnected.', 'Reconnect', () => openPreview(true));
+        updateReadyBadge();
+      });
       const show = () => {
-        const s = track.getSettings ? track.getSettings() : {};
-        if (s.width && s.height) {
-          $('previewInfo').textContent = `${s.width}×${s.height}${s.frameRate ? ' · ' + Math.round(s.frameRate) + 'fps' : ''}`;
+        const st = track.getSettings ? track.getSettings() : {};
+        if (st.width && st.height) {
+          $('previewInfo').textContent = `${st.width}×${st.height}${st.frameRate ? ' · ' + Math.round(st.frameRate) + 'fps' : ''}`;
           $('previewInfo').hidden = false;
         }
       };
       show();
-      setTimeout(show, 600); // settings fill in a beat after the track starts
+      setTimeout(show, 600); // track settings fill in a beat after start
       refreshDevices();      // labels appear once permission is granted
     } catch (err) {
-      $('preview').srcObject = null;
-      $('previewEmpty').hidden = false;
-      $('previewEmpty').textContent = err.name === 'NotAllowedError'
-        ? 'Camera blocked.\nWindows Settings → Privacy → Camera'
-        : err.name === 'NotReadableError' ? 'Camera busy — close other apps using it' : 'No camera found';
+      const openCamSettings = () => window.api.invoke('permissions:openSettings', 'camera');
+      if (err.name === 'NotAllowedError' || err.name === 'SecurityError') {
+        showPreviewProblem('Camera blocked by Windows.', 'Open camera settings', openCamSettings);
+      } else if (err.name === 'NotReadableError' || err.name === 'AbortError') {
+        // Almost always another app holding the device, or a camera that has
+        // wedged and needs a replug.
+        showPreviewProblem(`Can't open ${currentCamLabel()}.\nAnother app may be using it, or it needs a replug.`, 'Try again', () => openPreview(true));
+      } else if (err.name === 'NotFoundError' || err.name === 'OverconstrainedError') {
+        if (id && id !== 'default') {
+          // A specific camera vanished (unplugged, or a driver that wedged).
+          showPreviewProblem('That camera is no longer available.', 'Use default camera', () => save({ camera: { deviceId: 'default' } }));
+        } else {
+          showPreviewProblem('No camera found.\nPlug one in, or re-scan.', 'Re-scan', () => rescan());
+        }
+      } else {
+        showPreviewProblem(err.message || 'Camera failed to start.', 'Try again', () => openPreview(true));
+      }
     }
+    await checkPermissions();
     updateReadyBadge();
+  }
+
+  /**
+   * Windows 10 gates desktop apps behind one global privacy switch and never
+   * prompts, so a blocked camera just fails silently. Read the real status and
+   * offer the exact Settings page.
+   */
+  async function checkPermissions() {
+    try { perms = await window.api.invoke('permissions:get'); } catch (_) { return; }
+    const camDenied = perms.camera === 'denied';
+    const micDenied = perms.microphone === 'denied';
+    const banner = $('permBanner');
+    banner.hidden = !(camDenied || micDenied);
+    if (banner.hidden) return;
+    const both = camDenied && micDenied;
+    $('permText').textContent = both
+      ? 'Windows is blocking camera and microphone access for desktop apps. Turn both on, then hit Retry.'
+      : camDenied
+        ? 'Windows is blocking camera access for desktop apps. Turn it on, then hit Retry.'
+        : 'Windows is blocking microphone access for desktop apps. Turn it on, then hit Retry.';
+    $('permOpenCam').hidden = !camDenied;
+    $('permOpenMic').hidden = !micDenied;
   }
 
   function updateReadyBadge() {
@@ -111,7 +175,28 @@
     const cam = !!previewStream;
     const mic = !!analyser;
     b.className = 'badge ' + (cam && mic ? 'ok' : cam || mic ? 'warn' : 'bad');
-    b.textContent = cam && mic ? 'Camera + mic ready' : cam ? 'No mic' : mic ? 'No camera' : 'No camera or mic';
+    b.textContent = cam && mic ? 'Camera + mic ready'
+      : cam ? 'No mic'
+        : mic ? (perms.camera === 'denied' ? 'Camera blocked' : 'No camera')
+          : (perms.camera === 'denied' ? 'Blocked by Windows' : 'No camera or mic');
+  }
+
+  $('permOpenCam').addEventListener('click', () => window.api.invoke('permissions:openSettings', 'camera'));
+  $('permOpenMic').addEventListener('click', () => window.api.invoke('permissions:openSettings', 'microphone'));
+  $('permRetry').addEventListener('click', () => rescan());
+  $('btnRescan').addEventListener('click', () => rescan());
+
+  /** Re-reads permissions, the device list, and reopens both streams. */
+  async function rescan() {
+    $('btnRescan').disabled = true;
+    try {
+      await checkPermissions();
+      await refreshDevices();
+      await openPreview(true);
+      await openMeter(true);
+    } finally {
+      $('btnRescan').disabled = false;
+    }
   }
 
   $('btnFlipH').addEventListener('click', () => save({ bubble: { mirror: !settings.bubble.mirror } }));
@@ -167,8 +252,10 @@
       refreshDevices();
     } catch (err) {
       analyser = null;
-      $('meterDb').textContent = err.name === 'NotAllowedError' ? 'blocked' : 'no mic';
+      $('meterDb').textContent = err.name === 'NotAllowedError' ? 'blocked'
+        : err.name === 'NotReadableError' ? 'busy' : 'no mic';
     }
+    await checkPermissions();
     updateReadyBadge();
   }
 
@@ -471,6 +558,7 @@
 
     recState = await window.api.invoke('state:get');
     render();
+    await checkPermissions();
     await refreshDevices();
     openPreview(true);
     openMeter(true);
