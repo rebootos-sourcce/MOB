@@ -131,5 +131,7 @@ His, not mine:
 
 ## Records
 
+`STABILITY.md` is the measured snapshot of what is solid and what must be
+finished, ordered by cost of leaving it alone. Read it first.
 `REVIEW-source.md` is the original review and the rebuild. `REVIEW-pass2.md`
 is the second engineering pass. `tests/README.md` explains the gates.
