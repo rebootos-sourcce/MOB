@@ -5121,10 +5121,14 @@ function loop(ts){
  requestAnimationFrame(loop);}
 
 /* ---- init ---- */
-/* the engine ships with a no-op store. this is the browser's one. */
+/* the engine ships with a no-op store. this is the browser's one. It must go
+   through bindStore(): assigning STORE directly left STORE_BOUND false, so
+   pPersist() refused every write and every save in the shipped app reported
+   a failure it had caused. Nothing was ever written. The functional gate now
+   saves, reloads and reads back. */
 try{ localStorage.getItem(PKEY);
- STORE={get:function(k){return localStorage.getItem(k);},
-        set:function(k,v){localStorage.setItem(k,v);}}; }catch(e){}
+ bindStore(function(k){return localStorage.getItem(k);},
+           function(k,v){localStorage.setItem(k,v);}); }catch(e){}
 /* One delegated handler for every address row the drills render, so a row
    opens the address it names instead of being a dead end. */
 document.addEventListener('click',function(e){

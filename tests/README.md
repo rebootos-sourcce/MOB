@@ -54,7 +54,7 @@ binds `localStorage`.
     npm install playwright
     node tests/design.js       17 checks · shell, one surface per tab, CSS coverage,
                                11px type floor, no all-caps
-    node tests/functional.js   241 checks · 10 personas x 5 tabs x 4 depths x 7 layers,
+    node tests/functional.js   246 checks · 10 personas x 5 tabs x 4 depths x 7 layers,
                                drills, figure fallback, zero JS errors
     node tests/collide.js      40 checks · zero overlapping wheel nameplates,
                                every persona x every depth

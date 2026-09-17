@@ -90,6 +90,23 @@ Object.keys(drills).forEach(k=>{
  else ok(drills[k]>120,k+' drill too short: '+drills[k]);});
 console.log(' ',JSON.stringify(drills));
 
+console.log('\n=== persistence: save, reload, read back ===');
+/* The store must be bound through bindStore(), or pPersist() refuses every
+   write. This is the gate that would have caught the shipped app writing
+   nothing while reporting storage as blocked. */
+const pers=await page.evaluate(()=>{
+ const bound=STORE_BOUND; const okp=pPersist();
+ return {bound, persist:okp, err:SAVE_ERR, keys:Object.keys(localStorage), n:PROFILES.length};});
+ok(pers.bound===true,'store is bound through bindStore, got '+pers.bound);
+ok(pers.persist===true,'pPersist reports success, got '+pers.persist+' '+pers.err);
+ok(pers.keys.indexOf('source.profiles')>=0,'profile key present in localStorage: '+pers.keys.join(','));
+await page.reload(); await page.waitForTimeout(900);
+/* PROFILES hydrates lazily from the store on the first intake render, so the
+   honest check after reload is what the store holds, not the in-memory array. */
+const back=await page.evaluate(()=>({n:pStore().length, bound:STORE_BOUND}));
+ok(back.n===pers.n&&back.n>0,'profiles survive reload: '+pers.n+' saved, '+back.n+' read back');
+ok(back.bound===true,'store bound after reload');
+
 console.log('\n=== real JS errors across all of the above ===');
 ok(real.length===0,'JS errors: '+real.slice(0,4).join(' | '));
 console.log('  count:',real.length);
