@@ -25,7 +25,7 @@ else may.
 
     ./atuned_src/BUILD.sh              parse checks, div balance, no em dashes
     ./atuned_src/BUILD-engine.sh       and asserts the engine is host free
-    node tests/engine.js               233, headless, 0.1s
+    node tests/engine.js               257, headless, 0.1s
     node tests/functional.js           246, real Chromium
     node tests/collide.js              40, no overlapping nameplates
     node tests/design.js               17, one expected environmental failure
@@ -67,9 +67,19 @@ needing the entry for a tab looks it up by `.k`, never by position.
 `localStorage`, `fetch`, `new Image`. `hostfree.py` enforces it after
 stripping comments and strings. A host binds storage with `bindStore(get,set)`.
 
-**Validate at the boundary, and never lie about a failure.** `loadProfile`
-still trusts everything it is given. Every write that can fail reports through
-`status()`; a control must never claim success before it has it.
+**Validate at the boundary, and never lie about a failure.** `validateProfile`
+is the boundary. A missing field is an older profile and is filled from the
+blank; a field of the wrong type or out of range is refused by name and never
+silently clamped, because a clamped 9999 reads as a 10 the person never
+entered. `pImport` is atomic: nothing is pushed and `CURP` does not move until
+the profile has validated, loaded and saved, and a failure restores what was
+there and says why through `importError()`. `loadProfile` itself still trusts
+its input, which is correct only because everything a person can paste now
+goes through the boundary first. There is no import control in the UI yet, so
+the boundary's first real caller will be the record fetch at sign in.
+
+Every write that can fail reports through `status()`; a control must never
+claim success before it has it.
 
 **Reproduce a failure before fixing it, and re-measure after.** Twice this
 session a probe reported a defect that was the probe's own bug: one read the
@@ -134,8 +144,10 @@ Mine to build when asked:
 
 - **Undo.** Applying a story bakes charge into the axes irreversibly. Largest
   remaining gap in the product.
-- **Schema validation.** `loadProfile` throws on a missing field and accepts a
-  charge of 9999. Reachable from the import control.
+- **A seed decay policy.** A stated four letter type writes charge onto the
+  nine axes and `seedShare` reports how much of the field is still that seed.
+  Whether it should fade on its own, or only move when the person moves it,
+  is open.
 - **Cognitive load.** 57 to 71 simultaneous choices per screen against a
   working memory of about four. Architectural, needs a decision first.
 - **The impure core.** `compute()` and friends read shared state. A front door

@@ -255,6 +255,57 @@ ok(ref('Rosa').loaded.length===0,'Rosa holds nothing');
 ok(ref('Gordon').loaded.length>90,'Gordon holds nearly everything');
 
 
+g('15c \u00b7 the boundary');
+{
+ const {blankProfile,saveProfile,validateProfile,pImport,importError,profiles,current,bindStore}=E;
+ /* a profile the app wrote goes through unchanged */
+ const good=saveProfile(blankProfile('round'));
+ const v=validateProfile(JSON.parse(JSON.stringify(good)));
+ ok(v.ok,'a profile the app wrote validates: '+JSON.stringify(v.errs||[]).slice(0,120));
+ /* the charge of 9999 the project has carried as a known hole */
+ const bad=JSON.parse(JSON.stringify(good)); bad.axes.Fear.held=9999;
+ const b=validateProfile(bad);
+ ok(!b.ok,'a charge of 9999 is refused');
+ ok(/9999/.test(String(b.errs)),'and the refusal names the value: '+b.errs);
+ /* every other way in */
+ const cases=[
+  ['law out of range', p=>{p.laws.Truth=50;}],
+  ['law not a number', p=>{p.laws.Truth='high';}],
+  ['charge not a number', p=>{p.axes.Anger.held='lots';}],
+  ['domain index off the table', p=>{p.soul.doms=[999];}],
+  ['archetype index off the table', p=>{p.soul.arcs=[99];}],
+  ['answer key off the 63', p=>{p.intake.answers[99]=5;}],
+  ['answer out of range', p=>{p.intake.answers[0]=11;}],
+  ['gate count negative', p=>{p.gates.verp.aware=-3;}],
+  ['seed type invented', p=>{p.seed={type:'XXXX',axes:{}};}],
+  ['schema version from the future', p=>{p.v=99;}]];
+ cases.forEach(c=>{
+  const x=JSON.parse(JSON.stringify(good)); c[1](x);
+  ok(!validateProfile(x).ok,c[0]+' is refused');});
+ /* a missing field is an older profile, not corruption */
+ const old=JSON.parse(JSON.stringify(good));
+ delete old.who; delete old.seed; delete old.gates; old.v=1;
+ ok(validateProfile(old).ok,'a v1 profile with no who, seed or gates still loads');
+ /* not an object at all */
+ ok(!validateProfile(null).ok&&!validateProfile([1,2]).ok&&!validateProfile('x').ok,
+  'null, an array and a string are all refused');
+ /* ATOMIC. a refused import must leave the app exactly as it was. */
+ bindStore(function(){return null;},function(){});
+ const before=JSON.stringify(profiles()), n=profiles().length, curBefore=current();
+ ok(pImport('{ not json')===null,'malformed JSON returns null');
+ ok(String(importError()).length>0,'and says why: '+importError());
+ const poison=JSON.parse(JSON.stringify(good)); poison.axes.Fear.held=9999;
+ ok(pImport(JSON.stringify(poison))===null,'a poisoned profile is not imported');
+ ok(profiles().length===n,'the profile list is untouched, '+n+' before, '+profiles().length+' after');
+ ok(JSON.stringify(profiles())===before,'and nothing inside it moved');
+ ok(current()===curBefore,'the current profile did not move');
+ /* a valid profile that cannot be saved must also roll back, not half land */
+ bindStore(function(){return null;},function(){throw new Error('QuotaExceeded');});
+ ok(pImport(JSON.stringify(good))===null,'an unsaveable import is refused');
+ ok(profiles().length===n&&current()===curBefore,'and rolls the list and the current profile back');
+ ok(/could not save/.test(String(importError())),'and says the save failed: '+importError());
+}
+
 g('15b \u00b7 the seed');
 {
  const {blankProfile,seedAxes,seedApply,seedClear,seedShare,seedValid,TYPE16,CHARGES,read}=E;
