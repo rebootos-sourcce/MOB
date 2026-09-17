@@ -1,0 +1,160 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>MOB Recorder</title>
+  <link rel="stylesheet" href="control.css">
+</head>
+<body>
+  <!-- Compact bar shown while recording -->
+  <div id="compactBar">
+    <span class="dot" id="cDot"></span>
+    <span id="cTimer" class="mono">00:00</span>
+    <button id="cPause" class="icon" title="Pause / resume (Ctrl+Shift+P)">⏸</button>
+    <button id="cMic" class="icon" title="Mute / unmute (Ctrl+Shift+M)">🎙</button>
+    <canvas id="cMeter" width="60" height="14"></canvas>
+    <button id="cStop" class="stop" title="Stop (Ctrl+Shift+R)">■ Stop</button>
+  </div>
+
+  <div id="full">
+    <header id="titlebar">
+      <span class="brand">MOB Recorder</span>
+      <span class="spacer"></span>
+      <button class="win" id="btnMin" title="Minimize">–</button>
+      <button class="win close" id="btnClose" title="Quit">✕</button>
+    </header>
+
+    <main>
+      <!-- Record -->
+      <section class="record">
+        <button id="btnRecord" class="record-btn"><span class="ring"></span><span class="label">Record</span></button>
+        <div class="rec-status">
+          <div id="statusLine">Ready</div>
+          <div id="timer" class="mono" hidden>00:00</div>
+          <div class="rec-actions" id="recActions" hidden>
+            <button id="btnPause" class="ghost">Pause</button>
+            <button id="btnStop" class="danger">Stop</button>
+          </div>
+          <div id="finalizeBox" hidden>
+            <div class="progress"><div id="finalizeBar"></div></div>
+            <div class="hint" id="finalizeHint">Encoding…</div>
+          </div>
+        </div>
+        <div id="message" class="message" hidden></div>
+        <div id="savedCard" class="saved" hidden>
+          <div class="saved-title">Saved</div>
+          <div id="savedPath" class="saved-path mono"></div>
+          <div class="row">
+            <button id="btnOpenFile" class="primary">Open</button>
+            <button id="btnShowFolder" class="ghost">Show in folder</button>
+            <button id="btnDismissSaved" class="ghost">✕</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Source -->
+      <section>
+        <h2>Screen</h2>
+        <div class="source-card" id="sourceCard">
+          <img id="sourceThumb" alt="">
+          <div class="source-meta">
+            <div id="sourceName">Primary display</div>
+            <div class="hint" id="sourceKind">Full screen</div>
+          </div>
+          <button id="btnChangeSource" class="ghost">Change</button>
+        </div>
+      </section>
+
+      <!-- Camera -->
+      <section>
+        <h2>Camera bubble</h2>
+        <label class="field"><span>Camera</span><select id="camSelect"></select></label>
+        <div class="field"><span>Shape</span><div id="shapeRow" class="chips"></div></div>
+        <div class="field"><span>Size</span>
+          <div class="size-row">
+            <div id="sizeChips" class="chips"></div>
+            <input type="range" id="sizeSlider" min="96" max="720" step="2">
+            <span id="sizeVal" class="mono hint"></span>
+          </div>
+        </div>
+        <div class="toggles">
+          <label class="toggle"><input type="checkbox" id="tMirror"><span>Mirror</span></label>
+          <label class="toggle"><input type="checkbox" id="tBorder"><span>Border ring</span></label>
+          <label class="toggle"><input type="checkbox" id="tVisible"><span>Show bubble</span></label>
+          <label class="toggle" title="Keeps the live bubble out of the recording so the camera only appears once. Needs Windows 10 2004+."><input type="checkbox" id="tExclude"><span>Hide bubble from capture</span></label>
+        </div>
+      </section>
+
+      <!-- Mic -->
+      <section>
+        <h2>Microphone</h2>
+        <label class="field"><span>Input</span><select id="micSelect"></select></label>
+        <div class="mic-row">
+          <button id="btnMic" class="mic-btn">🎙 On</button>
+          <canvas id="meter" width="240" height="18"></canvas>
+          <span id="meterDb" class="mono hint">–∞ dB</span>
+        </div>
+        <div class="hint">Bluetooth headsets paired in Windows appear in this list. Talk and watch the meter move.</div>
+      </section>
+
+      <!-- Output -->
+      <section>
+        <h2>Output</h2>
+        <div class="field"><span>Format</span>
+          <div class="seg" id="formatSeg"><button data-v="mp4">MP4</button><button data-v="webm">WebM</button></div>
+        </div>
+        <label class="field" id="codecField"><span>Codec</span><select id="codecSelect"></select></label>
+        <div class="field" id="qualityField"><span>Quality</span>
+          <div class="seg" id="qualitySeg"><button data-v="high">High</button><button data-v="balanced">Balanced</button><button data-v="small">Small file</button></div>
+        </div>
+        <div class="field"><span>Resolution</span>
+          <div class="seg" id="resSeg"><button data-v="720">720p</button><button data-v="1080">1080p</button><button data-v="0">Native</button></div>
+        </div>
+        <div class="field"><span>Frame rate</span>
+          <div class="seg" id="fpsSeg"><button data-v="30">30</button><button data-v="60">60</button></div>
+        </div>
+        <div class="field"><span>Countdown</span>
+          <div class="seg" id="cdSeg"><button data-v="0">Off</button><button data-v="3">3s</button><button data-v="5">5s</button></div>
+        </div>
+        <div class="field"><span>Save to</span>
+          <div class="save-row"><span id="saveDir" class="mono hint ellipsis"></span><button id="btnSaveDir" class="ghost">Change</button></div>
+        </div>
+        <div class="toggles">
+          <label class="toggle"><input type="checkbox" id="tAsk"><span>Ask where to save each time</span></label>
+          <label class="toggle"><input type="checkbox" id="tCompact"><span>Shrink this panel while recording</span></label>
+        </div>
+      </section>
+
+      <section class="hotkeys">
+        <h2>Hotkeys</h2>
+        <div class="hk"><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>R</kbd> Start / stop</div>
+        <div class="hk"><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd> Pause / resume</div>
+        <div class="hk"><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>M</kbd> Mute / unmute</div>
+        <div class="hk"><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>H</kbd> Hide / show bubble</div>
+        <div class="hint">Right-click the bubble for shape, size, corners, and mirror. Double-click it to hide.</div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Source picker overlay -->
+  <div id="picker" hidden>
+    <div class="picker-head">
+      <span>Choose what to record</span>
+      <span class="spacer"></span>
+      <button id="pickerRefresh" class="ghost">Refresh</button>
+      <button id="pickerClose" class="ghost">✕</button>
+    </div>
+    <div class="picker-body">
+      <h3>Screens</h3>
+      <div id="pickScreens" class="grid"></div>
+      <h3>Windows</h3>
+      <div id="pickWindows" class="grid"></div>
+    </div>
+  </div>
+
+  <div id="countdown" hidden></div>
+
+  <script src="../../shared/shapes.js"></script>
+  <script src="control.js"></script>
+</body>
+</html>

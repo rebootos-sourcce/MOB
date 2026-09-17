@@ -1,0 +1,57 @@
+{
+  "name": "mob-recorder",
+  "productName": "MOB Recorder",
+  "version": "0.1.0",
+  "description": "Local Loom-style screen + camera bubble recorder. Records your screen with a shaped webcam overlay and saves MP4 or WebM.",
+  "main": "src/main/main.js",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --win",
+    "dist:portable": "electron-builder --win portable",
+    "check": "node --check src/main/main.js && node --check src/main/windows.js && node --check src/main/settings.js && node --check src/main/ffmpeg.js && node --check src/main/recording-files.js && node --check src/preload/preload.js && node --check src/shared/shapes.js",
+    "smoke": "node scripts/smoke.js"
+  },
+  "build": {
+    "appId": "com.mob.recorder",
+    "productName": "MOB Recorder",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "src/**/*",
+      "package.json"
+    ],
+    "asarUnpack": [
+      "node_modules/ffmpeg-static/**"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
+  },
+  "devDependencies": {
+    "electron": "^33.2.0",
+    "electron-builder": "^25.1.8"
+  },
+  "dependencies": {
+    "ffmpeg-static": "^5.2.0"
+  }
+}
