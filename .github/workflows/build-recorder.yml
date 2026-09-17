@@ -4,6 +4,8 @@ on:
   workflow_dispatch:
   push:
     tags: ['recorder-v*']
+    branches: ['claude/quirky-pasteur-cpog96', 'main']
+    paths: ['recorder/**', '.github/workflows/build-recorder.yml']
 
 permissions:
   contents: write
