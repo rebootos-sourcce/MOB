@@ -882,6 +882,20 @@ function suscAll(){
   const prox=aff.includes(n.cf)?1.3:1;
   n.susc=(0.40+0.60*DOMAIN[arc])*prox;});
  return aff;}
+/* BALANCE. The nine child fetters split by the direction the body takes
+   under them. Four discharge outward, five withdraw inward. That is the
+   approach and withdrawal split, not a claim about anyone's character.
+   The reading is the difference over the total, minus one to one, so an
+   empty field reads zero rather than either pole. Sex at birth is stored
+   and shown beside it; it does not enter the arithmetic. */
+const OUTWARD=['Anger','Disgust','Anticipation','Surprise'];
+const INWARD=['Fear','Shame','Sad','Apathy','Shock'];
+function balance(){
+ var o=0,i=0;
+ OUTWARD.forEach(function(c){o+=S.charge[c]||0;});
+ INWARD.forEach(function(c){i+=S.charge[c]||0;});
+ var t=o+i;
+ return {out:o, in:i, lean: t?(o-i)/t : 0};}
 function compute(){
  const root=DOMAINS[S.dom].r;
  const rootsIn=[...new Set(S.doms.map(d=>DOMAINS[d].r).concat(S.roots))];
@@ -991,7 +1005,7 @@ function compute(){
  let weakL=SI[0];SI.forEach(l=>{if(S.law[l.nm]<S.law[weakL.nm])weakL=l;});
  return {loaded,sabs,cxs,hys,sups,maskRing,DQ:DQraw,Rz,vf:_vf,SQm,poleMean,JQ,excess,
   FAM_POLE,dist,Ig,It,CQ,tier,benign,malig,X,Y,Z,radiance,aff:af,pi,si,dch,steer,
-  will,drag,mask,darkB,darkV,root,rootsIn,weakL};
+  will,drag,mask,darkB,darkV,root,rootsIn,weakL,balance:balance()};
 }
 
 /* ============================================================
@@ -1500,7 +1514,7 @@ if(typeof module!=='undefined'&&module.exports){
                   NERVEBR:NERVEBR, BODYPATH:BODYPATH, TAB:TAB,
   /* indexes */   W:W, BY:BY, ALL_SAB:ALL_SAB, S:S,
   /* soul */      buildSoul:buildSoul, affinity:affinity, bandIg:bandIg,
-  /* engine */    compute:compute, suscAll:suscAll, accuracy:accuracy, sab33Detect:sab33Detect,
+  /* engine */    compute:compute, suscAll:suscAll, balance:balance, OUTWARD:OUTWARD, INWARD:INWARD, accuracy:accuracy, sab33Detect:sab33Detect,
                   sabLevels:sabLevels, exprFill:exprFill, exprRead:exprRead,
   /* gates */     verpScan:verpScan, verpApply:verpApply, verpFactor:verpFactor,
                   verpRead:verpRead, verpShare:verpShare,

@@ -203,6 +203,28 @@ function runXYZDrill(){
   +A.map(function(a){return '<div class="pm-eye">'+a[0]+'</div><p class="ad-p">'+a[3]+'</p>';}).join('');
  rdShell(h);}
 
+/* BALANCE. which way the field discharges, and what it is built from. */
+function runBalDrill(){
+ var r=compute(), b=r.balance;
+ var sx=CURP&&CURP.who?CURP.who.sex:'';
+ var SXN={m:'male',f:'female',o:'other'}[sx]||'';
+ var row=function(c,v,col){return '<div class="ad-r static"><span class="ad-k">'
+  +cr(col,v*10,{size:'xs',raw:v.toFixed(1)})+esc(c)+'</span></div>';};
+ var h='<div class="pm-eye">Balance</div><div class="ad-nm">'
+  +(b.lean===0?'even':(Math.abs(b.lean)*100).toFixed(0)+'% '+(b.lean>0?'outward':'inward'))+'</div>'
+  +'<div class="pm-eye">How it is read</div><p class="ad-p">The nine axes split by the direction the '
+  +'body takes under them. Four discharge outward, five withdraw inward. The reading is the '
+  +'difference over the total, so an empty field reads even rather than either pole. Outward '
+  +'<b>'+b.out.toFixed(1)+'</b> against inward <b>'+b.in.toFixed(1)+'</b>.</p>'
+  +(SXN?'<div class="pm-eye">Sex at birth</div><p class="ad-p">You gave <b>'+SXN+'</b>. It is stored '
+    +'and marked on the strip, and it does not enter the arithmetic. The distance between the tick '
+    +'and the marker is the reading, not a verdict.</p>':'')
+  +'<div class="pm-eye">Outward</div><div class="ad-rows">'
+  +OUTWARD.map(function(c){return row(c,S.charge[c]||0,'Solar');}).join('')+'</div>'
+  +'<div class="pm-eye">Inward</div><div class="ad-rows">'
+  +INWARD.map(function(c){return row(c,S.charge[c]||0,'Throat');}).join('')+'</div>';
+ rdShell(h);}
+
 /* the compass on the right of the stage. it was a picture with no door. */
 function runCompassDrill(){
  var r=compute(), cq=Math.max(0,Math.min(100,r.CQ));

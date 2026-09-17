@@ -148,6 +148,21 @@ function railStack(r){
     +'<span class="stk-p">'+cr('Heart',p*10,{size:'xs',raw:p.toFixed(1)})+'</span></button>';}).join('')
    :'<div class="rnone">Nothing at this layer.</div>';}
  e.innerHTML=h;}
+/* the balance strip. outward is the solar colour, inward the throat. the
+   small grey tick is sex at birth when it has been given, so a person can
+   see the distance between what they were born and what the field reads. */
+function renderBal(r){
+ var e=document.getElementById('bal'); if(!e)return;
+ var b=r.balance, pc=(b.lean+1)/2*100;
+ var c=b.lean>=0?seatCol('Solar'):seatCol('Throat');
+ var sx=CURP&&CURP.who?CURP.who.sex:'';
+ var tick=sx==='m'?'<span class="bal-s" style="left:78%"></span>'
+        :sx==='f'?'<span class="bal-s" style="left:22%"></span>':'';
+ e.innerHTML='<div class="bal-t"><span>inward</span>'
+  +'<span><b>'+(b.lean===0?'even':(Math.abs(b.lean)*100).toFixed(0)+'% '+(b.lean>0?'outward':'inward'))+'</b></span>'
+  +'<span>outward</span></div>'
+  +'<div class="bal-tr"><i></i>'+tick
+  +'<span class="bal-m" style="left:'+pc.toFixed(1)+'%;background:'+c+'"></span></div>';}
 function railTop(r){
  var e=document.getElementById('railtop'); if(!e)return;
  /* "18 of 112 held" read as a score out of a total, which is a test rather
@@ -221,7 +236,7 @@ function render(){
    +row('Installed',inst?inst+' addresses':'nothing','')
    +row('Darkest',r.darkB,r.darkV.toFixed(1))
    +row('Law shut',r.weakL.nm,'at the '+r.weakL.b.toLowerCase());})();
- railStack(r);
+ railStack(r); renderBal(r);
  $('rows').innerHTML='<span class="k">Instruments</span><br>'
   +'integrity <b>'+r.Ig.toFixed(1)+'</b><br>intention <b>'+r.It.toFixed(1)+'</b><br>'
   +'pole in <b>'+r.poleMean.toFixed(2)+'</b><br>jouissance <b>'+r.JQ.toFixed(2)+'</b>'
@@ -296,6 +311,7 @@ document.addEventListener('click',function(e){
  var gate=e.target.closest?e.target.closest('.gate-r[data-gate]'):null;
  if(gate){runGatesDrill(gate.getAttribute('data-gate'));return;}
  if(e.target.closest&&e.target.closest('#pol2')){S.pin=null;ANA_PICK=null;runCompassDrill();return;}
+ if(e.target.closest&&e.target.closest('#bal')){S.pin=null;ANA_PICK=null;runBalDrill();return;}
  var row=e.target.closest?e.target.closest('.ad-r[data-addr]'):null;
  if(!row)return;
  var n=BY[+row.getAttribute('data-addr')];
