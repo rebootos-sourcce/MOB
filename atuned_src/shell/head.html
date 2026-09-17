@@ -263,7 +263,7 @@ canvas#cv{display:block;width:100%;flex:1 1 auto;min-height:0;touch-action:none;
    is a button that opens its reading on the right. The tier block sits
    absolute at top right, so the strip leaves it room. */
 .key{position:relative;z-index:4;flex:0 0 auto;width:100%;box-sizing:border-box;
- display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:12px 216px 0 14px}
+ display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:12px 196px 0 14px}
 .kb{display:inline-flex;align-items:center;gap:6px;min-height:var(--tap);padding:2px 9px 2px 4px;
  background:transparent;border:1px solid var(--edge);border-radius:var(--r-xs);
  color:var(--mid);font:inherit;font-size:12px;cursor:pointer;text-align:left;white-space:nowrap}
@@ -277,8 +277,10 @@ body.punch canvas#cv{filter:saturate(1.2)}
 .ad-r.on{background:color-mix(in srgb,var(--c,var(--gold)) 22%,transparent)}
 /* balance, along the bottom of the stage. the centre is the neutral point
    and the marker moves out from it. */
-.bal{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);z-index:4;
- width:min(420px,calc(100% - 420px));background:none;border:0;padding:6px 0;cursor:pointer;
+/* the howto sits bottom left and the accuracy block bottom right, and the
+   strip crossed both. it takes the lane between them and sits above them. */
+.bal{position:absolute;bottom:64px;left:50%;transform:translateX(-50%);z-index:4;
+ width:min(300px,calc(100% - 700px));background:none;border:0;padding:6px 0;cursor:pointer;
  display:flex;flex-direction:column;gap:6px}
 body:not(.tab-field) .bal{display:none}
 .bal-t{display:flex;justify-content:space-between;font-size:11px;color:var(--dim)}
@@ -290,8 +292,11 @@ body:not(.tab-field) .bal{display:none}
 .bal-s{position:absolute;top:50%;width:2px;height:13px;transform:translate(-50%,-50%);
  background:var(--dim);border-radius:1px}
 .bal:hover .bal-tr{background:var(--panel-2)}
+/* the accuracy block owns the bottom right, so the howto stops before it
+   rather than running under it at the narrower desktop widths. */
 .howto{position:absolute;bottom:14px;left:16px;font-size:12.5px;color:var(--dim);
- pointer-events:none;line-height:1.75;white-space:pre-line;max-width:46ch}
+ pointer-events:none;line-height:1.75;white-space:pre-line;
+ max-width:min(46ch,calc(100% - 320px))}
 .tl{position:absolute;top:14px;right:18px;text-align:right;pointer-events:none;max-width:210px}
 .tl b{display:block;font-size:17px;font-weight:600}
 .acc{position:absolute;right:18px;bottom:16px;z-index:4;text-align:right;pointer-events:none}
@@ -304,7 +309,9 @@ body:not(.tab-field) .acc{display:none}
 .acc-lean{opacity:.72;margin-top:3px}
 /* the compass belongs to the field tab alone. in the original both rules
    declared the same properties, so it floated over every other tab. */
-.pol2{position:absolute;right:16px;top:104px;bottom:118px;z-index:4;cursor:pointer;
+/* the compass shares the right edge with the accuracy block, which is 124
+   tall. it stops above it rather than running behind it. */
+.pol2{position:absolute;right:16px;top:104px;bottom:152px;z-index:4;cursor:pointer;
  display:flex;align-items:center;justify-content:flex-end;background:none;border:0;padding:0;margin:0}
 .pol2:hover svg{opacity:.85}
 body:not(.tab-field) .pol2{display:none}

@@ -3,10 +3,10 @@
    POINTER. Drag a segment to load or clear it, click to drill.
    ============================================================ */
 const HOWTO=[
- 'A · Field. Three things only.\nThe core is CQ. The ring is your 112 addresses, SQ.\nThe wash behind everything is DQ.\nDrag any segment to load or clear it.',
- 'B · Firing. A plus the seats and the saboteurs.\nEach bead is a saboteur. The threads show which\naddresses built it. Hover a bead to name it.',
- 'C · Compounding. B plus the rest of the chain.\nSaboteur to complex to hyper to character, inward.\nThe named ring is your twelve archetypes.\nClick one to change how the soul expresses.',
- 'D · Everything. C plus domains, masks, laws.\nThe outer ring is nineteen domains, five per root cluster.\nThe faint ring inside is the six masks.\nThe short spokes at the centre are the twenty-one laws.'];
+ 'Charge. Three things only.\nThe core is CQ. The ring is your 112 addresses, SQ.\nThe wash behind everything is DQ.\nDrag any segment to load or clear it.',
+ 'Cluster. Charge, plus the seats and the saboteurs.\nEach bead is a saboteur. The threads show which\naddresses built it. Hover a bead to name it.',
+ 'Chain. Cluster, plus the rest of the compounding.\nSaboteur to complex to hyper to character, inward.\nThe named ring is your twelve archetypes.\nClick one to change how the soul expresses.',
+ 'Blueprint. Chain, plus domains, masks and laws.\nThe outer ring is nineteen domains, five per root cluster.\nThe faint ring inside is the six masks.\nThe short spokes at the centre are the twenty-one laws.'];
 function describe(h,r){
  if(h.k==='core')return '<u>CQ '+Math.round(r.CQ)+'</u> <b>the core</b><hr>'
   +'intention <b>'+r.It.toFixed(1)+'</b> times integrity <b>'+r.Ig.toFixed(1)+'</b><br>'
