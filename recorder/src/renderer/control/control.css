@@ -136,6 +136,8 @@ kbd { background: var(--card-2); border: 1px solid var(--line); border-bottom-wi
   padding: 1px 5px; font: 11px ui-monospace, Consolas, monospace; color: var(--text); }
 
 /* ── messages ──────────────────────────────────────────────── */
+.warn-banner { background: #2a2418; border: 1px solid #5c4a1f; color: #ffd489;
+  border-radius: 8px; padding: 9px 11px; font-size: 12px; margin-bottom: 10px; white-space: pre-line; }
 .message { background: #2e1e1e; border: 1px solid #5c2f2f; color: #ffb4b0; border-radius: 8px;
   padding: 9px 11px; white-space: pre-wrap; font-size: 12px; margin-bottom: 10px; }
 .saved { background: #1c2a21; border: 1px solid #2f5c3a; border-radius: 8px; padding: 10px; margin-bottom: 10px; }

@@ -31,7 +31,8 @@ const rec = {
   pausedTotal: 0,
   pausedAt: 0,
   micEnabled: true,
-  message: ''
+  message: '',
+  warnings: []
 };
 
 // ---------------------------------------------------------------- helpers
@@ -57,6 +58,7 @@ function publishState(extra) {
     micEnabled: rec.micEnabled,
     elapsedMs: elapsedMs(),
     message: rec.message,
+    warnings: rec.warnings,
     bubbleVisible: s.bubble.visible
   }, extra || {});
   sendControl('recording:state', payload);
@@ -179,23 +181,21 @@ async function startRecording() {
     return;
   }
 
-  rec.state = 'countdown';
+  rec.state = 'arming';
   rec.message = '';
+  rec.warnings = [];
   publishState();
-
-  for (let n = s.recording.countdown; n > 0; n--) {
-    broadcast('ui:countdown', n);
-    await new Promise((r) => setTimeout(r, 1000));
-    if (rec.state !== 'countdown') return; // cancelled
-  }
-  broadcast('ui:countdown', 0);
 
   rec.raw = new RawRecording();
   rec.micEnabled = s.mic.enabled;
   rec.pausedTotal = 0;
   rec.pausedAt = 0;
 
-  sendRecorder('recorder:start', {
+  // Phase 1. Opening the camera, screen and mic can take up to a couple of
+  // seconds on Windows. This has to complete BEFORE the countdown, otherwise
+  // the countdown hits zero, the user starts talking, and the encoder is not
+  // running yet.
+  sendRecorder('recorder:arm', {
     sourceId: source.id,
     sourceKind: source.kind,
     displayBounds: displayBoundsFor(source),
@@ -208,10 +208,28 @@ async function startRecording() {
   });
 }
 
+/** Phase 2, once devices are open: count down, then start encoding. */
+async function runCountdownAndGo() {
+  const s = settings.get();
+  rec.state = 'countdown';
+  publishState();
+
+  for (let n = s.recording.countdown; n > 0; n--) {
+    broadcast('ui:countdown', n);
+    await new Promise((r) => setTimeout(r, 1000));
+    if (rec.state !== 'countdown') return; // cancelled
+  }
+  broadcast('ui:countdown', 0);
+  if (rec.state !== 'countdown') return;
+  sendRecorder('recorder:go');
+}
+
 function stopRecording() {
-  if (rec.state === 'countdown') {
+  if (rec.state === 'countdown' || rec.state === 'arming') {
     rec.state = 'idle';
     broadcast('ui:countdown', 0);
+    sendRecorder('recorder:stop');
+    if (rec.raw) { rec.raw.end(); rec.raw = null; }
     publishState();
     return;
   }
@@ -336,6 +354,13 @@ async function finalizeRecording(durationMs) {
 
 function showBubbleMenu() {
   const s = settings.get();
+  // A native menu popup is a separate OS window, so bubble.setContentProtection
+  // does not cover it and it composites straight into the recording. Suppress
+  // it while live; the hotkeys and the compact bar cover what's needed there.
+  if (rec.state === 'recording' || rec.state === 'paused' || rec.state === 'countdown') {
+    if (bubble && !bubble.isDestroyed()) bubble.webContents.send('bubble:menuBlocked');
+    return;
+  }
   const shapeItems = Shapes.ORDER.map((id) => ({
     label: Shapes.SHAPES[id].label, type: 'radio', checked: s.bubble.shape === id,
     click: () => settings.set({ bubble: { shape: id } })
@@ -459,6 +484,12 @@ ipcMain.handle('window:close', () => app.quit());
 // From the hidden recorder window
 ipcMain.on('recorder:chunk', (_e, chunk) => { if (rec.raw) rec.raw.append(chunk); });
 ipcMain.on('recorder:state', (_e, msg) => {
+  if (msg.warnings) rec.warnings = msg.warnings;
+  if (msg.state === 'armed' && rec.state === 'arming') {
+    runCountdownAndGo();
+    publishState({ canvas: msg.canvas });
+    return;
+  }
   if (msg.state === 'recording' && rec.state === 'countdown') {
     rec.state = 'recording';
     rec.startedAt = Date.now();

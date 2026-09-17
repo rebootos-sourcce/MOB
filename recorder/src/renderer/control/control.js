@@ -49,7 +49,7 @@
     const el = $('previewShape');
     const inner = $('previewInner');
     // Same ring maths as the bubble and the recorded overlay.
-    const bw = settings.bubble.border ? Math.max(2, Math.round(Math.min(w, h) * 0.024)) : 0;
+    const bw = Material.ringWidth(w, h, settings.bubble.border);
     el.style.width = w + 'px';
     el.style.height = h + 'px';
     el.style.clipPath = shape.css(w, h);
@@ -441,17 +441,21 @@
   function renderRecState() {
     const st = recState.state;
     const live = st === 'recording' || st === 'paused';
+    const starting = st === 'arming' || st === 'countdown';
     const btn = $('btnRecord');
     btn.classList.toggle('busy', live || st === 'finalizing');
-    btn.classList.toggle('arming', st === 'countdown');
+    btn.classList.toggle('arming', starting);
     btn.disabled = st === 'finalizing';
     btn.title = st === 'idle' ? 'Start recording (Ctrl+Shift+R)' : 'Stop recording (Ctrl+Shift+R)';
-    $('statusLine').textContent = { idle: 'Ready to record', countdown: 'Get ready…', recording: 'Recording', paused: 'Paused', finalizing: 'Saving…' }[st] || st;
+    $('statusLine').textContent = {
+      idle: 'Ready to record', arming: 'Opening camera and mic…', countdown: 'Get ready…',
+      recording: 'Recording', paused: 'Paused', finalizing: 'Saving…'
+    }[st] || st;
     $('timer').hidden = !live;
     $('timer').textContent = fmtTime(recState.elapsedMs || 0);
     $('cTimer').textContent = fmtTime(recState.elapsedMs || 0);
     $('recActions').hidden = !live;
-    $('recHint').hidden = live || st === 'finalizing';
+    $('recHint').hidden = live || st === 'finalizing' || starting;
     $('finalizeBox').hidden = st !== 'finalizing';
     $('btnPause').textContent = st === 'paused' ? 'Resume' : 'Pause';
     $('cPause').textContent = st === 'paused' ? '▶' : '⏸';
@@ -462,9 +466,14 @@
     $('cMic').classList.toggle('off', !micOn);
     $('message').hidden = !recState.message;
     $('message').textContent = recState.message || '';
+    // Device problems used to be logged into a hidden window and never shown,
+    // so a take could finish with no camera or no audio and nothing said so.
+    const warns = recState.warnings || [];
+    $('warnBanner').hidden = warns.length === 0;
+    $('warnBanner').textContent = warns.join('\n');
 
     // Free the webcam while recording: the bubble and the engine own it then.
-    const wantPreview = st === 'idle';
+    const wantPreview = st === 'idle' || st === 'arming';
     if (wantPreview !== previewWanted) {
       previewWanted = wantPreview;
       if (wantPreview) openPreview(true); else stopPreview();

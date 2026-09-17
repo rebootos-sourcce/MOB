@@ -4,10 +4,10 @@ const { contextBridge, ipcRenderer } = require('electron');
 // Channels the renderer is allowed to listen on. Keeps the bridge narrow.
 const LISTEN = new Set([
   'settings:changed',
-  'recorder:start', 'recorder:stop', 'recorder:pause', 'recorder:resume',
+  'recorder:arm', 'recorder:go', 'recorder:stop', 'recorder:pause', 'recorder:resume',
   'recorder:setMic', 'recorder:updateOverlay',
   'recording:state', 'finalize:progress', 'finalize:done', 'finalize:error',
-  'bubble:resizing', 'ui:compact', 'ui:countdown'
+  'bubble:resizing', 'bubble:menuBlocked', 'ui:compact', 'ui:countdown'
 ]);
 
 contextBridge.exposeInMainWorld('api', {

@@ -12,28 +12,34 @@
   const rec = document.getElementById('rec');
   const grip = document.getElementById('grip');
   const countdown = document.getElementById('countdown');
+  const menuHint = document.getElementById('menuHint');
 
   let settings = null;
   let currentDevice = undefined;
   let stream = null;
 
-  /** Ring width in px for the current bubble size (matches the recorded overlay). */
-  function ringWidth(w, h) {
-    if (!settings.bubble.border) return 0;
-    return Math.max(2, Math.round(Math.min(w, h) * 0.024));
-  }
-
   function applyShape() {
     if (!settings) return;
     const shape = Shapes.SHAPES[settings.bubble.shape] || Shapes.SHAPES.circle;
     const w = window.innerWidth, h = window.innerHeight;
-    const bw = ringWidth(w, h);
+    const bw = Material.ringWidth(w, h, settings.bubble.border);
     frame.style.clipPath = shape.css(w, h);
     frame.classList.toggle('no-border', bw === 0);
     inner.style.inset = bw + 'px';
     inner.style.clipPath = shape.css(Math.max(1, w - bw * 2), Math.max(1, h - bw * 2));
     cam.classList.toggle('mirror', !!settings.bubble.mirror);
     cam.classList.toggle('flipv', !!settings.bubble.flipV);
+
+    // Anchor the overlay UI to points that are inside this shape's outline.
+    const grip = document.getElementById('grip');
+    const g = Shapes.anchor(settings.bubble.shape, 'grip', w, h);
+    grip.style.left = g.x + 'px';
+    grip.style.top = g.y + 'px';
+    const r = Shapes.anchor(settings.bubble.shape, 'badge', w, h);
+    rec.style.left = r.x + 'px';
+    rec.style.top = r.y + 'px';
+    // Scale the countdown from the actual box, which CSS percentages cannot do.
+    countdown.style.fontSize = Math.round(Math.min(w, h) * 0.42) + 'px';
   }
 
   async function openCamera() {
@@ -78,6 +84,13 @@
     countdown.textContent = n || '';
   });
   window.api.on('bubble:resizing', (on) => document.body.classList.toggle('resizing', on));
+  window.api.on('bubble:menuBlocked', () => {
+    menuHint.hidden = false;
+    menuHint.style.animation = 'none';
+    void menuHint.offsetWidth;          // restart the fade
+    menuHint.style.animation = '';
+    setTimeout(() => { menuHint.hidden = true; }, 2200);
+  });
 
   window.addEventListener('resize', applyShape);
   window.addEventListener('contextmenu', (e) => { e.preventDefault(); window.api.invoke('bubble:contextMenu'); });

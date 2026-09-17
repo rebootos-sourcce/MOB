@@ -50,6 +50,8 @@
 
   var SHAPES = {
     circle: {
+      grip: [0.854, 0.854],   // resize handle, inside the outline
+      badge: [0.5, 0.10],  // recording dot, inside the outline
       label: 'Circle',
       aspect: 1,
       css: function () { return 'circle(50% at 50% 50%)'; },
@@ -60,36 +62,48 @@
       }
     },
     square: {
+      grip: [0.93, 0.93],   // resize handle, inside the outline
+      badge: [0.5, 0.09],  // recording dot, inside the outline
       label: 'Rounded square',
       aspect: 1,
       css: function (w, h) { return 'inset(0 round ' + (Math.min(w, h) * 0.2).toFixed(1) + 'px)'; },
       path: function (ctx, x, y, w, h) { roundRectPath(ctx, x, y, w, h, Math.min(w, h) * 0.2); }
     },
     rect: {
+      grip: [0.95, 0.90],   // resize handle, inside the outline
+      badge: [0.5, 0.11],  // recording dot, inside the outline
       label: 'Rounded rectangle (16:9)',
       aspect: 16 / 9,
       css: function (w, h) { return 'inset(0 round ' + (Math.min(w, h) * 0.16).toFixed(1) + 'px)'; },
       path: function (ctx, x, y, w, h) { roundRectPath(ctx, x, y, w, h, Math.min(w, h) * 0.16); }
     },
     portrait: {
+      grip: [0.90, 0.95],   // resize handle, inside the outline
+      badge: [0.5, 0.08],  // recording dot, inside the outline
       label: 'Rounded portrait (3:4)',
       aspect: 3 / 4,
       css: function (w, h) { return 'inset(0 round ' + (Math.min(w, h) * 0.16).toFixed(1) + 'px)'; },
       path: function (ctx, x, y, w, h) { roundRectPath(ctx, x, y, w, h, Math.min(w, h) * 0.16); }
     },
     pill: {
+      grip: [0.93, 0.85],   // resize handle, inside the outline
+      badge: [0.5, 0.13],  // recording dot, inside the outline
       label: 'Pill',
       aspect: 16 / 9,
       css: function () { return 'inset(0 round 9999px)'; },
       path: function (ctx, x, y, w, h) { roundRectPath(ctx, x, y, w, h, Math.min(w, h) / 2); }
     },
     hexagon: {
+      grip: [0.86, 0.70],   // resize handle, inside the outline
+      badge: [0.5, 0.17],  // recording dot, inside the outline
       label: 'Hexagon',
       aspect: 1,
       css: polygonCss(HEX),
       path: polygonPath(HEX)
     },
     diamond: {
+      grip: [0.72, 0.72],   // resize handle, inside the outline
+      badge: [0.5, 0.30],  // recording dot, inside the outline
       label: 'Diamond',
       aspect: 1,
       css: polygonCss(DIAMOND),
@@ -107,5 +121,12 @@
     return { width: Math.round(size), height: Math.round(size / s.aspect) };
   }
 
-  return { SHAPES: SHAPES, SIZES: SIZES, dimensions: dimensions, ORDER: Object.keys(SHAPES) };
+  /** Anchor point in px for a named UI attachment on a w x h bubble. */
+  function anchor(shapeId, which, w, h) {
+    var s = SHAPES[shapeId] || SHAPES.circle;
+    var a = s[which] || [0.5, 0.5];
+    return { x: a[0] * w, y: a[1] * h };
+  }
+
+  return { SHAPES: SHAPES, SIZES: SIZES, dimensions: dimensions, anchor: anchor, ORDER: Object.keys(SHAPES) };
 });

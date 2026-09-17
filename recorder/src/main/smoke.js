@@ -33,7 +33,7 @@ function install(api) {
     if (++loaded < Object.keys(wins).length) return;
     log('all windows loaded');
     settings.set({
-      recording: { saveDir: outDir, countdown: 0, format: 'mp4', codec: 'h264', quality: 'balanced', maxHeight: 720, askWhereToSave: false, fps: 30 },
+      recording: { saveDir: outDir, countdown: Number(process.env.MOB_SMOKE_COUNTDOWN || 0), format: 'mp4', codec: 'h264', quality: 'balanced', maxHeight: 720, askWhereToSave: false, fps: 30 },
       bubble: { visible: true, border: true, shape: process.env.MOB_SMOKE_SHAPE || 'circle' }
     });
     setTimeout(() => { log('starting recording'); startRecording(); }, 1500);
@@ -41,7 +41,9 @@ function install(api) {
   for (const w of Object.values(wins)) w.webContents.once('did-finish-load', onLoaded);
 
   let stopped = false;
+  const seen = [];
   bus.on('state', (st) => {
+    if (seen[seen.length - 1] !== st.state) { seen.push(st.state); log('state ->', st.state); }
     if (st.state === 'recording' && !stopped) {
       stopped = true;
       log('recording started', JSON.stringify(st.canvas || {}));
@@ -54,6 +56,11 @@ function install(api) {
     const size = fs.statSync(p).size;
     log(`finalized ${p} (${size} bytes, ${durationMs} ms)`);
     if (size < 10000) return fail('output suspiciously small');
+    log('state sequence:', seen.join(' -> '));
+    const i = (x) => seen.indexOf(x);
+    if (i('countdown') >= 0 && i('arming') >= 0 && i('arming') > i('countdown')) {
+      return fail('devices armed AFTER countdown — first words would be lost');
+    }
     app.exit(0);
   });
   bus.on('finalize-error', (e) => fail('finalize: ' + e.message));

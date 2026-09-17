@@ -20,6 +20,8 @@
   let displayBounds = null;   // DIP bounds of the captured display, or null for window capture
   let startedAt = 0, pausedTotal = 0, pausedAt = 0;
   let writeQueue = Promise.resolve();
+  let armed = null;          // stream built at arm time, encoded at go time
+  let warnings = [];         // device problems worth telling the user about
   let fps = 30;
 
   function elapsed() {
@@ -31,11 +33,13 @@
 
   function cleanup() {
     if (timer) { clearInterval(timer); timer = null; }
+    warnings = [];
     stopTracks(screenStream); stopTracks(camStream); stopTracks(micStream); stopTracks(canvasStream);
     screenStream = camStream = micStream = canvasStream = null;
     if (screenVideo) { screenVideo.srcObject = null; screenVideo.remove(); screenVideo = null; }
     if (camVideo) { camVideo.srcObject = null; camVideo.remove(); camVideo = null; }
     mediaRecorder = null;
+    armed = null;
     startedAt = 0; pausedTotal = 0; pausedAt = 0;
   }
 
@@ -78,6 +82,7 @@
     } catch (err) {
       log('camera unavailable:', err.message, '— recording screen only');
       camStream = null;
+      warnings.push('No camera in this recording — ' + err.name);
     }
 
     try {
@@ -89,6 +94,7 @@
     } catch (err) {
       log('mic unavailable:', err.message, '— recording without audio');
       micStream = null;
+      warnings.push('No microphone in this recording — ' + err.name);
     }
   }
 
@@ -165,7 +171,12 @@
     return candidates.find((m) => MediaRecorder.isTypeSupported(m)) || '';
   }
 
-  async function start(opts) {
+  /**
+   * Phase 1: open every device and build the canvas, but do NOT start
+   * MediaRecorder. Devices can take 0.4-2s to open on Windows, so this has to
+   * finish before the countdown runs or the first words of the take are lost.
+   */
+  async function arm(opts) {
     cleanup();
     fps = opts.fps || 30;
     overlay = opts.overlay;
@@ -173,23 +184,52 @@
     try {
       await openStreams(opts);
 
-      // Canvas size: source size scaled so height <= maxHeight (even numbers for encoders).
       const sw = screenVideo.videoWidth || 1920, sh = screenVideo.videoHeight || 1080;
       let scale = 1;
       if (opts.maxHeight && sh > opts.maxHeight) scale = opts.maxHeight / sh;
       canvas = document.createElement('canvas');
       canvas.width = Math.round(sw * scale / 2) * 2;
       canvas.height = Math.round(sh * scale / 2) * 2;
-      ctx = canvas.getContext('2d', { alpha: false, desynchronized: true });
+      ctx = canvas.getContext('2d', { alpha: false });
+      // Downscaling a desktop to 1080p with the default 'low' (bilinear)
+      // setting is what makes recorded UI text look mushy.
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
 
-      canvasStream = canvas.captureStream(0); // we push frames manually for even pacing
+      canvasStream = canvas.captureStream(0); // frames pushed manually
       videoTrack = canvasStream.getVideoTracks()[0];
-      const mixed = new MediaStream([videoTrack]);
-      if (micStream) micStream.getAudioTracks().forEach((t) => mixed.addTrack(t));
+      armed = new MediaStream([videoTrack]);
+      if (micStream) micStream.getAudioTracks().forEach((t) => armed.addTrack(t));
 
+      // Paint immediately so the preview/composite is live during the countdown.
+      drawFrame();
+      timer = setInterval(drawFrame, 1000 / fps);
+
+      window.api.send('recorder:state', {
+        state: 'armed',
+        canvas: { width: canvas.width, height: canvas.height, fps },
+        // Report honestly what actually opened. These used to fail silently.
+        hasCamera: !!camStream,
+        hasMic: !!micStream,
+        warnings: warnings.slice()
+      });
+    } catch (err) {
+      log('arm failed:', err.name, err.message);
+      let message = err.message;
+      if (err.name === 'NotAllowedError') message = 'Permission denied. Check Windows Settings → Privacy → Camera / Microphone, and allow desktop apps.';
+      if (err.name === 'NotReadableError') message = 'Device is busy or unreadable. Is another app using the camera or screen?';
+      window.api.send('recorder:state', { state: 'error', message });
+      cleanup();
+    }
+  }
+
+  /** Phase 2: begin encoding. Devices are already open, so this is instant. */
+  function go() {
+    if (!armed || !canvas) return;
+    try {
       const pixels = canvas.width * canvas.height;
-      const videoBitsPerSecond = Math.round(pixels * fps * 0.12); // ~12 Mbps @1080p30 — generous intermediate, we transcode after
-      mediaRecorder = new MediaRecorder(mixed, { mimeType: pickMime(), videoBitsPerSecond, audioBitsPerSecond: 160000 });
+      const videoBitsPerSecond = Math.round(pixels * fps * 0.12); // ~7.5 Mbps @1080p30 intermediate
+      mediaRecorder = new MediaRecorder(armed, { mimeType: pickMime(), videoBitsPerSecond, audioBitsPerSecond: 160000 });
 
       mediaRecorder.ondataavailable = (e) => {
         if (!e.data || !e.data.size) return;
@@ -211,23 +251,23 @@
         window.api.send('recorder:done', { durationMs });
       };
 
-      drawFrame();
-      timer = setInterval(drawFrame, 1000 / fps);
       mediaRecorder.start(1000);
       startedAt = Date.now();
       log(`recording ${canvas.width}x${canvas.height} @${fps} ${mediaRecorder.mimeType}`);
-      window.api.send('recorder:state', { state: 'recording', canvas: { width: canvas.width, height: canvas.height, fps, mime: mediaRecorder.mimeType } });
+      window.api.send('recorder:state', {
+        state: 'recording',
+        canvas: { width: canvas.width, height: canvas.height, fps, mime: mediaRecorder.mimeType },
+        hasCamera: !!camStream, hasMic: !!micStream, warnings: warnings.slice()
+      });
     } catch (err) {
-      log('start failed:', err.name, err.message);
-      let message = err.message;
-      if (err.name === 'NotAllowedError') message = 'Permission denied. Check Windows Settings → Privacy → Camera / Microphone, and allow desktop apps.';
-      if (err.name === 'NotReadableError') message = 'Device is busy or unreadable. Is another app using the camera or screen?';
-      window.api.send('recorder:state', { state: 'error', message });
+      log('go failed:', err.message);
+      window.api.send('recorder:state', { state: 'error', message: err.message });
       cleanup();
     }
   }
 
-  window.api.on('recorder:start', start);
+  window.api.on('recorder:arm', arm);
+  window.api.on('recorder:go', go);
   window.api.on('recorder:stop', () => {
     if (!mediaRecorder) return;
     if (mediaRecorder.state === 'paused') { pausedTotal += Date.now() - pausedAt; pausedAt = 0; }
@@ -235,10 +275,21 @@
     try { mediaRecorder.stop(); } catch (err) { log('stop failed', err.message); window.api.send('recorder:done', { durationMs: elapsed() }); cleanup(); }
   });
   window.api.on('recorder:pause', () => {
-    if (mediaRecorder && mediaRecorder.state === 'recording') { mediaRecorder.pause(); pausedAt = Date.now(); }
+    if (mediaRecorder && mediaRecorder.state === 'recording') {
+      mediaRecorder.pause();
+      pausedAt = Date.now();
+      // Stop compositing while paused; it was previously still drawing and
+      // pushing frames into a paused recorder for the whole pause.
+      if (timer) { clearInterval(timer); timer = null; }
+    }
   });
   window.api.on('recorder:resume', () => {
-    if (mediaRecorder && mediaRecorder.state === 'paused') { mediaRecorder.resume(); pausedTotal += Date.now() - pausedAt; pausedAt = 0; }
+    if (mediaRecorder && mediaRecorder.state === 'paused') {
+      mediaRecorder.resume();
+      pausedTotal += Date.now() - pausedAt;
+      pausedAt = 0;
+      if (!timer) timer = setInterval(drawFrame, 1000 / fps);
+    }
   });
   window.api.on('recorder:setMic', (on) => {
     if (micStream) micStream.getAudioTracks().forEach((t) => { t.enabled = !!on; });
