@@ -380,5 +380,96 @@ g('18 · the path');
  ok(JSON.stringify(compute())===before,'parsing a path moves no number in the app');
 }
 
+g('19 \u00b7 energetics, the birth module');
+{
+ const {sunSign,moonSign,risingSign,lifePath,masterNumber,chineseElement,
+        hdOf,geneKey,spiritual,converge,BIRTH}=E;
+ /* This module had zero coverage. Every function below was reachable from the
+    Summary tab and never once executed by a gate. */
+ const pad=n=>String(n).padStart(2,'0');
+ const NAMES=new Set(['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra',
+  'Scorpio','Sagittarius','Capricorn','Aquarius','Pisces']);
+
+ /* every day of a leap year must name exactly one real sign */
+ let bad=[],seen={};
+ for(let m=1;m<=12;m++){
+  const dim=[31,29,31,30,31,30,31,31,30,31,30,31][m-1];
+  for(let d=1;d<=dim;d++){
+   const s=sunSign('2024-'+pad(m)+'-'+pad(d));
+   if(!s||!NAMES.has(s.nm))bad.push(m+'/'+d+' -> '+(s&&s.nm));
+   else seen[s.nm]=(seen[s.nm]||0)+1;}}
+ ok(bad.length===0,'every day of the year names a real sun sign'+(bad.length?'  '+bad.slice(0,4).join(', '):''));
+ ok(Object.keys(seen).length===12,'and all twelve signs are reachable, got '+Object.keys(seen).length);
+ const spread=Object.values(seen);
+ ok(Math.min(...spread)>=28&&Math.max(...spread)<=32,
+  'each sign spans a plausible run of days, '+Math.min(...spread)+' to '+Math.max(...spread));
+
+ /* life path reduces to a digit or a master number, for any date */
+ let lpBad=[];
+ for(let y=1900;y<=2030;y+=7)for(let m=1;m<=12;m+=3)for(let d=1;d<=28;d+=9){
+  const v=lifePath(y+'-'+pad(m)+'-'+pad(d));
+  if(!((v>=1&&v<=9)||v===11||v===22||v===33))lpBad.push(y+'-'+m+'-'+d+' -> '+v);}
+ ok(lpBad.length===0,'life path always reduces to 1..9 or a master number'
+  +(lpBad.length?'  '+lpBad.slice(0,3).join(', '):''));
+
+ /* the comment in this module claims pre 1970 births are handled. check it. */
+ let moonBad=[];
+ ['1935-03-02','1958-11-21','1969-12-31','1970-01-01','2001-06-15'].forEach(d=>{
+  const z=moonSign({d:d,t:'12:00'});
+  if(!z||!NAMES.has(z[2]))moonBad.push(d+' -> '+(z&&z[2]));});
+ ok(moonBad.length===0,'moon sign survives dates before 1970'
+  +(moonBad.length?'  '+moonBad.join(', '):''));
+
+ /* rising turns with the clock and stays inside the wheel */
+ let riseBad=[];
+ for(let h=0;h<24;h++){
+  const z=risingSign({d:'1988-04-12',t:pad(h)+':30'});
+  if(!z||!NAMES.has(z[2]))riseBad.push(h+':30 -> '+(z&&z[2]));}
+ ok(riseBad.length===0,'rising sign is valid at every hour'
+  +(riseBad.length?'  '+riseBad.slice(0,3).join(', '):''));
+
+ /* the remaining readings must not throw or hand back nothing */
+ const b={d:'1988-04-12',t:'07:45',p:'London'};
+ ok(chineseElement(1988)!=null,'chinese element resolves');
+ ok(masterNumber({d:'1979-11-29'})===null||[11,22,33].includes(masterNumber({d:'1979-11-29'})),
+  'master number is a master number or nothing');
+ const hd=hdOf(b);
+ ok(hd&&hd.type&&hd.authority,'human design type and authority both resolve');
+ const gk=geneKey(b);
+ ok(gk.gate>=1&&gk.gate<=64,'gene key gate sits in 1..64, got '+gk.gate);
+ ok(gk.line>=1&&gk.line<=6,'and the line in 1..6, got '+gk.line);
+ /* spiritual() is keyed on the BIRTH table. "You" is deliberately null,
+    because the live profile has no birth data until someone enters it, and
+    an unknown name is null for the same reason. Both are the contract, not
+    a failure, and asserting that is the point. */
+ ok(spiritual('Nobody At All')===null,'an unknown name reads null rather than throwing');
+ ok(spiritual('You')===null,'and the live profile reads null until birth data exists');
+ const PEEPS=Object.keys(BIRTH).filter(k=>BIRTH[k]);
+ ok(PEEPS.length===9,'nine reference cases carry birth data, got '+PEEPS.length);
+ let spBad=[];
+ PEEPS.forEach(k=>{const sp=spiritual(k);
+  if(!sp||!sp.sun||!sp.moon||!sp.rising||!sp.hd||!sp.gk)spBad.push(k);});
+ ok(spBad.length===0,'every reference case resolves a full reading'
+  +(spBad.length?'  '+spBad.join(', '):''));
+ /* three of the nine were born before 1970, so the negative-days path in
+    moonSign is exercised by real data rather than only by a synthetic date. */
+ ok(PEEPS.filter(k=>+BIRTH[k].d.slice(0,4)<1970).length>=3,
+  'the pre 1970 path is covered by real reference cases');
+
+ /* converge is the only one the UI actually calls */
+ reset(5,0,6);
+ ok(converge('Nobody At All',compute())===null,'converge is null without birth data');
+ const c=converge(PEEPS[0],compute());
+ ok(c!=null,'converge returns a reading');
+ ok(c.agree.length+c.differ.length===4,'it weighs four independent systems, got '
+  +(c.agree.length+c.differ.length));
+ ok(c.score>=0&&c.score<=100,'and scores agreement in 0..100, got '+c.score);
+ ok(JSON.stringify(converge(PEEPS[0],compute()))===JSON.stringify(c),'and is deterministic');
+
+ /* pure functions of date and time, so the same input is the same answer */
+ ok(sunSign('1988-04-12').nm===sunSign('1988-04-12').nm,'sun sign is pure');
+ ok(lifePath('1988-04-12')===lifePath('1988-04-12'),'life path is pure');
+}
+
 console.log('\n===== '+P+' passed, '+F+' failed =====');
 process.exit(F?1:0);

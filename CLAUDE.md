@@ -25,7 +25,7 @@ else may.
 
     ./atuned_src/BUILD.sh              parse checks, div balance, no em dashes
     ./atuned_src/BUILD-engine.sh       and asserts the engine is host free
-    node tests/engine.js               198, headless, 0.1s
+    node tests/engine.js               221, headless, 0.1s
     node tests/functional.js           241, real Chromium
     node tests/collide.js              40, no overlapping nameplates
     node tests/design.js               17, one expected environmental failure
@@ -37,6 +37,13 @@ egress. That one is expected. Any other failure is yours.
 Changed a data table, split a file, or moved code between modules:
 
     python3 tools/equiv.py old.html source.html
+
+Coverage, when you have added or changed engine logic. 96.1 percent of engine
+functions execute under `tests/engine.js` alone. An aggregate hides a hole:
+the whole birth module sat at zero while the average read 92 percent, so check
+the unexecuted list and not only the number.
+
+    rm -rf /tmp/cov && NODE_V8_COVERAGE=/tmp/cov node tests/engine.js
 
 It compares every top level declaration by name and hashed body and exits non
 zero on any difference, so an intended change is a named diff you acknowledge
@@ -85,13 +92,22 @@ only. Muted palette argued from autonomic response. Icons are ring, not fill.
 
 ## What this project is not
 
-No backend, no accounts, no network, no app store, no telemetry. Storage is
+No backend, no accounts, no app store, no telemetry, and no network except the
+Google Fonts link noted below, which is the one thing contradicting that
+sentence. Storage is
 the person's own browser and can vanish, which is why save failures must be
 reported rather than swallowed. Do not propose microservices, serverless,
 scaling tiers, ASO or analytics SDKs. They have no surface to attach to here,
 and the privacy posture is deliberate.
 
 ## Open, and whose call
+
+**Google Fonts contradicts the privacy posture.** `source.html` links
+`fonts.googleapis.com` and `fonts.gstatic.com`, so every load sends the
+person's IP to Google before they have typed anything. This app holds somatic
+and psychological self report. Self hosting the three families as base64, or
+falling back to a system stack, removes the only outbound request in the
+product. His call, because it costs bytes in a single file build.
 
 Mine to build when asked:
 
