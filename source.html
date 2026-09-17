@@ -116,7 +116,12 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
  font-family:var(--sans);font-weight:400;font-size:16px;line-height:1.65;
  -webkit-font-smoothing:antialiased;overflow:hidden;
  transition:background .35s,color .35s}
-#bgaura{position:fixed;inset:-25%;z-index:0;filter:blur(120px)}
+/* The wash is decoration. Without pointer-events:none it took every click
+   below 1180px, where .app drops to position:static and its z-index goes
+   inert. The theme control, the tab bar and the intake did not respond to
+   touch at all on a phone. Verified: elementFromPoint over the Field tab
+   returned bgaura at 1024 and at 390. */
+#bgaura{position:fixed;inset:-25%;z-index:0;filter:blur(120px);pointer-events:none}
 .app{position:fixed;inset:0;z-index:1;display:flex;flex-direction:column;gap:10px;padding:10px}
 
 /* ---------- panels ---------- */
@@ -248,7 +253,7 @@ canvas#cv{display:block;width:100%;flex:1 1 auto;min-height:0;touch-action:none;
    absolute at top right, so the strip leaves it room. */
 .key{position:relative;z-index:4;flex:0 0 auto;width:100%;box-sizing:border-box;
  display:flex;flex-wrap:wrap;gap:5px;align-items:center;padding:12px 216px 0 14px}
-.kb{display:inline-flex;align-items:center;gap:6px;min-height:34px;padding:2px 9px 2px 4px;
+.kb{display:inline-flex;align-items:center;gap:6px;min-height:var(--tap);padding:2px 9px 2px 4px;
  background:transparent;border:1px solid var(--edge);border-radius:var(--r-xs);
  color:var(--mid);font:inherit;font-size:12px;cursor:pointer;text-align:left;white-space:nowrap}
 .kb:hover{background:var(--sunk);color:var(--ink)}
@@ -4434,6 +4439,7 @@ function runGatesDrill(k){
    these, one per element, so nothing on the stage is a label without a door. */
 function runQDrill(q){
  if(q==='cq'){runCoreDrill();return;}
+ if(q==='xyz'){runXYZDrill();return;}
  var r=compute(), h='';
  if(q==='dq'){
   var top=r.loaded.slice().sort(function(a,b){return b.sq-a.sq;}).slice(0,5);
@@ -4454,6 +4460,30 @@ function runQDrill(q){
    +'Release empties the address, replace fills it with the opposite, and the pole is how much of that opposite is installed, 0 to 1 averaged across the nine.</p>'
    +'<div class="pm-eye">Installed</div><p class="ad-p">'+(inst.length?inst.map(function(c){
      var o=CHILD.filter(function(x){return x.nm===c;})[0];return esc(o.opp)+' over '+esc(c);}).join(', ')+'.':'Nothing installed yet.')+'</p>';}
+ rdShell(h);}
+
+/* THE THREE AXES. energy read on three independent lines, each a pure
+   function of quantities already in the reading. Vitality is what is left
+   after apathy and shadow weight. Awareness is intention against
+   distortion. Will is integrity through a clear segment. */
+function runXYZDrill(){
+ var r=compute();
+ var A=[['Vitality',r.X,'Solar','what is left after apathy and the shadow weight. Apathy <b>'
+   +(S.charge.Apathy||0).toFixed(1)+'</b>, shadow weight <b>'+r.DQ.toFixed(1)+'</b>.'],
+  ['Awareness',r.Y,'3rd Eye','intention against distortion. Intention <b>'+r.It.toFixed(1)
+   +'</b>, distortion <b>'+r.dist.toFixed(1)+'</b>.'],
+  ['Will',r.Z,'Root','integrity carried through a clear segment. Integrity <b>'+r.Ig.toFixed(1)
+   +'</b>, mean depth <b>'+r.SQm.toFixed(1)+'</b>.']];
+ var mean=(r.X+r.Y+r.Z)/3;
+ var low=A.slice().sort(function(a,b){return a[1]-b[1];})[0];
+ var h='<div class="pm-eye">Energy</div><div class="ad-nm">'+(mean*100).toFixed(0)+'% across three axes</div>'
+  +'<div class="pm-eye">How to read it</div><p class="ad-p">Three independent lines. They do not average into '
+  +'a score, they say which of the three is carrying and which is short. Yours reads shortest at <b>'
+  +low[0]+'</b>.</p>'
+  +'<div class="ad-rows">'+A.map(function(a){
+    return '<div class="ad-r static"><span class="ad-k">'+cr(a[2],a[1]*100,{size:'xs',raw:a[1].toFixed(2)})
+     +a[0]+'</span><span class="ad-m">'+(a[1]*100).toFixed(0)+'%</span></div>';}).join('')+'</div>'
+  +A.map(function(a){return '<div class="pm-eye">'+a[0]+'</div><p class="ad-p">'+a[3]+'</p>';}).join('');
  rdShell(h);}
 
 /* the compass on the right of the stage. it was a picture with no door. */
@@ -5126,7 +5156,10 @@ function render(){
    '<button class="kb" data-q="cq">'+cr('Crown',r.CQ,{size:'xs',label:'CQ'})+'<span><b>CQ</b> core</span></button>'
   +'<button class="kb" data-q="dq">'+cr('Root',clamp(r.DQ/14,0,1)*100,{size:'xs',raw:r.DQ.toFixed(1)})+'<span><b>DQ</b> shadow</span></button>'
   +'<button class="kb" data-q="sq">'+cr(r.darkB,r.SQm*10,{size:'xs',raw:r.SQm.toFixed(1)})+'<span><b>SQ</b> depth</span></button>'
-  +'<button class="kb" data-q="pole">'+cr('Heart',r.poleMean*100,{size:'xs',raw:r.poleMean.toFixed(2)})+'<span><b>Pole</b> installed</span></button>';
+  +'<button class="kb" data-q="pole">'+cr('Heart',r.poleMean*100,{size:'xs',raw:r.poleMean.toFixed(2)})+'<span><b>Pole</b> installed</span></button>'
+  /* the three axes. the engine has computed X, Y and Z on every reading
+     since the rebuild and nothing has ever drawn them. */
+  +'<button class="kb" data-q="xyz">'+cr('Solar',(r.X+r.Y+r.Z)/3*100,{size:'xs',raw:((r.X+r.Y+r.Z)/3).toFixed(2)})+'<span><b>Energy</b> three axes</span></button>';
  /* who. proportions, not one label. */
  (function(){
   var aff=(r.aff||[]).map(function(v,i){return {nm:(ARCH[i]||{}).nm||'',v:v};})

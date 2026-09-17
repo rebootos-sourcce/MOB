@@ -194,7 +194,10 @@ function render(){
    '<button class="kb" data-q="cq">'+cr('Crown',r.CQ,{size:'xs',label:'CQ'})+'<span><b>CQ</b> core</span></button>'
   +'<button class="kb" data-q="dq">'+cr('Root',clamp(r.DQ/14,0,1)*100,{size:'xs',raw:r.DQ.toFixed(1)})+'<span><b>DQ</b> shadow</span></button>'
   +'<button class="kb" data-q="sq">'+cr(r.darkB,r.SQm*10,{size:'xs',raw:r.SQm.toFixed(1)})+'<span><b>SQ</b> depth</span></button>'
-  +'<button class="kb" data-q="pole">'+cr('Heart',r.poleMean*100,{size:'xs',raw:r.poleMean.toFixed(2)})+'<span><b>Pole</b> installed</span></button>';
+  +'<button class="kb" data-q="pole">'+cr('Heart',r.poleMean*100,{size:'xs',raw:r.poleMean.toFixed(2)})+'<span><b>Pole</b> installed</span></button>'
+  /* the three axes. the engine has computed X, Y and Z on every reading
+     since the rebuild and nothing has ever drawn them. */
+  +'<button class="kb" data-q="xyz">'+cr('Solar',(r.X+r.Y+r.Z)/3*100,{size:'xs',raw:((r.X+r.Y+r.Z)/3).toFixed(2)})+'<span><b>Energy</b> three axes</span></button>';
  /* who. proportions, not one label. */
  (function(){
   var aff=(r.aff||[]).map(function(v,i){return {nm:(ARCH[i]||{}).nm||'',v:v};})

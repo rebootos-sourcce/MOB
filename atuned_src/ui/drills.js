@@ -156,6 +156,7 @@ function runGatesDrill(k){
    these, one per element, so nothing on the stage is a label without a door. */
 function runQDrill(q){
  if(q==='cq'){runCoreDrill();return;}
+ if(q==='xyz'){runXYZDrill();return;}
  var r=compute(), h='';
  if(q==='dq'){
   var top=r.loaded.slice().sort(function(a,b){return b.sq-a.sq;}).slice(0,5);
@@ -176,6 +177,30 @@ function runQDrill(q){
    +'Release empties the address, replace fills it with the opposite, and the pole is how much of that opposite is installed, 0 to 1 averaged across the nine.</p>'
    +'<div class="pm-eye">Installed</div><p class="ad-p">'+(inst.length?inst.map(function(c){
      var o=CHILD.filter(function(x){return x.nm===c;})[0];return esc(o.opp)+' over '+esc(c);}).join(', ')+'.':'Nothing installed yet.')+'</p>';}
+ rdShell(h);}
+
+/* THE THREE AXES. energy read on three independent lines, each a pure
+   function of quantities already in the reading. Vitality is what is left
+   after apathy and shadow weight. Awareness is intention against
+   distortion. Will is integrity through a clear segment. */
+function runXYZDrill(){
+ var r=compute();
+ var A=[['Vitality',r.X,'Solar','what is left after apathy and the shadow weight. Apathy <b>'
+   +(S.charge.Apathy||0).toFixed(1)+'</b>, shadow weight <b>'+r.DQ.toFixed(1)+'</b>.'],
+  ['Awareness',r.Y,'3rd Eye','intention against distortion. Intention <b>'+r.It.toFixed(1)
+   +'</b>, distortion <b>'+r.dist.toFixed(1)+'</b>.'],
+  ['Will',r.Z,'Root','integrity carried through a clear segment. Integrity <b>'+r.Ig.toFixed(1)
+   +'</b>, mean depth <b>'+r.SQm.toFixed(1)+'</b>.']];
+ var mean=(r.X+r.Y+r.Z)/3;
+ var low=A.slice().sort(function(a,b){return a[1]-b[1];})[0];
+ var h='<div class="pm-eye">Energy</div><div class="ad-nm">'+(mean*100).toFixed(0)+'% across three axes</div>'
+  +'<div class="pm-eye">How to read it</div><p class="ad-p">Three independent lines. They do not average into '
+  +'a score, they say which of the three is carrying and which is short. Yours reads shortest at <b>'
+  +low[0]+'</b>.</p>'
+  +'<div class="ad-rows">'+A.map(function(a){
+    return '<div class="ad-r static"><span class="ad-k">'+cr(a[2],a[1]*100,{size:'xs',raw:a[1].toFixed(2)})
+     +a[0]+'</span><span class="ad-m">'+(a[1]*100).toFixed(0)+'%</span></div>';}).join('')+'</div>'
+  +A.map(function(a){return '<div class="pm-eye">'+a[0]+'</div><p class="ad-p">'+a[3]+'</p>';}).join('');
  rdShell(h);}
 
 /* the compass on the right of the stage. it was a picture with no door. */
