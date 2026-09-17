@@ -2,17 +2,28 @@
 /* ============================================================
    COMPUTE. Everything downstream is a pure function of this.
    ============================================================ */
-function compute(){
- /* the Domain Matrix. the root domain a person runs makes them 1.3x more
-    susceptible to its affine child fetters. that is the Distortion wiring. */
- const root=DOMAINS[S.dom].r;
+/* the Domain Matrix. the root domain a person runs makes them 1.3x more
+   susceptible to its affine child fetters. that is the Distortion wiring.
+   This was the first thing compute() did, and it was the only place n.susc
+   was written. applyStory() reads n.susc to decide which addresses a story
+   lands on, and the front door applies the story before compute() runs, so
+   a story was attributed by whichever profile had been computed last. 944
+   of 1560 profile pairs read differently by order. loadProfile() now runs
+   this pass, so susceptibility always belongs to the profile being read. */
+function suscAll(){
  const rootsIn=[...new Set(S.doms.map(d=>DOMAINS[d].r).concat(S.roots))];
  const aff=[...new Set(rootsIn.flatMap(rn=>AFFIN[rn]||[]))];
- let loaded=[],sum=0;
  W.forEach(n=>{
   const arc=Math.min(18,Math.floor(n.slot/(108/19)));
   const prox=aff.includes(n.cf)?1.3:1;
-  n.susc=(0.40+0.60*DOMAIN[arc])*prox;
+  n.susc=(0.40+0.60*DOMAIN[arc])*prox;});
+ return aff;}
+function compute(){
+ const root=DOMAINS[S.dom].r;
+ const rootsIn=[...new Set(S.doms.map(d=>DOMAINS[d].r).concat(S.roots))];
+ const aff=suscAll();
+ let loaded=[],sum=0;
+ W.forEach(n=>{
   /* a closed law at this band lets charge sit deeper. integrity is local. */
   const relief=bandIg(n.b)/10;
   n.held = n.cf?clamp(S.charge[n.cf]*n.susc*(1-relief*0.42),0,10):0;

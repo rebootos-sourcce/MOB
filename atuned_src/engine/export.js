@@ -17,7 +17,7 @@ if(typeof module!=='undefined'&&module.exports){
                   NERVEBR:NERVEBR, BODYPATH:BODYPATH, TAB:TAB,
   /* indexes */   W:W, BY:BY, ALL_SAB:ALL_SAB, S:S,
   /* soul */      buildSoul:buildSoul, affinity:affinity, bandIg:bandIg,
-  /* engine */    compute:compute, accuracy:accuracy, sab33Detect:sab33Detect,
+  /* engine */    compute:compute, suscAll:suscAll, accuracy:accuracy, sab33Detect:sab33Detect,
                   sabLevels:sabLevels, exprFill:exprFill, exprRead:exprRead,
   /* gates */     verpScan:verpScan, verpApply:verpApply, verpFactor:verpFactor,
                   verpRead:verpRead, verpShare:verpShare,

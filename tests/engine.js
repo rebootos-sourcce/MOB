@@ -257,6 +257,18 @@ ok(ref('Gordon').loaded.length>90,'Gordon holds nearly everything');
 
 g('16 · the front door');
 {
+ /* a story must be attributed by the profile being read, whoever was read
+    before. loadProfile runs the susceptibility pass, so this holds. */
+ (function(){
+  const {read,blankProfile,CHARGES}=E;
+  function mk(seed){const p=blankProfile('p'+seed);
+   CHARGES.forEach((c,i)=>{p.axes[c]={held:(seed*3+i*2)%10,opp:0};});p.soul.doms=[seed%19];return p;}
+  const story='I was furious and ashamed, then panic and dread, I avoided everyone.';
+  const run=p=>JSON.stringify(read(p,{story}).reading.loaded.map(n=>[n.i,+n.sq.toFixed(3)]));
+  let bad=0,N=0;
+  for(let s=1;s<=12;s++)for(let t=1;t<=12;t++){if(s===t)continue;
+   const A=mk(s),B=mk(t); run(A); const a1=run(A); run(B); const a2=run(A); N++; if(a1!==a2)bad++;}
+  ok(bad===0,'story attribution is order independent: '+bad+' of '+N+' pairs differ');})();
  const {read,input,throughput,output,blankProfile,gatesClear}=E;
  /* a profile in, a reading out. no ambient setup, no globals touched. */
  const p=blankProfile('door');

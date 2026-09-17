@@ -30,6 +30,7 @@ function loadProfile(p){
   S.charge[c.nm]=a.held!=null?a.held:3; S.replace[c.nm]=a.opp||0;});
  SI.forEach(function(l){S.law[l.nm]=(p.laws[l.nm]!=null)?p.laws[l.nm]:6;});
  gatesLoad(p);   /* absent on a v1 profile, which reads as no story evidence */
+ suscAll();      /* so a story applied before compute() lands on this profile */
  return p;}
 function saveProfile(p){
  p.soul={doms:S.doms.slice(),arcs:S.arcs.slice(),roots:S.roots.slice()};

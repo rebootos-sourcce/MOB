@@ -210,7 +210,8 @@ function anaDrill(){
     +storyBlock([bn]);}
  } else if(P.k==='arch'){
   var ai=-1; ARCH.forEach(function(x,i){if(x.nm===P.nm)ai=i;});
-  var a18=ARCH18.filter(function(x){return x[0]===P.nm;})[0];
+  /* ARCH names it Rebel and the eighteen name it Outlaw. one row, two names. */
+  var a18=ARCH18.filter(function(x){return x[0]===P.nm||(P.nm==='Rebel'&&x[0]==='Outlaw');})[0];
   h+=head('Archetype',P.nm,(ai===r.pi?'primary, how the soul expresses':'secondary affinity'));
   h+='<p class="ad-p">'+((ARCH[ai]||{}).v||'')+'. Affinity <b>'
    +(((r.aff||[])[ai]||0)*100).toFixed(0)+'%</b>.'

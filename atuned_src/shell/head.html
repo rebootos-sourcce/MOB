@@ -64,8 +64,10 @@ body.punch{
  --gold:var(--seat);
  --edge:transparent; --edge-2:transparent;
  --bg:color-mix(in srgb,var(--seat) calc(2% + var(--seat-w)*6%),#12131A);
- --panel:color-mix(in srgb,var(--seat) calc(3% + var(--seat-w)*7%),#171922);
- --panel-2:color-mix(in srgb,var(--seat) calc(4% + var(--seat-w)*8%),#20222D);
+ /* panel tint is capped: at a full Root reading the earlier 10% mix put
+    dim text under 4.5 to 1. bg and sunk carry the seat, panels stay legible. */
+ --panel:color-mix(in srgb,var(--seat) calc(3% + var(--seat-w)*4%),#171922);
+ --panel-2:color-mix(in srgb,var(--seat) calc(4% + var(--seat-w)*4%),#20222D);
  --sunk:color-mix(in srgb,var(--seat) calc(2% + var(--seat-w)*5%),#12131B);
 }
 body.punch .glass,body.punch .vt,body.punch .ib,body.punch .btn,body.punch .cr,
