@@ -75,48 +75,50 @@ function solCore(r,base){
  HIT.push({k:'core',x:CX,y:CY,rad:cr0*1.5});
  return cr0;}
 
-/* SIX ARROWS at the core. three higher gates up, three lower gates down.
-   Each begins outside the halo and runs toward the laws, its length the
-   share of the story that ran through that gate, and it carries its word
-   and its percent at the tip. They were short, faint and unlabelled, and
-   the halo drew over their roots, so nobody could see them. */
+/* SIX GATES at the core. three higher above, three lower below, each a
+   ring icon on a short stem. The ring closes by the share of the story that
+   ran through that gate, the pill at its lower right says the number, the
+   glyph says which gate without a word, and the name comes on hover and on
+   click. No text is drawn over the wheel. The long labelled arrows were
+   read as too long and as text hovering over the construct. */
 function verpArrows(cr0){
  var V=verpRead(), evid=V.some(function(v){return v.pct>0;});
- if(!evid) V=V.map(function(v){return {k:v.k,nm:v.nm,side:v.side,mult:v.mult,pct:17,n:0};});
+ if(!evid) V=V.map(function(v){return {k:v.k,nm:v.nm,side:v.side,mult:v.mult,d:v.d,pct:0,n:0};});
  var hi=V.filter(function(v){return v.side==='higher';});
  var lo=V.filter(function(v){return v.side==='lower';});
- var ink=INK();
- var lawR0=[U*.44,U*.40,U*.33,U*.255][S.view], Lmax=lawR0-U*.045, Lmin=cr0*1.45;
- function arrow(v,i,n,up){
-  var a=(up?-Math.PI/2:Math.PI/2)+(i-(n-1)/2)*0.66;
-  var L=Math.max(Lmin,Math.min(Lmax,Lmin+(Lmax-Lmin)*(0.42+0.58*v.pct/100)));
-  var x1=CX+Math.cos(a)*cr0*1.22, y1=CY+Math.sin(a)*cr0*1.22;
-  var x2=CX+Math.cos(a)*L,        y2=CY+Math.sin(a)*L;
-  var c=up?hx(PAL.Heart):hx(PAL.Root);
-  var al=evid?(.55+v.pct/100*.45):.38;
-  g.beginPath();g.moveTo(x1,y1);g.lineTo(x2,y2);
-  g.strokeStyle=rgba(c,al);g.lineWidth=1.6+v.pct/100*2.4;g.lineCap='round';g.stroke();g.lineCap='butt';
-  var hd=4.5+v.pct/100*4;
-  g.beginPath();g.moveTo(x2,y2);
-  g.lineTo(x2-Math.cos(a-0.42)*hd, y2-Math.sin(a-0.42)*hd);
-  g.lineTo(x2-Math.cos(a+0.42)*hd, y2-Math.sin(a+0.42)*hd);
-  g.closePath();g.fillStyle=rgba(c,al);g.fill();
-  /* the word, and the percent when there is a story to count */
-  var lx=CX+Math.cos(a)*(L+9), ly=CY+Math.sin(a)*(L+9), cs=Math.cos(a);
-  g.save();g.font='500 11px Lexend, system-ui, sans-serif';
-  g.textAlign=Math.abs(cs)<.25?'center':(cs>0?'left':'right');g.textBaseline='middle';
-  g.fillStyle=rgba(ink,evid?.85:.5);
-  g.fillText(v.nm+(evid?' '+v.pct+'%':''),lx,ly+(up?-4:4));g.restore();
-  HIT.push({k:'gate',v:v,x:(x1+x2)/2,y:(y1+y2)/2,rad:Math.max(14,(L-cr0*1.22)/2)});
-  HIT.push({k:'gate',v:v,x:lx+(cs>0?28:cs<0?-28:0),y:ly,rad:30});}
- hi.forEach(function(v,i){arrow(v,i,hi.length,true);});
- lo.forEach(function(v,i){arrow(v,i,lo.length,false);});
+ var ink=INK(), bgc=LIGHT()?[248,247,243]:[23,25,34];
+ var R=13, rr=cr0*1.3+34;
+ function gate(v,i,n,up){
+  var a=(up?-Math.PI/2:Math.PI/2)+(i-(n-1)/2)*0.72;
+  var x=CX+Math.cos(a)*rr, y=CY+Math.sin(a)*rr;
+  var c=up?hx(PAL.Heart):hx(PAL.Root), f=v.pct/100;
+  /* the stem. its weight is the share, its length is fixed and short */
+  g.beginPath();g.moveTo(CX+Math.cos(a)*cr0*1.12,CY+Math.sin(a)*cr0*1.12);
+  g.lineTo(x-Math.cos(a)*(R+3),y-Math.sin(a)*(R+3));
+  g.strokeStyle=rgba(c,.25+f*.6);g.lineWidth=1+f*3;g.lineCap='round';g.stroke();g.lineCap='butt';
+  /* the ring. a dim track, then the share closing clockwise from the top */
+  g.beginPath();g.arc(x,y,R,0,TAU);g.fillStyle=rgba(bgc,.92);g.fill();
+  g.beginPath();g.arc(x,y,R,0,TAU);g.strokeStyle=rgba(c,.22);g.lineWidth=2.4;g.stroke();
+  if(f>0){g.beginPath();g.arc(x,y,R,-Math.PI/2,-Math.PI/2+TAU*f);
+   g.strokeStyle=rgba(c,.95);g.lineWidth=2.4;g.lineCap='round';g.stroke();g.lineCap='butt';}
+  /* the glyph */
+  var P=new Path2D(GATEGLYPH[v.k]), sc=15/24;
+  g.save();g.translate(x-7.5,y-7.5);g.scale(sc,sc);
+  g.lineWidth=1.9/sc;g.lineCap='round';g.lineJoin='round';g.strokeStyle=rgba(ink,evid?.9:.5);g.stroke(P);g.restore();
+  /* the pill at the lower right, only once there is a story to count */
+  if(evid){var px=x+R-3, py=y+R-5, pw=v.pct>=100?26:22, ph=12;
+   roundRect(px,py,pw,ph,6);g.fillStyle=rgba(c,1);g.fill();
+   g.save();g.font='600 8.5px Lexend, system-ui, sans-serif';g.textAlign='center';g.textBaseline='middle';
+   g.fillStyle=rgba(bgc,1);g.fillText(v.pct+'%',px+pw/2,py+ph/2+.5);g.restore();}
+  HIT.push({k:'gate',v:v,x:x,y:y,rad:R+9});}
+ hi.forEach(function(v,i){gate(v,i,hi.length,true);});
+ lo.forEach(function(v,i){gate(v,i,lo.length,false);});
  if(evid){
   var top=V.slice().sort(function(a,b){return b.pct-a.pct;})[0];
   if(top.pct>=34){
-   txt('defaults to '+top.nm.toLowerCase(),CX,CY+cr0*3.2+22,13,
+   txt('defaults to '+top.nm.toLowerCase(),CX,CY+rr+R+22,13,
     top.side==='higher'?hx(PAL.Heart):hx(PAL.Root),.95,600);
-   txt('costs \u00d7'+top.mult.toFixed(2)+' on everything held',CX,CY+cr0*3.2+38,11,INK(),.5,400);}}}
+   txt('costs \u00d7'+top.mult.toFixed(2)+' on everything held',CX,CY+rr+R+38,11,INK(),.5,400);}}}
 
 /* ============================================================
    THE WHEEL, four depths. A complexity ladder, not four skins.
@@ -141,16 +143,19 @@ function drawWheel(r,L){
 
  /* --- chain chords, C and D --- */
  if(L>=2){
-  const lit=o=>{if(!p||p===o)return 1;const has=x=>x===o||(x.parts||[]).some(has);return has(p)?1:.08;};
+  /* with a selection the rest of the web falls to .08 and the selected chain
+     rises above rest: alpha up, width up. it saturates rather than lights. */
+  const lit=o=>{if(!p)return 1;if(p===o)return 2;const has=x=>x===o||(x.parts||[]).some(has);return has(p)?2:.08;};
+  const al=(b,o)=>Math.min(1,b*lit(o)), wd=(b,o)=>lit(o)>1?b*1.5:b;
   const quad=(a0,r0,a1,r1,pull,st,w,dash)=>{const am=meanAng([a0,a1]),rm=(r0+r1)/2*pull;
    g.beginPath();g.moveTo(CX+Math.cos(a0)*r0,CY+Math.sin(a0)*r0);
    g.quadraticCurveTo(CX+Math.cos(am)*rm,CY+Math.sin(am)*rm,CX+Math.cos(a1)*r1,CY+Math.sin(a1)*r1);
    if(dash)g.setLineDash(dash);g.strokeStyle=st;g.lineWidth=w;g.stroke();g.setLineDash([]);};
   r.sabs.forEach(s=>s.parts.forEach(n=>quad(n.ang,R.shell*.92,s.ang,R.sab,.42,
-   rgba(bc(n.b),.46*lit(s)),1.6,s.unnamed?[3,3]:null)));
-  r.cxs.forEach(c=>c.parts.forEach(s=>quad(s.ang,R.sab,c.ang,R.cx,.44,rgba(bc('Solar'),.62*lit(c)),2.4)));
-  r.hys.forEach(h=>h.parts.forEach(c=>quad(c.ang,R.cx,h.ang,R.hy,.46,rgba(bc('Sacral'),.74*lit(h)),3.2)));
-  r.sups.forEach(u=>u.parts.forEach(h=>quad(h.ang,R.hy,u.ang,R.sup,.48,rgba(bc('Root'),.9*lit(u)),4)));
+   rgba(bc(n.b),al(.46,s)),wd(1.6,s),s.unnamed?[3,3]:null)));
+  r.cxs.forEach(c=>c.parts.forEach(s=>quad(s.ang,R.sab,c.ang,R.cx,.44,rgba(bc('Solar'),al(.62,c)),wd(2.4,c))));
+  r.hys.forEach(h=>h.parts.forEach(c=>quad(c.ang,R.cx,h.ang,R.hy,.46,rgba(bc('Sacral'),al(.74,h)),wd(3.2,h))));
+  r.sups.forEach(u=>u.parts.forEach(h=>quad(h.ang,R.hy,u.ang,R.sup,.48,rgba(bc('Root'),al(.9,u)),wd(4,u))));
  }else if(L===1){
   r.sabs.forEach(s=>s.parts.forEach(n=>{
    g.beginPath();g.moveTo(CX+Math.cos(n.ang)*R.shell*.92,CY+Math.sin(n.ang)*R.shell*.92);

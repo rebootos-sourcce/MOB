@@ -12,6 +12,10 @@ function describe(h,r){
   +'intention <b>'+r.It.toFixed(1)+'</b> times integrity <b>'+r.Ig.toFixed(1)+'</b><br>'
   +'over resistance <b>'+r.Rz.toFixed(2)+'</b><hr>'
   +'Size and saturation are coherence.<br><b>Click for the breakdown.</b>';
+ if(h.k==='gate'){var v=h.v;
+  return '<u>'+(v.side==='higher'?'higher gate':'lower gate')+'</u> <b>'+esc(v.nm)+'</b><hr>'
+   +esc(v.d||'')+'<hr>'+(v.n?'<b>'+v.pct+'%</b> of the story, '+v.n+' sentence'+(v.n===1?'':'s'):'no story yet')
+   +'<br>costs <b>\u00d7'+v.mult.toFixed(2)+'</b> on everything held<hr><b>Click for detail.</b>';}
  if(h.k==='node'){var n=h.n;
   return '<u>'+String(n.i).padStart(3,'0')+'</u> <b>'+esc(n.k)+'</b><hr>'+n.b+' seat, '+(n.n||'field')
    +'<hr>axis <b>'+(n.cf||'unrouted')+'</b><br>susceptibility <b>'+n.susc.toFixed(2)+'</b>'
@@ -114,6 +118,36 @@ function paintSections(){
    ============================================================ */
 /* The one line that is always on screen: coherence, the tier it names, and
    how much of the field is carrying. Everything else folds behind a label. */
+/* The stack. Under the reading, a row of tabs: the nine fetters, then the
+   saboteurs, complexes, hyper complexes and character layers running now.
+   Every row shows both halves of its pole: the charge held on the left and
+   the coherent opposite installed on the right. A row is a door to the
+   drill. The stack was five count lines. */
+var STACK_TAB='fet';
+function poleOf(o){
+ var lv=leaves(o), fs=[]; lv.forEach(function(n){if(n.cf&&fs.indexOf(n.cf)<0)fs.push(n.cf);});
+ if(!fs.length)return 0; var t=0; fs.forEach(function(f){t+=(S.replace[f]||0);}); return t/fs.length;}
+function railStack(r){
+ var e=document.getElementById('stack'); if(!e)return;
+ var TABS=[['fet','Fetters',CHILD.length],['sab','Saboteurs',r.sabs.length],['cx','Complexes',r.cxs.length],
+  ['hy','Hyper',r.hys.length],['sup','Character',r.sups.length]];
+ var h='<div class="stk-tabs" role="tablist">'+TABS.map(function(t){
+  return '<button type="button" role="tab" class="stk-t'+(STACK_TAB===t[0]?' on':'')+'" data-st="'+t[0]+'" '
+   +'aria-selected="'+(STACK_TAB===t[0])+'">'+t[1]+(t[2]?' <b>'+t[2]+'</b>':'')+'</button>';}).join('')+'</div>';
+ if(STACK_TAB==='fet'){
+  h+='<div class="stk-hd"><span>held</span><span>installed</span></div>';
+  h+=CHILD.map(function(c){var v=S.charge[c.nm]||0, p=S.replace[c.nm]||0;
+   return '<div class="stk-r static"><span class="stk-l">'+cr(c.seat,v*10,{size:'xs',raw:v.toFixed(1)})+esc(c.nm)+'</span>'
+    +'<span class="stk-p">'+esc(c.opp)+cr('Heart',p*10,{size:'xs',raw:p.toFixed(1)})+'</span></div>';}).join('');}
+ else{
+  var list={sab:r.sabs,cx:r.cxs,hy:r.hys,sup:r.sups}[STACK_TAB]||[];
+  h+=list.length?'<div class="stk-hd"><span>weight</span><span>opposite in</span></div>':'';
+  h+=list.length?list.map(function(o,i){var p=poleOf(o);
+   return '<button type="button" class="stk-r'+(S.pin===o?' on':'')+'" data-sk="'+STACK_TAB+'" data-si="'+i+'">'
+    +'<span class="stk-l">'+crPat(o,'xs')+esc(o.nm)+(o.unnamed?'<em>inferred</em>':'')+'</span>'
+    +'<span class="stk-p">'+cr('Heart',p*10,{size:'xs',raw:p.toFixed(1)})+'</span></button>';}).join('')
+   :'<div class="rnone">Nothing at this layer.</div>';}
+ e.innerHTML=h;}
 function railTop(r){
  var e=document.getElementById('railtop'); if(!e)return;
  /* "18 of 112 held" read as a score out of a total, which is a test rather
@@ -184,10 +218,8 @@ function render(){
    +row('Installed',inst?inst+' addresses':'nothing','')
    +row('Darkest',r.darkB,r.darkV.toFixed(1))
    +row('Law shut',r.weakL.nm,'at the '+r.weakL.b.toLowerCase());})();
- $('rows').innerHTML='<span class="k">Stack</span><br>addresses <b>'+r.loaded.length+'</b>'
-  +'<br>saboteurs <b>'+r.sabs.length+'</b><br>complexes <b>'+r.cxs.length+'</b>'
-  +'<br>hyper <b>'+r.hys.length+'</b><br>character <b>'+r.sups.length+'</b>'
-  +'<br><br><span class="k">Instruments</span><br>'
+ railStack(r);
+ $('rows').innerHTML='<span class="k">Instruments</span><br>'
   +'integrity <b>'+r.Ig.toFixed(1)+'</b><br>intention <b>'+r.It.toFixed(1)+'</b><br>'
   +'pole in <b>'+r.poleMean.toFixed(2)+'</b><br>jouissance <b>'+r.JQ.toFixed(2)+'</b>'
   +(r.excess.length?', '+r.excess.length+' overshot':'')+'<br>'
@@ -251,6 +283,11 @@ try{ localStorage.getItem(PKEY);
 /* One delegated handler for every address row the drills render, so a row
    opens the address it names instead of being a dead end. */
 document.addEventListener('click',function(e){
+ var st=e.target.closest?e.target.closest('.stk-t[data-st]'):null;
+ if(st){STACK_TAB=st.getAttribute('data-st');railStack(compute());return;}
+ var sr=e.target.closest?e.target.closest('.stk-r[data-sk]'):null;
+ if(sr){var rr=compute(), o=({sab:rr.sabs,cx:rr.cxs,hy:rr.hys,sup:rr.sups}[sr.getAttribute('data-sk')]||[])[+sr.getAttribute('data-si')];
+  if(o){var same=S.pin&&S.pin.nm===o.nm&&S.pin.kind===o.kind; S.pin=same?null:o; runDrill(S.pin); render();} return;}
  var kb=e.target.closest?e.target.closest('.kb[data-q]'):null;
  if(kb){S.pin=null;ANA_PICK=null;runQDrill(kb.getAttribute('data-q'));return;}
  var gate=e.target.closest?e.target.closest('.gate-r[data-gate]'):null;

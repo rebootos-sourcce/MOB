@@ -409,6 +409,25 @@ body:not(.tab-field) .pol2{display:none}
 .tk{font-size:11px;font-weight:600;color:var(--dim)}
 .tn{color:var(--ink)}
 .tp{color:var(--gold);font-family:var(--num);font-weight:500;font-variant-numeric:tabular-nums}
+/* the stack tabs under the reading */
+.stack{margin-top:14px}
+.stk-tabs{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px}
+.stk-t{background:var(--sunk);border:0;color:var(--mid);border-radius:var(--r-xs);padding:6px 10px;
+ font-family:var(--sans);font-size:12px;cursor:pointer;min-height:32px}
+.stk-t b{font-family:var(--num);font-weight:500;color:var(--dim);margin-left:2px}
+.stk-t.on{background:var(--gold);color:#15130A}
+.stk-t.on b{color:#15130A}
+.stk-hd{display:flex;justify-content:space-between;font-size:11px;color:var(--dim);
+ text-transform:none;padding:2px 6px 4px;letter-spacing:.02em}
+.stk-r{display:flex;justify-content:space-between;align-items:center;gap:8px;width:100%;
+ min-height:var(--tap);padding:3px 6px;border:0;background:transparent;border-radius:var(--r-xs);
+ font-family:var(--sans);font-size:13px;color:var(--ink);text-align:left;cursor:pointer}
+.stk-r.static{cursor:default}
+.stk-r:not(.static):hover,.stk-r.on{background:var(--panel-2)}
+.stk-l,.stk-p{display:inline-flex;align-items:center;gap:7px;min-width:0}
+.stk-l{flex:1 1 auto;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.stk-p{flex:0 0 auto;color:var(--mid);font-size:12px}
+.stk-r em{font-style:normal;color:var(--dim);font-size:11px;margin-left:4px}
 .rows{font-size:13.5px;line-height:1.85;color:var(--dim);margin-top:14px;padding-top:12px;
  border-top:1px solid var(--edge)}
 .rows b{color:var(--ink);font-weight:500;font-family:var(--num);font-variant-numeric:tabular-nums}
@@ -928,6 +947,7 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
     <button class="lsec-hd" type="button"><span>The reading</span><i></i></button>
     <div class="lsec-bd">
      <div class="person" id="person"></div>
+     <div class="stack" id="stack"></div>
      <div class="rows" id="rows"></div>
     </div>
    </div>
@@ -1113,6 +1133,17 @@ const CHARGES=CHILD.map(c=>c.nm);
 /* Ten of the 33 are Shirzad Chamine's Positive Intelligence saboteurs, the
    Judge and its nine accomplices. They are marked so the product gives the
    source its due. The other 23 are SOURCE's own extension of the library. */
+/* the six gate glyphs, 24 unit box, stroked. the eye open and shut for
+   awareness and ignorance, the dot outside the ring for detachment, the
+   raised arrow for intention, the link for attachment, the path bending
+   around the dot for aversion. */
+const GATEGLYPH={
+ aware:'M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12zM12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0-6 0',
+ detach:'M10 14m-6 0a6 6 0 1 0 12 0a6 6 0 1 0-12 0M19 5m-2 0a2 2 0 1 0 4 0a2 2 0 1 0-4 0',
+ intent:'M12 20V5M6 11l6-6 6 6',
+ ignore:'M2 12s4 5 10 5 10-5 10-5M6 15l-2 3M12 17v3M18 15l2 3',
+ attach:'M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1.5 1.5M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1.5-1.5',
+ averse:'M3 19C3 9 21 9 21 19M12 15m-2 0a2 2 0 1 0 4 0a2 2 0 1 0-4 0'};
 const SAB_PI=['Judge','Avoider','Controller','Hyper-Achiever','Hyper-Rational',
  'Hyper-Vigilant','Pleaser','Restless','Stickler','Victim'];
 /* Inferred saboteurs are clusters the library does not name: two or more
@@ -2426,7 +2457,7 @@ function read(prof,opts){
    ============================================================ */
 if(typeof module!=='undefined'&&module.exports){
  module.exports={
-  /* data */      NODES:NODES, SAB_LIB:SAB_LIB, HCX_LIB:HCX_LIB, SAB33:SAB33, SAB_PI:SAB_PI, INFER_NOUN:INFER_NOUN,
+  /* data */      NODES:NODES, SAB_LIB:SAB_LIB, HCX_LIB:HCX_LIB, SAB33:SAB33, SAB_PI:SAB_PI, GATEGLYPH:GATEGLYPH, INFER_NOUN:INFER_NOUN,
                   SABAUTH:SABAUTH, ARCH18:ARCH18, CHILD:CHILD, CHARGES:CHARGES,
                   DOMAINS:DOMAINS, ARCH:ARCH, SI:SI, SINAMES:SINAMES, MASKS:MASKS,
                   BANDS:BANDS, PAL:PAL, ROOTD:ROOTD, ROOTCOL:ROOTCOL, AFFIN:AFFIN,
@@ -2688,48 +2719,50 @@ function solCore(r,base){
  HIT.push({k:'core',x:CX,y:CY,rad:cr0*1.5});
  return cr0;}
 
-/* SIX ARROWS at the core. three higher gates up, three lower gates down.
-   Each begins outside the halo and runs toward the laws, its length the
-   share of the story that ran through that gate, and it carries its word
-   and its percent at the tip. They were short, faint and unlabelled, and
-   the halo drew over their roots, so nobody could see them. */
+/* SIX GATES at the core. three higher above, three lower below, each a
+   ring icon on a short stem. The ring closes by the share of the story that
+   ran through that gate, the pill at its lower right says the number, the
+   glyph says which gate without a word, and the name comes on hover and on
+   click. No text is drawn over the wheel. The long labelled arrows were
+   read as too long and as text hovering over the construct. */
 function verpArrows(cr0){
  var V=verpRead(), evid=V.some(function(v){return v.pct>0;});
- if(!evid) V=V.map(function(v){return {k:v.k,nm:v.nm,side:v.side,mult:v.mult,pct:17,n:0};});
+ if(!evid) V=V.map(function(v){return {k:v.k,nm:v.nm,side:v.side,mult:v.mult,d:v.d,pct:0,n:0};});
  var hi=V.filter(function(v){return v.side==='higher';});
  var lo=V.filter(function(v){return v.side==='lower';});
- var ink=INK();
- var lawR0=[U*.44,U*.40,U*.33,U*.255][S.view], Lmax=lawR0-U*.045, Lmin=cr0*1.45;
- function arrow(v,i,n,up){
-  var a=(up?-Math.PI/2:Math.PI/2)+(i-(n-1)/2)*0.66;
-  var L=Math.max(Lmin,Math.min(Lmax,Lmin+(Lmax-Lmin)*(0.42+0.58*v.pct/100)));
-  var x1=CX+Math.cos(a)*cr0*1.22, y1=CY+Math.sin(a)*cr0*1.22;
-  var x2=CX+Math.cos(a)*L,        y2=CY+Math.sin(a)*L;
-  var c=up?hx(PAL.Heart):hx(PAL.Root);
-  var al=evid?(.55+v.pct/100*.45):.38;
-  g.beginPath();g.moveTo(x1,y1);g.lineTo(x2,y2);
-  g.strokeStyle=rgba(c,al);g.lineWidth=1.6+v.pct/100*2.4;g.lineCap='round';g.stroke();g.lineCap='butt';
-  var hd=4.5+v.pct/100*4;
-  g.beginPath();g.moveTo(x2,y2);
-  g.lineTo(x2-Math.cos(a-0.42)*hd, y2-Math.sin(a-0.42)*hd);
-  g.lineTo(x2-Math.cos(a+0.42)*hd, y2-Math.sin(a+0.42)*hd);
-  g.closePath();g.fillStyle=rgba(c,al);g.fill();
-  /* the word, and the percent when there is a story to count */
-  var lx=CX+Math.cos(a)*(L+9), ly=CY+Math.sin(a)*(L+9), cs=Math.cos(a);
-  g.save();g.font='500 11px Lexend, system-ui, sans-serif';
-  g.textAlign=Math.abs(cs)<.25?'center':(cs>0?'left':'right');g.textBaseline='middle';
-  g.fillStyle=rgba(ink,evid?.85:.5);
-  g.fillText(v.nm+(evid?' '+v.pct+'%':''),lx,ly+(up?-4:4));g.restore();
-  HIT.push({k:'gate',v:v,x:(x1+x2)/2,y:(y1+y2)/2,rad:Math.max(14,(L-cr0*1.22)/2)});
-  HIT.push({k:'gate',v:v,x:lx+(cs>0?28:cs<0?-28:0),y:ly,rad:30});}
- hi.forEach(function(v,i){arrow(v,i,hi.length,true);});
- lo.forEach(function(v,i){arrow(v,i,lo.length,false);});
+ var ink=INK(), bgc=LIGHT()?[248,247,243]:[23,25,34];
+ var R=13, rr=cr0*1.3+34;
+ function gate(v,i,n,up){
+  var a=(up?-Math.PI/2:Math.PI/2)+(i-(n-1)/2)*0.72;
+  var x=CX+Math.cos(a)*rr, y=CY+Math.sin(a)*rr;
+  var c=up?hx(PAL.Heart):hx(PAL.Root), f=v.pct/100;
+  /* the stem. its weight is the share, its length is fixed and short */
+  g.beginPath();g.moveTo(CX+Math.cos(a)*cr0*1.12,CY+Math.sin(a)*cr0*1.12);
+  g.lineTo(x-Math.cos(a)*(R+3),y-Math.sin(a)*(R+3));
+  g.strokeStyle=rgba(c,.25+f*.6);g.lineWidth=1+f*3;g.lineCap='round';g.stroke();g.lineCap='butt';
+  /* the ring. a dim track, then the share closing clockwise from the top */
+  g.beginPath();g.arc(x,y,R,0,TAU);g.fillStyle=rgba(bgc,.92);g.fill();
+  g.beginPath();g.arc(x,y,R,0,TAU);g.strokeStyle=rgba(c,.22);g.lineWidth=2.4;g.stroke();
+  if(f>0){g.beginPath();g.arc(x,y,R,-Math.PI/2,-Math.PI/2+TAU*f);
+   g.strokeStyle=rgba(c,.95);g.lineWidth=2.4;g.lineCap='round';g.stroke();g.lineCap='butt';}
+  /* the glyph */
+  var P=new Path2D(GATEGLYPH[v.k]), sc=15/24;
+  g.save();g.translate(x-7.5,y-7.5);g.scale(sc,sc);
+  g.lineWidth=1.9/sc;g.lineCap='round';g.lineJoin='round';g.strokeStyle=rgba(ink,evid?.9:.5);g.stroke(P);g.restore();
+  /* the pill at the lower right, only once there is a story to count */
+  if(evid){var px=x+R-3, py=y+R-5, pw=v.pct>=100?26:22, ph=12;
+   roundRect(px,py,pw,ph,6);g.fillStyle=rgba(c,1);g.fill();
+   g.save();g.font='600 8.5px Lexend, system-ui, sans-serif';g.textAlign='center';g.textBaseline='middle';
+   g.fillStyle=rgba(bgc,1);g.fillText(v.pct+'%',px+pw/2,py+ph/2+.5);g.restore();}
+  HIT.push({k:'gate',v:v,x:x,y:y,rad:R+9});}
+ hi.forEach(function(v,i){gate(v,i,hi.length,true);});
+ lo.forEach(function(v,i){gate(v,i,lo.length,false);});
  if(evid){
   var top=V.slice().sort(function(a,b){return b.pct-a.pct;})[0];
   if(top.pct>=34){
-   txt('defaults to '+top.nm.toLowerCase(),CX,CY+cr0*3.2+22,13,
+   txt('defaults to '+top.nm.toLowerCase(),CX,CY+rr+R+22,13,
     top.side==='higher'?hx(PAL.Heart):hx(PAL.Root),.95,600);
-   txt('costs \u00d7'+top.mult.toFixed(2)+' on everything held',CX,CY+cr0*3.2+38,11,INK(),.5,400);}}}
+   txt('costs \u00d7'+top.mult.toFixed(2)+' on everything held',CX,CY+rr+R+38,11,INK(),.5,400);}}}
 
 /* ============================================================
    THE WHEEL, four depths. A complexity ladder, not four skins.
@@ -2754,16 +2787,19 @@ function drawWheel(r,L){
 
  /* --- chain chords, C and D --- */
  if(L>=2){
-  const lit=o=>{if(!p||p===o)return 1;const has=x=>x===o||(x.parts||[]).some(has);return has(p)?1:.08;};
+  /* with a selection the rest of the web falls to .08 and the selected chain
+     rises above rest: alpha up, width up. it saturates rather than lights. */
+  const lit=o=>{if(!p)return 1;if(p===o)return 2;const has=x=>x===o||(x.parts||[]).some(has);return has(p)?2:.08;};
+  const al=(b,o)=>Math.min(1,b*lit(o)), wd=(b,o)=>lit(o)>1?b*1.5:b;
   const quad=(a0,r0,a1,r1,pull,st,w,dash)=>{const am=meanAng([a0,a1]),rm=(r0+r1)/2*pull;
    g.beginPath();g.moveTo(CX+Math.cos(a0)*r0,CY+Math.sin(a0)*r0);
    g.quadraticCurveTo(CX+Math.cos(am)*rm,CY+Math.sin(am)*rm,CX+Math.cos(a1)*r1,CY+Math.sin(a1)*r1);
    if(dash)g.setLineDash(dash);g.strokeStyle=st;g.lineWidth=w;g.stroke();g.setLineDash([]);};
   r.sabs.forEach(s=>s.parts.forEach(n=>quad(n.ang,R.shell*.92,s.ang,R.sab,.42,
-   rgba(bc(n.b),.46*lit(s)),1.6,s.unnamed?[3,3]:null)));
-  r.cxs.forEach(c=>c.parts.forEach(s=>quad(s.ang,R.sab,c.ang,R.cx,.44,rgba(bc('Solar'),.62*lit(c)),2.4)));
-  r.hys.forEach(h=>h.parts.forEach(c=>quad(c.ang,R.cx,h.ang,R.hy,.46,rgba(bc('Sacral'),.74*lit(h)),3.2)));
-  r.sups.forEach(u=>u.parts.forEach(h=>quad(h.ang,R.hy,u.ang,R.sup,.48,rgba(bc('Root'),.9*lit(u)),4)));
+   rgba(bc(n.b),al(.46,s)),wd(1.6,s),s.unnamed?[3,3]:null)));
+  r.cxs.forEach(c=>c.parts.forEach(s=>quad(s.ang,R.sab,c.ang,R.cx,.44,rgba(bc('Solar'),al(.62,c)),wd(2.4,c))));
+  r.hys.forEach(h=>h.parts.forEach(c=>quad(c.ang,R.cx,h.ang,R.hy,.46,rgba(bc('Sacral'),al(.74,h)),wd(3.2,h))));
+  r.sups.forEach(u=>u.parts.forEach(h=>quad(h.ang,R.hy,u.ang,R.sup,.48,rgba(bc('Root'),al(.9,u)),wd(4,u))));
  }else if(L===1){
   r.sabs.forEach(s=>s.parts.forEach(n=>{
    g.beginPath();g.moveTo(CX+Math.cos(n.ang)*R.shell*.92,CY+Math.sin(n.ang)*R.shell*.92);
@@ -4893,6 +4929,10 @@ function describe(h,r){
   +'intention <b>'+r.It.toFixed(1)+'</b> times integrity <b>'+r.Ig.toFixed(1)+'</b><br>'
   +'over resistance <b>'+r.Rz.toFixed(2)+'</b><hr>'
   +'Size and saturation are coherence.<br><b>Click for the breakdown.</b>';
+ if(h.k==='gate'){var v=h.v;
+  return '<u>'+(v.side==='higher'?'higher gate':'lower gate')+'</u> <b>'+esc(v.nm)+'</b><hr>'
+   +esc(v.d||'')+'<hr>'+(v.n?'<b>'+v.pct+'%</b> of the story, '+v.n+' sentence'+(v.n===1?'':'s'):'no story yet')
+   +'<br>costs <b>\u00d7'+v.mult.toFixed(2)+'</b> on everything held<hr><b>Click for detail.</b>';}
  if(h.k==='node'){var n=h.n;
   return '<u>'+String(n.i).padStart(3,'0')+'</u> <b>'+esc(n.k)+'</b><hr>'+n.b+' seat, '+(n.n||'field')
    +'<hr>axis <b>'+(n.cf||'unrouted')+'</b><br>susceptibility <b>'+n.susc.toFixed(2)+'</b>'
@@ -4995,6 +5035,36 @@ function paintSections(){
    ============================================================ */
 /* The one line that is always on screen: coherence, the tier it names, and
    how much of the field is carrying. Everything else folds behind a label. */
+/* The stack. Under the reading, a row of tabs: the nine fetters, then the
+   saboteurs, complexes, hyper complexes and character layers running now.
+   Every row shows both halves of its pole: the charge held on the left and
+   the coherent opposite installed on the right. A row is a door to the
+   drill. The stack was five count lines. */
+var STACK_TAB='fet';
+function poleOf(o){
+ var lv=leaves(o), fs=[]; lv.forEach(function(n){if(n.cf&&fs.indexOf(n.cf)<0)fs.push(n.cf);});
+ if(!fs.length)return 0; var t=0; fs.forEach(function(f){t+=(S.replace[f]||0);}); return t/fs.length;}
+function railStack(r){
+ var e=document.getElementById('stack'); if(!e)return;
+ var TABS=[['fet','Fetters',CHILD.length],['sab','Saboteurs',r.sabs.length],['cx','Complexes',r.cxs.length],
+  ['hy','Hyper',r.hys.length],['sup','Character',r.sups.length]];
+ var h='<div class="stk-tabs" role="tablist">'+TABS.map(function(t){
+  return '<button type="button" role="tab" class="stk-t'+(STACK_TAB===t[0]?' on':'')+'" data-st="'+t[0]+'" '
+   +'aria-selected="'+(STACK_TAB===t[0])+'">'+t[1]+(t[2]?' <b>'+t[2]+'</b>':'')+'</button>';}).join('')+'</div>';
+ if(STACK_TAB==='fet'){
+  h+='<div class="stk-hd"><span>held</span><span>installed</span></div>';
+  h+=CHILD.map(function(c){var v=S.charge[c.nm]||0, p=S.replace[c.nm]||0;
+   return '<div class="stk-r static"><span class="stk-l">'+cr(c.seat,v*10,{size:'xs',raw:v.toFixed(1)})+esc(c.nm)+'</span>'
+    +'<span class="stk-p">'+esc(c.opp)+cr('Heart',p*10,{size:'xs',raw:p.toFixed(1)})+'</span></div>';}).join('');}
+ else{
+  var list={sab:r.sabs,cx:r.cxs,hy:r.hys,sup:r.sups}[STACK_TAB]||[];
+  h+=list.length?'<div class="stk-hd"><span>weight</span><span>opposite in</span></div>':'';
+  h+=list.length?list.map(function(o,i){var p=poleOf(o);
+   return '<button type="button" class="stk-r'+(S.pin===o?' on':'')+'" data-sk="'+STACK_TAB+'" data-si="'+i+'">'
+    +'<span class="stk-l">'+crPat(o,'xs')+esc(o.nm)+(o.unnamed?'<em>inferred</em>':'')+'</span>'
+    +'<span class="stk-p">'+cr('Heart',p*10,{size:'xs',raw:p.toFixed(1)})+'</span></button>';}).join('')
+   :'<div class="rnone">Nothing at this layer.</div>';}
+ e.innerHTML=h;}
 function railTop(r){
  var e=document.getElementById('railtop'); if(!e)return;
  /* "18 of 112 held" read as a score out of a total, which is a test rather
@@ -5065,10 +5135,8 @@ function render(){
    +row('Installed',inst?inst+' addresses':'nothing','')
    +row('Darkest',r.darkB,r.darkV.toFixed(1))
    +row('Law shut',r.weakL.nm,'at the '+r.weakL.b.toLowerCase());})();
- $('rows').innerHTML='<span class="k">Stack</span><br>addresses <b>'+r.loaded.length+'</b>'
-  +'<br>saboteurs <b>'+r.sabs.length+'</b><br>complexes <b>'+r.cxs.length+'</b>'
-  +'<br>hyper <b>'+r.hys.length+'</b><br>character <b>'+r.sups.length+'</b>'
-  +'<br><br><span class="k">Instruments</span><br>'
+ railStack(r);
+ $('rows').innerHTML='<span class="k">Instruments</span><br>'
   +'integrity <b>'+r.Ig.toFixed(1)+'</b><br>intention <b>'+r.It.toFixed(1)+'</b><br>'
   +'pole in <b>'+r.poleMean.toFixed(2)+'</b><br>jouissance <b>'+r.JQ.toFixed(2)+'</b>'
   +(r.excess.length?', '+r.excess.length+' overshot':'')+'<br>'
@@ -5132,6 +5200,11 @@ try{ localStorage.getItem(PKEY);
 /* One delegated handler for every address row the drills render, so a row
    opens the address it names instead of being a dead end. */
 document.addEventListener('click',function(e){
+ var st=e.target.closest?e.target.closest('.stk-t[data-st]'):null;
+ if(st){STACK_TAB=st.getAttribute('data-st');railStack(compute());return;}
+ var sr=e.target.closest?e.target.closest('.stk-r[data-sk]'):null;
+ if(sr){var rr=compute(), o=({sab:rr.sabs,cx:rr.cxs,hy:rr.hys,sup:rr.sups}[sr.getAttribute('data-sk')]||[])[+sr.getAttribute('data-si')];
+  if(o){var same=S.pin&&S.pin.nm===o.nm&&S.pin.kind===o.kind; S.pin=same?null:o; runDrill(S.pin); render();} return;}
  var kb=e.target.closest?e.target.closest('.kb[data-q]'):null;
  if(kb){S.pin=null;ANA_PICK=null;runQDrill(kb.getAttribute('data-q'));return;}
  var gate=e.target.closest?e.target.closest('.gate-r[data-gate]'):null;

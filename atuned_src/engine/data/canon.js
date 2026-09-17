@@ -104,6 +104,17 @@ const CHARGES=CHILD.map(c=>c.nm);
 /* Ten of the 33 are Shirzad Chamine's Positive Intelligence saboteurs, the
    Judge and its nine accomplices. They are marked so the product gives the
    source its due. The other 23 are SOURCE's own extension of the library. */
+/* the six gate glyphs, 24 unit box, stroked. the eye open and shut for
+   awareness and ignorance, the dot outside the ring for detachment, the
+   raised arrow for intention, the link for attachment, the path bending
+   around the dot for aversion. */
+const GATEGLYPH={
+ aware:'M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12zM12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0-6 0',
+ detach:'M10 14m-6 0a6 6 0 1 0 12 0a6 6 0 1 0-12 0M19 5m-2 0a2 2 0 1 0 4 0a2 2 0 1 0-4 0',
+ intent:'M12 20V5M6 11l6-6 6 6',
+ ignore:'M2 12s4 5 10 5 10-5 10-5M6 15l-2 3M12 17v3M18 15l2 3',
+ attach:'M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1.5 1.5M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1.5-1.5',
+ averse:'M3 19C3 9 21 9 21 19M12 15m-2 0a2 2 0 1 0 4 0a2 2 0 1 0-4 0'};
 const SAB_PI=['Judge','Avoider','Controller','Hyper-Achiever','Hyper-Rational',
  'Hyper-Vigilant','Pleaser','Restless','Stickler','Victim'];
 /* Inferred saboteurs are clusters the library does not name: two or more
