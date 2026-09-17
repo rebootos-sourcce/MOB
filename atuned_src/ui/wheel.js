@@ -1,11 +1,28 @@
 
-/* ---- DQ. the wash. the area of effect, behind everything. ---- */
+/* ---- DQ. the wash. the area of effect, behind everything. ----
+   Five full canvas radial gradients on a 1600x1000 surface is eight million
+   pixel operations. Painting that every frame cost 82ms of the 103ms a Field
+   frame took, and under prefers-reduced-motion the output was byte identical
+   every time and still repainted.
+
+   The wash is a slow drift behind everything, so it does not need 60fps. Its
+   clock is quantised to 12 steps a second and the whole paint is skipped when
+   the inputs have not moved. Reduced motion pins the clock, so it paints once
+   and never again. */
+var AURA_SIG=null;
 function drawAura(r){
- const w=bg.width,h=bg.height;bgx.clearRect(0,0,w,h);
+ const w=bg.width,h=bg.height;
  const reach=lerp(.20,.58,r.CQ/100), dens=clamp(r.DQ/7,0,1);
- bg.style.opacity=((LIGHT()?.16:.15)+r.radiance*.24).toFixed(2);
+ const t=REDUCED?0:Math.round(S.t*.09*12)/12;
+ const op=((LIGHT()?.16:.15)+r.radiance*.24).toFixed(2);
+ const sig=[w,h,op,reach.toFixed(3),dens.toFixed(3),r.benign?1:0,r.darkB,
+            r.radiance.toFixed(3),LIGHT()?1:0,t].join('|');
+ if(sig===AURA_SIG) return;
+ AURA_SIG=sig;
+ bgx.clearRect(0,0,w,h);
+ bg.style.opacity=op;
  const warm=hx(r.benign?PAL.Heart:PAL.Root), lead=hx(PAL[r.darkB]);
- const t=REDUCED?0:S.t*.09, gc=GOLDC();
+ const gc=GOLDC();
  const gr0=bgx.createRadialGradient(w/2,h/2,0,w/2,h/2,Math.max(w,h)*reach);
  gr0.addColorStop(0,rgba(gc,.42*r.radiance));
  gr0.addColorStop(.34,rgba(gc,.12*r.radiance));
@@ -284,7 +301,23 @@ function drawWheel(r,L){
   pill('hyper · '+r.hys.length,R.hy+13);
   if(r.sups.length)pill('character · '+r.sups.length,R.sup+13);}
 }
+/* Under prefers-reduced-motion the clock is frozen and disp snaps straight to
+   sq, so after the first frame the wheel is provably identical until someone
+   changes depth, hover, pin, theme or profile. It repainted a 922x913 surface
+   of 112 gradient beads anyway, which is why reduced motion measured SLOWER
+   than motion. Honouring the preference means not drawing, not drawing the
+   same thing more cheaply. With motion on, the breathing is the point and
+   every frame is drawn as before. */
+var DRAW_SIG=null;
+function drawSig(r){
+ if(!REDUCED) return null;                 /* animating, always draw */
+ var d=0; for(var i=0;i<W.length;i++)d+=W[i].sq;
+ return [S.view,S.tab,S.who,S.hover&&S.hover.k,S.pin&&(S.pin.nm||S.pin.k),
+         LIGHT()?1:0,S.legible?1:0,d.toFixed(3),r.CQ.toFixed(3)].join('|');}
 function draw(r){
  W.forEach(n=>{n.disp=(n.disp===undefined?n.sq:(REDUCED?n.sq:n.disp+(n.sq-n.disp)*.14));});
+ var sig=drawSig(r);
+ if(sig!==null&&sig===DRAW_SIG) return;    /* nothing moved and nothing will */
+ DRAW_SIG=sig;
  g.clearRect(0,0,CW,CH);HIT=[];
  drawWheel(r,S.view);}

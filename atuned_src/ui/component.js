@@ -100,7 +100,12 @@ function statusSaved(){
 function layout(){const b=cv.parentElement.getBoundingClientRect();
  DPR=Math.min(devicePixelRatio||1,2);cv.width=b.width*DPR;cv.height=b.height*DPR;
  CW=b.width;CH=b.height;CX=CW/2;CY=CH/2;U=Math.min(CW,CH)/2;
- g.setTransform(DPR,0,0,DPR,0,0);bg.width=innerWidth;bg.height=innerHeight;}
+ g.setTransform(DPR,0,0,DPR,0,0);bg.width=innerWidth;bg.height=innerHeight;
+ /* assigning width clears the canvas, so the cached wash is gone even when
+    the size is unchanged. drop its signature or the next frame skips the
+    repaint and the wash stays blank. */
+ if(typeof AURA_SIG!=='undefined')AURA_SIG=null;
+ if(typeof DRAW_SIG!=='undefined')DRAW_SIG=null;}
 addEventListener('resize',function(){layout();render();});
 /* The stage changes height without the window resizing: the depth sub bar
    appears, a tab swaps, a webfont arrives. layout() ran once at init against
