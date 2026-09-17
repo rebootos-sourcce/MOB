@@ -73,6 +73,18 @@ function layout(){const b=cv.parentElement.getBoundingClientRect();
  CW=b.width;CH=b.height;CX=CW/2;CY=CH/2;U=Math.min(CW,CH)/2;
  g.setTransform(DPR,0,0,DPR,0,0);bg.width=innerWidth;bg.height=innerHeight;}
 addEventListener('resize',function(){layout();render();});
+/* The stage changes height without the window resizing: the depth sub bar
+   appears, a tab swaps, a webfont arrives. layout() ran once at init against
+   a stage that was still 913 tall, and the buffer stayed 913 inside an 847.6
+   box for the whole session. Every circle drew as an ellipse squashed 7.2
+   percent, and U came out 456.9 where the box wanted 424.8, so the wheel was
+   laid out for a canvas it did not have. Guarded against its own writes: a
+   re-layout that does not change the size does not schedule another. */
+if(typeof ResizeObserver!=='undefined'){
+ new ResizeObserver(function(){
+  var b=cv.parentElement.getBoundingClientRect();
+  if(Math.abs(b.width-CW)<0.5&&Math.abs(b.height-CH)<0.5)return;
+  layout();render();}).observe(cv.parentElement);}
 function arcP(r0,r1,a0,a1){g.beginPath();g.arc(CX,CY,r0,a0,a1);g.arc(CX,CY,r1,a1,a0,true);g.closePath();}
 function radialTxt(s,ang,rad,size,c,a,w){
  g.save();g.translate(CX+Math.cos(ang)*rad,CY+Math.sin(ang)*rad);

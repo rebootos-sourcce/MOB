@@ -63,18 +63,19 @@ function setTab(i){
  if(cvE) cvE.style.display=(i===TAB.FIELD)?'block':'none';
  if(vb) vb.style.display=(i===TAB.FIELD)?'flex':'none';
  TABDEF.forEach(function(T){document.body.classList.remove(T.cls);});
- document.body.classList.add(TABDEF[i].cls);
+ document.body.classList.add(TABOF(i).cls);   /* by key, not by position */
  document.body.classList.toggle('hassub',i===TAB.FIELD);
  ['probe','howto','key','tier','pol'].forEach(function(id){
   var e=$(id); if(e)e.style.display=(i===TAB.FIELD)?'':'none';});
- document.querySelectorAll('.tabtop').forEach(function(x,j){x.setAttribute('aria-pressed',j===i);});
+ document.querySelectorAll('.tabtop').forEach(function(x,j){
+  x.setAttribute('aria-pressed',TABDEF[j]&&TABDEF[j].k===i);});
  if(i===TAB.STORY)stRender();
  if(i===TAB.SUMMARY)sumRender();
  if(i===TAB.ANALYTICS)anaRender();
  render(); paintSections();}
 TABDEF.forEach(function(T,i){
  var b=document.createElement('button');b.className='vt tabtop';b.type='button';
- b.setAttribute('aria-pressed',i===S.tab);
+ b.setAttribute('aria-pressed',T.k===S.tab);
  b.innerHTML='<span class="n">'+T.nm+'</span>';
  b.addEventListener('click',function(){setTab(T.k);});
  $('tabbar').appendChild(b);});

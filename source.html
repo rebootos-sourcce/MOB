@@ -1596,12 +1596,19 @@ const CHG2FET={anxiety:'Anticipation',fear:'Fear',anger:'Anger',shame:'Shame',
    Order is load bearing and must not change.
    ============================================================ */
 const TAB={STORY:0,SUMMARY:1,FIELD:2,ENERGY:3,ANALYTICS:4};
+/* TABDEF is DISPLAY order. TAB above is identity and does not move: the
+   integers are persisted, compared and passed around, and renumbering them
+   is the bug this file already warns about. Summary reads last because it is
+   the conclusion, so it sits after the instruments that produce it. Anything
+   that needs the entry for a tab looks it up by .k, never by position. */
 const TABDEF=[
  {k:TAB.STORY,    id:'story', nm:'Story',     cls:'tab-story'},
- {k:TAB.SUMMARY,  id:'sum',   nm:'Summary',   cls:'tab-summary'},
  {k:TAB.FIELD,    id:'cv',    nm:'Field',     cls:'tab-field'},
  {k:TAB.ENERGY,   id:'emap',  nm:'Energy',    cls:'tab-energy'},
- {k:TAB.ANALYTICS,id:'ana',   nm:'Analytics', cls:'tab-analytics'}];
+ {k:TAB.ANALYTICS,id:'ana',   nm:'Analytics', cls:'tab-analytics'},
+ {k:TAB.SUMMARY,  id:'sum',   nm:'Summary',   cls:'tab-summary'}];
+const TABOF=function(k){for(var i=0;i<TABDEF.length;i++)if(TABDEF[i].k===k)return TABDEF[i];
+ return TABDEF[0];};
 
 /* ============================================================
    STATE
@@ -2379,6 +2386,18 @@ function layout(){const b=cv.parentElement.getBoundingClientRect();
  CW=b.width;CH=b.height;CX=CW/2;CY=CH/2;U=Math.min(CW,CH)/2;
  g.setTransform(DPR,0,0,DPR,0,0);bg.width=innerWidth;bg.height=innerHeight;}
 addEventListener('resize',function(){layout();render();});
+/* The stage changes height without the window resizing: the depth sub bar
+   appears, a tab swaps, a webfont arrives. layout() ran once at init against
+   a stage that was still 913 tall, and the buffer stayed 913 inside an 847.6
+   box for the whole session. Every circle drew as an ellipse squashed 7.2
+   percent, and U came out 456.9 where the box wanted 424.8, so the wheel was
+   laid out for a canvas it did not have. Guarded against its own writes: a
+   re-layout that does not change the size does not schedule another. */
+if(typeof ResizeObserver!=='undefined'){
+ new ResizeObserver(function(){
+  var b=cv.parentElement.getBoundingClientRect();
+  if(Math.abs(b.width-CW)<0.5&&Math.abs(b.height-CH)<0.5)return;
+  layout();render();}).observe(cv.parentElement);}
 function arcP(r0,r1,a0,a1){g.beginPath();g.arc(CX,CY,r0,a0,a1);g.arc(CX,CY,r1,a1,a0,true);g.closePath();}
 function radialTxt(s,ang,rad,size,c,a,w){
  g.save();g.translate(CX+Math.cos(ang)*rad,CY+Math.sin(ang)*rad);
@@ -4196,18 +4215,19 @@ function setTab(i){
  if(cvE) cvE.style.display=(i===TAB.FIELD)?'block':'none';
  if(vb) vb.style.display=(i===TAB.FIELD)?'flex':'none';
  TABDEF.forEach(function(T){document.body.classList.remove(T.cls);});
- document.body.classList.add(TABDEF[i].cls);
+ document.body.classList.add(TABOF(i).cls);   /* by key, not by position */
  document.body.classList.toggle('hassub',i===TAB.FIELD);
  ['probe','howto','key','tier','pol'].forEach(function(id){
   var e=$(id); if(e)e.style.display=(i===TAB.FIELD)?'':'none';});
- document.querySelectorAll('.tabtop').forEach(function(x,j){x.setAttribute('aria-pressed',j===i);});
+ document.querySelectorAll('.tabtop').forEach(function(x,j){
+  x.setAttribute('aria-pressed',TABDEF[j]&&TABDEF[j].k===i);});
  if(i===TAB.STORY)stRender();
  if(i===TAB.SUMMARY)sumRender();
  if(i===TAB.ANALYTICS)anaRender();
  render(); paintSections();}
 TABDEF.forEach(function(T,i){
  var b=document.createElement('button');b.className='vt tabtop';b.type='button';
- b.setAttribute('aria-pressed',i===S.tab);
+ b.setAttribute('aria-pressed',T.k===S.tab);
  b.innerHTML='<span class="n">'+T.nm+'</span>';
  b.addEventListener('click',function(){setTab(T.k);});
  $('tabbar').appendChild(b);});
