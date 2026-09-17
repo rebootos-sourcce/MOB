@@ -37,10 +37,14 @@ jobs:
           CSC_IDENTITY_AUTO_DISCOVERY: "false"
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Read version
+      - name: Read version and tag
         id: ver
         shell: bash
-        run: echo "version=$(node -p "require('./package.json').version")" >> "$GITHUB_OUTPUT"
+        run: |
+          set -euo pipefail
+          version=$(node -p "require('./package.json').version")
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "TAG=recorder-v$version-build${{ github.run_number }}" >> "$GITHUB_ENV"
 
       - uses: actions/upload-artifact@v4
         with:
@@ -49,16 +53,16 @@ jobs:
             recorder/dist/*.exe
           if-no-files-found: error
 
-      # Two separate upload steps so a transient failure on one file
-      # never blocks the other; each step retries on its own.
-      - name: Publish release (portable EXE)
+      # The release is created empty first (a small, reliable API call), then
+      # the ~100 MB EXEs are uploaded with explicit retries. Uploading them
+      # through the release action has no retry and has failed mid-transfer.
+      - name: Create release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: recorder-v${{ steps.ver.outputs.version }}-build${{ github.run_number }}
+          tag_name: ${{ env.TAG }}
           name: MOB Recorder ${{ steps.ver.outputs.version }} (build ${{ github.run_number }})
           target_commitish: ${{ github.sha }}
           make_latest: true
-          fail_on_unmatched_files: true
           body: |
             Windows 10/11 64-bit.
 
@@ -67,11 +71,66 @@ jobs:
 
             The file is unsigned, so Windows SmartScreen will say "Windows protected your PC" the first time.
             Click **More info → Run anyway**.
-          files: recorder/dist/MOB-Recorder-*-portable.exe
 
-      - name: Publish release (installer)
-        uses: softprops/action-gh-release@v2
+      - name: Upload EXEs
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -uo pipefail
+          rc=0
+          for f in dist/*.exe; do
+            name=$(basename "$f")
+            for attempt in 1 2 3 4; do
+              echo "::group::Uploading $name (attempt $attempt)"
+              if gh release upload "$TAG" "$f" --clobber --repo "$GITHUB_REPOSITORY"; then
+                echo "uploaded $name"
+                echo "::endgroup::"
+                break
+              fi
+              echo "attempt $attempt failed for $name"
+              echo "::endgroup::"
+              if [ "$attempt" -eq 4 ]; then
+                echo "::error::gave up uploading $name"
+                rc=1
+              else
+                sleep $((attempt * 15))
+              fi
+            done
+          done
+          exit $rc
+
+      # A release with a missing or truncated download is worse than a failed
+      # build, so assert the portable EXE is actually there at full size.
+      - name: Verify download
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          gh release view "$TAG" --repo "$GITHUB_REPOSITORY" \
+            --json assets --jq '.assets[] | "\(.name)\t\(.size)\t\(.state)"'
+          local_size=$(stat -c%s dist/MOB-Recorder-*-portable.exe)
+          remote_size=$(gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json assets \
+            --jq '.assets[] | select(.name | endswith("-portable.exe")) | .size')
+          echo "local=$local_size remote=$remote_size"
+          if [ -z "$remote_size" ] || [ "$local_size" != "$remote_size" ]; then
+            echo "::error::portable EXE missing or size mismatch on the release"
+            exit 1
+          fi
+          echo "Download ready: https://github.com/$GITHUB_REPOSITORY/releases/latest"
+
+      # Failed runs leave behind draft releases; clear them so the releases
+      # page only shows real downloads.
+      - name: Remove stale draft releases
+        if: always()
         continue-on-error: true
-        with:
-          tag_name: recorder-v${{ steps.ver.outputs.version }}-build${{ github.run_number }}
-          files: recorder/dist/MOB-Recorder-*-setup.exe
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh api "repos/$GITHUB_REPOSITORY/releases?per_page=100" \
+            --jq '.[] | select(.draft == true) | .id' | while read -r id; do
+              echo "deleting draft release $id"
+              gh api -X DELETE "repos/$GITHUB_REPOSITORY/releases/$id" || true
+            done
