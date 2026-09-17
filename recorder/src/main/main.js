@@ -11,6 +11,11 @@ const EventEmitter = require('events');
 /** Internal event bus (used by the headless smoke test). */
 const bus = new EventEmitter();
 
+// Test harnesses get a throwaway profile so runs never inherit stale settings.
+if (process.env.MOB_SHOT || process.env.MOB_SMOKE) {
+  app.setPath('userData', require('path').join(app.getPath('temp'), 'mob-recorder-testprofile-' + process.pid));
+}
+
 if (!app.requestSingleInstanceLock()) app.quit();
 app.setAppUserModelId('com.mob.recorder');
 
@@ -71,6 +76,7 @@ function overlayPayload() {
     bounds: b,
     shape: s.bubble.shape,
     mirror: s.bubble.mirror,
+    flipV: s.bubble.flipV,
     visible: s.bubble.visible,
     border: s.bubble.border
   };
@@ -126,8 +132,9 @@ async function listSources() {
       return {
         id: s.id,
         name: isScreen && display
-          ? `Display ${displays.indexOf(display) + 1}${String(display.id) === primaryId ? ' (primary)' : ''} — ${display.size.width}×${display.size.height}`
+          ? `Display ${displays.indexOf(display) + 1}${String(display.id) === primaryId ? ' (primary)' : ''}`
           : s.name,
+        detail: isScreen && display ? `${display.size.width}×${display.size.height}` : null,
         kind: isScreen ? 'screen' : 'window',
         displayId: s.display_id || null,
         thumbnail: s.thumbnail && !s.thumbnail.isEmpty() ? s.thumbnail.toDataURL() : null,
@@ -256,7 +263,7 @@ function setCompact(on) {
   } else {
     control.setAlwaysOnTop(false);
     control.setContentProtection(false);
-    control.setMinimumSize(360, 420);
+    control.setMinimumSize(380, 480);
     if (control.__restoreBounds) control.setBounds(control.__restoreBounds);
   }
   sendControl('ui:compact', !!on);
@@ -359,7 +366,8 @@ function showBubbleMenu() {
     { label: 'Shape', submenu: shapeItems },
     { label: 'Size', submenu: sizeItems },
     { label: 'Snap to corner', submenu: corners },
-    { label: 'Mirror camera', type: 'checkbox', checked: s.bubble.mirror, click: () => settings.set({ bubble: { mirror: !s.bubble.mirror } }) },
+    { label: 'Mirror left-right', type: 'checkbox', checked: s.bubble.mirror, click: () => settings.set({ bubble: { mirror: !s.bubble.mirror } }) },
+    { label: 'Flip upside down', type: 'checkbox', checked: s.bubble.flipV, click: () => settings.set({ bubble: { flipV: !s.bubble.flipV } }) },
     { label: 'Border ring', type: 'checkbox', checked: s.bubble.border, click: () => settings.set({ bubble: { border: !s.bubble.border } }) },
     { type: 'separator' },
     { label: 'Hide bubble  (Ctrl+Shift+H)', click: toggleBubble },
@@ -474,6 +482,13 @@ app.whenReady().then(() => {
 
   control.on('closed', () => { app.__quitting = true; app.quit(); });
   registerShortcuts();
+
+  if (process.env.MOB_SHOT) {
+    require('./shot').install({
+      settings, setCompact,
+      getWindows: () => ({ control, bubble, recorder })
+    });
+  }
 
   if (process.env.MOB_SMOKE) {
     require('./smoke').install({

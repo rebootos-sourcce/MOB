@@ -13,7 +13,8 @@ const DEFAULTS = {
     size: 240,            // shorter side in DIP
     x: null,              // null = bottom-right of primary display on first run
     y: null,
-    mirror: true,
+    mirror: true,      // flip left-right (what you see in a real mirror)
+    flipV: false,      // flip upside down (for cameras mounted inverted)
     visible: true,
     border: true,
     excludeFromCapture: true // Windows WDA_EXCLUDEFROMCAPTURE so the bubble isn't recorded twice

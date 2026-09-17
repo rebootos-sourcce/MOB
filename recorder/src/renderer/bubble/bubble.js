@@ -6,6 +6,7 @@
  */
 (function () {
   const frame = document.getElementById('frame');
+  const inner = document.getElementById('inner');
   const cam = document.getElementById('cam');
   const noCam = document.getElementById('noCam');
   const rec = document.getElementById('rec');
@@ -16,13 +17,23 @@
   let currentDevice = undefined;
   let stream = null;
 
+  /** Ring width in px for the current bubble size (matches the recorded overlay). */
+  function ringWidth(w, h) {
+    if (!settings.bubble.border) return 0;
+    return Math.max(2, Math.round(Math.min(w, h) * 0.024));
+  }
+
   function applyShape() {
     if (!settings) return;
     const shape = Shapes.SHAPES[settings.bubble.shape] || Shapes.SHAPES.circle;
     const w = window.innerWidth, h = window.innerHeight;
+    const bw = ringWidth(w, h);
     frame.style.clipPath = shape.css(w, h);
-    frame.classList.toggle('border', !!settings.bubble.border);
+    frame.classList.toggle('no-border', bw === 0);
+    inner.style.inset = bw + 'px';
+    inner.style.clipPath = shape.css(Math.max(1, w - bw * 2), Math.max(1, h - bw * 2));
     cam.classList.toggle('mirror', !!settings.bubble.mirror);
+    cam.classList.toggle('flipv', !!settings.bubble.flipV);
   }
 
   async function openCamera() {

@@ -111,19 +111,24 @@
     return { x: canvas.width - w - m, y: canvas.height - h - m, w, h };
   }
 
-  function drawCover(video, x, y, w, h, mirror) {
+  /**
+   * Draws `video` filling the x/y/w/h box (object-fit: cover), optionally
+   * flipped. Flips happen around the box centre so the framing never shifts.
+   */
+  function drawCover(video, x, y, w, h, flipH, flipV) {
     const vw = video.videoWidth, vh = video.videoHeight;
     if (!vw || !vh) return;
     const scale = Math.max(w / vw, h / vh);
     const dw = vw * scale, dh = vh * scale;
     const dx = x + (w - dw) / 2, dy = y + (h - dh) / 2;
-    if (mirror) {
-      ctx.translate(x + w, 0);
-      ctx.scale(-1, 1);
-      ctx.drawImage(video, (x + w) - (dx + dw), dy, dw, dh);
-    } else {
-      ctx.drawImage(video, dx, dy, dw, dh);
-    }
+    if (!flipH && !flipV) { ctx.drawImage(video, dx, dy, dw, dh); return; }
+    const cx = x + w / 2, cy = y + h / 2;
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.scale(flipH ? -1 : 1, flipV ? -1 : 1);
+    ctx.translate(-cx, -cy);
+    ctx.drawImage(video, dx, dy, dw, dh);
+    ctx.restore();
   }
 
   function drawFrame() {
@@ -135,13 +140,19 @@
       ctx.save();
       shape.path(ctx, r.x, r.y, r.w, r.h);
       ctx.clip();
-      drawCover(camVideo, r.x, r.y, r.w, r.h, overlay.mirror);
+      drawCover(camVideo, r.x, r.y, r.w, r.h, overlay.mirror, overlay.flipV);
       ctx.restore();
       if (overlay.border) {
+        // Clip to the shape and stroke at double width: the outer half is
+        // clipped away, leaving a ring fully inside the outline. This matches
+        // how the live bubble draws its ring, for any shape.
+        const bw = Math.max(2, Math.round(Math.min(r.w, r.h) * 0.024));
         ctx.save();
         shape.path(ctx, r.x, r.y, r.w, r.h);
-        ctx.lineWidth = Math.max(2, Math.round(r.h * 0.012));
-        ctx.strokeStyle = 'rgba(255,255,255,0.85)';
+        ctx.clip();
+        shape.path(ctx, r.x, r.y, r.w, r.h);
+        ctx.lineWidth = bw * 2;
+        ctx.strokeStyle = 'rgba(255,255,255,0.9)';
         ctx.stroke();
         ctx.restore();
       }

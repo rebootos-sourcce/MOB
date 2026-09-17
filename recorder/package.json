@@ -11,7 +11,8 @@
     "dist": "electron-builder --win --publish never",
     "dist:portable": "electron-builder --win portable --publish never",
     "check": "node --check src/main/main.js && node --check src/main/windows.js && node --check src/main/settings.js && node --check src/main/ffmpeg.js && node --check src/main/recording-files.js && node --check src/preload/preload.js && node --check src/shared/shapes.js",
-    "smoke": "node scripts/smoke.js"
+    "smoke": "node scripts/smoke.js",
+    "shot": "node scripts/shot.js"
   },
   "build": {
     "appId": "com.mob.recorder",

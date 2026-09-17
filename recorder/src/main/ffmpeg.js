@@ -26,37 +26,37 @@ function binaryPath() {
  */
 const CODECS = {
   h264: {
-    label: 'H.264 (libx264) — best compatibility',
+    label: 'H.264 · plays everywhere',
     encoder: 'libx264',
     args: (q) => ['-c:v', 'libx264', '-preset', 'slow', '-crf', { high: 18, balanced: 21, small: 24 }[q],
       '-pix_fmt', 'yuv420p', '-profile:v', 'high', '-level', '4.2']
   },
   h265: {
-    label: 'H.265 / HEVC (libx265) — ~40% smaller, needs a modern player',
+    label: 'H.265 · ~40% smaller',
     encoder: 'libx265',
     args: (q) => ['-c:v', 'libx265', '-preset', 'medium', '-crf', { high: 20, balanced: 23, small: 26 }[q],
       '-pix_fmt', 'yuv420p', '-tag:v', 'hvc1']
   },
   av1: {
-    label: 'AV1 (SVT-AV1) — smallest files, slow to encode',
+    label: 'AV1 · smallest, slow',
     encoder: 'libsvtav1',
     args: (q) => ['-c:v', 'libsvtav1', '-preset', '6', '-crf', { high: 28, balanced: 32, small: 36 }[q],
       '-pix_fmt', 'yuv420p']
   },
   h264_nvenc: {
-    label: 'H.264 (NVIDIA GPU) — fast, needs an NVIDIA card',
+    label: 'H.264 · NVIDIA GPU (fast)',
     encoder: 'h264_nvenc',
     args: (q) => ['-c:v', 'h264_nvenc', '-preset', 'p6', '-rc', 'vbr', '-cq', { high: 19, balanced: 23, small: 27 }[q],
       '-b:v', '0', '-pix_fmt', 'yuv420p']
   },
   h264_qsv: {
-    label: 'H.264 (Intel Quick Sync) — fast, needs Intel iGPU',
+    label: 'H.264 · Intel GPU (fast)',
     encoder: 'h264_qsv',
     args: (q) => ['-c:v', 'h264_qsv', '-preset', 'slower', '-global_quality', { high: 19, balanced: 23, small: 27 }[q],
       '-pix_fmt', 'nv12']
   },
   h264_amf: {
-    label: 'H.264 (AMD GPU) — fast, needs an AMD card',
+    label: 'H.264 · AMD GPU (fast)',
     encoder: 'h264_amf',
     args: (q) => ['-c:v', 'h264_amf', '-quality', 'quality', '-rc', 'cqp', '-qp_i', { high: 18, balanced: 22, small: 26 }[q],
       '-qp_p', { high: 20, balanced: 24, small: 28 }[q], '-pix_fmt', 'yuv420p']

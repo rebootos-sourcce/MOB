@@ -6,9 +6,14 @@
   <link rel="stylesheet" href="bubble.css">
 </head>
 <body>
+  <!-- #frame is the ring: it is filled white and clipped to the shape.
+       #inner is inset by the ring width and clipped to the same shape at its
+       own smaller size, so the border follows ANY outline, polygons included. -->
   <div id="frame">
-    <video id="cam" autoplay muted playsinline></video>
-    <div id="noCam" hidden>No camera</div>
+    <div id="inner">
+      <video id="cam" autoplay muted playsinline></video>
+      <div id="noCam" hidden>No camera</div>
+    </div>
     <div id="rec" hidden></div>
     <div id="countdown" hidden></div>
   </div>

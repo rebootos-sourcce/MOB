@@ -25,36 +25,67 @@
     </header>
 
     <main>
-      <!-- Record -->
-      <section class="record">
-        <button id="btnRecord" class="record-btn"><span class="ring"></span><span class="label">Record</span></button>
-        <div class="rec-status">
-          <div id="statusLine">Ready</div>
-          <div id="timer" class="mono" hidden>00:00</div>
-          <div class="rec-actions" id="recActions" hidden>
-            <button id="btnPause" class="ghost">Pause</button>
-            <button id="btnStop" class="danger">Stop</button>
-          </div>
-          <div id="finalizeBox" hidden>
-            <div class="progress"><div id="finalizeBar"></div></div>
-            <div class="hint" id="finalizeHint">Encoding…</div>
-          </div>
+      <!-- ── 1 · Check yourself ─────────────────────────────── -->
+      <section class="card">
+        <div class="card-head">
+          <h2><span class="step">1</span> Check yourself</h2>
+          <span id="readyBadge" class="badge">checking…</span>
         </div>
-        <div id="message" class="message" hidden></div>
-        <div id="savedCard" class="saved" hidden>
-          <div class="saved-title">Saved</div>
-          <div id="savedPath" class="saved-path mono"></div>
-          <div class="row">
-            <button id="btnOpenFile" class="primary">Open</button>
-            <button id="btnShowFolder" class="ghost">Show in folder</button>
-            <button id="btnDismissSaved" class="ghost">✕</button>
+
+        <div class="preview-wrap">
+          <div id="previewShape">
+            <div id="previewInner">
+              <video id="preview" autoplay muted playsinline></video>
+              <div id="previewEmpty">No camera</div>
+            </div>
           </div>
+          <span id="previewInfo" class="res-badge" hidden></span>
         </div>
+
+        <div class="dev-row">
+          <span class="dev-ico" title="Camera">📷</span>
+          <select id="camSelect" title="Which camera to use"></select>
+          <button id="btnFlipH" class="icon-btn" title="Mirror left–right">⇄</button>
+          <button id="btnFlipV" class="icon-btn" title="Flip upside down">⇅</button>
+        </div>
+
+        <div class="dev-row">
+          <span class="dev-ico" title="Microphone">🎙</span>
+          <select id="micSelect" title="Which microphone to use"></select>
+          <button id="btnMic" class="icon-btn" title="Mute / unmute (Ctrl+Shift+M)">On</button>
+        </div>
+
+        <div class="meter-row">
+          <canvas id="meter" height="16"></canvas>
+          <span id="meterDb" class="mono hint">–∞</span>
+        </div>
+        <div class="hint">Talk — the bar should move. Bluetooth headsets appear here once paired.</div>
       </section>
 
-      <!-- Source -->
-      <section>
-        <h2>Screen</h2>
+      <!-- ── 2 · Bubble look ────────────────────────────────── -->
+      <section class="card">
+        <div class="card-head">
+          <h2><span class="step">2</span> Bubble look</h2>
+          <label class="switch" title="Show or hide the floating camera bubble (Ctrl+Shift+H)">
+            <input type="checkbox" id="tVisible"><span>Show</span>
+          </label>
+        </div>
+        <div id="shapeRow" class="chips shape-chips"></div>
+        <div class="size-row">
+          <div id="sizeChips" class="chips"></div>
+          <input type="range" id="sizeSlider" min="96" max="720" step="2" title="Bubble size">
+          <span id="sizeVal" class="mono hint"></span>
+        </div>
+        <div class="toggles">
+          <label class="toggle"><input type="checkbox" id="tBorder"><span>Border ring</span></label>
+          <label class="toggle" title="Keeps the live bubble out of the recording so your camera only appears once. Needs Windows 10 2004+."><input type="checkbox" id="tExclude"><span>Hide bubble from capture</span></label>
+        </div>
+        <div class="hint">Drag the bubble anywhere, or right-click it for these options.</div>
+      </section>
+
+      <!-- ── 3 · What to record ─────────────────────────────── -->
+      <section class="card">
+        <div class="card-head"><h2><span class="step">3</span> What to record</h2></div>
         <div class="source-card" id="sourceCard">
           <img id="sourceThumb" alt="">
           <div class="source-meta">
@@ -65,75 +96,74 @@
         </div>
       </section>
 
-      <!-- Camera -->
-      <section>
-        <h2>Camera bubble</h2>
-        <label class="field"><span>Camera</span><select id="camSelect"></select></label>
-        <div class="field"><span>Shape</span><div id="shapeRow" class="chips"></div></div>
-        <div class="field"><span>Size</span>
-          <div class="size-row">
-            <div id="sizeChips" class="chips"></div>
-            <input type="range" id="sizeSlider" min="96" max="720" step="2">
-            <span id="sizeVal" class="mono hint"></span>
+      <!-- ── 4 · Output (collapsed by default) ──────────────── -->
+      <details class="card" id="outputCard">
+        <summary><h2><span class="step">4</span> Output</h2><span id="outputSummary" class="hint"></span></summary>
+        <div class="details-body">
+          <div class="field"><span>Format</span>
+            <div class="seg" id="formatSeg"><button data-v="mp4">MP4</button><button data-v="webm">WebM</button></div>
+          </div>
+          <label class="field" id="codecField"><span>Codec</span><select id="codecSelect"></select></label>
+          <div class="field" id="qualityField"><span>Quality</span>
+            <div class="seg" id="qualitySeg"><button data-v="high">High</button><button data-v="balanced">Balanced</button><button data-v="small">Small</button></div>
+          </div>
+          <div class="field"><span>Size</span>
+            <div class="seg" id="resSeg"><button data-v="720">720p</button><button data-v="1080">1080p</button><button data-v="0">Native</button></div>
+          </div>
+          <div class="field"><span>Frame rate</span>
+            <div class="seg" id="fpsSeg"><button data-v="30">30</button><button data-v="60">60</button></div>
+          </div>
+          <div class="field"><span>Countdown</span>
+            <div class="seg" id="cdSeg"><button data-v="0">Off</button><button data-v="3">3s</button><button data-v="5">5s</button></div>
+          </div>
+          <div class="field"><span>Save to</span>
+            <div class="save-row"><span id="saveDir" class="mono hint ellipsis"></span><button id="btnSaveDir" class="ghost">Change</button></div>
+          </div>
+          <div class="toggles">
+            <label class="toggle"><input type="checkbox" id="tAsk"><span>Ask where to save each time</span></label>
+            <label class="toggle"><input type="checkbox" id="tCompact"><span>Shrink panel while recording</span></label>
           </div>
         </div>
-        <div class="toggles">
-          <label class="toggle"><input type="checkbox" id="tMirror"><span>Mirror</span></label>
-          <label class="toggle"><input type="checkbox" id="tBorder"><span>Border ring</span></label>
-          <label class="toggle"><input type="checkbox" id="tVisible"><span>Show bubble</span></label>
-          <label class="toggle" title="Keeps the live bubble out of the recording so the camera only appears once. Needs Windows 10 2004+."><input type="checkbox" id="tExclude"><span>Hide bubble from capture</span></label>
-        </div>
-      </section>
+      </details>
 
-      <!-- Mic -->
-      <section>
-        <h2>Microphone</h2>
-        <label class="field"><span>Input</span><select id="micSelect"></select></label>
-        <div class="mic-row">
-          <button id="btnMic" class="mic-btn">🎙 On</button>
-          <canvas id="meter" width="240" height="18"></canvas>
-          <span id="meterDb" class="mono hint">–∞ dB</span>
+      <!-- ── Hotkeys ────────────────────────────────────────── -->
+      <details class="card">
+        <summary><h2>Hotkeys</h2><span class="hint">Ctrl+Shift+…</span></summary>
+        <div class="details-body">
+          <div class="hk"><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>R</kbd><span>Start / stop</span></div>
+          <div class="hk"><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>P</kbd><span>Pause / resume</span></div>
+          <div class="hk"><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>M</kbd><span>Mute / unmute</span></div>
+          <div class="hk"><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>H</kbd><span>Hide / show bubble</span></div>
         </div>
-        <div class="hint">Bluetooth headsets paired in Windows appear in this list. Talk and watch the meter move.</div>
-      </section>
+      </details>
 
-      <!-- Output -->
-      <section>
-        <h2>Output</h2>
-        <div class="field"><span>Format</span>
-          <div class="seg" id="formatSeg"><button data-v="mp4">MP4</button><button data-v="webm">WebM</button></div>
+      <!-- messages + saved card live at the end of the scroll area -->
+      <div id="message" class="message" hidden></div>
+      <div id="savedCard" class="saved" hidden>
+        <div class="saved-title">✓ Saved</div>
+        <div id="savedPath" class="saved-path mono"></div>
+        <div class="row">
+          <button id="btnOpenFile" class="primary">Open</button>
+          <button id="btnShowFolder" class="ghost">Show in folder</button>
+          <button id="btnDismissSaved" class="ghost" title="Dismiss">✕</button>
         </div>
-        <label class="field" id="codecField"><span>Codec</span><select id="codecSelect"></select></label>
-        <div class="field" id="qualityField"><span>Quality</span>
-          <div class="seg" id="qualitySeg"><button data-v="high">High</button><button data-v="balanced">Balanced</button><button data-v="small">Small file</button></div>
-        </div>
-        <div class="field"><span>Resolution</span>
-          <div class="seg" id="resSeg"><button data-v="720">720p</button><button data-v="1080">1080p</button><button data-v="0">Native</button></div>
-        </div>
-        <div class="field"><span>Frame rate</span>
-          <div class="seg" id="fpsSeg"><button data-v="30">30</button><button data-v="60">60</button></div>
-        </div>
-        <div class="field"><span>Countdown</span>
-          <div class="seg" id="cdSeg"><button data-v="0">Off</button><button data-v="3">3s</button><button data-v="5">5s</button></div>
-        </div>
-        <div class="field"><span>Save to</span>
-          <div class="save-row"><span id="saveDir" class="mono hint ellipsis"></span><button id="btnSaveDir" class="ghost">Change</button></div>
-        </div>
-        <div class="toggles">
-          <label class="toggle"><input type="checkbox" id="tAsk"><span>Ask where to save each time</span></label>
-          <label class="toggle"><input type="checkbox" id="tCompact"><span>Shrink this panel while recording</span></label>
-        </div>
-      </section>
-
-      <section class="hotkeys">
-        <h2>Hotkeys</h2>
-        <div class="hk"><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>R</kbd> Start / stop</div>
-        <div class="hk"><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd> Pause / resume</div>
-        <div class="hk"><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>M</kbd> Mute / unmute</div>
-        <div class="hk"><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>H</kbd> Hide / show bubble</div>
-        <div class="hint">Right-click the bubble for shape, size, corners, and mirror. Double-click it to hide.</div>
-      </section>
+      </div>
     </main>
+
+    <!-- ── Sticky record bar ────────────────────────────────── -->
+    <footer id="recBar">
+      <button id="btnRecord" class="record-btn"><span class="ring"></span></button>
+      <div class="rec-info">
+        <div id="statusLine">Ready</div>
+        <div id="timer" class="mono" hidden>00:00</div>
+        <div class="progress" id="finalizeBox" hidden><div id="finalizeBar"></div></div>
+      </div>
+      <div class="rec-actions" id="recActions" hidden>
+        <button id="btnPause" class="ghost">Pause</button>
+        <button id="btnStop" class="danger">Stop</button>
+      </div>
+      <span class="hint hk-hint" id="recHint">Ctrl+Shift+R</span>
+    </footer>
   </div>
 
   <!-- Source picker overlay -->

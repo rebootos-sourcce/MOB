@@ -13,15 +13,15 @@ const Shapes = require('../shared/shapes');
 const PRELOAD = path.join(__dirname, '..', 'preload', 'preload.js');
 const R = (...p) => path.join(__dirname, '..', 'renderer', ...p);
 
-const CONTROL_SIZE = { width: 400, height: 640 };
+const CONTROL_SIZE = { width: 412, height: 680 };
 const COMPACT_SIZE = { width: 320, height: 60 };
 
 function createControlWindow() {
   const win = new BrowserWindow({
     width: CONTROL_SIZE.width,
     height: CONTROL_SIZE.height,
-    minWidth: 360,
-    minHeight: 420,
+    minWidth: 380,
+    minHeight: 480,
     frame: false,
     resizable: true,
     backgroundColor: '#14161a',

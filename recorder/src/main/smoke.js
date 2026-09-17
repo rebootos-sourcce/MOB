@@ -34,7 +34,7 @@ function install(api) {
     log('all windows loaded');
     settings.set({
       recording: { saveDir: outDir, countdown: 0, format: 'mp4', codec: 'h264', quality: 'balanced', maxHeight: 720, askWhereToSave: false, fps: 30 },
-      bubble: { visible: true }
+      bubble: { visible: true, border: true, shape: process.env.MOB_SMOKE_SHAPE || 'circle' }
     });
     setTimeout(() => { log('starting recording'); startRecording(); }, 1500);
   };

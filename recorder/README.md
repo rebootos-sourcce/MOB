@@ -9,9 +9,16 @@ Built with Electron. Everything runs on your laptop.
 
 ## What it does
 
+- **Test your camera before you record.** The panel opens with a live preview in the
+  exact shape, flip and ring that will be recorded, plus the resolution and frame rate
+  your camera actually negotiated.
+- **Pick your camera and mic** from dropdowns; the preview and level meter switch instantly.
+- **Flip** the camera left-to-right (mirror) or upside down. Applies to the preview, the
+  bubble and the recording together.
 - **Screen + camera bubble** recording, screen-only if no camera is present.
 - **Camera bubble** you can drag anywhere, resize with the corner grip or S/M/L presets,
-  and switch between 7 shapes live. Mirror toggle, optional border ring, hide/show.
+  and switch between 7 shapes live. Optional border ring that follows any outline,
+  polygons included. Hide/show at any time.
 - **What you see is what's recorded**: the bubble's on-screen position and shape are
   composited into the video in real time.
 - **Microphone** picker (built-in, USB, Bluetooth headsets — anything Windows lists),
@@ -20,6 +27,9 @@ Built with Electron. Everything runs on your laptop.
 - **Output**: MP4 with H.264 (default, best compatibility), H.265, or AV1; or WebM.
   Quality presets High / Balanced / Small. 720p, 1080p, or native resolution. 30 or 60 fps.
 - **Pause / resume**, 3-second countdown, global hotkeys, compact floating bar while recording.
+- **Panel laid out as the order you work**: 1 check yourself, 2 bubble look, 3 what to
+  record, 4 output (collapsed, you set it once), with the record button always pinned
+  to the bottom.
 - Recordings stream to disk as you go, so a crash never loses the take.
 
 ## Requirements
@@ -60,7 +70,7 @@ Click **More info → Run anyway**. That's expected for a personal build.
 | Ctrl + Shift + M | Mute / unmute mic |
 | Ctrl + Shift + H | Hide / show the camera bubble |
 
-Right-click the bubble for shape, size, snap-to-corner, and mirror. Double-click it to hide.
+Right-click the bubble for shape, size, snap-to-corner, mirror and flip. Double-click it to hide.
 
 ## Codecs: which one to pick
 
@@ -112,7 +122,9 @@ WebM output is a stream copy of the live VP9 recording, so it saves instantly.
 ```
 recorder/
 ├── package.json
-├── scripts/smoke.js              # headless end-to-end self-test launcher
+├── scripts/
+│   ├── smoke.js                  # headless end-to-end recording self-test
+│   └── shot.js                   # window screenshot capture for layout review
 └── src/
     ├── main/
     │   ├── main.js               # app lifecycle, recording state machine, IPC, hotkeys
@@ -131,9 +143,14 @@ recorder/
 
 ## Testing
 
-`npm run smoke` launches the app with synthetic camera/mic devices, records the
-screen for 4 seconds, finalizes to MP4, and exits 0 on success. On Linux CI wrap
-it with `xvfb-run`.
+`npm run smoke` launches the app with synthetic camera/mic devices, records the screen
+for 4 seconds, finalizes to MP4, and exits 0 on success. `MOB_SMOKE_SHAPE=hexagon`
+records with a given bubble shape so the overlay can be checked.
+
+`npm run shot` captures PNGs of the control panel and bubble for layout review.
+`MOB_SHOT_STATES=output,compact,shapes` adds variants. Both harnesses run against a
+throwaway settings profile, so they never inherit your real configuration. On Linux
+wrap either with `xvfb-run`.
 
 ## Known limitations
 
