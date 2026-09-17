@@ -131,8 +131,9 @@ His, not mine:
 
 ## Records
 
-`STABILITY.md` is the measured snapshot of what is solid and what must be
-finished, ordered by cost of leaving it alone. Read it first.
+`TASKS.md` is the single backlog. It merges the technical items with the
+review feedback so there are not two competing lists. Read it first.
+`STABILITY.md` is the measured snapshot behind the technical half of it.
 `FEEDBACK-alexander.md` is a review session with numbers attached, and it
 separates what can be built in one file from what needs a backend this project
 does not have.
