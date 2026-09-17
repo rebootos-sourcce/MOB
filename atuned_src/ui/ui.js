@@ -115,10 +115,11 @@ function paintSections(){
    how much of the field is carrying. Everything else folds behind a label. */
 function railTop(r){
  var e=document.getElementById('railtop'); if(!e)return;
- var held=W.filter(function(n){return n.sq>=4;}).length;
+ /* "18 of 112 held" read as a score out of a total, which is a test rather
+    than a mirror. Coherence and the tier it names are the line. The count
+    lives once, in Summary, where a count belongs. */
  e.innerHTML=cr(r.darkB, r.CQ, {size:'sm', label:'coherence'})
-  +'<span class="rt-t">'+esc(r.tier)+'</span>'
-  +'<span class="rt-h">'+held+' of '+NODES.length+' held</span>';}
+  +'<span class="rt-t">'+esc(r.tier)+'</span>';}
 function render(){
  const r=compute(), p=PEOPLE[S.who];
  $('tier').textContent=r.tier;

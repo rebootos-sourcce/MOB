@@ -102,11 +102,12 @@ VIEWS.forEach(function(v,i){
   $('vbar').querySelectorAll('.vt').forEach(function(x,j){x.setAttribute('aria-pressed',j===i);});
   render();});
  $('vbar').appendChild(b);});
-[['dark','Dark'],['snow','Snow']].forEach(function(t,i){
+[['dark','Dark'],['snow','Snow'],['punch','Punch']].forEach(function(t,i){
  var b=document.createElement('button');b.type='button';
  b.setAttribute('aria-pressed',i===0);b.textContent=t[1];
  b.addEventListener('click',function(){S.theme=t[0];
   document.body.classList.toggle('snow',t[0]==='snow');
+  document.body.classList.toggle('punch',t[0]==='punch');
   $('themes').querySelectorAll('button').forEach(function(x,j){x.setAttribute('aria-pressed',j===i);});
   rebuildSwatches();render();});
  $('themes').appendChild(b);});

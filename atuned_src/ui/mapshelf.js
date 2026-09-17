@@ -89,7 +89,7 @@ function renderShelf(r,seats,speed,stop,dom,loadedTot,marks){
   if(o.i!==undefined){                                      /* an address */
    var opp2=(CHILD.filter(function(c){return c.nm===o.cf;})[0]||{}).opp||'';
    var owners=[].concat(r.sups,r.hys,r.cxs,r.sabs).filter(function(z){return leaves(z).indexOf(o)>=0;});
-   sh+='<div class="pm-det"><div class="pm-eye">Address '+String(o.i).padStart(3,'0')+'</div>'
+   sh+='<div class="pm-det"><div class="pm-eye">'+esc(o.b||'')+'</div>'
     +'<div class="pm-dn">'+esc(o.k)+'</div>'
     +'<div class="pm-dm">'+o.b+' · '+(o.n||'field anchor')+'<br>axis '+esc(o.a||'')+'</div>'
     +'<div class="pm-grid"><span>held</span><b>'+o.held.toFixed(1)+'</b>'

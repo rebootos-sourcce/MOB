@@ -87,7 +87,9 @@ function runNodeDrill(n){
  var c=CHILD.filter(function(x){return x.nm===n.cf;})[0]||{};
  var r=compute();
  var owners=[].concat(r.sups,r.hys,r.cxs,r.sabs).filter(function(o){return leaves(o).indexOf(n)>=0;});
- var h='<div class="pm-eye">Address '+String(n.i).padStart(3,'0')+', '+n.b.toLowerCase()+'</div>'
+ /* The header read "Address 007, root". The index is a storage key and a
+    person's Scarcity is not 007 to them. The seat is what carries meaning. */
+ var h='<div class="pm-eye">'+esc(n.b)+'</div>'
   +'<div class="ad-nm">'+esc(n.k)+'</div>'
   +'<div class="ad-sub">'+esc(n.n||'field anchor')+(n.a?' · axis '+esc(n.a):'')+'</div>'
   +'<div class="pm-eye">How it runs through you</div><p class="ad-p">'
