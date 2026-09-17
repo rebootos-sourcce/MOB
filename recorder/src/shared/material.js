@@ -19,6 +19,17 @@
     RING_MIN: RING_MIN,
     RING_COLOR: 'rgba(255, 255, 255, 0.9)',
     SURFACE: '#1c1f25',     // matches --card in the control panel
+    /**
+     * Camera capture size for something that will be displayed at `px` across.
+     * Decoding 720p to paint a 240px circle is pure waste, so ask for about
+     * 2x the display size (for DPI and cover-crop headroom), clamped to sane
+     * bounds and rounded to a multiple of 16 that cameras actually offer.
+     */
+    captureWidth: function (px) {
+      var want = Math.round((px || 320) * 2 / 16) * 16;
+      return Math.max(320, Math.min(1280, want));
+    },
+
     /** Ring width in px for a bubble of w x h. */
     ringWidth: function (w, h, enabled) {
       if (enabled === false) return 0;

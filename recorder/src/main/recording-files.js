@@ -22,15 +22,28 @@ function stamp(d = new Date()) {
 class RawRecording {
   constructor() {
     this.startedAt = new Date();
-    this.path = path.join(rawDir(), `raw-${stamp(this.startedAt)}.webm`);
-    this.stream = fs.createWriteStream(this.path);
+    this.path = path.join(rawDir(), `raw-${stamp(this.startedAt)}.mkv`);
+    // A larger buffer means far fewer write syscalls for the ~1 MB chunks
+    // MediaRecorder delivers each second.
+    this.stream = fs.createWriteStream(this.path, { highWaterMark: 1 << 20 });
     this.bytes = 0;
     this.closed = null;
+    this.stalled = false;
+    this.stalls = 0;
+    this.stream.on('drain', () => { this.stalled = false; });
   }
+  /**
+   * Returns false when the disk is not keeping up. The return value of
+   * write() used to be discarded, so on a slow or nearly-full drive Node
+   * buffered the entire overflow in main-process memory instead of applying
+   * back pressure, which turns a slow disk into a memory incident.
+   */
   append(buffer) {
-    if (this.closed) return;
+    if (this.closed) return true;
     this.bytes += buffer.length;
-    this.stream.write(Buffer.from(buffer));
+    const ok = this.stream.write(Buffer.from(buffer));
+    if (!ok && !this.stalled) { this.stalled = true; this.stalls++; }
+    return ok;
   }
   end() {
     if (!this.closed) {
@@ -39,6 +52,9 @@ class RawRecording {
     return this.closed;
   }
   /** Default output file name for this take. */
+  /** True when the disk has fallen behind and memory is filling. */
+  get backlogged() { return this.stalled; }
+
   suggestedName(format) {
     return `Recording ${stamp(this.startedAt)}.${format}`;
   }

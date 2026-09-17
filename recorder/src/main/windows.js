@@ -26,7 +26,10 @@ function createControlWindow() {
     resizable: true,
     backgroundColor: '#14161a',
     title: 'MOB Recorder',
-    webPreferences: { preload: PRELOAD, contextIsolation: true, nodeIntegration: false, backgroundThrottling: false }
+    // The panel may throttle in the background; it has nothing to keep alive
+    // when it is not on screen. The bubble and the recorder must not throttle,
+    // because they keep rendering while another app has focus.
+    webPreferences: { preload: PRELOAD, contextIsolation: true, nodeIntegration: false }
   });
   win.loadFile(R('control', 'index.html'));
   win.setMenuBarVisibility(false);

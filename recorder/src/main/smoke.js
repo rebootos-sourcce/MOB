@@ -12,7 +12,7 @@ const path = require('path');
 const { app } = require('electron');
 
 function install(api) {
-  const { bus, settings, startRecording, stopRecording, getWindows } = api;
+  const { bus, settings, startRecording, stopRecording, getWindows, setTestHookAttacher } = api;
   const outDir = process.env.MOB_SMOKE_DIR || path.join(app.getPath('temp'), 'mob-recorder-smoke');
   fs.mkdirSync(outDir, { recursive: true });
   const log = (...a) => console.log('[smoke]', ...a);
@@ -20,20 +20,26 @@ function install(api) {
   const deadline = setTimeout(() => fail('timed out after 60s'), 60000);
 
   const wins = getWindows();
-  for (const [name, w] of Object.entries(wins)) {
+  const hook = (w, name) => {
     w.webContents.on('console-message', (_e, level, message, line, sourceId) => {
       console.log(`[${name}:${level}] ${message} (${path.basename(sourceId || '')}:${line})`);
     });
     w.webContents.on('did-fail-load', (_e, code, desc) => fail(`${name} failed to load: ${code} ${desc}`));
     w.webContents.on('render-process-gone', (_e, d) => fail(`${name} renderer gone: ${d.reason}`));
-  }
+    if (process.env.MOB_BENCH && name === 'recorder') {
+      w.webContents.once('did-finish-load', () => w.webContents.send('recorder:perfOn'));
+    }
+  };
+  for (const [name, w] of Object.entries(wins)) hook(w, name);
+  if (setTestHookAttacher) setTestHookAttacher(hook);
 
   let loaded = 0;
   const onLoaded = async () => {
     if (++loaded < Object.keys(wins).length) return;
     log('all windows loaded');
     settings.set({
-      recording: { saveDir: outDir, countdown: Number(process.env.MOB_SMOKE_COUNTDOWN || 0), format: 'mp4', codec: 'h264', quality: 'balanced', maxHeight: 720, askWhereToSave: false, fps: 30 },
+      recording: { saveDir: outDir, fps: Number(process.env.MOB_SMOKE_FPS || 30),
+        maxHeight: Number(process.env.MOB_SMOKE_H || 720), countdown: Number(process.env.MOB_SMOKE_COUNTDOWN || 0), format: process.env.MOB_SMOKE_FORMAT || 'mp4', codec: process.env.MOB_SMOKE_CODEC || 'h264', quality: 'balanced', askWhereToSave: false },
       bubble: { visible: true, border: true, shape: process.env.MOB_SMOKE_SHAPE || 'circle' }
     });
     setTimeout(() => { log('starting recording'); startRecording(); }, 1500);
@@ -51,10 +57,15 @@ function install(api) {
     }
     if (st.state === 'idle' && st.message) fail(st.message);
   });
+  bus.on('perf', (st) => log('PERF', JSON.stringify(st)));
+  let stopAt = 0;
+  bus.on('state', (st) => { if (st.state === 'finalizing' && !stopAt) stopAt = Date.now(); });
   bus.on('finalized', ({ path: p, durationMs }) => {
     clearTimeout(deadline);
     const size = fs.statSync(p).size;
     log(`finalized ${p} (${size} bytes, ${durationMs} ms)`);
+    if (stopAt) log('FINALIZE_MS', Date.now() - stopAt, '| recorded_ms', durationMs,
+      '| ratio', ((Date.now() - stopAt) / durationMs).toFixed(3) + 'x realtime');
     if (size < 10000) return fail('output suspiciously small');
     log('state sequence:', seen.join(' -> '));
     const i = (x) => seen.indexOf(x);

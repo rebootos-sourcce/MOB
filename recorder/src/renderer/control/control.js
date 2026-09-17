@@ -101,7 +101,10 @@
     previewStream = null;
     $('previewInfo').hidden = true;
     try {
-      const video = Object.assign({ width: { ideal: 1280 }, height: { ideal: 720 } },
+      // Sized to the preview box, not an arbitrary 720p. The preview is about
+      // 128 px tall, so a 720p decode every frame was almost entirely wasted.
+      const w = Material.captureWidth($('previewShape').clientHeight || 160);
+      const video = Object.assign({ width: { ideal: w }, height: { ideal: Math.round(w * 9 / 16) } },
         id && id !== 'default' ? { deviceId: { exact: id } } : {});
       previewStream = await navigator.mediaDevices.getUserMedia({ video, audio: false });
       $('preview').srcObject = previewStream;
@@ -259,7 +262,24 @@
     updateReadyBadge();
   }
 
+  // The meter used to redraw two canvases on every animation frame, forever,
+  // whether or not it was visible. A level meter reads fine at 20 Hz, and
+  // there is no reason to run at all when the window is hidden or the panel
+  // is showing something else.
+  const METER_HZ = 20;
+  let meterTimer = null;
+  let lastLevel = -1;
+
+  function meterShouldRun() {
+    if (document.hidden) return false;
+    // In compact mode only the small meter is on screen; when idle the big
+    // one is. Either way something is visible, so run. Nothing visible when
+    // the source picker is covering the panel.
+    return !($('picker') && !$('picker').hidden);
+  }
+
   function drawMeter() {
+    if (!meterShouldRun()) return;
     let rms = 0;
     if (analyser) {
       analyser.getFloatTimeDomainData(meterData);
@@ -269,11 +289,17 @@
     }
     const db = rms > 0 ? 20 * Math.log10(rms) : -Infinity;
     const level = Math.max(0, Math.min(1, (db + 60) / 60)); // -60 dB … 0 dB
-    peakHold = Math.max(level, peakHold - 0.012);
+    peakHold = Math.max(level, peakHold - 0.036);           // ~0.7/s at 20 Hz
     const muted = !settings || !settings.mic.enabled;
 
-    for (const c of [$('meter'), $('cMeter')]) {
-      if (!c.width) continue;
+    // Nothing moved and nothing is holding: skip the repaint entirely.
+    const quantised = Math.round(level * 200) + (muted ? 1000 : 0);
+    if (quantised === lastLevel && peakHold <= 0.02) return;
+    lastLevel = quantised;
+
+    const compact = document.body.classList.contains('compact');
+    for (const c of compact ? [$('cMeter')] : [$('meter')]) {
+      if (!c || !c.width) continue;
       const g = c.getContext('2d');
       const W = c.width, H = c.height;
       g.clearRect(0, 0, W, H);
@@ -291,8 +317,18 @@
       }
     }
     $('meterDb').textContent = muted ? 'muted' : (db === -Infinity ? '–∞' : db.toFixed(0) + ' dB');
-    requestAnimationFrame(drawMeter);
   }
+
+  function startMeter() {
+    if (meterTimer) return;
+    meterTimer = setInterval(drawMeter, 1000 / METER_HZ);
+  }
+  function stopMeter() {
+    if (meterTimer) { clearInterval(meterTimer); meterTimer = null; }
+  }
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) stopMeter(); else startMeter();
+  });
 
   function sizeMeter() {
     const c = $('meter');
@@ -546,24 +582,40 @@
 
   window.addEventListener('resize', () => { sizePreview(); sizeMeter(); });
 
+  // A hidden or minimised panel does not need a decoded camera feed. The
+  // bubble keeps its own, so nothing visible is lost.
+  document.addEventListener('visibilitychange', () => {
+    if (!settings) return;
+    if (document.hidden) {
+      if (previewStream) stopPreview();
+    } else if (recState.state === 'idle' || recState.state === 'arming') {
+      openPreview(true);
+    }
+  });
+
   async function init() {
-    let codecs;
-    [settings, shapes, codecs] = await Promise.all([
+    [settings, shapes] = await Promise.all([
       window.api.invoke('settings:get'),
-      window.api.invoke('shapes:list'),
-      window.api.invoke('codecs:list')
+      window.api.invoke('shapes:list')
     ]);
     buildShapeChips();
     const cs = $('codecSelect');
-    cs.innerHTML = '';
-    for (const c of codecs) {
-      const o = document.createElement('option');
-      o.value = c.id;
-      o.textContent = c.label + (c.available ? '' : ' — unavailable');
-      o.disabled = !c.available;
-      cs.appendChild(o);
-    }
     cs.addEventListener('change', (e) => save({ recording: { codec: e.target.value } }));
+
+    // Listing codecs spawns ffmpeg and parses several megabytes of output.
+    // It only matters once the Output section is opened, so it must not hold
+    // up first paint.
+    window.api.invoke('codecs:list').then((codecs) => {
+      cs.innerHTML = '';
+      for (const c of codecs) {
+        const o = document.createElement('option');
+        o.value = c.id;
+        o.textContent = c.label + (c.available ? '' : ' — unavailable');
+        o.disabled = !c.available;
+        cs.appendChild(o);
+      }
+      if (settings) cs.value = settings.recording.codec;
+    }).catch(() => { /* the Output section just shows the stored value */ });
 
     recState = await window.api.invoke('state:get');
     render();
@@ -571,7 +623,7 @@
     await refreshDevices();
     openPreview(true);
     openMeter(true);
-    drawMeter();
+    startMeter();
     loadSources();
   }
   init();

@@ -42,14 +42,18 @@
     countdown.style.fontSize = Math.round(Math.min(w, h) * 0.42) + 'px';
   }
 
-  async function openCamera() {
+  async function openCamera(force) {
     const id = settings.camera.deviceId;
-    if (id === currentDevice && stream) return;
+    if (!force && id === currentDevice && stream) return;
     currentDevice = id;
     if (stream) stream.getTracks().forEach((t) => t.stop());
     stream = null;
     try {
-      const video = Object.assign({ width: { ideal: 1280 }, height: { ideal: 720 } }, id && id !== 'default' ? { deviceId: { exact: id } } : {});
+      // Match the request to the bubble's actual size rather than always
+      // decoding 720p into a few hundred pixels.
+      const w = Material.captureWidth(Math.max(window.innerWidth, window.innerHeight));
+      const video = Object.assign({ width: { ideal: w }, height: { ideal: Math.round(w * 9 / 16) } },
+        id && id !== 'default' ? { deviceId: { exact: id } } : {});
       stream = await navigator.mediaDevices.getUserMedia({ video, audio: false });
       cam.srcObject = stream;
       noCam.hidden = true;
@@ -73,10 +77,17 @@
     rec.classList.toggle('paused', state === 'paused');
   }
 
+  let lastCaptureW = 0;
   window.api.on('settings:changed', (s) => {
+    const sizeChanged = !settings || s.bubble.size !== settings.bubble.size;
     settings = s;
     applyShape();
-    openCamera();
+    // Only re-negotiate the camera when the needed capture size actually
+    // changes bucket; re-opening the device on every settings write is slow
+    // and makes the preview flicker.
+    const want = Material.captureWidth(Math.max(window.innerWidth, window.innerHeight));
+    if (want !== lastCaptureW && sizeChanged) { lastCaptureW = want; openCamera(true); }
+    else openCamera();
   });
   window.api.on('recording:state', (st) => setRecState(st.state));
   window.api.on('ui:countdown', (n) => {

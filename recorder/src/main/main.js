@@ -22,6 +22,7 @@ app.setAppUserModelId('com.mob.recorder');
 let control = null;
 let bubble = null;
 let recorder = null;
+let recorderReady = null;   // resolves once the recorder window has loaded
 
 /** Recording state machine: idle -> countdown -> recording <-> paused -> finalizing -> idle */
 const rec = {
@@ -50,6 +51,36 @@ function sendControl(channel, payload) {
 function sendRecorder(channel, payload) {
   if (recorder && !recorder.isDestroyed()) recorder.webContents.send(channel, payload);
 }
+
+/**
+ * The recorder window holds no media until a take starts, but an idle
+ * renderer process still costs around 90 MB. It is created on first use
+ * instead, which folds invisibly into the arm phase that already waits on
+ * the camera.
+ */
+function ensureRecorder() {
+  if (recorderReady) return recorderReady;
+  recorder = windows.createRecorderWindow();
+  if (process.env.MOB_SHOT || process.env.MOB_SMOKE) attachTestHooks(recorder, 'recorder');
+  // loadFile() is asynchronous, so isLoading() can still be false here and
+  // resolving on it would send the arm message into a page whose scripts have
+  // not run. Wait for the load to actually finish.
+  recorderReady = new Promise((resolve, reject) => {
+    const win = recorder;
+    win.webContents.once('did-finish-load', () => resolve());
+    win.webContents.once('did-fail-load', (_e, code, desc) => {
+      recorderReady = null;
+      reject(new Error(`recorder window failed to load: ${code} ${desc}`));
+    });
+  });
+  recorder.on('closed', () => { recorderReady = null; recorder = null; });
+  return recorderReady;
+}
+
+// Test harnesses attach console/crash listeners to every window; a lazily
+// created one has to get them too.
+let attachTestHooks = () => {};
+function setTestHookAttacher(fn) { attachTestHooks = fn; }
 
 function publishState(extra) {
   const s = settings.get();
@@ -186,6 +217,16 @@ async function startRecording() {
   rec.warnings = [];
   publishState();
 
+  try {
+    await ensureRecorder();
+  } catch (err) {
+    rec.state = 'idle';
+    rec.message = err.message;
+    publishState();
+    return;
+  }
+  if (rec.state !== 'arming') return;  // cancelled while the window came up
+
   rec.raw = new RawRecording();
   rec.micEnabled = s.mic.enabled;
   rec.pausedTotal = 0;
@@ -201,10 +242,15 @@ async function startRecording() {
     displayBounds: displayBoundsFor(source),
     overlay: overlayPayload(),
     cameraDeviceId: s.camera.deviceId,
+    cameraHint: Math.max(160, s.bubble.size),
     micDeviceId: s.mic.deviceId,
     micEnabled: rec.micEnabled,
     fps: s.recording.fps,
-    maxHeight: s.recording.maxHeight
+    maxHeight: s.recording.maxHeight,
+    targetFormat: s.recording.format,
+    quality: s.recording.quality,
+    // H.265 and AV1 cannot be remuxed from an H.264 capture.
+    wantsTranscode: s.recording.format === 'mp4' && s.recording.codec !== 'h264'
   });
 }
 
@@ -287,7 +333,7 @@ function setCompact(on) {
   sendControl('ui:compact', !!on);
 }
 
-async function finalizeRecording(durationMs) {
+async function finalizeRecording(durationMs, rawVideoCodec) {
   const s = settings.get();
   const raw = rec.raw;
   rec.raw = null;
@@ -312,7 +358,8 @@ async function finalizeRecording(durationMs) {
       codec: s.recording.codec,
       quality: s.recording.quality,
       fps: s.recording.fps,
-      durationMs
+      durationMs,
+      rawVideoCodec
     }, (p) => sendControl('finalize:progress', p));
     rec.state = 'idle';
     rec.startedAt = 0;
@@ -326,7 +373,7 @@ async function finalizeRecording(durationMs) {
       try {
         const retryRaw = raw; // raw file still exists because finalize failed before unlink
         const result = await ffmpeg.finalize(retryRaw.path, outputPath, {
-          format, codec: 'h264', quality: s.recording.quality, fps: s.recording.fps, durationMs
+          format, codec: 'h264', quality: s.recording.quality, fps: s.recording.fps, durationMs, rawVideoCodec
         }, (p) => sendControl('finalize:progress', p));
         try { require('fs').unlinkSync(retryRaw.path); } catch (_) { /* ignore */ }
         rec.state = 'idle';
@@ -504,7 +551,7 @@ ipcMain.on('recorder:state', (_e, msg) => {
     publishState();
   }
 });
-ipcMain.on('recorder:done', (_e, msg) => finalizeRecording(msg.durationMs));
+ipcMain.on('recorder:done', (_e, msg) => { if (msg.perf) bus.emit('perf', msg.perf); finalizeRecording(msg.durationMs, msg.rawVideoCodec); });
 
 // ---------------------------------------------------------------- lifecycle
 
@@ -528,7 +575,7 @@ app.whenReady().then(() => {
 
   control = windows.createControlWindow();
   bubble = windows.createBubbleWindow(s);
-  recorder = windows.createRecorderWindow();
+  // recorder is created lazily by ensureRecorder() on the first take.
 
   bubble.on('moved', persistBubblePosition);
   bubble.on('move', pushOverlay);
@@ -541,14 +588,14 @@ app.whenReady().then(() => {
   if (process.env.MOB_SHOT) {
     require('./shot').install({
       settings, setCompact,
-      getWindows: () => ({ control, bubble, recorder })
+      getWindows: () => ({ control, bubble })
     });
   }
 
   if (process.env.MOB_SMOKE) {
     require('./smoke').install({
-      bus, settings, startRecording, stopRecording,
-      getWindows: () => ({ control, bubble, recorder })
+      bus, settings, startRecording, stopRecording, setTestHookAttacher,
+      getWindows: () => ({ control, bubble })
     });
   }
 
