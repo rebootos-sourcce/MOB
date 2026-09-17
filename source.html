@@ -4235,7 +4235,17 @@ function numField(host,name,band,store,key){
  const set=function(v){toYou();store[key]=clamp(v,0,10);
   tr.style.width=(store[key]*10)+'%';inp.value=store[key].toFixed(1);
   trk.setAttribute('aria-valuenow',store[key].toFixed(1));saveYou();render();};
- inp.addEventListener('input',function(){set(+inp.value||0);});
+/* +inp.value||0 mapped anything unparseable to zero, so a stray keystroke or
+    clearing the field mid edit silently set the law to its worst value. An
+    unreadable entry now holds the last good one instead of destroying it.
+    Clamping is unchanged: 9999 still reads 10, -50 still reads 0. */
+ inp.addEventListener('input',function(){
+  var raw=inp.value.trim();
+  if(raw===''){return;}                    /* mid edit, not a value of zero */
+  var v=parseFloat(raw);
+  if(!isFinite(v)){inp.value=store[key].toFixed(1);return;}
+  set(v);});
+ inp.addEventListener('blur',function(){inp.value=store[key].toFixed(1);});
  let dragging=false;
  const fromX=function(e){const b=trk.getBoundingClientRect();
   return ((e.clientX-b.left)/b.width)*10;};
