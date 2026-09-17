@@ -49,8 +49,12 @@ function crNode(n,size,o){o=o||{};
    and the value, so the filled dot and the loose <b> both go. */
 function addrRow(n,o){o=o||{};
  var opp=(CHILD.filter(function(c){return c.nm===n.cf;})[0]||{}).opp||'';
- return '<div class="ad-r">'+crNode(n,'xs')
-  +'<span>'+esc(n.k)+'</span><em>'+esc(opp||n.b)+'</em></div>';}
+ /* The row named an address and went nowhere. runNodeDrill already exists and
+    is already wired from the wheel, so the row carries its address and a
+    delegated handler in ui.js opens the same drill. */
+ return '<button type="button" class="ad-r" data-addr="'+n.i+'" '
+  +'title="Open '+esc(n.k)+'">'+crNode(n,'xs')
+  +'<span>'+esc(n.k)+'</span><em>'+esc(opp||n.b)+'</em></button>';}
 function crPat(p,size,o){o=o||{};
  var lv=leaves(p), b=(lv[0]||{}).b||'Heart';
  return cr(b, p.w*10, Object.assign({size:size||'md', raw:p.w.toFixed(1), label:p.nm,

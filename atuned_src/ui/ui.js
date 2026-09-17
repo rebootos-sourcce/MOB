@@ -239,5 +239,19 @@ function loop(ts){
 try{ localStorage.getItem(PKEY);
  STORE={get:function(k){return localStorage.getItem(k);},
         set:function(k,v){localStorage.setItem(k,v);}}; }catch(e){}
+/* One delegated handler for every address row the drills render, so a row
+   opens the address it names instead of being a dead end. */
+document.addEventListener('click',function(e){
+ var row=e.target.closest?e.target.closest('.ad-r[data-addr]'):null;
+ if(!row)return;
+ var n=BY[+row.getAttribute('data-addr')];
+ if(!n)return;
+ /* No render() here. runNodeDrill paints the drill itself, and on Analytics a
+    render would run anaDrill straight over the top of it: the handler fired,
+    the node resolved, and the old drill reappeared unchanged. ANA_PICK is
+    cleared so the next render does not resurrect it either. */
+ if(typeof ANA_PICK!=='undefined')ANA_PICK=null;
+ S.pin=null; runNodeDrill(n);});
+
 layout(); mxKey(); wireSections(); loadP(0); setTab(TAB.FIELD);
 requestAnimationFrame(loop);

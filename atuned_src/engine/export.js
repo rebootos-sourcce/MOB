@@ -29,6 +29,7 @@ if(typeof module!=='undefined'&&module.exports){
                   saveProfile:saveProfile, snapshot:snapshot,
                   pExport:pExport, pImport:pImport, SCHEMA_V:SCHEMA_V,
                   bindStore:bindStore, PKEY:PKEY, pPersist:pPersist, saveState:saveState,
+                  storeBound:function(){return STORE_BOUND;},
   /* intake */    iqList:iqList, iqScore:iqScore, iqApply:iqApply,
   /* sniffer */   scanStory:scanStory, parseStory:parseStory, applyStory:applyStory,
                   pathOf:pathOf, seatOf:seatOf, SEATXY:SEATXY, PATHSEAT:PATHSEAT,

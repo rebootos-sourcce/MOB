@@ -619,6 +619,7 @@ body.impbig .st-write{display:none}
 .ad-sub{font-size:13px;color:var(--dim);margin-bottom:11px}
 .ad-rows{display:flex;flex-direction:column;gap:2px;margin-top:6px}
 .ad-r{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;
+ text-align:left;width:100%;border:0;background:transparent;cursor:pointer;min-height:var(--tap);font-family:var(--sans);
  font-size:13.5px;color:var(--mid);padding:5px 6px;border-radius:var(--r-xs)}
 .ad-r:hover{background:var(--panel-2)}
 .ad-r span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink)}
@@ -1959,16 +1960,21 @@ var PROFILES=[], CURP=null;
 /* The engine does not know what a browser is. The host binds a store. With none
    bound the profiles last as long as the process, which is what a headless run
    wants. ui/ui.js binds localStorage. */
-var STORE={get:function(){return null;}, set:function(){}};
+/* The default store is a no-op whose set() never throws, so a browser that
+   blocks storage left SAVE_OK true and the app reported "Saved." while nothing
+   was written. That is the lie this file already forbids. A store has to be
+   bound before a save can be claimed. */
+var STORE={get:function(){return null;}, set:function(){}}, STORE_BOUND=false;
 /* a host binds its own. exported, because module.exports captures the value of
    STORE and not the binding, so an outside caller cannot assign to it. */
-function bindStore(get,set){ STORE={get:get,set:set}; return STORE; }
+function bindStore(get,set){ STORE={get:get,set:set}; STORE_BOUND=true; return STORE; }
 function pStore(){ try{ return JSON.parse(STORE.get(PKEY)||'[]'); }catch(e){ return []; } }
 /* The empty catch here meant a save that failed on quota or blocked storage
    told nobody, and the intake button said "Saved" regardless. The engine still
    does not render anything: it reports, and the UI decides what to show. */
 var SAVE_OK=true, SAVE_ERR=null;
 function pPersist(){
+ if(!STORE_BOUND){ SAVE_OK=false; SAVE_ERR='NoStore'; return false; }
  try{ STORE.set(PKEY,JSON.stringify(PROFILES)); SAVE_OK=true; SAVE_ERR=null; }
  catch(e){ SAVE_OK=false; SAVE_ERR=(e&&e.name)||'error'; }
  return SAVE_OK; }
@@ -2372,6 +2378,7 @@ if(typeof module!=='undefined'&&module.exports){
                   saveProfile:saveProfile, snapshot:snapshot,
                   pExport:pExport, pImport:pImport, SCHEMA_V:SCHEMA_V,
                   bindStore:bindStore, PKEY:PKEY, pPersist:pPersist, saveState:saveState,
+                  storeBound:function(){return STORE_BOUND;},
   /* intake */    iqList:iqList, iqScore:iqScore, iqApply:iqApply,
   /* sniffer */   scanStory:scanStory, parseStory:parseStory, applyStory:applyStory,
                   pathOf:pathOf, seatOf:seatOf, SEATXY:SEATXY, PATHSEAT:PATHSEAT,
@@ -2436,8 +2443,12 @@ function crNode(n,size,o){o=o||{};
    and the value, so the filled dot and the loose <b> both go. */
 function addrRow(n,o){o=o||{};
  var opp=(CHILD.filter(function(c){return c.nm===n.cf;})[0]||{}).opp||'';
- return '<div class="ad-r">'+crNode(n,'xs')
-  +'<span>'+esc(n.k)+'</span><em>'+esc(opp||n.b)+'</em></div>';}
+ /* The row named an address and went nowhere. runNodeDrill already exists and
+    is already wired from the wheel, so the row carries its address and a
+    delegated handler in ui.js opens the same drill. */
+ return '<button type="button" class="ad-r" data-addr="'+n.i+'" '
+  +'title="Open '+esc(n.k)+'">'+crNode(n,'xs')
+  +'<span>'+esc(n.k)+'</span><em>'+esc(opp||n.b)+'</em></button>';}
 function crPat(p,size,o){o=o||{};
  var lv=leaves(p), b=(lv[0]||{}).b||'Heart';
  return cr(b, p.w*10, Object.assign({size:size||'md', raw:p.w.toFixed(1), label:p.nm,
@@ -3767,8 +3778,15 @@ function anaRender(){
 /* THE DRILL. one resolution down, plus the stories that touched it. */
 function anaDrill(){
  var box=document.getElementById('rdrill'); if(!box)return;
- if(!ANA_PICK){box.innerHTML='';box.style.display='none';return;}
- box.style.display='block';
+ /* Clear in place. rdClose calls render, render calls anaRender, anaRender
+    calls this, which recursed until the stack died. */
+ if(!ANA_PICK){box.innerHTML='';box.style.display='none';
+  var none=document.getElementById('rdrill-none'); if(none)none.style.display='';
+  return;}
+ /* This set display:block directly and skipped rdOpen, so the content landed
+    inside a collapsed accordion section and the click produced no visible
+    change at all. rdOpen unfolds the section and scrolls it into view. */
+ rdOpen();
  var r=compute(),P=ANA_PICK,h='';
  var ents=((CURP&&CURP.story&&CURP.story.entries)||[]);
  function head(t,nm,sub){return '<div class="pm-eye">'+t+'</div><div class="ad-nm">'+esc(nm)+'</div>'
@@ -4947,6 +4965,20 @@ function loop(ts){
 try{ localStorage.getItem(PKEY);
  STORE={get:function(k){return localStorage.getItem(k);},
         set:function(k,v){localStorage.setItem(k,v);}}; }catch(e){}
+/* One delegated handler for every address row the drills render, so a row
+   opens the address it names instead of being a dead end. */
+document.addEventListener('click',function(e){
+ var row=e.target.closest?e.target.closest('.ad-r[data-addr]'):null;
+ if(!row)return;
+ var n=BY[+row.getAttribute('data-addr')];
+ if(!n)return;
+ /* No render() here. runNodeDrill paints the drill itself, and on Analytics a
+    render would run anaDrill straight over the top of it: the handler fired,
+    the node resolved, and the old drill reappeared unchanged. ANA_PICK is
+    cleared so the next render does not resurrect it either. */
+ if(typeof ANA_PICK!=='undefined')ANA_PICK=null;
+ S.pin=null; runNodeDrill(n);});
+
 layout(); mxKey(); wireSections(); loadP(0); setTab(TAB.FIELD);
 requestAnimationFrame(loop);
 </script></body></html>

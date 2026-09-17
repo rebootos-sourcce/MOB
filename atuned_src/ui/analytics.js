@@ -140,8 +140,15 @@ function anaRender(){
 /* THE DRILL. one resolution down, plus the stories that touched it. */
 function anaDrill(){
  var box=document.getElementById('rdrill'); if(!box)return;
- if(!ANA_PICK){box.innerHTML='';box.style.display='none';return;}
- box.style.display='block';
+ /* Clear in place. rdClose calls render, render calls anaRender, anaRender
+    calls this, which recursed until the stack died. */
+ if(!ANA_PICK){box.innerHTML='';box.style.display='none';
+  var none=document.getElementById('rdrill-none'); if(none)none.style.display='';
+  return;}
+ /* This set display:block directly and skipped rdOpen, so the content landed
+    inside a collapsed accordion section and the click produced no visible
+    change at all. rdOpen unfolds the section and scrolls it into view. */
+ rdOpen();
  var r=compute(),P=ANA_PICK,h='';
  var ents=((CURP&&CURP.story&&CURP.story.entries)||[]);
  function head(t,nm,sub){return '<div class="pm-eye">'+t+'</div><div class="ad-nm">'+esc(nm)+'</div>'

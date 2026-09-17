@@ -50,16 +50,21 @@ var PROFILES=[], CURP=null;
 /* The engine does not know what a browser is. The host binds a store. With none
    bound the profiles last as long as the process, which is what a headless run
    wants. ui/ui.js binds localStorage. */
-var STORE={get:function(){return null;}, set:function(){}};
+/* The default store is a no-op whose set() never throws, so a browser that
+   blocks storage left SAVE_OK true and the app reported "Saved." while nothing
+   was written. That is the lie this file already forbids. A store has to be
+   bound before a save can be claimed. */
+var STORE={get:function(){return null;}, set:function(){}}, STORE_BOUND=false;
 /* a host binds its own. exported, because module.exports captures the value of
    STORE and not the binding, so an outside caller cannot assign to it. */
-function bindStore(get,set){ STORE={get:get,set:set}; return STORE; }
+function bindStore(get,set){ STORE={get:get,set:set}; STORE_BOUND=true; return STORE; }
 function pStore(){ try{ return JSON.parse(STORE.get(PKEY)||'[]'); }catch(e){ return []; } }
 /* The empty catch here meant a save that failed on quota or blocked storage
    told nobody, and the intake button said "Saved" regardless. The engine still
    does not render anything: it reports, and the UI decides what to show. */
 var SAVE_OK=true, SAVE_ERR=null;
 function pPersist(){
+ if(!STORE_BOUND){ SAVE_OK=false; SAVE_ERR='NoStore'; return false; }
  try{ STORE.set(PKEY,JSON.stringify(PROFILES)); SAVE_OK=true; SAVE_ERR=null; }
  catch(e){ SAVE_OK=false; SAVE_ERR=(e&&e.name)||'error'; }
  return SAVE_OK; }
