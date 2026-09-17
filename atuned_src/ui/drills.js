@@ -211,11 +211,13 @@ function runBalDrill(){
  var row=function(c,v,col){return '<div class="ad-r static"><span class="ad-k">'
   +cr(col,v*10,{size:'xs',raw:v.toFixed(1)})+esc(c)+'</span></div>';};
  var h='<div class="pm-eye">Balance</div><div class="ad-nm">'
-  +(b.lean===0?'even':(Math.abs(b.lean)*100).toFixed(0)+'% '+(b.lean>0?'outward':'inward'))+'</div>'
+  +(!b.read?'not enough held to read'
+    :b.lean===0?'even':(Math.abs(b.lean)*100).toFixed(0)+'% '+(b.lean>0?'outward':'inward'))+'</div>'
   +'<div class="pm-eye">How it is read</div><p class="ad-p">The nine axes split by the direction the '
-  +'body takes under them. Four discharge outward, five withdraw inward. The reading is the '
-  +'difference over the total, so an empty field reads even rather than either pole. Outward '
-  +'<b>'+b.out.toFixed(1)+'</b> against inward <b>'+b.in.toFixed(1)+'</b>.</p>'
+  +'body takes under them. Four discharge outward, five withdraw inward. Four against five is not a '
+  +'fair sum, so the means are what compare. Outward mean <b>'+b.outMean.toFixed(1)
+  +'</b> against inward mean <b>'+b.inMean.toFixed(1)+'</b>.'
+  +(b.read?'':' Both sides sit under 1, which is too little held to name a direction.')+'</p>'
   +(SXN?'<div class="pm-eye">Sex at birth</div><p class="ad-p">You gave <b>'+SXN+'</b>. It is stored '
     +'and marked on the strip, and it does not enter the arithmetic. The distance between the tick '
     +'and the marker is the reading, not a verdict.</p>':'')

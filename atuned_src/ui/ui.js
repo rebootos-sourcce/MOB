@@ -159,7 +159,8 @@ function renderBal(r){
  var tick=sx==='m'?'<span class="bal-s" style="left:78%"></span>'
         :sx==='f'?'<span class="bal-s" style="left:22%"></span>':'';
  e.innerHTML='<div class="bal-t"><span>inward</span>'
-  +'<span><b>'+(b.lean===0?'even':(Math.abs(b.lean)*100).toFixed(0)+'% '+(b.lean>0?'outward':'inward'))+'</b></span>'
+  +'<span><b>'+(!b.read?'not enough held to read'
+    :b.lean===0?'even':(Math.abs(b.lean)*100).toFixed(0)+'% '+(b.lean>0?'outward':'inward'))+'</b></span>'
   +'<span>outward</span></div>'
   +'<div class="bal-tr"><i></i>'+tick
   +'<span class="bal-m" style="left:'+pc.toFixed(1)+'%;background:'+c+'"></span></div>';}
