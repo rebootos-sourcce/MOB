@@ -146,9 +146,7 @@ function anaDrill(){
  var ents=((CURP&&CURP.story&&CURP.story.entries)||[]);
  function head(t,nm,sub){return '<div class="pm-eye">'+t+'</div><div class="ad-nm">'+esc(nm)+'</div>'
   +(sub?'<div class="ad-sub">'+esc(sub)+'</div>':'');}
- function addr(n){var o=(CHILD.filter(function(c){return c.nm===n.cf;})[0]||{}).opp||'';
-  return '<div class="ad-r"><i style="background:'+seatCol(n.b)+'"></i><span>'+esc(n.k)
-   +'</span><em>'+esc(o||n.b)+'</em><b>'+n.sq.toFixed(1)+'</b></div>';}
+ var addr=addrRow;   /* one definition, in component.js */
  function rows(list){return '<div class="ad-rows">'+list.map(addr).join('')+'</div>';}
  function storyBlock(bands){
   var hit=ents.filter(function(e){return bands.some(function(b){return e.bands&&e.bands[B2K[b]];});});

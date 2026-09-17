@@ -12,10 +12,7 @@ function rdShell(h){
  b.innerHTML='<div class="rd-card">'+h
   +'<button class="btn" id="rdx" style="margin-top:14px">Close</button></div>';
  var x=document.getElementById('rdx'); if(x)x.onclick=rdClose;}
-function addrRow(n){
- var o=(CHILD.filter(function(c){return c.nm===n.cf;})[0]||{}).opp||'';
- return '<div class="ad-r"><i style="background:'+seatCol(n.b)+'"></i><span>'+esc(n.k)
-  +'</span><em>'+esc(o||n.b)+'</em><b>'+n.sq.toFixed(1)+'</b></div>';}
+/* addrRow lives in component.js, beside the component it renders. */
 
 function runDrill(o){
  if(!o){rdClose();return;}

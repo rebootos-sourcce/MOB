@@ -43,6 +43,14 @@ function cr(band,pct,o){
 function crNode(n,size,o){o=o||{};
  return cr(n.b, n.sq*10, Object.assign({size:size||'sm', raw:n.sq.toFixed(1),
   label:n.k, title:n.k+' · '+n.b+' · SQ '+n.sq.toFixed(1)},o));}
+/* An address row. analytics.js and drills.js each carried a byte identical
+   copy of this markup, a filled dot plus a bare number, while crNode sat
+   unused. crNode was built for exactly this: the ring carries the seat colour
+   and the value, so the filled dot and the loose <b> both go. */
+function addrRow(n,o){o=o||{};
+ var opp=(CHILD.filter(function(c){return c.nm===n.cf;})[0]||{}).opp||'';
+ return '<div class="ad-r">'+crNode(n,'xs')
+  +'<span>'+esc(n.k)+'</span><em>'+esc(opp||n.b)+'</em></div>';}
 function crPat(p,size,o){o=o||{};
  var lv=leaves(p), b=(lv[0]||{}).b||'Heart';
  return cr(b, p.w*10, Object.assign({size:size||'md', raw:p.w.toFixed(1), label:p.nm,

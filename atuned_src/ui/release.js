@@ -78,9 +78,9 @@ function relRender(){
    +'<div class="rel-log">';
   RUN.log.forEach(function(x){
    out+='<div class="rel-row'+(x.cleared?' cleared':'')+'">'
-    +'<i style="background:'+seatCol(x.band)+'"></i>'
-    +'<span>'+esc(x.name)+'</span><em>toward '+esc(x.opp||'no pole')+'</em>'
-    +'<b>'+x.w0+' '+x.d+'</b></div>';});
+    +cr(x.band, (x.w0||0)*10, {size:'xs', raw:x.w0+' '+x.d,
+       title:x.name+' · '+x.band+' · '+x.w0})
+    +'<span>'+esc(x.name)+'</span><em>toward '+esc(x.opp||'no pole')+'</em></div>';});
   out+='</div><div class="rel-note">Release empties the address. The coherent opposite is '
    +'installing on the same pass. The rebound is day four and a half. Completion is day '
    +'twenty seven.</div>'
@@ -92,8 +92,8 @@ function relRender(){
    +'<div class="rel-node">'+q.length+(q.length===1?' address':' addresses')+'</div>'
    +'<div class="rel-log">';
   q.forEach(function(n){
-   out+='<div class="rel-row"><i style="background:'+seatCol(n.b)+'"></i>'
-    +'<span>'+esc(n.k)+'</span><em>'+n.b+'</em><b>'+n.sq.toFixed(1)+'</b></div>';});
+   out+='<div class="rel-row">'+crNode(n,'xs')
+    +'<span>'+esc(n.k)+'</span><em>'+n.b+'</em></div>';});
   out+='</div><div class="rel-note">Four passes: right then left, limit before truth. About '
    +(Math.round(CHAN.length*q.length*RUN.speed/60*10)/10)+' minutes.</div>'
    +'<div class="rel-act"><button class="btn" id="relcancel">Cancel</button>'

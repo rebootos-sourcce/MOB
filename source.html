@@ -613,10 +613,9 @@ body.impbig .st-write{display:none}
 .ad-nm{font-size:21px;font-weight:600;margin:5px 0 3px;letter-spacing:0}
 .ad-sub{font-size:13px;color:var(--dim);margin-bottom:11px}
 .ad-rows{display:flex;flex-direction:column;gap:2px;margin-top:6px}
-.ad-r{display:grid;grid-template-columns:10px 1fr auto auto;gap:10px;align-items:center;
+.ad-r{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;
  font-size:13.5px;color:var(--mid);padding:5px 6px;border-radius:var(--r-xs)}
 .ad-r:hover{background:var(--panel-2)}
-.ad-r i{width:10px;height:10px;border-radius:50%}
 .ad-r span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink)}
 .ad-r em{font-style:normal;font-size:12px;color:var(--heart)}
 .ad-r b{font-weight:500;color:var(--gold);font-family:var(--num);font-variant-numeric:tabular-nums}
@@ -697,10 +696,9 @@ body.snow .rel{background:rgba(238,237,233,.82)}
 .rel-ct{font-family:var(--num);font-size:12.5px;color:var(--dim)}
 .rel-log{display:flex;flex-direction:column;gap:3px;margin:15px 0;text-align:left;
  max-height:260px;overflow-y:auto}
-.rel-row{display:grid;grid-template-columns:10px 1fr auto auto;gap:10px;align-items:center;
+.rel-row{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;
  font-size:13.5px;color:var(--mid);padding:6px 8px;border-radius:var(--r-xs)}
 .rel-row.cleared{background:rgba(104,203,164,.12);color:var(--ink)}
-.rel-row i{width:10px;height:10px;border-radius:50%}
 .rel-row em{font-style:normal;font-size:12px;color:var(--heart)}
 .rel-row b{font-weight:500;color:var(--gold);font-family:var(--num);font-variant-numeric:tabular-nums}
 .rel-note{font-size:13.5px;color:var(--dim);line-height:1.7;margin:13px 0 19px;text-align:left;font-weight:300}
@@ -2392,6 +2390,14 @@ function cr(band,pct,o){
 function crNode(n,size,o){o=o||{};
  return cr(n.b, n.sq*10, Object.assign({size:size||'sm', raw:n.sq.toFixed(1),
   label:n.k, title:n.k+' · '+n.b+' · SQ '+n.sq.toFixed(1)},o));}
+/* An address row. analytics.js and drills.js each carried a byte identical
+   copy of this markup, a filled dot plus a bare number, while crNode sat
+   unused. crNode was built for exactly this: the ring carries the seat colour
+   and the value, so the filled dot and the loose <b> both go. */
+function addrRow(n,o){o=o||{};
+ var opp=(CHILD.filter(function(c){return c.nm===n.cf;})[0]||{}).opp||'';
+ return '<div class="ad-r">'+crNode(n,'xs')
+  +'<span>'+esc(n.k)+'</span><em>'+esc(opp||n.b)+'</em></div>';}
 function crPat(p,size,o){o=o||{};
  var lv=leaves(p), b=(lv[0]||{}).b||'Heart';
  return cr(b, p.w*10, Object.assign({size:size||'md', raw:p.w.toFixed(1), label:p.nm,
@@ -3689,9 +3695,7 @@ function anaDrill(){
  var ents=((CURP&&CURP.story&&CURP.story.entries)||[]);
  function head(t,nm,sub){return '<div class="pm-eye">'+t+'</div><div class="ad-nm">'+esc(nm)+'</div>'
   +(sub?'<div class="ad-sub">'+esc(sub)+'</div>':'');}
- function addr(n){var o=(CHILD.filter(function(c){return c.nm===n.cf;})[0]||{}).opp||'';
-  return '<div class="ad-r"><i style="background:'+seatCol(n.b)+'"></i><span>'+esc(n.k)
-   +'</span><em>'+esc(o||n.b)+'</em><b>'+n.sq.toFixed(1)+'</b></div>';}
+ var addr=addrRow;   /* one definition, in component.js */
  function rows(list){return '<div class="ad-rows">'+list.map(addr).join('')+'</div>';}
  function storyBlock(bands){
   var hit=ents.filter(function(e){return bands.some(function(b){return e.bands&&e.bands[B2K[b]];});});
@@ -3937,9 +3941,9 @@ function relRender(){
    +'<div class="rel-log">';
   RUN.log.forEach(function(x){
    out+='<div class="rel-row'+(x.cleared?' cleared':'')+'">'
-    +'<i style="background:'+seatCol(x.band)+'"></i>'
-    +'<span>'+esc(x.name)+'</span><em>toward '+esc(x.opp||'no pole')+'</em>'
-    +'<b>'+x.w0+' '+x.d+'</b></div>';});
+    +cr(x.band, (x.w0||0)*10, {size:'xs', raw:x.w0+' '+x.d,
+       title:x.name+' · '+x.band+' · '+x.w0})
+    +'<span>'+esc(x.name)+'</span><em>toward '+esc(x.opp||'no pole')+'</em></div>';});
   out+='</div><div class="rel-note">Release empties the address. The coherent opposite is '
    +'installing on the same pass. The rebound is day four and a half. Completion is day '
    +'twenty seven.</div>'
@@ -3951,8 +3955,8 @@ function relRender(){
    +'<div class="rel-node">'+q.length+(q.length===1?' address':' addresses')+'</div>'
    +'<div class="rel-log">';
   q.forEach(function(n){
-   out+='<div class="rel-row"><i style="background:'+seatCol(n.b)+'"></i>'
-    +'<span>'+esc(n.k)+'</span><em>'+n.b+'</em><b>'+n.sq.toFixed(1)+'</b></div>';});
+   out+='<div class="rel-row">'+crNode(n,'xs')
+    +'<span>'+esc(n.k)+'</span><em>'+n.b+'</em></div>';});
   out+='</div><div class="rel-note">Four passes: right then left, limit before truth. About '
    +(Math.round(CHAN.length*q.length*RUN.speed/60*10)/10)+' minutes.</div>'
    +'<div class="rel-act"><button class="btn" id="relcancel">Cancel</button>'
@@ -4056,10 +4060,7 @@ function rdShell(h){
  b.innerHTML='<div class="rd-card">'+h
   +'<button class="btn" id="rdx" style="margin-top:14px">Close</button></div>';
  var x=document.getElementById('rdx'); if(x)x.onclick=rdClose;}
-function addrRow(n){
- var o=(CHILD.filter(function(c){return c.nm===n.cf;})[0]||{}).opp||'';
- return '<div class="ad-r"><i style="background:'+seatCol(n.b)+'"></i><span>'+esc(n.k)
-  +'</span><em>'+esc(o||n.b)+'</em><b>'+n.sq.toFixed(1)+'</b></div>';}
+/* addrRow lives in component.js, beside the component it renders. */
 
 function runDrill(o){
  if(!o){rdClose();return;}
