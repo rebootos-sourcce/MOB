@@ -241,6 +241,13 @@ function drawWheel(r,L){
     unlabelled: the bead still draws, and the name is in the right-hand list
     either way. plateHit is the single predicate the collision gate also uses. */
  const PLATES=[];
+ /* The seven seat names sit on the shell at a fixed bearing and were drawn
+    before any nameplate, but they were never registered as occupied, so a
+    saboteur's plate could run straight through one. "AggreSolar" was the
+    shipped result. They go in first, so every plate routes around them. */
+ if(L>=1)BANDS.forEach(b=>{const seg=W.filter(n=>n.b===b);
+  if(seg.length)PLATES.push({ang:meanAng(seg.map(n=>n.ang)), out:R.shell*1.058,
+   len:b.length, fs:12});});
  /* the free radius: inside the archetype ring once it exists, else the stage. */
  const CEIL=(L>=2)?R.arch-U*0.05:U*1.02;
  /* A radial label runs OUTWARD from its anchor, so it occupies a radial

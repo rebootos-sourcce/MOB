@@ -303,7 +303,7 @@ body:not(.tab-field) .acc{display:none}
  display:flex;align-items:center;justify-content:flex-end;background:none;border:0;padding:0;margin:0}
 .pol2:hover svg{opacity:.85}
 body:not(.tab-field) .pol2{display:none}
-.pol2 svg{display:block;height:100%;width:58px}
+.pol2 svg{display:block;height:100%;width:104px}
 .pol2-t{font-family:var(--num);font-size:10px;fill:var(--dim)}
 .pol2-c{font-family:var(--num);font-size:11px;font-weight:500}
 
@@ -3203,6 +3203,13 @@ function drawWheel(r,L){
     unlabelled: the bead still draws, and the name is in the right-hand list
     either way. plateHit is the single predicate the collision gate also uses. */
  const PLATES=[];
+ /* The seven seat names sit on the shell at a fixed bearing and were drawn
+    before any nameplate, but they were never registered as occupied, so a
+    saboteur's plate could run straight through one. "AggreSolar" was the
+    shipped result. They go in first, so every plate routes around them. */
+ if(L>=1)BANDS.forEach(b=>{const seg=W.filter(n=>n.b===b);
+  if(seg.length)PLATES.push({ang:meanAng(seg.map(n=>n.ang)), out:R.shell*1.058,
+   len:b.length, fs:12});});
  /* the free radius: inside the archetype ring once it exists, else the stage. */
  const CEIL=(L>=2)?R.arch-U*0.05:U*1.02;
  /* A radial label runs OUTWARD from its anchor, so it occupies a radial
@@ -4144,7 +4151,10 @@ function anaField(title,sub,items,w,h){
   if(!tiny){
    var fs=Math.max(11,Math.min(14,p.r*0.30));
    var room=Math.floor((p.r*1.7)/(fs*0.56));
-   var t=(p.it.nm.length<=room)?p.it.nm:(room>4?p.it.nm.slice(0,room-1)+'…':'');
+   /* A name cut to "Hyper-Ach\u2026" names nothing and still costs the ink.
+      A name that does not fit is dropped, and the bubble carries its value
+      instead. The full name is on hover and in the list beside the chart. */
+   var t=(p.it.nm.length<=room)?p.it.nm:'';
    if(t){
     s+='<text x="'+p.x.toFixed(1)+'" y="'+(p.y-(fit?3:-3)).toFixed(1)+'" text-anchor="middle" '
      +'class="ab-t" style="font-size:'+fs.toFixed(1)+'px">'+esc(t)+'</text>';
@@ -5241,7 +5251,9 @@ function renderSpirit(){
 /* ---- the compass. where coherence sits, and how far it swings. ---- */
 function renderPol2(r){
  var el=$('pol2'); if(!el)return;
- var H=360,Wd=58,top=30,bot=H-30,x=34;
+ /* the labels sit at x+20 and run right, so a 58 wide box cut them off.
+    the box is wide enough to hold what it draws. */
+ var H=360,Wd=104,top=30,bot=H-30,x=34;
  var cq=Math.max(0,Math.min(100,r.CQ));
  /* the band narrows as coherence rises. tight alignment leaves little room to
     wander, a decohering field ranges wide. */

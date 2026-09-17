@@ -64,7 +64,10 @@ function anaField(title,sub,items,w,h){
   if(!tiny){
    var fs=Math.max(11,Math.min(14,p.r*0.30));
    var room=Math.floor((p.r*1.7)/(fs*0.56));
-   var t=(p.it.nm.length<=room)?p.it.nm:(room>4?p.it.nm.slice(0,room-1)+'…':'');
+   /* A name cut to "Hyper-Ach\u2026" names nothing and still costs the ink.
+      A name that does not fit is dropped, and the bubble carries its value
+      instead. The full name is on hover and in the list beside the chart. */
+   var t=(p.it.nm.length<=room)?p.it.nm:'';
    if(t){
     s+='<text x="'+p.x.toFixed(1)+'" y="'+(p.y-(fit?3:-3)).toFixed(1)+'" text-anchor="middle" '
      +'class="ab-t" style="font-size:'+fs.toFixed(1)+'px">'+esc(t)+'</text>';

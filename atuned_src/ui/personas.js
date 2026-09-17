@@ -70,7 +70,9 @@ function renderSpirit(){
 /* ---- the compass. where coherence sits, and how far it swings. ---- */
 function renderPol2(r){
  var el=$('pol2'); if(!el)return;
- var H=360,Wd=58,top=30,bot=H-30,x=34;
+ /* the labels sit at x+20 and run right, so a 58 wide box cut them off.
+    the box is wide enough to hold what it draws. */
+ var H=360,Wd=104,top=30,bot=H-30,x=34;
  var cq=Math.max(0,Math.min(100,r.CQ));
  /* the band narrows as coherence rises. tight alignment leaves little room to
     wander, a decohering field ranges wide. */
