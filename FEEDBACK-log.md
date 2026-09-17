@@ -43,6 +43,39 @@ change: kept.
 said: are there small things to make the wheel look alive.
 change: open. Art director proposing three tied to real quantities.
 
+## 2026-09-17 · owner · gates and rail, second pass
+
+said: give the action direction symbolic icons, name on hover, percent
+pill at the lower right, a ring that matches the percent, click for the
+information. The arrow is too long. I do not like text hovering over
+things unless I can read it.
+change: six ring icons on short stems, ring closes by share, pill at the
+lower right, glyph per gate, name and sentence on hover, drill on click.
+No text drawn over the wheel.
+
+said: the reading should be a snapshot, then tabs under it where I select
+fetters, complexes, hyper complexes, both halves of every pole.
+change: stack tabs under the reading, every row shows held and installed.
+
+said: the lines that cross, if I select one does it saturate more.
+change: selected chain rises above rest in alpha and width, the rest fall.
+
+said: put balance on the left, masculine or feminine lean.
+change: open. No such measure exists in the engine. Needs a definition.
+
+said: leaderboard markers on the compass, Musashi and Buddha at the top,
+Moloch and Lucifer at the bottom, tiny symbols, name on hover.
+change: open. No reference figures exist in the data. Needs their positions.
+
+said: Field, Firing, Compounding, Everything need to be more meaningful.
+change: open. Proposal made, ruling pending.
+
+## 2026-09-17 · owner · save
+
+said: none. Found by the systems scan.
+read: the store was assigned, not bound, so no save ever wrote.
+change: bound through bindStore, gate saves, reloads, reads back. 246.
+
 ## 2026-09-17 · owner · right rail
 
 said: whatever I select I want the parent and the children, what is running
