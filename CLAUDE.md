@@ -131,6 +131,8 @@ His, not mine:
 
 ## Records
 
+`MILESTONES.md` is the sequenced plan, scrubbed by five disciplines, and it
+records what each milestone unlocks and what must be decided before it starts.
 `TASKS.md` is the single backlog. It merges the technical items with the
 review feedback so there are not two competing lists. Read it first.
 `STABILITY.md` is the measured snapshot behind the technical half of it.
