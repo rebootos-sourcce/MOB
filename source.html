@@ -2,7 +2,7 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
-<meta name="description" content="A field instrument. 108 addresses, nine poled axes, twenty-one laws.">
+<meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
 <style>
@@ -3053,10 +3053,10 @@ function verpArrows(cr0){
      SQ  depth of any single segment
    ============================================================ */
 const VIEWS=[
- {k:'A',nm:'Field',      layers:'core · 108 addresses · wash'},
- {k:'B',nm:'Firing',     layers:'A + band names + saboteurs'},
- {k:'C',nm:'Compounding',layers:'B + complexes, hyper, character, archetypes'},
- {k:'D',nm:'Everything', layers:'C + 19 domains + 6 masks + 21 laws'}];
+ {k:'A',nm:'Charge',    layers:'the core, 112 addresses, the wash'},
+ {k:'B',nm:'Cluster',   layers:'charge, plus the seats named and the saboteurs'},
+ {k:'C',nm:'Chain',     layers:'cluster, plus complexes, hyper, character, archetypes'},
+ {k:'D',nm:'Blueprint', layers:'chain, plus 19 domains, 6 masks, 21 laws'}];
 function nzAng(a){while(a<-Math.PI)a+=TAU;while(a>Math.PI)a-=TAU;return a;}
 function drawWheel(r,L){
  const ink=INK(),p=S.pin,gc=GOLDC();
@@ -3877,7 +3877,10 @@ function stRefresh(){
  if(keep){keep.focus(); try{keep.setSelectionRange(pos,pos);}catch(e){}}}
 function stMic(){
  var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
- if(!SR){ ST_LISTEN=false; alert('This browser has no speech recognition. Typing works.'); return; }
+ /* alert() blocks the page and is not the status region, which is the app's
+    one writer for anything that can fail. */
+ if(!SR){ ST_LISTEN=false; stRender();
+  status('This browser has no speech recognition. Typing works.'); return; }
  if(ST_REC&&ST_LISTEN){ ST_REC.stop(); ST_LISTEN=false; stRender(); return; }
  ST_REC=new SR(); ST_REC.continuous=true; ST_REC.interimResults=true; ST_REC.lang='en-US';
  var base=ST_TEXT;
@@ -3944,7 +3947,7 @@ function sumRender(){
  out+='<div class="sum-hero">'+cr(r.darkB,r.CQ,{size:'lg',label:'coherence'})
   +'<div><div class="pm-eye">Coherence, '+r.tier.toLowerCase()+'</div>'
   +'<div class="sum-line">'+(held.length
-    ? 'You are carrying <b>'+held.length+'</b> of '+NODES.length+' addresses. '
+    ? 'You are carrying <b>'+held.length+'</b> address'+(held.length===1?'':'es')+' at a shadow weight of <b>'+r.DQ.toFixed(1)+'</b>. '
       +(named.length?'The loudest thing running is <b>'+esc(named[0].nm)+'</b> at '+named[0].score+'% match. ':'')
       +'Flow stops where the '+r.darkB.toLowerCase()+' is holding.'
     : 'Nothing is held above the line. The output matches the shape.')
@@ -4032,7 +4035,9 @@ function sumRender(){
   +'anything to perceive, and there '+(hist.length>1
     ? 'are '+hist.length+' snapshots on file.'
     : 'is not enough yet. Run a release or save the diagnostic and it will start.')+'</p>'
-  +'<button class="btn pri"'+(hist.length>1?'':' disabled')+'>Talk to it about this</button></div>';
+  /* The button had no handler in either state, so it promised a thing that
+     did nothing when clicked. It says what it is instead. */
+  +'</div>';
  out+='</div>';
  h.innerHTML=out;}
 
@@ -4123,7 +4128,7 @@ function anaRender(){
   +'<div class="ab-say">'
   +(loud?'<b>'+esc(loud.nm)+'</b> is the biggest thing running. ':'Nothing is compounding. ')
   +(stop?'Flow stops at the <b>'+stop.p.n.toLowerCase()+'</b>. ':'Every seat is passing. ')
-  +'<b>'+held.length+'</b> of '+NODES.length+' addresses held.'
+  +(held.length?'<b>'+held.length+'</b> addresses are carrying, at a shadow weight of <b>'+r.DQ.toFixed(1)+'</b>.':'Nothing is carrying.')
   +(prev?' CQ '+(r.CQ-prev.cq>=0?'up ':'down ')+Math.abs(r.CQ-prev.cq).toFixed(1)+' since last session.':'')
   +'</div></div></div><div class="ab-grid">';
  out+=anaField('Masks','the era you speak from, biggest is loudest',
@@ -4166,8 +4171,11 @@ function anaRender(){
    +seatCol(x.dark)+'"></u></div>';});
   out+='</div>';}
  var meas=SI.filter(function(l){return CURP&&CURP.laws&&CURP.laws[l.nm]!=null;});
- out+='<p class="sum-p" style="margin-top:18px">'+meas.length+' of 21 laws measured'
-  +(meas.length<21?'. The rest default to 6, which flatters the score.':'.')+'</p></div>';
+ out+='<p class="sum-p" style="margin-top:18px">'
+  +(meas.length===21?'Every law is measured, so nothing here is a default.'
+    :meas.length?'<b>'+(21-meas.length)+'</b> law'+(21-meas.length===1?' is':'s are')+' still unmeasured and sitting at the default 6, which flatters the score. Answer them in Intake.'
+    :'No law is measured yet. All 21 sit at the default 6, which flatters the score. Answer them in Intake.')
+  +'</p></div>';
  el.innerHTML=out;
  el.querySelectorAll('[data-ab]').forEach(function(gEl){gEl.onclick=function(){
   var p=gEl.getAttribute('data-ab').split('|');
@@ -5223,7 +5231,7 @@ function renderPol2(r){
 function renderAcc(r){
  var el=$('acc'); if(!el)return;
  var a=accuracy(r), w=[];
- if(a.cov<21) w.push((21-a.cov)+' of 21 laws unmeasured');
+ if(a.cov<21) w.push((21-a.cov)+' law'+(21-a.cov===1?'':'s')+' unmeasured, sitting at the default 6');
  if(a.signal<70) w.push('signal '+a.signal+'%, '+a.held+' held');
  if(a.exq<0.7) w.push('expression '+Math.round(a.exq*100)+'%');
  if(a.deg) w.push(a.deg+' degenerate pair'+(a.deg>1?'s':''));

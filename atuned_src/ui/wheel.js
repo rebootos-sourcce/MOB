@@ -129,10 +129,10 @@ function verpArrows(cr0){
      SQ  depth of any single segment
    ============================================================ */
 const VIEWS=[
- {k:'A',nm:'Field',      layers:'core · 108 addresses · wash'},
- {k:'B',nm:'Firing',     layers:'A + band names + saboteurs'},
- {k:'C',nm:'Compounding',layers:'B + complexes, hyper, character, archetypes'},
- {k:'D',nm:'Everything', layers:'C + 19 domains + 6 masks + 21 laws'}];
+ {k:'A',nm:'Charge',    layers:'the core, 112 addresses, the wash'},
+ {k:'B',nm:'Cluster',   layers:'charge, plus the seats named and the saboteurs'},
+ {k:'C',nm:'Chain',     layers:'cluster, plus complexes, hyper, character, archetypes'},
+ {k:'D',nm:'Blueprint', layers:'chain, plus 19 domains, 6 masks, 21 laws'}];
 function nzAng(a){while(a<-Math.PI)a+=TAU;while(a>Math.PI)a-=TAU;return a;}
 function drawWheel(r,L){
  const ink=INK(),p=S.pin,gc=GOLDC();

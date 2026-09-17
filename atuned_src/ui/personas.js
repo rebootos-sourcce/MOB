@@ -110,7 +110,7 @@ function renderPol2(r){
 function renderAcc(r){
  var el=$('acc'); if(!el)return;
  var a=accuracy(r), w=[];
- if(a.cov<21) w.push((21-a.cov)+' of 21 laws unmeasured');
+ if(a.cov<21) w.push((21-a.cov)+' law'+(21-a.cov===1?'':'s')+' unmeasured, sitting at the default 6');
  if(a.signal<70) w.push('signal '+a.signal+'%, '+a.held+' held');
  if(a.exq<0.7) w.push('expression '+Math.round(a.exq*100)+'%');
  if(a.deg) w.push(a.deg+' degenerate pair'+(a.deg>1?'s':''));

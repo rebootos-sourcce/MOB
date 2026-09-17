@@ -86,7 +86,7 @@ function anaRender(){
   +'<div class="ab-say">'
   +(loud?'<b>'+esc(loud.nm)+'</b> is the biggest thing running. ':'Nothing is compounding. ')
   +(stop?'Flow stops at the <b>'+stop.p.n.toLowerCase()+'</b>. ':'Every seat is passing. ')
-  +'<b>'+held.length+'</b> of '+NODES.length+' addresses held.'
+  +(held.length?'<b>'+held.length+'</b> addresses are carrying, at a shadow weight of <b>'+r.DQ.toFixed(1)+'</b>.':'Nothing is carrying.')
   +(prev?' CQ '+(r.CQ-prev.cq>=0?'up ':'down ')+Math.abs(r.CQ-prev.cq).toFixed(1)+' since last session.':'')
   +'</div></div></div><div class="ab-grid">';
  out+=anaField('Masks','the era you speak from, biggest is loudest',
@@ -129,8 +129,11 @@ function anaRender(){
    +seatCol(x.dark)+'"></u></div>';});
   out+='</div>';}
  var meas=SI.filter(function(l){return CURP&&CURP.laws&&CURP.laws[l.nm]!=null;});
- out+='<p class="sum-p" style="margin-top:18px">'+meas.length+' of 21 laws measured'
-  +(meas.length<21?'. The rest default to 6, which flatters the score.':'.')+'</p></div>';
+ out+='<p class="sum-p" style="margin-top:18px">'
+  +(meas.length===21?'Every law is measured, so nothing here is a default.'
+    :meas.length?'<b>'+(21-meas.length)+'</b> law'+(21-meas.length===1?' is':'s are')+' still unmeasured and sitting at the default 6, which flatters the score. Answer them in Intake.'
+    :'No law is measured yet. All 21 sit at the default 6, which flatters the score. Answer them in Intake.')
+  +'</p></div>';
  el.innerHTML=out;
  el.querySelectorAll('[data-ab]').forEach(function(gEl){gEl.onclick=function(){
   var p=gEl.getAttribute('data-ab').split('|');

@@ -54,7 +54,7 @@ function sumRender(){
  out+='<div class="sum-hero">'+cr(r.darkB,r.CQ,{size:'lg',label:'coherence'})
   +'<div><div class="pm-eye">Coherence, '+r.tier.toLowerCase()+'</div>'
   +'<div class="sum-line">'+(held.length
-    ? 'You are carrying <b>'+held.length+'</b> of '+NODES.length+' addresses. '
+    ? 'You are carrying <b>'+held.length+'</b> address'+(held.length===1?'':'es')+' at a shadow weight of <b>'+r.DQ.toFixed(1)+'</b>. '
       +(named.length?'The loudest thing running is <b>'+esc(named[0].nm)+'</b> at '+named[0].score+'% match. ':'')
       +'Flow stops where the '+r.darkB.toLowerCase()+' is holding.'
     : 'Nothing is held above the line. The output matches the shape.')
@@ -142,6 +142,8 @@ function sumRender(){
   +'anything to perceive, and there '+(hist.length>1
     ? 'are '+hist.length+' snapshots on file.'
     : 'is not enough yet. Run a release or save the diagnostic and it will start.')+'</p>'
-  +'<button class="btn pri"'+(hist.length>1?'':' disabled')+'>Talk to it about this</button></div>';
+  /* The button had no handler in either state, so it promised a thing that
+     did nothing when clicked. It says what it is instead. */
+  +'</div>';
  out+='</div>';
  h.innerHTML=out;}

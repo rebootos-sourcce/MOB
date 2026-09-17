@@ -48,7 +48,10 @@ function stRefresh(){
  if(keep){keep.focus(); try{keep.setSelectionRange(pos,pos);}catch(e){}}}
 function stMic(){
  var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
- if(!SR){ ST_LISTEN=false; alert('This browser has no speech recognition. Typing works.'); return; }
+ /* alert() blocks the page and is not the status region, which is the app's
+    one writer for anything that can fail. */
+ if(!SR){ ST_LISTEN=false; stRender();
+  status('This browser has no speech recognition. Typing works.'); return; }
  if(ST_REC&&ST_LISTEN){ ST_REC.stop(); ST_LISTEN=false; stRender(); return; }
  ST_REC=new SR(); ST_REC.continuous=true; ST_REC.interimResults=true; ST_REC.lang='en-US';
  var base=ST_TEXT;
