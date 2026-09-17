@@ -4,6 +4,26 @@
    required. Every finished law is a finding on its own.
    ============================================================ */
 var IQ_OPEN=null;
+/* THE SEED. A four letter type is what a person says about themselves, so
+   it is never presented as a reading. It puts charge on the nine axes so a
+   new field is not empty, and the line underneath says how much of the
+   field is still the seed and how much the person has moved. */
+function iqSeedBlock(p){
+ var sd=p.seed, share=seedShare(p);
+ var sel='<div class="iq-f"><label for="wtype">Type, if you know it</label>'
+  +'<select id="wtype"><option value="">not said</option>'
+  +TYPE16.map(function(t){return '<option value="'+t+'"'+(sd&&sd.type===t?' selected':'')+'>'+t+'</option>';}).join('')
+  +'</select></div>';
+ var note;
+ if(!sd) note='Optional. A four letter type is the ego\u2019s own account of itself, not a reading. '
+  +'Giving one puts charge on the nine axes so the field is not empty on the first day. '
+  +'Your own answers and your own stories move it from there.';
+ else note='Seeded from <b>'+esc(sd.type)+'</b>. <b>'+Math.round(share*100)+'%</b> of what the axes carry is still '
+  +'that seed'+(share<=0.25?', so the field is mostly yours now.':share>=0.9?'. Nothing has moved it yet.':'.')
+  +' It is charge only. No law, no gate and no domain was written by it, because those are measured.';
+ return '<div class="iq-seed"><div class="iq-fields">'+sel
+  +'<div class="iq-f" style="grid-column:span 2"><label>&nbsp;</label><p class="iq-why" style="margin:0">'+note+'</p></div>'
+  +'</div></div>';}
 function iqField(label,key,v){
  var id='w'+key;
  return '<div class="iq-f"><label for="'+id+'">'+label+'</label>'
@@ -49,7 +69,9 @@ function renderIntake(){
    +'<input type="text" id="wplace" data-born="place" placeholder="City, region" value="'+esc(bn.place||'')+'"></div>'
   +'<div class="iq-f"><label>&nbsp;</label><label class="iq-ck"><input type="checkbox" id="wtu"'
    +(bn.timeUnknown?' checked':'')+'> I do not know the time</label></div>'
-  +'</div></div>';
+  +'</div>'
+  +iqSeedBlock(p)
+  +'</div>';
  h+='<div class="iq-top">'
   +'<div class="iq-cq"><b>'+(scored?Math.round(r.CQ):'–')+'</b>'
   +'<span>'+(scored?'CQ from '+scored+' measured':'no law measured yet')+'</span></div>'
@@ -107,6 +129,11 @@ function renderIntake(){
   CURP.who[el.dataset.who]=el.value; pSave(); statusSaved();};});
  host.querySelectorAll('[data-born]').forEach(function(el){el.onchange=function(){
   CURP.who.born[el.dataset.born]=el.value; pSave(); statusSaved(); renderSpirit&&renderSpirit();};});
+ var ty=document.getElementById('wtype');
+ if(ty)ty.onchange=function(){
+  if(ty.value)seedApply(CURP,ty.value); else seedClear(CURP);
+  loadProfile(CURP); pSave(); statusSaved();
+  syncCh(); syncSoul(); renderIntake(); render();};
  var tu=document.getElementById('wtu');
  if(tu)tu.onchange=function(){CURP.who.born.timeUnknown=tu.checked;
   if(tu.checked)CURP.who.born.time=''; pSave(); statusSaved(); renderIntake();};

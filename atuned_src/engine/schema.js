@@ -21,6 +21,8 @@ function blankProfile(name){
      sixth system still costs nothing. timeUnknown is explicit, because an
      unknown birth time changes what can be read and must not be guessed. */
   who:{first:'', middle:'', last:'', sex:'', born:{date:'', time:'', place:'', timeUnknown:false}},
+  /* what the person said their type is, and what it wrote. null until stated. */
+  seed:null,
   laws:{}, intake:{answers:{}, done:[], startedAt:null, completedAt:null},
   gates:{verp:{aware:0,detach:0,intent:0,ignore:0,attach:0,averse:0},
          lean:{benign:0,malignant:0}},   /* the cost multiplier, v2 */

@@ -255,7 +255,37 @@ ok(ref('Rosa').loaded.length===0,'Rosa holds nothing');
 ok(ref('Gordon').loaded.length>90,'Gordon holds nearly everything');
 
 
-g('16 · the front door');
+g('15b \u00b7 the seed');
+{
+ const {blankProfile,seedAxes,seedApply,seedClear,seedShare,seedValid,TYPE16,CHARGES,read}=E;
+ ok(TYPE16.length===16,'sixteen types, got '+TYPE16.length);
+ ok(seedValid('ENTP')&&!seedValid('XXXX'),'a type is validated before it is written');
+ const seen={}; let dup=0;
+ TYPE16.forEach(t=>{const k=JSON.stringify(seedAxes(t)); if(seen[k])dup++; seen[k]=1;});
+ ok(dup===0,'every type seeds a distinct pattern, '+dup+' collide');
+ TYPE16.forEach(t=>{const a=seedAxes(t);
+  CHARGES.forEach(c=>{ if(a[c]<0||a[c]>10) ok(false,t+' put '+c+' out of range at '+a[c]); });});
+ ok(true,'every seeded charge stays inside 0 to 10');
+ const p=blankProfile('seed');
+ const before=JSON.stringify(p.laws)+JSON.stringify(p.gates)+JSON.stringify(p.soul);
+ seedApply(p,'ENTP');
+ ok(p.seed&&p.seed.type==='ENTP','the seed records what it wrote');
+ ok(JSON.stringify(p.laws)+JSON.stringify(p.gates)+JSON.stringify(p.soul)===before,
+  'the seed writes charge only, never a law, a gate or a domain');
+ ok(seedShare(p)===1,'a fresh seed is all seed, got '+seedShare(p));
+ p.axes.Fear.held=9; p.axes.Anger.held=1;
+ const mid=seedShare(p);
+ ok(mid>0&&mid<1,'the share falls as the person moves the axes, got '+mid);
+ /* seeding twice re-seeds from the base rather than compounding */
+ seedApply(p,'ENTP');
+ ok(seedShare(p)===1&&JSON.stringify(p.axes.Fear.held)==='2.8',
+  're-seeding starts from the base, Fear reads '+p.axes.Fear.held);
+ const r=read(p,{});
+ ok(typeof r.reading.CQ==='number'&&r.reading.CQ>=0&&r.reading.CQ<=100,'a seeded profile reads');
+ seedClear(p); ok(!p.seed&&seedShare(p)===0,'clearing the seed leaves no claim behind');
+}
+
+g('16 \u00b7 the front door');
 {
  /* a story must be attributed by the profile being read, whoever was read
     before. loadProfile runs the susceptibility pass, so this holds. */

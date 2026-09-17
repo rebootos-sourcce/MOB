@@ -15,6 +15,7 @@ engine/schema.js
 engine/intake.js
 engine/sniff.js
 engine/birth.js
+engine/seed.js
 engine/read.js
 engine/export.js
 ui/component.js
