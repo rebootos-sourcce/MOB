@@ -123,6 +123,10 @@ function railTop(r){
 function render(){
  const r=compute(), p=PEOPLE[S.who];
  $('tier').textContent=r.tier;
+ /* The heaviest seat and its charge go onto the body so a theme can derive
+    its chrome from the reading. Punch reads both; Dark and Snow ignore them. */
+ document.body.style.setProperty('--seat',seatCol(r.darkB));
+ document.body.style.setProperty('--seat-w',Math.max(0,Math.min(1,(r.darkV||0)/10)).toFixed(2));
  railTop(r);
  /* benign against malignant, as percentages of one field */
  (function(){

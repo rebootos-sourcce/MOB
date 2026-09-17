@@ -53,9 +53,20 @@
 /* ---------- PUNCH. The third theme. Nothing is outlined, everything is solid.
    Flat: one plane, no borders, no shadows, filled shapes, a selected thing is
    a colour fill and not an outline. Dark ground, same seat palette. ---------- */
+/* Punch is relational. The one colour with no seat behind it was gold, and
+   as the fill for every pressed state it out-shouted the reading. In Punch
+   the accent is the seat the reading names heaviest, set by render() as
+   --seat, and the shell tints toward it by that seat's charge, --seat-w in
+   0 to 1. A light Throat reading is a cool grey; a severe Root one is warm
+   and deeper. The chrome is a consequence of the field, not a skin. */
 body.punch{
+ --seat:#DFCC7E; --seat-w:0.3;
+ --gold:var(--seat);
  --edge:transparent; --edge-2:transparent;
- --panel:#171922; --panel-2:#20222D; --sunk:#12131B;
+ --bg:color-mix(in srgb,var(--seat) calc(2% + var(--seat-w)*6%),#12131A);
+ --panel:color-mix(in srgb,var(--seat) calc(3% + var(--seat-w)*7%),#171922);
+ --panel-2:color-mix(in srgb,var(--seat) calc(4% + var(--seat-w)*8%),#20222D);
+ --sunk:color-mix(in srgb,var(--seat) calc(2% + var(--seat-w)*5%),#12131B);
 }
 body.punch .glass,body.punch .vt,body.punch .ib,body.punch .btn,body.punch .cr,
 body.punch .pm-lb,body.punch .pm-rb,body.punch .iq-law,body.punch .iq-n,
@@ -64,31 +75,28 @@ body.punch .st-mic,body.punch .ab-f,body.punch .ad-r,body.punch .rel-row{border-
 body.punch .vt,body.punch .btn,body.punch .pm-lb,body.punch .st-mic{background:var(--panel-2)}
 body.punch .ib{background:var(--sunk);border-width:0}
 body.punch .ib svg{opacity:.92}
-body.punch .ib[aria-pressed=true],body.punch .ib[data-r="2"]{background:var(--c,var(--gold));border-color:transparent}
+/* A pressed icon fills with its own seat colour, --c, which the domain and
+   archetype grids already carry. Only a control with no seat takes --seat. */
+body.punch .ib[aria-pressed=true],body.punch .ib[data-r="2"]{background:var(--c,var(--seat));border-color:transparent}
 body.punch .ib[aria-pressed=true] svg,body.punch .ib[data-r="2"] svg{stroke:var(--bg);opacity:1}
 body.punch .cr{background:color-mix(in srgb,var(--c) 26%,var(--panel-2))}
 body.punch .lsec-hd{background:var(--panel-2);border-radius:var(--r-xs);padding-left:12px;padding-right:12px;margin-bottom:6px}
-body.punch .lsec.open .lsec-hd{background:var(--gold);color:#15130A}
+body.punch .lsec.open .lsec-hd{background:var(--panel-2);color:var(--seat)}
 body.punch .lsec{border-bottom:0}
 body.punch .nf input{border-width:0}
 body.punch select#psel{border-width:0}
 body.punch .top,body.punch .glass{box-shadow:none}
 body.punch .seg{background:var(--sunk)}
-/* Two rules hardcoded a colour instead of the edge token, so they leaked
-   through the theme. The writing box focus ring was literal gold; the
-   imprint pill mixed its seat colour into a border. Both become fills. */
+body.punch .btn.pri{background:var(--seat);border-color:var(--seat)}
 body.punch .st-ta,body.punch .st-ta:focus{border-color:transparent}
 body.punch .st-ta:focus{background:var(--panel-2)}
-/* Punch has no outlines, so the keyboard focus ring on a field becomes a
-   solid bar down the left edge. Same job, no ring. Buttons keep the ring
-   because a bar on a pill reads as a glyph. */
+/* No outlines in Punch, so keyboard focus on a field is a solid bar down
+   the left edge in the seat colour. Buttons keep the ring, a bar on a pill
+   reads as a glyph. */
 body.punch textarea:focus-visible,body.punch input:focus-visible,body.punch select:focus-visible{
- outline:none;box-shadow:inset 4px 0 0 var(--gold)}
+ outline:none;box-shadow:inset 4px 0 0 var(--seat)}
 body.punch .ip{border-color:transparent;background:color-mix(in srgb,var(--c) 22%,var(--panel-2))}
 body.punch .ip.ghost{border-style:solid;border-color:transparent;background:var(--sunk);opacity:.72}
-/* The open section header was a solid gold slab and out-shouted the primary
-   action. A label should not be louder than a button. Quiet fill, gold text. */
-body.punch .lsec.open .lsec-hd{background:var(--panel-2);color:var(--gold)}
 body.snow{
  --bg:#EDEBE6; --panel:#F8F7F3; --panel-2:#F2F0EB; --sunk:#E6E4DE;
  --edge:rgba(20,23,28,.11); --edge-2:rgba(20,23,28,.18);
@@ -4896,6 +4904,10 @@ function railTop(r){
 function render(){
  const r=compute(), p=PEOPLE[S.who];
  $('tier').textContent=r.tier;
+ /* The heaviest seat and its charge go onto the body so a theme can derive
+    its chrome from the reading. Punch reads both; Dark and Snow ignore them. */
+ document.body.style.setProperty('--seat',seatCol(r.darkB));
+ document.body.style.setProperty('--seat-w',Math.max(0,Math.min(1,(r.darkV||0)/10)).toFixed(2));
  railTop(r);
  /* benign against malignant, as percentages of one field */
  (function(){
