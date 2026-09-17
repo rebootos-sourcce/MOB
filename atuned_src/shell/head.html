@@ -720,6 +720,21 @@ body.impbig .st-write{display:none}
 .iqleft .iq-top{flex-direction:column;align-items:stretch;gap:11px;padding:13px}
 .iqleft .iq-cq b{font-size:30px}
 .iqleft .iq-n{width:30px;height:30px;font-size:13px}
+/* the identity block. it opens the intake, because the birth moment is the
+   only input the person cannot answer from memory of how they behave. */
+.iq-who{padding:15px 17px;border-radius:var(--r-s);background:var(--panel-2);
+ border:1px solid var(--edge);margin-bottom:12px}
+.iq-why{font-size:13px;line-height:1.7;color:var(--mid);margin:9px 0 14px;max-width:74ch}
+.iq-fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));gap:10px}
+.iq-f{display:flex;flex-direction:column;gap:5px;min-width:0}
+.iq-f label{font-size:11px;color:var(--dim);font-weight:600}
+.iq-f input,.iq-f select{background:var(--sunk);border:1px solid var(--edge);color:var(--ink);
+ border-radius:var(--r-xs);padding:0 10px;min-height:var(--tap);font-family:var(--sans);font-size:13.5px;width:100%;box-sizing:border-box}
+.iq-f input:focus,.iq-f select:focus{border-color:var(--gold)}
+.iq-ck{display:flex;align-items:center;gap:8px;min-height:var(--tap);font-size:13px;color:var(--mid)}
+.iq-ck input{width:18px;height:18px;accent-color:var(--gold)}
+body.punch .iq-who{border-color:transparent}
+body.punch .iq-f input,body.punch .iq-f select{border-color:transparent}
 .iq-top{display:flex;gap:18px;align-items:center;flex-wrap:wrap;padding:15px 17px;
  border-radius:var(--r-s);background:var(--panel-2);border:1px solid var(--edge)}
 .iq-cq b{display:block;font-family:var(--num);font-size:38px;font-weight:400;line-height:1;
@@ -820,6 +835,8 @@ body:not(.tab-field) #key,body:not(.tab-field) #howto,body:not(.tab-field) #prob
 body:not(.tab-field) #tier,body:not(.tab-field) #pol,body:not(.tab-field) #cv{display:none!important}
 body.tab-summary #sum{display:flex!important;z-index:5;overflow-y:auto}
 body:not(.tab-summary) #sum{display:none!important}
+body.tab-intake #iq{display:flex!important;z-index:5;overflow-y:auto}
+body:not(.tab-intake) #iq{display:none!important}
 body.tab-story #story{display:flex!important;z-index:5;align-items:center;justify-content:center}
 body:not(.tab-story) #story{display:none!important}
 body.tab-energy #emap{display:flex!important;z-index:5}

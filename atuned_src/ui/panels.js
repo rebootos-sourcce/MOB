@@ -79,6 +79,7 @@ function setTab(i){
   var e=$(id); if(e)e.style.display=(i===TAB.FIELD)?'':'none';});
  document.querySelectorAll('.tabtop').forEach(function(x,j){
   x.setAttribute('aria-pressed',TABDEF[j]&&TABDEF[j].k===i);});
+ if(i===TAB.INTAKE)renderIntake();
  if(i===TAB.STORY)stRender();
  if(i===TAB.SUMMARY)sumRender();
  if(i===TAB.ANALYTICS)anaRender();

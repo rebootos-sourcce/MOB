@@ -47,13 +47,14 @@ const CHG2FET={anxiety:'Anticipation',fear:'Fear',anger:'Anger',shame:'Shame',
    this codebase, so the integers are named once and never typed again.
    Order is load bearing and must not change.
    ============================================================ */
-const TAB={STORY:0,SUMMARY:1,FIELD:2,ENERGY:3,ANALYTICS:4};
+const TAB={STORY:0,SUMMARY:1,FIELD:2,ENERGY:3,ANALYTICS:4,INTAKE:5};
 /* TABDEF is DISPLAY order. TAB above is identity and does not move: the
    integers are persisted, compared and passed around, and renumbering them
    is the bug this file already warns about. Summary reads last because it is
    the conclusion, so it sits after the instruments that produce it. Anything
    that needs the entry for a tab looks it up by .k, never by position. */
 const TABDEF=[
+ {k:TAB.INTAKE,   id:'iq',    nm:'Intake',    cls:'tab-intake'},
  {k:TAB.STORY,    id:'story', nm:'Story',     cls:'tab-story'},
  {k:TAB.FIELD,    id:'cv',    nm:'Field',     cls:'tab-field'},
  {k:TAB.ENERGY,   id:'emap',  nm:'Energy',    cls:'tab-energy'},

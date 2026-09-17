@@ -4,6 +4,10 @@
    required. Every finished law is a finding on its own.
    ============================================================ */
 var IQ_OPEN=null;
+function iqField(label,key,v){
+ var id='w'+key;
+ return '<div class="iq-f"><label for="'+id+'">'+label+'</label>'
+  +'<input type="text" id="'+id+'" data-who="'+key+'" value="'+esc(v||'')+'"></div>';}
 function iqEnsure(){
  if(!PROFILES.length) PROFILES=pStore();
  if(!PROFILES.length){ pNew('You'); loadProfile(CURP); }
@@ -17,7 +21,36 @@ function renderIntake(){
  iqApply(p);
  var r=compute();
  /* no measured law means no result. a defaulted CQ reads as a finding and is not one. */
- var h='<div class="iq-top">'
+ var w=p.who||{}, bn=w.born||{};
+ /* Why this is asked, said once, in the place it is asked. The intake was an
+    unlabelled accordion in the left rail and nothing said what it was for. */
+ var h='<div class="iq-who">'
+  +'<div class="pm-eye">Who this is</div>'
+  +'<p class="iq-why">Your energetics were fixed at the moment you were cut from your mother. '
+  +'Date, time and place are what locate that moment, and nothing else here can be derived from '
+  +'memory the way the 63 questions are. Every culture with a psycho spiritual practice read this '
+  +'field at a different resolution. Where independent readings overlap, the triangulation is '
+  +'pointing at you, and the inversion of that overlap is where you are compressed. '
+  +'If you do not know the time, say so. It is not guessed.</p>'
+  +'<div class="iq-fields">'
+  +iqField('First name','first',w.first)
+  +iqField('Middle','middle',w.middle)
+  +iqField('Last','last',w.last)
+  +'<div class="iq-f"><label for="wsex">Sex at birth</label><select id="wsex" data-who="sex">'
+   +[['','not said'],['f','Female'],['m','Male'],['o','Other']].map(function(o){
+     return '<option value="'+o[0]+'"'+(w.sex===o[0]?' selected':'')+'>'+o[1]+'</option>';}).join('')
+   +'</select></div>'
+  +'<div class="iq-f"><label for="wdate">Date of birth</label>'
+   +'<input type="date" id="wdate" data-born="date" value="'+esc(bn.date||'')+'"></div>'
+  +'<div class="iq-f"><label for="wtime">Time of birth</label>'
+   +'<input type="time" id="wtime" data-born="time" value="'+esc(bn.time||'')+'"'
+   +(bn.timeUnknown?' disabled':'')+'></div>'
+  +'<div class="iq-f"><label for="wplace">Place of birth</label>'
+   +'<input type="text" id="wplace" data-born="place" placeholder="City, region" value="'+esc(bn.place||'')+'"></div>'
+  +'<div class="iq-f"><label>&nbsp;</label><label class="iq-ck"><input type="checkbox" id="wtu"'
+   +(bn.timeUnknown?' checked':'')+'> I do not know the time</label></div>'
+  +'</div></div>';
+ h+='<div class="iq-top">'
   +'<div class="iq-cq"><b>'+(scored?Math.round(r.CQ):'–')+'</b>'
   +'<span>'+(scored?'CQ from '+scored+' measured':'no law measured yet')+'</span></div>'
   +'<div class="iq-pr"><div class="iq-bar"><i style="width:'+(answered/63*100).toFixed(0)+'%"></i></div>'
@@ -68,6 +101,15 @@ function renderIntake(){
   CURP.intake.answers[+el.dataset.a]=+el.dataset.v;
   if(!CURP.intake.startedAt)CURP.intake.startedAt=new Date().toISOString();
   iqApply(CURP); pSave(); syncLw(); renderIntake(); render();};});
+ /* identity writes on change, not on every keystroke, and reports through
+    the status region like every other write that can fail. */
+ host.querySelectorAll('[data-who]').forEach(function(el){el.onchange=function(){
+  CURP.who[el.dataset.who]=el.value; pSave(); statusSaved();};});
+ host.querySelectorAll('[data-born]').forEach(function(el){el.onchange=function(){
+  CURP.who.born[el.dataset.born]=el.value; pSave(); statusSaved(); renderSpirit&&renderSpirit();};});
+ var tu=document.getElementById('wtu');
+ if(tu)tu.onchange=function(){CURP.who.born.timeUnknown=tu.checked;
+  if(tu.checked)CURP.who.born.time=''; pSave(); statusSaved(); renderIntake();};
  var ps=document.getElementById('iqprof');
  if(ps)ps.onchange=function(){CURP=PROFILES[+ps.value];loadProfile(CURP);IQ_OPEN=null;
   syncCh();syncLw();syncSoul();renderIntake();render();};

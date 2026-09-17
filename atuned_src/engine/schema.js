@@ -16,6 +16,11 @@ function blankProfile(name){
   name:name||'New profile', created:new Date().toISOString(), updated:null,
   soul:{doms:[0], arcs:[0,1], roots:[]},            /* the invariant */
   axes:{},                                          /* nine poled child fetters */
+  /* who. name, sex at birth, and the birth moment. Nothing derived is
+     stored: the energetics are pure functions of these three strings, so a
+     sixth system still costs nothing. timeUnknown is explicit, because an
+     unknown birth time changes what can be read and must not be guessed. */
+  who:{first:'', middle:'', last:'', sex:'', born:{date:'', time:'', place:'', timeUnknown:false}},
   laws:{}, intake:{answers:{}, done:[], startedAt:null, completedAt:null},
   gates:{verp:{aware:0,detach:0,intent:0,ignore:0,attach:0,averse:0},
          lean:{benign:0,malignant:0}},   /* the cost multiplier, v2 */
@@ -24,6 +29,8 @@ function blankProfile(name){
  SI.forEach(function(l){p.laws[l.nm]=null;});        /* null = not yet measured */
  return p;}
 function loadProfile(p){
+ if(!p.who)p.who={first:'',middle:'',last:'',sex:'',born:{date:'',time:'',place:'',timeUnknown:false}};
+ if(!p.who.born)p.who.born={date:'',time:'',place:'',timeUnknown:false};
  S.doms=(p.soul.doms||[0]).slice(); S.arcs=(p.soul.arcs||[0,1]).slice();
  S.roots=(p.soul.roots||[]).slice(); buildSoul();
  CHILD.forEach(function(c){var a=p.axes[c.nm]||{};

@@ -720,6 +720,21 @@ body.impbig .st-write{display:none}
 .iqleft .iq-top{flex-direction:column;align-items:stretch;gap:11px;padding:13px}
 .iqleft .iq-cq b{font-size:30px}
 .iqleft .iq-n{width:30px;height:30px;font-size:13px}
+/* the identity block. it opens the intake, because the birth moment is the
+   only input the person cannot answer from memory of how they behave. */
+.iq-who{padding:15px 17px;border-radius:var(--r-s);background:var(--panel-2);
+ border:1px solid var(--edge);margin-bottom:12px}
+.iq-why{font-size:13px;line-height:1.7;color:var(--mid);margin:9px 0 14px;max-width:74ch}
+.iq-fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));gap:10px}
+.iq-f{display:flex;flex-direction:column;gap:5px;min-width:0}
+.iq-f label{font-size:11px;color:var(--dim);font-weight:600}
+.iq-f input,.iq-f select{background:var(--sunk);border:1px solid var(--edge);color:var(--ink);
+ border-radius:var(--r-xs);padding:0 10px;min-height:var(--tap);font-family:var(--sans);font-size:13.5px;width:100%;box-sizing:border-box}
+.iq-f input:focus,.iq-f select:focus{border-color:var(--gold)}
+.iq-ck{display:flex;align-items:center;gap:8px;min-height:var(--tap);font-size:13px;color:var(--mid)}
+.iq-ck input{width:18px;height:18px;accent-color:var(--gold)}
+body.punch .iq-who{border-color:transparent}
+body.punch .iq-f input,body.punch .iq-f select{border-color:transparent}
 .iq-top{display:flex;gap:18px;align-items:center;flex-wrap:wrap;padding:15px 17px;
  border-radius:var(--r-s);background:var(--panel-2);border:1px solid var(--edge)}
 .iq-cq b{display:block;font-family:var(--num);font-size:38px;font-weight:400;line-height:1;
@@ -820,6 +835,8 @@ body:not(.tab-field) #key,body:not(.tab-field) #howto,body:not(.tab-field) #prob
 body:not(.tab-field) #tier,body:not(.tab-field) #pol,body:not(.tab-field) #cv{display:none!important}
 body.tab-summary #sum{display:flex!important;z-index:5;overflow-y:auto}
 body:not(.tab-summary) #sum{display:none!important}
+body.tab-intake #iq{display:flex!important;z-index:5;overflow-y:auto}
+body:not(.tab-intake) #iq{display:none!important}
 body.tab-story #story{display:flex!important;z-index:5;align-items:center;justify-content:center}
 body:not(.tab-story) #story{display:none!important}
 body.tab-energy #emap{display:flex!important;z-index:5}
@@ -902,10 +919,6 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
      <div id="chg"></div>
     </div>
    </div>
-   <div class="lsec" data-sec="diag">
-    <button class="lsec-hd" type="button"><span>Diagnostic, 21 &times; 3</span><i></i></button>
-    <div class="lsec-bd"><div id="iq" class="iq iqleft"></div></div>
-   </div>
    <div class="lsec" data-sec="spirit">
     <button class="lsec-hd" type="button"><span>Spiritual states</span><i></i></button>
     <div class="lsec-bd"><div id="spirit"></div></div>
@@ -926,6 +939,7 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
    <div class="key" id="key" aria-label="What you are looking at"></div>
    <canvas id="cv" role="img" aria-label="The field wheel. Every element is also listed in the panels either side."></canvas>
    <div id="emap" class="emap"></div>
+   <div id="iq" class="iq"></div>
    <div id="story" class="iq"></div>
    <div id="sum" class="iq"></div>
    <div id="ana" class="iq"></div>
@@ -1765,13 +1779,14 @@ const CHG2FET={anxiety:'Anticipation',fear:'Fear',anger:'Anger',shame:'Shame',
    this codebase, so the integers are named once and never typed again.
    Order is load bearing and must not change.
    ============================================================ */
-const TAB={STORY:0,SUMMARY:1,FIELD:2,ENERGY:3,ANALYTICS:4};
+const TAB={STORY:0,SUMMARY:1,FIELD:2,ENERGY:3,ANALYTICS:4,INTAKE:5};
 /* TABDEF is DISPLAY order. TAB above is identity and does not move: the
    integers are persisted, compared and passed around, and renumbering them
    is the bug this file already warns about. Summary reads last because it is
    the conclusion, so it sits after the instruments that produce it. Anything
    that needs the entry for a tab looks it up by .k, never by position. */
 const TABDEF=[
+ {k:TAB.INTAKE,   id:'iq',    nm:'Intake',    cls:'tab-intake'},
  {k:TAB.STORY,    id:'story', nm:'Story',     cls:'tab-story'},
  {k:TAB.FIELD,    id:'cv',    nm:'Field',     cls:'tab-field'},
  {k:TAB.ENERGY,   id:'emap',  nm:'Energy',    cls:'tab-energy'},
@@ -2045,6 +2060,11 @@ function blankProfile(name){
   name:name||'New profile', created:new Date().toISOString(), updated:null,
   soul:{doms:[0], arcs:[0,1], roots:[]},            /* the invariant */
   axes:{},                                          /* nine poled child fetters */
+  /* who. name, sex at birth, and the birth moment. Nothing derived is
+     stored: the energetics are pure functions of these three strings, so a
+     sixth system still costs nothing. timeUnknown is explicit, because an
+     unknown birth time changes what can be read and must not be guessed. */
+  who:{first:'', middle:'', last:'', sex:'', born:{date:'', time:'', place:'', timeUnknown:false}},
   laws:{}, intake:{answers:{}, done:[], startedAt:null, completedAt:null},
   gates:{verp:{aware:0,detach:0,intent:0,ignore:0,attach:0,averse:0},
          lean:{benign:0,malignant:0}},   /* the cost multiplier, v2 */
@@ -2053,6 +2073,8 @@ function blankProfile(name){
  SI.forEach(function(l){p.laws[l.nm]=null;});        /* null = not yet measured */
  return p;}
 function loadProfile(p){
+ if(!p.who)p.who={first:'',middle:'',last:'',sex:'',born:{date:'',time:'',place:'',timeUnknown:false}};
+ if(!p.who.born)p.who.born={date:'',time:'',place:'',timeUnknown:false};
  S.doms=(p.soul.doms||[0]).slice(); S.arcs=(p.soul.arcs||[0,1]).slice();
  S.roots=(p.soul.roots||[]).slice(); buildSoul();
  CHILD.forEach(function(c){var a=p.axes[c.nm]||{};
@@ -4013,6 +4035,10 @@ function anaDrill(){
    required. Every finished law is a finding on its own.
    ============================================================ */
 var IQ_OPEN=null;
+function iqField(label,key,v){
+ var id='w'+key;
+ return '<div class="iq-f"><label for="'+id+'">'+label+'</label>'
+  +'<input type="text" id="'+id+'" data-who="'+key+'" value="'+esc(v||'')+'"></div>';}
 function iqEnsure(){
  if(!PROFILES.length) PROFILES=pStore();
  if(!PROFILES.length){ pNew('You'); loadProfile(CURP); }
@@ -4026,7 +4052,36 @@ function renderIntake(){
  iqApply(p);
  var r=compute();
  /* no measured law means no result. a defaulted CQ reads as a finding and is not one. */
- var h='<div class="iq-top">'
+ var w=p.who||{}, bn=w.born||{};
+ /* Why this is asked, said once, in the place it is asked. The intake was an
+    unlabelled accordion in the left rail and nothing said what it was for. */
+ var h='<div class="iq-who">'
+  +'<div class="pm-eye">Who this is</div>'
+  +'<p class="iq-why">Your energetics were fixed at the moment you were cut from your mother. '
+  +'Date, time and place are what locate that moment, and nothing else here can be derived from '
+  +'memory the way the 63 questions are. Every culture with a psycho spiritual practice read this '
+  +'field at a different resolution. Where independent readings overlap, the triangulation is '
+  +'pointing at you, and the inversion of that overlap is where you are compressed. '
+  +'If you do not know the time, say so. It is not guessed.</p>'
+  +'<div class="iq-fields">'
+  +iqField('First name','first',w.first)
+  +iqField('Middle','middle',w.middle)
+  +iqField('Last','last',w.last)
+  +'<div class="iq-f"><label for="wsex">Sex at birth</label><select id="wsex" data-who="sex">'
+   +[['','not said'],['f','Female'],['m','Male'],['o','Other']].map(function(o){
+     return '<option value="'+o[0]+'"'+(w.sex===o[0]?' selected':'')+'>'+o[1]+'</option>';}).join('')
+   +'</select></div>'
+  +'<div class="iq-f"><label for="wdate">Date of birth</label>'
+   +'<input type="date" id="wdate" data-born="date" value="'+esc(bn.date||'')+'"></div>'
+  +'<div class="iq-f"><label for="wtime">Time of birth</label>'
+   +'<input type="time" id="wtime" data-born="time" value="'+esc(bn.time||'')+'"'
+   +(bn.timeUnknown?' disabled':'')+'></div>'
+  +'<div class="iq-f"><label for="wplace">Place of birth</label>'
+   +'<input type="text" id="wplace" data-born="place" placeholder="City, region" value="'+esc(bn.place||'')+'"></div>'
+  +'<div class="iq-f"><label>&nbsp;</label><label class="iq-ck"><input type="checkbox" id="wtu"'
+   +(bn.timeUnknown?' checked':'')+'> I do not know the time</label></div>'
+  +'</div></div>';
+ h+='<div class="iq-top">'
   +'<div class="iq-cq"><b>'+(scored?Math.round(r.CQ):'–')+'</b>'
   +'<span>'+(scored?'CQ from '+scored+' measured':'no law measured yet')+'</span></div>'
   +'<div class="iq-pr"><div class="iq-bar"><i style="width:'+(answered/63*100).toFixed(0)+'%"></i></div>'
@@ -4077,6 +4132,15 @@ function renderIntake(){
   CURP.intake.answers[+el.dataset.a]=+el.dataset.v;
   if(!CURP.intake.startedAt)CURP.intake.startedAt=new Date().toISOString();
   iqApply(CURP); pSave(); syncLw(); renderIntake(); render();};});
+ /* identity writes on change, not on every keystroke, and reports through
+    the status region like every other write that can fail. */
+ host.querySelectorAll('[data-who]').forEach(function(el){el.onchange=function(){
+  CURP.who[el.dataset.who]=el.value; pSave(); statusSaved();};});
+ host.querySelectorAll('[data-born]').forEach(function(el){el.onchange=function(){
+  CURP.who.born[el.dataset.born]=el.value; pSave(); statusSaved(); renderSpirit&&renderSpirit();};});
+ var tu=document.getElementById('wtu');
+ if(tu)tu.onchange=function(){CURP.who.born.timeUnknown=tu.checked;
+  if(tu.checked)CURP.who.born.time=''; pSave(); statusSaved(); renderIntake();};
  var ps=document.getElementById('iqprof');
  if(ps)ps.onchange=function(){CURP=PROFILES[+ps.value];loadProfile(CURP);IQ_OPEN=null;
   syncCh();syncLw();syncSoul();renderIntake();render();};
@@ -4640,6 +4704,7 @@ function setTab(i){
   var e=$(id); if(e)e.style.display=(i===TAB.FIELD)?'':'none';});
  document.querySelectorAll('.tabtop').forEach(function(x,j){
   x.setAttribute('aria-pressed',TABDEF[j]&&TABDEF[j].k===i);});
+ if(i===TAB.INTAKE)renderIntake();
  if(i===TAB.STORY)stRender();
  if(i===TAB.SUMMARY)sumRender();
  if(i===TAB.ANALYTICS)anaRender();
