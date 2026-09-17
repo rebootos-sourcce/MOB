@@ -38,6 +38,8 @@ function runDrill(o){
  var h='<div class="pm-eye">'+(TN[o.kind]||'Pattern')+(o.over?', overshot':'')+'</div>'
   +'<div class="ad-nm">'+esc(o.nm)+'</div>'
   +(o.auth?'<div class="ad-sub">'+esc(o.auth)+'</div>':'')
+  +(o.kind==='sab'&&o.unnamed?'<div class="ad-sub">Inferred. The library has no name for this cluster, so it is named for its seat and its fetter.</div>'
+   :(o.kind==='sab'&&SAB_PI.indexOf(o.nm)>=0?'<div class="ad-sub">One of the ten Positive Intelligence saboteurs, after Shirzad Chamine.</div>':''))
   +'<div class="pm-eye">How it runs through you</div><p class="ad-p">'
   +(o.over
    ? 'Jouissance. The coherent opposite installed past the point where it serves. The address '
@@ -118,7 +120,74 @@ function runCoreDrill(){
   +'<div class="pm-eye">The read</div><p class="ad-p">The field is <b>'
   +(r.benign?'expanding':'contracting '+r.malig+'%')+'</b>. Radiance <b>'
   +(r.radiance*100).toFixed(0)+'%</b>. The core takes its colour from the coherence ramp, so '
-  +'saturation and size are coherence and nothing else.</p>';
+  +'saturation and size are coherence and nothing else.</p>'
+  +gatesBlock(null);
+ rdShell(h);}
+
+/* the six gates. three higher keep charge from binding, three lower bind it.
+   the percent is the share of the story that ran through each gate, the
+   multiplier is what that gate does to everything held. */
+function gatesBlock(focus){
+ var V=verpRead(), evid=V.some(function(v){return v.pct>0;});
+ var rows=V.map(function(v){
+  var c=v.side==='higher'?seatCol('Heart'):seatCol('Root');
+  return '<button class="ad-r gate-r'+(focus===v.k?' on':'')+'" data-gate="'+v.k+'" style="--c:'+c+'">'
+   +'<span class="ad-k">'+esc(v.nm)+'</span>'
+   +'<span class="ad-v">'+(evid?v.pct+'%':'')+'</span>'
+   +'<span class="ad-m">\u00d7'+v.mult.toFixed(2)+'</span></button>';}).join('');
+ return '<div class="pm-eye">The six gates</div><p class="ad-p">'
+  +(evid?'The share of the story that ran through each gate. ':'No story yet, so no gate has evidence. ')
+  +'Higher gates leave charge where it is. Lower gates bind it, and the multiplier is the cost on everything held.</p>'
+  +'<div class="ad-rows">'+rows+'</div>';}
+function runGatesDrill(k){
+ var v=verpRead().filter(function(x){return x.k===k;})[0];
+ if(!v){runCoreDrill();return;}
+ var h='<div class="pm-eye">'+(v.side==='higher'?'Higher gate':'Lower gate')+'</div>'
+  +'<div class="ad-nm">'+esc(v.nm)+'</div>'
+  +'<div class="pm-eye">What it sounds like</div><p class="ad-p">'+esc(v.d)+'</p>'
+  +'<div class="pm-eye">What it does</div><p class="ad-p">'
+  +(v.pct?'<b>'+v.pct+'%</b> of the story ran through this gate, '+v.n+' sentence'+(v.n===1?'':'s')+'. ':'Nothing in the story has run through it yet. ')
+  +'Everything held is multiplied by <b>'+v.mult.toFixed(2)+'</b> for the share that passes here'
+  +(v.mult<1?', so it lightens the load.':v.mult>1?', so it adds to the load.':'.')+'</p>'
+  +gatesBlock(k);
+ rdShell(h);}
+
+/* the three quotients and the pole. the key strip above the wheel opens
+   these, one per element, so nothing on the stage is a label without a door. */
+function runQDrill(q){
+ if(q==='cq'){runCoreDrill();return;}
+ var r=compute(), h='';
+ if(q==='dq'){
+  var top=r.loaded.slice().sort(function(a,b){return b.sq-a.sq;}).slice(0,5);
+  h='<div class="pm-eye">Shadow weight</div><div class="ad-nm">DQ '+r.DQ.toFixed(1)+'</div>'
+   +'<div class="pm-eye">How it is built</div><p class="ad-p">Every address holding charge above its floor, summed. '
+   +'It is the wash pressing in from the edge of the wheel, and it is the whole of resistance: CQ divides by 1 plus DQ, so this is the only number that divides you down.</p>'
+   +'<div class="pm-eye">Where it sits</div><p class="ad-p"><b>'+r.loaded.length+'</b> addresses carry it. The heaviest:</p>'
+   +'<div class="ad-rows">'+top.map(addrRow).join('')+'</div>';}
+ else if(q==='sq'){
+  h='<div class="pm-eye">Segment depth</div><div class="ad-nm">SQ '+r.SQm.toFixed(1)+' mean</div>'
+   +'<div class="pm-eye">How it is built</div><p class="ad-p">The charge held at one address, 0 to 10. '
+   +'Each segment of the shell is drawn to its own depth, so the wheel is 112 of these side by side. The mean is across the addresses that hold anything.</p>'
+   +'<div class="pm-eye">Heaviest seat</div><p class="ad-p"><b>'+esc(r.darkB)+'</b> at <b>'+r.darkV.toFixed(1)+'</b>. Click a segment on the wheel to read one address.</p>';}
+ else {
+  var inst=CHARGES.filter(function(c){return (S.replace[c]||0)>=4;});
+  h='<div class="pm-eye">Pole</div><div class="ad-nm">'+r.poleMean.toFixed(2)+' coherent opposite in</div>'
+   +'<div class="pm-eye">How it is built</div><p class="ad-p">Each child fetter has a coherent opposite. Fear to trust, anger to equanimity. '
+   +'Release empties the address, replace fills it with the opposite, and the pole is how much of that opposite is installed, 0 to 1 averaged across the nine.</p>'
+   +'<div class="pm-eye">Installed</div><p class="ad-p">'+(inst.length?inst.map(function(c){
+     var o=CHILD.filter(function(x){return x.nm===c;})[0];return esc(o.opp)+' over '+esc(c);}).join(', ')+'.':'Nothing installed yet.')+'</p>';}
+ rdShell(h);}
+
+/* the compass on the right of the stage. it was a picture with no door. */
+function runCompassDrill(){
+ var r=compute(), cq=Math.max(0,Math.min(100,r.CQ));
+ var swing=(1-cq/100), band=2.5+swing*swing*26;
+ var T=[[90,'Mastery'],[70,'Embodied'],[50,'Practicing'],[31,'Incoherent'],[21,'Corrupt'],[1,'Severe'],[0,'Collapsed']];
+ var h='<div class="pm-eye">The compass</div><div class="ad-nm">CQ '+Math.round(cq)+', '+r.tier.toLowerCase()+'</div>'
+  +'<div class="pm-eye">How to read it</div><p class="ad-p">The line runs 0 at the base to 100 at the crown. Above 50 the field builds more than it costs. Below 50 it costs more than it builds. '
+  +'The marker is where coherence sits now. The band around it is the swing, <b>'+band.toFixed(0)+'</b> points: how far a reading can wander before it settles. Tight alignment leaves little room. A decohering field ranges wide.</p>'
+  +'<div class="pm-eye">The tiers</div><div class="ad-rows">'
+  +T.map(function(t){return '<div class="ad-r static'+(t[1]===r.tier?' on':'')+'"><span class="ad-k">'+t[1]+'</span><span class="ad-v">'+t[0]+'</span></div>';}).join('')+'</div>';
  rdShell(h);}
 
 /* the matrix cell. the handshake lists this as never wired: either the cells

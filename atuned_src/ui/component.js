@@ -101,7 +101,9 @@ function statusSaved(){
  else status('Not saved. Storage is full or blocked, so this session will not survive a reload.','fail');
  return st.ok;}
 
-function layout(){const b=cv.parentElement.getBoundingClientRect();
+/* the key strip sits in flow above the canvas, so the canvas box is the
+   measure, not the stage. */
+function layout(){const b=cv.getBoundingClientRect();
  DPR=Math.min(devicePixelRatio||1,2);cv.width=b.width*DPR;cv.height=b.height*DPR;
  CW=b.width;CH=b.height;CX=CW/2;CY=CH/2;U=Math.min(CW,CH)/2;
  g.setTransform(DPR,0,0,DPR,0,0);bg.width=innerWidth;bg.height=innerHeight;
@@ -120,7 +122,7 @@ addEventListener('resize',function(){layout();render();});
    re-layout that does not change the size does not schedule another. */
 if(typeof ResizeObserver!=='undefined'){
  new ResizeObserver(function(){
-  var b=cv.parentElement.getBoundingClientRect();
+  var b=cv.getBoundingClientRect();
   if(Math.abs(b.width-CW)<0.5&&Math.abs(b.height-CH)<0.5)return;
   layout();render();}).observe(cv.parentElement);}
 function arcP(r0,r1,a0,a1){g.beginPath();g.arc(CX,CY,r0,a0,a1);g.arc(CX,CY,r1,a1,a0,true);g.closePath();}

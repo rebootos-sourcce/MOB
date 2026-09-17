@@ -32,7 +32,7 @@ function describe(h,r){
  var f=leaves(o);
  var nm={sab:'saboteur',cx:'complex',hy:'hyper-complex',sup:'character layer'}[h.k];
  if(!nm)return '';
- return '<u>'+nm+'</u> <b>'+esc(o.nm)+'</b>'+(o.unnamed?' <em>derived</em>':'')+'<hr>'
+ return '<u>'+nm+'</u> <b>'+esc(o.nm)+'</b>'+(o.unnamed?' <em>inferred</em>':(SAB_PI.indexOf(o.nm)>=0?' <em>Positive Intelligence</em>':''))+'<hr>'
   +(o.auth?esc(o.auth)+'<br>':'')+(o.sub?esc(o.sub)+'<br>':'')
   +'weight <b>'+o.w.toFixed(1)+'</b><hr><b>from '+f.length+' addresses</b><br>'
   +f.slice(0,5).map(function(n){return String(n.i).padStart(3,'0')+' '+esc(n.k)
@@ -65,6 +65,7 @@ cv.addEventListener('pointerdown',function(e){
   buildSoul();S.pin=null;syncSoul();saveYou();render();return;}
  if(h.k==='law'){S.pin=null;runLawDrill(SI[h.j]);render();return;}
  if(h.k==='core'){S.pin=null;runCoreDrill();render();return;}
+ if(h.k==='gate'){S.pin=null;runGatesDrill(h.v.k);render();return;}
  if(h.k==='mk'){S.pin=null;render();return;}
  var o=h.o||null;
  var same=o&&S.pin&&S.pin.nm===o.nm&&S.pin.kind===o.kind;
@@ -152,15 +153,14 @@ function render(){
    ? 'The story leans '+(L.mal>50?'malignant':'benign')+'. '+L.cues+' cue'+(L.cues===1?'':'s')+' so far.'
    : 'No story yet. This is the field alone.';})();
  /* the key. three quotients, three elements. */
- $('key').innerHTML='<h4>What you are looking at</h4>'
-  +'<div class="kr">'+cr('Crown',r.CQ,{size:'sm',label:'CQ'})
-  +'<span class="tx"><b>CQ</b> the core<em>and how far the light reaches</em></span></div>'
-  +'<div class="kr">'+cr('Root',clamp(r.DQ/14,0,1)*100,{size:'sm',raw:r.DQ.toFixed(1)})
-  +'<span class="tx"><b>DQ</b> shadow weight, summed<em>total load, pressing in from the edges</em></span></div>'
-  +'<div class="kr">'+cr(r.darkB,r.SQm*10,{size:'sm',raw:r.SQm.toFixed(1)})
-  +'<span class="tx"><b>SQ</b> depth of one segment<em>weight held at a single address</em></span></div>'
-  +'<div class="kr">'+cr('Heart',r.poleMean*100,{size:'sm',raw:r.poleMean.toFixed(2)})
-  +'<span class="tx"><b>Pole</b> coherent opposite in<em>release empties, replace fills</em></span></div>';
+ /* The key sat on top of the wheel as a 288px card. It is now a strip in
+    flow above the canvas, one ring and one word per element, and each is a
+    door to the reading on the right. Nothing on the stage covers the wheel. */
+ $('key').innerHTML=
+   '<button class="kb" data-q="cq">'+cr('Crown',r.CQ,{size:'xs',label:'CQ'})+'<span><b>CQ</b> core</span></button>'
+  +'<button class="kb" data-q="dq">'+cr('Root',clamp(r.DQ/14,0,1)*100,{size:'xs',raw:r.DQ.toFixed(1)})+'<span><b>DQ</b> shadow</span></button>'
+  +'<button class="kb" data-q="sq">'+cr(r.darkB,r.SQm*10,{size:'xs',raw:r.SQm.toFixed(1)})+'<span><b>SQ</b> depth</span></button>'
+  +'<button class="kb" data-q="pole">'+cr('Heart',r.poleMean*100,{size:'xs',raw:r.poleMean.toFixed(2)})+'<span><b>Pole</b> installed</span></button>';
  /* who. proportions, not one label. */
  (function(){
   var aff=(r.aff||[]).map(function(v,i){return {nm:(ARCH[i]||{}).nm||'',v:v};})
@@ -247,6 +247,11 @@ try{ localStorage.getItem(PKEY);
 /* One delegated handler for every address row the drills render, so a row
    opens the address it names instead of being a dead end. */
 document.addEventListener('click',function(e){
+ var kb=e.target.closest?e.target.closest('.kb[data-q]'):null;
+ if(kb){S.pin=null;ANA_PICK=null;runQDrill(kb.getAttribute('data-q'));return;}
+ var gate=e.target.closest?e.target.closest('.gate-r[data-gate]'):null;
+ if(gate){runGatesDrill(gate.getAttribute('data-gate'));return;}
+ if(e.target.closest&&e.target.closest('#pol2')){S.pin=null;ANA_PICK=null;runCompassDrill();return;}
  var row=e.target.closest?e.target.closest('.ad-r[data-addr]'):null;
  if(!row)return;
  var n=BY[+row.getAttribute('data-addr')];

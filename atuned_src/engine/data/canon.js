@@ -101,6 +101,17 @@ const CHILD=[
  {nm:'Surprise',    opp:'Readiness',   addr:'Upper chest and back',       loc:'upper torso',        seat:'Heart',  ic:'M12 3v18M7 7c-3 2-3 9 0 11M17 7c3 2 3 9 0 11'},
  {nm:'Anticipation',opp:'Presence',    addr:'Below the heart',            loc:'lower sternum',      seat:'Solar',  ic:'M12 4v11M8 11l4 4 4-4M6 20h12'}];
 const CHARGES=CHILD.map(c=>c.nm);
+/* Ten of the 33 are Shirzad Chamine's Positive Intelligence saboteurs, the
+   Judge and its nine accomplices. They are marked so the product gives the
+   source its due. The other 23 are SOURCE's own extension of the library. */
+const SAB_PI=['Judge','Avoider','Controller','Hyper-Achiever','Hyper-Rational',
+ 'Hyper-Vigilant','Pleaser','Restless','Stickler','Victim'];
+/* Inferred saboteurs are clusters the library does not name: two or more
+   addresses in one seat carrying the same child fetter. They take an agent
+   noun for the fetter so they read alongside the named ones, and they carry
+   the inferred flag everywhere they show. */
+const INFER_NOUN={Fear:'Flincher',Anger:'Striker',Shame:'Hider',Disgust:'Recoiler',
+ Apathy:'Drifter',Shock:'Freezer',Sad:'Mourner',Surprise:'Startler',Anticipation:'Bracer'};
 /* routing from the node map's eight charge labels onto the nine child fetters */
 const REROUTE={Fear:'Fear',Anger:'Anger',Shame:'Shame',Disgust:'Disgust',Sadness:'Sad',
  Shock:'Shock',Resentment:'Anger',Joy:'Apathy'};

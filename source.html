@@ -231,9 +231,9 @@ body:not(.hassub) .subbar{display:none}
 .verdict b{color:var(--ink);font-weight:600}
 
 /* ---------- stage ---------- */
-.stage{position:relative;display:flex;align-items:center;justify-content:center;
+.stage{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;
  min-height:0;border-radius:var(--r);overflow:hidden}
-canvas#cv{display:block;width:100%;height:100%;touch-action:none;cursor:crosshair}
+canvas#cv{display:block;width:100%;flex:1 1 auto;min-height:0;touch-action:none;cursor:crosshair}
 .probe{position:absolute;pointer-events:none;padding:13px 15px;border-radius:var(--r-s);
  font-size:13px;line-height:1.65;color:var(--mid);opacity:0;transition:opacity .16s;
  max-width:300px;z-index:9;background:var(--panel);border:1px solid var(--edge);box-shadow:var(--shadow)}
@@ -241,14 +241,22 @@ canvas#cv{display:block;width:100%;height:100%;touch-action:none;cursor:crosshai
 .probe b{color:var(--ink);font-weight:600}
 .probe u{text-decoration:none;color:var(--gold);font-family:var(--num);font-size:11px;font-weight:500}
 .probe hr{border:0;border-top:1px solid var(--edge);margin:8px 0}
-.key{position:absolute;top:14px;left:16px;padding:14px 16px;border-radius:var(--r-s);z-index:4;
- max-width:288px;background:var(--panel);border:1px solid var(--edge);box-shadow:var(--shadow)}
-.key h4{margin:0 0 10px;font-size:11px;font-weight:600;color:var(--dim)}
-.kr{display:flex;gap:11px;align-items:flex-start;margin-bottom:10px}
-.kr:last-child{margin-bottom:0}
-.kr .tx{font-size:13.5px;line-height:1.5;color:var(--mid)}
-.kr .tx b{color:var(--ink);font-family:var(--num);font-size:13px;font-weight:500}
-.kr .tx em{font-style:normal;color:var(--dim);display:block;font-size:12.5px;margin-top:2px}
+/* The key is a strip in flow above the canvas, never over it. Each element
+   is a button that opens its reading on the right. The tier block sits
+   absolute at top right, so the strip leaves it room. */
+.key{position:relative;z-index:4;flex:0 0 auto;width:100%;box-sizing:border-box;
+ display:flex;flex-wrap:wrap;gap:5px;align-items:center;padding:12px 216px 0 14px}
+.kb{display:inline-flex;align-items:center;gap:6px;min-height:34px;padding:2px 9px 2px 4px;
+ background:transparent;border:1px solid var(--edge);border-radius:var(--r-xs);
+ color:var(--mid);font:inherit;font-size:12px;cursor:pointer;text-align:left;white-space:nowrap}
+.kb:hover{background:var(--sunk);color:var(--ink)}
+.kb b{color:var(--ink);font-family:var(--num);font-weight:500;margin-right:4px}
+body.punch .kb{border-color:transparent;background:var(--panel-2)}
+/* the wheel is the main graphic. in Punch it carries a fifth more colour. */
+body.punch canvas#cv{filter:saturate(1.2)}
+.gate-r .ad-m{margin-left:auto;font-family:var(--num);color:var(--dim);font-size:11.5px}
+.ad-r.static{cursor:default}
+.ad-r.on{background:color-mix(in srgb,var(--c,var(--gold)) 22%,transparent)}
 .howto{position:absolute;bottom:14px;left:16px;font-size:12.5px;color:var(--dim);
  pointer-events:none;line-height:1.75;white-space:pre-line;max-width:46ch}
 .tl{position:absolute;top:14px;right:18px;text-align:right;pointer-events:none;max-width:210px}
@@ -263,8 +271,9 @@ body:not(.tab-field) .acc{display:none}
 .acc-lean{opacity:.72;margin-top:3px}
 /* the compass belongs to the field tab alone. in the original both rules
    declared the same properties, so it floated over every other tab. */
-.pol2{position:absolute;right:16px;top:104px;bottom:118px;z-index:4;pointer-events:none;
- display:flex;align-items:center;justify-content:flex-end}
+.pol2{position:absolute;right:16px;top:104px;bottom:118px;z-index:4;cursor:pointer;
+ display:flex;align-items:center;justify-content:flex-end;background:none;border:0;padding:0;margin:0}
+.pol2:hover svg{opacity:.85}
 body:not(.tab-field) .pol2{display:none}
 .pol2 svg{display:block;height:100%;width:58px}
 .pol2-t{font-family:var(--num);font-size:10px;fill:var(--dim)}
@@ -818,7 +827,7 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
  .g6{grid-template-columns:repeat(5,1fr)}
  .mx{grid-template-columns:repeat(19,1fr);gap:1px}
  .sum-cq b,.ab-cq b{font-size:38px}
- .key{max-width:calc(100% - 32px)}
+ .key{padding-right:16px}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style></head>
@@ -887,6 +896,8 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
 
   <!-- ============ STAGE ============ -->
   <div class="glass stage" id="stage">
+   <!-- the key comes first in flow so it sits above the canvas -->
+   <div class="key" id="key" aria-label="What you are looking at"></div>
    <canvas id="cv" role="img" aria-label="The field wheel. Every element is also listed in the panels either side."></canvas>
    <div id="emap" class="emap"></div>
    <div id="story" class="iq"></div>
@@ -894,12 +905,11 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
    <div id="ana" class="iq"></div>
    <div id="rel" class="rel"></div>
    <div id="rit" class="rel"></div>
-   <div class="key" id="key"></div>
    <div class="tl"><b id="tier">-</b><div id="pol"></div></div>
    <div class="probe" id="probe"></div>
    <div class="howto" id="howto"></div>
    <div class="acc" id="acc"></div>
-   <div class="pol2" id="pol2"></div>
+   <button class="pol2" id="pol2" aria-label="The compass. Where coherence sits and how far it swings. Opens the reading."></button>
   </div>
 
   <!-- ============ RIGHT RAIL ============ -->
@@ -1100,6 +1110,17 @@ const CHILD=[
  {nm:'Surprise',    opp:'Readiness',   addr:'Upper chest and back',       loc:'upper torso',        seat:'Heart',  ic:'M12 3v18M7 7c-3 2-3 9 0 11M17 7c3 2 3 9 0 11'},
  {nm:'Anticipation',opp:'Presence',    addr:'Below the heart',            loc:'lower sternum',      seat:'Solar',  ic:'M12 4v11M8 11l4 4 4-4M6 20h12'}];
 const CHARGES=CHILD.map(c=>c.nm);
+/* Ten of the 33 are Shirzad Chamine's Positive Intelligence saboteurs, the
+   Judge and its nine accomplices. They are marked so the product gives the
+   source its due. The other 23 are SOURCE's own extension of the library. */
+const SAB_PI=['Judge','Avoider','Controller','Hyper-Achiever','Hyper-Rational',
+ 'Hyper-Vigilant','Pleaser','Restless','Stickler','Victim'];
+/* Inferred saboteurs are clusters the library does not name: two or more
+   addresses in one seat carrying the same child fetter. They take an agent
+   noun for the fetter so they read alongside the named ones, and they carry
+   the inferred flag everywhere they show. */
+const INFER_NOUN={Fear:'Flincher',Anger:'Striker',Shame:'Hider',Disgust:'Recoiler',
+ Apathy:'Drifter',Shock:'Freezer',Sad:'Mourner',Surprise:'Startler',Anticipation:'Bracer'};
 /* routing from the node map's eight charge labels onto the nine child fetters */
 const REROUTE={Fear:'Fear',Anger:'Anger',Shame:'Shame',Disgust:'Disgust',Sadness:'Sad',
  Shock:'Shock',Resentment:'Anger',Joy:'Apathy'};
@@ -1683,14 +1704,14 @@ BANDS.forEach(b=>{const grp={};
  Object.keys(grp).forEach(c=>{if(grp[c].length<2)return;
   const fam=GRAND.test(grp[c].map(n=>n.k).join(' '))?'Grandiosity':FAM_OF[c];
   grp[c].forEach(n=>PLACED.add(n.i));
-  UNNAMED.push({nm:b+' '+c.toLowerCase(),hcx:fam,nids:grp[c].map(n=>n.i),unnamed:true});});});
+  UNNAMED.push({nm:b+' '+(INFER_NOUN[c]||c),hcx:fam,nids:grp[c].map(n=>n.i),unnamed:true});});});
 /* leftovers. a singleton in its band joins the cross-band cluster for its own
    child fetter, so every address that can hold charge can also compound. */
 const LEFT={};
 W.filter(n=>n.cf&&!NAMED.has(n.i)&&!PLACED.has(n.i)).forEach(n=>{(LEFT[n.cf]=LEFT[n.cf]||[]).push(n);});
 Object.keys(LEFT).forEach(c=>{
  const fam=GRAND.test(LEFT[c].map(n=>n.k).join(' '))?'Grandiosity':FAM_OF[c];
- UNNAMED.push({nm:'diffuse '+c.toLowerCase(),hcx:fam,nids:LEFT[c].map(n=>n.i),unnamed:true,diffuse:true});});
+ UNNAMED.push({nm:'Diffuse '+(INFER_NOUN[c]||c),hcx:fam,nids:LEFT[c].map(n=>n.i),unnamed:true,diffuse:true});});
 const ALL_SAB=SAB_LIB.concat(UNNAMED);
 const TAU=Math.PI*2, clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const CHG2SEAT={fear:'Root',anger:'Solar',shame:'Sacral',disgust:'Sacral',apathy:'Throat',
@@ -2405,7 +2426,7 @@ function read(prof,opts){
    ============================================================ */
 if(typeof module!=='undefined'&&module.exports){
  module.exports={
-  /* data */      NODES:NODES, SAB_LIB:SAB_LIB, HCX_LIB:HCX_LIB, SAB33:SAB33,
+  /* data */      NODES:NODES, SAB_LIB:SAB_LIB, HCX_LIB:HCX_LIB, SAB33:SAB33, SAB_PI:SAB_PI, INFER_NOUN:INFER_NOUN,
                   SABAUTH:SABAUTH, ARCH18:ARCH18, CHILD:CHILD, CHARGES:CHARGES,
                   DOMAINS:DOMAINS, ARCH:ARCH, SI:SI, SINAMES:SINAMES, MASKS:MASKS,
                   BANDS:BANDS, PAL:PAL, ROOTD:ROOTD, ROOTCOL:ROOTCOL, AFFIN:AFFIN,
@@ -2544,7 +2565,9 @@ function statusSaved(){
  else status('Not saved. Storage is full or blocked, so this session will not survive a reload.','fail');
  return st.ok;}
 
-function layout(){const b=cv.parentElement.getBoundingClientRect();
+/* the key strip sits in flow above the canvas, so the canvas box is the
+   measure, not the stage. */
+function layout(){const b=cv.getBoundingClientRect();
  DPR=Math.min(devicePixelRatio||1,2);cv.width=b.width*DPR;cv.height=b.height*DPR;
  CW=b.width;CH=b.height;CX=CW/2;CY=CH/2;U=Math.min(CW,CH)/2;
  g.setTransform(DPR,0,0,DPR,0,0);bg.width=innerWidth;bg.height=innerHeight;
@@ -2563,7 +2586,7 @@ addEventListener('resize',function(){layout();render();});
    re-layout that does not change the size does not schedule another. */
 if(typeof ResizeObserver!=='undefined'){
  new ResizeObserver(function(){
-  var b=cv.parentElement.getBoundingClientRect();
+  var b=cv.getBoundingClientRect();
   if(Math.abs(b.width-CW)<0.5&&Math.abs(b.height-CH)<0.5)return;
   layout();render();}).observe(cv.parentElement);}
 function arcP(r0,r1,a0,a1){g.beginPath();g.arc(CX,CY,r0,a0,a1);g.arc(CX,CY,r1,a1,a0,true);g.closePath();}
@@ -2661,44 +2684,52 @@ function solCore(r,base){
  g.beginPath();g.arc(CX,CY,cr0,0,TAU);
  g.strokeStyle=rgba(mixc(gc,[255,255,255],.5),lerp(.4,.95,coh));g.lineWidth=1.4;g.stroke();
  txt(String(Math.round(r.CQ)),CX,CY+cr0*.02,Math.max(13,Math.round(cr0*.58)),
-  [26,20,8],lerp(.55,.95,coh),500,"'IBM Plex Mono', ui-monospace, monospace");
+  [26,20,8],lerp(.55,.95,coh),500);
  HIT.push({k:'core',x:CX,y:CY,rad:cr0*1.5});
  return cr0;}
 
-/* SIX ARROWS at the core. three higher gates up, three lower gates down,
-   each sized by how often the story shows that gate. */
+/* SIX ARROWS at the core. three higher gates up, three lower gates down.
+   Each begins outside the halo and runs toward the laws, its length the
+   share of the story that ran through that gate, and it carries its word
+   and its percent at the tip. They were short, faint and unlabelled, and
+   the halo drew over their roots, so nobody could see them. */
 function verpArrows(cr0){
  var V=verpRead(), evid=V.some(function(v){return v.pct>0;});
  if(!evid) V=V.map(function(v){return {k:v.k,nm:v.nm,side:v.side,mult:v.mult,pct:17,n:0};});
  var hi=V.filter(function(v){return v.side==='higher';});
  var lo=V.filter(function(v){return v.side==='lower';});
  var ink=INK();
+ var lawR0=[U*.44,U*.40,U*.33,U*.255][S.view], Lmax=lawR0-U*.045, Lmin=cr0*1.45;
  function arrow(v,i,n,up){
-  var a=(up?-Math.PI/2:Math.PI/2)+(i-(n-1)/2)*0.62;
-  var L=cr0*1.25+cr0*1.5*(v.pct/100);
-  var x1=CX+Math.cos(a)*cr0*1.1, y1=CY+Math.sin(a)*cr0*1.1;
-  var x2=CX+Math.cos(a)*L,       y2=CY+Math.sin(a)*L;
+  var a=(up?-Math.PI/2:Math.PI/2)+(i-(n-1)/2)*0.66;
+  var L=Math.max(Lmin,Math.min(Lmax,Lmin+(Lmax-Lmin)*(0.42+0.58*v.pct/100)));
+  var x1=CX+Math.cos(a)*cr0*1.22, y1=CY+Math.sin(a)*cr0*1.22;
+  var x2=CX+Math.cos(a)*L,        y2=CY+Math.sin(a)*L;
   var c=up?hx(PAL.Heart):hx(PAL.Root);
+  var al=evid?(.55+v.pct/100*.45):.38;
   g.beginPath();g.moveTo(x1,y1);g.lineTo(x2,y2);
-  g.strokeStyle=rgba(c,(evid?.30:.11)+v.pct/100*(evid?.6:.18));
-  g.lineWidth=1.1+v.pct/100*2.4;g.lineCap='round';g.stroke();g.lineCap='butt';
-  var hd=3+v.pct/100*3;
+  g.strokeStyle=rgba(c,al);g.lineWidth=1.6+v.pct/100*2.4;g.lineCap='round';g.stroke();g.lineCap='butt';
+  var hd=4.5+v.pct/100*4;
   g.beginPath();g.moveTo(x2,y2);
-  g.lineTo(x2-Math.cos(a-0.4)*hd, y2-Math.sin(a-0.4)*hd);
-  g.lineTo(x2-Math.cos(a+0.4)*hd, y2-Math.sin(a+0.4)*hd);
-  g.closePath();g.fillStyle=rgba(c,(evid?.4:.15)+v.pct/100*(evid?.6:.18));g.fill();
-  if(evid&&v.pct>=6)
-   txt(v.pct+'%',CX+Math.cos(a)*(L+11),CY+Math.sin(a)*(L+11),11,ink,.75,500,
-    "'IBM Plex Mono', ui-monospace, monospace");}
+  g.lineTo(x2-Math.cos(a-0.42)*hd, y2-Math.sin(a-0.42)*hd);
+  g.lineTo(x2-Math.cos(a+0.42)*hd, y2-Math.sin(a+0.42)*hd);
+  g.closePath();g.fillStyle=rgba(c,al);g.fill();
+  /* the word, and the percent when there is a story to count */
+  var lx=CX+Math.cos(a)*(L+9), ly=CY+Math.sin(a)*(L+9), cs=Math.cos(a);
+  g.save();g.font='500 11px Lexend, system-ui, sans-serif';
+  g.textAlign=Math.abs(cs)<.25?'center':(cs>0?'left':'right');g.textBaseline='middle';
+  g.fillStyle=rgba(ink,evid?.85:.5);
+  g.fillText(v.nm+(evid?' '+v.pct+'%':''),lx,ly+(up?-4:4));g.restore();
+  HIT.push({k:'gate',v:v,x:(x1+x2)/2,y:(y1+y2)/2,rad:Math.max(14,(L-cr0*1.22)/2)});
+  HIT.push({k:'gate',v:v,x:lx+(cs>0?28:cs<0?-28:0),y:ly,rad:30});}
  hi.forEach(function(v,i){arrow(v,i,hi.length,true);});
  lo.forEach(function(v,i){arrow(v,i,lo.length,false);});
  if(evid){
   var top=V.slice().sort(function(a,b){return b.pct-a.pct;})[0];
   if(top.pct>=34){
-   txt('defaults to '+top.nm.toLowerCase(),CX,CY+cr0*3.2,13,
+   txt('defaults to '+top.nm.toLowerCase(),CX,CY+cr0*3.2+22,13,
     top.side==='higher'?hx(PAL.Heart):hx(PAL.Root),.95,600);
-   txt('costs ×'+top.mult.toFixed(2)+' on everything held',CX,CY+cr0*3.2+16,11,INK(),.5,400,
-    "'IBM Plex Mono', ui-monospace, monospace");}}}
+   txt('costs \u00d7'+top.mult.toFixed(2)+' on everything held',CX,CY+cr0*3.2+38,11,INK(),.5,400);}}}
 
 /* ============================================================
    THE WHEEL, four depths. A complexity ladder, not four skins.
@@ -2959,7 +2990,7 @@ function pmMarks(r){
    return {o:s,kind:'seat',band:K2B[s.p.k],v:s.pass,nm:s.p.n,links:[]};});
  if(L==='sab')   return r.sabs.map(function(o){var lv=leaves(o);
    return {o:o,kind:'bead',band:(lv[0]||{}).b,v:o.w/10,nm:o.nm,links:lv,
-     sub:(o.named?o.score+'% match'+(o.exact?' exact':''):'derived')};});
+     sub:(o.named?o.score+'% match'+(o.exact?' exact':''):'inferred')};});
  if(L==='cx')    return r.cxs.map(function(o){var lv=leaves(o);
    return {o:o,kind:'bead',band:(lv[0]||{}).b,v:o.w/10,nm:o.nm,links:lv,sub:'complex'};});
  if(L==='hyper') return r.hys.concat(r.sups).map(function(o){var lv=leaves(o);
@@ -4234,6 +4265,8 @@ function runDrill(o){
  var h='<div class="pm-eye">'+(TN[o.kind]||'Pattern')+(o.over?', overshot':'')+'</div>'
   +'<div class="ad-nm">'+esc(o.nm)+'</div>'
   +(o.auth?'<div class="ad-sub">'+esc(o.auth)+'</div>':'')
+  +(o.kind==='sab'&&o.unnamed?'<div class="ad-sub">Inferred. The library has no name for this cluster, so it is named for its seat and its fetter.</div>'
+   :(o.kind==='sab'&&SAB_PI.indexOf(o.nm)>=0?'<div class="ad-sub">One of the ten Positive Intelligence saboteurs, after Shirzad Chamine.</div>':''))
   +'<div class="pm-eye">How it runs through you</div><p class="ad-p">'
   +(o.over
    ? 'Jouissance. The coherent opposite installed past the point where it serves. The address '
@@ -4314,7 +4347,74 @@ function runCoreDrill(){
   +'<div class="pm-eye">The read</div><p class="ad-p">The field is <b>'
   +(r.benign?'expanding':'contracting '+r.malig+'%')+'</b>. Radiance <b>'
   +(r.radiance*100).toFixed(0)+'%</b>. The core takes its colour from the coherence ramp, so '
-  +'saturation and size are coherence and nothing else.</p>';
+  +'saturation and size are coherence and nothing else.</p>'
+  +gatesBlock(null);
+ rdShell(h);}
+
+/* the six gates. three higher keep charge from binding, three lower bind it.
+   the percent is the share of the story that ran through each gate, the
+   multiplier is what that gate does to everything held. */
+function gatesBlock(focus){
+ var V=verpRead(), evid=V.some(function(v){return v.pct>0;});
+ var rows=V.map(function(v){
+  var c=v.side==='higher'?seatCol('Heart'):seatCol('Root');
+  return '<button class="ad-r gate-r'+(focus===v.k?' on':'')+'" data-gate="'+v.k+'" style="--c:'+c+'">'
+   +'<span class="ad-k">'+esc(v.nm)+'</span>'
+   +'<span class="ad-v">'+(evid?v.pct+'%':'')+'</span>'
+   +'<span class="ad-m">\u00d7'+v.mult.toFixed(2)+'</span></button>';}).join('');
+ return '<div class="pm-eye">The six gates</div><p class="ad-p">'
+  +(evid?'The share of the story that ran through each gate. ':'No story yet, so no gate has evidence. ')
+  +'Higher gates leave charge where it is. Lower gates bind it, and the multiplier is the cost on everything held.</p>'
+  +'<div class="ad-rows">'+rows+'</div>';}
+function runGatesDrill(k){
+ var v=verpRead().filter(function(x){return x.k===k;})[0];
+ if(!v){runCoreDrill();return;}
+ var h='<div class="pm-eye">'+(v.side==='higher'?'Higher gate':'Lower gate')+'</div>'
+  +'<div class="ad-nm">'+esc(v.nm)+'</div>'
+  +'<div class="pm-eye">What it sounds like</div><p class="ad-p">'+esc(v.d)+'</p>'
+  +'<div class="pm-eye">What it does</div><p class="ad-p">'
+  +(v.pct?'<b>'+v.pct+'%</b> of the story ran through this gate, '+v.n+' sentence'+(v.n===1?'':'s')+'. ':'Nothing in the story has run through it yet. ')
+  +'Everything held is multiplied by <b>'+v.mult.toFixed(2)+'</b> for the share that passes here'
+  +(v.mult<1?', so it lightens the load.':v.mult>1?', so it adds to the load.':'.')+'</p>'
+  +gatesBlock(k);
+ rdShell(h);}
+
+/* the three quotients and the pole. the key strip above the wheel opens
+   these, one per element, so nothing on the stage is a label without a door. */
+function runQDrill(q){
+ if(q==='cq'){runCoreDrill();return;}
+ var r=compute(), h='';
+ if(q==='dq'){
+  var top=r.loaded.slice().sort(function(a,b){return b.sq-a.sq;}).slice(0,5);
+  h='<div class="pm-eye">Shadow weight</div><div class="ad-nm">DQ '+r.DQ.toFixed(1)+'</div>'
+   +'<div class="pm-eye">How it is built</div><p class="ad-p">Every address holding charge above its floor, summed. '
+   +'It is the wash pressing in from the edge of the wheel, and it is the whole of resistance: CQ divides by 1 plus DQ, so this is the only number that divides you down.</p>'
+   +'<div class="pm-eye">Where it sits</div><p class="ad-p"><b>'+r.loaded.length+'</b> addresses carry it. The heaviest:</p>'
+   +'<div class="ad-rows">'+top.map(addrRow).join('')+'</div>';}
+ else if(q==='sq'){
+  h='<div class="pm-eye">Segment depth</div><div class="ad-nm">SQ '+r.SQm.toFixed(1)+' mean</div>'
+   +'<div class="pm-eye">How it is built</div><p class="ad-p">The charge held at one address, 0 to 10. '
+   +'Each segment of the shell is drawn to its own depth, so the wheel is 112 of these side by side. The mean is across the addresses that hold anything.</p>'
+   +'<div class="pm-eye">Heaviest seat</div><p class="ad-p"><b>'+esc(r.darkB)+'</b> at <b>'+r.darkV.toFixed(1)+'</b>. Click a segment on the wheel to read one address.</p>';}
+ else {
+  var inst=CHARGES.filter(function(c){return (S.replace[c]||0)>=4;});
+  h='<div class="pm-eye">Pole</div><div class="ad-nm">'+r.poleMean.toFixed(2)+' coherent opposite in</div>'
+   +'<div class="pm-eye">How it is built</div><p class="ad-p">Each child fetter has a coherent opposite. Fear to trust, anger to equanimity. '
+   +'Release empties the address, replace fills it with the opposite, and the pole is how much of that opposite is installed, 0 to 1 averaged across the nine.</p>'
+   +'<div class="pm-eye">Installed</div><p class="ad-p">'+(inst.length?inst.map(function(c){
+     var o=CHILD.filter(function(x){return x.nm===c;})[0];return esc(o.opp)+' over '+esc(c);}).join(', ')+'.':'Nothing installed yet.')+'</p>';}
+ rdShell(h);}
+
+/* the compass on the right of the stage. it was a picture with no door. */
+function runCompassDrill(){
+ var r=compute(), cq=Math.max(0,Math.min(100,r.CQ));
+ var swing=(1-cq/100), band=2.5+swing*swing*26;
+ var T=[[90,'Mastery'],[70,'Embodied'],[50,'Practicing'],[31,'Incoherent'],[21,'Corrupt'],[1,'Severe'],[0,'Collapsed']];
+ var h='<div class="pm-eye">The compass</div><div class="ad-nm">CQ '+Math.round(cq)+', '+r.tier.toLowerCase()+'</div>'
+  +'<div class="pm-eye">How to read it</div><p class="ad-p">The line runs 0 at the base to 100 at the crown. Above 50 the field builds more than it costs. Below 50 it costs more than it builds. '
+  +'The marker is where coherence sits now. The band around it is the swing, <b>'+band.toFixed(0)+'</b> points: how far a reading can wander before it settles. Tight alignment leaves little room. A decohering field ranges wide.</p>'
+  +'<div class="pm-eye">The tiers</div><div class="ad-rows">'
+  +T.map(function(t){return '<div class="ad-r static'+(t[1]===r.tier?' on':'')+'"><span class="ad-k">'+t[1]+'</span><span class="ad-v">'+t[0]+'</span></div>';}).join('')+'</div>';
  rdShell(h);}
 
 /* the matrix cell. the handshake lists this as never wired: either the cells
@@ -4813,7 +4913,7 @@ function describe(h,r){
  var f=leaves(o);
  var nm={sab:'saboteur',cx:'complex',hy:'hyper-complex',sup:'character layer'}[h.k];
  if(!nm)return '';
- return '<u>'+nm+'</u> <b>'+esc(o.nm)+'</b>'+(o.unnamed?' <em>derived</em>':'')+'<hr>'
+ return '<u>'+nm+'</u> <b>'+esc(o.nm)+'</b>'+(o.unnamed?' <em>inferred</em>':(SAB_PI.indexOf(o.nm)>=0?' <em>Positive Intelligence</em>':''))+'<hr>'
   +(o.auth?esc(o.auth)+'<br>':'')+(o.sub?esc(o.sub)+'<br>':'')
   +'weight <b>'+o.w.toFixed(1)+'</b><hr><b>from '+f.length+' addresses</b><br>'
   +f.slice(0,5).map(function(n){return String(n.i).padStart(3,'0')+' '+esc(n.k)
@@ -4846,6 +4946,7 @@ cv.addEventListener('pointerdown',function(e){
   buildSoul();S.pin=null;syncSoul();saveYou();render();return;}
  if(h.k==='law'){S.pin=null;runLawDrill(SI[h.j]);render();return;}
  if(h.k==='core'){S.pin=null;runCoreDrill();render();return;}
+ if(h.k==='gate'){S.pin=null;runGatesDrill(h.v.k);render();return;}
  if(h.k==='mk'){S.pin=null;render();return;}
  var o=h.o||null;
  var same=o&&S.pin&&S.pin.nm===o.nm&&S.pin.kind===o.kind;
@@ -4933,15 +5034,14 @@ function render(){
    ? 'The story leans '+(L.mal>50?'malignant':'benign')+'. '+L.cues+' cue'+(L.cues===1?'':'s')+' so far.'
    : 'No story yet. This is the field alone.';})();
  /* the key. three quotients, three elements. */
- $('key').innerHTML='<h4>What you are looking at</h4>'
-  +'<div class="kr">'+cr('Crown',r.CQ,{size:'sm',label:'CQ'})
-  +'<span class="tx"><b>CQ</b> the core<em>and how far the light reaches</em></span></div>'
-  +'<div class="kr">'+cr('Root',clamp(r.DQ/14,0,1)*100,{size:'sm',raw:r.DQ.toFixed(1)})
-  +'<span class="tx"><b>DQ</b> shadow weight, summed<em>total load, pressing in from the edges</em></span></div>'
-  +'<div class="kr">'+cr(r.darkB,r.SQm*10,{size:'sm',raw:r.SQm.toFixed(1)})
-  +'<span class="tx"><b>SQ</b> depth of one segment<em>weight held at a single address</em></span></div>'
-  +'<div class="kr">'+cr('Heart',r.poleMean*100,{size:'sm',raw:r.poleMean.toFixed(2)})
-  +'<span class="tx"><b>Pole</b> coherent opposite in<em>release empties, replace fills</em></span></div>';
+ /* The key sat on top of the wheel as a 288px card. It is now a strip in
+    flow above the canvas, one ring and one word per element, and each is a
+    door to the reading on the right. Nothing on the stage covers the wheel. */
+ $('key').innerHTML=
+   '<button class="kb" data-q="cq">'+cr('Crown',r.CQ,{size:'xs',label:'CQ'})+'<span><b>CQ</b> core</span></button>'
+  +'<button class="kb" data-q="dq">'+cr('Root',clamp(r.DQ/14,0,1)*100,{size:'xs',raw:r.DQ.toFixed(1)})+'<span><b>DQ</b> shadow</span></button>'
+  +'<button class="kb" data-q="sq">'+cr(r.darkB,r.SQm*10,{size:'xs',raw:r.SQm.toFixed(1)})+'<span><b>SQ</b> depth</span></button>'
+  +'<button class="kb" data-q="pole">'+cr('Heart',r.poleMean*100,{size:'xs',raw:r.poleMean.toFixed(2)})+'<span><b>Pole</b> installed</span></button>';
  /* who. proportions, not one label. */
  (function(){
   var aff=(r.aff||[]).map(function(v,i){return {nm:(ARCH[i]||{}).nm||'',v:v};})
@@ -5028,6 +5128,11 @@ try{ localStorage.getItem(PKEY);
 /* One delegated handler for every address row the drills render, so a row
    opens the address it names instead of being a dead end. */
 document.addEventListener('click',function(e){
+ var kb=e.target.closest?e.target.closest('.kb[data-q]'):null;
+ if(kb){S.pin=null;ANA_PICK=null;runQDrill(kb.getAttribute('data-q'));return;}
+ var gate=e.target.closest?e.target.closest('.gate-r[data-gate]'):null;
+ if(gate){runGatesDrill(gate.getAttribute('data-gate'));return;}
+ if(e.target.closest&&e.target.closest('#pol2')){S.pin=null;ANA_PICK=null;runCompassDrill();return;}
  var row=e.target.closest?e.target.closest('.ad-r[data-addr]'):null;
  if(!row)return;
  var n=BY[+row.getAttribute('data-addr')];

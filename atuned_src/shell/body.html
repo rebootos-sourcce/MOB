@@ -63,6 +63,8 @@
 
   <!-- ============ STAGE ============ -->
   <div class="glass stage" id="stage">
+   <!-- the key comes first in flow so it sits above the canvas -->
+   <div class="key" id="key" aria-label="What you are looking at"></div>
    <canvas id="cv" role="img" aria-label="The field wheel. Every element is also listed in the panels either side."></canvas>
    <div id="emap" class="emap"></div>
    <div id="story" class="iq"></div>
@@ -70,12 +72,11 @@
    <div id="ana" class="iq"></div>
    <div id="rel" class="rel"></div>
    <div id="rit" class="rel"></div>
-   <div class="key" id="key"></div>
    <div class="tl"><b id="tier">-</b><div id="pol"></div></div>
    <div class="probe" id="probe"></div>
    <div class="howto" id="howto"></div>
    <div class="acc" id="acc"></div>
-   <div class="pol2" id="pol2"></div>
+   <button class="pol2" id="pol2" aria-label="The compass. Where coherence sits and how far it swings. Opens the reading."></button>
   </div>
 
   <!-- ============ RIGHT RAIL ============ -->

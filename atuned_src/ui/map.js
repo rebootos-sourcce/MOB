@@ -46,7 +46,7 @@ function pmMarks(r){
    return {o:s,kind:'seat',band:K2B[s.p.k],v:s.pass,nm:s.p.n,links:[]};});
  if(L==='sab')   return r.sabs.map(function(o){var lv=leaves(o);
    return {o:o,kind:'bead',band:(lv[0]||{}).b,v:o.w/10,nm:o.nm,links:lv,
-     sub:(o.named?o.score+'% match'+(o.exact?' exact':''):'derived')};});
+     sub:(o.named?o.score+'% match'+(o.exact?' exact':''):'inferred')};});
  if(L==='cx')    return r.cxs.map(function(o){var lv=leaves(o);
    return {o:o,kind:'bead',band:(lv[0]||{}).b,v:o.w/10,nm:o.nm,links:lv,sub:'complex'};});
  if(L==='hyper') return r.hys.concat(r.sups).map(function(o){var lv=leaves(o);

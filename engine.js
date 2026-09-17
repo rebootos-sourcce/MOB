@@ -143,6 +143,17 @@ const CHILD=[
  {nm:'Surprise',    opp:'Readiness',   addr:'Upper chest and back',       loc:'upper torso',        seat:'Heart',  ic:'M12 3v18M7 7c-3 2-3 9 0 11M17 7c3 2 3 9 0 11'},
  {nm:'Anticipation',opp:'Presence',    addr:'Below the heart',            loc:'lower sternum',      seat:'Solar',  ic:'M12 4v11M8 11l4 4 4-4M6 20h12'}];
 const CHARGES=CHILD.map(c=>c.nm);
+/* Ten of the 33 are Shirzad Chamine's Positive Intelligence saboteurs, the
+   Judge and its nine accomplices. They are marked so the product gives the
+   source its due. The other 23 are SOURCE's own extension of the library. */
+const SAB_PI=['Judge','Avoider','Controller','Hyper-Achiever','Hyper-Rational',
+ 'Hyper-Vigilant','Pleaser','Restless','Stickler','Victim'];
+/* Inferred saboteurs are clusters the library does not name: two or more
+   addresses in one seat carrying the same child fetter. They take an agent
+   noun for the fetter so they read alongside the named ones, and they carry
+   the inferred flag everywhere they show. */
+const INFER_NOUN={Fear:'Flincher',Anger:'Striker',Shame:'Hider',Disgust:'Recoiler',
+ Apathy:'Drifter',Shock:'Freezer',Sad:'Mourner',Surprise:'Startler',Anticipation:'Bracer'};
 /* routing from the node map's eight charge labels onto the nine child fetters */
 const REROUTE={Fear:'Fear',Anger:'Anger',Shame:'Shame',Disgust:'Disgust',Sadness:'Sad',
  Shock:'Shock',Resentment:'Anger',Joy:'Apathy'};
@@ -726,14 +737,14 @@ BANDS.forEach(b=>{const grp={};
  Object.keys(grp).forEach(c=>{if(grp[c].length<2)return;
   const fam=GRAND.test(grp[c].map(n=>n.k).join(' '))?'Grandiosity':FAM_OF[c];
   grp[c].forEach(n=>PLACED.add(n.i));
-  UNNAMED.push({nm:b+' '+c.toLowerCase(),hcx:fam,nids:grp[c].map(n=>n.i),unnamed:true});});});
+  UNNAMED.push({nm:b+' '+(INFER_NOUN[c]||c),hcx:fam,nids:grp[c].map(n=>n.i),unnamed:true});});});
 /* leftovers. a singleton in its band joins the cross-band cluster for its own
    child fetter, so every address that can hold charge can also compound. */
 const LEFT={};
 W.filter(n=>n.cf&&!NAMED.has(n.i)&&!PLACED.has(n.i)).forEach(n=>{(LEFT[n.cf]=LEFT[n.cf]||[]).push(n);});
 Object.keys(LEFT).forEach(c=>{
  const fam=GRAND.test(LEFT[c].map(n=>n.k).join(' '))?'Grandiosity':FAM_OF[c];
- UNNAMED.push({nm:'diffuse '+c.toLowerCase(),hcx:fam,nids:LEFT[c].map(n=>n.i),unnamed:true,diffuse:true});});
+ UNNAMED.push({nm:'Diffuse '+(INFER_NOUN[c]||c),hcx:fam,nids:LEFT[c].map(n=>n.i),unnamed:true,diffuse:true});});
 const ALL_SAB=SAB_LIB.concat(UNNAMED);
 const TAU=Math.PI*2, clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const CHG2SEAT={fear:'Root',anger:'Solar',shame:'Sacral',disgust:'Sacral',apathy:'Throat',
@@ -1448,7 +1459,7 @@ function read(prof,opts){
    ============================================================ */
 if(typeof module!=='undefined'&&module.exports){
  module.exports={
-  /* data */      NODES:NODES, SAB_LIB:SAB_LIB, HCX_LIB:HCX_LIB, SAB33:SAB33,
+  /* data */      NODES:NODES, SAB_LIB:SAB_LIB, HCX_LIB:HCX_LIB, SAB33:SAB33, SAB_PI:SAB_PI, INFER_NOUN:INFER_NOUN,
                   SABAUTH:SABAUTH, ARCH18:ARCH18, CHILD:CHILD, CHARGES:CHARGES,
                   DOMAINS:DOMAINS, ARCH:ARCH, SI:SI, SINAMES:SINAMES, MASKS:MASKS,
                   BANDS:BANDS, PAL:PAL, ROOTD:ROOTD, ROOTCOL:ROOTCOL, AFFIN:AFFIN,

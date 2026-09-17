@@ -231,9 +231,9 @@ body:not(.hassub) .subbar{display:none}
 .verdict b{color:var(--ink);font-weight:600}
 
 /* ---------- stage ---------- */
-.stage{position:relative;display:flex;align-items:center;justify-content:center;
+.stage{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;
  min-height:0;border-radius:var(--r);overflow:hidden}
-canvas#cv{display:block;width:100%;height:100%;touch-action:none;cursor:crosshair}
+canvas#cv{display:block;width:100%;flex:1 1 auto;min-height:0;touch-action:none;cursor:crosshair}
 .probe{position:absolute;pointer-events:none;padding:13px 15px;border-radius:var(--r-s);
  font-size:13px;line-height:1.65;color:var(--mid);opacity:0;transition:opacity .16s;
  max-width:300px;z-index:9;background:var(--panel);border:1px solid var(--edge);box-shadow:var(--shadow)}
@@ -241,14 +241,22 @@ canvas#cv{display:block;width:100%;height:100%;touch-action:none;cursor:crosshai
 .probe b{color:var(--ink);font-weight:600}
 .probe u{text-decoration:none;color:var(--gold);font-family:var(--num);font-size:11px;font-weight:500}
 .probe hr{border:0;border-top:1px solid var(--edge);margin:8px 0}
-.key{position:absolute;top:14px;left:16px;padding:14px 16px;border-radius:var(--r-s);z-index:4;
- max-width:288px;background:var(--panel);border:1px solid var(--edge);box-shadow:var(--shadow)}
-.key h4{margin:0 0 10px;font-size:11px;font-weight:600;color:var(--dim)}
-.kr{display:flex;gap:11px;align-items:flex-start;margin-bottom:10px}
-.kr:last-child{margin-bottom:0}
-.kr .tx{font-size:13.5px;line-height:1.5;color:var(--mid)}
-.kr .tx b{color:var(--ink);font-family:var(--num);font-size:13px;font-weight:500}
-.kr .tx em{font-style:normal;color:var(--dim);display:block;font-size:12.5px;margin-top:2px}
+/* The key is a strip in flow above the canvas, never over it. Each element
+   is a button that opens its reading on the right. The tier block sits
+   absolute at top right, so the strip leaves it room. */
+.key{position:relative;z-index:4;flex:0 0 auto;width:100%;box-sizing:border-box;
+ display:flex;flex-wrap:wrap;gap:5px;align-items:center;padding:12px 216px 0 14px}
+.kb{display:inline-flex;align-items:center;gap:6px;min-height:34px;padding:2px 9px 2px 4px;
+ background:transparent;border:1px solid var(--edge);border-radius:var(--r-xs);
+ color:var(--mid);font:inherit;font-size:12px;cursor:pointer;text-align:left;white-space:nowrap}
+.kb:hover{background:var(--sunk);color:var(--ink)}
+.kb b{color:var(--ink);font-family:var(--num);font-weight:500;margin-right:4px}
+body.punch .kb{border-color:transparent;background:var(--panel-2)}
+/* the wheel is the main graphic. in Punch it carries a fifth more colour. */
+body.punch canvas#cv{filter:saturate(1.2)}
+.gate-r .ad-m{margin-left:auto;font-family:var(--num);color:var(--dim);font-size:11.5px}
+.ad-r.static{cursor:default}
+.ad-r.on{background:color-mix(in srgb,var(--c,var(--gold)) 22%,transparent)}
 .howto{position:absolute;bottom:14px;left:16px;font-size:12.5px;color:var(--dim);
  pointer-events:none;line-height:1.75;white-space:pre-line;max-width:46ch}
 .tl{position:absolute;top:14px;right:18px;text-align:right;pointer-events:none;max-width:210px}
@@ -263,8 +271,9 @@ body:not(.tab-field) .acc{display:none}
 .acc-lean{opacity:.72;margin-top:3px}
 /* the compass belongs to the field tab alone. in the original both rules
    declared the same properties, so it floated over every other tab. */
-.pol2{position:absolute;right:16px;top:104px;bottom:118px;z-index:4;pointer-events:none;
- display:flex;align-items:center;justify-content:flex-end}
+.pol2{position:absolute;right:16px;top:104px;bottom:118px;z-index:4;cursor:pointer;
+ display:flex;align-items:center;justify-content:flex-end;background:none;border:0;padding:0;margin:0}
+.pol2:hover svg{opacity:.85}
 body:not(.tab-field) .pol2{display:none}
 .pol2 svg{display:block;height:100%;width:58px}
 .pol2-t{font-family:var(--num);font-size:10px;fill:var(--dim)}
@@ -818,7 +827,7 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
  .g6{grid-template-columns:repeat(5,1fr)}
  .mx{grid-template-columns:repeat(19,1fr);gap:1px}
  .sum-cq b,.ab-cq b{font-size:38px}
- .key{max-width:calc(100% - 32px)}
+ .key{padding-right:16px}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style></head>

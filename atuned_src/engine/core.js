@@ -24,14 +24,14 @@ BANDS.forEach(b=>{const grp={};
  Object.keys(grp).forEach(c=>{if(grp[c].length<2)return;
   const fam=GRAND.test(grp[c].map(n=>n.k).join(' '))?'Grandiosity':FAM_OF[c];
   grp[c].forEach(n=>PLACED.add(n.i));
-  UNNAMED.push({nm:b+' '+c.toLowerCase(),hcx:fam,nids:grp[c].map(n=>n.i),unnamed:true});});});
+  UNNAMED.push({nm:b+' '+(INFER_NOUN[c]||c),hcx:fam,nids:grp[c].map(n=>n.i),unnamed:true});});});
 /* leftovers. a singleton in its band joins the cross-band cluster for its own
    child fetter, so every address that can hold charge can also compound. */
 const LEFT={};
 W.filter(n=>n.cf&&!NAMED.has(n.i)&&!PLACED.has(n.i)).forEach(n=>{(LEFT[n.cf]=LEFT[n.cf]||[]).push(n);});
 Object.keys(LEFT).forEach(c=>{
  const fam=GRAND.test(LEFT[c].map(n=>n.k).join(' '))?'Grandiosity':FAM_OF[c];
- UNNAMED.push({nm:'diffuse '+c.toLowerCase(),hcx:fam,nids:LEFT[c].map(n=>n.i),unnamed:true,diffuse:true});});
+ UNNAMED.push({nm:'Diffuse '+(INFER_NOUN[c]||c),hcx:fam,nids:LEFT[c].map(n=>n.i),unnamed:true,diffuse:true});});
 const ALL_SAB=SAB_LIB.concat(UNNAMED);
 const TAU=Math.PI*2, clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const CHG2SEAT={fear:'Root',anger:'Solar',shame:'Sacral',disgust:'Sacral',apathy:'Throat',

@@ -71,44 +71,52 @@ function solCore(r,base){
  g.beginPath();g.arc(CX,CY,cr0,0,TAU);
  g.strokeStyle=rgba(mixc(gc,[255,255,255],.5),lerp(.4,.95,coh));g.lineWidth=1.4;g.stroke();
  txt(String(Math.round(r.CQ)),CX,CY+cr0*.02,Math.max(13,Math.round(cr0*.58)),
-  [26,20,8],lerp(.55,.95,coh),500,"'IBM Plex Mono', ui-monospace, monospace");
+  [26,20,8],lerp(.55,.95,coh),500);
  HIT.push({k:'core',x:CX,y:CY,rad:cr0*1.5});
  return cr0;}
 
-/* SIX ARROWS at the core. three higher gates up, three lower gates down,
-   each sized by how often the story shows that gate. */
+/* SIX ARROWS at the core. three higher gates up, three lower gates down.
+   Each begins outside the halo and runs toward the laws, its length the
+   share of the story that ran through that gate, and it carries its word
+   and its percent at the tip. They were short, faint and unlabelled, and
+   the halo drew over their roots, so nobody could see them. */
 function verpArrows(cr0){
  var V=verpRead(), evid=V.some(function(v){return v.pct>0;});
  if(!evid) V=V.map(function(v){return {k:v.k,nm:v.nm,side:v.side,mult:v.mult,pct:17,n:0};});
  var hi=V.filter(function(v){return v.side==='higher';});
  var lo=V.filter(function(v){return v.side==='lower';});
  var ink=INK();
+ var lawR0=[U*.44,U*.40,U*.33,U*.255][S.view], Lmax=lawR0-U*.045, Lmin=cr0*1.45;
  function arrow(v,i,n,up){
-  var a=(up?-Math.PI/2:Math.PI/2)+(i-(n-1)/2)*0.62;
-  var L=cr0*1.25+cr0*1.5*(v.pct/100);
-  var x1=CX+Math.cos(a)*cr0*1.1, y1=CY+Math.sin(a)*cr0*1.1;
-  var x2=CX+Math.cos(a)*L,       y2=CY+Math.sin(a)*L;
+  var a=(up?-Math.PI/2:Math.PI/2)+(i-(n-1)/2)*0.66;
+  var L=Math.max(Lmin,Math.min(Lmax,Lmin+(Lmax-Lmin)*(0.42+0.58*v.pct/100)));
+  var x1=CX+Math.cos(a)*cr0*1.22, y1=CY+Math.sin(a)*cr0*1.22;
+  var x2=CX+Math.cos(a)*L,        y2=CY+Math.sin(a)*L;
   var c=up?hx(PAL.Heart):hx(PAL.Root);
+  var al=evid?(.55+v.pct/100*.45):.38;
   g.beginPath();g.moveTo(x1,y1);g.lineTo(x2,y2);
-  g.strokeStyle=rgba(c,(evid?.30:.11)+v.pct/100*(evid?.6:.18));
-  g.lineWidth=1.1+v.pct/100*2.4;g.lineCap='round';g.stroke();g.lineCap='butt';
-  var hd=3+v.pct/100*3;
+  g.strokeStyle=rgba(c,al);g.lineWidth=1.6+v.pct/100*2.4;g.lineCap='round';g.stroke();g.lineCap='butt';
+  var hd=4.5+v.pct/100*4;
   g.beginPath();g.moveTo(x2,y2);
-  g.lineTo(x2-Math.cos(a-0.4)*hd, y2-Math.sin(a-0.4)*hd);
-  g.lineTo(x2-Math.cos(a+0.4)*hd, y2-Math.sin(a+0.4)*hd);
-  g.closePath();g.fillStyle=rgba(c,(evid?.4:.15)+v.pct/100*(evid?.6:.18));g.fill();
-  if(evid&&v.pct>=6)
-   txt(v.pct+'%',CX+Math.cos(a)*(L+11),CY+Math.sin(a)*(L+11),11,ink,.75,500,
-    "'IBM Plex Mono', ui-monospace, monospace");}
+  g.lineTo(x2-Math.cos(a-0.42)*hd, y2-Math.sin(a-0.42)*hd);
+  g.lineTo(x2-Math.cos(a+0.42)*hd, y2-Math.sin(a+0.42)*hd);
+  g.closePath();g.fillStyle=rgba(c,al);g.fill();
+  /* the word, and the percent when there is a story to count */
+  var lx=CX+Math.cos(a)*(L+9), ly=CY+Math.sin(a)*(L+9), cs=Math.cos(a);
+  g.save();g.font='500 11px Lexend, system-ui, sans-serif';
+  g.textAlign=Math.abs(cs)<.25?'center':(cs>0?'left':'right');g.textBaseline='middle';
+  g.fillStyle=rgba(ink,evid?.85:.5);
+  g.fillText(v.nm+(evid?' '+v.pct+'%':''),lx,ly+(up?-4:4));g.restore();
+  HIT.push({k:'gate',v:v,x:(x1+x2)/2,y:(y1+y2)/2,rad:Math.max(14,(L-cr0*1.22)/2)});
+  HIT.push({k:'gate',v:v,x:lx+(cs>0?28:cs<0?-28:0),y:ly,rad:30});}
  hi.forEach(function(v,i){arrow(v,i,hi.length,true);});
  lo.forEach(function(v,i){arrow(v,i,lo.length,false);});
  if(evid){
   var top=V.slice().sort(function(a,b){return b.pct-a.pct;})[0];
   if(top.pct>=34){
-   txt('defaults to '+top.nm.toLowerCase(),CX,CY+cr0*3.2,13,
+   txt('defaults to '+top.nm.toLowerCase(),CX,CY+cr0*3.2+22,13,
     top.side==='higher'?hx(PAL.Heart):hx(PAL.Root),.95,600);
-   txt('costs ×'+top.mult.toFixed(2)+' on everything held',CX,CY+cr0*3.2+16,11,INK(),.5,400,
-    "'IBM Plex Mono', ui-monospace, monospace");}}}
+   txt('costs \u00d7'+top.mult.toFixed(2)+' on everything held',CX,CY+cr0*3.2+38,11,INK(),.5,400);}}}
 
 /* ============================================================
    THE WHEEL, four depths. A complexity ladder, not four skins.
