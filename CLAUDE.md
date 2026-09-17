@@ -133,5 +133,8 @@ His, not mine:
 
 `STABILITY.md` is the measured snapshot of what is solid and what must be
 finished, ordered by cost of leaving it alone. Read it first.
+`FEEDBACK-alexander.md` is a review session with numbers attached, and it
+separates what can be built in one file from what needs a backend this project
+does not have.
 `REVIEW-source.md` is the original review and the rebuild. `REVIEW-pass2.md`
 is the second engineering pass. `tests/README.md` explains the gates.
