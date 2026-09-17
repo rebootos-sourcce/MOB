@@ -3,10 +3,22 @@
    THE DRILLS. Every element that carries data opens one. Same panel
    for all of them, so there is one place to look.
    ============================================================ */
+/* Opening a drill only set display:block on a div far down a long rail, so
+   the answer to a click arrived below the fold with nothing saying it had. */
 function rdOpen(){var b=document.getElementById('rdrill');if(!b)return null;
- b.style.display='block';return b;}
+ b.style.display='block';
+ var none=document.getElementById('rdrill-none'); if(none)none.style.display='none';
+ if(typeof OPENSEC==='object'&&OPENSEC){OPENSEC.right='sel';
+  if(typeof paintSections==='function')paintSections();}
+ var sec=b.closest?b.closest('.lsec'):null;
+ if(sec&&sec.scrollIntoView){
+  try{sec.scrollIntoView({block:'start',behavior:REDUCED?'auto':'smooth'});}
+  catch(e){sec.scrollIntoView();}}
+ return b;}
 function rdClose(){ANA_PICK=null;S.pin=null;
- var b=document.getElementById('rdrill');if(b){b.innerHTML='';b.style.display='none';}render();}
+ var b=document.getElementById('rdrill');if(b){b.innerHTML='';b.style.display='none';}
+ var none=document.getElementById('rdrill-none'); if(none)none.style.display='';
+ render();}
 function rdShell(h){
  var b=rdOpen(); if(!b)return;
  b.innerHTML='<div class="rd-card">'+h

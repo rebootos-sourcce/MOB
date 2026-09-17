@@ -91,15 +91,19 @@ cv.addEventListener('pointermove',function(e){
 cv.addEventListener('pointerleave',function(){S.hover=null;DRAG=null;$('probe').classList.remove('on');});
 
 /* ---- collapsible sections ---- */
-var OPENSEC='soul';
+/* One open section per rail. It was a single value, so opening anything on
+   the right would have folded the left. */
+var OPENSEC={left:'soul', right:'you'};
+function railOf(sec){return sec.dataset.rail||'left';}
 function wireSections(){
  document.querySelectorAll('.lsec').forEach(function(sec){
   var hd=sec.querySelector('.lsec-hd'); if(!hd||hd._w)return; hd._w=1;
-  hd.onclick=function(){OPENSEC=(OPENSEC===sec.dataset.sec)?'':sec.dataset.sec;paintSections();};});
+  hd.onclick=function(){var rl=railOf(sec);
+   OPENSEC[rl]=(OPENSEC[rl]===sec.dataset.sec)?'':sec.dataset.sec;paintSections();};});
  paintSections();}
 function paintSections(){
  document.querySelectorAll('.lsec').forEach(function(sec){
-  var on=OPENSEC===sec.dataset.sec;
+  var on=OPENSEC[railOf(sec)]===sec.dataset.sec;
   sec.classList.toggle('open',on);
   var hd=sec.querySelector('.lsec-hd');if(hd)hd.setAttribute('aria-expanded',on?'true':'false');});}
 
@@ -107,9 +111,18 @@ function paintSections(){
    RENDER. One truth, five windows. Nothing here holds its own copy
    of a derived value.
    ============================================================ */
+/* The one line that is always on screen: coherence, the tier it names, and
+   how much of the field is carrying. Everything else folds behind a label. */
+function railTop(r){
+ var e=document.getElementById('railtop'); if(!e)return;
+ var held=W.filter(function(n){return n.sq>=4;}).length;
+ e.innerHTML=cr(r.darkB, r.CQ, {size:'sm', label:'coherence'})
+  +'<span class="rt-t">'+esc(r.tier)+'</span>'
+  +'<span class="rt-h">'+held+' of '+NODES.length+' held</span>';}
 function render(){
  const r=compute(), p=PEOPLE[S.who];
  $('tier').textContent=r.tier;
+ railTop(r);
  /* benign against malignant, as percentages of one field */
  (function(){
   var mal=Math.max(0,Math.min(100,r.malig||0)), ben=100-mal;

@@ -79,18 +79,53 @@
   </div>
 
   <!-- ============ RIGHT RAIL ============ -->
+  <!-- The rail was nine blocks in one scroll with no labels and nothing that
+       folded. The reading alone was 860px pinned above an 826px viewport, so
+       clicking a node put the answer 668px down and mostly below the fold,
+       with nothing on screen saying anything had happened.
+
+       One line stays pinned and is always true. Everything with detail is a
+       named section that folds, one open at a time. Selection unfolds itself
+       when the wheel is clicked. -->
   <div class="col"><div class="glass card sc">
-   <!-- the energy shelf. the original computed this every frame and then
-        dropped it on the floor, because no element with this id existed. -->
-   <div id="eshelf"></div>
-   <div id="run"></div>
-   <div id="rdrill" style="display:none"></div>
-   <div class="person" id="person"></div>
-   <div class="rows" id="rows"></div>
-   <div id="fire" style="margin-top:14px;padding-top:12px;border-top:1px solid var(--edge)"></div>
-   <div class="lbl" style="margin-top:20px">21 laws of integrity</div>
-   <div class="bulk"><label for="allLaw">all</label><input type="range" id="allLaw" min="0" max="10" step="0.5" value="6"></div>
-   <div id="laws"></div>
+   <div id="railtop" class="railtop"></div>
+
+   <div class="lsec open" data-rail="right" data-sec="you">
+    <button class="lsec-hd" type="button"><span>The reading</span><i></i></button>
+    <div class="lsec-bd">
+     <div class="person" id="person"></div>
+     <div class="rows" id="rows"></div>
+    </div>
+   </div>
+
+   <div class="lsec" data-rail="right" data-sec="sel">
+    <button class="lsec-hd" type="button"><span>Selection</span><i></i></button>
+    <div class="lsec-bd">
+     <div id="rdrill" style="display:none"></div>
+     <div id="rdrill-none" class="rel-note">Nothing selected. Click an address, a law, a saboteur or the core.</div>
+    </div>
+   </div>
+
+   <div class="lsec" data-rail="right" data-sec="flow">
+    <button class="lsec-hd" type="button"><span>Flow through</span><i></i></button>
+    <!-- the energy shelf. the original computed this every frame and then
+         dropped it on the floor, because no element with this id existed. -->
+    <div class="lsec-bd"><div id="eshelf"></div><div id="run"></div></div>
+   </div>
+
+   <div class="lsec" data-rail="right" data-sec="running">
+    <button class="lsec-hd" type="button"><span>What is running</span><i></i></button>
+    <div class="lsec-bd"><div id="fire"></div></div>
+   </div>
+
+   <div class="lsec" data-rail="right" data-sec="laws">
+    <button class="lsec-hd" type="button"><span>21 laws of integrity</span><i></i></button>
+    <div class="lsec-bd">
+     <div class="bulk"><label for="allLaw">all</label><input type="range" id="allLaw" min="0" max="10" step="0.5" value="6"></div>
+     <div id="laws"></div>
+    </div>
+   </div>
+
    <div style="display:flex;gap:7px;margin-top:14px"><button class="btn pri" id="bRel">Run a release</button></div>
   </div></div>
  </div>
