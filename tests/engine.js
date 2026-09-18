@@ -306,6 +306,25 @@ g('15d \u00b7 the meter');
  ok(f1&&f1.t&&f1.nm==='Fear, Root','a first records what and when');
  ok(meterFirst(p,'addr:7')===null,'and a first only happens once');
  ok(meterRead(p).firsts.length===1,'the meter reports it, got '+meterRead(p).firsts.length);
+ /* and it has to survive the boundary. meterFirst wrote them, meterRead
+    returned them, and validateProfile copied four meter fields and not this
+    one, so every dated first was lost through an import. It is the only
+    achievement shape this product allows, which made the boundary the one
+    place that could silently delete the whole record of it. */
+ {
+  const bp=E.blankProfile('firsts');
+  meterFirst(bp,'addr:7','Fear, Root'); meterFirst(bp,'seat:Root','first at the root');
+  const rt=E.validateProfile(JSON.parse(JSON.stringify(bp)));
+  ok(rt.ok,'a profile carrying dated firsts validates');
+  ok(rt.profile.meter.firsts.length===2,
+   'and they survive the boundary, got '+rt.profile.meter.firsts.length);
+  ok(rt.profile.meter.firsts[0].k==='addr:7'&&rt.profile.meter.firsts[0].nm==='Fear, Root',
+   'with their key and label intact');
+  /* a poisoned entry is refused by name, never clamped or quietly dropped */
+  const bad=JSON.parse(JSON.stringify(bp));
+  bad.meter.firsts.push({k:'x'.repeat(200),t:'not a date'});
+  ok(E.validateProfile(bad).ok===false,'a first that is not a dated first is refused');
+ }
  p.who.born.date='not a date';
  ok(meterRead(p).estimate===null,'an unparseable birth date gives no estimate rather than a wrong one');
  p.who.born.date='1986-04-02';

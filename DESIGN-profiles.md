@@ -73,7 +73,7 @@ practitioner grants (`:628`), tier and allowance (`:644`), notifications, and
 data with export and delete (`:666`). This document does not replace that
 specification. It designs the two things section 4 of that document names and
 cannot hold: the grant system, and the practitioner's own panel
-(`DESIGN-ia.md:735` to `:742`).
+(`DESIGN-ia.md:735` to `:740`).
 
 ## 0.3 Two defects found while reading, before any design
 
@@ -104,18 +104,18 @@ Each row below is a request a named panel member made, and the row it becomes.
 
 | Who | What they asked for | Where | The row it becomes |
 |---|---|---|---|
-| Diane, 46 | "What moved since Tuesday. I have asked in five passes." | `DESIGN-mobile-icp.md:663` | **The delta.** Last reading against this one, one line |
-| Diane | "A number and a cost" | `RESEARCH-icp.md:228` | The cost line, under the reading |
-| Derek, 39 | Runs the ladder arithmetic unprompted and reads a subscription with no end | `RESEARCH-icp.md:300` to `:313` | **Allowance and horizon, never adjacent without the collapse story** |
-| Marcus, 44 | "Give me a claim specific enough to be wrong" | `RESEARCH-icp.md:233` | Identification and its interval, on the sheet, always |
-| Marcus | The anatomy is precision as costume unless framed as a coordinate system | `RESEARCH-icp.md:~276` | One sentence on what the seats are |
-| Angela, 36 | Closed the product at the word Incoherent and told the group chat | `RESEARCH-icp.md:~289` | Mechanical band words, no moral adjective anywhere in the sheet |
+| Diane, 46 | "What moved since Tuesday. I have asked in five passes." | `DESIGN-mobile-icp.md:656` | **The delta.** Last reading against this one, one line |
+| Diane | "A number and a cost" | `RESEARCH-icp.md:186` | The cost line, under the reading |
+| Derek, 39 | Runs the ladder arithmetic unprompted and reads a subscription with no end | `RESEARCH-icp.md:321` to `:331` | **Allowance and horizon, never adjacent without the collapse story** |
+| Marcus, 44 | "Give me a claim specific enough to be wrong" | `RESEARCH-icp.md:192` | Identification and its interval, on the sheet, always |
+| Marcus | The anatomy is precision as costume unless framed as a coordinate system | `RESEARCH-icp.md:275` | One sentence on what the seats are |
+| Angela, 36 | Closed the product at the word Incoherent and told the group chat | `RESEARCH-icp.md:306` | Mechanical band words, no moral adjective anywhere in the sheet |
 | Sofia, 41 | "Who else can see a client's record. It is the only thing between you and my recommendation" | `DESIGN-mobile-icp.md:646` | **The sight list, and it is the highest value row in the sheet** |
-| Sofia | "The question is who can ask for it and get it" | `RESEARCH-icp.md:341` | Retrieval rule, stated. Not a promise, a mechanism |
-| James, 57 | Wants a rank against peers, and is refused | `RESEARCH-icp.md:243`, `:251` | **No comparison row. Ever.** He is 100 of 1,000 and would corrupt his own reading |
-| Ana, 47 | "Will it tell me this has an end" | `RESEARCH-icp.md:~205` | The ladder as distance, next marker only |
-| Ana | "Nobody is reading them but me" | `RESEARCH-icp.md:~160` | The stories row says where the story text is held |
-| Sofia, Ana | Resumable, interruptible, does not lose work | `RESEARCH-icp.md:~150` | Storage state row, which already exists at `panels.js:281` |
+| Sofia | "The question is who can ask for it and get it" | `RESEARCH-icp.md:343` | Retrieval rule, stated. Not a promise, a mechanism |
+| James, 57 | Wants a rank against peers, and is refused | `RESEARCH-icp.md:203`, `:218` | **No comparison row. Ever.** He is 100 of 1,000 and would corrupt his own reading |
+| Ana, 47 | "Will it tell me this has an end" | `RESEARCH-icp.md:250` | The ladder as distance, next marker only |
+| Ana | "Nobody is reading them but me" | `RESEARCH-icp.md:153` | The stories row says where the story text is held |
+| Sofia, Ana | Resumable, interruptible, does not lose work | `RESEARCH-icp.md:145` | Storage state row, which already exists at `panels.js:281` |
 
 **The nine rows that fall out.** In this order, because the order is the
 argument.
@@ -125,7 +125,7 @@ argument.
    in the code today.
 2. **What the instrument knows.** Identification and its interval, from
    `accuracy` at `engine/compute.js:176`. Marcus and James both move from
-   resistance to hold when this is shown (`RESEARCH-icp.md:~283`).
+   resistance to hold when this is shown (`RESEARCH-icp.md:301`).
 3. **Your record.** Snapshots on file, storage state, ground opened, lines
    spoken with reruns stated free, rituals saved, dated firsts.
 4. **The ladder.** The next marker as a distance. Six markers exist at
@@ -146,7 +146,7 @@ argument.
 
 **What no design adds.** A rank, a streak, a badge that is not a dated fact, or
 a leaderboard. One panel member wants a rank and the study refuses him by name
-(`RESEARCH-icp.md:251`). A marker is a distance and never a trophy
+(`RESEARCH-icp.md:218`). A marker is a distance and never a trophy
 (`schema.js:255`).
 
 ---
@@ -155,22 +155,22 @@ a leaderboard. One panel member wants a rank and the study refuses him by name
 
 One panel member is a practitioner: Sofia, 41, weight 140, and she is the
 highest value entry in the roster because she brings clients
-(`RESEARCH-icp.md:345`). She has two jobs and they are different products.
+(`RESEARCH-icp.md:349`). She has two jobs and they are different products.
 
 **Job one, in session, on a client's phone.** "In session I need one image and
-one sentence" (`DESIGN-mobile-icp.md:136`). "I open the wheel and lift a sheet
+one sentence" (`DESIGN-mobile-icp.md:142`). "I open the wheel and lift a sheet
 on one address and read the client the seat and the plexus"
-(`DESIGN-mobile-icp.md:640`). Knowledge is how she works, and moving it behind
+(`DESIGN-mobile-icp.md:642`). Knowledge is how she works, and moving it behind
 an overflow control ends her recommendation (`DESIGN-mobile-icp.md:496` to
 `:503`).
 
 **Job two, at night, alone.** "Eleven at night, last client gone, in bed"
-(`DESIGN-mobile-icp.md:134`). "Tell me what to run and how long it takes"
-(`RESEARCH-icp.md:~267`).
+(`DESIGN-mobile-icp.md:139`). "Tell me what to run and how long it takes"
+(`RESEARCH-icp.md:244`).
 
 **What she will not do.** "I will not put a client in front of a screen that
 asks whose field this is before it asks anything about them"
-(`DESIGN-mobile-icp.md:150`). The persona selector at `shell/body.html:11` is
+(`DESIGN-mobile-icp.md:152`). The persona selector at `shell/body.html:11` is
 the control she means, and `DESIGN-ia.md:604` already rules it the first thing
 removed when sign in lands.
 
@@ -178,7 +178,7 @@ removed when sign in lands.
 layout problem and it is still the only thing between you and my
 recommendation" (`DESIGN-mobile-icp.md:646`). And: "You are telling me you will
 never sell it. I believe you. That is not the question. The question is who can
-ask for it and get it" (`RESEARCH-icp.md:340`).
+ask for it and get it" (`RESEARCH-icp.md:343`).
 
 That is the sharpest finding in the whole panel for this document. **A promise
 does not answer her. A retrieval mechanism answers her.** Every design below is
@@ -223,7 +223,7 @@ consent list into a list.
 four tests, so a design can pass or fail rather than be argued about.
 
 **T1. The name never leaves the device.** `DECISIONS.md:110`. A key replaces it
-(`:112`). Records are never looked up by name (`:113`).
+(`:112`), and records are never looked up by name (`:112`).
 
 **T2. The record is never held joined to the story.** `DECISIONS.md:243`. The
 record identifies, the story does not, and we do not hold the two together.
@@ -233,7 +233,9 @@ record identifies, the story does not, and we do not hold the two together.
 self report about a named human and we do not hold that.
 
 **T4. A grant of sight is explicit, listed, revocable, and never a default.**
-`DECISIONS.md:129`, and `CLAUDE.md` repeats it.
+`DECISIONS.md:125` puts consent with the person whose data it is, and
+`CLAUDE.md` adds the rest: explicit consent, a visible list of who has sight,
+revocation, and never a silent default.
 
 **The collision inside the ruling itself, and it must be named rather than
 quietly relaxed.** `DECISIONS.md:110` says the name never leaves the device.
@@ -294,9 +296,9 @@ other's business.
 ## 4.2 The flows
 
 **Sign in and claim, once.** The person enters their email. A one time code goes
-to the address. The code, not the address, retrieves the record. `TASKS.md:136`
+to the address. The code, not the address, retrieves the record. `TASKS.md:137`
 already rules this not optional and the panel confirms it commercially:
-`RESEARCH-icp.md:~369` records James refusing to hand an address to a stranger
+`RESEARCH-icp.md:500` records James refusing to hand an address to a stranger
 for a number he was already promised. The record arrives, passes
 `validateProfile` (`schema.js:130`), and a failure names the refused field
 through `importError` (`schema.js:324`). After the claim the profile is local
@@ -455,7 +457,7 @@ boundary (`schema.js:134`). Concretely: a `grants` array whose entries are
 checked for a known `dir`, a known `state`, a `scope` whose keys are the six
 above, and timestamps that are strings. An unknown `state` is refused by name
 and not defaulted, because a grant that defaults to live is the silent default
-`DECISIONS.md:129` forbids. **A `sec` present in imported text is refused
+`CLAUDE.md` forbids. **A `sec` present in imported text is refused
 outright**, because a secret half arriving from a paste is either an accident or
 an attack and there is no third case.
 
@@ -472,13 +474,13 @@ choose.
 
 | System | Where it lives | Why |
 |---|---|---|
-| A blind key value store, three collections | new service | `TASKS.md:123` already sizes it: about 49 MB for 100,000 people |
-| A one time code sender | that service | `TASKS.md:136` rules the email alone cannot be the key |
+| A blind key value store, three collections | new service | `TASKS.md:110` sizes it at about 49 MB for 100,000 people, `:123` scopes it |
+| A one time code sender | that service | `TASKS.md:137` rules the email alone cannot be the key |
 | `ui/net.js`, the one seam | new ui module, late in MANIFEST | `CLAUDE.md`, no `fetch` in `engine/` |
 | `ui/crypto.js`, seal and open | new ui module | `crypto.subtle` is a host API |
 | `bindSeal(seal, open)` | `engine/schema.js` | mirrors `bindStore` at `schema.js:93` |
 | A key recovery decision | product, not code | see 4.5 |
-| A controller, and the obligations | legal | `TASKS.md:144`, `CLAUDE.md` |
+| A controller, and the obligations | legal | `TASKS.md:143`, `CLAUDE.md` |
 | `hostfree.py` gains `crypto` and `subtle` | `atuned_src/hostfree.py:11` | the gate does not list them today, so the engine could reach for them and pass |
 
 ## 4.5 Where it holds, and where it strains
@@ -503,13 +505,13 @@ that states the payload, revocation is one tap, and the list is always visible.
 
 **Where it strains, and it is one place.** Lose the key and the envelopes are
 unreadable and the record is unrecoverable. That is the cost of the store being
-blind, and it lands exactly on the row `DESIGN-ia.md:625` already describes as
+blind, and it lands exactly on the row `DESIGN-ia.md:626` already describes as
 the one row in the sheet that can lose a person everything. Three ways out, and
 the choice is the owner's: a printed recovery phrase at first run, a second
 factor held by the person, or an escrow that we hold, which reintroduces exactly
 the capability this design exists to remove. The first is honest and the panel
 will accept it, because the panel already accepts a stated limit and punishes a
-discovered one (`RESEARCH-icp.md:~283`).
+discovered one (`RESEARCH-icp.md:300`).
 
 ## 4.6 What it forbids later
 
@@ -683,7 +685,7 @@ exercise it:
 The practitioner's panel is a roster they typed, on their device, with a status
 per row: paired now, a cached reading from a date, or no sight. That is a real
 product for Sofia's in session job, which is the job the panel says she actually
-does with a client (`DESIGN-mobile-icp.md:640`).
+does with a client (`DESIGN-mobile-icp.md:642`).
 
 ## 6.2 The flows
 
@@ -743,10 +745,10 @@ Nothing about a named person is ever at rest on our side for longer than 72
 hours, and in the pairing path, never.
 
 **Where it costs, and the panel measures it.** Sofia has two jobs
-(`DESIGN-mobile-icp.md:134` to `:137`). This design serves the in session job
+(`DESIGN-mobile-icp.md:139` to `:143`). This design serves the in session job
 completely and the night job not at all: she cannot look at a client's field at
 eleven at night with the last client gone, because the client is asleep and not
-paired. Her request at `DESIGN-mobile-icp.md:637` is explicitly both.
+paired. Her request at `DESIGN-mobile-icp.md:640` is explicitly both.
 
 Worse, it cannot deliver requirement 3 of the practitioner panel, released
 against not released between sessions, which is the one thing a coach needs to
@@ -805,7 +807,7 @@ says it must not be.
 
 **Two. Whether a practitioner can look when the person is asleep.** Design three
 says no, and that deletes half of the highest value ICP's use of the product
-(`DESIGN-mobile-icp.md:134`, `:637`). This is not a privacy win, because the data
+(`DESIGN-mobile-icp.md:139`, `:640`). This is not a privacy win, because the data
 leaves anyway through screenshots and spreadsheets, where we can neither scope
 it nor revoke it.
 
@@ -824,8 +826,8 @@ and one piece of design three.**
 
 **It is the only design that answers Sofia in a sentence that is mechanically
 true.** She is the highest value entry in the roster because she brings clients
-(`RESEARCH-icp.md:345`), and her condition is not a promise but a retrieval
-rule: "The question is who can ask for it and get it" (`RESEARCH-icp.md:341`).
+(`RESEARCH-icp.md:349`), and her condition is not a promise but a retrieval
+rule: "The question is who can ask for it and get it" (`RESEARCH-icp.md:343`).
 Design one's answer is that nobody can, including us, and it is checkable rather
 than trustable. Design two's answer is that they can get numbers with nobody
 attached, which is a good answer that requires her to accept a policy. Design
@@ -850,9 +852,9 @@ cannot deliver it.
 
 **It fails in exactly one place and the failure is honest.** Lose the key, lose
 the record. That failure lands on a row the IA already specifies as the one row
-in the sheet that can lose a person everything (`DESIGN-ia.md:625`), it is
+in the sheet that can lose a person everything (`DESIGN-ia.md:626`), it is
 stated once and never again, and the panel has already shown it accepts a stated
-limit and punishes a discovered one (`RESEARCH-icp.md:~283`).
+limit and punishes a discovered one (`RESEARCH-icp.md:300`).
 
 ## 8.2 What to take from design two
 
@@ -871,7 +873,7 @@ kilobyte per grant.
 
 **The pairing path as the in session mode, later.** Sofia's session job wants
 one image and one sentence on a client's phone
-(`DESIGN-mobile-icp.md:136`, `:640`). A live pairing is the better shape for
+(`DESIGN-mobile-icp.md:142`, `:642`). A live pairing is the better shape for
 that, and it is additive: `grants[].between` from 6.3 becomes a fourth cadence
 alongside `save`, `daily` and `manual`. It is not in the first build.
 
@@ -879,7 +881,7 @@ alongside `save`, `daily` and `manual`. It is not in the first build.
 
 A practitioner directory that can be searched. A roster wide export. Any
 comparison between clients, or between a client and a population
-(`RESEARCH-icp.md:251`). A grant that defaults to on. A revocation that reads as
+(`RESEARCH-icp.md:218`). A grant that defaults to on. A revocation that reads as
 more complete than it is. A recovery path we can perform without the person.
 
 ## 8.5 The order to build it
@@ -924,8 +926,8 @@ Sizes in the register `TASKS.md` uses. Honest estimates against this codebase.
 | `ui/net.js`, the one seam | new, late in MANIFEST | Medium |
 | The nine row sheet | `ui/panels.js:264` rewritten | Medium |
 | Scope sheet and consent flow | `ui/panels.js` | Medium |
-| The practitioner panel | new `ui/practice.js` | **Large. It is a second application wearing this one's chrome, as `DESIGN-ia.md:741` already says** |
-| Blind store, three collections | new service | Small. `TASKS.md:123` sizes it |
+| The practitioner panel | new `ui/practice.js` | **Large. It is a second application wearing this one's chrome, as `DESIGN-ia.md:739` already says** |
+| Blind store, three collections | new service | Small. `TASKS.md:110` sizes it |
 | One time code sender | that service | Small |
 | Key recovery phrase, and its copy | product | Small, and it needs writing before coding |
 | `hostfree.py` additions | `atuned_src/hostfree.py:11` | Trivial |
@@ -972,13 +974,13 @@ this document proposes plan, tier and allowance as the three words. The profile
 sheet cannot be written until one word means one thing, because the coherence
 band and the paid ladder sit four rows apart in it.
 
-**4. `DECISIONS.md:184`, save conflict between two devices.** Already named as
+**4. `DECISIONS.md:183`, save conflict between two devices.** Already named as
 blocking the record store. It also blocks the envelope cadence in design one: if
 two devices can both re seal a grant, the practitioner reads whichever wrote
 last, and neither device knows it lost.
 
 One more, and it is a copy ruling rather than an architecture one. The delta that
-Diane asked for in five passes (`DESIGN-mobile-icp.md:663`) needs a stored
+Diane asked for in five passes (`DESIGN-mobile-icp.md:656`) needs a stored
 previous reading to compare against. `history` already holds snapshots
 (`schema.js:40`, written at `schema.js:107`), so the data exists and nothing
 reads it back as a change. That is the cheapest row in section 1 and the most
@@ -998,7 +1000,7 @@ lost on import. Small.
 
 **Theme and legible do not persist.** `ui/panels.js:129` and `:136` set no
 store, while density does at `panels.js:241`. Three appearance controls, two
-persistence contracts. Named already at `DESIGN-ia.md:594`.
+persistence contracts. Named already at `DESIGN-ia.md:582`.
 
 **`hostfree.py` would not catch crypto.** The forbidden list at
 `atuned_src/hostfree.py:11` names `document`, `window`, `navigator`,

@@ -33,7 +33,7 @@ function blankProfile(name){
      ground you may open. It lives on the record and is never derived,
      because a derived count moves when the model moves and then the tier
      gate disagrees with the app about what was run. */
-  meter:{lines:0, unique:[], first:null, last:null},
+  meter:{lines:0, unique:[], firsts:[], first:null, last:null},
   laws:{}, intake:{answers:{}, done:[], startedAt:null, completedAt:null},
   gates:{verp:{aware:0,detach:0,intent:0,ignore:0,attach:0,averse:0},
          lean:{benign:0,malignant:0}},   /* the cost multiplier, v2 */
@@ -198,7 +198,23 @@ function validateProfile(o){
    p.meter.unique=o.meter.unique.filter(function(k){return typeof k==='string'&&k.length<64;});
   else if(o.meter.unique!==undefined)errs.push('meter.unique is not a list');
   if(typeof o.meter.first==='string')p.meter.first=o.meter.first;
-  if(typeof o.meter.last==='string')p.meter.last=o.meter.last;}
+  if(typeof o.meter.last==='string')p.meter.last=o.meter.last;
+  /* The dated firsts were written by meterFirst, returned by meterRead, and
+     dropped here, so every one of them was lost through an import. They are
+     the only achievement shape this product allows, which made the boundary
+     the one place that could quietly delete a person's whole record of it.
+     Validated like everything else: typed, bounded, and refused by name. */
+  if(Array.isArray(o.meter.firsts)){
+   p.meter.firsts=o.meter.firsts.filter(function(f){
+    return f&&typeof f==='object'
+     &&typeof f.k==='string'&&f.k.length>0&&f.k.length<64
+     &&typeof f.t==='string'&&!isNaN(new Date(f.t).getTime())
+     &&(f.nm===undefined||(typeof f.nm==='string'&&f.nm.length<120));})
+    .map(function(f){return {k:f.k,t:f.t,nm:typeof f.nm==='string'?f.nm:f.k};});
+   if(p.meter.firsts.length!==o.meter.firsts.length)
+    errs.push('meter.firsts held '+(o.meter.firsts.length-p.meter.firsts.length)
+     +' entries that are not a dated first');}
+  else if(o.meter.firsts!==undefined)errs.push('meter.firsts is not a list');}
  if(Array.isArray(o.rituals))p.rituals=o.rituals.filter(function(x){return x&&typeof x==='object';});
  /* A snapshot is strictly typed numbers and the record calls toFixed on them,
     so "the person's own text" does not apply here. An unchecked history
