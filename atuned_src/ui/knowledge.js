@@ -38,7 +38,13 @@ function kbRows(sec){
  if(sec==='gate') verpRead().forEach(function(g){
   out.push({k:'gate', t:g.nm, s:g.side+' gate', d:g.d, v:g.pct?g.pct+'%':'', o:g});});
  if(sec==='harm') HARM.forEach(function(e){
-  out.push({k:'harm', t:e.t, s:HARM_AX[e.a]||e.a, d:e.c+', '+e.ch, v:'', o:e});});
+  /* 21 of the 76 are the Laws of Moral Integrity and those are the ones the
+     intake scores. The other 55 are read, not measured, and the row says
+     which it is rather than leaving a person to assume all 76 carry a score. */
+  var scored=(e.a==='spirit');
+  out.push({k:'harm', t:e.t, s:HARM_AX[e.a]||e.a,
+   d:e.c+', '+e.ch+(scored?'. scored by the intake':'. read, not scored'),
+   v:scored&&S.law[e.t]!=null?S.law[e.t].toFixed(1):'', o:e});});
  if(sec==='gloss') GLOSS.forEach(function(g){
   out.push({k:'gloss', t:g.t, s:'', d:g.d, v:'', o:g});});
  if(sec==='card'){
@@ -66,7 +72,7 @@ function kbRows(sec){
 const KB_SECS=[['addr','Addresses'],['fetter','Fetters'],['sab','Saboteurs'],
  ['law','Laws'],['dom','Domains'],['arch','Archetypes'],['gate','Gates'],
  ['card','The cards'],['seat','The catalog'],
- ['harm','The 76 elements'],['gloss','Glossary']];
+ ['harm','The 76 laws'],['gloss','Glossary']];
 
 function kbMatch(row,q){
  if(!q)return true;

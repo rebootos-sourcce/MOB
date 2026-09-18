@@ -5,7 +5,7 @@
    engine.js there. an absolute path would only ever be right on one machine. */
 const E=require(require('path').resolve(process.env.ENGINE||'engine.js'));
 const {S,CHILD,CHARGES,SI,SINAMES,BANDS,W,NODES,DOMAINS,ARCH,MASKS,SAB33,
-       PEOPLE,LAWSET,PRACTICE,EXPR,compute,buildSoul,accuracy,
+       PEOPLE,LAWSET,PRACTICE,EXPR,compute,buildSoul,accuracy,meterFirst,
        julianDay,sunLon,moonLon,designJD,GATE_WHEEL,chineseYear,usDST}=E;
 let P=0,F=0,GRP='';
 const g=n=>{GRP=n;console.log('\n'+n);};
@@ -284,9 +284,28 @@ g('15d \u00b7 the meter');
     one year's worth rather than exactly. */
  ok(Math.abs(h.estimate-h.age*200)<200,'the estimate is two hundred a year, got '+h.estimate);
  ok(h.estimateLow<h.estimate&&h.estimateHigh>h.estimate,'and carries its ten percent swing');
- ok(h.markers.length===MARKERS.length&&h.markers[0].at===2500&&h.markers[1].at===3500,
-  'the two markers are fixed counts, not scores');
- ok(h.markers[0].left===2500-h.unique,'and report the ground left to them');
+ /* Six fixed distances on one ruler, from the owner's own ladder. Entry at
+    the first address, then Buddha nature, Integration, Field awareness,
+    Liberation, Ascension. */
+ ok(h.markers.length===6,'six markers, got '+h.markers.length);
+ const MAT=h.markers.map(m=>m.at).join();
+ ok(MAT==='1,2500,3500,4500,10000,12000','the ladder is the owner\'s thresholds, got '+MAT);
+ ok(h.markers.every((m,i)=>i===0||m.at>h.markers[i-1].at),'and they only ever go up');
+ const bn=h.markers.filter(m=>m.nm==='Buddha nature')[0];
+ ok(bn&&bn.left===2500-h.unique,'a marker reports the ground left to it');
+ /* one direction, not six. the next unreached marker only. */
+ ok(h.next&&h.next.left>0,'the meter names the next marker and how far, got '
+  +(h.next?h.next.nm+' '+h.next.left:'none'));
+ /* a marker is a distance, never a gate. nothing in the engine may unlock
+    at one, because unique ground is exactly what a tier sells. */
+ ok(h.markers.every(m=>!('unlocks' in m)&&!('grants' in m)),
+  'no marker carries an unlock, because a marker that unlocks is for sale');
+
+ /* a dated first: a fact about the work that cannot be taken away */
+ const f1=meterFirst(p,'addr:7','Fear, Root');
+ ok(f1&&f1.t&&f1.nm==='Fear, Root','a first records what and when');
+ ok(meterFirst(p,'addr:7')===null,'and a first only happens once');
+ ok(meterRead(p).firsts.length===1,'the meter reports it, got '+meterRead(p).firsts.length);
  p.who.born.date='not a date';
  ok(meterRead(p).estimate===null,'an unparseable birth date gives no estimate rather than a wrong one');
  p.who.born.date='1986-04-02';

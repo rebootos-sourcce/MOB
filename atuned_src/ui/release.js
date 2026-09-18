@@ -49,7 +49,19 @@ function relCoolDown(){
     ground spends the tier. */
  if(CURP){var keys=[];
   CHAN.forEach(function(ch){RUN.queue.forEach(function(n){keys.push(meterKey(n.i,ch[0]+ch[2]));});});
-  RUN.meter=meterRun(CURP,keys);}
+  RUN.meter=meterRun(CURP,keys);
+  /* A first is a dated fact about the work. Recorded here because this is
+     the one place that knows an address was opened for the first time, and
+     it is recorded as the address and the seat, never as a claim about the
+     person who opened it. */
+  RUN.firsts=[];
+  RUN.queue.forEach(function(n){
+   var f=meterFirst(CURP,'addr:'+n.i,n.k+', '+n.b);
+   if(f)RUN.firsts.push(f);});
+  var seats={}; RUN.queue.forEach(function(n){seats[n.b]=1;});
+  Object.keys(seats).forEach(function(b){
+   var f=meterFirst(CURP,'seat:'+b,'first release at the '+String(b).toLowerCase());
+   if(f)RUN.firsts.push(f);});}
  /* this pushed a snapshot by hand and then saved, which is pSnap plus pSave
     with one of the two writes done twice. */
  if(CURP){pSave();pSnap();}

@@ -1626,7 +1626,26 @@ function meterRun(p,keys){
    knowable from a birth date. The two markers are fixed counts of ground
    opened, not scores, so they do not move with age. */
 const PAT_PER_YEAR=200, PAT_SWING=0.10;
-const MARKERS=[{nm:'Buddha nature', at:2500},{nm:'Christ consciousness', at:3500}];
+/* The ladder, from SOURCE OS v27.3 Sprint J, which the owner had already
+   designed. Six fixed distances on one ruler.
+
+   Two things were reconciled against that document. It names 3,500
+   Integration where the engine had Christ consciousness; the owner's own
+   document wins. And its counts are of total releases, which include
+   repeats, where the meter counts unique ground opened. Unique is the
+   harder number and the one a tier sells, so the thresholds are held
+   against it and the difference is stated rather than quietly rescaled.
+
+   A marker is a distance, never a trophy and never a gate. Nothing in the
+   product unlocks at one, because a marker that unlocks something is a
+   marker for sale, and unique ground is exactly what money buys. */
+const MARKERS=[
+ {nm:'Entry',           at:1,     of:'the first address opened'},
+ {nm:'Buddha nature',   at:2500,  of:'ground opened'},
+ {nm:'Integration',     at:3500,  of:'ground opened'},
+ {nm:'Field awareness', at:4500,  of:'ground opened'},
+ {nm:'Liberation',      at:10000, of:'ground opened'},
+ {nm:'Ascension',       at:12000, of:'ground opened'}];
 function ageAt(dateStr,now){
  if(!dateStr)return null;
  var b=new Date(dateStr+'T00:00:00Z'); if(isNaN(b.getTime()))return null;
@@ -1646,8 +1665,30 @@ function meterRead(p,now){
   estimateLow:est===null?null:Math.round(est*(1-PAT_SWING)),
   estimateHigh:est===null?null:Math.round(est*(1+PAT_SWING)),
   cleared:est?Math.min(1,uniq/est):null,
-  markers:MARKERS.map(function(k){return {nm:k.nm, at:k.at, reached:uniq>=k.at,
-   left:Math.max(0,k.at-uniq)};})};}
+  markers:MARKERS.map(function(k){return {nm:k.nm, at:k.at, of:k.of,
+   reached:uniq>=k.at, left:Math.max(0,k.at-uniq)};}),
+  /* the next one only, because six distances at once is a to do list and
+     one distance is a direction. null when they are all behind you. */
+  next:(function(){for(var i=0;i<MARKERS.length;i++)
+   if(uniq<MARKERS[i].at)return {nm:MARKERS[i].nm, at:MARKERS[i].at,
+    left:MARKERS[i].at-uniq}; return null;})(),
+  /* a dated first cannot be taken away and claims no causation, which is
+     why it is the only achievement shape this product allows. */
+  firsts:(p&&p.meter&&p.meter.firsts)||[]};}
+
+/* Record a dated first. meterRun already knows the moment ground is new
+   and nothing read it. These are facts about the work, never statements
+   about the person: the ladder says an address was opened on a date, it
+   does not say what that made someone. */
+function meterFirst(p,key,label){
+ if(!p||!key)return null;
+ if(!p.meter)p.meter={lines:0,unique:[],first:null,last:null};
+ if(!Array.isArray(p.meter.firsts))p.meter.firsts=[];
+ for(var i=0;i<p.meter.firsts.length;i++)
+  if(p.meter.firsts[i].k===key)return null;      /* a first happens once */
+ var f={k:key, t:new Date().toISOString(), nm:label||key};
+ p.meter.firsts.push(f);
+ return f;}
 
 var IMPORT_ERR=null;
 function pImport(txt){
@@ -2408,6 +2449,7 @@ if(typeof module!=='undefined'&&module.exports){
   /* data */      NODES:NODES, SAB_LIB:SAB_LIB, HCX_LIB:HCX_LIB, SAB33:SAB33, SAB_PI:SAB_PI, GATEGLYPH:GATEGLYPH,
                   APC:APC, APC_REL:APC_REL, APC_EMB:APC_EMB,
                   SABDEF:SABDEF, DOMDEF:DOMDEF, GLOSS:GLOSS, HARM:HARM,
+  /* meter */    meterFirst:meterFirst,
   /* astro */     julianDay:julianDay, sunLon:sunLon, moonLon:moonLon, gmst:gmst,
                   ascendant:ascendant, signOf:signOf, degInSign:degInSign,
                   gateOf:gateOf, designJD:designJD, birthJD:birthJD, PLACE:PLACE,
