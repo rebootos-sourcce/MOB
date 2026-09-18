@@ -4,7 +4,7 @@
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 /* ============================================================
    ART DIRECTION
@@ -39,7 +39,12 @@
  --heart:#6FC5A3; --throat:#65B8D4; --eye:#8296DB; --crown:#A98BCE;
  --alarm:#FF2E1F; --alarm-soft:rgba(255,46,31,.16); --gold:#DFCC7E;
  --good:#68CBA4; --bad:#CB5F59;
- --sans:'Lexend',system-ui,-apple-system,sans-serif;
+ /* Lexend is a wide face by design, which is why the rail clipped: Witness
+    rendered as Wit. Inter is narrower at the same size and carries more
+    characters per line without dropping the point size. The font tuner is
+    gone on the owner's ruling, so this is the one face and there is no
+    per person override to keep working. */
+ --sans:'Inter','Inter Tight',system-ui,-apple-system,'Segoe UI',sans-serif;
  /* One family. The mono was in the first art direction doc and was ruled out
     on sight. Lexend carries the digits, with tabular figures so columns hold. */
  --num:Lexend,system-ui,-apple-system,sans-serif;
@@ -114,7 +119,7 @@ body.snow{
  --good:#1F8560; --bad:#A8413C;
  --shadow:0 12px 30px rgba(40,54,74,.12);
 }
-body.legible{ --sans:'Atkinson Hyperlegible',system-ui,sans-serif }
+/* the legible toggle is removed. the face below is the one face. */
 
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
@@ -329,6 +334,9 @@ body:not(.tab-field) .pol2{display:none}
  padding:0 0 13px;border-bottom:1px solid var(--edge);margin-bottom:2px}
 .railtop .rt-t{font-size:14px;color:var(--ink);font-weight:500}
 /* the tier reads as a word you can open, not as a verdict printed at you */
+.undobtn{gap:6px;color:var(--gold);border-color:var(--gold)}
+.undobtn svg{fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.undobtn span{max-width:20ch;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .tierbtn{background:none;border:0;padding:2px 0;font:inherit;color:inherit;
  cursor:pointer;text-align:left;min-height:var(--tap,44px);
  border-bottom:1px dotted var(--edge-2)}
@@ -1187,12 +1195,17 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
   <label for="psel" class="toplab">Whose field</label>
   <select id="psel"></select>
   <div class="seg" id="themes"></div>
-  <button class="vt" id="legible" type="button" aria-pressed="false"
-   title="Atkinson Hyperlegible. Maximum character distinction.">Aa</button>
   <!-- Density moved into the profile on the owner's ruling. It is a setting a
        person chooses once, and a setting chosen once does not earn three
        permanent buttons in the bar where the work happens. The profile opens
        on the right, which is where it now lives. -->
+  <!-- Undo. It says what it will take back, because a control that says only
+       "undo" makes a person guess what they are about to get. Hidden when the
+       stack is empty rather than sitting there disabled. -->
+  <button class="vt undobtn" id="undobtn" type="button" hidden>
+   <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
+    <path d="M4 10h10a5 5 0 0 1 0 10h-3"/><path d="M4 10l4-4M4 10l4 4"/></svg>
+   <span id="undolab">Undo</span></button>
   <button class="vt" id="profbtn" type="button" title="Your profile and settings">
    <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">
     <circle cx="12" cy="8" r="3.6"/><path d="M5 20c0-3.6 3.1-5.6 7-5.6s7 2 7 5.6"/></svg></button>
@@ -2536,7 +2549,7 @@ const TABOF=function(k){for(var i=0;i<TABDEF.length;i++)if(TABDEF[i].k===k)retur
    STATE
    ============================================================ */
 const S={dom:0,doms:[0],arcs:[0,1],roots:[],a1:0,a2:1,charge:{},law:{},
- theme:'dark',legible:false,hover:null,pin:null,t:0,replace:{},view:1,who:0,tab:TAB.FIELD,
+ theme:'dark',hover:null,pin:null,t:0,replace:{},view:1,who:0,tab:TAB.FIELD,
  zoom:1,panx:0,pany:0};
 /* A stranger's first load used to seed every axis at 3, which produced CQ 36
    and the word Incoherent in the largest type on screen, beside a panel that
@@ -2619,6 +2632,69 @@ function exprFill(nm){
  return clamp(ig*(1-load*1.25),0,10);}
 function exprRead(){return EXPR.map(function(e){var f=exprFill(e.nm);
  return {nm:e.nm, sh:e.sh, b:e.b, fill:f, leak:10-f};});}
+
+/* ============================================================
+   UNDO. The largest gap in the product, named as such in the
+   brief since the rebuild.
+
+   Applying a story bakes charge into the nine axes. A release
+   empties addresses and installs their opposites. A drag writes
+   a value and saves it. None of it could be taken back, so the
+   instrument asked a person to commit and then gave them no way
+   to be wrong.
+
+   snapshot() was not the answer. It records a derived READING,
+   cq and dq and sq, which is what the record compares. You
+   cannot restore a field from it because the inputs are gone.
+   Undo has to capture the inputs: the nine charges, the nine
+   installed opposites, the twenty one laws and the soul.
+
+   Bounded at twenty, because this is a stack for mistakes and
+   not a version history, and an unbounded one on a phone is a
+   leak nobody will find.
+   ============================================================ */
+const UNDO_MAX=20;
+var UNDO=[];
+
+/* the inputs, and nothing derived. everything else recomputes from these. */
+function undoState(){
+ var c={},o={},l={};
+ CHARGES.forEach(function(k){c[k]=S.charge[k];o[k]=S.replace[k]||0;});
+ SINAMES.forEach(function(k){l[k]=S.law[k];});
+ return {charge:c, replace:o, law:l,
+  doms:S.doms.slice(), arcs:S.arcs.slice(), roots:S.roots.slice(),
+  dom:S.dom, a1:S.a1, a2:S.a2};}
+
+/* call BEFORE the mutation, with what the person is about to do, in their
+   words, because an undo control that says "undo" and nothing else makes a
+   person guess what they are about to get back. */
+function undoPush(label){
+ UNDO.push({s:undoState(), nm:label||'the last change', t:new Date().toISOString()});
+ while(UNDO.length>UNDO_MAX)UNDO.shift();
+ return UNDO.length;}
+
+function undoDepth(){return UNDO.length;}
+function undoPeek(){return UNDO.length?UNDO[UNDO.length-1].nm:null;}
+function undoClear(){UNDO=[];}
+
+/* restore, and return what was undone so the host can say so. A failed undo
+   returns null rather than half applying: the state is replaced wholesale or
+   not at all. */
+function undoPop(){
+ if(!UNDO.length)return null;
+ var e=UNDO.pop(), s=e.s;
+ CHARGES.forEach(function(k){
+  S.charge[k]=(s.charge[k]!==undefined)?s.charge[k]:0;
+  S.replace[k]=(s.replace[k]!==undefined)?s.replace[k]:0;});
+ SINAMES.forEach(function(k){if(s.law[k]!==undefined)S.law[k]=s.law[k];});
+ S.doms=s.doms.slice(); S.arcs=s.arcs.slice(); S.roots=s.roots.slice();
+ S.dom=s.dom; S.a1=s.a1; S.a2=s.a2;
+ buildSoul();
+ /* susceptibility is a function of the soul and is written by a pass, not by
+    compute, so restoring the soul without rerunning it leaves the field
+    attributing stories against the wrong profile. */
+ suscAll();
+ return {nm:e.nm, t:e.t};}
 
 /* ============================================================
    COMPUTE. Everything downstream is a pure function of this.
@@ -3927,6 +4003,8 @@ if(typeof module!=='undefined'&&module.exports){
                   APC:APC, APC_REL:APC_REL, APC_EMB:APC_EMB,
                   SABDEF:SABDEF, DOMDEF:DOMDEF, GLOSS:GLOSS, HARM:HARM,
   /* meter */    meterFirst:meterFirst,
+  /* undo */     undoPush:undoPush, undoPop:undoPop, undoDepth:undoDepth,
+                  undoPeek:undoPeek, undoClear:undoClear, UNDO_MAX:UNDO_MAX,
   /* labels */   TIERDEF:TIERDEF, TIER_BY:TIER_BY, tierOf:tierOf,
   /* astro */     julianDay:julianDay, sunLon:sunLon, moonLon:moonLon, gmst:gmst,
                   ascendant:ascendant, signOf:signOf, degInSign:degInSign,
@@ -4497,7 +4575,7 @@ function drawSig(r){
  var d=0; for(var i=0;i<W.length;i++)d+=W[i].sq;
  /* effView, not S.view: the cache has to miss when zoom resolves a layer */
  return [effView(),S.tab,S.who,S.hover&&S.hover.k,S.pin&&(S.pin.nm||S.pin.k),
-         LIGHT()?1:0,S.legible?1:0,S.zoom.toFixed(3),S.panx|0,S.pany|0,
+         LIGHT()?1:0,S.zoom.toFixed(3),S.panx|0,S.pany|0,
          d.toFixed(3),r.CQ.toFixed(3)].join('|');}
 function draw(r){
  W.forEach(n=>{n.disp=(n.disp===undefined?n.sq:(REDUCED?n.sq:n.disp+(n.sq-n.disp)*.14));});
@@ -5103,6 +5181,8 @@ function stRender(){
  var ap=document.getElementById('stapply');
  if(ap)ap.onclick=function(){
   if(!ST_PARSED||!ST_PARSED.imprints.length)return;
+  /* the field is about to change and until now there was no way back */
+  undoPush('committing the story');
   applyStory(ST_TEXT); verpApply(ST_TEXT); leanApply(ST_TEXT);
   if(CURP){CURP.story=CURP.story||{entries:[]};
    CURP.story.entries.push({t:new Date().toISOString(),text:ST_TEXT,
@@ -5744,6 +5824,9 @@ function relTick(){
   relRender();}, RUN.speed*1000);}
 function relCoolDown(){
  if(RUN.done)return; RUN.done=true; RUN.phase='done';
+ /* the release empties addresses and installs their opposites. it is the
+    largest single write this product makes and it had no way back. */
+ undoPush('the release at '+(RUN.queue.length?RUN.queue.length+' addresses':'no addresses'));
  var freed=0;
  RUN.queue.forEach(function(n){
   var w0=n.sq*10;                                   /* weights are 0 to 100 here */
@@ -7046,9 +7129,8 @@ const THEMEICON={
   $('themes').querySelectorAll('button').forEach(function(x,j){x.setAttribute('aria-pressed',j===i);});
   rebuildSwatches();render();});
  $('themes').appendChild(b);});
-$('legible').addEventListener('click',function(){
- S.legible=!S.legible; document.body.classList.toggle('legible',S.legible);
- this.setAttribute('aria-pressed',S.legible?'true':'false');});
+/* the font tuner is gone on the owner's ruling. one face, narrower, no
+   per person override to keep working across every surface. */
 
 /* ---- the icon grids. the icon carries the colour, selection is a ring. ---- */
 DOMAINS.forEach(function(d,i){
@@ -7240,6 +7322,35 @@ function helpSheet(){
  /* the stored choice has to be on the body before the first paint measures it */
  var k=densGet(); if(k)document.body.classList.add('dens-'+k);
  densPaint();})();
+
+/* ---- UNDO ----
+   The control names what it will take back and disappears when there is
+   nothing to take back, because a permanently disabled button is furniture
+   and a button labelled only "undo" makes a person guess. */
+function paintUndo(){
+ var b=$('undobtn'), l=$('undolab'); if(!b)return;
+ var n=undoDepth(), what=undoPeek();
+ b.hidden=(n===0);
+ if(n){ l.textContent='Undo '+what;
+  b.title='Takes back '+what+'. '+n+' step'+(n===1?'':'s')+' available.'; }}
+(function(){
+ var b=$('undobtn');
+ if(b)b.onclick=function(){
+  var u=undoPop();
+  if(!u){paintUndo();return;}
+  /* the field changed underneath everything, so the whole surface repaints
+     and the person is told what came back rather than left to spot it. */
+  syncCh(); if(typeof syncLw==='function')syncLw();
+  if(typeof syncSoul==='function')syncSoul();
+  saveYou(); if(typeof pSave==='function')pSave();
+  render(); paintUndo();
+  status('Took back '+u.nm+'.','ok');};
+ /* the usual chord, because a person who wants undo reaches for it */
+ addEventListener('keydown',function(e){
+  if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='z'){
+   var t=e.target&&e.target.tagName;
+   if(t==='INPUT'||t==='TEXTAREA')return;   /* let the field have its own */
+   e.preventDefault(); var ub=$('undobtn'); if(ub&&!ub.hidden)ub.onclick();}});})();
 
 /* ---- THE MATRIX. 19 domains across, 9 child fetters down. Cells drill. ---- */
 const MXC=[];
@@ -7588,17 +7699,20 @@ cv.addEventListener('pointerdown',function(e){
   if(!h)return;}
  var touch=COARSE||e.pointerType==='touch'||e.pointerType==='pen';
  if(h.k==='node'&&h.n.cf&&!touch){
+  /* one push per drag, taken at the start, so a drag is one undo and not
+     forty. the move handler writes continuously. */
+  undoPush('setting '+h.n.cf.toLowerCase()+' by hand');
   DRAG={mode:'cf',cf:h.n.cf,y:y,s:S.charge[h.n.cf],node:h.n,moved:false};
   try{cv.setPointerCapture(e.pointerId);}catch(err){}
   return;}
  if(h.k==='node'&&h.n.cf&&touch){ /* a tap reads the address, it never writes it */
   S.pin=null; runNodeDrill(h.n); render(); return;}
- if(h.k==='dom'){toYou();
+ if(h.k==='dom'){toYou(); undoPush('changing the blueprint domain');
   if(e.shiftKey){var k=S.doms.indexOf(h.j);
    if(k>=0){if(S.doms.length>1)S.doms.splice(k,1);}else S.doms.push(h.j);}
   else S.doms=[h.j];
   buildSoul();S.pin=null;syncSoul();saveYou();render();return;}
- if(h.k==='arch'){toYou();
+ if(h.k==='arch'){toYou(); undoPush('changing the archetype');
   if(e.shiftKey){var k2=S.arcs.indexOf(h.j);
    if(k2>=0){if(S.arcs.length>1)S.arcs.splice(k2,1);}else S.arcs.push(h.j);}
   else S.arcs=[h.j].concat(S.arcs.filter(function(z){return z!==h.j;}).slice(0,3));
@@ -7770,6 +7884,7 @@ function railTop(r){
  e.title=td?(td.nm+'. '+td.def+' '+td.energy+' Toward: '+td.toward)
   :'Nothing has been read yet. Write a story or set a charge.';}
 function render(){
+ if(typeof paintUndo==='function')paintUndo();
  const r=compute(), p=PEOPLE[S.who];
  /* the tier is a name for a person. it is not printed off the defaults, and it
     never appears without what it owes: the definition, the behaviour and the
@@ -7863,9 +7978,10 @@ function render(){
    /* "nothing" was being printed over charge a person had entered themselves.
       If something sits under the line, the row says so rather than reporting
       a zero that is not true. */
-   +row('Held',held?held+' addresses'
-     :(r.under?'nothing above the line':'nothing'),
-     held?'':(r.under?r.under+' under it':''))
+   /* "nothing above the line" plus "74 under it" wrapped into four lines in a
+      narrow column and read as broken text. One short value, one short note. */
+   +row('Held',held?held+' addresses':'nothing',
+     held?'':(r.under?r.under+' under the line':''))
    +row('Installed',inst?inst+' addresses':'nothing','')
    +row('Darkest',r.darkB,r.darkV.toFixed(1))
    +row('Law shut',r.weakL.nm,'at the '+r.weakL.b.toLowerCase());})();

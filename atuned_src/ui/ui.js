@@ -78,17 +78,20 @@ cv.addEventListener('pointerdown',function(e){
   if(!h)return;}
  var touch=COARSE||e.pointerType==='touch'||e.pointerType==='pen';
  if(h.k==='node'&&h.n.cf&&!touch){
+  /* one push per drag, taken at the start, so a drag is one undo and not
+     forty. the move handler writes continuously. */
+  undoPush('setting '+h.n.cf.toLowerCase()+' by hand');
   DRAG={mode:'cf',cf:h.n.cf,y:y,s:S.charge[h.n.cf],node:h.n,moved:false};
   try{cv.setPointerCapture(e.pointerId);}catch(err){}
   return;}
  if(h.k==='node'&&h.n.cf&&touch){ /* a tap reads the address, it never writes it */
   S.pin=null; runNodeDrill(h.n); render(); return;}
- if(h.k==='dom'){toYou();
+ if(h.k==='dom'){toYou(); undoPush('changing the blueprint domain');
   if(e.shiftKey){var k=S.doms.indexOf(h.j);
    if(k>=0){if(S.doms.length>1)S.doms.splice(k,1);}else S.doms.push(h.j);}
   else S.doms=[h.j];
   buildSoul();S.pin=null;syncSoul();saveYou();render();return;}
- if(h.k==='arch'){toYou();
+ if(h.k==='arch'){toYou(); undoPush('changing the archetype');
   if(e.shiftKey){var k2=S.arcs.indexOf(h.j);
    if(k2>=0){if(S.arcs.length>1)S.arcs.splice(k2,1);}else S.arcs.push(h.j);}
   else S.arcs=[h.j].concat(S.arcs.filter(function(z){return z!==h.j;}).slice(0,3));
@@ -260,6 +263,7 @@ function railTop(r){
  e.title=td?(td.nm+'. '+td.def+' '+td.energy+' Toward: '+td.toward)
   :'Nothing has been read yet. Write a story or set a charge.';}
 function render(){
+ if(typeof paintUndo==='function')paintUndo();
  const r=compute(), p=PEOPLE[S.who];
  /* the tier is a name for a person. it is not printed off the defaults, and it
     never appears without what it owes: the definition, the behaviour and the
@@ -353,9 +357,10 @@ function render(){
    /* "nothing" was being printed over charge a person had entered themselves.
       If something sits under the line, the row says so rather than reporting
       a zero that is not true. */
-   +row('Held',held?held+' addresses'
-     :(r.under?'nothing above the line':'nothing'),
-     held?'':(r.under?r.under+' under it':''))
+   /* "nothing above the line" plus "74 under it" wrapped into four lines in a
+      narrow column and read as broken text. One short value, one short note. */
+   +row('Held',held?held+' addresses':'nothing',
+     held?'':(r.under?r.under+' under the line':''))
    +row('Installed',inst?inst+' addresses':'nothing','')
    +row('Darkest',r.darkB,r.darkV.toFixed(1))
    +row('Law shut',r.weakL.nm,'at the '+r.weakL.b.toLowerCase());})();

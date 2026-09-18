@@ -13,6 +13,7 @@ engine/verp.js
 engine/lexicon.js
 engine/core.js
 engine/expression.js
+engine/undo.js
 engine/compute.js
 engine/schema.js
 engine/intake.js

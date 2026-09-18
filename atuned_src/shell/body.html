@@ -11,12 +11,17 @@
   <label for="psel" class="toplab">Whose field</label>
   <select id="psel"></select>
   <div class="seg" id="themes"></div>
-  <button class="vt" id="legible" type="button" aria-pressed="false"
-   title="Atkinson Hyperlegible. Maximum character distinction.">Aa</button>
   <!-- Density moved into the profile on the owner's ruling. It is a setting a
        person chooses once, and a setting chosen once does not earn three
        permanent buttons in the bar where the work happens. The profile opens
        on the right, which is where it now lives. -->
+  <!-- Undo. It says what it will take back, because a control that says only
+       "undo" makes a person guess what they are about to get. Hidden when the
+       stack is empty rather than sitting there disabled. -->
+  <button class="vt undobtn" id="undobtn" type="button" hidden>
+   <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
+    <path d="M4 10h10a5 5 0 0 1 0 10h-3"/><path d="M4 10l4-4M4 10l4 4"/></svg>
+   <span id="undolab">Undo</span></button>
   <button class="vt" id="profbtn" type="button" title="Your profile and settings">
    <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">
     <circle cx="12" cy="8" r="3.6"/><path d="M5 20c0-3.6 3.1-5.6 7-5.6s7 2 7 5.6"/></svg></button>

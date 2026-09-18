@@ -738,6 +738,38 @@ g('19b \u00b7 the empty field says it is empty');
  S.charge.Fear=0; compute();
 }
 
+g('18b \u00b7 undo');
+/* The largest gap in the product since the rebuild. snapshot() was never the
+   answer: it records a derived reading, cq and dq and sq, so a field cannot be
+   restored from it. Undo captures the INPUTS, which is the only thing
+   everything else recomputes from. */
+{
+ reset(2,0,6);
+ const before=CHARGES.map(c=>S.charge[c]).join();
+ ok(E.undoDepth()>=0,'the stack reports its depth');
+ E.undoClear();
+ ok(E.undoPop()===null,'an empty stack returns nothing rather than throwing');
+ E.undoPush('a test change');
+ ok(E.undoPeek()==='a test change','the stack names what it will take back');
+ S.charge.Fear=9.4; S.charge.Anger=8.1; S.replace.Sad=5; S.law.Truth=2.2;
+ S.doms=[3,7]; buildSoul();
+ const u=E.undoPop();
+ ok(u&&u.nm==='a test change','undo reports what it undid');
+ ok(CHARGES.map(c=>S.charge[c]).join()===before,'every charge comes back');
+ ok(S.replace.Sad===0,'and every installed opposite');
+ ok(Math.abs(S.law.Truth-6)<1e-9,'and every law, got '+S.law.Truth);
+ ok(JSON.stringify(S.doms)==='[0]','and the soul');
+ /* susceptibility is written by a pass, not by compute, so a restore that
+    skips it leaves stories attributing against the wrong profile */
+ ok(W.every(n=>typeof n.susc==='number'&&n.susc>0),'susceptibility is rebuilt, not stale');
+ /* bounded: a stack for mistakes, not a version history */
+ E.undoClear();
+ for(let i=0;i<E.UNDO_MAX+12;i++)E.undoPush('step '+i);
+ ok(E.undoDepth()===E.UNDO_MAX,'the stack is bounded at '+E.UNDO_MAX+', got '+E.undoDepth());
+ ok(E.undoPeek()==='step '+(E.UNDO_MAX+11),'and keeps the most recent');
+ E.undoClear();
+}
+
 g('19a \u00b7 the roster covers the scale');
 /* The roster sat in the middle, so the vocabulary at the ends had never been
    looked at with a real field behind it. Four cases added at the ends on the

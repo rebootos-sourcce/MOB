@@ -296,6 +296,28 @@ ok(bands.length===0,'no band word appears anywhere on an unread first screen, fo
  +(bands.join(', ')||'none'));
 await blank.close();
 
+console.log('\n=== undo, on the three irreversible writes ===');
+const un=await page.evaluate(()=>{
+ loadP(6); setTab(TAB.STORY); render();
+ const o={hiddenAtRest:document.getElementById('undobtn').hidden};
+ const before=JSON.stringify(S.charge);
+ ST_TEXT='I could not stop going over it and it had me. I said nothing and I let it sit.';
+ ST_PARSED=parseStory(ST_TEXT); stRender();
+ const ap=document.getElementById('stapply'); if(ap)ap.click();
+ o.changed=(JSON.stringify(S.charge)!==before);
+ o.label=document.getElementById('undolab').textContent;
+ o.shown=!document.getElementById('undobtn').hidden;
+ document.getElementById('undobtn').click();
+ o.restored=(JSON.stringify(S.charge)===before);
+ o.hiddenAgain=document.getElementById('undobtn').hidden;
+ return o;});
+ok(un.hiddenAtRest,'the control is hidden when there is nothing to take back');
+ok(un.changed,'committing a story changes the field');
+ok(un.shown&&/committing the story/.test(un.label),
+ 'and the control names what it will undo: '+JSON.stringify(un.label));
+ok(un.restored,'undo restores the field exactly');
+ok(un.hiddenAgain,'and hides itself again when the stack empties');
+
 console.log('\n=== a label never appears without what it owes ===');
 /* The owner's ruling. A word like Severe with nothing attached is a judgement.
    The same word with a definition, the behaviour and the direction is a

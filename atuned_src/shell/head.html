@@ -4,7 +4,7 @@
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 /* ============================================================
    ART DIRECTION
@@ -39,7 +39,12 @@
  --heart:#6FC5A3; --throat:#65B8D4; --eye:#8296DB; --crown:#A98BCE;
  --alarm:#FF2E1F; --alarm-soft:rgba(255,46,31,.16); --gold:#DFCC7E;
  --good:#68CBA4; --bad:#CB5F59;
- --sans:'Lexend',system-ui,-apple-system,sans-serif;
+ /* Lexend is a wide face by design, which is why the rail clipped: Witness
+    rendered as Wit. Inter is narrower at the same size and carries more
+    characters per line without dropping the point size. The font tuner is
+    gone on the owner's ruling, so this is the one face and there is no
+    per person override to keep working. */
+ --sans:'Inter','Inter Tight',system-ui,-apple-system,'Segoe UI',sans-serif;
  /* One family. The mono was in the first art direction doc and was ruled out
     on sight. Lexend carries the digits, with tabular figures so columns hold. */
  --num:Lexend,system-ui,-apple-system,sans-serif;
@@ -114,7 +119,7 @@ body.snow{
  --good:#1F8560; --bad:#A8413C;
  --shadow:0 12px 30px rgba(40,54,74,.12);
 }
-body.legible{ --sans:'Atkinson Hyperlegible',system-ui,sans-serif }
+/* the legible toggle is removed. the face below is the one face. */
 
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
@@ -329,6 +334,9 @@ body:not(.tab-field) .pol2{display:none}
  padding:0 0 13px;border-bottom:1px solid var(--edge);margin-bottom:2px}
 .railtop .rt-t{font-size:14px;color:var(--ink);font-weight:500}
 /* the tier reads as a word you can open, not as a verdict printed at you */
+.undobtn{gap:6px;color:var(--gold);border-color:var(--gold)}
+.undobtn svg{fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.undobtn span{max-width:20ch;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .tierbtn{background:none;border:0;padding:2px 0;font:inherit;color:inherit;
  cursor:pointer;text-align:left;min-height:var(--tap,44px);
  border-bottom:1px dotted var(--edge-2)}

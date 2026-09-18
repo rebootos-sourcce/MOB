@@ -26,6 +26,8 @@ function stRender(){
  var ap=document.getElementById('stapply');
  if(ap)ap.onclick=function(){
   if(!ST_PARSED||!ST_PARSED.imprints.length)return;
+  /* the field is about to change and until now there was no way back */
+  undoPush('committing the story');
   applyStory(ST_TEXT); verpApply(ST_TEXT); leanApply(ST_TEXT);
   if(CURP){CURP.story=CURP.story||{entries:[]};
    CURP.story.entries.push({t:new Date().toISOString(),text:ST_TEXT,

@@ -30,6 +30,9 @@ function relTick(){
   relRender();}, RUN.speed*1000);}
 function relCoolDown(){
  if(RUN.done)return; RUN.done=true; RUN.phase='done';
+ /* the release empties addresses and installs their opposites. it is the
+    largest single write this product makes and it had no way back. */
+ undoPush('the release at '+(RUN.queue.length?RUN.queue.length+' addresses':'no addresses'));
  var freed=0;
  RUN.queue.forEach(function(n){
   var w0=n.sq*10;                                   /* weights are 0 to 100 here */

@@ -132,9 +132,8 @@ const THEMEICON={
   $('themes').querySelectorAll('button').forEach(function(x,j){x.setAttribute('aria-pressed',j===i);});
   rebuildSwatches();render();});
  $('themes').appendChild(b);});
-$('legible').addEventListener('click',function(){
- S.legible=!S.legible; document.body.classList.toggle('legible',S.legible);
- this.setAttribute('aria-pressed',S.legible?'true':'false');});
+/* the font tuner is gone on the owner's ruling. one face, narrower, no
+   per person override to keep working across every surface. */
 
 /* ---- the icon grids. the icon carries the colour, selection is a ring. ---- */
 DOMAINS.forEach(function(d,i){
@@ -326,3 +325,32 @@ function helpSheet(){
  /* the stored choice has to be on the body before the first paint measures it */
  var k=densGet(); if(k)document.body.classList.add('dens-'+k);
  densPaint();})();
+
+/* ---- UNDO ----
+   The control names what it will take back and disappears when there is
+   nothing to take back, because a permanently disabled button is furniture
+   and a button labelled only "undo" makes a person guess. */
+function paintUndo(){
+ var b=$('undobtn'), l=$('undolab'); if(!b)return;
+ var n=undoDepth(), what=undoPeek();
+ b.hidden=(n===0);
+ if(n){ l.textContent='Undo '+what;
+  b.title='Takes back '+what+'. '+n+' step'+(n===1?'':'s')+' available.'; }}
+(function(){
+ var b=$('undobtn');
+ if(b)b.onclick=function(){
+  var u=undoPop();
+  if(!u){paintUndo();return;}
+  /* the field changed underneath everything, so the whole surface repaints
+     and the person is told what came back rather than left to spot it. */
+  syncCh(); if(typeof syncLw==='function')syncLw();
+  if(typeof syncSoul==='function')syncSoul();
+  saveYou(); if(typeof pSave==='function')pSave();
+  render(); paintUndo();
+  status('Took back '+u.nm+'.','ok');};
+ /* the usual chord, because a person who wants undo reaches for it */
+ addEventListener('keydown',function(e){
+  if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='z'){
+   var t=e.target&&e.target.tagName;
+   if(t==='INPUT'||t==='TEXTAREA')return;   /* let the field have its own */
+   e.preventDefault(); var ub=$('undobtn'); if(ub&&!ub.hidden)ub.onclick();}});})();
