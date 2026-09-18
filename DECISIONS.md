@@ -749,3 +749,48 @@ channel there are 428 lifetime keys and tier one exhausts the entire product in
 five weeks. Keyed by statement there are 21,400 and it runs for fifty three
 months. Nothing else in the economics matters until it is ruled.
 
+## Free stays at ten a week. Ruled
+
+> It is the free layer, so I do not want people just cashing in. So let us try
+> ten.
+
+Ten a week, banking toward a run of twenty five, which means a free person
+reaches one release every two and a half weeks. That is the intended friction
+and it is now a decision rather than an accident: the grant banks, the surface
+says it is banking, and nobody is shown a number that reads like a permission
+to do something they cannot afford.
+
+## The equivalence, and the two rules on saying it
+
+Every rate is the codex's own, quoted: therapy one to six patterns a session,
+meditation six to twelve per twenty minute practice, breathwork the same.
+**Plant medicine is deliberately absent.** The book gives no rate for it and a
+number invented to make a comparison look good is the first thing a person who
+has done it will check.
+
+    therapy          1 to 6 a session
+    thirty minutes   9 to 18
+    a month of it    270 to 540, at half an hour every day
+
+    one run, 25      4 to 25 therapy sessions
+    the gift, 100    17 to 100 sessions
+    tier one, 400    a month of half an hour every day
+    tier two, 800    a month and a half of it
+    tier three, 1200 two and a bit months
+
+**Tier one is a month of daily practice.** Four hundred sits inside two hundred
+and seventy to five hundred and forty, which is that month exactly. That is the
+sentence the whole table exists to support.
+
+**Rule one: throughput, never outcome.** How many patterns a thing releases is
+checkable against the book. What a life does afterwards is not, and the
+evidence tier does not carry it. So the copy says "as many patterns as", never
+"the same as" and never "instead of".
+
+**Rule two: the low end gets said.** A range of one to six quoted at six is the
+most flattering reading of your own number, which is exactly the reading a
+hostile reader checks first.
+
+Rapid rewiring is the mechanism claim and it is fine. Two years of therapy is
+an outcome claim and it is not.
+

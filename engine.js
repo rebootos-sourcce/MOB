@@ -2183,6 +2183,188 @@ function planUpgrade(pl){
    +(moreSight?', and the next rung of the chain':'')};}
 
 /* ============================================================
+   WHAT AN ALLOWANCE IS WORTH, in the units people already price
+   against. Every figure here is the codex's own, quoted:
+
+     "Therapy tends to release one to six patterns per session, if
+      you are lucky. Meditation, six to twelve patterns per twenty
+      minute practice. Breathwork, similar. Plant medicine depends
+      on exposure."
+
+   Plant medicine is deliberately absent from the table. The book
+   gives no figure for it and inventing one to make a comparison
+   look good is the fastest way to lose an argument with somebody
+   who has done it.
+
+   TWO RULES ON HOW THIS MAY BE SAID.
+
+   It is a claim about THROUGHPUT, never about outcome. How many
+   patterns a thing releases is measurable against the book. What a
+   person's life does afterwards is not, and the evidence tier does
+   not carry it. So the copy says "as many patterns as", never "the
+   same as" and never "instead of".
+
+   And the low end is the one that gets said. A range of one to six
+   quoted at six is the most flattering reading of your own number,
+   which is exactly the reading a hostile reader will check first.
+   ============================================================ */
+const EQUIV=[
+ {k:'therapy', nm:'therapy sessions',        lo:1,  hi:6,   unit:'a session',
+  d:'One to six patterns a session, if you are lucky.'},
+ {k:'medit',   nm:'thirty minute sittings',  lo:9,  hi:18,  unit:'per thirty minutes',
+  d:'Six to twelve per twenty minutes, so nine to eighteen per half hour.'},
+ {k:'breath',  nm:'breathwork sessions',     lo:9,  hi:18,  unit:'per thirty minutes',
+  d:'The same rate as meditation.'},
+ {k:'month',   nm:'months of daily practice',lo:270,hi:540, unit:'thirty minutes a day',
+  d:'A month of half an hour every day, at the meditation rate.'}];
+const EQUIV_NONE='Plant medicine is not on this list. The book gives no rate for it, '
+ +'and a number invented to make a comparison look good is the first thing a person who '
+ +'has done it will check.';
+/* how many of a thing an allowance is worth. the low end first, because the
+   low end is the claim that survives being checked. */
+function equivOf(patterns,k){
+ var e=EQUIV.filter(function(x){return x.k===k;})[0];
+ if(!e||!(patterns>0))return null;
+ return {k:k, nm:e.nm, lo:patterns/e.hi, hi:patterns/e.lo,
+  /* the sentence, at the conservative end and phrased as throughput */
+  say:'as many patterns as '+fmtN(patterns/e.hi)+' '+e.nm+' would release'};}
+function fmtN(n){
+ if(n>=10)return String(Math.round(n));
+ if(n>=1)return String(Math.round(n*10)/10);
+ return String(Math.round(n*100)/100);}
+/* the one line a rung gets to say about itself, and it is the meditation month
+   because four hundred a month lands inside two hundred and seventy to five
+   hundred and forty, which IS a month of half an hour a day. */
+function planWorth(patterns){
+ var m=equivOf(patterns,'month'), t=equivOf(patterns,'therapy');
+ if(!m||!t)return '';
+ /* THE TEST IS WHETHER THE RANGE CONTAINS ONE, not whether a ratio is near
+    it. Four hundred over the high rate is 0.74 months and over the low rate
+    is 1.48, so a month sits inside the band and the honest sentence is "about
+    a month". Comparing the conservative end to one instead said sixty seven
+    therapy sessions, which is true and is the wrong unit. */
+ if(m.lo<=1&&m.hi>=1)
+  return 'About what a month of half an hour of practice every day would release.';
+ if(m.lo>1)return 'About what '+fmtN(m.lo)+' months of half an hour a day would release.';
+ return 'As many patterns as '+fmtN(t.lo)+' therapy sessions would release.';}
+
+/* ============================================================
+   THE AVATAR, THE PURPOSE MAP AND THE BOUNDARY.
+
+   The becoming half. Release empties an address and replace fills
+   it, and neither says what the person is filling it toward.
+
+   Ported from the original Atuned build, not rebuilt. The owner's
+   own sentence governs it: "one side is who the person is at their
+   best, the other is who they are not. The app never rules on
+   whether an attribute is a real edge or a saboteur wearing a
+   virtue. That depends on where they are in their growth, and it
+   is the thing they revise upward as they climb."
+
+   Host free. The resolver and the seat weights come in as
+   arguments, so nothing here reaches for a document or a store.
+   ============================================================ */
+const AV_MONTH=30*24*3600*1000;
+function avatarBlank(){
+ return {built:false, at:null, reviewedAt:null, pairs:[]};}
+/* A PAIR IS WRITTEN AS A PAIR. The left side is a value and a value has no
+   address. The right side is a sentence about a bad day, and a sentence about
+   a bad day parses. That is why neither half is written alone. */
+function avatarValid(pair){
+ return !!(pair&&typeof pair.be==='string'&&pair.be.trim()
+  &&typeof pair.notbe==='string'&&pair.notbe.trim());}
+function avatarDue(av,now){
+ if(!av||!av.built)return false;
+ var last=av.reviewedAt||av.at||0;
+ return ((now||Date.now())-new Date(last).getTime())>=AV_MONTH;}
+function avatarDaysLeft(av,now){
+ if(!av||!av.built)return null;
+ var last=new Date(av.reviewedAt||av.at||(now||Date.now())).getTime();
+ return Math.max(0,Math.ceil((AV_MONTH-((now||Date.now())-last))/86400000));}
+/* THE GAP. The right side goes to the resolver, the resolver returns a seat,
+   the seat has live imprints and the imprints have weight. The distance
+   between who somebody is and who they are becoming is not a mood, it is a
+   number at an address. seatLoad and seatIg are handed in so this stays pure. */
+function avatarGap(pair,seat,seatLoad,seatIg){
+ if(!avatarValid(pair)||!seat)return null;
+ var clear=(seatLoad<=0);
+ return {seat:seat, load:seatLoad, ig:seatIg, clear:clear,
+  at:mirrorAt(seatLoad,seatIg)};}
+/* completion read from work done rather than from work declared */
+function avatarProgress(rows){
+ var list=rows||[];
+ if(!list.length)return null;
+ var done=list.filter(function(r){return r.gap&&r.gap.clear;}).length;
+ return {done:done, total:list.length,
+  pct:Math.round(100*done/Math.max(1,list.length))};}
+
+/* ============================================================
+   THE PURPOSE MAP. Two overlapping triangles, and the overlap is
+   the boundary.
+
+   The owner's model. "Meaning is the end point of expression. At
+   the end of expression, meaning creates purpose." The direction
+   runs one way and purpose is what is left standing at the end of
+   it, so a person may not type any of the three readings.
+
+   Upward: the higher purpose, the soul's, three universal values.
+   Downward: the earthly purpose, the ego's, three with a body
+   attached. Each centre is the sum of its three corners. The line
+   between the two centres is how a person makes money and how they
+   find fulfilment doing it.
+
+   Six values in. Nothing else is stored, because a derived value
+   that is also stored is a value that can drift.
+   ============================================================ */
+const PUR_SIDES=['partner','family','friends','community','coworkers','alone'];
+const PUR_PER_SIDE=5;
+const PUR_SOUL='Universal. Freedom, free will, knowledge, wisdom, that register.';
+const PUR_EGO='With a body attached. Health, fitness, financial stability, wealth, family.';
+function purposeBlank(){
+ var sides={}; PUR_SIDES.forEach(function(s){sides[s]=[];});
+ return {soul:['','',''], ego:['','',''], sides:sides};}
+function purposeReady(p){
+ if(!p)return false;
+ var f=function(a){return (a||[]).filter(function(x){return x&&String(x).trim();}).length===3;};
+ return f(p.soul)&&f(p.ego);}
+/* THE CENTRE IS THE SUM OF THE CORNERS and is never entered. With three words
+   and no measurement behind them, the only honest centre is the three said
+   together, so the product returns them rather than inventing a fourth. */
+function purposeCentre(three){
+ var a=(three||[]).filter(function(x){return x&&String(x).trim();});
+ return a.length===3?a.join(', '):null;}
+function purposeRead(p){
+ if(!purposeReady(p))return null;
+ return {higher:purposeCentre(p.soul), earthly:purposeCentre(p.ego),
+  /* what the relation between the two centres answers, ruled */
+  between:'Where those two meet is how you make money and how you find fulfilment doing it.'};}
+/* THE HEXAGON IS THE BOUNDARY. Six sides, five commitments each, thirty in
+   all. Inside is yours to protect and outside is choice. Thirty is not a lot
+   to ask: this is the instrument, not an onboarding form, and a mirror half
+   described shows half a person. */
+function boundaryCount(p){
+ if(!p||!p.sides)return {filled:0, of:PUR_SIDES.length*PUR_PER_SIDE, thin:PUR_SIDES.slice()};
+ var n=0, thin=[];
+ PUR_SIDES.forEach(function(s){
+  var a=(p.sides[s]||[]).filter(function(x){return x&&String(x).trim();});
+  n+=Math.min(a.length,PUR_PER_SIDE);
+  if(a.length<PUR_PER_SIDE)thin.push(s);});
+ return {filled:n, of:PUR_SIDES.length*PUR_PER_SIDE, thin:thin};}
+/* which side an imprint landed on, so the journal can say WHY the charge
+   landed rather than only where. null when the entry names nobody. */
+function boundaryCross(text){
+ var t=String(text||'').toLowerCase();
+ var MAP={partner:/\b(wife|husband|partner|girlfriend|boyfriend|spouse|marriage)\b/,
+  family:/\b(mum|mom|mother|dad|father|parent|brother|sister|son|daughter|family)\b/,
+  friends:/\b(friend|mate|friends)\b/,
+  community:/\b(neighbour|neighbor|church|team|club|community|group)\b/,
+  coworkers:/\b(boss|manager|colleague|coworker|co-worker|client|work)\b/,
+  alone:/\b(myself|alone|on my own|by myself)\b/};
+ for(var i=0;i<PUR_SIDES.length;i++)
+  if(MAP[PUR_SIDES[i]].test(t))return PUR_SIDES[i];
+ return null;}
+
+/* ============================================================
    SOURCE PROFILE SCHEMA v1 · the cross-compatibility contract.
    Every number in the app derives from this and nothing else.
    Versioned so a v2 can migrate rather than break.
@@ -2227,6 +2409,11 @@ function blankProfile(name){
      does not need any of them to answer what somebody may open, and holding an
      identifier it does not need is how a promise about a name gets broken. */
   plan:{tier:'free', status:'', granted:0, carried:0, base:0, since:null, until:null},
+  /* THE BECOMING HALF. Who you are becoming, what that is for, and what is
+     yours to protect. Six values in on the purpose map and nothing derived is
+     stored, because a derived value that is also stored is one that can
+     drift. */
+  avatar:avatarBlank(), purpose:purposeBlank(),
   laws:{}, intake:{answers:{}, done:[], startedAt:null, completedAt:null},
   gates:{verp:{aware:0,detach:0,intent:0,ignore:0,attach:0,averse:0},
          lean:{benign:0,malignant:0}},   /* the cost multiplier, v2 */
@@ -2246,6 +2433,9 @@ function loadProfile(p){
  /* an older record has no plan, which is a free record and not a broken one */
  if(!p.plan)p.plan={tier:'free',status:'',granted:0,carried:0,base:0,since:null,until:null};
  if(p.plan.base==null)p.plan.base=0;
+ if(!p.avatar)p.avatar=avatarBlank();
+ if(!Array.isArray(p.avatar.pairs))p.avatar.pairs=[];
+ if(!p.purpose)p.purpose=purposeBlank();
  S.doms=(p.soul.doms||[0]).slice(); S.arcs=(p.soul.arcs||[0,1]).slice();
  S.roots=(p.soul.roots||[]).slice(); buildSoul();
  CHILD.forEach(function(c){var a=p.axes[c.nm]||{};
@@ -2445,6 +2635,51 @@ function validateProfile(o){
   ['customer','subscription','email','key','secret','token'].forEach(function(f){
    if(o.plan[f]!==undefined)errs.push('plan.'+f+' is not held by this product');});}
  else if(o.plan!==undefined)errs.push('plan is not an object');
+ /* THE AVATAR. A pair is written as a pair and half a pair is refused rather
+    than half kept, because the left side alone has no address and the right
+    side alone has no direction. The text is the person's own and is only
+    bounded, never edited. */
+ if(o.avatar&&typeof o.avatar==='object'){
+  p.avatar.built=!!o.avatar.built;
+  ['at','reviewedAt'].forEach(function(f){
+   if(o.avatar[f]===null||o.avatar[f]===undefined)return;
+   if(typeof o.avatar[f]==='string'&&!isNaN(new Date(o.avatar[f]).getTime()))
+    p.avatar[f]=o.avatar[f];
+   else errs.push('avatar.'+f+' is not a date');});
+  if(Array.isArray(o.avatar.pairs)){
+   p.avatar.pairs=o.avatar.pairs.filter(function(x){
+    return x&&typeof x==='object'
+     &&typeof x.be==='string'&&x.be.length>0&&x.be.length<200
+     &&typeof x.notbe==='string'&&x.notbe.length>0&&x.notbe.length<200;})
+    .map(function(x){return {be:x.be, notbe:x.notbe};});
+   if(p.avatar.pairs.length!==o.avatar.pairs.length)
+    errs.push('avatar.pairs held '+(o.avatar.pairs.length-p.avatar.pairs.length)
+     +' entries that are not a written pair');}
+  else if(o.avatar.pairs!==undefined)errs.push('avatar.pairs is not a list');}
+ else if(o.avatar!==undefined)errs.push('avatar is not an object');
+ /* THE PURPOSE MAP. Three and three, and six sides of five. A seventh value
+    or a sixth commitment on one side is refused rather than dropped, because
+    a boundary quietly truncated is a boundary a person thinks they set. */
+ if(o.purpose&&typeof o.purpose==='object'){
+  ['soul','ego'].forEach(function(f){
+   if(o.purpose[f]===undefined)return;
+   if(!Array.isArray(o.purpose[f])||o.purpose[f].length>3){
+    errs.push('purpose.'+f+' is not three values'); return;}
+   p.purpose[f]=o.purpose[f].map(function(x){
+    return typeof x==='string'&&x.length<120?x:'';});
+   while(p.purpose[f].length<3)p.purpose[f].push('');});
+  if(o.purpose.sides&&typeof o.purpose.sides==='object'){
+   PUR_SIDES.forEach(function(sd){
+    var a=o.purpose.sides[sd];
+    if(a===undefined)return;
+    if(!Array.isArray(a)){errs.push('purpose.sides.'+sd+' is not a list'); return;}
+    if(a.length>PUR_PER_SIDE){
+     errs.push('purpose.sides.'+sd+' holds '+a.length+', which is more than '+PUR_PER_SIDE);
+     return;}
+    p.purpose.sides[sd]=a.filter(function(x){
+     return typeof x==='string'&&x.length>0&&x.length<200;});});}
+  else if(o.purpose.sides!==undefined)errs.push('purpose.sides is not an object');}
+ else if(o.purpose!==undefined)errs.push('purpose is not an object');
  if(Array.isArray(o.rituals))p.rituals=o.rituals.filter(function(x){return x&&typeof x==='object';});
  /* A snapshot is strictly typed numbers and the record calls toFixed on them,
     so "the person's own text" does not apply here. An unchecked history
@@ -2475,6 +2710,9 @@ function meterRun(p,keys){
  /* an older record has no plan, which is a free record and not a broken one */
  if(!p.plan)p.plan={tier:'free',status:'',granted:0,carried:0,base:0,since:null,until:null};
  if(p.plan.base==null)p.plan.base=0;
+ if(!p.avatar)p.avatar=avatarBlank();
+ if(!Array.isArray(p.avatar.pairs))p.avatar.pairs=[];
+ if(!p.purpose)p.purpose=purposeBlank();
  var list=(keys||[]).filter(function(k){return typeof k==='string'&&k;});
  if(!list.length)return {added:0,repeated:0};
  var have={},added=0,repeated=0;
@@ -3370,12 +3608,21 @@ if(typeof module!=='undefined'&&module.exports){
   /* meter */    meterFirst:meterFirst,
   /* undo */     undoPush:undoPush, undoPop:undoPop, undoDepth:undoDepth,
                   undoPeek:undoPeek, undoClear:undoClear, UNDO_MAX:UNDO_MAX,
+  /* avatar */   avatarBlank:avatarBlank, avatarValid:avatarValid, avatarDue:avatarDue,
+                 avatarDaysLeft:avatarDaysLeft, avatarGap:avatarGap,
+                 avatarProgress:avatarProgress, AV_MONTH:AV_MONTH,
+  /* purpose */  purposeBlank:purposeBlank, purposeReady:purposeReady,
+                 purposeCentre:purposeCentre, purposeRead:purposeRead,
+                 boundaryCount:boundaryCount, boundaryCross:boundaryCross,
+                 PUR_SIDES:PUR_SIDES, PUR_PER_SIDE:PUR_PER_SIDE,
+                 PUR_SOUL:PUR_SOUL, PUR_EGO:PUR_EGO,
   /* plan */     PLANS:PLANS, PLAN_BY:PLAN_BY, PLAN_ALWAYS:PLAN_ALWAYS, SEE_ORDER:SEE_ORDER,
                  PLAN_LIVE:PLAN_LIVE, PLAN_DEAD:PLAN_DEAD,
                  planState:planState, planOf:planOf, planSees:planSees,
                  planNextSight:planNextSight, planAllowance:planAllowance,
                  planUpgrade:planUpgrade, RUN_MAX:RUN_MAX,
                  LEAD_SEES:LEAD_SEES, LEAD_HIDDEN:LEAD_HIDDEN, leadSees:leadSees,
+                 EQUIV:EQUIV, EQUIV_NONE:EQUIV_NONE, equivOf:equivOf, planWorth:planWorth,
   /* ages */     AGES:AGES, AGE_TEST:AGE_TEST, AGE_LO:AGE_LO, AGE_HI:AGE_HI,
                  ageFinding:ageFinding, AGE_WORKED:AGE_WORKED,
   /* compass */  MIRROR:MIRROR, MASTERS:MASTERS, BLUEPRINT:BLUEPRINT, CIRCLES:CIRCLES,

@@ -670,11 +670,13 @@ const open_=await page.evaluate(()=>{
  undoPop(); render();
  return o;});
 ok(open_.unread&&open_.shown,'an empty field is offered a way in rather than a tooltip');
-ok(open_.btns===3,'three doors, got '+open_.btns);
+ok(open_.btns===4,'four doors, got '+open_.btns);
 ok(open_.tap>=44,'each one clears the tap floor, smallest '+Math.round(open_.tap));
 ok(/cannot think of themselves as the problem/.test(open_.txt)
  &&/cannot think of anything they identify with/.test(open_.txt),
  'and each says who it is for rather than only what it is');
+ok(/what you are filling it toward/.test(open_.txt),
+ 'including the one that says where the work is aimed');
 ok(/mind sticks to anything that it defends/.test(open_.three||'')
  &&/none of them is about being a bad person/i.test(open_.two||''),
  'both doors open the thing they name  '+JSON.stringify(open_.why));
@@ -726,6 +728,49 @@ ok(!/72%|28%/.test(virginSweep.pol),'and prints no percentage off the defaults')
   +(nums.length?'  '+nums.slice(0,5).join(', '):''));}
 /* the roster itself is always there. only the descent read is conditional. */
 ok(/Satan frozen/.test(pole.clean),'while the nine circles stay readable to anybody');
+
+console.log('\n=== the avatar, and what it aims the work at ===');
+/* The becoming half. The right hand sentence resolves to a seat and the seat
+   has addresses with weight, which is what turns a value into something the
+   release queue can aim at. */
+const avat=await page.evaluate(()=>{
+ const o={}, txt=()=>(document.getElementById('rdrill').textContent||'').replace(/\s+/g,' ');
+ loadP(8); setTab(TAB.FIELD); render();
+ const keptA=CURP.avatar, keptP=CURP.purpose;
+ /* THE RESOLVER. It read p.hits and looked up BY[h.i], which is undefined on
+    every hit, so it answered nothing for text it had in fact parsed. */
+ o.seat=readSeat('I take every meeting home and I am angry about it');
+ o.none=readSeat('the sky was grey');
+ CURP.avatar={built:true,at:new Date().toISOString(),reviewedAt:new Date().toISOString(),
+  pairs:[{be:'I leave work at work',notbe:'I take every meeting home and I am angry about it'}]};
+ CURP.purpose={soul:['freedom','wisdom','truth'],ego:['health','family','stability'],
+  sides:{partner:['a','b'],family:[],friends:[],community:[],coworkers:[],alone:[]}};
+ runAvatarDrill(); o.av=txt();
+ o.rows=document.querySelectorAll('#rdrill [data-avp]').length;
+ document.querySelector('#rdrill [data-avp]').click(); o.pair=txt();
+ runPurposeDrill(); o.pur=txt();
+ CURP.avatar=keptA; CURP.purpose=keptP;
+ return o;});
+ok(avat.seat==='Solar','the resolver reads a seat out of a bad day sentence, got '+avat.seat);
+ok(avat.none===null,'and nothing out of a sentence with no feeling in it');
+ok(avat.rows===1,'one written pair, one row');
+ok(/solar, 5/.test(avat.av),'the row names the seat and what is held there');
+ok(/does not rule on whether an attribute is a real edge/.test(avat.av),
+ 'and the standing ruling is on the surface');
+ok(/Read from what you have actually cleared, not from what you wrote/.test(avat.av),
+ 'progress is read from work done');
+ok(/What is in the way/.test(avat.pair)&&/Self-Judgment|Pride|Need To Win/.test(avat.pair),
+ 'an attribute opens the addresses standing in the way of it');
+ok(/right hand sentence steers the release/.test(avat.pair)
+ &&/left hand one steers the reframe/.test(avat.pair),
+ 'and the routing is stated, because the other way round releases a value');
+/* THE PURPOSE MAP. Six values in, three readings out, none of them typeable. */
+ok(/freedom, wisdom, truth/.test(avat.pur),'the higher centre is the sum of its corners');
+ok(/how you make money and how you find fulfilment/.test(avat.pur),
+ 'and the line between the two answers what it was ruled to answer');
+ok(/2 of 30 written/.test(avat.pur),'the boundary counts thirty');
+ok(/A mirror half described shows half a person/.test(avat.pur),
+ 'and says why thirty is not a lot to ask');
 
 console.log('\n=== the compass with volume ===');
 /* A line cannot show what a cone shows. Two cones meeting at a neck, eight

@@ -44,6 +44,11 @@ function blankProfile(name){
      does not need any of them to answer what somebody may open, and holding an
      identifier it does not need is how a promise about a name gets broken. */
   plan:{tier:'free', status:'', granted:0, carried:0, base:0, since:null, until:null},
+  /* THE BECOMING HALF. Who you are becoming, what that is for, and what is
+     yours to protect. Six values in on the purpose map and nothing derived is
+     stored, because a derived value that is also stored is one that can
+     drift. */
+  avatar:avatarBlank(), purpose:purposeBlank(),
   laws:{}, intake:{answers:{}, done:[], startedAt:null, completedAt:null},
   gates:{verp:{aware:0,detach:0,intent:0,ignore:0,attach:0,averse:0},
          lean:{benign:0,malignant:0}},   /* the cost multiplier, v2 */
@@ -63,6 +68,9 @@ function loadProfile(p){
  /* an older record has no plan, which is a free record and not a broken one */
  if(!p.plan)p.plan={tier:'free',status:'',granted:0,carried:0,base:0,since:null,until:null};
  if(p.plan.base==null)p.plan.base=0;
+ if(!p.avatar)p.avatar=avatarBlank();
+ if(!Array.isArray(p.avatar.pairs))p.avatar.pairs=[];
+ if(!p.purpose)p.purpose=purposeBlank();
  S.doms=(p.soul.doms||[0]).slice(); S.arcs=(p.soul.arcs||[0,1]).slice();
  S.roots=(p.soul.roots||[]).slice(); buildSoul();
  CHILD.forEach(function(c){var a=p.axes[c.nm]||{};
@@ -262,6 +270,51 @@ function validateProfile(o){
   ['customer','subscription','email','key','secret','token'].forEach(function(f){
    if(o.plan[f]!==undefined)errs.push('plan.'+f+' is not held by this product');});}
  else if(o.plan!==undefined)errs.push('plan is not an object');
+ /* THE AVATAR. A pair is written as a pair and half a pair is refused rather
+    than half kept, because the left side alone has no address and the right
+    side alone has no direction. The text is the person's own and is only
+    bounded, never edited. */
+ if(o.avatar&&typeof o.avatar==='object'){
+  p.avatar.built=!!o.avatar.built;
+  ['at','reviewedAt'].forEach(function(f){
+   if(o.avatar[f]===null||o.avatar[f]===undefined)return;
+   if(typeof o.avatar[f]==='string'&&!isNaN(new Date(o.avatar[f]).getTime()))
+    p.avatar[f]=o.avatar[f];
+   else errs.push('avatar.'+f+' is not a date');});
+  if(Array.isArray(o.avatar.pairs)){
+   p.avatar.pairs=o.avatar.pairs.filter(function(x){
+    return x&&typeof x==='object'
+     &&typeof x.be==='string'&&x.be.length>0&&x.be.length<200
+     &&typeof x.notbe==='string'&&x.notbe.length>0&&x.notbe.length<200;})
+    .map(function(x){return {be:x.be, notbe:x.notbe};});
+   if(p.avatar.pairs.length!==o.avatar.pairs.length)
+    errs.push('avatar.pairs held '+(o.avatar.pairs.length-p.avatar.pairs.length)
+     +' entries that are not a written pair');}
+  else if(o.avatar.pairs!==undefined)errs.push('avatar.pairs is not a list');}
+ else if(o.avatar!==undefined)errs.push('avatar is not an object');
+ /* THE PURPOSE MAP. Three and three, and six sides of five. A seventh value
+    or a sixth commitment on one side is refused rather than dropped, because
+    a boundary quietly truncated is a boundary a person thinks they set. */
+ if(o.purpose&&typeof o.purpose==='object'){
+  ['soul','ego'].forEach(function(f){
+   if(o.purpose[f]===undefined)return;
+   if(!Array.isArray(o.purpose[f])||o.purpose[f].length>3){
+    errs.push('purpose.'+f+' is not three values'); return;}
+   p.purpose[f]=o.purpose[f].map(function(x){
+    return typeof x==='string'&&x.length<120?x:'';});
+   while(p.purpose[f].length<3)p.purpose[f].push('');});
+  if(o.purpose.sides&&typeof o.purpose.sides==='object'){
+   PUR_SIDES.forEach(function(sd){
+    var a=o.purpose.sides[sd];
+    if(a===undefined)return;
+    if(!Array.isArray(a)){errs.push('purpose.sides.'+sd+' is not a list'); return;}
+    if(a.length>PUR_PER_SIDE){
+     errs.push('purpose.sides.'+sd+' holds '+a.length+', which is more than '+PUR_PER_SIDE);
+     return;}
+    p.purpose.sides[sd]=a.filter(function(x){
+     return typeof x==='string'&&x.length>0&&x.length<200;});});}
+  else if(o.purpose.sides!==undefined)errs.push('purpose.sides is not an object');}
+ else if(o.purpose!==undefined)errs.push('purpose is not an object');
  if(Array.isArray(o.rituals))p.rituals=o.rituals.filter(function(x){return x&&typeof x==='object';});
  /* A snapshot is strictly typed numbers and the record calls toFixed on them,
     so "the person's own text" does not apply here. An unchecked history
@@ -292,6 +345,9 @@ function meterRun(p,keys){
  /* an older record has no plan, which is a free record and not a broken one */
  if(!p.plan)p.plan={tier:'free',status:'',granted:0,carried:0,base:0,since:null,until:null};
  if(p.plan.base==null)p.plan.base=0;
+ if(!p.avatar)p.avatar=avatarBlank();
+ if(!Array.isArray(p.avatar.pairs))p.avatar.pairs=[];
+ if(!p.purpose)p.purpose=purposeBlank();
  var list=(keys||[]).filter(function(k){return typeof k==='string'&&k;});
  if(!list.length)return {added:0,repeated:0};
  var have={},added=0,repeated=0;

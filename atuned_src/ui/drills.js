@@ -472,6 +472,156 @@ function runCircleDrill(n){
  rdShell(h);}
 
 /* ============================================================
+   THE AVATAR, on screen.
+
+   Two columns. Left is who you are becoming, right is the
+   inversion of the same attribute in the person's own words. The
+   right side goes to the resolver and comes back as a seat, and
+   the seat has addresses with weight on them, which is what turns
+   a value into something the release queue can aim at.
+
+   The product never rules on whether an attribute is a real edge
+   or a saboteur wearing a virtue. That is the owner's standing
+   ruling and the monthly review exists because of it.
+   ============================================================ */
+function avOf(){ return (CURP&&CURP.avatar)||avatarBlank(); }
+function avRows(){
+ var av=avOf();
+ return (av.pairs||[]).map(function(pr){
+  var seg=readSeat(pr.notbe);
+  var load=0, ig=6;
+  if(seg){var grp=W.filter(function(n){return n.b===seg;});
+   load=grp.length?grp.reduce(function(a,n){return a+n.sq;},0)/grp.length:0;
+   ig=bandIg(seg);}
+  return {pair:pr, gap:seg?avatarGap(pr,seg,load,ig):null};});}
+/* the seat a sentence about a bad day resolves to. the story parser already
+   does this work, so this asks it rather than owning a second lexicon. */
+function readSeat(text){
+ var p=parseStory(String(text||''));
+ /* imprints, not hits. a hit carries a lowercase band name and no node, and
+    reading BY[h.i] off it gave undefined for every sentence, so the resolver
+    silently answered nothing for text it had in fact parsed. an imprint
+    carries the seat already cased the way the rest of the product cases it. */
+ if(!p||!p.imprints||!p.imprints.length)return null;
+ var tally={};
+ p.imprints.forEach(function(x){
+  if(x&&x.band)tally[x.band]=(tally[x.band]||0)+(x.amt||1);});
+ var best=null,bv=0;
+ Object.keys(tally).forEach(function(b){if(tally[b]>bv){bv=tally[b];best=b;}});
+ return best;}
+function runAvatarDrill(){
+ var av=avOf(), rows=avRows(), pg=avatarProgress(rows);
+ var h='<div class="pm-eye">The avatar</div>'
+  +'<div class="ad-nm">Who you are becoming</div>'
+  +'<p class="ad-p">One side is who you are at your best. The other is who you are not, in '
+  +'your own words. They are written as a pair, because a value has no address and a '
+  +'sentence about a bad day does.</p>'
+  +'<p class="ad-p">Nothing here is a diagnosis. This product does not rule on whether an '
+  +'attribute is a real edge or a saboteur wearing a virtue. That depends on where you are, '
+  +'and it is the thing you revise upward as you climb.</p>';
+ if(rows.length){
+  h+='<div class="pm-eye">What is in the way</div><div class="ad-rows">';
+  rows.forEach(function(r,i){
+   var g2=r.gap;
+   h+='<button type="button" class="ad-r" data-avp="'+i+'">'
+    +(g2?cr(g2.seat,g2.at,{size:'xs',raw:String(g2.at)}):'')
+    +'<span>'+esc(r.pair.be)+'</span>'
+    +'<em>'+(g2?(g2.clear?'clear':esc(String(g2.seat).toLowerCase())+', '+g2.load.toFixed(1))
+      :'not resolved')+'</em></button>';});
+  h+='</div>';
+  if(pg)h+='<p class="ad-p"><b>'+pg.done+' of '+pg.total+'</b> clear at the address behind '
+   +'them. Read from what you have actually cleared, not from what you wrote.</p>';
+ } else {
+  h+='<p class="ad-p">Nothing written yet. The journal asks for it in two questions: '
+   +'describe yourself on your best day, not what you achieved but how you were. Then the '
+   +'opposite.</p>';}
+ if(av.built){
+  var d=avatarDaysLeft(av);
+  h+='<p class="ad-p">Reviewed monthly. '+(avatarDue(av)?'Due now.':d+' days to the next one.')
+   +'</p>';}
+ h+='<div class="ad-act">'
+  +'<button class="btn pri" id="avpur">The purpose map</button>'
+  +'</div>';
+ rdShell(h);
+ var pu=document.getElementById('avpur'); if(pu)pu.onclick=runPurposeDrill;
+ var host=document.getElementById('rdrill');
+ if(host)host.querySelectorAll('[data-avp]').forEach(function(b){
+  b.onclick=function(){runAvPair(+b.getAttribute('data-avp'));};});}
+/* one attribute, both halves, and the addresses standing in the way of it */
+function runAvPair(i){
+ var rows=avRows(), r=rows[i]; if(!r)return;
+ var g2=r.gap;
+ var h='<div class="pm-eye">At your best</div>'
+  +'<div class="ad-nm">'+esc(r.pair.be)+'</div>'
+  +'<div class="pm-eye">And not</div><p class="ad-p">'+esc(r.pair.notbe)+'</p>';
+ if(g2){
+  h+='<div class="pm-eye">Where that sits</div>'
+   +'<p class="ad-p">The '+String(g2.seat).toLowerCase()+', carrying <b>'
+   +g2.load.toFixed(1)+'</b>. On the axis between the two poles of that seat you read <b>'
+   +g2.at+'</b>.</p>';
+  var grp=W.filter(function(n){return n.b===g2.seat;})
+   .sort(function(a,b){return b.sq-a.sq;}).slice(0,5);
+  if(grp.length)h+='<div class="pm-eye">What is in the way</div><div class="ad-rows">'
+   +grp.map(function(n){return addrRow(n);}).join('')+'</div>';
+  h+='<p class="ad-p">The right hand sentence steers the release, because that is what is '
+   +'in the way. The left hand one steers the reframe, because that is what is being '
+   +'installed. Never the other way round.</p>';
+ } else {
+  h+='<p class="ad-p">The resolver could not read a feeling out of the second sentence. '
+   +'Say it again with one in.</p>';}
+ h+='<div class="ad-act"><button class="btn" id="avback">All of them</button></div>';
+ rdShell(h);
+ var b=document.getElementById('avback'); if(b)b.onclick=runAvatarDrill;}
+
+/* ============================================================
+   THE PURPOSE MAP. Two overlapping triangles and a hexagon.
+   Six values in, three readings out, and a person may type none
+   of the three.
+   ============================================================ */
+function runPurposeDrill(){
+ var pu=(CURP&&CURP.purpose)||purposeBlank();
+ var rd=purposeRead(pu), bc=boundaryCount(pu);
+ var h='<div class="pm-eye">The purpose map</div>'
+  +'<div class="ad-nm">Two triangles and what they overlap</div>'
+  +'<p class="ad-p">Meaning is the end point of expression. At the end of expression, '
+  +'meaning creates purpose. So purpose is not entered. It is what is left standing at the '
+  +'end of the other two.</p>'
+  +'<div class="pm-eye">Upward, the higher purpose</div>'
+  +'<p class="ad-p">Three values, the soul\u2019s. '+esc(PUR_SOUL)+'</p>'
+  +'<div class="ad-rows">'+[0,1,2].map(function(i){
+    return '<div class="ad-r static"><span class="ad-k">'+(i+1)+'</span>'
+     +'<span>'+esc(pu.soul[i]||'not written')+'</span></div>';}).join('')+'</div>'
+  +'<div class="pm-eye">Downward, the earthly purpose</div>'
+  +'<p class="ad-p">Three more, the ego\u2019s. '+esc(PUR_EGO)+'</p>'
+  +'<div class="ad-rows">'+[0,1,2].map(function(i){
+    return '<div class="ad-r static"><span class="ad-k">'+(i+1)+'</span>'
+     +'<span>'+esc(pu.ego[i]||'not written')+'</span></div>';}).join('')+'</div>';
+ if(rd){
+  h+='<div class="pm-eye">What motivates you in the spirit</div><p class="ad-p">'
+   +esc(rd.higher)+'</p>'
+   +'<div class="pm-eye">What drives you on the earth</div><p class="ad-p">'
+   +esc(rd.earthly)+'</p>'
+   +'<div class="pm-eye">And between them</div><p class="ad-p"><b>'+esc(rd.between)+'</b></p>';
+ } else {
+  h+='<p class="ad-p">Six values in and the three readings come out. Until then there is '
+   +'nothing to derive.</p>';}
+ h+='<div class="pm-eye">The boundary</div>'
+  +'<p class="ad-p">Overlap the two triangles and the six sided shape is the boundary of '
+  +'your behaviour. That is your containment. A mirror you hold up to yourself. Inside it is '
+  +'yours to protect and outside it is choice.</p>'
+  +'<div class="ad-rows">'+PUR_SIDES.map(function(sd){
+    var n=((pu.sides&&pu.sides[sd])||[]).filter(function(x){return x&&String(x).trim();}).length;
+    return '<div class="ad-r static'+(n>=PUR_PER_SIDE?' on':'')+'">'
+     +'<span class="ad-k">'+esc(sd)+'</span>'
+     +'<span class="ad-v">'+n+' of '+PUR_PER_SIDE+'</span></div>';}).join('')+'</div>'
+  +'<p class="ad-p">'+bc.filled+' of '+bc.of+' written. Thirty is not a lot to ask of a '
+  +'mirror you will hold for as long as this takes. A mirror half described shows half a '
+  +'person.</p>'
+  +'<div class="ad-act"><button class="btn" id="puback">The avatar</button></div>';
+ rdShell(h);
+ var b=document.getElementById('puback'); if(b)b.onclick=runAvatarDrill;}
+
+/* ============================================================
    THE AGE LADDER, on screen.
 
    Sixteen years, one question each, and then a three question test

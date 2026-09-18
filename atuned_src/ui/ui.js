@@ -391,11 +391,15 @@ function render(){
     +'is a diagnosis.</span></button>'
     +'<button type="button" class="stbtn" id="stw3"><b>Go year by year</b>'
     +'<span>Three to eighteen. For anyone who cannot think of anything they '
-    +'identify with, which is most people.</span></button>';
+    +'identify with, which is most people.</span></button>'
+    +'<button type="button" class="stbtn" id="stw4"><b>Say who you are becoming</b>'
+    +'<span>The avatar. Release empties an address and replace fills it. This is '
+    +'what you are filling it toward.</span></button>';
    var b1=$('stw1'); if(b1)b1.onclick=function(){setTab(TAB.STORY);render();
     var ta=document.getElementById('sttext'); if(ta)ta.focus();};
    var b2=$('stw2'); if(b2)b2.onclick=function(){runRecogniseDrill();};
-   var b3=$('stw3'); if(b3)b3.onclick=function(){runAgeDrill();};})();
+   var b3=$('stw3'); if(b3)b3.onclick=function(){runAgeDrill();};
+   var b4=$('stw4'); if(b4)b4.onclick=function(){runAvatarDrill();};})();
   $('person').innerHTML='<h3>'+(p.you?'You':p.nm)+'</h3>'
    +(p.you?'':'<div class="prole">'+p.age+', '+esc(String(p.role).replace(' · ICP',''))+'</div>')
    +(p.says?'<p class="psay">'+esc(p.says)+'</p>':'')

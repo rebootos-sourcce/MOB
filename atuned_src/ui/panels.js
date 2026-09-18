@@ -283,6 +283,10 @@ function profileSheet(){
   +'<div class="sh-row"><span>Snapshots on file</span><b>'+((CURP&&CURP.history&&CURP.history.length)||0)+'</b></div>'
   +'<div class="sh-row"><span>Storage</span><b>'+(STORE_BOUND?'writing':'blocked')+'</b></div>'
   +'</div>'
+  +'<div class="sh-sec"><div class="pm-eye">Who you are becoming</div>'
+  +'<p class="sh-p">The avatar, the purpose map and the boundary. What the release work is '
+  +'aimed at.</p>'
+  +'<div class="sh-act"><button class="btn" id="shav">Open the avatar</button></div></div>'
   +'<div class="sh-sec"><button class="btn" id="shclose">Close</button></div>';
  sheetOpen(h);
  /* the same three steps, inside the sheet, sharing one setter */
@@ -293,6 +297,7 @@ function profileSheet(){
   d.querySelectorAll('[data-dens2]').forEach(function(b){
    b.onclick=function(){densSet(b.getAttribute('data-dens2')); profileSheet();};});}
  planWire();
+ var av=$('shav'); if(av)av.onclick=function(){sheetShut();runAvatarDrill();};
  var c=$('shclose'); if(c)c.onclick=sheetShut;}
 
 /* ============================================================
@@ -324,6 +329,10 @@ function planSection(m){
   +'<p class="sh-p">'+esc(t.d)+' Rerunning anything already open costs nothing, always.</p>';
  if(nx)h+='<p class="sh-p">'+esc(nx.tier.nm)+' adds '+esc(SEEN[nx.kind]||nx.kind)+'.</p>';
  if(up)h+='<p class="sh-p">'+esc(up.to.nm)+' is '+esc(up.say)+'.</p>';
+ /* WHAT IT IS WORTH, in the unit people already price against. Throughput and
+    never outcome, at the conservative end of the book's own range. */
+ var worth=planWorth(al.inGift?100:t.grant);
+ if(worth)h+='<p class="sh-p">'+esc(worth)+'</p>';
  h+='<div class="sh-act">'
   +(up?'<button class="btn pri" id="planup" data-tier="'+esc(up.to.k)+'">Move to '
     +esc(up.to.nm.toLowerCase())+'</button>':'')

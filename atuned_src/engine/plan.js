@@ -157,3 +157,70 @@ function planUpgrade(pl){
      :same?(moreGround+' more of new ground a '+nxt.per)
      :(nxt.grant+' of new ground a '+nxt.per))
    +(moreSight?', and the next rung of the chain':'')};}
+
+/* ============================================================
+   WHAT AN ALLOWANCE IS WORTH, in the units people already price
+   against. Every figure here is the codex's own, quoted:
+
+     "Therapy tends to release one to six patterns per session, if
+      you are lucky. Meditation, six to twelve patterns per twenty
+      minute practice. Breathwork, similar. Plant medicine depends
+      on exposure."
+
+   Plant medicine is deliberately absent from the table. The book
+   gives no figure for it and inventing one to make a comparison
+   look good is the fastest way to lose an argument with somebody
+   who has done it.
+
+   TWO RULES ON HOW THIS MAY BE SAID.
+
+   It is a claim about THROUGHPUT, never about outcome. How many
+   patterns a thing releases is measurable against the book. What a
+   person's life does afterwards is not, and the evidence tier does
+   not carry it. So the copy says "as many patterns as", never "the
+   same as" and never "instead of".
+
+   And the low end is the one that gets said. A range of one to six
+   quoted at six is the most flattering reading of your own number,
+   which is exactly the reading a hostile reader will check first.
+   ============================================================ */
+const EQUIV=[
+ {k:'therapy', nm:'therapy sessions',        lo:1,  hi:6,   unit:'a session',
+  d:'One to six patterns a session, if you are lucky.'},
+ {k:'medit',   nm:'thirty minute sittings',  lo:9,  hi:18,  unit:'per thirty minutes',
+  d:'Six to twelve per twenty minutes, so nine to eighteen per half hour.'},
+ {k:'breath',  nm:'breathwork sessions',     lo:9,  hi:18,  unit:'per thirty minutes',
+  d:'The same rate as meditation.'},
+ {k:'month',   nm:'months of daily practice',lo:270,hi:540, unit:'thirty minutes a day',
+  d:'A month of half an hour every day, at the meditation rate.'}];
+const EQUIV_NONE='Plant medicine is not on this list. The book gives no rate for it, '
+ +'and a number invented to make a comparison look good is the first thing a person who '
+ +'has done it will check.';
+/* how many of a thing an allowance is worth. the low end first, because the
+   low end is the claim that survives being checked. */
+function equivOf(patterns,k){
+ var e=EQUIV.filter(function(x){return x.k===k;})[0];
+ if(!e||!(patterns>0))return null;
+ return {k:k, nm:e.nm, lo:patterns/e.hi, hi:patterns/e.lo,
+  /* the sentence, at the conservative end and phrased as throughput */
+  say:'as many patterns as '+fmtN(patterns/e.hi)+' '+e.nm+' would release'};}
+function fmtN(n){
+ if(n>=10)return String(Math.round(n));
+ if(n>=1)return String(Math.round(n*10)/10);
+ return String(Math.round(n*100)/100);}
+/* the one line a rung gets to say about itself, and it is the meditation month
+   because four hundred a month lands inside two hundred and seventy to five
+   hundred and forty, which IS a month of half an hour a day. */
+function planWorth(patterns){
+ var m=equivOf(patterns,'month'), t=equivOf(patterns,'therapy');
+ if(!m||!t)return '';
+ /* THE TEST IS WHETHER THE RANGE CONTAINS ONE, not whether a ratio is near
+    it. Four hundred over the high rate is 0.74 months and over the low rate
+    is 1.48, so a month sits inside the band and the honest sentence is "about
+    a month". Comparing the conservative end to one instead said sixty seven
+    therapy sessions, which is true and is the wrong unit. */
+ if(m.lo<=1&&m.hi>=1)
+  return 'About what a month of half an hour of practice every day would release.';
+ if(m.lo>1)return 'About what '+fmtN(m.lo)+' months of half an hour a day would release.';
+ return 'As many patterns as '+fmtN(t.lo)+' therapy sessions would release.';}
+

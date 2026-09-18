@@ -1250,6 +1250,41 @@ g('23 \u00b7 the plan. what it grants, what it lets you see, and what it refuses
  ok(LEAD_HIDDEN.indexOf('the story cloud')>=0,'which is named as hidden rather than omitted');
  ok(LEAD_SEES.filter(x=>/stor|journal/i.test(x)).length===0,
   'no story shaped thing is on the visible list at all');
+
+ /* ---- WHAT AN ALLOWANCE IS WORTH ----
+    Every rate is the codex's own: therapy one to six a session, meditation
+    six to twelve per twenty minutes, breathwork the same. Plant medicine is
+    deliberately absent because the book gives no rate for it. */
+ const {EQUIV,EQUIV_NONE,equivOf,planWorth}=E;
+ ok(EQUIV.length===4,'four units to price against, got '+EQUIV.length);
+ ok(EQUIV.filter(x=>x.k==='therapy')[0].lo===1&&EQUIV.filter(x=>x.k==='therapy')[0].hi===6,
+  'therapy is one to six, the book\'s figure');
+ ok(EQUIV.filter(x=>x.k==='medit')[0].lo===9&&EQUIV.filter(x=>x.k==='medit')[0].hi===18,
+  'and thirty minutes is nine to eighteen, which is the twenty minute rate scaled');
+ ok(EQUIV.filter(x=>x.k==='month')[0].lo===270&&EQUIV.filter(x=>x.k==='month')[0].hi===540,
+  'a month of half an hour a day is two hundred and seventy to five hundred and forty');
+ /* PLANT MEDICINE IS NOT ON THE LIST, and its absence is deliberate */
+ ok(EQUIV.filter(x=>/plant|ayah|psilo/i.test(x.nm)).length===0,
+  'plant medicine is not on the table');
+ ok(/no rate for it/.test(EQUIV_NONE),'and the reason is written down rather than forgotten');
+ /* THE CLAIM IS THROUGHPUT, NEVER OUTCOME, and it is made at the low end */
+ const e=equivOf(100,'therapy');
+ ok(Math.round(e.lo)===17,'a hundred patterns is seventeen sessions at the conservative end');
+ ok(/would release/.test(e.say),'and the sentence is about what a thing releases');
+ ok(!/instead of|the same as|better than|replaces/i.test(e.say),
+  'never that it is the same as, instead of, or better than');
+ ok(EQUIV.every(x=>x.lo>0&&x.hi>=x.lo),'every rate is a real range');
+ /* TIER ONE IS A MONTH OF DAILY PRACTICE, which is the sentence the whole
+    table exists to support. Four hundred sits inside two seventy to five
+    forty, so the test is whether the band contains a month, not whether a
+    ratio is near one. */
+ ok(/a month of half an hour/.test(planWorth(400)),
+  'four hundred a month is a month of daily practice, got '+planWorth(400));
+ ok(/a month of half an hour/.test(planWorth(270))&&/a month of half an hour/.test(planWorth(540)),
+  'across the whole band');
+ ok(/1.5 months/.test(planWorth(800)),'eight hundred is a month and a half, got '+planWorth(800));
+ ok(/therapy sessions/.test(planWorth(100)),'and the gift falls back to sessions, which is its unit');
+ ok(planWorth(0)===''&&equivOf(0,'therapy')===null,'nothing is worth nothing, said as nothing');
  ok(PLAN_BY.gift.see==='sup','and the gift shows everything, which is the whole point of it');
  ok(PLANS.every(p=>SEE_ORDER.indexOf(p.see)>=0),'every tier names a rung it can see');
  ok(PLAN_ALWAYS.length>=3,'and what is on every tier is named rather than remembered');
@@ -1349,6 +1384,105 @@ g('23 \u00b7 the plan. what it grants, what it lets you see, and what it refuses
     plan is the one place a key would ever be tempting */
  ok(JSON.stringify(PLANS).indexOf('sk_')<0&&JSON.stringify(PLANS).indexOf('pk_')<0,
   'and no key of any kind is in the engine');
+}
+
+g('24 \u00b7 the avatar, the purpose map and the boundary');
+/* The becoming half. Release empties an address and replace fills it, and
+   neither says what the person is filling it toward. Ported from the original
+   build, not rebuilt: the owner's own sentence governs it. */
+{
+ const {avatarBlank,avatarValid,avatarDue,avatarDaysLeft,avatarGap,avatarProgress,
+        AV_MONTH,purposeBlank,purposeReady,purposeCentre,purposeRead,
+        boundaryCount,boundaryCross,PUR_SIDES,PUR_PER_SIDE,
+        blankProfile,saveProfile,validateProfile}=E;
+
+ /* A PAIR IS WRITTEN AS A PAIR. The left side is a value and a value has no
+    address. The right side is a sentence about a bad day and that parses. */
+ ok(avatarValid({be:'I leave work at work',notbe:'I take every meeting home'}),
+  'a written pair is a pair');
+ ok(!avatarValid({be:'I leave work at work',notbe:''}),'half of one is not');
+ ok(!avatarValid({be:'',notbe:'I take every meeting home'}),'in either direction');
+ ok(!avatarValid(null)&&!avatarValid({}),'and nothing is not');
+
+ /* the monthly review, which exists because the product will not adjudicate
+    an attribute for somebody */
+ const av=avatarBlank();
+ ok(av.built===false&&av.pairs.length===0,'a new avatar is empty and knows it');
+ ok(avatarDue(av)===false,'an unbuilt avatar is never due');
+ const now=Date.UTC(2026,8,18);
+ const fresh={built:true,at:new Date(now).toISOString(),reviewedAt:new Date(now).toISOString(),pairs:[]};
+ ok(avatarDue(fresh,now)===false,'nor a fresh one');
+ ok(avatarDue(fresh,now+AV_MONTH+1)===true,'and it is due after a month');
+ ok(avatarDaysLeft(fresh,now)===30,'which the surface can count down, got '
+  +avatarDaysLeft(fresh,now));
+
+ /* THE GAP IS A NUMBER AT AN ADDRESS, not a mood */
+ const pair={be:'I leave work at work',notbe:'I take every meeting home with me'};
+ const g1=avatarGap(pair,'Heart',6.9,3);
+ ok(g1&&g1.seat==='Heart'&&g1.load===6.9,'the gap names the seat and what is held there');
+ ok(g1.clear===false,'and a loaded seat is not clear');
+ ok(avatarGap(pair,'Heart',0,10).clear===true,'an empty one is');
+ ok(avatarGap({be:'x',notbe:''},'Heart',0,10)===null,'half a pair has no gap');
+ /* completion read from work done rather than from work declared */
+ const pr=avatarProgress([{gap:{clear:true}},{gap:{clear:false}},{gap:{clear:true}}]);
+ ok(pr.done===2&&pr.total===3&&pr.pct===67,'progress is what cleared, got '+pr.pct);
+ ok(avatarProgress([])===null,'and nothing declared is nothing to report');
+
+ /* ---- THE PURPOSE MAP ---- */
+ const pp=purposeBlank();
+ ok(pp.soul.length===3&&pp.ego.length===3,'three corners on each triangle');
+ ok(PUR_SIDES.length===6&&PUR_PER_SIDE===5,'six sides of five, which is thirty');
+ ok(Object.keys(pp.sides).length===6,'and a list for each side');
+ ok(purposeReady(pp)===false,'an empty map is not ready');
+ pp.soul=['freedom','wisdom','truth']; pp.ego=['health','family','stability'];
+ ok(purposeReady(pp)===true,'six values in and it is');
+ /* PURPOSE IS DERIVED AND NEVER ENTERED */
+ const rd=purposeRead(pp);
+ ok(rd&&rd.higher==='freedom, wisdom, truth','the higher centre is the sum of its corners');
+ ok(rd.earthly==='health, family, stability','and the earthly one is too');
+ ok(/how you make money and how you find fulfilment/.test(rd.between),
+  'and the line between them answers the thing it was ruled to answer');
+ ok(purposeCentre(['a','b'])===null,'two corners make no centre');
+ ok(Object.keys(pp).indexOf('purpose')<0,
+  'nothing called purpose is stored, because a derived value that is stored can drift');
+
+ /* THE HEXAGON IS THE BOUNDARY */
+ const bc0=boundaryCount(pp);
+ ok(bc0.filled===0&&bc0.of===30,'thirty commitments, none written');
+ ok(bc0.thin.length===6,'and every side is thin');
+ pp.sides.partner=['a','b','c','d','e'];
+ ok(boundaryCount(pp).filled===5,'a full side counts five');
+ ok(boundaryCount(pp).thin.indexOf('partner')<0,'and stops being thin');
+ /* which side an imprint landed on, which is the first time this product
+    could say WHY the charge landed rather than only where */
+ ok(boundaryCross('my wife said it again')==='partner','a partner is named');
+ ok(boundaryCross('my manager moved the date')==='coworkers','a manager is');
+ ok(boundaryCross('my mother rang')==='family','a mother is');
+ ok(boundaryCross('the sky was grey')===null,'and an entry naming nobody crosses nothing');
+
+ /* ---- THE BOUNDARY AT THE RECORD BOUNDARY ---- */
+ const bp=blankProfile('av');
+ ok(bp.avatar&&bp.purpose,'a new record carries both');
+ const good=saveProfile(bp);
+ good.avatar={built:true,at:'2026-01-01T00:00:00Z',reviewedAt:'2026-01-01T00:00:00Z',
+  pairs:[{be:'I rest properly',notbe:'I have not slept properly in weeks'}]};
+ good.purpose={soul:['freedom','wisdom','truth'],ego:['health','family','stability'],
+  sides:{partner:['a'],family:[],friends:[],community:[],coworkers:[],alone:[]}};
+ ok(validateProfile(good).ok,'a real one round trips');
+ ok(validateProfile(good).profile.avatar.pairs.length===1,'with its pair');
+ const halfPair=JSON.parse(JSON.stringify(good)); halfPair.avatar.pairs=[{be:'x'}];
+ ok(!validateProfile(halfPair).ok,'half a pair is refused by name');
+ /* A BOUNDARY QUIETLY TRUNCATED IS ONE A PERSON THINKS THEY SET */
+ const over=JSON.parse(JSON.stringify(good));
+ over.purpose.sides.partner=['a','b','c','d','e','f'];
+ ok(!validateProfile(over).ok,'a sixth commitment on one side is refused, not dropped');
+ ok(/more than 5/.test((validateProfile(over).errs||[]).join(' ')),'and says so by name');
+ const fourVals=JSON.parse(JSON.stringify(good));
+ fourVals.purpose.soul=['a','b','c','d'];
+ ok(!validateProfile(fourVals).ok,'a fourth value on a triangle is refused');
+ const older=JSON.parse(JSON.stringify(good)); delete older.avatar; delete older.purpose;
+ ok(validateProfile(older).ok&&validateProfile(older).profile.avatar.built===false,
+  'and an older record with neither is filled from the blank rather than broken');
 }
 
 console.log('\n===== '+P+' passed, '+F+' failed =====');
