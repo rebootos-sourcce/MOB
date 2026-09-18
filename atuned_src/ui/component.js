@@ -70,6 +70,15 @@ function leaves(o){if(!o||!o.parts)return o?[o]:[];
 const cv=document.getElementById('cv'),g=cv.getContext('2d');
 const bg=document.getElementById('bgaura'),bgx=bg.getContext('2d');
 let CW=1e3,CH=1e3,CX=500,CY=500,DPR=1,HIT=[],U=400;
+/* Every label the wheel draws, in canvas coordinates, recorded the way HIT
+   records targets. A DOM overlay sat on top of the lowest seat label for a
+   long time and nothing could see it, because a canvas label is pixels and
+   a probe that reads pixels lies. This gives the collide gate the boxes. */
+let LBL=[];
+/* where the outermost label sits, and how much room its text needs */
+const LBL_R=1.20, LBL_M=30;
+/* what sits over the canvas and therefore bounds the wheel */
+const OVERLAY=['tl','acc','bal','howto'];
 const hx=h=>{const n=parseInt(String(h).slice(1),16);return[(n>>16)&255,(n>>8)&255,n&255];};
 const rgba=(c,a)=>'rgba('+c[0]+','+c[1]+','+c[2]+','+(+a).toFixed(3)+')';
 const mixc=(a,b,t)=>a.map((v,i)=>Math.round(v+(b[i]-v)*t));
@@ -108,7 +117,31 @@ function statusSaved(){
    the same CX, CY and U the draw used. */
 var BASE_U=1;
 function reframe(){
- BASE_U=Math.min(CW,CH)/2;
+ /* HOW BIG THE WHEEL IS ALLOWED TO BE.
+
+    Two things bounded it and neither was being asked. The labels run outward
+    past the rings, furthest at the blueprint depth where nineteen domain names
+    radiate to 1.2 of the unit radius, so a rule that stopped at the canvas
+    edge put 3rd Eye and Knowledge half off it. And the readouts parked in the
+    corners are only safe while the circle does not reach them, which is true
+    on a wide stage and false on a square one.
+
+    So the free radius is measured rather than assumed: the half box, then cut
+    back to the nearest corner of anything sitting over the canvas. The wheel
+    is whatever fits inside that once the longest label is taken out. On a wide
+    stage the corners are far away and this changes nothing. On a square one
+    the wheel gives up the difference, which is the honest trade. */
+ var half=Math.min(CW,CH)/2, free=half;
+ if(cv&&cv.getBoundingClientRect){
+  var cb=cv.getBoundingClientRect(), fx=cb.left+CW/2, fy=cb.top+CH/2;
+  OVERLAY.forEach(function(id){
+   var e=document.getElementById(id); if(!e)return;
+   var st=window.getComputedStyle(e);
+   if(st.display==='none'||st.visibility==='hidden'||+st.opacity===0)return;
+   var b=e.getBoundingClientRect(); if(!b.width||!b.height)return;
+   var dx=Math.max(b.left-fx,0,fx-b.right), dy=Math.max(b.top-fy,0,fy-b.bottom);
+   free=Math.min(free,Math.hypot(dx,dy));});}
+ BASE_U=Math.max(40,Math.min(half,(free-LBL_M)/LBL_R));
  U=BASE_U*S.zoom;
  var lim=CW*0.9;
  S.panx=Math.max(-lim,Math.min(lim,S.panx));
@@ -137,13 +170,22 @@ if(typeof ResizeObserver!=='undefined'){
  new ResizeObserver(function(){
   var b=cv.getBoundingClientRect();
   if(Math.abs(b.width-CW)<0.5&&Math.abs(b.height-CH)<0.5)return;
-  layout();render();}).observe(cv.parentElement);}
+  layout();render();}).observe(cv);}   /* the canvas, not the stage: the stage
+    is a grid and the wheel's cell resizes without the stage doing so. */
 function arcP(r0,r1,a0,a1){g.beginPath();g.arc(CX,CY,r0,a0,a1);g.arc(CX,CY,r1,a1,a0,true);g.closePath();}
 function radialTxt(s,ang,rad,size,c,a,w){
  g.save();g.translate(CX+Math.cos(ang)*rad,CY+Math.sin(ang)*rad);
  let rot=ang;if(Math.cos(ang)<0){rot+=Math.PI;g.textAlign='right';}else g.textAlign='left';
  g.rotate(rot);g.font=(w||400)+' '+size+"px Lexend, system-ui, sans-serif";
- g.textBaseline='middle';g.fillStyle=rgba(c,a);g.fillText(s,0,0);g.restore();}
+ g.textBaseline='middle';g.fillStyle=rgba(c,a);g.fillText(s,0,0);
+ /* the axis aligned box the rotated run actually occupies */
+ var tw=g.measureText(s).width, sn=Math.abs(Math.sin(rot)), cs=Math.abs(Math.cos(rot));
+ var bw=tw*cs+size*sn, bh=tw*sn+size*cs;
+ var px=CX+Math.cos(ang)*rad, py=CY+Math.sin(ang)*rad;
+ var off=(g.textAlign==='right'?-tw/2:tw/2);
+ px+=Math.cos(rot)*off; py+=Math.sin(rot)*off;
+ LBL.push({t:s,x:px-bw/2,y:py-bh/2,w:bw,h:bh});
+ g.restore();}
 function txt(s,x,y,size,c,a,w,fam){g.save();
  g.font=(w||400)+' '+size+'px '+(fam||'Lexend, system-ui, sans-serif');
  g.textAlign='center';g.textBaseline='middle';g.fillStyle=rgba(c,a);g.fillText(s,x,y);g.restore();}

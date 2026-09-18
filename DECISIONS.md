@@ -303,3 +303,67 @@ copy should say so rather than describing four separate features.
 
 Headers and subheaders take a capital on every word. Body text is sentence
 case and stays that way. No all caps anywhere, which is unchanged.
+
+## The felt sense, ruled
+
+This answers copy question 1 properly, and it is the mechanism rather than a
+tone. The owner's words, in sequence:
+
+1. The word lands and hits the resistance in the nervous system.
+2. The person feels a barrier.
+3. Then a release. The tension at that location lets go.
+4. Every subsequent read continues to release tension from the same location.
+5. They feel relief. The mind calms. They feel at peace.
+
+**What that settles for the copy.** A line is not a description of a state, it
+is an instrument that acts on one. So:
+
+- The barrier is the point. A line that slides past with no friction has missed
+  the address. Resistance on the first read is the line working, not the line
+  failing, and the copy may say so.
+- Release is on the same read, not later. Nothing is deferred to a practice, a
+  course or a week of repetition.
+- Repetition is cumulative at one location. A reread is not a rehearsal of the
+  same effect, it drains further from the same place. This is why a rerun of
+  ground already opened costs nothing.
+- The end state is calm and peace, arrived at through tension leaving a named
+  location. It is never promised ahead of the barrier, and it is never the
+  opening claim.
+- The order is fixed and the copy may not reorder it: resistance, barrier,
+  release, relief, calm, peace.
+
+## The scale, ruled. Ten bands, ten points each
+
+Seven tiers of uneven width did not read as a nought to a hundred scale.
+Practicing was nineteen points wide, Collapsed was one, and no word told a
+person how much of the line it covered. The ruling is a new word every ten
+points.
+
+    91 to 100   Mastery       builds far more than it costs
+    81 to  90   Embodied      builds more than it costs, real load still in it
+    71 to  80   Compounding   each cleared address makes the next cheaper
+    61 to  70   Gaining       net build, thin margin
+    51 to  60   Even          breaks even, just above the line
+    41 to  50   Oscillating   the median. crosses the line both ways
+    31 to  40   Incoherent    costs more than it builds
+    21 to  30   Corrupt       the charge is shaping decisions, not only mood
+    11 to  20   Severe        most of the field is carrying
+     0 to  10   Collapsed     fully loaded, nothing clearing
+
+Fifty is the median and sits at the top of Oscillating. Forty to sixty is the
+median range, which is where the reading swings across the line rather than
+sitting on one side of it. A reading of forty is Incoherent and still inside the
+median range. That is not a contradiction: it says one good week from the
+centre, which is true and is more useful than a threshold.
+
+Every band carries a definition, the behaviour it produces and the direction out
+of it, which is the earlier ruling and is enforced by a gate. The ladder now
+prints a range rather than a threshold, because a threshold does not tell a
+person how wide the word is.
+
+**Still the owner's, and now sharper.** Collapsed is also a node name, a hyper
+complex name and the word for an axis that has shut. Four meanings for one word,
+and the band is the one that renders in the largest type on screen. The summary
+card that read Collapsed four now reads Shut four, which removes the worst of
+the ambiguity, but the band word itself is his to keep or change. Seized is the
+candidate: mechanical, physical, and used nowhere else in the product.

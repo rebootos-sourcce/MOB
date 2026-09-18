@@ -310,7 +310,10 @@ function runCompassDrill(){
  var me=r.unread?null:TIER_BY[r.tier];
  var h='<div class="pm-eye">The compass</div><div class="ad-nm">'
   +(r.unread?'Not read yet':'CQ '+Math.round(cq)+', '+r.tier.toLowerCase())+'</div>'
-  +'<div class="pm-eye">How to read it</div><p class="ad-p">The line runs 0 at the base to 100 at the crown. Above 50 the field builds more than it costs. Below 50 it costs more than it builds. '
+  +'<div class="pm-eye">How to read it</div><p class="ad-p">The line runs 0 at the base to 100 at the crown, and the word changes every ten points. '
+  +'Above '+MEDIAN+' the field builds more than it costs. Below '+MEDIAN+' it costs more than it builds. '
+  +MEDIAN_LO+' to '+MEDIAN_HI+' is the median range, where the reading crosses the line in both directions'
+  +(medianRange(cq)&&!r.unread?', and that is where this one sits':'')+'. '
   +'The marker is where coherence sits now. The band around it is the swing, <b>'+band.toFixed(0)+'</b> points: how far a reading can wander before it settles. Tight alignment leaves little room. A decohering field ranges wide.</p>'
   /* THE RULING. A label this product puts on a person carries a definition,
     the behaviour it produces, and the direction out of it. A word like Severe
@@ -323,7 +326,7 @@ function runCompassDrill(){
  h+='<div class="pm-eye">The whole scale</div><div class="ad-rows">'
   +TIERDEF.map(function(t){
     return '<div class="ad-r static'+(t.nm===r.tier&&!r.unread?' on':'')+'" title="'+esc(t.def)+'">'
-     +'<span class="ad-k">'+esc(t.nm)+'</span><span class="ad-v">'+t.at+'</span></div>';}).join('')
+     +'<span class="ad-k">'+esc(t.nm)+'</span><span class="ad-v">'+tierRange(t)+'</span></div>';}).join('')
   +'</div>';
  rdShell(h);}
 

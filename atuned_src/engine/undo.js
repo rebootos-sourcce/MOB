@@ -15,11 +15,16 @@
    Undo has to capture the inputs: the nine charges, the nine
    installed opposites, the twenty one laws and the soul.
 
-   Bounded at twenty, because this is a stack for mistakes and
-   not a version history, and an unbounded one on a phone is a
-   leak nobody will find.
+   UNLIMITED, on the owner's ruling. It was capped at twenty on
+   a memory argument and the argument does not survive the
+   arithmetic: one entry is nine charges, nine opposites, twenty
+   one laws and a short soul, which is under a kilobyte. Ten
+   thousand of them is under ten megabytes and nobody performs
+   ten thousand irreversible acts in a session. A person who
+   cannot get back to where they started has no undo, they have
+   a grace period.
    ============================================================ */
-const UNDO_MAX=20;
+const UNDO_MAX=0;                 /* 0 means no ceiling */
 var UNDO=[];
 
 /* the inputs, and nothing derived. everything else recomputes from these. */
@@ -36,7 +41,7 @@ function undoState(){
    person guess what they are about to get back. */
 function undoPush(label){
  UNDO.push({s:undoState(), nm:label||'the last change', t:new Date().toISOString()});
- while(UNDO.length>UNDO_MAX)UNDO.shift();
+ if(UNDO_MAX>0){while(UNDO.length>UNDO_MAX)UNDO.shift();}
  return UNDO.length;}
 
 function undoDepth(){return UNDO.length;}

@@ -195,10 +195,15 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 body:not(.hassub) .subbar{display:none}
 .mid{display:grid;grid-template-columns:302px 1fr 336px;gap:10px;flex:1 1 auto;min-height:0}
 .col{display:flex;flex-direction:column;gap:10px;min-height:0}
-.card{padding:16px 18px;min-height:0;display:flex;flex-direction:column}
-.card.sc{overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--edge-2) transparent}
-.card.sc::-webkit-scrollbar{width:6px}
-.card.sc::-webkit-scrollbar-thumb{background:var(--edge-2);border-radius:3px}
+/* A rail is a panel. It was called a card, and the letting go deck also has a
+   card, declared later in this sheet with width:min(380px,100% - 32px) on it.
+   Same word, two concepts, and the later one won: both rails rendered 32px
+   narrower than the column holding them, with the gap sitting empty beside
+   every control. One word per concept, so the panel is a panel. */
+.panel{padding:16px 18px;min-height:0;display:flex;flex-direction:column;width:100%}
+.panel.sc{overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--edge-2) transparent}
+.panel.sc::-webkit-scrollbar{width:6px}
+.panel.sc::-webkit-scrollbar-thumb{background:var(--edge-2);border-radius:3px}
 
 /* ---------- type roles ---------- */
 .eyebrow,.lbl,.pm-eye,.sum-lt,.rit-tr,.sp-hd,.ip-bh,.sub,.iq-qt em{
@@ -264,9 +269,36 @@ body:not(.hassub) .subbar{display:none}
 .verdict b{color:var(--ink);font-weight:600}
 
 /* ---------- stage ---------- */
-.stage{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;
- min-height:0;border-radius:var(--r);overflow:hidden}
-canvas#cv{display:block;width:100%;flex:1 1 auto;min-height:0;touch-action:none;cursor:crosshair}
+/* ============================================================
+   THE STAGE. A grid, because absolute positioning was a promise
+   and not a guarantee.
+
+   Six controls were laid over the wheel at hand chosen offsets,
+   and at any width the author had not looked at they landed on
+   the labels the wheel draws: the compass ruler through Sacral
+   and Root, the accuracy figure on Solar, the balance strip
+   through Heart. Each fix moved one box and broke another width.
+
+   Three rows and two columns. The wheel gets the cell that is
+   left over and nothing else is inside it, so no width can put a
+   control on a label. The other tab surfaces stay absolute and
+   cover the whole stage, which is what they are for.
+
+        key            tier and the split
+        the wheel      the compass
+        balance        accuracy
+   ============================================================ */
+/* Three columns, and the outer two are the same width. The compass needs a
+   lane of its own or it draws across the wheel, and a lane on one side only
+   pushes the wheel off centre by half its width. The left lane is empty and
+   exists to hold the wheel in the middle of the stage, which is where the
+   owner put it. */
+.stage{--lane:128px;position:relative;display:grid;
+ grid-template-columns:var(--lane) minmax(0,1fr) var(--lane);
+ grid-template-rows:auto minmax(0,1fr);
+ align-items:center;min-height:0;border-radius:var(--r);overflow:hidden}
+canvas#cv{display:block;grid-column:2;grid-row:2;width:100%;height:100%;
+ min-width:0;min-height:0;touch-action:none;cursor:crosshair}
 /* On a coarse pointer the wheel must not eat a scroll. touch-action:none
    made the canvas a dead zone across the thumb rest, which is also how a
    scroll attempt became a charge write. Vertical panning goes to the page
@@ -282,8 +314,8 @@ canvas#cv{display:block;width:100%;flex:1 1 auto;min-height:0;touch-action:none;
 /* The key is a strip in flow above the canvas, never over it. Each element
    is a button that opens its reading on the right. The tier block sits
    absolute at top right, so the strip leaves it room. */
-.key{position:relative;z-index:4;flex:0 0 auto;width:100%;box-sizing:border-box;
- display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:12px 196px 0 14px}
+.key{grid-column:1/-1;grid-row:1;position:relative;z-index:4;width:100%;box-sizing:border-box;
+ align-self:start;display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:12px 300px 0 14px}
 .kb{display:inline-flex;align-items:center;gap:6px;min-height:var(--tap);padding:2px 9px 2px 4px;
  background:transparent;border:1px solid var(--edge);border-radius:var(--r-xs);
  color:var(--mid);font:inherit;font-size:12px;cursor:pointer;text-align:left;white-space:nowrap}
@@ -299,11 +331,15 @@ body.punch canvas#cv{filter:saturate(1.2)}
    and the marker moves out from it. */
 /* the howto sits bottom left and the accuracy block bottom right, and the
    strip crossed both. it takes the lane between them and sits above them. */
-.bal{position:absolute;bottom:64px;left:50%;transform:translateX(-50%);z-index:4;
- width:min(300px,calc(100% - 700px));background:none;border:0;padding:6px 0;cursor:pointer;
- display:flex;flex-direction:column;gap:6px}
+.bal{position:absolute;left:16px;bottom:16px;z-index:4;
+ width:min(272px,calc(100% - 560px));background:none;border:0;padding:6px 0;cursor:pointer;
+ display:flex;flex-direction:column;gap:6px;text-align:left}
 body:not(.tab-field) .bal{display:none}
-.bal-t{display:flex;justify-content:space-between;font-size:11px;color:var(--dim)}
+.bal-t{display:flex;justify-content:space-between;align-items:baseline;gap:10px;
+ font-size:11px;color:var(--dim);white-space:nowrap}
+/* the end the field leans to. the number in the middle is the amount, the
+   lit end is the direction, and neither repeats the other. */
+.bal-t .on{font-weight:600}
 .bal-t b{color:var(--ink);font-family:var(--num);font-weight:500}
 .bal-tr{position:relative;height:5px;border-radius:3px;background:var(--sunk)}
 .bal-tr i{position:absolute;top:0;bottom:0;width:1px;left:50%;background:var(--edge-2)}
@@ -317,22 +353,32 @@ body:not(.tab-field) .bal{display:none}
 .howto{position:absolute;bottom:14px;left:16px;font-size:12.5px;color:var(--dim);
  pointer-events:none;line-height:1.75;white-space:pre-line;
  max-width:min(46ch,calc(100% - 320px))}
-.tl{position:absolute;top:14px;right:18px;text-align:right;pointer-events:none;max-width:210px}
+/* The corners. A circle inside a rectangle never reaches them, so a readout
+   parked in one cannot land on a label however the box is resized. The right
+   offset clears the compass column, which is the only other thing on that
+   side. The old layout was doing this by accident in three corners and by
+   mistake at the bottom centre, where the circle does reach and the wheel
+   draws the word Heart. */
+.tl{position:absolute;top:14px;right:152px;text-align:right;pointer-events:none;max-width:210px}
 .tl b{display:block;font-size:17px;font-weight:600}
-.acc{position:absolute;right:18px;bottom:16px;z-index:4;text-align:right;pointer-events:none}
+.acc{position:absolute;right:152px;bottom:16px;z-index:4;text-align:right}
+.acc-b{display:flex;align-items:center;gap:9px;background:transparent;border:0;padding:6px 8px;
+ border-radius:var(--r-xs);color:inherit;font:inherit;cursor:pointer;min-height:var(--tap)}
+.acc-b:hover{background:var(--sunk)}
 body:not(.tab-field) .acc{display:none}
 .acc-n{font-family:var(--num);font-size:34px;font-weight:400;line-height:1;color:var(--gold)}
 .acc-n small{font-size:16px;opacity:.6;margin-left:2px}
 .acc-n em{font-style:normal;font-size:15px;opacity:.55;margin-left:7px}
-.acc-l{font-size:11px;font-weight:600;color:var(--dim);margin-top:5px}
+.acc-l{font-size:11px;font-weight:600;color:var(--dim)}
 .acc-w{font-size:12.5px;color:var(--dim);margin-top:5px;max-width:300px;margin-left:auto;line-height:1.55}
 .acc-lean{opacity:.72;margin-top:3px}
 /* the compass belongs to the field tab alone. in the original both rules
    declared the same properties, so it floated over every other tab. */
 /* the compass shares the right edge with the accuracy block, which is 124
    tall. it stops above it rather than running behind it. */
-.pol2{position:absolute;right:16px;top:104px;bottom:152px;z-index:4;cursor:pointer;
- display:flex;align-items:center;justify-content:flex-end;background:none;border:0;padding:0;margin:0}
+.pol2{grid-column:3;grid-row:2;z-index:4;cursor:pointer;height:100%;
+ display:flex;align-items:center;justify-content:flex-end;background:none;border:0;
+ padding:0 16px 0 8px;margin:0}
 .pol2:hover svg{opacity:.85}
 body:not(.tab-field) .pol2{display:none}
 .pol2 svg{display:block;height:100%;width:104px}
@@ -1145,7 +1191,7 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
  .stage{order:-1}
  .col{min-height:auto}
  .stage{min-height:62vh}
- .card.sc{max-height:none;overflow:visible}
+ .panel.sc{max-height:none;overflow:visible}
  .st-wrap{grid-template-columns:1fr}
  .pm-top{max-width:none;position:static;margin:12px;box-shadow:none}
  .pm-reg{position:static;margin:0 12px 12px;max-width:none}
@@ -1153,7 +1199,7 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
 @media (max-width:720px){
  body{font-size:14.5px}
  .app{padding:7px;gap:6px}
- .card{padding:13px 14px}
+ .panel{padding:13px 14px}
  .g6{grid-template-columns:repeat(5,1fr)}
  .mx{grid-template-columns:repeat(19,1fr);gap:1px}
  .sum-cq b,.ab-cq b{font-size:38px}
@@ -1169,8 +1215,14 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
     flow under it, in the order a person reads them. */
  /* the canvas took its height from flex against a stage that no longer
     constrains it, so it collapsed to zero. it gets an explicit square. */
- .stage{overflow:visible;min-height:0;width:100%;box-sizing:border-box}
+ /* The stage is a two column grid on a desktop so the compass has a lane of
+    its own and nothing sits over the wheel. On a phone there are no lanes: it
+    is one column in reading order, which is what the order rules below assume,
+    and they are flex rules. So it goes back to being a flex column here. */
+ .stage{display:flex;flex-direction:column;align-items:stretch;
+  overflow:visible;min-height:0;width:100%;box-sizing:border-box}
  .stage>*{max-width:100%;box-sizing:border-box}
+ canvas#cv{width:100%}
  /* The stage stops being a box here: it drops its overflow and its min height
     so the wheel can flow down the screen. The tab panels were still absolutely
     positioned against it, so on a phone every one of them rendered into a 36px
@@ -1232,7 +1284,7 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
  <div class="mid">
 
   <!-- ============ LEFT RAIL ============ -->
-  <div class="col"><div class="glass card sc">
+  <div class="col"><div class="glass panel sc">
    <div class="lsec open" data-sec="soul">
     <button class="lsec-hd" type="button"><span>Awareness</span><i></i></button>
     <div class="lsec-bd">
@@ -1296,7 +1348,7 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
    <!-- The tier is a word this product puts on a person, so it is a button and
         not a label. Its definition lived only in a title attribute, which a
         touch screen cannot reach, and the audience arrives on phones. -->
-   <div class="tl"><button type="button" class="tierbtn" id="tier">-</button>
+   <div class="tl" id="tl"><button type="button" class="tierbtn" id="tier">-</button>
     <div id="pol"></div></div>
    <div class="probe" id="probe"></div>
    <div class="howto" id="howto"></div>
@@ -1314,7 +1366,7 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
        One line stays pinned and is always true. Everything with detail is a
        named section that folds, one open at a time. Selection unfolds itself
        when the wheel is clicked. -->
-  <div class="col"><div class="glass card sc">
+  <div class="col"><div class="glass panel sc">
    <div id="railtop" class="railtop"></div>
 
    <div class="lsec open" data-rail="right" data-sec="you">
@@ -1613,28 +1665,61 @@ const MASKS=[{nm:'Child',b:['Root','Sacral']},{nm:'Preteen',b:['Solar','Throat']
    themselves are his call: the panel found these four words are
    the single largest commercial item in the product.
    ============================================================ */
+/* ============================================================
+   THE SCALE. Ten bands, one word every ten points, and a range
+   rather than a threshold.
+
+   The owner's ruling. Seven tiers with uneven widths did not read
+   as a nought to a hundred scale: Practicing was nineteen points
+   wide, Collapsed was one, and no word told a person how much of
+   the line it covered. Ten bands of ten each, so the word moves
+   at every tenth point and a person can see the whole line in it.
+
+   Forty to sixty is the median range. Fifty is the median exactly,
+   and it sits at the top of Oscillating, which is the band named
+   for crossing the line in both directions. A reading of forty is
+   Incoherent and still inside the median range: one good week from
+   the centre, which is a true statement and not a contradiction.
+
+   Every band carries three things, on the ruling that a label this
+   product puts on a person is a reading and not a judgement: what
+   it is, what it does, and where it goes.
+   ============================================================ */
 const TIERDEF=[
- {at:90, nm:'Mastery',
+ {at:91, nm:'Mastery',
   def:'The field builds far more than it costs. Almost nothing is held.',
   energy:'Intention and action arrive together. There is no gap left to manage.',
   toward:'Hold it. The work here is maintenance, and what you can now carry for other people.'},
- {at:70, nm:'Embodied',
+ {at:81, nm:'Embodied',
   def:'The field builds more than it costs, with real load still in it.',
   energy:'You recover fast. A charge lands and clears instead of staying.',
-  toward:'Mastery. Close the laws still shut, and clear what is left holding after a week.'},
- {at:50, nm:'Practicing',
-  def:'The field breaks even. What it builds and what it spends are close.',
-  energy:'Good days and hard days, and the difference is mostly what is running that day.',
-  toward:'Embodied. Consistency rather than intensity: the same address twice beats eight addresses once.'},
+  toward:'Mastery. Close the laws still shut, and clear what is still holding a week later.'},
+ {at:71, nm:'Compounding',
+  def:'Each cleared address makes the next one cheaper. The gains are stacking.',
+  energy:'Less effort buys more movement than it did a month ago.',
+  toward:'Embodied. Stop opening addresses. Finish the ones already open.'},
+ {at:61, nm:'Gaining',
+  def:'The field builds more than it spends, and the margin is thin.',
+  energy:'Forward on most days, and one hard week takes it back.',
+  toward:'Compounding. Same seat, same address, repeated, until the load there stops returning.'},
+ {at:51, nm:'Even',
+  def:'The field breaks even and sits just above the line.',
+  energy:'What you build holds about as often as it slips.',
+  toward:'Gaining. One address cleared entirely beats four reduced.'},
+ {at:41, nm:'Oscillating',
+  def:'The median range is forty to sixty and fifty is the centre of the line. '
+     +'The field crosses it in both directions.',
+  energy:'The day decides. What is running that morning sets the range.',
+  toward:'Even. Consistency rather than intensity. The swing narrows before the number rises.'},
  {at:31, nm:'Incoherent',
   def:'The field costs more than it builds. Charge is held at more addresses than are clearing.',
   energy:'Effort goes in and less comes out. You are working, and the work is going into holding.',
-  toward:'Practicing. Take the heaviest seat first. One address cleared where the load actually sits moves this further than ten cleared anywhere else.'},
+  toward:'Oscillating, and the median range starts at forty. Take the heaviest seat first. One address cleared where the load actually sits moves this further than ten cleared anywhere else.'},
  {at:21, nm:'Corrupt',
   def:'The held charge is shaping decisions now, not only mood.',
   energy:'The pattern chooses before you do. You can see it afterwards and not while it runs.',
-  toward:'Incoherent, then Practicing. The move is interruption: name the address while it is running, ahead of the behaviour.'},
- {at:1, nm:'Severe',
+  toward:'Incoherent, then the median range. The move is interruption: name the address while it is running, ahead of the behaviour.'},
+ {at:11, nm:'Severe',
   def:'Most of the field is carrying. Very little is clear.',
   energy:'Ordinary demands read as threats. Capacity is spent before the day starts.',
   toward:'Off the floor, and nothing more ambitious than that. One seat, one address, one line. Not a programme.'},
@@ -1642,8 +1727,19 @@ const TIERDEF=[
   def:'The field is fully loaded. Nothing is clearing.',
   energy:'Flat. Not calm, out of charge.',
   toward:'Weight off, and not alone. A reading this low is not a thing to manage by yourself, and the instrument will not pretend otherwise.'}];
-/* one lookup, so the tier table stops being copied into renderers */
+/* one lookup, so the band table stops being copied into renderers */
 const TIER_BY={}; TIERDEF.forEach(function(t){TIER_BY[t.nm]=t;});
+/* the median, and the width of the swing around it. named once, because three
+   renderers asked the same question of the same number. */
+const MEDIAN=50, MEDIAN_LO=40, MEDIAN_HI=60;
+function medianRange(cq){return cq>=MEDIAN_LO&&cq<=MEDIAN_HI;}
+/* a band is a range and says so. the ladder printed one number per row, which
+   is a threshold, and a threshold does not tell a person how wide the word is.
+   the top of a band is one below the floor of the band above it. */
+function tierTop(nm){
+ for(var i=0;i<TIERDEF.length;i++) if(TIERDEF[i].nm===nm) return i===0?100:TIERDEF[i-1].at-1;
+ return 100;}
+function tierRange(t){return t.at+' to '+tierTop(t.nm);}
 function tierOf(cq){
  for(var i=0;i<TIERDEF.length;i++) if(cq>=TIERDEF[i].at)return TIERDEF[i];
  return TIERDEF[TIERDEF.length-1];}
@@ -1843,7 +1939,7 @@ const PEOPLE=[
     Four reference cases added on the owner's ruling, because the roster sat in
     the middle and the vocabulary at the ends had never been looked at with a
     real field behind it. Two at the floor and two near the ceiling, and the
-    pairs are the point: 2 and 10 are both Severe, 92 and 98 are both Mastery.
+    pairs are the point: 2 and 10 are both Collapsed, 92 and 98 are both Mastery.
     If one word has to carry both ends of each pair, the word is doing no work.
 
     The charge vectors were solved against compute() rather than invented, and
@@ -2664,11 +2760,16 @@ function exprRead(){return EXPR.map(function(e){var f=exprFill(e.nm);
    Undo has to capture the inputs: the nine charges, the nine
    installed opposites, the twenty one laws and the soul.
 
-   Bounded at twenty, because this is a stack for mistakes and
-   not a version history, and an unbounded one on a phone is a
-   leak nobody will find.
+   UNLIMITED, on the owner's ruling. It was capped at twenty on
+   a memory argument and the argument does not survive the
+   arithmetic: one entry is nine charges, nine opposites, twenty
+   one laws and a short soul, which is under a kilobyte. Ten
+   thousand of them is under ten megabytes and nobody performs
+   ten thousand irreversible acts in a session. A person who
+   cannot get back to where they started has no undo, they have
+   a grace period.
    ============================================================ */
-const UNDO_MAX=20;
+const UNDO_MAX=0;                 /* 0 means no ceiling */
 var UNDO=[];
 
 /* the inputs, and nothing derived. everything else recomputes from these. */
@@ -2685,7 +2786,7 @@ function undoState(){
    person guess what they are about to get back. */
 function undoPush(label){
  UNDO.push({s:undoState(), nm:label||'the last change', t:new Date().toISOString()});
- while(UNDO.length>UNDO_MAX)UNDO.shift();
+ if(UNDO_MAX>0){while(UNDO.length>UNDO_MAX)UNDO.shift();}
  return UNDO.length;}
 
 function undoDepth(){return UNDO.length;}
@@ -4021,6 +4122,8 @@ if(typeof module!=='undefined'&&module.exports){
   /* undo */     undoPush:undoPush, undoPop:undoPop, undoDepth:undoDepth,
                   undoPeek:undoPeek, undoClear:undoClear, UNDO_MAX:UNDO_MAX,
   /* labels */   TIERDEF:TIERDEF, TIER_BY:TIER_BY, tierOf:tierOf,
+                 MEDIAN:MEDIAN, MEDIAN_LO:MEDIAN_LO, MEDIAN_HI:MEDIAN_HI,
+                 medianRange:medianRange, tierTop:tierTop, tierRange:tierRange,
   /* astro */     julianDay:julianDay, sunLon:sunLon, moonLon:moonLon, gmst:gmst,
                   ascendant:ascendant, signOf:signOf, degInSign:degInSign,
                   gateOf:gateOf, designJD:designJD, birthJD:birthJD, PLACE:PLACE,
@@ -4145,6 +4248,15 @@ function leaves(o){if(!o||!o.parts)return o?[o]:[];
 const cv=document.getElementById('cv'),g=cv.getContext('2d');
 const bg=document.getElementById('bgaura'),bgx=bg.getContext('2d');
 let CW=1e3,CH=1e3,CX=500,CY=500,DPR=1,HIT=[],U=400;
+/* Every label the wheel draws, in canvas coordinates, recorded the way HIT
+   records targets. A DOM overlay sat on top of the lowest seat label for a
+   long time and nothing could see it, because a canvas label is pixels and
+   a probe that reads pixels lies. This gives the collide gate the boxes. */
+let LBL=[];
+/* where the outermost label sits, and how much room its text needs */
+const LBL_R=1.20, LBL_M=30;
+/* what sits over the canvas and therefore bounds the wheel */
+const OVERLAY=['tl','acc','bal','howto'];
 const hx=h=>{const n=parseInt(String(h).slice(1),16);return[(n>>16)&255,(n>>8)&255,n&255];};
 const rgba=(c,a)=>'rgba('+c[0]+','+c[1]+','+c[2]+','+(+a).toFixed(3)+')';
 const mixc=(a,b,t)=>a.map((v,i)=>Math.round(v+(b[i]-v)*t));
@@ -4183,7 +4295,31 @@ function statusSaved(){
    the same CX, CY and U the draw used. */
 var BASE_U=1;
 function reframe(){
- BASE_U=Math.min(CW,CH)/2;
+ /* HOW BIG THE WHEEL IS ALLOWED TO BE.
+
+    Two things bounded it and neither was being asked. The labels run outward
+    past the rings, furthest at the blueprint depth where nineteen domain names
+    radiate to 1.2 of the unit radius, so a rule that stopped at the canvas
+    edge put 3rd Eye and Knowledge half off it. And the readouts parked in the
+    corners are only safe while the circle does not reach them, which is true
+    on a wide stage and false on a square one.
+
+    So the free radius is measured rather than assumed: the half box, then cut
+    back to the nearest corner of anything sitting over the canvas. The wheel
+    is whatever fits inside that once the longest label is taken out. On a wide
+    stage the corners are far away and this changes nothing. On a square one
+    the wheel gives up the difference, which is the honest trade. */
+ var half=Math.min(CW,CH)/2, free=half;
+ if(cv&&cv.getBoundingClientRect){
+  var cb=cv.getBoundingClientRect(), fx=cb.left+CW/2, fy=cb.top+CH/2;
+  OVERLAY.forEach(function(id){
+   var e=document.getElementById(id); if(!e)return;
+   var st=window.getComputedStyle(e);
+   if(st.display==='none'||st.visibility==='hidden'||+st.opacity===0)return;
+   var b=e.getBoundingClientRect(); if(!b.width||!b.height)return;
+   var dx=Math.max(b.left-fx,0,fx-b.right), dy=Math.max(b.top-fy,0,fy-b.bottom);
+   free=Math.min(free,Math.hypot(dx,dy));});}
+ BASE_U=Math.max(40,Math.min(half,(free-LBL_M)/LBL_R));
  U=BASE_U*S.zoom;
  var lim=CW*0.9;
  S.panx=Math.max(-lim,Math.min(lim,S.panx));
@@ -4212,13 +4348,22 @@ if(typeof ResizeObserver!=='undefined'){
  new ResizeObserver(function(){
   var b=cv.getBoundingClientRect();
   if(Math.abs(b.width-CW)<0.5&&Math.abs(b.height-CH)<0.5)return;
-  layout();render();}).observe(cv.parentElement);}
+  layout();render();}).observe(cv);}   /* the canvas, not the stage: the stage
+    is a grid and the wheel's cell resizes without the stage doing so. */
 function arcP(r0,r1,a0,a1){g.beginPath();g.arc(CX,CY,r0,a0,a1);g.arc(CX,CY,r1,a1,a0,true);g.closePath();}
 function radialTxt(s,ang,rad,size,c,a,w){
  g.save();g.translate(CX+Math.cos(ang)*rad,CY+Math.sin(ang)*rad);
  let rot=ang;if(Math.cos(ang)<0){rot+=Math.PI;g.textAlign='right';}else g.textAlign='left';
  g.rotate(rot);g.font=(w||400)+' '+size+"px Lexend, system-ui, sans-serif";
- g.textBaseline='middle';g.fillStyle=rgba(c,a);g.fillText(s,0,0);g.restore();}
+ g.textBaseline='middle';g.fillStyle=rgba(c,a);g.fillText(s,0,0);
+ /* the axis aligned box the rotated run actually occupies */
+ var tw=g.measureText(s).width, sn=Math.abs(Math.sin(rot)), cs=Math.abs(Math.cos(rot));
+ var bw=tw*cs+size*sn, bh=tw*sn+size*cs;
+ var px=CX+Math.cos(ang)*rad, py=CY+Math.sin(ang)*rad;
+ var off=(g.textAlign==='right'?-tw/2:tw/2);
+ px+=Math.cos(rot)*off; py+=Math.sin(rot)*off;
+ LBL.push({t:s,x:px-bw/2,y:py-bh/2,w:bw,h:bh});
+ g.restore();}
 function txt(s,x,y,size,c,a,w,fam){g.save();
  g.font=(w||400)+' '+size+'px '+(fam||'Lexend, system-ui, sans-serif');
  g.textAlign='center';g.textBaseline='middle';g.fillStyle=rgba(c,a);g.fillText(s,x,y);g.restore();}
@@ -4597,7 +4742,7 @@ function draw(r){
  var sig=drawSig(r);
  if(sig!==null&&sig===DRAW_SIG) return;    /* nothing moved and nothing will */
  DRAW_SIG=sig;
- g.clearRect(0,0,CW,CH);HIT=[];
+ g.clearRect(0,0,CW,CH);HIT=[];LBL=[];
  drawWheel(r,effView());}
 
 /* ============================================================
@@ -5301,7 +5446,12 @@ function sumRender(){
     return '<div class="sum-row"><span>'+esc(x.nm)+'</span><em>'+x.score+'% '
      +(x.exact?'exact':'near')+'</em><b>'+x.w.toFixed(1)+'</b></div>';}).join('')
    :'<p class="sum-none">No named saboteur is firing.</p>'));
- out+=sumCard('Collapsed '+under.length+', overshot '+over.length,
+ /* The card title said Collapsed, which is also the word the scale puts on a
+    person at the bottom of the line, so a person reading Collapsed 4 beside
+    the band word Collapsed had two meanings for one word on one screen. The
+    title says what the address does. The body keeps the codex term and
+    defines it. */
+ out+=sumCard('Shut '+under.length+', overshot '+over.length,
   '<p class="sum-p">Collapse means the address shuts. Jouissance means it will not shut. '
   +'Both are distortion. Coherence is neither.</p>'
   +(over.length? '<div class="sum-chips">'+over.slice(0,6).map(function(x){
@@ -6327,7 +6477,10 @@ function runCompassDrill(){
  var me=r.unread?null:TIER_BY[r.tier];
  var h='<div class="pm-eye">The compass</div><div class="ad-nm">'
   +(r.unread?'Not read yet':'CQ '+Math.round(cq)+', '+r.tier.toLowerCase())+'</div>'
-  +'<div class="pm-eye">How to read it</div><p class="ad-p">The line runs 0 at the base to 100 at the crown. Above 50 the field builds more than it costs. Below 50 it costs more than it builds. '
+  +'<div class="pm-eye">How to read it</div><p class="ad-p">The line runs 0 at the base to 100 at the crown, and the word changes every ten points. '
+  +'Above '+MEDIAN+' the field builds more than it costs. Below '+MEDIAN+' it costs more than it builds. '
+  +MEDIAN_LO+' to '+MEDIAN_HI+' is the median range, where the reading crosses the line in both directions'
+  +(medianRange(cq)&&!r.unread?', and that is where this one sits':'')+'. '
   +'The marker is where coherence sits now. The band around it is the swing, <b>'+band.toFixed(0)+'</b> points: how far a reading can wander before it settles. Tight alignment leaves little room. A decohering field ranges wide.</p>'
   /* THE RULING. A label this product puts on a person carries a definition,
     the behaviour it produces, and the direction out of it. A word like Severe
@@ -6340,7 +6493,7 @@ function runCompassDrill(){
  h+='<div class="pm-eye">The whole scale</div><div class="ad-rows">'
   +TIERDEF.map(function(t){
     return '<div class="ad-r static'+(t.nm===r.tier&&!r.unread?' on':'')+'" title="'+esc(t.def)+'">'
-     +'<span class="ad-k">'+esc(t.nm)+'</span><span class="ad-v">'+t.at+'</span></div>';}).join('')
+     +'<span class="ad-k">'+esc(t.nm)+'</span><span class="ad-v">'+tierRange(t)+'</span></div>';}).join('')
   +'</div>';
  rdShell(h);}
 
@@ -7506,11 +7659,40 @@ function renderAcc(r){
  if(a.signal<70) w.push('signal '+a.signal+'%, '+a.held+' held');
  if(a.exq<0.7) w.push('expression '+Math.round(a.exq*100)+'%');
  if(a.deg) w.push(a.deg+' degenerate pair'+(a.deg>1?'s':''));
- el.innerHTML=cr('Crown',a.pct,{size:'lg',raw:a.pct.toFixed(1)+'%',label:'identification'})
-  +'<div class="acc-l">Family identification, plus or minus '+a.band.toFixed(1)+'</div>'
-  +'<div class="acc-w">'+(w.length?w.join(' · '):'laws, signal and expression all full')+'</div>'
-  +'<div class="acc-w acc-lean">'+(a.relN>=0.6?'lean reliable':(a.relN>=0.3?'lean partial':'lean not callable'))
-  +' · '+a.rel+'% of laws spread 3 or more</div>';}
+ /* This was a figure and three lines of diagnostics, 325 by 140, parked in
+    the bottom corner of the stage. A circle inside a rectangle leaves the
+    corners free, but not that much of them: the block reached into the wheel
+    and the wheel had to give up radius to clear it, which is why the field
+    was rendering small. The figure stays on the stage. The three lines move
+    into the drill, which is where a person asks for them, and the figure
+    becomes a button, because the house rule is that a number on the stage
+    has a door. */
+ el.innerHTML='<button type="button" class="acc-b" id="accbtn" '
+  +'aria-label="Family identification. How sure the reading is. Opens the detail.">'
+  +cr('Crown',a.pct,{size:'lg',raw:a.pct.toFixed(1)+'%',label:'identification'})
+  +'<span class="acc-l">Identification</span></button>';
+ var bt=document.getElementById('accbtn');
+ if(bt)bt.onclick=function(){runAccDrill();};}
+/* the detail the stage used to print whether it was asked for or not */
+function runAccDrill(){
+ var r=compute(), a=accuracy(r), w=[];
+ if(a.cov<21) w.push((21-a.cov)+' law'+(21-a.cov===1?'':'s')+' unmeasured, sitting at the default 6');
+ if(a.signal<70) w.push('signal '+a.signal+'%, '+a.held+' held');
+ if(a.exq<0.7) w.push('expression '+Math.round(a.exq*100)+'%');
+ if(a.deg) w.push(a.deg+' degenerate pair'+(a.deg>1?'s':''));
+ rdShell('<div class="pm-eye">Family identification</div>'
+  +'<div class="ad-nm">'+a.pct.toFixed(1)+'%</div>'
+  +'<div class="pm-eye">What it is</div>'
+  +'<p class="ad-p">How closely this field matches a named family, and how wide the '
+  +'match is. Plus or minus <b>'+a.band.toFixed(1)+'</b> at this reading. A narrow band '
+  +'means one family fits and the others do not. A wide one means several fit about as '
+  +'well, and the name is a guess.</p>'
+  +'<div class="pm-eye">What is limiting it</div>'
+  +'<p class="ad-p">'+esc(w.length?w.join('. '):'Laws, signal and expression are all full.')+'</p>'
+  +'<div class="pm-eye">How reliable</div>'
+  +'<p class="ad-p">'+(a.relN>=0.6?'Reliable':(a.relN>=0.3?'Partial':'Not callable'))
+  +'. <b>'+a.rel+'%</b> of the laws are spread three or more, which is what separates one '
+  +'family from another. Laws sitting close together name nothing.</p>');}
 
 /* ---- personas ---- */
 PEOPLE.unshift({nm:'You',age:'',role:'build your own',dom:0,a1:0,a2:1,
@@ -7880,10 +8062,16 @@ function renderBal(r){
  var sx=CURP&&CURP.who?CURP.who.sex:'';
  var tick=sx==='m'?'<span class="bal-s" style="left:78%"></span>'
         :sx==='f'?'<span class="bal-s" style="left:22%"></span>':'';
- e.innerHTML='<div class="bal-t"><span>inward</span>'
+ /* The centre named the direction and so did the end label, so "26% outward"
+    sat against the word outward and the two ran together. The ends carry the
+    direction, the centre carries the number, and the end the field leans to is
+    the one that lights. One word per concept, on one strip. */
+ var lean=b.read?Math.abs(b.lean)*100:0;
+ var dir=!b.read?'':b.lean===0?'even':b.lean>0?'outward':'inward';
+ e.innerHTML='<div class="bal-t"><span'+(dir==='inward'?' class="on" style="color:'+c+'"':'')+'>inward</span>'
   +'<span><b>'+(!b.read?'not enough held to read'
-    :b.lean===0?'even':(Math.abs(b.lean)*100).toFixed(0)+'% '+(b.lean>0?'outward':'inward'))+'</b></span>'
-  +'<span>outward</span></div>'
+    :b.lean===0?'even':lean.toFixed(0)+'%')+'</b></span>'
+  +'<span'+(dir==='outward'?' class="on" style="color:'+c+'"':'')+'>outward</span></div>'
   +'<div class="bal-tr"><i></i>'+tick
   +'<span class="bal-m" style="left:'+pc.toFixed(1)+'%;background:'+c+'"></span></div>';}
 function railTop(r){
@@ -7926,7 +8114,13 @@ function render(){
    +'<div class="bmrow"><span class="bmk">Malignant</span>'
    +'<span class="bmbar"><i style="width:'+mal.toFixed(0)+'%;background:'+PAL.Root+'"></i></span>'
    +'<span class="bmv" style="color:'+PAL.Root+'">'+mal.toFixed(0)+'%</span></div>'
-   +'<div class="bmnote">'+(ben>=mal?'building more than it costs':'costing more than it builds')+'</div>';})();
+   /* This said "building more than it costs", which is the ledger sentence and
+      the ledger belongs to the scale, where it is defined against the median.
+      A field at CQ 39 read Incoherent in the rail and "building more than it
+      costs" two inches away, because this line was reading the benign split
+      and not coherence at all. It says what it actually measures. */
+   +'<div class="bmnote">'+(ben>=mal?'most of what is held is benign'
+     :'most of what is held is malignant')+'</div>';})();
  /* The how to block sat permanently under the wheel repeating what the depth
     buttons already say. Ruled out. The text survives as the depth button's own
     tooltip, where it is asked for rather than always on. */

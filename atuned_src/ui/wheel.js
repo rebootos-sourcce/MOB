@@ -360,5 +360,5 @@ function draw(r){
  var sig=drawSig(r);
  if(sig!==null&&sig===DRAW_SIG) return;    /* nothing moved and nothing will */
  DRAW_SIG=sig;
- g.clearRect(0,0,CW,CH);HIT=[];
+ g.clearRect(0,0,CW,CH);HIT=[];LBL=[];
  drawWheel(r,effView());}

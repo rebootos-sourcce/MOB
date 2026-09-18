@@ -138,11 +138,40 @@ function renderAcc(r){
  if(a.signal<70) w.push('signal '+a.signal+'%, '+a.held+' held');
  if(a.exq<0.7) w.push('expression '+Math.round(a.exq*100)+'%');
  if(a.deg) w.push(a.deg+' degenerate pair'+(a.deg>1?'s':''));
- el.innerHTML=cr('Crown',a.pct,{size:'lg',raw:a.pct.toFixed(1)+'%',label:'identification'})
-  +'<div class="acc-l">Family identification, plus or minus '+a.band.toFixed(1)+'</div>'
-  +'<div class="acc-w">'+(w.length?w.join(' · '):'laws, signal and expression all full')+'</div>'
-  +'<div class="acc-w acc-lean">'+(a.relN>=0.6?'lean reliable':(a.relN>=0.3?'lean partial':'lean not callable'))
-  +' · '+a.rel+'% of laws spread 3 or more</div>';}
+ /* This was a figure and three lines of diagnostics, 325 by 140, parked in
+    the bottom corner of the stage. A circle inside a rectangle leaves the
+    corners free, but not that much of them: the block reached into the wheel
+    and the wheel had to give up radius to clear it, which is why the field
+    was rendering small. The figure stays on the stage. The three lines move
+    into the drill, which is where a person asks for them, and the figure
+    becomes a button, because the house rule is that a number on the stage
+    has a door. */
+ el.innerHTML='<button type="button" class="acc-b" id="accbtn" '
+  +'aria-label="Family identification. How sure the reading is. Opens the detail.">'
+  +cr('Crown',a.pct,{size:'lg',raw:a.pct.toFixed(1)+'%',label:'identification'})
+  +'<span class="acc-l">Identification</span></button>';
+ var bt=document.getElementById('accbtn');
+ if(bt)bt.onclick=function(){runAccDrill();};}
+/* the detail the stage used to print whether it was asked for or not */
+function runAccDrill(){
+ var r=compute(), a=accuracy(r), w=[];
+ if(a.cov<21) w.push((21-a.cov)+' law'+(21-a.cov===1?'':'s')+' unmeasured, sitting at the default 6');
+ if(a.signal<70) w.push('signal '+a.signal+'%, '+a.held+' held');
+ if(a.exq<0.7) w.push('expression '+Math.round(a.exq*100)+'%');
+ if(a.deg) w.push(a.deg+' degenerate pair'+(a.deg>1?'s':''));
+ rdShell('<div class="pm-eye">Family identification</div>'
+  +'<div class="ad-nm">'+a.pct.toFixed(1)+'%</div>'
+  +'<div class="pm-eye">What it is</div>'
+  +'<p class="ad-p">How closely this field matches a named family, and how wide the '
+  +'match is. Plus or minus <b>'+a.band.toFixed(1)+'</b> at this reading. A narrow band '
+  +'means one family fits and the others do not. A wide one means several fit about as '
+  +'well, and the name is a guess.</p>'
+  +'<div class="pm-eye">What is limiting it</div>'
+  +'<p class="ad-p">'+esc(w.length?w.join('. '):'Laws, signal and expression are all full.')+'</p>'
+  +'<div class="pm-eye">How reliable</div>'
+  +'<p class="ad-p">'+(a.relN>=0.6?'Reliable':(a.relN>=0.3?'Partial':'Not callable'))
+  +'. <b>'+a.rel+'%</b> of the laws are spread three or more, which is what separates one '
+  +'family from another. Laws sitting close together name nothing.</p>');}
 
 /* ---- personas ---- */
 PEOPLE.unshift({nm:'You',age:'',role:'build your own',dom:0,a1:0,a2:1,

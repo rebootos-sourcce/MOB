@@ -65,7 +65,12 @@ function sumRender(){
     return '<div class="sum-row"><span>'+esc(x.nm)+'</span><em>'+x.score+'% '
      +(x.exact?'exact':'near')+'</em><b>'+x.w.toFixed(1)+'</b></div>';}).join('')
    :'<p class="sum-none">No named saboteur is firing.</p>'));
- out+=sumCard('Collapsed '+under.length+', overshot '+over.length,
+ /* The card title said Collapsed, which is also the word the scale puts on a
+    person at the bottom of the line, so a person reading Collapsed 4 beside
+    the band word Collapsed had two meanings for one word on one screen. The
+    title says what the address does. The body keeps the codex term and
+    defines it. */
+ out+=sumCard('Shut '+under.length+', overshot '+over.length,
   '<p class="sum-p">Collapse means the address shuts. Jouissance means it will not shut. '
   +'Both are distortion. Coherence is neither.</p>'
   +(over.length? '<div class="sum-chips">'+over.slice(0,6).map(function(x){

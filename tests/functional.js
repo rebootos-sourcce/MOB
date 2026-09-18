@@ -289,7 +289,7 @@ ok(!/Incoherent|Corrupt|Severe|Collapsed/.test(virgin.tier),
  'the tier does not name a band, it reads: '+JSON.stringify(virgin.tier));
 ok(!/Incoherent/.test(virgin.profile),'nor does the profile sheet');
 ok(!/incoherent/.test(virgin.ana),'nor the analytics hero, which reads: '+JSON.stringify(virgin.ana));
-ok(virgin.unreadAfter===false&&/Incoherent|Corrupt|Severe|Practicing|Embodied|Mastery/.test(virgin.after),
+ok(virgin.unreadAfter===false&&/Incoherent|Corrupt|Severe|Oscillating|Even|Gaining|Compounding|Embodied|Mastery/.test(virgin.after),
  'and one held address makes it a real reading again: '+JSON.stringify(virgin.after));
 const bands=['Incoherent','Corrupt','Severe','Collapsed'].filter(w=>virgin.sweep.includes(w));
 ok(bands.length===0,'no band word appears anywhere on an unread first screen, found: '
@@ -349,7 +349,11 @@ ok(/Severe|Collapsed|Corrupt|Incoherent/.test(lab.label),
  'the heaviest case gets a band, got '+JSON.stringify(lab.label));
 ok(lab.tip.length>120,'and the label carries its meaning on hover, '+lab.tip.length+' chars');
 ok(/Toward:/.test(lab.tip),'including the direction out of it');
-ok(/What severe means/i.test(lab.drill),'the drill defines the word');
+/* the gate named Severe, so it broke when the scale went to ten bands and
+   Gordon moved a band. it asks the drill about whatever word the label used. */
+ok(new RegExp('What '+lab.label.replace(/[^A-Za-z]/g,' ').trim().split(/\s+/).pop()
+  +' means','i').test(lab.drill),
+ 'the drill defines the word it used, '+JSON.stringify(lab.label));
 ok(/How it shows up/i.test(lab.drill),'says how it shows up in a life');
 ok(/Where it goes/i.test(lab.drill),'and where it goes next');
 /* and the definition has to be reachable by TAP, not only by hover. It lived

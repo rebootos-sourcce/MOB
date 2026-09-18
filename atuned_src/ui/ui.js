@@ -244,10 +244,16 @@ function renderBal(r){
  var sx=CURP&&CURP.who?CURP.who.sex:'';
  var tick=sx==='m'?'<span class="bal-s" style="left:78%"></span>'
         :sx==='f'?'<span class="bal-s" style="left:22%"></span>':'';
- e.innerHTML='<div class="bal-t"><span>inward</span>'
+ /* The centre named the direction and so did the end label, so "26% outward"
+    sat against the word outward and the two ran together. The ends carry the
+    direction, the centre carries the number, and the end the field leans to is
+    the one that lights. One word per concept, on one strip. */
+ var lean=b.read?Math.abs(b.lean)*100:0;
+ var dir=!b.read?'':b.lean===0?'even':b.lean>0?'outward':'inward';
+ e.innerHTML='<div class="bal-t"><span'+(dir==='inward'?' class="on" style="color:'+c+'"':'')+'>inward</span>'
   +'<span><b>'+(!b.read?'not enough held to read'
-    :b.lean===0?'even':(Math.abs(b.lean)*100).toFixed(0)+'% '+(b.lean>0?'outward':'inward'))+'</b></span>'
-  +'<span>outward</span></div>'
+    :b.lean===0?'even':lean.toFixed(0)+'%')+'</b></span>'
+  +'<span'+(dir==='outward'?' class="on" style="color:'+c+'"':'')+'>outward</span></div>'
   +'<div class="bal-tr"><i></i>'+tick
   +'<span class="bal-m" style="left:'+pc.toFixed(1)+'%;background:'+c+'"></span></div>';}
 function railTop(r){
@@ -290,7 +296,13 @@ function render(){
    +'<div class="bmrow"><span class="bmk">Malignant</span>'
    +'<span class="bmbar"><i style="width:'+mal.toFixed(0)+'%;background:'+PAL.Root+'"></i></span>'
    +'<span class="bmv" style="color:'+PAL.Root+'">'+mal.toFixed(0)+'%</span></div>'
-   +'<div class="bmnote">'+(ben>=mal?'building more than it costs':'costing more than it builds')+'</div>';})();
+   /* This said "building more than it costs", which is the ledger sentence and
+      the ledger belongs to the scale, where it is defined against the median.
+      A field at CQ 39 read Incoherent in the rail and "building more than it
+      costs" two inches away, because this line was reading the benign split
+      and not coherence at all. It says what it actually measures. */
+   +'<div class="bmnote">'+(ben>=mal?'most of what is held is benign'
+     :'most of what is held is malignant')+'</div>';})();
  /* The how to block sat permanently under the wheel repeating what the depth
     buttons already say. Ruled out. The text survives as the depth button's own
     tooltip, where it is asked for rather than always on. */

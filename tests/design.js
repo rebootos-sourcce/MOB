@@ -92,6 +92,53 @@ const caps=await page.evaluate(()=>{
 ok(caps.length===0,'all-caps strings: '+caps.slice(0,6).join(' | '));
 console.log('  all-caps strings:',caps.length?caps.slice(0,6).join(' | '):'none');
 
+/* ============================================================
+   6. A panel fills the column that holds it, and no single class
+   name is declared twice with conflicting geometry.
+
+   The letting go deck declared a bare .card with width:min(380px,
+   100% - 32px) after the rail panels had already claimed .card.
+   The later rule won, so both rails rendered 32px narrower than
+   their own column and every control inside sat beside dead space.
+   Nothing failed, nothing logged, and it only showed up when
+   someone measured. Two gates, because one word per concept is a
+   ruling and a collision like this is how it gets broken quietly.
+   ============================================================ */
+console.log('\n=== 6 \u00b7 panels fill their columns, no name declared twice ===');
+const fill=await page.evaluate(()=>{
+ const bad=[];
+ document.querySelectorAll('.mid > .col').forEach((col,i)=>{
+  const cw=col.getBoundingClientRect().width;
+  [...col.children].forEach(ch=>{
+   const w=ch.getBoundingClientRect().width;
+   if(cw-w>1)bad.push('col '+i+' child .'+String(ch.className).split(' ')[0]
+    +' is '+w.toFixed(0)+' inside '+cw.toFixed(0));});});
+ return bad;});
+ok(fill.length===0,'panels short of their column: '+fill.join(' | '));
+console.log('  short panels:',fill.length?fill.join(' | '):'none');
+
+const dupe=await page.evaluate(()=>{
+ /* a single class selector, no combinator and no second class, is a
+    claim on that word. two such claims both setting geometry is the
+    collision. */
+ const GEO=['width','padding','padding-left','padding-right','max-width',
+            'display','flex-direction'];
+ const seen={}, bad=[];
+ for(const sh of document.styleSheets){
+  let rules; try{rules=sh.cssRules}catch(e){continue}
+  const walk=r=>{
+   if(r.selectorText&&/^\.[A-Za-z][\w-]*$/.test(r.selectorText.trim())){
+    const k=r.selectorText.trim();
+    const props=GEO.filter(g=>r.style.getPropertyValue(g));
+    if(props.length){
+     if(seen[k])bad.push(k+' declared twice, both setting '+props.join('/'));
+     else seen[k]=1;}}
+   if(r.cssRules&&!(r.media))for(const c of r.cssRules)walk(c);};
+  for(const r of rules)walk(r);}
+ return bad;});
+ok(dupe.length===0,'class names declared twice with geometry: '+dupe.join(' | '));
+console.log('  colliding names:',dupe.length?dupe.join(' | '):'none');
+
 await browser.close();
 console.log('\n===== '+PASS+' passed, '+FAIL+' failed =====');
 process.exit(FAIL?1:0);

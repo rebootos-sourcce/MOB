@@ -210,28 +210,61 @@ const MASKS=[{nm:'Child',b:['Root','Sacral']},{nm:'Preteen',b:['Solar','Throat']
    themselves are his call: the panel found these four words are
    the single largest commercial item in the product.
    ============================================================ */
+/* ============================================================
+   THE SCALE. Ten bands, one word every ten points, and a range
+   rather than a threshold.
+
+   The owner's ruling. Seven tiers with uneven widths did not read
+   as a nought to a hundred scale: Practicing was nineteen points
+   wide, Collapsed was one, and no word told a person how much of
+   the line it covered. Ten bands of ten each, so the word moves
+   at every tenth point and a person can see the whole line in it.
+
+   Forty to sixty is the median range. Fifty is the median exactly,
+   and it sits at the top of Oscillating, which is the band named
+   for crossing the line in both directions. A reading of forty is
+   Incoherent and still inside the median range: one good week from
+   the centre, which is a true statement and not a contradiction.
+
+   Every band carries three things, on the ruling that a label this
+   product puts on a person is a reading and not a judgement: what
+   it is, what it does, and where it goes.
+   ============================================================ */
 const TIERDEF=[
- {at:90, nm:'Mastery',
+ {at:91, nm:'Mastery',
   def:'The field builds far more than it costs. Almost nothing is held.',
   energy:'Intention and action arrive together. There is no gap left to manage.',
   toward:'Hold it. The work here is maintenance, and what you can now carry for other people.'},
- {at:70, nm:'Embodied',
+ {at:81, nm:'Embodied',
   def:'The field builds more than it costs, with real load still in it.',
   energy:'You recover fast. A charge lands and clears instead of staying.',
-  toward:'Mastery. Close the laws still shut, and clear what is left holding after a week.'},
- {at:50, nm:'Practicing',
-  def:'The field breaks even. What it builds and what it spends are close.',
-  energy:'Good days and hard days, and the difference is mostly what is running that day.',
-  toward:'Embodied. Consistency rather than intensity: the same address twice beats eight addresses once.'},
+  toward:'Mastery. Close the laws still shut, and clear what is still holding a week later.'},
+ {at:71, nm:'Compounding',
+  def:'Each cleared address makes the next one cheaper. The gains are stacking.',
+  energy:'Less effort buys more movement than it did a month ago.',
+  toward:'Embodied. Stop opening addresses. Finish the ones already open.'},
+ {at:61, nm:'Gaining',
+  def:'The field builds more than it spends, and the margin is thin.',
+  energy:'Forward on most days, and one hard week takes it back.',
+  toward:'Compounding. Same seat, same address, repeated, until the load there stops returning.'},
+ {at:51, nm:'Even',
+  def:'The field breaks even and sits just above the line.',
+  energy:'What you build holds about as often as it slips.',
+  toward:'Gaining. One address cleared entirely beats four reduced.'},
+ {at:41, nm:'Oscillating',
+  def:'The median range is forty to sixty and fifty is the centre of the line. '
+     +'The field crosses it in both directions.',
+  energy:'The day decides. What is running that morning sets the range.',
+  toward:'Even. Consistency rather than intensity. The swing narrows before the number rises.'},
  {at:31, nm:'Incoherent',
   def:'The field costs more than it builds. Charge is held at more addresses than are clearing.',
   energy:'Effort goes in and less comes out. You are working, and the work is going into holding.',
-  toward:'Practicing. Take the heaviest seat first. One address cleared where the load actually sits moves this further than ten cleared anywhere else.'},
+  toward:'Oscillating, and the median range starts at forty. Take the heaviest seat first. One address cleared where the load actually sits moves this further than ten cleared anywhere else.'},
  {at:21, nm:'Corrupt',
   def:'The held charge is shaping decisions now, not only mood.',
   energy:'The pattern chooses before you do. You can see it afterwards and not while it runs.',
-  toward:'Incoherent, then Practicing. The move is interruption: name the address while it is running, ahead of the behaviour.'},
- {at:1, nm:'Severe',
+  toward:'Incoherent, then the median range. The move is interruption: name the address while it is running, ahead of the behaviour.'},
+ {at:11, nm:'Severe',
   def:'Most of the field is carrying. Very little is clear.',
   energy:'Ordinary demands read as threats. Capacity is spent before the day starts.',
   toward:'Off the floor, and nothing more ambitious than that. One seat, one address, one line. Not a programme.'},
@@ -239,8 +272,19 @@ const TIERDEF=[
   def:'The field is fully loaded. Nothing is clearing.',
   energy:'Flat. Not calm, out of charge.',
   toward:'Weight off, and not alone. A reading this low is not a thing to manage by yourself, and the instrument will not pretend otherwise.'}];
-/* one lookup, so the tier table stops being copied into renderers */
+/* one lookup, so the band table stops being copied into renderers */
 const TIER_BY={}; TIERDEF.forEach(function(t){TIER_BY[t.nm]=t;});
+/* the median, and the width of the swing around it. named once, because three
+   renderers asked the same question of the same number. */
+const MEDIAN=50, MEDIAN_LO=40, MEDIAN_HI=60;
+function medianRange(cq){return cq>=MEDIAN_LO&&cq<=MEDIAN_HI;}
+/* a band is a range and says so. the ladder printed one number per row, which
+   is a threshold, and a threshold does not tell a person how wide the word is.
+   the top of a band is one below the floor of the band above it. */
+function tierTop(nm){
+ for(var i=0;i<TIERDEF.length;i++) if(TIERDEF[i].nm===nm) return i===0?100:TIERDEF[i-1].at-1;
+ return 100;}
+function tierRange(t){return t.at+' to '+tierTop(t.nm);}
 function tierOf(cq){
  for(var i=0;i<TIERDEF.length;i++) if(cq>=TIERDEF[i].at)return TIERDEF[i];
  return TIERDEF[TIERDEF.length-1];}

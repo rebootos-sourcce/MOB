@@ -340,7 +340,7 @@ g('15d \u00b7 the meter');
  ok(!validateProfile(bh).ok,'a poisoned history is refused');
  const gh=JSON.parse(JSON.stringify(saveProfile(p)));
  gh.history=[{t:'2026-01-01T00:00:00Z',cq:40,dq:3,sq:2,pole:0.1,jq:0,rad:0.5,
-  loaded:4,sab:1,cx:0,hy:0,ch:0,dark:'Root',tier:'Severe',arch:'Sage'}];
+  loaded:4,sab:1,cx:0,hy:0,ch:0,dark:'Root',tier:'Incoherent',arch:'Sage'}];
  const ghv=validateProfile(gh);
  ok(ghv.ok&&ghv.profile.history.length===1&&typeof ghv.profile.history[0].cq==='number',
   'and a real one round trips as numbers');
@@ -762,11 +762,16 @@ g('18b \u00b7 undo');
  /* susceptibility is written by a pass, not by compute, so a restore that
     skips it leaves stories attributing against the wrong profile */
  ok(W.every(n=>typeof n.susc==='number'&&n.susc>0),'susceptibility is rebuilt, not stale');
- /* bounded: a stack for mistakes, not a version history */
+ /* UNLIMITED on the owner's ruling. A person who cannot get back to where
+    they started does not have undo, they have a grace period. */
  E.undoClear();
- for(let i=0;i<E.UNDO_MAX+12;i++)E.undoPush('step '+i);
- ok(E.undoDepth()===E.UNDO_MAX,'the stack is bounded at '+E.UNDO_MAX+', got '+E.undoDepth());
- ok(E.undoPeek()==='step '+(E.UNDO_MAX+11),'and keeps the most recent');
+ for(let i=0;i<500;i++)E.undoPush('step '+i);
+ ok(E.undoDepth()===500,'the stack does not discard, got '+E.undoDepth());
+ ok(E.undoPeek()==='step 499','and keeps the most recent');
+ /* and it unwinds the whole way back, not just the recent part */
+ let n=0; while(E.undoPop())n++;
+ ok(n===500,'it unwinds every step, got '+n);
+ ok(E.undoDepth()===0,'and empties');
  E.undoClear();
 }
 
@@ -825,13 +830,26 @@ g('19c \u00b7 a label carries what it owes');
    definition, the behaviour it produces, and the direction out of it. A word
    like Severe with nothing attached is a judgement. */
 {
- const {TIERDEF,TIER_BY,tierOf}=E;
- ok(TIERDEF.length===7,'seven tiers, got '+TIERDEF.length);
+ const {TIERDEF,TIER_BY,tierOf,tierRange,tierTop,medianRange,MEDIAN,MEDIAN_LO,MEDIAN_HI}=E;
+ ok(TIERDEF.length===10,'ten bands, got '+TIERDEF.length);
  const missing=TIERDEF.filter(t=>!t.def||!t.energy||!t.toward).map(t=>t.nm);
  ok(missing.length===0,'every tier carries a definition, a behaviour and a direction'
   +(missing.length?'  missing on '+missing.join(', '):''));
  /* the thresholds must still be the ones the engine computes against */
- ok(TIERDEF.map(t=>t.at).join()==='90,70,50,31,21,1,0','the thresholds are unchanged');
+ ok(TIERDEF.map(t=>t.at).join()==='91,81,71,61,51,41,31,21,11,0','the thresholds are unchanged');
+ /* the owner's ruling: a new word every ten points. every band is ten wide,
+    so the word moves at every tenth point and no band swallows nineteen. */
+ const wide=TIERDEF.filter(t=>tierTop(t.nm)-t.at!==(t.at===0?10:9)).map(t=>t.nm+' '+tierRange(t));
+ ok(wide.length===0,'every band is ten points wide'+(wide.length?'  '+wide.join(', '):''));
+ ok(tierRange(TIERDEF[0])==='91 to 100'&&tierRange(TIERDEF[9])==='0 to 10',
+  'and a band prints as a range, got '+tierRange(TIERDEF[0])+' and '+tierRange(TIERDEF[9]));
+ /* the median, ruled. fifty is the centre and forty to sixty is the swing. */
+ ok(MEDIAN===50&&MEDIAN_LO===40&&MEDIAN_HI===60,'fifty is the median, forty to sixty the range');
+ ok(medianRange(40)&&medianRange(50)&&medianRange(60)&&!medianRange(39.9)&&!medianRange(60.1),
+  'the median range is closed at forty and sixty');
+ ok(tierOf(50).nm==='Oscillating'&&tierOf(MEDIAN).at===41,
+  'and fifty sits at the top of the band named for crossing the line, got '+tierOf(50).nm);
+ ok(/median/i.test(TIER_BY.Oscillating.def),'which says median in its own definition');
  ok(TIERDEF.every((t,i)=>i===0||t.at<TIERDEF[i-1].at),'and they only descend');
  /* ONE TABLE. There were three: canon, the renderer, and compute itself. A
     previous commit removed the renderer's and claimed the duplicate was gone,
@@ -839,12 +857,13 @@ g('19c \u00b7 a label carries what it owes');
     rename would have drifted silently between the engine and the definitions.
     This asserts there is no second table anywhere by checking that every band
     compute can name has a definition behind it, across the whole scale. */
- ok(tierOf(95).nm==='Mastery'&&tierOf(12).nm==='Severe'&&tierOf(0).nm==='Collapsed',
+ ok(tierOf(95).nm==='Mastery'&&tierOf(12).nm==='Severe'&&tierOf(0).nm==='Collapsed'
+  &&tierOf(10).nm==='Collapsed'&&tierOf(11).nm==='Severe'&&tierOf(75).nm==='Compounding',
   'tierOf resolves the band');
  {
   const named=new Set(), defined=new Set(TIERDEF.map(t=>t.nm));
   for(let cq=0;cq<=100;cq+=0.25)named.add(tierOf(cq).nm);
-  ok(named.size===7,'the scale reaches all seven bands, got '+named.size);
+  ok(named.size===10,'the scale reaches all ten bands, got '+named.size);
   const orphan=[...named].filter(n=>!defined.has(n));
   ok(orphan.length===0,'and no band exists without a definition'
    +(orphan.length?'  orphans: '+orphan.join(', '):''));
