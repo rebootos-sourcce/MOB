@@ -23,10 +23,21 @@ joins.
 
 The pain map is on all four. The tools are on all four.
 
-**Open: what counts as one pattern.** This is the unit the whole business
-model meters, and nothing in the code counts it yet. The candidates are one
-committed story, one detected pattern in a reading, or one drill opened. They
-differ by an order of magnitude. Needs a ruling before the meter is built.
+**One pattern is one sentence.** One release line delivered, over one address,
+through one channel. Built and counted.
+
+**The six channels.** Believing, perceiving, thinking, behaving, acting,
+feeling. Each can be run on its own: letting go of believing I am unhappy,
+letting go of thinking I am unhappy. The sweep exists so all six are hit in
+one shot. A sweep over one address is six patterns, one per channel.
+
+Then left side, then right side.
+
+**Open, and it changes the release:** the code runs four passes, right limit,
+left limit, right truth, left truth. That is not the six channels. Either the
+four passes become the six channels crossed with two sides, which is twelve
+lines per address, or the six channels sit inside each existing pass. The
+count follows whichever it is, so this ruling moves the meter.
 
 ## Privacy and the snippet
 
@@ -102,9 +113,10 @@ Named by the owner as still to be integrated. None of these exist in
 
 ## Still open, and named as open
 
-- What counts as one pattern. Blocks the meter.
+- Whether the release runs six channels by two sides, twelve lines per
+  address, or the six sit inside the four passes that exist. Moves the meter.
 - Save conflict between two devices. Blocks the record store.
 - Whether the tools panel lock after intake is retroactive.
 - Whether push may add a second file, against the one file rule.
 - Laws, domains, masks and seats have no coded opposite.
-- "The PIDs." Said in passing and not understood here. Needs one sentence.
+- Tier one, 400 a month or 100 a week. Both were said.

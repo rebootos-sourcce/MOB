@@ -255,6 +255,27 @@ ok(ref('Rosa').loaded.length===0,'Rosa holds nothing');
 ok(ref('Gordon').loaded.length>90,'Gordon holds nearly everything');
 
 
+g('15d \u00b7 the meter');
+{
+ const {blankProfile,saveProfile,validateProfile,meterAdd,meterRead}=E;
+ const p=blankProfile('meter');
+ ok(meterRead(p).patterns===0,'a new record has run nothing');
+ ok(meterRead(p).giftLeft===100&&meterRead(p).inGift,'and holds the whole gift of 100');
+ meterAdd(p,6);
+ ok(meterRead(p).patterns===6,'a six channel sweep over one address counts six');
+ ok(typeof p.meter.first==='string','the first run is stamped');
+ meterAdd(p,0); meterAdd(p,-4);
+ ok(meterRead(p).patterns===6,'nothing and a negative add nothing');
+ meterAdd(p,94);
+ ok(meterRead(p).giftLeft===0&&!meterRead(p).inGift,'the gift runs out at 100 exactly');
+ /* the count is stored, never derived: a derived count would move when the
+    model moves, and the tier gate would disagree with the app. */
+ const round=validateProfile(JSON.parse(JSON.stringify(saveProfile(p))));
+ ok(round.ok&&round.profile.meter.patterns===100,'the count survives a round trip');
+ const neg=JSON.parse(JSON.stringify(saveProfile(p))); neg.meter.patterns=-5;
+ ok(!validateProfile(neg).ok,'a negative count is refused at the boundary');
+}
+
 g('15c \u00b7 the boundary');
 {
  const {blankProfile,saveProfile,validateProfile,pImport,importError,profiles,current,bindStore}=E;

@@ -25,7 +25,7 @@ else may.
 
     ./atuned_src/BUILD.sh              parse checks, div balance, no em dashes
     ./atuned_src/BUILD-engine.sh       and asserts the engine is host free
-    node tests/engine.js               257, headless, 0.1s
+    node tests/engine.js               265, headless, 0.1s
     node tests/functional.js           246, real Chromium
     node tests/collide.js              40, no overlapping nameplates
     node tests/design.js               17, one expected environmental failure

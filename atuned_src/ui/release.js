@@ -44,6 +44,10 @@ function relCoolDown(){
    opp:(CHILD.filter(function(c){return c.nm===n.cf;})[0]||{}).opp||'',
    w0:Math.round(w0),d:d,w1:w1,cleared:(w1<=6)});});
  RUN.freed=freed;
+ /* One pattern is one line delivered: one channel over one address. A pass
+    over the whole queue is queue.length patterns, and a full run is that
+    times the channels. */
+ if(CURP)meterAdd(CURP,CHAN.length*RUN.queue.length);
  if(CURP){CURP.history=CURP.history||[];CURP.history.push(snapshot(CURP));pSave();}
  toYou();syncCh();relRender();render();}
 function relClose(){clearInterval(RUN.timer);RUN.open=false;RUN.phase='idle';relRender();render();}
