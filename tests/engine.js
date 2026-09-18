@@ -1216,6 +1216,40 @@ g('23 \u00b7 the plan. what it grants, what it lets you see, and what it refuses
   &&PLAN_BY.three.grant===1200&&PLAN_BY.four.grant===1200,
   'the ladder is the owner\'s: 400, 800, 1200, 1200');
  ok(PLAN_BY.gift.grant===100&&PLAN_BY.free.grant===10,'the gift is 100 and free is 10 a week');
+ /* THE RUN CAP, and the thing it exposes. A release run is at most twenty
+    five, so the gift is exactly four runs. The free grant of ten is LESS
+    THAN ONE RUN, which means a free person cannot complete a single release
+    in a week however they spend it. The allowance banks, and the surface
+    says so, because ten patterns reads like a permission and nought runs is
+    the truth. */
+ const {RUN_MAX,LEAD_SEES,LEAD_HIDDEN,leadSees}=E;
+ ok(RUN_MAX===25,'a run is at most twenty five, got '+RUN_MAX);
+ ok(PLAN_BY.gift.grant/RUN_MAX===4,'so the gift is exactly four runs');
+ ok(PLAN_BY.free.grant<RUN_MAX,'and the free week is less than one run, which is the finding');
+ ok(planAllowance({tier:'free',status:''},100).runs===0,
+  'a free week buys no run at all');
+ ok(/banking toward a run/.test(planAllowance({tier:'free',status:''},100).say),
+  'and the surface says it is banking rather than reading as a permission');
+ ok(planAllowance({tier:'one',status:'active',granted:400,base:100},100).runs===16,
+  'tier one is sixteen runs a month, got '
+  +planAllowance({tier:'one',status:'active',granted:400,base:100},100).runs);
+ ok(planAllowance({tier:'two',status:'active',granted:800,base:100},100).runs===32,
+  'and tier two is thirty two');
+
+ /* TIER FOUR IS NOT MORE OF THE SAME. Same twelve hundred as tier three, so
+    patterns do not separate them at all. What it buys is the cohort suite. */
+ ok(PLAN_BY.four.grant===PLAN_BY.three.grant,
+  'tier four carries the same grant as tier three');
+ ok(PLAN_BY.four.lead===true&&PLANS.filter(p=>p.lead).length===1,
+  'and exactly one rung carries the cohort lead suite');
+ /* WHAT A LEAD SEES IS NARROWER THAN WHAT THEY OWN. The outputs, not the
+    tools, and never the story, because the story is the person's own words. */
+ ok(leadSees('saboteurs')&&leadSees('complexes')&&leadSees('hyper complexes')
+  &&leadSees('analytics'),'a lead sees the outputs');
+ ok(!leadSees('the story cloud'),'and never the story cloud');
+ ok(LEAD_HIDDEN.indexOf('the story cloud')>=0,'which is named as hidden rather than omitted');
+ ok(LEAD_SEES.filter(x=>/stor|journal/i.test(x)).length===0,
+  'no story shaped thing is on the visible list at all');
  ok(PLAN_BY.gift.see==='sup','and the gift shows everything, which is the whole point of it');
  ok(PLANS.every(p=>SEE_ORDER.indexOf(p.see)>=0),'every tier names a rung it can see');
  ok(PLAN_ALWAYS.length>=3,'and what is on every tier is named rather than remembered');

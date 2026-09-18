@@ -14,12 +14,34 @@ joins.
 
 **The paid ladder**, per month:
 
-| Tier | Patterns per month | Sees up to |
-|---|---|---|
-| One | 400 | fetters and saboteurs |
-| Two | 800 | complexes |
-| Three | 1200 | hyper complexes |
-| Four | 1200 | everything, plus practitioner |
+| Tier | Patterns per month | A week | Sees up to | Price |
+|---|---|---|---|---|
+| One | 400 | 100 | fetters and saboteurs | open |
+| Two | 800 | 200 | complexes | open |
+| Three | 1200 | 300 | hyper complexes | open |
+| Four | 1200 | 300 | everything, and the cohort lead suite | **99** |
+
+**A release run is at most 25 patterns**, so the gift of a hundred is exactly
+four runs. Ten a week on the free tier is less than one run, so the free grant
+banks until a run is affordable rather than expiring.
+
+**Tier four is not more of the same.** It carries the same twelve hundred as
+tier three, so patterns do not separate them at all. What it buys is the cohort
+lead suite: manage profiles, build rituals and build accountability for the
+people you lead. It is the one rung with a price attached.
+
+**What a cohort lead sees is narrower than what they own.** The outputs, not
+the tools. Fetters, saboteurs, complexes, hyper complexes, and their analytics.
+Not the spiritual material and **not the story cloud**. A snapshot. This
+supersedes the earlier line that had a practitioner seeing the stories, and it
+tightens rather than loosens: the story is the person's own words and the
+standing promise is that the record and the story are never held joined.
+
+**One pattern is valued at one dollar.** An internal unit for the value story
+and never a published price: four hundred patterns at a twelve dollar rung is
+three cents a pattern, and printing the dollar figure makes that division
+trivial. Use it for the gift, where a hundred dollars of work before deciding
+anything is a real sentence, and never for a tier.
 
 The pain map is on all four. The tools are on all four.
 
@@ -673,4 +695,57 @@ practitioner seat is per practitioner or per client, which is the clearest
 thing in the product to charge for and is not designed.
 
 Full detail in `DESIGN-billing.md`.
+
+## The business strategy pass, and what it found
+
+Full working in `DESIGN-economics.md`. Every figure is either the owner's, the
+codex's, or model output over the panel and labelled.
+
+**The free tier could not complete a single release.** Ten a week against a run
+of twenty five is one run every two and a half weeks. An allowance below the
+smallest unit of the product is a countdown, not an allowance. The grant banks
+now and the surface says so. **Open: whether free should be twenty five a week
+instead**, which is exactly one run and turns a countdown into a weekly ritual.
+It costs nothing marginal.
+
+**The price per pattern currently rises with the tier.** At twelve, twenty nine
+and fifty nine for four hundred, eight hundred and twelve hundred, a person
+pays three, three point six and four point nine cents a pattern. Buying more
+costs more per unit. Either re-space the grants to 400, 1,000, 2,000, which
+flattens the rate, or stop selling patterns and sell sight, which the panel
+already recommended.
+
+**The therapy claim is understated by the book.** The codex says therapy
+releases one to six patterns a session. So twenty five patterns is four to
+twenty five sessions, not three, and a hundred patterns is seventeen to a
+hundred. "Two years of therapy" is defensible as throughput at the conservative
+end. It is **not** defensible as an outcome claim. Safe form: as many patterns
+as a year of fortnightly sessions would release, on our own most conservative
+figure.
+
+**The referral should be fifty.** At a hundred, four invites a month replaces a
+tier one subscription and the bottom rung is cannibalised. At twenty five it
+takes sixteen and nobody feels a gift. Fifty is two full runs and eight invites
+a month, which protects the ladder. Cap at four a month against fraud.
+
+**The price list, recommended: 12, 29, 59, 99.** The panel reached the first
+three independently from the anchors people price against, and the owner
+reached ninety nine independently for the professional rung. They compose
+without either moving. A single price is worth thirty to forty percent less,
+because two thirds of the revenue and two thirds of the people sit on different
+anchors.
+
+**Ninety nine is the one number the model cannot advise on.** Against the
+panel's practitioner segment, forty nine earns half as much again. But that
+segment's fifty eight is a *personal* willingness to pay taken as a consumer,
+and tier four carries somebody's client book. A coach billing a hundred and
+fifty an hour across twelve clients turns over seven thousand two hundred a
+month and ninety nine is one and a half percent of it. Hold ninety nine,
+instrument it from the first paying practitioner, and change it if the take
+rate says so.
+
+**And the keying ruling still blocks the price list.** Keyed by address and
+channel there are 428 lifetime keys and tier one exhausts the entire product in
+five weeks. Keyed by statement there are 21,400 and it runs for fifty three
+months. Nothing else in the economics matters until it is ruled.
 

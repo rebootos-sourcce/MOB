@@ -3503,20 +3503,47 @@ function accuracy(r,prof){
    and a tier stops somewhere along it. Sight is a separate thing from
    allowance and they are not traded against each other. */
 const SEE_ORDER=['sab','cx','hy','sup'];
+/* THE RUN CAP. A release run is at most twenty five patterns, which is what
+   makes the gift exactly four runs rather than an unbounded number. It is
+   also the smallest unit of the product that does anything, so an allowance
+   below it cannot complete a single release, which is why the free grant
+   banks rather than expiring. */
+const RUN_MAX=25;
 const PLANS=[
- {k:'gift',  nm:'The gift',    per:'once',  grant:100,  see:'sup',
-  d:'A hundred patterns, free, with everything visible. It is spent by opening new ground and never by rerunning what is already open.'},
- {k:'free',  nm:'Free',        per:'week',  grant:10,   see:'sab',
-  d:'Ten patterns a week. Inviting somebody who joins earns twenty five more, once each.'},
- {k:'one',   nm:'Tier one',    per:'month', grant:400,  see:'sab',
-  d:'Four hundred patterns a month. Fetters and saboteurs.'},
- {k:'two',   nm:'Tier two',    per:'month', grant:800,  see:'cx',
-  d:'Eight hundred a month. Complexes as well.'},
- {k:'three', nm:'Tier three',  per:'month', grant:1200, see:'hy',
+ {k:'gift',  nm:'The gift',    per:'once',  grant:100,  see:'sup', lead:false,
+  d:'A hundred patterns, free, with everything visible. Four runs of twenty five. It is spent by opening new ground and never by rerunning what is already open.'},
+ {k:'free',  nm:'Free',        per:'week',  grant:10,   see:'sab', lead:false,
+  d:'Ten patterns a week, for life. They bank until a run is affordable, because ten is less than a run and an allowance that cannot complete one release is not an allowance.'},
+ {k:'one',   nm:'Tier one',    per:'month', grant:400,  see:'sab', lead:false,
+  d:'Four hundred a month, which is a hundred a week. Fetters and saboteurs.'},
+ {k:'two',   nm:'Tier two',    per:'month', grant:800,  see:'cx',  lead:false,
+  d:'Eight hundred a month, two hundred a week. Complexes as well.'},
+ {k:'three', nm:'Tier three',  per:'month', grant:1200, see:'hy',  lead:false,
   d:'Twelve hundred a month. Hyper complexes as well.'},
- {k:'four',  nm:'Tier four',   per:'month', grant:1200, see:'sup',
-  d:'Twelve hundred a month. Everything, and the practitioner panel.'}];
+ /* TIER FOUR IS NOT MORE OF THE SAME. It carries the same twelve hundred as
+    tier three, so patterns do not separate them at all: what tier four buys
+    is the cohort lead suite. Ruled, and it is the one rung with a price
+    attached. */
+ {k:'four',  nm:'Tier four',   per:'month', grant:1200, see:'sup', lead:true,
+  d:'Twelve hundred a month, the same as tier three, and the cohort lead suite. Manage profiles, build rituals and build accountability for the people you lead.'}];
 const PLAN_BY={}; PLANS.forEach(function(p){PLAN_BY[p.k]=p;});
+/* ============================================================
+   WHAT A COHORT LEAD SEES OF SOMEBODY THEY LEAD.
+
+   A separate axis from the personal sight ladder, and deliberately
+   narrower than it. The owner's ruling: the outputs, not the tools.
+   Fetters, saboteurs, complexes, hyper complexes. Their analytics.
+   Not the spiritual material and not the story cloud. A snapshot.
+
+   The story is the one thing that never crosses, because the story
+   is the person's own words and the standing promise is that the
+   record and the story are never held joined. A lead who can read
+   twelve journals is a different product with a different
+   obligation attached.
+   ============================================================ */
+const LEAD_SEES=['fetters','saboteurs','complexes','hyper complexes','analytics'];
+const LEAD_HIDDEN=['the story cloud','the spiritual material','the tools themselves'];
+function leadSees(what){ return LEAD_SEES.indexOf(what)>=0; }
 /* the pain map and the tools are on every tier, ruled, so they are named
    here rather than left for a renderer to remember */
 const PLAN_ALWAYS=['the pain map','the tools','the journal','rerunning anything already open'];
@@ -3562,7 +3589,7 @@ function planAllowance(pl,uniqueCount){
  var used=Math.max(0,uniqueCount||0);
  var giftLeft=Math.max(0,100-used);
  if(giftLeft>0)return {source:'gift', left:giftLeft, of:100, inGift:true,
-  base:0, spent:used,
+  base:0, spent:used, runs:Math.floor(giftLeft/RUN_MAX),
   say:giftLeft+' of the gift left'};
  var t=planOf(pl);
  /* The grant comes from the tier that is IN FORCE, not from the number
@@ -3582,8 +3609,15 @@ function planAllowance(pl,uniqueCount){
  var base=Math.max(0,(pl&&pl.base!=null)?pl.base:100);
  var spent=Math.max(0,used-base-Math.max(0,(pl&&pl.carried)||0));
  var left=Math.max(0,granted-spent);
+ /* HOW MANY RUNS THAT IS, which is the unit a person actually acts in. An
+    allowance of ten against a run of twenty five is nought runs, and saying
+    ten patterns hides that. */
+ var runs=Math.floor(left/RUN_MAX);
  return {source:t.k, left:left, of:granted, inGift:false, base:base, spent:spent,
-  say:granted?left+' of '+granted+' left this '+t.per:'nothing left to open'};}
+  runs:runs,
+  say:!granted?'nothing left to open'
+   :(runs>0?(left+' of '+granted+' left this '+t.per)
+    :(left+' left this '+t.per+', banking toward a run of '+RUN_MAX))};}
 /* WHAT AN UPGRADE WOULD BUY, said in the two things a tier actually changes.
    Never phrased as what a person is missing out on, because the product does
    not sell by making somebody feel short. */
@@ -4798,7 +4832,8 @@ if(typeof module!=='undefined'&&module.exports){
                  PLAN_LIVE:PLAN_LIVE, PLAN_DEAD:PLAN_DEAD,
                  planState:planState, planOf:planOf, planSees:planSees,
                  planNextSight:planNextSight, planAllowance:planAllowance,
-                 planUpgrade:planUpgrade,
+                 planUpgrade:planUpgrade, RUN_MAX:RUN_MAX,
+                 LEAD_SEES:LEAD_SEES, LEAD_HIDDEN:LEAD_HIDDEN, leadSees:leadSees,
   /* ages */     AGES:AGES, AGE_TEST:AGE_TEST, AGE_LO:AGE_LO, AGE_HI:AGE_HI,
                  ageFinding:ageFinding, AGE_WORKED:AGE_WORKED,
   /* compass */  MIRROR:MIRROR, MASTERS:MASTERS, BLUEPRINT:BLUEPRINT, CIRCLES:CIRCLES,
