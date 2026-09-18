@@ -47,7 +47,10 @@
      <div class="tier1">0 &middot; Balance</div>
      <div class="polbar" id="polbar"></div>
      <div class="tier1" style="margin-top:18px">1 &middot; Root domains</div>
-     <div style="display:flex;gap:5px;margin-bottom:14px" id="roots"></div>
+     <!-- Four root domains would not fit one row, so Witness rendered as Witn
+          with no affordance saying there was more. It wraps. Rule 10: never
+          hide a control with no affordance. -->
+     <div class="rootrow" id="roots"></div>
      <div class="tier1">2 &middot; Blueprint domains</div>
      <div class="gdom" id="doms"></div><div class="cap" id="capD"></div>
      <div class="tier1" style="margin-top:18px">3 &middot; Primary</div>

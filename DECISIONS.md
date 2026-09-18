@@ -260,3 +260,46 @@ leaks by accident the first time someone forgets.
 
 **Open:** whether the developer view is a separate build from day one or a tab
 that is stripped at build time.
+
+## The register, ruled. This answers the copy team's questions 1 and 4.
+
+**We are not judging anybody.** The owner's words. The product says what is
+running, not what a person is.
+
+The shape of every reading, in his order:
+
+1. This is what is running.
+2. This is how these patterns work. The mechanism, stated plainly.
+3. Given your story, this is how it is operating in you. Their material, not a
+   generic description.
+4. This is the behaviour you actually want. The direction, named.
+5. Your mind is holding these patterns. Let us release them.
+6. You can go to your imprints and select them from here. A route, not an
+   instruction to feel something.
+
+**What that settles.**
+
+*Question 1, what a person feels when the reading lands.* Recognition, not
+revelation. Described rather than judged. A mechanic's estimate, not a verdict.
+The proposed default stands because the owner has now stated it in his own
+words from a different direction.
+
+*Question 4, whether a label may ever be a moral word.* No, when the label is
+about the person. A label that describes a PATTERN may be blunt, because a
+pattern is a mechanism and blunt is accurate. A label that describes the WHOLE
+PERSON may not. That splits the work the writers costed: the 33 saboteur names
+describe patterns and stay, the four low band names describe a person and are
+the ones under review.
+
+*Question 3, the floor, is still open* and is the one place a destination
+cannot be invented.
+
+**Selection is a route, not a funnel.** A person reaches the same set of
+patterns from an imprint, a fetter, a saboteur or a hyper complex. Every one of
+those is a door onto the same list. That is already how the drills work and the
+copy should say so rather than describing four separate features.
+
+## Case, ruled
+
+Headers and subheaders take a capital on every word. Body text is sentence
+case and stays that way. No all caps anywhere, which is unchanged.

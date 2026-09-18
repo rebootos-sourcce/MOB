@@ -205,6 +205,16 @@ body:not(.hassub) .subbar{display:none}
  font-size:11px;font-weight:600;color:var(--dim);letter-spacing:0;
  font-family:var(--sans);line-height:1.45;text-transform:none}
 .lbl,.sub{margin-bottom:10px;flex:0 0 auto}
+/* CASE, ruled. Headers and subheaders take a capital on every word. Body text
+   is sentence case and stays that way. Done here rather than by editing every
+   string, so a header written in sentence case still renders correctly and
+   nobody has to remember the rule while writing one. capitalize only touches
+   the first letter of each word, so an all caps acronym like CQ survives. */
+.pm-eye,.tier1,.sub,.sp-hd,.rit-tr,.ip-bh,.sum-lt,.kb-h,.sh-h,.ad-nm,.gm-on,
+.eyebrow,.lbl{text-transform:capitalize}
+/* the exceptions, where a capital on every word would be wrong: running prose
+   that happens to use a header class, and anything already an acronym. */
+.pm-eye.plain,.sub.plain{text-transform:none}
 .tier1{font-size:11px;font-weight:600;color:var(--gold);margin-bottom:9px;line-height:1.45}
 .tier1 span{display:block;color:var(--dim);font-weight:400;font-size:13px;margin-top:3px}
 /* reading text. 16px floor, 50 to 75 character measure. */
@@ -334,6 +344,8 @@ body:not(.tab-field) .pol2{display:none}
  padding:0 0 13px;border-bottom:1px solid var(--edge);margin-bottom:2px}
 .railtop .rt-t{font-size:14px;color:var(--ink);font-weight:500}
 /* the tier reads as a word you can open, not as a verdict printed at you */
+.rootrow{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px}
+.rootrow>*{flex:1 1 auto;min-width:0;white-space:nowrap}
 .undobtn{gap:6px;color:var(--gold);border-color:var(--gold)}
 .undobtn svg{fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 .undobtn span{max-width:20ch;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}

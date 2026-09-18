@@ -296,6 +296,23 @@ ok(bands.length===0,'no band word appears anywhere on an unread first screen, fo
  +(bands.join(', ')||'none'));
 await blank.close();
 
+console.log('\n=== nothing in the rail is clipped without an affordance ===');
+/* Witness rendered as Witn at every desktop width, in a row that did not wrap
+   and had no scrollbar. Rule 10: never hide a control with no affordance. */
+const clip=await page.evaluate(()=>{
+ loadP(6); setTab(TAB.FIELD); render();
+ const bad=[];
+ document.querySelectorAll('#roots > *, .vt, .tab, .kb-t').forEach(e=>{
+  const r=e.getBoundingClientRect();
+  if(r.width>0&&e.scrollWidth>e.clientWidth+1)bad.push((e.textContent||'').trim().slice(0,20));});
+ const row=document.getElementById('roots');
+ return {bad, rowOverflows:row.scrollWidth>row.clientWidth+1,
+  names:[...row.children].map(c=>c.textContent.trim())};});
+ok(clip.bad.length===0,'no control clips its own label: '+(clip.bad.join(', ')||'none'));
+ok(!clip.rowOverflows,'and the root domain row does not overflow its box');
+ok(clip.names.join()==='Architect,Engine,Weaver,Witness',
+ 'all four root domains render in full, got '+clip.names.join(', '));
+
 console.log('\n=== undo, on the three irreversible writes ===');
 const un=await page.evaluate(()=>{
  loadP(6); setTab(TAB.STORY); render();
