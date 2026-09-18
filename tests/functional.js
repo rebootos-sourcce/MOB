@@ -261,7 +261,9 @@ console.log('\n=== zoom atomises the construct ===');
 const zsteps=[];
 for(const z of [1,2.3,3.3,4.3]){
  await page.evaluate(zz=>{loadP(6);setTab(TAB.FIELD);S.view=0;S.zoom=zz;reframe();render();},z);
- await page.waitForTimeout(220);
+ /* wait for the frame the render was deferred to, rather than for a guess at
+    how long it takes. A fixed timeout here failed roughly one run in ten. */
+ await page.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));
  zsteps.push(await page.evaluate(()=>{
   const k={};HIT.forEach(h=>k[h.k]=(k[h.k]||0)+1);
   return {n:HIT.length,eff:effView(),kinds:Object.keys(k)};}));}
@@ -274,7 +276,7 @@ ok(zsteps[3].kinds.indexOf('dom')>=0&&zsteps[3].kinds.indexOf('mk')>=0,
  'domains and masks resolve at the fourth');
 /* the button sets the floor: a gesture never takes away what a person chose */
 await page.evaluate(()=>{S.view=3;S.zoom=1;reframe();render();});
-await page.waitForTimeout(220);
+await page.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));
 const floor=await page.evaluate(()=>({eff:effView(),n:HIT.length}));
 ok(floor.eff===3&&floor.n>200,
  'the depth button holds at zoom 1, so zooming out never removes a chosen layer');
