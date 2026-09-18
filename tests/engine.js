@@ -1204,5 +1204,118 @@ g('22 \u00b7 the age ladder, the second way in');
   'no diagnosis word and no wellness word anywhere in the way in');
 }
 
+g('23 \u00b7 the plan. what it grants, what it lets you see, and what it refuses');
+/* Stripe is a network and this half of the product has none. Everything here
+   is arithmetic over a plan record the host hands it, so the engine answers
+   what somebody may open and may see without knowing a processor exists. */
+{
+ const {PLANS,PLAN_BY,SEE_ORDER,planState,planOf,planSees,planNextSight,
+        planAllowance,planUpgrade,PLAN_ALWAYS,blankProfile,saveProfile,validateProfile}=E;
+ ok(PLANS.length===6,'the gift, free and four paid, got '+PLANS.length);
+ ok(PLAN_BY.one.grant===400&&PLAN_BY.two.grant===800
+  &&PLAN_BY.three.grant===1200&&PLAN_BY.four.grant===1200,
+  'the ladder is the owner\'s: 400, 800, 1200, 1200');
+ ok(PLAN_BY.gift.grant===100&&PLAN_BY.free.grant===10,'the gift is 100 and free is 10 a week');
+ ok(PLAN_BY.gift.see==='sup','and the gift shows everything, which is the whole point of it');
+ ok(PLANS.every(p=>SEE_ORDER.indexOf(p.see)>=0),'every tier names a rung it can see');
+ ok(PLAN_ALWAYS.length>=3,'and what is on every tier is named rather than remembered');
+
+ /* WHAT IS IN FORCE, NOT WHAT IS WRITTEN. A record can say tier three and be
+    cancelled, and the answer is free. */
+ ok(planOf({tier:'three',status:'active'}).k==='three','an active tier is in force');
+ ok(planOf({tier:'three',status:'canceled'}).k==='free','a cancelled one is not');
+ ok(planOf({tier:'three',status:'unpaid'}).k==='free','nor an unpaid one');
+ ok(planOf({tier:'three',status:'past_due'}).k==='three',
+  'past due keeps access, because cutting somebody off over a bank\'s timing is a punishment');
+ ok(planOf({tier:'three',status:'trialing'}).k==='three','and a trial is access');
+ /* AN UNKNOWN STATE OPENS NOTHING. This is the one that matters: a processor
+    adds a status, an old build does not know it, and the safe reading is no. */
+ ok(planState({tier:'three',status:'something_new'})==='pending','an unknown status is pending');
+ ok(planOf({tier:'three',status:'something_new'}).k==='free','and pending grants nothing');
+ ok(planOf(null).k==='free'&&planOf({}).k==='free','no plan at all is free');
+
+ /* SIGHT. The chain is saboteur, complex, hyper, character. */
+ const t1={tier:'one',status:'active'}, t3={tier:'three',status:'active'};
+ ok(planSees(t1,'sab')&&!planSees(t1,'cx'),'tier one sees saboteurs and not complexes');
+ ok(planSees(t3,'hy')&&!planSees(t3,'sup'),'tier three sees hyper and not character');
+ ok(planSees({tier:'four',status:'active'},'sup'),'tier four sees everything');
+ ok(planNextSight(t1).kind==='cx','and the next rung is named, so a lock can say what it is');
+ ok(planNextSight({tier:'four',status:'active'})===null,'with nothing left to name at the top');
+
+ /* ALLOWANCE. The gift is spent first and spent once, and spend is never
+    stored: it is the unique count against what was granted, so they cannot
+    drift apart. */
+ ok(planAllowance(t1,0).inGift&&planAllowance(t1,0).left===100,'a new record is all gift');
+ ok(planAllowance(t1,40).left===60,'and the gift is spent by opening new ground');
+ ok(planAllowance(t1,100).inGift===false,'then it is gone');
+ ok(planAllowance({tier:'one',status:'active',granted:400,base:100},150).left===350,
+  'after which the tier grant carries it, got '
+  +planAllowance({tier:'one',status:'active',granted:400,base:100},150).left);
+ ok(planAllowance({tier:'one',status:'active',granted:400,base:100},600).left===0,
+  'and it never reads below nothing');
+ /* SPEND IS PER PERIOD. The first build subtracted every address ever opened
+    from one month's grant, so somebody in their ninth month read nothing left
+    on the day the month opened. base is the unique count when the period
+    began. */
+ ok(planAllowance({tier:'one',status:'active',granted:400,base:3000},3000).left===400,
+  'a new period opens at the full grant however long the record is, got '
+  +planAllowance({tier:'one',status:'active',granted:400,base:3000},3000).left);
+ ok(planAllowance({tier:'one',status:'active',granted:400,base:3000},3050).left===350,
+  'and spends from there');
+ /* A CANCELLED RECORD CARRYING granted 400 MUST NOT SPEND 400. It drops to
+    free, which is ten, and somebody who stops paying is a free user rather
+    than a locked one. */
+ const canc=planAllowance({tier:'one',status:'canceled',granted:400,base:3000},3000);
+ ok(canc.left===PLAN_BY.free.grant,'a cancelled plan falls to the free grant, got '+canc.left);
+ ok(canc.source==='free','and says which plan it is reading');
+ ok(planAllowance({tier:'one',status:'active',granted:0,base:3000},3000).left===PLAN_BY.one.grant,
+  'a live plan with no grant written falls back to the tier, not to nothing');
+
+ /* THE UPGRADE, said as what it buys and never as what somebody lacks */
+ const up=planUpgrade(t1);
+ ok(up&&up.to.k==='two'&&up.ground===400,'an upgrade names the next tier and the ground');
+ ok(/more of new ground/.test(up.say),'and says it as what it buys');
+ ok(!/miss|lose|locked out|only/i.test(up.say),'never as what a person is short of');
+ ok(planUpgrade({tier:'four',status:'active'})===null,'with nothing to sell at the top');
+ /* A DIFFERENCE ONLY MEANS SOMETHING WHEN THE PERIODS MATCH. Free is ten a
+    week and tier one is four hundred a month. Subtracting gave 390 more a
+    month, which is arithmetic over two different units. */
+ const fromFree=planUpgrade({tier:'free',status:''});
+ ok(fromFree.to.k==='one','free steps up to tier one');
+ ok(fromFree.same===false&&fromFree.ground===400,
+  'and across a period boundary the tier states its own figure, got '+fromFree.ground);
+ ok(/400 of new ground a month/.test(fromFree.say),'said in one unit, got '+fromFree.say);
+ ok(up.same===true,'while a step inside one period is a difference');
+
+ /* THE BOUNDARY. A record a person can edit must not be able to grant itself
+    a tier, and must not carry an identifier this product refused to hold. */
+ const bp=blankProfile('plan');
+ ok(bp.plan&&bp.plan.tier==='free','a new record is free');
+ const good=saveProfile(bp); good.plan={tier:'two',status:'active',granted:800,
+  carried:0,since:'2026-01-01T00:00:00Z',until:'2026-02-01T00:00:00Z'};
+ ok(validateProfile(good).ok&&validateProfile(good).profile.plan.tier==='two',
+  'a real plan round trips');
+ const madeUp=JSON.parse(JSON.stringify(good)); madeUp.plan.tier='platinum';
+ ok(!validateProfile(madeUp).ok,'a tier this build does not know is refused by name');
+ ok(/plan.tier/.test((validateProfile(madeUp).errs||[]).join(' ')),'and says which field');
+ const badBase=JSON.parse(JSON.stringify(good)); badBase.plan.base='lots';
+ ok(!validateProfile(badBase).ok,'a baseline that is not a number is refused');
+ const negative=JSON.parse(JSON.stringify(good)); negative.plan.granted=-5;
+ ok(!validateProfile(negative).ok,'a negative grant is refused');
+ const huge=JSON.parse(JSON.stringify(good)); huge.plan.granted=1e9;
+ ok(!validateProfile(huge).ok,'and so is one past the ceiling, rather than clamped');
+ const carriesId=JSON.parse(JSON.stringify(good)); carriesId.plan.customer='cus_123';
+ ok(!validateProfile(carriesId).ok,'a record carrying a customer id is refused');
+ const carriesKey=JSON.parse(JSON.stringify(good)); carriesKey.plan.secret='sk_live_x';
+ ok(!validateProfile(carriesKey).ok,'and so is one carrying a key');
+ const older=JSON.parse(JSON.stringify(good)); delete older.plan;
+ ok(validateProfile(older).ok&&validateProfile(older).profile.plan.tier==='free',
+  'an older record with no plan is a free record, not a broken one');
+ /* the whole file is host free, which hostfree.py already enforces, but the
+    plan is the one place a key would ever be tempting */
+ ok(JSON.stringify(PLANS).indexOf('sk_')<0&&JSON.stringify(PLANS).indexOf('pk_')<0,
+  'and no key of any kind is in the engine');
+}
+
 console.log('\n===== '+P+' passed, '+F+' failed =====');
 process.exit(F?1:0);

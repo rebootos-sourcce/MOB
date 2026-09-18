@@ -17,6 +17,7 @@ engine/core.js
 engine/expression.js
 engine/undo.js
 engine/compute.js
+engine/plan.js
 engine/schema.js
 engine/intake.js
 engine/sniff.js

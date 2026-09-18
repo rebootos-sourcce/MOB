@@ -268,10 +268,13 @@ function profileSheet(){
   +'<div class="sh-row"><span>Coherence</span><b>'
    +(r.unread?'not read yet':Math.round(r.CQ)+' of 100')+'</b></div>'
   +'<div class="sh-row"><span>Tier</span><b>'+esc(r.unread?'not read yet':r.tier)+'</b></div>'
-  +'<div class="sh-row"><span>Addresses carrying</span><b>'+r.loaded.length+' of 112</b></div>'
+  /* "of 112" was a count against a total, which is the one thing a reading
+     may never be. The number of addresses carrying is the fact. */
+  +'<div class="sh-row"><span>Addresses carrying</span><b>'+r.loaded.length+'</b></div>'
   +(m?'<div class="sh-row"><span>Ground opened</span><b>'+m.unique+'</b></div>':'')
   +(m&&m.next?'<div class="sh-row"><span>Next marker</span><b>'+esc(m.next.nm)+', '+m.next.left+' away</b></div>':'')
   +'</div>'
+  +planSection(m)
   +'<div class="sh-sec"><div class="pm-eye">Screen</div>'
   +'<p class="sh-p">How much fits on one screen. This scales the whole interface, not just the type.</p>'
   +'<div class="dens-list" id="densheet" style="margin-top:8px"></div></div>'
@@ -289,7 +292,67 @@ function profileSheet(){
     +'aria-pressed="'+(x[0]===now)+'"><b>'+esc(x[1])+'</b><em>'+esc(x[2])+'</em></button>';}).join('');
   d.querySelectorAll('[data-dens2]').forEach(function(b){
    b.onclick=function(){densSet(b.getAttribute('data-dens2')); profileSheet();};});}
+ planWire();
  var c=$('shclose'); if(c)c.onclick=sheetShut;}
+
+/* ============================================================
+   THE PLAN, on the person's own screen.
+
+   Three facts and two controls, and the controls are the only
+   place in this product that will ever touch a network besides
+   the record fetch. Nothing here knows what a processor is: it
+   reads the plan off the record and calls one host function.
+
+   Rule three governs the controls. A control must never claim
+   success before it has it, so while nothing is bound they say so
+   through status() rather than opening a dead page or pretending.
+   ============================================================ */
+function planSection(m){
+ var pl=(CURP&&CURP.plan)||null;
+ var t=planOf(pl), st=planState(pl);
+ var al=planAllowance(pl,(m&&m.unique)||0);
+ var up=planUpgrade(pl);
+ var nx=planNextSight(pl);
+ var SEEN={sab:'saboteurs',cx:'complexes',hy:'hyper complexes',sup:'character'};
+ var h='<div class="sh-sec"><div class="pm-eye">Your plan</div>'
+  +'<div class="sh-row"><span>On</span><b>'+esc(t.nm)+'</b></div>'
+  +(st==='pending'
+    ? '<div class="sh-row"><span>State</span><b>not confirmed</b></div>'
+    : (st==='ended'?'<div class="sh-row"><span>State</span><b>ended</b></div>':''))
+  +'<div class="sh-row"><span>New ground</span><b>'+esc(al.say)+'</b></div>'
+  +'<div class="sh-row"><span>You can see</span><b>'+esc(SEEN[t.see]||t.see)+'</b></div>'
+  +'<p class="sh-p">'+esc(t.d)+' Rerunning anything already open costs nothing, always.</p>';
+ if(nx)h+='<p class="sh-p">'+esc(nx.tier.nm)+' adds '+esc(SEEN[nx.kind]||nx.kind)+'.</p>';
+ if(up)h+='<p class="sh-p">'+esc(up.to.nm)+' is '+esc(up.say)+'.</p>';
+ h+='<div class="sh-act">'
+  +(up?'<button class="btn pri" id="planup" data-tier="'+esc(up.to.k)+'">Move to '
+    +esc(up.to.nm.toLowerCase())+'</button>':'')
+  +'<button class="btn" id="planman">Manage billing</button></div>'
+  +'<p class="sh-p dim">Payment is handled off this device. Nothing about a card is '
+  +'ever held here, and the record carries no customer number.</p>'
+  +'</div>';
+ return h;}
+/* THE SEAM. Two host functions and nothing else. A build with no store bound
+   has nowhere to send anybody, and says so rather than opening a dead page. */
+function planWire(){
+ var up=$('planup'), man=$('planman');
+ if(up)up.onclick=function(){planOpen('checkout',up.getAttribute('data-tier'));};
+ if(man)man.onclick=function(){planOpen('portal',null);};}
+function planOpen(what,tier){
+ /* The record store is the only thing that can mint a session, because a
+    session needs a key and a key never comes near this file. When there is no
+    store, this is not an error and not a silent no: it is a statement of where
+    the product currently is. */
+ if(typeof PLAN_HOST!=='function'){
+  status('Billing is not connected yet. The plan is read from your record, and '
+   +'the page that changes it lives behind sign in.','fail');
+  return;}
+ try{ PLAN_HOST(what,tier); }
+ catch(e){ status('Could not open the billing page. Nothing has changed.','fail'); }}
+/* bound by the host the same way storage is, so the engine and this file both
+   stay ignorant of what is on the other side */
+var PLAN_HOST=null;
+function bindPlan(fn){ PLAN_HOST=(typeof fn==='function')?fn:null; return !!PLAN_HOST; }
 
 function helpSheet(){
  var h='<div class="pm-eye">Help</div><p class="sh-h">How to read this</p>'

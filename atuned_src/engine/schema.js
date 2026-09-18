@@ -34,6 +34,16 @@ function blankProfile(name){
      because a derived count moves when the model moves and then the tier
      gate disagrees with the app about what was run. */
   meter:{lines:0, unique:[], firsts:[], first:null, last:null},
+  /* THE PLAN. Written by the record store from the processor's own state and
+     never by the app, because a record a person can edit must not be able to
+     grant itself a tier. Everything here is either the processor's word for
+     something or a number the processor sent, so a record round trips without
+     translation, and translation is where access bugs live.
+
+     There is no customer id, no subscription id, no email and no key. The app
+     does not need any of them to answer what somebody may open, and holding an
+     identifier it does not need is how a promise about a name gets broken. */
+  plan:{tier:'free', status:'', granted:0, carried:0, base:0, since:null, until:null},
   laws:{}, intake:{answers:{}, done:[], startedAt:null, completedAt:null},
   gates:{verp:{aware:0,detach:0,intent:0,ignore:0,attach:0,averse:0},
          lean:{benign:0,malignant:0}},   /* the cost multiplier, v2 */
@@ -50,6 +60,9 @@ function loadProfile(p){
  if(!p.who.born)p.who.born={date:'',time:'',place:'',timeUnknown:false};
  if(!p.meter)p.meter={lines:0,unique:[],first:null,last:null};
  if(!Array.isArray(p.meter.unique))p.meter.unique=[];
+ /* an older record has no plan, which is a free record and not a broken one */
+ if(!p.plan)p.plan={tier:'free',status:'',granted:0,carried:0,base:0,since:null,until:null};
+ if(p.plan.base==null)p.plan.base=0;
  S.doms=(p.soul.doms||[0]).slice(); S.arcs=(p.soul.arcs||[0,1]).slice();
  S.roots=(p.soul.roots||[]).slice(); buildSoul();
  CHILD.forEach(function(c){var a=p.axes[c.nm]||{};
@@ -219,6 +232,36 @@ function validateProfile(o){
     errs.push('meter.firsts held '+(o.meter.firsts.length-p.meter.firsts.length)
      +' entries that are not a dated first');}
   else if(o.meter.firsts!==undefined)errs.push('meter.firsts is not a list');}
+ /* THE PLAN, refused by name and never clamped. A tier this build does not
+    know is refused rather than rounded down to free, because silently
+    downgrading somebody who paid is the same class of error as silently
+    upgrading somebody who did not, and only one of them gets reported. A
+    status this build does not know is kept as written and read as pending by
+    planState, which grants nothing: an unknown state must not open a door. */
+ if(o.plan&&typeof o.plan==='object'){
+  if(typeof o.plan.tier==='string'){
+   if(PLAN_BY[o.plan.tier])p.plan.tier=o.plan.tier;
+   else errs.push('plan.tier is not a tier this build knows: '+o.plan.tier);}
+  else if(o.plan.tier!==undefined)errs.push('plan.tier is not a string');
+  if(typeof o.plan.status==='string'&&o.plan.status.length<32)p.plan.status=o.plan.status;
+  else if(o.plan.status!==undefined)errs.push('plan.status is not a short string');
+  var gr=vRange(errs,'plan.granted',o.plan.granted,0,1e6);
+  if(gr!==null)p.plan.granted=Math.floor(gr);
+  var ca=vRange(errs,'plan.carried',o.plan.carried,0,1e6);
+  if(ca!==null)p.plan.carried=Math.floor(ca);
+  /* the unique count when the current period opened. spend is per period and
+     a lifetime count cannot answer it. */
+  var ba=vRange(errs,'plan.base',o.plan.base,0,1e7);
+  if(ba!==null)p.plan.base=Math.floor(ba);
+  ['since','until'].forEach(function(f){
+   if(o.plan[f]===null||o.plan[f]===undefined)return;
+   if(typeof o.plan[f]==='string'&&!isNaN(new Date(o.plan[f]).getTime()))p.plan[f]=o.plan[f];
+   else errs.push('plan.'+f+' is not a date');});
+  /* and nothing else comes across. a record carrying a customer id or a key
+     is carrying something this product refused to hold. */
+  ['customer','subscription','email','key','secret','token'].forEach(function(f){
+   if(o.plan[f]!==undefined)errs.push('plan.'+f+' is not held by this product');});}
+ else if(o.plan!==undefined)errs.push('plan is not an object');
  if(Array.isArray(o.rituals))p.rituals=o.rituals.filter(function(x){return x&&typeof x==='object';});
  /* A snapshot is strictly typed numbers and the record calls toFixed on them,
     so "the person's own text" does not apply here. An unchecked history
@@ -246,6 +289,9 @@ function meterRun(p,keys){
  if(!p)return null;
  if(!p.meter)p.meter={lines:0,unique:[],first:null,last:null};
  if(!Array.isArray(p.meter.unique))p.meter.unique=[];
+ /* an older record has no plan, which is a free record and not a broken one */
+ if(!p.plan)p.plan={tier:'free',status:'',granted:0,carried:0,base:0,since:null,until:null};
+ if(p.plan.base==null)p.plan.base=0;
  var list=(keys||[]).filter(function(k){return typeof k==='string'&&k;});
  if(!list.length)return {added:0,repeated:0};
  var have={},added=0,repeated=0;

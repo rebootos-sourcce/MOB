@@ -630,3 +630,47 @@ before it is, and none of them is a feature:
 
 None of that is a no. It is what has to be answered first.
 
+## Billing. Stripe, and where it is not
+
+The brief: frictionless, clean, in and out with no fuss, controlled from the
+desktop. That decides the integration before anything else does.
+
+**Stripe never appears in the app.** No key, no script, no customer id, no card
+field. `source.html` is one file with no network and it does not gain one for
+billing. It reads a plan off the record and calls one host function. A gate
+sweeps the whole build for `sk_`, `pk_`, `cus_`, `sub_` and card fields.
+
+    the app          reads plan, answers what may be opened and seen
+    the record store reads Stripe, writes the plan onto the record
+    Stripe           holds the customer, the card, the subscription
+
+**Checkout in subscription mode for the purchase, Customer Portal for
+everything after.** Hosted both times. The portal is what "controlled from the
+desktop" means in practice: one button, card or plan or cancel, and no billing
+UI for us to build wrong.
+
+**What is in force, not what is written.** A record saying tier three with a
+cancelled subscription is free. An unknown status grants nothing, because a
+processor will add one and an old build must read it as no. `past_due` keeps
+access: cutting somebody off over a bank's timing is a punishment.
+
+**Spend is per period and never stored.** It is the unique count against a
+baseline written when the period rolls. Without the baseline the allowance
+subtracts a lifetime of opened ground from one month's grant.
+
+**A cancellation destroys nothing.** The record is the person's and the plan is
+one field on it.
+
+**The store writes five fields and nothing else.** tier, status, granted, base,
+until. The promise is that the record and the story are never held joined, and
+a billing system is exactly where that gets broken by accident.
+
+**Still open and his.** Tier one at 400 a month or 100 a week, which is the
+oldest open item and now blocks the price list. The actual prices, which the
+panel research says to anchor against therapy, coaching and app pricing rather
+than against pattern counts. Whether there is an annual. Whether tier four's
+practitioner seat is per practitioner or per client, which is the clearest
+thing in the product to charge for and is not designed.
+
+Full detail in `DESIGN-billing.md`.
+

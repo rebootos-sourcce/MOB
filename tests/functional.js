@@ -727,6 +727,63 @@ ok(!/72%|28%/.test(virginSweep.pol),'and prints no percentage off the defaults')
 /* the roster itself is always there. only the descent read is conditional. */
 ok(/Satan frozen/.test(pole.clean),'while the nine circles stay readable to anybody');
 
+console.log('\n=== the plan, and the seam that has nowhere to go yet ===');
+/* Stripe is a network and this file has none. The panel reads the plan off
+   the record and calls one host function, and with nothing bound it says so
+   rather than opening a dead page, which is rule three. */
+const plan=await page.evaluate(()=>{
+ const o={}, txt=()=>(document.getElementById('sheet').textContent||'').replace(/\s+/g,' ');
+ const kept=CURP.plan?JSON.parse(JSON.stringify(CURP.plan)):null;
+ const keptU=CURP.meter.unique.slice();
+ profileSheet(); o.free=txt();
+ CURP.plan={tier:'two',status:'active',granted:800,carried:0,base:100,
+  since:'2026-09-01T00:00:00Z',until:'2026-10-01T00:00:00Z'};
+ CURP.meter.unique=new Array(320).fill(0).map((_,i)=>'a'+i);
+ profileSheet(); o.two=txt();
+ /* a cancelled record must not read as the tier written on it */
+ CURP.plan.status='canceled'; profileSheet(); o.dead=txt();
+ CURP.plan.status='active';
+ /* the control with nothing bound reports rather than pretending */
+ document.getElementById('planman').click();
+ o.status=(document.getElementById('status').textContent||'').trim();
+ o.kind=document.getElementById('status').getAttribute('data-kind');
+ /* and once a host is bound it is called, with no key anywhere near this file */
+ let called=null;
+ bindPlan(function(what,tier){called={what:what,tier:tier};});
+ profileSheet();
+ document.getElementById('planup').click();
+ o.called=called;
+ bindPlan(null);
+ CURP.plan=kept; CURP.meter.unique=keptU;
+ sheetShut();
+ return o;});
+ok(/On\s*Free/.test(plan.free),'a record with no plan reads free');
+ok(/100 of the gift left/.test(plan.free),'and is inside the gift');
+ok(/400 of new ground a month/.test(plan.free),
+ 'the step up states its own figure rather than subtracting a week from a month');
+ok(/On\s*Tier two/.test(plan.two)&&/580 of 800 left this month/.test(plan.two),
+ 'a live tier reads its own grant and what is left of it');
+ok(/You can see\s*complexes/.test(plan.two),'and what it lets a person see');
+ok(/On\s*Free/.test(plan.dead),
+ 'a cancelled record reads free however high the tier written on it');
+ok(/Rerunning anything already open costs nothing/.test(plan.two),
+ 'the one thing that is always true is always said');
+ok(/no customer number/.test(plan.two),'and the record says what it does not hold');
+ok(/not connected yet/.test(plan.status)&&plan.kind==='fail',
+ 'with nothing bound the control says so rather than opening a dead page');
+ok(plan.called&&plan.called.what==='checkout'&&plan.called.tier==='three',
+ 'and once a host is bound it is handed the action and the tier, got '
+ +JSON.stringify(plan.called));
+/* THE PROMISE. No key, no customer id, no card field anywhere in the build. */
+const leak=await page.evaluate(()=>{
+ const src=document.documentElement.innerHTML;
+ const bad=[];
+ [/sk_live/,/sk_test/,/pk_live/,/\bcus_[A-Za-z0-9]/,/\bsub_[A-Za-z0-9]/,
+  /card\s*number/i,/cardnumber/i,/cvc/i].forEach(function(re){
+   if(re.test(src))bad.push(String(re));});
+ return bad;});
+ok(leak.length===0,'no key, customer id or card field is anywhere in the build: '+leak.join(', '));
+
 await browser.close();
 
 console.log('\n===== '+PASS+' passed, '+FAIL+' failed =====');
