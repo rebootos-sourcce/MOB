@@ -17,6 +17,7 @@ engine/compute.js
 engine/schema.js
 engine/intake.js
 engine/sniff.js
+engine/astro.js
 engine/birth.js
 engine/seed.js
 engine/read.js

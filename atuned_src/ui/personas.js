@@ -56,9 +56,16 @@ function renderSpirit(){
   +row('Path','',String(sp.lp),sp.lpMean,'lp',String(sp.lp))
   +(sp.master?row('Master','',String(sp.master),'survives reduction','lp',String(sp.master)):'')
   +'<div class="sp-hd">Design</div>'
-  +row('Type','',sp.hd.type,'','hd',sp.hd.type)
-  +row('Authority','',sp.hd.authority,'','auth',sp.hd.authority)
-  +row('Gene key','',sp.gk.gate+'.'+sp.gk.line,'gate and line','gk',sp.gk.gate+'.'+sp.gk.line)
+  /* the personality and design gates are real and computed. the type is
+     not, and says so, rather than printing one that sounds right. */
+  +row('Profile','',sp.hd.profile||'unresolved','personality line over design line','hd',sp.hd.profile||'')
+  +row('Personality','',sp.hd.personality?('gate '+sp.hd.personality.gate+'.'+sp.hd.personality.line):'unresolved',
+    'the sun at birth','gk',sp.hd.personality?String(sp.hd.personality.gate):'')
+  +row('Design','',sp.hd.design?('gate '+sp.hd.design.gate+'.'+sp.hd.design.line):'unresolved',
+    'the sun 88 degrees earlier','gk',sp.hd.design?String(sp.hd.design.gate):'')
+  +'<div class="sp-row static"><span class="sp-k">Type</span><span class="sp-v">unresolved</span>'
+  +'<span class="sp-x">needs the full bodygraph</span></div>'
+  +row('Gene key','',sp.gk.gate+'.'+sp.gk.line,'the gate the sun occupied','gk',sp.gk.gate+'.'+sp.gk.line)
   +'<div class="sp-hd">Born</div>'
   +'<div class="sp-row static"><span class="sp-k">When</span><span class="sp-v">'
   +sp.birth.d+'</span><span class="sp-x">'+sp.birth.t+'</span></div>'

@@ -119,9 +119,11 @@ function sumRender(){
    +'<div class="sum-l"><div class="sum-lt">Numerology</div><div class="sum-la">Life path '+e.lp
     +'</div><div class="sum-lb">'+(LP_RUNS[e.lp]||'')+'</div>'
     +'<div class="sum-lc">'+(e.master?'master number, survives reduction':'birth date, reduced')+'</div></div>'
-   +'<div class="sum-l"><div class="sum-lt">Human design</div><div class="sum-la">'+e.hd.type
-    +'</div><div class="sum-lb">'+(HD_RUNS[e.hd.type]||'')+'</div>'
-    +'<div class="sum-lc">'+e.hd.authority+' authority</div></div>'
+   +'<div class="sum-l"><div class="sum-lt">Human design</div><div class="sum-la">'
+    +(e.hd.profile?('profile '+e.hd.profile):'unresolved')+'</div>'
+    +'<div class="sum-lb">'+(e.hd.design?('personality gate '+e.hd.personality.gate
+      +', design gate '+e.hd.design.gate):'')+'</div>'
+    +'<div class="sum-lc">type needs the full bodygraph and is not computed</div></div>'
    +'<div class="sum-l"><div class="sum-lt">Gene keys</div><div class="sum-la">'+e.gk.gate+'.'+e.gk.line
     +'</div><div class="sum-lb">shadow to gift to siddhi, one axis at a time</div>'
     +'<div class="sum-lc">gate and line</div></div></div>';

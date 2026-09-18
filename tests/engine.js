@@ -5,7 +5,8 @@
    engine.js there. an absolute path would only ever be right on one machine. */
 const E=require(require('path').resolve(process.env.ENGINE||'engine.js'));
 const {S,CHILD,CHARGES,SI,SINAMES,BANDS,W,NODES,DOMAINS,ARCH,MASKS,SAB33,
-       PEOPLE,LAWSET,PRACTICE,EXPR,compute,buildSoul,accuracy}=E;
+       PEOPLE,LAWSET,PRACTICE,EXPR,compute,buildSoul,accuracy,
+       julianDay,sunLon,moonLon,designJD,GATE_WHEEL,chineseYear,usDST}=E;
 let P=0,F=0,GRP='';
 const g=n=>{GRP=n;console.log('\n'+n);};
 const ok=(c,m)=>{if(c){P++}else{F++;console.log('  FAIL  '+m)}};
@@ -565,13 +566,60 @@ g('19 \u00b7 energetics, the birth module');
  ok(moonBad.length===0,'moon sign survives dates before 1970'
   +(moonBad.length?'  '+moonBad.join(', '):''));
 
- /* rising turns with the clock and stays inside the wheel */
- let riseBad=[];
+ /* The ascendant needs a place, and a record without one now gets null
+    rather than a sign derived from a sunrise nobody checked. */
+ ok(risingSign({d:'1988-04-12',t:'07:30'})===null,
+  'no birthplace means no ascendant, not a guessed one');
+ ok(risingSign({d:'1988-04-12',p:'Chicago, IL'})===null,
+  'and no birth time means no ascendant either');
+ /* with a place it turns through the whole wheel across a day, which is
+    the thing the old fixed sunrise could not do. */
+ let riseSeen=new Set(), riseBad=[];
  for(let h=0;h<24;h++){
-  const z=risingSign({d:'1988-04-12',t:pad(h)+':30'});
-  if(!z||!NAMES.has(z[2]))riseBad.push(h+':30 -> '+(z&&z[2]));}
- ok(riseBad.length===0,'rising sign is valid at every hour'
+  const z=risingSign({d:'1988-04-12',t:pad(h)+':30',p:'Chicago, IL'});
+  if(!z||!NAMES.has(z[2]))riseBad.push(h+':30 -> '+(z&&z[2])); else riseSeen.add(z[2]);}
+ ok(riseBad.length===0,'rising sign is valid at every hour with a place'
   +(riseBad.length?'  '+riseBad.slice(0,3).join(', '):''));
+ ok(riseSeen.size>=11,"and sweeps the wheel across a day, got "+riseSeen.size+" signs");
+ /* latitude changes the answer. the old code could not tell these apart. */
+ const chi=risingSign({d:'1988-04-12',t:'07:30',p:'Chicago, IL'});
+ const lis=risingSign({d:'1988-04-12',t:'07:30',p:'Lisbon, PT'});
+ ok(chi&&lis,'both places resolve an ascendant');
+
+ /* THE SKY ITSELF, checked against cases that validate themselves.
+    At a new moon the two longitudes coincide, so the error is readable
+    without trusting anything remembered about a specific date. */
+ const NM=[[2000,1,6,18.233],[2024,1,11,11.57],[1969,7,14,12.27]];
+ let worst=0;
+ NM.forEach(x=>{const jd=julianDay(x[0],x[1],x[2],x[3]);
+  const d=Math.abs(((moonLon(jd)-sunLon(jd)+540)%360)-180);
+  if(d>worst)worst=d;});
+ ok(worst<1.5,'the moon tracks the sun through a new moon, worst error '+worst.toFixed(2)+' deg');
+ /* the sun at an equinox is zero by definition */
+ const eqx=Math.abs(((sunLon(julianDay(2000,3,20,7.583))+180)%360)-180);
+ ok(eqx<0.1,'the sun reads zero at the vernal equinox, got '+eqx.toFixed(3)+' deg');
+ /* the design sun is 88 degrees of arc back, not 88 days */
+ const bj=julianDay(1990,5,15,10);
+ const arc=((sunLon(bj)-sunLon(designJD(bj)))%360+360)%360;
+ ok(Math.abs(arc-88)<0.01,'the design sun sits 88 degrees back, got '+arc.toFixed(3));
+ ok(Math.abs((bj-designJD(bj))-88)>0.5,'and that is not the same as 88 days');
+
+ /* the whole wheel is reachable. the old gene key could only ever
+    produce 31 of the 64 gates, so 33 existed for nobody. */
+ ok(new Set(GATE_WHEEL).size===64,'all 64 gates are on the wheel, got '+new Set(GATE_WHEEL).size);
+ let gates=new Set();
+ for(let m=1;m<=12;m++)for(let d=1;d<=28;d+=1)
+  gates.add(geneKey({d:'1990-'+pad(m)+'-'+pad(d)}).gate);
+ ok(gates.size>=60,'a year of births reaches most of the wheel, got '+gates.size+' gates');
+
+ /* Li Chun, not the first of January. A birth in the first weeks of a
+    year belongs to the previous animal, which is about a tenth of births. */
+ ok(chineseYear({d:'1987-01-19'})===1986,'a January birth takes the previous Chinese year');
+ ok(chineseYear({d:'1987-06-19'})===1987,'and a June birth takes its own');
+
+ /* daylight saving decides an hour, and an hour is half a sign of ascendant */
+ ok(usDST(2010,3,14)&&!usDST(2010,3,13),'US daylight saving starts on the second Sunday in March');
+ ok(usDST(1985,4,8)&&!usDST(1985,3,20),'and on the old rule before 2007');
 
  /* the remaining readings must not throw or hand back nothing */
  const b={d:'1988-04-12',t:'07:45',p:'London'};
@@ -579,7 +627,14 @@ g('19 \u00b7 energetics, the birth module');
  ok(masterNumber({d:'1979-11-29'})===null||[11,22,33].includes(masterNumber({d:'1979-11-29'})),
   'master number is a master number or nothing');
  const hd=hdOf(b);
- ok(hd&&hd.type&&hd.authority,'human design type and authority both resolve');
+ /* The type is deliberately not computed. It falls out of the defined
+    centres, which needs every body at both moments, and the old code
+    returned the birth hour modulo five for everybody. An unresolved
+    field is the honest output and a gate fails if a guess comes back. */
+ ok(hd.type===null&&hd.unresolved,'human design type reads unresolved rather than guessed');
+ ok(hd.personality&&hd.design,'but the personality and design gates are real');
+ ok(hd.personality.gate>=1&&hd.personality.gate<=64,'personality gate is on the wheel');
+ ok(/^[1-6]\/[1-6]$/.test(hd.profile),'and the profile is two lines, got '+hd.profile);
  const gk=geneKey(b);
  ok(gk.gate>=1&&gk.gate<=64,'gene key gate sits in 1..64, got '+gk.gate);
  ok(gk.line>=1&&gk.line<=6,'and the line in 1..6, got '+gk.line);
