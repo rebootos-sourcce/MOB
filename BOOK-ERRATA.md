@@ -223,15 +223,24 @@ Every child fetter has one. Writing them is forty-six new assertions.
 
 ## Where the engine and the book disagree, and the engine moved
 
-**The Ascension distance.** The book prints the five developmental thresholds
-with a distance beside each: `The Still Mind (2,500)`, `The Open Heart (3,500)`,
-`Clear Perception (4,500)`, `The Ground (10,000)`, `Ascension (11,664)`. The
-engine's `MARKERS` table carried the first four exactly and set the fifth to
-12,000. The book is right and the engine moved to it. The figure is the square
-of the node count, so it was never a round number waiting to be rounded, and a
-person reading the product was being told the last threshold was 336 further
-away than the book says. Pinned by value in the engine gate, so a future edit to
-one of these five is a deliberate edit to a quotation.
+**The Ascension distance. Twice, and the second one is the book's problem.**
+The book prints the five developmental thresholds with a distance beside each:
+`The Still Mind (2,500)`, `The Open Heart (3,500)`, `Clear Perception (4,500)`,
+`The Ground (10,000)`, `Ascension (11,664)`. The engine carried the first four
+exactly and set the fifth to 12,000, which was the engine's error and was fixed
+to the book.
+
+The owner then ruled the figure at **fifteen thousand**, against his own anchor
+of fifteen thousand cleared by the age of fifty, with the beginning of nirvana
+around ten thousand and breaking duality around five hundred. His ruling governs
+and the engine now carries fifteen thousand.
+
+So the book and the product now disagree, and it is the book that should move.
+Against a total of fifteen thousand, every threshold the book prints is an exact
+thirtieth: 2,500 is five, 3,500 is seven, 4,500 is nine, 10,000 is twenty. Only
+11,664 is not, and it is thirty thirtieths of 11,664 rather than of the total
+the same chapter implies. The square of the node count is a satisfying figure
+and it breaks the only pattern the other four hold to. **The book's to settle.**
 
 **The threshold names, unresolved and the owner's.** The book names them The
 Still Mind, The Open Heart, Clear Perception, The Ground and Ascension. The
@@ -241,4 +250,3 @@ is not listed as a book error because the owner asked separately for Buddha,
 Christ and Musashi as markers, which is a different object: a compass of people
 rather than a ladder of thresholds. Two objects should not share one table. His
 ruling, and it is named in `DESIGN-avatar.md`.
-

@@ -82,7 +82,22 @@ function recRender(){
   +'<div class="sum-lc">'+(m.unique?'addresses and channels opened at least once, from '
     +m.lines+' lines spoken':'nothing opened yet')
   +(m.estimate?'. Your own horizon reads about '+m.estimate+', give or take '+(m.estimateHigh-m.estimate)+'.':'.')
-  +'</div></div>';
+  +'</div>';
+ /* THE LADDER IS THEIRS. A threshold is a fraction of what a person is
+    carrying, and what a person is carrying follows how long they have been
+    alive to accumulate it. So the distance is computed against them the
+    moment a birth date exists, and until it does the surface says whose
+    numbers it is showing rather than letting a stranger's total read as
+    their own. */
+ if(m.next)
+  h+='<div class="rec-next"><span class="pm-eye">Next</span>'
+   +'<b>'+esc(m.next.nm)+'</b>'
+   +'<span class="rec-nl">'+m.next.left+' of new ground away</span>'
+   +'<span class="rec-ns">'+(m.scaled
+     ?'your own scale, at '+m.next.at+' of about '+m.estimate
+     :'the reference scale. Give a birth date and this becomes yours')+'</span>'
+   +'</div>';
+ h+='</div>';
 
  h+='<div class="rec-hd"><span class="rec-k">Reading</span><span class="rec-a">A</span>'
   +'<span class="rec-b">B</span><span class="rec-d">move</span></div>'

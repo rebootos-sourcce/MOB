@@ -256,12 +256,42 @@ function meterRun(p,keys){
  p.meter.lines+=list.length; p.meter.last=now;
  return {added:added, repeated:repeated};}
 
-/* THE HORIZON. Roughly two thousand patterns accumulate per decade lived, so
-   a person's own total is their age times two hundred. The estimate carries a
-   ten percent swing because how hard somebody identifies with a thing is not
-   knowable from a birth date. The two markers are fixed counts of ground
-   opened, not scores, so they do not move with age. */
-const PAT_PER_YEAR=200, PAT_SWING=0.10;
+/* ============================================================
+   THE HORIZON, AND WHY THE LADDER IS NOT A FIXED COUNT.
+
+   The owner's ruling, and it overturns what this file said before.
+   A person does not have to clear a fixed number. They have to
+   clear THEIR OWN, and their own is a function of how long they
+   have been alive to accumulate it.
+
+   The anchor is his: fifteen thousand by the age of fifty. That is
+   three hundred a year, and three thousand a decade, not the two
+   thousand a decade he estimated out loud. The arithmetic is stated
+   here rather than rounded to the estimate, because every marker in
+   the product derives from it.
+
+   Three thresholds were named with distances attached: breaking
+   duality around five hundred, the beginning of nirvana around ten
+   thousand, ascension around fifteen thousand. Against a total of
+   fifteen thousand those are exact thirtieths, one, twenty and
+   thirty, and the three thresholds already in the book fall on
+   thirtieths too, five, seven and nine. So the ladder is a fraction
+   of a person's own load and always was. The absolute counts were
+   one man's numbers at one man's age.
+
+   A twenty year old does not reach ascension at fifteen thousand.
+   They reach it at six. The distance is the same distance: all of
+   what they are carrying.
+
+   The swing is ten percent because how hard somebody identifies
+   with a thing is not knowable from a birth date. PAT_COHORT is the
+   place a generational rate goes, on the owner's observation that
+   younger people are more identified, which is a real effect and
+   not yet a number. It multiplies the yearly rate and is one until
+   he sets it, so the model has the seam without inventing the
+   figure.
+   ============================================================ */
+const PAT_PER_YEAR=300, PAT_SWING=0.10, PAT_COHORT=1;
 /* The ladder, from SOURCE OS v27.3 Sprint J, which the owner had already
    designed. Six fixed distances on one ruler.
 
@@ -276,18 +306,26 @@ const PAT_PER_YEAR=200, PAT_SWING=0.10;
    product unlocks at one, because a marker that unlocks something is a
    marker for sale, and unique ground is exactly what money buys. */
 const MARKERS=[
- {nm:'Entry',           at:1,     of:'the first address opened'},
- {nm:'Buddha nature',   at:2500,  of:'ground opened'},
- {nm:'Integration',     at:3500,  of:'ground opened'},
- {nm:'Field awareness', at:4500,  of:'ground opened'},
- {nm:'Liberation',      at:10000, of:'ground opened'},
- /* 11,664 and not 12,000. The codex names five developmental thresholds with
-    distances attached and this is the last of them: "Ascension (11,664), the
-    environment loses its grip. Stimuli meet presence, not pattern." The figure
-    is the square of the node count, so it is not a round number waiting to be
-    rounded, and a product that ships 12,000 is quoting the book wrong at the
-    one place a person is trying to reach. */
- {nm:'Ascension',       at:11664, of:'ground opened'}];
+ {nm:'Entry',                at:1,     of:'the first address opened'},
+ {nm:'Breaking duality',     frac:1/30,  of:'your own load'},
+ {nm:'The Still Mind',       frac:5/30,  of:'your own load'},
+ {nm:'The Open Heart',       frac:7/30,  of:'your own load'},
+ {nm:'Clear Perception',     frac:9/30,  of:'your own load'},
+ {nm:'Beginning of Nirvana', frac:20/30, of:'your own load'},
+ {nm:'Ascension',            frac:1,     of:'your own load'}];
+/* A marker resolves against the person in front of it. Entry is the one
+   absolute, because a first address is a first address at any age. The rest
+   are fractions and need a total, so a record with no birth date is read
+   against the reference scale rather than refused: the owner's own, fifty
+   years, fifteen thousand. The read says which of the two it used, because a
+   distance computed from somebody else's age is a different claim and the
+   surface has to be able to say so. */
+const PAT_REF_AGE=50;
+function markersFor(est){
+ var total=est||Math.round(PAT_REF_AGE*PAT_PER_YEAR*PAT_COHORT);
+ return MARKERS.map(function(k){
+  return {nm:k.nm, of:k.of,
+   at:(k.at!=null)?k.at:Math.max(1,Math.round(total*k.frac))};});}
 function ageAt(dateStr,now){
  if(!dateStr)return null;
  var b=new Date(dateStr+'T00:00:00Z'); if(isNaN(b.getTime()))return null;
@@ -298,7 +336,8 @@ function meterRead(p,now){
  var m=(p&&p.meter)||{lines:0,unique:[],first:null,last:null};
  var uniq=(m.unique||[]).length;
  var age=ageAt(p&&p.who&&p.who.born?p.who.born.date:null,now);
- var est=age===null?null:Math.round(age*PAT_PER_YEAR);
+ var est=age===null?null:Math.round(age*PAT_PER_YEAR*PAT_COHORT);
+ var mk=markersFor(est);
  return {lines:m.lines, unique:uniq, first:m.first, last:m.last,
   /* the gift is 100 of new ground, ruled. reruns never spend it. */
   giftLeft:Math.max(0,100-uniq), inGift:uniq<100,
@@ -307,13 +346,15 @@ function meterRead(p,now){
   estimateLow:est===null?null:Math.round(est*(1-PAT_SWING)),
   estimateHigh:est===null?null:Math.round(est*(1+PAT_SWING)),
   cleared:est?Math.min(1,uniq/est):null,
-  markers:MARKERS.map(function(k){return {nm:k.nm, at:k.at, of:k.of,
+  /* the ladder, resolved against this person rather than against a table */
+  scaled:est!==null,
+  markers:mk.map(function(k){return {nm:k.nm, at:k.at, of:k.of,
    reached:uniq>=k.at, left:Math.max(0,k.at-uniq)};}),
   /* the next one only, because six distances at once is a to do list and
      one distance is a direction. null when they are all behind you. */
-  next:(function(){for(var i=0;i<MARKERS.length;i++)
-   if(uniq<MARKERS[i].at)return {nm:MARKERS[i].nm, at:MARKERS[i].at,
-    left:MARKERS[i].at-uniq}; return null;})(),
+  next:(function(){for(var i=0;i<mk.length;i++)
+   if(uniq<mk[i].at)return {nm:mk[i].nm, at:mk[i].at,
+    left:mk[i].at-uniq}; return null;})(),
   /* a dated first cannot be taken away and claims no causation, which is
      why it is the only achievement shape this product allows. */
   firsts:(p&&p.meter&&p.meter.firsts)||[]};}

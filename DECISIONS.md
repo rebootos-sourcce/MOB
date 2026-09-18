@@ -367,3 +367,78 @@ and the band is the one that renders in the largest type on screen. The summary
 card that read Collapsed four now reads Shut four, which removes the worst of
 the ambiguity, but the band word itself is his to keep or change. Seized is the
 candidate: mechanical, physical, and used nowhere else in the product.
+
+## The ladder, ruled. A percent of the person, not a count
+
+> remember, it's a percent of a person's total age. I had to release 15,000 by
+> the time I was 50.
+
+> a person who's 30 may not have to release 2,500 patterns. They're going to
+> release a percent smaller.
+
+Fifteen thousand by fifty is three hundred a year and three thousand a decade.
+The estimate given out loud was a little over two thousand a decade; the anchor
+says three, and the anchor governs because every marker derives from it.
+
+Three thresholds were named with distances: breaking duality about five hundred,
+the beginning of nirvana about ten thousand, ascension about fifteen thousand.
+Against a total of fifteen thousand those are exact thirtieths, and the three
+already in the book fall on thirtieths too.
+
+    entry                    the first address opened, absolute at any age
+    breaking duality          1/30 of your own load
+    the still mind            5/30
+    the open heart            7/30
+    clear perception          9/30
+    beginning of nirvana     20/30
+    ascension                30/30, all of it
+
+Ascension is the whole of what a person carries, for everyone. That is the only
+definition that survives the owner's own framing, that ascension is no longer
+being stimulated by the external environment: nothing is left to be stimulated
+by. It is a complete clearing and cannot be a fixed number in a table.
+
+A record with no birth date reads against the reference scale, which is the
+owner's own fifty years, and the read says `scaled:false` so a surface can say
+whose numbers it is showing. A distance computed from somebody else's age is a
+different claim.
+
+Open and his: the cohort rate. Younger people are more identified, so later
+cohorts carry more per year rather than fewer. `PAT_COHORT` multiplies the rate
+and is one until he sets it.
+
+Supersedes the book. The codex prints `Ascension (11,664)`, the square of the
+node count. His fifteen thousand governs and the disagreement is in
+`BOOK-ERRATA.md`.
+
+## Purpose, ruled. Derived, never entered
+
+Meaning is the end point of expression. At the end of expression, meaning
+creates purpose. The direction runs one way and purpose is what is left standing
+at the end of it.
+
+Upward triangle, the higher purpose, the soul's. Three corners, three values the
+person enters, and the soul's values are universal: freedom, free will,
+knowledge, wisdom. Downward triangle, the earthly purpose, the ego's. Three more
+values with a body attached: health, fitness, financial stability, wealth,
+family. Each triangle's centre is the sum of its three corners.
+
+The upward centre is what motivates you in the spirit. The downward centre is
+what drives you on the earth. And between the two:
+
+> the purpose between those two tells you how you make money and then how you
+> find fulfilment doing it.
+
+Six values in, three readings out, and a person may type none of the three.
+
+The overlap of the two triangles is a hexagon and the hexagon is the boundary of
+your behaviour, the containment. A mirror you hold up to yourself. Its six sides
+are partner, family, friends, community, coworkers and alone, five commitments
+each, thirty in total. Inside is yours to protect. Outside is choice.
+
+**Thirty is not a lot to ask and the objection is withdrawn.** It was costed as
+onboarding friction, and the instinct that applies to onboarding is to reduce
+what is asked. This is not onboarding. It is the instrument, and the instrument
+is a mirror a person lives with until what they are carrying is clear. A mirror
+half described shows half a person. The count stands.
+

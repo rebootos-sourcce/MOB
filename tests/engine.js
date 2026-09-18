@@ -275,30 +275,47 @@ g('15d \u00b7 the meter');
  ok(meterRead(p).giftLeft===94,'the gift is spent by new ground only');
  ok(typeof p.meter.first==='string','the first run is stamped');
  ok(meterRun(p,[]).added===0,'an empty run adds nothing');
- /* the horizon. two thousand a decade, so age times two hundred. */
- ok(meterRead(p).estimate===null,'with no birth date there is no estimate');
+ /* the horizon. fifteen thousand by fifty, so three thousand a decade and
+    three hundred a year. */
+ const blank=meterRead(p);
+ ok(blank.estimate===null,'with no birth date there is no estimate');
+ ok(blank.scaled===false,'and the read says so rather than pretending');
+ ok(blank.markers.map(m=>m.at).join()==='1,500,2500,3500,4500,10000,15000',
+  'the ladder falls back to the reference scale, got '+blank.markers.map(m=>m.at).join());
  p.who.born.date='1986-04-02';
  const h=meterRead(p,'2026-09-18T00:00:00Z');
  ok(h.age>40&&h.age<41,'age comes off the birth date, got '+h.age);
  /* age is rounded for display, the estimate is not, so they agree to within
     one year's worth rather than exactly. */
- ok(Math.abs(h.estimate-h.age*200)<200,'the estimate is two hundred a year, got '+h.estimate);
+ ok(Math.abs(h.estimate-h.age*300)<300,'the estimate is three hundred a year, got '+h.estimate);
+ ok(h.scaled===true,'and this read is scaled to this person');
+ ok(h.markers[6].at===h.estimate,'ascension is the whole of this person\'s own load, got '
+  +h.markers[6].at+' against '+h.estimate);
+ ok(h.markers[6].at<15000,'which for somebody younger than fifty is under fifteen thousand');
  ok(h.estimateLow<h.estimate&&h.estimateHigh>h.estimate,'and carries its ten percent swing');
  /* Six fixed distances on one ruler, from the owner's own ladder. Entry at
     the first address, then Buddha nature, Integration, Field awareness,
     Liberation, Ascension. */
- ok(h.markers.length===6,'six markers, got '+h.markers.length);
- const MAT=h.markers.map(m=>m.at).join();
- /* The codex names five developmental thresholds and prints a distance beside
-    each one. The last of them reads "Ascension (11,664)", which is the square of
-    the node count and is not a round number waiting to be rounded. The engine
-    shipped 12,000 against it. The distances are quotations, so they are pinned
-    here by value and any change to one is a change to the book. */
- ok(MAT==='1,2500,3500,4500,10000,11664','the ladder is the owner\'s thresholds, got '+MAT);
- ok(h.markers[5].at===108*108,'and ascension is the node count squared, got '+h.markers[5].at);
+ ok(h.markers.length===7,'seven markers, got '+h.markers.length);
+ /* THE LADDER IS A FRACTION OF THE PERSON, not a table of counts. The owner's
+    anchor is fifteen thousand by fifty, which is three hundred a year. Against
+    that total his three named thresholds are exact thirtieths, and so are the
+    three in the book. A record with no birth date reads against the reference
+    scale, which is his own age, so these are the reference numbers. */
  ok(h.markers.every((m,i)=>i===0||m.at>h.markers[i-1].at),'and they only ever go up');
- const bn=h.markers.filter(m=>m.nm==='Buddha nature')[0];
- ok(bn&&bn.left===2500-h.unique,'a marker reports the ground left to it');
+ const bn=h.markers.filter(m=>m.nm==='Breaking duality')[0];
+ ok(bn&&bn.left===Math.max(0,bn.at-h.unique),'a marker reports the ground left to it');
+ /* the whole point: a younger person does not have to clear an older person's
+    total. they have to clear their own, and the top marker is all of it. */
+ {const {markersFor,PAT_PER_YEAR,PAT_COHORT}=E;
+  const at30=markersFor(Math.round(30*PAT_PER_YEAR*PAT_COHORT)).map(m=>m.at).join();
+  ok(at30==='1,300,1500,2100,2700,6000,9000','a thirty year old carries nine thousand, got '+at30);
+  const at50=markersFor(Math.round(50*PAT_PER_YEAR*PAT_COHORT));
+  ok(at50[6].at===15000,'a fifty year old reaches ascension at fifteen thousand, got '+at50[6].at);
+  ok(markersFor(9000)[6].at===9000&&markersFor(6000)[6].at===6000,
+   'and ascension is always the whole of it, whoever is reading');
+  ok(PAT_PER_YEAR*50===15000,'the anchor holds: fifteen thousand by fifty');
+  ok(PAT_PER_YEAR*10===3000,'which is three thousand a decade, not two');}
  /* one direction, not six. the next unreached marker only. */
  ok(h.next&&h.next.left>0,'the meter names the next marker and how far, got '
   +(h.next?h.next.nm+' '+h.next.left:'none'));

@@ -4,8 +4,9 @@ The becoming half of the product. Release empties an address. Replace fills it.
 Neither of them says what the person is filling it toward. The Avatar is that
 target, and it is the thing that turns a sequence of releases into a direction.
 
-This document is a design. It changes one line of code, named at the end, and
-it is a correction to a number rather than a build.
+This document is a design. The only code it has changed is the horizon and the
+marker ladder, which the owner ruled in this pass and which is built, gated and
+described in section 5. Everything else here is specified and not built.
 
 ---
 
@@ -147,41 +148,48 @@ writes the target, and the target orders the work.
 
 ---
 
-## 4. The Purpose Map and the boundary
+## 4. The Purpose Map and the boundary, ruled
 
-This is the third of the four client entry experiences in the codex, quoted in
-full because the geometry is the tool:
+The owner's model, given in full and superseding the codex sketch. The codex
+draws the geometry. This says what the geometry means.
 
-> **Three · The Purpose Map.** Two overlapping triangles, Star of David geometry
-> / diamond-lotus structure. Upward triangle: three values defining the higher
-> sense of self, where they converge is purpose. Downward triangle: what you are
-> here to do in the world, survival mechanics, how you navigate. Six sides of
-> the boundary: five things you do with partner, family, friends, community,
-> coworkers, and alone. Thirty things. Inside the boundary is yours to protect.
-> Outside is choice.
+**Meaning is the end point of expression. At the end of expression, meaning
+creates purpose.** That is the direction of the whole object and it runs one
+way: expression, then meaning, then purpose. Purpose is never entered. It is
+what is left standing at the end of the other two.
 
-That is one object with three rings and it maps exactly onto what the product
-already draws.
+**The upward triangle is the higher purpose.** The soul's. Its corners are
+values, entered by the person, and the soul's values are universal: freedom,
+free will, knowledge, wisdom, that register. The centre point of the triangle is
+the sum of the three corners.
 
-**The upward triangle, three values.** Three points. Where they converge is
-purpose, which is a derived position and not a fourth entry. So purpose is
-computed, the way CQ is computed, and a person cannot type it.
+**The downward triangle is the earthly purpose.** The ego's. Its corners are
+also values, entered by the person, and the ego's values are the ones with a
+body attached: health, fitness, financial stability, wealth, family. Its centre
+is likewise the sum of its three.
 
-**The downward triangle, three survival mechanics.** How you navigate. These are
-the things a person does under load, which is what the saboteur layer already
-detects. The downward triangle is the only part of this the product can fill in
-without asking, because it has been watching.
+**Overlaid, the two centres answer two different questions.** The upward centre
+is what motivates you in the spirit. The downward centre is what drives you on
+the earth. And the relation between the two is the useful one:
 
-**The six sides, thirty commitments.** Partner, family, friends, community,
-coworkers, alone. Five each. This is a hexagon and the product already renders
-hexagonal geometry on the wheel. Inside is protected, outside is choice, and
-that line is the boundary.
+> the purpose between those two tells you how you make money and then how you
+> find fulfilment doing it.
+
+So the product asks for six and reports three. Six values in, purpose out twice,
+plus the line between them. A person cannot type any of the three outputs.
+Purpose is derived, ruled.
+
+**The overlap is a hexagon and the hexagon is the boundary.**
+
+> when you overlap those two triangles, that six-sided shape is the boundary of
+> your behaviour. That is what is your containment. This is a mirror you hold up
+> to yourself.
+
+Its six sides are the six relationships the codex names: partner, family,
+friends, community, coworkers, alone. Five commitments each, thirty in total.
+Inside is yours to protect. Outside is choice.
 
 ### How it connects to the Avatar
-
-The Avatar says who you are becoming. The Purpose Map says what that person is
-**for** and the boundary says what they **defend**. Three layers of the same
-statement at three time horizons:
 
     Avatar         who you are becoming          revised monthly
     Purpose Map    what that is for              revised rarely
@@ -189,59 +197,107 @@ statement at three time horizons:
 
 The boundary is the one that touches the release work every day, because a
 crossed boundary is a stress response and a stress response is an imprint. A
-person who has written thirty commitments has given the journal thirty things to
+person with thirty commitments written has given the journal thirty things to
 notice, and the resolver can say which side of the line an entry sits on. That
-is the first time this product could tell a person *why* the charge landed
-rather than only where.
+is the first time this product could tell a person why the charge landed rather
+than only where.
 
-The codex already has the release statement for it, at two places:
+The corpus already carries the release for it:
 
 > State one boundary once, plainly, and do not repeat it.
 
 > Solar release on resentment, then one boundary stated once.
 
-So the ritual step exists in the corpus. It needs the tool, not the copy.
+The ritual step exists. It needs the tool, not the copy.
 
----
+### On the objection, withdrawn
 
-## 5. Ascension, and a number that is wrong
+The last pass called thirty commitments a lot to ask, and put it to the owner as
+a friction problem to be fixed by seeding the sides out of the journal.
 
-The owner's framing in this session:
+That was wrong, and it is worth recording because it is a failure mode this
+project will meet again. Thirty was costed as onboarding, and the instinct that
+applies to onboarding is to reduce what is asked. This is not onboarding. It is
+the instrument, and the instrument is a mirror a person holds up to themselves
+for as long as it takes to clear what they are carrying. Asking somebody to name
+thirty things they will protect, across the six relationships they actually live
+in, is not friction. It is the tool working. A mirror you have only half
+described shows you half of yourself.
 
-> ultimately it is a path of ascension. And ascension in this state simply means
-> you're no longer being stimulated by the external environment.
+The seeding idea survives on its own merits and only on them: an entry a person
+already wrote is better evidence than an answer they gave to a form, so the
+journal should be able to propose a side and the person accepts or rewrites it.
+That is a different argument from the one made last pass and it does not reduce
+the thirty. The count stands.
 
-The codex agrees exactly, and the glossary in this repo already carries it:
+## 5. The ladder is a fraction of the person, not a table of counts
 
-> Ascension: the threshold at which the external environment loses automatic
-> control over internal state; stimuli arrive but no longer run the response.
+The owner's ruling, and it overturns what the engine shipped this morning.
 
-> Ascension is not going up. It is going home.
+> remember, it's a percent of a person's total age. I had to release 15,000 by
+> the time I was 50.
 
-The codex names five developmental thresholds with distances attached:
+> a person who's 30 may not have to release 2,500 patterns. They're going to
+> release a percent smaller.
 
-    The Still Mind        2,500    thoughts arise but no longer command
-    The Open Heart        3,500    heart and crown begin to link
-    Clear Perception      4,500    distortion layers thin, the clairs steady
-    The Ground           10,000    presence replaces protection
-    Ascension            11,664    stimuli meet presence, not pattern
+**The arithmetic, stated rather than rounded.** Fifteen thousand by fifty is
+three hundred a year and three thousand a decade. The estimate given out loud
+was a little over two thousand a decade; the anchor says three. Every marker in
+the product derives from this figure, so it is worth being exact: the engine now
+carries three hundred a year, against the two hundred it had.
 
-`MARKERS` in `engine/schema.js:278` carries these distances and gets one of them
-wrong. Ascension is set to `12000`. The codex says **11,664**, which is not an
-arbitrary figure: it is the square of the node count, and the product is not
-free to round it.
+**The three named thresholds are exact thirtieths of that total.**
 
-The four names in the code are also not the codex's names. Buddha nature,
-Integration, Field awareness and Liberation stand where the codex has The Still
-Mind, The Open Heart, Clear Perception and The Ground. That may be deliberate,
-because the owner asked separately for Buddha, Christ and Musashi as markers,
-and those are a different object: a compass of people, not a ladder of
-thresholds. **His call**, and the two should not share one table whichever way
-he rules.
+    breaking duality        500  of 15,000   =  1/30
+    beginning of nirvana 10,000  of 15,000   = 20/30
+    ascension            15,000  of 15,000   = 30/30
 
-The number is not a matter of taste and is corrected in this pass.
+And the three the book already names fall on thirtieths too:
 
----
+    the still mind        2,500  of 15,000   =  5/30
+    the open heart        3,500  of 15,000   =  7/30
+    clear perception      4,500  of 15,000   =  9/30
+
+One, five, seven, nine, twenty, thirty. The absolute counts were never a ladder.
+They were one man's numbers at one man's age, and the ladder underneath them is
+a fraction of whatever a person is carrying.
+
+**So the ladder resolves against the reader.** Entry stays absolute, because a
+first address is a first address at any age. The other six are computed from the
+person's own horizon the moment a birth date exists:
+
+    age 20   load  6,000    200 · 1,000 · 1,400 · 1,800 ·  4,000 ·  6,000
+    age 30   load  9,000    300 · 1,500 · 2,100 · 2,700 ·  6,000 ·  9,000
+    age 40   load 12,000    400 · 2,000 · 2,800 · 3,600 ·  8,000 · 12,000
+    age 50   load 15,000    500 · 2,500 · 3,500 · 4,500 · 10,000 · 15,000
+
+A twenty year old does not reach ascension at fifteen thousand. They reach it at
+six, and it is the same distance, because it is all of what they are carrying.
+Ascension is the whole of it for everyone, which is the only definition that
+survives the owner's own framing:
+
+> ascension in this state simply means you're no longer being stimulated by the
+> external environment.
+
+Nothing is left to be stimulated by. That is a complete clearing, not a
+milestone, and it cannot be a fixed number in a table.
+
+**Until a birth date exists the surface says whose numbers it is showing.** A
+record with no birth date reads against the reference scale, which is the
+owner's own, and the read carries `scaled:false` so the surface can say so. A
+distance computed from somebody else's age is a different claim and the product
+has to be able to make that visible.
+
+**One seam left open and it is his.** He observed that younger people are more
+identified, which raises the yearly rate for later cohorts rather than lowering
+it. That is a real effect and not yet a number, so `PAT_COHORT` exists,
+multiplies the rate, and is one. The shape is in without the figure being
+invented.
+
+**And the book now disagrees with the product.** The codex prints
+`Ascension (11,664)`, the square of the node count. The owner says fifteen
+thousand. His ruling governs, the number moved, and the disagreement is recorded
+in `BOOK-ERRATA.md` as the book's to settle rather than quietly dropped.
 
 ## 6. What this needs from the schema
 
@@ -254,11 +310,17 @@ Additive, and small, because the resolver and the meter already do the work.
       pairs:      [ {be:'', notbe:''} ]
     }
     purpose: {
-      values:   ['','',''],    /* the upward triangle */
-      mechanics:['','',''],    /* the downward triangle, seeded from saboteurs */
-      sides:    { partner:[], family:[], friends:[],
-                  community:[], coworkers:[], alone:[] }   /* five each */
+      soul: ['','',''],        /* upward triangle, the higher purpose */
+      ego:  ['','',''],        /* downward triangle, the earthly purpose */
+      sides:{ partner:[], family:[], friends:[],
+              community:[], coworkers:[], alone:[] }       /* five each, thirty */
     }
+
+Six values in. Nothing else is stored, because everything else is derived: each
+triangle's centre is the sum of its three corners, the line between the two
+centres is how a person makes money and how they find fulfilment doing it, and
+the hexagon is the overlap. A derived value that is also stored is a value that
+can drift.
 
 Validated at the boundary in the existing refuse by name style: a pair missing
 either half is refused, a side holding more than five is refused, and an older
@@ -269,7 +331,8 @@ New pure functions, all host free and all reading existing state:
     avatarGap(pair)        seat, weight and nerve state standing in the way
     avatarProgress()       done against total, read from cleared ground
     avatarDue(now)         thirty days since the last review
-    purposeConverge()      where the three values meet, derived and not typed
+    purposeCentre(three)   the sum of a triangle's corners, derived and not typed
+    purposeLine()          the relation between the two centres
     boundaryCross(imprint) which side of the line an imprint landed on
 
 `avatarGap` is a port. The original is fifteen lines and its body and signature
@@ -298,15 +361,12 @@ codex draws them as one figure.
 
 ## 8. Open, and whose call
 
-- **The marker names.** Codex thresholds, or the Buddha and Christ and Musashi
-  compass, or both as two separate objects. His.
-- **Whether purpose is typed or derived.** The codex says the three values
-  converge, which reads as derived. Deriving a person's purpose from three words
-  is a strong claim for this product to make.
-- **Thirty commitments is a lot to ask for.** The Avatar seeds itself from
-  onboarding; the boundary has no equivalent. Five sides could seed from the
-  journal, since a person writes about a partner or a manager long before they
-  would fill a form. Needs a decision before it is built.
+- **The cohort rate.** Younger people are more identified, so later cohorts
+  carry more per year rather than fewer. `PAT_COHORT` is the seam and it is one
+  until he sets it.
+- **The Buddha and Christ and Musashi compass.** Asked for separately and it is
+  a different object: a compass of people, not a ladder of thresholds. It should
+  not share the marker table. Whether it is built at all is his.
 - **Whether the Avatar is free.** It is the piece that makes the release work
   feel aimed, which argues for free. It is also the piece that makes a plan
   worth renewing, which argues for paid. Not mine.
