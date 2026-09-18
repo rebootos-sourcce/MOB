@@ -84,37 +84,55 @@ function anaRender(){
  var loud=[].concat(r.sups,r.hys,r.cxs,r.sabs).sort(function(a,b){return b.w-a.w;})[0];
  var held=W.filter(function(n){return n.sq>=4;});
  var out='<div class="ana-wrap">';
+ /* Every figure on this tab was bare except CQ, which carries a percent only
+    because cr() appends one. A number with no scale is not a reading, it is a
+    digit, and six of them sat here on six different scales. */
+ var acc=accuracy(r);
  out+='<div class="ab-hero">'+cr(r.darkB,r.CQ,{size:'lg',label:'coherence'})
-  +'<div><div class="pm-eye">Coherence, '+r.tier.toLowerCase()+'</div>'
+  +'<div><div class="pm-eye">Coherence, '+r.tier.toLowerCase()+', 0 to 100</div>'
   +'<div class="ab-say">'
   +(loud?'<b>'+esc(loud.nm)+'</b> is the biggest thing running. ':'Nothing is compounding. ')
   +(stop?'Flow stops at the <b>'+stop.p.n.toLowerCase()+'</b>. ':'Every seat is passing. ')
-  +(held.length?'<b>'+held.length+'</b> addresses are carrying, at a shadow weight of <b>'+r.DQ.toFixed(1)+'</b>.':'Nothing is carrying.')
+  +(held.length?'<b>'+held.length+'</b> of the 112 addresses are carrying, at a shadow weight of <b>'+r.DQ.toFixed(1)+'</b>.':'Nothing is carrying.')
   +(prev?' CQ '+(r.CQ-prev.cq>=0?'up ':'down ')+Math.abs(r.CQ-prev.cq).toFixed(1)+' since last session.':'')
-  +'</div></div></div><div class="ab-grid">';
- out+=anaField('Masks','the era you speak from, biggest is loudest',
+  +'</div>'
+  /* The accuracy interval is this product's stated substitute for explaining
+     a model, and it was rendered into the Field rail and nowhere else. It
+     belongs on the tab whose whole job is saying what the instrument knows.
+     A move smaller than the interval is not a reading, it is noise, and the
+     line says so rather than leaving a person to infer it. */
+  +'<div class="ab-acc"><span class="pm-eye">Identification</span>'
+  +'<b>'+acc.pct.toFixed(0)+'%</b><span class="ab-band">plus or minus '
+  +acc.band.toFixed(0)+'</span>'
+  +'<span class="ab-note">'+acc.cov+' of 21 laws measured'
+  +(acc.held?', '+acc.held+' addresses carrying':'')
+  +'. A move smaller than the interval is not a reading.</span></div>'
+  +'</div></div><div class="ab-grid">';
+ out+=anaField('Masks','the era you speak from. size is weight, 0 to 10',
   r.maskRing.map(function(m){return {k:'mask',nm:m.nm,v:m.w,
    c:seatCol((m.bands||['Heart'])[0])};}),300,210);
- out+=anaField('Domains','the blueprint you run, yours are lit',
+ out+=anaField('Domains','the blueprint you run. yours are lit, the rest are context',
   S.doms.map(function(di){var d=DOMAINS[di];return {k:'dom',nm:d.nm,v:9,c:ROOTCOL[d.r]};})
    .concat(DOMAINS.filter(function(d,i){return S.doms.indexOf(i)<0;}).slice(0,9)
     .map(function(d){return {k:'dom',nm:d.nm,v:2,c:ROOTCOL[d.r]};})),300,210);
- out+=anaField('Archetypes','how the blueprint expresses, gold is primary',
+ out+=anaField('Archetypes','how the blueprint expresses. size is affinity, 0 to 100 percent',
   (r.aff||[]).map(function(a,i){return {k:'arch',nm:(ARCH[i]||{}).nm||'',
    v:Math.max(0.4,a*10),c:(i===r.pi?GOLD:PAL['3rd Eye'])};}),300,210);
- out+=anaField('What is running','blue saboteur, gold complex, orange hyper, red character',
+ out+=anaField('What is running','blue saboteur, gold complex, orange hyper, red character. size is weight, 0 to 10',
   [].concat(r.sups,r.hys,r.cxs,r.sabs).slice(0,16).map(function(o){
    return {k:'chain',nm:o.nm,v:o.w,c:o.over?ALARM:(TIER[o.kind]||PAL.Throat)};}),300,210);
- out+=anaField('The nine axes','held charge on each poled axis',
+ out+=anaField('The nine axes','held charge on each poled axis, 0 to 10',
   CHILD.map(function(c){return {k:'axis',nm:c.nm,v:Math.max(0.3,S.charge[c.nm]||0),
    c:seatCol(c.seat)};}),300,210);
- out+=anaField('The seven seats','size is how much is held there',
+ out+=anaField('The seven seats','size is how much is held there, 0 to 10',
   seats.map(function(s){return {k:'seat',nm:s.p.n,v:Math.max(0.3,s.hot),
    c:seatCol(K2B[s.p.k])};}),300,210);
  out+='</div>';
  var laws=SI.map(function(l){return {nm:l.nm,b:l.b,v:S.law[l.nm]};});
  var shutL=laws.filter(function(l){return l.v<4;});
- out+='<div class="pm-eye" style="margin-top:20px">The 21 laws'
+ /* 21 of the 76, and the 21 are the Laws of Moral Integrity. Saying "the 21
+    laws" with no frame reads as though there were only 21. */
+ out+='<div class="pm-eye" style="margin-top:20px">Moral integrity, 21 of the 76 laws, each 0 to 10'
   +(shutL.length?', '+shutL.length+' shut':', none shut')+'</div><div class="ana-laws">';
  laws.forEach(function(l){
   out+='<div class="ana-lw'+(l.v<4?' shut':'')+'" title="'+l.nm+' '+l.v.toFixed(1)+'">'
@@ -125,7 +143,9 @@ function anaRender(){
   +shutL.map(function(l){return l.nm;}).join(', ')+'</b>.</p>';
  if(H.length>1){
   out+='<div class="pm-eye" style="margin-top:20px">'+H.length+' sessions</div>'
-   +'<p class="sum-p">One bar per session. Height is CQ, colour is the darkest seat.</p>'
+   +'<p class="sum-p">One bar per session. Height is CQ on 0 to 100, colour is the darkest seat. '
+   +'The band on the reading above is plus or minus '+acc.band.toFixed(0)+', so a step smaller '
+   +'than that is not movement.</p>'
    +'<div class="ana-strip">';
   H.forEach(function(x){out+='<div class="ana-px" title="CQ '+x.cq+', '+x.dark
    +'"><u style="height:'+Math.max(6,Math.round(x.cq/100*50))+'px;background:'
