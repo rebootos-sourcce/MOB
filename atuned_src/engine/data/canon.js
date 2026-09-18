@@ -177,9 +177,9 @@ const ARCH=[
 /* the 21 Laws of Spiritual Integrity, each seated at the band it governs.
    integrity is not one aggregate: a closed law dims its own band. */
 const SI=[
- {nm:'Truth',b:'Throat'},{nm:'Transparency',b:'Throat'},{nm:'Expression',b:'Throat'},
+ {nm:'Truth',b:'Throat'},{nm:'Transparency',b:'Throat'},{nm:'Justice',b:'Throat'},
  {nm:'Unity',b:'Crown'},{nm:'Awareness',b:'Crown'},{nm:'Nature',b:'Crown'},
- {nm:'Presence',b:'3rd Eye'},{nm:'Discernment',b:'3rd Eye'},{nm:'Equanimity',b:'3rd Eye'},
+ {nm:'Presence',b:'3rd Eye'},{nm:'Humility',b:'3rd Eye'},{nm:'Equanimity',b:'3rd Eye'},
  {nm:'Compassion',b:'Heart'},{nm:'Forgiveness',b:'Heart'},{nm:'Generosity',b:'Heart'},{nm:'Aesthetic Beauty',b:'Heart'},
  {nm:'Courage',b:'Solar'},{nm:'Duty',b:'Solar'},{nm:'Responsibility',b:'Solar'},{nm:'Accountability',b:'Solar'},
  {nm:'Temperance',b:'Sacral'},{nm:'Detachment',b:'Sacral'},

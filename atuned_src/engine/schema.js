@@ -50,7 +50,17 @@ function loadProfile(p){
  S.roots=(p.soul.roots||[]).slice(); buildSoul();
  CHILD.forEach(function(c){var a=p.axes[c.nm]||{};
   S.charge[c.nm]=a.held!=null?a.held:3; S.replace[c.nm]=a.opp||0;});
- SI.forEach(function(l){S.law[l.nm]=(p.laws[l.nm]!=null)?p.laws[l.nm]:6;});
+ /* Expression and Discernment were the twenty one until the owner ruled that
+    Justice and Humility are. A law is keyed by name in every saved profile, so
+    the old score is carried across rather than dropped back to the default a
+    person never entered. Expression is a whole separate law axis in the codex
+    and keeps its own name there. */
+ var LAWWAS={Justice:'Expression', Humility:'Discernment'};
+ SI.forEach(function(l){
+  var v=p.laws[l.nm];
+  if(v==null&&LAWWAS[l.nm]!=null&&p.laws[LAWWAS[l.nm]]!=null){
+   v=p.laws[LAWWAS[l.nm]]; p.laws[l.nm]=v; delete p.laws[LAWWAS[l.nm]];}
+  S.law[l.nm]=(v!=null)?v:6;});
  gatesLoad(p);   /* absent on a v1 profile, which reads as no story evidence */
  suscAll();      /* so a story applied before compute() lands on this profile */
  return p;}

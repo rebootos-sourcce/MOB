@@ -219,9 +219,9 @@ const ARCH=[
 /* the 21 Laws of Spiritual Integrity, each seated at the band it governs.
    integrity is not one aggregate: a closed law dims its own band. */
 const SI=[
- {nm:'Truth',b:'Throat'},{nm:'Transparency',b:'Throat'},{nm:'Expression',b:'Throat'},
+ {nm:'Truth',b:'Throat'},{nm:'Transparency',b:'Throat'},{nm:'Justice',b:'Throat'},
  {nm:'Unity',b:'Crown'},{nm:'Awareness',b:'Crown'},{nm:'Nature',b:'Crown'},
- {nm:'Presence',b:'3rd Eye'},{nm:'Discernment',b:'3rd Eye'},{nm:'Equanimity',b:'3rd Eye'},
+ {nm:'Presence',b:'3rd Eye'},{nm:'Humility',b:'3rd Eye'},{nm:'Equanimity',b:'3rd Eye'},
  {nm:'Compassion',b:'Heart'},{nm:'Forgiveness',b:'Heart'},{nm:'Generosity',b:'Heart'},{nm:'Aesthetic Beauty',b:'Heart'},
  {nm:'Courage',b:'Solar'},{nm:'Duty',b:'Solar'},{nm:'Responsibility',b:'Solar'},{nm:'Accountability',b:'Solar'},
  {nm:'Temperance',b:'Sacral'},{nm:'Detachment',b:'Sacral'},
@@ -805,7 +805,7 @@ const CHG2FET={anxiety:'Anticipation',fear:'Fear',anger:'Anger',shame:'Shame',
    this codebase, so the integers are named once and never typed again.
    Order is load bearing and must not change.
    ============================================================ */
-const TAB={STORY:0,SUMMARY:1,FIELD:2,ENERGY:3,ANALYTICS:4,INTAKE:5,KNOW:6};
+const TAB={STORY:0,SUMMARY:1,FIELD:2,ENERGY:3,ANALYTICS:4,INTAKE:5,KNOW:6,GAMES:7};
 /* TABDEF is DISPLAY order. TAB above is identity and does not move: the
    integers are persisted, compared and passed around, and renumbering them
    is the bug this file already warns about. Summary reads last because it is
@@ -818,7 +818,8 @@ const TABDEF=[
  {k:TAB.ENERGY,   id:'emap',  nm:'Energy',    cls:'tab-energy'},
  {k:TAB.ANALYTICS,id:'ana',   nm:'Analytics', cls:'tab-analytics'},
  {k:TAB.SUMMARY,  id:'sum',   nm:'Summary',   cls:'tab-summary'},
- {k:TAB.KNOW,     id:'know',  nm:'Knowledge', cls:'tab-know'}];
+ {k:TAB.KNOW,     id:'know',  nm:'Knowledge', cls:'tab-know'},
+ {k:TAB.GAMES,    id:'games', nm:'Games',     cls:'tab-games'}];
 const TABOF=function(k){for(var i=0;i<TABDEF.length;i++)if(TABDEF[i].k===k)return TABDEF[i];
  return TABDEF[0];};
 
@@ -1149,7 +1150,17 @@ function loadProfile(p){
  S.roots=(p.soul.roots||[]).slice(); buildSoul();
  CHILD.forEach(function(c){var a=p.axes[c.nm]||{};
   S.charge[c.nm]=a.held!=null?a.held:3; S.replace[c.nm]=a.opp||0;});
- SI.forEach(function(l){S.law[l.nm]=(p.laws[l.nm]!=null)?p.laws[l.nm]:6;});
+ /* Expression and Discernment were the twenty one until the owner ruled that
+    Justice and Humility are. A law is keyed by name in every saved profile, so
+    the old score is carried across rather than dropped back to the default a
+    person never entered. Expression is a whole separate law axis in the codex
+    and keeps its own name there. */
+ var LAWWAS={Justice:'Expression', Humility:'Discernment'};
+ SI.forEach(function(l){
+  var v=p.laws[l.nm];
+  if(v==null&&LAWWAS[l.nm]!=null&&p.laws[LAWWAS[l.nm]]!=null){
+   v=p.laws[LAWWAS[l.nm]]; p.laws[l.nm]=v; delete p.laws[LAWWAS[l.nm]];}
+  S.law[l.nm]=(v!=null)?v:6;});
  gatesLoad(p);   /* absent on a v1 profile, which reads as no story evidence */
  suscAll();      /* so a story applied before compute() lands on this profile */
  return p;}

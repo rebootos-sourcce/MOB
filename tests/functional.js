@@ -156,19 +156,55 @@ const back=await page.evaluate(()=>({n:pStore().length, bound:STORE_BOUND}));
 ok(back.n===pers.n&&back.n>0,'profiles survive reload: '+pers.n+' saved, '+back.n+' read back');
 ok(back.bound===true,'store bound after reload');
 
+console.log('\n=== games ===');
+const gm=await page.evaluate(()=>{
+ loadP(9); setTab(TAB.GAMES); GAME='lg'; gmRender(); lgStart();
+ const dealt=LG.cards.length;
+ /* a turn shows the line, a second turn puts the card down and counts it */
+ lgTurn(0); const said=(document.querySelector('.gm-line')||{}).textContent||'';
+ lgTurn(0); const down=LG.turned, face=LG.cards[0].face, done=LG.cards[0].done;
+ /* the channel changes the verb in the line */
+ LG.chan=5; lgTurn(1); const feel=(document.querySelector('.gm-line')||{}).textContent||'';
+ lgTurn(1); lgStop();
+ /* the deck never deals the same address twice */
+ const ids=LG.cards.map(c=>c.n.i), uniq=new Set(ids).size;
+ GAME='mt'; mtStart();
+ const cards=MT.cards.length, pairs=new Set(MT.cards.map(c=>c.id)).size;
+ const idx=[]; MT.cards.forEach((c,i)=>{if(c.id===0)idx.push(i);});
+ mtTurn(idx[0]); mtTurn(idx[1]);
+ const found=MT.found, opened=(document.querySelector('.gm-on')||{}).textContent||'';
+ /* two that do not match do not stay face up */
+ const a=MT.cards.findIndex(c=>!c.done), b=MT.cards.findIndex((c,i)=>!c.done&&c.id!==MT.cards[a].id&&i!==a);
+ mtTurn(a); mtTurn(b); const locked=MT.lock;
+ loadP(0);
+ return {dealt,said,down,face,done,feel,uniq,cards,pairs,found,opened,locked};});
+ok(gm.dealt===24,'the run deals twenty four, got '+gm.dealt);
+ok(gm.uniq===24,'and never the same address twice, got '+gm.uniq+' distinct');
+ok(/letting go of believing that I am /.test(gm.said),'a turned card says its line: '+gm.said);
+ok(gm.down===1&&!gm.face&&gm.done,'a second turn puts it down and counts it');
+ok(/letting go of feeling that I am /.test(gm.feel),'the channel changes the verb: '+gm.feel);
+ok(gm.cards===16&&gm.pairs===8,'the match deals eight pairs, got '+gm.cards+' cards, '+gm.pairs+' pairs');
+ok(gm.found===1&&gm.opened.length>2,'a matched pair opens its fetter: '+gm.opened);
+ok(gm.locked,'two that do not match lock until they turn back');
+
 console.log('\n=== the record the person is actually editing ===');
 /* loadP caches a profile per persona. replacing PROFILES at boot left that
    cache pointing outside the list, so every write after a persona round trip
    reported success onto an array nobody reads. */
 const orph=await page.evaluate(async ()=>{
- toYou(); S.charge.Fear=7.7; syncCh(); saveYou();
+ /* a reference case is loaded, then the person marks the state as their own.
+    toYou has to move the record too or the edit lands in the case's file. */
+ loadP(4); toYou();
+ const ownAfterToYou=(CURP===PROF_BY[PEOPLE[0].nm]);
+ S.charge.Fear=7.7; syncCh(); saveYou();
  await new Promise(r=>setTimeout(r,600));
  const first=pStore()[0].axes.Fear.held;
  loadP(3); loadP(0);
  const inList=PROFILES.indexOf(CURP)>=0;
  toYou(); S.charge.Fear=2.2; syncCh(); saveYou();
  await new Promise(r=>setTimeout(r,600));
- return {first, inList, second:pStore()[0].axes.Fear.held};});
+ return {first, inList, ownAfterToYou, second:pStore()[0].axes.Fear.held};});
+ok(orph.ownAfterToYou,'switching back to your own moves the record, not just the label');
 ok(orph.first===7.7,'an edit reaches the store, got '+orph.first);
 ok(orph.inList,'the current profile stays inside the profile list after a persona round trip');
 ok(orph.second===2.2,'and an edit after that round trip still reaches the store, got '+orph.second);

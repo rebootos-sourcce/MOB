@@ -508,6 +508,42 @@ body:not(.tab-field) .pol2{display:none}
 body.punch .kb-search input{border-color:transparent}
 @media (max-width:760px){ .kb-r{grid-template-columns:auto 1fr auto} .kb-rd{display:none} }
 
+/* ---------- games ---------- */
+.gm-intro,.gm-done,.gm-soon,.gm-open,.gm-say{padding:16px 18px;border-radius:var(--r-s);
+ background:var(--panel-2);display:flex;flex-direction:column;gap:9px;align-items:flex-start;margin:14px 0}
+.gm-soon{background:var(--sunk)}
+.gm-p{margin:0;font-size:13.5px;line-height:1.65;color:var(--mid);max-width:74ch}
+.gm-bar{display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end;justify-content:space-between;
+ padding:12px 0;border-bottom:1px solid var(--edge);margin-bottom:14px}
+.gm-chan{display:flex;flex-direction:column;gap:6px}
+.gm-chips{display:flex;flex-wrap:wrap;gap:4px}
+.gm-chip{background:var(--sunk);border:0;color:var(--mid);border-radius:var(--r-xs);padding:6px 11px;
+ font-family:var(--sans);font-size:12.5px;cursor:pointer;min-height:34px}
+.gm-chip.on{background:var(--gold);color:#15130A}
+.gm-meter{display:flex;flex-direction:column;align-items:flex-end;gap:3px}
+.gm-clock{font-family:var(--num);font-size:26px;font-weight:400;color:var(--ink);
+ font-variant-numeric:tabular-nums;line-height:1}
+.gm-of{font-size:12px;color:var(--dim);font-family:var(--num)}
+.gm-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:8px;margin:6px 0 14px}
+.gm-grid.mt{grid-template-columns:repeat(auto-fill,minmax(84px,1fr))}
+.gm-card{aspect-ratio:3/4;border:0;border-radius:var(--r-s);background:var(--sunk);cursor:pointer;
+ display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;padding:8px;
+ font-family:var(--sans);color:var(--ink);transition:background .14s}
+.gm-card:hover{background:var(--panel-2)}
+.gm-card.face{background:color-mix(in srgb,var(--c) 24%,var(--panel-2))}
+.gm-card.done{opacity:.34;cursor:default}
+.gm-card.mt{aspect-ratio:1/1}
+.gm-card.mt svg{fill:none;stroke:var(--c);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.gm-back{width:22px;height:22px;border-radius:50%;border:1.6px solid var(--edge-2);opacity:.6}
+body.punch .gm-back{border-color:var(--panel);background:var(--panel)}
+.gm-cn{font-size:12.5px;font-weight:500;text-align:center;line-height:1.25}
+.gm-cb{font-size:10.5px;color:var(--dim)}
+.gm-tick{font-size:10.5px;color:var(--dim);letter-spacing:.05em}
+.gm-line{margin:0;font-size:18px;line-height:1.45;color:var(--ink);max-width:40ch}
+.gm-on{font-size:22px;font-weight:500;color:var(--ink)}
+.gm-oo{font-size:12.5px;color:var(--gold)}
+.gm-act{display:flex;gap:7px;flex-wrap:wrap}
+
 /* ---------- the letting go deck ---------- */
 .card{width:min(380px,calc(100% - 32px));background:var(--panel);border:1px solid var(--edge);
  border-radius:var(--r);padding:22px;display:flex;flex-direction:column;gap:16px;box-shadow:var(--shadow)}
@@ -945,6 +981,8 @@ body:not(.tab-field) #key,body:not(.tab-field) #howto,body:not(.tab-field) #prob
 body:not(.tab-field) #tier,body:not(.tab-field) #pol,body:not(.tab-field) #cv{display:none!important}
 body.tab-summary #sum{display:flex!important;z-index:5;overflow-y:auto}
 body:not(.tab-summary) #sum{display:none!important}
+body.tab-games #games{display:flex!important;z-index:5;overflow-y:auto}
+body:not(.tab-games) #games{display:none!important}
 body.tab-know #know{display:flex!important;z-index:5;overflow-y:auto}
 body:not(.tab-know) #know{display:none!important}
 body.tab-intake #iq{display:flex!important;z-index:5;overflow-y:auto}

@@ -34,6 +34,7 @@ ui/ritual.js
 ui/drills.js
 ui/knowledge.js
 ui/record.js
+ui/games.js
 ui/panels.js
 ui/personas.js
 ui/ui.js

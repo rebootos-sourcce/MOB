@@ -508,6 +508,42 @@ body:not(.tab-field) .pol2{display:none}
 body.punch .kb-search input{border-color:transparent}
 @media (max-width:760px){ .kb-r{grid-template-columns:auto 1fr auto} .kb-rd{display:none} }
 
+/* ---------- games ---------- */
+.gm-intro,.gm-done,.gm-soon,.gm-open,.gm-say{padding:16px 18px;border-radius:var(--r-s);
+ background:var(--panel-2);display:flex;flex-direction:column;gap:9px;align-items:flex-start;margin:14px 0}
+.gm-soon{background:var(--sunk)}
+.gm-p{margin:0;font-size:13.5px;line-height:1.65;color:var(--mid);max-width:74ch}
+.gm-bar{display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end;justify-content:space-between;
+ padding:12px 0;border-bottom:1px solid var(--edge);margin-bottom:14px}
+.gm-chan{display:flex;flex-direction:column;gap:6px}
+.gm-chips{display:flex;flex-wrap:wrap;gap:4px}
+.gm-chip{background:var(--sunk);border:0;color:var(--mid);border-radius:var(--r-xs);padding:6px 11px;
+ font-family:var(--sans);font-size:12.5px;cursor:pointer;min-height:34px}
+.gm-chip.on{background:var(--gold);color:#15130A}
+.gm-meter{display:flex;flex-direction:column;align-items:flex-end;gap:3px}
+.gm-clock{font-family:var(--num);font-size:26px;font-weight:400;color:var(--ink);
+ font-variant-numeric:tabular-nums;line-height:1}
+.gm-of{font-size:12px;color:var(--dim);font-family:var(--num)}
+.gm-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:8px;margin:6px 0 14px}
+.gm-grid.mt{grid-template-columns:repeat(auto-fill,minmax(84px,1fr))}
+.gm-card{aspect-ratio:3/4;border:0;border-radius:var(--r-s);background:var(--sunk);cursor:pointer;
+ display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;padding:8px;
+ font-family:var(--sans);color:var(--ink);transition:background .14s}
+.gm-card:hover{background:var(--panel-2)}
+.gm-card.face{background:color-mix(in srgb,var(--c) 24%,var(--panel-2))}
+.gm-card.done{opacity:.34;cursor:default}
+.gm-card.mt{aspect-ratio:1/1}
+.gm-card.mt svg{fill:none;stroke:var(--c);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.gm-back{width:22px;height:22px;border-radius:50%;border:1.6px solid var(--edge-2);opacity:.6}
+body.punch .gm-back{border-color:var(--panel);background:var(--panel)}
+.gm-cn{font-size:12.5px;font-weight:500;text-align:center;line-height:1.25}
+.gm-cb{font-size:10.5px;color:var(--dim)}
+.gm-tick{font-size:10.5px;color:var(--dim);letter-spacing:.05em}
+.gm-line{margin:0;font-size:18px;line-height:1.45;color:var(--ink);max-width:40ch}
+.gm-on{font-size:22px;font-weight:500;color:var(--ink)}
+.gm-oo{font-size:12.5px;color:var(--gold)}
+.gm-act{display:flex;gap:7px;flex-wrap:wrap}
+
 /* ---------- the letting go deck ---------- */
 .card{width:min(380px,calc(100% - 32px));background:var(--panel);border:1px solid var(--edge);
  border-radius:var(--r);padding:22px;display:flex;flex-direction:column;gap:16px;box-shadow:var(--shadow)}
@@ -945,6 +981,8 @@ body:not(.tab-field) #key,body:not(.tab-field) #howto,body:not(.tab-field) #prob
 body:not(.tab-field) #tier,body:not(.tab-field) #pol,body:not(.tab-field) #cv{display:none!important}
 body.tab-summary #sum{display:flex!important;z-index:5;overflow-y:auto}
 body:not(.tab-summary) #sum{display:none!important}
+body.tab-games #games{display:flex!important;z-index:5;overflow-y:auto}
+body:not(.tab-games) #games{display:none!important}
 body.tab-know #know{display:flex!important;z-index:5;overflow-y:auto}
 body:not(.tab-know) #know{display:none!important}
 body.tab-intake #iq{display:flex!important;z-index:5;overflow-y:auto}
@@ -1085,6 +1123,7 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
    <div id="emap" class="emap"></div>
    <div id="iq" class="iq"></div>
    <div id="know" class="iq"></div>
+   <div id="games" class="iq"></div>
    <div id="deck" class="rel"></div>
    <div id="story" class="iq"></div>
    <div id="sum" class="iq"></div>
@@ -1374,9 +1413,9 @@ const ARCH=[
 /* the 21 Laws of Spiritual Integrity, each seated at the band it governs.
    integrity is not one aggregate: a closed law dims its own band. */
 const SI=[
- {nm:'Truth',b:'Throat'},{nm:'Transparency',b:'Throat'},{nm:'Expression',b:'Throat'},
+ {nm:'Truth',b:'Throat'},{nm:'Transparency',b:'Throat'},{nm:'Justice',b:'Throat'},
  {nm:'Unity',b:'Crown'},{nm:'Awareness',b:'Crown'},{nm:'Nature',b:'Crown'},
- {nm:'Presence',b:'3rd Eye'},{nm:'Discernment',b:'3rd Eye'},{nm:'Equanimity',b:'3rd Eye'},
+ {nm:'Presence',b:'3rd Eye'},{nm:'Humility',b:'3rd Eye'},{nm:'Equanimity',b:'3rd Eye'},
  {nm:'Compassion',b:'Heart'},{nm:'Forgiveness',b:'Heart'},{nm:'Generosity',b:'Heart'},{nm:'Aesthetic Beauty',b:'Heart'},
  {nm:'Courage',b:'Solar'},{nm:'Duty',b:'Solar'},{nm:'Responsibility',b:'Solar'},{nm:'Accountability',b:'Solar'},
  {nm:'Temperance',b:'Sacral'},{nm:'Detachment',b:'Sacral'},
@@ -1960,7 +1999,7 @@ const CHG2FET={anxiety:'Anticipation',fear:'Fear',anger:'Anger',shame:'Shame',
    this codebase, so the integers are named once and never typed again.
    Order is load bearing and must not change.
    ============================================================ */
-const TAB={STORY:0,SUMMARY:1,FIELD:2,ENERGY:3,ANALYTICS:4,INTAKE:5,KNOW:6};
+const TAB={STORY:0,SUMMARY:1,FIELD:2,ENERGY:3,ANALYTICS:4,INTAKE:5,KNOW:6,GAMES:7};
 /* TABDEF is DISPLAY order. TAB above is identity and does not move: the
    integers are persisted, compared and passed around, and renumbering them
    is the bug this file already warns about. Summary reads last because it is
@@ -1973,7 +2012,8 @@ const TABDEF=[
  {k:TAB.ENERGY,   id:'emap',  nm:'Energy',    cls:'tab-energy'},
  {k:TAB.ANALYTICS,id:'ana',   nm:'Analytics', cls:'tab-analytics'},
  {k:TAB.SUMMARY,  id:'sum',   nm:'Summary',   cls:'tab-summary'},
- {k:TAB.KNOW,     id:'know',  nm:'Knowledge', cls:'tab-know'}];
+ {k:TAB.KNOW,     id:'know',  nm:'Knowledge', cls:'tab-know'},
+ {k:TAB.GAMES,    id:'games', nm:'Games',     cls:'tab-games'}];
 const TABOF=function(k){for(var i=0;i<TABDEF.length;i++)if(TABDEF[i].k===k)return TABDEF[i];
  return TABDEF[0];};
 
@@ -2304,7 +2344,17 @@ function loadProfile(p){
  S.roots=(p.soul.roots||[]).slice(); buildSoul();
  CHILD.forEach(function(c){var a=p.axes[c.nm]||{};
   S.charge[c.nm]=a.held!=null?a.held:3; S.replace[c.nm]=a.opp||0;});
- SI.forEach(function(l){S.law[l.nm]=(p.laws[l.nm]!=null)?p.laws[l.nm]:6;});
+ /* Expression and Discernment were the twenty one until the owner ruled that
+    Justice and Humility are. A law is keyed by name in every saved profile, so
+    the old score is carried across rather than dropped back to the default a
+    person never entered. Expression is a whole separate law axis in the codex
+    and keeps its own name there. */
+ var LAWWAS={Justice:'Expression', Humility:'Discernment'};
+ SI.forEach(function(l){
+  var v=p.laws[l.nm];
+  if(v==null&&LAWWAS[l.nm]!=null&&p.laws[LAWWAS[l.nm]]!=null){
+   v=p.laws[LAWWAS[l.nm]]; p.laws[l.nm]=v; delete p.laws[LAWWAS[l.nm]];}
+  S.law[l.nm]=(v!=null)?v:6;});
  gatesLoad(p);   /* absent on a v1 profile, which reads as no story evidence */
  suscAll();      /* so a story applied before compute() lands on this profile */
  return p;}
@@ -5571,6 +5621,197 @@ function recRender(){
   recRender();};});}
 
 /* ============================================================
+   GAMES. Two, and both are the instrument at practice speed
+   rather than a diversion bolted on the side.
+
+   THE LETTING GO RUN. Twenty four cards face down, a channel
+   prompt, and a clock. Turn a card, say the line at that
+   address through that channel, turn it back. The clock is the
+   point: the practice is two or three minutes and a person who
+   has never timed it does not believe that.
+
+   THE MATCH. Eight pairs of fetter marks face down. Match a
+   pair and the fetter opens: what it is, how it runs through
+   you, what the coherent opposite is, and how many of your own
+   addresses it is running right now.
+
+   Both deal from the engine. Neither invents a pattern.
+   ============================================================ */
+var GAME=null;
+
+/* ---- the letting go run ---- */
+var LG={cards:[], chan:0, turned:0, t0:0, tick:null, open:null, done:false};
+const LG_CHAN=[['believe','believing'],['perceive','perceiving'],['think','thinking'],
+ ['behave','behaving'],['act','acting'],['feel','feeling']];
+const LG_N=24;
+
+function lgPool(){
+ var r=compute(), held=r.loaded.slice();
+ /* a person with a light field still gets a full deck, drawn from the
+    heaviest addresses they have rather than from nothing. */
+ if(held.length<LG_N){
+  var rest=W.filter(function(n){return held.indexOf(n)<0;})
+   .sort(function(a,b){return b.sq-a.sq;});
+  held=held.concat(rest.slice(0,LG_N-held.length));}
+ return held.slice(0,LG_N);}
+
+function lgStart(){
+ var pool=lgPool().slice();
+ for(var i=pool.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=pool[i];pool[i]=pool[j];pool[j]=t;}
+ LG.cards=pool.map(function(n){return {n:n, face:false, done:false};});
+ LG.chan=0; LG.turned=0; LG.open=null; LG.done=false; LG.t0=Date.now();
+ if(LG.tick)clearInterval(LG.tick);
+ LG.tick=setInterval(function(){var e=document.getElementById('lgclock');
+  if(e)e.textContent=lgClock(); else {clearInterval(LG.tick);LG.tick=null;}},250);
+ gmRender();}
+
+function lgClock(){
+ if(!LG.t0)return '0:00';
+ var s=Math.floor((Date.now()-LG.t0)/1000);
+ return Math.floor(s/60)+':'+String(s%60).padStart(2,'0');}
+
+function lgStop(){ if(LG.tick){clearInterval(LG.tick);LG.tick=null;} }
+
+function lgTurn(i){
+ var c=LG.cards[i]; if(!c||c.done)return;
+ if(LG.open===i){ /* second press on the same card puts it down and counts it */
+  c.face=false; c.done=true; LG.open=null; LG.turned++;
+  if(LG.turned>=LG.cards.length){LG.done=true; lgStop();}
+  gmRender(); return;}
+ if(LG.open!==null){LG.cards[LG.open].face=false;}
+ c.face=true; LG.open=i; gmRender();}
+
+function lgLine(n){
+ var ch=LG_CHAN[LG.chan][1];
+ return 'I am letting go of '+ch+' that I am '+String(n.k).toLowerCase()+'.';}
+
+/* ---- the match ---- */
+var MT={cards:[], open:[], found:0, lock:false, pick:null};
+const MT_PAIRS=8;
+
+function mtStart(){
+ var fs=CHILD.slice(0,MT_PAIRS), deck=[];
+ fs.forEach(function(c,i){deck.push({c:c,id:i},{c:c,id:i});});
+ for(var i=deck.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=deck[i];deck[i]=deck[j];deck[j]=t;}
+ MT.cards=deck.map(function(d){return {c:d.c, id:d.id, face:false, done:false};});
+ MT.open=[]; MT.found=0; MT.lock=false; MT.pick=null;
+ gmRender();}
+
+function mtTurn(i){
+ if(MT.lock)return;
+ var c=MT.cards[i]; if(!c||c.done||c.face)return;
+ c.face=true; MT.open.push(i);
+ if(MT.open.length<2){gmRender();return;}
+ var a=MT.cards[MT.open[0]], b=MT.cards[MT.open[1]];
+ if(a.id===b.id){
+  a.done=b.done=true; MT.found++; MT.open=[]; MT.pick=a.c;
+  gmRender(); return;}
+ MT.lock=true; gmRender();
+ setTimeout(function(){a.face=b.face=false; MT.open=[]; MT.lock=false; gmRender();},700);}
+
+/* what a matched pair is worth: the fetter, how it runs, the opposite, and
+   how much of the person's own field it is actually running. */
+function mtBlock(c){
+ if(!c)return '<p class="gm-p">Match a pair to open it.</p>';
+ var at=W.filter(function(n){return n.cf===c.nm;});
+ var live=at.filter(function(n){return n.sq>=4;});
+ var held=S.charge[c.nm]||0, inst=S.replace[c.nm]||0;
+ return '<div class="gm-open"><div class="pm-eye">'+esc(c.seat)+'</div>'
+  +'<div class="gm-on">'+esc(c.nm)+'</div>'
+  +'<div class="gm-oo">toward '+esc(c.opp)+'</div>'
+  +'<p class="gm-p">It sits at the '+esc(c.addr).toLowerCase()+', at '+esc(c.loc)+'.</p>'
+  +'<p class="gm-p">It runs <b>'+at.length+'</b> of the 112 addresses. '
+  +(live.length?'<b>'+live.length+'</b> of them are carrying in your field right now.'
+    :'None of them are carrying in your field right now.')+'</p>'
+  +'<p class="gm-p">Held <b>'+held.toFixed(1)+'</b>. '+esc(c.opp)+' installed <b>'+inst.toFixed(1)+'</b>. '
+  +'Release empties the address, the opposite is what fills it.</p>'
+  +(live.length?'<button class="btn" data-gmimp="'+esc(c.nm)+'">See the '+live.length+' running you</button>':'')
+  +'</div>';}
+
+/* ---- the shell ---- */
+function gmRender(){
+ var host=document.getElementById('games'); if(!host)return;
+ var h='<div class="kb-top"><div class="kb-hd"><div class="pm-eye">Games</div>'
+  +'<h2 class="kb-h">The instrument at practice speed</h2>'
+  +'<p class="kb-p">Both deal from your own field. Neither invents a pattern.</p></div>'
+  +'<div class="kb-tabs" role="tablist">'
+  +'<button type="button" role="tab" class="kb-t'+(GAME==='lg'?' on':'')+'" data-gm="lg" '
+   +'aria-selected="'+(GAME==='lg')+'">The letting go run</button>'
+  +'<button type="button" role="tab" class="kb-t'+(GAME==='mt'?' on':'')+'" data-gm="mt" '
+   +'aria-selected="'+(GAME==='mt')+'">The match</button>'
+  +'</div></div>';
+
+ if(GAME==='lg'){
+  if(!LG.cards.length){
+   h+='<div class="gm-intro"><p class="gm-p">Twenty four cards, face down, dealt from what you '
+    +'are carrying. Turn one, say the line, turn it back. The clock runs while you do it.</p>'
+    +'<p class="gm-p">The practice is two or three minutes. Time it once and you will believe it.</p>'
+    +'<button class="btn pri" id="lggo">Deal twenty four</button></div>';}
+  else{
+   h+='<div class="gm-bar"><div class="gm-chan"><span class="pm-eye">Channel</span>'
+    +'<div class="gm-chips">'+LG_CHAN.map(function(c,i){
+      return '<button type="button" class="gm-chip'+(LG.chan===i?' on':'')+'" data-lgc="'+i+'">'
+       +c[1]+'</button>';}).join('')+'</div></div>'
+    +'<div class="gm-meter"><span class="gm-clock" id="lgclock">'+lgClock()+'</span>'
+    +'<span class="gm-of">'+LG.turned+' of '+LG.cards.length+' put down</span></div></div>';
+   if(LG.open!==null){
+    var n=LG.cards[LG.open].n;
+    h+='<div class="gm-say"><div class="pm-eye">'+esc(n.b)+', '+esc(n.n||'field')+'</div>'
+     +'<p class="gm-line">'+esc(lgLine(n))+'</p>'
+     +'<p class="gm-p">Say it, feel where it lands, then put the card down.</p></div>';}
+   h+='<div class="gm-grid">'+LG.cards.map(function(c,i){
+     return '<button type="button" class="gm-card'+(c.face?' face':'')+(c.done?' done':'')+'" '
+      +'data-lg="'+i+'" style="--c:'+seatCol(c.n.b)+'" aria-label="'+(c.face?esc(c.n.k):'Face down card')+'">'
+      +(c.done?'<span class="gm-tick">done</span>'
+        :c.face?'<span class="gm-cn">'+esc(c.n.k)+'</span><span class="gm-cb">'+esc(c.n.b)+'</span>'
+        :'<span class="gm-back"></span>')+'</button>';}).join('')+'</div>';
+   if(LG.done)h+='<div class="gm-done"><div class="pm-eye">Run complete</div>'
+    +'<p class="gm-p">Twenty four addresses through the '+LG_CHAN[LG.chan][1]+' channel in <b>'
+    +lgClock()+'</b>. Change the channel and run it again, or open the release to commit it.</p></div>';
+   h+='<div class="gm-act"><button class="btn" id="lggo">Deal again</button></div>';}}
+
+ if(GAME==='mt'){
+  if(!MT.cards.length){
+   h+='<div class="gm-intro"><p class="gm-p">Eight pairs of fetter marks, face down. Match a pair '
+    +'and it opens: what it is, how it runs through you, and what the coherent opposite is.</p>'
+    +'<button class="btn pri" id="mtgo">Deal the marks</button></div>';}
+  else{
+   h+='<div class="gm-bar"><div class="gm-of">'+MT.found+' of '+MT_PAIRS+' matched</div></div>'
+    +'<div class="gm-grid mt">'+MT.cards.map(function(c,i){
+      return '<button type="button" class="gm-card mt'+(c.face||c.done?' face':'')+(c.done?' done':'')+'" '
+       +'data-mt="'+i+'" style="--c:'+seatCol(c.c.seat)+'" '
+       +'aria-label="'+((c.face||c.done)?esc(c.c.nm):'Face down card')+'">'
+       +((c.face||c.done)
+         ? '<svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path d="'+c.c.ic+'"/></svg>'
+         : '<span class="gm-back"></span>')+'</button>';}).join('')+'</div>'
+    +mtBlock(MT.pick)
+    +(MT.found>=MT_PAIRS?'<div class="gm-done"><div class="pm-eye">All eight matched</div>'
+      +'<p class="gm-p">The nine axes are the whole emotional architecture. The ninth, '
+      +esc(CHILD[8].nm)+', is not in this deck.</p></div>':'')
+    +'<div class="gm-act"><button class="btn" id="mtgo">Deal again</button></div>';}}
+
+ h+='<div class="gm-soon"><div class="pm-eye">Phase two</div>'
+  +'<p class="gm-p">A narrated walkthrough of how a matched pair actually runs, unlocked by '
+  +'matching it. Not built.</p></div>';
+
+ host.innerHTML=h;
+ host.querySelectorAll('[data-gm]').forEach(function(el){el.onclick=function(){
+  GAME=el.getAttribute('data-gm'); lgStop(); gmRender();};});
+ host.querySelectorAll('[data-lgc]').forEach(function(el){el.onclick=function(){
+  LG.chan=+el.getAttribute('data-lgc'); gmRender();};});
+ host.querySelectorAll('[data-lg]').forEach(function(el){el.onclick=function(){
+  lgTurn(+el.getAttribute('data-lg'));};});
+ host.querySelectorAll('[data-mt]').forEach(function(el){el.onclick=function(){
+  mtTurn(+el.getAttribute('data-mt'));};});
+ host.querySelectorAll('[data-gmimp]').forEach(function(el){el.onclick=function(){
+  var nm=el.getAttribute('data-gmimp');
+  IMP_PICK={};
+  W.forEach(function(n){if(n.cf===nm&&n.sq>=4)IMP_PICK[n.i]=1;});
+  setTab(TAB.STORY); render();};});
+ var b=document.getElementById('lggo'); if(b)b.onclick=lgStart;
+ b=document.getElementById('mtgo'); if(b)b.onclick=mtStart;}
+
+/* ============================================================
    CONTROLS
    ============================================================ */
 const $=function(id){return document.getElementById(id);};
@@ -5652,6 +5893,7 @@ function setTab(i){
   x.setAttribute('aria-pressed',TABDEF[j]&&TABDEF[j].k===i);});
  if(i===TAB.INTAKE)renderIntake();
  if(i===TAB.KNOW)kbRender();
+ if(i===TAB.GAMES){if(!GAME)GAME='lg'; gmRender();} else lgStop();
  if(i===TAB.STORY)stRender();
  if(i===TAB.SUMMARY)sumRender();
  if(i===TAB.ANALYTICS)anaRender();
@@ -5923,7 +6165,14 @@ function lawsFor(p){ return p.law || LAWSET[p.nm] || {_:5.5}; }
   else if(/ICP/.test(p.role)){gICP=gICP||mk('ICPs');gICP.appendChild(o);}
   else {gRef=gRef||mk('Reference cases');gRef.appendChild(o);}});})();
 $('psel').addEventListener('change',function(e){loadP(+e.target.value);});
-function toYou(){if(S.who===0)return;S.who=0;$('psel').value='0';renderSpirit();}
+/* This set the flag and moved the dropdown and left CURP pointing at whichever
+   reference case was loaded, so the next save wrote the person's own edit into
+   that case's record. It repoints the record without reloading S, because the
+   caller is usually midway through a drag and reloading would undo it. */
+function toYou(){if(S.who===0)return;S.who=0;$('psel').value='0';
+ var own=PROF_BY[PEOPLE[0].nm];
+ if(own&&PROFILES.indexOf(own)>=0)CURP=own;
+ renderSpirit();}
 function saveYou(){if(S.who!==0)return;var Y=PEOPLE[0];
  Y.dom=S.dom;Y.a1=S.a1;Y.a2=S.a2;Y.doms=S.doms.slice();Y.arcs=S.arcs.slice();Y.roots=S.roots.slice();
  CHARGES.forEach(function(c){Y.c[c]=S.charge[c];});

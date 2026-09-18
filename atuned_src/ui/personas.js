@@ -141,7 +141,14 @@ function lawsFor(p){ return p.law || LAWSET[p.nm] || {_:5.5}; }
   else if(/ICP/.test(p.role)){gICP=gICP||mk('ICPs');gICP.appendChild(o);}
   else {gRef=gRef||mk('Reference cases');gRef.appendChild(o);}});})();
 $('psel').addEventListener('change',function(e){loadP(+e.target.value);});
-function toYou(){if(S.who===0)return;S.who=0;$('psel').value='0';renderSpirit();}
+/* This set the flag and moved the dropdown and left CURP pointing at whichever
+   reference case was loaded, so the next save wrote the person's own edit into
+   that case's record. It repoints the record without reloading S, because the
+   caller is usually midway through a drag and reloading would undo it. */
+function toYou(){if(S.who===0)return;S.who=0;$('psel').value='0';
+ var own=PROF_BY[PEOPLE[0].nm];
+ if(own&&PROFILES.indexOf(own)>=0)CURP=own;
+ renderSpirit();}
 function saveYou(){if(S.who!==0)return;var Y=PEOPLE[0];
  Y.dom=S.dom;Y.a1=S.a1;Y.a2=S.a2;Y.doms=S.doms.slice();Y.arcs=S.arcs.slice();Y.roots=S.roots.slice();
  CHARGES.forEach(function(c){Y.c[c]=S.charge[c];});
