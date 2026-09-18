@@ -218,3 +218,27 @@ no rebound.
 
 **28. Four kinds have no coherent opposite.** Laws, domains, masks and seats.
 Every child fetter has one. Writing them is forty-six new assertions.
+
+---
+
+## Where the engine and the book disagree, and the engine moved
+
+**The Ascension distance.** The book prints the five developmental thresholds
+with a distance beside each: `The Still Mind (2,500)`, `The Open Heart (3,500)`,
+`Clear Perception (4,500)`, `The Ground (10,000)`, `Ascension (11,664)`. The
+engine's `MARKERS` table carried the first four exactly and set the fifth to
+12,000. The book is right and the engine moved to it. The figure is the square
+of the node count, so it was never a round number waiting to be rounded, and a
+person reading the product was being told the last threshold was 336 further
+away than the book says. Pinned by value in the engine gate, so a future edit to
+one of these five is a deliberate edit to a quotation.
+
+**The threshold names, unresolved and the owner's.** The book names them The
+Still Mind, The Open Heart, Clear Perception, The Ground and Ascension. The
+engine names the same five distances Entry, Buddha nature, Integration, Field
+awareness, Liberation and Ascension. Four of the six do not match the book. This
+is not listed as a book error because the owner asked separately for Buddha,
+Christ and Musashi as markers, which is a different object: a compass of people
+rather than a ladder of thresholds. Two objects should not share one table. His
+ruling, and it is named in `DESIGN-avatar.md`.
+

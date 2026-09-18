@@ -1901,7 +1901,13 @@ const MARKERS=[
  {nm:'Integration',     at:3500,  of:'ground opened'},
  {nm:'Field awareness', at:4500,  of:'ground opened'},
  {nm:'Liberation',      at:10000, of:'ground opened'},
- {nm:'Ascension',       at:12000, of:'ground opened'}];
+ /* 11,664 and not 12,000. The codex names five developmental thresholds with
+    distances attached and this is the last of them: "Ascension (11,664), the
+    environment loses its grip. Stimuli meet presence, not pattern." The figure
+    is the square of the node count, so it is not a round number waiting to be
+    rounded, and a product that ships 12,000 is quoting the book wrong at the
+    one place a person is trying to reach. */
+ {nm:'Ascension',       at:11664, of:'ground opened'}];
 function ageAt(dateStr,now){
  if(!dateStr)return null;
  var b=new Date(dateStr+'T00:00:00Z'); if(isNaN(b.getTime()))return null;

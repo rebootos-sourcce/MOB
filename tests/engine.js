@@ -289,7 +289,13 @@ g('15d \u00b7 the meter');
     Liberation, Ascension. */
  ok(h.markers.length===6,'six markers, got '+h.markers.length);
  const MAT=h.markers.map(m=>m.at).join();
- ok(MAT==='1,2500,3500,4500,10000,12000','the ladder is the owner\'s thresholds, got '+MAT);
+ /* The codex names five developmental thresholds and prints a distance beside
+    each one. The last of them reads "Ascension (11,664)", which is the square of
+    the node count and is not a round number waiting to be rounded. The engine
+    shipped 12,000 against it. The distances are quotations, so they are pinned
+    here by value and any change to one is a change to the book. */
+ ok(MAT==='1,2500,3500,4500,10000,11664','the ladder is the owner\'s thresholds, got '+MAT);
+ ok(h.markers[5].at===108*108,'and ascension is the node count squared, got '+h.markers[5].at);
  ok(h.markers.every((m,i)=>i===0||m.at>h.markers[i-1].at),'and they only ever go up');
  const bn=h.markers.filter(m=>m.nm==='Buddha nature')[0];
  ok(bn&&bn.left===2500-h.unique,'a marker reports the ground left to it');
