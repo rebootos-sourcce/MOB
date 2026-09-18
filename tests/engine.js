@@ -735,6 +735,24 @@ g('19b \u00b7 the empty field says it is empty');
  S.charge.Fear=0; compute();
 }
 
+g('19bb \u00b7 charge under the line is not nothing');
+/* An address counts as carrying at SQ 4. Under that the charge is real, the
+   person entered it, and every surface said nothing held. All nine axes at 4
+   read identically to all nine at 0: CQ 92.2, DQ 0.0, nothing carrying. The
+   instrument was saying nothing about something. */
+{
+ const read=v=>{S.doms=[0];S.arcs=[0,1];S.roots=[];buildSoul();
+  CHARGES.forEach(c=>{S.charge[c]=v;S.replace[c]=0;});
+  SINAMES.forEach(l=>S.law[l]=9.6); return compute();};
+ const z=read(0), four=read(4), seven=read(7);
+ ok(z.under===0,'a truly empty field has nothing under the line either');
+ ok(four.loaded.length===0,'charge of 4 still carries nothing above the line');
+ ok(four.under>0,'but the reading now knows there is charge under it, got '+four.under);
+ ok(four.under!==z.under,'so 4 no longer reads identically to 0');
+ ok(seven.loaded.length>0&&seven.under>0,'and a loaded field reports both halves');
+ read(0);
+}
+
 g('19c \u00b7 a label carries what it owes');
 /* The owner's ruling: when this product puts a label on a person it carries a
    definition, the behaviour it produces, and the direction out of it. A word

@@ -347,7 +347,12 @@ function render(){
    +'<div class="pm-eye" style="margin-top:14px">Archetypes</div>'+ah
    +'<div class="pm-eye" style="margin-top:12px">Domains</div>'+dsh
    +'<div class="pm-eye" style="margin-top:12px">Field</div>'
-   +row('Held',held?held+' addresses':'nothing','')
+   /* "nothing" was being printed over charge a person had entered themselves.
+      If something sits under the line, the row says so rather than reporting
+      a zero that is not true. */
+   +row('Held',held?held+' addresses'
+     :(r.under?'nothing above the line':'nothing'),
+     held?'':(r.under?r.under+' under it':''))
    +row('Installed',inst?inst+' addresses':'nothing','')
    +row('Darkest',r.darkB,r.darkV.toFixed(1))
    +row('Law shut',r.weakL.nm,'at the '+r.weakL.b.toLowerCase());})();

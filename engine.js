@@ -1397,6 +1397,14 @@ function compute(){
     been read yet and every surface that names a tier checks this first. */
  const measured=SI.filter(function(l){return CURP&&CURP.laws&&CURP.laws[l.nm]!=null;}).length;
  const unread=(loaded.length===0&&measured===0);
+ /* BELOW THE LINE. An address counts as carrying at SQ 4. Under that the
+    charge is real, a person entered it, and every surface reported nothing
+    held. Setting all nine axes to 4 gave an identical reading to setting them
+    to 0: CQ 92.2, DQ 0.0, nothing carrying. That is the instrument saying
+    nothing about something. The threshold stays, because it is what the
+    arithmetic is built on, but the fact that there is charge underneath it is
+    now reportable instead of invisible. */
+ const under=W.filter(function(n){return n.sq>0&&n.sq<4;}).length;
  const benign=CQ>=50,malig=benign?0:Math.round((50-CQ)/50*100);
  const X=clamp((1-S.charge.Apathy/10)*.3+(1-clamp(DQraw/14,0,1))*.7,0,1);
  const Y=clamp((It/10)*.6+(1-dist/10)*.4,0,1);
@@ -1414,7 +1422,7 @@ function compute(){
   if(v>darkV){darkV=v;darkB=b;}});
  let weakL=SI[0];SI.forEach(l=>{if(S.law[l.nm]<S.law[weakL.nm])weakL=l;});
  return {loaded,sabs,cxs,hys,sups,maskRing,DQ:DQraw,Rz,vf:_vf,SQm,poleMean,JQ,excess,
-  FAM_POLE,dist,Ig,It,CQ,tier,unread,measured,benign,malig,X,Y,Z,radiance,aff:af,pi,si,dch,steer,
+  FAM_POLE,dist,Ig,It,CQ,tier,unread,measured,under,benign,malig,X,Y,Z,radiance,aff:af,pi,si,dch,steer,
   will,drag,mask,darkB,darkV,root,rootsIn,weakL,balance:balance()};
 }
 
