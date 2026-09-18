@@ -529,3 +529,104 @@ Map's earthly one, and the frozen figure at its point expresses every depth
 above it outward at once. The two cones and the two triangles are the same
 figure at two scales, which is what the volumetric compass should draw.
 
+## The devil is ordinary. Corrected
+
+> The devil, if this were the twelfth century, would be described as exactly
+> this. A person who does something adversarial to morality. It is a stress
+> response in the person's survival mechanism that is dominating. It is the
+> resistance itself that causes you to do adversarial behaviour. It starts
+> small, gets conditioned, and becomes who we are. A frozen nervous system
+> acting adversarially against our intentions.
+
+Not a rare strategic manipulator. The common case. That correction changed the
+measurement, because the first build read organised as the will beating the
+drag, and at low coherence the will always loses, so every adversarial field
+came out chaotic and nobody was ever the devil.
+
+**Organised means compounded.** The engine already walks the chain: loose
+saboteurs, then complexes, then hyper complexes, then character. How far a
+pattern has climbed that chain is how conditioned it is, which is what "starts
+small, gets conditioned, becomes who we are" describes. Measured as the deepest
+rung reached, not as a share of the mass: a field carries many saboteurs and
+one hyper complex, so a weighted mean read everybody as loose. A hyper complex
+existing at all is the conditioning, whatever else is firing.
+
+All four corners are now reachable and the roster spreads across them.
+
+**The inward corner has no figure and that is the finding.** Every culture
+named outward harm and gave it a face. Inward harm never got one. So the corner
+is called **Turned inward**, plainly, which is the owner's own answer: inward,
+it is just the behaviour.
+
+## The age ladder. The second way in
+
+> Another way I found my limiting beliefs is by age, because I couldn't think
+> of anything that I identified with. That didn't make any sense to me.
+
+The Inferno is the way in for somebody who cannot see themselves as bad. This
+is the way in for somebody who cannot see themselves as identified, which is
+most people, because an identification that is working does not feel like one.
+
+Sixteen years, three to eighteen, one question each, and every question asks
+for the thing and for what it was against, because an identification is only
+visible against what it excluded.
+
+**The mechanic, and it is one sentence.** The mind sticks to anything that it
+defends. Once it is stuck, the bias is set.
+
+**The worked example is the one that found the method.** At fourteen, Superman
+against the Hulk, and the Hulk got picked because the other person was a DC
+person. Five years later, a different person, the same argument, the Hulk again
+because the arguments were already loaded. Again in the twenties. Again in the
+thirties. Then: I do not care about either of these, I never have, and I keep
+taking the same position. Let go, and never raised since.
+
+**The test, and its order is load bearing.** Would you still argue its corner.
+Has it ever cost you anything. Do you actually care, or do you just always take
+this position. Defence first and care last, because asking care first lets a
+person answer for who they would like to be. The middle one is to sit with
+rather than to answer.
+
+**Defended and not meant is the only finding there is.** Defended and meant is
+a preference. Not defended is nothing. A position you hold and do not mean is a
+groove worn by arguing for it, and a groove sits at an address.
+
+## What the practice is for. The owner's framing, verbatim
+
+> This is the practice of finding the biases that have conditioned our
+> behaviour in ways that are against our better nature, our intentions, and the
+> lives that we truly seek to live. This is a path of liberation. A mirror held
+> up to you with the practice that aids the spiritual journey. Turning decades
+> into months, and showing your true nature, revealed. Without judgment. With
+> the purpose of becoming better people. Regardless of our score.
+
+Three rulings are inside that and the copy team does not get to soften any of
+them. **Turning decades into months** is the claim and it is a time claim, not
+an outcome claim. **Without judgment** is why no label in this product is ever
+about a person. **Regardless of our score** settles the argument about whether
+coherence is a rank: it is not, and no surface may imply that a person at a low
+reading is further from becoming a better person than anybody else.
+
+## Frequency by Atüned. Recorded, not designed
+
+Matching people by coherence. Paired rather than swiped, kept in a queue you
+can leave them in, chat, and then decide whether to connect. Act like adults.
+
+Recorded as the owner's idea and not built. Three things have to be settled
+before it is, and none of them is a feature:
+
+- **Sorting people by a psychological reading is the leaderboard problem with
+  the stakes raised.** The research already rejected a ranked list of people
+  inside the product. A dating surface is that list with a stronger incentive
+  attached to the number, and the incentive runs the wrong way: it rewards
+  reporting a field you do not have.
+- **It moves the record off the device and joins it to an identity.** The
+  standing promise is that the name never leaves the device and a key replaces
+  it. A matching surface needs two people to be identifiable to each other,
+  which is a different product and a different controller obligation.
+- **A low reading must not become an exclusion.** If coherence gates who a
+  person may meet, the product has made a reading into a social outcome, which
+  is the one thing "regardless of our score" forbids.
+
+None of that is a no. It is what has to be answered first.
+

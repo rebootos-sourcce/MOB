@@ -566,10 +566,10 @@ ok(!/Both at once/.test(pole.clean),'nor the descent read');
    describes the shape of what is firing. The first build let a field at CQ 39
    read Angel because its stack all pointed inward, which is wrong twice. */
 ok(/The Devil/.test(pole.dn)&&/The Demon/.test(pole.dn)&&/The Storm/.test(pole.dn)
- &&/The Penitent/.test(pole.dn),'all four stack corners are on the surface');
+ &&/Turned inward/.test(pole.dn),'all four stack corners are on the surface');
 ok(/oldest mistake in this material/.test(pole.dn),
  'and the surface says that chaos is not malice');
-ok(/reached by clearing rather than by having a tidy stack/.test(pole.dn),
+ok(/It is what is left when nothing is running/.test(pole.dn),
  'and that angel is not a corner of the stack');
 ok(/What is running here reads|no shape to read/.test(pole.dn),
  'the corner is phrased about what is running, never about the person');
@@ -592,6 +592,40 @@ ok(/What you might recognise/.test(seen.one)&&/Where it sits/.test(seen.one),
  'a sentence opens what it is and where it sits');
 ok(/not a person and not a thing that exists/.test(seen.one),
  'and says the governor is a name for a pattern');
+/* THE SECOND WAY IN. A person who cannot see themselves as bad gets the nine
+   sentences. A person who cannot see themselves as identified gets the years,
+   and that is most people, because an identification that is working does not
+   feel like one. */
+const age=await page.evaluate(()=>{
+ const txt=()=>(document.getElementById('rdrill').textContent||'').replace(/\s+/g,' ');
+ runRecogniseDrill();
+ const o={door:!!document.getElementById('rdage')};
+ if(o.door)document.getElementById('rdage').click();
+ o.list=txt();
+ o.years=document.querySelectorAll('#rdrill [data-age]').length;
+ const y=document.querySelector('#rdrill [data-age="14"]');
+ if(y){y.click(); o.year=txt();
+  /* defended, and not cared about, is the one finding there is */
+  const yes=document.querySelector('#rdrill [data-ag="defend"][data-v="1"]');
+  if(yes)yes.click();
+  const no=document.querySelector('#rdrill [data-ag="care"][data-v="0"]');
+  if(no)no.click();
+  o.found=txt();
+  /* and the same position, meant, is a preference rather than a groove */
+  const care=document.querySelector('#rdrill [data-ag="care"][data-v="1"]');
+  if(care)care.click();
+  o.pref=txt();}
+ return o;});
+ok(age.door,'the nine sentences carry a door to the years for anyone none of them fit');
+ok(age.years===16,'sixteen years, got '+age.years);
+ok(/mind sticks to anything that it defends/.test(age.list),'the mechanic is stated on the list');
+ok(/Superman|Hulk/.test(age.list),'with the worked example that found it');
+ok(/Nothing is stored here, and nothing is scored/.test(age.year),
+ 'a year says plainly that it keeps nothing');
+ok(/A groove/.test(age.found)&&/groove, not a taste/.test(age.found),
+ 'defended and not meant reads as a groove');
+ok(/preference, not a bias/.test(age.pref),
+ 'and the same position meant reads as a preference');
 /* the roster itself is always there. only the descent read is conditional. */
 ok(/Satan frozen/.test(pole.clean),'while the nine circles stay readable to anybody');
 

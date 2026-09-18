@@ -380,11 +380,13 @@ function runPoleDrill(end){
        +Math.round(r.outward*100)+', control '+Math.round((r.organized||0)*100)+'.')
      :'Nothing is firing that points either way, so there is no shape to read here.')
    +'</p>'
-   +'<p class="ad-p">A demon is chaos with harm in it. A devil is the same harm organised. '
-   +'A penitent is the same discipline with the person carrying it as the target. Chaos on its '
-   +'own is none of the three, and calling it a demon is the oldest mistake in this material. '
-   +'Angel is not a fifth shape. It is what is left when nothing is running, and it is reached '
-   +'by clearing rather than by having a tidy stack.</p>';
+   +'<p class="ad-p">The devil is the ordinary case, not a rare one: resistance dominating, '
+   +'aimed outward, and compounded into structure. It starts small, gets conditioned, and '
+   +'becomes who we are. A demon is the same harm before it has compounded. Turned inward is '
+   +'the same conditioning with the person carrying it as the target, and it has no figure '
+   +'because history named outward harm and never named this. Loose charge aimed at nobody is '
+   +'the storm, and calling that a demon is the oldest mistake in this material. Angel is not '
+   +'a fifth shape. It is what is left when nothing is running.</p>';
   /* THE DARK READ. Only when both conditions hold, once, with the referral. */
   if(dk.dark){
    h+='<div class="pm-eye">Both at once</div><p class="ad-p">'+esc(dk.say)+'</p>'
@@ -432,8 +434,10 @@ function runRecogniseDrill(){
    +'<em>'+esc(c.sin||c.nm)+'</em></button>';});
  h+='</div><p class="ad-p">Each one has a body address behind it, which is where the work '
   +'happens. The name on the right is what people called the pattern for eight hundred years '
-  +'before anybody measured it.</p>';
+  +'before anybody measured it.</p>'
+  +'<div class="ad-act"><button class="btn" id="rdage">None of these. Try by age</button></div>';
  rdShell(h);
+ var ag=document.getElementById('rdage'); if(ag)ag.onclick=runAgeDrill;
  var host=document.getElementById('rdrill');
  if(host)host.querySelectorAll('[data-circ]').forEach(function(b){
   b.onclick=function(){runCircleDrill(+b.getAttribute('data-circ'));};});}
@@ -457,6 +461,76 @@ function runCircleDrill(n){
  h+='<p class="ad-p">The governor is a name for the pattern, not a person and not a thing '
   +'that exists. It is still recognisable because the pattern is still running.</p>';
  rdShell(h);}
+
+/* ============================================================
+   THE AGE LADDER, on screen.
+
+   Sixteen years, one question each, and then a three question test
+   that turns an answer into a finding. The order of the test is
+   load bearing: defence, then cost, then care. Asking care first
+   lets a person answer for the person they would like to be.
+   ============================================================ */
+var AGE_AT=null, AGE_ANS={};
+function runAgeDrill(){
+ var h='<div class="pm-eye">Another way in</div>'
+  +'<div class="ad-nm">Three to eighteen</div>'
+  +'<p class="ad-p">Not a memory exercise. A person who cannot think of anything they identify '
+  +'with is not unusual, because an identification that is working does not feel like one. So '
+  +'go year by year and look at what got picked up. Toys, games, characters, teams, machines, '
+  +'sides taken in arguments that did not matter.</p>'
+  +'<div class="pm-eye">How it was found</div><p class="ad-p">'+esc(AGE_WORKED)+'</p>'
+  +'<div class="pm-eye">The mechanic</div><p class="ad-p"><b>The mind sticks to anything that '
+  +'it defends. Once it is stuck, the bias is set.</b> So the question is never what you liked. '
+  +'It is what you would still argue for, and whether you actually care.</p>'
+  +'<div class="ad-rows">';
+ AGES.forEach(function(x){
+  var done=AGE_ANS[x.a];
+  h+='<button type="button" class="ad-r'+(done?' on':'')+'" data-age="'+x.a+'" '
+   +'title="'+esc(x.q)+'"><span class="ad-k">'+x.a+'</span>'
+   +'<span>'+esc(x.k)+'</span>'
+   +'<em>'+(done?esc(done.found?'a groove':'clear'):'')+'</em></button>';});
+ h+='</div>';
+ var found=Object.keys(AGE_ANS).filter(function(k){return AGE_ANS[k].found;});
+ if(found.length)h+='<p class="ad-p"><b>'+found.length+'</b> position'
+  +(found.length===1?'':'s')+' defended and not meant. Each one is a groove worn by arguing '
+  +'for it, and a groove is releasable at the address it sits on.</p>';
+ rdShell(h);
+ var host=document.getElementById('rdrill');
+ if(host)host.querySelectorAll('[data-age]').forEach(function(b){
+  b.onclick=function(){runAgeYear(+b.getAttribute('data-age'));};});}
+/* one year, the question, and the three that test the answer */
+function runAgeYear(a){
+ var x=AGES.filter(function(y){return y.a===a;})[0]; if(!x)return;
+ AGE_AT=a;
+ var st=AGE_ANS[a]||{defend:null,care:null};
+ var h='<div class="pm-eye">Age '+a+', '+esc(x.k)+'</div>'
+  +'<div class="ad-nm">'+esc(x.q)+'</div>'
+  +'<p class="ad-p">Name it to yourself. Nothing is stored here, and nothing is scored.</p>'
+  +'<div class="pm-eye">Now test it</div>';
+ AGE_TEST.forEach(function(t){
+  if(t.k==='cost')return;                       /* the middle one is to sit with, not to answer */
+  var v=st[t.k];
+  h+='<div class="ag-q"><span>'+esc(t.q)+'</span>'
+   +'<span class="ag-b"><button type="button" class="btn'+(v===true?' pri':'')
+   +'" data-ag="'+t.k+'" data-v="1">Yes</button>'
+   +'<button type="button" class="btn'+(v===false?' pri':'')
+   +'" data-ag="'+t.k+'" data-v="0">No</button></span></div>';});
+ h+='<p class="ad-p">'+esc(AGE_TEST[1].q)+' Sit with that one rather than answering it.</p>';
+ if(st.defend!==null&&st.care!==null){
+  var f=ageFinding(st.defend,st.care);
+  h+='<div class="pm-eye">'+(f.found?'A groove':'Not a groove')+'</div>'
+   +'<p class="ad-p">'+esc(f.say)+'</p>';}
+ h+='<div class="ad-act"><button class="btn" id="agback">All sixteen</button></div>';
+ rdShell(h);
+ var host=document.getElementById('rdrill'); if(!host)return;
+ host.querySelectorAll('[data-ag]').forEach(function(b){
+  b.onclick=function(){
+   var k=b.getAttribute('data-ag'), v=b.getAttribute('data-v')==='1';
+   var cur=AGE_ANS[a]||{defend:null,care:null};
+   cur[k]=v;
+   if(cur.defend!==null&&cur.care!==null)cur.found=ageFinding(cur.defend,cur.care).found;
+   AGE_ANS[a]=cur; runAgeYear(a);};});
+ var bk=document.getElementById('agback'); if(bk)bk.onclick=runAgeDrill;}
 
 /* one axis, both ends, and the question that tells them apart */
 function runMirrorDrill(k){

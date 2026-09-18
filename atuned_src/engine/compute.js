@@ -189,9 +189,14 @@ function compute(){
  BANDS.forEach(b=>{const gp=W.filter(n=>n.b===b),v=gp.reduce((a,n)=>a+n.sq,0)/gp.length;
   if(v>darkV){darkV=v;darkB=b;}});
  let weakL=SI[0];SI.forEach(l=>{if(S.law[l.nm]<S.law[weakL.nm])weakL=l;});
- /* the two real axes, and the corner they land in */
- const outward=outwardShare(sabs.concat(cxs).concat(hys));
- const organized=(will+drag)<=0?0.5:clamp(will/(will+drag),0,1);
+ /* THE TWO REAL AXES. Shape is where what is running points. Control is how
+    far it has compounded, which is what conditioning is, and not whether the
+    will is winning: at low coherence the will always loses, so measuring it
+    that way made the devil unreachable and put every adversarial field in the
+    chaotic corner. */
+ const chain=sabs.concat(cxs).concat(hys).concat(sups);
+ const outward=outwardShare(chain);
+ const organized=organisedShare(chain);
  const gov=quadrant(outward,organized,CQ);
  return {loaded,sabs,cxs,hys,sups,maskRing,DQ:DQraw,Rz,vf:_vf,SQm,poleMean,JQ,excess,
   FAM_POLE,dist,Ig,It,CQ,tier,unread,measured,under,benign,malig,X,Y,Z,radiance,aff:af,pi,si,dch,steer,

@@ -385,6 +385,11 @@ body:not(.tab-field) .pol2{display:none}
 .pol2-t{font-family:var(--num);font-size:10px;fill:var(--dim)}
 /* the two ends of the cone are doors, so they say so on hover */
 .ad-act{display:flex;gap:7px;flex-wrap:wrap;margin-top:13px}
+/* one question of the age test, with its two answers on the same line */
+.ag-q{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;
+ gap:8px 12px;padding:9px 0;border-bottom:1px solid var(--edge);font-size:14px;color:var(--ink)}
+.ag-q:last-of-type{border-bottom:0}
+.ag-b{display:flex;gap:6px;flex:0 0 auto}
 .p2end{cursor:pointer}
 .pol2:hover .p2end{opacity:1}
 .pol2-c{font-family:var(--num);font-size:11px;font-weight:500}

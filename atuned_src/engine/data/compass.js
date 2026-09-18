@@ -210,14 +210,31 @@ function circleAt(CQ){
    it: the storm.
    ============================================================ */
 const GOVERN=[
+ /* THE DEVIL IS ORDINARY, which is the owner's correction and the whole point
+    of naming it. "The devil, if this were the twelfth century, would be
+    described as exactly this. A person who does something adversarial to
+    morality. It is a stress response in the person's survival mechanism that
+    is dominating. It is the resistance itself that causes you to do
+    adversarial behaviour. It starts small, gets conditioned, and becomes who
+    we are. A frozen nervous system acting adversarially against our
+    intentions."
+
+    So this is not a rare strategic manipulator. It is the common case of a
+    conditioned pattern that has compounded into structure and now runs
+    against the person's own intentions. Nothing about it requires malice and
+    nothing about it requires a monster. */
  {nm:'The Devil',    org:true,  mal:true,  stack:true,
-  d:'Organised and malignant. Not reactive, strategic. Awareness is present and deployed against coherence rather than in service of it.'},
+  d:'Resistance dominating, aimed outward, and compounded into structure. It starts small, gets conditioned, and becomes who we are. A frozen nervous system acting adversarially against its own intentions. This is the common case, not a rare one.'},
  {nm:'The Demon',    org:false, mal:true,  stack:true,
-  d:'Chaos with harm in it. The pattern is running the person. No gap between stimulus and response, and no recognition available while it runs.'},
- {nm:'The Penitent', org:true,  mal:false, stack:true,
-  d:'Organised, and pointed at the person carrying it. The harm is real and deliberate and none of it is aimed outward. Discipline spent on the self as the target rather than the instrument.'},
+  d:'The same harm before it has compounded. Loose, reactive, no gap between stimulus and response and no recognition available while it runs.'},
+ /* NO FIGURE FOR THIS CORNER, and its absence is the finding. Every culture
+    named outward harm and gave it a face. Inward harm never got one. So this
+    corner is named for what it does, plainly, because the owner's answer to
+    what to call it was "inward, it is just the behaviour". */
+ {nm:'Turned inward',org:true,  mal:false, stack:true,
+  d:'The same conditioning, pointed at the person carrying it. Structured, repeated, and aimed at nobody else. History named outward harm and gave it a face. It never named this one, which is why it has no figure and only a description.'},
  {nm:'The Storm',    org:false, mal:false, stack:true,
-  d:'Chaos with nothing aimed at anybody. A system discharging without direction. This corner is the one mistaken for a demon for a thousand years, and it is the one that needs help rather than a name.'},
+  d:'Loose charge with nothing aimed at anybody. A system discharging without direction. This corner is the one mistaken for a demon for a thousand years, and it is the one that needs help rather than a name.'},
  {nm:'Angel',        org:true,  mal:false, stack:false,
   d:'One quality carried to its maximum in service of something, with nothing decoherent running underneath it. This is the coherent pole of a mirror axis rather than a fifth kind of thing, which is why the twelve read as angels and nobody reaches it by having a tidy stack.'}];
 const GOV_ORG=0.5, GOV_MAL=0.5, GOV_ANGEL=71;
@@ -243,6 +260,34 @@ function quadrant(outward,organized,CQ){
  for(var i=0;i<GOVERN.length;i++)
   if(GOVERN[i].stack&&GOVERN[i].org===org&&GOVERN[i].mal===mal)return GOVERN[i];
  return GOVERN[3];}
+/* HOW ORGANISED THE PATTERN IS.
+
+   Not whether the will is beating the drag, which is what the first build
+   measured and which made the devil unreachable: at low coherence the will
+   loses, so everything adversarial came out chaotic and nobody was ever the
+   devil. That contradicted the owner's own reading, where the devil is the
+   ordinary case.
+
+   Organised means the pattern has compounded. "It starts small, gets
+   conditioned, and becomes who we are." The engine already walks that chain:
+   loose saboteurs, then complexes, then hyper complexes, then character. The
+   share of what is running that has climbed that chain is how conditioned it
+   is, which is the thing the word organised was reaching for. */
+const ORG_W={sab:0.2, cx:0.5, hy:0.8, sup:1};
+function organisedShare(stack){
+ /* HOW FAR IT HAS CLIMBED, not how the mass is split. A weighted mean was the
+    first attempt and it read everybody as loose, because a field carries many
+    saboteurs and one hyper complex, so the many dragged the mean to the floor
+    and nothing ever reached the organised half. That is backwards: a hyper
+    complex existing at all IS the conditioning, whatever else is also firing.
+    So this is the deepest rung reached. A named saboteur already counts,
+    because a pattern with a name is a pattern that repeats. */
+ var best=null;
+ (stack||[]).forEach(function(x){
+  if((x.w||0)<=0)return;
+  var k=ORG_W[x.kind]; if(k===undefined)return;
+  if(best===null||k>best)best=k;});
+ return best;}
 /* Which families run at other people. Predatory and Grandiosity extract, and
    Mania is Collapse turned outward. Everything else lands on the person
    carrying it. Rigidity and Dysregulation are neither, so they are counted in

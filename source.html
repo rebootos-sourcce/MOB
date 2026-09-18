@@ -385,6 +385,11 @@ body:not(.tab-field) .pol2{display:none}
 .pol2-t{font-family:var(--num);font-size:10px;fill:var(--dim)}
 /* the two ends of the cone are doors, so they say so on hover */
 .ad-act{display:flex;gap:7px;flex-wrap:wrap;margin-top:13px}
+/* one question of the age test, with its two answers on the same line */
+.ag-q{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;
+ gap:8px 12px;padding:9px 0;border-bottom:1px solid var(--edge);font-size:14px;color:var(--ink)}
+.ag-q:last-of-type{border-bottom:0}
+.ag-b{display:flex;gap:6px;flex:0 0 auto}
 .p2end{cursor:pointer}
 .pol2:hover .p2end{opacity:1}
 .pol2-c{font-family:var(--num);font-size:11px;font-weight:500}
@@ -1965,14 +1970,31 @@ function circleAt(CQ){
    it: the storm.
    ============================================================ */
 const GOVERN=[
+ /* THE DEVIL IS ORDINARY, which is the owner's correction and the whole point
+    of naming it. "The devil, if this were the twelfth century, would be
+    described as exactly this. A person who does something adversarial to
+    morality. It is a stress response in the person's survival mechanism that
+    is dominating. It is the resistance itself that causes you to do
+    adversarial behaviour. It starts small, gets conditioned, and becomes who
+    we are. A frozen nervous system acting adversarially against our
+    intentions."
+
+    So this is not a rare strategic manipulator. It is the common case of a
+    conditioned pattern that has compounded into structure and now runs
+    against the person's own intentions. Nothing about it requires malice and
+    nothing about it requires a monster. */
  {nm:'The Devil',    org:true,  mal:true,  stack:true,
-  d:'Organised and malignant. Not reactive, strategic. Awareness is present and deployed against coherence rather than in service of it.'},
+  d:'Resistance dominating, aimed outward, and compounded into structure. It starts small, gets conditioned, and becomes who we are. A frozen nervous system acting adversarially against its own intentions. This is the common case, not a rare one.'},
  {nm:'The Demon',    org:false, mal:true,  stack:true,
-  d:'Chaos with harm in it. The pattern is running the person. No gap between stimulus and response, and no recognition available while it runs.'},
- {nm:'The Penitent', org:true,  mal:false, stack:true,
-  d:'Organised, and pointed at the person carrying it. The harm is real and deliberate and none of it is aimed outward. Discipline spent on the self as the target rather than the instrument.'},
+  d:'The same harm before it has compounded. Loose, reactive, no gap between stimulus and response and no recognition available while it runs.'},
+ /* NO FIGURE FOR THIS CORNER, and its absence is the finding. Every culture
+    named outward harm and gave it a face. Inward harm never got one. So this
+    corner is named for what it does, plainly, because the owner's answer to
+    what to call it was "inward, it is just the behaviour". */
+ {nm:'Turned inward',org:true,  mal:false, stack:true,
+  d:'The same conditioning, pointed at the person carrying it. Structured, repeated, and aimed at nobody else. History named outward harm and gave it a face. It never named this one, which is why it has no figure and only a description.'},
  {nm:'The Storm',    org:false, mal:false, stack:true,
-  d:'Chaos with nothing aimed at anybody. A system discharging without direction. This corner is the one mistaken for a demon for a thousand years, and it is the one that needs help rather than a name.'},
+  d:'Loose charge with nothing aimed at anybody. A system discharging without direction. This corner is the one mistaken for a demon for a thousand years, and it is the one that needs help rather than a name.'},
  {nm:'Angel',        org:true,  mal:false, stack:false,
   d:'One quality carried to its maximum in service of something, with nothing decoherent running underneath it. This is the coherent pole of a mirror axis rather than a fifth kind of thing, which is why the twelve read as angels and nobody reaches it by having a tidy stack.'}];
 const GOV_ORG=0.5, GOV_MAL=0.5, GOV_ANGEL=71;
@@ -1998,6 +2020,34 @@ function quadrant(outward,organized,CQ){
  for(var i=0;i<GOVERN.length;i++)
   if(GOVERN[i].stack&&GOVERN[i].org===org&&GOVERN[i].mal===mal)return GOVERN[i];
  return GOVERN[3];}
+/* HOW ORGANISED THE PATTERN IS.
+
+   Not whether the will is beating the drag, which is what the first build
+   measured and which made the devil unreachable: at low coherence the will
+   loses, so everything adversarial came out chaotic and nobody was ever the
+   devil. That contradicted the owner's own reading, where the devil is the
+   ordinary case.
+
+   Organised means the pattern has compounded. "It starts small, gets
+   conditioned, and becomes who we are." The engine already walks that chain:
+   loose saboteurs, then complexes, then hyper complexes, then character. The
+   share of what is running that has climbed that chain is how conditioned it
+   is, which is the thing the word organised was reaching for. */
+const ORG_W={sab:0.2, cx:0.5, hy:0.8, sup:1};
+function organisedShare(stack){
+ /* HOW FAR IT HAS CLIMBED, not how the mass is split. A weighted mean was the
+    first attempt and it read everybody as loose, because a field carries many
+    saboteurs and one hyper complex, so the many dragged the mean to the floor
+    and nothing ever reached the organised half. That is backwards: a hyper
+    complex existing at all IS the conditioning, whatever else is also firing.
+    So this is the deepest rung reached. A named saboteur already counts,
+    because a pattern with a name is a pattern that repeats. */
+ var best=null;
+ (stack||[]).forEach(function(x){
+  if((x.w||0)<=0)return;
+  var k=ORG_W[x.kind]; if(k===undefined)return;
+  if(best===null||k>best)best=k;});
+ return best;}
 /* Which families run at other people. Predatory and Grandiosity extract, and
    Mania is Collapse turned outward. Everything else lands on the person
    carrying it. Rigidity and Dysregulation are neither, so they are counted in
@@ -2015,6 +2065,77 @@ function outwardShare(stack){
     unreadable shape, not a benign one. */
  return tot<=0?null:out/tot;}
 
+/* ============================================================
+   THE AGE LADDER. The second way in, and it is the owner's own.
+
+   "Another way I found my limiting beliefs is by age, because I
+   couldn't think of anything that I identified with. That didn't
+   make any sense to me. So I started reflecting on things I grew
+   up with, toys, games, cartoons, movies, and realised I had
+   accumulated a bunch of stuff from the age of three to eighteen
+   that I had overly identified with."
+
+   The Inferno is the way in for a person who cannot see themselves
+   as bad. This is the way in for a person who cannot see
+   themselves as identified, which is most people, because an
+   identification that is working does not feel like one.
+
+   THE MECHANIC, in his words: "The mind sticks to anything that it
+   defends. Then once it's stuck, the bias is set."
+
+   The worked example is the one that found it. At fourteen he
+   argued Superman against the Hulk and took the Hulk, not because
+   he cared, but because he was not a DC person. Five years later,
+   a different person, the same argument, and he auto picked the
+   Hulk because he already had his arguments ready. Again in his
+   twenties. Again in his thirties. Then he stopped and said: I do
+   not care about either of these. I never have. And I keep taking
+   the same position. He let it go and has not talked about it
+   since.
+
+   So the tool is not a memory exercise. It is a defence audit. The
+   question is never what you liked. It is what you would still
+   argue for, and whether you actually care.
+   ============================================================ */
+const AGE_LO=3, AGE_HI=18;
+const AGES=[
+ {a:3,  k:'the first thing',      q:'What did you carry everywhere and would not be parted from?'},
+ {a:4,  k:'the first building',   q:'What did you make things out of, and what did you always make?'},
+ {a:5,  k:'the first favourite',  q:'What was your favourite, and what was the one you were against?'},
+ {a:6,  k:'the first collection', q:'What did you collect, and what made one of them better than another?'},
+ {a:7,  k:'the first character',  q:'Who did you pretend to be, and who did you refuse to be?'},
+ {a:8,  k:'the first side',       q:'What did you take a side on, at school or at home, that other children took the other side of?'},
+ {a:9,  k:'the first mastery',    q:'What were you the one who was good at it, and who was better?'},
+ {a:10, k:'the first team',       q:'What were you part of, and who were they against?'},
+ {a:11, k:'the first taste',      q:'What did you decide was good, and what did you decide was for other people?'},
+ {a:12, k:'the first argument',   q:'What did you argue about with a friend, and which corner did you take?'},
+ {a:13, k:'the first machine',    q:'What did you learn to use, and what did you think of the ones who used the other thing?'},
+ {a:14, k:'the first position',   q:'What position did you hold, and who were you holding it against?'},
+ {a:15, k:'the first belonging',  q:'What were you one of, and what did being one of them mean you were not?'},
+ {a:16, k:'the first work',       q:'What did you get good at, and what did that let you look down on?'},
+ {a:17, k:'the first plan',       q:'What were you going to be, and who decided that?'},
+ {a:18, k:'the first leaving',    q:'What did you take with you, and what did you make sure to leave?'}];
+/* The three questions that turn an answer into a finding. Order is load
+   bearing: defence first, then cost, then care. Asking care first lets a
+   person answer for the person they would like to be. */
+const AGE_TEST=[
+ {k:'defend', q:'Would you still argue its corner today?'},
+ {k:'cost',   q:'Has taking that side ever cost you anything?'},
+ {k:'care',   q:'Do you actually care, or do you just always take this position?'}];
+/* defend yes and care no is the finding. It is the only combination that is,
+   because a position you hold and mean is a preference, and a position you
+   hold and do not mean is a groove. */
+function ageFinding(defend,care){
+ if(!defend)return {found:false,say:'Not defended. Nothing is stuck here.'};
+ if(care)return {found:false,say:'Defended and meant. That is a preference, not a bias.'};
+ return {found:true,say:'Defended and not meant. The mind stuck to it because it argued for it, '
+  +'and once it was stuck the bias was set. This one is a groove, not a taste.'};}
+const AGE_WORKED='At fourteen the argument was Superman against the Hulk. The Hulk got picked, '
+ +'not because he was better, but because the other person was a DC person. Five years later, a '
+ +'different person, the same argument, and the Hulk got picked again because the arguments were '
+ +'already loaded. Again in the twenties. Again in the thirties. Then: I do not care about either '
+ +'of these. I never have. And I keep taking the same position. It was let go and has not come up '
+ +'since.';
 
 /* ============================================================
    EXPRESSION · the third scale type. Not bipolar. There is no
@@ -3274,9 +3395,14 @@ function compute(){
  BANDS.forEach(b=>{const gp=W.filter(n=>n.b===b),v=gp.reduce((a,n)=>a+n.sq,0)/gp.length;
   if(v>darkV){darkV=v;darkB=b;}});
  let weakL=SI[0];SI.forEach(l=>{if(S.law[l.nm]<S.law[weakL.nm])weakL=l;});
- /* the two real axes, and the corner they land in */
- const outward=outwardShare(sabs.concat(cxs).concat(hys));
- const organized=(will+drag)<=0?0.5:clamp(will/(will+drag),0,1);
+ /* THE TWO REAL AXES. Shape is where what is running points. Control is how
+    far it has compounded, which is what conditioning is, and not whether the
+    will is winning: at low coherence the will always loses, so measuring it
+    that way made the devil unreachable and put every adversarial field in the
+    chaotic corner. */
+ const chain=sabs.concat(cxs).concat(hys).concat(sups);
+ const outward=outwardShare(chain);
+ const organized=organisedShare(chain);
  const gov=quadrant(outward,organized,CQ);
  return {loaded,sabs,cxs,hys,sups,maskRing,DQ:DQraw,Rz,vf:_vf,SQm,poleMean,JQ,excess,
   FAM_POLE,dist,Ig,It,CQ,tier,unread,measured,under,benign,malig,X,Y,Z,radiance,aff:af,pi,si,dch,steer,
@@ -4467,11 +4593,13 @@ if(typeof module!=='undefined'&&module.exports){
   /* meter */    meterFirst:meterFirst,
   /* undo */     undoPush:undoPush, undoPop:undoPop, undoDepth:undoDepth,
                   undoPeek:undoPeek, undoClear:undoClear, UNDO_MAX:UNDO_MAX,
+  /* ages */     AGES:AGES, AGE_TEST:AGE_TEST, AGE_LO:AGE_LO, AGE_HI:AGE_HI,
+                 ageFinding:ageFinding, AGE_WORKED:AGE_WORKED,
   /* compass */  MIRROR:MIRROR, MASTERS:MASTERS, BLUEPRINT:BLUEPRINT, CIRCLES:CIRCLES,
                  CASCADE:CASCADE, DESCENT:DESCENT, DESCENT_REFER:DESCENT_REFER,
                  mirrorAt:mirrorAt, darkRead:darkRead, circleAt:circleAt,
                  DARK_MAL:DARK_MAL, DARK_CQ:DARK_CQ,
-                 GOVERN:GOVERN, quadrant:quadrant, outwardShare:outwardShare,
+                 GOVERN:GOVERN, quadrant:quadrant, outwardShare:outwardShare, organisedShare:organisedShare, ORG_W:ORG_W,
                  FAM_OUT:FAM_OUT, FAM_IN:FAM_IN, GOV_ORG:GOV_ORG, GOV_MAL:GOV_MAL, GOV_ANGEL:GOV_ANGEL,
   /* labels */   TIERDEF:TIERDEF, TIER_BY:TIER_BY, tierOf:tierOf,
                  MEDIAN:MEDIAN, MEDIAN_LO:MEDIAN_LO, MEDIAN_HI:MEDIAN_HI,
@@ -6900,11 +7028,13 @@ function runPoleDrill(end){
        +Math.round(r.outward*100)+', control '+Math.round((r.organized||0)*100)+'.')
      :'Nothing is firing that points either way, so there is no shape to read here.')
    +'</p>'
-   +'<p class="ad-p">A demon is chaos with harm in it. A devil is the same harm organised. '
-   +'A penitent is the same discipline with the person carrying it as the target. Chaos on its '
-   +'own is none of the three, and calling it a demon is the oldest mistake in this material. '
-   +'Angel is not a fifth shape. It is what is left when nothing is running, and it is reached '
-   +'by clearing rather than by having a tidy stack.</p>';
+   +'<p class="ad-p">The devil is the ordinary case, not a rare one: resistance dominating, '
+   +'aimed outward, and compounded into structure. It starts small, gets conditioned, and '
+   +'becomes who we are. A demon is the same harm before it has compounded. Turned inward is '
+   +'the same conditioning with the person carrying it as the target, and it has no figure '
+   +'because history named outward harm and never named this. Loose charge aimed at nobody is '
+   +'the storm, and calling that a demon is the oldest mistake in this material. Angel is not '
+   +'a fifth shape. It is what is left when nothing is running.</p>';
   /* THE DARK READ. Only when both conditions hold, once, with the referral. */
   if(dk.dark){
    h+='<div class="pm-eye">Both at once</div><p class="ad-p">'+esc(dk.say)+'</p>'
@@ -6952,8 +7082,10 @@ function runRecogniseDrill(){
    +'<em>'+esc(c.sin||c.nm)+'</em></button>';});
  h+='</div><p class="ad-p">Each one has a body address behind it, which is where the work '
   +'happens. The name on the right is what people called the pattern for eight hundred years '
-  +'before anybody measured it.</p>';
+  +'before anybody measured it.</p>'
+  +'<div class="ad-act"><button class="btn" id="rdage">None of these. Try by age</button></div>';
  rdShell(h);
+ var ag=document.getElementById('rdage'); if(ag)ag.onclick=runAgeDrill;
  var host=document.getElementById('rdrill');
  if(host)host.querySelectorAll('[data-circ]').forEach(function(b){
   b.onclick=function(){runCircleDrill(+b.getAttribute('data-circ'));};});}
@@ -6977,6 +7109,76 @@ function runCircleDrill(n){
  h+='<p class="ad-p">The governor is a name for the pattern, not a person and not a thing '
   +'that exists. It is still recognisable because the pattern is still running.</p>';
  rdShell(h);}
+
+/* ============================================================
+   THE AGE LADDER, on screen.
+
+   Sixteen years, one question each, and then a three question test
+   that turns an answer into a finding. The order of the test is
+   load bearing: defence, then cost, then care. Asking care first
+   lets a person answer for the person they would like to be.
+   ============================================================ */
+var AGE_AT=null, AGE_ANS={};
+function runAgeDrill(){
+ var h='<div class="pm-eye">Another way in</div>'
+  +'<div class="ad-nm">Three to eighteen</div>'
+  +'<p class="ad-p">Not a memory exercise. A person who cannot think of anything they identify '
+  +'with is not unusual, because an identification that is working does not feel like one. So '
+  +'go year by year and look at what got picked up. Toys, games, characters, teams, machines, '
+  +'sides taken in arguments that did not matter.</p>'
+  +'<div class="pm-eye">How it was found</div><p class="ad-p">'+esc(AGE_WORKED)+'</p>'
+  +'<div class="pm-eye">The mechanic</div><p class="ad-p"><b>The mind sticks to anything that '
+  +'it defends. Once it is stuck, the bias is set.</b> So the question is never what you liked. '
+  +'It is what you would still argue for, and whether you actually care.</p>'
+  +'<div class="ad-rows">';
+ AGES.forEach(function(x){
+  var done=AGE_ANS[x.a];
+  h+='<button type="button" class="ad-r'+(done?' on':'')+'" data-age="'+x.a+'" '
+   +'title="'+esc(x.q)+'"><span class="ad-k">'+x.a+'</span>'
+   +'<span>'+esc(x.k)+'</span>'
+   +'<em>'+(done?esc(done.found?'a groove':'clear'):'')+'</em></button>';});
+ h+='</div>';
+ var found=Object.keys(AGE_ANS).filter(function(k){return AGE_ANS[k].found;});
+ if(found.length)h+='<p class="ad-p"><b>'+found.length+'</b> position'
+  +(found.length===1?'':'s')+' defended and not meant. Each one is a groove worn by arguing '
+  +'for it, and a groove is releasable at the address it sits on.</p>';
+ rdShell(h);
+ var host=document.getElementById('rdrill');
+ if(host)host.querySelectorAll('[data-age]').forEach(function(b){
+  b.onclick=function(){runAgeYear(+b.getAttribute('data-age'));};});}
+/* one year, the question, and the three that test the answer */
+function runAgeYear(a){
+ var x=AGES.filter(function(y){return y.a===a;})[0]; if(!x)return;
+ AGE_AT=a;
+ var st=AGE_ANS[a]||{defend:null,care:null};
+ var h='<div class="pm-eye">Age '+a+', '+esc(x.k)+'</div>'
+  +'<div class="ad-nm">'+esc(x.q)+'</div>'
+  +'<p class="ad-p">Name it to yourself. Nothing is stored here, and nothing is scored.</p>'
+  +'<div class="pm-eye">Now test it</div>';
+ AGE_TEST.forEach(function(t){
+  if(t.k==='cost')return;                       /* the middle one is to sit with, not to answer */
+  var v=st[t.k];
+  h+='<div class="ag-q"><span>'+esc(t.q)+'</span>'
+   +'<span class="ag-b"><button type="button" class="btn'+(v===true?' pri':'')
+   +'" data-ag="'+t.k+'" data-v="1">Yes</button>'
+   +'<button type="button" class="btn'+(v===false?' pri':'')
+   +'" data-ag="'+t.k+'" data-v="0">No</button></span></div>';});
+ h+='<p class="ad-p">'+esc(AGE_TEST[1].q)+' Sit with that one rather than answering it.</p>';
+ if(st.defend!==null&&st.care!==null){
+  var f=ageFinding(st.defend,st.care);
+  h+='<div class="pm-eye">'+(f.found?'A groove':'Not a groove')+'</div>'
+   +'<p class="ad-p">'+esc(f.say)+'</p>';}
+ h+='<div class="ad-act"><button class="btn" id="agback">All sixteen</button></div>';
+ rdShell(h);
+ var host=document.getElementById('rdrill'); if(!host)return;
+ host.querySelectorAll('[data-ag]').forEach(function(b){
+  b.onclick=function(){
+   var k=b.getAttribute('data-ag'), v=b.getAttribute('data-v')==='1';
+   var cur=AGE_ANS[a]||{defend:null,care:null};
+   cur[k]=v;
+   if(cur.defend!==null&&cur.care!==null)cur.found=ageFinding(cur.defend,cur.care).found;
+   AGE_ANS[a]=cur; runAgeYear(a);};});
+ var bk=document.getElementById('agback'); if(bk)bk.onclick=runAgeDrill;}
 
 /* one axis, both ends, and the question that tells them apart */
 function runMirrorDrill(k){

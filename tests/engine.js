@@ -1057,7 +1057,36 @@ g('21 \u00b7 the compass. two cones, eight axes, a descent');
  ok(GOVERN.every(g=>g.d&&g.d.length>60),'each one carries what it is');
  ok(quadrant(0.9,0.9,20).nm==='The Devil','organised and malignant is the devil');
  ok(quadrant(0.9,0.1,20).nm==='The Demon','chaotic and malignant is the demon');
- ok(quadrant(0.1,0.9,20).nm==='The Penitent','organised and pointed at the carrier is the penitent');
+ ok(quadrant(0.1,0.9,20).nm==='Turned inward','compounded and pointed at the carrier is turned inward');
+ /* NO FIGURE FOR THAT CORNER, and its absence is the finding: every culture
+    named outward harm and gave it a face, and none of them named this one. */
+ ok(GOVERN.filter(g=>/^The /.test(g.nm)).length===3,
+  'three of the corners carry a figure and one does not');
+ ok(/never named this one/.test(GOVERN.filter(g=>g.nm==='Turned inward')[0].d),
+  'and it says why it has no figure');
+ /* THE DEVIL IS THE ORDINARY CASE, which is the owner's correction. It is
+    resistance dominating and compounded, not a rare strategic manipulator. */
+ ok(/common case, not a rare one/.test(GOVERN[0].d),'the devil is named as the common case');
+ ok(/starts small, gets conditioned/.test(GOVERN[0].d),'and as conditioning rather than malice');
+ /* ORGANISED MEANS COMPOUNDED. The first build measured will against drag,
+    which at low coherence the will always loses, so the devil was unreachable
+    and every adversarial field fell into the chaotic corner. */
+ const {organisedShare,ORG_W}=E;
+ ok(organisedShare([])===null,'an empty chain has no reading');
+ ok(organisedShare([{kind:'sab',w:5}])===ORG_W.sab,'a named saboteur is already conditioning');
+ ok(organisedShare([{kind:'sup',w:5}])===1,'character is fully conditioned');
+ /* DEPTH REACHED, NOT MASS SPLIT. A weighted mean read everybody as loose,
+    because a field carries many saboteurs and one hyper complex, so the many
+    dragged the mean down and nothing ever reached the organised half. A hyper
+    complex existing at all is the conditioning, whatever else is firing. */
+ ok(organisedShare([{kind:'sab',w:9},{kind:'sab',w:9},{kind:'sab',w:9},{kind:'hy',w:2}])===ORG_W.hy,
+  'one compounded pattern is not outvoted by loose ones');
+ ok(ORG_W.sab<ORG_W.cx&&ORG_W.cx<ORG_W.hy&&ORG_W.hy<ORG_W.sup,
+  'the chain only ever counts more as it deepens');
+ /* the correction proves itself: a compounded outward stack is now the devil
+    whatever the coherence, which is what made him unreachable before */
+ ok(quadrant(0.8,organisedShare([{kind:'hy',w:6},{kind:'sup',w:6}]),9).nm==='The Devil',
+  'a conditioned outward pattern reads devil even at the floor');
  ok(quadrant(0.1,0.1,20).nm==='The Storm','and chaotic with nothing aimed at anybody is the storm');
  /* ANGEL IS NOT A CORNER OF THE STACK. It is what is left when nothing
     decoherent runs and coherence is high, which is reached by clearing and
@@ -1125,6 +1154,54 @@ g('21 \u00b7 the compass. two cones, eight axes, a descent');
  const all=JSON.stringify([MIRROR,MASTERS,BLUEPRINT,CIRCLES,CASCADE,DESCENT]);
  ok(!/[\u2014\u2013]/.test(all),'no em or en dashes anywhere in the compass');
  ok(all.indexOf('108')<0,'and it never says 108');
+}
+
+g('22 \u00b7 the age ladder, the second way in');
+/* The Inferno is the way in for somebody who cannot see themselves as bad.
+   This is the way in for somebody who cannot see themselves as identified,
+   which is most people, because an identification that is working does not
+   feel like one. The mechanic is one sentence: the mind sticks to anything it
+   defends, and once it is stuck the bias is set. */
+{
+ const {AGES,AGE_TEST,AGE_LO,AGE_HI,ageFinding,AGE_WORKED}=E;
+ ok(AGES.length===16,'sixteen years, got '+AGES.length);
+ ok(AGES[0].a===AGE_LO&&AGES[15].a===AGE_HI,'three to eighteen, got '
+  +AGES[0].a+' to '+AGES[15].a);
+ ok(AGES.every((x,i)=>i===0||x.a===AGES[i-1].a+1),'one year at a time with no gaps');
+ ok(AGES.every(x=>x.k&&x.q),'each year names what it is looking for and asks for it');
+ ok(AGES.every(x=>/\?$/.test(x.q)),'and asks it as a question');
+ /* every prompt asks for the thing AND its opposite, because an
+    identification is only visible against what it excluded */
+ const oneSided=AGES.filter(x=>!/,\s|and /.test(x.q)).map(x=>x.a);
+ ok(oneSided.length===0,'every year asks for the side and what it was against'
+  +(oneSided.length?'  one sided at '+oneSided.join(', '):''));
+
+ /* THE TEST, and its order is load bearing. Asking care first lets a person
+    answer for who they would like to be. */
+ ok(AGE_TEST.length===3,'three questions to test an answer, got '+AGE_TEST.length);
+ ok(AGE_TEST[0].k==='defend'&&AGE_TEST[2].k==='care',
+  'defence is asked first and care last, got '+AGE_TEST.map(t=>t.k).join(', '));
+
+ /* THE FINDING. Defended and not meant is the only one that is. */
+ ok(ageFinding(true,false).found===true,'defended and not meant is a groove');
+ ok(ageFinding(true,true).found===false,'defended and meant is a preference');
+ ok(ageFinding(false,false).found===false,'not defended is nothing at all');
+ ok(ageFinding(false,true).found===false,'and neither is caring about something you never argue');
+ ok(/preference, not a bias/.test(ageFinding(true,true).say),
+  'and the product says which is which rather than leaving a person to guess');
+ ok(/groove, not a taste/.test(ageFinding(true,false).say),'both ways');
+
+ /* the worked example is the one that found the method, so it carries the
+    detail that makes it land: the same position taken four times */
+ ok(/Superman|Hulk/.test(AGE_WORKED),'the worked example is the one that found it');
+ ok(/I do not care about either/.test(AGE_WORKED),'and ends where the method was found');
+
+ /* house voice */
+ const all=JSON.stringify([AGES,AGE_TEST,AGE_WORKED]);
+ ok(!/[\u2014\u2013]/.test(all),'no em or en dashes in the age ladder');
+ /* and it never hands a person a diagnosis on the way in */
+ ok(!/saboteur|narcissis|trauma|heal/i.test(all),
+  'no diagnosis word and no wellness word anywhere in the way in');
 }
 
 console.log('\n===== '+P+' passed, '+F+' failed =====');
