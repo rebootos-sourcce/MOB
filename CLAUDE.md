@@ -174,3 +174,7 @@ separates what can be built in one file from what needs a backend this project
 does not have.
 `REVIEW-source.md` is the original review and the rebuild. `REVIEW-pass2.md`
 is the second engineering pass. `tests/README.md` explains the gates.
+`DECISIONS.md` is what the owner has ruled, including the tier ladder, the
+snippet privacy boundary and the practitioner model, with the open items named
+as open. Read it before proposing anything it already settles.
+`FEEDBACK-log.md` is one entry per piece of feedback that moved the product.
