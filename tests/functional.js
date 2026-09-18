@@ -313,6 +313,22 @@ ok(/Toward:/.test(lab.tip),'including the direction out of it');
 ok(/What severe means/i.test(lab.drill),'the drill defines the word');
 ok(/How it shows up/i.test(lab.drill),'says how it shows up in a life');
 ok(/Where it goes/i.test(lab.drill),'and where it goes next');
+/* and the definition has to be reachable by TAP, not only by hover. It lived
+   in a title attribute, and the audience arrives on phones. */
+const tapPg=await browser.newPage({viewport:{width:390,height:844}});
+await tapPg.goto(FILE,{waitUntil:'load'}); await tapPg.waitForTimeout(700);
+const tapped=await tapPg.evaluate(()=>{
+ loadP(9); setTab(TAB.FIELD); render();
+ const el=document.getElementById('tier');
+ const h=Math.round(el.getBoundingClientRect().height);
+ el.click();
+ const d=(document.getElementById('rdrill').textContent||'').replace(/\s+/g,' ');
+ return {tag:el.tagName, h, opened:d.length,
+  full:/means/i.test(d)&&/How it shows up/i.test(d)&&/Where it goes/i.test(d)};});
+ok(tapped.tag==='BUTTON','the tier is a control, not a label printed at a person');
+ok(tapped.h>=44,'it clears the touch floor, got '+tapped.h+'px');
+ok(tapped.full,'and a tap gives the definition, the behaviour and the direction');
+await tapPg.close();
 
 console.log('\n=== zoom atomises the construct ===');
 /* Zoom used to magnify the same picture while the depth ladder was a separate

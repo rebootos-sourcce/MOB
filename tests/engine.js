@@ -801,9 +801,29 @@ g('19c \u00b7 a label carries what it owes');
  /* the thresholds must still be the ones the engine computes against */
  ok(TIERDEF.map(t=>t.at).join()==='90,70,50,31,21,1,0','the thresholds are unchanged');
  ok(TIERDEF.every((t,i)=>i===0||t.at<TIERDEF[i-1].at),'and they only descend');
- /* the table in the renderer was a second copy. tierOf is the only one now. */
+ /* ONE TABLE. There were three: canon, the renderer, and compute itself. A
+    previous commit removed the renderer's and claimed the duplicate was gone,
+    which was wrong: compute carried its own literal thresholds and names, so a
+    rename would have drifted silently between the engine and the definitions.
+    This asserts there is no second table anywhere by checking that every band
+    compute can name has a definition behind it, across the whole scale. */
  ok(tierOf(95).nm==='Mastery'&&tierOf(12).nm==='Severe'&&tierOf(0).nm==='Collapsed',
   'tierOf resolves the band');
+ {
+  const named=new Set(), defined=new Set(TIERDEF.map(t=>t.nm));
+  for(let cq=0;cq<=100;cq+=0.25)named.add(tierOf(cq).nm);
+  ok(named.size===7,'the scale reaches all seven bands, got '+named.size);
+  const orphan=[...named].filter(n=>!defined.has(n));
+  ok(orphan.length===0,'and no band exists without a definition'
+   +(orphan.length?'  orphans: '+orphan.join(', '):''));
+  /* and compute must agree with tierOf at every band, not only at the ends */
+  let drift=[];
+  [[0,0,10],[6,0,9.2],[6,0,7.4],[7,0,6],[8,0,4],[9,0,2],[10,0,0]].forEach(function(v){
+   reset(v[0],v[1],v[2]); const r=compute();
+   if(tierOf(r.CQ).nm!==r.tier)drift.push(r.CQ.toFixed(1)+': '+r.tier+' vs '+tierOf(r.CQ).nm);});
+  ok(drift.length===0,'compute and the definitions never disagree'
+   +(drift.length?'  '+drift.join(', '):''));
+ }
  /* it has to agree with what compute names, or two surfaces disagree */
  reset(0,0,10); ok(tierOf(compute().CQ).nm===compute().tier,'and agrees with compute at the top');
  reset(10,0,0); ok(tierOf(compute().CQ).nm===compute().tier,'and at the bottom');

@@ -134,8 +134,12 @@ function compute(){
  const Rz=Math.max(1,(1+DQraw*0.05)*_vf);
  /* CQ = (Intention x Integrity) / Resistance. 100 when all 21 laws read 10. */
  const CQ=clamp((It*Ig)/Rz,0,100);
- const tier=[[90,'Mastery'],[70,'Embodied'],[50,'Practicing'],[31,'Incoherent'],
-  [21,'Corrupt'],[1,'Severe'],[0,'Collapsed']].find(b=>CQ>=b[0])[1];
+ /* One table. This was a literal copy of the thresholds and the names, and a
+    previous commit claimed to have removed the duplicate after removing only
+    the one in the renderer. A rename would have drifted silently between the
+    engine and the definitions. canon.js loads before this file, which is what
+    makes tierOf reachable here. */
+ const tier=tierOf(CQ).nm;
  /* UNREAD. With nothing held and no law measured, CQ is a pure function of
     the default 6 on all 21 laws: it comes out 36 and the tier comes out
     Incoherent. That is not a reading of a person, it is a reading of the

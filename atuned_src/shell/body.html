@@ -89,7 +89,11 @@
    <div id="ana" class="iq"></div>
    <div id="rel" class="rel"></div>
    <div id="rit" class="rel"></div>
-   <div class="tl"><b id="tier">-</b><div id="pol"></div></div>
+   <!-- The tier is a word this product puts on a person, so it is a button and
+        not a label. Its definition lived only in a title attribute, which a
+        touch screen cannot reach, and the audience arrives on phones. -->
+   <div class="tl"><button type="button" class="tierbtn" id="tier">-</button>
+    <div id="pol"></div></div>
    <div class="probe" id="probe"></div>
    <div class="howto" id="howto"></div>
    <button class="bal" id="bal" aria-label="Balance. Which way the field discharges. Opens the reading."></button>

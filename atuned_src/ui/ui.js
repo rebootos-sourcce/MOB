@@ -268,7 +268,10 @@ function render(){
   e.textContent=r.unread?'not read yet':r.tier;
   var td=r.unread?null:TIER_BY[r.tier];
   e.title=td?(td.def+'  '+td.energy+'  Toward: '+td.toward)
-   :'Nothing has been read yet. Write a story or set a charge.';})();
+   :'Nothing has been read yet. Write a story or set a charge.';
+  /* and a tap gets the same thing, in full, because hover is not a route on
+     the device most of this audience arrives on. */
+  e.onclick=function(){S.pin=null; runCompassDrill(); render();};})();
  /* The heaviest seat and its charge go onto the body so a theme can derive
     its chrome from the reading. Punch reads both; Dark and Snow ignore them. */
  document.body.style.setProperty('--seat',seatCol(r.darkB));

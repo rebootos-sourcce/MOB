@@ -328,6 +328,11 @@ body:not(.tab-field) .pol2{display:none}
 .railtop{display:flex;align-items:center;gap:10px;flex-wrap:wrap;
  padding:0 0 13px;border-bottom:1px solid var(--edge);margin-bottom:2px}
 .railtop .rt-t{font-size:14px;color:var(--ink);font-weight:500}
+/* the tier reads as a word you can open, not as a verdict printed at you */
+.tierbtn{background:none;border:0;padding:2px 0;font:inherit;color:inherit;
+ cursor:pointer;text-align:left;min-height:var(--tap,44px);
+ border-bottom:1px dotted var(--edge-2)}
+.tierbtn:hover,.tierbtn:focus-visible{color:var(--gold);border-bottom-color:var(--gold)}
 .railtop .rt-h{font-family:var(--num);font-size:12.5px;color:var(--dim);
  font-variant-numeric:tabular-nums;margin-left:auto}
 .lsec{border-bottom:1px solid var(--edge)}
@@ -1260,7 +1265,11 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
    <div id="ana" class="iq"></div>
    <div id="rel" class="rel"></div>
    <div id="rit" class="rel"></div>
-   <div class="tl"><b id="tier">-</b><div id="pol"></div></div>
+   <!-- The tier is a word this product puts on a person, so it is a button and
+        not a label. Its definition lived only in a title attribute, which a
+        touch screen cannot reach, and the audience arrives on phones. -->
+   <div class="tl"><button type="button" class="tierbtn" id="tier">-</button>
+    <div id="pol"></div></div>
    <div class="probe" id="probe"></div>
    <div class="howto" id="howto"></div>
    <button class="bal" id="bal" aria-label="Balance. Which way the field discharges. Opens the reading."></button>
@@ -2746,8 +2755,12 @@ function compute(){
  const Rz=Math.max(1,(1+DQraw*0.05)*_vf);
  /* CQ = (Intention x Integrity) / Resistance. 100 when all 21 laws read 10. */
  const CQ=clamp((It*Ig)/Rz,0,100);
- const tier=[[90,'Mastery'],[70,'Embodied'],[50,'Practicing'],[31,'Incoherent'],
-  [21,'Corrupt'],[1,'Severe'],[0,'Collapsed']].find(b=>CQ>=b[0])[1];
+ /* One table. This was a literal copy of the thresholds and the names, and a
+    previous commit claimed to have removed the duplicate after removing only
+    the one in the renderer. A rename would have drifted silently between the
+    engine and the definitions. canon.js loads before this file, which is what
+    makes tierOf reachable here. */
+ const tier=tierOf(CQ).nm;
  /* UNREAD. With nothing held and no law measured, CQ is a pure function of
     the default 6 on all 21 laws: it comes out 36 and the tier comes out
     Incoherent. That is not a reading of a person, it is a reading of the
@@ -7765,7 +7778,10 @@ function render(){
   e.textContent=r.unread?'not read yet':r.tier;
   var td=r.unread?null:TIER_BY[r.tier];
   e.title=td?(td.def+'  '+td.energy+'  Toward: '+td.toward)
-   :'Nothing has been read yet. Write a story or set a charge.';})();
+   :'Nothing has been read yet. Write a story or set a charge.';
+  /* and a tap gets the same thing, in full, because hover is not a route on
+     the device most of this audience arrives on. */
+  e.onclick=function(){S.pin=null; runCompassDrill(); render();};})();
  /* The heaviest seat and its charge go onto the body so a theme can derive
     its chrome from the reading. Punch reads both; Dark and Snow ignore them. */
  document.body.style.setProperty('--seat',seatCol(r.darkB));

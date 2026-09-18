@@ -22,10 +22,10 @@ the review's findings were checked against the tree first. Three classes came
 back.
 
 **Fixed, confirmed fixed, not restated below.** The invented opening charge is
-gone: `atuned_src/engine/core.js:86` seeds every axis at 0 and every opposite at
+gone: `atuned_src/engine/core.js:85` seeds every axis at 0 and every opposite at
 0, the comment above it says why, and `compute()` now returns an `unread` flag
-(`atuned_src/engine/compute.js:148`) which `ui/ui.js:264` and
-`ui/panels.js:283` both check before naming a tier. The Energy tab renders on a
+(`atuned_src/engine/compute.js:147`) which `ui/ui.js:268` and
+`ui/panels.js:271` both check before naming a tier. The Energy tab renders on a
 phone: `atuned_src/shell/head.html:1158` makes `.emap` static inside the 720
 band. The wheel no longer eats the scroll gesture: `head.html:259` sets
 `touch-action:pan-y` on a coarse pointer. The primary button no longer destroys
@@ -56,7 +56,7 @@ hyper complex as `sub`, and `atuned_src/ui/map.js:200`,
 `atuned_src/ui/mapshelf.js:33`, `atuned_src/ui/ui.js:40` and `ui/ui.js:374` all
 print it. The pain map rasters still do not exist:
 `atuned_src/engine/data/figure.js:10` names two files and neither is in the
-tree. Rituals are still write only: `atuned_src/ui/ritual.js:70` pushes to
+tree. Rituals are still write only: `atuned_src/ui/ritual.js:71` pushes to
 `CURP.rituals` and the only other reference in the tree is the validator at
 `schema.js:222`. Dated firsts are still invisible: `meterRead().firsts`
 (`schema.js:313`) has no reader in `ui/`, and the release done phase
@@ -99,7 +99,7 @@ product is, so the chrome cannot tell what belongs in it. Four things take it up
 the engine already runs it: `parseStory` to `compute` to `relPick` to `ritFor`.
 Four steps. The chrome presents eight destinations and no route, and the fourth
 step of the loop, `ritFor`, writes to an array nothing reads
-(`ritual.js:70`). A scope that is a loop can say which surfaces serve it.
+(`ritual.js:71`). A scope that is a loop can say which surfaces serve it.
 Intake, Story, Field, Energy, Analytics and Summary serve it. Knowledge and
 Games do not.
 
@@ -319,7 +319,7 @@ that four segments and three panels have asked for.
 
 **2. Explanation has to survive a finger.** Every control that explains itself
 does so through a `title` attribute: the depth buttons, the blueprint domains,
-the root clusters at `panels.js:161`, the archetypes. The tier label's own
+the root clusters at `panels.js:162`, the archetypes. The tier label's own
 definition is a hover title at `ui/ui.js:260`. A touch device has no hover, so
 on a phone this product explains none of its own controls, including the one
 that names the person. Every explanation gets a tap path, which is the same
@@ -496,7 +496,7 @@ them as the single largest commercial item in the file, 1,645 of the 1,948 who
 reach a score in its scenario B. Shipping a rename inside an engineering pass
 steals a decision that is his. And the rename would drift the moment it landed,
 because `compute.js:137` still carries a second copy of the tier table and the
-comment at `canon.js:244` claims the copy was removed.
+comment at `canon.js:242` claims the copy was removed.
 
 **Survives.** Fix the duplication first, so the name is one field in one table.
 Then the rename is a data edit he can make in a minute, and the panel's cost
@@ -582,7 +582,7 @@ Every item is a small correctness fix and every one is already located.
 ## Phase 2. The product looks like one thing.
 
 1. **A type scale in `:root`.** Seven steps, argued in the comment the way the
-   spacing scale is argued at `head.html:51`. 29 sizes across 208 uses collapse
+   spacing scale is argued at `head.html:55`. 29 sizes across 208 uses collapse
    into it.
 2. **A motion scale in `:root`.** Three durations, two curves. Ten durations
    collapse into it. `prefers-reduced-motion` already holds.
@@ -613,7 +613,7 @@ Every item is a small correctness fix and every one is already located.
 Specified in full at the end of this document.
 
 1. The duplicate tier table at `compute.js:137` is deleted and `tierOf()` at
-   `canon.js:246` becomes the only one.
+   `canon.js:244` becomes the only one.
 2. Tranche one: 33 entries. Nine axes, six masks, six hyper complexes, twelve
    archetypes.
 3. `SABDEF`'s four fields are mapped onto the three slots, so a saboteur and a
@@ -768,7 +768,7 @@ to, so a label is a position and never a verdict.
 **What already exists, verified today.** The ruling has a beginning in the tree.
 `canon.js:213` holds `TIERDEF`, seven entries with `def`, `energy` and `toward`,
 marked in the comment above it as a draft for the owner to rule on.
-`canon.js:245` holds `TIER_BY` and `canon.js:246` holds `tierOf`. Two surfaces
+`canon.js:243` holds `TIER_BY` and `canon.js:244` holds `tierOf`. Two surfaces
 read them: `ui/ui.js:259` as a hover title, and the compass drill at
 `ui/drills.js:310` which prints all three parts under three eyebrows. And
 `kb.js:16` holds `SABDEF`, which carries `d`, `t`, `q` and `i` for all 33 named
@@ -1014,7 +1014,7 @@ thing to carry by yourself and the instrument will not pretend otherwise.
 ## What has to be true before these ship
 
 1. **The duplicate tier table goes.** `compute.js:137` carries a second copy of
-   the thresholds and the names. The comment at `canon.js:244` says the table
+   the thresholds and the names. The comment at `canon.js:242` says the table
    stopped being copied into renderers, and it is still copied into the engine.
    Rename anything today and the two drift silently.
 2. **The entry is reachable by a tap.** `ui.js:260` puts it in a hover title.
