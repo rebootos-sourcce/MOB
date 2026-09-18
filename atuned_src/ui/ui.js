@@ -74,6 +74,31 @@ cv.addEventListener('pointerdown',function(e){
  var o=h.o||null;
  var same=o&&S.pin&&S.pin.nm===o.nm&&S.pin.kind===o.kind;
  S.pin=same?null:o; runDrill(S.pin); render();});
+/* THE FRAME. The wheel is the instrument and a person reads it by moving in.
+   The pointer keeps the address under it fixed while the scale changes, so
+   zooming toward a segment lands on that segment. F reframes. */
+function setZoom(z,ax,ay){
+ var lo=1, hi=5, nz=Math.max(lo,Math.min(hi,z));
+ if(nz===S.zoom)return;
+ var wx=(ax-CX)/U, wy=(ay-CY)/U;
+ S.zoom=nz; reframe();
+ S.panx += ax-(CX+wx*U); S.pany += ay-(CY+wy*U);
+ reframe(); render();}
+cv.addEventListener('wheel',function(e){
+ if(S.tab!==TAB.FIELD)return;
+ e.preventDefault();
+ var L=loc(e);
+ setZoom(S.zoom*(e.deltaY<0?1.12:1/1.12),L[0],L[1]);},{passive:false});
+addEventListener('keydown',function(e){
+ if(S.tab!==TAB.FIELD)return;
+ var t=e.target&&e.target.tagName;
+ if(t==='INPUT'||t==='TEXTAREA'||t==='SELECT')return;
+ var k=e.key.toLowerCase();
+ if(k==='f'){S.zoom=1;S.panx=0;S.pany=0;reframe();render();
+  status(HOWTO_ZOOM_OUT);return;}
+ if(k==='+'||k==='='){setZoom(S.zoom*1.25,CW/2,CH/2);return;}
+ if(k==='-'||k==='_'){setZoom(S.zoom/1.25,CW/2,CH/2);return;}});
+const HOWTO_ZOOM_OUT='Reframed. Scroll on the wheel to move in, F to come back.';
 cv.addEventListener('pointerup',function(){
  if(DRAG&&!DRAG.moved&&DRAG.node){var n=DRAG.node;DRAG=null;S.pin=null;runNodeDrill(n);render();return;}
  DRAG=null;});
@@ -324,5 +349,16 @@ document.addEventListener('click',function(e){
  if(typeof ANA_PICK!=='undefined')ANA_PICK=null;
  S.pin=null; runNodeDrill(n);});
 
-layout(); mxKey(); wireSections(); loadP(0); setTab(TAB.FIELD);
+layout(); mxKey(); wireSections(); loadP(0);
+/* A saved record is the person's own state, so it wins over the demo "You"
+   that loadP(0) just installed. Nothing read the store at boot before, so a
+   reload always came back to the demo. */
+(function(){
+ try{ PROFILES=pStore(); }catch(e){ PROFILES=[]; }
+ if(!PROFILES.length){ pNew('You'); }
+ CURP=PROFILES[0];
+ loadProfile(CURP);
+ syncCh(); syncLw(); syncSoul();
+}());
+setTab(TAB.FIELD);
 requestAnimationFrame(loop);

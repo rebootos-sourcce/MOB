@@ -67,7 +67,8 @@ const TABOF=function(k){for(var i=0;i<TABDEF.length;i++)if(TABDEF[i].k===k)retur
    STATE
    ============================================================ */
 const S={dom:0,doms:[0],arcs:[0,1],roots:[],a1:0,a2:1,charge:{},law:{},
- theme:'dark',legible:false,hover:null,pin:null,t:0,replace:{},view:1,who:0,tab:TAB.FIELD};
+ theme:'dark',legible:false,hover:null,pin:null,t:0,replace:{},view:1,who:0,tab:TAB.FIELD,
+ zoom:1,panx:0,pany:0};
 CHARGES.forEach(c=>{S.charge[c]=3;S.replace[c]=0;});
 SINAMES.forEach(l=>S.law[l]=6);
 

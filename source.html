@@ -1867,7 +1867,8 @@ const TABOF=function(k){for(var i=0;i<TABDEF.length;i++)if(TABDEF[i].k===k)retur
    STATE
    ============================================================ */
 const S={dom:0,doms:[0],arcs:[0,1],roots:[],a1:0,a2:1,charge:{},law:{},
- theme:'dark',legible:false,hover:null,pin:null,t:0,replace:{},view:1,who:0,tab:TAB.FIELD};
+ theme:'dark',legible:false,hover:null,pin:null,t:0,replace:{},view:1,who:0,tab:TAB.FIELD,
+ zoom:1,panx:0,pany:0};
 CHARGES.forEach(c=>{S.charge[c]=3;S.replace[c]=0;});
 SINAMES.forEach(l=>S.law[l]=6);
 
@@ -2928,9 +2929,22 @@ function statusSaved(){
 
 /* the key strip sits in flow above the canvas, so the canvas box is the
    measure, not the stage. */
+/* Zoom is applied to the unit radius and the centre rather than to the canvas
+   transform, so hit testing needs no inverse: every HIT region is built from
+   the same CX, CY and U the draw used. */
+var BASE_U=1;
+function reframe(){
+ BASE_U=Math.min(CW,CH)/2;
+ U=BASE_U*S.zoom;
+ var lim=CW*0.9;
+ S.panx=Math.max(-lim,Math.min(lim,S.panx));
+ S.pany=Math.max(-lim,Math.min(lim,S.pany));
+ if(S.zoom===1){S.panx=0;S.pany=0;}
+ CX=CW/2+S.panx; CY=CH/2+S.pany;
+ if(typeof DRAW_SIG!=='undefined')DRAW_SIG=null;}
 function layout(){const b=cv.getBoundingClientRect();
  DPR=Math.min(devicePixelRatio||1,2);cv.width=b.width*DPR;cv.height=b.height*DPR;
- CW=b.width;CH=b.height;CX=CW/2;CY=CH/2;U=Math.min(CW,CH)/2;
+ CW=b.width;CH=b.height;reframe();
  g.setTransform(DPR,0,0,DPR,0,0);bg.width=innerWidth;bg.height=innerHeight;
  /* assigning width clears the canvas, so the cached wash is gone even when
     the size is unchanged. drop its signature or the next frame skips the
@@ -3307,7 +3321,8 @@ function drawSig(r){
  if(!REDUCED) return null;                 /* animating, always draw */
  var d=0; for(var i=0;i<W.length;i++)d+=W[i].sq;
  return [S.view,S.tab,S.who,S.hover&&S.hover.k,S.pin&&(S.pin.nm||S.pin.k),
-         LIGHT()?1:0,S.legible?1:0,d.toFixed(3),r.CQ.toFixed(3)].join('|');}
+         LIGHT()?1:0,S.legible?1:0,S.zoom.toFixed(3),S.panx|0,S.pany|0,
+         d.toFixed(3),r.CQ.toFixed(3)].join('|');}
 function draw(r){
  W.forEach(n=>{n.disp=(n.disp===undefined?n.sq:(REDUCED?n.sq:n.disp+(n.sq-n.disp)*.14));});
  var sig=drawSig(r);
@@ -5340,7 +5355,20 @@ function saveYou(){if(S.who!==0)return;var Y=PEOPLE[0];
  CHARGES.forEach(function(c){Y.c[c]=S.charge[c];});
  Y.rep={};CHARGES.forEach(function(c){Y.rep[c]=S.replace[c]||0;});
  /* the original wrote Y.law here and lawsFor could never read it back. */
- Y.law={};SINAMES.forEach(function(l){Y.law[l]=S.law[l];});}
+ Y.law={};SINAMES.forEach(function(l){Y.law[l]=S.law[l];});
+ /* And it only ever wrote to the in memory persona, so every charge, law,
+    domain and archetype a person set in the tools panel was gone on reload
+    unless they happened to open Intake and press Save. It writes through to
+    the record too. Debounced, because this fires on every pointer move of a
+    slider and a write per frame is a write per frame. */
+ persistYou();}
+var YOU_T=null;
+function persistYou(){
+ if(!CURP)return;
+ if(YOU_T)clearTimeout(YOU_T);
+ YOU_T=setTimeout(function(){YOU_T=null;
+  saveProfile(CURP);
+  if(!pPersist())status('Not saved. '+(saveState().err||'storage refused the write')+'.');},400);}
 /* each persona gets a real 63-answer intake derived from the laws they carry,
    so their spread and lean are theirs and not a default. */
 function seedIntake(p){
@@ -5473,6 +5501,31 @@ cv.addEventListener('pointerdown',function(e){
  var o=h.o||null;
  var same=o&&S.pin&&S.pin.nm===o.nm&&S.pin.kind===o.kind;
  S.pin=same?null:o; runDrill(S.pin); render();});
+/* THE FRAME. The wheel is the instrument and a person reads it by moving in.
+   The pointer keeps the address under it fixed while the scale changes, so
+   zooming toward a segment lands on that segment. F reframes. */
+function setZoom(z,ax,ay){
+ var lo=1, hi=5, nz=Math.max(lo,Math.min(hi,z));
+ if(nz===S.zoom)return;
+ var wx=(ax-CX)/U, wy=(ay-CY)/U;
+ S.zoom=nz; reframe();
+ S.panx += ax-(CX+wx*U); S.pany += ay-(CY+wy*U);
+ reframe(); render();}
+cv.addEventListener('wheel',function(e){
+ if(S.tab!==TAB.FIELD)return;
+ e.preventDefault();
+ var L=loc(e);
+ setZoom(S.zoom*(e.deltaY<0?1.12:1/1.12),L[0],L[1]);},{passive:false});
+addEventListener('keydown',function(e){
+ if(S.tab!==TAB.FIELD)return;
+ var t=e.target&&e.target.tagName;
+ if(t==='INPUT'||t==='TEXTAREA'||t==='SELECT')return;
+ var k=e.key.toLowerCase();
+ if(k==='f'){S.zoom=1;S.panx=0;S.pany=0;reframe();render();
+  status(HOWTO_ZOOM_OUT);return;}
+ if(k==='+'||k==='='){setZoom(S.zoom*1.25,CW/2,CH/2);return;}
+ if(k==='-'||k==='_'){setZoom(S.zoom/1.25,CW/2,CH/2);return;}});
+const HOWTO_ZOOM_OUT='Reframed. Scroll on the wheel to move in, F to come back.';
 cv.addEventListener('pointerup',function(){
  if(DRAG&&!DRAG.moved&&DRAG.node){var n=DRAG.node;DRAG=null;S.pin=null;runNodeDrill(n);render();return;}
  DRAG=null;});
@@ -5723,6 +5776,17 @@ document.addEventListener('click',function(e){
  if(typeof ANA_PICK!=='undefined')ANA_PICK=null;
  S.pin=null; runNodeDrill(n);});
 
-layout(); mxKey(); wireSections(); loadP(0); setTab(TAB.FIELD);
+layout(); mxKey(); wireSections(); loadP(0);
+/* A saved record is the person's own state, so it wins over the demo "You"
+   that loadP(0) just installed. Nothing read the store at boot before, so a
+   reload always came back to the demo. */
+(function(){
+ try{ PROFILES=pStore(); }catch(e){ PROFILES=[]; }
+ if(!PROFILES.length){ pNew('You'); }
+ CURP=PROFILES[0];
+ loadProfile(CURP);
+ syncCh(); syncLw(); syncSoul();
+}());
+setTab(TAB.FIELD);
 requestAnimationFrame(loop);
 </script></body></html>

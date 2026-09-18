@@ -333,7 +333,8 @@ function drawSig(r){
  if(!REDUCED) return null;                 /* animating, always draw */
  var d=0; for(var i=0;i<W.length;i++)d+=W[i].sq;
  return [S.view,S.tab,S.who,S.hover&&S.hover.k,S.pin&&(S.pin.nm||S.pin.k),
-         LIGHT()?1:0,S.legible?1:0,d.toFixed(3),r.CQ.toFixed(3)].join('|');}
+         LIGHT()?1:0,S.legible?1:0,S.zoom.toFixed(3),S.panx|0,S.pany|0,
+         d.toFixed(3),r.CQ.toFixed(3)].join('|');}
 function draw(r){
  W.forEach(n=>{n.disp=(n.disp===undefined?n.sq:(REDUCED?n.sq:n.disp+(n.sq-n.disp)*.14));});
  var sig=drawSig(r);

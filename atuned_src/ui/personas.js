@@ -147,7 +147,20 @@ function saveYou(){if(S.who!==0)return;var Y=PEOPLE[0];
  CHARGES.forEach(function(c){Y.c[c]=S.charge[c];});
  Y.rep={};CHARGES.forEach(function(c){Y.rep[c]=S.replace[c]||0;});
  /* the original wrote Y.law here and lawsFor could never read it back. */
- Y.law={};SINAMES.forEach(function(l){Y.law[l]=S.law[l];});}
+ Y.law={};SINAMES.forEach(function(l){Y.law[l]=S.law[l];});
+ /* And it only ever wrote to the in memory persona, so every charge, law,
+    domain and archetype a person set in the tools panel was gone on reload
+    unless they happened to open Intake and press Save. It writes through to
+    the record too. Debounced, because this fires on every pointer move of a
+    slider and a write per frame is a write per frame. */
+ persistYou();}
+var YOU_T=null;
+function persistYou(){
+ if(!CURP)return;
+ if(YOU_T)clearTimeout(YOU_T);
+ YOU_T=setTimeout(function(){YOU_T=null;
+  saveProfile(CURP);
+  if(!pPersist())status('Not saved. '+(saveState().err||'storage refused the write')+'.');},400);}
 /* each persona gets a real 63-answer intake derived from the laws they carry,
    so their spread and lean are theirs and not a default. */
 function seedIntake(p){

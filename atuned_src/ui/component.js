@@ -103,9 +103,22 @@ function statusSaved(){
 
 /* the key strip sits in flow above the canvas, so the canvas box is the
    measure, not the stage. */
+/* Zoom is applied to the unit radius and the centre rather than to the canvas
+   transform, so hit testing needs no inverse: every HIT region is built from
+   the same CX, CY and U the draw used. */
+var BASE_U=1;
+function reframe(){
+ BASE_U=Math.min(CW,CH)/2;
+ U=BASE_U*S.zoom;
+ var lim=CW*0.9;
+ S.panx=Math.max(-lim,Math.min(lim,S.panx));
+ S.pany=Math.max(-lim,Math.min(lim,S.pany));
+ if(S.zoom===1){S.panx=0;S.pany=0;}
+ CX=CW/2+S.panx; CY=CH/2+S.pany;
+ if(typeof DRAW_SIG!=='undefined')DRAW_SIG=null;}
 function layout(){const b=cv.getBoundingClientRect();
  DPR=Math.min(devicePixelRatio||1,2);cv.width=b.width*DPR;cv.height=b.height*DPR;
- CW=b.width;CH=b.height;CX=CW/2;CY=CH/2;U=Math.min(CW,CH)/2;
+ CW=b.width;CH=b.height;reframe();
  g.setTransform(DPR,0,0,DPR,0,0);bg.width=innerWidth;bg.height=innerHeight;
  /* assigning width clears the canvas, so the cached wash is gone even when
     the size is unchanged. drop its signature or the next frame skips the
