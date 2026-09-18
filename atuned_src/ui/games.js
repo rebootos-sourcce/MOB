@@ -3,11 +3,22 @@
    GAMES. Two, and both are the instrument at practice speed
    rather than a diversion bolted on the side.
 
-   THE LETTING GO RUN. Twenty four cards face down, a channel
-   prompt, and a clock. Turn a card, say the line at that
-   address through that channel, turn it back. The clock is the
-   point: the practice is two or three minutes and a person who
-   has never timed it does not believe that.
+   THE LETTING GO RUN. Twenty four cards face down, a pole, and
+   a clock. Turn a card, say the line at that address, turn it
+   back. The clock is the point: the practice is two or three
+   minutes and a person who has never timed it does not believe
+   that.
+
+   The lines are the owner's, out of the pattern catalog. Where
+   the dealt address sits on an axis with a printed card, the run
+   speaks that card's sentence and its paired embodied truth.
+   Where it does not, it speaks the strict 3C syntax at the
+   address. Nothing here writes a sentence the catalog does not.
+
+   The pole is masculine or feminine, which the printed cards
+   label right channel sympathetic and left channel
+   parasympathetic. Both must clear, so a card is not done until
+   it has been run through both.
 
    THE MATCH. Eight pairs of fetter marks face down. Match a
    pair and the fetter opens: what it is, how it runs through
@@ -19,9 +30,7 @@
 var GAME=null;
 
 /* ---- the letting go run ---- */
-var LG={cards:[], chan:0, turned:0, t0:0, tick:null, open:null, done:false};
-const LG_CHAN=[['believe','believing'],['perceive','perceiving'],['think','thinking'],
- ['behave','behaving'],['act','acting'],['feel','feeling']];
+var LG={cards:[], pole:'m', turned:0, t0:0, tick:null, open:null, done:false};
 const LG_N=24;
 
 function lgPool(){
@@ -37,8 +46,9 @@ function lgPool(){
 function lgStart(){
  var pool=lgPool().slice();
  for(var i=pool.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=pool[i];pool[i]=pool[j];pool[j]=t;}
- LG.cards=pool.map(function(n){return {n:n, face:false, done:false};});
- LG.chan=0; LG.turned=0; LG.open=null; LG.done=false; LG.t0=Date.now();
+ /* m and f are tracked apart, because the bilateral note says both clear */
+ LG.cards=pool.map(function(n){return {n:n, face:false, m:false, f:false};});
+ LG.pole='m'; LG.turned=0; LG.open=null; LG.done=false; LG.t0=Date.now();
  if(LG.tick)clearInterval(LG.tick);
  LG.tick=setInterval(function(){var e=document.getElementById('lgclock');
   if(e)e.textContent=lgClock(); else {clearInterval(LG.tick);LG.tick=null;}},250);
@@ -51,18 +61,48 @@ function lgClock(){
 
 function lgStop(){ if(LG.tick){clearInterval(LG.tick);LG.tick=null;} }
 
+/* a card is clear when every side it actually has has been run. a bilateral
+   statement has one side, a printed card has two. */
+function lgSplit(c){return lgLine(c.n).split;}
+function lgDone(c){return lgSplit(c)?(c.m&&c.f):(c.m||c.f);}
+function lgCount(){var n=0;LG.cards.forEach(function(c){if(lgDone(c))n++;});return n;}
 function lgTurn(i){
- var c=LG.cards[i]; if(!c||c.done)return;
- if(LG.open===i){ /* second press on the same card puts it down and counts it */
-  c.face=false; c.done=true; LG.open=null; LG.turned++;
+ var c=LG.cards[i]; if(!c)return;
+ if(c[LG.pole]||lgDone(c))return; /* already run on this side */
+ if(LG.open===i){ /* second press puts it down and marks this side clear */
+  c.face=false; c[LG.pole]=true; LG.open=null; LG.turned=lgCount();
   if(LG.turned>=LG.cards.length){LG.done=true; lgStop();}
   gmRender(); return;}
  if(LG.open!==null){LG.cards[LG.open].face=false;}
  c.face=true; LG.open=i; gmRender();}
 
+/* the line for a dealt address. a printed card first, then the axis card, then
+   the strict syntax at the address itself. the source is always named, so a
+   person can tell a catalogued sentence from a constructed one. */
 function lgLine(n){
- var ch=LG_CHAN[LG.chan][1];
- return 'I am letting go of '+ch+' that I am '+String(n.k).toLowerCase()+'.';}
+ var ax=n.cf, i;
+ var d=cardDepth(ax,LG.pole);
+ if(d){ /* the printed card, cycled by address so one axis does not repeat */
+  i=Math.abs(n.i|0)%d;
+  var l=cardLine(ax,LG.pole,i);
+  /* split: the printed cards say different things on the two sides, so both
+     sides have to be run. */
+  if(l)return {rel:l.rel, tru:l.tru, src:'Release protocol card, '+ax,
+    track:null, split:true};}
+ var a=AXC_BY[ax];
+ /* the axes card is one statement run bilaterally, and its install is written
+    out on the card. Synthesising a truth from the coherent pole produced
+    "that I am worth", which is not a sentence the owner wrote or would.
+    not split: one pass clears both sides, which is what the card says. */
+ if(a)return {rel:axLine(ax), tru:a.inst, track:a.track,
+   src:'Letting go card, axis '+a.num, split:false};
+ /* no card at this address. the strict syntax, and the coherent pole of the
+    axis if the engine knows one, never a guess. */
+ var opp=(CHILD.filter(function(x){return x.nm===ax;})[0]||{}).opp;
+ return {rel:C3_STEM+String(n.k).toLowerCase()+'.',
+   tru:opp?C3_TRUTH+'moving toward '+String(opp).toLowerCase()+' at this address.'
+     :C3_TRUTH+'not '+String(n.k).toLowerCase()+'.',
+   track:null, src:'Strict syntax at the address', split:false};}
 
 /* ---- the match ---- */
 var MT={cards:[], open:[], found:0, lock:false, pick:null};
@@ -123,31 +163,47 @@ function gmRender(){
  if(GAME==='lg'){
   if(!LG.cards.length){
    h+='<div class="gm-intro"><p class="gm-p">Twenty four cards, face down, dealt from what you '
-    +'are carrying. Turn one, say the line, turn it back. The clock runs while you do it.</p>'
+    +'are carrying. Turn one, say the line and the truth under it, turn it back. The clock runs '
+    +'while you do it.</p>'
     +'<p class="gm-p">The practice is two or three minutes. Time it once and you will believe it.</p>'
+    +'<p class="gm-p">'+esc(CARD_OPEN)+'</p>'
+    +'<div class="gm-gates"><span class="pm-eye">The statement runs nine gates at once</span>'
+    +'<div class="gm-glist">'+C3_VERB.map(function(v){
+      return '<span class="gm-gate">'+esc(v)+'</span>';}).join('')+'</div></div>'
     +'<button class="btn pri" id="lggo">Deal twenty four</button></div>';}
   else{
-   h+='<div class="gm-bar"><div class="gm-chan"><span class="pm-eye">Channel</span>'
-    +'<div class="gm-chips">'+LG_CHAN.map(function(c,i){
-      return '<button type="button" class="gm-chip'+(LG.chan===i?' on':'')+'" data-lgc="'+i+'">'
-       +c[1]+'</button>';}).join('')+'</div></div>'
+   h+='<div class="gm-bar"><div class="gm-chan"><span class="pm-eye">Pole</span>'
+    +'<div class="gm-chips">'+C3_POLE.map(function(p){
+      return '<button type="button" class="gm-chip'+(LG.pole===p.k?' on':'')+'" data-lgc="'+p.k+'">'
+       +esc(p.nm)+'<em>'+esc(p.ch.toLowerCase())+'</em></button>';}).join('')+'</div></div>'
     +'<div class="gm-meter"><span class="gm-clock" id="lgclock">'+lgClock()+'</span>'
-    +'<span class="gm-of">'+LG.turned+' of '+LG.cards.length+' put down</span></div></div>';
+    +'<span class="gm-of">'+LG.turned+' of '+LG.cards.length+' cleared</span></div></div>';
    if(LG.open!==null){
-    var n=LG.cards[LG.open].n;
+    var n=LG.cards[LG.open].n, L=lgLine(n);
+    var pl=C3_POLE.filter(function(p){return p.k===LG.pole;})[0];
     h+='<div class="gm-say"><div class="pm-eye">'+esc(n.b)+', '+esc(n.n||'field')+'</div>'
-     +'<p class="gm-line">'+esc(lgLine(n))+'</p>'
-     +'<p class="gm-p">Say it, feel where it lands, then put the card down.</p></div>';}
+     +(L.track?'<p class="gm-track">'+esc(L.track)+'</p>':'')
+     +'<p class="gm-line">'+esc(L.rel)+'</p>'
+     +'<p class="gm-line tru">'+esc(L.tru)+'</p>'
+     +'<div class="gm-src">'+esc(L.src)+'. '
+     +(L.split?esc(pl.ch)+', '+esc(pl.ans)+'.':'Bilateral, both channels at once.')+'</div>'
+     +'<p class="gm-p">Say both, feel where they land, then put the card down.</p></div>';}
    h+='<div class="gm-grid">'+LG.cards.map(function(c,i){
-     return '<button type="button" class="gm-card'+(c.face?' face':'')+(c.done?' done':'')+'" '
+     var did=c[LG.pole], both=lgDone(c), sp=lgSplit(c);
+     return '<button type="button" class="gm-card'+(c.face?' face':'')+(both?' done':'')
+      +(did&&!both?' half':'')+'" '
       +'data-lg="'+i+'" style="--c:'+seatCol(c.n.b)+'" aria-label="'+(c.face?esc(c.n.k):'Face down card')+'">'
-      +(c.done?'<span class="gm-tick">done</span>'
+      +(both?'<span class="gm-tick">'+(sp?'both':'clear')+'</span>'
         :c.face?'<span class="gm-cn">'+esc(c.n.k)+'</span><span class="gm-cb">'+esc(c.n.b)+'</span>'
+        :did?'<span class="gm-tick">'+(LG.pole==='m'?'right':'left')+'</span>'
         :'<span class="gm-back"></span>')+'</button>';}).join('')+'</div>';
    if(LG.done)h+='<div class="gm-done"><div class="pm-eye">Run complete</div>'
-    +'<p class="gm-p">Twenty four addresses through the '+LG_CHAN[LG.chan][1]+' channel in <b>'
-    +lgClock()+'</b>. Change the channel and run it again, or open the release to commit it.</p></div>';
-   h+='<div class="gm-act"><button class="btn" id="lggo">Deal again</button></div>';}}
+    +'<p class="gm-p">Twenty four addresses cleared in <b>'
+    +lgClock()+'</b>. Deal again, or open the release to commit it.</p></div>';
+   h+='<div class="gm-note"><div class="pm-eye">Both sides</div><p class="gm-p">'
+    +esc(C3_BILATERAL)+'</p></div>';
+   h+='<div class="gm-shut"><p class="gm-p">'+esc(CARD_SHUT)+'</p></div>'
+    +'<div class="gm-act"><button class="btn" id="lggo">Deal again</button></div>';}}
 
  if(GAME==='mt'){
   if(!MT.cards.length){
@@ -177,7 +233,9 @@ function gmRender(){
  host.querySelectorAll('[data-gm]').forEach(function(el){el.onclick=function(){
   GAME=el.getAttribute('data-gm'); lgStop(); gmRender();};});
  host.querySelectorAll('[data-lgc]').forEach(function(el){el.onclick=function(){
-  LG.chan=+el.getAttribute('data-lgc'); gmRender();};});
+  LG.pole=el.getAttribute('data-lgc'); LG.open=null;
+  LG.cards.forEach(function(c){c.face=false;});
+  LG.turned=lgCount(); gmRender();};});
  host.querySelectorAll('[data-lg]').forEach(function(el){el.onclick=function(){
   lgTurn(+el.getAttribute('data-lg'));};});
  host.querySelectorAll('[data-mt]').forEach(function(el){el.onclick=function(){

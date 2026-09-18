@@ -539,7 +539,34 @@ body.punch .gm-back{border-color:var(--panel);background:var(--panel)}
 .gm-cn{font-size:12.5px;font-weight:500;text-align:center;line-height:1.25}
 .gm-cb{font-size:10.5px;color:var(--dim)}
 .gm-tick{font-size:10.5px;color:var(--dim);letter-spacing:.05em}
-.gm-line{margin:0;font-size:18px;line-height:1.45;color:var(--ink);max-width:40ch}
+.gm-line{margin:0;font-size:17px;line-height:1.45;color:var(--ink);max-width:52ch}
+/* the truth reads as the answer to the line above it, so it is set apart and
+   coloured with the installed pole rather than the held one. */
+.gm-line.tru{margin-top:9px;padding-top:9px;border-top:1px solid var(--edge);
+ color:var(--good);font-size:16px}
+/* the track statement is what the pattern says in the person's own voice. it is
+   quoted, because it is not an instruction. */
+.gm-track{margin:0 0 9px;font-size:14px;line-height:1.5;color:var(--gold);
+ font-style:italic;max-width:52ch}
+.gm-track:before{content:'\201C'}.gm-track:after{content:'\201D'}
+.gm-src{margin-top:10px;font-size:11px;color:var(--dim);letter-spacing:.03em}
+.gm-note,.gm-shut{padding:13px 16px;border-radius:var(--r-s);background:var(--sunk);
+ margin:0 0 12px;display:flex;flex-direction:column;gap:6px}
+.gm-gates{display:flex;flex-direction:column;gap:6px;margin:4px 0 2px}
+.gm-glist{display:flex;flex-wrap:wrap;gap:4px}
+.gm-gate{font-size:11px;color:var(--mid);background:var(--sunk);border-radius:var(--r-xs);
+ padding:4px 9px;letter-spacing:.02em}
+body.punch .gm-gate{background:var(--panel-2)}
+.gm-chip em{display:block;font-style:normal;font-size:10px;opacity:.7;letter-spacing:.02em}
+/* a card line in the right rail. the release and the truth paired, because a
+   release with nothing to install is half the protocol. */
+.kb-pair{margin:0 0 10px;padding-bottom:10px;border-bottom:1px solid var(--edge)}
+.kb-pair:last-child{border-bottom:0}
+.kb-rel{margin:0;font-size:13px;line-height:1.5;color:var(--ink)}
+.kb-tru{margin:5px 0 0;font-size:12.5px;line-height:1.5;color:var(--good)}
+/* one side clear is not the release. it reads as partial, not as done. */
+.gm-card.half{opacity:.62}
+.gm-card.half .gm-tick{color:var(--gold)}
 .gm-on{font-size:22px;font-weight:500;color:var(--ink)}
 .gm-oo{font-size:12.5px;color:var(--gold)}
 .gm-act{display:flex;gap:7px;flex-wrap:wrap}
@@ -1043,6 +1070,12 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
     constrains it, so it collapsed to zero. it gets an explicit square. */
  .stage{overflow:visible;min-height:0;width:100%;box-sizing:border-box}
  .stage>*{max-width:100%;box-sizing:border-box}
+ /* The stage stops being a box here: it drops its overflow and its min height
+    so the wheel can flow down the screen. The tab panels were still absolutely
+    positioned against it, so on a phone every one of them rendered into a 36px
+    window with the rest clipped below: Knowledge had 5,729 pixels of content in
+    it and Games 3,564. They flow too, and the stage grows to hold them. */
+ .iq{position:static;inset:auto;overflow:visible;width:100%;padding:14px 0;order:0}
  canvas#cv{flex:0 0 auto;height:min(86vw,390px);order:1}
  .tl,.acc,.howto,.bal{position:static;transform:none;text-align:left;max-width:none;
   width:auto;padding:0 14px;margin:0}

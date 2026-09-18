@@ -185,3 +185,48 @@ Named by the owner as still to be integrated. None of these exist in
 - Whether push may add a second file, against the one file rule.
 - Laws, domains, masks and seats have no coded opposite.
 - Tier one, 400 a month or 100 a week. Both were said.
+
+## The pattern catalog, reached 18 September
+
+The TULA folder is on Google Drive, not on this machine, and the Drive
+connector reaches it. Three artefacts matter and all three are now ported into
+`atuned_src/engine/data/cards.js`. Every sentence in that file is the owner's.
+Nothing in it is generated and nothing is paraphrased.
+
+**Settled by the catalog, not by me.**
+
+- A pattern is one sentence. Confirmed.
+- The release statement is nine verbs in one line: believing, perceiving,
+  thinking, behaving, acting, feeling, speaking, saying, doing. The spec calls
+  it non negotiable. The earlier ruling on file said six, and the six is short.
+- The embodied truth is `I now embody the truth that I am ...`.
+- A card is two hundred statements: fifty per pole per phase, two poles, two
+  phases. Five intensity bands of ten, subtle activation through existential
+  exposure.
+- Left or right first is not a question. Both run at once, fifty and fifty, and
+  both must clear. The printed card puts right in the first column, which is
+  layout.
+- The poles are masculine and feminine, and the printed cards label the same
+  split right channel sympathetic and left channel parasympathetic. So the
+  balance slider, the autonomic split and the card polarity are one axis under
+  three names. The spec is explicit that feminine is not women.
+- The intensity ladder is twenty two rungs and does not contain the threshold
+  word the book gives sadness.
+
+**His, and open.**
+
+- **Two nine gate rosters exist, both his.** The 3C spec gives one, the nine
+  axes cards give another mapped to a chakra region each. The engine speaks
+  whichever roster the sentence it is saying was written for, and a gate fails
+  if they are ever merged. Which is canonical is his call.
+- **Two axes cards name no axis the engine carries.** The cards give Receiving
+  blocked at the inferior anterior heart and Grief at the centre chest, where
+  the engine carries Surprise and Anticipation. Nothing has been renamed. Both
+  are kept under their own names and marked unmatched.
+- **The printed cards cover three axes of nine.** Anxiety, Grief, Anger. The
+  other six have no printed card, so the run speaks the axes card or the strict
+  syntax at the address and says which.
+- **The coherent opposites differ between the engine and the cards** on several
+  axes: Fear toward Trust in the engine and toward Safety on the card, Apathy
+  toward Vitality and toward Joy, Sad toward Joy and toward Happy. The engine's
+  are load bearing for the install arithmetic and were left alone.

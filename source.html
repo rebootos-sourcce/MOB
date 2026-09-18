@@ -539,7 +539,34 @@ body.punch .gm-back{border-color:var(--panel);background:var(--panel)}
 .gm-cn{font-size:12.5px;font-weight:500;text-align:center;line-height:1.25}
 .gm-cb{font-size:10.5px;color:var(--dim)}
 .gm-tick{font-size:10.5px;color:var(--dim);letter-spacing:.05em}
-.gm-line{margin:0;font-size:18px;line-height:1.45;color:var(--ink);max-width:40ch}
+.gm-line{margin:0;font-size:17px;line-height:1.45;color:var(--ink);max-width:52ch}
+/* the truth reads as the answer to the line above it, so it is set apart and
+   coloured with the installed pole rather than the held one. */
+.gm-line.tru{margin-top:9px;padding-top:9px;border-top:1px solid var(--edge);
+ color:var(--good);font-size:16px}
+/* the track statement is what the pattern says in the person's own voice. it is
+   quoted, because it is not an instruction. */
+.gm-track{margin:0 0 9px;font-size:14px;line-height:1.5;color:var(--gold);
+ font-style:italic;max-width:52ch}
+.gm-track:before{content:'\201C'}.gm-track:after{content:'\201D'}
+.gm-src{margin-top:10px;font-size:11px;color:var(--dim);letter-spacing:.03em}
+.gm-note,.gm-shut{padding:13px 16px;border-radius:var(--r-s);background:var(--sunk);
+ margin:0 0 12px;display:flex;flex-direction:column;gap:6px}
+.gm-gates{display:flex;flex-direction:column;gap:6px;margin:4px 0 2px}
+.gm-glist{display:flex;flex-wrap:wrap;gap:4px}
+.gm-gate{font-size:11px;color:var(--mid);background:var(--sunk);border-radius:var(--r-xs);
+ padding:4px 9px;letter-spacing:.02em}
+body.punch .gm-gate{background:var(--panel-2)}
+.gm-chip em{display:block;font-style:normal;font-size:10px;opacity:.7;letter-spacing:.02em}
+/* a card line in the right rail. the release and the truth paired, because a
+   release with nothing to install is half the protocol. */
+.kb-pair{margin:0 0 10px;padding-bottom:10px;border-bottom:1px solid var(--edge)}
+.kb-pair:last-child{border-bottom:0}
+.kb-rel{margin:0;font-size:13px;line-height:1.5;color:var(--ink)}
+.kb-tru{margin:5px 0 0;font-size:12.5px;line-height:1.5;color:var(--good)}
+/* one side clear is not the release. it reads as partial, not as done. */
+.gm-card.half{opacity:.62}
+.gm-card.half .gm-tick{color:var(--gold)}
 .gm-on{font-size:22px;font-weight:500;color:var(--ink)}
 .gm-oo{font-size:12.5px;color:var(--gold)}
 .gm-act{display:flex;gap:7px;flex-wrap:wrap}
@@ -1043,6 +1070,12 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
     constrains it, so it collapsed to zero. it gets an explicit square. */
  .stage{overflow:visible;min-height:0;width:100%;box-sizing:border-box}
  .stage>*{max-width:100%;box-sizing:border-box}
+ /* The stage stops being a box here: it drops its overflow and its min height
+    so the wheel can flow down the screen. The tab panels were still absolutely
+    positioned against it, so on a phone every one of them rendered into a 36px
+    window with the rest clipped below: Knowledge had 5,729 pixels of content in
+    it and Games 3,564. They flow too, and the stage grows to hold them. */
+ .iq{position:static;inset:auto;overflow:visible;width:100%;padding:14px 0;order:0}
  canvas#cv{flex:0 0 auto;height:min(86vw,390px);order:1}
  .tl,.acc,.howto,.bal{position:static;transform:none;text-align:left;max-width:none;
   width:auto;padding:0 14px;margin:0}
@@ -1746,6 +1779,290 @@ var GLOSS=[{"t":"Address","d":"The specific location in the body’s energetic a
 var HARM=[{"c":"E01","t":"All Is One","a":"nature","ch":"Chapter 19"},{"c":"E02","t":"All Is Motion","a":"nature","ch":"Chapter 19"},{"c":"E03","t":"Polarity","a":"nature","ch":"Chapter 19"},{"c":"E04","t":"All Fields Correspond","a":"nature","ch":"Chapter 19"},{"c":"E05","t":"Like Fields Attract","a":"nature","ch":"Chapter 19"},{"c":"E06","t":"Inspired Act.","a":"nature","ch":"Chapter 19"},{"c":"E07","t":"Transmutation","a":"nature","ch":"Chapter 19"},{"c":"E08","t":"Cause & Effect","a":"nature","ch":"Chapter 19"},{"c":"E09","t":"Compensation","a":"nature","ch":"Chapter 19"},{"c":"E10","t":"Potential","a":"nature","ch":"Chapter 19"},{"c":"E11","t":"Relativity","a":"nature","ch":"Chapter 19"},{"c":"E12","t":"Rhythm","a":"nature","ch":"Chapter 19"},{"c":"E13","t":"Gender","a":"nature","ch":"Chapter 19"},{"c":"E14","t":"Form","a":"human","ch":"Chapter 19"},{"c":"E15","t":"Archetype","a":"human","ch":"Chapter 19"},{"c":"E16","t":"Biofield","a":"human","ch":"Chapter 19"},{"c":"E17","t":"Attunement","a":"human","ch":"Chapter 19"},{"c":"E18","t":"Perception","a":"human","ch":"Chapter 19"},{"c":"E19","t":"Intelligence","a":"human","ch":"Chapter 19"},{"c":"E20","t":"Pleasure & Pain","a":"human","ch":"Chapter 19"},{"c":"E21","t":"The Three Axes","a":"human","ch":"Chapter 19"},{"c":"E22","t":"Symbol","a":"human","ch":"Chapter 19"},{"c":"E23","t":"Identity","a":"human","ch":"Chapter 19"},{"c":"E24","t":"Choice","a":"human","ch":"Chapter 19"},{"c":"E25","t":"Ego","a":"human","ch":"Chapter 19"},{"c":"E26","t":"Intention","a":"human","ch":"Chapter 19"},{"c":"E27","t":"Action","a":"human","ch":"Chapter 19"},{"c":"E28","t":"Memory","a":"human","ch":"Chapter 19"},{"c":"E29","t":"Truth","a":"spirit","ch":"Chapter 19"},{"c":"E30","t":"Transparency","a":"spirit","ch":"Chapter 19"},{"c":"E31","t":"Unity","a":"spirit","ch":"Chapter 19"},{"c":"E32","t":"Awareness","a":"spirit","ch":"Chapter 19"},{"c":"E33","t":"Presence","a":"spirit","ch":"Chapter 19"},{"c":"E34","t":"Equanimity","a":"spirit","ch":"Chapter 19"},{"c":"E35","t":"Compassion","a":"spirit","ch":"Chapter 19"},{"c":"E36","t":"Forgiveness","a":"spirit","ch":"Chapter 19"},{"c":"E37","t":"Courage","a":"spirit","ch":"Chapter 19"},{"c":"E38","t":"Temperance","a":"spirit","ch":"Chapter 19"},{"c":"E39","t":"Duty","a":"spirit","ch":"Chapter 19"},{"c":"E40","t":"Accountability","a":"spirit","ch":"Chapter 19"},{"c":"E41","t":"Justice","a":"spirit","ch":"Chapter 19"},{"c":"E42","t":"Non-Harm","a":"spirit","ch":"Chapter 19"},{"c":"E43","t":"Responsibility","a":"spirit","ch":"Chapter 19"},{"c":"E44","t":"Humility","a":"spirit","ch":"Chapter 19"},{"c":"E45","t":"Generosity","a":"spirit","ch":"Chapter 19"},{"c":"E46","t":"Detachment","a":"spirit","ch":"Chapter 19"},{"c":"E47","t":"Patience","a":"spirit","ch":"Chapter 19"},{"c":"E48","t":"Aesthetic Beauty","a":"spirit","ch":"Chapter 19"},{"c":"E49","t":"Nature","a":"spirit","ch":"Chapter 19"},{"c":"E50","t":"Peace","a":"express","ch":"Chapter 19"},{"c":"E51","t":"Play","a":"express","ch":"Chapter 19"},{"c":"E52","t":"Curiosity","a":"express","ch":"Chapter 19"},{"c":"E53","t":"Creativity","a":"express","ch":"Chapter 19"},{"c":"E54","t":"Flow","a":"express","ch":"Chapter 19"},{"c":"E55","t":"Wonder","a":"express","ch":"Chapter 19"},{"c":"E56","t":"Order","a":"express","ch":"Chapter 19"},{"c":"E57","t":"Love","a":"express","ch":"Chapter 19"},{"c":"E58","t":"Purpose","a":"express","ch":"Chapter 19"},{"c":"E59","t":"Will","a":"express","ch":"Chapter 19"},{"c":"E60","t":"Fear · Safety","a":"emotion","ch":"Chapter 19"},{"c":"E61","t":"Anger · Calm","a":"emotion","ch":"Chapter 19"},{"c":"E62","t":"Shame · Worth","a":"emotion","ch":"Chapter 19"},{"c":"E63","t":"Disgust · Acc.","a":"emotion","ch":"Chapter 19"},{"c":"E64","t":"Apathy · Joy","a":"emotion","ch":"Chapter 19"},{"c":"E65","t":"Shock","a":"emotion","ch":"Chapter 19"},{"c":"E66","t":"Sad · Happy","a":"emotion","ch":"Chapter 19"},{"c":"E67","t":"Surprise","a":"emotion","ch":"Chapter 19"},{"c":"E68","t":"Anticipation","a":"emotion","ch":"Chapter 19"},{"c":"E69","t":"Physical","a":"measure","ch":"Chapter 19"},{"c":"E70","t":"Intellectual","a":"measure","ch":"Chapter 19"},{"c":"E71","t":"Emotional","a":"measure","ch":"Chapter 19"},{"c":"E72","t":"Wisdom","a":"measure","ch":"Chapter 19"},{"c":"E73","t":"Adversity","a":"measure","ch":"Chapter 19"},{"c":"E74","t":"Coherence","a":"measure","ch":"Chapter 19"},{"c":"E75","t":"Meta- Awareness","a":"meta","ch":"Chapter 19"},{"c":"E76","t":"Coherence","a":"meta","ch":"Chapter 19"}];
 var HARM_AX={nature:'Laws of Nature',human:'Laws of Human Nature',spirit:'Laws of Moral Integrity',
  express:'Laws of Expression',emotion:'The nine architectures',measure:'The instruments',meta:'The frame'};
+
+/* ============================================================
+   THE PATTERN CATALOG. Ported from the owner's own production
+   artefacts, not written here. Three sources, and where they
+   disagree the divergence is recorded rather than resolved:
+
+   1. TULA 3C GENERATOR, the full system spec. A generator, not
+      a list, which is why the app never needed 3,800 hardcoded
+      sentences. One card is one pattern at one address and it
+      runs to two hundred statements: fifty masculine limiting,
+      fifty feminine limiting, fifty masculine truths, fifty
+      feminine truths. The book's two hundred per card is
+      correct and this is its construction.
+
+   2. SOULCRAFT RELEASE PROTOCOL cards No.01 to No.03, the
+      printed production cards. Anxiety, Grief, Anger, with
+      every line paired to its embodied truth.
+
+   3. THE LETTING GO CARDS, nine axes, the release protocol at
+      the address level. Track statement, release, install.
+
+   Every sentence here is the owner's wording. Nothing is
+   generated and nothing is paraphrased.
+   ============================================================ */
+
+/* ---- the strict syntax. the spec calls it non negotiable ----
+   nine gates, one statement. it fires the cognitive, emotional,
+   behavioural, identity and somatic layers at once, which is the
+   whole reason the line is this long. */
+const C3_VERB=['believing','perceiving','thinking','behaving','acting','feeling',
+ 'speaking','saying','doing'];
+const C3_STEM='I am letting go of '+C3_VERB.join(', ').replace(/, ([^,]*)$/,', and $1')
+ +' that I am ';
+const C3_TRUTH='I now embody the truth that I am ';
+
+/* A second nine gate roster exists, on the nine axes cards, and it is not
+   this one: believing, perceiving, thinking, feeling, speaking, acting from,
+   relating through, creating from, being, each mapped to a chakra region
+   crown to root. The 3C spec calls its own roster non negotiable and the
+   axes card calls its own simultaneous. Both are the owner's. The engine
+   speaks the 3C roster because that is the one the statements are built on,
+   and the other is recorded here so the disagreement is visible. */
+const C3_GATE9=['believing','perceiving','thinking','feeling','speaking',
+ 'acting from','relating through','creating from','being'];
+
+/* ---- the escalation curve ----
+   fifty statements per channel, five bands of ten. the band is not
+   decoration: it is nervous system pacing, and the purpose column is why
+   a card cannot open at the bottom. */
+const C3_BAND=[
+ {lo:1, hi:10, nm:'Subtle activation',        why:'gain nervous system permission',
+  w:['slightly','mildly','subtly','lightly']},
+ {lo:11,hi:20, nm:'Tension accumulation',     why:'emotional recognition',
+  w:['uneasy','pressured','frustrated','burdened']},
+ {lo:21,hi:30, nm:'Emotional flooding',       why:'somatic activation',
+  w:['overwhelmed','angry','exhausted','trapped']},
+ {lo:31,hi:40, nm:'Identity destabilization', why:'access the core wound',
+  w:['unsupported','invisible','unsafe','powerless']},
+ {lo:41,hi:50, nm:'Existential exposure',     why:'deep nervous system discharge',
+  w:['completely alone','beyond support','trapped forever','emotionally destroyed']}];
+
+/* the adjective progression, in the owner's order. no repetition is a stated
+   failure mode, so the ladder is the fix: each rung is a depth, not a synonym.
+   note what is not on it. the book gives sadness an action threshold word of
+   suicidal and this ladder does not, and the ladder is the newer artefact. */
+const C3_LADDER=['uneasy','tense','nervous','bothered','irritated','frustrated',
+ 'stressed','overwhelmed','anxious','afraid','fearful','worried','threatened',
+ 'ashamed','guilty','troubled','distressed','panicked','angry','furious',
+ 'enraged','collapsing'];
+
+/* ---- the polarity, and it is the balance axis under another name ----
+   masculine is structure and direction, feminine is energy and receptivity,
+   and the printed cards label the same split right channel sympathetic and
+   left channel parasympathetic. So masculine, right and sympathetic are one
+   thing and feminine, left and parasympathetic are another. The spec is
+   explicit that feminine is not women and masculine is not men. */
+const C3_POLE=[
+ {k:'m', nm:'Masculine', ch:'Right channel', ans:'sympathetic', of:'structure and direction',
+  is:['action','clarity','control','execution','external orientation'],
+  th:['action','performance','outcomes','responsibility','control','execution',
+      'pressure','dominance','frustration'],
+  body:['jaw','shoulders','chest','hips','adrenaline'], en:'forward driving'},
+ {k:'f', nm:'Feminine', ch:'Left channel', ans:'parasympathetic', of:'energy and receptivity',
+  is:['feeling','receiving','safety','openness','internal experience'],
+  th:['emotional safety','support','abandonment','grief','tenderness','worthiness','connection'],
+  body:['chest','throat','gut','pelvis'], en:'receptive and internal'}];
+/* both sides run at once, fifty left and fifty right, and both must clear */
+const C3_BILATERAL='All releases run bilaterally, fifty left and fifty right at '
+ +'the same time. The right side is the outward expression channel. The left '
+ +'side is the inner world channel. Both must clear.';
+
+/* ---- the chain the generator reverses ---- */
+const C3_CHAIN=['Trigger','Somatic response','Emotional interpretation',
+ 'Behavioural adaptation','Identity formation','Existential belief'];
+/* release escalates into the wound, the truth escalates out of it */
+const C3_DIR={down:'surface, emotion, identity, existential collapse',
+ up:'existential repair, identity repair, emotional regulation, grounded action'};
+
+/* every sentence is built of four parts, and a line missing the body is the
+   stated weakness: if there is no body connection the card weakens sharply. */
+const C3_PART=['intensity modifier','nervous system state','contextual trigger',
+ 'identity implication'];
+/* the required card header. the engine already carries region and nerves. */
+const C3_HEAD=['region','primary nerves','fetters','somatic tone','energetic signature'];
+/* two to four dominant themes per card, from these */
+const C3_THEME=['scarcity','abandonment','control','suppression','overwhelm','shame',
+ 'instability','disconnection','hypervigilance','avoidance'];
+/* the six kinds of pattern the generator takes */
+const C3_KIND=[
+ {nm:'Emotional',  ex:['grief','anxiety','shame','anger']},
+ {nm:'Cognitive',  ex:['overthinking','fear loops','self doubt']},
+ {nm:'Somatic',    ex:['tight throat','swollen ankles','jaw tension']},
+ {nm:'Relational', ex:['abandonment','approval seeking','rejection fear']},
+ {nm:'Financial',  ex:['scarcity','wealth rejection','instability']},
+ {nm:'Identity',   ex:['I am broken','I am not enough','I am evil']}];
+/* what a truth is and is not. the bad example is the owner's own. */
+const C3_TRUTHRULE={is:'a nervous system corrective experience encoded in language',
+ not:'positive thinking',
+ must:['feel believable','reduce activation','restore agency','restore safety',
+       'restore connection','restore groundedness'],
+ bad:'I am infinite cosmic abundance.', good:'I am safe to slow down.',
+ /* the last ten go short, because simplicity processes best after activation */
+ last:['I am safe','I am supported','I am grounded','I am held','I am here']};
+/* the ways a card fails. checked against, not decoration. */
+const C3_FAIL=['repeating the same emotional word','mixing the polarities',
+ 'giving only one polarity','not scaling the intensity','turning into advice',
+ 'losing the exact syntax','weak endings'];
+
+/* ============================================================
+   THE PRINTED CARDS. No.01 to No.03, verbatim. Each line in rel
+   is paired by position with the line in tru beside it: that
+   pairing is the card's own, and it is what the engine has never
+   had. Release empties the address, the paired truth fills it.
+   ============================================================ */
+const CARDSET=[
+ {no:'01', nm:'Anxiety', ax:'Anticipation',
+  dom:'World, life, future projection',
+  seat:'Brainstem, chest, gut', nrv:'Vagus, reticular activating system, enteric',
+  lad:['alert','tense','tight','compressed','activated'],
+  m:{rel:['pure anxiety and cannot shut it off',
+          'going to lose control completely',
+          'not going to make it through what is ahead',
+          'doomed by the direction of life',
+          'completely overwhelmed and cannot handle the future'],
+     tru:['not controlled by the future','not losing control','not spiraling',
+          'not powerless','not threatened by the future']},
+  f:{rel:['completely unsafe in the world',
+          'completely unsupported in life',
+          'completely alone facing the future',
+          'abandoned in uncertainty',
+          'alone and not safe in this world'],
+     tru:['safe','held','supported','grounded','here']}},
+ {no:'02', nm:'Grief', ax:'Sad',
+  dom:'Loneliness, aloneness, life heaviness',
+  seat:'Heart, chest, diaphragm', nrv:'Vagus, cardiac plexus, phrenic',
+  lad:['soft heaviness','sinking weight','pressure','collapse'],
+  m:{rel:['nothing beyond this loneliness',
+          'disappearing into loneliness',
+          'erased by being alone',
+          'lost in the heaviness of life',
+          'completely alone and life is too heavy'],
+     tru:['not defined by loneliness','not reduced by the heaviness of life',
+          'not erased by being alone','not lost in this heaviness',
+          'not consumed by grief']},
+  f:{rel:['completely alone and nothing is holding me',
+          'isolated in existence',
+          'disconnected from everyone',
+          'not held in my grief',
+          'abandoned in my experience'],
+     tru:['not alone','held','safe','connected','here and held']}},
+ {no:'03', nm:'Anger', ax:'Anger',
+  dom:'Life, world, loss of control',
+  seat:'Jaw, throat, chest, solar plexus',
+  nrv:'Trigeminal, vagus, sympathetic chain, solar plexus',
+  lad:['tight','hot','pressurized','explosive','volatile'],
+  m:{rel:['pure anger and cannot shut it off',
+          'going to lose control completely',
+          'defined by my anger',
+          'powerless over my reactions',
+          'trapped in frustration'],
+     tru:['not consumed by anger','not losing control','not driven by rage',
+          'not explosive','not out of control']},
+  f:{rel:['completely overwhelmed and cannot turn it off',
+          'consumed internally by rage',
+          'alone with my anger',
+          'not safe to express power',
+          'not safe to release pressure'],
+     tru:['safe','held','supported','grounded','here']}}];
+/* how to read a card, the owner's framing and closing copy */
+const CARD_OPEN='Turn your senses inward before you read. Move slowly through '
+ +'each line. Notice where reading feels contracted, where it pulls, tightens, '
+ +'or resists. Notice where it feels expansive. What your body does as you read '
+ +'is the data.';
+const CARD_SHUT='If you felt resistance on any line, stay with it. Read it again. '
+ +'The resistance is the charge. Keep reading until the line no longer produces '
+ +'a contraction in your body.';
+
+/* ============================================================
+   THE NINE AXES CARDS. Track statement, release, install, one
+   per axis. The track is what the pattern says in the person's
+   own voice, and the engine has never had it.
+
+   Seven of the nine land on an address the engine already
+   carries. Two do not: the cards give Receiving blocked at the
+   inferior anterior heart and Grief at the centre chest, where
+   the engine carries Surprise and Anticipation. That is the
+   owner's call and nothing here renames an axis. The two
+   unmatched cards are kept under their own names, marked, so
+   they are not lost and not silently merged.
+   ============================================================ */
+const AXCARD=[
+ {ax:'Fear', num:'01', cop:'Safety', addr:'Lumbar Plexus (L1 to L4)',
+  track:'I am stuck. I am trapped.',
+  rel:'afraid. I am letting go of the belief that I am trapped. I am letting go of the survival program running at this address.',
+  inst:'I am safe in this body. I am grounded in this moment. The ground holds me. The threat has passed. My nervous system is free to conduct without the alarm.'},
+ {ax:'Anger', num:'02', cop:'Calm', addr:'Solar plexus, celiac plexus',
+  track:'This is wrong. Move.',
+  rel:'angry. I am letting go of the compressed will at this address. I am letting go of the belief that I must force the result.',
+  inst:'I have power available without force. I can see the options in this situation clearly. I can move with discernment, not with pressure. My will is calm and direct.'},
+ {ax:'Shame', num:'03', cop:'Worth', addr:'Pudendal nerve',
+  track:'I am not worthy.',
+  rel:'ashamed. I am letting go of the collapse at this address. I am letting go of the story that my presence requires justification.',
+  inst:'I am worthy of taking up space. I am worthy of being seen. My worth is not earned through performance. It is present at this address right now.'},
+ {ax:'Disgust', num:'04', cop:'Acceptance', addr:'Sacral and dermis, front to back',
+  track:'Things are not as they should be.',
+  rel:'in rejection. I am letting go of the recoil at this address. I am letting go of the standard that makes reality wrong.',
+  inst:'What is here is what is here. I can be present with what is present without contracting. I can engage without rejection. The dermis is warm and open.'},
+ {ax:'Apathy', num:'07', cop:'Joy', addr:'Shoulder girdle and throat',
+  track:'What is the point.',
+  rel:'in apathy. I am letting go of the collapsed will at this address. I am letting go of the question that assumes the answer is nothing.',
+  inst:'My will is active and available. My shoulders are open and lifted. My throat is clear. The point is here. It has always been here. I can feel it moving through me right now.'},
+ {ax:'Shock', num:'08', cop:'Anticipation', addr:'Dermis, the full skin surface',
+  track:'This should not be happening.',
+  rel:'in shock. I am letting go of the bracing at the surface. I am letting go of the record that says reality must always be a threat.',
+  inst:'My skin is warm. The surface is open. What is happening can be met without recoil. I am ready for what comes. My nervous system can be curious rather than alarmed.'},
+ {ax:'Sad', num:'09', cop:'Happy', addr:'Inferior anterior cardiac nerves',
+  track:'I cannot have what I want.',
+  rel:'in sadness. I am letting go of the weight at the inferior heart. I am letting go of the old flags that were never updated. I am letting go of the version of the future that was set in stone at an earlier age.',
+  inst:'What I have is real. What is here now is enough to work with. The cardiac plexus at the top of my heart is open. Joy is available. I can feel what is good in what is present right now.'},
+ /* unmatched: no axis in the engine sits at these two addresses under these
+    names. kept, marked, and never merged into a neighbour. */
+ {ax:null, un:'Receiving blocked', num:'05', cop:'Gratitude', addr:'Inferior anterior heart',
+  track:'I am too small to be seen.',
+  rel:'closed to receiving. I am letting go of the smallness at this address. I am letting go of the belief that what is present cannot be for me.',
+  inst:'I am large enough to receive what is present. What is here is here for me. I can take in what is offered without diminishing it or deflecting it. The heart is open to receive.'},
+ {ax:null, un:'Grief', num:'06', cop:'Renewal', addr:'Centre chest, bilateral, lung influence',
+  track:'I cannot move forward.',
+  rel:'in grief. I am letting go of the weight at this address. I am letting go of the hold on what was or what never came to be.',
+  inst:'I can move forward from here. What was, was. What is, is. The loss is real and the life continues. My chest can expand fully. I can breathe the present moment.'}];
+
+/* how the protocol is run, the owner's five steps plus the bilateral note */
+const CARD_STEP=[
+ 'Find the axis that is active. Feel the address. Make contact with the charge before speaking.',
+ 'Run the full statement. Speak it or sub vocalise it. The body does not require volume, it requires direction.',
+ 'After the release, state the installation. Not as an affirmation, as a somatic claim. Hold it at the address until the body confirms it.',
+ 'Run the snowball: bring to mind every memory, every person, every situation that carries this charge. Release each in sequence. The chain builds momentum.',
+ 'The release is complete when the body settles. Breath deepens. Vision may clear. The wrapped sensation dissolves. That is the signal.'];
+
+/* ---- lookups. by axis name, because the axis names are identity. ---- */
+const CARD_BY={}; CARDSET.forEach(function(c){if(c.ax)CARD_BY[c.ax]=c;});
+const AXC_BY={}; AXCARD.forEach(function(c){if(c.ax)AXC_BY[c.ax]=c;});
+/* the two the engine has no axis for, kept reachable by their own name */
+const AXC_UN=AXCARD.filter(function(c){return !c.ax;});
+
+/* one release line at full strength, in the strict syntax, for any axis that
+   has a card. returns null rather than inventing one. */
+function cardLine(ax,pole,i){
+ var c=CARD_BY[ax]; if(!c)return null;
+ var side=c[pole==='f'?'f':'m']; if(!side||!side.rel[i])return null;
+ return {rel:C3_STEM+side.rel[i]+'.', tru:C3_TRUTH+side.tru[i]+'.'};}
+/* how many paired lines a card carries on a side */
+function cardDepth(ax,pole){var c=CARD_BY[ax];
+ return c?c[pole==='f'?'f':'m'].rel.length:0;}
+/* the axis release, at the address. This one is written for the axes card's
+   own gate roster, which ends in being, so it is built from that roster and
+   not from the 3C stem. The two rosters are not interchangeable and splicing
+   one into the other produces a line neither card says. */
+const AX_STEM='I am letting go of '+C3_GATE9.join(', ').replace(/, ([^,]*)$/,', and $1')+' ';
+function axLine(ax){var c=AXC_BY[ax]||AXC_UN.filter(function(x){return x.un===ax;})[0];
+ return c?AX_STEM+c.rel:null;}
+/* which band a position on the fifty falls in */
+function c3Band(n){for(var i=0;i<C3_BAND.length;i++)
+ if(n>=C3_BAND[i].lo&&n<=C3_BAND[i].hi)return C3_BAND[i];
+ return C3_BAND[0];}
 
 /* ============================================================
    THE SIX AXES. Three higher gates and three lower gates. This is
@@ -3038,6 +3355,13 @@ if(typeof module!=='undefined'&&module.exports){
   /* data */      NODES:NODES, SAB_LIB:SAB_LIB, HCX_LIB:HCX_LIB, SAB33:SAB33, SAB_PI:SAB_PI, GATEGLYPH:GATEGLYPH,
                   APC:APC, APC_REL:APC_REL, APC_EMB:APC_EMB,
                   SABDEF:SABDEF, DOMDEF:DOMDEF, GLOSS:GLOSS, HARM:HARM,
+  /* catalog */   C3_VERB:C3_VERB, C3_STEM:C3_STEM, C3_TRUTH:C3_TRUTH, C3_GATE9:C3_GATE9,
+                  C3_BAND:C3_BAND, C3_LADDER:C3_LADDER, C3_POLE:C3_POLE, C3_BILATERAL:C3_BILATERAL,
+                  C3_CHAIN:C3_CHAIN, C3_DIR:C3_DIR, C3_PART:C3_PART, C3_HEAD:C3_HEAD,
+                  C3_THEME:C3_THEME, C3_KIND:C3_KIND, C3_TRUTHRULE:C3_TRUTHRULE, C3_FAIL:C3_FAIL,
+                  CARDSET:CARDSET, CARD_OPEN:CARD_OPEN, CARD_SHUT:CARD_SHUT, CARD_STEP:CARD_STEP,
+                  AXCARD:AXCARD, AXC_UN:AXC_UN, CARD_BY:CARD_BY, AXC_BY:AXC_BY, AX_STEM:AX_STEM,
+                  cardLine:cardLine, cardDepth:cardDepth, axLine:axLine, c3Band:c3Band,
                   HARM_AX:HARM_AX, KB_RENAME:KB_RENAME, KB_KEY:KB_KEY, INFER_NOUN:INFER_NOUN,
                   SABAUTH:SABAUTH, ARCH18:ARCH18, CHILD:CHILD, CHARGES:CHARGES,
                   DOMAINS:DOMAINS, ARCH:ARCH, SI:SI, SINAMES:SINAMES, MASKS:MASKS,
@@ -5378,13 +5702,31 @@ function kbRows(sec){
   out.push({k:'harm', t:e.t, s:HARM_AX[e.a]||e.a, d:e.c+', '+e.ch, v:'', o:e});});
  if(sec==='gloss') GLOSS.forEach(function(g){
   out.push({k:'gloss', t:g.t, s:'', d:g.d, v:'', o:g});});
+ if(sec==='card'){
+  /* the printed cards first, then the axes cards, then the two the engine has
+     no axis for. every row opens the card, and a row never invents a line. */
+  CARDSET.forEach(function(c){
+   out.push({k:'card', t:c.nm, s:'protocol No.'+c.no,
+    d:c.dom+'. '+c.seat+'. '+c.lad.join(' to '),
+    v:(c.m.rel.length+c.f.rel.length)+' lines', o:c});});
+  AXCARD.forEach(function(c){
+   out.push({k:'axcard', t:c.ax||c.un, s:'axis '+c.num+(c.ax?'':', unmatched'),
+    d:'"'+c.track+'" toward '+c.cop+'. '+c.addr, v:'', o:c});});
+  C3_BAND.forEach(function(b){
+   out.push({k:'band', t:b.nm, s:b.lo+' to '+b.hi,
+    d:'to '+b.why+'. '+b.w.join(', '), v:'', o:b});});
+  C3_KIND.forEach(function(x){
+   out.push({k:'kind', t:x.nm, s:'pattern kind', d:x.ex.join(', '), v:'', o:x});});
+  C3_POLE.forEach(function(x){
+   out.push({k:'pole', t:x.nm, s:x.ch+', '+x.ans, d:x.of+'. '+x.is.join(', '), v:'', o:x});});}
  if(sec==='seat') APC.forEach(function(c){
   var rel=0,emb=0; c.sub.forEach(function(x){rel+=x[1];emb+=x[2];});
   out.push({k:'seat', t:c.b, s:c.nv, d:c.d, v:rel+' released', o:c, emb:emb});});
  return out;}
 
 const KB_SECS=[['addr','Addresses'],['fetter','Fetters'],['sab','Saboteurs'],
- ['law','Laws'],['dom','Domains'],['arch','Archetypes'],['gate','Gates'],['seat','The catalog'],
+ ['law','Laws'],['dom','Domains'],['arch','Archetypes'],['gate','Gates'],
+ ['card','The cards'],['seat','The catalog'],
  ['harm','The 76 elements'],['gloss','Glossary']];
 
 function kbMatch(row,q){
@@ -5460,7 +5802,55 @@ function kbOpen(x){
  if(x.k==='gloss'){runKbDrill('Glossary', x.o.t, '', x.o.d); return;}
  if(x.k==='dom'){runDomDrill(x.o); return;}
  if(x.k==='arch'){runKbDrill('Archetype', x.o.nm, 'how the blueprint expresses', x.o.v||''); return;}
- if(x.k==='seat'){runSeatDrill(x.o); return;}}
+ if(x.k==='seat'){runSeatDrill(x.o); return;}
+ if(x.k==='card'){runCardDrill(x.o); return;}
+ if(x.k==='axcard'){runAxCardDrill(x.o); return;}
+ if(x.k==='band'){runKbDrill('Intensity band '+x.o.lo+' to '+x.o.hi, x.o.nm,
+   'why the band exists', 'To '+x.o.why+'. The language at this depth: '
+   +x.o.w.join(', ')+'. A card cannot open here. The curve is pacing, not decoration.');
+  return;}
+ if(x.k==='kind'){runKbDrill('Pattern kind', x.o.nm, 'what the generator takes',
+   x.o.ex.join(', ')+'.'); return;}
+ if(x.k==='pole'){runKbDrill(x.o.ch+', '+x.o.ans, x.o.nm, 'the polarity of '+x.o.of,
+   'Themes: '+x.o.th.join(', ')+'. Held in the '+x.o.body.join(', ')+'. The energy is '
+   +x.o.en+'. '+C3_BILATERAL); return;}}
+
+/* a printed card, whole: both poles, every line paired to its truth. */
+function runCardDrill(c){
+ var h='<div class="pm-eye">Release protocol No.'+esc(c.no)+'</div>'
+  +'<div class="ad-nm">'+esc(c.nm)+'</div>'
+  +'<div class="ad-sub">'+esc(c.dom)+'</div>'
+  +'<div class="pm-eye">Where it sits</div>'
+  +'<p class="ad-p">'+esc(c.seat)+'. '+esc(c.nrv)+'.</p>'
+  +'<p class="ad-p">'+esc(c.lad.join(' to '))+'.</p>'
+  +'<div class="pm-eye">How to read it</div>'
+  +'<p class="ad-p">'+esc(CARD_OPEN)+'</p>';
+ C3_POLE.forEach(function(p){
+  var side=c[p.k];
+  h+='<div class="pm-eye">'+esc(p.ch)+', '+esc(p.ans)+'</div>';
+  side.rel.forEach(function(r,i){
+   h+='<div class="kb-pair"><p class="kb-rel">'+esc(C3_STEM+r+'.')+'</p>'
+    +'<p class="kb-tru">'+esc(C3_TRUTH+side.tru[i]+'.')+'</p></div>';});});
+ h+='<p class="ad-p">'+esc(CARD_SHUT)+'</p>';
+ rdShell(h);}
+
+/* one axis card: the track the pattern speaks, the release, the install. */
+function runAxCardDrill(c){
+ var h='<div class="pm-eye">Letting go card, axis '+esc(c.num)+'</div>'
+  +'<div class="ad-nm">'+esc(c.ax||c.un)+'</div>'
+  +'<div class="ad-sub">toward '+esc(c.cop)+'. '+esc(c.addr)+'</div>'
+  +(c.ax?'':'<div class="pm-eye">Unmatched</div><p class="ad-p">The engine carries no axis '
+    +'at this address under this name, so the card is kept under its own and is not '
+    +'merged into a neighbour.</p>')
+  +'<div class="pm-eye">What the pattern says</div>'
+  +'<p class="kb-rel" style="font-style:italic">'+esc(c.track)+'</p>'
+  +'<div class="pm-eye">Release</div>'
+  +'<p class="kb-rel">'+esc(axLine(c.ax||c.un))+'</p>'
+  +'<div class="pm-eye">Install</div>'
+  +'<p class="kb-tru">'+esc(c.inst)+'</p>'
+  +'<div class="pm-eye">How it is run</div>'
+  +CARD_STEP.map(function(t,i){return '<p class="ad-p"><b>'+(i+1)+'.</b> '+esc(t)+'</p>';}).join('');
+ rdShell(h);}
 
 /* ---- THE LETTING GO DECK ----
    Suits are the seven seats. Ranks are intensity, the charge at the address
@@ -5624,11 +6014,22 @@ function recRender(){
    GAMES. Two, and both are the instrument at practice speed
    rather than a diversion bolted on the side.
 
-   THE LETTING GO RUN. Twenty four cards face down, a channel
-   prompt, and a clock. Turn a card, say the line at that
-   address through that channel, turn it back. The clock is the
-   point: the practice is two or three minutes and a person who
-   has never timed it does not believe that.
+   THE LETTING GO RUN. Twenty four cards face down, a pole, and
+   a clock. Turn a card, say the line at that address, turn it
+   back. The clock is the point: the practice is two or three
+   minutes and a person who has never timed it does not believe
+   that.
+
+   The lines are the owner's, out of the pattern catalog. Where
+   the dealt address sits on an axis with a printed card, the run
+   speaks that card's sentence and its paired embodied truth.
+   Where it does not, it speaks the strict 3C syntax at the
+   address. Nothing here writes a sentence the catalog does not.
+
+   The pole is masculine or feminine, which the printed cards
+   label right channel sympathetic and left channel
+   parasympathetic. Both must clear, so a card is not done until
+   it has been run through both.
 
    THE MATCH. Eight pairs of fetter marks face down. Match a
    pair and the fetter opens: what it is, how it runs through
@@ -5640,9 +6041,7 @@ function recRender(){
 var GAME=null;
 
 /* ---- the letting go run ---- */
-var LG={cards:[], chan:0, turned:0, t0:0, tick:null, open:null, done:false};
-const LG_CHAN=[['believe','believing'],['perceive','perceiving'],['think','thinking'],
- ['behave','behaving'],['act','acting'],['feel','feeling']];
+var LG={cards:[], pole:'m', turned:0, t0:0, tick:null, open:null, done:false};
 const LG_N=24;
 
 function lgPool(){
@@ -5658,8 +6057,9 @@ function lgPool(){
 function lgStart(){
  var pool=lgPool().slice();
  for(var i=pool.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=pool[i];pool[i]=pool[j];pool[j]=t;}
- LG.cards=pool.map(function(n){return {n:n, face:false, done:false};});
- LG.chan=0; LG.turned=0; LG.open=null; LG.done=false; LG.t0=Date.now();
+ /* m and f are tracked apart, because the bilateral note says both clear */
+ LG.cards=pool.map(function(n){return {n:n, face:false, m:false, f:false};});
+ LG.pole='m'; LG.turned=0; LG.open=null; LG.done=false; LG.t0=Date.now();
  if(LG.tick)clearInterval(LG.tick);
  LG.tick=setInterval(function(){var e=document.getElementById('lgclock');
   if(e)e.textContent=lgClock(); else {clearInterval(LG.tick);LG.tick=null;}},250);
@@ -5672,18 +6072,48 @@ function lgClock(){
 
 function lgStop(){ if(LG.tick){clearInterval(LG.tick);LG.tick=null;} }
 
+/* a card is clear when every side it actually has has been run. a bilateral
+   statement has one side, a printed card has two. */
+function lgSplit(c){return lgLine(c.n).split;}
+function lgDone(c){return lgSplit(c)?(c.m&&c.f):(c.m||c.f);}
+function lgCount(){var n=0;LG.cards.forEach(function(c){if(lgDone(c))n++;});return n;}
 function lgTurn(i){
- var c=LG.cards[i]; if(!c||c.done)return;
- if(LG.open===i){ /* second press on the same card puts it down and counts it */
-  c.face=false; c.done=true; LG.open=null; LG.turned++;
+ var c=LG.cards[i]; if(!c)return;
+ if(c[LG.pole]||lgDone(c))return; /* already run on this side */
+ if(LG.open===i){ /* second press puts it down and marks this side clear */
+  c.face=false; c[LG.pole]=true; LG.open=null; LG.turned=lgCount();
   if(LG.turned>=LG.cards.length){LG.done=true; lgStop();}
   gmRender(); return;}
  if(LG.open!==null){LG.cards[LG.open].face=false;}
  c.face=true; LG.open=i; gmRender();}
 
+/* the line for a dealt address. a printed card first, then the axis card, then
+   the strict syntax at the address itself. the source is always named, so a
+   person can tell a catalogued sentence from a constructed one. */
 function lgLine(n){
- var ch=LG_CHAN[LG.chan][1];
- return 'I am letting go of '+ch+' that I am '+String(n.k).toLowerCase()+'.';}
+ var ax=n.cf, i;
+ var d=cardDepth(ax,LG.pole);
+ if(d){ /* the printed card, cycled by address so one axis does not repeat */
+  i=Math.abs(n.i|0)%d;
+  var l=cardLine(ax,LG.pole,i);
+  /* split: the printed cards say different things on the two sides, so both
+     sides have to be run. */
+  if(l)return {rel:l.rel, tru:l.tru, src:'Release protocol card, '+ax,
+    track:null, split:true};}
+ var a=AXC_BY[ax];
+ /* the axes card is one statement run bilaterally, and its install is written
+    out on the card. Synthesising a truth from the coherent pole produced
+    "that I am worth", which is not a sentence the owner wrote or would.
+    not split: one pass clears both sides, which is what the card says. */
+ if(a)return {rel:axLine(ax), tru:a.inst, track:a.track,
+   src:'Letting go card, axis '+a.num, split:false};
+ /* no card at this address. the strict syntax, and the coherent pole of the
+    axis if the engine knows one, never a guess. */
+ var opp=(CHILD.filter(function(x){return x.nm===ax;})[0]||{}).opp;
+ return {rel:C3_STEM+String(n.k).toLowerCase()+'.',
+   tru:opp?C3_TRUTH+'moving toward '+String(opp).toLowerCase()+' at this address.'
+     :C3_TRUTH+'not '+String(n.k).toLowerCase()+'.',
+   track:null, src:'Strict syntax at the address', split:false};}
 
 /* ---- the match ---- */
 var MT={cards:[], open:[], found:0, lock:false, pick:null};
@@ -5744,31 +6174,47 @@ function gmRender(){
  if(GAME==='lg'){
   if(!LG.cards.length){
    h+='<div class="gm-intro"><p class="gm-p">Twenty four cards, face down, dealt from what you '
-    +'are carrying. Turn one, say the line, turn it back. The clock runs while you do it.</p>'
+    +'are carrying. Turn one, say the line and the truth under it, turn it back. The clock runs '
+    +'while you do it.</p>'
     +'<p class="gm-p">The practice is two or three minutes. Time it once and you will believe it.</p>'
+    +'<p class="gm-p">'+esc(CARD_OPEN)+'</p>'
+    +'<div class="gm-gates"><span class="pm-eye">The statement runs nine gates at once</span>'
+    +'<div class="gm-glist">'+C3_VERB.map(function(v){
+      return '<span class="gm-gate">'+esc(v)+'</span>';}).join('')+'</div></div>'
     +'<button class="btn pri" id="lggo">Deal twenty four</button></div>';}
   else{
-   h+='<div class="gm-bar"><div class="gm-chan"><span class="pm-eye">Channel</span>'
-    +'<div class="gm-chips">'+LG_CHAN.map(function(c,i){
-      return '<button type="button" class="gm-chip'+(LG.chan===i?' on':'')+'" data-lgc="'+i+'">'
-       +c[1]+'</button>';}).join('')+'</div></div>'
+   h+='<div class="gm-bar"><div class="gm-chan"><span class="pm-eye">Pole</span>'
+    +'<div class="gm-chips">'+C3_POLE.map(function(p){
+      return '<button type="button" class="gm-chip'+(LG.pole===p.k?' on':'')+'" data-lgc="'+p.k+'">'
+       +esc(p.nm)+'<em>'+esc(p.ch.toLowerCase())+'</em></button>';}).join('')+'</div></div>'
     +'<div class="gm-meter"><span class="gm-clock" id="lgclock">'+lgClock()+'</span>'
-    +'<span class="gm-of">'+LG.turned+' of '+LG.cards.length+' put down</span></div></div>';
+    +'<span class="gm-of">'+LG.turned+' of '+LG.cards.length+' cleared</span></div></div>';
    if(LG.open!==null){
-    var n=LG.cards[LG.open].n;
+    var n=LG.cards[LG.open].n, L=lgLine(n);
+    var pl=C3_POLE.filter(function(p){return p.k===LG.pole;})[0];
     h+='<div class="gm-say"><div class="pm-eye">'+esc(n.b)+', '+esc(n.n||'field')+'</div>'
-     +'<p class="gm-line">'+esc(lgLine(n))+'</p>'
-     +'<p class="gm-p">Say it, feel where it lands, then put the card down.</p></div>';}
+     +(L.track?'<p class="gm-track">'+esc(L.track)+'</p>':'')
+     +'<p class="gm-line">'+esc(L.rel)+'</p>'
+     +'<p class="gm-line tru">'+esc(L.tru)+'</p>'
+     +'<div class="gm-src">'+esc(L.src)+'. '
+     +(L.split?esc(pl.ch)+', '+esc(pl.ans)+'.':'Bilateral, both channels at once.')+'</div>'
+     +'<p class="gm-p">Say both, feel where they land, then put the card down.</p></div>';}
    h+='<div class="gm-grid">'+LG.cards.map(function(c,i){
-     return '<button type="button" class="gm-card'+(c.face?' face':'')+(c.done?' done':'')+'" '
+     var did=c[LG.pole], both=lgDone(c), sp=lgSplit(c);
+     return '<button type="button" class="gm-card'+(c.face?' face':'')+(both?' done':'')
+      +(did&&!both?' half':'')+'" '
       +'data-lg="'+i+'" style="--c:'+seatCol(c.n.b)+'" aria-label="'+(c.face?esc(c.n.k):'Face down card')+'">'
-      +(c.done?'<span class="gm-tick">done</span>'
+      +(both?'<span class="gm-tick">'+(sp?'both':'clear')+'</span>'
         :c.face?'<span class="gm-cn">'+esc(c.n.k)+'</span><span class="gm-cb">'+esc(c.n.b)+'</span>'
+        :did?'<span class="gm-tick">'+(LG.pole==='m'?'right':'left')+'</span>'
         :'<span class="gm-back"></span>')+'</button>';}).join('')+'</div>';
    if(LG.done)h+='<div class="gm-done"><div class="pm-eye">Run complete</div>'
-    +'<p class="gm-p">Twenty four addresses through the '+LG_CHAN[LG.chan][1]+' channel in <b>'
-    +lgClock()+'</b>. Change the channel and run it again, or open the release to commit it.</p></div>';
-   h+='<div class="gm-act"><button class="btn" id="lggo">Deal again</button></div>';}}
+    +'<p class="gm-p">Twenty four addresses cleared in <b>'
+    +lgClock()+'</b>. Deal again, or open the release to commit it.</p></div>';
+   h+='<div class="gm-note"><div class="pm-eye">Both sides</div><p class="gm-p">'
+    +esc(C3_BILATERAL)+'</p></div>';
+   h+='<div class="gm-shut"><p class="gm-p">'+esc(CARD_SHUT)+'</p></div>'
+    +'<div class="gm-act"><button class="btn" id="lggo">Deal again</button></div>';}}
 
  if(GAME==='mt'){
   if(!MT.cards.length){
@@ -5798,7 +6244,9 @@ function gmRender(){
  host.querySelectorAll('[data-gm]').forEach(function(el){el.onclick=function(){
   GAME=el.getAttribute('data-gm'); lgStop(); gmRender();};});
  host.querySelectorAll('[data-lgc]').forEach(function(el){el.onclick=function(){
-  LG.chan=+el.getAttribute('data-lgc'); gmRender();};});
+  LG.pole=el.getAttribute('data-lgc'); LG.open=null;
+  LG.cards.forEach(function(c){c.face=false;});
+  LG.turned=lgCount(); gmRender();};});
  host.querySelectorAll('[data-lg]').forEach(function(el){el.onclick=function(){
   lgTurn(+el.getAttribute('data-lg'));};});
  host.querySelectorAll('[data-mt]').forEach(function(el){el.onclick=function(){

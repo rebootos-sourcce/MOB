@@ -616,5 +616,89 @@ g('19 \u00b7 energetics, the birth module');
  ok(lifePath('1988-04-12')===lifePath('1988-04-12'),'life path is pure');
 }
 
+g('20 \u00b7 the pattern catalog');
+/* Ported from the owner's own cards and generator spec. These assert the
+   PORT, which is the only thing that can silently rot: a sentence edited
+   here is a sentence the owner never wrote. */
+{
+ const {C3_VERB,C3_STEM,C3_TRUTH,C3_GATE9,C3_BAND,C3_LADDER,C3_POLE,CARDSET,
+        AXCARD,AXC_UN,CARD_BY,AXC_BY,cardLine,cardDepth,axLine,c3Band}=E;
+ /* the syntax the spec calls non negotiable */
+ ok(C3_VERB.length===9,'nine gates in the 3C statement, got '+C3_VERB.length);
+ ok(C3_STEM==='I am letting go of believing, perceiving, thinking, behaving, acting, '
+   +'feeling, speaking, saying, and doing that I am ','the 3C stem is verbatim');
+ ok(C3_TRUTH==='I now embody the truth that I am ','the truth stem is verbatim');
+ /* the second roster exists and is NOT the first. recording the disagreement
+    is the point: a future edit that quietly merges them fails here. */
+ ok(C3_GATE9.length===9,'the axes card roster is also nine, got '+C3_GATE9.length);
+ ok(C3_GATE9.join()!==C3_VERB.join(),'and the two rosters are not the same roster');
+ ok(C3_GATE9[8]==='being','the axes roster ends in being, which is why its line differs');
+
+ /* the escalation curve covers one to fifty with no gap and no overlap */
+ ok(C3_BAND.length===5,'five intensity bands, got '+C3_BAND.length);
+ ok(C3_BAND[0].lo===1&&C3_BAND[4].hi===50,'the curve runs 1 to 50');
+ let gap=[];
+ for(let i=1;i<C3_BAND.length;i++)
+  if(C3_BAND[i].lo!==C3_BAND[i-1].hi+1)gap.push(C3_BAND[i].lo);
+ ok(gap.length===0,'the bands are contiguous'+(gap.length?'  break at '+gap.join():''));
+ ok(c3Band(1).nm==='Subtle activation'&&c3Band(50).nm==='Existential exposure',
+  'a position resolves to its band');
+ /* a card is 200 statements: 50 per pole per phase, two poles, two phases */
+ ok(C3_BAND[4].hi*C3_POLE.length*2===200,
+  'the curve times two poles times two phases is the two hundred the book prints');
+
+ /* the ladder is a progression, so a repeat is a stated failure mode */
+ ok(C3_LADDER.length===22,'twenty two rungs on the adjective ladder, got '+C3_LADDER.length);
+ ok(new Set(C3_LADDER).size===C3_LADDER.length,'and no rung repeats');
+ /* the book gives sadness an action threshold word of suicidal with no stop
+    line anywhere near it. This ladder is the newer artefact and does not, and
+    nothing may reintroduce it here without a ruling and a screen. */
+ ok(C3_LADDER.indexOf('suicidal')<0,'and the ladder carries no threshold word needing a screen');
+
+ /* the poles are the balance axis: masculine is right and sympathetic */
+ ok(C3_POLE.length===2,'two poles');
+ ok(C3_POLE[0].ch==='Right channel'&&C3_POLE[0].ans==='sympathetic',
+  'masculine is the right channel and sympathetic');
+ ok(C3_POLE[1].ch==='Left channel'&&C3_POLE[1].ans==='parasympathetic',
+  'feminine is the left channel and parasympathetic');
+
+ /* the printed cards. every release line is paired to a truth by position, and
+    an unpaired line is a card that installs nothing. */
+ ok(CARDSET.length===3,'three printed release protocol cards, got '+CARDSET.length);
+ let unpaired=[];
+ CARDSET.forEach(c=>['m','f'].forEach(k=>{
+  if(c[k].rel.length!==c[k].tru.length)unpaired.push(c.nm+' '+k);}));
+ ok(unpaired.length===0,'every release line is paired to a truth'
+  +(unpaired.length?'  '+unpaired.join(', '):''));
+ /* every card names an axis the engine actually carries */
+ const axn=CHILD.map(c=>c.nm);
+ ok(CARDSET.every(c=>axn.indexOf(c.ax)>=0),'every printed card lands on a real axis');
+ const l=cardLine('Anger','m',0);
+ ok(l&&l.rel.indexOf(C3_STEM)===0,'a card line is built on the strict stem');
+ ok(l&&l.tru.indexOf(C3_TRUTH)===0,'and its truth on the truth stem');
+ /* the port never invents. an axis with no card returns nothing. */
+ ok(cardLine('Surprise','m',0)===null,'an axis with no printed card returns null');
+ ok(cardDepth('Surprise','m')===0,'and reads zero deep');
+ ok(cardLine('Anger','m',99)===null,'and a position past the card returns null');
+
+ /* the nine axes cards. seven match an engine axis, two do not, and the two
+    are kept rather than merged into a neighbour. */
+ ok(AXCARD.length===9,'nine axes cards, got '+AXCARD.length);
+ ok(AXC_UN.length===2,'two of them name no engine axis, got '+AXC_UN.length);
+ ok(AXCARD.filter(c=>c.ax).length===7,'seven land on an engine axis');
+ ok(AXCARD.filter(c=>c.ax).every(c=>axn.indexOf(c.ax)>=0),'and each of those axes is real');
+ ok(AXC_UN.map(c=>c.un).sort().join()==='Grief,Receiving blocked',
+  'the two unmatched keep their own names');
+ ok(AXCARD.every(c=>c.track&&c.rel&&c.inst),'every axes card carries a track, a release and an install');
+ ok(axLine('Fear').indexOf('and being afraid')>0,
+  'the axes line is built on the axes roster, not spliced from the 3C stem');
+ ok(axLine('Surprise')===null,'and an axis with no card returns null');
+
+ /* the house voice applies to ported text too */
+ const all=JSON.stringify([CARDSET,AXCARD,C3_LADDER,C3_BAND]);
+ ok(!/[\u2014\u2013]/.test(all),'no em or en dashes anywhere in the catalog');
+ ok(all.indexOf('108')<0,'and the catalog never says 108');
+}
+
 console.log('\n===== '+P+' passed, '+F+' failed =====');
 process.exit(F?1:0);

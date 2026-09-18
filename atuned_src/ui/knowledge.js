@@ -41,13 +41,31 @@ function kbRows(sec){
   out.push({k:'harm', t:e.t, s:HARM_AX[e.a]||e.a, d:e.c+', '+e.ch, v:'', o:e});});
  if(sec==='gloss') GLOSS.forEach(function(g){
   out.push({k:'gloss', t:g.t, s:'', d:g.d, v:'', o:g});});
+ if(sec==='card'){
+  /* the printed cards first, then the axes cards, then the two the engine has
+     no axis for. every row opens the card, and a row never invents a line. */
+  CARDSET.forEach(function(c){
+   out.push({k:'card', t:c.nm, s:'protocol No.'+c.no,
+    d:c.dom+'. '+c.seat+'. '+c.lad.join(' to '),
+    v:(c.m.rel.length+c.f.rel.length)+' lines', o:c});});
+  AXCARD.forEach(function(c){
+   out.push({k:'axcard', t:c.ax||c.un, s:'axis '+c.num+(c.ax?'':', unmatched'),
+    d:'"'+c.track+'" toward '+c.cop+'. '+c.addr, v:'', o:c});});
+  C3_BAND.forEach(function(b){
+   out.push({k:'band', t:b.nm, s:b.lo+' to '+b.hi,
+    d:'to '+b.why+'. '+b.w.join(', '), v:'', o:b});});
+  C3_KIND.forEach(function(x){
+   out.push({k:'kind', t:x.nm, s:'pattern kind', d:x.ex.join(', '), v:'', o:x});});
+  C3_POLE.forEach(function(x){
+   out.push({k:'pole', t:x.nm, s:x.ch+', '+x.ans, d:x.of+'. '+x.is.join(', '), v:'', o:x});});}
  if(sec==='seat') APC.forEach(function(c){
   var rel=0,emb=0; c.sub.forEach(function(x){rel+=x[1];emb+=x[2];});
   out.push({k:'seat', t:c.b, s:c.nv, d:c.d, v:rel+' released', o:c, emb:emb});});
  return out;}
 
 const KB_SECS=[['addr','Addresses'],['fetter','Fetters'],['sab','Saboteurs'],
- ['law','Laws'],['dom','Domains'],['arch','Archetypes'],['gate','Gates'],['seat','The catalog'],
+ ['law','Laws'],['dom','Domains'],['arch','Archetypes'],['gate','Gates'],
+ ['card','The cards'],['seat','The catalog'],
  ['harm','The 76 elements'],['gloss','Glossary']];
 
 function kbMatch(row,q){
@@ -123,7 +141,55 @@ function kbOpen(x){
  if(x.k==='gloss'){runKbDrill('Glossary', x.o.t, '', x.o.d); return;}
  if(x.k==='dom'){runDomDrill(x.o); return;}
  if(x.k==='arch'){runKbDrill('Archetype', x.o.nm, 'how the blueprint expresses', x.o.v||''); return;}
- if(x.k==='seat'){runSeatDrill(x.o); return;}}
+ if(x.k==='seat'){runSeatDrill(x.o); return;}
+ if(x.k==='card'){runCardDrill(x.o); return;}
+ if(x.k==='axcard'){runAxCardDrill(x.o); return;}
+ if(x.k==='band'){runKbDrill('Intensity band '+x.o.lo+' to '+x.o.hi, x.o.nm,
+   'why the band exists', 'To '+x.o.why+'. The language at this depth: '
+   +x.o.w.join(', ')+'. A card cannot open here. The curve is pacing, not decoration.');
+  return;}
+ if(x.k==='kind'){runKbDrill('Pattern kind', x.o.nm, 'what the generator takes',
+   x.o.ex.join(', ')+'.'); return;}
+ if(x.k==='pole'){runKbDrill(x.o.ch+', '+x.o.ans, x.o.nm, 'the polarity of '+x.o.of,
+   'Themes: '+x.o.th.join(', ')+'. Held in the '+x.o.body.join(', ')+'. The energy is '
+   +x.o.en+'. '+C3_BILATERAL); return;}}
+
+/* a printed card, whole: both poles, every line paired to its truth. */
+function runCardDrill(c){
+ var h='<div class="pm-eye">Release protocol No.'+esc(c.no)+'</div>'
+  +'<div class="ad-nm">'+esc(c.nm)+'</div>'
+  +'<div class="ad-sub">'+esc(c.dom)+'</div>'
+  +'<div class="pm-eye">Where it sits</div>'
+  +'<p class="ad-p">'+esc(c.seat)+'. '+esc(c.nrv)+'.</p>'
+  +'<p class="ad-p">'+esc(c.lad.join(' to '))+'.</p>'
+  +'<div class="pm-eye">How to read it</div>'
+  +'<p class="ad-p">'+esc(CARD_OPEN)+'</p>';
+ C3_POLE.forEach(function(p){
+  var side=c[p.k];
+  h+='<div class="pm-eye">'+esc(p.ch)+', '+esc(p.ans)+'</div>';
+  side.rel.forEach(function(r,i){
+   h+='<div class="kb-pair"><p class="kb-rel">'+esc(C3_STEM+r+'.')+'</p>'
+    +'<p class="kb-tru">'+esc(C3_TRUTH+side.tru[i]+'.')+'</p></div>';});});
+ h+='<p class="ad-p">'+esc(CARD_SHUT)+'</p>';
+ rdShell(h);}
+
+/* one axis card: the track the pattern speaks, the release, the install. */
+function runAxCardDrill(c){
+ var h='<div class="pm-eye">Letting go card, axis '+esc(c.num)+'</div>'
+  +'<div class="ad-nm">'+esc(c.ax||c.un)+'</div>'
+  +'<div class="ad-sub">toward '+esc(c.cop)+'. '+esc(c.addr)+'</div>'
+  +(c.ax?'':'<div class="pm-eye">Unmatched</div><p class="ad-p">The engine carries no axis '
+    +'at this address under this name, so the card is kept under its own and is not '
+    +'merged into a neighbour.</p>')
+  +'<div class="pm-eye">What the pattern says</div>'
+  +'<p class="kb-rel" style="font-style:italic">'+esc(c.track)+'</p>'
+  +'<div class="pm-eye">Release</div>'
+  +'<p class="kb-rel">'+esc(axLine(c.ax||c.un))+'</p>'
+  +'<div class="pm-eye">Install</div>'
+  +'<p class="kb-tru">'+esc(c.inst)+'</p>'
+  +'<div class="pm-eye">How it is run</div>'
+  +CARD_STEP.map(function(t,i){return '<p class="ad-p"><b>'+(i+1)+'.</b> '+esc(t)+'</p>';}).join('');
+ rdShell(h);}
 
 /* ---- THE LETTING GO DECK ----
    Suits are the seven seats. Ranks are intensity, the charge at the address

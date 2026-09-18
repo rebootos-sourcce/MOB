@@ -103,7 +103,7 @@ const kb=await page.evaluate(()=>{
  KB_Q=''; kbRender();
  /* every section renders and every row opens something */
  let opened=0, empty=[];
- ['addr','fetter','sab','law','dom','arch','gate','seat','harm','gloss'].forEach(k=>{
+ ['addr','fetter','sab','law','dom','arch','gate','card','seat','harm','gloss'].forEach(k=>{
   KB_SEC=k; kbRender();
   if(!document.querySelectorAll('.kb-r').length){empty.push(k);return;}
   document.querySelector('.kb-r').click();
@@ -114,12 +114,12 @@ const kb=await page.evaluate(()=>{
  deckDeal(); const card=DECK_CARD; deckClose();
  return {secs,all,hit,none,foundAll,opened,empty,pool,held,
   cardIsHeld:!!(card&&card.n&&card.n.sq>=4), rank:card?card.rank:0};});
-ok(kb.secs===10,'the base has ten sections, got '+kb.secs);
+ok(kb.secs===11,'the base has eleven sections, got '+kb.secs);
 ok(kb.all>100,'addresses list in full, got '+kb.all);
 ok(kb.hit>0&&kb.hit<kb.all,'search narrows, '+kb.all+' to '+kb.hit);
 ok(kb.none===0&&kb.foundAll===0,'a term in no table finds nothing in any section');
 ok(kb.empty.length===0,'every section has rows, empty: '+kb.empty.join(','));
-ok(kb.opened===10,'every section opens a drill, got '+kb.opened+' of 10');
+ok(kb.opened===11,'every section opens a drill, got '+kb.opened+' of 11');
 ok(kb.pool===kb.held,'the deck is exactly what is held, '+kb.pool+' against '+kb.held);
 ok(kb.cardIsHeld,'a dealt card is an address that is actually carrying');
 ok(kb.rank>=1&&kb.rank<=13,'the rank is a card rank, got '+kb.rank);
@@ -160,12 +160,31 @@ console.log('\n=== games ===');
 const gm=await page.evaluate(()=>{
  loadP(9); setTab(TAB.GAMES); GAME='lg'; gmRender(); lgStart();
  const dealt=LG.cards.length;
- /* a turn shows the line, a second turn puts the card down and counts it */
- lgTurn(0); const said=(document.querySelector('.gm-line')||{}).textContent||'';
- lgTurn(0); const down=LG.turned, face=LG.cards[0].face, done=LG.cards[0].done;
- /* the channel changes the verb in the line */
- LG.chan=5; lgTurn(1); const feel=(document.querySelector('.gm-line')||{}).textContent||'';
- lgTurn(1); lgStop();
+ /* the deal is shuffled, so the kind of card at a given index is not fixed.
+    each assertion picks a card of the kind it is about. A printed card says
+    different things on the two sides and needs both run; an axes card is one
+    bilateral statement and clears in one pass. */
+ let pr=-1, bi=-1;
+ LG.cards.forEach((c,i)=>{const L=lgLine(c.n);
+  if(L.split&&pr<0)pr=i;
+  if(!L.split&&/Letting go card/.test(L.src)&&bi<0)bi=i;});
+ /* the printed card: a line, its paired truth, and both poles required */
+ lgTurn(pr); const said=(document.querySelector('.gm-line')||{}).textContent||'';
+ const truth=(document.querySelector('.gm-line.tru')||{}).textContent||'';
+ lgTurn(pr);
+ const half=LG.cards[pr].m&&!LG.cards[pr].f, counted=LG.turned, face=LG.cards[pr].face;
+ LG.pole='f'; LG.cards.forEach(c=>{c.face=false;}); LG.open=null; LG.turned=lgCount();
+ lgTurn(pr); const other=(document.querySelector('.gm-line')||{}).textContent||'';
+ lgTurn(pr); const both=LG.cards[pr].m&&LG.cards[pr].f, after=LG.turned;
+ /* the bilateral card: its truth is the install the card actually prints, and
+    one pass clears it. Synthesising a truth from the coherent pole produced
+    "that I am worth", so the card's own sentence is the only right source. */
+ LG.pole='m'; LG.cards.forEach(c=>{c.face=false;}); LG.open=null; gmRender();
+ lgTurn(bi); const biTru=(document.querySelector('.gm-line.tru')||{}).textContent||'';
+ lgTurn(bi); const biClear=lgDone(LG.cards[bi]), biOne=LG.cards[bi].m&&!LG.cards[bi].f;
+ /* every dealt line is the catalog's, never a sentence the catalog does not hold */
+ const srcs=new Set(); LG.cards.forEach(c=>{srcs.add(lgLine(c.n).src);});
+ lgStop();
  /* the deck never deals the same address twice */
  const ids=LG.cards.map(c=>c.n.i), uniq=new Set(ids).size;
  GAME='mt'; mtStart();
@@ -177,12 +196,28 @@ const gm=await page.evaluate(()=>{
  const a=MT.cards.findIndex(c=>!c.done), b=MT.cards.findIndex((c,i)=>!c.done&&c.id!==MT.cards[a].id&&i!==a);
  mtTurn(a); mtTurn(b); const locked=MT.lock;
  loadP(0);
- return {dealt,said,down,face,done,feel,uniq,cards,pairs,found,opened,locked};});
+ return {dealt,said,truth,half,counted,face,other,both,after,biTru,biClear,biOne,
+  srcs:[...srcs],uniq,cards,pairs,found,opened,locked};});
 ok(gm.dealt===24,'the run deals twenty four, got '+gm.dealt);
 ok(gm.uniq===24,'and never the same address twice, got '+gm.uniq+' distinct');
-ok(/letting go of believing that I am /.test(gm.said),'a turned card says its line: '+gm.said);
-ok(gm.down===1&&!gm.face&&gm.done,'a second turn puts it down and counts it');
-ok(/letting go of feeling that I am /.test(gm.feel),'the channel changes the verb: '+gm.feel);
+/* the strict syntax, and the spec calls it non negotiable: nine gates in one
+   sentence, not one channel at a time. */
+ok(/^I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am /
+  .test(gm.said)||/^I am letting go of believing, perceiving, thinking, feeling, speaking, acting from, relating through, creating from, and being /
+  .test(gm.said),'a turned card speaks one of the two catalogued nine gate rosters: '+gm.said);
+ok(/^I now embody the truth that I am /.test(gm.truth),
+  'and the embodied truth paired to it: '+gm.truth);
+ok(gm.half&&gm.counted===0&&!gm.face,
+  'one pole of a printed card does not clear it, both channels must run');
+ok(gm.other&&gm.other!==gm.said,'the other pole is a different sentence at the same address');
+ok(gm.both&&gm.after===1,'both poles clear the printed card, got '+gm.after);
+/* an axes card is one statement run bilaterally, so demanding two passes would
+   be busywork the card does not ask for. */
+ok(gm.biOne&&gm.biClear,'a bilateral axes card clears in one pass');
+ok(!/^I now embody the truth that I am (worth|safety|calm)\.$/.test(gm.biTru)&&gm.biTru.length>40,
+  'and its truth is the install the card prints, not one synthesised from a noun: '+gm.biTru.slice(0,60));
+ok(gm.srcs.every(x=>/Release protocol card|Letting go card|Strict syntax/.test(x)),
+  'every line names a catalogued source: '+gm.srcs.join(' / '));
 ok(gm.cards===16&&gm.pairs===8,'the match deals eight pairs, got '+gm.cards+' cards, '+gm.pairs+' pairs');
 ok(gm.found===1&&gm.opened.length>2,'a matched pair opens its fetter: '+gm.opened);
 ok(gm.locked,'two that do not match lock until they turn back');
@@ -215,6 +250,31 @@ const flush=await page.evaluate(async ()=>{
  await new Promise(r=>setTimeout(r,60));
  return pStore()[0].axes.Anger.held;});
 ok(flush===9.1,'a pending write flushes when the page hides, got '+flush);
+
+console.log('\n=== every tab fits a phone ===');
+/* The stage drops its overflow and its min height at 720 so the wheel can flow
+   down the screen. The tab panels stayed position:absolute against it, so every
+   one of them rendered into a 36px window with the rest clipped: Knowledge had
+   5,729 pixels of content inside it and Games 3,564, with no way to reach any
+   of it. A panel taller than its own box is the whole bug, so that is the
+   assertion. */
+const phone=await browser.newPage({viewport:{width:390,height:844}});
+await phone.goto(FILE,{waitUntil:'load'}); await phone.waitForTimeout(700);
+for(const [t,sel] of [['STORY','#story'],['SUMMARY','#sum'],['ANALYTICS','#ana'],
+                      ['INTAKE','#iq'],['KNOW','#know'],['GAMES','#games']]){
+ const r=await phone.evaluate(([tt,ss])=>{
+  loadP(6); setTab(TAB[tt]);
+  if(tt==='KNOW')kbRender();
+  if(tt==='GAMES'){GAME='lg'; gmRender(); lgStart();}
+  const e=document.querySelector(ss);
+  const box=Math.round(e.getBoundingClientRect().height);
+  return {box, sh:e.scrollHeight, body:document.body.scrollHeight,
+   wide:document.documentElement.scrollWidth>window.innerWidth};},[t,sel]);
+ await phone.waitForTimeout(120);
+ ok(r.sh<=r.box+4,t+' is not clipped on a phone: '+r.sh+' of content in a '+r.box+' box');
+ ok(r.box>200,t+' actually rendered on a phone, box '+r.box);
+ ok(!r.wide,t+' does not scroll the page sideways on a phone');}
+await phone.close();
 
 console.log('\n=== real JS errors across all of the above ===');
 ok(real.length===0,'JS errors: '+real.slice(0,4).join(' | '));

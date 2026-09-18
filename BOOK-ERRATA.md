@@ -104,6 +104,11 @@ Line 5649 gives every axis an action-threshold word and sadness gets
 `suicidal`. The chapter runs the ladder as a working tool. No stop line appears
 anywhere near it.
 
+The 3C spec carries its own intensity ladder, twenty two rungs, uneasy through
+collapsing, and that word is not on it. The spec is the newer artefact. The
+engine carries the spec's ladder and a gate fails if anything reintroduces a
+threshold word that needs a screen the product does not have.
+
 Line 10969 records that the screen exists, and where: the Practice Manual. A
 reader who owns only this book meets that rung with nothing.
 
@@ -174,21 +179,37 @@ instrument. The engine returns DQ as the raw sum of held charge, and the whole
 interface reads it that way. Changing it changes what the word means on every
 screen.
 
-**27. The release channels, and the book disagrees with itself three ways.**
+**27. The release channels. RESOLVED by the pattern catalog, and the book's
+printed card was right.**
 
-The verb chain at line 1023 gives six: believing, perceiving, thinking,
-behaving, acting, feeling. The printed card at line 8123 gives nine: those six
-plus speaking, saying and doing. Chapter 33 gives a third six.
+The catalog reached the repo after this list was written. The TULA 3C Generator
+spec settles it and the book's printed card at line 8123 is the one that
+matches: nine verbs, believing, perceiving, thinking, behaving, acting,
+feeling, speaking, saying, doing, in a single statement. The spec calls that
+syntax non negotiable and says why: it fires the cognitive, emotional,
+behavioural, identity and somatic layers at once. The verb chain at line 1023
+and the chapter 33 list are both short.
 
-The printed card runs right channel before left, at lines 8122, 8174, 8227 and
-8279. The ruling on file says left then right.
+The two hundred statements per card at line 1483 is also correct, and the spec
+gives its construction: fifty masculine limiting beliefs, fifty feminine,
+fifty masculine truths, fifty feminine. Five bands of ten, escalating from
+subtle activation to existential exposure.
 
-A full card is two hundred statements over one address, at line 1483. The
-engine runs four passes and names no channel at all.
+Left against right dissolves. The nine axes cards state that releases run
+bilaterally, fifty left and fifty right at the same time, and that both must
+clear. The printed card puts right in the first column, which is layout, not
+sequence.
 
-The engine also uses arithmetic that appears nowhere in the book: twenty one
-percent off the held value on release, and the coherent opposite installed at
-sixty two percent of what was removed. Those numbers are mine from the rebuild.
+One thing does not resolve and is the owner's call. There are two nine gate
+rosters, both his. The 3C spec's is above. The nine axes cards give a
+different nine, believing, perceiving, thinking, feeling, speaking, acting
+from, relating through, creating from, being, mapped to a chakra region each,
+crown to root. The engine speaks whichever roster the sentence it is saying was
+written for, and an engine gate fails if the two are ever quietly merged.
+
+The engine's own arithmetic still appears nowhere in either: twenty one percent
+off the held value on release, and the coherent opposite installed at sixty two
+percent of what was removed. Those numbers are mine from the rebuild.
 
 **27b. The rebound is copy, not behaviour.** The text about day four and a half
 and day twenty seven is correct against the book's own maths, and nothing in
