@@ -25,7 +25,7 @@ const shell=await page.evaluate(()=>({
  axes:document.querySelectorAll('#chg .nf').length,
  mx:document.querySelectorAll('#mx button').length,
  eshelf:!!document.getElementById('eshelf')}));
-ok(shell.tabs===6,'6 tabs, got '+shell.tabs);
+ok(shell.tabs===7,'7 tabs, got '+shell.tabs);
 ok(shell.depths===4,'4 depths, got '+shell.depths);
 ok(shell.doms===19,'19 domains, got '+shell.doms);
 ok(shell.arcs===12,'12 archetypes, got '+shell.arcs);

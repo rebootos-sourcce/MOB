@@ -6,6 +6,7 @@ engine/data/nerves.js
 engine/data/canon.js
 engine/data/practice.js
 engine/data/people.js
+engine/data/catalog.js
 engine/verp.js
 engine/lexicon.js
 engine/core.js
@@ -30,6 +31,7 @@ ui/intakeui.js
 ui/release.js
 ui/ritual.js
 ui/drills.js
+ui/knowledge.js
 ui/panels.js
 ui/personas.js
 ui/ui.js

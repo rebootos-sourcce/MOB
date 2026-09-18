@@ -80,6 +80,7 @@ function setTab(i){
  document.querySelectorAll('.tabtop').forEach(function(x,j){
   x.setAttribute('aria-pressed',TABDEF[j]&&TABDEF[j].k===i);});
  if(i===TAB.INTAKE)renderIntake();
+ if(i===TAB.KNOW)kbRender();
  if(i===TAB.STORY)stRender();
  if(i===TAB.SUMMARY)sumRender();
  if(i===TAB.ANALYTICS)anaRender();

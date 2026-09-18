@@ -449,6 +449,53 @@ body:not(.tab-field) .pol2{display:none}
 .tk{font-size:11px;font-weight:600;color:var(--dim)}
 .tn{color:var(--ink)}
 .tp{color:var(--gold);font-family:var(--num);font-weight:500;font-variant-numeric:tabular-nums}
+/* ---------- the knowledge base ---------- */
+.kb-top{display:flex;flex-direction:column;gap:14px;padding-bottom:16px}
+.kb-hd{display:flex;flex-direction:column;gap:5px}
+.kb-h{margin:0;font-size:22px;font-weight:500;letter-spacing:-.01em;color:var(--ink)}
+.kb-p{margin:0;font-size:13.5px;line-height:1.65;color:var(--mid);max-width:76ch}
+.kb-search{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.kb-search input{flex:1 1 280px;background:var(--sunk);border:1px solid var(--edge);color:var(--ink);
+ border-radius:var(--r-xs);padding:0 13px;min-height:var(--tap);font-family:var(--sans);font-size:14px}
+.kb-search input:focus{border-color:var(--gold)}
+.kb-found{font-size:12px;color:var(--dim);font-family:var(--num)}
+.kb-tabs{display:flex;flex-wrap:wrap;gap:5px}
+.kb-t{background:var(--sunk);border:0;color:var(--mid);border-radius:var(--r-xs);padding:7px 12px;
+ font-family:var(--sans);font-size:12.5px;cursor:pointer;min-height:36px}
+.kb-t b{font-family:var(--num);font-weight:500;color:var(--dim);margin-left:3px}
+.kb-t.on{background:var(--gold);color:#15130A}
+.kb-t.on b{color:#15130A}
+.kb-list{display:flex;flex-direction:column;gap:2px;flex:1 1 auto}
+.kb-r{display:grid;grid-template-columns:auto minmax(120px,1.1fr) minmax(0,2fr) auto;gap:12px;
+ align-items:center;width:100%;min-height:var(--tap);padding:8px 10px;border:0;background:transparent;
+ border-radius:var(--r-xs);font-family:var(--sans);font-size:13.5px;color:var(--mid);text-align:left;cursor:pointer}
+.kb-r:hover{background:var(--panel-2)}
+.kb-rt{display:flex;flex-direction:column;min-width:0}
+.kb-rt b{color:var(--ink);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.kb-rt em{font-style:normal;color:var(--dim);font-size:11px}
+.kb-rd{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--dim);font-size:12.5px}
+.kb-rv{font-family:var(--num);color:var(--ink);font-size:12.5px;white-space:nowrap}
+.kb-deck{margin-top:22px;padding:18px 20px;border-radius:var(--r-s);background:var(--panel-2);
+ display:flex;flex-direction:column;gap:9px;align-items:flex-start}
+body.punch .kb-search input{border-color:transparent}
+@media (max-width:760px){ .kb-r{grid-template-columns:auto 1fr auto} .kb-rd{display:none} }
+
+/* ---------- the letting go deck ---------- */
+.card{width:min(380px,calc(100% - 32px));background:var(--panel);border:1px solid var(--edge);
+ border-radius:var(--r);padding:22px;display:flex;flex-direction:column;gap:16px;box-shadow:var(--shadow)}
+body.punch .card{border-color:transparent}
+.card-hd{display:flex;justify-content:space-between;align-items:baseline;
+ border-bottom:1px solid var(--edge);padding-bottom:10px}
+.card-rk{font-family:var(--num);font-size:26px;font-weight:500;color:var(--c)}
+.card-suit{font-size:12px;letter-spacing:.06em;color:var(--c)}
+.card-nm{font-size:24px;font-weight:500;color:var(--ink);line-height:1.2}
+.card-ad{font-size:12.5px;color:var(--dim);margin-top:4px}
+.card-say{border-left:2px solid var(--c);padding-left:13px;display:flex;flex-direction:column;gap:5px}
+.card-say p{margin:0;font-size:14px;line-height:1.55;color:var(--ink)}
+.card-ft{display:flex;justify-content:space-between;align-items:baseline;font-size:12px;color:var(--dim);
+ border-top:1px solid var(--edge);padding-top:10px}
+.card-sq{font-family:var(--num);color:var(--ink)}
+.card-act{display:flex;gap:6px;flex-wrap:wrap}
 /* the stack tabs under the reading */
 .stack{margin-top:14px}
 .stk-tabs{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px}
@@ -870,6 +917,8 @@ body:not(.tab-field) #key,body:not(.tab-field) #howto,body:not(.tab-field) #prob
 body:not(.tab-field) #tier,body:not(.tab-field) #pol,body:not(.tab-field) #cv{display:none!important}
 body.tab-summary #sum{display:flex!important;z-index:5;overflow-y:auto}
 body:not(.tab-summary) #sum{display:none!important}
+body.tab-know #know{display:flex!important;z-index:5;overflow-y:auto}
+body:not(.tab-know) #know{display:none!important}
 body.tab-intake #iq{display:flex!important;z-index:5;overflow-y:auto}
 body:not(.tab-intake) #iq{display:none!important}
 body.tab-story #story{display:flex!important;z-index:5;align-items:center;justify-content:center}
@@ -1007,6 +1056,8 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
    <canvas id="cv" role="img" aria-label="The field wheel. Every element is also listed in the panels either side."></canvas>
    <div id="emap" class="emap"></div>
    <div id="iq" class="iq"></div>
+   <div id="know" class="iq"></div>
+   <div id="deck" class="rel"></div>
    <div id="story" class="iq"></div>
    <div id="sum" class="iq"></div>
    <div id="ana" class="iq"></div>
@@ -1079,7 +1130,7 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
    nerve, plus 4 field anchors above and below the body.
    ============================================================ */
 const NODES=
-[{"i":1,"k":"Fear","b":"Root","n":"Lumbar Plexus","a":"Instinct, threat","d":"Avoidance","c":"Fear"},{"i":2,"k":"Shame","b":"Root","n":"Pudendal Nerve","a":"Worth, embodiment","d":"Self-rejection","c":"Shame"},{"i":3,"k":"Guilt","b":"Root","n":"Inferior Hypogastric Plexus","a":"Responsibility","d":"Overcompensation","c":"Shame"},{"i":4,"k":"Control","b":"Root","n":"Sacral Nerves","a":"Safety through force","d":"Domination","c":"Fear"},{"i":5,"k":"Insecurity","b":"Root","n":"Pelvic Nerve","a":"Belonging","d":"Dependency","c":"Fear"},{"i":6,"k":"Victimhood","b":"Root","n":"Coccygeal Plexus","a":"Agency","d":"Blame","c":"Sadness"},{"i":7,"k":"Scarcity","b":"Root","n":"Iliac Nerve Branch","a":"Resources","d":"Hoarding","c":"Fear"},{"i":8,"k":"Root_08_Unnamed","b":"Root","n":"Cauda Equina","a":"Privilege","d":"Deservingness","c":null},{"i":9,"k":"Possession","b":"Root","n":"Gluteal Nerve","a":"Attachment","d":"Control of objects","c":"Shock"},{"i":10,"k":"Lethargy","b":"Root","n":"Obturator Nerve","a":"Momentum","d":"Stagnation","c":"Sadness"},{"i":11,"k":"Resistance","b":"Root","n":"Perineal Branch","a":"Change","d":"Holding on","c":"Fear"},{"i":12,"k":"Compulsion","b":"Root","n":"Pelvic Floor Nerves","a":"Safety rituals","d":"Fixation","c":"Fear"},{"i":13,"k":"Disconnection","b":"Root","n":"Sacral Root Ganglia","a":"Presence","d":"Numbness","c":"Sadness"},{"i":14,"k":"Escapism","b":"Root","n":"Sciatic Nerve","a":"Facing pain","d":"Running","c":"Joy"},{"i":15,"k":"Panic","b":"Root","n":"Lumbar Sympathetic Chain","a":"Reaction","d":"Unconsciousness","c":"Fear"},{"i":16,"k":"Collapse","b":"Root","n":"Spinal Cord Base","a":"Structure","d":"Abandoning Self","c":"Sadness"},{"i":17,"k":"Addiction","b":"Sacral","n":"Sacral Plexus","a":"Craving","d":"Obsession","c":"Joy"},{"i":18,"k":"Lust","b":"Sacral","n":"Genitofemoral Nerve","a":"Desire","d":"Objectification","c":"Joy"},{"i":19,"k":"Envy","b":"Sacral","n":"Internal Pudendal Nerve","a":"Lack","d":"Hatred of others' joy","c":"Resentment"},{"i":20,"k":"Jealousy","b":"Sacral","n":"Obturator Nerve","a":"Possessiveness","d":"Paranoia","c":"Resentment"},{"i":21,"k":"Co-Dependency","b":"Sacral","n":"Pelvic Splanchnic Nerves","a":"Neediness","d":"Self-abandonment","c":"Disgust"},{"i":22,"k":"Shame Of Desire","b":"Sacral","n":"Hypogastric Plexus","a":"Repression","d":"Suppression","c":"Joy"},{"i":23,"k":"Hypersexuality","b":"Sacral","n":"Pudendal Plexus","a":"Validation","d":"Dissociation","c":"Joy"},{"i":24,"k":"Avoidance Of Pleasure","b":"Sacral","n":"Pelvic Nerve","a":"Sensuality","d":"Denial of life","c":"Joy"},{"i":25,"k":"Manipulation Through Emotion","b":"Sacral","n":"Uterovaginal Plexus","a":"Control","d":"Emotional blackmail","c":"Anger"},{"i":26,"k":"Oversensitivity","b":"Sacral","n":"Inferior Hypogastric Plexus","a":"Pain threshold","d":"Victim reactivity","c":"Shock"},{"i":27,"k":"Fantasy","b":"Sacral","n":"Splanchnic Root","a":"Escapism","d":"Delusion","c":"Joy"},{"i":28,"k":"Infatuation","b":"Sacral","n":"Lumbar-Sacral Overlap","a":"Projection","d":"Idealization","c":"Joy"},{"i":29,"k":"Obsession","b":"Sacral","n":"Pelvic Ganglia","a":"Focus","d":"Fixation","c":"Fear"},{"i":30,"k":"Guilt Of Pleasure","b":"Sacral","n":"Sacral Outflow","a":"Joy","d":"Self-denial","c":"Joy"},{"i":31,"k":"Need For Approval","b":"Sacral","n":"Iliac Branches","a":"Identity in others","d":"Conformity","c":"Shame"},{"i":32,"k":"Excess Emotion","b":"Sacral","n":"Urogenital Nerve","a":"Drama","d":"Flooding","c":"Shock"},{"i":33,"k":"Pride","b":"Solar","n":"Celiac Plexus","a":"Self-importance","d":"Superiority","c":"Anger"},{"i":34,"k":"Arrogance","b":"Solar","n":"Greater Splanchnic Nerve","a":"Ego","d":"Inflated Self","c":"Anger"},{"i":35,"k":"Competition","b":"Solar","n":"Aortic Plexus","a":"Comparison","d":"Division","c":"Anger"},{"i":36,"k":"Anger","b":"Solar","n":"Celiac Plexus","a":"Power misused","d":"Attack","c":"Anger"},{"i":37,"k":"Judgment","b":"Solar","n":"Splanchnic Plexus","a":"Othering","d":"Projection","c":"Anger"},{"i":38,"k":"Entitlement","b":"Solar","n":"Renal Plexus","a":"Control of outcomes","d":"Deserving","c":"Anger"},{"i":39,"k":"Rebellion","b":"Solar","n":"Renal Ganglia","a":"Defiance","d":"Misalignment","c":"Anger"},{"i":40,"k":"Perfectionism","b":"Solar","n":"Mesenteric Plexus","a":"Idealism","d":"Rigidity","c":"Fear"},{"i":41,"k":"Force","b":"Solar","n":"Splenic Plexus","a":"Control over flow","d":"Overpowering","c":"Fear"},{"i":42,"k":"Rigidity","b":"Solar","n":"Pancreatic Plexus","a":"Will","d":"Inflexibility","c":"Fear"},{"i":43,"k":"Resentment (Solar)","b":"Solar","n":"Suprarenal Plexus","a":"Grudge","d":"Recycled anger","c":"Resentment"},{"i":44,"k":"Unworthiness","b":"Solar","n":"Inferior Mesenteric Plexus","a":"Confidence","d":"Minimization","c":"Shame"},{"i":45,"k":"Anxiety","b":"Solar","n":"Adrenal Medulla","a":"Control of outcomes","d":"Future fear","c":"Fear"},{"i":46,"k":"Self-Judgment (Solar)","b":"Solar","n":"Epigastric Branches","a":"Inner war","d":"Invalidation","c":"Shame"},{"i":47,"k":"Need To Win","b":"Solar","n":"Vagus-Liver Plexus","a":"Ego","d":"Domination","c":"Anger"},{"i":48,"k":"Superiority","b":"Solar","n":"Hepatic Nerve","a":"Hierarchy","d":"Distinction","c":"Anger"},{"i":49,"k":"Hatred","b":"Heart","n":"Cardiac Plexus","a":"Forgiveness","d":"Vengeance","c":"Anger"},{"i":50,"k":"Resentment (Heart)","b":"Heart","n":"Thoracic Nerves","a":"Holding pain","d":"Withholding love","c":"Resentment"},{"i":51,"k":"Self-Judgment (Heart)","b":"Heart","n":"Vagus Nerve","a":"Grace","d":"Harshness","c":"Shame"},{"i":52,"k":"Betrayal","b":"Heart","n":"Thoracic Plexus","a":"Trust","d":"Abandonment","c":"Shock"},{"i":53,"k":"Separation","b":"Heart","n":"Pericardial Nerve","a":"Unity","d":"Isolation","c":"Sadness"},{"i":54,"k":"Martyrdom","b":"Heart","n":"Intercostal Nerves","a":"Self-sacrifice","d":"Guilt-driven love","c":"Sadness"},{"i":55,"k":"Longing","b":"Heart","n":"Cardiac Nerve Plexus","a":"Presence","d":"Fantasy","c":"Sadness"},{"i":56,"k":"Closed Heart","b":"Heart","n":"Costal Branches","a":"Vulnerability","d":"Armor","c":"Sadness"},{"i":57,"k":"Manipulative Kindness","b":"Heart","n":"Phrenic Nerve","a":"Motive","d":"Transactional giving","c":"Anger"},{"i":58,"k":"Expectation","b":"Heart","n":"Pulmonary Nerve Plexus","a":"Outcome","d":"Contractual love","c":"Fear"},{"i":59,"k":"Blame","b":"Heart","n":"Thoracic Ganglia","a":"Responsibility","d":"Externalization","c":"Anger"},{"i":60,"k":"False Love","b":"Heart","n":"Anterior Thoracic Roots","a":"Image","d":"Projection","c":"Disgust"},{"i":61,"k":"Rejection","b":"Heart","n":"Vagal Branches","a":"Inclusion","d":"Othering","c":"Sadness"},{"i":62,"k":"Avoidance Of Grief","b":"Heart","n":"Great Cardiac Nerve","a":"Loss","d":"Suppression","c":"Joy"},{"i":63,"k":"Need To Be Needed","b":"Heart","n":"Coronary Plexus","a":"Identity","d":"Validation","c":"Disgust"},{"i":64,"k":"Deceit","b":"Throat","n":"Cervical Plexus","a":"Honesty","d":"Manipulation","c":"Disgust"},{"i":65,"k":"Self-Silencing","b":"Throat","n":"Vagus Nerve","a":"Voice","d":"Withholding","c":"Shame"},{"i":66,"k":"People Pleasing","b":"Throat","n":"Superior Laryngeal Nerve","a":"Approval","d":"Inauthenticity","c":"Shame"},{"i":67,"k":"Lying","b":"Throat","n":"Recurrent Laryngeal Nerve","a":"Integrity","d":"Protection","c":"Disgust"},{"i":68,"k":"Interrupting","b":"Throat","n":"Pharyngeal Nerve","a":"Listening","d":"Imposition","c":"Anger"},{"i":69,"k":"Comparison","b":"Throat","n":"Accessory Nerve","a":"Voice Identity","d":"Envy","c":"Shame"},{"i":70,"k":"Excuse","b":"Throat","n":"Glossopharyngeal Nerve","a":"Ownership","d":"Victimization","c":"Disgust"},{"i":71,"k":"Stage Performing","b":"Throat","n":"Laryngeal Plexus","a":"Image","d":"Persona","c":"Shock"},{"i":72,"k":"Speaking To Be Right","b":"Throat","n":"Cervical Ganglia","a":"Ego","d":"Righteousness","c":"Anger"},{"i":73,"k":"Manic Expression","b":"Throat","n":"Spinal Accessory Nerve","a":"Over-talking","d":"Energy discharge","c":"Shock"},{"i":74,"k":"Talking To Avoid Feeling","b":"Throat","n":"Subclavian Nerve","a":"Presence","d":"Avoidance","c":"Shock"},{"i":75,"k":"Spiritual Language To Manipulate","b":"Throat","n":"Brachial Plexus","a":"Belonging","d":"Performance","c":"Disgust"},{"i":76,"k":"Delusion","b":"3rd Eye","n":"Optic Nerve","a":"Truth","d":"Illusion","c":"Disgust"},{"i":77,"k":"Cynicism","b":"3rd Eye","n":"Oculomotor Nerve","a":"Clarity","d":"Dismissal","c":"Disgust"},{"i":78,"k":"Distrust","b":"3rd Eye","n":"Abducens Nerve","a":"Faith","d":"Suspicion","c":"Fear"},{"i":79,"k":"Hypervigilance","b":"3rd Eye","n":"Optic Chiasm","a":"Control","d":"Overthinking","c":"Fear"},{"i":80,"k":"Dogma","b":"3rd Eye","n":"Pineal Gland","a":"Belief","d":"Rigidity","c":"Disgust"},{"i":81,"k":"Overanalysis","b":"3rd Eye","n":"Trigeminal Nerve","a":"Clarity","d":"Paralysis","c":"Shock"},{"i":82,"k":"Projection","b":"3rd Eye","n":"Visual Cortex","a":"Othering","d":"Blame","c":"Disgust"},{"i":83,"k":"Paranoia","b":"3rd Eye","n":"Lateral Geniculate","a":"Fear","d":"Narrative spinning","c":"Fear"},{"i":84,"k":"Distortion","b":"3rd Eye","n":"Occipital Nerve","a":"Reality","d":"Mis-seeing","c":"Disgust"},{"i":85,"k":"Doubt","b":"3rd Eye","n":"Cortical Visual Pathway","a":"Intuition","d":"Dismissal","c":"Fear"},{"i":86,"k":"Idealism","b":"3rd Eye","n":"Supraoptic Nucleus","a":"Fantasy","d":"Denial of reality","c":"Joy"},{"i":87,"k":"Lack Of Discernment","b":"3rd Eye","n":"Thalamus","a":"Perception","d":"Blind trust","c":"Disgust"},{"i":88,"k":"Doubt Of God","b":"Crown","n":"Corpus Callosum","a":"Faith","d":"Separation","c":"Resentment"},{"i":89,"k":"Hubris","b":"Crown","n":"Prefrontal Cortex","a":"Alignment","d":"Ego-God complex","c":"Anger"},{"i":90,"k":"Spiritual Pride","b":"Crown","n":"Pineal-Hypothalamic Axis","a":"Insight","d":"Superiority","c":"Disgust"},{"i":91,"k":"Nihilism","b":"Crown","n":"Parietal Cortex","a":"Meaning","d":"Apathy","c":"Sadness"},{"i":92,"k":"Spiritual Escapism","b":"Crown","n":"Dorsal Raphe Nucleus","a":"Presence","d":"Bypass","c":"Joy"},{"i":93,"k":"False Humility","b":"Crown","n":"Frontal Lobe","a":"Disguise","d":"Manipulation","c":"Shame"},{"i":94,"k":"Seeking Validation","b":"Crown","n":"Cerebral Cortex","a":"Ego","d":"Worship addiction","c":"Shame"},{"i":95,"k":"Savior Complex","b":"Crown","n":"Posterior Cingulate","a":"Responsibility","d":"Overreach","c":"Disgust"},{"i":96,"k":"Condemnation","b":"Crown","n":"Reticular Formation","a":"Mercy","d":"Judgment","c":"Anger"},{"i":97,"k":"Need To Be Special","b":"Crown","n":"Anterior Cingulate","a":"Identity","d":"Distinction","c":"Disgust"},{"i":98,"k":"Unworthy Of God","b":"Crown","n":"Pineal-Amygdala Axis","a":"Divinity","d":"Disbelief","c":"Resentment"},{"i":99,"k":"Knowing Better Than God","b":"Crown","n":"Default Mode Network","a":"Will","d":"Arrogance","c":"Resentment"},{"i":100,"k":"Denial Of Truth","b":"Crown","n":"Medial Forebrain Bundle","a":"Insight","d":"Resistance","c":"Resentment"},{"i":101,"k":"Rejection Of Spirit","b":"Crown","n":"Posterior Commissure","a":"Divinity","d":"Abandonment","c":"Resentment"},{"i":102,"k":"Fear Of God","b":"Crown","n":"Temporal Lobe","a":"Love","d":"Dread","c":"Resentment"},{"i":103,"k":"Anger At God","b":"Crown","n":"Hypothalamus","a":"Trust","d":"Rebellion","c":"Resentment"},{"i":104,"k":"Forgetfulness","b":"Crown","n":"Hippocampus","a":"Identity","d":"Amnesia","c":"Sadness"},{"i":105,"k":"Denial Of Light","b":"Crown","n":"Epithalamus","a":"Revelation","d":"Avoidance","c":"Resentment"},{"i":106,"k":"Rejection Of Unity","b":"Crown","n":"Neocortex","a":"Connection","d":"Separation","c":"Resentment"},{"i":107,"k":"Self-Exclusion","b":"Crown","n":"Superior Sagittal Sinus","a":"Belonging","d":"Disconnection","c":"Shame"},{"i":108,"k":"Endless Seeking","b":"Crown","n":"Ascension Column","a":"Arrival","d":"Never enough","c":"Sadness"},{"i":109,"k":"Soul Star","b":"Field-Above","n":null,"a":"Higher Self anchor","d":"field","c":null},{"i":110,"k":"Stellar Gateway","b":"Field-Above","n":null,"a":"Source connection","d":"field","c":null},{"i":111,"k":"Earth Star","b":"Field-Below","n":null,"a":"Grounding anchor","d":"field","c":null},{"i":112,"k":"Param Shiva / Ascension","b":"Field-Below","n":null,"a":"Cosmic anchor","d":"field","c":null}];
+[{"i":1,"k":"Fear","b":"Root","n":"Lumbar Plexus","a":"Instinct, threat","d":"Avoidance","c":"Fear"},{"i":2,"k":"Shame","b":"Root","n":"Pudendal Nerve","a":"Worth, embodiment","d":"Self-rejection","c":"Shame"},{"i":3,"k":"Guilt","b":"Root","n":"Inferior Hypogastric Plexus","a":"Responsibility","d":"Overcompensation","c":"Shame"},{"i":4,"k":"Control","b":"Root","n":"Sacral Nerves","a":"Safety through force","d":"Domination","c":"Fear"},{"i":5,"k":"Insecurity","b":"Root","n":"Pelvic Nerve","a":"Belonging","d":"Dependency","c":"Fear"},{"i":6,"k":"Victimhood","b":"Root","n":"Coccygeal Plexus","a":"Agency","d":"Blame","c":"Sadness"},{"i":7,"k":"Scarcity","b":"Root","n":"Iliac Nerve Branch","a":"Resources","d":"Hoarding","c":"Fear"},{"i":8,"k":"Root_08_Unnamed","b":"Root","n":"Cauda Equina","a":"Privilege","d":"Deservingness","c":null},{"i":9,"k":"Possession","b":"Root","n":"Gluteal Nerve","a":"Attachment","d":"Control of objects","c":"Shock"},{"i":10,"k":"Lethargy","b":"Root","n":"Obturator Nerve","a":"Momentum","d":"Stagnation","c":"Sadness"},{"i":11,"k":"Resistance","b":"Root","n":"Perineal Branch","a":"Change","d":"Holding on","c":"Fear"},{"i":12,"k":"Compulsion","b":"Root","n":"Pelvic Floor Nerves","a":"Safety rituals","d":"Fixation","c":"Fear"},{"i":13,"k":"Disconnection","b":"Root","n":"Sacral Root Ganglia","a":"Presence","d":"Numbness","c":"Sadness"},{"i":14,"k":"Escapism","b":"Root","n":"Sciatic Nerve","a":"Facing pain","d":"Running","c":"Joy"},{"i":15,"k":"Panic","b":"Root","n":"Lumbar Sympathetic Chain","a":"Reaction","d":"Unconsciousness","c":"Fear"},{"i":16,"k":"Collapse","b":"Root","n":"Spinal Cord Base","a":"Structure","d":"Abandoning Self","c":"Sadness"},{"i":17,"k":"Addiction","b":"Sacral","n":"Sacral Plexus","a":"Craving","d":"Obsession","c":"Joy"},{"i":18,"k":"Lust","b":"Sacral","n":"Genitofemoral Nerve","a":"Desire","d":"Objectification","c":"Joy"},{"i":19,"k":"Envy","b":"Sacral","n":"Internal Pudendal Nerve","a":"Lack","d":"Hatred of others' joy","c":"Resentment"},{"i":20,"k":"Jealousy","b":"Sacral","n":"Obturator Nerve","a":"Possessiveness","d":"Paranoia","c":"Resentment"},{"i":21,"k":"Co-Dependency","b":"Sacral","n":"Pelvic Splanchnic Nerves","a":"Neediness","d":"Self-abandonment","c":"Disgust"},{"i":22,"k":"Shame Of Desire","b":"Sacral","n":"Hypogastric Plexus","a":"Repression","d":"Suppression","c":"Joy"},{"i":23,"k":"Hypersexuality","b":"Sacral","n":"Pudendal Plexus","a":"Validation","d":"Dissociation","c":"Joy"},{"i":24,"k":"Avoidance Of Pleasure","b":"Sacral","n":"Pelvic Nerve","a":"Sensuality","d":"Denial of life","c":"Joy"},{"i":25,"k":"Manipulation Through Emotion","b":"Sacral","n":"Uterovaginal Plexus","a":"Control","d":"Emotional blackmail","c":"Anger"},{"i":26,"k":"Oversensitivity","b":"Sacral","n":"Inferior Hypogastric Plexus","a":"Pain threshold","d":"Victim reactivity","c":"Shock"},{"i":27,"k":"Fantasy","b":"Sacral","n":"Splanchnic Root","a":"Escapism","d":"Delusion","c":"Joy"},{"i":28,"k":"Infatuation","b":"Sacral","n":"Lumbar-Sacral Overlap","a":"Projection","d":"Idealization","c":"Joy"},{"i":29,"k":"Obsession","b":"Sacral","n":"Pelvic Ganglia","a":"Focus","d":"Fixation","c":"Fear"},{"i":30,"k":"Guilt Of Pleasure","b":"Sacral","n":"Sacral Outflow","a":"Joy","d":"Self-denial","c":"Joy"},{"i":31,"k":"Need For Approval","b":"Sacral","n":"Iliac Branches","a":"Identity in others","d":"Conformity","c":"Shame"},{"i":32,"k":"Excess Emotion","b":"Sacral","n":"Urogenital Nerve","a":"Drama","d":"Flooding","c":"Shock"},{"i":33,"k":"Pride","b":"Solar","n":"Celiac Plexus","a":"Self-importance","d":"Superiority","c":"Anger"},{"i":34,"k":"Arrogance","b":"Solar","n":"Greater Splanchnic Nerve","a":"Ego","d":"Inflated Self","c":"Anger"},{"i":35,"k":"Competition","b":"Solar","n":"Aortic Plexus","a":"Comparison","d":"Division","c":"Anger"},{"i":36,"k":"Anger","b":"Solar","n":"Celiac Plexus","a":"Power misused","d":"Attack","c":"Anger"},{"i":37,"k":"Judgment","b":"Solar","n":"Splanchnic Plexus","a":"Othering","d":"Projection","c":"Anger"},{"i":38,"k":"Entitlement","b":"Solar","n":"Renal Plexus","a":"Control of outcomes","d":"Deserving","c":"Anger"},{"i":39,"k":"Rebellion","b":"Solar","n":"Renal Ganglia","a":"Defiance","d":"Misalignment","c":"Anger"},{"i":40,"k":"Perfectionism","b":"Solar","n":"Mesenteric Plexus","a":"Idealism","d":"Rigidity","c":"Fear"},{"i":41,"k":"Force","b":"Solar","n":"Splenic Plexus","a":"Control over flow","d":"Overpowering","c":"Fear"},{"i":42,"k":"Rigidity","b":"Solar","n":"Pancreatic Plexus","a":"Will","d":"Inflexibility","c":"Fear"},{"i":43,"k":"Resentment (Solar)","b":"Solar","n":"Suprarenal Plexus","a":"Grudge","d":"Recycled anger","c":"Resentment"},{"i":44,"k":"Unworthiness","b":"Solar","n":"Inferior Mesenteric Plexus","a":"Confidence","d":"Minimization","c":"Shame"},{"i":45,"k":"Anxiety","b":"Solar","n":"Adrenal Medulla","a":"Control of outcomes","d":"Future fear","c":"Fear"},{"i":46,"k":"Self-Judgment (Solar)","b":"Solar","n":"Epigastric Branches","a":"Inner war","d":"Invalidation","c":"Shame"},{"i":47,"k":"Need To Win","b":"Solar","n":"Vagus-Liver Plexus","a":"Ego","d":"Domination","c":"Anger"},{"i":48,"k":"Superiority","b":"Solar","n":"Hepatic Nerve","a":"Hierarchy","d":"Distinction","c":"Anger"},{"i":49,"k":"Hatred","b":"Heart","n":"Cardiac Plexus","a":"Forgiveness","d":"Vengeance","c":"Anger"},{"i":50,"k":"Resentment (Heart)","b":"Heart","n":"Thoracic Nerves","a":"Holding pain","d":"Withholding love","c":"Resentment"},{"i":51,"k":"Self-Judgment (Heart)","b":"Heart","n":"Vagus Nerve","a":"Grace","d":"Harshness","c":"Shame"},{"i":52,"k":"Betrayal","b":"Heart","n":"Thoracic Plexus","a":"Trust","d":"Abandonment","c":"Shock"},{"i":53,"k":"Separation","b":"Heart","n":"Pericardial Nerve","a":"Unity","d":"Isolation","c":"Sadness"},{"i":54,"k":"Martyrdom","b":"Heart","n":"Intercostal Nerves","a":"Self-sacrifice","d":"Guilt-driven love","c":"Sadness"},{"i":55,"k":"Longing","b":"Heart","n":"Cardiac Nerve Plexus","a":"Presence","d":"Fantasy","c":"Sadness"},{"i":56,"k":"Closed Heart","b":"Heart","n":"Costal Branches","a":"Vulnerability","d":"Armor","c":"Sadness"},{"i":57,"k":"Manipulative Kindness","b":"Heart","n":"Phrenic Nerve","a":"Motive","d":"Transactional giving","c":"Anger"},{"i":58,"k":"Expectation","b":"Heart","n":"Pulmonary Nerve Plexus","a":"Outcome","d":"Contractual love","c":"Fear"},{"i":59,"k":"Blame","b":"Heart","n":"Thoracic Ganglia","a":"Responsibility","d":"Externalization","c":"Anger"},{"i":60,"k":"False Love","b":"Heart","n":"Anterior Thoracic Roots","a":"Image","d":"Projection","c":"Disgust"},{"i":61,"k":"Rejection","b":"Heart","n":"Vagal Branches","a":"Inclusion","d":"Othering","c":"Sadness"},{"i":62,"k":"Avoidance Of Grief","b":"Heart","n":"Great Cardiac Nerve","a":"Loss","d":"Suppression","c":"Joy"},{"i":63,"k":"Need To Be Needed","b":"Heart","n":"Coronary Plexus","a":"Identity","d":"Validation","c":"Disgust"},{"i":64,"k":"Deceit","b":"Throat","n":"Cervical Plexus","a":"Honesty","d":"Manipulation","c":"Disgust"},{"i":65,"k":"Self-Silencing","b":"Throat","n":"Vagus Nerve","a":"Voice","d":"Withholding","c":"Shame"},{"i":66,"k":"People Pleasing","b":"Throat","n":"Superior Laryngeal Nerve","a":"Approval","d":"Inauthenticity","c":"Shame"},{"i":67,"k":"Lying","b":"Throat","n":"Recurrent Laryngeal Nerve","a":"Integrity","d":"Protection","c":"Disgust"},{"i":68,"k":"Interrupting","b":"Throat","n":"Pharyngeal Nerve","a":"Listening","d":"Imposition","c":"Anger"},{"i":69,"k":"Comparison","b":"Throat","n":"Accessory Nerve","a":"Voice Identity","d":"Envy","c":"Shame"},{"i":70,"k":"Excuse","b":"Throat","n":"Glossopharyngeal Nerve","a":"Ownership","d":"Victimization","c":"Disgust"},{"i":71,"k":"Stage Performing","b":"Throat","n":"Laryngeal Plexus","a":"Image","d":"Persona","c":"Shock"},{"i":72,"k":"Speaking To Be Right","b":"Throat","n":"Cervical Ganglia","a":"Ego","d":"Righteousness","c":"Anger"},{"i":73,"k":"Manic Expression","b":"Throat","n":"Spinal Accessory Nerve","a":"Over-talking","d":"Energy discharge","c":"Shock"},{"i":74,"k":"Talking To Avoid Feeling","b":"Throat","n":"Subclavian Nerve","a":"Presence","d":"Avoidance","c":"Shock"},{"i":75,"k":"Spiritual Language To Manipulate","b":"Throat","n":"Brachial Plexus","a":"Belonging","d":"Performance","c":"Disgust"},{"i":76,"k":"Delusion","b":"3rd Eye","n":"Optic Nerve","a":"Truth","d":"Illusion","c":"Disgust"},{"i":77,"k":"Cynicism","b":"3rd Eye","n":"Oculomotor Nerve","a":"Clarity","d":"Dismissal","c":"Disgust"},{"i":78,"k":"Distrust","b":"3rd Eye","n":"Abducens Nerve","a":"Faith","d":"Suspicion","c":"Fear"},{"i":79,"k":"Hypervigilance","b":"3rd Eye","n":"Optic Chiasm","a":"Control","d":"Overthinking","c":"Fear"},{"i":80,"k":"Dogma","b":"3rd Eye","n":"Pineal Gland","a":"Belief","d":"Rigidity","c":"Disgust"},{"i":81,"k":"Overanalysis","b":"3rd Eye","n":"Trigeminal Nerve","a":"Clarity","d":"Paralysis","c":"Shock"},{"i":82,"k":"Projection","b":"3rd Eye","n":"Visual Cortex","a":"Othering","d":"Blame","c":"Disgust"},{"i":83,"k":"Paranoia","b":"3rd Eye","n":"Lateral Geniculate","a":"Fear","d":"Narrative spinning","c":"Fear"},{"i":84,"k":"Distortion","b":"3rd Eye","n":"Occipital Nerve","a":"Reality","d":"Mis-seeing","c":"Disgust"},{"i":85,"k":"Doubt","b":"3rd Eye","n":"Cortical Visual Pathway","a":"Intuition","d":"Dismissal","c":"Fear"},{"i":86,"k":"Idealism","b":"3rd Eye","n":"Supraoptic Nucleus","a":"Fantasy","d":"Denial of reality","c":"Joy"},{"i":87,"k":"Lack Of Discernment","b":"3rd Eye","n":"Thalamus","a":"Perception","d":"Blind trust","c":"Disgust"},{"i":88,"k":"Doubt Of God","b":"Crown","n":"Corpus Callosum","a":"Faith","d":"Separation","c":"Resentment"},{"i":89,"k":"Hubris","b":"Crown","n":"Prefrontal Cortex","a":"Alignment","d":"Ego-God complex","c":"Anger"},{"i":90,"k":"Spiritual Pride","b":"Crown","n":"Pineal-Hypothalamic Axis","a":"Insight","d":"Superiority","c":"Disgust"},{"i":91,"k":"Nihilism","b":"Crown","n":"Parietal Cortex","a":"Meaning","d":"Apathy","c":"Sadness"},{"i":92,"k":"Spiritual Escapism","b":"Crown","n":"Dorsal Raphe Nucleus","a":"Presence","d":"Bypass","c":"Joy"},{"i":93,"k":"False Humility","b":"Crown","n":"Frontal Lobe","a":"Disguise","d":"Manipulation","c":"Shame"},{"i":94,"k":"Seeking Validation","b":"Crown","n":"Cerebral Cortex","a":"Ego","d":"Worship addiction","c":"Shame"},{"i":95,"k":"Savior Complex","b":"Crown","n":"Posterior Cingulate","a":"Responsibility","d":"Overreach","c":"Disgust"},{"i":96,"k":"Condemnation","b":"Crown","n":"Reticular Formation","a":"Mercy","d":"Judgment","c":"Anger"},{"i":97,"k":"Need To Be Special","b":"Crown","n":"Anterior Cingulate","a":"Identity","d":"Distinction","c":"Disgust"},{"i":98,"k":"Unworthy Of God","b":"Crown","n":"Pineal-Amygdala Axis","a":"Divinity","d":"Disbelief","c":"Resentment"},{"i":99,"k":"Knowing Better Than God","b":"Crown","n":"Default Mode Network","a":"Will","d":"Arrogance","c":"Resentment"},{"i":100,"k":"Denial Of Truth","b":"Crown","n":"Medial Forebrain Bundle","a":"Insight","d":"Resistance","c":"Resentment"},{"i":101,"k":"Rejection Of Spirit","b":"Crown","n":"Posterior Commissure","a":"Divinity","d":"Abandonment","c":"Resentment"},{"i":102,"k":"Fear Of God","b":"Crown","n":"Temporal Lobe","a":"Love","d":"Dread","c":"Resentment"},{"i":103,"k":"Anger At God","b":"Crown","n":"Hypothalamus","a":"Trust","d":"Rebellion","c":"Resentment"},{"i":104,"k":"Forgetfulness","b":"Crown","n":"Hippocampus","a":"Identity","d":"Amnesia","c":"Sadness"},{"i":105,"k":"Denial Of Light","b":"Crown","n":"Epithalamus","a":"Revelation","d":"Avoidance","c":"Resentment"},{"i":106,"k":"Rejection Of Unity","b":"Crown","n":"Neocortex","a":"Connection","d":"Separation","c":"Resentment"},{"i":107,"k":"Self-Exclusion","b":"Crown","n":"Superior Sagittal Sinus","a":"Belonging","d":"Disconnection","c":"Shame"},{"i":108,"k":"Endless Seeking","b":"Crown","n":"Ascension Column","a":"Arrival","d":"Never enough","c":"Sadness"},{"i":109,"k":"Sol Star","b":"Field-Above","n":null,"a":"Higher Self anchor","d":"field","c":null},{"i":110,"k":"Stellar Gateway","b":"Field-Above","n":null,"a":"Source connection","d":"field","c":null},{"i":111,"k":"Earth Star","b":"Field-Below","n":null,"a":"Grounding anchor","d":"field","c":null},{"i":112,"k":"Gaia Gateway","b":"Field-Below","n":null,"a":"Cosmic anchor","d":"field","c":null}];
 const SAB_LIB=[{"nm":"Controller","nids":[4,36,50],"hcx":"Rigidity"},{"nm":"Victim","nids":[6,50,3],"hcx":"Collapse"},{"nm":"Perfectionist","nids":[40,37,45],"hcx":"Rigidity"},{"nm":"Pleaser","nids":[66,2,65],"hcx":"Collapse"},{"nm":"Hyper-Achiever","nids":[33,40,48],"hcx":"Grandiosity"},{"nm":"Hyper-Vigilant","nids":[79,1,82],"hcx":"Dysregulation"},{"nm":"Judge","nids":[37,48,82],"hcx":"Predatory"},{"nm":"Avoider","nids":[1,14,89],"hcx":"Dissociation"},{"nm":"Worrywart","nids":[45,1,3],"hcx":"Dysregulation"},{"nm":"Loner","nids":[55,1,49],"hcx":"Dissociation"},{"nm":"Nihilist","nids":[91,88,90],"hcx":"Collapse"},{"nm":"Aggressor","nids":[36,49,38],"hcx":"Predatory"},{"nm":"Imposter","nids":[2,45,66],"hcx":"Collapse"},{"nm":"Superior","nids":[48,33,38],"hcx":"Grandiosity"}];
 const HCX_LIB=[{"nm":"Grandiosity","sub":"narcissism · histrionic"},{"nm":"Predatory","sub":"machiavellian · antisocial"},{"nm":"Collapse","sub":"depression · BPD · anxiety"},{"nm":"Rigidity","sub":"OCPD · paranoia"},{"nm":"Dysregulation","sub":"bipolar · ADHD"},{"nm":"Dissociation","sub":"schizoid · withdrawal"}];
 /* ============================================================
@@ -1596,6 +1647,18 @@ var LP2ARCH={1:'Warrior',2:'Lover',3:'Creator',4:'Ruler',5:'Explorer',6:'Caregiv
  7:'Sage',8:'Ruler',9:'Magician',11:'Magician',22:'Creator',33:'Sage'};
 
 /* ============================================================
+   THE PATTERN CATALOG. The clinical record, by seat.
+   Seven plexus clusters, thirty-seven named categories, the
+   count released at each and the count of coherent opposites
+   installed. Ported from the earlier edition of the codex,
+   where it is a summary: the source carries the counts and the
+   nerve context, not the individual patterns, and this file
+   does not invent what the source does not hold.
+   ============================================================ */
+const APC=[{"b":"Root","nv":"Coccygeal / Sacral Plexus (S4-Co1)","d":"Survival charge encodes in the coccygeal and sacral plexus because the body's primary question, am I safe?, routes through the lowest nerve roots. Scarcity, physical harm, and tribal rejection all converge here. Highest embodiment ratio in the system (27.7%). This layer is actively transitioning.","sub":[["Survival Fear",193,93],["Physical Body",114,2],["Financial Scarcity",82,0],["Tribal / Family",63,1],["Shelter / Stability",18,34]]},{"b":"Sacral","nv":"Sacral Plexus (S1-S3) / Hypogastric","d":"Creativity and desire encode in the sacral plexus because these are the body's generative functions at the nerve level. Suppressed creativity is a sacral nerve charge. The S1-S3 roots fire every time creative expression is blocked. Lowest embodiment ratio (2.6%). The creative suppression charge runs deeper than any other layer. The installation of coherent opposites has barely begun.","sub":[["Creativity Suppression",211,7],["Emotional Flow",197,5],["Pleasure / Guilt",135,1],["Sexual Identity",64,1],["Relationships / Intimacy",13,2]]},{"b":"Solar","nv":"Solar / Celiac Plexus (T5-T12)","d":"The celiac plexus is the most complex autonomic network outside the brain. Power, self-worth, shame, and will all encode here because this is where the body processes its relationship to the external world. The felt sense of \"can I handle this?\" is a celiac plexus response. 31.9% of total pattern load. Every major saboteur structure in the catalog has a Solar Plexus root node.","sub":[["Self-Worth / Inadequacy",366,56],["Willpower / Giving Up",330,1],["Power / Powerlessness",124,16],["Control / Chaos",118,6],["Anger / Rage",111,1],["Shame / Humiliation",92,1],["Responsibility Avoidance",68,5]]},{"b":"Heart","nv":"Cardiac Plexus / Vagus (T1-T4)","d":"The cardiac plexus receives vagal branches carrying relational information upward from the gut. Grief, love, abandonment, and forgiveness encode here because the heart conducts the information of relational experience through its nerve branches. 14.6% embodiment, the highest rate among the major clusters. When heart patterns clear, coherent opposites install effectively.","sub":[["Love / Fear of Love",122,11],["Forgiveness",84,7],["Connection / Isolation",25,16],["Abandonment / Rejection",23,2],["Grief / Loss",14,3]]},{"b":"Throat","nv":"Pharyngeal / Cervical Plexus (C1-C4)","d":"The cervical plexus innervates the structures of vocalization. Voice suppression is a cervical nerve charge, a literal nerve-level tightening around the mechanisms of speech every time the person was silenced, shamed for speaking, or punished for having a voice. 405 of 604 Throat patterns are Voice Suppression alone. The charge is not about confidence as a concept. It is about C1-C4 nerve roots firing at the moment of self-expression.","sub":[["Voice Suppression",405,5],["Self-Expression Blocks",38,26],["Public Speaking / Visibility",32,6],["Judgement Fear",17,0]]},{"b":"3rd Eye","nv":"Optic / Trigeminal / Cranial Nerves (CN II, V)","d":"The trigeminal nerve is the largest cranial nerve, with connections into the optic pathways. Decision paralysis and unclear direction are not thinking problems. They are trigeminal and optic nerve charges that fire when the person is about to commit to a direction. Vision/Direction carries 123 patterns, the dominant subcategory. The charge that keeps a person from seeing their next step has a specific cranial nerve address.","sub":[["Vision / Direction",123,9],["Perception / Reality",69,1],["Decision Paralysis",23,6],["Intuition Denial",17,2],["Overthinking / Mental Loops",9,0]]},{"b":"Crown","nv":"Pineal / Reticular Formation / Cranial Convergence","d":"\"I AM\" constructions encode at the crown because this is the convergence point of all cranial nerve inputs. Every belief about self, every self-limiting story, routes through the pineal and reticular formation. The crown is not a spiritual location. It is a nerve topology. 196 Identity/I Am patterns. Each one is a self-limiting I AM construction running as a retrieval command at the nerve level.","sub":[["Identity / I Am",196,17],["Existential Despair",106,9],["God / Source",56,1],["Surrender / Trust",14,4],["Purpose / Mission",14,0],["Ascension / Awakening",2,1]]}];
+const APC_REL=3688, APC_EMB=358;
+
+/* ============================================================
    THE SIX AXES. Three higher gates and three lower gates. This is
    not a display, it is a COST MULTIPLIER on every held pattern.
    A lower gate multiplies what the pattern costs down. A higher
@@ -1847,7 +1910,7 @@ const CHG2FET={anxiety:'Anticipation',fear:'Fear',anger:'Anger',shame:'Shame',
    this codebase, so the integers are named once and never typed again.
    Order is load bearing and must not change.
    ============================================================ */
-const TAB={STORY:0,SUMMARY:1,FIELD:2,ENERGY:3,ANALYTICS:4,INTAKE:5};
+const TAB={STORY:0,SUMMARY:1,FIELD:2,ENERGY:3,ANALYTICS:4,INTAKE:5,KNOW:6};
 /* TABDEF is DISPLAY order. TAB above is identity and does not move: the
    integers are persisted, compared and passed around, and renumbering them
    is the bug this file already warns about. Summary reads last because it is
@@ -1859,7 +1922,8 @@ const TABDEF=[
  {k:TAB.FIELD,    id:'cv',    nm:'Field',     cls:'tab-field'},
  {k:TAB.ENERGY,   id:'emap',  nm:'Energy',    cls:'tab-energy'},
  {k:TAB.ANALYTICS,id:'ana',   nm:'Analytics', cls:'tab-analytics'},
- {k:TAB.SUMMARY,  id:'sum',   nm:'Summary',   cls:'tab-summary'}];
+ {k:TAB.SUMMARY,  id:'sum',   nm:'Summary',   cls:'tab-summary'},
+ {k:TAB.KNOW,     id:'know',  nm:'Knowledge', cls:'tab-know'}];
 const TABOF=function(k){for(var i=0;i<TABDEF.length;i++)if(TABDEF[i].k===k)return TABDEF[i];
  return TABDEF[0];};
 
@@ -2067,7 +2131,12 @@ function compute(){
     means no gate evidence, so the factor is 1 and nothing changes. */
  const _vf=verpFactor();
  /* Resistance = floor + DQ. compounding raises the floor, it is not a term. */
- const Rz=Math.max(1,(1+DQraw*0.05+dist*0.03)*_vf);
+ /* Distortion is struck as a formula variable, the author's ruling of 13 May,
+    because Distortion and SQ are the same reading under two names and
+    multiplying one by the other counted the same charge twice. It is still
+    computed and still reported, because Analytics reads it. It no longer
+    divides CQ. */
+ const Rz=Math.max(1,(1+DQraw*0.05)*_vf);
  /* CQ = (Intention x Integrity) / Resistance. 100 when all 21 laws read 10. */
  const CQ=clamp((It*Ig)/Rz,0,100);
  const tier=[[90,'Mastery'],[70,'Embodied'],[50,'Practicing'],[31,'Incoherent'],
@@ -2852,7 +2921,8 @@ function read(prof,opts){
    ============================================================ */
 if(typeof module!=='undefined'&&module.exports){
  module.exports={
-  /* data */      NODES:NODES, SAB_LIB:SAB_LIB, HCX_LIB:HCX_LIB, SAB33:SAB33, SAB_PI:SAB_PI, GATEGLYPH:GATEGLYPH, INFER_NOUN:INFER_NOUN,
+  /* data */      NODES:NODES, SAB_LIB:SAB_LIB, HCX_LIB:HCX_LIB, SAB33:SAB33, SAB_PI:SAB_PI, GATEGLYPH:GATEGLYPH,
+                  APC:APC, APC_REL:APC_REL, APC_EMB:APC_EMB, INFER_NOUN:INFER_NOUN,
                   SABAUTH:SABAUTH, ARCH18:ARCH18, CHILD:CHILD, CHARGES:CHARGES,
                   DOMAINS:DOMAINS, ARCH:ARCH, SI:SI, SINAMES:SINAMES, MASKS:MASKS,
                   BANDS:BANDS, PAL:PAL, ROOTD:ROOTD, ROOTCOL:ROOTCOL, AFFIN:AFFIN,
@@ -5072,6 +5142,214 @@ function runSpDrill(kind,val){
   +(extra?'<div class="pm-eye">Against your field</div><p class="ad-p">'+extra+'</p>':''));}
 
 /* ============================================================
+   THE KNOWLEDGE BASE. Everything the instrument knows, in one
+   place, searchable, and every row a door to the same drill the
+   wheel opens. Nothing here is a second copy of the data: it
+   reads the engine tables directly, so the knowledge base and
+   the reading can never disagree.
+
+   The Letting Go Deck sits underneath it. The book specifies it
+   as a playing card deck whose suits are the seats and whose
+   ranks are intensity. It deals from the person's own held
+   addresses, so a card is a thing they are actually carrying.
+   ============================================================ */
+var KB_Q='', KB_SEC='addr';
+
+/* every searchable thing in the instrument, built from the engine tables.
+   kind decides which drill a row opens. */
+function kbRows(sec){
+ var r=compute(), out=[];
+ if(sec==='addr') W.forEach(function(n){
+  out.push({k:'node', t:n.k, s:n.b, d:(n.n||'field')+', axis '+(n.cf||'unrouted'),
+   v:n.sq>=4?n.sq.toFixed(1):'', o:n});});
+ if(sec==='fetter') CHILD.forEach(function(c){
+  out.push({k:'fetter', t:c.nm, s:c.seat, d:'toward '+c.opp+'. '+c.addr+', '+c.loc,
+   v:(S.charge[c.nm]||0).toFixed(1), o:c});});
+ if(sec==='sab') ALL_SAB.forEach(function(s){
+  var pi=SAB_PI.indexOf(s.nm)>=0;
+  out.push({k:'sab', t:s.nm, s:s.hcx||'', d:(s.unnamed?'inferred from the connection types':
+    (pi?'Positive Intelligence':'SOURCE library'))+', '+(s.nids||[]).length+' addresses',
+   v:'', o:s});});
+ if(sec==='law') SI.forEach(function(l,i){
+  out.push({k:'law', t:l.nm, s:l.b, d:l.d||'seated at the '+l.b.toLowerCase(),
+   v:(S.law[l.nm]!=null?S.law[l.nm].toFixed(1):''), o:l, j:i});});
+ if(sec==='dom') DOMAINS.forEach(function(d,i){
+  out.push({k:'dom', t:d.nm, s:d.r, d:d.d||'', v:(DOMAIN[i]||0).toFixed(2), o:d, j:i});});
+ if(sec==='arch') ARCH.forEach(function(a,i){
+  out.push({k:'arch', t:a.nm, s:'archetype', d:a.v||'', v:((r.aff[i]||0)*100).toFixed(0)+'%', o:a, j:i});});
+ if(sec==='gate') verpRead().forEach(function(g){
+  out.push({k:'gate', t:g.nm, s:g.side+' gate', d:g.d, v:g.pct?g.pct+'%':'', o:g});});
+ if(sec==='seat') APC.forEach(function(c){
+  var rel=0,emb=0; c.sub.forEach(function(x){rel+=x[1];emb+=x[2];});
+  out.push({k:'seat', t:c.b, s:c.nv, d:c.d, v:rel+' released', o:c, emb:emb});});
+ return out;}
+
+const KB_SECS=[['addr','Addresses'],['fetter','Fetters'],['sab','Saboteurs'],
+ ['law','Laws'],['dom','Domains'],['arch','Archetypes'],['gate','Gates'],['seat','The catalog']];
+
+function kbMatch(row,q){
+ if(!q)return true;
+ return (row.t+' '+row.s+' '+row.d).toLowerCase().indexOf(q)>=0;}
+
+function kbRender(){
+ var host=document.getElementById('know'); if(!host)return;
+ var q=KB_Q.trim().toLowerCase();
+ var rows=kbRows(KB_SEC).filter(function(x){return kbMatch(x,q);});
+ /* the count across every section, so search says what it found everywhere */
+ var total=0, per={};
+ KB_SECS.forEach(function(s){
+  var n=kbRows(s[0]).filter(function(x){return kbMatch(x,q);}).length;
+  per[s[0]]=n; total+=n;});
+
+ var h='<div class="kb-top">'
+  +'<div class="kb-hd"><div class="pm-eye">The knowledge base</div>'
+  +'<h2 class="kb-h">Everything the instrument knows</h2>'
+  +'<p class="kb-p">The same tables the reading runs on. Search any of it. Every row opens '
+  +'the same detail the wheel opens, on the right.</p></div>'
+  +'<div class="kb-search"><input type="search" id="kbq" placeholder="Search addresses, fetters, saboteurs, laws, domains" '
+  +'value="'+esc(KB_Q)+'" aria-label="Search the knowledge base">'
+  +(q?'<span class="kb-found">'+total+' match'+(total===1?'':'es')+'</span>':'')+'</div>'
+  +'<div class="kb-tabs" role="tablist">'+KB_SECS.map(function(s){
+    return '<button type="button" role="tab" class="kb-t'+(KB_SEC===s[0]?' on':'')+'" data-kb="'+s[0]+'" '
+     +'aria-selected="'+(KB_SEC===s[0])+'">'+s[1]+(q?' <b>'+per[s[0]]+'</b>':'')+'</button>';}).join('')
+  +'</div></div>';
+
+ h+='<div class="kb-list">';
+ if(!rows.length) h+='<div class="rnone">Nothing here matches. The count beside each tab says where it is.</div>';
+ rows.forEach(function(x,i){
+  var col=x.k==='seat'?x.t:(x.s&&BANDS.indexOf(x.s)>=0?x.s:'Heart');
+  h+='<button type="button" class="kb-r" data-kbi="'+i+'">'
+   +'<span class="kb-rc">'+cr(BANDS.indexOf(col)>=0?col:'Heart', 0, {size:'xs', raw:''})+'</span>'
+   +'<span class="kb-rt"><b>'+esc(x.t)+'</b>'+(x.s?'<em>'+esc(x.s)+'</em>':'')+'</span>'
+   +'<span class="kb-rd">'+esc(String(x.d||'').slice(0,150))+'</span>'
+   +(x.v?'<span class="kb-rv">'+esc(x.v)+'</span>':'')
+   +'</button>';});
+ h+='</div>';
+
+ /* the deck sits under the base, because a card is the base at practice speed */
+ h+='<div class="kb-deck"><div class="pm-eye">The Letting Go Deck</div>'
+  +'<p class="kb-p">A deck whose suits are the seven seats and whose ranks are intensity. It deals '
+  +'from what you are actually carrying, so every card is an address with charge on it. '
+  +(deckSize()?'<b>'+deckSize()+'</b> cards in the deck.':'Nothing is held above the line yet, so the deck is empty.')+'</p>'
+  +'<button class="btn pri" id="kbdeck"'+(deckSize()?'':' disabled')+'>Deal a card</button></div>';
+
+ host.innerHTML=h;
+ var qi=document.getElementById('kbq');
+ if(qi){qi.oninput=function(){KB_Q=qi.value; kbRender();
+   var e=document.getElementById('kbq'); if(e){e.focus(); try{e.setSelectionRange(e.value.length,e.value.length);}catch(err){}}};}
+ host.querySelectorAll('[data-kb]').forEach(function(el){el.onclick=function(){
+  KB_SEC=el.getAttribute('data-kb'); kbRender();};});
+ host.querySelectorAll('[data-kbi]').forEach(function(el){el.onclick=function(){
+  kbOpen(rows[+el.getAttribute('data-kbi')]);};});
+ var dk=document.getElementById('kbdeck');
+ if(dk)dk.onclick=function(){deckDeal();};}
+
+/* one row, one door. every kind routes to the drill that already exists for it. */
+function kbOpen(x){
+ if(!x)return;
+ S.pin=null; ANA_PICK=null;
+ if(x.k==='node'){runNodeDrill(x.o); render(); return;}
+ if(x.k==='law'){runLawDrill(x.o); render(); return;}
+ if(x.k==='gate'){runGatesDrill(x.o.k); render(); return;}
+ if(x.k==='fetter'){runFetterDrill(x.o); return;}
+ if(x.k==='sab'){
+  var r=compute(), live=r.sabs.filter(function(s){return s.nm===x.o.nm;})[0];
+  if(live){S.pin=live; runDrill(live); render(); return;}
+  runSabDrill(x.o); return;}
+ if(x.k==='dom'){runKbDrill('Blueprint domain', x.o.nm, x.o.r+' cluster', x.o.d||''); return;}
+ if(x.k==='arch'){runKbDrill('Archetype', x.o.nm, 'how the blueprint expresses', x.o.v||''); return;}
+ if(x.k==='seat'){runSeatDrill(x.o); return;}}
+
+/* the catalog entry for one seat. the counts are the clinical record, not a
+   score, so they are stated as what was released and what installed. */
+function runSeatDrill(c){
+ var h='<div class="pm-eye">Seat</div><div class="ad-nm">'+esc(c.b)+'</div>'
+  +'<div class="ad-sub">'+esc(c.nv)+'</div>'
+  +'<div class="pm-eye">What encodes here</div><p class="ad-p">'+esc(c.d)+'</p>'
+  +'<div class="pm-eye">The record</div><div class="ad-rows">'
+  +c.sub.map(function(x){
+    return '<div class="ad-r static"><span class="ad-k">'+esc(x[0])+'</span>'
+     +'<span class="ad-m">'+x[1]+' released, '+x[2]+' installed</span></div>';}).join('')
+  +'</div>'
+  +'<div class="pm-eye">Addresses at this seat</div><div class="ad-rows">'
+  +W.filter(function(n){return n.b===c.b;}).slice(0,10).map(addrRow).join('')+'</div>';
+ rdShell(h);}
+
+function runFetterDrill(c){
+ var held=S.charge[c.nm]||0, inst=S.replace[c.nm]||0;
+ var at=W.filter(function(n){return n.cf===c.nm;});
+ var h='<div class="pm-eye">Child fetter</div><div class="ad-nm">'+esc(c.nm)+'</div>'
+  +'<div class="ad-sub">toward '+esc(c.opp)+'</div>'
+  +'<div class="pm-eye">Where it sits</div><p class="ad-p">'+esc(c.addr)+', at '+esc(c.loc)
+  +'. Seated at the '+esc(c.seat).toLowerCase()+'.</p>'
+  +'<div class="pm-eye">Both halves</div><p class="ad-p">Held <b>'+held.toFixed(1)+'</b>. '
+  +esc(c.opp)+' installed <b>'+inst.toFixed(1)+'</b>. Release empties the address, the opposite is what fills it.</p>'
+  +'<div class="pm-eye">It runs '+at.length+' addresses</div><div class="ad-rows">'
+  +at.slice(0,10).map(addrRow).join('')
+  +(at.length>10?'<div class="pm-more">and '+(at.length-10)+' more</div>':'')+'</div>';
+ rdShell(h);}
+
+/* a saboteur the reading is not currently carrying. it still has a definition. */
+function runSabDrill(s){
+ var pi=SAB_PI.indexOf(s.nm)>=0;
+ var nodes=(s.nids||[]).map(function(i){return BY[i];}).filter(Boolean);
+ var h='<div class="pm-eye">Saboteur, not running</div><div class="ad-nm">'+esc(s.nm)+'</div>'
+  +'<div class="ad-sub">'+(s.unnamed?'Inferred from the connection types'
+    :(pi?'One of the ten Positive Intelligence saboteurs, after Shirzad Chamine':'SOURCE library'))+'</div>'
+  +'<div class="pm-eye">What it would take</div><p class="ad-p">It fires when its addresses carry at '
+  +'once. Yours are not carrying enough for it to run, which is why it is here and not on the wheel.'
+  +(s.hcx?' It compounds into <b>'+esc(s.hcx)+'</b>.':'')+'</p>'
+  +'<div class="pm-eye">Made of</div><div class="ad-rows">'+nodes.map(addrRow).join('')+'</div>';
+ rdShell(h);}
+
+function runKbDrill(eyebrow,title,sub,body){
+ rdShell('<div class="pm-eye">'+esc(eyebrow)+'</div><div class="ad-nm">'+esc(title)+'</div>'
+  +(sub?'<div class="ad-sub">'+esc(sub)+'</div>':'')
+  +(body?'<div class="pm-eye">What it is</div><p class="ad-p">'+esc(body)+'</p>':''));}
+
+/* ---- THE LETTING GO DECK ----
+   Suits are the seven seats. Ranks are intensity, the charge at the address
+   rounded to a whole number, so an ace is a one and the face cards are the
+   heaviest thing a person carries. The deck is dealt from the field, never
+   from the library, because a card a person is not carrying teaches nothing. */
+var DECK_CARD=null;
+function deckPool(){return W.filter(function(n){return n.sq>=4;});}
+function deckSize(){return deckPool().length;}
+const RANKNM={1:'Ace',11:'Jack',12:'Queen',13:'King'};
+function deckDeal(){
+ var pool=deckPool(); if(!pool.length)return;
+ var n=pool[Math.floor(Math.random()*pool.length)];
+ DECK_CARD={n:n, rank:Math.max(1,Math.min(13,Math.round(n.sq)))};
+ deckRender();}
+function deckClose(){DECK_CARD=null; deckRender();}
+function deckRender(){
+ var el=document.getElementById('deck'); if(!el)return;
+ if(!DECK_CARD){el.style.display='none'; el.innerHTML=''; return;}
+ var c=DECK_CARD, n=c.n, col=seatCol(n.b);
+ var opp=(CHILD.filter(function(x){return x.nm===n.cf;})[0]||{}).opp||'';
+ var rk=RANKNM[c.rank]||String(c.rank);
+ el.style.display='flex';
+ el.innerHTML='<div class="card" style="--c:'+col+'">'
+  +'<div class="card-hd"><span class="card-rk">'+rk+'</span>'
+   +'<span class="card-suit">'+esc(n.b)+'</span></div>'
+  +'<div class="card-mid"><div class="card-nm">'+esc(n.k)+'</div>'
+   +'<div class="card-ad">'+esc(n.n||'field')+'</div></div>'
+  +'<div class="card-say"><div class="pm-eye">Say it</div>'
+   +'<p>Letting go of believing that I am '+esc(String(n.k).toLowerCase())+'.</p>'
+   +'<p>Letting go of feeling that I am '+esc(String(n.k).toLowerCase())+'.</p></div>'
+  +'<div class="card-ft"><span>axis '+esc(n.cf||'unrouted')+(opp?', toward '+esc(opp):'')+'</span>'
+   +'<span class="card-sq">'+n.sq.toFixed(1)+'</span></div>'
+  +'<div class="card-act"><button class="btn" id="cardnext">Deal another</button>'
+   +'<button class="btn" id="cardopen">Open the address</button>'
+   +'<button class="btn" id="cardx">Close</button></div>'
+  +'</div>';
+ var b;
+ b=document.getElementById('cardnext'); if(b)b.onclick=deckDeal;
+ b=document.getElementById('cardx'); if(b)b.onclick=deckClose;
+ b=document.getElementById('cardopen'); if(b)b.onclick=function(){
+  deckClose(); S.pin=null; runNodeDrill(n); render();};}
+
+/* ============================================================
    CONTROLS
    ============================================================ */
 const $=function(id){return document.getElementById(id);};
@@ -5152,6 +5430,7 @@ function setTab(i){
  document.querySelectorAll('.tabtop').forEach(function(x,j){
   x.setAttribute('aria-pressed',TABDEF[j]&&TABDEF[j].k===i);});
  if(i===TAB.INTAKE)renderIntake();
+ if(i===TAB.KNOW)kbRender();
  if(i===TAB.STORY)stRender();
  if(i===TAB.SUMMARY)sumRender();
  if(i===TAB.ANALYTICS)anaRender();

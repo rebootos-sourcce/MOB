@@ -126,7 +126,12 @@ function compute(){
     means no gate evidence, so the factor is 1 and nothing changes. */
  const _vf=verpFactor();
  /* Resistance = floor + DQ. compounding raises the floor, it is not a term. */
- const Rz=Math.max(1,(1+DQraw*0.05+dist*0.03)*_vf);
+ /* Distortion is struck as a formula variable, the author's ruling of 13 May,
+    because Distortion and SQ are the same reading under two names and
+    multiplying one by the other counted the same charge twice. It is still
+    computed and still reported, because Analytics reads it. It no longer
+    divides CQ. */
+ const Rz=Math.max(1,(1+DQraw*0.05)*_vf);
  /* CQ = (Intention x Integrity) / Resistance. 100 when all 21 laws read 10. */
  const CQ=clamp((It*Ig)/Rz,0,100);
  const tier=[[90,'Mastery'],[70,'Embodied'],[50,'Practicing'],[31,'Incoherent'],

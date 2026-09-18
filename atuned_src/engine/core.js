@@ -47,7 +47,7 @@ const CHG2FET={anxiety:'Anticipation',fear:'Fear',anger:'Anger',shame:'Shame',
    this codebase, so the integers are named once and never typed again.
    Order is load bearing and must not change.
    ============================================================ */
-const TAB={STORY:0,SUMMARY:1,FIELD:2,ENERGY:3,ANALYTICS:4,INTAKE:5};
+const TAB={STORY:0,SUMMARY:1,FIELD:2,ENERGY:3,ANALYTICS:4,INTAKE:5,KNOW:6};
 /* TABDEF is DISPLAY order. TAB above is identity and does not move: the
    integers are persisted, compared and passed around, and renumbering them
    is the bug this file already warns about. Summary reads last because it is
@@ -59,7 +59,8 @@ const TABDEF=[
  {k:TAB.FIELD,    id:'cv',    nm:'Field',     cls:'tab-field'},
  {k:TAB.ENERGY,   id:'emap',  nm:'Energy',    cls:'tab-energy'},
  {k:TAB.ANALYTICS,id:'ana',   nm:'Analytics', cls:'tab-analytics'},
- {k:TAB.SUMMARY,  id:'sum',   nm:'Summary',   cls:'tab-summary'}];
+ {k:TAB.SUMMARY,  id:'sum',   nm:'Summary',   cls:'tab-summary'},
+ {k:TAB.KNOW,     id:'know',  nm:'Knowledge', cls:'tab-know'}];
 const TABOF=function(k){for(var i=0;i<TABDEF.length;i++)if(TABDEF[i].k===k)return TABDEF[i];
  return TABDEF[0];};
 
