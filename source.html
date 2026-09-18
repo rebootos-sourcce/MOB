@@ -1802,6 +1802,33 @@ const PEOPLE=[
   says:'I am in the middle of something and I cannot see the far side of it.',
   c:{Fear:9,Anger:7,Shame:9,Disgust:7,Apathy:5,Shock:8,Sad:9,Surprise:6,Anticipation:7},
   rep:{Sad:4,Fear:3}},
+ /* ---- the ends of the scale ----
+    Four reference cases added on the owner's ruling, because the roster sat in
+    the middle and the vocabulary at the ends had never been looked at with a
+    real field behind it. Two at the floor and two near the ceiling, and the
+    pairs are the point: 2 and 10 are both Severe, 92 and 98 are both Mastery.
+    If one word has to carry both ends of each pair, the word is doing no work.
+
+    The charge vectors were solved against compute() rather than invented, and
+    the law scale for each was found by bisection to land the CQ on target. The
+    two high cases deliberately still carry something, because a high reading
+    with an empty wheel tells a person they are the wrong customer. */
+ {nm:'Tomas',age:58,role:'long haul driver, off the road fourteen months',dom:0,a1:9,a2:4,
+  says:'I used to drive nine hundred miles and feel nothing. Now I cannot get to the end of the street.',
+  c:{Fear:9.4,Anger:8.2,Shame:9.1,Disgust:7.6,Apathy:9.6,Shock:8.8,Sad:9.5,Surprise:6.4,Anticipation:8.9},
+  rep:{}},
+ {nm:'Nkem',age:35,role:'paediatric nurse, third year of nights',dom:12,a1:3,a2:9,
+  says:'I am very good at the job. I have started crying in the car park before the shift, not after.',
+  c:{Fear:7.8,Anger:6.2,Shame:8.4,Disgust:5.1,Apathy:7.1,Shock:6,Sad:8,Surprise:4.2,Anticipation:7.4},
+  rep:{}},
+ {nm:'Wren',age:66,role:'luthier, forty one years at the bench',dom:1,a1:0,a2:11,
+  says:'Most of it went quiet a long time ago. One thing did not, and I know exactly which.',
+  c:{Fear:2,Anger:1.2,Shame:7.5,Disgust:1,Apathy:1.5,Shock:1.1,Sad:2,Surprise:0.7,Anticipation:2},
+  rep:{Fear:5.4,Anger:4.8,Apathy:4.2,Sad:4.6}},
+ {nm:'Abraham',age:74,role:'retired judge, eleven years of practice',dom:6,a1:8,a2:0,
+  says:'I spent a career deciding for other people. The last decade has been learning to sit still.',
+  c:{Fear:1,Anger:0.6,Shame:5.4,Disgust:0.4,Apathy:0.8,Shock:0.5,Sad:1.2,Surprise:0.3,Anticipation:0.9},
+  rep:{Fear:6.2,Anger:5.8,Apathy:5.4,Sad:5.6,Shock:5,Disgust:4.8}},
  {nm:'Gordon',age:58,role:'managing partner',dom:2,a1:6,a2:0,
   says:'There is nothing wrong with me. Four people left in a year and each had their reasons.',
   c:{Fear:10,Anger:10,Shame:10,Disgust:10,Apathy:7,Shock:9,Sad:8,Surprise:6,Anticipation:8},rep:{}}];
@@ -1813,10 +1840,15 @@ const PEOPLE=[
    do exist. */
 const LAWSET={
  You:    {_:6.5},
+ /* found by bisection against compute(), not chosen by feel */
+ Tomas:  {_:2.669, Courage:1.1, Truth:1.4, Patience:1.2, Duty:3.8, 'Non-Harm':4.1},
+ Nkem:   {_:4.378, Compassion:8.2, Duty:8.8, 'Non-Harm':8.4, Temperance:1.6, Detachment:1.2, Patience:1.9},
+ Wren:   {_:9.221, Patience:9.4, Temperance:9.2, 'Aesthetic Beauty':9.6, Forgiveness:6.8},
+ Abraham:{_:8.702, Equanimity:9.7, Justice:9.8, Humility:9.5, Presence:9.6, Temperance:9.4},
  Sofia:  {_:7.6, Compassion:8.6, 'Non-Harm':9.1, Generosity:8.2, Detachment:2.4, Temperance:3.1},
  Diane:  {_:6.1, Duty:8.4, Responsibility:8.1, Accountability:7.6, Temperance:2.2, Patience:2.6, Detachment:3.4},
- Marcus: {_:6.4, Discernment:8.8, Truth:7.9, 'Aesthetic Beauty':9.2, Compassion:2.8, Forgiveness:2.4, Unity:3.3},
- Angela: {_:6.9, Unity:8.4, Nature:8.1, Awareness:7.4, Truth:2.6, Discernment:2.1, Accountability:3.2},
+ Marcus: {_:6.4, Humility:8.8, Truth:7.9, 'Aesthetic Beauty':9.2, Compassion:2.8, Forgiveness:2.4, Unity:3.3},
+ Angela: {_:6.9, Unity:8.4, Nature:8.1, Awareness:7.4, Truth:2.6, Humility:2.1, Accountability:3.2},
  Derek:  {_:4.6, Courage:9.0, Duty:8.3, Responsibility:7.7, Temperance:1.8, 'Non-Harm':2.9, Equanimity:3.1},
  James:  {_:4.4, Accountability:7.8, Truth:6.9, Compassion:1.6, Forgiveness:1.9, Unity:2.2, Transparency:2.4},
  Rosa:   {_:9.6, Presence:10, Equanimity:10, Compassion:10, 'Non-Harm':10, Unity:9.8, Patience:9.9},
@@ -1841,7 +1873,11 @@ var BIRTH={
  James:  {d:'1969-09-27', t:'17:30', p:'Boston, MA'},
  Rosa:   {d:'1965-02-11', t:'03:10', p:'Oaxaca, MX'},
  Ana:    {d:'1979-04-30', t:'20:45', p:'Lisbon, PT'},
- Gordon: {d:'1968-08-05', t:'14:00', p:'Greenwich, CT'}};
+ Gordon: {d:'1968-08-05', t:'14:00', p:'Greenwich, CT'},
+ Tomas:  {d:'1967-11-22', t:'03:55', p:'Chicago, IL'},
+ Nkem:   {d:'1990-09-03', t:'19:10', p:'Boston, MA'},
+ Wren:   {d:'1959-04-17', t:'08:35', p:'Portland, OR'},
+ Abraham:{d:'1951-06-29', t:'11:20', p:'Boulder, CO'}};
 var ZSIGN=[[1,20,'Aquarius','air','fixed'],[2,19,'Pisces','water','mutable'],
  [3,21,'Aries','fire','cardinal'],[4,20,'Taurus','earth','fixed'],
  [5,21,'Gemini','air','mutable'],[6,21,'Cancer','water','cardinal'],

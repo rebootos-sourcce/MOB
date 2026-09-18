@@ -683,7 +683,10 @@ g('19 \u00b7 energetics, the birth module');
  ok(spiritual('Nobody At All')===null,'an unknown name reads null rather than throwing');
  ok(spiritual('You')===null,'and the live profile reads null until birth data exists');
  const PEEPS=Object.keys(BIRTH).filter(k=>BIRTH[k]);
- ok(PEEPS.length===9,'nine reference cases carry birth data, got '+PEEPS.length);
+ /* nine at the rebuild, thirteen since the roster gained four cases at the
+    ends of the scale. The assertion is that every case with a birth record
+    resolves a full reading, not that the roster never grows. */
+ ok(PEEPS.length>=9,'every reference case carries birth data, got '+PEEPS.length);
  let spBad=[];
  PEEPS.forEach(k=>{const sp=spiritual(k);
   if(!sp||!sp.sun||!sp.moon||!sp.rising||!sp.hd||!sp.gk)spBad.push(k);});
@@ -733,6 +736,38 @@ g('19b \u00b7 the empty field says it is empty');
  ok(r1.unread===false,'one held address makes it a reading');
  ok(r1.tier&&r1.tier.length>0,'and the tier means something');
  S.charge.Fear=0; compute();
+}
+
+g('19a \u00b7 the roster covers the scale');
+/* The roster sat in the middle, so the vocabulary at the ends had never been
+   looked at with a real field behind it. Four cases added at the ends on the
+   owner's ruling, solved against compute() by bisection rather than invented:
+   2 and 10 at the floor, 92 and 98 near the ceiling. The pairs are the point.
+   If one word has to carry both 2 and 10, the word is doing no work. */
+{
+ const rd=p=>{
+  S.doms=p.doms?p.doms.slice():[p.dom]; S.arcs=p.arcs?p.arcs.slice():[p.a1,p.a2];
+  S.roots=p.roots?p.roots.slice():[]; buildSoul();
+  CHARGES.forEach(c=>{S.charge[c]=(p.c&&p.c[c])||0; S.replace[c]=(p.rep&&p.rep[c])||0;});
+  const LS=LAWSET[p.nm]||{_:5.5};
+  SINAMES.forEach(l=>S.law[l]=(LS[l]!==undefined)?LS[l]:(LS._!==undefined?LS._:5.5));
+  return compute();};
+ const by={}; PEOPLE.forEach(p=>{by[p.nm]=rd(p);});
+ const near=(n,t)=>ok(Math.abs(by[n].CQ-t)<0.6,n+' reads about '+t+', got '+by[n].CQ.toFixed(1));
+ near('Tomas',2); near('Nkem',10); near('Wren',92); near('Abraham',98);
+ /* the pairs sit inside one band each, which is the test of the vocabulary */
+ ok(by.Tomas.tier===by.Nkem.tier,'2 and 10 are the same word: '+by.Tomas.tier);
+ ok(by.Wren.tier===by.Abraham.tier,'92 and 98 are the same word: '+by.Wren.tier);
+ /* the ends must be real fields, not empty ones */
+ ok(by.Tomas.loaded.length>60,'the floor case is genuinely loaded, got '+by.Tomas.loaded.length);
+ ok(by.Wren.loaded.length>0,'and the ceiling case still carries something, got '+by.Wren.loaded.length);
+ /* six of the seven bands are now covered by a real reference case */
+ const bands={}; PEOPLE.forEach(p=>{bands[by[p.nm].tier]=1;});
+ ok(Object.keys(bands).length>=6,'the roster covers at least six bands, got '+Object.keys(bands).length);
+ /* every new case resolves the cosmological layer too */
+ ['Tomas','Nkem','Wren','Abraham'].forEach(n=>{
+  const sp=E.spiritual(n);
+  ok(sp&&sp.sun&&sp.rising,n+' resolves a full birth reading');});
 }
 
 g('19bb \u00b7 charge under the line is not nothing');
