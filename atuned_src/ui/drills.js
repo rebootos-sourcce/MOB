@@ -344,7 +344,7 @@ function runPoleDrill(end){
   h+='</div><p class="ad-p">They appeared at moments of maximum collective decoherence. '
    +'That is the law of rhythm running at the scale of a civilisation rather than a person.</p>';
  } else {
-  var dk=darkRead(r.malig,r.CQ), circ=circleAt(r.CQ);
+  var dk=darkRead(r.outward,r.CQ), circ=circleAt(r.CQ);
   h+='<div class="pm-eye">The blueprint, where the downward cone ends</div><div class="ad-rows">';
   BLUEPRINT.forEach(function(x){
    h+='<div class="ad-r static" title="'+esc(x.d)+'"><span class="ad-k">'+esc(x.nm)+'</span></div>';});
@@ -358,7 +358,33 @@ function runPoleDrill(end){
   h+='</div>';
   h+='<p class="ad-p">Read as a taxonomy rather than a poem. Each depth is a behaviour at a '
    +'specific compression, and the floor is stasis rather than power: no flow, no movement, '
-   +'nothing completing anywhere.</p>';
+   +'nothing completing anywhere. The pit is a downward triangle and the frozen figure at the '
+   +'point of it is expressing every depth above it outward at once.</p>';
+  /* THE FOUR CORNERS. Two axes, and the fourth corner is the one this
+     material has got wrong for a thousand years. Chaos is not malice. */
+  h+='<div class="pm-eye">Organised or chaotic, benign or malignant</div>'
+   +'<div class="ad-rows">'+GOVERN.map(function(gv){
+     var on=r.gov&&r.gov.nm===gv.nm;
+     return '<div class="ad-r static'+(on?' on':'')+'" title="'+esc(gv.d)+'">'
+      +'<span class="ad-k">'+esc(gv.nm)+'</span>'
+      +'<span class="ad-v">'+(gv.org?'organised':'chaotic')+', '
+      +(gv.mal?'malignant':'benign')+'</span></div>';}).join('')+'</div>'
+   /* NAMES A PATTERN, NEVER A PERSON. The corner describes the shape of what
+      is firing. With nothing firing there is no shape and the surface says
+      that rather than defaulting a quiet field to the top corner. */
+   +'<p class="ad-p">Two measurements, not one twice. <b>Shape</b> is where what is running '
+   +'points, at other people or at the person carrying it. <b>Control</b> is whether the will '
+   +'is directing or the drag is. '
+   +(r.gov
+     ?('What is running here reads <b>'+esc(r.gov.nm.replace(/^The /,''))+'</b>: shape '
+       +Math.round(r.outward*100)+', control '+Math.round((r.organized||0)*100)+'.')
+     :'Nothing is firing that points either way, so there is no shape to read here.')
+   +'</p>'
+   +'<p class="ad-p">A demon is chaos with harm in it. A devil is the same harm organised. '
+   +'A penitent is the same discipline with the person carrying it as the target. Chaos on its '
+   +'own is none of the three, and calling it a demon is the oldest mistake in this material. '
+   +'Angel is not a fifth shape. It is what is left when nothing is running, and it is reached '
+   +'by clearing rather than by having a tidy stack.</p>';
   /* THE DARK READ. Only when both conditions hold, once, with the referral. */
   if(dk.dark){
    h+='<div class="pm-eye">Both at once</div><p class="ad-p">'+esc(dk.say)+'</p>'
@@ -366,13 +392,71 @@ function runPoleDrill(end){
       return '<div class="ad-r static'+(dk.step&&dk.step.nm===d.nm?' on':'')
        +'" title="'+esc(d.d)+'"><span class="ad-k">'+esc(d.nm)+'</span>'
        +'<span class="ad-v">'+esc(d.kind)+'</span></div>';}).join('')+'</div>';
-   if(dk.refer)h+='<p class="ad-p"><b>'+esc(DESCENT_REFER)+'</b></p>';}
+   if(dk.refer)h+='<p class="ad-p"><b>'+esc(DESCENT_REFER)+'</b></p>';
+  h+='<div class="ad-act"><button class="btn" id="rdsee">Start from a sentence</button></div>';}
  }
  rdShell(h);
+ var see=document.getElementById('rdsee');
+ if(see)see.onclick=runRecogniseDrill;
  /* a row opens the axis, both poles and the question a practitioner asks */
  var host=document.getElementById('rdrill');
  if(host)host.querySelectorAll('[data-mirror]').forEach(function(b){
   b.onclick=function(){runMirrorDrill(b.getAttribute('data-mirror'));};});}
+
+/* ============================================================
+   THE ENTRY FRAMEWORK, WHICH IS THE OWNER'S OWN.
+
+   "When I first started getting into my limiting beliefs I didn't
+   have a framework, because I didn't think of myself as bad. So I
+   started looking at the seven deadly sins, Dante's Inferno, and
+   the psychological behaviour description of the Inferno as a
+   layer."
+
+   That is the discovery problem this product has, solved once
+   already by the person who has it. Nobody ticks a box that says
+   narcissist. Everybody recognises a sentence about themselves.
+   Nine sentences, plain, first person, no diagnosis in any of
+   them, and each one routes to a seat that already has addresses
+   at it.
+   ============================================================ */
+function runRecogniseDrill(){
+ var h='<div class="pm-eye">Where to start</div>'
+  +'<div class="ad-nm">Nine sentences</div>'
+  +'<p class="ad-p">None of these is a diagnosis and none of them is about being a bad '
+  +'person. They are descriptions of things that run. Read them and notice which ones you '
+  +'recognise. The one you would rather skip is usually the one.</p>'
+  +'<div class="ad-rows">';
+ CIRCLES.forEach(function(c){
+  h+='<button type="button" class="ad-r" data-circ="'+c.c+'" title="'+esc(c.p)+'">'
+   +'<span>'+esc(c.see)+'</span>'
+   +'<em>'+esc(c.sin||c.nm)+'</em></button>';});
+ h+='</div><p class="ad-p">Each one has a body address behind it, which is where the work '
+  +'happens. The name on the right is what people called the pattern for eight hundred years '
+  +'before anybody measured it.</p>';
+ rdShell(h);
+ var host=document.getElementById('rdrill');
+ if(host)host.querySelectorAll('[data-circ]').forEach(function(b){
+  b.onclick=function(){runCircleDrill(+b.getAttribute('data-circ'));};});}
+/* one depth, what it is, where it sits, and the way out of it */
+function runCircleDrill(n){
+ var c=CIRCLES.filter(function(x){return x.c===n;})[0]; if(!c)return;
+ var seat=(c.at.match(/Crown|Sacral|Solar|Root|Third eye|Heart|Throat/i)||[''])[0];
+ seat=seat?seat.replace(/^Third eye$/i,'3rd Eye'):'';
+ seat=BANDS.indexOf(seat)>=0?seat:(BANDS.indexOf(seat.replace(/^\w/,function(m){return m.toUpperCase();}))>=0?seat:'');
+ var h='<div class="pm-eye">Depth '+c.c+(c.sin?', '+esc(c.sin.toLowerCase()):'')+'</div>'
+  +'<div class="ad-nm">'+esc(c.nm)+'</div>'
+  +'<div class="ad-sub">'+esc(c.by)+'</div>'
+  +'<div class="pm-eye">What you might recognise</div><p class="ad-p">'+esc(c.see)+'</p>'
+  +'<div class="pm-eye">What it is</div><p class="ad-p">'+esc(c.p)+'</p>'
+  +'<div class="pm-eye">Where it sits</div><p class="ad-p">'+esc(c.at)+'.</p>';
+ if(seat){
+  var grp=W.filter(function(x){return x.b===seat;}).sort(function(a,b){return b.sq-a.sq;}).slice(0,5);
+  if(grp.length){
+   h+='<div class="pm-eye">The addresses there</div><div class="ad-rows">'
+    +grp.map(function(x){return addrRow(x);}).join('')+'</div>';}}
+ h+='<p class="ad-p">The governor is a name for the pattern, not a person and not a thing '
+  +'that exists. It is still recognisable because the pattern is still running.</p>';
+ rdShell(h);}
 
 /* one axis, both ends, and the question that tells them apart */
 function runMirrorDrill(k){

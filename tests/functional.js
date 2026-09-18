@@ -525,7 +525,7 @@ const pole=await page.evaluate(()=>{
  const row=document.querySelector('#rdrill [data-mirror]');
  o.rows=document.querySelectorAll('#rdrill [data-mirror]').length;
  if(row){row.click(); o.axis=txt();}
- const r=compute(); o.cq=Math.round(r.CQ); o.dark=darkRead(r.malig,r.CQ).dark;
+ const r=compute(); o.cq=Math.round(r.CQ); o.dark=darkRead(r.outward,r.CQ).dark;
  /* and a coherent field is never shown it. built rather than assumed: four
     hundred checks have run against this page and persona zero is not
     guaranteed to still be empty. */
@@ -535,7 +535,7 @@ const pole=await page.evaluate(()=>{
  toYou(); render();
  const rc=compute();
  o.cleanCQ=Math.round(rc.CQ); o.cleanMal=Math.round(rc.malig);
- o.cleanDark=darkRead(rc.malig,rc.CQ).dark;
+ o.cleanDark=darkRead(rc.outward,rc.CQ).dark;
  runPoleDrill('dn'); o.clean=txt();
  undoPop();
  return o;});
@@ -562,6 +562,36 @@ ok(pole.cleanDark===false,'a cleared field does not read as the descent, CQ '
  +pole.cleanCQ+' malignant '+pole.cleanMal);
 ok(!/licensed clinician/.test(pole.clean),'and is never shown the referral');
 ok(!/Both at once/.test(pole.clean),'nor the descent read');
+/* THE FOUR CORNERS, and the one thing the surface must never do. A corner
+   describes the shape of what is firing. The first build let a field at CQ 39
+   read Angel because its stack all pointed inward, which is wrong twice. */
+ok(/The Devil/.test(pole.dn)&&/The Demon/.test(pole.dn)&&/The Storm/.test(pole.dn)
+ &&/The Penitent/.test(pole.dn),'all four stack corners are on the surface');
+ok(/oldest mistake in this material/.test(pole.dn),
+ 'and the surface says that chaos is not malice');
+ok(/reached by clearing rather than by having a tidy stack/.test(pole.dn),
+ 'and that angel is not a corner of the stack');
+ok(/What is running here reads|no shape to read/.test(pole.dn),
+ 'the corner is phrased about what is running, never about the person');
+/* the recognition lens, which is the owner's own entry framework */
+const seen=await page.evaluate(()=>{
+ const txt=()=>(document.getElementById('rdrill').textContent||'').replace(/\s+/g,' ');
+ loadP(8); setTab(TAB.FIELD); render();
+ runRecogniseDrill();
+ const o={n:document.querySelectorAll('#rdrill [data-circ]').length, see:txt()};
+ const first=document.querySelector('#rdrill [data-circ]');
+ if(first){first.click(); o.one=txt();}
+ return o;});
+ok(seen.n===9,'nine sentences to start from, got '+seen.n);
+ok(/^I |\bI /.test(seen.see),'written in the first person');
+ok(/none of them is about being a bad person/i.test(seen.see),
+ 'and saying plainly that none of it is about being a bad person');
+ok(!/narcissis|psychopath|saboteur/i.test(seen.see),
+ 'no diagnosis word appears on the sentence list');
+ok(/What you might recognise/.test(seen.one)&&/Where it sits/.test(seen.one),
+ 'a sentence opens what it is and where it sits');
+ok(/not a person and not a thing that exists/.test(seen.one),
+ 'and says the governor is a name for a pattern');
 /* the roster itself is always there. only the descent read is conditional. */
 ok(/Satan frozen/.test(pole.clean),'while the nine circles stay readable to anybody');
 

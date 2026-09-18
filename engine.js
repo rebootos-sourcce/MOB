@@ -435,15 +435,15 @@ const BLUEPRINT=[
    Dante and persist now. They are still recognisable because the
    patterns are still running." */
 const CIRCLES=[
- {c:1, nm:'Limbo',      by:'Charon',     p:'Disbelief. Spiritual bypass through rationalism. Nothing is felt, nothing is trusted.', at:'Crown to heart circuit never completed'},
- {c:2, nm:'Lust',       by:'Minos',      p:'Narcissism. Grandiose entitlement. The narcissist appoints himself arbiter of all things.', at:'Sacral, desire looping without ground'},
- {c:3, nm:'Gluttony',   by:'Cerberus',   p:'Consumption as substitution. Appetite replacing connection. Each mouth feeds and none is filled.', at:'Solar collapse driving upward into the oral circuit'},
- {c:4, nm:'Greed',      by:'Plutus',     p:'Scarcity identity. Accumulation as self proof. Worth measured in possession.', at:'Root locked in survival frequency'},
- {c:5, nm:'Wrath and sloth', by:'Phlegyas', p:'Two exits for one suppressed charge. Wrath outward as attack, sloth inward as shutdown. Same origin.', at:'Solar, the fight or freeze split'},
- {c:6, nm:'Heresy',     by:'The Furies', p:'Ideological decoherence. Belief replacing direct experience. Doctrine as identity armour.', at:'Third eye locked, perception distorted by installed narrative'},
- {c:7, nm:'Violence',   by:'Minotaur',   p:'Against others, against the self, against order. The pattern has escaped containment.', at:'Full system, no single anchor'},
- {c:8, nm:'Fraud',      by:'Geryon',     p:'Beautiful surface, serpentine beneath. Shine without a light source. The mask has become the entire operating system.', at:'Heart inverted, warmth performed rather than generated'},
- {c:9, nm:'Treachery',  by:'Satan frozen',p:'Complete inversion. No flow, no movement, maximum resistance. Stasis at terminal velocity, not active evil.', at:'Full system locked, no circuit completing anywhere'}];
+ {c:1, nm:'Limbo',      by:'Charon',     sin:'', see:'I do not really believe any of this works, and I am here anyway.', p:'Disbelief. Spiritual bypass through rationalism. Nothing is felt, nothing is trusted.', at:'Crown to heart circuit never completed'},
+ {c:2, nm:'Lust',       by:'Minos',      sin:'Lust', see:'I need to be wanted, and I arrange things so that I am.', p:'Narcissism. Grandiose entitlement. The narcissist appoints himself arbiter of all things.', at:'Sacral, desire looping without ground'},
+ {c:3, nm:'Gluttony',   by:'Cerberus',   sin:'Gluttony', see:'I consume something every time I feel the gap, and the gap is still there.', p:'Consumption as substitution. Appetite replacing connection. Each mouth feeds and none is filled.', at:'Solar collapse driving upward into the oral circuit'},
+ {c:4, nm:'Greed',      by:'Plutus',     sin:'Greed', see:'I measure how I am doing by what I have managed to keep.', p:'Scarcity identity. Accumulation as self proof. Worth measured in possession.', at:'Root locked in survival frequency'},
+ {c:5, nm:'Wrath and sloth', by:'Phlegyas', sin:'Wrath and sloth', see:'I either go off, or I go flat. There is not much in between.', p:'Two exits for one suppressed charge. Wrath outward as attack, sloth inward as shutdown. Same origin.', at:'Solar, the fight or freeze split'},
+ {c:6, nm:'Heresy',     by:'The Furies', sin:'Pride', see:'I already know how this works, and I stop listening once I have decided.', p:'Ideological decoherence. Belief replacing direct experience. Doctrine as identity armour.', at:'Third eye locked, perception distorted by installed narrative'},
+ {c:7, nm:'Violence',   by:'Minotaur',   sin:'Wrath', see:'Something in me wants to break it, and sometimes that something is me.', p:'Against others, against the self, against order. The pattern has escaped containment.', at:'Full system, no single anchor'},
+ {c:8, nm:'Fraud',      by:'Geryon',     sin:'Envy', see:'What people meet is a version I run. It costs me nothing to be warm at them.', p:'Beautiful surface, serpentine beneath. Shine without a light source. The mask has become the entire operating system.', at:'Heart inverted, warmth performed rather than generated'},
+ {c:9, nm:'Treachery',  by:'Satan frozen',sin:'', see:'I went against someone who trusted me, and I have not moved since.', p:'Complete inversion. No flow, no movement, maximum resistance. Stasis at terminal velocity, not active evil.', at:'Full system locked, no circuit completing anywhere'}];
 
 /* ---- THE BEHAVIOURAL CASCADE ----
    Six named states between early decoherence and full fragmentation. */
@@ -493,8 +493,12 @@ function mirrorAt(seatLoad, seatIg){
    says so once, with the referral attached, and never as a label on
    a person. */
 const DARK_MAL=0.55, DARK_CQ=31;
-function darkRead(malig, CQ){
- var mal=clamp((malig||0)/100,0,1);
+function darkRead(outward, CQ){
+ /* outward is the shape axis, nought to one, and CQ is the coherence axis.
+    Two measurements, not one twice. An unreadable shape is never dark. */
+ if(outward===null||outward===undefined)
+  return {mal:null,cq:Math.round(CQ),dark:false,step:null,refer:false,say:''};
+ var mal=clamp(outward,0,1);
  var dark=(mal>=DARK_MAL)&&(CQ<DARK_CQ);
  return {mal:Math.round(mal*100), cq:Math.round(CQ),
   dark:dark,
@@ -510,6 +514,84 @@ function circleAt(CQ){
  if(q>=41)return null;                 /* above the median band nothing is descending */
  var i=Math.min(8,Math.floor((41-q)/41*9));
  return CIRCLES[i];}
+
+/* ============================================================
+   ORGANISED OR CHAOTIC, BENIGN OR MALIGNANT.
+
+   The owner's model, and it is two axes rather than a ladder.
+
+     Demon   chaos. out of control. the pattern is running the
+             person and there is no gap between stimulus and
+             response.
+     Devil   organised, and malignant. not reactive, strategic.
+             awareness is present and deployed against coherence.
+     Angel   organised, and benign. a universal expression taken
+             to the maximum, which is exactly what the coherent
+             pole of a mirror pair is.
+
+   His point about the fourth corner is the one that matters most
+   to build correctly. "If this were religious times back in the
+   twelfth century, the homeless people on the street who would
+   just seem crazy, they would be considered demons. Because they
+   are out of control." That is the misread the product must not
+   repeat. Chaos is not malice. A person whose system is
+   discharging with nothing aimed at anybody is not a demon, and
+   naming them one is the oldest mistake in this material.
+
+   So the fourth corner has a name of its own and the product uses
+   it: the storm.
+   ============================================================ */
+const GOVERN=[
+ {nm:'The Devil',    org:true,  mal:true,  stack:true,
+  d:'Organised and malignant. Not reactive, strategic. Awareness is present and deployed against coherence rather than in service of it.'},
+ {nm:'The Demon',    org:false, mal:true,  stack:true,
+  d:'Chaos with harm in it. The pattern is running the person. No gap between stimulus and response, and no recognition available while it runs.'},
+ {nm:'The Penitent', org:true,  mal:false, stack:true,
+  d:'Organised, and pointed at the person carrying it. The harm is real and deliberate and none of it is aimed outward. Discipline spent on the self as the target rather than the instrument.'},
+ {nm:'The Storm',    org:false, mal:false, stack:true,
+  d:'Chaos with nothing aimed at anybody. A system discharging without direction. This corner is the one mistaken for a demon for a thousand years, and it is the one that needs help rather than a name.'},
+ {nm:'Angel',        org:true,  mal:false, stack:false,
+  d:'One quality carried to its maximum in service of something, with nothing decoherent running underneath it. This is the coherent pole of a mirror axis rather than a fifth kind of thing, which is why the twelve read as angels and nobody reaches it by having a tidy stack.'}];
+const GOV_ORG=0.5, GOV_MAL=0.5, GOV_ANGEL=71;
+/* outward is the share of the firing stack that runs at other people, and
+   organised is whether the will is directing or the drag is. Both nought to
+   one, both read from the field, neither asked. */
+function quadrant(outward,organized,CQ){
+ /* NULL IS AN ANSWER, and Angel is not a corner of the stack.
+
+    The first build had four corners over the firing stack, with organised
+    and inward reading as Angel. That named a field at CQ 39 an angel, which
+    is wrong twice: a stack pointed at the person carrying it is not benign,
+    it is aimed at them, and an angel is a quality carried to its maximum
+    rather than an absence of harm.
+
+    So the stack has four corners and none of them is Angel. Angel is what is
+    left when nothing decoherent is running at all and coherence is high,
+    which is the coherent pole of a mirror axis and is reached by clearing,
+    never by having a tidy stack. */
+ if(outward===null||outward===undefined)
+  return (CQ!==undefined&&CQ!==null&&CQ>=GOV_ANGEL)?GOVERN[4]:null;
+ var mal=outward>=GOV_MAL, org=(organized||0)>=GOV_ORG;
+ for(var i=0;i<GOVERN.length;i++)
+  if(GOVERN[i].stack&&GOVERN[i].org===org&&GOVERN[i].mal===mal)return GOVERN[i];
+ return GOVERN[3];}
+/* Which families run at other people. Predatory and Grandiosity extract, and
+   Mania is Collapse turned outward. Everything else lands on the person
+   carrying it. Rigidity and Dysregulation are neither, so they are counted in
+   the denominator and not in the numerator: a field made only of those is not
+   malignant and must not read as half malignant. */
+const FAM_OUT={Predatory:1,Grandiosity:1,Mania:1};
+const FAM_IN={Collapse:1,Dissociation:1,'Self-erasure':1,Enabling:1,Numbness:1};
+function outwardShare(stack){
+ var out=0,tot=0;
+ (stack||[]).forEach(function(x){
+  var w=x.w||0; if(w<=0)return;
+  if(FAM_OUT[x.hcx]){out+=w;tot+=w;}
+  else if(FAM_IN[x.hcx]){tot+=w;}});
+ /* null rather than nought: a field with nothing pointed either way has an
+    unreadable shape, not a benign one. */
+ return tot<=0?null:out/tot;}
+
 
 /* ============================================================
    EXPRESSION · the third scale type. Not bipolar. There is no
@@ -1737,6 +1819,22 @@ function compute(){
     arithmetic is built on, but the fact that there is charge underneath it is
     now reportable instead of invisible. */
  const under=W.filter(function(n){return n.sq>0&&n.sq<4;}).length;
+ /* benign and malig were CQ restated: malig was (50 minus CQ) doubled, so a
+    surface asking whether a field was malignant AND decoherent was asking one
+    question twice and could never get a no from one and a yes from the other.
+    The owner's model needs two independent axes, so there are two now.
+
+    SHAPE. Where the firing stack points. Predatory and Grandiosity run at
+    other people, and Mania is Collapse turned outward. The rest lands on the
+    person carrying it. This is the axis the book calls malignancy, and its
+    threshold is the book's: harm to others becoming instrumental.
+
+    CONTROL. Whether the will is directing or the drag is. Organised against
+    chaotic, which is the difference between the devil and the demon.
+
+    benign and malig keep their old meaning and their old callers, because
+    they are the coherence read and several surfaces already print them. They
+    are just no longer pretending to be a second axis. */
  const benign=CQ>=50,malig=benign?0:Math.round((50-CQ)/50*100);
  const X=clamp((1-S.charge.Apathy/10)*.3+(1-clamp(DQraw/14,0,1))*.7,0,1);
  const Y=clamp((It/10)*.6+(1-dist/10)*.4,0,1);
@@ -1753,8 +1851,13 @@ function compute(){
  BANDS.forEach(b=>{const gp=W.filter(n=>n.b===b),v=gp.reduce((a,n)=>a+n.sq,0)/gp.length;
   if(v>darkV){darkV=v;darkB=b;}});
  let weakL=SI[0];SI.forEach(l=>{if(S.law[l.nm]<S.law[weakL.nm])weakL=l;});
+ /* the two real axes, and the corner they land in */
+ const outward=outwardShare(sabs.concat(cxs).concat(hys));
+ const organized=(will+drag)<=0?0.5:clamp(will/(will+drag),0,1);
+ const gov=quadrant(outward,organized,CQ);
  return {loaded,sabs,cxs,hys,sups,maskRing,DQ:DQraw,Rz,vf:_vf,SQm,poleMean,JQ,excess,
   FAM_POLE,dist,Ig,It,CQ,tier,unread,measured,under,benign,malig,X,Y,Z,radiance,aff:af,pi,si,dch,steer,
+  outward,organized,gov,
   will,drag,mask,darkB,darkV,root,rootsIn,weakL,balance:balance()};
 }
 
@@ -2945,6 +3048,8 @@ if(typeof module!=='undefined'&&module.exports){
                  CASCADE:CASCADE, DESCENT:DESCENT, DESCENT_REFER:DESCENT_REFER,
                  mirrorAt:mirrorAt, darkRead:darkRead, circleAt:circleAt,
                  DARK_MAL:DARK_MAL, DARK_CQ:DARK_CQ,
+                 GOVERN:GOVERN, quadrant:quadrant, outwardShare:outwardShare,
+                 FAM_OUT:FAM_OUT, FAM_IN:FAM_IN, GOV_ORG:GOV_ORG, GOV_MAL:GOV_MAL, GOV_ANGEL:GOV_ANGEL,
   /* labels */   TIERDEF:TIERDEF, TIER_BY:TIER_BY, tierOf:tierOf,
                  MEDIAN:MEDIAN, MEDIAN_LO:MEDIAN_LO, MEDIAN_HI:MEDIAN_HI,
                  medianRange:medianRange, tierTop:tierTop, tierRange:tierRange,

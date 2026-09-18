@@ -157,6 +157,22 @@ function compute(){
     arithmetic is built on, but the fact that there is charge underneath it is
     now reportable instead of invisible. */
  const under=W.filter(function(n){return n.sq>0&&n.sq<4;}).length;
+ /* benign and malig were CQ restated: malig was (50 minus CQ) doubled, so a
+    surface asking whether a field was malignant AND decoherent was asking one
+    question twice and could never get a no from one and a yes from the other.
+    The owner's model needs two independent axes, so there are two now.
+
+    SHAPE. Where the firing stack points. Predatory and Grandiosity run at
+    other people, and Mania is Collapse turned outward. The rest lands on the
+    person carrying it. This is the axis the book calls malignancy, and its
+    threshold is the book's: harm to others becoming instrumental.
+
+    CONTROL. Whether the will is directing or the drag is. Organised against
+    chaotic, which is the difference between the devil and the demon.
+
+    benign and malig keep their old meaning and their old callers, because
+    they are the coherence read and several surfaces already print them. They
+    are just no longer pretending to be a second axis. */
  const benign=CQ>=50,malig=benign?0:Math.round((50-CQ)/50*100);
  const X=clamp((1-S.charge.Apathy/10)*.3+(1-clamp(DQraw/14,0,1))*.7,0,1);
  const Y=clamp((It/10)*.6+(1-dist/10)*.4,0,1);
@@ -173,8 +189,13 @@ function compute(){
  BANDS.forEach(b=>{const gp=W.filter(n=>n.b===b),v=gp.reduce((a,n)=>a+n.sq,0)/gp.length;
   if(v>darkV){darkV=v;darkB=b;}});
  let weakL=SI[0];SI.forEach(l=>{if(S.law[l.nm]<S.law[weakL.nm])weakL=l;});
+ /* the two real axes, and the corner they land in */
+ const outward=outwardShare(sabs.concat(cxs).concat(hys));
+ const organized=(will+drag)<=0?0.5:clamp(will/(will+drag),0,1);
+ const gov=quadrant(outward,organized,CQ);
  return {loaded,sabs,cxs,hys,sups,maskRing,DQ:DQraw,Rz,vf:_vf,SQm,poleMean,JQ,excess,
   FAM_POLE,dist,Ig,It,CQ,tier,unread,measured,under,benign,malig,X,Y,Z,radiance,aff:af,pi,si,dch,steer,
+  outward,organized,gov,
   will,drag,mask,darkB,darkV,root,rootsIn,weakL,balance:balance()};
 }
 

@@ -1035,18 +1035,82 @@ g('21 \u00b7 the compass. two cones, eight axes, a descent');
  ok(mirrorAt(5,5)>0&&mirrorAt(5,5)<100,'and everybody else is somewhere between them');
 
  /* THE DARK READ. malignant alone is not it, decoherent alone is not it. */
- ok(darkRead(90,70).dark===false,'a malignant shape in a coherent field is not the descent');
- ok(darkRead(10,5).dark===false,'and a decoherent field with a benign shape is not either');
- ok(darkRead(90,5).dark===true,'the two together is');
- ok(darkRead(90,5).refer===true,'and at the floor it refers out');
- ok(darkRead(90,5).step&&darkRead(90,5).step.refer===true,'to the step that says so');
+ ok(darkRead(0.9,70).dark===false,'a malignant shape in a coherent field is not the descent');
+ ok(darkRead(0.1,5).dark===false,'and a decoherent field with a benign shape is not either');
+ ok(darkRead(0.9,5).dark===true,'the two together is');
+ ok(darkRead(0.9,5).refer===true,'and at the floor it refers out');
+ ok(darkRead(0.9,5).step&&darkRead(0.9,5).step.refer===true,'to the step that says so');
  ok(/licensed clinician/.test(DESCENT_REFER),'the referral names a clinician');
  ok(DESCENT.length===3&&DESCENT[2].refer===true,'three steps and the last is not ours to work');
  /* never a label on a person. the sentence has to say what it is a reading of. */
- ok(/not of who is running it/.test(darkRead(90,5).say),
+ ok(/not of who is running it/.test(darkRead(0.9,5).say),
   'and the dark read says it is a reading of what runs, not of the person');
- ok(darkRead(90,70).say==='','while a field that is not there is told nothing');
+ ok(darkRead(0.9,70).say==='','while a field that is not there is told nothing');
  ok(DARK_MAL>0&&DARK_MAL<1&&DARK_CQ>0,'both conditions carry a named threshold');
+
+ /* ---- THE FOUR CORNERS ----
+    Organised or chaotic, benign or malignant. Two axes, and the fourth corner
+    is the one the material has got wrong for a thousand years. */
+ const {GOVERN,quadrant,outwardShare,FAM_OUT,FAM_IN,GOV_ORG,GOV_MAL}=E;
+ ok(GOVERN.length===5,'four corners over the stack and one above it, got '+GOVERN.length);
+ ok(GOVERN.filter(g=>g.stack).length===4,'four of them describe a firing stack');
+ ok(GOVERN.every(g=>g.d&&g.d.length>60),'each one carries what it is');
+ ok(quadrant(0.9,0.9,20).nm==='The Devil','organised and malignant is the devil');
+ ok(quadrant(0.9,0.1,20).nm==='The Demon','chaotic and malignant is the demon');
+ ok(quadrant(0.1,0.9,20).nm==='The Penitent','organised and pointed at the carrier is the penitent');
+ ok(quadrant(0.1,0.1,20).nm==='The Storm','and chaotic with nothing aimed at anybody is the storm');
+ /* ANGEL IS NOT A CORNER OF THE STACK. It is what is left when nothing
+    decoherent runs and coherence is high, which is reached by clearing and
+    never by having a tidy stack. The first build named a field at CQ 39 an
+    angel because its saboteurs all pointed inward. */
+ ok(GOVERN.filter(g=>g.nm==='Angel')[0].stack===false,'angel is not one of the four');
+ ok(quadrant(0.1,0.9,39).nm!=='Angel','a loaded field is never named an angel');
+ ok(quadrant(null,0.9,95).nm==='Angel','a clear field at height is');
+ ok(quadrant(null,0.9,39)===null,'and a clear field that is not is nothing at all');
+ /* the ruling that matters. chaos is not malice, and the product must not
+    call a person in distress a demon because their system is discharging. */
+ ok(quadrant(0,0,20).nm!=='The Demon','chaos alone is never named a demon');
+ const storm=GOVERN.filter(g=>g.nm==='The Storm')[0];
+ ok(/mistaken for a demon/.test(storm.d),'and the storm says so in its own definition');
+ ok(/coherent pole/.test(GOVERN.filter(g=>g.nm==='Angel')[0].d),
+  'the angel is the coherent pole of an axis, not a separate kind of thing');
+ /* the corners are exhaustive: every pair of truth values has exactly one */
+ [[true,true],[true,false],[false,true],[false,false]].forEach(function(p){
+  const hit=GOVERN.filter(g=>g.stack&&g.org===p[0]&&g.mal===p[1]);
+  ok(hit.length===1,'exactly one corner for organised '+p[0]+' malignant '+p[1]
+   +', got '+hit.length);});
+
+ /* ---- THE SHAPE AXIS IS REAL AND NOT COHERENCE RESTATED ---- */
+ /* NULL IS AN ANSWER, and this is the fix that stopped a field at CQ 39
+    being named an angel. No stack, or a stack aimed at nobody, means the
+    shape is unreadable rather than benign. */
+ ok(outwardShare([])===null,'an empty stack has no readable shape');
+ ok(quadrant(null,0.9,20)===null,'and no shape at low coherence means no corner');
+ ok(quadrant(outwardShare([{hcx:'Rigidity',w:9}]),1,20)===null,
+  'a stack aimed at nobody is not quietly promoted to the top corner');
+ ok(darkRead(null,3).dark===false&&darkRead(null,3).mal===null,
+  'and an unreadable shape is never dark, whatever the coherence');
+ ok(outwardShare([{hcx:'Predatory',w:5}])===1,'a stack that runs at people is all outward');
+ ok(outwardShare([{hcx:'Collapse',w:5}])===0,'one that lands on the carrier is none');
+ ok(Math.abs(outwardShare([{hcx:'Predatory',w:5},{hcx:'Collapse',w:5}])-0.5)<1e-9,
+  'and an even split is a half');
+ /* a field made only of the neither families must not read as half malignant */
+ ok(outwardShare([{hcx:'Rigidity',w:9},{hcx:'Dysregulation',w:9}])===null,
+  'families that aim at nobody read as unreadable, not as benign');
+ ok(!FAM_OUT.Collapse&&!FAM_IN.Predatory,'and the two lists never overlap');
+ ok(GOV_ORG>0&&GOV_ORG<1&&GOV_MAL>0&&GOV_MAL<1,'both corners carry a named threshold');
+
+ /* THE DEFECT THIS REPLACED. malig was (50 minus CQ) doubled, so asking
+    whether a field was malignant and decoherent asked one question twice.
+    The two axes must be able to disagree, or the owner's rule says nothing. */
+ reset(0,0,10); const hi=compute();
+ reset(10,0,0); const lo=compute();
+ ok(hi.outward===null||typeof hi.outward==='number','a clear field reports a shape or none');
+ ok(lo.outward===null||typeof lo.outward==='number','and so does a loaded one');
+ ok(hi.gov===null||!!hi.gov.nm,'a corner is a corner or it is absent');
+ ok(lo.gov===null||!!lo.gov.nm,'at both ends of the scale');
+ ok(darkRead(0.9,70).dark===false&&darkRead(0.2,5).dark===false&&darkRead(0.9,5).dark===true,
+  'and the pair can disagree in both directions, which is the whole point');
 
  /* the descent is below the median band and nowhere else */
  ok(circleAt(80)===null&&circleAt(41)===null,'nothing descends at or above the median range');

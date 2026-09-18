@@ -90,6 +90,119 @@ is never shown the referral and that the nine circles stay readable to anybody.
 
 ---
 
+## 1b. Built. Organised or chaotic, benign or malignant
+
+The distinction that came out of this pass is two axes, not a ladder, and it is
+the most useful thing said about this material so far.
+
+> Demon just means chaos. Devil means organised, but malignant. Angel simply
+> means organised and benign, or universal expressions, they tend to take one
+> to the max.
+
+**Two measurements that can disagree, which is the whole point.**
+
+    shape     where what is running points. at other people, or at the
+              person carrying it. Predatory and Grandiosity run outward
+              and Mania is Collapse turned outward. everything else lands
+              on the carrier.
+    control   whether the will is directing or the drag is.
+
+**A defect this exposed, and it was load bearing.** `benign` and `malig` in
+`compute` were coherence restated: `malig` was fifty minus CQ, doubled. So a
+surface asking whether a field was malignant AND decoherent was asking one
+question twice and could never get a yes from one and a no from the other. The
+owner's rule says nothing at all under that arithmetic. Shape is now measured
+from where the firing stack points, which is independent of coherence and can
+disagree with it in both directions. `benign` and `malig` keep their old
+meaning and their old callers; they have just stopped pretending to be a second
+axis.
+
+**Four corners over the stack, and Angel is not one of them.**
+
+| | organised | chaotic |
+|---|---|---|
+| **outward** | The Devil | The Demon |
+| **inward** | The Penitent | The Storm |
+
+The first build had Angel in the organised and benign corner, and it named a
+field at CQ 39 an angel because that person's saboteurs all pointed inward.
+Wrong twice. A stack aimed at the person carrying it is not benign, it is aimed
+at them. And an angel is a quality carried to its maximum, not an absence of
+harm. So Angel sits above the table: nothing decoherent running and coherence
+high, which is the coherent pole of a mirror axis and is reached by clearing
+rather than by having a tidy stack.
+
+**The corner the whole distinction exists to protect.**
+
+> If this were religious times back in the twelfth century, the homeless people
+> on the street who would just seem crazy, they would be considered demons.
+> Because they are out of control.
+
+That is the misread, and the product must not repeat it. Chaos is not malice. A
+person whose system is discharging with nothing aimed at anybody is in the
+storm, and the storm needs help rather than a name. Gated: chaos alone can
+never be named a demon, and the storm carries the reason in its own definition.
+
+**Where the roster lands.** Rosa, Wren and Abraham read Angel. Sofia and Marcus
+read Penitent, which is the correct and uncomfortable reading of a disciplined
+person whose harm is pointed at themselves. Diane, Derek, James, Tomas, Nkem and
+Gordon are in the storm. Angela and Ana are demons by shape.
+
+**Nobody is the Devil, and that is a hole in the roster rather than a win.**
+Organised plus outward is rare and it is exactly the configuration a
+practitioner most needs to recognise before it is in front of them. A reference
+case would need writing deliberately, and writing a convincing manipulator as a
+persona is a decision rather than a task. **His.**
+
+**The name Penitent is mine and is the weakest thing in this pass.** It needs to
+say organised, deliberate, and aimed at the self, without reaching for a
+wellness word or colliding with Martyrdom, which is already a node, or
+Self-erasure, which is already a family pole. **Open.**
+
+---
+
+## 1c. Built. The Inferno as the way in
+
+The owner's own account of how he found his limiting beliefs, and it solves the
+discovery problem this product has:
+
+> When I first started getting into my limiting beliefs I didn't have a
+> framework, because I didn't think of myself as bad. So I started looking at
+> the seven deadly sins, Dante's Inferno, and the psychological behaviour
+> description of the Inferno as a layer.
+
+Nobody ticks a box that says narcissist. Everybody recognises a sentence about
+themselves. So the nine circles carry a first person sentence each, no diagnosis
+word anywhere in the list, and each one routes to the seat the codex gives it
+and then to the addresses actually loaded there.
+
+    I do not really believe any of this works, and I am here anyway.
+    I need to be wanted, and I arrange things so that I am.
+    I consume something every time I feel the gap, and the gap is still there.
+    I measure how I am doing by what I have managed to keep.
+    I either go off, or I go flat. There is not much in between.
+    I already know how this works, and I stop listening once I have decided.
+    Something in me wants to break it, and sometimes that something is me.
+    What people meet is a version I run. It costs me nothing to be warm at them.
+    I went against someone who trusted me, and I have not moved since.
+
+The deadly sin sits on the right of each row as the name people used for eight
+hundred years before anybody measured it. The governor opens with what it is,
+where it sits, and the addresses loaded at that seat, with the standing note
+that a governor is a name for a pattern and not a thing that exists.
+
+This is the strongest candidate the product has for the opening of the quiz. It
+talks to pain, it has stakes, and it never once calls anybody bad. Gated: nine
+sentences, first person, and no diagnosis word on the list.
+
+**The pit is a downward triangle**, which is the same downward triangle as the
+Purpose Map's earthly triangle. The frozen figure at its point is expressing
+every depth above it outward at once. That echo is in the copy and is worth
+drawing when the volumetric compass is built, because the two cones and the two
+triangles are the same figure at two scales.
+
+---
+
 ## 2. Specified. The compass with volume
 
 The ask: a detailed rendered compass you can spin, so what is at stake is

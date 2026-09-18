@@ -475,3 +475,57 @@ Discord, beehiiv, or beehiiv for accounts and Discord for the room. It matters
 before the invite mechanic is built, because the twenty five patterns attach to
 whichever one holds the accounts.
 
+## Organised or chaotic, benign or malignant. Ruled
+
+> Demon just means chaos. Devil means organised, but malignant. Angel simply
+> means organised and benign, or universal expressions, they tend to take one
+> to the max.
+
+Two axes, and they must be able to disagree. Shape is where what is running
+points, at other people or at the person carrying it. Control is whether the
+will is directing or the drag is.
+
+    outward + organised   The Devil
+    outward + chaotic     The Demon
+    inward  + organised   The Penitent
+    inward  + chaotic     The Storm
+
+Angel is not a corner of the stack. It is what is left when nothing decoherent
+is running and coherence is high, which is the coherent pole of a mirror axis,
+reached by clearing and never by having a tidy stack. The first build had Angel
+in the inward and organised corner and named a field at CQ 39 an angel.
+
+**The storm is the corner the distinction exists to protect.** A person whose
+system is discharging with nothing aimed at anybody is not a demon. Calling
+them one is the oldest mistake in this material and the product does not repeat
+it. Gated.
+
+**None of the four is a kind of person.** They describe the shape of what is
+running, and the copy says so.
+
+Open: the name Penitent, which is mine and is the weakest thing here. And a
+reference case for the Devil, since nobody in the roster is organised and
+outward, and that is the configuration a practitioner most needs to recognise.
+Writing a convincing manipulator as a persona is a decision rather than a task.
+
+## The Inferno is the way in. Ruled by example
+
+> When I first started getting into my limiting beliefs I didn't have a
+> framework, because I didn't think of myself as bad. So I started looking at
+> the seven deadly sins, Dante's Inferno, and the psychological behaviour
+> description of the Inferno as a layer.
+
+Nobody ticks a box that says narcissist. Everybody recognises a sentence about
+themselves. So the nine circles each carry a first person sentence, no
+diagnosis word appears on the list, and each routes to the seat and then to the
+addresses actually loaded there. The deadly sin sits on the right as the name
+people used before anybody measured it.
+
+This is the strongest candidate the product has for the opening of the quiz. It
+talks to pain, it carries stakes, and it never calls anybody bad.
+
+**The pit is a downward triangle**, the same downward triangle as the Purpose
+Map's earthly one, and the frozen figure at its point expresses every depth
+above it outward at once. The two cones and the two triangles are the same
+figure at two scales, which is what the volumetric compass should draw.
+
