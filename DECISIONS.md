@@ -23,8 +23,20 @@ joins.
 
 The pain map is on all four. The tools are on all four.
 
+What the higher tiers buy is more unique ground, not more speaking.
+
 **One pattern is one sentence.** One release line delivered, over one address,
 through one channel. Built and counted.
+
+**Unique ground is what a tier buys.** A person may rerun anything as often as
+they like and it costs nothing. Only ground opened for the first time spends
+the gift or the tier. The meter keys every line by its address and its
+channel: lines counts everything spoken, unique counts what was opened. Built.
+
+**The bank is the imprints.** A person fills it. It wants a piggy bank icon.
+
+**Density decides what is kept.** Felt density, keep it. No density, let it go.
+Swipe right to keep, left to drop. Not built.
 
 **The six channels.** Believing, perceiving, thinking, behaving, acting,
 feeling. Each can be run on its own: letting go of believing I am unhappy,
@@ -38,6 +50,34 @@ left limit, right truth, left truth. That is not the six channels. Either the
 four passes become the six channels crossed with two sides, which is twelve
 lines per address, or the six channels sit inside each existing pass. The
 count follows whichever it is, so this ruling moves the meter.
+
+## The horizon and the markers
+
+Roughly two thousand patterns accumulate per decade lived, so a person's own
+total is their age times two hundred. The estimate carries a ten percent swing,
+because how hard somebody identifies with a thing is not knowable from a birth
+date. No birth date gives no estimate rather than a wrong one. Built.
+
+Two fixed markers of ground opened, which do not move with age:
+
+| Marker | Patterns opened |
+|---|---|
+| Buddha nature | 2500 |
+| Christ consciousness | 3500 |
+
+**Open:** the owner said there are more markers than these two.
+
+**What other modalities release**, for scale, as the owner gave them:
+
+| Modality | Patterns |
+|---|---|
+| A therapy session, 50 to 150 dollars | 1 to 6 |
+| Thirty minutes of mindful meditation | 5 to 8 |
+| Plant medicine, one day | 50 to 100 |
+| Plant medicine, five days | 300 to 500 |
+
+The owner's own pricing runs about a dollar a pattern, capped. Recorded as
+context, not as a decision about this product.
 
 ## Privacy and the snippet
 
