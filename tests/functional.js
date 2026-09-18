@@ -251,6 +251,45 @@ const flush=await page.evaluate(async ()=>{
  return pStore()[0].axes.Anger.held;});
 ok(flush===9.1,'a pending write flushes when the page hides, got '+flush);
 
+console.log('\n=== a real person reaches the cosmological layer ===');
+/* The whole ephemeris was visible to nine fixtures and to nobody real.
+   BIRTH.You is null, Intake wrote to CURP.who.born, and nothing read it. */
+const birth=await page.evaluate(()=>{
+ loadP(0); toYou();
+ CURP.who=CURP.who||{};
+ CURP.who.born={date:'1984-11-07',time:'14:25',place:'Chicago, IL'};
+ renderSpirit();
+ const known=(document.getElementById('spirit').textContent||'').replace(/\s+/g,' ');
+ CURP.who.born={date:'1984-11-07',time:'14:25',place:'Nowhere, ZZ'};
+ renderSpirit();
+ const nocity=(document.getElementById('spirit').textContent||'').replace(/\s+/g,' ');
+ CURP.who.born={};
+ renderSpirit();
+ const none=(document.getElementById('spirit').textContent||'').replace(/\s+/g,' ');
+ return {known, nocity, none};});
+ok(/Scorpio/.test(birth.known)&&/Taurus/.test(birth.known),
+ 'a birth date typed into intake produces a real sun and moon: '+birth.known.slice(0,60));
+ok(/Pisces/.test(birth.known),'and a birthplace produces an ascendant');
+ok(/gate \d/.test(birth.known),'and a real gene key gate off the wheel');
+ok(/unresolved/.test(birth.nocity)&&/birthplace/.test(birth.nocity),
+ 'a place the gazetteer cannot locate says so rather than rendering blank');
+ok(/No birth data/.test(birth.none),'and no birth data at all says that');
+
+console.log('\n=== the main button never destroys a field it was not asked to ===');
+/* With nothing held, Run a release used to start a 2.8 second animation that
+   zeroed every charge and raised every law toward ten. One click, no
+   confirmation, no undo, and indistinguishable from the real thing. */
+const rel=await page.evaluate(()=>{
+ loadP(0); toYou();
+ CHARGES.forEach(c=>{S.charge[c]=0;}); SINAMES.forEach(l=>{S.law[l]=5;});
+ syncCh(); syncLw(); render();
+ const l0=SINAMES.map(l=>S.law[l]).join();
+ document.getElementById('bRel').click();
+ return {l0, wait:true};});
+await page.waitForTimeout(3200);
+const relAfter=await page.evaluate(()=>SINAMES.map(l=>S.law[l]).join());
+ok(relAfter===rel.l0,'with nothing held, the button changes no law');
+
 console.log('\n=== a finger reads the wheel, it does not write it ===');
 /* A thumb landing on the wheel to scroll used to drag the charge underneath
    it and save the result, because the canvas carries touch-action:none and so

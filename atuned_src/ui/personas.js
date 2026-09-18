@@ -36,6 +36,13 @@ function syncMx(){MXC.forEach(function(b){
 function renderSpirit(){
  var el=$('spirit'); if(!el)return;
  var p=PEOPLE[S.who]||PEOPLE[0], sp=spiritual(p.nm);
+ /* A person's own birth data goes into Intake, is saved to CURP.who.born, and
+    until now nothing read it. BIRTH.You is null and always was, so the whole
+    ephemeris was visible to nine fixtures and to nobody real. spiritualOf was
+    written to close exactly this and was never called. It is called here. */
+ if(!sp&&CURP&&CURP.who&&CURP.who.born&&CURP.who.born.date){
+  var bn=CURP.who.born;
+  sp=spiritualOf({d:bn.date, t:(bn.timeUnknown?'':(bn.time||'')), p:bn.place||''});}
  if(!sp){
   el.innerHTML='<div class="sp-none">No birth data. Date, time and place unlock sun, moon, '
    +'rising, the year animal, life path and design type.</div>';
@@ -48,7 +55,15 @@ function renderSpirit(){
  el.innerHTML='<div class="sp-hd">Western</div>'
   +row('Sun',ZGLYPH[sp.sun],sp.sun,sp.sunEl,'sign')
   +row('Moon',ZGLYPH[sp.moon],sp.moon,sp.moonEl,'sign')
-  +row('Rising',ZGLYPH[sp.rising],sp.rising,sp.risingEl,'sign')
+  /* The ascendant is the one reading that needs a place, because it is the
+     degree rising on the horizon and that depends on where the horizon was.
+     A blank row says nothing, so the row says what is missing and why. */
+  +(sp.rising
+    ? row('Rising',ZGLYPH[sp.rising],sp.rising,sp.risingEl,'sign')
+    : '<div class="sp-row static"><span class="sp-k">Rising</span>'
+      +'<span class="sp-v">unresolved</span><span class="sp-x">'
+      +(sp.needsTime?'needs a birth time':'needs a birthplace the instrument can locate')
+      +'</span></div>')
   +'<div class="sp-hd">Eastern</div>'
   +row('Year','',sp.celem+' '+sp.chinese,'','chinese',sp.chinese)
   +row('Element','',sp.celem,'','celem',sp.celem)
@@ -231,11 +246,15 @@ var REL=null;
 $('bRel').addEventListener('click',function(){
  var hot=W.filter(function(n){return n.sq>=4;}).sort(function(a,b){return b.sq-a.sq;});
  if(hot.length){relPick(hot.slice(0,8).map(function(n){return n.i;}));return;}
- /* nothing held. the smooth decay still demonstrates the mechanism. */
- if(REL)return;
- var c={},l={};CHARGES.forEach(function(k){c[k]=S.charge[k];});
- SINAMES.forEach(function(k){l[k]=S.law[k];});
- REL={c:c,l:l,t0:performance.now()};});
+ /* Nothing is held, so there is nothing to release. This used to run a 2.8
+    second animation that zeroed every charge and raised every law toward ten,
+    on one click, with no confirmation and no undo. It was written as a
+    demonstration of the mechanism and a person cannot tell a demonstration
+    from the real thing: the numbers simply changed and there was no way back.
+    A control must never claim to have done something it has not done, and it
+    must never do something destructive it was not asked to do. */
+ status('Nothing is held above the line, so there is nothing to release. '
+  +'Write a story or set a charge first.','warn');});
 function stepRel(now){
  if(!REL)return;
  var k=Math.min(1,(now-REL.t0)/2800), e=1-Math.pow(1-k,3);
