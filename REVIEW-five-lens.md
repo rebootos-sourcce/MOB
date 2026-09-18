@@ -331,7 +331,7 @@ Two failures, both on screens I looked at:
 ### Iconography, readability and form follows function. 5.
 
 Icons are ring, not fill, throughout, and the ring set is genuinely good: the
-four view icons at `atuned_src/ui/panels.js:94` are a concentric family that
+four view icons at `atuned_src/ui/panels.js:95` are a concentric family that
 reads as one system, and the domain glyphs are consistent in weight.
 
 Five is the score because of three readability failures that are not opinions:
@@ -355,8 +355,8 @@ Five is the score because of three readability failures that are not opinions:
    visible in every single 1600 wide screenshot I took.
 
 3. **"8 addresses" above seven rows.** The release overlay's header counts 8 and
-   the list shows 7, because `.rel-list` is capped at `max-height:260px` at
-   `atuned_src/shell/head.html:1052` with a hidden scrollbar. The header
+   the list shows 7, because `.rel-log` is capped at `max-height:260px` at
+   `atuned_src/shell/head.html:1051` with a hidden scrollbar. The header
    contradicts the body on the confirmation screen of the product's destructive
    action.
 
@@ -536,9 +536,9 @@ your mother." Seven personal fields, framed as the foundation of the reading.
 nothing that renders for a real person. `renderSpirit` at
 `atuned_src/ui/personas.js:38` was patched to call `spiritualOf(bn)` when a
 birth record exists, so the western rows now populate, but the ascendant
-resolves against a nine city gazetteer (`atuned_src/engine/astro.js:144`) whose
-every entry is a reference persona's birthplace. A real person types a real city
-and gets null.
+resolves against a nine city gazetteer (`atuned_src/engine/astro.js:144`). The
+nine are Asheville, Chicago, Portland, Santa Fe, Boulder, Boston, Oaxaca,
+Lisbon and Greenwich. A real person types a real city and gets null.
 
 So the product asks for the most identifying data it will ever hold, gives it
 the most consequential framing on the page, and then cannot use the field that
@@ -699,8 +699,8 @@ needs a landing page and cannot have one without this.
 
 ## 10. The release confirmation miscounts its own list
 
-"8 addresses" above seven rows, because `.rel-list` caps at 260px with no scroll
-affordance (`atuned_src/shell/head.html:1052`). On the confirmation screen for
+"8 addresses" above seven rows, because `.rel-log` caps at 260px with no scroll
+affordance (`atuned_src/shell/head.html:1051`). On the confirmation screen for
 the product's irreversible action.
 
 ## 11. The gate that measures the rule this codebase most often breaks does not fail
