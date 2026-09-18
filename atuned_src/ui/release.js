@@ -44,10 +44,12 @@ function relCoolDown(){
    opp:(CHILD.filter(function(c){return c.nm===n.cf;})[0]||{}).opp||'',
    w0:Math.round(w0),d:d,w1:w1,cleared:(w1<=6)});});
  RUN.freed=freed;
- /* One pattern is one line delivered: one channel over one address. A pass
-    over the whole queue is queue.length patterns, and a full run is that
-    times the channels. */
- if(CURP)meterAdd(CURP,CHAN.length*RUN.queue.length);
+ /* One pattern is one line: one channel over one address. Every line of the
+    run is keyed, so a rerun of the same ground costs nothing and only new
+    ground spends the tier. */
+ if(CURP){var keys=[];
+  CHAN.forEach(function(ch){RUN.queue.forEach(function(n){keys.push(meterKey(n.i,ch[0]+ch[2]));});});
+  RUN.meter=meterRun(CURP,keys);}
  if(CURP){CURP.history=CURP.history||[];CURP.history.push(snapshot(CURP));pSave();}
  toYou();syncCh();relRender();render();}
 function relClose(){clearInterval(RUN.timer);RUN.open=false;RUN.phase='idle';relRender();render();}

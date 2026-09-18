@@ -257,23 +257,44 @@ ok(ref('Gordon').loaded.length>90,'Gordon holds nearly everything');
 
 g('15d \u00b7 the meter');
 {
- const {blankProfile,saveProfile,validateProfile,meterAdd,meterRead}=E;
+ const {blankProfile,saveProfile,validateProfile,meterRun,meterRead,meterKey,MARKERS}=E;
  const p=blankProfile('meter');
- ok(meterRead(p).patterns===0,'a new record has run nothing');
+ ok(meterRead(p).unique===0&&meterRead(p).lines===0,'a new record has run nothing');
  ok(meterRead(p).giftLeft===100&&meterRead(p).inGift,'and holds the whole gift of 100');
- meterAdd(p,6);
- ok(meterRead(p).patterns===6,'a six channel sweep over one address counts six');
+ const sweep=['believe','perceive','think','behave','act','feel'].map(c=>meterKey(7,c));
+ const a=meterRun(p,sweep);
+ ok(a.added===6&&a.repeated===0,'a six channel sweep over one address opens six');
+ ok(meterRead(p).unique===6&&meterRead(p).lines===6,'six new, six spoken');
+ /* rerunning the same ground is free. that is the whole distinction the
+    tier ladder buys: not how much you may speak, how much new you may open. */
+ const b=meterRun(p,sweep);
+ ok(b.added===0&&b.repeated===6,'a rerun opens nothing');
+ ok(meterRead(p).unique===6,'and the unique count does not move');
+ ok(meterRead(p).lines===12,'while the lines spoken do');
+ ok(meterRead(p).giftLeft===94,'the gift is spent by new ground only');
  ok(typeof p.meter.first==='string','the first run is stamped');
- meterAdd(p,0); meterAdd(p,-4);
- ok(meterRead(p).patterns===6,'nothing and a negative add nothing');
- meterAdd(p,94);
- ok(meterRead(p).giftLeft===0&&!meterRead(p).inGift,'the gift runs out at 100 exactly');
- /* the count is stored, never derived: a derived count would move when the
-    model moves, and the tier gate would disagree with the app. */
+ ok(meterRun(p,[]).added===0,'an empty run adds nothing');
+ /* the horizon. two thousand a decade, so age times two hundred. */
+ ok(meterRead(p).estimate===null,'with no birth date there is no estimate');
+ p.who.born.date='1986-04-02';
+ const h=meterRead(p,'2026-09-18T00:00:00Z');
+ ok(h.age>40&&h.age<41,'age comes off the birth date, got '+h.age);
+ /* age is rounded for display, the estimate is not, so they agree to within
+    one year's worth rather than exactly. */
+ ok(Math.abs(h.estimate-h.age*200)<200,'the estimate is two hundred a year, got '+h.estimate);
+ ok(h.estimateLow<h.estimate&&h.estimateHigh>h.estimate,'and carries its ten percent swing');
+ ok(h.markers.length===MARKERS.length&&h.markers[0].at===2500&&h.markers[1].at===3500,
+  'the two markers are fixed counts, not scores');
+ ok(h.markers[0].left===2500-h.unique,'and report the ground left to them');
+ p.who.born.date='not a date';
+ ok(meterRead(p).estimate===null,'an unparseable birth date gives no estimate rather than a wrong one');
+ p.who.born.date='1986-04-02';
  const round=validateProfile(JSON.parse(JSON.stringify(saveProfile(p))));
- ok(round.ok&&round.profile.meter.patterns===100,'the count survives a round trip');
- const neg=JSON.parse(JSON.stringify(saveProfile(p))); neg.meter.patterns=-5;
- ok(!validateProfile(neg).ok,'a negative count is refused at the boundary');
+ ok(round.ok&&round.profile.meter.unique.length===6,'the keys survive a round trip');
+ const neg=JSON.parse(JSON.stringify(saveProfile(p))); neg.meter.lines=-5;
+ ok(!validateProfile(neg).ok,'a negative line count is refused at the boundary');
+ const notlist=JSON.parse(JSON.stringify(saveProfile(p))); notlist.meter.unique='lots';
+ ok(!validateProfile(notlist).ok,'and a unique list that is not a list');
 }
 
 g('15c \u00b7 the boundary');

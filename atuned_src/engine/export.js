@@ -30,7 +30,7 @@ if(typeof module!=='undefined'&&module.exports){
   /* schema */    blankProfile:blankProfile, loadProfile:loadProfile,
                   saveProfile:saveProfile, snapshot:snapshot,
                   pExport:pExport, pImport:pImport, validateProfile:validateProfile, importError:importError,
-                  meterAdd:meterAdd, meterRead:meterRead,
+                  meterRun:meterRun, meterRead:meterRead, meterKey:meterKey, MARKERS:MARKERS, PAT_PER_YEAR:PAT_PER_YEAR,
                   profiles:function(){return PROFILES;}, current:function(){return CURP;}, SCHEMA_V:SCHEMA_V,
                   bindStore:bindStore, PKEY:PKEY, pPersist:pPersist, saveState:saveState,
                   storeBound:function(){return STORE_BOUND;},

@@ -12,7 +12,7 @@ contract rather than today's numbers, so a legitimate tuning change passes and a
 broken invariant does not.
 
     ./atuned_src/BUILD-engine.sh
-    node tests/engine.js       265 checks in 22 groups
+    node tests/engine.js       277 checks in 22 groups
 
 The 17 groups: data integrity, determinism, the poled binary (jouissance begins
 at 6), monotonicity, CQ bounds and ceiling, saboteur charge ranges are bands and

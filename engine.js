@@ -1082,11 +1082,17 @@ function blankProfile(name){
   who:{first:'', middle:'', last:'', sex:'', born:{date:'', time:'', place:'', timeUnknown:false}},
   /* what the person said their type is, and what it wrote. null until stated. */
   seed:null,
-  /* THE METER. One pattern is one release line delivered: one channel, one
-     address. A six channel sweep over one address is six. The tier ladder
-     counts this and nothing else, so it lives on the record and is never
-     derived, because a derived count would change when the model changes. */
-  meter:{patterns:0, first:null, last:null},
+  /* THE METER. One pattern is one release line delivered: one channel over
+     one address. A six channel sweep over one address is six.
+
+     Lines counts every line ever spoken, repeats included, because a person
+     may rerun anything as often as they like and that is free. Unique holds
+     the keys of the lines run at least once, and that is what the tier
+     ladder buys: a tier is not how much you may speak, it is how much new
+     ground you may open. It lives on the record and is never derived,
+     because a derived count moves when the model moves and then the tier
+     gate disagrees with the app about what was run. */
+  meter:{lines:0, unique:[], first:null, last:null},
   laws:{}, intake:{answers:{}, done:[], startedAt:null, completedAt:null},
   gates:{verp:{aware:0,detach:0,intent:0,ignore:0,attach:0,averse:0},
          lean:{benign:0,malignant:0}},   /* the cost multiplier, v2 */
@@ -1097,7 +1103,8 @@ function blankProfile(name){
 function loadProfile(p){
  if(!p.who)p.who={first:'',middle:'',last:'',sex:'',born:{date:'',time:'',place:'',timeUnknown:false}};
  if(!p.who.born)p.who.born={date:'',time:'',place:'',timeUnknown:false};
- if(!p.meter)p.meter={patterns:0,first:null,last:null};
+ if(!p.meter)p.meter={lines:0,unique:[],first:null,last:null};
+ if(!Array.isArray(p.meter.unique))p.meter.unique=[];
  S.doms=(p.soul.doms||[0]).slice(); S.arcs=(p.soul.arcs||[0,1]).slice();
  S.roots=(p.soul.roots||[]).slice(); buildSoul();
  CHILD.forEach(function(c){var a=p.axes[c.nm]||{};
@@ -1234,8 +1241,11 @@ function validateProfile(o){
  /* logs. shape checked, contents left alone: they are the person's own text. */
  if(o.story&&Array.isArray(o.story.entries))p.story.entries=o.story.entries.slice();
  if(o.meter&&typeof o.meter==='object'){
-  var mp=vRange(errs,'meter.patterns',o.meter.patterns,0,1e9);
-  if(mp!==null)p.meter.patterns=Math.floor(mp);
+  var mp=vRange(errs,'meter.lines',o.meter.lines,0,1e9);
+  if(mp!==null)p.meter.lines=Math.floor(mp);
+  if(Array.isArray(o.meter.unique))
+   p.meter.unique=o.meter.unique.filter(function(k){return typeof k==='string'&&k.length<64;});
+  else if(o.meter.unique!==undefined)errs.push('meter.unique is not a list');
   if(typeof o.meter.first==='string')p.meter.first=o.meter.first;
   if(typeof o.meter.last==='string')p.meter.last=o.meter.last;}
  if(Array.isArray(o.rituals))p.rituals=o.rituals.slice();
@@ -1247,20 +1257,49 @@ function validateProfile(o){
    says what was wrong rather than returning a bare null. */
 /* Counting is an engine job because the tier gate will read it, and the tier
    gate must not be able to disagree with the app about what was run. */
-function meterAdd(p,n){
+function meterKey(nodeId,chan){return String(nodeId)+':'+String(chan);}
+function meterRun(p,keys){
  if(!p)return null;
- if(!p.meter)p.meter={patterns:0,first:null,last:null};
- var k=Math.max(0,Math.floor(n||0));
- if(!k)return p.meter;
+ if(!p.meter)p.meter={lines:0,unique:[],first:null,last:null};
+ if(!Array.isArray(p.meter.unique))p.meter.unique=[];
+ var list=(keys||[]).filter(function(k){return typeof k==='string'&&k;});
+ if(!list.length)return {added:0,repeated:0};
+ var have={},added=0,repeated=0;
+ p.meter.unique.forEach(function(k){have[k]=1;});
+ list.forEach(function(k){ if(have[k]){repeated++;} else {have[k]=1;p.meter.unique.push(k);added++;} });
  var now=new Date().toISOString();
  if(!p.meter.first)p.meter.first=now;
- p.meter.patterns+=k; p.meter.last=now;
- return p.meter;}
-function meterRead(p){
- var m=(p&&p.meter)||{patterns:0,first:null,last:null};
- return {patterns:m.patterns, first:m.first, last:m.last,
-  /* the gift is 100, ruled. what happens after it is spent is the tier. */
-  giftLeft:Math.max(0,100-m.patterns), inGift:m.patterns<100};}
+ p.meter.lines+=list.length; p.meter.last=now;
+ return {added:added, repeated:repeated};}
+
+/* THE HORIZON. Roughly two thousand patterns accumulate per decade lived, so
+   a person's own total is their age times two hundred. The estimate carries a
+   ten percent swing because how hard somebody identifies with a thing is not
+   knowable from a birth date. The two markers are fixed counts of ground
+   opened, not scores, so they do not move with age. */
+const PAT_PER_YEAR=200, PAT_SWING=0.10;
+const MARKERS=[{nm:'Buddha nature', at:2500},{nm:'Christ consciousness', at:3500}];
+function ageAt(dateStr,now){
+ if(!dateStr)return null;
+ var b=new Date(dateStr+'T00:00:00Z'); if(isNaN(b.getTime()))return null;
+ var t=now?new Date(now):new Date();
+ var a=(t-b)/(365.2425*24*3600*1000);
+ return a>0&&a<130?a:null;}
+function meterRead(p,now){
+ var m=(p&&p.meter)||{lines:0,unique:[],first:null,last:null};
+ var uniq=(m.unique||[]).length;
+ var age=ageAt(p&&p.who&&p.who.born?p.who.born.date:null,now);
+ var est=age===null?null:Math.round(age*PAT_PER_YEAR);
+ return {lines:m.lines, unique:uniq, first:m.first, last:m.last,
+  /* the gift is 100 of new ground, ruled. reruns never spend it. */
+  giftLeft:Math.max(0,100-uniq), inGift:uniq<100,
+  age:age===null?null:Math.round(age*10)/10,
+  estimate:est,
+  estimateLow:est===null?null:Math.round(est*(1-PAT_SWING)),
+  estimateHigh:est===null?null:Math.round(est*(1+PAT_SWING)),
+  cleared:est?Math.min(1,uniq/est):null,
+  markers:MARKERS.map(function(k){return {nm:k.nm, at:k.at, reached:uniq>=k.at,
+   left:Math.max(0,k.at-uniq)};})};}
 
 var IMPORT_ERR=null;
 function pImport(txt){
@@ -1760,7 +1799,7 @@ if(typeof module!=='undefined'&&module.exports){
   /* schema */    blankProfile:blankProfile, loadProfile:loadProfile,
                   saveProfile:saveProfile, snapshot:snapshot,
                   pExport:pExport, pImport:pImport, validateProfile:validateProfile, importError:importError,
-                  meterAdd:meterAdd, meterRead:meterRead,
+                  meterRun:meterRun, meterRead:meterRead, meterKey:meterKey, MARKERS:MARKERS, PAT_PER_YEAR:PAT_PER_YEAR,
                   profiles:function(){return PROFILES;}, current:function(){return CURP;}, SCHEMA_V:SCHEMA_V,
                   bindStore:bindStore, PKEY:PKEY, pPersist:pPersist, saveState:saveState,
                   storeBound:function(){return STORE_BOUND;},
