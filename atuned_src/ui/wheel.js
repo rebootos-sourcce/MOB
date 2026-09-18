@@ -129,10 +129,14 @@ function verpArrows(cr0){
      SQ  depth of any single segment
    ============================================================ */
 const VIEWS=[
- {k:'A',nm:'Charge',    layers:'the core, 112 addresses, the wash'},
- {k:'B',nm:'Cluster',   layers:'charge, plus the seats named and the saboteurs'},
- {k:'C',nm:'Chain',     layers:'cluster, plus complexes, hyper, character, archetypes'},
- {k:'D',nm:'Blueprint', layers:'chain, plus 19 domains, 6 masks, 21 laws'}];
+ {k:'A',nm:'Charge',    layers:'the core, 112 addresses, the wash',
+  how:'Charge. Three things only.\nThe core is CQ. The ring is your 112 addresses, SQ.\nThe wash behind everything is DQ.\nDrag any segment to load or clear it.'},
+ {k:'B',nm:'Cluster',   layers:'charge, plus the seats named and the saboteurs',
+  how:'Cluster. Charge, plus the seats and the saboteurs.\nEach bead is a saboteur. The threads show which\naddresses built it. Hover a bead to name it.'},
+ {k:'C',nm:'Chain',     layers:'cluster, plus complexes, hyper, character, archetypes',
+  how:'Chain. Cluster, plus the rest of the compounding.\nSaboteur to complex to hyper to character, inward.\nThe named ring is your twelve archetypes.\nClick one to change how the soul expresses.'},
+ {k:'D',nm:'Blueprint', layers:'chain, plus 19 domains, 6 masks, 21 laws',
+  how:'Blueprint. Chain, plus domains, masks and laws.\nThe outer ring is nineteen domains, five per root cluster.\nThe faint ring inside is the six masks.\nThe short spokes at the centre are the twenty-one laws.'}];
 function nzAng(a){while(a<-Math.PI)a+=TAU;while(a>Math.PI)a-=TAU;return a;}
 function drawWheel(r,L){
  const ink=INK(),p=S.pin,gc=GOLDC();

@@ -99,7 +99,13 @@ const VICON=[
  '<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6.4"/><circle cx="12" cy="12" r="2.2"/><path d="M12 2v3.6M12 18.4V22M2 12h3.6M18.4 12H22"/>'];
 VIEWS.forEach(function(v,i){
  var b=document.createElement('button');b.className='vt';b.type='button';
- b.setAttribute('aria-pressed',i===S.view);b.title=v.layers;
+ /* The how to block under the wheel is gone, so its text lives here, on the
+    control it was describing. It reads v.how, declared in wheel.js, because
+    wheel.js loads BEFORE this file. Reaching forward to HOWTO in ui.js threw
+    at parse, which in a concatenated build takes down every module after it.
+    MANIFEST order is the rule and this is what breaking it looks like. */
+ b.setAttribute('aria-pressed',i===S.view);
+ b.title=v.how||v.layers;
  b.innerHTML=svgI(VICON[i])+'<span class="n">'+v.nm+'</span>';
  b.addEventListener('click',function(){S.view=i;S.pin=null;
   $('vbar').querySelectorAll('.vt').forEach(function(x,j){x.setAttribute('aria-pressed',j===i);});
@@ -210,3 +216,110 @@ function rebuildSwatches(){
  SI.forEach(function(l){
   var i=LWF[l.nm].inp.parentElement.querySelector('i');if(i)i.style.background=seatCol(l.b);});
  syncMx();}
+
+/* ============================================================
+   DENSITY, PROFILE AND HELP. Three controls the product has
+   never had, and the reason it needed them is the owner's own
+   finding: the whole interface reads better scaled down, which
+   is a statement about this product rather than about a monitor.
+
+   Density is three steps, not a slider, because three is a
+   choice and a slider is a chore. It scales one variable that
+   everything else derives from, so nothing has to be restyled.
+
+   The sheet is one surface. Both buttons open it, the backdrop
+   and escape close it, and it is the same object on a phone
+   where it comes up from the bottom instead of the side.
+   ============================================================ */
+const DENS=[['tight','Tight','more on screen, smaller type'],
+ ['','Comfortable','what the reading was designed at'],
+ ['wide','Wide','fewer things, larger type']];
+function densGet(){try{return STORE.get('dens')||'';}catch(e){return '';}}
+function densSet(k){
+ document.body.classList.remove('dens-tight','dens-wide');
+ if(k)document.body.classList.add('dens-'+k);
+ try{STORE.set('dens',k);}catch(e){}
+ densPaint();
+ /* the wheel takes its size from the box, so it has to be told */
+ if(typeof reframe==='function'){reframe();}
+ if(typeof render==='function')render();}
+function densPaint(){
+ var host=$('density'); if(!host)return;
+ var now=densGet();
+ host.innerHTML=DENS.map(function(d){
+  return '<button type="button" class="vt'+(d[0]===now?' on':'')+'" data-dens="'+d[0]+'" '
+   +'aria-pressed="'+(d[0]===now)+'" title="'+esc(d[2])+'">'+esc(d[1].slice(0,1))+'</button>';}).join('');
+ host.querySelectorAll('[data-dens]').forEach(function(b){
+  b.onclick=function(){densSet(b.getAttribute('data-dens'));};});}
+
+/* ---- the sheet ---- */
+function sheetOpen(html){
+ var s=$('sheet'), c=$('sheet-card'); if(!s||!c)return;
+ c.innerHTML=html; s.hidden=false;
+ var f=c.querySelector('button,a,input,select'); if(f)f.focus();}
+function sheetShut(){var s=$('sheet'); if(s)s.hidden=true;}
+
+function profileSheet(){
+ var r=compute(), m=(typeof meterRead==='function')?meterRead(CURP):null;
+ var who=(CURP&&CURP.name)||'You';
+ var h='<div class="pm-eye">Profile</div><p class="sh-h">'+esc(who)+'</p>'
+  +'<div class="sh-sec"><div class="pm-eye">This reading</div>'
+  +'<div class="sh-row"><span>Coherence</span><b>'+Math.round(r.CQ)+' of 100</b></div>'
+  +'<div class="sh-row"><span>Tier</span><b>'+esc(r.tier)+'</b></div>'
+  +'<div class="sh-row"><span>Addresses carrying</span><b>'+r.loaded.length+' of 112</b></div>'
+  +(m?'<div class="sh-row"><span>Ground opened</span><b>'+m.unique+'</b></div>':'')
+  +(m&&m.next?'<div class="sh-row"><span>Next marker</span><b>'+esc(m.next.nm)+', '+m.next.left+' away</b></div>':'')
+  +'</div>'
+  +'<div class="sh-sec"><div class="pm-eye">Density</div>'
+  +'<p class="sh-p">How much fits on one screen. This changes the whole interface, not just the type.</p>'
+  +'<div class="seg" id="densheet" style="margin-top:8px"></div></div>'
+  +'<div class="sh-sec"><div class="pm-eye">Your record</div>'
+  +'<p class="sh-p">Everything is held in this browser. Nothing has left this device.</p>'
+  +'<div class="sh-row"><span>Snapshots on file</span><b>'+((CURP&&CURP.history&&CURP.history.length)||0)+'</b></div>'
+  +'<div class="sh-row"><span>Storage</span><b>'+(STORE_BOUND?'writing':'blocked')+'</b></div>'
+  +'</div>'
+  +'<div class="sh-sec"><button class="btn" id="shclose">Close</button></div>';
+ sheetOpen(h);
+ /* the same three steps, inside the sheet, sharing one setter */
+ var d=$('densheet'), now=densGet();
+ if(d){d.innerHTML=DENS.map(function(x){
+   return '<button type="button" class="vt'+(x[0]===now?' on':'')+'" data-dens2="'+x[0]+'">'
+    +esc(x[1])+'</button>';}).join('');
+  d.querySelectorAll('[data-dens2]').forEach(function(b){
+   b.onclick=function(){densSet(b.getAttribute('data-dens2')); profileSheet();};});}
+ var c=$('shclose'); if(c)c.onclick=sheetShut;}
+
+function helpSheet(){
+ var h='<div class="pm-eye">Help</div><p class="sh-h">How to read this</p>'
+  +'<div class="sh-sec"><div class="pm-eye">The three things on screen</div>'
+  +'<p class="sh-p">The wheel is your field. The rail on the left is what you are made of, '
+  +'the panel on the right is what the instrument reads. Everything on either side is a door '
+  +'into the same detail.</p></div>'
+  +'<div class="sh-sec"><div class="pm-eye">The wheel</div>'
+  +'<div class="sh-row"><span>Move in and out</span><b>scroll</b></div>'
+  +'<div class="sh-row"><span>Move the frame</span><b>click and drag</b></div>'
+  +'<div class="sh-row"><span>Put it back</span><b>double click, or F</b></div>'
+  +'<div class="sh-row"><span>Open an address</span><b>click it</b></div>'
+  +'<div class="sh-row"><span>Set a charge</span><b>drag it, on a mouse</b></div>'
+  +'</div>'
+  +'<div class="sh-sec"><div class="pm-eye">The reading</div>'
+  +'<p class="sh-p">CQ is coherence, 0 to 100, what the field builds against what it costs. '
+  +'DQ is the shadow weight it is carrying. SQ is how deep that charge sits. Pole is how much '
+  +'of the coherent opposite is installed. Hover any of them for the rest.</p></div>'
+  +'<div class="sh-sec"><div class="pm-eye">What it does not claim</div>'
+  +'<p class="sh-p">Every reading carries an interval. A move smaller than that interval is not '
+  +'a reading, it is noise, and the instrument says so rather than flattering you.</p></div>'
+  +'<div class="sh-sec"><button class="btn" id="shclose2">Close</button></div>';
+ sheetOpen(h);
+ var c=$('shclose2'); if(c)c.onclick=sheetShut;}
+
+/* wiring, once the shell exists */
+(function(){
+ var pb=$('profbtn'); if(pb)pb.onclick=profileSheet;
+ var hb=$('helpbtn'); if(hb)hb.onclick=helpSheet;
+ var sh=$('sheet');
+ if(sh)sh.addEventListener('click',function(e){if(e.target===sh)sheetShut();});
+ addEventListener('keydown',function(e){if(e.key==='Escape')sheetShut();});
+ /* the stored choice has to be on the body before the first paint measures it */
+ var k=densGet(); if(k)document.body.classList.add('dens-'+k);
+ densPaint();})();

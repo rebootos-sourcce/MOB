@@ -51,7 +51,7 @@ function hitTest(px,py){
   if(nz(a-h.a0)>=0&&nz(h.a1-a)>=0)return h;}
  return null;}
 const loc=function(e){var b=cv.getBoundingClientRect();return [e.clientX-b.left,e.clientY-b.top];};
-let DRAG=null;
+let DRAG=null, PAN=null;
 /* A finger is not a mouse and this cost a person their reading.
    The canvas carries touch-action:none, so it swallows a scroll gesture
    rather than passing it to the page. Combined with drag to charge, a
@@ -67,11 +67,20 @@ let DRAG=null;
 const COARSE=(typeof matchMedia==='function')&&matchMedia('(pointer:coarse)').matches;
 cv.addEventListener('pointerdown',function(e){
  var L=loc(e),x=L[0],y=L[1],h=hitTest(x,y);
- if(!h)return;
+ /* empty canvas, or the core, is grab space: the frame moves, nothing is set */
+ if(!h||h.k==='core'){
+  if(e.button===0||e.pointerType!=='mouse'){
+   PAN={x:x,y:y,px:S.panx||0,py:S.pany||0,moved:false,core:!!h};
+   /* a pointer that has already been released cannot be captured, and the
+      throw would take the handler down with it */
+   try{cv.setPointerCapture(e.pointerId);}catch(err){}
+   cv.style.cursor='grabbing';}
+  if(!h)return;}
  var touch=COARSE||e.pointerType==='touch'||e.pointerType==='pen';
  if(h.k==='node'&&h.n.cf&&!touch){
   DRAG={mode:'cf',cf:h.n.cf,y:y,s:S.charge[h.n.cf],node:h.n,moved:false};
-  cv.setPointerCapture(e.pointerId);return;}
+  try{cv.setPointerCapture(e.pointerId);}catch(err){}
+  return;}
  if(h.k==='node'&&h.n.cf&&touch){ /* a tap reads the address, it never writes it */
   S.pin=null; runNodeDrill(h.n); render(); return;}
  if(h.k==='dom'){toYou();
@@ -117,10 +126,27 @@ addEventListener('keydown',function(e){
  if(k==='-'||k==='_'){setZoom(S.zoom/1.25,CW/2,CH/2);return;}});
 const HOWTO_ZOOM_OUT='Reframed. Scroll on the wheel to move in, F to come back.';
 cv.addEventListener('pointerup',function(){
+ cv.style.cursor='';
+ if(PAN){var wasCore=PAN.core, moved=PAN.moved; PAN=null;
+  /* a press on the core that never moved is still a click on the core */
+  if(!moved&&wasCore){S.pin=null;runCoreDrill();render();}
+  return;}
  if(DRAG&&!DRAG.moved&&DRAG.node){var n=DRAG.node;DRAG=null;S.pin=null;runNodeDrill(n);render();return;}
  DRAG=null;});
+cv.addEventListener('pointercancel',function(){PAN=null;DRAG=null;cv.style.cursor='';});
+/* double click puts the frame back, the same thing F does, because a person
+   who has panned into a corner should not have to find a keyboard. */
+cv.addEventListener('dblclick',function(){S.zoom=1;S.panx=0;S.pany=0;reframe();render();});
 cv.addEventListener('pointermove',function(e){
  var L=loc(e),x=L[0],y=L[1];
+ /* PAN. Left press and drag anywhere the wheel is not a target and the frame
+    moves under the pointer. The scroll wheel already zoomed and F already
+    reframed, so the one thing missing was moving the view without changing it.
+    Nothing here writes to the reading. */
+ if(PAN){
+  S.panx=PAN.px+(x-PAN.x); S.pany=PAN.py+(y-PAN.y);
+  PAN.moved=PAN.moved||Math.hypot(x-PAN.x,y-PAN.y)>3;
+  render(); return;}
  if(DRAG){var d=(DRAG.y-y)/22;
   if(Math.abs(DRAG.y-y)>3)DRAG.moved=true;
   toYou();S.charge[DRAG.cf]=clamp(DRAG.s+d,0,10);
@@ -231,31 +257,50 @@ function render(){
    +'<span class="bmbar"><i style="width:'+mal.toFixed(0)+'%;background:'+PAL.Root+'"></i></span>'
    +'<span class="bmv" style="color:'+PAL.Root+'">'+mal.toFixed(0)+'%</span></div>'
    +'<div class="bmnote">'+(ben>=mal?'building more than it costs':'costing more than it builds')+'</div>';})();
- $('howto').textContent=HOWTO[S.view];
- /* the lean. the story moves it. */
+ /* The how to block sat permanently under the wheel repeating what the depth
+    buttons already say. Ruled out. The text survives as the depth button's own
+    tooltip, where it is asked for rather than always on. */
+ (function(){var e=$('howto'); if(e){e.textContent=''; e.style.display='none';}})();
+ /* BALANCE. It read left to right, which draws two competing quantities and
+    makes the reader do the subtraction. It now grows from the centre out, so
+    the thing a person sees is the lean itself: which way, and how far. Fifty
+    fifty is a bar with nothing sticking out either side.
+    The note under it came out on the owner's ruling. The numbers are on the
+    bar and the rest is in the tooltip. */
  (function(){
   var pb=$('polbar'); if(!pb)return;
   var L=leanRead(r);
-  pb.innerHTML='<div class="fill" style="width:'+L.ben.toFixed(0)+'%;background:linear-gradient(90deg,'
-   +PAL.Heart+' 0%,'+PAL.Throat+' 100%);opacity:.55"></div><div class="mid"></div>'
-   +'<div class="lb l">benign '+L.ben.toFixed(0)+'%</div>'
-   +'<div class="lb r">'+L.mal.toFixed(0)+'% malignant</div>';
-  pb.title='benign '+L.ben.toFixed(0)+', malignant '+L.mal.toFixed(0)+', read from '+L.src;
-  $('polnote').textContent=L.cues
-   ? 'The story leans '+(L.mal>50?'malignant':'benign')+'. '+L.cues+' cue'+(L.cues===1?'':'s')+' so far.'
-   : 'No story yet. This is the field alone.';})();
+  var off=Math.abs(L.ben-50)*2;              /* 0 at even, 100 at either end */
+  var mal=L.mal>L.ben;
+  pb.innerHTML='<div class="fill'+(mal?' mal':'')+'" style="width:'+(off/2).toFixed(1)+'%;'
+   +'background:'+(mal?PAL.Root:PAL.Heart)+';opacity:.62"></div><div class="mid"></div>'
+   +'<div class="lb l">'+L.ben.toFixed(0)+'</div>'
+   +'<div class="lb r">'+L.mal.toFixed(0)+'</div>';
+  pb.title=(L.cues?'Balance. '+L.cues+' cue'+(L.cues===1?'':'s')+' from the story so far. '
+    :'Balance. No story yet, so this is the field alone. ')
+   +'Benign '+L.ben.toFixed(0)+', malignant '+L.mal.toFixed(0)+', read from '+L.src
+   +'. The bar grows from the centre: the further it reaches, the harder the lean.';})();
  /* the key. three quotients, three elements. */
  /* The key sat on top of the wheel as a 288px card. It is now a strip in
     flow above the canvas, one ring and one word per element, and each is a
     door to the reading on the right. Nothing on the stage covers the wheel. */
  $('key').innerHTML=
-   '<button class="kb" data-q="cq">'+cr('Crown',r.CQ,{size:'xs',label:'CQ'})+'<span><b>CQ</b> core</span></button>'
-  +'<button class="kb" data-q="dq">'+cr('Root',clamp(r.DQ/14,0,1)*100,{size:'xs',raw:r.DQ.toFixed(1)})+'<span><b>DQ</b> shadow</span></button>'
-  +'<button class="kb" data-q="sq">'+cr(r.darkB,r.SQm*10,{size:'xs',raw:r.SQm.toFixed(1)})+'<span><b>SQ</b> depth</span></button>'
-  +'<button class="kb" data-q="pole">'+cr('Heart',r.poleMean*100,{size:'xs',raw:r.poleMean.toFixed(2)})+'<span><b>Pole</b> installed</span></button>'
+   /* The trailing word on each of these was a gloss: core, shadow, depth,
+      installed, three axes. A gloss that never goes away is furniture. The
+      letter is the name, the tooltip says what it is, and the click opens
+      the whole reading. */
+   '<button class="kb" data-q="cq" title="Coherence. 0 to 100. What the field builds against what it costs.">'
+    +cr('Crown',r.CQ,{size:'xs',label:'CQ'})+'<span><b>CQ</b></span></button>'
+  +'<button class="kb" data-q="dq" title="Shadow weight. The summed charge across every address that is carrying.">'
+    +cr('Root',clamp(r.DQ/14,0,1)*100,{size:'xs',raw:r.DQ.toFixed(1)})+'<span><b>DQ</b></span></button>'
+  +'<button class="kb" data-q="sq" title="Segment depth. 0 to 10. How deep the held charge sits at the addresses carrying it.">'
+    +cr(r.darkB,r.SQm*10,{size:'xs',raw:r.SQm.toFixed(1)})+'<span><b>SQ</b></span></button>'
+  +'<button class="kb" data-q="pole" title="The coherent opposite, installed. 0 to 1 across the nine axes.">'
+    +cr('Heart',r.poleMean*100,{size:'xs',raw:r.poleMean.toFixed(2)})+'<span><b>Pole</b></span></button>'
   /* the three axes. the engine has computed X, Y and Z on every reading
      since the rebuild and nothing has ever drawn them. */
-  +'<button class="kb" data-q="xyz">'+cr('Solar',(r.X+r.Y+r.Z)/3*100,{size:'xs',raw:((r.X+r.Y+r.Z)/3).toFixed(2)})+'<span><b>Energy</b> three axes</span></button>';
+  +'<button class="kb" data-q="xyz" title="Vitality, awareness and will. The mean of the three, 0 to 1.">'
+    +cr('Solar',(r.X+r.Y+r.Z)/3*100,{size:'xs',raw:((r.X+r.Y+r.Z)/3).toFixed(2)})+'<span><b>Energy</b></span></button>';
  /* who. proportions, not one label. */
  (function(){
   var aff=(r.aff||[]).map(function(v,i){return {nm:(ARCH[i]||{}).nm||'',v:v};})
