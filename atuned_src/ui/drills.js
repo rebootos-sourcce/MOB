@@ -228,6 +228,78 @@ function runBalDrill(){
   +INWARD.map(function(c){return row(c,S.charge[c]||0,'Throat');}).join('')+'</div>';
  rdShell(h);}
 
+/* ---- the knowledge base drills. every drill lives in this file. ---- */
+/* the catalog entry for one seat. the counts are the clinical record, not a
+   score, so they are stated as what was released and what installed. */
+function runSeatDrill(c){
+ var h='<div class="pm-eye">Seat</div><div class="ad-nm">'+esc(c.b)+'</div>'
+  +'<div class="ad-sub">'+esc(c.nv)+'</div>'
+  +'<div class="pm-eye">What encodes here</div><p class="ad-p">'+esc(c.d)+'</p>'
+  +'<div class="pm-eye">The record</div><div class="ad-rows">'
+  +c.sub.map(function(x){
+    return '<div class="ad-r static"><span class="ad-k">'+esc(x[0])+'</span>'
+     +'<span class="ad-m">'+x[1]+' released, '+x[2]+' installed</span></div>';}).join('')
+  +'</div>'
+  +'<div class="pm-eye">Addresses at this seat</div><div class="ad-rows">'
+  +W.filter(function(n){return n.b===c.b;}).slice(0,10).map(addrRow).join('')+'</div>';
+ rdShell(h);}
+
+function runFetterDrill(c){
+ var held=S.charge[c.nm]||0, inst=S.replace[c.nm]||0;
+ var at=W.filter(function(n){return n.cf===c.nm;});
+ var h='<div class="pm-eye">Child fetter</div><div class="ad-nm">'+esc(c.nm)+'</div>'
+  +'<div class="ad-sub">toward '+esc(c.opp)+'</div>'
+  +'<div class="pm-eye">Where it sits</div><p class="ad-p">'+esc(c.addr)+', at '+esc(c.loc)
+  +'. Seated at the '+esc(c.seat).toLowerCase()+'.</p>'
+  +'<div class="pm-eye">Both halves</div><p class="ad-p">Held <b>'+held.toFixed(1)+'</b>. '
+  +esc(c.opp)+' installed <b>'+inst.toFixed(1)+'</b>. Release empties the address, the opposite is what fills it.</p>'
+  +'<div class="pm-eye">It runs '+at.length+' addresses</div><div class="ad-rows">'
+  +at.slice(0,10).map(addrRow).join('')
+  +(at.length>10?'<div class="pm-more">and '+(at.length-10)+' more</div>':'')+'</div>';
+ rdShell(h);}
+
+/* a saboteur the reading is not currently carrying. it still has a definition. */
+function runSabDrill(s){
+ var pi=SAB_PI.indexOf(s.nm)>=0;
+ var nodes=(s.nids||[]).map(function(i){return BY[i];}).filter(Boolean);
+ var h='<div class="pm-eye">Saboteur, not running</div><div class="ad-nm">'+esc(s.nm)+'</div>'
+  +'<div class="ad-sub">'+(s.unnamed?'Inferred from the connection types'
+    :(pi?'One of the ten Positive Intelligence saboteurs, after Shirzad Chamine':'SOURCE library'))+'</div>'
+  +'<div class="pm-eye">What it would take</div><p class="ad-p">It fires when its addresses carry at '
+  +'once. Yours are not carrying enough for it to run, which is why it is here and not on the wheel.'
+  +(s.hcx?' It compounds into <b>'+esc(s.hcx)+'</b>.':'')+'</p>'
+  +kbSabBlock(s.nm)
+  +'<div class="pm-eye">Made of</div><div class="ad-rows">'+nodes.map(addrRow).join('')+'</div>';
+ rdShell(h);}
+
+/* THE DOMAIN, read clear and read distorted. The book prints both readings
+   for all nineteen. Four are under a different name in the engine, and the
+   drill says both rather than picking one, because that ruling is not mine. */
+function runDomDrill(d){
+ var k=KB_KEY(d.nm), def=DOMDEF[k], alt=KB_RENAME[k];
+ var h='<div class="pm-eye">Blueprint domain'+(def&&def.n?' '+def.n:'')+'</div>'
+  +'<div class="ad-nm">'+esc(d.nm)+'</div>'
+  +'<div class="ad-sub">'+esc(d.r)+' cluster'+(alt?', called '+esc(alt)+' in the codex':'')+'</div>';
+ if(def){
+  h+='<div class="pm-eye">Read clear</div><p class="ad-p">'+esc(def.c)+'</p>'
+   +'<div class="pm-eye">Read distorted</div><p class="ad-p">'+esc(def.x)+'</p>';}
+ else h+='<div class="pm-eye">What it is</div><p class="ad-p">'+esc(d.d||'')+'</p>';
+ rdShell(h);}
+
+/* the definition, the trigger and the interrupt. an interrupt is the only
+   part a person can act on in the moment, so it is printed last and plainly. */
+function kbSabBlock(nm){
+ var def=SABDEF[KB_KEY(nm)]; if(!def)return '';
+ return (def.d?'<div class="pm-eye">What it is</div><p class="ad-p">'+esc(def.d)+'</p>':'')
+  +(def.t?'<div class="pm-eye">When it fires</div><p class="ad-p">'+esc(def.t)+'</p>':'')
+  +(def.q?'<div class="pm-eye">What it says</div><p class="ad-p"><em>'+esc(def.q)+'</em></p>':'')
+  +(def.i?'<div class="pm-eye">The interrupt</div><p class="ad-p">'+esc(def.i)+'</p>':'');}
+
+function runKbDrill(eyebrow,title,sub,body){
+ rdShell('<div class="pm-eye">'+esc(eyebrow)+'</div><div class="ad-nm">'+esc(title)+'</div>'
+  +(sub?'<div class="ad-sub">'+esc(sub)+'</div>':'')
+  +(body?'<div class="pm-eye">What it is</div><p class="ad-p">'+esc(body)+'</p>':''));}
+
 /* the compass on the right of the stage. it was a picture with no door. */
 function runCompassDrill(){
  var r=compute(), cq=Math.max(0,Math.min(100,r.CQ));

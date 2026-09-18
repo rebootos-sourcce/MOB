@@ -50,7 +50,9 @@ function relCoolDown(){
  if(CURP){var keys=[];
   CHAN.forEach(function(ch){RUN.queue.forEach(function(n){keys.push(meterKey(n.i,ch[0]+ch[2]));});});
   RUN.meter=meterRun(CURP,keys);}
- if(CURP){CURP.history=CURP.history||[];CURP.history.push(snapshot(CURP));pSave();}
+ /* this pushed a snapshot by hand and then saved, which is pSnap plus pSave
+    with one of the two writes done twice. */
+ if(CURP){pSave();pSnap();}
  toYou();syncCh();relRender();render();}
 function relClose(){clearInterval(RUN.timer);RUN.open=false;RUN.phase='idle';relRender();render();}
 function relRender(){

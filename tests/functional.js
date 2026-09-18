@@ -90,6 +90,55 @@ Object.keys(drills).forEach(k=>{
  else ok(drills[k]>120,k+' drill too short: '+drills[k]);});
 console.log(' ',JSON.stringify(drills));
 
+console.log('\n=== the knowledge base, the deck and the record ===');
+const kb=await page.evaluate(()=>{
+ setTab(TAB.KNOW); kbRender();
+ const secs=[...document.querySelectorAll('.kb-t')].length;
+ const rows=()=>document.querySelectorAll('.kb-r').length;
+ const all=rows();
+ /* search narrows, and a term that is in no table finds nothing anywhere */
+ KB_Q='fear'; kbRender(); const hit=rows();
+ KB_Q='zzzznotathing'; kbRender();
+ const none=rows(), foundAll=[...document.querySelectorAll('.kb-t b')].reduce((a,b)=>a+ +b.textContent,0);
+ KB_Q=''; kbRender();
+ /* every section renders and every row opens something */
+ let opened=0, empty=[];
+ ['addr','fetter','sab','law','dom','arch','gate','seat','harm','gloss'].forEach(k=>{
+  KB_SEC=k; kbRender();
+  if(!document.querySelectorAll('.kb-r').length){empty.push(k);return;}
+  document.querySelector('.kb-r').click();
+  if(document.getElementById('rdrill').textContent.length>40)opened++;});
+ KB_SEC='addr'; kbRender();
+ /* the deck deals only from what is held, and a card names a real address */
+ loadP(6); const pool=deckSize(), held=compute().loaded.length;
+ deckDeal(); const card=DECK_CARD; deckClose();
+ return {secs,all,hit,none,foundAll,opened,empty,pool,held,
+  cardIsHeld:!!(card&&card.n&&card.n.sq>=4), rank:card?card.rank:0};});
+ok(kb.secs===10,'the base has ten sections, got '+kb.secs);
+ok(kb.all>100,'addresses list in full, got '+kb.all);
+ok(kb.hit>0&&kb.hit<kb.all,'search narrows, '+kb.all+' to '+kb.hit);
+ok(kb.none===0&&kb.foundAll===0,'a term in no table finds nothing in any section');
+ok(kb.empty.length===0,'every section has rows, empty: '+kb.empty.join(','));
+ok(kb.opened===10,'every section opens a drill, got '+kb.opened+' of 10');
+ok(kb.pool===kb.held,'the deck is exactly what is held, '+kb.pool+' against '+kb.held);
+ok(kb.cardIsHeld,'a dealt card is an address that is actually carrying');
+ok(kb.rank>=1&&kb.rank<=13,'the rank is a card rank, got '+kb.rank);
+
+const rec=await page.evaluate(()=>{
+ const p=CURP; p.history=[];
+ for(let i=0;i<5;i++){CHARGES.forEach(c=>{S.charge[c]=Math.max(0,(S.charge[c]||3)-0.3);});
+  p.history.push(snapshot(p));}
+ setTab(TAB.ANALYTICS); anaRender();
+ const pts=document.querySelectorAll('.rec-p').length;
+ const rows=document.querySelectorAll('.rec-row').length;
+ /* clicking an end moves it and the two never collapse onto one */
+ document.querySelectorAll('.rec-p')[2].click();
+ const same=(REC_A===REC_B);
+ return {pts,rows,same,a:REC_A,b:REC_B};});
+ok(rec.pts===5,'the record shows every snapshot, got '+rec.pts);
+ok(rec.rows===10,'and ten measured rows, got '+rec.rows);
+ok(!rec.same,'the two ends never collapse onto one snapshot, A '+rec.a+' B '+rec.b);
+
 console.log('\n=== persistence: save, reload, read back ===');
 /* The store must be bound through bindStore(), or pPersist() refuses every
    write. This is the gate that would have caught the shipped app writing
