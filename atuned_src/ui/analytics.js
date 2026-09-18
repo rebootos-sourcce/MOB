@@ -137,7 +137,11 @@ function anaRender(){
     :meas.length?'<b>'+(21-meas.length)+'</b> law'+(21-meas.length===1?' is':'s are')+' still unmeasured and sitting at the default 6, which flatters the score. Answer them in Intake.'
     :'No law is measured yet. All 21 sit at the default 6, which flatters the score. Answer them in Intake.')
   +'</p></div>';
+ /* the record. every snapshot the profile carries, and the distance between
+    any two of them. the data has been accruing since the rebuild. */
+ out+='<div class="ab-f" id="rec"></div>';
  el.innerHTML=out;
+ recRender();
  el.querySelectorAll('[data-ab]').forEach(function(gEl){gEl.onclick=function(){
   var p=gEl.getAttribute('data-ab').split('|');
   ANA_PICK=(ANA_PICK&&ANA_PICK.k===p[0]&&ANA_PICK.nm===p[1])?null:{k:p[0],nm:p[1]};
