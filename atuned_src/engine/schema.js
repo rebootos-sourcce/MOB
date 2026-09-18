@@ -284,14 +284,20 @@ function meterRun(p,keys){
    what they are carrying.
 
    The swing is ten percent because how hard somebody identifies
-   with a thing is not knowable from a birth date. PAT_COHORT is the
+   with a thing is not knowable from a birth date. PAT_GEN is the
    place a generational rate goes, on the owner's observation that
    younger people are more identified, which is a real effect and
    not yet a number. It multiplies the yearly rate and is one until
    he sets it, so the model has the seam without inventing the
    figure.
+
+   It was called PAT_COHORT for half a day. A cohort is now a group
+   of people a practitioner teaches together, which is a different
+   object entirely and is the one a person will say out loud. One
+   word per concept, so the birth band is a generation and the
+   classroom keeps the word cohort.
    ============================================================ */
-const PAT_PER_YEAR=300, PAT_SWING=0.10, PAT_COHORT=1;
+const PAT_PER_YEAR=300, PAT_SWING=0.10, PAT_GEN=1;
 /* The ladder, from SOURCE OS v27.3 Sprint J, which the owner had already
    designed. Six fixed distances on one ruler.
 
@@ -322,7 +328,7 @@ const MARKERS=[
    surface has to be able to say so. */
 const PAT_REF_AGE=50;
 function markersFor(est){
- var total=est||Math.round(PAT_REF_AGE*PAT_PER_YEAR*PAT_COHORT);
+ var total=est||Math.round(PAT_REF_AGE*PAT_PER_YEAR*PAT_GEN);
  return MARKERS.map(function(k){
   return {nm:k.nm, of:k.of,
    at:(k.at!=null)?k.at:Math.max(1,Math.round(total*k.frac))};});}
@@ -336,7 +342,7 @@ function meterRead(p,now){
  var m=(p&&p.meter)||{lines:0,unique:[],first:null,last:null};
  var uniq=(m.unique||[]).length;
  var age=ageAt(p&&p.who&&p.who.born?p.who.born.date:null,now);
- var est=age===null?null:Math.round(age*PAT_PER_YEAR*PAT_COHORT);
+ var est=age===null?null:Math.round(age*PAT_PER_YEAR*PAT_GEN);
  var mk=markersFor(est);
  return {lines:m.lines, unique:uniq, first:m.first, last:m.last,
   /* the gift is 100 of new ground, ruled. reruns never spend it. */

@@ -442,3 +442,36 @@ what is asked. This is not onboarding. It is the instrument, and the instrument
 is a mirror a person lives with until what they are carrying is clear. A mirror
 half described shows half a person. The count stands.
 
+## The compass, ruled
+
+**The figures get numbers, and the number is a position on an axis.** Ruled:
+give them all numbers and let a person move against them. Not a rank, because
+the book is explicit that the masters are not a summit but coordinates on the
+cone. So nought at the inverted pole, a hundred at the coherent one, eight
+axes, and the position is read from the seat rather than asked.
+
+**Both ends render as behaviours, never as entities.** A person runs pride as
+false light. Lucifer is what people called that behaviour when they saw it. The
+names carry the historical footprint and the echo is in the room today, which
+is the only reason they earn their place. Gated.
+
+**The dark read needs both conditions.** Malignant shape and decoherent field
+at once. Neither alone is it. Said once, as a reading of what is running rather
+than a label on a person, and below the floor the product stops working the
+problem and refers to a licensed clinician, which is the book's own
+instruction carried onto the surface.
+
+**Cohort is the classroom, not the birth band.** A cohort is a set of groups a
+practitioner moves through the same material. The generational rate in the
+horizon model was briefly called PAT_COHORT and is now PAT_GEN.
+
+**A practitioner panel sorted by coherence is a leaderboard with a licence.**
+Group views sort by what needs attention, never by who is ahead.
+
+**No Discord from here.** There is no Discord tool in this session. beehiiv is
+connected and its community side carries channels with tier gating, members,
+roles, invites, moderation and direct messages. Open: whether the community is
+Discord, beehiiv, or beehiiv for accounts and Discord for the room. It matters
+before the invite mechanic is built, because the twenty five patterns attach to
+whichever one holds the accounts.
+

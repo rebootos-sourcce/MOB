@@ -301,6 +301,101 @@ function runKbDrill(eyebrow,title,sub,body){
   +(sub?'<div class="ad-sub">'+esc(sub)+'</div>':'')
   +(body?'<div class="pm-eye">What it is</div><p class="ad-p">'+esc(body)+'</p>':''));}
 
+/* ============================================================
+   THE TWO ENDS OF THE COMPASS.
+
+   The cone points up toward twelve coherent expressions of eight
+   human qualities, and down toward the inversion of the same eight.
+   Same energy, opposite direction, and the person reading is
+   somewhere between them on every axis.
+
+   Rendered as behaviours and never as figures. Nobody meets Lucifer.
+   A person runs pride as false light, and the name is what four
+   thousand years of people called that behaviour when they saw it.
+   That is the only reason the names earn their place: they carry
+   the historical footprint, and the echo is in the room today.
+   ============================================================ */
+function runPoleDrill(end){
+ var up=(end!=='dn'), r=compute();
+ var h='<div class="pm-eye">'+(up?'The upward cone':'The downward cone')+'</div>'
+  +'<div class="ad-nm">'+(up?'Eight qualities at full expression':'The same eight, inverted')+'</div>'
+  +'<p class="ad-p">'+(up
+    ?'Each of the twelve is the maximum coherent expression of one human quality, at one moment when it was most needed. They are coordinates, not a summit. Nothing here is a person to become.'
+    :'The same quality at maximum inversion. Same energy, opposite direction. These are behaviours, not entities, and they are named because the names have survived: the patterns are still running.')
+  +'</p>';
+ /* where this person sits on each axis, read rather than asked */
+ h+='<div class="pm-eye">Where you sit on each</div><div class="ad-rows">';
+ MIRROR.forEach(function(m){
+  var grp=W.filter(function(n){return n.b===m.seat;});
+  var load=grp.length?grp.reduce(function(a,n){return a+n.sq;},0)/grp.length:0;
+  var pos=mirrorAt(load,bandIg(m.seat));
+  var c=seatCol(m.seat);
+  h+='<button type="button" class="ad-r" data-mirror="'+m.k+'" title="'+esc(m.ask)+'">'
+   +cr(m.seat,pos,{size:'xs',raw:String(pos)})
+   +'<span>'+esc(up?m.up:m.dn)+'</span>'
+   +'<em style="color:'+c+'">'+esc(m.q.toLowerCase())+'</em></button>';});
+ h+='</div>';
+ if(up){
+  h+='<div class="pm-eye">The twelve, and where each one stood</div><div class="ad-rows">';
+  MASTERS.forEach(function(x){
+   h+='<div class="ad-r static" title="'+esc(x.d)+'">'
+    +'<span class="ad-k">'+esc(x.nm)+'</span>'
+    +'<span class="ad-v">'+esc(x.was.toLowerCase())+'</span></div>';});
+  h+='</div><p class="ad-p">They appeared at moments of maximum collective decoherence. '
+   +'That is the law of rhythm running at the scale of a civilisation rather than a person.</p>';
+ } else {
+  var dk=darkRead(r.malig,r.CQ), circ=circleAt(r.CQ);
+  h+='<div class="pm-eye">The blueprint, where the downward cone ends</div><div class="ad-rows">';
+  BLUEPRINT.forEach(function(x){
+   h+='<div class="ad-r static" title="'+esc(x.d)+'"><span class="ad-k">'+esc(x.nm)+'</span></div>';});
+  h+='</div>';
+  h+='<div class="pm-eye">The descent, nine depths</div><div class="ad-rows">';
+  CIRCLES.forEach(function(c){
+   var here=circ&&circ.c===c.c;
+   h+='<div class="ad-r static'+(here?' on':'')+'" title="'+esc(c.p+' '+c.at+'.')+'">'
+    +'<span class="ad-k">'+esc(c.nm)+'</span>'
+    +'<span class="ad-v">'+esc(c.by)+'</span></div>';});
+  h+='</div>';
+  h+='<p class="ad-p">Read as a taxonomy rather than a poem. Each depth is a behaviour at a '
+   +'specific compression, and the floor is stasis rather than power: no flow, no movement, '
+   +'nothing completing anywhere.</p>';
+  /* THE DARK READ. Only when both conditions hold, once, with the referral. */
+  if(dk.dark){
+   h+='<div class="pm-eye">Both at once</div><p class="ad-p">'+esc(dk.say)+'</p>'
+    +'<div class="ad-rows">'+DESCENT.map(function(d){
+      return '<div class="ad-r static'+(dk.step&&dk.step.nm===d.nm?' on':'')
+       +'" title="'+esc(d.d)+'"><span class="ad-k">'+esc(d.nm)+'</span>'
+       +'<span class="ad-v">'+esc(d.kind)+'</span></div>';}).join('')+'</div>';
+   if(dk.refer)h+='<p class="ad-p"><b>'+esc(DESCENT_REFER)+'</b></p>';}
+ }
+ rdShell(h);
+ /* a row opens the axis, both poles and the question a practitioner asks */
+ var host=document.getElementById('rdrill');
+ if(host)host.querySelectorAll('[data-mirror]').forEach(function(b){
+  b.onclick=function(){runMirrorDrill(b.getAttribute('data-mirror'));};});}
+
+/* one axis, both ends, and the question that tells them apart */
+function runMirrorDrill(k){
+ var m=MIRROR.filter(function(x){return x.k===k;})[0]; if(!m)return;
+ var grp=W.filter(function(n){return n.b===m.seat;});
+ var load=grp.length?grp.reduce(function(a,n){return a+n.sq;},0)/grp.length:0;
+ var pos=mirrorAt(load,bandIg(m.seat)), c=seatCol(m.seat);
+ rdShell('<div class="pm-eye">'+esc(m.q)+'</div>'
+  +'<div class="ad-nm">'+esc(m.up)+' against '+esc(m.dn)+'</div>'
+  +'<div class="ad-sub">at the '+String(m.seat).toLowerCase()+'</div>'
+  +'<div class="pm-eye">At full expression</div><p class="ad-p">'+esc(m.upd)+'</p>'
+  +'<div class="pm-eye">At full inversion</div><p class="ad-p">'+esc(m.dnd)+'</p>'
+  +'<div class="pm-eye">The question that tells them apart</div>'
+  +'<p class="ad-p"><b>'+esc(m.ask)+'</b></p>'
+  +'<div class="pm-eye">Where you sit</div>'
+  +'<div class="ad-rows"><div class="ad-r static">'
+   +cr(m.seat,pos,{size:'sm',raw:String(pos)})
+   +'<span class="ad-k">'+esc(m.dn)+' at nought, '+esc(m.up)+' at a hundred</span>'
+   +'<span class="ad-v" style="color:'+c+'">'+pos+'</span></div></div>'
+  +'<p class="ad-p">Read from what is held at the '+String(m.seat).toLowerCase()
+  +' and the integrity measured there. Not asked, and not a verdict. Both ends are behaviours '
+  +'and the axis is one you are on whether or not you look at it.</p>');}
+
 /* the compass on the right of the stage. it was a picture with no door. */
 function runCompassDrill(){
  var r=compute(), cq=Math.max(0,Math.min(100,r.CQ));

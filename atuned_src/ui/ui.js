@@ -450,7 +450,12 @@ document.addEventListener('click',function(e){
  if(kb){S.pin=null;ANA_PICK=null;runQDrill(kb.getAttribute('data-q'));return;}
  var gate=e.target.closest?e.target.closest('.gate-r[data-gate]'):null;
  if(gate){runGatesDrill(gate.getAttribute('data-gate'));return;}
- if(e.target.closest&&e.target.closest('#pol2')){S.pin=null;ANA_PICK=null;runCompassDrill();return;}
+ if(e.target.closest&&e.target.closest('#pol2')){
+  S.pin=null;ANA_PICK=null;
+  /* either end of the cone opens its own roster. the shaft opens the reading. */
+  var pe=e.target.closest('[data-polend]');
+  if(pe)runPoleDrill(pe.getAttribute('data-polend')); else runCompassDrill();
+  return;}
  if(e.target.closest&&e.target.closest('#bal')){S.pin=null;ANA_PICK=null;runBalDrill();return;}
  var row=e.target.closest?e.target.closest('.ad-r[data-addr]'):null;
  if(!row)return;

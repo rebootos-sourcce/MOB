@@ -4,6 +4,7 @@ engine/data/nodes.js
 engine/data/figure.js
 engine/data/nerves.js
 engine/data/canon.js
+engine/data/compass.js
 engine/data/practice.js
 engine/data/people.js
 engine/data/catalog.js

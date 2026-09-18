@@ -508,7 +508,65 @@ await phone.close();
 console.log('\n=== real JS errors across all of the above ===');
 ok(real.length===0,'JS errors: '+real.slice(0,4).join(' | '));
 console.log('  count:',real.length);
+console.log('\n=== the compass has two ends and both are doors ===');
+/* The cone was a picture of a direction with nothing at either end of it. The
+   top is anchored by the twelve, the bottom by the blueprint and the nine
+   circles, and the rule that governs both is that they render as behaviours
+   and never as entities. */
+const pole=await page.evaluate(()=>{
+ const o={};
+ loadP(8); setTab(TAB.FIELD); render();
+ o.ends=document.querySelectorAll('#pol2 [data-polend]').length;
+ const txt=()=>(document.getElementById('rdrill').textContent||'').replace(/\s+/g,' ');
+ runPoleDrill('up'); o.up=txt();
+ runPoleDrill('dn'); o.dn=txt();
+ /* a row on either roster opens that axis with both poles on it */
+ runPoleDrill('up');
+ const row=document.querySelector('#rdrill [data-mirror]');
+ o.rows=document.querySelectorAll('#rdrill [data-mirror]').length;
+ if(row){row.click(); o.axis=txt();}
+ const r=compute(); o.cq=Math.round(r.CQ); o.dark=darkRead(r.malig,r.CQ).dark;
+ /* and a coherent field is never shown it. built rather than assumed: four
+    hundred checks have run against this page and persona zero is not
+    guaranteed to still be empty. */
+ undoPush('the compass gate');
+ CHILD.forEach(function(c){S.charge[c.nm]=0;S.replace[c.nm]=8;});
+ SI.forEach(function(l){S.law[l.nm]=10;});
+ toYou(); render();
+ const rc=compute();
+ o.cleanCQ=Math.round(rc.CQ); o.cleanMal=Math.round(rc.malig);
+ o.cleanDark=darkRead(rc.malig,rc.CQ).dark;
+ runPoleDrill('dn'); o.clean=txt();
+ undoPop();
+ return o;});
+ok(pole.ends===2,'the cone carries a door at each end, got '+pole.ends);
+ok(pole.rows===8,'and eight axes on the roster, got '+pole.rows);
+ok(/Musashi/.test(pole.up)&&/Buddha/.test(pole.up)&&/Akhenaten/.test(pole.up),
+ 'the upward roster names the twelve');
+ok(/Lucifer/.test(pole.dn)&&/Moloch/.test(pole.dn)&&/Satan frozen/.test(pole.dn),
+ 'the downward roster names the inversions and the nine circles');
+ok(/behaviours, not entities/.test(pole.dn),
+ 'and says in the copy that they are behaviours rather than entities');
+ok(/Musashi against Moloch|against/.test(pole.axis),'an axis opens with both poles on it');
+ok(/\?/.test(pole.axis),'carrying the question that tells them apart');
+ok(/not a verdict/.test(pole.axis),'and saying it is not a verdict');
+/* THE SAFETY RULE, carried out of the book. Gordon is the heaviest case in
+   the roster and sits under the floor with a malignant shape, which is the one
+   configuration the codex says to refer out rather than work. */
+ok(pole.dark===true,'the heaviest case reads malignant and decoherent at once, CQ '+pole.cq);
+ok(/licensed clinician/.test(pole.dn),'and the referral is on the surface, not only in the book');
+ok(/reading of what is running, not of who/.test(pole.dn),
+ 'said as a reading of what runs rather than a label on a person');
+/* and none of it is shown to somebody it is not true of */
+ok(pole.cleanDark===false,'a cleared field does not read as the descent, CQ '
+ +pole.cleanCQ+' malignant '+pole.cleanMal);
+ok(!/licensed clinician/.test(pole.clean),'and is never shown the referral');
+ok(!/Both at once/.test(pole.clean),'nor the descent read');
+/* the roster itself is always there. only the descent read is conditional. */
+ok(/Satan frozen/.test(pole.clean),'while the nine circles stay readable to anybody');
+
 await browser.close();
+
 console.log('\n===== '+PASS+' passed, '+FAIL+' failed =====');
 process.exit(FAIL?1:0);
 })();

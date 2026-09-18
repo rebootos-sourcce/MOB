@@ -250,3 +250,16 @@ is not listed as a book error because the owner asked separately for Buddha,
 Christ and Musashi as markers, which is a different object: a compass of people
 rather than a ladder of thresholds. Two objects should not share one table. His
 ruling, and it is named in `DESIGN-avatar.md`.
+
+**The twelve masters are never listed as twelve.** The book states that "the 12
+Ascended Masters anchor" the CQ cone. The coordinate section lists nine:
+Akhenaten, Buddha, Christ, Krishna, Rama, Lao Tzu, Moses, Rumi, Musashi. The
+Eight Mirror Pairs list eight coherent poles: Jesus, Ramakrishna, Moses,
+Musashi, Buddha, Rumi, Elijah, Meister Eckhart. The two overlap on five, and
+their union is exactly twelve, which is almost certainly the intended roster
+and is the one the engine now carries. A reader who counts either list alone
+finds nine or eight and concludes the book cannot count. **One line naming the
+twelve in one place fixes it.** Ramakrishna, Elijah and Meister Eckhart appear
+only as poles and never on the coordinate system, which is the other half of
+the same gap.
+

@@ -114,9 +114,18 @@ function renderPol2(r){
  [[60,y60],[50,mid],[40,y40]].forEach(function(tk){
   s+='<line x1="'+(x-6)+'" y1="'+tk[1]+'" x2="'+(x+6)+'" y2="'+tk[1]+'" stroke="rgba(128,128,128,.34)" stroke-width="1"/>';
   s+='<text x="'+(x-10)+'" y="'+(tk[1]+3.5)+'" text-anchor="end" class="pol2-t">'+tk[0]+'</text>';});
- s+='<g opacity="'+(up?1:.35)+'"><ellipse cx="'+x+'" cy="'+(top-15)+'" rx="8" ry="3.2" fill="none" stroke="'+gc+'" stroke-width="1.6"/>'
+ /* THE TWO ENDS ARE DOORS. The compass was a picture of a direction with
+    nothing at either end of it. The top of the cone is anchored by the
+    twelve, the bottom by the blueprint and the nine circles, and both are
+    behaviours rather than figures. Each end carries its own hit box, which
+    is generous because the glyphs are small, and opens its own roster. */
+ s+='<g class="p2end" data-polend="up" opacity="'+(up?1:.35)+'">'
+  +'<rect x="'+(x-22)+'" y="'+(top-30)+'" width="44" height="34" fill="transparent"/>'
+  +'<ellipse cx="'+x+'" cy="'+(top-15)+'" rx="8" ry="3.2" fill="none" stroke="'+gc+'" stroke-width="1.6"/>'
   +'<path d="M'+(x-7)+' '+(top-4)+' Q'+x+' '+(top-11)+' '+(x+7)+' '+(top-4)+'" fill="none" stroke="'+gc+'" stroke-width="1.3" opacity=".6"/></g>';
- s+='<g opacity="'+(up?.35:1)+'"><path d="M'+x+' '+(bot+22)+' L'+x+' '+(bot+11)+'" stroke="'+rc+'" stroke-width="1.8" fill="none"/>'
+ s+='<g class="p2end" data-polend="dn" opacity="'+(up?.35:1)+'">'
+  +'<rect x="'+(x-22)+'" y="'+(bot)+'" width="44" height="32" fill="transparent"/>'
+  +'<path d="M'+x+' '+(bot+22)+' L'+x+' '+(bot+11)+'" stroke="'+rc+'" stroke-width="1.8" fill="none"/>'
   +'<path d="M'+(x-6)+' '+(bot+11)+' L'+(x-6)+' '+(bot+4)+' M'+x+' '+(bot+11)+' L'+x+' '+(bot+2)
   +' M'+(x+6)+' '+(bot+11)+' L'+(x+6)+' '+(bot+4)+'" stroke="'+rc+'" stroke-width="1.5" fill="none"/>'
   +'<path d="M'+(x-7)+' '+(bot+11)+' L'+(x+7)+' '+(bot+11)+'" stroke="'+rc+'" stroke-width="1.5" fill="none"/></g>';

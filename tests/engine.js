@@ -307,10 +307,10 @@ g('15d \u00b7 the meter');
  ok(bn&&bn.left===Math.max(0,bn.at-h.unique),'a marker reports the ground left to it');
  /* the whole point: a younger person does not have to clear an older person's
     total. they have to clear their own, and the top marker is all of it. */
- {const {markersFor,PAT_PER_YEAR,PAT_COHORT}=E;
-  const at30=markersFor(Math.round(30*PAT_PER_YEAR*PAT_COHORT)).map(m=>m.at).join();
+ {const {markersFor,PAT_PER_YEAR,PAT_GEN}=E;
+  const at30=markersFor(Math.round(30*PAT_PER_YEAR*PAT_GEN)).map(m=>m.at).join();
   ok(at30==='1,300,1500,2100,2700,6000,9000','a thirty year old carries nine thousand, got '+at30);
-  const at50=markersFor(Math.round(50*PAT_PER_YEAR*PAT_COHORT));
+  const at50=markersFor(Math.round(50*PAT_PER_YEAR*PAT_GEN));
   ok(at50[6].at===15000,'a fifty year old reaches ascension at fifteen thousand, got '+at50[6].at);
   ok(markersFor(9000)[6].at===9000&&markersFor(6000)[6].at===6000,
    'and ascension is always the whole of it, whoever is reading');
@@ -992,6 +992,75 @@ g('20 \u00b7 the pattern catalog');
  const all=JSON.stringify([CARDSET,AXCARD,C3_LADDER,C3_BAND]);
  ok(!/[\u2014\u2013]/.test(all),'no em or en dashes anywhere in the catalog');
  ok(all.indexOf('108')<0,'and the catalog never says 108');
+}
+
+g('21 \u00b7 the compass. two cones, eight axes, a descent');
+/* Every name and every description in compass.js is a quotation. The gate's
+   job is not to re-read the book, it is to assert the shape the book states:
+   eight mirror pairs, twelve masters, four blueprint archetypes, nine circles,
+   six cascade states, and a descent whose last step refers out. */
+{
+ const {MIRROR,MASTERS,BLUEPRINT,CIRCLES,CASCADE,DESCENT,DESCENT_REFER,
+        mirrorAt,darkRead,circleAt,DARK_MAL,DARK_CQ,BANDS}=E;
+ ok(MIRROR.length===8,'eight mirror pairs, got '+MIRROR.length);
+ const thin=MIRROR.filter(m=>!m.up||!m.dn||!m.upd||!m.dnd||!m.ask).map(m=>m.k);
+ ok(thin.length===0,'every pair carries both poles, both descriptions and the diagnostic'
+  +(thin.length?'  thin: '+thin.join(', '):''));
+ /* the diagnostic is a question a practitioner asks, so it has to be one */
+ ok(MIRROR.every(m=>/\?$/.test(m.ask)),'and the diagnostic is phrased as a question');
+ /* a pair is only readable if the product already measures where it sits */
+ const off=MIRROR.filter(m=>BANDS.indexOf(m.seat)<0).map(m=>m.k+' '+m.seat);
+ ok(off.length===0,'every axis names a seat this product measures'
+  +(off.length?'  off: '+off.join(', '):''));
+ /* the owner asked for Musashi by name, and the book had already answered */
+ ok(MIRROR.some(m=>m.up==='Musashi'&&m.dn==='Moloch'),'power is Musashi against Moloch');
+ ok(MIRROR.some(m=>m.up==='Jesus'&&m.dn==='Lucifer'),'illumination is Jesus against Lucifer');
+ ok(MIRROR.some(m=>m.up==='Buddha'),'and Buddha holds perception');
+
+ ok(MASTERS.length===12,'twelve masters anchor the cone, got '+MASTERS.length);
+ /* the union arithmetic: the coordinate list and the mirror pairs overlap, and
+    the union is exactly twelve. if either list moves, this catches it. */
+ const upNames=new Set(MIRROR.map(m=>m.up));
+ const missing=[...upNames].filter(n=>!MASTERS.some(x=>x.nm===n)&&n!=='Jesus');
+ ok(missing.length===0,'every coherent pole is one of the twelve'
+  +(missing.length?'  missing: '+missing.join(', '):''));
+ ok(BLUEPRINT.length===4,'four blueprint archetypes, got '+BLUEPRINT.length);
+ ok(CIRCLES.length===9&&CIRCLES.every((c,i)=>c.c===i+1),'nine circles in order');
+ ok(CIRCLES.every(c=>c.by&&c.p&&c.at),'each circle names its governor, its pattern and its seat');
+ ok(CASCADE.length===6,'six cascade states, got '+CASCADE.length);
+
+ /* the position on an axis is read, not asked */
+ ok(mirrorAt(0,10)===100,'a clear seat with full integrity sits at the coherent pole');
+ ok(mirrorAt(10,0)===0,'a fully loaded seat with none sits at the inverted pole');
+ ok(mirrorAt(5,5)>0&&mirrorAt(5,5)<100,'and everybody else is somewhere between them');
+
+ /* THE DARK READ. malignant alone is not it, decoherent alone is not it. */
+ ok(darkRead(90,70).dark===false,'a malignant shape in a coherent field is not the descent');
+ ok(darkRead(10,5).dark===false,'and a decoherent field with a benign shape is not either');
+ ok(darkRead(90,5).dark===true,'the two together is');
+ ok(darkRead(90,5).refer===true,'and at the floor it refers out');
+ ok(darkRead(90,5).step&&darkRead(90,5).step.refer===true,'to the step that says so');
+ ok(/licensed clinician/.test(DESCENT_REFER),'the referral names a clinician');
+ ok(DESCENT.length===3&&DESCENT[2].refer===true,'three steps and the last is not ours to work');
+ /* never a label on a person. the sentence has to say what it is a reading of. */
+ ok(/not of who is running it/.test(darkRead(90,5).say),
+  'and the dark read says it is a reading of what runs, not of the person');
+ ok(darkRead(90,70).say==='','while a field that is not there is told nothing');
+ ok(DARK_MAL>0&&DARK_MAL<1&&DARK_CQ>0,'both conditions carry a named threshold');
+
+ /* the descent is below the median band and nowhere else */
+ ok(circleAt(80)===null&&circleAt(41)===null,'nothing descends at or above the median range');
+ ok(circleAt(40)&&circleAt(40).c===1,'the first circle opens just under it, got '
+  +(circleAt(40)?circleAt(40).c:'none'));
+ ok(circleAt(0).c===9,'and the floor is the ninth');
+ let last=0,mono=true;
+ for(let q=40;q>=0;q--){const c=circleAt(q); if(c.c<last)mono=false; last=c.c;}
+ ok(mono,'the circles only ever deepen as coherence falls');
+
+ /* house voice applies to a hundred and fifty lines of quotation too */
+ const all=JSON.stringify([MIRROR,MASTERS,BLUEPRINT,CIRCLES,CASCADE,DESCENT]);
+ ok(!/[\u2014\u2013]/.test(all),'no em or en dashes anywhere in the compass');
+ ok(all.indexOf('108')<0,'and it never says 108');
 }
 
 console.log('\n===== '+P+' passed, '+F+' failed =====');
