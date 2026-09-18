@@ -261,7 +261,11 @@ function railTop(r){
  /* "18 of 112 held" read as a score out of a total, which is a test rather
     than a mirror. Coherence and the tier it names are the line. The count
     was cut everywhere a count read against a total. */
- e.innerHTML=cr(r.darkB, r.CQ, {size:'sm', label:'coherence'})
+ /* the ring draws empty and the tail carries a dash, for the same reason the
+    core does: the word beside it already says not read yet, and a percentage
+    beside that word is the contradiction the word exists to prevent. */
+ e.innerHTML=cr(r.darkB, r.unread?0:r.CQ, {size:'sm', label:'coherence',
+   raw:r.unread?'\u2013':undefined})
   +'<span class="rt-t">'+esc(r.unread?'not read yet':r.tier)+'</span>';
  /* the label never stands alone: hovering it gives the definition and the
     direction, and clicking the strip opens the whole thing. */
@@ -290,6 +294,11 @@ function render(){
  /* benign against malignant, as percentages of one field */
  (function(){
   var mal=Math.max(0,Math.min(100,r.malig||0)), ben=100-mal;
+  /* and the split is a reading of CQ, so it is not printed off the defaults
+     either. Seventy two percent benign to somebody who has typed nothing is
+     the same lie in a different shape. */
+  if(r.unread){$('pol').innerHTML='<div class="bmnote">Nothing read yet, so there is '
+   +'no split to show.</div>'; return;}
   $('pol').innerHTML='<div class="bmrow"><span class="bmk">Benign</span>'
    +'<span class="bmbar"><i style="width:'+ben.toFixed(0)+'%;background:'+PAL.Heart+'"></i></span>'
    +'<span class="bmv" style="color:'+PAL.Heart+'">'+ben.toFixed(0)+'%</span></div>'
@@ -335,8 +344,12 @@ function render(){
       installed, three axes. A gloss that never goes away is furniture. The
       letter is the name, the tooltip says what it is, and the click opens
       the whole reading. */
+   /* the same rule as the core: nothing is printed off the defaults. the ring
+      still draws, because an empty ring is the honest picture of an empty
+      field, and the tail carries a dash rather than a number nobody entered. */
    '<button class="kb" data-q="cq" title="Coherence. 0 to 100. What the field builds against what it costs.">'
-    +cr('Crown',r.CQ,{size:'xs',label:'CQ'})+'<span><b>CQ</b></span></button>'
+    +cr('Crown',r.unread?0:r.CQ,{size:'xs',label:'CQ',
+      raw:r.unread?'\u2013':undefined})+'<span><b>CQ</b></span></button>'
   +'<button class="kb" data-q="dq" title="Shadow weight. The summed charge across every address that is carrying.">'
     +cr('Root',clamp(r.DQ/14,0,1)*100,{size:'xs',raw:r.DQ.toFixed(1)})+'<span><b>DQ</b></span></button>'
   +'<button class="kb" data-q="sq" title="Segment depth. 0 to 10. How deep the held charge sits at the addresses carrying it.">'
@@ -346,7 +359,9 @@ function render(){
   /* the three axes. the engine has computed X, Y and Z on every reading
      since the rebuild and nothing has ever drawn them. */
   +'<button class="kb" data-q="xyz" title="Vitality, awareness and will. The mean of the three, 0 to 1.">'
-    +cr('Solar',(r.X+r.Y+r.Z)/3*100,{size:'xs',raw:((r.X+r.Y+r.Z)/3).toFixed(2)})+'<span><b>Energy</b></span></button>';
+    +cr('Solar',r.unread?0:(r.X+r.Y+r.Z)/3*100,
+      {size:'xs',raw:r.unread?'\u2013':((r.X+r.Y+r.Z)/3).toFixed(2)})
+    +'<span><b>Energy</b></span></button>';
  /* who. proportions, not one label. */
  (function(){
   var aff=(r.aff||[]).map(function(v,i){return {nm:(ARCH[i]||{}).nm||'',v:v};})
@@ -360,6 +375,27 @@ function render(){
    return d?row(T[i]||'Also',d.nm,Math.round(100/(S.doms.length||1))+'%'):'';}).join('');
   var held=W.filter(function(n){return n.sq>=4;}).length;
   var inst=W.filter(function(n){return n.pole>=4;}).length;
+  /* WHERE TO START. Only while there is nothing to read, because a call to
+     action that survives the action is furniture. Two doors and a line saying
+     what each one is for, so nobody has to remember a term to find one. */
+  (function(){var st=$('start'); if(!st)return;
+   if(!r.unread){st.innerHTML='';st.hidden=true;return;}
+   st.hidden=false;
+   st.innerHTML='<div class="pm-eye">Where to start</div>'
+    +'<p class="st-lead">Nothing has been read yet. Three ways in, and none of them '
+    +'asks you to know anything first.</p>'
+    +'<button type="button" class="stbtn" id="stw1"><b>Write what happened</b>'
+    +'<span>The day, in your own words. The engine reads the charge out of it.</span></button>'
+    +'<button type="button" class="stbtn" id="stw2"><b>Read nine sentences</b>'
+    +'<span>For anyone who cannot think of themselves as the problem. None of them '
+    +'is a diagnosis.</span></button>'
+    +'<button type="button" class="stbtn" id="stw3"><b>Go year by year</b>'
+    +'<span>Three to eighteen. For anyone who cannot think of anything they '
+    +'identify with, which is most people.</span></button>';
+   var b1=$('stw1'); if(b1)b1.onclick=function(){setTab(TAB.STORY);render();
+    var ta=document.getElementById('sttext'); if(ta)ta.focus();};
+   var b2=$('stw2'); if(b2)b2.onclick=function(){runRecogniseDrill();};
+   var b3=$('stw3'); if(b3)b3.onclick=function(){runAgeDrill();};})();
   $('person').innerHTML='<h3>'+(p.you?'You':p.nm)+'</h3>'
    +(p.you?'':'<div class="prole">'+p.age+', '+esc(String(p.role).replace(' · ICP',''))+'</div>')
    +(p.says?'<p class="psay">'+esc(p.says)+'</p>':'')

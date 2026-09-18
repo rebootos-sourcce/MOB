@@ -136,7 +136,11 @@ function renderPol2(r){
  s+='<path d="M'+(x+9)+' '+y.toFixed(1)+' L'+(x+17)+' '+(y-4.5).toFixed(1)+' L'+(x+17)+' '+(y+4.5).toFixed(1)+' Z" fill="'+mc+'"/>';
  s+='<circle cx="'+x+'" cy="'+y.toFixed(1)+'" r="3.6" fill="'+mc+'"/>';
  s+='<circle cx="'+x+'" cy="'+y.toFixed(1)+'" r="7" fill="none" stroke="'+mc+'" stroke-width="1" opacity=".45"/>';
- s+='<text x="'+(x+20)+'" y="'+(y+4).toFixed(1)+'" class="pol2-c" style="fill:'+mc+'">'+Math.round(cq)+'</text>';
+ /* not off the defaults. the marker still sits where the arithmetic puts it,
+    because the picture of an unread field is a real picture, but the number
+    beside it is not printed until somebody has entered something. */
+ s+='<text x="'+(x+20)+'" y="'+(y+4).toFixed(1)+'" class="pol2-c" style="fill:'+mc+'">'
+  +(r.unread?'\u2013':Math.round(cq))+'</text>';
  el.innerHTML=s+'</svg>';}
 
 /* ---- accuracy. one value, given room. B19 scope. ---- */
@@ -155,9 +159,13 @@ function renderAcc(r){
     into the drill, which is where a person asks for them, and the figure
     becomes a button, because the house rule is that a number on the stage
     has a door. */
+ /* and not off the defaults either. A field nobody has entered anything into
+    identifies with nothing, and printing a percentage against that is the
+    instrument reporting on itself as though it had read somebody. */
+ var un=r.unread;
  el.innerHTML='<button type="button" class="acc-b" id="accbtn" '
   +'aria-label="Family identification. How sure the reading is. Opens the detail.">'
-  +cr('Crown',a.pct,{size:'lg',raw:a.pct.toFixed(1)+'%',label:'identification'})
+  +cr('Crown',un?0:a.pct,{size:'lg',raw:un?'\u2013':a.pct.toFixed(1)+'%',label:'identification'})
   +'<span class="acc-l">Identification</span></button>';
  var bt=document.getElementById('accbtn');
  if(bt)bt.onclick=function(){runAccDrill();};}

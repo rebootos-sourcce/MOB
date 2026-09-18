@@ -124,7 +124,13 @@
    <div class="lsec open" data-rail="right" data-sec="you">
     <button class="lsec-hd" type="button"><span>The reading</span><i></i></button>
     <div class="lsec-bd">
-     <div class="person" id="person"></div>
+     <!-- Where to start. A field with nothing in it had a tooltip saying to
+         write a story, which is rule 10 broken: a control with no affordance
+         is the same as a missing feature. The two ways in were three clicks
+         deep inside the bottom of the compass. They are here instead, and
+         they are only here while there is nothing to read. -->
+    <div class="start" id="start"></div>
+    <div class="person" id="person"></div>
      <div class="stack" id="stack"></div>
      <div class="rows" id="rows"></div>
     </div>

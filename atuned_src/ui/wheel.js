@@ -70,8 +70,14 @@ function solCore(r,base){
  g.fillStyle='rgba(255,255,252,'+lerp(.28,.85,coh).toFixed(2)+')';g.fill();
  g.beginPath();g.arc(CX,CY,cr0,0,TAU);
  g.strokeStyle=rgba(mixc(gc,[255,255,255],.5),lerp(.4,.95,coh));g.lineWidth=1.4;g.stroke();
- txt(String(Math.round(r.CQ)),CX,CY+cr0*.02,Math.max(13,Math.round(cr0*.58)),
-  [26,20,8],lerp(.55,.95,coh),500);
+ /* THE CORE PRINTS NOTHING UNTIL SOMETHING IS READ. With nothing held and no
+    law measured, CQ comes out 36 from the defaults on the twenty one laws.
+    compute already refuses to name a band on that, and the rail already says
+    not read yet, but the core was still printing 36 in the largest type on
+    the screen to somebody who had not typed a word. The same reading of the
+    same defaults, said two ways on one screen. A dash is the honest glyph. */
+ txt(r.unread?'\u2013':String(Math.round(r.CQ)),CX,CY+cr0*.02,
+  Math.max(13,Math.round(cr0*.58)),[26,20,8],lerp(.55,.95,coh),500);
  HIT.push({k:'core',x:CX,y:CY,rad:cr0*1.5});
  return cr0;}
 

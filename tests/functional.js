@@ -626,6 +626,104 @@ ok(/A groove/.test(age.found)&&/groove, not a taste/.test(age.found),
  'defended and not meant reads as a groove');
 ok(/preference, not a bias/.test(age.pref),
  'and the same position meant reads as a preference');
+/* THE OPENING. A field with nothing in it had a tooltip saying to write a
+   story, which is rule ten broken: a control with no affordance is the same as
+   a missing feature. Both ways in were three clicks inside the bottom of the
+   compass, which is rule six broken too. */
+const open_=await page.evaluate(()=>{
+ const o={};
+ undoPush('the opening gate');
+ CHILD.forEach(c=>{S.charge[c.nm]=0;S.replace[c.nm]=0;});
+ SI.forEach(l=>{S.law[l.nm]=6;});
+ /* unread is nothing held AND no law recorded, and four hundred checks have
+    already run the intake on this page, so the recorded laws come out too and
+    go back afterwards. */
+ /* toYou reloads the profile when it actually switches, which puts the laws
+    straight back, so the clear has to come after it and not before. */
+ toYou();
+ const keptLaws=CURP&&CURP.laws?JSON.parse(JSON.stringify(CURP.laws)):null;
+ if(CURP)CURP.laws={};
+ CHILD.forEach(c=>{S.charge[c.nm]=0;S.replace[c.nm]=0;});
+ setTab(TAB.FIELD);
+ /* the reading folds, and a folded section measures zero, so it is opened the
+    way a person opens it rather than measured shut */
+ const sec=document.querySelector('.lsec[data-sec="you"]');
+ if(sec&&!sec.classList.contains('open'))sec.querySelector('.lsec-hd').click();
+ render();
+ o.unread=compute().unread;
+ const st=document.getElementById('start');
+ o.shown=!!st&&!st.hidden;
+ o.txt=(st?st.textContent:'').replace(/\s+/g,' ');
+ o.btns=document.querySelectorAll('#start .stbtn').length;
+ o.tap=Math.min.apply(null,[...document.querySelectorAll('#start .stbtn')]
+  .map(e=>{const b=e.getBoundingClientRect();return Math.min(b.width,b.height);}));
+ /* each door actually opens */
+ o.why={loaded:compute().loaded.length,measured:compute().measured,who:S.who,tab:S.tab};
+ const d2=document.getElementById('stw2'), d3=document.getElementById('stw3');
+ if(d2){d2.click(); o.two=(document.getElementById('rdrill').textContent||'').replace(/\s+/g,' ');}
+ if(d3){d3.click(); o.three=(document.getElementById('rdrill').textContent||'').replace(/\s+/g,' ');}
+ /* and the block is gone once there is something to read */
+ loadP(8); render();
+ const st2=document.getElementById('start');
+ o.after=compute().unread; o.afterShown=!!st2&&!st2.hidden;
+ if(CURP&&keptLaws)CURP.laws=keptLaws;
+ undoPop(); render();
+ return o;});
+ok(open_.unread&&open_.shown,'an empty field is offered a way in rather than a tooltip');
+ok(open_.btns===3,'three doors, got '+open_.btns);
+ok(open_.tap>=44,'each one clears the tap floor, smallest '+Math.round(open_.tap));
+ok(/cannot think of themselves as the problem/.test(open_.txt)
+ &&/cannot think of anything they identify with/.test(open_.txt),
+ 'and each says who it is for rather than only what it is');
+ok(/mind sticks to anything that it defends/.test(open_.three||'')
+ &&/none of them is about being a bad person/i.test(open_.two||''),
+ 'both doors open the thing they name  '+JSON.stringify(open_.why));
+ok(open_.after===false&&open_.afterShown===false,
+ 'and the block goes once there is something to read, because a call to action '
+ +'that survives the action is furniture');
+/* NOTHING IS PRINTED OFF THE DEFAULTS. With nothing held and no law measured
+   CQ comes out 36 from the default six on twenty one laws. compute already
+   refuses to name a band on that and the rail already says not read yet, and
+   the core was still printing 36 in the largest type on the screen. The same
+   reading of the same defaults, said two ways on one screen. */
+const virginSweep=await page.evaluate(()=>{
+ toYou();
+ const keptLaws=CURP&&CURP.laws?JSON.parse(JSON.stringify(CURP.laws)):null;
+ if(CURP)CURP.laws={};
+ CHILD.forEach(c=>{S.charge[c.nm]=0;S.replace[c.nm]=0;});
+ SI.forEach(l=>{S.law[l.nm]=6;});
+ setTab(TAB.FIELD); layout(); draw(compute());
+ const r=compute();
+ /* the whole rendered page, not one element, because the last time this was
+    fixed the right rail was missed and a screenshot caught it. the profile
+    picker comes out, because it legitimately carries ages and one of the
+    people in the roster happens to be the age the defaults compute to. */
+ const clone=document.body.cloneNode(true);
+ clone.querySelectorAll('select,option,script,style,svg,canvas').forEach(function(x){x.remove();});
+ const o={unread:r.unread, cq:Math.round(r.CQ),
+  page:(clone.textContent||'').replace(/\s+/g,' ')};
+ /* the canvas core is pixels, so it is read from what draw was asked to write */
+ o.pol=(document.getElementById('pol').textContent||'').replace(/\s+/g,' ');
+ if(CURP&&keptLaws)CURP.laws=keptLaws;
+ return o;});
+ok(virginSweep.unread,'the field reads as unread');
+ok(virginSweep.cq>0,'and the arithmetic still produces a number underneath, '
+ +virginSweep.cq);
+{const re=new RegExp('.{0,60}\\b'+virginSweep.cq+'\\b.{0,30}','g');
+ const hits=[]; let m; while((m=re.exec(virginSweep.page)))hits.push(m[0].trim());
+ ok(hits.length===0,'and '+virginSweep.cq+' appears nowhere on an unread page'
+  +(hits.length?'  '+hits.slice(0,3).join(' | '):''));}
+ok(/Nothing read yet/.test(virginSweep.pol),
+ 'the benign split says there is none rather than printing one');
+ok(!/72%|28%/.test(virginSweep.pol),'and prints no percentage off the defaults');
+/* the whole class, not the one instance. every reading derived from the
+   default six on the laws is silent until somebody enters something. DQ, SQ
+   and Pole stay at zero because zero is true: nothing is held and nothing is
+   installed. */
+{const nums=(virginSweep.page.match(/\b\d{1,3}(\.\d+)?%/g)||[])
+  .filter(s=>s!=='100%'&&s!=='0%');
+ ok(nums.length===0,'no percentage is printed off the defaults anywhere'
+  +(nums.length?'  '+nums.slice(0,5).join(', '):''));}
 /* the roster itself is always there. only the descent read is conditional. */
 ok(/Satan frozen/.test(pole.clean),'while the nine circles stay readable to anybody');
 
