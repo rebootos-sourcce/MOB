@@ -158,9 +158,21 @@ var YOU_T=null;
 function persistYou(){
  if(!CURP)return;
  if(YOU_T)clearTimeout(YOU_T);
- YOU_T=setTimeout(function(){YOU_T=null;
-  saveProfile(CURP);
-  if(!pPersist())status('Not saved. '+(saveState().err||'storage refused the write')+'.');},400);}
+ YOU_T=setTimeout(persistNow,400);}
+/* the write, and the check that it can land. a profile outside the list is
+   not reachable by any save, so claiming success would be the lie this
+   codebase forbids by name. */
+function persistNow(){
+ if(YOU_T){clearTimeout(YOU_T); YOU_T=null;}
+ if(!CURP)return;
+ saveProfile(CURP);
+ if(PROFILES.indexOf(CURP)<0){
+  status('Not saved. This profile is not in the record list.'); return;}
+ if(!pPersist())status('Not saved. '+(saveState().err||'storage refused the write')+'.');}
+/* a debounce with no flush loses whatever is in flight when the tab closes,
+   and never reports it, because the write never reaches the store at all. */
+if(typeof addEventListener==='function')['pagehide','visibilitychange'].forEach(function(ev){
+ addEventListener(ev,function(){ if(YOU_T)persistNow(); });});
 /* each persona gets a real 63-answer intake derived from the laws they carry,
    so their spread and lean are theirs and not a default. */
 function seedIntake(p){

@@ -156,6 +156,30 @@ const back=await page.evaluate(()=>({n:pStore().length, bound:STORE_BOUND}));
 ok(back.n===pers.n&&back.n>0,'profiles survive reload: '+pers.n+' saved, '+back.n+' read back');
 ok(back.bound===true,'store bound after reload');
 
+console.log('\n=== the record the person is actually editing ===');
+/* loadP caches a profile per persona. replacing PROFILES at boot left that
+   cache pointing outside the list, so every write after a persona round trip
+   reported success onto an array nobody reads. */
+const orph=await page.evaluate(async ()=>{
+ toYou(); S.charge.Fear=7.7; syncCh(); saveYou();
+ await new Promise(r=>setTimeout(r,600));
+ const first=pStore()[0].axes.Fear.held;
+ loadP(3); loadP(0);
+ const inList=PROFILES.indexOf(CURP)>=0;
+ toYou(); S.charge.Fear=2.2; syncCh(); saveYou();
+ await new Promise(r=>setTimeout(r,600));
+ return {first, inList, second:pStore()[0].axes.Fear.held};});
+ok(orph.first===7.7,'an edit reaches the store, got '+orph.first);
+ok(orph.inList,'the current profile stays inside the profile list after a persona round trip');
+ok(orph.second===2.2,'and an edit after that round trip still reaches the store, got '+orph.second);
+/* a debounce with no flush loses what is in flight when the tab closes */
+const flush=await page.evaluate(async ()=>{
+ toYou(); S.charge.Anger=9.1; syncCh(); saveYou();
+ dispatchEvent(new Event('pagehide'));
+ await new Promise(r=>setTimeout(r,60));
+ return pStore()[0].axes.Anger.held;});
+ok(flush===9.1,'a pending write flushes when the page hides, got '+flush);
+
 console.log('\n=== real JS errors across all of the above ===');
 ok(real.length===0,'JS errors: '+real.slice(0,4).join(' | '));
 console.log('  count:',real.length);

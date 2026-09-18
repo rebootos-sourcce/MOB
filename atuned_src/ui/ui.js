@@ -357,6 +357,13 @@ layout(); mxKey(); wireSections(); loadP(0);
  try{ PROFILES=pStore(); }catch(e){ PROFILES=[]; }
  if(!PROFILES.length){ pNew('You'); }
  CURP=PROFILES[0];
+ /* loadP(0) cached a blank profile under the persona name a moment ago, and
+    replacing PROFILES left that cache pointing at an object no longer in the
+    list. Picking a reference case and coming back sent CURP to the orphan,
+    and every write after that reported success onto an array nobody reads.
+    Reproduced: two edits, a persona round trip between them, the second one
+    gone after a reload with no error shown. The cache points at the record. */
+ PROF_BY[PEOPLE[0].nm]=CURP;
  loadProfile(CURP);
  syncCh(); syncLw(); syncSoul();
 }());

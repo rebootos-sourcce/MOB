@@ -189,8 +189,21 @@ function validateProfile(o){
   else if(o.meter.unique!==undefined)errs.push('meter.unique is not a list');
   if(typeof o.meter.first==='string')p.meter.first=o.meter.first;
   if(typeof o.meter.last==='string')p.meter.last=o.meter.last;}
- if(Array.isArray(o.rituals))p.rituals=o.rituals.slice();
- if(Array.isArray(o.history))p.history=o.history.slice();
+ if(Array.isArray(o.rituals))p.rituals=o.rituals.filter(function(x){return x&&typeof x==='object';});
+ /* A snapshot is strictly typed numbers and the record calls toFixed on them,
+    so "the person's own text" does not apply here. An unchecked history
+    crashed the record view on the first render after an import. */
+ if(Array.isArray(o.history))p.history=o.history.map(function(x,i){
+  if(!x||typeof x!=='object'){errs.push('history entry '+i+' is not an object');return null;}
+  var q={t:typeof x.t==='string'?x.t:new Date().toISOString(),
+   dark:typeof x.dark==='string'?x.dark:'Heart',
+   tier:typeof x.tier==='string'?x.tier:'Collapsed',
+   arch:typeof x.arch==='string'?x.arch:''};
+  [['cq',0,100],['dq',0,1e4],['sq',0,10],['pole',0,10],['jq',0,10],['rad',0,10],
+   ['loaded',0,1e4],['sab',0,1e4],['cx',0,1e4],['hy',0,1e4],['ch',0,1e4]].forEach(function(f){
+   var v=vRange(errs,'history['+i+'].'+f[0],x[f[0]],f[1],f[2]);
+   q[f[0]]=v===null?0:v;});
+  return q;}).filter(Boolean);
  return errs.length?{ok:false, errs:errs}:{ok:true, profile:p};}
 
 /* Atomic. Nothing is pushed and CURP is not moved until the profile has
@@ -249,12 +262,13 @@ function pImport(txt){
  var v=validateProfile(o);
  if(!v.ok){ IMPORT_ERR=v.errs; return null; }
  var keepP=PROFILES.slice(), keepC=CURP;
+ /* with no current profile there is nothing to restore to, so the rollback
+    loads a blank rather than leaving the engine holding the rejected one. */
+ var back=function(){ PROFILES=keepP; CURP=keepC; loadProfile(keepC||blankProfile('unnamed')); };
  try{ loadProfile(v.profile); }
- catch(e){ PROFILES=keepP; CURP=keepC; if(keepC)loadProfile(keepC);
-  IMPORT_ERR=['could not load: '+((e&&e.message)||'error')]; return null; }
+ catch(e){ back(); IMPORT_ERR=['could not load: '+((e&&e.message)||'error')]; return null; }
  PROFILES.push(v.profile); CURP=v.profile;
- if(!pPersist()){ PROFILES=keepP; CURP=keepC; if(keepC)loadProfile(keepC);
-  IMPORT_ERR=['could not save: '+(SAVE_ERR||'error')]; return null; }
+ if(!pPersist()){ back(); IMPORT_ERR=['could not save: '+(SAVE_ERR||'error')]; return null; }
  return v.profile;}
 function importError(){ return IMPORT_ERR; }
 

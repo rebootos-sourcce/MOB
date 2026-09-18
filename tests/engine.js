@@ -295,6 +295,16 @@ g('15d \u00b7 the meter');
  ok(!validateProfile(neg).ok,'a negative line count is refused at the boundary');
  const notlist=JSON.parse(JSON.stringify(saveProfile(p))); notlist.meter.unique='lots';
  ok(!validateProfile(notlist).ok,'and a unique list that is not a list');
+ /* a snapshot is typed numbers, and the record calls toFixed on them, so an
+    unchecked history crashes the first render after an import. */
+ const bh=JSON.parse(JSON.stringify(saveProfile(p))); bh.history=[{},{cq:'nope',tier:null}];
+ ok(!validateProfile(bh).ok,'a poisoned history is refused');
+ const gh=JSON.parse(JSON.stringify(saveProfile(p)));
+ gh.history=[{t:'2026-01-01T00:00:00Z',cq:40,dq:3,sq:2,pole:0.1,jq:0,rad:0.5,
+  loaded:4,sab:1,cx:0,hy:0,ch:0,dark:'Root',tier:'Severe',arch:'Sage'}];
+ const ghv=validateProfile(gh);
+ ok(ghv.ok&&ghv.profile.history.length===1&&typeof ghv.profile.history[0].cq==='number',
+  'and a real one round trips as numbers');
 }
 
 g('15c \u00b7 the boundary');

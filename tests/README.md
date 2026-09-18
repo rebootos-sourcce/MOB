@@ -12,7 +12,7 @@ contract rather than today's numbers, so a legitimate tuning change passes and a
 broken invariant does not.
 
     ./atuned_src/BUILD-engine.sh
-    node tests/engine.js       277 checks in 22 groups
+    node tests/engine.js       279 checks in 22 groups
 
 The 17 groups: data integrity, determinism, the poled binary (jouissance begins
 at 6), monotonicity, CQ bounds and ceiling, saboteur charge ranges are bands and
@@ -54,7 +54,7 @@ binds `localStorage`.
     npm install playwright
     node tests/design.js       17 checks · shell, one surface per tab, CSS coverage,
                                11px type floor, no all-caps
-    node tests/functional.js   258 checks · 10 personas x 5 tabs x 4 depths x 7 layers,
+    node tests/functional.js   262 checks · 10 personas x 5 tabs x 4 depths x 7 layers,
                                drills, figure fallback, zero JS errors
     node tests/collide.js      40 checks · zero overlapping wheel nameplates,
                                every persona x every depth
