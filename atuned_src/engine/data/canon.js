@@ -188,3 +188,59 @@ const SINAMES=SI.map(l=>l.nm);
 /* six masks. roster closed 14 September 2026. Young Adult out, Adult stands. */
 const MASKS=[{nm:'Child',b:['Root','Sacral']},{nm:'Preteen',b:['Solar','Throat']},{nm:'Teen',b:['Throat']},
  {nm:'Adult',b:['Sacral','Solar']},{nm:'Professional',b:['Solar','Throat']},{nm:'Ideological',b:['3rd Eye']}];
+
+/* ============================================================
+   WHAT A LABEL OWES THE PERSON IT IS PUT ON.
+
+   Ruled by the owner: when this product hands somebody a label,
+   the label carries three things or it does not go on screen.
+   A definition, so the word means something specific. The energy
+   and behaviour, so a person can recognise it in their own week
+   rather than take it on trust. And the direction, so a label is
+   a position and never a verdict.
+
+   The tiers go first because the engine hands five of the six
+   reference ICPs a moral adjective and two of them the word
+   Severe. A word like that with nothing attached is a judgement.
+   The same word with a definition, a behaviour and a way out is
+   a reading.
+
+   THE COPY BELOW IS A DRAFT FOR THE OWNER TO RULE ON. The
+   structure is settled. The wording is not, and the tier names
+   themselves are his call: the panel found these four words are
+   the single largest commercial item in the product.
+   ============================================================ */
+const TIERDEF=[
+ {at:90, nm:'Mastery',
+  def:'The field builds far more than it costs. Almost nothing is held.',
+  energy:'Intention and action arrive together. There is no gap left to manage.',
+  toward:'Hold it. The work here is maintenance, and what you can now carry for other people.'},
+ {at:70, nm:'Embodied',
+  def:'The field builds more than it costs, with real load still in it.',
+  energy:'You recover fast. A charge lands and clears instead of staying.',
+  toward:'Mastery. Close the laws still shut, and clear what is left holding after a week.'},
+ {at:50, nm:'Practicing',
+  def:'The field breaks even. What it builds and what it spends are close.',
+  energy:'Good days and hard days, and the difference is mostly what is running that day.',
+  toward:'Embodied. Consistency rather than intensity: the same address twice beats eight addresses once.'},
+ {at:31, nm:'Incoherent',
+  def:'The field costs more than it builds. Charge is held at more addresses than are clearing.',
+  energy:'Effort goes in and less comes out. You are working, and the work is going into holding.',
+  toward:'Practicing. Take the heaviest seat first. One address cleared where the load actually sits moves this further than ten cleared anywhere else.'},
+ {at:21, nm:'Corrupt',
+  def:'The held charge is shaping decisions now, not only mood.',
+  energy:'The pattern chooses before you do. You can see it afterwards and not while it runs.',
+  toward:'Incoherent, then Practicing. The move is interruption: name the address while it is running, ahead of the behaviour.'},
+ {at:1, nm:'Severe',
+  def:'Most of the field is carrying. Very little is clear.',
+  energy:'Ordinary demands read as threats. Capacity is spent before the day starts.',
+  toward:'Off the floor, and nothing more ambitious than that. One seat, one address, one line. Not a programme.'},
+ {at:0, nm:'Collapsed',
+  def:'The field is fully loaded. Nothing is clearing.',
+  energy:'Flat. Not calm, out of charge.',
+  toward:'Weight off, and not alone. A reading this low is not a thing to manage by yourself, and the instrument will not pretend otherwise.'}];
+/* one lookup, so the tier table stops being copied into renderers */
+const TIER_BY={}; TIERDEF.forEach(function(t){TIER_BY[t.nm]=t;});
+function tierOf(cq){
+ for(var i=0;i<TIERDEF.length;i++) if(cq>=TIERDEF[i].at)return TIERDEF[i];
+ return TIERDEF[TIERDEF.length-1];}

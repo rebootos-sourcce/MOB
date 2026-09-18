@@ -253,11 +253,22 @@ function railTop(r){
     than a mirror. Coherence and the tier it names are the line. The count
     was cut everywhere a count read against a total. */
  e.innerHTML=cr(r.darkB, r.CQ, {size:'sm', label:'coherence'})
-  +'<span class="rt-t">'+esc(r.unread?'not read yet':r.tier)+'</span>';}
+  +'<span class="rt-t">'+esc(r.unread?'not read yet':r.tier)+'</span>';
+ /* the label never stands alone: hovering it gives the definition and the
+    direction, and clicking the strip opens the whole thing. */
+ var td=r.unread?null:TIER_BY[r.tier];
+ e.title=td?(td.nm+'. '+td.def+' '+td.energy+' Toward: '+td.toward)
+  :'Nothing has been read yet. Write a story or set a charge.';}
 function render(){
  const r=compute(), p=PEOPLE[S.who];
- /* the tier is a name for a person. it is not printed off the defaults. */
- $('tier').textContent=r.unread?'not read yet':r.tier;
+ /* the tier is a name for a person. it is not printed off the defaults, and it
+    never appears without what it owes: the definition, the behaviour and the
+    direction. Hover gives all three, the compass drill gives them in full. */
+ (function(){var e=$('tier'); if(!e)return;
+  e.textContent=r.unread?'not read yet':r.tier;
+  var td=r.unread?null:TIER_BY[r.tier];
+  e.title=td?(td.def+'  '+td.energy+'  Toward: '+td.toward)
+   :'Nothing has been read yet. Write a story or set a charge.';})();
  /* The heaviest seat and its charge go onto the body so a theme can derive
     its chrome from the reading. Punch reads both; Dark and Snow ignore them. */
  document.body.style.setProperty('--seat',seatCol(r.darkB));

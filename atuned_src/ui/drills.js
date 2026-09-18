@@ -305,13 +305,26 @@ function runKbDrill(eyebrow,title,sub,body){
 function runCompassDrill(){
  var r=compute(), cq=Math.max(0,Math.min(100,r.CQ));
  var swing=(1-cq/100), band=2.5+swing*swing*26;
- var T=[[90,'Mastery'],[70,'Embodied'],[50,'Practicing'],[31,'Incoherent'],[21,'Corrupt'],[1,'Severe'],[0,'Collapsed']];
+ /* the tier table was a second copy of the one in the engine and could drift
+    from it silently. It reads TIERDEF now, which is the only one. */
+ var me=r.unread?null:TIER_BY[r.tier];
  var h='<div class="pm-eye">The compass</div><div class="ad-nm">'
   +(r.unread?'Not read yet':'CQ '+Math.round(cq)+', '+r.tier.toLowerCase())+'</div>'
   +'<div class="pm-eye">How to read it</div><p class="ad-p">The line runs 0 at the base to 100 at the crown. Above 50 the field builds more than it costs. Below 50 it costs more than it builds. '
   +'The marker is where coherence sits now. The band around it is the swing, <b>'+band.toFixed(0)+'</b> points: how far a reading can wander before it settles. Tight alignment leaves little room. A decohering field ranges wide.</p>'
-  +'<div class="pm-eye">The tiers</div><div class="ad-rows">'
-  +T.map(function(t){return '<div class="ad-r static'+(t[1]===r.tier?' on':'')+'"><span class="ad-k">'+t[1]+'</span><span class="ad-v">'+t[0]+'</span></div>';}).join('')+'</div>';
+  /* THE RULING. A label this product puts on a person carries a definition,
+    the behaviour it produces, and the direction out of it. A word like Severe
+    with nothing attached is a judgement. The same word with those three is a
+    reading. */
+ if(me)h+='<div class="pm-eye">What '+esc(me.nm.toLowerCase())+' means</div>'
+  +'<p class="ad-p">'+esc(me.def)+'</p>'
+  +'<div class="pm-eye">How it shows up</div><p class="ad-p">'+esc(me.energy)+'</p>'
+  +'<div class="pm-eye">Where it goes</div><p class="ad-p">'+esc(me.toward)+'</p>';
+ h+='<div class="pm-eye">The whole scale</div><div class="ad-rows">'
+  +TIERDEF.map(function(t){
+    return '<div class="ad-r static'+(t.nm===r.tier&&!r.unread?' on':'')+'" title="'+esc(t.def)+'">'
+     +'<span class="ad-k">'+esc(t.nm)+'</span><span class="ad-v">'+t.at+'</span></div>';}).join('')
+  +'</div>';
  rdShell(h);}
 
 /* the matrix cell. the handshake lists this as never wired: either the cells

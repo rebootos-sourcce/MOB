@@ -735,6 +735,34 @@ g('19b \u00b7 the empty field says it is empty');
  S.charge.Fear=0; compute();
 }
 
+g('19c \u00b7 a label carries what it owes');
+/* The owner's ruling: when this product puts a label on a person it carries a
+   definition, the behaviour it produces, and the direction out of it. A word
+   like Severe with nothing attached is a judgement. */
+{
+ const {TIERDEF,TIER_BY,tierOf}=E;
+ ok(TIERDEF.length===7,'seven tiers, got '+TIERDEF.length);
+ const missing=TIERDEF.filter(t=>!t.def||!t.energy||!t.toward).map(t=>t.nm);
+ ok(missing.length===0,'every tier carries a definition, a behaviour and a direction'
+  +(missing.length?'  missing on '+missing.join(', '):''));
+ /* the thresholds must still be the ones the engine computes against */
+ ok(TIERDEF.map(t=>t.at).join()==='90,70,50,31,21,1,0','the thresholds are unchanged');
+ ok(TIERDEF.every((t,i)=>i===0||t.at<TIERDEF[i-1].at),'and they only descend');
+ /* the table in the renderer was a second copy. tierOf is the only one now. */
+ ok(tierOf(95).nm==='Mastery'&&tierOf(12).nm==='Severe'&&tierOf(0).nm==='Collapsed',
+  'tierOf resolves the band');
+ /* it has to agree with what compute names, or two surfaces disagree */
+ reset(0,0,10); ok(tierOf(compute().CQ).nm===compute().tier,'and agrees with compute at the top');
+ reset(10,0,0); ok(tierOf(compute().CQ).nm===compute().tier,'and at the bottom');
+ /* the lowest band is the one that must not read as a product upsell */
+ ok(/not alone|alone/.test(TIER_BY.Collapsed.toward),
+  'the lowest band does not tell a person to manage it by themselves');
+ /* house voice applies to the copy too */
+ const all=JSON.stringify(TIERDEF);
+ ok(!/[\u2014\u2013]/.test(all),'no em or en dashes in the label copy');
+ ok(all.indexOf('108')<0,'and it never says 108');
+}
+
 g('20 \u00b7 the pattern catalog');
 /* Ported from the owner's own cards and generator spec. These assert the
    PORT, which is the only thing that can silently rot: a sentence edited

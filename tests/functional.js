@@ -296,6 +296,24 @@ ok(bands.length===0,'no band word appears anywhere on an unread first screen, fo
  +(bands.join(', ')||'none'));
 await blank.close();
 
+console.log('\n=== a label never appears without what it owes ===');
+/* The owner's ruling. A word like Severe with nothing attached is a judgement.
+   The same word with a definition, the behaviour and the direction is a
+   reading. Checked on Gordon, the heaviest case in the roster. */
+const lab=await page.evaluate(()=>{
+ loadP(8); setTab(TAB.FIELD); render();
+ const el=document.getElementById('tier');
+ runCompassDrill();
+ return {label:el.textContent, tip:el.title,
+  drill:(document.getElementById('rdrill').textContent||'').replace(/\s+/g,' ')};});
+ok(/Severe|Collapsed|Corrupt|Incoherent/.test(lab.label),
+ 'the heaviest case gets a band, got '+JSON.stringify(lab.label));
+ok(lab.tip.length>120,'and the label carries its meaning on hover, '+lab.tip.length+' chars');
+ok(/Toward:/.test(lab.tip),'including the direction out of it');
+ok(/What severe means/i.test(lab.drill),'the drill defines the word');
+ok(/How it shows up/i.test(lab.drill),'says how it shows up in a life');
+ok(/Where it goes/i.test(lab.drill),'and where it goes next');
+
 console.log('\n=== zoom atomises the construct ===');
 /* Zoom used to magnify the same picture while the depth ladder was a separate
    control for the same idea. Past a threshold the next layer resolves, so more
