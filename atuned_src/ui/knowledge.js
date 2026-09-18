@@ -37,13 +37,18 @@ function kbRows(sec){
   out.push({k:'arch', t:a.nm, s:'archetype', d:a.v||'', v:((r.aff[i]||0)*100).toFixed(0)+'%', o:a, j:i});});
  if(sec==='gate') verpRead().forEach(function(g){
   out.push({k:'gate', t:g.nm, s:g.side+' gate', d:g.d, v:g.pct?g.pct+'%':'', o:g});});
+ if(sec==='harm') HARM.forEach(function(e){
+  out.push({k:'harm', t:e.t, s:HARM_AX[e.a]||e.a, d:e.c+', '+e.ch, v:'', o:e});});
+ if(sec==='gloss') GLOSS.forEach(function(g){
+  out.push({k:'gloss', t:g.t, s:'', d:g.d, v:'', o:g});});
  if(sec==='seat') APC.forEach(function(c){
   var rel=0,emb=0; c.sub.forEach(function(x){rel+=x[1];emb+=x[2];});
   out.push({k:'seat', t:c.b, s:c.nv, d:c.d, v:rel+' released', o:c, emb:emb});});
  return out;}
 
 const KB_SECS=[['addr','Addresses'],['fetter','Fetters'],['sab','Saboteurs'],
- ['law','Laws'],['dom','Domains'],['arch','Archetypes'],['gate','Gates'],['seat','The catalog']];
+ ['law','Laws'],['dom','Domains'],['arch','Archetypes'],['gate','Gates'],['seat','The catalog'],
+ ['harm','The 76 elements'],['gloss','Glossary']];
 
 function kbMatch(row,q){
  if(!q)return true;
@@ -114,7 +119,9 @@ function kbOpen(x){
   var r=compute(), live=r.sabs.filter(function(s){return s.nm===x.o.nm;})[0];
   if(live){S.pin=live; runDrill(live); render(); return;}
   runSabDrill(x.o); return;}
- if(x.k==='dom'){runKbDrill('Blueprint domain', x.o.nm, x.o.r+' cluster', x.o.d||''); return;}
+ if(x.k==='harm'){runKbDrill('Harmonic element '+x.o.c, x.o.t, HARM_AX[x.o.a]||x.o.a, x.o.ch); return;}
+ if(x.k==='gloss'){runKbDrill('Glossary', x.o.t, '', x.o.d); return;}
+ if(x.k==='dom'){runDomDrill(x.o); return;}
  if(x.k==='arch'){runKbDrill('Archetype', x.o.nm, 'how the blueprint expresses', x.o.v||''); return;}
  if(x.k==='seat'){runSeatDrill(x.o); return;}}
 
@@ -157,8 +164,32 @@ function runSabDrill(s){
   +'<div class="pm-eye">What it would take</div><p class="ad-p">It fires when its addresses carry at '
   +'once. Yours are not carrying enough for it to run, which is why it is here and not on the wheel.'
   +(s.hcx?' It compounds into <b>'+esc(s.hcx)+'</b>.':'')+'</p>'
+  +kbSabBlock(s.nm)
   +'<div class="pm-eye">Made of</div><div class="ad-rows">'+nodes.map(addrRow).join('')+'</div>';
  rdShell(h);}
+
+/* THE DOMAIN, read clear and read distorted. The book prints both readings
+   for all nineteen. Four are under a different name in the engine, and the
+   drill says both rather than picking one, because that ruling is not mine. */
+function runDomDrill(d){
+ var k=KB_KEY(d.nm), def=DOMDEF[k], alt=KB_RENAME[k];
+ var h='<div class="pm-eye">Blueprint domain'+(def&&def.n?' '+def.n:'')+'</div>'
+  +'<div class="ad-nm">'+esc(d.nm)+'</div>'
+  +'<div class="ad-sub">'+esc(d.r)+' cluster'+(alt?', called '+esc(alt)+' in the codex':'')+'</div>';
+ if(def){
+  h+='<div class="pm-eye">Read clear</div><p class="ad-p">'+esc(def.c)+'</p>'
+   +'<div class="pm-eye">Read distorted</div><p class="ad-p">'+esc(def.x)+'</p>';}
+ else h+='<div class="pm-eye">What it is</div><p class="ad-p">'+esc(d.d||'')+'</p>';
+ rdShell(h);}
+
+/* the definition, the trigger and the interrupt. an interrupt is the only
+   part a person can act on in the moment, so it is printed last and plainly. */
+function kbSabBlock(nm){
+ var def=SABDEF[KB_KEY(nm)]; if(!def)return '';
+ return (def.d?'<div class="pm-eye">What it is</div><p class="ad-p">'+esc(def.d)+'</p>':'')
+  +(def.t?'<div class="pm-eye">When it fires</div><p class="ad-p">'+esc(def.t)+'</p>':'')
+  +(def.q?'<div class="pm-eye">What it says</div><p class="ad-p"><em>'+esc(def.q)+'</em></p>':'')
+  +(def.i?'<div class="pm-eye">The interrupt</div><p class="ad-p">'+esc(def.i)+'</p>':'');}
 
 function runKbDrill(eyebrow,title,sub,body){
  rdShell('<div class="pm-eye">'+esc(eyebrow)+'</div><div class="ad-nm">'+esc(title)+'</div>'

@@ -7,6 +7,7 @@ engine/data/canon.js
 engine/data/practice.js
 engine/data/people.js
 engine/data/catalog.js
+engine/data/kb.js
 engine/verp.js
 engine/lexicon.js
 engine/core.js

@@ -56,6 +56,7 @@ function runDrill(o){
      +(inst.length?'You already have '+inst.map(oppOf).join(', ')+' partly installed.'
        :'None of it is installed yet. Release empties the address, the opposite is what fills it.')
    : 'No poled axis sits underneath this one.')+'</p>'
+  +(o.kind==='sab'?kbSabBlock(o.nm):'')
   +'<div class="pm-eye">Made of</div><div class="ad-rows">'
   +lv.slice(0,8).map(addrRow).join('')
   +(lv.length>8?'<div class="pm-more">and '+(lv.length-8)+' more</div>':'')+'</div>';
