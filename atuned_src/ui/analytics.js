@@ -89,7 +89,8 @@ function anaRender(){
     digit, and six of them sat here on six different scales. */
  var acc=accuracy(r);
  out+='<div class="ab-hero">'+cr(r.darkB,r.CQ,{size:'lg',label:'coherence'})
-  +'<div><div class="pm-eye">Coherence, '+r.tier.toLowerCase()+', 0 to 100</div>'
+  +'<div><div class="pm-eye">'+(r.unread?'Coherence, not read yet'
+    :'Coherence, '+r.tier.toLowerCase()+', 0 to 100')+'</div>'
   +'<div class="ab-say">'
   +(loud?'<b>'+esc(loud.nm)+'</b> is the biggest thing running. ':'Nothing is compounding. ')
   +(stop?'Flow stops at the <b>'+stop.p.n.toLowerCase()+'</b>. ':'Every seat is passing. ')

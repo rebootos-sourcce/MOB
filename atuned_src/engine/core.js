@@ -71,7 +71,18 @@ const TABOF=function(k){for(var i=0;i<TABDEF.length;i++)if(TABDEF[i].k===k)retur
 const S={dom:0,doms:[0],arcs:[0,1],roots:[],a1:0,a2:1,charge:{},law:{},
  theme:'dark',legible:false,hover:null,pin:null,t:0,replace:{},view:1,who:0,tab:TAB.FIELD,
  zoom:1,panx:0,pany:0};
-CHARGES.forEach(c=>{S.charge[c]=3;S.replace[c]=0;});
+/* A stranger's first load used to seed every axis at 3, which produced CQ 36
+   and the word Incoherent in the largest type on screen, beside a panel that
+   correctly said nothing was held. The interval was never the problem. The
+   values were invented, and the product named a person from them before they
+   had typed a word.
+
+   Zero is the honest opening. Nothing held reads as nothing held, and the
+   reading says there is nothing to read yet rather than reaching for a tier.
+   The laws stay at the default 6 and the interface already says, in the one
+   place it matters, that an unmeasured law is a default and flatters the
+   score. */
+CHARGES.forEach(c=>{S.charge[c]=0;S.replace[c]=0;});
 SINAMES.forEach(l=>S.law[l]=6);
 
 /* ============================================================

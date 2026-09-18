@@ -709,6 +709,32 @@ g('19 \u00b7 energetics, the birth module');
  ok(lifePath('1988-04-12')===lifePath('1988-04-12'),'life path is pure');
 }
 
+g('19b \u00b7 the empty field says it is empty');
+/* The nine axes were seeded at charge 3, so a stranger's first load produced
+   CQ 36 and the word Incoherent in the largest type on screen, beside a panel
+   correctly saying nothing was held. Zeroing the charge was not enough: CQ 36
+   comes from the 21 laws sitting at the default 6, so the tier was a reading
+   of the defaults rather than of a person. */
+{
+ /* The seeded 3 is gone from the state itself, which is the half that does not
+    depend on who is loaded. The unread flag reads CURP, so it is asserted in
+    the browser gate where a genuinely fresh profile exists. */
+ E.S.doms=[0];E.S.arcs=[0,1];E.S.roots=[];buildSoul();
+ CHARGES.forEach(c=>{S.charge[c]=0;S.replace[c]=0;});
+ SINAMES.forEach(l=>S.law[l]=6);
+ const r0=compute();
+ ok(r0.loaded.length===0,'an empty field carries nothing');
+ ok(typeof r0.unread==='boolean','the reading reports whether it has been read');
+ ok(typeof r0.measured==='number','and how many laws were measured');
+ /* the number is still computed, because everything downstream needs it */
+ ok(typeof r0.CQ==='number'&&r0.CQ>0,'CQ is still computed for the machinery, got '+r0.CQ.toFixed(1));
+ /* one real input and it is a reading whatever the profile */
+ S.charge.Fear=7; const r1=compute();
+ ok(r1.unread===false,'one held address makes it a reading');
+ ok(r1.tier&&r1.tier.length>0,'and the tier means something');
+ S.charge.Fear=0; compute();
+}
+
 g('20 \u00b7 the pattern catalog');
 /* Ported from the owner's own cards and generator spec. These assert the
    PORT, which is the only thing that can silently rot: a sentence edited

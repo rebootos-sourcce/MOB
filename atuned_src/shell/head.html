@@ -1152,6 +1152,10 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
     window with the rest clipped below: Knowledge had 5,729 pixels of content in
     it and Games 3,564. They flow too, and the stage grows to hold them. */
  .iq{position:static;inset:auto;overflow:visible;width:100%;padding:14px 0;order:0}
+ /* The Energy map is absolutely positioned against the stage exactly like the
+    tab panels were, and the same fix was applied to .iq and not to it. It
+    rendered 10 pixels tall on every phone with 106 pixels of content in it. */
+ .emap{position:static;inset:auto;overflow:visible;width:100%;min-height:0;order:0}
  canvas#cv{flex:0 0 auto;height:min(86vw,390px);order:1}
  .tl,.acc,.howto,.bal{position:static;transform:none;text-align:left;max-width:none;
   width:auto;padding:0 14px;margin:0}

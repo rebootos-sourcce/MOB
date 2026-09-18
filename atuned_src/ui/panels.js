@@ -266,8 +266,9 @@ function profileSheet(){
  var who=(CURP&&CURP.name)||'You';
  var h='<div class="pm-eye">Profile</div><p class="sh-h">'+esc(who)+'</p>'
   +'<div class="sh-sec"><div class="pm-eye">This reading</div>'
-  +'<div class="sh-row"><span>Coherence</span><b>'+Math.round(r.CQ)+' of 100</b></div>'
-  +'<div class="sh-row"><span>Tier</span><b>'+esc(r.tier)+'</b></div>'
+  +'<div class="sh-row"><span>Coherence</span><b>'
+   +(r.unread?'not read yet':Math.round(r.CQ)+' of 100')+'</b></div>'
+  +'<div class="sh-row"><span>Tier</span><b>'+esc(r.unread?'not read yet':r.tier)+'</b></div>'
   +'<div class="sh-row"><span>Addresses carrying</span><b>'+r.loaded.length+' of 112</b></div>'
   +(m?'<div class="sh-row"><span>Ground opened</span><b>'+m.unique+'</b></div>':'')
   +(m&&m.next?'<div class="sh-row"><span>Next marker</span><b>'+esc(m.next.nm)+', '+m.next.left+' away</b></div>':'')

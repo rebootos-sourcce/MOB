@@ -112,7 +112,8 @@ function runNodeDrill(n){
 function runCoreDrill(){
  var r=compute();
  var h='<div class="pm-eye">The core</div>'
-  +'<div class="ad-nm">CQ '+Math.round(r.CQ)+', '+r.tier.toLowerCase()+'</div>'
+  +'<div class="ad-nm">'+(r.unread?'Not read yet'
+    :'CQ '+Math.round(r.CQ)+', '+r.tier.toLowerCase())+'</div>'
   +'<div class="pm-eye">How it is built</div><p class="ad-p">'
   +'CQ is intention times integrity, divided by resistance. Intention <b>'+r.It.toFixed(1)
   +'</b>, integrity <b>'+r.Ig.toFixed(1)+'</b>, resistance <b>'+r.Rz.toFixed(2)+'</b>. '
@@ -305,7 +306,8 @@ function runCompassDrill(){
  var r=compute(), cq=Math.max(0,Math.min(100,r.CQ));
  var swing=(1-cq/100), band=2.5+swing*swing*26;
  var T=[[90,'Mastery'],[70,'Embodied'],[50,'Practicing'],[31,'Incoherent'],[21,'Corrupt'],[1,'Severe'],[0,'Collapsed']];
- var h='<div class="pm-eye">The compass</div><div class="ad-nm">CQ '+Math.round(cq)+', '+r.tier.toLowerCase()+'</div>'
+ var h='<div class="pm-eye">The compass</div><div class="ad-nm">'
+  +(r.unread?'Not read yet':'CQ '+Math.round(cq)+', '+r.tier.toLowerCase())+'</div>'
   +'<div class="pm-eye">How to read it</div><p class="ad-p">The line runs 0 at the base to 100 at the crown. Above 50 the field builds more than it costs. Below 50 it costs more than it builds. '
   +'The marker is where coherence sits now. The band around it is the swing, <b>'+band.toFixed(0)+'</b> points: how far a reading can wander before it settles. Tight alignment leaves little room. A decohering field ranges wide.</p>'
   +'<div class="pm-eye">The tiers</div><div class="ad-rows">'

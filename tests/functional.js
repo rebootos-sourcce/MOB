@@ -251,6 +251,51 @@ const flush=await page.evaluate(async ()=>{
  return pStore()[0].axes.Anger.held;});
 ok(flush===9.1,'a pending write flushes when the page hides, got '+flush);
 
+console.log('\n=== a stranger is not told they are incoherent ===');
+/* The nine axes were seeded at charge 3, so a first load produced CQ 36 and
+   the word Incoherent in the largest type on screen, next to a panel correctly
+   saying nothing was held. Zeroing the charge was not enough, because CQ 36
+   comes from the 21 laws sitting at the default 6. The tier was a reading of
+   the defaults and it was being shown to someone who had not typed a word. */
+/* a genuinely first load: the store has to be empty, or the page restores a
+   field an earlier test in this run saved and this stops being a first load */
+const blank=await browser.newPage({viewport:{width:1600,height:1000}});
+await blank.goto(FILE,{waitUntil:'load'}); await blank.waitForTimeout(400);
+await blank.evaluate(()=>{try{localStorage.clear();}catch(e){}});
+await blank.reload({waitUntil:'load'}); await blank.waitForTimeout(700);
+const virgin=await blank.evaluate(()=>{
+ const r=compute();
+ const o={unread:r.unread, measured:r.measured, carrying:r.loaded.length,
+  charge:CHARGES.map(c=>S.charge[c]).reduce((a,b)=>a+b,0),
+  tier:(document.getElementById('tier')||{}).textContent};
+ profileSheet();
+ o.profile=(document.getElementById('sheet-card').textContent||'').replace(/\s+/g,' ');
+ sheetShut();
+ setTab(TAB.ANALYTICS); anaRender();
+ o.ana=(document.querySelector('.ab-hero .pm-eye')||{}).textContent||'';
+ setTab(TAB.FIELD); render();
+ /* the whole first screen, not only the surfaces I remembered to guard. The
+    right rail was missed on the first pass and a screenshot caught it. This
+    has to be read BEFORE the charge below is set, or it reads a real one. */
+ o.sweep=document.body.innerText;
+ S.charge.Fear=7; syncCh(); render();
+ o.after=(document.getElementById('tier')||{}).textContent;
+ o.unreadAfter=compute().unread;
+ return o;});
+ok(virgin.charge===0,'a first load seeds no charge, total is '+virgin.charge);
+ok(virgin.carrying===0,'and nothing is carrying');
+ok(virgin.unread===true&&virgin.measured===0,'the reading knows it has not been read');
+ok(!/Incoherent|Corrupt|Severe|Collapsed/.test(virgin.tier),
+ 'the tier does not name a band, it reads: '+JSON.stringify(virgin.tier));
+ok(!/Incoherent/.test(virgin.profile),'nor does the profile sheet');
+ok(!/incoherent/.test(virgin.ana),'nor the analytics hero, which reads: '+JSON.stringify(virgin.ana));
+ok(virgin.unreadAfter===false&&/Incoherent|Corrupt|Severe|Practicing|Embodied|Mastery/.test(virgin.after),
+ 'and one held address makes it a real reading again: '+JSON.stringify(virgin.after));
+const bands=['Incoherent','Corrupt','Severe','Collapsed'].filter(w=>virgin.sweep.includes(w));
+ok(bands.length===0,'no band word appears anywhere on an unread first screen, found: '
+ +(bands.join(', ')||'none'));
+await blank.close();
+
 console.log('\n=== zoom atomises the construct ===');
 /* Zoom used to magnify the same picture while the depth ladder was a separate
    control for the same idea. Past a threshold the next layer resolves, so more

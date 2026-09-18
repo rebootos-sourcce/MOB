@@ -147,7 +147,11 @@ function renderAcc(r){
 /* ---- personas ---- */
 PEOPLE.unshift({nm:'You',age:'',role:'build your own',dom:0,a1:0,a2:1,
  says:'Set the root, the archetypes, and the nine poled axes. Everything else derives.',
- c:{Fear:3,Anger:3,Shame:3,Disgust:3,Apathy:3,Shock:3,Sad:3,Surprise:3,Anticipation:3},
+ /* This was 3 on every axis, and it is the persona the app opens on. So a
+    stranger's first screen showed Fear 3.0, Anger 3.0, Shame 3.0 and the rest,
+    three rows below a panel correctly saying nothing was held. Nobody entered
+    those numbers. An empty field is empty. */
+ c:{Fear:0,Anger:0,Shame:0,Disgust:0,Apathy:0,Shock:0,Sad:0,Surprise:0,Anticipation:0},
  rep:{Fear:0,Anger:0,Shame:0,Disgust:0,Apathy:0,Shock:0,Sad:0,Surprise:0,Anticipation:0},you:true});
 BIRTH.You=null; LAWSET.You={_:6.5};
 /* a profile per persona, so switching one never overwrites another's diagnostic.

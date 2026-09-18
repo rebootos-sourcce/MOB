@@ -38,7 +38,11 @@ function blankProfile(name){
   gates:{verp:{aware:0,detach:0,intent:0,ignore:0,attach:0,averse:0},
          lean:{benign:0,malignant:0}},   /* the cost multiplier, v2 */
   story:{entries:[]}, rituals:[], history:[]};
- CHILD.forEach(function(c){p.axes[c.nm]={held:3,opp:0};});
+ /* held was 3 on every axis, and this is the profile a new person gets. The
+    laws beside it are correctly null, meaning not yet measured, and the charge
+    was not given the same honesty. Nobody entered a 3. Zero is the only value
+    that is true of a person who has said nothing. */
+ CHILD.forEach(function(c){p.axes[c.nm]={held:0,opp:0};});
  SI.forEach(function(l){p.laws[l.nm]=null;});        /* null = not yet measured */
  return p;}
 function loadProfile(p){

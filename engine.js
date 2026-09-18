@@ -1113,7 +1113,18 @@ const TABOF=function(k){for(var i=0;i<TABDEF.length;i++)if(TABDEF[i].k===k)retur
 const S={dom:0,doms:[0],arcs:[0,1],roots:[],a1:0,a2:1,charge:{},law:{},
  theme:'dark',legible:false,hover:null,pin:null,t:0,replace:{},view:1,who:0,tab:TAB.FIELD,
  zoom:1,panx:0,pany:0};
-CHARGES.forEach(c=>{S.charge[c]=3;S.replace[c]=0;});
+/* A stranger's first load used to seed every axis at 3, which produced CQ 36
+   and the word Incoherent in the largest type on screen, beside a panel that
+   correctly said nothing was held. The interval was never the problem. The
+   values were invented, and the product named a person from them before they
+   had typed a word.
+
+   Zero is the honest opening. Nothing held reads as nothing held, and the
+   reading says there is nothing to read yet rather than reaching for a tier.
+   The laws stay at the default 6 and the interface already says, in the one
+   place it matters, that an unmeasured law is a default and flatters the
+   score. */
+CHARGES.forEach(c=>{S.charge[c]=0;S.replace[c]=0;});
 SINAMES.forEach(l=>S.law[l]=6);
 
 /* ============================================================
@@ -1321,6 +1332,15 @@ function compute(){
  const CQ=clamp((It*Ig)/Rz,0,100);
  const tier=[[90,'Mastery'],[70,'Embodied'],[50,'Practicing'],[31,'Incoherent'],
   [21,'Corrupt'],[1,'Severe'],[0,'Collapsed']].find(b=>CQ>=b[0])[1];
+ /* UNREAD. With nothing held and no law measured, CQ is a pure function of
+    the default 6 on all 21 laws: it comes out 36 and the tier comes out
+    Incoherent. That is not a reading of a person, it is a reading of the
+    defaults, and the product was printing it in the largest type on screen to
+    someone who had not yet typed a word. The number is still computed, because
+    everything downstream needs it, but the field says plainly that nothing has
+    been read yet and every surface that names a tier checks this first. */
+ const measured=SI.filter(function(l){return CURP&&CURP.laws&&CURP.laws[l.nm]!=null;}).length;
+ const unread=(loaded.length===0&&measured===0);
  const benign=CQ>=50,malig=benign?0:Math.round((50-CQ)/50*100);
  const X=clamp((1-S.charge.Apathy/10)*.3+(1-clamp(DQraw/14,0,1))*.7,0,1);
  const Y=clamp((It/10)*.6+(1-dist/10)*.4,0,1);
@@ -1338,7 +1358,7 @@ function compute(){
   if(v>darkV){darkV=v;darkB=b;}});
  let weakL=SI[0];SI.forEach(l=>{if(S.law[l.nm]<S.law[weakL.nm])weakL=l;});
  return {loaded,sabs,cxs,hys,sups,maskRing,DQ:DQraw,Rz,vf:_vf,SQm,poleMean,JQ,excess,
-  FAM_POLE,dist,Ig,It,CQ,tier,benign,malig,X,Y,Z,radiance,aff:af,pi,si,dch,steer,
+  FAM_POLE,dist,Ig,It,CQ,tier,unread,measured,benign,malig,X,Y,Z,radiance,aff:af,pi,si,dch,steer,
   will,drag,mask,darkB,darkV,root,rootsIn,weakL,balance:balance()};
 }
 
@@ -1422,7 +1442,11 @@ function blankProfile(name){
   gates:{verp:{aware:0,detach:0,intent:0,ignore:0,attach:0,averse:0},
          lean:{benign:0,malignant:0}},   /* the cost multiplier, v2 */
   story:{entries:[]}, rituals:[], history:[]};
- CHILD.forEach(function(c){p.axes[c.nm]={held:3,opp:0};});
+ /* held was 3 on every axis, and this is the profile a new person gets. The
+    laws beside it are correctly null, meaning not yet measured, and the charge
+    was not given the same honesty. Nobody entered a 3. Zero is the only value
+    that is true of a person who has said nothing. */
+ CHILD.forEach(function(c){p.axes[c.nm]={held:0,opp:0};});
  SI.forEach(function(l){p.laws[l.nm]=null;});        /* null = not yet measured */
  return p;}
 function loadProfile(p){

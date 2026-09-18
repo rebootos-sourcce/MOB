@@ -253,10 +253,11 @@ function railTop(r){
     than a mirror. Coherence and the tier it names are the line. The count
     was cut everywhere a count read against a total. */
  e.innerHTML=cr(r.darkB, r.CQ, {size:'sm', label:'coherence'})
-  +'<span class="rt-t">'+esc(r.tier)+'</span>';}
+  +'<span class="rt-t">'+esc(r.unread?'not read yet':r.tier)+'</span>';}
 function render(){
  const r=compute(), p=PEOPLE[S.who];
- $('tier').textContent=r.tier;
+ /* the tier is a name for a person. it is not printed off the defaults. */
+ $('tier').textContent=r.unread?'not read yet':r.tier;
  /* The heaviest seat and its charge go onto the body so a theme can derive
     its chrome from the reading. Punch reads both; Dark and Snow ignore them. */
  document.body.style.setProperty('--seat',seatCol(r.darkB));
