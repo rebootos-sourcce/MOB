@@ -251,6 +251,34 @@ const flush=await page.evaluate(async ()=>{
  return pStore()[0].axes.Anger.held;});
 ok(flush===9.1,'a pending write flushes when the page hides, got '+flush);
 
+console.log('\n=== zoom atomises the construct ===');
+/* Zoom used to magnify the same picture while the depth ladder was a separate
+   control for the same idea. Past a threshold the next layer resolves, so more
+   zoom is literally more information and not just bigger pixels.
+   NOTE: render is deferred to an animation frame, so HIT must be read after a
+   wait. Reading it synchronously returns the previous frame and reports that
+   nothing changed, which cost two probes before it was noticed. */
+const zsteps=[];
+for(const z of [1,2.3,3.3,4.3]){
+ await page.evaluate(zz=>{loadP(6);setTab(TAB.FIELD);S.view=0;S.zoom=zz;reframe();render();},z);
+ await page.waitForTimeout(220);
+ zsteps.push(await page.evaluate(()=>{
+  const k={};HIT.forEach(h=>k[h.k]=(k[h.k]||0)+1);
+  return {n:HIT.length,eff:effView(),kinds:Object.keys(k)};}));}
+ok(zsteps.map(x=>x.eff).join()==='0,1,2,3',
+ 'zoom resolves each layer in turn, got '+zsteps.map(x=>x.eff).join());
+ok(zsteps[0].n<zsteps[1].n&&zsteps[1].n<zsteps[2].n&&zsteps[2].n<zsteps[3].n,
+ 'and each layer adds real targets, got '+zsteps.map(x=>x.n).join(' '));
+ok(zsteps[1].kinds.indexOf('sab')>=0,'saboteurs resolve at the second layer');
+ok(zsteps[3].kinds.indexOf('dom')>=0&&zsteps[3].kinds.indexOf('mk')>=0,
+ 'domains and masks resolve at the fourth');
+/* the button sets the floor: a gesture never takes away what a person chose */
+await page.evaluate(()=>{S.view=3;S.zoom=1;reframe();render();});
+await page.waitForTimeout(220);
+const floor=await page.evaluate(()=>({eff:effView(),n:HIT.length}));
+ok(floor.eff===3&&floor.n>200,
+ 'the depth button holds at zoom 1, so zooming out never removes a chosen layer');
+
 console.log('\n=== a real person reaches the cosmological layer ===');
 /* The whole ephemeris was visible to nine fixtures and to nobody real.
    BIRTH.You is null, Intake wrote to CURP.who.born, and nothing read it. */

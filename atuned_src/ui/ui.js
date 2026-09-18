@@ -103,13 +103,28 @@ cv.addEventListener('pointerdown',function(e){
 /* THE FRAME. The wheel is the instrument and a person reads it by moving in.
    The pointer keeps the address under it fixed while the scale changes, so
    zooming toward a segment lands on that segment. F reframes. */
+/* The depth buttons show what the button set. When zoom has resolved further,
+   the reached button is marked so a person can see that the extra detail came
+   from the gesture and not from them, and that zooming out will take it away
+   again. Without this the wheel silently changes what it is drawing. */
+function paintDepth(){
+ var bar=$('vbar'); if(!bar)return;
+ var eff=effView(), set=S.view|0;
+ bar.querySelectorAll('.vt').forEach(function(b,i){
+  b.setAttribute('aria-pressed',i===set);
+  b.classList.toggle('zoomed',i>set&&i<=eff);});
+ var note=$('zoomnote');
+ if(note){
+  var add=zoomAdded();
+  note.textContent=add?('zoom resolved '+VIEWS[eff].nm.toLowerCase()):'';
+  note.style.display=add?'':'none';}}
 function setZoom(z,ax,ay){
  var lo=1, hi=5, nz=Math.max(lo,Math.min(hi,z));
  if(nz===S.zoom)return;
  var wx=(ax-CX)/U, wy=(ay-CY)/U;
  S.zoom=nz; reframe();
  S.panx += ax-(CX+wx*U); S.pany += ay-(CY+wy*U);
- reframe(); render();}
+ reframe(); render(); paintDepth();}
 cv.addEventListener('wheel',function(e){
  if(S.tab!==TAB.FIELD)return;
  e.preventDefault();

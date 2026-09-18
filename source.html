@@ -571,6 +571,15 @@ body.punch .gm-gate{background:var(--panel-2)}
 .gm-chip em{display:block;font-style:normal;font-size:10px;opacity:.7;letter-spacing:.02em}
 /* a card line in the right rail. the release and the truth paired, because a
    release with nothing to install is half the protocol. */
+/* A depth the zoom reached rather than the person. Ringed, not filled, so it
+   reads as reached and not as chosen. */
+.vt.zoomed{border-color:var(--gold);color:var(--ink)}
+.vt.zoomed::after{content:'';position:absolute;right:5px;top:5px;width:4px;height:4px;
+ border-radius:50%;background:var(--gold)}
+.vt{position:relative}
+.zoomnote{align-self:center;margin-left:10px;font-size:11.5px;color:var(--gold);
+ letter-spacing:.02em}
+
 /* DENSITY. One variable scales the whole interface, so a person who wants
    more on screen gets it without the browser zoom that breaks fixed layouts.
    Set on the root so every rem and every var(--ui) derives from it. */
@@ -1175,7 +1184,8 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
     <circle cx="12" cy="17.4" r="1"/></svg></button>
  </div>
  <div class="sheet" id="sheet" hidden><div class="sheet-card" id="sheet-card"></div></div>
- <div class="glass subbar" id="subbar"><div id="vbar" style="display:flex;gap:5px"></div></div>
+ <div class="glass subbar" id="subbar"><div id="vbar" style="display:flex;gap:5px"></div>
+  <span class="zoomnote" id="zoomnote" style="display:none"></span></div>
  <div class="mid">
 
   <!-- ============ LEFT RAIL ============ -->
@@ -4104,6 +4114,21 @@ const VIEWS=[
   how:'Chain. Cluster, plus the rest of the compounding.\nSaboteur to complex to hyper to character, inward.\nThe named ring is your twelve archetypes.\nClick one to change how the soul expresses.'},
  {k:'D',nm:'Blueprint', layers:'chain, plus 19 domains, 6 masks, 21 laws',
   how:'Blueprint. Chain, plus domains, masks and laws.\nThe outer ring is nineteen domains, five per root cluster.\nThe faint ring inside is the six masks.\nThe short spokes at the centre are the twenty-one laws.'}];
+/* ATOMIZING. Zoom used to magnify the same picture, and the depth ladder was
+   a separate control for the same idea: how much of the construct is drawn.
+   They are one idea. Past a threshold the next layer resolves, because at 3x
+   there is room on the ring for names that cannot fit at 1x.
+
+   Zoom only ever ADDS. The depth buttons set the floor, so a person who chose
+   Charge still sees Charge when they zoom back out, and nothing a person
+   selected is ever taken off the screen by a gesture. */
+const ZOOM_STEP=[1,2.2,3.2,4.2];
+function effView(){
+ var extra=0, z=S.zoom||1;
+ for(var i=1;i<ZOOM_STEP.length;i++) if(z>=ZOOM_STEP[i])extra=i;
+ return Math.min(VIEWS.length-1,(S.view|0)+extra);}
+/* what zoom added on top of the button, for the readout */
+function zoomAdded(){return effView()-(S.view|0);}
 function nzAng(a){while(a<-Math.PI)a+=TAU;while(a>Math.PI)a-=TAU;return a;}
 function drawWheel(r,L){
  const ink=INK(),p=S.pin,gc=GOLDC();
@@ -4303,7 +4328,8 @@ var DRAW_SIG=null;
 function drawSig(r){
  if(!REDUCED) return null;                 /* animating, always draw */
  var d=0; for(var i=0;i<W.length;i++)d+=W[i].sq;
- return [S.view,S.tab,S.who,S.hover&&S.hover.k,S.pin&&(S.pin.nm||S.pin.k),
+ /* effView, not S.view: the cache has to miss when zoom resolves a layer */
+ return [effView(),S.tab,S.who,S.hover&&S.hover.k,S.pin&&(S.pin.nm||S.pin.k),
          LIGHT()?1:0,S.legible?1:0,S.zoom.toFixed(3),S.panx|0,S.pany|0,
          d.toFixed(3),r.CQ.toFixed(3)].join('|');}
 function draw(r){
@@ -4312,7 +4338,7 @@ function draw(r){
  if(sig!==null&&sig===DRAW_SIG) return;    /* nothing moved and nothing will */
  DRAW_SIG=sig;
  g.clearRect(0,0,CW,CH);HIT=[];
- drawWheel(r,S.view);}
+ drawWheel(r,effView());}
 
 /* ============================================================
    THE ENERGY MAP. One code path serves all seven layers: resolve
@@ -7397,13 +7423,28 @@ cv.addEventListener('pointerdown',function(e){
 /* THE FRAME. The wheel is the instrument and a person reads it by moving in.
    The pointer keeps the address under it fixed while the scale changes, so
    zooming toward a segment lands on that segment. F reframes. */
+/* The depth buttons show what the button set. When zoom has resolved further,
+   the reached button is marked so a person can see that the extra detail came
+   from the gesture and not from them, and that zooming out will take it away
+   again. Without this the wheel silently changes what it is drawing. */
+function paintDepth(){
+ var bar=$('vbar'); if(!bar)return;
+ var eff=effView(), set=S.view|0;
+ bar.querySelectorAll('.vt').forEach(function(b,i){
+  b.setAttribute('aria-pressed',i===set);
+  b.classList.toggle('zoomed',i>set&&i<=eff);});
+ var note=$('zoomnote');
+ if(note){
+  var add=zoomAdded();
+  note.textContent=add?('zoom resolved '+VIEWS[eff].nm.toLowerCase()):'';
+  note.style.display=add?'':'none';}}
 function setZoom(z,ax,ay){
  var lo=1, hi=5, nz=Math.max(lo,Math.min(hi,z));
  if(nz===S.zoom)return;
  var wx=(ax-CX)/U, wy=(ay-CY)/U;
  S.zoom=nz; reframe();
  S.panx += ax-(CX+wx*U); S.pany += ay-(CY+wy*U);
- reframe(); render();}
+ reframe(); render(); paintDepth();}
 cv.addEventListener('wheel',function(e){
  if(S.tab!==TAB.FIELD)return;
  e.preventDefault();

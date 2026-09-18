@@ -137,6 +137,21 @@ const VIEWS=[
   how:'Chain. Cluster, plus the rest of the compounding.\nSaboteur to complex to hyper to character, inward.\nThe named ring is your twelve archetypes.\nClick one to change how the soul expresses.'},
  {k:'D',nm:'Blueprint', layers:'chain, plus 19 domains, 6 masks, 21 laws',
   how:'Blueprint. Chain, plus domains, masks and laws.\nThe outer ring is nineteen domains, five per root cluster.\nThe faint ring inside is the six masks.\nThe short spokes at the centre are the twenty-one laws.'}];
+/* ATOMIZING. Zoom used to magnify the same picture, and the depth ladder was
+   a separate control for the same idea: how much of the construct is drawn.
+   They are one idea. Past a threshold the next layer resolves, because at 3x
+   there is room on the ring for names that cannot fit at 1x.
+
+   Zoom only ever ADDS. The depth buttons set the floor, so a person who chose
+   Charge still sees Charge when they zoom back out, and nothing a person
+   selected is ever taken off the screen by a gesture. */
+const ZOOM_STEP=[1,2.2,3.2,4.2];
+function effView(){
+ var extra=0, z=S.zoom||1;
+ for(var i=1;i<ZOOM_STEP.length;i++) if(z>=ZOOM_STEP[i])extra=i;
+ return Math.min(VIEWS.length-1,(S.view|0)+extra);}
+/* what zoom added on top of the button, for the readout */
+function zoomAdded(){return effView()-(S.view|0);}
 function nzAng(a){while(a<-Math.PI)a+=TAU;while(a>Math.PI)a-=TAU;return a;}
 function drawWheel(r,L){
  const ink=INK(),p=S.pin,gc=GOLDC();
@@ -336,7 +351,8 @@ var DRAW_SIG=null;
 function drawSig(r){
  if(!REDUCED) return null;                 /* animating, always draw */
  var d=0; for(var i=0;i<W.length;i++)d+=W[i].sq;
- return [S.view,S.tab,S.who,S.hover&&S.hover.k,S.pin&&(S.pin.nm||S.pin.k),
+ /* effView, not S.view: the cache has to miss when zoom resolves a layer */
+ return [effView(),S.tab,S.who,S.hover&&S.hover.k,S.pin&&(S.pin.nm||S.pin.k),
          LIGHT()?1:0,S.legible?1:0,S.zoom.toFixed(3),S.panx|0,S.pany|0,
          d.toFixed(3),r.CQ.toFixed(3)].join('|');}
 function draw(r){
@@ -345,4 +361,4 @@ function draw(r){
  if(sig!==null&&sig===DRAW_SIG) return;    /* nothing moved and nothing will */
  DRAW_SIG=sig;
  g.clearRect(0,0,CW,CH);HIT=[];
- drawWheel(r,S.view);}
+ drawWheel(r,effView());}

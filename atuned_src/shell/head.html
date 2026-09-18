@@ -571,6 +571,15 @@ body.punch .gm-gate{background:var(--panel-2)}
 .gm-chip em{display:block;font-style:normal;font-size:10px;opacity:.7;letter-spacing:.02em}
 /* a card line in the right rail. the release and the truth paired, because a
    release with nothing to install is half the protocol. */
+/* A depth the zoom reached rather than the person. Ringed, not filled, so it
+   reads as reached and not as chosen. */
+.vt.zoomed{border-color:var(--gold);color:var(--ink)}
+.vt.zoomed::after{content:'';position:absolute;right:5px;top:5px;width:4px;height:4px;
+ border-radius:50%;background:var(--gold)}
+.vt{position:relative}
+.zoomnote{align-self:center;margin-left:10px;font-size:11.5px;color:var(--gold);
+ letter-spacing:.02em}
+
 /* DENSITY. One variable scales the whole interface, so a person who wants
    more on screen gets it without the browser zoom that breaks fixed layouts.
    Set on the root so every rem and every var(--ui) derives from it. */
