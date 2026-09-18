@@ -45,11 +45,36 @@ one shot. A sweep over one address is six patterns, one per channel.
 
 Then left side, then right side.
 
-**Open, and it changes the release:** the code runs four passes, right limit,
-left limit, right truth, left truth. That is not the six channels. Either the
-four passes become the six channels crossed with two sides, which is twelve
-lines per address, or the six channels sit inside each existing pass. The
-count follows whichever it is, so this ruling moves the meter.
+**Open, and it now looks larger than twelve.** The book prints a full card at
+lines 8119 to 8332 and describes it at line 1483: one card is one address, and
+a full card is two hundred statements. A hundred to release, fifty down the
+left channel and fifty down the right. Then a hundred to install the coherent
+opposite, fifty and fifty again. Left is parasympathetic, right is sympathetic.
+
+Line 1484 gives the anatomy of one statement: the gate, the prompt, the
+intensity and the target. "I am letting go of believing that I am scared of
+money." Believing is the gate. That I am is the prompt. Scared is the
+intensity. Of money is the target.
+
+So a statement can carry one channel, which matches the ruling that one
+sentence is one pattern. But the printed card does it the other way: one
+header names every channel at once and then fifty intensity and target lines
+run under it.
+
+Three things need a ruling, and the meter follows all three.
+
+1. **Is a pattern a statement or a card.** Two hundred statements per address
+   against one card per address is a factor of two hundred on the price.
+2. **Six channels or nine.** The verb chain at line 1023 gives six: believing,
+   perceiving, thinking, behaving, acting, feeling. The printed card at line
+   8123 gives nine: those six plus speaking, saying and doing. A third list in
+   chapter 33 gives a different six.
+3. **Which side first.** The printed card runs right channel before left, at
+   lines 8122, 8174, 8227 and 8279. The ruling recorded here says left then
+   right.
+
+Nothing in the code has been changed on this. The meter counts whatever the
+channel table holds, so it follows the ruling the moment it is made.
 
 ## The horizon and the markers
 

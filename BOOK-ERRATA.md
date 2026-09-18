@@ -174,10 +174,26 @@ instrument. The engine returns DQ as the raw sum of held charge, and the whole
 interface reads it that way. Changing it changes what the word means on every
 screen.
 
-**27. The release channels.** The book gives six: believing, perceiving,
-thinking, behaving, acting, feeling, run left side then right side. The engine
-runs four: right limit, left limit, right truth, left truth. The pattern meter
-counts whatever the table holds, so it follows the ruling automatically.
+**27. The release channels, and the book disagrees with itself three ways.**
+
+The verb chain at line 1023 gives six: believing, perceiving, thinking,
+behaving, acting, feeling. The printed card at line 8123 gives nine: those six
+plus speaking, saying and doing. Chapter 33 gives a third six.
+
+The printed card runs right channel before left, at lines 8122, 8174, 8227 and
+8279. The ruling on file says left then right.
+
+A full card is two hundred statements over one address, at line 1483. The
+engine runs four passes and names no channel at all.
+
+The engine also uses arithmetic that appears nowhere in the book: twenty one
+percent off the held value on release, and the coherent opposite installed at
+sixty two percent of what was removed. Those numbers are mine from the rebuild.
+
+**27b. The rebound is copy, not behaviour.** The text about day four and a half
+and day twenty seven is correct against the book's own maths, and nothing in
+the engine implements a time based decay, so a person who comes back later sees
+no rebound.
 
 **28. Four kinds have no coherent opposite.** Laws, domains, masks and seats.
 Every child fetter has one. Writing them is forty-six new assertions.
