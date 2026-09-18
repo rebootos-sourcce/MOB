@@ -37,6 +37,7 @@ ui/analytics.js
 ui/intakeui.js
 ui/release.js
 ui/ritual.js
+ui/cone.js
 ui/drills.js
 ui/knowledge.js
 ui/record.js

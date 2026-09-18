@@ -394,10 +394,19 @@ function runPoleDrill(end){
       return '<div class="ad-r static'+(dk.step&&dk.step.nm===d.nm?' on':'')
        +'" title="'+esc(d.d)+'"><span class="ad-k">'+esc(d.nm)+'</span>'
        +'<span class="ad-v">'+esc(d.kind)+'</span></div>';}).join('')+'</div>';
-   if(dk.refer)h+='<p class="ad-p"><b>'+esc(DESCENT_REFER)+'</b></p>';
-  h+='<div class="ad-act"><button class="btn" id="rdsee">Start from a sentence</button></div>';}
+   if(dk.refer)h+='<p class="ad-p"><b>'+esc(DESCENT_REFER)+'</b></p>';}
  }
+ /* one row of doors, on BOTH ends of the cone, so the volume is reachable
+    from the flat reading rather than only from a tab nobody has found. This
+    sat inside the downward branch on its first write, so the upward roster
+    had no way through to the thing it describes. */
+ h+='<div class="ad-act">'
+  +'<button class="btn pri" id="rdcone">Go to the compass</button>'
+  +(up?'':'<button class="btn" id="rdsee">Start from a sentence</button>')
+  +'</div>';
  rdShell(h);
+ var cn=document.getElementById('rdcone');
+ if(cn)cn.onclick=function(){rdClose();coneOpen();};
  var see=document.getElementById('rdsee');
  if(see)see.onclick=runRecogniseDrill;
  /* a row opens the axis, both poles and the question a practitioner asks */

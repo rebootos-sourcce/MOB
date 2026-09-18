@@ -203,7 +203,7 @@ triangles are the same figure at two scales.
 
 ---
 
-## 2. Specified. The compass with volume
+## 2. Built. The compass with volume
 
 The ask: a detailed rendered compass you can spin, so what is at stake is
 legible from a single image.
@@ -234,9 +234,32 @@ show more than say, and never a count against a total. The volume earns its
 place only if it makes the eight axes readable at a glance, which a list of
 eight numbers does not.
 
-Not built in this pass. It is a day of work on the renderer and it should
-follow the laws of integrity being wired onto the same surface, since those
-are the other thing with a coherent pole and an inverted mirror.
+**Built.** `ui/cone.js`, its own canvas, its own context, an axonometric
+projection in about forty lines. No library. Reachable from both ends of the
+flat compass.
+
+Three things came out of building it that the specification did not have.
+
+**The waist is a neck, not a point.** Two true cones meet at a point and the
+figure pinches to nothing exactly where the median range lives, which is the
+part of the scale a person is most likely to be standing in. A minimum radius
+makes it a neck, the median reads as a band with width, and the rings read as
+ellipses rather than collapsing to a line.
+
+**The far half has to dim.** A wireframe with every line at one weight reads as
+a flat web whatever the projection. The far half of each meridian at a third of
+the near half is the whole difference between a drawing of a cone and a cone.
+
+**A tilted ring reaches lower than the axis point it sits on**, by its own
+radius times the sine of the tilt. Sizing the figure against the axis alone put
+the floor names off the bottom of the canvas. The height budget is height times
+cosine plus radius times sine, plus room for the pole names, which sit outside
+the figure entirely. A gate now walks all sixteen poles at the default view and
+fails if one is outside the box.
+
+Still owed on the same surface: the twenty one laws of integrity, which are the
+other thing with a coherent pole and an inverted mirror and should share the
+renderer.
 
 ---
 

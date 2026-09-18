@@ -727,6 +727,56 @@ ok(!/72%|28%/.test(virginSweep.pol),'and prints no percentage off the defaults')
 /* the roster itself is always there. only the descent read is conditional. */
 ok(/Satan frozen/.test(pole.clean),'while the nine circles stay readable to anybody');
 
+console.log('\n=== the compass with volume ===');
+/* A line cannot show what a cone shows. Two cones meeting at a neck, eight
+   meridians, the person plotted on every one, and the whole thing spins. Its
+   own canvas and its own context, no library and no new dependency. */
+const cone=await page.evaluate(()=>{
+ const o={};
+ loadP(8); setTab(TAB.FIELD); render();
+ /* reachable from BOTH ends of the flat compass. it sat inside the downward
+    branch on its first write, so the upward roster had no way through. */
+ runPoleDrill('up');   o.fromUp=!!document.getElementById('rdcone');
+ runPoleDrill('dn');   o.fromDn=!!document.getElementById('rdcone');
+ document.getElementById('rdcone').click();
+ o.open=CONE.open;
+ const cv=document.getElementById('conecv');
+ o.cv=!!cv;
+ if(cv){const b=cv.getBoundingClientRect(); o.w=Math.round(b.width); o.h=Math.round(b.height);}
+ /* it draws something rather than an empty canvas */
+ coneDraw();
+ if(cv){const g=cv.getContext('2d');
+  const d=g.getImageData(0,0,cv.width,cv.height).data;
+  let lit=0; for(let i=3;i<d.length;i+=4*97)if(d[i]>8)lit++;
+  o.lit=lit;}
+ /* every pole is inside the box at the default view, which is the thing that
+    broke first: a tilted ring reaches lower than the axis point it sits on. */
+ const W=cv.width/CONE.dpr, H=cv.height/CONE.dpr;
+ const off=[];
+ for(let m=0;m<8;m++){
+  [0,100].forEach(function(q){
+   const p=conePt(q,m,W,H);
+   if(p.x<0||p.x>W||p.y<24||p.y>H-24)off.push(MIRROR[m].k+'@'+q);});}
+ o.off=off;
+ /* drag turns it, and the tilt never passes the point where up stops being up */
+ const s0=CONE.spin;
+ cv.dispatchEvent(new PointerEvent('pointerdown',{clientX:400,clientY:300,pointerId:1,bubbles:true}));
+ cv.dispatchEvent(new PointerEvent('pointermove',{clientX:520,clientY:900,pointerId:1,bubbles:true}));
+ cv.dispatchEvent(new PointerEvent('pointerup',{clientX:520,clientY:900,pointerId:1,bubbles:true}));
+ o.spun=(CONE.spin!==s0); o.tilt=CONE.tilt;
+ coneClose(); o.shut=CONE.open;
+ o.gone=!document.getElementById('conecv');
+ return o;});
+ok(cone.fromUp&&cone.fromDn,'both ends of the flat compass open the volume');
+ok(cone.open&&cone.cv,'it opens with a canvas of its own');
+ok(cone.w>200&&cone.h>200,'sized, got '+cone.w+' by '+cone.h);
+ok(cone.lit>40,'and draws something, '+cone.lit+' lit samples');
+ok(cone.off.length===0,'every pole is inside the box: '+cone.off.join(', '));
+ok(cone.spun,'a drag turns it');
+ok(cone.tilt<=0.92&&cone.tilt>=0.08,'and the tilt never passes where up stops being up, '
+ +cone.tilt.toFixed(2));
+ok(cone.shut===false&&cone.gone,'and it closes clean, taking its canvas with it');
+
 console.log('\n=== the plan, and the seam that has nowhere to go yet ===');
 /* Stripe is a network and this file has none. The panel reads the plan off
    the record and calls one host function, and with nothing bound it says so
