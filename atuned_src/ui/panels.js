@@ -243,6 +243,8 @@ function densSet(k){
  /* the wheel takes its size from the box, so it has to be told */
  if(typeof reframe==='function'){reframe();}
  if(typeof render==='function')render();}
+/* The strip in the top bar is gone. This stays because the profile sheet and
+   the boot sequence both call it, and it does nothing when there is no host. */
 function densPaint(){
  var host=$('density'); if(!host)return;
  var now=densGet();
@@ -270,9 +272,9 @@ function profileSheet(){
   +(m?'<div class="sh-row"><span>Ground opened</span><b>'+m.unique+'</b></div>':'')
   +(m&&m.next?'<div class="sh-row"><span>Next marker</span><b>'+esc(m.next.nm)+', '+m.next.left+' away</b></div>':'')
   +'</div>'
-  +'<div class="sh-sec"><div class="pm-eye">Density</div>'
-  +'<p class="sh-p">How much fits on one screen. This changes the whole interface, not just the type.</p>'
-  +'<div class="seg" id="densheet" style="margin-top:8px"></div></div>'
+  +'<div class="sh-sec"><div class="pm-eye">Screen</div>'
+  +'<p class="sh-p">How much fits on one screen. This scales the whole interface, not just the type.</p>'
+  +'<div class="dens-list" id="densheet" style="margin-top:8px"></div></div>'
   +'<div class="sh-sec"><div class="pm-eye">Your record</div>'
   +'<p class="sh-p">Everything is held in this browser. Nothing has left this device.</p>'
   +'<div class="sh-row"><span>Snapshots on file</span><b>'+((CURP&&CURP.history&&CURP.history.length)||0)+'</b></div>'
@@ -283,8 +285,8 @@ function profileSheet(){
  /* the same three steps, inside the sheet, sharing one setter */
  var d=$('densheet'), now=densGet();
  if(d){d.innerHTML=DENS.map(function(x){
-   return '<button type="button" class="vt'+(x[0]===now?' on':'')+'" data-dens2="'+x[0]+'">'
-    +esc(x[1])+'</button>';}).join('');
+   return '<button type="button" class="dens-opt'+(x[0]===now?' on':'')+'" data-dens2="'+x[0]+'" '
+    +'aria-pressed="'+(x[0]===now)+'"><b>'+esc(x[1])+'</b><em>'+esc(x[2])+'</em></button>';}).join('');
   d.querySelectorAll('[data-dens2]').forEach(function(b){
    b.onclick=function(){densSet(b.getAttribute('data-dens2')); profileSheet();};});}
  var c=$('shclose'); if(c)c.onclick=sheetShut;}

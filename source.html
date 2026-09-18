@@ -603,6 +603,17 @@ body.dens-wide{--ui:1.1}
 .sh-row:last-child{border-bottom:0}
 .sh-row b{color:var(--ink);font-weight:500}
 .sh-p{margin:0;font-size:13px;line-height:1.6;color:var(--mid)}
+/* Three named rows rather than three letters. A setting chosen once should say
+   what it does, and there is room for it here where there was not in the bar. */
+.dens-list{display:flex;flex-direction:column;gap:5px}
+.dens-opt{display:flex;flex-direction:column;align-items:flex-start;gap:2px;
+ background:var(--sunk);border:1px solid transparent;color:var(--mid);
+ border-radius:var(--r-xs);padding:9px 12px;cursor:pointer;text-align:left;width:100%;
+ min-height:44px}
+.dens-opt b{font-size:13px;font-weight:500;color:var(--ink)}
+.dens-opt em{font-style:normal;font-size:11.5px;color:var(--dim)}
+.dens-opt.on{border-color:var(--gold)}
+.dens-opt.on b{color:var(--gold)}
 @media (max-width:720px){ .sheet{align-items:flex-end;padding:0}
  .sheet-card{width:100%;max-height:82vh;border-radius:var(--r) var(--r) 0 0} }
 
@@ -1169,12 +1180,10 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
   <div class="seg" id="themes"></div>
   <button class="vt" id="legible" type="button" aria-pressed="false"
    title="Atkinson Hyperlegible. Maximum character distinction.">Aa</button>
-  <!-- Density. The owner found that the whole interface reads better scaled
-       down in the browser, which is a real finding about this product and not
-       about his monitor: there is more on screen than the type size assumes.
-       Three steps rather than a slider, because three is a choice and a slider
-       is a chore. Comfortable is what shipped. -->
-  <div class="seg" id="density" role="group" aria-label="Density"></div>
+  <!-- Density moved into the profile on the owner's ruling. It is a setting a
+       person chooses once, and a setting chosen once does not earn three
+       permanent buttons in the bar where the work happens. The profile opens
+       on the right, which is where it now lives. -->
   <button class="vt" id="profbtn" type="button" title="Your profile and settings">
    <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">
     <circle cx="12" cy="8" r="3.6"/><path d="M5 20c0-3.6 3.1-5.6 7-5.6s7 2 7 5.6"/></svg></button>
@@ -6974,6 +6983,8 @@ function densSet(k){
  /* the wheel takes its size from the box, so it has to be told */
  if(typeof reframe==='function'){reframe();}
  if(typeof render==='function')render();}
+/* The strip in the top bar is gone. This stays because the profile sheet and
+   the boot sequence both call it, and it does nothing when there is no host. */
 function densPaint(){
  var host=$('density'); if(!host)return;
  var now=densGet();
@@ -7001,9 +7012,9 @@ function profileSheet(){
   +(m?'<div class="sh-row"><span>Ground opened</span><b>'+m.unique+'</b></div>':'')
   +(m&&m.next?'<div class="sh-row"><span>Next marker</span><b>'+esc(m.next.nm)+', '+m.next.left+' away</b></div>':'')
   +'</div>'
-  +'<div class="sh-sec"><div class="pm-eye">Density</div>'
-  +'<p class="sh-p">How much fits on one screen. This changes the whole interface, not just the type.</p>'
-  +'<div class="seg" id="densheet" style="margin-top:8px"></div></div>'
+  +'<div class="sh-sec"><div class="pm-eye">Screen</div>'
+  +'<p class="sh-p">How much fits on one screen. This scales the whole interface, not just the type.</p>'
+  +'<div class="dens-list" id="densheet" style="margin-top:8px"></div></div>'
   +'<div class="sh-sec"><div class="pm-eye">Your record</div>'
   +'<p class="sh-p">Everything is held in this browser. Nothing has left this device.</p>'
   +'<div class="sh-row"><span>Snapshots on file</span><b>'+((CURP&&CURP.history&&CURP.history.length)||0)+'</b></div>'
@@ -7014,8 +7025,8 @@ function profileSheet(){
  /* the same three steps, inside the sheet, sharing one setter */
  var d=$('densheet'), now=densGet();
  if(d){d.innerHTML=DENS.map(function(x){
-   return '<button type="button" class="vt'+(x[0]===now?' on':'')+'" data-dens2="'+x[0]+'">'
-    +esc(x[1])+'</button>';}).join('');
+   return '<button type="button" class="dens-opt'+(x[0]===now?' on':'')+'" data-dens2="'+x[0]+'" '
+    +'aria-pressed="'+(x[0]===now)+'"><b>'+esc(x[1])+'</b><em>'+esc(x[2])+'</em></button>';}).join('');
   d.querySelectorAll('[data-dens2]').forEach(function(b){
    b.onclick=function(){densSet(b.getAttribute('data-dens2')); profileSheet();};});}
  var c=$('shclose'); if(c)c.onclick=sheetShut;}
