@@ -251,6 +251,44 @@ const flush=await page.evaluate(async ()=>{
  return pStore()[0].axes.Anger.held;});
 ok(flush===9.1,'a pending write flushes when the page hides, got '+flush);
 
+console.log('\n=== a finger reads the wheel, it does not write it ===');
+/* A thumb landing on the wheel to scroll used to drag the charge underneath
+   it and save the result, because the canvas carries touch-action:none and so
+   swallowed the gesture. Reproduced before the fix: Anger 8.0 to 10.0 with the
+   page not moving. There is no undo, so the value was simply gone. */
+const touchCtx=await browser.newContext({viewport:{width:390,height:844},hasTouch:true,isMobile:true});
+const touchPg=await touchCtx.newPage();
+await touchPg.goto(FILE,{waitUntil:'load'}); await touchPg.waitForTimeout(700);
+const drag=await touchPg.evaluate(()=>{
+ loadP(6); setTab(TAB.FIELD); render();
+ const before=JSON.parse(JSON.stringify(S.charge));
+ const cv=document.getElementById('cv'), rect=cv.getBoundingClientRect();
+ const sx=rect.width/cv.width, sy=rect.height/cv.height;
+ let pick=null,pt=null;
+ for(let i=HIT.length-1;i>=0;i--){const h=HIT[i];
+  if(h.k!=='node'||!h.n||!h.n.cf||h.x!==undefined)continue;
+  const rr=(h.r0+h.r1)/2, aa=(h.a0+h.a1)/2;
+  const px=h.cx+rr*Math.cos(aa), py=h.cy+rr*Math.sin(aa);
+  const t=hitTest(px,py);
+  if(t&&t.k==='node'&&t.n&&t.n.cf){pick=t;pt={px,py};break;}}
+ if(!pick)return {err:'no node reachable'};
+ const x=rect.left+pt.px*sx, y=rect.top+pt.py*sy;
+ const ev=(t,cy)=>cv.dispatchEvent(new PointerEvent(t,{clientX:x,clientY:cy,
+  pointerId:1,bubbles:true,pointerType:'touch',isPrimary:true}));
+ ev('pointerdown',y); for(let d=10;d<=60;d+=10)ev('pointermove',y-d); ev('pointerup',y-60);
+ const after=JSON.parse(JSON.stringify(S.charge));
+ const moved=Object.keys(before).filter(k=>Math.abs(before[k]-after[k])>0.01);
+ return {moved, axis:pick.n.cf,
+  drill:((document.getElementById('rdrill')||{}).textContent||'').length};});
+ok(!drag.err,'a node on the wheel is reachable, '+(drag.err||'yes'));
+ok(drag.moved&&drag.moved.length===0,
+ 'a touch drag across the wheel writes no charge, moved: '+((drag.moved||[]).join(',')||'none'));
+ok(drag.drill>40,'and the tap opens the address instead, got '+drag.drill+' chars');
+/* the canvas must also stop eating the scroll it used to swallow */
+const ta=await touchPg.evaluate(()=>getComputedStyle(document.getElementById('cv')).touchAction);
+ok(ta!=='none','the wheel lets a coarse pointer scroll the page, touch-action is '+ta);
+await touchPg.close(); await touchCtx.close();
+
 console.log('\n=== every tab fits a phone ===');
 /* The stage drops its overflow and its min height at 720 so the wheel can flow
    down the screen. The tab panels stayed position:absolute against it, so every

@@ -52,11 +52,28 @@ function hitTest(px,py){
  return null;}
 const loc=function(e){var b=cv.getBoundingClientRect();return [e.clientX-b.left,e.clientY-b.top];};
 let DRAG=null;
+/* A finger is not a mouse and this cost a person their reading.
+   The canvas carries touch-action:none, so it swallows a scroll gesture
+   rather than passing it to the page. Combined with drag to charge, a
+   thumb landing on the wheel to scroll dragged the value underneath it
+   and saveYou() wrote it. Reproduced at 390 wide: a touch on Denial Of
+   Light and a 60px drag upward moved Anger from 8.0 to 10.0 and the page
+   did not move at all. There is no undo, so the charge is simply gone.
+
+   On a coarse pointer the drag does not arm. A tap still opens the
+   address, which is the thing a finger is actually good at, and the
+   gesture reaches the page so the wheel stops being a dead zone.
+   This comes out when undo exists and not before. */
+const COARSE=(typeof matchMedia==='function')&&matchMedia('(pointer:coarse)').matches;
 cv.addEventListener('pointerdown',function(e){
  var L=loc(e),x=L[0],y=L[1],h=hitTest(x,y);
  if(!h)return;
- if(h.k==='node'&&h.n.cf){DRAG={mode:'cf',cf:h.n.cf,y:y,s:S.charge[h.n.cf],node:h.n,moved:false};
+ var touch=COARSE||e.pointerType==='touch'||e.pointerType==='pen';
+ if(h.k==='node'&&h.n.cf&&!touch){
+  DRAG={mode:'cf',cf:h.n.cf,y:y,s:S.charge[h.n.cf],node:h.n,moved:false};
   cv.setPointerCapture(e.pointerId);return;}
+ if(h.k==='node'&&h.n.cf&&touch){ /* a tap reads the address, it never writes it */
+  S.pin=null; runNodeDrill(h.n); render(); return;}
  if(h.k==='dom'){toYou();
   if(e.shiftKey){var k=S.doms.indexOf(h.j);
    if(k>=0){if(S.doms.length>1)S.doms.splice(k,1);}else S.doms.push(h.j);}
