@@ -230,3 +230,33 @@ Nothing in it is generated and nothing is paraphrased.
   axes: Fear toward Trust in the engine and toward Safety on the card, Apathy
   toward Vitality and toward Joy, Sad toward Joy and toward Happy. The engine's
   are load bearing for the install arithmetic and were left alone.
+
+## Data, ruled 18 September. The strongest ruling in this file.
+
+**We never sell anybody's data. Ever.** The owner has worked in the field and
+knows what a person's data is worth to someone else. This is not a policy line
+to be softened later, it is the promise the product is built on.
+
+What that means mechanically, and it is already how the pieces are shaped:
+
+- A person gets a **key** for their information.
+- **We do not keep the record joined to the story.** The record identifies, the
+  story does not, and the two are not held together.
+- The **story without the record** is what refines the models. A story with no
+  person attached is training material. A story with a person attached is
+  somatic and psychological self report about a named human, and we do not
+  hold that.
+- The funnel record exists **only to hand back to the person**. It is not an
+  asset, not a list, not a segment.
+
+**What this creates that does not exist yet.** Refining models off stories
+means someone has to be able to see them, so a developer side analytics engine
+is now in scope: account management, the whole picture, a view no ordinary
+person gets. The owner's instinct while thinking aloud was that it has to be
+separate, and that is right. The staging idea, build it as its own tab first
+and break it out later, is workable on one condition: it never ships to a
+person's build. Same repo, excluded from `source.html` by MANIFEST, or it
+leaks by accident the first time someone forgets.
+
+**Open:** whether the developer view is a separate build from day one or a tab
+that is stripped at build time.

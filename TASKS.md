@@ -199,3 +199,29 @@ intake next rather than later.
 
 A11 and A9 are blocked on one question each. Answering both costs a minute of
 looking and would unblock real work.
+
+## B0. The quiz has to have stakes. Noted 18 September.
+
+Ahead of the mechanics, the ruling on what the quiz is:
+
+**It has to talk directly to the pain.** Not a personality test, not a
+curiosity. A person arrives carrying something. The quiz has to name it back
+to them in a way that lands before it asks for anything.
+
+**A magical solution without the magic.** That phrase is the brief. The result
+should feel like it should not be possible to know that from a few questions,
+and every line of it has to be mechanically defensible. The instrument already
+is: it reads charge, it names the address, it costs it out. The copy has to
+carry that without reaching for wonder, because the mechanism is the wonder.
+
+**Open, the delivery format.** A video that sets it all up, or give it to them
+raw and let them work it out. These are different products. The video
+de-risks comprehension and adds production and a place to host it. Raw is
+faster to ship, respects the person, and loses everyone who needs the frame.
+Untested either way, so the focus group decides it rather than either of us.
+
+**Open, the funnel shape.** Which funnel actually gets these people in is a
+question for the ICPs, not an assumption. Ask them: what would get them to the
+test, what they need to hear to take it, what they expect to get out of it,
+and what makes them think this is too good to be true. Then shape the
+narrative from the mechanics of being, sharp and short.
