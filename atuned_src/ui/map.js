@@ -69,27 +69,86 @@ function pmPlace(marks){
  beads.forEach(function(m,i){ m.rank=i; });
  return marks;}
 
+/* HOW MUCH EACH LAYER HOLDS.
+
+   Fetters read zero on this profile and the layer still opened by default,
+   so the first thing the page said was nothing, on a body with twenty eight
+   saboteurs sitting one button away. A control that offers an empty room
+   first is a broken control. Every layer now carries its own count, and the
+   opening layer is the first one that has something in it. */
+function pmCount(r,L){
+ /* a count has to be the count of what OPENS, or it is a lie on a button. The
+    bands layer draws every address that is carrying AND every one holding the
+    opposite pole, so counting only the carrying ones dimmed Fetters to zero on
+    a profile with forty nine addresses waiting inside it. */
+ if(L==='bands') return W.filter(function(n){return n.sq>=LOADED||n.pole>=4;}).length;
+ if(L==='pain')  return W.filter(function(n){return n.sq>=LOADED+1;}).length;
+ if(L==='nerves')return 7;
+ if(L==='sab')   return r.sabs.length;
+ if(L==='cx')    return r.cxs.length;
+ if(L==='hyper') return r.hys.length+r.sups.length;
+ if(L==='masks') return r.maskRing.length;
+ return 0;}
+var PMFIRST=1;
 function renderMap(r){
+ if(PMFIRST){ PMFIRST=0;
+  if(!pmCount(r,PMLAYER)){ for(var pf=0;pf<PML.length;pf++){
+   if(pmCount(r,PML[pf][0])){PMLAYER=PML[pf][0];break;} } } }
  var host=document.getElementById('emap');if(!host)return;
  var seats=flSeats(),speed=flSpeed(),loadedTot=W.filter(function(n){return n.sq>=LOADED;}).length;
  var stop=null;seats.slice().reverse().forEach(function(s){if(!stop&&s.held)stop=s;});
  var dom=seats.slice().sort(function(a,b){return b.hot-a.hot||b.load-a.load;})[0];
  var marks=pmPlace(pmMarks(r));
+ /* THE PIN HAD TO BE RE-SEATED EVERY FRAME.
+
+    PMPICK holds the pattern object itself and every call site compares it by
+    identity. The read hands back a fresh set of objects on each compute, so
+    the instant anything re-rendered, the pinned object matched nothing in the
+    new set: show came back empty and the body went blank with the pin still
+    lit in the rail. Clicking a pattern emptied the page.
+
+    The pin is re-seated onto this frame's object by name before anything
+    reads it, which leaves every identity comparison downstream correct. */
+ if(PMPICK&&typeof PMPICK==='object'){
+  var pnm=PMPICK.nm, pag=null;
+  marks.forEach(function(m){if(m.kind==='bead'&&m.nm===pnm)pag=m.o;});
+  PMPICK=pag; S.pin=pag;}
  var domc=PMC[K2B[dom.p.k]]||'var(--gold)';
- var h='<div class="pm-top">';
- PML.forEach(function(L){h+='<button class="pm-lb'+(PMLAYER===L[0]?' on':'')+'" data-pml="'+L[0]+'">'+L[1]+'</button>';});
- h+='</div>';
- if(PMLAYER==='pain'){
-  h+='<div class="pm-reg"><span class="pm-eye">Front view, select a region</span><div class="pm-regb">';
-  h+='<button class="pm-rb'+(PAINPICK?'':' on')+'" data-reg="">All</button>';
-  PAINREG.forEach(function(p){
-   h+='<button class="pm-rb'+(PAINPICK===p.k?' on':'')+'" data-reg="'+p.k+'">'+p.nm+'</button>';});
-  h+='</div></div>';}
- h+='<div class="pm-well">'
+ /* THE CONTROLS ARE NOT IN THE PICTURE. They render into the sub bar, which
+    is where Field already puts its depth ladder, so this surface stops
+    covering its own figure with the buttons that change it. */
+ (function(){
+  var lb=document.getElementById('lbar'); if(!lb)return;
+  lb.innerHTML=PML.map(function(L){
+   var cn=pmCount(r,L[0]);
+   return '<button class="pm-lb'+(PMLAYER===L[0]?' on':'')+(cn?'':' empty')
+    +'" data-pml="'+L[0]+'">'+L[1]
+    +(L[0]==='nerves'?'':'<b>'+cn+'</b>')+'</button>';}).join('');
+  var rb=document.getElementById('rbar'); if(!rb)return;
+  if(PMLAYER==='pain'){
+   rb.style.display='flex';
+   rb.innerHTML='<span class="pm-eye" style="align-self:center;margin-right:4px">Region</span>'
+    +'<button class="pm-rb'+(PAINPICK?'':' on')+'" data-reg="">All</button>'
+    +PAINREG.map(function(p){
+     return '<button class="pm-rb'+(PAINPICK===p.k?' on':'')+'" data-reg="'+p.k+'">'
+      +p.nm+'</button>';}).join('');
+  }else{rb.style.display='none';rb.innerHTML='';}})();
+ var h='<div class="pm-well">'
   +'<div class="pm-aura" style="background:radial-gradient(ellipse 62% 48% at 50% 40%,'+domc
   +' 0%,transparent 70%);opacity:'+(0.08+r.radiance*0.30).toFixed(3)+'"></div>'
   +'<svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" class="pm-svg">';
- h+='<clipPath id="pmClip"><g transform="translate('+PMTX+','+PMTY+') scale('+PMS+')"><path d="'+BODYPATH+'"/></g></clipPath>';
+ /* THE CLIP WAS SWALLOWING EVERY ADDRESS ON THE BODY.
+
+    This wrapped the body path in a <g> to carry the transform. A clipPath may
+    only hold shapes, <text> and <use>: a <g> child is not valid geometry and
+    is ignored, which left the clip with no geometry at all, which clips away
+    everything inside it. Every node and heat mark on the figure has been in
+    the document and painting nothing, on every layer, for as long as the clip
+    has been there. Forty nine addresses, all present, all invisible.
+
+    The transform belongs on the path, where it is valid. */
+ h+='<clipPath id="pmClip"><path transform="translate('+PMTX+','+PMTY+') scale('+PMS
+  +')" d="'+BODYPATH+'"/></clipPath>';
  /* the base figure. raster when present, vector when not. */
  var IMG=(PMLAYER==='pain')?FIG_PAIN:FIG_FETTER, IAR=(PMLAYER==='pain')?FIG_PAIN_AR:FIG_FETTER_AR;
  if(ART_OK[IMG]){
@@ -116,15 +175,115 @@ function renderMap(r){
    var d='M'+br.p.map(function(q){return q[0]+','+q[1];}).join(' L');
    h+='<path d="'+d+'" fill="none" stroke="'+c+'" stroke-width="'+(0.22+th*0.5).toFixed(2)
     +'" opacity="'+(0.10+th*0.72).toFixed(3)+'" stroke-linecap="round"/>';});}
- /* the seven seats, always */
+ /* THE SEVEN SEATS, AS HEAT.
+
+    They were three stacked circles each: a wash, a hard disc and a ring. Seven
+    of those down the spine reads as seven buttons on a diagram, which is a
+    control panel, not a body. Charge is not a disc. It is heat in tissue, and
+    heat has no edge.
+
+    Each seat is one radial gradient whose radius and opacity both run off its
+    own load, drawn with additive blending so two loaded seats next to each
+    other pool the way real heat does rather than stacking as two flat discs.
+    A seat carrying nothing draws almost nothing, which is the honest picture
+    of a seat carrying nothing. */
+ (function(){
+  var col=marks.filter(function(m){return m.kind==='seat';})
+   .sort(function(a,b){return a.y-b.y;});
+  if(col.length<2)return;
+  /* A clear channel is every seat at full pass, which at the first widths
+     came out as one flat slab five units across running the length of the
+     torso and rubbing out the anatomy under it. A channel running clean
+     should read as running clean, not as a bar laid on a body. Narrow, and
+     let the pinch do the talking. */
+  var half=function(m){return 0.40+m.v*1.25;};
+  var L=[],R=[];
+  col.forEach(function(m){L.push([50-half(m),m.y]);R.push([50+half(m),m.y]);});
+  /* close the ends on the figure rather than in mid air */
+  /* and they close ON the figure. At minus six the head end was finishing
+     above the crown, off the top of the body, which is a channel leaking
+     into the margin. */
+  L.unshift([50-half(col[0])*0.5,Math.max(3.0,col[0].y-1.6)]);
+  R.unshift([50+half(col[0])*0.5,Math.max(3.0,col[0].y-1.6)]);
+  L.push([50-half(col[col.length-1])*0.5,col[col.length-1].y+4.5]);
+  R.push([50+half(col[col.length-1])*0.5,col[col.length-1].y+4.5]);
+  var d='M'+L[0][0].toFixed(2)+','+L[0][1].toFixed(2);
+  for(var i=1;i<L.length;i++){
+   var p=L[i-1],q=L[i],my=(p[1]+q[1])/2;
+   d+=' C'+p[0].toFixed(2)+','+my.toFixed(2)+' '+q[0].toFixed(2)+','+my.toFixed(2)
+    +' '+q[0].toFixed(2)+','+q[1].toFixed(2);}
+  d+=' L'+R[R.length-1][0].toFixed(2)+','+R[R.length-1][1].toFixed(2);
+  for(var j=R.length-1;j>0;j--){
+   var p2=R[j],q2=R[j-1],my2=(p2[1]+q2[1])/2;
+   d+=' C'+p2[0].toFixed(2)+','+my2.toFixed(2)+' '+q2[0].toFixed(2)+','+my2.toFixed(2)
+    +' '+q2[0].toFixed(2)+','+q2[1].toFixed(2);}
+  d+=' Z';
+  var g1='pmRiv';
+  h+='<defs><linearGradient id="'+g1+'" x1="0" y1="0" x2="0" y2="1">'
+   +col.map(function(m,i2){
+     return '<stop offset="'+(i2/(col.length-1)*100).toFixed(1)+'%" stop-color="'
+      +(PMC[m.band]||'#888')+'" stop-opacity="'+(0.05+m.v*0.15).toFixed(3)+'"/>';}).join('')
+   +'</linearGradient></defs>';
+  /* A CHANNEL IS ITS BANKS.
+
+     Filled solid, this is a coloured bar laid down the middle of a body, and
+     a bar has no pinch to read: at full pass every seat is the same width and
+     the shape says nothing at all. What carries the reading is the two walls
+     and where they close on each other, so the fill drops to a wash and the
+     outline is the thing you actually see. */
+  h+='<path d="'+d+'" fill="url(#'+g1+')"/>'
+   +'<path d="'+d+'" fill="none" stroke="url(#'+g1+')" stroke-width=".55" '
+   +'opacity="1" stroke-linejoin="round"/>';
+  /* the one word this layer is allowed. It used to be a rule straight across
+     the figure with the caption sitting on the channel, which put text on the
+     body to say a thing the body was already saying by pinching. Now it is a
+     short leader out to clear air and the words land beside the figure. */
+  if(stop){
+   var sm=col.filter(function(m){return m.o.p.k===stop.p.k;})[0];
+   if(sm){var c2=PMC[sm.band], lx=50+half(sm)+3.5;
+    h+='<path d="M'+lx.toFixed(2)+','+sm.y+' H'+(lx+8).toFixed(2)+'" stroke="'+c2
+     +'" stroke-width=".3" opacity=".7" fill="none"/>'
+     +'<circle cx="'+lx.toFixed(2)+'" cy="'+sm.y+'" r=".55" fill="'+c2+'" opacity=".9"/>'
+     +'<text x="'+(lx+8.8).toFixed(2)+'" y="'+(sm.y+0.9).toFixed(2)+'" class="pm-lbl" '
+     +'style="fill:'+c2+'">stops at the '+esc(String(sm.o.p.n).toLowerCase())+'</text>';}}})();
+ /* A heat map has one kernel size and lets intensity carry the reading. The
+    first cut ran the radius off the load as well, so a light seat drew a dot
+    and a body with light load read as seven dots on a diagram. Anatomy sets
+    the radius, which is what b.r has always been. Load sets the brightness. */
+ var HGAIN=function(l){return Math.sqrt(clamp(l||0,0,1));};
+ h+='<defs>';
  PMBANDS.forEach(function(b){
-  var st=seats.filter(function(s){return s.p.k===b.k;})[0],rr=(b.r/10)*(0.5+(st.load||0)*0.95);
-  h+='<circle cx="50" cy="'+b.yp+'" r="'+(rr*2.1).toFixed(2)+'" fill="'+b.c+'" opacity="'+(0.04+st.load*0.2).toFixed(3)+'"/>'
-   +'<circle class="pm-seat" data-seat="'+b.k+'" cx="50" cy="'+b.yp+'" r="'+Math.max(1.3,rr).toFixed(2)
-   +'" fill="'+b.c+'" opacity="'+(0.55+st.load*0.45).toFixed(2)+'"><title>'+b.nm+', '+st.hot
-   +' held</title></circle>'
-   +'<circle cx="50" cy="'+b.yp+'" r="'+Math.max(1.3,rr).toFixed(2)+'" fill="none" stroke="'+b.c
-   +'" stroke-width=".32" opacity=".85"/>';});
+  var st=seats.filter(function(s){return s.p.k===b.k;})[0], g=HGAIN(st.load);
+  h+='<radialGradient id="pmh-'+b.k+'">'
+   +'<stop offset="0%" stop-color="'+b.c+'" stop-opacity="'+(0.07+g*0.62).toFixed(3)+'"/>'
+   +'<stop offset="30%" stop-color="'+b.c+'" stop-opacity="'+(0.05+g*0.40).toFixed(3)+'"/>'
+   +'<stop offset="64%" stop-color="'+b.c+'" stop-opacity="'+(0.02+g*0.15).toFixed(3)+'"/>'
+   +'<stop offset="100%" stop-color="'+b.c+'" stop-opacity="0"/></radialGradient>';});
+ h+='</defs><g style="mix-blend-mode:screen">';
+ PMBANDS.forEach(function(b){
+  var st=seats.filter(function(s){return s.p.k===b.k;})[0];
+  var rr=(b.r/10)*(9.4+HGAIN(st.load)*4.6);
+  h+='<ellipse cx="50" cy="'+b.yp+'" rx="'+(rr*0.92).toFixed(2)+'" ry="'+rr.toFixed(2)
+   +'" fill="url(#pmh-'+b.k+')"/>';});
+ /* and the texture. Seven symmetric ellipses are a diagram of seven seats. The
+    charge is not evenly spread inside a seat, so every carrying address adds
+    its own small bloom at its own scattered position, which is what stops the
+    wash reading as clip art and starts it reading as a body. */
+ W.forEach(function(n){
+  if(n.sq<LOADED)return;
+  var k=B2K[n.b]; if(!k)return;
+  var q=pmNode(n.i,k), c=PMC[n.b]||'#888', g=clamp((n.sq-LOADED)/(10-LOADED),0,1);
+  h+='<circle cx="'+q.x.toFixed(2)+'" cy="'+q.y.toFixed(2)+'" r="'+(3.0+g*4.2).toFixed(2)
+   +'" fill="'+c+'" opacity="'+(0.03+g*0.085).toFixed(3)+'"/>';});
+ h+='</g>';
+ /* the target, and the only hard mark a seat gets: a small core so there is
+    something to aim at and something to say a seat is there at all. */
+ PMBANDS.forEach(function(b){
+  var st=seats.filter(function(s){return s.p.k===b.k;})[0];
+  h+='<circle class="pm-seat" data-seat="'+b.k+'" cx="50" cy="'+b.yp+'" r="'
+   +(0.85+st.load*1.1).toFixed(2)+'" fill="'+b.c+'" opacity="'+(0.30+st.load*0.45).toFixed(2)
+   +'"><title>'+b.nm+', '+st.hot+' carrying, '+Math.round(st.pass*100)
+   +' percent through</title></circle>';});
  /* the domains you run, ringing the seats they own */
  if(PMLAYER==='bands'&&S.doms.length){
   var own={};S.doms.forEach(function(di){W.forEach(function(n){
@@ -151,60 +310,72 @@ function renderMap(r){
      +'" stroke="'+c+'" stroke-width=".22" opacity=".5"/>';});
    h+='<circle cx="'+hxp.toFixed(2)+'" cy="'+hy.toFixed(2)+'" r="'+(pinned?1.1:0.7)
     +'" fill="'+c+'" opacity="'+(pinned?0.95:0.6)+'"/>';});});
- /* THE GUTTER. one layout, five uses. */
+ /* THE GUTTER IS GONE.
+
+    It was two columns of names down the outside of the body, each tied back to
+    its seat by a curve, up to twenty four of them at once. That is the "text
+    all over the page with all the lines" and it was the loudest thing on the
+    surface: a person looked at a body and read a list.
+
+    The names were always in the right rail as well, under Fetters, Saboteurs,
+    Complexes, Hyper and Character, with their counts and their weights and a
+    drill on every row. So the body was carrying a second copy of a list that
+    already had a better home four inches to the right.
+
+    The body shows WHERE and HOW MUCH. The rail shows WHAT. One thing each.
+
+    What replaces it is the thing the gutter was never doing: WHAT IS RUNNING
+    WHAT. A pattern is not at a place, it stands on addresses that are, so it
+    is drawn as the arcs from its own centre of mass out to the addresses it
+    holds. Weight sets the width. Hovering the rail lights its arcs here. That
+    is a structure you can read at a glance and a list is not. */
  var TIERC={sab:PAL.Throat,cx:PAL.Solar,hy:PAL.Sacral,sup:PAL.Root,mask:PAL.Crown};
- var gut=marks.slice();
- if(PMLAYER==='pain'&&PAINPICK){var reg=PAINREG.filter(function(p){return p.k===PAINPICK;})[0];
-  gut=gut.filter(function(x){return reg.bands.indexOf(x.band)>=0;});}
- if(PMLAYER==='nerves') gut=[];
- /* an installed pole is not load. a cleared field lists nothing and says so. */
- if(PMLAYER==='bands'||PMLAYER==='pain')
-  gut=gut.filter(function(x){return x.o&&x.o.sq>=LOADED;});
- gut.sort(function(a,b){ if(a.kind==='bead') return b.v-a.v;
-  return PMYP[B2K[a.band]]-PMYP[B2K[b.band]]||b.v-a.v;});
- var isBead=(gut[0]&&gut[0].kind==='bead');
- if(isBead) gut=gut.slice(0,12);
- var ROWH=isBead?6.4:3.4, capN=Math.floor(96/ROWH);
- var cols=[[],[]];gut.forEach(function(x,i){cols[i%2].push(x);});
- cols.forEach(function(col,ci){
-  var side=ci?1:-1, n=Math.min(col.length,capN);
-  col.slice(0,n).forEach(function(x,k){
-   var y=2+(n<=1?47:k*(96/(n-1)));
-   x.gy=y; x.gside=side;
-   var lx=side<0?26.5:73.5;
-   var c=x.kind==='bead'
-    ? (TIERC[(x.o.kind==='sup')?'sup':(PMLAYER==='masks'?'mask':(x.o.kind||'sab'))]||'#DFCC7E')
-    : (PMC[x.band]||'#888');
-   var on=(PMPICK===x.o), dim=(PMPICK&&!on)?0.25:1;
-   var seats2;
-   if(x.kind==='bead'){
-    var tal={}; x.links.forEach(function(n){var k3=B2K[n.b]; if(k3)tal[k3]=(tal[k3]||0)+n.sq;});
-    var ks=Object.keys(tal).sort(function(p,q){return tal[q]-tal[p];});
-    seats2 = on ? ks : ks.slice(0,1);
-   } else seats2=[B2K[x.band]];
-   seats2.forEach(function(k2){ var sy=PMYP[k2]; if(sy==null)return;
-    h+='<path d="M'+lx.toFixed(1)+','+y.toFixed(2)+' L'+(lx+side*2).toFixed(1)+','+y.toFixed(2)
-     +' Q'+(50+side*17).toFixed(1)+','+((y+sy)/2).toFixed(2)+' '+(50+side*6).toFixed(1)+','+sy.toFixed(2)
-     +'" fill="none" stroke="'+(PMC[K2B[k2]]||c)+'" stroke-width="'+(on?0.5:0.16)
-     +'" opacity="'+(on?0.9:0.15*dim).toFixed(2)+'"/>';});
-   h+='<rect class="pm-gr" data-gi="'+gut.indexOf(x)+'" x="'+(side<0?2:73).toFixed(1)+'" y="'+(y-ROWH/2+0.2).toFixed(2)
-    +'" width="25" height="'+(ROWH-0.6).toFixed(2)+'" rx=".8" fill="'+c+'" opacity="'+(on?0.2:0.001)+'"/>'
-    +'<rect x="'+(side<0?25.3:73.5).toFixed(1)+'" y="'+(y-1).toFixed(2)+'" width="1.2" height="2" rx=".3" fill="'+c
-    +'" opacity="'+(on?1:0.75*dim).toFixed(2)+'"/>'
-    +'<text x="'+(side<0?24.4:75.2).toFixed(1)+'" y="'+(y+0.5).toFixed(2)+'" text-anchor="'+(side<0?'end':'start')
-    +'" class="pm-gl" style="fill:'+c+'" opacity="'+(on?1:0.92*dim).toFixed(2)+'">'
-    +esc(x.nm.length>(isBead?26:22)?x.nm.slice(0,(isBead?25:21))+'…':x.nm)
-    +'<tspan class="pm-gv"> '+(x.kind==='bead'?(x.v*10).toFixed(1):x.o.sq.toFixed(1))+'</tspan></text>';
-   if(isBead&&x.sub&&on)
-    h+='<text x="'+(side<0?24.4:75.2).toFixed(1)+'" y="'+(y+2.7).toFixed(2)+'" text-anchor="'+(side<0?'end':'start')
-     +'" class="pm-gs" opacity="0.95">'+esc(x.sub)+' · '+x.links.length+' addr</text>';});
-  if(col.length>n)
-   h+='<text x="'+(side<0?24.4:75.2)+'" y="99" text-anchor="'+(side<0?'end':'start')
-    +'" class="pm-gl" opacity=".45">+'+(col.length-n)+' more in the list</text>';});
- if((PMLAYER==='bands'||PMLAYER==='pain')&&!gut.length){
+ var chain=marks.filter(function(x){return x.kind==='bead';});
+ if(PMLAYER==='pain'&&PAINPICK){
+  var reg=PAINREG.filter(function(p){return p.k===PAINPICK;})[0];
+  chain=chain.filter(function(x){return reg.bands.indexOf(x.band)>=0;});}
+ if(PMLAYER==='nerves') chain=[];
+ chain.sort(function(p,q){return q.v-p.v;});
+ /* six at once, or one when one is picked. Beyond six the arcs stop being a
+    structure and become the gutter again in another form. */
+ var show=PMPICK?chain.filter(function(x){return x.o===PMPICK;})
+   :chain.slice(0,3);
+ show.forEach(function(m){
+  var kind=(m.o.kind==='sup')?'sup':(PMLAYER==='masks'?'mask':(m.o.kind||'sab'));
+  var c=TIERC[kind]||'#DFCC7E';
+  var on=(PMPICK===m.o);
+  /* the pattern sits at the mean height of everything it stands on, pushed
+     off the spine so its arcs are legible. The side alternates so two heavy
+     patterns at the same height do not land on each other. */
+  var ys=m.links.map(function(n){return PMYP[B2K[n.b]];}).filter(function(v){return v!=null;});
+  if(!ys.length)return;
+  var my=ys.reduce(function(p,q){return p+q;},0)/ys.length;
+  var side=(show.indexOf(m)%2)?1:-1;
+  var mx=50+side*(19+ (show.indexOf(m)>>1)*4.6);
+  m.x=mx; m.y=my; m.gside=side;
+  /* The first cut pushed the control point at a fixed offset from the chord,
+     which on a near horizontal run is no offset at all: every arc came out a
+     straight line and the figure read as a pin cushion. The control point now
+     sits off the PERPENDICULAR of each chord, so every link bows by the same
+     amount whatever direction it runs, and a bundle of them reads as a bundle. */
+  m.links.slice(0,on?24:6).forEach(function(n){
+   var k2=B2K[n.b]; if(!k2)return;
+   var p=pmNode(n.i,k2);
+   var dx=p.x-mx, dy=p.y-my, len=Math.sqrt(dx*dx+dy*dy)||1;
+   var bow=Math.min(9,len*0.30);
+   var cx2=(mx+p.x)/2 + (-dy/len)*bow*side*-1;
+   var cy2=(my+p.y)/2 + ( dx/len)*bow*side*-1;
+   var w=0.16+clamp(n.sq/10,0,1)*(on?0.58:0.34);
+   h+='<path d="M'+mx.toFixed(2)+','+my.toFixed(2)
+    +' Q'+cx2.toFixed(2)+','+cy2.toFixed(2)
+    +' '+p.x.toFixed(2)+','+p.y.toFixed(2)+'" fill="none" stroke="'+c
+    +'" stroke-width="'+w.toFixed(2)+'" opacity="'+(on?0.78:0.42)+'" '
+    +'stroke-linecap="round"/>';});});
+ if(!chain.length&&(PMLAYER==='bands'||PMLAYER==='pain')){
   var instN=W.filter(function(n){return n.pole>=4;}).length;
-  h+='<text x="50" y="96" text-anchor="middle" class="pm-gl" style="fill:'+PAL.Heart+'">'
-   +(instN?'nothing held · '+instN+' addresses carry the coherent opposite':'nothing held')+'</text>';}
+  h+='<text x="50" y="97" text-anchor="middle" class="pm-gl" style="fill:'+PAL.Heart+'">'
+   +(instN?'nothing carrying. '+instN+' addresses hold the opposite instead.'
+     :'nothing carrying yet')+'</text>';}
  /* the marks */
  h+='<g clip-path="url(#pmClip)">';
  marks.filter(function(m){return m.kind==='node'||m.kind==='heat';}).forEach(function(m){
@@ -215,50 +386,103 @@ function renderMap(r){
     +'<circle cx="'+m.x.toFixed(2)+'" cy="'+m.y.toFixed(2)+'" r="'+(0.7+m.v*1.1).toFixed(2)
     +'" fill="'+c+'" opacity="'+(0.55+m.v*0.45).toFixed(2)+'"/>';
   }else{
-   h+='<circle class="pm-n" data-node="'+m.o.i+'" cx="'+m.x.toFixed(2)+'" cy="'+m.y.toFixed(2)
-    +'" r="'+(0.55+m.v*1.5).toFixed(2)+'" fill="'+c+'" opacity="'+(0.3+m.v*0.68).toFixed(2)+'">'
-    +'<title>'+esc(m.nm)+' · '+m.o.sq.toFixed(1)+'</title></circle>';
-   if(m.o.pole>=4)h+='<circle cx="'+m.x.toFixed(2)+'" cy="'+m.y.toFixed(2)+'" r="'+(1.5+m.v).toFixed(2)
-    +'" fill="none" stroke="#fff" stroke-width=".2" opacity=".5"/>';}});
+   /* AN ADDRESS THAT IS HELD CLEAR IS NOT NOTHING.
+
+      An installed address carries no charge, so sq is zero, so it was drawn at
+      radius 0.55 at thirty percent: a four pixel speck. On a profile with
+      forty nine of them and none carrying, the button said forty nine and the
+      body showed an empty figure. The count was right and the drawing was
+      silent, which is the page reading as broken.
+
+      Carrying and clear are opposite readings and they now look opposite. A
+      carrying address is a filled warm point, weight setting its size. A clear
+      one is a ring, open in the middle, which is what holding the far pole
+      looks like and what the icon rule has said since the icon pass. */
+   var clr=(m.o.pole>=4&&m.o.sq<LOADED);
+   if(clr){
+    h+='<g class="pm-n" data-node="'+m.o.i+'">'
+     +'<circle cx="'+m.x.toFixed(2)+'" cy="'+m.y.toFixed(2)+'" r="1.15" fill="none" stroke="'+c
+     +'" stroke-width=".3" opacity=".72"/>'
+     +'<circle cx="'+m.x.toFixed(2)+'" cy="'+m.y.toFixed(2)+'" r=".3" fill="'+c+'" opacity=".85"/>'
+     +'<title>'+esc(m.nm)+', clear. holds the far pole</title></g>';
+   }else{
+    h+='<circle class="pm-n" data-node="'+m.o.i+'" cx="'+m.x.toFixed(2)+'" cy="'+m.y.toFixed(2)
+     +'" r="'+(0.8+m.v*1.9).toFixed(2)+'" fill="'+c+'" opacity="'+(0.42+m.v*0.56).toFixed(2)+'">'
+     +'<title>'+esc(m.nm)+' · '+m.o.sq.toFixed(1)+'</title></circle>';}}});
  h+='</g>';
- /* the flow columns and the stopping seat */
- marks.filter(function(m){return m.kind==='seat';}).forEach(function(m){
-  var c=PMC[m.band],w=2.2+m.v*7.6,s=m.o;
-  h+='<rect x="'+(50-w/2).toFixed(2)+'" y="'+(m.y-3.1).toFixed(2)+'" width="'+w.toFixed(2)
-   +'" height="6.2" rx="1" fill="'+c+'" opacity="'+(0.22+m.v*0.5).toFixed(2)+'"/>'
-   +'<text x="'+(50+w/2+2.4).toFixed(2)+'" y="'+(m.y+0.7).toFixed(2)+'" class="pm-lbl">'
-   +Math.round(m.v*100)+'% through</text>'
-   +'<text x="'+(50-w/2-2.4).toFixed(2)+'" y="'+(m.y+0.7).toFixed(2)+'" text-anchor="end" class="pm-lbl">'
-   +(s.hot?s.hot+' held':'clear')+'</text>';
-  if(stop&&stop.p.k===s.p.k)
-   h+='<line x1="30" y1="'+m.y+'" x2="70" y2="'+m.y+'" stroke="'+c
-    +'" stroke-width=".5" stroke-dasharray="2 1.6" opacity=".95"/>'
-    +'<text x="50" y="'+(m.y-4.8).toFixed(2)+'" text-anchor="middle" class="pm-lbl" style="fill:'+c+'">flow stops here</text>';});
- /* the beads */
- marks.filter(function(m){return m.kind==='bead'&&m.gy!=null;}).forEach(function(m){
-  var c=PMC[m.band]||'#DFCC7E',on=PMPICK===m.o,rr=1.5+(m.v||0)*2.2;
-  var dim=(PMPICK&&PMPICK!==m.o)?0.22:1;
-  /* a bead sits at the mean height of the seats it touches. one with no held
-     address, an unloaded mask for instance, has no seats to average, so it
-     stays on its own gutter row rather than resolving to undefined. */
-  var ys=m.links.map(function(n){return PMYP[B2K[n.b]];}).filter(function(v){return v!=null;});
-  m.y=ys.length ? ys.reduce(function(a,b){return a+b;},0)/ys.length
-     : (m.gy!=null ? m.gy : (PMYP[B2K[m.band]]!=null?PMYP[B2K[m.band]]:30));
-  m.x=50+(m.gside||1)*5.2;
-  h+='<circle class="pm-it" data-it="'+m.rank+'" cx="'+m.x.toFixed(2)+'" cy="'+m.y.toFixed(2)
-   +'" r="'+(rr*(on?1.45:1)).toFixed(2)+'" fill="'+c+'" opacity="'+(on?1:0.8*dim).toFixed(2)+'">'
-   +'<title>'+esc(m.nm)+'</title></circle>';
-  if(on)h+='<circle cx="'+m.x.toFixed(2)+'" cy="'+m.y.toFixed(2)+'" r="'+(rr*2.6).toFixed(2)
-   +'" fill="none" stroke="'+c+'" stroke-width=".3" opacity=".5"/>';});
+ /* THE COLUMN OF THROUGHPUT, AND ONE LABEL ON THE WHOLE FIGURE.
+
+    Every seat used to print "83% through" on its right and "3 held" on its
+    left, fourteen numbers down a body, plus a dashed line and a caption
+    wherever flow stopped. Reading a body should not be reading fourteen
+    numbers.
+
+    The width of the column IS the throughput, which is what a column is for,
+    and the one place it matters is where it closes. Only the stopping seat is
+    named, and it is named once. Every other number is a hover away and lives
+    in the shelf under the figure, which is where a number belongs. */
+ /* ONE RIVER, NOT SEVEN TILES. Seven separate rounded rectangles down the
+    spine read as seven buttons stacked on a body. Throughput is continuous:
+    it is one channel that narrows where a seat closes and opens where one is
+    clear. So it is drawn as one shape, its half width at each seat set by
+    that seat's own pass, and it runs behind the heat rather than over it.
+
+    Where it pinches is the answer to the only question this layer is asked,
+    and that is the one place a word is spent. */
+ /* THE PATTERN ITSELF, at the end of its own arcs. One mark, sized by weight,
+    named on hover and on the rail rather than printed on the body. */
+ /* THE PATTERN MARK IS A RING, NOT A DISC.
+
+    It was a filled circle up to four units across and there were six of them,
+    which on a hundred unit figure is six solid coins laid on a body, all the
+    same colour, none of them saying what it was. A person looked at that and
+    could not name one thing on the screen.
+
+    The house rule for a mark has been settled since the icon pass: ring, not
+    fill. So a pattern is a ring at a fixed, small size with its tier glyph
+    inside it, and weight is spent on the ring's WIDTH rather than its
+    diameter, which keeps six of them the same size and still ranks them. The
+    name prints for the one you are holding, and only for that one, off to the
+    outside where it is not on the body. */
+ var PMIC={
+  sab:'M12 4 L19 18 H5 Z',
+  cx: 'M12 4 A8 8 0 1 0 12 20 A8 8 0 1 0 12 4 M12 8 A4 4 0 1 1 12 16 A4 4 0 1 1 12 8',
+  hy: 'M12 3 L20 8 V16 L12 21 L4 16 V8 Z',
+  sup:'M12 3 L14.5 9.5 L21 12 L14.5 14.5 L12 21 L9.5 14.5 L3 12 L9.5 9.5 Z',
+  mask:'M4 8 H20 V13 A8 8 0 0 1 4 13 Z'};
+ show.forEach(function(m){
+  if(m.x==null)return;
+  var kind=(m.o.kind==='sup')?'sup':(PMLAYER==='masks'?'mask':(m.o.kind||'sab'));
+  var c=TIERC[kind]||'#DFCC7E', on=(PMPICK===m.o);
+  /* the glyph says what tier of thing this is. The ring says where it sits.
+     Three saboteurs are three of the same glyph, which is correct and says
+     nothing, so the ring takes the colour of the seat the pattern centres on
+     and the three stop being interchangeable. */
+  var sc=PMC[m.band]||c;
+  var rr=on?3.1:2.5, sw=0.26+(m.v||0)*0.8;
+  h+='<g class="pm-it" data-it="'+m.rank+'" opacity="'+(on?1:0.82)+'">'
+   +'<circle cx="'+m.x.toFixed(2)+'" cy="'+m.y.toFixed(2)+'" r="'+rr.toFixed(2)
+   +'" fill="var(--bg)" fill-opacity=".66" stroke="'+sc+'" stroke-width="'+sw.toFixed(2)+'"/>'
+   +'<g transform="translate('+(m.x-rr*0.46).toFixed(2)+','+(m.y-rr*0.46).toFixed(2)
+   +') scale('+(rr*0.92/24).toFixed(4)+')">'
+   +'<path d="'+(PMIC[kind]||PMIC.sab)+'" fill="none" stroke="'+c
+   +'" stroke-width="2.2" stroke-linejoin="round" opacity=".92"/></g>'
+   +'<title>'+esc(m.nm)+'. '+m.links.length+' addresses, weight '
+   +(m.v*10).toFixed(1)+'</title></g>';
+  if(on){
+   var lsd=(m.gside<0)?-1:1;
+   h+='<circle cx="'+m.x.toFixed(2)+'" cy="'+m.y.toFixed(2)+'" r="'+(rr+2.4).toFixed(2)
+    +'" fill="none" stroke="'+sc+'" stroke-width=".24" opacity=".5"/>'
+    +'<text x="'+(m.x+lsd*(rr+3.4)).toFixed(2)+'" y="'+(m.y+0.9).toFixed(2)
+    +'" text-anchor="'+(lsd<0?'end':'start')+'" class="pm-lbl" style="fill:'+c+'">'
+    +esc(m.nm)+'</text>';}});
  h+='</svg></div>';
  host.innerHTML=h;
  renderShelf(r,seats,speed,stop,dom,loadedTot,marks);
- host.querySelectorAll('[data-gi]').forEach(function(el){el.onclick=function(){
-  var g2=gut[+el.dataset.gi]; if(!g2)return;
-  PMPICK=(PMPICK===g2.o)?null:g2.o; S.pin=(g2.kind==='bead')?PMPICK:null; render();};});
- host.querySelectorAll('[data-reg]').forEach(function(el){el.onclick=function(){
+ /* the gutter rows are gone, and so is the handler that answered for them */
+ document.querySelectorAll('#rbar [data-reg]').forEach(function(el){el.onclick=function(){
   PAINPICK=el.dataset.reg||null;render();};});
- host.querySelectorAll('[data-pml]').forEach(function(el){el.onclick=function(){
+ document.querySelectorAll('#lbar [data-pml]').forEach(function(el){el.onclick=function(){
   PMLAYER=el.dataset.pml;PMPICK=null;render();};});
  host.querySelectorAll('[data-seat]').forEach(function(el){el.onclick=function(){
   PMPICK=(PMPICK===el.dataset.seat)?null:el.dataset.seat;render();};});

@@ -1286,6 +1286,12 @@ select#psel optgroup{background:var(--sunk);color:var(--dim);font-style:normal;
  min-height:var(--tap);display:inline-flex;align-items:center}
 .pm-lb:hover{background:var(--panel-2);color:var(--ink)}
 .pm-lb.on{background:var(--gold);border-color:var(--gold);color:var(--on-accent);font-weight:500}
+/* the count each layer holds, so a layer with nothing in it says so before it
+   is opened rather than after. An empty layer stays reachable and reads back. */
+.pm-lb b{font-family:var(--num);font-weight:400;font-size:11.5px;margin-left:7px;
+ opacity:.66;font-variant-numeric:tabular-nums}
+.pm-lb.empty{opacity:.42}
+.pm-lb.empty:hover{opacity:.72}
 .pm-reg{position:absolute;top:66px;left:12px;z-index:3;max-width:56%;padding:9px 11px;
  border-radius:var(--r-s);background:var(--panel);border:1px solid var(--edge);box-shadow:var(--shadow)}
 .pm-regb{display:flex;gap:4px;flex-wrap:wrap;margin-top:7px}
@@ -1305,7 +1311,8 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
 .pm-vec{color:var(--ink)}
 .pm-seat,.pm-n,.pm-it,.pm-gr{cursor:pointer}
 .pm-gr:hover{opacity:.14!important}
-.pm-lbl{font-family:var(--num);font-size:1.5px;fill:var(--ink);opacity:.8}
+.pm-lbl{font-family:var(--num);font-size:2.1px;fill:var(--ink);opacity:.92;
+ paint-order:stroke;stroke:var(--bg);stroke-width:.55px;stroke-linejoin:round}
 .pm-gl{font-family:var(--num);font-size:1.5px;opacity:.9}
 .pm-gv{opacity:.55}
 .pm-gs{font-family:var(--num);font-size:1.15px;fill:var(--ink);opacity:.6}

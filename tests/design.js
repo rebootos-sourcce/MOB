@@ -309,6 +309,75 @@ console.log('\n=== 9 \u00b7 four lightings, each its own ===');
  await p4.close();
 }
 
+/* ============================================================
+   10 · THE BODY PAINTS WHAT IT COUNTS
+
+   The address marks on the Body figure sat inside a clip whose only child was
+   a <g>. A clipPath may hold shapes, <text> and <use>; a <g> is not valid
+   geometry, is ignored, and a clip with no geometry clips everything away. So
+   forty nine marks were in the document, correctly placed, correctly sized,
+   painting nothing, on every layer. Reading the source could not catch it and
+   counting the nodes could not catch it, because both were right.
+
+   This gate does the only thing that could: it counts the marks, then reads
+   the pixels under them and asserts the figure is not the same picture with
+   them as without. A drawing that is in the DOM and not on the screen fails
+   here.
+   ============================================================ */
+{
+ console.log('\n=== 10 · the body paints what it counts ===');
+ const p5=await browser.newPage({viewport:{width:1600,height:1000}});
+ await p5.goto(FILE,{waitUntil:'load'});
+ await p5.waitForTimeout(900);
+ await p5.selectOption('select',{index:1});
+ await p5.waitForTimeout(500);
+ const tt=await p5.$$eval('.tabtop',a=>a.map(x=>x.textContent.trim()));
+ await p5.$$eval('.tabtop',(a,i)=>a[i].click(),tt.findIndex(t=>/Body/i.test(t)));
+ await p5.waitForTimeout(800);
+
+ for(const [layer,label] of [['bands','Fetters'],['sab','Saboteurs'],['cx','Complexes']]){
+  await p5.evaluate(k=>{const e=document.querySelector('#lbar [data-pml="'+k+'"]');if(e)e.click();},layer);
+  await p5.waitForTimeout(450);
+  const m=await p5.evaluate(()=>({
+   n:document.querySelectorAll('#emap .pm-n').length,
+   it:document.querySelectorAll('#emap .pm-it').length,
+   btn:(()=>{const b=document.querySelector('#lbar .pm-lb.on b');return b?+b.textContent:null;})()}));
+  const drawn=m.n+m.it;
+  ok(drawn>0,label+': something is drawn, got '+drawn);
+  /* the count on the button is what opens. A button that says 49 over an
+     empty figure is the defect this gate exists for. */
+  if(m.btn!==null)ok(m.btn===0||drawn>0,label+': the button count and the drawing agree, '
+   +m.btn+' counted, '+drawn+' drawn');
+  /* AND THE MARKS REACH THE PIXELS.
+
+     A first cut of this check asked whether a mark had a bounding box, which
+     every clipped element still has, so it passed against the very bug it was
+     written for. The only honest question is whether the screen changes. Two
+     shots of the same figure, one with the marks hidden and one with them
+     shown, and identical bytes means they painted nothing. */
+  const well=await p5.$('#emap .pm-well');
+  const shotOn=await well.screenshot();
+  await p5.addStyleTag({content:'#emap .pm-n,#emap .pm-it{display:none!important}'});
+  await p5.waitForTimeout(160);
+  const shotOff=await well.screenshot();
+  await p5.evaluate(()=>{const t=[...document.querySelectorAll('style')]
+   .filter(e=>/pm-n.*display:none/.test(e.textContent));t.forEach(e=>e.remove());});
+  await p5.waitForTimeout(160);
+  ok(!shotOn.equals(shotOff),
+   label+': hiding the marks changes the picture. identical means they paint nothing');
+ }
+ /* the clip itself. This is the shape of the bug, named, so nobody puts the
+    <g> back. */
+ const clipOK=await p5.evaluate(()=>{
+  const c=document.getElementById('pmClip'); if(!c)return 'no clipPath';
+  const bad=[...c.children].filter(e=>!/^(path|circle|ellipse|rect|polygon|polyline|line|text|use)$/i
+   .test(e.tagName)).map(e=>e.tagName);
+  return bad.length?('invalid clip children: '+bad.join(',')):'ok';});
+ ok(clipOK==='ok','the body clip holds only valid geometry, got '+clipOK);
+ console.log('  clip:',clipOK);
+ await p5.close();
+}
+
 await browser.close();
 console.log('\n===== '+PASS+' passed, '+FAIL+' failed =====');
 process.exit(FAIL?1:0);

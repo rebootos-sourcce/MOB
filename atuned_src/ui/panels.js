@@ -91,6 +91,10 @@ function setTab(i){
   e.style.display=(T.k===i)?'flex':'none';});
  if(cvE) cvE.style.display=(i===TAB.FIELD)?'block':'none';
  if(vb) vb.style.display=(i===TAB.FIELD)?'flex':'none';
+ /* Body's layer row lives in the sub bar now, not over the figure */
+ var lb=$('lbar'), rb=$('rbar');
+ if(lb) lb.style.display=(i===TAB.ENERGY)?'flex':'none';
+ if(rb) rb.style.display=(i===TAB.ENERGY&&PMLAYER==='pain')?'flex':'none';
  TABDEF.forEach(function(T){document.body.classList.remove(T.cls);});
  document.body.classList.add(TABOF(i).cls);   /* by key, not by position */
  /* MEASURE THE CANVAS THE MOMENT IT IS VISIBLE, AND NOT ONE LINE EARLIER.
@@ -108,7 +112,7 @@ function setTab(i){
     it survived a pass. It sits after the class now, where the canvas is
     actually on screen. */
  if(i===TAB.FIELD&&typeof layout==='function')layout();
- document.body.classList.toggle('hassub',i===TAB.FIELD);
+ document.body.classList.toggle('hassub',i===TAB.FIELD||i===TAB.ENERGY);
  ['probe','howto','key','tier','pol'].forEach(function(id){
   var e=$(id); if(e)e.style.display=(i===TAB.FIELD)?'':'none';});
  document.querySelectorAll('.tabtop').forEach(function(x,j){
