@@ -36,10 +36,30 @@ function drawAura(r){
   bgx.fillStyle=gr;bgx.fillRect(0,0,w,h);});}
 
 /* ---- CQ. the core. saturation and size are coherence. ---- */
+/* THE RAMP ENDS AT THE ACCENT.
+
+   This was a heat ramp: dark red, red, orange, gold, white. It was correct
+   when the accent was gold and nothing re-pointed it when the accent went
+   blue, so the hero element of the product, the largest and only saturated
+   object on the Field, was returning rgb(204,107,48) at CQ 39 inside a product
+   whose accent is #7EB8D4. Measured, not guessed. That is the orange, and it
+   survived the Punch fix because it was never the theme doing it.
+
+   The scale now runs alarm at the floor, through a neutral slate at the
+   median, into the product's own sky at the crown and past it to white. Three
+   things it gets right that a heat ramp did not:
+
+   The median reads as neutral rather than as amber, so fifty stops looking
+   like a warning. Coherence resolves toward the accent, so the core becomes
+   the thing the accent already means rather than arguing with it. And the
+   floor keeps the alarm red, which is the one place in this product where red
+   is earned.
+
+   Saturation and size are still coherence and nothing else. */
 function cqRamp(cq){
  var t=Math.max(0,Math.min(100,cq))/100;
- var ST=[[0.00,[46,20,20]],[0.25,[176,52,44]],[0.50,[226,150,52]],
-         [0.75,[242,205,110]],[1.00,[255,248,214]]];
+ var ST=[[0.00,[58,23,20]],[0.28,[163,58,50]],[0.50,[90,96,112]],
+         [0.76,[126,184,212]],[1.00,[234,244,249]]];
  for(var i=1;i<ST.length;i++){
   if(t<=ST[i][0]){var a=ST[i-1],b=ST[i],f=(t-a[0])/(b[0]-a[0]);
    return [Math.round(a[1][0]+(b[1][0]-a[1][0])*f),

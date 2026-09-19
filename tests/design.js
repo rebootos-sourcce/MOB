@@ -205,6 +205,51 @@ console.log('\n=== 7 \u00b7 nothing leaves the device ===');
  await p2.close();
 }
 
+console.log('\n=== 8 \u00b7 the tap floor. 44 by 44, every interactive element. ===');
+/* THE GATE HAD A HOLE. Gate 4 checks the type floor and nothing checked the
+   tap floor, which is the other measured number in this product's own UX rules
+   and the one it was breaking in sixty nine places across three surfaces. A
+   floor with no check is a preference.
+
+   Measured on the element's own box, and only where it is actually on screen:
+   a control in a folded section has no box and is not a violation. */
+{
+ const page3=await browser.newPage({viewport:{width:1600,height:1000}});
+ await page3.goto(FILE,{waitUntil:'load'}); await page3.waitForTimeout(900);
+ const tap=await page3.evaluate(async()=>{
+  const out={};
+  const tabs=TABDEF.map(t=>[t.k,t.nm]);
+  for(const [k,nm] of tabs){
+   loadP(6); setTab(k);
+   await new Promise(r=>setTimeout(r,120));
+   const bad=[...document.querySelectorAll(
+     'button,select,input:not([type=range]),textarea,[role=tab]')]
+    /* THE TARGET IS WHAT A FINGER CAN LAND ON, not what is painted. A native
+       checkbox ignores padding, so an 18px box inside a label that meets the
+       floor still has a 44px target, because clicking the label toggles it.
+       That is a fact about the platform and not an exemption: measure the
+       label where one wraps the control. */
+    .map(e=>{
+     const lab=e.closest&&e.closest('label');
+     const box=(lab&&(e.type==='checkbox'||e.type==='radio'))?lab:e;
+     return {e:e,r:box.getBoundingClientRect()};})
+    .filter(x=>{
+     const r=x.r;
+     if(r.width<1||r.height<1)return false;            /* not on screen */
+     if(getComputedStyle(x.e).visibility==='hidden')return false;
+     return r.width<44||r.height<44;})
+    .map(x=>{const e=x.e, r=x.r;
+     return ((e.textContent||'').trim()||e.getAttribute('aria-label')||e.title||e.id||'?')
+      .slice(0,26)+' '+Math.round(r.width)+'x'+Math.round(r.height);});
+   out[nm]={n:bad.length,worst:[...new Set(bad)].slice(0,4)};}
+  return out;});
+ Object.keys(tap).forEach(nm=>{
+  ok(tap[nm].n===0,nm+': '+tap[nm].n+' controls under the 44px tap floor  '
+   +tap[nm].worst.join(' | '));
+  console.log('  '+nm.padEnd(11),tap[nm].n?(tap[nm].n+' under floor'):'clean');});
+ await page3.close();
+}
+
 await browser.close();
 console.log('\n===== '+PASS+' passed, '+FAIL+' failed =====');
 process.exit(FAIL?1:0);
