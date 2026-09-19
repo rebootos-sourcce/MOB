@@ -139,6 +139,8 @@ TABDEF.forEach(function(T,i){
  b.innerHTML='<span class="n">'+T.nm+'</span>';
  b.addEventListener('click',function(){setTab(T.k);});
  $('tabbar').appendChild(b);});
+/* measured once the strip exists, and again whenever the window changes */
+if(typeof paintTabEdge==='function')paintTabEdge();
 const VICON=[
  '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.6"/>',
  '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2"/><path d="M12 5.2v2.6M7.2 15.4l2.2-1.3M16.8 15.4l-2.2-1.3"/>',
@@ -516,27 +518,64 @@ function helpSheet(){
    The control names what it will take back and disappears when there is
    nothing to take back, because a permanently disabled button is furniture
    and a button labelled only "undo" makes a person guess. */
+/* the tab strip's fade is only honest while there is something past the
+   edge, so it is measured rather than always on. */
+function paintTabEdge(){
+ var t=document.getElementById('tabbar'); if(!t)return;
+ var more=t.scrollWidth-t.clientWidth-t.scrollLeft>2;
+ t.setAttribute('data-end',more?'0':'1');}
+(function(){
+ var t=document.getElementById('tabbar');
+ if(t)t.addEventListener('scroll',paintTabEdge);
+ addEventListener('resize',paintTabEdge);
+ /* measured after layout, not during it. Called straight after the tabs are
+    appended it read the strip at its unconstrained width and reported there
+    was nothing past the edge on a window where Summary was off it. */
+ addEventListener('load',paintTabEdge);
+ if(typeof requestAnimationFrame==='function')
+  requestAnimationFrame(function(){requestAnimationFrame(paintTabEdge);});})();
 function paintUndo(){
- var b=$('undobtn'), l=$('undolab'); if(!b)return;
+ var b=$('undobtn'), l=$('undolab'), f=$('redobtn'), w=$('histpair');
+ if(!b)return;
  var n=undoDepth(), what=undoPeek();
+ var m=(typeof redoDepth==='function')?redoDepth():0;
+ var fwd=(typeof redoPeek==='function')?redoPeek():null;
  b.hidden=(n===0);
  if(n){ l.textContent='Undo '+what;
-  b.title='Takes back '+what+'. '+n+' step'+(n===1?'':'s')+' available.'; }}
+  b.title='Takes back '+what+'. '+n+' step'+(n===1?'':'s')+' available.'; }
+ if(f){ f.hidden=(m===0);
+  if(m)f.title='Puts back '+fwd+'. '+m+' step'+(m===1?'':'s')+' forward.'; }
+ /* the pair only exists while there is history in either direction. Two
+    permanently disabled arrows in the bar are furniture, which is the same
+    reason the single control was hidden when the stack was empty. */
+ if(w)w.hidden=(n===0&&m===0);}
 (function(){
+ /* one settle for both directions. The field changed underneath everything,
+    so the whole surface repaints and the person is told what moved rather
+    than left to spot it. */
+ function settle(msg){
+  syncCh(); if(typeof syncLw==='function')syncLw();
+  if(typeof syncSoul==='function')syncSoul();
+  saveYou(); if(typeof pSave==='function')pSave();
+  render(); paintUndo(); status(msg,'ok');}
  var b=$('undobtn');
  if(b)b.onclick=function(){
   var u=undoPop();
   if(!u){paintUndo();return;}
-  /* the field changed underneath everything, so the whole surface repaints
-     and the person is told what came back rather than left to spot it. */
-  syncCh(); if(typeof syncLw==='function')syncLw();
-  if(typeof syncSoul==='function')syncSoul();
-  saveYou(); if(typeof pSave==='function')pSave();
-  render(); paintUndo();
-  status('Took back '+u.nm+'.','ok');};
- /* the usual chord, because a person who wants undo reaches for it */
+  settle('Took back '+u.nm+'.');};
+ var f=$('redobtn');
+ if(f)f.onclick=function(){
+  var u=(typeof redoPop==='function')?redoPop():null;
+  if(!u){paintUndo();return;}
+  settle('Put back '+u.nm+'.');};
+ /* the usual chords, because a person who wants either one reaches for them */
  addEventListener('keydown',function(e){
-  if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='z'){
-   var t=e.target&&e.target.tagName;
-   if(t==='INPUT'||t==='TEXTAREA')return;   /* let the field have its own */
-   e.preventDefault(); var ub=$('undobtn'); if(ub&&!ub.hidden)ub.onclick();}});})();
+  if(!(e.metaKey||e.ctrlKey))return;
+  var k=e.key.toLowerCase();
+  if(k!=='z'&&k!=='y')return;
+  var t=e.target&&e.target.tagName;
+  if(t==='INPUT'||t==='TEXTAREA')return;   /* let the field have its own */
+  var fwd=(k==='y')||(k==='z'&&e.shiftKey);
+  e.preventDefault();
+  var el=$(fwd?'redobtn':'undobtn');
+  if(el&&!el.hidden)el.onclick();});})();

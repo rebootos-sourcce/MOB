@@ -26,6 +26,16 @@
    ============================================================ */
 const UNDO_MAX=0;                 /* 0 means no ceiling */
 var UNDO=[];
+/* REDO. Undo without it is half a control.
+
+   Taking a step back and then finding there is no way forward makes undo
+   something a person is careful with rather than something they explore with,
+   which is the opposite of what it is for. The redo stack takes whatever undo
+   pops and holds it until the person either walks forward again or makes a
+   new change, at which point the branch they walked away from is gone. That
+   is the standard contract and it is the one people already have in their
+   hands. */
+var REDO=[];
 
 /* the inputs, and nothing derived. everything else recomputes from these. */
 function undoState(){
@@ -42,18 +52,18 @@ function undoState(){
 function undoPush(label){
  UNDO.push({s:undoState(), nm:label||'the last change', t:new Date().toISOString()});
  if(UNDO_MAX>0){while(UNDO.length>UNDO_MAX)UNDO.shift();}
+ /* a new change abandons the branch that was walked away from */
+ REDO=[];
  return UNDO.length;}
 
 function undoDepth(){return UNDO.length;}
 function undoPeek(){return UNDO.length?UNDO[UNDO.length-1].nm:null;}
-function undoClear(){UNDO=[];}
-
-/* restore, and return what was undone so the host can say so. A failed undo
-   returns null rather than half applying: the state is replaced wholesale or
-   not at all. */
-function undoPop(){
- if(!UNDO.length)return null;
- var e=UNDO.pop(), s=e.s;
+function redoDepth(){return REDO.length;}
+function redoPeek(){return REDO.length?REDO[REDO.length-1].nm:null;}
+function undoClear(){UNDO=[];REDO=[];}
+/* the two ends share one restore, because a state is a state whichever
+   direction it was reached from, and two copies of this would drift. */
+function undoApply(s){
  CHARGES.forEach(function(k){
   S.charge[k]=(s.charge[k]!==undefined)?s.charge[k]:0;
   S.replace[k]=(s.replace[k]!==undefined)?s.replace[k]:0;});
@@ -64,5 +74,25 @@ function undoPop(){
  /* susceptibility is a function of the soul and is written by a pass, not by
     compute, so restoring the soul without rerunning it leaves the field
     attributing stories against the wrong profile. */
- suscAll();
+ suscAll();}
+/* walk forward again. Symmetrical with undoPop: it captures where it is
+   standing before it moves, so undo can bring it back. */
+function redoPop(){
+ if(!REDO.length)return null;
+ var e=REDO.pop();
+ UNDO.push({s:undoState(), nm:e.nm, t:e.t});
+ undoApply(e.s);
+ return {nm:e.nm, t:e.t};}
+
+/* restore, and return what was undone so the host can say so. A failed undo
+   returns null rather than half applying: the state is replaced wholesale or
+   not at all. */
+function undoPop(){
+ if(!UNDO.length)return null;
+ var e=UNDO.pop();
+ /* where it is standing goes onto the forward stack before it moves, under
+    the name of the change being taken back, so the forward control can say
+    what it will put back. */
+ REDO.push({s:undoState(), nm:e.nm, t:e.t});
+ undoApply(e.s);
  return {nm:e.nm, t:e.t};}

@@ -33,10 +33,24 @@
   <!-- Undo. It says what it will take back, because a control that says only
        "undo" makes a person guess what they are about to get. Hidden when the
        stack is empty rather than sitting there disabled. -->
-  <button class="vt undobtn" id="undobtn" type="button" hidden>
-   <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
-    <path d="M4 10h10a5 5 0 0 1 0 10h-3"/><path d="M4 10l4-4M4 10l4 4"/></svg>
-   <span id="undolab">Undo</span></button>
+  <!-- BACK AND FORWARD. Ruled.
+
+       Undo without a way forward is half a control: take one step back, find
+       there is no way to return, and undo becomes something a person is
+       careful with rather than something they explore with, which is the
+       opposite of what it is for. Two arrows, the pair everybody already has
+       in their hands, and each one names what it will do rather than saying
+       only undo. -->
+  <div class="histpair" id="histpair" hidden>
+   <button class="vt undobtn" id="undobtn" type="button" hidden>
+    <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
+     <path d="M4 10h10a5 5 0 0 1 0 10h-3"/><path d="M4 10l4-4M4 10l4 4"/></svg>
+    <span id="undolab">Undo</span></button>
+   <button class="vt redobtn" id="redobtn" type="button" hidden
+    aria-label="Forward">
+    <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
+     <path d="M20 10H10a5 5 0 0 0 0 10h3"/><path d="M20 10l-4-4M20 10l-4 4"/></svg>
+   </button></div>
   <!-- THE RIGHT HAND END, in the order the owner ruled it: the lighting menu,
        then help, then the person. The three lighting buttons used to sit out
        in the bar as a permanent segmented control, which is a setting taking

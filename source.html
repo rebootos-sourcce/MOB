@@ -300,8 +300,23 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
    1180px the accessibility toggle sat past the right edge with nothing on
    screen saying it was reachable. Hidden content with no affordance is the
    same as missing content. It wraps to a second row instead. */
+/* AND THE BAR DOES NOT WRAP ON A DESKTOP WINDOW.
+
+   It was set to wrap so nothing could be pushed off the edge with no
+   affordance, which is the right rule and was solving it at the wrong layer.
+   Flex wrap does not shrink to avoid wrapping: it fills a line, then wraps,
+   then shrinks within the line. So the tab strip never gave up a pixel and
+   the lighting menu, help and the profile dropped onto a second row at 1280,
+   which is an ordinary laptop.
+
+   The tab strip scrolls inside itself now, so it can yield width without
+   hiding anything, and the bar holds one line. Wrap comes back under the
+   phone breakpoint, where one line is not a thing worth protecting. */
 .top{display:flex;align-items:center;gap:10px;row-gap:6px;padding:9px 13px;flex:0 0 auto;
- flex-wrap:wrap;scrollbar-width:none}
+ flex-wrap:nowrap;scrollbar-width:none}
+/* the picker is a control, not a headline. Unbounded it took 262px of a bar
+   that has seven tabs to fit, because it sizes to its longest profile name. */
+.top #psel{max-width:190px;min-width:0}
 .top::-webkit-scrollbar{display:none}
 /* The status region. Silent and zero height until something needs saying, so
    it never occupies space it has not earned. Failures hold; confirmations
@@ -332,6 +347,10 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
  width:.14em;height:.14em;border-radius:50%;background:var(--um)}
 .brand .um::before{left:.055em}
 .brand .um::after{left:.35em}
+/* back and forward sit together as one object, because they are one control
+   with two directions and a gap between them reads as two unrelated buttons */
+.histpair{display:flex;gap:2px;align-items:center;flex:0 0 auto}
+.redobtn{padding-left:9px;padding-right:9px}
 .spacer{flex:1 1 auto;min-width:8px}
 .toplab{font-family:var(--num);font-size:11px;font-weight:400;color:var(--dim);white-space:nowrap}
 
@@ -356,7 +375,10 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
  color:var(--accent);font-weight:500}
 .vt[aria-pressed=true]:hover{background:transparent;color:var(--accent)}
 .tabtop[aria-pressed=true],#vbar .vt[aria-pressed=true]{position:relative}
-.tabtop[aria-pressed=true]::after,#vbar .vt[aria-pressed=true]::after{
+.tabtop[aria-pressed=true]::after{
+ content:'';position:absolute;left:8px;right:8px;bottom:-1px;height:2px;
+ background:var(--accent)}
+#vbar .vt[aria-pressed=true]::after{
  content:'';position:absolute;left:14px;right:14px;bottom:5px;height:1.5px;
  border-radius:2px;background:var(--accent)}
 .vt[aria-pressed=true] svg{stroke:var(--accent)}
@@ -370,8 +392,46 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
    because the one difference worth a weight change is which surface you are
    on, and it also carries a fill, so the weight is confirmation rather than
    the only signal. */
-.tabtop{font-weight:350;letter-spacing:.012em}
+/* A TAB IS NOT A BUTTON AND IT DOES NOT WEAR A BOX.
+
+   Every top level item carried the .vt border, so seven boxes sat in a row
+   across the head of the instrument and the navigation read as a toolbar.
+   The pressed state was already right, an underline and the accent with no
+   fill, but it was an underline inside a box, which says "this button is
+   selected" rather than "you are on this surface".
+
+   The boxes come off. What is left is the word, the underline under the one
+   you are on, and one hairline under the whole strip, which is the shape a
+   tab strip has had since tabs were paper. */
+.tabtop{font-weight:350;letter-spacing:.012em;
+ background:transparent;border-color:transparent;border-radius:0;
+ padding-left:11px;padding-right:11px}
+.tabtop:hover{background:transparent;color:var(--ink)}
 .tabtop[aria-pressed=true]{font-weight:500;letter-spacing:0}
+/* THE STRIP YIELDS ITS OWN WIDTH BEFORE THE BAR WRAPS.
+
+   The bar wraps rather than hiding a control, which is the right rule and
+   was pushing the profile and the lighting menu onto a second row on a
+   narrow window: seven tabs are the widest thing in the bar and they were
+   the last thing to give. The strip scrolls inside itself now, so it gives
+   up width first and everything to the right of it stays on one line. The
+   wrap survives as the last resort it was meant to be. */
+#tabbar{flex:0 1 auto;min-width:0;flex-wrap:nowrap!important;
+ overflow-x:auto;scrollbar-width:none;
+ border-bottom:1px solid var(--edge);align-items:stretch}
+#tabbar::-webkit-scrollbar{display:none}
+#tabbar>*{flex:0 0 auto}
+/* AND A SCROLLED TAB HAS TO SAY SO.
+
+   A strip that scrolls with no edge treatment hides Summary at 1280 with
+   nothing on screen saying it is there, which is the rule the wrapping was
+   protecting in the first place. The mask fades the last few pixels only
+   while there is something past them, so at full width there is no fade and
+   nothing to explain. */
+.tbwrap{position:relative;flex:0 1 auto;min-width:0;display:flex}
+#tabbar{mask-image:linear-gradient(90deg,#000 0,#000 calc(100% - 26px),transparent 100%);
+ -webkit-mask-image:linear-gradient(90deg,#000 0,#000 calc(100% - 26px),transparent 100%)}
+#tabbar[data-end="1"]{mask-image:none;-webkit-mask-image:none}
 .seg{display:flex;gap:3px;padding:3px;border-radius:var(--r-s);background:var(--sunk);flex:0 0 auto}
 .seg button{background:transparent;border:0;border-radius:var(--r-xs);min-height:var(--tap);padding:7px 13px;
  font-family:var(--sans);font-size:13.5px;font-weight:400;color:var(--dim);cursor:pointer;transition:.16s}
@@ -1765,6 +1825,7 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
  .pm-top{max-width:none;position:static;margin:12px;box-shadow:none}
  .pm-reg{position:static;margin:0 12px 12px;max-width:none}
 }
+@media (max-width:820px){.top{flex-wrap:wrap}.top #psel{max-width:none}}
 @media (max-width:720px){
  body{font-size:14.5px}
  .app{padding:7px;gap:6px}
@@ -1849,10 +1910,24 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
   <!-- Undo. It says what it will take back, because a control that says only
        "undo" makes a person guess what they are about to get. Hidden when the
        stack is empty rather than sitting there disabled. -->
-  <button class="vt undobtn" id="undobtn" type="button" hidden>
-   <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
-    <path d="M4 10h10a5 5 0 0 1 0 10h-3"/><path d="M4 10l4-4M4 10l4 4"/></svg>
-   <span id="undolab">Undo</span></button>
+  <!-- BACK AND FORWARD. Ruled.
+
+       Undo without a way forward is half a control: take one step back, find
+       there is no way to return, and undo becomes something a person is
+       careful with rather than something they explore with, which is the
+       opposite of what it is for. Two arrows, the pair everybody already has
+       in their hands, and each one names what it will do rather than saying
+       only undo. -->
+  <div class="histpair" id="histpair" hidden>
+   <button class="vt undobtn" id="undobtn" type="button" hidden>
+    <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
+     <path d="M4 10h10a5 5 0 0 1 0 10h-3"/><path d="M4 10l4-4M4 10l4 4"/></svg>
+    <span id="undolab">Undo</span></button>
+   <button class="vt redobtn" id="redobtn" type="button" hidden
+    aria-label="Forward">
+    <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
+     <path d="M20 10H10a5 5 0 0 0 0 10h3"/><path d="M20 10l-4-4M20 10l-4 4"/></svg>
+   </button></div>
   <!-- THE RIGHT HAND END, in the order the owner ruled it: the lighting menu,
        then help, then the person. The three lighting buttons used to sit out
        in the bar as a permanent segmented control, which is a setting taking
@@ -3885,6 +3960,16 @@ function exprRead(){return EXPR.map(function(e){var f=exprFill(e.nm);
    ============================================================ */
 const UNDO_MAX=0;                 /* 0 means no ceiling */
 var UNDO=[];
+/* REDO. Undo without it is half a control.
+
+   Taking a step back and then finding there is no way forward makes undo
+   something a person is careful with rather than something they explore with,
+   which is the opposite of what it is for. The redo stack takes whatever undo
+   pops and holds it until the person either walks forward again or makes a
+   new change, at which point the branch they walked away from is gone. That
+   is the standard contract and it is the one people already have in their
+   hands. */
+var REDO=[];
 
 /* the inputs, and nothing derived. everything else recomputes from these. */
 function undoState(){
@@ -3901,18 +3986,18 @@ function undoState(){
 function undoPush(label){
  UNDO.push({s:undoState(), nm:label||'the last change', t:new Date().toISOString()});
  if(UNDO_MAX>0){while(UNDO.length>UNDO_MAX)UNDO.shift();}
+ /* a new change abandons the branch that was walked away from */
+ REDO=[];
  return UNDO.length;}
 
 function undoDepth(){return UNDO.length;}
 function undoPeek(){return UNDO.length?UNDO[UNDO.length-1].nm:null;}
-function undoClear(){UNDO=[];}
-
-/* restore, and return what was undone so the host can say so. A failed undo
-   returns null rather than half applying: the state is replaced wholesale or
-   not at all. */
-function undoPop(){
- if(!UNDO.length)return null;
- var e=UNDO.pop(), s=e.s;
+function redoDepth(){return REDO.length;}
+function redoPeek(){return REDO.length?REDO[REDO.length-1].nm:null;}
+function undoClear(){UNDO=[];REDO=[];}
+/* the two ends share one restore, because a state is a state whichever
+   direction it was reached from, and two copies of this would drift. */
+function undoApply(s){
  CHARGES.forEach(function(k){
   S.charge[k]=(s.charge[k]!==undefined)?s.charge[k]:0;
   S.replace[k]=(s.replace[k]!==undefined)?s.replace[k]:0;});
@@ -3923,7 +4008,27 @@ function undoPop(){
  /* susceptibility is a function of the soul and is written by a pass, not by
     compute, so restoring the soul without rerunning it leaves the field
     attributing stories against the wrong profile. */
- suscAll();
+ suscAll();}
+/* walk forward again. Symmetrical with undoPop: it captures where it is
+   standing before it moves, so undo can bring it back. */
+function redoPop(){
+ if(!REDO.length)return null;
+ var e=REDO.pop();
+ UNDO.push({s:undoState(), nm:e.nm, t:e.t});
+ undoApply(e.s);
+ return {nm:e.nm, t:e.t};}
+
+/* restore, and return what was undone so the host can say so. A failed undo
+   returns null rather than half applying: the state is replaced wholesale or
+   not at all. */
+function undoPop(){
+ if(!UNDO.length)return null;
+ var e=UNDO.pop();
+ /* where it is standing goes onto the forward stack before it moves, under
+    the name of the change being taken back, so the forward control can say
+    what it will put back. */
+ REDO.push({s:undoState(), nm:e.nm, t:e.t});
+ undoApply(e.s);
  return {nm:e.nm, t:e.t};}
 
 /* ============================================================
@@ -6030,6 +6135,7 @@ if(typeof module!=='undefined'&&module.exports){
                   SABDEF:SABDEF, DOMDEF:DOMDEF, GLOSS:GLOSS, HARM:HARM,
   /* meter */    meterFirst:meterFirst,
   /* undo */     undoPush:undoPush, undoPop:undoPop, undoDepth:undoDepth,
+                 redoPop:redoPop, redoDepth:redoDepth, redoPeek:redoPeek,
                   undoPeek:undoPeek, undoClear:undoClear, UNDO_MAX:UNDO_MAX,
   /* avatar */   avatarBlank:avatarBlank, avatarValid:avatarValid, avatarDue:avatarDue,
                  avatarDaysLeft:avatarDaysLeft, avatarGap:avatarGap,
@@ -11155,6 +11261,8 @@ TABDEF.forEach(function(T,i){
  b.innerHTML='<span class="n">'+T.nm+'</span>';
  b.addEventListener('click',function(){setTab(T.k);});
  $('tabbar').appendChild(b);});
+/* measured once the strip exists, and again whenever the window changes */
+if(typeof paintTabEdge==='function')paintTabEdge();
 const VICON=[
  '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.6"/>',
  '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2"/><path d="M12 5.2v2.6M7.2 15.4l2.2-1.3M16.8 15.4l-2.2-1.3"/>',
@@ -11532,30 +11640,67 @@ function helpSheet(){
    The control names what it will take back and disappears when there is
    nothing to take back, because a permanently disabled button is furniture
    and a button labelled only "undo" makes a person guess. */
+/* the tab strip's fade is only honest while there is something past the
+   edge, so it is measured rather than always on. */
+function paintTabEdge(){
+ var t=document.getElementById('tabbar'); if(!t)return;
+ var more=t.scrollWidth-t.clientWidth-t.scrollLeft>2;
+ t.setAttribute('data-end',more?'0':'1');}
+(function(){
+ var t=document.getElementById('tabbar');
+ if(t)t.addEventListener('scroll',paintTabEdge);
+ addEventListener('resize',paintTabEdge);
+ /* measured after layout, not during it. Called straight after the tabs are
+    appended it read the strip at its unconstrained width and reported there
+    was nothing past the edge on a window where Summary was off it. */
+ addEventListener('load',paintTabEdge);
+ if(typeof requestAnimationFrame==='function')
+  requestAnimationFrame(function(){requestAnimationFrame(paintTabEdge);});})();
 function paintUndo(){
- var b=$('undobtn'), l=$('undolab'); if(!b)return;
+ var b=$('undobtn'), l=$('undolab'), f=$('redobtn'), w=$('histpair');
+ if(!b)return;
  var n=undoDepth(), what=undoPeek();
+ var m=(typeof redoDepth==='function')?redoDepth():0;
+ var fwd=(typeof redoPeek==='function')?redoPeek():null;
  b.hidden=(n===0);
  if(n){ l.textContent='Undo '+what;
-  b.title='Takes back '+what+'. '+n+' step'+(n===1?'':'s')+' available.'; }}
+  b.title='Takes back '+what+'. '+n+' step'+(n===1?'':'s')+' available.'; }
+ if(f){ f.hidden=(m===0);
+  if(m)f.title='Puts back '+fwd+'. '+m+' step'+(m===1?'':'s')+' forward.'; }
+ /* the pair only exists while there is history in either direction. Two
+    permanently disabled arrows in the bar are furniture, which is the same
+    reason the single control was hidden when the stack was empty. */
+ if(w)w.hidden=(n===0&&m===0);}
 (function(){
+ /* one settle for both directions. The field changed underneath everything,
+    so the whole surface repaints and the person is told what moved rather
+    than left to spot it. */
+ function settle(msg){
+  syncCh(); if(typeof syncLw==='function')syncLw();
+  if(typeof syncSoul==='function')syncSoul();
+  saveYou(); if(typeof pSave==='function')pSave();
+  render(); paintUndo(); status(msg,'ok');}
  var b=$('undobtn');
  if(b)b.onclick=function(){
   var u=undoPop();
   if(!u){paintUndo();return;}
-  /* the field changed underneath everything, so the whole surface repaints
-     and the person is told what came back rather than left to spot it. */
-  syncCh(); if(typeof syncLw==='function')syncLw();
-  if(typeof syncSoul==='function')syncSoul();
-  saveYou(); if(typeof pSave==='function')pSave();
-  render(); paintUndo();
-  status('Took back '+u.nm+'.','ok');};
- /* the usual chord, because a person who wants undo reaches for it */
+  settle('Took back '+u.nm+'.');};
+ var f=$('redobtn');
+ if(f)f.onclick=function(){
+  var u=(typeof redoPop==='function')?redoPop():null;
+  if(!u){paintUndo();return;}
+  settle('Put back '+u.nm+'.');};
+ /* the usual chords, because a person who wants either one reaches for them */
  addEventListener('keydown',function(e){
-  if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='z'){
-   var t=e.target&&e.target.tagName;
-   if(t==='INPUT'||t==='TEXTAREA')return;   /* let the field have its own */
-   e.preventDefault(); var ub=$('undobtn'); if(ub&&!ub.hidden)ub.onclick();}});})();
+  if(!(e.metaKey||e.ctrlKey))return;
+  var k=e.key.toLowerCase();
+  if(k!=='z'&&k!=='y')return;
+  var t=e.target&&e.target.tagName;
+  if(t==='INPUT'||t==='TEXTAREA')return;   /* let the field have its own */
+  var fwd=(k==='y')||(k==='z'&&e.shiftKey);
+  e.preventDefault();
+  var el=$(fwd?'redobtn':'undobtn');
+  if(el&&!el.hidden)el.onclick();});})();
 
 /* ---- THE MATRIX. 19 domains across, 9 child fetters down. Cells drill. ---- */
 const MXC=[];

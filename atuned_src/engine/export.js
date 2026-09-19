@@ -12,6 +12,7 @@ if(typeof module!=='undefined'&&module.exports){
                   SABDEF:SABDEF, DOMDEF:DOMDEF, GLOSS:GLOSS, HARM:HARM,
   /* meter */    meterFirst:meterFirst,
   /* undo */     undoPush:undoPush, undoPop:undoPop, undoDepth:undoDepth,
+                 redoPop:redoPop, redoDepth:redoDepth, redoPeek:redoPeek,
                   undoPeek:undoPeek, undoClear:undoClear, UNDO_MAX:UNDO_MAX,
   /* avatar */   avatarBlank:avatarBlank, avatarValid:avatarValid, avatarDue:avatarDue,
                  avatarDaysLeft:avatarDaysLeft, avatarGap:avatarGap,

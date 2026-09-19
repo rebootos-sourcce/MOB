@@ -300,8 +300,23 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
    1180px the accessibility toggle sat past the right edge with nothing on
    screen saying it was reachable. Hidden content with no affordance is the
    same as missing content. It wraps to a second row instead. */
+/* AND THE BAR DOES NOT WRAP ON A DESKTOP WINDOW.
+
+   It was set to wrap so nothing could be pushed off the edge with no
+   affordance, which is the right rule and was solving it at the wrong layer.
+   Flex wrap does not shrink to avoid wrapping: it fills a line, then wraps,
+   then shrinks within the line. So the tab strip never gave up a pixel and
+   the lighting menu, help and the profile dropped onto a second row at 1280,
+   which is an ordinary laptop.
+
+   The tab strip scrolls inside itself now, so it can yield width without
+   hiding anything, and the bar holds one line. Wrap comes back under the
+   phone breakpoint, where one line is not a thing worth protecting. */
 .top{display:flex;align-items:center;gap:10px;row-gap:6px;padding:9px 13px;flex:0 0 auto;
- flex-wrap:wrap;scrollbar-width:none}
+ flex-wrap:nowrap;scrollbar-width:none}
+/* the picker is a control, not a headline. Unbounded it took 262px of a bar
+   that has seven tabs to fit, because it sizes to its longest profile name. */
+.top #psel{max-width:190px;min-width:0}
 .top::-webkit-scrollbar{display:none}
 /* The status region. Silent and zero height until something needs saying, so
    it never occupies space it has not earned. Failures hold; confirmations
@@ -332,6 +347,10 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
  width:.14em;height:.14em;border-radius:50%;background:var(--um)}
 .brand .um::before{left:.055em}
 .brand .um::after{left:.35em}
+/* back and forward sit together as one object, because they are one control
+   with two directions and a gap between them reads as two unrelated buttons */
+.histpair{display:flex;gap:2px;align-items:center;flex:0 0 auto}
+.redobtn{padding-left:9px;padding-right:9px}
 .spacer{flex:1 1 auto;min-width:8px}
 .toplab{font-family:var(--num);font-size:11px;font-weight:400;color:var(--dim);white-space:nowrap}
 
@@ -356,7 +375,10 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
  color:var(--accent);font-weight:500}
 .vt[aria-pressed=true]:hover{background:transparent;color:var(--accent)}
 .tabtop[aria-pressed=true],#vbar .vt[aria-pressed=true]{position:relative}
-.tabtop[aria-pressed=true]::after,#vbar .vt[aria-pressed=true]::after{
+.tabtop[aria-pressed=true]::after{
+ content:'';position:absolute;left:8px;right:8px;bottom:-1px;height:2px;
+ background:var(--accent)}
+#vbar .vt[aria-pressed=true]::after{
  content:'';position:absolute;left:14px;right:14px;bottom:5px;height:1.5px;
  border-radius:2px;background:var(--accent)}
 .vt[aria-pressed=true] svg{stroke:var(--accent)}
@@ -370,8 +392,46 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
    because the one difference worth a weight change is which surface you are
    on, and it also carries a fill, so the weight is confirmation rather than
    the only signal. */
-.tabtop{font-weight:350;letter-spacing:.012em}
+/* A TAB IS NOT A BUTTON AND IT DOES NOT WEAR A BOX.
+
+   Every top level item carried the .vt border, so seven boxes sat in a row
+   across the head of the instrument and the navigation read as a toolbar.
+   The pressed state was already right, an underline and the accent with no
+   fill, but it was an underline inside a box, which says "this button is
+   selected" rather than "you are on this surface".
+
+   The boxes come off. What is left is the word, the underline under the one
+   you are on, and one hairline under the whole strip, which is the shape a
+   tab strip has had since tabs were paper. */
+.tabtop{font-weight:350;letter-spacing:.012em;
+ background:transparent;border-color:transparent;border-radius:0;
+ padding-left:11px;padding-right:11px}
+.tabtop:hover{background:transparent;color:var(--ink)}
 .tabtop[aria-pressed=true]{font-weight:500;letter-spacing:0}
+/* THE STRIP YIELDS ITS OWN WIDTH BEFORE THE BAR WRAPS.
+
+   The bar wraps rather than hiding a control, which is the right rule and
+   was pushing the profile and the lighting menu onto a second row on a
+   narrow window: seven tabs are the widest thing in the bar and they were
+   the last thing to give. The strip scrolls inside itself now, so it gives
+   up width first and everything to the right of it stays on one line. The
+   wrap survives as the last resort it was meant to be. */
+#tabbar{flex:0 1 auto;min-width:0;flex-wrap:nowrap!important;
+ overflow-x:auto;scrollbar-width:none;
+ border-bottom:1px solid var(--edge);align-items:stretch}
+#tabbar::-webkit-scrollbar{display:none}
+#tabbar>*{flex:0 0 auto}
+/* AND A SCROLLED TAB HAS TO SAY SO.
+
+   A strip that scrolls with no edge treatment hides Summary at 1280 with
+   nothing on screen saying it is there, which is the rule the wrapping was
+   protecting in the first place. The mask fades the last few pixels only
+   while there is something past them, so at full width there is no fade and
+   nothing to explain. */
+.tbwrap{position:relative;flex:0 1 auto;min-width:0;display:flex}
+#tabbar{mask-image:linear-gradient(90deg,#000 0,#000 calc(100% - 26px),transparent 100%);
+ -webkit-mask-image:linear-gradient(90deg,#000 0,#000 calc(100% - 26px),transparent 100%)}
+#tabbar[data-end="1"]{mask-image:none;-webkit-mask-image:none}
 .seg{display:flex;gap:3px;padding:3px;border-radius:var(--r-s);background:var(--sunk);flex:0 0 auto}
 .seg button{background:transparent;border:0;border-radius:var(--r-xs);min-height:var(--tap);padding:7px 13px;
  font-family:var(--sans);font-size:13.5px;font-weight:400;color:var(--dim);cursor:pointer;transition:.16s}
@@ -1765,6 +1825,7 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
  .pm-top{max-width:none;position:static;margin:12px;box-shadow:none}
  .pm-reg{position:static;margin:0 12px 12px;max-width:none}
 }
+@media (max-width:820px){.top{flex-wrap:wrap}.top #psel{max-width:none}}
 @media (max-width:720px){
  body{font-size:14.5px}
  .app{padding:7px;gap:6px}
