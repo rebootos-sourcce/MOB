@@ -90,11 +90,24 @@ function kbRender(){
   var n=kbRows(s[0]).filter(function(x){return kbMatch(x,q);}).length;
   per[s[0]]=n; total+=n;});
 
+ /* THIS IS THE CODEX, NOT A WIKI.
+
+    It opened with "Everything the instrument knows" over a search box and a
+    list of rows, which is the shape of a reference a person consults when
+    they already know what they are looking for. Nobody arrives here knowing
+    that. They arrive because a word in their own reading meant nothing to
+    them, and the page has to be worth standing in.
+
+    So it says what it is and why it is open to you. Transparency is a law in
+    this system, and the whole of the philosophy being readable is the proof
+    of it, which is a thing to say out loud rather than to imply with a
+    search field. */
  var h='<div class="kb-top">'
-  +'<div class="kb-hd"><div class="pm-eye">The knowledge base</div>'
-  +'<h2 class="kb-h">Everything the instrument knows</h2>'
-  +'<p class="kb-p">The same tables the reading runs on. Search any of it. Every row opens '
-  +'the same detail the wheel opens, on the right.</p></div>'
+  +'<div class="kb-hd"><div class="pm-eye">The codex</div>'
+  +'<h2 class="kb-h">Every part of the system, open</h2>'
+  +'<p class="kb-p">Nothing here is held back. These are the same tables the '
+  +'reading runs on, the whole structure it is built from, and it is open '
+  +'because a mirror you cannot inspect is not a mirror. Take any card.</p></div>'
   +'<div class="kb-search"><input type="search" id="kbq" placeholder="Search addresses, fetters, saboteurs, laws, domains" '
   +'value="'+esc(KB_Q)+'" aria-label="Search the knowledge base">'
   +(q?'<span class="kb-found">'+total+' match'+(total===1?'':'es')+'</span>':'')+'</div>'
@@ -103,15 +116,40 @@ function kbRender(){
      +'aria-selected="'+(KB_SEC===s[0])+'">'+s[1]+(q?' <b>'+per[s[0]]+'</b>':'')+'</button>';}).join('')
   +'</div></div>';
 
- h+='<div class="kb-list">';
+ /* EVERY ENTRY IS A CARD.
+
+    A row in a list is a line of text with a hit area. It says "there are
+    many of these and none of them is special", which is exactly wrong for a
+    codex: every one of these is a named thing with a seat, a family and a
+    reading, and the point of being here is that they are each worth looking
+    at.
+
+    A card carries its family stripe at the top, its glyph, its name, what it
+    is, and its own reading when it has one. The families are the sections
+    and the colour is the seat, so a person reading these is learning the
+    colour system at the same time. */
+ var KIND={node:'Address',fetter:'Fetter',sab:'Saboteur',law:'Law',dom:'Domain',
+  arch:'Archetype',gate:'Gate',harm:'Harmonic',gloss:'Term',seat:'Seat'};
+ h+='<div class="kb-grid">';
  if(!rows.length) h+='<div class="rnone">Nothing here matches. The count beside each tab says where it is.</div>';
  rows.forEach(function(x,i){
   var col=x.k==='seat'?x.t:(x.s&&BANDS.indexOf(x.s)>=0?x.s:'Heart');
-  h+='<button type="button" class="kb-r" data-kbi="'+i+'">'
-   +'<span class="kb-rc">'+cr(BANDS.indexOf(col)>=0?col:'Heart', 0, {size:'xs', raw:''})+'</span>'
-   +'<span class="kb-rt"><b>'+esc(x.t)+'</b>'+(x.s?'<em>'+esc(x.s)+'</em>':'')+'</span>'
-   +'<span class="kb-rd">'+esc(String(x.d||'').slice(0,150))+'</span>'
-   +(x.v?'<span class="kb-rv">'+esc(x.v)+'</span>':'')
+  var band=BANDS.indexOf(col)>=0?col:'Heart';
+  var c=seatCol(band);
+  var gl=SEATGLYPH[band]||SEATGLYPH._;
+  /* the reading on a card is the card's own number, and it is only printed
+     when the card has one. A card with no reading is not a card at zero. */
+  var hot=x.v&&parseFloat(x.v)>0;
+  h+='<button type="button" class="kb-c'+(hot?' live':'')+'" data-kbi="'+i+'" '
+   +'style="--c:'+c+'">'
+   +'<span class="kb-cs"></span>'
+   +'<span class="kb-ch"><span class="kb-cg"><svg viewBox="0 0 24 24" aria-hidden="true">'
+   +gl+'</svg></span>'
+   +'<span class="kb-ck">'+esc(KIND[x.k]||x.k)+'</span>'
+   +(x.v?'<span class="kb-cv">'+esc(x.v)+'</span>':'')+'</span>'
+   +'<span class="kb-cn">'+esc(x.t)+'</span>'
+   +(x.s?'<span class="kb-cb">'+esc(x.s)+'</span>':'')
+   +'<span class="kb-cd">'+esc(String(x.d||''))+'</span>'
    +'</button>';});
  h+='</div>';
 

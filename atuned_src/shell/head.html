@@ -1144,20 +1144,58 @@ body:not(.tab-field) .pol2{display:none}
 .kb-t.on{background:transparent;color:var(--accent);font-weight:500}
 .kb-t.on b{color:var(--accent)}
 .kb-t.on b{color:var(--on-accent)}
-.kb-list{display:flex;flex-direction:column;gap:2px;flex:1 1 auto}
-.kb-r{display:grid;grid-template-columns:auto minmax(120px,1.1fr) minmax(0,2fr) auto;gap:12px;
- align-items:center;width:100%;min-height:var(--tap);padding:8px 10px;border:0;background:transparent;
- border-radius:var(--r-xs);font-family:var(--sans);font-size:13.5px;color:var(--mid);text-align:left;cursor:pointer}
-.kb-r:hover{background:var(--panel-2)}
-.kb-rt{display:flex;flex-direction:column;min-width:0}
-.kb-rt b{color:var(--ink);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.kb-rt em{font-style:normal;color:var(--dim);font-size:11px}
-.kb-rd{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--dim);font-size:12.5px}
-.kb-rv{font-family:var(--num);color:var(--ink);font-size:12.5px;white-space:nowrap}
+/* ============================================================
+   THE CODEX IS A DECK, NOT A LIST.
+
+   A row in a list is a line of text with a hit area, and a page of them says
+   "there are many of these and none of them is special", which is exactly
+   wrong here. Every entry is a named thing with a seat, a family and a
+   reading, and the reason to stand on this page is that each one is worth
+   looking at.
+
+   A card carries a family stripe in its seat colour, the seat glyph, what
+   kind of thing it is, its own reading when it has one, its name and what it
+   is. The colour is the seat, so reading the codex teaches the colour system
+   at the same time.
+   ============================================================ */
+.kb-grid{display:grid;gap:12px;flex:1 1 auto;
+ grid-template-columns:repeat(auto-fill,minmax(236px,1fr))}
+.kb-c{position:relative;display:flex;flex-direction:column;gap:7px;
+ padding:15px 15px 16px;border:1px solid var(--edge);border-radius:var(--r-s);
+ background:var(--panel);text-align:left;cursor:pointer;overflow:hidden;
+ font-family:var(--sans);color:var(--mid);min-height:150px;
+ transition:transform .18s cubic-bezier(.22,1,.36,1),border-color .18s,box-shadow .18s}
+/* the family stripe. It is the first thing read and it is the only thing on
+   the card that is pure colour. */
+.kb-cs{position:absolute;left:0;right:0;top:0;height:3px;background:var(--c);opacity:.9}
+.kb-c:hover{transform:translateY(-2px);border-color:var(--c);box-shadow:var(--shadow)}
+.kb-c:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+/* a card carrying a live reading is lit from its own stripe, so the ones
+   that are actually running in this person's field stand out of the deck. */
+.kb-c.live{background:
+ linear-gradient(180deg,color-mix(in srgb,var(--c) 9%,transparent) 0,transparent 78px),
+ var(--panel)}
+.kb-ch{display:flex;align-items:center;gap:8px}
+.kb-cg{width:24px;height:24px;flex:0 0 auto;display:grid;place-items:center;color:var(--c)}
+.kb-cg svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.5;
+ stroke-linecap:round;stroke-linejoin:round}
+/* not uppercase. No all caps UI copy is a standing ruling and the gate is
+   right to hold it: the kind label is small and tracked, which is what it
+   was reaching for, and shouting was never the way to get it. */
+.kb-ck{font-size:11px;font-weight:500;letter-spacing:.06em;color:var(--dim)}
+.kb-cv{margin-left:auto;font-family:var(--num);font-size:13px;font-weight:500;
+ color:var(--c)}
+.kb-cn{font-size:16px;font-weight:500;color:var(--ink);line-height:1.25}
+.kb-cb{font-size:11.5px;color:var(--dim);margin-top:-3px}
+/* three lines and then it stops. A card that grows to its text is a row
+   again, and a deck of different heights is not a deck. */
+.kb-cd{font-size:13px;line-height:1.5;color:var(--mid);
+ display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .kb-deck{margin-top:22px;padding:18px 20px;border-radius:var(--r-s);background:var(--panel-2);
  display:flex;flex-direction:column;gap:9px;align-items:flex-start}
 body.punch .kb-search input{border-color:transparent}
-@media (max-width:760px){ .kb-r{grid-template-columns:auto 1fr auto} .kb-rd{display:none} }
+body.punch .kb-c{background:var(--panel-2);border-color:transparent}
+@media (max-width:760px){.kb-grid{grid-template-columns:1fr}}
 
 /* ---------- games ---------- */
 .gm-intro,.gm-done,.gm-soon,.gm-open,.gm-say{padding:16px 18px;border-radius:var(--r-s);
