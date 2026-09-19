@@ -1619,6 +1619,66 @@ ok(await page.evaluate(()=>{loadP(6);const r=compute();
   return cqHeadroom(r.CQ)>0&&cqHeadroom(200)===0;}),
  'headroom is never negative and is positive where there is ground');
 
+
+console.log('\n=== the phone reaches everything it draws ===');
+/* MEASURE BOTH body.scrollWidth AND documentElement.scrollWidth. html clips the
+   overflow, so documentElement reports the viewport width on every tab and a
+   probe that reads only that reports no overflow and is wrong. That mistake has
+   already produced one incorrect report on this defect, so the gate takes both
+   and asserts on the difference, which is the part no gesture can reach.
+
+   Measured before the fix at 390x844: Field body.scrollWidth 1386 against 390,
+   so 996 pixels of that surface were unreachable. Story 432, Settings 402. */
+const ph=await browser.newPage({viewport:{width:390,height:844}});
+await ph.goto(FILE,{waitUntil:'load'}); await booted(ph); await ph.waitForTimeout(900);
+await ph.evaluate(()=>{const i=PEOPLE.findIndex(x=>x.nm==='Lance');loadP(i);});
+for(const [nm,t] of [['story',0],['summary',1],['field',2],['body',3],['intake',5],
+                     ['know',6],['games',7],['compass',8],['settings',9]]){
+ const o=await ph.evaluate(async t=>{setTab(t);await new Promise(r=>setTimeout(r,420));
+  return {b:document.body.scrollWidth,h:document.documentElement.scrollWidth,w:innerWidth};},t);
+ ok(o.b-o.h<=2,'no unreachable width on '+nm+', body '+o.b+' against html '+o.h);
+ ok(o.h<=o.w+2,'and the document itself fits the phone on '+nm+', '+o.h+' against '+o.w);
+}
+/* THE COMPASS DREW ITSELF OFF SCREEN. #cone.tabmode kept position:absolute
+   inside the phone band while .iq and .emap were both released from it.
+   Measured: #conecv at y -612, 338 by 591, entirely above the viewport. The
+   rule is that the surface a tab names is on the screen that tab opens. */
+const phCone=await ph.evaluate(async()=>{setTab(8);await new Promise(r=>setTimeout(r,700));
+ const el=document.getElementById('conecv'); if(!el)return {missing:true};
+ const r=el.getBoundingClientRect();
+ return {h:Math.round(r.height),w:Math.round(r.width),
+  onScreen:r.bottom>0&&r.top<innerHeight&&r.right>0&&r.left<innerWidth};});
+ok(!phCone.missing,'the compass canvas exists on a phone');
+ok(phCone.onScreen,'the compass is on the screen the Compass tab opens');
+ok(phCone.h>120&&phCone.w>120,'and it has a box to draw in, '+phCone.w+' by '+phCone.h);
+/* THE BODY DREW NO BODY. .pm-svg is absolute against .pm-well, which is flex:1
+   inside .emap; releasing .emap from absolute left it auto height so the well
+   resolved to zero. Measured: .pm-svg 374 wide by 0 tall. */
+const phFig=await ph.evaluate(async()=>{setTab(3);await new Promise(r=>setTimeout(r,700));
+ const s=document.querySelector('.pm-svg'); if(!s)return {missing:true};
+ const r=s.getBoundingClientRect(); return {w:Math.round(r.width),h:Math.round(r.height)};});
+ok(!phFig.missing,'the body figure exists on a phone');
+ok(phFig.h>120,'the surface named Body draws a body, height '+phFig.h);
+await ph.close();
+
+console.log('\n=== a count under a word counts that word ===');
+/* The Fetters layer counted every address carrying at or above the line OR
+   holding the installed opposite at 4. The installed opposite is the other
+   pole. Measured: Rosa, CQ 100 at Mastery carrying nothing, was told Fetters
+   107; Lance, 87.7, Fetters 107; Gordon, the most loaded in the roster at CQ 1,
+   97. The rule is that the number cannot run against the load. */
+const fc=await page.evaluate(()=>{
+ const out=[];
+ for(let i=0;i<PEOPLE.length;i++){
+  loadP(i); const r=compute();
+  out.push({nm:PEOPLE[i].nm,count:pmCount(r,'bands'),carrying:r.carrying.length});}
+ return out;});
+fc.forEach(f=>ok(f.count===f.carrying,
+ 'the Fetters count is what '+f.nm+' carries, '+f.count+' against '+f.carrying));
+const heavy=fc.find(f=>f.nm==='Gordon'), light=fc.find(f=>f.nm==='Rosa');
+ok(heavy.count>light.count,
+ 'and the most loaded person counts more than the least, '+heavy.count+' against '+light.count);
+
 await browser.close();
 
 console.log('\n===== '+PASS+' passed, '+FAIL+' failed =====');

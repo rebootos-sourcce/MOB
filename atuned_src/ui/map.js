@@ -125,11 +125,28 @@ function pmPlace(marks){
    first is a broken control. Every layer now carries its own count, and the
    opening layer is the first one that has something in it. */
 function pmCount(r,L){
- /* a count has to be the count of what OPENS, or it is a lie on a button. The
-    bands layer draws every address that is carrying AND every one holding the
-    opposite pole, so counting only the carrying ones dimmed Fetters to zero on
-    a profile with forty nine addresses waiting inside it. */
- if(L==='bands') return W.filter(function(n){return n.sq>=LOADED||n.pole>=4;}).length;
+ /* A COUNT UNDER A WORD IS A COUNT OF THAT WORD. This counted every address
+    carrying at or above the line OR holding the installed opposite at 4, under
+    a button labelled Fetters. The installed opposite is the other pole: it is
+    the nearest thing in the instrument to the reverse of a fetter, and on the
+    people with the most of it installed it was the whole of the number.
+
+    Measured across the roster: Rosa reads CQ 100 at Mastery, carries nothing
+    at all, and the Body told her Fetters 107. Lance reads 87.7 and carries
+    nothing, Fetters 107. Gordon, who is the most loaded person in the roster
+    at CQ 1, read 97. The number ran backwards for exactly the people the
+    product is kindest to, which is the same inversion the record already
+    carries once from the Summary glance row.
+
+    The original reason for the OR was real and is kept: counting only
+    sq>=LOADED dimmed the layer to zero for Sofia while forty nine addresses
+    sat inside it. `carrying` is the answer to that, and it is the honest one,
+    because it is every address holding anything rather than a line drawn at 4.
+    Sofia now reads 52 and the layer is not dimmed; Rosa and Lance read 0,
+    which is what they carry. The layer still DRAWS both poles, because drawing
+    is not counting, and an empty layer stays reachable and reads back. */
+ if(L==='bands') return (r&&r.carrying)?r.carrying.length
+   :W.filter(function(n){return n.sq>0;}).length;
  /* the button counts what is there to be found, not what is drawn: the layer
     opens blank by ruling, and a button reading zero on a body with nineteen
     carrying addresses would read as an empty instrument rather than as one

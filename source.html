@@ -2309,6 +2309,48 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
     rendered 10 pixels tall on every phone with 106 pixels of content in it. */
  .emap{position:static;inset:auto;overflow:visible;width:100%;min-height:0;order:0}
  canvas#cv{flex:0 0 auto;height:min(86vw,390px);order:1}
+ /* THE COMPASS RENDERED ENTIRELY OFF SCREEN. Measured at 390x844: #conecv at
+    y -612, 338 by 591, onScreen false, with its host #cone 10 pixels tall and
+    still position:absolute. The tab named Compass showed a person nothing at
+    all. Same cause as .iq and .emap, which were both released from absolute in
+    this band while #cone was missed, so it is the same one line fix. The card
+    inside it is given the square the canvas needs, in flow. */
+ #cone.tabmode{position:static;inset:auto;overflow:visible;width:100%;
+  padding:14px 0;order:0}
+ #cone.tabmode .cone-cv{height:min(88vw,400px)}
+ /* THE BODY DREW NO BODY. .pm-svg measured 374 by 0. It is absolute inset:0
+    against .pm-well, and .pm-well is flex:1 with min-height:0 inside .emap.
+    Releasing .emap from absolute in this band left it auto height, so the flex
+    child resolved to zero and the figure had no box to draw in. The well gets
+    the height here, which is the one thing the phone band never replaced. */
+ .emap{position:relative}
+ .pm-well{flex:0 0 auto;min-height:min(122vw,470px)}
+ /* THE DEPTH LADDER RAN 996 PIXELS PAST THE SCREEN AND NOTHING COULD REACH IT.
+    On the Field, body.scrollWidth measured 1386 against innerWidth 390 while
+    documentElement stayed at 390, so html clipped it and no gesture scrolled
+    to it. #vbar is a flex row of depth buttons with no overflow handling. It
+    gets what #tabbar already has: it scrolls inside itself and gives up width
+    before anything else does. Measuring documentElement alone reports 390 and
+    hides this completely, which is worth stating because it already produced
+    one wrong report. */
+ #vbar{flex:1 1 auto;min-width:0;overflow-x:auto;overscroll-behavior-x:contain;
+  scrollbar-width:none}
+ #vbar::-webkit-scrollbar{display:none}
+ #vbar>*{flex:0 0 auto}
+ #subbar{min-width:0;overflow:hidden}
+ /* .st-mnote is flex:1 1 100% inside .st-hd, which never wrapped, so the row
+    held a full width item beside its siblings and forced the writing column to
+    420 in a 376 lane. The basis says it was meant to have its own line. */
+ .st-hd{flex-wrap:wrap}
+ /* wrapping the row was not enough: the eyebrow and the mic button on its
+    first line still had a combined minimum of 420, and a grid track cannot go
+    below its content's minimum, so the writing column pushed the whole surface
+    to 432. Everything in the chain is allowed to shrink, and the mic keeps its
+    tap height while its label wraps. */
+ .st-wrap,.st-col,.st-hd>*{min-width:0}
+ .st-mic{flex-wrap:wrap;height:auto;padding-top:6px;padding-bottom:6px}
+ /* and the lighting switch is a segmented row of six that cannot fit on one */
+ #setthemes{flex-wrap:wrap}
  .tl,.acc,.howto{position:static;transform:none;text-align:left;max-width:none;
   width:auto;padding:0 14px;margin:0}
  .tl{order:2;margin-top:10px}
@@ -8932,11 +8974,28 @@ function pmPlace(marks){
    first is a broken control. Every layer now carries its own count, and the
    opening layer is the first one that has something in it. */
 function pmCount(r,L){
- /* a count has to be the count of what OPENS, or it is a lie on a button. The
-    bands layer draws every address that is carrying AND every one holding the
-    opposite pole, so counting only the carrying ones dimmed Fetters to zero on
-    a profile with forty nine addresses waiting inside it. */
- if(L==='bands') return W.filter(function(n){return n.sq>=LOADED||n.pole>=4;}).length;
+ /* A COUNT UNDER A WORD IS A COUNT OF THAT WORD. This counted every address
+    carrying at or above the line OR holding the installed opposite at 4, under
+    a button labelled Fetters. The installed opposite is the other pole: it is
+    the nearest thing in the instrument to the reverse of a fetter, and on the
+    people with the most of it installed it was the whole of the number.
+
+    Measured across the roster: Rosa reads CQ 100 at Mastery, carries nothing
+    at all, and the Body told her Fetters 107. Lance reads 87.7 and carries
+    nothing, Fetters 107. Gordon, who is the most loaded person in the roster
+    at CQ 1, read 97. The number ran backwards for exactly the people the
+    product is kindest to, which is the same inversion the record already
+    carries once from the Summary glance row.
+
+    The original reason for the OR was real and is kept: counting only
+    sq>=LOADED dimmed the layer to zero for Sofia while forty nine addresses
+    sat inside it. `carrying` is the answer to that, and it is the honest one,
+    because it is every address holding anything rather than a line drawn at 4.
+    Sofia now reads 52 and the layer is not dimmed; Rosa and Lance read 0,
+    which is what they carry. The layer still DRAWS both poles, because drawing
+    is not counting, and an empty layer stays reachable and reads back. */
+ if(L==='bands') return (r&&r.carrying)?r.carrying.length
+   :W.filter(function(n){return n.sq>0;}).length;
  /* the button counts what is there to be found, not what is drawn: the layer
     opens blank by ruling, and a button reading zero on a body with nineteen
     carrying addresses would read as an empty instrument rather than as one
