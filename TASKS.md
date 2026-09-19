@@ -314,3 +314,89 @@ you pay for this, would you pay this price, and how long would you use it.
 
 **Technical questions to answer.** Does the engine need optimising. Does
 anything need exposing that is not exposed yet.
+
+
+---
+
+# Queue, round two
+
+Added as given. Struck as they land.
+
+## Landed since the last queue entry
+
+- Source OS is gold. `--gold` is an alias for the accent and has been since
+  the accent was ruled blue, so everything asking for gold got blue. `--au` is
+  a real gold token and nothing else uses it unless it asks by name.
+- The centre stage ground is #101010, stated, on Field, Body and Compass. They
+  were each sitting on the panel colour, which mixes from the heaviest seat
+  and therefore drifts with the reading.
+- Benign and malignant carry symbols, like balance. One form in two states:
+  a closed ring with a rising stroke, and the same ring broken at its lower
+  right with the stroke falling out of the gap.
+- The Body footer list is back. It was never missing: `#eshelf` had seven
+  children and real text and measured zero by zero, because it sits in a rail
+  section that is closed by default. A surface now opens the sections it is
+  about, once, the first time it is reached.
+- The saboteurs were not broken, they were three of thirty four. Eight now
+  draw as rings, and the wash underneath carries all of them.
+- The heat map now matches what is selected. It was reading the field's own
+  address load on every layer, so Saboteurs and Complexes drew an identical
+  wash. Measured after the fix: four layers, four genuinely different
+  distributions.
+
+## Open, round two
+
+**The summary page.** Terrible layout, terrible use of space, terrible
+visuals. Bolded without the chakra colours. Simulate against the ICPs for a
+frictionless flow that is symbolic, clean and well designed. It has to feel
+special: this is you. First name, big, almost a welcome. Then buckets: top
+line energetics, full name, the astrological systems and how those patterns
+work through you, stated as a matter of fact and never wishy washy. Then
+complexes, hyper complexes, saboteurs and how they work through you. Then the
+output: how these raise or lower moral integrity, what is going well, what is
+not, the protocol suggestions and the ritual recommendations.
+
+**Source AI window on the summary.** A conversation about any of this data.
+
+**Scrub the software ten times** for missed opportunities and ways to beef up
+the innovation, the look and the feel. C to C plus.
+
+**The tools rail is missing tools.** Examine every tool that could be exposed
+on the left so a person can hold the mirror up and see themselves as deeply as
+possible. The owner does not know what is missing, which is the brief.
+
+**The Field is a missed opportunity for animation.** Which lines are showing
+tension. What the weight of a connection is. As you zoom in, the symbols
+should be all over it.
+
+**The Body page needs the chakra image.** It was supplied and is not being
+used. Selecting head, throat or shoulders should zoom to that location.
+
+**The pain map starts blank and is touch select.** Tap anywhere on the figure
+to mark tension, then go granular: find what is going on there, find the story
+associated with it, release it. The system around this needs building.
+
+**Body page: the stringy lines pointing at nothing** do not help. UI UX to
+innovate on the design rather than patch it.
+
+**The knowledge base.** Where is the stack, the universal laws, coherence. The
+design looks nothing like the rest of the product. Review five times and
+dramatically improve.
+
+**Systems deep dive.** Go through every system, not willy nilly. Check five
+times that everything works, then ten more for efficiency, tested against the
+ICPs.
+
+**The ritual builder and the accountability tracker** from the original
+Atüned app. Research it, produce an integration and build plan, fit it to the
+badge and achievement system, review the plan ten times, run it against the
+ICPs, get analytics on the sticking points, fix, simulate until smooth, then
+build.
+
+## Still open from round one
+
+Everything in the previous queue block that is not struck above, in
+particular: the compass overhaul, the story imprints fifth menu, onboarding
+and the tutorial, badges and achievements, screen zone logic, intake clarity,
+glass crispness, tooltips on every number, and the ICP simulations with the
+pricing questions.

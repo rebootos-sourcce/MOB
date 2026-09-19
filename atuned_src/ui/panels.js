@@ -125,6 +125,29 @@ function setTab(i){
   var e=$(id); if(e)e.style.display=(i===TAB.FIELD)?'':'none';});
  document.querySelectorAll('.tabtop').forEach(function(x,j){
   x.setAttribute('aria-pressed',TABDEF[j]&&TABDEF[j].k===i);});
+ /* THE RAIL OPENS WHAT THE SURFACE IS ABOUT.
+
+    The Body page's whole reading is flow through the seven seats, and the
+    shelf carrying it sits in a rail section that is closed by default. So the
+    owner opened Body and the footer was not there: it was in the document
+    with seven children and real text, measuring zero by zero, behind a
+    collapsed accordion he had no reason to know to open.
+
+    Each surface names the sections it is about and they are opened once, the
+    first time that surface is reached. Once, not every time: a person who
+    closes a section has closed it, and a tab that reopens it on every visit
+    is arguing with them. */
+ (function(){
+  var WANT={};
+  WANT[TAB.ENERGY]={right:['flow','running']};
+  WANT[TAB.FIELD]={left:['soul'],right:['you']};
+  WANT[TAB.COMPASS]={right:['you']};
+  var w=WANT[i]; if(!w)return;
+  SEC_SEEDED=SEC_SEEDED||{};
+  if(SEC_SEEDED[i])return; SEC_SEEDED[i]=1;
+  Object.keys(w).forEach(function(rail){
+   w[rail].forEach(function(k){ if(OPENSEC[rail])OPENSEC[rail][k]=1; });});
+  if(typeof paintSections==='function')paintSections();})();
  if(i===TAB.INTAKE)renderIntake();
  /* Knowledge carries Games. Rendering the parent renders both, because the
     games host is inside it and a hidden host renders nothing a person sees. */

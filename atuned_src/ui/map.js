@@ -26,6 +26,44 @@ function pmNode(id,k){
  var q=(n*2654435761)%1000,ang=(q/1000)*Math.PI*2,rx=6.4+(q%7),ry=2.4+((q>>3)%4);
  return (_pmpos[id]={x:Math.max(50-HW*0.9,Math.min(50+HW*0.9,50+Math.cos(ang)*rx)),
                      y:Math.max(2,Math.min(97,baseY+Math.sin(ang)*ry))});}
+/* THE HEAT HAS TO BE THE HEAT OF WHAT IS SELECTED.
+
+   flSeats reads the load of every carrying address, which is the right answer
+   for Fetters and for Flow and the wrong one for every pattern layer: picking
+   Saboteurs and picking Complexes drew exactly the same wash, because neither
+   of them was being asked. The owner's finding, and it is correct: the heat
+   map does not match what is selected.
+
+   On a pattern layer the heat is built from the addresses those patterns
+   actually stand on, weighted by each pattern's own weight. So the wash under
+   thirty four saboteurs is the shape of thirty four saboteurs, even though
+   only the heaviest few get a ring on top of them. That is also the answer to
+   the other half of it: every pattern contributes to the picture, not only
+   the ones named. */
+function pmHeat(r){
+ var L=PMLAYER;
+ if(L==='bands'||L==='nerves'||L==='pain')return null;
+ var src=(L==='sab')?r.sabs
+   :(L==='cx')?r.cxs
+   :(L==='hyper')?r.hys.concat(r.sups)
+   :(L==='masks')?r.maskRing:null;
+ if(!src||!src.length)return null;
+ var by={},any=0;
+ src.forEach(function(o){
+  var lv=(L==='masks')
+   ? W.filter(function(n){return o.bands&&o.bands.indexOf(n.b)>=0&&n.sq>=LOADED;})
+   : leaves(o);
+  var w=(o.w||0)/10;
+  lv.forEach(function(n){
+   var k=B2K[n.b]; if(!k)return;
+   by[k]=(by[k]||0)+w*clamp(n.sq/10,0.15,1); any=1;});});
+ if(!any)return null;
+ /* normalised against the busiest seat, so the wash always uses its range
+    rather than reading as nothing on a light profile. */
+ var max=0; Object.keys(by).forEach(function(k){if(by[k]>max)max=by[k];});
+ if(max<=0)return null;
+ var out={}; Object.keys(by).forEach(function(k){out[k]=clamp(by[k]/max,0,1);});
+ return out;}
 function flSeats(){
  return FLOWSEAT.map(function(p){
   var b=K2B[p.k],seg=W.filter(function(n){return n.b===b;});
@@ -250,10 +288,17 @@ function renderMap(r){
     first cut ran the radius off the load as well, so a light seat drew a dot
     and a body with light load read as seven dots on a diagram. Anatomy sets
     the radius, which is what b.r has always been. Load sets the brightness. */
+ var LHEAT=pmHeat(r);
+ /* the load a seat draws with: the layer's own when the layer has one, the
+    field's otherwise. */
+ var seatLoad=function(k){
+  var st=seats.filter(function(s){return s.p.k===k;})[0];
+  if(LHEAT)return LHEAT[k]||0;
+  return (st&&st.load)||0;};
  var HGAIN=function(l){return Math.sqrt(clamp(l||0,0,1));};
  h+='<defs>';
  PMBANDS.forEach(function(b){
-  var st=seats.filter(function(s){return s.p.k===b.k;})[0], g=HGAIN(st.load);
+  var g=HGAIN(seatLoad(b.k));
   h+='<radialGradient id="pmh-'+b.k+'">'
    +'<stop offset="0%" stop-color="'+b.c+'" stop-opacity="'+(0.07+g*0.62).toFixed(3)+'"/>'
    +'<stop offset="30%" stop-color="'+b.c+'" stop-opacity="'+(0.05+g*0.40).toFixed(3)+'"/>'
@@ -261,8 +306,7 @@ function renderMap(r){
    +'<stop offset="100%" stop-color="'+b.c+'" stop-opacity="0"/></radialGradient>';});
  h+='</defs><g style="mix-blend-mode:screen">';
  PMBANDS.forEach(function(b){
-  var st=seats.filter(function(s){return s.p.k===b.k;})[0];
-  var rr=(b.r/10)*(9.4+HGAIN(st.load)*4.6);
+  var rr=(b.r/10)*(9.4+HGAIN(seatLoad(b.k))*4.6);
   h+='<ellipse cx="50" cy="'+b.yp+'" rx="'+(rr*0.92).toFixed(2)+'" ry="'+rr.toFixed(2)
    +'" fill="url(#pmh-'+b.k+')"/>';});
  /* and the texture. Seven symmetric ellipses are a diagram of seven seats. The
@@ -270,6 +314,7 @@ function renderMap(r){
     its own small bloom at its own scattered position, which is what stops the
     wash reading as clip art and starts it reading as a body. */
  W.forEach(function(n){
+  if(LHEAT)return;                 /* a layer's heat is its own, not the field's */
   if(n.sq<LOADED)return;
   var k=B2K[n.b]; if(!k)return;
   var q=pmNode(n.i,k), c=PMC[n.b]||'#888', g=clamp((n.sq-LOADED)/(10-LOADED),0,1);
@@ -338,8 +383,16 @@ function renderMap(r){
  chain.sort(function(p,q){return q.v-p.v;});
  /* six at once, or one when one is picked. Beyond six the arcs stop being a
     structure and become the gutter again in another form. */
+ /* EIGHT AT REST, NOT THREE.
+
+    Three rings on a body under a button reading 34 is the page saying it has
+    nothing when it has thirty four, which is what "the saboteurs are broken"
+    means. The wash underneath now carries all of them, so the rings are the
+    named handles on the heaviest and the count on the button is honest about
+    the rest. Beyond eight the arcs stop being a structure and become the
+    gutter again in another form, which is the reason there is a limit at all. */
  var show=PMPICK?chain.filter(function(x){return x.o===PMPICK;})
-   :chain.slice(0,3);
+   :chain.slice(0,8);
  show.forEach(function(m){
   var kind=(m.o.kind==='sup')?'sup':(PMLAYER==='masks'?'mask':(m.o.kind||'sab'));
   var c=TIERC[kind]||'#DFCC7E';

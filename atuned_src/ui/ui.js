@@ -247,6 +247,9 @@ cv.addEventListener('pointerleave',function(){S.hover=null;DRAG=null;$('probe').
    a reading arrives, and now it opens it beside what was already there instead
    of closing it. */
 var OPENSEC={left:{soul:1}, right:{you:1}};
+/* which surfaces have already had their sections seeded, so a tab opens what
+   it is about the first time and never argues with a person who closed it. */
+var SEC_SEEDED={};
 function railOf(sec){return sec.dataset.rail||'left';}
 function wireSections(){
  document.querySelectorAll('.lsec').forEach(function(sec){
@@ -569,10 +572,30 @@ function render(){
   var L=leanRead(r);
   var off=Math.abs(L.ben-50)*2;              /* 0 at even, 100 at either end */
   var mal=L.mal>L.ben;
+  /* BENIGN AND MALIGNANT GET SYMBOLS, like balance. Ruled.
+
+     The bar carried two bare numbers at its ends and nothing saying which end
+     was which, so a person had to already know that the left one was the
+     benign figure. The balance strip directly above it has carried its two
+     symbols since it was rebuilt and this one had not caught up.
+
+     Benign is a closed ring with a rising stroke inside it: contained, and
+     going up. Malignant is a ring broken at its lower right with the stroke
+     falling out of the gap: the same shape, open, and going down. One form,
+     two states, which is the reading. */
+  var gB='<circle cx="12" cy="12" r="8"/><path d="M8.6 14.2l2.6-3.1 2.2 2 2-3.4"/>';
+  var gM='<path d="M15.6 18.6A8 8 0 1 1 18.6 15.4"/>'
+   +'<path d="M8.6 9.9l2.6 3.1 2.2-2 2 3.4"/>';
+  function pIco(g,on,c,t){
+   return '<span class="pol-g'+(on?' on':'')+'" style="--c:'+c+'" title="'+esc(t)+'">'
+    +'<svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">'+g+'</svg></span>';}
   pb.innerHTML='<div class="fill'+(mal?' mal':'')+'" style="width:'+(off/2).toFixed(1)+'%;'
    +'background:'+(mal?PAL.Root:PAL.Heart)+';opacity:.62"></div><div class="mid"></div>'
-   +'<div class="lb l">'+L.ben.toFixed(0)+'</div>'
-   +'<div class="lb r">'+L.mal.toFixed(0)+'</div>';
+   +'<div class="lb l">'+pIco(gB,!mal,PAL.Heart,
+     'Benign. Charge that is held and is not costing you.')
+   +'<b>'+L.ben.toFixed(0)+'</b></div>'
+   +'<div class="lb r"><b>'+L.mal.toFixed(0)+'</b>'+pIco(gM,mal,PAL.Root,
+     'Malignant. Charge that is held and is taking something from you.')+'</div>';
   pb.title=(L.cues?'Balance. '+L.cues+' cue'+(L.cues===1?'':'s')+' from the story so far. '
     :'Balance. No story yet, so this is the field alone. ')
    +'Benign '+L.ben.toFixed(0)+', malignant '+L.mal.toFixed(0)+', read from '+L.src

@@ -67,6 +67,19 @@ font-display:swap;src:url(data:font/woff2;base64,d09GMgABAAAAALyAABUAAAAB4CAAALw
     --um is the umlaut on the wordmark. It sits on the bar rather than on the
     letter, so it answers to the background. White on dark, as ruled. */
  --accent:#7EB8D4; --gold:var(--accent); --on-accent:#0B1418;
+ /* TRUE GOLD, SEPARATE FROM --gold.
+
+    --gold is an alias for the accent and has been since the accent was ruled
+    blue, so everything reaching for "gold" gets blue. That is correct for the
+    eyebrows and the rules that were gold before the ruling, and it is wrong
+    for the one thing that was asked for in actual gold: Source OS under the
+    wordmark rendered in the blue accent, twice, because the token lied about
+    its own name.
+
+    --au is gold. Muted, warm, sitting next to the Solar seat without becoming
+    it, and dark enough on paper to hold. Nothing else uses it unless it is
+    asked for by name. */
+ --au:#C2A063;
  /* the ink on a solid seat colour. every seat in this palette is light
     enough that one dark ink holds on all seven, in every lighting. */
  --on-flat:#0E1015;
@@ -271,6 +284,7 @@ body.snow{
     cannot stay white because the dots sit on the paper, not on the letter.
     On a deep blue fill the ink goes light rather than dark. */
  --accent:#2F6E92; --gold:var(--accent); --on-accent:#F4F8FA;
+ --au:#8A6B24;
  --on-flat:#0E1015;
  --sky:#2F6E92; --um:#13303F;
  --good:#1F8560; --bad:#A8413C;
@@ -339,7 +353,7 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
    person is expected to read, and a product name is a string a person is
    expected to read. Tracking carries the smallness instead. */
 .brand .bs{display:block;font-size:11px;font-weight:500;letter-spacing:.17em;
- color:var(--gold);line-height:1;text-transform:none}
+ color:var(--au);line-height:1;text-transform:none}
 .brand:hover{color:color-mix(in srgb,var(--sky) 76%,var(--ink))}
 /* the umlaut, drawn. two dots, white, sitting above a plain u. */
 .brand .um{position:relative;display:inline-block}
@@ -743,6 +757,13 @@ body.punch .s-row{border-bottom-color:transparent}
    pushes the wheel off centre by half its width. The left lane is empty and
    exists to hold the wheel in the middle of the stage, which is where the
    owner put it. */
+/* THE STAGE GROUND IS #101010, ruled, and the same on every centre surface.
+
+   Field, Body and Compass were each sitting on the panel colour, which is
+   mixed from the heaviest seat and therefore drifts with the reading: three
+   surfaces on three slightly different grounds, none of them stated. One
+   value, stated, and the instrument sits on it. */
+.stage,#emap,#cone{background:#101010}
 .stage{--lane:128px;position:relative;display:grid;
  grid-template-columns:var(--lane) minmax(0,1fr) var(--lane);
  grid-template-rows:auto minmax(0,1fr);
@@ -1014,6 +1035,14 @@ body:not(.tab-field) .pol2{display:none}
  transition:width .5s cubic-bezier(.3,0,.2,1),left .5s cubic-bezier(.3,0,.2,1)}
 .polbar .fill.mal{left:auto;right:50%}
 .polbar .mid{position:absolute;left:50%;top:0;bottom:0;width:1px;background:var(--edge-2)}
+/* the two symbols on the ends, the same way the balance strip carries its
+   two. The one the field is leaning to lights. */
+.polbar .lb{display:inline-flex;align-items:center;gap:6px}
+.polbar .lb b{font-weight:500}
+.pol-g{display:inline-flex;align-items:center;color:var(--dim)}
+.pol-g svg{fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;
+ stroke-linejoin:round}
+.pol-g.on{color:var(--c)}
 .polbar .lb{position:absolute;top:0;bottom:0;display:flex;align-items:center;
  font-family:var(--num);font-size:11px;font-weight:500;color:var(--ink);opacity:.86;padding:0 10px}
 .polbar .l{left:0}.polbar .r{right:0}
@@ -2121,7 +2150,7 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
 .boot-wm .bn{font-family:var(--sans);font-size:23px;font-weight:400;
  letter-spacing:.075em;color:var(--sky);line-height:1;position:relative}
 .boot-wm .bs{font-family:var(--sans);font-size:11px;font-weight:500;
- letter-spacing:.17em;color:var(--gold);line-height:1}
+ letter-spacing:.17em;color:var(--au);line-height:1}
 .boot-wm .um{position:relative;display:inline-block}
 .boot-wm .um::before,.boot-wm .um::after{content:'';position:absolute;top:-.42em;
  width:.14em;height:.14em;border-radius:50%;background:var(--um)}
@@ -7709,6 +7738,44 @@ function pmNode(id,k){
  var q=(n*2654435761)%1000,ang=(q/1000)*Math.PI*2,rx=6.4+(q%7),ry=2.4+((q>>3)%4);
  return (_pmpos[id]={x:Math.max(50-HW*0.9,Math.min(50+HW*0.9,50+Math.cos(ang)*rx)),
                      y:Math.max(2,Math.min(97,baseY+Math.sin(ang)*ry))});}
+/* THE HEAT HAS TO BE THE HEAT OF WHAT IS SELECTED.
+
+   flSeats reads the load of every carrying address, which is the right answer
+   for Fetters and for Flow and the wrong one for every pattern layer: picking
+   Saboteurs and picking Complexes drew exactly the same wash, because neither
+   of them was being asked. The owner's finding, and it is correct: the heat
+   map does not match what is selected.
+
+   On a pattern layer the heat is built from the addresses those patterns
+   actually stand on, weighted by each pattern's own weight. So the wash under
+   thirty four saboteurs is the shape of thirty four saboteurs, even though
+   only the heaviest few get a ring on top of them. That is also the answer to
+   the other half of it: every pattern contributes to the picture, not only
+   the ones named. */
+function pmHeat(r){
+ var L=PMLAYER;
+ if(L==='bands'||L==='nerves'||L==='pain')return null;
+ var src=(L==='sab')?r.sabs
+   :(L==='cx')?r.cxs
+   :(L==='hyper')?r.hys.concat(r.sups)
+   :(L==='masks')?r.maskRing:null;
+ if(!src||!src.length)return null;
+ var by={},any=0;
+ src.forEach(function(o){
+  var lv=(L==='masks')
+   ? W.filter(function(n){return o.bands&&o.bands.indexOf(n.b)>=0&&n.sq>=LOADED;})
+   : leaves(o);
+  var w=(o.w||0)/10;
+  lv.forEach(function(n){
+   var k=B2K[n.b]; if(!k)return;
+   by[k]=(by[k]||0)+w*clamp(n.sq/10,0.15,1); any=1;});});
+ if(!any)return null;
+ /* normalised against the busiest seat, so the wash always uses its range
+    rather than reading as nothing on a light profile. */
+ var max=0; Object.keys(by).forEach(function(k){if(by[k]>max)max=by[k];});
+ if(max<=0)return null;
+ var out={}; Object.keys(by).forEach(function(k){out[k]=clamp(by[k]/max,0,1);});
+ return out;}
 function flSeats(){
  return FLOWSEAT.map(function(p){
   var b=K2B[p.k],seg=W.filter(function(n){return n.b===b;});
@@ -7933,10 +8000,17 @@ function renderMap(r){
     first cut ran the radius off the load as well, so a light seat drew a dot
     and a body with light load read as seven dots on a diagram. Anatomy sets
     the radius, which is what b.r has always been. Load sets the brightness. */
+ var LHEAT=pmHeat(r);
+ /* the load a seat draws with: the layer's own when the layer has one, the
+    field's otherwise. */
+ var seatLoad=function(k){
+  var st=seats.filter(function(s){return s.p.k===k;})[0];
+  if(LHEAT)return LHEAT[k]||0;
+  return (st&&st.load)||0;};
  var HGAIN=function(l){return Math.sqrt(clamp(l||0,0,1));};
  h+='<defs>';
  PMBANDS.forEach(function(b){
-  var st=seats.filter(function(s){return s.p.k===b.k;})[0], g=HGAIN(st.load);
+  var g=HGAIN(seatLoad(b.k));
   h+='<radialGradient id="pmh-'+b.k+'">'
    +'<stop offset="0%" stop-color="'+b.c+'" stop-opacity="'+(0.07+g*0.62).toFixed(3)+'"/>'
    +'<stop offset="30%" stop-color="'+b.c+'" stop-opacity="'+(0.05+g*0.40).toFixed(3)+'"/>'
@@ -7944,8 +8018,7 @@ function renderMap(r){
    +'<stop offset="100%" stop-color="'+b.c+'" stop-opacity="0"/></radialGradient>';});
  h+='</defs><g style="mix-blend-mode:screen">';
  PMBANDS.forEach(function(b){
-  var st=seats.filter(function(s){return s.p.k===b.k;})[0];
-  var rr=(b.r/10)*(9.4+HGAIN(st.load)*4.6);
+  var rr=(b.r/10)*(9.4+HGAIN(seatLoad(b.k))*4.6);
   h+='<ellipse cx="50" cy="'+b.yp+'" rx="'+(rr*0.92).toFixed(2)+'" ry="'+rr.toFixed(2)
    +'" fill="url(#pmh-'+b.k+')"/>';});
  /* and the texture. Seven symmetric ellipses are a diagram of seven seats. The
@@ -7953,6 +8026,7 @@ function renderMap(r){
     its own small bloom at its own scattered position, which is what stops the
     wash reading as clip art and starts it reading as a body. */
  W.forEach(function(n){
+  if(LHEAT)return;                 /* a layer's heat is its own, not the field's */
   if(n.sq<LOADED)return;
   var k=B2K[n.b]; if(!k)return;
   var q=pmNode(n.i,k), c=PMC[n.b]||'#888', g=clamp((n.sq-LOADED)/(10-LOADED),0,1);
@@ -8021,8 +8095,16 @@ function renderMap(r){
  chain.sort(function(p,q){return q.v-p.v;});
  /* six at once, or one when one is picked. Beyond six the arcs stop being a
     structure and become the gutter again in another form. */
+ /* EIGHT AT REST, NOT THREE.
+
+    Three rings on a body under a button reading 34 is the page saying it has
+    nothing when it has thirty four, which is what "the saboteurs are broken"
+    means. The wash underneath now carries all of them, so the rings are the
+    named handles on the heaviest and the count on the button is honest about
+    the rest. Beyond eight the arcs stop being a structure and become the
+    gutter again in another form, which is the reason there is a limit at all. */
  var show=PMPICK?chain.filter(function(x){return x.o===PMPICK;})
-   :chain.slice(0,3);
+   :chain.slice(0,8);
  show.forEach(function(m){
   var kind=(m.o.kind==='sup')?'sup':(PMLAYER==='masks'?'mask':(m.o.kind||'sab'));
   var c=TIERC[kind]||'#DFCC7E';
@@ -11885,6 +11967,29 @@ function setTab(i){
   var e=$(id); if(e)e.style.display=(i===TAB.FIELD)?'':'none';});
  document.querySelectorAll('.tabtop').forEach(function(x,j){
   x.setAttribute('aria-pressed',TABDEF[j]&&TABDEF[j].k===i);});
+ /* THE RAIL OPENS WHAT THE SURFACE IS ABOUT.
+
+    The Body page's whole reading is flow through the seven seats, and the
+    shelf carrying it sits in a rail section that is closed by default. So the
+    owner opened Body and the footer was not there: it was in the document
+    with seven children and real text, measuring zero by zero, behind a
+    collapsed accordion he had no reason to know to open.
+
+    Each surface names the sections it is about and they are opened once, the
+    first time that surface is reached. Once, not every time: a person who
+    closes a section has closed it, and a tab that reopens it on every visit
+    is arguing with them. */
+ (function(){
+  var WANT={};
+  WANT[TAB.ENERGY]={right:['flow','running']};
+  WANT[TAB.FIELD]={left:['soul'],right:['you']};
+  WANT[TAB.COMPASS]={right:['you']};
+  var w=WANT[i]; if(!w)return;
+  SEC_SEEDED=SEC_SEEDED||{};
+  if(SEC_SEEDED[i])return; SEC_SEEDED[i]=1;
+  Object.keys(w).forEach(function(rail){
+   w[rail].forEach(function(k){ if(OPENSEC[rail])OPENSEC[rail][k]=1; });});
+  if(typeof paintSections==='function')paintSections();})();
  if(i===TAB.INTAKE)renderIntake();
  /* Knowledge carries Games. Rendering the parent renders both, because the
     games host is inside it and a hidden host renders nothing a person sees. */
@@ -13036,6 +13141,9 @@ cv.addEventListener('pointerleave',function(){S.hover=null;DRAG=null;$('probe').
    a reading arrives, and now it opens it beside what was already there instead
    of closing it. */
 var OPENSEC={left:{soul:1}, right:{you:1}};
+/* which surfaces have already had their sections seeded, so a tab opens what
+   it is about the first time and never argues with a person who closed it. */
+var SEC_SEEDED={};
 function railOf(sec){return sec.dataset.rail||'left';}
 function wireSections(){
  document.querySelectorAll('.lsec').forEach(function(sec){
@@ -13358,10 +13466,30 @@ function render(){
   var L=leanRead(r);
   var off=Math.abs(L.ben-50)*2;              /* 0 at even, 100 at either end */
   var mal=L.mal>L.ben;
+  /* BENIGN AND MALIGNANT GET SYMBOLS, like balance. Ruled.
+
+     The bar carried two bare numbers at its ends and nothing saying which end
+     was which, so a person had to already know that the left one was the
+     benign figure. The balance strip directly above it has carried its two
+     symbols since it was rebuilt and this one had not caught up.
+
+     Benign is a closed ring with a rising stroke inside it: contained, and
+     going up. Malignant is a ring broken at its lower right with the stroke
+     falling out of the gap: the same shape, open, and going down. One form,
+     two states, which is the reading. */
+  var gB='<circle cx="12" cy="12" r="8"/><path d="M8.6 14.2l2.6-3.1 2.2 2 2-3.4"/>';
+  var gM='<path d="M15.6 18.6A8 8 0 1 1 18.6 15.4"/>'
+   +'<path d="M8.6 9.9l2.6 3.1 2.2-2 2 3.4"/>';
+  function pIco(g,on,c,t){
+   return '<span class="pol-g'+(on?' on':'')+'" style="--c:'+c+'" title="'+esc(t)+'">'
+    +'<svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">'+g+'</svg></span>';}
   pb.innerHTML='<div class="fill'+(mal?' mal':'')+'" style="width:'+(off/2).toFixed(1)+'%;'
    +'background:'+(mal?PAL.Root:PAL.Heart)+';opacity:.62"></div><div class="mid"></div>'
-   +'<div class="lb l">'+L.ben.toFixed(0)+'</div>'
-   +'<div class="lb r">'+L.mal.toFixed(0)+'</div>';
+   +'<div class="lb l">'+pIco(gB,!mal,PAL.Heart,
+     'Benign. Charge that is held and is not costing you.')
+   +'<b>'+L.ben.toFixed(0)+'</b></div>'
+   +'<div class="lb r"><b>'+L.mal.toFixed(0)+'</b>'+pIco(gM,mal,PAL.Root,
+     'Malignant. Charge that is held and is taking something from you.')+'</div>';
   pb.title=(L.cues?'Balance. '+L.cues+' cue'+(L.cues===1?'':'s')+' from the story so far. '
     :'Balance. No story yet, so this is the field alone. ')
    +'Benign '+L.ben.toFixed(0)+', malignant '+L.mal.toFixed(0)+', read from '+L.src
