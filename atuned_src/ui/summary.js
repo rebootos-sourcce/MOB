@@ -244,12 +244,17 @@ function sumStruct(r){
     +'title="'+esc(d.nm+'. '+d.d)+'">'+svgI('<path d="'+d.ic+'"/>')
     +'<span>'+esc(d.nm)+'</span></button>';}).join('')+'</div>';
  /* the archetypes. these ARE measured: aff is a real proportion. */
- var aff=(r.aff||[]).map(function(v,i){return {i:i,nm:(ARCH[i]||{}).nm||'',ic:(ARCH[i]||{}).ic,v:v};})
+ /* EVERY ARCHETYPE IN ITS OWN SEAT'S COLOUR. Ruled. Twelve named things were
+    passed the literal 'Heart' here, so a primary Warrior and a primary Sage
+    printed in the same green, and the family the mark belongs to was invisible
+    on the one surface that names it. The seat is on the record now. */
+ var aff=(r.aff||[]).map(function(v,i){return {i:i,nm:(ARCH[i]||{}).nm||'',
+   ic:(ARCH[i]||{}).ic, b:(ARCH[i]||{}).b||'Heart', v:v};})
   .filter(function(x){return x.nm;}).sort(function(a,b){return b.v-a.v;});
  var tot=aff.reduce(function(a,x){return a+x.v;},0)||1;
  out+='<div class="pm-eye" style="margin-top:18px">Primary and secondary</div>';
  out+=aff.slice(0,4).map(function(x,i){
-  return sumStructRow(x.nm, i===0?'primary':(i===1?'secondary':'also'), 'Heart',
+  return sumStructRow(x.nm, i===0?'primary':(i===1?'secondary':'also'), x.b,
    x.v/tot*100, Math.round(x.v/tot*100)+'%', x.ic?'<path d="'+x.ic+'"/>':null,
    ' data-arch="'+x.i+'"');}).join('');
  /* masks. weight on 0 to 10, so the arc is the weight and the pill is the value. */

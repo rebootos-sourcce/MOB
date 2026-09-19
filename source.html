@@ -119,9 +119,25 @@ font-display:swap;src:url(data:font/woff2;base64,d09GMgABAAAAALyAABUAAAAB4CAAALw
     gone on the owner's ruling, so this is the one face and there is no
     per person override to keep working. */
  --sans:'Inter','Inter Tight',system-ui,-apple-system,'Segoe UI',sans-serif;
- /* One family. The mono was in the first art direction doc and was ruled out
-    on sight. Lexend carries the digits, with tabular figures so columns hold. */
- --num:Lexend,system-ui,-apple-system,sans-serif;
+ /* ONE FAMILY MEANT ONE FAMILY, AND THIS TOKEN NAMED A SECOND ONE.
+
+    The comment above it said Lexend carries the digits. Lexend was never in
+    the build. When Google Fonts went, Inter was embedded as a variable font
+    and Lexend was not, so document.fonts lists exactly one family and every
+    number in this product, every reading, every allowance, every tabular
+    column, was falling through to system-ui. Which face that is depends on
+    the machine, so the one thing this token existed to guarantee, that
+    columns of figures line up, was the one thing it could not do.
+
+    document.fonts.check('12px Lexend') returns true, which is what hid this:
+    check answers whether the text can be rendered at all, and a fallback
+    counts. The list of loaded families is the honest reader and it has one
+    entry.
+
+    Inter carries the digits now, which is a statement about a font that is
+    actually here. Tabular figures are a feature of Inter and every column in
+    the sheet already asks for them with font-variant-numeric. */
+ --num:'Inter','Inter Tight',system-ui,-apple-system,sans-serif;
  --r:16px; --r-s:11px; --r-xs:8px;
  /* Minimum touch target. 69 of the interactive elements measured under 44px,
     which is the floor a finger needs. The number lives here so it cannot
@@ -3503,19 +3519,33 @@ const DOMAINS=[
 const AFFIN={Architect:['Apathy','Shock'],Engine:['Anger','Shame','Disgust'],
  Weaver:['Sad','Surprise'],Witness:['Fear','Anticipation']};
 
+/* EVERY ARCHETYPE IS SEATED. Ruled by the owner: "the primary and secondary
+   archetypes are also associated with chakra colours. The warrior's root, the
+   sage is crown, the mage is third eye, that kind of stuff."
+
+   Three of the twelve are his and are written as he gave them. The other nine
+   are placed by what the archetype does, which is the line already recorded
+   beside each one, against what each seat governs: root is what you stand on,
+   sacral what you want, solar what you carry, heart what you give, throat what
+   you say, third eye what you see, crown what you belong to.
+
+   This closes a standing rule rather than adding decoration. If it has a name
+   it has an icon, the icon has a family, and the family has a colour. Twelve
+   named things wore a mark and no family, so twelve distinct archetypes
+   rendered in one accent. */
 const ARCH=[
- {nm:'Warrior',  v:'moves on the threat',   ic:'M12 2l3 7h7l-6 4 2 8-6-5-6 5 2-8-6-4h7z'},
- {nm:'Sage',     v:'reads the situation',   ic:'M4 6h7v13H4zM20 6h-7v13h7'},
- {nm:'Rebel',    v:'refuses the frame',     ic:'M3 12h18M7 7l-4 5 4 5M17 7l4 5-4 5'},
- {nm:'Caregiver',v:'attends to the other',  ic:'M12 21s-8-5-8-11a4 4 0 018-2 4 4 0 018 2c0 6-8 11-8 11z'},
- {nm:'Creator',  v:'makes the thing',       ic:'M3 20l9-16 9 16z'},
- {nm:'Magician', v:'changes the conditions',ic:'M4 20L18 6M15 3l1 3 3 1-3 1-1 3-1-3-3-1 3-1z'},
- {nm:'Ruler',    v:'orders the field',      ic:'M3 19l3-12 6 6 6-6 3 12z'},
- {nm:'Explorer', v:'goes to the edge',      ic:'M12 12m-9 0a9 9 0 1018 0 9 9 0 10-18 0M15 9l-2 6-4 2 2-6z'},
- {nm:'Lover',    v:'closes the distance',   ic:'M12 21s-8-5-8-11a4 4 0 018-2 4 4 0 018 2c0 6-8 11-8 11zM12 8v13'},
- {nm:'Jester',   v:'breaks the tension',    ic:'M12 12m-9 0a9 9 0 1018 0 9 9 0 10-18 0M8 10h.01M16 10h.01M8 15c2 2 6 2 8 0'},
- {nm:'Everyman', v:'stays with the room',   ic:'M12 8m-4 0a4 4 0 108 0 4 4 0 10-8 0M4 21c0-5 4-7 8-7s8 2 8 7'},
- {nm:'Innocent', v:'takes it at face value',ic:'M12 12m-5 0a5 5 0 1010 0 5 5 0 10-10 0M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2'}];
+ {nm:'Warrior',  v:'moves on the threat',   b:'Root', ic:'M12 2l3 7h7l-6 4 2 8-6-5-6 5 2-8-6-4h7z'},
+ {nm:'Sage',     v:'reads the situation',   b:'Crown', ic:'M4 6h7v13H4zM20 6h-7v13h7'},
+ {nm:'Rebel',    v:'refuses the frame',     b:'Throat', ic:'M3 12h18M7 7l-4 5 4 5M17 7l4 5-4 5'},
+ {nm:'Caregiver',v:'attends to the other',  b:'Heart', ic:'M12 21s-8-5-8-11a4 4 0 018-2 4 4 0 018 2c0 6-8 11-8 11z'},
+ {nm:'Creator',  v:'makes the thing',       b:'Sacral', ic:'M3 20l9-16 9 16z'},
+ {nm:'Magician', v:'changes the conditions',b:'3rd Eye', ic:'M4 20L18 6M15 3l1 3 3 1-3 1-1 3-1-3-3-1 3-1z'},
+ {nm:'Ruler',    v:'orders the field',      b:'Solar', ic:'M3 19l3-12 6 6 6-6 3 12z'},
+ {nm:'Explorer', v:'goes to the edge',      b:'Sacral', ic:'M12 12m-9 0a9 9 0 1018 0 9 9 0 10-18 0M15 9l-2 6-4 2 2-6z'},
+ {nm:'Lover',    v:'closes the distance',   b:'Heart', ic:'M12 21s-8-5-8-11a4 4 0 018-2 4 4 0 018 2c0 6-8 11-8 11zM12 8v13'},
+ {nm:'Jester',   v:'breaks the tension',    b:'Throat', ic:'M12 12m-9 0a9 9 0 1018 0 9 9 0 10-18 0M8 10h.01M16 10h.01M8 15c2 2 6 2 8 0'},
+ {nm:'Everyman', v:'stays with the room',   b:'Root', ic:'M12 8m-4 0a4 4 0 108 0 4 4 0 10-8 0M4 21c0-5 4-7 8-7s8 2 8 7'},
+ {nm:'Innocent', v:'takes it at face value',b:'Crown', ic:'M12 12m-5 0a5 5 0 1010 0 5 5 0 10-10 0M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2'}];
 
 /* the 21 Laws of Spiritual Integrity, each seated at the band it governs.
    integrity is not one aggregate: a closed law dims its own band. */
@@ -8436,7 +8466,7 @@ function arcP(r0,r1,a0,a1){g.beginPath();g.arc(CX,CY,r0,a0,a1);g.arc(CX,CY,r1,a1
 function radialTxt(s,ang,rad,size,c,a,w){
  g.save();g.translate(CX+Math.cos(ang)*rad,CY+Math.sin(ang)*rad);
  let rot=ang;if(Math.cos(ang)<0){rot+=Math.PI;g.textAlign='right';}else g.textAlign='left';
- g.rotate(rot);g.font=(w||400)+' '+size+"px Lexend, system-ui, sans-serif";
+ g.rotate(rot);g.font=(w||400)+' '+size+"px Inter, system-ui, sans-serif";
  g.textBaseline='middle';g.fillStyle=rgba(c,a);g.fillText(s,0,0);
  /* the axis aligned box the rotated run actually occupies */
  var tw=g.measureText(s).width, sn=Math.abs(Math.sin(rot)), cs=Math.abs(Math.cos(rot));
@@ -8447,14 +8477,14 @@ function radialTxt(s,ang,rad,size,c,a,w){
  LBL.push({t:s,x:px-bw/2,y:py-bh/2,w:bw,h:bh});
  g.restore();}
 function txt(s,x,y,size,c,a,w,fam){g.save();
- g.font=(w||400)+' '+size+'px '+(fam||'Lexend, system-ui, sans-serif');
+ g.font=(w||400)+' '+size+'px '+(fam||'Inter, system-ui, sans-serif');
  g.textAlign='center';g.textBaseline='middle';g.fillStyle=rgba(c,a);g.fillText(s,x,y);g.restore();}
 function roundRect(x,y,w,h,r){
  if(g.roundRect){g.beginPath();g.roundRect(x,y,w,h,r);return;}
  g.beginPath();g.moveTo(x+r,y);g.arcTo(x+w,y,x+w,y+h,r);g.arcTo(x+w,y+h,x,y+h,r);
  g.arcTo(x,y+h,x,y,r);g.arcTo(x,y,x+w,y,r);g.closePath();}
 function pill(t,rad){const ink=INK();g.save();
- g.font="600 11px Lexend, system-ui, sans-serif";g.textAlign='center';g.textBaseline='middle';
+ g.font="600 11px Inter, system-ui, sans-serif";g.textAlign='center';g.textBaseline='middle';
  const w=g.measureText(t).width+18;
  g.fillStyle=LIGHT()?'rgba(255,255,255,.94)':'rgba(25,27,35,.94)';
  roundRect(CX-w/2,CY-rad-10,w,20,10);g.fill();
@@ -8890,7 +8920,7 @@ function verpArrows(cr0){
   /* the pill at the lower right, only once there is a story to count */
   if(evid){var px=x+R-3, py=y+R-5, pw=v.pct>=100?26:22, ph=12;
    roundRect(px,py,pw,ph,6);g.fillStyle=rgba(c,1);g.fill();
-   g.save();g.font='600 8.5px Lexend, system-ui, sans-serif';g.textAlign='center';g.textBaseline='middle';
+   g.save();g.font='600 8.5px Inter, system-ui, sans-serif';g.textAlign='center';g.textBaseline='middle';
    g.fillStyle=rgba(bgc,1);g.fillText(v.pct+'%',px+pw/2,py+ph/2+.5);g.restore();}
   HIT.push({k:'gate',v:v,x:x,y:y,rad:R+9});}
  hi.forEach(function(v,i){gate(v,i,hi.length,true);});
@@ -9242,7 +9272,7 @@ function drawWheel(r,L){
   const fs=Math.max(12.5,size*1.25);
   const x=CX+Math.cos(o.ang)*rad, y=CY+Math.sin(o.ang)*rad;
   const right=Math.cos(o.ang)>=0;
-  g.save();g.font='600 '+fs+'px Lexend, system-ui, sans-serif';
+  g.save();g.font='600 '+fs+'px Inter, system-ui, sans-serif';
   const w=g.measureText(o.nm).width;g.restore();
   let lx=x+(right?1:-1)*(size+10), ly=y;
   for(let step=0;step<6;step++){
@@ -9251,7 +9281,7 @@ function drawWheel(r,L){
     FLATS.push(box);
     g.beginPath();g.moveTo(x+(right?1:-1)*size,y);g.lineTo(lx,ly);
     g.strokeStyle=rgba(c,.6);g.lineWidth=1;g.stroke();
-    g.save();g.font='600 '+fs+'px Lexend, system-ui, sans-serif';
+    g.save();g.font='600 '+fs+'px Inter, system-ui, sans-serif';
     g.textAlign=right?'left':'right';g.textBaseline='middle';
     g.fillStyle=rgba(c,.99);g.fillText(o.nm,lx,ly);g.restore();
     return;}
@@ -9838,7 +9868,22 @@ function renderMap(r){
  if(PMLAYER==='pain'&&!PAINPICK){
   h+='<text x="50" y="97" text-anchor="middle" class="pm-gl" style="fill:'+PAL.Throat+'">'
    +'paint where it hurts</text>';
- }else if(!chain.length&&(PMLAYER==='bands'||PMLAYER==='pain')){
+ }else if(!marks.length&&(PMLAYER==='bands'||PMLAYER==='pain')){
+  /* THE EMPTY STATE ASKED THE WRONG QUESTION AND ANSWERED IT ON EVERY PROFILE.
+
+     It tested chain.length. chain is marks filtered to kind 'bead', and
+     pmMarks returns kind 'node' on this layer, always, so chain.length was
+     structurally zero and this fired unconditionally. It never read charge.
+
+     Measured before the fix: Ana carries 41 addresses, 41 marks are drawn on
+     the figure, and the caption underneath them said "nothing carrying yet".
+     James carries 18 with 24 drawn and read "nothing carrying". Four hundred
+     pixels above it the rail said "Carrying, 41 addresses". The instrument
+     contradicted itself on one screen, which is the owner's report of this
+     surface being broken, and it is this line.
+
+     The question the caption means is whether anything is drawn. marks is the
+     drawn set, so it is what the caption asks. */
   var instN=W.filter(function(n){return n.pole>=4;}).length;
   h+='<text x="50" y="97" text-anchor="middle" class="pm-gl" style="fill:'+PAL.Heart+'">'
    +(instN?'nothing carrying. '+instN+' addresses hold the opposite instead.'
@@ -10880,12 +10925,17 @@ function sumStruct(r){
     +'title="'+esc(d.nm+'. '+d.d)+'">'+svgI('<path d="'+d.ic+'"/>')
     +'<span>'+esc(d.nm)+'</span></button>';}).join('')+'</div>';
  /* the archetypes. these ARE measured: aff is a real proportion. */
- var aff=(r.aff||[]).map(function(v,i){return {i:i,nm:(ARCH[i]||{}).nm||'',ic:(ARCH[i]||{}).ic,v:v};})
+ /* EVERY ARCHETYPE IN ITS OWN SEAT'S COLOUR. Ruled. Twelve named things were
+    passed the literal 'Heart' here, so a primary Warrior and a primary Sage
+    printed in the same green, and the family the mark belongs to was invisible
+    on the one surface that names it. The seat is on the record now. */
+ var aff=(r.aff||[]).map(function(v,i){return {i:i,nm:(ARCH[i]||{}).nm||'',
+   ic:(ARCH[i]||{}).ic, b:(ARCH[i]||{}).b||'Heart', v:v};})
   .filter(function(x){return x.nm;}).sort(function(a,b){return b.v-a.v;});
  var tot=aff.reduce(function(a,x){return a+x.v;},0)||1;
  out+='<div class="pm-eye" style="margin-top:18px">Primary and secondary</div>';
  out+=aff.slice(0,4).map(function(x,i){
-  return sumStructRow(x.nm, i===0?'primary':(i===1?'secondary':'also'), 'Heart',
+  return sumStructRow(x.nm, i===0?'primary':(i===1?'secondary':'also'), x.b,
    x.v/tot*100, Math.round(x.v/tot*100)+'%', x.ic?'<path d="'+x.ic+'"/>':null,
    ' data-arch="'+x.i+'"');}).join('');
  /* masks. weight on 0 to 10, so the arc is the weight and the pill is the value. */
@@ -16842,7 +16892,9 @@ function render(){
     +'</button>';}
   var ah=aff.slice(0,3).map(function(x,i){
    var A=ARCH[x.i]||{};
-   return prow(T[i],x.nm,x.v/tot*100,seatCol('Heart'),A.ic?'<path d="'+A.ic+'"/>':null,
+   /* and the same in the rail, which passed the literal 'Heart' for all twelve.
+      Ruled: the warrior is root, the sage is crown, the mage is third eye. */
+   return prow(T[i],x.nm,x.v/tot*100,seatCol(A.b||'Heart'),A.ic?'<path d="'+A.ic+'"/>':null,
     x.nm+'. '+(A.v||'')+' Share of how the blueprint expresses.',
     ['arch',x.nm],
     'An archetype. '+x.nm+' '+(A.v||'')+'. It is native and was there before '

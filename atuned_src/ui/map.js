@@ -506,7 +506,22 @@ function renderMap(r){
  if(PMLAYER==='pain'&&!PAINPICK){
   h+='<text x="50" y="97" text-anchor="middle" class="pm-gl" style="fill:'+PAL.Throat+'">'
    +'paint where it hurts</text>';
- }else if(!chain.length&&(PMLAYER==='bands'||PMLAYER==='pain')){
+ }else if(!marks.length&&(PMLAYER==='bands'||PMLAYER==='pain')){
+  /* THE EMPTY STATE ASKED THE WRONG QUESTION AND ANSWERED IT ON EVERY PROFILE.
+
+     It tested chain.length. chain is marks filtered to kind 'bead', and
+     pmMarks returns kind 'node' on this layer, always, so chain.length was
+     structurally zero and this fired unconditionally. It never read charge.
+
+     Measured before the fix: Ana carries 41 addresses, 41 marks are drawn on
+     the figure, and the caption underneath them said "nothing carrying yet".
+     James carries 18 with 24 drawn and read "nothing carrying". Four hundred
+     pixels above it the rail said "Carrying, 41 addresses". The instrument
+     contradicted itself on one screen, which is the owner's report of this
+     surface being broken, and it is this line.
+
+     The question the caption means is whether anything is drawn. marks is the
+     drawn set, so it is what the caption asks. */
   var instN=W.filter(function(n){return n.pole>=4;}).length;
   h+='<text x="50" y="97" text-anchor="middle" class="pm-gl" style="fill:'+PAL.Heart+'">'
    +(instN?'nothing carrying. '+instN+' addresses hold the opposite instead.'

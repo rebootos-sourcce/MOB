@@ -388,7 +388,7 @@ function verpArrows(cr0){
   /* the pill at the lower right, only once there is a story to count */
   if(evid){var px=x+R-3, py=y+R-5, pw=v.pct>=100?26:22, ph=12;
    roundRect(px,py,pw,ph,6);g.fillStyle=rgba(c,1);g.fill();
-   g.save();g.font='600 8.5px Lexend, system-ui, sans-serif';g.textAlign='center';g.textBaseline='middle';
+   g.save();g.font='600 8.5px Inter, system-ui, sans-serif';g.textAlign='center';g.textBaseline='middle';
    g.fillStyle=rgba(bgc,1);g.fillText(v.pct+'%',px+pw/2,py+ph/2+.5);g.restore();}
   HIT.push({k:'gate',v:v,x:x,y:y,rad:R+9});}
  hi.forEach(function(v,i){gate(v,i,hi.length,true);});
@@ -740,7 +740,7 @@ function drawWheel(r,L){
   const fs=Math.max(12.5,size*1.25);
   const x=CX+Math.cos(o.ang)*rad, y=CY+Math.sin(o.ang)*rad;
   const right=Math.cos(o.ang)>=0;
-  g.save();g.font='600 '+fs+'px Lexend, system-ui, sans-serif';
+  g.save();g.font='600 '+fs+'px Inter, system-ui, sans-serif';
   const w=g.measureText(o.nm).width;g.restore();
   let lx=x+(right?1:-1)*(size+10), ly=y;
   for(let step=0;step<6;step++){
@@ -749,7 +749,7 @@ function drawWheel(r,L){
     FLATS.push(box);
     g.beginPath();g.moveTo(x+(right?1:-1)*size,y);g.lineTo(lx,ly);
     g.strokeStyle=rgba(c,.6);g.lineWidth=1;g.stroke();
-    g.save();g.font='600 '+fs+'px Lexend, system-ui, sans-serif';
+    g.save();g.font='600 '+fs+'px Inter, system-ui, sans-serif';
     g.textAlign=right?'left':'right';g.textBaseline='middle';
     g.fillStyle=rgba(c,.99);g.fillText(o.nm,lx,ly);g.restore();
     return;}

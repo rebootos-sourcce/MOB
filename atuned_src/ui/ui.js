@@ -728,7 +728,9 @@ function render(){
     +'</button>';}
   var ah=aff.slice(0,3).map(function(x,i){
    var A=ARCH[x.i]||{};
-   return prow(T[i],x.nm,x.v/tot*100,seatCol('Heart'),A.ic?'<path d="'+A.ic+'"/>':null,
+   /* and the same in the rail, which passed the literal 'Heart' for all twelve.
+      Ruled: the warrior is root, the sage is crown, the mage is third eye. */
+   return prow(T[i],x.nm,x.v/tot*100,seatCol(A.b||'Heart'),A.ic?'<path d="'+A.ic+'"/>':null,
     x.nm+'. '+(A.v||'')+' Share of how the blueprint expresses.',
     ['arch',x.nm],
     'An archetype. '+x.nm+' '+(A.v||'')+'. It is native and was there before '

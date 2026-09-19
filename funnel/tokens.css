@@ -76,9 +76,25 @@
     gone on the owner's ruling, so this is the one face and there is no
     per person override to keep working. */
  --sans:'Inter','Inter Tight',system-ui,-apple-system,'Segoe UI',sans-serif;
- /* One family. The mono was in the first art direction doc and was ruled out
-    on sight. Lexend carries the digits, with tabular figures so columns hold. */
- --num:Lexend,system-ui,-apple-system,sans-serif;
+ /* ONE FAMILY MEANT ONE FAMILY, AND THIS TOKEN NAMED A SECOND ONE.
+
+    The comment above it said Lexend carries the digits. Lexend was never in
+    the build. When Google Fonts went, Inter was embedded as a variable font
+    and Lexend was not, so document.fonts lists exactly one family and every
+    number in this product, every reading, every allowance, every tabular
+    column, was falling through to system-ui. Which face that is depends on
+    the machine, so the one thing this token existed to guarantee, that
+    columns of figures line up, was the one thing it could not do.
+
+    document.fonts.check('12px Lexend') returns true, which is what hid this:
+    check answers whether the text can be rendered at all, and a fallback
+    counts. The list of loaded families is the honest reader and it has one
+    entry.
+
+    Inter carries the digits now, which is a statement about a font that is
+    actually here. Tabular figures are a feature of Inter and every column in
+    the sheet already asks for them with font-variant-numeric. */
+ --num:'Inter','Inter Tight',system-ui,-apple-system,sans-serif;
  --r:16px; --r-s:11px; --r-xs:8px;
  /* Minimum touch target. 69 of the interactive elements measured under 44px,
     which is the floor a finger needs. The number lives here so it cannot

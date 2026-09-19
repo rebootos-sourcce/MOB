@@ -750,3 +750,62 @@ UX architect together, ten simulated passes, pitched to the ICPs, aiming at the
 least friction and the most reason to come back. Then simulated against the ICPs
 again and fixed on what that finds.
 *Large. The one on this list a person has called broken, so it goes first.*
+
+---
+
+## Ruled 19 September, fourth note. The Compass, and the Summary.
+
+He sent a screenshot of the Compass and called the page completely broken.
+
+**T1. Field, Compass and Body become sub buttons under one parent.** `ui/ui.js`, `shell/body.html`
+His word for the parent is tools. Three surfaces you cycle between rather than
+three separate top level tabs. The TAB integers are identity and do not move.
+*Medium.*
+
+**T2. The Compass is a feature and must not hold the dominant space.** `ui/cone.js`
+*Medium.*
+
+**T3. It opens flat, in 2D.** `ui/cone.js`
+Then click and drag to move around it. Today it opens in the turned figure,
+which is the state he has to work out how to get out of.
+*Small once T2 is decided.*
+
+**T4. Flat, Regulation and Layers go to the upper left.** `ui/cone.js`
+He does not know what they do, which is a naming problem as much as a placement
+one. Move them, and make each one say what it is.
+*Small.*
+
+**T5. The lower left block comes out.** `ui/cone.js`
+The right hand side is the information layer. A second information layer in the
+lower left is the same reading in two places.
+*Small.*
+
+**T6. 30 day, quarter and year become a 2D graph in the lower right.** `ui/cone.js`
+Cycling the three shows progress in graph form rather than switching a label.
+Clicking the graph opens Summary.
+*Medium.*
+
+**T7. Summary carries integrity over time, full width.** `ui/summary.js`
+One horizontal graph across the whole line, sortable by day, week, month,
+quarter, year and five years.
+*Medium. The five year bucket has no data behind it yet and must say so
+rather than draw an empty axis as though it were flat.*
+
+**T8. The Summary is bracketed and written.** `ui/summary.js`
+His frame, and it is the spec: how the spiritual psychology runs through me,
+how the ego runs through me, and how the spiritual influences the ego. Then a
+summary. In depth, direct, accurate, computed from everything already entered
+rather than assembled on the page.
+*Large. It is the piece with the most engine behind it already.*
+
+**T9. A widget to talk to Source AI from the Summary.** new module
+A conversation about the summary, asking for specifics. Needs the seam, needs a
+ruling on what the conversation may see, and the story boundary applies.
+*Large. Blocked on his ruling about what Source AI is allowed to read.*
+
+**T10. The archetypes wear their chakra colours.** `engine/data`, `ui/summary.js`
+Primary and secondary archetypes are seated. Warrior is root, sage is crown,
+mage is third eye. They are rendered without their colour today, which breaks
+the standing rule that a named thing has an icon, the icon has a family and the
+family has a colour.
+*Small, and it is the one on this list that can land immediately.*

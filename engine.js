@@ -246,19 +246,33 @@ const DOMAINS=[
 const AFFIN={Architect:['Apathy','Shock'],Engine:['Anger','Shame','Disgust'],
  Weaver:['Sad','Surprise'],Witness:['Fear','Anticipation']};
 
+/* EVERY ARCHETYPE IS SEATED. Ruled by the owner: "the primary and secondary
+   archetypes are also associated with chakra colours. The warrior's root, the
+   sage is crown, the mage is third eye, that kind of stuff."
+
+   Three of the twelve are his and are written as he gave them. The other nine
+   are placed by what the archetype does, which is the line already recorded
+   beside each one, against what each seat governs: root is what you stand on,
+   sacral what you want, solar what you carry, heart what you give, throat what
+   you say, third eye what you see, crown what you belong to.
+
+   This closes a standing rule rather than adding decoration. If it has a name
+   it has an icon, the icon has a family, and the family has a colour. Twelve
+   named things wore a mark and no family, so twelve distinct archetypes
+   rendered in one accent. */
 const ARCH=[
- {nm:'Warrior',  v:'moves on the threat',   ic:'M12 2l3 7h7l-6 4 2 8-6-5-6 5 2-8-6-4h7z'},
- {nm:'Sage',     v:'reads the situation',   ic:'M4 6h7v13H4zM20 6h-7v13h7'},
- {nm:'Rebel',    v:'refuses the frame',     ic:'M3 12h18M7 7l-4 5 4 5M17 7l4 5-4 5'},
- {nm:'Caregiver',v:'attends to the other',  ic:'M12 21s-8-5-8-11a4 4 0 018-2 4 4 0 018 2c0 6-8 11-8 11z'},
- {nm:'Creator',  v:'makes the thing',       ic:'M3 20l9-16 9 16z'},
- {nm:'Magician', v:'changes the conditions',ic:'M4 20L18 6M15 3l1 3 3 1-3 1-1 3-1-3-3-1 3-1z'},
- {nm:'Ruler',    v:'orders the field',      ic:'M3 19l3-12 6 6 6-6 3 12z'},
- {nm:'Explorer', v:'goes to the edge',      ic:'M12 12m-9 0a9 9 0 1018 0 9 9 0 10-18 0M15 9l-2 6-4 2 2-6z'},
- {nm:'Lover',    v:'closes the distance',   ic:'M12 21s-8-5-8-11a4 4 0 018-2 4 4 0 018 2c0 6-8 11-8 11zM12 8v13'},
- {nm:'Jester',   v:'breaks the tension',    ic:'M12 12m-9 0a9 9 0 1018 0 9 9 0 10-18 0M8 10h.01M16 10h.01M8 15c2 2 6 2 8 0'},
- {nm:'Everyman', v:'stays with the room',   ic:'M12 8m-4 0a4 4 0 108 0 4 4 0 10-8 0M4 21c0-5 4-7 8-7s8 2 8 7'},
- {nm:'Innocent', v:'takes it at face value',ic:'M12 12m-5 0a5 5 0 1010 0 5 5 0 10-10 0M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2'}];
+ {nm:'Warrior',  v:'moves on the threat',   b:'Root', ic:'M12 2l3 7h7l-6 4 2 8-6-5-6 5 2-8-6-4h7z'},
+ {nm:'Sage',     v:'reads the situation',   b:'Crown', ic:'M4 6h7v13H4zM20 6h-7v13h7'},
+ {nm:'Rebel',    v:'refuses the frame',     b:'Throat', ic:'M3 12h18M7 7l-4 5 4 5M17 7l4 5-4 5'},
+ {nm:'Caregiver',v:'attends to the other',  b:'Heart', ic:'M12 21s-8-5-8-11a4 4 0 018-2 4 4 0 018 2c0 6-8 11-8 11z'},
+ {nm:'Creator',  v:'makes the thing',       b:'Sacral', ic:'M3 20l9-16 9 16z'},
+ {nm:'Magician', v:'changes the conditions',b:'3rd Eye', ic:'M4 20L18 6M15 3l1 3 3 1-3 1-1 3-1-3-3-1 3-1z'},
+ {nm:'Ruler',    v:'orders the field',      b:'Solar', ic:'M3 19l3-12 6 6 6-6 3 12z'},
+ {nm:'Explorer', v:'goes to the edge',      b:'Sacral', ic:'M12 12m-9 0a9 9 0 1018 0 9 9 0 10-18 0M15 9l-2 6-4 2 2-6z'},
+ {nm:'Lover',    v:'closes the distance',   b:'Heart', ic:'M12 21s-8-5-8-11a4 4 0 018-2 4 4 0 018 2c0 6-8 11-8 11zM12 8v13'},
+ {nm:'Jester',   v:'breaks the tension',    b:'Throat', ic:'M12 12m-9 0a9 9 0 1018 0 9 9 0 10-18 0M8 10h.01M16 10h.01M8 15c2 2 6 2 8 0'},
+ {nm:'Everyman', v:'stays with the room',   b:'Root', ic:'M12 8m-4 0a4 4 0 108 0 4 4 0 10-8 0M4 21c0-5 4-7 8-7s8 2 8 7'},
+ {nm:'Innocent', v:'takes it at face value',b:'Crown', ic:'M12 12m-5 0a5 5 0 1010 0 5 5 0 10-10 0M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2'}];
 
 /* the 21 Laws of Spiritual Integrity, each seated at the band it governs.
    integrity is not one aggregate: a closed law dims its own band. */

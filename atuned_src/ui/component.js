@@ -271,7 +271,7 @@ function arcP(r0,r1,a0,a1){g.beginPath();g.arc(CX,CY,r0,a0,a1);g.arc(CX,CY,r1,a1
 function radialTxt(s,ang,rad,size,c,a,w){
  g.save();g.translate(CX+Math.cos(ang)*rad,CY+Math.sin(ang)*rad);
  let rot=ang;if(Math.cos(ang)<0){rot+=Math.PI;g.textAlign='right';}else g.textAlign='left';
- g.rotate(rot);g.font=(w||400)+' '+size+"px Lexend, system-ui, sans-serif";
+ g.rotate(rot);g.font=(w||400)+' '+size+"px Inter, system-ui, sans-serif";
  g.textBaseline='middle';g.fillStyle=rgba(c,a);g.fillText(s,0,0);
  /* the axis aligned box the rotated run actually occupies */
  var tw=g.measureText(s).width, sn=Math.abs(Math.sin(rot)), cs=Math.abs(Math.cos(rot));
@@ -282,14 +282,14 @@ function radialTxt(s,ang,rad,size,c,a,w){
  LBL.push({t:s,x:px-bw/2,y:py-bh/2,w:bw,h:bh});
  g.restore();}
 function txt(s,x,y,size,c,a,w,fam){g.save();
- g.font=(w||400)+' '+size+'px '+(fam||'Lexend, system-ui, sans-serif');
+ g.font=(w||400)+' '+size+'px '+(fam||'Inter, system-ui, sans-serif');
  g.textAlign='center';g.textBaseline='middle';g.fillStyle=rgba(c,a);g.fillText(s,x,y);g.restore();}
 function roundRect(x,y,w,h,r){
  if(g.roundRect){g.beginPath();g.roundRect(x,y,w,h,r);return;}
  g.beginPath();g.moveTo(x+r,y);g.arcTo(x+w,y,x+w,y+h,r);g.arcTo(x+w,y+h,x,y+h,r);
  g.arcTo(x,y+h,x,y,r);g.arcTo(x,y,x+w,y,r);g.closePath();}
 function pill(t,rad){const ink=INK();g.save();
- g.font="600 11px Lexend, system-ui, sans-serif";g.textAlign='center';g.textBaseline='middle';
+ g.font="600 11px Inter, system-ui, sans-serif";g.textAlign='center';g.textBaseline='middle';
  const w=g.measureText(t).width+18;
  g.fillStyle=LIGHT()?'rgba(255,255,255,.94)':'rgba(25,27,35,.94)';
  roundRect(CX-w/2,CY-rad-10,w,20,10);g.fill();

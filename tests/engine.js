@@ -1783,7 +1783,29 @@ console.log('\n27 · the ladder');
   ok(L.earned.some(m=>m.k==='week'),'seven days running earns the week mark');}
 }
 
-console.log('\n28 · the outbox, and what may never leave the device');
+console.log('\n28 · every archetype is seated');
+{
+ /* IF IT HAS A NAME IT HAS AN ICON, THE ICON HAS A FAMILY, AND THE FAMILY HAS
+    A COLOUR. Twelve archetypes wore a mark and no family, so both renderers
+    passed the literal 'Heart' for all of them and a primary Warrior printed
+    in the same green as a primary Sage. */
+ ok(E.ARCH.every(a=>a.b),'every archetype names a seat');
+ ok(E.ARCH.every(a=>E.BANDS.indexOf(a.b)>=0),
+  'and every seat named is one of the seven');
+ /* the owner's three, written as he gave them */
+ const aseat=n=>(E.ARCH.filter(a=>a.nm===n)[0]||{}).b;
+ ok(aseat('Warrior')==='Root','the warrior is root');
+ ok(aseat('Sage')==='Crown','the sage is crown');
+ ok(aseat('Magician')==='3rd Eye','the mage is third eye');
+ /* NOT ALL ONE SEAT, which is the defect this closes. A single seat across
+    twelve would pass every check above and reproduce exactly what was wrong. */
+ ok(new Set(E.ARCH.map(a=>a.b)).size>=6,
+  'and the twelve are spread across at least six of the seven');
+ ok(E.ARCH.every(a=>a.ic),'every archetype still wears its own mark');
+ ok(new Set(E.ARCH.map(a=>a.ic)).size===E.ARCH.length,'and no two share one');
+}
+
+console.log('\n29 · the outbox, and what may never leave the device');
 {
  /* A STORE THAT IS NOT THE REAL ONE. The engine is host free and binds its
     storage, so the outbox is testable headless without a browser. */
