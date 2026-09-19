@@ -1330,7 +1330,9 @@ body.punch .crb-v{border-color:transparent;background:var(--c);color:var(--on-ac
    draws the word Heart. */
 .tl{position:absolute;top:14px;right:152px;text-align:right;pointer-events:none;max-width:210px}
 .tl b{display:block;font-size:17px;font-weight:600}
-.acc{position:absolute;right:152px;bottom:16px;z-index:4;text-align:right}
+/* lower right, ruled, and it was already there. What moved is the label,
+   which now sits to the left of the figure and carries the scale. */
+.acc{position:absolute;right:20px;bottom:14px;z-index:4;text-align:right}
 .acc-b{display:flex;align-items:center;gap:9px;background:transparent;border:0;padding:6px 8px;
  border-radius:var(--r-xs);color:inherit;font:inherit;cursor:pointer;min-height:var(--tap)}
 .acc-b:hover{background:var(--sunk)}
@@ -1338,7 +1340,11 @@ body:not(.tab-field) .acc{display:none}
 .acc-n{font-family:var(--num);font-size:34px;font-weight:400;line-height:1;color:var(--gold)}
 .acc-n small{font-size:16px;opacity:.6;margin-left:2px}
 .acc-n em{font-style:normal;font-size:15px;opacity:.55;margin-left:7px}
-.acc-l{font-size:11px;font-weight:600;color:var(--dim)}
+.acc-l{display:flex;flex-direction:column;align-items:flex-end;gap:2px;
+ font-size:11px;font-weight:600;color:var(--dim);text-align:right}
+.acc-l b{font-size:13px;font-weight:500;color:var(--mid);letter-spacing:.01em}
+.acc-l em{font-style:normal;font-size:11px;color:var(--dim);
+ font-family:var(--num);font-variant-numeric:tabular-nums}
 .acc-w{font-size:12.5px;color:var(--dim);margin-top:5px;max-width:300px;margin-left:auto;line-height:1.55}
 .acc-lean{opacity:.72;margin-top:3px}
 /* the compass belongs to the field tab alone. in the original both rules
@@ -1376,7 +1382,14 @@ body:not(.tab-field) .pol2{display:none}
 /* ---------- left rail : collapsible sections ---------- */
 .railtop{display:flex;align-items:center;gap:10px;flex-wrap:wrap;
  padding:0 0 13px;border-bottom:1px solid var(--edge);margin-bottom:2px}
-.railtop .rt-t{font-size:14px;color:var(--ink);font-weight:500}
+/* it is a button now, and a button that carries a definition owes the tap
+   floor like every other control. */
+.railtop .rt-t{font-size:14px;color:var(--ink);font-weight:500;
+ background:transparent;border:0;padding:0;font-family:var(--sans);cursor:pointer;
+ text-align:left;min-height:var(--tap);display:flex;align-items:center;
+ border-bottom:1px dotted var(--edge-2)}
+.railtop .rt-t:hover,.railtop .rt-t:focus-visible{color:var(--gold);
+ border-bottom-color:var(--gold)}
 /* the band word carries its own meaning, on the screen, not in a tooltip */
 .railtop{flex-wrap:wrap}
 .railtop .rt-d{flex:0 0 100%;font-size:12.5px;line-height:1.55;color:var(--mid);
@@ -1862,6 +1875,23 @@ body.dens-wide{--ui:1.1}
    everything that is a reading sits in the information column on the right,
    which is where the information layer lives everywhere else in this product.
    The figure was taking the full width and then a stack of prose under it. */
+/* THE SECOND STRIP. Lower left, carrying what moves through the person, while
+   the top strip carries what the instrument reads. Ruled. */
+/* ONE LINE. Four chips of one kind are one row, and I capped the strip at
+   half the stage so the fourth wrapped underneath on its own, which is not a
+   design decision, it is a width I typed without checking what it did. */
+/* AND IT MUST NOT COVER THE WHEEL. "Nothing on the stage covers the wheel" is
+   a standing rule and this broke it the moment it went in: the strip took
+   pointer events across its whole box, so an atom in the lower left could not
+   be hovered at all. The functional gate caught it by walking every anchor in
+   a story and finding no reachable atom anywhere.
+
+   The container passes the pointer through and only the chips take it. */
+.keylo{position:absolute;left:14px;bottom:14px;z-index:3;display:flex;gap:8px;
+ flex-wrap:nowrap;pointer-events:none}
+.keylo .kb{pointer-events:auto}
+@media (max-width:1180px){
+ .keylo{position:static;margin:0 14px 10px;order:9;flex-wrap:wrap}}
 .cone-body{display:grid;grid-template-columns:1fr 340px;gap:16px;align-items:start;
  min-height:0}
 .cone-fig{position:relative;min-width:0}

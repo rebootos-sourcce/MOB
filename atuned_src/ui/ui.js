@@ -532,10 +532,23 @@ function railTop(r){
  var td=r.unread?null:TIER_BY[r.tier];
  e.innerHTML=cr(r.darkB, r.unread?0:r.CQ, {size:'sm', label:'coherence',
    raw:r.unread?'\u2013':undefined})
-  +'<span class="rt-t">'+esc(r.unread?'not read yet':r.tier)+'</span>'
+  /* THE TIER IS A CONTROL WHEREVER IT LIVES. Taking the word off the Field
+     centre was ruled, and it took the only tappable route to the definition
+     with it: there was exactly one tier control in the product and it was the
+     one on the stage. A label never appears without what it owes, and the
+     definition has to be reachable by tap rather than by hover, because the
+     audience arrives on phones. So the word in the rail is the button now. */
+  +'<button type="button" class="rt-t tierbtn" id="tier" title="'
+  +esc(td?(td.def+'  '+td.energy+'  Toward: '+td.toward)
+       :'Nothing has been read yet. Write a story or set a charge.')+'">'
+  +esc(r.unread?'not read yet':r.tier)+'</button>'
   +'<span class="rt-d">'+esc(r.unread
     ? 'Nothing entered yet. Write what happened and this fills in.'
     : (td?td.def:''))+'</span>';
+ /* and a tap gets the whole thing, because hover is not a route on the device
+    most of this audience arrives on. */
+ var tb=e.querySelector('#tier');
+ if(tb)tb.onclick=function(){S.pin=null; runCompassDrill(); render();};
  /* the label never stands alone: hovering it gives the definition and the
     direction, and clicking the strip opens the whole thing. */
  e.title=td?(td.nm+'. '+td.def+' '+td.energy+' Toward: '+td.toward)
@@ -546,14 +559,8 @@ function render(){
  /* the tier is a name for a person. it is not printed off the defaults, and it
     never appears without what it owes: the definition, the behaviour and the
     direction. Hover gives all three, the compass drill gives them in full. */
- (function(){var e=$('tier'); if(!e)return;
-  e.textContent=r.unread?'not read yet':r.tier;
-  var td=r.unread?null:TIER_BY[r.tier];
-  e.title=td?(td.def+'  '+td.energy+'  Toward: '+td.toward)
-   :'Nothing has been read yet. Write a story or set a charge.';
-  /* and a tap gets the same thing, in full, because hover is not a route on
-     the device most of this audience arrives on. */
-  e.onclick=function(){S.pin=null; runCompassDrill(); render();};})();
+ /* the wiring lives with the button now, in railTop, because this ran before
+    railTop wrote the markup and would have found nothing. */
  /* The heaviest seat and its charge go onto the body so a theme can derive
     its chrome from the reading. Punch reads both; Dark and Snow ignore them. */
  document.body.style.setProperty('--seat',seatCol(r.darkB));
@@ -647,11 +654,10 @@ function render(){
     +cr('Crown',r.unread?0:r.CQ,{size:'xs',label:'CQ',hot:false,
       raw:r.unread?'\u2013':undefined})+'<span><b>CQ</b></span></button>'
   +'<button class="kb" data-q="dq" title="Shadow weight. The summed charge across every address that is carrying.">'
-    +cr('Root',clamp(r.DQ/14,0,1)*100,{size:'xs',raw:r.DQ.toFixed(1)})+'<span><b>DQ</b></span></button>'
+    +cr('Root',clamp(r.DQ/14,0,1)*100,{size:'xs',raw:r.DQ.toFixed(1)})
+    +'<span><b>DQ</b></span></button>'
   +'<button class="kb" data-q="sq" title="Segment depth. 0 to 10. How deep the held charge sits at the addresses carrying it.">'
     +cr(r.darkB,r.SQm*10,{size:'xs',raw:r.SQm.toFixed(1)})+'<span><b>SQ</b></span></button>'
-  +'<button class="kb" data-q="pole" title="The coherent opposite, installed. 0 to 1 across the nine axes.">'
-    +cr('Heart',r.poleMean*100,{size:'xs',hot:false,raw:r.poleMean.toFixed(2)})+'<span><b>Pole</b></span></button>'
   /* THE CONSOLE AVERAGED THREE READINGS AND SHOWED THE AVERAGE.
 
      One pill said Energy and behind it sat vitality, awareness and will,
@@ -670,21 +676,32 @@ function render(){
      share of signal that reaches the crown from the root, and it is what the
      Body page draws as a channel. It was computed and drawn there and read
      nowhere else. It reads here. */
-  +'<button class="kb" data-q="xyz" title="Vitality. What is left after apathy and the shadow weight.">'
+  ;   /* vitality, awareness, will and flow are the lower strip now */
+ /* TWO KINDS, TWO STRIPS. Ruled, and the grouping is his: CQ, DQ and SQ are
+    one kind of reading. Vitality, awareness, will and flow are another, and
+    they go lower left.
+
+    Eight chips on one line wrapped to two rows of unequal length, which is
+    what he circled and called a jumble. They are not one list: the first three
+    are the instrument reading itself, the last four are what is moving through
+    the person. Splitting them by kind is what makes the row mean something
+    rather than just fit. */
+ (function(){
+  var f=flSpeed(), lo=$('keylo'); if(!lo)return;
+  lo.innerHTML=
+   '<button class="kb" data-q="xyz" title="Vitality. What is left after apathy and the shadow weight.">'
     +cr('Solar',r.unread?0:r.X*100,{size:'xs',hot:false,raw:r.unread?'\u2013':r.X.toFixed(2)})
     +'<span><b>Vitality</b></span></button>'
-  +'<button class="kb" data-q="xyz" title="Awareness. Intention read against distortion.">'
+  +'<button class="kb" data-q="xyz" title="Awareness of the instrument. Intention read against distortion. Not the rail section of the same name.">'
     +cr('3rd Eye',r.unread?0:r.Y*100,{size:'xs',hot:false,raw:r.unread?'\u2013':r.Y.toFixed(2)})
     +'<span><b>Awareness</b></span></button>'
   +'<button class="kb" data-q="xyz" title="Will. Integrity carried through a clear segment.">'
     +cr('Root',r.unread?0:r.Z*100,{size:'xs',hot:false,raw:r.unread?'\u2013':r.Z.toFixed(2)})
     +'<span><b>Will</b></span></button>'
-  +(function(){
-    var f=flSpeed();
-    return '<button class="kb" data-q="flow" title="Flow. What reaches the crown from the root, '
-     +'every seat multiplied by the next.">'
-     +cr('Heart',r.unread?0:f*100,{size:'xs',hot:false,raw:r.unread?'\u2013':f.toFixed(2)})
-     +'<span><b>Flow</b></span></button>';})();
+  +'<button class="kb" data-q="flow" title="Flow. What reaches the crown from the root, '
+    +'every seat multiplied by the next.">'
+    +cr('Heart',r.unread?0:f*100,{size:'xs',hot:false,raw:r.unread?'\u2013':f.toFixed(2)})
+    +'<span><b>Flow</b></span></button>';})();
  /* who. proportions, not one label. */
  (function(){
   var aff=(r.aff||[]).map(function(v,i){return {i:i,nm:(ARCH[i]||{}).nm||'',v:v};})

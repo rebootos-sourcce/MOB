@@ -197,10 +197,29 @@ function renderAcc(r){
     identifies with nothing, and printing a percentage against that is the
     instrument reporting on itself as though it had read somebody. */
  var un=r.unread;
+ /* ACCURACY. He did not know what family match meant either, and said to
+    just use the word accuracy. It is what he has called this number from the
+    beginning.
+
+    THE LABEL GOES TO THE LEFT OF THE FIGURE. Ruled: "the text to the right of
+    it, I don't know what that is, but that should go to the left of it."
+
+    He did not recognise it because it said Identification, which is a
+    truncation of family identification and names nothing on its own. It says
+    what it is now, and it says what the number is out of, which is the
+    standing rule: a number without its scale does not print.
+
+    The interval is the honest half and it was already computed and never
+    shown here. An estimate presented without its spread is a precision claim
+    the instrument cannot support. */
  el.innerHTML='<button type="button" class="acc-b" id="accbtn" '
-  +'aria-label="Family identification. How sure the reading is. Opens the detail.">'
-  +cr('Crown',un?0:a.pct,{size:'lg',raw:un?'\u2013':a.pct.toFixed(1)+'%',label:'identification'})
-  +'<span class="acc-l">Identification</span></button>';
+  +'aria-label="Family identification. How much of you the instrument has '
+  +'measured. Opens the detail.">'
+  +'<span class="acc-l"><b>Accuracy</b>'
+  +(un?'<em>nothing read yet</em>'
+     :'<em>of 100, plus or minus '+a.band.toFixed(0)+'</em>')+'</span>'
+  +cr('Crown',un?0:a.pct,{size:'lg',raw:un?'\u2013':a.pct.toFixed(0),label:'accuracy'})
+  +'</button>';
  var bt=document.getElementById('accbtn');
  if(bt)bt.onclick=function(){runAccDrill();};}
 /* the detail the stage used to print whether it was asked for or not */

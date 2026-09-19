@@ -311,7 +311,9 @@
   <!-- ============ STAGE ============ -->
   <div class="glass stage" id="stage">
    <!-- the key comes first in flow so it sits above the canvas -->
-   <div class="key" id="key" aria-label="What you are looking at"></div>
+   <div class="key" id="key" aria-label="What the instrument reads"></div>
+   <!-- the second strip, lower left, carrying what moves through the person -->
+   <div class="keylo" id="keylo" aria-label="What is moving through you"></div>
    <canvas id="cv" role="img" aria-label="The field wheel. Every element is also listed in the panels either side."></canvas>
    <div id="emap" class="emap"></div>
    <div id="iq" class="iq"></div>
@@ -352,8 +354,22 @@
    <!-- The tier is a word this product puts on a person, so it is a button and
         not a label. Its definition lived only in a title attribute, which a
         touch screen cannot reach, and the audience arrives on phones. -->
-   <div class="tl" id="tl"><button type="button" class="tierbtn" id="tier">-</button>
-    <div id="pol"></div></div>
+   <!-- THE TIER WORD AND THE ORIENTATION BARS ARE OFF THE CENTRE. Ruled, and
+        he struck them out on a screenshot: the tier word is already on the
+        right rail and the benign and malignant split is already on the left
+        console. The sentence underneath them restated the bar directly above
+        it, which is a third copy of the same reading.
+
+        A reading printed twice on one screen is not emphasis, it is two places
+        for it to disagree. Nothing is lost: both still render where they
+        belong. The hosts stay in the document because the renderers write into
+        them, and they draw nothing on the Field. -->
+   <!-- The tier word moved to the right rail, where it is now the button, so
+        the copy that lived here is gone rather than hidden: two elements with
+        one id is worse than the duplicate reading it was meant to fix. #pol
+        stays because the orientation renderer writes into it, and it draws
+        nothing on the Field. -->
+   <div class="tl" id="tl" hidden><div id="pol"></div></div>
    <div class="probe" id="probe"></div>
    <div class="howto" id="howto"></div>
 

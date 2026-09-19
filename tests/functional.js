@@ -1481,13 +1481,31 @@ ok(leak.length===0,'no key, customer id or card field is anywhere in the build: 
     .map(function(h){var a=(h.a0+h.a1)/2,r=(h.r0+h.r1)/2;
       return {x:CX+Math.cos(a)*r,y:CY+Math.sin(a)*r};});});
  ok(anchors.length>0,'there is an address with a story on it to zoom into');
+ /* AND THE MAGNIFICATION IS NOT A CONSTANT EITHER.
+
+    Sixteen notches was tuned to a canvas 725 high. The Field top row was split
+    into two strips on the owner's ruling, the canvas gained 26 pixels, and at
+    sixteen notches the whole atom cluster now lands at x 701 to 784 against a
+    canvas 664 wide: past the right edge, at every anchor. The gate read that
+    as no atom to hover.
+
+    Measured at twelve notches on the same build: two atoms inside the canvas
+    and elementFromPoint returns the canvas, so they are reachable and the
+    product is fine. The comment above claimed walking the anchors made this a
+    real assertion rather than a geometry coincidence. It was still a
+    coincidence, one variable further out.
+
+    So the depth is walked too. The assertion is that somewhere in the range a
+    person can actually reach, an atom is hoverable, which is the thing worth
+    protecting and does not move when a strip changes height. */
  let one=null;
  for(const anc of anchors){
+  for(const notches of [12,14,10,16,8]){
   await pa.evaluate(()=>{S.zoom=1;S.panx=0;S.pany=0;render();});
   await pa.waitForTimeout(260);
   const b0=await (await pa.$('#cv')).boundingBox();
   await pa.mouse.move(b0.x+anc.x,b0.y+anc.y);
-  for(let i=0;i<16;i++){await pa.mouse.wheel(0,-120);await pa.waitForTimeout(25);}
+  for(let i=0;i<notches;i++){await pa.mouse.wheel(0,-120);await pa.waitForTimeout(25);}
   await pa.waitForTimeout(650);
   one=await pa.evaluate(()=>{
     const cv=document.getElementById('cv'), b=cv.getBoundingClientRect();
@@ -1495,6 +1513,7 @@ ok(leak.length===0,'no key, customer id or card field is anywhere in the build: 
       &&x.x>12&&x.x<b.width-12&&x.y>12&&x.y<b.height-12
       &&document.elementFromPoint(b.left+x.x,b.top+x.y)===cv)[0];
     return h?{x:h.x,y:h.y}:null;});
+  if(one)break;}
   if(one)break;}
 
  const st=await pa.evaluate(()=>({z:S.zoom,a:atomA(),
