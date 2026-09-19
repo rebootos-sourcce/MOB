@@ -230,45 +230,86 @@ const MASKS=[{nm:'Child',b:['Root','Sacral']},{nm:'Preteen',b:['Solar','Throat']
    product puts on a person is a reading and not a judgement: what
    it is, what it does, and where it goes.
    ============================================================ */
+/* THE STATE AND THE SOMATIC CONDITION, on the owner's grid.
+
+   Ten states, one per band, mapped bottom to top. They say what the body is
+   doing at that reading, which is the one thing the three existing fields
+   did not: def says what the field is doing, energy says what the day feels
+   like, toward says where it goes. None of them says what condition the
+   hardware is in.
+
+   Two of the ten were renamed against the grid as given, and both because of
+   a collision with a word this table already owns. The grid's level 4 is
+   Oscillating, and Oscillating is the band at 41 to 50 here, named for
+   crossing the median in both directions, which is a different reading at a
+   different place on the line. Its level 4 sits at 31 to 40, so it carries
+   Frustrated, which is the grid's own description of it. Level 5 keeps
+   Searching.
+
+   The grid's commercial column, the buying probability and its rationale, is
+   deliberately NOT here. It is real and it is useful and it belongs in the
+   business record: a person opening this product to read themselves must
+   never find a percentage saying how likely they are to buy, next to their
+   own reading. It is in BUYERS.md. */
 const TIERDEF=[
  {at:91, nm:'Mastery',
+  state:'Sovereign',
+  soma:'Absolute structural clarity. No unprocessed past experiences.',
   def:'The field builds far more than it costs. Almost nothing is held.',
   energy:'Intention and action arrive together. There is no gap left to manage.',
   toward:'Hold it. The work here is maintenance, and what you can now carry for other people.'},
  {at:81, nm:'Embodied',
+  state:'Coherent',
+  soma:'Frictionless connection between the field and local experience. Dynamic.',
   def:'The field builds more than it costs, with real load still in it.',
   energy:'You recover fast. A charge lands and clears instead of staying.',
   toward:'Mastery. Close the laws still shut, and clear what is still holding a week later.'},
  {at:71, nm:'Compounding',
+  state:'Aligned',
+  soma:'High throughput, low friction.',
   def:'Each cleared address makes the next one cheaper. The gains are stacking.',
   energy:'Less effort buys more movement than it did a month ago.',
   toward:'Embodied. Stop opening addresses. Finish the ones already open.'},
  {at:61, nm:'Gaining',
+  state:'Tuned',
+  soma:'Actively troubleshooting your own bottlenecks. Pragmatic, execution focused.',
   def:'The field builds more than it spends, and the margin is thin.',
   energy:'Forward on most days, and one hard week takes it back.',
   toward:'Compounding. Same seat, same address, repeated, until the load there stops returning.'},
  {at:51, nm:'Even',
+  state:'Receptive',
+  soma:'Exhausted by the old way and aware that it is broken.',
   def:'The field breaks even and sits just above the line.',
   energy:'What you build holds about as often as it slips.',
   toward:'Gaining. One address cleared entirely beats four reduced.'},
  {at:41, nm:'Oscillating',
+  state:'Searching',
+  soma:'Consuming and understanding, and still trapped in intellectualisation.',
   def:'The median range is forty to sixty and fifty is the centre of the line. '
      +'The field crosses it in both directions.',
   energy:'The day decides. What is running that morning sets the range.',
   toward:'Even. Consistency rather than intensity. The swing narrows before the number rises.'},
  {at:31, nm:'Incoherent',
+  state:'Frustrated',
+  soma:'Caught between somatic drag and occasional awareness.',
   def:'The field costs more than it builds. Charge is held at more addresses than are clearing.',
   energy:'Effort goes in and less comes out. You are working, and the work is going into holding.',
   toward:'Oscillating, and the median range starts at forty. Take the heaviest seat first. One address cleared where the load actually sits moves this further than ten cleared anywhere else.'},
  {at:21, nm:'Corrupt',
+  state:'Defensive',
+  soma:'Bound by dogma. Managing symptoms to protect a position.',
   def:'The held charge is shaping decisions now, not only mood.',
   energy:'The pattern chooses before you do. You can see it afterwards and not while it runs.',
   toward:'Incoherent, then the median range. The move is interruption: name the address while it is running, ahead of the behaviour.'},
  {at:11, nm:'Severe',
+  state:'Numb',
+  soma:'Medicating or distracting to survive the glitch. The hardware is shutting down.',
   def:'Most of the field is carrying. Very little is clear.',
   energy:'Ordinary demands read as threats. Capacity is spent before the day starts.',
   toward:'Off the floor, and nothing more ambitious than that. One seat, one address, one line. Not a programme.'},
  {at:0, nm:'Collapsed',
+  state:'Fragmented',
+  soma:'Hijacked by unprocessed past data. Absolute somatic drag.',
   def:'The field is fully loaded. Nothing is clearing.',
   energy:'Flat. Not calm, out of charge.',
   toward:'Weight off, and not alone. A reading this low is not a thing to manage by yourself, and the instrument will not pretend otherwise.'}];

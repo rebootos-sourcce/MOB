@@ -251,10 +251,49 @@ function railOf(sec){return sec.dataset.rail||'left';}
 function wireSections(){
  document.querySelectorAll('.lsec').forEach(function(sec){
   var hd=sec.querySelector('.lsec-hd'); if(!hd||hd._w)return; hd._w=1;
+  /* OPENING A SECTION USED TO THROW THE RAIL DOWN THE PAGE.
+
+     Opening Matrix put 171 cells into the rail, the column grew by 264px,
+     and the browser's scroll anchoring chose an anchor below the fold and
+     moved scrollTop from 0 to 355 to keep it still. Measured, not guessed:
+     the rail jumps exactly that far every time.
+
+     Scroll anchoring is off on the rail, and the thing that should stay
+     still is named rather than left to the browser to pick: the header you
+     just pressed. Its position on screen is taken before the layout changes
+     and restored after, so the section opens under your finger and nothing
+     else moves. */
   hd.onclick=function(){var rl=railOf(sec);
+   var sc=hd.closest?hd.closest('.sc'):null;
+   var was=sc?hd.getBoundingClientRect().top:0;
    var k=sec.dataset.sec, set=OPENSEC[rl];
+   var opening=!set[k];
    if(set[k])delete set[k]; else set[k]=1;
-   paintSections();};});
+   paintSections();
+   if(!sc)return;
+   /* PRESSING A HEADER PUTS THAT SECTION AT THE TOP. ALWAYS.
+
+      Matrix puts 171 cells into the column and its header sits below the
+      fold, so pressing it both scrolled the header into view and grew the
+      rail by 264px underneath. That is the screen jumping around, and it was
+      the browser choosing where to land rather than the product.
+
+      Holding the header exactly still is not the fix either: it leaves what
+      you just opened below the bottom edge, and on a close it cannot hold at
+      all, because the column shrinks and scrollTop clamps.
+
+      So there is one rule in both directions. Press a header and that
+      section goes to the top. Opening, you see what you opened. Closing, you
+      see the section you just collapsed and what follows it. The movement is
+      the same every time, which is what stops it reading as a jump: a person
+      learns it once.
+
+      The rail carries a tail below its last section so there is always room
+      to finish the move. Without it scrollTop clamped and the header stopped
+      530px short, which is a movement that starts and does not arrive. */
+   var top=sc.getBoundingClientRect().top;
+   sc.scrollTop+=(hd.getBoundingClientRect().top-top);
+   void was; void opening;};});
  paintSections();}
 function paintSections(){
  document.querySelectorAll('.lsec').forEach(function(sec){

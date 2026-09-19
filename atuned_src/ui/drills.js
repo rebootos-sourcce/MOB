@@ -876,12 +876,20 @@ function runCompassDrill(){
     reading. */
  if(me)h+='<div class="pm-eye">What '+esc(me.nm.toLowerCase())+' means</div>'
   +'<p class="ad-p">'+esc(me.def)+'</p>'
+  /* THE STATE THE BODY IS IN. The other three fields say what the field is
+     doing, what the day feels like, and where it goes. None of them says
+     what condition the hardware is in, which is the reading a person
+     recognises first. */
+  +(me.soma?'<div class="pm-eye">The state</div><p class="ad-p"><b>'
+    +esc(me.state)+'.</b> '+esc(me.soma)+'</p>':'')
   +'<div class="pm-eye">How it shows up</div><p class="ad-p">'+esc(me.energy)+'</p>'
   +'<div class="pm-eye">Where it goes</div><p class="ad-p">'+esc(me.toward)+'</p>';
  h+='<div class="pm-eye">The whole scale</div><div class="ad-rows">'
   +TIERDEF.map(function(t){
-    return '<div class="ad-r static'+(t.nm===r.tier&&!r.unread?' on':'')+'" title="'+esc(t.def)+'">'
-     +'<span class="ad-k">'+esc(t.nm)+'</span><span class="ad-v">'+tierRange(t)+'</span></div>';}).join('')
+    return '<div class="ad-r static'+(t.nm===r.tier&&!r.unread?' on':'')+'" title="'+esc(t.soma||t.def)+'">'
+     +'<span class="ad-k">'+esc(t.nm)
+     +(t.state?'<em>'+esc(t.state)+'</em>':'')+'</span>'
+     +'<span class="ad-v">'+tierRange(t)+'</span></div>';}).join('')
   +'</div>';
  rdShell(h);}
 

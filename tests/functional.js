@@ -2,6 +2,15 @@ const {chromium}=require('playwright');
 const path=require('path');
 const FILE='file://'+path.resolve('source.html');
 let PASS=0,FAIL=0;
+/* THE BOOT IS A THREE SECOND SHEET, so every page these gates open has to be
+   allowed to finish booting before anything is measured or clicked. Without
+   it the gates race the boot: they wait under a second, the sheet is still
+   up, and a run fails intermittently on whichever surface it happened to
+   reach first. Measured once as four failures in one run of four that would
+   not reproduce, which is exactly the shape of this kind of race. */
+const booted=async p=>{try{await p.waitForFunction(
+  ()=>document.body.classList.contains('booted'),null,{timeout:6000});}
+ catch(e){/* reduced motion clears it synchronously; a miss is not a failure */}};
 const ok=(c,m)=>{if(c)PASS++;else{FAIL++;console.log('  FAIL '+m);}};
 (async()=>{
 const browser=await chromium.launch({executablePath:'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
@@ -10,7 +19,7 @@ const real=[];
 page.on('pageerror',e=>real.push('PAGEERROR: '+e.message));
 page.on('console',m=>{if(m.type()==='error'){const t=m.text();
  if(!/ERR_CERT_AUTHORITY_INVALID|ERR_FILE_NOT_FOUND|fonts\.googleapis/.test(t))real.push(t);}});
-await page.goto(FILE,{waitUntil:'load'}); await page.waitForTimeout(800);
+await page.goto(FILE,{waitUntil:'load'}); await booted(page); await page.waitForTimeout(800);
 
 console.log('=== figure fallback ===');
 await page.evaluate(()=>setTab(TAB.ENERGY)); await page.waitForTimeout(400);
@@ -267,7 +276,7 @@ console.log('\n=== a stranger is not told they are incoherent ===');
 /* a genuinely first load: the store has to be empty, or the page restores a
    field an earlier test in this run saved and this stops being a first load */
 const blank=await browser.newPage({viewport:{width:1600,height:1000}});
-await blank.goto(FILE,{waitUntil:'load'}); await blank.waitForTimeout(400);
+await blank.goto(FILE,{waitUntil:'load'}); await booted(blank); await blank.waitForTimeout(400);
 await blank.evaluate(()=>{try{localStorage.clear();}catch(e){}});
 await blank.reload({waitUntil:'load'}); await blank.waitForTimeout(700);
 const virgin=await blank.evaluate(()=>{
@@ -366,7 +375,7 @@ ok(/Where it goes/i.test(lab.drill),'and where it goes next');
 /* and the definition has to be reachable by TAP, not only by hover. It lived
    in a title attribute, and the audience arrives on phones. */
 const tapPg=await browser.newPage({viewport:{width:390,height:844}});
-await tapPg.goto(FILE,{waitUntil:'load'}); await tapPg.waitForTimeout(700);
+await tapPg.goto(FILE,{waitUntil:'load'}); await booted(tapPg); await tapPg.waitForTimeout(700);
 const tapped=await tapPg.evaluate(()=>{
  loadP(9); setTab(TAB.FIELD); render();
  const el=document.getElementById('tier');
@@ -456,7 +465,7 @@ console.log('\n=== a finger reads the wheel, it does not write it ===');
    page not moving. There is no undo, so the value was simply gone. */
 const touchCtx=await browser.newContext({viewport:{width:390,height:844},hasTouch:true,isMobile:true});
 const touchPg=await touchCtx.newPage();
-await touchPg.goto(FILE,{waitUntil:'load'}); await touchPg.waitForTimeout(700);
+await touchPg.goto(FILE,{waitUntil:'load'}); await booted(touchPg); await touchPg.waitForTimeout(700);
 /* The wheel is drawn on a requestAnimationFrame, and the app no longer opens on
    Field, so at this point in a fresh page the wheel has never been drawn and
    HIT is empty. Switch, let one frame pass, then probe. Nothing about the
@@ -730,7 +739,7 @@ console.log('\n=== every tab fits a phone ===');
    of it. A panel taller than its own box is the whole bug, so that is the
    assertion. */
 const phone=await browser.newPage({viewport:{width:390,height:844}});
-await phone.goto(FILE,{waitUntil:'load'}); await phone.waitForTimeout(700);
+await phone.goto(FILE,{waitUntil:'load'}); await booted(phone); await phone.waitForTimeout(700);
 for(const [t,sel] of [['STORY','#story'],['SUMMARY','#sum'],['ANALYTICS','#ana'],
                       ['INTAKE','#iq'],['KNOW','#know'],['GAMES','#games']]){
  const r=await phone.evaluate(([tt,ss])=>{
@@ -1144,8 +1153,18 @@ ok(/You can see\s*everything/.test(plan.two),
  'sight is not for sale, so every tier sees everything');
 ok(/On every tier including free/.test(plan.two),
  'and the panel names what is on every tier rather than what the next one unlocks');
-ok(/Twelve months for the price of 10/.test(plan.two),
- 'annual is offered, two months free');
+/* TWO MONTHS FREE IS OUT, on the owner's ruling, and this assertion is the
+   reason it survived: it pinned the sentence "twelve months for the price of
+   10" to the screen, so a ruling made in the design records could not reach
+   the product without the gate refusing it.
+
+   It asserts the rule now rather than the number. The annual line never
+   offers months it is not giving away, and it always says the allowance is
+   monthly, which is true at any price. */
+ok(!/price of/.test(plan.two),
+ 'the annual line does not offer free months while none are ruled');
+ok(/allowance still arrives monthly/.test(plan.two),
+ 'and the allowance is monthly whatever the year costs');
 ok(/On\s*Free/.test(plan.dead),
  'a cancelled record reads free however high the tier written on it');
 ok(/Rerunning anything already open costs nothing/.test(plan.two),
@@ -1193,7 +1212,7 @@ ok(leak.length===0,'no key, customer id or card field is anywhere in the build: 
 {
  console.log('\n=== the atom, past the fetters ===');
  const pa=await browser.newPage({viewport:{width:1600,height:1000}});
- await pa.goto(FILE,{waitUntil:'load'});
+ await pa.goto(FILE,{waitUntil:'load'}); await booted(pa);
  await pa.waitForTimeout(900);
  const tabs=await pa.$$eval('.tabtop',a=>a.map(x=>x.textContent.trim()));
  const go=async nm=>{await pa.$$eval('.tabtop',(a,i)=>a[i].click(),

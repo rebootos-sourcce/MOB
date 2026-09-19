@@ -2,6 +2,15 @@ const {chromium}=require('playwright');
 const path=require('path');
 const FILE='file://'+path.resolve('source.html');
 let PASS=0,FAIL=0;
+/* THE BOOT IS A THREE SECOND SHEET, so every page these gates open has to be
+   allowed to finish booting before anything is measured or clicked. Without
+   it the gates race the boot: they wait under a second, the sheet is still
+   up, and a run fails intermittently on whichever surface it happened to
+   reach first. Measured once as four failures in one run of four that would
+   not reproduce, which is exactly the shape of this kind of race. */
+const booted=async p=>{try{await p.waitForFunction(
+  ()=>document.body.classList.contains('booted'),null,{timeout:6000});}
+ catch(e){/* reduced motion clears it synchronously; a miss is not a failure */}};
 const ok=(c,m)=>{if(c)PASS++;else{FAIL++;console.log('  FAIL '+m);}};
 
 (async()=>{
@@ -10,7 +19,7 @@ const page=await browser.newPage({viewport:{width:1600,height:1000}});
 const errs=[];
 page.on('console',m=>{if(m.type()==='error')errs.push(m.text());});
 page.on('pageerror',e=>errs.push('PAGEERROR: '+e.message));
-await page.goto(FILE,{waitUntil:'load'});
+await page.goto(FILE,{waitUntil:'load'}); await booted(page);
 await page.waitForTimeout(900);
 
 console.log('\n=== 1 · load ===');
@@ -179,7 +188,7 @@ console.log('\n=== 7 \u00b7 nothing leaves the device ===');
  const asked=[];
  const p2=await browser.newPage({viewport:{width:1600,height:1000}});
  p2.on('request',r=>{const u=r.url(); if(!/^(file|data|blob|about):/.test(u))asked.push(u);});
- await p2.goto(FILE,{waitUntil:'load'});
+ await p2.goto(FILE,{waitUntil:'load'}); await booted(p2);
  await p2.waitForTimeout(900);
  /* exercise the surfaces most likely to reach for something */
  await p2.evaluate(()=>{loadP(8);setTab(TAB.FIELD);render();
@@ -215,7 +224,7 @@ console.log('\n=== 8 \u00b7 the tap floor. 44 by 44, every interactive element. 
    a control in a folded section has no box and is not a violation. */
 {
  const page3=await browser.newPage({viewport:{width:1600,height:1000}});
- await page3.goto(FILE,{waitUntil:'load'}); await page3.waitForTimeout(900);
+ await page3.goto(FILE,{waitUntil:'load'}); await booted(page3); await page3.waitForTimeout(900);
  const tap=await page3.evaluate(async()=>{
   const out={};
   const tabs=TABDEF.map(t=>[t.k,t.nm]);
@@ -265,7 +274,7 @@ console.log('\n=== 9 \u00b7 four lightings, each its own ===');
    A number this gate cannot stand behind is worse than no number. */
 {
  const p4=await browser.newPage({viewport:{width:1600,height:1000}});
- await p4.goto(FILE,{waitUntil:'load'}); await p4.waitForTimeout(900);
+ await p4.goto(FILE,{waitUntil:'load'}); await booted(p4); await p4.waitForTimeout(900);
  const lit=await p4.evaluate(async()=>{
   const out={};
   for(const b of [...document.querySelectorAll('#themes button')]){
@@ -327,7 +336,7 @@ console.log('\n=== 9 \u00b7 four lightings, each its own ===');
 {
  console.log('\n=== 10 · the body paints what it counts ===');
  const p5=await browser.newPage({viewport:{width:1600,height:1000}});
- await p5.goto(FILE,{waitUntil:'load'});
+ await p5.goto(FILE,{waitUntil:'load'}); await booted(p5);
  await p5.waitForTimeout(900);
  await p5.selectOption('select',{index:1});
  await p5.waitForTimeout(500);
@@ -393,6 +402,10 @@ console.log('\n=== 9 \u00b7 four lightings, each its own ===');
    ============================================================ */
 {
  console.log('\n=== 11 · the boot ===');
+ /* THIS ONE DOES NOT WAIT FOR THE BOOT, because the boot is what it is
+    checking. The shared helper was applied to every goto in the file and it
+    made this gate assert the sheet was up after waiting for it to come
+    down, which it then correctly reported as a failure. */
  const p6=await browser.newPage({viewport:{width:1200,height:800}});
  await p6.goto(FILE,{waitUntil:'load'});
  await p6.waitForTimeout(250);

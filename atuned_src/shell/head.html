@@ -493,7 +493,27 @@ body:not(.hassub) .subbar{display:none}
    narrower than the column holding them, with the gap sitting empty beside
    every control. One word per concept, so the panel is a panel. */
 .panel{padding:16px 18px;min-height:0;display:flex;flex-direction:column;width:100%}
-.panel.sc{overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--edge-2) transparent}
+/* SCROLL ANCHORING IS OFF ON THE RAILS.
+
+   The rails hold accordions, and opening one adds a lot of height at once:
+   Matrix alone puts 171 cells in. The browser then picks an anchor to keep
+   still and, with the rail at the top, it picked something below the fold
+   and moved scrollTop from 0 to 355. The thing that should stay still is the
+   header you pressed, which the handler now pins by hand, and this stops the
+   browser fighting it. */
+.panel.sc{overflow-y:auto;overflow-anchor:none;
+ scrollbar-width:thin;scrollbar-color:var(--edge-2) transparent}
+/* AND THE RAIL HAS ROOM TO FINISH THE MOVE.
+
+   Bringing an opened section to the top only works while the container has
+   somewhere left to scroll. Matrix is the fourth of seven and the sections
+   under it are short, so scrollTop clamped and the header stopped 530px
+   short of the top, which is a movement that starts and does not arrive.
+
+   A tail after the last section gives every section enough travel to reach
+   the top. It is empty space below everything, which is the price, and it is
+   only visible at the very bottom of the rail. */
+.panel.sc::after{content:"";display:block;height:88vh;flex:0 0 auto}
 .panel.sc::-webkit-scrollbar{width:6px}
 .panel.sc::-webkit-scrollbar-thumb{background:var(--edge-2);border-radius:3px}
 
@@ -769,6 +789,9 @@ body.punch .kb{border-color:transparent;background:var(--panel-2)}
 body.punch canvas#cv{filter:saturate(1.2)}
 .gate-r .ad-m{margin-left:auto;font-family:var(--num);color:var(--dim);font-size:11.5px}
 .ad-r.static{cursor:default}
+/* the state beside the band name on the scale, so the ladder reads as ten
+   conditions and not ten adjectives */
+.ad-k em{font-style:normal;color:var(--dim);font-size:11.5px;margin-left:8px}
 .ad-r.on{background:color-mix(in srgb,var(--c,var(--gold)) 22%,transparent)}
 /* balance, along the bottom of the stage. the centre is the neutral point
    and the marker moves out from it. */
@@ -1979,8 +2002,15 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
    The one easing used for arrival is a cubic with an overshoot, because
    follow through is what makes a mark land rather than stop.
    ============================================================ */
+/* THE BOOT DOES NOT TAKE THE POINTER.
+
+   It is a full screen sheet for three seconds and it is decoration. Somebody
+   who reaches for a control in that time should reach the control, not a
+   picture of a spine. It is also what made the browser gates race: they open
+   the page, wait under a second, and click through a sheet that is still up. */
 .boot{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;
  align-items:center;justify-content:center;gap:26px;background:var(--bg);
+ pointer-events:none;
  animation:bootOut .42s cubic-bezier(.4,0,1,1) 2.58s forwards}
 .boot-svg{width:min(42vmin,300px);height:min(42vmin,300px);overflow:visible;
  fill:none;stroke-linecap:round}

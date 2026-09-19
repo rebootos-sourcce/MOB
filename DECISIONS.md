@@ -848,10 +848,15 @@ The repoint comes first now.
 themselves, and eight invites a month to break the ladder. Capped at four a
 month against fraud.
 
-**Monthly or annual.** Two months free on annual, which is the convention. The
-allowance still arrives monthly rather than as a year in one lump, because the
-allowance is a pace and a year of patterns handed over at once is not a
-practice.
+**Monthly or annual.** Two months free is out. It was ruled in here as the
+convention and the owner has ruled it back out, so this entry records the
+reversal rather than being edited to hide that it was ever decided. Whether an
+annual plan carries any discount at all is open and is his.
+
+The allowance still arrives monthly rather than as a year in one lump,
+whatever the price, because the allowance is a pace and a year of patterns
+handed over at once is not a practice. That part was never about the
+discount.
 
 **Sight is not for sale.**
 

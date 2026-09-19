@@ -205,9 +205,12 @@ which is worth more than the difference.
 3. **The referral number.** Fifty is the recommendation with the arithmetic
    attached.
 4. **Whether tier three gets something of its own** or the grants re-space.
-5. **Annual.** Two months free is the convention, it lifts retained revenue by
-   roughly fifteen percent on these numbers, and it changes the grant
-   arithmetic because an annual plan still grants monthly.
+5. **Annual. Two months free is out, on the owner's ruling.** It was listed
+   here as the convention and as worth roughly fifteen percent on retained
+   revenue, and it is ruled against, so the arithmetic that assumed it is
+   wrong wherever it still appears. An annual plan still grants monthly, so
+   the grant arithmetic stands on its own and did not depend on the discount.
+   What the annual discount should be, if any, is open and is the owner's.
 6. **Tax registration thresholds.** Stripe Tax is a switch; the obligations are
    not.
 7. **Instrument the ninety nine** from the first paying practitioner.

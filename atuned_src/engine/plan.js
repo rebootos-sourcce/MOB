@@ -82,16 +82,32 @@ function leadSees(what){ return LEAD_SEES.indexOf(what)>=0; }
 const PLAN_ALWAYS=['the whole reading','saboteurs, complexes, hyper complexes and character',
  'the archetypes','the pain map','every tool','the journal',
  'rerunning anything already open'];
-/* ANNUAL, ruled. Monthly or annual, and two months free is what annual pays.
+/* ANNUAL. TWO MONTHS FREE IS OUT, on the owner's ruling.
+
+   It was ruled in as the convention and has been ruled back out, and this was
+   not a document: planYear built the sentence "twelve months for the price of
+   ten" and the settings surface printed it to a person. An offer the owner
+   has withdrawn cannot keep being made by the product because the reversal
+   only reached the design records.
+
+   The discount is zero until a number is ruled. PLAN_YEAR_FREE stays as the
+   one place that number lives, so setting it is the whole change when there
+   is one, and at zero planYear says nothing about price at all.
+
    The allowance still arrives monthly rather than as a year in one lump,
-   because the allowance is a pace and a year of patterns handed over at once
-   is not a practice. */
-const PLAN_YEAR_FREE=2;
+   whatever the price, because the allowance is a pace and a year of patterns
+   handed over at once is not a practice. That part was never about the
+   discount. */
+const PLAN_YEAR_FREE=0;
 function planYear(k){
  var t=PLAN_BY[k]; if(!t||t.per!=='month')return null;
- return {pay:12-PLAN_YEAR_FREE, grant:t.grant,
-  say:'Twelve months for the price of '+(12-PLAN_YEAR_FREE)
-   +'. The allowance still arrives monthly, because it is a pace.'};}
+ var pay=12-PLAN_YEAR_FREE;
+ return {pay:pay, grant:t.grant,
+  say:(PLAN_YEAR_FREE>0
+    ? 'Twelve months for the price of '+pay+'. The allowance still arrives '
+      +'monthly, because it is a pace.'
+    : 'Paid for the year. The allowance still arrives monthly, because it is '
+      +'a pace.')};}
 
 /* THE STATES A SUBSCRIPTION CAN BE IN, and what each one means for access.
    past_due keeps access, because cutting somebody off mid month over a card

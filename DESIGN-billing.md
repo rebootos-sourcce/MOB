@@ -146,8 +146,10 @@ runs, because the page is hosted.
   attached to any of it. The panel research anchored against therapy, coaching
   and app pricing rather than against pattern counts, which is the right frame
   for setting them.
-- **Annual, and whether there is one.** Two months free is the convention and
-  it changes the grant arithmetic, because an annual plan grants monthly.
+- **Annual, and whether there is one.** Two months free was written here as
+  the convention and is ruled out. Whether there is any annual discount is
+  open and is the owner's. The grant arithmetic does not depend on it: an
+  annual plan grants monthly either way.
 - **Whether tier four's practitioner seat is per practitioner or per client.**
   A practitioner with twelve clients is a different product from a person with
   a bigger allowance, and it is the clearest thing here to charge for.

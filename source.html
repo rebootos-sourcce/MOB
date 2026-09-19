@@ -493,7 +493,27 @@ body:not(.hassub) .subbar{display:none}
    narrower than the column holding them, with the gap sitting empty beside
    every control. One word per concept, so the panel is a panel. */
 .panel{padding:16px 18px;min-height:0;display:flex;flex-direction:column;width:100%}
-.panel.sc{overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--edge-2) transparent}
+/* SCROLL ANCHORING IS OFF ON THE RAILS.
+
+   The rails hold accordions, and opening one adds a lot of height at once:
+   Matrix alone puts 171 cells in. The browser then picks an anchor to keep
+   still and, with the rail at the top, it picked something below the fold
+   and moved scrollTop from 0 to 355. The thing that should stay still is the
+   header you pressed, which the handler now pins by hand, and this stops the
+   browser fighting it. */
+.panel.sc{overflow-y:auto;overflow-anchor:none;
+ scrollbar-width:thin;scrollbar-color:var(--edge-2) transparent}
+/* AND THE RAIL HAS ROOM TO FINISH THE MOVE.
+
+   Bringing an opened section to the top only works while the container has
+   somewhere left to scroll. Matrix is the fourth of seven and the sections
+   under it are short, so scrollTop clamped and the header stopped 530px
+   short of the top, which is a movement that starts and does not arrive.
+
+   A tail after the last section gives every section enough travel to reach
+   the top. It is empty space below everything, which is the price, and it is
+   only visible at the very bottom of the rail. */
+.panel.sc::after{content:"";display:block;height:88vh;flex:0 0 auto}
 .panel.sc::-webkit-scrollbar{width:6px}
 .panel.sc::-webkit-scrollbar-thumb{background:var(--edge-2);border-radius:3px}
 
@@ -769,6 +789,9 @@ body.punch .kb{border-color:transparent;background:var(--panel-2)}
 body.punch canvas#cv{filter:saturate(1.2)}
 .gate-r .ad-m{margin-left:auto;font-family:var(--num);color:var(--dim);font-size:11.5px}
 .ad-r.static{cursor:default}
+/* the state beside the band name on the scale, so the ladder reads as ten
+   conditions and not ten adjectives */
+.ad-k em{font-style:normal;color:var(--dim);font-size:11.5px;margin-left:8px}
 .ad-r.on{background:color-mix(in srgb,var(--c,var(--gold)) 22%,transparent)}
 /* balance, along the bottom of the stage. the centre is the neutral point
    and the marker moves out from it. */
@@ -1979,8 +2002,15 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
    The one easing used for arrival is a cubic with an overshoot, because
    follow through is what makes a mark land rather than stop.
    ============================================================ */
+/* THE BOOT DOES NOT TAKE THE POINTER.
+
+   It is a full screen sheet for three seconds and it is decoration. Somebody
+   who reaches for a control in that time should reach the control, not a
+   picture of a spine. It is also what made the browser gates race: they open
+   the page, wait under a second, and click through a sheet that is still up. */
 .boot{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;
  align-items:center;justify-content:center;gap:26px;background:var(--bg);
+ pointer-events:none;
  animation:bootOut .42s cubic-bezier(.4,0,1,1) 2.58s forwards}
 .boot-svg{width:min(42vmin,300px);height:min(42vmin,300px);overflow:visible;
  fill:none;stroke-linecap:round}
@@ -2701,45 +2731,86 @@ const MASKS=[{nm:'Child',b:['Root','Sacral']},{nm:'Preteen',b:['Solar','Throat']
    product puts on a person is a reading and not a judgement: what
    it is, what it does, and where it goes.
    ============================================================ */
+/* THE STATE AND THE SOMATIC CONDITION, on the owner's grid.
+
+   Ten states, one per band, mapped bottom to top. They say what the body is
+   doing at that reading, which is the one thing the three existing fields
+   did not: def says what the field is doing, energy says what the day feels
+   like, toward says where it goes. None of them says what condition the
+   hardware is in.
+
+   Two of the ten were renamed against the grid as given, and both because of
+   a collision with a word this table already owns. The grid's level 4 is
+   Oscillating, and Oscillating is the band at 41 to 50 here, named for
+   crossing the median in both directions, which is a different reading at a
+   different place on the line. Its level 4 sits at 31 to 40, so it carries
+   Frustrated, which is the grid's own description of it. Level 5 keeps
+   Searching.
+
+   The grid's commercial column, the buying probability and its rationale, is
+   deliberately NOT here. It is real and it is useful and it belongs in the
+   business record: a person opening this product to read themselves must
+   never find a percentage saying how likely they are to buy, next to their
+   own reading. It is in BUYERS.md. */
 const TIERDEF=[
  {at:91, nm:'Mastery',
+  state:'Sovereign',
+  soma:'Absolute structural clarity. No unprocessed past experiences.',
   def:'The field builds far more than it costs. Almost nothing is held.',
   energy:'Intention and action arrive together. There is no gap left to manage.',
   toward:'Hold it. The work here is maintenance, and what you can now carry for other people.'},
  {at:81, nm:'Embodied',
+  state:'Coherent',
+  soma:'Frictionless connection between the field and local experience. Dynamic.',
   def:'The field builds more than it costs, with real load still in it.',
   energy:'You recover fast. A charge lands and clears instead of staying.',
   toward:'Mastery. Close the laws still shut, and clear what is still holding a week later.'},
  {at:71, nm:'Compounding',
+  state:'Aligned',
+  soma:'High throughput, low friction.',
   def:'Each cleared address makes the next one cheaper. The gains are stacking.',
   energy:'Less effort buys more movement than it did a month ago.',
   toward:'Embodied. Stop opening addresses. Finish the ones already open.'},
  {at:61, nm:'Gaining',
+  state:'Tuned',
+  soma:'Actively troubleshooting your own bottlenecks. Pragmatic, execution focused.',
   def:'The field builds more than it spends, and the margin is thin.',
   energy:'Forward on most days, and one hard week takes it back.',
   toward:'Compounding. Same seat, same address, repeated, until the load there stops returning.'},
  {at:51, nm:'Even',
+  state:'Receptive',
+  soma:'Exhausted by the old way and aware that it is broken.',
   def:'The field breaks even and sits just above the line.',
   energy:'What you build holds about as often as it slips.',
   toward:'Gaining. One address cleared entirely beats four reduced.'},
  {at:41, nm:'Oscillating',
+  state:'Searching',
+  soma:'Consuming and understanding, and still trapped in intellectualisation.',
   def:'The median range is forty to sixty and fifty is the centre of the line. '
      +'The field crosses it in both directions.',
   energy:'The day decides. What is running that morning sets the range.',
   toward:'Even. Consistency rather than intensity. The swing narrows before the number rises.'},
  {at:31, nm:'Incoherent',
+  state:'Frustrated',
+  soma:'Caught between somatic drag and occasional awareness.',
   def:'The field costs more than it builds. Charge is held at more addresses than are clearing.',
   energy:'Effort goes in and less comes out. You are working, and the work is going into holding.',
   toward:'Oscillating, and the median range starts at forty. Take the heaviest seat first. One address cleared where the load actually sits moves this further than ten cleared anywhere else.'},
  {at:21, nm:'Corrupt',
+  state:'Defensive',
+  soma:'Bound by dogma. Managing symptoms to protect a position.',
   def:'The held charge is shaping decisions now, not only mood.',
   energy:'The pattern chooses before you do. You can see it afterwards and not while it runs.',
   toward:'Incoherent, then the median range. The move is interruption: name the address while it is running, ahead of the behaviour.'},
  {at:11, nm:'Severe',
+  state:'Numb',
+  soma:'Medicating or distracting to survive the glitch. The hardware is shutting down.',
   def:'Most of the field is carrying. Very little is clear.',
   energy:'Ordinary demands read as threats. Capacity is spent before the day starts.',
   toward:'Off the floor, and nothing more ambitious than that. One seat, one address, one line. Not a programme.'},
  {at:0, nm:'Collapsed',
+  state:'Fragmented',
+  soma:'Hijacked by unprocessed past data. Absolute somatic drag.',
   def:'The field is fully loaded. Nothing is clearing.',
   energy:'Flat. Not calm, out of charge.',
   toward:'Weight off, and not alone. A reading this low is not a thing to manage by yourself, and the instrument will not pretend otherwise.'}];
@@ -4656,16 +4727,32 @@ function leadSees(what){ return LEAD_SEES.indexOf(what)>=0; }
 const PLAN_ALWAYS=['the whole reading','saboteurs, complexes, hyper complexes and character',
  'the archetypes','the pain map','every tool','the journal',
  'rerunning anything already open'];
-/* ANNUAL, ruled. Monthly or annual, and two months free is what annual pays.
+/* ANNUAL. TWO MONTHS FREE IS OUT, on the owner's ruling.
+
+   It was ruled in as the convention and has been ruled back out, and this was
+   not a document: planYear built the sentence "twelve months for the price of
+   ten" and the settings surface printed it to a person. An offer the owner
+   has withdrawn cannot keep being made by the product because the reversal
+   only reached the design records.
+
+   The discount is zero until a number is ruled. PLAN_YEAR_FREE stays as the
+   one place that number lives, so setting it is the whole change when there
+   is one, and at zero planYear says nothing about price at all.
+
    The allowance still arrives monthly rather than as a year in one lump,
-   because the allowance is a pace and a year of patterns handed over at once
-   is not a practice. */
-const PLAN_YEAR_FREE=2;
+   whatever the price, because the allowance is a pace and a year of patterns
+   handed over at once is not a practice. That part was never about the
+   discount. */
+const PLAN_YEAR_FREE=0;
 function planYear(k){
  var t=PLAN_BY[k]; if(!t||t.per!=='month')return null;
- return {pay:12-PLAN_YEAR_FREE, grant:t.grant,
-  say:'Twelve months for the price of '+(12-PLAN_YEAR_FREE)
-   +'. The allowance still arrives monthly, because it is a pace.'};}
+ var pay=12-PLAN_YEAR_FREE;
+ return {pay:pay, grant:t.grant,
+  say:(PLAN_YEAR_FREE>0
+    ? 'Twelve months for the price of '+pay+'. The allowance still arrives '
+      +'monthly, because it is a pace.'
+    : 'Paid for the year. The allowance still arrives monthly, because it is '
+      +'a pace.')};}
 
 /* THE STATES A SUBSCRIPTION CAN BE IN, and what each one means for access.
    past_due keeps access, because cutting somebody off mid month over a card
@@ -10792,12 +10879,20 @@ function runCompassDrill(){
     reading. */
  if(me)h+='<div class="pm-eye">What '+esc(me.nm.toLowerCase())+' means</div>'
   +'<p class="ad-p">'+esc(me.def)+'</p>'
+  /* THE STATE THE BODY IS IN. The other three fields say what the field is
+     doing, what the day feels like, and where it goes. None of them says
+     what condition the hardware is in, which is the reading a person
+     recognises first. */
+  +(me.soma?'<div class="pm-eye">The state</div><p class="ad-p"><b>'
+    +esc(me.state)+'.</b> '+esc(me.soma)+'</p>':'')
   +'<div class="pm-eye">How it shows up</div><p class="ad-p">'+esc(me.energy)+'</p>'
   +'<div class="pm-eye">Where it goes</div><p class="ad-p">'+esc(me.toward)+'</p>';
  h+='<div class="pm-eye">The whole scale</div><div class="ad-rows">'
   +TIERDEF.map(function(t){
-    return '<div class="ad-r static'+(t.nm===r.tier&&!r.unread?' on':'')+'" title="'+esc(t.def)+'">'
-     +'<span class="ad-k">'+esc(t.nm)+'</span><span class="ad-v">'+tierRange(t)+'</span></div>';}).join('')
+    return '<div class="ad-r static'+(t.nm===r.tier&&!r.unread?' on':'')+'" title="'+esc(t.soma||t.def)+'">'
+     +'<span class="ad-k">'+esc(t.nm)
+     +(t.state?'<em>'+esc(t.state)+'</em>':'')+'</span>'
+     +'<span class="ad-v">'+tierRange(t)+'</span></div>';}).join('')
   +'</div>';
  rdShell(h);}
 
@@ -12851,10 +12946,49 @@ function railOf(sec){return sec.dataset.rail||'left';}
 function wireSections(){
  document.querySelectorAll('.lsec').forEach(function(sec){
   var hd=sec.querySelector('.lsec-hd'); if(!hd||hd._w)return; hd._w=1;
+  /* OPENING A SECTION USED TO THROW THE RAIL DOWN THE PAGE.
+
+     Opening Matrix put 171 cells into the rail, the column grew by 264px,
+     and the browser's scroll anchoring chose an anchor below the fold and
+     moved scrollTop from 0 to 355 to keep it still. Measured, not guessed:
+     the rail jumps exactly that far every time.
+
+     Scroll anchoring is off on the rail, and the thing that should stay
+     still is named rather than left to the browser to pick: the header you
+     just pressed. Its position on screen is taken before the layout changes
+     and restored after, so the section opens under your finger and nothing
+     else moves. */
   hd.onclick=function(){var rl=railOf(sec);
+   var sc=hd.closest?hd.closest('.sc'):null;
+   var was=sc?hd.getBoundingClientRect().top:0;
    var k=sec.dataset.sec, set=OPENSEC[rl];
+   var opening=!set[k];
    if(set[k])delete set[k]; else set[k]=1;
-   paintSections();};});
+   paintSections();
+   if(!sc)return;
+   /* PRESSING A HEADER PUTS THAT SECTION AT THE TOP. ALWAYS.
+
+      Matrix puts 171 cells into the column and its header sits below the
+      fold, so pressing it both scrolled the header into view and grew the
+      rail by 264px underneath. That is the screen jumping around, and it was
+      the browser choosing where to land rather than the product.
+
+      Holding the header exactly still is not the fix either: it leaves what
+      you just opened below the bottom edge, and on a close it cannot hold at
+      all, because the column shrinks and scrollTop clamps.
+
+      So there is one rule in both directions. Press a header and that
+      section goes to the top. Opening, you see what you opened. Closing, you
+      see the section you just collapsed and what follows it. The movement is
+      the same every time, which is what stops it reading as a jump: a person
+      learns it once.
+
+      The rail carries a tail below its last section so there is always room
+      to finish the move. Without it scrollTop clamped and the header stopped
+      530px short, which is a movement that starts and does not arrive. */
+   var top=sc.getBoundingClientRect().top;
+   sc.scrollTop+=(hd.getBoundingClientRect().top-top);
+   void was; void opening;};});
  paintSections();}
 function paintSections(){
  document.querySelectorAll('.lsec').forEach(function(sec){

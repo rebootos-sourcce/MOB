@@ -1316,12 +1316,21 @@ g('23 \u00b7 the plan. what it grants, what it lets you see, and what it refuses
  ok(planNextSight(t1)===null&&planNextSight()===null,
   'and there is no next rung of sight to sell, on any plan');
  ok(planSees(t1,'nonsense')===false,'a rung that does not exist is still not a rung');
- /* ANNUAL, ruled. Monthly or annual, two months free, and the allowance still
-    arrives monthly because the allowance is a pace. */
+ /* ANNUAL. TWO MONTHS FREE IS OUT, on the owner's ruling, and this test is
+    what would have caught the product still making the offer: it asserted the
+    discount rather than asserting that the discount is whatever the one
+    constant says. It reads the constant now, so the ruling is a one line
+    change and the gate follows it instead of pinning it.
+
+    The allowance stays monthly whatever the price, because the allowance is
+    a pace and that was never about the discount. */
  const planYear=E.planYear, PLAN_YEAR_FREE=E.PLAN_YEAR_FREE;
- ok(PLAN_YEAR_FREE===2,'annual pays ten months, got '+(12-PLAN_YEAR_FREE));
- ok(planYear('one').pay===10&&planYear('one').grant===400,
-  'a year of tier one is ten payments at four hundred a month');
+ ok(PLAN_YEAR_FREE===0,'no annual discount is ruled, got '+PLAN_YEAR_FREE);
+ ok(planYear('one').pay===12-PLAN_YEAR_FREE&&planYear('one').grant===400,
+  'a year of tier one is '+(12-PLAN_YEAR_FREE)+' payments at four hundred a month');
+ /* and it does not offer months it is not giving away */
+ ok(!/price of/.test(planYear('one').say)||PLAN_YEAR_FREE>0,
+  'and it does not say months free while none are');
  ok(/arrives monthly/.test(planYear('one').say),
   'and the allowance is still monthly rather than a year in one lump');
  ok(planYear('free')===null&&planYear('gift')===null,

@@ -225,3 +225,92 @@ question for the ICPs, not an assumption. Ask them: what would get them to the
 test, what they need to hear to take it, what they expect to get out of it,
 and what makes them think this is too good to be true. Then shape the
 narrative from the mechanics of being, sharp and short.
+
+---
+
+# The owner's queue, this session
+
+Recorded verbatim in substance as it was given, so nothing is lost between
+passes. Items are struck as they land. What is DONE below was done this
+session and is in the history with its own commit; what is OPEN is not
+started and is not being claimed.
+
+## Done this session
+
+- Body page: heat map, chain arcs, the clip defect that hid every address
+- CQ copy rewritten to the owner's own language for coherence
+- Lean removed; benign or malignant named; balance returned to the rail
+- Balance strip rebuilt to the ruling: symbols, one line with a centre break,
+  fill from the centre out, percent as a pill
+- Console split: vitality, awareness, will and flow as their own readings
+- Compass: halo on Source, ego compression and pitchfork on the blueprint,
+  the 40 to 60 band with souls in it, your own marker oscillating, and the
+  paragraph replaced with the reading and the integrity loop
+- The atom: zoom past the fetters to the story weights, selectable and named
+- Rail rows are doors with tooltips and a jump into the codex
+- Source OS under the wordmark; the app opens on Field
+- Back and forward, not just undo
+- Top nav reads as tabs; the bar holds one line
+- The boot: three seconds, twelve principles, and it removes itself
+- Codex as a deck of cards rather than a wiki list
+- Record replaces Speak, reports its failures, green and red dot
+- Fetters highlighted in the person's own sentence in their seat colour
+- Settings in the centre panel, integer 9, no tab
+- Rail sections: pressing a header puts that section at the top
+
+## Open, in the order it was given
+
+**Story imprints, a fifth menu.** Ultra modern, flat, ten out of ten on
+innovation, drawing on current UI direction. The dropdown has to sing.
+
+**The compass, D to C plus.** Oscillation range over time in the lower left,
+30 day, quarter, annual, to show whether a person is improving. The six axis
+arrows: three that up regulate and three that down regulate, which is the
+nervous system and the spine composited onto the figure as toggleable
+overlays. A symbol for every character, Jesus through Lucifer. Selecting a
+character shows their story and their polar opposite, because the whole point
+of the compass is two paths of the same behaviour, and Socrates' framework of
+virtue against the compression below. A layers button, with Dante's Inferno
+and Paradiso as a suggestion for what compression over time looks like. And a
+flat 2D version on a button, alongside the spinning one.
+
+**The numbers, everywhere.** Lethargy, disconnection and the rest print as
+bare figures. They become an icon with the percent complete on it, and the
+pill to the lower right carrying the actual number. This is the item repeated
+most and it is UX work across every surface.
+
+**Tooltips on every number and every button.** Nothing on screen without one.
+
+**The intake needs to say what it is asking.** Fetters as emotional
+attachments: is the number how often they appear in the story cloud, or
+something a person types in? What does "fear towards trust" mean? Is this the
+laws of expression, in which case the sniffer will eventually supply the
+value. Intention, integrity and expression probably belong on this screen.
+Same question for the matrix: what is a person meant to do with it.
+
+**Screen zones.** Top, bottom, left and right each need a logic, so the
+areas around the centre carry at a glance information that is worth having.
+
+**Badges, achievements and score.** Not integrated at all yet.
+
+**Onboarding and the tutorial.** The welcome, the why, the story loop, how
+mindset programming works, the geometric nature of behaviour, a walk through
+the release protocol and the tools. Warm and inviting: this is for you, to
+return yourself to your own state, and everything is exposed so you can see
+how it works. The tutorial turns off once seen. Maximum flow and retention
+with no burden, while still capturing enough for CQ and the energetics.
+
+**Glass is a C.** Clunky. Crisper, and the fonts are too much in the face.
+
+**Two months free is out.** The offer is not two months free. Any copy
+saying so is wrong and comes out.
+
+**Simulations to run.** Onboarding and tutorial against the ICPs and the
+focus group. The story journal, Source AI, imprints and release, with release
+treated as the special one because it is the true gamification and the audio.
+Day one to day thirty, at a sample large enough to stop moving. Sign ups,
+tier changes, drop off, acquisition cost. And the closing questions: would
+you pay for this, would you pay this price, and how long would you use it.
+
+**Technical questions to answer.** Does the engine need optimising. Does
+anything need exposing that is not exposed yet.

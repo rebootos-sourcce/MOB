@@ -1,10 +1,19 @@
 const {chromium}=require('playwright');const path=require('path');
 const FILE='file://'+path.resolve('source.html');
+/* THE BOOT IS A THREE SECOND SHEET, so every page these gates open has to be
+   allowed to finish booting before anything is measured or clicked. Without
+   it the gates race the boot: they wait under a second, the sheet is still
+   up, and a run fails intermittently on whichever surface it happened to
+   reach first. Measured once as four failures in one run of four that would
+   not reproduce, which is exactly the shape of this kind of race. */
+const booted=async p=>{try{await p.waitForFunction(
+  ()=>document.body.classList.contains('booted'),null,{timeout:6000});}
+ catch(e){/* reduced motion clears it synchronously; a miss is not a failure */}};
 let PASS=0,FAIL=0;const ok=(c,m)=>{if(c)PASS++;else{FAIL++;console.log('  FAIL '+m);}};
 (async()=>{
 const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
 const p=await b.newPage({viewport:{width:1680,height:1020}});
-await p.goto(FILE,{waitUntil:'load'});await p.waitForTimeout(800);
+await p.goto(FILE,{waitUntil:'load'}); await booted(p);await p.waitForTimeout(800);
 const people=await p.evaluate(()=>PEOPLE.map(x=>x.nm));
 console.log('=== wheel nameplate overlaps, every persona x every depth ===');
 for(const nm of people){
