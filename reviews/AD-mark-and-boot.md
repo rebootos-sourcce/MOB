@@ -812,7 +812,7 @@ residual waveform read. Those are three live risks, they are all in section
 ## 9. Files
 
 - `reviews/AD-mark-and-boot.md`, this document.
-- `reviews/mark-proposals.html`, 151,599 bytes, one file, no network, Inter
+- `reviews/mark-proposals.html`, 151,618 bytes, one file, no network, Inter
   embedded. Both directions at 18px, 64px and 320px on nine grounds, which is
   the seven lightings plus Lumen's white ground and the boot's own black. The
   boot is playable with a live frame counter and a reduced motion switch, and
