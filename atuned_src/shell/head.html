@@ -443,7 +443,7 @@ body:not(.hassub) .subbar{display:none}
 .eyebrow,.lbl{text-transform:capitalize}
 /* the exceptions, where a capital on every word would be wrong: running prose
    that happens to use a header class, and anything already an acronym. */
-.pm-eye.plain,.sub.plain{text-transform:none}
+.pm-eye.plain,.sub.plain,.tier1.plain{text-transform:none}
 .tier1{font-size:11px;font-weight:600;color:var(--gold);margin-bottom:9px;line-height:1.45}
 .tier1 span{display:block;color:var(--dim);font-weight:400;font-size:13px;margin-top:3px}
 /* reading text. 16px floor, 50 to 75 character measure. */
@@ -673,6 +673,9 @@ canvas#cv{display:block;grid-column:2;grid-row:2;width:100%;height:100%;
 .probe b{color:var(--ink);font-weight:600}
 .probe u{text-decoration:none;color:var(--gold);font-family:var(--num);font-size:11px;font-weight:500}
 .probe hr{border:0;border-top:1px solid var(--edge);margin:8px 0}
+/* the arithmetic under a reading. It is how the number was computed and it is
+   not what the number means, so it sits under the meaning and reads quieter. */
+.probe .tt-q{font-family:var(--num);font-size:11px;opacity:.6;letter-spacing:.01em}
 /* The key is a strip in flow above the canvas, never over it. Each element
    is a button that opens its reading on the right. The tier block sits
    absolute at top right, so the strip leaves it room. */
@@ -693,10 +696,14 @@ body.punch canvas#cv{filter:saturate(1.2)}
    and the marker moves out from it. */
 /* the howto sits bottom left and the accuracy block bottom right, and the
    strip crossed both. it takes the lane between them and sits above them. */
-.bal{position:absolute;left:16px;bottom:16px;z-index:4;min-height:var(--tap);
- width:min(272px,calc(100% - 560px));background:none;border:0;padding:6px 0;cursor:pointer;
- display:flex;flex-direction:column;gap:6px;text-align:left}
-body:not(.tab-field) .bal{display:none}
+/* THE BALANCE STRIP MOVED INTO THE RAIL.
+
+   It was absolutely positioned at the bottom left of the Field canvas and
+   hidden on every other tab, so masculine against feminine existed on one
+   screen out of seven. In the rail it is a block like every other reading,
+   in flow, on every tab, and it needs none of the pinning. */
+.bal{display:flex;flex-direction:column;gap:6px;width:100%;text-align:left;
+ background:none;border:0;padding:6px 0;cursor:pointer;min-height:var(--tap)}
 .bal-t{display:flex;justify-content:space-between;align-items:center;gap:7px;
  font-size:11px;color:var(--dim);white-space:nowrap}
 /* the end the field leans to. the number in the middle is the amount, the
@@ -1767,11 +1774,10 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
     rendered 10 pixels tall on every phone with 106 pixels of content in it. */
  .emap{position:static;inset:auto;overflow:visible;width:100%;min-height:0;order:0}
  canvas#cv{flex:0 0 auto;height:min(86vw,390px);order:1}
- .tl,.acc,.howto,.bal{position:static;transform:none;text-align:left;max-width:none;
+ .tl,.acc,.howto{position:static;transform:none;text-align:left;max-width:none;
   width:auto;padding:0 14px;margin:0}
  .tl{order:2;margin-top:10px}
  .tl b{font-size:15px}
- .bal{order:3;margin-top:12px;display:flex}
  .acc{order:4;margin-top:12px}
  .howto{order:5;margin:12px 0 4px;max-width:none}
  .pol2{order:6;position:static;height:auto;margin:12px auto 0;justify-content:center}

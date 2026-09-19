@@ -3,15 +3,27 @@
    POINTER. Drag a segment to load or clear it, click to drill.
    ============================================================ */
 const HOWTO=[
- 'Charge. Three things only.\nThe core is CQ. The ring is your 112 addresses, SQ.\nThe wash behind everything is DQ.\nDrag any segment to load or clear it.',
+ 'Charge. Three things only.\nThe core is CQ, the alignment of the whole circuit.\nThe ring is your 112 addresses, SQ.\nThe wash behind everything is DQ.\nDrag any segment to load or clear it.',
  'Cluster. Charge, plus the seats and the saboteurs.\nEach bead is a saboteur. The threads show which\naddresses built it. Hover a bead to name it.',
  'Chain. Cluster, plus the rest of the compounding.\nSaboteur to complex to hyper to character, inward.\nThe named ring is your twelve archetypes.\nClick one to change how the soul expresses.',
  'Blueprint. Chain, plus domains, masks and laws.\nThe outer ring is nineteen domains, five per root cluster.\nThe faint ring inside is the six masks.\nThe short spokes at the centre are the twenty-one laws.'];
 function describe(h,r){
+ /* THE CORE SAID ITS ARITHMETIC AND NOT ITS MEANING.
+
+    It read "intention 6.5 times integrity over resistance" and that is three
+    variable names and a division. Nobody arriving at this screen knows what
+    any of the three are, so the sentence carried nothing at all.
+
+    Coherence is the alignment between what arrives, how you read it, what you
+    intend by it, and what you then do. That is a circuit with four stations
+    and this instrument reads every one. The formula is how the reading is
+    computed. It is not what the reading means, and it does not go first. */
  if(h.k==='core')return '<u>CQ '+Math.round(r.CQ)+'</u> <b>the core</b><hr>'
-  +'intention <b>'+r.It.toFixed(1)+'</b> times integrity <b>'+r.Ig.toFixed(1)+'</b><br>'
-  +'over resistance <b>'+r.Rz.toFixed(2)+'</b><hr>'
-  +'Size and saturation are coherence.<br><b>Click for the breakdown.</b>';
+  +'Coherence is the alignment between what arrives, how you read it,<br>'
+  +'what you intend, and what you then do.<br>'
+  +'This reads every register in that circuit.<hr>'
+  +'<span class="tt-q">intention '+r.It.toFixed(1)+', integrity '+r.Ig.toFixed(1)
+  +', resistance '+r.Rz.toFixed(2)+'</span><hr><b>Click for the breakdown.</b>';
  if(h.k==='gate'){var v=h.v;
   return '<u>'+(v.side==='higher'?'higher gate':'lower gate')+'</u> <b>'+esc(v.nm)+'</b><hr>'
    +esc(v.d||'')+'<hr>'+(v.n?'<b>'+v.pct+'%</b> of the story, '+v.n+' sentence'+(v.n===1?'':'s'):'no story yet')
@@ -340,13 +352,22 @@ function renderBal(r){
     the one that lights. One word per concept, on one strip. */
  var lean=b.read?Math.abs(b.lean)*100:0;
  var dir=!b.read?'':b.lean===0?'even':b.lean>0?'outward':'inward';
+ /* THE STRIP NAMED THE DIRECTION AND NOT THE POLE.
+
+    It read "outward" and "feminine" nowhere, with the two symbols carrying
+    the whole meaning. Outward and inward are how each pole expresses. They
+    are not what each pole IS, and a symbol a person has not been taught yet
+    cannot supply the word underneath it.
+
+    The poles are masculine and feminine. Those are the words. Outward and
+    inward move into the tooltips, where an explanation belongs. */
  e.innerHTML='<div class="bal-t">'
   +balG(GLYPH_M,dir==='outward','Masculine. Structure and direction, expressed outward. '
     +'Not men: the codex is explicit about that.')
-  +'<span'+(dir==='outward'?' class="on" style="color:'+c+'"':'')+'>outward</span>'
+  +'<span'+(dir==='outward'?' class="on" style="color:'+c+'"':'')+'>masculine</span>'
   +'<span class="bal-n"><b>'+(!b.read?'not enough held to read'
     :b.lean===0?'even':lean.toFixed(0)+'%')+'</b></span>'
-  +'<span'+(dir==='inward'?' class="on" style="color:'+c+'"':'')+'>inward</span>'
+  +'<span'+(dir==='inward'?' class="on" style="color:'+c+'"':'')+'>feminine</span>'
   +balG(GLYPH_F,dir==='inward','Feminine. Energy and receptivity, held inward. '
     +'Not women: the codex is explicit about that.')
   +'</div>'

@@ -131,19 +131,43 @@ addEventListener('click',function(e){
  if(!isFinite(i))return;
  rdClose(); relPick([i]);});
 
+/* THE CORE DRILL LED WITH ITS OWN ARITHMETIC.
+
+   Every word a person got about the most important number in the product was
+   a restatement of the formula: intention times integrity over resistance,
+   three values divided. That explains the calculation to somebody who already
+   knows what the calculation is for, which is nobody who opens this.
+
+   What it measures goes first. Then where the distortion sits, because that
+   is the only actionable thing on the screen. Then the arithmetic, which is
+   how the number was reached and not what it says. */
 function runCoreDrill(){
  var r=compute();
  var h='<div class="pm-eye">The core</div>'
   +'<div class="ad-nm">'+(r.unread?'Not read yet'
     :'CQ '+Math.round(r.CQ)+', '+r.tier.toLowerCase())+'</div>'
-  +'<div class="pm-eye">How it is built</div><p class="ad-p">'
-  +'CQ is intention times integrity, divided by resistance. Intention <b>'+r.It.toFixed(1)
-  +'</b>, integrity <b>'+r.Ig.toFixed(1)+'</b>, resistance <b>'+r.Rz.toFixed(2)+'</b>. '
-  +'Resistance is a floor of 1 plus DQ, so shadow weight is the only thing dividing you down.'
+  +'<div class="pm-eye">What coherence is</div><p class="ad-p">'
+  +'Coherence is the alignment between the world around you, what arrives from '
+  +'it, the way you read what arrives, the intention behind it, and the action '
+  +'that follows. Four stations and one circuit. This instrument reads every '
+  +'register in that circuit and reports where they stop agreeing.</p>'
+  +'<div class="pm-eye">Where the distortion sits</div><p class="ad-p">'
+  +'A circuit distorts somewhere specific. In the field, and it shows up as '
+  +'perception. In the body, and it shows up in the nervous system or in what '
+  +'the ego is holding. The reading does not tell you that you are incoherent. '
+  +'It tells you which register bent, and the body page shows you where.</p>'
+  +'<div class="pm-eye">How the number is reached</div><p class="ad-p">'
+  +'Intention <b>'+r.It.toFixed(1)+'</b>, integrity <b>'+r.Ig.toFixed(1)
+  +'</b>, resistance <b>'+r.Rz.toFixed(2)+'</b>. Intention times integrity, '
+  +'divided by resistance. Resistance is a floor of 1 plus DQ, so shadow '
+  +'weight is the only thing dividing you down.'
   +(r.vf!==1?' Your gate mix multiplies that cost by <b>'+r.vf.toFixed(2)+'</b>.':'')+'</p>'
   +'<div class="pm-eye">The read</div><p class="ad-p">The field is <b>'
   +(r.benign?'expanding':'contracting '+r.malig+'%')+'</b>. Radiance <b>'
-  +(r.radiance*100).toFixed(0)+'%</b>. The core takes its colour from the coherence ramp, so '
+  +(r.radiance*100).toFixed(0)+'%</b>. The field is the geometry of that '
+  +'radiance. It is harmonic, so patterns sit at registers rather than '
+  +'anywhere, and what radiates outward tends to carry the colour of the '
+  +'loudest seat. The core takes its colour from the coherence ramp, so '
   +'saturation and size are coherence and nothing else.</p>'
   +gatesBlock(null);
  rdShell(h);}

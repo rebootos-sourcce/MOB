@@ -443,7 +443,7 @@ body:not(.hassub) .subbar{display:none}
 .eyebrow,.lbl{text-transform:capitalize}
 /* the exceptions, where a capital on every word would be wrong: running prose
    that happens to use a header class, and anything already an acronym. */
-.pm-eye.plain,.sub.plain{text-transform:none}
+.pm-eye.plain,.sub.plain,.tier1.plain{text-transform:none}
 .tier1{font-size:11px;font-weight:600;color:var(--gold);margin-bottom:9px;line-height:1.45}
 .tier1 span{display:block;color:var(--dim);font-weight:400;font-size:13px;margin-top:3px}
 /* reading text. 16px floor, 50 to 75 character measure. */
@@ -673,6 +673,9 @@ canvas#cv{display:block;grid-column:2;grid-row:2;width:100%;height:100%;
 .probe b{color:var(--ink);font-weight:600}
 .probe u{text-decoration:none;color:var(--gold);font-family:var(--num);font-size:11px;font-weight:500}
 .probe hr{border:0;border-top:1px solid var(--edge);margin:8px 0}
+/* the arithmetic under a reading. It is how the number was computed and it is
+   not what the number means, so it sits under the meaning and reads quieter. */
+.probe .tt-q{font-family:var(--num);font-size:11px;opacity:.6;letter-spacing:.01em}
 /* The key is a strip in flow above the canvas, never over it. Each element
    is a button that opens its reading on the right. The tier block sits
    absolute at top right, so the strip leaves it room. */
@@ -693,10 +696,14 @@ body.punch canvas#cv{filter:saturate(1.2)}
    and the marker moves out from it. */
 /* the howto sits bottom left and the accuracy block bottom right, and the
    strip crossed both. it takes the lane between them and sits above them. */
-.bal{position:absolute;left:16px;bottom:16px;z-index:4;min-height:var(--tap);
- width:min(272px,calc(100% - 560px));background:none;border:0;padding:6px 0;cursor:pointer;
- display:flex;flex-direction:column;gap:6px;text-align:left}
-body:not(.tab-field) .bal{display:none}
+/* THE BALANCE STRIP MOVED INTO THE RAIL.
+
+   It was absolutely positioned at the bottom left of the Field canvas and
+   hidden on every other tab, so masculine against feminine existed on one
+   screen out of seven. In the rail it is a block like every other reading,
+   in flow, on every tab, and it needs none of the pinning. */
+.bal{display:flex;flex-direction:column;gap:6px;width:100%;text-align:left;
+ background:none;border:0;padding:6px 0;cursor:pointer;min-height:var(--tap)}
 .bal-t{display:flex;justify-content:space-between;align-items:center;gap:7px;
  font-size:11px;color:var(--dim);white-space:nowrap}
 /* the end the field leans to. the number in the middle is the amount, the
@@ -1767,11 +1774,10 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
     rendered 10 pixels tall on every phone with 106 pixels of content in it. */
  .emap{position:static;inset:auto;overflow:visible;width:100%;min-height:0;order:0}
  canvas#cv{flex:0 0 auto;height:min(86vw,390px);order:1}
- .tl,.acc,.howto,.bal{position:static;transform:none;text-align:left;max-width:none;
+ .tl,.acc,.howto{position:static;transform:none;text-align:left;max-width:none;
   width:auto;padding:0 14px;margin:0}
  .tl{order:2;margin-top:10px}
  .tl b{font-size:15px}
- .bal{order:3;margin-top:12px;display:flex}
  .acc{order:4;margin-top:12px}
  .howto{order:5;margin:12px 0 4px;max-width:none}
  .pol2{order:6;position:static;height:auto;margin:12px auto 0;justify-content:center}
@@ -1866,21 +1872,42 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
           a definition sitting permanently under a heading a person reads once,
           and the definition belongs in the tooltip and the drill, where it is
           asked for. What is left is the name and the thing itself. -->
-     <!-- ONE WORD PER CONCEPT. This said Balance and so does the strip under
-          the wheel, and they are not the same reading: this one is benign
-          against malignant, which is what the charge is made of, and that one
-          is masculine against feminine, which is which way it discharges.
-          Two things called Balance four inches apart is the rule broken. -->
-     <div class="tier1">0 &middot; Lean <span>benign against malignant</span></div>
+     <!-- LEAN WAS A WORD NOBODY COULD CASH.
+
+          The heading said Lean and the sublabel said benign against
+          malignant, so the heading was a name for the sublabel and carried
+          nothing the sublabel was not already saying. It was renamed Lean to
+          stop two sections both being called Balance. That solved the
+          collision by inventing a word instead of using the true one.
+
+          The reading is whether the charge a person holds is benign or
+          malignant. That is the heading now. Nothing abstract, and the
+          section says exactly what it does. -->
+     <!-- plain, because capitalize would render the conjunction as Or. The
+          exception hook already exists for exactly this. -->
+     <div class="tier1 plain">0 &middot; Benign or malignant</div>
      <div class="polbar" id="polbar"></div>
-     <div class="tier1" style="margin-top:18px">1 &middot; Root domains</div>
+     <!-- AND BALANCE COMES BACK INTO THE RAIL.
+
+          Masculine against feminine lived in one place: a floating strip
+          pinned to the bottom left of the Field canvas, hidden by CSS on
+          every other tab. So on six of seven screens the reading did not
+          exist, and the only thing in the rail that looked like it was the
+          benign against malignant bar under a word nobody could read.
+
+          Every other reading in this product lives in the rail. This one
+          does now too, and it is the only place it is drawn. -->
+     <div class="tier1" style="margin-top:18px">1 &middot; Balance</div>
+     <button type="button" class="bal" id="bal"
+      aria-label="Balance. Masculine against feminine. Opens the reading."></button>
+     <div class="tier1" style="margin-top:18px">2 &middot; Root domains</div>
      <!-- Four root domains would not fit one row, so Witness rendered as Witn
           with no affordance saying there was more. It wraps. Rule 10: never
           hide a control with no affordance. -->
      <div class="rootrow" id="roots"></div>
-     <div class="tier1">2 &middot; Blueprint domains</div>
+     <div class="tier1">3 &middot; Blueprint domains</div>
      <div class="gdom" id="doms"></div><div class="cap" id="capD"></div>
-     <div class="tier1" style="margin-top:18px">3 &middot; Primary</div>
+     <div class="tier1" style="margin-top:18px">4 &middot; Primary</div>
      <div class="g6" id="ar1"></div>
      <div class="sub" style="margin-top:16px">Secondary</div>
      <div class="g6" id="ar2"></div><div class="cap" id="capA"></div>
@@ -1951,7 +1978,7 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
     <div id="pol"></div></div>
    <div class="probe" id="probe"></div>
    <div class="howto" id="howto"></div>
-   <button class="bal" id="bal" aria-label="Balance. Which way the field discharges. Opens the reading."></button>
+
    <div class="acc" id="acc"></div>
    <button class="pol2" id="pol2" aria-label="The compass. Where coherence sits and how far it swings. Opens the reading."></button>
   </div>
@@ -9244,19 +9271,43 @@ addEventListener('click',function(e){
  if(!isFinite(i))return;
  rdClose(); relPick([i]);});
 
+/* THE CORE DRILL LED WITH ITS OWN ARITHMETIC.
+
+   Every word a person got about the most important number in the product was
+   a restatement of the formula: intention times integrity over resistance,
+   three values divided. That explains the calculation to somebody who already
+   knows what the calculation is for, which is nobody who opens this.
+
+   What it measures goes first. Then where the distortion sits, because that
+   is the only actionable thing on the screen. Then the arithmetic, which is
+   how the number was reached and not what it says. */
 function runCoreDrill(){
  var r=compute();
  var h='<div class="pm-eye">The core</div>'
   +'<div class="ad-nm">'+(r.unread?'Not read yet'
     :'CQ '+Math.round(r.CQ)+', '+r.tier.toLowerCase())+'</div>'
-  +'<div class="pm-eye">How it is built</div><p class="ad-p">'
-  +'CQ is intention times integrity, divided by resistance. Intention <b>'+r.It.toFixed(1)
-  +'</b>, integrity <b>'+r.Ig.toFixed(1)+'</b>, resistance <b>'+r.Rz.toFixed(2)+'</b>. '
-  +'Resistance is a floor of 1 plus DQ, so shadow weight is the only thing dividing you down.'
+  +'<div class="pm-eye">What coherence is</div><p class="ad-p">'
+  +'Coherence is the alignment between the world around you, what arrives from '
+  +'it, the way you read what arrives, the intention behind it, and the action '
+  +'that follows. Four stations and one circuit. This instrument reads every '
+  +'register in that circuit and reports where they stop agreeing.</p>'
+  +'<div class="pm-eye">Where the distortion sits</div><p class="ad-p">'
+  +'A circuit distorts somewhere specific. In the field, and it shows up as '
+  +'perception. In the body, and it shows up in the nervous system or in what '
+  +'the ego is holding. The reading does not tell you that you are incoherent. '
+  +'It tells you which register bent, and the body page shows you where.</p>'
+  +'<div class="pm-eye">How the number is reached</div><p class="ad-p">'
+  +'Intention <b>'+r.It.toFixed(1)+'</b>, integrity <b>'+r.Ig.toFixed(1)
+  +'</b>, resistance <b>'+r.Rz.toFixed(2)+'</b>. Intention times integrity, '
+  +'divided by resistance. Resistance is a floor of 1 plus DQ, so shadow '
+  +'weight is the only thing dividing you down.'
   +(r.vf!==1?' Your gate mix multiplies that cost by <b>'+r.vf.toFixed(2)+'</b>.':'')+'</p>'
   +'<div class="pm-eye">The read</div><p class="ad-p">The field is <b>'
   +(r.benign?'expanding':'contracting '+r.malig+'%')+'</b>. Radiance <b>'
-  +(r.radiance*100).toFixed(0)+'%</b>. The core takes its colour from the coherence ramp, so '
+  +(r.radiance*100).toFixed(0)+'%</b>. The field is the geometry of that '
+  +'radiance. It is harmonic, so patterns sit at registers rather than '
+  +'anywhere, and what radiates outward tends to carry the colour of the '
+  +'loudest seat. The core takes its colour from the coherence ramp, so '
   +'saturation and size are coherence and nothing else.</p>'
   +gatesBlock(null);
  rdShell(h);}
@@ -11513,15 +11564,27 @@ function stepRel(now){
    POINTER. Drag a segment to load or clear it, click to drill.
    ============================================================ */
 const HOWTO=[
- 'Charge. Three things only.\nThe core is CQ. The ring is your 112 addresses, SQ.\nThe wash behind everything is DQ.\nDrag any segment to load or clear it.',
+ 'Charge. Three things only.\nThe core is CQ, the alignment of the whole circuit.\nThe ring is your 112 addresses, SQ.\nThe wash behind everything is DQ.\nDrag any segment to load or clear it.',
  'Cluster. Charge, plus the seats and the saboteurs.\nEach bead is a saboteur. The threads show which\naddresses built it. Hover a bead to name it.',
  'Chain. Cluster, plus the rest of the compounding.\nSaboteur to complex to hyper to character, inward.\nThe named ring is your twelve archetypes.\nClick one to change how the soul expresses.',
  'Blueprint. Chain, plus domains, masks and laws.\nThe outer ring is nineteen domains, five per root cluster.\nThe faint ring inside is the six masks.\nThe short spokes at the centre are the twenty-one laws.'];
 function describe(h,r){
+ /* THE CORE SAID ITS ARITHMETIC AND NOT ITS MEANING.
+
+    It read "intention 6.5 times integrity over resistance" and that is three
+    variable names and a division. Nobody arriving at this screen knows what
+    any of the three are, so the sentence carried nothing at all.
+
+    Coherence is the alignment between what arrives, how you read it, what you
+    intend by it, and what you then do. That is a circuit with four stations
+    and this instrument reads every one. The formula is how the reading is
+    computed. It is not what the reading means, and it does not go first. */
  if(h.k==='core')return '<u>CQ '+Math.round(r.CQ)+'</u> <b>the core</b><hr>'
-  +'intention <b>'+r.It.toFixed(1)+'</b> times integrity <b>'+r.Ig.toFixed(1)+'</b><br>'
-  +'over resistance <b>'+r.Rz.toFixed(2)+'</b><hr>'
-  +'Size and saturation are coherence.<br><b>Click for the breakdown.</b>';
+  +'Coherence is the alignment between what arrives, how you read it,<br>'
+  +'what you intend, and what you then do.<br>'
+  +'This reads every register in that circuit.<hr>'
+  +'<span class="tt-q">intention '+r.It.toFixed(1)+', integrity '+r.Ig.toFixed(1)
+  +', resistance '+r.Rz.toFixed(2)+'</span><hr><b>Click for the breakdown.</b>';
  if(h.k==='gate'){var v=h.v;
   return '<u>'+(v.side==='higher'?'higher gate':'lower gate')+'</u> <b>'+esc(v.nm)+'</b><hr>'
    +esc(v.d||'')+'<hr>'+(v.n?'<b>'+v.pct+'%</b> of the story, '+v.n+' sentence'+(v.n===1?'':'s'):'no story yet')
@@ -11850,13 +11913,22 @@ function renderBal(r){
     the one that lights. One word per concept, on one strip. */
  var lean=b.read?Math.abs(b.lean)*100:0;
  var dir=!b.read?'':b.lean===0?'even':b.lean>0?'outward':'inward';
+ /* THE STRIP NAMED THE DIRECTION AND NOT THE POLE.
+
+    It read "outward" and "feminine" nowhere, with the two symbols carrying
+    the whole meaning. Outward and inward are how each pole expresses. They
+    are not what each pole IS, and a symbol a person has not been taught yet
+    cannot supply the word underneath it.
+
+    The poles are masculine and feminine. Those are the words. Outward and
+    inward move into the tooltips, where an explanation belongs. */
  e.innerHTML='<div class="bal-t">'
   +balG(GLYPH_M,dir==='outward','Masculine. Structure and direction, expressed outward. '
     +'Not men: the codex is explicit about that.')
-  +'<span'+(dir==='outward'?' class="on" style="color:'+c+'"':'')+'>outward</span>'
+  +'<span'+(dir==='outward'?' class="on" style="color:'+c+'"':'')+'>masculine</span>'
   +'<span class="bal-n"><b>'+(!b.read?'not enough held to read'
     :b.lean===0?'even':lean.toFixed(0)+'%')+'</b></span>'
-  +'<span'+(dir==='inward'?' class="on" style="color:'+c+'"':'')+'>inward</span>'
+  +'<span'+(dir==='inward'?' class="on" style="color:'+c+'"':'')+'>feminine</span>'
   +balG(GLYPH_F,dir==='inward','Feminine. Energy and receptivity, held inward. '
     +'Not women: the codex is explicit about that.')
   +'</div>'
