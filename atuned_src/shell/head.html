@@ -1524,13 +1524,60 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
 .st-col{min-height:0;display:flex;flex-direction:column}
 .st-read{overflow-y:auto;scrollbar-width:thin;padding-right:6px}
 .st-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px}
-.st-mic{min-height:var(--tap);display:inline-flex;align-items:center;
+/* RECORD, AND THE DOT SAYS WHICH MODE YOU ARE IN.
+
+   Green while it is recording, red while you are typing, ruled. The dot is
+   read before the label is, which is the point of having it: a person
+   glancing at this control should not have to read a word to know whether
+   the microphone is on. */
+.st-mic{min-height:var(--tap);display:inline-flex;align-items:center;gap:8px;
  background:var(--panel-2);border:1px solid var(--edge);color:var(--mid);
  border-radius:var(--r-xs);padding:7px 15px;font-family:var(--sans);font-size:13.5px;cursor:pointer}
+.st-mic svg{fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;
+ stroke-linejoin:round;flex:0 0 auto}
+.st-dot{width:8px;height:8px;border-radius:50%;flex:0 0 auto;
+ background:var(--alarm);transition:background .2s}
+.st-mic.on{border-color:#3FBF7F;color:var(--ink)}
+.st-mic.on .st-dot{background:#3FBF7F;animation:micPulse 1.6s ease-in-out infinite}
+@keyframes micPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.82)}}
 .st-mic.on{background:var(--alarm);border-color:var(--alarm);color:#fff;font-weight:500}
-.st-ta{flex:1 1 auto;min-height:260px;resize:none;background:var(--sunk);color:var(--ink);
- border:1px solid var(--edge);border-radius:var(--r-s);padding:18px 20px;font-family:var(--sans);
- font-size:16px;line-height:1.75;outline:none;font-weight:300}
+/* ============================================================
+   THE EDITOR IS TWO LAYERS IN REGISTER.
+
+   A textarea cannot carry colour inside its own value, so the highlight is a
+   layer behind it holding the same text, and the textarea's own text is
+   transparent with only its caret and its selection showing.
+
+   Every metric that affects where a glyph lands has to be identical on both
+   or they drift: font, size, weight, line height, padding, border width,
+   letter spacing and the wrapping mode. They are set once on the shared
+   parent and inherited, which is the only way to keep them from parting.
+   ============================================================ */
+.st-ed{position:relative;flex:1 1 auto;min-height:260px;display:flex;
+ font-family:var(--sans);font-size:16px;line-height:1.75;font-weight:300;
+ letter-spacing:normal}
+.st-ta,.st-hl{
+ flex:1 1 auto;min-height:260px;
+ border:1px solid transparent;border-radius:var(--r-s);padding:18px 20px;
+ font-family:inherit;font-size:inherit;line-height:inherit;font-weight:inherit;
+ letter-spacing:inherit;
+ white-space:pre-wrap;word-break:break-word;overflow-wrap:break-word;
+ margin:0}
+.st-hl{position:absolute;inset:0;overflow:hidden;pointer-events:none;
+ background:var(--sunk);border-color:var(--edge);color:transparent;z-index:0}
+.st-ta{position:relative;z-index:1;resize:none;background:transparent;
+ color:transparent;caret-color:var(--ink);outline:none;overflow:auto}
+.st-ta::selection{background:color-mix(in srgb,var(--accent) 34%,transparent)}
+.st-ta:focus+.st-hl,.st-ed:focus-within .st-hl{border-color:var(--accent)}
+/* the text a person reads is the layer behind, so that is the one with ink */
+.st-hl{color:var(--ink)}
+/* AND THE FETTERS ARE LIT IN THEIR OWN SEAT COLOUR.
+
+   Bold and coloured, ruled. The tint behind them is what makes a run of
+   three in one sentence read as a cluster rather than as three loud words. */
+.st-f{background:color-mix(in srgb,var(--c) 17%,transparent);color:var(--c);
+ font-weight:600;border-radius:3px;
+ box-shadow:0 0 0 1px color-mix(in srgb,var(--c) 26%,transparent)}
 .st-ta:focus{border-color:rgba(223,204,126,.48)}
 .st-ta::placeholder{color:var(--dim)}
 .st-bar{display:flex;align-items:center;gap:10px;margin-top:11px}
