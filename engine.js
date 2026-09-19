@@ -962,33 +962,48 @@ var FLOWSEAT=[
 var PML=[['bands','Fetters'],['sab','Saboteurs'],['cx','Complexes'],['hyper','Hyper'],
          ['masks','Masks'],['pain','Pain'],['nerves','Flow']];
 
-/* pain regions, front view. each owns a band set and a y-span on the figure. */
+/* pain regions, front view. each owns a band set, a y-span on the figure, and
+   now the boxes it occupies in the figure's own 100 by 100 space.
+
+   THE SPAN ALONE COULD NOT BE PAINTED ON. y0 and y1 answer how far down, which
+   is all a row of buttons needed, and the owner asked for the map to start
+   blank and be painted instead. A band across the whole width cannot be a hit
+   area here: arms and torso share every row between 26 and 45, and hands and
+   legs share 48 to 56, so a full width strip for either swallows the other.
+
+   box is a list because a limb is two of them, one per side, and a central
+   region is a list of one. The coordinates are the same space the addresses
+   are placed in, so a box is checked against the figure and not against a
+   guess. They are clipped to the silhouette when drawn, which is why a box may
+   run past the body: the clip trims it to the arm rather than the author
+   having to trace one. Smaller regions are drawn last so they take the click
+   where two overlap. */
 var PAINREG=[
- {k:'head',nm:'Head',bands:['Crown','3rd Eye'],y0:0,y1:16,
+ {k:'head',box:[[43.5,2,56.5,17]],nm:'Head',bands:['Crown','3rd Eye'],y0:0,y1:16,
   common:'tension headache, migraine, jaw clench, eye strain',
   pattern:'Overthinking and hypervigilance. The eye and crown holding what the body cannot resolve.'},
- {k:'throat',nm:'Throat',bands:['Throat'],y0:16,y1:25,
+ {k:'throat',box:[[45,16,55,25]],nm:'Throat',bands:['Throat'],y0:16,y1:25,
   common:'globus, thyroid strain, chronic clearing, voice loss',
   pattern:'Truth withheld. Apathy at the shoulder girdle and the throat, silence chosen over cost.'},
- {k:'shoulders',nm:'Shoulders',bands:['Throat','Heart'],y0:19,y1:28,
+ {k:'shoulders',box:[[36,19,64,28]],nm:'Shoulders',bands:['Throat','Heart'],y0:19,y1:28,
   common:'trapezius knots, frozen shoulder, upper back burn',
   pattern:'Carrying what is not yours. Duty overshot into martyrdom.'},
- {k:'arms',nm:'Arms',bands:['Heart','Throat'],y0:22,y1:52,
+ {k:'arms',box:[[30.5,23,39.5,50],[60.5,23,69.5,50]],nm:'Arms',bands:['Heart','Throat'],y0:22,y1:52,
   common:'tennis elbow, carpal tunnel, radiating ache',
   pattern:'Reaching and not receiving. Blocked receiving at the anterior cardiac.'},
- {k:'torso',nm:'Torso',bands:['Heart','Solar'],y0:26,y1:45,
+ {k:'torso',box:[[39,26,61,45]],nm:'Torso',bands:['Heart','Solar'],y0:26,y1:45,
   common:'reflux, IBS, rib tension, shallow breath, chest tightness',
   pattern:'Anger held at the celiac and grief at the cardiac. The two most loaded plexuses in most fields.'},
- {k:'pelvis',nm:'Pelvis',bands:['Sacral','Root'],y0:44,y1:60,
+ {k:'pelvis',box:[[40,44,60,60]],nm:'Pelvis',bands:['Sacral','Root'],y0:44,y1:60,
   common:'low back pain, hip impingement, pelvic floor tension, sciatica',
   pattern:'Shame at the pudendal and fear at the lumbar. Safety and worth, held in the base.'},
- {k:'legs',nm:'Legs',bands:['Root','Sacral'],y0:56,y1:94,
+ {k:'legs',box:[[40,56,60,90]],nm:'Legs',bands:['Root','Sacral'],y0:56,y1:94,
   common:'knee pain, plantar strain, restless legs, shin ache',
   pattern:'Ground not trusted. Fear at the root refusing to let weight down.'},
- {k:'hands',nm:'Hands',bands:['Heart'],y0:46,y1:56,
+ {k:'hands',box:[[27.5,48,38,61],[62,48,72.5,61]],nm:'Hands',bands:['Heart'],y0:46,y1:56,
   common:'grip pain, finger stiffness, cold hands',
   pattern:'Holding on. Control chosen over flow.'},
- {k:'feet',nm:'Feet',bands:['Root'],y0:90,y1:99,
+ {k:'feet',box:[[39,89,61,99]],nm:'Feet',bands:['Root'],y0:90,y1:99,
   common:'plantar fasciitis, arch collapse, numbness',
   pattern:'Contact with the ground refused. The root address will not discharge.'}];
 

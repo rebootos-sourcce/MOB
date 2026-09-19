@@ -2403,6 +2403,15 @@ body.booted{--boot-done:1}
 @keyframes tabIn{from{opacity:0;transform:translateY(6px)}
  to{opacity:1;transform:none}}
 .tabin{animation:tabIn var(--t-context) var(--ease-out) both}
+/* PAINT TO SELECT. A region is nearly invisible until it is pointed at, which
+   is what makes the figure a surface to paint on rather than a diagram with
+   nine boxes drawn on it. The selected one holds a low wash so the person can
+   see what they told it without the wash competing with the field underneath. */
+.pm-pr{fill-opacity:0;stroke-opacity:0;stroke-width:.4;cursor:pointer;
+ transition:fill-opacity var(--t-micro) var(--ease-out),
+  stroke-opacity var(--t-micro) var(--ease-out)}
+.pm-pr:hover{fill-opacity:.10;stroke-opacity:.55}
+.pm-pr.on{fill-opacity:.14;stroke-opacity:.78}
 @media (prefers-reduced-motion:reduce){
  .boot{animation:none;opacity:0;visibility:hidden}}
 

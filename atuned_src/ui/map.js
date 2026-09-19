@@ -78,8 +78,18 @@ function pmMarks(r){
  var L=PMLAYER;
  if(L==='bands') return W.filter(function(n){return n.sq>=LOADED||n.pole>=4;})
    .map(function(n){return {o:n,kind:'node',band:n.b,v:n.sq/10,nm:n.k,links:[]};});
- if(L==='pain')  return W.filter(function(n){return n.sq>=LOADED+1;})
-   .map(function(n){return {o:n,kind:'heat',band:n.b,v:(n.sq-LOADED)/(10-LOADED),nm:n.k,links:[]};});
+ /* THE PAIN MAP OPENS BLANK. Ruled. It printed every carrying address on the
+    figure the moment it was opened, which is the instrument answering a
+    question before it has been asked: a pain map exists to be told where it
+    hurts, and one that arrives already covered is telling the person where it
+    hurts instead. Nothing is drawn until a region is painted, and then only
+    what that region holds. */
+ if(L==='pain'){
+  if(!PAINPICK)return [];
+  var pr=PAINREG.filter(function(x){return x.k===PAINPICK;})[0];
+  return W.filter(function(n){return n.sq>=LOADED+1
+    &&(!pr||pr.bands.indexOf(n.b)>=0);})
+   .map(function(n){return {o:n,kind:'heat',band:n.b,v:(n.sq-LOADED)/(10-LOADED),nm:n.k,links:[]};});}
  if(L==='nerves')return flSeats().map(function(s){
    return {o:s,kind:'seat',band:K2B[s.p.k],v:s.pass,nm:s.p.n,links:[]};});
  if(L==='sab')   return r.sabs.map(function(o){var lv=leaves(o);
@@ -120,6 +130,10 @@ function pmCount(r,L){
     opposite pole, so counting only the carrying ones dimmed Fetters to zero on
     a profile with forty nine addresses waiting inside it. */
  if(L==='bands') return W.filter(function(n){return n.sq>=LOADED||n.pole>=4;}).length;
+ /* the button counts what is there to be found, not what is drawn: the layer
+    opens blank by ruling, and a button reading zero on a body with nineteen
+    carrying addresses would read as an empty instrument rather than as one
+    waiting to be asked. */
  if(L==='pain')  return W.filter(function(n){return n.sq>=LOADED+1;}).length;
  if(L==='nerves')return 7;
  if(L==='sab')   return r.sabs.length;
@@ -194,9 +208,15 @@ function renderMap(r){
   h+='<image class="pm-art" href="'+IMG+'" x="'+IX.toFixed(2)+'" y="2" width="'+IW.toFixed(2)
    +'" height="'+IH+'" preserveAspectRatio="xMidYMid meet"/>';
  }else{
+  /* A FILLED SILHOUETTE, not a wire. At rgba(128,128,128,.045) under an
+     opacity of .34 the fill was four thousandths of an alpha and the figure
+     was a line drawing, which gives the field nothing to sit in and gives the
+     eye no body to read the field against. The reference maps are all a solid
+     shape on a dark ground. The fill is its own alpha now so the outline can
+     stay faint without taking the body with it. */
   h+='<g class="pm-vec" transform="translate('+PMTX+','+PMTY+') scale('+PMS+')">'
-   +'<path d="'+BODYPATH+'" fill="rgba(128,128,128,.045)" stroke="currentColor" '
-   +'stroke-width="1.6" vector-effect="non-scaling-stroke" opacity=".34"/></g>';
+   +'<path d="'+BODYPATH+'" fill="rgba(150,152,160,.085)" stroke="currentColor" '
+   +'stroke-width="1.6" vector-effect="non-scaling-stroke" stroke-opacity=".34"/></g>';
   /* the pain layer wants anatomy, not an outline. the traced branches are the
      nerve map and they are already vector, so they stand in for the raster. */
   if(PMLAYER==='pain')NERVEBR.forEach(function(br){
@@ -304,7 +324,43 @@ function renderMap(r){
    +'<stop offset="30%" stop-color="'+b.c+'" stop-opacity="'+(0.05+g*0.40).toFixed(3)+'"/>'
    +'<stop offset="64%" stop-color="'+b.c+'" stop-opacity="'+(0.02+g*0.15).toFixed(3)+'"/>'
    +'<stop offset="100%" stop-color="'+b.c+'" stop-opacity="0"/></radialGradient>';});
- h+='</defs><g style="mix-blend-mode:screen">';
+ /* THE NUMMENMAA TREATMENT. Ruled, with the four bodily maps supplied as the
+    reference, and the finding that came with them was that the zones were not
+    noticeable. They were not, and the screenshot says why: seven radial
+    gradients and a scatter of flat circles, drawn over a wire outline with
+    nothing containing them. The washes ran a body width out past the arms into
+    empty ground, and every per address bloom was a hard edged disc because a
+    circle with a flat fill has an edge no matter how low its opacity goes.
+    That is a diagram of seven seats with dots on it.
+
+    What those maps actually do is three things, and the colour is the least of
+    them. The silhouette is filled, so there is a body for the field to be in.
+    The field is continuous, with no kernel edge anywhere, so intensity is the
+    only thing the eye reads. And it stops at the skin.
+
+    So: one blur over the whole heat group, which melts the seven gradients and
+    every address bloom into a single field and costs one filter rather than a
+    gradient per mark, and then a clip to the silhouette. A filter runs before a
+    clip on the same element, which is the order this needs: blur first so the
+    field is continuous, clip second so it ends at the body.
+
+    Hue stays the seat. A diverging red to blue scale is what the reference uses
+    because it has one variable to show, and this has seven, and colour means
+    seat everywhere else in the product. Intensity carries the reading, which is
+    what the ramp below was already for. */
+ h+='<filter id="pmField" x="-25%" y="-25%" width="150%" height="150%">'
+  +'<feGaussianBlur stdDeviation="2.4"/></filter>';
+ h+='</defs>';
+ /* THE FIELD IS PART OF WHAT BLANK MEANS. The pain layer opens with nothing
+    drawn on it, and the charge wash is drawn on every layer, so the map still
+    arrived carrying the person's field: seven seats lit and eighteen addresses
+    blooming under a figure that was supposed to be asking them where it hurts.
+    A map that opens already showing you your own body is not blank in any
+    sense the ruling meant. The wash comes back the moment a region is painted,
+    because then the person has asked. */
+ var PMBLANK=(PMLAYER==='pain'&&!PAINPICK);
+ h+=PMBLANK?'<g style="display:none">'
+  :'<g style="mix-blend-mode:screen" filter="url(#pmField)" clip-path="url(#pmClip)">';
  PMBANDS.forEach(function(b){
   var rr=(b.r/10)*(9.4+HGAIN(seatLoad(b.k))*4.6);
   h+='<ellipse cx="50" cy="'+b.yp+'" rx="'+(rr*0.92).toFixed(2)+'" ry="'+rr.toFixed(2)
@@ -424,19 +480,71 @@ function renderMap(r){
     +' '+p.x.toFixed(2)+','+p.y.toFixed(2)+'" fill="none" stroke="'+c
     +'" stroke-width="'+w.toFixed(2)+'" opacity="'+(on?0.78:0.42)+'" '
     +'stroke-linecap="round"/>';});});
- if(!chain.length&&(PMLAYER==='bands'||PMLAYER==='pain')){
+ /* THE BLANK PAIN MAP IS A QUESTION, SO IT ASKS ONE. This printed the same
+    caption as the fetters layer, "nothing carrying, 6 addresses hold the
+    opposite instead", on a surface that has deliberately drawn nothing yet.
+    That is a reading of the body offered where an instruction belongs, and it
+    reads as the instrument having found nothing rather than as waiting to be
+    told. One line, imperative, and it goes the moment a region is painted. */
+ if(PMLAYER==='pain'&&!PAINPICK){
+  h+='<text x="50" y="97" text-anchor="middle" class="pm-gl" style="fill:'+PAL.Throat+'">'
+   +'paint where it hurts</text>';
+ }else if(!chain.length&&(PMLAYER==='bands'||PMLAYER==='pain')){
   var instN=W.filter(function(n){return n.pole>=4;}).length;
   h+='<text x="50" y="97" text-anchor="middle" class="pm-gl" style="fill:'+PAL.Heart+'">'
    +(instN?'nothing carrying. '+instN+' addresses hold the opposite instead.'
      :'nothing carrying yet')+'</text>';}
+ /* THE OUTER DISC OF A HEAT MARK IS FIELD, AND THE CORE IS A TARGET.
+
+    Both were drawn here as flat filled circles, one large and faint and one
+    small and solid, and the large one is what the owner was looking at when he
+    said the map reads as blooms on a diagram. A circle with a flat fill has a
+    hard edge at any opacity, so twenty of them at eighteen percent are twenty
+    visible discs rather than one field, and blurring the wash underneath them
+    changed nothing because these were never in it.
+
+    So the outer discs are collected and emitted into the blurred group with
+    the rest of the field, and the cores stay exactly as they were: sharp,
+    unblurred, the thing a person aims at. Collected rather than drawn in place
+    because a filter is per group, and one blurred group is one filter pass
+    where a filter per mark would be one per address. */
+ var field='';
+ marks.filter(function(m){return m.kind==='heat';}).forEach(function(m){
+  var c=PMC[m.band]||'#888';
+  field+='<circle cx="'+m.x.toFixed(2)+'" cy="'+m.y.toFixed(2)+'" r="'+(2.2+m.v*4.4).toFixed(2)
+   +'" fill="'+c+'" opacity="'+(0.10+m.v*0.34).toFixed(3)+'"/>';});
+ if(field)h+='<g style="mix-blend-mode:screen" filter="url(#pmField)" '
+  +'clip-path="url(#pmClip)">'+field+'</g>';
+ /* PAINT TO SELECT, on the figure and not only in a row of buttons. Ruled.
+
+    Each region is drawn as its own boxes clipped to the silhouette, so a click
+    lands on the arm rather than on a rectangle beside it, and the shape a
+    person paints is the shape of the body part. Largest first so the small
+    ones take the click where two overlap: arms and torso share every row
+    between 26 and 45 and hands and legs share 48 to 56, and without the order
+    a limb is unreachable.
+
+    The button row stays. A rect is not focusable and does not announce itself,
+    so the row is the same nine regions reachable by keyboard and by a screen
+    reader, and the two controls write the same one value. */
+ if(PMLAYER==='pain'){
+  var area=function(x){var a=0;(x.box||[]).forEach(function(q){
+   a+=(q[2]-q[0])*(q[3]-q[1]);});return a;};
+  var regs=PAINREG.slice().sort(function(a,b){return area(b)-area(a);});
+  h+='<g class="pm-paint" clip-path="url(#pmClip)">';
+  regs.forEach(function(rg){
+   var on=PAINPICK===rg.k, c=PMC[rg.bands[0]]||'#888';
+   (rg.box||[]).forEach(function(q){
+    h+='<rect class="pm-pr'+(on?' on':'')+'" data-reg="'+rg.k+'" x="'+q[0]+'" y="'+q[1]
+     +'" width="'+(q[2]-q[0]).toFixed(2)+'" height="'+(q[3]-q[1]).toFixed(2)
+     +'" rx="2" fill="'+c+'" stroke="'+c+'"><title>'+esc(rg.nm)+'</title></rect>';});});
+  h+='</g>';}
  /* the marks */
  h+='<g clip-path="url(#pmClip)">';
  marks.filter(function(m){return m.kind==='node'||m.kind==='heat';}).forEach(function(m){
   var c=PMC[m.band]||'#888';
   if(m.kind==='heat'){
-   h+='<circle cx="'+m.x.toFixed(2)+'" cy="'+m.y.toFixed(2)+'" r="'+(2.2+m.v*4.4).toFixed(2)
-    +'" fill="'+c+'" opacity="'+(0.10+m.v*0.34).toFixed(3)+'"/>'
-    +'<circle cx="'+m.x.toFixed(2)+'" cy="'+m.y.toFixed(2)+'" r="'+(0.7+m.v*1.1).toFixed(2)
+   h+='<circle cx="'+m.x.toFixed(2)+'" cy="'+m.y.toFixed(2)+'" r="'+(0.7+m.v*1.1).toFixed(2)
     +'" fill="'+c+'" opacity="'+(0.55+m.v*0.45).toFixed(2)+'"/>';
   }else{
    /* AN ADDRESS THAT IS HELD CLEAR IS NOT NOTHING.
@@ -459,9 +567,28 @@ function renderMap(r){
      +'<circle cx="'+m.x.toFixed(2)+'" cy="'+m.y.toFixed(2)+'" r=".3" fill="'+c+'" opacity=".85"/>'
      +'<title>'+esc(m.nm)+', clear. holds the far pole</title></g>';
    }else{
-    h+='<circle class="pm-n" data-node="'+m.o.i+'" cx="'+m.x.toFixed(2)+'" cy="'+m.y.toFixed(2)
-     +'" r="'+(0.8+m.v*1.9).toFixed(2)+'" fill="'+c+'" opacity="'+(0.42+m.v*0.56).toFixed(2)+'">'
-     +'<title>'+esc(m.nm)+' · '+m.o.sq.toFixed(1)+'</title></circle>';}}});
+    /* A CARRYING ADDRESS IS A RING TOO, and this was the last flat disc on the
+       figure. At radius 2.7 and ninety eight percent it is a solid coin of
+       band colour, and with eighteen of them on a loaded body they are what
+       the page is: the continuous field underneath them was drawn, clipped and
+       blurred correctly and could not be seen through them.
+
+       Icons are ring, not fill, which has been the rule since the icon pass
+       and was already how a clear address is drawn. So both poles are rings
+       now and they still read as opposites, which was the point of the pass
+       that made them differ: a carrying address is a heavy ring with a solid
+       core, weight setting the radius, the stroke and the core together. A
+       clear one is a thin ring around a pinpoint. Open in the middle means the
+       field shows through the mark that sits on it, which is the whole reason
+       the field is there. */
+    var rr=(0.9+m.v*1.7), sw=(0.26+m.v*0.34);
+    h+='<g class="pm-n" data-node="'+m.o.i+'">'
+     +'<circle cx="'+m.x.toFixed(2)+'" cy="'+m.y.toFixed(2)+'" r="'+rr.toFixed(2)
+     +'" fill="none" stroke="'+c+'" stroke-width="'+sw.toFixed(2)
+     +'" opacity="'+(0.52+m.v*0.46).toFixed(2)+'"/>'
+     +'<circle cx="'+m.x.toFixed(2)+'" cy="'+m.y.toFixed(2)+'" r="'+(0.3+m.v*0.5).toFixed(2)
+     +'" fill="'+c+'" opacity="'+(0.55+m.v*0.43).toFixed(2)+'"/>'
+     +'<title>'+esc(m.nm)+' · '+m.o.sq.toFixed(1)+'</title></g>';}}});
  h+='</g>';
  /* THE COLUMN OF THROUGHPUT, AND ONE LABEL ON THE WHOLE FIGURE.
 
@@ -533,8 +660,16 @@ function renderMap(r){
  host.innerHTML=h;
  renderShelf(r,seats,speed,stop,dom,loadedTot,marks);
  /* the gutter rows are gone, and so is the handler that answered for them */
+ /* both controls write the same value. The row answers for the keyboard, the
+    figure answers for the pointer, and painting the region already selected
+    clears it, so a person can put the map back to blank without hunting for an
+    All button they were not looking at. */
  document.querySelectorAll('#rbar [data-reg]').forEach(function(el){el.onclick=function(){
   PAINPICK=el.dataset.reg||null;render();};});
+ host.querySelectorAll('.pm-pr[data-reg]').forEach(function(el){el.onclick=function(e){
+  e.stopPropagation();
+  var k=el.getAttribute('data-reg');
+  PAINPICK=(PAINPICK===k)?null:k; render();};});
  document.querySelectorAll('#lbar [data-pml]').forEach(function(el){el.onclick=function(){
   PMLAYER=el.dataset.pml;PMPICK=null;render();};});
  host.querySelectorAll('[data-seat]').forEach(function(el){el.onclick=function(){

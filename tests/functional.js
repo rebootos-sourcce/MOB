@@ -54,6 +54,53 @@ for(const nm of people){
   line.push(L+':'+res.nodes+'/'+res.shelfTxt);}
  console.log(' ',nm.padEnd(8),line.join('  '));}
 
+/* ---------------------------------------------------------------------------
+   THE PAIN MAP OPENS BLANK AND IS PAINTED ON.
+
+   Ruled. It used to print every carrying address the moment it was opened,
+   which is the instrument answering before it has been asked: a pain map
+   exists to be told where it hurts, and one that arrives already covered is
+   telling the person instead.
+
+   Three things are held here. Nothing is drawn until a region is painted. The
+   regions are on the figure and not only in the row of buttons, and they are
+   clipped to the silhouette so a click lands on the arm rather than beside it.
+   And painting the region already selected puts the map back to blank, so a
+   person is never stuck holding a selection they cannot drop.
+--------------------------------------------------------------------------- */
+console.log('\n=== the pain map opens blank ===');
+{const pm=await page.evaluate(async()=>{
+  loadP(6); setTab(TAB.ENERGY); PMLAYER='pain'; PAINPICK=null; render();
+  await new Promise(r=>setTimeout(r,60));
+  const marks=()=>document.querySelectorAll('#emap .pm-svg .pm-n').length
+   +document.querySelectorAll('#emap .pm-svg g[filter] circle').length;
+  const o={blank:marks(), regs:document.querySelectorAll('#emap .pm-pr').length,
+   bare:PAINREG.filter(x=>!x.box||!x.box.length).length};
+  /* every region is reachable and paints something or honestly nothing */
+  const el=document.querySelector('#emap .pm-pr[data-reg="torso"]');
+  el.dispatchEvent(new MouseEvent('click',{bubbles:true}));
+  await new Promise(r=>setTimeout(r,60));
+  o.picked=PAINPICK; o.after=marks();
+  /* only the picked region's own bands are drawn */
+  const want=PAINREG.filter(x=>x.k==='torso')[0].bands;
+  o.foreign=pmMarks(compute()).filter(m=>want.indexOf(m.band)<0).length;
+  /* painting it again drops it */
+  document.querySelector('#emap .pm-pr[data-reg="torso"]')
+   .dispatchEvent(new MouseEvent('click',{bubbles:true}));
+  await new Promise(r=>setTimeout(r,60));
+  o.cleared=PAINPICK; o.back=marks();
+  PMLAYER='bands'; PAINPICK=null; render();
+  return o;});
+ ok(pm.blank===0,'nothing is drawn before a region is painted, got '+pm.blank);
+ ok(pm.bare===0,'every pain region carries hit boxes, '+pm.bare+' without');
+ ok(pm.regs>=9,'the regions are on the figure, got '+pm.regs+' boxes');
+ ok(pm.picked==='torso','painting a region selects it, got '+pm.picked);
+ ok(pm.after>0,'and it paints what that region holds, got '+pm.after);
+ ok(pm.foreign===0,'and nothing outside its bands, got '+pm.foreign);
+ ok(pm.cleared===null,'painting it again clears it, got '+pm.cleared);
+ ok(pm.back===0,'and the map goes blank again, got '+pm.back);
+ console.log('  blank',pm.blank,' painted',pm.after,' boxes',pm.regs);}
+
 console.log('\n=== 4 field depths, every persona ===');
 for(const nm of people){
  const i=people.indexOf(nm);

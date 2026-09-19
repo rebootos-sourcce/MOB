@@ -17,7 +17,12 @@
     BLOCK  6 story + release  PART   story column split, release settings and
                                      run in place. Standalone tab remains
     BLOCK  7 tools scrub      OPEN
-    BLOCK  8 body             OPEN
+    BLOCK  8 body             PART   the Nummenmaa treatment: filled
+                                     silhouette, one continuous field, clipped
+                                     at the skin. Markers are rings so the
+                                     field shows through. Pain map opens blank
+                                     and is painted on the figure. Chakra image
+                                     and zoom to region remain
     BLOCK  9 intake           OPEN
     BLOCK 10 games            PART   its own tab again. The games themselves open
     BLOCK 11 onboarding       OPEN
