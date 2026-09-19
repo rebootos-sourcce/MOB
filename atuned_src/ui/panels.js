@@ -185,7 +185,14 @@ VIEWS.forEach(function(v,i){
     at parse, which in a concatenated build takes down every module after it.
     MANIFEST order is the rule and this is what breaking it looks like. */
  b.setAttribute('aria-pressed',i===S.view);
- b.title=v.how||v.layers;
+ /* the definition first, then the detail. A person hovering a depth wants to
+    know what it is before they want the four line description of it. */
+ b.title=(v.tip?v.tip+'\n\n':'')+(v.how||v.layers);
+ /* and the product's own tooltip as well as the native one, because a native
+    title cannot be reached on a touch screen and these four words are the
+    ones the owner could not read. */
+ b.setAttribute('data-tip',v.tip||v.layers);
+ b.classList.add('kbjump');
  b.innerHTML=svgI(VICON[i])+'<span class="n">'+v.nm+'</span>';
  b.addEventListener('click',function(){S.view=i;S.pin=null;
   $('vbar').querySelectorAll('.vt').forEach(function(x,j){x.setAttribute('aria-pressed',j===i);});
@@ -660,8 +667,19 @@ function helpSheet(){
   document.body.classList.add('booted'); }
  el.addEventListener('animationend',function(e){
   if(e.animationName==='bootOut')clear();});
- /* the floor. 3.0s is the end of the sequence and this sits just past it. */
- setTimeout(clear,3200);
+ /* the floor. 5.2s is the end of the sequence, bookends included, and this
+    sits just past it. */
+ setTimeout(clear,5400);
+ /* AND THERE IS A WAY OUT. Anything over 600ms needs one, and this is five
+    seconds. It is the overture and it is worth watching, so it is not
+    skipped automatically on a return visit and no flag is stored: a person
+    who wants past it presses anything, and a person who wants to watch it
+    watches it. */
+ var skip=function(){ if(gone)return;
+  el.style.transition='opacity .18s cubic-bezier(.4,0,1,1)';
+  el.style.opacity='0'; setTimeout(clear,190); };
+ addEventListener('pointerdown',skip,{once:true});
+ addEventListener('keydown',skip,{once:true});
  var rm=(typeof matchMedia==='function')&&matchMedia('(prefers-reduced-motion:reduce)').matches;
  if(rm)clear();})();
 

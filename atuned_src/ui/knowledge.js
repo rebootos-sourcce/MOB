@@ -69,7 +69,7 @@ function kbRows(sec){
   out.push({k:'seat', t:c.b, s:c.nv, d:c.d, v:rel+' released', o:c, emb:emb});});
  return out;}
 
-const KB_SECS=[['addr','Addresses'],['fetter','Fetters'],['sab','Saboteurs'],
+const KB_SECS=[['addr','Nodes'],['fetter','Fetters'],['sab','Saboteurs'],
  ['law','Laws'],['dom','Domains'],['arch','Archetypes'],['gate','Gates'],
  ['card','The cards'],['seat','The catalog'],
  ['harm','The 76 laws'],['gloss','Glossary']];
@@ -128,7 +128,18 @@ function kbRender(){
     is, and its own reading when it has one. The families are the sections
     and the colour is the seat, so a person reading these is learning the
     colour system at the same time. */
- var KIND={node:'Address',fetter:'Fetter',sab:'Saboteur',law:'Law',dom:'Domain',
+ /* ADDRESS BECOMES NODE, and the two words were never a distinction.
+
+    The codex called the same thing an address in one place and a node in
+    another, and a person clicking Addresses could not tell what separated
+    them from Fetters. One word per concept: the place in the architecture is
+    a node. What sits at a node is a fetter.
+
+    And the kind label on a fetter card was the word "Fetter" on all nine of
+    them, which is the category printed nine times where the thing itself
+    could have been. Icon, then the thing. A fetter card says Fear, or Anger,
+    and the card knows it is a fetter because it is in the Fetters deck. */
+ var KIND={node:'Node',fetter:'Fetter',sab:'Saboteur',law:'Law',dom:'Domain',
   arch:'Archetype',gate:'Gate',harm:'Harmonic',gloss:'Term',seat:'Seat'};
  h+='<div class="kb-grid">';
  if(!rows.length) h+='<div class="rnone">Nothing here matches. The count beside each tab says where it is.</div>';
@@ -140,13 +151,32 @@ function kbRender(){
   /* the reading on a card is the card's own number, and it is only printed
      when the card has one. A card with no reading is not a card at zero. */
   var hot=x.v&&parseFloat(x.v)>0;
+  /* a fetter carries its own glyph, not its seat's, because it has one and
+     the icon rule says a named thing wears its own mark. */
+  if(x.k==='fetter'&&x.o&&x.o.ic)gl='<path d="'+x.o.ic+'"/>';
+  /* THE READING SITS IN A PILL AT THE LOWER RIGHT OF THE ICON. Ruled, and
+     the badge already exists for exactly this: the ring carries the share as
+     a shape, the pill carries the figure. A card with nothing on it in this
+     person's field gets the plain glyph and no pill, because a card at zero
+     is not a card with a zero on it. */
+  var pct=hot?Math.min(100,parseFloat(x.v)*10):0;
   h+='<button type="button" class="kb-c'+(hot?' live':'')+'" data-kbi="'+i+'" '
    +'style="--c:'+c+'">'
    +'<span class="kb-cs"></span>'
-   +'<span class="kb-ch"><span class="kb-cg"><svg viewBox="0 0 24 24" aria-hidden="true">'
-   +gl+'</svg></span>'
-   +'<span class="kb-ck">'+esc(KIND[x.k]||x.k)+'</span>'
-   +(x.v?'<span class="kb-cv">'+esc(x.v)+'</span>':'')+'</span>'
+   +'<span class="kb-ch">'
+   +(hot
+     ? crBadge(band,pct,{size:'sm',raw:x.v,glyph:gl,color:c,
+        title:x.t+' · '+x.v})
+     : '<span class="kb-cg"><svg viewBox="0 0 24 24" aria-hidden="true">'+gl+'</svg></span>')
+   /* THE KIND LABEL ONLY EARNS ITS SPACE WHEN THE DECK DOES NOT SAY IT.
+
+      Every fetter card printed the word "Fetter" in a deck already titled
+      Fetters, nine times, above the name of the thing. That is the category
+      occupying the line the thing itself should be on. Icon, then the thing.
+
+      It comes back during a search, because a search spans every deck and
+      then the kind is the only thing saying which one a result came from. */
+   +(q?'<span class="kb-ck">'+esc(KIND[x.k]||x.k)+'</span>':'')+'</span>'
    +'<span class="kb-cn">'+esc(x.t)+'</span>'
    +(x.s?'<span class="kb-cb">'+esc(x.s)+'</span>':'')
    +'<span class="kb-cd">'+esc(String(x.d||''))+'</span>'

@@ -9,7 +9,7 @@ let PASS=0,FAIL=0;
    reach first. Measured once as four failures in one run of four that would
    not reproduce, which is exactly the shape of this kind of race. */
 const booted=async p=>{try{await p.waitForFunction(
-  ()=>document.body.classList.contains('booted'),null,{timeout:6000});}
+  ()=>document.body.classList.contains('booted'),null,{timeout:12000});}
  catch(e){/* reduced motion clears it synchronously; a miss is not a failure */}};
 const ok=(c,m)=>{if(c)PASS++;else{FAIL++;console.log('  FAIL '+m);}};
 (async()=>{

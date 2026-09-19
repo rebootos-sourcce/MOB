@@ -397,15 +397,45 @@ function verpArrows(cr0){
      DQ  the wash, area of effect
      SQ  depth of any single segment
    ============================================================ */
+/* THE FOUR DEPTHS ARE NAMED FOR WHAT THEY ADD.
+
+   They were Charge, Cluster, Chain, Blueprint, and two of those four are
+   words this product does not define anywhere else. A cluster of what: a
+   saboteur is a pattern, not a cluster, and nothing in the codex calls it
+   one. Chain is undefined entirely. Charge reads as the thing an individual
+   address holds, which it also is, so at the top of a depth ladder it is
+   ambiguous with itself.
+
+   The ruling is that a menu word describes exactly what the thing does. Each
+   depth adds one layer of the architecture, so each is named for the layer it
+   adds, in words the product already uses everywhere else:
+
+     Charge      the three quotients and the addresses carrying them
+     Patterns    the saboteurs, which is what the rail has always called them
+     Chains      how a pattern compounds into a complex, a hyper complex and
+                 a character layer. Drawn as chords, which is why the word
+                 survives at all
+     Blueprint   domains, masks and laws, and this one already landed
+
+   Blueprint keeps its name because it is the one the owner said he
+   understood, and because the rail already calls those blueprint domains.
+
+   A word alone cannot carry a definition, so each depth now has one. Menu is
+   one word. Definition is on demand. */
 const VIEWS=[
  {k:'A',nm:'Charge',    layers:'the core, 112 addresses, the wash',
-  how:'Charge. Three things only.\nThe core is CQ. The ring is your 112 addresses, SQ.\nThe wash behind everything is DQ.\nDrag any segment to load or clear it.'},
- {k:'B',nm:'Cluster',   layers:'charge, plus the seats named and the saboteurs',
-  how:'Cluster. Charge, plus the seats and the saboteurs.\nEach bead is a saboteur. The threads show which\naddresses built it. Hover a bead to name it.'},
- {k:'C',nm:'Chain',     layers:'cluster, plus complexes, hyper, character, archetypes',
-  how:'Chain. Cluster, plus the rest of the compounding.\nSaboteur to complex to hyper to character, inward.\nThe named ring is your twelve archetypes.\nClick one to change how the soul expresses.'},
- {k:'D',nm:'Blueprint', layers:'chain, plus 19 domains, 6 masks, 21 laws',
-  how:'Blueprint. Chain, plus domains, masks and laws.\nThe outer ring is nineteen domains, five per root cluster.\nThe faint ring inside is the six masks.\nThe short spokes at the centre are the twenty-one laws.'}];
+  tip:'What you are carrying, and where. The core is coherence, the ring is your 112 addresses, the wash is shadow weight.',
+  how:'Charge. Three things only.\nThe core is CQ, the alignment of the whole circuit.\nThe ring is your 112 addresses, SQ.\nThe wash behind everything is DQ.\nDrag any segment to load or clear it.'},
+ {k:'B',nm:'Patterns',  layers:'charge, plus the seats named and the saboteurs',
+  tip:'The saboteurs running on top of the charge. Each bead is one, and the threads show which addresses built it.',
+  how:'Patterns. Charge, plus the seats and the saboteurs.\nEach bead is a saboteur. The threads show which\naddresses built it. Hover a bead to name it.'},
+ {k:'C',nm:'Chains',    layers:'patterns, plus complexes, hyper, character, archetypes',
+  tip:'How a pattern compounds. Saboteur into complex into hyper complex into character, inward, each built from the one outside it.',
+  how:'Chains. Patterns, plus the rest of the compounding.\nSaboteur to complex to hyper to character, inward.\nThe named ring is your twelve archetypes.\nClick one to change how the soul expresses.'},
+ {k:'D',nm:'Blueprint', layers:'chains, plus 19 domains, 6 masks, 21 laws',
+  tip:'What was there before any of it. Nineteen domains, six masks, and the twenty one laws underneath the whole reading.',
+  how:'Blueprint. Chains, plus domains, masks and laws.\nThe outer ring is nineteen domains, five per root cluster.\nThe faint ring inside is the six masks.\nThe short spokes at the centre are the twenty-one laws.'}];
+
 /* ATOMIZING. Zoom used to magnify the same picture, and the depth ladder was
    a separate control for the same idea: how much of the construct is drawn.
    They are one idea. Past a threshold the next layer resolves, because at 3x

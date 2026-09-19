@@ -380,14 +380,20 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
 .brand{font-size:18px;font-weight:400;letter-spacing:.075em;padding:0 10px 0 2px;
  white-space:nowrap;color:var(--sky);background:transparent;border:0;cursor:pointer;
  font-family:var(--sans);line-height:1;min-height:var(--tap);display:flex;
- flex-direction:column;align-items:flex-start;justify-content:center;gap:2px}
+ flex-direction:column;align-items:flex-start;justify-content:center;gap:0}
 /* the name, and the line under it saying what the name is */
 .brand .bn{display:block;line-height:1}
-/* 11px, not 9.5. The design gate holds a sub-11px floor on every string a
-   person is expected to read, and a product name is a string a person is
-   expected to read. Tracking carries the smallness instead. */
-.brand .bs{display:block;font-size:11px;font-weight:500;letter-spacing:.17em;
- color:var(--au);line-height:1;text-transform:none}
+/* WHITE, two points smaller, four more pixels off the wordmark. Ruled.
+
+   It went gold on the previous ruling and is white on this one. --au stays in
+   the file: a token that exists for one caller is worth keeping rather than
+   re-deriving the next time gold is asked for.
+
+   9px is under the type floor and gate 4 carries a named exception for this
+   one class. The floor is for strings a person has to read to use the thing,
+   and a wordmark subtitle is identity read once. */
+.brand .bs{display:block;font-size:9px;font-weight:500;letter-spacing:.19em;
+ color:var(--ink);line-height:1;text-transform:none;margin-top:4px}
 .brand:hover{color:color-mix(in srgb,var(--sky) 76%,var(--ink))}
 /* the umlaut, drawn. two dots, white, sitting above a plain u. */
 .brand .um{position:relative;display:inline-block}
@@ -2123,16 +2129,32 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
    who reaches for a control in that time should reach the control, not a
    picture of a spine. It is also what made the browser gates race: they open
    the page, wait under a second, and click through a sheet that is still up. */
+/* FIVE SECONDS, AND IT OPENS AND CLOSES ON BLACK. Ruled.
+
+   Two beats of black at each end, which is the oldest device in title work
+   and the reason a title sequence feels like an invitation rather than a
+   splash: the room goes dark before anything arrives, and dark again before
+   the thing you came for. The sequence itself gains two seconds, which is
+   spent on the parts that were rushed rather than on holding the end frame
+   longer.
+
+   The ground is black, not --bg, because a bookend that fades to the app's
+   own ground is not a bookend. */
 .boot{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;
- align-items:center;justify-content:center;gap:26px;background:var(--bg);
+ align-items:center;justify-content:center;gap:26px;background:#000;
  pointer-events:none;
- animation:bootOut .42s cubic-bezier(.4,0,1,1) 2.58s forwards}
+ animation:bootOut .58s cubic-bezier(.4,0,1,1) 4.62s forwards}
+/* the opening beat. Everything inside is held back behind it, so the first
+   thing on screen is nothing, on purpose, for a third of a second. */
+.boot::before{content:'';position:absolute;inset:0;background:#000;z-index:2;
+ animation:bootIn .46s cubic-bezier(.4,0,1,1) .34s forwards}
+@keyframes bootIn{to{opacity:0}}
 .boot-svg{width:min(42vmin,300px);height:min(42vmin,300px);overflow:visible;
  fill:none;stroke-linecap:round}
 /* ANTICIPATION and SQUASH. The core draws in before it releases, flattens as
    it expands and rounds as it lands. */
 .b-core{fill:var(--accent);transform-origin:100px 100px;opacity:0;
- animation:bootCore 1.5s cubic-bezier(.34,1.56,.64,1) .06s both}
+ animation:bootCore 2.1s cubic-bezier(.34,1.56,.64,1) .62s both}
 @keyframes bootCore{
  0%  {opacity:0;transform:scale(.35) scaleY(1)}
  14% {opacity:1;transform:scale(.22) scaleY(1.25)}   /* draws in */
@@ -2142,13 +2164,13 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
 /* STAGING. The spine rises root to crown before anything sits on it. */
 .b-spine{stroke:var(--edge-2);stroke-width:1.4;
  stroke-dasharray:120;stroke-dashoffset:120;
- animation:bootSpine .72s cubic-bezier(.22,1,.36,1) .30s forwards}
+ animation:bootSpine 1.02s cubic-bezier(.22,1,.36,1) .92s forwards}
 @keyframes bootSpine{to{stroke-dashoffset:0}}
 /* TIMING and FOLLOW THROUGH. Ninety milliseconds apart, each one overshooting
    its size and settling back. Fast enough to read as one rising movement,
    slow enough to count. */
 .b-seat{transform-origin:100px 100px;opacity:0;
- animation:bootSeat .54s cubic-bezier(.34,1.56,.64,1) both}
+ animation:bootSeat .66s cubic-bezier(.34,1.56,.64,1) both}
 @keyframes bootSeat{
  0%  {opacity:0;transform:scale(.2)}
  60% {opacity:1;transform:scale(1.5)}
@@ -2158,40 +2180,40 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
    the engine, and a boot in colours that nearly match the product is worse
    than one that does not try. These are canon.js values, copied, and
    tests/design.js gate 11 fails if the two ever part company. */
-.b-s1{fill:#C4635E;animation-delay:.42s}   /* Root */
-.b-s2{fill:#D19255;animation-delay:.51s}   /* Sacral */
-.b-s3{fill:#D4BC70;animation-delay:.60s}   /* Solar */
-.b-s4{fill:#6FC5A3;animation-delay:.69s}   /* Heart */
-.b-s5{fill:#65B8D4;animation-delay:.78s}   /* Throat */
-.b-s6{fill:#8296DB;animation-delay:.87s}   /* 3rd Eye */
-.b-s7{fill:#A98BCE;animation-delay:.96s}   /* Crown */
+.b-s1{fill:#C4635E;animation-delay:1.18s}   /* Root */
+.b-s2{fill:#D19255;animation-delay:1.30s}   /* Sacral */
+.b-s3{fill:#D4BC70;animation-delay:1.42s}   /* Solar */
+.b-s4{fill:#6FC5A3;animation-delay:1.54s}   /* Heart */
+.b-s5{fill:#65B8D4;animation-delay:1.66s}   /* Throat */
+.b-s6{fill:#8296DB;animation-delay:1.78s}   /* 3rd Eye */
+.b-s7{fill:#A98BCE;animation-delay:1.90s}   /* Crown */
 /* ARCS and OVERLAPPING ACTION. The ring is an arc and it begins at 0.95s,
    while the last two seats are still arriving. Nothing waits for the thing
    before it to come to a stop. */
 .b-ring{stroke:var(--accent);stroke-width:1.6;opacity:.85;
  stroke-dasharray:390;stroke-dashoffset:390;transform-origin:100px 100px;
  transform:rotate(-90deg);
- animation:bootRing 1.15s cubic-bezier(.32,.72,.26,1) .95s forwards}
+ animation:bootRing 1.55s cubic-bezier(.32,.72,.26,1) 1.92s forwards}
 @keyframes bootRing{to{stroke-dashoffset:0}}
 /* the addresses, arriving around the ring behind it */
 .b-addr line{stroke:var(--accent);stroke-width:1.5;opacity:0;
- animation:bootAddr .5s cubic-bezier(.22,1,.36,1) both}
+ animation:bootAddr .62s cubic-bezier(.22,1,.36,1) both}
 @keyframes bootAddr{0%{opacity:0}100%{opacity:.5}}
 /* SECONDARY ACTION. The halo breathes once, under the main action and late,
    so it reads as a consequence rather than as another thing happening. */
 .b-halo{stroke:var(--gold);stroke-width:1.4;opacity:0;transform-origin:100px 26px;
- animation:bootHalo .9s cubic-bezier(.34,1.56,.64,1) 1.75s both}
+ animation:bootHalo 1.15s cubic-bezier(.34,1.56,.64,1) 3.22s both}
 @keyframes bootHalo{
  0%{opacity:0;transform:scale(.6)}
  55%{opacity:.95;transform:scale(1.14)}
  100%{opacity:.8;transform:scale(1)}}
 .boot-wm{display:flex;flex-direction:column;align-items:center;gap:4px;opacity:0;
- animation:bootWm .7s cubic-bezier(.22,1,.36,1) 1.95s both}
+ animation:bootWm .92s cubic-bezier(.22,1,.36,1) 3.54s both}
 @keyframes bootWm{0%{opacity:0;transform:translateY(8px)}100%{opacity:1;transform:none}}
 .boot-wm .bn{font-family:var(--sans);font-size:23px;font-weight:400;
  letter-spacing:.075em;color:var(--sky);line-height:1;position:relative}
-.boot-wm .bs{font-family:var(--sans);font-size:11px;font-weight:500;
- letter-spacing:.17em;color:var(--au);line-height:1}
+.boot-wm .bs{font-family:var(--sans);font-size:9px;font-weight:500;
+ letter-spacing:.19em;color:var(--ink);line-height:1;margin-top:4px}
 .boot-wm .um{position:relative;display:inline-block}
 .boot-wm .um::before,.boot-wm .um::after{content:'';position:absolute;top:-.42em;
  width:.14em;height:.14em;border-radius:50%;background:var(--um)}
@@ -2259,30 +2281,30 @@ body.booted{--boot-done:1}
   <circle class="b-seat b-s7" cx="100" cy="40"  r="4.2"/>
   <circle class="b-ring" cx="100" cy="100" r="62"/>
   <g class="b-addr">
-   <line x1="100.00" y1="38.00" x2="100.00" y2="32.00" style="animation-delay:1.050s"/>
-   <line x1="116.05" y1="40.11" x2="117.60" y2="34.32" style="animation-delay:1.082s"/>
-   <line x1="131.00" y1="46.31" x2="134.00" y2="41.11" style="animation-delay:1.114s"/>
-   <line x1="143.84" y1="56.16" x2="148.08" y2="51.92" style="animation-delay:1.146s"/>
-   <line x1="153.69" y1="69.00" x2="158.89" y2="66.00" style="animation-delay:1.178s"/>
-   <line x1="159.89" y1="83.95" x2="165.68" y2="82.40" style="animation-delay:1.210s"/>
-   <line x1="162.00" y1="100.00" x2="168.00" y2="100.00" style="animation-delay:1.242s"/>
-   <line x1="159.89" y1="116.05" x2="165.68" y2="117.60" style="animation-delay:1.274s"/>
-   <line x1="153.69" y1="131.00" x2="158.89" y2="134.00" style="animation-delay:1.306s"/>
-   <line x1="143.84" y1="143.84" x2="148.08" y2="148.08" style="animation-delay:1.338s"/>
-   <line x1="131.00" y1="153.69" x2="134.00" y2="158.89" style="animation-delay:1.370s"/>
-   <line x1="116.05" y1="159.89" x2="117.60" y2="165.68" style="animation-delay:1.402s"/>
-   <line x1="100.00" y1="162.00" x2="100.00" y2="168.00" style="animation-delay:1.434s"/>
-   <line x1="83.95" y1="159.89" x2="82.40" y2="165.68" style="animation-delay:1.466s"/>
-   <line x1="69.00" y1="153.69" x2="66.00" y2="158.89" style="animation-delay:1.498s"/>
-   <line x1="56.16" y1="143.84" x2="51.92" y2="148.08" style="animation-delay:1.530s"/>
-   <line x1="46.31" y1="131.00" x2="41.11" y2="134.00" style="animation-delay:1.562s"/>
-   <line x1="40.11" y1="116.05" x2="34.32" y2="117.60" style="animation-delay:1.594s"/>
-   <line x1="38.00" y1="100.00" x2="32.00" y2="100.00" style="animation-delay:1.626s"/>
-   <line x1="40.11" y1="83.95" x2="34.32" y2="82.40" style="animation-delay:1.658s"/>
-   <line x1="46.31" y1="69.00" x2="41.11" y2="66.00" style="animation-delay:1.690s"/>
-   <line x1="56.16" y1="56.16" x2="51.92" y2="51.92" style="animation-delay:1.722s"/>
-   <line x1="69.00" y1="46.31" x2="66.00" y2="41.11" style="animation-delay:1.754s"/>
-   <line x1="83.95" y1="40.11" x2="82.40" y2="34.32" style="animation-delay:1.786s"/>
+   <line x1="100.00" y1="38.00" x2="100.00" y2="32.00" style="animation-delay:2.080s"/>
+   <line x1="116.05" y1="40.11" x2="117.60" y2="34.32" style="animation-delay:2.122s"/>
+   <line x1="131.00" y1="46.31" x2="134.00" y2="41.11" style="animation-delay:2.164s"/>
+   <line x1="143.84" y1="56.16" x2="148.08" y2="51.92" style="animation-delay:2.206s"/>
+   <line x1="153.69" y1="69.00" x2="158.89" y2="66.00" style="animation-delay:2.248s"/>
+   <line x1="159.89" y1="83.95" x2="165.68" y2="82.40" style="animation-delay:2.290s"/>
+   <line x1="162.00" y1="100.00" x2="168.00" y2="100.00" style="animation-delay:2.332s"/>
+   <line x1="159.89" y1="116.05" x2="165.68" y2="117.60" style="animation-delay:2.374s"/>
+   <line x1="153.69" y1="131.00" x2="158.89" y2="134.00" style="animation-delay:2.416s"/>
+   <line x1="143.84" y1="143.84" x2="148.08" y2="148.08" style="animation-delay:2.458s"/>
+   <line x1="131.00" y1="153.69" x2="134.00" y2="158.89" style="animation-delay:2.500s"/>
+   <line x1="116.05" y1="159.89" x2="117.60" y2="165.68" style="animation-delay:2.542s"/>
+   <line x1="100.00" y1="162.00" x2="100.00" y2="168.00" style="animation-delay:2.584s"/>
+   <line x1="83.95" y1="159.89" x2="82.40" y2="165.68" style="animation-delay:2.626s"/>
+   <line x1="69.00" y1="153.69" x2="66.00" y2="158.89" style="animation-delay:2.668s"/>
+   <line x1="56.16" y1="143.84" x2="51.92" y2="148.08" style="animation-delay:2.710s"/>
+   <line x1="46.31" y1="131.00" x2="41.11" y2="134.00" style="animation-delay:2.752s"/>
+   <line x1="40.11" y1="116.05" x2="34.32" y2="117.60" style="animation-delay:2.794s"/>
+   <line x1="38.00" y1="100.00" x2="32.00" y2="100.00" style="animation-delay:2.836s"/>
+   <line x1="40.11" y1="83.95" x2="34.32" y2="82.40" style="animation-delay:2.878s"/>
+   <line x1="46.31" y1="69.00" x2="41.11" y2="66.00" style="animation-delay:2.920s"/>
+   <line x1="56.16" y1="56.16" x2="51.92" y2="51.92" style="animation-delay:2.962s"/>
+   <line x1="69.00" y1="46.31" x2="66.00" y2="41.11" style="animation-delay:3.004s"/>
+   <line x1="83.95" y1="40.11" x2="82.40" y2="34.32" style="animation-delay:3.046s"/>
   </g>
   <circle class="b-core" cx="100" cy="100" r="9"/>
  </svg>
@@ -7460,15 +7482,45 @@ function verpArrows(cr0){
      DQ  the wash, area of effect
      SQ  depth of any single segment
    ============================================================ */
+/* THE FOUR DEPTHS ARE NAMED FOR WHAT THEY ADD.
+
+   They were Charge, Cluster, Chain, Blueprint, and two of those four are
+   words this product does not define anywhere else. A cluster of what: a
+   saboteur is a pattern, not a cluster, and nothing in the codex calls it
+   one. Chain is undefined entirely. Charge reads as the thing an individual
+   address holds, which it also is, so at the top of a depth ladder it is
+   ambiguous with itself.
+
+   The ruling is that a menu word describes exactly what the thing does. Each
+   depth adds one layer of the architecture, so each is named for the layer it
+   adds, in words the product already uses everywhere else:
+
+     Charge      the three quotients and the addresses carrying them
+     Patterns    the saboteurs, which is what the rail has always called them
+     Chains      how a pattern compounds into a complex, a hyper complex and
+                 a character layer. Drawn as chords, which is why the word
+                 survives at all
+     Blueprint   domains, masks and laws, and this one already landed
+
+   Blueprint keeps its name because it is the one the owner said he
+   understood, and because the rail already calls those blueprint domains.
+
+   A word alone cannot carry a definition, so each depth now has one. Menu is
+   one word. Definition is on demand. */
 const VIEWS=[
  {k:'A',nm:'Charge',    layers:'the core, 112 addresses, the wash',
-  how:'Charge. Three things only.\nThe core is CQ. The ring is your 112 addresses, SQ.\nThe wash behind everything is DQ.\nDrag any segment to load or clear it.'},
- {k:'B',nm:'Cluster',   layers:'charge, plus the seats named and the saboteurs',
-  how:'Cluster. Charge, plus the seats and the saboteurs.\nEach bead is a saboteur. The threads show which\naddresses built it. Hover a bead to name it.'},
- {k:'C',nm:'Chain',     layers:'cluster, plus complexes, hyper, character, archetypes',
-  how:'Chain. Cluster, plus the rest of the compounding.\nSaboteur to complex to hyper to character, inward.\nThe named ring is your twelve archetypes.\nClick one to change how the soul expresses.'},
- {k:'D',nm:'Blueprint', layers:'chain, plus 19 domains, 6 masks, 21 laws',
-  how:'Blueprint. Chain, plus domains, masks and laws.\nThe outer ring is nineteen domains, five per root cluster.\nThe faint ring inside is the six masks.\nThe short spokes at the centre are the twenty-one laws.'}];
+  tip:'What you are carrying, and where. The core is coherence, the ring is your 112 addresses, the wash is shadow weight.',
+  how:'Charge. Three things only.\nThe core is CQ, the alignment of the whole circuit.\nThe ring is your 112 addresses, SQ.\nThe wash behind everything is DQ.\nDrag any segment to load or clear it.'},
+ {k:'B',nm:'Patterns',  layers:'charge, plus the seats named and the saboteurs',
+  tip:'The saboteurs running on top of the charge. Each bead is one, and the threads show which addresses built it.',
+  how:'Patterns. Charge, plus the seats and the saboteurs.\nEach bead is a saboteur. The threads show which\naddresses built it. Hover a bead to name it.'},
+ {k:'C',nm:'Chains',    layers:'patterns, plus complexes, hyper, character, archetypes',
+  tip:'How a pattern compounds. Saboteur into complex into hyper complex into character, inward, each built from the one outside it.',
+  how:'Chains. Patterns, plus the rest of the compounding.\nSaboteur to complex to hyper to character, inward.\nThe named ring is your twelve archetypes.\nClick one to change how the soul expresses.'},
+ {k:'D',nm:'Blueprint', layers:'chains, plus 19 domains, 6 masks, 21 laws',
+  tip:'What was there before any of it. Nineteen domains, six masks, and the twenty one laws underneath the whole reading.',
+  how:'Blueprint. Chains, plus domains, masks and laws.\nThe outer ring is nineteen domains, five per root cluster.\nThe faint ring inside is the six masks.\nThe short spokes at the centre are the twenty-one laws.'}];
+
 /* ATOMIZING. Zoom used to magnify the same picture, and the depth ladder was
    a separate control for the same idea: how much of the construct is drawn.
    They are one idea. Past a threshold the next layer resolves, because at 3x
@@ -11376,7 +11428,7 @@ function kbRows(sec){
   out.push({k:'seat', t:c.b, s:c.nv, d:c.d, v:rel+' released', o:c, emb:emb});});
  return out;}
 
-const KB_SECS=[['addr','Addresses'],['fetter','Fetters'],['sab','Saboteurs'],
+const KB_SECS=[['addr','Nodes'],['fetter','Fetters'],['sab','Saboteurs'],
  ['law','Laws'],['dom','Domains'],['arch','Archetypes'],['gate','Gates'],
  ['card','The cards'],['seat','The catalog'],
  ['harm','The 76 laws'],['gloss','Glossary']];
@@ -11435,7 +11487,18 @@ function kbRender(){
     is, and its own reading when it has one. The families are the sections
     and the colour is the seat, so a person reading these is learning the
     colour system at the same time. */
- var KIND={node:'Address',fetter:'Fetter',sab:'Saboteur',law:'Law',dom:'Domain',
+ /* ADDRESS BECOMES NODE, and the two words were never a distinction.
+
+    The codex called the same thing an address in one place and a node in
+    another, and a person clicking Addresses could not tell what separated
+    them from Fetters. One word per concept: the place in the architecture is
+    a node. What sits at a node is a fetter.
+
+    And the kind label on a fetter card was the word "Fetter" on all nine of
+    them, which is the category printed nine times where the thing itself
+    could have been. Icon, then the thing. A fetter card says Fear, or Anger,
+    and the card knows it is a fetter because it is in the Fetters deck. */
+ var KIND={node:'Node',fetter:'Fetter',sab:'Saboteur',law:'Law',dom:'Domain',
   arch:'Archetype',gate:'Gate',harm:'Harmonic',gloss:'Term',seat:'Seat'};
  h+='<div class="kb-grid">';
  if(!rows.length) h+='<div class="rnone">Nothing here matches. The count beside each tab says where it is.</div>';
@@ -11447,13 +11510,32 @@ function kbRender(){
   /* the reading on a card is the card's own number, and it is only printed
      when the card has one. A card with no reading is not a card at zero. */
   var hot=x.v&&parseFloat(x.v)>0;
+  /* a fetter carries its own glyph, not its seat's, because it has one and
+     the icon rule says a named thing wears its own mark. */
+  if(x.k==='fetter'&&x.o&&x.o.ic)gl='<path d="'+x.o.ic+'"/>';
+  /* THE READING SITS IN A PILL AT THE LOWER RIGHT OF THE ICON. Ruled, and
+     the badge already exists for exactly this: the ring carries the share as
+     a shape, the pill carries the figure. A card with nothing on it in this
+     person's field gets the plain glyph and no pill, because a card at zero
+     is not a card with a zero on it. */
+  var pct=hot?Math.min(100,parseFloat(x.v)*10):0;
   h+='<button type="button" class="kb-c'+(hot?' live':'')+'" data-kbi="'+i+'" '
    +'style="--c:'+c+'">'
    +'<span class="kb-cs"></span>'
-   +'<span class="kb-ch"><span class="kb-cg"><svg viewBox="0 0 24 24" aria-hidden="true">'
-   +gl+'</svg></span>'
-   +'<span class="kb-ck">'+esc(KIND[x.k]||x.k)+'</span>'
-   +(x.v?'<span class="kb-cv">'+esc(x.v)+'</span>':'')+'</span>'
+   +'<span class="kb-ch">'
+   +(hot
+     ? crBadge(band,pct,{size:'sm',raw:x.v,glyph:gl,color:c,
+        title:x.t+' · '+x.v})
+     : '<span class="kb-cg"><svg viewBox="0 0 24 24" aria-hidden="true">'+gl+'</svg></span>')
+   /* THE KIND LABEL ONLY EARNS ITS SPACE WHEN THE DECK DOES NOT SAY IT.
+
+      Every fetter card printed the word "Fetter" in a deck already titled
+      Fetters, nine times, above the name of the thing. That is the category
+      occupying the line the thing itself should be on. Icon, then the thing.
+
+      It comes back during a search, because a search spans every deck and
+      then the kind is the only thing saying which one a result came from. */
+   +(q?'<span class="kb-ck">'+esc(KIND[x.k]||x.k)+'</span>':'')+'</span>'
    +'<span class="kb-cn">'+esc(x.t)+'</span>'
    +(x.s?'<span class="kb-cb">'+esc(x.s)+'</span>':'')
    +'<span class="kb-cd">'+esc(String(x.d||''))+'</span>'
@@ -12152,7 +12234,14 @@ VIEWS.forEach(function(v,i){
     at parse, which in a concatenated build takes down every module after it.
     MANIFEST order is the rule and this is what breaking it looks like. */
  b.setAttribute('aria-pressed',i===S.view);
- b.title=v.how||v.layers;
+ /* the definition first, then the detail. A person hovering a depth wants to
+    know what it is before they want the four line description of it. */
+ b.title=(v.tip?v.tip+'\n\n':'')+(v.how||v.layers);
+ /* and the product's own tooltip as well as the native one, because a native
+    title cannot be reached on a touch screen and these four words are the
+    ones the owner could not read. */
+ b.setAttribute('data-tip',v.tip||v.layers);
+ b.classList.add('kbjump');
  b.innerHTML=svgI(VICON[i])+'<span class="n">'+v.nm+'</span>';
  b.addEventListener('click',function(){S.view=i;S.pin=null;
   $('vbar').querySelectorAll('.vt').forEach(function(x,j){x.setAttribute('aria-pressed',j===i);});
@@ -12627,8 +12716,19 @@ function helpSheet(){
   document.body.classList.add('booted'); }
  el.addEventListener('animationend',function(e){
   if(e.animationName==='bootOut')clear();});
- /* the floor. 3.0s is the end of the sequence and this sits just past it. */
- setTimeout(clear,3200);
+ /* the floor. 5.2s is the end of the sequence, bookends included, and this
+    sits just past it. */
+ setTimeout(clear,5400);
+ /* AND THERE IS A WAY OUT. Anything over 600ms needs one, and this is five
+    seconds. It is the overture and it is worth watching, so it is not
+    skipped automatically on a return visit and no flag is stored: a person
+    who wants past it presses anything, and a person who wants to watch it
+    watches it. */
+ var skip=function(){ if(gone)return;
+  el.style.transition='opacity .18s cubic-bezier(.4,0,1,1)';
+  el.style.opacity='0'; setTimeout(clear,190); };
+ addEventListener('pointerdown',skip,{once:true});
+ addEventListener('keydown',skip,{once:true});
  var rm=(typeof matchMedia==='function')&&matchMedia('(prefers-reduced-motion:reduce)').matches;
  if(rm)clear();})();
 

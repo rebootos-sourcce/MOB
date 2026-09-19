@@ -9,7 +9,7 @@ let PASS=0,FAIL=0;
    reach first. Measured once as four failures in one run of four that would
    not reproduce, which is exactly the shape of this kind of race. */
 const booted=async p=>{try{await p.waitForFunction(
-  ()=>document.body.classList.contains('booted'),null,{timeout:6000});}
+  ()=>document.body.classList.contains('booted'),null,{timeout:12000});}
  catch(e){/* reduced motion clears it synchronously; a miss is not a failure */}};
 const ok=(c,m)=>{if(c)PASS++;else{FAIL++;console.log('  FAIL '+m);}};
 
@@ -101,10 +101,23 @@ console.log('  unstyled classes:',cssMiss.length?cssMiss.join(', '):'none');
 console.log('\n=== 4 · type floor. nothing under 11px in CSS pixels. ===');
 const small=await page.evaluate(()=>{
  const out={};
+ /* ONE EXCEPTION, NAMED, AND IT IS NOT A LOOPHOLE.
+
+    The floor exists because a string a person has to read in order to use the
+    product must be readable. A wordmark subtitle is not that: it is identity,
+    it is read once, it says nothing operational, and nothing is lost by
+    somebody skipping it. The owner ruled it two points down from the floor
+    and this records the carve out rather than quietly lowering the floor for
+    everything.
+
+    It is the only exception and it is by class, so the next thing that wants
+    to be small has to come and argue here. */
+ const EXEMPT=['bs'];
  document.querySelectorAll('*').forEach(e=>{
   if(e.closest('svg'))return;                    // svg text scales with viewBox
   const t=(e.textContent||'').trim();
   if(!t||e.children.length)return;
+  if(EXEMPT.some(c=>e.classList.contains(c)))return;
   const fs=parseFloat(getComputedStyle(e).fontSize);
   if(fs<11){const k=e.className+' @'+fs+'px';out[k]=(out[k]||0)+1;}});
  return out;});
@@ -433,8 +446,10 @@ console.log('\n=== 9 \u00b7 four lightings, each its own ===');
    +new Set(early.seats).size);
   ok(early.addr>0,'the addresses are drawn, '+early.addr+' of them');
  }
- /* three seconds, then gone from the document */
- await p6.waitForTimeout(3400);
+ /* THE SEQUENCE IS FIVE SECONDS NOW, with two beats of black at each end on
+    the owner's ruling, so this waits past the end of it rather than past the
+    end of the old one. Measured: booted at 5317ms and the node gone with it. */
+ await p6.waitForTimeout(5800);
  const late=await p6.evaluate(()=>({gone:!document.getElementById('boot'),
    booted:document.body.classList.contains('booted')}));
  ok(late.gone,'the boot is removed from the document, not just faded');
