@@ -1491,3 +1491,52 @@ is your job to make sure it's no longer happening."
 This is AJ1 restated as an instruction to me rather than a task in a list.
 Every number, every surface, says what it is out of or does not print.
 *Standing.*
+
+---
+
+# Ruled 19 September, twelfth note. The developer end, and the stores.
+
+**AS1. Login and password, and what they unlock.** new
+His question and it is the right one: the password goes to the database and
+unlocks the software. What that means on the developer end has never been
+specced and he is right that it was not in the queue.
+*Large. Out with the enterprise pass.*
+
+**AS2. THE DEVELOPER END OF THE SOFTWARE, SPECCED.** new
+The whole server side. Auth, the record store, sessions, the API surface, what
+the one seam calls and what comes back, migrations, environments, deploys,
+observability, and the admin and developer view he asked for earlier.
+*Large, and it is the single biggest unwritten thing in the project. Everything
+in the accounts fork sits on top of it.*
+
+**AS3. Two factor.** ruling needed, research out
+`DECISIONS.md` already rules that an email alone must never be the key, given
+what the record holds. Whether that means two factor is the question.
+
+**AS4. The enterprise and app store checklist.** new
+Everything an enterprise app carries, and everything Apple and Google demand of
+a health or wellness submission specifically, cited rather than remembered.
+*Large.*
+
+**AS5. The ninety day simulation, presented.** `reviews/simulation-quarter.md`
+It exists at 1,249 lines and he has not seen it. A second pass runs against the
+build as it is now and both come to him as something he can open.
+*Medium.*
+
+## AT. The mark. He has rejected the first design outright.
+
+**AT1. The previous mark is dead.** His words: I do not like it at all.
+
+**AT2. The mark is the stack, and the stack is the product.** new
+His direction, and it is better than the brief that produced the rejected one.
+All of it is divine geometry. The fetters are the most detailed layer. The top
+is the binary, benign against malignant, which the product now calls
+Orientation. They stack and form one shape. Seven chakra colours. Those two
+things, the stack and the seven colours, are what he names as unique to this
+product.
+*Medium to draw, and it has to be read out of the engine rather than imagined.*
+
+**AT3. The soul shape.** BLOCKED on him.
+He calls it a squiggly cue and says he may never have shown it. If it is not in
+the repository it cannot be drawn from, and inventing one and calling it his
+would be worse than asking.

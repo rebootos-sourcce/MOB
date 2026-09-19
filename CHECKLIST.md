@@ -101,6 +101,8 @@ started. `HIS` waiting on a ruling. `BLOCKED` waiting on something external.
 | D9 | Nine release rulings, including what a mask is |
 | D10 | The therapy equivalence claim, before the funnel ships |
 | D11 | The opening surface. He has ruled Summary, then Field, then Avatar |
+| D12 | Two factor auth, yes or no |
+| D13 | The soul shape. Not in the repository, cannot be drawn from |
 
 ## F. Named by him as built, and not built
 
