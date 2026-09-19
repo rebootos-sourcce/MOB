@@ -179,6 +179,16 @@ His, not mine:
 - Whether the kink sits at the highest charge or the lowest. The code assumed
   highest by a sort order. `parseStory().path` now reports both ends.
 
+## Handing the build over
+
+**Every build goes to the owner as a download, not a preview.** Ruled. An HTML
+file sent without saying how to present it renders inline in the view pane,
+which looks like the app and cannot be saved, so the one thing a build is for
+is the one thing it will not do. Send `source.html` as an attachment, named
+`atuned.html` so the download says what it is, and state the commit and the
+md5 so it is clear which build it is. The file is one file with no
+dependencies and no network, so it runs from wherever it lands.
+
 ## Records
 
 `MILESTONES.md` is the sequenced plan, scrubbed by five disciplines, and it
