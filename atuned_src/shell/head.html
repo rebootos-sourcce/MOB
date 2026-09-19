@@ -470,10 +470,19 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
    600 at negative tracking read as a product logo shouting; this is a name.
    It is a button and it carries no button chrome, because chrome on a wordmark
    makes it look like a control rather than the thing you are in. */
-.brand{font-size:18px;font-weight:400;letter-spacing:.075em;padding:0 10px 0 2px;
+/* THE UMLAUT NEEDS HEADROOM OR IT IS CUT IN HALF. The dots are absolutely
+   positioned at -.42em above a line box with line-height 1, so they sat
+   outside the button's content box and were clipped through the middle at
+   every size. Seen only by screenshotting the mark at six times scale: at one
+   to one they read as slightly light rather than as broken. 7px is the dot
+   offset plus its diameter at 18px, rounded up. */
+.brand{font-size:18px;font-weight:400;letter-spacing:.075em;padding:7px 10px 0 2px;
  white-space:nowrap;color:var(--sky);background:transparent;border:0;cursor:pointer;
  font-family:var(--sans);line-height:1;min-height:var(--tap);display:flex;
- flex-direction:column;align-items:flex-start;justify-content:center;gap:0}
+ /* THE TWO LINES ARE ONE LOCKUP, so they share a centre line. Ruled: Source OS
+    sits evenly spaced and centred under the wordmark. It was left aligned,
+    which read as two stacked labels rather than one mark. */
+ flex-direction:column;align-items:center;justify-content:center;gap:0}
 /* the name, and the line under it saying what the name is */
 .brand .bn{display:block;line-height:1}
 /* WHITE, two points smaller, four more pixels off the wordmark. Ruled.
@@ -485,15 +494,29 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
    9px is under the type floor and gate 4 carries a named exception for this
    one class. The floor is for strings a person has to read to use the thing,
    and a wordmark subtitle is identity read once. */
-.brand .bs{display:block;font-size:9px;font-weight:500;letter-spacing:.19em;
+/* SOURCE OS, TRACKED TO THE WORDMARK'S WIDTH. Measured: the wordmark sets
+   68.9px and this was 61px at .19em, so the lower line sat visibly short and
+   the lockup read as lopsided even once centred. Tracking carries the
+   difference rather than a font size change, because the size is ruled.
+
+   letter-spacing adds a gap after the LAST character too, which pushes the
+   optical centre left by half that gap. The negative margin takes the trailing
+   gap back off so centring is true rather than nearly true. */
+.brand .bs{display:block;font-size:9px;font-weight:500;letter-spacing:.288em;
+ margin-right:-.288em;
  color:var(--ink);line-height:1;text-transform:none;margin-top:4px}
 .brand:hover{color:color-mix(in srgb,var(--sky) 76%,var(--ink))}
 /* the umlaut, drawn. two dots, white, sitting above a plain u. */
 .brand .um{position:relative;display:inline-block}
 .brand .um::before,.brand .um::after{content:'';position:absolute;top:-.42em;
  width:.14em;height:.14em;border-radius:50%;background:var(--um)}
-.brand .um::before{left:.055em}
-.brand .um::after{left:.35em}
+/* CENTRED ON THE U, MEASURED. The pair sat at .408 of the u's box where the
+   glyph's own centre is .444, because letter-spacing of .075em is added after
+   the letter and pushes the box wider than the glyph. Four tenths of a pixel
+   at 18px, which is why it read as dots over the gap rather than dots on the
+   letter and why it needed measuring rather than looking. */
+.brand .um::before{left:.078em}
+.brand .um::after{left:.373em}
 /* back and forward sit together as one object, because they are one control
    with two directions and a gap between them reads as two unrelated buttons */
 .histpair{display:flex;gap:2px;align-items:center;flex:0 0 auto}

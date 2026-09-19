@@ -30,7 +30,20 @@ function scanStory(text){
       first, so it bit constantly: a third of legitimate matches never landed.
       The phrase still outranks the words inside it, which is what this is for. */
    if(!hits.some(function(h){return h.at<=at&&at<h.at+h.t.length+1;}))
-    hits.push({t:w,kind:'word',band:LEX[w][0],amt:LEX[w][1],at:at});
+    /* A WORD MAY NAME ITS OWN FETTER, and some have to.
+
+       LEX was [seat, intensity] and the fetter was then inferred from the
+       seat's modal one. That works while a seat carries the fetter the word
+       means, and the exhaustion family proves it does not always: the owner
+       ruled that exhaustion sits at the solar plexus and is NOT anger, and the
+       solar plexus carries ten Anger addresses and no Apathy address at all.
+       Seat and fetter are two facts and the table could only hold one.
+
+       A third element states the fetter outright. The seat still says where,
+       which is what the body map needs, and the fetter now says what, which is
+       what the person reads. Entries without a third element behave exactly as
+       before. */
+    hits.push({t:w,kind:'word',band:LEX[w][0],amt:LEX[w][1],fet:LEX[w][2]||null,at:at});
    at=src.indexOf(' '+w+' ',at+1);}});
  /* adjectives name the charge even when they carry no band */
  Object.keys(ADJ2CHG).forEach(function(w){
@@ -142,6 +155,10 @@ function parseStory(text){
   if(h.band&&h.band!=='coherent'){ byBand[h.band]=(byBand[h.band]||0)+h.amt; }
   if(h.charge){ byChg[h.charge]=(byChg[h.charge]||0)+1; }});
  var wanted={}; Object.keys(byChg).forEach(function(c){var f=CHG2FET[c]; if(f)wanted[f]=true;});
+ /* a word that names its own fetter is as named as an adjective that maps to
+    one, so it counts toward wanted and stops the reading being inferred. */
+ var stated={};
+ hits.forEach(function(h){ if(h.fet){ wanted[h.fet]=true; stated[h.fet]=true; } });
  var anyNamed=Object.keys(wanted).length>0;
  Object.keys(byBand).forEach(function(k){
   var bn=K2BAND[k]; if(!bn) return;
@@ -173,7 +190,21 @@ function parseStory(text){
      the seat is genuinely known. What changes is that the imprint says so.
      Anything rendering a name now has to ask whether the text named it. */
   var named=seg.length>0;
-  if(seg.length < all.length*0.25){
+  /* A STATED FETTER SURVIVES A SEAT THAT CANNOT HOUSE IT. The quarter rule
+     below exists to stop one stray address dragging a whole band onto the
+     wrong reading, and it is right for a fetter that was inferred. A fetter
+     the person's own word named is different: exhaustion states Apathy and the
+     solar plexus has no Apathy address, so the quarter rule would discard the
+     one thing the sentence actually said and fall back to Anger. The charge
+     still lands on the seat, because that is where the body holds it, and the
+     reading keeps the name the word gave it. */
+  var stateHere=Object.keys(stated).filter(function(f){return wanted[f];}).length>0;
+  if(stateHere&&!seg.length){
+   imprints.push({node:all[0]?all[0].i:null, name:all[0]?all[0].k:'', band:bn,
+    fetter:Object.keys(stated)[0], inferred:false, stated:true,
+    amt:Math.round(Math.min(10,byBand[k]/3)*10)/10, from:k});
+   return;}
+  if(seg.length < all.length*0.25 && !stateHere){
    named=false;
    var tally={}; all.forEach(function(n){tally[n.cf]=(tally[n.cf]||0)+1;});
    var modal=Object.keys(tally).sort(function(a,b){return tally[b]-tally[a];})[0];

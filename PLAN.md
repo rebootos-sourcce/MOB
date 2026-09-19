@@ -39,6 +39,11 @@
                                      holds it. Reading acknowledgement and the
                                      Body pulse remain
     BLOCK 15 simulations      OPEN
+    BLOCK 16 energetics       OPEN   redesign, questions on side by side cards
+                                     coloured by their seat, and the accuracy
+                                     note. Owner, 19 September
+    BLOCK 17 ritual + account OPEN   the third button in. Spec with the whole
+                                     team, six passes, then wired
 
 
 Written because the owner asked for the list in blocks, after finding that a
@@ -331,3 +336,69 @@ motion system, 4 knowledge base, 5 the two lightings.
    means, not only when it appears.
 3. **Summary structure:** everything structural on the right, or above the
    reading. He said both in one sentence and they are different layouts.
+
+
+---
+
+## BLOCK 16. The energetics page.
+
+Owner, 19 September, and the note is the substance rather than the layout.
+
+**The layout.**
+1. Art direction, UI, UX and design redesign the surface. Aesthetically
+   pleasing, and the flow reads clean.
+2. Anything that is text and should be a mark gets a mark. If it has a name it
+   has an icon, which is already the rule and is not kept here.
+3. The questions eat the horizontal space. Each question goes on its own card
+   and the cards sit side by side.
+4. Each card's background is coloured by the seat the question belongs to, so
+   the chakra is carried by the surface and not by a label.
+
+**The note, and this is the part that changes what the answers mean.** It goes
+on the page where somebody reads it while answering, not in a help sheet.
+
+- A ten means a hundred times out of a hundred. You do it all the time,
+  consistently. That is the scale.
+- This is not judgment and it is not how we would like to see ourselves. It is
+  accuracy.
+- Integrity up regulates or down regulates the nervous system, and that
+  maintains or disconnects the spiritual connection.
+- The story journal weights these answers and adjusts them toward the actual,
+  which is the reason accuracy matters here rather than optimism.
+- Worked examples, his: how often do you tell the truth, to yourself and to
+  others. Do you actually go to the gym four days a week like you say. Do you
+  drink eight glasses of water a day like you say.
+- We all slip. That is the point. The point is to find the slips so the
+  behaviour can be transformed and the integrity refined, which holds an
+  upward regulated nervous system that self heals. The internal state
+  transforms, and the external follows it.
+
+**Size.** Medium for the layout, small for the note, and the note is worth more
+than the layout.
+
+---
+
+## BLOCK 17. The ritual builder and the accountability tracker.
+
+Owner, 19 September, with his own consolidated source document at
+`docs/RITUAL-ACCOUNTABILITY-source.md`. The team is specifying it now: six
+passes, the seats debating each other rather than writing in isolation, and
+the nine ICPs consulted on it as a high performance behaviour change tool.
+
+**What he asked for.** A calendar ritual builder and an accountability tracker
+that work together. It reads the sniffer so a release protocol can be
+automated. A person can add behaviours of their own, transforming
+communication being his example, on top of defaults like gratitude and
+affirmation. It carries the asks that belong around the app: set your
+boundary, set your avatar. Ritual becomes the third button in. The tracker
+holds somebody to account over time and pushes what to do next, to the phone
+and to the app, driven by the data already in the app. And when somebody
+fails, the accountability becomes a story saying why, which is what closes the
+loop back into the sniffer.
+
+**The five contradictions in his own document are blocking and unruled:** the
+daily number, streak versus season, four tabs versus two pages, whether the
+accountability map is built at all, and what a paused card does to a streak.
+The spec resolves or escalates each by name.
+
+**Size.** Large, and it is the largest thing left.

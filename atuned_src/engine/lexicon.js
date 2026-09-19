@@ -28,6 +28,20 @@ var LEX={
     unheard at the throat, meaninglessness at the crown, rumination at the
     third eye.
     ============================================================ */
+ /* WHAT ANGER LOOKS LIKE WHEN SOMEBODY DESCRIBES IT. The table had furious
+    and angry, which are the words a person uses about themselves afterwards,
+    and none of the verbs they use about what happened. "He shouted at me and I
+    slammed the door" read as nothing at all. */
+ shouted:['solar',24],yelled:['solar',24],screamed:['solar',26],
+ slammed:['solar',22],snapped:['solar',22],'lashed out':['solar',26],
+ 'blew up':['solar',26],'lost it':['solar',24],'saw red':['solar',26],
+ /* and what being unheard looks like from the outside, at the throat */
+ 'talked over':['throat',22],interrupted:['throat',20],'shut me down':['throat',24],
+ 'would not listen':['throat',24],'wouldnt listen':['throat',24],
+ 'nobody listened':['throat',24],
+ /* and being judged, at the sacral, where shame already sits */
+ criticised:['sacral',22],criticized:['sacral',22],'told me off':['sacral',22],
+ 'made me feel small':['sacral',26],laughed:['sacral',20],
  /* grief and loss. heartbroken and grieving were here; the event was not. */
  died:['heart',28],death:['heart',26],dying:['heart',26],'passed away':['heart',28],
  grief:['heart',26],mourning:['heart',24],mourn:['heart',24],bereaved:['heart',26],
@@ -37,10 +51,10 @@ var LEX={
  alone:['heart',24],loneliness:['heart',24],isolated:['heart',22],
  unwanted:['heart',22],'nobody cares':['heart',26],'no one came':['heart',24],
  /* exhaustion. drained and depleted were here, the plain word was not. */
- exhausted:['solar',26],exhaustion:['solar',26],weary:['solar',22],
- fatigue:['solar',22],'wiped out':['solar',24],'no energy':['solar',24],
- 'running on empty':['solar',26],'cannot keep going':['solar',28],
- 'can not keep going':['solar',28],'cant keep going':['solar',28],
+ exhausted:['solar',26,'Apathy'],exhaustion:['solar',26,'Apathy'],weary:['solar',22,'Apathy'],
+ fatigue:['solar',22,'Apathy'],'wiped out':['solar',24,'Apathy'],'no energy':['solar',24,'Apathy'],
+ 'running on empty':['solar',26,'Apathy'],'cannot keep going':['solar',28,'Apathy'],
+ 'can not keep going':['solar',28,'Apathy'],'cant keep going':['solar',28,'Apathy'],
  /* panic. panicked was here, the noun and the event were not. */
  panic:['root',28],'panic attack':['root',28],panicking:['root',28],
  terror:['root',28],petrified:['root',26],
@@ -81,8 +95,8 @@ var LEX={
     four segments out of thirty-three. */
  inadequacy:['throat',24],inadequate:['throat',22],misery:['heart',24],
  miserable:['heart',22],remorse:['heart',20],remorseful:['heart',18],
- burnout:['solar',28],'burnt out':['solar',28],'burned out':['solar',28],
- depleted:['solar',24],drained:['solar',22],evaporated:['solar',20],
+ burnout:['solar',28,'Apathy'],'burnt out':['solar',28,'Apathy'],'burned out':['solar',28,'Apathy'],
+ depleted:['solar',24,'Apathy'],drained:['solar',22,'Apathy'],evaporated:['solar',20,'Apathy'],
  throbbing:['eye',18],throb:['eye',16],pounding:['eye',20],
  tense:['throat',16],tension:['throat',16],tight:['throat',16],clenched:['throat',20],
  crushed:['heart',26],humiliating:['throat',22],
