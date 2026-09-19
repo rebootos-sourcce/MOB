@@ -6532,6 +6532,10 @@ function loadProfile(p){
  if(!p.avatar)p.avatar=avatarBlank();
  if(!Array.isArray(p.avatar.pairs))p.avatar.pairs=[];
  if(!p.purpose)p.purpose=purposeBlank();
+ /* soul was the one field this did not fill, and it is the one the next line
+    reads without a guard. Six fields were defended and the seventh took the
+    boot down. */
+ if(!p.soul)p.soul={doms:[0],arcs:[0,1],roots:[]};
  S.doms=(p.soul.doms||[0]).slice(); S.arcs=(p.soul.arcs||[0,1]).slice();
  S.roots=(p.soul.roots||[]).slice(); buildSoul();
  CHILD.forEach(function(c){var a=p.axes[c.nm]||{};
@@ -6612,7 +6616,40 @@ var STORE={get:function(){return null;}, set:function(){}}, STORE_BOUND=false;
 /* a host binds its own. exported, because module.exports captures the value of
    STORE and not the binding, so an outside caller cannot assign to it. */
 function bindStore(get,set){ STORE={get:get,set:set}; STORE_BOUND=true; return STORE; }
-function pStore(){ try{ return JSON.parse(STORE.get(PKEY)||'[]'); }catch(e){ return []; } }
+/* EVERYTHING THAT COMES OFF THE DISK GOES THROUGH THE BOUNDARY.
+
+   This was the last route into the product that did not, and it was filed as a
+   gap this morning and left. What it cost: a profile written by an earlier
+   build has no `soul`, loadProfile reads `p.soul.doms` on line 88 without a
+   guard, and the throw takes the boot down with it. Measured on a profile in
+   the shape an earlier build saved: the centre canvas came back 0 by 0 and the
+   console carried "Cannot read properties of undefined (reading 'doms')".
+   That is the owner's report of the centre not rendering, and it only ever
+   reproduced for somebody who had used the product before.
+
+   validateProfile is exactly the right instrument for it and always was: a
+   missing field is an older profile and is filled from the blank, which is the
+   standing rule. A record it refuses is kept rather than dropped, because a
+   person's own data is not ours to discard in silence, and the caller is told
+   so it can say something true.
+
+   A profile store is the one place a refusal must not be fatal: one bad record
+   must not take the other nine with it. */
+var STORE_REFUSED=[];
+function pStore(){
+ var raw;
+ try{ raw=JSON.parse(STORE.get(PKEY)||'[]'); }catch(e){ return []; }
+ if(!Array.isArray(raw)) return [];
+ STORE_REFUSED=[];
+ var out=[];
+ for(var i=0;i<raw.length;i++){
+  var v=validateProfile(raw[i]);
+  if(v.ok){ out.push(v.profile); }
+  else { STORE_REFUSED.push({i:i, name:(raw[i]&&raw[i].name)||'unnamed',
+    errs:(v.errs||[]).slice(0,3)}); }}
+ return out;}
+/* what the boundary would not take, for a host that wants to say so */
+function storeRefused(){ return STORE_REFUSED.slice(); }
 /* The empty catch here meant a save that failed on quota or blocked storage
    told nobody, and the intake button said "Saved" regardless. The engine still
    does not render anything: it reports, and the UI decides what to show. */
@@ -6792,7 +6829,14 @@ function validateProfile(o){
     errs.push('avatar.pairs held '+(o.avatar.pairs.length-p.avatar.pairs.length)
      +' entries that are not a written pair');}
   else if(o.avatar.pairs!==undefined)errs.push('avatar.pairs is not a list');}
- else if(o.avatar!==undefined)errs.push('avatar is not an object');
+ /* NULL IS MISSING, NOT WRONG. The rule is that a missing field is an older
+    profile and is filled from the blank, and only a field of the wrong type or
+    out of range is refused by name. These two tested `!==undefined`, so a
+    record carrying avatar:null, which is exactly what an earlier build wrote,
+    was refused and the person's whole profile with it. loadProfile has always
+    treated a null avatar as an older record and filled it. The boundary now
+    agrees with it. */
+ else if(o.avatar!==undefined&&o.avatar!==null)errs.push('avatar is not an object');
  /* THE PURPOSE MAP. Three and three, and six sides of five. A seventh value
     or a sixth commitment on one side is refused rather than dropped, because
     a boundary quietly truncated is a boundary a person thinks they set. */
@@ -6815,7 +6859,7 @@ function validateProfile(o){
     p.purpose.sides[sd]=a.filter(function(x){
      return typeof x==='string'&&x.length>0&&x.length<200;});});}
   else if(o.purpose.sides!==undefined)errs.push('purpose.sides is not an object');}
- else if(o.purpose!==undefined)errs.push('purpose is not an object');
+ else if(o.purpose!==undefined&&o.purpose!==null)errs.push('purpose is not an object');
  if(Array.isArray(o.rituals))p.rituals=o.rituals.filter(function(x){return x&&typeof x==='object';});
  /* A snapshot is strictly typed numbers and the record calls toFixed on them,
     so "the person's own text" does not apply here. An unchecked history
@@ -8476,6 +8520,9 @@ if(typeof module!=='undefined'&&module.exports){
                   NUM_LET:NUM_LET, NUM_MASTER:NUM_MASTER, NUM_DEBT:NUM_DEBT,
                   NUM_CORE:NUM_CORE, NUM_DEBT_SAYS:NUM_DEBT_SAYS,
                   FULLNAME:FULLNAME, BIRTH:BIRTH,
+  /* store */     storeRefused:storeRefused, pStore:pStore,
+                  validateProfile:validateProfile, loadProfile:loadProfile,
+                  blankProfile:blankProfile,
   /* palettes */  PAL_VIVID:PAL_VIVID,
   /* series */    seriesRead:seriesRead, SPANS:SPANS, spanOf:spanOf,
   /* outbox */    obQueue:obQueue, obValidate:obValidate, obDrain:obDrain,

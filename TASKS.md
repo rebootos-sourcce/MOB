@@ -1402,3 +1402,92 @@ be captured.
 **AP4.** The focus group at scale.
 **AP5.** Then the release. It is the next focus once everything above is done
 and every piece of art has been ruled on.
+
+---
+
+# Ruled 19 September, eleventh note. The compass, properly.
+
+**I MISREAD HIM ON THE COMPASS AND RECORDED THE WRONG THING TWICE.** He was
+never reversing himself. His actual position: every tool in the centre column
+is a feature. The Field is a feature, the energy figure is a feature, the
+compass is a feature. That was always one consistent statement. What he
+dislikes is the SHAPE, not the size. The AF1 entry claiming a reversal is
+wrong and this supersedes it.
+
+**AQ1. The shape is wrong. It is meant to be an arrow up and an arrow down.**
+`ui/cone.js`
+It is a compass. What is drawn is something else.
+*Medium.*
+
+**AQ2. Coherent at the top, decoherent at the bottom.** `ui/cone.js`
+Replacing Source and The blueprint, which are the words there now.
+*Small.*
+
+**AQ3. Halo at the top, pitchfork at the bottom.** `ui/cone.js`
+*Small.*
+
+**AQ4. The marker oscillates in your own range.** `ui/cone.js`
+A dot, a circle, oscillating across the range the data says is yours, and
+showing where most people oscillate.
+*Medium. The oscillation exists on the marker today; the range being the
+person's own does not.*
+
+**AQ5. Every teacher takes their seat's colour.** `ui/cone.js`, data
+Musashi is power. Buddha is perception. Rumi is love.
+*Small once the mapping is written, and the mapping is his.*
+
+**AQ6. Eckhart comes out. Classic figures only.** data
+*Small.*
+
+**AQ7. Every figure gets an icon.** data
+Rumi, Buddha, Geryon, Moloch, all of them. Today they are names with marks on
+some and nothing on others.
+*Medium.*
+
+**AQ8. The opposites take the dark version of the light colours.** `ui/cone.js`
+Light on top, the same hues desaturated below. They stay legible and visible.
+*Small.*
+
+**AQ9. The names sit left and right and light up as you wheel round.**
+`ui/cone.js`
+Hovering one spins the figure to that person, quickly, and never snaps.
+*Medium. Taken from pass 4, which he liked for this.*
+
+**AQ10. The band becomes a room.** `ui/cone.js`
+From pass 7. He said so directly.
+*Medium.*
+
+**AQ11. Pass 10 is the one.** `ui/cone.js`
+Every number carries its scale. He named it and then named the reason: a
+number that does not say what it is out of is meaningless.
+*Large, and it is the same thing as AJ1.*
+
+**AQ12. NO TEXT OVER THE HERO GRAPHIC, EVER.** standing rule
+The 39 in the middle of the compass goes. So does anything else printed on
+top of a hero figure.
+*Small here, standing everywhere.*
+
+**AQ13. The plane is out.** He tried it and ruled against it.
+
+**AQ14. The bottom information goes right, unless it is about the tool.**
+`ui/cone.js`
+Tool information may sit at the bottom. A reading may not.
+*Small.*
+
+**AQ15. Flat becomes all solid. No outlines on buttons, anywhere.**
+`shell/head.html`
+Flat and Punch are too similar and this is what separates them.
+*Small.*
+
+**AQ16. "Powered by SOURCE OS" on the intro.** `shell/body.html`
+The card, which the type arithmetic already says is the only place it fits.
+*Small.*
+
+## AR. And the copy editor rule he handed me directly
+
+**AR1. A number without its scale is my job to stop, not his to catch.**
+"39 of what. We're not doing that anymore. Make sure that's copy editor. This
+is your job to make sure it's no longer happening."
+This is AJ1 restated as an instruction to me rather than a task in a list.
+Every number, every surface, says what it is out of or does not print.
+*Standing.*

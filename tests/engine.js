@@ -1783,6 +1783,52 @@ console.log('\n27 · the ladder');
   ok(L.earned.some(m=>m.k==='week'),'seven days running earns the week mark');}
 }
 
+console.log('\n27b · a profile from an older build still loads');
+{
+ /* THIS IS THE ONE THE OWNER HIT. A profile written by an earlier build has no
+    soul, loadProfile read p.soul.doms without a guard, and the throw took the
+    boot down: the centre canvas measured 0 by 0 and the menu went with it.
+    It only ever reproduced for somebody who had used the product before, which
+    is why every cold boot test in this file passed while his did not. */
+ let mem={};
+ E.bindStore(k=>mem[k]===undefined?null:mem[k],(k,v)=>{mem[k]=String(v);});
+ const older={v:2,name:'Lance',
+  who:{first:'Lance',middle:'',last:'Powell',sex:'m',
+   born:{date:'1971-06-04',time:'',place:'Denver',timeUnknown:true}},
+  intake:{answers:{0:9,1:8},startedAt:'2026-09-18T00:00:00.000Z'},
+  /* the three shapes an earlier build actually wrote */
+  avatar:null, purpose:null, seed:null};
+ mem['source.profiles']=JSON.stringify([older]);
+
+ const got=E.pStore();
+ ok(got.length===1,'an older profile survives the boundary, got '+got.length);
+ ok(E.storeRefused().length===0,
+  'and is not refused: '+JSON.stringify(E.storeRefused()));
+ ok(got[0].name==='Lance','and keeps its name, got '+got[0].name);
+
+ /* NULL IS MISSING, NOT WRONG. A missing field is an older profile and is
+    filled from the blank. Only a wrong type or an out of range value is
+    refused by name. These two were refused on !==undefined, which took the
+    person's entire profile with them. */
+ ok(got[0].avatar&&typeof got[0].avatar==='object',
+  'a null avatar is filled from the blank rather than refused');
+ ok(got[0].purpose&&typeof got[0].purpose==='object',
+  'and so is a null purpose');
+ ok(got[0].soul&&Array.isArray(got[0].soul.doms),
+  'and the soul the older build never wrote is there');
+
+ /* AND A WRONG TYPE IS STILL REFUSED, or the fix above would have turned the
+    boundary off rather than corrected it. */
+ mem['source.profiles']=JSON.stringify([{v:2,name:'Bad',avatar:'not an object'}]);
+ ok(E.pStore().length===0,'a wrong type is still refused');
+ ok(E.storeRefused().length===1,'and the refusal is reported rather than swallowed');
+
+ /* ONE BAD RECORD MUST NOT TAKE THE OTHERS WITH IT. */
+ mem['source.profiles']=JSON.stringify([older,{v:2,name:'Bad',avatar:42},older]);
+ ok(E.pStore().length===2,'one refused record leaves the other two loadable');
+ E.bindStore(()=>null,()=>{});
+}
+
 console.log('\n28 · no title is a truncation');
 {
  /* A TITLE IS WHAT A PERSON READS, SO IT IS A WHOLE WORD. Two shipped

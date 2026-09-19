@@ -67,6 +67,8 @@ started. `HIS` waiting on a ruling. `BLOCKED` waiting on something external.
 | B9 | Gate 9 counted six lightings by hand | failed because the product grew |
 | B10 | Settings was in no screenshot harness | five surfaces of ten |
 | B11 | `--bad` too thin to see past about fifty five | 4.01 on panel-2 |
+| B12 | A profile from an older build killed the centre render | canvas 0x0, throw on `p.soul.doms` |
+| B13 | The boundary refused a null avatar and dropped the whole profile | null is missing, not wrong |
 
 ## C. Specced, not built
 
