@@ -1052,3 +1052,45 @@ draw and every hit test, so one NaN reaching it stopped the wheel for the
 session with no error and no way back but a reload. Found by a probe that
 forgot to pass its own argument, which is the second time this session a tool
 lied before the code did.
+
+---
+
+## Ruled 19 September, the operational round
+
+**The microphone stays.** The owner wants speech capture and promises the data
+is never sold. Both hold, and a third fact holds with them: browser speech
+recognition is a network service, so the audio reaches the browser vendor. We
+do not sell it and we also do not control it. The control therefore says so in
+one line before the microphone opens, because a promise about data is only
+worth what the person can check. Typing remains the equal path.
+
+**A run costs the minimum, and a rerun is free.** `meterPlan` treated the cap
+as a fill target, so every run cost twenty five whatever was picked. Ruled: run
+the fewest patterns the selection needs, and re-running ground already opened
+costs nothing. The cap stays a ceiling.
+
+**The ladder is 12, 24, 36, 99.** The sales seat's flat three cents a pattern
+at every rung, taken over 12/29/59/99, because the printable rate is worth more
+than the four percent revenue difference and the lower middle rungs widen the
+pool.
+
+**Free is ten unique patterns.** Not twenty five a week and not a hundred a
+month: a hundred a month clears an axis for nothing, which prices the product
+at zero for the people who need one axis.
+
+Ten UNIQUE patterns. Anything already opened may be rerun without limit and
+without cost, forever. New unique ground swaps against the set already held
+rather than adding to it, and the swap is decided by weight: what a person
+marks heavy stays, what sits light drops off first. A person telling us which
+pattern moved them is telling us what to keep.
+
+**Headers take title case.** The stylesheet was right and `CLAUDE.md` was
+wrong, so the sentence case rule applies to body copy and not to headers.
+A person's own name is exempt, because a surname is not a header and a
+transform that renders somebody as De Vries is wrong about them.
+
+**The instruction for this round, in the owner's own frame:** make the system
+highly operational before making any of it complete. Fix the stoppers, wire in
+what is missing even where it is rough, get the whole loop closed so other
+people can be put in front of it, then refine. A full loop that is crude beats
+a polished half.
