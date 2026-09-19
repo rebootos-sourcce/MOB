@@ -36,4 +36,4 @@ PY
 # correct on the day it is copied and wrong afterwards, and the first person
 # to notice is somebody clicking through from the page to the app who sees the
 # greens disagree. Regenerated on every build from the block above.
-python3 "$(dirname "$0")/../tools/tokens.py"
+python3 ../tools/tokens.py
