@@ -1379,6 +1379,17 @@ body.punch .set-sec{background:var(--panel-2);border-color:transparent}
 .s-oact{margin-top:6px;align-self:flex-start}
 body.punch .s-readbox,body.punch .s-out{background:var(--panel-2);border-color:transparent}
 @media (max-width:1100px){.s-cols{grid-template-columns:1fr}}
+/* the compass controls. Four switches on the card, each one a reading the
+   figure can carry rather than a decoration it can wear. */
+.cone-ctl{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin:12px 0 4px}
+.cn-b{background:transparent;border:1px solid var(--edge);color:var(--mid);
+ border-radius:var(--r-xs);padding:7px 13px;font-family:var(--sans);font-size:12.5px;
+ cursor:pointer;min-height:var(--tap);display:inline-flex;align-items:center;
+ transition:background .12s cubic-bezier(.22,1,.36,1),color .12s,border-color .12s}
+.cn-b:hover{background:var(--panel-2);color:var(--ink)}
+.cn-b.on{border-color:var(--accent);color:var(--accent);font-weight:500}
+.cn-sp{flex:1 1 auto;min-width:6px}
+body.punch .cn-b{border-color:transparent;background:var(--panel-2)}
 .kb-deck{margin-top:22px;padding:18px 20px;border-radius:var(--r-s);background:var(--panel-2);
  display:flex;flex-direction:column;gap:9px;align-items:flex-start}
 body.punch .kb-search input{border-color:transparent}
@@ -10124,7 +10135,20 @@ function ritRender(){
    No library and no new dependency. Its own canvas, its own
    context, and an axonometric projection in about forty lines.
    ============================================================ */
-var CONE={open:false, tab:false, spin:0.6, tilt:0.60, drag:null, raf:null, t:0, cv:null, g:null, dpr:1, hits:[]};
+/* flat: the 2D version on a button, beside the spinning one. Ruled.
+   layers: the compression reading, Dante, off by default.
+   reg: the six axis arrows, three up regulating and three down.
+   span: the oscillation window, 30, 90 or 365 days. */
+var CONE={open:false, tab:false, spin:0.6, tilt:0.60, drag:null, raf:null, t:0,
+ cv:null, g:null, dpr:1, hits:[], flat:false, layers:false, reg:false, span:30};
+/* THE FLAT VERSION IS THE SAME FIGURE WITH THE TILT TAKEN OUT.
+
+   A second renderer for a 2D compass would be a second thing to keep true and
+   it would drift. The projection already takes a tilt: at zero the rings
+   collapse to lines, the meridians become a flat fan, and what is left is an
+   elevation of the same geometry, which is what a flat version is. One
+   switch, one renderer, and the two can never disagree. */
+function coneTilt(){return CONE.flat?0.0001:CONE.tilt;}
 /* THE HEIGHT BUDGET. A tilted ring reaches lower than the axis point it sits
    on, by its own radius times the sine of the tilt, so a figure sized against
    the axis alone puts its floor names off the bottom of the canvas. The budget
@@ -10173,8 +10197,8 @@ function conePtA(q,a,W,H){
  var th=a+CONE.spin;
  var x3=Math.cos(th)*rad, z3=Math.sin(th)*rad;
  return {x:cx+x3,
-  y:cy-y*Math.cos(CONE.tilt)+z3*Math.sin(CONE.tilt),
-  d:z3*Math.cos(CONE.tilt)+y*Math.sin(CONE.tilt)};}
+  y:cy-y*Math.cos(coneTilt())+z3*Math.sin(coneTilt()),
+  d:z3*Math.cos(coneTilt())+y*Math.sin(coneTilt())};}
 /* coherence 0 to 100, meridian 0 to 7 */
 function conePt(q,mer,W,H){return conePtA(q,mer*(Math.PI*2/8),W,H);}
 /* the ring at one coherence, sampled finely enough to be a curve */
@@ -10253,6 +10277,15 @@ function coneDraw(){
      quality it started as. The poles keep Source and the blueprint, which are
      the two things that genuinely are single points. */
   var up=conePt(91,h.i,W,H), dn=conePt(9,h.i,W,H);
+  /* FLAT MODE COLLAPSES THE MERIDIANS ONTO ONE LINE, so eight names land on
+     top of each other at each end. With the tilt gone there is no depth to
+     separate them, so they are separated by hand: each meridian steps its
+     label away from the axis by its own index. The spinning version needs
+     none of this because the projection does it. */
+  if(CONE.flat){
+   var step=(h.i-3.5)*15;
+   up=({x:up.x,y:up.y-Math.abs(step)*0.9,d:up.d});
+   dn=({x:dn.x,y:dn.y+Math.abs(step)*0.9,d:dn.d});}
   var hv=CONE.hover&&CONE.hover.m===h.m?CONE.hover.end:null;
   var uo=(up.x<W/2?-1:1), dof=(dn.x<W/2?-1:1);
   /* the name runs away from the figure, so it never starts on top of its own
@@ -10280,8 +10313,8 @@ function coneDraw(){
  (function(){
   var top=conePt(100,0,W,H), bot=conePt(0,0,W,H);
   var cy=H/2, U=Math.min(W,H)/2, hgt=U*CONE_H;
-  g.beginPath(); g.moveTo(W/2,cy-hgt*Math.cos(CONE.tilt));
-  g.lineTo(W/2,cy+hgt*Math.cos(CONE.tilt));
+  g.beginPath(); g.moveTo(W/2,cy-hgt*Math.cos(coneTilt()));
+  g.lineTo(W/2,cy+hgt*Math.cos(coneTilt()));
   g.strokeStyle=rgba(ink,.16); g.lineWidth=1; g.stroke();
   /* THE TWO ENDS CARRY THEIR SYMBOL.
 
@@ -10294,7 +10327,7 @@ function coneDraw(){
      The halo is a ring with nothing inside it, which is what Source is. Ego
      compression is a ring squeezed from both sides, which is what it does.
      The pitchfork stands beside it. */
-  var ty=cy-hgt*Math.cos(CONE.tilt), by=cy+hgt*Math.cos(CONE.tilt);
+  var ty=cy-hgt*Math.cos(coneTilt()), by=cy+hgt*Math.cos(coneTilt());
   coneGlyph(g,GL_HALO,W/2,ty-48,gc,.9);
   coneTxt(g,'Source',W/2,ty-26,13,gc,.9,600);
   coneTxt(g,'The blueprint',W/2,by+30,13,rc,.85,600);
@@ -10346,6 +10379,113 @@ function coneDraw(){
    W/2,byB+16,10.5,ink,.5,400);})();
 
  /* the reading itself, on the axis at its own height */
+ /* ============================================================
+    THE SIX AXIS ARROWS. Three up regulate and three down.
+
+    The owner: "there are some characters going up and some going down, and
+    this is the core of our integrity. Up means up regulation, down means
+    down regulation, and there is something about the nervous system with
+    this compass, and the spine."
+
+    So they are drawn on the axis, which is the spine of the figure, and they
+    are the reading rather than an ornament: the three that up regulate are
+    the three highest laws and the three that down regulate are the three
+    lowest, taken from S.law, which is already the twenty one measurements
+    this instrument makes about moral integrity. Each one sits at its own
+    height by its own value. Off by default, because the figure is already
+    carrying sixteen names.
+    ============================================================ */
+ if(CONE.reg){
+  var cyR=H/2, UR=Math.min(W,H)/2, hR=UR*CONE_H;
+  var laws=SI.map(function(l){return {nm:l.nm,v:S.law[l.nm]||0,b:l.b};})
+   .sort(function(a,b){return b.v-a.v;});
+  var up=laws.slice(0,3), dn=laws.slice(-3).reverse();
+  var arrow=function(x,y,dir,c,nm,v){
+   var L=13;
+   g.beginPath();
+   g.moveTo(x,y+dir*L); g.lineTo(x,y-dir*L);
+   g.moveTo(x-4,y-dir*(L-5)); g.lineTo(x,y-dir*L); g.lineTo(x+4,y-dir*(L-5));
+   g.strokeStyle=rgba(c,.88); g.lineWidth=1.7;
+   g.lineCap='round'; g.lineJoin='round'; g.stroke(); g.lineCap='butt';
+   coneTxt(g,nm.toLowerCase(),x+(dir>0?16:16),y+4,10.5,c,.8,500,'left');
+   coneTxt(g,v.toFixed(1),x-16,y+4,10.5,c,.55,400,'right');};
+  up.forEach(function(l,i){
+   var y=cyR-hR*0.52*Math.cos(coneTilt())+i*24-24;
+   arrow(W/2-96,y,1,hx(PAL[l.b]||PAL.Heart),l.nm,l.v);});
+  dn.forEach(function(l,i){
+   var y=cyR+hR*0.32*Math.cos(coneTilt())+i*24;
+   arrow(W/2-96,y,-1,hx(PAL.Root),l.nm,l.v);});
+  coneTxt(g,'up regulating',W/2-96,cyR-hR*0.52*Math.cos(coneTilt())-42,10,ink,.42,500);
+  coneTxt(g,'down regulating',W/2-96,cyR+hR*0.32*Math.cos(coneTilt())+86,10,ink,.42,500);}
+
+ /* ============================================================
+    THE LAYERS. What compression over time looks like.
+
+    Dante's Inferno and the Paradiso as the suggestion, which is the owner's
+    own reference: the lower compass is what happens as these behaviours are
+    adopted, and the upper is what happens as they are released. Nine bands
+    each way, drawn as the rings the figure already has, named, so the
+    structure a person is standing inside has a name at every level.
+    ============================================================ */
+ if(CONE.layers){
+  var LO=['Limbo','Lust','Gluttony','Greed','Wrath','Heresy','Violence','Fraud','Treachery'];
+  var HI=['Moon','Mercury','Venus','Sun','Mars','Jupiter','Saturn','Stars','Primum'];
+  var cyL=H/2, UL=Math.min(W,H)/2;
+  HI.forEach(function(nm,i){
+   var q=55+i*5, p2=conePtA(q,Math.PI/2,W,H);
+   coneTxt(g,nm.toLowerCase(),W/2+UL*0.60,p2.y+3,9.5,gc,.30+i*0.035,400,'left');});
+  LO.forEach(function(nm,i){
+   var q=45-i*5, p2=conePtA(q,Math.PI/2,W,H);
+   coneTxt(g,nm.toLowerCase(),W/2-UL*0.60,p2.y+3,9.5,rc,.30+i*0.035,400,'right');});
+  coneTxt(g,'released',W/2+UL*0.60,conePtA(100,Math.PI/2,W,H).y-6,10,gc,.5,500,'left');
+  coneTxt(g,'compressed',W/2-UL*0.60,conePtA(0,Math.PI/2,W,H).y+10,10,rc,.5,500,'right');}
+
+ /* ============================================================
+    THE OSCILLATION RANGE OVER TIME, lower left. Ruled.
+
+    "Maybe I can see my oscillation range over a period of time, 30 days,
+    quarter, annual, to show whether you are improving or not."
+
+    It reads the snapshots the record already keeps. Each one carries a CQ, so
+    a window of them is a range and a direction, and the direction is the only
+    thing a person actually wants from this: is the swing narrowing and is the
+    floor rising. A window with fewer than two snapshots says so rather than
+    drawing a line through one point.
+    ============================================================ */
+ (function(){
+  var hist=(CURP&&CURP.history)||[];
+  var now=Date.now(), span=CONE.span*86400000;
+  var pts=hist.map(function(h){
+    var t=Date.parse(h.t||h.at||''), v=(h.cq!=null?h.cq:(h.CQ!=null?h.CQ:null));
+    return (isFinite(t)&&v!=null)?{t:t,v:+v}:null;})
+   .filter(function(x){return x&&(now-x.t)<=span;})
+   .sort(function(a,b){return a.t-b.t;});
+  var x0=18, y0=H-96, w=168, h2=54;
+  coneTxt(g,CONE.span+' day oscillation',x0,y0-10,10.5,ink,.55,500,'left');
+  g.beginPath(); g.rect(x0,y0,w,h2);
+  g.strokeStyle=rgba(ink,.10); g.lineWidth=1; g.stroke();
+  /* the band everybody stands in, so the plot is read against it */
+  var by0=y0+h2*(1-60/100), by1=y0+h2*(1-40/100);
+  g.fillStyle=rgba(ink,.05); g.fillRect(x0,by0,w,by1-by0);
+  if(pts.length<2){
+   coneTxt(g,pts.length?'one reading so far':'no readings in this window',
+    x0+w/2,y0+h2/2+4,10,ink,.38,400);
+  }else{
+   var lo=Math.min.apply(null,pts.map(function(p2){return p2.v;}));
+   var hi=Math.max.apply(null,pts.map(function(p2){return p2.v;}));
+   var t0=pts[0].t, t1=pts[pts.length-1].t||t0+1;
+   g.beginPath();
+   pts.forEach(function(p2,i){
+    var X=x0+((p2.t-t0)/Math.max(1,t1-t0))*w;
+    var Y=y0+h2*(1-clamp(p2.v,0,100)/100);
+    i?g.lineTo(X,Y):g.moveTo(X,Y);});
+   g.strokeStyle=rgba(gc,.85); g.lineWidth=1.6; g.stroke();
+   var first=pts[0].v, last=pts[pts.length-1].v;
+   var dir=last>first?'rising':(last<first?'falling':'level');
+   coneTxt(g,'swing '+Math.round(hi-lo)+', '+dir,x0,y0+h2+14,10,
+    last>=first?gc:rc,.75,500,'left');}
+ })();
+
  if(cq!==null){
   var cyy=H/2, U2=Math.min(W,H)/2;
   /* AND YOUR OWN MARKER OSCILLATES, IF THAT IS WHAT YOU ARE DOING.
@@ -10360,7 +10500,7 @@ function coneDraw(){
      band a person is not oscillating. */
   var osc=(cq>40&&cq<60)?Math.sin(CONE.t*0.55)*2.4:0;
   var y=((cq+osc-50)/50)*U2*CONE_H;
-  var my=cyy-y*Math.cos(CONE.tilt);
+  var my=cyy-y*Math.cos(coneTilt());
   if(osc){
    g.beginPath(); g.arc(W/2,my,13,0,Math.PI*2);
    g.strokeStyle=rgba(cq>=50?gc:rc,.22); g.lineWidth=1; g.stroke();}
@@ -10459,11 +10599,35 @@ function coneOpen(inTab){
   +(inTab?'':'<button class="btn" id="conex">Close</button>')+'</div>'
   +'<canvas id="conecv" class="cone-cv" role="img" '
   +'aria-label="Two cones meeting at the median. Eight axes, each with a coherent pole above and its inversion below."></canvas>'
+  /* THE CONTROLS. Four switches, and each one is a reading the figure can
+     carry rather than a decoration it can wear. */
+  +'<div class="cone-ctl">'
+   +'<button type="button" class="cn-b" data-cn="flat">Flat</button>'
+   +'<button type="button" class="cn-b" data-cn="reg">Regulation</button>'
+   +'<button type="button" class="cn-b" data-cn="layers">Layers</button>'
+   +'<span class="cn-sp"></span>'
+   +[30,90,365].map(function(d){
+     return '<button type="button" class="cn-b" data-cnspan="'+d+'">'
+      +(d===365?'Year':(d===90?'Quarter':'30 day'))+'</button>';}).join('')
+  +'</div>'
   +coneRead()+'</div>';
  CONE.cv=document.getElementById('conecv');
  CONE.g=CONE.cv?CONE.cv.getContext('2d'):null;
  coneLayout(); coneTick();
  var x=document.getElementById('conex'); if(x)x.onclick=coneClose;
+ /* the four switches. Each toggles a reading on the figure and repaints the
+    card, so the state of the button and the state of the drawing cannot
+    disagree. */
+ h.querySelectorAll('[data-cn]').forEach(function(b){
+  var k=b.getAttribute('data-cn');
+  b.setAttribute('aria-pressed',!!CONE[k]);
+  b.classList.toggle('on',!!CONE[k]);
+  b.onclick=function(){CONE[k]=!CONE[k]; coneOpen(CONE.tab);};});
+ h.querySelectorAll('[data-cnspan]').forEach(function(b){
+  var d=+b.getAttribute('data-cnspan');
+  b.classList.toggle('on',CONE.span===d);
+  b.setAttribute('aria-pressed',CONE.span===d);
+  b.onclick=function(){CONE.span=d; coneOpen(CONE.tab);};});
  if(CONE.cv){
   CONE.cv.onpointerdown=function(e){CONE.drag={x:e.clientX,y:e.clientY,
    s:CONE.spin,t:CONE.tilt,moved:false};

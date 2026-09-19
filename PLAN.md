@@ -1,5 +1,28 @@
 # The build plan
 
+## State
+
+    BLOCK  1 summary          DONE   3990px to 2892, plate, reading has a home,
+                                     everything structural right, output row
+    BLOCK  2 field look dev   PART   chords carry weight and susceptibility,
+                                     60fps, thresholds down. Scale and the
+                                     travelling charge remain
+    BLOCK  3 compass look dev DONE   flat toggle, six axis arrows, Dante
+                                     layers, oscillation over 30/90/365
+    BLOCK  4 knowledge        OPEN
+    BLOCK  5 two lightings    OPEN
+    BLOCK  6 story + release  OPEN
+    BLOCK  7 tools scrub      OPEN
+    BLOCK  8 body             OPEN
+    BLOCK  9 intake           OPEN
+    BLOCK 10 games            PART   its own tab again. The games themselves open
+    BLOCK 11 onboarding       OPEN
+    BLOCK 12 the ladder       OPEN
+    BLOCK 13 intro variants   OPEN
+    BLOCK 14 motion system    OPEN
+    BLOCK 15 simulations      OPEN
+
+
 Written because the owner asked for the list in blocks, after finding that a
 mountain of work sat queued while small fixes shipped. That is a fair reading
 of what happened and this is the correction.
