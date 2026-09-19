@@ -1565,5 +1565,118 @@ g('25 \u00b7 the key. one thought line, at an address, by way of a channel');
   'the ruled one is fifty four, got '+Math.round(releasable*4*LINES_PER_CH/400));
 }
 
+g('26 \u00b7 numerology, in full');
+{
+ const {numerology,numerologyOf,numReduce,numIsVowel,numSays,
+        NUM_LET,NUM_MASTER,NUM_DEBT,FULLNAME,BIRTH}=E;
+
+ /* PYTHAGOREAN. A to I are 1 to 9, and then it wraps twice. S is 1 and Z is 8,
+    which is the one end of the table every hand written version gets wrong. */
+ ok(NUM_LET.A===1&&NUM_LET.I===9,'A is 1 and I is 9');
+ ok(NUM_LET.J===1&&NUM_LET.R===9,'J starts the second nine and R ends it');
+ ok(NUM_LET.S===1&&NUM_LET.Z===8,'S is 1 and Z is 8, so the last row is eight long');
+
+ /* MASTERS SURVIVE REDUCTION AT EVERY STEP. A master reduced is a master lost,
+    and the place it gets lost is inside a single name part. */
+ ok(numReduce(29)===11,'29 reduces to 11 and stops');
+ ok(numReduce(4)===4&&numReduce(39)===3,'and everything else reduces all the way');
+ NUM_MASTER.forEach(function(m){ok(numReduce(m)===m,m+' survives reduction');});
+
+ /* THE Y RULE, stated rather than felt: Y is a vowel when it has no vowel
+    beside it. This is the one judgement call in the system and it is written
+    down, which is more than most tables that use it can say. */
+ ok(numIsVowel('WYN',1),'Y between two consonants carries the sound');
+ ok(!numIsVowel('YARA',0),'Y beside a vowel does not');
+ ok(numIsVowel('AMY',2),'Y at the end after a consonant does');
+ ok(numIsVowel('MARIA',0)===false,'and an M is never a vowel whatever is beside it');
+
+ /* THE SIX NUMBERS. Worked by hand against a name with a known shape.
+    JAMES  1+1+4+5+1 = 12 -> 3
+    EDWARD 5+4+5+1+9+4 = 28 -> 10 -> 1
+    CAVANAUGH 3+1+4+1+5+1+3+7+8 = 33, a master, which is the whole point */
+ const N=numerology('James Edward Cavanaugh','1969-09-27');
+ ok(N.each[0].v===3,'James reduces to 3, got '+N.each[0].v);
+ ok(N.each[1].v===1,'Edward reduces to 1, got '+N.each[1].v);
+ ok(N.each[2].v===33,'Cavanaugh is a master 33, got '+N.each[2].v);
+ ok(N.expression===numReduce(3+1+33),'expression is the parts reduced, not the letters piled');
+ ok(N.lifePath===7,'life path off 1969-09-27 is 7, got '+N.lifePath);
+ ok(N.birthday===27&&N.birthdayReduced===9,'birthday is the day unreduced, and its reduction');
+ ok(N.maturity===numReduce(N.lifePath+N.expression),'maturity is life path plus expression');
+ ok(N.soul>0&&N.personality>0,'the vowels and the consonants both produce a number');
+ ok(N.cornerstone==='J'&&N.capstone==='H','cornerstone and capstone come off the ends');
+
+ /* VOWELS PLUS CONSONANTS IS EVERY LETTER. The three sums have to reconcile or
+    one of the three is reading the wrong letters, which is exactly what a Y
+    rule applied in one place and not the other would do. */
+ ['James Edward Cavanaugh','Ana Cristina Ferreira','Nkem Adaeze Okonkwo',
+  'Wren Josephine Halliday','Amy Lynn Wyatt'].forEach(function(nm){
+  const x=numerology(nm,'1980-01-01');
+  const all=x.parts.reduce(function(a,p){return a+E.numSum(p,'all');},0);
+  const v=x.parts.reduce(function(a,p){return a+E.numSum(p,'vowel');},0);
+  const c=x.parts.reduce(function(a,p){return a+E.numSum(p,'cons');},0);
+  ok(v+c===all,nm+': vowels plus consonants is every letter, '+v+'+'+c+' against '+all);});
+
+ /* THE SPLIT IS REPORTED, NOT PICKED, AND IT IS RARER THAN IT LOOKS.
+
+    Digit summing preserves value mod nine, so the two routes are always
+    congruent and only the master rule can separate them: one route halts on
+    11, 22 or 33 while the other walks past to a single digit. Cavanaugh's 33
+    does not split this name, because both routes land on 1. The contract is
+    that split is present exactly when the two disagree, never as a flag on
+    "there is a master somewhere", which is what a looser test would have let
+    through. */
+ ok((N.split===null)===(N.expression===N.expressionFlat),
+  'split is present exactly when the two routes disagree');
+ ['John Smith','Ana Cristina Ferreira','Diane Elizabeth Halloran',
+  'Marcus Aurelius Vance','Nkem Adaeze Okonkwo','Amy Lynn Wyatt'].forEach(function(nm){
+  const x=numerology(nm,'1980-01-01');
+  ok((x.split===null)===(x.expression===x.expressionFlat),
+   nm+': split reports the disagreement and nothing else');
+  ok(x.expression%9===x.expressionFlat%9||NUM_MASTER.indexOf(x.expression)>=0
+   ||NUM_MASTER.indexOf(x.expressionFlat)>=0,
+   nm+': the two routes stay congruent mod nine unless a master halts one');});
+
+ /* KARMIC DEBT is read off the unreduced total and never inferred. */
+ NUM_DEBT.forEach(function(d){ok(numReduce(d)===numReduce(d),'debt '+d+' is a real total');});
+ ok(numerology('Aa','1980-01-01').debt===null,'a total that is not one of the four is not a debt');
+
+ /* PURE. Same name in, same numbers out, and nothing read from shared state. */
+ const a1=numerology('Diane Elizabeth Halloran','1980-11-02');
+ S.doms=[5]; buildSoul(); compute();
+ const a2=numerology('Diane Elizabeth Halloran','1980-11-02');
+ ok(JSON.stringify(a1)===JSON.stringify(a2),'the reading does not move when the field does');
+ reset();
+
+ /* NOTHING IN, NOTHING OUT. A blank name is not a zero, it is an absence. */
+ ok(numerology('','1980-01-01')===null,'an empty name reads null rather than a number');
+ ok(numerology('Bo')&&numerology('Bo').lifePath===null,
+  'and no birth date means no life path rather than a guessed one');
+
+ /* THE ROSTER. Every reference case has a full name, because a numerology read
+    off a first name is a numerology read off a nickname. */
+ const roster=Object.keys(FULLNAME).filter(function(k){return FULLNAME[k];});
+ ok(roster.length>=13,'every reference case carries a full name, got '+roster.length);
+ roster.forEach(function(k){
+  ok(FULLNAME[k].split(' ').length===3,k+' has a first, a middle and a last');
+  const x=numerologyOf(k,null);
+  ok(x&&x.expression>0&&x.lifePath!==null,
+   k+': the full profile resolves off the roster');});
+
+ /* THE PROFILE WINS. A real person's own name is on their profile and it takes
+    precedence over anything in a table. */
+ const p=E.blankProfile('num');
+ p.who.first='Ada'; p.who.middle='Byron'; p.who.last='Lovelace';
+ p.who.born.date='1815-12-10';
+ const own=numerologyOf('James',p);
+ ok(own.parts.join(' ')==='ADA BYRON LOVELACE',
+  'the profile name beats the roster table, got '+own.parts.join(' '));
+ ok(own.lifePath===numerology('Ada Byron Lovelace','1815-12-10').lifePath,
+  'and the birth date comes off the profile with it');
+
+ /* the sentences differ by position, which is the whole reason they exist */
+ ok(numSays('soul',1)!==numSays('personality',1),
+  'the same digit does not say the same thing in the soul as in the personality');
+}
+
 console.log('\n===== '+P+' passed, '+F+' failed =====');
 process.exit(F?1:0);

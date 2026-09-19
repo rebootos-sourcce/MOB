@@ -15,6 +15,9 @@
    ============================================================ */
 var CRGEO={lg:{box:46,r:18,w:3.5},md:{box:34,r:13,w:3},sm:{box:24,r:9,w:2.4},xs:{box:18,r:6.5,w:2}};
 var HOT_AT=90;                         /* the alarm band. severity gets its own channel. */
+/* one stroked icon, 24 unit box. declared here because this file loads first
+   and every renderer after it wants one. */
+const svgI=function(p){return '<svg viewBox="0 0 24 24">'+p+'</svg>';};
 function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function seatCol(b){return (S.theme==='snow'?PAL_LIGHT[b]:PAL[b])||'var(--gold)';}
 function cr(band,pct,o){
@@ -85,7 +88,9 @@ const mixc=(a,b,t)=>a.map((v,i)=>Math.round(v+(b[i]-v)*t));
 const lerp=(a,b,t)=>a+(b-a)*t;
 const LIGHT=()=>S.theme==='snow';
 const INK=()=>LIGHT()?[22,23,28]:[239,237,232];
-const GOLDC=()=>hx(LIGHT()?'#8A6D18':'#DFCC7E');
+/* the accent, for the canvas, which cannot read a custom property. the two
+   values are the same two the sheet declares and they move together. */
+const GOLDC=()=>hx(LIGHT()?'#2F6E92':'#7EB8D4');
 function bc(b){return hx(LIGHT()?PAL_LIGHT[b]:PAL[b]);}
 function nodeCol(n){const base=bc(n.b),ld=clamp(n.disp/10,0,1);
  return mixc(mixc(base,LIGHT()?[238,236,230]:[150,160,180],.74),base,Math.pow(ld,.55));}

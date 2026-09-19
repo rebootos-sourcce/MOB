@@ -3,7 +3,9 @@
    CONTROLS
    ============================================================ */
 const $=function(id){return document.getElementById(id);};
-const svgI=function(p){return '<svg viewBox="0 0 24 24">'+p+'</svg>';};
+/* svgI moved to component.js. It is a const, and a const reached for before
+   its declaration throws at call time, which is a trap waiting for the first
+   renderer that loads earlier than this file and wants an icon. */
 function numField(host,name,band,store,key){
  const d=document.createElement('div');d.className='nf';
  const col=band?seatCol(band):'var(--gold)';

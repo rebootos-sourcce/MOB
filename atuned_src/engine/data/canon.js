@@ -71,7 +71,7 @@ const PAL={'Root':'#C4635E','Sacral':'#D19255','Solar':'#D4BC70','Heart':'#6FC5A
  'Throat':'#65B8D4','3rd Eye':'#8296DB','Crown':'#A98BCE'};
 const PAL_LIGHT={'Root':'#9B4B47','Sacral':'#8E6231','Solar':'#7E6C29','Heart':'#2A7A5C',
  'Throat':'#2C6F88','3rd Eye':'#4C5F9E','Crown':'#6E5490'};
-const GOLD='#DFCC7E', ALARM='#FF2E1F';
+const GOLD='#7EB8D4', ALARM='#FF2E1F';   /* the accent. blue, ruled. */
 
 /* the seat glyphs. the direction's vocabulary: each seat has a mark, so the
    ring can name where it sits without a word. */

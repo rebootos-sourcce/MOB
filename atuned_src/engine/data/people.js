@@ -114,6 +114,30 @@ var BIRTH={
  Nkem:   {d:'1990-09-03', t:'19:10', p:'Boston, MA'},
  Wren:   {d:'1959-04-17', t:'08:35', p:'Portland, OR'},
  Abraham:{d:'1951-06-29', t:'11:20', p:'Boulder, CO'}};
+/* FULL NAMES, because numerology reads the name on the certificate and not the
+   one on the door. The roster carried first names only, so every name number
+   in the product was computed off a nickname, which is the numerological
+   equivalent of reading a birth chart off the year alone. A real person's own
+   full name comes off the profile; these are the reference cases.
+
+   Middle names are here on purpose: the middle name is the one nobody uses and
+   numerology reads it as the part that is carried rather than shown. Leaving
+   them out would have moved every Expression in the roster. */
+var FULLNAME={
+ You:null,
+ Sofia:  'Sofia Beatriz Alarcon',
+ Diane:  'Diane Elizabeth Halloran',
+ Marcus: 'Marcus Aurelius Vance',
+ Angela: 'Angela Mercedes Ruiz',
+ Derek:  'Derek Thomas Whitfield',
+ James:  'James Edward Cavanaugh',
+ Rosa:   'Rosa Milagros Otero',
+ Ana:    'Ana Cristina Ferreira',
+ Gordon: 'Gordon Blake Ashcroft',
+ Tomas:  'Tomas Eduardo Ibarra',
+ Nkem:   'Nkem Adaeze Okonkwo',
+ Wren:   'Wren Josephine Halliday',
+ Abraham:'Abraham Isaac Stern'};
 var ZSIGN=[[1,20,'Aquarius','air','fixed'],[2,19,'Pisces','water','mutable'],
  [3,21,'Aries','fire','cardinal'],[4,20,'Taurus','earth','fixed'],
  [5,21,'Gemini','air','mutable'],[6,21,'Cancer','water','cardinal'],

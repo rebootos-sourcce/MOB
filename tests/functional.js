@@ -489,6 +489,97 @@ const ta=await touchPg.evaluate(()=>getComputedStyle(document.getElementById('cv
 ok(ta!=='none','the wheel lets a coarse pointer scroll the page, touch-action is '+ta);
 await touchPg.close(); await touchCtx.close();
 
+console.log('\n=== the summary, the opening screen ===');
+/* The app opens here, so this surface is what a stranger sees and what an
+   owner comes back to. It carries four blocks that did not exist before this
+   pass and none of them had a gate. */
+const sum=await page.evaluate(()=>{
+ loadP(6); setTab(TAB.SUMMARY);
+ const q=s=>document.querySelectorAll(s).length;
+ const body=document.getElementById('sumbody');
+ /* every ring on this surface is the same object: icon, arc, pill */
+ const rings=[...document.querySelectorAll('#sumbody .cr')];
+ const badRing=rings.filter(c=>!c.querySelector('svg.arc')||!c.querySelector('.gl svg'));
+ /* a pill that is empty must not paint, or a colour marker grows a chip */
+ const emptyPill=rings.filter(c=>{const v=c.querySelector('.v');
+  return v&&!v.textContent.trim()&&getComputedStyle(v).display!=='none';});
+ return {
+  glance:q('#sumbody .s-gl'),
+  storyP:q('#sumbody .s-story .s-p'),
+  structRows:q('#sumbody .s-row'),
+  doms:q('#sumbody .s-dom'),
+  chips:q('#sumbody .s-chip'),
+  /* no boxes around the spiritual glyphs, on the owner's ruling */
+  chipBox:[...document.querySelectorAll('#sumbody .s-chip')]
+   .filter(c=>getComputedStyle(c).borderTopWidth!=='0px').length,
+  numRows:q('#sumbody .s-nrow'),
+  numParts:q('#sumbody .s-npart'),
+  rings:rings.length, badRing:badRing.length, emptyPill:emptyPill.length,
+  /* the folded analytics is still there, underneath */
+  ana:(document.getElementById('ana').textContent||'').trim().length,
+  /* nothing may run wider than its own column */
+  over:[...body.querySelectorAll('*')].filter(e=>e.scrollWidth>e.clientWidth+2
+   &&getComputedStyle(e).overflowX==='visible').length,
+  text:(body.textContent||'').replace(/\s+/g,' ')};});
+ok(sum.glance>=5,'the glance strip carries every reading, got '+sum.glance);
+ok(sum.storyP===3,'the story is three paragraphs, got '+sum.storyP);
+ok(sum.structRows>5,'the structures panel lists what is measured, got '+sum.structRows);
+ok(sum.doms>0,'and draws the blueprint selection, got '+sum.doms);
+ok(sum.chips>=5,'the spiritual layer is a row of glyphs, got '+sum.chips);
+ok(sum.chipBox===0,'with no boxes around them, got '+sum.chipBox);
+ok(sum.numRows>=5,'numerology prints its numbers, got '+sum.numRows);
+ok(sum.numParts===3,'and every name on its own, got '+sum.numParts);
+ok(sum.rings>8&&sum.badRing===0,
+ sum.rings+' rings and every one is icon, arc and pill, bad '+sum.badRing);
+ok(sum.emptyPill===0,'an empty value paints no pill, got '+sum.emptyPill);
+ok(sum.ana>200,'the folded analytics renders underneath, got '+sum.ana+' chars');
+ok(sum.over===0,'nothing on the surface overflows its own box, got '+sum.over);
+/* the prose is a reading, not a template: it names what was measured */
+ok(/blueprint you were born on|no birth data/.test(sum.text),
+ 'the story opens on the spiritual layer');
+ok(/Momentum/.test(sum.text),'and closes on momentum');
+ok(!/undefined|NaN|\[object/.test(sum.text),'and nothing leaked a placeholder');
+console.log(' ',JSON.stringify({glance:sum.glance,rows:sum.structRows,chips:sum.chips,
+ num:sum.numRows,rings:sum.rings}));
+
+/* every control on the surface opens something. a button that does nothing is
+   the defect this product keeps finding in itself. */
+const sumOpen=await page.evaluate(()=>{
+ loadP(6); setTab(TAB.SUMMARY);
+ const sel=['[data-sp]','[data-num]','[data-dom]','[data-seat]','[data-arch]','[data-gl]'];
+ const out={};
+ sel.forEach(s=>{
+  /* rdClose re-renders, and a re-render replaces the whole surface, so the
+     node has to be found AFTER the close or the click lands on a detached
+     element and silently does nothing. */
+  rdClose();
+  const b=document.querySelector('#sumbody '+s);
+  if(!b){out[s]='absent';return;}
+  b.click();
+  out[s]=(document.getElementById('rdrill').textContent||'').trim().length;});
+ rdClose();
+ return out;});
+Object.keys(sumOpen).forEach(k=>{
+ ok(sumOpen[k]==='absent'||sumOpen[k]>60,
+  'the summary control '+k+' opens a reading, got '+sumOpen[k]);});
+console.log(' ',JSON.stringify(sumOpen));
+
+/* the six numbers are the six numbers, and they are the person's own */
+const numUI=await page.evaluate(()=>{
+ loadP(6);
+ const N=numerologyOf('James',null);
+ setTab(TAB.SUMMARY);
+ const txt=(document.getElementById('sumbody').textContent||'');
+ return {full:N.parts.join(' '), inPage:txt.indexOf('James Edward Cavanaugh')>=0,
+  lp:N.lifePath, hasLp:txt.indexOf('Life path')>=0,
+  /* the convergence says a fraction, never a bare percentage */
+  frac:/\d+ of \d+ comparisons/.test(txt),
+  pct75:/convergence[^.]*\d+%/i.test(txt)};});
+ok(numUI.inPage,'the full name is read, not the roster nickname');
+ok(numUI.hasLp,'and the six numbers are on the page');
+ok(numUI.frac,'convergence states the fraction it rests on');
+ok(!numUI.pct75,'and never a bare percentage with no denominator');
+
 console.log('\n=== every tab fits a phone ===');
 /* The stage drops its overflow and its min height at 720 so the wheel can flow
    down the screen. The tab panels stayed position:absolute against it, so every

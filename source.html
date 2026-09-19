@@ -53,12 +53,20 @@ font-display:swap;src:url(data:font/woff2;base64,d09GMgABAAAAALyAABUAAAAB4CAAALw
  --ink:#EFEDE8; --mid:#B4B0A8; --dim:#7C7872;
  --root:#C4635E; --sacral:#D19255; --solar:#D4BC70;
  --heart:#6FC5A3; --throat:#65B8D4; --eye:#8296DB; --crown:#A98BCE;
- --alarm:#FF2E1F; --alarm-soft:rgba(255,46,31,.16); --gold:#DFCC7E;
- /* THE SKY. The owner asked for the wordmark in sky blue and asked where the
-    blue design went. It is in the original: --law-accent:#7eb8d4, used in
-    thirteen places, on a paper white ground. That exact value is the token.
-    --um is the umlaut, which sits on the bar rather than on the letter, so it
-    answers to the background. White on dark, as ruled. */
+ --alarm:#FF2E1F; --alarm-soft:rgba(255,46,31,.16);
+ /* THE ACCENT IS BLUE. Ruled. It was gold since the rebuild and the owner
+    never chose it: he chose the blue, which is the original app's own
+    --law-accent:#7eb8d4, used there in thirteen places. --accent is the one
+    source of truth and --gold is kept as its alias because sixty places in
+    this sheet already read that name. Nothing reads a literal.
+
+    --on-accent is the ink that sits on top of a filled accent. It was
+    var(--on-accent), a warm near black chosen against gold, and a warm ink on a cool
+    fill is the one thing that would still have read as the old palette.
+
+    --um is the umlaut on the wordmark. It sits on the bar rather than on the
+    letter, so it answers to the background. White on dark, as ruled. */
+ --accent:#7EB8D4; --gold:var(--accent); --on-accent:#0B1418;
  --sky:#7EB8D4; --um:#FFFFFF;
  --good:#68CBA4; --bad:#CB5F59;
  /* Lexend is a wide face by design, which is why the rail clipped: Witness
@@ -85,15 +93,19 @@ font-display:swap;src:url(data:font/woff2;base64,d09GMgABAAAAALyAABUAAAAB4CAAALw
 /* ---------- PUNCH. The third theme. Nothing is outlined, everything is solid.
    Flat: one plane, no borders, no shadows, filled shapes, a selected thing is
    a colour fill and not an outline. Dark ground, same seat palette. ---------- */
-/* Punch is relational. The one colour with no seat behind it was gold, and
-   as the fill for every pressed state it out-shouted the reading. In Punch
-   the accent is the seat the reading names heaviest, set by render() as
-   --seat, and the shell tints toward it by that seat's charge, --seat-w in
-   0 to 1. A light Throat reading is a cool grey; a severe Root one is warm
-   and deeper. The chrome is a consequence of the field, not a skin. */
+/* Punch is relational: the shell tints toward the seat the reading names
+   heaviest, set by render() as --seat, with --seat-w in 0 to 1 for how hard.
+   A light Throat reading is a cool grey; a severe Root one is warm and
+   deeper. The chrome is a consequence of the field, not a skin.
+
+   THE ACCENT IS NOT THE SEAT ANY MORE. It was, and that is where the orange
+   came from: a field leaning Sacral promoted #E77016 to the fill on every
+   pressed control, every primary button and every ring in the product. The
+   owner never chose orange. He chose blue. The seat still tints the ground,
+   which is the part of Punch that was doing real work, and the accent is the
+   product's accent in all three lightings. */
 body.punch{
  --seat:#DFCC7E; --seat-w:0.3;
- --gold:var(--seat);
  --edge:transparent; --edge-2:transparent;
  --bg:color-mix(in srgb,var(--seat) calc(2% + var(--seat-w)*6%),#12131A);
  /* panel tint is capped: at a full Root reading the earlier 10% mix put
@@ -107,28 +119,33 @@ body.punch .pm-lb,body.punch .pm-rb,body.punch .iq-law,body.punch .iq-n,
 body.punch .rd-card,body.punch .sum-card,body.punch .sum-l,body.punch .sum-ai,
 body.punch .st-mic,body.punch .ab-f,body.punch .ad-r,body.punch .rel-row{border-color:transparent}
 body.punch .vt,body.punch .btn,body.punch .pm-lb,body.punch .st-mic{background:var(--panel-2)}
+/* AND THE PRESSED ONE STILL READS. body.punch .vt outranks .vt[aria-pressed],
+   so in Punch every tab looked the same and the surface you were on was not
+   marked at all. Punch removes outlines, not state. */
+body.punch .vt[aria-pressed=true]{background:var(--accent);color:var(--on-accent)}
+body.punch .vt[aria-pressed=true] svg{stroke:var(--on-accent)}
 body.punch .ib{background:var(--sunk);border-width:0}
 body.punch .ib svg{opacity:.92}
 /* A pressed icon fills with its own seat colour, --c, which the domain and
    archetype grids already carry. Only a control with no seat takes --seat. */
-body.punch .ib[aria-pressed=true],body.punch .ib[data-r="2"]{background:var(--c,var(--seat));border-color:transparent}
+body.punch .ib[aria-pressed=true],body.punch .ib[data-r="2"]{background:var(--c,var(--accent));border-color:transparent}
 body.punch .ib[aria-pressed=true] svg,body.punch .ib[data-r="2"] svg{stroke:var(--bg);opacity:1}
 body.punch .cr{background:color-mix(in srgb,var(--c) 26%,var(--panel-2))}
 body.punch .lsec-hd{background:var(--panel-2);border-radius:var(--r-xs);padding-left:12px;padding-right:12px;margin-bottom:6px}
-body.punch .lsec.open .lsec-hd{background:var(--panel-2);color:var(--seat)}
+body.punch .lsec.open .lsec-hd{background:var(--panel-2);color:var(--accent)}
 body.punch .lsec{border-bottom:0}
 body.punch .nf input{border-width:0}
 body.punch select#psel{border-width:0}
 body.punch .top,body.punch .glass{box-shadow:none}
 body.punch .seg{background:var(--sunk)}
-body.punch .btn.pri{background:var(--seat);border-color:var(--seat)}
+body.punch .btn.pri{background:var(--accent);border-color:var(--accent)}
 body.punch .st-ta,body.punch .st-ta:focus{border-color:transparent}
 body.punch .st-ta:focus{background:var(--panel-2)}
 /* No outlines in Punch, so keyboard focus on a field is a solid bar down
    the left edge in the seat colour. Buttons keep the ring, a bar on a pill
    reads as a glyph. */
 body.punch textarea:focus-visible,body.punch input:focus-visible,body.punch select:focus-visible{
- outline:none;box-shadow:inset 4px 0 0 var(--seat)}
+ outline:none;box-shadow:inset 4px 0 0 var(--accent)}
 body.punch .ip{border-color:transparent;background:color-mix(in srgb,var(--c) 22%,var(--panel-2))}
 body.punch .ip.ghost{border-style:solid;border-color:transparent;background:var(--sunk);opacity:.72}
 body.snow{
@@ -137,9 +154,11 @@ body.snow{
  --ink:#16171C; --mid:#4E4C48; --dim:#7A7872;
  --root:#9B4B47; --sacral:#8E6231; --solar:#7E6C29; --heart:#2A7A5C;
  --throat:#2C6F88; --eye:#4C5F9E; --crown:#6E5490;
- --alarm:#D41200; --alarm-soft:rgba(212,18,0,.12); --gold:#8A6D18;
- /* Snow is paper. Sky deepens to hold against it, and the umlaut cannot stay
-    white because the dots sit on the paper, not on the letter. */
+ --alarm:#D41200; --alarm-soft:rgba(212,18,0,.12);
+ /* Snow is paper. The accent deepens to hold against it, and the umlaut
+    cannot stay white because the dots sit on the paper, not on the letter.
+    On a deep blue fill the ink goes light rather than dark. */
+ --accent:#2F6E92; --gold:var(--accent); --on-accent:#F4F8FA;
  --sky:#2F6E92; --um:#13303F;
  --good:#1F8560; --bad:#A8413C;
  --shadow:0 12px 30px rgba(40,54,74,.12);
@@ -201,7 +220,7 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
  font-size:14px;font-weight:400;transition:.18s;white-space:nowrap;flex:0 0 auto;
  display:flex;align-items:center;gap:10px;line-height:1.3}
 .vt:hover{background:var(--panel-2);border-color:var(--edge-2);color:var(--ink)}
-.vt[aria-pressed=true]{background:var(--gold);border-color:var(--gold);color:#15130A;font-weight:500}
+.vt[aria-pressed=true]{background:var(--gold);border-color:var(--gold);color:var(--on-accent);font-weight:500}
 .vt svg{width:17px;height:17px;stroke:currentColor;stroke-width:1.6;fill:none;
  stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}
 .vt .n{display:block}
@@ -218,11 +237,11 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
 .seg button{background:transparent;border:0;border-radius:var(--r-xs);min-height:var(--tap);padding:7px 13px;
  font-family:var(--sans);font-size:13.5px;font-weight:400;color:var(--dim);cursor:pointer;transition:.16s}
 .seg button:hover{color:var(--ink)}
-.seg button[aria-pressed=true]{background:var(--gold);color:#15130A;font-weight:500}
+.seg button[aria-pressed=true]{background:var(--gold);color:var(--on-accent);font-weight:500}
 /* the theme switch. icons, so it takes a third of the width it took. */
 .seg-i{padding:0 11px;display:inline-flex;align-items:center;justify-content:center}
 .seg-i svg{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
-.seg-i[aria-pressed=true] svg{stroke:#15130A}
+.seg-i[aria-pressed=true] svg{stroke:var(--on-accent)}
 .seg-i svg path:first-child{fill:none}
 .seg-i[data-solid] svg path:first-child{fill:currentColor}
 /* ---------- THE GLASS MENU ----------
@@ -259,7 +278,7 @@ body.punch .gmenu::before{display:none}
  min-height:var(--tap);padding:9px 17px;font-size:14px;font-family:var(--sans);font-weight:400;cursor:pointer;transition:.18s}
 .btn:hover{background:var(--sunk);border-color:var(--edge-2)}
 .btn:disabled{opacity:.4;cursor:default}
-.btn.pri{background:var(--gold);color:#15130A;border-color:var(--gold);font-weight:500}
+.btn.pri{background:var(--gold);color:var(--on-accent);border-color:var(--gold);font-weight:500}
 .btn.pri:hover{filter:brightness(1.08)}
 button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{
  outline:2px solid var(--gold);outline-offset:2px}
@@ -350,6 +369,113 @@ body.punch .cr .v{background:color-mix(in srgb,var(--c) 30%,transparent)}
 .cr.xs .ring svg.arc{width:18px;height:18px}.cr.xs .ring .gl svg{width:8px;height:8px}
 .cr.xs .v{font-size:11.5px;margin-left:5px}.cr.xs{padding:2px 8px 2px 2px}
 .sum-start{margin-top:20px;max-width:620px}
+
+/* ============================================================
+   THE SUMMARY SURFACE.
+
+   Analytics across the top, the story and the structures side by
+   side beneath it, then the spiritual layer and the numbers full
+   width. Three tracks on a desktop, one sequence on a phone, and
+   the document order is already the phone order so the stack costs
+   one media query and no second markup.
+   ============================================================ */
+.sum-wrap{width:100%;max-width:1180px;margin:0 auto}
+
+/* the glance strip. every reading the product makes, in one row. */
+.s-glance{display:flex;flex-wrap:wrap;gap:8px;padding-bottom:20px;
+ border-bottom:1px solid var(--edge);margin-bottom:22px}
+.s-gl{display:inline-flex;align-items:center;gap:9px;background:transparent;border:0;
+ padding:4px 10px 4px 4px;border-radius:999px;cursor:pointer;color:var(--dim);
+ font-family:var(--sans);font-size:12.5px;transition:.16s;min-height:var(--tap)}
+.s-gl:hover{background:var(--panel-2);color:var(--ink)}
+.s-gl-k{white-space:nowrap}
+
+/* the two panels */
+.s-two{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:28px;
+ align-items:start}
+@media (max-width:900px){.s-two{grid-template-columns:1fr;gap:26px}}
+
+/* THE STORY. running prose, so it takes the reading measure and the reading
+   size. 16px floor, 65 characters, which is the one part of this surface a
+   person actually reads rather than scans. */
+.s-story{min-width:0}
+.s-p{font-size:16px;line-height:1.72;color:var(--mid);margin:0 0 14px;max-width:66ch}
+.s-p b{color:var(--ink);font-weight:500}
+.s-src{font-size:12.5px;line-height:1.6;color:var(--dim);margin:14px 0 0;max-width:70ch}
+.s-src b{color:var(--mid);font-weight:500}
+
+/* THE STRUCTURES. scanned, not read, so the rhythm is one row per thing and
+   every row is the same object: a ring with its value, then a name. */
+.s-struct{min-width:0;display:flex;flex-direction:column}
+.s-sel{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:2px}
+.s-sel-r{font-family:var(--num);font-size:11px;color:var(--rc,var(--dim));
+ border:1px solid color-mix(in srgb,var(--rc) 40%,transparent);border-radius:999px;
+ padding:4px 10px}
+/* a blueprint domain is a choice, not a measurement, so it gets an icon and a
+   name and no ring. a ring here would be a number nobody entered. */
+.s-dom{display:inline-flex;align-items:center;gap:7px;background:var(--sunk);border:0;
+ border-radius:var(--r-xs);padding:7px 11px 7px 8px;cursor:pointer;color:var(--ink);
+ font-family:var(--sans);font-size:12.5px;min-height:var(--tap);transition:.16s}
+.s-dom:hover{background:var(--panel-2)}
+.s-dom svg{width:16px;height:16px;fill:none;stroke:var(--rc,var(--mid));stroke-width:1.7;
+ stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}
+.s-row{display:flex;align-items:center;gap:11px;width:100%;background:transparent;border:0;
+ border-bottom:1px solid var(--edge);padding:9px 2px;cursor:pointer;text-align:left;
+ min-height:var(--tap);transition:.16s}
+.s-row:hover{background:var(--panel-2)}
+.s-row-t{display:flex;flex-direction:column;gap:1px;min-width:0}
+.s-row-t b{font-size:14px;font-weight:500;color:var(--ink)}
+.s-row-t em{font-style:normal;font-size:12px;color:var(--dim)}
+.s-chain{display:flex;flex-wrap:wrap;gap:7px;margin-top:4px}
+.s-ch{display:inline-flex;align-items:baseline;gap:6px;background:var(--sunk);
+ border-radius:999px;padding:6px 12px;font-size:12px;color:var(--dim)}
+.s-ch b{font-family:var(--num);font-size:14px;font-weight:500;color:var(--ink)}
+
+/* THE SPIRITUAL LAYER. glyphs, and no boxes around them, on the owner's
+   ruling. The box was doing nothing the glyph was not already doing. */
+.s-spirit{margin-top:34px;padding-top:26px;border-top:1px solid var(--edge)}
+.s-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.s-chip{display:flex;flex-direction:column;align-items:center;gap:3px;background:transparent;
+ border:0;border-radius:var(--r-s);padding:12px 14px 10px;cursor:pointer;min-width:84px;
+ min-height:var(--tap);color:var(--mid);font-family:var(--sans);transition:.16s}
+.s-chip:hover{background:var(--panel-2);color:var(--ink)}
+.s-chip-g{display:flex;align-items:center;justify-content:center;height:30px;color:var(--accent)}
+.s-chip-g svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.5;
+ stroke-linecap:round;stroke-linejoin:round}
+.s-uni{font-size:26px;line-height:1}
+.s-num-g{font-family:var(--num);font-size:25px;font-weight:300;line-height:1}
+.s-chip-l{font-size:12.5px;color:var(--ink);white-space:nowrap}
+.s-chip-v{font-family:var(--num);font-size:11px;color:var(--dim)}
+.s-agree{display:flex;flex-direction:column;gap:5px;margin-top:16px}
+.s-ag,.s-dg{font-size:13.5px;line-height:1.55;padding:8px 0 8px 13px;color:var(--mid);
+ border-left:2px solid var(--good,#6FC5A3)}
+.s-dg{border-left-color:var(--alarm)}
+
+/* NUMEROLOGY. six numbers, then every name on its own. The number is the
+   object here, so it is set large in the numeric face and the words hang off
+   it, rather than a ring, which would imply a proportion it does not have. */
+.s-numer{margin-top:34px;padding-top:26px;border-top:1px solid var(--edge)}
+.s-nrows{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:4px;
+ margin-top:12px}
+.s-nrow{display:flex;align-items:center;gap:13px;background:transparent;border:0;
+ border-radius:var(--r-xs);padding:9px 10px;cursor:pointer;text-align:left;
+ min-height:var(--tap);transition:.16s;min-width:0}
+.s-nrow:hover{background:var(--panel-2)}
+.s-nv{font-family:var(--num);font-size:27px;font-weight:300;line-height:1;color:var(--accent);
+ font-variant-numeric:tabular-nums;flex:0 0 auto;min-width:36px;text-align:center}
+.s-nv.sm{font-size:20px;min-width:28px}
+.s-nrow.master .s-nv{color:var(--alarm)}
+.s-nt{display:flex;flex-direction:column;gap:1px;min-width:0}
+.s-nt b{font-size:13.5px;font-weight:500;color:var(--ink)}
+.s-nt em{font-style:normal;font-size:12px;color:var(--dim);line-height:1.45}
+.s-nparts{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:4px;
+ margin-top:10px}
+.s-npart{display:flex;align-items:center;gap:13px;padding:8px 10px;min-width:0}
+/* Punch flattens the two surfaces this page leans on. */
+body.punch .s-gl:hover,body.punch .s-row:hover,body.punch .s-nrow:hover,
+body.punch .s-chip:hover,body.punch .s-dom:hover{background:var(--panel-2)}
+body.punch .s-row{border-bottom-color:transparent}
+
 .crlab{font-size:14.5px;font-weight:400;margin-left:11px;color:var(--ink)}
 .crrow{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
 .crline{display:flex;align-items:center;gap:0;margin-bottom:8px}
@@ -745,8 +871,8 @@ body:not(.tab-field) .pol2{display:none}
 .kb-t{background:var(--sunk);border:0;color:var(--mid);border-radius:var(--r-xs);padding:7px 12px;
  font-family:var(--sans);font-size:12.5px;cursor:pointer;min-height:36px}
 .kb-t b{font-family:var(--num);font-weight:500;color:var(--dim);margin-left:3px}
-.kb-t.on{background:var(--gold);color:#15130A}
-.kb-t.on b{color:#15130A}
+.kb-t.on{background:var(--gold);color:var(--on-accent)}
+.kb-t.on b{color:var(--on-accent)}
 .kb-list{display:flex;flex-direction:column;gap:2px;flex:1 1 auto}
 .kb-r{display:grid;grid-template-columns:auto minmax(120px,1.1fr) minmax(0,2fr) auto;gap:12px;
  align-items:center;width:100%;min-height:var(--tap);padding:8px 10px;border:0;background:transparent;
@@ -773,7 +899,7 @@ body.punch .kb-search input{border-color:transparent}
 .gm-chips{display:flex;flex-wrap:wrap;gap:4px}
 .gm-chip{background:var(--sunk);border:0;color:var(--mid);border-radius:var(--r-xs);padding:6px 11px;
  font-family:var(--sans);font-size:12.5px;cursor:pointer;min-height:34px}
-.gm-chip.on{background:var(--gold);color:#15130A}
+.gm-chip.on{background:var(--gold);color:var(--on-accent)}
 .gm-meter{display:flex;flex-direction:column;align-items:flex-end;gap:3px}
 .gm-clock{font-family:var(--num);font-size:26px;font-weight:400;color:var(--ink);
  font-variant-numeric:tabular-nums;line-height:1}
@@ -923,8 +1049,8 @@ body.punch .card{border-color:transparent}
 .stk-t{background:var(--sunk);border:0;color:var(--mid);border-radius:var(--r-xs);padding:6px 10px;
  font-family:var(--sans);font-size:12px;cursor:pointer;min-height:32px}
 .stk-t b{font-family:var(--num);font-weight:500;color:var(--dim);margin-left:2px}
-.stk-t.on{background:var(--gold);color:#15130A}
-.stk-t.on b{color:#15130A}
+.stk-t.on{background:var(--gold);color:var(--on-accent)}
+.stk-t.on b{color:var(--on-accent)}
 .stk-hd{display:flex;justify-content:space-between;font-size:11px;color:var(--dim);
  text-transform:none;padding:2px 6px 4px;letter-spacing:.02em}
 .stk-r{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;
@@ -974,14 +1100,14 @@ select#psel optgroup{background:var(--sunk);color:var(--dim);font-style:normal;
  border-radius:var(--r-xs);padding:7px 13px;font-family:var(--sans);font-size:13.5px;
  font-weight:400;cursor:pointer;transition:.16s}
 .pm-lb:hover{background:var(--panel-2);color:var(--ink)}
-.pm-lb.on{background:var(--gold);border-color:var(--gold);color:#15130A;font-weight:500}
+.pm-lb.on{background:var(--gold);border-color:var(--gold);color:var(--on-accent);font-weight:500}
 .pm-reg{position:absolute;top:66px;left:12px;z-index:3;max-width:56%;padding:9px 11px;
  border-radius:var(--r-s);background:var(--panel);border:1px solid var(--edge);box-shadow:var(--shadow)}
 .pm-regb{display:flex;gap:4px;flex-wrap:wrap;margin-top:7px}
 .pm-rb{background:transparent;border:1px solid var(--edge);color:var(--mid);border-radius:var(--r-xs);
  padding:5px 10px;font-family:var(--sans);font-size:12.5px;cursor:pointer;transition:.16s}
 .pm-rb:hover{background:var(--panel-2);color:var(--ink)}
-.pm-rb.on{background:var(--gold);border-color:var(--gold);color:#15130A;font-weight:500}
+.pm-rb.on{background:var(--gold);border-color:var(--gold);color:var(--on-accent);font-weight:500}
 .pm-well{flex:1;position:relative;min-height:0;overflow:hidden}
 .pm-aura{position:absolute;inset:-18%;pointer-events:none;z-index:0;filter:blur(40px);
  transition:opacity .5s,background .5s}
@@ -1090,10 +1216,10 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
 .ip-g{background:var(--sunk);border:0;color:var(--mid);border-radius:var(--r-xs);
  padding:6px 11px;font-family:var(--sans);font-size:12.5px;cursor:pointer;transition:.15s}
 .ip-g:hover{color:var(--ink)}
-.ip-g.on{background:var(--gold);color:#15130A;font-weight:500}
+.ip-g.on{background:var(--gold);color:var(--on-accent);font-weight:500}
 .ip-max{background:var(--sunk);border:0;color:var(--mid);border-radius:var(--r-xs);
  padding:6px 10px;font-size:15px;cursor:pointer;line-height:1;margin-left:5px}
-.ip-max:hover{background:var(--gold);color:#15130A}
+.ip-max:hover{background:var(--gold);color:var(--on-accent)}
 .ip-bh{margin:15px 0 7px;display:flex;justify-content:space-between;align-items:baseline;
  gap:10px;border-bottom:1px solid var(--edge);padding-bottom:5px;color:var(--c)}
 .ip-bh em{font-style:normal;color:var(--dim);font-weight:400;font-size:12px}
@@ -1277,7 +1403,7 @@ body.punch .iq-f input,body.punch .iq-f select{border-color:transparent}
 .iq-n{width:32px;height:32px;border-radius:var(--r-xs);border:1px solid var(--edge);
  background:var(--sunk);color:var(--mid);font-family:var(--num);font-size:13px;font-weight:500;cursor:pointer;transition:.15s}
 .iq-n:hover{background:var(--panel);color:var(--ink);border-color:var(--edge-2)}
-.iq-n.on{background:var(--gold);border-color:var(--gold);color:#15130A;font-weight:600}
+.iq-n.on{background:var(--gold);border-color:var(--gold);color:var(--on-accent);font-weight:600}
 
 /* ============================================================
    RELEASE AND RITUAL
@@ -1520,7 +1646,12 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
           a definition sitting permanently under a heading a person reads once,
           and the definition belongs in the tooltip and the drill, where it is
           asked for. What is left is the name and the thing itself. -->
-     <div class="tier1">0 &middot; Balance</div>
+     <!-- ONE WORD PER CONCEPT. This said Balance and so does the strip under
+          the wheel, and they are not the same reading: this one is benign
+          against malignant, which is what the charge is made of, and that one
+          is masculine against feminine, which is which way it discharges.
+          Two things called Balance four inches apart is the rule broken. -->
+     <div class="tier1">0 &middot; Lean <span>benign against malignant</span></div>
      <div class="polbar" id="polbar"></div>
      <div class="tier1" style="margin-top:18px">1 &middot; Root domains</div>
      <!-- Four root domains would not fit one row, so Witness rendered as Witn
@@ -1776,7 +1907,7 @@ const PAL={'Root':'#C4635E','Sacral':'#D19255','Solar':'#D4BC70','Heart':'#6FC5A
  'Throat':'#65B8D4','3rd Eye':'#8296DB','Crown':'#A98BCE'};
 const PAL_LIGHT={'Root':'#9B4B47','Sacral':'#8E6231','Solar':'#7E6C29','Heart':'#2A7A5C',
  'Throat':'#2C6F88','3rd Eye':'#4C5F9E','Crown':'#6E5490'};
-const GOLD='#DFCC7E', ALARM='#FF2E1F';
+const GOLD='#7EB8D4', ALARM='#FF2E1F';   /* the accent. blue, ruled. */
 
 /* the seat glyphs. the direction's vocabulary: each seat has a mark, so the
    ring can name where it sits without a word. */
@@ -2639,6 +2770,30 @@ var BIRTH={
  Nkem:   {d:'1990-09-03', t:'19:10', p:'Boston, MA'},
  Wren:   {d:'1959-04-17', t:'08:35', p:'Portland, OR'},
  Abraham:{d:'1951-06-29', t:'11:20', p:'Boulder, CO'}};
+/* FULL NAMES, because numerology reads the name on the certificate and not the
+   one on the door. The roster carried first names only, so every name number
+   in the product was computed off a nickname, which is the numerological
+   equivalent of reading a birth chart off the year alone. A real person's own
+   full name comes off the profile; these are the reference cases.
+
+   Middle names are here on purpose: the middle name is the one nobody uses and
+   numerology reads it as the part that is carried rather than shown. Leaving
+   them out would have moved every Expression in the roster. */
+var FULLNAME={
+ You:null,
+ Sofia:  'Sofia Beatriz Alarcon',
+ Diane:  'Diane Elizabeth Halloran',
+ Marcus: 'Marcus Aurelius Vance',
+ Angela: 'Angela Mercedes Ruiz',
+ Derek:  'Derek Thomas Whitfield',
+ James:  'James Edward Cavanaugh',
+ Rosa:   'Rosa Milagros Otero',
+ Ana:    'Ana Cristina Ferreira',
+ Gordon: 'Gordon Blake Ashcroft',
+ Tomas:  'Tomas Eduardo Ibarra',
+ Nkem:   'Nkem Adaeze Okonkwo',
+ Wren:   'Wren Josephine Halliday',
+ Abraham:'Abraham Isaac Stern'};
 var ZSIGN=[[1,20,'Aquarius','air','fixed'],[2,19,'Pisces','water','mutable'],
  [3,21,'Aries','fire','cardinal'],[4,20,'Taurus','earth','fixed'],
  [5,21,'Gemini','air','mutable'],[6,21,'Cancer','water','cardinal'],
@@ -5206,6 +5361,212 @@ function converge(name,r){
 
 
 /* ============================================================
+   NUMEROLOGY, IN FULL.
+
+   The summary reduced a whole name to one value and called it the
+   name lens. That is one of six numbers and it was the wrong one:
+   the value of every letter in a name is the Expression, and the
+   product was printing it under the heading Name with no statement
+   of what had been reduced or how.
+
+   Six numbers, and each answers a different question.
+
+     Life path     the birth date. The road, not the traveller.
+     Expression    every letter of the full name. What the person
+                   is equipped to do.
+     Soul urge     the vowels. What is wanted when nobody is asked.
+     Personality   the consonants. What arrives in the room first.
+     Birthday      the day of the month, unreduced. A single gift.
+     Maturity      life path plus expression. What the second half
+                   is for.
+
+   Pythagorean, which is the system the codex uses: A to I are 1 to
+   9, J to R are 1 to 9 again, S to Z are 1 to 8. Master numbers 11,
+   22 and 33 survive reduction at every step, including inside a
+   single name part, because a master reduced is a master lost.
+
+   KARMIC DEBT is reported off the unreduced total and not inferred.
+   13, 14, 16 and 19 are the four, and a 4 that came from 13 is not
+   the same 4 as one that came from 22.
+
+   Y IS THE ARGUMENT, in every system. The rule here is stated
+   rather than felt: Y is a vowel when it carries the sound, which
+   is when it has no vowel beside it. Wyn is a vowel Y. Yara is a
+   consonant Y. The rule is one line and it is written down, which
+   is more than most tables that use it can say.
+
+   No etymology table. A root meaning for an arbitrary name cannot
+   be looked up on a device that makes no outbound request, and
+   inventing one is the kind of claim this instrument does not make.
+   What a name part carries is its own number, its cornerstone and
+   its capstone, and those are computed rather than remembered.
+   ============================================================ */
+const NUM_LET=(function(){
+ var m={}, A='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+ for(var i=0;i<26;i++)m[A[i]]=(i%9)+1;
+ return m;})();
+const NUM_VOW='AEIOU';
+const NUM_MASTER=[11,22,33];
+const NUM_DEBT=[13,14,16,19];
+
+/* reduce, keeping the masters. the unreduced total is returned with it
+   because karmic debt is a statement about the total and not about the
+   digit it collapses to. */
+function numReduce(n){
+ var v=Math.abs(n|0);
+ while(v>9&&NUM_MASTER.indexOf(v)<0)
+  v=String(v).split('').reduce(function(a,c){return a+ +c;},0);
+ return v;}
+
+/* THE Y RULE, written down. Y is a vowel when it carries the sound, which is
+   when neither neighbour inside the same name part is a vowel. */
+function numIsVowel(s,i){
+ var c=s[i];
+ if(NUM_VOW.indexOf(c)>=0)return true;
+ if(c!=='Y')return false;
+ var prev=s[i-1], next=s[i+1];
+ if(prev&&NUM_VOW.indexOf(prev)>=0)return false;
+ if(next&&NUM_VOW.indexOf(next)>=0)return false;
+ return true;}
+
+function numClean(s){return String(s||'').toUpperCase().replace(/[^A-Z ]/g,' ')
+ .replace(/\s+/g,' ').trim();}
+function numParts(s){var c=numClean(s); return c?c.split(' '):[];}
+
+/* one name part, summed three ways. total is the unreduced figure, which is
+   what debt is read from. */
+function numSum(part,mode){
+ var t=0;
+ for(var i=0;i<part.length;i++){
+  var v=NUM_LET[part[i]]; if(!v)continue;
+  var vow=numIsVowel(part,i);
+  if(mode==='vowel'&&!vow)continue;
+  if(mode==='cons'&&vow)continue;
+  t+=v;}
+ return t;}
+
+/* THE STEP THAT MOST TABLES GET WRONG. Expression is each name part reduced on
+   its own and then those reduced, not every letter in one pile.
+
+   WHEN THE TWO CAN DISAGREE, exactly. Digit summing preserves the value mod
+   nine, so the two totals are always congruent and the only thing that can
+   separate them is the master rule: numReduce stops at 11, 22 and 33, so one
+   route can halt on a master while the other walks past it to a single digit.
+   Same name, two answers, and only one of them keeps the master.
+
+   That is uncommon and it is not rare enough to ignore, so both totals are
+   kept and the renderer says so when they part. The parts are the reading,
+   because a master inside a name is the thing the flat sum destroys. */
+function numAcross(parts,mode){
+ var each=parts.map(function(p){return numReduce(numSum(p,mode));});
+ var flat=parts.reduce(function(a,p){return a+numSum(p,mode);},0);
+ return {each:each, byPart:numReduce(each.reduce(function(a,v){return a+v;},0)),
+  flatTotal:flat, flat:numReduce(flat)};}
+
+function numDebt(total){return NUM_DEBT.indexOf(total)>=0?total:null;}
+
+/* what each number does, by the position it is standing in. The same digit is
+   not the same statement in the soul as it is in the personality: one is what
+   is wanted and the other is what arrives first. */
+const NUM_CORE={
+ 1:{n:'The one who starts', ex:'builds first and asks after', so:'wants to be the origin of it',
+    pe:'arrives direct, and early'},
+ 2:{n:'The one who joins', ex:'works through the other person', so:'wants to be met',
+    pe:'arrives quiet, and reads the room'},
+ 3:{n:'The one who expresses', ex:'makes the thing visible', so:'wants to be heard',
+    pe:'arrives bright, and talking'},
+ 4:{n:'The one who builds', ex:'puts a floor under it', so:'wants it to hold',
+    pe:'arrives solid, and early'},
+ 5:{n:'The one who moves', ex:'changes the conditions', so:'wants the exit unlocked',
+    pe:'arrives fast, and unpinned'},
+ 6:{n:'The one who tends', ex:'carries what others put down', so:'wants to be needed',
+    pe:'arrives warm, and responsible'},
+ 7:{n:'The one who looks', ex:'takes it apart to see it', so:'wants to know',
+    pe:'arrives reserved, and watching'},
+ 8:{n:'The one who commands', ex:'moves the resource', so:'wants the authority real',
+    pe:'arrives weighted, and in charge'},
+ 9:{n:'The one who completes', ex:'finishes what was handed over', so:'wants it to mean something',
+    pe:'arrives wide, and already leaving'},
+ 11:{n:'The one who channels', ex:'carries more current than the wire is rated for',
+    so:'wants the signal clean', pe:'arrives charged, and unsettling'},
+ 22:{n:'The one who makes it real', ex:'lands the thing nobody could land',
+    so:'wants it built', pe:'arrives steady, and very large'},
+ 33:{n:'The one who teaches', ex:'raises the whole room',
+    so:'wants the others through', pe:'arrives given away'}};
+const NUM_DEBT_SAYS={
+ 13:'Work refused earlier. The way out is the work, done plainly and without a shortcut.',
+ 14:'Freedom taken at somebody else’s cost. The way out is a limit you set yourself.',
+ 16:'Something built on a false footing, and it comes down. The way out is being seen as you are.',
+ 19:'Power used alone. The way out is needing somebody.'};
+/* the cornerstone is the first letter of the first name and the capstone the
+   last. one says how a thing is approached, the other how it is finished. */
+const NUM_STONE={
+ 1:'straight at it',2:'alongside it',3:'talking about it',4:'shoring it up',
+ 5:'moving around it',6:'carrying it',7:'studying it',8:'owning it',9:'releasing it'};
+
+/* THE FULL PROFILE. Pure. Name in, six numbers out, and a birth date only for
+   the two that need one. Nothing here reads shared state and nothing stores. */
+function numerology(name,birthDate){
+ var parts=numParts(name);
+ if(!parts.length)return null;
+ var all=numAcross(parts,'all'), vow=numAcross(parts,'vowel'), con=numAcross(parts,'cons');
+ var first=parts[0], last=parts[parts.length-1];
+ var lp=null, bday=null, bdayR=null;
+ if(birthDate&&/^\d{4}-\d{2}-\d{2}$/.test(birthDate)){
+  lp=lifePath(birthDate);
+  bday=+birthDate.split('-')[2];
+  bdayR=numReduce(bday);}
+ var expr=all.byPart;
+ var mat=(lp!==null)?numReduce(lp+expr):null;
+ return {
+  parts:parts,
+  /* each name part on its own, which is what the owner asked to see */
+  each:parts.map(function(p,i){
+   return {nm:p.charAt(0)+p.slice(1).toLowerCase(),
+    v:all.each[i], total:numSum(p,'all'),
+    debt:numDebt(numSum(p,'all')),
+    says:(NUM_CORE[all.each[i]]||{}).n||'',
+    role:i===0?'first':(i===parts.length-1?'last':'middle')};}),
+  expression:expr, expressionFlat:all.flat, expressionTotal:all.flatTotal,
+  soul:vow.byPart, personality:con.byPart,
+  lifePath:lp, birthday:bday, birthdayReduced:bdayR, maturity:mat,
+  /* the split only shows up when a part carries a master, and when it does it
+     is worth saying out loud rather than silently taking one side. */
+  split:(all.byPart!==all.flat)?{byPart:all.byPart, flat:all.flat}:null,
+  debt:numDebt(all.flatTotal),
+  cornerstone:first.charAt(0), capstone:last.charAt(last.length-1),
+  cornerSays:NUM_STONE[NUM_LET[first.charAt(0)]]||'',
+  capSays:NUM_STONE[NUM_LET[last.charAt(last.length-1)]]||'',
+  master:NUM_MASTER.filter(function(m){
+   return expr===m||vow.byPart===m||con.byPart===m||lp===m;})};}
+
+/* one line per number, for a renderer that wants the reading and not the table */
+function numSays(k,v){
+ var c=NUM_CORE[v]; if(!c)return '';
+ if(k==='expression')return c.ex;
+ if(k==='soul')return c.so;
+ if(k==='personality')return c.pe;
+ return c.n;}
+
+/* THE NAME THIS READS. A real person's own full name lives on their profile,
+   because the product asks for first, middle and last at intake. A reference
+   case has one in FULLNAME. Falling back to the bare roster name is the last
+   resort and it is honest about being a first name only, because reading a
+   nickname as a birth name is the numerological equivalent of reading a chart
+   off the year. */
+function numFullName(p){
+ var w=p&&p.who; if(!w)return null;
+ var parts=[w.first,w.middle,w.last].filter(function(x){return x&&String(x).trim();});
+ return parts.length?parts.join(' '):null;}
+function numerologyOf(name,p){
+ var full=numFullName(p)
+  ||((typeof FULLNAME!=='undefined'&&FULLNAME[name])||null)
+  ||name;
+ var bd=(p&&p.who&&p.who.born&&p.who.born.date)
+  ||((typeof BIRTH!=='undefined'&&BIRTH[name]&&BIRTH[name].d)||null);
+ return numerology(full,bd);}
+
+/* ============================================================
    THE SEED. A four letter type is the ego's own account of
    itself. It is not a reading, so this module never claims to
    have detected one: the person states it, and it is used to
@@ -5444,6 +5805,13 @@ if(typeof module!=='undefined'&&module.exports){
                      a page could test them. */
                   masterNumber:masterNumber, chineseElement:chineseElement,
                   hdOf:hdOf, geneKey:geneKey,
+  /* numerology */numerology:numerology, numerologyOf:numerologyOf,
+                  numReduce:numReduce, numIsVowel:numIsVowel, numSum:numSum,
+                  numAcross:numAcross, numParts:numParts, numSays:numSays,
+                  numFullName:numFullName,
+                  NUM_LET:NUM_LET, NUM_MASTER:NUM_MASTER, NUM_DEBT:NUM_DEBT,
+                  NUM_CORE:NUM_CORE, NUM_DEBT_SAYS:NUM_DEBT_SAYS,
+                  FULLNAME:FULLNAME, BIRTH:BIRTH,
   /* util */      clamp:clamp, leaves:(typeof leaves==='function'?leaves:null)
  };
 }
@@ -5464,6 +5832,9 @@ if(typeof module!=='undefined'&&module.exports){
    ============================================================ */
 var CRGEO={lg:{box:46,r:18,w:3.5},md:{box:34,r:13,w:3},sm:{box:24,r:9,w:2.4},xs:{box:18,r:6.5,w:2}};
 var HOT_AT=90;                         /* the alarm band. severity gets its own channel. */
+/* one stroked icon, 24 unit box. declared here because this file loads first
+   and every renderer after it wants one. */
+const svgI=function(p){return '<svg viewBox="0 0 24 24">'+p+'</svg>';};
 function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function seatCol(b){return (S.theme==='snow'?PAL_LIGHT[b]:PAL[b])||'var(--gold)';}
 function cr(band,pct,o){
@@ -5534,7 +5905,9 @@ const mixc=(a,b,t)=>a.map((v,i)=>Math.round(v+(b[i]-v)*t));
 const lerp=(a,b,t)=>a+(b-a)*t;
 const LIGHT=()=>S.theme==='snow';
 const INK=()=>LIGHT()?[22,23,28]:[239,237,232];
-const GOLDC=()=>hx(LIGHT()?'#8A6D18':'#DFCC7E');
+/* the accent, for the canvas, which cannot read a custom property. the two
+   values are the same two the sheet declares and they move together. */
+const GOLDC=()=>hx(LIGHT()?'#2F6E92':'#7EB8D4');
 function bc(b){return hx(LIGHT()?PAL_LIGHT[b]:PAL[b]);}
 function nodeCol(n){const base=bc(n.b),ld=clamp(n.disp/10,0,1);
  return mixc(mixc(base,LIGHT()?[238,236,230]:[150,160,180],.74),base,Math.pow(ld,.55));}
@@ -6724,205 +7097,339 @@ function lensGene(r){
   Sad:'Joy as bliss',Surprise:'Readiness as wonder',Anticipation:'Presence as timelessness'};
  return {t:'Gene keys',a:top.k,
   b:top.cf+' to '+(c.opp||'')+' to '+(SID[top.cf]||''),c:'shadow, gift, siddhi'};}
-function lensName(r){
- var nm=(CURP&&CURP.name)||'You', v=0;
- for(var i=0;i<nm.length;i++){var ch=nm.toUpperCase().charCodeAt(i)-64; if(ch>0&&ch<27)v+=ch;}
- while(v>9&&v!==11&&v!==22) v=String(v).split('').reduce(function(a,b){return a+ +b;},0);
- var M={1:'the one who starts',2:'the one who joins',3:'the one who expresses',
-  4:'the one who builds',5:'the one who moves',6:'the one who tends',7:'the one who looks',
-  8:'the one who commands',9:'the one who completes',11:'the one who channels',
-  22:'the one who makes it real'};
- return {t:'Name',a:nm+', '+v,b:M[v]||'',c:'root meaning, reduced'};}
-/* THE SPIRITUAL OVERLAY, lifted into its own function so the unread page can
-   carry it. It is the one block on this surface that is not derived from the
-   nine axes: it reads a birth date a person typed, so it is either real or it
-   says there is none. Nothing here is invented from a default.
+/* lensName is gone. It reduced a whole name to one digit and called that the
+   name lens, which is the Expression and only one of six numbers, and it was
+   computing it off a first name. numerology.js does the job properly and the
+   spiritual block reads that. */
 
-   THE CONVERGENCE RING SAID 75 PERCENT AND NOTHING SAID WHAT OF. The owner
-   asked. It is the share of the ten pairs among five systems that agree, so
-   the sentence now states the fraction it came from and what agreement means.
-   A percentage with no denominator is a mood. */
-function sumOverlay(r){
- var o='';
+/* ============================================================
+   THE SUMMARY.
+
+   Redesigned on the owner's ruling. The app opens here, so this is
+   the first screen and the whole reading has to be on it.
+
+   Analytics across the top as a strip of rings. The story on the
+   left, in prose, as the instrument would say it out loud. The
+   structures on the right, at a glance. The spiritual layer beneath
+   as glyphs with no boxes around them. Full numerology under that.
+
+   THREE COLUMNS ON A DESKTOP, ONE SEQUENCE ON A PHONE. The order in
+   the document is the order a phone reads: verdict, story,
+   structures, spiritual, numbers. The grid puts the middle two side
+   by side when there is room and stacks them when there is not, so
+   it is one build and not two.
+
+   EVERY PERCENTAGE IS THE SAME OBJECT. An icon, a ring carrying the
+   percentage as an arc, and a pill carrying the number. cr() is that
+   object and nothing on this surface prints a bare figure.
+
+   NOTHING HERE IS INVENTED. Every sentence in the prose is
+   conditional on the value it names existing. A selection is drawn
+   as a selection and never given a ring, because a ring is a
+   measurement and a blueprint domain is a choice.
+   ============================================================ */
+
+/* ---- the strip. all analytics at a glance, which is what was asked for. ---- */
+function sumGlance(r){
+ var acc=(typeof accuracy==='function')?accuracy(r):null;
+ var e=(r.X+r.Y+r.Z)/3;
+ var row=[
+  ['coherence', r.darkB, r.CQ, Math.round(r.CQ)+'%', 'Where the field sits, 0 to 100.'],
+  ['shadow weight', 'Root', r.DQ*10, r.DQ.toFixed(1), 'What is held, 0 to 10.'],
+  ['installed', 'Heart', r.SQm*10, r.SQm.toFixed(1), 'What has been filled in, 0 to 10.'],
+  ['pole', 'Heart', r.poleMean*10, r.poleMean.toFixed(2), 'Coherent opposites standing, 0 to 1.'],
+  ['energy', 'Solar', e*100, e.toFixed(2), 'Vitality, awareness and will, meaned, 0 to 1.']];
+ if(acc)row.push(['identification','3rd Eye',acc.pct,acc.pct.toFixed(0)+'%',
+  'How much of you the instrument has actually measured, plus or minus '+acc.band.toFixed(0)+'.']);
+ return '<div class="s-glance">'+row.map(function(x){
+  return '<button type="button" class="s-gl" data-gl="'+esc(x[0])+'" title="'+esc(x[4])+'">'
+   +cr(x[1],x[2],{size:'sm',label:x[0],raw:x[3]})
+   +'<span class="s-gl-k">'+esc(x[0])+'</span></button>';}).join('')+'</div>';}
+
+/* ---- the story. three paragraphs, in the instrument's voice. ----
+
+   Spiritual into psychological, psychological into the body, and then what the
+   patterns are doing to momentum. The owner asked for this in his words and
+   these are the three joints he named.
+
+   Every clause is guarded. A person with no birth data gets two paragraphs and
+   a line saying what is missing, rather than a paragraph of hedges. */
+function sumStory(r){
+ var nm2=(PEOPLE[S.who]||{}).nm||'You';
+ var C=converge(nm2,r), e=C?C.e:null;
+ var held=W.filter(function(n){return n.sq>=4;}).sort(function(a,b){return b.sq-a.sq;});
+ var named=r.sabs.filter(function(s){return s.named;}).sort(function(a,b){return b.score-a.score;});
+ var loud=[].concat(r.sups,r.hys,r.cxs,r.sabs).sort(function(a,b){return b.w-a.w;})[0];
+ var seats=flSeats(), stop=null;
+ seats.slice().reverse().forEach(function(x){if(!stop&&x.held)stop=x;});
+ var arch=(ARCH[r.pi]||{}).nm||'';
+ var rootNow=(DOMAINS[S.doms[0]]||{}).r||'';
+ var lean=leanRead(r);
+ var p=[];
+
+ /* ONE. the spiritual into the psychological. */
+ if(e){
+  var elRoot=ELEM2ROOT[e.sunEl]||'';
+  var num=numerologyOf(nm2,CURP);
+  p.push('The blueprint you were born on reads <b>'+esc(e.sunEl)+'</b>, which is the <b>'
+   +esc(elRoot)+'</b> root, on life path <b>'+e.lp+'</b>, the one who '
+   +esc(e.lpMean||'runs')+'.'
+   +(num?' The name carries an expression of <b>'+num.expression+'</b>, '
+     +esc(numSays('expression',num.expression))+'.':'')
+   +' What is actually running is <b>'+esc(rootNow)+'</b>, through <b>'+esc(arch)+'</b>. '
+   +(elRoot===rootNow
+     ? 'Those agree, so what you are doing is what you were built for and the cost is elsewhere.'
+     : 'Those do not agree. A blueprint that says '+esc(elRoot)+' and a field that runs '
+       +esc(rootNow)+' means something was installed on top of the blueprint, and it has been '
+       +'carried long enough to feel like a personality.'));
+ }else{
+  p.push('There is no birth data on file, so the spiritual layer is not in this reading. '
+   +'Date, time and place would put it in. What is running now is <b>'+esc(rootNow)
+   +'</b>, through <b>'+esc(arch)+'</b>.');}
+
+ /* TWO. the psychological into the body. */
+ if(held.length){
+  p.push('That reaches the body at <b>'+esc(held[0].k)+'</b>, on the <b>'
+   +esc(String(held[0].cf).toLowerCase())+'</b> axis, at '+held[0].sq.toFixed(1)+' of 10.'
+   +(loud?' The biggest thing compounding on it is <b>'+esc(loud.nm)+'</b>'
+     +(named.length&&named[0]===loud?', at a '+named[0].score+' percent match':'')+'.':'')
+   +(stop?' Flow stops at the <b>'+esc(String(stop.p.n).toLowerCase())
+     +'</b>, which is where the charge is dense enough to close the seat.'
+    :' No seat is closed, so what is held is not yet stopping flow.')
+   +' Shadow weight is '+r.DQ.toFixed(1)+' and the law furthest shut is <b>'
+   +esc(r.weakL.nm)+'</b>, at the '+esc(String(r.weakL.b).toLowerCase())+'.');
+ }else{
+  p.push('Nothing is held above the line, so nothing is reaching the body as load. '
+   +(r.under?'There are '+r.under+' addresses carrying under it, which is signal and not yet cost.':''));}
+
+ /* THREE. momentum, and what stands between here and the avatar. */
+ var av=(CURP&&CURP.avatar)||null;
+ var pairs=(av&&av.pairs)?av.pairs.filter(avatarValid):[];
+ var gapLine='';
+ if(pairs.length){
+  var blocked=pairs.map(function(pair){
+   var st=seats.filter(function(x){return x.p.n===pair.seat;})[0];
+   return {pair:pair, clear:!(st&&st.held)};}).filter(function(x){return !x.clear;});
+  gapLine=blocked.length
+   ? ' Against the avatar you stated, '+blocked.map(function(x){
+       return '<b>'+esc(x.pair.becoming||x.pair.seat)+'</b>';}).join(' and ')
+     +' is the part still blocked, and it is blocked by the same charge named above.'
+   : ' Every seat your avatar depends on is passing. What you stated you are becoming is not '
+     +'being blocked by the field.';
+ }else{
+  gapLine=' No avatar has been stated, so there is nothing to measure this against. '
+   +'Say who you are becoming and this paragraph names what stands in the way.';}
+ p.push('Momentum: the field leans <b>'+(lean.ben>=lean.mal?'benign':'malignant')
+  +'</b> at '+Math.round(Math.max(lean.ben,lean.mal))+' percent, '
+  +(r.benign?'which means it is expanding':'which means it is contracting')+'.'
+  +(r.excess?' Installed pole is past the point where it pays, so some of the work is now costing.':'')
+  +gapLine);
+
+ return '<div class="s-story"><div class="pm-eye">The reading</div>'
+  +p.map(function(t){return '<p class="s-p">'+t+'</p>';}).join('')
+  +'<p class="s-src">Written from the nine axes, the twenty one laws, the blueprint and '
+  +'the birth data. Nothing here is generated from anything the instrument has not measured.</p>'
+  +'</div>';}
+
+/* ---- structures at a glance. the right hand panel. ---- */
+function sumStructRow(nm,sub,band,pct,raw,glyph,data){
+ return '<button type="button" class="s-row"'+(data||'')+'>'
+  +cr(band,pct,{size:'sm',raw:raw,glyph:glyph,label:nm})
+  +'<span class="s-row-t"><b>'+esc(nm)+'</b>'+(sub?'<em>'+esc(sub)+'</em>':'')+'</span></button>';}
+function sumStruct(r){
+ var out='<div class="s-struct">';
+ /* the blueprint. a selection, drawn as a selection: icons and names, and no
+    ring on any of them, because a ring is a measurement and this is a choice. */
+ var rootNow=(DOMAINS[S.doms[0]]||{}).r||'';
+ out+='<div class="pm-eye">Blueprint</div><div class="s-sel">'
+  +'<span class="s-sel-r" style="--rc:'+(ROOTCOL[rootNow]||'var(--accent)')+'">'
+  +esc(rootNow)+'</span>'
+  +S.doms.map(function(di){var d=DOMAINS[di]; if(!d)return '';
+   return '<button type="button" class="s-dom" data-dom="'+di+'" style="--rc:'+ROOTCOL[d.r]+'" '
+    +'title="'+esc(d.nm+'. '+d.d)+'">'+svgI('<path d="'+d.ic+'"/>')
+    +'<span>'+esc(d.nm)+'</span></button>';}).join('')+'</div>';
+ /* the archetypes. these ARE measured: aff is a real proportion. */
+ var aff=(r.aff||[]).map(function(v,i){return {i:i,nm:(ARCH[i]||{}).nm||'',ic:(ARCH[i]||{}).ic,v:v};})
+  .filter(function(x){return x.nm;}).sort(function(a,b){return b.v-a.v;});
+ var tot=aff.reduce(function(a,x){return a+x.v;},0)||1;
+ out+='<div class="pm-eye" style="margin-top:18px">Primary and secondary</div>';
+ out+=aff.slice(0,4).map(function(x,i){
+  return sumStructRow(x.nm, i===0?'primary':(i===1?'secondary':'also'), 'Heart',
+   x.v/tot*100, Math.round(x.v/tot*100)+'%', x.ic?'<path d="'+x.ic+'"/>':null,
+   ' data-arch="'+x.i+'"');}).join('');
+ /* masks. weight on 0 to 10, so the arc is the weight and the pill is the value. */
+ if(r.maskRing&&r.maskRing.length){
+  out+='<div class="pm-eye" style="margin-top:18px">Masks</div>';
+  out+=r.maskRing.slice(0,6).map(function(m){
+   return sumStructRow(m.nm, (m.bands||[]).join(' and '), (m.bands||['Heart'])[0],
+    m.w*10, m.w.toFixed(1), null, ' data-mask="'+esc(m.nm)+'"');}).join('');}
+ /* the seats. load is measured and the ring is the load. */
+ var seats=flSeats().filter(function(x){return x.load>0;})
+  .sort(function(a,b){return b.load-a.load;}).slice(0,4);
+ if(seats.length){
+  out+='<div class="pm-eye" style="margin-top:18px">Where it sits</div>';
+  out+=seats.map(function(x){
+   return sumStructRow(x.p.n, x.held?'closed':'passing', x.p.n,
+    Math.min(100,x.load*100), Math.round(x.load*100)+'%', null,
+    ' data-seat="'+esc(x.p.n)+'"');}).join('');}
+ /* the chain. counts, never against a total. */
+ out+='<div class="pm-eye" style="margin-top:18px">The chain</div><div class="s-chain">'
+  +[['saboteurs',r.sabs.length],['complexes',r.cxs.length],
+    ['hyper',r.hys.length],['character',r.sups.length]].map(function(x){
+   return '<span class="s-ch"><b>'+x[1]+'</b>'+x[0]+'</span>';}).join('')+'</div>';
+ return out+'</div>';}
+
+/* ---- the spiritual layer. glyphs, no boxes. ----
+   The owner ruled the little boxes out and icons in: a sign, an animal with
+   its element, a life path. Each opens its own detail. Date of birth came out
+   with the boxes, because a birth date is an input and this is a reading. */
+const CELEM_IC={
+ Metal:'<circle cx="12" cy="12" r="7"/><path d="M12 5v14"/>',
+ Water:'<path d="M4 10c3 3 5 3 8 0s5-3 8 0M4 16c3 3 5 3 8 0s5-3 8 0"/>',
+ Wood:'<path d="M12 21V7M12 7L7 3M12 7l5-4M12 13l-5-3M12 13l5-3"/>',
+ Fire:'<path d="M12 21c4 0 6-2.6 6-6 0-4-4-5-4-9 0 0-3 2-3 5 0-1-1.6-2-1.6-2C9.4 11 6 12 6 15c0 3.4 2 6 6 6z"/>',
+ Earth:'<path d="M3 17h18M6 13h12M9 9h6"/>'};
+function sumSpirit(r){
  var nm2=(PEOPLE[S.who]||{}).nm||'You';
  var C=converge(nm2,r);
- if(!C){
-  o+='<div class="pm-eye" style="margin-top:22px">The spiritual overlay</div>'
-   +'<p class="sum-p">No birth data on file. Date, time and place would let the overlay run. '
-   +'Nothing else is stored, and every reading is derived from those three.</p>';
-  return o;}
- {
-  var e=C.e;
-  o+='<div class="pm-eye" style="margin-top:22px">The spiritual overlay</div>'
-   +'<div class="sum-hero" style="margin-top:8px">'
-   /* THE RING SAYS THE FRACTION. It said 75 percent, the owner asked what that
-      meant, and he was right to: three of four and seventy five percent are
-      the same number and only one of them says how few comparisons it rests
-      on. birth.js has carried .of for exactly this reason and this renderer
-      was throwing it away. The ring arc still runs on the percentage, because
-      an arc is a proportion; the value printed is the count. */
-   +cr('Crown',C.score||0,{size:'md',label:'convergence',
-     raw:C.agree.length+' of '+C.of,
-     title:'Convergence. '+C.agree.length+' of '+C.of+' comparisons between the birth '
-      +'chart and the field point the same way.'})
-   +'<div class="sum-line">Born '+esc(e.birth.d)+' at '+esc(e.birth.t)+', '+esc(e.birth.p)
-   +'. Five systems read independently, and the instrument compares them one pair at a '
-   +'time against what is running now. <b>'+C.agree.length+' of '+C.of+'</b> comparisons '
-   +'point the same way.'
-   +(C.open&&C.open.length?' '+C.open.length+' could not be compared at all: '
-     +esc(C.open.join('; '))+'. A gap is not a disagreement.':'')
-   +'</div></div>'
-   +'<div class="sum-lens">'
-   +'<div class="sum-l"><div class="sum-lt">Western</div><div class="sum-la">'
-    +(ZGLYPH[e.sun]||'')+' '+e.sun+'</div><div class="sum-lb">'+SIGN_RUNS[e.sun]+'</div>'
-    +'<div class="sum-lc">moon '+e.moon+', rising '+e.rising+'</div></div>'
-   +'<div class="sum-l"><div class="sum-lt">Eastern</div><div class="sum-la">'+e.celem+' '+e.chinese
-    +'</div><div class="sum-lb">'+CH_RUNS[e.chinese]+'</div>'
-    +'<div class="sum-lc">'+CE_RUNS[e.celem]+'</div></div>'
-   +'<div class="sum-l"><div class="sum-lt">Numerology</div><div class="sum-la">Life path '+e.lp
-    +'</div><div class="sum-lb">'+(LP_RUNS[e.lp]||'')+'</div>'
-    +'<div class="sum-lc">'+(e.master?'master number, survives reduction':'birth date, reduced')+'</div></div>'
-   +'<div class="sum-l"><div class="sum-lt">Human design</div><div class="sum-la">'
-    +(e.hd.profile?('profile '+e.hd.profile):'unresolved')+'</div>'
-    +'<div class="sum-lb">'+(e.hd.design?('personality gate '+e.hd.personality.gate
-      +', design gate '+e.hd.design.gate):'')+'</div>'
-    +'<div class="sum-lc">type needs the full bodygraph and is not computed</div></div>'
-   +'<div class="sum-l"><div class="sum-lt">Gene keys</div><div class="sum-la">'+e.gk.gate+'.'+e.gk.line
-    +'</div><div class="sum-lb">shadow to gift to siddhi, one axis at a time</div>'
-    +'<div class="sum-lc">gate and line</div></div></div>';
-  o+='<div class="pm-eye" style="margin-top:14px">Where they agree, '+C.agree.length+'</div>';
-  o+=C.agree.length?('<div class="sum-agree">'+C.agree.map(function(a){
-    return '<div class="sum-ag">'+esc(a)+'</div>';}).join('')+'</div>')
-   :'<p class="sum-p">Nothing converges. That is a reading, not a gap.</p>';
-  if(C.differ.length){
-   o+='<div class="pm-eye" style="margin-top:12px">Where they do not, '+C.differ.length+'</div>'
-    +'<div class="sum-agree">'+C.differ.map(function(d){
-     return '<div class="sum-dg">'+esc(d)+'</div>';}).join('')+'</div>'
-    +'<div class="verdict"><p>The instrument does not pick a winner. A birth chart describes '
-    +'the blueprint. The field describes what is running now. They diverge when something has '
-    +'been installed on top of the blueprint.</p></div>';}}
- return o;}
-function sumCard(t,body){return '<div class="sum-card"><div class="pm-eye">'+t+'</div>'+body+'</div>';}
-/* ONE WRAPPER, ONE EXIT. This function used to open the wrapper, then return
-   early down the unread path having closed it, then close it again at the
-   bottom of the read path. Both paths were correct at runtime and the file
-   carried one more closing div than opening, which is what the build's
-   balance check counts. It is a crude check on purpose and it was right to
-   complain: two exits through one open tag is a structure waiting to leak.
-   Each path now returns its own balanced block and the wrapper is written
-   once, here. */
+ if(!C)return '<div class="s-spirit"><div class="pm-eye">The spiritual layer</div>'
+  +'<p class="s-p">No birth data on file. Date, time and place would let this run, and '
+  +'nothing else is stored, because every reading here is derived from those three.</p></div>';
+ var e=C.e;
+ function chip(k,v,glyph,lab,val,t){
+  return '<button type="button" class="s-chip" data-sp="'+k+'" data-spv="'+esc(String(v))+'" '
+   +'title="'+esc(t)+'"><span class="s-chip-g">'+glyph+'</span>'
+   +'<span class="s-chip-l">'+esc(lab)+'</span>'
+   +(val?'<span class="s-chip-v">'+esc(val)+'</span>':'')+'</button>';}
+ function uni(ch){return '<span class="s-uni">'+ch+'</span>';}
+ var out='<div class="s-spirit"><div class="pm-eye">The spiritual layer</div>'
+  +'<p class="s-p">Five systems, read independently off one birth date. '
+  +'<b>'+C.agree.length+' of '+C.of+'</b> comparisons between them and the field point the '
+  +'same way. That is what the convergence is: agreements over comparisons, not a score.'
+  +(C.open&&C.open.length?' '+C.open.length+' could not be compared at all: '
+    +esc(C.open.join('; '))+'. A gap is not a disagreement.':'')+'</p>'
+  +'<div class="s-chips">';
+ out+=chip('sign',e.sun,uni(ZGLYPH[e.sun]||'*'),e.sun,'',
+  'Sun sign. '+(SIGN_RUNS[e.sun]||''));
+ if(e.moon)out+=chip('sign',e.moon,uni(ZGLYPH[e.moon]||'*'),e.moon,'moon',
+  'Moon sign. What it runs on underneath.');
+ if(e.rising)out+=chip('sign',e.rising,uni(ZGLYPH[e.rising]||'*'),e.rising,'rising',
+  'Rising sign. What arrives in the room first.');
+ out+=chip('celem',e.celem,svgI(CELEM_IC[e.celem]||CELEM_IC.Earth),e.celem+' '+e.chinese,'',
+  'Year animal and element. '+(CH_RUNS[e.chinese]||''));
+ out+=chip('lp',e.lp,'<span class="s-num-g">'+e.lp+'</span>','Life path',String(e.lp),
+  'Life path. '+(LP_RUNS[e.lp]||''));
+ out+=chip('hd',(e.hd.profile||'unresolved'),
+  svgI('<path d="M7 4v16M17 4v16M7 9h10M7 15h10"/>'),'Human design',
+  e.hd.profile?('profile '+e.hd.profile):'unresolved',
+  e.hd.unresolved?'Type needs the full bodygraph and is not computed. The profile is.'
+   :'Design profile.');
+ out+=chip('gk',e.gk.gate,svgI('<circle cx="12" cy="12" r="8.4"/><path d="M12 3.6v16.8"/>'),
+  'Gene key',e.gk.gate+'.'+e.gk.line,'Gate and line. Shadow to gift to siddhi.');
+ out+='</div>';
+ if(C.agree.length||C.differ.length){
+  out+='<div class="s-agree">';
+  out+=C.agree.map(function(a){return '<div class="s-ag">'+esc(a)+'</div>';}).join('');
+  out+=C.differ.map(function(d){return '<div class="s-dg">'+esc(d)+'</div>';}).join('');
+  out+='</div>';
+  if(C.differ.length)out+='<p class="s-src">The instrument does not pick a winner. A birth '
+   +'chart describes the blueprint and the field describes what is running now. They diverge '
+   +'where something was installed on top of the blueprint.</p>';}
+ return out+'</div>';}
+
+/* ---- full numerology. six numbers, and every name part on its own. ---- */
+function sumNum(r){
+ var nm2=(PEOPLE[S.who]||{}).nm||'You';
+ var N=numerologyOf(nm2,CURP);
+ if(!N)return '';
+ var rows=[
+  ['expression','Expression',N.expression,'every letter of the full name'],
+  ['soul','Soul urge',N.soul,'the vowels. what is wanted when nobody is asked'],
+  ['personality','Personality',N.personality,'the consonants. what arrives first']];
+ if(N.lifePath!==null)rows.unshift(['lifePath','Life path',N.lifePath,'the birth date']);
+ if(N.birthday!==null)rows.push(['birthday','Birthday',N.birthday,'the day of the month, unreduced']);
+ if(N.maturity!==null)rows.push(['maturity','Maturity',N.maturity,'life path plus expression']);
+ var out='<div class="s-numer"><div class="pm-eye">Numerology, in full</div>'
+  +'<p class="s-p">Read off <b>'+esc(N.parts.map(function(p){
+    return p.charAt(0)+p.slice(1).toLowerCase();}).join(' '))+'</b>. Pythagorean, with 11, 22 '
+  +'and 33 surviving reduction at every step.</p>'
+  +'<div class="s-nrows">';
+ out+=rows.map(function(x){
+  var v=x[2], master=NUM_MASTER.indexOf(v)>=0;
+  return '<button type="button" class="s-nrow'+(master?' master':'')+'" data-num="'+x[0]+'" '
+   +'title="'+esc(x[3])+'"><span class="s-nv">'+v+'</span>'
+   +'<span class="s-nt"><b>'+esc(x[1])+'</b><em>'
+   +esc(numSays(x[0],v)||x[3])+'</em></span></button>';}).join('');
+ out+='</div>';
+ /* every name part on its own, which is what was asked for */
+ out+='<div class="pm-eye" style="margin-top:16px">Each name</div><div class="s-nparts">';
+ out+=N.each.map(function(x){
+  return '<div class="s-npart"><span class="s-nv sm">'+x.v+'</span>'
+   +'<span class="s-nt"><b>'+esc(x.nm)+'</b><em>'+esc(x.role)+'. '+esc(x.says).toLowerCase()
+   +(x.debt?'. karmic debt '+x.debt:'')+'</em></span></div>';}).join('');
+ out+='</div>';
+ out+='<p class="s-src">Cornerstone <b>'+esc(N.cornerstone)+'</b>, '+esc(N.cornerSays)
+  +'. Capstone <b>'+esc(N.capstone)+'</b>, '+esc(N.capSays)+'.'
+  +(N.debt?' Karmic debt '+N.debt+' on the whole name. '+esc(NUM_DEBT_SAYS[N.debt]):'')
+  +(N.split?' The parts reduce to '+N.split.byPart+' and the flat sum to '+N.split.flat
+    +', which happens when one name carries a master. The parts are the reading.':'')
+  +'</p>';
+ return out+'</div>';}
+
+/* ---- the two paths, each balanced, and one wrapper written once ---- */
 function sumRender(){
  /* #sumbody, not #sum. #sum is the tab host and it also carries the folded
     analytics surface, which this function would otherwise overwrite. */
  var h=document.getElementById('sumbody'); if(!h)return;
  var r=compute();
- h.innerHTML='<div class="sum-wrap">'+(r.unread?sumUnread(r):sumFull(r))+'</div>';}
+ h.innerHTML='<div class="sum-wrap">'+(r.unread?sumUnread(r):sumFull(r))+'</div>';
+ sumWire();}
 
 /* NOTHING READ YET IS ITS OWN PAGE.
 
-   The owner ruled that the app opens here, and the moment it did this surface
-   became the first thing a stranger sees. It was printing coherence 42 percent
-   in the largest ring on the screen off nothing but the default six on the
-   laws, which is the one rule this product does not break: a reading is never
-   invented, and a percentage is never printed off a default. The functional
-   gate caught it within a minute of the tab order changing, which is the gate
-   doing its job.
-
-   So the opening is the way in. The ring holds a dash, the band word is not
-   said, and everything downstream of the nine axes is left out rather than
-   printed at zero, because a grid of zeroes still reads as a measurement.
-   The spiritual overlay stays: it is derived from a birth date a person
-   entered, not from a default, so it is either real or absent. */
+   The app opens here, so this surface is the first thing a stranger sees. It
+   was printing coherence 42 percent in the largest ring on the screen off
+   nothing but the default six on the laws. A reading is never invented and a
+   percentage is never printed off a default, so the ring holds a dash and the
+   page is the way in instead. The spiritual layer stays: it is derived from a
+   birth date a person entered, not from a default, so it is real or absent. */
 function sumUnread(r){
- var o='';
-
-  o+='<div class="sum-hero">'
-   /* a neutral colour, not the darkest seat. darkB falls back to Root on an
-      empty field, which paints the largest object on the opening screen in the
-      alarm red this product reserves for something being wrong. Nothing is
-      wrong. Nothing has been entered. */
-   +cr(r.darkB,0,{size:'lg',label:'coherence',raw:'\u2013',hot:false,color:'var(--dim)'})
-   +'<div><div class="pm-eye">Coherence, not read yet</div>'
-   +'<div class="sum-line">Nothing has been entered, so there is nothing to read. '
-   +'The arithmetic underneath works and it is not being shown, because a number '
-   +'off a default is a number about the default and not about you.</div></div></div>'
-   +'<div class="sum-start">'+startHTML('Four ways in. None of them asks you to know '
-   +'a term first, and any one of them fills this page.')+'</div>';
-  o+=sumOverlay(r);
- return o;}
+ return '<div class="sum-hero">'
+  +cr(r.darkB,0,{size:'lg',label:'coherence',raw:'–',hot:false,color:'var(--dim)'})
+  +'<div><div class="pm-eye">Coherence, not read yet</div>'
+  +'<div class="sum-line">Nothing has been entered, so there is nothing to read. '
+  +'The arithmetic underneath works and it is not being shown, because a number off a '
+  +'default is a number about the default and not about you.</div></div></div>'
+  +'<div class="sum-start">'+startHTML('Four ways in. None of them asks you to know a term '
+  +'first, and any one of them fills this page.')+'</div>'
+  +sumSpirit(r)+sumNum(r);}
 
 function sumFull(r){
- var held=W.filter(function(n){return n.sq>=4;}).sort(function(a,b){return b.sq-a.sq;});
- var installed=W.filter(function(n){return n.pole>=4;});
- var over=r.sabs.filter(function(s){return s.over;});
- var under=r.sabs.filter(function(s){return !s.over;});
- var named=r.sabs.filter(function(s){return s.named;}).sort(function(a,b){return b.score-a.score;});
- var laws=SI.map(function(l){return {nm:l.nm,b:l.b,v:S.law[l.nm]};});
- var strong=laws.slice().sort(function(a,b){return b.v-a.v;}).slice(0,4);
- var shut=laws.slice().sort(function(a,b){return a.v-b.v;}).slice(0,4);
- var out='';
- /* the headline. one value, given room. */
- out+='<div class="sum-hero">'+cr(r.darkB,r.CQ,{size:'lg',label:'coherence'})
-  +'<div><div class="pm-eye">Coherence, '+r.tier.toLowerCase()+'</div>'
-  +'<div class="sum-line">'+(held.length
-    ? 'You are carrying <b>'+held.length+'</b> address'+(held.length===1?'':'es')+' at a shadow weight of <b>'+r.DQ.toFixed(1)+'</b>. '
-      +(named.length?'The loudest thing running is <b>'+esc(named[0].nm)+'</b> at '+named[0].score+'% match. ':'')
-      +'Flow stops where the '+r.darkB.toLowerCase()+' is holding.'
-    : 'Nothing is held above the line. The output matches the shape.')
-  +'</div></div></div>';
- out+='<div class="sum-grid">';
- out+=sumCard('What is running',
-  (named.length? named.slice(0,8).map(function(x){
-    return '<div class="sum-row"><span>'+esc(x.nm)+'</span><em>'+x.score+'% '
-     +(x.exact?'exact':'near')+'</em><b>'+x.w.toFixed(1)+'</b></div>';}).join('')
-   :'<p class="sum-none">No named saboteur is firing.</p>'));
- /* The card title said Collapsed, which is also the word the scale puts on a
-    person at the bottom of the line, so a person reading Collapsed 4 beside
-    the band word Collapsed had two meanings for one word on one screen. The
-    title says what the address does. The body keeps the codex term and
-    defines it. */
- out+=sumCard('Shut '+under.length+', overshot '+over.length,
-  '<p class="sum-p">Collapse means the address shuts. Jouissance means it will not shut. '
-  +'Both are distortion. Coherence is neither.</p>'
-  +(over.length? '<div class="sum-chips">'+over.slice(0,6).map(function(x){
-     return '<span class="pm-chip over">'+esc(x.nm)+'</span>';}).join('')+'</div>':''));
- out+=sumCard('The chain',
-  '<div class="sum-row"><span>saboteurs</span><b>'+r.sabs.length+'</b></div>'
-  +'<div class="sum-row"><span>complexes</span><b>'+r.cxs.length+'</b></div>'
-  +'<div class="sum-row"><span>hyper-complexes</span><b>'+r.hys.length+'</b></div>'
-  +'<div class="sum-row"><span>character layers</span><b>'+r.sups.length+'</b></div>'
-  +(r.sups.length?'<p class="sum-p">A character layer is not something you have. It is '
-    +'something you cannot see as separate from you.</p>':''));
- out+=sumCard('Masks', r.maskRing.map(function(m){
-   return '<div class="sum-row"><span>'+esc(m.nm)+'</span><em>'+(m.bands||[]).join(' + ')
-    +'</em><b>'+m.w.toFixed(1)+'</b></div>';}).join(''));
- out+=sumCard('Laws open', strong.map(function(l){
-   return '<div class="sum-row"><span>'+l.nm+'</span><em>'+l.b+'</em><b>'+l.v.toFixed(1)+'</b></div>';}).join(''));
- out+=sumCard('Laws shut', shut.map(function(l){
-   return '<div class="sum-row"><span>'+l.nm+'</span><em>'+l.b+'</em><b>'+l.v.toFixed(1)+'</b></div>';}).join(''));
- out+='</div>';
- /* the composite */
- out+='<div class="pm-eye" style="margin-top:22px">The composite</div>'
-  +'<p class="sum-p">Five lenses on one profile. Each is a function of the soul, the nine '
-  +'axes and the twenty-one laws, so none can drift from what the instrument already knows.</p>'
-  +'<div class="sum-lens">';
- [lensWestern,lensEastern,lensDesign,lensGene,lensName].forEach(function(fn){
-  var L=fn(r);
-  out+='<div class="sum-l"><div class="sum-lt">'+L.t+'</div><div class="sum-la">'+esc(L.a)+'</div>'
-   +'<div class="sum-lb">'+esc(L.b)+'</div><div class="sum-lc">'+L.c+'</div></div>';});
- out+='</div>';
- out+=sumOverlay(r);
- var hist=(CURP&&CURP.history)||[];
- out+='<div class="sum-ai"><div class="pm-eye">Source AI</div>'
-  +'<p class="sum-p">It reads movement, not definitions. It needs history before it has '
-  +'anything to perceive, and there '+(hist.length>1
-    ? 'are '+hist.length+' snapshots on file.'
-    : 'is not enough yet. Run a release or save the diagnostic and it will start.')+'</p>'
-  /* The button had no handler in either state, so it promised a thing that
-     did nothing when clicked. It says what it is instead. */
-  +'</div>';
- return out;}
+ return sumGlance(r)
+  +'<div class="s-two">'+sumStory(r)+sumStruct(r)+'</div>'
+  +sumSpirit(r)
+  +sumNum(r);}
 
+/* ---- one delegated listener for everything on this surface ---- */
+function sumWire(){
+ var h=document.getElementById('sumbody'); if(!h||h.dataset.wired)return;
+ h.dataset.wired='1';
+ h.addEventListener('click',function(ev){
+  var b=ev.target.closest?ev.target.closest('[data-sp],[data-num],[data-arch],[data-dom],[data-seat],[data-mask],[data-gl]'):null;
+  if(!b)return;
+  if(b.hasAttribute('data-sp'))return runSpDrill(b.getAttribute('data-sp'),b.getAttribute('data-spv'));
+  if(b.hasAttribute('data-num'))return runNumDrill(b.getAttribute('data-num'));
+  if(b.hasAttribute('data-dom'))return runCellDrill(+b.getAttribute('data-dom'),0);
+  if(b.hasAttribute('data-seat')){
+   /* runSeatDrill takes the APC entry, not a name. Looked up by band rather
+      than passed a string it would then have to parse. */
+   var sn=b.getAttribute('data-seat');
+   var sc=APC.filter(function(x){return x.b===sn;})[0];
+   return sc?runSeatDrill(sc):runCoreDrill();}
+  if(b.hasAttribute('data-gl'))return runCoreDrill();
+  /* an archetype or a mask has no drill of its own yet, so the core reading is
+     the honest destination rather than a button that does nothing. */
+  return runCoreDrill();});}
 
 /* ============================================================
    ANALYTICS. Bubbles. Size is magnitude, colour is seat or tier. The
@@ -8602,6 +9109,53 @@ function runSpDrill(kind,val){
   +(extra?'<div class="pm-eye">Against your field</div><p class="ad-p">'+extra+'</p>':''));}
 
 /* ============================================================
+   THE NUMEROLOGY DRILL. One number, what it was reduced from, and
+   what it says against what the field is actually running. The
+   summary prints six of these and every one of them opens.
+   ============================================================ */
+const NUM_OF={
+ lifePath:'the birth date, every digit summed and reduced',
+ expression:'every letter of the full name, each name reduced first',
+ soul:'the vowels only, which is why it is the one nobody sees',
+ personality:'the consonants only, which is what arrives before you speak',
+ birthday:'the day of the month, unreduced, because a single day is a single gift',
+ maturity:'life path plus expression, which is what the second half is for'};
+const NUM_LABEL={lifePath:'Life path',expression:'Expression',soul:'Soul urge',
+ personality:'Personality',birthday:'Birthday',maturity:'Maturity'};
+function runNumDrill(k){
+ var r=compute(), nm=(PEOPLE[S.who]||{}).nm||'You';
+ var N=numerologyOf(nm,CURP); if(!N)return;
+ var v=N[k]; if(v===undefined||v===null)return;
+ var core=NUM_CORE[v]||{};
+ var archNow=(ARCH[r.pi]||{}).nm||'';
+ var h='<div class="pm-eye">Numerology</div>'
+  +'<div class="ad-nm">'+esc(NUM_LABEL[k]||k)+' '+v+'</div>'
+  +'<div class="ad-sub">'+esc(core.n||'')+'</div>'
+  +'<div class="pm-eye">What it is</div><p class="ad-p">'+esc(NUM_OF[k]||'')+'.</p>'
+  +'<div class="pm-eye">What it says</div><p class="ad-p">'+esc(numSays(k,v)||core.n||'')+'.</p>';
+ if(NUM_MASTER.indexOf(v)>=0)
+  h+='<p class="ad-p">This is a master number. It survives reduction at every step, '
+   +'including inside a single name, and a master reduced is a master lost.</p>';
+ if(k==='expression'&&N.split)
+  h+='<p class="ad-p">Your names reduce to '+N.split.byPart+' and the flat sum of every '
+   +'letter comes to '+N.split.flat+'. They disagree because one of your names carries a '
+   +'master. The parts are the reading.</p>';
+ if(k==='expression'&&N.debt)
+  h+='<p class="ad-p">Karmic debt '+N.debt+'. '+esc(NUM_DEBT_SAYS[N.debt])+'</p>';
+ if(k==='lifePath'&&typeof LP2ARCH!=='undefined')
+  h+='<p class="ad-p">This path reads <b>'+esc(LP2ARCH[v]||'unmapped')+'</b>. Your first '
+   +'archetype is <b>'+esc(archNow)+'</b>. '
+   +(LP2ARCH[v]===archNow?'They agree.':'They do not.')+'</p>';
+ h+='<div class="pm-eye">Every name</div><div class="ad-rows">'
+  +N.each.map(function(x){
+   return '<div class="ad-r static"><span class="ad-k">'+esc(x.nm)+'</span>'
+    +'<span class="ad-m">'+x.role+', '+x.v+(x.debt?', debt '+x.debt:'')+'</span></div>';}).join('')
+  +'</div>'
+  +'<p class="ad-p">Cornerstone <b>'+esc(N.cornerstone)+'</b>, '+esc(N.cornerSays)
+  +'. Capstone <b>'+esc(N.capstone)+'</b>, '+esc(N.capSays)+'.</p>';
+ rdShell(h);}
+
+/* ============================================================
    THE KNOWLEDGE BASE. Everything the instrument knows, in one
    place, searchable, and every row a door to the same drill the
    wheel opens. Nothing here is a second copy of the data: it
@@ -9227,7 +9781,9 @@ function gmRender(){
    CONTROLS
    ============================================================ */
 const $=function(id){return document.getElementById(id);};
-const svgI=function(p){return '<svg viewBox="0 0 24 24">'+p+'</svg>';};
+/* svgI moved to component.js. It is a const, and a const reached for before
+   its declaration throws at call time, which is a trap waiting for the first
+   renderer that loads earlier than this file and wants an icon. */
 function numField(host,name,band,store,key){
  const d=document.createElement('div');d.className='nf';
  const col=band?seatCol(band):'var(--gold)';

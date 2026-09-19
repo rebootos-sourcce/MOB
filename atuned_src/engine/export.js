@@ -92,6 +92,13 @@ if(typeof module!=='undefined'&&module.exports){
                      a page could test them. */
                   masterNumber:masterNumber, chineseElement:chineseElement,
                   hdOf:hdOf, geneKey:geneKey,
+  /* numerology */numerology:numerology, numerologyOf:numerologyOf,
+                  numReduce:numReduce, numIsVowel:numIsVowel, numSum:numSum,
+                  numAcross:numAcross, numParts:numParts, numSays:numSays,
+                  numFullName:numFullName,
+                  NUM_LET:NUM_LET, NUM_MASTER:NUM_MASTER, NUM_DEBT:NUM_DEBT,
+                  NUM_CORE:NUM_CORE, NUM_DEBT_SAYS:NUM_DEBT_SAYS,
+                  FULLNAME:FULLNAME, BIRTH:BIRTH,
   /* util */      clamp:clamp, leaves:(typeof leaves==='function'?leaves:null)
  };
 }

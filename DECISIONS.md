@@ -941,3 +941,59 @@ Still open, and deliberately not built yet because the owner asked for them to
 go through the ICPs and art direction first: the Summary redesign, the
 iconography of the spiritual block, and whether the product's accent moves from
 gold to the sky blue.
+
+## The accent is blue, and the summary is built
+
+**Gold is out. The accent is `#7EB8D4`.** Ruled, and it was not a preference
+about a swatch: the owner picked the blue and never picked gold. That value is
+the original app's own `--law-accent`, used there in thirteen places. It
+deepens to `#2F6E92` on paper so the accent works in both lightings rather
+than only the dark one. `--accent` is the one source of truth and `--gold`
+stays as its alias, because sixty places in the sheet already read that name
+and none of them read a literal.
+
+**Punch stops promoting the seat to the accent.** That is where the orange came
+from: a field leaning Sacral made `#E77016` the fill on every pressed control,
+every primary button and every ring in the product, and nobody chose it. The
+seat still tints the ground, which is the part of Punch that was doing real
+work. The pressed tab also reads again in Punch, which it had stopped doing:
+`body.punch .vt` outranks `.vt[aria-pressed]`, so the surface a person was on
+was not marked at all.
+
+**Lean is not Balance.** Two controls four inches apart both said Balance and
+they are not the same reading. The rail says Lean, which is benign against
+malignant. The strip under the wheel says Balance, which is masculine against
+feminine, and that is which way the field discharges.
+
+**The summary is built.** Analytics across the top as a strip of rings. The
+story on the left, in prose, three paragraphs: the spiritual into the
+psychological, the psychological into the body, and momentum against the
+avatar. The structures on the right, every measured thing carrying an icon, a
+ring and a pill. The spiritual layer beneath as glyphs with the boxes gone,
+and the birth date gone with them, because a birth date is an input and this
+is a reading. Three tracks on a desktop and one sequence on a phone, out of
+one build, because the document order is already the phone order.
+
+A blueprint domain is drawn as a selection and never given a ring. A ring is a
+measurement and a domain is a choice.
+
+**Numerology, in full.** The product was reducing a first name to one digit and
+calling it the name lens. That is the Expression, it is one of six, and it was
+being read off a nickname. Six numbers now, each answering a different
+question: life path, expression, soul urge, personality, birthday, maturity.
+Every name part on its own with its own number, the cornerstone and the
+capstone, and karmic debt read off the unreduced total rather than inferred.
+
+Masters survive reduction at every step, including inside a single name, and
+the two routes to Expression are both kept because digit summing preserves
+value mod nine, so only the master rule can separate them. When it does, the
+parts are the reading.
+
+No etymology table. A root meaning for an arbitrary name cannot be looked up on
+a device that makes no outbound request, and inventing one is the kind of claim
+this instrument does not make. What a name part carries is computed, not
+remembered.
+
+The reference roster carries full names now, middle names included, because a
+middle name is the part numerology reads as carried rather than shown and
+leaving them out would have moved every Expression in the roster.

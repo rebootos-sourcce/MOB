@@ -28,202 +28,336 @@ function lensGene(r){
   Sad:'Joy as bliss',Surprise:'Readiness as wonder',Anticipation:'Presence as timelessness'};
  return {t:'Gene keys',a:top.k,
   b:top.cf+' to '+(c.opp||'')+' to '+(SID[top.cf]||''),c:'shadow, gift, siddhi'};}
-function lensName(r){
- var nm=(CURP&&CURP.name)||'You', v=0;
- for(var i=0;i<nm.length;i++){var ch=nm.toUpperCase().charCodeAt(i)-64; if(ch>0&&ch<27)v+=ch;}
- while(v>9&&v!==11&&v!==22) v=String(v).split('').reduce(function(a,b){return a+ +b;},0);
- var M={1:'the one who starts',2:'the one who joins',3:'the one who expresses',
-  4:'the one who builds',5:'the one who moves',6:'the one who tends',7:'the one who looks',
-  8:'the one who commands',9:'the one who completes',11:'the one who channels',
-  22:'the one who makes it real'};
- return {t:'Name',a:nm+', '+v,b:M[v]||'',c:'root meaning, reduced'};}
-/* THE SPIRITUAL OVERLAY, lifted into its own function so the unread page can
-   carry it. It is the one block on this surface that is not derived from the
-   nine axes: it reads a birth date a person typed, so it is either real or it
-   says there is none. Nothing here is invented from a default.
+/* lensName is gone. It reduced a whole name to one digit and called that the
+   name lens, which is the Expression and only one of six numbers, and it was
+   computing it off a first name. numerology.js does the job properly and the
+   spiritual block reads that. */
 
-   THE CONVERGENCE RING SAID 75 PERCENT AND NOTHING SAID WHAT OF. The owner
-   asked. It is the share of the ten pairs among five systems that agree, so
-   the sentence now states the fraction it came from and what agreement means.
-   A percentage with no denominator is a mood. */
-function sumOverlay(r){
- var o='';
+/* ============================================================
+   THE SUMMARY.
+
+   Redesigned on the owner's ruling. The app opens here, so this is
+   the first screen and the whole reading has to be on it.
+
+   Analytics across the top as a strip of rings. The story on the
+   left, in prose, as the instrument would say it out loud. The
+   structures on the right, at a glance. The spiritual layer beneath
+   as glyphs with no boxes around them. Full numerology under that.
+
+   THREE COLUMNS ON A DESKTOP, ONE SEQUENCE ON A PHONE. The order in
+   the document is the order a phone reads: verdict, story,
+   structures, spiritual, numbers. The grid puts the middle two side
+   by side when there is room and stacks them when there is not, so
+   it is one build and not two.
+
+   EVERY PERCENTAGE IS THE SAME OBJECT. An icon, a ring carrying the
+   percentage as an arc, and a pill carrying the number. cr() is that
+   object and nothing on this surface prints a bare figure.
+
+   NOTHING HERE IS INVENTED. Every sentence in the prose is
+   conditional on the value it names existing. A selection is drawn
+   as a selection and never given a ring, because a ring is a
+   measurement and a blueprint domain is a choice.
+   ============================================================ */
+
+/* ---- the strip. all analytics at a glance, which is what was asked for. ---- */
+function sumGlance(r){
+ var acc=(typeof accuracy==='function')?accuracy(r):null;
+ var e=(r.X+r.Y+r.Z)/3;
+ var row=[
+  ['coherence', r.darkB, r.CQ, Math.round(r.CQ)+'%', 'Where the field sits, 0 to 100.'],
+  ['shadow weight', 'Root', r.DQ*10, r.DQ.toFixed(1), 'What is held, 0 to 10.'],
+  ['installed', 'Heart', r.SQm*10, r.SQm.toFixed(1), 'What has been filled in, 0 to 10.'],
+  ['pole', 'Heart', r.poleMean*10, r.poleMean.toFixed(2), 'Coherent opposites standing, 0 to 1.'],
+  ['energy', 'Solar', e*100, e.toFixed(2), 'Vitality, awareness and will, meaned, 0 to 1.']];
+ if(acc)row.push(['identification','3rd Eye',acc.pct,acc.pct.toFixed(0)+'%',
+  'How much of you the instrument has actually measured, plus or minus '+acc.band.toFixed(0)+'.']);
+ return '<div class="s-glance">'+row.map(function(x){
+  return '<button type="button" class="s-gl" data-gl="'+esc(x[0])+'" title="'+esc(x[4])+'">'
+   +cr(x[1],x[2],{size:'sm',label:x[0],raw:x[3]})
+   +'<span class="s-gl-k">'+esc(x[0])+'</span></button>';}).join('')+'</div>';}
+
+/* ---- the story. three paragraphs, in the instrument's voice. ----
+
+   Spiritual into psychological, psychological into the body, and then what the
+   patterns are doing to momentum. The owner asked for this in his words and
+   these are the three joints he named.
+
+   Every clause is guarded. A person with no birth data gets two paragraphs and
+   a line saying what is missing, rather than a paragraph of hedges. */
+function sumStory(r){
+ var nm2=(PEOPLE[S.who]||{}).nm||'You';
+ var C=converge(nm2,r), e=C?C.e:null;
+ var held=W.filter(function(n){return n.sq>=4;}).sort(function(a,b){return b.sq-a.sq;});
+ var named=r.sabs.filter(function(s){return s.named;}).sort(function(a,b){return b.score-a.score;});
+ var loud=[].concat(r.sups,r.hys,r.cxs,r.sabs).sort(function(a,b){return b.w-a.w;})[0];
+ var seats=flSeats(), stop=null;
+ seats.slice().reverse().forEach(function(x){if(!stop&&x.held)stop=x;});
+ var arch=(ARCH[r.pi]||{}).nm||'';
+ var rootNow=(DOMAINS[S.doms[0]]||{}).r||'';
+ var lean=leanRead(r);
+ var p=[];
+
+ /* ONE. the spiritual into the psychological. */
+ if(e){
+  var elRoot=ELEM2ROOT[e.sunEl]||'';
+  var num=numerologyOf(nm2,CURP);
+  p.push('The blueprint you were born on reads <b>'+esc(e.sunEl)+'</b>, which is the <b>'
+   +esc(elRoot)+'</b> root, on life path <b>'+e.lp+'</b>, the one who '
+   +esc(e.lpMean||'runs')+'.'
+   +(num?' The name carries an expression of <b>'+num.expression+'</b>, '
+     +esc(numSays('expression',num.expression))+'.':'')
+   +' What is actually running is <b>'+esc(rootNow)+'</b>, through <b>'+esc(arch)+'</b>. '
+   +(elRoot===rootNow
+     ? 'Those agree, so what you are doing is what you were built for and the cost is elsewhere.'
+     : 'Those do not agree. A blueprint that says '+esc(elRoot)+' and a field that runs '
+       +esc(rootNow)+' means something was installed on top of the blueprint, and it has been '
+       +'carried long enough to feel like a personality.'));
+ }else{
+  p.push('There is no birth data on file, so the spiritual layer is not in this reading. '
+   +'Date, time and place would put it in. What is running now is <b>'+esc(rootNow)
+   +'</b>, through <b>'+esc(arch)+'</b>.');}
+
+ /* TWO. the psychological into the body. */
+ if(held.length){
+  p.push('That reaches the body at <b>'+esc(held[0].k)+'</b>, on the <b>'
+   +esc(String(held[0].cf).toLowerCase())+'</b> axis, at '+held[0].sq.toFixed(1)+' of 10.'
+   +(loud?' The biggest thing compounding on it is <b>'+esc(loud.nm)+'</b>'
+     +(named.length&&named[0]===loud?', at a '+named[0].score+' percent match':'')+'.':'')
+   +(stop?' Flow stops at the <b>'+esc(String(stop.p.n).toLowerCase())
+     +'</b>, which is where the charge is dense enough to close the seat.'
+    :' No seat is closed, so what is held is not yet stopping flow.')
+   +' Shadow weight is '+r.DQ.toFixed(1)+' and the law furthest shut is <b>'
+   +esc(r.weakL.nm)+'</b>, at the '+esc(String(r.weakL.b).toLowerCase())+'.');
+ }else{
+  p.push('Nothing is held above the line, so nothing is reaching the body as load. '
+   +(r.under?'There are '+r.under+' addresses carrying under it, which is signal and not yet cost.':''));}
+
+ /* THREE. momentum, and what stands between here and the avatar. */
+ var av=(CURP&&CURP.avatar)||null;
+ var pairs=(av&&av.pairs)?av.pairs.filter(avatarValid):[];
+ var gapLine='';
+ if(pairs.length){
+  var blocked=pairs.map(function(pair){
+   var st=seats.filter(function(x){return x.p.n===pair.seat;})[0];
+   return {pair:pair, clear:!(st&&st.held)};}).filter(function(x){return !x.clear;});
+  gapLine=blocked.length
+   ? ' Against the avatar you stated, '+blocked.map(function(x){
+       return '<b>'+esc(x.pair.becoming||x.pair.seat)+'</b>';}).join(' and ')
+     +' is the part still blocked, and it is blocked by the same charge named above.'
+   : ' Every seat your avatar depends on is passing. What you stated you are becoming is not '
+     +'being blocked by the field.';
+ }else{
+  gapLine=' No avatar has been stated, so there is nothing to measure this against. '
+   +'Say who you are becoming and this paragraph names what stands in the way.';}
+ p.push('Momentum: the field leans <b>'+(lean.ben>=lean.mal?'benign':'malignant')
+  +'</b> at '+Math.round(Math.max(lean.ben,lean.mal))+' percent, '
+  +(r.benign?'which means it is expanding':'which means it is contracting')+'.'
+  +(r.excess?' Installed pole is past the point where it pays, so some of the work is now costing.':'')
+  +gapLine);
+
+ return '<div class="s-story"><div class="pm-eye">The reading</div>'
+  +p.map(function(t){return '<p class="s-p">'+t+'</p>';}).join('')
+  +'<p class="s-src">Written from the nine axes, the twenty one laws, the blueprint and '
+  +'the birth data. Nothing here is generated from anything the instrument has not measured.</p>'
+  +'</div>';}
+
+/* ---- structures at a glance. the right hand panel. ---- */
+function sumStructRow(nm,sub,band,pct,raw,glyph,data){
+ return '<button type="button" class="s-row"'+(data||'')+'>'
+  +cr(band,pct,{size:'sm',raw:raw,glyph:glyph,label:nm})
+  +'<span class="s-row-t"><b>'+esc(nm)+'</b>'+(sub?'<em>'+esc(sub)+'</em>':'')+'</span></button>';}
+function sumStruct(r){
+ var out='<div class="s-struct">';
+ /* the blueprint. a selection, drawn as a selection: icons and names, and no
+    ring on any of them, because a ring is a measurement and this is a choice. */
+ var rootNow=(DOMAINS[S.doms[0]]||{}).r||'';
+ out+='<div class="pm-eye">Blueprint</div><div class="s-sel">'
+  +'<span class="s-sel-r" style="--rc:'+(ROOTCOL[rootNow]||'var(--accent)')+'">'
+  +esc(rootNow)+'</span>'
+  +S.doms.map(function(di){var d=DOMAINS[di]; if(!d)return '';
+   return '<button type="button" class="s-dom" data-dom="'+di+'" style="--rc:'+ROOTCOL[d.r]+'" '
+    +'title="'+esc(d.nm+'. '+d.d)+'">'+svgI('<path d="'+d.ic+'"/>')
+    +'<span>'+esc(d.nm)+'</span></button>';}).join('')+'</div>';
+ /* the archetypes. these ARE measured: aff is a real proportion. */
+ var aff=(r.aff||[]).map(function(v,i){return {i:i,nm:(ARCH[i]||{}).nm||'',ic:(ARCH[i]||{}).ic,v:v};})
+  .filter(function(x){return x.nm;}).sort(function(a,b){return b.v-a.v;});
+ var tot=aff.reduce(function(a,x){return a+x.v;},0)||1;
+ out+='<div class="pm-eye" style="margin-top:18px">Primary and secondary</div>';
+ out+=aff.slice(0,4).map(function(x,i){
+  return sumStructRow(x.nm, i===0?'primary':(i===1?'secondary':'also'), 'Heart',
+   x.v/tot*100, Math.round(x.v/tot*100)+'%', x.ic?'<path d="'+x.ic+'"/>':null,
+   ' data-arch="'+x.i+'"');}).join('');
+ /* masks. weight on 0 to 10, so the arc is the weight and the pill is the value. */
+ if(r.maskRing&&r.maskRing.length){
+  out+='<div class="pm-eye" style="margin-top:18px">Masks</div>';
+  out+=r.maskRing.slice(0,6).map(function(m){
+   return sumStructRow(m.nm, (m.bands||[]).join(' and '), (m.bands||['Heart'])[0],
+    m.w*10, m.w.toFixed(1), null, ' data-mask="'+esc(m.nm)+'"');}).join('');}
+ /* the seats. load is measured and the ring is the load. */
+ var seats=flSeats().filter(function(x){return x.load>0;})
+  .sort(function(a,b){return b.load-a.load;}).slice(0,4);
+ if(seats.length){
+  out+='<div class="pm-eye" style="margin-top:18px">Where it sits</div>';
+  out+=seats.map(function(x){
+   return sumStructRow(x.p.n, x.held?'closed':'passing', x.p.n,
+    Math.min(100,x.load*100), Math.round(x.load*100)+'%', null,
+    ' data-seat="'+esc(x.p.n)+'"');}).join('');}
+ /* the chain. counts, never against a total. */
+ out+='<div class="pm-eye" style="margin-top:18px">The chain</div><div class="s-chain">'
+  +[['saboteurs',r.sabs.length],['complexes',r.cxs.length],
+    ['hyper',r.hys.length],['character',r.sups.length]].map(function(x){
+   return '<span class="s-ch"><b>'+x[1]+'</b>'+x[0]+'</span>';}).join('')+'</div>';
+ return out+'</div>';}
+
+/* ---- the spiritual layer. glyphs, no boxes. ----
+   The owner ruled the little boxes out and icons in: a sign, an animal with
+   its element, a life path. Each opens its own detail. Date of birth came out
+   with the boxes, because a birth date is an input and this is a reading. */
+const CELEM_IC={
+ Metal:'<circle cx="12" cy="12" r="7"/><path d="M12 5v14"/>',
+ Water:'<path d="M4 10c3 3 5 3 8 0s5-3 8 0M4 16c3 3 5 3 8 0s5-3 8 0"/>',
+ Wood:'<path d="M12 21V7M12 7L7 3M12 7l5-4M12 13l-5-3M12 13l5-3"/>',
+ Fire:'<path d="M12 21c4 0 6-2.6 6-6 0-4-4-5-4-9 0 0-3 2-3 5 0-1-1.6-2-1.6-2C9.4 11 6 12 6 15c0 3.4 2 6 6 6z"/>',
+ Earth:'<path d="M3 17h18M6 13h12M9 9h6"/>'};
+function sumSpirit(r){
  var nm2=(PEOPLE[S.who]||{}).nm||'You';
  var C=converge(nm2,r);
- if(!C){
-  o+='<div class="pm-eye" style="margin-top:22px">The spiritual overlay</div>'
-   +'<p class="sum-p">No birth data on file. Date, time and place would let the overlay run. '
-   +'Nothing else is stored, and every reading is derived from those three.</p>';
-  return o;}
- {
-  var e=C.e;
-  o+='<div class="pm-eye" style="margin-top:22px">The spiritual overlay</div>'
-   +'<div class="sum-hero" style="margin-top:8px">'
-   /* THE RING SAYS THE FRACTION. It said 75 percent, the owner asked what that
-      meant, and he was right to: three of four and seventy five percent are
-      the same number and only one of them says how few comparisons it rests
-      on. birth.js has carried .of for exactly this reason and this renderer
-      was throwing it away. The ring arc still runs on the percentage, because
-      an arc is a proportion; the value printed is the count. */
-   +cr('Crown',C.score||0,{size:'md',label:'convergence',
-     raw:C.agree.length+' of '+C.of,
-     title:'Convergence. '+C.agree.length+' of '+C.of+' comparisons between the birth '
-      +'chart and the field point the same way.'})
-   +'<div class="sum-line">Born '+esc(e.birth.d)+' at '+esc(e.birth.t)+', '+esc(e.birth.p)
-   +'. Five systems read independently, and the instrument compares them one pair at a '
-   +'time against what is running now. <b>'+C.agree.length+' of '+C.of+'</b> comparisons '
-   +'point the same way.'
-   +(C.open&&C.open.length?' '+C.open.length+' could not be compared at all: '
-     +esc(C.open.join('; '))+'. A gap is not a disagreement.':'')
-   +'</div></div>'
-   +'<div class="sum-lens">'
-   +'<div class="sum-l"><div class="sum-lt">Western</div><div class="sum-la">'
-    +(ZGLYPH[e.sun]||'')+' '+e.sun+'</div><div class="sum-lb">'+SIGN_RUNS[e.sun]+'</div>'
-    +'<div class="sum-lc">moon '+e.moon+', rising '+e.rising+'</div></div>'
-   +'<div class="sum-l"><div class="sum-lt">Eastern</div><div class="sum-la">'+e.celem+' '+e.chinese
-    +'</div><div class="sum-lb">'+CH_RUNS[e.chinese]+'</div>'
-    +'<div class="sum-lc">'+CE_RUNS[e.celem]+'</div></div>'
-   +'<div class="sum-l"><div class="sum-lt">Numerology</div><div class="sum-la">Life path '+e.lp
-    +'</div><div class="sum-lb">'+(LP_RUNS[e.lp]||'')+'</div>'
-    +'<div class="sum-lc">'+(e.master?'master number, survives reduction':'birth date, reduced')+'</div></div>'
-   +'<div class="sum-l"><div class="sum-lt">Human design</div><div class="sum-la">'
-    +(e.hd.profile?('profile '+e.hd.profile):'unresolved')+'</div>'
-    +'<div class="sum-lb">'+(e.hd.design?('personality gate '+e.hd.personality.gate
-      +', design gate '+e.hd.design.gate):'')+'</div>'
-    +'<div class="sum-lc">type needs the full bodygraph and is not computed</div></div>'
-   +'<div class="sum-l"><div class="sum-lt">Gene keys</div><div class="sum-la">'+e.gk.gate+'.'+e.gk.line
-    +'</div><div class="sum-lb">shadow to gift to siddhi, one axis at a time</div>'
-    +'<div class="sum-lc">gate and line</div></div></div>';
-  o+='<div class="pm-eye" style="margin-top:14px">Where they agree, '+C.agree.length+'</div>';
-  o+=C.agree.length?('<div class="sum-agree">'+C.agree.map(function(a){
-    return '<div class="sum-ag">'+esc(a)+'</div>';}).join('')+'</div>')
-   :'<p class="sum-p">Nothing converges. That is a reading, not a gap.</p>';
-  if(C.differ.length){
-   o+='<div class="pm-eye" style="margin-top:12px">Where they do not, '+C.differ.length+'</div>'
-    +'<div class="sum-agree">'+C.differ.map(function(d){
-     return '<div class="sum-dg">'+esc(d)+'</div>';}).join('')+'</div>'
-    +'<div class="verdict"><p>The instrument does not pick a winner. A birth chart describes '
-    +'the blueprint. The field describes what is running now. They diverge when something has '
-    +'been installed on top of the blueprint.</p></div>';}}
- return o;}
-function sumCard(t,body){return '<div class="sum-card"><div class="pm-eye">'+t+'</div>'+body+'</div>';}
-/* ONE WRAPPER, ONE EXIT. This function used to open the wrapper, then return
-   early down the unread path having closed it, then close it again at the
-   bottom of the read path. Both paths were correct at runtime and the file
-   carried one more closing div than opening, which is what the build's
-   balance check counts. It is a crude check on purpose and it was right to
-   complain: two exits through one open tag is a structure waiting to leak.
-   Each path now returns its own balanced block and the wrapper is written
-   once, here. */
+ if(!C)return '<div class="s-spirit"><div class="pm-eye">The spiritual layer</div>'
+  +'<p class="s-p">No birth data on file. Date, time and place would let this run, and '
+  +'nothing else is stored, because every reading here is derived from those three.</p></div>';
+ var e=C.e;
+ function chip(k,v,glyph,lab,val,t){
+  return '<button type="button" class="s-chip" data-sp="'+k+'" data-spv="'+esc(String(v))+'" '
+   +'title="'+esc(t)+'"><span class="s-chip-g">'+glyph+'</span>'
+   +'<span class="s-chip-l">'+esc(lab)+'</span>'
+   +(val?'<span class="s-chip-v">'+esc(val)+'</span>':'')+'</button>';}
+ function uni(ch){return '<span class="s-uni">'+ch+'</span>';}
+ var out='<div class="s-spirit"><div class="pm-eye">The spiritual layer</div>'
+  +'<p class="s-p">Five systems, read independently off one birth date. '
+  +'<b>'+C.agree.length+' of '+C.of+'</b> comparisons between them and the field point the '
+  +'same way. That is what the convergence is: agreements over comparisons, not a score.'
+  +(C.open&&C.open.length?' '+C.open.length+' could not be compared at all: '
+    +esc(C.open.join('; '))+'. A gap is not a disagreement.':'')+'</p>'
+  +'<div class="s-chips">';
+ out+=chip('sign',e.sun,uni(ZGLYPH[e.sun]||'*'),e.sun,'',
+  'Sun sign. '+(SIGN_RUNS[e.sun]||''));
+ if(e.moon)out+=chip('sign',e.moon,uni(ZGLYPH[e.moon]||'*'),e.moon,'moon',
+  'Moon sign. What it runs on underneath.');
+ if(e.rising)out+=chip('sign',e.rising,uni(ZGLYPH[e.rising]||'*'),e.rising,'rising',
+  'Rising sign. What arrives in the room first.');
+ out+=chip('celem',e.celem,svgI(CELEM_IC[e.celem]||CELEM_IC.Earth),e.celem+' '+e.chinese,'',
+  'Year animal and element. '+(CH_RUNS[e.chinese]||''));
+ out+=chip('lp',e.lp,'<span class="s-num-g">'+e.lp+'</span>','Life path',String(e.lp),
+  'Life path. '+(LP_RUNS[e.lp]||''));
+ out+=chip('hd',(e.hd.profile||'unresolved'),
+  svgI('<path d="M7 4v16M17 4v16M7 9h10M7 15h10"/>'),'Human design',
+  e.hd.profile?('profile '+e.hd.profile):'unresolved',
+  e.hd.unresolved?'Type needs the full bodygraph and is not computed. The profile is.'
+   :'Design profile.');
+ out+=chip('gk',e.gk.gate,svgI('<circle cx="12" cy="12" r="8.4"/><path d="M12 3.6v16.8"/>'),
+  'Gene key',e.gk.gate+'.'+e.gk.line,'Gate and line. Shadow to gift to siddhi.');
+ out+='</div>';
+ if(C.agree.length||C.differ.length){
+  out+='<div class="s-agree">';
+  out+=C.agree.map(function(a){return '<div class="s-ag">'+esc(a)+'</div>';}).join('');
+  out+=C.differ.map(function(d){return '<div class="s-dg">'+esc(d)+'</div>';}).join('');
+  out+='</div>';
+  if(C.differ.length)out+='<p class="s-src">The instrument does not pick a winner. A birth '
+   +'chart describes the blueprint and the field describes what is running now. They diverge '
+   +'where something was installed on top of the blueprint.</p>';}
+ return out+'</div>';}
+
+/* ---- full numerology. six numbers, and every name part on its own. ---- */
+function sumNum(r){
+ var nm2=(PEOPLE[S.who]||{}).nm||'You';
+ var N=numerologyOf(nm2,CURP);
+ if(!N)return '';
+ var rows=[
+  ['expression','Expression',N.expression,'every letter of the full name'],
+  ['soul','Soul urge',N.soul,'the vowels. what is wanted when nobody is asked'],
+  ['personality','Personality',N.personality,'the consonants. what arrives first']];
+ if(N.lifePath!==null)rows.unshift(['lifePath','Life path',N.lifePath,'the birth date']);
+ if(N.birthday!==null)rows.push(['birthday','Birthday',N.birthday,'the day of the month, unreduced']);
+ if(N.maturity!==null)rows.push(['maturity','Maturity',N.maturity,'life path plus expression']);
+ var out='<div class="s-numer"><div class="pm-eye">Numerology, in full</div>'
+  +'<p class="s-p">Read off <b>'+esc(N.parts.map(function(p){
+    return p.charAt(0)+p.slice(1).toLowerCase();}).join(' '))+'</b>. Pythagorean, with 11, 22 '
+  +'and 33 surviving reduction at every step.</p>'
+  +'<div class="s-nrows">';
+ out+=rows.map(function(x){
+  var v=x[2], master=NUM_MASTER.indexOf(v)>=0;
+  return '<button type="button" class="s-nrow'+(master?' master':'')+'" data-num="'+x[0]+'" '
+   +'title="'+esc(x[3])+'"><span class="s-nv">'+v+'</span>'
+   +'<span class="s-nt"><b>'+esc(x[1])+'</b><em>'
+   +esc(numSays(x[0],v)||x[3])+'</em></span></button>';}).join('');
+ out+='</div>';
+ /* every name part on its own, which is what was asked for */
+ out+='<div class="pm-eye" style="margin-top:16px">Each name</div><div class="s-nparts">';
+ out+=N.each.map(function(x){
+  return '<div class="s-npart"><span class="s-nv sm">'+x.v+'</span>'
+   +'<span class="s-nt"><b>'+esc(x.nm)+'</b><em>'+esc(x.role)+'. '+esc(x.says).toLowerCase()
+   +(x.debt?'. karmic debt '+x.debt:'')+'</em></span></div>';}).join('');
+ out+='</div>';
+ out+='<p class="s-src">Cornerstone <b>'+esc(N.cornerstone)+'</b>, '+esc(N.cornerSays)
+  +'. Capstone <b>'+esc(N.capstone)+'</b>, '+esc(N.capSays)+'.'
+  +(N.debt?' Karmic debt '+N.debt+' on the whole name. '+esc(NUM_DEBT_SAYS[N.debt]):'')
+  +(N.split?' The parts reduce to '+N.split.byPart+' and the flat sum to '+N.split.flat
+    +', which happens when one name carries a master. The parts are the reading.':'')
+  +'</p>';
+ return out+'</div>';}
+
+/* ---- the two paths, each balanced, and one wrapper written once ---- */
 function sumRender(){
  /* #sumbody, not #sum. #sum is the tab host and it also carries the folded
     analytics surface, which this function would otherwise overwrite. */
  var h=document.getElementById('sumbody'); if(!h)return;
  var r=compute();
- h.innerHTML='<div class="sum-wrap">'+(r.unread?sumUnread(r):sumFull(r))+'</div>';}
+ h.innerHTML='<div class="sum-wrap">'+(r.unread?sumUnread(r):sumFull(r))+'</div>';
+ sumWire();}
 
 /* NOTHING READ YET IS ITS OWN PAGE.
 
-   The owner ruled that the app opens here, and the moment it did this surface
-   became the first thing a stranger sees. It was printing coherence 42 percent
-   in the largest ring on the screen off nothing but the default six on the
-   laws, which is the one rule this product does not break: a reading is never
-   invented, and a percentage is never printed off a default. The functional
-   gate caught it within a minute of the tab order changing, which is the gate
-   doing its job.
-
-   So the opening is the way in. The ring holds a dash, the band word is not
-   said, and everything downstream of the nine axes is left out rather than
-   printed at zero, because a grid of zeroes still reads as a measurement.
-   The spiritual overlay stays: it is derived from a birth date a person
-   entered, not from a default, so it is either real or absent. */
+   The app opens here, so this surface is the first thing a stranger sees. It
+   was printing coherence 42 percent in the largest ring on the screen off
+   nothing but the default six on the laws. A reading is never invented and a
+   percentage is never printed off a default, so the ring holds a dash and the
+   page is the way in instead. The spiritual layer stays: it is derived from a
+   birth date a person entered, not from a default, so it is real or absent. */
 function sumUnread(r){
- var o='';
-
-  o+='<div class="sum-hero">'
-   /* a neutral colour, not the darkest seat. darkB falls back to Root on an
-      empty field, which paints the largest object on the opening screen in the
-      alarm red this product reserves for something being wrong. Nothing is
-      wrong. Nothing has been entered. */
-   +cr(r.darkB,0,{size:'lg',label:'coherence',raw:'\u2013',hot:false,color:'var(--dim)'})
-   +'<div><div class="pm-eye">Coherence, not read yet</div>'
-   +'<div class="sum-line">Nothing has been entered, so there is nothing to read. '
-   +'The arithmetic underneath works and it is not being shown, because a number '
-   +'off a default is a number about the default and not about you.</div></div></div>'
-   +'<div class="sum-start">'+startHTML('Four ways in. None of them asks you to know '
-   +'a term first, and any one of them fills this page.')+'</div>';
-  o+=sumOverlay(r);
- return o;}
+ return '<div class="sum-hero">'
+  +cr(r.darkB,0,{size:'lg',label:'coherence',raw:'–',hot:false,color:'var(--dim)'})
+  +'<div><div class="pm-eye">Coherence, not read yet</div>'
+  +'<div class="sum-line">Nothing has been entered, so there is nothing to read. '
+  +'The arithmetic underneath works and it is not being shown, because a number off a '
+  +'default is a number about the default and not about you.</div></div></div>'
+  +'<div class="sum-start">'+startHTML('Four ways in. None of them asks you to know a term '
+  +'first, and any one of them fills this page.')+'</div>'
+  +sumSpirit(r)+sumNum(r);}
 
 function sumFull(r){
- var held=W.filter(function(n){return n.sq>=4;}).sort(function(a,b){return b.sq-a.sq;});
- var installed=W.filter(function(n){return n.pole>=4;});
- var over=r.sabs.filter(function(s){return s.over;});
- var under=r.sabs.filter(function(s){return !s.over;});
- var named=r.sabs.filter(function(s){return s.named;}).sort(function(a,b){return b.score-a.score;});
- var laws=SI.map(function(l){return {nm:l.nm,b:l.b,v:S.law[l.nm]};});
- var strong=laws.slice().sort(function(a,b){return b.v-a.v;}).slice(0,4);
- var shut=laws.slice().sort(function(a,b){return a.v-b.v;}).slice(0,4);
- var out='';
- /* the headline. one value, given room. */
- out+='<div class="sum-hero">'+cr(r.darkB,r.CQ,{size:'lg',label:'coherence'})
-  +'<div><div class="pm-eye">Coherence, '+r.tier.toLowerCase()+'</div>'
-  +'<div class="sum-line">'+(held.length
-    ? 'You are carrying <b>'+held.length+'</b> address'+(held.length===1?'':'es')+' at a shadow weight of <b>'+r.DQ.toFixed(1)+'</b>. '
-      +(named.length?'The loudest thing running is <b>'+esc(named[0].nm)+'</b> at '+named[0].score+'% match. ':'')
-      +'Flow stops where the '+r.darkB.toLowerCase()+' is holding.'
-    : 'Nothing is held above the line. The output matches the shape.')
-  +'</div></div></div>';
- out+='<div class="sum-grid">';
- out+=sumCard('What is running',
-  (named.length? named.slice(0,8).map(function(x){
-    return '<div class="sum-row"><span>'+esc(x.nm)+'</span><em>'+x.score+'% '
-     +(x.exact?'exact':'near')+'</em><b>'+x.w.toFixed(1)+'</b></div>';}).join('')
-   :'<p class="sum-none">No named saboteur is firing.</p>'));
- /* The card title said Collapsed, which is also the word the scale puts on a
-    person at the bottom of the line, so a person reading Collapsed 4 beside
-    the band word Collapsed had two meanings for one word on one screen. The
-    title says what the address does. The body keeps the codex term and
-    defines it. */
- out+=sumCard('Shut '+under.length+', overshot '+over.length,
-  '<p class="sum-p">Collapse means the address shuts. Jouissance means it will not shut. '
-  +'Both are distortion. Coherence is neither.</p>'
-  +(over.length? '<div class="sum-chips">'+over.slice(0,6).map(function(x){
-     return '<span class="pm-chip over">'+esc(x.nm)+'</span>';}).join('')+'</div>':''));
- out+=sumCard('The chain',
-  '<div class="sum-row"><span>saboteurs</span><b>'+r.sabs.length+'</b></div>'
-  +'<div class="sum-row"><span>complexes</span><b>'+r.cxs.length+'</b></div>'
-  +'<div class="sum-row"><span>hyper-complexes</span><b>'+r.hys.length+'</b></div>'
-  +'<div class="sum-row"><span>character layers</span><b>'+r.sups.length+'</b></div>'
-  +(r.sups.length?'<p class="sum-p">A character layer is not something you have. It is '
-    +'something you cannot see as separate from you.</p>':''));
- out+=sumCard('Masks', r.maskRing.map(function(m){
-   return '<div class="sum-row"><span>'+esc(m.nm)+'</span><em>'+(m.bands||[]).join(' + ')
-    +'</em><b>'+m.w.toFixed(1)+'</b></div>';}).join(''));
- out+=sumCard('Laws open', strong.map(function(l){
-   return '<div class="sum-row"><span>'+l.nm+'</span><em>'+l.b+'</em><b>'+l.v.toFixed(1)+'</b></div>';}).join(''));
- out+=sumCard('Laws shut', shut.map(function(l){
-   return '<div class="sum-row"><span>'+l.nm+'</span><em>'+l.b+'</em><b>'+l.v.toFixed(1)+'</b></div>';}).join(''));
- out+='</div>';
- /* the composite */
- out+='<div class="pm-eye" style="margin-top:22px">The composite</div>'
-  +'<p class="sum-p">Five lenses on one profile. Each is a function of the soul, the nine '
-  +'axes and the twenty-one laws, so none can drift from what the instrument already knows.</p>'
-  +'<div class="sum-lens">';
- [lensWestern,lensEastern,lensDesign,lensGene,lensName].forEach(function(fn){
-  var L=fn(r);
-  out+='<div class="sum-l"><div class="sum-lt">'+L.t+'</div><div class="sum-la">'+esc(L.a)+'</div>'
-   +'<div class="sum-lb">'+esc(L.b)+'</div><div class="sum-lc">'+L.c+'</div></div>';});
- out+='</div>';
- out+=sumOverlay(r);
- var hist=(CURP&&CURP.history)||[];
- out+='<div class="sum-ai"><div class="pm-eye">Source AI</div>'
-  +'<p class="sum-p">It reads movement, not definitions. It needs history before it has '
-  +'anything to perceive, and there '+(hist.length>1
-    ? 'are '+hist.length+' snapshots on file.'
-    : 'is not enough yet. Run a release or save the diagnostic and it will start.')+'</p>'
-  /* The button had no handler in either state, so it promised a thing that
-     did nothing when clicked. It says what it is instead. */
-  +'</div>';
- return out;}
+ return sumGlance(r)
+  +'<div class="s-two">'+sumStory(r)+sumStruct(r)+'</div>'
+  +sumSpirit(r)
+  +sumNum(r);}
 
+/* ---- one delegated listener for everything on this surface ---- */
+function sumWire(){
+ var h=document.getElementById('sumbody'); if(!h||h.dataset.wired)return;
+ h.dataset.wired='1';
+ h.addEventListener('click',function(ev){
+  var b=ev.target.closest?ev.target.closest('[data-sp],[data-num],[data-arch],[data-dom],[data-seat],[data-mask],[data-gl]'):null;
+  if(!b)return;
+  if(b.hasAttribute('data-sp'))return runSpDrill(b.getAttribute('data-sp'),b.getAttribute('data-spv'));
+  if(b.hasAttribute('data-num'))return runNumDrill(b.getAttribute('data-num'));
+  if(b.hasAttribute('data-dom'))return runCellDrill(+b.getAttribute('data-dom'),0);
+  if(b.hasAttribute('data-seat')){
+   /* runSeatDrill takes the APC entry, not a name. Looked up by band rather
+      than passed a string it would then have to parse. */
+   var sn=b.getAttribute('data-seat');
+   var sc=APC.filter(function(x){return x.b===sn;})[0];
+   return sc?runSeatDrill(sc):runCoreDrill();}
+  if(b.hasAttribute('data-gl'))return runCoreDrill();
+  /* an archetype or a mask has no drill of its own yet, so the core reading is
+     the honest destination rather than a button that does nothing. */
+  return runCoreDrill();});}

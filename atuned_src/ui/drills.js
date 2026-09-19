@@ -803,3 +803,50 @@ function runSpDrill(kind,val){
   +'<div class="pm-eye">How it runs through you</div>'
   +'<p class="ad-p">'+(runs||'no behaviour on file')+'</p>'
   +(extra?'<div class="pm-eye">Against your field</div><p class="ad-p">'+extra+'</p>':''));}
+
+/* ============================================================
+   THE NUMEROLOGY DRILL. One number, what it was reduced from, and
+   what it says against what the field is actually running. The
+   summary prints six of these and every one of them opens.
+   ============================================================ */
+const NUM_OF={
+ lifePath:'the birth date, every digit summed and reduced',
+ expression:'every letter of the full name, each name reduced first',
+ soul:'the vowels only, which is why it is the one nobody sees',
+ personality:'the consonants only, which is what arrives before you speak',
+ birthday:'the day of the month, unreduced, because a single day is a single gift',
+ maturity:'life path plus expression, which is what the second half is for'};
+const NUM_LABEL={lifePath:'Life path',expression:'Expression',soul:'Soul urge',
+ personality:'Personality',birthday:'Birthday',maturity:'Maturity'};
+function runNumDrill(k){
+ var r=compute(), nm=(PEOPLE[S.who]||{}).nm||'You';
+ var N=numerologyOf(nm,CURP); if(!N)return;
+ var v=N[k]; if(v===undefined||v===null)return;
+ var core=NUM_CORE[v]||{};
+ var archNow=(ARCH[r.pi]||{}).nm||'';
+ var h='<div class="pm-eye">Numerology</div>'
+  +'<div class="ad-nm">'+esc(NUM_LABEL[k]||k)+' '+v+'</div>'
+  +'<div class="ad-sub">'+esc(core.n||'')+'</div>'
+  +'<div class="pm-eye">What it is</div><p class="ad-p">'+esc(NUM_OF[k]||'')+'.</p>'
+  +'<div class="pm-eye">What it says</div><p class="ad-p">'+esc(numSays(k,v)||core.n||'')+'.</p>';
+ if(NUM_MASTER.indexOf(v)>=0)
+  h+='<p class="ad-p">This is a master number. It survives reduction at every step, '
+   +'including inside a single name, and a master reduced is a master lost.</p>';
+ if(k==='expression'&&N.split)
+  h+='<p class="ad-p">Your names reduce to '+N.split.byPart+' and the flat sum of every '
+   +'letter comes to '+N.split.flat+'. They disagree because one of your names carries a '
+   +'master. The parts are the reading.</p>';
+ if(k==='expression'&&N.debt)
+  h+='<p class="ad-p">Karmic debt '+N.debt+'. '+esc(NUM_DEBT_SAYS[N.debt])+'</p>';
+ if(k==='lifePath'&&typeof LP2ARCH!=='undefined')
+  h+='<p class="ad-p">This path reads <b>'+esc(LP2ARCH[v]||'unmapped')+'</b>. Your first '
+   +'archetype is <b>'+esc(archNow)+'</b>. '
+   +(LP2ARCH[v]===archNow?'They agree.':'They do not.')+'</p>';
+ h+='<div class="pm-eye">Every name</div><div class="ad-rows">'
+  +N.each.map(function(x){
+   return '<div class="ad-r static"><span class="ad-k">'+esc(x.nm)+'</span>'
+    +'<span class="ad-m">'+x.role+', '+x.v+(x.debt?', debt '+x.debt:'')+'</span></div>';}).join('')
+  +'</div>'
+  +'<p class="ad-p">Cornerstone <b>'+esc(N.cornerstone)+'</b>, '+esc(N.cornerSays)
+  +'. Capstone <b>'+esc(N.capstone)+'</b>, '+esc(N.capSays)+'.</p>';
+ rdShell(h);}
