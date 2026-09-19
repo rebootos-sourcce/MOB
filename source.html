@@ -1346,6 +1346,39 @@ body:not(.tab-field) .pol2{display:none}
 .set-sec{display:flex;flex-direction:column;gap:9px;padding:17px 19px;
  border:1px solid var(--edge);border-radius:var(--r-s);background:var(--panel)}
 body.punch .set-sec{background:var(--panel-2);border-color:transparent}
+/* ============================================================
+   THE SUMMARY. Plate, reading with a home, output row, information panel.
+   ============================================================ */
+.s-plate{display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center;
+ padding:4px 0 18px;border-bottom:1px solid var(--edge);margin-bottom:20px}
+.s-pname{font-family:var(--sans);font-size:clamp(34px,5vw,58px);font-weight:600;
+ line-height:1.02;letter-spacing:-.02em;color:var(--ink)}
+.s-pwho{font-size:14px;color:var(--dim);margin-top:6px}
+.s-pl-r{display:flex;align-items:center;gap:14px}
+.s-pband{display:flex;flex-direction:column;gap:2px}
+.s-pband b{font-size:19px;font-weight:600;color:var(--ink)}
+.s-pband em{font-style:normal;font-size:12.5px;color:var(--dim)}
+.s-ptoward{grid-column:1/-1;font-size:15px;line-height:1.6;color:var(--mid);
+ max-width:68ch;margin-top:4px}
+.s-ptoward .pm-eye{display:block;margin-bottom:5px}
+/* the reading gets a home. It was text on the page ground. */
+.s-readbox{background:var(--panel);border:1px solid var(--edge);
+ border-radius:var(--r-s);padding:22px 24px;margin-bottom:18px}
+.s-readbox>*:last-child{margin-bottom:0}
+.s-cols{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(300px,.85fr);
+ gap:22px;align-items:start}
+.s-main{min-width:0}
+.s-side{min-width:0;display:flex;flex-direction:column;gap:18px}
+/* the output row. Three cards, the block this page never had. */
+.s-outrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(196px,1fr));
+ gap:12px;margin-bottom:18px}
+.s-out{display:flex;flex-direction:column;gap:6px;padding:15px 16px;
+ border:1px solid var(--edge);border-radius:var(--r-s);background:var(--panel)}
+.s-out-n{font-size:16px;font-weight:500;color:var(--ink);line-height:1.25}
+.s-out-s{font-size:13px;color:var(--dim);line-height:1.5}
+.s-oact{margin-top:6px;align-self:flex-start}
+body.punch .s-readbox,body.punch .s-out{background:var(--panel-2);border-color:transparent}
+@media (max-width:1100px){.s-cols{grid-template-columns:1fr}}
 .kb-deck{margin-top:22px;padding:18px 20px;border-radius:var(--r-s);background:var(--panel-2);
  display:flex;flex-direction:column;gap:9px;align-items:flex-start}
 body.punch .kb-search input{border-color:transparent}
@@ -2501,9 +2534,11 @@ body.booted{--boot-done:1}
         the functional gate on the record, which is the same shape: sumRender
         ate #ana. Each host now holds its own body and the folded surface
         beside it, and each renderer owns only its own body. -->
-   <div id="know" class="iq">
-    <div id="knowbody"></div>
-    <div id="games" class="fold"></div></div>
+   <div id="know" class="iq"><div id="knowbody"></div></div>
+   <!-- GAMES IS ITS OWN SURFACE AGAIN. Ruled. It was folded into Knowledge to
+        get the bar to seven; they are independent games and a game folded
+        into a reference page is neither. -->
+   <div id="games" class="iq"></div>
    <div id="deck" class="rel"></div>
    <div id="story" class="iq"></div>
    <!-- SETTINGS IN THE CENTRE, NOT IN A MODAL.
@@ -4308,6 +4343,11 @@ const TABDEF=[
  {k:TAB.ENERGY,  id:'emap',  nm:'Body',      cls:'tab-energy'},
  {k:TAB.COMPASS, id:'cone',  nm:'Compass',   cls:'tab-compass'},
  {k:TAB.KNOW,    id:'know',  nm:'Knowledge', cls:'tab-know'},
+ /* GAMES COMES BACK OUT. Ruled, and it reverses the fold that put it inside
+    Knowledge to get the bar to seven. They are independent games, a place a
+    person goes for brain release, and a game folded into a reference page is
+    neither. The bar is eight. */
+ {k:TAB.GAMES,   id:'games', nm:'Games',     cls:'tab-games'},
  {k:TAB.SUMMARY, id:'sum',   nm:'Summary',   cls:'tab-summary'}];
 /* SETTINGS HAS NO TABDEF ENTRY, so TABOF would fall through to the first one
    and put the Energetics body class on the Settings surface, which is how a
@@ -4324,7 +4364,8 @@ const TABOF=function(k){for(var i=0;i<TABDEF.length;i++)if(TABDEF[i].k===k)retur
    to the first entry in the bar, which is what TABOF would have done. */
 const TABFOLD={};
 TABFOLD[TAB.ANALYTICS]=TAB.SUMMARY;
-TABFOLD[TAB.GAMES]=TAB.KNOW;
+/* GAMES IS UNFOLDED. It has its own tab again on the owner's ruling, so it
+   must not resolve to Knowledge. */
 const TABREAL=function(k){
  if(TABFOLD[k]!==undefined)return TABFOLD[k];
  for(var i=0;i<TABDEF.length;i++)if(TABDEF[i].k===k)return k;
@@ -7210,7 +7251,18 @@ const CORE_STEP=[1.45,2.30,3.40];
    the tick was, which is the point: at this magnification a person
    is choosing one thing to work on.
    ============================================================ */
-const FET_STEP=[2.60,3.90];
+/* THE THRESHOLDS COME DOWN. Ruled.
+
+   Measured: the shell is fully on screen only to zoom 2.08. The glyph layer
+   started at 2.60, names at 3.90 and atoms at 4.40, so every symbol the owner
+   asked to see was drawn after the ring had left the frame and reached full
+   strength with more than half the addresses off screen. They were being
+   drawn where he could not see them.
+
+   At 1.55 the ring sits well inside the frame and the glyphs land on a ring
+   he can see all of. At 2.05 the names arrive as the ring reaches the edge,
+   which is the moment a person has committed to one sector. */
+const FET_STEP=[1.55,2.05];
 function fetA(i){
  var z=S.zoom||1, t=FET_STEP[i];
  return Math.max(0,Math.min(1,(z-t)/(t*0.30)));}
@@ -7249,7 +7301,7 @@ function fetResolved(){
    At 4.40 the layer opens as the fetters finish naming themselves, which is
    the right place for it: the fetter is the pattern and the atom is what put
    the pattern there, so one resolves into the other. */
-const ATOM_STEP=4.40;
+const ATOM_STEP=2.60;
 function atomA(){
  var z=S.zoom||1;
  return Math.max(0,Math.min(1,(z-ATOM_STEP)/(ATOM_STEP*0.26)));}
@@ -9254,11 +9306,105 @@ function sumUnread(r){
   +'first, and any one of them fills this page.')+'</div>'
   +sumSpirit(r)+sumNum(r);}
 
+/* ============================================================
+   THE SUMMARY, REBUILT. Named wrong four times and this is the correction.
+
+   What it was: a glance strip, then the reading and the blueprint stack side
+   by side, then the spiritual layer, then numerology at the very bottom.
+   Measured at 3990px and 115 interactive elements, with the person's name
+   first appearing 1.9 screens down inside a numerology sentence, and the
+   reading itself sitting as bare text on the page ground with nothing around
+   it. The owner: terrible layout, terrible use of space, the chain beneath
+   the stack is weird, the numerology should be above, and the reading needs
+   a home.
+
+   What it is now, and every part of this is his instruction:
+
+   THE PLATE. The first name at display size, because this page has one job
+   before any other and that job is to say this is you. The band beside it,
+   and the direction out of that band, which lives in TIERDEF and has only
+   ever been reachable through a tooltip.
+
+   THE READING HAS A HOME. A display panel with its own ground and its own
+   edge, so the paragraph a person came here to read is a thing on the page
+   rather than text on the background.
+
+   EVERYTHING STRUCTURAL GOES RIGHT. Blueprint, primary, secondary, masks,
+   expression, soul urge, numerology, the spiritual layer. He asked for it
+   above and he asked for it on the right in the same breath; the right is
+   the one that holds, because the centre then carries the reading and
+   nothing else, and the right column is what this product already calls the
+   information panel. The best arrangement inside that column is the thing
+   the ICPs are being simulated on.
+
+   THE OUTPUT ROW. The block this page has never had: what this state calls
+   for, what to release, and how far to the next marker. A summary with no
+   next action is a diagnosis with no prescription.
+   ============================================================ */
+function sumPlate(r){
+ var who=(CURP&&CURP.name)||'You';
+ var first=String(who).trim().split(/\s+/)[0]||'You';
+ var t=TIER_BY[r.tier]||null;
+ return '<div class="s-plate">'
+  +'<div class="s-pl-l">'
+   +'<div class="s-pname">'+esc(first)+'</div>'
+   +(CURP&&CURP.who&&CURP.who.line?'<div class="s-pwho">'+esc(CURP.who.line)+'</div>':'')
+  +'</div>'
+  +'<div class="s-pl-r">'
+   +cr(r.darkB,r.CQ,{size:'lg',label:'coherence',raw:Math.round(r.CQ)+'%',hot:false})
+   +'<div class="s-pband"><b>'+esc(r.tier)+'</b>'
+   +(t&&t.state?'<em>'+esc(t.state)+'</em>':'')+'</div>'
+  +'</div>'
+  /* the direction out, which has never been on a surface a touch screen can
+     reach. It is the third of the three things a band is required to carry. */
+  +(t&&t.toward?'<div class="s-ptoward"><span class="pm-eye">Where it goes</span>'
+    +esc(t.toward)+'</div>':'')
+  +'</div>';}
+
+/* WHAT THIS STATE CALLS FOR. ritFor is a pure function of the reading and has
+   only ever been called from inside the ritual overlay, which opens after a
+   release run, which means a person who has not run one has never seen it. */
+function sumOutput(r){
+ var rit=(typeof ritFor==='function')?ritFor(r):null;
+ var m=(typeof meterRead==='function')?meterRead(CURP):null;
+ var hot=r.loaded.slice().sort(function(a,b){return b.sq-a.sq;})[0];
+ var card=function(eye,nm,sub,act){
+  return '<div class="s-out">'
+   +'<span class="pm-eye">'+eye+'</span>'
+   +'<div class="s-out-n">'+esc(nm)+'</div>'
+   +(sub?'<div class="s-out-s">'+esc(sub)+'</div>':'')
+   +(act||'')+'</div>';};
+ return '<div class="s-outrow">'
+  +(rit?card('The protocol this calls for',rit.nm||'A practice',
+     rit.how||rit.d||'','<button class="btn s-oact" data-sout="rit">Open it</button>')
+    :card('The protocol this calls for','Not enough read yet',
+     'Write what happened and this fills in',''))
+  +(hot?card('Release this first',hot.k,
+     hot.b+' seat, holding '+hot.sq.toFixed(1),
+     '<button class="btn s-oact" data-sout="rel" data-n="'+hot.i+'">Run a release</button>')
+    :card('Release this first','Nothing is carrying',
+     'Nothing is held above the line',''))
+  +(m&&m.next?card('Next marker',m.next.nm,m.next.left+' away','')
+    :card('Next marker','The first one','Open some ground and it appears',''))
+  +'</div>';}
+
 function sumFull(r){
- return sumGlance(r)
-  +'<div class="s-two">'+sumStory(r)+sumStruct(r)+'</div>'
-  +sumSpirit(r)
-  +sumNum(r);}
+ return sumPlate(r)
+  +'<div class="s-cols">'
+   +'<div class="s-main">'
+    +'<div class="s-readbox">'+sumStory(r)+'</div>'
+    +sumOutput(r)
+    +sumGlance(r)
+   +'</div>'
+   /* THE INFORMATION PANEL. Everything structural, in one column, in the
+      order a person asks for it: what is running, then the blueprint it runs
+      on, then the spiritual layer, then the numbers. */
+   +'<aside class="s-side">'
+    +sumStruct(r)
+    +sumSpirit(r)
+    +sumNum(r)
+   +'</aside>'
+  +'</div>';}
 
 /* ---- one delegated listener for everything on this surface ---- */
 function sumWire(){

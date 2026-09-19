@@ -41,11 +41,11 @@ const shell=await page.evaluate(()=>({
  axes:document.querySelectorAll('#chg .nf').length,
  mx:document.querySelectorAll('#mx button').length,
  eshelf:!!document.getElementById('eshelf')}));
-/* SEVEN, not eight. Analytics folded into Summary and Games folded into
-   Knowledge on the owner's ruling, and the compass gained a door it never
-   had, so the bar lost two items and gained one. Both folded surfaces still
-   exist and still have their own integers: what they lost is a tab. */
-ok(shell.tabs===7,'7 tabs, got '+shell.tabs);
+/* EIGHT. Analytics is still folded into Summary, the compass gained a door it
+   never had, and Games has come back out on the owner's ruling: they are
+   independent games, a place a person goes for brain release, and a game
+   folded into a reference page is neither. Analytics is the one fold left. */
+ok(shell.tabs===8,'8 tabs, got '+shell.tabs);
 ok(shell.depths===4,'4 depths, got '+shell.depths);
 ok(shell.doms===19,'19 domains, got '+shell.doms);
 ok(shell.arcs===12,'12 archetypes, got '+shell.arcs);
@@ -63,7 +63,9 @@ console.log('\n=== 2 · one tab surface visible, plus whatever it carries ===');
    visible with it and that is the point. The invariant is that exactly one TAB
    surface is visible, and anything else visible must be a descendant of it. A
    sibling surface showing through is still the bug it always was. */
-const FOLDOF={ana:'sum',games:'know'};
+/* Analytics is the one fold left. Games came back out on the owner's ruling
+   and has its own tab and its own host again. */
+const FOLDOF={ana:'sum'};
 /* indexed by the TAB integer, not by position, which is the rule this repo
    keeps relearning. 5 is Intake and it is not swept here. */
 const TABN=['Story','Summary','Field','Energy','Analytics','Intake','Knowledge',

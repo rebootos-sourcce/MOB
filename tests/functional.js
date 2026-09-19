@@ -603,7 +603,14 @@ for(const [k,z] of [['z1',1],['z28',2.8],['z46',4.6]]){
    wide:+((hh.a1-hh.a0)*1000).toFixed(1),
    deep:+((hh.r1-hh.r0)/U*100).toFixed(1)};});}
 ok(fet.z1.a[0]===0&&fet.z1.res==='','the shell is closed at zoom 1');
-ok(fet.z28.a[0]>0&&fet.z28.a[1]===0,'the fetters grow first, got '+fet.z28.a);
+/* THE THRESHOLDS CAME DOWN on the owner's ruling, because every symbol he
+   asked to see was being drawn after the ring had left the frame: the shell
+   is fully on screen only to zoom 2.08 and the glyph layer used to start at
+   2.60. At 1.55 and 2.05 both layers are already open by 2.8, so the
+   assertion is the ORDERING rather than a pair of values at one zoom. The
+   glyph never arrives after the name. */
+ok(fet.z28.a[0]>=fet.z28.a[1],'the glyph layer is never behind the name layer, got '+fet.z28.a);
+ok(fet.z28.a[0]>0,'and the shell is open by 2.8, got '+fet.z28.a[0]);
 ok(fet.z46.a[1]>0,'then they are named, got '+fet.z46.a);
 ok(fet.z46.wide>fet.z1.wide,'a grown address is a wider target, '+fet.z1.wide+' to '+fet.z46.wide);
 ok(fet.z46.deep>fet.z1.deep,'and a deeper one, '+fet.z1.deep+' to '+fet.z46.deep);

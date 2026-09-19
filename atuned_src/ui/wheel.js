@@ -125,7 +125,18 @@ const CORE_STEP=[1.45,2.30,3.40];
    the tick was, which is the point: at this magnification a person
    is choosing one thing to work on.
    ============================================================ */
-const FET_STEP=[2.60,3.90];
+/* THE THRESHOLDS COME DOWN. Ruled.
+
+   Measured: the shell is fully on screen only to zoom 2.08. The glyph layer
+   started at 2.60, names at 3.90 and atoms at 4.40, so every symbol the owner
+   asked to see was drawn after the ring had left the frame and reached full
+   strength with more than half the addresses off screen. They were being
+   drawn where he could not see them.
+
+   At 1.55 the ring sits well inside the frame and the glyphs land on a ring
+   he can see all of. At 2.05 the names arrive as the ring reaches the edge,
+   which is the moment a person has committed to one sector. */
+const FET_STEP=[1.55,2.05];
 function fetA(i){
  var z=S.zoom||1, t=FET_STEP[i];
  return Math.max(0,Math.min(1,(z-t)/(t*0.30)));}
@@ -164,7 +175,7 @@ function fetResolved(){
    At 4.40 the layer opens as the fetters finish naming themselves, which is
    the right place for it: the fetter is the pattern and the atom is what put
    the pattern there, so one resolves into the other. */
-const ATOM_STEP=4.40;
+const ATOM_STEP=2.60;
 function atomA(){
  var z=S.zoom||1;
  return Math.max(0,Math.min(1,(z-ATOM_STEP)/(ATOM_STEP*0.26)));}

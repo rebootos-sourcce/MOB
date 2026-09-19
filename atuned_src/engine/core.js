@@ -89,6 +89,11 @@ const TABDEF=[
  {k:TAB.ENERGY,  id:'emap',  nm:'Body',      cls:'tab-energy'},
  {k:TAB.COMPASS, id:'cone',  nm:'Compass',   cls:'tab-compass'},
  {k:TAB.KNOW,    id:'know',  nm:'Knowledge', cls:'tab-know'},
+ /* GAMES COMES BACK OUT. Ruled, and it reverses the fold that put it inside
+    Knowledge to get the bar to seven. They are independent games, a place a
+    person goes for brain release, and a game folded into a reference page is
+    neither. The bar is eight. */
+ {k:TAB.GAMES,   id:'games', nm:'Games',     cls:'tab-games'},
  {k:TAB.SUMMARY, id:'sum',   nm:'Summary',   cls:'tab-summary'}];
 /* SETTINGS HAS NO TABDEF ENTRY, so TABOF would fall through to the first one
    and put the Energetics body class on the Settings surface, which is how a
@@ -105,7 +110,8 @@ const TABOF=function(k){for(var i=0;i<TABDEF.length;i++)if(TABDEF[i].k===k)retur
    to the first entry in the bar, which is what TABOF would have done. */
 const TABFOLD={};
 TABFOLD[TAB.ANALYTICS]=TAB.SUMMARY;
-TABFOLD[TAB.GAMES]=TAB.KNOW;
+/* GAMES IS UNFOLDED. It has its own tab again on the owner's ruling, so it
+   must not resolve to Knowledge. */
 const TABREAL=function(k){
  if(TABFOLD[k]!==undefined)return TABFOLD[k];
  for(var i=0;i<TABDEF.length;i++)if(TABDEF[i].k===k)return k;

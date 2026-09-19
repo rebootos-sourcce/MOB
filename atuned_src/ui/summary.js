@@ -335,11 +335,105 @@ function sumUnread(r){
   +'first, and any one of them fills this page.')+'</div>'
   +sumSpirit(r)+sumNum(r);}
 
+/* ============================================================
+   THE SUMMARY, REBUILT. Named wrong four times and this is the correction.
+
+   What it was: a glance strip, then the reading and the blueprint stack side
+   by side, then the spiritual layer, then numerology at the very bottom.
+   Measured at 3990px and 115 interactive elements, with the person's name
+   first appearing 1.9 screens down inside a numerology sentence, and the
+   reading itself sitting as bare text on the page ground with nothing around
+   it. The owner: terrible layout, terrible use of space, the chain beneath
+   the stack is weird, the numerology should be above, and the reading needs
+   a home.
+
+   What it is now, and every part of this is his instruction:
+
+   THE PLATE. The first name at display size, because this page has one job
+   before any other and that job is to say this is you. The band beside it,
+   and the direction out of that band, which lives in TIERDEF and has only
+   ever been reachable through a tooltip.
+
+   THE READING HAS A HOME. A display panel with its own ground and its own
+   edge, so the paragraph a person came here to read is a thing on the page
+   rather than text on the background.
+
+   EVERYTHING STRUCTURAL GOES RIGHT. Blueprint, primary, secondary, masks,
+   expression, soul urge, numerology, the spiritual layer. He asked for it
+   above and he asked for it on the right in the same breath; the right is
+   the one that holds, because the centre then carries the reading and
+   nothing else, and the right column is what this product already calls the
+   information panel. The best arrangement inside that column is the thing
+   the ICPs are being simulated on.
+
+   THE OUTPUT ROW. The block this page has never had: what this state calls
+   for, what to release, and how far to the next marker. A summary with no
+   next action is a diagnosis with no prescription.
+   ============================================================ */
+function sumPlate(r){
+ var who=(CURP&&CURP.name)||'You';
+ var first=String(who).trim().split(/\s+/)[0]||'You';
+ var t=TIER_BY[r.tier]||null;
+ return '<div class="s-plate">'
+  +'<div class="s-pl-l">'
+   +'<div class="s-pname">'+esc(first)+'</div>'
+   +(CURP&&CURP.who&&CURP.who.line?'<div class="s-pwho">'+esc(CURP.who.line)+'</div>':'')
+  +'</div>'
+  +'<div class="s-pl-r">'
+   +cr(r.darkB,r.CQ,{size:'lg',label:'coherence',raw:Math.round(r.CQ)+'%',hot:false})
+   +'<div class="s-pband"><b>'+esc(r.tier)+'</b>'
+   +(t&&t.state?'<em>'+esc(t.state)+'</em>':'')+'</div>'
+  +'</div>'
+  /* the direction out, which has never been on a surface a touch screen can
+     reach. It is the third of the three things a band is required to carry. */
+  +(t&&t.toward?'<div class="s-ptoward"><span class="pm-eye">Where it goes</span>'
+    +esc(t.toward)+'</div>':'')
+  +'</div>';}
+
+/* WHAT THIS STATE CALLS FOR. ritFor is a pure function of the reading and has
+   only ever been called from inside the ritual overlay, which opens after a
+   release run, which means a person who has not run one has never seen it. */
+function sumOutput(r){
+ var rit=(typeof ritFor==='function')?ritFor(r):null;
+ var m=(typeof meterRead==='function')?meterRead(CURP):null;
+ var hot=r.loaded.slice().sort(function(a,b){return b.sq-a.sq;})[0];
+ var card=function(eye,nm,sub,act){
+  return '<div class="s-out">'
+   +'<span class="pm-eye">'+eye+'</span>'
+   +'<div class="s-out-n">'+esc(nm)+'</div>'
+   +(sub?'<div class="s-out-s">'+esc(sub)+'</div>':'')
+   +(act||'')+'</div>';};
+ return '<div class="s-outrow">'
+  +(rit?card('The protocol this calls for',rit.nm||'A practice',
+     rit.how||rit.d||'','<button class="btn s-oact" data-sout="rit">Open it</button>')
+    :card('The protocol this calls for','Not enough read yet',
+     'Write what happened and this fills in',''))
+  +(hot?card('Release this first',hot.k,
+     hot.b+' seat, holding '+hot.sq.toFixed(1),
+     '<button class="btn s-oact" data-sout="rel" data-n="'+hot.i+'">Run a release</button>')
+    :card('Release this first','Nothing is carrying',
+     'Nothing is held above the line',''))
+  +(m&&m.next?card('Next marker',m.next.nm,m.next.left+' away','')
+    :card('Next marker','The first one','Open some ground and it appears',''))
+  +'</div>';}
+
 function sumFull(r){
- return sumGlance(r)
-  +'<div class="s-two">'+sumStory(r)+sumStruct(r)+'</div>'
-  +sumSpirit(r)
-  +sumNum(r);}
+ return sumPlate(r)
+  +'<div class="s-cols">'
+   +'<div class="s-main">'
+    +'<div class="s-readbox">'+sumStory(r)+'</div>'
+    +sumOutput(r)
+    +sumGlance(r)
+   +'</div>'
+   /* THE INFORMATION PANEL. Everything structural, in one column, in the
+      order a person asks for it: what is running, then the blueprint it runs
+      on, then the spiritual layer, then the numbers. */
+   +'<aside class="s-side">'
+    +sumStruct(r)
+    +sumSpirit(r)
+    +sumNum(r)
+   +'</aside>'
+  +'</div>';}
 
 /* ---- one delegated listener for everything on this surface ---- */
 function sumWire(){
