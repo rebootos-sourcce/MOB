@@ -1783,7 +1783,30 @@ console.log('\n27 · the ladder');
   ok(L.earned.some(m=>m.k==='week'),'seven days running earns the week mark');}
 }
 
-console.log('\n28 · every archetype is seated');
+console.log('\n28 · no title is a truncation');
+{
+ /* A TITLE IS WHAT A PERSON READS, SO IT IS A WHOLE WORD. Two shipped
+    abbreviated: "Inspired Act." and "Disgust · Acc.". They are the label on a
+    card and the thing a person searches for, and a film arrived from the owner
+    called "Inspired Action", which is the name the world uses.
+
+    A sentence ending in a full stop is not a truncation, so this looks for an
+    abbreviation: a short last word ending in a stop with no space before the
+    stop and no sentence in front of it. */
+ const trunc=E.HARM.filter(x=>{
+  const t=x.t.trim();
+  if(!/\.$/.test(t))return false;
+  if(t.split(/\s+/).length>4)return false;   /* a sentence, not a title */
+  return true;});
+ ok(trunc.length===0,'no knowledge base title is abbreviated: '
+  +trunc.map(x=>x.c+' '+x.t).join(', '));
+ /* and the two that were */
+ const byc=c=>(E.HARM.filter(x=>x.c===c)[0]||{}).t;
+ ok(byc('E06')==='Inspired Action','E06 is Inspired Action in full');
+ ok(byc('E63')==='Disgust · Acceptance','E63 names the pole in full');
+}
+
+console.log('\n29 · every archetype is seated');
 {
  /* IF IT HAS A NAME IT HAS AN ICON, THE ICON HAS A FAMILY, AND THE FAMILY HAS
     A COLOUR. Twelve archetypes wore a mark and no family, so both renderers
@@ -1805,7 +1828,7 @@ console.log('\n28 · every archetype is seated');
  ok(new Set(E.ARCH.map(a=>a.ic)).size===E.ARCH.length,'and no two share one');
 }
 
-console.log('\n29 · the outbox, and what may never leave the device');
+console.log('\n30 · the outbox, and what may never leave the device');
 {
  /* A STORE THAT IS NOT THE REAL ONE. The engine is host free and binds its
     storage, so the outbox is testable headless without a browser. */

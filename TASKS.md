@@ -850,3 +850,17 @@ other figure, which is why the cone's nameplates have been piling on top of
 each other, in every screenshot, without a gate ever saying so. Moloch over
 Set, Asmodeus over Lucifer, and three labels over The blueprint.
 *Medium. The gate first, because a fix with no gate behind it regresses.*
+
+**U4. The films arrived and are mapped.** `engine/data/kb.js`, `ui/knowledge.js`
+Eight mp4s in his Drive folder `Atuned Videos`, 15.4 MB, and they are the
+nature axis of HARM, E01 to E10. The mapping, the one numbering swap, the two
+laws with no film and the four laws carrying two names are written up in
+`BOOK-ERRATA.md`.
+
+Nothing in the footage has been watched. No ffmpeg in the container, the proxy
+refuses a direct Drive fetch and the package install, and fifteen megabytes
+through the connector would fill the context without answering anything.
+
+*The placement review is out with the architect. The hard constraint is the
+whole problem: one file, no network, currently 1.17 MB, and 15.4 MB of video
+base64s to about 21. That needs a ruling from him before a frame is edited.*

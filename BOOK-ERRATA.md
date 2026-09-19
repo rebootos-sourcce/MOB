@@ -284,3 +284,51 @@ mirrored with it, so the two never disagree on one strip.
 The code should not move. If the owner rules the other way later, the change is
 two constants and the `pc` inversion in `renderBal`, all of them in one
 function.
+
+---
+
+## The video set against the engine, 19 September
+
+Eight films arrived in the owner's Drive folder `Atuned Videos`, named and
+numbered. They are the nature axis of `HARM` in `engine/data/kb.js`, entries
+E01 to E10. The mapping is exact on six of the eight and disagrees on the rest.
+
+**14. Cause and effect and transmutation are numbered the other way round.**
+The films are `7 Cause and Effect` and `8 Transmutation`. The engine has
+`E07 Transmutation` and `E08 Cause & Effect`. Six of the eight agree on
+position, so this is not two different orderings, it is one swap.
+
+One of the two is wrong and it is not mine to choose. Whichever moves, the
+other follows: a film numbered 7 sitting on a card numbered 8 is the kind of
+thing a person notices once and then stops trusting the numbering anywhere.
+
+**15. Two laws have no film, and they are adjacent.**
+E04 `All Fields Correspond` and E05 `Like Fields Attract` have no film. Nothing
+is broken by that, but a card stack where one row plays and the next says
+nothing reads as a fault rather than as a gap, so the two without film should
+say they have none rather than showing a dead control.
+
+**16. Four of the ten laws carry two names.**
+
+    film                      engine
+    1 Unified Field           E01 All Is One
+    2 Vibration               E02 All Is Motion
+    6 Inspired Action         E06 Inspired Act.
+    9 Balance (Compensation)  E09 Compensation
+
+One word per concept is a standing ruling and this breaks it four times over.
+A person hears "the law of vibration" in a film and then looks for it in the
+knowledge base under "all is motion". Two of the four are cosmetic, `Inspired
+Act.` is a truncation that should never have been shipped as a title, and
+`Balance (Compensation)` is a title carrying its own synonym in brackets, which
+is the same defect wearing a different coat.
+
+Whose call: the titles are the book's, so which name wins is the owner's. The
+truncation is not a naming question and is mine to fix.
+
+**What was not checked, stated plainly.** Nothing in the films themselves has
+been watched. The container has no ffmpeg and the proxy refuses both a direct
+fetch from Drive and the package install, and pulling fifteen megabytes of
+video through the connector would have filled the context without answering
+anything. Everything above is from the file names, the numbering and the
+engine table. No claim is made about what is in the footage.
