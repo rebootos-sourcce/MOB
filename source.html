@@ -2604,9 +2604,52 @@ body.booted{--boot-done:1}
 @media (prefers-reduced-motion:reduce){
  .boot{animation:none;opacity:0;visibility:hidden}}
 
+/* THE NO SCRIPT NOTICE. It sits above the boot sheet, because the sheet fades
+   itself on a CSS animation and would otherwise uncover an empty shell and let
+   a person believe that is the product. Plain, high contrast, and it depends on
+   no token a script might have been going to set. */
+.nojs{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;
+ align-items:center;justify-content:center;gap:14px;padding:32px;
+ background:#0C0D12;color:#E8E6E1;font-family:'Inter',system-ui,sans-serif;
+ text-align:center}
+.nojs h1{margin:0;font-size:22px;font-weight:500;letter-spacing:-.01em}
+.nojs p{margin:0;font-size:14.5px;line-height:1.65;color:#94908A;max-width:54ch}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style></head>
 <body>
+<!-- ============================================================
+     WITHOUT SCRIPTS THIS LOOKS BROKEN RATHER THAN BLANK, AND SAID SO
+     TO THE OWNER BEFORE IT SAID SO TO ANYBODY ELSE.
+
+     The shell below is static: the rails, their section headers, the
+     Reading panel and the Run a release button are all in this file. Every
+     tab, every list, every number and the whole centre stage are built by
+     script. And the boot sheet fades on a CSS animation with a forwards
+     fill, which needs no script at all.
+
+     So in a place where scripts do not run, the sheet lifts on schedule and
+     uncovers a complete looking application with an empty tab bar, an empty
+     profile list, empty panels and nothing in the middle. That is not a
+     blank page a person can interpret. It is the product appearing to be
+     broken, and it cost a mayday: the owner opened a build in a preview
+     pane, saw exactly this, and reasonably concluded the build was dead.
+
+     Reproduced with javaScriptEnabled false and matched against his
+     screenshot element for element before this was written.
+
+     One notice, in the flow of the document so it cannot be missed, and it
+     says the one thing that fixes it rather than apologising.
+     ============================================================ -->
+<noscript>
+ <div class="nojs">
+  <h1>This page needs JavaScript</h1>
+  <p>The whole instrument is built in the browser. With scripts turned off you
+     are looking at an empty frame, not at the product.</p>
+  <p>If you are viewing this inside a preview pane, download the file and open
+     it from your own machine. It is one file, it needs no network and no
+     install, and it runs from wherever you save it.</p>
+ </div>
+</noscript>
 <!-- ============================================================
      THE BOOT. THREE SECONDS, AND IT IS THE FIELD BEING BUILT.
 

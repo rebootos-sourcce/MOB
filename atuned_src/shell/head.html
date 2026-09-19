@@ -2604,5 +2604,15 @@ body.booted{--boot-done:1}
 @media (prefers-reduced-motion:reduce){
  .boot{animation:none;opacity:0;visibility:hidden}}
 
+/* THE NO SCRIPT NOTICE. It sits above the boot sheet, because the sheet fades
+   itself on a CSS animation and would otherwise uncover an empty shell and let
+   a person believe that is the product. Plain, high contrast, and it depends on
+   no token a script might have been going to set. */
+.nojs{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;
+ align-items:center;justify-content:center;gap:14px;padding:32px;
+ background:#0C0D12;color:#E8E6E1;font-family:'Inter',system-ui,sans-serif;
+ text-align:center}
+.nojs h1{margin:0;font-size:22px;font-weight:500;letter-spacing:-.01em}
+.nojs p{margin:0;font-size:14.5px;line-height:1.65;color:#94908A;max-width:54ch}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style></head>
