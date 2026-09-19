@@ -1461,6 +1461,30 @@ body.punch .s-readbox,body.punch .s-out{background:var(--panel-2);border-color:t
 .cn-b.on{border-color:var(--accent);color:var(--accent);font-weight:500}
 .cn-sp{flex:1 1 auto;min-width:6px}
 body.punch .cn-b{border-color:transparent;background:var(--panel-2)}
+/* the story's right column, two halves that scroll on their own */
+.st-read{display:flex;flex-direction:column;gap:12px;min-height:0;padding-right:6px}
+.st-half{min-height:0;overflow-y:auto;overflow-anchor:none;
+ scrollbar-width:thin;scrollbar-color:var(--edge-2) transparent}
+.st-imp{flex:1 1 56%}
+.st-rel{flex:1 1 44%;border-top:1px solid var(--edge);padding-top:12px}
+.st-relp{font-size:13.5px;color:var(--dim);line-height:1.55;margin:4px 0 10px}
+.st-rrow{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin-bottom:8px}
+.st-rlab{font-size:11px;font-weight:600;color:var(--dim);width:62px;flex:0 0 auto}
+/* min-width as well as min-height. A one character label gave a 29px wide
+   target, which passes a height floor and fails a tap floor, and the gate is
+   right that 44 is both dimensions. */
+.st-rb{background:transparent;border:1px solid var(--edge);color:var(--mid);
+ border-radius:var(--r-xs);padding:6px 11px;font-family:var(--sans);font-size:12.5px;
+ cursor:pointer;min-height:var(--tap);min-width:var(--tap);
+ display:inline-flex;align-items:center;justify-content:center}
+.st-rb:hover{background:var(--panel-2);color:var(--ink)}
+.st-rb.on{border-color:var(--accent);color:var(--accent);font-weight:500}
+.st-rlist{display:flex;flex-direction:column;gap:6px;margin:10px 0}
+.st-rit{display:flex;align-items:center;gap:10px;font-size:13.5px;color:var(--ink)}
+.st-rit em{font-style:normal;color:var(--dim);font-size:11.5px;margin-left:auto}
+.st-rfoot{display:flex;align-items:center;justify-content:space-between;gap:10px;
+ font-size:12px;color:var(--dim);margin-top:4px}
+body.punch .st-rb{border-color:transparent;background:var(--panel-2)}
 .kb-deck{margin-top:22px;padding:18px 20px;border-radius:var(--r-s);background:var(--panel-2);
  display:flex;flex-direction:column;gap:9px;align-items:flex-start}
 body.punch .kb-search input{border-color:transparent}
@@ -1792,7 +1816,10 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
 .st-wrap{display:grid;grid-template-columns:1fr 396px;gap:16px;width:100%;height:100%;
  padding:4px;align-items:stretch;text-align:left}
 .st-col{min-height:0;display:flex;flex-direction:column}
-.st-read{overflow-y:auto;scrollbar-width:thin;padding-right:6px}
+/* the column itself no longer scrolls: its two halves do, each on its own, so
+   imprints and the release settings move independently. The rule that made
+   the whole column scroll is gone rather than overridden, because two
+   declarations of one class is how a geometry ends up depending on order. */
 .st-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px}
 /* RECORD, AND THE DOT SAYS WHICH MODE YOU ARE IN.
 
@@ -8909,7 +8936,17 @@ function stRender(){
    +'<button class="btn pri" id="stapply"'+(p&&p.imprints.length?'':' disabled')+'>'
     +'Commit '+(p?p.imprints.length:0)+'</button>'
   +'</div></div>'
-  +'<div class="st-col st-read" id="imp"></div></div>';
+  /* THE RIGHT COLUMN IS TWO HALVES THAT SCROLL ON THEIR OWN. Ruled.
+
+     Imprints on top, the release and every setting it takes on the bottom, so
+     a person can see what the sniffer found and run a release against it
+     without leaving the page they wrote on. The release was reachable only
+     from a button somewhere else, which meant the two halves of one act were
+     on two surfaces. */
+  +'<div class="st-col st-read">'
+   +'<div class="st-half st-imp" id="imp"></div>'
+   +'<div class="st-half st-rel" id="strel"></div>'
+  +'</div></div>';
  h.innerHTML=out;
  impRender();
  var ta=document.getElementById('sttext');
@@ -8920,6 +8957,7 @@ function stRender(){
   ta.onscroll=function(){var hl=document.getElementById('sthl');
    if(hl){hl.scrollTop=ta.scrollTop;hl.scrollLeft=ta.scrollLeft;}};}
  stPaintHL();
+ stRelPanel();
  var cl=document.getElementById('stclear');
  if(cl)cl.onclick=function(){ST_TEXT='';ST_PARSED=null;stRender();};
  var ap=document.getElementById('stapply');
@@ -8936,6 +8974,63 @@ function stRender(){
   toYou();syncCh();stRender();render();};
  var mic=document.getElementById('stmic');
  if(mic)mic.onclick=stMic;}
+/* ============================================================
+   THE RELEASE PANEL, on the story, under the imprints.
+
+   Every setting a run takes, stated before it starts, because a person is
+   entitled to see what a run costs before they begin it. How many patterns,
+   how fast, and which ones: the heaviest first, or the ones this story just
+   found.
+   ============================================================ */
+/* the pace, in seconds a line. Named rather than numeric, because a person
+   choosing how fast to run a release is choosing a feeling and not a number. */
+var RUN_SPEED_S={Slow:3.2, Steady:2.2, Quick:1.4};
+var ST_RELN=3, ST_RELSRC='heavy', ST_RELSPD='Steady';
+function stRelPanel(){
+ var e=document.getElementById('strel'); if(!e)return;
+ var r=compute();
+ var live=r.loaded.slice().sort(function(a,b){return b.sq-a.sq;});
+ var found=[];
+ if(ST_PARSED)ST_PARSED.imprints.forEach(function(im){
+  var n=BY[im.node]; if(n&&found.indexOf(n)<0)found.push(n);});
+ var pool=(ST_RELSRC==='story'&&found.length)?found:live;
+ var take=pool.slice(0,ST_RELN);
+ var secs=Math.round(take.length*RUN_SPEED_S[ST_RELSPD]*4);
+ e.innerHTML='<div class="pm-eye">Release</div>'
+  +'<p class="st-relp">'+(pool.length
+    ? 'Pick how much to run. Each pattern is one thought line at one address.'
+    : 'Nothing is held above the line yet, so there is nothing to release.')+'</p>'
+  +'<div class="st-rrow"><span class="st-rlab">From</span>'
+   +'<button type="button" class="st-rb'+(ST_RELSRC==='heavy'?' on':'')+'" data-rsrc="heavy">Heaviest</button>'
+   +'<button type="button" class="st-rb'+(ST_RELSRC==='story'?' on':'')+'" data-rsrc="story">'
+   +'This story'+(found.length?' '+found.length:'')+'</button></div>'
+  +'<div class="st-rrow"><span class="st-rlab">Patterns</span>'
+   +[1,3,5,8].map(function(n){
+     return '<button type="button" class="st-rb'+(ST_RELN===n?' on':'')+'" data-rn="'+n+'">'
+      +n+'</button>';}).join('')+'</div>'
+  +'<div class="st-rrow"><span class="st-rlab">Pace</span>'
+   +Object.keys(RUN_SPEED_S).map(function(k){
+     return '<button type="button" class="st-rb'+(ST_RELSPD===k?' on':'')+'" data-rsp="'+k+'">'
+      +k+'</button>';}).join('')+'</div>'
+  +'<div class="st-rlist">'+(take.length?take.map(function(n){
+     return '<div class="st-rit">'+crbNode(n,'xs')+'<span>'+esc(n.k)+'</span>'
+      +'<em>'+esc(n.b)+'</em></div>';}).join('')
+    :'<div class="rnone">Nothing to run.</div>')+'</div>'
+  +'<div class="st-rfoot"><span>'+(take.length?take.length+' patterns, about '
+    +secs+' seconds':'')+'</span>'
+   +'<button class="btn pri" id="strun"'+(take.length?'':' disabled')+'>Run a release</button></div>';
+ e.querySelectorAll('[data-rsrc]').forEach(function(b){b.onclick=function(){
+  ST_RELSRC=b.getAttribute('data-rsrc'); stRelPanel();};});
+ e.querySelectorAll('[data-rn]').forEach(function(b){b.onclick=function(){
+  ST_RELN=+b.getAttribute('data-rn'); stRelPanel();};});
+ e.querySelectorAll('[data-rsp]').forEach(function(b){b.onclick=function(){
+  ST_RELSPD=b.getAttribute('data-rsp'); stRelPanel();};});
+ var go=document.getElementById('strun');
+ if(go)go.onclick=function(){
+  if(!take.length)return;
+  RUN.speed=RUN_SPEED_S[ST_RELSPD];
+  relPick(take.map(function(n){return n.i;}));};}
+
 /* refresh only the read column so typing never loses the caret */
 function stRefresh(){
  var keep=document.getElementById('sttext'), pos=keep?keep.selectionStart:0;

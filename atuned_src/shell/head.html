@@ -1461,6 +1461,30 @@ body.punch .s-readbox,body.punch .s-out{background:var(--panel-2);border-color:t
 .cn-b.on{border-color:var(--accent);color:var(--accent);font-weight:500}
 .cn-sp{flex:1 1 auto;min-width:6px}
 body.punch .cn-b{border-color:transparent;background:var(--panel-2)}
+/* the story's right column, two halves that scroll on their own */
+.st-read{display:flex;flex-direction:column;gap:12px;min-height:0;padding-right:6px}
+.st-half{min-height:0;overflow-y:auto;overflow-anchor:none;
+ scrollbar-width:thin;scrollbar-color:var(--edge-2) transparent}
+.st-imp{flex:1 1 56%}
+.st-rel{flex:1 1 44%;border-top:1px solid var(--edge);padding-top:12px}
+.st-relp{font-size:13.5px;color:var(--dim);line-height:1.55;margin:4px 0 10px}
+.st-rrow{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin-bottom:8px}
+.st-rlab{font-size:11px;font-weight:600;color:var(--dim);width:62px;flex:0 0 auto}
+/* min-width as well as min-height. A one character label gave a 29px wide
+   target, which passes a height floor and fails a tap floor, and the gate is
+   right that 44 is both dimensions. */
+.st-rb{background:transparent;border:1px solid var(--edge);color:var(--mid);
+ border-radius:var(--r-xs);padding:6px 11px;font-family:var(--sans);font-size:12.5px;
+ cursor:pointer;min-height:var(--tap);min-width:var(--tap);
+ display:inline-flex;align-items:center;justify-content:center}
+.st-rb:hover{background:var(--panel-2);color:var(--ink)}
+.st-rb.on{border-color:var(--accent);color:var(--accent);font-weight:500}
+.st-rlist{display:flex;flex-direction:column;gap:6px;margin:10px 0}
+.st-rit{display:flex;align-items:center;gap:10px;font-size:13.5px;color:var(--ink)}
+.st-rit em{font-style:normal;color:var(--dim);font-size:11.5px;margin-left:auto}
+.st-rfoot{display:flex;align-items:center;justify-content:space-between;gap:10px;
+ font-size:12px;color:var(--dim);margin-top:4px}
+body.punch .st-rb{border-color:transparent;background:var(--panel-2)}
 .kb-deck{margin-top:22px;padding:18px 20px;border-radius:var(--r-s);background:var(--panel-2);
  display:flex;flex-direction:column;gap:9px;align-items:flex-start}
 body.punch .kb-search input{border-color:transparent}
@@ -1792,7 +1816,10 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
 .st-wrap{display:grid;grid-template-columns:1fr 396px;gap:16px;width:100%;height:100%;
  padding:4px;align-items:stretch;text-align:left}
 .st-col{min-height:0;display:flex;flex-direction:column}
-.st-read{overflow-y:auto;scrollbar-width:thin;padding-right:6px}
+/* the column itself no longer scrolls: its two halves do, each on its own, so
+   imprints and the release settings move independently. The rule that made
+   the whole column scroll is gone rather than overridden, because two
+   declarations of one class is how a geometry ends up depending on order. */
 .st-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px}
 /* RECORD, AND THE DOT SAYS WHICH MODE YOU ARE IN.
 

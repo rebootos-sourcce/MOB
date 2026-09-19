@@ -37,7 +37,17 @@ function stRender(){
    +'<button class="btn pri" id="stapply"'+(p&&p.imprints.length?'':' disabled')+'>'
     +'Commit '+(p?p.imprints.length:0)+'</button>'
   +'</div></div>'
-  +'<div class="st-col st-read" id="imp"></div></div>';
+  /* THE RIGHT COLUMN IS TWO HALVES THAT SCROLL ON THEIR OWN. Ruled.
+
+     Imprints on top, the release and every setting it takes on the bottom, so
+     a person can see what the sniffer found and run a release against it
+     without leaving the page they wrote on. The release was reachable only
+     from a button somewhere else, which meant the two halves of one act were
+     on two surfaces. */
+  +'<div class="st-col st-read">'
+   +'<div class="st-half st-imp" id="imp"></div>'
+   +'<div class="st-half st-rel" id="strel"></div>'
+  +'</div></div>';
  h.innerHTML=out;
  impRender();
  var ta=document.getElementById('sttext');
@@ -48,6 +58,7 @@ function stRender(){
   ta.onscroll=function(){var hl=document.getElementById('sthl');
    if(hl){hl.scrollTop=ta.scrollTop;hl.scrollLeft=ta.scrollLeft;}};}
  stPaintHL();
+ stRelPanel();
  var cl=document.getElementById('stclear');
  if(cl)cl.onclick=function(){ST_TEXT='';ST_PARSED=null;stRender();};
  var ap=document.getElementById('stapply');
@@ -64,6 +75,63 @@ function stRender(){
   toYou();syncCh();stRender();render();};
  var mic=document.getElementById('stmic');
  if(mic)mic.onclick=stMic;}
+/* ============================================================
+   THE RELEASE PANEL, on the story, under the imprints.
+
+   Every setting a run takes, stated before it starts, because a person is
+   entitled to see what a run costs before they begin it. How many patterns,
+   how fast, and which ones: the heaviest first, or the ones this story just
+   found.
+   ============================================================ */
+/* the pace, in seconds a line. Named rather than numeric, because a person
+   choosing how fast to run a release is choosing a feeling and not a number. */
+var RUN_SPEED_S={Slow:3.2, Steady:2.2, Quick:1.4};
+var ST_RELN=3, ST_RELSRC='heavy', ST_RELSPD='Steady';
+function stRelPanel(){
+ var e=document.getElementById('strel'); if(!e)return;
+ var r=compute();
+ var live=r.loaded.slice().sort(function(a,b){return b.sq-a.sq;});
+ var found=[];
+ if(ST_PARSED)ST_PARSED.imprints.forEach(function(im){
+  var n=BY[im.node]; if(n&&found.indexOf(n)<0)found.push(n);});
+ var pool=(ST_RELSRC==='story'&&found.length)?found:live;
+ var take=pool.slice(0,ST_RELN);
+ var secs=Math.round(take.length*RUN_SPEED_S[ST_RELSPD]*4);
+ e.innerHTML='<div class="pm-eye">Release</div>'
+  +'<p class="st-relp">'+(pool.length
+    ? 'Pick how much to run. Each pattern is one thought line at one address.'
+    : 'Nothing is held above the line yet, so there is nothing to release.')+'</p>'
+  +'<div class="st-rrow"><span class="st-rlab">From</span>'
+   +'<button type="button" class="st-rb'+(ST_RELSRC==='heavy'?' on':'')+'" data-rsrc="heavy">Heaviest</button>'
+   +'<button type="button" class="st-rb'+(ST_RELSRC==='story'?' on':'')+'" data-rsrc="story">'
+   +'This story'+(found.length?' '+found.length:'')+'</button></div>'
+  +'<div class="st-rrow"><span class="st-rlab">Patterns</span>'
+   +[1,3,5,8].map(function(n){
+     return '<button type="button" class="st-rb'+(ST_RELN===n?' on':'')+'" data-rn="'+n+'">'
+      +n+'</button>';}).join('')+'</div>'
+  +'<div class="st-rrow"><span class="st-rlab">Pace</span>'
+   +Object.keys(RUN_SPEED_S).map(function(k){
+     return '<button type="button" class="st-rb'+(ST_RELSPD===k?' on':'')+'" data-rsp="'+k+'">'
+      +k+'</button>';}).join('')+'</div>'
+  +'<div class="st-rlist">'+(take.length?take.map(function(n){
+     return '<div class="st-rit">'+crbNode(n,'xs')+'<span>'+esc(n.k)+'</span>'
+      +'<em>'+esc(n.b)+'</em></div>';}).join('')
+    :'<div class="rnone">Nothing to run.</div>')+'</div>'
+  +'<div class="st-rfoot"><span>'+(take.length?take.length+' patterns, about '
+    +secs+' seconds':'')+'</span>'
+   +'<button class="btn pri" id="strun"'+(take.length?'':' disabled')+'>Run a release</button></div>';
+ e.querySelectorAll('[data-rsrc]').forEach(function(b){b.onclick=function(){
+  ST_RELSRC=b.getAttribute('data-rsrc'); stRelPanel();};});
+ e.querySelectorAll('[data-rn]').forEach(function(b){b.onclick=function(){
+  ST_RELN=+b.getAttribute('data-rn'); stRelPanel();};});
+ e.querySelectorAll('[data-rsp]').forEach(function(b){b.onclick=function(){
+  ST_RELSPD=b.getAttribute('data-rsp'); stRelPanel();};});
+ var go=document.getElementById('strun');
+ if(go)go.onclick=function(){
+  if(!take.length)return;
+  RUN.speed=RUN_SPEED_S[ST_RELSPD];
+  relPick(take.map(function(n){return n.i;}));};}
+
 /* refresh only the read column so typing never loses the caret */
 function stRefresh(){
  var keep=document.getElementById('sttext'), pos=keep?keep.selectionStart:0;
