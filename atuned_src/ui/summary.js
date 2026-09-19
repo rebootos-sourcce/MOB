@@ -130,7 +130,8 @@ function sumStory(r){
  /* TWO. the psychological into the body. */
  if(held.length){
   p.push('That reaches the body at <b>'+esc(held[0].k)+'</b>, on the <b>'
-   +esc(String(held[0].cf).toLowerCase())+'</b> axis, at '+held[0].sq.toFixed(1)+' of 10.'
+   /* the weight is the reading. "of 10" made it a mark out of ten. */
+   +esc(String(held[0].cf).toLowerCase())+'</b> axis, at a weight of '+held[0].sq.toFixed(1)+'.'
    +(loud?' The biggest thing compounding on it is <b>'+esc(loud.nm)+'</b>'
      +(named.length&&named[0]===loud?', at a '+named[0].score+' percent match':'')+'.':'')
    +(stop?' Flow stops at the <b>'+esc(String(stop.p.n).toLowerCase())
@@ -244,8 +245,11 @@ function sumSpirit(r){
  function uni(ch){return '<span class="s-uni">'+ch+'</span>';}
  var out='<div class="s-spirit"><div class="pm-eye">The spiritual layer</div>'
   +'<p class="s-p">Five systems, read independently off one birth date. '
-  +'<b>'+C.agree.length+' of '+C.of+'</b> comparisons between them and the field point the '
-  +'same way. That is what the convergence is: agreements over comparisons, not a score.'
+  /* This was a fraction with a sentence after it explaining that it was not a
+     score, which is an admission that it read as one. Two facts in sequence
+     need no defending and say the same thing. */
+  +'<b>'+C.of+'</b> comparison'+(C.of===1?'':'s')+' could be made between them and the '
+  +'field. <b>'+C.agree.length+'</b> point the same way. That is what the convergence is.'
   +(C.open&&C.open.length?' '+C.open.length+' could not be compared at all: '
     +esc(C.open.join('; '))+'. A gap is not a disagreement.':'')+'</p>'
   +'<div class="s-chips">';

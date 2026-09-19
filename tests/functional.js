@@ -874,12 +874,22 @@ const numUI=await page.evaluate(()=>{
  const txt=(document.getElementById('sumbody').textContent||'');
  return {full:N.parts.join(' '), inPage:txt.indexOf('James Edward Cavanaugh')>=0,
   lp:N.lifePath, hasLp:txt.indexOf('Life path')>=0,
-  /* the convergence says a fraction, never a bare percentage */
-  frac:/\d+ of \d+ comparisons/.test(txt),
+  /* THE CONVERGENCE SHOWS ITS BASIS, never a bare percentage.
+
+     This asserted the literal form "N of M comparisons". That form is a count
+     against a total, which the Bible forbids outright, and the copy underneath
+     it used to carry a sentence explaining that it was not a score, which is an
+     admission that it read as one. The ruling is the one that moved, not the
+     code, so the gate now asserts what the ruling actually wants: both numbers
+     are on the page, the word comparisons is there to say what they count, and
+     no percentage is offered in their place. */
+  basis:/\bcomparisons?\b/.test(txt)&&/\b\d+\b/.test(txt),
+  noFrac:!/\d+\s+of\s+\d+\s+comparisons/.test(txt),
   pct75:/convergence[^.]*\d+%/i.test(txt)};});
 ok(numUI.inPage,'the full name is read, not the roster nickname');
 ok(numUI.hasLp,'and the six numbers are on the page');
-ok(numUI.frac,'convergence states the fraction it rests on');
+ok(numUI.basis,'convergence names the comparisons it rests on');
+ok(numUI.noFrac,'and does not state them as a count against a total');
 ok(!numUI.pct75,'and never a bare percentage with no denominator');
 
 console.log('\n=== every tab fits a phone ===');
@@ -1678,6 +1688,61 @@ fc.forEach(f=>ok(f.count===f.carrying,
 const heavy=fc.find(f=>f.nm==='Gordon'), light=fc.find(f=>f.nm==='Rosa');
 ok(heavy.count>light.count,
  'and the most loaded person counts more than the least, '+heavy.count+' against '+light.count);
+
+
+console.log('\n=== a reading is not a score ===');
+/* THE RULE: no surface prints the person's state as a count against a total.
+   The headline reading was rendered as "88 of 100" in two places on Settings,
+   in a file whose own comment six lines below had already struck "of 112" for
+   this exact reason and left the number it was actually about. Held addresses
+   were printed against the addresses at their seat in two more.
+
+   What is allowed and is deliberately not caught here: a length, like the
+   intake's progress bar, because a bar is not a number; and a ratio that names
+   its own denominator as a method rather than as a total of the person, which
+   the convergence line does in its own next sentence. */
+for(const w of [[1600,1000],[390,844]]){
+ const pg=await browser.newPage({viewport:{width:w[0],height:w[1]}});
+ await pg.goto(FILE,{waitUntil:'load'}); await booted(pg); await pg.waitForTimeout(700);
+ for(const who of ['Lance','Gordon','Sofia']){
+  const hits=await pg.evaluate(async n=>{
+   const i=PEOPLE.findIndex(x=>x.nm===n); loadP(i);
+   const bad=[];
+   for(const t of [0,1,2,3,5,6,7,8,9]){
+    setTab(t); await new Promise(r=>setTimeout(r,300));
+    const txt=document.body.innerText||'';
+    const RE=/\b(\d{1,3})\s*(?:of|out of)\s*(\d{1,3})\b/gi;
+    let m; while((m=RE.exec(txt))){
+     if(+m[2]>+m[1]&&+m[2]>1)bad.push('tab '+t+': '+m[0]);}}
+   return bad;},who);
+  ok(hits.length===0,'no count against a total at '+w[0]+' for '+who
+    +(hits.length?', found '+hits.slice(0,4).join(', '):''));
+ }
+ await pg.close();
+}
+
+console.log('\n=== the intake says how long and why it repeats ===');
+/* Two panel findings, both measured. Without a stated duration and a visible
+   remainder, 63 questions loses about half its finishers. With both, plus one
+   line naming the three way design, completion runs 29 points higher. The
+   person who works out around question 40 that twenty one things are cycling
+   feels handled unless it was said at the top, where the same fact reads as
+   rigour. None of it was anywhere on the surface. */
+const iq=await page.evaluate(async()=>{
+ loadP(0); setTab(TAB.INTAKE);
+ await new Promise(r=>setTimeout(r,500));
+ const el=document.getElementById('iq')||document.body;
+ const t=(el.innerText||'').replace(/\s+/g,' ');
+ return {mins:/fifteen minutes|15 minutes/i.test(t),
+  three:/three ways|asked three/i.test(t),
+  gap:/gap/i.test(t),
+  resume:/come back|stop whenever/i.test(t),
+  left:/\bleft\b/i.test(t)};});
+ok(iq.mins,'the intake states how long it takes');
+ok(iq.three,'and that every law is asked three ways');
+ok(iq.gap,'and that the gap between the three is the reading');
+ok(iq.resume,'and that it can be stopped and come back to');
+ok(iq.left,'and the progress line says what is left');
 
 await browser.close();
 

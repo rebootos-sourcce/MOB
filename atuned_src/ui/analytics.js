@@ -128,7 +128,9 @@ function anaRender(){
   +(r.unread?'':'<span class="ab-band">plus or minus '+acc.band.toFixed(0)+'</span>')
   +'<span class="ab-note">'+(r.unread
     ?'Nothing measured. The interval opens once something is entered.'
-    :acc.cov+' of 21 laws measured'
+    /* the coverage as a fact and a remainder, not as a fraction of the person */
+    :acc.cov+' law'+(acc.cov===1?'':'s')+' measured'
+     +(acc.cov<21?', '+(21-acc.cov)+' still at the default':'')
      +(acc.held?', '+acc.held+' addresses carrying':'')
      +'. A move smaller than the interval is not a reading.')+'</span></div>'
   +'</div></div><div class="ab-grid">';
@@ -255,8 +257,8 @@ function anaDrill(){
    var seg=W.filter(function(n){return n.b===bn;}).sort(function(a,b){return b.sq-a.sq;});
    h+=head('Seat',s2.p.n,s2.p.sk+' · '+s2.p.nv+' · '+s2.p.hz+' Hz');
    h+='<p class="ad-p">Vritti '+s2.p.vt+', seated at '+s2.p.seat+'. It passes <b>'
-    +Math.round(s2.pass*100)+'%</b> of what reaches it. <b>'+s2.hot+'</b> of '+s2.tot
-    +' addresses here are held.</p>'
+    +Math.round(s2.pass*100)+'%</b> of what reaches it. <b>'+s2.hot+'</b> address'
+    +(s2.hot===1?' is':'es are')+' held here.</p>'
     +'<div class="pm-eye">Laws seated here</div><div class="pm-chips">'
     +SI.filter(function(l){return l.b===bn;}).map(function(l){
       return '<span class="pm-chip">'+l.nm+' '+S.law[l.nm].toFixed(1)+'</span>';}).join('')+'</div>'

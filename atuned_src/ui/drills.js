@@ -75,8 +75,10 @@ function runLawDrill(l){
     +'seated at the '+l.b.toLowerCase()+' pays for it.'
    :v>=7?'This law is <b>open</b>. It is one of the things carrying your coherence.'
    :'Working but not strong. It holds in some contexts and slips in others.')
-  +' Seated at the '+l.b.toLowerCase()+', where <b>'+hot.length+'</b> of '+seg.length
-  +' addresses are held.</p>';
+  /* the count of what is held is the fact. Against the seat's total it is a
+     score, and this is a reading. */
+  +' Seated at the '+l.b.toLowerCase()+', where <b>'+hot.length+'</b> address'
+  +(hot.length===1?' is':'es are')+' held.</p>';
  h+= sc
   ? '<div class="pm-eye">From your diagnostic</div><p class="ad-p">Spread <b>'+sc.spread
     +'</b>. '+sc.lean+'</p>'
@@ -451,7 +453,7 @@ function runTeacherDrill(m,end){
     ?'Nothing has been entered yet, so this axis has no reading. It is still the axis.'
     :'The '+esc(String(m.seat).toLowerCase())+' is carrying <b>'
      +Math.round(load*100)+'%</b> and its integrity reads <b>'+ig.toFixed(1)
-     +'</b> of 10.'+(at?' That puts you at <b>'+esc(at)+'</b> on this axis.':''))
+     +'</b>.'+(at?' That puts you at <b>'+esc(at)+'</b> on this axis.':''))
   +'</p>'
   +'<div class="pm-eye">The question that separates them</div>'
   +'<p class="ad-p">'+esc(m.ask||'')+'</p>'

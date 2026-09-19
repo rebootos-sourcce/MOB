@@ -10368,7 +10368,8 @@ function sumStory(r){
  /* TWO. the psychological into the body. */
  if(held.length){
   p.push('That reaches the body at <b>'+esc(held[0].k)+'</b>, on the <b>'
-   +esc(String(held[0].cf).toLowerCase())+'</b> axis, at '+held[0].sq.toFixed(1)+' of 10.'
+   /* the weight is the reading. "of 10" made it a mark out of ten. */
+   +esc(String(held[0].cf).toLowerCase())+'</b> axis, at a weight of '+held[0].sq.toFixed(1)+'.'
    +(loud?' The biggest thing compounding on it is <b>'+esc(loud.nm)+'</b>'
      +(named.length&&named[0]===loud?', at a '+named[0].score+' percent match':'')+'.':'')
    +(stop?' Flow stops at the <b>'+esc(String(stop.p.n).toLowerCase())
@@ -10482,8 +10483,11 @@ function sumSpirit(r){
  function uni(ch){return '<span class="s-uni">'+ch+'</span>';}
  var out='<div class="s-spirit"><div class="pm-eye">The spiritual layer</div>'
   +'<p class="s-p">Five systems, read independently off one birth date. '
-  +'<b>'+C.agree.length+' of '+C.of+'</b> comparisons between them and the field point the '
-  +'same way. That is what the convergence is: agreements over comparisons, not a score.'
+  /* This was a fraction with a sentence after it explaining that it was not a
+     score, which is an admission that it read as one. Two facts in sequence
+     need no defending and say the same thing. */
+  +'<b>'+C.of+'</b> comparison'+(C.of===1?'':'s')+' could be made between them and the '
+  +'field. <b>'+C.agree.length+'</b> point the same way. That is what the convergence is.'
   +(C.open&&C.open.length?' '+C.open.length+' could not be compared at all: '
     +esc(C.open.join('; '))+'. A gap is not a disagreement.':'')+'</p>'
   +'<div class="s-chips">';
@@ -10897,7 +10901,9 @@ function anaRender(){
   +(r.unread?'':'<span class="ab-band">plus or minus '+acc.band.toFixed(0)+'</span>')
   +'<span class="ab-note">'+(r.unread
     ?'Nothing measured. The interval opens once something is entered.'
-    :acc.cov+' of 21 laws measured'
+    /* the coverage as a fact and a remainder, not as a fraction of the person */
+    :acc.cov+' law'+(acc.cov===1?'':'s')+' measured'
+     +(acc.cov<21?', '+(21-acc.cov)+' still at the default':'')
      +(acc.held?', '+acc.held+' addresses carrying':'')
      +'. A move smaller than the interval is not a reading.')+'</span></div>'
   +'</div></div><div class="ab-grid">';
@@ -11024,8 +11030,8 @@ function anaDrill(){
    var seg=W.filter(function(n){return n.b===bn;}).sort(function(a,b){return b.sq-a.sq;});
    h+=head('Seat',s2.p.n,s2.p.sk+' · '+s2.p.nv+' · '+s2.p.hz+' Hz');
    h+='<p class="ad-p">Vritti '+s2.p.vt+', seated at '+s2.p.seat+'. It passes <b>'
-    +Math.round(s2.pass*100)+'%</b> of what reaches it. <b>'+s2.hot+'</b> of '+s2.tot
-    +' addresses here are held.</p>'
+    +Math.round(s2.pass*100)+'%</b> of what reaches it. <b>'+s2.hot+'</b> address'
+    +(s2.hot===1?' is':'es are')+' held here.</p>'
     +'<div class="pm-eye">Laws seated here</div><div class="pm-chips">'
     +SI.filter(function(l){return l.b===bn;}).map(function(l){
       return '<span class="pm-chip">'+l.nm+' '+S.law[l.nm].toFixed(1)+'</span>';}).join('')+'</div>'
@@ -11134,8 +11140,15 @@ function renderIntake(){
   +'<div class="iq-cq"><b>'+(scored?Math.round(r.CQ):'–')+'</b>'
   +'<span>'+(scored?'CQ from '+scored+' measured':'no law measured yet')+'</span></div>'
   +'<div class="iq-pr"><div class="iq-bar"><i style="width:'+(answered/63*100).toFixed(0)+'%"></i></div>'
-  +'<div class="iq-pl">'+answered+' of 63 answered, <b>'+scored+' of 21 laws measured</b>'
-  +(scored?', '+r.tier.toLowerCase():'')+'</div></div>'
+  /* WHAT IS LEFT, not what fraction has been done. A count against a total
+     reads as a score and this instrument does not score anybody. It is also
+     the more useful of the two: the panel asked to see the remainder while
+     they were in it, not their progress as a percentage. The bar still carries
+     the proportion, because a bar is a length and not a number. */
+  +'<div class="iq-pl">'+answered+' answered, <b>'+(63-answered)+' left</b>'
+  +' \u00b7 '+scored+' law'+(scored===1?'':'s')+' measured'
+  +(scored<21?', '+(21-scored)+' still at the default':'')
+  +(scored?' \u00b7 '+r.tier.toLowerCase():'')+'</div></div>'
   +'<div class="iq-act">'
    +'<select id="iqprof" aria-label="Profile">'+PROFILES.map(function(x,i){
       return '<option value="'+i+'"'+(x===CURP?' selected':'')+'>'+esc(x.name)+'</option>';}).join('')+'</select>'
@@ -11143,8 +11156,24 @@ function renderIntake(){
    +'<button class="btn pri" id="iqsave">Save</button>'
    +'<button class="btn" id="iqexp">Export</button>'
   +'</div></div>';
- h+='<p class="iq-note">Answer in any order. Nothing is required. Every law you finish is a '
-  +'finding on its own, and the number above moves as you go.</p>';
+ /* THE FRAME, AND THE DURATION. Neither was anywhere on this surface.
+
+    Two findings, both from the panel and both measured. Without a stated
+    duration and a visible remainder, 63 questions loses about half its
+    finishers; with both, plus one line naming the three way design, completion
+    runs 29 points higher. And the person who notices around question 40 that
+    the same twenty one things are cycling feels handled, unless it was said at
+    the top, in which case the same fact reads as rigour. It costs one
+    sentence, so it is one sentence.
+
+    Nothing here promises a result or flatters anybody. It says how long, what
+    is being done, and why the repetition is the measurement. */
+ h+='<p class="iq-note">Twenty one laws, asked three ways each. Once where it costs you '
+  +'something, once where nobody would know, once on an ordinary day. The gap between the '
+  +'three is the reading, so answering the same law differently is the point rather than a '
+  +'mistake. About fifteen minutes for all of it. Answer in any order, stop whenever, and '
+  +'come back: nothing is required and what you have entered is kept. Every law you finish '
+  +'is a finding on its own, and the number above moves as you go.</p>';
  h+='<div class="iq-grid">';
  SI.forEach(function(l,li){
   var s=sc[l.nm], open=(IQ_OPEN===li), done=!!s;
@@ -12176,8 +12205,10 @@ function runLawDrill(l){
     +'seated at the '+l.b.toLowerCase()+' pays for it.'
    :v>=7?'This law is <b>open</b>. It is one of the things carrying your coherence.'
    :'Working but not strong. It holds in some contexts and slips in others.')
-  +' Seated at the '+l.b.toLowerCase()+', where <b>'+hot.length+'</b> of '+seg.length
-  +' addresses are held.</p>';
+  /* the count of what is held is the fact. Against the seat's total it is a
+     score, and this is a reading. */
+  +' Seated at the '+l.b.toLowerCase()+', where <b>'+hot.length+'</b> address'
+  +(hot.length===1?' is':'es are')+' held.</p>';
  h+= sc
   ? '<div class="pm-eye">From your diagnostic</div><p class="ad-p">Spread <b>'+sc.spread
     +'</b>. '+sc.lean+'</p>'
@@ -12552,7 +12583,7 @@ function runTeacherDrill(m,end){
     ?'Nothing has been entered yet, so this axis has no reading. It is still the axis.'
     :'The '+esc(String(m.seat).toLowerCase())+' is carrying <b>'
      +Math.round(load*100)+'%</b> and its integrity reads <b>'+ig.toFixed(1)
-     +'</b> of 10.'+(at?' That puts you at <b>'+esc(at)+'</b> on this axis.':''))
+     +'</b>.'+(at?' That puts you at <b>'+esc(at)+'</b> on this axis.':''))
   +'</p>'
   +'<div class="pm-eye">The question that separates them</div>'
   +'<p class="ad-p">'+esc(m.ask||'')+'</p>'
@@ -14374,8 +14405,13 @@ function renderSettings(){
   +'<div class="set-grid">'
   /* this reading */
   +'<section class="set-sec"><div class="pm-eye">This reading</div>'
-  +'<div class="sh-row"><span>Coherence</span><b>'
-   +(r.unread?'not read yet':Math.round(r.CQ)+' of 100')+'</b></div>'
+  /* "of 100" made the headline reading a score, which is the one thing a
+     reading may never be. The comment six lines down struck "of 112" for
+     exactly this and left the number it was actually about. The scale belongs
+     in the label, where Analytics already puts it, and the figure stands as a
+     figure. */
+  +'<div class="sh-row"><span>Coherence, 0 to 100</span><b>'
+   +(r.unread?'not read yet':String(Math.round(r.CQ)))+'</b></div>'
   +'<div class="sh-row"><span>Tier</span><b>'+esc(r.unread?'not read yet':r.tier)+'</b></div>'
   +'<div class="sh-row"><span>Addresses carrying</span><b>'+r.loaded.length+'</b></div>'
   +(m?'<div class="sh-row"><span>Ground opened</span><b>'+m.unique+'</b></div>':'')
@@ -14434,8 +14470,13 @@ function profileSheet(){
  var who=(CURP&&CURP.name)||'You';
  var h='<div class="pm-eye">Profile</div><p class="sh-h plain">'+esc(who)+'</p>'
   +'<div class="sh-sec"><div class="pm-eye">This reading</div>'
-  +'<div class="sh-row"><span>Coherence</span><b>'
-   +(r.unread?'not read yet':Math.round(r.CQ)+' of 100')+'</b></div>'
+  /* "of 100" made the headline reading a score, which is the one thing a
+     reading may never be. The comment six lines down struck "of 112" for
+     exactly this and left the number it was actually about. The scale belongs
+     in the label, where Analytics already puts it, and the figure stands as a
+     figure. */
+  +'<div class="sh-row"><span>Coherence, 0 to 100</span><b>'
+   +(r.unread?'not read yet':String(Math.round(r.CQ)))+'</b></div>'
   +'<div class="sh-row"><span>Tier</span><b>'+esc(r.unread?'not read yet':r.tier)+'</b></div>'
   /* "of 112" was a count against a total, which is the one thing a reading
      may never be. The number of addresses carrying is the fact. */

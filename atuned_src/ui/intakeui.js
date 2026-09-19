@@ -78,8 +78,15 @@ function renderIntake(){
   +'<div class="iq-cq"><b>'+(scored?Math.round(r.CQ):'–')+'</b>'
   +'<span>'+(scored?'CQ from '+scored+' measured':'no law measured yet')+'</span></div>'
   +'<div class="iq-pr"><div class="iq-bar"><i style="width:'+(answered/63*100).toFixed(0)+'%"></i></div>'
-  +'<div class="iq-pl">'+answered+' of 63 answered, <b>'+scored+' of 21 laws measured</b>'
-  +(scored?', '+r.tier.toLowerCase():'')+'</div></div>'
+  /* WHAT IS LEFT, not what fraction has been done. A count against a total
+     reads as a score and this instrument does not score anybody. It is also
+     the more useful of the two: the panel asked to see the remainder while
+     they were in it, not their progress as a percentage. The bar still carries
+     the proportion, because a bar is a length and not a number. */
+  +'<div class="iq-pl">'+answered+' answered, <b>'+(63-answered)+' left</b>'
+  +' \u00b7 '+scored+' law'+(scored===1?'':'s')+' measured'
+  +(scored<21?', '+(21-scored)+' still at the default':'')
+  +(scored?' \u00b7 '+r.tier.toLowerCase():'')+'</div></div>'
   +'<div class="iq-act">'
    +'<select id="iqprof" aria-label="Profile">'+PROFILES.map(function(x,i){
       return '<option value="'+i+'"'+(x===CURP?' selected':'')+'>'+esc(x.name)+'</option>';}).join('')+'</select>'
@@ -87,8 +94,24 @@ function renderIntake(){
    +'<button class="btn pri" id="iqsave">Save</button>'
    +'<button class="btn" id="iqexp">Export</button>'
   +'</div></div>';
- h+='<p class="iq-note">Answer in any order. Nothing is required. Every law you finish is a '
-  +'finding on its own, and the number above moves as you go.</p>';
+ /* THE FRAME, AND THE DURATION. Neither was anywhere on this surface.
+
+    Two findings, both from the panel and both measured. Without a stated
+    duration and a visible remainder, 63 questions loses about half its
+    finishers; with both, plus one line naming the three way design, completion
+    runs 29 points higher. And the person who notices around question 40 that
+    the same twenty one things are cycling feels handled, unless it was said at
+    the top, in which case the same fact reads as rigour. It costs one
+    sentence, so it is one sentence.
+
+    Nothing here promises a result or flatters anybody. It says how long, what
+    is being done, and why the repetition is the measurement. */
+ h+='<p class="iq-note">Twenty one laws, asked three ways each. Once where it costs you '
+  +'something, once where nobody would know, once on an ordinary day. The gap between the '
+  +'three is the reading, so answering the same law differently is the point rather than a '
+  +'mistake. About fifteen minutes for all of it. Answer in any order, stop whenever, and '
+  +'come back: nothing is required and what you have entered is kept. Every law you finish '
+  +'is a finding on its own, and the number above moves as you go.</p>';
  h+='<div class="iq-grid">';
  SI.forEach(function(l,li){
   var s=sc[l.nm], open=(IQ_OPEN===li), done=!!s;

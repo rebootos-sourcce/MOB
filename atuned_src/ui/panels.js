@@ -479,8 +479,13 @@ function renderSettings(){
   +'<div class="set-grid">'
   /* this reading */
   +'<section class="set-sec"><div class="pm-eye">This reading</div>'
-  +'<div class="sh-row"><span>Coherence</span><b>'
-   +(r.unread?'not read yet':Math.round(r.CQ)+' of 100')+'</b></div>'
+  /* "of 100" made the headline reading a score, which is the one thing a
+     reading may never be. The comment six lines down struck "of 112" for
+     exactly this and left the number it was actually about. The scale belongs
+     in the label, where Analytics already puts it, and the figure stands as a
+     figure. */
+  +'<div class="sh-row"><span>Coherence, 0 to 100</span><b>'
+   +(r.unread?'not read yet':String(Math.round(r.CQ)))+'</b></div>'
   +'<div class="sh-row"><span>Tier</span><b>'+esc(r.unread?'not read yet':r.tier)+'</b></div>'
   +'<div class="sh-row"><span>Addresses carrying</span><b>'+r.loaded.length+'</b></div>'
   +(m?'<div class="sh-row"><span>Ground opened</span><b>'+m.unique+'</b></div>':'')
@@ -539,8 +544,13 @@ function profileSheet(){
  var who=(CURP&&CURP.name)||'You';
  var h='<div class="pm-eye">Profile</div><p class="sh-h plain">'+esc(who)+'</p>'
   +'<div class="sh-sec"><div class="pm-eye">This reading</div>'
-  +'<div class="sh-row"><span>Coherence</span><b>'
-   +(r.unread?'not read yet':Math.round(r.CQ)+' of 100')+'</b></div>'
+  /* "of 100" made the headline reading a score, which is the one thing a
+     reading may never be. The comment six lines down struck "of 112" for
+     exactly this and left the number it was actually about. The scale belongs
+     in the label, where Analytics already puts it, and the figure stands as a
+     figure. */
+  +'<div class="sh-row"><span>Coherence, 0 to 100</span><b>'
+   +(r.unread?'not read yet':String(Math.round(r.CQ)))+'</b></div>'
   +'<div class="sh-row"><span>Tier</span><b>'+esc(r.unread?'not read yet':r.tier)+'</b></div>'
   /* "of 112" was a count against a total, which is the one thing a reading
      may never be. The number of addresses carrying is the fact. */
