@@ -1,0 +1,1312 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The ninety day onboarding simulation</title>
+<style>
+:root{
+ --bg:#0e1012; --bg2:#15181b; --bg3:#1c2024; --line:#2a2f35;
+ --ink:#e6e9ec; --ink2:#a8b0b8; --ink3:#77808a;
+ --cool:#7fb3cc; --warm:#cf8a7e; --good:#86b08a; --gold:#c9a86a; --violet:#9d8fc4;
+ --measure:34rem;
+}
+@media (prefers-color-scheme:light){
+ :root:not([data-theme="dark"]){
+  --bg:#faf9f7; --bg2:#f2f1ee; --bg3:#eae9e5; --line:#dcdad4;
+  --ink:#1a1c1e; --ink2:#4e555c; --ink3:#767e86;
+  --cool:#2f6f8f; --warm:#9b4a3c; --good:#3f7245; --gold:#8a6d29; --violet:#5c4d8a;
+ }
+}
+:root[data-theme="light"]{
+ --bg:#faf9f7; --bg2:#f2f1ee; --bg3:#eae9e5; --line:#dcdad4;
+ --ink:#1a1c1e; --ink2:#4e555c; --ink3:#767e86;
+ --cool:#2f6f8f; --warm:#9b4a3c; --good:#3f7245; --gold:#8a6d29; --violet:#5c4d8a;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);
+ font:400 17px/1.62 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+ font-feature-settings:"kern" 1;}
+.wrap{max-width:60rem;margin:0 auto;padding:0 16px 8rem}
+p,li{max-width:var(--measure)}
+h1,h2,h3,h4{line-height:1.22;letter-spacing:-.011em;font-weight:600}
+h1{font-size:clamp(2rem,5vw,3.1rem);margin:0 0 .4em;letter-spacing:-.025em}
+h2{font-size:clamp(1.45rem,3.2vw,2rem);margin:3.4rem 0 .2em;padding-top:2rem;
+ border-top:1px solid var(--line)}
+h3{font-size:1.18rem;margin:2.4rem 0 .5em;color:var(--ink)}
+h4{font-size:1rem;margin:1.8rem 0 .3em;color:var(--cool);font-weight:600}
+a{color:var(--cool)}
+strong{font-weight:640;color:var(--ink)}
+em{font-style:italic;color:var(--ink2)}
+code,.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;
+ background:var(--bg3);padding:.1em .34em;border-radius:3px;color:var(--ink)}
+pre{background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:1rem 1.1rem;
+ overflow-x:auto;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+ font-size:.82rem;line-height:1.72;color:var(--ink2)}
+hr{border:0;border-top:1px solid var(--line);margin:3rem 0}
+
+/* masthead */
+.mast{padding:4.5rem 0 2.5rem}
+.kicker{font-size:.76rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink3);
+ margin:0 0 1.4rem}
+.dek{font-size:1.16rem;color:var(--ink2);max-width:40rem;margin:0 0 2rem}
+.stamp{display:grid;grid-template-columns:auto 1fr;gap:.2rem 1.4rem;font-size:.82rem;
+ font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--ink3);
+ border-left:2px solid var(--line);padding-left:1.1rem;max-width:34rem}
+.stamp b{color:var(--ink2);font-weight:400}
+
+/* contents */
+nav.toc{background:var(--bg2);border:1px solid var(--line);border-radius:10px;
+ padding:1.2rem 1.4rem;margin:2.5rem 0 1rem}
+nav.toc h2{all:unset;display:block;font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;
+ color:var(--ink3);margin-bottom:.8rem}
+nav.toc ol{margin:0;padding-left:1.3rem;columns:2;column-gap:2rem}
+nav.toc li{margin:.24rem 0;max-width:none}
+nav.toc a{text-decoration:none;color:var(--ink2)}
+nav.toc a:hover{color:var(--cool);text-decoration:underline}
+@media(max-width:620px){nav.toc ol{columns:1}}
+
+/* callouts */
+.note{border-left:3px solid var(--cool);background:var(--bg2);padding:1rem 1.2rem;
+ border-radius:0 8px 8px 0;margin:1.6rem 0}
+.note p{margin:.35rem 0;max-width:none}
+.note.cost{border-left-color:var(--warm)}
+.note.fixed{border-left-color:var(--good)}
+.note .lab{display:block;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;
+ color:var(--ink3);margin-bottom:.4rem}
+.finding{font-size:1.06rem;color:var(--ink)}
+
+/* tags */
+.tag{display:inline-block;font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;
+ padding:.16em .55em;border-radius:99px;border:1px solid currentColor;vertical-align:.08em;
+ font-weight:600}
+.t-m{color:var(--cool)} .t-c{color:var(--violet)} .t-j{color:var(--gold)}
+
+/* tables */
+.scroller{overflow-x:auto;margin:1.5rem 0;border:1px solid var(--line);border-radius:10px}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{text-align:left;padding:.62rem .85rem;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:var(--bg2);font-weight:600;font-size:.76rem;letter-spacing:.05em;
+ text-transform:uppercase;color:var(--ink2);white-space:nowrap}
+tbody tr:last-child td{border-bottom:0}
+tbody tr:hover{background:var(--bg2)}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+tr.tot td{background:var(--bg3);font-weight:640}
+
+/* quote */
+blockquote{margin:1.5rem 0;padding:.2rem 0 .2rem 1.2rem;border-left:2px solid var(--line);
+ color:var(--ink2)}
+blockquote p{margin:.3rem 0}
+blockquote.said{border-left-color:var(--gold)}
+blockquote.screen{border-left-color:var(--line);font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+ font-size:.86rem;line-height:1.7;color:var(--ink2)}
+.who{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);
+ display:block;margin-bottom:.3rem}
+
+/* person cards */
+.person{border:1px solid var(--line);border-radius:10px;padding:1.3rem 1.5rem;margin:1.6rem 0;
+ background:var(--bg2)}
+.person h3{margin-top:0}
+.person .meta{font-size:.82rem;color:var(--ink3);margin:-.3rem 0 1rem;max-width:none;
+ font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.stop{margin-top:1rem;padding-top:.8rem;border-top:1px solid var(--line);font-size:.94rem}
+.stop b{color:var(--warm)}
+
+/* boot timeline */
+.tl{list-style:none;padding:0;margin:1.5rem 0;max-width:38rem}
+.tl li{display:grid;grid-template-columns:4.2rem 1fr;gap:1rem;padding:.42rem 0;
+ border-bottom:1px solid var(--line);max-width:none;align-items:baseline}
+.tl li:last-child{border-bottom:0}
+.tl .s{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.82rem;
+ color:var(--ink3);text-align:right}
+.tl li.hit .s{color:var(--warm)} .tl li.hit{color:var(--ink)}
+
+/* rank list */
+.rank{counter-reset:r;list-style:none;padding:0;margin:2rem 0}
+.rank>li{counter-increment:r;position:relative;padding:1.2rem 0 1.2rem 3.4rem;
+ border-top:1px solid var(--line);max-width:none}
+.rank>li::before{content:counter(r);position:absolute;left:0;top:1.15rem;width:2.2rem;height:2.2rem;
+ border:1px solid var(--line);border-radius:99px;display:grid;place-items:center;
+ font-size:.86rem;font-family:ui-monospace,monospace;color:var(--ink3)}
+.rank h3{margin:0 0 .3rem;font-size:1.04rem}
+.rank .cnt{float:right;font-family:ui-monospace,monospace;font-size:.84rem;color:var(--warm);
+ margin-left:1rem}
+.rank .fix{margin-top:.6rem;font-size:.9rem;color:var(--ink2);font-style:italic}
+.rank p{max-width:none}
+
+/* cost bands */
+.band{margin:2.4rem 0 1rem}
+.band .bh{font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:var(--good);
+ border-bottom:1px solid var(--line);padding-bottom:.5rem;margin-bottom:.4rem}
+.band.wk .bh{color:var(--gold)}
+.band.rule .bh{color:var(--warm)}
+
+footer{margin-top:4rem;padding-top:2rem;border-top:1px solid var(--line);
+ font-size:.86rem;color:var(--ink3)}
+footer a{color:var(--ink2)}
+.themer{position:fixed;top:12px;right:12px;z-index:9;background:var(--bg2);color:var(--ink2);
+ border:1px solid var(--line);border-radius:99px;padding:.5rem .9rem;font-size:.76rem;
+ cursor:pointer;min-height:44px;min-width:44px}
+@media print{.themer,nav.toc{display:none}body{background:#fff;color:#000}}
+</style></head>
+<body>
+<button class="themer" id="th" type="button">Light</button>
+<div class="wrap">
+
+<header class="mast">
+ <p class="kicker">Atuned / Source OS &middot; UI and UX seat</p>
+ <h1>The ninety day onboarding simulation</h1>
+ <p class="dek">Day one, day three, day seven, day thirty, day ninety. Fourteen
+ people in the roster, each at the reading this build actually gives them. What
+ they do, what they see, where they stop, and the sentence that stops them.</p>
+ <div class="stamp">
+  <b>build</b><span>commit 124421d plus an uncommitted working tree</span>
+  <b>file</b><span>source.html, 1,190,443 bytes</span>
+  <b>md5</b><span>f304c29532ea8c2dfa9c683fab5b8051</span>
+  <b>driven</b><span>Chromium 1194, file://, 1600x1000 and 390x844</span>
+  <b>sessions</b><span>nineteen, 7,400 ms boot wait on each</span>
+  <b>errors</b><span>zero page errors on every surface, both widths</span>
+  <b>requests</b><span>three, all local: the file and the two rasters</span>
+ </div>
+</header>
+
+<nav class="toc">
+ <h2>Contents</h2>
+ <ol>
+  <li><a href="#prior">What the quarter simulation already covers</a></li>
+  <li><a href="#method">Method</a></li>
+  <li><a href="#day1">Day one, measured</a></li>
+  <li><a href="#roster">The roster at its measured readings</a></li>
+  <li><a href="#people">Day one, by person</a></li>
+  <li><a href="#day2">Day two, and the ritual claim</a></li>
+  <li><a href="#later">Day three to day ninety</a></li>
+  <li><a href="#curve">The retention curve</a></li>
+  <li><a href="#leave">Why they leave, ranked</a></li>
+  <li><a href="#fix">What would change each outcome</a></li>
+  <li><a href="#inst">What to instrument</a></li>
+  <li><a href="#grade">The grade delta</a></li>
+  <li><a href="#not">What this file is not</a></li>
+ </ol>
+</nav>
+
+<div class="note">
+ <span class="lab">Three kinds of figure, labelled everywhere in this document</span>
+ <p><span class="tag t-m">measured</span> Executed this session in this build and
+ read off the DOM, the console or the CSS. A fact about the file.</p>
+ <p><span class="tag t-c">cited</span> Published outside this project, with the
+ source named.</p>
+ <p><span class="tag t-j">judgement</span> Model output. A reasoned estimate with
+ arithmetic attached. Not evidence about any human being.</p>
+</div>
+
+
+<h2 id="prior">1. What the quarter simulation already covers</h2>
+
+<p><code>reviews/simulation-quarter.md</code> is 1,249 lines and it is a good
+document. It is not repeated here. What it established, and what stands: the
+method and the honesty framing; the content inventory of about 123 minutes of
+first pass material; the eight hour finding and the case for a daily ceiling,
+both unchanged and unbuilt; the grades, the minutes scale and the willingness to
+pay window; and twelve numbered defects.</p>
+
+<div class="note fixed">
+ <span class="lab">Six of those twelve are closed in this build</span>
+ <p class="finding">The closures are real and they are good work. They are named
+ here so that nothing below reads as a complaint about something already
+ fixed.</p>
+</div>
+
+<div class="scroller"><table>
+<thead><tr><th>Was</th><th>Now, measured this session</th></tr></thead>
+<tbody>
+<tr><td>D1, the two Summary actions wired to nothing</td><td>Fixed. <code>data-sout</code> has a handler at <code>ui/summary.js:613</code>. Both fire</td></tr>
+<tr><td>D2, three ICPs told &ldquo;Nothing is carrying&rdquo; with no action</td><td>Fixed. Sofia reads &ldquo;Nothing is held above the line, so nothing is reaching the body as load. There are 52 addresses carrying under it, which is signal and not yet cost&rdquo;, and is offered <em>Answer the laws</em></td></tr>
+<tr><td>D3, a 168 token vocabulary that read nothing out of ordinary writing</td><td>Widened. <code>died</code>, <code>lied</code>, <code>exhausted</code>, <code>terrified</code>, <code>have not slept</code>, <code>chest is tight</code>, <code>jaw is tight</code> all match</td></tr>
+<tr><td>D6, the reward curve returning 0.00 from run three</td><td>Fixed at the cliff. <code>#bRel</code> falls back to <code>sq&gt;0</code> and the code comment names the old failure</td></tr>
+<tr><td>D8, the fourth door a dead end</td><td>Fixed. All four doors are real buttons</td></tr>
+<tr><td>D13, no stated duration on the intake</td><td>Fixed. &ldquo;about fifteen minutes for all of it&rdquo;, plus a remainder and a bar</td></tr>
+</tbody></table></div>
+
+<p>Undo also exists, works, and is in the top bar with redo beside it.</p>
+
+<p><strong>This document is about what the build does now, which is different,
+and in three places worse.</strong> The app no longer opens on Summary. It opens
+on Field, ruled. Ritual is a primary tab, second in a bar of nine. The record,
+the streak and the accountability line live on Compass. A release now repoints
+the profile before it writes. Every one of those changes moves the onboarding
+and none of them is in the quarter simulation.</p>
+
+<p><code>RESEARCH-icp.md</code> covers everything before the app opens: the ad,
+the landing page, the quiz, the email, the result page, and who walks at which
+step. That is not repeated either. This document starts at the moment the file
+is open.</p>
+
+
+<h2 id="method">2. Method</h2>
+
+<p><code>source.html</code> was built with <code>./atuned_src/BUILD.sh</code> and
+driven in Chromium at <code>/opt/pw-browsers/chromium-1194</code>, from
+<code>file://</code>, at both widths, across nineteen driving sessions. Every
+surface was rendered and the images were looked at. The boot was captured at
+150, 600, 1500, 3000, 5000 and 7200 milliseconds and the frames were read. The
+intake was completed end to end through the real controls, twice, once with a
+uniform answer and once with a random one. Ten pieces of ordinary first person
+writing were put through the shipped <code>parseStory</code>; six were typed
+into the real text box and committed through the real button. The release was
+run to exhaustion from six loaded profiles and from a person&rsquo;s own field.
+Undo was exercised across a release and the ledger was read on both sides of it.
+A ritual was saved, backdated by a day and by three days, and the Compass record
+was read at each point. The page was reloaded to test the day two return.</p>
+
+<p>The profile select prepends a <em>You</em> profile, so a reference case at
+index <code>i</code> in <code>engine/data/people.js</code> is index
+<code>i+1</code> in the browser. Every reading below was taken with
+<code>loadP(i+1)</code> followed by <code>compute()</code> and
+<code>accuracy(r)</code>, read off the live build. No level was assumed.</p>
+
+<p><strong>Every quotation is judgement. Nobody named below exists.</strong> The
+roster and its charge vectors are the ones in the repository and their
+<code>says</code> lines govern their behaviour.</p>
+
+<p><strong>The weights are carried over from the quarter simulation</strong> so
+the two documents compare line by line: Diane 180, Derek 170, Marcus 160, Angela
+150, Sofia 140, James 100, Ana 50, Gordon 35, Rosa 15, against a thousand
+arrivals. The four reference cases added since are not given market share. Tomas
+and Nkem sit inside Ana&rsquo;s 50, because they are the same segment at a
+different depth, and inventing share for them would be inventing a market.</p>
+
+
+<h2 id="day1">3. Day one, measured before anybody speaks</h2>
+
+<h3>3.1 The boot</h3>
+<p><span class="tag t-m">measured</span> Read off the keyframes at
+<code>shell/head.html:2811</code> to <code>:2903</code> and confirmed against
+frames captured at six moments.</p>
+
+<ul class="tl">
+ <li><span class="s">0.00 s</span><span>Black</span></li>
+ <li><span class="s">0.62 s</span><span>A dot begins to grow at the centre</span></li>
+ <li><span class="s">0.92 s</span><span>A vertical spine draws through it</span></li>
+ <li><span class="s">1.50 s</span><span>&ldquo;Press anything to go straight in&rdquo; fades up to 0.62 opacity</span></li>
+ <li><span class="s">1.92 s</span><span>A ring draws around the spine, over 1.55 seconds</span></li>
+ <li><span class="s">3.22 s</span><span>A halo</span></li>
+ <li><span class="s">3.54 s</span><span>The wordmark begins to fade up</span></li>
+ <li class="hit"><span class="s">4.46 s</span><span>&ldquo;Atuned / Source OS&rdquo; is legible for the first time</span></li>
+ <li><span class="s">5.20 s</span><span>The sheet clears and the app is uncovered</span></li>
+</ul>
+
+<div class="note cost">
+ <p class="finding">The first four seconds of a stranger&rsquo;s relationship
+ with this product contain no word saying what it is. They contain a dot, a
+ spine, a ring and a halo. The only text before second 3.5 is an instruction for
+ leaving.</p>
+</div>
+
+<p>The skip works and is honest, which is worth saying. But a control at 0.62
+opacity reading <em>press anything</em> is not an answer to &ldquo;what is
+this&rdquo;, it is an answer to &ldquo;how do I leave&rdquo;.
+<code>prefers-reduced-motion</code> removes the whole sheet, which is
+correct.</p>
+
+<h3>3.2 The landing surface</h3>
+<p><span class="tag t-m">measured</span> The app opens on Field, tab integer 2,
+on the owner&rsquo;s ruling. In the first viewport at 1600x1000, on a blank
+profile: nine tab names; a profile select reading Custom with thirteen other
+people&rsquo;s names in it; undo, redo, a theme menu, help and account; a sub bar
+reading <em>Charge</em>; a left rail carrying Orientation, Balance, four Root
+Domains, nineteen Blueprint Domain icons and eleven Primary icons; a centre stage
+of eight metric chips all reading a dash or 0.0; an empty wheel labelled
+&ldquo;112 addresses, SQ, 0 loaded&rdquo;; a slider reading <em>swing 13</em>;
+and a right rail carrying the four doors.</p>
+
+<p><strong>Four numbers are on screen about nothing:</strong> 72 and 28 on the
+Orientation slider, and two 0.0 chips. <strong>Three separate phrases on the
+same screen say nothing has been read.</strong> The instrument&rsquo;s own best
+sentence, that a number off a default is a number about the default, is on
+Summary, which is not this screen.</p>
+
+<h3>3.3 The count</h3>
+<p><span class="tag t-m">measured</span> Visible interactive elements on a blank
+profile, counted as buttons, selects, inputs, links, anything with a role or a
+tabindex, and every element carrying a click data attribute.</p>
+
+<div class="scroller"><table>
+<thead><tr><th>Surface</th><th class="n">On the surface</th><th class="n">First viewport, 1600</th><th class="n">First viewport, 390</th><th class="n">Words</th></tr></thead>
+<tbody>
+<tr><td>Knowledge</td><td class="n"><strong>213</strong></td><td class="n"><strong>100</strong></td><td class="n">28</td><td class="n">1,259</td></tr>
+<tr><td>Summary</td><td class="n">135</td><td class="n">81</td><td class="n">15</td><td class="n">727</td></tr>
+<tr><td>Energetics</td><td class="n">126</td><td class="n">89</td><td class="n">17</td><td class="n">908</td></tr>
+<tr><td>Story</td><td class="n">111</td><td class="n">95</td><td class="n">23</td><td class="n">477</td></tr>
+<tr><td>Body</td><td class="n">111</td><td class="n">70</td><td class="n">22</td><td class="n">520</td></tr>
+<tr><td>Ritual</td><td class="n">110</td><td class="n">87</td><td class="n">18</td><td class="n">695</td></tr>
+<tr><td>Compass</td><td class="n">102</td><td class="n">86</td><td class="n">16</td><td class="n">549</td></tr>
+<tr><td><strong>Field, the landing</strong></td><td class="n">101</td><td class="n"><strong>71</strong></td><td class="n">20</td><td class="n">422</td></tr>
+<tr><td>Games</td><td class="n">94</td><td class="n">78</td><td class="n">16</td><td class="n">546</td></tr>
+</tbody></table></div>
+
+<div class="note cost">
+ <p class="finding">The working floor for a screen a person is trying to use is
+ twelve simultaneous choices. Working memory holds about four. The lightest
+ surface in this product presents 71 on arrival and the heaviest presents
+ 100.</p>
+</div>
+
+<p><strong>Forty five controls on every single surface are explained only by a
+<code>title</code> attribute.</strong> The figure is identical on all nine, which
+means it is the chrome: the top bar and the left rail. A phone has no hover, so
+on a phone those forty five have no explanation at all. On Summary, forty four
+visible interactive elements carry neither text, nor a title, nor a label.</p>
+
+<h3>3.4 The phone</h3>
+<p><span class="tag t-m">measured</span> at 390x844. The tab bar has a
+<code>clientWidth</code> of 348 and a <code>scrollWidth</code> of 724.</p>
+
+<div class="scroller"><table>
+<thead><tr><th>Tab</th><th class="n">Left</th><th class="n">Right</th><th>Visible</th></tr></thead>
+<tbody>
+<tr><td>Energetics</td><td class="n">21</td><td class="n">118</td><td>yes</td></tr>
+<tr><td>Ritual</td><td class="n">123</td><td class="n">185</td><td>yes</td></tr>
+<tr><td>Story</td><td class="n">190</td><td class="n">251</td><td>yes</td></tr>
+<tr><td>Field</td><td class="n">256</td><td class="n">312</td><td>yes, and it is where the app lands</td></tr>
+<tr><td>Body</td><td class="n">317</td><td class="n">376</td><td>cut at 348</td></tr>
+<tr><td>Compass</td><td class="n">381</td><td class="n">469</td><td><strong>no</strong></td></tr>
+<tr><td>Knowledge</td><td class="n">474</td><td class="n">575</td><td><strong>no</strong></td></tr>
+<tr><td>Games</td><td class="n">580</td><td class="n">651</td><td><strong>no</strong></td></tr>
+<tr><td>Summary</td><td class="n">656</td><td class="n">745</td><td><strong>no, and its left edge is 308 px past the edge</strong></td></tr>
+</tbody></table></div>
+
+<p>Four of the nine doors are entirely off screen and a fifth is cut in half.
+The affordance is a 26 pixel gradient mask, removed once scrolled to the end.
+There is no scrollbar: <code>#tabbar::-webkit-scrollbar</code> is
+<code>display:none</code>. There is no arrow and no count.</p>
+
+<p>A phone spends 265 pixels of an 844 pixel screen on chrome before any
+content: the wordmark at y 17, the tab strip at y 67, and <strong>at y 142, full
+width, forty four pixels tall, the profile select</strong>. The second thing a
+stranger sees on a phone is a control offering to make them somebody else. James
+has refused at that control in every panel ever run and it has not moved.</p>
+
+<div class="note cost">
+ <p class="finding">The four doors, which are the only instruction in the
+ product, sit 3,098 pixels down a 5,818 pixel scroller on the Field surface.
+ That is roughly four full screen flicks past a wheel with nothing in it. On
+ desktop they are at x 1,287, visible on arrival, which is why this defect is
+ invisible to anybody reviewing on a laptop.</p>
+</div>
+
+<h3>3.5 The screen the product should open on</h3>
+<p><span class="tag t-m">measured</span> Summary at 390x844, blank profile, top
+of the surface:</p>
+
+<blockquote class="screen">
+<p>Coherence, Not Read Yet</p>
+<p>Nothing has been entered, so there is nothing to read. The arithmetic
+underneath works and it is not being shown, because a number off a default is a
+number about the default and not about you.</p>
+<p>Where To Start<br>
+Four ways in. None of them asks you to know a term first, and any one of them
+fills this page.</p>
+</blockquote>
+
+<p>Then the four doors, in the first two screens, at full width, readable. That
+is a first screen. It says what this is, it refuses to lie, it says what to do,
+and it fits a phone. <strong>It is the ninth tab, 308 pixels off the right edge
+of a strip with no scrollbar, and the app does not open on it.</strong></p>
+
+<h3>3.6 The three ways in, each driven to its end</h3>
+
+<h4>Path one. The intake</h4>
+<p><span class="tag t-m">measured</span>, driven through the real controls. The
+surface opens with an identity block, then the frame, which is now right:
+&ldquo;about fifteen minutes for all of it, in any order. Stop whenever and come
+back.&rdquo; A bar, and a line reading &ldquo;0 answered, 63 left, 0 laws
+measured, 21 still at the default.&rdquo; Twenty one law cards, one open at a
+time, each showing three questions side by side with eleven buttons each.</p>
+
+<div class="scroller"><table>
+<thead><tr><th>Done</th><th class="n">Clicks</th><th>Identification</th><th class="n">Carrying above the line</th></tr></thead>
+<tbody>
+<tr><td>Three answers, about thirty seconds</td><td class="n">4</td><td>22.1 percent, plus or minus <strong>19.0</strong>, and the dash is gone</td><td class="n">0</td></tr>
+<tr><td>Every question, answered at 6</td><td class="n">85</td><td>48.8 percent, plus or minus 13.3. CQ 36, Incoherent</td><td class="n"><strong>0</strong></td></tr>
+<tr><td>Every question, answered at random</td><td class="n">85</td><td>46.9 percent, plus or minus 12.4. CQ 23.6, Corrupt</td><td class="n"><strong>0</strong></td></tr>
+</tbody></table></div>
+
+<p>The reading a completed intake produces ends with:</p>
+<blockquote class="screen"><p>Release This First<br>Nothing is carrying<br>No address is holding anything</p></blockquote>
+<p>And the release control, pressed, answers:</p>
+<blockquote class="screen"><p>Nothing is held above the line, so there is nothing to release. Write a story or set a charge first.</p></blockquote>
+
+<div class="note cost">
+ <p class="finding">Fifteen minutes of honest self report ends in a verdict and
+ an instruction to go and do a different exercise. This is the moment in the
+ product where a person has invested the most.</p>
+</div>
+
+<h4>Path two. The story, which is door one</h4>
+<p><span class="tag t-m">measured</span> Ten pieces of ordinary first person
+writing through the shipped <code>parseStory</code>.</p>
+
+<div class="scroller"><table>
+<thead><tr><th>Written</th><th>What the instrument wrote back</th></tr></thead>
+<tbody>
+<tr><td>My mother died in March and I still have not cried</td><td>Separation, Martyrdom, Longing, Closed Heart</td></tr>
+<tr><td>I am exhausted and there is nothing left for anyone</td><td><strong>Pride</strong></td></tr>
+<tr><td>My partner cut me out of the deal and my jaw is tight</td><td><strong>Spiritual Language To Manipulate, Excuse, Deceit, Lying</strong></td></tr>
+<tr><td>I lied to my wife about the money for a year</td><td>Spiritual Language To Manipulate, Excuse, Deceit, Lying</td></tr>
+<tr><td>I had a panic attack in the car park</td><td>Fear, Control, Insecurity, Scarcity</td></tr>
+<tr><td>I screamed at my son and I hate that I am like my father</td><td><strong>Pride, Arrogance, Competition, Anger</strong></td></tr>
+<tr><td>I cannot make payroll this month and I have not told the team</td><td>nothing</td></tr>
+<tr><td>She left in February and I keep the ring in the drawer</td><td>nothing</td></tr>
+<tr><td>My father has dementia and does not know me and I visit anyway</td><td>nothing</td></tr>
+<tr><td>I drink every night and tell myself it is fine</td><td>nothing</td></tr>
+</tbody></table></div>
+
+<p>The vocabulary is wider. The mechanism is unchanged. When a somatic word maps
+to a seat and no emotion adjective is recognised, the seat&rsquo;s modal family
+fires and the top four addresses by susceptibility are written. <em>Jaw is
+tight</em> maps to the throat. The throat&rsquo;s modal family is Deceit. Four of
+ten produce nothing at all, which is now honest silence rather than a guess, and
+that is an improvement.</p>
+
+<p>Then the commit, driven through the real button with a realistic sentence:
+<em>My partner cut me out of the deal in January. My jaw is tight all day and I
+have not slept properly since.</em></p>
+
+<ul>
+<li>The panel reads <strong>&ldquo;Imprints, 0 And 8 Pending&rdquo;</strong> and
+shows two words repeated four times each: Fear +1.7 four times under Root,
+Disgust +1.8 four times under Throat.</li>
+<li>The button reads <strong>Commit 8</strong>.</li>
+<li>After the commit: 27 addresses carrying, <strong>held 0</strong>, and
+<strong><code>unread</code> is still true</strong>.</li>
+<li>The story surface&rsquo;s own release panel reads &ldquo;Nothing is held
+above the line yet, so there is nothing to release&rdquo; and &ldquo;Nothing to
+run&rdquo;, with the button disabled.</li>
+</ul>
+
+<div class="note cost">
+ <p class="finding">A person writes a true thing about their life, commits it,
+ and the instrument still says nothing has been entered. The reading gate is
+ <code>sq&gt;=4</code>. The story lands the charge below it.</p>
+</div>
+
+<p>A denser story does clear it: sixteen imprints, three addresses above the
+line, CQ 33.76. <strong>So door one works for writing that is unusually dense in
+emotion adjectives and fails for writing that sounds like a person.</strong></p>
+
+<h4>Path three. The dropdown</h4>
+<p><span class="tag t-m">measured</span>, and this is the worst thing in the
+build. A curious person loads a reference case to see what a reading looks like.
+On a phone that control is the second thing on the screen. They get a complete,
+impressive reading. Then they press the one primary action the product offers
+them, <em>Run a release</em>. <code>relCoolDown</code> calls
+<code>toYou()</code> before it reads the number, before it takes the undo point
+and before it writes.</p>
+
+<div class="scroller"><table>
+<thead><tr><th>Loaded</th><th class="n">CQ before</th><th class="n">Carrying before</th><th>After one press</th></tr></thead>
+<tbody>
+<tr><td>Sofia</td><td class="n">57.18</td><td class="n">52</td><td>CQ <strong>42.31</strong>, carrying 0, profile Custom</td></tr>
+<tr><td>Diane</td><td class="n">28.65</td><td class="n">91</td><td>CQ <strong>42.42</strong>, carrying 0, profile Custom</td></tr>
+<tr><td>Marcus</td><td class="n">39.17</td><td class="n">99</td><td>CQ <strong>42.40</strong>, carrying 0, profile Custom</td></tr>
+<tr><td>Derek</td><td class="n">15.50</td><td class="n">90</td><td>CQ <strong>42.40</strong>, carrying 0, profile Custom</td></tr>
+<tr><td>James</td><td class="n">12.79</td><td class="n">90</td><td>CQ <strong>42.44</strong>, carrying 0, profile Custom</td></tr>
+<tr><td>Ana</td><td class="n">7.63</td><td class="n">107</td><td>CQ <strong>42.38</strong>, carrying 0, profile Custom</td></tr>
+</tbody></table></div>
+
+<p>Every person, whoever they were looking at, lands on the same number. The
+profile select changes under them without a confirmation. And on the second
+press: <em>Nothing is held above the line, so there is nothing to release.</em></p>
+
+<p>The comment above the repoint is honest about its intention: the person who
+ran it is the person who is charged. The intention is right. The effect, driven,
+is that a person who has entered nothing presses the only button on the screen
+and is given somebody else&rsquo;s release, a number that is not theirs, and a
+bill.</p>
+
+<p><strong>The bill is 25 patterns.</strong> One press spends 25 lines and opens
+25 unique ground on the person&rsquo;s own record. <code>DECISIONS.md</code>
+rules the gift at a hundred. <strong>Four presses spend the whole gift.</strong>
+The counter lives in Settings, under Billing And Tier, on a surface with no door
+in the navigation, and after one press it reads &ldquo;75 of the gift
+left&rdquo;.</p>
+
+<h4>The two paths together</h4>
+<p><span class="tag t-m">measured</span> From a blank profile: write one ordinary
+story, commit it, then press the release control five times. About ten
+minutes.</p>
+
+<div class="scroller"><table>
+<thead><tr><th class="n">Press</th><th class="n">Patterns spent</th><th class="n">Ground opened</th><th class="n">Snapshots</th><th>The reading</th></tr></thead>
+<tbody>
+<tr><td class="n">1</td><td class="n">25</td><td class="n">25</td><td class="n">2</td><td>not read yet</td></tr>
+<tr><td class="n">2</td><td class="n">50</td><td class="n">50</td><td class="n">3</td><td>not read yet</td></tr>
+<tr><td class="n">3</td><td class="n">75</td><td class="n">75</td><td class="n">4</td><td>not read yet</td></tr>
+<tr><td class="n">4</td><td class="n">100</td><td class="n">100</td><td class="n">5</td><td>not read yet</td></tr>
+<tr><td class="n">5</td><td class="n">104</td><td class="n">104</td><td class="n">6</td><td>not read yet</td></tr>
+<tr class="tot"><td class="n">6</td><td colspan="3">refused</td><td>not read yet</td></tr>
+</tbody></table></div>
+
+<div class="note cost">
+ <p class="finding">A person can spend the entire hundred pattern gift on day
+ one, in ten minutes, and never see a single reading. The release gate fires at
+ <code>sq&gt;0</code>. The reading gate needs <code>sq&gt;=4</code>. Two
+ thresholds in the same build, pointing opposite ways, and the person is standing
+ between them.</p>
+</div>
+
+<h4>Undo, and the ledger</h4>
+<p><span class="tag t-m">measured</span> <code>undoState()</code> captures the
+nine charges, the nine installed opposites, the twenty one laws and the soul. It
+does not capture the meter, the history or the rituals. After the fifth press,
+undo restores one carrying address and leaves the ledger exactly where it was:
+104 patterns spent, 104 ground opened, six snapshots. And because
+<code>undoPush</code> is called after <code>toYou</code>, the undo point on a
+reference case release is taken <em>after</em> the field has been swapped, so the
+restore lands on CQ 42.25 and not on the 57.18 the person was looking at.</p>
+
+<div class="note cost">
+ <p class="finding">The release is reversible on the field and irreversible on
+ the ledger, and the only thing a person is charged for is the ledger.</p>
+</div>
+
+
+<h2 id="roster">4. The roster at its measured readings</h2>
+<p><span class="tag t-m">measured</span> Read off this build by loading each
+profile and calling <code>compute()</code> and <code>accuracy(r)</code>.</p>
+
+<div class="scroller"><table>
+<thead><tr><th>Who</th><th class="n">CQ</th><th>Band</th><th>State</th><th>Identification</th><th class="n">Carrying above the line</th><th>Offered first</th></tr></thead>
+<tbody>
+<tr><td>Rosa, 61, retired midwife</td><td class="n">100.0</td><td>Mastery</td><td>Sovereign</td><td>96.1 &plusmn; 4.6</td><td class="n">0</td><td>Nothing is carrying</td></tr>
+<tr><td>Abraham, 74, retired judge</td><td class="n">98.3</td><td>Mastery</td><td>Sovereign</td><td>93.1 &plusmn; 5.1</td><td class="n">0</td><td>Answer the laws</td></tr>
+<tr><td>Wren, 66, luthier</td><td class="n">91.7</td><td>Mastery</td><td>Sovereign</td><td>84.0 &plusmn; 6.7</td><td class="n">2</td><td>Shame, root seat, holding 4.0</td></tr>
+<tr><td>Lance, 54, author</td><td class="n">87.7</td><td>Embodied</td><td>Coherent</td><td>96.0 &plusmn; 4.6</td><td class="n">0</td><td>Nothing is carrying</td></tr>
+<tr><td><strong>Sofia, 41, practitioner</strong></td><td class="n">57.2</td><td>Even</td><td>Receptive</td><td>82.7 &plusmn; 6.9</td><td class="n">0, and 52 under</td><td>Answer the laws</td></tr>
+<tr><td><strong>Angela, 36, seeker</strong></td><td class="n">40.9</td><td>Incoherent</td><td>Frustrated</td><td>74.8 &plusmn; 7.4</td><td class="n">0</td><td>Answer the laws</td></tr>
+<tr><td><strong>Marcus, 44, creative director</strong></td><td class="n">39.2</td><td>Incoherent</td><td>Frustrated</td><td><strong>57.6 &plusmn; 10.6</strong></td><td class="n">0, and 99 under</td><td>Answer the laws</td></tr>
+<tr><td><strong>Diane, 46, founder</strong></td><td class="n">28.6</td><td>Corrupt</td><td>Defensive</td><td>74.6 &plusmn; 7.4</td><td class="n">8</td><td>Need For Approval, sacral, 5.0</td></tr>
+<tr><td><strong>Derek, 39, endurance</strong></td><td class="n">15.5</td><td>Severe</td><td>Numb</td><td>82.0 &plusmn; 6.0</td><td class="n">20</td><td>Need For Approval, sacral, 6.6</td></tr>
+<tr><td><strong>James, 57, C-suite</strong></td><td class="n">12.8</td><td>Severe</td><td>Numb</td><td>79.0 &plusmn; 6.4</td><td class="n">18</td><td>Blame, heart seat, 6.2</td></tr>
+<tr><td>Nkem, 35, paediatric nurse</td><td class="n">10.6</td><td>Collapsed</td><td>Fragmented</td><td>85.5 &plusmn; 5.3</td><td class="n">41</td><td>Nihilism, crown seat, 6.7</td></tr>
+<tr><td>Ana, 47, teacher</td><td class="n">7.6</td><td>Collapsed</td><td>Fragmented</td><td>84.3 &plusmn; 5.4</td><td class="n">41</td><td>Self-Judgment, heart seat, 9.6</td></tr>
+<tr><td>Tomas, 58, long haul driver</td><td class="n">2.9</td><td>Collapsed</td><td>Fragmented</td><td>83.7 &plusmn; 5.4</td><td class="n">77</td><td>Possession, root seat, 8.7</td></tr>
+<tr><td>Gordon, 58, managing partner</td><td class="n">1.0</td><td>Collapsed</td><td>Fragmented</td><td>82.4 &plusmn; 5.6</td><td class="n">97</td><td>Possession, root seat, 9.5</td></tr>
+</tbody></table></div>
+
+<div class="note cost">
+ <span class="lab">Two things to read off that table</span>
+ <p><strong>One. Angela&rsquo;s headline prints &ldquo;41%&rdquo; beside the word
+ &ldquo;Incoherent&rdquo;.</strong> Her CQ is 40.9. <code>tierOf</code> bands the
+ unrounded value and Incoherent runs 31 to 40. The headline rounds. So the
+ product shows her a number its own band table says belongs to the band above.
+ <code>RESEARCH-icp.md</code> already records that she walks at the word
+ Incoherent.</p>
+ <p><strong>Two. These readings are reference cases and no real person can reach
+ one.</strong> A person&rsquo;s own path through this product, whatever they
+ answer, produces carrying 0. The intake writes laws, never charge. Only a story,
+ a wheel drag or a stated four letter type puts anything on the wheel, and the
+ wheel is where the release lives. The six ICP readings are a demonstration, not
+ a destination.</p>
+</div>
+
+
+<h2 id="people">5. Day one, by person</h2>
+<p>All quotations are <span class="tag t-j">judgement</span>.</p>
+
+<div class="person">
+<h3>Diane, 46, founder</h3>
+<p class="meta">weight 180 &middot; CQ 28.6 Corrupt, Defensive &middot; grid level 3</p>
+<p>Desktop, between two meetings. She sees the doors because desktop shows them.
+She takes the intake because the duration is stated and the remainder is visible,
+which is exactly the two things she asked for and both are now there. She
+finishes in eleven minutes. She gets Incoherent, and under it: <em>Release This
+First. Nothing is carrying. No address is holding anything.</em> She presses the
+release control anyway and is told to write a story.</p>
+<blockquote class="said"><span class="who">Judgement</span>
+<p>&ldquo;It told me what it would cost before I started, which is the first
+time any of these has done that, and I gave it the fifteen minutes. Then it gave
+me an adjective and told me there was nothing to do about it and sent me to a
+different exercise. I have asked four times for the line that says what this is
+costing me. It has a verdict and no invoice.&rdquo;</p></blockquote>
+<p class="stop"><b>Where she stops.</b> The Summary, at &ldquo;No address is
+holding anything&rdquo;, after fifteen minutes. She opens it once more that
+evening and the number is the same.</p>
+</div>
+
+<div class="person">
+<h3>Derek, 39, endurance</h3>
+<p class="meta">weight 170 &middot; CQ 15.5 Severe, Numb &middot; grid level 2</p>
+<p>Does the sixty three in nine minutes. Then he opens the dropdown, because he
+wants to see the range. He loads a case, presses Run a release, and the profile
+becomes Custom and the number becomes 42.</p>
+<blockquote class="said"><span class="who">Judgement</span>
+<p>&ldquo;I pressed the one button on the screen and it changed who I was and
+gave me a different number. Then I pressed it again and it told me there was
+nothing to release. I train for a living. I know what a plateau is, and a
+plateau is not a machine handing you a stranger&rsquo;s result and then
+refusing.&rdquo;</p></blockquote>
+<p class="stop"><b>Where he stops.</b> The release, at the moment the profile
+select changes under him. He never finds the ledger line saying he has spent a
+quarter of his gift, because it is in Settings.</p>
+</div>
+
+<div class="person">
+<h3>Marcus, 44, creative director</h3>
+<p class="meta">weight 160 &middot; CQ 39.2 Incoherent, Frustrated &middot; identification 57.6, the lowest in the roster</p>
+<p>Finds the repoint in the fourth minute. He also reads the best copy in the
+product: <em>Nothing is held above the line, so nothing is reaching the body as
+load. There are 99 addresses carrying under it, which is signal and not yet
+cost.</em> Then he writes three sentences about a project going wrong, with the
+word tight in them.</p>
+<blockquote class="said"><span class="who">Judgement</span>
+<p>&ldquo;The paragraph about ninety nine addresses carrying under the line is
+the most honest sentence I have read in this category and somebody good wrote
+it. Then I wrote about being cut out of a deal and it called me a liar four
+different ways. It also prints my identification at 57.6 with an interval of plus
+or minus 10.6, the lowest of anybody in that dropdown, and still puts Frustrated
+on the screen at display size.&rdquo;</p></blockquote>
+<p class="stop"><b>Where he stops.</b> He does not. He files it and keeps the
+tab. He is the only person in the roster whose retention is a function of the
+team rather than the product.</p>
+</div>
+
+<div class="person">
+<h3>Angela, 36, seeker</h3>
+<p class="meta">weight 150 &middot; CQ 40.9 Incoherent, Frustrated &middot; grid level 5, phone only</p>
+<p>Lands on Field. The tab strip shows her four names and Summary is not one of
+them. The wheel has nothing in it. There is no instruction on the screen, because
+the instruction is 3,098 pixels down. She finds the dials, finds a slider reading
+<em>swing 13</em>, and gives up before the doors. Later she taps along the strip,
+finds Energetics, answers enough, and the headline reads <strong>41% Incoherent
+Frustrated</strong>.</p>
+<blockquote class="said"><span class="who">Judgement</span>
+<p>&ldquo;It says forty one and then it says incoherent. I looked up what
+incoherent meant here and it said thirty one to forty. So which am I. I have done
+six of these and this is the first one that told me I was the wrong answer and
+got its own arithmetic wrong doing it.&rdquo;</p></blockquote>
+<p class="stop"><b>Where she stops.</b> The headline, at the word Incoherent
+beside the number 41. She is 150 of a thousand and she is the volume case.</p>
+</div>
+
+<div class="person">
+<h3>Sofia, 41, somatic practitioner</h3>
+<p class="meta">weight 140 &middot; CQ 57.2 Even, Receptive &middot; grid level 6, the tipping point</p>
+<p>Desktop, late, last client gone. The reading now tells her what moves it,
+which it did not before: <em>Release has about 1.5 left in it for you. The rest
+of the reading is integrity, and that moves when you answer the laws or when what
+you do changes.</em> She opens Ritual because it is a primary tab and she is the
+one person in the roster whose job is prescribing practice. She gets seventeen
+practices across four tracks, about 230 minutes, one marked <em>called for</em>,
+and a line reading <em>Tier 3 and below</em>.</p>
+<blockquote class="said"><span class="who">Judgement</span>
+<p>&ldquo;The drill opens from five places and lands in the same panel, and the
+reading tells me what would move it instead of just naming me. Both of those are
+new and both are right. Then I opened the tab called Ritual, which I would be
+using with a client, and it handed me seventeen practices with no order, three of
+which are twenty minutes, and a line about tier three. I do not know what tier
+three is and neither does anybody I would put this in front of.&rdquo;</p></blockquote>
+<p class="stop"><b>Where she stops.</b> She does not. She stays and refers
+nobody, because sign in does not exist and the account surface says so plainly:
+&ldquo;This record is in this browser and nowhere else.&rdquo;</p>
+</div>
+
+<div class="person">
+<h3>James, 57, C-suite</h3>
+<p class="meta">weight 100 &middot; CQ 12.8 Severe, Numb &middot; grid level 2</p>
+<p>Refuses at the profile select, which on his phone is at y 142, full width, the
+second control on the screen.</p>
+<blockquote class="said"><span class="who">Judgement</span>
+<p>&ldquo;There is a menu at the top with thirteen other people&rsquo;s names in
+it and I can be any of them in one tap. If I can be Sofia then the number on this
+screen is not mine. That is the whole review and I have not
+scrolled.&rdquo;</p></blockquote>
+<p class="stop"><b>Where he stops.</b> The second control on the screen.
+Unchanged across every panel this product has ever run.</p>
+</div>
+
+<div class="person">
+<h3>Ana, 47, teacher, one year out</h3>
+<p class="meta">weight 50 &middot; CQ 7.6 Collapsed, Fragmented &middot; the acute arrival</p>
+<p>She finishes everything and reads the best sentence in the file: <em>Weight
+off, and not alone. A reading this low is not a thing to manage by yourself, and
+the instrument will not pretend otherwise.</em> Then she reads &ldquo;Release
+This First: Self-Judgment, heart seat, holding 9.6&rdquo; and presses the button
+under it, and the profile becomes Custom and the number becomes 42.</p>
+<blockquote class="said"><span class="who">Judgement</span>
+<p>&ldquo;It told me the truth about how bad it was and told me not to do it
+alone, and nothing else has said that to me, including people. Then I pressed the
+one thing it told me to press and it turned me into somebody called Custom with a
+completely different number. I could not get back. I found the name in the menu
+again but that is choosing myself off a list.&rdquo;</p></blockquote>
+<p class="stop"><b>Where she stops.</b> She does not, but she never runs a
+release again.</p>
+</div>
+
+<div class="person">
+<h3>The floor and the ceiling</h3>
+<p class="meta">Tomas 2.9 &middot; Nkem 10.6 &middot; Gordon 1.0 &middot; Rosa 100 &middot; Wren 91.7 &middot; Abraham 98.3</p>
+<p>Tomas and Nkem both read Collapsed and both get the direction out, which is
+correct and is the product at its best. Gordon reads Collapsed with ninety seven
+addresses carrying and closes in ninety seconds: <em>&ldquo;One percent. There is
+nothing wrong with me.&rdquo;</em> Correct, not recoverable, and do not redesign
+for him. Rosa is told the work here is maintenance. Wren at 91.7 is offered one
+address holding 4.0, which is the right answer at that reading. None of them is
+the customer and the product does not pretend otherwise.</p>
+</div>
+
+
+<h2 id="day2">6. Day two, and the claim that the ritual takes over</h2>
+<p>The claim under test: Ritual is now a primary tab and day two is meant to be
+the ritual taking over.</p>
+
+<div class="note cost">
+ <p class="finding">It does not take over, because there is no day two in the
+ product.</p>
+</div>
+
+<h3>6.1 What the surface actually does</h3>
+<p><code>ui/ritual.js</code> is eighty lines. On open it computes the seat
+carrying the most, maps it to a track, picks a tier from DQ, filters the practice
+table and preselects one. On a blank profile, measured, it reads:</p>
+<blockquote class="screen"><p>Build A Ritual<br><strong>Body</strong><br>
+The root is carrying the most, so the body track is what your state calls for.
+Tier 3 and below.</p></blockquote>
+
+<p><code>ritFor</code> reads <code>r.darkB||'Root'</code>. On a blank profile
+there is no darkest band, so the default fires and the surface asserts as fact
+that the root is carrying the most, about eight hundred pixels from a rail saying
+nothing has been entered. That is the self contradiction the quarter simulation
+named on the old Summary, now living on a primary tab. It also says <em>Tier 3
+and below</em> to a person on their first day, which is internal vocabulary
+reaching a screen.</p>
+
+<p>Seventeen practices are offered, totalling about 230 minutes, three of them
+twenty minutes each. One is marked <em>called for</em> and is already selected.
+<strong>Sixteen of the seventeen can only make the choice worse</strong>, and the
+surface whose job is to hand over one thing presents seventeen.</p>
+
+<h3>6.2 What it records</h3>
+<p>Saving writes <code>{t, track, band, steps, min}</code> to
+<code>CURP.rituals</code> and closes the surface. Closing navigates to Summary,
+which is a different tab from the one the person was on. <strong>Nothing on the
+surface asks whether the practice was done.</strong> There is no start control,
+no timer, no completion, no mark. <em>Save ritual</em> records an intention and
+the streak counts it as a day practised.</p>
+
+<h3>6.3 What day two looks like</h3>
+<p><span class="tag t-m">measured</span> A ritual was saved, its timestamp moved
+back one day, and the surface reopened. <strong>The Ritual tab on day two is
+identical to the Ritual tab on day one.</strong> Same heading, same seventeen
+practices, same preselection, same two buttons. It does not mention yesterday, or
+the streak, or what was saved. <code>RIT.sel</code> is emptied on every open.</p>
+
+<p>The accountability lives on <strong>Compass</strong>, the sixth tab, the one
+that is off screen on a phone:</p>
+
+<blockquote class="screen">
+<p>The Record<br><strong>1</strong> day running<br>
+Today is not on the record yet.<br>
+[ Build today&rsquo;s ritual ]<br>
+Minutes practised 5 &middot; Rituals saved 1 &middot; Ground opened 0 addresses
+&middot; Held at the far pole 0 addresses</p>
+</blockquote>
+
+<p>That is a good accountability block. The copy is right, the button is the
+right button, and the ledger counts only things that happened. <strong>It is on
+the wrong tab, and on a phone it is on a tab with no visible door.</strong></p>
+
+<h3>6.4 Three defects in the record</h3>
+<ol>
+<li><strong>The streak shipped, and the recommendation was not to ship one.</strong>
+<code>engine/ladder.js</code> computes <code>run</code>, <code>live</code>,
+<code>best</code> and <code>days</code>, with marks at seven, thirty and ninety
+days. Section 8 of the quarter simulation says, in the owner&rsquo;s own frame,
+<em>never a streak</em>, citing <code>RESEARCH-ladder.md</code> on streak anxiety
+inverting in a mental health context. The ledger and the &ldquo;today is not on
+the record yet&rdquo; line are good and survive either ruling. The consecutive
+day count is the thing being decided, and it is the largest number on the
+surface.</li>
+<li><strong>The streak counts a save, not a practice.</strong> Seven presses of
+Save ritual on seven days earns <em>&ldquo;Seven days in a row. This is where it
+stops being a decision each morning&rdquo;</em> from a person who has not
+breathed once.</li>
+<li><strong>The next mark is printed in the past tense.</strong> On a blank
+profile, with nothing saved, the Compass prints <em>&ldquo;First run. You ran
+one. The instrument is no longer a thing you are reading about.&rdquo;</em>
+<code>ladderHtml</code> uses the mark&rsquo;s own description for both the earned
+list and the next line, and the descriptions are past tense because they describe
+things done. So the product tells a person who has done nothing that they have
+done it.</li>
+</ol>
+
+<h3>6.5 What day two actually is, driven</h3>
+<p><span class="tag t-m">measured</span> A full day one was performed: a story
+written and committed through the real controls, a release run, a ritual saved.
+The page was reloaded. Persistence works: one <code>localStorage</code> key,
+3,456 bytes, everything survives. And then:</p>
+<ul>
+<li>The app opens on Field.</li>
+<li><code>unread</code> is still true.</li>
+<li>The right rail reads <strong>&ldquo;Nothing entered yet. Write what happened
+and this fills in.&rdquo;</strong></li>
+<li>No copy anywhere on the landing surface says welcome back, or yesterday, or
+last time, or since you were here.</li>
+</ul>
+
+<div class="note cost">
+ <p class="finding">A person who did every single thing the product asked of
+ them on day one is greeted on day two by a screen telling them they have entered
+ nothing. The ritual has a primary tab. Day two has nothing at all.</p>
+</div>
+
+
+<h2 id="later">7. Day three, day seven, day thirty, day ninety</h2>
+
+<h3>Day three</h3>
+<p>Nothing in the product has changed. What has changed is that the people who
+stayed have stopped exploring and have started asking it to be useful a second
+time, which is the first real test.</p>
+
+<div class="scroller"><table>
+<thead><tr><th>Who</th><th>State at day three</th></tr></thead>
+<tbody>
+<tr><td>Diane</td><td>Gone. The number was the same on all three openings and there is still no cost line</td></tr>
+<tr><td>Derek</td><td>Gone at day two</td></tr>
+<tr><td>Marcus</td><td>Opening it every other day, four minutes, watching whether the repoint gets fixed</td></tr>
+<tr><td>Angela</td><td>Gone at day one</td></tr>
+<tr><td>Sofia</td><td>Daily. Using the codex and the drill. Has not opened Ritual again</td></tr>
+<tr><td>James</td><td>Gone at day one</td></tr>
+<tr><td>Ana</td><td>Daily, six minutes, reading the Collapsed paragraph. No release since the first one</td></tr>
+<tr><td>Gordon, Rosa</td><td>Gone in week one</td></tr>
+</tbody></table></div>
+
+<p><strong>Day three is where it goes.</strong> By the end of it, roughly four in
+five have stopped, and the cause is not the reading, which is good, or the
+writing, which is the best thing in the product. It is four measured facts: the
+release repoints and bills, the intake cannot reach the release, the story leaves
+the instrument unread, and day two does not exist.</p>
+
+<h3>Day seven</h3>
+<p>The survivors are using the product as a reference document and a well written
+paragraph. Both are real uses and neither is what the tier ladder prices, which
+meters unique ground opened by releasing. The one new thing that happens in week
+one is that somebody finds the gift counter, in Settings, reading &ldquo;75 of
+the gift left&rdquo; after a single press of a button on a different surface. A
+person who pressed it four times on day one finds a counter at zero and no record
+of what it bought, because the ledger keeps the spend and the undo does not.</p>
+
+<h3>Day thirty</h3>
+<p>Three people are still opening it: Sofia, Marcus and Ana. Sofia has referred
+nobody, and the blocker is now precisely nameable: the account surface says
+&ldquo;Sign in does not exist yet. This record is in this browser and nowhere
+else&rdquo;, and the cohort lead suite that would let her see a client is tier
+four and unbuilt. Marcus is still checking the repoint. Ana&rsquo;s CQ is 7.6 on
+day one and 7.6 on day thirty, because the only mechanism that would move it
+turned her into Custom the first time she used it.</p>
+
+<h3>Day ninety</h3>
+<p>Stable at roughly three in a hundred. Across a thousand arrivals, judgement
+built on measured per run costs: roughly 1,100 release runs, of which about 700
+were run on a loaded reference case and moved the person&rsquo;s own field to the
+same number; roughly 27,000 patterns spent against a gift of a hundred each,
+which means the majority of arrivals who pressed the button at all exhausted the
+gift without reaching a reading; zero practitioner referrals, because the
+mechanism does not exist; and zero completed rituals, because the product records
+saves.</p>
+
+
+<h2 id="curve">8. The retention curve</h2>
+<p><span class="tag t-j">judgement</span>, derived per person from the measured
+defects that land on them, weighted as in section 2.</p>
+
+<div class="scroller"><table>
+<thead><tr><th>Who</th><th class="n">Weight</th><th class="n">Day 1</th><th class="n">Day 3</th><th class="n">Day 7</th><th class="n">Day 30</th><th class="n">Day 90</th><th>What decides it</th></tr></thead>
+<tbody>
+<tr><td>Diane</td><td class="n">180</td><td class="n">100%</td><td class="n">22%</td><td class="n">6%</td><td class="n">1%</td><td class="n">0%</td><td>Fifteen minutes ends at &ldquo;No address is holding anything&rdquo;</td></tr>
+<tr><td>Derek</td><td class="n">170</td><td class="n">74%</td><td class="n">9%</td><td class="n">3%</td><td class="n">0%</td><td class="n">0%</td><td>The repoint, then the refusal</td></tr>
+<tr><td>Marcus</td><td class="n">160</td><td class="n">58%</td><td class="n">26%</td><td class="n">16%</td><td class="n">9%</td><td class="n"><strong>5%</strong></td><td>Stays to watch whether it gets fixed</td></tr>
+<tr><td>Angela</td><td class="n">150</td><td class="n">31%</td><td class="n">5%</td><td class="n">2%</td><td class="n">0%</td><td class="n">0%</td><td>Phone. Four doors of nine, and &ldquo;41% Incoherent&rdquo;</td></tr>
+<tr><td>Sofia</td><td class="n">140</td><td class="n">81%</td><td class="n">55%</td><td class="n">43%</td><td class="n">24%</td><td class="n"><strong>15%</strong></td><td>Reference use. Cannot refer</td></tr>
+<tr><td>James</td><td class="n">100</td><td class="n">19%</td><td class="n">4%</td><td class="n">1%</td><td class="n">0%</td><td class="n">0%</td><td>The profile select at y 142</td></tr>
+<tr><td>Ana</td><td class="n">50</td><td class="n">72%</td><td class="n">40%</td><td class="n">27%</td><td class="n">12%</td><td class="n"><strong>6%</strong></td><td>Returns for the direction out</td></tr>
+<tr><td>Gordon</td><td class="n">35</td><td class="n">6%</td><td class="n">0%</td><td class="n">0%</td><td class="n">0%</td><td class="n">0%</td><td>Refuses the frame, correctly</td></tr>
+<tr><td>Rosa</td><td class="n">15</td><td class="n">12%</td><td class="n">2%</td><td class="n">0%</td><td class="n">0%</td><td class="n">0%</td><td>Correctly not the customer</td></tr>
+<tr class="tot"><td>Weighted</td><td class="n">1,000</td><td class="n">62%</td><td class="n">21%</td><td class="n">12%</td><td class="n">5.6%</td><td class="n">3.2%</td><td></td></tr>
+</tbody></table></div>
+
+<h3>The walk, day one</h3>
+<p>Where the 383 who do not return on day two are lost.</p>
+<div class="scroller"><table>
+<thead><tr><th>Moment</th><th class="n">Reaches it</th><th class="n">Leaves</th><th class="n">Surviving</th></tr></thead>
+<tbody>
+<tr><td>The boot, 5.2 seconds, no word until 4.46</td><td class="n">1,000</td><td class="n">21</td><td class="n">979</td></tr>
+<tr><td>Lands on Field. 71 choices, no instruction, four numbers about defaults</td><td class="n">979</td><td class="n">84</td><td class="n">895</td></tr>
+<tr><td>Phone: four doors visible of nine, Summary 308 px off the edge</td><td class="n">895</td><td class="n">61</td><td class="n">834</td></tr>
+<tr><td>Phone: the only instruction is 3,098 px down</td><td class="n">834</td><td class="n">47</td><td class="n">787</td></tr>
+<tr><td>The profile select, second control on a phone</td><td class="n">787</td><td class="n">33</td><td class="n">754</td></tr>
+<tr><td>Run a release on a loaded case. Profile becomes Custom, number becomes 42</td><td class="n">754</td><td class="n"><strong>96</strong></td><td class="n">658</td></tr>
+<tr><td>Press it again. &ldquo;Nothing is held above the line&rdquo;</td><td class="n">658</td><td class="n">41</td><td class="n"><strong>617</strong></td></tr>
+</tbody></table></div>
+
+<h3>The walk, day two to day ninety</h3>
+<div class="scroller"><table>
+<thead><tr><th>Moment</th><th class="n">Leaves</th><th class="n">Surviving</th></tr></thead>
+<tbody>
+<tr><td>Day two opens on Field and says nothing has been entered</td><td class="n">149</td><td class="n">468</td></tr>
+<tr><td>The completed intake ends at &ldquo;No address is holding anything&rdquo;</td><td class="n"><strong>163</strong></td><td class="n">305</td></tr>
+<tr><td>The story returns nothing, or returns Lying</td><td class="n">71</td><td class="n">234</td></tr>
+<tr><td>The Ritual tab on day two is the Ritual tab on day one</td><td class="n">29</td><td class="n">205</td></tr>
+<tr><td>Days four to seven. The content is exhausted</td><td class="n">52</td><td class="n">153</td></tr>
+<tr><td>The gift is gone and the counter was in Settings</td><td class="n">21</td><td class="n">132</td></tr>
+<tr><td>The record and today&rsquo;s line are on a tab a phone cannot reach</td><td class="n">13</td><td class="n">119</td></tr>
+<tr><td>Days eight to thirty</td><td class="n">63</td><td class="n">56</td></tr>
+<tr><td>Days thirty one to ninety</td><td class="n">24</td><td class="n"><strong>32</strong></td></tr>
+</tbody></table></div>
+
+<h3>Against the outside</h3>
+<p><span class="tag t-c">cited</span> Baumel, Muench, Edan and Kane,
+<em>Objective User Engagement With Mental Health Apps</em>, JMIR 21(9):e14567,
+2019. Ninety three apps, median 100,000 installs. Median daily active users
+<strong>4.0 percent</strong>. Median fifteen day retention <strong>3.9
+percent</strong>. Median thirty day retention <strong>3.3 percent</strong>.</p>
+
+<p><span class="tag t-c">cited</span> Health and fitness app day one retention
+runs about 20 to 27 percent and day thirty about 3 percent, per the AppsFlyer
+figures compiled by Business of Apps and UXCam for 2026.</p>
+
+<div class="note">
+ <p><strong>These are not the same measurement as the table above and must not be
+ read as one.</strong> The cohort figures count installs. The table above counts
+ people who opened the file once, which is a later and much more favourable
+ starting point. The honest comparison is at day thirty, where the two converge
+ on the same population: <strong>5.6 percent modelled here against a category
+ median of 3.3 percent.</strong></p>
+ <p>That is not a compliment. It says this product, with the defects below
+ unfixed, would land slightly above the median of a category whose median is a
+ catastrophe.</p>
+</div>
+
+<p><span class="tag t-c">cited</span> On the intake: survey abandonment rises
+sharply past the seven to eight minute mark, with completion falling by 5 to 20
+points, and completion falls roughly from 89 percent at ten questions to 79
+percent at forty. The intake states fifteen minutes, which is past that cliff by
+design. <code>RESEARCH-icp.md</code> already argues the right answer, which is
+not to shorten it: with the duration stated, the remainder visible and the three
+way design named, the panel&rsquo;s finishing rate runs 68 percent against 31
+percent without. <strong>Two of those three are built.</strong> The third, one
+line naming the three way design, is still absent from the surface.</p>
+
+
+<h2 id="leave">9. Why they leave, ranked</h2>
+<p>Ranked by people lost across ninety days. The product facts are
+<span class="tag t-m">measured</span>. The counts are
+<span class="tag t-j">judgement</span>.</p>
+
+<ol class="rank">
+
+<li><h3>The release repoints the profile, wipes the field and bills the person<span class="cnt">187</span></h3>
+<p><code>relCoolDown</code> calls <code>toYou()</code> before it reads the
+number, before it takes the undo point and before it writes. A release run while
+any reference case is loaded changes the profile select to Custom, empties the
+carrying addresses, lands every person on CQ 42.3 to 42.4 whoever they were
+looking at, spends 25 patterns on their own record, writes a snapshot, and
+refuses the second run.</p>
+<p>The intention is stated in the code and the intention is correct. The effect,
+driven six times from six profiles, is that the product&rsquo;s one primary
+action takes a curious person&rsquo;s identity, their number and a quarter of
+their gift, in a single click, with no confirmation and no way back.</p>
+<p class="fix">Fix: one condition. Either refuse the run while a reference case
+is loaded and say why, or copy the loaded field onto the person&rsquo;s own
+profile with a named confirmation first.</p></li>
+
+<li><h3>The intake cannot reach the release<span class="cnt">163</span></h3>
+<p>Answered uniformly: carrying 0. Answered at random: carrying 0. The intake
+writes <code>CURP.laws</code>. The wheel reads <code>S.charge</code>. There is no
+path between them. So the most invested fifteen minutes in the product ends at
+&ldquo;Release This First: Nothing is carrying&rdquo;, and the release control
+answers &ldquo;Nothing is held above the line&rdquo;.</p>
+<p>This is the structural defect. It is not a copy problem and not a threshold
+problem. The product&rsquo;s front door and its core loop are not connected.</p>
+<p class="fix">Fix: a ruling first. Either the intake seeds charge the way the
+four letter type does, or the surface says up front that it measures integrity
+and points at the door that fills the wheel.</p></li>
+
+<li><h3>The app opens on Field and not on Summary<span class="cnt">148</span></h3>
+<p>Field presents 71 simultaneous choices in the first viewport, four numbers
+about defaults, three separate statements that nothing has been read, an empty
+wheel, and no instruction. Summary presents an honest dash, the best paragraph in
+the product, and the four doors, and on a phone all of it is in the first two
+screens. The product has the right first screen and ruled it out of first
+position.</p>
+<p class="fix">Fix: one integer, and it is already an integer.</p></li>
+
+<li><h3>The phone tab strip hides four of the nine doors<span class="cnt">121</span></h3>
+<p><code>clientWidth</code> 348 against <code>scrollWidth</code> 724. Compass,
+Knowledge, Games and Summary are entirely off screen; Body is cut. The affordance
+is a 26 pixel gradient. Compass carries the record, the streak and the only line
+in the product that asks a person to come back today. Summary carries the reading
+and the doors.</p>
+<p class="fix">Fix: wrap to two rows, or one menu control, or move the two that
+matter.</p></li>
+
+<li><h3>The story leaves the instrument unread<span class="cnt">88</span></h3>
+<p>An ordinary sentence commits 8 imprints, lands 27 addresses carrying, and
+leaves <code>unread</code> true, because the reading gate is <code>sq&gt;=4</code>
+and the story lands below it. The story surface&rsquo;s own release panel then
+reads &ldquo;Nothing to run&rdquo; with the button disabled, while the rail
+control on the same screen fires at <code>sq&gt;0</code> and spends 25
+patterns.</p>
+<p class="fix">Fix: one constant, plus a ruling on which way it moves.</p></li>
+
+<li><h3>The story still accuses<span class="cnt">71</span></h3>
+<p>Unchanged since the quarter simulation named it. &ldquo;My partner cut me out
+of the deal and my jaw is tight&rdquo; returns Spiritual Language To Manipulate,
+Excuse, Deceit and Lying. &ldquo;I am exhausted&rdquo; returns Pride. &ldquo;I
+screamed at my son and I hate that I am like my father&rdquo; returns Pride,
+Arrogance, Competition and Anger. The band&rsquo;s modal family fires when no
+adjective matches. Each of these people tells somebody.</p>
+<p class="fix">Fix: one condition. Say nothing rather than guess. It was already
+recommended and it is the smallest item on this list.</p></li>
+
+<li><h3>The unread gate releases after three answers<span class="cnt">62</span></h3>
+<p>Four clicks, about thirty seconds. The dash is replaced by a band word at
+display size, backed by an identification of 22.1 percent plus or minus 19.0. The
+product&rsquo;s own promise, that a number off a default is a number about the
+default, holds for thirty seconds.</p>
+<p class="fix">Fix: hold the gate until the interval is worth printing. The
+engine already computes the interval.</p></li>
+
+<li><h3>Day two does not exist<span class="cnt">58</span></h3>
+<p>After a complete day one, the app opens on Field and says nothing has been
+entered. The Ritual tab is byte identical to day one. Nothing says welcome back.
+The one line that asks a person to come back, &ldquo;Today is not on the record
+yet&rdquo;, is on Compass, which is off screen on a phone.</p>
+<p class="fix">Fix: put the record and today&rsquo;s line on the Ritual tab, and
+let the landing surface know what day it is.</p></li>
+
+<li><h3>The gift is spent invisibly<span class="cnt">41</span></h3>
+<p>One press spends 25 patterns. Four presses spend the gift. The counter reading
+&ldquo;75 of the gift left&rdquo; lives in Settings, under Billing And Tier, on a
+surface with no door in the navigation.</p>
+<p class="fix">Fix: print the cost on the run panel before the run, which is what
+the plan already builds it for.</p></li>
+
+<li><h3>Undo does not restore the ledger<span class="cnt">29</span></h3>
+<p><code>undoState</code> captures charge, opposites, laws and soul. It does not
+capture the meter, the history or the rituals. After five runs and one undo: one
+carrying address restored, 104 patterns still spent, 104 ground still opened, six
+snapshots still written. And because <code>undoPush</code> fires after
+<code>toYou</code>, the undo point on a reference case release is taken after the
+field was already swapped.</p>
+<p class="fix">Fix: move <code>undoPush</code> above <code>toYou</code>, and add
+the meter and the last snapshot to the captured state.</p></li>
+
+<li><h3>&ldquo;41%&rdquo; beside the word &ldquo;Incoherent&rdquo;<span class="cnt">29</span></h3>
+<p>Angela&rsquo;s CQ is 40.9. The headline rounds to 41.
+<code>tierOf</code> bands the unrounded value and Incoherent runs 31 to 40.
+<code>RESEARCH-icp.md</code> already records that she walks at that word. She is
+the volume case.</p>
+<p class="fix">Fix: band on the displayed value, or floor the displayed value.</p></li>
+
+<li><h3>The first four seconds contain no word<span class="cnt">21</span></h3>
+<p>The wordmark begins at 3.54 seconds and is legible at 4.46. The sheet clears at
+5.20.</p>
+<p class="fix">Fix: bring the wordmark to the front of the sequence and let the
+ring draw behind it.</p></li>
+
+<li><h3>The Compass tells a person who has done nothing that they did it<span class="cnt">12</span></h3>
+<p>With zero rituals saved, the record prints &ldquo;First run. You ran one. The
+instrument is no longer a thing you are reading about.&rdquo;</p>
+<p class="fix">Fix: a second string per mark, future tense, for the next line.</p></li>
+
+<li><h3>Seventeen practices on a surface whose job is to hand over one<span class="cnt">not quantified</span></h3>
+<p>Four tracks, seventeen practices, about 230 minutes, one preselected, three of
+them twenty minutes each. On a blank profile the surface asserts &ldquo;The root
+is carrying the most&rdquo; from a default, and says &ldquo;Tier 3 and
+below&rdquo; to somebody on their first day.</p></li>
+
+<li><h3>Cognitive load<span class="cnt">architectural</span></h3>
+<p>71 simultaneous choices in the first viewport of the landing surface, 100 on
+Knowledge, 213 on the Knowledge surface entire. Forty five controls on every
+surface explained only by a <code>title</code>, which a phone cannot show. Forty
+four elements on Summary with no text, no title and no label.
+<code>CLAUDE.md</code> already names this as architectural and needing a decision
+before it needs code. It is here because it is the reason every other fix has to
+fight for attention.</p></li>
+
+</ol>
+
+
+<h2 id="fix">10. What would change each outcome, ranked by cost</h2>
+<p>Ranked cheapest first, because that is the order it can be acted on. The gain
+is judgement; the defect behind each one is measured.</p>
+
+<div class="band">
+<div class="bh">An afternoon each</div>
+<div class="scroller"><table>
+<thead><tr><th class="n">#</th><th>Move</th><th>What it changes</th><th class="n">Recovers</th></tr></thead>
+<tbody>
+<tr><td class="n">1</td><td><strong>Open on Summary.</strong> One integer, and Field keeps its own</td><td>The first screen becomes the one that says what this is, refuses to lie, and shows four doors. On a phone it is the difference between four flicks and none</td><td class="n">148</td></tr>
+<tr><td class="n">2</td><td><strong>Refuse the release while a reference case is loaded, and say why</strong></td><td>The product stops taking a stranger&rsquo;s identity, number and gift for a click</td><td class="n">187</td></tr>
+<tr><td class="n">3</td><td><strong>Move <code>undoPush</code> above <code>toYou</code> and put the meter in <code>undoState</code></strong></td><td>Undo becomes true. The person who presses the wrong thing gets back to where they were, including what it cost</td><td class="n">29</td></tr>
+<tr><td class="n">4</td><td><strong>Say nothing rather than guess in <code>parseStory</code></strong></td><td>A tight jaw stops returning four accusations of lying</td><td class="n">71</td></tr>
+<tr><td class="n">5</td><td><strong>Print the cost on the run panel before the run</strong></td><td>The gift stops being spent invisibly. The plan already computes it</td><td class="n">41</td></tr>
+<tr><td class="n">6</td><td><strong>Band on the displayed number</strong></td><td>Angela stops being shown a number her own band table contradicts</td><td class="n">29</td></tr>
+<tr><td class="n">7</td><td><strong>A future tense string for the next mark</strong></td><td>The Compass stops telling people they did things they have not done</td><td class="n">12</td></tr>
+<tr><td class="n">8</td><td><strong>Bring the wordmark to the front of the boot</strong></td><td>The first four seconds say what this is</td><td class="n">21</td></tr>
+<tr><td class="n">9</td><td><strong>One sentence at the top of the intake naming the three way design</strong></td><td>The last of the three fixes <code>RESEARCH-icp.md</code> costed at 29 points of completion. Two are built</td><td class="n">part of 163</td></tr>
+</tbody></table></div>
+<div class="note fixed">
+ <p class="finding">Items one to nine together are worth roughly 540 of a
+ thousand and none of them is a week of work. Item one is an integer.</p>
+</div>
+</div>
+
+<div class="band wk">
+<div class="bh">A week each</div>
+<div class="scroller"><table>
+<thead><tr><th class="n">#</th><th>Move</th><th>What it changes</th></tr></thead>
+<tbody>
+<tr><td class="n">10</td><td><strong>Put the record, the streak line and &ldquo;Build today&rsquo;s ritual&rdquo; on the Ritual tab</strong></td><td>Day two acquires a surface. The primary tab starts doing the job it was promoted for</td></tr>
+<tr><td class="n">11</td><td><strong>Wrap the phone tab strip, or give the nine doors one menu</strong></td><td>Compass and Summary stop being invisible on the device most arrivals use</td></tr>
+<tr><td class="n">12</td><td><strong>Make the reading gate and the release gate the same number</strong></td><td>A person stops being able to spend everything on charge the instrument will not read</td></tr>
+<tr><td class="n">13</td><td><strong>Cut the Ritual surface to the practice called for, with the other sixteen behind one control</strong></td><td>Seventeen simultaneous choices becomes one, on the surface whose entire job is to hand over one thing</td></tr>
+<tr><td class="n">14</td><td><strong>The streak counts a practice, not a save</strong></td><td>Requires one control saying the practice was done. Without it the record is a scoreboard</td></tr>
+</tbody></table></div>
+</div>
+
+<div class="band rule">
+<div class="bh">A ruling before any code</div>
+<div class="scroller"><table>
+<thead><tr><th class="n">#</th><th>The question</th><th>Why it cannot be built around</th></tr></thead>
+<tbody>
+<tr><td class="n">15</td><td><strong>Does the intake write charge?</strong></td><td>Today it does not, so the most invested path in the product cannot reach the core loop. Either it seeds the wheel, or the surface says plainly that it measures integrity and points at the door that fills the wheel</td></tr>
+<tr><td class="n">16</td><td><strong>Does the streak ship at all?</strong></td><td>It is built and live. The standing recommendation, on this project&rsquo;s own research, was never to ship one. The ledger and &ldquo;today is not on the record yet&rdquo; survive either ruling</td></tr>
+<tr><td class="n">17</td><td><strong>Where does the unread gate sit?</strong></td><td>Three answers currently buys a band word at plus or minus 19.0</td></tr>
+<tr><td class="n">18</td><td><strong>The daily ceiling</strong></td><td>The quarter simulation asked for it and argued it. It is unbuilt, and every item above makes the loop more capable of holding somebody for longer</td></tr>
+<tr><td class="n">19</td><td><strong>Cognitive load</strong></td><td>71 on the landing surface against a floor of twelve. Architectural, and named as such already</td></tr>
+</tbody></table></div>
+</div>
+
+
+<h2 id="inst">11. What to instrument</h2>
+<p>There is no instrumentation in the product and there cannot be while it makes
+no network request. The fork to accounts opens exactly one seam, and the record
+fetch at sign in is where this goes. <strong>Decide what is measured before
+building the thing that would be measured.</strong> None of these carries a
+story, an answer or a reading, in line with the standing promise that the record
+and the story are never held joined.</p>
+
+<div class="scroller"><table>
+<thead><tr><th>Event</th><th>Fields</th><th>The question it answers</th></tr></thead>
+<tbody>
+<tr><td><code>first_paint</code></td><td>ms to the wordmark, whether the boot was skipped</td><td>Are the first four seconds costing arrivals</td></tr>
+<tr><td><code>first_surface</code></td><td>which tab, viewport width</td><td>Confirms the landing ruling against behaviour rather than argument</td></tr>
+<tr><td><code>first_instruction_seen</code></td><td>which door, seconds since open, scroll depth at the time</td><td><strong>The single most important number in this document.</strong> On a phone the doors are 3,098 px down and nobody knows whether anybody reaches them</td></tr>
+<tr><td><code>intake_progress</code></td><td>answers at each minute, abandoned or completed, seconds elapsed</td><td>Replaces the whole cited abandonment literature with one measurement of this intake</td></tr>
+<tr><td><code>gate_cleared</code></td><td>which path cleared <code>unread</code>, identification at that moment</td><td>Whether anybody ever clears it by writing, or only by answering</td></tr>
+<tr><td><code>release_attempt</code></td><td>refused or ran, whether a reference case was loaded, patterns spent, CQ before and after</td><td>Measures items one and two directly, including how often the repoint fires</td></tr>
+<tr><td><code>undo_used</code></td><td>what it was undoing, seconds after the act</td><td>Undo has been built twice and found by almost nobody</td></tr>
+<tr><td><code>ritual_saved</code></td><td>track, minutes, whether a practice control was pressed</td><td>The only honest way to separate a save from a practice</td></tr>
+<tr><td><code>return</code></td><td>days since last open, which surface, whether anything was entered</td><td>Day two, measured instead of modelled</td></tr>
+</tbody></table></div>
+
+<div class="note">
+ <span class="lab">Two measurements that need no backend at all</span>
+ <p><strong>One landing page, two first screens, count who reaches the
+ second.</strong> Field against Summary. It settles item one in a week for the
+ price of a domain.</p>
+ <p><strong>Five people, phones, thirty minutes each, no prompting.</strong> Five
+ surfaces about eighty five percent of what is here. The question to watch, and
+ not to ask: how long before they touch a door, and what they press first.</p>
+</div>
+
+
+<h2 id="grade">12. The grade delta</h2>
+<p>Against the quarter simulation&rsquo;s rubric, same criteria, measured against
+this build.</p>
+
+<pre>criterion            was    now    why
+ICP alignment        7/10   7/10   unchanged. maps to all fourteen, serves the loop for none
+First touch          7/10   4/10   WORSE. the good first screen exists and is no longer first
+Core loop            2/10   3/10   the cliff at run three is gone. the repoint replaced it
+Emotional            6/10   7/10   the under-the-line copy is genuinely better
+Behavioral flow      4/10   4/10   71 to 100 per screen, 45 title-only per surface
+Visual and kinetic   8/10   8/10   unchanged, and it is reference grade
+Technical            8/10   8/10   zero errors, three local requests, undo and redo built
+Monetization         3/10   2/10   WORSE. the gift is now spendable to zero without a reading
+Retention            2/10   3/10   day 30 modelled at 5.6 against 3.3 category median
+Referral             5/10   5/10   unchanged. the mechanism does not exist
+total               52/100 51/100</pre>
+
+<p><strong>The product as it is: D+, unchanged, and the composition has
+moved.</strong> Six of the twelve defects the quarter simulation named are
+genuinely closed and the closures are good work. Three new defects, all in the
+onboarding, cost more than the six closures returned: the landing ruling, the
+repoint, and the disconnect between the intake and the wheel.</p>
+
+<p><strong>Its potential: A-, unchanged.</strong> Every defect in section 9 is
+bounded and nine of the fifteen are an afternoon. The architecture, which is the
+part nobody can retrofit, is still right.</p>
+
+<div class="note">
+ <p class="finding">The delta that matters is not the grade. The quarter
+ simulation found a product whose core loop was dead and whose front door worked.
+ This one found a product whose core loop is alive and whose front door now
+ points away from it. That is a better position to be in and a worse screen to
+ open on.</p>
+</div>
+
+
+<h2 id="not">13. What this file is not</h2>
+<p>Every person, reaction, quotation, retention figure, drop off count and grade
+above is <span class="tag t-j">judgement</span>: model output with arithmetic
+attached. Nobody named exists and no sentence in quotation marks was said by a
+human.</p>
+<p>The readings, identifications, release deltas and pattern costs are the
+shipped engine&rsquo;s real output on the repository&rsquo;s own fictional
+vectors.</p>
+<p>Everything labelled <span class="tag t-m">measured</span> is a fact about
+<code>source.html</code> at md5
+<code>f304c29532ea8c2dfa9c683fab5b8051</code>, verified by executing it in
+Chromium at 1600x1000 and 390x844 this session, and by looking at the images.</p>
+<p><strong>No figure here is evidence about any human being and none of it should
+be quoted as research.</strong> Two landing pages and five people with phones
+would replace half of it with measurements, and both are cheaper than the
+arguing.</p>
+
+<footer>
+ <p><strong>Sources</strong></p>
+ <ul>
+  <li>Baumel A, Muench F, Edan S, Kane JM. Objective User Engagement With Mental
+  Health Apps: Systematic Search and Panel-Based Usage Analysis. J Med Internet
+  Res 2019;21(9):e14567. <a href="https://www.jmir.org/2019/9/e14567/">jmir.org</a></li>
+  <li>Health and Fitness App Benchmarks, Business of Apps, 2026.
+  <a href="https://www.businessofapps.com/data/health-fitness-app-benchmarks/">businessofapps.com</a></li>
+  <li>Mobile App Retention Benchmarks by Industry, UXCam, 2026.
+  <a href="https://uxcam.com/blog/mobile-app-retention-benchmarks/">uxcam.com</a></li>
+  <li>Digital therapeutics for mental health: is attrition the Achilles heel?
+  Front Psychiatry 2022.
+  <a href="https://www.frontiersin.org/journals/psychiatry/articles/10.3389/fpsyt.2022.900615/full">frontiersin.org</a></li>
+  <li>How many questions should surveys have, Survicate, 21,000 surveys.
+  <a href="https://survicate.com/blog/how-many-questions-should-surveys-have/">survicate.com</a></li>
+  <li>Survey completion rates and drop off, Lensym.
+  <a href="https://lensym.com/blog/survey-completion-rates-drop-off/">lensym.com</a></li>
+ </ul>
+ <p>Companion document: <code>reviews/SIM-ninety-days.md</code>. Prior:
+ <code>reviews/simulation-quarter.md</code>, <code>RESEARCH-icp.md</code>,
+ <code>BUYERS.md</code>.</p>
+</footer>
+
+</div>
+<script>
+(function(){
+ var b=document.getElementById('th');
+ var dark=!matchMedia('(prefers-color-scheme: light)').matches;
+ function set(d){dark=d;document.documentElement.setAttribute('data-theme',d?'dark':'light');
+  b.textContent=d?'Light':'Dark';}
+ set(dark);
+ b.onclick=function(){set(!dark);};
+})();
+</script>
+</body></html>

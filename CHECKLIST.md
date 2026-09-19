@@ -102,7 +102,7 @@ started. `HIS` waiting on a ruling. `BLOCKED` waiting on something external.
 | D10 | The therapy equivalence claim, before the funnel ships |
 | D11 | The opening surface. He has ruled Summary, then Field, then Avatar |
 | D12 | Two factor auth, yes or no |
-| D13 | The soul shape. Not in the repository, cannot be drawn from |
+| D13 | The soul shape. WRONG, AND CORRECTED. It is in the repository at `index.html:8936`, labelled Layer 6, Soul. I told him it was not there and it was. What is genuinely open is whether he means that squiggle or a squiggly Q, which is a different drawing |
 
 ## F. Named by him as built, and not built
 

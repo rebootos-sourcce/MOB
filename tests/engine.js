@@ -1783,6 +1783,58 @@ console.log('\n27 · the ladder');
   ok(L.earned.some(m=>m.k==='week'),'seven days running earns the week mark');}
 }
 
+console.log('\n27c · a save never costs a person data, and a drain never leaks');
+{
+ let mem={};
+ E.bindStore(k=>mem[k]===undefined?null:mem[k],(k,v)=>{mem[k]=String(v);});
+
+ /* KEPT MEANS KEPT ON THE DISK. The refusal path held a record in memory and
+    the next write erased it, while the comment beside it said it was kept.
+    Measured before: two records on disk, one refused, one save, disk held one. */
+ mem['source.profiles']=JSON.stringify([
+  {v:2,name:'Good',axes:{},intake:{answers:{}}},
+  {v:2,name:'Refused',avatar:'not an object'}]);
+ const loaded=E.pStore();
+ ok(loaded.length===1,'the good record loads');
+ ok(E.storeRefused().length===1,'and the refusal is reported');
+ /* PROFILES is module state and earlier blocks in this file have put their
+    own records in it, so an exact match here tests the order of this file
+    rather than the product. What matters is that the refused record is still
+    on the disk after a write. */
+ const names=()=>JSON.parse(mem['source.profiles']).map(x=>x.name);
+ E.pPersist();
+ ok(names().indexOf('Refused')>=0,
+  'and a write puts the refused record back untouched, got '+names().join(','));
+
+ /* A SAVE REPORTS WHETHER IT SAVED. */
+ ok(typeof E.pPersist()==='boolean','the write reports a boolean');
+ E.bindStore(()=>null,()=>{throw new Error('QuotaExceededError');});
+ ok(E.pPersist()===false,'and reports false when the store throws');
+ ok(E.saveState().ok===false,'and the state names the failure');
+ E.bindStore(k=>mem[k]===undefined?null:mem[k],(k,v)=>{mem[k]=String(v);});
+
+ /* THE BOUNDARY IS ON THE WAY OUT TOO. obValidate ran on queue and not on
+    drain, so anything already in the key went to the host unread. Measured
+    before: name, email and story all crossed the wire. */
+ mem[E.OBKEY]=JSON.stringify([{kind:'question',body:'hi',
+  name:'Lance',email:'l@x.com',story:'secret'}]);
+ const sentKeys=[];
+ E.bindSend(function(e){sentKeys.push(Object.keys(e).sort().join(','));return true;});
+ const d=E.obDrain();
+ E.bindSend(null);
+ ok(sentKeys.length===0,'an envelope the boundary refuses never reaches the host');
+ ok(d.state==='refused','and the drain says so rather than reporting sent');
+
+ mem[E.OBKEY]=JSON.stringify([{kind:'question',at:'2026-09-19',body:'the compass overlaps',
+  answers:{},band:'median',build:'abc',platform:'desktop',viewport:'wide'}]);
+ const ok2=[];
+ E.bindSend(function(e){ok2.push(e.kind);return true;});
+ const d2=E.obDrain();
+ E.bindSend(null);
+ ok(d2.state==='sent'&&ok2.length===1,'a clean envelope still sends');
+ E.bindStore(()=>null,()=>{});
+}
+
 console.log('\n27b · a profile from an older build still loads');
 {
  /* THIS IS THE ONE THE OWNER HIT. A profile written by an earlier build has no

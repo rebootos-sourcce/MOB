@@ -97,11 +97,26 @@ function obDrain(){
  var q=obStore();
  if(!q.length) return {state:'empty', n:0};
  if(typeof SEND_HOST!=='function') return {state:'nohost', n:q.length};
- var left=[], sent=0, err=null;
+ /* THE BOUNDARY IS ON THE WAY OUT, NOT ONLY ON THE WAY IN.
+
+    obValidate ran on queue and not on drain, so anything already sitting in
+    the key went to the host unread: measured with a bound sender, name, email
+    and story all crossed the wire, and every one of them is on OB_NEVER. The
+    queue is on a disk a person, another build or another tab can write, so
+    what comes off it is exactly as untrusted as what goes on.
+
+    A refused entry is dropped rather than retried forever, and it is reported,
+    because an envelope that can never be sent is not a queue item, it is a
+    thing to tell somebody about. */
+ var left=[], sent=0, err=null, bad=[];
  for(var i=0;i<q.length;i++){
+  var v=obValidate(q[i]);
+  if(!v.ok){ bad.push({i:i,errs:v.errs.slice(0,2)}); continue; }
   var r;
   try{ r=SEND_HOST(q[i]); }catch(ex){ r=false; err=String(ex&&ex.message||ex); }
   if(r===true) sent++; else { left.push(q[i]); if(!err)err='the send was refused'; }}
  obWrite(left);
- if(!left.length) return {state:'sent', n:sent};
- return {state:'retry', n:left.length, sent:sent, why:err};}
+ if(bad.length&&!left.length&&!sent)
+  return {state:'refused', n:bad.length, bad:bad};
+ if(!left.length) return {state:'sent', n:sent, refused:bad.length||undefined};
+ return {state:'retry', n:left.length, sent:sent, why:err, refused:bad.length||undefined};}

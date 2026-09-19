@@ -3128,18 +3128,31 @@ function bindStore(get,set){ STORE={get:get,set:set}; STORE_BOUND=true; return S
 
    A profile store is the one place a refusal must not be fatal: one bad record
    must not take the other nine with it. */
-var STORE_REFUSED=[];
+var STORE_REFUSED=[], STORE_KEPT=[];
 function pStore(){
  var raw;
  try{ raw=JSON.parse(STORE.get(PKEY)||'[]'); }catch(e){ return []; }
  if(!Array.isArray(raw)) return [];
- STORE_REFUSED=[];
+ STORE_REFUSED=[]; STORE_KEPT=[];
  var out=[];
  for(var i=0;i<raw.length;i++){
   var v=validateProfile(raw[i]);
   if(v.ok){ out.push(v.profile); }
-  else { STORE_REFUSED.push({i:i, name:(raw[i]&&raw[i].name)||'unnamed',
-    errs:(v.errs||[]).slice(0,3)}); }}
+  else {
+   STORE_REFUSED.push({i:i, name:(raw[i]&&raw[i].name)||'unnamed',
+    errs:(v.errs||[]).slice(0,3)});
+   /* KEPT MEANS KEPT ON THE DISK, NOT KEPT IN MEMORY.
+
+      The comment here said a refused record is kept rather than dropped, and
+      that was a lie by omission: it was held in PROFILES' place for the
+      session and then erased by the next pPersist, which writes the whole
+      validated array back over the key. Measured: two records on disk, one
+      refused, one pSave, disk holds one.
+
+      The raw bytes are held verbatim and written back beside the good ones, so
+      a record this version cannot read survives for a version that can. It is
+      never loaded and never shown. It is simply not destroyed. */
+   STORE_KEPT.push(raw[i]); }}
  return out;}
 /* what the boundary would not take, for a host that wants to say so */
 function storeRefused(){ return STORE_REFUSED.slice(); }
@@ -3149,13 +3162,21 @@ function storeRefused(){ return STORE_REFUSED.slice(); }
 var SAVE_OK=true, SAVE_ERR=null;
 function pPersist(){
  if(!STORE_BOUND){ SAVE_OK=false; SAVE_ERR='NoStore'; return false; }
- try{ STORE.set(PKEY,JSON.stringify(PROFILES)); SAVE_OK=true; SAVE_ERR=null; }
+ /* the records the boundary would not read go back untouched, at the end, so
+    a save never costs a person data this version happens not to understand. */
+ var all=PROFILES.concat(STORE_KEPT);
+ try{ STORE.set(PKEY,JSON.stringify(all)); SAVE_OK=true; SAVE_ERR=null; }
  catch(e){ SAVE_OK=false; SAVE_ERR=(e&&e.name)||'error'; }
  return SAVE_OK; }
 function saveState(){ return {ok:SAVE_OK, err:SAVE_ERR}; }
 function pNew(name){ var p=blankProfile(name); PROFILES.push(p); CURP=p; pPersist(); return p; }
-function pSave(){ if(!CURP)return null; saveProfile(CURP); pPersist(); return CURP; }
-function pSnap(){ if(!CURP)return null; CURP.history.push(snapshot(CURP)); pPersist(); return CURP; }
+/* A SAVE REPORTS WHETHER IT SAVED. This returned CURP, an object, so every
+   caller testing it got true whatever the disk did, and accDelete's guard
+   `if(!pSave())` could never fire: a delete that failed to write said
+   "Deleted from this browser" and left the record where it was. That is the
+   one write in the product where a false claim is worst. */
+function pSave(){ if(!CURP)return false; saveProfile(CURP); return pPersist(); }
+function pSnap(){ if(!CURP)return false; CURP.history.push(snapshot(CURP)); return pPersist(); }
 function pExport(){ return JSON.stringify(CURP?saveProfile(CURP):null,null,1); }
 /* ============================================================
    THE BOUNDARY. Everything above this line trusts its input
@@ -4901,14 +4922,29 @@ function obDrain(){
  var q=obStore();
  if(!q.length) return {state:'empty', n:0};
  if(typeof SEND_HOST!=='function') return {state:'nohost', n:q.length};
- var left=[], sent=0, err=null;
+ /* THE BOUNDARY IS ON THE WAY OUT, NOT ONLY ON THE WAY IN.
+
+    obValidate ran on queue and not on drain, so anything already sitting in
+    the key went to the host unread: measured with a bound sender, name, email
+    and story all crossed the wire, and every one of them is on OB_NEVER. The
+    queue is on a disk a person, another build or another tab can write, so
+    what comes off it is exactly as untrusted as what goes on.
+
+    A refused entry is dropped rather than retried forever, and it is reported,
+    because an envelope that can never be sent is not a queue item, it is a
+    thing to tell somebody about. */
+ var left=[], sent=0, err=null, bad=[];
  for(var i=0;i<q.length;i++){
+  var v=obValidate(q[i]);
+  if(!v.ok){ bad.push({i:i,errs:v.errs.slice(0,2)}); continue; }
   var r;
   try{ r=SEND_HOST(q[i]); }catch(ex){ r=false; err=String(ex&&ex.message||ex); }
   if(r===true) sent++; else { left.push(q[i]); if(!err)err='the send was refused'; }}
  obWrite(left);
- if(!left.length) return {state:'sent', n:sent};
- return {state:'retry', n:left.length, sent:sent, why:err};}
+ if(bad.length&&!left.length&&!sent)
+  return {state:'refused', n:bad.length, bad:bad};
+ if(!left.length) return {state:'sent', n:sent, refused:bad.length||undefined};
+ return {state:'retry', n:left.length, sent:sent, why:err, refused:bad.length||undefined};}
 
 /* ============================================================
    The engine is DOM free. In a browser these are globals on the
@@ -5013,7 +5049,8 @@ if(typeof module!=='undefined'&&module.exports){
                   NUM_LET:NUM_LET, NUM_MASTER:NUM_MASTER, NUM_DEBT:NUM_DEBT,
                   NUM_CORE:NUM_CORE, NUM_DEBT_SAYS:NUM_DEBT_SAYS,
                   FULLNAME:FULLNAME, BIRTH:BIRTH,
-  /* store */     storeRefused:storeRefused, pStore:pStore,
+  /* store */     storeRefused:storeRefused, pStore:pStore, pPersist:pPersist,
+                  saveState:saveState,
                   validateProfile:validateProfile, loadProfile:loadProfile,
                   blankProfile:blankProfile,
   /* palettes */  PAL_VIVID:PAL_VIVID,

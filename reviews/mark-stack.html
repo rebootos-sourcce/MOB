@@ -37,12 +37,13 @@ blockquote p{margin:4px 0}
 
 /* ---- the ladder ---- */
 .lad{margin:22px 0 8px;display:flex;flex-direction:column;gap:7px}
-.lad-r{display:grid;grid-template-columns:20px minmax(0,1fr) minmax(0,1.25fr);gap:14px;align-items:center}
+.lad-r{display:grid;grid-template-columns:20px minmax(0,.72fr) minmax(0,1.5fr);gap:14px;align-items:center}
+.lad-bw{min-width:0}
 .lad-i{font-family:var(--mono);font-size:11px;color:var(--dim);text-align:right}
 .lad-b{background:linear-gradient(90deg,var(--s-root),var(--s-sacral),var(--s-solar),var(--s-heart),var(--s-throat),var(--s-eye),var(--s-crown));
- border-radius:2px;height:26px;display:flex;align-items:center;justify-content:space-between;
- padding:0 9px;color:#0C0D12;font-size:11.5px;font-weight:600;min-width:52px;overflow:hidden}
-.lad-b i{font-style:normal;font-family:var(--mono);font-size:10px;opacity:.72}
+ border-radius:2px;height:22px;min-width:5px}
+.lad-t b{color:var(--ink);font-size:13px}
+.lad-t i{font-style:normal;font-family:var(--mono);font-size:10.5px;opacity:.8}
 .lad-t{font-size:12.5px;color:var(--dim);line-height:1.5}
 .lad-t code{font-size:10.5px}
 .lad-t em{font-style:normal;color:var(--s-throat);font-size:11px}
@@ -57,7 +58,10 @@ blockquote p{margin:4px 0}
 .sz{display:flex;flex-direction:column;align-items:flex-start;gap:5px}
 .sz span{font-family:var(--mono);font-size:9.5px;opacity:.5}
 .cell{background:var(--pan);border-radius:4px;padding:7px 9px;display:flex;align-items:center;justify-content:center}
-.mk{height:var(--h);width:auto;display:block;overflow:visible}
+/* A MARK MUST NEVER WIDEN ITS OWN COLUMN. Direction 3 is 1.6 to 1, so at a
+   320px hero height it is 512px wide and pushed the phone layout 61px past the
+   viewport. max-width holds the box and the viewBox letterboxes inside it. */
+.mk{height:var(--h);width:auto;max-width:100%;display:block;overflow:visible}
 .cell{--h:18px}
 
 /* ---- direction card ---- */
@@ -125,8 +129,9 @@ tr.bad th{color:var(--alarm)}
  .wrap{padding:34px 16px 90px}
  h1{font-size:26px} h2{font-size:20px}
  .gr{grid-template-columns:1fr;gap:10px}
- .lad-r{grid-template-columns:16px 1fr;row-gap:4px}
+ .lad-r{grid-template-columns:16px 1fr;row-gap:5px}
  .lad-t{grid-column:2}
+ .hero .cell{--h:180px}
  .hero{gap:26px;padding:22px 14px}
  .hero .cell{--h:220px}
 }
@@ -152,7 +157,7 @@ neither of the two things he has now named as ours. Nothing from it is reused.</
 <h2>1. The Stack, As The Engine Computes It</h2>
 <p>He is describing a real structure. Seven rungs, bottom to top, each one a coarser reading of
 the same field. The bar width below is the actual taper.</p>
-<div class="lad"><div class="lad-r"><span class="lad-i">7</span><div class="lad-b" style="width:7.30%"><b>Orientation</b><i>1 bit</i></div><div class="lad-t"><code>compute.js:180</code> <em>none</em><p>benign if CQ is 50 or over, malignant under it. derived from CQ, not measured beside it.</p></div></div><div class="lad-r"><span class="lad-i">6</span><div class="lad-b" style="width:11.80%"><b>Character</b><i>0 to 3</i></div><div class="lad-t"><code>compute.js:107</code> <em>inherited</em><p>two hyper families paired, gate at weight 5.6. the layer a person cannot see as separate from themselves.</p></div></div><div class="lad-r"><span class="lad-i">5</span><div class="lad-b" style="width:19.10%"><b>Hyper</b><i>0 to 12</i></div><div class="lad-t"><code>nodes.js:34</code> <em>6 seats, no Heart</em><p>six architectures and their six overshoot poles. the only rung with its own seat field.</p></div></div><div class="lad-r"><span class="lad-i">4</span><div class="lad-b" style="width:30.90%"><b>Complexes</b><i>0 to n</i></div><div class="lad-t"><code>compute.js:88</code> <em>inherited</em><p>saboteurs paired inside one family. two at a time, in order of weight.</p></div></div><div class="lad-r"><span class="lad-i">3</span><div class="lad-b" style="width:50.00%"><b>Saboteurs</b><i>33 + 14 + 9</i></div><div class="lad-t"><code>canon.js:8</code> <em>via family</em><p>33 named on charge bands, 14 clusters on node lists, 9 inferred agent nouns. the widest rung, not the narrowest.</p></div></div><div class="lad-r"><span class="lad-i">2</span><div class="lad-b" style="width:80.90%"><b>Fetters</b><i>9 poled</i></div><div class="lad-t"><code>canon.js:100</code> <em>6 seats, no Crown</em><p>nine axes, each a held state and its coherent opposite. the only rung a person writes to.</p></div></div><div class="lad-r"><span class="lad-i">1</span><div class="lad-b" style="width:100.00%"><b>Addresses</b><i>112</i></div><div class="lad-t"><code>nodes.js:5</code> <em>all 7 seats</em><p>108 somatic at a named plexus, 4 field anchors. more detailed than the fetters, and the stack strip does not show it.</p></div></div></div>
+<div class="lad"><div class="lad-r"><span class="lad-i">7</span><div class="lad-bw"><div class="lad-b" style="width:7.30%"></div></div><div class="lad-t"><b>Orientation</b> <i>1 bit</i> <code>compute.js:180</code> <em>none</em><p>benign if CQ is 50 or over, malignant under it. derived from CQ, not measured beside it.</p></div></div><div class="lad-r"><span class="lad-i">6</span><div class="lad-bw"><div class="lad-b" style="width:11.80%"></div></div><div class="lad-t"><b>Character</b> <i>0 to 3</i> <code>compute.js:107</code> <em>inherited</em><p>two hyper families paired, gate at weight 5.6. the layer a person cannot see as separate from themselves.</p></div></div><div class="lad-r"><span class="lad-i">5</span><div class="lad-bw"><div class="lad-b" style="width:19.10%"></div></div><div class="lad-t"><b>Hyper</b> <i>0 to 12</i> <code>nodes.js:34</code> <em>6 seats, no Heart</em><p>six architectures and their six overshoot poles. the only rung with its own seat field.</p></div></div><div class="lad-r"><span class="lad-i">4</span><div class="lad-bw"><div class="lad-b" style="width:30.90%"></div></div><div class="lad-t"><b>Complexes</b> <i>0 to n</i> <code>compute.js:88</code> <em>inherited</em><p>saboteurs paired inside one family. two at a time, in order of weight.</p></div></div><div class="lad-r"><span class="lad-i">3</span><div class="lad-bw"><div class="lad-b" style="width:50.00%"></div></div><div class="lad-t"><b>Saboteurs</b> <i>33 + 14 + 9</i> <code>canon.js:8, nodes.js:7</code> <em>via family</em><p>33 named on charge bands, 14 clusters on node lists, 9 inferred agent nouns. the widest rung, not the narrowest.</p></div></div><div class="lad-r"><span class="lad-i">2</span><div class="lad-bw"><div class="lad-b" style="width:80.90%"></div></div><div class="lad-t"><b>Fetters</b> <i>9 poled</i> <code>canon.js:100</code> <em>6 seats, no Crown</em><p>nine axes, each a held state and its coherent opposite. the only rung a person writes to.</p></div></div><div class="lad-r"><span class="lad-i">1</span><div class="lad-bw"><div class="lad-b" style="width:100.00%"></div></div><div class="lad-t"><b>Addresses</b> <i>112</i> <code>nodes.js:5</code> <em>all 7 seats</em><p>108 somatic at a named plexus, 4 field anchors. more detailed than the fetters, and the stack strip does not show it.</p></div></div></div>
 <p class="who">Found by Mika. Read out of <code>atuned_src/engine/compute.js</code> and
 <code>atuned_src/engine/data/canon.js</code>, and confirmed against the rung strip the product
 already renders at <code>atuned_src/ui/ui.js:352</code>, which names five of these seven rungs
@@ -205,7 +210,7 @@ more detailed than 112.</p>
 Nine held values and nine opposites, eighteen continuous inputs at 0 to 10 in half steps.
 Everything above the fetters is derived and read only. Everything below the fetters is derived
 too: <code>n.sq</code>, <code>n.held</code>, <code>n.rep</code> and <code>n.pole</code> are all
-computed at <code>compute.js:44</code> to <code>52</code>. So the detail gradient he is describing
+computed at <code>compute.js:51</code> to <code>57</code>. So the detail gradient he is describing
 is a gradient of <b>degrees of freedom</b>: eighteen at the fetters, zero everywhere else, one bit
 at the top. That is a sharper statement than his and it is the one the mark should draw.
 <span class="who">Found by Mika.</span></p>
@@ -345,7 +350,57 @@ exact.</span></p>
 cell in direction 2 are the two places to check first if the bar ground ever darkens or lightens.
 <span class="who">Sol.</span></p>
 
-<h2>8. My Recommendation</h2>
+
+<h2>8. Ink At 18px, Measured</h2>
+<p>Each 18px cut rasterised at device pixel ratio 1 onto its own panel colour, then differenced
+against that panel pixel by pixel. <em>marked</em> is every pixel the mark touches at all,
+<em>solid</em> is every pixel carrying more than 110 of summed channel difference, which is the
+part that survives a squint.</p>
+<div class="tw"><table><thead><tr><th>direction</th><th>box at 18px</th><th>ground</th><th>marked</th><th>solid</th></tr></thead><tbody>
+<tr><th>1. The Seed</th><td>18 x 18, 324px</td><td class="pl">Dark</td><td>123, 38 percent</td><td>101, 31 percent</td></tr>
+<tr><th></th><td></td><td class="pl">Snow</td><td>126, 39 percent</td><td>106, 33 percent</td></tr>
+<tr><th></th><td></td><td class="pl">Lumen bar</td><td>123, 38 percent</td><td>100, 31 percent</td></tr>
+<tr><th></th><td></td><td class="pl">Lumen paper</td><td>126, 39 percent</td><td>106, 33 percent</td></tr>
+<tr><th>2. The Cairn</th><td>27 x 18, 486px</td><td class="pl">Dark</td><td>130, 27 percent</td><td>98, 20 percent</td></tr>
+<tr><th></th><td></td><td class="pl">Snow</td><td>130, 27 percent</td><td>102, 21 percent</td></tr>
+<tr><th></th><td></td><td class="pl">Lumen bar</td><td>130, 27 percent</td><td>96, 20 percent</td></tr>
+<tr><th></th><td></td><td class="pl">Lumen paper</td><td>130, 27 percent</td><td>102, 21 percent</td></tr>
+<tr><th>3. The Collapse</th><td>29 x 18, 522px</td><td class="pl">Dark</td><td>170, 33 percent</td><td>135, 26 percent</td></tr>
+<tr><th></th><td></td><td class="pl">Snow</td><td>171, 33 percent</td><td>139, 27 percent</td></tr>
+<tr><th></th><td></td><td class="pl">Lumen bar</td><td>166, 32 percent</td><td>131, 25 percent</td></tr>
+<tr><th></th><td></td><td class="pl">Lumen paper</td><td>171, 33 percent</td><td>139, 27 percent</td></tr>
+</tbody></table></div>
+<p><b>No direction has a ground specific failure at 18px.</b> Across four grounds the marked count
+moves by at most 5 pixels out of 324, 0 out of 486 and 5 out of 522. Whatever each mark loses at
+small size, it loses the same amount everywhere, which is what a mark built from
+<code>currentColor</code> and seven tokens should do and is the thing the harness was built to
+check.</p>
+<p>Direction 2 is the sparsest at 20 percent solid, direction 1 the densest at 31 percent. Both
+sit inside the band where a favicon still reads. Direction 3 at 26 percent is one continuous
+stroke rather than scattered parts, which is why it holds together better than its number
+suggests. <span class="who">Measured by Bjorn, who wanted the number before he would agree the
+18px cuts were finished.</span></p>
+
+
+<h2>9. The Grade</h2>
+<p>Judged on the mark alone, not the boot.</p>
+<div class="tw"><table><thead><tr><th>criterion</th><th>today</th><th>1. Seed</th><th>2. Cairn</th><th>3. Collapse</th></tr></thead><tbody>
+<tr><th>says what the product is</th><td class="pl">D, seven dots on a line</td><td>B</td><td>A</td><td>A</td></tr>
+<tr><th>carries the seven seats</th><td class="pl">F, the heart is painted over</td><td>B</td><td>A</td><td>A</td></tr>
+<tr><th>carries the stack</th><td class="pl">F, absent</td><td>C</td><td>A</td><td>A</td></tr>
+<tr><th>carries the soul mark</th><td class="pl">F, absent</td><td>A</td><td class="x">F</td><td>A</td></tr>
+<tr><th>reads at 18px</th><td class="pl">C</td><td>B</td><td>B</td><td>A</td></tr>
+<tr><th>holds on all seven lightings</th><td class="pl">B</td><td>A</td><td>A</td><td>A</td></tr>
+<tr><th>is not a chakra diagram</th><td class="pl">F</td><td>C</td><td>A</td><td>B</td></tr>
+<tr><th>overall</th><td class="pl"><b>D</b></td><td><b>B minus</b></td><td><b>B plus</b></td><td><b>A minus</b></td></tr>
+</tbody></table></div>
+<p>The row that decides it is the last one. Direction 1 is a flower of life and everyone has
+seen a flower of life. Direction 2 is a bar stack and everyone has seen a signal meter. Direction
+3 is a spiral and everyone has seen a spiral, and nobody has seen one whose radii are the rungs
+of a stack and whose eye is a squiggle. It is the only one of the three where a person can be
+told what every part of it means and every answer is true.</p>
+
+<h2>10. My Recommendation</h2>
 <p><b>Direction 3, The Collapse.</b> It is the only one of the three that carries all seven rungs,
 all seven seat colours and his own soul mark in one figure, and it is the only one whose
 construction is also the product's own stated mechanism: the collapse sequence, outside in, ending
@@ -365,7 +420,7 @@ whose proportions are the data is worth more than a mark that needs a second loc
 is recorded rather than resolved, because the icon problem is his to lose and the ladder problem is
 mine.</span></p>
 
-<h2>9. What Needs A Ruling</h2>
+<h2>11. What Needs A Ruling</h2>
 <ol>
 <li><b>Squiggle or squiggly Q.</b> If the mark he means is the circle with the line cutting through
 it and the two pins, none of the three is drawn from the right shape and all three change. This is

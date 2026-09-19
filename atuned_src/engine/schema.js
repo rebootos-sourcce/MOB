@@ -188,18 +188,31 @@ function bindStore(get,set){ STORE={get:get,set:set}; STORE_BOUND=true; return S
 
    A profile store is the one place a refusal must not be fatal: one bad record
    must not take the other nine with it. */
-var STORE_REFUSED=[];
+var STORE_REFUSED=[], STORE_KEPT=[];
 function pStore(){
  var raw;
  try{ raw=JSON.parse(STORE.get(PKEY)||'[]'); }catch(e){ return []; }
  if(!Array.isArray(raw)) return [];
- STORE_REFUSED=[];
+ STORE_REFUSED=[]; STORE_KEPT=[];
  var out=[];
  for(var i=0;i<raw.length;i++){
   var v=validateProfile(raw[i]);
   if(v.ok){ out.push(v.profile); }
-  else { STORE_REFUSED.push({i:i, name:(raw[i]&&raw[i].name)||'unnamed',
-    errs:(v.errs||[]).slice(0,3)}); }}
+  else {
+   STORE_REFUSED.push({i:i, name:(raw[i]&&raw[i].name)||'unnamed',
+    errs:(v.errs||[]).slice(0,3)});
+   /* KEPT MEANS KEPT ON THE DISK, NOT KEPT IN MEMORY.
+
+      The comment here said a refused record is kept rather than dropped, and
+      that was a lie by omission: it was held in PROFILES' place for the
+      session and then erased by the next pPersist, which writes the whole
+      validated array back over the key. Measured: two records on disk, one
+      refused, one pSave, disk holds one.
+
+      The raw bytes are held verbatim and written back beside the good ones, so
+      a record this version cannot read survives for a version that can. It is
+      never loaded and never shown. It is simply not destroyed. */
+   STORE_KEPT.push(raw[i]); }}
  return out;}
 /* what the boundary would not take, for a host that wants to say so */
 function storeRefused(){ return STORE_REFUSED.slice(); }
@@ -209,13 +222,21 @@ function storeRefused(){ return STORE_REFUSED.slice(); }
 var SAVE_OK=true, SAVE_ERR=null;
 function pPersist(){
  if(!STORE_BOUND){ SAVE_OK=false; SAVE_ERR='NoStore'; return false; }
- try{ STORE.set(PKEY,JSON.stringify(PROFILES)); SAVE_OK=true; SAVE_ERR=null; }
+ /* the records the boundary would not read go back untouched, at the end, so
+    a save never costs a person data this version happens not to understand. */
+ var all=PROFILES.concat(STORE_KEPT);
+ try{ STORE.set(PKEY,JSON.stringify(all)); SAVE_OK=true; SAVE_ERR=null; }
  catch(e){ SAVE_OK=false; SAVE_ERR=(e&&e.name)||'error'; }
  return SAVE_OK; }
 function saveState(){ return {ok:SAVE_OK, err:SAVE_ERR}; }
 function pNew(name){ var p=blankProfile(name); PROFILES.push(p); CURP=p; pPersist(); return p; }
-function pSave(){ if(!CURP)return null; saveProfile(CURP); pPersist(); return CURP; }
-function pSnap(){ if(!CURP)return null; CURP.history.push(snapshot(CURP)); pPersist(); return CURP; }
+/* A SAVE REPORTS WHETHER IT SAVED. This returned CURP, an object, so every
+   caller testing it got true whatever the disk did, and accDelete's guard
+   `if(!pSave())` could never fire: a delete that failed to write said
+   "Deleted from this browser" and left the record where it was. That is the
+   one write in the product where a false claim is worst. */
+function pSave(){ if(!CURP)return false; saveProfile(CURP); return pPersist(); }
+function pSnap(){ if(!CURP)return false; CURP.history.push(snapshot(CURP)); return pPersist(); }
 function pExport(){ return JSON.stringify(CURP?saveProfile(CURP):null,null,1); }
 /* ============================================================
    THE BOUNDARY. Everything above this line trusts its input
