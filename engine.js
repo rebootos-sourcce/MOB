@@ -5,7 +5,37 @@
 const NODES=
 [{"i":1,"k":"Fear","b":"Root","n":"Lumbar Plexus","a":"Instinct, threat","d":"Avoidance","c":"Fear"},{"i":2,"k":"Shame","b":"Root","n":"Pudendal Nerve","a":"Worth, embodiment","d":"Self-rejection","c":"Shame"},{"i":3,"k":"Guilt","b":"Root","n":"Inferior Hypogastric Plexus","a":"Responsibility","d":"Overcompensation","c":"Shame"},{"i":4,"k":"Control","b":"Root","n":"Sacral Nerves","a":"Safety through force","d":"Domination","c":"Fear"},{"i":5,"k":"Insecurity","b":"Root","n":"Pelvic Nerve","a":"Belonging","d":"Dependency","c":"Fear"},{"i":6,"k":"Victimhood","b":"Root","n":"Coccygeal Plexus","a":"Agency","d":"Blame","c":"Sadness"},{"i":7,"k":"Scarcity","b":"Root","n":"Iliac Nerve Branch","a":"Resources","d":"Hoarding","c":"Fear"},{"i":8,"k":"Root_08_Unnamed","b":"Root","n":"Cauda Equina","a":"Privilege","d":"Deservingness","c":null},{"i":9,"k":"Possession","b":"Root","n":"Gluteal Nerve","a":"Attachment","d":"Control of objects","c":"Shock"},{"i":10,"k":"Lethargy","b":"Root","n":"Obturator Nerve","a":"Momentum","d":"Stagnation","c":"Sadness"},{"i":11,"k":"Resistance","b":"Root","n":"Perineal Branch","a":"Change","d":"Holding on","c":"Fear"},{"i":12,"k":"Compulsion","b":"Root","n":"Pelvic Floor Nerves","a":"Safety rituals","d":"Fixation","c":"Fear"},{"i":13,"k":"Disconnection","b":"Root","n":"Sacral Root Ganglia","a":"Presence","d":"Numbness","c":"Sadness"},{"i":14,"k":"Escapism","b":"Root","n":"Sciatic Nerve","a":"Facing pain","d":"Running","c":"Joy"},{"i":15,"k":"Panic","b":"Root","n":"Lumbar Sympathetic Chain","a":"Reaction","d":"Unconsciousness","c":"Fear"},{"i":16,"k":"Collapse","b":"Root","n":"Spinal Cord Base","a":"Structure","d":"Abandoning Self","c":"Sadness"},{"i":17,"k":"Addiction","b":"Sacral","n":"Sacral Plexus","a":"Craving","d":"Obsession","c":"Joy"},{"i":18,"k":"Lust","b":"Sacral","n":"Genitofemoral Nerve","a":"Desire","d":"Objectification","c":"Joy"},{"i":19,"k":"Envy","b":"Sacral","n":"Internal Pudendal Nerve","a":"Lack","d":"Hatred of others' joy","c":"Resentment"},{"i":20,"k":"Jealousy","b":"Sacral","n":"Obturator Nerve","a":"Possessiveness","d":"Paranoia","c":"Resentment"},{"i":21,"k":"Co-Dependency","b":"Sacral","n":"Pelvic Splanchnic Nerves","a":"Neediness","d":"Self-abandonment","c":"Disgust"},{"i":22,"k":"Shame Of Desire","b":"Sacral","n":"Hypogastric Plexus","a":"Repression","d":"Suppression","c":"Joy"},{"i":23,"k":"Hypersexuality","b":"Sacral","n":"Pudendal Plexus","a":"Validation","d":"Dissociation","c":"Joy"},{"i":24,"k":"Avoidance Of Pleasure","b":"Sacral","n":"Pelvic Nerve","a":"Sensuality","d":"Denial of life","c":"Joy"},{"i":25,"k":"Manipulation Through Emotion","b":"Sacral","n":"Uterovaginal Plexus","a":"Control","d":"Emotional blackmail","c":"Anger"},{"i":26,"k":"Oversensitivity","b":"Sacral","n":"Inferior Hypogastric Plexus","a":"Pain threshold","d":"Victim reactivity","c":"Shock"},{"i":27,"k":"Fantasy","b":"Sacral","n":"Splanchnic Root","a":"Escapism","d":"Delusion","c":"Joy"},{"i":28,"k":"Infatuation","b":"Sacral","n":"Lumbar-Sacral Overlap","a":"Projection","d":"Idealization","c":"Joy"},{"i":29,"k":"Obsession","b":"Sacral","n":"Pelvic Ganglia","a":"Focus","d":"Fixation","c":"Fear"},{"i":30,"k":"Guilt Of Pleasure","b":"Sacral","n":"Sacral Outflow","a":"Joy","d":"Self-denial","c":"Joy"},{"i":31,"k":"Need For Approval","b":"Sacral","n":"Iliac Branches","a":"Identity in others","d":"Conformity","c":"Shame"},{"i":32,"k":"Excess Emotion","b":"Sacral","n":"Urogenital Nerve","a":"Drama","d":"Flooding","c":"Shock"},{"i":33,"k":"Pride","b":"Solar","n":"Celiac Plexus","a":"Self-importance","d":"Superiority","c":"Anger"},{"i":34,"k":"Arrogance","b":"Solar","n":"Greater Splanchnic Nerve","a":"Ego","d":"Inflated Self","c":"Anger"},{"i":35,"k":"Competition","b":"Solar","n":"Aortic Plexus","a":"Comparison","d":"Division","c":"Anger"},{"i":36,"k":"Anger","b":"Solar","n":"Celiac Plexus","a":"Power misused","d":"Attack","c":"Anger"},{"i":37,"k":"Judgment","b":"Solar","n":"Splanchnic Plexus","a":"Othering","d":"Projection","c":"Anger"},{"i":38,"k":"Entitlement","b":"Solar","n":"Renal Plexus","a":"Control of outcomes","d":"Deserving","c":"Anger"},{"i":39,"k":"Rebellion","b":"Solar","n":"Renal Ganglia","a":"Defiance","d":"Misalignment","c":"Anger"},{"i":40,"k":"Perfectionism","b":"Solar","n":"Mesenteric Plexus","a":"Idealism","d":"Rigidity","c":"Fear"},{"i":41,"k":"Force","b":"Solar","n":"Splenic Plexus","a":"Control over flow","d":"Overpowering","c":"Fear"},{"i":42,"k":"Rigidity","b":"Solar","n":"Pancreatic Plexus","a":"Will","d":"Inflexibility","c":"Fear"},{"i":43,"k":"Resentment (Solar)","b":"Solar","n":"Suprarenal Plexus","a":"Grudge","d":"Recycled anger","c":"Resentment"},{"i":44,"k":"Unworthiness","b":"Solar","n":"Inferior Mesenteric Plexus","a":"Confidence","d":"Minimization","c":"Shame"},{"i":45,"k":"Anxiety","b":"Solar","n":"Adrenal Medulla","a":"Control of outcomes","d":"Future fear","c":"Fear"},{"i":46,"k":"Self-Judgment (Solar)","b":"Solar","n":"Epigastric Branches","a":"Inner war","d":"Invalidation","c":"Shame"},{"i":47,"k":"Need To Win","b":"Solar","n":"Vagus-Liver Plexus","a":"Ego","d":"Domination","c":"Anger"},{"i":48,"k":"Superiority","b":"Solar","n":"Hepatic Nerve","a":"Hierarchy","d":"Distinction","c":"Anger"},{"i":49,"k":"Hatred","b":"Heart","n":"Cardiac Plexus","a":"Forgiveness","d":"Vengeance","c":"Anger"},{"i":50,"k":"Resentment (Heart)","b":"Heart","n":"Thoracic Nerves","a":"Holding pain","d":"Withholding love","c":"Resentment"},{"i":51,"k":"Self-Judgment (Heart)","b":"Heart","n":"Vagus Nerve","a":"Grace","d":"Harshness","c":"Shame"},{"i":52,"k":"Betrayal","b":"Heart","n":"Thoracic Plexus","a":"Trust","d":"Abandonment","c":"Shock"},{"i":53,"k":"Separation","b":"Heart","n":"Pericardial Nerve","a":"Unity","d":"Isolation","c":"Sadness"},{"i":54,"k":"Martyrdom","b":"Heart","n":"Intercostal Nerves","a":"Self-sacrifice","d":"Guilt-driven love","c":"Sadness"},{"i":55,"k":"Longing","b":"Heart","n":"Cardiac Nerve Plexus","a":"Presence","d":"Fantasy","c":"Sadness"},{"i":56,"k":"Closed Heart","b":"Heart","n":"Costal Branches","a":"Vulnerability","d":"Armor","c":"Sadness"},{"i":57,"k":"Manipulative Kindness","b":"Heart","n":"Phrenic Nerve","a":"Motive","d":"Transactional giving","c":"Anger"},{"i":58,"k":"Expectation","b":"Heart","n":"Pulmonary Nerve Plexus","a":"Outcome","d":"Contractual love","c":"Fear"},{"i":59,"k":"Blame","b":"Heart","n":"Thoracic Ganglia","a":"Responsibility","d":"Externalization","c":"Anger"},{"i":60,"k":"False Love","b":"Heart","n":"Anterior Thoracic Roots","a":"Image","d":"Projection","c":"Disgust"},{"i":61,"k":"Rejection","b":"Heart","n":"Vagal Branches","a":"Inclusion","d":"Othering","c":"Sadness"},{"i":62,"k":"Avoidance Of Grief","b":"Heart","n":"Great Cardiac Nerve","a":"Loss","d":"Suppression","c":"Joy"},{"i":63,"k":"Need To Be Needed","b":"Heart","n":"Coronary Plexus","a":"Identity","d":"Validation","c":"Disgust"},{"i":64,"k":"Deceit","b":"Throat","n":"Cervical Plexus","a":"Honesty","d":"Manipulation","c":"Disgust"},{"i":65,"k":"Self-Silencing","b":"Throat","n":"Vagus Nerve","a":"Voice","d":"Withholding","c":"Shame"},{"i":66,"k":"People Pleasing","b":"Throat","n":"Superior Laryngeal Nerve","a":"Approval","d":"Inauthenticity","c":"Shame"},{"i":67,"k":"Lying","b":"Throat","n":"Recurrent Laryngeal Nerve","a":"Integrity","d":"Protection","c":"Disgust"},{"i":68,"k":"Interrupting","b":"Throat","n":"Pharyngeal Nerve","a":"Listening","d":"Imposition","c":"Anger"},{"i":69,"k":"Comparison","b":"Throat","n":"Accessory Nerve","a":"Voice Identity","d":"Envy","c":"Shame"},{"i":70,"k":"Excuse","b":"Throat","n":"Glossopharyngeal Nerve","a":"Ownership","d":"Victimization","c":"Disgust"},{"i":71,"k":"Stage Performing","b":"Throat","n":"Laryngeal Plexus","a":"Image","d":"Persona","c":"Shock"},{"i":72,"k":"Speaking To Be Right","b":"Throat","n":"Cervical Ganglia","a":"Ego","d":"Righteousness","c":"Anger"},{"i":73,"k":"Manic Expression","b":"Throat","n":"Spinal Accessory Nerve","a":"Over-talking","d":"Energy discharge","c":"Shock"},{"i":74,"k":"Talking To Avoid Feeling","b":"Throat","n":"Subclavian Nerve","a":"Presence","d":"Avoidance","c":"Shock"},{"i":75,"k":"Spiritual Language To Manipulate","b":"Throat","n":"Brachial Plexus","a":"Belonging","d":"Performance","c":"Disgust"},{"i":76,"k":"Delusion","b":"3rd Eye","n":"Optic Nerve","a":"Truth","d":"Illusion","c":"Disgust"},{"i":77,"k":"Cynicism","b":"3rd Eye","n":"Oculomotor Nerve","a":"Clarity","d":"Dismissal","c":"Disgust"},{"i":78,"k":"Distrust","b":"3rd Eye","n":"Abducens Nerve","a":"Faith","d":"Suspicion","c":"Fear"},{"i":79,"k":"Hypervigilance","b":"3rd Eye","n":"Optic Chiasm","a":"Control","d":"Overthinking","c":"Fear"},{"i":80,"k":"Dogma","b":"3rd Eye","n":"Pineal Gland","a":"Belief","d":"Rigidity","c":"Disgust"},{"i":81,"k":"Overanalysis","b":"3rd Eye","n":"Trigeminal Nerve","a":"Clarity","d":"Paralysis","c":"Shock"},{"i":82,"k":"Projection","b":"3rd Eye","n":"Visual Cortex","a":"Othering","d":"Blame","c":"Disgust"},{"i":83,"k":"Paranoia","b":"3rd Eye","n":"Lateral Geniculate","a":"Fear","d":"Narrative spinning","c":"Fear"},{"i":84,"k":"Distortion","b":"3rd Eye","n":"Occipital Nerve","a":"Reality","d":"Mis-seeing","c":"Disgust"},{"i":85,"k":"Doubt","b":"3rd Eye","n":"Cortical Visual Pathway","a":"Intuition","d":"Dismissal","c":"Fear"},{"i":86,"k":"Idealism","b":"3rd Eye","n":"Supraoptic Nucleus","a":"Fantasy","d":"Denial of reality","c":"Joy"},{"i":87,"k":"Lack Of Discernment","b":"3rd Eye","n":"Thalamus","a":"Perception","d":"Blind trust","c":"Disgust"},{"i":88,"k":"Doubt Of God","b":"Crown","n":"Corpus Callosum","a":"Faith","d":"Separation","c":"Resentment"},{"i":89,"k":"Hubris","b":"Crown","n":"Prefrontal Cortex","a":"Alignment","d":"Ego-God complex","c":"Anger"},{"i":90,"k":"Spiritual Pride","b":"Crown","n":"Pineal-Hypothalamic Axis","a":"Insight","d":"Superiority","c":"Disgust"},{"i":91,"k":"Nihilism","b":"Crown","n":"Parietal Cortex","a":"Meaning","d":"Apathy","c":"Sadness"},{"i":92,"k":"Spiritual Escapism","b":"Crown","n":"Dorsal Raphe Nucleus","a":"Presence","d":"Bypass","c":"Joy"},{"i":93,"k":"False Humility","b":"Crown","n":"Frontal Lobe","a":"Disguise","d":"Manipulation","c":"Shame"},{"i":94,"k":"Seeking Validation","b":"Crown","n":"Cerebral Cortex","a":"Ego","d":"Worship addiction","c":"Shame"},{"i":95,"k":"Savior Complex","b":"Crown","n":"Posterior Cingulate","a":"Responsibility","d":"Overreach","c":"Disgust"},{"i":96,"k":"Condemnation","b":"Crown","n":"Reticular Formation","a":"Mercy","d":"Judgment","c":"Anger"},{"i":97,"k":"Need To Be Special","b":"Crown","n":"Anterior Cingulate","a":"Identity","d":"Distinction","c":"Disgust"},{"i":98,"k":"Unworthy Of God","b":"Crown","n":"Pineal-Amygdala Axis","a":"Divinity","d":"Disbelief","c":"Resentment"},{"i":99,"k":"Knowing Better Than God","b":"Crown","n":"Default Mode Network","a":"Will","d":"Arrogance","c":"Resentment"},{"i":100,"k":"Denial Of Truth","b":"Crown","n":"Medial Forebrain Bundle","a":"Insight","d":"Resistance","c":"Resentment"},{"i":101,"k":"Rejection Of Spirit","b":"Crown","n":"Posterior Commissure","a":"Divinity","d":"Abandonment","c":"Resentment"},{"i":102,"k":"Fear Of God","b":"Crown","n":"Temporal Lobe","a":"Love","d":"Dread","c":"Resentment"},{"i":103,"k":"Anger At God","b":"Crown","n":"Hypothalamus","a":"Trust","d":"Rebellion","c":"Resentment"},{"i":104,"k":"Forgetfulness","b":"Crown","n":"Hippocampus","a":"Identity","d":"Amnesia","c":"Sadness"},{"i":105,"k":"Denial Of Light","b":"Crown","n":"Epithalamus","a":"Revelation","d":"Avoidance","c":"Resentment"},{"i":106,"k":"Rejection Of Unity","b":"Crown","n":"Neocortex","a":"Connection","d":"Separation","c":"Resentment"},{"i":107,"k":"Self-Exclusion","b":"Crown","n":"Superior Sagittal Sinus","a":"Belonging","d":"Disconnection","c":"Shame"},{"i":108,"k":"Endless Seeking","b":"Crown","n":"Ascension Column","a":"Arrival","d":"Never enough","c":"Sadness"},{"i":109,"k":"Sol Star","b":"Field-Above","n":null,"a":"Higher Self anchor","d":"field","c":null},{"i":110,"k":"Stellar Gateway","b":"Field-Above","n":null,"a":"Source connection","d":"field","c":null},{"i":111,"k":"Earth Star","b":"Field-Below","n":null,"a":"Grounding anchor","d":"field","c":null},{"i":112,"k":"Gaia Gateway","b":"Field-Below","n":null,"a":"Cosmic anchor","d":"field","c":null}];
 const SAB_LIB=[{"nm":"Controller","nids":[4,36,50],"hcx":"Rigidity"},{"nm":"Victim","nids":[6,50,3],"hcx":"Collapse"},{"nm":"Perfectionist","nids":[40,37,45],"hcx":"Rigidity"},{"nm":"Pleaser","nids":[66,2,65],"hcx":"Collapse"},{"nm":"Hyper-Achiever","nids":[33,40,48],"hcx":"Grandiosity"},{"nm":"Hyper-Vigilant","nids":[79,1,82],"hcx":"Dysregulation"},{"nm":"Judge","nids":[37,48,82],"hcx":"Predatory"},{"nm":"Avoider","nids":[1,14,89],"hcx":"Dissociation"},{"nm":"Worrywart","nids":[45,1,3],"hcx":"Dysregulation"},{"nm":"Loner","nids":[55,1,49],"hcx":"Dissociation"},{"nm":"Nihilist","nids":[91,88,90],"hcx":"Collapse"},{"nm":"Aggressor","nids":[36,49,38],"hcx":"Predatory"},{"nm":"Imposter","nids":[2,45,66],"hcx":"Collapse"},{"nm":"Superior","nids":[48,33,38],"hcx":"Grandiosity"}];
-const HCX_LIB=[{"nm":"Grandiosity","sub":"narcissism · histrionic"},{"nm":"Predatory","sub":"machiavellian · antisocial"},{"nm":"Collapse","sub":"depression · BPD · anxiety"},{"nm":"Rigidity","sub":"OCPD · paranoia"},{"nm":"Dysregulation","sub":"bipolar · ADHD"},{"nm":"Dissociation","sub":"schizoid · withdrawal"}];
+/* THIRTY NINE SABOTEURS SHARED ONE GLYPH, their seat's, and a person opening
+   the deck saw the same mark thirty nine times. Thirty nine hand drawn marks
+   would be thirty nine inventions, most of them arbitrary, so the family takes
+   the mark: a saboteur is a contraction of a fetter and what distinguishes one
+   from the next behaviourally is which of the six architectures it belongs to.
+   Six marks, each drawn as what the structure does to a shape under load, and
+   a seat for the colour argued from where that architecture is held.
+
+   b is the seat and is for colour only. Rigidity clenches at the solar plexus,
+   collapse drops to the root, grandiosity inflates at the throat, dysregulation
+   oscillates at the sacral, predatory reaches from the third eye because it is
+   calculated rather than felt, and dissociation leaves through the crown. */
+const HCX_LIB=[
+ /* a shape blown past its own outline. */
+ {"nm":"Grandiosity","sub":"narcissism · histrionic","b":"Throat",
+  "ic":"M12 3a9 9 0 100 18 9 9 0 100-18 M12 7a5 5 0 100 10 5 5 0 100-10"},
+ /* a point, and the line that arrived at it from outside the frame. */
+ {"nm":"Predatory","sub":"machiavellian · antisocial","b":"3rd Eye",
+  "ic":"M3 3l9 9 M12 12l9-9 M12 12v9 M8 21h8"},
+ /* a structure that has lost its top and is resting on the floor. */
+ {"nm":"Collapse","sub":"depression · BPD · anxiety","b":"Root",
+  "ic":"M4 20h16 M6 20V9 M18 20V9 M6 9l6 5 6-5"},
+ /* a grid with nothing allowed out of its cell. */
+ {"nm":"Rigidity","sub":"OCPD · paranoia","b":"Solar",
+  "ic":"M4 4h16v16H4z M4 12h16 M12 4v16"},
+ /* an oscillation that overshoots at both ends. */
+ {"nm":"Dysregulation","sub":"bipolar · ADHD","b":"Sacral",
+  "ic":"M3 12h3l2-7 3 14 3-11 2 4h5"},
+ /* an outline with its middle gone. still a shape, nobody in it. */
+ {"nm":"Dissociation","sub":"schizoid · withdrawal","b":"Crown",
+  "ic":"M12 3a9 9 0 019 9 M21 12a9 9 0 01-9 9 M12 21a9 9 0 01-9-9 M3 12a9 9 0 019-9"}];
 /* ============================================================
    THE ARTWORK.
    The original inlined two ~35KB base64 PNGs. They are external
@@ -218,18 +248,76 @@ const ARCH=[
 
 /* the 21 Laws of Spiritual Integrity, each seated at the band it governs.
    integrity is not one aggregate: a closed law dims its own band. */
+/* EVERY LAW WEARS ITS OWN MARK. Ruled: if it has a name, it has an icon, and
+   the icon has a family and the family has a colour. The colour is the seat,
+   which these already carried. The mark was missing, so all twenty one printed
+   the glyph of their band and a person looking at the Laws deck saw seven
+   glyphs for twenty one laws. Each is a physical metaphor drawn as an open
+   stroke in a 24 box, never a fill, so it reads at badge size and inherits
+   currentColor from the seat. */
 const SI=[
- {nm:'Truth',b:'Throat'},{nm:'Transparency',b:'Throat'},{nm:'Justice',b:'Throat'},
- {nm:'Unity',b:'Crown'},{nm:'Awareness',b:'Crown'},{nm:'Nature',b:'Crown'},
- {nm:'Presence',b:'3rd Eye'},{nm:'Humility',b:'3rd Eye'},{nm:'Equanimity',b:'3rd Eye'},
- {nm:'Compassion',b:'Heart'},{nm:'Forgiveness',b:'Heart'},{nm:'Generosity',b:'Heart'},{nm:'Aesthetic Beauty',b:'Heart'},
- {nm:'Courage',b:'Solar'},{nm:'Duty',b:'Solar'},{nm:'Responsibility',b:'Solar'},{nm:'Accountability',b:'Solar'},
- {nm:'Temperance',b:'Sacral'},{nm:'Detachment',b:'Sacral'},
- {nm:'Non-Harm',b:'Root'},{nm:'Patience',b:'Root'}];
+ /* a plumb line. it hangs where it hangs and no opinion moves it. */
+ {nm:'Truth',b:'Throat',ic:'M12 3v11 M9 17a3 3 0 006 0 3 3 0 00-6 0'},
+ /* a pane. the light crossing it is the proof there is nothing behind it. */
+ {nm:'Transparency',b:'Throat',ic:'M4 4h16v16H4z M8 20L20 8'},
+ /* a beam balance, loaded on both arms, read at the fulcrum. */
+ {nm:'Justice',b:'Throat',ic:'M12 4v4 M4 8h16 M4 8l-2 5h4z M20 8l-2 5h4z'},
+ /* two rings that share their middle. neither is dissolved. */
+ {nm:'Unity',b:'Crown',ic:'M10 7a5 5 0 100 10 5 5 0 100-10 M14 7a5 5 0 110 10 5 5 0 110-10'},
+ /* a horizon, and the arc of what is above it. */
+ {nm:'Awareness',b:'Crown',ic:'M3 16h18 M7 16a5 5 0 0110 0'},
+ /* a branch. it divides by a rule it did not choose. */
+ {nm:'Nature',b:'Crown',ic:'M12 21V6 M12 13L7 9 M12 16l5-4 M12 10l4-3'},
+ /* one point, dead centre of the ring. nothing either side of now. */
+ {nm:'Presence',b:'3rd Eye',ic:'M12 11.4v1.2 M4 12a8 8 0 1116 0 8 8 0 01-16 0'},
+ /* a bowl. it holds because it sits below what it holds. */
+ {nm:'Humility',b:'3rd Eye',ic:'M4 11h16 M4 11a8 8 0 0016 0'},
+ /* a level, and the bubble reading centre. */
+ {nm:'Equanimity',b:'3rd Eye',ic:'M3 10h18v4H3z M12 10v4'},
+ /* two arcs leaning into each other, meeting under load. */
+ {nm:'Compassion',b:'Heart',ic:'M12 19c-4-3-7-5-7-8a4 4 0 017-2 4 4 0 017 2c0 3-3 5-7 8'},
+ /* a chain link opened. the load it carried is set down, not cut. */
+ {nm:'Forgiveness',b:'Heart',ic:'M9 9H7a4 4 0 000 6h2 M15 15h2a4 4 0 000-6h-2'},
+ /* a vessel, and what leaves it going up rather than out. */
+ {nm:'Generosity',b:'Heart',ic:'M5 13a7 7 0 0014 0 M12 11V3 M9 6l3-3 3 3'},
+ /* a frame and the arc that divides it where the eye already stopped. */
+ {nm:'Aesthetic Beauty',b:'Heart',ic:'M3 6h18v12H3z M3 18a12 12 0 0112-12'},
+ /* a spine under load, still upright. */
+ {nm:'Courage',b:'Solar',ic:'M12 21V4 M8 8l4-4 4 4 M6 14h12'},
+ /* a yoke on two posts. it is carried because it was taken up. */
+ {nm:'Duty',b:'Solar',ic:'M4 8h16 M7 8v12 M17 8v12'},
+ /* a weight, and the hands under it. */
+ {nm:'Responsibility',b:'Solar',ic:'M4 9h16v5H4z M9 14v5 M15 14v5 M9 19h6'},
+ /* a tally, closed with the mark that says it was read. */
+ {nm:'Accountability',b:'Solar',ic:'M6 4v16 M18 4v16 M6 13h12 M9 8l2 2 4-4'},
+ /* a measured pour. two vessels and exactly one measure between them. */
+ {nm:'Temperance',b:'Sacral',ic:'M5 5h6l-3 6z M13 19h6l-3-6z M11 10l2 4'},
+ /* a gap held open. both ends intact, neither pulling. */
+ {nm:'Detachment',b:'Sacral',ic:'M3 12h5 M16 12h5 M10 7v10 M14 7v10'},
+ /* a closed ring with the bar down. the hand is stopped, not raised. */
+ {nm:'Non-Harm',b:'Root',ic:'M4 12a8 8 0 1116 0 8 8 0 01-16 0 M8 12h8'},
+ /* an hourglass. the only thing it needs is the thing it cannot hurry. */
+ {nm:'Patience',b:'Root',ic:'M7 4h10 M7 20h10 M7 4l5 8 5-8 M7 20l5-8 5 8'}];
 const SINAMES=SI.map(l=>l.nm);
 /* six masks. roster closed 14 September 2026. Young Adult out, Adult stands. */
-const MASKS=[{nm:'Child',b:['Root','Sacral']},{nm:'Preteen',b:['Solar','Throat']},{nm:'Teen',b:['Throat']},
- {nm:'Adult',b:['Sacral','Solar']},{nm:'Professional',b:['Solar','Throat']},{nm:'Ideological',b:['3rd Eye']}];
+/* THE SIX WEAR ONE FACE WITH SIX DIFFERENT SEAMS, which is the point: a mask
+   is the same object every time and what changes is how much has been built
+   onto it. The outline is identical across all six so the family reads at a
+   glance, and the mark inside is what that stage added. */
+const MASK_FACE='M4 9a8 6 0 0116 0c0 6-4 10-8 10S4 15 4 9z';
+const MASKS=[
+ /* one eye open. nothing has been added yet. */
+ {nm:'Child',b:['Root','Sacral'],ic:MASK_FACE+' M12 10v1'},
+ /* two. it has learned there is someone watching. */
+ {nm:'Preteen',b:['Solar','Throat'],ic:MASK_FACE+' M9 10v1 M15 10v1'},
+ /* a split down the middle, held together from outside. */
+ {nm:'Teen',b:['Throat'],ic:MASK_FACE+' M12 6v13'},
+ /* a seam across. the two halves are joined and the join shows. */
+ {nm:'Adult',b:['Sacral','Solar'],ic:MASK_FACE+' M5 12h14'},
+ /* a squared jaw fitted over the lower half. it was issued, not grown. */
+ {nm:'Professional',b:['Solar','Throat'],ic:MASK_FACE+' M8 13h8v5H8z'},
+ /* a ring above the face, worn where a thought is kept. */
+ {nm:'Ideological',b:['3rd Eye'],ic:MASK_FACE+' M9 4a3 3 0 006 0'}];
 
 /* ============================================================
    WHAT A LABEL OWES THE PERSON IT IS PUT ON.
@@ -1133,6 +1221,38 @@ var GLOSS=[{"t":"Address","d":"The specific location in the body’s energetic a
 var HARM=[{"c":"E01","t":"All Is One","a":"nature","ch":"Chapter 19"},{"c":"E02","t":"All Is Motion","a":"nature","ch":"Chapter 19"},{"c":"E03","t":"Polarity","a":"nature","ch":"Chapter 19"},{"c":"E04","t":"All Fields Correspond","a":"nature","ch":"Chapter 19"},{"c":"E05","t":"Like Fields Attract","a":"nature","ch":"Chapter 19"},{"c":"E06","t":"Inspired Act.","a":"nature","ch":"Chapter 19"},{"c":"E07","t":"Transmutation","a":"nature","ch":"Chapter 19"},{"c":"E08","t":"Cause & Effect","a":"nature","ch":"Chapter 19"},{"c":"E09","t":"Compensation","a":"nature","ch":"Chapter 19"},{"c":"E10","t":"Potential","a":"nature","ch":"Chapter 19"},{"c":"E11","t":"Relativity","a":"nature","ch":"Chapter 19"},{"c":"E12","t":"Rhythm","a":"nature","ch":"Chapter 19"},{"c":"E13","t":"Gender","a":"nature","ch":"Chapter 19"},{"c":"E14","t":"Form","a":"human","ch":"Chapter 19"},{"c":"E15","t":"Archetype","a":"human","ch":"Chapter 19"},{"c":"E16","t":"Biofield","a":"human","ch":"Chapter 19"},{"c":"E17","t":"Attunement","a":"human","ch":"Chapter 19"},{"c":"E18","t":"Perception","a":"human","ch":"Chapter 19"},{"c":"E19","t":"Intelligence","a":"human","ch":"Chapter 19"},{"c":"E20","t":"Pleasure & Pain","a":"human","ch":"Chapter 19"},{"c":"E21","t":"The Three Axes","a":"human","ch":"Chapter 19"},{"c":"E22","t":"Symbol","a":"human","ch":"Chapter 19"},{"c":"E23","t":"Identity","a":"human","ch":"Chapter 19"},{"c":"E24","t":"Choice","a":"human","ch":"Chapter 19"},{"c":"E25","t":"Ego","a":"human","ch":"Chapter 19"},{"c":"E26","t":"Intention","a":"human","ch":"Chapter 19"},{"c":"E27","t":"Action","a":"human","ch":"Chapter 19"},{"c":"E28","t":"Memory","a":"human","ch":"Chapter 19"},{"c":"E29","t":"Truth","a":"spirit","ch":"Chapter 19"},{"c":"E30","t":"Transparency","a":"spirit","ch":"Chapter 19"},{"c":"E31","t":"Unity","a":"spirit","ch":"Chapter 19"},{"c":"E32","t":"Awareness","a":"spirit","ch":"Chapter 19"},{"c":"E33","t":"Presence","a":"spirit","ch":"Chapter 19"},{"c":"E34","t":"Equanimity","a":"spirit","ch":"Chapter 19"},{"c":"E35","t":"Compassion","a":"spirit","ch":"Chapter 19"},{"c":"E36","t":"Forgiveness","a":"spirit","ch":"Chapter 19"},{"c":"E37","t":"Courage","a":"spirit","ch":"Chapter 19"},{"c":"E38","t":"Temperance","a":"spirit","ch":"Chapter 19"},{"c":"E39","t":"Duty","a":"spirit","ch":"Chapter 19"},{"c":"E40","t":"Accountability","a":"spirit","ch":"Chapter 19"},{"c":"E41","t":"Justice","a":"spirit","ch":"Chapter 19"},{"c":"E42","t":"Non-Harm","a":"spirit","ch":"Chapter 19"},{"c":"E43","t":"Responsibility","a":"spirit","ch":"Chapter 19"},{"c":"E44","t":"Humility","a":"spirit","ch":"Chapter 19"},{"c":"E45","t":"Generosity","a":"spirit","ch":"Chapter 19"},{"c":"E46","t":"Detachment","a":"spirit","ch":"Chapter 19"},{"c":"E47","t":"Patience","a":"spirit","ch":"Chapter 19"},{"c":"E48","t":"Aesthetic Beauty","a":"spirit","ch":"Chapter 19"},{"c":"E49","t":"Nature","a":"spirit","ch":"Chapter 19"},{"c":"E50","t":"Peace","a":"express","ch":"Chapter 19"},{"c":"E51","t":"Play","a":"express","ch":"Chapter 19"},{"c":"E52","t":"Curiosity","a":"express","ch":"Chapter 19"},{"c":"E53","t":"Creativity","a":"express","ch":"Chapter 19"},{"c":"E54","t":"Flow","a":"express","ch":"Chapter 19"},{"c":"E55","t":"Wonder","a":"express","ch":"Chapter 19"},{"c":"E56","t":"Order","a":"express","ch":"Chapter 19"},{"c":"E57","t":"Love","a":"express","ch":"Chapter 19"},{"c":"E58","t":"Purpose","a":"express","ch":"Chapter 19"},{"c":"E59","t":"Will","a":"express","ch":"Chapter 19"},{"c":"E60","t":"Fear · Safety","a":"emotion","ch":"Chapter 19"},{"c":"E61","t":"Anger · Calm","a":"emotion","ch":"Chapter 19"},{"c":"E62","t":"Shame · Worth","a":"emotion","ch":"Chapter 19"},{"c":"E63","t":"Disgust · Acc.","a":"emotion","ch":"Chapter 19"},{"c":"E64","t":"Apathy · Joy","a":"emotion","ch":"Chapter 19"},{"c":"E65","t":"Shock","a":"emotion","ch":"Chapter 19"},{"c":"E66","t":"Sad · Happy","a":"emotion","ch":"Chapter 19"},{"c":"E67","t":"Surprise","a":"emotion","ch":"Chapter 19"},{"c":"E68","t":"Anticipation","a":"emotion","ch":"Chapter 19"},{"c":"E69","t":"Physical","a":"measure","ch":"Chapter 19"},{"c":"E70","t":"Intellectual","a":"measure","ch":"Chapter 19"},{"c":"E71","t":"Emotional","a":"measure","ch":"Chapter 19"},{"c":"E72","t":"Wisdom","a":"measure","ch":"Chapter 19"},{"c":"E73","t":"Adversity","a":"measure","ch":"Chapter 19"},{"c":"E74","t":"Coherence","a":"measure","ch":"Chapter 19"},{"c":"E75","t":"Meta- Awareness","a":"meta","ch":"Chapter 19"},{"c":"E76","t":"Coherence","a":"meta","ch":"Chapter 19"}];
 var HARM_AX={nature:'Laws of Nature',human:'Laws of Human Nature',spirit:'Laws of Moral Integrity',
  express:'Laws of Expression',emotion:'The nine architectures',measure:'The instruments',meta:'The frame'};
+/* THE SEVENTY SIX HAD ONE GLYPH BETWEEN THEM, and not even their own: the
+   codex read a card's colour off its seat, a universal law has an axis rather
+   than a seat, and the fallback was Heart. So seventy six cards printed the
+   Heart glyph in the Heart colour and the seven families the book is organised
+   into were invisible on the page that exists to show the organisation.
+
+   The family is the axis. Seven axes, so seven marks and seven seats, and the
+   twenty one Laws of Moral Integrity are by name the same twenty one the
+   instrument measures, so those wear the icon they already have and are not
+   given a second one. Fifty five take their family's mark.
+
+   The seat here is for colour only. It is the band whose business that axis is,
+   which is an argument each time and not a free choice: expression is the
+   throat, the nine architectures are the emotional layer at the heart, the
+   instruments are observation at the third eye, human nature is appetite and
+   relation at the sacral, nature is the crown, and the frame sits at the root
+   because it is what everything else stands on. */
+var HARM_FAM={
+ /* a wave that returns. the law does not care whether it was noticed. */
+ nature:{b:'Crown',ic:'M3 12a4.5 4.5 0 019 0 4.5 4.5 0 009 0'},
+ /* two rings, apart and joined. nothing about a person happens alone. */
+ human:{b:'Sacral',ic:'M8 9a3 3 0 100 6 3 3 0 100-6 M16 9a3 3 0 110 6 3 3 0 110-6 M11 12h2'},
+ /* the axis that wears the law's own mark. see SI. */
+ spirit:{b:null,ic:null},
+ /* an aperture and what leaves through it. */
+ express:{b:'Throat',ic:'M5 10h3l4-4v12l-4-4H5z M16 9a4 4 0 010 6 M19 6a8 8 0 010 12'},
+ /* nine cells. the architectures are nine and the grid says nine. */
+ emotion:{b:'Heart',ic:'M5 5h14v14H5z M5 10h14 M5 15h14 M10 5v14 M15 5v14'},
+ /* a scale with its graduations. an instrument is its marks. */
+ measure:{b:'3rd Eye',ic:'M3 9h18v6H3z M7 9v3 M11 9v3 M15 9v3'},
+ /* a frame inside a frame. this is the one that is about the others. */
+ meta:{b:'Root',ic:'M3 3h18v18H3z M8 8h8v8H8z'}};
 
 /* ============================================================
    THE PATTERN CATALOG. Ported from the owner's own production

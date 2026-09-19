@@ -674,7 +674,15 @@ body:not(.hassub) .subbar{display:none}
    string, so a header written in sentence case still renders correctly and
    nobody has to remember the rule while writing one. capitalize only touches
    the first letter of each word, so an all caps acronym like CQ survives. */
-.pm-eye,.tier1,.sub,.sp-hd,.rit-tr,.ip-bh,.sum-lt,.kb-h,.sh-h,.ad-nm,.gm-on,
+/* A HEADLINE IS A SENTENCE AND TAKES ONE CAPITAL. kb-h and sh-h were in this
+   list and they are the only two classes here that carry a whole sentence or a
+   person's name rather than a label. It printed "Every Part Of The System,
+   Open" and "How To Read This", which is not title case either since title case
+   leaves of, the and this lowercase, and it title cased whatever name a person
+   typed, so a surname like de Vries came back De Vries. Labels keep the rule.
+   The wider question of whether headers should be title case at all is the
+   owner's and is raised, not answered here. */
+.pm-eye,.tier1,.sub,.sp-hd,.rit-tr,.ip-bh,.sum-lt,.ad-nm,.gm-on,
 .eyebrow,.lbl{text-transform:capitalize}
 /* the exceptions, where a capital on every word would be wrong: running prose
    that happens to use a header class, and anything already an acronym. */

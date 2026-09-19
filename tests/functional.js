@@ -118,24 +118,73 @@ const kb=await page.evaluate(()=>{
  const none=rows(), foundAll=[...document.querySelectorAll('.kb-t b')].reduce((a,b)=>a+ +b.textContent,0);
  KB_Q=''; kbRender();
  /* every section renders and every row opens something */
- let opened=0, empty=[];
- ['addr','fetter','sab','law','dom','arch','gate','card','seat','harm','gloss'].forEach(k=>{
+ let opened=0, empty=[], walked=0, marks={};
+ ['addr','fetter','sab','law','mask','dom','arch','gate','card','seat','harm','gloss'].forEach(k=>{
   KB_SEC=k; kbRender();
   if(!document.querySelectorAll('.kb-c').length){empty.push(k);return;}
+  walked++;
+  {const ps=[...document.querySelectorAll('.kb-c')].map(c=>{
+    const a=c.querySelector('svg path'); return a?a.getAttribute('d'):null;});
+   marks[k]={n:ps.length, uniq:new Set(ps.filter(Boolean)).size,
+    blank:ps.filter(x=>!x).length};}
   document.querySelector('.kb-c').click();
   if(document.getElementById('rdrill').textContent.length>40)opened++;});
  KB_SEC='addr'; kbRender();
  /* the deck deals only from what is held, and a card names a real address */
  loadP(6); const pool=deckSize(), held=compute().loaded.length;
  deckDeal(); const card=DECK_CARD; deckClose();
- return {secs,all,hit,none,foundAll,opened,empty,pool,held,
-  cardIsHeld:!!(card&&card.n&&card.n.sq>=4), rank:card?card.rank:0};});
-ok(kb.secs===11,'the base has eleven sections, got '+kb.secs);
+ return {secs,all,hit,none,foundAll,opened,walked,marks,empty,pool,held,
+  cardIsHeld:!!(card&&card.n&&card.n.sq>=4), rank:card?card.rank:0,
+  names:[...document.querySelectorAll('[data-kb]')].map(e=>e.textContent.trim()
+   .replace(/\s+\d+$/,''))};});
+/* ASSERT THE DECKS, NOT HOW MANY THERE ARE. This pinned the count at eleven,
+   so adding Masks failed it while nothing was wrong, and renaming a deck to a
+   word a person could find would have passed it while everything was. What
+   matters is that every deck the codex claims to hold is reachable by name.
+   The owner asked where the stack and the universal laws were: both were here
+   under names that did not say what they held, so those two are named here. */
+{const want=['Nodes','Fetters','Saboteurs','Laws','Masks','Domains','Archetypes',
+  'Gates','The cards','The stack','Universal laws','Glossary'];
+ const miss=want.filter(w=>kb.names.indexOf(w)<0);
+ ok(miss.length===0,'every deck is reachable by name'
+  +(miss.length?', missing '+miss.join(', '):'')+', '+kb.names.length+' decks');
+ ok(kb.names.indexOf('The catalog')<0&&kb.names.indexOf('The 76 laws')<0,
+  'and neither old name survives');}
 ok(kb.all>100,'addresses list in full, got '+kb.all);
 ok(kb.hit>0&&kb.hit<kb.all,'search narrows, '+kb.all+' to '+kb.hit);
 ok(kb.none===0&&kb.foundAll===0,'a term in no table finds nothing in any section');
 ok(kb.empty.length===0,'every section has rows, empty: '+kb.empty.join(','));
-ok(kb.opened===11,'every section opens a drill, got '+kb.opened+' of 11');
+/* every deck that has cards opens a drill from the first of them. Counted
+   against the decks walked rather than a literal, for the same reason as
+   above: a new deck is a reason to check it opens, not a reason to fail. */
+ok(kb.opened===kb.walked,'every section opens a drill, got '+kb.opened
+ +' of '+kb.walked);
+
+/* ---------------------------------------------------------------------------
+   IF IT HAS A NAME, IT HAS AN ICON.
+
+   Ruled by the owner, and the codex was the place it was least true. Every card
+   read its glyph off its seat, so the twenty one Laws printed seven glyphs
+   between them, the seventy six universal laws printed one, the thirty nine
+   saboteurs printed one, and the six masks had no deck to print in.
+
+   The rule is not one mark per card. A saboteur's identity is its
+   hypercomplex and a universal law's is its axis, so those decks carry one
+   mark per family, which is a deliberate count and not a fallback. What is
+   refused is a deck of many cards showing a single mark, which is the shape
+   the bug had, and any card with no mark at all.
+--------------------------------------------------------------------------- */
+{const want={law:21, mask:6, sab:6, harm:27, fetter:9};
+ const bad=[];
+ Object.keys(kb.marks).forEach(k=>{
+  const m=kb.marks[k];
+  if(m.blank)bad.push(k+': '+m.blank+' cards with no mark');
+  if(want[k]!==undefined&&m.uniq!==want[k])
+   bad.push(k+': '+m.uniq+' marks, expected '+want[k]);
+  else if(want[k]===undefined&&m.n>3&&m.uniq<2)
+   bad.push(k+': '+m.n+' cards sharing one mark');});
+ ok(bad.length===0,'every card wears a mark and no deck collapses to one'
+  +(bad.length?'  '+bad.join(' | '):''));}
 ok(kb.pool===kb.held,'the deck is exactly what is held, '+kb.pool+' against '+kb.held);
 ok(kb.cardIsHeld,'a dealt card is an address that is actually carrying');
 ok(kb.rank>=1&&kb.rank<=13,'the rank is a card rank, got '+kb.rank);

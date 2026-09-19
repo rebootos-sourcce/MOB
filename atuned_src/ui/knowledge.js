@@ -15,6 +15,22 @@ var KB_Q='', KB_SEC='addr';
 
 /* every searchable thing in the instrument, built from the engine tables.
    kind decides which drill a row opens. */
+/* a glossary term matched, case insensitively, to the thing it names. The
+   tables are searched in the order a collision should resolve: a law before a
+   fetter before a hypercomplex before a seat, because a word that is both is
+   the law first in this system. Returns null when the term is only a word. */
+function glossHit(t){
+ var q=String(t||'').toLowerCase(), i;
+ for(i=0;i<SI.length;i++)if(SI[i].nm.toLowerCase()===q)return {o:SI[i],b:SI[i].b};
+ for(i=0;i<CHILD.length;i++)if(CHILD[i].nm.toLowerCase()===q)return {o:CHILD[i],b:CHILD[i].seat};
+ for(i=0;i<HCX_LIB.length;i++)if(HCX_LIB[i].nm.toLowerCase()===q)return {o:HCX_LIB[i],b:HCX_LIB[i].b};
+ for(i=0;i<MASKS.length;i++)if(MASKS[i].nm.toLowerCase()===q)return {o:MASKS[i],b:MASKS[i].b[0]};
+ return null;}
+/* an open book. a definition, and nothing claimed beyond one. */
+var GLOSS_IC='M3 5h7a2 2 0 012 2v12a2 2 0 00-2-2H3z M21 5h-7a2 2 0 00-2 2v12a2 2 0 012-2h7z';
+function glossMark(t){var h=glossHit(t); return (h&&h.o.ic)||GLOSS_IC;}
+function glossBand(t){var h=glossHit(t); return (h&&h.b)||'3rd Eye';}
+
 function kbRows(sec){
  var r=compute(), out=[];
  if(sec==='addr') W.forEach(function(n){
@@ -25,54 +41,118 @@ function kbRows(sec){
    v:(S.charge[c.nm]||0).toFixed(1), o:c});});
  if(sec==='sab') ALL_SAB.forEach(function(s){
   var pi=SAB_PI.indexOf(s.nm)>=0;
+  /* a saboteur's family is its hypercomplex, which carries the mark and the
+     colour. Six architectures rather than thirty nine inventions. */
+  var fam=null;
+  for(var q=0;q<HCX_LIB.length;q++)if(HCX_LIB[q].nm===s.hcx){fam=HCX_LIB[q];break;}
   out.push({k:'sab', t:s.nm, s:s.hcx||'', d:(s.unnamed?'inferred from the connection types':
     (pi?'Positive Intelligence':'SOURCE library'))+', '+(s.nids||[]).length+' addresses',
-   v:'', o:s});});
+   v:'', o:s, band:(fam&&fam.b)||null, mark:(fam&&fam.ic)||null});});
  if(sec==='law') SI.forEach(function(l,i){
   out.push({k:'law', t:l.nm, s:l.b, d:l.d||'seated at the '+l.b.toLowerCase(),
    v:(S.law[l.nm]!=null?S.law[l.nm].toFixed(1):''), o:l, j:i});});
+ if(sec==='mask') MASKS.forEach(function(m){
+  /* a mask sits across the seats it is worn over, so the card takes the first
+     of them for its colour and names all of them in the line under. */
+  out.push({k:'mask', t:m.nm, s:(m.b&&m.b[0])||'Heart',
+   d:'worn over the '+(m.b||[]).join(' and ')+'. '+(m.b.length>1?'two seats':'one seat'),
+   v:'', o:m});});
  if(sec==='dom') DOMAINS.forEach(function(d,i){
-  out.push({k:'dom', t:d.nm, s:d.r, d:d.d||'', v:(DOMAIN[i]||0).toFixed(2), o:d, j:i});});
+  /* nineteen domains carried nineteen marks in one colour, because a domain is
+     not seated and the fallback is the heart. Its family is its root domain,
+     four of them, and those already have colours the rest of the product uses.
+     So the deck reads as four families rather than one wash. */
+  out.push({k:'dom', t:d.nm, s:d.r, d:d.d||'', v:(DOMAIN[i]||0).toFixed(2), o:d, j:i,
+   col:ROOTCOL[d.r]||null});});
  if(sec==='arch') ARCH.forEach(function(a,i){
   out.push({k:'arch', t:a.nm, s:'archetype', d:a.v||'', v:((r.aff[i]||0)*100).toFixed(0)+'%', o:a, j:i});});
  if(sec==='gate') verpRead().forEach(function(g){
-  out.push({k:'gate', t:g.nm, s:g.side+' gate', d:g.d, v:g.pct?g.pct+'%':'', o:g});});
+  /* GATEGLYPH has carried a mark per gate the whole time and the codex never
+     asked for it, so six gates printed the Heart glyph six times. The side is
+     the family: a higher gate opens at the crown, a lower one holds at the
+     root. */
+  out.push({k:'gate', t:g.nm, s:g.side+' gate', d:g.d, v:g.pct?g.pct+'%':'', o:g,
+   band:g.side==='higher'?'Crown':'Root', mark:GATEGLYPH[g.k]||null});});
+ /* a universal law's family is its axis, so the card takes its colour and its
+    mark from HARM_FAM. The twenty one of Moral Integrity are by name the same
+    twenty one the instrument measures, so they are matched to SI and wear the
+    law's own icon and the law's own seat rather than a family mark. */
  if(sec==='harm') HARM.forEach(function(e){
   /* 21 of the 76 are the Laws of Moral Integrity and those are the ones the
      intake scores. The other 55 are read, not measured, and the row says
      which it is rather than leaving a person to assume all 76 carry a score. */
   var scored=(e.a==='spirit');
+  var fam=HARM_FAM[e.a]||{}, si=null;
+  if(scored)for(var q=0;q<SI.length;q++)if(SI[q].nm===e.t){si=SI[q];break;}
   out.push({k:'harm', t:e.t, s:HARM_AX[e.a]||e.a,
    d:e.c+', '+e.ch+(scored?'. scored by the intake':'. read, not scored'),
-   v:scored&&S.law[e.t]!=null?S.law[e.t].toFixed(1):'', o:e});});
+   v:scored&&S.law[e.t]!=null?S.law[e.t].toFixed(1):'', o:e,
+   /* band carries the colour, mark carries the glyph. a row states its own
+      family rather than leaving the renderer to guess from a label. */
+   band:(si&&si.b)||fam.b||'Heart', mark:(si&&si.ic)||fam.ic||null});});
  if(sec==='gloss') GLOSS.forEach(function(g){
-  out.push({k:'gloss', t:g.t, s:'', d:g.d, v:'', o:g});});
+  /* A GLOSSARY TERM IS OFTEN A THING THIS CODEX ALREADY HOLDS. Fifty six
+     entries printed one mark, and a third of them name a law, a fetter, a
+     hypercomplex or a seat that has its own. So the term wears that mark and
+     the glossary reads as cross referenced rather than as a list of words.
+     Everything else takes the plain term mark, an open book, which is honest:
+     it is a definition and nothing more. */
+  out.push({k:'gloss', t:g.t, s:'', d:g.d, v:'', o:g,
+   band:glossBand(g.t), mark:glossMark(g.t)});});
+ /* THE CARDS DECK HOLDS FIVE DIFFERENT THINGS and printed one mark across all
+    twenty five: the printed protocols, the axis cards, the intensity bands, the
+    pattern kinds and the poles. The kind is the family here, because that is
+    genuinely what separates a band from a protocol, and the mark says which
+    one a person is looking at before they read a word of it. */
+ var CARDMARK={
+  /* a card, face up, with its rule printed on it. */
+  card:{b:'Heart',ic:'M5 3h14v18H5z M8 7h8 M8 11h8 M8 15h5'},
+  /* an axis: two ends and the line between them. */
+  axcard:{b:'Throat',ic:'M4 12h16 M4 9v6 M20 9v6 M12 8v8'},
+  /* a band: a range taken out of a longer scale. */
+  band:{b:'Solar',ic:'M3 8h18 M3 16h18 M8 8v8 M16 8v8'},
+  /* a kind: one shape repeated, which is what a pattern is. */
+  kind:{b:'Sacral',ic:'M5 5h5v5H5z M14 5h5v5h-5z M5 14h5v5H5z M14 14h5v5h-5z'},
+  /* a pole: one axis, and which end of it is loaded. */
+  pole:{b:'3rd Eye',ic:'M12 3v18 M8 7l4-4 4 4 M8 17l4 4 4-4'}};
  if(sec==='card'){
   /* the printed cards first, then the axes cards, then the two the engine has
      no axis for. every row opens the card, and a row never invents a line. */
   CARDSET.forEach(function(c){
-   out.push({k:'card', t:c.nm, s:'protocol No.'+c.no,
+   out.push({band:CARDMARK.card.b, mark:CARDMARK.card.ic, k:'card', t:c.nm, s:'protocol No.'+c.no,
     d:c.dom+'. '+c.seat+'. '+c.lad.join(' to '),
     v:(c.m.rel.length+c.f.rel.length)+' lines', o:c});});
   AXCARD.forEach(function(c){
-   out.push({k:'axcard', t:c.ax||c.un, s:'axis '+c.num+(c.ax?'':', unmatched'),
+   out.push({band:CARDMARK.axcard.b, mark:CARDMARK.axcard.ic, k:'axcard', t:c.ax||c.un, s:'axis '+c.num+(c.ax?'':', unmatched'),
     d:'"'+c.track+'" toward '+c.cop+'. '+c.addr, v:'', o:c});});
   C3_BAND.forEach(function(b){
-   out.push({k:'band', t:b.nm, s:b.lo+' to '+b.hi,
+   out.push({band:CARDMARK.band.b, mark:CARDMARK.band.ic, k:'band', t:b.nm, s:b.lo+' to '+b.hi,
     d:'to '+b.why+'. '+b.w.join(', '), v:'', o:b});});
   C3_KIND.forEach(function(x){
-   out.push({k:'kind', t:x.nm, s:'pattern kind', d:x.ex.join(', '), v:'', o:x});});
+   out.push({band:CARDMARK.kind.b, mark:CARDMARK.kind.ic, k:'kind', t:x.nm, s:'pattern kind', d:x.ex.join(', '), v:'', o:x});});
   C3_POLE.forEach(function(x){
-   out.push({k:'pole', t:x.nm, s:x.ch+', '+x.ans, d:x.of+'. '+x.is.join(', '), v:'', o:x});});}
+   out.push({band:CARDMARK.pole.b, mark:CARDMARK.pole.ic, k:'pole', t:x.nm, s:x.ch+', '+x.ans, d:x.of+'. '+x.is.join(', '), v:'', o:x});});}
  if(sec==='seat') APC.forEach(function(c){
   var rel=0,emb=0; c.sub.forEach(function(x){rel+=x[1];emb+=x[2];});
   out.push({k:'seat', t:c.b, s:c.nv, d:c.d, v:rel+' released', o:c, emb:emb});});
  return out;}
 
+/* THE OWNER ASKED WHERE THE STACK AND THE UNIVERSAL LAWS WERE. Both were on
+   this page the whole time, filed under names that did not say what they held.
+   The seven seats were "The catalog", which is what a list of anything is
+   called, and the seventy six were "The 76 laws", which leads with a count
+   over the thing counted and reads as a different set from the twenty one deck
+   two tabs to the left. One word per concept: the seats are the stack, and the
+   seventy six are the universal laws. The twenty one keep Laws because they are
+   the ones this instrument measures, and their deck says so on entry.
+
+   Masks were the one named table with no deck at all. Six of them, each with a
+   seat and now a mark, reachable only through a reading that happened to raise
+   one. They are in the codex because everything is. */
 const KB_SECS=[['addr','Nodes'],['fetter','Fetters'],['sab','Saboteurs'],
- ['law','Laws'],['dom','Domains'],['arch','Archetypes'],['gate','Gates'],
- ['card','The cards'],['seat','The catalog'],
- ['harm','The 76 laws'],['gloss','Glossary']];
+ ['law','Laws'],['mask','Masks'],['dom','Domains'],['arch','Archetypes'],
+ ['gate','Gates'],['card','The cards'],['seat','The stack'],
+ ['harm','Universal laws'],['gloss','Glossary']];
 
 function kbMatch(row,q){
  if(!q)return true;
@@ -139,21 +219,37 @@ function kbRender(){
     them, which is the category printed nine times where the thing itself
     could have been. Icon, then the thing. A fetter card says Fear, or Anger,
     and the card knows it is a fetter because it is in the Fetters deck. */
+ /* EVERY KIND, because a miss here prints the raw key. A search across the
+    decks was labelling results axcard, band, kind and pole, which are variable
+    names and not words the product uses anywhere a person can see. */
  var KIND={node:'Node',fetter:'Fetter',sab:'Saboteur',law:'Law',dom:'Domain',
-  arch:'Archetype',gate:'Gate',harm:'Harmonic',gloss:'Term',seat:'Seat'};
+  arch:'Archetype',gate:'Gate',harm:'Harmonic',gloss:'Term',seat:'Seat',
+  mask:'Mask',card:'Card',axcard:'Card',band:'Band',kind:'Pattern',pole:'Pole'};
  h+='<div class="kb-grid">';
  if(!rows.length) h+='<div class="rnone">Nothing here matches. The count beside each tab says where it is.</div>';
  rows.forEach(function(x,i){
-  var col=x.k==='seat'?x.t:(x.s&&BANDS.indexOf(x.s)>=0?x.s:'Heart');
+  /* a row may state its own band, which is how a thing whose family is not a
+     seat still lands in the colour system. Otherwise the subtitle is read as a
+     band name, and Heart is the last resort rather than the common case. */
+  var col=x.band||(x.k==='seat'?x.t:(x.s&&BANDS.indexOf(x.s)>=0?x.s:'Heart'));
   var band=BANDS.indexOf(col)>=0?col:'Heart';
-  var c=seatCol(band);
+  /* a row may state its own colour outright, for a family that is real and is
+     not a seat. The root domains are the case: they have four colours already
+     and forcing them through a band would have picked the wrong one. */
+  var c=x.col||seatCol(band);
   var gl=SEATGLYPH[band]||SEATGLYPH._;
   /* the reading on a card is the card's own number, and it is only printed
      when the card has one. A card with no reading is not a card at zero. */
   var hot=x.v&&parseFloat(x.v)>0;
   /* a fetter carries its own glyph, not its seat's, because it has one and
      the icon rule says a named thing wears its own mark. */
-  if(x.k==='fetter'&&x.o&&x.o.ic)gl='<path d="'+x.o.ic+'"/>';
+  /* ANY NAMED THING THAT CARRIES A MARK WEARS ITS OWN, not its band's. This
+     was written for fetters alone, so the twenty one laws printed seven seat
+     glyphs between them and the six masks had none at all. The rule is not
+     about fetters, it is about names: if the row's object has an ic, that is
+     the icon. The seat colour still comes from the band, so the family holds. */
+  if(x.mark)gl='<path d="'+x.mark+'"/>';
+  else if(x.o&&x.o.ic)gl='<path d="'+x.o.ic+'"/>';
   /* THE READING SITS IN A PILL AT THE LOWER RIGHT OF THE ICON. Ruled, and
      the badge already exists for exactly this: the ring carries the share as
      a shape, the pill carries the figure. A card with nothing on it in this
@@ -217,6 +313,11 @@ function kbOpen(x){
  if(x.k==='gloss'){runKbDrill('Glossary', x.o.t, '', x.o.d); return;}
  if(x.k==='dom'){runDomDrill(x.o); return;}
  if(x.k==='arch'){runKbDrill('Archetype', x.o.nm, 'how the blueprint expresses', x.o.v||''); return;}
+ if(x.k==='mask'){runKbDrill('Mask', x.o.nm, 'worn over the '+(x.o.b||[]).join(' and '),
+   'A mask is not a fault and it is not a stage you failed to leave. It is a '
+   +'shape held in front of the seats it covers, and it costs what holding it '
+   +'costs. This one sits over the '+(x.o.b||[]).join(' and ')+'. Its charge is '
+   +'read from the story, never from a question about your age.'); return;}
  if(x.k==='seat'){runSeatDrill(x.o); return;}
  if(x.k==='card'){runCardDrill(x.o); return;}
  if(x.k==='axcard'){runAxCardDrill(x.o); return;}

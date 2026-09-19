@@ -176,18 +176,76 @@ const ARCH=[
 
 /* the 21 Laws of Spiritual Integrity, each seated at the band it governs.
    integrity is not one aggregate: a closed law dims its own band. */
+/* EVERY LAW WEARS ITS OWN MARK. Ruled: if it has a name, it has an icon, and
+   the icon has a family and the family has a colour. The colour is the seat,
+   which these already carried. The mark was missing, so all twenty one printed
+   the glyph of their band and a person looking at the Laws deck saw seven
+   glyphs for twenty one laws. Each is a physical metaphor drawn as an open
+   stroke in a 24 box, never a fill, so it reads at badge size and inherits
+   currentColor from the seat. */
 const SI=[
- {nm:'Truth',b:'Throat'},{nm:'Transparency',b:'Throat'},{nm:'Justice',b:'Throat'},
- {nm:'Unity',b:'Crown'},{nm:'Awareness',b:'Crown'},{nm:'Nature',b:'Crown'},
- {nm:'Presence',b:'3rd Eye'},{nm:'Humility',b:'3rd Eye'},{nm:'Equanimity',b:'3rd Eye'},
- {nm:'Compassion',b:'Heart'},{nm:'Forgiveness',b:'Heart'},{nm:'Generosity',b:'Heart'},{nm:'Aesthetic Beauty',b:'Heart'},
- {nm:'Courage',b:'Solar'},{nm:'Duty',b:'Solar'},{nm:'Responsibility',b:'Solar'},{nm:'Accountability',b:'Solar'},
- {nm:'Temperance',b:'Sacral'},{nm:'Detachment',b:'Sacral'},
- {nm:'Non-Harm',b:'Root'},{nm:'Patience',b:'Root'}];
+ /* a plumb line. it hangs where it hangs and no opinion moves it. */
+ {nm:'Truth',b:'Throat',ic:'M12 3v11 M9 17a3 3 0 006 0 3 3 0 00-6 0'},
+ /* a pane. the light crossing it is the proof there is nothing behind it. */
+ {nm:'Transparency',b:'Throat',ic:'M4 4h16v16H4z M8 20L20 8'},
+ /* a beam balance, loaded on both arms, read at the fulcrum. */
+ {nm:'Justice',b:'Throat',ic:'M12 4v4 M4 8h16 M4 8l-2 5h4z M20 8l-2 5h4z'},
+ /* two rings that share their middle. neither is dissolved. */
+ {nm:'Unity',b:'Crown',ic:'M10 7a5 5 0 100 10 5 5 0 100-10 M14 7a5 5 0 110 10 5 5 0 110-10'},
+ /* a horizon, and the arc of what is above it. */
+ {nm:'Awareness',b:'Crown',ic:'M3 16h18 M7 16a5 5 0 0110 0'},
+ /* a branch. it divides by a rule it did not choose. */
+ {nm:'Nature',b:'Crown',ic:'M12 21V6 M12 13L7 9 M12 16l5-4 M12 10l4-3'},
+ /* one point, dead centre of the ring. nothing either side of now. */
+ {nm:'Presence',b:'3rd Eye',ic:'M12 11.4v1.2 M4 12a8 8 0 1116 0 8 8 0 01-16 0'},
+ /* a bowl. it holds because it sits below what it holds. */
+ {nm:'Humility',b:'3rd Eye',ic:'M4 11h16 M4 11a8 8 0 0016 0'},
+ /* a level, and the bubble reading centre. */
+ {nm:'Equanimity',b:'3rd Eye',ic:'M3 10h18v4H3z M12 10v4'},
+ /* two arcs leaning into each other, meeting under load. */
+ {nm:'Compassion',b:'Heart',ic:'M12 19c-4-3-7-5-7-8a4 4 0 017-2 4 4 0 017 2c0 3-3 5-7 8'},
+ /* a chain link opened. the load it carried is set down, not cut. */
+ {nm:'Forgiveness',b:'Heart',ic:'M9 9H7a4 4 0 000 6h2 M15 15h2a4 4 0 000-6h-2'},
+ /* a vessel, and what leaves it going up rather than out. */
+ {nm:'Generosity',b:'Heart',ic:'M5 13a7 7 0 0014 0 M12 11V3 M9 6l3-3 3 3'},
+ /* a frame and the arc that divides it where the eye already stopped. */
+ {nm:'Aesthetic Beauty',b:'Heart',ic:'M3 6h18v12H3z M3 18a12 12 0 0112-12'},
+ /* a spine under load, still upright. */
+ {nm:'Courage',b:'Solar',ic:'M12 21V4 M8 8l4-4 4 4 M6 14h12'},
+ /* a yoke on two posts. it is carried because it was taken up. */
+ {nm:'Duty',b:'Solar',ic:'M4 8h16 M7 8v12 M17 8v12'},
+ /* a weight, and the hands under it. */
+ {nm:'Responsibility',b:'Solar',ic:'M4 9h16v5H4z M9 14v5 M15 14v5 M9 19h6'},
+ /* a tally, closed with the mark that says it was read. */
+ {nm:'Accountability',b:'Solar',ic:'M6 4v16 M18 4v16 M6 13h12 M9 8l2 2 4-4'},
+ /* a measured pour. two vessels and exactly one measure between them. */
+ {nm:'Temperance',b:'Sacral',ic:'M5 5h6l-3 6z M13 19h6l-3-6z M11 10l2 4'},
+ /* a gap held open. both ends intact, neither pulling. */
+ {nm:'Detachment',b:'Sacral',ic:'M3 12h5 M16 12h5 M10 7v10 M14 7v10'},
+ /* a closed ring with the bar down. the hand is stopped, not raised. */
+ {nm:'Non-Harm',b:'Root',ic:'M4 12a8 8 0 1116 0 8 8 0 01-16 0 M8 12h8'},
+ /* an hourglass. the only thing it needs is the thing it cannot hurry. */
+ {nm:'Patience',b:'Root',ic:'M7 4h10 M7 20h10 M7 4l5 8 5-8 M7 20l5-8 5 8'}];
 const SINAMES=SI.map(l=>l.nm);
 /* six masks. roster closed 14 September 2026. Young Adult out, Adult stands. */
-const MASKS=[{nm:'Child',b:['Root','Sacral']},{nm:'Preteen',b:['Solar','Throat']},{nm:'Teen',b:['Throat']},
- {nm:'Adult',b:['Sacral','Solar']},{nm:'Professional',b:['Solar','Throat']},{nm:'Ideological',b:['3rd Eye']}];
+/* THE SIX WEAR ONE FACE WITH SIX DIFFERENT SEAMS, which is the point: a mask
+   is the same object every time and what changes is how much has been built
+   onto it. The outline is identical across all six so the family reads at a
+   glance, and the mark inside is what that stage added. */
+const MASK_FACE='M4 9a8 6 0 0116 0c0 6-4 10-8 10S4 15 4 9z';
+const MASKS=[
+ /* one eye open. nothing has been added yet. */
+ {nm:'Child',b:['Root','Sacral'],ic:MASK_FACE+' M12 10v1'},
+ /* two. it has learned there is someone watching. */
+ {nm:'Preteen',b:['Solar','Throat'],ic:MASK_FACE+' M9 10v1 M15 10v1'},
+ /* a split down the middle, held together from outside. */
+ {nm:'Teen',b:['Throat'],ic:MASK_FACE+' M12 6v13'},
+ /* a seam across. the two halves are joined and the join shows. */
+ {nm:'Adult',b:['Sacral','Solar'],ic:MASK_FACE+' M5 12h14'},
+ /* a squared jaw fitted over the lower half. it was issued, not grown. */
+ {nm:'Professional',b:['Solar','Throat'],ic:MASK_FACE+' M8 13h8v5H8z'},
+ /* a ring above the face, worn where a thought is kept. */
+ {nm:'Ideological',b:['3rd Eye'],ic:MASK_FACE+' M9 4a3 3 0 006 0'}];
 
 /* ============================================================
    WHAT A LABEL OWES THE PERSON IT IS PUT ON.

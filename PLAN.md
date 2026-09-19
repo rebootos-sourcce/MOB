@@ -9,7 +9,10 @@
                                      travelling charge remain
     BLOCK  3 compass look dev DONE   flat toggle, six axis arrows, Dante
                                      layers, oscillation over 30/90/365
-    BLOCK  4 knowledge        OPEN
+    BLOCK  4 knowledge        DONE   the stack and the universal laws are
+                                     findable, masks have a deck, and every
+                                     card in all twelve decks wears a mark.
+                                     33 new icons. A gate holds the rule
     BLOCK  5 two lightings    DONE   Glass white and Flat. Six, gate proves it
     BLOCK  6 story + release  PART   story column split, release settings and
                                      run in place. Standalone tab remains
