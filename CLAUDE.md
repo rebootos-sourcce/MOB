@@ -29,6 +29,22 @@ else may.
     node tests/functional.js           262, real Chromium
     node tests/collide.js              40, no overlapping nameplates
     node tests/design.js               22, and it is green now
+    node tools/monitor.js             every surface renders, and it logs
+
+`monitor.js` is the render watch. It walks all nine surfaces at 1600 and at
+390, on a blank profile and a loaded one, asserts the noscript notice, and
+appends one stamped block to `MONITOR.log` carrying the commit, the md5,
+whether the tree was dirty and the markup size of every surface. It exits non
+zero on an empty surface, so "the centre column is broken again" is answered
+by diffing two blocks of the log rather than by starting from a screenshot.
+
+Two lessons are built into the check and must not be optimised out. innerText
+does not see SVG, so the Body page reports zero characters of text while
+rendering forty seven elements correctly, and a surface therefore passes on
+markup size with text recorded beside it. And a CSS animation runs without
+scripts, so the boot sheet fades on its own and uncovers a complete looking
+shell with nothing in it, which is exactly what a preview pane showed the
+owner and why the noscript assertion is in there.
 
 Browser gates need `NODE_PATH` pointing at a playwright install and are run
 from the repo root. `design.js` used to fail one check in a sandbox with no
