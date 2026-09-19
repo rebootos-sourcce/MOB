@@ -5,6 +5,20 @@
 const NODES=
 [{"i":1,"k":"Fear","b":"Root","n":"Lumbar Plexus","a":"Instinct, threat","d":"Avoidance","c":"Fear"},{"i":2,"k":"Shame","b":"Root","n":"Pudendal Nerve","a":"Worth, embodiment","d":"Self-rejection","c":"Shame"},{"i":3,"k":"Guilt","b":"Root","n":"Inferior Hypogastric Plexus","a":"Responsibility","d":"Overcompensation","c":"Shame"},{"i":4,"k":"Control","b":"Root","n":"Sacral Nerves","a":"Safety through force","d":"Domination","c":"Fear"},{"i":5,"k":"Insecurity","b":"Root","n":"Pelvic Nerve","a":"Belonging","d":"Dependency","c":"Fear"},{"i":6,"k":"Victimhood","b":"Root","n":"Coccygeal Plexus","a":"Agency","d":"Blame","c":"Sadness"},{"i":7,"k":"Scarcity","b":"Root","n":"Iliac Nerve Branch","a":"Resources","d":"Hoarding","c":"Fear"},{"i":8,"k":"Root_08_Unnamed","b":"Root","n":"Cauda Equina","a":"Privilege","d":"Deservingness","c":null},{"i":9,"k":"Possession","b":"Root","n":"Gluteal Nerve","a":"Attachment","d":"Control of objects","c":"Shock"},{"i":10,"k":"Lethargy","b":"Root","n":"Obturator Nerve","a":"Momentum","d":"Stagnation","c":"Sadness"},{"i":11,"k":"Resistance","b":"Root","n":"Perineal Branch","a":"Change","d":"Holding on","c":"Fear"},{"i":12,"k":"Compulsion","b":"Root","n":"Pelvic Floor Nerves","a":"Safety rituals","d":"Fixation","c":"Fear"},{"i":13,"k":"Disconnection","b":"Root","n":"Sacral Root Ganglia","a":"Presence","d":"Numbness","c":"Sadness"},{"i":14,"k":"Escapism","b":"Root","n":"Sciatic Nerve","a":"Facing pain","d":"Running","c":"Joy"},{"i":15,"k":"Panic","b":"Root","n":"Lumbar Sympathetic Chain","a":"Reaction","d":"Unconsciousness","c":"Fear"},{"i":16,"k":"Collapse","b":"Root","n":"Spinal Cord Base","a":"Structure","d":"Abandoning Self","c":"Sadness"},{"i":17,"k":"Addiction","b":"Sacral","n":"Sacral Plexus","a":"Craving","d":"Obsession","c":"Joy"},{"i":18,"k":"Lust","b":"Sacral","n":"Genitofemoral Nerve","a":"Desire","d":"Objectification","c":"Joy"},{"i":19,"k":"Envy","b":"Sacral","n":"Internal Pudendal Nerve","a":"Lack","d":"Hatred of others' joy","c":"Resentment"},{"i":20,"k":"Jealousy","b":"Sacral","n":"Obturator Nerve","a":"Possessiveness","d":"Paranoia","c":"Resentment"},{"i":21,"k":"Co-Dependency","b":"Sacral","n":"Pelvic Splanchnic Nerves","a":"Neediness","d":"Self-abandonment","c":"Disgust"},{"i":22,"k":"Shame Of Desire","b":"Sacral","n":"Hypogastric Plexus","a":"Repression","d":"Suppression","c":"Joy"},{"i":23,"k":"Hypersexuality","b":"Sacral","n":"Pudendal Plexus","a":"Validation","d":"Dissociation","c":"Joy"},{"i":24,"k":"Avoidance Of Pleasure","b":"Sacral","n":"Pelvic Nerve","a":"Sensuality","d":"Denial of life","c":"Joy"},{"i":25,"k":"Manipulation Through Emotion","b":"Sacral","n":"Uterovaginal Plexus","a":"Control","d":"Emotional blackmail","c":"Anger"},{"i":26,"k":"Oversensitivity","b":"Sacral","n":"Inferior Hypogastric Plexus","a":"Pain threshold","d":"Victim reactivity","c":"Shock"},{"i":27,"k":"Fantasy","b":"Sacral","n":"Splanchnic Root","a":"Escapism","d":"Delusion","c":"Joy"},{"i":28,"k":"Infatuation","b":"Sacral","n":"Lumbar-Sacral Overlap","a":"Projection","d":"Idealization","c":"Joy"},{"i":29,"k":"Obsession","b":"Sacral","n":"Pelvic Ganglia","a":"Focus","d":"Fixation","c":"Fear"},{"i":30,"k":"Guilt Of Pleasure","b":"Sacral","n":"Sacral Outflow","a":"Joy","d":"Self-denial","c":"Joy"},{"i":31,"k":"Need For Approval","b":"Sacral","n":"Iliac Branches","a":"Identity in others","d":"Conformity","c":"Shame"},{"i":32,"k":"Excess Emotion","b":"Sacral","n":"Urogenital Nerve","a":"Drama","d":"Flooding","c":"Shock"},{"i":33,"k":"Pride","b":"Solar","n":"Celiac Plexus","a":"Self-importance","d":"Superiority","c":"Anger"},{"i":34,"k":"Arrogance","b":"Solar","n":"Greater Splanchnic Nerve","a":"Ego","d":"Inflated Self","c":"Anger"},{"i":35,"k":"Competition","b":"Solar","n":"Aortic Plexus","a":"Comparison","d":"Division","c":"Anger"},{"i":36,"k":"Anger","b":"Solar","n":"Celiac Plexus","a":"Power misused","d":"Attack","c":"Anger"},{"i":37,"k":"Judgment","b":"Solar","n":"Splanchnic Plexus","a":"Othering","d":"Projection","c":"Anger"},{"i":38,"k":"Entitlement","b":"Solar","n":"Renal Plexus","a":"Control of outcomes","d":"Deserving","c":"Anger"},{"i":39,"k":"Rebellion","b":"Solar","n":"Renal Ganglia","a":"Defiance","d":"Misalignment","c":"Anger"},{"i":40,"k":"Perfectionism","b":"Solar","n":"Mesenteric Plexus","a":"Idealism","d":"Rigidity","c":"Fear"},{"i":41,"k":"Force","b":"Solar","n":"Splenic Plexus","a":"Control over flow","d":"Overpowering","c":"Fear"},{"i":42,"k":"Rigidity","b":"Solar","n":"Pancreatic Plexus","a":"Will","d":"Inflexibility","c":"Fear"},{"i":43,"k":"Resentment (Solar)","b":"Solar","n":"Suprarenal Plexus","a":"Grudge","d":"Recycled anger","c":"Resentment"},{"i":44,"k":"Unworthiness","b":"Solar","n":"Inferior Mesenteric Plexus","a":"Confidence","d":"Minimization","c":"Shame"},{"i":45,"k":"Anxiety","b":"Solar","n":"Adrenal Medulla","a":"Control of outcomes","d":"Future fear","c":"Fear"},{"i":46,"k":"Self-Judgment (Solar)","b":"Solar","n":"Epigastric Branches","a":"Inner war","d":"Invalidation","c":"Shame"},{"i":47,"k":"Need To Win","b":"Solar","n":"Vagus-Liver Plexus","a":"Ego","d":"Domination","c":"Anger"},{"i":48,"k":"Superiority","b":"Solar","n":"Hepatic Nerve","a":"Hierarchy","d":"Distinction","c":"Anger"},{"i":49,"k":"Hatred","b":"Heart","n":"Cardiac Plexus","a":"Forgiveness","d":"Vengeance","c":"Anger"},{"i":50,"k":"Resentment (Heart)","b":"Heart","n":"Thoracic Nerves","a":"Holding pain","d":"Withholding love","c":"Resentment"},{"i":51,"k":"Self-Judgment (Heart)","b":"Heart","n":"Vagus Nerve","a":"Grace","d":"Harshness","c":"Shame"},{"i":52,"k":"Betrayal","b":"Heart","n":"Thoracic Plexus","a":"Trust","d":"Abandonment","c":"Shock"},{"i":53,"k":"Separation","b":"Heart","n":"Pericardial Nerve","a":"Unity","d":"Isolation","c":"Sadness"},{"i":54,"k":"Martyrdom","b":"Heart","n":"Intercostal Nerves","a":"Self-sacrifice","d":"Guilt-driven love","c":"Sadness"},{"i":55,"k":"Longing","b":"Heart","n":"Cardiac Nerve Plexus","a":"Presence","d":"Fantasy","c":"Sadness"},{"i":56,"k":"Closed Heart","b":"Heart","n":"Costal Branches","a":"Vulnerability","d":"Armor","c":"Sadness"},{"i":57,"k":"Manipulative Kindness","b":"Heart","n":"Phrenic Nerve","a":"Motive","d":"Transactional giving","c":"Anger"},{"i":58,"k":"Expectation","b":"Heart","n":"Pulmonary Nerve Plexus","a":"Outcome","d":"Contractual love","c":"Fear"},{"i":59,"k":"Blame","b":"Heart","n":"Thoracic Ganglia","a":"Responsibility","d":"Externalization","c":"Anger"},{"i":60,"k":"False Love","b":"Heart","n":"Anterior Thoracic Roots","a":"Image","d":"Projection","c":"Disgust"},{"i":61,"k":"Rejection","b":"Heart","n":"Vagal Branches","a":"Inclusion","d":"Othering","c":"Sadness"},{"i":62,"k":"Avoidance Of Grief","b":"Heart","n":"Great Cardiac Nerve","a":"Loss","d":"Suppression","c":"Joy"},{"i":63,"k":"Need To Be Needed","b":"Heart","n":"Coronary Plexus","a":"Identity","d":"Validation","c":"Disgust"},{"i":64,"k":"Deceit","b":"Throat","n":"Cervical Plexus","a":"Honesty","d":"Manipulation","c":"Disgust"},{"i":65,"k":"Self-Silencing","b":"Throat","n":"Vagus Nerve","a":"Voice","d":"Withholding","c":"Shame"},{"i":66,"k":"People Pleasing","b":"Throat","n":"Superior Laryngeal Nerve","a":"Approval","d":"Inauthenticity","c":"Shame"},{"i":67,"k":"Lying","b":"Throat","n":"Recurrent Laryngeal Nerve","a":"Integrity","d":"Protection","c":"Disgust"},{"i":68,"k":"Interrupting","b":"Throat","n":"Pharyngeal Nerve","a":"Listening","d":"Imposition","c":"Anger"},{"i":69,"k":"Comparison","b":"Throat","n":"Accessory Nerve","a":"Voice Identity","d":"Envy","c":"Shame"},{"i":70,"k":"Excuse","b":"Throat","n":"Glossopharyngeal Nerve","a":"Ownership","d":"Victimization","c":"Disgust"},{"i":71,"k":"Stage Performing","b":"Throat","n":"Laryngeal Plexus","a":"Image","d":"Persona","c":"Shock"},{"i":72,"k":"Speaking To Be Right","b":"Throat","n":"Cervical Ganglia","a":"Ego","d":"Righteousness","c":"Anger"},{"i":73,"k":"Manic Expression","b":"Throat","n":"Spinal Accessory Nerve","a":"Over-talking","d":"Energy discharge","c":"Shock"},{"i":74,"k":"Talking To Avoid Feeling","b":"Throat","n":"Subclavian Nerve","a":"Presence","d":"Avoidance","c":"Shock"},{"i":75,"k":"Spiritual Language To Manipulate","b":"Throat","n":"Brachial Plexus","a":"Belonging","d":"Performance","c":"Disgust"},{"i":76,"k":"Delusion","b":"3rd Eye","n":"Optic Nerve","a":"Truth","d":"Illusion","c":"Disgust"},{"i":77,"k":"Cynicism","b":"3rd Eye","n":"Oculomotor Nerve","a":"Clarity","d":"Dismissal","c":"Disgust"},{"i":78,"k":"Distrust","b":"3rd Eye","n":"Abducens Nerve","a":"Faith","d":"Suspicion","c":"Fear"},{"i":79,"k":"Hypervigilance","b":"3rd Eye","n":"Optic Chiasm","a":"Control","d":"Overthinking","c":"Fear"},{"i":80,"k":"Dogma","b":"3rd Eye","n":"Pineal Gland","a":"Belief","d":"Rigidity","c":"Disgust"},{"i":81,"k":"Overanalysis","b":"3rd Eye","n":"Trigeminal Nerve","a":"Clarity","d":"Paralysis","c":"Shock"},{"i":82,"k":"Projection","b":"3rd Eye","n":"Visual Cortex","a":"Othering","d":"Blame","c":"Disgust"},{"i":83,"k":"Paranoia","b":"3rd Eye","n":"Lateral Geniculate","a":"Fear","d":"Narrative spinning","c":"Fear"},{"i":84,"k":"Distortion","b":"3rd Eye","n":"Occipital Nerve","a":"Reality","d":"Mis-seeing","c":"Disgust"},{"i":85,"k":"Doubt","b":"3rd Eye","n":"Cortical Visual Pathway","a":"Intuition","d":"Dismissal","c":"Fear"},{"i":86,"k":"Idealism","b":"3rd Eye","n":"Supraoptic Nucleus","a":"Fantasy","d":"Denial of reality","c":"Joy"},{"i":87,"k":"Lack Of Discernment","b":"3rd Eye","n":"Thalamus","a":"Perception","d":"Blind trust","c":"Disgust"},{"i":88,"k":"Doubt Of God","b":"Crown","n":"Corpus Callosum","a":"Faith","d":"Separation","c":"Resentment"},{"i":89,"k":"Hubris","b":"Crown","n":"Prefrontal Cortex","a":"Alignment","d":"Ego-God complex","c":"Anger"},{"i":90,"k":"Spiritual Pride","b":"Crown","n":"Pineal-Hypothalamic Axis","a":"Insight","d":"Superiority","c":"Disgust"},{"i":91,"k":"Nihilism","b":"Crown","n":"Parietal Cortex","a":"Meaning","d":"Apathy","c":"Sadness"},{"i":92,"k":"Spiritual Escapism","b":"Crown","n":"Dorsal Raphe Nucleus","a":"Presence","d":"Bypass","c":"Joy"},{"i":93,"k":"False Humility","b":"Crown","n":"Frontal Lobe","a":"Disguise","d":"Manipulation","c":"Shame"},{"i":94,"k":"Seeking Validation","b":"Crown","n":"Cerebral Cortex","a":"Ego","d":"Worship addiction","c":"Shame"},{"i":95,"k":"Savior Complex","b":"Crown","n":"Posterior Cingulate","a":"Responsibility","d":"Overreach","c":"Disgust"},{"i":96,"k":"Condemnation","b":"Crown","n":"Reticular Formation","a":"Mercy","d":"Judgment","c":"Anger"},{"i":97,"k":"Need To Be Special","b":"Crown","n":"Anterior Cingulate","a":"Identity","d":"Distinction","c":"Disgust"},{"i":98,"k":"Unworthy Of God","b":"Crown","n":"Pineal-Amygdala Axis","a":"Divinity","d":"Disbelief","c":"Resentment"},{"i":99,"k":"Knowing Better Than God","b":"Crown","n":"Default Mode Network","a":"Will","d":"Arrogance","c":"Resentment"},{"i":100,"k":"Denial Of Truth","b":"Crown","n":"Medial Forebrain Bundle","a":"Insight","d":"Resistance","c":"Resentment"},{"i":101,"k":"Rejection Of Spirit","b":"Crown","n":"Posterior Commissure","a":"Divinity","d":"Abandonment","c":"Resentment"},{"i":102,"k":"Fear Of God","b":"Crown","n":"Temporal Lobe","a":"Love","d":"Dread","c":"Resentment"},{"i":103,"k":"Anger At God","b":"Crown","n":"Hypothalamus","a":"Trust","d":"Rebellion","c":"Resentment"},{"i":104,"k":"Forgetfulness","b":"Crown","n":"Hippocampus","a":"Identity","d":"Amnesia","c":"Sadness"},{"i":105,"k":"Denial Of Light","b":"Crown","n":"Epithalamus","a":"Revelation","d":"Avoidance","c":"Resentment"},{"i":106,"k":"Rejection Of Unity","b":"Crown","n":"Neocortex","a":"Connection","d":"Separation","c":"Resentment"},{"i":107,"k":"Self-Exclusion","b":"Crown","n":"Superior Sagittal Sinus","a":"Belonging","d":"Disconnection","c":"Shame"},{"i":108,"k":"Endless Seeking","b":"Crown","n":"Ascension Column","a":"Arrival","d":"Never enough","c":"Sadness"},{"i":109,"k":"Sol Star","b":"Field-Above","n":null,"a":"Higher Self anchor","d":"field","c":null},{"i":110,"k":"Stellar Gateway","b":"Field-Above","n":null,"a":"Source connection","d":"field","c":null},{"i":111,"k":"Earth Star","b":"Field-Below","n":null,"a":"Grounding anchor","d":"field","c":null},{"i":112,"k":"Gaia Gateway","b":"Field-Below","n":null,"a":"Cosmic anchor","d":"field","c":null}];
 const SAB_LIB=[{"nm":"Controller","nids":[4,36,50],"hcx":"Rigidity"},{"nm":"Victim","nids":[6,50,3],"hcx":"Collapse"},{"nm":"Perfectionist","nids":[40,37,45],"hcx":"Rigidity"},{"nm":"Pleaser","nids":[66,2,65],"hcx":"Collapse"},{"nm":"Hyper-Achiever","nids":[33,40,48],"hcx":"Grandiosity"},{"nm":"Hyper-Vigilant","nids":[79,1,82],"hcx":"Dysregulation"},{"nm":"Judge","nids":[37,48,82],"hcx":"Predatory"},{"nm":"Avoider","nids":[1,14,89],"hcx":"Dissociation"},{"nm":"Worrywart","nids":[45,1,3],"hcx":"Dysregulation"},{"nm":"Loner","nids":[55,1,49],"hcx":"Dissociation"},{"nm":"Nihilist","nids":[91,88,90],"hcx":"Collapse"},{"nm":"Aggressor","nids":[36,49,38],"hcx":"Predatory"},{"nm":"Imposter","nids":[2,45,66],"hcx":"Collapse"},{"nm":"Superior","nids":[48,33,38],"hcx":"Grandiosity"}];
+/* THE CLINICAL NAMES ARE NOT SHOWN TO THE PERSON THEY ARE ABOUT.
+
+   sub carries the diagnostic families these architectures correspond to, and
+   the card renderer printed it straight: a person opening the Body page was
+   told "bipolar and ADHD" or "depression, BPD and anxiety" about themselves,
+   as a subtitle, with no clinician, no assessment and nothing attached. This
+   product reads self report out of a story somebody typed. It is not
+   qualified to hand anybody a diagnosis and it must not look as though it is.
+
+   So d is what a person is shown: what the architecture DOES, in behaviour, in
+   the product's own voice. sub stays because the correspondence is real and
+   the codex needs it, and it is now internal. Anything rendering to a person
+   takes d.
+
 /* THIRTY NINE SABOTEURS SHARED ONE GLYPH, their seat's, and a person opening
    the deck saw the same mark thirty nine times. Thirty nine hand drawn marks
    would be thirty nine inventions, most of them arbitrary, so the family takes
@@ -19,22 +33,22 @@ const SAB_LIB=[{"nm":"Controller","nids":[4,36,50],"hcx":"Rigidity"},{"nm":"Vict
    calculated rather than felt, and dissociation leaves through the crown. */
 const HCX_LIB=[
  /* a shape blown past its own outline. */
- {"nm":"Grandiosity","sub":"narcissism · histrionic","b":"Throat",
+ {"nm":"Grandiosity","d":"the shape is held bigger than it is, and the gap is defended","sub":"narcissism · histrionic","b":"Throat",
   "ic":"M12 3a9 9 0 100 18 9 9 0 100-18 M12 7a5 5 0 100 10 5 5 0 100-10"},
  /* a point, and the line that arrived at it from outside the frame. */
- {"nm":"Predatory","sub":"machiavellian · antisocial","b":"3rd Eye",
+ {"nm":"Predatory","d":"other people are read as terrain, and the move is made before it is felt","sub":"machiavellian · antisocial","b":"3rd Eye",
   "ic":"M3 3l9 9 M12 12l9-9 M12 12v9 M8 21h8"},
  /* a structure that has lost its top and is resting on the floor. */
- {"nm":"Collapse","sub":"depression · BPD · anxiety","b":"Root",
+ {"nm":"Collapse","d":"the structure gives way downward and stays down","sub":"depression · BPD · anxiety","b":"Root",
   "ic":"M4 20h16 M6 20V9 M18 20V9 M6 9l6 5 6-5"},
  /* a grid with nothing allowed out of its cell. */
- {"nm":"Rigidity","sub":"OCPD · paranoia","b":"Solar",
+ {"nm":"Rigidity","d":"nothing is allowed out of its cell, including you","sub":"OCPD · paranoia","b":"Solar",
   "ic":"M4 4h16v16H4z M4 12h16 M12 4v16"},
  /* an oscillation that overshoots at both ends. */
- {"nm":"Dysregulation","sub":"bipolar · ADHD","b":"Sacral",
+ {"nm":"Dysregulation","d":"the swing overshoots at both ends and never settles at the middle","sub":"bipolar · ADHD","b":"Sacral",
   "ic":"M3 12h3l2-7 3 14 3-11 2 4h5"},
  /* an outline with its middle gone. still a shape, nobody in it. */
- {"nm":"Dissociation","sub":"schizoid · withdrawal","b":"Crown",
+ {"nm":"Dissociation","d":"the outline holds and there is nobody inside it","sub":"schizoid · withdrawal","b":"Crown",
   "ic":"M12 3a9 9 0 019 9 M21 12a9 9 0 01-9 9 M12 21a9 9 0 01-9-9 M3 12a9 9 0 019-9"}];
 /* ============================================================
    THE ARTWORK.
@@ -2167,8 +2181,12 @@ function compute(){
  sabs.sort((a,b)=>b.w-a.w);
 
  const cxs=[];
- const FAMS=HCX_LIB.map(h=>({nm:h.nm,sub:h.sub})).concat(
-  HCX_LIB.map(h=>({nm:FAM_POLE[h.nm],sub:'overshoot of '+h.nm,over:true})));
+ /* d is the line a person is shown and sub is the clinical correspondence,
+    which is internal. Both are carried so the codex keeps its mapping and the
+    card has something true to print that is not a diagnosis. */
+ const FAMS=HCX_LIB.map(h=>({nm:h.nm,d:h.d,sub:h.sub})).concat(
+  HCX_LIB.map(h=>({nm:FAM_POLE[h.nm],d:'the cure for '+h.nm.toLowerCase()
+    +', done past the point where it helps',sub:'overshoot of '+h.nm,over:true})));
  FAMS.forEach(h=>{const fam=sabs.filter(s=>s.hcx===h.nm);
   for(let i=0;i+1<fam.length;i+=2){const parts=fam.slice(i,i+2);
    cxs.push({kind:'cx',nm:parts[0].nm+' + '+parts[1].nm,hcx:h.nm,over:!!h.over,parts,
@@ -2178,7 +2196,7 @@ function compute(){
  const hys=[];
  FAMS.forEach(h=>{const fam=cxs.filter(c=>c.hcx===h.nm);
   if(fam.length>=2 || (fam.length===1 && fam[0].w>=6.5))
-   hys.push({kind:'hy',nm:h.nm,sub:h.sub,over:!!h.over,parts:fam,
+   hys.push({kind:'hy',nm:h.nm,d:h.d,sub:h.sub,over:!!h.over,parts:fam,
     w:fam.reduce((a,p)=>a+p.w,0)/fam.length,ang:meanAng(fam.map(p=>p.ang))});});
  hys.sort((a,b)=>b.w-a.w);
  const sups=[];
@@ -2766,6 +2784,10 @@ function blankProfile(name){
  CHILD.forEach(function(c){p.axes[c.nm]={held:0,opp:0};});
  SI.forEach(function(l){p.laws[l.nm]=null;});        /* null = not yet measured */
  return p;}
+/* The value an unmeasured law is given in working state, and which of them
+   are sitting on it. Named rather than repeated as a literal, because the two
+   places that used the number 6 had to agree and did not. */
+var LAW_DEFAULT=6, LAW_UNSET={}, LAW_SEED={};
 function loadProfile(p){
  if(!p.who)p.who={first:'',middle:'',last:'',sex:'',born:{date:'',time:'',place:'',timeUnknown:false}};
  if(!p.who.born)p.who.born={date:'',time:'',place:'',timeUnknown:false};
@@ -2791,13 +2813,39 @@ function loadProfile(p){
   var v=p.laws[l.nm];
   if(v==null&&LAWWAS[l.nm]!=null&&p.laws[LAWWAS[l.nm]]!=null){
    v=p.laws[LAWWAS[l.nm]]; p.laws[l.nm]=v; delete p.laws[LAWWAS[l.nm]];}
-  S.law[l.nm]=(v!=null)?v:6;});
+  /* remembered, so saveProfile can tell a default apart from a reading */
+  LAW_UNSET[l.nm]=(v==null);
+  S.law[l.nm]=(v!=null)?v:LAW_DEFAULT;
+  LAW_SEED[l.nm]=S.law[l.nm];});
  gatesLoad(p);   /* absent on a v1 profile, which reads as no story evidence */
  suscAll();      /* so a story applied before compute() lands on this profile */
  return p;}
 function saveProfile(p){
  p.soul={doms:S.doms.slice(),arcs:S.arcs.slice(),roots:S.roots.slice()};
  CHILD.forEach(function(c){p.axes[c.nm]={held:S.charge[c.nm],opp:S.replace[c.nm]||0};});
+ /* A LAW NOBODY MEASURED MUST NOT COME BACK MEASURED.
+
+    null in p.laws means not yet measured, and every surface that asks whether
+    a person has been read at all counts the non null ones. loadProfile fills
+    the working state with 6 for an unmeasured law, because the arithmetic
+    downstream needs a number. This line then wrote the whole of S.law back,
+    and S.law is never null, so the first save of a blank profile turned all
+    twenty one nulls into twenty one sixes.
+
+    Measured: a fresh profile with nothing entered reported 21 of 21 laws
+    measured, so unread was false for somebody who had typed nothing, and the
+    guards that exist precisely to stop the product reading a stranger off its
+    own defaults were all reading false. The bug was invisible because 6 is
+    also a plausible score.
+
+    So a law that arrived unmeasured is only written once it holds something
+    other than the default it was given. The one case this cannot see is a
+    person deliberately setting an unmeasured law to exactly 6, which stays
+    unmeasured. That is the honest cost of not having a separate touched flag
+    on the control, and it is the right way round: failing to record a 6
+    understates what was measured, where the old behaviour invented twenty one
+    measurements nobody made. The intake writes p.laws directly and is
+    unaffected. */
  SI.forEach(function(l){if(S.law[l.nm]!=null)p.laws[l.nm]=S.law[l.nm];});
  gatesSave(p);
  p.updated=new Date().toISOString(); p.v=SCHEMA_V;

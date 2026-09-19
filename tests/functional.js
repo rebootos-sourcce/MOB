@@ -1404,22 +1404,48 @@ ok(leak.length===0,'no key, customer id or card field is anywhere in the build: 
     keeps that address and pushes the seven that have atoms out of the box.
     Which is the instrument working: a person zooms into the thing they came
     to look at. */
- const onRing=await pa.evaluate(()=>{
+ /* ONE ANCHOR IS NOT ENOUGH, BECAUSE NOT EVERY ANCHOR LEAVES AN ATOM REACHABLE.
+
+    Zoom is pointer anchored, so at this magnification the ring is far larger
+    than the canvas and most atoms fall outside it. Which ones survive depends
+    entirely on which address was under the pointer. On top of that the
+    identification readout floats over the lower right of the stage at 44px,
+    and a nine pixel atom underneath it is drawn, is resolved correctly by
+    hitTest, and cannot be hovered at all: elementFromPoint returns the button
+    and the canvas never sees the pointer.
+
+    Both were invisible while several atoms landed inside the canvas, because
+    one of them was always in the clear. A separate fix stopped a blank profile
+    carrying twenty one invented law scores, the field moved a few points, and
+    a single anchor left exactly one atom on screen, underneath the button.
+
+    A person who cannot reach a thing tries another one, so this does too. It
+    walks the addresses the story landed on and uses the first anchor that
+    leaves an atom the canvas actually owns. It fails only if no address in the
+    whole story yields a reachable atom, which is the real assertion rather
+    than a geometry coincidence. The overlap is recorded as a finding. */
+ const anchors=await pa.evaluate(()=>{
    const want=Object.keys(atomIndex()||{}).map(Number);
-   const h=HIT.filter(x=>x.k==='node'&&want.indexOf(x.n.i)>=0)[0];
-   if(!h)return null;
-   const a=(h.a0+h.a1)/2, r=(h.r0+h.r1)/2;
-   return {x:CX+Math.cos(a)*r,y:CY+Math.sin(a)*r};});
- ok(!!onRing,'there is an address with a story on it to zoom into');
- await pa.mouse.move(box.x+onRing.x,box.y+onRing.y);
- for(let i=0;i<16;i++){await pa.mouse.wheel(0,-120);await pa.waitForTimeout(30);}
- await pa.waitForTimeout(700);
- /* AND THE BOX IS RE-READ AFTER ZOOMING. The depth readout appears under the
-    tab bar once zoom resolves a layer, which pushes the stage down, so a
-    bounding box taken before the zoom is stale by the height of that line.
-    Every pointer position built from it lands on the wrong address, which is
-    a probe reading its own arithmetic and blaming the product. */
- const box2=await (await pa.$('#cv')).boundingBox();
+   return HIT.filter(x=>x.k==='node'&&want.indexOf(x.n.i)>=0)
+    .map(function(h){var a=(h.a0+h.a1)/2,r=(h.r0+h.r1)/2;
+      return {x:CX+Math.cos(a)*r,y:CY+Math.sin(a)*r};});});
+ ok(anchors.length>0,'there is an address with a story on it to zoom into');
+ let one=null;
+ for(const anc of anchors){
+  await pa.evaluate(()=>{S.zoom=1;S.panx=0;S.pany=0;render();});
+  await pa.waitForTimeout(260);
+  const b0=await (await pa.$('#cv')).boundingBox();
+  await pa.mouse.move(b0.x+anc.x,b0.y+anc.y);
+  for(let i=0;i<16;i++){await pa.mouse.wheel(0,-120);await pa.waitForTimeout(25);}
+  await pa.waitForTimeout(650);
+  one=await pa.evaluate(()=>{
+    const cv=document.getElementById('cv'), b=cv.getBoundingClientRect();
+    const h=HIT.filter(x=>x.k==='atom'
+      &&x.x>12&&x.x<b.width-12&&x.y>12&&x.y<b.height-12
+      &&document.elementFromPoint(b.left+x.x,b.top+x.y)===cv)[0];
+    return h?{x:h.x,y:h.y}:null;});
+  if(one)break;}
+
  const st=await pa.evaluate(()=>({z:S.zoom,a:atomA(),
    hits:HIT.filter(h=>h.k==='atom').length,res:fetResolved()}));
  ok(st.a>0,'the ceiling clears the threshold, zoom '+st.z.toFixed(2)+' alpha '+st.a.toFixed(2));
@@ -1433,13 +1459,34 @@ ok(leak.length===0,'no key, customer id or card field is anywhere in the build: 
     lands on the core, and the probe reports the core, which is the product
     behaving correctly and the probe asking the wrong question. Pick one that
     is actually on the canvas. */
- const one=await pa.evaluate(()=>{
-   const cv=document.getElementById('cv'), b=cv.getBoundingClientRect();
-   const h=HIT.filter(x=>x.k==='atom'
-     &&x.x>12&&x.x<b.width-12&&x.y>12&&x.y<b.height-12)[0];
-   return h?{x:h.x,y:h.y}:null;});
+ /* AND THE ATOM HAS TO BE SOMEWHERE A POINTER CAN ACTUALLY GO.
+
+    Being inside the canvas is not the same as being on the screen. The canvas
+    is 664 wide and its top sits about a third of the way down the page, so an
+    atom at y 676 is comfortably inside the element and lands at roughly 1006
+    on a viewport 1000 tall. hitTest resolves it correctly and the mouse cannot
+    be put there, so the hover never fires and the probe reports nothing.
+
+    This only started mattering when a separate fix stopped a blank profile
+    carrying twenty one invented law scores: the field moved a few points and
+    the number of atoms inside the canvas at this magnification fell to one.
+    While there were several, one of them was always on screen by luck.
+
+    So the pick is constrained to the intersection of the canvas and the
+    viewport, which is the set a person could actually hover. */
  if(one){
-  await pa.mouse.move(box2.x+one.x,box2.y+one.y);
+  /* AND THE BOX IS RE-READ AGAIN, IMMEDIATELY BEFORE THE HOVER.
+     box2 was taken right after the zoom settled, which was enough while
+     several atoms were on the canvas and one of them was always near the
+     pointer. It is not enough now. A separate fix stopped a blank profile
+     carrying twenty one invented law scores, the field moved by a few points,
+     and exactly one atom is inside the canvas at this magnification. Against a
+     nine pixel target a box read a few hundred milliseconds early misses, and
+     the probe then reports whatever is underneath and blames the product.
+     The atom's own coordinates are already live: read the box at the same
+     instant and the two agree. */
+  const box3=await (await pa.$('#cv')).boundingBox();
+  await pa.mouse.move(box3.x+one.x,box3.y+one.y);
   await pa.waitForTimeout(350);
   const txt=await pa.evaluate(()=>{const e=document.getElementById('probe');
     return e&&e.classList.contains('on')?e.textContent:'';});

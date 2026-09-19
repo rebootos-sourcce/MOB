@@ -289,8 +289,30 @@ function loadP(i){
  CHARGES.forEach(function(c){
   S.charge[c]=(p.c&&p.c[c]!==undefined)?p.c[c]:0;
   S.replace[c]=(p.rep&&p.rep[c])||0;});
+ /* THE CUSTOM PERSONA IS NOT A DEMO AND MUST NOT BE GIVEN LAW SCORES.
+
+    lawsFor falls back to {_:5.5} for anybody with no table, and "You" is the
+    profile a stranger arrives on, so every one of the twenty one laws was set
+    to 5.5: a score nobody entered, on the one profile that is supposed to hold
+    nothing. saveProfile then wrote all of them, so measured went to 21 and
+    unread went false, which is the flag every surface checks before it agrees
+    to print a band, a tier or a reading. Measured on a fresh page: 21 of 21
+    laws non null on a profile with zero charge.
+
+    A demo persona keeps its table, because that is what a demo is. The custom
+    one is left unmeasured and stays unmeasured until the intake writes a real
+    score. */
  var LS=lawsFor(p);
- SINAMES.forEach(function(l){S.law[l]=(LS[l]!==undefined)?LS[l]:(LS._!==undefined?LS._:5.5);});
+ SINAMES.forEach(function(l){
+  var v=(p.you&&CURP&&CURP.laws)?CURP.laws[l]:undefined;
+  /* The placeholder is unchanged, so the field geometry is unchanged. What
+     changes is only whether it is allowed to persist as a measurement: on the
+     custom persona an unmeasured law is seeded and marked, and saveProfile
+     leaves a seeded law alone until somebody moves it. A demo persona's table
+     IS its measurement, so it is written as before. */
+  S.law[l]=(v!=null)?v:((LS[l]!==undefined)?LS[l]:(LS._!==undefined?LS._:5.5));
+  LAW_UNSET[l]=!!(p.you&&v==null);
+  LAW_SEED[l]=S.law[l];});
  /* switch profiles, never overwrite one. */
  if(!PROF_BY[p.nm]){
   var pr=blankProfile(p.nm==='You'?'You':p.nm);

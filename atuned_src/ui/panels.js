@@ -163,9 +163,19 @@ function setTab(i){
    w[rail].forEach(function(k){ if(OPENSEC[rail])OPENSEC[rail][k]=1; });});
   if(typeof paintSections==='function')paintSections();})();
  if(i===TAB.INTAKE)renderIntake();
- /* Knowledge carries Games. Rendering the parent renders both, because the
-    games host is inside it and a hidden host renders nothing a person sees. */
- if(i===TAB.KNOW){kbRender(); if(!GAME)GAME='lg'; gmRender();} else lgStop();
+ /* GAMES IS ITS OWN TAB AGAIN AND THIS DISPATCH DID NOT KNOW.
+
+    Knowledge used to carry Games as a folded surface, and this rendered both
+    from the parent because the games host sat inside it. The owner ruled Games
+    back onto its own door, core.js unfolded it and body.html moved #games out
+    to be a sibling of #know, and this line was left behind. So the only branch
+    that ever called gmRender was the Knowledge branch, and every other tab,
+    Games included, fell into the else and called lgStop.
+
+    The result was a tab that opened a 903px host with nothing in it. Two
+    conditions now, because they are two surfaces. */
+ if(i===TAB.KNOW)kbRender();
+ if(i===TAB.GAMES){ if(!GAME)GAME='lg'; gmRender(); } else lgStop();
  if(i===TAB.STORY)stRender();
  /* Summary carries Analytics, and reads last. */
  if(i===TAB.SUMMARY){sumRender(); anaRender();}

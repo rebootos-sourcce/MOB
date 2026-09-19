@@ -8,8 +8,15 @@ s=re.sub(r'(?m)^\s*//.*$','',s)                     # whole line comments
 s=re.sub(r"'(?:\\.|[^'\\\n])*'",'""',s)             # single quoted
 s=re.sub(r'"(?:\\.|[^"\\\n])*"','""',s)             # double quoted
 s=re.sub(r'`(?:\\.|[^`\\])*`','""',s)               # template
+# The audio and speech globals are bare names, not properties of window, so
+# `new AudioContext()` or `new webkitSpeechRecognition()` inside engine/ passed
+# this check until they were named here. SpeechRecognition matters most: in
+# Chrome it is a NETWORK service that ships the microphone to the browser
+# vendor, which is the one thing this product promises never happens.
 BAD=(r'\b(document|window|navigator|localStorage|sessionStorage'
-     r'|requestAnimationFrame|alert|fetch|XMLHttpRequest)\b|new\s+Image\b')
+     r'|requestAnimationFrame|alert|fetch|XMLHttpRequest'
+     r'|AudioContext|webkitAudioContext|speechSynthesis'
+     r'|SpeechRecognition|webkitSpeechRecognition)\b|new\s+Image\b')
 hits=[(s[:m.start()].count('\n')+1,m.group(0)) for m in re.finditer(BAD,s)]
 if hits:
     for ln,tok in hits[:20]: print('  line %d  %s'%(ln,tok))

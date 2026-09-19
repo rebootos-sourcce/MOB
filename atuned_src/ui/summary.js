@@ -67,7 +67,16 @@ function sumGlance(r){
  var row=[
   ['coherence', r.darkB, r.CQ, Math.round(r.CQ)+'%', 'Where the field sits, 0 to 100.'],
   ['shadow weight', 'Root', r.DQ*10, r.DQ.toFixed(1), 'What is held, 0 to 10.'],
-  ['installed', 'Heart', r.SQm*10, r.SQm.toFixed(1), 'What has been filled in, 0 to 10.'],
+  /* THIS PRINTED THE OPPOSITE OF WHAT IT MEASURES. It was labelled "installed"
+     and glossed "what has been filled in". SQm is built in compute.js from
+     sum+=n.sq over the loaded addresses, and n.sq is HELD charge: an address
+     joins `loaded` precisely because it is carrying. Installed is the other
+     pole, n.rep, and it is not in this figure at all. So the second screen of
+     the product printed a person's carried load and told them it was the part
+     of them that had been filled in, which is not a wording problem, it is a
+     reading that says the reverse of the truth. */
+  ['carried depth', 'Root', r.SQm*10, r.SQm.toFixed(1),
+   'How deep the carrying addresses run, meaned, 0 to 10.'],
   ['pole', 'Heart', r.poleMean*10, r.poleMean.toFixed(2), 'Coherent opposites standing, 0 to 1.'],
   ['energy', 'Solar', e*100, e.toFixed(2), 'Vitality, awareness and will, meaned, 0 to 1.']];
  if(acc)row.push(['identification','3rd Eye',acc.pct,acc.pct.toFixed(0)+'%',
@@ -270,6 +279,14 @@ function sumSpirit(r){
 
 /* ---- full numerology. six numbers, and every name part on its own. ---- */
 function sumNum(r){
+ /* NOTHING ENTERED MEANS NOTHING READ, AND THIS SURFACE SAID BOTH.
+    sumUnread prints "a number off a default is a number about the default and
+    not about you" and then called this, which fell back to the name "You" and
+    computed a full numerology reading off it, ending in a karmic debt line
+    about something built on a false footing coming down. Twenty lines under
+    the sentence forbidding exactly that. The guard belongs here rather than at
+    the caller, because any future caller has the same problem. */
+ if(r&&r.unread)return '';
  var nm2=(PEOPLE[S.who]||{}).nm||'You';
  var N=numerologyOf(nm2,CURP);
  if(!N)return '';

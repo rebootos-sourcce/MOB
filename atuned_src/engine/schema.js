@@ -60,6 +60,10 @@ function blankProfile(name){
  CHILD.forEach(function(c){p.axes[c.nm]={held:0,opp:0};});
  SI.forEach(function(l){p.laws[l.nm]=null;});        /* null = not yet measured */
  return p;}
+/* The value an unmeasured law is given in working state, and which of them
+   are sitting on it. Named rather than repeated as a literal, because the two
+   places that used the number 6 had to agree and did not. */
+var LAW_DEFAULT=6, LAW_UNSET={}, LAW_SEED={};
 function loadProfile(p){
  if(!p.who)p.who={first:'',middle:'',last:'',sex:'',born:{date:'',time:'',place:'',timeUnknown:false}};
  if(!p.who.born)p.who.born={date:'',time:'',place:'',timeUnknown:false};
@@ -85,14 +89,49 @@ function loadProfile(p){
   var v=p.laws[l.nm];
   if(v==null&&LAWWAS[l.nm]!=null&&p.laws[LAWWAS[l.nm]]!=null){
    v=p.laws[LAWWAS[l.nm]]; p.laws[l.nm]=v; delete p.laws[LAWWAS[l.nm]];}
-  S.law[l.nm]=(v!=null)?v:6;});
+  /* remembered, so saveProfile can tell a default apart from a reading */
+  LAW_UNSET[l.nm]=(v==null);
+  S.law[l.nm]=(v!=null)?v:LAW_DEFAULT;
+  LAW_SEED[l.nm]=S.law[l.nm];});
  gatesLoad(p);   /* absent on a v1 profile, which reads as no story evidence */
  suscAll();      /* so a story applied before compute() lands on this profile */
  return p;}
 function saveProfile(p){
  p.soul={doms:S.doms.slice(),arcs:S.arcs.slice(),roots:S.roots.slice()};
  CHILD.forEach(function(c){p.axes[c.nm]={held:S.charge[c.nm],opp:S.replace[c.nm]||0};});
- SI.forEach(function(l){if(S.law[l.nm]!=null)p.laws[l.nm]=S.law[l.nm];});
+ /* A LAW NOBODY MEASURED MUST NOT COME BACK MEASURED.
+
+    null in p.laws means not yet measured, and every surface that asks whether
+    a person has been read at all counts the non null ones. loadProfile fills
+    the working state with 6 for an unmeasured law, because the arithmetic
+    downstream needs a number. This line then wrote the whole of S.law back,
+    and S.law is never null, so the first save of a blank profile turned all
+    twenty one nulls into twenty one sixes.
+
+    Measured: a fresh profile with nothing entered reported 21 of 21 laws
+    measured, so unread was false for somebody who had typed nothing, and the
+    guards that exist precisely to stop the product reading a stranger off its
+    own defaults were all reading false. The bug was invisible because 6 is
+    also a plausible score.
+
+    So a law that arrived unmeasured is only written once it holds something
+    other than the default it was given. The one case this cannot see is a
+    person deliberately setting an unmeasured law to exactly 6, which stays
+    unmeasured. That is the honest cost of not having a separate touched flag
+    on the control, and it is the right way round: failing to record a 6
+    understates what was measured, where the old behaviour invented twenty one
+    measurements nobody made. The intake writes p.laws directly and is
+    unaffected. */
+ SI.forEach(function(l){
+  if(S.law[l.nm]==null)return;
+  /* Compared against the value this law was SEEDED with, not against a single
+     literal. Two callers seed an unmeasured law and they do not agree: this
+     module uses 6 and the persona loader uses 5.5. Testing one literal wrote
+     the other one straight through, which is the bug wearing a different
+     number. What is being asked is "has anybody moved this since it was given
+     a placeholder", and only the seed can answer that. */
+  if(LAW_UNSET[l.nm]&&S.law[l.nm]===LAW_SEED[l.nm])return;
+  p.laws[l.nm]=S.law[l.nm]; LAW_UNSET[l.nm]=false;});
  gatesSave(p);
  p.updated=new Date().toISOString(); p.v=SCHEMA_V;
  return p;}

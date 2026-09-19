@@ -86,8 +86,12 @@ function compute(){
  sabs.sort((a,b)=>b.w-a.w);
 
  const cxs=[];
- const FAMS=HCX_LIB.map(h=>({nm:h.nm,sub:h.sub})).concat(
-  HCX_LIB.map(h=>({nm:FAM_POLE[h.nm],sub:'overshoot of '+h.nm,over:true})));
+ /* d is the line a person is shown and sub is the clinical correspondence,
+    which is internal. Both are carried so the codex keeps its mapping and the
+    card has something true to print that is not a diagnosis. */
+ const FAMS=HCX_LIB.map(h=>({nm:h.nm,d:h.d,sub:h.sub})).concat(
+  HCX_LIB.map(h=>({nm:FAM_POLE[h.nm],d:'the cure for '+h.nm.toLowerCase()
+    +', done past the point where it helps',sub:'overshoot of '+h.nm,over:true})));
  FAMS.forEach(h=>{const fam=sabs.filter(s=>s.hcx===h.nm);
   for(let i=0;i+1<fam.length;i+=2){const parts=fam.slice(i,i+2);
    cxs.push({kind:'cx',nm:parts[0].nm+' + '+parts[1].nm,hcx:h.nm,over:!!h.over,parts,
@@ -97,7 +101,7 @@ function compute(){
  const hys=[];
  FAMS.forEach(h=>{const fam=cxs.filter(c=>c.hcx===h.nm);
   if(fam.length>=2 || (fam.length===1 && fam[0].w>=6.5))
-   hys.push({kind:'hy',nm:h.nm,sub:h.sub,over:!!h.over,parts:fam,
+   hys.push({kind:'hy',nm:h.nm,d:h.d,sub:h.sub,over:!!h.over,parts:fam,
     w:fam.reduce((a,p)=>a+p.w,0)/fam.length,ang:meanAng(fam.map(p=>p.ang))});});
  hys.sort((a,b)=>b.w-a.w);
  const sups=[];

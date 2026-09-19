@@ -65,8 +65,31 @@ function describe(h,r){
   +f.slice(0,5).map(function(n){return String(n.i).padStart(3,'0')+' '+esc(n.k)
    +' <b>'+n.sq.toFixed(1)+'</b>';}).join('<br>')
   +(f.length>5?'<br>and '+(f.length-5)+' more':'');}
+/* AN ATOM IS THE SMALLEST THING DRAWN AND IT MUST WIN ITS OWN PIXEL.
+
+   The scan runs backward so the last thing registered wins, which is the right
+   default: later means drawn on top. Atoms break it. They are pushed at
+   wheel.js:220, inside the shell loop, long before the addresses at :657, so
+   an address whose wedge covers the atom takes every pointer that lands on it.
+
+   That is not a stale ordering, it is a geometry dependent one, which is worse.
+   It sat correct for months and only surfaced when a separate fix stopped a
+   blank profile carrying twenty one invented law scores. The field moved by a
+   few points, an address wedge slid over an atom, and the probe that hovers an
+   atom to read the sentence behind it started reporting the address instead.
+   Any future change to the arithmetic could do it again to a different atom.
+
+   So atoms are resolved first, and only when the atom layer is actually up. A
+   person zoomed in far enough to see atoms is looking at atoms: that is what
+   the zoom was for. Two passes rather than a sort, because the common case is
+   no atoms on screen at all and that case pays one length check. */
 function hitTest(px,py){
- for(var i=HIT.length-1;i>=0;i--){var h=HIT[i];
+ var i,h;
+ if(typeof atomA==='function'&&atomA()>0){
+  for(i=HIT.length-1;i>=0;i--){h=HIT[i];
+   if(h.k!=='atom'||h.x===undefined)continue;
+   if(Math.hypot(px-h.x,py-h.y)<=h.rad)return h;}}
+ for(i=HIT.length-1;i>=0;i--){h=HIT[i];
   if(h.x!==undefined){if(Math.hypot(px-h.x,py-h.y)<=h.rad)return h;continue;}
   var d=Math.hypot(px-h.cx,py-h.cy);if(d<h.r0||d>h.r1)continue;
   var nz=function(x){while(x<-Math.PI)x+=TAU;while(x>Math.PI)x-=TAU;return x;};
@@ -735,7 +758,12 @@ function render(){
    st.innerHTML=startHTML();})();
   $('person').innerHTML='<h3>'+(p.you?'You':p.nm)+'</h3>'
    +(p.you?'':'<div class="prole">'+p.age+', '+esc(String(p.role).replace(' · ICP',''))+'</div>')
-   +(p.says?'<p class="psay">'+esc(p.says)+'</p>':'')
+   /* THE EMPTY STATE OUTLIVED THE EMPTINESS. says was printed whenever it
+      existed, and the blank persona's says is the words "Nothing has been
+      entered yet". A person who then entered charge got a live reading beside
+      a sentence swearing they had entered nothing. It is an empty state, so it
+      goes when the state is not empty. */
+   +(p.says&&!(p.you&&!r.unread)?'<p class="psay">'+esc(p.says)+'</p>':'')
    +'<div class="pm-eye" style="margin-top:14px">Archetypes</div>'+ah
    +'<div class="pm-eye" style="margin-top:12px">Domains</div>'+dsh
    +'<div class="pm-eye" style="margin-top:12px">Field</div>'
@@ -754,7 +782,12 @@ function render(){
  railStack(r); renderBal(r);
  $('rows').innerHTML='<span class="k">Instruments</span><br>'
   +'integrity <b>'+r.Ig.toFixed(1)+'</b><br>intention <b>'+r.It.toFixed(1)+'</b><br>'
-  +'pole in <b>'+r.poleMean.toFixed(2)+'</b><br>jouissance <b>'+r.JQ.toFixed(2)+'</b>'
+  /* JOUISSANCE WAS ON EIGHTY ONE SCREENS. A French psychoanalytic term, printed
+     as an instrument label to a person who has never heard it, with no gloss
+     anywhere in the product. One word per concept, and the word has to say
+     what the thing does: JQ is the opposite driven past the point where it
+     serves. That is overshoot. The codex keeps its own word. */
+  +'pole in <b>'+r.poleMean.toFixed(2)+'</b><br>overshoot <b>'+r.JQ.toFixed(2)+'</b>'
   +(r.excess.length?', '+r.excess.length+' overshot':'')+'<br>'
   +'distortion <b>'+r.dist.toFixed(1)+'</b>';
  /* what is running */
@@ -770,8 +803,12 @@ function render(){
       +'<div class="tier" style="color:'+(o.over?'var(--alarm)':TIERC[o.kind])+'">'+TIERNM[o.kind]
       +(o.over?', overshot':', collapsed')+'</div>'
       +'<div class="nm">'+esc(o.nm)+'</div>'
-      +'<p class="sub">'+(o.over?'jouissance. done past the point where it serves, and not able to stop.'
-        :esc(o.auth||o.sub||NOTE[o.kind]))+'</p>'
+      /* d, not sub. sub is the clinical correspondence and is internal: this
+         line printed "bipolar and ADHD" to the person it was about, with no
+         clinician and nothing attached. Also: jouissance was a French
+         psychoanalytic term dropped on a stranger with no gloss. */
+      +'<p class="sub">'+(o.over?'the cure done past the point where it helps, and not able to stop.'
+        :esc(o.auth||o.d||NOTE[o.kind]))+'</p>'
       +'<div class="w">'+crPat(o,'md')+'</div></div>';}).join('')
     +(rows.length>4?'<div class="rnone">and '+(rows.length-4)+' more below</div>':'')
   : '<div class="rnone">Nothing is running.</div>';
