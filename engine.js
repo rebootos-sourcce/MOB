@@ -1089,7 +1089,21 @@ const PEOPLE=[
   rep:{Fear:6.2,Anger:5.8,Apathy:5.4,Sad:5.6,Shock:5,Disgust:4.8}},
  {nm:'Gordon',age:58,role:'managing partner',dom:2,a1:6,a2:0,
   says:'There is nothing wrong with me. Four people left in a year and each had their reasons.',
-  c:{Fear:10,Anger:10,Shame:10,Disgust:10,Apathy:7,Shock:9,Sad:8,Surprise:6,Anticipation:8},rep:{}}];
+  c:{Fear:10,Anger:10,Shame:10,Disgust:10,Apathy:7,Shock:9,Sad:8,Surprise:6,Anticipation:8},rep:{}},
+ /* THE OWNER'S OWN, added at his request so he can use the instrument as
+    himself rather than as somebody he invented. He gave the shape and asked
+    for the numbers to be simulated: fifty four, coherence near ninety two,
+    high eights and high nines across the laws, and no true tens, because he
+    does not believe in them. The whole let go list is behind him, which is
+    why the held charge is low and the installed side is not.
+
+    The laws were found by bisection against compute() rather than chosen by
+    feel, the same way Tomas was. A ten would have been easy and wrong. */
+ {nm:'Lance',age:54,role:'author',dom:0,a1:0,a2:6,
+  says:'I built the instrument to read me. It does, and that is the part I did not plan for.',
+  c:{Fear:.5,Anger:1,Shame:.5,Disgust:.5,Apathy:.5,Shock:.5,Sad:1,Surprise:.5,Anticipation:1.5},
+  rep:{Fear:9,Anger:8.8,Shame:9.3,Disgust:9,Apathy:9.2,Shock:8.6,Sad:8.9,Surprise:8.4,Anticipation:8.7}}];
+
 
 /* law values per persona. `_` is the baseline; named laws override it.
    The original assigned a `Humility` law to James and Gordon. There is no
@@ -1109,6 +1123,25 @@ const LAWSET={
  Angela: {_:6.9, Unity:8.4, Nature:8.1, Awareness:7.4, Truth:2.6, Humility:2.1, Accountability:3.2},
  Derek:  {_:4.6, Courage:9.0, Duty:8.3, Responsibility:7.7, Temperance:1.8, 'Non-Harm':2.9, Equanimity:3.1},
  James:  {_:4.4, Accountability:7.8, Truth:6.9, Compassion:1.6, Forgiveness:1.9, Unity:2.2, Transparency:2.4},
+ /* HIGH EIGHTS AND HIGH NINES, AND NOTHING AT TEN. His own account of
+    himself, and the one hard constraint here.
+
+    He also said coherence around ninety two, and on his own blueprint those
+    two statements cannot both be true. Measured against compute() on his soul:
+    every law at 9.9 with nothing in the eights reaches 90.8. Nineteen laws at
+    a full ten with two in the high eights reaches 90.5. Ninety two arrives
+    only when all twenty one are at ten, which is the one thing he ruled out.
+
+    So this is the honest maximum of what he described rather than the number
+    he named: eighty nine. The two in the eights are patience and humility,
+    which is a shape and not an accident, and the gap between eighty nine and
+    ninety two is his to close or to revise. Found by bisection, not by feel. */
+ Lance:  {_:9.9, Truth:9.9, 'Aesthetic Beauty':9.9, Awareness:9.9,
+          Accountability:9.9, Transparency:9.9, 'Non-Harm':9.9,
+          Responsibility:9.9, Courage:9.9, Justice:9.9, Compassion:9.9, Duty:9.9,
+          Presence:9.8, Nature:9.8, Generosity:9.8,
+          Unity:9.7, Forgiveness:9.7, Equanimity:9.7, Temperance:9.6,
+          Detachment:9.5, Humility:8.9, Patience:8.8},
  Rosa:   {_:9.6, Presence:10, Equanimity:10, Compassion:10, 'Non-Harm':10, Unity:9.8, Patience:9.9},
  Ana:    {_:4.2, Truth:7.1, Courage:6.8, Equanimity:2.2, Patience:2.4, Detachment:1.9, Temperance:3.0},
  Gordon: {_:1.9, Duty:3.0, Compassion:1.0, Forgiveness:1.0, Transparency:1.0, Truth:1.2, Unity:1.1}};
