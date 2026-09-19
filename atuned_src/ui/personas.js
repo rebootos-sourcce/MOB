@@ -90,6 +90,22 @@ function renderSpirit(){
   btn.onclick=function(){runSpDrill(btn.getAttribute('data-sp'),btn.getAttribute('data-spv'));};});}
 
 /* ---- the compass. where coherence sits, and how far it swings. ---- */
+/* THE OSCILLATING BAND, BUILT ONCE AND MOVED EVERY FRAME.
+
+   This wrote its whole SVG through innerHTML on every animation frame, and it
+   is called from the rAF loop while the Field is up. Measured on the Field at
+   1600x1000: 59.96 forced layouts and 59.96 style recalculations per second,
+   which is one of each per frame, from this one write.
+
+   Only four nodes move. Everything else is a function of the reading and is
+   the same on every frame until the reading changes. So the picture is built
+   when its signature changes and the marker is moved by attribute writes after
+   that, which the compositor takes without a layout. The drift is deliberately
+   not in the signature, because the drift is the thing that moves.
+
+   REDUCED gets the end state rather than a slower one: drift is already zero
+   under it, so the signature never changes and nothing is rewritten at all. */
+var POL2={sig:null,el:null,mv:null,yB:0,dy:0};
 function renderPol2(r){
  var el=$('pol2'); if(!el)return;
  /* the labels sit at x+20 and run right, so a 58 wide box cut them off.
@@ -105,8 +121,20 @@ function renderPol2(r){
  var drift=REDUCED?0:(Math.sin(t*0.55)*0.62+Math.sin(t*0.23+1.1)*0.38);
  var live=cq+drift*(bandPts/2);
  var y=bot-(Math.max(0,Math.min(100,live))/100)*(bot-top);
+ /* the marker is DRAWN at the undrifted position and MOVED from there */
+ var yB=bot-(Math.max(0,Math.min(100,cq))/100)*(bot-top);
  var mid=bot-(bot-top)*0.50, y60=bot-(bot-top)*0.60, y40=bot-(bot-top)*0.40;
  var up=cq>=50, gc=GOLD, rc=PAL.Root;
+ var mc=up?gc:rc;
+ /* THE SIGNATURE IS CHECKED BEFORE THE PICTURE IS BUILT, not after. Building
+    twenty five SVG nodes into a string and then discovering the string was not
+    needed is the same work as writing it. On the Field this ran every frame. */
+ var sig=[Math.round(cq*100),Math.round(bandPts*100),r.unread?1:0,up?1:0,mc,
+          REDUCED?1:0,Wd,H].join('|');
+ if(POL2.sig===sig&&POL2.el===el&&el.firstChild){
+  var dy0=+(y-POL2.yB).toFixed(2);
+  if(POL2.mv&&dy0!==POL2.dy){POL2.mv.style.transform='translateY('+dy0+'px)';POL2.dy=dy0;}
+  return;}
  var s='<svg viewBox="0 0 '+Wd+' '+H+'" preserveAspectRatio="xMidYMid meet" aria-hidden="true">';
  s+='<line x1="'+x+'" y1="'+top+'" x2="'+x+'" y2="'+mid+'" stroke="'+gc+'" stroke-width="2.4" stroke-linecap="round" opacity=".85"/>';
  s+='<line x1="'+x+'" y1="'+mid+'" x2="'+x+'" y2="'+bot+'" stroke="'+rc+'" stroke-width="2.4" stroke-linecap="round" opacity=".85"/>';
@@ -129,19 +157,25 @@ function renderPol2(r){
   +'<path d="M'+(x-6)+' '+(bot+11)+' L'+(x-6)+' '+(bot+4)+' M'+x+' '+(bot+11)+' L'+x+' '+(bot+2)
   +' M'+(x+6)+' '+(bot+11)+' L'+(x+6)+' '+(bot+4)+'" stroke="'+rc+'" stroke-width="1.5" fill="none"/>'
   +'<path d="M'+(x-7)+' '+(bot+11)+' L'+(x+7)+' '+(bot+11)+'" stroke="'+rc+'" stroke-width="1.5" fill="none"/></g>';
- var mc=up?gc:rc;
  s+='<rect x="'+(x-3.5)+'" y="'+yHi.toFixed(1)+'" width="7" height="'+(yLo-yHi).toFixed(1)
   +'" rx="3.5" fill="'+mc+'" opacity=".16"/>';
  s+='<text x="'+(x+20)+'" y="'+(yHi-4).toFixed(1)+'" class="pol2-t">swing '+bandPts.toFixed(0)+'</text>';
- s+='<path d="M'+(x+9)+' '+y.toFixed(1)+' L'+(x+17)+' '+(y-4.5).toFixed(1)+' L'+(x+17)+' '+(y+4.5).toFixed(1)+' Z" fill="'+mc+'"/>';
- s+='<circle cx="'+x+'" cy="'+y.toFixed(1)+'" r="3.6" fill="'+mc+'"/>';
- s+='<circle cx="'+x+'" cy="'+y.toFixed(1)+'" r="7" fill="none" stroke="'+mc+'" stroke-width="1" opacity=".45"/>';
+ /* the marker and its number ride in one group so the frame to frame move is a
+    single compositor transform rather than four geometry writes */
+ s+='<g class="pol2-mv">';
+ s+='<path class="pol2-mk" d="M'+(x+9)+' '+yB.toFixed(1)+' L'+(x+17)+' '+(yB-4.5).toFixed(1)+' L'+(x+17)+' '+(yB+4.5).toFixed(1)+' Z" fill="'+mc+'"/>';
+ s+='<circle class="pol2-dot" cx="'+x+'" cy="'+yB.toFixed(1)+'" r="3.6" fill="'+mc+'"/>';
+ s+='<circle class="pol2-ring" cx="'+x+'" cy="'+yB.toFixed(1)+'" r="7" fill="none" stroke="'+mc+'" stroke-width="1" opacity=".45"/>';
  /* not off the defaults. the marker still sits where the arithmetic puts it,
     because the picture of an unread field is a real picture, but the number
     beside it is not printed until somebody has entered something. */
- s+='<text x="'+(x+20)+'" y="'+(y+4).toFixed(1)+'" class="pol2-c" style="fill:'+mc+'">'
-  +(r.unread?'\u2013':Math.round(cq))+'</text>';
- el.innerHTML=s+'</svg>';}
+ s+='<text x="'+(x+20)+'" y="'+(yB+4).toFixed(1)+'" class="pol2-c" style="fill:'+mc+'">'
+  +(r.unread?'\u2013':Math.round(cq))+'</text></g>';
+ el.innerHTML=s+'</svg>';
+ POL2.sig=sig; POL2.el=el; POL2.yB=yB;
+ POL2.mv=el.querySelector('.pol2-mv');
+ if(POL2.mv)POL2.mv.style.transform='translateY(0px)';
+ POL2.dy=0;}
 
 /* ---- accuracy. one value, given room. B19 scope. ---- */
 function renderAcc(r){

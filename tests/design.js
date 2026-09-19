@@ -538,6 +538,92 @@ console.log('\n=== 9 \u00b7 four lightings, each its own ===');
  await p7.close();
 }
 
+
+console.log('\n=== 13 -  no lighting costs the Field its frame rate ===');
+/* THE RULE IS THE MECHANISM, because the frame rate alone measures the runner.
+
+   What broke: the Field's wheel canvas repaints every frame, and every element
+   above it carrying a backdrop-filter has its backdrop re-read and re-filtered
+   on each of those frames. Measured on Gordon, the worst case profile, at
+   1600x1000 in isolation: dark 60.5, snow 60.5, punch 60.6, flat 60.6, glass
+   12.0, glass white 16.4. Seventy one elements carried one under glass.
+
+   It is not the radius: 26 to 10 gave 12.0. Not the pseudo elements: removing
+   the specular and the fringe gave 12.9. Not the count: 71 down to 5 gave 12.7,
+   because the cost is the readback and that goes with area. Not layerisation:
+   will-change, translateZ, contain and isolation on the canvas all landed
+   between 11.6 and 12.1. Stopping the wheel repainting gave 56.7, which is the
+   proof, and removing every backdrop gave 60.6.
+
+   So the gate asserts the structural fact, which is deterministic and does not
+   move with load: nothing over the Field carries a backdrop-filter in any
+   lighting. The frame rate is kept as a loose backstop only. It is set at 30,
+   well under the 60 floor, because this file keeps several pages open at once
+   and a lighting measured in that company reads 36 where the same build reads
+   60.1 alone. A tighter number here would be a gate reporting on the gate,
+   which this project has already been caught by twice. */
+{
+ const pf=await browser.newPage({viewport:{width:1600,height:1000}});
+ await pf.goto(FILE,{waitUntil:'load'});
+ await pf.mouse.click(800,500);
+ await booted(pf); await pf.waitForTimeout(700);
+ await pf.evaluate(()=>{const i=PEOPLE.findIndex(x=>x.nm==='Gordon');loadP(i);});
+ for(const t of ['dark','snow','punch','glass','glasswhite','flat']){
+  await pf.evaluate(t=>{setLighting(t);setTab(TAB.FIELD);},t);
+  await pf.waitForTimeout(700);
+  const m=await pf.evaluate(()=>{
+   let n=0,worst='';
+   document.querySelectorAll('*').forEach(e=>{
+    const cs=getComputedStyle(e);
+    if(cs.backdropFilter&&cs.backdropFilter!=='none'&&cs.display!=='none'
+       &&e.getBoundingClientRect().width>0){n++;if(!worst)worst=e.className||e.tagName;}});
+   return {n,worst,cls:document.body.className};});
+  ok(m.n===0,'nothing over the Field carries a backdrop under '+t
+    +', found '+m.n+(m.worst?' e.g. '+String(m.worst).slice(0,40):''));
+  const fps=await pf.evaluate(()=>new Promise(r=>{
+   let n=0;const t0=performance.now();
+   (function f(){n++;if(performance.now()-t0<1400)requestAnimationFrame(f);
+    else r(+(n/((performance.now()-t0)/1000)).toFixed(1));})();}));
+  ok(fps>=30,'and the Field still animates under '+t+', measured '+fps);
+  console.log('  '+t.padEnd(11)+'backdrops '+String(m.n).padStart(3)+'   fps '+fps);
+ }
+ /* and the lighting is still itself: the panes are still translucent panes */
+ const look=await pf.evaluate(()=>{setLighting('glass');setTab(TAB.FIELD);
+  const el=document.querySelector('.glass.top')||document.querySelector('.panel');
+  const cs=getComputedStyle(el);
+  return {bg:cs.backgroundColor,shadow:cs.boxShadow!=='none'};});
+ ok(/rgba\([^)]*0?\.\d+\s*\)/.test(look.bg),
+  'glass keeps a translucent ground on the Field, got '+look.bg);
+ ok(look.shadow,'and keeps its shadow');
+ await pf.close();
+}
+
+console.log('\n=== 14 -  the boot says how to get past it ===');
+/* pointerdown and keydown have always cleared the boot. Nothing said so, so a
+   person met a five second sheet with no visible end and no visible exit while
+   the app underneath had been usable since 198ms. The gate asserts that the
+   way out is legible well before the sequence ends, and that taking it works. */
+{
+ const pb=await browser.newPage({viewport:{width:1600,height:1000}});
+ const t0=Date.now();
+ await pb.goto(FILE,{waitUntil:'load'});
+ let at=-1, txt='';
+ for(let i=0;i<40;i++){
+  const v=await pb.evaluate(()=>{const e=document.querySelector('.boot-skip');
+   if(!e)return null; return {o:+getComputedStyle(e).opacity,t:e.textContent.trim()};});
+  if(v&&v.o>0.2){at=Date.now()-t0;txt=v.t;break;}
+  await pb.waitForTimeout(100);
+ }
+ ok(at>0&&at<2600,'the way out is legible before the sequence ends, at '+at+'ms');
+ ok(/press/i.test(txt),'and it says what to do, got '+JSON.stringify(txt));
+ await pb.mouse.click(800,500);
+ let cleared=false;
+ try{await pb.waitForFunction(()=>document.body.classList.contains('booted'),null,{timeout:4000});
+  cleared=true;}catch(e){}
+ ok(cleared,'and taking it goes straight in');
+ await pb.close();
+}
+
 await browser.close();
 console.log('\n===== '+PASS+' passed, '+FAIL+' failed =====');
 process.exit(FAIL?1:0);

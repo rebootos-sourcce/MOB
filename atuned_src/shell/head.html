@@ -319,6 +319,57 @@ body.glass .glass::after,body.glass .panel::after{
 /* the stage is the deepest plane, so it refracts least and sits furthest back */
 body.glass .stage{-webkit-backdrop-filter:blur(14px) saturate(1.3);
  backdrop-filter:blur(14px) saturate(1.3)}
+
+/* ============================================================
+   GLASS OVER A LIVE INSTRUMENT. The Field keeps 60, and glass keeps
+   everything about itself except the one property it cannot afford there.
+
+   Measured at 1600x1000 on Gordon, who is the most loaded profile in the
+   roster and so the worst case for the wheel. Field frame rate by lighting:
+   dark 60.5, snow 60.5, punch 60.6, flat 60.6, and glass 12.0 with glass
+   white 16.4. A 60fps floor is a hard rule and those two were breaking it by
+   a factor of five.
+
+   The cause is backdrop-filter, and it is not the radius and not the count.
+   Dropping the blur from 26 to 10 gave 12.0. Removing the specular and fringe
+   pseudo elements gave 12.9. Removing the backdrop from all 71 controls that
+   carried one, leaving five, gave 12.7: the count is nearly irrelevant because
+   the cost is the backdrop readback and that is proportional to area. Giving
+   the canvas its own compositing layer with will-change, translateZ, contain
+   and isolation changed nothing, 11.6 to 12.1 across all four.
+
+   What it actually is: the wheel canvas repaints every frame, and every
+   backdrop-filtered element above it must re-read and re-filter its backdrop
+   on every one of those frames. Stopping the wheel repainting gave 56.7 with
+   everything else untouched, which is the proof. Removing every backdrop under
+   glass gave 60.6.
+
+   So the Field, and only the Field, drops the backdrop. It is the one surface
+   in the product that repaints continuously; every other tab keeps the full
+   treatment because nothing behind those panes is moving. The tint, the
+   specular, the fringe, the edge and the shadow all stay, so the lighting is
+   still itself and the design gate still finds it distinct. The panes are
+   given a denser ground to stand in for the blur, because a pane that was
+   relying on a blur to separate it from a moving wheel is unreadable without
+   one.
+   ============================================================ */
+body.glass.tab-field *,body.glasswhite.tab-field *{
+ -webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+body.glass.tab-field .glass,body.glass.tab-field .panel,
+body.glass.tab-field .top,body.glass.tab-field .subbar{
+ background:rgba(18,20,27,.72)}
+body.glass.tab-field .vt,body.glass.tab-field .btn,body.glass.tab-field .ib,
+body.glass.tab-field .stk-t,body.glass.tab-field .kb-t,body.glass.tab-field .pm-lb,
+body.glass.tab-field .s-dom,body.glass.tab-field .ip-g,body.glass.tab-field .st-mic{
+ background:rgba(255,255,255,.085)}
+body.glasswhite.tab-field .glass,body.glasswhite.tab-field .panel,
+body.glasswhite.tab-field .top,body.glasswhite.tab-field .subbar{
+ background:rgba(255,255,255,.86)}
+body.glasswhite.tab-field .vt,body.glasswhite.tab-field .btn,
+body.glasswhite.tab-field .ib,body.glasswhite.tab-field .stk-t,
+body.glasswhite.tab-field .kb-t,body.glasswhite.tab-field .pm-lb,
+body.glasswhite.tab-field .s-dom,body.glasswhite.tab-field .ip-g,
+body.glasswhite.tab-field .st-mic{background:rgba(255,255,255,.72)}
 /* raised: anything a person summoned. more blur, brighter edge, longer shadow. */
 body.glass .sheet-card,body.glass .rd-card,body.glass .gmenu,body.glass .cone-card{
  -webkit-backdrop-filter:blur(38px) saturate(1.8);
@@ -2466,6 +2517,26 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
  width:.14em;height:.14em;border-radius:50%;background:var(--um)}
 .boot-wm .um::before{left:.055em}
 .boot-wm .um::after{left:.35em}
+/* THE WAY OUT, SAID QUIETLY AND LATE. It arrives at 1.5s, once the sequence
+   has begun and long before the 5.2s it would otherwise run to, so a person
+   who does not want the overture is never held by it without knowing. It is
+   dim because it is an instruction and not an invitation, and it is not a
+   button: the gesture is anything at all, and drawing a button would be
+   narrower than the truth as well as another tap target on a first screen. */
+.boot-skip{position:absolute;left:0;right:0;bottom:6.5vh;text-align:center;
+ font-family:var(--sans);font-size:11.5px;font-weight:400;letter-spacing:.055em;
+ color:var(--dim);opacity:0;pointer-events:none;
+ animation:bootSkip .7s cubic-bezier(.22,1,.36,1) 1.5s both}
+@keyframes bootSkip{0%{opacity:0}100%{opacity:.62}}
+@media (prefers-reduced-motion:reduce){
+ /* the end state, not a faster arrival */
+ .boot-skip{animation:none;opacity:.62}}
+/* THE OSCILLATING BAND'S MOVING PARTS. The marker, its ring and its number ride
+   in one group so a frame to frame move is a single transform rather than four
+   geometry writes. will-change lives here rather than inline because a class
+   that appears in the markup and in no stylesheet is a class nobody can find. */
+.pol2-mv{will-change:transform}
+.pol2-mk,.pol2-dot,.pol2-ring{pointer-events:none}
 @keyframes bootOut{to{opacity:0;visibility:hidden}}
 /* the body says the boot is over. Nothing depends on it yet and it is not
    decoration: it is the hook a later surface uses to hold its own entrance
