@@ -21,8 +21,14 @@
    layers: the compression reading, Dante, off by default.
    reg: the six axis arrows, three up regulating and three down.
    span: the oscillation window, 30, 90 or 365 days. */
+/* IT OPENS FLAT. Ruled: "it should also start 2D flat, and then you can click
+   and mouse and move around it." The turned figure is what a person got first
+   and it is the state they then had to work out how to get out of. Flat is the
+   plan view, it is legible without being turned, and dragging still turns it,
+   so nothing is taken away by starting where a person can read. */
 var CONE={open:false, tab:false, spin:0.6, tilt:0.60, drag:null, raf:null, t:0,
- cv:null, g:null, dpr:1, hits:[], flat:false, layers:false, reg:false, span:30};
+ cv:null, g:null, dpr:1, hits:[], flat:true, layers:false, reg:false,
+ span:'quarter'};
 /* THE FLAT VERSION IS THE SAME FIGURE WITH THE TILT TAKEN OUT.
 
    A second renderer for a 2D compass would be a second thing to keep true and
@@ -323,50 +329,22 @@ function coneDraw(){
   coneTxt(g,'compressed',W/2-UL*0.60,conePtA(0,Math.PI/2,W,H).y+10,10,rc,.5,500,'right');}
 
  /* ============================================================
-    THE OSCILLATION RANGE OVER TIME, lower left. Ruled.
+    THE OSCILLATION PLOT IS OUT OF THE LOWER LEFT. Ruled.
 
-    "Maybe I can see my oscillation range over a period of time, 30 days,
-    quarter, annual, to show whether you are improving or not."
+    "All that information on the lower left, I'm not certain what made you put
+    that there, considering the right hand side is our information layer."
 
-    It reads the snapshots the record already keeps. Each one carries a CQ, so
-    a window of them is a range and a direction, and the direction is the only
-    thing a person actually wants from this: is the swing narrowing and is the
-    floor rising. A window with fewer than two snapshots says so rather than
-    drawing a line through one point.
+    He is right twice. It is an information layer facing the one this product
+    already has, and it was a chart drawn into a canvas, where it could not be
+    clicked, could not be read by anything but an eye, and could not carry a
+    control of its own.
+
+    It has not been deleted, it has been moved and given what it never had.
+    coneGraph draws the same series in the information column as real markup,
+    the spans run day to five years rather than three fixed windows, and it is
+    a door: pressing it opens the summary, where the long version of the same
+    reading lives. seriesRead in the engine is the one reader for both.
     ============================================================ */
- (function(){
-  var hist=(CURP&&CURP.history)||[];
-  var now=Date.now(), span=CONE.span*86400000;
-  var pts=hist.map(function(h){
-    var t=Date.parse(h.t||h.at||''), v=(h.cq!=null?h.cq:(h.CQ!=null?h.CQ:null));
-    return (isFinite(t)&&v!=null)?{t:t,v:+v}:null;})
-   .filter(function(x){return x&&(now-x.t)<=span;})
-   .sort(function(a,b){return a.t-b.t;});
-  var x0=18, y0=H-96, w=168, h2=54;
-  coneTxt(g,CONE.span+' day oscillation',x0,y0-10,10.5,ink,.55,500,'left');
-  g.beginPath(); g.rect(x0,y0,w,h2);
-  g.strokeStyle=rgba(ink,.10); g.lineWidth=1; g.stroke();
-  /* the band everybody stands in, so the plot is read against it */
-  var by0=y0+h2*(1-60/100), by1=y0+h2*(1-40/100);
-  g.fillStyle=rgba(ink,.05); g.fillRect(x0,by0,w,by1-by0);
-  if(pts.length<2){
-   coneTxt(g,pts.length?'one reading so far':'no readings in this window',
-    x0+w/2,y0+h2/2+4,10,ink,.38,400);
-  }else{
-   var lo=Math.min.apply(null,pts.map(function(p2){return p2.v;}));
-   var hi=Math.max.apply(null,pts.map(function(p2){return p2.v;}));
-   var t0=pts[0].t, t1=pts[pts.length-1].t||t0+1;
-   g.beginPath();
-   pts.forEach(function(p2,i){
-    var X=x0+((p2.t-t0)/Math.max(1,t1-t0))*w;
-    var Y=y0+h2*(1-clamp(p2.v,0,100)/100);
-    i?g.lineTo(X,Y):g.moveTo(X,Y);});
-   g.strokeStyle=rgba(gc,.85); g.lineWidth=1.6; g.stroke();
-   var first=pts[0].v, last=pts[pts.length-1].v;
-   var dir=last>first?'rising':(last<first?'falling':'level');
-   coneTxt(g,'swing '+Math.round(hi-lo)+', '+dir,x0,y0+h2+14,10,
-    last>=first?gc:rc,.75,500,'left');}
- })();
 
  if(cq!==null){
   var cyy=H/2, U2=Math.min(W,H)/2;
@@ -468,9 +446,63 @@ function coneRead(){
   +'integrity again. The loop turns both ways. Yours is currently turning '
   +'<b>'+(rising?'up':'down')+'</b>. You are floating the ship out of the '
   +'water so that it can float.</p>'
-  +'<p class="cone-p">Drag to turn the figure. Click any name to read that '
-  +'axis.</p>';}
+  ;}
 
+/* ============================================================
+   COHERENCE OVER TIME. The span buttons become a graph.
+
+   Ruled: "the 30 day, quarter and year, we want a 2D graph representation on
+   the lower right hand side, and when you cycle through you can see your
+   progress in graph form. And if you click on that it'll take you to the
+   summary page."
+
+   The series comes from the engine, which reads it out of the snapshots that
+   were already being written and that nothing was drawing.
+
+   A GRAPH OF ONE POINT IS A FLAT LINE, AND A FLAT LINE IS A CLAIM. It says
+   nothing changed. One reading is not that, so the empty and the single point
+   states say what they are instead of drawing an axis.
+   ============================================================ */
+function coneGraph(){
+ var sr=seriesRead(CURP,CONE.span,Date.now());
+ var h='<div class="cn-gr" id="cngraph">'
+  +'<div class="cn-gh"><span class="pm-eye">Coherence Over Time</span>'
+  +'<div class="cn-spans">'
+  +SPANS.map(function(sp){
+    return '<button type="button" class="cn-sb'+(sp.k===CONE.span?' on':'')+'" '
+     +'data-cnspan="'+sp.k+'" aria-pressed="'+(sp.k===CONE.span)+'">'
+     +esc(sp.nm)+'</button>';}).join('')
+  +'</div></div>';
+ if(sr.state==='none'){
+  h+='<p class="cn-gp">Nothing on the record for this span. Every save writes a '
+   +'point, so this fills in as you go.</p>';}
+ else if(sr.state==='one'){
+  h+='<p class="cn-gp">One reading in this span, at <b>'+Math.round(sr.last)+'</b>. '
+   +'Two makes a line.</p>';}
+ else {
+  /* the axis is the range that is actually there, with a floor of ten points
+     so a quiet month does not draw as a cliff. */
+  var lo=Math.min(sr.lo,sr.hi-10), hi=Math.max(sr.hi,sr.lo+10);
+  var span=hi-lo||1, t0=sr.t0, tspan=(sr.t1-sr.t0)||1;
+  var pts=sr.pts.map(function(p){
+   return {x:((p.ms-t0)/tspan*100), y:(100-((p.cq-lo)/span*100))};});
+  var d=pts.map(function(p,i){
+   return (i?'L':'M')+p.x.toFixed(2)+','+p.y.toFixed(2);}).join(' ');
+  var area=d+' L'+pts[pts.length-1].x.toFixed(2)+',100 L'+pts[0].x.toFixed(2)+',100 Z';
+  var col=sr.dir==='down'?'var(--bad)':(sr.dir==='up'?'var(--good)':'var(--accent)');
+  h+='<svg class="cn-gsvg" viewBox="0 0 100 100" preserveAspectRatio="none" '
+   +'aria-label="Coherence over the last '+esc(sr.span.nm.toLowerCase())+'">'
+   +'<path d="'+area+'" fill="'+col+'" opacity=".12"/>'
+   +'<path d="'+d+'" fill="none" stroke="'+col+'" stroke-width="1.6" '
+   +'vector-effect="non-scaling-stroke" stroke-linejoin="round" stroke-linecap="round"/>'
+   +'</svg>'
+   /* THE NUMBERS ARE PRINTED, NOT HOVERED. A phone has no hover, and the
+      reading a person came for is the two ends and the direction. */
+   +'<div class="cn-gf"><span>'+Math.round(sr.first)+'</span>'
+   +'<b>'+(sr.dir==='up'?'up':(sr.dir==='down'?'down':'level'))+'</b>'
+   +'<span>'+Math.round(sr.last)+'</span></div>';}
+ h+='<button type="button" class="cn-gmore" id="cngomore">Open the summary</button>';
+ return h+'</div>';}
 function coneOpen(inTab){
  var h=document.getElementById('cone'); if(!h)return;
  CONE.open=true; CONE.tab=!!inTab;
@@ -479,20 +511,39 @@ function coneOpen(inTab){
  h.innerHTML='<div class="cone-card">'
   +'<div class="cone-hd"><span class="pm-eye">The compass</span>'
   +(inTab?'':'<button class="btn" id="conex">Close</button>')+'</div>'
-  +'<canvas id="conecv" class="cone-cv" role="img" '
-  +'aria-label="Two cones meeting at the median. Eight axes, each with a coherent pole above and its inversion below."></canvas>'
-  /* THE CONTROLS. Four switches, and each one is a reading the figure can
-     carry rather than a decoration it can wear. */
-  +'<div class="cone-ctl">'
-   +'<button type="button" class="cn-b" data-cn="flat">Flat</button>'
-   +'<button type="button" class="cn-b" data-cn="reg">Regulation</button>'
-   +'<button type="button" class="cn-b" data-cn="layers">Layers</button>'
-   +'<span class="cn-sp"></span>'
-   +[30,90,365].map(function(d){
-     return '<button type="button" class="cn-b" data-cnspan="'+d+'">'
-      +(d===365?'Year':(d===90?'Quarter':'30 day'))+'</button>';}).join('')
+  /* THE FIGURE, AND THE CONTROLS ON IT. Ruled: the switches go to the upper
+     left. They sat under the drawing in a row of their own, which cost a band
+     of the stage and put the control further from the thing it changes.
+
+     Each one says what it does now. "Flat" told a person nothing, which is
+     exactly what he reported: he did not know what those buttons were for. */
+  +'<div class="cone-body"><div class="cone-fig">'
+   +'<canvas id="conecv" class="cone-cv" role="img" '
+   +'aria-label="Two cones meeting at the median. Eight axes, each with a coherent pole above and its inversion below."></canvas>'
+   +'<div class="cone-ctl">'
+    +'<button type="button" class="cn-b" data-cn="flat" '
+     +'title="Take the tilt out and look straight down on the figure">Flat</button>'
+    +'<button type="button" class="cn-b" data-cn="reg" '
+     +'title="Show which axes are regulating you up and which are regulating you down">Regulation</button>'
+    +'<button type="button" class="cn-b" data-cn="layers" '
+     +'title="Show the rings the axes are stacked on">Layers</button>'
+   +'</div>'
+   +'<p class="cone-hint">Drag to turn it. Click any name to read that axis.</p>'
   +'</div>'
-  +coneRead()+ladderHtml()+'</div>';
+  /* THE INFORMATION LAYER IS ON THE RIGHT. Ruled, and it is his standing rule
+     for this product: the reading and the record went in a column under the
+     figure on the left, which is a second information layer facing the one
+     that already exists. */
+  +'<div class="cone-info">'
+   /* THE READING AT THE TOP, THE RECORD IN THE MIDDLE, THE GRAPH PINNED AT
+      THE BOTTOM. He asked for the graph in the lower right and a column that
+      simply stacks puts it below the fold, which is the same as not having it.
+      The middle is the only part that scrolls. */
+   +'<div class="cone-txt">'+coneRead()+'</div>'
+   +'<div class="cone-mid">'+ladderHtml()+'</div>'
+   +coneGraph()
+  /* cone-info, cone-body, cone-card */
+  +'</div></div></div>';
  CONE.cv=document.getElementById('conecv');
  CONE.g=CONE.cv?CONE.cv.getContext('2d'):null;
  coneLayout(); coneTick();
@@ -511,10 +562,13 @@ function coneOpen(inTab){
   b.classList.toggle('on',!!CONE[k]);
   b.onclick=function(){CONE[k]=!CONE[k]; coneOpen(CONE.tab);};});
  h.querySelectorAll('[data-cnspan]').forEach(function(b){
-  var d=+b.getAttribute('data-cnspan');
-  b.classList.toggle('on',CONE.span===d);
-  b.setAttribute('aria-pressed',CONE.span===d);
-  b.onclick=function(){CONE.span=d; coneOpen(CONE.tab);};});
+  var k=b.getAttribute('data-cnspan');
+  b.onclick=function(){CONE.span=k; coneOpen(CONE.tab);};});
+ /* the graph is a door onto the long version of itself. Ruled. */
+ var gm=document.getElementById('cngomore'), gr=document.getElementById('cngraph');
+ function toSum(){setTab(TAB.SUMMARY);}
+ if(gm)gm.onclick=function(e){e.stopPropagation();toSum();};
+ if(gr)gr.onclick=toSum;
  if(CONE.cv){
   CONE.cv.onpointerdown=function(e){CONE.drag={x:e.clientX,y:e.clientY,
    s:CONE.spin,t:CONE.tilt,moved:false};

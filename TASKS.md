@@ -809,3 +809,44 @@ mage is third eye. They are rendered without their colour today, which breaks
 the standing rule that a named thing has an icon, the icon has a family and the
 family has a colour.
 *Small, and it is the one on this list that can land immediately.*
+
+---
+
+## Ruled 19 September, fifth note. The diagnostic cards, and the knowledge base media.
+
+**U1. Two law cards side by side, each framed in its chakra's colour.** `ui/intakeui.js`
+Drawn on a screenshot, and it corrects the layout that went in an hour before
+it. Not three question cards across inside one full width law. Two law cards
+across, each holding its own three questions stacked, and the frame of the card
+is the colour of the seat, so a person knows which band they are answering
+while they answer it.
+*Small. Done, this commit.*
+
+**U2. The intro above the questions is too long.** `ui/intakeui.js`
+Struck out on the same screenshot. It was one sixteen pixel paragraph of nine
+lines and is now three short panels, which is the same correction arrived at
+from the other side. Re-check the length against what he marked.
+*Small. Done, and to be looked at again on the next build he sees.*
+
+**U3. Videos and images for the knowledge base.** BLOCKED, and the block is
+mechanical rather than a decision.
+He gave the path `C:\Users\lance\Documents\GitHub\Reboot OS\Videos`, which is a
+folder on his own machine. This session runs in a container with no sight of
+it, so nothing about the files can be reviewed, placed or simulated until they
+are somewhere reachable: committed to this repository, or attached to the
+conversation. What he asked for once they are here is the team review and a
+hundred ICP passes on where in the knowledge base they belong.
+*The review is Medium. The block is one step by him.*
+
+Note on one file: source.html carries no network at all and tests/design.js
+gate 7 fails the build on any outbound request. Video in the knowledge base
+therefore has to be either embedded, which a single file cannot absorb at any
+real length, or served from the record store once it exists. That is a ruling
+he will need to make and it should be made before anybody edits a frame.
+
+**T11. tests/collide.js does not look at the Compass.** `tests/collide.js`
+Found while fixing the Compass layout. The gate walks the Field wheel and no
+other figure, which is why the cone's nameplates have been piling on top of
+each other, in every screenshot, without a gate ever saying so. Moloch over
+Set, Asmodeus over Lucifer, and three labels over The blueprint.
+*Medium. The gate first, because a fix with no gate behind it regresses.*

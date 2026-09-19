@@ -222,7 +222,13 @@ function renderIntake(){
    if(l.b!==bd) return;
    var s=sc[l.nm], open=(IQ_OPEN===li), done=!!s;
    var got=[0,1,2].filter(function(t){return p.intake.answers[li*3+t]!=null;}).length;
-   rows+='<div class="iq-law'+(done?' done':'')+(open?' open':'')+'">'
+   /* THE FRAME OF THE CARD IS THE COLOUR OF THE SEAT. Drawn by the owner on a
+      screenshot, in his words so a person knows the band they are answering
+      while they are answering it. The card carries --c itself rather than
+      inheriting it from the group, because an open card is tall enough that
+      its group header is off the top of the screen. */
+   rows+='<div class="iq-law'+(done?' done':'')+(open?' open':'')
+    +'" style="--c:'+col+'">'
     +'<button class="iq-hd" data-law="'+li+'" aria-expanded="'+(open?'true':'false')+'">'
      /* ANY NAMED THING WEARS ITS OWN MARK. Every law carries an icon and this
         header printed a coloured dot, so twenty one distinct things looked like

@@ -168,3 +168,47 @@ function ladderRead(p,now){
  var lead=null, best=-1;
  left.forEach(function(m){var n=by[m.fam]||0; if(n>best){best=n; lead=m;}});
  return {earned:got, next:lead, ledger:l, streak:s};}
+
+/* ============================================================
+   COHERENCE OVER TIME. The series behind the graph.
+
+   Every snapshot already carries an ISO stamp and a coherence, so the record
+   is a time series and nothing on any surface was drawing it. Ruled: the span
+   buttons become a graph, and the graph opens Summary.
+
+   AN EMPTY SPAN SAYS EMPTY. A graph drawn from one point is a flat line, and a
+   flat line is a claim: nothing changed. One reading is not a flat line, it is
+   one reading, and the read says which so the renderer can say so too.
+   ============================================================ */
+var SPANS=[{k:'day',nm:'Day',d:1},{k:'week',nm:'Week',d:7},
+ {k:'month',nm:'Month',d:30},{k:'quarter',nm:'Quarter',d:90},
+ {k:'year',nm:'Year',d:365},{k:'five',nm:'Five years',d:1826}];
+function spanOf(k){for(var i=0;i<SPANS.length;i++)if(SPANS[i].k===k)return SPANS[i];
+ return SPANS[3];}
+function seriesRead(p,spanKey,now){
+ var sp=spanOf(spanKey), t1=(now===undefined?Date.now():now);
+ var t0=t1-sp.d*86400000;
+ var hist=(p&&p.history)||[];
+ var pts=[];
+ for(var i=0;i<hist.length;i++){
+  var s=hist[i];
+  if(!s||typeof s.cq!=='number')continue;
+  var ms=Date.parse(s.t);
+  if(!(ms>=t0&&ms<=t1))continue;
+  pts.push({ms:ms, cq:s.cq, ig:(typeof s.jq==='number'?s.jq:null)});}
+ pts.sort(function(a,b){return a.ms-b.ms;});
+ /* WHAT THE SPAN CAN AND CANNOT SAY. Nothing at all is one state, one reading
+    is a second, and two or more is a line. They read differently and a caller
+    that cannot tell them apart will draw a flat line for a single point. */
+ var st = !pts.length ? 'none' : (pts.length===1 ? 'one' : 'line');
+ var lo=null, hi=null, first=null, last=null;
+ if(pts.length){
+  lo=hi=pts[0].cq; first=pts[0].cq; last=pts[pts.length-1].cq;
+  for(var j=0;j<pts.length;j++){
+   if(pts[j].cq<lo)lo=pts[j].cq;
+   if(pts[j].cq>hi)hi=pts[j].cq;}}
+ return {span:sp, state:st, pts:pts, n:pts.length,
+  lo:lo, hi:hi, first:first, last:last,
+  /* direction is only a claim when there are two ends to compare */
+  dir: st==='line' ? (last>first?'up':(last<first?'down':'level')) : null,
+  t0:t0, t1:t1};}
