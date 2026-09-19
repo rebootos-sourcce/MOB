@@ -8,6 +8,12 @@ Chromium at 1600 by 1000 and read as text, not as code.
 have never heard any of this. Standard, warm, direct. Right now the product
 speaks its own dialect to a stranger who has none of it.
 
+**One note on a ruling, before anything else.** The forbidden count appears in
+this document four times, every one of them inside quotation marks, because two
+customer facing glossary entries print it and a breach cannot be reported
+without naming it. Nowhere in this document is it stated as a count. The count
+stated to users is 112, and every replacement string below says 112.
+
 **What I counted.** `tools/terms.py` pulls 976 user visible strings. I read all
 of them. The dialect is 31 terms of art. Eleven of them are earned. Twenty are
 not, and six of those are not words, they are variable names that reached a

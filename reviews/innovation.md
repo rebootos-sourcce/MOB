@@ -67,7 +67,7 @@ that knows a pattern can be outgrown upward prints it as a count.
 **3. The cure is measured as a defect.**
 
 `n.jq` in `compute.js`. Jouissance, the coherent opposite overshot past the
-point where it serves, computed at every one of 108 addresses and folded into
+point where it serves, computed at every somatic address and folded into
 integrity with a negative coefficient. I know of no other instrument in this
 space that models overinstall at all. Every one of them treats the positive
 pole as an unbounded good.
@@ -725,7 +725,7 @@ label and a mechanism.
 ## 10. Overshoot as its own reading
 
 **What it is.** `n.jq` measures the coherent opposite installed past the point
-where it serves, on every one of 108 addresses, and folds into integrity
+where it serves, at every somatic address, and folds into integrity
 negatively. Give it its own surface: where the cure has become the problem, on
 the body, with the same figure and the opposite polarity.
 
