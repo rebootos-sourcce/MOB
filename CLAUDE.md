@@ -80,13 +80,19 @@ Then LOOK at the images. Reading CSS is not reviewing a screen.
 **Never renumber the TAB integers.** They are identity, persisted and
 compared. `TABDEF` is display order and may be reordered freely. Anything
 needing the entry for a tab looks it up by `.k`, never by position. Compass is
-integer 8, appended for that reason. Analytics (4) and Games (7) are folded
-surfaces: they kept their integers and their renderers and lost their tabs, so
-`TABREAL` maps them to the tab that now carries them and every caller of
-`setTab` goes through it.
+integer 8, appended for that reason. Analytics (4) is a folded surface: it kept
+its integer and its renderer and lost its tab, so `TABREAL` maps it to the tab
+that now carries it and every caller of `setTab` goes through it.
+
+Games (7) was folded into Knowledge and has been unfolded again, on the ruling
+recorded at `engine/core.js`: they are independent games, somewhere a person
+goes for brain release, and a game folded into a reference page is neither. The
+bar is eight. This paragraph said otherwise for longer than it was true, which
+is how a file that describes the code stops being usable as one.
 
 **A tab host that carries a folded surface cannot also be one.** `#sum` holds
-`#sumbody` and `#ana`; `#know` holds `#knowbody` and `#games`. The first cut
+`#sumbody` and `#ana`. `#know` held `#knowbody` and `#games` until Games was
+unfolded, and the lesson is the reason it is still written down. The first cut
 put the child straight inside the parent and the parent's renderer, which
 writes the whole innerHTML of its host, deleted the child on the way past. The
 functional gate caught it.

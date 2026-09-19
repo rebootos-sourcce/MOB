@@ -302,19 +302,39 @@ One of the two is wrong and it is not mine to choose. Whichever moves, the
 other follows: a film numbered 7 sitting on a card numbered 8 is the kind of
 thing a person notices once and then stops trusting the numbering anywhere.
 
-**15. Two laws have no film, and they are adjacent.**
-E04 `All Fields Correspond` and E05 `Like Fields Attract` have no film. Nothing
-is broken by that, but a card stack where one row plays and the next says
-nothing reads as a fault rather than as a gap, so the two without film should
-say they have none rather than showing a dead control.
+**15. Five laws have no film, and three of them are the end of the axis.**
 
-**16. Four of the ten laws carry two names.**
+Corrected. This entry first said two, which was wrong, and the error was mine
+rather than the book's. I counted the gap inside the numbering the films use,
+which stops at ten, and the nature axis does not: it runs E01 to E13.
+
+    E04  All Fields Correspond   middle of the axis
+    E05  Like Fields Attract     middle of the axis
+    E11  Relativity              terminal run
+    E12  Rhythm                  terminal run
+    E13  Gender                  terminal run
+
+The middle pair and the terminal run are not the same defect. A gap in the
+middle reads as a gap. Three missing off the end reads as the set being over at
+ten, which is a claim about the book that the book does not make. A card with
+no film says it has none; the last three need the axis to say it is thirteen
+long before a person concludes it is ten.
+
+**16. Three of the laws carry two names.**
+
+It was four when this was written. `Inspired Act.` was a truncation rather than
+a second name, it was fixed in the same commit that recorded it, and E06 now
+reads `Inspired Action`, which matches film 6 exactly. Three are left and all
+three are real naming disagreements rather than typography.
 
     film                      engine
     1 Unified Field           E01 All Is One
     2 Vibration               E02 All Is Motion
-    6 Inspired Action         E06 Inspired Act.
     9 Balance (Compensation)  E09 Compensation
+
+And a caution on the third: `Balance` is already the name of the masculine and
+feminine strip under the wheel. Taking it for E09 puts one word on two concepts
+in the same product, which is the ruling this section is enforcing.
 
 One word per concept is a standing ruling and this breaks it four times over.
 A person hears "the law of vibration" in a film and then looks for it in the
