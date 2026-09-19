@@ -1485,5 +1485,69 @@ g('24 \u00b7 the avatar, the purpose map and the boundary');
   'and an older record with neither is filled from the blank rather than broken');
 }
 
+g('25 \u00b7 the key. one thought line, at an address, by way of a channel');
+/* RULED. One pattern is one thought line, and the line targets the address by
+   way of the channel. The key was two parts and the code had taken half the
+   ruling: every one of the fifty thoughts on a channel was the same key, so
+   all two hundred statements on a card collapsed into four. */
+{
+ const {meterKey,meterNext,meterPlan,meterRun,meterRead,LINES_PER_CH,RUN_MAX,
+        blankProfile,W}=E;
+ ok(LINES_PER_CH===50,'fifty lines a channel, which is the printed card split, got '
+  +LINES_PER_CH);
+ ok(meterKey(7,'Rlimit',0)==='7:Rlimit:0','a key is address, channel and line');
+ ok(meterKey(7,'Rlimit',0)!==meterKey(7,'Rlimit',1),
+  'and two thoughts down one channel are two keys, which is the whole ruling');
+ ok(meterKey(7,'Rlimit',0)!==meterKey(7,'Llimit',0),'two channels are still two');
+ ok(meterKey(7,'Rlimit',0)!==meterKey(8,'Rlimit',0),'and two addresses are still two');
+
+ /* THE CEILING. 107 releasable addresses, four channels, fifty lines. */
+ const releasable=W.filter(n=>n.cf).length;
+ ok(releasable===107,'a hundred and seven addresses carry an axis, got '+releasable);
+ ok(releasable*4*LINES_PER_CH===21400,
+  'so the product holds twenty one thousand four hundred units of new ground, got '
+  +(releasable*4*LINES_PER_CH));
+
+ /* THE CURSOR IS READ, NEVER STORED. A stored cursor and a stored key list are
+    two answers to one question and they drift. */
+ const p=blankProfile('key');
+ ok(meterNext(p,7,'Rlimit')===0,'a fresh record starts at the first line');
+ meterRun(p,[meterKey(7,'Rlimit',0),meterKey(7,'Rlimit',1)]);
+ ok(meterNext(p,7,'Rlimit')===2,'and the cursor follows what was opened, got '
+  +meterNext(p,7,'Rlimit'));
+ ok(meterNext(p,7,'Llimit')===0,'each channel keeps its own place');
+ {const full=[]; for(let i=0;i<LINES_PER_CH;i++)full.push(meterKey(9,'Rtruth',i));
+  meterRun(p,full);
+  ok(meterNext(p,9,'Rtruth')===-1,'and a fully opened channel says so rather than wrapping');}
+
+ /* THE RUN IS A PLAN, capped, walking new ground only */
+ const q=blankProfile('plan2');
+ const CH=['Rlimit','Llimit','Rtruth','Ltruth'];
+ const plan=meterPlan(q,[1,2,3],CH,RUN_MAX);
+ ok(plan.length===RUN_MAX,'a run is capped at twenty five, got '+plan.length);
+ ok(new Set(plan).size===plan.length,'and never repeats a line inside one run');
+ meterRun(q,plan);
+ const plan2=meterPlan(q,[1,2,3],CH,RUN_MAX);
+ ok(plan2.filter(k=>plan.indexOf(k)>=0).length===0,
+  'the next run continues rather than re-offering what is open');
+ ok(meterRead(q).unique===RUN_MAX,'and a run of twenty five spends twenty five');
+ /* rerunning the same keys is still free, which is the standing ruling */
+ const again=meterRun(q,plan);
+ ok(again.added===0&&again.repeated===RUN_MAX,'rerunning opened ground costs nothing');
+ ok(meterRead(q).unique===RUN_MAX,'and does not move the count');
+ /* a plan over an address with nothing left returns nothing rather than looping */
+ const drained=blankProfile('drain');
+ const all=[]; CH.forEach(function(c){for(let i=0;i<LINES_PER_CH;i++)all.push(meterKey(1,c,i));});
+ meterRun(drained,all);
+ ok(meterPlan(drained,[1],CH,RUN_MAX).length===0,
+  'an address fully opened offers nothing, rather than spinning');
+
+ /* THE ARITHMETIC THE RULING FIXES. Tier one at four hundred a month against a
+    ceiling of four hundred and twenty eight was five weeks of product. */
+ ok(Math.round(releasable*4/400*10)/10===1.1,'the old ceiling was one month of tier one');
+ ok(Math.round(releasable*4*LINES_PER_CH/400)===54,
+  'the ruled one is fifty four, got '+Math.round(releasable*4*LINES_PER_CH/400));
+}
+
 console.log('\n===== '+P+' passed, '+F+' failed =====');
 process.exit(F?1:0);

@@ -729,6 +729,43 @@ ok(!/72%|28%/.test(virginSweep.pol),'and prints no percentage off the defaults')
 /* the roster itself is always there. only the descent read is conditional. */
 ok(/Satan frozen/.test(pole.clean),'while the nine circles stay readable to anybody');
 
+console.log('\n=== a release run spends thought lines, and charges the right person ===');
+const relrun=await page.evaluate(()=>{
+ const o={};
+ loadP(8); setTab(TAB.FIELD); render();
+ const held=W.filter(n=>n.sq>=4).slice(0,3).map(n=>n.i);
+ relPick(held);
+ o.plan=RUN.plan.length;
+ o.setup=(document.getElementById('rel').textContent||'').replace(/\s+/g,' ');
+ o.distinct=new Set(RUN.plan).size;
+ /* THE PERSON WHO RAN IT IS THE PERSON CHARGED. toYou repoints CURP at the
+    person's own record and it used to be called AFTER the meter wrote, so a run
+    started while a reference case was loaded charged the reference case and
+    then moved the pointer away. */
+ o.beforeWho=S.who;
+ const ownBefore=(PROF_BY[PEOPLE[0].nm].meter.unique||[]).length;
+ RUN.phase='run'; RUN.idx=RUN.plan.length-1;
+ relCoolDown();
+ o.afterWho=S.who;
+ o.ownGained=(PROF_BY[PEOPLE[0].nm].meter.unique||[]).length-ownBefore;
+ o.gordonGained=(PROF_BY[PEOPLE[8].nm]
+   ?((PROF_BY[PEOPLE[8].nm].meter.unique||[]).length):0);
+ /* a second run continues rather than repeating */
+ relPick(held);
+ o.plan2=RUN.plan.length;
+ o.overlap=RUN.plan.filter(k=>(CURP.meter.unique||[]).indexOf(k)>=0).length;
+ relClose();
+ return o;});
+ok(relrun.plan===25,'a run is twenty five thought lines, got '+relrun.plan);
+ok(relrun.distinct===25,'and never repeats a line inside one run');
+ok(/25 thought lines of new ground/.test(relrun.setup),
+ 'the setup says what it costs before anybody begins');
+ok(/25 of your allowance/.test(relrun.setup),'and that it comes out of the allowance');
+ok(relrun.beforeWho===8&&relrun.afterWho===0,'the run ends on the person\'s own record');
+ok(relrun.ownGained===25,
+ 'and the twenty five land there rather than on the reference case, got '+relrun.ownGained);
+ok(relrun.overlap===0,'the next run continues rather than re-offering opened ground');
+
 console.log('\n=== the avatar, and what it aims the work at ===');
 /* The becoming half. The right hand sentence resolves to a seat and the seat
    has addresses with weight, which is what turns a value into something the

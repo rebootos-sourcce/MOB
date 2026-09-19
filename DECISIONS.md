@@ -794,3 +794,51 @@ hostile reader checks first.
 Rapid rewiring is the mechanism claim and it is fine. Two years of therapy is
 an outcome claim and it is not.
 
+## The key, ruled. One thought line, at an address, by way of a channel
+
+> It is not spoken line, it is one thought line. And as one thought line, it
+> targets the address by way of the channel.
+
+So the key is three parts and their order is that sentence read backwards:
+which thought, down which channel, at which address. The address is what is
+hit, the channel is how it is reached, and the line is the thought that does
+it.
+
+**A thought line, not a spoken one.** Reading it in thought spends it. Nothing
+in this product requires a person to say anything out loud and no count may
+imply that it does.
+
+**What it was.** Two parts, address and channel, which made every one of the
+fifty thoughts on a channel the same key. All two hundred statements on a card
+collapsed into four, the whole product held four hundred and twenty eight units
+of new ground, and tier one at four hundred a month finished it in five weeks.
+The ruling had already been written down and the code had taken half of it.
+
+**What it is now.**
+
+    107 releasable addresses
+      x 4 channels
+      x 50 lines a channel      the printed card, a hundred each way, split
+    = 21,400 units of new ground in the product
+
+Tier one at four hundred a month runs for fifty four months. The price list is
+unblocked.
+
+**The cursor is read and never stored.** The next unopened line at an address
+down a channel is counted off the keys already held. A stored cursor and a
+stored key list are two answers to one question and they drift.
+
+**A run is a plan, built when the run is picked.** A person is entitled to see
+what a run costs before they begin it, and a plan that changes between being
+shown and being charged is a bill they did not agree to. It walks new ground
+only, caps at twenty five, and never re-offers a line already opened, so a
+rerun is a deliberate act rather than something that happens while somebody
+thinks they are opening something. Rerunning opened ground still costs nothing.
+
+**A defect found while building it.** `toYou` repoints the record at the
+person's own, and it was called at the end of the cooldown, after the meter had
+written. So a release run started while a reference case was loaded charged the
+reference case and then moved the pointer away: the patterns were spent, the
+person's allowance never moved, and the keys went into a record nobody reads.
+The repoint comes first now.
+

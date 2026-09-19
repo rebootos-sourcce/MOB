@@ -337,7 +337,53 @@ function validateProfile(o){
    says what was wrong rather than returning a bare null. */
 /* Counting is an engine job because the tier gate will read it, and the tier
    gate must not be able to disagree with the app about what was run. */
-function meterKey(nodeId,chan){return String(nodeId)+':'+String(chan);}
+/* ============================================================
+   THE KEY. Ruled: one pattern is one THOUGHT LINE, and the line
+   targets the address by way of the channel.
+
+   So the key is three parts and the order of them is the ruling
+   read backwards: which thought, down which channel, at which
+   address. The address is what is hit, the channel is how it is
+   reached, and the line is the thought that does it.
+
+   It was two parts, address and channel, which made every one of
+   the fifty thoughts on a channel the same key. All two hundred
+   statements on a card collapsed into four, the whole product held
+   four hundred and twenty eight units of new ground, and tier one
+   at four hundred a month finished it in five weeks. The ruling
+   had already been written down and the code had taken half of it.
+
+   A thought line, not a spoken one. Reading it in thought spends
+   it. Nothing in this product requires a person to say anything
+   out loud, and the count must not imply that it does.
+   ============================================================ */
+const LINES_PER_CH=50;          /* the printed card, a hundred each way, split */
+function meterKey(nodeId,chan,line){
+ return String(nodeId)+':'+String(chan)+(line==null?'':':'+String(line));}
+/* THE NEXT UNOPENED LINE at an address down a channel. Read off the keys
+   already held rather than stored, because a stored cursor and a stored key
+   list are two answers to one question and they drift. */
+function meterNext(p,nodeId,chan){
+ var have={}; ((p&&p.meter&&p.meter.unique)||[]).forEach(function(k){have[k]=1;});
+ for(var i=0;i<LINES_PER_CH;i++)
+  if(!have[meterKey(nodeId,chan,i)])return i;
+ return -1;}                    /* that channel at that address is fully open */
+/* A RUN, as a list of keys. Walks the queue address by address and channel by
+   channel, taking the next unopened line each time, and stops at the cap. New
+   ground first, because that is what a tier buys and what a person came for. */
+function meterPlan(p,nodeIds,chans,cap){
+ var out=[], seen={};
+ var lim=cap>0?cap:25;
+ for(var pass=0;pass<LINES_PER_CH&&out.length<lim;pass++){
+  for(var a=0;a<(nodeIds||[]).length&&out.length<lim;a++){
+   for(var c=0;c<(chans||[]).length&&out.length<lim;c++){
+    var id=nodeIds[a], ch=chans[c];
+    var n=meterNext(p,id,ch);
+    /* skip forward past anything this plan has already taken */
+    while(n>=0&&seen[meterKey(id,ch,n)])n++;
+    if(n<0||n>=LINES_PER_CH)continue;
+    var k=meterKey(id,ch,n); seen[k]=1; out.push(k);}}}
+ return out;}
 function meterRun(p,keys){
  if(!p)return null;
  if(!p.meter)p.meter={lines:0,unique:[],first:null,last:null};
