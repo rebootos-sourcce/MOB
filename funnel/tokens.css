@@ -62,7 +62,14 @@
     enough that one dark ink holds on all seven, in every lighting. */
  --on-flat:#0E1015;
  --sky:#7EB8D4; --um:#FFFFFF;
- --good:#68CBA4; --bad:#CB5F59;
+ /* #CB5F59 measures 4.01 against --panel-2 and 4.44 against the seat tinted
+    panel. It is not carrying text today, it is a three pixel marker and a
+    seven percent wash, so the 4.5 text threshold is not the one it has to
+    clear. Moved anyway: a marker that thin at four to one is hard to see at
+    all past about fifty five, and three of the nine reference people are
+    fifty seven or older. #D4736D measures 4.87 and 5.40 on the same two.
+    Snow's own value is 5.62 and does not move. */
+ --good:#68CBA4; --bad:#D4736D;
  /* Lexend is a wide face by design, which is why the rail clipped: Witness
     rendered as Wit. Inter is narrower at the same size and carries more
     characters per line without dropping the point size. The font tuner is

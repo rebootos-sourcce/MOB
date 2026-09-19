@@ -105,7 +105,14 @@ font-display:swap;src:url(data:font/woff2;base64,d09GMgABAAAAALyAABUAAAAB4CAAALw
     enough that one dark ink holds on all seven, in every lighting. */
  --on-flat:#0E1015;
  --sky:#7EB8D4; --um:#FFFFFF;
- --good:#68CBA4; --bad:#CB5F59;
+ /* #CB5F59 measures 4.01 against --panel-2 and 4.44 against the seat tinted
+    panel. It is not carrying text today, it is a three pixel marker and a
+    seven percent wash, so the 4.5 text threshold is not the one it has to
+    clear. Moved anyway: a marker that thin at four to one is hard to see at
+    all past about fifty five, and three of the nine reference people are
+    fifty seven or older. #D4736D measures 4.87 and 5.40 on the same two.
+    Snow's own value is 5.62 and does not move. */
+ --good:#68CBA4; --bad:#D4736D;
  /* Lexend is a wide face by design, which is why the rail clipped: Witness
     rendered as Wit. Inter is narrower at the same size and carries more
     characters per line without dropping the point size. The font tuner is
@@ -2721,8 +2728,117 @@ body.booted{--boot-done:1}
 .s-told-e p{margin:0;font-size:15px;line-height:1.7;color:var(--ink);max-width:68ch}
 .s-w{color:var(--c);font-weight:600}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
-</style></head>
-<body>
+
+/* ============================================================
+   THE ACCOUNT AREA
+   ============================================================ */
+/* THE RAILS DO NOT RENDER HERE. Two passes measured the same thing from
+   opposite ends: 98 simultaneous choices of which 52 are the rail and 12 are
+   settings, and 69 percent of the phone scroll spent on the instrument the
+   person navigated away from. This is one rule and it is the largest single
+   reduction available anywhere on this surface. */
+body.tab-settings .mid{grid-template-columns:1fr}
+body.tab-settings .mid .col{display:none}
+.ac-wrap{display:flex;flex-direction:column;gap:16px;width:100%;
+ max-width:980px;margin:0 auto;padding:4px 2px 28px}
+.ac-hd h2{margin:4px 0 0}
+.ac-body{display:grid;grid-template-columns:228px 1fr;gap:18px;align-items:start}
+/* 228 and not the 240 the precedent uses, because this product's own left rail
+   is 302 and an index near that width reads as the instrument rail returning. */
+.ac-ix{display:flex;flex-direction:column;gap:2px;position:sticky;top:0}
+.ac-ixb{display:flex;align-items:center;gap:10px;width:100%;min-height:var(--tap);
+ padding:10px 12px;background:transparent;border:1px solid transparent;
+ border-radius:var(--r-s);color:var(--mid);font-family:var(--sans);font-size:14px;
+ font-weight:400;text-align:left;cursor:pointer;
+ transition:background var(--t-micro) var(--ease-out),color var(--t-micro) var(--ease-out)}
+.ac-ixb:hover{background:var(--panel-2);color:var(--ink)}
+.ac-ixb.on{background:var(--panel-2);color:var(--ink);
+ border-color:color-mix(in srgb,var(--c) 40%,var(--edge))}
+.ac-ixb.on .ac-gl{color:var(--c)}
+.ac-gl{width:20px;height:20px;flex:0 0 auto;display:grid;place-items:center;color:var(--dim)}
+.ac-gl svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.5;
+ stroke-linecap:round;stroke-linejoin:round}
+.ac-pane{min-width:0;display:flex;flex-direction:column;gap:14px}
+.ac-ph{font-size:20px;font-weight:400;color:var(--ink);letter-spacing:.005em;
+ padding-bottom:10px;border-bottom:1px solid var(--edge)}
+body.punch .ac-ph{border-bottom-color:var(--panel-2)}
+.ac-lead{margin:0;font-size:14.5px;line-height:1.7;color:var(--ink);
+ padding:13px 15px;border-radius:var(--r-s);background:var(--panel-2);
+ border-left:3px solid var(--c)}
+.ac-grp{border:1px solid var(--edge);border-radius:var(--r-s);background:var(--panel);
+ overflow:hidden}
+body.punch .ac-grp{border-color:transparent;background:var(--panel-2)}
+.ac-gh{padding:11px 15px 10px;font-size:12px;font-weight:600;color:var(--dim);
+ letter-spacing:.06em;border-bottom:1px solid var(--edge)}
+body.punch .ac-gh{border-bottom-color:transparent}
+/* A ROW IS 56 AND NOT 44. Forty four is the floor a finger needs, not a target
+   for a full width list row, and the rows this replaced measured 35. */
+.ac-row{display:flex;align-items:center;justify-content:space-between;gap:14px;
+ min-height:56px;padding:9px 15px;border-bottom:1px solid var(--edge)}
+.ac-row:last-child{border-bottom:0}
+body.punch .ac-row{border-bottom-color:var(--panel)}
+.ac-rl{font-size:14px;color:var(--ink);font-weight:400;min-width:0}
+.ac-rl em{display:block;font-style:normal;font-size:12.5px;color:var(--dim);margin-top:3px}
+.ac-rv{font-size:13.5px;color:var(--mid);text-align:right;min-width:0}
+.ac-rv.num{font-family:var(--num);font-variant-numeric:tabular-nums;color:var(--ink)}
+/* A STUB IS NOT A DISABLED CONTROL. Full opacity, never dimmed, because dim
+   reads as "you may not" and the truth is "not yet". It takes no press. */
+.ac-stub{cursor:default}
+.ac-stub .ac-rv{color:var(--dim);font-style:normal}
+.ac-act{gap:12px}
+.ac-edit input{background:var(--sunk);border:1px solid var(--edge);color:var(--ink);
+ border-radius:var(--r-xs);padding:9px 11px;font-family:var(--sans);font-size:14px;
+ min-height:var(--tap);max-width:260px}
+.ac-edit input:focus{border-color:var(--accent)}
+.ac-sw{width:46px;min-width:46px;height:var(--tap);flex:0 0 auto;background:transparent;
+ border:0;cursor:pointer;display:grid;place-items:center;padding:0}
+.ac-sw::before{content:'';position:absolute;width:0;height:0}
+.ac-sw i{display:block;width:42px;height:24px;border-radius:12px;background:var(--sunk);
+ border:1px solid var(--edge-2);position:relative;
+ transition:background var(--t-element) var(--ease-out),border-color var(--t-element) var(--ease-out)}
+.ac-sw i::after{content:'';position:absolute;top:2px;left:2px;width:18px;height:18px;
+ border-radius:50%;background:var(--dim);
+ transition:transform var(--t-element) var(--ease-land),background var(--t-element) var(--ease-out)}
+.ac-sw.on i{background:color-mix(in srgb,var(--accent) 34%,var(--sunk));border-color:var(--accent)}
+.ac-sw.on i::after{transform:translateX(18px);background:var(--accent)}
+.ac-gf{padding:11px 15px 13px;font-size:12.5px;line-height:1.65;color:var(--dim);
+ background:var(--sunk);border-top:1px solid var(--edge)}
+body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
+/* DESTRUCTIVE IS A DECISION, NOT AN ALARM. Deleting on purpose is not
+   something being wrong, so it does not wear the alarm colour. */
+.btn.dgr{color:var(--bad);border-color:color-mix(in srgb,var(--bad) 52%,var(--edge))}
+.btn.dgr:hover{background:color-mix(in srgb,var(--bad) 14%,transparent);color:var(--bad)}
+.ac-seg{margin:11px 15px 13px}
+.ac-grp .dens-list{margin:11px 15px 13px}
+@media (max-width:1000px){
+ .ac-body{grid-template-columns:1fr}
+ .ac-ix{position:static;flex-direction:row;flex-wrap:wrap;gap:4px}
+ .ac-ixb{width:auto;flex:1 1 140px}}
+
+/* ---------- composing something to send ---------- */
+.ob-qs{margin:14px 0 4px;display:flex;flex-direction:column;gap:13px}
+.ob-lens{font-size:12px;font-weight:600;color:var(--dim);letter-spacing:.06em;
+ margin-top:6px;padding-top:11px;border-top:1px solid var(--edge)}
+.ob-qs .ob-lens:first-child{margin-top:0;padding-top:0;border-top:0}
+.ob-qt{font-size:14px;line-height:1.5;color:var(--ink);margin-bottom:7px;font-weight:300}
+.ob-as{display:flex;gap:5px;flex-wrap:wrap}
+.ob-a{min-height:var(--tap);padding:8px 13px;border-radius:var(--r-xs);
+ border:1px solid var(--edge);background:var(--sunk);color:var(--mid);
+ font-family:var(--sans);font-size:13px;cursor:pointer;
+ transition:background var(--t-micro) var(--ease-out),color var(--t-micro) var(--ease-out)}
+.ob-a:hover{background:var(--panel);color:var(--ink)}
+.ob-a.on{background:var(--accent);border-color:var(--accent);color:var(--on-accent);font-weight:500}
+.ob-f{margin:16px 0 4px}
+.ob-f label{display:block;font-size:12px;font-weight:600;color:var(--dim);
+ letter-spacing:.06em;margin-bottom:6px}
+/* SAID BEFORE THEY TYPE. Always these words, and never below the field. */
+.ob-warn{margin:0 0 8px;font-size:12.5px;color:var(--sacral);line-height:1.5}
+.ob-f textarea{width:100%;background:var(--sunk);border:1px solid var(--edge);
+ color:var(--ink);border-radius:var(--r-xs);padding:11px 12px;font-family:var(--sans);
+ font-size:14px;line-height:1.6;resize:vertical;min-height:110px}
+.ob-f textarea:focus{border-color:var(--accent);outline:none}
+
+</style></head><body>
 <!-- ============================================================
      WITHOUT SCRIPTS THIS LOOKS BROKEN RATHER THAN BLANK, AND SAID SO
      TO THE OWNER BEFORE IT SAID SO TO ANYBODY ELSE.
@@ -6079,6 +6195,11 @@ function blankProfile(name){
      open invites somebody to fiddle with the one input that cannot be wrong. */
   who:{first:'', middle:'', last:'', sex:'', sealed:'',
    born:{date:'', time:'', place:'', timeUnknown:false}},
+  /* PER PROFILE INTERFACE PREFERENCES. quiet is the reduced motion switch the
+     phone spec asked for and nothing had built; model is the consent to let a
+     story with nothing identifying attached refine the reading, and it is off
+     until a person turns it on, because it is a use of their own words. */
+  ui:{quiet:false, model:false},
   /* what the person said their type is, and what it wrote. null until stated. */
   seed:null,
   /* THE METER. One pattern is one release line delivered: one channel over
@@ -6303,6 +6424,11 @@ function validateProfile(o){
    ['date','time','place'].forEach(function(k){
     if(typeof o.who.born[k]==='string')p.who.born[k]=o.who.born[k].slice(0,200);});
    p.who.born.timeUnknown=!!o.who.born.timeUnknown;}}
+ /* ui preferences. booleans only, and an older profile without them is filled
+    from the blank rather than refused. */
+ if(o.ui&&typeof o.ui==='object'){
+  ['quiet','model'].forEach(function(k){
+   if(o.ui[k]!==undefined)p.ui[k]=!!o.ui[k];});}
  /* the seed is a stated type, so it is one of sixteen or it is nothing. */
  if(o.seed&&typeof o.seed==='object'){
   if(!seedValid(o.seed.type))errs.push('seed type '+o.seed.type+' is not one of the sixteen');
@@ -7817,6 +7943,113 @@ function ladderRead(p,now){
  var lead=null, best=-1;
  left.forEach(function(m){var n=by[m.fam]||0; if(n>best){best=n; lead=m;}});
  return {earned:got, next:lead, ledger:l, streak:s};}
+/* ============================================================
+   THE OUTBOX. One seam, and an honest failure.
+
+   CLAUDE.md is strict: source.html stays one file with no dependencies, and
+   the app gains network at exactly one seam. A support question and a feedback
+   submission both need network, and neither is that seam.
+
+   The resolution is the pattern bindPlan and bindStore already use. This file
+   never calls fetch and never knows what is on the other side. It builds an
+   envelope, validates it at the boundary, queues it durably, and reports one
+   of four states. A host binds a send function or it does not.
+
+   NEVER SENT OFF A LOCAL ENQUEUE. A control that says "sent" when the thing is
+   sitting in a queue on the person's own machine has lied about the only fact
+   that mattered to them. Queued says queued.
+   ============================================================ */
+var OBKEY='source.outbox';
+var OB_MAX=20, OB_BYTES=65536;
+/* the free text ceilings, per kind. A ceiling is refused at the boundary and
+   never silently truncated, because a silently cut sentence reads back to the
+   person as something they never said. */
+var OB_LIMIT={question:600, bug:600, rating:300, feedback:600};
+var OB_KINDS=['question','bug','rating','feedback'];
+
+/* WHAT AN ENVELOPE MAY CARRY. This list is the spec, not a summary of one.
+   Anything not on it is refused by name, including by whoever adds a helpful
+   field six months from now, because the gate asserts the key set exactly. */
+var OB_KEYS=['kind','at','body','answers','band','build','platform','viewport'];
+/* WHAT IT REFUSES, BY NAME. Read this before adding anything. */
+var OB_NEVER=['name','first','middle','last','email','address','key','rk','rid',
+ 'customer','subscription','stripe','token','code','cookie','story','stories',
+ 'journal','imprints','born','birth','date','dob','cq','dq','sq','seed','type',
+ 'axes','laws','answers63','gates','device','ua','ip','geo','timezone','locale',
+ 'practitioner','roster','avatar','purpose','history','meter'];
+
+function obStore(){ try{ return JSON.parse(STORE.get(OBKEY)||'[]'); }catch(e){ return []; } }
+function obWrite(q){
+ if(!STORE_BOUND) return false;
+ try{ STORE.set(OBKEY,JSON.stringify(q)); return true; }catch(e){ return false; } }
+function obCount(){ return obStore().length; }
+
+/* THE BAND, BUCKETED. Two passes disagreed here and both were half right. A
+   feedback row is worthless without knowing where on the curve it came from,
+   because a three from a high reading and a three from a low one are opposite
+   findings. But a fine grained band beside a platform and a theme is a cell of
+   one in a panel of thirty. Three buckets keep the analysis and kill the cell.
+   The raw reading never travels. */
+function obBand(r){
+ if(!r||r.unread) return 'unread';
+ var c=r.CQ;
+ return c<50?'low':(c<70?'median':'high');}
+
+/* THE BOUNDARY. validateProfile's posture, applied to what leaves rather than
+   what arrives: refuse by name, never clamp, never strip in silence. */
+function obValidate(e){
+ var errs=[];
+ if(!e||typeof e!=='object') return {ok:false,errs:['no envelope']};
+ if(OB_KINDS.indexOf(e.kind)<0) errs.push('kind '+e.kind+' is not one of the four');
+ Object.keys(e).forEach(function(k){
+  if(OB_KEYS.indexOf(k)<0) errs.push('the envelope may not carry '+k);});
+ var lim=OB_LIMIT[e.kind]||600;
+ if(typeof e.body==='string'&&e.body.length>lim)
+  errs.push('that is '+e.body.length+' characters and the limit is '+lim);
+ /* WHAT THE PERSON TYPED IS CHECKED AND NEVER EDITED. A mail shaped string or
+    a long run of digits is refused with the reason, so the person decides what
+    to do about it. This will not catch a first name in a sentence and nothing
+    anywhere may claim that it does. */
+ var t=String(e.body||'');
+ if(/[^\s@]+@[^\s@]+\.[^\s@]+/.test(t)) errs.push('that looks like an email address, '
+  +'and nothing that identifies you can go in here');
+ if(/\d[\d\s().-]{6,}\d/.test(t)) errs.push('that looks like a phone number or an '
+  +'account number, and nothing that identifies you can go in here');
+ return {ok:!errs.length, errs:errs};}
+
+/* ONE QUEUE ENTRY. Over the cap is refused by name rather than evicting the
+   oldest, because a queue that quietly discards a person's words has lost
+   them, which is the failure this whole file exists to prevent. */
+function obQueue(e){
+ var v=obValidate(e);
+ if(!v.ok) return {ok:false, why:v.errs[0], errs:v.errs};
+ if(!STORE_BOUND) return {ok:false, why:'storage is blocked in this browser, so '
+  +'there is nowhere to hold this. Copy it somewhere before you leave the page.'};
+ var q=obStore();
+ if(q.length>=OB_MAX) return {ok:false, why:'there are already '+OB_MAX
+  +' waiting to send and nowhere to send them, so this one was not taken.'};
+ var next=q.concat([e]);
+ if(JSON.stringify(next).length>OB_BYTES) return {ok:false,
+  why:'the outbox is full. Nothing was taken and nothing was thrown away.'};
+ if(!obWrite(next)) return {ok:false, why:'could not write to storage. Nothing was taken.'};
+ return {ok:true, queued:next.length};}
+
+/* THE SEAM. Bound by the host exactly as storage and billing are. */
+var SEND_HOST=null;
+function bindSend(fn){ SEND_HOST=(typeof fn==='function')?fn:null; return !!SEND_HOST; }
+/* THE FOUR STATES, and none of them is a guess. */
+function obDrain(){
+ var q=obStore();
+ if(!q.length) return {state:'empty', n:0};
+ if(typeof SEND_HOST!=='function') return {state:'nohost', n:q.length};
+ var left=[], sent=0, err=null;
+ for(var i=0;i<q.length;i++){
+  var r;
+  try{ r=SEND_HOST(q[i]); }catch(ex){ r=false; err=String(ex&&ex.message||ex); }
+  if(r===true) sent++; else { left.push(q[i]); if(!err)err='the send was refused'; }}
+ obWrite(left);
+ if(!left.length) return {state:'sent', n:sent};
+ return {state:'retry', n:left.length, sent:sent, why:err};}
 
 /* ============================================================
    The engine is DOM free. In a browser these are globals on the
@@ -7921,6 +8154,12 @@ if(typeof module!=='undefined'&&module.exports){
                   NUM_LET:NUM_LET, NUM_MASTER:NUM_MASTER, NUM_DEBT:NUM_DEBT,
                   NUM_CORE:NUM_CORE, NUM_DEBT_SAYS:NUM_DEBT_SAYS,
                   FULLNAME:FULLNAME, BIRTH:BIRTH,
+  /* outbox */    obQueue:obQueue, obValidate:obValidate, obDrain:obDrain,
+                  obCount:obCount, obStore:obStore, obBand:obBand,
+                  bindSend:bindSend, OBKEY:OBKEY, OB_MAX:OB_MAX,
+                  OB_KEYS:OB_KEYS, OB_NEVER:OB_NEVER, OB_LIMIT:OB_LIMIT,
+                  OB_KINDS:OB_KINDS,
+  /* storage */   bindStore:bindStore,
   /* util */      clamp:clamp, leaves:(typeof leaves==='function'?leaves:null)
  };
 }
@@ -14380,7 +14619,10 @@ function setTab(i){
  (function(){var sE=$('settings'); if(!sE)return;
   sE.classList.toggle('on',i===TAB.SETTINGS);
   sE.style.display=(i===TAB.SETTINGS)?'flex':'none';
-  if(i===TAB.SETTINGS&&typeof renderSettings==='function')renderSettings();})();
+  /* the account area replaced renderSettings. The old function is gone rather
+     than left beside it, because two renderers for one host is how a surface
+     ends up half updated. */
+  if(i===TAB.SETTINGS&&typeof renderAccount==='function')renderAccount();})();
  if(cvE) cvE.style.display=(i===TAB.FIELD)?'block':'none';
  if(vb) vb.style.display=(i===TAB.FIELD)?'flex':'none';
  /* Body's layer row lives in the sub bar now, not over the figure */
@@ -14749,79 +14991,10 @@ function sheetShut(){var s=$('sheet'); if(s)s.hidden=true;}
    the sheet had, laid in columns because the centre has width the sheet
    never did.
    ============================================================ */
-function renderSettings(){
- var host=$('settings'); if(!host)return;
- var r=compute(), m=(typeof meterRead==='function')?meterRead(CURP):null;
- var who=(CURP&&CURP.name)||'You';
- var h='<div class="set-wrap">'
-  +'<div class="set-hd"><div class="pm-eye">Settings</div>'
-  /* plain: this header is a person's own name, and title casing a name is a
-     claim about how they spell it. de Vries is not De Vries. */
-  +'<h2 class="kb-h plain">'+esc(who)+'</h2>'
-  +'<p class="kb-p">Everything here is held in this browser. Nothing has left '
-  +'this device.</p></div>'
-  +'<div class="set-grid">'
-  /* this reading */
-  +'<section class="set-sec"><div class="pm-eye">This reading</div>'
-  /* "of 100" made the headline reading a score, which is the one thing a
-     reading may never be. The comment six lines down struck "of 112" for
-     exactly this and left the number it was actually about. The scale belongs
-     in the label, where Analytics already puts it, and the figure stands as a
-     figure. */
-  +'<div class="sh-row"><span>Coherence, 0 to 100</span><b>'
-   +(r.unread?'not read yet':String(Math.round(r.CQ)))+'</b></div>'
-  +'<div class="sh-row"><span>Tier</span><b>'+esc(r.unread?'not read yet':r.tier)+'</b></div>'
-  +'<div class="sh-row"><span>Addresses carrying</span><b>'+r.loaded.length+'</b></div>'
-  +(m?'<div class="sh-row"><span>Ground opened</span><b>'+m.unique+'</b></div>':'')
-  +(m&&m.next?'<div class="sh-row"><span>Next marker</span><b>'+esc(m.next.nm)
-    +', '+m.next.left+' away</b></div>':'')
-  +'</section>'
-  +planSection(m)
-  /* screen */
-  +'<section class="set-sec"><div class="pm-eye">Screen</div>'
-  +'<p class="sh-p">How much fits on one screen. This scales the whole '
-  +'interface, not just the type.</p>'
-  +'<div class="dens-list" id="densheet" style="margin-top:8px"></div></section>'
-  /* lighting, which was only ever reachable from the bar menu */
-  +'<section class="set-sec"><div class="pm-eye">Lighting</div>'
-  +'<p class="sh-p">Dark is the default. Snow is the same instrument on paper. '
-  +'Punch removes every outline and fills every shape. Glass puts the panes in '
-  +'front of a moving ground and lets them refract it.</p>'
-  +'<div class="seg" id="setthemes" style="margin-top:8px"></div></section>'
-  /* the record */
-  +'<section class="set-sec"><div class="pm-eye">Your record</div>'
-  +'<p class="sh-p">Held in this browser only. A save that fails says so '
-  +'rather than being swallowed.</p>'
-  +'<div class="sh-row"><span>Snapshots on file</span><b>'
-   +((CURP&&CURP.history&&CURP.history.length)||0)+'</b></div>'
-  +'<div class="sh-row"><span>Storage</span><b>'+(STORE_BOUND?'writing':'blocked')+'</b></div>'
-  +'</section>'
-  /* who you are becoming */
-  +'<section class="set-sec"><div class="pm-eye">Who you are becoming</div>'
-  +'<p class="sh-p">The avatar, the purpose map and the boundary. What the '
-  +'release work is aimed at.</p>'
-  +'<div class="sh-act"><button class="btn" id="setav" type="button">'
-  +'Open the avatar</button></div></section>'
-  +'</div></div>';
- host.innerHTML=h;
- /* the same three steps, the same setter. Re-rendering in place rather than
-    reopening a sheet, so the surface does not blink. */
- var d=$('densheet'), now=densGet();
- if(d){d.innerHTML=DENS.map(function(x){
-   return '<button type="button" class="dens-opt'+(x[0]===now?' on':'')+'" data-dens3="'+x[0]+'" '
-    +'aria-pressed="'+(x[0]===now)+'"><b>'+esc(x[1])+'</b><em>'+esc(x[2])+'</em></button>';}).join('');
-  d.querySelectorAll('[data-dens3]').forEach(function(b){
-   b.onclick=function(){densSet(b.getAttribute('data-dens3')); renderSettings();};});}
- /* lighting, sharing the bar's own list and setter rather than a second copy */
- var th=$('setthemes');
- if(th){
-  th.innerHTML=LIGHTINGS.map(function(t){
-   return '<button type="button" data-set3="'+t[0]+'" aria-pressed="'
-    +(S.theme===t[0])+'">'+esc(t[1])+'</button>';}).join('');
-  th.querySelectorAll('[data-set3]').forEach(function(b){
-   b.onclick=function(){setLighting(b.getAttribute('data-set3')); renderSettings();};});}
- planWire();
- var av=$('setav'); if(av)av.onclick=function(){runAvatarDrill();};}
+/* renderSettings is gone. The account area replaced it, in ui/account.js, on
+   the owner's ruling that the profile page is non-standard and should be a
+   standard one. planSection and planWire stay here and are called from there,
+   ported rather than rebuilt. */
 
 function profileSheet(){
  var r=compute(), m=(typeof meterRead==='function')?meterRead(CURP):null;
@@ -15076,6 +15249,454 @@ function paintUndo(){
   e.preventDefault();
   var el=$(fwd?'redobtn':'undobtn');
   if(el&&!el.hidden)el.onclick();});})();
+/* ============================================================
+   THE ACCOUNT AREA. Six sections, one column, no rails.
+
+   Ruled by the owner: "our profile page is non-standard, I want for now go out
+   to the internet, let's get a very standard profile page for a technology
+   such as this. We don't need coherence and everything else, because coherence
+   is all over the app. What we need are security settings, privacy settings,
+   account settings, billing, your tier."
+
+   Two independent passes reached the same two rulings without seeing each
+   other's working, which is the strongest evidence either of them produced.
+
+   THE RAILS DO NOT RENDER HERE. The architect counted 98 simultaneous choices
+   on this surface against a working memory of about four, 52 of them the left
+   rail, and 12 of them actually settings. The art director measured the same
+   thing from the other end: 69 percent of the phone scroll on this surface is
+   the instrument the person navigated away from. One CSS rule takes 98 to 27.
+
+   A STUB IS NOT A DISABLED CONTROL. Five of the things the owner asked for
+   have no route at all today, and four of them cannot exist until sign in
+   does. A stub row renders at full opacity with its real label and the words
+   "not built yet" where a value would sit. It is never dimmed, because dim
+   reads as "you may not" rather than "not yet", and it never takes a press,
+   because a control that takes a press and then says no is the dead upgrade
+   button this surface already shipped.
+
+   WHAT IS A READING DOES NOT LIVE HERE. Coherence, tier as a band, addresses
+   carrying, ground opened and the next marker are all printed on Summary or by
+   record.js. Printing them a third time on an account page is what made a
+   stranger's account page say "not read yet" four times.
+   ============================================================ */
+var ACC_OPEN='account';
+
+/* One glyph per section. A named thing wears its own mark, the mark has a
+   family, and the family has a colour. Crown is deliberately left unspent. */
+var ACC_SECS=[
+ {k:'account', nm:'Account',       b:'Throat',
+  ic:'<circle cx="12" cy="8" r="3.6"/><path d="M5 20a7 7 0 0114 0"/>'},
+ {k:'display', nm:'Display',       b:'3rd Eye',
+  ic:'<circle cx="12" cy="12" r="4"/><path d="M12 3v2.2M12 18.8V21M3 12h2.2M18.8 12H21'
+    +'M5.6 5.6l1.6 1.6M16.8 16.8l1.6 1.6M18.4 5.6l-1.6 1.6M7.2 16.8l-1.6 1.6"/>'},
+ {k:'security',nm:'Security',      b:'Root',
+  ic:'<path d="M12 3l7 3.5v5.5c0 4.2-3 7.4-7 9-4-1.6-7-4.8-7-9V6.5z"/><path d="M12 11v3"/>'},
+ {k:'privacy', nm:'Privacy',       b:'Heart',
+  ic:'<rect x="4.5" y="10.5" width="15" height="9.5" rx="2"/>'
+    +'<path d="M8 10.5V7.8a4 4 0 018 0v2.7"/>'},
+ {k:'billing', nm:'Billing And Tier',b:'Solar',
+  ic:'<rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10.5h18"/>'},
+ {k:'help',    nm:'Help',          b:'Sacral',
+  ic:'<circle cx="12" cy="12" r="8.4"/><path d="M9.6 9.6a2.5 2.5 0 114 2.4c-.9.6-1.6 1-1.6 2"/>'
+    +'<path d="M12 17.1v.1"/>'}];
+function accSec(k){for(var i=0;i<ACC_SECS.length;i++)if(ACC_SECS[i].k===k)return ACC_SECS[i];
+ return ACC_SECS[0];}
+
+/* ---------- the six row types, and there is no seventh ---------- */
+/* A value row states a fact. The value takes the tabular face, because these
+   are numbers in a column and a column of numbers that does not line up is
+   the whole reason --num exists. */
+function accRow(label,value,o){
+ o=o||{};
+ return '<div class="ac-row'+(o.cls?' '+o.cls:'')+'">'
+  +'<span class="ac-rl">'+esc(label)+'</span>'
+  +'<span class="ac-rv'+(o.num?' num':'')+'">'+(o.raw?value:esc(String(value)))+'</span></div>';}
+/* A stub row. Full opacity, real label, and the honest value in the value
+   slot. aria-disabled and not a button, so nothing can press it. */
+function accStub(label,why){
+ return '<div class="ac-row ac-stub" aria-disabled="true">'
+  +'<span class="ac-rl">'+esc(label)+'</span>'
+  +'<span class="ac-rv">'+esc(why||'not built yet')+'</span></div>';}
+function accAct(label,id,o){
+ o=o||{};
+ return '<div class="ac-row ac-act"><span class="ac-rl">'+esc(label)+'</span>'
+  +'<button class="btn'+(o.danger?' dgr':'')+'" id="'+id+'" type="button">'
+  +esc(o.btn||'Open')+'</button></div>';}
+/* A toggle row. The switch is the control and the row label is its name, so
+   the switch carries no label of its own. */
+function accTog(label,id,on,note){
+ return '<div class="ac-row ac-tog"><span class="ac-rl">'+esc(label)
+  +(note?'<em>'+esc(note)+'</em>':'')+'</span>'
+  +'<button class="ac-sw'+(on?' on':'')+'" id="'+id+'" type="button" role="switch" '
+  +'aria-checked="'+(!!on)+'" aria-label="'+esc(label)+'"><i></i></button></div>';}
+function accGroup(title,rows,foot){
+ return '<div class="ac-grp">'+(title?'<div class="ac-gh">'+esc(title)+'</div>':'')
+  +rows+(foot?'<div class="ac-gf">'+foot+'</div>':'')+'</div>';}
+
+/* ---------- 4.1 account ---------- */
+function accAccount(){
+ var w=(CURP&&CURP.who)||{}, bn=w.born||{};
+ var nm=[w.first,w.middle,w.last].filter(function(x){return x&&x.trim();}).join(' ');
+ var born=[bn.date,(bn.timeUnknown?'time not known':bn.time),bn.place]
+  .filter(function(x){return x;}).join(' · ');
+ var h=accGroup('This Account',
+   '<div class="ac-row ac-edit"><span class="ac-rl">Profile name</span>'
+   +'<input type="text" id="acnm" value="'+esc((CURP&&CURP.name)||'')+'" '
+   +'aria-label="Profile name"></div>'
+   +accRow('Profiles on this device',PROFILES.length,{num:true}),
+   'The profile picker sits in the top bar today. It is a demo control in the '
+   +'navigation of a product about to grow accounts, and it comes out of there '
+   +'when sign in lands.');
+ /* IDENTITY IS READ OUT HERE AND EDITED NOWHERE BUT ENERGETICS. Two editors
+    for one field is two answers to one question. */
+ h+=accGroup('Identity',
+   accRow('Name',nm||'not entered')
+   +accRow('Born',born||'not entered')
+   +accAct('Change it','acgoiq',{btn:'Open Energetics'}),
+   'Entered once on Energetics and read here. There is only ever one editor '
+   +'for a field.');
+ h+=accGroup('Sign In',
+   accStub('Signed in as','not signed in')
+   +accStub('Key','no key yet')
+   +accStub('Sign out'),
+   'Sign in does not exist yet. This record is in this browser and nowhere '
+   +'else, so there is nothing to sign in to and nothing to sign out of.');
+ return h;}
+
+/* ---------- 4.2 display ---------- */
+function accDisplay(){
+ var h=accGroup('Lighting',
+   '<div class="seg ac-seg" id="acthemes"></div>',
+   'Dark is the default. Snow is the same instrument on paper. Punch removes '
+   +'every outline and fills every shape. Glass puts the panes in front of a '
+   +'moving ground and lets them refract it.');
+ h+=accGroup('Screen','<div class="dens-list" id="acdens"></div>',
+   'How much fits on one screen. This scales the whole interface, not just '
+   +'the type.');
+ h+=accGroup('Motion',
+   accTog('Quiet','acquiet',!!(CURP&&CURP.ui&&CURP.ui.quiet),
+    'no background wash, no breathing, no motion on arrival'),
+   'If your system already asks for reduced motion, that is honoured whatever '
+   +'this says. This is the switch for when it does not.');
+ return h;}
+
+/* ---------- 4.3 security ---------- */
+function accSecurity(){
+ return '<p class="ac-lead">Nothing about this record is protected by a password '
+  +'today. It is held in this browser, so anybody with this browser has it. '
+  +'That is the honest state and it is also the argument for sign in.</p>'
+  +accGroup('How This Is Protected',
+   accRow('Sign in method','none, this browser only')
+   +accStub('Password','not set')
+   +accStub('Two factor','not set')
+   +accStub('Sessions and devices','this browser only')
+   +accStub('Recent account activity','nothing to show'),
+   'Every row here waits on sign in. When it lands it is a one time code to '
+   +'the address or a signed link, never the address alone, because an address '
+   +'alone would be the key to somatic and psychological self report.');}
+
+/* ---------- 4.4 privacy. the one section here that is not generic ---------- */
+var ACC_HELD=[
+ ['The identity and birth moment','name, sex, date, time and place'],
+ ['The 63 answers','what you said about the twenty one laws'],
+ ['The charge on nine axes','what the answers and the stories wrote'],
+ ['The stories','every entry, in your words, as you typed it'],
+ ['The imprints','what the engine read out of them'],
+ ['The meter','which addresses have been opened and when'],
+ ['The snapshots','every saved state of the field'],
+ ['The avatar and purpose','what you said you are becoming'],
+ ['The plan','the tier word, and nothing about a card']];
+function accPrivacy(){
+ var snaps=(CURP&&CURP.history&&CURP.history.length)||0;
+ var h='<p class="ac-lead">We never sell anybody’s data. Ever.</p>';
+ h+=accGroup('What Is Held Here',
+   ACC_HELD.map(function(x){return accRow(x[0],x[1]);}).join(''),
+   'Held in this browser and nowhere else. This is a list rather than a '
+   +'sentence because a list is what makes export and delete mean something.');
+ h+=accGroup('This Device',
+   accRow('Snapshots on file',snaps,{num:true})
+   +accRow('Storage',STORE_BOUND?'writing':'blocked'),
+   STORE_BOUND?'A save that fails says so rather than being swallowed.'
+    :'Storage is blocked in this browser, so nothing you do here will survive '
+     +'a reload. Export is the only way to keep it.');
+ h+=accGroup('Who Has Sight',
+   accRow('People with sight of this record','nobody'),
+   'Nobody sees this but you. When a practitioner can be granted sight it is '
+   +'explicit, it is listed here by name with what they see and when you '
+   +'granted it, and revoking is one press on the row. Never a silent default.');
+ h+=accGroup('Improve The Models',
+   accTog('Use my stories to refine the reading','acmodel',
+     !!(CURP&&CURP.ui&&CURP.ui.model)),
+   'Off unless you turn it on. What would be used is the story with nothing '
+   +'that identifies you attached, and the record and the story are never held '
+   +'together. Saying no keeps the product whole.');
+ h+=accGroup('Getting It Out, And Getting Rid Of It',
+   accAct('Export this record','acexp',{btn:'Copy'})
+   +accAct('Delete this record','acdel',{btn:'Delete',danger:true}),
+   'Delete removes this record from this browser now. There is no store yet, '
+   +'so there is nowhere else it could be and nothing else to ask. It cannot '
+   +'be undone and there is no copy unless you made one.');
+ return h;}
+
+/* ---------- 4.5 billing. almost entirely real, ported not rebuilt ---------- */
+function accBilling(m){
+ return planSection(m)+accGroup('Invoices',accStub('Invoices','held by the processor'),
+  'Invoices live with whoever takes the payment, which is never this file. '
+  +'Nothing about a card is held here and the record carries no customer number.');}
+
+/* ---------- 4.6 help ---------- */
+function accHelp(){
+ var h=accGroup('Get Help',
+   accAct('Ask a question','achelpq',{btn:'Ask'})
+   +accAct('Report something broken','achelpb',{btn:'Report'}),
+   'Both go to the same place. There is nowhere to send them yet, so what you '
+   +'write is held on this device and the outbox below says so.');
+ h+=accGroup('Tell Us How It Is Going',
+   accAct('Rate the product','acrate',{btn:'Rate'})
+   +accAct('Product feedback','acsurv',{btn:'Open'}),
+   'The rating is two questions and about five seconds. The feedback is about '
+   +'four minutes and it is never asked for inside the instrument.');
+ h+=accGroup('Reading This',
+   accAct('How to read this','achowto',{btn:'Open'}),'');
+ h+=accGroup('What Is Waiting',
+   accRow('Outbox',obCount()+' waiting',{num:false}),
+   obCount()?'Nothing can be sent yet. What you wrote is kept here and will go '
+    +'when there is somewhere to send it.'
+   :'Nothing waiting.');
+ h+=accGroup('This Build',
+   accRow('Build',(typeof BUILD_ID!=='undefined'&&BUILD_ID)||'not stamped')
+   +accRow('Version',(typeof VERSION!=='undefined'&&VERSION)||'alpha'),
+   'Quote this when you report something. It is what makes a report '
+   +'reproducible.');
+ return h;}
+
+/* ---------- the surface ---------- */
+function renderAccount(){
+ var host=$('settings'); if(!host)return;
+ var m=(typeof meterRead==='function')?meterRead(CURP):null;
+ var who=(CURP&&CURP.name)||'You';
+ var body;
+ switch(ACC_OPEN){
+  case 'display': body=accDisplay(); break;
+  case 'security':body=accSecurity(); break;
+  case 'privacy': body=accPrivacy(); break;
+  case 'billing': body=accBilling(m); break;
+  case 'help':    body=accHelp(); break;
+  default:        body=accAccount();}
+ var sec=accSec(ACC_OPEN);
+ var h='<div class="ac-wrap">'
+  /* plain: this is a person's own name, and title casing a name is a claim
+     about how they spell it. de Vries is not De Vries. */
+  +'<div class="ac-hd"><div class="pm-eye">Account</div>'
+  +'<h2 class="kb-h plain">'+esc(who)+'</h2></div>'
+  +'<div class="ac-body">'
+  +'<nav class="ac-ix" aria-label="Account sections">'
+  +ACC_SECS.map(function(s){
+    return '<button class="ac-ixb'+(s.k===ACC_OPEN?' on':'')+'" data-acs="'+s.k+'" '
+     +'type="button" style="--c:'+seatCol(s.b)+'" aria-current="'+(s.k===ACC_OPEN)+'">'
+     +'<span class="ac-gl"><svg viewBox="0 0 24 24" aria-hidden="true">'+s.ic+'</svg></span>'
+     +'<span>'+esc(s.nm)+'</span></button>';}).join('')
+  +'</nav>'
+  +'<section class="ac-pane" style="--c:'+seatCol(sec.b)+'">'
+  +'<div class="ac-ph">'+esc(sec.nm)+'</div>'+body+'</section>'
+  +'</div></div>';
+ host.innerHTML=h;
+ accWire();}
+function accWire(){
+ var host=$('settings'); if(!host)return;
+ host.querySelectorAll('[data-acs]').forEach(function(b){
+  b.onclick=function(){ACC_OPEN=b.getAttribute('data-acs'); renderAccount();};});
+ var nm=$('acnm');
+ if(nm)nm.onchange=function(){
+  var v=nm.value.trim();
+  if(!v){status('A profile needs a name. Nothing was changed.','fail');nm.value=CURP.name;return;}
+  CURP.name=v; pSave(); statusSaved(); renderAccount(); render();};
+ var gi=$('acgoiq'); if(gi)gi.onclick=function(){setTab(TAB.INTAKE);};
+ /* the same three steps and the same setter as the bar menu. Two doors onto
+    one setter is not a duplicate: one is for changing it while looking at the
+    instrument, the other for finding it when you do not know where it is. */
+ var d=$('acdens'), now=densGet();
+ if(d){d.innerHTML=DENS.map(function(x){
+   return '<button type="button" class="dens-opt'+(x[0]===now?' on':'')+'" data-acd="'+x[0]+'" '
+    +'aria-pressed="'+(x[0]===now)+'"><b>'+esc(x[1])+'</b><em>'+esc(x[2])+'</em></button>';}).join('');
+  d.querySelectorAll('[data-acd]').forEach(function(b){
+   b.onclick=function(){densSet(b.getAttribute('data-acd')); renderAccount();};});}
+ var th=$('acthemes');
+ if(th){th.innerHTML=LIGHTINGS.map(function(t){
+   return '<button type="button" data-act="'+t[0]+'" aria-pressed="'+(S.theme===t[0])+'">'
+    +esc(t[1])+'</button>';}).join('');
+  th.querySelectorAll('[data-act]').forEach(function(b){
+   b.onclick=function(){setLighting(b.getAttribute('data-act')); renderAccount();};});}
+ var q=$('acquiet');
+ if(q)q.onclick=function(){uiSet('quiet',!(CURP.ui&&CURP.ui.quiet)); renderAccount();};
+ var mo=$('acmodel');
+ if(mo)mo.onclick=function(){uiSet('model',!(CURP.ui&&CURP.ui.model)); renderAccount();};
+ var ex=$('acexp');
+ if(ex)ex.onclick=function(){var t=pExport();
+  try{navigator.clipboard.writeText(t); status('Record copied to the clipboard.','ok');}
+  catch(e){status('Could not reach the clipboard. Nothing was copied.','fail');}};
+ var dl=$('acdel');
+ if(dl)dl.onclick=function(){accDelete();};
+ var hw=$('achowto'); if(hw)hw.onclick=function(){sheetOpen(helpSheet());};
+ var aq=$('achelpq'); if(aq)aq.onclick=function(){obCompose('question');};
+ var ab=$('achelpb'); if(ab)ab.onclick=function(){obCompose('bug');};
+ var ar=$('acrate');  if(ar)ar.onclick=function(){obCompose('rating');};
+ var as=$('acsurv');  if(as)as.onclick=function(){obCompose('feedback');};
+ planWire();}
+/* ONE WRITER FOR THE UI PREFERENCES ON THE PROFILE, so a missing ui object on
+   an older profile is filled here rather than at nine call sites. */
+function uiSet(k,v){
+ if(!CURP)return false;
+ if(!CURP.ui||typeof CURP.ui!=='object')CURP.ui={};
+ CURP.ui[k]=v; pSave();
+ if(!statusSaved())return false;
+ applyUiPrefs(); return true;}
+function applyUiPrefs(){
+ var q=!!(CURP&&CURP.ui&&CURP.ui.quiet);
+ document.body.classList.toggle('quiet',q);}
+/* DELETE IS A REAL CONTROL AND IT SAYS EXACTLY WHAT IT DID. It removes this
+   record from this browser. There is no store, so it does not claim to have
+   deleted anything from anywhere else, because that would be a lie about the
+   one thing a person most needs the truth about. */
+function accDelete(){
+ var nm=(CURP&&CURP.name)||'this profile';
+ if(!confirm('Delete '+nm+' from this browser?\n\nThe identity, the 63 answers, the '
+  +'stories, the imprints and every snapshot go. It cannot be undone and there is no '
+  +'copy unless you made one.')) return false;
+ var i=PROFILES.indexOf(CURP);
+ if(i<0){status('Nothing was deleted.','fail');return false;}
+ PROFILES.splice(i,1);
+ if(!PROFILES.length)pNew('You');
+ CURP=PROFILES[0]; loadProfile(CURP);
+ if(!pSave()){status('Could not write to storage. Nothing was deleted.','fail');return false;}
+ ACC_OPEN='privacy';
+ syncCh(); if(typeof syncLw==='function')syncLw(); if(typeof syncSoul==='function')syncSoul();
+ renderAccount(); render();
+ status('Deleted from this browser. Nothing was held anywhere else.','ok');
+ return true;}
+
+/* ============================================================
+   COMPOSING SOMETHING TO SEND, AND THE HONEST FAILURE.
+
+   Four kinds through one sheet: a question, a bug, a rating and the
+   questionnaire. The rating and the questionnaire carry their answers; the
+   question and the bug carry a body.
+
+   The line above the field is always the same words and it is there before
+   anybody types, per the practice: say it at the moment of contribution, not
+   in a policy page. The boundary refuses a mail shaped string or a long run of
+   digits by name and never strips them, because a silently cut sentence reads
+   back as something the person never said. It will not catch a first name in a
+   sentence, and nothing here claims that it does.
+   ============================================================ */
+var OB_TITLE={question:'Ask A Question',bug:'Report Something Broken',
+ rating:'Rate The Product',feedback:'Product Feedback'};
+var OB_LEAD={
+ question:'Ask anything about what a reading means, what a control does, or why '
+  +'the instrument said what it said.',
+ bug:'What did you do, what did you expect, and what happened instead. The build '
+  +'string from Help makes it reproducible.',
+ rating:'Two questions and about five seconds.',
+ feedback:'Three short blocks: what this is, whether the content makes sense, and '
+  +'whether the product works. About four minutes.'};
+/* THE RATING. Two questions, and neither of them is a star. */
+var OB_RATE=[
+ {k:'state',q:'How is it working right now?',
+  a:['Broken','Rough','Works','Good','Sharp']},
+ {k:'again',q:'Would you open it again this week?',
+  a:['No','Probably not','Probably','Yes']}];
+/* THE QUESTIONNAIRE. The owner's own eleven questions, in the three lenses he
+   named. Every one of them survives. What changed is the wording, the response
+   type and the order. Two of his were doing two jobs each and are split or
+   merged where asking them as one returns an answer actionable neither way. */
+var OB_SURVEY=[
+ {lens:'What This Is',k:'m1',q:'Do you know what this product is for?',
+  a:['No idea','Roughly','Yes, I could explain it']},
+ {lens:'What This Is',k:'m2',q:'Do you know why we are doing this?',
+  a:['No','I have a guess','Yes']},
+ {lens:'What This Is',k:'m3',q:'Who would you hand this to?',
+  a:['Nobody','Somebody who is stuck','Somebody who trains hard',
+     'Somebody who works with people','Anybody']},
+ {lens:'The Content',k:'p1',q:'Does the information make sense?',
+  a:['No','In places','Yes']},
+ {lens:'The Content',k:'p2',q:'Do you know what you are reading when a reading prints?',
+  a:['No','Some of it','Yes']},
+ {lens:'The Content',k:'p3',q:'Is the information helpful?',
+  a:['It cost me time','Neither','A little','A lot']},
+ {lens:'The Content',k:'p4',q:'Does the explanation of the problem make sense?',
+  a:['No','In places','Yes']},
+ {lens:'The Content',k:'p5',q:'Does the protocol make sense?',
+  a:['No','I understand it and I do not believe it','Mostly','Yes']},
+ {lens:'The Content',k:'p6',q:'Does the knowledge base make sense?',
+  a:['I have not opened it','No','In places','Yes']},
+ {lens:'The Product',k:'d1',q:'Do you know what you are doing when you open it?',
+  a:['No','I work it out each time','Yes']},
+ {lens:'The Product',k:'d2',q:'How good is it?',
+  a:['Bad','Weak','Fine','Good','Very good']},
+ {lens:'The Product',k:'d3',q:'How would you feel if you could no longer use it?',
+  a:['Not bothered','A little disappointed','Very disappointed']}];
+var OB_KIND=null, OB_ANS={}, OB_BODY='';
+function obCompose(kind){
+ OB_KIND=kind; OB_ANS={}; OB_BODY='';
+ sheetOpen(obSheet());
+ obWire();}
+function obSheet(){
+ var k=OB_KIND, lim=OB_LIMIT[k]||600;
+ var h='<div class="pm-eye">Help</div><p class="sh-h">'+esc(OB_TITLE[k]||'Send')+'</p>'
+  +'<p class="sh-p">'+esc(OB_LEAD[k]||'')+'</p>';
+ if(k==='rating'||k==='feedback'){
+  var list=(k==='rating')?OB_RATE:OB_SURVEY, lens=null;
+  h+='<div class="ob-qs">';
+  list.forEach(function(q){
+   if(q.lens&&q.lens!==lens){lens=q.lens; h+='<div class="ob-lens">'+esc(lens)+'</div>';}
+   h+='<div class="ob-q"><div class="ob-qt">'+esc(q.q)+'</div><div class="ob-as">'
+    +q.a.map(function(a,i){
+      return '<button class="ob-a'+(OB_ANS[q.k]===i?' on':'')+'" type="button" '
+       +'data-obq="'+q.k+'" data-obv="'+i+'">'+esc(a)+'</button>';}).join('')
+    +'</div></div>';});
+  h+='</div>';}
+ h+='<div class="ob-f"><label for="obtext">'
+  +esc(k==='rating'||k==='feedback'?'What would improve the experience?':'In your words')
+  +'</label>'
+  /* SAID BEFORE THEY TYPE, not after. Always these words. */
+  +'<p class="ob-warn">No names. No addresses. Nothing that identifies you or '
+  +'anybody else.</p>'
+  +'<textarea id="obtext" maxlength="'+lim+'" rows="5" '
+  +'placeholder="'+(k==='bug'?'What you did, what you expected, what happened':'')
+  +'"></textarea></div>'
+  +'<div class="sh-act"><button class="btn pri" id="obsend" type="button">'
+  +(k==='rating'||k==='feedback'?'Send':'Send it')+'</button>'
+  +'<button class="btn" id="obcancel" type="button">Cancel</button></div>'
+  +'<p class="sh-p dim">There is nowhere to send this yet. It is kept on this '
+  +'device and goes when there is somewhere to send it. Nothing about who you '
+  +'are travels with it.</p>';
+ return h;}
+function obWire(){
+ document.querySelectorAll('[data-obq]').forEach(function(b){
+  b.onclick=function(){OB_ANS[b.getAttribute('data-obq')]=+b.getAttribute('data-obv');
+   var host=document.querySelector('.sheet-bd')||document.body;
+   var t=$('obtext'); if(t)OB_BODY=t.value;
+   sheetOpen(obSheet()); obWire();
+   var t2=$('obtext'); if(t2)t2.value=OB_BODY;};});
+ var c=$('obcancel'); if(c)c.onclick=function(){sheetShut();};
+ var s=$('obsend'); if(s)s.onclick=function(){obSend();};}
+function obSend(){
+ var t=$('obtext'), body=t?t.value.trim():'';
+ var r=compute();
+ var e={kind:OB_KIND, at:new Date().toISOString().slice(0,10), body:body,
+  answers:OB_ANS, band:obBand(r),
+  build:(typeof BUILD_ID!=='undefined'&&BUILD_ID)||'alpha',
+  platform:(window.innerWidth<720?'phone':'desktop'),
+  viewport:(window.innerWidth<720?'narrow':'wide')};
+ var q=obQueue(e);
+ if(!q.ok){ status(q.why,'fail'); return false; }
+ /* QUEUED SAYS QUEUED. Never sent, because it has not been. */
+ var d=obDrain();
+ if(d.state==='sent'){ status('Sent. Thank you.','ok'); }
+ else { status('Held on this device. There is nowhere to send it yet, so it is '
+   +'waiting in the outbox and nothing has been thrown away.','ok'); }
+ sheetShut(); renderAccount(); return true;}
 
 /* ---- THE MATRIX. 19 domains across, 9 child fetters down. Cells drill. ---- */
 const MXC=[];

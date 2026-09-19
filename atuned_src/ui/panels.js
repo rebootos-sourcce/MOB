@@ -96,7 +96,10 @@ function setTab(i){
  (function(){var sE=$('settings'); if(!sE)return;
   sE.classList.toggle('on',i===TAB.SETTINGS);
   sE.style.display=(i===TAB.SETTINGS)?'flex':'none';
-  if(i===TAB.SETTINGS&&typeof renderSettings==='function')renderSettings();})();
+  /* the account area replaced renderSettings. The old function is gone rather
+     than left beside it, because two renderers for one host is how a surface
+     ends up half updated. */
+  if(i===TAB.SETTINGS&&typeof renderAccount==='function')renderAccount();})();
  if(cvE) cvE.style.display=(i===TAB.FIELD)?'block':'none';
  if(vb) vb.style.display=(i===TAB.FIELD)?'flex':'none';
  /* Body's layer row lives in the sub bar now, not over the figure */
@@ -465,79 +468,10 @@ function sheetShut(){var s=$('sheet'); if(s)s.hidden=true;}
    the sheet had, laid in columns because the centre has width the sheet
    never did.
    ============================================================ */
-function renderSettings(){
- var host=$('settings'); if(!host)return;
- var r=compute(), m=(typeof meterRead==='function')?meterRead(CURP):null;
- var who=(CURP&&CURP.name)||'You';
- var h='<div class="set-wrap">'
-  +'<div class="set-hd"><div class="pm-eye">Settings</div>'
-  /* plain: this header is a person's own name, and title casing a name is a
-     claim about how they spell it. de Vries is not De Vries. */
-  +'<h2 class="kb-h plain">'+esc(who)+'</h2>'
-  +'<p class="kb-p">Everything here is held in this browser. Nothing has left '
-  +'this device.</p></div>'
-  +'<div class="set-grid">'
-  /* this reading */
-  +'<section class="set-sec"><div class="pm-eye">This reading</div>'
-  /* "of 100" made the headline reading a score, which is the one thing a
-     reading may never be. The comment six lines down struck "of 112" for
-     exactly this and left the number it was actually about. The scale belongs
-     in the label, where Analytics already puts it, and the figure stands as a
-     figure. */
-  +'<div class="sh-row"><span>Coherence, 0 to 100</span><b>'
-   +(r.unread?'not read yet':String(Math.round(r.CQ)))+'</b></div>'
-  +'<div class="sh-row"><span>Tier</span><b>'+esc(r.unread?'not read yet':r.tier)+'</b></div>'
-  +'<div class="sh-row"><span>Addresses carrying</span><b>'+r.loaded.length+'</b></div>'
-  +(m?'<div class="sh-row"><span>Ground opened</span><b>'+m.unique+'</b></div>':'')
-  +(m&&m.next?'<div class="sh-row"><span>Next marker</span><b>'+esc(m.next.nm)
-    +', '+m.next.left+' away</b></div>':'')
-  +'</section>'
-  +planSection(m)
-  /* screen */
-  +'<section class="set-sec"><div class="pm-eye">Screen</div>'
-  +'<p class="sh-p">How much fits on one screen. This scales the whole '
-  +'interface, not just the type.</p>'
-  +'<div class="dens-list" id="densheet" style="margin-top:8px"></div></section>'
-  /* lighting, which was only ever reachable from the bar menu */
-  +'<section class="set-sec"><div class="pm-eye">Lighting</div>'
-  +'<p class="sh-p">Dark is the default. Snow is the same instrument on paper. '
-  +'Punch removes every outline and fills every shape. Glass puts the panes in '
-  +'front of a moving ground and lets them refract it.</p>'
-  +'<div class="seg" id="setthemes" style="margin-top:8px"></div></section>'
-  /* the record */
-  +'<section class="set-sec"><div class="pm-eye">Your record</div>'
-  +'<p class="sh-p">Held in this browser only. A save that fails says so '
-  +'rather than being swallowed.</p>'
-  +'<div class="sh-row"><span>Snapshots on file</span><b>'
-   +((CURP&&CURP.history&&CURP.history.length)||0)+'</b></div>'
-  +'<div class="sh-row"><span>Storage</span><b>'+(STORE_BOUND?'writing':'blocked')+'</b></div>'
-  +'</section>'
-  /* who you are becoming */
-  +'<section class="set-sec"><div class="pm-eye">Who you are becoming</div>'
-  +'<p class="sh-p">The avatar, the purpose map and the boundary. What the '
-  +'release work is aimed at.</p>'
-  +'<div class="sh-act"><button class="btn" id="setav" type="button">'
-  +'Open the avatar</button></div></section>'
-  +'</div></div>';
- host.innerHTML=h;
- /* the same three steps, the same setter. Re-rendering in place rather than
-    reopening a sheet, so the surface does not blink. */
- var d=$('densheet'), now=densGet();
- if(d){d.innerHTML=DENS.map(function(x){
-   return '<button type="button" class="dens-opt'+(x[0]===now?' on':'')+'" data-dens3="'+x[0]+'" '
-    +'aria-pressed="'+(x[0]===now)+'"><b>'+esc(x[1])+'</b><em>'+esc(x[2])+'</em></button>';}).join('');
-  d.querySelectorAll('[data-dens3]').forEach(function(b){
-   b.onclick=function(){densSet(b.getAttribute('data-dens3')); renderSettings();};});}
- /* lighting, sharing the bar's own list and setter rather than a second copy */
- var th=$('setthemes');
- if(th){
-  th.innerHTML=LIGHTINGS.map(function(t){
-   return '<button type="button" data-set3="'+t[0]+'" aria-pressed="'
-    +(S.theme===t[0])+'">'+esc(t[1])+'</button>';}).join('');
-  th.querySelectorAll('[data-set3]').forEach(function(b){
-   b.onclick=function(){setLighting(b.getAttribute('data-set3')); renderSettings();};});}
- planWire();
- var av=$('setav'); if(av)av.onclick=function(){runAvatarDrill();};}
+/* renderSettings is gone. The account area replaced it, in ui/account.js, on
+   the owner's ruling that the profile page is non-standard and should be a
+   standard one. planSection and planWire stay here and are called from there,
+   ported rather than rebuilt. */
 
 function profileSheet(){
  var r=compute(), m=(typeof meterRead==='function')?meterRead(CURP):null;

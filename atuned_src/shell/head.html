@@ -105,7 +105,14 @@ font-display:swap;src:url(data:font/woff2;base64,d09GMgABAAAAALyAABUAAAAB4CAAALw
     enough that one dark ink holds on all seven, in every lighting. */
  --on-flat:#0E1015;
  --sky:#7EB8D4; --um:#FFFFFF;
- --good:#68CBA4; --bad:#CB5F59;
+ /* #CB5F59 measures 4.01 against --panel-2 and 4.44 against the seat tinted
+    panel. It is not carrying text today, it is a three pixel marker and a
+    seven percent wash, so the 4.5 text threshold is not the one it has to
+    clear. Moved anyway: a marker that thin at four to one is hard to see at
+    all past about fifty five, and three of the nine reference people are
+    fifty seven or older. #D4736D measures 4.87 and 5.40 on the same two.
+    Snow's own value is 5.62 and does not move. */
+ --good:#68CBA4; --bad:#D4736D;
  /* Lexend is a wide face by design, which is why the rail clipped: Witness
     rendered as Wit. Inter is narrower at the same size and carries more
     characters per line without dropping the point size. The font tuner is
@@ -2721,4 +2728,114 @@ body.booted{--boot-done:1}
 .s-told-e p{margin:0;font-size:15px;line-height:1.7;color:var(--ink);max-width:68ch}
 .s-w{color:var(--c);font-weight:600}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* ============================================================
+   THE ACCOUNT AREA
+   ============================================================ */
+/* THE RAILS DO NOT RENDER HERE. Two passes measured the same thing from
+   opposite ends: 98 simultaneous choices of which 52 are the rail and 12 are
+   settings, and 69 percent of the phone scroll spent on the instrument the
+   person navigated away from. This is one rule and it is the largest single
+   reduction available anywhere on this surface. */
+body.tab-settings .mid{grid-template-columns:1fr}
+body.tab-settings .mid .col{display:none}
+.ac-wrap{display:flex;flex-direction:column;gap:16px;width:100%;
+ max-width:980px;margin:0 auto;padding:4px 2px 28px}
+.ac-hd h2{margin:4px 0 0}
+.ac-body{display:grid;grid-template-columns:228px 1fr;gap:18px;align-items:start}
+/* 228 and not the 240 the precedent uses, because this product's own left rail
+   is 302 and an index near that width reads as the instrument rail returning. */
+.ac-ix{display:flex;flex-direction:column;gap:2px;position:sticky;top:0}
+.ac-ixb{display:flex;align-items:center;gap:10px;width:100%;min-height:var(--tap);
+ padding:10px 12px;background:transparent;border:1px solid transparent;
+ border-radius:var(--r-s);color:var(--mid);font-family:var(--sans);font-size:14px;
+ font-weight:400;text-align:left;cursor:pointer;
+ transition:background var(--t-micro) var(--ease-out),color var(--t-micro) var(--ease-out)}
+.ac-ixb:hover{background:var(--panel-2);color:var(--ink)}
+.ac-ixb.on{background:var(--panel-2);color:var(--ink);
+ border-color:color-mix(in srgb,var(--c) 40%,var(--edge))}
+.ac-ixb.on .ac-gl{color:var(--c)}
+.ac-gl{width:20px;height:20px;flex:0 0 auto;display:grid;place-items:center;color:var(--dim)}
+.ac-gl svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.5;
+ stroke-linecap:round;stroke-linejoin:round}
+.ac-pane{min-width:0;display:flex;flex-direction:column;gap:14px}
+.ac-ph{font-size:20px;font-weight:400;color:var(--ink);letter-spacing:.005em;
+ padding-bottom:10px;border-bottom:1px solid var(--edge)}
+body.punch .ac-ph{border-bottom-color:var(--panel-2)}
+.ac-lead{margin:0;font-size:14.5px;line-height:1.7;color:var(--ink);
+ padding:13px 15px;border-radius:var(--r-s);background:var(--panel-2);
+ border-left:3px solid var(--c)}
+.ac-grp{border:1px solid var(--edge);border-radius:var(--r-s);background:var(--panel);
+ overflow:hidden}
+body.punch .ac-grp{border-color:transparent;background:var(--panel-2)}
+.ac-gh{padding:11px 15px 10px;font-size:12px;font-weight:600;color:var(--dim);
+ letter-spacing:.06em;border-bottom:1px solid var(--edge)}
+body.punch .ac-gh{border-bottom-color:transparent}
+/* A ROW IS 56 AND NOT 44. Forty four is the floor a finger needs, not a target
+   for a full width list row, and the rows this replaced measured 35. */
+.ac-row{display:flex;align-items:center;justify-content:space-between;gap:14px;
+ min-height:56px;padding:9px 15px;border-bottom:1px solid var(--edge)}
+.ac-row:last-child{border-bottom:0}
+body.punch .ac-row{border-bottom-color:var(--panel)}
+.ac-rl{font-size:14px;color:var(--ink);font-weight:400;min-width:0}
+.ac-rl em{display:block;font-style:normal;font-size:12.5px;color:var(--dim);margin-top:3px}
+.ac-rv{font-size:13.5px;color:var(--mid);text-align:right;min-width:0}
+.ac-rv.num{font-family:var(--num);font-variant-numeric:tabular-nums;color:var(--ink)}
+/* A STUB IS NOT A DISABLED CONTROL. Full opacity, never dimmed, because dim
+   reads as "you may not" and the truth is "not yet". It takes no press. */
+.ac-stub{cursor:default}
+.ac-stub .ac-rv{color:var(--dim);font-style:normal}
+.ac-act{gap:12px}
+.ac-edit input{background:var(--sunk);border:1px solid var(--edge);color:var(--ink);
+ border-radius:var(--r-xs);padding:9px 11px;font-family:var(--sans);font-size:14px;
+ min-height:var(--tap);max-width:260px}
+.ac-edit input:focus{border-color:var(--accent)}
+.ac-sw{width:46px;min-width:46px;height:var(--tap);flex:0 0 auto;background:transparent;
+ border:0;cursor:pointer;display:grid;place-items:center;padding:0}
+.ac-sw::before{content:'';position:absolute;width:0;height:0}
+.ac-sw i{display:block;width:42px;height:24px;border-radius:12px;background:var(--sunk);
+ border:1px solid var(--edge-2);position:relative;
+ transition:background var(--t-element) var(--ease-out),border-color var(--t-element) var(--ease-out)}
+.ac-sw i::after{content:'';position:absolute;top:2px;left:2px;width:18px;height:18px;
+ border-radius:50%;background:var(--dim);
+ transition:transform var(--t-element) var(--ease-land),background var(--t-element) var(--ease-out)}
+.ac-sw.on i{background:color-mix(in srgb,var(--accent) 34%,var(--sunk));border-color:var(--accent)}
+.ac-sw.on i::after{transform:translateX(18px);background:var(--accent)}
+.ac-gf{padding:11px 15px 13px;font-size:12.5px;line-height:1.65;color:var(--dim);
+ background:var(--sunk);border-top:1px solid var(--edge)}
+body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
+/* DESTRUCTIVE IS A DECISION, NOT AN ALARM. Deleting on purpose is not
+   something being wrong, so it does not wear the alarm colour. */
+.btn.dgr{color:var(--bad);border-color:color-mix(in srgb,var(--bad) 52%,var(--edge))}
+.btn.dgr:hover{background:color-mix(in srgb,var(--bad) 14%,transparent);color:var(--bad)}
+.ac-seg{margin:11px 15px 13px}
+.ac-grp .dens-list{margin:11px 15px 13px}
+@media (max-width:1000px){
+ .ac-body{grid-template-columns:1fr}
+ .ac-ix{position:static;flex-direction:row;flex-wrap:wrap;gap:4px}
+ .ac-ixb{width:auto;flex:1 1 140px}}
+
+/* ---------- composing something to send ---------- */
+.ob-qs{margin:14px 0 4px;display:flex;flex-direction:column;gap:13px}
+.ob-lens{font-size:12px;font-weight:600;color:var(--dim);letter-spacing:.06em;
+ margin-top:6px;padding-top:11px;border-top:1px solid var(--edge)}
+.ob-qs .ob-lens:first-child{margin-top:0;padding-top:0;border-top:0}
+.ob-qt{font-size:14px;line-height:1.5;color:var(--ink);margin-bottom:7px;font-weight:300}
+.ob-as{display:flex;gap:5px;flex-wrap:wrap}
+.ob-a{min-height:var(--tap);padding:8px 13px;border-radius:var(--r-xs);
+ border:1px solid var(--edge);background:var(--sunk);color:var(--mid);
+ font-family:var(--sans);font-size:13px;cursor:pointer;
+ transition:background var(--t-micro) var(--ease-out),color var(--t-micro) var(--ease-out)}
+.ob-a:hover{background:var(--panel);color:var(--ink)}
+.ob-a.on{background:var(--accent);border-color:var(--accent);color:var(--on-accent);font-weight:500}
+.ob-f{margin:16px 0 4px}
+.ob-f label{display:block;font-size:12px;font-weight:600;color:var(--dim);
+ letter-spacing:.06em;margin-bottom:6px}
+/* SAID BEFORE THEY TYPE. Always these words, and never below the field. */
+.ob-warn{margin:0 0 8px;font-size:12.5px;color:var(--sacral);line-height:1.5}
+.ob-f textarea{width:100%;background:var(--sunk);border:1px solid var(--edge);
+ color:var(--ink);border-radius:var(--r-xs);padding:11px 12px;font-family:var(--sans);
+ font-size:14px;line-height:1.6;resize:vertical;min-height:110px}
+.ob-f textarea:focus{border-color:var(--accent);outline:none}
+
 </style></head>

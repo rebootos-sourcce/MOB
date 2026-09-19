@@ -1783,5 +1783,78 @@ console.log('\n27 · the ladder');
   ok(L.earned.some(m=>m.k==='week'),'seven days running earns the week mark');}
 }
 
+console.log('\n28 · the outbox, and what may never leave the device');
+{
+ /* A STORE THAT IS NOT THE REAL ONE. The engine is host free and binds its
+    storage, so the outbox is testable headless without a browser. */
+ let mem={};
+ E.bindStore(k=>mem[k]===undefined?null:mem[k], (k,v)=>{mem[k]=String(v);});
+ mem[E.OBKEY]='[]';
+
+ /* THE ALLOW LIST IS THE SPEC. This is the gate the architect asked for and it
+    exists to catch one specific failure: somebody six months from now adding a
+    field that is obviously useful and obviously fine. */
+ ok(E.OB_KEYS.length===8,'the envelope carries eight keys and no more');
+ const e=()=>({kind:'question',at:'2026-09-19',body:'the compass text overlaps',
+  answers:{},band:'median',build:'abc1234',platform:'desktop',viewport:'wide'});
+ ok(E.obValidate(e()).ok,'a well formed envelope passes the boundary');
+
+ /* REFUSED BY NAME, never stripped in silence, because a silently cut field
+    reads back to the person as something they never wrote. */
+ E.OB_NEVER.slice(0,8).forEach(k=>{
+  const bad=e(); bad[k]='anything';
+  const v=E.obValidate(bad);
+  ok(!v.ok&&v.errs.join().indexOf(k)>=0,
+   'the envelope refuses '+k+' by name');});
+
+ {const bad=e(); bad.body='write to lance@example.com';
+  const v=E.obValidate(bad);
+  ok(!v.ok,'a mail shaped string in the body is refused');
+  ok(/identifies you/.test(v.errs.join()),'and the refusal says why');
+  ok(bad.body==='write to lance@example.com','and the body is not edited');}
+ {const bad=e(); bad.body='call 555 867 5309 about it';
+  ok(!E.obValidate(bad).ok,'a long run of digits in the body is refused');}
+ {const bad=e(); bad.kind='newsletter';
+  ok(!E.obValidate(bad).ok,'a kind that is not one of the four is refused');}
+ {const bad=e(); bad.body='x'.repeat(E.OB_LIMIT.question+1);
+  const v=E.obValidate(bad);
+  ok(!v.ok&&/limit is/.test(v.errs.join()),
+   'over the ceiling is refused with the number, and never truncated');}
+
+ /* THE BAND IS BUCKETED. A feedback row is worthless without knowing where on
+    the curve it came from, and a fine grained band beside a platform and a
+    theme is a cell of one in a panel of thirty. Three buckets keep the
+    analysis and kill the cell. The raw reading never travels. */
+ ok(E.obBand({unread:true})==='unread','an unread profile says unread, not a number');
+ ok(E.obBand({CQ:41})==='low'&&E.obBand({CQ:62})==='median'&&E.obBand({CQ:88})==='high',
+  'the band is one of three buckets');
+ ok(typeof E.obBand({CQ:88})==='string','and never the reading itself');
+
+ /* OVER THE CAP IS REFUSED, NOT EVICTED. A queue that quietly discards a
+    person's words has lost them, which is what this file exists to prevent. */
+ mem[E.OBKEY]='[]';
+ let n=0;
+ for(let i=0;i<E.OB_MAX;i++){ if(E.obQueue(e()).ok) n++; }
+ ok(n===E.OB_MAX,'the outbox takes '+E.OB_MAX+' entries');
+ const over=E.obQueue(e());
+ ok(!over.ok&&/not taken/.test(over.why),'and refuses the next one rather than evicting');
+ ok(E.obCount()===E.OB_MAX,'and nothing already queued was thrown away');
+
+ /* NEVER SENT OFF A LOCAL ENQUEUE. */
+ E.bindSend(null);
+ ok(E.obDrain().state==='nohost','with no host bound the drain says nohost');
+ ok(E.obCount()===E.OB_MAX,'and nothing was lost');
+ E.bindSend(()=>true);
+ const d=E.obDrain();
+ ok(d.state==='sent'&&d.n===E.OB_MAX,'with a host that accepts, everything goes');
+ ok(E.obCount()===0,'and the queue empties');
+ E.bindSend(()=>false);
+ E.obQueue(e());
+ const f=E.obDrain();
+ ok(f.state==='retry'&&f.n===1,'a host that refuses leaves the entry in the queue');
+ ok(E.obCount()===1,'so nothing a person wrote is ever dropped on a failed send');
+ E.bindSend(null);
+}
+
 console.log('\n===== '+P+' passed, '+F+' failed =====');
 process.exit(F?1:0);

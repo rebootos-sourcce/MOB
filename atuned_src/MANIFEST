@@ -28,6 +28,7 @@ engine/numerology.js
 engine/seed.js
 engine/read.js
 engine/ladder.js
+engine/outbox.js
 engine/export.js
 ui/component.js
 ui/wheel.js
@@ -46,6 +47,7 @@ ui/knowledge.js
 ui/record.js
 ui/games.js
 ui/panels.js
+ui/account.js
 ui/personas.js
 ui/ui.js
 shell/foot.html

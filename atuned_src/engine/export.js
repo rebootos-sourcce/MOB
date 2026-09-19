@@ -102,6 +102,12 @@ if(typeof module!=='undefined'&&module.exports){
                   NUM_LET:NUM_LET, NUM_MASTER:NUM_MASTER, NUM_DEBT:NUM_DEBT,
                   NUM_CORE:NUM_CORE, NUM_DEBT_SAYS:NUM_DEBT_SAYS,
                   FULLNAME:FULLNAME, BIRTH:BIRTH,
+  /* outbox */    obQueue:obQueue, obValidate:obValidate, obDrain:obDrain,
+                  obCount:obCount, obStore:obStore, obBand:obBand,
+                  bindSend:bindSend, OBKEY:OBKEY, OB_MAX:OB_MAX,
+                  OB_KEYS:OB_KEYS, OB_NEVER:OB_NEVER, OB_LIMIT:OB_LIMIT,
+                  OB_KINDS:OB_KINDS,
+  /* storage */   bindStore:bindStore,
   /* util */      clamp:clamp, leaves:(typeof leaves==='function'?leaves:null)
  };
 }

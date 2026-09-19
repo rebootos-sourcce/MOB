@@ -5,7 +5,13 @@ const {chromium}=require('playwright');
 const path=require('path'), fs=require('fs');
 const OUT=process.argv[2]||'shots';
 const W=+(process.argv[3]||1600), H=+(process.argv[4]||1000);
-const TABS=[['story',0],['summary',1],['field',2],['energy',3],['analytics',4]];
+/* THE LIST WAS FIVE AND THE PRODUCT HAS TEN SURFACES. Settings is integer 9
+   and is not in TABDEF, so it was never shot, which made the account area the
+   one surface whose first reviewer was the owner. Intake, knowledge, compass
+   and settings are added; the integers are identity and are never renumbered,
+   so they are written out rather than derived from a position. */
+const TABS=[['story',0],['summary',1],['field',2],['energy',3],['analytics',4],
+ ['intake',5],['knowledge',6],['compass',8],['settings',9]];
 (async()=>{
  fs.mkdirSync(OUT,{recursive:true});
  const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});

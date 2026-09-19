@@ -26,6 +26,11 @@ function blankProfile(name){
      open invites somebody to fiddle with the one input that cannot be wrong. */
   who:{first:'', middle:'', last:'', sex:'', sealed:'',
    born:{date:'', time:'', place:'', timeUnknown:false}},
+  /* PER PROFILE INTERFACE PREFERENCES. quiet is the reduced motion switch the
+     phone spec asked for and nothing had built; model is the consent to let a
+     story with nothing identifying attached refine the reading, and it is off
+     until a person turns it on, because it is a use of their own words. */
+  ui:{quiet:false, model:false},
   /* what the person said their type is, and what it wrote. null until stated. */
   seed:null,
   /* THE METER. One pattern is one release line delivered: one channel over
@@ -250,6 +255,11 @@ function validateProfile(o){
    ['date','time','place'].forEach(function(k){
     if(typeof o.who.born[k]==='string')p.who.born[k]=o.who.born[k].slice(0,200);});
    p.who.born.timeUnknown=!!o.who.born.timeUnknown;}}
+ /* ui preferences. booleans only, and an older profile without them is filled
+    from the blank rather than refused. */
+ if(o.ui&&typeof o.ui==='object'){
+  ['quiet','model'].forEach(function(k){
+   if(o.ui[k]!==undefined)p.ui[k]=!!o.ui[k];});}
  /* the seed is a stated type, so it is one of sixteen or it is nothing. */
  if(o.seed&&typeof o.seed==='object'){
   if(!seedValid(o.seed.type))errs.push('seed type '+o.seed.type+' is not one of the sixteen');
