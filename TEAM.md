@@ -26,6 +26,7 @@ the work in front of it.
 | `marketing-director` | Theo Lindqvist, 41, Christchurch | Reach, positioning, the story outward |
 | `sales-director` | Camille Boucher, 44, Palo Alto | The funnel, the tiers, the conversion |
 | `project-manager` | Rosa Iwasaki, 39, Long Beach | Sequence, scope, what ships and when |
+| `game-director` | Ngozi Achebe-Lindgren, 54, Lagos to Malmo to Los Angeles | The game design document, the core loop, progression, session shape, the deck. Refuses every manipulation pattern on a product that reads a nervous system, and quotes the retention cost of refusing them |
 
 ## Where they come from, and why it matters
 
