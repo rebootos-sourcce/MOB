@@ -96,7 +96,21 @@ function stRelPanel(){
   var n=BY[im.node]; if(n&&found.indexOf(n)<0)found.push(n);});
  var pool=(ST_RELSRC==='story'&&found.length)?found:live;
  var take=pool.slice(0,ST_RELN);
- var secs=Math.round(take.length*RUN_SPEED_S[ST_RELSPD]*4);
+ /* WHAT THE RUN ACTUALLY COSTS, asked of the meter rather than guessed from
+    the number of addresses. The panel used to print take.length followed by
+    the word patterns, and take.length is how many ADDRESSES were picked. One
+    pattern is one thought line, ruled, so a person choosing three was told
+    three and the run spent up to twenty five from their allowance. On the free
+    tier that is a fortnight's grant against a quote of three.
+
+    meterPlan is the same call the run itself makes, with the same cap, so this
+    is the price and not an estimate of it. CHAN lives in release.js, which
+    loads after this module, and that is fine because this runs at render. */
+ var relIds=take.map(function(n){return n.i;});
+ var relCh=(typeof CHAN!=='undefined')?CHAN.map(function(c){return c[0]+c[2];}):[];
+ var cost=(CURP&&relIds.length&&relCh.length)
+   ? meterPlan(CURP,relIds,relCh,RUN_MAX).length : 0;
+ var secs=Math.round(cost*RUN_SPEED_S[ST_RELSPD]);
  e.innerHTML='<div class="pm-eye">Release</div>'
   +'<p class="st-relp">'+(pool.length
     ? 'Pick how much to run. Each pattern is one thought line at one address.'
@@ -105,7 +119,9 @@ function stRelPanel(){
    +'<button type="button" class="st-rb'+(ST_RELSRC==='heavy'?' on':'')+'" data-rsrc="heavy">Heaviest</button>'
    +'<button type="button" class="st-rb'+(ST_RELSRC==='story'?' on':'')+'" data-rsrc="story">'
    +'This story'+(found.length?' '+found.length:'')+'</button></div>'
-  +'<div class="st-rrow"><span class="st-rlab">Patterns</span>'
+  /* ADDRESSES, because that is what these numbers pick. It said Patterns, and
+     a pattern is a thought line, so the label named the wrong unit entirely. */
+  +'<div class="st-rrow"><span class="st-rlab">Addresses</span>'
    +[1,3,5,8].map(function(n){
      return '<button type="button" class="st-rb'+(ST_RELN===n?' on':'')+'" data-rn="'+n+'">'
       +n+'</button>';}).join('')+'</div>'
@@ -117,8 +133,10 @@ function stRelPanel(){
      return '<div class="st-rit">'+crbNode(n,'xs')+'<span>'+esc(n.k)+'</span>'
       +'<em>'+esc(n.b)+'</em></div>';}).join('')
     :'<div class="rnone">Nothing to run.</div>')+'</div>'
-  +'<div class="st-rfoot"><span>'+(take.length?take.length+' patterns, about '
-    +secs+' seconds':'')+'</span>'
+  +'<div class="st-rfoot"><span>'+(take.length
+    ? take.length+(take.length===1?' address, ':' addresses, ')
+      +cost+(cost===1?' pattern, about ':' patterns, about ')+secs+' seconds'
+    : '')+'</span>'
    +'<button class="btn pri" id="strun"'+(take.length?'':' disabled')+'>Run a release</button></div>';
  e.querySelectorAll('[data-rsrc]').forEach(function(b){b.onclick=function(){
   ST_RELSRC=b.getAttribute('data-rsrc'); stRelPanel();};});
