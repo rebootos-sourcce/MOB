@@ -170,6 +170,7 @@ function statusSaved(){
    transform, so hit testing needs no inverse: every HIT region is built from
    the same CX, CY and U the draw used. */
 var BASE_U=1;
+const AURA_DIV=8;
 function reframe(){
  /* HOW BIG THE WHEEL IS ALLOWED TO BE.
 
@@ -229,7 +230,24 @@ function reframe(){
 function layout(){const b=cv.getBoundingClientRect();
  DPR=Math.min(devicePixelRatio||1,2);cv.width=b.width*DPR;cv.height=b.height*DPR;
  CW=b.width;CH=b.height;reframe();
- g.setTransform(DPR,0,0,DPR,0,0);bg.width=innerWidth;bg.height=innerHeight;
+ g.setTransform(DPR,0,0,DPR,0,0);
+ /* THE AURA IS PAINTED SMALL AND SCALED UP, AND THE CSS BLUR IS GONE.
+
+    The wash was a full viewport canvas inset by 25 percent on both axes, so
+    2400 by 1500 at this size, carrying a 120px CSS blur and recompositing
+    whenever its content changed. Measured on the Field with a loaded
+    profile: 7.7 frames a second, against 59.5 with that one element hidden.
+    Eighty seven percent of the frame budget was going into blurring four
+    radial gradients that are already soft. Dropping the radius did not save
+    it either: 40px at a smaller inset still only reached 15.2.
+
+    So it is painted at an eighth scale and stretched back up. The browser's
+    bilinear upscale is the blur, it is free, and eight times is far past the
+    point where a gradient shows a step. The backing store goes from about
+    3.6 million pixels to 56 thousand, which is 64 times less to paint and
+    nothing at all to filter. */
+ bg.width=Math.max(2,Math.ceil(innerWidth/AURA_DIV));
+ bg.height=Math.max(2,Math.ceil(innerHeight/AURA_DIV));
  /* assigning width clears the canvas, so the cached wash is gone even when
     the size is unchanged. drop its signature or the next frame skips the
     repaint and the wash stays blank. */

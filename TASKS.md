@@ -400,3 +400,124 @@ particular: the compass overhaul, the story imprints fifth menu, onboarding
 and the tutorial, badges and achievements, screen zone logic, intake clarity,
 glass crispness, tooltips on every number, and the ICP simulations with the
 pricing questions.
+
+---
+
+# The team's four reviews, and what came out of them
+
+Art direction, motion and VFX, UX structure and innovation, run in parallel
+against the same captured evidence. Every finding below carries a measurement
+taken off the live page. Full reports are in the session record.
+
+## Built this round
+
+- **The aura blur was eating 87 percent of the frame budget.** Measured 7.7
+  fps on the Field with a loaded profile, 59.5 with that one element hidden.
+  A 120px CSS blur over a 2400 by 1500 canvas, blurring four radial gradients
+  that are already soft. Dropping the radius did not save it either: 40px at a
+  smaller inset still only reached 15.2. Painted at an eighth scale and
+  stretched instead, so the browser's bilinear upscale is the blur and it is
+  free. **60.2 fps.**
+- **The chords carry weight.** 163 of them were stroked at four constant
+  widths by tier while the engine had already computed a real spread, 3.73 to
+  6.00 across 34 saboteurs, and discarded it at the draw call. Heaviest chord
+  is now about four times the lightest.
+- **The chords carry tension, and the first definition was wrong.** I took
+  tension as held minus installed and shipped it before measuring. Three
+  distinct values across 120 chords: a reading with no variance. Susceptibility
+  discriminates, 16 distinct values on the same set, and it is the Domain
+  Matrix, which this instrument has computed since the first commit and never
+  drawn. A taut chord is one the person is susceptible at.
+- **`--dim` carried 104 of 105 contrast failures.** One token, measured at
+  3.70 to 1, now 5.11. It marks the entire second tier of the information
+  architecture, and six of the thirteen reference people are 57 or older.
+- **Snow was broken and I broke it.** The `#101010` ruling named field, body
+  and compass; I applied it to `.stage`, which also hosts every text surface,
+  so Snow rendered a black box in a white app. 174 of 360 text runs failed,
+  the reading paragraph at 2.22 to 1. Scoped to the three ruled surfaces:
+  now 7.99.
+- **The surface ramp was narrower than a printing tolerance.** `--bg` to
+  `--panel` measured 1.08 to 1. Four declared levels of surface inside a sixth
+  of a stop, which is why the page squints to three grey slabs. Now 1.15 and
+  1.32.
+
+## Open, with the spec attached
+
+**The travelling charge on each chord.** One charge per chord moving inward,
+address to saboteur to complex to hyper, period set by weight because heavy
+things are slow. Turns the diagram into a circuit and teaches the compounding
+direction without a word. 1.60s to 4.20s by weight, sine alpha envelope,
+deterministic phase off the node id. Measured cost: about +1.2ms, taking the
+frame to 14 percent of budget.
+
+**Zoom is a hard cut, and every reveal layer opens after the ring has left
+the frame.** Measured: the shell is fully on screen only to zoom 2.08, and the
+glyph layer starts at 2.60, names at 3.90, atoms at 4.40. Every symbol the
+owner asked to see is being drawn where he cannot see them. Two moves: ease
+`S.zoom` over 260ms, which makes all five reveal ramps dissolve instead of
+snap for free, and pull the thresholds down to 1.55, 2.05 and 2.60. The
+threshold move changes what a depth means and is the owner's call.
+
+**The Body has no pulse.** 144 SVG nodes, zero animated. Bloom radius and
+alpha pulsing at a rate set by charge, asymmetric so it is a pulse and not a
+throb, phase offset per marker so the body shimmers rather than flashing.
+Compositor only, under 0.3ms.
+
+**The house curve is on zero live elements.** 382 of 384 animated elements use
+the browser default `ease`; the product's own `cubic-bezier(.22,1,.36,1)` is
+in the stylesheet and on nothing. 323 elements transition `all`. Three easing
+tokens and four duration tokens, then replace the `all`.
+
+**`n.disp` is frame rate bound.** 0.14 per frame settles in 331ms at 60Hz and
+165ms at 120Hz: the same instrument reads charge as moving at two different
+speeds on two machines. Critically damped spring against real dt, plus a 90ms
+stagger by tier so the chain reads as caused rather than simultaneous.
+
+**The readings change in zero frames.** CQ goes 15 to 22 with no mark of any
+kind. Count the number over 420ms when the delta is 2 or more, and let the
+tile acknowledge with the seat colour of the direction of travel. Never the
+alarm colour.
+
+**The Summary structure**, as an ordered outline: the plate with the first
+name at display size and the band and `TIERDEF.toward` beside it; four top
+line readings on one scale each; the blueprint in one sentence; the spiritual
+layer; what is running as one block rather than four; moral integrity, which
+the owner asked for by name and which needs no new arithmetic; the output row
+of protocol, release and next marker, which is the block the page has none of;
+and what the instrument does not know. Analytics comes off Summary entirely
+and becomes its own tool. Measured today: 115 interactive elements, 3990px
+tall, the person's name first appearing 1.9 screens down inside a numerology
+sentence, and 46 percent of the page a second rendering of its own top.
+
+**Eighteen tools the engine computes and no surface draws**, ranked. The top
+eight: the direction out of the band, moral integrity, the protocol this state
+calls for, governance, the marker ladder, what is under the line, purpose and
+the boundary, and the six gates. `pathOf`, `markersFor`, `boundaryCross`,
+`equivOf`, `verpShare`, `r.steer` and `CASCADE` have zero callers anywhere in
+the UI. That is the honest answer to "we are missing tools and I do not know
+what."
+
+**The pain map, paint to select.** `NERVEBR` is 72 traced polylines, about
+1500 points, in the figure's own coordinate space, each tagged with its seat,
+currently used only to draw strokes. It is the hit geometry, already in the
+file, and it resolves what the region buttons cannot: `PAINREG` has no x, so
+arms and torso at the same height are indistinguishable. Capture, locate,
+answer, release, and `relPick` already exists. The discipline: the stroke
+selects addresses and never writes charge.
+
+**27 named things have no icon.** All 21 laws and all 6 masks. The laws are
+the numerator of CQ and render as bare radial spokes. This is why zooming in
+resolves into geometry rather than into language, and it is a standing Bible
+violation.
+
+**Eight defects filed regardless of any redesign**, including two direct self
+contradictions on the Summary: "leans benign at 82 percent, which means it is
+contracting" takes the word from one reading and the verb from another, and
+"installed pole is past the point where it pays" prints beside installed 0.0.
+The pole ring is labelled 0 to 1 and reads 2.26. `sq>=4` gates "held" while
+the saboteur gate is 3, so "nothing is held" prints beside ten named
+saboteurs.
+
+**The Field is too small.** The drawn disc is 26 percent of its own canvas and
+16 percent of its column. An art direction call, and it caps what motion can
+deliver.

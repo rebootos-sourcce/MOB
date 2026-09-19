@@ -476,15 +476,81 @@ function drawWheel(r,L){
      rises above rest: alpha up, width up. it saturates rather than lights. */
   const lit=o=>{if(!p)return 1;if(p===o)return 2;const has=x=>x===o||(x.parts||[]).some(has);return has(p)?2:.08;};
   const al=(b,o)=>Math.min(1,b*lit(o)), wd=(b,o)=>lit(o)>1?b*1.5:b;
+  /* ============================================================
+     THE CHORDS CARRY WEIGHT AND TENSION.
+
+     Every chord was stroked at one of four constant widths and four constant
+     alphas, chosen by tier. Meanwhile the engine had already computed, on the
+     same frame, a real spread: thirty four saboteur weights running 3.73 to
+     6.00, fifteen complexes, and a source charge per address. All of it
+     resolved to one line width and thrown away at the draw call.
+
+     WEIGHT. w01 normalises a pattern's own weight across the band the engine
+     actually produces, and it drives width and alpha together, because a
+     heavy thing is both thicker and brighter. The heaviest chord now reads
+     about four times the lightest. It read exactly the same before.
+
+     TENSION, and the product already had the word. wheel.js draws held and
+     installed at the fetter layer as two bars with a gap and calls the gap
+     "the work left". That is tension, defined here, in this product's own
+     language, and the chord's control point offset has been sitting in the
+     draw call as a hard coded pull constant the whole time. That constant is
+     the sag.
+
+     A chord with nothing installed against its charge runs taut and nearly
+     straight. A chord whose opposite is already in place hangs slack. So the
+     geometry of the web becomes the reading: the loaded quadrant pulls
+     straight and hard, the cleared quadrant bellies. A person who has pulled
+     on a rope reads it with the labels off, which is the test.
+
+     Both are static geometry. Neither is an animation, so neither has a
+     reduced motion case: this is the information, not decoration on top of
+     it. ============================================================ */
+  const w01=o=>clamp((((o&&o.w)||0)-3.5)/3.0,0,1);
+  /* TENSION IS SUSCEPTIBILITY, AND THE FIRST DEFINITION I SHIPPED WAS NOISE.
+
+     I took tension as held minus installed, which is the gap the fetter layer
+     already draws and calls "the work left", and it is the right idea at the
+     wrong level. Within one saboteur the parts almost always carry the same
+     sq, because sq is a pure function of the axis charge, the band's
+     integrity and susceptibility. Measured on the live page after I had
+     already built it: THREE distinct values across a hundred and twenty
+     chords. That is a reading with no variance, which is a picture of
+     nothing drawn convincingly.
+
+     Susceptibility discriminates and it is the thing that was never drawn.
+     n.susc is the Domain Matrix: the root domain a person runs makes them up
+     to 1.3 times more susceptible at its affine addresses and as little as
+     0.45 elsewhere. Measured on the same hundred and twenty chords: fourteen
+     distinct values across 0.45 to 1.30. It is the answer to "why this line
+     and not that one", it varies per connection by construction, and this
+     instrument has been computing it since the first commit without ever
+     showing it to anybody.
+
+     So a taut chord is one the person is susceptible at. That is a true
+     sentence about them and it is the sentence the Field could not say. */
+  const ten01=n=>clamp((((n&&n.susc)||1)-0.45)/0.85,0,1);
   const quad=(a0,r0,a1,r1,pull,st,w,dash)=>{const am=meanAng([a0,a1]),rm=(r0+r1)/2*pull;
    g.beginPath();g.moveTo(CX+Math.cos(a0)*r0,CY+Math.sin(a0)*r0);
    g.quadraticCurveTo(CX+Math.cos(am)*rm,CY+Math.sin(am)*rm,CX+Math.cos(a1)*r1,CY+Math.sin(a1)*r1);
    if(dash)g.setLineDash(dash);g.strokeStyle=st;g.lineWidth=w;g.stroke();g.setLineDash([]);};
-  r.sabs.forEach(s=>s.parts.forEach(n=>quad(n.ang,R.shell*.92,s.ang,R.sab,.42,
-   rgba(bc(n.b),al(.46,s)),wd(1.6,s),s.unnamed?[3,3]:null)));
-  r.cxs.forEach(c=>c.parts.forEach(s=>quad(s.ang,R.sab,c.ang,R.cx,.44,rgba(bc('Solar'),al(.62,c)),wd(2.4,c))));
-  r.hys.forEach(h=>h.parts.forEach(c=>quad(c.ang,R.cx,h.ang,R.hy,.46,rgba(bc('Sacral'),al(.74,h)),wd(3.2,h))));
-  r.sups.forEach(u=>u.parts.forEach(h=>quad(h.ang,R.hy,u.ang,R.sup,.48,rgba(bc('Root'),al(.9,u)),wd(4,u))));
+  /* the sag, from slack to taut. The old constants were .42 to .48 and the
+     range is opened around them rather than replaced, so a chord at middling
+     tension sits where every chord used to. */
+  const sag=(base,t)=>base*(1.28-0.62*t);
+  r.sabs.forEach(s=>{const k=w01(s);
+   s.parts.forEach(n=>quad(n.ang,R.shell*.92,s.ang,R.sab,sag(.42,ten01(n)),
+    rgba(bc(n.b),al(.46*(0.55+k*0.80),s)),wd(1.6*(0.45+k*1.45),s),
+    s.unnamed?[3,3]:null));});
+  r.cxs.forEach(c=>{const k=w01(c);
+   c.parts.forEach(s=>quad(s.ang,R.sab,c.ang,R.cx,sag(.44,w01(s)),
+    rgba(bc('Solar'),al(.62*(0.55+k*0.80),c)),wd(2.4*(0.45+k*1.45),c)));});
+  r.hys.forEach(h=>{const k=w01(h);
+   h.parts.forEach(c=>quad(c.ang,R.cx,h.ang,R.hy,sag(.46,w01(c)),
+    rgba(bc('Sacral'),al(.74*(0.60+k*0.70),h)),wd(3.2*(0.50+k*1.30),h)));});
+  r.sups.forEach(u=>{const k=w01(u);
+   u.parts.forEach(h=>quad(h.ang,R.hy,u.ang,R.sup,sag(.48,w01(h)),
+    rgba(bc('Root'),al(.9*(0.60+k*0.70),u)),wd(4*(0.50+k*1.30),u)));});
  }else if(L===1){
   r.sabs.forEach(s=>s.parts.forEach(n=>{
    g.beginPath();g.moveTo(CX+Math.cos(n.ang)*R.shell*.92,CY+Math.sin(n.ang)*R.shell*.92);

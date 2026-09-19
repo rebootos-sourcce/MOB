@@ -48,9 +48,30 @@ font-display:swap;src:url(data:font/woff2;base64,d09GMgABAAAAALyAABUAAAAB4CAAALw
    on the chosen item spends legibility where it is not needed. Selection
    is a ring. The icon carries the colour and keeps its inner spacing.
    ============================================================ */:root{
- --bg:#12131A; --panel:#191B23; --panel-2:#1E202A; --sunk:#101119;
+ /* THE SURFACE RAMP WAS NARROWER THAN A PRINTING TOLERANCE.
+
+    Measured: --bg to --panel was 1.08 to 1 and --bg to --panel-2 was 1.14.
+    Four declared levels of surface spanning a sixth of a stop, which is why
+    the page squints down to three vertical grey slabs and the eye lands on
+    nothing first. The architecture of every screen rested on a distinction
+    that was not visible.
+
+    The ground goes down and the raised surfaces go up, so the range opens
+    from both ends rather than lightening the product. Muted is a saturation
+    ruling and not a contrast one, and this changes no hue. */
+ --bg:#0C0D12; --panel:#1A1D26; --panel-2:#252833; --sunk:#090A0E;
  --edge:rgba(255,255,255,.09); --edge-2:rgba(255,255,255,.14);
- --ink:#EFEDE8; --mid:#B4B0A8; --dim:#7C7872;
+ /* --dim WAS BELOW AA EVERYWHERE IT APPEARED, and it is the only token
+    marking the second tier of the information architecture: every eyebrow,
+    every key label, every explanatory subline. Measured at 3.70 to 1 on
+    --panel-2 and 3.92 on --panel, and it carried 104 of the 105 contrast
+    failures on the Summary in Dark. One value, 104 defects.
+
+    It also matters more than the ratio suggests. Six of the thirteen people
+    in the reference sample are 57 or older, and contrast sensitivity falls
+    materially past 55. At 3.70 that half of the sample loses the whole layer
+    that tells them what they are looking at. */
+ --ink:#EFEDE8; --mid:#B4B0A8; --dim:#94908A;
  --root:#C4635E; --sacral:#D19255; --solar:#D4BC70;
  --heart:#6FC5A3; --throat:#65B8D4; --eye:#8296DB; --crown:#A98BCE;
  --alarm:#FF2E1F; --alarm-soft:rgba(255,46,31,.16);
@@ -227,7 +248,7 @@ body.glass .cr .v{background:color-mix(in srgb,var(--c) 26%,rgba(255,255,255,.08
 /* the ground is the thing being refracted, so it is allowed to be seen */
 /* and the aura is turned up, because here it is the thing being refracted
    rather than a wash nobody notices. */
-body.glass #bgaura{filter:blur(96px);opacity:1}
+body.glass #bgaura{opacity:1}
 body.glass .top,body.glass .subbar{background:rgba(255,255,255,.035)}
 /* no fill under a selected tab here either. the ruling is the ruling in every
    lighting: colour and weight, and the hairline underneath. */
@@ -273,10 +294,17 @@ body.punch textarea:focus-visible,body.punch input:focus-visible,body.punch sele
  outline:none;box-shadow:inset 4px 0 0 var(--accent)}
 body.punch .ip{border-color:transparent;background:color-mix(in srgb,var(--c) 22%,var(--panel-2))}
 body.punch .ip.ghost{border-style:solid;border-color:transparent;background:var(--sunk);opacity:.72}
+/* the root element keeps --bg under a light body, because Snow is declared
+   on body.snow while --bg is declared on :root. Visible on overscroll as a
+   dark band above a white app. */
+html:has(body.snow){background:#EDEBE6}
 body.snow{
  --bg:#EDEBE6; --panel:#F8F7F3; --panel-2:#F2F0EB; --sunk:#E6E4DE;
  --edge:rgba(20,23,28,.11); --edge-2:rgba(20,23,28,.18);
- --ink:#16171C; --mid:#4E4C48; --dim:#7A7872;
+ /* Snow's --dim measured 3.47 to 1 on its own panel, which is worse than
+    Dark's was. Same reasoning, darker direction, because this is ink on
+    paper. */
+ --ink:#16171C; --mid:#4E4C48; --dim:#605E59;
  --root:#9B4B47; --sacral:#8E6231; --solar:#7E6C29; --heart:#2A7A5C;
  --throat:#2C6F88; --eye:#4C5F9E; --crown:#6E5490;
  --alarm:#D41200; --alarm-soft:rgba(212,18,0,.12);
@@ -302,7 +330,13 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
    inert. The theme control, the tab bar and the intake did not respond to
    touch at all on a phone. Verified: elementFromPoint over the Field tab
    returned bgaura at 1024 and at 390. */
-#bgaura{position:fixed;inset:-25%;z-index:0;filter:blur(120px);pointer-events:none}
+/* no filter. The canvas is painted at an eighth scale and stretched, and the
+   upscale is the softening. Measured: 7.7 fps with the 120px blur, 59.5 with
+   the element hidden, and the blur was the whole of the difference. The inset
+   comes in too, because a wash that is already soft does not need a 25
+   percent bleed to hide its edges. */
+#bgaura{position:fixed;inset:-6%;z-index:0;pointer-events:none;
+ width:112%;height:112%;image-rendering:auto}
 .app{position:fixed;inset:0;z-index:1;display:flex;flex-direction:column;gap:10px;padding:10px}
 
 /* ---------- panels ---------- */
@@ -757,13 +791,20 @@ body.punch .s-row{border-bottom-color:transparent}
    pushes the wheel off centre by half its width. The left lane is empty and
    exists to hold the wheel in the middle of the stage, which is where the
    owner put it. */
-/* THE STAGE GROUND IS #101010, ruled, and the same on every centre surface.
+/* THE RENDER GROUND IS #101010, ruled, ON THE THREE RENDER SURFACES.
 
-   Field, Body and Compass were each sitting on the panel colour, which is
-   mixed from the heaviest seat and therefore drifts with the reading: three
-   surfaces on three slightly different grounds, none of them stated. One
-   value, stated, and the instrument sits on it. */
-.stage,#emap,#cone{background:#101010}
+   The ruling named field, body and compass. I applied it to `.stage`, which
+   is the centre container and also hosts Summary, Knowledge, Energetics and
+   Settings, so every text surface got a black rectangle. Under Snow that is
+   a black box in the middle of a white app rendering Snow's dark ink: the
+   reading paragraph measured 2.22 to 1 against its own ground, and 174 of
+   360 text runs on Summary failed. The one lighting a practitioner would
+   pick to sit beside a client in a lit room was the one that broke.
+
+   Scoped to the three surfaces that were ruled. A reading surface sits on
+   the panel, where it can be read. */
+body.tab-field .stage,body.tab-energy .stage,body.tab-compass .stage,
+#emap,#cone{background:#101010}
 .stage{--lane:128px;position:relative;display:grid;
  grid-template-columns:var(--lane) minmax(0,1fr) var(--lane);
  grid-template-rows:auto minmax(0,1fr);
