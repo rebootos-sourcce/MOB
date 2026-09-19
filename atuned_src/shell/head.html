@@ -535,7 +535,19 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
     which read as two stacked labels rather than one mark. */
  flex-direction:column;align-items:center;justify-content:center;gap:0}
 /* the name, and the line under it saying what the name is */
-.brand .bn{display:block;line-height:1}
+/* ATUNED, UPPERCASE. Ruled, and asked for twice before it was done.
+
+   The transform rather than the markup, because the same two spans are used
+   by the boot wordmark and by the header and one rule should decide both. The
+   letter spacing opens up because capitals set tighter than lowercase at the
+   same tracking and the mark reads cramped without it.
+
+   The umlaut moves with it. Its dots were placed against a lowercase u, whose
+   x height puts them just above the shoulder; over a capital U they have to
+   clear the cap line instead, and the U is wider so they sit further apart.
+   Measured against the rendered glyph rather than guessed, the same way the
+   lowercase pair was. */
+.brand .bn{display:block;line-height:1;text-transform:uppercase;letter-spacing:.11em}
 /* WHITE, two points smaller, four more pixels off the wordmark. Ruled.
 
    It went gold on the previous ruling and is white on this one. --au stays in
@@ -553,21 +565,32 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
    letter-spacing adds a gap after the LAST character too, which pushes the
    optical centre left by half that gap. The negative margin takes the trailing
    gap back off so centring is true rather than nearly true. */
-.brand .bs{display:block;font-size:9px;font-weight:500;letter-spacing:.288em;
- margin-right:-.288em;
+/* RE-TRACKED FOR THE UPPERCASE MARK. ATUNED sets 85.2px where Atuned set
+   68.9, so the .288em that matched the lowercase mark now leaves the lower
+   line sixteen pixels short and the lockup lopsided again. Nine characters
+   carry the difference at .489em. Measured, not chosen. */
+.brand .bs{display:block;font-size:9px;font-weight:500;letter-spacing:.489em;
+ margin-right:-.489em;
  color:var(--ink);line-height:1;text-transform:none;margin-top:4px}
 .brand:hover{color:color-mix(in srgb,var(--sky) 76%,var(--ink))}
 /* the umlaut, drawn. two dots, white, sitting above a plain u. */
 .brand .um{position:relative;display:inline-block}
-.brand .um::before,.brand .um::after{content:'';position:absolute;top:-.42em;
+/* and higher, because they now clear a cap line rather than an x height. */
+.brand .um::before,.brand .um::after{content:'';position:absolute;top:-.54em;
  width:.14em;height:.14em;border-radius:50%;background:var(--um)}
 /* CENTRED ON THE U, MEASURED. The pair sat at .408 of the u's box where the
    glyph's own centre is .444, because letter-spacing of .075em is added after
    the letter and pushes the box wider than the glyph. Four tenths of a pixel
    at 18px, which is why it read as dots over the gap rather than dots on the
    letter and why it needed measuring rather than looking. */
-.brand .um::before{left:.078em}
-.brand .um::after{left:.373em}
+/* PLACED AGAINST THE CAPITAL U, measured. The box is 15.38px at 18px type and
+   the tracking of .11em adds 1.98 after the letter, so the glyph itself is
+   about 13.4 and its centre sits at .436 of the box, not at .5. The dots go at
+   a quarter and three quarters of the glyph, which is where an umlaut sits on
+   a capital, and that is wider apart than the lowercase pair was because the
+   letter is wider. */
+.brand .um::before{left:.116em}
+.brand .um::after{left:.488em}
 /* back and forward sit together as one object, because they are one control
    with two directions and a gap between them reads as two unrelated buttons */
 .histpair{display:flex;gap:2px;align-items:center;flex:0 0 auto}
@@ -2614,5 +2637,14 @@ body.booted{--boot-done:1}
  text-align:center}
 .nojs h1{margin:0;font-size:22px;font-weight:500;letter-spacing:-.01em}
 .nojs p{margin:0;font-size:14.5px;line-height:1.65;color:#94908A;max-width:54ch}
+/* THE STORY ON THE SUMMARY. A word that named a behaviour is bold and carries
+   its seat's colour, the same as it did in the box while it was typed. */
+.s-told{margin-bottom:16px}
+.s-told-e{padding:12px 14px;border:1px solid var(--edge);border-radius:var(--r-s);
+ background:var(--panel-2);margin-top:8px}
+.s-told-e time{display:block;font-family:var(--sans);font-size:11px;
+ color:var(--dim);margin-bottom:5px}
+.s-told-e p{margin:0;font-size:15px;line-height:1.7;color:var(--ink);max-width:68ch}
+.s-w{color:var(--c);font-weight:600}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style></head>

@@ -94,6 +94,60 @@ function sumGlance(r){
 
    Every clause is guarded. A person with no birth data gets two paragraphs and
    a line saying what is missing, rather than a paragraph of hedges. */
+/* ============================================================
+   THE STORY, IN THE PERSON'S OWN WORDS, COLOURED BY WHERE IT LANDED.
+
+   Ruled: the centre of this page is the story, and every word that names a
+   behaviour is bold and carries the colour of the seat it belongs to.
+
+   storyui already does this while somebody types, but only for the text in
+   the box, because it reads ST_PARSED, the live parse. A committed entry is
+   just text on the record, so it has to be parsed again here. Same colour
+   rule, same seat map, so a word looks the same after it is committed as it
+   did while it was being written, which is the whole point of colouring it.
+
+   K2BAND is the map between the two, and it is the thing that was missed once
+   already: the sniffer stores a seat key like throat and seatCol wants Throat,
+   so without it every word in every seat comes out one colour.
+   ============================================================ */
+function sumWords(text){
+ if(!text)return '';
+ var pr=(typeof parseStory==='function')?parseStory(text):null;
+ if(!pr||!pr.hits||!pr.hits.length)return esc(text);
+ var band={};
+ pr.hits.forEach(function(h){ if(h.t&&h.band&&h.band!=='coherent')band[h.t]=h.band; });
+ var words=Object.keys(band).sort(function(a,b){return b.length-a.length;});
+ if(!words.length)return esc(text);
+ var rx;
+ try{ rx=new RegExp('\\b('+words.map(function(w){
+   return w.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');}).join('|')+')\\b','gi'); }
+ catch(e){ return esc(text); }
+ var out='', last=0, m;
+ while((m=rx.exec(text))!==null){
+  out+=esc(text.slice(last,m.index));
+  var k=band[m[0].toLowerCase()]||band[m[0]];
+  var bn=K2BAND[k]||k;
+  out+='<b class="s-w" style="--c:'+(bn?seatCol(bn):'var(--accent)')+'">'
+   +esc(m[0])+'</b>';
+  last=m.index+m[0].length;
+  if(rx.lastIndex===m.index)rx.lastIndex++;}
+ out+=esc(text.slice(last));
+ return out;}
+
+/* the entries a person has actually committed, newest first, capped so the
+   page stays a reading and does not become a journal. The journal is Story. */
+function sumEntries(){
+ var es=((CURP&&CURP.story&&CURP.story.entries)||[]).slice();
+ return es.reverse().slice(0,3);}
+function sumToldHtml(){
+ var es=sumEntries();
+ if(!es.length)return '';
+ return '<div class="s-told"><div class="pm-eye">What You Told It</div>'
+  +es.map(function(e){
+    var d=new Date(e.t);
+    return '<div class="s-told-e"><time>'+(isNaN(d)?'':d.toLocaleDateString())
+     +'</time><p>'+sumWords(String(e.text||''))+'</p></div>';}).join('')
+  +'</div>';}
 function sumStory(r){
  var nm2=(PEOPLE[S.who]||{}).nm||'You';
  var C=converge(nm2,r), e=C?C.e:null;
@@ -477,6 +531,11 @@ function sumFull(r){
  return sumPlate(r)
   +'<div class="s-cols">'
    +'<div class="s-main">'
+    /* THE CENTRE IS THE STORY. Ruled. Their own words first, coloured where
+       they landed, then the reading built from them. The order matters: the
+       reading is a claim about the person and the story is the evidence for
+       it, and evidence goes first. */
+    +sumToldHtml()
     +'<div class="s-readbox">'+sumStory(r)+'</div>'
     +sumOutput(r)
     +sumGlance(r)

@@ -906,8 +906,14 @@ layout(); mxKey(); wireSections(); loadP(0);
  loadProfile(CURP);
  syncCh(); syncLw(); syncSoul();
 }());
-/* THE APP OPENS ON SUMMARY, on the owner's ruling. This line said FIELD, which
-   is what actually decided the opening surface: the default on S was only what
-   held until this ran. Both say Summary now. */
-setTab(TAB.SUMMARY);
+/* THE APP OPENS ON THE FIELD, on the owner's ruling of 19 September, which
+   reverses the earlier one that opened it on Summary.
+
+   This line is what actually decides the opening surface. The default on S is
+   only what holds until this runs, and it has said FIELD the whole time, so
+   changing the default alone would have looked right in the source and done
+   nothing on screen. Both say Field now, as they did before the Summary
+   ruling, and the comment says why rather than leaving the next reader to
+   wonder which of the two is the live one. */
+setTab(TAB.FIELD);
 requestAnimationFrame(loop);
