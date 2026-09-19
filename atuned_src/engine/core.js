@@ -47,29 +47,55 @@ const CHG2FET={anxiety:'Anticipation',fear:'Fear',anger:'Anger',shame:'Shame',
    this codebase, so the integers are named once and never typed again.
    Order is load bearing and must not change.
    ============================================================ */
-const TAB={STORY:0,SUMMARY:1,FIELD:2,ENERGY:3,ANALYTICS:4,INTAKE:5,KNOW:6,GAMES:7};
+const TAB={STORY:0,SUMMARY:1,FIELD:2,ENERGY:3,ANALYTICS:4,INTAKE:5,KNOW:6,GAMES:7,
+ COMPASS:8};
 /* TABDEF is DISPLAY order. TAB above is identity and does not move: the
    integers are persisted, compared and passed around, and renumbering them
-   is the bug this file already warns about. Summary reads last because it is
-   the conclusion, so it sits after the instruments that produce it. Anything
-   that needs the entry for a tab looks it up by .k, never by position. */
+   is the bug this file already warns about. Compass is a new integer at the
+   end for exactly that reason. Anything that needs the entry for a tab looks
+   it up by .k, never by position.
+
+   TWO SURFACES CAME OFF THE BAR on the owner's ruling. Analytics folded into
+   Summary and Games folded into Knowledge, so neither has a top level door
+   any more. They are still surfaces with their own integers and their own
+   renderers: what changed is where the host element sits in the document.
+   #ana now lives inside #sum and #games inside #know, so the parent tab
+   showing itself shows the folded surface with it.
+
+   Summary reads last. It is the conclusion and the owner ruled it opens
+   there, so the bar reads left to right as the instruments and then the
+   thing they add up to, and the app lands on the right hand end of it. */
 const TABDEF=[
- {k:TAB.INTAKE,   id:'iq',    nm:'Intake',    cls:'tab-intake'},
- {k:TAB.STORY,    id:'story', nm:'Story',     cls:'tab-story'},
- {k:TAB.FIELD,    id:'cv',    nm:'Field',     cls:'tab-field'},
- {k:TAB.ENERGY,   id:'emap',  nm:'Energy',    cls:'tab-energy'},
- {k:TAB.ANALYTICS,id:'ana',   nm:'Analytics', cls:'tab-analytics'},
- {k:TAB.SUMMARY,  id:'sum',   nm:'Summary',   cls:'tab-summary'},
- {k:TAB.KNOW,     id:'know',  nm:'Knowledge', cls:'tab-know'},
- {k:TAB.GAMES,    id:'games', nm:'Games',     cls:'tab-games'}];
+ {k:TAB.INTAKE,  id:'iq',    nm:'Intake',    cls:'tab-intake'},
+ {k:TAB.STORY,   id:'story', nm:'Story',     cls:'tab-story'},
+ {k:TAB.FIELD,   id:'cv',    nm:'Field',     cls:'tab-field'},
+ {k:TAB.ENERGY,  id:'emap',  nm:'Energy',    cls:'tab-energy'},
+ {k:TAB.COMPASS, id:'cone',  nm:'Compass',   cls:'tab-compass'},
+ {k:TAB.KNOW,    id:'know',  nm:'Knowledge', cls:'tab-know'},
+ {k:TAB.SUMMARY, id:'sum',   nm:'Summary',   cls:'tab-summary'}];
 const TABOF=function(k){for(var i=0;i<TABDEF.length;i++)if(TABDEF[i].k===k)return TABDEF[i];
  return TABDEF[0];};
+/* A FOLDED SURFACE IS STILL A SURFACE. Analytics and Games kept their
+   integers, so a stored tab from a session before the fold still resolves to
+   something. It resolves to the tab that now carries it rather than silently
+   to the first entry in the bar, which is what TABOF would have done. */
+const TABFOLD={};
+TABFOLD[TAB.ANALYTICS]=TAB.SUMMARY;
+TABFOLD[TAB.GAMES]=TAB.KNOW;
+const TABREAL=function(k){
+ if(TABFOLD[k]!==undefined)return TABFOLD[k];
+ for(var i=0;i<TABDEF.length;i++)if(TABDEF[i].k===k)return k;
+ return TAB.SUMMARY;};
 
 /* ============================================================
    STATE
    ============================================================ */
+/* THE APP OPENS ON SUMMARY, on the owner's ruling. Field was the opening for
+   as long as the wheel was the product. It is not: the wheel is one
+   instrument and the summary is the reading, and a person arriving wants the
+   reading. Field is one click away and keeps its own integer. */
 const S={dom:0,doms:[0],arcs:[0,1],roots:[],a1:0,a2:1,charge:{},law:{},
- theme:'dark',hover:null,pin:null,t:0,replace:{},view:1,who:0,tab:TAB.FIELD,
+ theme:'dark',hover:null,pin:null,t:0,replace:{},view:1,who:0,tab:TAB.SUMMARY,
  zoom:1,panx:0,pany:0};
 /* A stranger's first load used to seed every axis at 3, which produced CQ 36
    and the word Incoherent in the largest type on screen, beside a panel that

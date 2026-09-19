@@ -79,7 +79,9 @@ function kbMatch(row,q){
  return (row.t+' '+row.s+' '+row.d).toLowerCase().indexOf(q)>=0;}
 
 function kbRender(){
- var host=document.getElementById('know'); if(!host)return;
+ /* #knowbody, not #know. #know is the tab host and it also carries the folded
+    games surface, which this function would otherwise overwrite. */
+ var host=document.getElementById('knowbody'); if(!host)return;
  var q=KB_Q.trim().toLowerCase();
  var rows=kbRows(KB_SEC).filter(function(x){return kbMatch(x,q);});
  /* the count across every section, so search says what it found everywhere */

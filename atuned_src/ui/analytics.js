@@ -88,14 +88,28 @@ function anaRender(){
     because cr() appends one. A number with no scale is not a reading, it is a
     digit, and six of them sat here on six different scales. */
  var acc=accuracy(r);
- out+='<div class="ab-hero">'+cr(r.darkB,r.CQ,{size:'lg',label:'coherence'})
+ /* THIS SURFACE IS NO LONGER SOMEWHERE A PERSON NAVIGATES TO. It is folded
+    into Summary, and Summary is where the app opens, so it now renders to a
+    stranger who has entered nothing. The eyebrow already knew how to say
+    "not read yet" and the ring beside it printed 36 percent anyway, which is
+    the exact failure the ruling about the opening screen exposed. The ring
+    holds a dash and the arc holds nothing. Same rule as everywhere else: a
+    percentage is never printed off a default. */
+ out+='<div class="ab-hero">'
+  +cr(r.darkB,r.unread?0:r.CQ,{size:'lg',label:'coherence',
+    raw:r.unread?'\u2013':null, hot:r.unread?false:undefined,
+    color:r.unread?'var(--dim)':null})
   +'<div><div class="pm-eye">'+(r.unread?'Coherence, not read yet'
     :'Coherence, '+r.tier.toLowerCase()+', 0 to 100')+'</div>'
   +'<div class="ab-say">'
-  +(loud?'<b>'+esc(loud.nm)+'</b> is the biggest thing running. ':'Nothing is compounding. ')
-  +(stop?'Flow stops at the <b>'+stop.p.n.toLowerCase()+'</b>. ':'Every seat is passing. ')
-  +(held.length?'<b>'+held.length+'</b> of the 112 addresses are carrying, at a shadow weight of <b>'+r.DQ.toFixed(1)+'</b>.':'Nothing is carrying.')
-  +(prev?' CQ '+(r.CQ-prev.cq>=0?'up ':'down ')+Math.abs(r.CQ-prev.cq).toFixed(1)+' since last session.':'')
+  +(r.unread?'Nothing has been entered, so none of this is measured yet. Every figure '
+    +'below is drawn from the blueprint you have selected and not from a reading.'
+   :(loud?'<b>'+esc(loud.nm)+'</b> is the biggest thing running. ':'Nothing is compounding. ')
+   /* a count against a total is a score, and this is not a score */
+   +(stop?'Flow stops at the <b>'+stop.p.n.toLowerCase()+'</b>. ':'Every seat is passing. ')
+   +(held.length?'<b>'+held.length+'</b> address'+(held.length===1?' is':'es are')
+     +' carrying, at a shadow weight of <b>'+r.DQ.toFixed(1)+'</b>.':'Nothing is carrying.')
+   +(prev?' CQ '+(r.CQ-prev.cq>=0?'up ':'down ')+Math.abs(r.CQ-prev.cq).toFixed(1)+' since last session.':''))
   +'</div>'
   /* The accuracy interval is this product's stated substitute for explaining
      a model, and it was rendered into the Field rail and nowhere else. It
@@ -103,11 +117,13 @@ function anaRender(){
      A move smaller than the interval is not a reading, it is noise, and the
      line says so rather than leaving a person to infer it. */
   +'<div class="ab-acc"><span class="pm-eye">Identification</span>'
-  +'<b>'+acc.pct.toFixed(0)+'%</b><span class="ab-band">plus or minus '
-  +acc.band.toFixed(0)+'</span>'
-  +'<span class="ab-note">'+acc.cov+' of 21 laws measured'
-  +(acc.held?', '+acc.held+' addresses carrying':'')
-  +'. A move smaller than the interval is not a reading.</span></div>'
+  +'<b>'+(r.unread?'\u2013':acc.pct.toFixed(0)+'%')+'</b>'
+  +(r.unread?'':'<span class="ab-band">plus or minus '+acc.band.toFixed(0)+'</span>')
+  +'<span class="ab-note">'+(r.unread
+    ?'Nothing measured. The interval opens once something is entered.'
+    :acc.cov+' of 21 laws measured'
+     +(acc.held?', '+acc.held+' addresses carrying':'')
+     +'. A move smaller than the interval is not a reading.')+'</span></div>'
   +'</div></div><div class="ab-grid">';
  out+=anaField('Masks','the era you speak from. size is weight, 0 to 10',
   r.maskRing.map(function(m){return {k:'mask',nm:m.nm,v:m.w,

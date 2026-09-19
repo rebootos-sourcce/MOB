@@ -63,7 +63,23 @@ Then LOOK at the images. Reading CSS is not reviewing a screen.
 
 **Never renumber the TAB integers.** They are identity, persisted and
 compared. `TABDEF` is display order and may be reordered freely. Anything
-needing the entry for a tab looks it up by `.k`, never by position.
+needing the entry for a tab looks it up by `.k`, never by position. Compass is
+integer 8, appended for that reason. Analytics (4) and Games (7) are folded
+surfaces: they kept their integers and their renderers and lost their tabs, so
+`TABREAL` maps them to the tab that now carries them and every caller of
+`setTab` goes through it.
+
+**A tab host that carries a folded surface cannot also be one.** `#sum` holds
+`#sumbody` and `#ana`; `#know` holds `#knowbody` and `#games`. The first cut
+put the child straight inside the parent and the parent's renderer, which
+writes the whole innerHTML of its host, deleted the child on the way past. The
+functional gate caught it.
+
+**The app opens on Summary, so Summary is a stranger's first screen.** Anything
+that renders there renders to somebody who has entered nothing. Both surfaces
+that print a reading now silence themselves on `r.unread` and show the four
+doors instead, and Summary empties itself on the way out so a hidden surface
+never sits in the document asserting a stale reading.
 
 **The engine may not touch the host.** No `document`, `window`, `navigator`,
 `localStorage`, `fetch`, `new Image`. `hostfree.py` enforces it after

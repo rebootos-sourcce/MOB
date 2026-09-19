@@ -54,6 +54,12 @@ font-display:swap;src:url(data:font/woff2;base64,d09GMgABAAAAALyAABUAAAAB4CAAALw
  --root:#C4635E; --sacral:#D19255; --solar:#D4BC70;
  --heart:#6FC5A3; --throat:#65B8D4; --eye:#8296DB; --crown:#A98BCE;
  --alarm:#FF2E1F; --alarm-soft:rgba(255,46,31,.16); --gold:#DFCC7E;
+ /* THE SKY. The owner asked for the wordmark in sky blue and asked where the
+    blue design went. It is in the original: --law-accent:#7eb8d4, used in
+    thirteen places, on a paper white ground. That exact value is the token.
+    --um is the umlaut, which sits on the bar rather than on the letter, so it
+    answers to the background. White on dark, as ruled. */
+ --sky:#7EB8D4; --um:#FFFFFF;
  --good:#68CBA4; --bad:#CB5F59;
  /* Lexend is a wide face by design, which is why the rail clipped: Witness
     rendered as Wit. Inter is narrower at the same size and carries more
@@ -132,6 +138,9 @@ body.snow{
  --root:#9B4B47; --sacral:#8E6231; --solar:#7E6C29; --heart:#2A7A5C;
  --throat:#2C6F88; --eye:#4C5F9E; --crown:#6E5490;
  --alarm:#D41200; --alarm-soft:rgba(212,18,0,.12); --gold:#8A6D18;
+ /* Snow is paper. Sky deepens to hold against it, and the umlaut cannot stay
+    white because the dots sit on the paper, not on the letter. */
+ --sky:#2F6E92; --um:#13303F;
  --good:#1F8560; --bad:#A8413C;
  --shadow:0 12px 30px rgba(40,54,74,.12);
 }
@@ -169,10 +178,22 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
  line-height:1.4;color:var(--mid);transition:.2s}
 #status:empty{display:none}
 #status[data-kind="fail"]{color:var(--hot,#c0392b);font-weight:500}
-.brand{font-size:17px;font-weight:600;letter-spacing:-.01em;padding-right:6px;white-space:nowrap}
-.brand em{font-style:normal;color:var(--gold);font-weight:400}
+/* THE WORDMARK. Sky blue, letters given room, and the weight down from 600.
+   600 at negative tracking read as a product logo shouting; this is a name.
+   It is a button and it carries no button chrome, because chrome on a wordmark
+   makes it look like a control rather than the thing you are in. */
+.brand{font-size:18px;font-weight:400;letter-spacing:.075em;padding:0 10px 0 2px;
+ white-space:nowrap;color:var(--sky);background:transparent;border:0;cursor:pointer;
+ font-family:var(--sans);line-height:1;min-height:var(--tap);display:flex;align-items:center}
+.brand:hover{color:color-mix(in srgb,var(--sky) 76%,var(--ink))}
+/* the umlaut, drawn. two dots, white, sitting above a plain u. */
+.brand .um{position:relative;display:inline-block}
+.brand .um::before,.brand .um::after{content:'';position:absolute;top:-.42em;
+ width:.14em;height:.14em;border-radius:50%;background:var(--um)}
+.brand .um::before{left:.055em}
+.brand .um::after{left:.35em}
 .spacer{flex:1 1 auto;min-width:8px}
-.toplab{font-family:var(--num);font-size:11px;font-weight:500;color:var(--dim);white-space:nowrap}
+.toplab{font-family:var(--num);font-size:11px;font-weight:400;color:var(--dim);white-space:nowrap}
 
 /* ---------- buttons ---------- */
 .vt{background:transparent;border:1px solid var(--edge);border-radius:var(--r-s);
@@ -184,8 +205,15 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
 .vt svg{width:17px;height:17px;stroke:currentColor;stroke-width:1.6;fill:none;
  stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}
 .vt .n{display:block}
-/* the top-level surface switch. .vt carries the look, .tabtop marks the role. */
-.tabtop{font-weight:500}
+/* the top-level surface switch. .vt carries the look, .tabtop marks the role.
+   THE WEIGHT CAME DOWN. 500 across seven items in one row read as a heavy
+   band across the top of the instrument, which is the owner's finding. 350
+   with a little tracking reads as navigation. The pressed one carries 500,
+   because the one difference worth a weight change is which surface you are
+   on, and it also carries a fill, so the weight is confirmation rather than
+   the only signal. */
+.tabtop{font-weight:350;letter-spacing:.012em}
+.tabtop[aria-pressed=true]{font-weight:500;letter-spacing:0}
 .seg{display:flex;gap:3px;padding:3px;border-radius:var(--r-s);background:var(--sunk);flex:0 0 auto}
 .seg button{background:transparent;border:0;border-radius:var(--r-xs);min-height:var(--tap);padding:7px 13px;
  font-family:var(--sans);font-size:13.5px;font-weight:400;color:var(--dim);cursor:pointer;transition:.16s}
@@ -197,6 +225,36 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
 .seg-i[aria-pressed=true] svg{stroke:#15130A}
 .seg-i svg path:first-child{fill:none}
 .seg-i[data-solid] svg path:first-child{fill:currentColor}
+/* ---------- THE GLASS MENU ----------
+   Apple Glass, on the owner's ruling, and what that actually is: a surface
+   that takes its colour from what is behind it rather than from a swatch. So
+   the background is a wash over a backdrop blur and a saturate, there is a
+   one pixel light along the top edge where a pane would catch a highlight,
+   and the shadow is long and soft rather than tight. backdrop-filter is not
+   universal, so the wash alone is opaque enough to read on its own and the
+   blur is the improvement rather than the requirement. */
+.gwrap{position:relative;flex:0 0 auto}
+.gbtn .chev{width:12px;height:12px;opacity:.7}
+.gbtn[aria-expanded=true]{background:var(--panel-2);border-color:var(--edge-2);color:var(--ink)}
+.gbtn[aria-expanded=true] .chev{transform:rotate(180deg)}
+.gmenu{position:absolute;top:calc(100% + 8px);right:0;z-index:60;min-width:246px;
+ padding:13px 14px 12px;border-radius:var(--r-s);
+ background:color-mix(in srgb,var(--panel) 78%,transparent);
+ -webkit-backdrop-filter:blur(22px) saturate(1.5);backdrop-filter:blur(22px) saturate(1.5);
+ border:1px solid color-mix(in srgb,var(--ink) 11%,transparent);
+ box-shadow:0 22px 54px rgba(0,0,0,.42),0 2px 8px rgba(0,0,0,.2)}
+.gmenu::before{content:'';position:absolute;inset:0 0 auto 0;height:1px;
+ border-radius:var(--r-s) var(--r-s) 0 0;
+ background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--ink) 26%,transparent),transparent)}
+.gmenu[hidden]{display:none}
+.gmenu-hd{font-family:var(--num);font-size:11px;font-weight:400;color:var(--dim);
+ margin-bottom:8px}
+.gmenu .seg{width:100%;justify-content:space-between}
+.gmenu .seg button{flex:1 1 0;justify-content:center}
+.gmenu-p{margin:10px 0 0;font-size:12px;line-height:1.6;color:var(--dim)}
+body.punch .gmenu{background:var(--panel-2);border-color:transparent;
+ -webkit-backdrop-filter:none;backdrop-filter:none}
+body.punch .gmenu::before{display:none}
 .btn{background:var(--panel-2);border:1px solid var(--edge);color:var(--ink);border-radius:999px;
  min-height:var(--tap);padding:9px 17px;font-size:14px;font-family:var(--sans);font-weight:400;cursor:pointer;transition:.18s}
 .btn:hover{background:var(--sunk);border-color:var(--edge-2)}
@@ -251,15 +309,33 @@ body:not(.hassub) .subbar{display:none}
    Nothing to learn and nothing to look up.
    ============================================================ */
 .cr{display:inline-flex;align-items:center;vertical-align:middle;border-radius:999px;
- background:color-mix(in srgb,var(--c) 14%,transparent);
- border:1px solid color-mix(in srgb,var(--c) 34%,transparent);
- padding:3px 13px 3px 3px;font-family:var(--sans);cursor:default;transition:.16s}
+ background:color-mix(in srgb,var(--c) 9%,transparent);
+ border:1px solid color-mix(in srgb,var(--c) 30%,transparent);
+ padding:3px 4px 3px 3px;font-family:var(--sans);cursor:default;transition:.16s}
 .cr .ring{position:relative;flex:0 0 auto}
 .cr .ring svg.arc{transform:rotate(-90deg);display:block}
 .cr .ring .gl{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
 .cr .ring .gl svg{fill:none;stroke:var(--c);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+/* THE VALUE IS A PILL. The owner's grammar for every percentage in the product:
+   an icon, a ring around it showing the percentage as an arc, and then a pill
+   with the number in it. The chip already carried the first two and printed the
+   number as bare text, so the third was missing and the grammar did not read as
+   a grammar. One rule, and every ring in the product gains it at once, which is
+   the whole point of there being one component. */
 .cr .v{font-family:var(--num);font-weight:500;font-variant-numeric:tabular-nums;
- color:var(--c);margin-left:9px;line-height:1}
+ color:var(--c);margin-left:8px;line-height:1;border-radius:999px;
+ background:color-mix(in srgb,var(--c) 17%,transparent);
+ padding:4px 9px 4px 9px;white-space:nowrap}
+.cr.hot .v{background:var(--alarm-soft)}
+body.punch .cr .v{background:color-mix(in srgb,var(--c) 30%,transparent)}
+/* A RING WITH NO VALUE IS JUST A RING. knowledge.js uses cr() with raw:'' as a
+   colour marker beside a row name, and now that the value is a pill an empty
+   value painted an empty pill next to it. Nothing to say, nothing drawn. */
+.cr .v:empty{display:none;padding:0;margin:0;background:none}
+/* the colour marker that wrapping serves. it was emitted with no rule at all,
+   which the design gate only caught once it started sweeping the knowledge
+   surface, which it started doing because Games folded into it. */
+.kb-rc{display:inline-flex;align-items:center;flex:0 0 auto}
 .cr.hot{background:var(--alarm-soft);border-color:rgba(255,46,31,.45)}
 .cr.hot .v{color:var(--alarm)}
 .cr.hot .ring .gl svg{stroke:var(--alarm)}
@@ -273,6 +349,7 @@ body:not(.hassub) .subbar{display:none}
 .cr.sm .v{font-size:12.5px;margin-left:6px}.cr.sm{padding:2px 10px 2px 2px}
 .cr.xs .ring svg.arc{width:18px;height:18px}.cr.xs .ring .gl svg{width:8px;height:8px}
 .cr.xs .v{font-size:11.5px;margin-left:5px}.cr.xs{padding:2px 8px 2px 2px}
+.sum-start{margin-top:20px;max-width:620px}
 .crlab{font-size:14.5px;font-weight:400;margin-left:11px;color:var(--ink)}
 .crrow{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
 .crline{display:flex;align-items:center;gap:0;margin-bottom:8px}
@@ -351,12 +428,20 @@ body.punch canvas#cv{filter:saturate(1.2)}
  width:min(272px,calc(100% - 560px));background:none;border:0;padding:6px 0;cursor:pointer;
  display:flex;flex-direction:column;gap:6px;text-align:left}
 body:not(.tab-field) .bal{display:none}
-.bal-t{display:flex;justify-content:space-between;align-items:baseline;gap:10px;
+.bal-t{display:flex;justify-content:space-between;align-items:center;gap:7px;
  font-size:11px;color:var(--dim);white-space:nowrap}
 /* the end the field leans to. the number in the middle is the amount, the
    lit end is the direction, and neither repeats the other. */
 .bal-t .on{font-weight:600}
 .bal-t b{color:var(--ink);font-family:var(--num);font-weight:500}
+.bal-n{flex:1 1 auto;text-align:center}
+/* the two poles, as glyphs. ring and not fill, like every other icon here.
+   masculine on the left and feminine on the right, mirrored against the body
+   on the owner's ruling, which is what facing a mirror does. */
+.bal-g{display:inline-flex;align-items:center;flex:0 0 auto;color:var(--dim)}
+.bal-g svg{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;
+ stroke-linejoin:round}
+.bal-g.on{color:var(--ink)}
 .bal-tr{position:relative;height:5px;border-radius:3px;background:var(--sunk)}
 .bal-tr i{position:absolute;top:0;bottom:0;width:1px;left:50%;background:var(--edge-2)}
 .bal-m{position:absolute;top:50%;width:12px;height:12px;border-radius:50%;
@@ -364,6 +449,10 @@ body:not(.tab-field) .bal{display:none}
 .bal-s{position:absolute;top:50%;width:2px;height:13px;transform:translate(-50%,-50%);
  background:var(--dim);border-radius:1px}
 .bal:hover .bal-tr{background:var(--panel-2)}
+/* the definition of the two ends of an axis, said once in the rail rather than
+   only in a tooltip, because a tooltip is not reachable by a thumb. */
+.stk-def{margin:10px 0 8px;font-size:12.5px;line-height:1.6;color:var(--dim)}
+.stk-def b{color:var(--ink);font-weight:500}
 /* the accuracy block owns the bottom right, so the howto stops before it
    rather than running under it at the narrower desktop widths. */
 .howto{position:absolute;bottom:14px;left:16px;font-size:12.5px;color:var(--dim);
@@ -425,8 +514,11 @@ body:not(.tab-field) .pol2{display:none}
  padding:0 0 13px;border-bottom:1px solid var(--edge);margin-bottom:2px}
 .railtop .rt-t{font-size:14px;color:var(--ink);font-weight:500}
 /* the tier reads as a word you can open, not as a verdict printed at you */
-.rootrow{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px}
-.rootrow>*{flex:1 1 auto;min-width:0;white-space:nowrap}
+/* THE ROOT ROW. Four buttons on one line, always. It was a wrapping flex row
+   of auto width nowrap items, which is a row that fits until it does not, and
+   the owner watched Witness drop to a line of its own. Four equal columns
+   cannot wrap: the count is the grid and the width is whatever is left. */
+.rootrow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;margin-bottom:14px}
 .undobtn{gap:6px;color:var(--gold);border-color:var(--gold)}
 .undobtn svg{fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 .undobtn span{max-width:20ch;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -466,11 +558,23 @@ body:not(.tab-field) .pol2{display:none}
 .polnote{font-size:12.5px;color:var(--dim);margin:6px 0 0;line-height:1.55}
 
 /* ---------- icon grids ---------- */
-.g6{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+/* THE ICON GRIDS, AND WHY THEY RAN OFF THE EDGE. An .ib is aspect-ratio 1 with
+   min-height var(--tap), and an aspect ratio turns a height floor into a width
+   floor, so every cell was at least 44 wide whatever the column said. Six of
+   them plus five six pixel gaps is 294 inside a 264 content box, so the last
+   two icons of each archetype row sat 29px past the right hand edge of the
+   rail. Measured, then fixed, then measured again.
+
+   The column count was the mistake, not the cell. A hard six cannot know how
+   wide the rail is, and the rail width is a layout decision made three rules
+   away from here. auto-fill with a floor of one tap target fits as many whole
+   columns as there is room for and then stops, so the count follows the width
+   at every density and every rail size and the overflow cannot come back. */
+.g6{display:grid;grid-template-columns:repeat(auto-fill,minmax(var(--tap),1fr));gap:6px}
 /* nineteen domains on five columns, so each root cluster is one contiguous
    row of one colour. Under high hue quantity, scattered colour delays
    attentional orienting; contiguous blocks of one colour search fastest. */
-.gdom{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.gdom{display:grid;grid-template-columns:repeat(auto-fill,minmax(var(--tap),1fr));gap:6px}
 .ib{aspect-ratio:1;min-height:var(--tap);background:var(--sunk);border:1.5px solid transparent;border-radius:var(--r-xs);
  cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;
  transition:.18s;position:relative}
@@ -488,7 +592,34 @@ body:not(.tab-field) .pol2{display:none}
 .ib[data-r="2"]{border-color:color-mix(in srgb,var(--gold) 52%,transparent)}
 .ib[data-r="2"] svg{opacity:1}
 .ib .rt{position:absolute;top:3px;right:3px;width:5px;height:5px;border-radius:50%}
-.rootb{min-height:var(--tap)}
+/* THE ROOT BUTTON, and the three things it has to say. A root is off, or it is
+   lit because the blueprint domain you have selected lives in it, or it is
+   added because you clicked it. The old control only had off and added, and it
+   said added with a border tint and a 44 percent glow, so the owner had a
+   profile loaded, four roots that all looked identical, and no way to see
+   which one his own selection sat in. That is the bug: the row was a filter
+   pretending to be a readout.
+
+   Added is a flat fill, on the owner's ruling. The ring-not-fill rule governs
+   the icon grids, where a fill would destroy the glyph; this is a text chip
+   and he asked for flat colour, so it is flat colour. The ink on top is a
+   fixed dark rather than var(--bg), because all four root colours are light
+   and --bg goes light in snow, which would have printed light on light. */
+.rootb{min-height:var(--tap);display:flex;align-items:center;justify-content:center;
+ padding:8px 4px;border-radius:var(--r-xs);border:1.5px solid var(--edge);
+ background:transparent;font-family:var(--sans);font-size:11.5px;font-weight:400;
+ line-height:1.15;text-align:center;cursor:pointer;transition:.18s;
+ color:var(--rc,var(--mid))}
+.rootb:hover{border-color:var(--rc,var(--edge-2))}
+/* lit: your selection is in this root. a wash, not a fill, because you did not
+   choose it and a control that looks chosen invites you to unchoose it. */
+.rootb[data-lit="1"]{border-color:color-mix(in srgb,var(--rc) 46%,transparent);
+ background:color-mix(in srgb,var(--rc) 13%,transparent);color:var(--rc)}
+/* added: you clicked it. flat. */
+.rootb[aria-pressed=true]{background:var(--rc);border-color:var(--rc);color:#14151C;
+ font-weight:500}
+.rootlegend{font-family:var(--num);font-size:11px;color:var(--dim);
+ margin:-9px 0 14px;line-height:1.5}
 .rootb[aria-pressed=true]{font-weight:600}
 .cap{font-size:12.5px;color:var(--gold);margin-top:9px;text-align:center;min-height:2.6em;line-height:1.5}
 .cap b{font-weight:600}
@@ -1207,18 +1338,31 @@ body:not(.tab-field) #key,body:not(.tab-field) #howto,body:not(.tab-field) #prob
 body:not(.tab-field) #tier,body:not(.tab-field) #pol,body:not(.tab-field) #cv{display:none!important}
 body.tab-summary #sum{display:flex!important;z-index:5;overflow-y:auto}
 body:not(.tab-summary) #sum{display:none!important}
-body.tab-games #games{display:flex!important;z-index:5;overflow-y:auto}
-body:not(.tab-games) #games{display:none!important}
 body.tab-know #know{display:flex!important;z-index:5;overflow-y:auto}
 body:not(.tab-know) #know{display:none!important}
+/* A FOLDED SURFACE. Games inside Knowledge, Analytics inside Summary. It is in
+   flow rather than absolute, it does not scroll on its own because its parent
+   already does, and it has no visibility rule of its own: it is shown exactly
+   when the tab carrying it is shown. Two ids that used to be tabs, so the old
+   per tab rules for them are gone rather than left to fight this one. */
+.fold{display:block;width:100%;min-width:0;margin-top:26px;padding-top:22px;
+ border-top:1px solid var(--edge)}
+.fold:empty{display:none;margin:0;padding:0;border:0}
+.fold>*{min-width:0}
 body.tab-intake #iq{display:flex!important;z-index:5;overflow-y:auto}
 body:not(.tab-intake) #iq{display:none!important}
 body.tab-story #story{display:flex!important;z-index:5;align-items:center;justify-content:center}
 body:not(.tab-story) #story{display:none!important}
 body.tab-energy #emap{display:flex!important;z-index:5}
 body:not(.tab-energy) #emap{display:none!important}
-body.tab-analytics #ana{display:flex!important;z-index:5;overflow-y:auto}
-body:not(.tab-analytics) #ana{display:none!important}
+/* THE COMPASS AS A TAB. As a modal #cone is fixed to the viewport with a
+   backdrop, which is right for something a drill throws up over your reading
+   and wrong for a surface you navigated to. In tab mode it is the stage. */
+body.tab-compass #cone{display:flex!important}
+#cone.tabmode{position:absolute;z-index:5;background:transparent;backdrop-filter:none}
+#cone.tabmode .cone-card{width:100%;max-height:none;border:0;background:transparent;
+ box-shadow:none;padding:14px 18px 18px}
+#cone.tabmode .cone-cv{height:min(70vh,640px)}
 #eshelf{display:none}
 body.tab-energy #eshelf{display:flex;flex-direction:column}
 
@@ -1252,7 +1396,7 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
  body{font-size:14.5px}
  .app{padding:7px;gap:6px}
  .panel{padding:13px 14px}
- .g6{grid-template-columns:repeat(5,1fr)}
+ /* nothing to override: auto-fill already answers to the width */
  .mx{grid-template-columns:repeat(19,1fr);gap:1px}
  .sum-cq b,.ab-cq b{font-size:38px}
  /* the key strip wrapped to three rows and pushed the wheel 154px down.
@@ -1302,15 +1446,26 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
 <canvas id="bgaura" aria-hidden="true"></canvas>
 <div class="app">
  <div class="glass top">
-  <div class="brand">At&uuml;ned</div>
+  <!-- THE WORDMARK. Sky blue, two white dots, and the letters given room, on
+       the owner's ruling. The umlaut is drawn rather than typed: the dots have
+       to be white while the letter is sky, which one glyph cannot do. They sit
+       on the bar rather than on the letter, so their colour answers to the
+       background and not to the wordmark, which is why snow redefines them.
+
+       It is a button because it goes somewhere. Home is the summary, which is
+       also where the app now opens. -->
+  <button class="brand" id="brand" type="button"
+   title="Home. Takes you back to the summary.">At<span class="um">u</span>ned</button>
   <div id="tabbar" style="display:flex;gap:5px;flex-wrap:wrap"></div>
   <!-- One status region for the whole app. Polite so it does not interrupt,
        and it carries the message rather than a button lying about it. -->
   <div id="status" role="status" aria-live="polite"></div>
   <div class="spacer"></div>
-  <label for="psel" class="toplab">Whose field</label>
+  <!-- "Whose field" is gone on the owner's ruling. It was a question the
+       product asked itself out loud. The control is a profile picker, so it
+       says Profile. -->
+  <label for="psel" class="toplab">Profile</label>
   <select id="psel"></select>
-  <div class="seg" id="themes"></div>
   <!-- Density moved into the profile on the owner's ruling. It is a setting a
        person chooses once, and a setting chosen once does not earn three
        permanent buttons in the bar where the work happens. The profile opens
@@ -1322,13 +1477,34 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
    <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
     <path d="M4 10h10a5 5 0 0 1 0 10h-3"/><path d="M4 10l4-4M4 10l4 4"/></svg>
    <span id="undolab">Undo</span></button>
-  <button class="vt" id="profbtn" type="button" title="Your profile and settings">
-   <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">
-    <circle cx="12" cy="8" r="3.6"/><path d="M5 20c0-3.6 3.1-5.6 7-5.6s7 2 7 5.6"/></svg></button>
+  <!-- THE RIGHT HAND END, in the order the owner ruled it: the lighting menu,
+       then help, then the person. The three lighting buttons used to sit out
+       in the bar as a permanent segmented control, which is a setting taking
+       the width of a navigation item. They fold into one menu that names the
+       lighting it is currently on. -->
+  <div class="gwrap">
+   <button class="vt gbtn" id="lightbtn" type="button" aria-expanded="false"
+    aria-haspopup="true" title="Lighting">
+    <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">
+     <circle cx="12" cy="12" r="4.2"/><path d="M12 3v2.4M12 18.6V21M3 12h2.4M18.6 12H21
+      M5.6 5.6l1.7 1.7M16.7 16.7l1.7 1.7M18.4 5.6l-1.7 1.7M7.3 16.7l-1.7 1.7"/></svg>
+    <span class="n" id="lightnow">Dark</span>
+    <svg class="chev" viewBox="0 0 24 24" width="12" height="12" aria-hidden="true">
+     <path d="M6 9.5l6 5.5 6-5.5"/></svg></button>
+   <div class="gmenu" id="lightmenu" hidden>
+    <div class="gmenu-hd">Lighting</div>
+    <div class="seg" id="themes"></div>
+    <p class="gmenu-p">Dark is the default. Snow is the same instrument on
+     paper. Punch removes every outline and fills every shape.</p>
+   </div>
+  </div>
   <button class="vt" id="helpbtn" type="button" title="How to read this, and what everything means">
    <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">
     <circle cx="12" cy="12" r="9.2"/><path d="M9.4 9.2a2.7 2.7 0 1 1 3.4 2.6c-.6.2-.9.7-.9 1.3v.7"/>
     <circle cx="12" cy="17.4" r="1"/></svg></button>
+  <button class="vt" id="profbtn" type="button" title="Your profile and settings">
+   <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">
+    <circle cx="12" cy="8" r="3.6"/><path d="M5 20c0-3.6 3.1-5.6 7-5.6s7 2 7 5.6"/></svg></button>
  </div>
  <div class="sheet" id="sheet" hidden><div class="sheet-card" id="sheet-card"></div></div>
  <div class="glass subbar" id="subbar"><div id="vbar" style="display:flex;gap:5px"></div>
@@ -1389,12 +1565,25 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
    <canvas id="cv" role="img" aria-label="The field wheel. Every element is also listed in the panels either side."></canvas>
    <div id="emap" class="emap"></div>
    <div id="iq" class="iq"></div>
-   <div id="know" class="iq"></div>
-   <div id="games" class="iq"></div>
+   <!-- Knowledge carries Games, and Summary carries Analytics. The owner ruled
+        both folds, so the host element moved inside its parent rather than the
+        tab being hidden while the surface stayed where it was. A folded host is
+        in flow, not an absolute overlay, which is what .fold says. -->
+   <!-- A TAB HOST THAT CARRIES TWO SURFACES CANNOT ALSO BE ONE OF THEM. The
+        first cut at the fold put #games straight inside #know, and kbRender
+        writes the whole innerHTML of its host, so rendering Knowledge deleted
+        the Games host on the way past and the fold rendered nothing. Caught by
+        the functional gate on the record, which is the same shape: sumRender
+        ate #ana. Each host now holds its own body and the folded surface
+        beside it, and each renderer owns only its own body. -->
+   <div id="know" class="iq">
+    <div id="knowbody"></div>
+    <div id="games" class="fold"></div></div>
    <div id="deck" class="rel"></div>
    <div id="story" class="iq"></div>
-   <div id="sum" class="iq"></div>
-   <div id="ana" class="iq"></div>
+   <div id="sum" class="iq">
+    <div id="sumbody"></div>
+    <div id="ana" class="fold"></div></div>
    <div id="rel" class="rel"></div>
    <div id="rit" class="rel"></div>
    <!-- the compass with volume. its own canvas, its own context, and an
@@ -3077,29 +3266,55 @@ const CHG2FET={anxiety:'Anticipation',fear:'Fear',anger:'Anger',shame:'Shame',
    this codebase, so the integers are named once and never typed again.
    Order is load bearing and must not change.
    ============================================================ */
-const TAB={STORY:0,SUMMARY:1,FIELD:2,ENERGY:3,ANALYTICS:4,INTAKE:5,KNOW:6,GAMES:7};
+const TAB={STORY:0,SUMMARY:1,FIELD:2,ENERGY:3,ANALYTICS:4,INTAKE:5,KNOW:6,GAMES:7,
+ COMPASS:8};
 /* TABDEF is DISPLAY order. TAB above is identity and does not move: the
    integers are persisted, compared and passed around, and renumbering them
-   is the bug this file already warns about. Summary reads last because it is
-   the conclusion, so it sits after the instruments that produce it. Anything
-   that needs the entry for a tab looks it up by .k, never by position. */
+   is the bug this file already warns about. Compass is a new integer at the
+   end for exactly that reason. Anything that needs the entry for a tab looks
+   it up by .k, never by position.
+
+   TWO SURFACES CAME OFF THE BAR on the owner's ruling. Analytics folded into
+   Summary and Games folded into Knowledge, so neither has a top level door
+   any more. They are still surfaces with their own integers and their own
+   renderers: what changed is where the host element sits in the document.
+   #ana now lives inside #sum and #games inside #know, so the parent tab
+   showing itself shows the folded surface with it.
+
+   Summary reads last. It is the conclusion and the owner ruled it opens
+   there, so the bar reads left to right as the instruments and then the
+   thing they add up to, and the app lands on the right hand end of it. */
 const TABDEF=[
- {k:TAB.INTAKE,   id:'iq',    nm:'Intake',    cls:'tab-intake'},
- {k:TAB.STORY,    id:'story', nm:'Story',     cls:'tab-story'},
- {k:TAB.FIELD,    id:'cv',    nm:'Field',     cls:'tab-field'},
- {k:TAB.ENERGY,   id:'emap',  nm:'Energy',    cls:'tab-energy'},
- {k:TAB.ANALYTICS,id:'ana',   nm:'Analytics', cls:'tab-analytics'},
- {k:TAB.SUMMARY,  id:'sum',   nm:'Summary',   cls:'tab-summary'},
- {k:TAB.KNOW,     id:'know',  nm:'Knowledge', cls:'tab-know'},
- {k:TAB.GAMES,    id:'games', nm:'Games',     cls:'tab-games'}];
+ {k:TAB.INTAKE,  id:'iq',    nm:'Intake',    cls:'tab-intake'},
+ {k:TAB.STORY,   id:'story', nm:'Story',     cls:'tab-story'},
+ {k:TAB.FIELD,   id:'cv',    nm:'Field',     cls:'tab-field'},
+ {k:TAB.ENERGY,  id:'emap',  nm:'Energy',    cls:'tab-energy'},
+ {k:TAB.COMPASS, id:'cone',  nm:'Compass',   cls:'tab-compass'},
+ {k:TAB.KNOW,    id:'know',  nm:'Knowledge', cls:'tab-know'},
+ {k:TAB.SUMMARY, id:'sum',   nm:'Summary',   cls:'tab-summary'}];
 const TABOF=function(k){for(var i=0;i<TABDEF.length;i++)if(TABDEF[i].k===k)return TABDEF[i];
  return TABDEF[0];};
+/* A FOLDED SURFACE IS STILL A SURFACE. Analytics and Games kept their
+   integers, so a stored tab from a session before the fold still resolves to
+   something. It resolves to the tab that now carries it rather than silently
+   to the first entry in the bar, which is what TABOF would have done. */
+const TABFOLD={};
+TABFOLD[TAB.ANALYTICS]=TAB.SUMMARY;
+TABFOLD[TAB.GAMES]=TAB.KNOW;
+const TABREAL=function(k){
+ if(TABFOLD[k]!==undefined)return TABFOLD[k];
+ for(var i=0;i<TABDEF.length;i++)if(TABDEF[i].k===k)return k;
+ return TAB.SUMMARY;};
 
 /* ============================================================
    STATE
    ============================================================ */
+/* THE APP OPENS ON SUMMARY, on the owner's ruling. Field was the opening for
+   as long as the wheel was the product. It is not: the wheel is one
+   instrument and the summary is the reading, and a person arriving wants the
+   reading. Field is one click away and keeps its own integer. */
 const S={dom:0,doms:[0],arcs:[0,1],roots:[],a1:0,a2:1,charge:{},law:{},
- theme:'dark',hover:null,pin:null,t:0,replace:{},view:1,who:0,tab:TAB.FIELD,
+ theme:'dark',hover:null,pin:null,t:0,replace:{},view:1,who:0,tab:TAB.SUMMARY,
  zoom:1,panx:0,pany:0};
 /* A stranger's first load used to seed every axis at 3, which produced CQ 36
    and the word Incoherent in the largest type on screen, beside a panel that
@@ -5437,6 +5652,44 @@ function pill(t,rad){const ink=INK();g.save();
 /* the rAF loop honours reduced motion: the field stops breathing. */
 var REDUCED=(window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches);
 
+/* ============================================================
+   WHERE TO START. One set of doors, two places that show them.
+
+   The rail carried them and the summary now needs them, because the
+   summary is where the app opens and a person arriving has read
+   nothing. Two copies meant two sets of ids, and two elements with
+   one id is a broken document, so the doors carry a data attribute
+   and one delegated listener answers for every copy of them.
+   ============================================================ */
+const STARTD=[
+ ['story','Write what happened',
+  'The day, in your own words. The engine reads the charge out of it.'],
+ ['nine','Read nine sentences',
+  'For anyone who cannot think of themselves as the problem. None of them is a diagnosis.'],
+ ['ages','Go year by year',
+  'Three to eighteen. For anyone who cannot think of anything they identify with, which is most people.'],
+ ['avatar','Say who you are becoming',
+  'The avatar. Release empties an address and replace fills it. This is what you are filling it toward.']];
+function startHTML(lead){
+ return '<div class="pm-eye">Where to start</div>'
+  +'<p class="st-lead">'+(lead||'Nothing has been read yet. Four ways in, and none of them '
+   +'asks you to know anything first.')+'</p>'
+  +STARTD.map(function(d){
+   return '<button type="button" class="stbtn" data-start="'+d[0]+'"><b>'+d[1]+'</b>'
+    +'<span>'+d[2]+'</span></button>';}).join('');}
+/* One listener, bound once, for every door on the page now or later. The
+   handlers are declared in later modules, so they are reached at click time
+   rather than at bind time. */
+addEventListener('click',function(e){
+ var b=e.target&&e.target.closest?e.target.closest('[data-start]'):null;
+ if(!b)return;
+ var k=b.getAttribute('data-start');
+ if(k==='story'){setTab(TAB.STORY);render();
+  var ta=document.getElementById('sttext'); if(ta)ta.focus(); return;}
+ if(k==='nine'){runRecogniseDrill();return;}
+ if(k==='ages'){runAgeDrill();return;}
+ if(k==='avatar'){runAvatarDrill();return;}});
+
 /* ---- DQ. the wash. the area of effect, behind everything. ----
    Five full canvas radial gradients on a 1600x1000 surface is eight million
    pixel operations. Painting that every frame cost 82ms of the 103ms a Field
@@ -6480,10 +6733,125 @@ function lensName(r){
   8:'the one who commands',9:'the one who completes',11:'the one who channels',
   22:'the one who makes it real'};
  return {t:'Name',a:nm+', '+v,b:M[v]||'',c:'root meaning, reduced'};}
+/* THE SPIRITUAL OVERLAY, lifted into its own function so the unread page can
+   carry it. It is the one block on this surface that is not derived from the
+   nine axes: it reads a birth date a person typed, so it is either real or it
+   says there is none. Nothing here is invented from a default.
+
+   THE CONVERGENCE RING SAID 75 PERCENT AND NOTHING SAID WHAT OF. The owner
+   asked. It is the share of the ten pairs among five systems that agree, so
+   the sentence now states the fraction it came from and what agreement means.
+   A percentage with no denominator is a mood. */
+function sumOverlay(r){
+ var o='';
+ var nm2=(PEOPLE[S.who]||{}).nm||'You';
+ var C=converge(nm2,r);
+ if(!C){
+  o+='<div class="pm-eye" style="margin-top:22px">The spiritual overlay</div>'
+   +'<p class="sum-p">No birth data on file. Date, time and place would let the overlay run. '
+   +'Nothing else is stored, and every reading is derived from those three.</p>';
+  return o;}
+ {
+  var e=C.e;
+  o+='<div class="pm-eye" style="margin-top:22px">The spiritual overlay</div>'
+   +'<div class="sum-hero" style="margin-top:8px">'
+   /* THE RING SAYS THE FRACTION. It said 75 percent, the owner asked what that
+      meant, and he was right to: three of four and seventy five percent are
+      the same number and only one of them says how few comparisons it rests
+      on. birth.js has carried .of for exactly this reason and this renderer
+      was throwing it away. The ring arc still runs on the percentage, because
+      an arc is a proportion; the value printed is the count. */
+   +cr('Crown',C.score||0,{size:'md',label:'convergence',
+     raw:C.agree.length+' of '+C.of,
+     title:'Convergence. '+C.agree.length+' of '+C.of+' comparisons between the birth '
+      +'chart and the field point the same way.'})
+   +'<div class="sum-line">Born '+esc(e.birth.d)+' at '+esc(e.birth.t)+', '+esc(e.birth.p)
+   +'. Five systems read independently, and the instrument compares them one pair at a '
+   +'time against what is running now. <b>'+C.agree.length+' of '+C.of+'</b> comparisons '
+   +'point the same way.'
+   +(C.open&&C.open.length?' '+C.open.length+' could not be compared at all: '
+     +esc(C.open.join('; '))+'. A gap is not a disagreement.':'')
+   +'</div></div>'
+   +'<div class="sum-lens">'
+   +'<div class="sum-l"><div class="sum-lt">Western</div><div class="sum-la">'
+    +(ZGLYPH[e.sun]||'')+' '+e.sun+'</div><div class="sum-lb">'+SIGN_RUNS[e.sun]+'</div>'
+    +'<div class="sum-lc">moon '+e.moon+', rising '+e.rising+'</div></div>'
+   +'<div class="sum-l"><div class="sum-lt">Eastern</div><div class="sum-la">'+e.celem+' '+e.chinese
+    +'</div><div class="sum-lb">'+CH_RUNS[e.chinese]+'</div>'
+    +'<div class="sum-lc">'+CE_RUNS[e.celem]+'</div></div>'
+   +'<div class="sum-l"><div class="sum-lt">Numerology</div><div class="sum-la">Life path '+e.lp
+    +'</div><div class="sum-lb">'+(LP_RUNS[e.lp]||'')+'</div>'
+    +'<div class="sum-lc">'+(e.master?'master number, survives reduction':'birth date, reduced')+'</div></div>'
+   +'<div class="sum-l"><div class="sum-lt">Human design</div><div class="sum-la">'
+    +(e.hd.profile?('profile '+e.hd.profile):'unresolved')+'</div>'
+    +'<div class="sum-lb">'+(e.hd.design?('personality gate '+e.hd.personality.gate
+      +', design gate '+e.hd.design.gate):'')+'</div>'
+    +'<div class="sum-lc">type needs the full bodygraph and is not computed</div></div>'
+   +'<div class="sum-l"><div class="sum-lt">Gene keys</div><div class="sum-la">'+e.gk.gate+'.'+e.gk.line
+    +'</div><div class="sum-lb">shadow to gift to siddhi, one axis at a time</div>'
+    +'<div class="sum-lc">gate and line</div></div></div>';
+  o+='<div class="pm-eye" style="margin-top:14px">Where they agree, '+C.agree.length+'</div>';
+  o+=C.agree.length?('<div class="sum-agree">'+C.agree.map(function(a){
+    return '<div class="sum-ag">'+esc(a)+'</div>';}).join('')+'</div>')
+   :'<p class="sum-p">Nothing converges. That is a reading, not a gap.</p>';
+  if(C.differ.length){
+   o+='<div class="pm-eye" style="margin-top:12px">Where they do not, '+C.differ.length+'</div>'
+    +'<div class="sum-agree">'+C.differ.map(function(d){
+     return '<div class="sum-dg">'+esc(d)+'</div>';}).join('')+'</div>'
+    +'<div class="verdict"><p>The instrument does not pick a winner. A birth chart describes '
+    +'the blueprint. The field describes what is running now. They diverge when something has '
+    +'been installed on top of the blueprint.</p></div>';}}
+ return o;}
 function sumCard(t,body){return '<div class="sum-card"><div class="pm-eye">'+t+'</div>'+body+'</div>';}
+/* ONE WRAPPER, ONE EXIT. This function used to open the wrapper, then return
+   early down the unread path having closed it, then close it again at the
+   bottom of the read path. Both paths were correct at runtime and the file
+   carried one more closing div than opening, which is what the build's
+   balance check counts. It is a crude check on purpose and it was right to
+   complain: two exits through one open tag is a structure waiting to leak.
+   Each path now returns its own balanced block and the wrapper is written
+   once, here. */
 function sumRender(){
- var h=document.getElementById('sum'); if(!h)return;
+ /* #sumbody, not #sum. #sum is the tab host and it also carries the folded
+    analytics surface, which this function would otherwise overwrite. */
+ var h=document.getElementById('sumbody'); if(!h)return;
  var r=compute();
+ h.innerHTML='<div class="sum-wrap">'+(r.unread?sumUnread(r):sumFull(r))+'</div>';}
+
+/* NOTHING READ YET IS ITS OWN PAGE.
+
+   The owner ruled that the app opens here, and the moment it did this surface
+   became the first thing a stranger sees. It was printing coherence 42 percent
+   in the largest ring on the screen off nothing but the default six on the
+   laws, which is the one rule this product does not break: a reading is never
+   invented, and a percentage is never printed off a default. The functional
+   gate caught it within a minute of the tab order changing, which is the gate
+   doing its job.
+
+   So the opening is the way in. The ring holds a dash, the band word is not
+   said, and everything downstream of the nine axes is left out rather than
+   printed at zero, because a grid of zeroes still reads as a measurement.
+   The spiritual overlay stays: it is derived from a birth date a person
+   entered, not from a default, so it is either real or absent. */
+function sumUnread(r){
+ var o='';
+
+  o+='<div class="sum-hero">'
+   /* a neutral colour, not the darkest seat. darkB falls back to Root on an
+      empty field, which paints the largest object on the opening screen in the
+      alarm red this product reserves for something being wrong. Nothing is
+      wrong. Nothing has been entered. */
+   +cr(r.darkB,0,{size:'lg',label:'coherence',raw:'\u2013',hot:false,color:'var(--dim)'})
+   +'<div><div class="pm-eye">Coherence, not read yet</div>'
+   +'<div class="sum-line">Nothing has been entered, so there is nothing to read. '
+   +'The arithmetic underneath works and it is not being shown, because a number '
+   +'off a default is a number about the default and not about you.</div></div></div>'
+   +'<div class="sum-start">'+startHTML('Four ways in. None of them asks you to know '
+   +'a term first, and any one of them fills this page.')+'</div>';
+  o+=sumOverlay(r);
+ return o;}
+
+function sumFull(r){
  var held=W.filter(function(n){return n.sq>=4;}).sort(function(a,b){return b.sq-a.sq;});
  var installed=W.filter(function(n){return n.pole>=4;});
  var over=r.sabs.filter(function(s){return s.over;});
@@ -6492,7 +6860,7 @@ function sumRender(){
  var laws=SI.map(function(l){return {nm:l.nm,b:l.b,v:S.law[l.nm]};});
  var strong=laws.slice().sort(function(a,b){return b.v-a.v;}).slice(0,4);
  var shut=laws.slice().sort(function(a,b){return a.v-b.v;}).slice(0,4);
- var out='<div class="sum-wrap">';
+ var out='';
  /* the headline. one value, given room. */
  out+='<div class="sum-hero">'+cr(r.darkB,r.CQ,{size:'lg',label:'coherence'})
   +'<div><div class="pm-eye">Coherence, '+r.tier.toLowerCase()+'</div>'
@@ -6543,49 +6911,7 @@ function sumRender(){
   out+='<div class="sum-l"><div class="sum-lt">'+L.t+'</div><div class="sum-la">'+esc(L.a)+'</div>'
    +'<div class="sum-lb">'+esc(L.b)+'</div><div class="sum-lc">'+L.c+'</div></div>';});
  out+='</div>';
- /* the overlay. the point is where the systems agree. */
- var nm2=(PEOPLE[S.who]||{}).nm||'You';
- var C=converge(nm2,r);
- if(!C){
-  out+='<div class="pm-eye" style="margin-top:22px">The spiritual overlay</div>'
-   +'<p class="sum-p">No birth data on file. Date, time and place would let the overlay run. '
-   +'Nothing else is stored, and every reading is derived from those three.</p>';
- }else{
-  var e=C.e;
-  out+='<div class="pm-eye" style="margin-top:22px">The spiritual overlay</div>'
-   +'<div class="sum-hero" style="margin-top:8px">'
-   +cr('Crown',C.score,{size:'md',label:'convergence'})
-   +'<div class="sum-line">Born '+esc(e.birth.d)+' at '+esc(e.birth.t)+', '+esc(e.birth.p)
-   +'. Five systems read independently. What matters is where they say the same thing.</div></div>'
-   +'<div class="sum-lens">'
-   +'<div class="sum-l"><div class="sum-lt">Western</div><div class="sum-la">'
-    +(ZGLYPH[e.sun]||'')+' '+e.sun+'</div><div class="sum-lb">'+SIGN_RUNS[e.sun]+'</div>'
-    +'<div class="sum-lc">moon '+e.moon+', rising '+e.rising+'</div></div>'
-   +'<div class="sum-l"><div class="sum-lt">Eastern</div><div class="sum-la">'+e.celem+' '+e.chinese
-    +'</div><div class="sum-lb">'+CH_RUNS[e.chinese]+'</div>'
-    +'<div class="sum-lc">'+CE_RUNS[e.celem]+'</div></div>'
-   +'<div class="sum-l"><div class="sum-lt">Numerology</div><div class="sum-la">Life path '+e.lp
-    +'</div><div class="sum-lb">'+(LP_RUNS[e.lp]||'')+'</div>'
-    +'<div class="sum-lc">'+(e.master?'master number, survives reduction':'birth date, reduced')+'</div></div>'
-   +'<div class="sum-l"><div class="sum-lt">Human design</div><div class="sum-la">'
-    +(e.hd.profile?('profile '+e.hd.profile):'unresolved')+'</div>'
-    +'<div class="sum-lb">'+(e.hd.design?('personality gate '+e.hd.personality.gate
-      +', design gate '+e.hd.design.gate):'')+'</div>'
-    +'<div class="sum-lc">type needs the full bodygraph and is not computed</div></div>'
-   +'<div class="sum-l"><div class="sum-lt">Gene keys</div><div class="sum-la">'+e.gk.gate+'.'+e.gk.line
-    +'</div><div class="sum-lb">shadow to gift to siddhi, one axis at a time</div>'
-    +'<div class="sum-lc">gate and line</div></div></div>';
-  out+='<div class="pm-eye" style="margin-top:14px">Where they agree, '+C.agree.length+'</div>';
-  out+=C.agree.length?('<div class="sum-agree">'+C.agree.map(function(a){
-    return '<div class="sum-ag">'+esc(a)+'</div>';}).join('')+'</div>')
-   :'<p class="sum-p">Nothing converges. That is a reading, not a gap.</p>';
-  if(C.differ.length){
-   out+='<div class="pm-eye" style="margin-top:12px">Where they do not, '+C.differ.length+'</div>'
-    +'<div class="sum-agree">'+C.differ.map(function(d){
-     return '<div class="sum-dg">'+esc(d)+'</div>';}).join('')+'</div>'
-    +'<div class="verdict"><p>The instrument does not pick a winner. A birth chart describes '
-    +'the blueprint. The field describes what is running now. They diverge when something has '
-    +'been installed on top of the blueprint.</p></div>';}}
+ out+=sumOverlay(r);
  var hist=(CURP&&CURP.history)||[];
  out+='<div class="sum-ai"><div class="pm-eye">Source AI</div>'
   +'<p class="sum-p">It reads movement, not definitions. It needs history before it has '
@@ -6595,8 +6921,8 @@ function sumRender(){
   /* The button had no handler in either state, so it promised a thing that
      did nothing when clicked. It says what it is instead. */
   +'</div>';
- out+='</div>';
- h.innerHTML=out;}
+ return out;}
+
 
 /* ============================================================
    ANALYTICS. Bubbles. Size is magnitude, colour is seat or tier. The
@@ -6687,14 +7013,28 @@ function anaRender(){
     because cr() appends one. A number with no scale is not a reading, it is a
     digit, and six of them sat here on six different scales. */
  var acc=accuracy(r);
- out+='<div class="ab-hero">'+cr(r.darkB,r.CQ,{size:'lg',label:'coherence'})
+ /* THIS SURFACE IS NO LONGER SOMEWHERE A PERSON NAVIGATES TO. It is folded
+    into Summary, and Summary is where the app opens, so it now renders to a
+    stranger who has entered nothing. The eyebrow already knew how to say
+    "not read yet" and the ring beside it printed 36 percent anyway, which is
+    the exact failure the ruling about the opening screen exposed. The ring
+    holds a dash and the arc holds nothing. Same rule as everywhere else: a
+    percentage is never printed off a default. */
+ out+='<div class="ab-hero">'
+  +cr(r.darkB,r.unread?0:r.CQ,{size:'lg',label:'coherence',
+    raw:r.unread?'\u2013':null, hot:r.unread?false:undefined,
+    color:r.unread?'var(--dim)':null})
   +'<div><div class="pm-eye">'+(r.unread?'Coherence, not read yet'
     :'Coherence, '+r.tier.toLowerCase()+', 0 to 100')+'</div>'
   +'<div class="ab-say">'
-  +(loud?'<b>'+esc(loud.nm)+'</b> is the biggest thing running. ':'Nothing is compounding. ')
-  +(stop?'Flow stops at the <b>'+stop.p.n.toLowerCase()+'</b>. ':'Every seat is passing. ')
-  +(held.length?'<b>'+held.length+'</b> of the 112 addresses are carrying, at a shadow weight of <b>'+r.DQ.toFixed(1)+'</b>.':'Nothing is carrying.')
-  +(prev?' CQ '+(r.CQ-prev.cq>=0?'up ':'down ')+Math.abs(r.CQ-prev.cq).toFixed(1)+' since last session.':'')
+  +(r.unread?'Nothing has been entered, so none of this is measured yet. Every figure '
+    +'below is drawn from the blueprint you have selected and not from a reading.'
+   :(loud?'<b>'+esc(loud.nm)+'</b> is the biggest thing running. ':'Nothing is compounding. ')
+   /* a count against a total is a score, and this is not a score */
+   +(stop?'Flow stops at the <b>'+stop.p.n.toLowerCase()+'</b>. ':'Every seat is passing. ')
+   +(held.length?'<b>'+held.length+'</b> address'+(held.length===1?' is':'es are')
+     +' carrying, at a shadow weight of <b>'+r.DQ.toFixed(1)+'</b>.':'Nothing is carrying.')
+   +(prev?' CQ '+(r.CQ-prev.cq>=0?'up ':'down ')+Math.abs(r.CQ-prev.cq).toFixed(1)+' since last session.':''))
   +'</div>'
   /* The accuracy interval is this product's stated substitute for explaining
      a model, and it was rendered into the Field rail and nowhere else. It
@@ -6702,11 +7042,13 @@ function anaRender(){
      A move smaller than the interval is not a reading, it is noise, and the
      line says so rather than leaving a person to infer it. */
   +'<div class="ab-acc"><span class="pm-eye">Identification</span>'
-  +'<b>'+acc.pct.toFixed(0)+'%</b><span class="ab-band">plus or minus '
-  +acc.band.toFixed(0)+'</span>'
-  +'<span class="ab-note">'+acc.cov+' of 21 laws measured'
-  +(acc.held?', '+acc.held+' addresses carrying':'')
-  +'. A move smaller than the interval is not a reading.</span></div>'
+  +'<b>'+(r.unread?'\u2013':acc.pct.toFixed(0)+'%')+'</b>'
+  +(r.unread?'':'<span class="ab-band">plus or minus '+acc.band.toFixed(0)+'</span>')
+  +'<span class="ab-note">'+(r.unread
+    ?'Nothing measured. The interval opens once something is entered.'
+    :acc.cov+' of 21 laws measured'
+     +(acc.held?', '+acc.held+' addresses carrying':'')
+     +'. A move smaller than the interval is not a reading.')+'</span></div>'
   +'</div></div><div class="ab-grid">';
  out+=anaField('Masks','the era you speak from. size is weight, 0 to 10',
   r.maskRing.map(function(m){return {k:'mask',nm:m.nm,v:m.w,
@@ -7277,7 +7619,7 @@ function ritRender(){
    No library and no new dependency. Its own canvas, its own
    context, and an axonometric projection in about forty lines.
    ============================================================ */
-var CONE={open:false, spin:0.6, tilt:0.60, drag:null, raf:null, t:0, cv:null, g:null, dpr:1};
+var CONE={open:false, tab:false, spin:0.6, tilt:0.60, drag:null, raf:null, t:0, cv:null, g:null, dpr:1};
 /* THE HEIGHT BUDGET. A tilted ring reaches lower than the axis point it sits
    on, by its own radius times the sine of the tilt, so a figure sized against
    the axis alone puts its floor names off the bottom of the canvas. The budget
@@ -7414,12 +7756,19 @@ function coneTick(){
  if(!REDUCED&&!CONE.drag)CONE.spin+=0.0022;
  coneDraw();
  CONE.raf=requestAnimationFrame(coneTick);}
-function coneOpen(){
+/* TWO WAYS IN, ONE FIGURE. As a modal it is what a drill opens, over the top
+   of whatever a person was reading, and it closes back to that. As a tab it is
+   a surface inside the stage with no backdrop and no close button, because
+   closing a tab leaves a person looking at nothing. inTab is the only
+   difference and it changes where the host sits, not what is drawn. */
+function coneOpen(inTab){
  var h=document.getElementById('cone'); if(!h)return;
- CONE.open=true; h.style.display='flex';
+ CONE.open=true; CONE.tab=!!inTab;
+ h.classList.toggle('tabmode',!!inTab);
+ h.style.display='flex';
  h.innerHTML='<div class="cone-card">'
   +'<div class="cone-hd"><span class="pm-eye">The compass</span>'
-  +'<button class="btn" id="conex">Close</button></div>'
+  +(inTab?'':'<button class="btn" id="conex">Close</button>')+'</div>'
   +'<canvas id="conecv" class="cone-cv" role="img" '
   +'aria-label="Two cones meeting at the median. Eight axes, each with a coherent pole above and its inversion below."></canvas>'
   +'<p class="cone-p">Eight qualities, each with its coherent pole at the crown and its '
@@ -7441,9 +7790,10 @@ function coneOpen(){
   CONE.cv.onpointerup=CONE.cv.onpointercancel=function(){CONE.drag=null;};}
  addEventListener('resize',coneLayout);}
 function coneClose(){
- CONE.open=false; CONE.drag=null;
+ CONE.open=false; CONE.tab=false; CONE.drag=null;
  if(CONE.raf)cancelAnimationFrame(CONE.raf);
- var h=document.getElementById('cone'); if(h){h.style.display='none';h.innerHTML='';}
+ var h=document.getElementById('cone');
+ if(h){h.style.display='none';h.innerHTML='';h.classList.remove('tabmode');}
  removeEventListener('resize',coneLayout);}
 
 /* ============================================================
@@ -8331,7 +8681,9 @@ function kbMatch(row,q){
  return (row.t+' '+row.s+' '+row.d).toLowerCase().indexOf(q)>=0;}
 
 function kbRender(){
- var host=document.getElementById('know'); if(!host)return;
+ /* #knowbody, not #know. #know is the tab host and it also carries the folded
+    games surface, which this function would otherwise overwrite. */
+ var host=document.getElementById('knowbody'); if(!host)return;
  var q=KB_Q.trim().toLowerCase();
  var rows=kbRows(KB_SEC).filter(function(x){return kbMatch(x,q);});
  /* the count across every section, so search says what it found everywhere */
@@ -8936,6 +9288,23 @@ $('allLaw').addEventListener('input',function(e){toYou();
 
 /* ---- tabs and depths ---- */
 function setTab(i){
+ /* A FOLDED SURFACE RESOLVES TO ITS PARENT. Analytics and Games came off the
+    bar and their hosts moved inside Summary and Knowledge, so an integer that
+    used to be a tab is now a request for the tab that carries it. Routing
+    every caller through TABREAL means the drills, the tools and any stored
+    value keep working instead of landing on whatever happens to be first. */
+ i=TABREAL(i);
+ /* A HIDDEN SURFACE THAT KEEPS ITS LAST RENDER IS STILL ASSERTING IT. Summary
+    and the analytics folded into it are the two surfaces that print a reading,
+    and both are rebuilt on entry, so what they hold while hidden is whatever
+    was true for whoever was loaded last. Leaving it there means the document
+    carries a coherence figure for a profile that is no longer selected, which
+    anything reading the page finds, and the functional gate did: it swept the
+    body on a cleared field and found two percentages nobody could see. They
+    are emptied on the way out rather than left to go stale. */
+ if(S.tab===TAB.SUMMARY&&i!==TAB.SUMMARY){
+  var sb=$('sumbody'), ab=$('ana');
+  if(sb)sb.innerHTML=''; if(ab)ab.innerHTML='';}
  S.tab=i; S.pin=null;
  var cvE=$('cv'), vb=$('vbar');
  TABDEF.forEach(function(T){
@@ -8944,6 +9313,15 @@ function setTab(i){
   e.style.display=(T.k===i)?'flex':'none';});
  if(cvE) cvE.style.display=(i===TAB.FIELD)?'block':'none';
  if(vb) vb.style.display=(i===TAB.FIELD)?'flex':'none';
+ /* MEASURE THE CANVAS THE MOMENT IT IS VISIBLE. It used to be measured once at
+    boot, which worked only while Field was the opening surface. It is not any
+    more, so at boot the canvas was display:none, its box was zero by zero, and
+    the first draw after switching to Field laid the wheel out for a canvas
+    that did not exist. A ResizeObserver corrected it a frame later, which is
+    one frame of an empty wheel and, in the functional gate, a depth with no
+    hit targets at all. The display change above is already a forced layout, so
+    reading the box here costs nothing that has not been paid. */
+ if(i===TAB.FIELD&&typeof layout==='function')layout();
  TABDEF.forEach(function(T){document.body.classList.remove(T.cls);});
  document.body.classList.add(TABOF(i).cls);   /* by key, not by position */
  document.body.classList.toggle('hassub',i===TAB.FIELD);
@@ -8952,11 +9330,20 @@ function setTab(i){
  document.querySelectorAll('.tabtop').forEach(function(x,j){
   x.setAttribute('aria-pressed',TABDEF[j]&&TABDEF[j].k===i);});
  if(i===TAB.INTAKE)renderIntake();
- if(i===TAB.KNOW)kbRender();
- if(i===TAB.GAMES){if(!GAME)GAME='lg'; gmRender();} else lgStop();
+ /* Knowledge carries Games. Rendering the parent renders both, because the
+    games host is inside it and a hidden host renders nothing a person sees. */
+ if(i===TAB.KNOW){kbRender(); if(!GAME)GAME='lg'; gmRender();} else lgStop();
  if(i===TAB.STORY)stRender();
- if(i===TAB.SUMMARY)sumRender();
- if(i===TAB.ANALYTICS)anaRender();
+ /* Summary carries Analytics, and reads last. */
+ if(i===TAB.SUMMARY){sumRender(); anaRender();}
+ /* THE COMPASS HAS A FRONT DOOR. It was three clicks deep: click one end of
+    the cone marker on the Field stage, then a button inside the drill that
+    opened. The owner looked for it and could not find it, which is the whole
+    finding. It is a tab. coneOpen builds its own canvas and starts its own
+    frame loop, so entering the tab opens it and leaving it stops the loop
+    rather than leaving a requestAnimationFrame running behind another
+    surface. */
+ if(i===TAB.COMPASS)coneOpen(true); else if(CONE.open&&CONE.tab)coneClose();
  render(); paintSections();}
 TABDEF.forEach(function(T,i){
  var b=document.createElement('button');b.className='vt tabtop';b.type='button';
@@ -9002,8 +9389,36 @@ const THEMEICON={
   document.body.classList.toggle('snow',t[0]==='snow');
   document.body.classList.toggle('punch',t[0]==='punch');
   $('themes').querySelectorAll('button').forEach(function(x,j){x.setAttribute('aria-pressed',j===i);});
+  var nw=$('lightnow'); if(nw)nw.textContent=t[1];
   rebuildSwatches();render();});
  $('themes').appendChild(b);});
+/* ---- THE LIGHTING MENU ----
+   The three lighting buttons moved off the bar and into a menu on the owner's
+   ruling. The button names the lighting it is on, so the setting is still
+   readable at a glance without spending three navigation slots on it.
+
+   It closes on the backdrop, on escape and on a choice, and the choice closes
+   it because a person who has picked the lighting can see the result behind
+   the menu and does not need the menu any more. */
+(function(){
+ var btn=$('lightbtn'), menu=$('lightmenu'); if(!btn||!menu)return;
+ function shut(){menu.hidden=true; btn.setAttribute('aria-expanded','false');}
+ function open(){menu.hidden=false; btn.setAttribute('aria-expanded','true');}
+ btn.addEventListener('click',function(e){
+  e.stopPropagation(); if(menu.hidden)open(); else shut();});
+ menu.addEventListener('click',function(e){
+  /* a lighting choice is the last thing this menu is for */
+  if(e.target.closest('button'))shut();
+  e.stopPropagation();});
+ document.addEventListener('click',function(){if(!menu.hidden)shut();});
+ document.addEventListener('keydown',function(e){
+  if(e.key==='Escape'&&!menu.hidden){shut();btn.focus();}});})();
+/* ---- THE WORDMARK GOES HOME ----
+   Home is the summary. It is the conclusion, it is where the app opens, and it
+   is what a person clicking the name of the product is asking to see. */
+(function(){
+ var b=$('brand'); if(!b)return;
+ b.addEventListener('click',function(){setTab(TAB.SUMMARY);});})();
 /* the font tuner is gone on the owner's ruling. one face, narrower, no
    per person override to keep working across every surface. */
 
@@ -9024,25 +9439,38 @@ DOMAINS.forEach(function(d,i){
   else S.doms=[i];
   buildSoul();S.pin=null;syncSoul();saveYou();render();});
  $('doms').appendChild(b);});
+/* WHICH ROOT IS LIT. A blueprint domain belongs to exactly one root, so a
+   selection already implies a root whether or not anybody clicked one. The row
+   never said so, which is why a loaded profile showed four identical buttons.
+   This is the derivation, and it is a pure read of S.doms. */
+function rootsLit(){
+ var out={};
+ (S.doms||[]).forEach(function(i){var D=DOMAINS[i]; if(D)out[D.r]=true;});
+ return out;}
 ROOTD.forEach(function(rn){
  var b=document.createElement('button');b.type='button';b.dataset.r=rn;
  b.className='rootb';b.textContent=rn;b.setAttribute('aria-pressed',false);
- b.style.cssText='flex:1 1 auto;background:transparent;border:1.5px solid var(--edge);'
-  +'border-radius:var(--r-xs);padding:8px 6px;font-family:var(--sans);font-size:13px;'
-  +'cursor:pointer;color:'+ROOTCOL[rn]+';transition:.18s';
- b.title=rn+'. Holds '+DOMAINS.filter(function(D){return D.r===rn;}).map(function(D){return D.nm;}).join(', ')
-  +'. Affinity 1.3 on '+(AFFIN[rn]||[]).join(', ')+'.';
+ /* the colour is a custom property so the three states in the sheet can each
+    mix against it. it was an inline style, which meant the sheet could not
+    reach it and every state had to be written back in script. */
+ b.style.setProperty('--rc',ROOTCOL[rn]);
+ var holds=DOMAINS.filter(function(D){return D.r===rn;}).map(function(D){return D.nm;}).join(', ');
+ b.title=rn+'. Holds '+holds+'. Affinity 1.3 on '+(AFFIN[rn]||[]).join(', ')
+  +'. Filled means you added it. Washed means your selection is already in it.';
  b.addEventListener('mouseenter',function(){
   $('capD').innerHTML='<b style="color:'+ROOTCOL[rn]+'">'+rn+'</b> root domain. Holds '
-   +DOMAINS.filter(function(D){return D.r===rn;}).map(function(D){return D.nm;}).join(', ')+'.';});
+   +holds+'.';});
  b.addEventListener('mouseleave',capD);
  b.addEventListener('click',function(){toYou();var k=S.roots.indexOf(rn);
   if(k>=0)S.roots.splice(k,1);else S.roots.push(rn);
-  b.setAttribute('aria-pressed',k<0);
-  b.style.borderColor=k<0?ROOTCOL[rn]:'var(--edge)';
-  b.style.boxShadow=k<0?('0 0 0 2px '+ROOTCOL[rn]+'44'):'none';
   buildSoul();S.pin=null;syncSoul();saveYou();render();});
  $('roots').appendChild(b);});
+/* What the two states mean, in the rail, once. A legend is cheaper than a
+   person guessing, and there is nowhere else on this row to put it. */
+(function(){
+ var r=$('roots'); if(!r||!r.parentNode)return;
+ var d=document.createElement('div'); d.className='rootlegend'; d.id='rootlegend';
+ r.parentNode.insertBefore(d,r.nextSibling);})();
 function capD(){
  $('capD').innerHTML=S.doms.map(function(i){
   return '<b style="color:'+ROOTCOL[DOMAINS[i].r]+'">'+DOMAINS[i].nm+'</b>';}).join(' + ')
@@ -9074,11 +9502,17 @@ function syncSoul(){
  $('ar2').querySelectorAll('.ib').forEach(function(b,i){
   b.setAttribute('aria-pressed',false);
   if(S.arcs.indexOf(i)>=1)b.dataset.r='2';else delete b.dataset.r;});
+ var lit=rootsLit(), nlit=0;
  $('roots').querySelectorAll('button').forEach(function(b){
   var on=S.roots.indexOf(b.dataset.r)>=0;
   b.setAttribute('aria-pressed',on);
-  b.style.borderColor=on?ROOTCOL[b.dataset.r]:'var(--edge)';
-  b.style.boxShadow=on?('0 0 0 2px '+ROOTCOL[b.dataset.r]+'44'):'none';});
+  /* added wins over lit, because a fill and a wash on one control is noise */
+  if(!on&&lit[b.dataset.r]){b.dataset.lit='1';nlit++;}else delete b.dataset.lit;});
+ var lg=$('rootlegend');
+ if(lg)lg.textContent=(S.roots.length?'filled, you added':'')
+  +(S.roots.length&&nlit?' \u00b7 ':'')
+  +(nlit?'washed, your selection sits here':'')
+  +(!S.roots.length&&!nlit?'click a root to add every domain under it':'');
  capD();capA();}
 function rebuildSwatches(){
  $('doms').querySelectorAll('.ib').forEach(function(b,i){b.style.setProperty('--c',ROOTCOL[DOMAINS[i].r]);});
@@ -9837,10 +10271,23 @@ function railStack(r){
   return '<button type="button" role="tab" class="stk-t'+(STACK_TAB===t[0]?' on':'')+'" data-st="'+t[0]+'" '
    +'aria-selected="'+(STACK_TAB===t[0])+'">'+t[1]+(t[2]?' <b>'+t[2]+'</b>':'')+'</button>';}).join('')+'</div>';
  if(STACK_TAB==='fet'){
-  h+='<div class="stk-hd"><span>held</span><span>installed</span></div>';
+  /* ONE WORD PER CONCEPT. This header said held and installed, the rail four
+     inches to the left said held and opposite, and the owner asked what either
+     of them meant. They are the two ends of one axis: the state you are
+     carrying, and the coherent quality on the other side of it. Held and
+     opposite, in both places, with the definition said once here rather than
+     left in a tooltip nothing on a phone can reach. */
+  h+='<p class="stk-def">Nine axes, two ends each. <b>Held</b> is the state you are '
+   +'carrying. <b>Opposite</b> is the coherent quality on the far side of it. Release '
+   +'empties the first, replace fills the second.</p>';
+  h+='<div class="stk-hd"><span>held</span><span>opposite</span></div>';
   h+=CHILD.map(function(c){var v=S.charge[c.nm]||0, p=S.replace[c.nm]||0;
-   return '<div class="stk-r static"><span class="stk-l">'+cr(c.seat,v*10,{size:'xs',raw:v.toFixed(1)})+esc(c.nm)+'</span>'
-    +'<span class="stk-p">'+esc(c.opp)+cr('Heart',p*10,{size:'xs',raw:p.toFixed(1)})+'</span></div>';}).join('');}
+   /* each axis carries its own glyph. canon.js has had one on every entry
+      since the port and nothing in the rails was drawing them. */
+   return '<div class="stk-r static"><span class="stk-l">'
+    +cr(c.seat,v*10,{size:'xs',raw:v.toFixed(1),glyph:'<path d="'+c.ic+'"/>'})+esc(c.nm)+'</span>'
+    +'<span class="stk-p">'+esc(c.opp)
+    +cr('Heart',p*10,{size:'xs',raw:p.toFixed(1),glyph:'<path d="'+c.ic+'"/>'})+'</span></div>';}).join('');}
  else{
   var list={sab:r.sabs,cx:r.cxs,hy:r.hys,sup:r.sups}[STACK_TAB]||[];
   h+=list.length?'<div class="stk-hd"><span>weight</span><span>opposite in</span></div>':'';
@@ -9850,26 +10297,60 @@ function railStack(r){
     +'<span class="stk-p">'+cr('Heart',p*10,{size:'xs',raw:p.toFixed(1)})+'</span></button>';}).join('')
    :'<div class="rnone">Nothing at this layer.</div>';}
  e.innerHTML=h;}
-/* the balance strip. outward is the solar colour, inward the throat. the
-   small grey tick is sex at birth when it has been given, so a person can
-   see the distance between what they were born and what the field reads. */
+/* THE BALANCE STRIP, AND WHICH END IS WHICH.
+
+   The two poles are masculine and feminine. cards.js states the codex
+   position: masculine is structure and direction, feminine is energy and
+   receptivity, masculine runs the right channel and sympathetic, feminine the
+   left and parasympathetic, and the spec is explicit that feminine is not
+   women and masculine is not men. Outward is the masculine end and inward the
+   feminine one.
+
+   The owner ruled the masculine symbol on the left and the feminine on the
+   right, which is the opposite handedness from the body. That is not a
+   conflict, it is what a mirror is: face one and your right hand is on the
+   left. This product is a mirror a person holds up to themselves and the strip
+   is drawn the way they would see it, so the screen is mirrored against the
+   body on purpose. Logged in BOOK-ERRATA so the codex and the screen disagree
+   in writing rather than by accident.
+
+   So the strip reads masculine on the left and feminine on the right, the lean
+   is mirrored with it, and the marker still sits where the field actually is.
+   The centre is a hairline, the same one the compass draws down its axis. */
+const GLYPH_M='<circle cx="10" cy="14" r="6"/><path d="M14.5 9.5L20 4M15.5 4H20v4.5"/>';
+const GLYPH_F='<circle cx="12" cy="9" r="6"/><path d="M12 15v7M8.5 19h7"/>';
+function balG(g,on,t){
+ return '<span class="bal-g'+(on?' on':'')+'" title="'+esc(t)+'">'
+  +'<svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">'+g+'</svg></span>';}
 function renderBal(r){
  var e=document.getElementById('bal'); if(!e)return;
- var b=r.balance, pc=(b.lean+1)/2*100;
+ var b=r.balance;
+ /* mirrored: lean +1 is fully outward, which is the masculine end, and the
+    masculine end is now on the left, so the position runs the other way. */
+ var pc=(1-(b.lean+1)/2)*100;
  var c=b.lean>=0?seatCol('Solar'):seatCol('Throat');
  var sx=CURP&&CURP.who?CURP.who.sex:'';
- var tick=sx==='m'?'<span class="bal-s" style="left:78%"></span>'
-        :sx==='f'?'<span class="bal-s" style="left:22%"></span>':'';
+ /* sex at birth follows the same mirror: male at the masculine end, which is
+    now the left one. It is a reference point, not a reading, and it is only
+    drawn when a person has given it. */
+ var tick=sx==='m'?'<span class="bal-s" style="left:22%"></span>'
+        :sx==='f'?'<span class="bal-s" style="left:78%"></span>':'';
  /* The centre named the direction and so did the end label, so "26% outward"
     sat against the word outward and the two ran together. The ends carry the
     direction, the centre carries the number, and the end the field leans to is
     the one that lights. One word per concept, on one strip. */
  var lean=b.read?Math.abs(b.lean)*100:0;
  var dir=!b.read?'':b.lean===0?'even':b.lean>0?'outward':'inward';
- e.innerHTML='<div class="bal-t"><span'+(dir==='inward'?' class="on" style="color:'+c+'"':'')+'>inward</span>'
-  +'<span><b>'+(!b.read?'not enough held to read'
+ e.innerHTML='<div class="bal-t">'
+  +balG(GLYPH_M,dir==='outward','Masculine. Structure and direction, expressed outward. '
+    +'Not men: the codex is explicit about that.')
+  +'<span'+(dir==='outward'?' class="on" style="color:'+c+'"':'')+'>outward</span>'
+  +'<span class="bal-n"><b>'+(!b.read?'not enough held to read'
     :b.lean===0?'even':lean.toFixed(0)+'%')+'</b></span>'
-  +'<span'+(dir==='outward'?' class="on" style="color:'+c+'"':'')+'>outward</span></div>'
+  +'<span'+(dir==='inward'?' class="on" style="color:'+c+'"':'')+'>inward</span>'
+  +balG(GLYPH_F,dir==='inward','Feminine. Energy and receptivity, held inward. '
+    +'Not women: the codex is explicit about that.')
+  +'</div>'
   +'<div class="bal-tr"><i></i>'+tick
   +'<span class="bal-m" style="left:'+pc.toFixed(1)+'%;background:'+c+'"></span></div>';}
 function railTop(r){
@@ -9995,27 +10476,16 @@ function render(){
      action that survives the action is furniture. Two doors and a line saying
      what each one is for, so nobody has to remember a term to find one. */
   (function(){var st=$('start'); if(!st)return;
-   if(!r.unread){st.innerHTML='';st.hidden=true;return;}
+   /* ONE SET OF DOORS PER SCREEN. The summary carries the same four, and the
+      summary is the opening surface, so on that tab the rail was printing a
+      second copy of them beside the first. The rail keeps them everywhere
+      else, because everywhere else there is nothing on screen offering a way
+      in. */
+   if(!r.unread||S.tab===TAB.SUMMARY){st.innerHTML='';st.hidden=true;return;}
+   /* the doors and their wiring moved to component.js, because the summary
+      needs the same four and two sets of one id is a broken document. */
    st.hidden=false;
-   st.innerHTML='<div class="pm-eye">Where to start</div>'
-    +'<p class="st-lead">Nothing has been read yet. Three ways in, and none of them '
-    +'asks you to know anything first.</p>'
-    +'<button type="button" class="stbtn" id="stw1"><b>Write what happened</b>'
-    +'<span>The day, in your own words. The engine reads the charge out of it.</span></button>'
-    +'<button type="button" class="stbtn" id="stw2"><b>Read nine sentences</b>'
-    +'<span>For anyone who cannot think of themselves as the problem. None of them '
-    +'is a diagnosis.</span></button>'
-    +'<button type="button" class="stbtn" id="stw3"><b>Go year by year</b>'
-    +'<span>Three to eighteen. For anyone who cannot think of anything they '
-    +'identify with, which is most people.</span></button>'
-    +'<button type="button" class="stbtn" id="stw4"><b>Say who you are becoming</b>'
-    +'<span>The avatar. Release empties an address and replace fills it. This is '
-    +'what you are filling it toward.</span></button>';
-   var b1=$('stw1'); if(b1)b1.onclick=function(){setTab(TAB.STORY);render();
-    var ta=document.getElementById('sttext'); if(ta)ta.focus();};
-   var b2=$('stw2'); if(b2)b2.onclick=function(){runRecogniseDrill();};
-   var b3=$('stw3'); if(b3)b3.onclick=function(){runAgeDrill();};
-   var b4=$('stw4'); if(b4)b4.onclick=function(){runAvatarDrill();};})();
+   st.innerHTML=startHTML();})();
   $('person').innerHTML='<h3>'+(p.you?'You':p.nm)+'</h3>'
    +(p.you?'':'<div class="prole">'+p.age+', '+esc(String(p.role).replace(' · ICP',''))+'</div>')
    +(p.says?'<p class="psay">'+esc(p.says)+'</p>':'')
@@ -10142,6 +10612,9 @@ layout(); mxKey(); wireSections(); loadP(0);
  loadProfile(CURP);
  syncCh(); syncLw(); syncSoul();
 }());
-setTab(TAB.FIELD);
+/* THE APP OPENS ON SUMMARY, on the owner's ruling. This line said FIELD, which
+   is what actually decided the opening surface: the default on S was only what
+   held until this ran. Both say Summary now. */
+setTab(TAB.SUMMARY);
 requestAnimationFrame(loop);
 </script></body></html>

@@ -54,6 +54,12 @@ font-display:swap;src:url(data:font/woff2;base64,d09GMgABAAAAALyAABUAAAAB4CAAALw
  --root:#C4635E; --sacral:#D19255; --solar:#D4BC70;
  --heart:#6FC5A3; --throat:#65B8D4; --eye:#8296DB; --crown:#A98BCE;
  --alarm:#FF2E1F; --alarm-soft:rgba(255,46,31,.16); --gold:#DFCC7E;
+ /* THE SKY. The owner asked for the wordmark in sky blue and asked where the
+    blue design went. It is in the original: --law-accent:#7eb8d4, used in
+    thirteen places, on a paper white ground. That exact value is the token.
+    --um is the umlaut, which sits on the bar rather than on the letter, so it
+    answers to the background. White on dark, as ruled. */
+ --sky:#7EB8D4; --um:#FFFFFF;
  --good:#68CBA4; --bad:#CB5F59;
  /* Lexend is a wide face by design, which is why the rail clipped: Witness
     rendered as Wit. Inter is narrower at the same size and carries more
@@ -132,6 +138,9 @@ body.snow{
  --root:#9B4B47; --sacral:#8E6231; --solar:#7E6C29; --heart:#2A7A5C;
  --throat:#2C6F88; --eye:#4C5F9E; --crown:#6E5490;
  --alarm:#D41200; --alarm-soft:rgba(212,18,0,.12); --gold:#8A6D18;
+ /* Snow is paper. Sky deepens to hold against it, and the umlaut cannot stay
+    white because the dots sit on the paper, not on the letter. */
+ --sky:#2F6E92; --um:#13303F;
  --good:#1F8560; --bad:#A8413C;
  --shadow:0 12px 30px rgba(40,54,74,.12);
 }
@@ -169,10 +178,22 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
  line-height:1.4;color:var(--mid);transition:.2s}
 #status:empty{display:none}
 #status[data-kind="fail"]{color:var(--hot,#c0392b);font-weight:500}
-.brand{font-size:17px;font-weight:600;letter-spacing:-.01em;padding-right:6px;white-space:nowrap}
-.brand em{font-style:normal;color:var(--gold);font-weight:400}
+/* THE WORDMARK. Sky blue, letters given room, and the weight down from 600.
+   600 at negative tracking read as a product logo shouting; this is a name.
+   It is a button and it carries no button chrome, because chrome on a wordmark
+   makes it look like a control rather than the thing you are in. */
+.brand{font-size:18px;font-weight:400;letter-spacing:.075em;padding:0 10px 0 2px;
+ white-space:nowrap;color:var(--sky);background:transparent;border:0;cursor:pointer;
+ font-family:var(--sans);line-height:1;min-height:var(--tap);display:flex;align-items:center}
+.brand:hover{color:color-mix(in srgb,var(--sky) 76%,var(--ink))}
+/* the umlaut, drawn. two dots, white, sitting above a plain u. */
+.brand .um{position:relative;display:inline-block}
+.brand .um::before,.brand .um::after{content:'';position:absolute;top:-.42em;
+ width:.14em;height:.14em;border-radius:50%;background:var(--um)}
+.brand .um::before{left:.055em}
+.brand .um::after{left:.35em}
 .spacer{flex:1 1 auto;min-width:8px}
-.toplab{font-family:var(--num);font-size:11px;font-weight:500;color:var(--dim);white-space:nowrap}
+.toplab{font-family:var(--num);font-size:11px;font-weight:400;color:var(--dim);white-space:nowrap}
 
 /* ---------- buttons ---------- */
 .vt{background:transparent;border:1px solid var(--edge);border-radius:var(--r-s);
@@ -184,8 +205,15 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
 .vt svg{width:17px;height:17px;stroke:currentColor;stroke-width:1.6;fill:none;
  stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}
 .vt .n{display:block}
-/* the top-level surface switch. .vt carries the look, .tabtop marks the role. */
-.tabtop{font-weight:500}
+/* the top-level surface switch. .vt carries the look, .tabtop marks the role.
+   THE WEIGHT CAME DOWN. 500 across seven items in one row read as a heavy
+   band across the top of the instrument, which is the owner's finding. 350
+   with a little tracking reads as navigation. The pressed one carries 500,
+   because the one difference worth a weight change is which surface you are
+   on, and it also carries a fill, so the weight is confirmation rather than
+   the only signal. */
+.tabtop{font-weight:350;letter-spacing:.012em}
+.tabtop[aria-pressed=true]{font-weight:500;letter-spacing:0}
 .seg{display:flex;gap:3px;padding:3px;border-radius:var(--r-s);background:var(--sunk);flex:0 0 auto}
 .seg button{background:transparent;border:0;border-radius:var(--r-xs);min-height:var(--tap);padding:7px 13px;
  font-family:var(--sans);font-size:13.5px;font-weight:400;color:var(--dim);cursor:pointer;transition:.16s}
@@ -197,6 +225,36 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
 .seg-i[aria-pressed=true] svg{stroke:#15130A}
 .seg-i svg path:first-child{fill:none}
 .seg-i[data-solid] svg path:first-child{fill:currentColor}
+/* ---------- THE GLASS MENU ----------
+   Apple Glass, on the owner's ruling, and what that actually is: a surface
+   that takes its colour from what is behind it rather than from a swatch. So
+   the background is a wash over a backdrop blur and a saturate, there is a
+   one pixel light along the top edge where a pane would catch a highlight,
+   and the shadow is long and soft rather than tight. backdrop-filter is not
+   universal, so the wash alone is opaque enough to read on its own and the
+   blur is the improvement rather than the requirement. */
+.gwrap{position:relative;flex:0 0 auto}
+.gbtn .chev{width:12px;height:12px;opacity:.7}
+.gbtn[aria-expanded=true]{background:var(--panel-2);border-color:var(--edge-2);color:var(--ink)}
+.gbtn[aria-expanded=true] .chev{transform:rotate(180deg)}
+.gmenu{position:absolute;top:calc(100% + 8px);right:0;z-index:60;min-width:246px;
+ padding:13px 14px 12px;border-radius:var(--r-s);
+ background:color-mix(in srgb,var(--panel) 78%,transparent);
+ -webkit-backdrop-filter:blur(22px) saturate(1.5);backdrop-filter:blur(22px) saturate(1.5);
+ border:1px solid color-mix(in srgb,var(--ink) 11%,transparent);
+ box-shadow:0 22px 54px rgba(0,0,0,.42),0 2px 8px rgba(0,0,0,.2)}
+.gmenu::before{content:'';position:absolute;inset:0 0 auto 0;height:1px;
+ border-radius:var(--r-s) var(--r-s) 0 0;
+ background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--ink) 26%,transparent),transparent)}
+.gmenu[hidden]{display:none}
+.gmenu-hd{font-family:var(--num);font-size:11px;font-weight:400;color:var(--dim);
+ margin-bottom:8px}
+.gmenu .seg{width:100%;justify-content:space-between}
+.gmenu .seg button{flex:1 1 0;justify-content:center}
+.gmenu-p{margin:10px 0 0;font-size:12px;line-height:1.6;color:var(--dim)}
+body.punch .gmenu{background:var(--panel-2);border-color:transparent;
+ -webkit-backdrop-filter:none;backdrop-filter:none}
+body.punch .gmenu::before{display:none}
 .btn{background:var(--panel-2);border:1px solid var(--edge);color:var(--ink);border-radius:999px;
  min-height:var(--tap);padding:9px 17px;font-size:14px;font-family:var(--sans);font-weight:400;cursor:pointer;transition:.18s}
 .btn:hover{background:var(--sunk);border-color:var(--edge-2)}
@@ -251,15 +309,33 @@ body:not(.hassub) .subbar{display:none}
    Nothing to learn and nothing to look up.
    ============================================================ */
 .cr{display:inline-flex;align-items:center;vertical-align:middle;border-radius:999px;
- background:color-mix(in srgb,var(--c) 14%,transparent);
- border:1px solid color-mix(in srgb,var(--c) 34%,transparent);
- padding:3px 13px 3px 3px;font-family:var(--sans);cursor:default;transition:.16s}
+ background:color-mix(in srgb,var(--c) 9%,transparent);
+ border:1px solid color-mix(in srgb,var(--c) 30%,transparent);
+ padding:3px 4px 3px 3px;font-family:var(--sans);cursor:default;transition:.16s}
 .cr .ring{position:relative;flex:0 0 auto}
 .cr .ring svg.arc{transform:rotate(-90deg);display:block}
 .cr .ring .gl{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
 .cr .ring .gl svg{fill:none;stroke:var(--c);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+/* THE VALUE IS A PILL. The owner's grammar for every percentage in the product:
+   an icon, a ring around it showing the percentage as an arc, and then a pill
+   with the number in it. The chip already carried the first two and printed the
+   number as bare text, so the third was missing and the grammar did not read as
+   a grammar. One rule, and every ring in the product gains it at once, which is
+   the whole point of there being one component. */
 .cr .v{font-family:var(--num);font-weight:500;font-variant-numeric:tabular-nums;
- color:var(--c);margin-left:9px;line-height:1}
+ color:var(--c);margin-left:8px;line-height:1;border-radius:999px;
+ background:color-mix(in srgb,var(--c) 17%,transparent);
+ padding:4px 9px 4px 9px;white-space:nowrap}
+.cr.hot .v{background:var(--alarm-soft)}
+body.punch .cr .v{background:color-mix(in srgb,var(--c) 30%,transparent)}
+/* A RING WITH NO VALUE IS JUST A RING. knowledge.js uses cr() with raw:'' as a
+   colour marker beside a row name, and now that the value is a pill an empty
+   value painted an empty pill next to it. Nothing to say, nothing drawn. */
+.cr .v:empty{display:none;padding:0;margin:0;background:none}
+/* the colour marker that wrapping serves. it was emitted with no rule at all,
+   which the design gate only caught once it started sweeping the knowledge
+   surface, which it started doing because Games folded into it. */
+.kb-rc{display:inline-flex;align-items:center;flex:0 0 auto}
 .cr.hot{background:var(--alarm-soft);border-color:rgba(255,46,31,.45)}
 .cr.hot .v{color:var(--alarm)}
 .cr.hot .ring .gl svg{stroke:var(--alarm)}
@@ -273,6 +349,7 @@ body:not(.hassub) .subbar{display:none}
 .cr.sm .v{font-size:12.5px;margin-left:6px}.cr.sm{padding:2px 10px 2px 2px}
 .cr.xs .ring svg.arc{width:18px;height:18px}.cr.xs .ring .gl svg{width:8px;height:8px}
 .cr.xs .v{font-size:11.5px;margin-left:5px}.cr.xs{padding:2px 8px 2px 2px}
+.sum-start{margin-top:20px;max-width:620px}
 .crlab{font-size:14.5px;font-weight:400;margin-left:11px;color:var(--ink)}
 .crrow{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
 .crline{display:flex;align-items:center;gap:0;margin-bottom:8px}
@@ -351,12 +428,20 @@ body.punch canvas#cv{filter:saturate(1.2)}
  width:min(272px,calc(100% - 560px));background:none;border:0;padding:6px 0;cursor:pointer;
  display:flex;flex-direction:column;gap:6px;text-align:left}
 body:not(.tab-field) .bal{display:none}
-.bal-t{display:flex;justify-content:space-between;align-items:baseline;gap:10px;
+.bal-t{display:flex;justify-content:space-between;align-items:center;gap:7px;
  font-size:11px;color:var(--dim);white-space:nowrap}
 /* the end the field leans to. the number in the middle is the amount, the
    lit end is the direction, and neither repeats the other. */
 .bal-t .on{font-weight:600}
 .bal-t b{color:var(--ink);font-family:var(--num);font-weight:500}
+.bal-n{flex:1 1 auto;text-align:center}
+/* the two poles, as glyphs. ring and not fill, like every other icon here.
+   masculine on the left and feminine on the right, mirrored against the body
+   on the owner's ruling, which is what facing a mirror does. */
+.bal-g{display:inline-flex;align-items:center;flex:0 0 auto;color:var(--dim)}
+.bal-g svg{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;
+ stroke-linejoin:round}
+.bal-g.on{color:var(--ink)}
 .bal-tr{position:relative;height:5px;border-radius:3px;background:var(--sunk)}
 .bal-tr i{position:absolute;top:0;bottom:0;width:1px;left:50%;background:var(--edge-2)}
 .bal-m{position:absolute;top:50%;width:12px;height:12px;border-radius:50%;
@@ -364,6 +449,10 @@ body:not(.tab-field) .bal{display:none}
 .bal-s{position:absolute;top:50%;width:2px;height:13px;transform:translate(-50%,-50%);
  background:var(--dim);border-radius:1px}
 .bal:hover .bal-tr{background:var(--panel-2)}
+/* the definition of the two ends of an axis, said once in the rail rather than
+   only in a tooltip, because a tooltip is not reachable by a thumb. */
+.stk-def{margin:10px 0 8px;font-size:12.5px;line-height:1.6;color:var(--dim)}
+.stk-def b{color:var(--ink);font-weight:500}
 /* the accuracy block owns the bottom right, so the howto stops before it
    rather than running under it at the narrower desktop widths. */
 .howto{position:absolute;bottom:14px;left:16px;font-size:12.5px;color:var(--dim);
@@ -425,8 +514,11 @@ body:not(.tab-field) .pol2{display:none}
  padding:0 0 13px;border-bottom:1px solid var(--edge);margin-bottom:2px}
 .railtop .rt-t{font-size:14px;color:var(--ink);font-weight:500}
 /* the tier reads as a word you can open, not as a verdict printed at you */
-.rootrow{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px}
-.rootrow>*{flex:1 1 auto;min-width:0;white-space:nowrap}
+/* THE ROOT ROW. Four buttons on one line, always. It was a wrapping flex row
+   of auto width nowrap items, which is a row that fits until it does not, and
+   the owner watched Witness drop to a line of its own. Four equal columns
+   cannot wrap: the count is the grid and the width is whatever is left. */
+.rootrow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;margin-bottom:14px}
 .undobtn{gap:6px;color:var(--gold);border-color:var(--gold)}
 .undobtn svg{fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 .undobtn span{max-width:20ch;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -466,11 +558,23 @@ body:not(.tab-field) .pol2{display:none}
 .polnote{font-size:12.5px;color:var(--dim);margin:6px 0 0;line-height:1.55}
 
 /* ---------- icon grids ---------- */
-.g6{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+/* THE ICON GRIDS, AND WHY THEY RAN OFF THE EDGE. An .ib is aspect-ratio 1 with
+   min-height var(--tap), and an aspect ratio turns a height floor into a width
+   floor, so every cell was at least 44 wide whatever the column said. Six of
+   them plus five six pixel gaps is 294 inside a 264 content box, so the last
+   two icons of each archetype row sat 29px past the right hand edge of the
+   rail. Measured, then fixed, then measured again.
+
+   The column count was the mistake, not the cell. A hard six cannot know how
+   wide the rail is, and the rail width is a layout decision made three rules
+   away from here. auto-fill with a floor of one tap target fits as many whole
+   columns as there is room for and then stops, so the count follows the width
+   at every density and every rail size and the overflow cannot come back. */
+.g6{display:grid;grid-template-columns:repeat(auto-fill,minmax(var(--tap),1fr));gap:6px}
 /* nineteen domains on five columns, so each root cluster is one contiguous
    row of one colour. Under high hue quantity, scattered colour delays
    attentional orienting; contiguous blocks of one colour search fastest. */
-.gdom{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.gdom{display:grid;grid-template-columns:repeat(auto-fill,minmax(var(--tap),1fr));gap:6px}
 .ib{aspect-ratio:1;min-height:var(--tap);background:var(--sunk);border:1.5px solid transparent;border-radius:var(--r-xs);
  cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;
  transition:.18s;position:relative}
@@ -488,7 +592,34 @@ body:not(.tab-field) .pol2{display:none}
 .ib[data-r="2"]{border-color:color-mix(in srgb,var(--gold) 52%,transparent)}
 .ib[data-r="2"] svg{opacity:1}
 .ib .rt{position:absolute;top:3px;right:3px;width:5px;height:5px;border-radius:50%}
-.rootb{min-height:var(--tap)}
+/* THE ROOT BUTTON, and the three things it has to say. A root is off, or it is
+   lit because the blueprint domain you have selected lives in it, or it is
+   added because you clicked it. The old control only had off and added, and it
+   said added with a border tint and a 44 percent glow, so the owner had a
+   profile loaded, four roots that all looked identical, and no way to see
+   which one his own selection sat in. That is the bug: the row was a filter
+   pretending to be a readout.
+
+   Added is a flat fill, on the owner's ruling. The ring-not-fill rule governs
+   the icon grids, where a fill would destroy the glyph; this is a text chip
+   and he asked for flat colour, so it is flat colour. The ink on top is a
+   fixed dark rather than var(--bg), because all four root colours are light
+   and --bg goes light in snow, which would have printed light on light. */
+.rootb{min-height:var(--tap);display:flex;align-items:center;justify-content:center;
+ padding:8px 4px;border-radius:var(--r-xs);border:1.5px solid var(--edge);
+ background:transparent;font-family:var(--sans);font-size:11.5px;font-weight:400;
+ line-height:1.15;text-align:center;cursor:pointer;transition:.18s;
+ color:var(--rc,var(--mid))}
+.rootb:hover{border-color:var(--rc,var(--edge-2))}
+/* lit: your selection is in this root. a wash, not a fill, because you did not
+   choose it and a control that looks chosen invites you to unchoose it. */
+.rootb[data-lit="1"]{border-color:color-mix(in srgb,var(--rc) 46%,transparent);
+ background:color-mix(in srgb,var(--rc) 13%,transparent);color:var(--rc)}
+/* added: you clicked it. flat. */
+.rootb[aria-pressed=true]{background:var(--rc);border-color:var(--rc);color:#14151C;
+ font-weight:500}
+.rootlegend{font-family:var(--num);font-size:11px;color:var(--dim);
+ margin:-9px 0 14px;line-height:1.5}
 .rootb[aria-pressed=true]{font-weight:600}
 .cap{font-size:12.5px;color:var(--gold);margin-top:9px;text-align:center;min-height:2.6em;line-height:1.5}
 .cap b{font-weight:600}
@@ -1207,18 +1338,31 @@ body:not(.tab-field) #key,body:not(.tab-field) #howto,body:not(.tab-field) #prob
 body:not(.tab-field) #tier,body:not(.tab-field) #pol,body:not(.tab-field) #cv{display:none!important}
 body.tab-summary #sum{display:flex!important;z-index:5;overflow-y:auto}
 body:not(.tab-summary) #sum{display:none!important}
-body.tab-games #games{display:flex!important;z-index:5;overflow-y:auto}
-body:not(.tab-games) #games{display:none!important}
 body.tab-know #know{display:flex!important;z-index:5;overflow-y:auto}
 body:not(.tab-know) #know{display:none!important}
+/* A FOLDED SURFACE. Games inside Knowledge, Analytics inside Summary. It is in
+   flow rather than absolute, it does not scroll on its own because its parent
+   already does, and it has no visibility rule of its own: it is shown exactly
+   when the tab carrying it is shown. Two ids that used to be tabs, so the old
+   per tab rules for them are gone rather than left to fight this one. */
+.fold{display:block;width:100%;min-width:0;margin-top:26px;padding-top:22px;
+ border-top:1px solid var(--edge)}
+.fold:empty{display:none;margin:0;padding:0;border:0}
+.fold>*{min-width:0}
 body.tab-intake #iq{display:flex!important;z-index:5;overflow-y:auto}
 body:not(.tab-intake) #iq{display:none!important}
 body.tab-story #story{display:flex!important;z-index:5;align-items:center;justify-content:center}
 body:not(.tab-story) #story{display:none!important}
 body.tab-energy #emap{display:flex!important;z-index:5}
 body:not(.tab-energy) #emap{display:none!important}
-body.tab-analytics #ana{display:flex!important;z-index:5;overflow-y:auto}
-body:not(.tab-analytics) #ana{display:none!important}
+/* THE COMPASS AS A TAB. As a modal #cone is fixed to the viewport with a
+   backdrop, which is right for something a drill throws up over your reading
+   and wrong for a surface you navigated to. In tab mode it is the stage. */
+body.tab-compass #cone{display:flex!important}
+#cone.tabmode{position:absolute;z-index:5;background:transparent;backdrop-filter:none}
+#cone.tabmode .cone-card{width:100%;max-height:none;border:0;background:transparent;
+ box-shadow:none;padding:14px 18px 18px}
+#cone.tabmode .cone-cv{height:min(70vh,640px)}
 #eshelf{display:none}
 body.tab-energy #eshelf{display:flex;flex-direction:column}
 
@@ -1252,7 +1396,7 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
  body{font-size:14.5px}
  .app{padding:7px;gap:6px}
  .panel{padding:13px 14px}
- .g6{grid-template-columns:repeat(5,1fr)}
+ /* nothing to override: auto-fill already answers to the width */
  .mx{grid-template-columns:repeat(19,1fr);gap:1px}
  .sum-cq b,.ab-cq b{font-size:38px}
  /* the key strip wrapped to three rows and pushed the wheel 154px down.

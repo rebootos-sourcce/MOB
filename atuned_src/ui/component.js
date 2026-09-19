@@ -202,3 +202,41 @@ function pill(t,rad){const ink=INK();g.save();
  g.fillStyle=rgba(ink,.62);g.fillText(t,CX,CY-rad);g.restore();}
 /* the rAF loop honours reduced motion: the field stops breathing. */
 var REDUCED=(window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches);
+
+/* ============================================================
+   WHERE TO START. One set of doors, two places that show them.
+
+   The rail carried them and the summary now needs them, because the
+   summary is where the app opens and a person arriving has read
+   nothing. Two copies meant two sets of ids, and two elements with
+   one id is a broken document, so the doors carry a data attribute
+   and one delegated listener answers for every copy of them.
+   ============================================================ */
+const STARTD=[
+ ['story','Write what happened',
+  'The day, in your own words. The engine reads the charge out of it.'],
+ ['nine','Read nine sentences',
+  'For anyone who cannot think of themselves as the problem. None of them is a diagnosis.'],
+ ['ages','Go year by year',
+  'Three to eighteen. For anyone who cannot think of anything they identify with, which is most people.'],
+ ['avatar','Say who you are becoming',
+  'The avatar. Release empties an address and replace fills it. This is what you are filling it toward.']];
+function startHTML(lead){
+ return '<div class="pm-eye">Where to start</div>'
+  +'<p class="st-lead">'+(lead||'Nothing has been read yet. Four ways in, and none of them '
+   +'asks you to know anything first.')+'</p>'
+  +STARTD.map(function(d){
+   return '<button type="button" class="stbtn" data-start="'+d[0]+'"><b>'+d[1]+'</b>'
+    +'<span>'+d[2]+'</span></button>';}).join('');}
+/* One listener, bound once, for every door on the page now or later. The
+   handlers are declared in later modules, so they are reached at click time
+   rather than at bind time. */
+addEventListener('click',function(e){
+ var b=e.target&&e.target.closest?e.target.closest('[data-start]'):null;
+ if(!b)return;
+ var k=b.getAttribute('data-start');
+ if(k==='story'){setTab(TAB.STORY);render();
+  var ta=document.getElementById('sttext'); if(ta)ta.focus(); return;}
+ if(k==='nine'){runRecogniseDrill();return;}
+ if(k==='ages'){runAgeDrill();return;}
+ if(k==='avatar'){runAvatarDrill();return;}});

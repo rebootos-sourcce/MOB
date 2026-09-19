@@ -64,6 +64,23 @@ $('allLaw').addEventListener('input',function(e){toYou();
 
 /* ---- tabs and depths ---- */
 function setTab(i){
+ /* A FOLDED SURFACE RESOLVES TO ITS PARENT. Analytics and Games came off the
+    bar and their hosts moved inside Summary and Knowledge, so an integer that
+    used to be a tab is now a request for the tab that carries it. Routing
+    every caller through TABREAL means the drills, the tools and any stored
+    value keep working instead of landing on whatever happens to be first. */
+ i=TABREAL(i);
+ /* A HIDDEN SURFACE THAT KEEPS ITS LAST RENDER IS STILL ASSERTING IT. Summary
+    and the analytics folded into it are the two surfaces that print a reading,
+    and both are rebuilt on entry, so what they hold while hidden is whatever
+    was true for whoever was loaded last. Leaving it there means the document
+    carries a coherence figure for a profile that is no longer selected, which
+    anything reading the page finds, and the functional gate did: it swept the
+    body on a cleared field and found two percentages nobody could see. They
+    are emptied on the way out rather than left to go stale. */
+ if(S.tab===TAB.SUMMARY&&i!==TAB.SUMMARY){
+  var sb=$('sumbody'), ab=$('ana');
+  if(sb)sb.innerHTML=''; if(ab)ab.innerHTML='';}
  S.tab=i; S.pin=null;
  var cvE=$('cv'), vb=$('vbar');
  TABDEF.forEach(function(T){
@@ -72,6 +89,15 @@ function setTab(i){
   e.style.display=(T.k===i)?'flex':'none';});
  if(cvE) cvE.style.display=(i===TAB.FIELD)?'block':'none';
  if(vb) vb.style.display=(i===TAB.FIELD)?'flex':'none';
+ /* MEASURE THE CANVAS THE MOMENT IT IS VISIBLE. It used to be measured once at
+    boot, which worked only while Field was the opening surface. It is not any
+    more, so at boot the canvas was display:none, its box was zero by zero, and
+    the first draw after switching to Field laid the wheel out for a canvas
+    that did not exist. A ResizeObserver corrected it a frame later, which is
+    one frame of an empty wheel and, in the functional gate, a depth with no
+    hit targets at all. The display change above is already a forced layout, so
+    reading the box here costs nothing that has not been paid. */
+ if(i===TAB.FIELD&&typeof layout==='function')layout();
  TABDEF.forEach(function(T){document.body.classList.remove(T.cls);});
  document.body.classList.add(TABOF(i).cls);   /* by key, not by position */
  document.body.classList.toggle('hassub',i===TAB.FIELD);
@@ -80,11 +106,20 @@ function setTab(i){
  document.querySelectorAll('.tabtop').forEach(function(x,j){
   x.setAttribute('aria-pressed',TABDEF[j]&&TABDEF[j].k===i);});
  if(i===TAB.INTAKE)renderIntake();
- if(i===TAB.KNOW)kbRender();
- if(i===TAB.GAMES){if(!GAME)GAME='lg'; gmRender();} else lgStop();
+ /* Knowledge carries Games. Rendering the parent renders both, because the
+    games host is inside it and a hidden host renders nothing a person sees. */
+ if(i===TAB.KNOW){kbRender(); if(!GAME)GAME='lg'; gmRender();} else lgStop();
  if(i===TAB.STORY)stRender();
- if(i===TAB.SUMMARY)sumRender();
- if(i===TAB.ANALYTICS)anaRender();
+ /* Summary carries Analytics, and reads last. */
+ if(i===TAB.SUMMARY){sumRender(); anaRender();}
+ /* THE COMPASS HAS A FRONT DOOR. It was three clicks deep: click one end of
+    the cone marker on the Field stage, then a button inside the drill that
+    opened. The owner looked for it and could not find it, which is the whole
+    finding. It is a tab. coneOpen builds its own canvas and starts its own
+    frame loop, so entering the tab opens it and leaving it stops the loop
+    rather than leaving a requestAnimationFrame running behind another
+    surface. */
+ if(i===TAB.COMPASS)coneOpen(true); else if(CONE.open&&CONE.tab)coneClose();
  render(); paintSections();}
 TABDEF.forEach(function(T,i){
  var b=document.createElement('button');b.className='vt tabtop';b.type='button';
@@ -130,8 +165,36 @@ const THEMEICON={
   document.body.classList.toggle('snow',t[0]==='snow');
   document.body.classList.toggle('punch',t[0]==='punch');
   $('themes').querySelectorAll('button').forEach(function(x,j){x.setAttribute('aria-pressed',j===i);});
+  var nw=$('lightnow'); if(nw)nw.textContent=t[1];
   rebuildSwatches();render();});
  $('themes').appendChild(b);});
+/* ---- THE LIGHTING MENU ----
+   The three lighting buttons moved off the bar and into a menu on the owner's
+   ruling. The button names the lighting it is on, so the setting is still
+   readable at a glance without spending three navigation slots on it.
+
+   It closes on the backdrop, on escape and on a choice, and the choice closes
+   it because a person who has picked the lighting can see the result behind
+   the menu and does not need the menu any more. */
+(function(){
+ var btn=$('lightbtn'), menu=$('lightmenu'); if(!btn||!menu)return;
+ function shut(){menu.hidden=true; btn.setAttribute('aria-expanded','false');}
+ function open(){menu.hidden=false; btn.setAttribute('aria-expanded','true');}
+ btn.addEventListener('click',function(e){
+  e.stopPropagation(); if(menu.hidden)open(); else shut();});
+ menu.addEventListener('click',function(e){
+  /* a lighting choice is the last thing this menu is for */
+  if(e.target.closest('button'))shut();
+  e.stopPropagation();});
+ document.addEventListener('click',function(){if(!menu.hidden)shut();});
+ document.addEventListener('keydown',function(e){
+  if(e.key==='Escape'&&!menu.hidden){shut();btn.focus();}});})();
+/* ---- THE WORDMARK GOES HOME ----
+   Home is the summary. It is the conclusion, it is where the app opens, and it
+   is what a person clicking the name of the product is asking to see. */
+(function(){
+ var b=$('brand'); if(!b)return;
+ b.addEventListener('click',function(){setTab(TAB.SUMMARY);});})();
 /* the font tuner is gone on the owner's ruling. one face, narrower, no
    per person override to keep working across every surface. */
 
@@ -152,25 +215,38 @@ DOMAINS.forEach(function(d,i){
   else S.doms=[i];
   buildSoul();S.pin=null;syncSoul();saveYou();render();});
  $('doms').appendChild(b);});
+/* WHICH ROOT IS LIT. A blueprint domain belongs to exactly one root, so a
+   selection already implies a root whether or not anybody clicked one. The row
+   never said so, which is why a loaded profile showed four identical buttons.
+   This is the derivation, and it is a pure read of S.doms. */
+function rootsLit(){
+ var out={};
+ (S.doms||[]).forEach(function(i){var D=DOMAINS[i]; if(D)out[D.r]=true;});
+ return out;}
 ROOTD.forEach(function(rn){
  var b=document.createElement('button');b.type='button';b.dataset.r=rn;
  b.className='rootb';b.textContent=rn;b.setAttribute('aria-pressed',false);
- b.style.cssText='flex:1 1 auto;background:transparent;border:1.5px solid var(--edge);'
-  +'border-radius:var(--r-xs);padding:8px 6px;font-family:var(--sans);font-size:13px;'
-  +'cursor:pointer;color:'+ROOTCOL[rn]+';transition:.18s';
- b.title=rn+'. Holds '+DOMAINS.filter(function(D){return D.r===rn;}).map(function(D){return D.nm;}).join(', ')
-  +'. Affinity 1.3 on '+(AFFIN[rn]||[]).join(', ')+'.';
+ /* the colour is a custom property so the three states in the sheet can each
+    mix against it. it was an inline style, which meant the sheet could not
+    reach it and every state had to be written back in script. */
+ b.style.setProperty('--rc',ROOTCOL[rn]);
+ var holds=DOMAINS.filter(function(D){return D.r===rn;}).map(function(D){return D.nm;}).join(', ');
+ b.title=rn+'. Holds '+holds+'. Affinity 1.3 on '+(AFFIN[rn]||[]).join(', ')
+  +'. Filled means you added it. Washed means your selection is already in it.';
  b.addEventListener('mouseenter',function(){
   $('capD').innerHTML='<b style="color:'+ROOTCOL[rn]+'">'+rn+'</b> root domain. Holds '
-   +DOMAINS.filter(function(D){return D.r===rn;}).map(function(D){return D.nm;}).join(', ')+'.';});
+   +holds+'.';});
  b.addEventListener('mouseleave',capD);
  b.addEventListener('click',function(){toYou();var k=S.roots.indexOf(rn);
   if(k>=0)S.roots.splice(k,1);else S.roots.push(rn);
-  b.setAttribute('aria-pressed',k<0);
-  b.style.borderColor=k<0?ROOTCOL[rn]:'var(--edge)';
-  b.style.boxShadow=k<0?('0 0 0 2px '+ROOTCOL[rn]+'44'):'none';
   buildSoul();S.pin=null;syncSoul();saveYou();render();});
  $('roots').appendChild(b);});
+/* What the two states mean, in the rail, once. A legend is cheaper than a
+   person guessing, and there is nowhere else on this row to put it. */
+(function(){
+ var r=$('roots'); if(!r||!r.parentNode)return;
+ var d=document.createElement('div'); d.className='rootlegend'; d.id='rootlegend';
+ r.parentNode.insertBefore(d,r.nextSibling);})();
 function capD(){
  $('capD').innerHTML=S.doms.map(function(i){
   return '<b style="color:'+ROOTCOL[DOMAINS[i].r]+'">'+DOMAINS[i].nm+'</b>';}).join(' + ')
@@ -202,11 +278,17 @@ function syncSoul(){
  $('ar2').querySelectorAll('.ib').forEach(function(b,i){
   b.setAttribute('aria-pressed',false);
   if(S.arcs.indexOf(i)>=1)b.dataset.r='2';else delete b.dataset.r;});
+ var lit=rootsLit(), nlit=0;
  $('roots').querySelectorAll('button').forEach(function(b){
   var on=S.roots.indexOf(b.dataset.r)>=0;
   b.setAttribute('aria-pressed',on);
-  b.style.borderColor=on?ROOTCOL[b.dataset.r]:'var(--edge)';
-  b.style.boxShadow=on?('0 0 0 2px '+ROOTCOL[b.dataset.r]+'44'):'none';});
+  /* added wins over lit, because a fill and a wash on one control is noise */
+  if(!on&&lit[b.dataset.r]){b.dataset.lit='1';nlit++;}else delete b.dataset.lit;});
+ var lg=$('rootlegend');
+ if(lg)lg.textContent=(S.roots.length?'filled, you added':'')
+  +(S.roots.length&&nlit?' \u00b7 ':'')
+  +(nlit?'washed, your selection sits here':'')
+  +(!S.roots.length&&!nlit?'click a root to add every domain under it':'');
  capD();capA();}
 function rebuildSwatches(){
  $('doms').querySelectorAll('.ib').forEach(function(b,i){b.style.setProperty('--c',ROOTCOL[DOMAINS[i].r]);});

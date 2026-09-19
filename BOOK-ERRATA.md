@@ -263,3 +263,24 @@ twelve in one place fixes it.** Ramakrishna, Elijah and Meister Eckhart appear
 only as poles and never on the coordinate system, which is the other half of
 the same gap.
 
+
+## The balance strip is mirrored against the body
+
+`atuned_src/engine/data/cards.js` states the codex position plainly: masculine
+is structure and direction, feminine is energy and receptivity, masculine runs
+the right channel and sympathetic, feminine the left and parasympathetic, and
+the spec is explicit that feminine is not women and masculine is not men.
+
+`renderBal` in `atuned_src/ui/ui.js` draws the masculine end on the LEFT of the
+screen and the feminine on the right, on the owner's ruling. That is the
+opposite handedness from the body.
+
+It is not an error and it is not a drift. Face a mirror and your right hand is
+on the left. The product is described throughout as a mirror a person holds up
+to themselves, so the strip is drawn as they would see themselves rather than
+as the body is described from the inside. The sex at birth reference mark is
+mirrored with it, so the two never disagree on one strip.
+
+The code should not move. If the owner rules the other way later, the change is
+two constants and the `pc` inversion in `renderBal`, all of them in one
+function.

@@ -2,15 +2,26 @@
 <canvas id="bgaura" aria-hidden="true"></canvas>
 <div class="app">
  <div class="glass top">
-  <div class="brand">At&uuml;ned</div>
+  <!-- THE WORDMARK. Sky blue, two white dots, and the letters given room, on
+       the owner's ruling. The umlaut is drawn rather than typed: the dots have
+       to be white while the letter is sky, which one glyph cannot do. They sit
+       on the bar rather than on the letter, so their colour answers to the
+       background and not to the wordmark, which is why snow redefines them.
+
+       It is a button because it goes somewhere. Home is the summary, which is
+       also where the app now opens. -->
+  <button class="brand" id="brand" type="button"
+   title="Home. Takes you back to the summary.">At<span class="um">u</span>ned</button>
   <div id="tabbar" style="display:flex;gap:5px;flex-wrap:wrap"></div>
   <!-- One status region for the whole app. Polite so it does not interrupt,
        and it carries the message rather than a button lying about it. -->
   <div id="status" role="status" aria-live="polite"></div>
   <div class="spacer"></div>
-  <label for="psel" class="toplab">Whose field</label>
+  <!-- "Whose field" is gone on the owner's ruling. It was a question the
+       product asked itself out loud. The control is a profile picker, so it
+       says Profile. -->
+  <label for="psel" class="toplab">Profile</label>
   <select id="psel"></select>
-  <div class="seg" id="themes"></div>
   <!-- Density moved into the profile on the owner's ruling. It is a setting a
        person chooses once, and a setting chosen once does not earn three
        permanent buttons in the bar where the work happens. The profile opens
@@ -22,13 +33,34 @@
    <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
     <path d="M4 10h10a5 5 0 0 1 0 10h-3"/><path d="M4 10l4-4M4 10l4 4"/></svg>
    <span id="undolab">Undo</span></button>
-  <button class="vt" id="profbtn" type="button" title="Your profile and settings">
-   <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">
-    <circle cx="12" cy="8" r="3.6"/><path d="M5 20c0-3.6 3.1-5.6 7-5.6s7 2 7 5.6"/></svg></button>
+  <!-- THE RIGHT HAND END, in the order the owner ruled it: the lighting menu,
+       then help, then the person. The three lighting buttons used to sit out
+       in the bar as a permanent segmented control, which is a setting taking
+       the width of a navigation item. They fold into one menu that names the
+       lighting it is currently on. -->
+  <div class="gwrap">
+   <button class="vt gbtn" id="lightbtn" type="button" aria-expanded="false"
+    aria-haspopup="true" title="Lighting">
+    <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">
+     <circle cx="12" cy="12" r="4.2"/><path d="M12 3v2.4M12 18.6V21M3 12h2.4M18.6 12H21
+      M5.6 5.6l1.7 1.7M16.7 16.7l1.7 1.7M18.4 5.6l-1.7 1.7M7.3 16.7l-1.7 1.7"/></svg>
+    <span class="n" id="lightnow">Dark</span>
+    <svg class="chev" viewBox="0 0 24 24" width="12" height="12" aria-hidden="true">
+     <path d="M6 9.5l6 5.5 6-5.5"/></svg></button>
+   <div class="gmenu" id="lightmenu" hidden>
+    <div class="gmenu-hd">Lighting</div>
+    <div class="seg" id="themes"></div>
+    <p class="gmenu-p">Dark is the default. Snow is the same instrument on
+     paper. Punch removes every outline and fills every shape.</p>
+   </div>
+  </div>
   <button class="vt" id="helpbtn" type="button" title="How to read this, and what everything means">
    <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">
     <circle cx="12" cy="12" r="9.2"/><path d="M9.4 9.2a2.7 2.7 0 1 1 3.4 2.6c-.6.2-.9.7-.9 1.3v.7"/>
     <circle cx="12" cy="17.4" r="1"/></svg></button>
+  <button class="vt" id="profbtn" type="button" title="Your profile and settings">
+   <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">
+    <circle cx="12" cy="8" r="3.6"/><path d="M5 20c0-3.6 3.1-5.6 7-5.6s7 2 7 5.6"/></svg></button>
  </div>
  <div class="sheet" id="sheet" hidden><div class="sheet-card" id="sheet-card"></div></div>
  <div class="glass subbar" id="subbar"><div id="vbar" style="display:flex;gap:5px"></div>
@@ -89,12 +121,25 @@
    <canvas id="cv" role="img" aria-label="The field wheel. Every element is also listed in the panels either side."></canvas>
    <div id="emap" class="emap"></div>
    <div id="iq" class="iq"></div>
-   <div id="know" class="iq"></div>
-   <div id="games" class="iq"></div>
+   <!-- Knowledge carries Games, and Summary carries Analytics. The owner ruled
+        both folds, so the host element moved inside its parent rather than the
+        tab being hidden while the surface stayed where it was. A folded host is
+        in flow, not an absolute overlay, which is what .fold says. -->
+   <!-- A TAB HOST THAT CARRIES TWO SURFACES CANNOT ALSO BE ONE OF THEM. The
+        first cut at the fold put #games straight inside #know, and kbRender
+        writes the whole innerHTML of its host, so rendering Knowledge deleted
+        the Games host on the way past and the fold rendered nothing. Caught by
+        the functional gate on the record, which is the same shape: sumRender
+        ate #ana. Each host now holds its own body and the folded surface
+        beside it, and each renderer owns only its own body. -->
+   <div id="know" class="iq">
+    <div id="knowbody"></div>
+    <div id="games" class="fold"></div></div>
    <div id="deck" class="rel"></div>
    <div id="story" class="iq"></div>
-   <div id="sum" class="iq"></div>
-   <div id="ana" class="iq"></div>
+   <div id="sum" class="iq">
+    <div id="sumbody"></div>
+    <div id="ana" class="fold"></div></div>
    <div id="rel" class="rel"></div>
    <div id="rit" class="rel"></div>
    <!-- the compass with volume. its own canvas, its own context, and an

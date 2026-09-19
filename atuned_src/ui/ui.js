@@ -221,10 +221,23 @@ function railStack(r){
   return '<button type="button" role="tab" class="stk-t'+(STACK_TAB===t[0]?' on':'')+'" data-st="'+t[0]+'" '
    +'aria-selected="'+(STACK_TAB===t[0])+'">'+t[1]+(t[2]?' <b>'+t[2]+'</b>':'')+'</button>';}).join('')+'</div>';
  if(STACK_TAB==='fet'){
-  h+='<div class="stk-hd"><span>held</span><span>installed</span></div>';
+  /* ONE WORD PER CONCEPT. This header said held and installed, the rail four
+     inches to the left said held and opposite, and the owner asked what either
+     of them meant. They are the two ends of one axis: the state you are
+     carrying, and the coherent quality on the other side of it. Held and
+     opposite, in both places, with the definition said once here rather than
+     left in a tooltip nothing on a phone can reach. */
+  h+='<p class="stk-def">Nine axes, two ends each. <b>Held</b> is the state you are '
+   +'carrying. <b>Opposite</b> is the coherent quality on the far side of it. Release '
+   +'empties the first, replace fills the second.</p>';
+  h+='<div class="stk-hd"><span>held</span><span>opposite</span></div>';
   h+=CHILD.map(function(c){var v=S.charge[c.nm]||0, p=S.replace[c.nm]||0;
-   return '<div class="stk-r static"><span class="stk-l">'+cr(c.seat,v*10,{size:'xs',raw:v.toFixed(1)})+esc(c.nm)+'</span>'
-    +'<span class="stk-p">'+esc(c.opp)+cr('Heart',p*10,{size:'xs',raw:p.toFixed(1)})+'</span></div>';}).join('');}
+   /* each axis carries its own glyph. canon.js has had one on every entry
+      since the port and nothing in the rails was drawing them. */
+   return '<div class="stk-r static"><span class="stk-l">'
+    +cr(c.seat,v*10,{size:'xs',raw:v.toFixed(1),glyph:'<path d="'+c.ic+'"/>'})+esc(c.nm)+'</span>'
+    +'<span class="stk-p">'+esc(c.opp)
+    +cr('Heart',p*10,{size:'xs',raw:p.toFixed(1),glyph:'<path d="'+c.ic+'"/>'})+'</span></div>';}).join('');}
  else{
   var list={sab:r.sabs,cx:r.cxs,hy:r.hys,sup:r.sups}[STACK_TAB]||[];
   h+=list.length?'<div class="stk-hd"><span>weight</span><span>opposite in</span></div>':'';
@@ -234,26 +247,60 @@ function railStack(r){
     +'<span class="stk-p">'+cr('Heart',p*10,{size:'xs',raw:p.toFixed(1)})+'</span></button>';}).join('')
    :'<div class="rnone">Nothing at this layer.</div>';}
  e.innerHTML=h;}
-/* the balance strip. outward is the solar colour, inward the throat. the
-   small grey tick is sex at birth when it has been given, so a person can
-   see the distance between what they were born and what the field reads. */
+/* THE BALANCE STRIP, AND WHICH END IS WHICH.
+
+   The two poles are masculine and feminine. cards.js states the codex
+   position: masculine is structure and direction, feminine is energy and
+   receptivity, masculine runs the right channel and sympathetic, feminine the
+   left and parasympathetic, and the spec is explicit that feminine is not
+   women and masculine is not men. Outward is the masculine end and inward the
+   feminine one.
+
+   The owner ruled the masculine symbol on the left and the feminine on the
+   right, which is the opposite handedness from the body. That is not a
+   conflict, it is what a mirror is: face one and your right hand is on the
+   left. This product is a mirror a person holds up to themselves and the strip
+   is drawn the way they would see it, so the screen is mirrored against the
+   body on purpose. Logged in BOOK-ERRATA so the codex and the screen disagree
+   in writing rather than by accident.
+
+   So the strip reads masculine on the left and feminine on the right, the lean
+   is mirrored with it, and the marker still sits where the field actually is.
+   The centre is a hairline, the same one the compass draws down its axis. */
+const GLYPH_M='<circle cx="10" cy="14" r="6"/><path d="M14.5 9.5L20 4M15.5 4H20v4.5"/>';
+const GLYPH_F='<circle cx="12" cy="9" r="6"/><path d="M12 15v7M8.5 19h7"/>';
+function balG(g,on,t){
+ return '<span class="bal-g'+(on?' on':'')+'" title="'+esc(t)+'">'
+  +'<svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">'+g+'</svg></span>';}
 function renderBal(r){
  var e=document.getElementById('bal'); if(!e)return;
- var b=r.balance, pc=(b.lean+1)/2*100;
+ var b=r.balance;
+ /* mirrored: lean +1 is fully outward, which is the masculine end, and the
+    masculine end is now on the left, so the position runs the other way. */
+ var pc=(1-(b.lean+1)/2)*100;
  var c=b.lean>=0?seatCol('Solar'):seatCol('Throat');
  var sx=CURP&&CURP.who?CURP.who.sex:'';
- var tick=sx==='m'?'<span class="bal-s" style="left:78%"></span>'
-        :sx==='f'?'<span class="bal-s" style="left:22%"></span>':'';
+ /* sex at birth follows the same mirror: male at the masculine end, which is
+    now the left one. It is a reference point, not a reading, and it is only
+    drawn when a person has given it. */
+ var tick=sx==='m'?'<span class="bal-s" style="left:22%"></span>'
+        :sx==='f'?'<span class="bal-s" style="left:78%"></span>':'';
  /* The centre named the direction and so did the end label, so "26% outward"
     sat against the word outward and the two ran together. The ends carry the
     direction, the centre carries the number, and the end the field leans to is
     the one that lights. One word per concept, on one strip. */
  var lean=b.read?Math.abs(b.lean)*100:0;
  var dir=!b.read?'':b.lean===0?'even':b.lean>0?'outward':'inward';
- e.innerHTML='<div class="bal-t"><span'+(dir==='inward'?' class="on" style="color:'+c+'"':'')+'>inward</span>'
-  +'<span><b>'+(!b.read?'not enough held to read'
+ e.innerHTML='<div class="bal-t">'
+  +balG(GLYPH_M,dir==='outward','Masculine. Structure and direction, expressed outward. '
+    +'Not men: the codex is explicit about that.')
+  +'<span'+(dir==='outward'?' class="on" style="color:'+c+'"':'')+'>outward</span>'
+  +'<span class="bal-n"><b>'+(!b.read?'not enough held to read'
     :b.lean===0?'even':lean.toFixed(0)+'%')+'</b></span>'
-  +'<span'+(dir==='outward'?' class="on" style="color:'+c+'"':'')+'>outward</span></div>'
+  +'<span'+(dir==='inward'?' class="on" style="color:'+c+'"':'')+'>inward</span>'
+  +balG(GLYPH_F,dir==='inward','Feminine. Energy and receptivity, held inward. '
+    +'Not women: the codex is explicit about that.')
+  +'</div>'
   +'<div class="bal-tr"><i></i>'+tick
   +'<span class="bal-m" style="left:'+pc.toFixed(1)+'%;background:'+c+'"></span></div>';}
 function railTop(r){
@@ -379,27 +426,16 @@ function render(){
      action that survives the action is furniture. Two doors and a line saying
      what each one is for, so nobody has to remember a term to find one. */
   (function(){var st=$('start'); if(!st)return;
-   if(!r.unread){st.innerHTML='';st.hidden=true;return;}
+   /* ONE SET OF DOORS PER SCREEN. The summary carries the same four, and the
+      summary is the opening surface, so on that tab the rail was printing a
+      second copy of them beside the first. The rail keeps them everywhere
+      else, because everywhere else there is nothing on screen offering a way
+      in. */
+   if(!r.unread||S.tab===TAB.SUMMARY){st.innerHTML='';st.hidden=true;return;}
+   /* the doors and their wiring moved to component.js, because the summary
+      needs the same four and two sets of one id is a broken document. */
    st.hidden=false;
-   st.innerHTML='<div class="pm-eye">Where to start</div>'
-    +'<p class="st-lead">Nothing has been read yet. Three ways in, and none of them '
-    +'asks you to know anything first.</p>'
-    +'<button type="button" class="stbtn" id="stw1"><b>Write what happened</b>'
-    +'<span>The day, in your own words. The engine reads the charge out of it.</span></button>'
-    +'<button type="button" class="stbtn" id="stw2"><b>Read nine sentences</b>'
-    +'<span>For anyone who cannot think of themselves as the problem. None of them '
-    +'is a diagnosis.</span></button>'
-    +'<button type="button" class="stbtn" id="stw3"><b>Go year by year</b>'
-    +'<span>Three to eighteen. For anyone who cannot think of anything they '
-    +'identify with, which is most people.</span></button>'
-    +'<button type="button" class="stbtn" id="stw4"><b>Say who you are becoming</b>'
-    +'<span>The avatar. Release empties an address and replace fills it. This is '
-    +'what you are filling it toward.</span></button>';
-   var b1=$('stw1'); if(b1)b1.onclick=function(){setTab(TAB.STORY);render();
-    var ta=document.getElementById('sttext'); if(ta)ta.focus();};
-   var b2=$('stw2'); if(b2)b2.onclick=function(){runRecogniseDrill();};
-   var b3=$('stw3'); if(b3)b3.onclick=function(){runAgeDrill();};
-   var b4=$('stw4'); if(b4)b4.onclick=function(){runAvatarDrill();};})();
+   st.innerHTML=startHTML();})();
   $('person').innerHTML='<h3>'+(p.you?'You':p.nm)+'</h3>'
    +(p.you?'':'<div class="prole">'+p.age+', '+esc(String(p.role).replace(' · ICP',''))+'</div>')
    +(p.says?'<p class="psay">'+esc(p.says)+'</p>':'')
@@ -526,5 +562,8 @@ layout(); mxKey(); wireSections(); loadP(0);
  loadProfile(CURP);
  syncCh(); syncLw(); syncSoul();
 }());
-setTab(TAB.FIELD);
+/* THE APP OPENS ON SUMMARY, on the owner's ruling. This line said FIELD, which
+   is what actually decided the opening surface: the default on S was only what
+   held until this ran. Both say Summary now. */
+setTab(TAB.SUMMARY);
 requestAnimationFrame(loop);

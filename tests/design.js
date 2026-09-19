@@ -32,7 +32,11 @@ const shell=await page.evaluate(()=>({
  axes:document.querySelectorAll('#chg .nf').length,
  mx:document.querySelectorAll('#mx button').length,
  eshelf:!!document.getElementById('eshelf')}));
-ok(shell.tabs===8,'8 tabs, got '+shell.tabs);
+/* SEVEN, not eight. Analytics folded into Summary and Games folded into
+   Knowledge on the owner's ruling, and the compass gained a door it never
+   had, so the bar lost two items and gained one. Both folded surfaces still
+   exist and still have their own integers: what they lost is a tab. */
+ok(shell.tabs===7,'7 tabs, got '+shell.tabs);
 ok(shell.depths===4,'4 depths, got '+shell.depths);
 ok(shell.doms===19,'19 domains, got '+shell.doms);
 ok(shell.arcs===12,'12 archetypes, got '+shell.arcs);
@@ -42,17 +46,31 @@ ok(shell.mx===171,'171 matrix cells, got '+shell.mx);
 ok(shell.eshelf,'#eshelf element exists');
 console.log('  shell:',JSON.stringify(shell));
 
-console.log('\n=== 2 · exactly one surface visible per tab ===');
-const TABN=['Story','Summary','Field','Energy','Analytics'];
-for(let i=0;i<5;i++){
+console.log('\n=== 2 · one tab surface visible, plus whatever it carries ===');
+/* THE INVARIANT MOVED, because the information architecture did. It used to be
+   one visible surface per tab and nothing else, which is what caught three
+   stacking bugs. Two surfaces are now folded inside others: #ana lives in #sum
+   and #games lives in #know, so the parent being visible makes the child
+   visible with it and that is the point. The invariant is that exactly one TAB
+   surface is visible, and anything else visible must be a descendant of it. A
+   sibling surface showing through is still the bug it always was. */
+const FOLDOF={ana:'sum',games:'know'};
+/* indexed by the TAB integer, not by position, which is the rule this repo
+   keeps relearning. 5 is Intake and it is not swept here. */
+const TABN=['Story','Summary','Field','Energy','Analytics','Intake','Knowledge',
+ 'Games','Compass'];
+for(const i of [0,1,2,3,4,6,7,8]){
  await page.evaluate(n=>setTab(n),i);
  await page.waitForTimeout(260);
  const vis=await page.evaluate(()=>{
-  const ids=['story','sum','cv','emap','ana'];
+  const ids=['story','sum','cv','emap','ana','know','games','cone'];
   return ids.filter(id=>{const e=document.getElementById(id);if(!e)return false;
    const r=e.getBoundingClientRect();
    return getComputedStyle(e).display!=='none'&&r.width>0&&r.height>0;});});
- ok(vis.length===1,TABN[i]+': expected 1 visible surface, got '+vis.length+' ['+vis+']');
+ const tops=vis.filter(id=>!FOLDOF[id]);
+ const orphan=vis.filter(id=>FOLDOF[id]&&tops.indexOf(FOLDOF[id])<0);
+ ok(tops.length===1&&orphan.length===0,
+  TABN[i]+': expected one tab surface and only its own folds, got ['+vis+']');
  console.log('  '+TABN[i].padEnd(10),'visible:',vis.join(',')||'NONE');}
 
 console.log('\n=== 3 · CSS coverage. every class a renderer emits has a rule. ===');

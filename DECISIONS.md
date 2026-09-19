@@ -884,3 +884,60 @@ actually resolved, because a silent fallback would have looked like a success.
 `tests/design.js` is green for the first time. The expected environmental
 failure in CLAUDE.md is gone because its cause is.
 
+
+## The user journey pass
+
+Ruled in a single review of the opening experience. Everything here is the
+owner's call, recorded as given.
+
+**The app opens on Summary.** Field was the opening for as long as the wheel
+was the product. It is not. The wheel is one instrument; the summary is the
+reading. Summary also moves to the far right of the bar, so the row reads left
+to right as the instruments and then the thing they add up to.
+
+This exposed a defect the moment it landed. Summary printed coherence 42
+percent off nothing but the default six on the laws, to a person who had
+entered nothing. The functional gate caught it within a minute. The opening
+screen is now the way in: a dash in the ring, no band word, and the four doors.
+Analytics had the same defect and the same fix.
+
+**Analytics folds into Summary. Games folds into Knowledge.** Neither has a
+top level door any more. Both keep their integers and their renderers; what
+changed is that the host element moved inside its parent. The bar goes from
+eight items to seven.
+
+**The compass gets a tab.** It was three clicks deep behind a marker on the
+Field stage, inside a drill. The owner went looking for it and could not find
+it, which is the entire finding. TAB.COMPASS is integer 8, appended, because
+the integers are identity and are never renumbered.
+
+**The wordmark is sky blue with two white dots and more letter spacing**, and
+it goes home, which is the summary. The sky is `#7EB8D4`, which is the original
+app's own `--law-accent`, used in thirteen places there. That is the blue the
+owner remembered.
+
+**"Whose field" is now "Profile."** It was a question the product asked itself
+out loud.
+
+**The lighting moves into a glass menu**, upper right, with help to its left
+and the person to its right, in that order. Three lighting buttons sitting
+permanently in the bar was a setting taking the width of a navigation item.
+
+**Every percentage is an icon, a ring showing the percentage as an arc, and a
+pill carrying the number.** The component already carried the first two and
+printed the number as bare text. One rule, one component, every ring in the
+product.
+
+**The balance strip carries the masculine glyph on the left and the feminine
+on the right**, with the hairline down the centre. This mirrors the body: the
+codex puts masculine on the right channel. That is what a mirror is, and this
+product is a mirror a person holds up to themselves. Logged in BOOK-ERRATA.
+
+**Held and opposite, in both rails.** The right rail said installed and the
+left said opposite, for the same two ends of the same axis. The definition is
+now said once, in place, rather than left in a tooltip no thumb can reach.
+
+Still open, and deliberately not built yet because the owner asked for them to
+go through the ICPs and art direction first: the Summary redesign, the
+iconography of the spiritual block, and whether the product's accent moves from
+gold to the sky blue.

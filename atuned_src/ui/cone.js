@@ -17,7 +17,7 @@
    No library and no new dependency. Its own canvas, its own
    context, and an axonometric projection in about forty lines.
    ============================================================ */
-var CONE={open:false, spin:0.6, tilt:0.60, drag:null, raf:null, t:0, cv:null, g:null, dpr:1};
+var CONE={open:false, tab:false, spin:0.6, tilt:0.60, drag:null, raf:null, t:0, cv:null, g:null, dpr:1};
 /* THE HEIGHT BUDGET. A tilted ring reaches lower than the axis point it sits
    on, by its own radius times the sine of the tilt, so a figure sized against
    the axis alone puts its floor names off the bottom of the canvas. The budget
@@ -154,12 +154,19 @@ function coneTick(){
  if(!REDUCED&&!CONE.drag)CONE.spin+=0.0022;
  coneDraw();
  CONE.raf=requestAnimationFrame(coneTick);}
-function coneOpen(){
+/* TWO WAYS IN, ONE FIGURE. As a modal it is what a drill opens, over the top
+   of whatever a person was reading, and it closes back to that. As a tab it is
+   a surface inside the stage with no backdrop and no close button, because
+   closing a tab leaves a person looking at nothing. inTab is the only
+   difference and it changes where the host sits, not what is drawn. */
+function coneOpen(inTab){
  var h=document.getElementById('cone'); if(!h)return;
- CONE.open=true; h.style.display='flex';
+ CONE.open=true; CONE.tab=!!inTab;
+ h.classList.toggle('tabmode',!!inTab);
+ h.style.display='flex';
  h.innerHTML='<div class="cone-card">'
   +'<div class="cone-hd"><span class="pm-eye">The compass</span>'
-  +'<button class="btn" id="conex">Close</button></div>'
+  +(inTab?'':'<button class="btn" id="conex">Close</button>')+'</div>'
   +'<canvas id="conecv" class="cone-cv" role="img" '
   +'aria-label="Two cones meeting at the median. Eight axes, each with a coherent pole above and its inversion below."></canvas>'
   +'<p class="cone-p">Eight qualities, each with its coherent pole at the crown and its '
@@ -181,7 +188,8 @@ function coneOpen(){
   CONE.cv.onpointerup=CONE.cv.onpointercancel=function(){CONE.drag=null;};}
  addEventListener('resize',coneLayout);}
 function coneClose(){
- CONE.open=false; CONE.drag=null;
+ CONE.open=false; CONE.tab=false; CONE.drag=null;
  if(CONE.raf)cancelAnimationFrame(CONE.raf);
- var h=document.getElementById('cone'); if(h){h.style.display='none';h.innerHTML='';}
+ var h=document.getElementById('cone');
+ if(h){h.style.display='none';h.innerHTML='';h.classList.remove('tabmode');}
  removeEventListener('resize',coneLayout);}

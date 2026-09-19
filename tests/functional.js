@@ -93,7 +93,10 @@ console.log(' ',JSON.stringify(drills));
 console.log('\n=== the knowledge base, the deck and the record ===');
 const kb=await page.evaluate(()=>{
  setTab(TAB.KNOW); kbRender();
- const secs=[...document.querySelectorAll('.kb-t')].length;
+ /* scoped to #knowbody. Games folded into Knowledge and its two chooser tabs
+    are also .kb-t, so an unscoped count reads 13. The eleven being asserted
+    are the knowledge sections. */
+ const secs=[...document.querySelectorAll('#knowbody .kb-t')].length;
  const rows=()=>document.querySelectorAll('.kb-r').length;
  const all=rows();
  /* search narrows, and a term that is in no table finds nothing anywhere */
@@ -450,8 +453,14 @@ console.log('\n=== a finger reads the wheel, it does not write it ===');
 const touchCtx=await browser.newContext({viewport:{width:390,height:844},hasTouch:true,isMobile:true});
 const touchPg=await touchCtx.newPage();
 await touchPg.goto(FILE,{waitUntil:'load'}); await touchPg.waitForTimeout(700);
+/* The wheel is drawn on a requestAnimationFrame, and the app no longer opens on
+   Field, so at this point in a fresh page the wheel has never been drawn and
+   HIT is empty. Switch, let one frame pass, then probe. Nothing about the
+   product changed here: it is the harness that was relying on the old opening
+   surface having already painted. */
+await touchPg.evaluate(()=>{loadP(6); setTab(TAB.FIELD); render();});
+await touchPg.waitForTimeout(300);
 const drag=await touchPg.evaluate(()=>{
- loadP(6); setTab(TAB.FIELD); render();
  const before=JSON.parse(JSON.stringify(S.charge));
  const cv=document.getElementById('cv'), rect=cv.getBoundingClientRect();
  const sx=rect.width/cv.width, sy=rect.height/cv.height;
@@ -659,7 +668,10 @@ const open_=await page.evaluate(()=>{
   .map(e=>{const b=e.getBoundingClientRect();return Math.min(b.width,b.height);}));
  /* each door actually opens */
  o.why={loaded:compute().loaded.length,measured:compute().measured,who:S.who,tab:S.tab};
- const d2=document.getElementById('stw2'), d3=document.getElementById('stw3');
+ /* the doors moved to a data attribute. They render in the rail and on the
+    summary now, and two elements cannot share one id. */
+ const d2=document.querySelector('#start [data-start="nine"]'),
+       d3=document.querySelector('#start [data-start="ages"]');
  if(d2){d2.click(); o.two=(document.getElementById('rdrill').textContent||'').replace(/\s+/g,' ');}
  if(d3){d3.click(); o.three=(document.getElementById('rdrill').textContent||'').replace(/\s+/g,' ');}
  /* and the block is gone once there is something to read */
