@@ -20,7 +20,12 @@
     BLOCK 11 onboarding       OPEN
     BLOCK 12 the ladder       OPEN
     BLOCK 13 intro variants   OPEN
-    BLOCK 14 motion system    OPEN
+    BLOCK 14 motion system    PART   3 curves, 4 durations, every transition
+                                     tokened. 381 of 384 elements ran on the
+                                     browser default ease, now zero. Bead ease
+                                     is time based. Tab entrance in. Gate 12
+                                     holds it. Reading acknowledgement and the
+                                     Body pulse remain
     BLOCK 15 simulations      OPEN
 
 

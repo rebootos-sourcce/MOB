@@ -799,6 +799,7 @@ function drawWheel(r,L){
    same thing more cheaply. With motion on, the breathing is the point and
    every frame is drawn as before. */
 var DRAW_SIG=null;
+var DISP_T=null, DISP_RATE=-Math.log(.86)*60;
 function drawSig(r){
  if(!REDUCED) return null;                 /* animating, always draw */
  var d=0; for(var i=0;i<W.length;i++)d+=W[i].sq;
@@ -807,7 +808,21 @@ function drawSig(r){
          LIGHT()?1:0,S.zoom.toFixed(3),S.panx|0,S.pany|0,
          d.toFixed(3),r.CQ.toFixed(3)].join('|');}
 function draw(r){
- W.forEach(n=>{n.disp=(n.disp===undefined?n.sq:(REDUCED?n.sq:n.disp+(n.sq-n.disp)*.14));});
+ /* The ease used to be a flat .14 of the remaining distance per frame, which
+    makes the settle a function of the display and not of the design. On the
+    120Hz panel the bead arrived in half the time it takes on the 60Hz one,
+    and on a loaded frame it crawled. Same curve, driven by elapsed time: the
+    retention is .86 per frame at 60Hz, so the rate is -ln(.86)*60, about 9.05
+    per second, and the per frame fraction is 1-e^(-rate*dt). At exactly 60Hz
+    this is .14 again, so nothing about the look moves.
+
+    dt is clamped at 100ms. A tab that was hidden for a minute reports one
+    enormous frame, and without the clamp every bead would snap to its target
+    in a single step, which is the jump the easing exists to prevent. */
+ var t=performance.now(), dt=(DISP_T===null?1/60:(t-DISP_T)/1000);
+ DISP_T=t; if(dt>.1)dt=.1; if(!(dt>0))dt=1/60;
+ var k=1-Math.exp(-DISP_RATE*dt);
+ W.forEach(n=>{n.disp=(n.disp===undefined?n.sq:(REDUCED?n.sq:n.disp+(n.sq-n.disp)*k));});
  var sig=drawSig(r);
  if(sig!==null&&sig===DRAW_SIG) return;    /* nothing moved and nothing will */
  DRAW_SIG=sig;

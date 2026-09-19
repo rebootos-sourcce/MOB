@@ -105,6 +105,20 @@ function setTab(i){
  if(rb) rb.style.display=(i===TAB.ENERGY&&PMLAYER==='pain')?'flex':'none';
  TABDEF.forEach(function(T){document.body.classList.remove(T.cls);});
  document.body.classList.add(TABOF(i).cls);   /* by key, not by position */
+ /* THE TAB ARRIVES RATHER THAN APPEARING. Switching surfaces was a single
+    frame cut: one host went to display:none and the next to flex, which gives
+    the eye no direction to follow and no sense that anything moved rather than
+    was replaced. Six pixels of rise over the context step, on the surface that
+    just came on.
+
+    The class has to be taken off and the layout read before it goes back on.
+    Adding a class that is already there does not restart a keyframe, so
+    without the offsetWidth read the second visit to a tab animates nothing.
+    This is the one deliberate forced reflow in the product, on a host that was
+    about to be laid out anyway. */
+ (function(){var h=$(i===TAB.SETTINGS?'settings':TABOF(i).id);
+  if(!h)return; h.classList.remove('tabin'); void h.offsetWidth;
+  h.classList.add('tabin');})();
  /* MEASURE THE CANVAS THE MOMENT IT IS VISIBLE, AND NOT ONE LINE EARLIER.
 
     It used to be measured once at boot, which worked only while Field was the

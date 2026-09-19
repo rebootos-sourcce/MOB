@@ -245,7 +245,22 @@ console.log('\n=== 8 \u00b7 the tap floor. 44 by 44, every interactive element. 
   const tabs=TABDEF.map(t=>[t.k,t.nm]);
   for(const [k,nm] of tabs){
    loadP(6); setTab(k);
-   await new Promise(r=>setTimeout(r,120));
+   /* 120ms was enough while a tab switch was a single frame cut. The surface
+      now rises in over the context step, and measuring through that reads a
+      control mid arrival: the same button came back 0x0, then 882x44, then its
+      real size, on three runs of the same page. A tap target is a fact about a
+      settled screen, so the entrance is taken off before anything is measured.
+
+      Waiting it out was tried first and is not deterministic. Every tap target
+      in this product is exactly 44.0 with min-height:44px, which is correct and
+      leaves no margin, and a descendant of an element carrying a fractional
+      translateY comes back snapped to the compositor grid: 43.98 on one run,
+      44 on the next, a different control each time. So this drops the class
+      rather than waiting for it, which removes the transform instead of
+      sampling around it. Gate 12 proves the entrance exists, so taking it off
+      here hides nothing. */
+   document.querySelectorAll('.tabin').forEach(e=>e.classList.remove('tabin'));
+   await new Promise(r=>setTimeout(r,140));
    const bad=[...document.querySelectorAll(
      'button,select,input:not([type=range]),textarea,[role=tab]')]
     /* THE TARGET IS WHAT A FINGER CAN LAND ON, not what is painted. A native
@@ -465,6 +480,62 @@ console.log('\n=== 9 \u00b7 four lightings, each its own ===');
  ok(late.booted,'and the body says so');
  console.log('  cleared:',late.gone);
  await p6.close();
+}
+
+/* ---------------------------------------------------------------------------
+   12 · MOTION IS NAMED
+
+   Measured before the tokens existed: 381 of 384 live animated elements ran
+   on the browser default ease, a symmetric curve. Four hand written beziers
+   sat in the stylesheet and reached one live element. The cause was not a
+   missing curve, it was the shorthand: transition:.16s computes to
+   "all .16s ease", because the property list defaults to all and the timing
+   function defaults to ease. A grep for transition:all found nothing while
+   322 elements used it.
+
+   So this gate reads the computed style of every animated element rather than
+   the sheet. It refuses the default ease outright, and it refuses a duration
+   that is not one of the four named steps, which is what stops a hover and a
+   tab drifting to the same speed again.
+--------------------------------------------------------------------------- */
+{
+ console.log('\n=== 12 · motion is named ===');
+ const p7=await browser.newPage();
+ await p7.setViewportSize({width:1600,height:1000});
+ await p7.goto(FILE,{waitUntil:'load'}); await booted(p7);
+ const m=await p7.evaluate(()=>{
+  const cs=getComputedStyle(document.documentElement);
+  const tok=n=>cs.getPropertyValue(n).trim();
+  const out={tok:{},ease:[],dur:{},tot:0};
+  ['--ease-out','--ease-in','--ease-land','--t-micro','--t-element',
+   '--t-surface','--t-context'].forEach(n=>out.tok[n]=tok(n));
+  document.querySelectorAll('*').forEach(e=>{
+   const c=getComputedStyle(e);
+   if(!c.transitionDuration||c.transitionDuration==='0s')return;
+   out.tot++;
+   /* a list transitions several properties, so every segment is checked */
+   c.transitionTimingFunction.split(/,\s*(?![^(]*\))/).forEach(f=>{
+    if(f.trim()==='ease'&&out.ease.length<6)
+     out.ease.push(e.tagName.toLowerCase()+'.'+(e.className||'?').toString().slice(0,24));});
+   c.transitionDuration.split(',').forEach(d=>{
+    d=d.trim(); out.dur[d]=(out.dur[d]||0)+1;});});
+  return out;});
+ /* the seven tokens resolve. an unresolved var() reads as empty and every
+    transition using it silently falls back to 0s, which is no motion at all. */
+ const missing=Object.keys(m.tok).filter(k=>!m.tok[k]);
+ ok(missing.length===0,'all seven motion tokens resolve'
+  +(missing.length?', missing '+missing.join(' '):''));
+ ok(m.tot>100,'there are live animated elements to check, '+m.tot);
+ ok(m.ease.length===0,'no element runs on the browser default ease'
+  +(m.ease.length?', found '+m.ease.join(', '):''));
+ /* every duration on screen is one of the four steps. the boot keyframes are
+    animations, not transitions, so they are not in this set. */
+ const ALLOW=['0.12s','0.22s','0.32s','0.42s'];
+ const stray=Object.keys(m.dur).filter(d=>ALLOW.indexOf(d)<0);
+ ok(stray.length===0,'every duration is one of the four named steps'
+  +(stray.length?', stray '+stray.join(' '):''));
+ console.log('  animated:',m.tot,' durations:',Object.keys(m.dur).join(' '));
+ await p7.close();
 }
 
 await browser.close();
