@@ -578,6 +578,18 @@ body:not(.tab-field) .bal{display:none}
 /* the definition of the two ends of an axis, said once in the rail rather than
    only in a tooltip, because a tooltip is not reachable by a thumb. */
 .stk-def{margin:10px 0 8px;font-size:12.5px;line-height:1.6;color:var(--dim)}
+/* the protocol control on an address reading. It is the one action on that
+   panel, so it is the one filled button, and the line under it says what the
+   run will actually be rather than leaving a person to press and find out. */
+/* .ad-prot, not .ad-act. The drills already had an .ad-act row and the design
+   gate caught the second declaration on the first run, which is the whole
+   reason that check exists: the .card collision cost a rail thirty two pixels
+   and a turn to find. */
+.ad-prot{display:flex;flex-direction:column;gap:8px;margin-top:16px;padding-top:14px;
+ border-top:1px solid var(--edge)}
+.ad-prot .btn{align-self:flex-start}
+.ad-prot-n{font-size:12.5px;line-height:1.55;color:var(--dim)}
+
 .stk-def b{color:var(--ink);font-weight:500}
 /* the accuracy block owns the bottom right, so the howto stops before it
    rather than running under it at the narrower desktop widths. */

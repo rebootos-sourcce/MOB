@@ -578,6 +578,18 @@ body:not(.tab-field) .bal{display:none}
 /* the definition of the two ends of an axis, said once in the rail rather than
    only in a tooltip, because a tooltip is not reachable by a thumb. */
 .stk-def{margin:10px 0 8px;font-size:12.5px;line-height:1.6;color:var(--dim)}
+/* the protocol control on an address reading. It is the one action on that
+   panel, so it is the one filled button, and the line under it says what the
+   run will actually be rather than leaving a person to press and find out. */
+/* .ad-prot, not .ad-act. The drills already had an .ad-act row and the design
+   gate caught the second declaration on the first run, which is the whole
+   reason that check exists: the .card collision cost a rail thirty two pixels
+   and a turn to find. */
+.ad-prot{display:flex;flex-direction:column;gap:8px;margin-top:16px;padding-top:14px;
+ border-top:1px solid var(--edge)}
+.ad-prot .btn{align-self:flex-start}
+.ad-prot-n{font-size:12.5px;line-height:1.55;color:var(--dim)}
+
 .stk-def b{color:var(--ink);font-weight:500}
 /* the accuracy block owns the bottom right, so the howto stops before it
    rather than running under it at the narrower desktop widths. */
@@ -6164,6 +6176,41 @@ function cqRamp(cq){
    keeps a backing disc so it stays legible over the detail.
    ============================================================ */
 const CORE_STEP=[1.45,2.30,3.40];
+/* ============================================================
+   THE FETTERS GROW AS YOU COME IN.
+
+   Zoom already resolved two things: the depth ladder outside the
+   wheel and the interior of the core. The shell, which is the 112
+   addresses and is where the actual work happens, resolved nothing:
+   an address was a tick at every magnification, so moving in gave a
+   bigger tick and no more information.
+
+   Two more thresholds, on the same gesture.
+
+     2.60  an address that is carrying grows out of the shell by its
+           own charge, and takes the glyph of the axis it sits on.
+           You can see which fetter a behaviour is standing on.
+     3.90  it is named, and its two ends are drawn as a pair: held
+           outward from the ring, opposite inward. The pair is the
+           protocol in one shape, because release empties the first
+           and replace fills the second.
+
+   Only what is carrying grows. A hundred and twelve labels at once
+   is not detail, it is noise, and an address at zero has nothing to
+   say. Growth is by charge, so what grows most is what costs most,
+   which is also what you would want to reach for.
+
+   Every grown address is a target, and the target is bigger than
+   the tick was, which is the point: at this magnification a person
+   is choosing one thing to work on.
+   ============================================================ */
+const FET_STEP=[2.60,3.90];
+function fetA(i){
+ var z=S.zoom||1, t=FET_STEP[i];
+ return Math.max(0,Math.min(1,(z-t)/(t*0.30)));}
+function fetOpen(){return Math.max(fetA(0),fetA(1));}
+function fetResolved(){
+ return fetA(1)>0.5?'every fetter named':(fetA(0)>0.5?'the fetters':'');}
 /* how far in each layer is, 0 to 1, over a ramp of its own threshold. */
 function coreLayerA(i){
  var z=S.zoom||1, t=CORE_STEP[i];
@@ -6378,9 +6425,50 @@ function effView(){
 /* what zoom added on top of the button, for the readout */
 function zoomAdded(){return effView()-(S.view|0);}
 function nzAng(a){while(a<-Math.PI)a+=TAU;while(a>Math.PI)a-=TAU;return a;}
+/* ONE GROWN ADDRESS. The glyph of the axis it sits on, then at the deeper
+   threshold its name and its two ends. Held reads outward from the ring and
+   opposite inward, which is the protocol in one shape: release empties the
+   first and replace fills the second, at the same address. */
+function fetGrown(n,a,hw,r0,c,ld,fg,fn){
+ var cf=CHILD.filter(function(x){return x.nm===n.cf;})[0];
+ var gx=CX+Math.cos(a)*(r0+6), gy=CY+Math.sin(a)*(r0+6);
+ /* the axis glyph, sized by charge, on the leading edge of the address */
+ if(cf&&cf.ic&&fg>0.12){
+  /* the glyph reads or it is not worth drawing. It is the one mark that says
+     WHICH axis this address is standing on, which is the whole reason a person
+     came in this close, so it gets size and contrast rather than a tint. */
+  var sc=(11+ld*13)*fg/24;
+  g.save(); g.translate(gx,gy); g.rotate(a+Math.PI/2); g.scale(sc,sc);
+  g.translate(-12,-12);
+  g.strokeStyle=rgba(mixc(c,[255,255,255],.72),fg*(0.55+ld*0.45));
+  g.lineWidth=2.0/sc; g.lineJoin='round'; g.lineCap='round';
+  g.stroke(new Path2D(cf.ic));
+  g.restore();}
+ /* an edge, so a grown address reads as one object with a boundary rather
+    than as a gradient that happens to be brighter. It is a target now. */
+ if(fg>0.3){arcP(r0,R_SHELL,a-hw,a+hw);
+  g.strokeStyle=rgba(mixc(c,[255,255,255],.35),fg*(.18+ld*.35));
+  g.lineWidth=1; g.stroke();}
+ if(fn<=0.05)return;
+ /* the pair. outward from the ring is what is held, inward is what is
+    installed against it. Two bars, one axis, and the gap between them is the
+    work left. */
+ var hl=ld*U*.075*fn, pl=clamp((n.rep||0)/10,0,1)*U*.075*fn;
+ if(hl>1){arcP(R_SHELL+2,R_SHELL+2+hl,a-hw*.62,a+hw*.62);
+  g.fillStyle=rgba(c,.30+ld*.5); g.fill();}
+ if(pl>1){arcP(r0-2-pl,r0-2,a-hw*.62,a+hw*.62);
+  g.fillStyle=rgba(bc('Heart'),.28+(n.rep||0)/10*.5); g.fill();}
+ /* the name. only the heaviest, because the collide gate is right that a ring
+    of a hundred labels is a ring of no labels. */
+ if(n.disp>=6&&fn>0.45)
+  radialTxt(n.k,a,R_SHELL+9+hl,11.5,mixc(c,[255,255,255],.3),.6+fn*.4,600);}
+var R_SHELL=0;
 function drawWheel(r,L){
  const ink=INK(),p=S.pin,gc=GOLDC();
  const shellR=[U*.62,U*.68,U*.74,U*.78][L];
+ /* the shell radius, published once so the grown address can draw outside it
+    without being handed four arguments it would only pass along. */
+ R_SHELL=shellR;
  const R={shell:shellR,arch:U*.60,sab:[0,U*.56,U*.545,U*.50][L],cx:U*.425,hy:U*.335,
   sup:U*.255,dom:U*.93,mask:U*.685};
  const coreBase=[U*.30,U*.26,U*.20,U*.155][L];
@@ -6442,17 +6530,28 @@ function drawWheel(r,L){
   pill('6 masks',R.mask+13);}
 
  /* --- THE SHELL. 108 addresses. SQ. present at every depth. --- */
- W.forEach(n=>{const a=n.ang,hw=TAU/108*.43,ld=clamp(n.disp/10,0,1);
-  const d=U*.016+ld*U*.088,c=nodeCol(n),r0=R.shell-d;
+ const fg=fetA(0), fn=fetA(1);
+ W.forEach(n=>{const a=n.ang,ld=clamp(n.disp/10,0,1);
+  /* the slice widens a little as the fetters grow, so a grown address is a
+     shape you can hit rather than a hair you have to aim at */
+  const hw=TAU/108*(.43+fg*.24);
+  const c=nodeCol(n), carrying=n.disp>=4;
+  /* GROWTH IS BY CHARGE. An address at zero does not move, whatever the zoom:
+     there is nothing there to come forward. */
+  const grow=carrying?fg*ld*U*.085:0;
+  const d=U*.016+ld*U*.088+grow, r0=R.shell-d;
   arcP(r0,R.shell,a-hw,a+hw);
   const gr=g.createRadialGradient(CX,CY,r0,CX,CY,R.shell);
-  gr.addColorStop(0,rgba(mixc(c,[0,0,0],LIGHT()?.05:.36),n.disp>=4?.34+ld*.6:.08));
-  gr.addColorStop(1,rgba(mixc(c,[255,255,255],.44),n.disp>=4?.7:.15));
+  gr.addColorStop(0,rgba(mixc(c,[0,0,0],LIGHT()?.05:.36),carrying?.34+ld*.6:.08));
+  gr.addColorStop(1,rgba(mixc(c,[255,255,255],.44),carrying?.7:.15));
   g.fillStyle=gr;g.fill();
   if(n.disp>=6.5){g.shadowColor=rgba(c,.9);g.shadowBlur=16;g.fill();g.shadowBlur=0;}
   if(n.disp>=9){g.strokeStyle=rgba(hx('#FF2E1F'),.85);g.lineWidth=1.4;g.stroke();}
   if(S.hover===n||S.pin===n){g.strokeStyle=rgba(gc,1);g.lineWidth=2;g.stroke();}
-  HIT.push({k:'node',n,cx:CX,cy:CY,a0:a-hw,a1:a+hw,r0:R.shell*.85,r1:R.shell*1.02});});
+  if(fg>0&&carrying)fetGrown(n,a,hw,r0,c,ld,fg,fn);
+  /* the target grows with the shape. r0 is where the address now starts. */
+  HIT.push({k:'node',n,cx:CX,cy:CY,a0:a-hw,a1:a+hw,
+   r0:Math.min(R.shell*.85,r0-4),r1:R.shell*1.02+(fn>0&&carrying?U*.05:0)});});
  pill('112 addresses · SQ · '+r.loaded.length+' loaded',R.shell+14);
  if(L>=1)BANDS.forEach(b=>{const seg=W.filter(n=>n.b===b);
   radialTxt(b,meanAng(seg.map(n=>n.ang)),R.shell*1.058,12,bc(b),.9,600);});
@@ -8566,7 +8665,28 @@ function runNodeDrill(n){
   +(owners.length?owners.slice(0,8).map(function(o){
     return '<span class="pm-chip'+(o.over?' over':'')+'">'+esc(o.nm)+' '+o.w.toFixed(1)+'</span>';}).join('')
    :'<span class="pm-chip">nothing compounds from here</span>')+'</div>';
+ /* RUN THE PROTOCOL HERE. The reading ended at the reading: a person could see
+    exactly which address was costing them and had no way to act on it from
+    where they were standing. The release runner has always taken a list of
+    node ids, so scoping a run to one address is the call it was built for and
+    nothing new had to be invented. Only offered where there is something to
+    release: a protocol on an empty address is a ritual, not a protocol. */
+ if(n.sq>=1)
+  h+='<div class="ad-prot"><button class="btn pri" data-prot="'+n.i+'">'
+   +'Run the protocol here</button>'
+   +'<span class="ad-prot-n">'+esc(n.k)+', '+(c.nm?esc(c.nm)+' toward '+esc(c.opp):'this address')
+   +'. Four channels, twenty five lines.</span></div>';
+ else
+  h+='<p class="ad-p">Nothing is held here, so there is nothing to release. '
+   +'The protocol opens once this address is carrying.</p>';
  rdShell(h);}
+/* one listener for every protocol control, wherever it is drawn */
+addEventListener('click',function(e){
+ var b=e.target&&e.target.closest?e.target.closest('[data-prot]'):null;
+ if(!b)return;
+ var i=+b.getAttribute('data-prot');
+ if(!isFinite(i))return;
+ rdClose(); relPick([i]);});
 
 function runCoreDrill(){
  var r=compute();
@@ -10893,9 +11013,11 @@ function paintDepth(){
      which. Silent when zoom has added nothing, as before. */
   var add=zoomAdded();
   var inside=(typeof coreResolved==='function')?coreResolved():'';
+  var shell=(typeof fetResolved==='function')?fetResolved():'';
   var parts=[];
   if(add)parts.push('zoom resolved '+VIEWS[eff].nm.toLowerCase());
   if(inside)parts.push('the core is showing '+inside);
+  if(shell)parts.push('the shell is showing '+shell);
   note.textContent=parts.join(' \u00b7 ');
   note.style.display=parts.length?'':'none';}}
 function setZoom(z,ax,ay){

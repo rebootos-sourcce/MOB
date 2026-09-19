@@ -107,7 +107,28 @@ function runNodeDrill(n){
   +(owners.length?owners.slice(0,8).map(function(o){
     return '<span class="pm-chip'+(o.over?' over':'')+'">'+esc(o.nm)+' '+o.w.toFixed(1)+'</span>';}).join('')
    :'<span class="pm-chip">nothing compounds from here</span>')+'</div>';
+ /* RUN THE PROTOCOL HERE. The reading ended at the reading: a person could see
+    exactly which address was costing them and had no way to act on it from
+    where they were standing. The release runner has always taken a list of
+    node ids, so scoping a run to one address is the call it was built for and
+    nothing new had to be invented. Only offered where there is something to
+    release: a protocol on an empty address is a ritual, not a protocol. */
+ if(n.sq>=1)
+  h+='<div class="ad-prot"><button class="btn pri" data-prot="'+n.i+'">'
+   +'Run the protocol here</button>'
+   +'<span class="ad-prot-n">'+esc(n.k)+', '+(c.nm?esc(c.nm)+' toward '+esc(c.opp):'this address')
+   +'. Four channels, twenty five lines.</span></div>';
+ else
+  h+='<p class="ad-p">Nothing is held here, so there is nothing to release. '
+   +'The protocol opens once this address is carrying.</p>';
  rdShell(h);}
+/* one listener for every protocol control, wherever it is drawn */
+addEventListener('click',function(e){
+ var b=e.target&&e.target.closest?e.target.closest('[data-prot]'):null;
+ if(!b)return;
+ var i=+b.getAttribute('data-prot');
+ if(!isFinite(i))return;
+ rdClose(); relPick([i]);});
 
 function runCoreDrill(){
  var r=compute();

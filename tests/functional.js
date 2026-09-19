@@ -566,6 +566,63 @@ ok(core.z42.rad>core.z1.rad*1.5,
 ok(core.z28.res==='the seven seats','and it says what it is showing, got '+core.z28.res);
 console.log(' ',JSON.stringify(core));
 
+console.log('\n=== the fetters grow, and one of them runs a protocol ===');
+/* The shell resolved nothing on zoom: an address was a tick at every
+   magnification, so coming in gave a bigger tick and no more information. */
+await page.evaluate(()=>{loadP(6);setTab(TAB.FIELD);});
+await page.waitForTimeout(280);
+const fet={steps:await page.evaluate(()=>FET_STEP.slice())};
+for(const [k,z] of [['z1',1],['z28',2.8],['z46',4.6]]){
+ await page.evaluate(zz=>{S.zoom=zz;S.panx=0;S.pany=0;reframe();render();},z);
+ await page.waitForTimeout(240);
+ fet[k]=await page.evaluate(()=>{
+  const hits=HIT.filter(h=>h.k==='node');
+  /* the heaviest address, and how deep its target now reaches */
+  const heavy=W.filter(x=>x.sq>=4).sort((a,b)=>b.sq-a.sq)[0];
+  const hh=hits.filter(h=>h.n===heavy)[0];
+  return {a:[fetA(0),fetA(1)].map(x=>+x.toFixed(2)),res:fetResolved(),
+   n:hits.length,
+   /* angular width and radial depth of one target, in the wheel's own units */
+   wide:+((hh.a1-hh.a0)*1000).toFixed(1),
+   deep:+((hh.r1-hh.r0)/U*100).toFixed(1)};});}
+ok(fet.z1.a[0]===0&&fet.z1.res==='','the shell is closed at zoom 1');
+ok(fet.z28.a[0]>0&&fet.z28.a[1]===0,'the fetters grow first, got '+fet.z28.a);
+ok(fet.z46.a[1]>0,'then they are named, got '+fet.z46.a);
+ok(fet.z46.wide>fet.z1.wide,'a grown address is a wider target, '+fet.z1.wide+' to '+fet.z46.wide);
+ok(fet.z46.deep>fet.z1.deep,'and a deeper one, '+fet.z1.deep+' to '+fet.z46.deep);
+ok(fet.z1.n===108&&fet.z46.n===108,'and there are still 108, never more and never fewer');
+console.log(' ',JSON.stringify(fet));
+
+/* RUN THE PROTOCOL HERE. The reading used to end at the reading. */
+const prot=await page.evaluate(()=>{
+ S.zoom=1;S.panx=0;S.pany=0;reframe();render();
+ const heavy=W.filter(x=>x.sq>=4).sort((a,b)=>b.sq-a.sq)[0];
+ const empty=W.filter(x=>x.sq<1)[0];
+ runNodeDrill(heavy);
+ const onHeld=!!document.querySelector('[data-prot]');
+ const copy=(document.getElementById('rdrill').textContent||'');
+ runNodeDrill(empty);
+ const onEmpty=!!document.querySelector('[data-prot]');
+ const emptyCopy=(document.getElementById('rdrill').textContent||'');
+ runNodeDrill(heavy);
+ document.querySelector('[data-prot]').click();
+ const out={onHeld,onEmpty,
+  open:RUN.open,queue:RUN.queue.length,plan:RUN.plan.length,
+  addr:RUN.queue[0]&&RUN.queue[0].k, want:heavy.k,
+  /* the run names the address rather than leaving a person to press and find out */
+  says:/Four channels, twenty five lines/.test(copy),
+  emptySays:/nothing to release/.test(emptyCopy)};
+ relClose(); rdClose();
+ return out;});
+ok(prot.onHeld,'an address that is carrying offers the protocol');
+ok(!prot.onEmpty,'and an empty one does not, because that would be a ritual');
+ok(prot.emptySays,'which it says, rather than showing a control that refuses');
+ok(prot.says,'the control states what the run will be before it is pressed');
+ok(prot.open&&prot.queue===1,'pressing it opens a run scoped to that one address');
+ok(prot.addr===prot.want,'and it is the address that was clicked, '+prot.addr);
+ok(prot.plan>0&&prot.plan<=25,'with a real plan under the cap, got '+prot.plan);
+console.log(' ',JSON.stringify(prot));
+
 console.log('\n=== the summary, the opening screen ===');
 /* The app opens here, so this surface is what a stranger sees and what an
    owner comes back to. It carries four blocks that did not exist before this

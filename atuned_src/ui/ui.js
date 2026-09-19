@@ -126,9 +126,11 @@ function paintDepth(){
      which. Silent when zoom has added nothing, as before. */
   var add=zoomAdded();
   var inside=(typeof coreResolved==='function')?coreResolved():'';
+  var shell=(typeof fetResolved==='function')?fetResolved():'';
   var parts=[];
   if(add)parts.push('zoom resolved '+VIEWS[eff].nm.toLowerCase());
   if(inside)parts.push('the core is showing '+inside);
+  if(shell)parts.push('the shell is showing '+shell);
   note.textContent=parts.join(' \u00b7 ');
   note.style.display=parts.length?'':'none';}}
 function setZoom(z,ax,ay){
