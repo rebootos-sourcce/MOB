@@ -743,16 +743,21 @@ function paintTabEdge(){
  if(typeof requestAnimationFrame==='function')
   requestAnimationFrame(function(){requestAnimationFrame(paintTabEdge);});})();
 function paintUndo(){
- var b=$('undobtn'), l=$('undolab'), f=$('redobtn'), w=$('histpair');
+ var b=$('undobtn'), f=$('redobtn'), w=$('histpair');
  if(!b)return;
  var n=undoDepth(), what=undoPeek();
  var m=(typeof redoDepth==='function')?redoDepth():0;
  var fwd=(typeof redoPeek==='function')?redoPeek():null;
  b.hidden=(n===0);
- if(n){ l.textContent='Undo '+what;
-  b.title='Takes back '+what+'. '+n+' step'+(n===1?'':'s')+' available.'; }
+ /* THE ARROW CARRIES IT, and the name goes where a name belongs. Ruled: just
+    the arrows. What the step will take back is still written, on every
+    repaint, as the accessible name and the tooltip, so a screen reader and a
+    hover both get the sentence the label used to print. */
+ if(n){ var ub='Back. Takes back '+what+'. '+n+' step'+(n===1?'':'s')+' available.';
+  b.title=ub; b.setAttribute('aria-label',ub); }
  if(f){ f.hidden=(m===0);
-  if(m)f.title='Puts back '+fwd+'. '+m+' step'+(m===1?'':'s')+' forward.'; }
+  if(m){ var rb='Forward. Puts back '+fwd+'. '+m+' step'+(m===1?'':'s')+' forward.';
+   f.title=rb; f.setAttribute('aria-label',rb); } }
  /* the pair only exists while there is history in either direction. Two
     permanently disabled arrows in the bar are furniture, which is the same
     reason the single control was hidden when the stack was empty. */

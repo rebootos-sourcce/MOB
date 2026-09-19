@@ -164,14 +164,19 @@
        Undo without a way forward is half a control: take one step back, find
        there is no way to return, and undo becomes something a person is
        careful with rather than something they explore with, which is the
-       opposite of what it is for. Two arrows, the pair everybody already has
-       in their hands, and each one names what it will do rather than saying
-       only undo. -->
+       opposite of what it is for.
+
+       JUST THE ARROWS. Ruled 19 September, and it overrules the earlier
+       ruling that each one should print what it takes back. The label ran to
+       twenty characters and moved every time the stack moved, so the two
+       controls beside it shifted on the screen with every edit. The naming
+       did not go anywhere: it is the accessible name and the tooltip, both
+       still written on every repaint. -->
   <div class="histpair" id="histpair" hidden>
-   <button class="vt undobtn" id="undobtn" type="button" hidden>
+   <button class="vt undobtn" id="undobtn" type="button" hidden aria-label="Back">
     <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
      <path d="M4 10h10a5 5 0 0 1 0 10h-3"/><path d="M4 10l4-4M4 10l4 4"/></svg>
-    <span id="undolab">Undo</span></button>
+   </button>
    <button class="vt redobtn" id="redobtn" type="button" hidden
     aria-label="Forward">
     <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">

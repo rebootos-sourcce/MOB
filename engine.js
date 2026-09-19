@@ -2932,7 +2932,12 @@ function blankProfile(name){
      stored: the energetics are pure functions of these three strings, so a
      sixth system still costs nothing. timeUnknown is explicit, because an
      unknown birth time changes what can be read and must not be guessed. */
-  who:{first:'', middle:'', last:'', sex:'', born:{date:'', time:'', place:'', timeUnknown:false}},
+  /* sealed is the stamp from the moment the person pressed save on their own
+     identity. Ruled: once it is in, the block rolls up and an edit control is
+     what reopens it, because a birth moment does not change and a form left
+     open invites somebody to fiddle with the one input that cannot be wrong. */
+  who:{first:'', middle:'', last:'', sex:'', sealed:'',
+   born:{date:'', time:'', place:'', timeUnknown:false}},
   /* what the person said their type is, and what it wrote. null until stated. */
   seed:null,
   /* THE METER. One pattern is one release line delivered: one channel over
@@ -3151,7 +3156,7 @@ function validateProfile(o){
   if(typeof o.intake.completedAt==='string')p.intake.completedAt=o.intake.completedAt;}
  /* who. strings only, and never trusted into the document by this file. */
  if(o.who&&typeof o.who==='object'){
-  ['first','middle','last','sex'].forEach(function(k){
+  ['first','middle','last','sex','sealed'].forEach(function(k){
    if(typeof o.who[k]==='string')p.who[k]=o.who[k].slice(0,200);});
   if(o.who.born&&typeof o.who.born==='object'){
    ['date','time','place'].forEach(function(k){

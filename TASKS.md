@@ -644,3 +644,109 @@ question needs an answer on the screen.
 halves that scroll independently: imprints on top, and the release with all
 its settings on the bottom. How many patterns, how long, how quick, and
 selecting which ones.
+
+---
+
+## Ruled 19 September, second note. Account, help and the feedback loop.
+
+His words, and the whole block is his: the profile page is non-standard, the
+identity form should put itself away once it is saved, undo and redo are just
+the arrows, and feedback lives in help alongside customer support. The point he
+made at the end is the one that orders the rest: the funnel, the product and
+the feedback loop are one loop, not three features.
+
+**Q1. The identity block rolls up on save.** `ui/intakeui.js`, `engine/schema.js`
+Once a person has entered name, sex, date, time and place and pressed save, the
+form collapses to one line stating what was entered, and an edit control is what
+reopens it. His reasoning: a birth moment does not change, and a form left open
+invites somebody to fiddle with the one input that cannot be wrong.
+*Small. Done, this commit. `who.sealed` is an ISO stamp and passes the boundary.*
+
+**Q2. A standard account area.** `ui/ui.js` settings surface, new module
+The profile page is non-standard and he does not want it invented here.
+Sections, in his order: account, security, privacy, billing and tier. Coherence
+does not belong in it, because coherence is everywhere else in the app already.
+*Large. Blocked on the IA report. Most of it is a stub until sign in exists,
+and a stub has to say so rather than look broken.*
+
+**Q3. Help, and what is in it.** new module
+Customer support, which is a question that goes to a record store this product
+does not have yet. A rating a person can give in seconds. The full alpha
+questionnaire. All three need network, and the app has exactly one seam.
+*Large. The queue and the honest failure report are the real work, not the form.*
+
+**Q4. The alpha questionnaire.** new module
+Eleven questions he named, across marketing, production and development. Do you
+know what you are doing. How good is it. Does the information make sense. Do you
+know what you are reading. What would improve the experience. Is the information
+helpful, or not. Does the protocol make sense. Does the explanation around the
+problem make sense. Do you know why we are doing this. Does the content and the
+knowledge base make sense.
+*Medium. Every answer has to name a decision it would change, or it is cut.*
+
+**Q5. Undo and redo are the arrows.** `ui/ui.js`
+No labels. The arrows carry it.
+*Small.*
+
+**Q6. One loop.** funnel, product, feedback
+His close: "That way we have our funnel, the product, and feedback loop all in
+one." Whatever gets built for Q2 to Q4 is designed as one path, not three
+surfaces that happen to sit near each other.
+*The framing, not a task. It decides the shape of Q2 to Q4.*
+
+**What is ruled and not negotiable inside this block.** A feedback payload
+leaves the device, so it is a record. It never carries a name, an email, a
+customer id, a subscription id, a key or a token, and it never carries a story.
+Free text is the risk and the control says so in one line before anybody types.
+Every control that can fail reports through `status()` and never claims a send
+it did not get.
+
+---
+
+## Ruled 19 September, third note. The Field, the fetters and imprints.
+
+**R1. Imprints gets its own tab and its own robustness.** `ui/imprints.js`
+He likes seeing an imprint appear inside the story and likes running one from
+there, because it is instantaneous. That stays. What it does not have is a
+surface of its own. His instruction: go and look at the original design and
+review it twice, because a layout and a flow for this already exist there.
+*Medium. Read the original before drawing anything.*
+
+**R2. The rainbow bands at the centre of the Field.** `ui/wheel.js`
+Zoomed in, the centre carries colour bands that read as feathers. His questions,
+which are the spec: what is the intention, is it the expression of the energy,
+what values is it deriving, and what is associated with it. Today it is a symbol
+with no information, no click target and no behaviour.
+*Medium. It either carries a reading and can be interrogated, or it comes out.*
+
+**R3. The six axis icons are barely visible.** `ui/wheel.js`
+Redesign so they stand out. They are also missing the pill carrying the percent
+at which a person tends to do that thing most often.
+*Medium.*
+
+**R4. The Field top row takes too much horizontal space.** `ui/wheel.js`, `ui/panels.js`
+Pills and percents across a full line for something that should be a circle and
+a pill with text. Same information, far less real estate.
+*Medium.*
+
+**R5. The accuracy readout in the lower right.** `ui/wheel.js`
+The percent is right and is what he wants: behavioural accuracy, stated. The
+word identification is not needed. What is needed is the number, that it is
+simulated, and the plus or minus gap around it.
+*Small.*
+
+**R6. Benign and malignant, masculine and feminine, are one feature.** `ui/panels.js`
+They are the same kind of reading and they look dramatically different. One
+design, one icon family, streamlined rather than a heavy bar. Click gives the
+information, hover gives a tooltip. His instruction: draw it three or four
+times and look at what information it is actually providing first.
+*Medium.*
+
+**R7. The fetters surface is broken.** `ui/panels.js`, `ui/map.js`
+His report: a cluster of circles with no information, nothing clickable, no text
+saying what is going on, and no way to tell how accurate it is. His instruction
+is explicit about who and how: the art director, the design director and the UI
+UX architect together, ten simulated passes, pitched to the ICPs, aiming at the
+least friction and the most reason to come back. Then simulated against the ICPs
+again and fixed on what that finds.
+*Large. The one on this list a person has called broken, so it goes first.*

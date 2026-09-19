@@ -434,7 +434,10 @@ const un=await page.evaluate(()=>{
  ST_PARSED=parseStory(ST_TEXT); stRender();
  const ap=document.getElementById('stapply'); if(ap)ap.click();
  o.changed=(JSON.stringify(S.charge)!==before);
- o.label=document.getElementById('undolab').textContent;
+ /* The label is the accessible name now, not printed text. Ruled: just the
+    arrows. What it owes is unchanged, so this reads it where it moved to
+    rather than dropping the assertion. */
+ o.label=document.getElementById('undobtn').getAttribute('aria-label');
  o.shown=!document.getElementById('undobtn').hidden;
  document.getElementById('undobtn').click();
  o.restored=(JSON.stringify(S.charge)===before);
@@ -443,7 +446,7 @@ const un=await page.evaluate(()=>{
 ok(un.hiddenAtRest,'the control is hidden when there is nothing to take back');
 ok(un.changed,'committing a story changes the field');
 ok(un.shown&&/committing the story/.test(un.label),
- 'and the control names what it will undo: '+JSON.stringify(un.label));
+ 'and the control still names what it will undo, as its accessible name: '+JSON.stringify(un.label));
 ok(un.restored,'undo restores the field exactly');
 ok(un.hiddenAgain,'and hides itself again when the stack empties');
 
