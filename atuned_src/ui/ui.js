@@ -358,43 +358,62 @@ function balG(g,on,t){
 function renderBal(r){
  var e=document.getElementById('bal'); if(!e)return;
  var b=r.balance;
- /* mirrored: lean +1 is fully outward, which is the masculine end, and the
-    masculine end is now on the left, so the position runs the other way. */
- var pc=(1-(b.lean+1)/2)*100;
+ /* THE STRIP, BUILT TO THE RULING AND NOT TO MY READING OF IT.
+
+    Asked for five times, and four times it came back as something adjacent.
+    The ruling is four things and every one of them is specific:
+
+      the two symbols, masculine on the left and feminine on the right
+      one line, with a break at the centre
+      the fill runs FROM THE CENTRE OUT toward the side you lean
+      and the percent is a pill
+
+    What was there was a dot sliding along a plain track with the figure
+    printed beside it as bare text. A dot on a track says "you are at this
+    point on a scale". That is not the reading. The reading is "you lean this
+    far, this way, off centre", which is a quantity with a direction and an
+    origin, and the only shape that says it is a bar growing out of the
+    middle. The break at the centre is where even sits, so even is visibly
+    nothing rather than a dot that happens to be halfway.
+
+    Masculine on the left and feminine on the right is the opposite
+    handedness from the body, and that is what a mirror is: face one and your
+    right hand is on the left. Logged in BOOK-ERRATA so the codex and the
+    screen disagree in writing rather than by accident. */
+ /* mirrored with the strip: lean +1 is fully outward, which is masculine,
+    and masculine is the left end. */
+ var lean=b.read?Math.abs(b.lean)*100:0;
+ var dir=!b.read?'':b.lean===0?'even':b.lean>0?'masculine':'feminine';
  var c=b.lean>=0?seatCol('Solar'):seatCol('Throat');
  var sx=CURP&&CURP.who?CURP.who.sex:'';
- /* sex at birth follows the same mirror: male at the masculine end, which is
-    now the left one. It is a reference point, not a reading, and it is only
-    drawn when a person has given it. */
- var tick=sx==='m'?'<span class="bal-s" style="left:22%"></span>'
-        :sx==='f'?'<span class="bal-s" style="left:78%"></span>':'';
- /* The centre named the direction and so did the end label, so "26% outward"
-    sat against the word outward and the two ran together. The ends carry the
-    direction, the centre carries the number, and the end the field leans to is
-    the one that lights. One word per concept, on one strip. */
- var lean=b.read?Math.abs(b.lean)*100:0;
- var dir=!b.read?'':b.lean===0?'even':b.lean>0?'outward':'inward';
- /* THE STRIP NAMED THE DIRECTION AND NOT THE POLE.
-
-    It read "outward" and "feminine" nowhere, with the two symbols carrying
-    the whole meaning. Outward and inward are how each pole expresses. They
-    are not what each pole IS, and a symbol a person has not been taught yet
-    cannot supply the word underneath it.
-
-    The poles are masculine and feminine. Those are the words. Outward and
-    inward move into the tooltips, where an explanation belongs. */
+ /* sex at birth is a reference point and not a reading, drawn only when a
+    person has given it, and mirrored with everything else. */
+ var tick=sx==='m'?'<span class="bal-s" style="left:25%"></span>'
+        :sx==='f'?'<span class="bal-s" style="left:75%"></span>':'';
+ /* the bar. half the width is half the strip, so a full lean fills its own
+    side exactly and nothing crosses the break. */
+ var half=(b.read?Math.min(1,Math.abs(b.lean)):0)*50;
+ var fill=!b.read||half<=0 ? ''
+  : '<span class="bal-f" style="'+(b.lean>0
+     ? 'right:50%;width:'+half.toFixed(1)+'%'
+     : 'left:50%;width:'+half.toFixed(1)+'%')
+    +';background:'+c+'"></span>';
  e.innerHTML='<div class="bal-t">'
-  +balG(GLYPH_M,dir==='outward','Masculine. Structure and direction, expressed outward. '
+  +balG(GLYPH_M,dir==='masculine','Masculine. Structure and direction, expressed outward. '
     +'Not men: the codex is explicit about that.')
-  +'<span'+(dir==='outward'?' class="on" style="color:'+c+'"':'')+'>masculine</span>'
-  +'<span class="bal-n"><b>'+(!b.read?'not enough held to read'
-    :b.lean===0?'even':lean.toFixed(0)+'%')+'</b></span>'
-  +'<span'+(dir==='inward'?' class="on" style="color:'+c+'"':'')+'>feminine</span>'
-  +balG(GLYPH_F,dir==='inward','Feminine. Energy and receptivity, held inward. '
+  +'<span'+(dir==='masculine'?' class="on" style="color:'+c+'"':'')+'>masculine</span>'
+  +'<span class="bal-n">'+(!b.read
+    ? '<em>not enough held to read</em>'
+    : cr('Heart',lean,{size:'xs',hot:false,color:c,label:dir,
+        glyph:(b.lean>=0?GLYPH_M:GLYPH_F),
+        raw:(b.lean===0?'even':Math.round(lean)+'%'),
+        title:'Balance. '+(b.lean===0?'even':Math.round(lean)+' percent '+dir)}))
+  +'</span>'
+  +'<span'+(dir==='feminine'?' class="on" style="color:'+c+'"':'')+'>feminine</span>'
+  +balG(GLYPH_F,dir==='feminine','Feminine. Energy and receptivity, held inward. '
     +'Not women: the codex is explicit about that.')
   +'</div>'
-  +'<div class="bal-tr"><i></i>'+tick
-  +'<span class="bal-m" style="left:'+pc.toFixed(1)+'%;background:'+c+'"></span></div>';}
+  +'<div class="bal-tr">'+fill+'<i></i>'+tick+'</div>';}
 /* ---- the rail's doors. one delegated set, on the rail itself ---- */
 var _KBJ=false;
 function wireKbJump(){

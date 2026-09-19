@@ -316,7 +316,15 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
    makes it look like a control rather than the thing you are in. */
 .brand{font-size:18px;font-weight:400;letter-spacing:.075em;padding:0 10px 0 2px;
  white-space:nowrap;color:var(--sky);background:transparent;border:0;cursor:pointer;
- font-family:var(--sans);line-height:1;min-height:var(--tap);display:flex;align-items:center}
+ font-family:var(--sans);line-height:1;min-height:var(--tap);display:flex;
+ flex-direction:column;align-items:flex-start;justify-content:center;gap:2px}
+/* the name, and the line under it saying what the name is */
+.brand .bn{display:block;line-height:1}
+/* 11px, not 9.5. The design gate holds a sub-11px floor on every string a
+   person is expected to read, and a product name is a string a person is
+   expected to read. Tracking carries the smallness instead. */
+.brand .bs{display:block;font-size:11px;font-weight:500;letter-spacing:.17em;
+ color:var(--gold);line-height:1;text-transform:none}
 .brand:hover{color:color-mix(in srgb,var(--sky) 76%,var(--ink))}
 /* the umlaut, drawn. two dots, white, sitting above a plain u. */
 .brand .um{position:relative;display:inline-block}
@@ -720,7 +728,8 @@ body.punch canvas#cv{filter:saturate(1.2)}
    lit end is the direction, and neither repeats the other. */
 .bal-t .on{font-weight:600}
 .bal-t b{color:var(--ink);font-family:var(--num);font-weight:500}
-.bal-n{flex:1 1 auto;text-align:center}
+.bal-n{flex:1 1 auto;text-align:center;display:flex;justify-content:center}
+.bal-n em{font-style:normal;color:var(--dim);font-size:11.5px}
 /* the two poles, as glyphs. ring and not fill, like every other icon here.
    masculine on the left and feminine on the right, mirrored against the body
    on the owner's ruling, which is what facing a mirror does. */
@@ -728,8 +737,18 @@ body.punch canvas#cv{filter:saturate(1.2)}
 .bal-g svg{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;
  stroke-linejoin:round}
 .bal-g.on{color:var(--ink)}
-.bal-tr{position:relative;height:5px;border-radius:3px;background:var(--sunk)}
-.bal-tr i{position:absolute;top:0;bottom:0;width:1px;left:50%;background:var(--edge-2)}
+/* ONE LINE WITH A BREAK AT THE CENTRE, and the fill runs out of the break
+   toward the side the field leans. A track with a dot on it says "you are at
+   this point on a scale", which is not the reading. The reading is how far
+   off centre and which way, and that is a bar with an origin. */
+.bal-tr{position:relative;height:6px;border-radius:3px;background:var(--sunk);
+ overflow:hidden}
+.bal-f{position:absolute;top:0;bottom:0;border-radius:3px;opacity:.9;
+ transition:width .3s cubic-bezier(.22,1,.36,1),background .3s}
+/* the break. It sits above the fill so even reads as a gap and not as a
+   seam, which is the whole reason it is there. */
+.bal-tr i{position:absolute;top:-1px;bottom:-1px;width:2px;left:calc(50% - 1px);
+ background:var(--bg);z-index:2}
 .bal-m{position:absolute;top:50%;width:12px;height:12px;border-radius:50%;
  transform:translate(-50%,-50%);transition:left .35s}
 .bal-s{position:absolute;top:50%;width:2px;height:13px;transform:translate(-50%,-50%);

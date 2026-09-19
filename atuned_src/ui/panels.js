@@ -210,11 +210,12 @@ const THEMEICON={
  document.addEventListener('keydown',function(e){
   if(e.key==='Escape'&&!menu.hidden){shut();btn.focus();}});})();
 /* ---- THE WORDMARK GOES HOME ----
-   Home is the summary. It is the conclusion, it is where the app opens, and it
-   is what a person clicking the name of the product is asking to see. */
+   Home is the field. It is the instrument, it is where the app opens on the
+   owner's ruling, and it is what clicking the name of the product asks for. */
 (function(){
  var b=$('brand'); if(!b)return;
- b.addEventListener('click',function(){setTab(TAB.SUMMARY);});})();
+ /* home is where the app opens, and the app opens on Field */
+ b.addEventListener('click',function(){setTab(TAB.FIELD);});})();
 /* the font tuner is gone on the owner's ruling. one face, narrower, no
    per person override to keep working across every surface. */
 

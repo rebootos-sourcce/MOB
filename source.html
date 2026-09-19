@@ -316,7 +316,15 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
    makes it look like a control rather than the thing you are in. */
 .brand{font-size:18px;font-weight:400;letter-spacing:.075em;padding:0 10px 0 2px;
  white-space:nowrap;color:var(--sky);background:transparent;border:0;cursor:pointer;
- font-family:var(--sans);line-height:1;min-height:var(--tap);display:flex;align-items:center}
+ font-family:var(--sans);line-height:1;min-height:var(--tap);display:flex;
+ flex-direction:column;align-items:flex-start;justify-content:center;gap:2px}
+/* the name, and the line under it saying what the name is */
+.brand .bn{display:block;line-height:1}
+/* 11px, not 9.5. The design gate holds a sub-11px floor on every string a
+   person is expected to read, and a product name is a string a person is
+   expected to read. Tracking carries the smallness instead. */
+.brand .bs{display:block;font-size:11px;font-weight:500;letter-spacing:.17em;
+ color:var(--gold);line-height:1;text-transform:none}
 .brand:hover{color:color-mix(in srgb,var(--sky) 76%,var(--ink))}
 /* the umlaut, drawn. two dots, white, sitting above a plain u. */
 .brand .um{position:relative;display:inline-block}
@@ -720,7 +728,8 @@ body.punch canvas#cv{filter:saturate(1.2)}
    lit end is the direction, and neither repeats the other. */
 .bal-t .on{font-weight:600}
 .bal-t b{color:var(--ink);font-family:var(--num);font-weight:500}
-.bal-n{flex:1 1 auto;text-align:center}
+.bal-n{flex:1 1 auto;text-align:center;display:flex;justify-content:center}
+.bal-n em{font-style:normal;color:var(--dim);font-size:11.5px}
 /* the two poles, as glyphs. ring and not fill, like every other icon here.
    masculine on the left and feminine on the right, mirrored against the body
    on the owner's ruling, which is what facing a mirror does. */
@@ -728,8 +737,18 @@ body.punch canvas#cv{filter:saturate(1.2)}
 .bal-g svg{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;
  stroke-linejoin:round}
 .bal-g.on{color:var(--ink)}
-.bal-tr{position:relative;height:5px;border-radius:3px;background:var(--sunk)}
-.bal-tr i{position:absolute;top:0;bottom:0;width:1px;left:50%;background:var(--edge-2)}
+/* ONE LINE WITH A BREAK AT THE CENTRE, and the fill runs out of the break
+   toward the side the field leans. A track with a dot on it says "you are at
+   this point on a scale", which is not the reading. The reading is how far
+   off centre and which way, and that is a bar with an origin. */
+.bal-tr{position:relative;height:6px;border-radius:3px;background:var(--sunk);
+ overflow:hidden}
+.bal-f{position:absolute;top:0;bottom:0;border-radius:3px;opacity:.9;
+ transition:width .3s cubic-bezier(.22,1,.36,1),background .3s}
+/* the break. It sits above the fill so even reads as a gap and not as a
+   seam, which is the whole reason it is there. */
+.bal-tr i{position:absolute;top:-1px;bottom:-1px;width:2px;left:calc(50% - 1px);
+ background:var(--bg);z-index:2}
 .bal-m{position:absolute;top:50%;width:12px;height:12px;border-radius:50%;
  transform:translate(-50%,-50%);transition:left .35s}
 .bal-s{position:absolute;top:50%;width:2px;height:13px;transform:translate(-50%,-50%);
@@ -1807,8 +1826,12 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
 
        It is a button because it goes somewhere. Home is the summary, which is
        also where the app now opens. -->
+  <!-- the name, and what the name is. Ruled. Source OS sits under the
+       wordmark in the accent, small, so the bar says what this is without
+       spending a second line of the bar on it. -->
   <button class="brand" id="brand" type="button"
-   title="Home. Takes you back to the summary.">At<span class="um">u</span>ned</button>
+   title="Home. Takes you back to the field."><span class="bn">At<span
+   class="um">u</span>ned</span><span class="bs">Source OS</span></button>
   <div id="tabbar" style="display:flex;gap:5px;flex-wrap:wrap"></div>
   <!-- One status region for the whole app. Polite so it does not interrupt,
        and it carries the message rather than a button lying about it. -->
@@ -3740,7 +3763,15 @@ const TABREAL=function(k){
    instrument and the summary is the reading, and a person arriving wants the
    reading. Field is one click away and keeps its own integer. */
 const S={dom:0,doms:[0],arcs:[0,1],roots:[],a1:0,a2:1,charge:{},law:{},
- theme:'dark',hover:null,pin:null,t:0,replace:{},view:1,who:0,tab:TAB.SUMMARY,
+ /* THE APP OPENS ON FIELD. Ruled, and it reverses the earlier ruling that
+    put it on Summary.
+
+    It matters because Field is now a stranger's first screen. Everything
+    that silences itself on an unread reading still has to, and the four
+    doors have to be reachable from here, which they are: the rail prints
+    them on every tab but Summary, which was written for exactly this case
+    and is the reason the change is safe. */
+ theme:'dark',hover:null,pin:null,t:0,replace:{},view:1,who:0,tab:TAB.FIELD,
  /* atom: the one story weight being held on the wheel, past the fetter
     layer. {i:node id, ei:entry index}, or null for none held. View state,
     like pin and hover, so it is not persisted and not validated. */
@@ -11195,11 +11226,12 @@ const THEMEICON={
  document.addEventListener('keydown',function(e){
   if(e.key==='Escape'&&!menu.hidden){shut();btn.focus();}});})();
 /* ---- THE WORDMARK GOES HOME ----
-   Home is the summary. It is the conclusion, it is where the app opens, and it
-   is what a person clicking the name of the product is asking to see. */
+   Home is the field. It is the instrument, it is where the app opens on the
+   owner's ruling, and it is what clicking the name of the product asks for. */
 (function(){
  var b=$('brand'); if(!b)return;
- b.addEventListener('click',function(){setTab(TAB.SUMMARY);});})();
+ /* home is where the app opens, and the app opens on Field */
+ b.addEventListener('click',function(){setTab(TAB.FIELD);});})();
 /* the font tuner is gone on the owner's ruling. one face, narrower, no
    per person override to keep working across every surface. */
 
@@ -12208,43 +12240,62 @@ function balG(g,on,t){
 function renderBal(r){
  var e=document.getElementById('bal'); if(!e)return;
  var b=r.balance;
- /* mirrored: lean +1 is fully outward, which is the masculine end, and the
-    masculine end is now on the left, so the position runs the other way. */
- var pc=(1-(b.lean+1)/2)*100;
+ /* THE STRIP, BUILT TO THE RULING AND NOT TO MY READING OF IT.
+
+    Asked for five times, and four times it came back as something adjacent.
+    The ruling is four things and every one of them is specific:
+
+      the two symbols, masculine on the left and feminine on the right
+      one line, with a break at the centre
+      the fill runs FROM THE CENTRE OUT toward the side you lean
+      and the percent is a pill
+
+    What was there was a dot sliding along a plain track with the figure
+    printed beside it as bare text. A dot on a track says "you are at this
+    point on a scale". That is not the reading. The reading is "you lean this
+    far, this way, off centre", which is a quantity with a direction and an
+    origin, and the only shape that says it is a bar growing out of the
+    middle. The break at the centre is where even sits, so even is visibly
+    nothing rather than a dot that happens to be halfway.
+
+    Masculine on the left and feminine on the right is the opposite
+    handedness from the body, and that is what a mirror is: face one and your
+    right hand is on the left. Logged in BOOK-ERRATA so the codex and the
+    screen disagree in writing rather than by accident. */
+ /* mirrored with the strip: lean +1 is fully outward, which is masculine,
+    and masculine is the left end. */
+ var lean=b.read?Math.abs(b.lean)*100:0;
+ var dir=!b.read?'':b.lean===0?'even':b.lean>0?'masculine':'feminine';
  var c=b.lean>=0?seatCol('Solar'):seatCol('Throat');
  var sx=CURP&&CURP.who?CURP.who.sex:'';
- /* sex at birth follows the same mirror: male at the masculine end, which is
-    now the left one. It is a reference point, not a reading, and it is only
-    drawn when a person has given it. */
- var tick=sx==='m'?'<span class="bal-s" style="left:22%"></span>'
-        :sx==='f'?'<span class="bal-s" style="left:78%"></span>':'';
- /* The centre named the direction and so did the end label, so "26% outward"
-    sat against the word outward and the two ran together. The ends carry the
-    direction, the centre carries the number, and the end the field leans to is
-    the one that lights. One word per concept, on one strip. */
- var lean=b.read?Math.abs(b.lean)*100:0;
- var dir=!b.read?'':b.lean===0?'even':b.lean>0?'outward':'inward';
- /* THE STRIP NAMED THE DIRECTION AND NOT THE POLE.
-
-    It read "outward" and "feminine" nowhere, with the two symbols carrying
-    the whole meaning. Outward and inward are how each pole expresses. They
-    are not what each pole IS, and a symbol a person has not been taught yet
-    cannot supply the word underneath it.
-
-    The poles are masculine and feminine. Those are the words. Outward and
-    inward move into the tooltips, where an explanation belongs. */
+ /* sex at birth is a reference point and not a reading, drawn only when a
+    person has given it, and mirrored with everything else. */
+ var tick=sx==='m'?'<span class="bal-s" style="left:25%"></span>'
+        :sx==='f'?'<span class="bal-s" style="left:75%"></span>':'';
+ /* the bar. half the width is half the strip, so a full lean fills its own
+    side exactly and nothing crosses the break. */
+ var half=(b.read?Math.min(1,Math.abs(b.lean)):0)*50;
+ var fill=!b.read||half<=0 ? ''
+  : '<span class="bal-f" style="'+(b.lean>0
+     ? 'right:50%;width:'+half.toFixed(1)+'%'
+     : 'left:50%;width:'+half.toFixed(1)+'%')
+    +';background:'+c+'"></span>';
  e.innerHTML='<div class="bal-t">'
-  +balG(GLYPH_M,dir==='outward','Masculine. Structure and direction, expressed outward. '
+  +balG(GLYPH_M,dir==='masculine','Masculine. Structure and direction, expressed outward. '
     +'Not men: the codex is explicit about that.')
-  +'<span'+(dir==='outward'?' class="on" style="color:'+c+'"':'')+'>masculine</span>'
-  +'<span class="bal-n"><b>'+(!b.read?'not enough held to read'
-    :b.lean===0?'even':lean.toFixed(0)+'%')+'</b></span>'
-  +'<span'+(dir==='inward'?' class="on" style="color:'+c+'"':'')+'>feminine</span>'
-  +balG(GLYPH_F,dir==='inward','Feminine. Energy and receptivity, held inward. '
+  +'<span'+(dir==='masculine'?' class="on" style="color:'+c+'"':'')+'>masculine</span>'
+  +'<span class="bal-n">'+(!b.read
+    ? '<em>not enough held to read</em>'
+    : cr('Heart',lean,{size:'xs',hot:false,color:c,label:dir,
+        glyph:(b.lean>=0?GLYPH_M:GLYPH_F),
+        raw:(b.lean===0?'even':Math.round(lean)+'%'),
+        title:'Balance. '+(b.lean===0?'even':Math.round(lean)+' percent '+dir)}))
+  +'</span>'
+  +'<span'+(dir==='feminine'?' class="on" style="color:'+c+'"':'')+'>feminine</span>'
+  +balG(GLYPH_F,dir==='feminine','Feminine. Energy and receptivity, held inward. '
     +'Not women: the codex is explicit about that.')
   +'</div>'
-  +'<div class="bal-tr"><i></i>'+tick
-  +'<span class="bal-m" style="left:'+pc.toFixed(1)+'%;background:'+c+'"></span></div>';}
+  +'<div class="bal-tr">'+fill+'<i></i>'+tick+'</div>';}
 /* ---- the rail's doors. one delegated set, on the rail itself ---- */
 var _KBJ=false;
 function wireKbJump(){

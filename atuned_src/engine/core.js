@@ -103,7 +103,15 @@ const TABREAL=function(k){
    instrument and the summary is the reading, and a person arriving wants the
    reading. Field is one click away and keeps its own integer. */
 const S={dom:0,doms:[0],arcs:[0,1],roots:[],a1:0,a2:1,charge:{},law:{},
- theme:'dark',hover:null,pin:null,t:0,replace:{},view:1,who:0,tab:TAB.SUMMARY,
+ /* THE APP OPENS ON FIELD. Ruled, and it reverses the earlier ruling that
+    put it on Summary.
+
+    It matters because Field is now a stranger's first screen. Everything
+    that silences itself on an unread reading still has to, and the four
+    doors have to be reachable from here, which they are: the rail prints
+    them on every tab but Summary, which was written for exactly this case
+    and is the reason the change is safe. */
+ theme:'dark',hover:null,pin:null,t:0,replace:{},view:1,who:0,tab:TAB.FIELD,
  /* atom: the one story weight being held on the wheel, past the fetter
     layer. {i:node id, ei:entry index}, or null for none held. View state,
     like pin and hover, so it is not persisted and not validated. */
