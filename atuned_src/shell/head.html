@@ -1873,5 +1873,98 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
  .pol2{order:6;position:static;height:auto;margin:12px auto 0;justify-content:center}
  .pol2 svg{height:190px}
 }
+
+/* ============================================================
+   THE BOOT. Three seconds, and the timings are the reading.
+
+   Every duration and delay here is deliberate and they are stated rather
+   than tuned by eye: the seats are 90ms apart, the ring starts at 0.95s
+   while the seats are still arriving, and the whole thing clears at 3.0s.
+   The one easing used for arrival is a cubic with an overshoot, because
+   follow through is what makes a mark land rather than stop.
+   ============================================================ */
+.boot{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;
+ align-items:center;justify-content:center;gap:26px;background:var(--bg);
+ animation:bootOut .42s cubic-bezier(.4,0,1,1) 2.58s forwards}
+.boot-svg{width:min(42vmin,300px);height:min(42vmin,300px);overflow:visible;
+ fill:none;stroke-linecap:round}
+/* ANTICIPATION and SQUASH. The core draws in before it releases, flattens as
+   it expands and rounds as it lands. */
+.b-core{fill:var(--accent);transform-origin:100px 100px;opacity:0;
+ animation:bootCore 1.5s cubic-bezier(.34,1.56,.64,1) .06s both}
+@keyframes bootCore{
+ 0%  {opacity:0;transform:scale(.35) scaleY(1)}
+ 14% {opacity:1;transform:scale(.22) scaleY(1.25)}   /* draws in */
+ 46% {opacity:1;transform:scale(1.22) scaleY(.82)}   /* stretches out */
+ 74% {opacity:1;transform:scale(.92) scaleY(1.08)}
+ 100%{opacity:1;transform:scale(1) scaleY(1)}}
+/* STAGING. The spine rises root to crown before anything sits on it. */
+.b-spine{stroke:var(--edge-2);stroke-width:1.4;
+ stroke-dasharray:120;stroke-dashoffset:120;
+ animation:bootSpine .72s cubic-bezier(.22,1,.36,1) .30s forwards}
+@keyframes bootSpine{to{stroke-dashoffset:0}}
+/* TIMING and FOLLOW THROUGH. Ninety milliseconds apart, each one overshooting
+   its size and settling back. Fast enough to read as one rising movement,
+   slow enough to count. */
+.b-seat{transform-origin:100px 100px;opacity:0;
+ animation:bootSeat .54s cubic-bezier(.34,1.56,.64,1) both}
+@keyframes bootSeat{
+ 0%  {opacity:0;transform:scale(.2)}
+ 60% {opacity:1;transform:scale(1.5)}
+ 100%{opacity:.92;transform:scale(1)}}
+/* SOLID DRAWING. The seven are PAL, exactly, not an approximation of it. The
+   boot runs before any script has painted so it cannot read the palette from
+   the engine, and a boot in colours that nearly match the product is worse
+   than one that does not try. These are canon.js values, copied, and
+   tests/design.js gate 11 fails if the two ever part company. */
+.b-s1{fill:#C4635E;animation-delay:.42s}   /* Root */
+.b-s2{fill:#D19255;animation-delay:.51s}   /* Sacral */
+.b-s3{fill:#D4BC70;animation-delay:.60s}   /* Solar */
+.b-s4{fill:#6FC5A3;animation-delay:.69s}   /* Heart */
+.b-s5{fill:#65B8D4;animation-delay:.78s}   /* Throat */
+.b-s6{fill:#8296DB;animation-delay:.87s}   /* 3rd Eye */
+.b-s7{fill:#A98BCE;animation-delay:.96s}   /* Crown */
+/* ARCS and OVERLAPPING ACTION. The ring is an arc and it begins at 0.95s,
+   while the last two seats are still arriving. Nothing waits for the thing
+   before it to come to a stop. */
+.b-ring{stroke:var(--accent);stroke-width:1.6;opacity:.85;
+ stroke-dasharray:390;stroke-dashoffset:390;transform-origin:100px 100px;
+ transform:rotate(-90deg);
+ animation:bootRing 1.15s cubic-bezier(.32,.72,.26,1) .95s forwards}
+@keyframes bootRing{to{stroke-dashoffset:0}}
+/* the addresses, arriving around the ring behind it */
+.b-addr line{stroke:var(--accent);stroke-width:1.5;opacity:0;
+ animation:bootAddr .5s cubic-bezier(.22,1,.36,1) both}
+@keyframes bootAddr{0%{opacity:0}100%{opacity:.5}}
+/* SECONDARY ACTION. The halo breathes once, under the main action and late,
+   so it reads as a consequence rather than as another thing happening. */
+.b-halo{stroke:var(--gold);stroke-width:1.4;opacity:0;transform-origin:100px 26px;
+ animation:bootHalo .9s cubic-bezier(.34,1.56,.64,1) 1.75s both}
+@keyframes bootHalo{
+ 0%{opacity:0;transform:scale(.6)}
+ 55%{opacity:.95;transform:scale(1.14)}
+ 100%{opacity:.8;transform:scale(1)}}
+.boot-wm{display:flex;flex-direction:column;align-items:center;gap:4px;opacity:0;
+ animation:bootWm .7s cubic-bezier(.22,1,.36,1) 1.95s both}
+@keyframes bootWm{0%{opacity:0;transform:translateY(8px)}100%{opacity:1;transform:none}}
+.boot-wm .bn{font-family:var(--sans);font-size:23px;font-weight:400;
+ letter-spacing:.075em;color:var(--sky);line-height:1;position:relative}
+.boot-wm .bs{font-family:var(--sans);font-size:11px;font-weight:500;
+ letter-spacing:.17em;color:var(--gold);line-height:1}
+.boot-wm .um{position:relative;display:inline-block}
+.boot-wm .um::before,.boot-wm .um::after{content:'';position:absolute;top:-.42em;
+ width:.14em;height:.14em;border-radius:50%;background:var(--um)}
+.boot-wm .um::before{left:.055em}
+.boot-wm .um::after{left:.35em}
+@keyframes bootOut{to{opacity:0;visibility:hidden}}
+/* the body says the boot is over. Nothing depends on it yet and it is not
+   decoration: it is the hook a later surface uses to hold its own entrance
+   until the instrument is actually on screen. */
+body.booted{--boot-done:1}
+/* REDUCED MOTION GETS THE END STATE, not a faster animation. Somebody who
+   has asked the machine to stop moving has not asked it to move less. */
+@media (prefers-reduced-motion:reduce){
+ .boot{animation:none;opacity:0;visibility:hidden}}
+
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style></head>

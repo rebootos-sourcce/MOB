@@ -378,6 +378,58 @@ console.log('\n=== 9 \u00b7 four lightings, each its own ===');
  await p5.close();
 }
 
+/* ============================================================
+   11 · THE BOOT, AND ITS COLOURS
+
+   The boot runs before any script has painted, so it cannot read the palette
+   from the engine and its seven seat colours are canon.js values copied into
+   the stylesheet. A copy drifts. This is the check that says so: every seat
+   fill in the boot has to be a PAL value and all seven have to be there.
+
+   And the boot has to LEAVE. A fade is CSS and a removal is not: an element
+   at opacity zero still covers the app, still takes pointer events and is
+   still in the tab order, so a boot that only animates out is a transparent
+   sheet over a working instrument.
+   ============================================================ */
+{
+ console.log('\n=== 11 · the boot ===');
+ const p6=await browser.newPage({viewport:{width:1200,height:800}});
+ await p6.goto(FILE,{waitUntil:'load'});
+ await p6.waitForTimeout(250);
+ const early=await p6.evaluate(()=>{
+  const e=document.getElementById('boot');
+  if(!e)return null;
+  const seats=[...document.querySelectorAll('.b-seat')]
+   .map(x=>getComputedStyle(x).fill);
+  return {up:true,seats:seats,addr:document.querySelectorAll('.b-addr line').length,
+    pal:(typeof PAL!=='undefined')?Object.keys(PAL).map(k=>PAL[k]):[]};});
+ ok(!!early,'the boot is up while the app loads');
+ if(early){
+  ok(early.seats.length===7,'seven seats, got '+early.seats.length);
+  /* every boot seat colour is a PAL colour, compared as rgb so the
+     stylesheet may write hex and the engine may write anything. */
+  const toRgb=h=>{const m=/^#?([0-9a-f]{6})$/i.exec(h);if(!m)return h;
+   const n=parseInt(m[1],16);
+   return 'rgb('+((n>>16)&255)+', '+((n>>8)&255)+', '+(n&255)+')';};
+  const palRgb=early.pal.map(toRgb);
+  const off=early.seats.filter(c=>palRgb.indexOf(c)<0);
+  ok(off.length===0,'every boot seat is a palette colour, off by '+off.length
+   +(off.length?': '+off.join(' '):''));
+  /* and all seven are distinct, so a copy that collapsed two is caught */
+  ok(new Set(early.seats).size===7,'and all seven differ, got '
+   +new Set(early.seats).size);
+  ok(early.addr>0,'the addresses are drawn, '+early.addr+' of them');
+ }
+ /* three seconds, then gone from the document */
+ await p6.waitForTimeout(3400);
+ const late=await p6.evaluate(()=>({gone:!document.getElementById('boot'),
+   booted:document.body.classList.contains('booted')}));
+ ok(late.gone,'the boot is removed from the document, not just faded');
+ ok(late.booted,'and the body says so');
+ console.log('  cleared:',late.gone);
+ await p6.close();
+}
+
 await browser.close();
 console.log('\n===== '+PASS+' passed, '+FAIL+' failed =====');
 process.exit(FAIL?1:0);

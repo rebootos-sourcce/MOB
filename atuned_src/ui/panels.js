@@ -518,6 +518,29 @@ function helpSheet(){
    The control names what it will take back and disappears when there is
    nothing to take back, because a permanently disabled button is furniture
    and a button labelled only "undo" makes a person guess. */
+/* ---- THE BOOT CLEARS ITSELF ----
+
+   The fade is CSS and the removal is not: an element at opacity 0 still
+   covers the app, still takes pointer events, and is still in the tab order,
+   so a boot that only animates out is a transparent sheet over a working
+   instrument. It is taken out of the document when it is done.
+
+   Reduced motion has no animation to end on, so that case is handled by the
+   timer rather than by the event. The timer is the floor in every case, so a
+   dropped animationend never leaves the sheet up. */
+(function(){
+ var el=document.getElementById('boot'); if(!el)return;
+ var gone=false;
+ function clear(){ if(gone)return; gone=true;
+  if(el.parentNode)el.parentNode.removeChild(el);
+  document.body.classList.add('booted'); }
+ el.addEventListener('animationend',function(e){
+  if(e.animationName==='bootOut')clear();});
+ /* the floor. 3.0s is the end of the sequence and this sits just past it. */
+ setTimeout(clear,3200);
+ var rm=(typeof matchMedia==='function')&&matchMedia('(prefers-reduced-motion:reduce)').matches;
+ if(rm)clear();})();
+
 /* the tab strip's fade is only honest while there is something past the
    edge, so it is measured rather than always on. */
 function paintTabEdge(){
