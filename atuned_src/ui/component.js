@@ -147,11 +147,34 @@ function reframe(){
    var dx=Math.max(b.left-fx,0,fx-b.right), dy=Math.max(b.top-fy,0,fy-b.bottom);
    free=Math.min(free,Math.hypot(dx,dy));});}
  BASE_U=Math.max(40,Math.min(half,(free-LBL_M)/LBL_R));
+ /* A NON FINITE FRAME IS UNRECOVERABLE. CX and CY are written here and read
+    by every draw and every hit test, so one NaN reaching them stops the wheel
+    drawing for the rest of the session with no error and no way back but a
+    reload. Cheap to guard and it costs a comparison a frame. Found by a probe
+    that forgot to pass its own argument and set S.zoom to undefined, which is
+    a bug in the probe and a demonstration of the hazard. */
+ if(!isFinite(BASE_U)||BASE_U<=0)BASE_U=40;
+ if(!isFinite(S.zoom)||S.zoom<=0)S.zoom=1;
+ if(!isFinite(S.panx))S.panx=0;
+ if(!isFinite(S.pany))S.pany=0;
  U=BASE_U*S.zoom;
- var lim=CW*0.9;
- S.panx=Math.max(-lim,Math.min(lim,S.panx));
- S.pany=Math.max(-lim,Math.min(lim,S.pany));
- if(S.zoom===1){S.panx=0;S.pany=0;}
+ /* HOW FAR THE FRAME MAY TRAVEL.
+
+    This used to be a flat 0.9 of the canvas WIDTH on both axes, and then it
+    threw the whole thing away at zoom 1. So dragging did nothing at the
+    default zoom, which is the zoom everybody is at, and at a higher zoom the
+    vertical limit was measured against the wrong side of the box.
+
+    The budget is two terms and each one is a reason. Half the box, so the
+    wheel can always be repositioned within its own frame whatever the zoom.
+    Plus however much of the magnified wheel is currently outside the box, so
+    a person who has zoomed in can reach the far edge of what they zoomed
+    into and no further. At zoom 1 the second term is zero and the first still
+    lets a person move the instrument off centre, which is the whole request. */
+ var outW=Math.max(0,U*LBL_R-CW/2), outH=Math.max(0,U*LBL_R-CH/2);
+ var limX=CW*0.5+outW, limY=CH*0.5+outH;
+ S.panx=Math.max(-limX,Math.min(limX,S.panx));
+ S.pany=Math.max(-limY,Math.min(limY,S.pany));
  CX=CW/2+S.panx; CY=CH/2+S.pany;
  if(typeof DRAW_SIG!=='undefined')DRAW_SIG=null;}
 function layout(){const b=cv.getBoundingClientRect();

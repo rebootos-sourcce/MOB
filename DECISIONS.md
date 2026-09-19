@@ -997,3 +997,53 @@ remembered.
 The reference roster carries full names now, middle names included, because a
 middle name is the part numerology reads as carried rather than shown and
 leaving them out would have moved every Expression in the roster.
+
+## The core atomizes, and the frame moves
+
+**Zoom resolves the core.** CQ is not a primitive. It is intention times
+integrity over resistance, and every one of those is a sum over things the
+instrument already measures, so a solid disc with a number on it was the one
+place in this product where a figure was drawn as though it had no parts.
+
+Three layers, each a real decomposition, each fading in over its own threshold
+rather than snapping:
+
+    1.45  the triad. vitality, awareness and will, which the energy read is
+          the mean of.
+    2.30  the seven seats, each feather as long as that seat's share of
+          integrity, which is bandIg over ten.
+    3.40  the twenty one laws, one filament each at its own value. These are
+          literally the numerator of CQ.
+
+Feathers because that is what it looks like from the inside: a spine with
+barbs, thinning to the tip, and the tip is how far that quantity actually
+reaches. A short feather is a quantity that is not carrying. Four quarter-step
+rings behind them turn the interior from a texture into a chart, so a person
+can answer "how much" by looking rather than by hovering.
+
+**The core grows as it opens**, by a factor that reaches about two at full
+resolution. That is the one dimension inside the wheel that is not a reading,
+and it is not pretending to be: an exploded view needs somewhere to explode
+into, and every length inside it scales with it.
+
+**Left drag was dead at every zoom.** It wrote `S.panx` and called `render()`,
+and `render()` draws from `CX` and `CY`, which only `reframe()` ever sets.
+Measured: a 72 pixel drag took `panx` from 0 to 72 and left `CX` at 332. The
+move handler reframes now. `reframe()` also used to throw the pan away
+entirely at zoom 1, which is the zoom everybody is at, so even a correct
+handler would have done nothing there.
+
+The travel budget is two terms and each is a reason: half the box, so the
+wheel can always be repositioned whatever the zoom, plus however much of the
+magnified wheel is currently outside the box, so a person who zoomed in can
+reach the far edge of what they zoomed into and no further.
+
+**A press on the core is a grab, and only a press that never moves opens the
+reading.** It was opening the drill on pointerdown, so a drag starting on the
+core could not happen at all.
+
+**A non finite value can no longer brick the frame.** `CX` is read by every
+draw and every hit test, so one NaN reaching it stopped the wheel for the
+session with no error and no way back but a reload. Found by a probe that
+forgot to pass its own argument, which is the second time this session a tool
+lied before the code did.

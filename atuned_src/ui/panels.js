@@ -91,17 +91,23 @@ function setTab(i){
   e.style.display=(T.k===i)?'flex':'none';});
  if(cvE) cvE.style.display=(i===TAB.FIELD)?'block':'none';
  if(vb) vb.style.display=(i===TAB.FIELD)?'flex':'none';
- /* MEASURE THE CANVAS THE MOMENT IT IS VISIBLE. It used to be measured once at
-    boot, which worked only while Field was the opening surface. It is not any
-    more, so at boot the canvas was display:none, its box was zero by zero, and
-    the first draw after switching to Field laid the wheel out for a canvas
-    that did not exist. A ResizeObserver corrected it a frame later, which is
-    one frame of an empty wheel and, in the functional gate, a depth with no
-    hit targets at all. The display change above is already a forced layout, so
-    reading the box here costs nothing that has not been paid. */
- if(i===TAB.FIELD&&typeof layout==='function')layout();
  TABDEF.forEach(function(T){document.body.classList.remove(T.cls);});
  document.body.classList.add(TABOF(i).cls);   /* by key, not by position */
+ /* MEASURE THE CANVAS THE MOMENT IT IS VISIBLE, AND NOT ONE LINE EARLIER.
+
+    It used to be measured once at boot, which worked only while Field was the
+    opening surface. It is not any more, so at boot the canvas was display:none
+    and the first draw after switching laid the wheel out for a canvas that did
+    not exist.
+
+    The first fix put this call above, before the body class was set, and the
+    sheet carries `body:not(.tab-field) #cv{display:none!important}`, which
+    beats the inline display this function had just written. So it measured a
+    canvas that was still hidden and read zero by zero. A ResizeObserver
+    corrected it a frame later and nothing looked wrong, which is exactly how
+    it survived a pass. It sits after the class now, where the canvas is
+    actually on screen. */
+ if(i===TAB.FIELD&&typeof layout==='function')layout();
  document.body.classList.toggle('hassub',i===TAB.FIELD);
  ['probe','howto','key','tier','pol'].forEach(function(id){
   var e=$(id); if(e)e.style.display=(i===TAB.FIELD)?'':'none';});

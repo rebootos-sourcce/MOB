@@ -489,6 +489,83 @@ const ta=await touchPg.evaluate(()=>getComputedStyle(document.getElementById('cv
 ok(ta!=='none','the wheel lets a coarse pointer scroll the page, touch-action is '+ta);
 await touchPg.close(); await touchCtx.close();
 
+console.log('\n=== the frame moves, and the core opens ===');
+/* LEFT DRAG. It wrote S.panx and called render, and render draws from CX and
+   CY, which only reframe() sets. So the numbers moved and the picture did not,
+   at every zoom level. Measured before the fix: a 72 pixel drag took panx from
+   0 to 72 and left CX at 332. */
+await page.evaluate(()=>{loadP(6);setTab(TAB.FIELD);});
+await page.waitForTimeout(300);
+const pan=await page.evaluate(()=>{
+ const cv=document.getElementById('cv'), rc=cv.getBoundingClientRect();
+ /* a spot the hit test calls empty, found rather than assumed */
+ let sx=null,sy=null;
+ for(let yy=10;yy<rc.height-10&&sx===null;yy+=9)
+  for(let xx=10;xx<rc.width-10;xx+=9){if(!hitTest(xx,yy)){sx=xx;sy=yy;break;}}
+ const ev=(t,X,Y)=>cv.dispatchEvent(new PointerEvent(t,{clientX:rc.left+X,
+  clientY:rc.top+Y,pointerId:9,button:0,buttons:1,bubbles:true,
+  pointerType:'mouse',isPrimary:true}));
+ function drag(z){
+  S.zoom=z;S.panx=0;S.pany=0;reframe();render();
+  const c0=CX, d0=CY;
+  ev('pointerdown',sx,sy);
+  for(let d=12;d<=72;d+=12)ev('pointermove',sx+d,sy+d);
+  ev('pointerup',sx+72,sy+72);
+  return {dx:Math.round(CX-c0),dy:Math.round(CY-d0)};}
+ const at1=drag(1), at3=drag(3);
+ /* a press that never moves is still a click on the core */
+ S.zoom=1;S.panx=0;S.pany=0;reframe();render();rdClose();
+ const core=HIT.filter(h=>h.k==='core')[0];
+ ev('pointerdown',core.x,core.y); ev('pointerup',core.x,core.y);
+ const opened=(document.getElementById('rdrill').textContent||'').trim().length;
+ rdClose();
+ /* and a NaN cannot brick the frame, which it could: CX is read by every draw
+    and every hit test, so one bad value stopped the wheel for the session. */
+ S.zoom=NaN; S.panx=NaN; reframe();
+ const survives=isFinite(CX)&&isFinite(CY)&&isFinite(U);
+ S.zoom=1;S.panx=0;S.pany=0;reframe();render();
+ return {spot:[sx,sy],at1,at3,opened,survives};});
+ok(pan.at1.dx===72&&pan.at1.dy===72,
+ 'left drag moves the frame at zoom 1, got '+JSON.stringify(pan.at1));
+ok(pan.at3.dx===72&&pan.at3.dy===72,
+ 'and at zoom 3, got '+JSON.stringify(pan.at3));
+ok(pan.opened>120,'a press on the core that never moves still opens the reading, got '+pan.opened);
+ok(pan.survives,'a non finite zoom cannot leave the frame unrecoverable');
+console.log(' ',JSON.stringify(pan));
+
+/* THE CORE ATOMIZES. Three layers, each a real decomposition of CQ, each
+   fading in over its own threshold. Nothing at zoom 1, which is the state
+   every person starts in. */
+/* a coherent field, so the feathers have length, and one frame per reading:
+   the wheel draws on a requestAnimationFrame, so HIT belongs to the frame
+   BEFORE the one this asked for. */
+await page.evaluate(()=>{loadP(7); setTab(TAB.FIELD);});
+await page.waitForTimeout(260);
+const core={steps:await page.evaluate(()=>CORE_STEP.slice())};
+for(const [k,z] of [['z1',1],['z18',1.8],['z28',2.8],['z42',4.2]]){
+ await page.evaluate(zz=>{S.zoom=zz;S.panx=0;S.pany=0;reframe();render();},z);
+ await page.waitForTimeout(220);
+ core[k]=await page.evaluate(()=>({
+  a:[coreLayerA(0),coreLayerA(1),coreLayerA(2)].map(x=>+x.toFixed(2)),
+  open:+coreOpen().toFixed(2),res:coreResolved(),
+  rad:+(HIT.filter(h=>h.k==='core')[0].rad).toFixed(1)}));}
+await page.evaluate(()=>{S.zoom=1;S.panx=0;S.pany=0;reframe();render();});
+ok(core.z1.open===0&&core.z1.res==='',
+ 'the core is closed at zoom 1, which is where everybody starts');
+ok(core.z18.a[0]>0&&core.z18.a[1]===0,'the triad comes in first, got '+core.z18.a);
+ok(core.z28.a[1]>0&&core.z28.a[2]===0,'then the seven seats, got '+core.z28.a);
+ok(core.z42.a[2]>0,'then the twenty one laws, got '+core.z42.a);
+ok(core.steps[0]<core.steps[1]&&core.steps[1]<core.steps[2],
+ 'the thresholds are ordered, got '+core.steps);
+/* each layer ramps rather than snapping, so nothing appears between one frame
+   and the next */
+ok(core.z18.a[0]>0&&core.z18.a[0]<1,'a layer fades in rather than snapping, got '+core.z18.a[0]);
+/* an exploded view needs somewhere to explode into */
+ok(core.z42.rad>core.z1.rad*1.5,
+ 'the core grows as it opens, '+core.z1.rad+' to '+core.z42.rad);
+ok(core.z28.res==='the seven seats','and it says what it is showing, got '+core.z28.res);
+console.log(' ',JSON.stringify(core));
+
 console.log('\n=== the summary, the opening screen ===');
 /* The app opens here, so this surface is what a stranger sees and what an
    owner comes back to. It carries four blocks that did not exist before this

@@ -46,11 +46,120 @@ function cqRamp(cq){
            Math.round(a[1][1]+(b[1][1]-a[1][1])*f),
            Math.round(a[1][2]+(b[1][2]-a[1][2])*f)];}}
  return ST[ST.length-1][1];}
+/* ============================================================
+   THE CORE ATOMIZES.
+
+   The core is CQ, and CQ is not a primitive. It is intention times
+   integrity over resistance, and every one of those is a sum over
+   things the instrument already measures. A solid disc with a number
+   on it was the one place in this product where a figure was drawn
+   as though it had no parts.
+
+   So zoom resolves it, the same way zoom already resolves the depth
+   ladder outside it. Three layers, each a real decomposition, each
+   fading in over its own threshold rather than snapping:
+
+     1.45  the triad. vitality, awareness and will, the three
+           quantities the energy read is the mean of.
+     2.30  the seven seats, each feather as long as that seat's
+           share of integrity, which is bandIg over ten.
+     3.40  the twenty one laws, one filament each, at its own
+           value. These are literally the numerator of CQ.
+
+   They are feathers because that is what they look like from the
+   inside: a spine with barbs, thinning to the tip, and the tip is
+   how far that quantity actually reaches. A short feather is a
+   quantity that is not carrying. Nothing here is decoration: every
+   length on screen is a number the engine computed.
+
+   The shell goes translucent as the layers come in, so the interior
+   reads as inside rather than on top, and the number shrinks and
+   keeps a backing disc so it stays legible over the detail.
+   ============================================================ */
+const CORE_STEP=[1.45,2.30,3.40];
+/* how far in each layer is, 0 to 1, over a ramp of its own threshold. */
+function coreLayerA(i){
+ var z=S.zoom||1, t=CORE_STEP[i];
+ return Math.max(0,Math.min(1,(z-t)/(t*0.42)));}
+/* what the core has resolved, for the readout under the tab bar */
+function coreOpen(){return Math.max(coreLayerA(0),coreLayerA(1),coreLayerA(2));}
+const CORE_LAYER_NM=['the triad','the seven seats','the twenty one laws'];
+function coreResolved(){
+ var n='';
+ for(var i=0;i<CORE_STEP.length;i++) if(coreLayerA(i)>0.5)n=CORE_LAYER_NM[i];
+ return n;}
+/* ONE FEATHER. A rachis out from the centre, barbs either side thinning to
+   the tip, and a vane behind them at low alpha so a dense layer still reads
+   as a shape rather than as a scribble. len is the reading. */
+function coreFeather(a,len,wid,col,al){
+ if(len<=1||al<=0.01)return;
+ var ca=Math.cos(a), sa=Math.sin(a), nx=-sa, ny=ca;
+ var bx=CX+ca*len*0.05, by=CY+sa*len*0.05;
+ var tx=CX+ca*len, ty=CY+sa*len;
+ /* the vane */
+ g.beginPath();
+ g.moveTo(bx,by);
+ g.quadraticCurveTo(CX+ca*len*0.42+nx*wid, CY+sa*len*0.42+ny*wid, tx,ty);
+ g.quadraticCurveTo(CX+ca*len*0.42-nx*wid, CY+sa*len*0.42-ny*wid, bx,by);
+ g.closePath();
+ g.fillStyle=rgba(col,al*0.22); g.fill();
+ /* the barbs. each one a shallow V pointing out, widest at the middle of the
+    feather and closing at both ends, which is the shape of a real vane. */
+ var n=Math.max(4,Math.min(11,Math.round(len/7)));
+ g.lineWidth=Math.max(0.7,wid*0.14); g.strokeStyle=rgba(col,al*0.62);
+ for(var i=1;i<=n;i++){
+  var f=i/(n+1), px=CX+ca*len*f, py=CY+sa*len*f;
+  var bw=wid*Math.sin(f*Math.PI);
+  g.beginPath();
+  g.moveTo(px-nx*bw,py-ny*bw);
+  g.quadraticCurveTo(px+ca*len*0.05,py+sa*len*0.05,px+nx*bw,py+ny*bw);
+  g.stroke();}
+ /* the rachis */
+ g.beginPath(); g.moveTo(bx,by); g.lineTo(tx,ty);
+ g.strokeStyle=rgba(col,al*0.98);
+ g.lineWidth=Math.max(1,wid*0.24); g.lineCap='round'; g.stroke(); g.lineCap='butt';}
+/* the three layers, clipped to the shell so nothing leaks past the rim */
+function coreInside(r,cr0){
+ var a0=coreLayerA(0), a1=coreLayerA(1), a2=coreLayerA(2);
+ if(a0+a1+a2<=0)return;
+ var spin=REDUCED?0:S.t*0.05;
+ g.save();
+ g.beginPath(); g.arc(CX,CY,cr0*0.985,0,TAU); g.clip();
+ /* THE SCALE, SO A LENGTH CAN BE READ. Every feather runs from the centre out
+    by its own value over ten, so the rim is ten and a feather reaching a third
+    of the way is a three. Without the rings that is a texture; with them it is
+    a chart, and the difference is whether a person can answer "how much" by
+    looking. Four rings, quarter steps, at the alpha of the faintest layer
+    currently in. */
+ var ink=INK();
+ [0.25,0.5,0.75,1].forEach(function(f){
+  g.beginPath(); g.arc(CX,CY,cr0*0.93*f,0,TAU);
+  g.strokeStyle=rgba(ink,0.055+(f===0.5?0.05:0)); g.lineWidth=1; g.stroke();});
+ /* 3. the laws, finest and furthest back, so the coarser layers read over
+    them rather than under. */
+ if(a2>0)SI.forEach(function(l,i){
+  var v=(S.law[l.nm]||0)/10;
+  coreFeather(i/SI.length*TAU-Math.PI/2+spin, cr0*0.93*v, cr0*0.035, bc(l.b), a2*0.75);});
+ /* 2. the seven seats */
+ if(a1>0)BANDS.forEach(function(b,i){
+  var v=bandIg(b)/10;
+  coreFeather(i/BANDS.length*TAU-Math.PI/2-spin*0.6, cr0*0.86*v, cr0*0.10, bc(b), a1*0.80);});
+ /* 1. the triad. vitality, awareness, will: the three the energy read means. */
+ if(a0>0)[[r.X,'Sacral'],[r.Y,'3rd Eye'],[r.Z,'Solar']].forEach(function(x,i){
+  coreFeather(i/3*TAU-Math.PI/2+spin*0.3, cr0*0.80*x[0], cr0*0.20, bc(x[1]), a0*0.95);});
+ g.restore();}
 function solCore(r,base){
  const coh=r.CQ/100, breathe=REDUCED?0:Math.sin(S.t*1.4)*.05;
  /* below the median the soul shrinks. above it, it grows. 50 is neutral. */
  var sz = coh<0.5 ? lerp(0.34,0.72,coh/0.5) : lerp(0.72,1.06,(coh-0.5)/0.5);
- const cr0=base*sz*(1+breathe);
+ var open=coreOpen();
+ /* THE CORE GROWS AS IT OPENS. An exploded view needs somewhere to explode
+    into: at a low reading the sphere is small by design, and three layers of
+    detail inside something that size is a smudge. Opening it is the gesture
+    that asks for the parts, so the sphere gives them room. It is the one
+    dimension on the wheel that is not a reading, and it is not pretending to
+    be: the lengths inside it are the reading and they scale with it. */
+ const cr0=base*sz*(1+breathe)*(1+open*0.95);
  var gc=cqRamp(r.CQ);
  /* the glow is earned. nothing below the median, then it opens out. */
  var glow = coh<=0.5 ? 0 : (coh-0.5)/0.5;
@@ -60,14 +169,23 @@ function solCore(r,base){
  halo.addColorStop(.42,rgba(mixc(gc,[0,0,0],.4),glow*0.18));
  halo.addColorStop(1,rgba(gc,0));
  g.fillStyle=halo;g.beginPath();g.arc(CX,CY,cr0*(1.18+glow*1.5),0,TAU);g.fill();
- g.beginPath();g.arc(CX,CY,cr0,0,TAU);g.fillStyle=rgba(gc,1);g.fill();
+ /* THE SHELL OPENS. Opaque until zoom asks, then down to a wash, so what is
+    inside reads as inside. A dark base goes under it first, because a wash
+    over the wheel's own web would let the chords show through the sphere. */
+ if(open>0){g.beginPath();g.arc(CX,CY,cr0,0,TAU);
+  g.fillStyle=rgba(LIGHT()?[250,249,245]:[16,17,25],0.90*open);g.fill();}
+ g.beginPath();g.arc(CX,CY,cr0,0,TAU);g.fillStyle=rgba(gc,1-open*0.62);g.fill();
  g.lineWidth=Math.max(1.2,cr0*.05);g.strokeStyle=rgba(mixc(gc,[0,0,0],.45),.9);g.stroke();
+ coreInside(r,cr0);
  var sh=g.createRadialGradient(CX-cr0*.3,CY-cr0*.42,cr0*.04,CX-cr0*.1,CY-cr0*.15,cr0*.95);
- sh.addColorStop(0,rgba(mixc(gc,[255,255,255],.4),.45));
+ sh.addColorStop(0,rgba(mixc(gc,[255,255,255],.4),.45*(1-open)));
  sh.addColorStop(.55,rgba(gc,0));
  g.fillStyle=sh;g.beginPath();g.arc(CX,CY,cr0,0,TAU);g.fill();
- g.beginPath();g.arc(CX-cr0*.3,CY-cr0*.36,cr0*.24,0,TAU);
- g.fillStyle='rgba(255,255,252,'+lerp(.28,.85,coh).toFixed(2)+')';g.fill();
+ /* the specular. it is the one mark that says solid, so it goes when the
+    sphere stops being solid. */
+ if(open<0.98){
+  g.beginPath();g.arc(CX-cr0*.3,CY-cr0*.36,cr0*.24,0,TAU);
+  g.fillStyle='rgba(255,255,252,'+(lerp(.28,.85,coh)*(1-open)).toFixed(2)+')';g.fill();}
  g.beginPath();g.arc(CX,CY,cr0,0,TAU);
  g.strokeStyle=rgba(mixc(gc,[255,255,255],.5),lerp(.4,.95,coh));g.lineWidth=1.4;g.stroke();
  /* THE CORE PRINTS NOTHING UNTIL SOMETHING IS READ. With nothing held and no
@@ -76,8 +194,22 @@ function solCore(r,base){
     not read yet, but the core was still printing 36 in the largest type on
     the screen to somebody who had not typed a word. The same reading of the
     same defaults, said two ways on one screen. A dash is the honest glyph. */
- txt(r.unread?'\u2013':String(Math.round(r.CQ)),CX,CY+cr0*.02,
-  Math.max(13,Math.round(cr0*.58)),[26,20,8],lerp(.55,.95,coh),500);
+ /* the number gives ground as the interior comes in, but it never leaves:
+    the parts are what the number is made of and losing it loses the point.
+    A backing disc keeps it legible over the feathers. */
+ /* The number gives up most of its size once the parts are showing, because
+    by then the parts are what is being read and the number is the caption.
+    It never goes: the parts are what the number is made of. */
+ var ns=Math.max(13,Math.round(cr0*(0.58-open*0.42)));
+ if(open>0.05){
+  var nr=ns*0.92;
+  var nb=g.createRadialGradient(CX,CY+cr0*.02-ns*0.06,nr*0.35,CX,CY+cr0*.02-ns*0.06,nr);
+  nb.addColorStop(0,rgba(LIGHT()?[250,249,245]:[14,15,22],0.80*open));
+  nb.addColorStop(1,rgba(LIGHT()?[250,249,245]:[14,15,22],0));
+  g.fillStyle=nb;g.beginPath();g.arc(CX,CY+cr0*.02-ns*0.06,nr,0,TAU);g.fill();}
+ txt(r.unread?'\u2013':String(Math.round(r.CQ)),CX,CY+cr0*.02,ns,
+  open>0.35?(LIGHT()?[26,20,8]:[240,238,232]):[26,20,8],
+  lerp(.55,.95,coh),500);
  HIT.push({k:'core',x:CX,y:CY,rad:cr0*1.5});
  return cr0;}
 

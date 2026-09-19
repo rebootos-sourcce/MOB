@@ -5964,11 +5964,34 @@ function reframe(){
    var dx=Math.max(b.left-fx,0,fx-b.right), dy=Math.max(b.top-fy,0,fy-b.bottom);
    free=Math.min(free,Math.hypot(dx,dy));});}
  BASE_U=Math.max(40,Math.min(half,(free-LBL_M)/LBL_R));
+ /* A NON FINITE FRAME IS UNRECOVERABLE. CX and CY are written here and read
+    by every draw and every hit test, so one NaN reaching them stops the wheel
+    drawing for the rest of the session with no error and no way back but a
+    reload. Cheap to guard and it costs a comparison a frame. Found by a probe
+    that forgot to pass its own argument and set S.zoom to undefined, which is
+    a bug in the probe and a demonstration of the hazard. */
+ if(!isFinite(BASE_U)||BASE_U<=0)BASE_U=40;
+ if(!isFinite(S.zoom)||S.zoom<=0)S.zoom=1;
+ if(!isFinite(S.panx))S.panx=0;
+ if(!isFinite(S.pany))S.pany=0;
  U=BASE_U*S.zoom;
- var lim=CW*0.9;
- S.panx=Math.max(-lim,Math.min(lim,S.panx));
- S.pany=Math.max(-lim,Math.min(lim,S.pany));
- if(S.zoom===1){S.panx=0;S.pany=0;}
+ /* HOW FAR THE FRAME MAY TRAVEL.
+
+    This used to be a flat 0.9 of the canvas WIDTH on both axes, and then it
+    threw the whole thing away at zoom 1. So dragging did nothing at the
+    default zoom, which is the zoom everybody is at, and at a higher zoom the
+    vertical limit was measured against the wrong side of the box.
+
+    The budget is two terms and each one is a reason. Half the box, so the
+    wheel can always be repositioned within its own frame whatever the zoom.
+    Plus however much of the magnified wheel is currently outside the box, so
+    a person who has zoomed in can reach the far edge of what they zoomed
+    into and no further. At zoom 1 the second term is zero and the first still
+    lets a person move the instrument off centre, which is the whole request. */
+ var outW=Math.max(0,U*LBL_R-CW/2), outH=Math.max(0,U*LBL_R-CH/2);
+ var limX=CW*0.5+outW, limY=CH*0.5+outH;
+ S.panx=Math.max(-limX,Math.min(limX,S.panx));
+ S.pany=Math.max(-limY,Math.min(limY,S.pany));
  CX=CW/2+S.panx; CY=CH/2+S.pany;
  if(typeof DRAW_SIG!=='undefined')DRAW_SIG=null;}
 function layout(){const b=cv.getBoundingClientRect();
@@ -6110,11 +6133,120 @@ function cqRamp(cq){
            Math.round(a[1][1]+(b[1][1]-a[1][1])*f),
            Math.round(a[1][2]+(b[1][2]-a[1][2])*f)];}}
  return ST[ST.length-1][1];}
+/* ============================================================
+   THE CORE ATOMIZES.
+
+   The core is CQ, and CQ is not a primitive. It is intention times
+   integrity over resistance, and every one of those is a sum over
+   things the instrument already measures. A solid disc with a number
+   on it was the one place in this product where a figure was drawn
+   as though it had no parts.
+
+   So zoom resolves it, the same way zoom already resolves the depth
+   ladder outside it. Three layers, each a real decomposition, each
+   fading in over its own threshold rather than snapping:
+
+     1.45  the triad. vitality, awareness and will, the three
+           quantities the energy read is the mean of.
+     2.30  the seven seats, each feather as long as that seat's
+           share of integrity, which is bandIg over ten.
+     3.40  the twenty one laws, one filament each, at its own
+           value. These are literally the numerator of CQ.
+
+   They are feathers because that is what they look like from the
+   inside: a spine with barbs, thinning to the tip, and the tip is
+   how far that quantity actually reaches. A short feather is a
+   quantity that is not carrying. Nothing here is decoration: every
+   length on screen is a number the engine computed.
+
+   The shell goes translucent as the layers come in, so the interior
+   reads as inside rather than on top, and the number shrinks and
+   keeps a backing disc so it stays legible over the detail.
+   ============================================================ */
+const CORE_STEP=[1.45,2.30,3.40];
+/* how far in each layer is, 0 to 1, over a ramp of its own threshold. */
+function coreLayerA(i){
+ var z=S.zoom||1, t=CORE_STEP[i];
+ return Math.max(0,Math.min(1,(z-t)/(t*0.42)));}
+/* what the core has resolved, for the readout under the tab bar */
+function coreOpen(){return Math.max(coreLayerA(0),coreLayerA(1),coreLayerA(2));}
+const CORE_LAYER_NM=['the triad','the seven seats','the twenty one laws'];
+function coreResolved(){
+ var n='';
+ for(var i=0;i<CORE_STEP.length;i++) if(coreLayerA(i)>0.5)n=CORE_LAYER_NM[i];
+ return n;}
+/* ONE FEATHER. A rachis out from the centre, barbs either side thinning to
+   the tip, and a vane behind them at low alpha so a dense layer still reads
+   as a shape rather than as a scribble. len is the reading. */
+function coreFeather(a,len,wid,col,al){
+ if(len<=1||al<=0.01)return;
+ var ca=Math.cos(a), sa=Math.sin(a), nx=-sa, ny=ca;
+ var bx=CX+ca*len*0.05, by=CY+sa*len*0.05;
+ var tx=CX+ca*len, ty=CY+sa*len;
+ /* the vane */
+ g.beginPath();
+ g.moveTo(bx,by);
+ g.quadraticCurveTo(CX+ca*len*0.42+nx*wid, CY+sa*len*0.42+ny*wid, tx,ty);
+ g.quadraticCurveTo(CX+ca*len*0.42-nx*wid, CY+sa*len*0.42-ny*wid, bx,by);
+ g.closePath();
+ g.fillStyle=rgba(col,al*0.22); g.fill();
+ /* the barbs. each one a shallow V pointing out, widest at the middle of the
+    feather and closing at both ends, which is the shape of a real vane. */
+ var n=Math.max(4,Math.min(11,Math.round(len/7)));
+ g.lineWidth=Math.max(0.7,wid*0.14); g.strokeStyle=rgba(col,al*0.62);
+ for(var i=1;i<=n;i++){
+  var f=i/(n+1), px=CX+ca*len*f, py=CY+sa*len*f;
+  var bw=wid*Math.sin(f*Math.PI);
+  g.beginPath();
+  g.moveTo(px-nx*bw,py-ny*bw);
+  g.quadraticCurveTo(px+ca*len*0.05,py+sa*len*0.05,px+nx*bw,py+ny*bw);
+  g.stroke();}
+ /* the rachis */
+ g.beginPath(); g.moveTo(bx,by); g.lineTo(tx,ty);
+ g.strokeStyle=rgba(col,al*0.98);
+ g.lineWidth=Math.max(1,wid*0.24); g.lineCap='round'; g.stroke(); g.lineCap='butt';}
+/* the three layers, clipped to the shell so nothing leaks past the rim */
+function coreInside(r,cr0){
+ var a0=coreLayerA(0), a1=coreLayerA(1), a2=coreLayerA(2);
+ if(a0+a1+a2<=0)return;
+ var spin=REDUCED?0:S.t*0.05;
+ g.save();
+ g.beginPath(); g.arc(CX,CY,cr0*0.985,0,TAU); g.clip();
+ /* THE SCALE, SO A LENGTH CAN BE READ. Every feather runs from the centre out
+    by its own value over ten, so the rim is ten and a feather reaching a third
+    of the way is a three. Without the rings that is a texture; with them it is
+    a chart, and the difference is whether a person can answer "how much" by
+    looking. Four rings, quarter steps, at the alpha of the faintest layer
+    currently in. */
+ var ink=INK();
+ [0.25,0.5,0.75,1].forEach(function(f){
+  g.beginPath(); g.arc(CX,CY,cr0*0.93*f,0,TAU);
+  g.strokeStyle=rgba(ink,0.055+(f===0.5?0.05:0)); g.lineWidth=1; g.stroke();});
+ /* 3. the laws, finest and furthest back, so the coarser layers read over
+    them rather than under. */
+ if(a2>0)SI.forEach(function(l,i){
+  var v=(S.law[l.nm]||0)/10;
+  coreFeather(i/SI.length*TAU-Math.PI/2+spin, cr0*0.93*v, cr0*0.035, bc(l.b), a2*0.75);});
+ /* 2. the seven seats */
+ if(a1>0)BANDS.forEach(function(b,i){
+  var v=bandIg(b)/10;
+  coreFeather(i/BANDS.length*TAU-Math.PI/2-spin*0.6, cr0*0.86*v, cr0*0.10, bc(b), a1*0.80);});
+ /* 1. the triad. vitality, awareness, will: the three the energy read means. */
+ if(a0>0)[[r.X,'Sacral'],[r.Y,'3rd Eye'],[r.Z,'Solar']].forEach(function(x,i){
+  coreFeather(i/3*TAU-Math.PI/2+spin*0.3, cr0*0.80*x[0], cr0*0.20, bc(x[1]), a0*0.95);});
+ g.restore();}
 function solCore(r,base){
  const coh=r.CQ/100, breathe=REDUCED?0:Math.sin(S.t*1.4)*.05;
  /* below the median the soul shrinks. above it, it grows. 50 is neutral. */
  var sz = coh<0.5 ? lerp(0.34,0.72,coh/0.5) : lerp(0.72,1.06,(coh-0.5)/0.5);
- const cr0=base*sz*(1+breathe);
+ var open=coreOpen();
+ /* THE CORE GROWS AS IT OPENS. An exploded view needs somewhere to explode
+    into: at a low reading the sphere is small by design, and three layers of
+    detail inside something that size is a smudge. Opening it is the gesture
+    that asks for the parts, so the sphere gives them room. It is the one
+    dimension on the wheel that is not a reading, and it is not pretending to
+    be: the lengths inside it are the reading and they scale with it. */
+ const cr0=base*sz*(1+breathe)*(1+open*0.95);
  var gc=cqRamp(r.CQ);
  /* the glow is earned. nothing below the median, then it opens out. */
  var glow = coh<=0.5 ? 0 : (coh-0.5)/0.5;
@@ -6124,14 +6256,23 @@ function solCore(r,base){
  halo.addColorStop(.42,rgba(mixc(gc,[0,0,0],.4),glow*0.18));
  halo.addColorStop(1,rgba(gc,0));
  g.fillStyle=halo;g.beginPath();g.arc(CX,CY,cr0*(1.18+glow*1.5),0,TAU);g.fill();
- g.beginPath();g.arc(CX,CY,cr0,0,TAU);g.fillStyle=rgba(gc,1);g.fill();
+ /* THE SHELL OPENS. Opaque until zoom asks, then down to a wash, so what is
+    inside reads as inside. A dark base goes under it first, because a wash
+    over the wheel's own web would let the chords show through the sphere. */
+ if(open>0){g.beginPath();g.arc(CX,CY,cr0,0,TAU);
+  g.fillStyle=rgba(LIGHT()?[250,249,245]:[16,17,25],0.90*open);g.fill();}
+ g.beginPath();g.arc(CX,CY,cr0,0,TAU);g.fillStyle=rgba(gc,1-open*0.62);g.fill();
  g.lineWidth=Math.max(1.2,cr0*.05);g.strokeStyle=rgba(mixc(gc,[0,0,0],.45),.9);g.stroke();
+ coreInside(r,cr0);
  var sh=g.createRadialGradient(CX-cr0*.3,CY-cr0*.42,cr0*.04,CX-cr0*.1,CY-cr0*.15,cr0*.95);
- sh.addColorStop(0,rgba(mixc(gc,[255,255,255],.4),.45));
+ sh.addColorStop(0,rgba(mixc(gc,[255,255,255],.4),.45*(1-open)));
  sh.addColorStop(.55,rgba(gc,0));
  g.fillStyle=sh;g.beginPath();g.arc(CX,CY,cr0,0,TAU);g.fill();
- g.beginPath();g.arc(CX-cr0*.3,CY-cr0*.36,cr0*.24,0,TAU);
- g.fillStyle='rgba(255,255,252,'+lerp(.28,.85,coh).toFixed(2)+')';g.fill();
+ /* the specular. it is the one mark that says solid, so it goes when the
+    sphere stops being solid. */
+ if(open<0.98){
+  g.beginPath();g.arc(CX-cr0*.3,CY-cr0*.36,cr0*.24,0,TAU);
+  g.fillStyle='rgba(255,255,252,'+(lerp(.28,.85,coh)*(1-open)).toFixed(2)+')';g.fill();}
  g.beginPath();g.arc(CX,CY,cr0,0,TAU);
  g.strokeStyle=rgba(mixc(gc,[255,255,255],.5),lerp(.4,.95,coh));g.lineWidth=1.4;g.stroke();
  /* THE CORE PRINTS NOTHING UNTIL SOMETHING IS READ. With nothing held and no
@@ -6140,8 +6281,22 @@ function solCore(r,base){
     not read yet, but the core was still printing 36 in the largest type on
     the screen to somebody who had not typed a word. The same reading of the
     same defaults, said two ways on one screen. A dash is the honest glyph. */
- txt(r.unread?'\u2013':String(Math.round(r.CQ)),CX,CY+cr0*.02,
-  Math.max(13,Math.round(cr0*.58)),[26,20,8],lerp(.55,.95,coh),500);
+ /* the number gives ground as the interior comes in, but it never leaves:
+    the parts are what the number is made of and losing it loses the point.
+    A backing disc keeps it legible over the feathers. */
+ /* The number gives up most of its size once the parts are showing, because
+    by then the parts are what is being read and the number is the caption.
+    It never goes: the parts are what the number is made of. */
+ var ns=Math.max(13,Math.round(cr0*(0.58-open*0.42)));
+ if(open>0.05){
+  var nr=ns*0.92;
+  var nb=g.createRadialGradient(CX,CY+cr0*.02-ns*0.06,nr*0.35,CX,CY+cr0*.02-ns*0.06,nr);
+  nb.addColorStop(0,rgba(LIGHT()?[250,249,245]:[14,15,22],0.80*open));
+  nb.addColorStop(1,rgba(LIGHT()?[250,249,245]:[14,15,22],0));
+  g.fillStyle=nb;g.beginPath();g.arc(CX,CY+cr0*.02-ns*0.06,nr,0,TAU);g.fill();}
+ txt(r.unread?'\u2013':String(Math.round(r.CQ)),CX,CY+cr0*.02,ns,
+  open>0.35?(LIGHT()?[26,20,8]:[240,238,232]):[26,20,8],
+  lerp(.55,.95,coh),500);
  HIT.push({k:'core',x:CX,y:CY,rad:cr0*1.5});
  return cr0;}
 
@@ -9869,17 +10024,23 @@ function setTab(i){
   e.style.display=(T.k===i)?'flex':'none';});
  if(cvE) cvE.style.display=(i===TAB.FIELD)?'block':'none';
  if(vb) vb.style.display=(i===TAB.FIELD)?'flex':'none';
- /* MEASURE THE CANVAS THE MOMENT IT IS VISIBLE. It used to be measured once at
-    boot, which worked only while Field was the opening surface. It is not any
-    more, so at boot the canvas was display:none, its box was zero by zero, and
-    the first draw after switching to Field laid the wheel out for a canvas
-    that did not exist. A ResizeObserver corrected it a frame later, which is
-    one frame of an empty wheel and, in the functional gate, a depth with no
-    hit targets at all. The display change above is already a forced layout, so
-    reading the box here costs nothing that has not been paid. */
- if(i===TAB.FIELD&&typeof layout==='function')layout();
  TABDEF.forEach(function(T){document.body.classList.remove(T.cls);});
  document.body.classList.add(TABOF(i).cls);   /* by key, not by position */
+ /* MEASURE THE CANVAS THE MOMENT IT IS VISIBLE, AND NOT ONE LINE EARLIER.
+
+    It used to be measured once at boot, which worked only while Field was the
+    opening surface. It is not any more, so at boot the canvas was display:none
+    and the first draw after switching laid the wheel out for a canvas that did
+    not exist.
+
+    The first fix put this call above, before the body class was set, and the
+    sheet carries `body:not(.tab-field) #cv{display:none!important}`, which
+    beats the inline display this function had just written. So it measured a
+    canvas that was still hidden and read zero by zero. A ResizeObserver
+    corrected it a frame later and nothing looked wrong, which is exactly how
+    it survived a pass. It sits after the class now, where the canvas is
+    actually on screen. */
+ if(i===TAB.FIELD&&typeof layout==='function')layout();
  document.body.classList.toggle('hassub',i===TAB.FIELD);
  ['probe','howto','key','tier','pol'].forEach(function(id){
   var e=$(id); if(e)e.style.display=(i===TAB.FIELD)?'':'none';});
@@ -10703,7 +10864,9 @@ cv.addEventListener('pointerdown',function(e){
   else S.arcs=[h.j].concat(S.arcs.filter(function(z){return z!==h.j;}).slice(0,3));
   buildSoul();S.pin=null;syncSoul();saveYou();render();return;}
  if(h.k==='law'){S.pin=null;runLawDrill(SI[h.j]);render();return;}
- if(h.k==='core'){S.pin=null;runCoreDrill();render();return;}
+ /* the core is grab space. A press on it arms the pan above, and pointerup
+    opens the reading only if the pointer never moved. Opening it here as well
+    meant the drill fired on press and the drag never happened. */
  if(h.k==='gate'){S.pin=null;runGatesDrill(h.v.k);render();return;}
  if(h.k==='mk'){S.pin=null;render();return;}
  var o=h.o||null;
@@ -10724,9 +10887,17 @@ function paintDepth(){
   b.classList.toggle('zoomed',i>set&&i<=eff);});
  var note=$('zoomnote');
  if(note){
+  /* what zoom has resolved, on both counts. The ladder outside the core and
+     the core itself atomize on the same gesture and at different thresholds,
+     so a person moving in sees two different things arrive and the line says
+     which. Silent when zoom has added nothing, as before. */
   var add=zoomAdded();
-  note.textContent=add?('zoom resolved '+VIEWS[eff].nm.toLowerCase()):'';
-  note.style.display=add?'':'none';}}
+  var inside=(typeof coreResolved==='function')?coreResolved():'';
+  var parts=[];
+  if(add)parts.push('zoom resolved '+VIEWS[eff].nm.toLowerCase());
+  if(inside)parts.push('the core is showing '+inside);
+  note.textContent=parts.join(' \u00b7 ');
+  note.style.display=parts.length?'':'none';}}
 function setZoom(z,ax,ay){
  var lo=1, hi=5, nz=Math.max(lo,Math.min(hi,z));
  if(nz===S.zoom)return;
@@ -10748,7 +10919,7 @@ addEventListener('keydown',function(e){
   status(HOWTO_ZOOM_OUT);return;}
  if(k==='+'||k==='='){setZoom(S.zoom*1.25,CW/2,CH/2);return;}
  if(k==='-'||k==='_'){setZoom(S.zoom/1.25,CW/2,CH/2);return;}});
-const HOWTO_ZOOM_OUT='Reframed. Scroll on the wheel to move in, F to come back.';
+const HOWTO_ZOOM_OUT='Reframed. Scroll on the wheel to move in and the core opens as you go, drag to move the frame, F to come back.';
 cv.addEventListener('pointerup',function(){
  cv.style.cursor='';
  if(PAN){var wasCore=PAN.core, moved=PAN.moved; PAN=null;
@@ -10770,7 +10941,11 @@ cv.addEventListener('pointermove',function(e){
  if(PAN){
   S.panx=PAN.px+(x-PAN.x); S.pany=PAN.py+(y-PAN.y);
   PAN.moved=PAN.moved||Math.hypot(x-PAN.x,y-PAN.y)>3;
-  render(); return;}
+  /* AND THE FRAME IS REBUILT. This wrote S.panx and then called render, and
+     render draws from CX and CY, which only reframe() ever sets. So the
+     numbers moved and the picture did not, at every zoom level. Measured: a
+     72 pixel drag moved panx from 0 to 72 and left CX at 332. */
+  reframe(); render(); return;}
  if(DRAG){var d=(DRAG.y-y)/22;
   if(Math.abs(DRAG.y-y)>3)DRAG.moved=true;
   toYou();S.charge[DRAG.cf]=clamp(DRAG.s+d,0,10);

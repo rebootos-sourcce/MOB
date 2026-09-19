@@ -97,7 +97,9 @@ cv.addEventListener('pointerdown',function(e){
   else S.arcs=[h.j].concat(S.arcs.filter(function(z){return z!==h.j;}).slice(0,3));
   buildSoul();S.pin=null;syncSoul();saveYou();render();return;}
  if(h.k==='law'){S.pin=null;runLawDrill(SI[h.j]);render();return;}
- if(h.k==='core'){S.pin=null;runCoreDrill();render();return;}
+ /* the core is grab space. A press on it arms the pan above, and pointerup
+    opens the reading only if the pointer never moved. Opening it here as well
+    meant the drill fired on press and the drag never happened. */
  if(h.k==='gate'){S.pin=null;runGatesDrill(h.v.k);render();return;}
  if(h.k==='mk'){S.pin=null;render();return;}
  var o=h.o||null;
@@ -118,9 +120,17 @@ function paintDepth(){
   b.classList.toggle('zoomed',i>set&&i<=eff);});
  var note=$('zoomnote');
  if(note){
+  /* what zoom has resolved, on both counts. The ladder outside the core and
+     the core itself atomize on the same gesture and at different thresholds,
+     so a person moving in sees two different things arrive and the line says
+     which. Silent when zoom has added nothing, as before. */
   var add=zoomAdded();
-  note.textContent=add?('zoom resolved '+VIEWS[eff].nm.toLowerCase()):'';
-  note.style.display=add?'':'none';}}
+  var inside=(typeof coreResolved==='function')?coreResolved():'';
+  var parts=[];
+  if(add)parts.push('zoom resolved '+VIEWS[eff].nm.toLowerCase());
+  if(inside)parts.push('the core is showing '+inside);
+  note.textContent=parts.join(' \u00b7 ');
+  note.style.display=parts.length?'':'none';}}
 function setZoom(z,ax,ay){
  var lo=1, hi=5, nz=Math.max(lo,Math.min(hi,z));
  if(nz===S.zoom)return;
@@ -142,7 +152,7 @@ addEventListener('keydown',function(e){
   status(HOWTO_ZOOM_OUT);return;}
  if(k==='+'||k==='='){setZoom(S.zoom*1.25,CW/2,CH/2);return;}
  if(k==='-'||k==='_'){setZoom(S.zoom/1.25,CW/2,CH/2);return;}});
-const HOWTO_ZOOM_OUT='Reframed. Scroll on the wheel to move in, F to come back.';
+const HOWTO_ZOOM_OUT='Reframed. Scroll on the wheel to move in and the core opens as you go, drag to move the frame, F to come back.';
 cv.addEventListener('pointerup',function(){
  cv.style.cursor='';
  if(PAN){var wasCore=PAN.core, moved=PAN.moved; PAN=null;
@@ -164,7 +174,11 @@ cv.addEventListener('pointermove',function(e){
  if(PAN){
   S.panx=PAN.px+(x-PAN.x); S.pany=PAN.py+(y-PAN.y);
   PAN.moved=PAN.moved||Math.hypot(x-PAN.x,y-PAN.y)>3;
-  render(); return;}
+  /* AND THE FRAME IS REBUILT. This wrote S.panx and then called render, and
+     render draws from CX and CY, which only reframe() ever sets. So the
+     numbers moved and the picture did not, at every zoom level. Measured: a
+     72 pixel drag moved panx from 0 to 72 and left CX at 332. */
+  reframe(); render(); return;}
  if(DRAG){var d=(DRAG.y-y)/22;
   if(Math.abs(DRAG.y-y)>3)DRAG.moved=true;
   toYou();S.charge[DRAG.cf]=clamp(DRAG.s+d,0,10);
