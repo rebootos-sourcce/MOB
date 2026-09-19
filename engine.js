@@ -2416,11 +2416,73 @@ function compute(){
  const outward=outwardShare(chain);
  const organized=organisedShare(chain);
  const gov=quadrant(outward,organized,CQ);
- return {loaded,sabs,cxs,hys,sups,maskRing,DQ:DQraw,Rz,vf:_vf,SQm,poleMean,JQ,excess,
+ /* CARRYING IS NOT THE SAME AS HELD, and the product had only the second word.
+    `loaded` is every address at or above the line at sq 4, and it drives the
+    arithmetic: DQ, resistance, the saboteur scan. That stays exactly as it is.
+
+    But every action surface also read `loaded`, and an absolute cut at 4 on a
+    quantity that is often spread thin means a person can carry real load at
+    every address and be told nothing is carrying. Measured across the roster:
+    Marcus carries 99 addresses with his heaviest at 2.51 and is told nothing
+    is carrying while the same screen calls him Incoherent. Sofia carries 52,
+    Angela 74. Three of the six ICPs. And it is also where the release curve
+    ran out: after two runs James is still Severe at CQ 18.6 with 72 addresses
+    carrying, and every release control refused him.
+
+    So `carrying` is its own word for its own thing: every address holding
+    anything at all, heaviest first. `heaviest` is the top of it. Nothing here
+    divides, multiplies or feeds CQ. It is a sort of what the field already
+    says, so the arithmetic core keeps its bodies, and the action surfaces get
+    something true to point at. */
+ const carrying=W.filter(n=>n.sq>0).sort((a,b)=>b.sq-a.sq);
+ return {loaded,carrying,heaviest:carrying[0]||null,
+  sabs,cxs,hys,sups,maskRing,DQ:DQraw,Rz,vf:_vf,SQm,poleMean,JQ,excess,
   FAM_POLE,dist,Ig,It,CQ,tier,unread,measured,under,benign,malig,X,Y,Z,radiance,aff:af,pi,si,dch,steer,
   outward,organized,gov,
   will,drag,mask,darkB,darkV,root,rootsIn,weakL,balance:balance()};
 }
+
+/* ============================================================
+   THE CEILING ON RELEASE. What coherence reads once every charge is gone,
+   which is the most a release can ever achieve, and the gap to it.
+
+   Why this exists. CQ is (Intention x Integrity) / Resistance. A release
+   empties addresses, so it works on Resistance and on the installed pole. It
+   cannot manufacture Integrity, because Integrity is the twenty one laws and
+   those move only when a person answers them or changes what they do. The
+   product never said so, and offered release as its core loop, so a person
+   pulled the one lever the arithmetic had already spent.
+
+   Measured across the roster by zeroing every charge and reading CQ back.
+   Marcus has 0.3 points of headroom and stays Incoherent. Sofia has 1.5 and
+   stays Even. Angela 1.0. Three of the six ICPs can run every release the
+   product will ever offer them and not move the number they were shown. James
+   has 7.2 and stays Severe at the end of it. The ceiling tracks the square of
+   the law mean: James law mean 4.37, ceiling 20.0; Marcus 6.21, ceiling 39.4;
+   Tomas 3.08, ceiling 9.5.
+
+   It is computed rather than simulated. With charge at zero, held is zero, sq
+   is zero and the pole is the whole of the installed side. jq reads off rep
+   alone so it does not move, bandIg reads off S.law alone so it does not move,
+   and DQ is zero by construction, which puts resistance on its floor. Nothing
+   is mutated and nothing is guessed. */
+function cqCeiling(){
+ const lawMean=SINAMES.reduce((a,l)=>a+S.law[l],0)/21;
+ const bandMean=BANDS.reduce((a,b)=>a+bandIg(b),0)/7;
+ let poleSum=0,jqSum=0;
+ W.forEach(n=>{
+  const relief=bandIg(n.b)/10;
+  const rep=n.cf?clamp((S.replace[n.cf]||0)*(0.72+0.28*relief),0,10):0;
+  poleSum+=rep;                                  /* held is 0, so pole is rep */
+  jqSum+=clamp(rep-6,0,4)/4*10;});
+ const poleMean=poleSum/108, JQ=jqSum/108;
+ const Ig=clamp(lawMean+poleMean*0.30-JQ*0.42,0,10);
+ const It=clamp(bandMean+poleMean*0.22-JQ*0.30,0,10);
+ const Rz=Math.max(1,verpFactor());             /* DQ is 0, so only the gate */
+ return clamp((It*Ig)/Rz,0,100);
+}
+/* the gap a release still has in it, for the person about to run one */
+function cqHeadroom(cqNow){return Math.max(0,cqCeiling()-cqNow);}
 
 /* ============================================================
    ACCURACY. Rebuilt from a layer ablation across visible axes x law

@@ -414,6 +414,8 @@ function sumOutput(r){
  var rit=(typeof ritFor==='function')?ritFor(r):null;
  var m=(typeof meterRead==='function')?meterRead(CURP):null;
  var hot=r.loaded.slice().sort(function(a,b){return b.sq-a.sq;})[0];
+ /* how much of the reading a release can still reach, from the engine */
+ var rhead=(typeof cqHeadroom==='function')?cqHeadroom(r.CQ):99;
  var card=function(eye,nm,sub,act){
   return '<div class="s-out">'
    +'<span class="pm-eye">'+eye+'</span>'
@@ -425,11 +427,44 @@ function sumOutput(r){
      rit.how||rit.d||'','<button class="btn s-oact" data-sout="rit">Open it</button>')
     :card('The protocol this calls for','Not enough read yet',
      'Write what happened and this fills in',''))
-  +(hot?card('Release this first',hot.k,
-     hot.b+' seat, holding '+hot.sq.toFixed(1),
-     '<button class="btn s-oact" data-sout="rel" data-n="'+hot.i+'">Run a release</button>')
-    :card('Release this first','Nothing is carrying',
-     'Nothing is held above the line',''))
+  /* WHAT RELEASE HAS LEFT IN IT, said before the person spends the time, and
+     only when there is something to spend it on.
+
+     CQ is intention times integrity over resistance. A release works on
+     resistance and on the installed pole; it cannot manufacture integrity,
+     because integrity is the twenty one laws and those move when a person
+     answers them or when what they do changes. Measured by clearing every
+     charge and reading CQ back: Marcus can run every release this product will
+     ever offer him and move 0.3, Sofia 1.5, Angela 1.0, and all three stay in
+     the same band. They were being pointed at the one lever already spent with
+     nothing on the screen saying so.
+
+     Four cases, and each says only what is true of it. Something above the
+     line, release it. Carrying below the line with room left, release that.
+     Carrying with the room gone, name the lever that is not gone. Carrying
+     nothing, say so, which is the right answer for the people it is true of
+     and was previously said to everybody.
+
+     THIN is 1.5 points of CQ. Not a tuned constant: the reading is published
+     to plus or minus about thirteen, so a lever with under one and a half in
+     it cannot produce a move this instrument would call a reading, and the
+     product should not spend a person's fifteen minutes pretending otherwise. */
+  +(function(){
+    var THIN=1.5;
+    if(hot)return card('Release this first',hot.k,
+     hot.b+' seat, holding '+hot.sq.toFixed(1)
+      +(r.unread?'':'. Release has about '+rhead.toFixed(1)+' in it'),
+     '<button class="btn s-oact" data-sout="rel" data-n="'+hot.i+'">Run a release</button>');
+    if(r.heaviest&&(r.unread||rhead>=THIN))return card('Release this first',r.heaviest.k,
+     r.heaviest.b+' seat, below the line at '+r.heaviest.sq.toFixed(1)
+      +'. The heaviest thing you are holding',
+     '<button class="btn s-oact" data-sout="rel" data-n="'+r.heaviest.i+'">Run a release</button>');
+    if(r.heaviest)return card('What moves the reading now','The twenty one laws',
+     'Release has about '+rhead.toFixed(1)+' left in it for you. The rest of the reading '
+     +'is integrity, and that moves when you answer the laws or when what you do changes',
+     '<button class="btn s-oact" data-sout="iq">Answer the laws</button>');
+    return card('Release this first','Nothing is carrying',
+     'No address is holding anything','');}())
   +(m&&m.next?card('Next marker',m.next.nm,m.next.left+' away','')
     :card('Next marker','The first one','Open some ground and it appears',''))
   +'</div>';}
@@ -477,6 +512,9 @@ function sumWire(){
    if(w==='rel'&&typeof relPick==='function'){
     var nid=+b.getAttribute('data-n');
     if(!isNaN(nid)){relPick([nid]);return;}}
+   /* the intake, for the person whose release ground is already spent. it is
+      the only lever left that moves integrity, so it needs a door from here. */
+   if(w==='iq'){setTab(TAB.INTAKE);return;}
    return;}
   if(b.hasAttribute('data-sp'))return runSpDrill(b.getAttribute('data-sp'),b.getAttribute('data-spv'));
   if(b.hasAttribute('data-num'))return runNumDrill(b.getAttribute('data-num'));

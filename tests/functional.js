@@ -1554,6 +1554,71 @@ ok(pris.measured===0,'and has measured nothing, got '+pris.measured);
 ok(pris.unset===21,'and carries 21 unset laws, got '+pris.unset);
 await strg.close();
 
+
+console.log('\n=== carrying and held are two facts, and only one of them was said ===');
+/* THE RULE: the product may say "Nothing is carrying" only to somebody who is
+   carrying nothing. `loaded` is the addresses at or above the line at sq 4 and
+   it drives the arithmetic; `carrying` is every address holding anything. An
+   absolute cut at 4 on load that is spread thin meant three of the six ICPs
+   reached a complete reading, were given a tier word earned by that load, and
+   were told on the same screen that nothing was carrying and no action existed.
+   Measured: Marcus 99 addresses carrying, heaviest 2.51, and the plate above
+   the card called him Incoherent. Sofia 52, Angela 74. */
+for(let i=1;i<15;i++){
+ const c=await page.evaluate(async w=>{
+  loadP(w); setTab(TAB.SUMMARY);
+  await new Promise(r=>setTimeout(r,320));
+  const r=compute();
+  const txt=(document.getElementById('sumbody')||{innerText:''}).innerText||'';
+  return {nm:PEOPLE[w].nm,carrying:r.carrying.length,unread:r.unread,
+   saysNothing:/Nothing is carrying/.test(txt),
+   heaviest:r.heaviest?+r.heaviest.sq.toFixed(2):0};},i);
+ if(c.unread)continue;
+ ok(!(c.saysNothing&&c.carrying>0),
+  c.nm+' is not told nothing is carrying while carrying '+c.carrying
+  +' (heaviest '+c.heaviest+')');
+}
+/* AND THE RELEASE CONTROL DOES NOT REFUSE SOMEBODY WHO IS STILL CARRYING.
+   The queue was built at the sq 4 line, so the core loop had two runs in it and
+   then the control refused. Measured on James: +4.05, +1.80, refused, while 72
+   addresses were still carrying. */
+const relOffer=await page.evaluate(async()=>{
+ loadP(6);
+ const seen=[];
+ for(let k=0;k<4;k++){
+  const r=compute();
+  document.getElementById('bRel').click();
+  await new Promise(z=>setTimeout(z,60));
+  seen.push({run:k+1,carrying:r.carrying.length,opened:RUN.open,q:RUN.queue.length});
+  if(RUN.open){RUN.phase='run';RUN.idx=1e9;relCoolDown();relClose();}
+ }
+ return seen;});
+relOffer.forEach(s=>{
+ ok(!(s.carrying>0&&!s.opened),
+  'release run '+s.run+' is offered while '+s.carrying+' addresses carry');});
+
+console.log('\n=== the ceiling on release is computed, not guessed ===');
+/* cqCeiling is analytic. It must agree with actually clearing every charge and
+   reading CQ back, on every persona, or it is a number the product should not
+   print. Checked against the brute force because a tool that lies is worse
+   than no tool and this one goes on a screen. */
+const ceil=await page.evaluate(()=>{
+ const out=[];
+ for(let i=1;i<PEOPLE.length;i++){
+  loadP(i);
+  const analytic=cqCeiling();
+  const save=JSON.parse(JSON.stringify(S.charge));
+  CHARGES.forEach(c=>{S.charge[c]=0;});
+  const brute=compute().CQ;
+  CHARGES.forEach(c=>{S.charge[c]=save[c];});
+  out.push({nm:PEOPLE[i].nm,d:Math.abs(analytic-brute)});}
+ return out;});
+ceil.forEach(c=>ok(c.d<0.05,'cqCeiling matches clearing every charge for '+c.nm
+ +', off by '+c.d.toFixed(3)));
+ok(await page.evaluate(()=>{loadP(6);const r=compute();
+  return cqHeadroom(r.CQ)>0&&cqHeadroom(200)===0;}),
+ 'headroom is never negative and is positive where there is ground');
+
 await browser.close();
 
 console.log('\n===== '+PASS+' passed, '+FAIL+' failed =====');

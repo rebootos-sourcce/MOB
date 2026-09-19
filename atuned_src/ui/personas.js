@@ -347,6 +347,22 @@ var REL=null;
 $('bRel').addEventListener('click',function(){
  var hot=W.filter(function(n){return n.sq>=4;}).sort(function(a,b){return b.sq-a.sq;});
  if(hot.length){relPick(hot.slice(0,8).map(function(n){return n.i;}));return;}
+ /* THIS IS WHERE THE REWARD CURVE ENDED. The queue was built at the sq 4 line
+    only, so the control refused the moment nothing was stacked that high, and
+    the core loop of the product had exactly two runs in it.
+
+    Measured on James, through this control. Run one +4.04 CQ, run two +1.80,
+    run three refused. He is left at CQ 18.6, tier Severe, the worst band but
+    one, with 72 addresses still carrying, and the product tells him there is
+    nothing to release. Three of the six ICPs never get past this line even on
+    their first visit, because their load was never stacked above it.
+
+    Below the line there is still ground, so the control takes it. The queue is
+    the heaviest addresses actually holding something. The release run already
+    handles them: it frees weight proportional to what is there, so the returns
+    fall away honestly as the field empties instead of stopping at a cliff. */
+ var warm=W.filter(function(n){return n.sq>0;}).sort(function(a,b){return b.sq-a.sq;});
+ if(warm.length){relPick(warm.slice(0,8).map(function(n){return n.i;}));return;}
  /* Nothing is held, so there is nothing to release. This used to run a 2.8
     second animation that zeroed every charge and raised every law toward ten,
     on one click, with no confirmation and no undo. It was written as a

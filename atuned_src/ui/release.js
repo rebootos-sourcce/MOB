@@ -46,6 +46,11 @@ function relTick(){
   relRender();}, RUN.speed*1000);}
 function relCoolDown(){
  if(RUN.done)return; RUN.done=true; RUN.phase='done';
+ /* READ THE NUMBER BEFORE THE WRITE, so the panel can report what this run
+    actually did rather than asserting that it did something. A control must
+    never claim success before it has it, and "released" is not the same claim
+    as "your coherence moved". */
+ var _pre=compute(); RUN.cq0=_pre.CQ; RUN.ceil0=cqCeiling();
  /* the release empties addresses and installs their opposites. it is the
     largest single write this product makes and it had no way back. */
  undoPush('the release at '+(RUN.queue.length?RUN.queue.length+' addresses':'no addresses'));
@@ -132,7 +137,26 @@ function relRender(){
     +cr(x.band, (x.w0||0)*10, {size:'xs', raw:x.w0+' '+x.d,
        title:x.name+' · '+x.band+' · '+x.w0})
     +'<span>'+esc(x.name)+'</span><em>toward '+esc(x.opp||'no pole')+'</em></div>';});
-  out+='</div><div class="rel-note">Release empties the address. The coherent opposite is '
+  /* WHAT MOVED, AND WHAT RELEASE CANNOT MOVE. The panel used to report weight
+     freed and nothing else, so a person ran the loop again and again watching
+     a number that was never going to answer. Release works on resistance and
+     on the installed pole. It cannot touch integrity, which is the twenty one
+     laws, and integrity is most of the reading. So the panel states the move
+     it actually made, and when the ground under release is spent it says so
+     and names the lever that is not spent. Measured: three of the six ICPs
+     have under two points of total release headroom. */
+  var _now=compute(), _mv=_now.CQ-(RUN.cq0||0), _left=cqHeadroom(_now.CQ);
+  out+='</div><div class="rel-note">Coherence '
+   +(Math.abs(_mv)<0.05?'did not move.'
+     :(_mv>0?'up ':'down ')+Math.abs(_mv).toFixed(1)+', now '+_now.CQ.toFixed(1)+'.')
+   +' '+(_left<1.5
+     ?'Release has about '+_left.toFixed(1)+' left to give you. What is holding the '
+      +'reading down now is integrity, which is the twenty one laws, and those move '
+      +'when you answer them or when what you do changes. Not from here.'
+     :'Release has about '+_left.toFixed(1)+' more in it before integrity is the '
+      +'only thing left holding the reading down.')
+   +'</div>'
+   +'<div class="rel-note">Release empties the address. The coherent opposite is '
    +'installing on the same pass. The rebound is day four and a half. Completion is day '
    +'twenty seven.</div>'
    +'<div class="rel-act"><button class="btn" id="relclose">Done</button>'

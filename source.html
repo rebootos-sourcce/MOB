@@ -5276,11 +5276,73 @@ function compute(){
  const outward=outwardShare(chain);
  const organized=organisedShare(chain);
  const gov=quadrant(outward,organized,CQ);
- return {loaded,sabs,cxs,hys,sups,maskRing,DQ:DQraw,Rz,vf:_vf,SQm,poleMean,JQ,excess,
+ /* CARRYING IS NOT THE SAME AS HELD, and the product had only the second word.
+    `loaded` is every address at or above the line at sq 4, and it drives the
+    arithmetic: DQ, resistance, the saboteur scan. That stays exactly as it is.
+
+    But every action surface also read `loaded`, and an absolute cut at 4 on a
+    quantity that is often spread thin means a person can carry real load at
+    every address and be told nothing is carrying. Measured across the roster:
+    Marcus carries 99 addresses with his heaviest at 2.51 and is told nothing
+    is carrying while the same screen calls him Incoherent. Sofia carries 52,
+    Angela 74. Three of the six ICPs. And it is also where the release curve
+    ran out: after two runs James is still Severe at CQ 18.6 with 72 addresses
+    carrying, and every release control refused him.
+
+    So `carrying` is its own word for its own thing: every address holding
+    anything at all, heaviest first. `heaviest` is the top of it. Nothing here
+    divides, multiplies or feeds CQ. It is a sort of what the field already
+    says, so the arithmetic core keeps its bodies, and the action surfaces get
+    something true to point at. */
+ const carrying=W.filter(n=>n.sq>0).sort((a,b)=>b.sq-a.sq);
+ return {loaded,carrying,heaviest:carrying[0]||null,
+  sabs,cxs,hys,sups,maskRing,DQ:DQraw,Rz,vf:_vf,SQm,poleMean,JQ,excess,
   FAM_POLE,dist,Ig,It,CQ,tier,unread,measured,under,benign,malig,X,Y,Z,radiance,aff:af,pi,si,dch,steer,
   outward,organized,gov,
   will,drag,mask,darkB,darkV,root,rootsIn,weakL,balance:balance()};
 }
+
+/* ============================================================
+   THE CEILING ON RELEASE. What coherence reads once every charge is gone,
+   which is the most a release can ever achieve, and the gap to it.
+
+   Why this exists. CQ is (Intention x Integrity) / Resistance. A release
+   empties addresses, so it works on Resistance and on the installed pole. It
+   cannot manufacture Integrity, because Integrity is the twenty one laws and
+   those move only when a person answers them or changes what they do. The
+   product never said so, and offered release as its core loop, so a person
+   pulled the one lever the arithmetic had already spent.
+
+   Measured across the roster by zeroing every charge and reading CQ back.
+   Marcus has 0.3 points of headroom and stays Incoherent. Sofia has 1.5 and
+   stays Even. Angela 1.0. Three of the six ICPs can run every release the
+   product will ever offer them and not move the number they were shown. James
+   has 7.2 and stays Severe at the end of it. The ceiling tracks the square of
+   the law mean: James law mean 4.37, ceiling 20.0; Marcus 6.21, ceiling 39.4;
+   Tomas 3.08, ceiling 9.5.
+
+   It is computed rather than simulated. With charge at zero, held is zero, sq
+   is zero and the pole is the whole of the installed side. jq reads off rep
+   alone so it does not move, bandIg reads off S.law alone so it does not move,
+   and DQ is zero by construction, which puts resistance on its floor. Nothing
+   is mutated and nothing is guessed. */
+function cqCeiling(){
+ const lawMean=SINAMES.reduce((a,l)=>a+S.law[l],0)/21;
+ const bandMean=BANDS.reduce((a,b)=>a+bandIg(b),0)/7;
+ let poleSum=0,jqSum=0;
+ W.forEach(n=>{
+  const relief=bandIg(n.b)/10;
+  const rep=n.cf?clamp((S.replace[n.cf]||0)*(0.72+0.28*relief),0,10):0;
+  poleSum+=rep;                                  /* held is 0, so pole is rep */
+  jqSum+=clamp(rep-6,0,4)/4*10;});
+ const poleMean=poleSum/108, JQ=jqSum/108;
+ const Ig=clamp(lawMean+poleMean*0.30-JQ*0.42,0,10);
+ const It=clamp(bandMean+poleMean*0.22-JQ*0.30,0,10);
+ const Rz=Math.max(1,verpFactor());             /* DQ is 0, so only the gate */
+ return clamp((It*Ig)/Rz,0,100);
+}
+/* the gap a release still has in it, for the person about to run one */
+function cqHeadroom(cqNow){return Math.max(0,cqCeiling()-cqNow);}
 
 /* ============================================================
    ACCURACY. Rebuilt from a layer ablation across visible axes x law
@@ -10446,6 +10508,8 @@ function sumOutput(r){
  var rit=(typeof ritFor==='function')?ritFor(r):null;
  var m=(typeof meterRead==='function')?meterRead(CURP):null;
  var hot=r.loaded.slice().sort(function(a,b){return b.sq-a.sq;})[0];
+ /* how much of the reading a release can still reach, from the engine */
+ var rhead=(typeof cqHeadroom==='function')?cqHeadroom(r.CQ):99;
  var card=function(eye,nm,sub,act){
   return '<div class="s-out">'
    +'<span class="pm-eye">'+eye+'</span>'
@@ -10457,11 +10521,44 @@ function sumOutput(r){
      rit.how||rit.d||'','<button class="btn s-oact" data-sout="rit">Open it</button>')
     :card('The protocol this calls for','Not enough read yet',
      'Write what happened and this fills in',''))
-  +(hot?card('Release this first',hot.k,
-     hot.b+' seat, holding '+hot.sq.toFixed(1),
-     '<button class="btn s-oact" data-sout="rel" data-n="'+hot.i+'">Run a release</button>')
-    :card('Release this first','Nothing is carrying',
-     'Nothing is held above the line',''))
+  /* WHAT RELEASE HAS LEFT IN IT, said before the person spends the time, and
+     only when there is something to spend it on.
+
+     CQ is intention times integrity over resistance. A release works on
+     resistance and on the installed pole; it cannot manufacture integrity,
+     because integrity is the twenty one laws and those move when a person
+     answers them or when what they do changes. Measured by clearing every
+     charge and reading CQ back: Marcus can run every release this product will
+     ever offer him and move 0.3, Sofia 1.5, Angela 1.0, and all three stay in
+     the same band. They were being pointed at the one lever already spent with
+     nothing on the screen saying so.
+
+     Four cases, and each says only what is true of it. Something above the
+     line, release it. Carrying below the line with room left, release that.
+     Carrying with the room gone, name the lever that is not gone. Carrying
+     nothing, say so, which is the right answer for the people it is true of
+     and was previously said to everybody.
+
+     THIN is 1.5 points of CQ. Not a tuned constant: the reading is published
+     to plus or minus about thirteen, so a lever with under one and a half in
+     it cannot produce a move this instrument would call a reading, and the
+     product should not spend a person's fifteen minutes pretending otherwise. */
+  +(function(){
+    var THIN=1.5;
+    if(hot)return card('Release this first',hot.k,
+     hot.b+' seat, holding '+hot.sq.toFixed(1)
+      +(r.unread?'':'. Release has about '+rhead.toFixed(1)+' in it'),
+     '<button class="btn s-oact" data-sout="rel" data-n="'+hot.i+'">Run a release</button>');
+    if(r.heaviest&&(r.unread||rhead>=THIN))return card('Release this first',r.heaviest.k,
+     r.heaviest.b+' seat, below the line at '+r.heaviest.sq.toFixed(1)
+      +'. The heaviest thing you are holding',
+     '<button class="btn s-oact" data-sout="rel" data-n="'+r.heaviest.i+'">Run a release</button>');
+    if(r.heaviest)return card('What moves the reading now','The twenty one laws',
+     'Release has about '+rhead.toFixed(1)+' left in it for you. The rest of the reading '
+     +'is integrity, and that moves when you answer the laws or when what you do changes',
+     '<button class="btn s-oact" data-sout="iq">Answer the laws</button>');
+    return card('Release this first','Nothing is carrying',
+     'No address is holding anything','');}())
   +(m&&m.next?card('Next marker',m.next.nm,m.next.left+' away','')
     :card('Next marker','The first one','Open some ground and it appears',''))
   +'</div>';}
@@ -10509,6 +10606,9 @@ function sumWire(){
    if(w==='rel'&&typeof relPick==='function'){
     var nid=+b.getAttribute('data-n');
     if(!isNaN(nid)){relPick([nid]);return;}}
+   /* the intake, for the person whose release ground is already spent. it is
+      the only lever left that moves integrity, so it needs a door from here. */
+   if(w==='iq'){setTab(TAB.INTAKE);return;}
    return;}
   if(b.hasAttribute('data-sp'))return runSpDrill(b.getAttribute('data-sp'),b.getAttribute('data-spv'));
   if(b.hasAttribute('data-num'))return runNumDrill(b.getAttribute('data-num'));
@@ -10633,7 +10733,14 @@ function anaRender(){
    /* a count against a total is a score, and this is not a score */
    +(stop?'Flow stops at the <b>'+stop.p.n.toLowerCase()+'</b>. ':'Every seat is passing. ')
    +(held.length?'<b>'+held.length+'</b> address'+(held.length===1?' is':'es are')
-     +' carrying, at a shadow weight of <b>'+r.DQ.toFixed(1)+'</b>.':'Nothing is carrying.')
+     +' carrying, at a shadow weight of <b>'+r.DQ.toFixed(1)+'</b>.'
+   /* Held above the line and carrying anything at all are two different facts
+      and this said the second when it only knew the first. A field with load
+      spread under the line reported "Nothing is carrying" beside a tier word
+      earned by that same load. It now says which of the two is true. */
+    :(r.heaviest?'Nothing is above the line. The heaviest is <b>'+esc(r.heaviest.k)
+      +'</b> at <b>'+r.heaviest.sq.toFixed(1)+'</b>, at the '
+      +String(r.heaviest.b).toLowerCase()+'.':'Nothing is carrying.'))
    +(prev?' CQ '+(r.CQ-prev.cq>=0?'up ':'down ')+Math.abs(r.CQ-prev.cq).toFixed(1)+' since last session.':''))
   +'</div>'
   /* The accuracy interval is this product's stated substitute for explaining
@@ -11011,6 +11118,11 @@ function relTick(){
   relRender();}, RUN.speed*1000);}
 function relCoolDown(){
  if(RUN.done)return; RUN.done=true; RUN.phase='done';
+ /* READ THE NUMBER BEFORE THE WRITE, so the panel can report what this run
+    actually did rather than asserting that it did something. A control must
+    never claim success before it has it, and "released" is not the same claim
+    as "your coherence moved". */
+ var _pre=compute(); RUN.cq0=_pre.CQ; RUN.ceil0=cqCeiling();
  /* the release empties addresses and installs their opposites. it is the
     largest single write this product makes and it had no way back. */
  undoPush('the release at '+(RUN.queue.length?RUN.queue.length+' addresses':'no addresses'));
@@ -11097,7 +11209,26 @@ function relRender(){
     +cr(x.band, (x.w0||0)*10, {size:'xs', raw:x.w0+' '+x.d,
        title:x.name+' · '+x.band+' · '+x.w0})
     +'<span>'+esc(x.name)+'</span><em>toward '+esc(x.opp||'no pole')+'</em></div>';});
-  out+='</div><div class="rel-note">Release empties the address. The coherent opposite is '
+  /* WHAT MOVED, AND WHAT RELEASE CANNOT MOVE. The panel used to report weight
+     freed and nothing else, so a person ran the loop again and again watching
+     a number that was never going to answer. Release works on resistance and
+     on the installed pole. It cannot touch integrity, which is the twenty one
+     laws, and integrity is most of the reading. So the panel states the move
+     it actually made, and when the ground under release is spent it says so
+     and names the lever that is not spent. Measured: three of the six ICPs
+     have under two points of total release headroom. */
+  var _now=compute(), _mv=_now.CQ-(RUN.cq0||0), _left=cqHeadroom(_now.CQ);
+  out+='</div><div class="rel-note">Coherence '
+   +(Math.abs(_mv)<0.05?'did not move.'
+     :(_mv>0?'up ':'down ')+Math.abs(_mv).toFixed(1)+', now '+_now.CQ.toFixed(1)+'.')
+   +' '+(_left<1.5
+     ?'Release has about '+_left.toFixed(1)+' left to give you. What is holding the '
+      +'reading down now is integrity, which is the twenty one laws, and those move '
+      +'when you answer them or when what you do changes. Not from here.'
+     :'Release has about '+_left.toFixed(1)+' more in it before integrity is the '
+      +'only thing left holding the reading down.')
+   +'</div>'
+   +'<div class="rel-note">Release empties the address. The coherent opposite is '
    +'installing on the same pass. The rebound is day four and a half. Completion is day '
    +'twenty seven.</div>'
    +'<div class="rel-act"><button class="btn" id="relclose">Done</button>'
@@ -14746,6 +14877,22 @@ var REL=null;
 $('bRel').addEventListener('click',function(){
  var hot=W.filter(function(n){return n.sq>=4;}).sort(function(a,b){return b.sq-a.sq;});
  if(hot.length){relPick(hot.slice(0,8).map(function(n){return n.i;}));return;}
+ /* THIS IS WHERE THE REWARD CURVE ENDED. The queue was built at the sq 4 line
+    only, so the control refused the moment nothing was stacked that high, and
+    the core loop of the product had exactly two runs in it.
+
+    Measured on James, through this control. Run one +4.04 CQ, run two +1.80,
+    run three refused. He is left at CQ 18.6, tier Severe, the worst band but
+    one, with 72 addresses still carrying, and the product tells him there is
+    nothing to release. Three of the six ICPs never get past this line even on
+    their first visit, because their load was never stacked above it.
+
+    Below the line there is still ground, so the control takes it. The queue is
+    the heaviest addresses actually holding something. The release run already
+    handles them: it frees weight proportional to what is there, so the returns
+    fall away honestly as the field empties instead of stopping at a cliff. */
+ var warm=W.filter(function(n){return n.sq>0;}).sort(function(a,b){return b.sq-a.sq;});
+ if(warm.length){relPick(warm.slice(0,8).map(function(n){return n.i;}));return;}
  /* Nothing is held, so there is nothing to release. This used to run a 2.8
     second animation that zeroed every charge and raised every law toward ten,
     on one click, with no confirmation and no undo. It was written as a

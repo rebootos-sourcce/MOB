@@ -108,7 +108,14 @@ function anaRender(){
    /* a count against a total is a score, and this is not a score */
    +(stop?'Flow stops at the <b>'+stop.p.n.toLowerCase()+'</b>. ':'Every seat is passing. ')
    +(held.length?'<b>'+held.length+'</b> address'+(held.length===1?' is':'es are')
-     +' carrying, at a shadow weight of <b>'+r.DQ.toFixed(1)+'</b>.':'Nothing is carrying.')
+     +' carrying, at a shadow weight of <b>'+r.DQ.toFixed(1)+'</b>.'
+   /* Held above the line and carrying anything at all are two different facts
+      and this said the second when it only knew the first. A field with load
+      spread under the line reported "Nothing is carrying" beside a tier word
+      earned by that same load. It now says which of the two is true. */
+    :(r.heaviest?'Nothing is above the line. The heaviest is <b>'+esc(r.heaviest.k)
+      +'</b> at <b>'+r.heaviest.sq.toFixed(1)+'</b>, at the '
+      +String(r.heaviest.b).toLowerCase()+'.':'Nothing is carrying.'))
    +(prev?' CQ '+(r.CQ-prev.cq>=0?'up ':'down ')+Math.abs(r.CQ-prev.cq).toFixed(1)+' since last session.':''))
   +'</div>'
   /* The accuracy interval is this product's stated substitute for explaining
