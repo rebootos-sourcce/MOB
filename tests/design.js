@@ -585,7 +585,11 @@ console.log('\n=== 13 -  no lighting costs the Field its frame rate ===');
  await pf.mouse.click(800,500);
  await booted(pf); await pf.waitForTimeout(700);
  await pf.evaluate(()=>{const i=PEOPLE.findIndex(x=>x.nm==='Gordon');loadP(i);});
- for(const t of ['dark','snow','punch','glass','glasswhite','flat']){
+ /* Lumen was missing from this list, so the seventh lighting shipped with
+    neither its frame rate nor its backdrop count guarded. A hand written list
+    of lightings goes stale the moment one is added, which is the same fault
+    the count in gate 9 had. */
+ for(const t of await pf.evaluate(()=>LIGHTINGS.map(x=>x[0]))){
   await pf.evaluate(t=>{setLighting(t);setTab(TAB.FIELD);},t);
   await pf.waitForTimeout(700);
   const m=await pf.evaluate(()=>{

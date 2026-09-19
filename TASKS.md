@@ -1236,3 +1236,114 @@ Reduced motion. Whether the card being gold and white while the bar wordmark
 stays sky blue is right. And whether "powered by SOURCE OS" has to appear in
 the bar at all, given it sets 107.8px against ATUNED's 83.2px and the only
 untracked fit is 6.56px, below the type floor.
+
+---
+
+# Ruled 19 September, ninth note. The checklist is the process now.
+
+**CHECKLIST.md is the running ledger.** Every request goes in the same turn it
+is made, before any code. Every seat adds its own tasks as it finds them. The
+project manager reads it every turn, decides the next block and the strategy,
+and only then does anybody execute. Nothing is marked done without a
+measurement.
+
+## AM. What he asked me to audit. Answers.
+
+**The ritual EXISTS and has no door of its own.** `ui/ritual.js` is built and
+`ritOpen` is reachable from three places: the compass ladder, the end of a
+release, and a Summary control. It is not a tab and he has never seen it.
+He has ruled where it goes: intake, ritual, story.
+*Small to give it a door. The spec behind it is 1,496 lines and unwired.*
+
+**The avatar EXISTS and is nearly unreachable.** `runAvatarDrill` in
+`ui/drills.js`, reachable from exactly one place, a component click handler.
+It is not a page.
+*Medium. And he has now given it a job: the avatar sets the priorities the
+ritual releases against.*
+
+**The boundary EXISTS inside the purpose drill.** `boundaryCount` and a
+boundary block in `ui/drills.js`. Not a surface.
+*Small to surface.*
+
+**Badges EXIST as nineteen marks.** `engine/ladder.js`, rendered in exactly one
+place, the compass ladder. No points, no achievements, no store.
+*Medium.*
+
+**The somatic opener does NOT exist.** Nothing in the build.
+**Points, achievements and the store do NOT exist.**
+**A mobile widget and push do NOT exist.**
+
+## AN. New, from the ninth note.
+
+**AN1. The Summary is boring and not alive.** Innovation, animation and art
+direction, ten passes, ICPs asked what would hold them, research first. His
+diagnosis is the brief: it is not holding the mirror up, and it is the way the
+content is delivered.
+*Large. He calls Summary the most informative surface and the Field the most
+impressive, so this is the gap between them.*
+
+**AN2. Ritual becomes the third tab.** intake, ritual, story.
+*Medium.*
+
+**AN3. The core loop is the tutorial.** Discover, play, flow, body, which is
+the journal, the imprints, the release and the ritual. Day one done is
+touching every screen and running that loop once. A badge and points at the
+end.
+*Large.*
+
+**AN4. Points, badges, achievements and a store.** Badges are completion, flow
+and consistency. Achievements are success: you cleared a fetter, a saboteur, a
+hyper complex, and they scale by the fetters upward. Points are a lightning
+bolt with lines coming off it, and they buy patterns at the store. Tied into
+the ritual and accountability tracker, which is where most of them are earned.
+*Large. Design team, UI UX and creative director to plan it together.*
+
+**AN5. The tutorial lives in the profile, toggleable and replayable.**
+It does not spend real charge. Ruled.
+*Medium. And it answers Q4 and Q5 of the twelve.*
+
+**AN6. Onboarding is humble and warm, and we do not do mechanical.**
+Ruled, and it settles the collision the architect flagged: "This is for you.
+No one's coming to save you. Save yourself. That's what this tool does. It
+helps you recognise the patterns that impair your success and make you
+mentally, physically and spiritually weak." Speak to their pain. Inviting,
+welcoming, they are not alone, this is here to help.
+*This is Q6 answered. The writing guide takes it.*
+
+**AN7. The somatic opener is the one thing onboarding has them do.**
+The signal test, to feel the mind body connection. Possibly the observer too,
+so they know how to drop back into witness and not take a release personally.
+*Medium. This is Q9 answered.*
+
+**AN8. The bar grows as they earn it.** Ruled. This is Q10 answered.
+*Medium, and it needs the locked state designed.*
+
+**AN9. Same onboarding for both arrivals.** Ruled. Q11 answered.
+
+**AN10. Day two is the ritual.** The ritual pushes notifications and takes
+over. Q12 answered.
+*Large, and it needs the mobile widget.*
+
+**AN11. Onboarding must capture something and be interactive.** Nothing is
+captured today. The funnel is interactive and gives information; onboarding
+should set parameters without bombarding. Pitch to the ICPs, especially the
+seekers and the liberated. The rest of it covers the purpose, the why, the how
+and the what we do, checked against how that is actually done.
+*Large.*
+
+**AN12. Migrate everything left in the Atuned app.** Plan the migration, put a
+button under Games, decide later.
+*Medium to plan.*
+
+**AN13. The avatar is a release designer.** What you set for your avatar
+becomes the priority for the ritual, which uses Source AI and your imprints to
+order your releases unless you override it.
+*Large, and it is the strongest single idea in this note.*
+
+**AN14. Beat the top two ritual and accountability trackers.** Architecture,
+schema, algorithms and systems, ten passes with the creative director, market
+research first.
+*Large.*
+
+**AN15. The avatar can use the figure already drawn on the body surface.**
+*Small.*

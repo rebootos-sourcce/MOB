@@ -150,7 +150,17 @@ const INK=()=>LIGHT()?[22,23,28]:[239,237,232];
 /* the accent, for the canvas, which cannot read a custom property. the two
    values are the same two the sheet declares and they move together. */
 const GOLDC=()=>hx(LIGHT()?'#2F6E92':'#7EB8D4');
-function bc(b){return hx(LIGHT()?PAL_LIGHT[b]:PAL[b]);}
+/* AND THE CANVAS NEEDS THE SAME ANSWER seatCol GOT. PAL_VIVID went in for
+   Lumen and was reached only by seatCol, which serves the HTML rings, so the
+   whole centre field carried on painting the muted dark palette and Lumen
+   against Dark was the same picture. Vibrancy was the entire point of the
+   lighting and it was not delivered. One ternary, and it is the same ladder
+   seatCol uses so the two cannot drift apart again. */
+function bc(b){
+ const P = S.theme==='lumen' ? PAL_VIVID
+         : LIGHT()           ? PAL_LIGHT
+         : PAL;
+ return hx(P[b]);}
 function nodeCol(n){const base=bc(n.b),ld=clamp(n.disp/10,0,1);
  return mixc(mixc(base,LIGHT()?[238,236,230]:[150,160,180],.74),base,Math.pow(ld,.55));}
 /* ---- the one status writer ----

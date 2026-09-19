@@ -66,7 +66,18 @@ function sumGlance(r){
  var e=(r.X+r.Y+r.Z)/3;
  var row=[
   ['coherence', r.darkB, r.CQ, Math.round(r.CQ)+'%', 'Where the field sits, 0 to 100.'],
-  ['shadow weight', 'Root', r.DQ*10, r.DQ.toFixed(1), 'What is held, 0 to 10.'],
+  /* THE LABEL SAID 0 TO 10 AND THE NUMBER GOES PAST 54. Measured across the
+     roster: Gordon 54.7, Tomas 45.9, Ana 22.8. It is a sum over every address
+     carrying, so it has no ceiling of ten or of anything else, and a stated
+     range the data walks straight through is a lie on the surface.
+
+     The ring is a second half of the same lie and is not fixed here: r.DQ*10
+     clamps at 100, so every profile past ten draws an identical full ring.
+     Replacing this figure with the two facts it sums is the right answer and
+     it is a design change, so it is the owner's. The label tells the truth in
+     the meantime. */
+  ['shadow weight', 'Root', r.DQ*10, r.DQ.toFixed(1),
+   'Everything held, summed across the addresses carrying it. No ceiling.'],
   /* THIS PRINTED THE OPPOSITE OF WHAT IT MEASURES. It was labelled "installed"
      and glossed "what has been filled in". SQm is built in compute.js from
      sum+=n.sq over the loaded addresses, and n.sq is HELD charge: an address
@@ -77,7 +88,10 @@ function sumGlance(r){
      reading that says the reverse of the truth. */
   ['carried depth', 'Root', r.SQm*10, r.SQm.toFixed(1),
    'How deep the carrying addresses run, meaned, 0 to 10.'],
-  ['pole', 'Heart', r.poleMean*10, r.poleMean.toFixed(2), 'Coherent opposites standing, 0 to 1.'],
+  /* and this said 0 to 1 while reading 8.49. It is a mean of values clamped
+     to 0 and 10, so ten is the ceiling and always was. */
+  ['pole', 'Heart', r.poleMean*10, r.poleMean.toFixed(2),
+   'Coherent opposites standing, 0 to 10.'],
   ['energy', 'Solar', e*100, e.toFixed(2), 'Vitality, awareness and will, meaned, 0 to 1.']];
  if(acc)row.push(['identification','3rd Eye',acc.pct,acc.pct.toFixed(0)+'%',
   'How much of you the instrument has actually measured, plus or minus '+acc.band.toFixed(0)+'.']);
@@ -148,6 +162,25 @@ function sumToldHtml(){
     return '<div class="s-told-e"><time>'+(isNaN(d)?'':d.toLocaleDateString())
      +'</time><p>'+sumWords(String(e.text||''))+'</p></div>';}).join('')
   +'</div>';}
+/* A BOLD NAME WEARS ITS OWN FAMILY'S COLOUR. Ruled: "where it's bold text,
+   like Witness, Architect, Sage, those bold colours need to relate back to
+   their icon colours."
+
+   Measured before: twelve bold names in the reading and every one of them
+   computed to plain ink. The mechanism already worked four inches away, in
+   sumWords, where a matched word in a story wears its seat. This is that rule
+   applied to the block that lacked it, not a new one.
+
+   A name with no family stays plain rather than being given a colour it has
+   not earned. The numerology figures are the case: an expression of 1 belongs
+   to no seat and no root, so it is not painted. */
+function sumB(text,col){
+ return '<b'+(col?' class="s-w" style="--c:'+col+'"':'')+'>'+esc(text)+'</b>';}
+function rootB(nm){return sumB(nm,ROOTCOL[nm]||null);}
+function archB(nm){
+ var a=ARCH.filter(function(x){return x.nm===nm;})[0];
+ return sumB(nm,a&&a.b?seatCol(a.b):null);}
+function seatB(nm,band){return sumB(nm,band?seatCol(band):null);}
 function sumStory(r){
  var nm2=(PEOPLE[S.who]||{}).nm||'You';
  var C=converge(nm2,r), e=C?C.e:null;
@@ -165,12 +198,12 @@ function sumStory(r){
  if(e){
   var elRoot=ELEM2ROOT[e.sunEl]||'';
   var num=numerologyOf(nm2,CURP);
-  p.push('The blueprint you were born on reads <b>'+esc(e.sunEl)+'</b>, which is the <b>'
-   +esc(elRoot)+'</b> root, on life path <b>'+e.lp+'</b>, the one who '
+  p.push('The blueprint you were born on reads '+sumB(e.sunEl,ROOTCOL[elRoot]||null)
+   +', which is the '+rootB(elRoot)+' root, on life path <b>'+e.lp+'</b>, the one who '
    +esc(e.lpMean||'runs')+'.'
    +(num?' The name carries an expression of <b>'+num.expression+'</b>, '
      +esc(numSays('expression',num.expression))+'.':'')
-   +' What is actually running is <b>'+esc(rootNow)+'</b>, through <b>'+esc(arch)+'</b>. '
+   +' What is actually running is '+rootB(rootNow)+', through '+archB(arch)+'. '
    +(elRoot===rootNow
      ? 'Those agree, so what you are doing is what you were built for and the cost is elsewhere.'
      : 'Those do not agree. A blueprint that says '+esc(elRoot)+' and a field that runs '
@@ -178,21 +211,22 @@ function sumStory(r){
        +'carried long enough to feel like a personality.'));
  }else{
   p.push('There is no birth data on file, so the spiritual layer is not in this reading. '
-   +'Date, time and place would put it in. What is running now is <b>'+esc(rootNow)
-   +'</b>, through <b>'+esc(arch)+'</b>.');}
+   +'Date, time and place would put it in. What is running now is '+rootB(rootNow)
+   +', through '+archB(arch)+'.');}
 
  /* TWO. the psychological into the body. */
  if(held.length){
-  p.push('That reaches the body at <b>'+esc(held[0].k)+'</b>, on the <b>'
+  p.push('That reaches the body at '+seatB(held[0].k,held[0].b)+', on the '
    /* the weight is the reading. "of 10" made it a mark out of ten. */
-   +esc(String(held[0].cf).toLowerCase())+'</b> axis, at a weight of '+held[0].sq.toFixed(1)+'.'
+   +seatB(String(held[0].cf).toLowerCase(),held[0].b)+' axis, at a weight of '
+   +held[0].sq.toFixed(1)+'.'
    +(loud?' The biggest thing compounding on it is <b>'+esc(loud.nm)+'</b>'
      +(named.length&&named[0]===loud?', at a '+named[0].score+' percent match':'')+'.':'')
-   +(stop?' Flow stops at the <b>'+esc(String(stop.p.n).toLowerCase())
-     +'</b>, which is where the charge is dense enough to close the seat.'
+   +(stop?' Flow stops at the '+seatB(String(stop.p.n).toLowerCase(),stop.p.b)
+     +', which is where the charge is dense enough to close the seat.'
     :' No seat is closed, so what is held is not yet stopping flow.')
-   +' Shadow weight is '+r.DQ.toFixed(1)+' and the law furthest shut is <b>'
-   +esc(r.weakL.nm)+'</b>, at the '+esc(String(r.weakL.b).toLowerCase())+'.');
+   +' Shadow weight is '+r.DQ.toFixed(1)+' and the law furthest shut is '
+   +seatB(r.weakL.nm,r.weakL.b)+', at the '+seatB(String(r.weakL.b).toLowerCase(),r.weakL.b)+'.');
  }else{
   p.push('Nothing is held above the line, so nothing is reaching the body as load. '
    +(r.under?'There are '+r.under+' addresses carrying under it, which is signal and not yet cost.':''));}

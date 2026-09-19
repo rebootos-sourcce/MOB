@@ -2947,7 +2947,12 @@ body.booted{--boot-done:1}
 .s-told-e time{display:block;font-family:var(--sans);font-size:11px;
  color:var(--dim);margin-bottom:5px}
 .s-told-e p{margin:0;font-size:15px;line-height:1.7;color:var(--ink);max-width:68ch}
-.s-w{color:var(--c);font-weight:600}
+/* A NAMED THING KEEPS ITS FAMILY'S COLOUR INSIDE A PARAGRAPH. .s-p b is
+   (0,1,1) and .s-w was (0,1,0), so every bold in the reading lost its seat to
+   the plain ink rule and the markup carrying --c was correct while nothing on
+   screen showed it. Scoped to match, so it wins on order rather than on
+   weight. */
+.s-w,.s-p b.s-w,.s-told b.s-w{color:var(--c);font-weight:600}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 
 /* ============================================================
