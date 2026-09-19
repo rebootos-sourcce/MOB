@@ -32,6 +32,14 @@ const CONE_FLARE=0.52;    /* how fast it widens away from the waist */
    radius makes it a neck, the median reads as a band with width, and the
    rings read as ellipses instead of collapsing to a line. */
 const CONE_NECK=0.14;
+/* THE THREE POLE GLYPHS, on the 24 unit grid every icon in this product uses.
+   Ring, not fill, like the rest. A halo is a ring with nothing in it. Ego
+   compression is a ring with two arrows pressing on it. The pitchfork is a
+   pitchfork. */
+const GL_HALO='M4 12 A8 3.4 0 1 0 20 12 A8 3.4 0 1 0 4 12';
+const GL_COMPRESS='M12 5.5 A5 5 0 1 0 12 18.5 A5 5 0 1 0 12 5.5'
+ +'M1.5 12H5M3.5 9.5L1.5 12l2 2.5M22.5 12H19M20.5 9.5l2 2.5l-2 2.5';
+const GL_FORK='M12 21V9M6 9V3.5M12 9V3M18 9V3.5M5 9h14';
 
 /* one point on the surface, by angle in radians rather than by meridian, so a
    ring can be sampled as finely as it needs to be to read as an ellipse. */
@@ -168,21 +176,90 @@ function coneDraw(){
   g.beginPath(); g.moveTo(W/2,cy-hgt*Math.cos(CONE.tilt));
   g.lineTo(W/2,cy+hgt*Math.cos(CONE.tilt));
   g.strokeStyle=rgba(ink,.16); g.lineWidth=1; g.stroke();
-  coneTxt(g,'Source',W/2,cy-hgt*Math.cos(CONE.tilt)-26,13,gc,.9,600);
-  coneTxt(g,'The blueprint',W/2,cy+hgt*Math.cos(CONE.tilt)+30,13,rc,.85,600);
-  /* the waist says what it is, because the median range is the part of this
-     figure a person is most likely to be standing in */
-  var wr=conePtA(50,Math.PI/2,W,H);
-  coneTxt(g,'the median range',W/2,wr.y+16,10.5,ink,.4,400);})();
+  /* THE TWO ENDS CARRY THEIR SYMBOL.
+
+     Ruled: a halo at Source, ego compression and a pitchfork at the
+     blueprint. Both ends had a word and nothing else, on a figure whose whole
+     job is to say that one end is the condition underneath and the other is
+     the conditioning laid on top. A word is not that. Ring, not fill, like
+     everything else with a name.
+
+     The halo is a ring with nothing inside it, which is what Source is. Ego
+     compression is a ring squeezed from both sides, which is what it does.
+     The pitchfork stands beside it. */
+  var ty=cy-hgt*Math.cos(CONE.tilt), by=cy+hgt*Math.cos(CONE.tilt);
+  coneGlyph(g,GL_HALO,W/2,ty-48,gc,.9);
+  coneTxt(g,'Source',W/2,ty-26,13,gc,.9,600);
+  coneTxt(g,'The blueprint',W/2,by+30,13,rc,.85,600);
+  /* the pair sits beside the word, not under it: under it is where the floor
+     teachers already are and two glyphs landed on Asmodeus. */
+  coneGlyph(g,GL_COMPRESS,W/2-104,by+30,rc,.85);
+  coneGlyph(g,GL_FORK,W/2+104,by+30,rc,.85);
+
+  /* THE MEDIAN IS WHERE NEARLY EVERYONE IS STANDING, SO PUT THEM IN IT.
+
+     Forty to sixty is oscillating and that is most people. The figure said
+     "the median range" in three words at the waist and drew an empty neck, so
+     a person reading their own number at forty four had no way to see they
+     were standing in a crowd. Being told you are typical and being shown it
+     are different readings, and only one of them lands.
+
+     There are souls in the band now, each drifting on its own phase, so the
+     band moves the way a band of oscillating people moves. They are not data
+     about anybody: they are the shape of the range, and the caption says the
+     range rather than letting a dot be mistaken for a person. */
+  var U3=Math.min(W,H)/2;
+  var b40=conePtA(40,Math.PI/2,W,H), b60=conePtA(60,Math.PI/2,W,H);
+  var byT=Math.min(b40.y,b60.y), byB=Math.max(b40.y,b60.y);
+  /* A HARD RECTANGLE ACROSS THE CANVAS IS NOT A BAND ON A FIGURE.
+
+     The first cut filled the full width at a flat alpha and the band read as
+     a panel behind the drawing rather than a stretch of it. It fades at both
+     edges and at both ends, so it belongs to the figure. */
+  /* and it fades in every direction, not just up and down: a linear gradient
+     down a rectangle still cuts hard at its left and right edges, and two
+     vertical cuts across a round figure read as a panel behind it again. */
+  g.save();
+  var bcy=(byT+byB)/2, brx=U3*0.92, bry=Math.max(6,(byB-byT)/2);
+  g.translate(W/2,bcy); g.scale(1,bry/brx);
+  var bg=g.createRadialGradient(0,0,0,0,0,brx);
+  bg.addColorStop(0,rgba(ink,.075)); bg.addColorStop(0.62,rgba(ink,.045));
+  bg.addColorStop(1,rgba(ink,0));
+  g.beginPath(); g.arc(0,0,brx,0,Math.PI*2);
+  g.fillStyle=bg; g.fill();
+  g.restore();
+  /* and the souls read. At .17 they were under the grain of the ground. */
+  for(var si=0;si<18;si++){
+   var ph=si*2.399963, spd=0.20+((si*37)%11)/38;
+   var sw=Math.sin(CONE.t*spd+ph);
+   var sp2=conePtA(50+sw*9.2,ph+CONE.spin*0.4,W,H);
+   g.beginPath(); g.arc(sp2.x,sp2.y,2.1,0,Math.PI*2);
+   g.fillStyle=rgba(ink,.34+sw*0.14); g.fill();}
+  coneTxt(g,'40 to 60 oscillating. most people stand here',
+   W/2,byB+16,10.5,ink,.5,400);})();
 
  /* the reading itself, on the axis at its own height */
  if(cq!==null){
   var cyy=H/2, U2=Math.min(W,H)/2;
-  var y=((cq-50)/50)*U2*CONE_H;
+  /* AND YOUR OWN MARKER OSCILLATES, IF THAT IS WHAT YOU ARE DOING.
+
+     A person between forty and sixty is not sitting at a number, they are
+     swinging through one, which is the whole meaning of the band they are
+     standing in. Drawn as a fixed dot it read as a settled position and said
+     the opposite of the truth.
+
+     The swing is drawn, the number printed is the reading and not the
+     wobble, and a marker outside the band holds still, because outside the
+     band a person is not oscillating. */
+  var osc=(cq>40&&cq<60)?Math.sin(CONE.t*0.55)*2.4:0;
+  var y=((cq+osc-50)/50)*U2*CONE_H;
   var my=cyy-y*Math.cos(CONE.tilt);
+  if(osc){
+   g.beginPath(); g.arc(W/2,my,13,0,Math.PI*2);
+   g.strokeStyle=rgba(cq>=50?gc:rc,.22); g.lineWidth=1; g.stroke();}
   g.beginPath(); g.arc(W/2,my,7,0,Math.PI*2);
   g.fillStyle=rgba(cq>=50?gc:rc,.95); g.fill();
-  coneTxt(g,String(Math.round(cq)),W/2+18,my+4,15,cq>=50?gc:rc,1,500);}}
+  coneTxt(g,String(Math.round(cq)),W/2+20,my+4,15,cq>=50?gc:rc,1,500);}}
 /* one pole glyph, on the 24 unit grid every other icon in this product uses */
 function coneGlyph(g,p,x,y,c,a){
  if(!p||a<0.06)return;
@@ -215,6 +292,9 @@ function coneLayout(){
 function coneTick(){
  if(!CONE.open)return;
  if(!REDUCED&&!CONE.drag)CONE.spin+=0.0022;
+ /* the figure had a spin and no clock. Anything that has to breathe rather
+    than turn needs its own time, and the band of souls at the median does. */
+ if(!REDUCED)CONE.t+=1/60;
  coneDraw();
  CONE.raf=requestAnimationFrame(coneTick);}
 /* TWO WAYS IN, ONE FIGURE. As a modal it is what a drill opens, over the top
@@ -222,6 +302,46 @@ function coneTick(){
    a surface inside the stage with no backdrop and no close button, because
    closing a tab leaves a person looking at nothing. inTab is the only
    difference and it changes where the host sits, not what is drawn. */
+/* THE PARAGRAPH UNDER THE COMPASS WAS A DESCRIPTION OF THE DRAWING.
+
+   "Eight qualities. Each one runs clean at the crown and inverted at the
+   floor, and the figure is widest where a behaviour has travelled furthest
+   from the quality it started as." Every clause of that is about the picture.
+   A person who can see the picture does not need it, and a person who cannot
+   is not helped by it. Nothing in it was about them.
+
+   What goes there is the reading, and the loop it sits in.
+
+   Integrity is the hull. A hole in the hull means the ship takes on water,
+   which is the codex's own image and the reason integrity is measured at all.
+   Integrity raises coherence. Coherence raises what a person can hold to,
+   which raises integrity again. It is a loop that turns either way, and the
+   whole instrument is pointed at which way it is turning for you. You float
+   the ship out of the water so that it can float.
+
+   So: where you are, which way the loop is running, and the one axis
+   furthest from its own quality. Three facts about the person, then one line
+   on how to turn the figure. */
+function coneRead(){
+ var r=compute();
+ if(r.unread)return '<p class="cone-p">Nothing has been read yet. '
+  +'Write what happened, or answer the questions, and your position on this '
+  +'figure fills in. Drag to turn it. Click any name to read that axis.</p>';
+ var cq=Math.round(r.CQ);
+ var band=cq>=60?'above the oscillating band':cq<=40?'below the oscillating band'
+  :'inside the oscillating band, where most people stand';
+ var rising=r.Ig>=5;
+ return '<p class="cone-p">You read <b>'+cq+'</b>, '+band+'. '
+  +'Integrity <b>'+r.Ig.toFixed(1)+'</b>, coherence <b>'+cq+'</b>.</p>'
+  +'<p class="cone-p">Integrity is the hull. A hole in it means the ship takes '
+  +'on water, and everything above the waterline stops mattering. Integrity '
+  +'raises coherence, coherence raises what you can hold to, and that raises '
+  +'integrity again. The loop turns both ways. Yours is currently turning '
+  +'<b>'+(rising?'up':'down')+'</b>. You are floating the ship out of the '
+  +'water so that it can float.</p>'
+  +'<p class="cone-p">Drag to turn the figure. Click any name to read that '
+  +'axis.</p>';}
+
 function coneOpen(inTab){
  var h=document.getElementById('cone'); if(!h)return;
  CONE.open=true; CONE.tab=!!inTab;
@@ -232,11 +352,7 @@ function coneOpen(inTab){
   +(inTab?'':'<button class="btn" id="conex">Close</button>')+'</div>'
   +'<canvas id="conecv" class="cone-cv" role="img" '
   +'aria-label="Two cones meeting at the median. Eight axes, each with a coherent pole above and its inversion below."></canvas>'
-  +'<p class="cone-p">Eight qualities. Each one runs clean at the crown and inverted at '
-  +'the floor, and the same behaviour sits at both ends. The figure is widest where a '
-  +'behaviour has travelled furthest from the quality it started as, and it closes to a '
-  +'point at each end, because Source and the blueprint are single places. The waist is '
-  +'the median range. Drag to turn it. Click any name to read that axis.</p></div>';
+  +coneRead()+'</div>';
  CONE.cv=document.getElementById('conecv');
  CONE.g=CONE.cv?CONE.cv.getContext('2d'):null;
  coneLayout(); coneTick();
