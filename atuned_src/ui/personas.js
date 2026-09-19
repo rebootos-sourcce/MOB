@@ -261,9 +261,24 @@ $('psel').addEventListener('change',function(e){loadP(+e.target.value);});
    reference case was loaded, so the next save wrote the person's own edit into
    that case's record. It repoints the record without reloading S, because the
    caller is usually midway through a drag and reloading would undo it. */
-function toYou(){if(S.who===0)return;S.who=0;$('psel').value='0';
+/* THE IDENTITY AND THE FIELD MOVE TOGETHER, OR NOTHING IS TRUE.
+
+   S.who===0 is a claim that S holds the person's own field. This repointed the
+   identity and left the reference case's field sitting in S, so the claim was
+   false for the rest of the session and saveYou then wrote that field into the
+   person's record as if they had entered it.
+
+   Measured before the fix: a person whose nine axes were all zero ended a
+   release run, started while James was loaded, carrying 50.6 of James's
+   charge. A stranger's field became theirs, silently, and persisted.
+
+   loadP(0) is what makes the claim true, and it is the same call every other
+   route to the person's own record already goes through. */
+function toYou(){if(S.who===0)return;
+ loadP(0);
  var own=PROF_BY[PEOPLE[0].nm];
  if(own&&PROFILES.indexOf(own)>=0)CURP=own;
+ var sel=$('psel'); if(sel)sel.value='0';
  renderSpirit();}
 function saveYou(){if(S.who!==0)return;var Y=PEOPLE[0];
  Y.dom=S.dom;Y.a1=S.a1;Y.a2=S.a2;Y.doms=S.doms.slice();Y.arcs=S.arcs.slice();Y.roots=S.roots.slice();

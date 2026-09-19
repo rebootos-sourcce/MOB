@@ -50,6 +50,18 @@ function relCoolDown(){
     actually did rather than asserting that it did something. A control must
     never claim success before it has it, and "released" is not the same claim
     as "your coherence moved". */
+ /* THE REPOINT COMES BEFORE THE WRITE, NOT AFTER IT.
+
+    "The person who ran it is the person who is charged" was already ruled and
+    the meter half was already fixed. The field half was not: the release wrote
+    into whatever field was loaded, and only then moved the pointer, so a run
+    started while a reference case was on screen emptied that case's addresses
+    and the person's own field never moved.
+
+    Repointing first means the write lands on the person's own charge, and a
+    person releasing charge they do not carry moves nothing, which is the
+    honest outcome rather than a borrowed one. */
+ toYou();
  var _pre=compute(); RUN.cq0=_pre.CQ; RUN.ceil0=cqCeiling();
  /* the release empties addresses and installs their opposites. it is the
     largest single write this product makes and it had no way back. */
@@ -78,7 +90,6 @@ function relCoolDown(){
     person's allowance never moved, and the keys went into a record nobody
     reads. The repoint comes first now, so everything below lands on the person
     who did the work. */
- toYou();
  if(CURP){
   /* the plan built when the run was picked, committed as it stands. a plan
      that changes between being shown and being charged is a bill a person did

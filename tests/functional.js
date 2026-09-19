@@ -1150,6 +1150,10 @@ ok(/Satan frozen/.test(pole.clean),'while the nine circles stay readable to anyb
 console.log('\n=== a release run spends thought lines, and charges the right person ===');
 const relrun=await page.evaluate(()=>{
  const o={};
+ /* what the person's own record holds BEFORE this run, so a leak from an
+    earlier step in this page is not blamed on the release. */
+ o.youBefore=Object.keys(PEOPLE[0].c||{}).reduce(function(a,k){
+   return a+(+PEOPLE[0].c[k]||0);},0);
  loadP(8); setTab(TAB.FIELD); render();
  const held=W.filter(n=>n.sq>=4).slice(0,3).map(n=>n.i);
  relPick(held);
@@ -1165,6 +1169,17 @@ const relrun=await page.evaluate(()=>{
  RUN.phase='run'; RUN.idx=RUN.plan.length-1;
  relCoolDown();
  o.afterWho=S.who;
+ /* AND THE FIELD MOVED WITH THE IDENTITY. The meter half of this was fixed
+    once and the field half was not, so the reference case's whole charge
+    vector ended up in the person's own record: measured at 50.6 on a person
+    whose nine axes were all zero. S.who===0 is a claim that S holds the
+    person's own field, and this is the check that the claim is true. */
+ o.youCharge=Object.keys(PEOPLE[0].c||{}).reduce(function(a,k){
+   return a+(+PEOPLE[0].c[k]||0);},0);
+ o.liveCharge=CHARGES.reduce(function(a,c){return a+(+S.charge[c]||0);},0);
+ saveYou();
+ o.savedCharge=Object.keys(PEOPLE[0].c||{}).reduce(function(a,k){
+   return a+(+PEOPLE[0].c[k]||0);},0);
  o.ownGained=(PROF_BY[PEOPLE[0].nm].meter.unique||[]).length-ownBefore;
  o.gordonGained=(PROF_BY[PEOPLE[8].nm]
    ?((PROF_BY[PEOPLE[8].nm].meter.unique||[]).length):0);
@@ -1191,6 +1206,20 @@ ok(new RegExp(relrun.plan+' of your allowance').test(relrun.setup),
 ok(relrun.beforeWho===8&&relrun.afterWho===0,'the run ends on the person\'s own record');
 ok(relrun.ownGained===relrun.plan,
  'and every line lands there rather than on the reference case, got '+relrun.ownGained);
+/* THE FIELD MOVES WITH THE IDENTITY, OR A STRANGER'S FIELD BECOMES YOURS.
+   Measured before the fix: a person whose nine axes were all zero came out of a
+   release run started on James carrying 50.6 of his charge, saved and
+   persisted. The meter half of this was fixed once; the field half was not. */
+ok(relrun.youCharge===relrun.youBefore,
+ 'a release run on a reference case leaves the person\'s own field where it was, '
+ +'was '+relrun.youBefore.toFixed(2)+', now '+relrun.youCharge.toFixed(2));
+/* This compared the live field after the release against the stored field
+   before the save, which differ by exactly the release, so it was measuring
+   the release and calling it a leak. What it means to check is that the live
+   field and the person's record agree once the save has run. */
+ok(Math.abs(relrun.liveCharge-relrun.savedCharge)<1e-9,
+ 'and the live field and the person\'s record agree once saved, got '
+ +relrun.liveCharge.toFixed(2)+' live against '+relrun.savedCharge.toFixed(2)+' saved');
 ok(relrun.overlap===0,'the next run continues rather than re-offering opened ground');
 
 console.log('\n=== the avatar, and what it aims the work at ===');

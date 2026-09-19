@@ -12190,6 +12190,18 @@ function relCoolDown(){
     actually did rather than asserting that it did something. A control must
     never claim success before it has it, and "released" is not the same claim
     as "your coherence moved". */
+ /* THE REPOINT COMES BEFORE THE WRITE, NOT AFTER IT.
+
+    "The person who ran it is the person who is charged" was already ruled and
+    the meter half was already fixed. The field half was not: the release wrote
+    into whatever field was loaded, and only then moved the pointer, so a run
+    started while a reference case was on screen emptied that case's addresses
+    and the person's own field never moved.
+
+    Repointing first means the write lands on the person's own charge, and a
+    person releasing charge they do not carry moves nothing, which is the
+    honest outcome rather than a borrowed one. */
+ toYou();
  var _pre=compute(); RUN.cq0=_pre.CQ; RUN.ceil0=cqCeiling();
  /* the release empties addresses and installs their opposites. it is the
     largest single write this product makes and it had no way back. */
@@ -12218,7 +12230,6 @@ function relCoolDown(){
     person's allowance never moved, and the keys went into a record nobody
     reads. The repoint comes first now, so everything below lands on the person
     who did the work. */
- toYou();
  if(CURP){
   /* the plan built when the run was picked, committed as it stands. a plan
      that changes between being shown and being charged is a bill a person did
@@ -16324,9 +16335,24 @@ $('psel').addEventListener('change',function(e){loadP(+e.target.value);});
    reference case was loaded, so the next save wrote the person's own edit into
    that case's record. It repoints the record without reloading S, because the
    caller is usually midway through a drag and reloading would undo it. */
-function toYou(){if(S.who===0)return;S.who=0;$('psel').value='0';
+/* THE IDENTITY AND THE FIELD MOVE TOGETHER, OR NOTHING IS TRUE.
+
+   S.who===0 is a claim that S holds the person's own field. This repointed the
+   identity and left the reference case's field sitting in S, so the claim was
+   false for the rest of the session and saveYou then wrote that field into the
+   person's record as if they had entered it.
+
+   Measured before the fix: a person whose nine axes were all zero ended a
+   release run, started while James was loaded, carrying 50.6 of James's
+   charge. A stranger's field became theirs, silently, and persisted.
+
+   loadP(0) is what makes the claim true, and it is the same call every other
+   route to the person's own record already goes through. */
+function toYou(){if(S.who===0)return;
+ loadP(0);
  var own=PROF_BY[PEOPLE[0].nm];
  if(own&&PROFILES.indexOf(own)>=0)CURP=own;
+ var sel=$('psel'); if(sel)sel.value='0';
  renderSpirit();}
 function saveYou(){if(S.who!==0)return;var Y=PEOPLE[0];
  Y.dom=S.dom;Y.a1=S.a1;Y.a2=S.a2;Y.doms=S.doms.slice();Y.arcs=S.arcs.slice();Y.roots=S.roots.slice();

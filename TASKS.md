@@ -1038,3 +1038,14 @@ guessed. Copyright, Tool of Unified LLC. A contact route, which he expects to
 sit in help or the profile, and help already exists to carry it.
 *Medium. This is the one item on the list where being wrong has a cost outside
 the product, so the research is named and cited rather than summarised.*
+
+**AC1. A second field leak, upstream of the release.** `ui/personas.js`, open
+Found while gating the first one. In a full functional run the person's own
+record already carries a reference case's charge before the release test ever
+starts, so something earlier in the page writes a loaded persona's field into
+`PEOPLE[0]`. The release path is fixed and gated; this one is not found yet.
+`saveYou()` is the only writer and it is guarded on `S.who===0`, so the fault
+is a path that claims the person's identity while a reference field is still
+in `S`. A clean page shows no leak, which is why it needs the full sequence to
+reproduce.
+*Medium, and it is corruption, so it goes before any new surface.*
