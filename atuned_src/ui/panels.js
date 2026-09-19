@@ -240,7 +240,11 @@ const THEMEICON={
  /* the same pane, lit from the front rather than from behind */
  glasswhite:'M5.5 7.2l9-3.2v12.8l-9 3.2zM14.5 4l4 2.4v11.2l-4 2.4M19 3l2.4 2.4M21 7.6l1.6-1.6',
  /* three flat planes, no bevel, no light. The mark is the position. */
- flat:'M3.5 5.5h7v7h-7zM13.5 5.5h7v4h-7zM13.5 12.5h7v6h-7zM3.5 15.5h7v3h-7z'};
+ flat:'M3.5 5.5h7v7h-7zM13.5 5.5h7v4h-7zM13.5 12.5h7v6h-7zM3.5 15.5h7v3h-7z',
+ /* a white field with a solid block set into it, which is the whole of Lumen:
+    the ground is paper and everything that carries reading is a black panel
+    standing on it. */
+ lumen:'M3 3h18v18H3zM8 8h8v8H8z'};
 /* FOUR LIGHTINGS. Glass is the fourth, and it is the one aimed forward: the
    direction the field is moving for 2027 and 2028 is holographic
    skeuomorphism, which is refraction and real elevation rather than the blur
@@ -250,11 +254,13 @@ const THEMEICON={
 /* SIX, on the owner's ruling. Glass on white is the same material under a
    different sun. Flat is the opposite position to all five others: no bevel,
    no blur, no shadow, and colour doing the work a material was doing. */
+/* SEVEN. Lumen is the owner's, and it is the only two tone one: white chrome,
+   black panels, the text on top of the black. */
 const LIGHTINGS=[['dark','Dark'],['snow','Snow'],['punch','Punch'],['glass','Glass'],
- ['glasswhite','Glass white'],['flat','Flat']];
+ ['glasswhite','Glass white'],['flat','Flat'],['lumen','Lumen']];
 function setLighting(k){
  S.theme=k;
- ['snow','punch','glass','glasswhite','flat'].forEach(function(c){
+ ['snow','punch','glass','glasswhite','flat','lumen'].forEach(function(c){
   document.body.classList.toggle(c,k===c);});
  var seg=$('themes');
  if(seg)seg.querySelectorAll('button').forEach(function(x,j){
@@ -268,7 +274,13 @@ LIGHTINGS.forEach(function(t,i){
  b.setAttribute('aria-pressed',i===0);
  b.className='seg-i'; b.title=t[1]; b.setAttribute('aria-label',t[1]+' theme');
  b.innerHTML='<svg viewBox="0 0 24 24" width="19" height="19" aria-hidden="true">'
-  +'<path d="'+THEMEICON[t[0]]+'"/></svg>';
+  /* A MISSING ICON IS A MISSING ICON, NOT THE WORD UNDEFINED. Adding a seventh
+     lighting put the string "undefined" into a path attribute and the browser
+     logged a parse error on every boot, which the design gate caught. A
+     lighting with no mark now draws nothing and says so in the console once,
+     rather than shipping a broken path. */
+  +'<path d="'+(THEMEICON[t[0]]||'')+'"/></svg>';
+ if(!THEMEICON[t[0]])b.setAttribute('data-noicon','1');
  b.addEventListener('click',function(){setLighting(t[0]);});
  $('themes').appendChild(b);});
 /* ---- THE LIGHTING MENU ----

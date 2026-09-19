@@ -129,8 +129,16 @@ console.log('  sub-floor elements:',Object.keys(small).length?JSON.stringify(sma
 console.log('\n=== 5 · no all-caps UI copy ===');
 const caps=await page.evaluate(()=>{
  const bad=[];
+ /* THE WORDMARK IS NOT COPY. The ruling is that no UI copy is set in all
+    caps, and a logotype is not UI copy: ATUNED has been uppercase since the
+    owner ruled it, and it only ever passed this gate by being six characters
+    long, which is luck rather than an exemption. SOURCE OS under it is nine.
+
+    Named narrowly, on .brand and nothing else, so the rule still bites
+    everywhere it is meant to. */
  document.querySelectorAll('*').forEach(e=>{
   if(e.children.length||e.closest('svg'))return;
+  if(e.closest('.brand'))return;
   const t=(e.textContent||'').trim();
   if(t.length<7)return;
   const st=getComputedStyle(e);
@@ -329,7 +337,14 @@ console.log('\n=== 9 \u00b7 four lightings, each its own ===');
  const names=Object.keys(lit);
  /* SIX, on the owner's ruling. Glass white is the same material under a
    different sun; Flat is the opposite position to all five others. */
- ok(names.length===6,'six lightings, got '+names.length+': '+names.join(', '));
+ /* COUNTED FROM THE LIST, NOT WRITTEN DOWN. This said six, and six was right
+    until a seventh landed, at which point the gate failed for the one reason a
+    gate must never fail: the product grew. What it is actually protecting is
+    that every lighting in LIGHTINGS reaches the bar and produces its own
+    ground, and that holds at any number. */
+ const declared=await p4.evaluate(()=>LIGHTINGS.length);
+ ok(names.length===declared,
+  declared+' lightings declared, '+names.length+' in the bar: '+names.join(', '));
  names.forEach(nm=>{
   const L=lit[nm];
   ok(!!L.panel&&!!L.edge&&!!L.ink&&!!L.accent,
@@ -341,7 +356,9 @@ console.log('\n=== 9 \u00b7 four lightings, each its own ===');
  /* six lightings that produce five grounds means one of them is not a
     lighting. This is the check that caught Glass inheriting Dark. */
  const grounds=new Set(names.map(n=>lit[n].bg));
- ok(grounds.size===6,'six distinct grounds, got '+grounds.size);
+ ok(grounds.size===declared,
+  declared+' lightings and '+grounds.size+' distinct grounds. Equal or one of '
+  +'them is a skin rather than a lighting.');
  const inks=new Set(names.map(n=>lit[n].ink));
  ok(inks.size>=2,'and the ink moves with them, got '+inks.size+' distinct');
  /* the accent is one value across every lighting but snow, which deepens it

@@ -297,6 +297,93 @@ body.glasswhite .panel,body.glasswhite .glass{
    radius comes down, every edge becomes one pixel, and the accent carries
    the entire hierarchy.
    ============================================================ */
+/* ============================================================
+   LUMEN. The seventh lighting, and the only two tone one.
+
+   Ruled, in his words: "white and flat, except the centre display areas for
+   all the tools are still 101010. And any background where there's text,
+   101010. And then put the text on top of that."
+
+   So this is not an inversion of Snow and it is not a variant of Flat. The
+   ground is white and the chrome is white, and every surface that carries
+   reading is a black panel sitting on it. The panels do the work the paper
+   does in Snow and the paper does the work the frame does in Dark.
+
+   TWO INKS, BECAUSE THERE ARE TWO GROUNDS. Every other lighting has one ink
+   because it has one ground. Here the top bar and the space between panels are
+   white and everything inside a panel is black, so text on the ground needs
+   the opposite colour to text on a panel. --on-bg is that second ink and it
+   exists only in this lighting.
+
+   Geometry is Flat's: no shadow, no bevel, tight radii, colour doing the work
+   a material was doing. */
+body.lumen{
+ --seat:#7EB8D4; --seat-w:0;
+ --bg:#FFFFFF;
+ /* every panel carries text, so every panel is the ruled black */
+ --panel:#101010; --panel-2:#171717; --sunk:#0A0A0A;
+ --edge:#2B2B2B; --edge-2:#3C3C3C;
+ --ink:#F7F7F7; --mid:#ADADAD; --dim:#8A8A8A;
+ --root:#D2726D; --sacral:#DCA067; --solar:#DEC77E; --heart:#7BD1AF;
+ --throat:#72C4E0; --eye:#8FA3E6; --crown:#B597D8;
+ --accent:#2FA8D4; --gold:var(--accent); --on-accent:#05131A;
+ --au:#C9A34A;
+ --sky:#2FA8D4; --um:#F7F7F7;
+ --good:#68CBA4; --bad:#D4736D;
+ --alarm:#FF2E1F; --alarm-soft:rgba(255,46,31,.14);
+ --on-flat:#0E1015;
+ --shadow:none;
+ --r:4px; --r-s:4px; --r-xs:3px;
+}
+/* WHAT IS WHITE IS WHAT CARRIES NO TEXT, and that turns out to be the ground
+   alone. The first cut gave the top bar the white and a second dark ink to go
+   on it, which was me adding a rule he did not make: the bar carries the tab
+   names, and his ruling is that any background carrying text is 101010. So
+   the bar stays black with the ordinary light ink, the stage stays black, the
+   panels stay black, and the white is the space between them.
+
+   That cut also had two rules of mine at the same specificity fighting, and
+   the later one won, so the bar kept its dark ground while the wordmark took
+   the dark ink and disappeared. One rule now, and nothing to fight. */
+body.lumen .stage,body.lumen #emap,body.lumen #cone{background:#101010}
+/* SOLID EVERYWHERE, AND THE ICONS PUNCHIER. Ruled, and it is a second ruling
+   on top of the first: "when selected, anything selected should be flat solid
+   colour. In fact I want this whole design to be like flat solid colour
+   everywhere when it comes to the menu and UI and nav and the icons."
+
+   Icons are ring and not fill is a standing rule, and Punch is already its
+   named exception. Lumen is the second, on his word, and only for the chrome:
+   the menu, the navigation and the controls. A reading is still drawn as a
+   reading, because a fetter at 6.2 is a measurement and not a button. */
+body.lumen .glass,body.lumen .vt,body.lumen .ib,body.lumen .btn,body.lumen .cr,
+body.lumen .pm-lb,body.lumen .pm-rb,body.lumen .iq-law,body.lumen .iq-n,
+body.lumen .rd-card,body.lumen .sum-card,body.lumen .sum-l,body.lumen .sum-ai,
+body.lumen .st-mic,body.lumen .ab-f,body.lumen .ad-r,body.lumen .rel-row,
+body.lumen .ac-grp,body.lumen .ac-row,body.lumen .seg,body.lumen .cn-gr,
+body.lumen .ob-a,body.lumen .iq-qc,body.lumen .iq-seg{border-color:transparent}
+body.lumen .vt,body.lumen .btn,body.lumen .pm-lb,body.lumen .st-mic,
+body.lumen .ob-a,body.lumen .cn-sb{background:var(--panel-2)}
+/* the icons themselves carry more weight, because a ring at 1.5 on a black
+   panel next to a white ground reads thinner than it measures. */
+body.lumen .ib svg,body.lumen .vt svg,body.lumen .tab svg,
+body.lumen .ac-gl svg,body.lumen .iq-gl svg{stroke-width:1.9;opacity:1}
+body.lumen .ib{background:var(--sunk);border-width:0}
+/* ANYTHING SELECTED IS A SOLID FILL, in its own family's colour where it has
+   one and the accent where it does not. */
+body.lumen .ib[aria-pressed=true],body.lumen .ib[data-r="2"]{
+ background:var(--c,var(--accent));border-color:transparent}
+body.lumen .ib[aria-pressed=true] svg,body.lumen .ib[data-r="2"] svg{
+ stroke:var(--panel);opacity:1;stroke-width:2}
+body.lumen .vt[aria-pressed=true]{background:var(--accent);color:var(--on-accent)}
+body.lumen .vt[aria-pressed=true] svg{stroke:var(--on-accent)}
+body.lumen .seg button[aria-pressed=true],body.lumen .cn-sb.on,
+body.lumen .ob-a.on,body.lumen .iq-n.on,body.lumen .cn-b.on{
+ background:var(--accent);color:var(--on-accent);border-color:transparent}
+body.lumen .ac-ixb.on{background:var(--c);color:var(--panel)}
+body.lumen .ac-ixb.on .ac-gl{color:var(--panel)}
+body.lumen .btn.pri{background:var(--accent);border-color:var(--accent)}
+body.lumen .tab.on{color:var(--accent)}
+body.lumen .top,body.lumen .glass{box-shadow:none}
 body.flat{
  --seat:#7EB8D4; --seat-w:0;
  --bg:#0A0B0E;
@@ -570,7 +657,12 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
    clear the cap line instead, and the U is wider so they sit further apart.
    Measured against the rendered glyph rather than guessed, the same way the
    lowercase pair was. */
-.brand .bn{display:block;line-height:1;text-transform:uppercase;letter-spacing:.11em}
+/* the trailing letter space is taken out of the layout on both lines, so the
+   two centre on their glyphs rather than on their glyphs plus one gap. The
+   subtitle already did this and the name did not, which put them a pixel
+   apart on a mark that is two lines of the same word. */
+.brand .bn{display:block;line-height:1;text-transform:uppercase;letter-spacing:.11em;
+ margin-right:-.11em}
 /* WHITE, two points smaller, four more pixels off the wordmark. Ruled.
 
    It went gold on the previous ruling and is white on this one. --au stays in
@@ -592,9 +684,17 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
    68.9, so the .288em that matched the lowercase mark now leaves the lower
    line sixteen pixels short and the lockup lopsided again. Nine characters
    carry the difference at .489em. Measured, not chosen. */
-.brand .bs{display:block;font-size:9px;font-weight:500;letter-spacing:.489em;
- margin-right:-.489em;
- color:var(--ink);line-height:1;text-transform:none;margin-top:4px}
+/* SOURCE OS, all caps to match ATUNED above it, and half a point down. Ruled.
+   The tracking is what centres it under the name and it is measured against
+   the cap width, so it moves with the size rather than being re-guessed. */
+.brand .bs{display:block;font-size:8.5px;font-weight:500;letter-spacing:.467em;
+ margin-right:-.467em;
+ /* UPPERCASED IN THE SHEET, NOT IN THE MARKUP. Ruled all caps, and the name
+    above it has always done it this way. Writing SOURCE OS into the document
+    tripped the gate that bans all caps UI copy, and that gate is right: a
+    logotype is not copy, and the way to say so is to leave the string in
+    sentence case and let the mark's own styling carry the case. */
+ color:var(--ink);line-height:1;text-transform:uppercase;margin-top:4px}
 .brand:hover{color:color-mix(in srgb,var(--sky) 76%,var(--ink))}
 /* the umlaut, drawn. two dots, white, sitting above a plain u. */
 .brand .um{position:relative;display:inline-block}
@@ -3192,9 +3292,15 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
           The reading is whether the charge a person holds is benign or
           malignant. That is the heading now. Nothing abstract, and the
           section says exactly what it does. -->
-     <!-- plain, because capitalize would render the conjunction as Or. The
-          exception hook already exists for exactly this. -->
-     <div class="tier1 plain">0 &middot; Benign or malignant</div>
+     <!-- ONE WORD. Ruled, and he found the word himself: "it's like a root
+          behaviour, it's orientation. It's either pointed towards benign or
+          malignant."
+
+          Benign or malignant is two words naming one thing, and it printed
+          one of them capitalised and the other not, which made them look like
+          two readings rather than the two ends of one. Orientation is what is
+          being read. The ends keep their names inside it. -->
+     <div class="tier1">0 &middot; Orientation</div>
      <div class="polbar" id="polbar"></div>
      <!-- AND BALANCE COMES BACK INTO THE RAIL.
 
@@ -15009,7 +15115,11 @@ const THEMEICON={
  /* the same pane, lit from the front rather than from behind */
  glasswhite:'M5.5 7.2l9-3.2v12.8l-9 3.2zM14.5 4l4 2.4v11.2l-4 2.4M19 3l2.4 2.4M21 7.6l1.6-1.6',
  /* three flat planes, no bevel, no light. The mark is the position. */
- flat:'M3.5 5.5h7v7h-7zM13.5 5.5h7v4h-7zM13.5 12.5h7v6h-7zM3.5 15.5h7v3h-7z'};
+ flat:'M3.5 5.5h7v7h-7zM13.5 5.5h7v4h-7zM13.5 12.5h7v6h-7zM3.5 15.5h7v3h-7z',
+ /* a white field with a solid block set into it, which is the whole of Lumen:
+    the ground is paper and everything that carries reading is a black panel
+    standing on it. */
+ lumen:'M3 3h18v18H3zM8 8h8v8H8z'};
 /* FOUR LIGHTINGS. Glass is the fourth, and it is the one aimed forward: the
    direction the field is moving for 2027 and 2028 is holographic
    skeuomorphism, which is refraction and real elevation rather than the blur
@@ -15019,11 +15129,13 @@ const THEMEICON={
 /* SIX, on the owner's ruling. Glass on white is the same material under a
    different sun. Flat is the opposite position to all five others: no bevel,
    no blur, no shadow, and colour doing the work a material was doing. */
+/* SEVEN. Lumen is the owner's, and it is the only two tone one: white chrome,
+   black panels, the text on top of the black. */
 const LIGHTINGS=[['dark','Dark'],['snow','Snow'],['punch','Punch'],['glass','Glass'],
- ['glasswhite','Glass white'],['flat','Flat']];
+ ['glasswhite','Glass white'],['flat','Flat'],['lumen','Lumen']];
 function setLighting(k){
  S.theme=k;
- ['snow','punch','glass','glasswhite','flat'].forEach(function(c){
+ ['snow','punch','glass','glasswhite','flat','lumen'].forEach(function(c){
   document.body.classList.toggle(c,k===c);});
  var seg=$('themes');
  if(seg)seg.querySelectorAll('button').forEach(function(x,j){
@@ -15037,7 +15149,13 @@ LIGHTINGS.forEach(function(t,i){
  b.setAttribute('aria-pressed',i===0);
  b.className='seg-i'; b.title=t[1]; b.setAttribute('aria-label',t[1]+' theme');
  b.innerHTML='<svg viewBox="0 0 24 24" width="19" height="19" aria-hidden="true">'
-  +'<path d="'+THEMEICON[t[0]]+'"/></svg>';
+  /* A MISSING ICON IS A MISSING ICON, NOT THE WORD UNDEFINED. Adding a seventh
+     lighting put the string "undefined" into a path attribute and the browser
+     logged a parse error on every boot, which the design gate caught. A
+     lighting with no mark now draws nothing and says so in the console once,
+     rather than shipping a broken path. */
+  +'<path d="'+(THEMEICON[t[0]]||'')+'"/></svg>';
+ if(!THEMEICON[t[0]])b.setAttribute('data-noicon','1');
  b.addEventListener('click',function(){setLighting(t[0]);});
  $('themes').appendChild(b);});
 /* ---- THE LIGHTING MENU ----

@@ -97,7 +97,10 @@ put the child straight inside the parent and the parent's renderer, which
 writes the whole innerHTML of its host, deleted the child on the way past. The
 functional gate caught it.
 
-**The app opens on Summary, so Summary is a stranger's first screen.** Anything
+**The app opens on the Field, ruled 19 September, reversing Summary.**
+`core.js` has `tab:TAB.FIELD` and `ui.js` calls `setTab(TAB.FIELD)`. This
+paragraph said Summary for longer than it was true, which a first run audit
+caught. The rest of it still holds and is the reason it is still written down. Anything
 that renders there renders to somebody who has entered nothing. Both surfaces
 that print a reading now silence themselves on `r.unread` and show the four
 doors instead, and Summary empties itself on the way out so a hidden surface

@@ -864,3 +864,177 @@ through the connector would fill the context without answering anything.
 *The placement review is out with the architect. The hard constraint is the
 whole problem: one file, no network, currently 1.17 MB, and 15.4 MB of video
 base64s to about 21. That needs a ruling from him before a frame is edited.*
+
+---
+
+# Ruled 19 September, sixth note. The release is the flagship.
+
+His framing, and it reorders everything under it: "once you're done with all
+these tasks, our focus is going to be on the release. The release is our
+flagship, ultimately. Everything else is in service of it."
+
+## V. The release. Deep review seven times, then build.
+
+**What it is, in his words.** "It is the release of our stories. It's the
+integration so that the bias is released from the site of the nerve. I am
+releasing."
+
+**V1. See and select stories.** `ui/release.js`
+Come to the page, see my stories, select the ones I want, and get a readout of
+what that is going to change within my system before anything runs.
+*Large. The readout before the run is the part that does not exist.*
+
+**V2. The page is super clean, and the settings fold away.** `ui/release.js`
+Select settings, save them, and they stop being in your face. Drop downs, or a
+menu that drops and slides back up. Time and number of patterns are the two he
+named.
+*Medium.*
+
+**V3. Multiple patterns divide automatically.** `engine/plan.js`, `ui/release.js`
+A hundred patterns in five minutes across four selected things is twenty five
+each. The person states the total and the selection, and the split is arithmetic
+rather than another thing to set.
+*Medium.*
+
+**V4. Select by mask, and run the biggest blockers.** `ui/release.js`
+His reasoning, and it is the strongest argument in the note: the masks are how
+a person looks at their character and finds their performance blockers. Stage
+fright, creative block, writing block. Pruning the mask so it is the shape you
+want.
+*Large. It turns the release from repair into performance work.*
+
+**V5. Sort by field.** future
+Arts, business, sports, performance, with the protocol customised to each.
+*Large, and named by him as future rather than now.*
+
+## W. The writing guide. Two engines, one rule.
+
+**W1. A prompt engine on the journal.** `ui/storyui.js`, new
+Speaks directly to pain and directly to character. His examples are the spec:
+when was the last time you, tell me how you did. The question has to draw the
+story out, cannot be ambiguous, and has to speak to an emotion, because the
+emotion is what is being reached for.
+*Medium.*
+
+**W2. The intake questions speak to the charge, not the concept.** `engine/intake.js`
+Same rule applied to the twenty one laws. A person should feel it in the body
+and answer instantly: oh, that is a six. Today the stems are abstractions and a
+person reasons their way to a number instead of feeling one.
+*Medium, and it is a rewrite of sixty three strings rather than a mechanism.*
+
+**W3. Both of the above go in the writing guide.** `.claude/skills/`
+Editorial and narrative own it. No ambiguous question, anywhere, ever.
+*Small once W1 and W2 are settled.*
+
+## X. The sniffer.
+
+**X1. Get closer to the root pattern.** `engine/sniff.js`
+His note in full: the closer we can get to a root pattern the better, and the
+more child patterns we can get down to, the more we are triangulating on the
+root.
+*Medium. It is a scoring change, not a lexicon change.*
+
+## Y. Counters and history.
+
+**Y1. The release keeps a history of every pattern released.** `engine/schema.js`, `ui/release.js`
+*Medium. Schema.*
+
+**Y2. Imprints carries stories added and stories released.** `ui/imprints.js`
+A vertical counter, almost a thermometer, showing how many were filled up and
+how many were released.
+*Medium.*
+
+## Z. The system around the product.
+
+**Z1. The funnel onboarding, end to end.** `funnel/`
+Story, information architecture, schema, design, flow, architecture, and how it
+plugs into the Atuned software.
+*Large.*
+
+**Z2. A developer API.** new
+See everything. Analytics across the entire system. See the Source AI brain
+pooling data globally, how it is refining the model, and what the model needs
+done to it.
+*Large, and it needs the record store first.*
+
+**Z3. Practitioner tools.** new
+Named as needing development. `DECISIONS.md` already rules the consent, the
+visible list and the revocation.
+*Large.*
+
+## AA. Small, and ruled outright.
+
+**AA1. Benign or malignant becomes one word: orientation.** `ui/panels.js`
+He worked it out in the note: it is a root behaviour, it is an orientation, and
+it points either benign or malignant. Malignant is also lowercase where benign
+is not.
+*Small.*
+
+**AA2. A fourth lighting called Lumen.** `shell/head.html`
+White and flat, except every centre display area for every tool stays 101010,
+and any background carrying text is 101010 with the text on top of it.
+*Medium. It is a whole lighting, and gate 9 checks each one is its own.*
+
+**AA3. The wordmark.** `shell/head.html`
+SOURCE goes all caps to match ATUNED, and drops half a point to a point.
+*Small.*
+
+**AA4. Intake cards start open.** `ui/intakeui.js`
+Open, answer, and the card closes itself. On closing it gives the weight of the
+circle and shows which fetters attached, so the pill carries either a zero or a
+number.
+*Medium. The fetters per law is a read that does not exist yet.*
+
+**AA5. Energetics is still boring.** `shell/head.html`, `ui/intakeui.js`
+He has said it twice. A subtle glass touch, around twenty percent, was his own
+suggestion.
+*Medium.*
+
+**AA6. Energetics opens with who you are, upper right.** `ui/intakeui.js`
+First, middle, last, where you were born, and the Myers-Briggs, as a panel in
+the upper right. Fill it, save, it folds away, and it unfolds to edit. The
+twenty one laws then rise to the top of the surface.
+*Medium. The roll up exists; the placement and the panel do not.*
+
+**AA7. One film, embedded, as the template.** `ui/knowledge.js`
+His ruling: just do All As One and see how it looks, and get the template set
+up. Measured cost for one film: build 1.17 MB to 2.63 MB, boot plus thirty
+milliseconds, heap unchanged.
+*Medium.*
+
+## What has had no touch at all
+
+Ritual and the accountability tracker, which have a 1,496 line spec and not one
+line wired. The phone spec, 1,132 lines, the same. The release, which is the
+flagship and is next. Onboarding and the tutorial, which he has asked to be
+built separately and wants to be asked about before anybody designs them.
+
+---
+
+## Ruled 19 September, seventh note. The mark, the boot, and the legal floor.
+
+**AB1. Reanimate the logo, from first principles.** `shell/head.html`, boot
+"The fundamentals of animation. Think Pixar. When it comes to timing."
+The boot is a stub he called a nice stubbing. The animation director, the art
+director and the design director go back to the fundamentals rather than
+tuning what is there.
+*Medium. It is the first four seconds a stranger has, and today they are a dot.*
+
+**AB2. Redesign the mark.** `shell/head.html`, `shell/body.html`
+Varying line weight. The golden ratio respected and reflected in the art and in
+the symmetry. A halo with a golden hue against the white. His words for the
+target: "when people come here they're like, oh my God, the halo." And the
+design itself may need re-examining rather than refining.
+*Medium.*
+
+**AB3. The wordmark reads "Atuned powered by SOURCE OS".** `shell/body.html`
+It reads Atuned over SOURCE OS today. The connecting words are new.
+*Small, and it changes the tracking arithmetic under the name, which is
+measured rather than eyeballed.*
+
+**AB4. The legal floor.** `ui/account.js`, footer
+Disclaimers appropriate to a product of this kind, researched rather than
+guessed. Copyright, Tool of Unified LLC. A contact route, which he expects to
+sit in help or the profile, and help already exists to carry it.
+*Medium. This is the one item on the list where being wrong has a cost outside
+the product, so the research is named and cited rather than summarised.*
