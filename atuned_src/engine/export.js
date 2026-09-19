@@ -26,7 +26,7 @@ if(typeof module!=='undefined'&&module.exports){
                  PLAN_LIVE:PLAN_LIVE, PLAN_DEAD:PLAN_DEAD,
                  planState:planState, planOf:planOf, planSees:planSees,
                  planNextSight:planNextSight, planAllowance:planAllowance,
-                 planUpgrade:planUpgrade, RUN_MAX:RUN_MAX,
+                 planUpgrade:planUpgrade, RUN_MAX:RUN_MAX, RUN_MIN:RUN_MIN,
                  planYear:planYear, PLAN_YEAR_FREE:PLAN_YEAR_FREE,
                  planYear:planYear, PLAN_YEAR_FREE:PLAN_YEAR_FREE,
                  LEAD_SEES:LEAD_SEES, LEAD_HIDDEN:LEAD_HIDDEN, leadSees:leadSees,

@@ -471,7 +471,9 @@ function renderSettings(){
  var who=(CURP&&CURP.name)||'You';
  var h='<div class="set-wrap">'
   +'<div class="set-hd"><div class="pm-eye">Settings</div>'
-  +'<h2 class="kb-h">'+esc(who)+'</h2>'
+  /* plain: this header is a person's own name, and title casing a name is a
+     claim about how they spell it. de Vries is not De Vries. */
+  +'<h2 class="kb-h plain">'+esc(who)+'</h2>'
   +'<p class="kb-p">Everything here is held in this browser. Nothing has left '
   +'this device.</p></div>'
   +'<div class="set-grid">'
@@ -535,7 +537,7 @@ function renderSettings(){
 function profileSheet(){
  var r=compute(), m=(typeof meterRead==='function')?meterRead(CURP):null;
  var who=(CURP&&CURP.name)||'You';
- var h='<div class="pm-eye">Profile</div><p class="sh-h">'+esc(who)+'</p>'
+ var h='<div class="pm-eye">Profile</div><p class="sh-h plain">'+esc(who)+'</p>'
   +'<div class="sh-sec"><div class="pm-eye">This reading</div>'
   +'<div class="sh-row"><span>Coherence</span><b>'
    +(r.unread?'not read yet':Math.round(r.CQ)+' of 100')+'</b></div>'

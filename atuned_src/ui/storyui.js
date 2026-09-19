@@ -18,7 +18,21 @@ function stRender(){
    +'<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">'
    +'<rect x="9" y="3" width="6" height="11" rx="3"/>'
    +'<path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3"/></svg>'
-   +'<span>'+(ST_LISTEN?'Recording':'Record')+'</span></button></div>'
+   +'<span>'+(ST_LISTEN?'Recording':'Record')+'</span></button>'
+   /* WHERE THE AUDIO GOES, SAID BEFORE IT GOES THERE.
+
+      The owner keeps the microphone and promises the data is never sold, and
+      both of those are true. A third fact is also true and was nowhere on
+      screen: browser speech recognition is a network service, so the audio
+      reaches the browser vendor. We do not sell it and we do not control it
+      either, which is exactly why it has to be said rather than assumed.
+
+      One line, always visible, not a dialog. A dialog asks for a decision the
+      person cannot yet make anything of, and it would sit between somebody and
+      the thing they came to do. Typing stays the equal path and is named here
+      so the alternative is in the same sentence as the cost. */
+   +'<span class="st-mnote">Recording sends the audio to your browser\'s '
+   +'speech service. Typing does not leave this device.</span></div>'
   /* THE FETTERS LIGHT UP IN THE PERSON'S OWN SENTENCE.
 
      The sniffer already names every word it is reading and which seat that

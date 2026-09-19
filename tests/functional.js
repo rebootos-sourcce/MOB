@@ -1161,14 +1161,23 @@ const relrun=await page.evaluate(()=>{
  o.overlap=RUN.plan.filter(k=>(CURP.meter.unique||[]).indexOf(k)>=0).length;
  relClose();
  return o;});
-ok(relrun.plan===25,'a run is twenty five thought lines, got '+relrun.plan);
-ok(relrun.distinct===25,'and never repeats a line inside one run');
-ok(/25 thought lines of new ground/.test(relrun.setup),
- 'the setup says what it costs before anybody begins');
-ok(/25 of your allowance/.test(relrun.setup),'and that it comes out of the allowance');
+/* A RUN COSTS THE MINIMUM NOW, RULED, so twenty five is a ceiling and not the
+   size of every run. These pinned the old fill-to-the-cap behaviour, under
+   which one address cost the same as eight and ten free patterns a week bought
+   nothing at all. The assertions are the rule: the run is as big as the
+   selection needs, it is never bigger than the cap, it never repeats a line
+   inside itself, the setup quotes its own real size before anybody begins, and
+   every line lands on the person's own record. */
+ok(relrun.plan>0&&relrun.plan<=25,
+ 'a run is at most twenty five thought lines, got '+relrun.plan);
+ok(relrun.distinct===relrun.plan,'and never repeats a line inside one run');
+ok(new RegExp(relrun.plan+' thought lines of new ground').test(relrun.setup),
+ 'the setup says what it costs before anybody begins, quoting '+relrun.plan);
+ok(new RegExp(relrun.plan+' of your allowance').test(relrun.setup),
+ 'and that it comes out of the allowance');
 ok(relrun.beforeWho===8&&relrun.afterWho===0,'the run ends on the person\'s own record');
-ok(relrun.ownGained===25,
- 'and the twenty five land there rather than on the reference case, got '+relrun.ownGained);
+ok(relrun.ownGained===relrun.plan,
+ 'and every line lands there rather than on the reference case, got '+relrun.ownGained);
 ok(relrun.overlap===0,'the next run continues rather than re-offering opened ground');
 
 console.log('\n=== the avatar, and what it aims the work at ===');

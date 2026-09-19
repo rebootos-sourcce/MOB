@@ -682,11 +682,21 @@ body:not(.hassub) .subbar{display:none}
    typed, so a surname like de Vries came back De Vries. Labels keep the rule.
    The wider question of whether headers should be title case at all is the
    owner's and is raised, not answered here. */
-.pm-eye,.tier1,.sub,.sp-hd,.rit-tr,.ip-bh,.sum-lt,.ad-nm,.gm-on,
+/* TITLE CASE ON HEADERS, ruled by the owner. The sentence case rule in
+   CLAUDE.md governs body copy and does not reach a header, which settles the
+   contradiction between the two records: this stylesheet was right.
+
+   kb-h and sh-h come back in, which is the ruling applied. sh-h is the one
+   exception in the set because it also carries a person's own name, and a
+   surname is not a header: rendering somebody as De Vries is wrong about them
+   rather than merely styled. So the class takes the transform and the one
+   element that prints a name opts out with plain, which is the escape hatch
+   this block already has. */
+.pm-eye,.tier1,.sub,.sp-hd,.rit-tr,.ip-bh,.sum-lt,.kb-h,.sh-h,.ad-nm,.gm-on,
 .eyebrow,.lbl{text-transform:capitalize}
 /* the exceptions, where a capital on every word would be wrong: running prose
    that happens to use a header class, and anything already an acronym. */
-.pm-eye.plain,.sub.plain,.tier1.plain{text-transform:none}
+.pm-eye.plain,.sub.plain,.tier1.plain,.sh-h.plain,.kb-h.plain{text-transform:none}
 .tier1{font-size:11px;font-weight:600;color:var(--gold);margin-bottom:9px;line-height:1.45}
 .tier1 span{display:block;color:var(--dim);font-weight:400;font-size:13px;margin-top:3px}
 /* reading text. 16px floor, 50 to 75 character measure. */
@@ -2449,6 +2459,9 @@ body.booted{--boot-done:1}
 .ld-off{color:var(--ink)}
 .ld-next{margin:14px 0 0;font-size:13px;line-height:1.6;color:var(--mid);max-width:62ch}
 .ld-next b{color:var(--ink);font-weight:500}
+/* the microphone's one line. Quiet, always there, never a dialog. */
+.st-mnote{display:block;flex:1 1 100%;font-family:var(--sans);font-size:11.5px;
+ line-height:1.5;color:var(--dim);margin-top:5px}
 @media (prefers-reduced-motion:reduce){
  .boot{animation:none;opacity:0;visibility:hidden}}
 

@@ -1222,19 +1222,32 @@ g('23 \u00b7 the plan. what it grants, what it lets you see, and what it refuses
     in a week however they spend it. The allowance banks, and the surface
     says so, because ten patterns reads like a permission and nought runs is
     the truth. */
- const {RUN_MAX,LEAD_SEES,LEAD_HIDDEN,leadSees}=E;
+ /* THE OWNER OVERTURNED THE ARITHMETIC THESE ASSERTED.
+
+    They pinned the old model, in which a run always cost the cap, so ten free
+    patterns bought nought runs and the surface told a person their allowance
+    was banking toward one. Ruled: a run costs the MINIMUM for what was picked,
+    the cap is a ceiling and not a size, and a rerun of ground already open is
+    free. Ten a week is therefore two releases a week, which is a product.
+
+    Rewritten to assert the rule rather than the numbers: an allowance buys
+    what it buys at the floor, the cap only truncates, and more grant buys
+    proportionally more. A future change to either constant moves these with
+    it instead of failing them. */
+ const {RUN_MAX,RUN_MIN,LEAD_SEES,LEAD_HIDDEN,leadSees}=E;
  ok(RUN_MAX===25,'a run is at most twenty five, got '+RUN_MAX);
- ok(PLAN_BY.gift.grant/RUN_MAX===4,'so the gift is exactly four runs');
- ok(PLAN_BY.free.grant<RUN_MAX,'and the free week is less than one run, which is the finding');
- ok(planAllowance({tier:'free',status:''},100).runs===0,
-  'a free week buys no run at all');
- ok(/banking toward a run/.test(planAllowance({tier:'free',status:''},100).say),
-  'and the surface says it is banking rather than reading as a permission');
- ok(planAllowance({tier:'one',status:'active',granted:400,base:100},100).runs===16,
-  'tier one is sixteen runs a month, got '
-  +planAllowance({tier:'one',status:'active',granted:400,base:100},100).runs);
- ok(planAllowance({tier:'two',status:'active',granted:800,base:100},100).runs===32,
-  'and tier two is thirty two');
+ ok(RUN_MIN>0&&RUN_MIN<RUN_MAX,'and the smallest run is smaller than the cap, got '+RUN_MIN);
+ ok(PLAN_BY.free.grant>=RUN_MIN,
+  'the free week affords at least one release, which is the ruling');
+ {const fr=planAllowance({tier:'free',status:''},100);
+  ok(fr.runs===Math.floor(PLAN_BY.free.grant/RUN_MIN),
+   'and it buys grant over the floor, got '+fr.runs);
+  ok(!/banking toward a run/.test(fr.say),
+   'and no longer says it is banking toward one it can already afford');}
+ {const t1=planAllowance({tier:'one',status:'active',granted:400,base:100},100).runs;
+  const t2=planAllowance({tier:'two',status:'active',granted:800,base:100},100).runs;
+  ok(t1===Math.floor(400/RUN_MIN),'tier one is its grant over the floor, got '+t1);
+  ok(t2===t1*2,'and tier two, at twice the grant, is twice the runs');}
 
  /* TIER FOUR IS NOT MORE OF THE SAME. Same twelve hundred as tier three, so
     patterns do not separate them at all. What it buys is the cohort suite. */
@@ -1548,18 +1561,31 @@ g('25 \u00b7 the key. one thought line, at an address, by way of a channel');
  /* THE RUN IS A PLAN, capped, walking new ground only */
  const q=blankProfile('plan2');
  const CH=['Rlimit','Llimit','Rtruth','Ltruth'];
+ /* A RUN COSTS THE MINIMUM, which for three addresses over four channels is
+    twelve and not the cap. The cap is proved separately, on a selection wide
+    enough to reach it. */
  const plan=meterPlan(q,[1,2,3],CH,RUN_MAX);
- ok(plan.length===RUN_MAX,'a run is capped at twenty five, got '+plan.length);
+ ok(plan.length===3*CH.length,
+  'a run is the addresses crossed with the channels, got '+plan.length);
+ ok(plan.length<RUN_MAX,'and a narrow selection costs less than the cap');
+ {const wide=meterPlan(blankProfile('plan3'),[1,2,3,4,5,6,7,8,9],CH,RUN_MAX);
+  ok(wide.length===RUN_MAX,
+   'a selection wide enough is truncated to the cap, got '+wide.length);}
  ok(new Set(plan).size===plan.length,'and never repeats a line inside one run');
  meterRun(q,plan);
  const plan2=meterPlan(q,[1,2,3],CH,RUN_MAX);
  ok(plan2.filter(k=>plan.indexOf(k)>=0).length===0,
   'the next run continues rather than re-offering what is open');
- ok(meterRead(q).unique===RUN_MAX,'and a run of twenty five spends twenty five');
+ ok(meterRead(q).unique===plan.length,
+  'and a run spends exactly what it planned, got '+meterRead(q).unique);
  /* rerunning the same keys is still free, which is the standing ruling */
  const again=meterRun(q,plan);
- ok(again.added===0&&again.repeated===RUN_MAX,'rerunning opened ground costs nothing');
- ok(meterRead(q).unique===RUN_MAX,'and does not move the count');
+ /* against the plan's own length, not the cap. A run is the minimum for what
+    was picked now, so three addresses over four channels is twelve, and
+    pinning the cap here asserted the old fill-to-ceiling behaviour. */
+ ok(again.added===0&&again.repeated===plan.length,
+  'rerunning opened ground costs nothing, added '+again.added);
+ ok(meterRead(q).unique===plan.length,'and does not move the count');
  /* a plan over an address with nothing left returns nothing rather than looping */
  const drained=blankProfile('drain');
  const all=[]; CH.forEach(function(c){for(let i=0;i<LINES_PER_CH;i++)all.push(meterKey(1,c,i));});

@@ -457,8 +457,27 @@ function sumWire(){
  var h=document.getElementById('sumbody'); if(!h||h.dataset.wired)return;
  h.dataset.wired='1';
  h.addEventListener('click',function(ev){
-  var b=ev.target.closest?ev.target.closest('[data-sp],[data-num],[data-arch],[data-dom],[data-seat],[data-mask],[data-gl]'):null;
+  var b=ev.target.closest?ev.target.closest('[data-sout],[data-sp],[data-num],[data-arch],[data-dom],[data-seat],[data-mask],[data-gl]'):null;
   if(!b)return;
+  /* THE TWO PRIMARY ACTIONS ON THIS PAGE DID NOTHING.
+
+     The output row prints "Open it" under the protocol and "Run a release"
+     under the heaviest address, and data-sout was not in the selector above,
+     so closest() returned null and the handler returned on its first line.
+     Both buttons have been inert since the row was built. They are the only
+     two actions on the surface a stranger opens on, so the product's front
+     door had no handle on it.
+
+     They go to the surfaces that already exist. Open it opens the ritual
+     builder. Run a release picks the one address the card names and opens the
+     run, which is the same call the Story panel makes. */
+  if(b.hasAttribute('data-sout')){
+   var w=b.getAttribute('data-sout');
+   if(w==='rit'&&typeof ritOpen==='function'){ritOpen(null);return;}
+   if(w==='rel'&&typeof relPick==='function'){
+    var nid=+b.getAttribute('data-n');
+    if(!isNaN(nid)){relPick([nid]);return;}}
+   return;}
   if(b.hasAttribute('data-sp'))return runSpDrill(b.getAttribute('data-sp'),b.getAttribute('data-spv'));
   if(b.hasAttribute('data-num'))return runNumDrill(b.getAttribute('data-num'));
   if(b.hasAttribute('data-dom'))return runCellDrill(+b.getAttribute('data-dom'),0);

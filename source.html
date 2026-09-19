@@ -682,11 +682,21 @@ body:not(.hassub) .subbar{display:none}
    typed, so a surname like de Vries came back De Vries. Labels keep the rule.
    The wider question of whether headers should be title case at all is the
    owner's and is raised, not answered here. */
-.pm-eye,.tier1,.sub,.sp-hd,.rit-tr,.ip-bh,.sum-lt,.ad-nm,.gm-on,
+/* TITLE CASE ON HEADERS, ruled by the owner. The sentence case rule in
+   CLAUDE.md governs body copy and does not reach a header, which settles the
+   contradiction between the two records: this stylesheet was right.
+
+   kb-h and sh-h come back in, which is the ruling applied. sh-h is the one
+   exception in the set because it also carries a person's own name, and a
+   surname is not a header: rendering somebody as De Vries is wrong about them
+   rather than merely styled. So the class takes the transform and the one
+   element that prints a name opts out with plain, which is the escape hatch
+   this block already has. */
+.pm-eye,.tier1,.sub,.sp-hd,.rit-tr,.ip-bh,.sum-lt,.kb-h,.sh-h,.ad-nm,.gm-on,
 .eyebrow,.lbl{text-transform:capitalize}
 /* the exceptions, where a capital on every word would be wrong: running prose
    that happens to use a header class, and anything already an acronym. */
-.pm-eye.plain,.sub.plain,.tier1.plain{text-transform:none}
+.pm-eye.plain,.sub.plain,.tier1.plain,.sh-h.plain,.kb-h.plain{text-transform:none}
 .tier1{font-size:11px;font-weight:600;color:var(--gold);margin-bottom:9px;line-height:1.45}
 .tier1 span{display:block;color:var(--dim);font-weight:400;font-size:13px;margin-top:3px}
 /* reading text. 16px floor, 50 to 75 character measure. */
@@ -2449,6 +2459,9 @@ body.booted{--boot-done:1}
 .ld-off{color:var(--ink)}
 .ld-next{margin:14px 0 0;font-size:13px;line-height:1.6;color:var(--mid);max-width:62ch}
 .ld-next b{color:var(--ink);font-weight:500}
+/* the microphone's one line. Quiet, always there, never a dialog. */
+.st-mnote{display:block;flex:1 1 100%;font-family:var(--sans);font-size:11.5px;
+ line-height:1.5;color:var(--dim);margin-top:5px}
 @media (prefers-reduced-motion:reduce){
  .boot{animation:none;opacity:0;visibility:hidden}}
 
@@ -5200,17 +5213,23 @@ function accuracy(r,prof){
    from them in order to sell it back.
    ============================================================ */
 const SEE_ORDER=['sab','cx','hy','sup'];
-/* THE RUN CAP. A release run is at most twenty five patterns, which is what
-   makes the gift exactly four runs rather than an unbounded number. It is
-   also the smallest unit of the product that does anything, so an allowance
-   below it cannot complete a single release, which is why the free grant
-   banks rather than expiring. */
+/* THE RUN CAP. A release run is at most twenty five patterns. It is a ceiling
+   and not a size: a run costs the minimum for what was picked, and the cap
+   only truncates a wide selection. It used to be both, which made every run
+   cost twenty five and the free grant unspendable. */
 const RUN_MAX=25;
+/* THE SMALLEST RUN THERE IS: one address crossed with the four channels. It is
+   the floor because a run has to cover the address on both sides and both
+   tracks to be a release at all, and it is what an allowance is measured in
+   now that a run costs the minimum rather than filling to the cap. Ten free
+   patterns is two of these a week, which is a product. Ten against a run of
+   twenty five was nought, which was not. */
+const RUN_MIN=4;
 const PLANS=[
  {k:'gift',  nm:'The gift',    per:'once',  grant:100,  see:'sup', lead:false,
-  d:'A hundred patterns, free, with everything visible. Four runs of twenty five. It is spent by opening new ground and never by rerunning what is already open.'},
+  d:'A hundred patterns, free, with everything visible. Twenty five releases at one address, or fewer and wider. It is spent by opening new ground and never by rerunning what is already open.'},
  {k:'free',  nm:'Free',        per:'week',  grant:10,   see:'sup', lead:false,
-  d:'Ten patterns a week, for life, banking until a run is affordable. The whole reading is visible, the same as on every tier.'},
+  d:'Ten patterns a week, for life. Two releases at one address, and unlimited rerunning of anything already open. The whole reading is visible, the same as on every tier.'},
  {k:'one',   nm:'Tier one',    per:'month', grant:400,  see:'sup', lead:false,
   d:'Four hundred a month, a hundred a week. About what a month of half an hour of practice every day would release.'},
  {k:'two',   nm:'Tier two',    per:'month', grant:800,  see:'sup',  lead:false,
@@ -5311,7 +5330,7 @@ function planAllowance(pl,uniqueCount){
  var used=Math.max(0,uniqueCount||0);
  var giftLeft=Math.max(0,100-used);
  if(giftLeft>0)return {source:'gift', left:giftLeft, of:100, inGift:true,
-  base:0, spent:used, runs:Math.floor(giftLeft/RUN_MAX),
+  base:0, spent:used, runs:Math.floor(giftLeft/RUN_MIN),
   say:giftLeft+' of the gift left'};
  var t=planOf(pl);
  /* The grant comes from the tier that is IN FORCE, not from the number
@@ -5331,15 +5350,16 @@ function planAllowance(pl,uniqueCount){
  var base=Math.max(0,(pl&&pl.base!=null)?pl.base:100);
  var spent=Math.max(0,used-base-Math.max(0,(pl&&pl.carried)||0));
  var left=Math.max(0,granted-spent);
- /* HOW MANY RUNS THAT IS, which is the unit a person actually acts in. An
-    allowance of ten against a run of twenty five is nought runs, and saying
-    ten patterns hides that. */
- var runs=Math.floor(left/RUN_MAX);
+ /* HOW MANY RUNS THAT IS, which is the unit a person actually acts in. Counted
+    against the smallest run and not the largest: a run costs the minimum for
+    what was picked, so what an allowance buys is answered by the floor. Saying
+    nought runs on ten patterns was true only while every run cost twenty five. */
+ var runs=Math.floor(left/RUN_MIN);
  return {source:t.k, left:left, of:granted, inGift:false, base:base, spent:spent,
   runs:runs,
   say:!granted?'nothing left to open'
    :(runs>0?(left+' of '+granted+' left this '+t.per)
-    :(left+' left this '+t.per+', banking toward a run of '+RUN_MAX))};}
+    :(left+' left this '+t.per+', banking toward a run of '+RUN_MIN))};}
 /* WHAT AN UPGRADE WOULD BUY, said in the two things a tier actually changes.
    Never phrased as what a person is missing out on, because the product does
    not sell by making somebody feel short. */
@@ -5958,7 +5978,21 @@ function meterNext(p,nodeId,chan){
 function meterPlan(p,nodeIds,chans,cap){
  var out=[], seen={};
  var lim=cap>0?cap:25;
- for(var pass=0;pass<LINES_PER_CH&&out.length<lim;pass++){
+ /* A RUN COSTS THE MINIMUM. Ruled.
+
+    This took passes until it reached the cap, so the cap was a fill target and
+    not a ceiling: every run cost twenty five whatever was selected, and one
+    address cost the same as eight. Against a free grant of ten unique patterns
+    that is nought runs a week, which this file's own comment downstream
+    already noticed and described as the arithmetic rather than as a bug.
+
+    One pass. The run is the addresses picked crossed with the channels, which
+    is the fewest lines that covers the selection, and it is allowed to contain
+    repeats. The cap still truncates a wide selection, which is what a ceiling
+    is for. Opening more ground is done by running again, and a rerun of ground
+    already open costs nothing, because planAllowance charges the unique count
+    and not the line count. */
+ for(var pass=0;pass<1&&out.length<lim;pass++){
   for(var a=0;a<(nodeIds||[]).length&&out.length<lim;a++){
    for(var c=0;c<(chans||[]).length&&out.length<lim;c++){
     var id=nodeIds[a], ch=chans[c];
@@ -7262,7 +7296,7 @@ if(typeof module!=='undefined'&&module.exports){
                  PLAN_LIVE:PLAN_LIVE, PLAN_DEAD:PLAN_DEAD,
                  planState:planState, planOf:planOf, planSees:planSees,
                  planNextSight:planNextSight, planAllowance:planAllowance,
-                 planUpgrade:planUpgrade, RUN_MAX:RUN_MAX,
+                 planUpgrade:planUpgrade, RUN_MAX:RUN_MAX, RUN_MIN:RUN_MIN,
                  planYear:planYear, PLAN_YEAR_FREE:PLAN_YEAR_FREE,
                  planYear:planYear, PLAN_YEAR_FREE:PLAN_YEAR_FREE,
                  LEAD_SEES:LEAD_SEES, LEAD_HIDDEN:LEAD_HIDDEN, leadSees:leadSees,
@@ -9512,7 +9546,21 @@ function stRender(){
    +'<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">'
    +'<rect x="9" y="3" width="6" height="11" rx="3"/>'
    +'<path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3"/></svg>'
-   +'<span>'+(ST_LISTEN?'Recording':'Record')+'</span></button></div>'
+   +'<span>'+(ST_LISTEN?'Recording':'Record')+'</span></button>'
+   /* WHERE THE AUDIO GOES, SAID BEFORE IT GOES THERE.
+
+      The owner keeps the microphone and promises the data is never sold, and
+      both of those are true. A third fact is also true and was nowhere on
+      screen: browser speech recognition is a network service, so the audio
+      reaches the browser vendor. We do not sell it and we do not control it
+      either, which is exactly why it has to be said rather than assumed.
+
+      One line, always visible, not a dialog. A dialog asks for a decision the
+      person cannot yet make anything of, and it would sit between somebody and
+      the thing they came to do. Typing stays the equal path and is named here
+      so the alternative is in the same sentence as the cost. */
+   +'<span class="st-mnote">Recording sends the audio to your browser\'s '
+   +'speech service. Typing does not leave this device.</span></div>'
   /* THE FETTERS LIGHT UP IN THE PERSON'S OWN SENTENCE.
 
      The sniffer already names every word it is reading and which seat that
@@ -10218,8 +10266,27 @@ function sumWire(){
  var h=document.getElementById('sumbody'); if(!h||h.dataset.wired)return;
  h.dataset.wired='1';
  h.addEventListener('click',function(ev){
-  var b=ev.target.closest?ev.target.closest('[data-sp],[data-num],[data-arch],[data-dom],[data-seat],[data-mask],[data-gl]'):null;
+  var b=ev.target.closest?ev.target.closest('[data-sout],[data-sp],[data-num],[data-arch],[data-dom],[data-seat],[data-mask],[data-gl]'):null;
   if(!b)return;
+  /* THE TWO PRIMARY ACTIONS ON THIS PAGE DID NOTHING.
+
+     The output row prints "Open it" under the protocol and "Run a release"
+     under the heaviest address, and data-sout was not in the selector above,
+     so closest() returned null and the handler returned on its first line.
+     Both buttons have been inert since the row was built. They are the only
+     two actions on the surface a stranger opens on, so the product's front
+     door had no handle on it.
+
+     They go to the surfaces that already exist. Open it opens the ritual
+     builder. Run a release picks the one address the card names and opens the
+     run, which is the same call the Story panel makes. */
+  if(b.hasAttribute('data-sout')){
+   var w=b.getAttribute('data-sout');
+   if(w==='rit'&&typeof ritOpen==='function'){ritOpen(null);return;}
+   if(w==='rel'&&typeof relPick==='function'){
+    var nid=+b.getAttribute('data-n');
+    if(!isNaN(nid)){relPick([nid]);return;}}
+   return;}
   if(b.hasAttribute('data-sp'))return runSpDrill(b.getAttribute('data-sp'),b.getAttribute('data-spv'));
   if(b.hasAttribute('data-num'))return runNumDrill(b.getAttribute('data-num'));
   if(b.hasAttribute('data-dom'))return runCellDrill(+b.getAttribute('data-dom'),0);
@@ -13801,7 +13868,9 @@ function renderSettings(){
  var who=(CURP&&CURP.name)||'You';
  var h='<div class="set-wrap">'
   +'<div class="set-hd"><div class="pm-eye">Settings</div>'
-  +'<h2 class="kb-h">'+esc(who)+'</h2>'
+  /* plain: this header is a person's own name, and title casing a name is a
+     claim about how they spell it. de Vries is not De Vries. */
+  +'<h2 class="kb-h plain">'+esc(who)+'</h2>'
   +'<p class="kb-p">Everything here is held in this browser. Nothing has left '
   +'this device.</p></div>'
   +'<div class="set-grid">'
@@ -13865,7 +13934,7 @@ function renderSettings(){
 function profileSheet(){
  var r=compute(), m=(typeof meterRead==='function')?meterRead(CURP):null;
  var who=(CURP&&CURP.name)||'You';
- var h='<div class="pm-eye">Profile</div><p class="sh-h">'+esc(who)+'</p>'
+ var h='<div class="pm-eye">Profile</div><p class="sh-h plain">'+esc(who)+'</p>'
   +'<div class="sh-sec"><div class="pm-eye">This reading</div>'
   +'<div class="sh-row"><span>Coherence</span><b>'
    +(r.unread?'not read yet':Math.round(r.CQ)+' of 100')+'</b></div>'

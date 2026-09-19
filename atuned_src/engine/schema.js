@@ -413,7 +413,21 @@ function meterNext(p,nodeId,chan){
 function meterPlan(p,nodeIds,chans,cap){
  var out=[], seen={};
  var lim=cap>0?cap:25;
- for(var pass=0;pass<LINES_PER_CH&&out.length<lim;pass++){
+ /* A RUN COSTS THE MINIMUM. Ruled.
+
+    This took passes until it reached the cap, so the cap was a fill target and
+    not a ceiling: every run cost twenty five whatever was selected, and one
+    address cost the same as eight. Against a free grant of ten unique patterns
+    that is nought runs a week, which this file's own comment downstream
+    already noticed and described as the arithmetic rather than as a bug.
+
+    One pass. The run is the addresses picked crossed with the channels, which
+    is the fewest lines that covers the selection, and it is allowed to contain
+    repeats. The cap still truncates a wide selection, which is what a ceiling
+    is for. Opening more ground is done by running again, and a rerun of ground
+    already open costs nothing, because planAllowance charges the unique count
+    and not the line count. */
+ for(var pass=0;pass<1&&out.length<lim;pass++){
   for(var a=0;a<(nodeIds||[]).length&&out.length<lim;a++){
    for(var c=0;c<(chans||[]).length&&out.length<lim;c++){
     var id=nodeIds[a], ch=chans[c];

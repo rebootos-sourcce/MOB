@@ -2379,17 +2379,23 @@ function accuracy(r,prof){
    from them in order to sell it back.
    ============================================================ */
 const SEE_ORDER=['sab','cx','hy','sup'];
-/* THE RUN CAP. A release run is at most twenty five patterns, which is what
-   makes the gift exactly four runs rather than an unbounded number. It is
-   also the smallest unit of the product that does anything, so an allowance
-   below it cannot complete a single release, which is why the free grant
-   banks rather than expiring. */
+/* THE RUN CAP. A release run is at most twenty five patterns. It is a ceiling
+   and not a size: a run costs the minimum for what was picked, and the cap
+   only truncates a wide selection. It used to be both, which made every run
+   cost twenty five and the free grant unspendable. */
 const RUN_MAX=25;
+/* THE SMALLEST RUN THERE IS: one address crossed with the four channels. It is
+   the floor because a run has to cover the address on both sides and both
+   tracks to be a release at all, and it is what an allowance is measured in
+   now that a run costs the minimum rather than filling to the cap. Ten free
+   patterns is two of these a week, which is a product. Ten against a run of
+   twenty five was nought, which was not. */
+const RUN_MIN=4;
 const PLANS=[
  {k:'gift',  nm:'The gift',    per:'once',  grant:100,  see:'sup', lead:false,
-  d:'A hundred patterns, free, with everything visible. Four runs of twenty five. It is spent by opening new ground and never by rerunning what is already open.'},
+  d:'A hundred patterns, free, with everything visible. Twenty five releases at one address, or fewer and wider. It is spent by opening new ground and never by rerunning what is already open.'},
  {k:'free',  nm:'Free',        per:'week',  grant:10,   see:'sup', lead:false,
-  d:'Ten patterns a week, for life, banking until a run is affordable. The whole reading is visible, the same as on every tier.'},
+  d:'Ten patterns a week, for life. Two releases at one address, and unlimited rerunning of anything already open. The whole reading is visible, the same as on every tier.'},
  {k:'one',   nm:'Tier one',    per:'month', grant:400,  see:'sup', lead:false,
   d:'Four hundred a month, a hundred a week. About what a month of half an hour of practice every day would release.'},
  {k:'two',   nm:'Tier two',    per:'month', grant:800,  see:'sup',  lead:false,
@@ -2490,7 +2496,7 @@ function planAllowance(pl,uniqueCount){
  var used=Math.max(0,uniqueCount||0);
  var giftLeft=Math.max(0,100-used);
  if(giftLeft>0)return {source:'gift', left:giftLeft, of:100, inGift:true,
-  base:0, spent:used, runs:Math.floor(giftLeft/RUN_MAX),
+  base:0, spent:used, runs:Math.floor(giftLeft/RUN_MIN),
   say:giftLeft+' of the gift left'};
  var t=planOf(pl);
  /* The grant comes from the tier that is IN FORCE, not from the number
@@ -2510,15 +2516,16 @@ function planAllowance(pl,uniqueCount){
  var base=Math.max(0,(pl&&pl.base!=null)?pl.base:100);
  var spent=Math.max(0,used-base-Math.max(0,(pl&&pl.carried)||0));
  var left=Math.max(0,granted-spent);
- /* HOW MANY RUNS THAT IS, which is the unit a person actually acts in. An
-    allowance of ten against a run of twenty five is nought runs, and saying
-    ten patterns hides that. */
- var runs=Math.floor(left/RUN_MAX);
+ /* HOW MANY RUNS THAT IS, which is the unit a person actually acts in. Counted
+    against the smallest run and not the largest: a run costs the minimum for
+    what was picked, so what an allowance buys is answered by the floor. Saying
+    nought runs on ten patterns was true only while every run cost twenty five. */
+ var runs=Math.floor(left/RUN_MIN);
  return {source:t.k, left:left, of:granted, inGift:false, base:base, spent:spent,
   runs:runs,
   say:!granted?'nothing left to open'
    :(runs>0?(left+' of '+granted+' left this '+t.per)
-    :(left+' left this '+t.per+', banking toward a run of '+RUN_MAX))};}
+    :(left+' left this '+t.per+', banking toward a run of '+RUN_MIN))};}
 /* WHAT AN UPGRADE WOULD BUY, said in the two things a tier actually changes.
    Never phrased as what a person is missing out on, because the product does
    not sell by making somebody feel short. */
@@ -2846,7 +2853,16 @@ function saveProfile(p){
     understates what was measured, where the old behaviour invented twenty one
     measurements nobody made. The intake writes p.laws directly and is
     unaffected. */
- SI.forEach(function(l){if(S.law[l.nm]!=null)p.laws[l.nm]=S.law[l.nm];});
+ SI.forEach(function(l){
+  if(S.law[l.nm]==null)return;
+  /* Compared against the value this law was SEEDED with, not against a single
+     literal. Two callers seed an unmeasured law and they do not agree: this
+     module uses 6 and the persona loader uses 5.5. Testing one literal wrote
+     the other one straight through, which is the bug wearing a different
+     number. What is being asked is "has anybody moved this since it was given
+     a placeholder", and only the seed can answer that. */
+  if(LAW_UNSET[l.nm]&&S.law[l.nm]===LAW_SEED[l.nm])return;
+  p.laws[l.nm]=S.law[l.nm]; LAW_UNSET[l.nm]=false;});
  gatesSave(p);
  p.updated=new Date().toISOString(); p.v=SCHEMA_V;
  return p;}
@@ -3128,7 +3144,21 @@ function meterNext(p,nodeId,chan){
 function meterPlan(p,nodeIds,chans,cap){
  var out=[], seen={};
  var lim=cap>0?cap:25;
- for(var pass=0;pass<LINES_PER_CH&&out.length<lim;pass++){
+ /* A RUN COSTS THE MINIMUM. Ruled.
+
+    This took passes until it reached the cap, so the cap was a fill target and
+    not a ceiling: every run cost twenty five whatever was selected, and one
+    address cost the same as eight. Against a free grant of ten unique patterns
+    that is nought runs a week, which this file's own comment downstream
+    already noticed and described as the arithmetic rather than as a bug.
+
+    One pass. The run is the addresses picked crossed with the channels, which
+    is the fewest lines that covers the selection, and it is allowed to contain
+    repeats. The cap still truncates a wide selection, which is what a ceiling
+    is for. Opening more ground is done by running again, and a rerun of ground
+    already open costs nothing, because planAllowance charges the unique count
+    and not the line count. */
+ for(var pass=0;pass<1&&out.length<lim;pass++){
   for(var a=0;a<(nodeIds||[]).length&&out.length<lim;a++){
    for(var c=0;c<(chans||[]).length&&out.length<lim;c++){
     var id=nodeIds[a], ch=chans[c];
@@ -4432,7 +4462,7 @@ if(typeof module!=='undefined'&&module.exports){
                  PLAN_LIVE:PLAN_LIVE, PLAN_DEAD:PLAN_DEAD,
                  planState:planState, planOf:planOf, planSees:planSees,
                  planNextSight:planNextSight, planAllowance:planAllowance,
-                 planUpgrade:planUpgrade, RUN_MAX:RUN_MAX,
+                 planUpgrade:planUpgrade, RUN_MAX:RUN_MAX, RUN_MIN:RUN_MIN,
                  planYear:planYear, PLAN_YEAR_FREE:PLAN_YEAR_FREE,
                  planYear:planYear, PLAN_YEAR_FREE:PLAN_YEAR_FREE,
                  LEAD_SEES:LEAD_SEES, LEAD_HIDDEN:LEAD_HIDDEN, leadSees:leadSees,
