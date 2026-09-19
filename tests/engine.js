@@ -1303,13 +1303,29 @@ g('23 \u00b7 the plan. what it grants, what it lets you see, and what it refuses
  ok(planOf({tier:'three',status:'something_new'}).k==='free','and pending grants nothing');
  ok(planOf(null).k==='free'&&planOf({}).k==='free','no plan at all is free');
 
- /* SIGHT. The chain is saboteur, complex, hyper, character. */
+ /* SIGHT IS NOT FOR SALE. Ruled. Everybody sees the whole reading at every
+    tier, free included, and what a tier buys is how much new ground may be
+    opened. This removed the one mechanic in the product that withheld a
+    person's own reading in order to sell it back. */
  const t1={tier:'one',status:'active'}, t3={tier:'three',status:'active'};
- ok(planSees(t1,'sab')&&!planSees(t1,'cx'),'tier one sees saboteurs and not complexes');
- ok(planSees(t3,'hy')&&!planSees(t3,'sup'),'tier three sees hyper and not character');
- ok(planSees({tier:'four',status:'active'},'sup'),'tier four sees everything');
- ok(planNextSight(t1).kind==='cx','and the next rung is named, so a lock can say what it is');
- ok(planNextSight({tier:'four',status:'active'})===null,'with nothing left to name at the top');
+ SEE_ORDER.forEach(function(k){
+  ok(planSees(t1,k)&&planSees(t3,k)&&planSees(null,k)&&planSees({tier:'free'},k),
+   'every rung is visible on every plan including none, at '+k);});
+ ok(PLANS.every(function(x){return x.see==='sup';}),
+  'no tier stops anywhere along the chain');
+ ok(planNextSight(t1)===null&&planNextSight()===null,
+  'and there is no next rung of sight to sell, on any plan');
+ ok(planSees(t1,'nonsense')===false,'a rung that does not exist is still not a rung');
+ /* ANNUAL, ruled. Monthly or annual, two months free, and the allowance still
+    arrives monthly because the allowance is a pace. */
+ const planYear=E.planYear, PLAN_YEAR_FREE=E.PLAN_YEAR_FREE;
+ ok(PLAN_YEAR_FREE===2,'annual pays ten months, got '+(12-PLAN_YEAR_FREE));
+ ok(planYear('one').pay===10&&planYear('one').grant===400,
+  'a year of tier one is ten payments at four hundred a month');
+ ok(/arrives monthly/.test(planYear('one').say),
+  'and the allowance is still monthly rather than a year in one lump');
+ ok(planYear('free')===null&&planYear('gift')===null,
+  'there is no annual on a plan that is not monthly');
 
  /* ALLOWANCE. The gift is spent first and spent once, and spend is never
     stored: it is the unique count against what was granted, so they cannot

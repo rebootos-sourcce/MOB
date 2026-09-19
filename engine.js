@@ -2041,9 +2041,22 @@ function accuracy(r,prof){
    more speaking, because a rerun costs nothing by construction.
    ============================================================ */
 
-/* What a tier may SEE. The chain is saboteur, complex, hyper, character,
-   and a tier stops somewhere along it. Sight is a separate thing from
-   allowance and they are not traded against each other. */
+/* ============================================================
+   SIGHT IS NOT FOR SALE. Ruled.
+
+   > Tier one can see the Jungian archetypes. Actually, they can
+   > see all that shit. It is really about the patterns and what
+   > the patterns are doing. And then how many they can release.
+
+   The ladder used to stop each tier somewhere along the chain.
+   That is gone. Everybody sees the whole reading at every tier,
+   free included. What a tier buys is one thing: how much new
+   ground you may open.
+
+   Simpler to explain, simpler to price, and it removes the one
+   mechanic in the product that withheld a person's own reading
+   from them in order to sell it back.
+   ============================================================ */
 const SEE_ORDER=['sab','cx','hy','sup'];
 /* THE RUN CAP. A release run is at most twenty five patterns, which is what
    makes the gift exactly four runs rather than an unbounded number. It is
@@ -2054,20 +2067,20 @@ const RUN_MAX=25;
 const PLANS=[
  {k:'gift',  nm:'The gift',    per:'once',  grant:100,  see:'sup', lead:false,
   d:'A hundred patterns, free, with everything visible. Four runs of twenty five. It is spent by opening new ground and never by rerunning what is already open.'},
- {k:'free',  nm:'Free',        per:'week',  grant:10,   see:'sab', lead:false,
-  d:'Ten patterns a week, for life. They bank until a run is affordable, because ten is less than a run and an allowance that cannot complete one release is not an allowance.'},
- {k:'one',   nm:'Tier one',    per:'month', grant:400,  see:'sab', lead:false,
-  d:'Four hundred a month, which is a hundred a week. Fetters and saboteurs.'},
- {k:'two',   nm:'Tier two',    per:'month', grant:800,  see:'cx',  lead:false,
-  d:'Eight hundred a month, two hundred a week. Complexes as well.'},
- {k:'three', nm:'Tier three',  per:'month', grant:1200, see:'hy',  lead:false,
-  d:'Twelve hundred a month. Hyper complexes as well.'},
+ {k:'free',  nm:'Free',        per:'week',  grant:10,   see:'sup', lead:false,
+  d:'Ten patterns a week, for life, banking until a run is affordable. The whole reading is visible, the same as on every tier.'},
+ {k:'one',   nm:'Tier one',    per:'month', grant:400,  see:'sup', lead:false,
+  d:'Four hundred a month, a hundred a week. About what a month of half an hour of practice every day would release.'},
+ {k:'two',   nm:'Tier two',    per:'month', grant:800,  see:'sup',  lead:false,
+  d:'Eight hundred a month, two hundred a week. Twice the ground and nothing else different.'},
+ {k:'three', nm:'Tier three',  per:'month', grant:1200, see:'sup',  lead:false,
+  d:'Twelve hundred a month, three hundred a week. Three times the ground.'},
  /* TIER FOUR IS NOT MORE OF THE SAME. It carries the same twelve hundred as
     tier three, so patterns do not separate them at all: what tier four buys
     is the cohort lead suite. Ruled, and it is the one rung with a price
     attached. */
  {k:'four',  nm:'Tier four',   per:'month', grant:1200, see:'sup', lead:true,
-  d:'Twelve hundred a month, the same as tier three, and the cohort lead suite. Manage profiles, build rituals and build accountability for the people you lead.'}];
+  d:'The same twelve hundred as tier three, and the cohort lead suite. Manage profiles, build rituals and build accountability for the people you lead.'}];
 const PLAN_BY={}; PLANS.forEach(function(p){PLAN_BY[p.k]=p;});
 /* ============================================================
    WHAT A COHORT LEAD SEES OF SOMEBODY THEY LEAD.
@@ -2088,7 +2101,21 @@ const LEAD_HIDDEN=['the story cloud','the spiritual material','the tools themsel
 function leadSees(what){ return LEAD_SEES.indexOf(what)>=0; }
 /* the pain map and the tools are on every tier, ruled, so they are named
    here rather than left for a renderer to remember */
-const PLAN_ALWAYS=['the pain map','the tools','the journal','rerunning anything already open'];
+/* on every tier including free, and the list is long on purpose: it is
+   everything except how much new ground you may open. */
+const PLAN_ALWAYS=['the whole reading','saboteurs, complexes, hyper complexes and character',
+ 'the archetypes','the pain map','every tool','the journal',
+ 'rerunning anything already open'];
+/* ANNUAL, ruled. Monthly or annual, and two months free is what annual pays.
+   The allowance still arrives monthly rather than as a year in one lump,
+   because the allowance is a pace and a year of patterns handed over at once
+   is not a practice. */
+const PLAN_YEAR_FREE=2;
+function planYear(k){
+ var t=PLAN_BY[k]; if(!t||t.per!=='month')return null;
+ return {pay:12-PLAN_YEAR_FREE, grant:t.grant,
+  say:'Twelve months for the price of '+(12-PLAN_YEAR_FREE)
+   +'. The allowance still arrives monthly, because it is a pace.'};}
 
 /* THE STATES A SUBSCRIPTION CAN BE IN, and what each one means for access.
    past_due keeps access, because cutting somebody off mid month over a card
@@ -2111,18 +2138,13 @@ function planOf(pl){
  return PLAN_BY.free;}
 /* SIGHT. Whether a rung of the chain is visible on this plan. */
 function planSees(pl,kind){
- var lim=SEE_ORDER.indexOf(planOf(pl).see), at=SEE_ORDER.indexOf(kind);
- return at>=0&&lim>=0&&at<=lim;}
+ /* everybody, on every plan, including free. ruled. */
+ return SEE_ORDER.indexOf(kind)>=0;}
 /* the first rung this plan cannot see, which is what an upgrade buys and
    what a locked row has to name. null when everything is visible. */
-function planNextSight(pl){
- var lim=SEE_ORDER.indexOf(planOf(pl).see);
- if(lim<0||lim>=SEE_ORDER.length-1)return null;
- var want=SEE_ORDER[lim+1];
- for(var i=0;i<PLANS.length;i++)
-  if(PLANS[i].k!=='gift'&&SEE_ORDER.indexOf(PLANS[i].see)>=lim+1)
-   return {kind:want, tier:PLANS[i]};
- return null;}
+/* there is no next rung of sight to sell, on any plan, ever. kept so a
+   renderer asking the question gets a straight no rather than an error. */
+function planNextSight(){ return null; }
 /* ALLOWANCE. What is left to open this period. The gift is spent first and
    spent once, because it is a gift and not a monthly grant. Spend is never
    stored: it is always the unique count minus what has been granted, so the
@@ -2169,7 +2191,7 @@ function planUpgrade(pl){
  var nxt=null;
  for(var j=i+1;j<PLANS.length;j++){if(PLANS[j].k!=='gift'){nxt=PLANS[j];break;}}
  if(!nxt)return null;
- var moreSight=SEE_ORDER.indexOf(nxt.see)>SEE_ORDER.indexOf(now.see);
+ var moreSight=false;                /* sight is not for sale. ruled. */
  /* A DIFFERENCE ONLY MEANS SOMETHING WHEN THE PERIODS MATCH. Free is ten a
     week and tier one is four hundred a month, and subtracting one from the
     other gave "390 more a month", which is arithmetic over two different
@@ -3667,6 +3689,8 @@ if(typeof module!=='undefined'&&module.exports){
                  planState:planState, planOf:planOf, planSees:planSees,
                  planNextSight:planNextSight, planAllowance:planAllowance,
                  planUpgrade:planUpgrade, RUN_MAX:RUN_MAX,
+                 planYear:planYear, PLAN_YEAR_FREE:PLAN_YEAR_FREE,
+                 planYear:planYear, PLAN_YEAR_FREE:PLAN_YEAR_FREE,
                  LEAD_SEES:LEAD_SEES, LEAD_HIDDEN:LEAD_HIDDEN, leadSees:leadSees,
                  EQUIV:EQUIV, EQUIV_NONE:EQUIV_NONE, equivOf:equivOf, planWorth:planWorth,
   /* ages */     AGES:AGES, AGE_TEST:AGE_TEST, AGE_LO:AGE_LO, AGE_HI:AGE_HI,

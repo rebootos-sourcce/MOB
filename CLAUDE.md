@@ -28,11 +28,13 @@ else may.
     node tests/engine.js               279, headless, 0.1s
     node tests/functional.js           262, real Chromium
     node tests/collide.js              40, no overlapping nameplates
-    node tests/design.js               17, one expected environmental failure
+    node tests/design.js               22, and it is green now
 
 Browser gates need `NODE_PATH` pointing at a playwright install and are run
-from the repo root. `design.js` fails one check in a sandbox with no font
-egress. That one is expected. Any other failure is yours.
+from the repo root. `design.js` used to fail one check in a sandbox with no
+font egress. It does not any more: the typeface is carried in the file and the
+product makes no outbound request at all, which gate 7 now watches. Every
+failure is yours.
 
 Changed a data table, split a file, or moved code between modules:
 
@@ -133,12 +135,11 @@ third theme called Punch, where nothing is outlined and everything is solid.
 The fork goes to accounts. Situational questions modelled on the Ultima virtue
 dilemmas, pending the format ruling.
 
-**Google Fonts contradicts the privacy posture.** `source.html` links
-`fonts.googleapis.com` and `fonts.gstatic.com`, so every load sends the
-person's IP to Google before they have typed anything. This app holds somatic
-and psychological self report. Self hosting the three families as base64, or
-falling back to a system stack, removes the only outbound request in the
-product. His call, because it costs bytes in a single file build.
+**Google Fonts is gone.** Settled. Inter as a variable font, latin subset,
+three hundred to seven hundred in one file, embedded as base64. Forty eight
+kilobytes raw and sixty four as base64, which is about a tenth of the build
+for the last network dependency it had. `tests/design.js` gate 7 watches the
+network and fails on any request that is not one of the two local rasters.
 
 Mine to build when asked:
 

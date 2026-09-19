@@ -317,17 +317,19 @@ function planSection(m){
  var t=planOf(pl), st=planState(pl);
  var al=planAllowance(pl,(m&&m.unique)||0);
  var up=planUpgrade(pl);
- var nx=planNextSight(pl);
- var SEEN={sab:'saboteurs',cx:'complexes',hy:'hyper complexes',sup:'character'};
+ var yr=planYear(t.k);
  var h='<div class="sh-sec"><div class="pm-eye">Your plan</div>'
   +'<div class="sh-row"><span>On</span><b>'+esc(t.nm)+'</b></div>'
   +(st==='pending'
     ? '<div class="sh-row"><span>State</span><b>not confirmed</b></div>'
     : (st==='ended'?'<div class="sh-row"><span>State</span><b>ended</b></div>':''))
   +'<div class="sh-row"><span>New ground</span><b>'+esc(al.say)+'</b></div>'
-  +'<div class="sh-row"><span>You can see</span><b>'+esc(SEEN[t.see]||t.see)+'</b></div>'
-  +'<p class="sh-p">'+esc(t.d)+' Rerunning anything already open costs nothing, always.</p>';
- if(nx)h+='<p class="sh-p">'+esc(nx.tier.nm)+' adds '+esc(SEEN[nx.kind]||nx.kind)+'.</p>';
+  +'<div class="sh-row"><span>You can see</span><b>everything</b></div>'
+  +'<p class="sh-p">'+esc(t.d)+' Rerunning anything already open costs nothing, always.</p>'
+  /* SIGHT IS NOT FOR SALE, ruled, so the panel says what is on every tier
+     rather than what the next one would unlock. */
+  +'<p class="sh-p dim">On every tier including free: '+esc(PLAN_ALWAYS.join(', '))+'.</p>';
+ if(yr)h+='<p class="sh-p">'+esc(yr.say)+'</p>';
  if(up)h+='<p class="sh-p">'+esc(up.to.nm)+' is '+esc(up.say)+'.</p>';
  /* WHAT IT IS WORTH, in the unit people already price against. Throughput and
     never outcome, at the conservative end of the book's own range. */

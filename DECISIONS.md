@@ -14,11 +14,11 @@ joins.
 
 **The paid ladder**, per month:
 
-| Tier | Patterns per month | A week | Sees up to | Price |
+| Tier | Patterns per month | A week | Sees | Price |
 |---|---|---|---|---|
-| One | 400 | 100 | fetters and saboteurs | open |
-| Two | 800 | 200 | complexes | open |
-| Three | 1200 | 300 | hyper complexes | open |
+| One | 400 | 100 | everything | open |
+| Two | 800 | 200 | everything | open |
+| Three | 1200 | 300 | everything | open |
 | Four | 1200 | 300 | everything, and the cohort lead suite | **99** |
 
 **A release run is at most 25 patterns**, so the gift of a hundred is exactly
@@ -841,4 +841,46 @@ written. So a release run started while a reference case was loaded charged the
 reference case and then moved the pointer away: the patterns were spent, the
 person's allowance never moved, and the keys went into a record nobody reads.
 The repoint comes first now.
+
+## Four rulings, and the last outbound request
+
+**The referral is fifty.** Two full runs, half of what a person was given
+themselves, and eight invites a month to break the ladder. Capped at four a
+month against fraud.
+
+**Monthly or annual.** Two months free on annual, which is the convention. The
+allowance still arrives monthly rather than as a year in one lump, because the
+allowance is a pace and a year of patterns handed over at once is not a
+practice.
+
+**Sight is not for sale.**
+
+> Tier one can see the Jungian archetypes. Actually, they can see all that
+> shit. It is really about the patterns and what the patterns are doing. And
+> then how many they can release.
+
+Every tier sees the whole reading, free included: saboteurs, complexes, hyper
+complexes, character, the archetypes, the pain map, every tool, the journal.
+What a tier buys is one thing, how much new ground may be opened. Simpler to
+explain, simpler to price, and it removes the one mechanic in the product that
+withheld a person's own reading from them in order to sell it back.
+
+That also settles the open item about tier three needing something of its own.
+It does not need one. The ladder is 400, 800, 1200, and then 1200 plus the
+cohort suite, and the only thing that moves is volume.
+
+**Google Fonts is gone.** The file linked `fonts.googleapis.com` and
+`fonts.gstatic.com`, so every load sent the person's IP to Google before they
+had typed a word, in a product that holds somatic and psychological self report
+and promises nothing leaves the device.
+
+Inter as a variable font, latin subset, three hundred to seven hundred in one
+file, embedded as base64. Forty eight kilobytes raw, sixty four as base64,
+about a tenth of the build for the last network dependency it had. A new gate
+watches the network on load and across four tabs and fails on any request that
+is not one of the two local rasters, and a second assertion checks the typeface
+actually resolved, because a silent fallback would have looked like a success.
+
+`tests/design.js` is green for the first time. The expected environmental
+failure in CLAUDE.md is gone because its cause is.
 

@@ -895,7 +895,12 @@ ok(/400 of new ground a month/.test(plan.free),
  'the step up states its own figure rather than subtracting a week from a month');
 ok(/On\s*Tier two/.test(plan.two)&&/580 of 800 left this month/.test(plan.two),
  'a live tier reads its own grant and what is left of it');
-ok(/You can see\s*complexes/.test(plan.two),'and what it lets a person see');
+ok(/You can see\s*everything/.test(plan.two),
+ 'sight is not for sale, so every tier sees everything');
+ok(/On every tier including free/.test(plan.two),
+ 'and the panel names what is on every tier rather than what the next one unlocks');
+ok(/Twelve months for the price of 10/.test(plan.two),
+ 'annual is offered, two months free');
 ok(/On\s*Free/.test(plan.dead),
  'a cancelled record reads free however high the tier written on it');
 ok(/Rerunning anything already open costs nothing/.test(plan.two),
@@ -908,7 +913,11 @@ ok(plan.called&&plan.called.what==='checkout'&&plan.called.tier==='three',
  +JSON.stringify(plan.called));
 /* THE PROMISE. No key, no customer id, no card field anywhere in the build. */
 const leak=await page.evaluate(()=>{
- const src=document.documentElement.innerHTML;
+ /* the embedded typeface is forty eight kilobytes of base64 and base64 is
+    every three letter sequence there is, so it comes out before the scan.
+    Scanning it found cvc inside the font and reported a card field. */
+ const src=document.documentElement.innerHTML
+  .replace(/data:font\/woff2;base64,[A-Za-z0-9+/=]+/g,'data:font');
  const bad=[];
  [/sk_live/,/sk_test/,/pk_live/,/\bcus_[A-Za-z0-9]/,/\bsub_[A-Za-z0-9]/,
   /card\s*number/i,/cardnumber/i,/cvc/i].forEach(function(re){

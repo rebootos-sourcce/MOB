@@ -26,6 +26,8 @@ if(typeof module!=='undefined'&&module.exports){
                  planState:planState, planOf:planOf, planSees:planSees,
                  planNextSight:planNextSight, planAllowance:planAllowance,
                  planUpgrade:planUpgrade, RUN_MAX:RUN_MAX,
+                 planYear:planYear, PLAN_YEAR_FREE:PLAN_YEAR_FREE,
+                 planYear:planYear, PLAN_YEAR_FREE:PLAN_YEAR_FREE,
                  LEAD_SEES:LEAD_SEES, LEAD_HIDDEN:LEAD_HIDDEN, leadSees:leadSees,
                  EQUIV:EQUIV, EQUIV_NONE:EQUIV_NONE, equivOf:equivOf, planWorth:planWorth,
   /* ages */     AGES:AGES, AGE_TEST:AGE_TEST, AGE_LO:AGE_LO, AGE_HI:AGE_HI,
