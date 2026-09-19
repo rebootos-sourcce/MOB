@@ -29,3 +29,11 @@ if d: print('div balance %d, not 0'%d); sys.exit(1)
 if '—' in s: print('em dash found'); sys.exit(1)
 print('built %s  %d bytes  div balance 0  no em dashes'%(sys.argv[1],len(s)))
 PY
+
+# THE FUNNEL INHERITS THE APP'S TOKENS, and does it here so it cannot drift.
+# The web funnel is a separate artifact from source.html, and the two have to
+# look like one product. A palette copied by hand into a second file is
+# correct on the day it is copied and wrong afterwards, and the first person
+# to notice is somebody clicking through from the page to the app who sees the
+# greens disagree. Regenerated on every build from the block above.
+python3 "$(dirname "$0")/../tools/tokens.py"
