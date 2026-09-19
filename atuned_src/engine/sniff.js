@@ -153,7 +153,28 @@ function parseStory(text){
      was filed as shame. A named fetter now has to hold at least a quarter of
      the band, otherwise the band's own modal fetter is the better read. */
   var seg=anyNamed? all.filter(function(n){return wanted[n.cf];}) : [];
+  /* DID THE TEXT NAME THIS, OR DID WE INFER IT? The answer decides what the
+     product is allowed to SAY, and until now it said the same thing either
+     way, which is how the worst readings in the instrument were produced.
+
+     Measured. "Partner cut me out of the deal" told the person they were
+     carrying Deceit, Lying, Excuse and Spiritual Language To Manipulate: the
+     person was wronged and the instrument accused them of lying. "My father
+     died last year" returned Separation, Martyrdom, Longing and Closed Heart,
+     and Martyrdom on a bereavement is not a reading, it is an insult. "I am
+     exhausted" returned Pride, Arrogance and Competition.
+
+     None of those words was in the sentence. What the scan actually knew was
+     a seat and an intensity. The fallback below then took the seat's modal
+     fetter, sorted its addresses by susceptibility and named the first four,
+     which is arithmetic presented as a finding about somebody's character.
+
+     The charge still lands, because the body map needs a place to put it and
+     the seat is genuinely known. What changes is that the imprint says so.
+     Anything rendering a name now has to ask whether the text named it. */
+  var named=seg.length>0;
   if(seg.length < all.length*0.25){
+   named=false;
    var tally={}; all.forEach(function(n){tally[n.cf]=(tally[n.cf]||0)+1;});
    var modal=Object.keys(tally).sort(function(a,b){return tally[b]-tally[a];})[0];
    var mseg=all.filter(function(n){return n.cf===modal;});
@@ -166,6 +187,10 @@ function parseStory(text){
   var total=Math.min(10,byBand[k]/3), share=total/Math.min(4,seg.length);
   seg.slice(0,4).forEach(function(n){
    imprints.push({node:n.i, name:n.k, band:bn, fetter:n.cf,
+    /* inferred: the seat was read, the address was chosen by the fallback and
+       not by the person's words. A renderer must not print name as a finding
+       when this is true. */
+    inferred:!named,
     amt:Math.round(share*10)/10, from:k});});});
  var nm={}; Object.keys(byChg).forEach(function(c){
   var f=CHG2FET[c]; if(f) nm[f]=(nm[f]||0)+byChg[c];});

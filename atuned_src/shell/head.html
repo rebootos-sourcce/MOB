@@ -2462,6 +2462,9 @@ body.booted{--boot-done:1}
 /* the microphone's one line. Quiet, always there, never a dialog. */
 .st-mnote{display:block;flex:1 1 100%;font-family:var(--sans);font-size:11.5px;
  line-height:1.5;color:var(--dim);margin-top:5px}
+/* an inferred chip. The seat was read, the address was not named by the
+   person's words, so the chip is quieter and its label is the fetter. */
+.ip.infer{border-style:dashed}
 @media (prefers-reduced-motion:reduce){
  .boot{animation:none;opacity:0;visibility:hidden}}
 

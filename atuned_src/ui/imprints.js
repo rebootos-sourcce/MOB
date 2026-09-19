@@ -19,7 +19,9 @@ function impGhosts(){
   if(seen[im.node])return; seen[im.node]=1;
   var n=BY[im.node]; if(!n)return;
   if(n.sq>=4)return;                 /* already live, not a ghost */
-  out[im.node]={node:n,amt:im.amt};});
+  /* inferred carries through, because the chip is the first place a person
+     reads what the instrument thinks their sentence was about. */
+  out[im.node]={node:n,amt:im.amt,inferred:!!im.inferred};});
  return Object.keys(out).map(function(k){return out[k];});}
 function painOf(n,bandLoad){
  return Math.min(10,Math.round((bandLoad[n.b]||0)*0.9+n.sq*0.3));}
@@ -30,7 +32,7 @@ function impIndex(){
   bandLoad[b]=seg.reduce(function(a,n){return a+n.sq;},0)/Math.max(1,seg.length);});
  r.sabs.forEach(function(s){leaves(s).forEach(function(n){feeds[n.i]=(feeds[n.i]||0)+1;});});
  return {r:r,feeds:feeds,bandLoad:bandLoad};}
-function impPill(n,maxW,IX,ghost){
+function impPill(n,maxW,IX,ghost,inferred){
  /* three states. held carries SQ. installed carries the coherent opposite and
     is not load, so it reads as a pole and not as a zero. pending is what the
     sniffer has found and nothing has committed. */
@@ -48,10 +50,28 @@ function impPill(n,maxW,IX,ghost){
   +(ghost?' · pending '+ghost.toFixed(1)
     :(installed?' · '+opp+' installed at '+n.pole.toFixed(1)
       :' · SQ '+n.sq.toFixed(1)+' · pain '+painOf(n,IX.bandLoad)+' · feeds '+(IX.feeds[n.i]||0)));
+ /* WHAT THE SENTENCE NAMED, OR WHAT THE SEAT IS. Never the address name on an
+    inferred hit. The scan reads a seat and an intensity out of a sentence, and
+    when the words name no fetter the address is chosen by a fallback: the
+    seat's modal fetter, sorted by susceptibility, first four. Printing the
+    address name there told a person who had been cut out of a deal that they
+    were carrying Deceit and Lying, and a person whose father had died that
+    they were carrying Martyrdom. The charge is real and the seat is real. The
+    name was arithmetic wearing a character judgement.
+
+    So an inferred chip says the fetter and the seat, which is what was
+    actually read, and the title says plainly that the address is not named. */
+ var lbl=(ghost&&inferred)?(n.cf||n.b):n.k;
+ var ttl=(ghost&&inferred)
+   ? (n.cf||n.b)+' at the '+String(n.b).toLowerCase()
+     +'. Your words named the seat, not the address, so this is where the '
+     +'charge lands and not what it is called.'
+   : title;
  return '<button class="ip'+(on?' on':'')+(hot?' hot':'')+(ghost?' ghost':'')
+  +(ghost&&inferred?' infer':'')
   +(installed?' inst':'')+'" data-imp="'+n.i+'" '
   +'style="--c:'+c+';font-size:'+fs+'px;padding:'+pad+'px '+(+pad+7)+'px" '
-  +'title="'+esc(title)+'">'+esc(n.k)+'<b>'+val+'</b></button>';}
+  +'title="'+esc(ttl)+'">'+esc(lbl)+'<b>'+val+'</b></button>';}
 function impRender(){
  var host=document.getElementById('imp'); if(!host)return;
  var live=impLive(), ghosts=impGhosts(), IX=impIndex();
@@ -69,8 +89,8 @@ function impRender(){
   h+='<div class="ip-none">You have not written anything yet. '
    +'Whatever you write gets pulled apart and collected here.</div>';
   host.innerHTML=h; impWire(); return;}
- function cloud(list,gl){var s='<div class="ip-cloud">';
-  list.forEach(function(n){s+=impPill(n,maxW,IX,gl?gl[n.i]:0);});return s+'</div>';}
+ function cloud(list,gl,gi){var s='<div class="ip-cloud">';
+  list.forEach(function(n){s+=impPill(n,maxW,IX,gl?gl[n.i]:0,gi&&gi[n.i]);});return s+'</div>';}
  if(IMP_GROUP==='band'){
   BANDS.forEach(function(b){
    var seg=live.filter(function(n){return n.b===b;});
@@ -83,8 +103,10 @@ function impRender(){
     +(heldN.length?heldN.length+' held, '+sum.toFixed(1):'nothing held')
     +(instN.length?', '+instN.length+' installed':'')
     +(gs.length?', '+gs.length+' pending':'')+'</em></div>';
-   var gl={};gs.forEach(function(x){gl[x.node.i]=x.amt;});
-   h+=cloud(seg.concat(gs.map(function(x){return x.node;})),gl);});
+   /* two maps, because ghost is passed as the amount and is a number. The
+      inferred flag rides beside it rather than being smuggled onto a float. */
+   var gl={},gi={};gs.forEach(function(x){gl[x.node.i]=x.amt;gi[x.node.i]=!!x.inferred;});
+   h+=cloud(seg.concat(gs.map(function(x){return x.node;})),gl,gi);});
  } else if(IMP_GROUP==='charge'){
   CHILD.forEach(function(c){
    var seg=live.filter(function(n){return n.cf===c.nm;});

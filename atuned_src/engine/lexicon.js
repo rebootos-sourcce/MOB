@@ -5,6 +5,78 @@
    the opposite of the stated intent. Merged here, one entry per key.
    ============================================================ */
 var LEX={
+ /* ============================================================
+    WHAT AN ORDINARY SENTENCE BRINGS, and the reason this block exists.
+
+    Measured against six plain sentences a person would actually type, four
+    returned nothing at all: a father dying, being exhausted, feeling alone,
+    and a panic attack. Those are not edge cases. They are the four most
+    common things somebody opens an instrument like this to say, and the core
+    loop of the product is that a story is read for charge.
+
+    The gap was not conceptual. Almost every one of these concepts was already
+    here in ONE inflection and missing in the others: lonely but not alone,
+    grieving but not grief or died, drained and depleted but not exhausted,
+    panicked but not panic. A person writes what happened in nouns and verbs,
+    and this table was written in adjectives.
+
+    So this is the same map widened, not a new theory: the event words and the
+    noun forms of concepts already seated here, at the weights their existing
+    neighbours carry. Seats follow the ones already in use: grief and
+    loneliness at the heart, exhaustion and rage at the solar plexus, panic
+    and survival at the root, shame and worth at the sacral, deceit and being
+    unheard at the throat, meaninglessness at the crown, rumination at the
+    third eye.
+    ============================================================ */
+ /* grief and loss. heartbroken and grieving were here; the event was not. */
+ died:['heart',28],death:['heart',26],dying:['heart',26],'passed away':['heart',28],
+ grief:['heart',26],mourning:['heart',24],mourn:['heart',24],bereaved:['heart',26],
+ loss:['heart',22],funeral:['heart',24],buried:['heart',22],widowed:['heart',26],
+ miscarriage:['heart',28],stillborn:['heart',28],
+ /* alone. lonely was here and alone was not, which is the commoner word. */
+ alone:['heart',24],loneliness:['heart',24],isolated:['heart',22],
+ unwanted:['heart',22],'nobody cares':['heart',26],'no one came':['heart',24],
+ /* exhaustion. drained and depleted were here, the plain word was not. */
+ exhausted:['solar',26],exhaustion:['solar',26],weary:['solar',22],
+ fatigue:['solar',22],'wiped out':['solar',24],'no energy':['solar',24],
+ 'running on empty':['solar',26],'cannot keep going':['solar',28],
+ 'can not keep going':['solar',28],'cant keep going':['solar',28],
+ /* panic. panicked was here, the noun and the event were not. */
+ panic:['root',28],'panic attack':['root',28],panicking:['root',28],
+ terror:['root',28],petrified:['root',26],
+ /* being lied to. the throat carries deceit and had no verb for it. */
+ lied:['throat',24],lying:['throat',22],lies:['throat',22],
+ betrayed:['throat',28],betrayal:['throat',28],cheated:['throat',26],
+ deceived:['throat',24],'went behind my back':['throat',26],
+ /* overwhelm */
+ overwhelmed:['solar',26],drowning:['solar',26],'too much':['solar',22],
+ 'cannot cope':['solar',26],'cant cope':['solar',26],
+ /* rage. furious was here; the noun and the held forms were not. */
+ rage:['solar',28],livid:['solar',26],seething:['solar',24],
+ resentment:['solar',24],resentful:['solar',24],bitter:['solar',22],
+ bitterness:['solar',22],
+ /* shame and worth. humiliated was here, the rest of the family was not. */
+ mortified:['sacral',26],disgraced:['sacral',26],exposed:['sacral',22],
+ unlovable:['sacral',26],disgusting:['sacral',24],'not good enough':['sacral',24],
+ /* meaninglessness. numb and empty were here, the statements were not. */
+ meaningless:['crown',24],'nothing matters':['crown',26],
+ 'what is the point':['crown',24],'whats the point':['crown',24],
+ disconnected:['crown',22],detached:['crown',20],hollow:['crown',22],
+ /* rumination */
+ overthinking:['eye',22],'cannot stop thinking':['eye',24],
+ 'cant stop thinking':['eye',24],'going over it':['eye',20],replaying:['eye',22],
+ /* what the body reports, which is where a somatic instrument should be
+    widest and was not. */
+ 'chest is tight':['heart',24],'chest tight':['heart',24],
+ 'cannot breathe':['root',26],'cant breathe':['root',26],'holding my breath':['root',22],
+ 'jaw is tight':['throat',22],'jaw clenched':['throat',22],
+ 'throat closed':['throat',24],'stomach knot':['sacral',22],
+ nauseous:['sacral',22],'sick to my stomach':['sacral',24],
+ trembling:['root',24],shaky:['root',20],'heavy in my chest':['heart',24],
+ /* and the things that read as clear, which keep the scale honest at the
+    other end. The coherent seat already carried calm, settled and grateful. */
+ rested:['coherent',-12],easeful:['coherent',-12],unhurried:['coherent',-12],
+ 'slept well':['coherent',-14],'let it go':['coherent',-14],
  /* the burnout set. the resolver had no entry for any of these and read
     four segments out of thirty-three. */
  inadequacy:['throat',24],inadequate:['throat',22],misery:['heart',24],
