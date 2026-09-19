@@ -55,9 +55,58 @@ function addrRow(n,o){o=o||{};
  /* The row named an address and went nowhere. runNodeDrill already exists and
     is already wired from the wheel, so the row carries its address and a
     delegated handler in ui.js opens the same drill. */
+ /* the badge, not the ring and a bare number. This row is the one that
+    prints Lethargy and Disconnection down a rail twenty at a time. */
  return '<button type="button" class="ad-r" data-addr="'+n.i+'" '
-  +'title="Open '+esc(n.k)+'">'+crNode(n,'xs')
+  +'title="Open '+esc(n.k)+'">'+crbNode(n,'sm')
   +'<span>'+esc(n.k)+'</span><em>'+esc(opp||n.b)+'</em></button>';}
+/* ============================================================
+   THE BADGE. AN ICON CARRYING ITS OWN PERCENT, AND THE NUMBER IN A PILL.
+
+   Ruled, and repeated more than anything else: the named things print as a
+   word and a bare figure. Lethargy 5.4. Disconnection 3.1. A figure with no
+   shape next to it is the least readable way to carry a quantity, and after
+   twenty of them down a rail a person is reading a spreadsheet of feelings.
+
+   What replaces it is one object with two parts.
+
+   The ICON carries the reading, as a ring drawn around its own glyph, so the
+   quantity is a shape before it is a number and a row of these reads at a
+   glance as a row of fuller and emptier rings. The glyph is the thing's own
+   symbol, which is the icon rule: if it has a name it has an icon, the icon
+   has a family, and the family has a colour that means something. The colour
+   here is the seat.
+
+   The PILL sits at the lower right of the icon and carries the actual
+   figure, for when a person wants the number rather than the impression.
+   Overlapping the icon rather than sitting beside it, because two things
+   side by side are two things and this is one reading in two resolutions.
+   ============================================================ */
+const CRB={xs:{box:26,r:10,w:2.4},sm:{box:34,r:13.5,w:3},md:{box:44,r:17.5,w:3.6}};
+function crBadge(band,pct,o){
+ o=o||{};
+ var size=o.size||'sm', G=CRB[size]||CRB.sm;
+ var p=Math.max(0,Math.min(100,pct||0));
+ var C=2*Math.PI*G.r, off=C*(1-p/100);
+ var col=o.color||seatCol(band);
+ var glyph=o.glyph||SEATGLYPH[band]||SEATGLYPH._;
+ var val=(o.raw!=null)?o.raw:(Math.round(p)+'%');
+ var half=G.box/2;
+ return '<span class="crb '+size+'" style="--c:'+col+'"'
+  +(o.title?' title="'+esc(o.title)+'"':'')+'>'
+  +'<svg class="crb-a" width="'+G.box+'" height="'+G.box+'" aria-hidden="true">'
+  +'<circle cx="'+half+'" cy="'+half+'" r="'+G.r+'" fill="none" '
+   +'stroke="rgba(128,128,128,.22)" stroke-width="'+G.w+'"/>'
+  +'<circle cx="'+half+'" cy="'+half+'" r="'+G.r+'" fill="none" stroke="'+col+'" '
+   +'stroke-width="'+G.w+'" stroke-linecap="round" '
+   +'stroke-dasharray="'+C.toFixed(1)+'" stroke-dashoffset="'+off.toFixed(1)+'"/></svg>'
+  +'<span class="crb-g"><svg viewBox="0 0 24 24" aria-hidden="true">'+glyph+'</svg></span>'
+  +'<span class="crb-v">'+esc(val)+'</span></span>';}
+/* an address as a badge. the same reading the ring carried, in the shape the
+   ruling asked for. */
+function crbNode(n,size,o){o=o||{};
+ return crBadge(n.b, n.sq*10, Object.assign({size:size||'sm', raw:n.sq.toFixed(1),
+  title:n.k+' · '+n.b+' · SQ '+n.sq.toFixed(1)},o));}
 function crPat(p,size,o){o=o||{};
  var lv=leaves(p), b=(lv[0]||{}).b||'Heart';
  return cr(b, p.w*10, Object.assign({size:size||'md', raw:p.w.toFixed(1), label:p.nm,

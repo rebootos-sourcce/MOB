@@ -788,6 +788,51 @@ body.punch .kb{border-color:transparent;background:var(--panel-2)}
 /* the wheel is the main graphic. in Punch it carries a fifth more colour. */
 body.punch canvas#cv{filter:saturate(1.2)}
 .gate-r .ad-m{margin-left:auto;font-family:var(--num);color:var(--dim);font-size:11.5px}
+/* ============================================================
+   THE BADGE. The icon carries the percent, the pill carries the number.
+
+   One object in two resolutions, so the reading is a shape before it is a
+   figure and a rail of twenty of these reads as fuller and emptier rings
+   rather than as a column of decimals.
+   ============================================================ */
+/* THE PILL LIVES INSIDE THE BADGE'S OWN BOX.
+
+   Hung off the corner with a negative offset it was outside the element, so
+   the row's grid cell clipped it and a 5.4 rendered as a 5 with the point
+   cut off. The badge reserves the space as padding and the pill sits in it,
+   which means nothing overflows and nothing can clip it, whatever it is put
+   inside. */
+.crb{position:relative;display:inline-block;flex:0 0 auto;box-sizing:content-box}
+.crb-a{display:block;transform:rotate(-90deg)}
+.crb-g{position:absolute;left:0;top:0;display:grid;place-items:center;color:var(--c);
+ pointer-events:none}
+.crb-g svg{fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round}
+/* the pill, at the lower right, overlapping. Two things side by side are two
+   things; this is one reading. */
+.crb-v{position:absolute;right:0;bottom:0;
+ font-family:var(--num);font-weight:500;line-height:1;
+ background:var(--panel-2);color:var(--ink);
+ border:1px solid color-mix(in srgb,var(--c) 44%,transparent);
+ border-radius:999px;padding:2px 6px;white-space:nowrap;
+ font-variant-numeric:tabular-nums}
+/* THE PILL SITS CLEAR OF THE RING, in the padding the badge reserves for it.
+   Laid on the corner of the box it covered the glyph it was qualifying and a
+   row of five read as five smudges. */
+.crb.xs{width:26px;height:26px;padding:0 20px 7px 0}
+.crb.xs .crb-g{width:26px;height:26px}
+.crb.xs .crb-g svg{width:11px;height:11px;stroke-width:2}
+.crb.xs .crb-v{font-size:11px;padding:1px 5px}
+.crb.sm{width:34px;height:34px;padding:0 24px 8px 0}
+.crb.sm .crb-g{width:34px;height:34px}
+.crb.sm .crb-g svg{width:15px;height:15px;stroke-width:1.8}
+.crb.sm .crb-v{font-size:11.5px;padding:1.5px 6px}
+.crb.md{width:44px;height:44px;padding:0 28px 9px 0}
+.crb.md .crb-g{width:44px;height:44px}
+.crb.md .crb-g svg{width:20px;height:20px;stroke-width:1.6}
+.crb.md .crb-v{font-size:12.5px;padding:2px 7px}
+body.punch .crb-v{border-color:transparent;background:var(--c);color:var(--on-accent)}
+/* a badge needs room at its lower right, which a tight row does not give it */
+.ad-r{column-gap:14px}
 .ad-r.static{cursor:default}
 /* the state beside the band name on the scale, so the ladder reads as ten
    conditions and not ten adjectives */
