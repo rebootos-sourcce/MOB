@@ -67,6 +67,9 @@ font-display:swap;src:url(data:font/woff2;base64,d09GMgABAAAAALyAABUAAAAB4CAAALw
     --um is the umlaut on the wordmark. It sits on the bar rather than on the
     letter, so it answers to the background. White on dark, as ruled. */
  --accent:#7EB8D4; --gold:var(--accent); --on-accent:#0B1418;
+ /* the ink on a solid seat colour. every seat in this palette is light
+    enough that one dark ink holds on all seven, in every lighting. */
+ --on-flat:#0E1015;
  --sky:#7EB8D4; --um:#FFFFFF;
  --good:#68CBA4; --bad:#CB5F59;
  /* Lexend is a wide face by design, which is why the rail clipped: Witness
@@ -114,6 +117,115 @@ body.punch{
  --panel-2:color-mix(in srgb,var(--seat) calc(4% + var(--seat-w)*4%),#20222D);
  --sunk:color-mix(in srgb,var(--seat) calc(2% + var(--seat-w)*5%),#12131B);
 }
+/* ---------- GLASS. The fourth lighting, and the one aimed forward.
+
+   Built off what the field is actually moving toward for 2027 and 2028 rather
+   than off what looked new in 2020. The direction has a name now, holographic
+   skeuomorphism, and what separates it from the glassmorphism everybody shipped
+   five years ago is three things, all of which this implements:
+
+   REFRACTION, NOT BLUR. A blurred panel is frosted plastic. Glass bends light,
+   and it bends the short wavelengths further than the long ones, so the edge of
+   a real pane carries a thin spectral fringe. Every surface here has one: a
+   hairline that runs cool on one edge and warm on the other. It is two pixels
+   of colour and it is the single thing that stops this reading as 2020.
+
+   LIGHT THAT COMES FROM SOMEWHERE. One source, upper left, for every surface
+   in the product. A specular sweep along the top edge and a soft occlusion at
+   the bottom. Glass with highlights in different directions on different panels
+   is not glass, it is a filter.
+
+   DEPTH AS ELEVATION. Three heights, and height sets blur radius, edge
+   luminance and shadow spread together, the way distance actually works. A
+   panel at rest, a panel raised, a panel floating over everything. Nothing here
+   gets a border to say it is separate: it is separate because it is closer.
+
+   The ground moves under all of it. The aura canvas is already breathing behind
+   the app and in every other lighting it is nearly invisible. Here it is the
+   thing being refracted, so the chrome is never quite the same twice, and it
+   still takes its hue from the seat the reading names heaviest.
+
+   backdrop-filter is not universal. Every surface is legible on its wash alone
+   and the refraction is the improvement rather than the requirement. ---------- */
+body.glass{
+ --seat:#7EB8D4; --seat-w:0.3;
+ /* THE GROUND STAYS NEUTRAL HERE. Punch tints the whole shell toward the seat
+    the reading names heaviest, and on a Sacral heavy field that turns the app
+    brown, which is the orange the owner has already ruled out twice. Glass
+    puts the colour in the light instead: the aura canvas behind the panes is
+    already seat derived and moving, so a heavy Sacral reading shows as a warm
+    glow through the glass rather than as a warm surface. Light carries the
+    reading, the material does not. */
+ --bg:#0B0D14;
+ /* the panes. alpha, not opacity, so what is behind them survives. */
+ --panel:rgba(30,34,46,.55);
+ --panel-2:rgba(42,47,62,.62);
+ --sunk:rgba(14,17,26,.50);
+ --edge:rgba(255,255,255,.10); --edge-2:rgba(255,255,255,.17);
+ --ink:#F3F2EE; --mid:#C2BEB6; --dim:#928D85;
+ --shadow:0 24px 64px rgba(0,0,0,.50);
+ /* one light, upper left, for every surface */
+ --spec:linear-gradient(160deg,rgba(255,255,255,.22),rgba(255,255,255,0) 42%);
+ /* the spectral fringe. cool leading, warm trailing, two pixels of it. */
+ --fringe-a:rgba(126,184,212,.55);
+ --fringe-b:rgba(232,168,140,.42);
+}
+body.glass .glass,body.glass .panel,body.glass .sheet-card,body.glass .rd-card,
+body.glass .sum-card,body.glass .gmenu,body.glass .cone-card{
+ position:relative;
+ -webkit-backdrop-filter:blur(26px) saturate(1.65);
+ backdrop-filter:blur(26px) saturate(1.65);
+ border:1px solid var(--edge);
+ box-shadow:var(--shadow), inset 0 1px 0 rgba(255,255,255,.13)}
+/* the pane's own light, and its fringe, in one pseudo element each */
+body.glass .glass::before,body.glass .panel::before{
+ content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+ background:var(--spec);mix-blend-mode:screen;opacity:.85}
+body.glass .glass::after,body.glass .panel::after{
+ content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+ padding:1px;
+ background:linear-gradient(150deg,var(--fringe-a),transparent 38%,
+  transparent 62%,var(--fringe-b));
+ -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+ mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+ -webkit-mask-composite:xor;mask-composite:exclude;opacity:.75}
+/* the stage is the deepest plane, so it refracts least and sits furthest back */
+body.glass .stage{-webkit-backdrop-filter:blur(14px) saturate(1.3);
+ backdrop-filter:blur(14px) saturate(1.3)}
+/* raised: anything a person summoned. more blur, brighter edge, longer shadow. */
+body.glass .sheet-card,body.glass .rd-card,body.glass .gmenu,body.glass .cone-card{
+ -webkit-backdrop-filter:blur(38px) saturate(1.8);
+ backdrop-filter:blur(38px) saturate(1.8);
+ border-color:var(--edge-2);
+ box-shadow:0 34px 90px rgba(0,0,0,.58), inset 0 1px 0 rgba(255,255,255,.19)}
+/* controls are small panes, not painted rectangles */
+body.glass .vt,body.glass .btn,body.glass .ib,body.glass .stk-t,body.glass .kb-t,
+body.glass .pm-lb,body.glass .s-dom,body.glass .ip-g,body.glass .st-mic{
+ background:rgba(255,255,255,.055);border-color:var(--edge);
+ -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+body.glass .vt:hover,body.glass .btn:hover,body.glass .ib:hover{
+ background:rgba(255,255,255,.10);border-color:var(--edge-2)}
+body.glass .btn.pri{background:color-mix(in srgb,var(--accent) 82%,transparent);
+ border-color:color-mix(in srgb,var(--accent) 90%,transparent);color:var(--on-accent)}
+/* a value pill is a lens over the ground, tinted by its own seat */
+body.glass .cr{background:rgba(255,255,255,.05);
+ border-color:color-mix(in srgb,var(--c) 34%,rgba(255,255,255,.14))}
+body.glass .cr .v{background:color-mix(in srgb,var(--c) 26%,rgba(255,255,255,.08))}
+/* the ground is the thing being refracted, so it is allowed to be seen */
+/* and the aura is turned up, because here it is the thing being refracted
+   rather than a wash nobody notices. */
+body.glass #bgaura{filter:blur(96px);opacity:1}
+body.glass .top,body.glass .subbar{background:rgba(255,255,255,.035)}
+/* no fill under a selected tab here either. the ruling is the ruling in every
+   lighting: colour and weight, and the hairline underneath. */
+body.glass .vt[aria-pressed=true]{background:transparent;border-color:transparent}
+@media (prefers-reduced-transparency:reduce){
+ body.glass .glass,body.glass .panel,body.glass .sheet-card,body.glass .rd-card,
+ body.glass .gmenu,body.glass .cone-card{
+  -webkit-backdrop-filter:none;backdrop-filter:none;
+  background:color-mix(in srgb,var(--seat) 6%,#181B24)}
+ body.glass .glass::before,body.glass .panel::before{display:none}}
+
 body.punch .glass,body.punch .vt,body.punch .ib,body.punch .btn,body.punch .cr,
 body.punch .pm-lb,body.punch .pm-rb,body.punch .iq-law,body.punch .iq-n,
 body.punch .rd-card,body.punch .sum-card,body.punch .sum-l,body.punch .sum-ai,
@@ -159,6 +271,7 @@ body.snow{
     cannot stay white because the dots sit on the paper, not on the letter.
     On a deep blue fill the ink goes light rather than dark. */
  --accent:#2F6E92; --gold:var(--accent); --on-accent:#F4F8FA;
+ --on-flat:#0E1015;
  --sky:#2F6E92; --um:#13303F;
  --good:#1F8560; --bad:#A8413C;
  --shadow:0 12px 30px rgba(40,54,74,.12);
@@ -220,7 +333,25 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
  font-size:14px;font-weight:400;transition:.18s;white-space:nowrap;flex:0 0 auto;
  display:flex;align-items:center;gap:10px;line-height:1.3}
 .vt:hover{background:var(--panel-2);border-color:var(--edge-2);color:var(--ink)}
-.vt[aria-pressed=true]{background:var(--gold);border-color:var(--gold);color:var(--on-accent);font-weight:500}
+/* A SELECTED MENU ITEM CHANGES ITS TEXT, NOT ITS GROUND. Ruled.
+
+   A filled pill behind the current tab put a solid block of accent in the
+   busiest row on the screen, and it was reading as a button you had not
+   pressed yet rather than as where you already are. Colour and weight say it
+   with no shape at all, and the hairline underneath is the one mark that
+   survives at a glance without adding a field of colour.
+
+   This is the navigation rule and it applies to every tab strip in the
+   product, not only the top one. A primary button still fills, because a
+   button is a thing you do and a tab is a place you are. */
+.vt[aria-pressed=true]{background:transparent;border-color:transparent;
+ color:var(--accent);font-weight:500}
+.vt[aria-pressed=true]:hover{background:transparent;color:var(--accent)}
+.tabtop[aria-pressed=true],#vbar .vt[aria-pressed=true]{position:relative}
+.tabtop[aria-pressed=true]::after,#vbar .vt[aria-pressed=true]::after{
+ content:'';position:absolute;left:14px;right:14px;bottom:5px;height:1.5px;
+ border-radius:2px;background:var(--accent)}
+.vt[aria-pressed=true] svg{stroke:var(--accent)}
 .vt svg{width:17px;height:17px;stroke:currentColor;stroke-width:1.6;fill:none;
  stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}
 .vt .n{display:block}
@@ -346,7 +477,19 @@ body:not(.hassub) .subbar{display:none}
  background:color-mix(in srgb,var(--c) 17%,transparent);
  padding:4px 9px 4px 9px;white-space:nowrap}
 .cr.hot .v{background:var(--alarm-soft)}
-body.punch .cr .v{background:color-mix(in srgb,var(--c) 30%,transparent)}
+/* PUNCH FILLS. Ruled. The whole argument of this lighting is that nothing is
+   outlined and everything is solid, and the one place it was still washing was
+   the object the product reads most: the value pill. It is solid now, in the
+   seat's own colour, with dark ink on it, and the figure itself goes up a
+   weight so the number carries the chip rather than sitting inside it. */
+body.punch .cr .v{background:var(--c);color:var(--on-flat);font-weight:600;
+ letter-spacing:.01em}
+body.punch .cr.hot .v{background:var(--alarm);color:#fff}
+body.punch .cr{background:transparent;border-color:transparent;padding-right:3px}
+body.punch .cr .ring .gl svg{stroke:var(--c);opacity:1}
+/* and every other figure on a Punch surface, which were all one weight down */
+body.punch .s-nv,body.punch .fig .v,body.punch .stk-r b,body.punch .s-ch b,
+body.punch .tp{font-weight:600}
 /* A RING WITH NO VALUE IS JUST A RING. knowledge.js uses cr() with raw:'' as a
    colour marker beside a row name, and now that the value is a pill an empty
    value painted an empty pill next to it. Nothing to say, nothing drawn. */
@@ -578,6 +721,17 @@ body:not(.tab-field) .bal{display:none}
 /* the definition of the two ends of an axis, said once in the rail rather than
    only in a tooltip, because a tooltip is not reachable by a thumb. */
 .stk-def{margin:10px 0 8px;font-size:12.5px;line-height:1.6;color:var(--dim)}
+/* a glyph set beside the name of the thing it stands for, in a drill header */
+.ad-ic{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.7;
+ stroke-linecap:round;stroke-linejoin:round;vertical-align:-3px;margin-right:8px;
+ opacity:.9}
+
+/* a tier row that carries the percentage object rather than a bare figure */
+.tierow.pill{display:grid;grid-template-columns:54px minmax(0,1fr) auto;gap:8px;
+ align-items:center;min-height:var(--tap)}
+.tierow.pill .tn{color:var(--ink);font-size:14px;min-width:0;overflow:hidden;
+ text-overflow:ellipsis;white-space:nowrap}
+
 /* the protocol control on an address reading. It is the one action on that
    panel, so it is the one filled button, and the line under it says what the
    run will actually be rather than leaving a person to press and find out. */
@@ -651,6 +805,12 @@ body:not(.tab-field) .pol2{display:none}
 .railtop{display:flex;align-items:center;gap:10px;flex-wrap:wrap;
  padding:0 0 13px;border-bottom:1px solid var(--edge);margin-bottom:2px}
 .railtop .rt-t{font-size:14px;color:var(--ink);font-weight:500}
+/* the band word carries its own meaning, on the screen, not in a tooltip */
+.railtop{flex-wrap:wrap}
+.railtop .rt-d{flex:0 0 100%;font-size:12.5px;line-height:1.55;color:var(--mid);
+ margin-top:6px}
+.s-band{font-size:14px;line-height:1.65;color:var(--mid);margin:14px 0 0;max-width:62ch}
+.s-band b{color:var(--ink);font-weight:600}
 /* the tier reads as a word you can open, not as a verdict printed at you */
 /* THE ROOT ROW. Four buttons on one line, always. It was a wrapping flex row
    of auto width nowrap items, which is a row that fits until it does not, and
@@ -885,7 +1045,8 @@ body:not(.tab-field) .pol2{display:none}
  padding:8px 13px;font-family:var(--sans);font-size:12.5px;cursor:pointer;
  min-height:var(--tap);display:inline-flex;align-items:center;gap:4px}
 .kb-t b{font-family:var(--num);font-weight:500;color:var(--dim);margin-left:3px}
-.kb-t.on{background:var(--gold);color:var(--on-accent)}
+.kb-t.on{background:transparent;color:var(--accent);font-weight:500}
+.kb-t.on b{color:var(--accent)}
 .kb-t.on b{color:var(--on-accent)}
 .kb-list{display:flex;flex-direction:column;gap:2px;flex:1 1 auto}
 .kb-r{display:grid;grid-template-columns:auto minmax(120px,1.1fr) minmax(0,2fr) auto;gap:12px;
@@ -1065,10 +1226,14 @@ body.punch .card{border-color:transparent}
    declaration was responsible for five of the seven failing tabs. Gate 8 now
    watches it, which is why it stopped being a preference. */
 .stk-t{background:var(--sunk);border:0;color:var(--mid);border-radius:var(--r-xs);
- padding:8px 12px;font-family:var(--sans);font-size:12px;cursor:pointer;
- min-height:var(--tap);display:inline-flex;align-items:center;gap:4px}
+ padding:8px 11px;font-family:var(--sans);font-size:12px;cursor:pointer;
+ min-height:var(--tap);display:inline-flex;align-items:center;gap:6px}
+.stk-t svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.6;
+ stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto;opacity:.75}
+.stk-t.on svg{opacity:1;stroke:var(--accent)}
 .stk-t b{font-family:var(--num);font-weight:500;color:var(--dim);margin-left:2px}
-.stk-t.on{background:var(--gold);color:var(--on-accent)}
+.stk-t.on{background:transparent;color:var(--accent);font-weight:500}
+.stk-t.on b{color:var(--accent)}
 .stk-t.on b{color:var(--on-accent)}
 .stk-hd{display:flex;justify-content:space-between;font-size:11px;color:var(--dim);
  text-transform:none;padding:2px 6px 4px;letter-spacing:.02em}
@@ -1660,7 +1825,8 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
     <div class="gmenu-hd">Lighting</div>
     <div class="seg" id="themes"></div>
     <p class="gmenu-p">Dark is the default. Snow is the same instrument on
-     paper. Punch removes every outline and fills every shape.</p>
+     paper. Punch removes every outline and fills every shape. Glass puts the
+     panes in front of a moving ground and lets them refract it.</p>
    </div>
   </div>
   <button class="vt" id="helpbtn" type="button" title="How to read this, and what everything means">
@@ -1706,20 +1872,24 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
     </div>
    </div>
    <div class="lsec" data-sec="fetters">
-    <button class="lsec-hd" type="button"><span>Child fetters</span><i></i></button>
+    <button class="lsec-hd" type="button"><span>Fetters</span><i></i></button>
     <div class="lsec-bd">
-     <div class="tier1">4 &middot; Child fetters <span>nine poled axes, held state then coherent opposite</span></div>
+     <!-- THE LABEL RULE, applied. One word where one word will do, and the
+     subtitle says what the control does rather than restating the schema.
+     "nine poled axes, held state then coherent opposite" is the data model
+     read aloud. -->
+     <div class="tier1">4 &middot; Fetters <span>nine feelings. the left slider is how much you carry it, the right is how much of its opposite is in place</span></div>
      <div class="bulk"><label for="allCh">held</label><input type="range" id="allCh" min="0" max="10" step="0.5" value="3"></div>
      <div class="bulk"><label for="allRep">opposite</label><input type="range" id="allRep" min="0" max="10" step="0.5" value="0"></div>
      <div id="chg"></div>
     </div>
    </div>
    <div class="lsec" data-sec="spirit">
-    <button class="lsec-hd" type="button"><span>Spiritual states</span><i></i></button>
+    <button class="lsec-hd" type="button"><span>States</span><i></i></button>
     <div class="lsec-bd"><div id="spirit"></div></div>
    </div>
    <div class="lsec" data-sec="matrix">
-    <button class="lsec-hd" type="button"><span>The matrix</span><i></i></button>
+    <button class="lsec-hd" type="button"><span>Matrix</span><i></i></button>
     <div class="lsec-bd">
      <div class="lbl">19 domains &times; 9 child fetters</div>
      <div class="mx" id="mx"></div>
@@ -1784,7 +1954,7 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
    <div id="railtop" class="railtop"></div>
 
    <div class="lsec open" data-rail="right" data-sec="you">
-    <button class="lsec-hd" type="button"><span>The reading</span><i></i></button>
+    <button class="lsec-hd" type="button"><span>Reading</span><i></i></button>
     <div class="lsec-bd">
      <!-- Where to start. A field with nothing in it had a tooltip saying to
          write a story, which is rule 10 broken: a control with no affordance
@@ -1807,19 +1977,19 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
    </div>
 
    <div class="lsec" data-rail="right" data-sec="flow">
-    <button class="lsec-hd" type="button"><span>Flow through</span><i></i></button>
+    <button class="lsec-hd" type="button"><span>Flow</span><i></i></button>
     <!-- the energy shelf. the original computed this every frame and then
          dropped it on the floor, because no element with this id existed. -->
     <div class="lsec-bd"><div id="eshelf"></div><div id="run"></div></div>
    </div>
 
    <div class="lsec" data-rail="right" data-sec="running">
-    <button class="lsec-hd" type="button"><span>What is running</span><i></i></button>
+    <button class="lsec-hd" type="button"><span>Running</span><i></i></button>
     <div class="lsec-bd"><div id="fire"></div></div>
    </div>
 
    <div class="lsec" data-rail="right" data-sec="laws">
-    <button class="lsec-hd" type="button"><span>21 laws of integrity</span><i></i></button>
+    <button class="lsec-hd" type="button"><span>Laws</span><i></i></button>
     <div class="lsec-bd">
      <div class="bulk"><label for="allLaw">all</label><input type="range" id="allLaw" min="0" max="10" step="0.5" value="6"></div>
      <div id="laws"></div>
@@ -2198,35 +2368,37 @@ const MIRROR=[
  {k:'IL', q:'Illumination', seat:'Heart',
   up:'Jesus',   upd:'Love generated from within. Freely given. No transaction. Light that has a source.',
   dn:'Lucifer', dnd:'Pride as false light. Shine performed for reflection, not generated from Source.',
-  ask:'Does this person’s warmth cost them anything, or does it require an audience?'},
+  ask:'Does this person’s warmth cost them anything, or does it require an audience?', ic:'M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1M12 8a4 4 0 110 8 4 4 0 010-8', dic:'M12 4l2.4 5.2 5.6.6-4.2 3.8 1.2 5.6L12 16.4 6.99 19.2l1.2-5.6L4 9.8l5.6-.6z'},
  {k:'DE', q:'Desire and will', seat:'Sacral',
   up:'Ramakrishna', upd:'Will surrendered to Source. Desire as devotion. Wanting that moves toward something beyond the self.',
   dn:'Asmodeus',    dnd:'Craving without closure. Appetite that cannot satisfy. Having never resolves the wanting.',
-  ask:'Does wanting move them toward something, or does having never satisfy?'},
+  ask:'Does wanting move them toward something, or does having never satisfy?', ic:'M12 20s-7-4.4-7-9.4A4 4 0 0112 8a4 4 0 017 2.6c0 5-7 9.4-7 9.4z', dic:'M4 9h16l-2.2 10.4a1 1 0 01-1 .6H7.2a1 1 0 01-1-.6zM9 9V6a3 3 0 016 0v3'},
  {k:'OR', q:'Order', seat:'Throat',
   up:'Moses', upd:'Structure in service of liberation. Law that creates freedom. Order others can stand within.',
   dn:'Set',   dnd:'Chaos engineered to prevent coherence. Betrayal as systemic strategy. Disruption from inside trusted systems.',
-  ask:'Does this person build structures others can stand in, or dismantle what others depend on?'},
+  ask:'Does this person build structures others can stand in, or dismantle what others depend on?', ic:'M4 6h16M4 12h16M4 18h11M19 16.5v3.6M17.4 18.3h3.2', dic:'M4.6 5.4l14.8 13.2M19.4 5.4L4.6 18.6M12 4v16'},
  {k:'PO', q:'Power', seat:'Solar',
   up:'Musashi', upd:'Mastery that costs the practitioner. Power in service of precision. Discipline the self bears.',
   dn:'Moloch',  dnd:'Power that extracts from others. The machine that must be fed. Discipline that others pay for.',
-  ask:'Who pays the cost of this person’s discipline?'},
+  ask:'Who pays the cost of this person’s discipline?', ic:'M6.5 17.5L17 7M15 5l4 4M6 18l-1.6 1.6M4.5 15.5l4 4', dic:'M5 20V9l7-5 7 5v11M9 20v-5h6v5M9.5 11.5h5'},
  {k:'PE', q:'Perception', seat:'3rd Eye',
   up:'Buddha', upd:'Clear seeing. Reality without overlay. The compositor running on present signal.',
   dn:'Geryon', dnd:'Engineered surface. Beautiful above, serpentine beneath. Perception itself weaponised.',
-  ask:'Does this person’s self presentation match their interior state?'},
+  ask:'Does this person’s self presentation match their interior state?', ic:'M2.5 12s3.6-6 9.5-6 9.5 6 9.5 6-3.6 6-9.5 6-9.5-6-9.5-6zM12 9.4a2.6 2.6 0 110 5.2 2.6 2.6 0 010-5.2', dic:'M2.5 12s3.6-6 9.5-6 9.5 6 9.5 6-3.6 6-9.5 6-9.5-6-9.5-6zM5 5l14 14'},
  {k:'TR', q:'Trust', seat:'Heart',
   up:'Rumi',   upd:'Direct encounter with the field. Felt knowing. The heart as the instrument.',
   dn:'Charon', dnd:'Threshold paralysis. Cannot cross what cannot be measured. The rational mind forever preparing to arrive.',
-  ask:'Does this person access experience directly, or require verification before they allow themselves to feel?'},
+  ask:'Does this person access experience directly, or require verification before they allow themselves to feel?', ic:'M12 20.5S4.5 15.6 4.5 10.2A3.8 3.8 0 0112 8a3.8 3.8 0 017.5 2.2c0 5.4-7.5 10.3-7.5 10.3z', dic:'M4 17h16M6.4 17V9.6M17.6 17V9.6M4 9.6h16L12 4.6z'},
  {k:'CH', q:'Charge', seat:'Root',
   up:'Elijah',   upd:'Grounded fire. Intensity moving through the body without destroying the container or the target.',
   dn:'Phlegyas', dnd:'Charge split at the root. Outward as rage or inward as paralysis. The same current, no clean exit.',
-  ask:'Where does this person’s intensity go when it has nowhere to land?'},
+  ask:'Where does this person’s intensity go when it has nowhere to land?', ic:'M13 2.5L5.5 13.5H11L10 21.5l7.5-11H12z', dic:'M12 3v8M12 15v6M6 9l-2.6-2.6M18 9l2.6-2.6M4 13.5h3.4M16.6 13.5H20'},
  {k:'RE', q:'Revelation', seat:'Crown',
   up:'Meister Eckhart', upd:'Direct knowing. Doctrine made unnecessary by experience.',
   dn:'The Furies',      dnd:'Map replacing territory permanently. The belief system defended against any experience that contradicts it.',
-  ask:'Can this person update their framework when direct experience contradicts it?'}];
+  ask:'Can this person update their framework when direct experience contradicts it?',
+  ic:'M12 3.5a6 6 0 013.5 10.9V17h-7v-2.6A6 6 0 0112 3.5M9.5 20h5',
+  dic:'M4 5h16v12H4zM8 9h8M8 13h5'}];
 
 /* ---- THE TWELVE, ON THE COORDINATE SYSTEM ----
    "Every ascended master held a specific position on the Sat, Chit
@@ -3478,11 +3650,19 @@ const TAB={STORY:0,SUMMARY:1,FIELD:2,ENERGY:3,ANALYTICS:4,INTAKE:5,KNOW:6,GAMES:
    Summary reads last. It is the conclusion and the owner ruled it opens
    there, so the bar reads left to right as the instruments and then the
    thing they add up to, and the app lands on the right hand end of it. */
+/* THE MENU RULE, ruled. One word, and the word names exactly what the surface
+   does. Not what it is about, not what it belongs to. What it does.
+
+   Intake became Energetics on the owner's word: a person does not arrive to
+   perform an intake, they arrive to have their energetics read. Energy became
+   Body, because the surface is a body with seven seats on it and Energy named
+   the subject rather than the thing on screen. The rest already passed the
+   rule and were left alone rather than churned to look busy. */
 const TABDEF=[
- {k:TAB.INTAKE,  id:'iq',    nm:'Intake',    cls:'tab-intake'},
+ {k:TAB.INTAKE,  id:'iq',    nm:'Energetics',cls:'tab-intake'},
  {k:TAB.STORY,   id:'story', nm:'Story',     cls:'tab-story'},
  {k:TAB.FIELD,   id:'cv',    nm:'Field',     cls:'tab-field'},
- {k:TAB.ENERGY,  id:'emap',  nm:'Energy',    cls:'tab-energy'},
+ {k:TAB.ENERGY,  id:'emap',  nm:'Body',      cls:'tab-energy'},
  {k:TAB.COMPASS, id:'cone',  nm:'Compass',   cls:'tab-compass'},
  {k:TAB.KNOW,    id:'know',  nm:'Knowledge', cls:'tab-know'},
  {k:TAB.SUMMARY, id:'sum',   nm:'Summary',   cls:'tab-summary'}];
@@ -7227,7 +7407,10 @@ function impRender(){
  h+='<button class="ip-max" id="impmax" title="'+(IMP_BIG?'shrink':'full width')+'">'
   +(IMP_BIG?'⤡':'⤢')+'</button></div></div>';
  if(!live.length&&!ghosts.length){
-  h+='<div class="ip-none">Nothing held. Write in the box and it gathers here.</div>';
+  /* "Nothing held. Write in the box and it gathers here." is the product
+     talking to itself. A person says: I have not written anything yet. */
+  h+='<div class="ip-none">You have not written anything yet. '
+   +'Whatever you write gets pulled apart and collected here.</div>';
   host.innerHTML=h; impWire(); return;}
  function cloud(list,gl){var s='<div class="ip-cloud">';
   list.forEach(function(n){s+=impPill(n,maxW,IX,gl?gl[n.i]:0);});return s+'</div>';}
@@ -7526,7 +7709,7 @@ function sumStory(r){
   +(r.excess?' Installed pole is past the point where it pays, so some of the work is now costing.':'')
   +gapLine);
 
- return '<div class="s-story"><div class="pm-eye">The reading</div>'
+ return '<div class="s-story"><div class="pm-eye">Reading</div>'
   +p.map(function(t){return '<p class="s-p">'+t+'</p>';}).join('')
   +'<p class="s-src">Written from the nine axes, the twenty one laws, the blueprint and '
   +'the birth data. Nothing here is generated from anything the instrument has not measured.</p>'
@@ -8023,7 +8206,9 @@ var IQ_OPEN=null;
    field is still the seed and how much the person has moved. */
 function iqSeedBlock(p){
  var sd=p.seed, share=seedShare(p);
- var sel='<div class="iq-f"><label for="wtype">Type, if you know it</label>'
+ /* It said "Type, if you know it", which names nothing. It is a Myers-Briggs
+   four letter type and saying so costs one word and removes all the guessing. */
+ var sel='<div class="iq-f"><label for="wtype">Myers-Briggs</label>'
   +'<select id="wtype"><option value="">not said</option>'
   +TYPE16.map(function(t){return '<option value="'+t+'"'+(sd&&sd.type===t?' selected':'')+'>'+t+'</option>';}).join('')
   +'</select></div>';
@@ -8427,7 +8612,7 @@ function ritRender(){
    No library and no new dependency. Its own canvas, its own
    context, and an axonometric projection in about forty lines.
    ============================================================ */
-var CONE={open:false, tab:false, spin:0.6, tilt:0.60, drag:null, raf:null, t:0, cv:null, g:null, dpr:1};
+var CONE={open:false, tab:false, spin:0.6, tilt:0.60, drag:null, raf:null, t:0, cv:null, g:null, dpr:1, hits:[]};
 /* THE HEIGHT BUDGET. A tilted ring reaches lower than the axis point it sits
    on, by its own radius times the sine of the tilt, so a figure sized against
    the axis alone puts its floor names off the bottom of the canvas. The budget
@@ -8449,7 +8634,22 @@ function conePtA(q,a,W,H){
  var cx=W/2, cy=H/2, U=Math.min(W,H)/2;
  var t=(clamp(q,0,100)-50)/50;                    /* -1 at the floor, 1 at the crown */
  var y=t*U*CONE_H;
- var rad=U*(CONE_NECK+Math.abs(t)*CONE_FLARE);
+ /* THE FIGURE IS TERMINATED AT BOTH ENDS. Ruled.
+
+    It was two true cones opening away from the waist, so the widest part of
+    the drawing was the two extremes and the figure ran off its own ends with
+    nothing closing them. Source and the blueprint are points, not openings:
+    a person at a hundred is at one place, and a person at zero is at one
+    place. Width is how far a behaviour has travelled from the quality it
+    started as, and at either pole there is nowhere left to have travelled.
+
+    So the radius opens out of the neck, reaches its widest around two thirds
+    of the way to each pole, and closes to a point at both. A spindle rather
+    than an hourglass. The neck survives because the median range is the one
+    part of the scale most people are standing in and it needs width to be
+    read as a band. */
+ var at=Math.abs(t);
+ var rad=U*(CONE_NECK*(1-at) + CONE_FLARE*Math.sin(at*Math.PI));
  var th=a+CONE.spin;
  var x3=Math.cos(th)*rad, z3=Math.sin(th)*rad;
  return {x:cx+x3,
@@ -8466,6 +8666,7 @@ function coneDraw(){
  var ink=INK(), gc=GOLDC(), rc=hx(PAL.Root);
  g.setTransform(CONE.dpr,0,0,CONE.dpr,0,0);
  g.clearRect(0,0,W,H);
+ CONE.hits=[];
  var r=compute(), cq=r.unread?null:clamp(r.CQ,0,100);
 
  /* the rings, painted from the back so the near edge lands on top */
@@ -8518,9 +8719,39 @@ function coneDraw(){
    g.beginPath(); g.arc(h.p.x,h.p.y,near?5:3.6,0,Math.PI*2);
    g.fillStyle=rgba(h.c,a); g.fill();}
   /* the coherent pole above, the inverted pole below, on the same meridian */
-  var up=conePt(100,h.i,W,H), dn=conePt(0,h.i,W,H);
-  coneTxt(g,h.m.up,up.x,up.y-11,near?12.5:11,gc,near?.95:.28,600);
-  coneTxt(g,h.m.dn,dn.x,dn.y+17,near?12.5:11,rc,near?.9:.26,600);
+  /* THE NAMES COME OFF THE POLES.
+
+     Closing the figure at both ends made every meridian converge on one point,
+     so eight teachers stacked on top of each other at the crown and eight
+     inversions at the floor. Terminating the ends is right and putting names
+     on a point is not.
+
+     Each name now sits at the widest part of its own meridian, around four
+     fifths of the way out, which is the one place on that meridian where it
+     has room and where the figure is actually saying something: the widest
+     point is the furthest a behaviour on that axis has travelled from the
+     quality it started as. The poles keep Source and the blueprint, which are
+     the two things that genuinely are single points. */
+  var up=conePt(91,h.i,W,H), dn=conePt(9,h.i,W,H);
+  var hv=CONE.hover&&CONE.hover.m===h.m?CONE.hover.end:null;
+  var uo=(up.x<W/2?-1:1), dof=(dn.x<W/2?-1:1);
+  /* the name runs away from the figure, so it never starts on top of its own
+     glyph. Centred text on a radial layout is what put them in the same
+     place. */
+  coneTxt(g,h.m.up,up.x+uo*22,up.y-4,near?12:10.5,gc,hv==='up'?1:(near?.95:.30),600,
+   uo<0?'right':'left');
+  coneTxt(g,h.m.dn,dn.x+dof*22,dn.y+6,near?12:10.5,rc,hv==='dn'?1:(near?.9:.28),600,
+   dof<0?'right':'left');
+  /* the glyph, on the figure side of the name, so the two read as one object.
+     every named thing in this product carries a symbol and these were the
+     last sixteen without one. */
+  coneGlyph(g,h.m.ic, up.x+uo*10,up.y-5,gc,hv==='up'?1:(near?.88:.26));
+  coneGlyph(g,h.m.dic,dn.x+dof*10,dn.y+6,rc,hv==='dn'?1:(near?.85:.24));
+  /* AND THEY ARE TARGETS. Clicking a name did nothing at all: the whole
+     figure had no hit testing, so eight teachers and eight inversions were
+     drawn as though they were buttons and were not. */
+  CONE.hits.push({x:up.x+uo*22,y:up.y-4,r:30,m:h.m,end:'up'});
+  CONE.hits.push({x:dn.x+dof*22,y:dn.y+6,r:30,m:h.m,end:'dn'});
   /* the quality is named on the three nearest only. eight at once on a figure
      this size is a pile, and a pile is not a reading. */
   if(h.rank<3)coneTxt(g,h.m.q.toLowerCase(),h.p.x,h.p.y-12,10.5,h.c,.85,400);});
@@ -8547,13 +8778,30 @@ function coneDraw(){
   g.beginPath(); g.arc(W/2,my,7,0,Math.PI*2);
   g.fillStyle=rgba(cq>=50?gc:rc,.95); g.fill();
   coneTxt(g,String(Math.round(cq)),W/2+18,my+4,15,cq>=50?gc:rc,1,500);}}
-function coneTxt(g,s,x,y,size,c,a,w){
+/* one pole glyph, on the 24 unit grid every other icon in this product uses */
+function coneGlyph(g,p,x,y,c,a){
+ if(!p||a<0.06)return;
+ var sc=17/24;
+ g.save(); g.translate(x-17/2,y-17/2); g.scale(sc,sc);
+ g.strokeStyle=rgba(c,a); g.lineWidth=1.8/sc;
+ g.lineJoin='round'; g.lineCap='round'; g.fillStyle='transparent';
+ try{g.stroke(new Path2D(p));}catch(e){}
+ g.restore();}
+function coneTxt(g,s,x,y,size,c,a,w,align){
  g.save(); g.font=(w||400)+' '+size+"px Inter, system-ui, sans-serif";
- g.textAlign='center'; g.textBaseline='middle';
+ g.textAlign=align||'center'; g.textBaseline='middle';
  g.fillStyle=rgba(c,a); g.fillText(s,x,y); g.restore();}
 /* the wheel's own address list, named once so the cone does not reach for a
    global whose name might move */
 function W_ADDR(){return W;}
+/* nearest pole under the pointer, or nothing. Drawn front to back, so the
+   nearest match wins rather than the first one found. */
+function coneHit(x,y){
+ var best=null,bd=1e9;
+ (CONE.hits||[]).forEach(function(h){
+  var d=Math.hypot(x-h.x,y-h.y);
+  if(d<=h.r&&d<bd){bd=d;best=h;}});
+ return best;}
 function coneLayout(){
  var c=CONE.cv; if(!c)return;
  var b=c.getBoundingClientRect();
@@ -8579,23 +8827,44 @@ function coneOpen(inTab){
   +(inTab?'':'<button class="btn" id="conex">Close</button>')+'</div>'
   +'<canvas id="conecv" class="cone-cv" role="img" '
   +'aria-label="Two cones meeting at the median. Eight axes, each with a coherent pole above and its inversion below."></canvas>'
-  +'<p class="cone-p">Eight qualities, each with its coherent pole at the crown and its '
-  +'inversion at the floor. The cones widen as they go, and the widening is the distance a '
-  +'behaviour has travelled from the quality it started as. The waist is the median range. '
-  +'Drag to turn it.</p></div>';
+  +'<p class="cone-p">Eight qualities. Each one runs clean at the crown and inverted at '
+  +'the floor, and the same behaviour sits at both ends. The figure is widest where a '
+  +'behaviour has travelled furthest from the quality it started as, and it closes to a '
+  +'point at each end, because Source and the blueprint are single places. The waist is '
+  +'the median range. Drag to turn it. Click any name to read that axis.</p></div>';
  CONE.cv=document.getElementById('conecv');
  CONE.g=CONE.cv?CONE.cv.getContext('2d'):null;
  coneLayout(); coneTick();
  var x=document.getElementById('conex'); if(x)x.onclick=coneClose;
  if(CONE.cv){
   CONE.cv.onpointerdown=function(e){CONE.drag={x:e.clientX,y:e.clientY,
-   s:CONE.spin,t:CONE.tilt}; CONE.cv.setPointerCapture(e.pointerId);};
-  CONE.cv.onpointermove=function(e){ if(!CONE.drag)return;
+   s:CONE.spin,t:CONE.tilt,moved:false};
+   /* a pointer that has already been released cannot be captured, and the
+      throw would take the handler down with it. The wheel learned this. */
+   try{CONE.cv.setPointerCapture(e.pointerId);}catch(err){}};
+  /* what is under the pointer, so a pole lights before it is pressed */
+  CONE.cv.onpointermove=function(e){
+   var b=CONE.cv.getBoundingClientRect();
+   var x=e.clientX-b.left, y=e.clientY-b.top;
+   if(!CONE.drag){
+    var h=coneHit(x,y);
+    CONE.cv.style.cursor=h?'pointer':'grab';
+    if(h!==CONE.hover){CONE.hover=h;coneDraw();}
+    return;}
+   CONE.drag.moved=CONE.drag.moved
+    ||Math.hypot(e.clientX-CONE.drag.x,e.clientY-CONE.drag.y)>4;
    CONE.spin=CONE.drag.s+(e.clientX-CONE.drag.x)*0.008;
    /* the vertical never tilts past the point where up stops reading as up */
    CONE.tilt=clamp(CONE.drag.t+(e.clientY-CONE.drag.y)*0.004,0.08,0.92);
    coneDraw();};
-  CONE.cv.onpointerup=CONE.cv.onpointercancel=function(){CONE.drag=null;};}
+  CONE.cv.onpointerup=function(e){
+   var was=CONE.drag; CONE.drag=null;
+   if(was&&!was.moved){
+    var b=CONE.cv.getBoundingClientRect();
+    var h=coneHit(e.clientX-b.left,e.clientY-b.top);
+    if(h)runTeacherDrill(h.m,h.end);}};
+  CONE.cv.onpointercancel=function(){CONE.drag=null;};
+  }
  addEventListener('resize',coneLayout);}
 function coneClose(){
  CONE.open=false; CONE.tab=false; CONE.drag=null;
@@ -8613,7 +8882,8 @@ function coneClose(){
 function rdOpen(){var b=document.getElementById('rdrill');if(!b)return null;
  b.style.display='block';
  var none=document.getElementById('rdrill-none'); if(none)none.style.display='none';
- if(typeof OPENSEC==='object'&&OPENSEC){OPENSEC.right='sel';
+ /* open Selection, and leave open whatever else the person had open. */
+ if(typeof OPENSEC==='object'&&OPENSEC&&OPENSEC.right){OPENSEC.right.sel=1;
   if(typeof paintSections==='function')paintSections();}
  var sec=b.closest?b.closest('.lsec'):null;
  if(sec&&sec.scrollIntoView){
@@ -8941,6 +9211,42 @@ function runKbDrill(eyebrow,title,sub,body){
    That is the only reason the names earn their place: they carry
    the historical footprint, and the echo is in the room today.
    ============================================================ */
+/* ONE TEACHER, OR ONE INVERSION. Clicking a name on the compass did nothing,
+   because the figure had no hit testing at all: sixteen names were drawn as
+   though they were buttons and were not.
+
+   Named as behaviours, on the owner's standing ruling. Nothing here treats a
+   teacher or a demon as an entity. Each is one end of one axis and what the
+   reading says is how far along that axis this person currently sits. */
+function runTeacherDrill(m,end){
+ if(!m)return;
+ var up=(end!=='dn'), r=compute();
+ var nm=up?m.up:m.dn, d=up?m.upd:m.dnd, ic=up?m.ic:m.dic;
+ var other=up?m.dn:m.up, od=up?m.dnd:m.upd;
+ var load=(typeof flSeats==='function')
+  ?(flSeats().filter(function(x){return x.p.n===m.seat;})[0]||{load:0}).load:0;
+ var ig=(typeof bandIg==='function')?bandIg(m.seat):0;
+ var at=(typeof mirrorAt==='function')?mirrorAt(load,ig):null;
+ var h='<div class="pm-eye">'+esc(m.q)+(up?', at the crown':', at the floor')+'</div>'
+  +'<div class="ad-nm">'+(ic?'<svg class="ad-ic" viewBox="0 0 24 24" aria-hidden="true">'
+    +'<path d="'+ic+'"/></svg>':'')+esc(nm)+'</div>'
+  +'<div class="ad-sub">'+esc(m.seat)+' \u00b7 '
+  +(up?'the quality running clean':'the same quality, inverted')+'</div>'
+  +'<div class="pm-eye">What this is</div><p class="ad-p">'+esc(d)+'</p>'
+  +'<div class="pm-eye">The other end</div><p class="ad-p"><b>'+esc(other)+'</b>. '
+  +esc(od)+'</p>'
+  +'<div class="pm-eye">Where you sit on it</div><p class="ad-p">'
+  +(r.unread
+    ?'Nothing has been entered yet, so this axis has no reading. It is still the axis.'
+    :'The '+esc(String(m.seat).toLowerCase())+' is carrying <b>'
+     +Math.round(load*100)+'%</b> and its integrity reads <b>'+ig.toFixed(1)
+     +'</b> of 10.'+(at?' That puts you at <b>'+esc(at)+'</b> on this axis.':''))
+  +'</p>'
+  +'<div class="pm-eye">The question that separates them</div>'
+  +'<p class="ad-p">'+esc(m.ask||'')+'</p>'
+  +'<p class="ad-p">Neither of these is a being. Both are behaviours, and they '
+  +'are the same behaviour at two settings.</p>';
+ rdShell(h);}
 function runPoleDrill(end){
  var up=(end!=='dn'), r=compute();
  var h='<div class="pm-eye">'+(up?'The upward cone':'The downward cone')+'</div>'
@@ -10262,8 +10568,15 @@ VIEWS.forEach(function(v,i){
 const THEMEICON={
  dark:'M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z',
  snow:'M12 3v18M4.2 7.5l15.6 9M19.8 7.5l-15.6 9M12 7l-2.6-2.6M12 7l2.6-2.6M12 17l-2.6 2.6M12 17l2.6 2.6',
- punch:'M12 4a8 8 0 0 1 0 16zM12 12m-8 0a8 8 0 1 0 16 0a8 8 0 1 0-16 0'};
-[['dark','Dark'],['snow','Snow'],['punch','Punch']].forEach(function(t,i){
+ punch:'M12 4a8 8 0 0 1 0 16zM12 12m-8 0a8 8 0 1 0 16 0a8 8 0 1 0-16 0',
+ /* a pane at an angle with light coming off its edge. the one glyph that says
+    refraction rather than blur. */
+ glass:'M5.5 7.2l9-3.2v12.8l-9 3.2zM14.5 4l4 2.4v11.2l-4 2.4M5.5 7.2L9.6 9.4'};
+/* FOUR LIGHTINGS. Glass is the fourth, and it is the one aimed forward: the
+   direction the field is moving for 2027 and 2028 is holographic
+   skeuomorphism, which is refraction and real elevation rather than the blur
+   and white hairline everybody shipped in 2020. */
+[['dark','Dark'],['snow','Snow'],['punch','Punch'],['glass','Glass']].forEach(function(t,i){
  var b=document.createElement('button');b.type='button';
  b.setAttribute('aria-pressed',i===0);
  b.className='seg-i'; b.title=t[1]; b.setAttribute('aria-label',t[1]+' theme');
@@ -10272,6 +10585,7 @@ const THEMEICON={
  b.addEventListener('click',function(){S.theme=t[0];
   document.body.classList.toggle('snow',t[0]==='snow');
   document.body.classList.toggle('punch',t[0]==='punch');
+  document.body.classList.toggle('glass',t[0]==='glass');
   $('themes').querySelectorAll('button').forEach(function(x,j){x.setAttribute('aria-pressed',j===i);});
   var nw=$('lightnow'); if(nw)nw.textContent=t[1];
   rebuildSwatches();render();});
@@ -10310,7 +10624,16 @@ const THEMEICON={
 DOMAINS.forEach(function(d,i){
  var b=document.createElement('button');b.className='ib';b.type='button';
  b.style.setProperty('--c',ROOTCOL[d.r]);
- b.title=d.nm+', '+d.r+'. '+d.d+'. Shift-click to add.';
+/* THE TOOLTIP SAYS WHAT THE THING IS AND WHAT PRESSING IT DOES. It said
+    "Justice, Architect. <one line>. Shift-click to add." which names the thing
+    and then jumps straight to a keyboard trick, with nothing in between about
+    what a blueprint domain is or what selecting one changes. */
+ b.title=d.nm+'. A blueprint domain, one of nineteen, under the '+d.r+' root.\n\n'
+  +d.d+'\n\n'
+  +'Affinity 1.3 on '+((AFFIN[d.r]||[]).join(', ')||'nothing')+', which means charge on '
+  +'those axes weighs heavier here than elsewhere.\n\n'
+  +'Click to make this the blueprint you run. Shift-click to add it alongside '
+  +'the ones already selected.';
  b.setAttribute('aria-label',d.nm+', '+d.r+' cluster');
  b.innerHTML=svgI('<path d="'+d.ic+'"/>')
   +'<span class="rt" style="background:'+ROOTCOL[d.r]+'"></span>';
@@ -10568,7 +10891,7 @@ function helpSheet(){
   +'<div class="sh-row"><span>Open an address</span><b>click it</b></div>'
   +'<div class="sh-row"><span>Set a charge</span><b>drag it, on a mouse</b></div>'
   +'</div>'
-  +'<div class="sh-sec"><div class="pm-eye">The reading</div>'
+  +'<div class="sh-sec"><div class="pm-eye">Reading</div>'
   +'<p class="sh-p">CQ is coherence, 0 to 100, what the field builds against what it costs. '
   +'DQ is the shadow weight it is carrying. SQ is how deep that charge sits. Pole is how much '
   +'of the coherent opposite is installed. Hover any of them for the rest.</p></div>'
@@ -10811,8 +11134,18 @@ function runAccDrill(){
   +'family from another. Laws sitting close together name nothing.</p>');}
 
 /* ---- personas ---- */
-PEOPLE.unshift({nm:'You',age:'',role:'build your own',dom:0,a1:0,a2:1,
- says:'Set the root, the archetypes, and the nine poled axes. Everything else derives.',
+/* CUSTOM, and a line a person can actually read.
+
+   It said "Set the root, the archetypes, and the nine poled axes. Everything
+   else derives." Nobody arriving at this software knows what any of that
+   means, and it was the first sentence on the first screen. Three internal
+   terms and a claim about derivation, addressed to somebody who has not been
+   told what a root is.
+
+   The replacement says what will happen, in the order it happens, using words
+   that carry their own meaning. */
+PEOPLE.unshift({nm:'You',age:'',role:'custom',dom:0,a1:0,a2:1,
+ says:'Nothing has been entered yet. Write what happened, or answer the questions, and this fills in.',
  /* This was 3 on every axis, and it is the persona the app opens on. So a
     stranger's first screen showed Fear 3.0, Anger 3.0, Shame 3.0 and the rest,
     three rows below a panel correctly saying nothing was held. Nobody entered
@@ -10828,7 +11161,7 @@ function lawsFor(p){ return p.law || LAWSET[p.nm] || {_:5.5}; }
  var mk=function(lab){var g=document.createElement('optgroup');g.label=lab;sel.appendChild(g);return g;};
  var gYou=null,gICP=null,gRef=null;
  PEOPLE.forEach(function(p,i){var o=document.createElement('option');o.value=i;
-  o.textContent=p.you?'build your own':(p.nm+', '+p.age+', '+p.role.replace(' · ICP',''));
+  o.textContent=p.you?'Custom':(p.nm+', '+p.age+', '+p.role.replace(' · ICP',''));
   if(p.you){gYou=gYou||mk('Your own');gYou.appendChild(o);}
   else if(/ICP/.test(p.role)){gICP=gICP||mk('ICPs');gICP.appendChild(o);}
   else {gRef=gRef||mk('Reference cases');gRef.appendChild(o);}});})();
@@ -11134,17 +11467,31 @@ cv.addEventListener('pointerleave',function(){S.hover=null;DRAG=null;$('probe').
 /* ---- collapsible sections ---- */
 /* One open section per rail. It was a single value, so opening anything on
    the right would have folded the left. */
-var OPENSEC={left:'soul', right:'you'};
+/* EVERY SECTION CAN BE OPEN AT ONCE. Ruled.
+
+   This was one open per rail: clicking Child fetters folded Awareness shut, so
+   a person could never see the blueprint and the axes they were setting at the
+   same time, which is the one comparison the left rail exists to support.
+   Folding is for getting a long rail under control, not for rationing what a
+   person is allowed to look at.
+
+   A set per rail rather than a single value, so the state is what is open
+   rather than what is the one thing open. The drill still opens Selection when
+   a reading arrives, and now it opens it beside what was already there instead
+   of closing it. */
+var OPENSEC={left:{soul:1}, right:{you:1}};
 function railOf(sec){return sec.dataset.rail||'left';}
 function wireSections(){
  document.querySelectorAll('.lsec').forEach(function(sec){
   var hd=sec.querySelector('.lsec-hd'); if(!hd||hd._w)return; hd._w=1;
   hd.onclick=function(){var rl=railOf(sec);
-   OPENSEC[rl]=(OPENSEC[rl]===sec.dataset.sec)?'':sec.dataset.sec;paintSections();};});
+   var k=sec.dataset.sec, set=OPENSEC[rl];
+   if(set[k])delete set[k]; else set[k]=1;
+   paintSections();};});
  paintSections();}
 function paintSections(){
  document.querySelectorAll('.lsec').forEach(function(sec){
-  var on=OPENSEC[railOf(sec)]===sec.dataset.sec;
+  var on=!!OPENSEC[railOf(sec)][sec.dataset.sec];
   sec.classList.toggle('open',on);
   var hd=sec.querySelector('.lsec-hd');if(hd)hd.setAttribute('aria-expanded',on?'true':'false');});}
 
@@ -11165,11 +11512,30 @@ function poleOf(o){
  if(!fs.length)return 0; var t=0; fs.forEach(function(f){t+=(S.replace[f]||0);}); return t/fs.length;}
 function railStack(r){
  var e=document.getElementById('stack'); if(!e)return;
- var TABS=[['fet','Fetters',CHILD.length],['sab','Saboteurs',r.sabs.length],['cx','Complexes',r.cxs.length],
-  ['hy','Hyper',r.hys.length],['sup','Character',r.sups.length]];
+ /* THE STACK CARRIES ITS SYMBOLS. Every named thing in this product has a
+    glyph and these five rungs were the last strip without one. The glyphs are
+    the chain itself: one ring is a fetter, two locked rings a saboteur, three
+    a complex, a lattice a hyper complex, and a filled silhouette the character
+    layer, which is the one a person cannot see as separate from themselves. */
+ var TABS=[
+  ['fet','Fetters',CHILD.length,
+   'M12 4.5a3.6 3.6 0 013.6 3.6v7.8a3.6 3.6 0 01-7.2 0V8.1A3.6 3.6 0 0112 4.5'],
+  ['sab','Saboteurs',r.sabs.length,
+   'M8.6 4.8a3.4 3.4 0 013.4 3.4v3.4a3.4 3.4 0 01-6.8 0V8.2a3.4 3.4 0 013.4-3.4'
+   +'M15.4 12.4a3.4 3.4 0 013.4 3.4a3.4 3.4 0 01-6.8 0a3.4 3.4 0 013.4-3.4'],
+  ['cx','Complexes',r.cxs.length,
+   'M9 6.6a3 3 0 110 6 3 3 0 010-6M15 6.6a3 3 0 110 6 3 3 0 010-6'
+   +'M12 12.8a3 3 0 110 6 3 3 0 010-6'],
+  ['hy','Hyper',r.hys.length,
+   'M12 3.2l7.6 4.4v8.8L12 20.8 4.4 16.4V7.6zM12 3.2v17.6M4.4 7.6l15.2 8.8'
+   +'M19.6 7.6L4.4 16.4'],
+  ['sup','Character',r.sups.length,
+   'M12 3.4a8.6 8.6 0 100 17.2 8.6 8.6 0 000-17.2M12 7.6a4.4 4.4 0 110 8.8 4.4 4.4 0 010-8.8']];
  var h='<div class="stk-tabs" role="tablist">'+TABS.map(function(t){
   return '<button type="button" role="tab" class="stk-t'+(STACK_TAB===t[0]?' on':'')+'" data-st="'+t[0]+'" '
-   +'aria-selected="'+(STACK_TAB===t[0])+'">'+t[1]+(t[2]?' <b>'+t[2]+'</b>':'')+'</button>';}).join('')+'</div>';
+   +'aria-selected="'+(STACK_TAB===t[0])+'" title="'+esc(t[1])+'">'
+   +svgI('<path d="'+t[3]+'"/>')
+   +'<span>'+t[1]+'</span>'+(t[2]?' <b>'+t[2]+'</b>':'')+'</button>';}).join('')+'</div>';
  if(STACK_TAB==='fet'){
   /* ONE WORD PER CONCEPT. This header said held and installed, the rail four
      inches to the left said held and opposite, and the owner asked what either
@@ -11261,12 +11627,23 @@ function railTop(r){
  /* the ring draws empty and the tail carries a dash, for the same reason the
     core does: the word beside it already says not read yet, and a percentage
     beside that word is the contradiction the word exists to prevent. */
+ /* THE BAND WORD SAYS WHAT IT MEANS, ON THE SCREEN.
+
+    It printed "42%" and "Oscillating" side by side and the definition lived in
+    a title attribute, which is not a route on the device most of this audience
+    arrives on and is not a route for anybody in a hurry. A word this product
+    puts on a person has to carry its own meaning where it is said.
+
+    One line, in plain words, from the same table the drill reads. */
+ var td=r.unread?null:TIER_BY[r.tier];
  e.innerHTML=cr(r.darkB, r.unread?0:r.CQ, {size:'sm', label:'coherence',
    raw:r.unread?'\u2013':undefined})
-  +'<span class="rt-t">'+esc(r.unread?'not read yet':r.tier)+'</span>';
+  +'<span class="rt-t">'+esc(r.unread?'not read yet':r.tier)+'</span>'
+  +'<span class="rt-d">'+esc(r.unread
+    ? 'Nothing entered yet. Write what happened and this fills in.'
+    : (td?td.def:''))+'</span>';
  /* the label never stands alone: hovering it gives the definition and the
     direction, and clicking the strip opens the whole thing. */
- var td=r.unread?null:TIER_BY[r.tier];
  e.title=td?(td.nm+'. '+td.def+' '+td.energy+' Toward: '+td.toward)
   :'Nothing has been read yet. Write a story or set a charge.';}
 function render(){
@@ -11361,15 +11738,41 @@ function render(){
     +'<span><b>Energy</b></span></button>';
  /* who. proportions, not one label. */
  (function(){
-  var aff=(r.aff||[]).map(function(v,i){return {nm:(ARCH[i]||{}).nm||'',v:v};})
+  var aff=(r.aff||[]).map(function(v,i){return {i:i,nm:(ARCH[i]||{}).nm||'',v:v};})
    .filter(function(x){return x.nm;}).sort(function(a,b){return b.v-a.v;});
   var tot=aff.reduce(function(a,x){return a+x.v;},0)||1;
   var T=['First','Second','Third'];
   function row(k,n,pc){return '<div class="tierow"><span class="tk">'+k+'</span>'
    +'<span class="tn">'+n+'</span><span class="tp">'+pc+'</span></div>';}
-  var ah=aff.slice(0,3).map(function(x,i){return row(T[i],x.nm,Math.round(x.v/tot*100)+'%');}).join('');
+  /* A PERCENTAGE IS THE PERCENTAGE OBJECT, EVERYWHERE. Ruled, and this rail was
+     the last place still printing a bare figure: Innocent 21%, Everyman 19%,
+     as text, four inches from a surface where the same quantity is an icon, a
+     ring and a pill. The object carries its own glyph, so a person reading this
+     rail is also learning the symbol for the archetype. That is the point of
+     having one object. */
+  /* col, not band. A root domain's colour is a ROOT colour and seatCol only
+     knows the seven seats, so passing Architect where it wanted Heart resolved
+     to the alarm red and printed Imperium 100% in the colour this product
+     reserves for something being wrong. */
+  function prow(k,n,pct,col,glyph,title){
+   return '<div class="tierow pill"><span class="tk">'+k+'</span>'
+    +'<span class="tn">'+esc(n)+'</span>'
+    /* hot:false. cr() turns anything past the hot threshold into the alarm
+       colour, which is right for a charge and wrong for a share: one selected
+       domain is 100 percent of the selection and printed Imperium in the
+       colour this product reserves for something being wrong. A proportion is
+       never an alarm. */
+    +cr('Heart',pct,{size:'xs',raw:Math.round(pct)+'%',glyph:glyph,label:n,
+      title:title,color:col,hot:false})
+    +'</div>';}
+  var ah=aff.slice(0,3).map(function(x,i){
+   var A=ARCH[x.i]||{};
+   return prow(T[i],x.nm,x.v/tot*100,seatCol('Heart'),A.ic?'<path d="'+A.ic+'"/>':null,
+    x.nm+'. '+(A.v||'')+' Share of how the blueprint expresses.');}).join('');
   var dsh=S.doms.map(function(di,i){var d=DOMAINS[di];
-   return d?row(T[i]||'Also',d.nm,Math.round(100/(S.doms.length||1))+'%'):'';}).join('');
+   return d?prow(T[i]||'Also',d.nm,100/(S.doms.length||1),ROOTCOL[d.r],
+    d.ic?'<path d="'+d.ic+'"/>':null,
+    d.nm+', '+d.r+' root. '+(d.d||'')):'';}).join('');
   var held=W.filter(function(n){return n.sq>=4;}).length;
   var inst=W.filter(function(n){return n.pole>=4;}).length;
   /* WHERE TO START. Only while there is nothing to read, because a call to
@@ -11397,11 +11800,13 @@ function render(){
       a zero that is not true. */
    /* "nothing above the line" plus "74 under it" wrapped into four lines in a
       narrow column and read as broken text. One short value, one short note. */
-   +row('Held',held?held+' addresses':'nothing',
-     held?'':(r.under?r.under+' under the line':''))
-   +row('Installed',inst?inst+' addresses':'nothing','')
-   +row('Darkest',r.darkB,r.darkV.toFixed(1))
-   +row('Law shut',r.weakL.nm,'at the '+r.weakL.b.toLowerCase());})();
+   /* SAID OUT LOUD. These read "Held nothing" and "Installed nothing", which
+      is the schema talking. A person says what is there and what is not. */
+   +row('Carrying',held?held+' addresses':'nothing yet',
+     held?'':(r.under?r.under+' sitting under the line':''))
+   +row('Filled in',inst?inst+' addresses':'nothing yet','')
+   +row('Heaviest',r.darkB,r.darkV.toFixed(1))
+   +row('Most shut',r.weakL.nm,'at the '+r.weakL.b.toLowerCase());})();
  railStack(r); renderBal(r);
  $('rows').innerHTML='<span class="k">Instruments</span><br>'
   +'integrity <b>'+r.Ig.toFixed(1)+'</b><br>intention <b>'+r.It.toFixed(1)+'</b><br>'

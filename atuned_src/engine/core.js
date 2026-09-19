@@ -65,11 +65,19 @@ const TAB={STORY:0,SUMMARY:1,FIELD:2,ENERGY:3,ANALYTICS:4,INTAKE:5,KNOW:6,GAMES:
    Summary reads last. It is the conclusion and the owner ruled it opens
    there, so the bar reads left to right as the instruments and then the
    thing they add up to, and the app lands on the right hand end of it. */
+/* THE MENU RULE, ruled. One word, and the word names exactly what the surface
+   does. Not what it is about, not what it belongs to. What it does.
+
+   Intake became Energetics on the owner's word: a person does not arrive to
+   perform an intake, they arrive to have their energetics read. Energy became
+   Body, because the surface is a body with seven seats on it and Energy named
+   the subject rather than the thing on screen. The rest already passed the
+   rule and were left alone rather than churned to look busy. */
 const TABDEF=[
- {k:TAB.INTAKE,  id:'iq',    nm:'Intake',    cls:'tab-intake'},
+ {k:TAB.INTAKE,  id:'iq',    nm:'Energetics',cls:'tab-intake'},
  {k:TAB.STORY,   id:'story', nm:'Story',     cls:'tab-story'},
  {k:TAB.FIELD,   id:'cv',    nm:'Field',     cls:'tab-field'},
- {k:TAB.ENERGY,  id:'emap',  nm:'Energy',    cls:'tab-energy'},
+ {k:TAB.ENERGY,  id:'emap',  nm:'Body',      cls:'tab-energy'},
  {k:TAB.COMPASS, id:'cone',  nm:'Compass',   cls:'tab-compass'},
  {k:TAB.KNOW,    id:'know',  nm:'Knowledge', cls:'tab-know'},
  {k:TAB.SUMMARY, id:'sum',   nm:'Summary',   cls:'tab-summary'}];

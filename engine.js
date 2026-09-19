@@ -365,35 +365,37 @@ const MIRROR=[
  {k:'IL', q:'Illumination', seat:'Heart',
   up:'Jesus',   upd:'Love generated from within. Freely given. No transaction. Light that has a source.',
   dn:'Lucifer', dnd:'Pride as false light. Shine performed for reflection, not generated from Source.',
-  ask:'Does this person’s warmth cost them anything, or does it require an audience?'},
+  ask:'Does this person’s warmth cost them anything, or does it require an audience?', ic:'M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1M12 8a4 4 0 110 8 4 4 0 010-8', dic:'M12 4l2.4 5.2 5.6.6-4.2 3.8 1.2 5.6L12 16.4 6.99 19.2l1.2-5.6L4 9.8l5.6-.6z'},
  {k:'DE', q:'Desire and will', seat:'Sacral',
   up:'Ramakrishna', upd:'Will surrendered to Source. Desire as devotion. Wanting that moves toward something beyond the self.',
   dn:'Asmodeus',    dnd:'Craving without closure. Appetite that cannot satisfy. Having never resolves the wanting.',
-  ask:'Does wanting move them toward something, or does having never satisfy?'},
+  ask:'Does wanting move them toward something, or does having never satisfy?', ic:'M12 20s-7-4.4-7-9.4A4 4 0 0112 8a4 4 0 017 2.6c0 5-7 9.4-7 9.4z', dic:'M4 9h16l-2.2 10.4a1 1 0 01-1 .6H7.2a1 1 0 01-1-.6zM9 9V6a3 3 0 016 0v3'},
  {k:'OR', q:'Order', seat:'Throat',
   up:'Moses', upd:'Structure in service of liberation. Law that creates freedom. Order others can stand within.',
   dn:'Set',   dnd:'Chaos engineered to prevent coherence. Betrayal as systemic strategy. Disruption from inside trusted systems.',
-  ask:'Does this person build structures others can stand in, or dismantle what others depend on?'},
+  ask:'Does this person build structures others can stand in, or dismantle what others depend on?', ic:'M4 6h16M4 12h16M4 18h11M19 16.5v3.6M17.4 18.3h3.2', dic:'M4.6 5.4l14.8 13.2M19.4 5.4L4.6 18.6M12 4v16'},
  {k:'PO', q:'Power', seat:'Solar',
   up:'Musashi', upd:'Mastery that costs the practitioner. Power in service of precision. Discipline the self bears.',
   dn:'Moloch',  dnd:'Power that extracts from others. The machine that must be fed. Discipline that others pay for.',
-  ask:'Who pays the cost of this person’s discipline?'},
+  ask:'Who pays the cost of this person’s discipline?', ic:'M6.5 17.5L17 7M15 5l4 4M6 18l-1.6 1.6M4.5 15.5l4 4', dic:'M5 20V9l7-5 7 5v11M9 20v-5h6v5M9.5 11.5h5'},
  {k:'PE', q:'Perception', seat:'3rd Eye',
   up:'Buddha', upd:'Clear seeing. Reality without overlay. The compositor running on present signal.',
   dn:'Geryon', dnd:'Engineered surface. Beautiful above, serpentine beneath. Perception itself weaponised.',
-  ask:'Does this person’s self presentation match their interior state?'},
+  ask:'Does this person’s self presentation match their interior state?', ic:'M2.5 12s3.6-6 9.5-6 9.5 6 9.5 6-3.6 6-9.5 6-9.5-6-9.5-6zM12 9.4a2.6 2.6 0 110 5.2 2.6 2.6 0 010-5.2', dic:'M2.5 12s3.6-6 9.5-6 9.5 6 9.5 6-3.6 6-9.5 6-9.5-6-9.5-6zM5 5l14 14'},
  {k:'TR', q:'Trust', seat:'Heart',
   up:'Rumi',   upd:'Direct encounter with the field. Felt knowing. The heart as the instrument.',
   dn:'Charon', dnd:'Threshold paralysis. Cannot cross what cannot be measured. The rational mind forever preparing to arrive.',
-  ask:'Does this person access experience directly, or require verification before they allow themselves to feel?'},
+  ask:'Does this person access experience directly, or require verification before they allow themselves to feel?', ic:'M12 20.5S4.5 15.6 4.5 10.2A3.8 3.8 0 0112 8a3.8 3.8 0 017.5 2.2c0 5.4-7.5 10.3-7.5 10.3z', dic:'M4 17h16M6.4 17V9.6M17.6 17V9.6M4 9.6h16L12 4.6z'},
  {k:'CH', q:'Charge', seat:'Root',
   up:'Elijah',   upd:'Grounded fire. Intensity moving through the body without destroying the container or the target.',
   dn:'Phlegyas', dnd:'Charge split at the root. Outward as rage or inward as paralysis. The same current, no clean exit.',
-  ask:'Where does this person’s intensity go when it has nowhere to land?'},
+  ask:'Where does this person’s intensity go when it has nowhere to land?', ic:'M13 2.5L5.5 13.5H11L10 21.5l7.5-11H12z', dic:'M12 3v8M12 15v6M6 9l-2.6-2.6M18 9l2.6-2.6M4 13.5h3.4M16.6 13.5H20'},
  {k:'RE', q:'Revelation', seat:'Crown',
   up:'Meister Eckhart', upd:'Direct knowing. Doctrine made unnecessary by experience.',
   dn:'The Furies',      dnd:'Map replacing territory permanently. The belief system defended against any experience that contradicts it.',
-  ask:'Can this person update their framework when direct experience contradicts it?'}];
+  ask:'Can this person update their framework when direct experience contradicts it?',
+  ic:'M12 3.5a6 6 0 013.5 10.9V17h-7v-2.6A6 6 0 0112 3.5M9.5 20h5',
+  dic:'M4 5h16v12H4zM8 9h8M8 13h5'}];
 
 /* ---- THE TWELVE, ON THE COORDINATE SYSTEM ----
    "Every ascended master held a specific position on the Sat, Chit
@@ -1645,11 +1647,19 @@ const TAB={STORY:0,SUMMARY:1,FIELD:2,ENERGY:3,ANALYTICS:4,INTAKE:5,KNOW:6,GAMES:
    Summary reads last. It is the conclusion and the owner ruled it opens
    there, so the bar reads left to right as the instruments and then the
    thing they add up to, and the app lands on the right hand end of it. */
+/* THE MENU RULE, ruled. One word, and the word names exactly what the surface
+   does. Not what it is about, not what it belongs to. What it does.
+
+   Intake became Energetics on the owner's word: a person does not arrive to
+   perform an intake, they arrive to have their energetics read. Energy became
+   Body, because the surface is a body with seven seats on it and Energy named
+   the subject rather than the thing on screen. The rest already passed the
+   rule and were left alone rather than churned to look busy. */
 const TABDEF=[
- {k:TAB.INTAKE,  id:'iq',    nm:'Intake',    cls:'tab-intake'},
+ {k:TAB.INTAKE,  id:'iq',    nm:'Energetics',cls:'tab-intake'},
  {k:TAB.STORY,   id:'story', nm:'Story',     cls:'tab-story'},
  {k:TAB.FIELD,   id:'cv',    nm:'Field',     cls:'tab-field'},
- {k:TAB.ENERGY,  id:'emap',  nm:'Energy',    cls:'tab-energy'},
+ {k:TAB.ENERGY,  id:'emap',  nm:'Body',      cls:'tab-energy'},
  {k:TAB.COMPASS, id:'cone',  nm:'Compass',   cls:'tab-compass'},
  {k:TAB.KNOW,    id:'know',  nm:'Knowledge', cls:'tab-know'},
  {k:TAB.SUMMARY, id:'sum',   nm:'Summary',   cls:'tab-summary'}];

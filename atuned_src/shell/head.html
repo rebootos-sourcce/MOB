@@ -67,6 +67,9 @@ font-display:swap;src:url(data:font/woff2;base64,d09GMgABAAAAALyAABUAAAAB4CAAALw
     --um is the umlaut on the wordmark. It sits on the bar rather than on the
     letter, so it answers to the background. White on dark, as ruled. */
  --accent:#7EB8D4; --gold:var(--accent); --on-accent:#0B1418;
+ /* the ink on a solid seat colour. every seat in this palette is light
+    enough that one dark ink holds on all seven, in every lighting. */
+ --on-flat:#0E1015;
  --sky:#7EB8D4; --um:#FFFFFF;
  --good:#68CBA4; --bad:#CB5F59;
  /* Lexend is a wide face by design, which is why the rail clipped: Witness
@@ -114,6 +117,115 @@ body.punch{
  --panel-2:color-mix(in srgb,var(--seat) calc(4% + var(--seat-w)*4%),#20222D);
  --sunk:color-mix(in srgb,var(--seat) calc(2% + var(--seat-w)*5%),#12131B);
 }
+/* ---------- GLASS. The fourth lighting, and the one aimed forward.
+
+   Built off what the field is actually moving toward for 2027 and 2028 rather
+   than off what looked new in 2020. The direction has a name now, holographic
+   skeuomorphism, and what separates it from the glassmorphism everybody shipped
+   five years ago is three things, all of which this implements:
+
+   REFRACTION, NOT BLUR. A blurred panel is frosted plastic. Glass bends light,
+   and it bends the short wavelengths further than the long ones, so the edge of
+   a real pane carries a thin spectral fringe. Every surface here has one: a
+   hairline that runs cool on one edge and warm on the other. It is two pixels
+   of colour and it is the single thing that stops this reading as 2020.
+
+   LIGHT THAT COMES FROM SOMEWHERE. One source, upper left, for every surface
+   in the product. A specular sweep along the top edge and a soft occlusion at
+   the bottom. Glass with highlights in different directions on different panels
+   is not glass, it is a filter.
+
+   DEPTH AS ELEVATION. Three heights, and height sets blur radius, edge
+   luminance and shadow spread together, the way distance actually works. A
+   panel at rest, a panel raised, a panel floating over everything. Nothing here
+   gets a border to say it is separate: it is separate because it is closer.
+
+   The ground moves under all of it. The aura canvas is already breathing behind
+   the app and in every other lighting it is nearly invisible. Here it is the
+   thing being refracted, so the chrome is never quite the same twice, and it
+   still takes its hue from the seat the reading names heaviest.
+
+   backdrop-filter is not universal. Every surface is legible on its wash alone
+   and the refraction is the improvement rather than the requirement. ---------- */
+body.glass{
+ --seat:#7EB8D4; --seat-w:0.3;
+ /* THE GROUND STAYS NEUTRAL HERE. Punch tints the whole shell toward the seat
+    the reading names heaviest, and on a Sacral heavy field that turns the app
+    brown, which is the orange the owner has already ruled out twice. Glass
+    puts the colour in the light instead: the aura canvas behind the panes is
+    already seat derived and moving, so a heavy Sacral reading shows as a warm
+    glow through the glass rather than as a warm surface. Light carries the
+    reading, the material does not. */
+ --bg:#0B0D14;
+ /* the panes. alpha, not opacity, so what is behind them survives. */
+ --panel:rgba(30,34,46,.55);
+ --panel-2:rgba(42,47,62,.62);
+ --sunk:rgba(14,17,26,.50);
+ --edge:rgba(255,255,255,.10); --edge-2:rgba(255,255,255,.17);
+ --ink:#F3F2EE; --mid:#C2BEB6; --dim:#928D85;
+ --shadow:0 24px 64px rgba(0,0,0,.50);
+ /* one light, upper left, for every surface */
+ --spec:linear-gradient(160deg,rgba(255,255,255,.22),rgba(255,255,255,0) 42%);
+ /* the spectral fringe. cool leading, warm trailing, two pixels of it. */
+ --fringe-a:rgba(126,184,212,.55);
+ --fringe-b:rgba(232,168,140,.42);
+}
+body.glass .glass,body.glass .panel,body.glass .sheet-card,body.glass .rd-card,
+body.glass .sum-card,body.glass .gmenu,body.glass .cone-card{
+ position:relative;
+ -webkit-backdrop-filter:blur(26px) saturate(1.65);
+ backdrop-filter:blur(26px) saturate(1.65);
+ border:1px solid var(--edge);
+ box-shadow:var(--shadow), inset 0 1px 0 rgba(255,255,255,.13)}
+/* the pane's own light, and its fringe, in one pseudo element each */
+body.glass .glass::before,body.glass .panel::before{
+ content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+ background:var(--spec);mix-blend-mode:screen;opacity:.85}
+body.glass .glass::after,body.glass .panel::after{
+ content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+ padding:1px;
+ background:linear-gradient(150deg,var(--fringe-a),transparent 38%,
+  transparent 62%,var(--fringe-b));
+ -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+ mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+ -webkit-mask-composite:xor;mask-composite:exclude;opacity:.75}
+/* the stage is the deepest plane, so it refracts least and sits furthest back */
+body.glass .stage{-webkit-backdrop-filter:blur(14px) saturate(1.3);
+ backdrop-filter:blur(14px) saturate(1.3)}
+/* raised: anything a person summoned. more blur, brighter edge, longer shadow. */
+body.glass .sheet-card,body.glass .rd-card,body.glass .gmenu,body.glass .cone-card{
+ -webkit-backdrop-filter:blur(38px) saturate(1.8);
+ backdrop-filter:blur(38px) saturate(1.8);
+ border-color:var(--edge-2);
+ box-shadow:0 34px 90px rgba(0,0,0,.58), inset 0 1px 0 rgba(255,255,255,.19)}
+/* controls are small panes, not painted rectangles */
+body.glass .vt,body.glass .btn,body.glass .ib,body.glass .stk-t,body.glass .kb-t,
+body.glass .pm-lb,body.glass .s-dom,body.glass .ip-g,body.glass .st-mic{
+ background:rgba(255,255,255,.055);border-color:var(--edge);
+ -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+body.glass .vt:hover,body.glass .btn:hover,body.glass .ib:hover{
+ background:rgba(255,255,255,.10);border-color:var(--edge-2)}
+body.glass .btn.pri{background:color-mix(in srgb,var(--accent) 82%,transparent);
+ border-color:color-mix(in srgb,var(--accent) 90%,transparent);color:var(--on-accent)}
+/* a value pill is a lens over the ground, tinted by its own seat */
+body.glass .cr{background:rgba(255,255,255,.05);
+ border-color:color-mix(in srgb,var(--c) 34%,rgba(255,255,255,.14))}
+body.glass .cr .v{background:color-mix(in srgb,var(--c) 26%,rgba(255,255,255,.08))}
+/* the ground is the thing being refracted, so it is allowed to be seen */
+/* and the aura is turned up, because here it is the thing being refracted
+   rather than a wash nobody notices. */
+body.glass #bgaura{filter:blur(96px);opacity:1}
+body.glass .top,body.glass .subbar{background:rgba(255,255,255,.035)}
+/* no fill under a selected tab here either. the ruling is the ruling in every
+   lighting: colour and weight, and the hairline underneath. */
+body.glass .vt[aria-pressed=true]{background:transparent;border-color:transparent}
+@media (prefers-reduced-transparency:reduce){
+ body.glass .glass,body.glass .panel,body.glass .sheet-card,body.glass .rd-card,
+ body.glass .gmenu,body.glass .cone-card{
+  -webkit-backdrop-filter:none;backdrop-filter:none;
+  background:color-mix(in srgb,var(--seat) 6%,#181B24)}
+ body.glass .glass::before,body.glass .panel::before{display:none}}
+
 body.punch .glass,body.punch .vt,body.punch .ib,body.punch .btn,body.punch .cr,
 body.punch .pm-lb,body.punch .pm-rb,body.punch .iq-law,body.punch .iq-n,
 body.punch .rd-card,body.punch .sum-card,body.punch .sum-l,body.punch .sum-ai,
@@ -159,6 +271,7 @@ body.snow{
     cannot stay white because the dots sit on the paper, not on the letter.
     On a deep blue fill the ink goes light rather than dark. */
  --accent:#2F6E92; --gold:var(--accent); --on-accent:#F4F8FA;
+ --on-flat:#0E1015;
  --sky:#2F6E92; --um:#13303F;
  --good:#1F8560; --bad:#A8413C;
  --shadow:0 12px 30px rgba(40,54,74,.12);
@@ -220,7 +333,25 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
  font-size:14px;font-weight:400;transition:.18s;white-space:nowrap;flex:0 0 auto;
  display:flex;align-items:center;gap:10px;line-height:1.3}
 .vt:hover{background:var(--panel-2);border-color:var(--edge-2);color:var(--ink)}
-.vt[aria-pressed=true]{background:var(--gold);border-color:var(--gold);color:var(--on-accent);font-weight:500}
+/* A SELECTED MENU ITEM CHANGES ITS TEXT, NOT ITS GROUND. Ruled.
+
+   A filled pill behind the current tab put a solid block of accent in the
+   busiest row on the screen, and it was reading as a button you had not
+   pressed yet rather than as where you already are. Colour and weight say it
+   with no shape at all, and the hairline underneath is the one mark that
+   survives at a glance without adding a field of colour.
+
+   This is the navigation rule and it applies to every tab strip in the
+   product, not only the top one. A primary button still fills, because a
+   button is a thing you do and a tab is a place you are. */
+.vt[aria-pressed=true]{background:transparent;border-color:transparent;
+ color:var(--accent);font-weight:500}
+.vt[aria-pressed=true]:hover{background:transparent;color:var(--accent)}
+.tabtop[aria-pressed=true],#vbar .vt[aria-pressed=true]{position:relative}
+.tabtop[aria-pressed=true]::after,#vbar .vt[aria-pressed=true]::after{
+ content:'';position:absolute;left:14px;right:14px;bottom:5px;height:1.5px;
+ border-radius:2px;background:var(--accent)}
+.vt[aria-pressed=true] svg{stroke:var(--accent)}
 .vt svg{width:17px;height:17px;stroke:currentColor;stroke-width:1.6;fill:none;
  stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}
 .vt .n{display:block}
@@ -346,7 +477,19 @@ body:not(.hassub) .subbar{display:none}
  background:color-mix(in srgb,var(--c) 17%,transparent);
  padding:4px 9px 4px 9px;white-space:nowrap}
 .cr.hot .v{background:var(--alarm-soft)}
-body.punch .cr .v{background:color-mix(in srgb,var(--c) 30%,transparent)}
+/* PUNCH FILLS. Ruled. The whole argument of this lighting is that nothing is
+   outlined and everything is solid, and the one place it was still washing was
+   the object the product reads most: the value pill. It is solid now, in the
+   seat's own colour, with dark ink on it, and the figure itself goes up a
+   weight so the number carries the chip rather than sitting inside it. */
+body.punch .cr .v{background:var(--c);color:var(--on-flat);font-weight:600;
+ letter-spacing:.01em}
+body.punch .cr.hot .v{background:var(--alarm);color:#fff}
+body.punch .cr{background:transparent;border-color:transparent;padding-right:3px}
+body.punch .cr .ring .gl svg{stroke:var(--c);opacity:1}
+/* and every other figure on a Punch surface, which were all one weight down */
+body.punch .s-nv,body.punch .fig .v,body.punch .stk-r b,body.punch .s-ch b,
+body.punch .tp{font-weight:600}
 /* A RING WITH NO VALUE IS JUST A RING. knowledge.js uses cr() with raw:'' as a
    colour marker beside a row name, and now that the value is a pill an empty
    value painted an empty pill next to it. Nothing to say, nothing drawn. */
@@ -578,6 +721,17 @@ body:not(.tab-field) .bal{display:none}
 /* the definition of the two ends of an axis, said once in the rail rather than
    only in a tooltip, because a tooltip is not reachable by a thumb. */
 .stk-def{margin:10px 0 8px;font-size:12.5px;line-height:1.6;color:var(--dim)}
+/* a glyph set beside the name of the thing it stands for, in a drill header */
+.ad-ic{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.7;
+ stroke-linecap:round;stroke-linejoin:round;vertical-align:-3px;margin-right:8px;
+ opacity:.9}
+
+/* a tier row that carries the percentage object rather than a bare figure */
+.tierow.pill{display:grid;grid-template-columns:54px minmax(0,1fr) auto;gap:8px;
+ align-items:center;min-height:var(--tap)}
+.tierow.pill .tn{color:var(--ink);font-size:14px;min-width:0;overflow:hidden;
+ text-overflow:ellipsis;white-space:nowrap}
+
 /* the protocol control on an address reading. It is the one action on that
    panel, so it is the one filled button, and the line under it says what the
    run will actually be rather than leaving a person to press and find out. */
@@ -651,6 +805,12 @@ body:not(.tab-field) .pol2{display:none}
 .railtop{display:flex;align-items:center;gap:10px;flex-wrap:wrap;
  padding:0 0 13px;border-bottom:1px solid var(--edge);margin-bottom:2px}
 .railtop .rt-t{font-size:14px;color:var(--ink);font-weight:500}
+/* the band word carries its own meaning, on the screen, not in a tooltip */
+.railtop{flex-wrap:wrap}
+.railtop .rt-d{flex:0 0 100%;font-size:12.5px;line-height:1.55;color:var(--mid);
+ margin-top:6px}
+.s-band{font-size:14px;line-height:1.65;color:var(--mid);margin:14px 0 0;max-width:62ch}
+.s-band b{color:var(--ink);font-weight:600}
 /* the tier reads as a word you can open, not as a verdict printed at you */
 /* THE ROOT ROW. Four buttons on one line, always. It was a wrapping flex row
    of auto width nowrap items, which is a row that fits until it does not, and
@@ -885,7 +1045,8 @@ body:not(.tab-field) .pol2{display:none}
  padding:8px 13px;font-family:var(--sans);font-size:12.5px;cursor:pointer;
  min-height:var(--tap);display:inline-flex;align-items:center;gap:4px}
 .kb-t b{font-family:var(--num);font-weight:500;color:var(--dim);margin-left:3px}
-.kb-t.on{background:var(--gold);color:var(--on-accent)}
+.kb-t.on{background:transparent;color:var(--accent);font-weight:500}
+.kb-t.on b{color:var(--accent)}
 .kb-t.on b{color:var(--on-accent)}
 .kb-list{display:flex;flex-direction:column;gap:2px;flex:1 1 auto}
 .kb-r{display:grid;grid-template-columns:auto minmax(120px,1.1fr) minmax(0,2fr) auto;gap:12px;
@@ -1065,10 +1226,14 @@ body.punch .card{border-color:transparent}
    declaration was responsible for five of the seven failing tabs. Gate 8 now
    watches it, which is why it stopped being a preference. */
 .stk-t{background:var(--sunk);border:0;color:var(--mid);border-radius:var(--r-xs);
- padding:8px 12px;font-family:var(--sans);font-size:12px;cursor:pointer;
- min-height:var(--tap);display:inline-flex;align-items:center;gap:4px}
+ padding:8px 11px;font-family:var(--sans);font-size:12px;cursor:pointer;
+ min-height:var(--tap);display:inline-flex;align-items:center;gap:6px}
+.stk-t svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.6;
+ stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto;opacity:.75}
+.stk-t.on svg{opacity:1;stroke:var(--accent)}
 .stk-t b{font-family:var(--num);font-weight:500;color:var(--dim);margin-left:2px}
-.stk-t.on{background:var(--gold);color:var(--on-accent)}
+.stk-t.on{background:transparent;color:var(--accent);font-weight:500}
+.stk-t.on b{color:var(--accent)}
 .stk-t.on b{color:var(--on-accent)}
 .stk-hd{display:flex;justify-content:space-between;font-size:11px;color:var(--dim);
  text-transform:none;padding:2px 6px 4px;letter-spacing:.02em}

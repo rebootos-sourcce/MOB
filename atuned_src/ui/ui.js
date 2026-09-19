@@ -200,17 +200,31 @@ cv.addEventListener('pointerleave',function(){S.hover=null;DRAG=null;$('probe').
 /* ---- collapsible sections ---- */
 /* One open section per rail. It was a single value, so opening anything on
    the right would have folded the left. */
-var OPENSEC={left:'soul', right:'you'};
+/* EVERY SECTION CAN BE OPEN AT ONCE. Ruled.
+
+   This was one open per rail: clicking Child fetters folded Awareness shut, so
+   a person could never see the blueprint and the axes they were setting at the
+   same time, which is the one comparison the left rail exists to support.
+   Folding is for getting a long rail under control, not for rationing what a
+   person is allowed to look at.
+
+   A set per rail rather than a single value, so the state is what is open
+   rather than what is the one thing open. The drill still opens Selection when
+   a reading arrives, and now it opens it beside what was already there instead
+   of closing it. */
+var OPENSEC={left:{soul:1}, right:{you:1}};
 function railOf(sec){return sec.dataset.rail||'left';}
 function wireSections(){
  document.querySelectorAll('.lsec').forEach(function(sec){
   var hd=sec.querySelector('.lsec-hd'); if(!hd||hd._w)return; hd._w=1;
   hd.onclick=function(){var rl=railOf(sec);
-   OPENSEC[rl]=(OPENSEC[rl]===sec.dataset.sec)?'':sec.dataset.sec;paintSections();};});
+   var k=sec.dataset.sec, set=OPENSEC[rl];
+   if(set[k])delete set[k]; else set[k]=1;
+   paintSections();};});
  paintSections();}
 function paintSections(){
  document.querySelectorAll('.lsec').forEach(function(sec){
-  var on=OPENSEC[railOf(sec)]===sec.dataset.sec;
+  var on=!!OPENSEC[railOf(sec)][sec.dataset.sec];
   sec.classList.toggle('open',on);
   var hd=sec.querySelector('.lsec-hd');if(hd)hd.setAttribute('aria-expanded',on?'true':'false');});}
 
@@ -231,11 +245,30 @@ function poleOf(o){
  if(!fs.length)return 0; var t=0; fs.forEach(function(f){t+=(S.replace[f]||0);}); return t/fs.length;}
 function railStack(r){
  var e=document.getElementById('stack'); if(!e)return;
- var TABS=[['fet','Fetters',CHILD.length],['sab','Saboteurs',r.sabs.length],['cx','Complexes',r.cxs.length],
-  ['hy','Hyper',r.hys.length],['sup','Character',r.sups.length]];
+ /* THE STACK CARRIES ITS SYMBOLS. Every named thing in this product has a
+    glyph and these five rungs were the last strip without one. The glyphs are
+    the chain itself: one ring is a fetter, two locked rings a saboteur, three
+    a complex, a lattice a hyper complex, and a filled silhouette the character
+    layer, which is the one a person cannot see as separate from themselves. */
+ var TABS=[
+  ['fet','Fetters',CHILD.length,
+   'M12 4.5a3.6 3.6 0 013.6 3.6v7.8a3.6 3.6 0 01-7.2 0V8.1A3.6 3.6 0 0112 4.5'],
+  ['sab','Saboteurs',r.sabs.length,
+   'M8.6 4.8a3.4 3.4 0 013.4 3.4v3.4a3.4 3.4 0 01-6.8 0V8.2a3.4 3.4 0 013.4-3.4'
+   +'M15.4 12.4a3.4 3.4 0 013.4 3.4a3.4 3.4 0 01-6.8 0a3.4 3.4 0 013.4-3.4'],
+  ['cx','Complexes',r.cxs.length,
+   'M9 6.6a3 3 0 110 6 3 3 0 010-6M15 6.6a3 3 0 110 6 3 3 0 010-6'
+   +'M12 12.8a3 3 0 110 6 3 3 0 010-6'],
+  ['hy','Hyper',r.hys.length,
+   'M12 3.2l7.6 4.4v8.8L12 20.8 4.4 16.4V7.6zM12 3.2v17.6M4.4 7.6l15.2 8.8'
+   +'M19.6 7.6L4.4 16.4'],
+  ['sup','Character',r.sups.length,
+   'M12 3.4a8.6 8.6 0 100 17.2 8.6 8.6 0 000-17.2M12 7.6a4.4 4.4 0 110 8.8 4.4 4.4 0 010-8.8']];
  var h='<div class="stk-tabs" role="tablist">'+TABS.map(function(t){
   return '<button type="button" role="tab" class="stk-t'+(STACK_TAB===t[0]?' on':'')+'" data-st="'+t[0]+'" '
-   +'aria-selected="'+(STACK_TAB===t[0])+'">'+t[1]+(t[2]?' <b>'+t[2]+'</b>':'')+'</button>';}).join('')+'</div>';
+   +'aria-selected="'+(STACK_TAB===t[0])+'" title="'+esc(t[1])+'">'
+   +svgI('<path d="'+t[3]+'"/>')
+   +'<span>'+t[1]+'</span>'+(t[2]?' <b>'+t[2]+'</b>':'')+'</button>';}).join('')+'</div>';
  if(STACK_TAB==='fet'){
   /* ONE WORD PER CONCEPT. This header said held and installed, the rail four
      inches to the left said held and opposite, and the owner asked what either
@@ -327,12 +360,23 @@ function railTop(r){
  /* the ring draws empty and the tail carries a dash, for the same reason the
     core does: the word beside it already says not read yet, and a percentage
     beside that word is the contradiction the word exists to prevent. */
+ /* THE BAND WORD SAYS WHAT IT MEANS, ON THE SCREEN.
+
+    It printed "42%" and "Oscillating" side by side and the definition lived in
+    a title attribute, which is not a route on the device most of this audience
+    arrives on and is not a route for anybody in a hurry. A word this product
+    puts on a person has to carry its own meaning where it is said.
+
+    One line, in plain words, from the same table the drill reads. */
+ var td=r.unread?null:TIER_BY[r.tier];
  e.innerHTML=cr(r.darkB, r.unread?0:r.CQ, {size:'sm', label:'coherence',
    raw:r.unread?'\u2013':undefined})
-  +'<span class="rt-t">'+esc(r.unread?'not read yet':r.tier)+'</span>';
+  +'<span class="rt-t">'+esc(r.unread?'not read yet':r.tier)+'</span>'
+  +'<span class="rt-d">'+esc(r.unread
+    ? 'Nothing entered yet. Write what happened and this fills in.'
+    : (td?td.def:''))+'</span>';
  /* the label never stands alone: hovering it gives the definition and the
     direction, and clicking the strip opens the whole thing. */
- var td=r.unread?null:TIER_BY[r.tier];
  e.title=td?(td.nm+'. '+td.def+' '+td.energy+' Toward: '+td.toward)
   :'Nothing has been read yet. Write a story or set a charge.';}
 function render(){
@@ -427,15 +471,41 @@ function render(){
     +'<span><b>Energy</b></span></button>';
  /* who. proportions, not one label. */
  (function(){
-  var aff=(r.aff||[]).map(function(v,i){return {nm:(ARCH[i]||{}).nm||'',v:v};})
+  var aff=(r.aff||[]).map(function(v,i){return {i:i,nm:(ARCH[i]||{}).nm||'',v:v};})
    .filter(function(x){return x.nm;}).sort(function(a,b){return b.v-a.v;});
   var tot=aff.reduce(function(a,x){return a+x.v;},0)||1;
   var T=['First','Second','Third'];
   function row(k,n,pc){return '<div class="tierow"><span class="tk">'+k+'</span>'
    +'<span class="tn">'+n+'</span><span class="tp">'+pc+'</span></div>';}
-  var ah=aff.slice(0,3).map(function(x,i){return row(T[i],x.nm,Math.round(x.v/tot*100)+'%');}).join('');
+  /* A PERCENTAGE IS THE PERCENTAGE OBJECT, EVERYWHERE. Ruled, and this rail was
+     the last place still printing a bare figure: Innocent 21%, Everyman 19%,
+     as text, four inches from a surface where the same quantity is an icon, a
+     ring and a pill. The object carries its own glyph, so a person reading this
+     rail is also learning the symbol for the archetype. That is the point of
+     having one object. */
+  /* col, not band. A root domain's colour is a ROOT colour and seatCol only
+     knows the seven seats, so passing Architect where it wanted Heart resolved
+     to the alarm red and printed Imperium 100% in the colour this product
+     reserves for something being wrong. */
+  function prow(k,n,pct,col,glyph,title){
+   return '<div class="tierow pill"><span class="tk">'+k+'</span>'
+    +'<span class="tn">'+esc(n)+'</span>'
+    /* hot:false. cr() turns anything past the hot threshold into the alarm
+       colour, which is right for a charge and wrong for a share: one selected
+       domain is 100 percent of the selection and printed Imperium in the
+       colour this product reserves for something being wrong. A proportion is
+       never an alarm. */
+    +cr('Heart',pct,{size:'xs',raw:Math.round(pct)+'%',glyph:glyph,label:n,
+      title:title,color:col,hot:false})
+    +'</div>';}
+  var ah=aff.slice(0,3).map(function(x,i){
+   var A=ARCH[x.i]||{};
+   return prow(T[i],x.nm,x.v/tot*100,seatCol('Heart'),A.ic?'<path d="'+A.ic+'"/>':null,
+    x.nm+'. '+(A.v||'')+' Share of how the blueprint expresses.');}).join('');
   var dsh=S.doms.map(function(di,i){var d=DOMAINS[di];
-   return d?row(T[i]||'Also',d.nm,Math.round(100/(S.doms.length||1))+'%'):'';}).join('');
+   return d?prow(T[i]||'Also',d.nm,100/(S.doms.length||1),ROOTCOL[d.r],
+    d.ic?'<path d="'+d.ic+'"/>':null,
+    d.nm+', '+d.r+' root. '+(d.d||'')):'';}).join('');
   var held=W.filter(function(n){return n.sq>=4;}).length;
   var inst=W.filter(function(n){return n.pole>=4;}).length;
   /* WHERE TO START. Only while there is nothing to read, because a call to
@@ -463,11 +533,13 @@ function render(){
       a zero that is not true. */
    /* "nothing above the line" plus "74 under it" wrapped into four lines in a
       narrow column and read as broken text. One short value, one short note. */
-   +row('Held',held?held+' addresses':'nothing',
-     held?'':(r.under?r.under+' under the line':''))
-   +row('Installed',inst?inst+' addresses':'nothing','')
-   +row('Darkest',r.darkB,r.darkV.toFixed(1))
-   +row('Law shut',r.weakL.nm,'at the '+r.weakL.b.toLowerCase());})();
+   /* SAID OUT LOUD. These read "Held nothing" and "Installed nothing", which
+      is the schema talking. A person says what is there and what is not. */
+   +row('Carrying',held?held+' addresses':'nothing yet',
+     held?'':(r.under?r.under+' sitting under the line':''))
+   +row('Filled in',inst?inst+' addresses':'nothing yet','')
+   +row('Heaviest',r.darkB,r.darkV.toFixed(1))
+   +row('Most shut',r.weakL.nm,'at the '+r.weakL.b.toLowerCase());})();
  railStack(r); renderBal(r);
  $('rows').innerHTML='<span class="k">Instruments</span><br>'
   +'integrity <b>'+r.Ig.toFixed(1)+'</b><br>intention <b>'+r.It.toFixed(1)+'</b><br>'

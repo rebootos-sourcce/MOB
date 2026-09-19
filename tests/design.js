@@ -250,6 +250,65 @@ console.log('\n=== 8 \u00b7 the tap floor. 44 by 44, every interactive element. 
  await page3.close();
 }
 
+console.log('\n=== 9 \u00b7 four lightings, each its own ===');
+/* A lighting is not a skin. Each has to resolve its own tokens and produce its
+   own ground, and nothing checked that: snow was asserted by the shots tool and
+   the other three were never measured at all.
+
+   WHAT THIS GATE DOES NOT DO, stated rather than implied. It does not score
+   contrast per lighting. Two probes tried: a regex that only knew rgb() read
+   null from the color-mix grounds Punch and Glass build and fell back to its
+   own defaults, so all four reported identical; a canvas readback did no
+   better on oklab. Contrast on a computed ground needs pixel sampling from a
+   real screenshot, which is a different tool than this one. Gate 4 holds the
+   type floor and the measured contrast work is recorded in REVIEW-fields.md.
+   A number this gate cannot stand behind is worse than no number. */
+{
+ const p4=await browser.newPage({viewport:{width:1600,height:1000}});
+ await p4.goto(FILE,{waitUntil:'load'}); await p4.waitForTimeout(900);
+ const lit=await p4.evaluate(async()=>{
+  const out={};
+  for(const b of [...document.querySelectorAll('#themes button')]){
+   const nm=(b.getAttribute('aria-label')||'').replace(' theme','');
+   b.click(); loadP(6); setTab(TAB.FIELD);
+   await new Promise(r=>setTimeout(r,220));
+   const cs=getComputedStyle(document.body);
+   out[nm]={cls:document.body.className.split(' ').filter(x=>!/^tab-/.test(x)).join(' '),
+    theme:S.theme,
+    /* the DECLARED token, not the computed colour. getComputedStyle on the
+       body reported the dark ground for snow and the punch ground for glass,
+       while shots.js proves snow renders light at rgb(237,235,230) and the
+       body class is demonstrably correct. Reading the token compares what each
+       lighting declares, needs no colour parsing, and cannot be wrong about
+       which rule won. */
+    bg:cs.getPropertyValue('--bg').trim(),
+    ink:cs.getPropertyValue('--ink').trim(),
+    panel:cs.getPropertyValue('--panel').trim(),
+    edge:cs.getPropertyValue('--edge').trim(),
+    accent:cs.getPropertyValue('--accent').trim()};}
+  return out;});
+ const names=Object.keys(lit);
+ ok(names.length===4,'four lightings, got '+names.length+': '+names.join(', '));
+ names.forEach(nm=>{
+  const L=lit[nm];
+  ok(!!L.panel&&!!L.edge&&!!L.ink&&!!L.accent,
+   nm+': resolves its own tokens');
+  ok(L.ink!==L.bg,nm+': ink and ground are not the same colour');
+  console.log('  '+nm.padEnd(7),'['+(L.cls||'default')+'] --bg '+L.bg.slice(0,34));});
+ /* four lightings that produce three grounds means one of them is not a
+    lighting. This is the check that would have caught Glass inheriting Dark. */
+ const grounds=new Set(names.map(n=>lit[n].bg));
+ ok(grounds.size===4,'four distinct grounds, got '+grounds.size);
+ const inks=new Set(names.map(n=>lit[n].ink));
+ ok(inks.size>=2,'and the ink moves with them, got '+inks.size+' distinct');
+ /* the accent is one value across every lighting but snow, which deepens it
+    to hold against paper. That is the ruling and this is where it is held. */
+ ok(lit.Dark.accent===lit.Punch.accent&&lit.Dark.accent===lit.Glass.accent,
+  'the accent is one value on every dark lighting');
+ ok(lit.Snow.accent!==lit.Dark.accent,'and deepens on paper');
+ await p4.close();
+}
+
 await browser.close();
 console.log('\n===== '+PASS+' passed, '+FAIL+' failed =====');
 process.exit(FAIL?1:0);

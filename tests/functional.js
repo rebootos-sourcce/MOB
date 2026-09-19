@@ -569,12 +569,16 @@ console.log(' ',JSON.stringify(core));
 console.log('\n=== the fetters grow, and one of them runs a protocol ===');
 /* The shell resolved nothing on zoom: an address was a tick at every
    magnification, so coming in gave a bigger tick and no more information. */
+/* n.disp eases toward n.sq at 0.14 a frame, and the address depth is drawn
+   from disp, so a reading taken before it settles is a reading of an animation
+   in progress. Measured: the same address came back 13.3 on both zooms because
+   both were read mid-ease. Let it land. */
 await page.evaluate(()=>{loadP(6);setTab(TAB.FIELD);});
-await page.waitForTimeout(280);
+await page.waitForTimeout(900);
 const fet={steps:await page.evaluate(()=>FET_STEP.slice())};
 for(const [k,z] of [['z1',1],['z28',2.8],['z46',4.6]]){
  await page.evaluate(zz=>{S.zoom=zz;S.panx=0;S.pany=0;reframe();render();},z);
- await page.waitForTimeout(240);
+ await page.waitForTimeout(420);
  fet[k]=await page.evaluate(()=>{
   const hits=HIT.filter(h=>h.k==='node');
   /* the heaviest address, and how deep its target now reaches */

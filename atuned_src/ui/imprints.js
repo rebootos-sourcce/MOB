@@ -64,7 +64,10 @@ function impRender(){
  h+='<button class="ip-max" id="impmax" title="'+(IMP_BIG?'shrink':'full width')+'">'
   +(IMP_BIG?'⤡':'⤢')+'</button></div></div>';
  if(!live.length&&!ghosts.length){
-  h+='<div class="ip-none">Nothing held. Write in the box and it gathers here.</div>';
+  /* "Nothing held. Write in the box and it gathers here." is the product
+     talking to itself. A person says: I have not written anything yet. */
+  h+='<div class="ip-none">You have not written anything yet. '
+   +'Whatever you write gets pulled apart and collected here.</div>';
   host.innerHTML=h; impWire(); return;}
  function cloud(list,gl){var s='<div class="ip-cloud">';
   list.forEach(function(n){s+=impPill(n,maxW,IX,gl?gl[n.i]:0);});return s+'</div>';}

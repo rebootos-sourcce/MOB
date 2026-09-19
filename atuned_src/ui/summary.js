@@ -156,7 +156,7 @@ function sumStory(r){
   +(r.excess?' Installed pole is past the point where it pays, so some of the work is now costing.':'')
   +gapLine);
 
- return '<div class="s-story"><div class="pm-eye">The reading</div>'
+ return '<div class="s-story"><div class="pm-eye">Reading</div>'
   +p.map(function(t){return '<p class="s-p">'+t+'</p>';}).join('')
   +'<p class="s-src">Written from the nine axes, the twenty one laws, the blueprint and '
   +'the birth data. Nothing here is generated from anything the instrument has not measured.</p>'

@@ -17,7 +17,7 @@
    No library and no new dependency. Its own canvas, its own
    context, and an axonometric projection in about forty lines.
    ============================================================ */
-var CONE={open:false, tab:false, spin:0.6, tilt:0.60, drag:null, raf:null, t:0, cv:null, g:null, dpr:1};
+var CONE={open:false, tab:false, spin:0.6, tilt:0.60, drag:null, raf:null, t:0, cv:null, g:null, dpr:1, hits:[]};
 /* THE HEIGHT BUDGET. A tilted ring reaches lower than the axis point it sits
    on, by its own radius times the sine of the tilt, so a figure sized against
    the axis alone puts its floor names off the bottom of the canvas. The budget
@@ -39,7 +39,22 @@ function conePtA(q,a,W,H){
  var cx=W/2, cy=H/2, U=Math.min(W,H)/2;
  var t=(clamp(q,0,100)-50)/50;                    /* -1 at the floor, 1 at the crown */
  var y=t*U*CONE_H;
- var rad=U*(CONE_NECK+Math.abs(t)*CONE_FLARE);
+ /* THE FIGURE IS TERMINATED AT BOTH ENDS. Ruled.
+
+    It was two true cones opening away from the waist, so the widest part of
+    the drawing was the two extremes and the figure ran off its own ends with
+    nothing closing them. Source and the blueprint are points, not openings:
+    a person at a hundred is at one place, and a person at zero is at one
+    place. Width is how far a behaviour has travelled from the quality it
+    started as, and at either pole there is nowhere left to have travelled.
+
+    So the radius opens out of the neck, reaches its widest around two thirds
+    of the way to each pole, and closes to a point at both. A spindle rather
+    than an hourglass. The neck survives because the median range is the one
+    part of the scale most people are standing in and it needs width to be
+    read as a band. */
+ var at=Math.abs(t);
+ var rad=U*(CONE_NECK*(1-at) + CONE_FLARE*Math.sin(at*Math.PI));
  var th=a+CONE.spin;
  var x3=Math.cos(th)*rad, z3=Math.sin(th)*rad;
  return {x:cx+x3,
@@ -56,6 +71,7 @@ function coneDraw(){
  var ink=INK(), gc=GOLDC(), rc=hx(PAL.Root);
  g.setTransform(CONE.dpr,0,0,CONE.dpr,0,0);
  g.clearRect(0,0,W,H);
+ CONE.hits=[];
  var r=compute(), cq=r.unread?null:clamp(r.CQ,0,100);
 
  /* the rings, painted from the back so the near edge lands on top */
@@ -108,9 +124,39 @@ function coneDraw(){
    g.beginPath(); g.arc(h.p.x,h.p.y,near?5:3.6,0,Math.PI*2);
    g.fillStyle=rgba(h.c,a); g.fill();}
   /* the coherent pole above, the inverted pole below, on the same meridian */
-  var up=conePt(100,h.i,W,H), dn=conePt(0,h.i,W,H);
-  coneTxt(g,h.m.up,up.x,up.y-11,near?12.5:11,gc,near?.95:.28,600);
-  coneTxt(g,h.m.dn,dn.x,dn.y+17,near?12.5:11,rc,near?.9:.26,600);
+  /* THE NAMES COME OFF THE POLES.
+
+     Closing the figure at both ends made every meridian converge on one point,
+     so eight teachers stacked on top of each other at the crown and eight
+     inversions at the floor. Terminating the ends is right and putting names
+     on a point is not.
+
+     Each name now sits at the widest part of its own meridian, around four
+     fifths of the way out, which is the one place on that meridian where it
+     has room and where the figure is actually saying something: the widest
+     point is the furthest a behaviour on that axis has travelled from the
+     quality it started as. The poles keep Source and the blueprint, which are
+     the two things that genuinely are single points. */
+  var up=conePt(91,h.i,W,H), dn=conePt(9,h.i,W,H);
+  var hv=CONE.hover&&CONE.hover.m===h.m?CONE.hover.end:null;
+  var uo=(up.x<W/2?-1:1), dof=(dn.x<W/2?-1:1);
+  /* the name runs away from the figure, so it never starts on top of its own
+     glyph. Centred text on a radial layout is what put them in the same
+     place. */
+  coneTxt(g,h.m.up,up.x+uo*22,up.y-4,near?12:10.5,gc,hv==='up'?1:(near?.95:.30),600,
+   uo<0?'right':'left');
+  coneTxt(g,h.m.dn,dn.x+dof*22,dn.y+6,near?12:10.5,rc,hv==='dn'?1:(near?.9:.28),600,
+   dof<0?'right':'left');
+  /* the glyph, on the figure side of the name, so the two read as one object.
+     every named thing in this product carries a symbol and these were the
+     last sixteen without one. */
+  coneGlyph(g,h.m.ic, up.x+uo*10,up.y-5,gc,hv==='up'?1:(near?.88:.26));
+  coneGlyph(g,h.m.dic,dn.x+dof*10,dn.y+6,rc,hv==='dn'?1:(near?.85:.24));
+  /* AND THEY ARE TARGETS. Clicking a name did nothing at all: the whole
+     figure had no hit testing, so eight teachers and eight inversions were
+     drawn as though they were buttons and were not. */
+  CONE.hits.push({x:up.x+uo*22,y:up.y-4,r:30,m:h.m,end:'up'});
+  CONE.hits.push({x:dn.x+dof*22,y:dn.y+6,r:30,m:h.m,end:'dn'});
   /* the quality is named on the three nearest only. eight at once on a figure
      this size is a pile, and a pile is not a reading. */
   if(h.rank<3)coneTxt(g,h.m.q.toLowerCase(),h.p.x,h.p.y-12,10.5,h.c,.85,400);});
@@ -137,13 +183,30 @@ function coneDraw(){
   g.beginPath(); g.arc(W/2,my,7,0,Math.PI*2);
   g.fillStyle=rgba(cq>=50?gc:rc,.95); g.fill();
   coneTxt(g,String(Math.round(cq)),W/2+18,my+4,15,cq>=50?gc:rc,1,500);}}
-function coneTxt(g,s,x,y,size,c,a,w){
+/* one pole glyph, on the 24 unit grid every other icon in this product uses */
+function coneGlyph(g,p,x,y,c,a){
+ if(!p||a<0.06)return;
+ var sc=17/24;
+ g.save(); g.translate(x-17/2,y-17/2); g.scale(sc,sc);
+ g.strokeStyle=rgba(c,a); g.lineWidth=1.8/sc;
+ g.lineJoin='round'; g.lineCap='round'; g.fillStyle='transparent';
+ try{g.stroke(new Path2D(p));}catch(e){}
+ g.restore();}
+function coneTxt(g,s,x,y,size,c,a,w,align){
  g.save(); g.font=(w||400)+' '+size+"px Inter, system-ui, sans-serif";
- g.textAlign='center'; g.textBaseline='middle';
+ g.textAlign=align||'center'; g.textBaseline='middle';
  g.fillStyle=rgba(c,a); g.fillText(s,x,y); g.restore();}
 /* the wheel's own address list, named once so the cone does not reach for a
    global whose name might move */
 function W_ADDR(){return W;}
+/* nearest pole under the pointer, or nothing. Drawn front to back, so the
+   nearest match wins rather than the first one found. */
+function coneHit(x,y){
+ var best=null,bd=1e9;
+ (CONE.hits||[]).forEach(function(h){
+  var d=Math.hypot(x-h.x,y-h.y);
+  if(d<=h.r&&d<bd){bd=d;best=h;}});
+ return best;}
 function coneLayout(){
  var c=CONE.cv; if(!c)return;
  var b=c.getBoundingClientRect();
@@ -169,23 +232,44 @@ function coneOpen(inTab){
   +(inTab?'':'<button class="btn" id="conex">Close</button>')+'</div>'
   +'<canvas id="conecv" class="cone-cv" role="img" '
   +'aria-label="Two cones meeting at the median. Eight axes, each with a coherent pole above and its inversion below."></canvas>'
-  +'<p class="cone-p">Eight qualities, each with its coherent pole at the crown and its '
-  +'inversion at the floor. The cones widen as they go, and the widening is the distance a '
-  +'behaviour has travelled from the quality it started as. The waist is the median range. '
-  +'Drag to turn it.</p></div>';
+  +'<p class="cone-p">Eight qualities. Each one runs clean at the crown and inverted at '
+  +'the floor, and the same behaviour sits at both ends. The figure is widest where a '
+  +'behaviour has travelled furthest from the quality it started as, and it closes to a '
+  +'point at each end, because Source and the blueprint are single places. The waist is '
+  +'the median range. Drag to turn it. Click any name to read that axis.</p></div>';
  CONE.cv=document.getElementById('conecv');
  CONE.g=CONE.cv?CONE.cv.getContext('2d'):null;
  coneLayout(); coneTick();
  var x=document.getElementById('conex'); if(x)x.onclick=coneClose;
  if(CONE.cv){
   CONE.cv.onpointerdown=function(e){CONE.drag={x:e.clientX,y:e.clientY,
-   s:CONE.spin,t:CONE.tilt}; CONE.cv.setPointerCapture(e.pointerId);};
-  CONE.cv.onpointermove=function(e){ if(!CONE.drag)return;
+   s:CONE.spin,t:CONE.tilt,moved:false};
+   /* a pointer that has already been released cannot be captured, and the
+      throw would take the handler down with it. The wheel learned this. */
+   try{CONE.cv.setPointerCapture(e.pointerId);}catch(err){}};
+  /* what is under the pointer, so a pole lights before it is pressed */
+  CONE.cv.onpointermove=function(e){
+   var b=CONE.cv.getBoundingClientRect();
+   var x=e.clientX-b.left, y=e.clientY-b.top;
+   if(!CONE.drag){
+    var h=coneHit(x,y);
+    CONE.cv.style.cursor=h?'pointer':'grab';
+    if(h!==CONE.hover){CONE.hover=h;coneDraw();}
+    return;}
+   CONE.drag.moved=CONE.drag.moved
+    ||Math.hypot(e.clientX-CONE.drag.x,e.clientY-CONE.drag.y)>4;
    CONE.spin=CONE.drag.s+(e.clientX-CONE.drag.x)*0.008;
    /* the vertical never tilts past the point where up stops reading as up */
    CONE.tilt=clamp(CONE.drag.t+(e.clientY-CONE.drag.y)*0.004,0.08,0.92);
    coneDraw();};
-  CONE.cv.onpointerup=CONE.cv.onpointercancel=function(){CONE.drag=null;};}
+  CONE.cv.onpointerup=function(e){
+   var was=CONE.drag; CONE.drag=null;
+   if(was&&!was.moved){
+    var b=CONE.cv.getBoundingClientRect();
+    var h=coneHit(e.clientX-b.left,e.clientY-b.top);
+    if(h)runTeacherDrill(h.m,h.end);}};
+  CONE.cv.onpointercancel=function(){CONE.drag=null;};
+  }
  addEventListener('resize',coneLayout);}
 function coneClose(){
  CONE.open=false; CONE.tab=false; CONE.drag=null;

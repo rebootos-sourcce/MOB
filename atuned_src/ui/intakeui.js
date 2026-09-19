@@ -10,7 +10,9 @@ var IQ_OPEN=null;
    field is still the seed and how much the person has moved. */
 function iqSeedBlock(p){
  var sd=p.seed, share=seedShare(p);
- var sel='<div class="iq-f"><label for="wtype">Type, if you know it</label>'
+ /* It said "Type, if you know it", which names nothing. It is a Myers-Briggs
+   four letter type and saying so costs one word and removes all the guessing. */
+ var sel='<div class="iq-f"><label for="wtype">Myers-Briggs</label>'
   +'<select id="wtype"><option value="">not said</option>'
   +TYPE16.map(function(t){return '<option value="'+t+'"'+(sd&&sd.type===t?' selected':'')+'>'+t+'</option>';}).join('')
   +'</select></div>';

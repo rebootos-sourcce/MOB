@@ -8,7 +8,8 @@
 function rdOpen(){var b=document.getElementById('rdrill');if(!b)return null;
  b.style.display='block';
  var none=document.getElementById('rdrill-none'); if(none)none.style.display='none';
- if(typeof OPENSEC==='object'&&OPENSEC){OPENSEC.right='sel';
+ /* open Selection, and leave open whatever else the person had open. */
+ if(typeof OPENSEC==='object'&&OPENSEC&&OPENSEC.right){OPENSEC.right.sel=1;
   if(typeof paintSections==='function')paintSections();}
  var sec=b.closest?b.closest('.lsec'):null;
  if(sec&&sec.scrollIntoView){
@@ -336,6 +337,42 @@ function runKbDrill(eyebrow,title,sub,body){
    That is the only reason the names earn their place: they carry
    the historical footprint, and the echo is in the room today.
    ============================================================ */
+/* ONE TEACHER, OR ONE INVERSION. Clicking a name on the compass did nothing,
+   because the figure had no hit testing at all: sixteen names were drawn as
+   though they were buttons and were not.
+
+   Named as behaviours, on the owner's standing ruling. Nothing here treats a
+   teacher or a demon as an entity. Each is one end of one axis and what the
+   reading says is how far along that axis this person currently sits. */
+function runTeacherDrill(m,end){
+ if(!m)return;
+ var up=(end!=='dn'), r=compute();
+ var nm=up?m.up:m.dn, d=up?m.upd:m.dnd, ic=up?m.ic:m.dic;
+ var other=up?m.dn:m.up, od=up?m.dnd:m.upd;
+ var load=(typeof flSeats==='function')
+  ?(flSeats().filter(function(x){return x.p.n===m.seat;})[0]||{load:0}).load:0;
+ var ig=(typeof bandIg==='function')?bandIg(m.seat):0;
+ var at=(typeof mirrorAt==='function')?mirrorAt(load,ig):null;
+ var h='<div class="pm-eye">'+esc(m.q)+(up?', at the crown':', at the floor')+'</div>'
+  +'<div class="ad-nm">'+(ic?'<svg class="ad-ic" viewBox="0 0 24 24" aria-hidden="true">'
+    +'<path d="'+ic+'"/></svg>':'')+esc(nm)+'</div>'
+  +'<div class="ad-sub">'+esc(m.seat)+' \u00b7 '
+  +(up?'the quality running clean':'the same quality, inverted')+'</div>'
+  +'<div class="pm-eye">What this is</div><p class="ad-p">'+esc(d)+'</p>'
+  +'<div class="pm-eye">The other end</div><p class="ad-p"><b>'+esc(other)+'</b>. '
+  +esc(od)+'</p>'
+  +'<div class="pm-eye">Where you sit on it</div><p class="ad-p">'
+  +(r.unread
+    ?'Nothing has been entered yet, so this axis has no reading. It is still the axis.'
+    :'The '+esc(String(m.seat).toLowerCase())+' is carrying <b>'
+     +Math.round(load*100)+'%</b> and its integrity reads <b>'+ig.toFixed(1)
+     +'</b> of 10.'+(at?' That puts you at <b>'+esc(at)+'</b> on this axis.':''))
+  +'</p>'
+  +'<div class="pm-eye">The question that separates them</div>'
+  +'<p class="ad-p">'+esc(m.ask||'')+'</p>'
+  +'<p class="ad-p">Neither of these is a being. Both are behaviours, and they '
+  +'are the same behaviour at two settings.</p>';
+ rdShell(h);}
 function runPoleDrill(end){
  var up=(end!=='dn'), r=compute();
  var h='<div class="pm-eye">'+(up?'The upward cone':'The downward cone')+'</div>'

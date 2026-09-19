@@ -162,8 +162,15 @@ VIEWS.forEach(function(v,i){
 const THEMEICON={
  dark:'M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z',
  snow:'M12 3v18M4.2 7.5l15.6 9M19.8 7.5l-15.6 9M12 7l-2.6-2.6M12 7l2.6-2.6M12 17l-2.6 2.6M12 17l2.6 2.6',
- punch:'M12 4a8 8 0 0 1 0 16zM12 12m-8 0a8 8 0 1 0 16 0a8 8 0 1 0-16 0'};
-[['dark','Dark'],['snow','Snow'],['punch','Punch']].forEach(function(t,i){
+ punch:'M12 4a8 8 0 0 1 0 16zM12 12m-8 0a8 8 0 1 0 16 0a8 8 0 1 0-16 0',
+ /* a pane at an angle with light coming off its edge. the one glyph that says
+    refraction rather than blur. */
+ glass:'M5.5 7.2l9-3.2v12.8l-9 3.2zM14.5 4l4 2.4v11.2l-4 2.4M5.5 7.2L9.6 9.4'};
+/* FOUR LIGHTINGS. Glass is the fourth, and it is the one aimed forward: the
+   direction the field is moving for 2027 and 2028 is holographic
+   skeuomorphism, which is refraction and real elevation rather than the blur
+   and white hairline everybody shipped in 2020. */
+[['dark','Dark'],['snow','Snow'],['punch','Punch'],['glass','Glass']].forEach(function(t,i){
  var b=document.createElement('button');b.type='button';
  b.setAttribute('aria-pressed',i===0);
  b.className='seg-i'; b.title=t[1]; b.setAttribute('aria-label',t[1]+' theme');
@@ -172,6 +179,7 @@ const THEMEICON={
  b.addEventListener('click',function(){S.theme=t[0];
   document.body.classList.toggle('snow',t[0]==='snow');
   document.body.classList.toggle('punch',t[0]==='punch');
+  document.body.classList.toggle('glass',t[0]==='glass');
   $('themes').querySelectorAll('button').forEach(function(x,j){x.setAttribute('aria-pressed',j===i);});
   var nw=$('lightnow'); if(nw)nw.textContent=t[1];
   rebuildSwatches();render();});
@@ -210,7 +218,16 @@ const THEMEICON={
 DOMAINS.forEach(function(d,i){
  var b=document.createElement('button');b.className='ib';b.type='button';
  b.style.setProperty('--c',ROOTCOL[d.r]);
- b.title=d.nm+', '+d.r+'. '+d.d+'. Shift-click to add.';
+/* THE TOOLTIP SAYS WHAT THE THING IS AND WHAT PRESSING IT DOES. It said
+    "Justice, Architect. <one line>. Shift-click to add." which names the thing
+    and then jumps straight to a keyboard trick, with nothing in between about
+    what a blueprint domain is or what selecting one changes. */
+ b.title=d.nm+'. A blueprint domain, one of nineteen, under the '+d.r+' root.\n\n'
+  +d.d+'\n\n'
+  +'Affinity 1.3 on '+((AFFIN[d.r]||[]).join(', ')||'nothing')+', which means charge on '
+  +'those axes weighs heavier here than elsewhere.\n\n'
+  +'Click to make this the blueprint you run. Shift-click to add it alongside '
+  +'the ones already selected.';
  b.setAttribute('aria-label',d.nm+', '+d.r+' cluster');
  b.innerHTML=svgI('<path d="'+d.ic+'"/>')
   +'<span class="rt" style="background:'+ROOTCOL[d.r]+'"></span>';
@@ -468,7 +485,7 @@ function helpSheet(){
   +'<div class="sh-row"><span>Open an address</span><b>click it</b></div>'
   +'<div class="sh-row"><span>Set a charge</span><b>drag it, on a mouse</b></div>'
   +'</div>'
-  +'<div class="sh-sec"><div class="pm-eye">The reading</div>'
+  +'<div class="sh-sec"><div class="pm-eye">Reading</div>'
   +'<p class="sh-p">CQ is coherence, 0 to 100, what the field builds against what it costs. '
   +'DQ is the shadow weight it is carrying. SQ is how deep that charge sits. Pole is how much '
   +'of the coherent opposite is installed. Hover any of them for the rest.</p></div>'

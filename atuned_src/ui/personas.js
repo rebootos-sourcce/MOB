@@ -191,8 +191,18 @@ function runAccDrill(){
   +'family from another. Laws sitting close together name nothing.</p>');}
 
 /* ---- personas ---- */
-PEOPLE.unshift({nm:'You',age:'',role:'build your own',dom:0,a1:0,a2:1,
- says:'Set the root, the archetypes, and the nine poled axes. Everything else derives.',
+/* CUSTOM, and a line a person can actually read.
+
+   It said "Set the root, the archetypes, and the nine poled axes. Everything
+   else derives." Nobody arriving at this software knows what any of that
+   means, and it was the first sentence on the first screen. Three internal
+   terms and a claim about derivation, addressed to somebody who has not been
+   told what a root is.
+
+   The replacement says what will happen, in the order it happens, using words
+   that carry their own meaning. */
+PEOPLE.unshift({nm:'You',age:'',role:'custom',dom:0,a1:0,a2:1,
+ says:'Nothing has been entered yet. Write what happened, or answer the questions, and this fills in.',
  /* This was 3 on every axis, and it is the persona the app opens on. So a
     stranger's first screen showed Fear 3.0, Anger 3.0, Shame 3.0 and the rest,
     three rows below a panel correctly saying nothing was held. Nobody entered
@@ -208,7 +218,7 @@ function lawsFor(p){ return p.law || LAWSET[p.nm] || {_:5.5}; }
  var mk=function(lab){var g=document.createElement('optgroup');g.label=lab;sel.appendChild(g);return g;};
  var gYou=null,gICP=null,gRef=null;
  PEOPLE.forEach(function(p,i){var o=document.createElement('option');o.value=i;
-  o.textContent=p.you?'build your own':(p.nm+', '+p.age+', '+p.role.replace(' · ICP',''));
+  o.textContent=p.you?'Custom':(p.nm+', '+p.age+', '+p.role.replace(' · ICP',''));
   if(p.you){gYou=gYou||mk('Your own');gYou.appendChild(o);}
   else if(/ICP/.test(p.role)){gICP=gICP||mk('ICPs');gICP.appendChild(o);}
   else {gRef=gRef||mk('Reference cases');gRef.appendChild(o);}});})();

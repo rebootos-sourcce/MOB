@@ -51,7 +51,8 @@
     <div class="gmenu-hd">Lighting</div>
     <div class="seg" id="themes"></div>
     <p class="gmenu-p">Dark is the default. Snow is the same instrument on
-     paper. Punch removes every outline and fills every shape.</p>
+     paper. Punch removes every outline and fills every shape. Glass puts the
+     panes in front of a moving ground and lets them refract it.</p>
    </div>
   </div>
   <button class="vt" id="helpbtn" type="button" title="How to read this, and what everything means">
@@ -97,20 +98,24 @@
     </div>
    </div>
    <div class="lsec" data-sec="fetters">
-    <button class="lsec-hd" type="button"><span>Child fetters</span><i></i></button>
+    <button class="lsec-hd" type="button"><span>Fetters</span><i></i></button>
     <div class="lsec-bd">
-     <div class="tier1">4 &middot; Child fetters <span>nine poled axes, held state then coherent opposite</span></div>
+     <!-- THE LABEL RULE, applied. One word where one word will do, and the
+     subtitle says what the control does rather than restating the schema.
+     "nine poled axes, held state then coherent opposite" is the data model
+     read aloud. -->
+     <div class="tier1">4 &middot; Fetters <span>nine feelings. the left slider is how much you carry it, the right is how much of its opposite is in place</span></div>
      <div class="bulk"><label for="allCh">held</label><input type="range" id="allCh" min="0" max="10" step="0.5" value="3"></div>
      <div class="bulk"><label for="allRep">opposite</label><input type="range" id="allRep" min="0" max="10" step="0.5" value="0"></div>
      <div id="chg"></div>
     </div>
    </div>
    <div class="lsec" data-sec="spirit">
-    <button class="lsec-hd" type="button"><span>Spiritual states</span><i></i></button>
+    <button class="lsec-hd" type="button"><span>States</span><i></i></button>
     <div class="lsec-bd"><div id="spirit"></div></div>
    </div>
    <div class="lsec" data-sec="matrix">
-    <button class="lsec-hd" type="button"><span>The matrix</span><i></i></button>
+    <button class="lsec-hd" type="button"><span>Matrix</span><i></i></button>
     <div class="lsec-bd">
      <div class="lbl">19 domains &times; 9 child fetters</div>
      <div class="mx" id="mx"></div>
@@ -175,7 +180,7 @@
    <div id="railtop" class="railtop"></div>
 
    <div class="lsec open" data-rail="right" data-sec="you">
-    <button class="lsec-hd" type="button"><span>The reading</span><i></i></button>
+    <button class="lsec-hd" type="button"><span>Reading</span><i></i></button>
     <div class="lsec-bd">
      <!-- Where to start. A field with nothing in it had a tooltip saying to
          write a story, which is rule 10 broken: a control with no affordance
@@ -198,19 +203,19 @@
    </div>
 
    <div class="lsec" data-rail="right" data-sec="flow">
-    <button class="lsec-hd" type="button"><span>Flow through</span><i></i></button>
+    <button class="lsec-hd" type="button"><span>Flow</span><i></i></button>
     <!-- the energy shelf. the original computed this every frame and then
          dropped it on the floor, because no element with this id existed. -->
     <div class="lsec-bd"><div id="eshelf"></div><div id="run"></div></div>
    </div>
 
    <div class="lsec" data-rail="right" data-sec="running">
-    <button class="lsec-hd" type="button"><span>What is running</span><i></i></button>
+    <button class="lsec-hd" type="button"><span>Running</span><i></i></button>
     <div class="lsec-bd"><div id="fire"></div></div>
    </div>
 
    <div class="lsec" data-rail="right" data-sec="laws">
-    <button class="lsec-hd" type="button"><span>21 laws of integrity</span><i></i></button>
+    <button class="lsec-hd" type="button"><span>Laws</span><i></i></button>
     <div class="lsec-bd">
      <div class="bulk"><label for="allLaw">all</label><input type="range" id="allLaw" min="0" max="10" step="0.5" value="6"></div>
      <div id="laws"></div>
