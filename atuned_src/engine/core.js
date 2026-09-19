@@ -104,7 +104,10 @@ const TABREAL=function(k){
    reading. Field is one click away and keeps its own integer. */
 const S={dom:0,doms:[0],arcs:[0,1],roots:[],a1:0,a2:1,charge:{},law:{},
  theme:'dark',hover:null,pin:null,t:0,replace:{},view:1,who:0,tab:TAB.SUMMARY,
- zoom:1,panx:0,pany:0};
+ /* atom: the one story weight being held on the wheel, past the fetter
+    layer. {i:node id, ei:entry index}, or null for none held. View state,
+    like pin and hover, so it is not persisted and not validated. */
+ zoom:1,panx:0,pany:0,atom:null};
 /* A stranger's first load used to seed every axis at 3, which produced CQ 36
    and the word Incoherent in the largest type on screen, beside a panel that
    correctly said nothing was held. The interval was never the problem. The

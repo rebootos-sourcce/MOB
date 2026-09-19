@@ -1166,6 +1166,119 @@ const leak=await page.evaluate(()=>{
  return bad;});
 ok(leak.length===0,'no key, customer id or card field is anywhere in the build: '+leak.join(', '));
 
+/* ============================================================
+   THE ATOM LAYER IS REACHABLE, AND IT DRAWS WHERE THE STORIES ARE
+
+   Three things had to be true at once and two of them were false when this
+   was first written, both silently.
+
+   The threshold sat at 5.20 and the zoom ceiling was 5, so the deepest layer
+   in the product could not be reached by any gesture. Every function in it
+   measured correctly and none of them ever ran.
+
+   And it was gated on the carrying floor. A story spreads its weight across
+   up to four addresses per seat and applyStory scales what lands by a third,
+   so two committed entries leave every touched address reading between 1.2
+   and 2.8 against a floor of 4. The layer was invisible in exactly the case
+   it exists for.
+
+   So the gate zooms with the wheel rather than by assignment, which is the
+   only path that reframes, and it asserts the atoms are there after a story
+   that leaves nothing above the floor.
+   ============================================================ */
+{
+ console.log('\n=== the atom, past the fetters ===');
+ const pa=await browser.newPage({viewport:{width:1600,height:1000}});
+ await pa.goto(FILE,{waitUntil:'load'});
+ await pa.waitForTimeout(900);
+ const tabs=await pa.$$eval('.tabtop',a=>a.map(x=>x.textContent.trim()));
+ const go=async nm=>{await pa.$$eval('.tabtop',(a,i)=>a[i].click(),
+   tabs.findIndex(t=>new RegExp(nm,'i').test(t))); await pa.waitForTimeout(600);};
+ await go('Story');
+ await pa.fill('#sttext','I was humiliated in the meeting and I said nothing. '
+  +'My chest went tight and I felt ashamed the rest of the day.');
+ await pa.waitForTimeout(450);
+ await pa.evaluate(()=>{const e=document.getElementById('stapply');if(e)e.click();});
+ await pa.waitForTimeout(700);
+ const ents=await pa.evaluate(()=>((window.CURP&&CURP.story&&CURP.story.entries)||[]).length);
+ ok(ents===1,'the story committed, entries '+ents);
+ const idx=await pa.evaluate(()=>Object.keys(atomIndex()||{}).length);
+ ok(idx>0,'re-reading the entry gives back its imprints, '+idx+' addresses');
+ /* AND NONE OF THEM IS ABOVE THE CARRYING FLOOR, which is the whole point.
+    Read from sq and not from disp: disp is the eased display value and it
+    does not exist until the wheel has drawn a frame, so asking for it from
+    the Story tab throws on undefined.toFixed. The probe, not the product. */
+ const below=await pa.evaluate(()=>Object.keys(atomIndex()||{})
+   .every(k=>{const n=BY[+k];return n&&n.sq<4;}));
+ ok(below,'and they sit under the carrying floor, where the old gate hid them');
+
+ await go('Field');
+ const box=await (await pa.$('#cv')).boundingBox();
+ /* THROUGH THE GESTURE, AND ON THE RING.
+
+    Setting S.zoom and calling render leaves U at the old magnification,
+    because only setZoom reframes, so a probe that assigns it is testing a
+    state the product never enters.
+
+    And the anchor matters. Zoom is pointer anchored: whatever is under the
+    pointer stays under it. Zooming from the middle of the canvas magnifies
+    about the centre and pushes the whole shell out of the box, which is
+    correct and is not what anybody does. A person zooming into an address
+    puts the pointer on that address first. */
+ /* and on an address the story actually landed on. At this magnification the
+    visible slice of the ring is narrow, so zooming onto an arbitrary address
+    keeps that address and pushes the seven that have atoms out of the box.
+    Which is the instrument working: a person zooms into the thing they came
+    to look at. */
+ const onRing=await pa.evaluate(()=>{
+   const want=Object.keys(atomIndex()||{}).map(Number);
+   const h=HIT.filter(x=>x.k==='node'&&want.indexOf(x.n.i)>=0)[0];
+   if(!h)return null;
+   const a=(h.a0+h.a1)/2, r=(h.r0+h.r1)/2;
+   return {x:CX+Math.cos(a)*r,y:CY+Math.sin(a)*r};});
+ ok(!!onRing,'there is an address with a story on it to zoom into');
+ await pa.mouse.move(box.x+onRing.x,box.y+onRing.y);
+ for(let i=0;i<16;i++){await pa.mouse.wheel(0,-120);await pa.waitForTimeout(30);}
+ await pa.waitForTimeout(700);
+ /* AND THE BOX IS RE-READ AFTER ZOOMING. The depth readout appears under the
+    tab bar once zoom resolves a layer, which pushes the stage down, so a
+    bounding box taken before the zoom is stale by the height of that line.
+    Every pointer position built from it lands on the wrong address, which is
+    a probe reading its own arithmetic and blaming the product. */
+ const box2=await (await pa.$('#cv')).boundingBox();
+ const st=await pa.evaluate(()=>({z:S.zoom,a:atomA(),
+   hits:HIT.filter(h=>h.k==='atom').length,res:fetResolved()}));
+ ok(st.a>0,'the ceiling clears the threshold, zoom '+st.z.toFixed(2)+' alpha '+st.a.toFixed(2));
+ ok(st.hits>0,'and the atoms are targets, '+st.hits+' of them');
+ ok(/stories/.test(st.res),'the readout names the layer, got "'+st.res+'"');
+ /* HOVERING ONE NAMES THE STORY IN THE PERSON'S OWN WORDS.
+
+    Taking the first atom in HIT is not enough: at this magnification the ring
+    is far larger than the canvas and most of it is off screen, so the first
+    one landed at x 1494 on a canvas 920 wide. The pointer clamps to the box,
+    lands on the core, and the probe reports the core, which is the product
+    behaving correctly and the probe asking the wrong question. Pick one that
+    is actually on the canvas. */
+ const one=await pa.evaluate(()=>{
+   const cv=document.getElementById('cv'), b=cv.getBoundingClientRect();
+   const h=HIT.filter(x=>x.k==='atom'
+     &&x.x>12&&x.x<b.width-12&&x.y>12&&x.y<b.height-12)[0];
+   return h?{x:h.x,y:h.y}:null;});
+ if(one){
+  await pa.mouse.move(box2.x+one.x,box2.y+one.y);
+  await pa.waitForTimeout(350);
+  const txt=await pa.evaluate(()=>{const e=document.getElementById('probe');
+    return e&&e.classList.contains('on')?e.textContent:'';});
+  ok(/humiliated/.test(txt),'and it quotes the sentence that did it');
+  ok(/weighed/.test(txt),'and says what it weighed');
+  await pa.mouse.down(); await pa.mouse.up();
+  await pa.waitForTimeout(500);
+  const held=await pa.evaluate(()=>!!S.atom);
+  ok(held,'clicking holds it');
+ } else ok(false,'no atom to hover');
+ await pa.close();
+}
+
 await browser.close();
 
 console.log('\n===== '+PASS+' passed, '+FAIL+' failed =====');

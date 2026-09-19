@@ -34,6 +34,17 @@ function describe(h,r){
    +((AFFIN[r.root]||[]).indexOf(n.cf)>=0?'<br><b>1.3×</b> '+r.root+' affinity':'')
    +'<br>held <b>'+n.held.toFixed(1)+'</b>, opposite <b>'+n.rep.toFixed(1)+'</b>'
    +'<br><b>SQ '+n.sq.toFixed(1)+'</b><hr><b>Drag to change, click for detail.</b>';}
+ /* AN ATOM. One story, one address, one weight, which is the smallest true
+    unit this instrument holds. The snippet is the person's own sentence, so
+    it goes in their words and not in a summary of them. */
+ if(h.k==='atom'){var x=h.v,d='';
+  try{d=new Date(x.t).toLocaleDateString(undefined,{year:'numeric',month:'short',day:'numeric'});}
+  catch(e){d='';}
+  var snip=x.text.length>96?x.text.slice(0,96).replace(/\s\S*$/,'')+'\u2026':x.text;
+  return '<u>what put it here</u> <b>'+esc(h.n.k)+'</b><hr>'
+   +'<em>'+esc(snip)+'</em><hr>'
+   +(d?d+', ':'')+'weighed <b>'+x.amt.toFixed(1)+'</b> at this address'
+   +'<hr><b>Click to hold it.</b>';}
  if(h.k==='law'){var l=SI[h.j];
   return '<u>law</u> <b>'+l.nm+'</b><hr>seated at the '+l.b.toLowerCase()
    +'<br>reads <b>'+S.law[l.nm].toFixed(1)+'</b><hr><b>Click for detail.</b>';}
@@ -109,6 +120,12 @@ cv.addEventListener('pointerdown',function(e){
   else S.arcs=[h.j].concat(S.arcs.filter(function(z){return z!==h.j;}).slice(0,3));
   buildSoul();S.pin=null;syncSoul();saveYou();render();return;}
  if(h.k==='law'){S.pin=null;runLawDrill(SI[h.j]);render();return;}
+ /* an atom holds, and holding it lights that one line and opens what it is.
+    Pressing the one you are holding lets it go. */
+ if(h.k==='atom'){
+  var held=S.atom&&S.atom.i===h.n.i&&S.atom.ei===h.v.ei;
+  S.atom=held?null:{i:h.n.i,ei:h.v.ei};
+  S.pin=null; if(!held)runAtomDrill(h.n,h.v); render(); return;}
  /* the core is grab space. A press on it arms the pan above, and pointerup
     opens the reading only if the pointer never moved. Opening it here as well
     meant the drill fired on press and the drag never happened. */
@@ -146,7 +163,12 @@ function paintDepth(){
   note.textContent=parts.join(' \u00b7 ');
   note.style.display=parts.length?'':'none';}}
 function setZoom(z,ax,ay){
- var lo=1, hi=5, nz=Math.max(lo,Math.min(hi,z));
+ /* THE CEILING HAS TO CLEAR THE DEEPEST LAYER, or the deepest layer does not
+    exist. The ceiling was five and the atoms open at 5.20, so the one thing
+    past the fetters could not be reached by any gesture and the layer was
+    dead code that measured correctly. A threshold above the ceiling is a
+    feature nobody can get to. */
+ var lo=1, hi=7, nz=Math.max(lo,Math.min(hi,z));
  if(nz===S.zoom)return;
  var wx=(ax-CX)/U, wy=(ay-CY)/U;
  S.zoom=nz; reframe();
@@ -476,14 +498,22 @@ function render(){
       still draws, because an empty ring is the honest picture of an empty
       field, and the tail carries a dash rather than a number nobody entered. */
    '<button class="kb" data-q="cq" title="Coherence. 0 to 100. What the field builds against what it costs.">'
-    +cr('Crown',r.unread?0:r.CQ,{size:'xs',label:'CQ',
+    /* HOT IS FOR A READING WHERE HIGH IS WRONG.
+
+       cr() reddens anything past the hot threshold, which is right for shadow
+       weight and depth and exactly backwards for every reading on this row
+       where high is the good end. Coherence at 100, vitality at 1.0 and flow
+       at 1.0 all printed in the colour this product reserves for something
+       being wrong. The domain pill had the same defect and was fixed the same
+       way: the pills that climb toward health say so. */
+    +cr('Crown',r.unread?0:r.CQ,{size:'xs',label:'CQ',hot:false,
       raw:r.unread?'\u2013':undefined})+'<span><b>CQ</b></span></button>'
   +'<button class="kb" data-q="dq" title="Shadow weight. The summed charge across every address that is carrying.">'
     +cr('Root',clamp(r.DQ/14,0,1)*100,{size:'xs',raw:r.DQ.toFixed(1)})+'<span><b>DQ</b></span></button>'
   +'<button class="kb" data-q="sq" title="Segment depth. 0 to 10. How deep the held charge sits at the addresses carrying it.">'
     +cr(r.darkB,r.SQm*10,{size:'xs',raw:r.SQm.toFixed(1)})+'<span><b>SQ</b></span></button>'
   +'<button class="kb" data-q="pole" title="The coherent opposite, installed. 0 to 1 across the nine axes.">'
-    +cr('Heart',r.poleMean*100,{size:'xs',raw:r.poleMean.toFixed(2)})+'<span><b>Pole</b></span></button>'
+    +cr('Heart',r.poleMean*100,{size:'xs',hot:false,raw:r.poleMean.toFixed(2)})+'<span><b>Pole</b></span></button>'
   /* THE CONSOLE AVERAGED THREE READINGS AND SHOWED THE AVERAGE.
 
      One pill said Energy and behind it sat vitality, awareness and will,
@@ -503,19 +533,19 @@ function render(){
      Body page draws as a channel. It was computed and drawn there and read
      nowhere else. It reads here. */
   +'<button class="kb" data-q="xyz" title="Vitality. What is left after apathy and the shadow weight.">'
-    +cr('Solar',r.unread?0:r.X*100,{size:'xs',raw:r.unread?'\u2013':r.X.toFixed(2)})
+    +cr('Solar',r.unread?0:r.X*100,{size:'xs',hot:false,raw:r.unread?'\u2013':r.X.toFixed(2)})
     +'<span><b>Vitality</b></span></button>'
   +'<button class="kb" data-q="xyz" title="Awareness. Intention read against distortion.">'
-    +cr('3rd Eye',r.unread?0:r.Y*100,{size:'xs',raw:r.unread?'\u2013':r.Y.toFixed(2)})
+    +cr('3rd Eye',r.unread?0:r.Y*100,{size:'xs',hot:false,raw:r.unread?'\u2013':r.Y.toFixed(2)})
     +'<span><b>Awareness</b></span></button>'
   +'<button class="kb" data-q="xyz" title="Will. Integrity carried through a clear segment.">'
-    +cr('Root',r.unread?0:r.Z*100,{size:'xs',raw:r.unread?'\u2013':r.Z.toFixed(2)})
+    +cr('Root',r.unread?0:r.Z*100,{size:'xs',hot:false,raw:r.unread?'\u2013':r.Z.toFixed(2)})
     +'<span><b>Will</b></span></button>'
   +(function(){
     var f=flSpeed();
     return '<button class="kb" data-q="flow" title="Flow. What reaches the crown from the root, '
      +'every seat multiplied by the next.">'
-     +cr('Heart',r.unread?0:f*100,{size:'xs',raw:r.unread?'\u2013':f.toFixed(2)})
+     +cr('Heart',r.unread?0:f*100,{size:'xs',hot:false,raw:r.unread?'\u2013':f.toFixed(2)})
      +'<span><b>Flow</b></span></button>';})();
  /* who. proportions, not one label. */
  (function(){

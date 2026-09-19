@@ -252,6 +252,35 @@ function runXYZDrill(){
   +A.map(function(a){return '<div class="pm-eye">'+a[0]+'</div><p class="ad-p">'+a[3]+'</p>';}).join('');
  rdShell(h);}
 
+/* ONE ATOM. The smallest true unit this instrument holds: one story, one
+   address, one weight. Everything above it on the wheel is a sum of these.
+
+   It is the person's own sentence that did this, so the sentence is quoted
+   whole and not summarised, and the address it landed on is named with what
+   it is standing on and what it costs. */
+function runAtomDrill(n,x){
+ var d=''; try{d=new Date(x.t).toLocaleDateString(undefined,
+   {year:'numeric',month:'long',day:'numeric'});}catch(e){d='';}
+ var cf=CHILD.filter(function(y){return y.nm===n.cf;})[0];
+ var all=(atomIndex()||{})[n.i]||[];
+ var tot=all.reduce(function(a,y){return a+y.amt;},0);
+ var h='<div class="pm-eye">What put it here</div>'
+  +'<div class="ad-nm">'+esc(n.k)+'</div>'
+  +'<div class="pm-eye">Your words</div>'
+  +'<p class="ad-p"><em>'+esc(x.text)+'</em></p>'
+  +'<div class="pm-eye">What it weighed</div><p class="ad-p">'
+  +(d?'Written '+d+'. ':'')+'This entry put <b>'+x.amt.toFixed(1)+'</b> at this '
+  +'address'+(all.length>1?', out of <b>'+tot.toFixed(1)+'</b> from '+all.length
+    +' entries that landed here':'')+'.</p>'
+  +'<div class="pm-eye">The address</div><p class="ad-p">'
+  +esc(n.k)+' sits at the '+String(n.b).toLowerCase()+', on the <b>'
+  +esc(n.cf||'unrouted')+'</b> axis'+(cf&&cf.opp?', against <b>'+esc(cf.opp)+'</b>':'')
+  +'. It is holding <b>'+n.sq.toFixed(1)+'</b> and the opposite is installed at <b>'
+  +(n.pole||0).toFixed(1)+'</b>.</p>'
+  +(n.cf?'<div class="ad-acts"><button class="btn ad-prot" data-prot="'+n.i
+    +'">Run a release here</button></div>':'');
+ rdShell(h);}
+
 /* FLOW. WHAT REACHES THE CROWN FROM THE ROOT.
 
    The seven seats pass signal in series, so the throughput of the whole

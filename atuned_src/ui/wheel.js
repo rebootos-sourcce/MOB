@@ -131,7 +131,83 @@ function fetA(i){
  return Math.max(0,Math.min(1,(z-t)/(t*0.30)));}
 function fetOpen(){return Math.max(fetA(0),fetA(1));}
 function fetResolved(){
- return fetA(1)>0.5?'every fetter named':(fetA(0)>0.5?'the fetters':'');}
+ return atomA()>0.5?'the stories behind every address'
+  :(fetA(1)>0.5?'every fetter named':(fetA(0)>0.5?'the fetters':''));}
+
+/* ============================================================
+   THE ATOM. WHAT PUT THE CHARGE THERE.
+
+   Zoom already resolved the core into its parts and the shell into named
+   fetters, and then it stopped. Past the fetter layer there was nothing left
+   to find, which made the deepest magnification in the product the one that
+   said the least.
+
+   A fetter is not the bottom. A charge at an address was put there by
+   something a person wrote, and that is the smallest true unit this
+   instrument holds: one story, one address, one weight. So past the fetters,
+   each carrying address grows a line per story that landed on it, out along
+   its own radius, the length being what that story put there. Click one and
+   it names the story it came from and what it weighed.
+
+   Nothing new is measured. Every committed story is kept with its text, and
+   the sniffer is pure, so re-reading an entry gives back the same imprints it
+   gave when it was committed. No schema change and it works on profiles that
+   were saved before this existed.
+   ============================================================ */
+/* THE BAND HAS TO BE WIDER THAN ONE NOTCH OF THE WHEEL.
+
+   At 5.20 against a ceiling of 7 the atoms lived in a stretch of zoom one
+   wheel step wide: a person scrolling went 4.89, then 7, and never passed
+   through the layer at all, they arrived at the far side of it. A threshold
+   you can only land on by accident is not a threshold.
+
+   At 4.40 the layer opens as the fetters finish naming themselves, which is
+   the right place for it: the fetter is the pattern and the atom is what put
+   the pattern there, so one resolves into the other. */
+const ATOM_STEP=4.40;
+function atomA(){
+ var z=S.zoom||1;
+ return Math.max(0,Math.min(1,(z-ATOM_STEP)/(ATOM_STEP*0.26)));}
+/* the atoms of one address, newest first, memoised against the entry count so
+   a parse per frame never happens. */
+var _ATOM={key:null,by:null};
+function atomIndex(){
+ var ents=(CURP&&CURP.story&&CURP.story.entries)||[];
+ var key=ents.length+':'+(CURP?CURP.id||CURP.nm||'':'');
+ if(_ATOM.key===key)return _ATOM.by;
+ var by={};
+ ents.forEach(function(e,ei){
+  if(!e||!e.text)return;
+  var im;
+  try{im=parseStory(e.text).imprints;}catch(err){return;}
+  im.forEach(function(x){
+   (by[x.node]=by[x.node]||[]).push({amt:x.amt,ei:ei,t:e.t,
+    text:String(e.text).replace(/\s+/g,' ').trim()});});});
+ Object.keys(by).forEach(function(k){
+  by[k].sort(function(a,b){return b.amt-a.amt;});});
+ _ATOM.key=key; _ATOM.by=by; return by;}
+/* ONE ADDRESS WORTH OF ATOMS. Lines out along the address's own radius, each
+   one as long as what that story put here, each one a target. */
+function atomGrow(n,a,hw,base,c,al){
+ var list=(atomIndex()||{})[n.i]; if(!list||!list.length)return;
+ var show=list.slice(0,6);
+ show.forEach(function(x,i){
+  /* fanned across the address so six do not stack into one line */
+  var off=(show.length===1)?0:((i/(show.length-1))-0.5)*hw*1.25;
+  var aa=a+off;
+  var len=clamp(x.amt/4,0.08,1)*U*0.085*al;
+  var r0=base+3, r1=r0+len;
+  var on=(S.atom&&S.atom.i===n.i&&S.atom.ei===x.ei);
+  g.beginPath();
+  g.moveTo(CX+Math.cos(aa)*r0,CY+Math.sin(aa)*r0);
+  g.lineTo(CX+Math.cos(aa)*r1,CY+Math.sin(aa)*r1);
+  g.strokeStyle=rgba(mixc(c,[255,255,255],on?.7:.28),al*(on?1:.55));
+  g.lineWidth=on?2.6:1.5; g.lineCap='round'; g.stroke();
+  /* the tip is the handle, and it is the thing a pointer can actually find */
+  g.beginPath(); g.arc(CX+Math.cos(aa)*r1,CY+Math.sin(aa)*r1,on?3.2:2,0,TAU);
+  g.fillStyle=rgba(mixc(c,[255,255,255],on?.8:.4),al*(on?1:.7)); g.fill();
+  HIT.push({k:'atom',n:n,x:CX+Math.cos(aa)*r1,y:CY+Math.sin(aa)*r1,rad:9,
+   v:x});});}
 /* how far in each layer is, 0 to 1, over a ramp of its own threshold. */
 function coreLayerA(i){
  var z=S.zoom||1, t=CORE_STEP[i];
@@ -473,6 +549,29 @@ function drawWheel(r,L){
   /* the target grows with the shape. r0 is where the address now starts. */
   HIT.push({k:'node',n,cx:CX,cy:CY,a0:a-hw,a1:a+hw,
    r0:Math.min(R.shell*.85,r0-4),r1:R.shell*1.02+(fn>0&&carrying?U*.05:0)});});
+
+ /* AND PAST THE FETTERS, WHAT PUT THE CHARGE THERE.
+
+    Two things had to be got right here and both were wrong first.
+
+    It was gated on carrying. A story spreads its weight across up to four
+    addresses per seat and applyStory scales what lands by a third, so two
+    committed entries left every touched address reading between 1.2 and 2.8
+    against a carrying floor of 4. The layer was invisible in exactly the
+    case it exists for. An atom is history and history does not stop being
+    true when the charge it left is small.
+
+    And it ran INSIDE the shell loop, before each address registered its own
+    hit. HIT is scanned backwards, so the address that was pushed after its
+    own atoms answered for all of them: hovering an atom named the address
+    and the atom could not be reached. It is its own pass now, after the
+    whole shell, which also puts the lines over the ring rather than under
+    it. */
+ {var aa2=atomA();
+  if(aa2>0)W.forEach(n=>{
+   const a=n.ang, ld=clamp(n.disp/10,0,1), carrying=n.disp>=4;
+   const hw=TAU/108*(.43+fg*.24);
+   atomGrow(n,a,hw,R_SHELL+3+(carrying?ld*U*.075*fn:0),nodeCol(n),aa2);});}
  pill('112 addresses · SQ · '+r.loaded.length+' loaded',R.shell+14);
  if(L>=1)BANDS.forEach(b=>{const seg=W.filter(n=>n.b===b);
   radialTxt(b,meanAng(seg.map(n=>n.ang)),R.shell*1.058,12,bc(b),.9,600);});

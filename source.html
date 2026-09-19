@@ -3731,7 +3731,10 @@ const TABREAL=function(k){
    reading. Field is one click away and keeps its own integer. */
 const S={dom:0,doms:[0],arcs:[0,1],roots:[],a1:0,a2:1,charge:{},law:{},
  theme:'dark',hover:null,pin:null,t:0,replace:{},view:1,who:0,tab:TAB.SUMMARY,
- zoom:1,panx:0,pany:0};
+ /* atom: the one story weight being held on the wheel, past the fetter
+    layer. {i:node id, ei:entry index}, or null for none held. View state,
+    like pin and hover, so it is not persisted and not validated. */
+ zoom:1,panx:0,pany:0,atom:null};
 /* A stranger's first load used to seed every axis at 3, which produced CQ 36
    and the word Incoherent in the largest type on screen, beside a panel that
    correctly said nothing was held. The interval was never the problem. The
@@ -6479,7 +6482,83 @@ function fetA(i){
  return Math.max(0,Math.min(1,(z-t)/(t*0.30)));}
 function fetOpen(){return Math.max(fetA(0),fetA(1));}
 function fetResolved(){
- return fetA(1)>0.5?'every fetter named':(fetA(0)>0.5?'the fetters':'');}
+ return atomA()>0.5?'the stories behind every address'
+  :(fetA(1)>0.5?'every fetter named':(fetA(0)>0.5?'the fetters':''));}
+
+/* ============================================================
+   THE ATOM. WHAT PUT THE CHARGE THERE.
+
+   Zoom already resolved the core into its parts and the shell into named
+   fetters, and then it stopped. Past the fetter layer there was nothing left
+   to find, which made the deepest magnification in the product the one that
+   said the least.
+
+   A fetter is not the bottom. A charge at an address was put there by
+   something a person wrote, and that is the smallest true unit this
+   instrument holds: one story, one address, one weight. So past the fetters,
+   each carrying address grows a line per story that landed on it, out along
+   its own radius, the length being what that story put there. Click one and
+   it names the story it came from and what it weighed.
+
+   Nothing new is measured. Every committed story is kept with its text, and
+   the sniffer is pure, so re-reading an entry gives back the same imprints it
+   gave when it was committed. No schema change and it works on profiles that
+   were saved before this existed.
+   ============================================================ */
+/* THE BAND HAS TO BE WIDER THAN ONE NOTCH OF THE WHEEL.
+
+   At 5.20 against a ceiling of 7 the atoms lived in a stretch of zoom one
+   wheel step wide: a person scrolling went 4.89, then 7, and never passed
+   through the layer at all, they arrived at the far side of it. A threshold
+   you can only land on by accident is not a threshold.
+
+   At 4.40 the layer opens as the fetters finish naming themselves, which is
+   the right place for it: the fetter is the pattern and the atom is what put
+   the pattern there, so one resolves into the other. */
+const ATOM_STEP=4.40;
+function atomA(){
+ var z=S.zoom||1;
+ return Math.max(0,Math.min(1,(z-ATOM_STEP)/(ATOM_STEP*0.26)));}
+/* the atoms of one address, newest first, memoised against the entry count so
+   a parse per frame never happens. */
+var _ATOM={key:null,by:null};
+function atomIndex(){
+ var ents=(CURP&&CURP.story&&CURP.story.entries)||[];
+ var key=ents.length+':'+(CURP?CURP.id||CURP.nm||'':'');
+ if(_ATOM.key===key)return _ATOM.by;
+ var by={};
+ ents.forEach(function(e,ei){
+  if(!e||!e.text)return;
+  var im;
+  try{im=parseStory(e.text).imprints;}catch(err){return;}
+  im.forEach(function(x){
+   (by[x.node]=by[x.node]||[]).push({amt:x.amt,ei:ei,t:e.t,
+    text:String(e.text).replace(/\s+/g,' ').trim()});});});
+ Object.keys(by).forEach(function(k){
+  by[k].sort(function(a,b){return b.amt-a.amt;});});
+ _ATOM.key=key; _ATOM.by=by; return by;}
+/* ONE ADDRESS WORTH OF ATOMS. Lines out along the address's own radius, each
+   one as long as what that story put here, each one a target. */
+function atomGrow(n,a,hw,base,c,al){
+ var list=(atomIndex()||{})[n.i]; if(!list||!list.length)return;
+ var show=list.slice(0,6);
+ show.forEach(function(x,i){
+  /* fanned across the address so six do not stack into one line */
+  var off=(show.length===1)?0:((i/(show.length-1))-0.5)*hw*1.25;
+  var aa=a+off;
+  var len=clamp(x.amt/4,0.08,1)*U*0.085*al;
+  var r0=base+3, r1=r0+len;
+  var on=(S.atom&&S.atom.i===n.i&&S.atom.ei===x.ei);
+  g.beginPath();
+  g.moveTo(CX+Math.cos(aa)*r0,CY+Math.sin(aa)*r0);
+  g.lineTo(CX+Math.cos(aa)*r1,CY+Math.sin(aa)*r1);
+  g.strokeStyle=rgba(mixc(c,[255,255,255],on?.7:.28),al*(on?1:.55));
+  g.lineWidth=on?2.6:1.5; g.lineCap='round'; g.stroke();
+  /* the tip is the handle, and it is the thing a pointer can actually find */
+  g.beginPath(); g.arc(CX+Math.cos(aa)*r1,CY+Math.sin(aa)*r1,on?3.2:2,0,TAU);
+  g.fillStyle=rgba(mixc(c,[255,255,255],on?.8:.4),al*(on?1:.7)); g.fill();
+  HIT.push({k:'atom',n:n,x:CX+Math.cos(aa)*r1,y:CY+Math.sin(aa)*r1,rad:9,
+   v:x});});}
 /* how far in each layer is, 0 to 1, over a ramp of its own threshold. */
 function coreLayerA(i){
  var z=S.zoom||1, t=CORE_STEP[i];
@@ -6821,6 +6900,29 @@ function drawWheel(r,L){
   /* the target grows with the shape. r0 is where the address now starts. */
   HIT.push({k:'node',n,cx:CX,cy:CY,a0:a-hw,a1:a+hw,
    r0:Math.min(R.shell*.85,r0-4),r1:R.shell*1.02+(fn>0&&carrying?U*.05:0)});});
+
+ /* AND PAST THE FETTERS, WHAT PUT THE CHARGE THERE.
+
+    Two things had to be got right here and both were wrong first.
+
+    It was gated on carrying. A story spreads its weight across up to four
+    addresses per seat and applyStory scales what lands by a third, so two
+    committed entries left every touched address reading between 1.2 and 2.8
+    against a carrying floor of 4. The layer was invisible in exactly the
+    case it exists for. An atom is history and history does not stop being
+    true when the charge it left is small.
+
+    And it ran INSIDE the shell loop, before each address registered its own
+    hit. HIT is scanned backwards, so the address that was pushed after its
+    own atoms answered for all of them: hovering an atom named the address
+    and the atom could not be reached. It is its own pass now, after the
+    whole shell, which also puts the lines over the ring rather than under
+    it. */
+ {var aa2=atomA();
+  if(aa2>0)W.forEach(n=>{
+   const a=n.ang, ld=clamp(n.disp/10,0,1), carrying=n.disp>=4;
+   const hw=TAU/108*(.43+fg*.24);
+   atomGrow(n,a,hw,R_SHELL+3+(carrying?ld*U*.075*fn:0),nodeCol(n),aa2);});}
  pill('112 addresses · SQ · '+r.loaded.length+' loaded',R.shell+14);
  if(L>=1)BANDS.forEach(b=>{const seg=W.filter(n=>n.b===b);
   radialTxt(b,meanAng(seg.map(n=>n.ang)),R.shell*1.058,12,bc(b),.9,600);});
@@ -9508,6 +9610,35 @@ function runXYZDrill(){
   +A.map(function(a){return '<div class="pm-eye">'+a[0]+'</div><p class="ad-p">'+a[3]+'</p>';}).join('');
  rdShell(h);}
 
+/* ONE ATOM. The smallest true unit this instrument holds: one story, one
+   address, one weight. Everything above it on the wheel is a sum of these.
+
+   It is the person's own sentence that did this, so the sentence is quoted
+   whole and not summarised, and the address it landed on is named with what
+   it is standing on and what it costs. */
+function runAtomDrill(n,x){
+ var d=''; try{d=new Date(x.t).toLocaleDateString(undefined,
+   {year:'numeric',month:'long',day:'numeric'});}catch(e){d='';}
+ var cf=CHILD.filter(function(y){return y.nm===n.cf;})[0];
+ var all=(atomIndex()||{})[n.i]||[];
+ var tot=all.reduce(function(a,y){return a+y.amt;},0);
+ var h='<div class="pm-eye">What put it here</div>'
+  +'<div class="ad-nm">'+esc(n.k)+'</div>'
+  +'<div class="pm-eye">Your words</div>'
+  +'<p class="ad-p"><em>'+esc(x.text)+'</em></p>'
+  +'<div class="pm-eye">What it weighed</div><p class="ad-p">'
+  +(d?'Written '+d+'. ':'')+'This entry put <b>'+x.amt.toFixed(1)+'</b> at this '
+  +'address'+(all.length>1?', out of <b>'+tot.toFixed(1)+'</b> from '+all.length
+    +' entries that landed here':'')+'.</p>'
+  +'<div class="pm-eye">The address</div><p class="ad-p">'
+  +esc(n.k)+' sits at the '+String(n.b).toLowerCase()+', on the <b>'
+  +esc(n.cf||'unrouted')+'</b> axis'+(cf&&cf.opp?', against <b>'+esc(cf.opp)+'</b>':'')
+  +'. It is holding <b>'+n.sq.toFixed(1)+'</b> and the opposite is installed at <b>'
+  +(n.pole||0).toFixed(1)+'</b>.</p>'
+  +(n.cf?'<div class="ad-acts"><button class="btn ad-prot" data-prot="'+n.i
+    +'">Run a release here</button></div>':'');
+ rdShell(h);}
+
 /* FLOW. WHAT REACHES THE CROWN FROM THE ROOT.
 
    The seven seats pass signal in series, so the throughput of the whole
@@ -11743,6 +11874,17 @@ function describe(h,r){
    +((AFFIN[r.root]||[]).indexOf(n.cf)>=0?'<br><b>1.3×</b> '+r.root+' affinity':'')
    +'<br>held <b>'+n.held.toFixed(1)+'</b>, opposite <b>'+n.rep.toFixed(1)+'</b>'
    +'<br><b>SQ '+n.sq.toFixed(1)+'</b><hr><b>Drag to change, click for detail.</b>';}
+ /* AN ATOM. One story, one address, one weight, which is the smallest true
+    unit this instrument holds. The snippet is the person's own sentence, so
+    it goes in their words and not in a summary of them. */
+ if(h.k==='atom'){var x=h.v,d='';
+  try{d=new Date(x.t).toLocaleDateString(undefined,{year:'numeric',month:'short',day:'numeric'});}
+  catch(e){d='';}
+  var snip=x.text.length>96?x.text.slice(0,96).replace(/\s\S*$/,'')+'\u2026':x.text;
+  return '<u>what put it here</u> <b>'+esc(h.n.k)+'</b><hr>'
+   +'<em>'+esc(snip)+'</em><hr>'
+   +(d?d+', ':'')+'weighed <b>'+x.amt.toFixed(1)+'</b> at this address'
+   +'<hr><b>Click to hold it.</b>';}
  if(h.k==='law'){var l=SI[h.j];
   return '<u>law</u> <b>'+l.nm+'</b><hr>seated at the '+l.b.toLowerCase()
    +'<br>reads <b>'+S.law[l.nm].toFixed(1)+'</b><hr><b>Click for detail.</b>';}
@@ -11818,6 +11960,12 @@ cv.addEventListener('pointerdown',function(e){
   else S.arcs=[h.j].concat(S.arcs.filter(function(z){return z!==h.j;}).slice(0,3));
   buildSoul();S.pin=null;syncSoul();saveYou();render();return;}
  if(h.k==='law'){S.pin=null;runLawDrill(SI[h.j]);render();return;}
+ /* an atom holds, and holding it lights that one line and opens what it is.
+    Pressing the one you are holding lets it go. */
+ if(h.k==='atom'){
+  var held=S.atom&&S.atom.i===h.n.i&&S.atom.ei===h.v.ei;
+  S.atom=held?null:{i:h.n.i,ei:h.v.ei};
+  S.pin=null; if(!held)runAtomDrill(h.n,h.v); render(); return;}
  /* the core is grab space. A press on it arms the pan above, and pointerup
     opens the reading only if the pointer never moved. Opening it here as well
     meant the drill fired on press and the drag never happened. */
@@ -11855,7 +12003,12 @@ function paintDepth(){
   note.textContent=parts.join(' \u00b7 ');
   note.style.display=parts.length?'':'none';}}
 function setZoom(z,ax,ay){
- var lo=1, hi=5, nz=Math.max(lo,Math.min(hi,z));
+ /* THE CEILING HAS TO CLEAR THE DEEPEST LAYER, or the deepest layer does not
+    exist. The ceiling was five and the atoms open at 5.20, so the one thing
+    past the fetters could not be reached by any gesture and the layer was
+    dead code that measured correctly. A threshold above the ceiling is a
+    feature nobody can get to. */
+ var lo=1, hi=7, nz=Math.max(lo,Math.min(hi,z));
  if(nz===S.zoom)return;
  var wx=(ax-CX)/U, wy=(ay-CY)/U;
  S.zoom=nz; reframe();
@@ -12185,14 +12338,22 @@ function render(){
       still draws, because an empty ring is the honest picture of an empty
       field, and the tail carries a dash rather than a number nobody entered. */
    '<button class="kb" data-q="cq" title="Coherence. 0 to 100. What the field builds against what it costs.">'
-    +cr('Crown',r.unread?0:r.CQ,{size:'xs',label:'CQ',
+    /* HOT IS FOR A READING WHERE HIGH IS WRONG.
+
+       cr() reddens anything past the hot threshold, which is right for shadow
+       weight and depth and exactly backwards for every reading on this row
+       where high is the good end. Coherence at 100, vitality at 1.0 and flow
+       at 1.0 all printed in the colour this product reserves for something
+       being wrong. The domain pill had the same defect and was fixed the same
+       way: the pills that climb toward health say so. */
+    +cr('Crown',r.unread?0:r.CQ,{size:'xs',label:'CQ',hot:false,
       raw:r.unread?'\u2013':undefined})+'<span><b>CQ</b></span></button>'
   +'<button class="kb" data-q="dq" title="Shadow weight. The summed charge across every address that is carrying.">'
     +cr('Root',clamp(r.DQ/14,0,1)*100,{size:'xs',raw:r.DQ.toFixed(1)})+'<span><b>DQ</b></span></button>'
   +'<button class="kb" data-q="sq" title="Segment depth. 0 to 10. How deep the held charge sits at the addresses carrying it.">'
     +cr(r.darkB,r.SQm*10,{size:'xs',raw:r.SQm.toFixed(1)})+'<span><b>SQ</b></span></button>'
   +'<button class="kb" data-q="pole" title="The coherent opposite, installed. 0 to 1 across the nine axes.">'
-    +cr('Heart',r.poleMean*100,{size:'xs',raw:r.poleMean.toFixed(2)})+'<span><b>Pole</b></span></button>'
+    +cr('Heart',r.poleMean*100,{size:'xs',hot:false,raw:r.poleMean.toFixed(2)})+'<span><b>Pole</b></span></button>'
   /* THE CONSOLE AVERAGED THREE READINGS AND SHOWED THE AVERAGE.
 
      One pill said Energy and behind it sat vitality, awareness and will,
@@ -12212,19 +12373,19 @@ function render(){
      Body page draws as a channel. It was computed and drawn there and read
      nowhere else. It reads here. */
   +'<button class="kb" data-q="xyz" title="Vitality. What is left after apathy and the shadow weight.">'
-    +cr('Solar',r.unread?0:r.X*100,{size:'xs',raw:r.unread?'\u2013':r.X.toFixed(2)})
+    +cr('Solar',r.unread?0:r.X*100,{size:'xs',hot:false,raw:r.unread?'\u2013':r.X.toFixed(2)})
     +'<span><b>Vitality</b></span></button>'
   +'<button class="kb" data-q="xyz" title="Awareness. Intention read against distortion.">'
-    +cr('3rd Eye',r.unread?0:r.Y*100,{size:'xs',raw:r.unread?'\u2013':r.Y.toFixed(2)})
+    +cr('3rd Eye',r.unread?0:r.Y*100,{size:'xs',hot:false,raw:r.unread?'\u2013':r.Y.toFixed(2)})
     +'<span><b>Awareness</b></span></button>'
   +'<button class="kb" data-q="xyz" title="Will. Integrity carried through a clear segment.">'
-    +cr('Root',r.unread?0:r.Z*100,{size:'xs',raw:r.unread?'\u2013':r.Z.toFixed(2)})
+    +cr('Root',r.unread?0:r.Z*100,{size:'xs',hot:false,raw:r.unread?'\u2013':r.Z.toFixed(2)})
     +'<span><b>Will</b></span></button>'
   +(function(){
     var f=flSpeed();
     return '<button class="kb" data-q="flow" title="Flow. What reaches the crown from the root, '
      +'every seat multiplied by the next.">'
-     +cr('Heart',r.unread?0:f*100,{size:'xs',raw:r.unread?'\u2013':f.toFixed(2)})
+     +cr('Heart',r.unread?0:f*100,{size:'xs',hot:false,raw:r.unread?'\u2013':f.toFixed(2)})
      +'<span><b>Flow</b></span></button>';})();
  /* who. proportions, not one label. */
  (function(){
