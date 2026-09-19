@@ -42,7 +42,10 @@
     BLOCK 16 energetics       OPEN   redesign, questions on side by side cards
                                      coloured by their seat, and the accuracy
                                      note. Owner, 19 September
-    BLOCK 17 ritual + account OPEN   the third button in. Spec with the whole
+    BLOCK 17 ritual + account OPEN   the third button in. Spec landed, 1496
+                                     lines, six passes. Wiring next
+    BLOCK 18 the phone        OPEN   a mobile version that the page serves
+                                     itself. Owner, 19 September   the third button in. Spec with the whole
                                      team, six passes, then wired
 
 
@@ -402,3 +405,43 @@ accountability map is built at all, and what a paused card does to a streak.
 The spec resolves or escalates each by name.
 
 **Size.** Large, and it is the largest thing left.
+
+
+---
+
+## BLOCK 18. The phone.
+
+Owner, 19 September. "The React version on mobile, no good." That is
+`index.html`, the 5.9MB Mechanics of Being build, and it is a separate artifact
+from this one. What he wants is a mobile version of Atüned that the product
+serves itself: load it on a phone and it detects and gives you that version.
+
+**Measured first, at 390 by 844, device scale 2, touch on, Lance loaded.**
+
+    tabs off screen        4 of 8
+    other controls off     12
+    horizontal scroll      none, so the four tabs are unreachable rather
+                           than merely hidden
+    under the tap floor    0, which is the one thing that is right
+    page height            844, so everything below is scrolled
+
+Half the navigation does not exist on a phone. Knowledge, Games, Summary and
+Compass cannot be reached at all, because the bar truncates at Comp and there
+is nothing to scroll. The three wheel captions stack on top of each other and
+on the Crown label, so the centre reads as one illegible block. The chrome
+takes the top third before any content: profile, undo, redo, lighting, help
+and account, all at desktop size.
+
+`DESIGN-mobile.md` already carries a five pass creative and art direction study
+at this exact size, and it says of itself that nothing in it has been built.
+
+**The architectural question, and it is the first thing the spec has to
+answer.** The ruling is that `source.html` stays one file with no
+dependencies. A separate mobile build would be a second product to keep in
+step, and the two would drift the way a hand copied palette drifts. One file
+that adapts keeps the ruling and costs layout complexity. The spec argues it
+rather than assuming it, and detection is a consequence of that decision and
+not the decision itself.
+
+**Size.** Large, and it is the difference between a product somebody can use
+and a product they can only use at a desk.
