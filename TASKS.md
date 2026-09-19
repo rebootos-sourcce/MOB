@@ -521,3 +521,126 @@ saboteurs.
 **The Field is too small.** The drawn disc is 26 percent of its own canvas and
 16 percent of its column. An art direction call, and it caps what motion can
 deliver.
+
+
+---
+
+# Queue, round three
+
+## The audit he asked for. What was asked and never built.
+
+Checked against the code, not against memory. A grep count of zero is the
+evidence.
+
+**Never started, asked for in earlier rounds:**
+
+- **Onboarding.** One mention in the source and it is a comment. The welcome,
+  the why, the story loop, how mindset programming works, the geometric nature
+  of behaviour, the walk through the release protocol and the tools.
+- **The tutorial.** Zero. Turns off once seen. Walks the tools and says what
+  to expect from each.
+- **Badges, achievements, score.** Two files mention a badge and neither is a
+  system. Asked for twice.
+- **Source AI.** Zero. A conversation with the reading, on the summary.
+- **The ritual builder and the accountability tracker** from the original
+  Atüned app. Zero.
+- **The chakra image the owner supplied.** Zero. Still unused.
+- **Selecting head, throat or shoulders should zoom to that location.** Not
+  built.
+- **The pain map starting blank, touch select.** Not built.
+- **The intake redesign**, the Ultima style moral dilemma questions, the nine
+  child emotion questions, and exposing every question in the centre rather
+  than the rail. Not built.
+- **The story redesign.** Called static and dull. Not done.
+- **The summary redesign.** Specified in detail twice. Not done.
+- **Tooltips on every number and every button.** Partial: the rail rows have
+  them, most numbers do not.
+- **Glass crispness.** Graded C twice, unchanged.
+- **The compass overhaul.** Oscillation over time in the lower left, the six
+  axis arrows, the nervous system and spine overlay, character symbols,
+  selecting a character showing their story and polar opposite, the Dante
+  layers, the flat 2D toggle. None built.
+- **Screen zone logic.** Specified by the UX architect this round, not built.
+- **The story imprints fifth menu.** Not built.
+- **The ICP simulations** with the pricing questions. Not run.
+- **The systems deep dive**, five passes then ten more for efficiency. Not
+  run.
+- **Knowledge base: where is the stack, the universal laws, coherence.** Not
+  addressed.
+- **The tools rail is missing tools.** Eighteen identified this round, none
+  added.
+
+## New this round
+
+**The heat map and the pain map need the Nummenmaa treatment.** He supplied
+the bodily maps of emotion figures as reference. The current zones are not
+noticeable. What those images do and this does not: a continuous field across
+the whole body rather than blooms at seven points, a diverging scale with
+activation and deactivation as two directions from a black midpoint, and a
+silhouette that is filled rather than outlined. Ours reads as dots on a
+diagram; theirs reads as a body.
+
+**Source OS.** White, not gold. Four more pixels of space between the
+wordmark and it. One or two points smaller.
+
+**Two more lightings.** A fifth, Glass on white. A sixth, flat colour, super
+futuristic, high end, really sexy, with less beveled edges than the current
+work.
+
+**The tabs.** They read as flat buttons. They should feel integrated into the
+navigation, and the design should be sexier.
+
+**Summary, the reading block.** It looks boring with text sitting on the
+background. It needs to look like a display area, with a home.
+
+**Summary, the blueprint block.** Primary, secondary, masks. Stacked is
+wasting space. The numerology belongs at the top. The icons at the centre top
+take too much room because everything is on one horizontal line; they should
+be stacked, and hovering one should give information.
+
+**Analytics.** Its own header, just the word Analytics. Can the charts be
+clicked and zoomed.
+
+**Moral integrity.** Bigger header. And three copy lines that do not
+communicate: "Shut. Temperance, detachment, patience", "Every law is measured,
+so nothing here is a default", and "The record. No snapshot yet."
+
+**The knowledge base.** Address becomes Node. What is the difference between
+an address and a fetter, and the page has to answer it. Add the weight, the
+icon and the percent of the weight for anything identified in this person, and
+nothing for what is not. The fetter cards already carry the icon; the number
+goes in a pill at the lower right of it. And the word Fetter on the card is
+replaced by the thing itself: Fear, Anger. Icon, then the action.
+
+**The games come out of the knowledge base.** They are independent games, a
+place a person comes for brain release games. This needs a game development
+director with thirty years of mobile experience, Jam City, EA, Supercell, who
+owns it: the structure, the game design document, the art direction, two
+really rad games, and how they work into the point and badge system. Simulated
+against the ICPs until the friction is out and they feel satisfying.
+
+**The Field depth names are broken language.** Charge, Cluster, Chain,
+Blueprint. Blueprint is understood. Chain is not. Is a cluster nodes, or
+fetters, or a saboteur. Is charge the individual fetter. The architecture may
+be right and the words are not, and this is the highest visibility naming
+failure in the product.
+
+**The wordmark restarts the app from the intro.** That is the behaviour; it is
+worth deciding whether it should be.
+
+**The intro animation is the face of the whole thing.** Two beats of black,
+fade in and fade out, as bookends. Two more seconds of animation. Then the
+animation director, the UI UX and the art director simulate it twenty times
+and produce three dramatically different versions. What he likes, in his
+words: line weight, effects, things that feel special, colour, feeling invited
+to something brand new, really awesome animation timing, smart and clever ease
+in and ease out, anticipation, timing, staging. The material is already
+there: the halo, the soul, the pitchfork, the geometric nature of the soul.
+
+**Profile save.** Is it automatic, is there a save button, is one needed. The
+question needs an answer on the screen.
+
+**A release tab, standalone.** The imprints panel on the left, split into two
+halves that scroll independently: imprints on top, and the release with all
+its settings on the bottom. How many patterns, how long, how quick, and
+selecting which ones.
