@@ -786,6 +786,54 @@ ok(sum.numParts===3,'and every name on its own, got '+sum.numParts);
 ok(sum.rings>8&&sum.badRing===0,
  sum.rings+' rings and every one is icon, arc and pill, bad '+sum.badRing);
 ok(sum.emptyPill===0,'an empty value paints no pill, got '+sum.emptyPill);
+
+/* ---------------------------------------------------------------------------
+   THE LADDER, AND THE RULING IT HAD TO GET PAST
+
+   The owner asked for badges, achievements and a score, and this product has a
+   standing ruling that a reading is never a score and a count is never printed
+   against a total. Both hold, because a reading and a record are different
+   things: what is true of you now has no maximum and is nobody's business to
+   score, and what you did is a count of events that happened.
+
+   So the surface is allowed to count days, minutes, addresses and marks, and
+   is not allowed to print any of them as a share of anything. This sweeps the
+   rendered text for that shape. Sixteen marks exist and the word sixteen must
+   not be on the page, nor "of 16", nor a percentage beside a mark.
+--------------------------------------------------------------------------- */
+console.log('\n=== the ladder, and no score ===');
+{const ld=await page.evaluate(async()=>{
+  loadP(6);
+  const base=Date.now();
+  CURP.rituals=[]; for(let i=0;i<9;i++)
+   CURP.rituals.push({t:new Date(base-i*86400000).toISOString(),min:14,steps:['a']});
+  setTab(TAB.COMPASS);
+  await new Promise(r=>setTimeout(r,500));
+  const el=document.querySelector('.ld');
+  if(!el)return {missing:true};
+  const txt=el.textContent;
+  return {missing:false,
+   marks:document.querySelectorAll('.ld-m').length,
+   glyphs:[...document.querySelectorAll('.ld-m svg path')].map(x=>x.getAttribute('d')),
+   streak:(document.querySelector('.ld-n')||{}).textContent,
+   nexts:document.querySelectorAll('.ld-next').length,
+   acc:document.querySelectorAll('.ld-acc button').length,
+   /* the shapes a count against a total takes */
+   ofN:/\b\d+\s*(of|\/)\s*\d+\b/i.test(txt),
+   pct:/\d+\s*%/.test(txt),
+   total:new RegExp('\\b'+MARKS.length+'\\b').test(txt),
+   txt:txt.slice(0,40)};});
+ ok(!ld.missing,'the ladder renders on the compass');
+ ok(ld.marks>0,'earned marks are shown, got '+ld.marks);
+ ok(ld.glyphs&&ld.glyphs.every(Boolean)&&new Set(ld.glyphs).size===ld.marks,
+  'every mark wears its own icon');
+ ok(ld.streak==='9','the streak is nine days, got '+ld.streak);
+ ok(ld.nexts===1,'exactly one next mark is named, got '+ld.nexts);
+ ok(ld.acc===1,'and the accountability half hands over one control, got '+ld.acc);
+ ok(!ld.ofN,'no count is printed against a total');
+ ok(!ld.pct,'and no mark carries a percentage');
+ ok(!ld.total,'and the number of marks that exist is never stated');
+ console.log('  marks',ld.marks,' streak',ld.streak);}
 ok(sum.ana>200,'the folded analytics renders underneath, got '+sum.ana+' chars');
 ok(sum.over===0,'nothing on the surface overflows its own box, got '+sum.over);
 /* the prose is a reading, not a template: it names what was measured */

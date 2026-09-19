@@ -1687,5 +1687,75 @@ g('26 \u00b7 numerology, in full');
   'the same digit does not say the same thing in the soul as in the personality');
 }
 
+/* ---------------------------------------------------------------------------
+   27 · THE LADDER
+
+   Pure functions of a profile and a moment. The moment is passed in rather
+   than read from the clock, which is the whole reason a streak can be tested
+   at all: a gate that ran at 23:59:58 and asserted against Date.now() would
+   fail once a day forever.
+--------------------------------------------------------------------------- */
+console.log('\n27 · the ladder');
+{
+ /* named off E rather than the destructured list at the top, so this block
+    stands alone and adding a mark never means editing an import line. */
+ const {blankProfile,ladderRead,ledgerRead,streakRead,MARKS}=E;
+ const NOW=Date.parse('2026-09-19T15:00:00Z');
+ const day=n=>new Date(NOW-n*86400000).toISOString();
+ const mk=days=>{const p=blankProfile('L');
+  days.forEach(d=>p.rituals.push({t:day(d),min:10,steps:['a']}));return p;};
+
+ /* a blank profile earns nothing and is not told it is at zero of sixteen */
+ const b=blankProfile('L'), L0=ladderRead(b,NOW);
+ ok(L0.earned.length===0,'a blank profile has earned nothing, got '+L0.earned.length);
+ ok(L0.next&&L0.next.k==='first','and the next mark is the first run, got '
+  +(L0.next&&L0.next.k));
+ ok(streakRead(b,NOW).run===0,'and no streak');
+
+ /* consecutive days count, and today is not required for the run to be live */
+ ok(streakRead(mk([0,1,2,3,4]),NOW).run===5,'five consecutive days is a run of five');
+ ok(streakRead(mk([1,2,3]),NOW).live===true,
+  'a run ending yesterday is still live, because a streak must not break at midnight');
+ ok(streakRead(mk([2,3,4]),NOW).live===false,'a run ending two days ago is not');
+ /* and what was built is still reported after it lapses */
+ ok(streakRead(mk([2,3,4,5,6,7,8,9]),NOW).best===8,
+  'the longest run is reported after it has ended, got '
+  +streakRead(mk([2,3,4,5,6,7,8,9]),NOW).best);
+ /* a gap splits a run rather than merging across it */
+ ok(streakRead(mk([0,1,2,5,6,7,8]),NOW).run===3,'a gap ends the current run');
+ ok(streakRead(mk([0,1,2,5,6,7,8]),NOW).best===4,'and the longer one before it stands');
+ /* two rituals on one day are one day */
+ {const p=blankProfile('L');
+  p.rituals.push({t:day(0),min:5}); p.rituals.push({t:day(0),min:5});
+  ok(streakRead(p,NOW).run===1,'two rituals in a day are one day, got '
+   +streakRead(p,NOW).run);
+  ok(ledgerRead(p).minutes===10,'and both count toward minutes');}
+
+ /* THE LEDGER COUNTS EVENTS AND NEVER A SHARE OF ANYTHING. */
+ {const p=mk([0,1]); p.meter.unique=['a','b','c']; p.meter.lines=9;
+  const l=ledgerRead(p);
+  ok(l.ground===3,'ground is the unique addresses opened, got '+l.ground);
+  ok(l.lines===9,'lines counts every line spoken, repeats included');
+  ok(l.rituals===2,'rituals counts saved rituals');
+  ok(Object.keys(l).every(k=>l[k]>=0),'no ledger figure is negative');}
+
+ /* every mark is a named thing, so every mark has an icon and a family */
+ ok(MARKS.filter(m=>!m.ic).length===0,'every mark has an icon');
+ ok(MARKS.filter(m=>!m.b||BANDS.indexOf(m.b)<0).length===0,
+  'every mark has a seat, which is where its colour comes from');
+ ok(new Set(MARKS.map(m=>m.ic)).size===MARKS.length,'and no two share a mark');
+ ok(new Set(MARKS.map(m=>m.k)).size===MARKS.length,'and no two share a key');
+
+ /* NEXT IS ONE MARK. The read returns the earned set and a single next, and
+    never the remainder, because a caller that could see the remainder could
+    render a person's unfinished self as a checklist. */
+ {const p=mk([0,1,2,3,4,5,6]);
+  const L=ladderRead(p,NOW);
+  ok(L.next&&!L.earned.some(m=>m.k===L.next.k),'the next mark is not one already earned');
+  ok(L.remaining===undefined&&L.all===undefined&&L.total===undefined,
+   'the read exposes no remainder and no total to print a count against');
+  ok(L.earned.some(m=>m.k==='week'),'seven days running earns the week mark');}
+}
+
 console.log('\n===== '+P+' passed, '+F+' failed =====');
 process.exit(F?1:0);

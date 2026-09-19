@@ -26,7 +26,11 @@
     BLOCK  9 intake           OPEN
     BLOCK 10 games            PART   its own tab again. The games themselves open
     BLOCK 11 onboarding       OPEN
-    BLOCK 12 the ladder       OPEN
+    BLOCK 12 the ladder       PART   engine module, 16 marks with their own
+                                     icons, streak, ledger, accountability
+                                     half, on the compass. No count against a
+                                     total anywhere, gated. Ritual builder was
+                                     already there. Points and tiers remain
     BLOCK 13 intro variants   OPEN
     BLOCK 14 motion system    PART   3 curves, 4 durations, every transition
                                      tokened. 381 of 384 elements ran on the

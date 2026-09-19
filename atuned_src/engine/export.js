@@ -62,6 +62,8 @@ if(typeof module!=='undefined'&&module.exports){
                   PAINREG:PAINREG, PEOPLE:PEOPLE, LAWSET:LAWSET, BIRTH:BIRTH,
                   LEX:LEX, ADJ2CHG:ADJ2CHG, PHRASES:PHRASES, VERP:VERP,
                   NERVEBR:NERVEBR, BODYPATH:BODYPATH, TAB:TAB,
+  /* the ladder */MARKS:MARKS, ladderRead:ladderRead, ledgerRead:ledgerRead,
+                  streakRead:streakRead, pracDays:pracDays, pracDay:pracDay,
   /* indexes */   W:W, BY:BY, ALL_SAB:ALL_SAB, S:S,
   /* soul */      buildSoul:buildSoul, affinity:affinity, bandIg:bandIg,
   /* engine */    compute:compute, suscAll:suscAll, balance:balance, OUTWARD:OUTWARD, INWARD:INWARD,

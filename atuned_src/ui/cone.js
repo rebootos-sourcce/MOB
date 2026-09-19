@@ -492,11 +492,16 @@ function coneOpen(inTab){
      return '<button type="button" class="cn-b" data-cnspan="'+d+'">'
       +(d===365?'Year':(d===90?'Quarter':'30 day'))+'</button>';}).join('')
   +'</div>'
-  +coneRead()+'</div>';
+  +coneRead()+ladderHtml()+'</div>';
  CONE.cv=document.getElementById('conecv');
  CONE.g=CONE.cv?CONE.cv.getContext('2d'):null;
  coneLayout(); coneTick();
  var x=document.getElementById('conex'); if(x)x.onclick=coneClose;
+ /* the ladder's one control opens the builder that already exists. It does not
+    write a ritual of its own: two places that can put a day on the record is
+    two places the streak can be wrong from. */
+ var lb=document.getElementById('ldrit');
+ if(lb)lb.onclick=function(){if(typeof ritOpen==='function')ritOpen(null);};
  /* the four switches. Each toggles a reading on the figure and repaints the
     card, so the state of the button and the state of the drawing cannot
     disagree. */
@@ -546,3 +551,72 @@ function coneClose(){
  var h=document.getElementById('cone');
  if(h){h.style.display='none';h.innerHTML='';h.classList.remove('tabmode');}
  removeEventListener('resize',coneLayout);}
+
+/* ============================================================
+   THE LADDER, ON THE COMPASS.
+
+   It goes here because the compass is already the surface that answers over
+   time: it carries the oscillation history across thirty, ninety and three
+   hundred and sixty five days. What you have done belongs beside where you are
+   pointed. It does not go on Summary, which is the reading, and a reading is
+   not a record of effort.
+
+   Three parts, and the order is deliberate. The streak first, because it is
+   the one number a person checks. The ledger under it, four quantities that
+   only count things that happened. Then the marks earned, and one line naming
+   the next.
+
+   NOTHING HERE PRINTS A COUNT AGAINST A TOTAL. Sixteen marks exist and the
+   surface never says sixteen. Earned ones are shown, the next is named with
+   what it takes, and the rest are not enumerated, because a list of a person's
+   unfinished self is a completion bar and this is not a game about becoming
+   whole.
+   ============================================================ */
+function ladderHtml(){
+ var L=ladderRead(CURP,Date.now()), s=L.streak, l=L.ledger;
+ var h='<div class="ld"><div class="pm-eye">The record</div>';
+ /* the streak. A run that has lapsed still says what it was, because the
+    thing a person built is not deleted by their having stopped. */
+ h+='<div class="ld-streak'+(s.live?' live':'')+'">'
+  +'<span class="ld-n">'+s.run+'</span>'
+  +'<span class="ld-u">'+(s.run===1?'day':'days')+(s.live?' running':' , last run')+'</span>'
+  +'</div>';
+ if(!s.days)
+  h+='<p class="ld-p">Nothing on the record yet. Build one ritual and save it, '
+   +'and the first day is on.</p>';
+ else if(!s.live)
+  h+='<p class="ld-p">The run ended '+s.gap+' days ago. Longest held: '
+   +s.best+'. Practise today and a new one starts.</p>';
+ else if(s.best>s.run)
+  h+='<p class="ld-p">Longest held: '+s.best+' days.</p>';
+ /* THE ACCOUNTABILITY HALF. A record that only reports is a scoreboard. This
+    says where today stands and hands over the one control that changes it, so
+    a person is never told they are behind on a surface that cannot do
+    anything about it. Today counts as done the moment a ritual is saved with
+    today's date, which is the same fact the streak is counted from, so the two
+    can never disagree. */
+ h+='<div class="ld-acc">'
+  +(s.gap===0
+    ? '<span class="ld-on">Today is on the record.</span>'
+    : '<span class="ld-off">Today is not on the record yet.</span>')
+  +'<button type="button" class="btn'+(s.gap===0?'':' pri')+'" id="ldrit">'
+  +(s.gap===0?'Run another':'Build today\'s ritual')+'</button></div>';
+ /* the ledger. four counts of events, no denominators. */
+ var LG=[['Minutes practised',l.minutes],['Rituals saved',l.rituals],
+  ['Ground opened',l.ground+(l.ground===1?' address':' addresses')],
+  ['Held at the far pole',l.clear+(l.clear===1?' address':' addresses')]];
+ h+='<div class="ld-led">'+LG.map(function(x){
+  return '<div class="ld-r"><span>'+x[0]+'</span><b>'+x[1]+'</b></div>';}).join('')+'</div>';
+ /* the marks. icon, name, and what it meant. */
+ if(L.earned.length){
+  h+='<div class="pm-eye ld-mh">Marks</div><div class="ld-marks">';
+  L.earned.forEach(function(m){
+   h+='<div class="ld-m" style="--c:'+seatCol(m.b)+'" title="'+esc(m.d)+'">'
+    +'<span class="ld-mi"><svg viewBox="0 0 24 24" aria-hidden="true">'
+    +'<path d="'+m.ic+'"/></svg></span>'
+    +'<span class="ld-mn">'+esc(m.nm)+'</span>'
+    +'<span class="ld-md">'+esc(m.d)+'</span></div>';});
+  h+='</div>';}
+ if(L.next)
+  h+='<p class="ld-next"><b>'+esc(L.next.nm)+'</b> '+esc(L.next.d)+'</p>';
+ return h+'</div>';}

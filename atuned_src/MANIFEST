@@ -27,6 +27,7 @@ engine/birth.js
 engine/numerology.js
 engine/seed.js
 engine/read.js
+engine/ladder.js
 engine/export.js
 ui/component.js
 ui/wheel.js
