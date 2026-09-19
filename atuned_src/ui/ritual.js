@@ -21,7 +21,13 @@ function ritOpen(fromLog){
  var c=ritFor(compute());
  if(c.called)RIT.sel[c.called.k]=true;
  ritRender();}
-function ritClose(){RIT.open=false;ritRender();}
+/* Closing means leaving the surface, not emptying it. While Ritual is the tab
+   there is nothing behind it to go back to, so a close that blanked the host
+   would leave a named tab showing an empty box. */
+function ritClose(){
+ if(typeof TAB!=='undefined'&&typeof S!=='undefined'&&S.tab===TAB.RITUAL){
+  if(typeof setTab==='function'){setTab(TAB.SUMMARY);return;} }
+ RIT.open=false;ritRender();}
 function ritRender(){
  var h=document.getElementById('rit'); if(!h)return;
  if(!RIT.open){h.style.display='none';h.innerHTML='';return;}

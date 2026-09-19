@@ -2582,6 +2582,17 @@ body:not(.tab-energy) #emap{display:none!important}
    backdrop, which is right for something a drill throws up over your reading
    and wrong for a surface you navigated to. In tab mode it is the stage. */
 body.tab-compass #cone{display:flex!important}
+/* THE RITUAL AS A SURFACE. Same shape as the compass: #rit is .rel, a modal
+   overlay, and in tab mode it stops being fixed to the viewport, drops its
+   scrim and its shadow, and fills the centre stage like any other surface.
+   The modal route still works, because the release still hands a log to it. */
+body.tab-ritual #rit{display:flex!important}
+body.tab-ritual #rit{position:absolute;z-index:5;background:transparent;
+ backdrop-filter:none;align-items:stretch;justify-content:stretch;overflow-y:auto}
+body.tab-ritual #rit .rit-card{width:100%;max-width:820px;margin:0 auto;
+ max-height:none;border:0;background:transparent;box-shadow:none;padding:14px 18px 22px}
+body.tab-ritual #rit .rel-act{position:sticky;bottom:0;background:var(--bg);
+ padding-top:10px;margin-top:14px}
 #cone.tabmode{position:absolute;z-index:5;background:transparent;backdrop-filter:none}
 #cone.tabmode .cone-card{width:100%;max-height:none;border:0;background:transparent;
  box-shadow:none;padding:14px 18px 18px}
@@ -2681,6 +2692,13 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
     inside it is given the square the canvas needs, in flow. */
  #cone.tabmode{position:static;inset:auto;overflow:visible;width:100%;
   padding:14px 0;order:0}
+ /* and the ritual, for the same reason and with the same one line. A surface
+    absolutely positioned inside a column that has collapsed measures ten
+    pixels tall, which is what this measured before the rule existed. */
+ body.tab-ritual #rit{position:static;inset:auto;overflow:visible;width:100%;
+  padding:8px 0;order:0}
+ body.tab-ritual #rit .rit-card{padding:4px 0 18px}
+ body.tab-ritual #rit .rel-act{position:static;background:transparent}
  #cone.tabmode .cone-cv{height:min(88vw,400px)}
  /* one scroll on the phone, which is the page's. A column that scrolls inside
     a page that scrolls is two scrolls under one thumb. */
@@ -5454,7 +5472,12 @@ const CHG2FET={anxiety:'Anticipation',fear:'Fear',anger:'Anger',shame:'Shame',
    with no tab, reached from the profile button, because a setting is not a
    place in the product a person navigates to as a peer of the instrument. */
 const TAB={STORY:0,SUMMARY:1,FIELD:2,ENERGY:3,ANALYTICS:4,INTAKE:5,KNOW:6,GAMES:7,
- COMPASS:8,SETTINGS:9};
+ /* RITUAL IS 10, APPENDED. Ruled: the ritual builder is a primary product and
+    goes in the primary navigation, with the accountability tracker built
+    inside it rather than beside it. Appended for the same reason Compass was:
+    the integers are identity, they are persisted and compared, and they do not
+    renumber to make a list look tidy. */
+ COMPASS:8,SETTINGS:9,RITUAL:10};
 /* TABDEF is DISPLAY order. TAB above is identity and does not move: the
    integers are persisted, compared and passed around, and renumbering them
    is the bug this file already warns about. Compass is a new integer at the
@@ -5485,6 +5508,8 @@ const TAB={STORY:0,SUMMARY:1,FIELD:2,ENERGY:3,ANALYTICS:4,INTAKE:5,KNOW:6,GAMES:
    renderer and no door in the navigation. */
 const TABDEF=[
  {k:TAB.INTAKE,  id:'iq',    nm:'Energetics',cls:'tab-intake'},
+ /* between the intake and the story, in his order: intake, ritual, story. */
+ {k:TAB.RITUAL,  id:'rit',   nm:'Ritual',    cls:'tab-ritual'},
  {k:TAB.STORY,   id:'story', nm:'Story',     cls:'tab-story'},
  {k:TAB.FIELD,   id:'cv',    nm:'Field',     cls:'tab-field'},
  {k:TAB.ENERGY,  id:'emap',  nm:'Body',      cls:'tab-energy'},
@@ -12442,7 +12467,13 @@ function ritOpen(fromLog){
  var c=ritFor(compute());
  if(c.called)RIT.sel[c.called.k]=true;
  ritRender();}
-function ritClose(){RIT.open=false;ritRender();}
+/* Closing means leaving the surface, not emptying it. While Ritual is the tab
+   there is nothing behind it to go back to, so a close that blanked the host
+   would leave a named tab showing an empty box. */
+function ritClose(){
+ if(typeof TAB!=='undefined'&&typeof S!=='undefined'&&S.tab===TAB.RITUAL){
+  if(typeof setTab==='function'){setTab(TAB.SUMMARY);return;} }
+ RIT.open=false;ritRender();}
 function ritRender(){
  var h=document.getElementById('rit'); if(!h)return;
  if(!RIT.open){h.style.display='none';h.innerHTML='';return;}
@@ -15066,7 +15097,13 @@ function setTab(i){
   /* the account area replaced renderSettings. The old function is gone rather
      than left beside it, because two renderers for one host is how a surface
      ends up half updated. */
-  if(i===TAB.SETTINGS&&typeof renderAccount==='function')renderAccount();})();
+  if(i===TAB.SETTINGS&&typeof renderAccount==='function')renderAccount();
+  /* THE RITUAL IS A SURFACE NOW, NOT A SHEET. It was a modal reached from
+     three places and he had never seen it. As a tab it has to be open the
+     moment the tab is, because a surface that needs a second press to show
+     anything is a blank screen with a name on it. */
+  if(i===TAB.RITUAL&&typeof ritOpen==='function'){
+   if(!RIT.open)ritOpen(null); else ritRender(); }})();
  if(cvE) cvE.style.display=(i===TAB.FIELD)?'block':'none';
  if(vb) vb.style.display=(i===TAB.FIELD)?'flex':'none';
  /* Body's layer row lives in the sub bar now, not over the figure */

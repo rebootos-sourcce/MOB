@@ -40,12 +40,19 @@ const shell=await page.evaluate(()=>({
  laws:document.querySelectorAll('#laws .nf').length,
  axes:document.querySelectorAll('#chg .nf').length,
  mx:document.querySelectorAll('#mx button').length,
+ tabdef:TABDEF.length,
  eshelf:!!document.getElementById('eshelf')}));
-/* EIGHT. Analytics is still folded into Summary, the compass gained a door it
-   never had, and Games has come back out on the owner's ruling: they are
-   independent games, a place a person goes for brain release, and a game
-   folded into a reference page is neither. Analytics is the one fold left. */
-ok(shell.tabs===8,'8 tabs, got '+shell.tabs);
+/* COUNTED FROM TABDEF, NOT WRITTEN DOWN. This said eight, and eight was right
+   until Ritual went into the bar on the owner's ruling, at which point the
+   gate failed for the one reason a gate must never fail: the product grew.
+   Third hand written count found stale in one session, after the lighting
+   count and the lighting list.
+
+   What it protects is that every tab declared reaches the bar, and that holds
+   at any number. Analytics is still the one fold left, which is why TABDEF is
+   the right list to count and TAB is not. */
+ok(shell.tabs===shell.tabdef,
+ shell.tabdef+' tabs declared, '+shell.tabs+' in the bar');
 ok(shell.depths===4,'4 depths, got '+shell.depths);
 ok(shell.doms===19,'19 domains, got '+shell.doms);
 ok(shell.arcs===12,'12 archetypes, got '+shell.arcs);

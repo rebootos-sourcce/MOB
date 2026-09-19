@@ -1347,3 +1347,58 @@ research first.
 
 **AN15. The avatar can use the figure already drawn on the body surface.**
 *Small.*
+
+---
+
+# Ruled 19 September, tenth note.
+
+**AO0. THE FUNNEL IS NOT BUILT AND HE THOUGHT IT WAS.** `funnel/`
+He asked where it is. The answer is that `funnel/` holds one file, `tokens.css`,
+which `BUILD.sh` generates. `reviews/funnel-strategy.md` and
+`reviews/funnel-offer.md` are strategy, not a page. Nothing has been built.
+This was not flagged when he said "I think we built the funnel onboarding", and
+it should have been.
+*Large, and it is now the thing he is most likely to ask for next.*
+
+**AO1. Ritual builder goes in the primary navigation.** `ui/ritual.js`, `engine/core.js`
+It is a primary product, in his words. The accountability tracker is built
+inside it rather than beside it. TAB.RITUAL takes integer 10, appended, because
+the integers are identity and never renumber.
+*Medium.*
+
+**AO2. The app opens on the Avatar.** new surface, `engine/core.js`
+This reverses the Field, which reversed Summary. He has now ruled three ways on
+the opening surface and this is the latest.
+*Recorded as a reversal, as the others were.*
+
+**AO3. The avatar becomes a real page, and it is the first screen.** new
+On it: set up your avatar, build the game plan, design it, set every goal. The
+frame is his and it is the strongest thing in this note. The avatar is the
+person you want to become. The I am story is the person you currently are and
+do not want to be. Two ends of one instrument.
+All the information sits on the right. Summary is a button underneath the
+avatar, and pressing it gives the full breakdown.
+*Large. Simulate the flow with the ICPs and the focus group first.*
+
+**AO4. The mobile widget is deprioritised.** His word: do not worry about it yet.
+
+**AO5. Every piece of art he has not ruled on, gathered.** ongoing
+*Small each time, and it is now a standing obligation rather than a task.*
+
+**AO6. Value based questions for the ICPs.** marketing
+Is the product helpful. Did they benefit from it. Did they hit a challenge.
+*Medium.*
+
+## AP. The closing review, before anything is called complete.
+
+Not now, in his words, but before the end. All of it runs six times.
+
+**AP1.** The architecture, the schemas, the frameworks and the CQ score,
+reviewed and run.
+**AP2.** Simulated against the personas.
+**AP3.** A thirty and ninety day simulation of people onboarding: why they
+leave, where they get stuck, every point of friction, capturing as much as can
+be captured.
+**AP4.** The focus group at scale.
+**AP5.** Then the release. It is the next focus once everything above is done
+and every piece of art has been ruled on.

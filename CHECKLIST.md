@@ -98,6 +98,14 @@ started. `HIS` waiting on a ruling. `BLOCKED` waiting on something external.
 | D8 | The boot: three seconds or five |
 | D9 | Nine release rulings, including what a mask is |
 | D10 | The therapy equivalence claim, before the funnel ships |
+| D11 | The opening surface. He has ruled Summary, then Field, then Avatar |
+
+## F. Named by him as built, and not built
+
+| # | What | Truth |
+|---|---|---|
+| F1 | The funnel | `funnel/` holds one generated stylesheet. Zero pages. Two strategy documents are not a funnel |
+
 
 ## E. Open, in his own words, not yet started
 

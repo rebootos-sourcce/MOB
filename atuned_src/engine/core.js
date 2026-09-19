@@ -53,7 +53,12 @@ const CHG2FET={anxiety:'Anticipation',fear:'Fear',anger:'Anger',shame:'Shame',
    with no tab, reached from the profile button, because a setting is not a
    place in the product a person navigates to as a peer of the instrument. */
 const TAB={STORY:0,SUMMARY:1,FIELD:2,ENERGY:3,ANALYTICS:4,INTAKE:5,KNOW:6,GAMES:7,
- COMPASS:8,SETTINGS:9};
+ /* RITUAL IS 10, APPENDED. Ruled: the ritual builder is a primary product and
+    goes in the primary navigation, with the accountability tracker built
+    inside it rather than beside it. Appended for the same reason Compass was:
+    the integers are identity, they are persisted and compared, and they do not
+    renumber to make a list look tidy. */
+ COMPASS:8,SETTINGS:9,RITUAL:10};
 /* TABDEF is DISPLAY order. TAB above is identity and does not move: the
    integers are persisted, compared and passed around, and renumbering them
    is the bug this file already warns about. Compass is a new integer at the
@@ -84,6 +89,8 @@ const TAB={STORY:0,SUMMARY:1,FIELD:2,ENERGY:3,ANALYTICS:4,INTAKE:5,KNOW:6,GAMES:
    renderer and no door in the navigation. */
 const TABDEF=[
  {k:TAB.INTAKE,  id:'iq',    nm:'Energetics',cls:'tab-intake'},
+ /* between the intake and the story, in his order: intake, ritual, story. */
+ {k:TAB.RITUAL,  id:'rit',   nm:'Ritual',    cls:'tab-ritual'},
  {k:TAB.STORY,   id:'story', nm:'Story',     cls:'tab-story'},
  {k:TAB.FIELD,   id:'cv',    nm:'Field',     cls:'tab-field'},
  {k:TAB.ENERGY,  id:'emap',  nm:'Body',      cls:'tab-energy'},

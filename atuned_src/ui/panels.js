@@ -99,7 +99,13 @@ function setTab(i){
   /* the account area replaced renderSettings. The old function is gone rather
      than left beside it, because two renderers for one host is how a surface
      ends up half updated. */
-  if(i===TAB.SETTINGS&&typeof renderAccount==='function')renderAccount();})();
+  if(i===TAB.SETTINGS&&typeof renderAccount==='function')renderAccount();
+  /* THE RITUAL IS A SURFACE NOW, NOT A SHEET. It was a modal reached from
+     three places and he had never seen it. As a tab it has to be open the
+     moment the tab is, because a surface that needs a second press to show
+     anything is a blank screen with a name on it. */
+  if(i===TAB.RITUAL&&typeof ritOpen==='function'){
+   if(!RIT.open)ritOpen(null); else ritRender(); }})();
  if(cvE) cvE.style.display=(i===TAB.FIELD)?'block':'none';
  if(vb) vb.style.display=(i===TAB.FIELD)?'flex':'none';
  /* Body's layer row lives in the sub bar now, not over the figure */

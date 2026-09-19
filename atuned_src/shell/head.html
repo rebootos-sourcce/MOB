@@ -2582,6 +2582,17 @@ body:not(.tab-energy) #emap{display:none!important}
    backdrop, which is right for something a drill throws up over your reading
    and wrong for a surface you navigated to. In tab mode it is the stage. */
 body.tab-compass #cone{display:flex!important}
+/* THE RITUAL AS A SURFACE. Same shape as the compass: #rit is .rel, a modal
+   overlay, and in tab mode it stops being fixed to the viewport, drops its
+   scrim and its shadow, and fills the centre stage like any other surface.
+   The modal route still works, because the release still hands a log to it. */
+body.tab-ritual #rit{display:flex!important}
+body.tab-ritual #rit{position:absolute;z-index:5;background:transparent;
+ backdrop-filter:none;align-items:stretch;justify-content:stretch;overflow-y:auto}
+body.tab-ritual #rit .rit-card{width:100%;max-width:820px;margin:0 auto;
+ max-height:none;border:0;background:transparent;box-shadow:none;padding:14px 18px 22px}
+body.tab-ritual #rit .rel-act{position:sticky;bottom:0;background:var(--bg);
+ padding-top:10px;margin-top:14px}
 #cone.tabmode{position:absolute;z-index:5;background:transparent;backdrop-filter:none}
 #cone.tabmode .cone-card{width:100%;max-height:none;border:0;background:transparent;
  box-shadow:none;padding:14px 18px 18px}
@@ -2681,6 +2692,13 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
     inside it is given the square the canvas needs, in flow. */
  #cone.tabmode{position:static;inset:auto;overflow:visible;width:100%;
   padding:14px 0;order:0}
+ /* and the ritual, for the same reason and with the same one line. A surface
+    absolutely positioned inside a column that has collapsed measures ten
+    pixels tall, which is what this measured before the rule existed. */
+ body.tab-ritual #rit{position:static;inset:auto;overflow:visible;width:100%;
+  padding:8px 0;order:0}
+ body.tab-ritual #rit .rit-card{padding:4px 0 18px}
+ body.tab-ritual #rit .rel-act{position:static;background:transparent}
  #cone.tabmode .cone-cv{height:min(88vw,400px)}
  /* one scroll on the phone, which is the page's. A column that scrolls inside
     a page that scrolls is two scrolls under one thumb. */
