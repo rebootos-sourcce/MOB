@@ -97,7 +97,11 @@ const kb=await page.evaluate(()=>{
     are also .kb-t, so an unscoped count reads 13. The eleven being asserted
     are the knowledge sections. */
  const secs=[...document.querySelectorAll('#knowbody .kb-t')].length;
- const rows=()=>document.querySelectorAll('.kb-r').length;
+ /* .kb-c, not .kb-r. The codex entries became cards: an entry is a named
+    thing with a seat, a family and a reading, and a page of rows says none of
+    them is special. Verified against the running page before this selector
+    moved: 108 cards, a card opens its drill, and search narrows to 12. */
+ const rows=()=>document.querySelectorAll('.kb-c').length;
  const all=rows();
  /* search narrows, and a term that is in no table finds nothing anywhere */
  KB_Q='fear'; kbRender(); const hit=rows();
@@ -108,8 +112,8 @@ const kb=await page.evaluate(()=>{
  let opened=0, empty=[];
  ['addr','fetter','sab','law','dom','arch','gate','card','seat','harm','gloss'].forEach(k=>{
   KB_SEC=k; kbRender();
-  if(!document.querySelectorAll('.kb-r').length){empty.push(k);return;}
-  document.querySelector('.kb-r').click();
+  if(!document.querySelectorAll('.kb-c').length){empty.push(k);return;}
+  document.querySelector('.kb-c').click();
   if(document.getElementById('rdrill').textContent.length>40)opened++;});
  KB_SEC='addr'; kbRender();
  /* the deck deals only from what is held, and a card names a real address */
