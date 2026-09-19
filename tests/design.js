@@ -312,7 +312,9 @@ console.log('\n=== 9 \u00b7 four lightings, each its own ===');
     accent:cs.getPropertyValue('--accent').trim()};}
   return out;});
  const names=Object.keys(lit);
- ok(names.length===4,'four lightings, got '+names.length+': '+names.join(', '));
+ /* SIX, on the owner's ruling. Glass white is the same material under a
+   different sun; Flat is the opposite position to all five others. */
+ ok(names.length===6,'six lightings, got '+names.length+': '+names.join(', '));
  names.forEach(nm=>{
   const L=lit[nm];
   ok(!!L.panel&&!!L.edge&&!!L.ink&&!!L.accent,
@@ -321,14 +323,19 @@ console.log('\n=== 9 \u00b7 four lightings, each its own ===');
   console.log('  '+nm.padEnd(7),'['+(L.cls||'default')+'] --bg '+L.bg.slice(0,34));});
  /* four lightings that produce three grounds means one of them is not a
     lighting. This is the check that would have caught Glass inheriting Dark. */
+ /* six lightings that produce five grounds means one of them is not a
+    lighting. This is the check that caught Glass inheriting Dark. */
  const grounds=new Set(names.map(n=>lit[n].bg));
- ok(grounds.size===4,'four distinct grounds, got '+grounds.size);
+ ok(grounds.size===6,'six distinct grounds, got '+grounds.size);
  const inks=new Set(names.map(n=>lit[n].ink));
  ok(inks.size>=2,'and the ink moves with them, got '+inks.size+' distinct');
  /* the accent is one value across every lighting but snow, which deepens it
     to hold against paper. That is the ruling and this is where it is held. */
  ok(lit.Dark.accent===lit.Punch.accent&&lit.Dark.accent===lit.Glass.accent,
-  'the accent is one value on every dark lighting');
+  'the accent is one value on every dark lighting that inherits it');
+ /* Flat carries its own accent on purpose: with no material doing any work,
+    colour carries the whole hierarchy, so it gets a colour strong enough to. */
+ ok(lit.Flat.accent!==lit.Dark.accent,'and Flat states its own, because it has nothing else');
  ok(lit.Snow.accent!==lit.Dark.accent,'and deepens on paper');
  await p4.close();
 }

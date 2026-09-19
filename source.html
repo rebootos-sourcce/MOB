@@ -204,6 +204,77 @@ body.glass{
  --fringe-a:rgba(126,184,212,.55);
  --fringe-b:rgba(232,168,140,.42);
 }
+/* ============================================================
+   FIVE. GLASS ON WHITE.
+
+   The same material under a different sun. Glass puts the colour in the
+   light rather than in the surface, so moving it onto paper is a question of
+   what the light is coming off: dark glass is lit from behind and pale glass
+   is lit from in front. The panes stay translucent, the fringe stays, the
+   specular stays and inverts, and the ink goes to paper ink.
+
+   The blur value is lower than dark Glass on purpose. On a light ground a
+   heavy blur reads as fog; on a dark one it reads as depth.
+   ============================================================ */
+body.glasswhite{
+ --seat:#7EB8D4; --seat-w:0.3;
+ --bg:#E8E7E2;
+ --panel:rgba(255,255,255,.62);
+ --panel-2:rgba(255,255,255,.76);
+ --sunk:rgba(228,226,220,.60);
+ --edge:rgba(20,22,28,.10); --edge-2:rgba(20,22,28,.18);
+ --ink:#14161C; --mid:#4A4843; --dim:#6E6B65;
+ --accent:#2F6E92; --gold:var(--accent); --on-accent:#F4F8FA; --au:#8A6B24;
+ --sky:#2F6E92; --um:#14161C;
+ --shadow:0 20px 52px rgba(20,22,28,.14);
+ --spec:linear-gradient(160deg,rgba(255,255,255,.85),rgba(255,255,255,0) 46%);
+ --fringe-a:rgba(47,110,146,.42);
+ --fringe-b:rgba(198,132,96,.34);
+}
+body.glasswhite .stage,body.glasswhite #emap,body.glasswhite #cone{background:#F2F1EC}
+body.glasswhite #bgaura{opacity:.55}
+body.glasswhite .pm-art{filter:invert(1) brightness(.32);opacity:.82}
+body.glasswhite .panel,body.glasswhite .glass{
+ -webkit-backdrop-filter:blur(10px) saturate(1.2);
+ backdrop-filter:blur(10px) saturate(1.2)}
+
+/* ============================================================
+   SIX. FLAT.
+
+   No bevel, no blur, no translucency, no shadow, no gradient. One flat
+   ground, one flat surface, one hairline, and colour doing every piece of
+   work that a material was doing in the other five.
+
+   This is the opposite position to Glass and it is deliberately the opposite:
+   where Glass says the interface is made of something, Flat says it is made
+   of nothing and only the reading is real. High end flat is not the absence
+   of effort, it is the refusal to spend any of it on the surface. Every
+   radius comes down, every edge becomes one pixel, and the accent carries
+   the entire hierarchy.
+   ============================================================ */
+body.flat{
+ --seat:#7EB8D4; --seat-w:0;
+ --bg:#0A0B0E;
+ --panel:#121419;
+ --panel-2:#181B22;
+ --sunk:#0A0B0E;
+ --edge:#232730; --edge-2:#2E333E;
+ --ink:#F7F6F3; --mid:#A9A69F; --dim:#767369;
+ --accent:#5FD4C4; --gold:var(--accent); --on-accent:#05100E;
+ --sky:#5FD4C4; --um:#F7F6F3;
+ --shadow:none;
+ --r:4px; --r-s:4px; --r-xs:3px;
+}
+body.flat .stage,body.flat #emap,body.flat #cone{background:#0A0B0E}
+body.flat *{box-shadow:none!important;backdrop-filter:none!important;
+ -webkit-backdrop-filter:none!important}
+body.flat .panel,body.flat .glass,body.flat .set-sec,body.flat .kb-c,
+body.flat .s-readbox,body.flat .s-out{background:var(--panel);
+ border:1px solid var(--edge)}
+body.flat #bgaura{opacity:.22}
+body.flat .btn.pri{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
+body.flat .crb-v{background:var(--panel-2);border-color:var(--edge-2)}
+
 body.glass .glass,body.glass .panel,body.glass .sheet-card,body.glass .rd-card,
 body.glass .sum-card,body.glass .gmenu,body.glass .cone-card{
  position:relative;
@@ -12568,19 +12639,26 @@ const THEMEICON={
  punch:'M12 4a8 8 0 0 1 0 16zM12 12m-8 0a8 8 0 1 0 16 0a8 8 0 1 0-16 0',
  /* a pane at an angle with light coming off its edge. the one glyph that says
     refraction rather than blur. */
- glass:'M5.5 7.2l9-3.2v12.8l-9 3.2zM14.5 4l4 2.4v11.2l-4 2.4M5.5 7.2L9.6 9.4'};
+ glass:'M5.5 7.2l9-3.2v12.8l-9 3.2zM14.5 4l4 2.4v11.2l-4 2.4M5.5 7.2L9.6 9.4',
+ /* the same pane, lit from the front rather than from behind */
+ glasswhite:'M5.5 7.2l9-3.2v12.8l-9 3.2zM14.5 4l4 2.4v11.2l-4 2.4M19 3l2.4 2.4M21 7.6l1.6-1.6',
+ /* three flat planes, no bevel, no light. The mark is the position. */
+ flat:'M3.5 5.5h7v7h-7zM13.5 5.5h7v4h-7zM13.5 12.5h7v6h-7zM3.5 15.5h7v3h-7z'};
 /* FOUR LIGHTINGS. Glass is the fourth, and it is the one aimed forward: the
    direction the field is moving for 2027 and 2028 is holographic
    skeuomorphism, which is refraction and real elevation rather than the blur
    and white hairline everybody shipped in 2020. */
 /* ONE LIST AND ONE SETTER, because the settings surface shows the same four
    and a second copy of a list of lightings is a list that will drift. */
-const LIGHTINGS=[['dark','Dark'],['snow','Snow'],['punch','Punch'],['glass','Glass']];
+/* SIX, on the owner's ruling. Glass on white is the same material under a
+   different sun. Flat is the opposite position to all five others: no bevel,
+   no blur, no shadow, and colour doing the work a material was doing. */
+const LIGHTINGS=[['dark','Dark'],['snow','Snow'],['punch','Punch'],['glass','Glass'],
+ ['glasswhite','Glass white'],['flat','Flat']];
 function setLighting(k){
  S.theme=k;
- document.body.classList.toggle('snow',k==='snow');
- document.body.classList.toggle('punch',k==='punch');
- document.body.classList.toggle('glass',k==='glass');
+ ['snow','punch','glass','glasswhite','flat'].forEach(function(c){
+  document.body.classList.toggle(c,k===c);});
  var seg=$('themes');
  if(seg)seg.querySelectorAll('button').forEach(function(x,j){
   x.setAttribute('aria-pressed',LIGHTINGS[j]&&LIGHTINGS[j][0]===k);});

@@ -209,19 +209,26 @@ const THEMEICON={
  punch:'M12 4a8 8 0 0 1 0 16zM12 12m-8 0a8 8 0 1 0 16 0a8 8 0 1 0-16 0',
  /* a pane at an angle with light coming off its edge. the one glyph that says
     refraction rather than blur. */
- glass:'M5.5 7.2l9-3.2v12.8l-9 3.2zM14.5 4l4 2.4v11.2l-4 2.4M5.5 7.2L9.6 9.4'};
+ glass:'M5.5 7.2l9-3.2v12.8l-9 3.2zM14.5 4l4 2.4v11.2l-4 2.4M5.5 7.2L9.6 9.4',
+ /* the same pane, lit from the front rather than from behind */
+ glasswhite:'M5.5 7.2l9-3.2v12.8l-9 3.2zM14.5 4l4 2.4v11.2l-4 2.4M19 3l2.4 2.4M21 7.6l1.6-1.6',
+ /* three flat planes, no bevel, no light. The mark is the position. */
+ flat:'M3.5 5.5h7v7h-7zM13.5 5.5h7v4h-7zM13.5 12.5h7v6h-7zM3.5 15.5h7v3h-7z'};
 /* FOUR LIGHTINGS. Glass is the fourth, and it is the one aimed forward: the
    direction the field is moving for 2027 and 2028 is holographic
    skeuomorphism, which is refraction and real elevation rather than the blur
    and white hairline everybody shipped in 2020. */
 /* ONE LIST AND ONE SETTER, because the settings surface shows the same four
    and a second copy of a list of lightings is a list that will drift. */
-const LIGHTINGS=[['dark','Dark'],['snow','Snow'],['punch','Punch'],['glass','Glass']];
+/* SIX, on the owner's ruling. Glass on white is the same material under a
+   different sun. Flat is the opposite position to all five others: no bevel,
+   no blur, no shadow, and colour doing the work a material was doing. */
+const LIGHTINGS=[['dark','Dark'],['snow','Snow'],['punch','Punch'],['glass','Glass'],
+ ['glasswhite','Glass white'],['flat','Flat']];
 function setLighting(k){
  S.theme=k;
- document.body.classList.toggle('snow',k==='snow');
- document.body.classList.toggle('punch',k==='punch');
- document.body.classList.toggle('glass',k==='glass');
+ ['snow','punch','glass','glasswhite','flat'].forEach(function(c){
+  document.body.classList.toggle(c,k===c);});
  var seg=$('themes');
  if(seg)seg.querySelectorAll('button').forEach(function(x,j){
   x.setAttribute('aria-pressed',LIGHTINGS[j]&&LIGHTINGS[j][0]===k);});

@@ -10,7 +10,7 @@
     BLOCK  3 compass look dev DONE   flat toggle, six axis arrows, Dante
                                      layers, oscillation over 30/90/365
     BLOCK  4 knowledge        OPEN
-    BLOCK  5 two lightings    OPEN
+    BLOCK  5 two lightings    DONE   Glass white and Flat. Six, gate proves it
     BLOCK  6 story + release  OPEN
     BLOCK  7 tools scrub      OPEN
     BLOCK  8 body             OPEN
