@@ -205,6 +205,7 @@ function runGatesDrill(k){
 function runQDrill(q){
  if(q==='cq'){runCoreDrill();return;}
  if(q==='xyz'){runXYZDrill();return;}
+ if(q==='flow'){runFlowDrill();return;}
  var r=compute(), h='';
  if(q==='dq'){
   var top=r.loaded.slice().sort(function(a,b){return b.sq-a.sq;}).slice(0,5);
@@ -249,6 +250,37 @@ function runXYZDrill(){
     return '<div class="ad-r static"><span class="ad-k">'+cr(a[2],a[1]*100,{size:'xs',raw:a[1].toFixed(2)})
      +a[0]+'</span><span class="ad-m">'+(a[1]*100).toFixed(0)+'%</span></div>';}).join('')+'</div>'
   +A.map(function(a){return '<div class="pm-eye">'+a[0]+'</div><p class="ad-p">'+a[3]+'</p>';}).join('');
+ rdShell(h);}
+
+/* FLOW. WHAT REACHES THE CROWN FROM THE ROOT.
+
+   The seven seats pass signal in series, so the throughput of the whole
+   column is each seat's pass multiplied by the next. One shut seat closes
+   the column regardless of how clear the six above it are, which is the
+   reading, and it is why this is drawn as a channel on the Body page rather
+   than as seven numbers.
+
+   It was computed there and read nowhere else. */
+function runFlowDrill(){
+ var r=compute(), seats=flSeats(), f=flSpeed();
+ var stop=null; seats.slice().reverse().forEach(function(s){if(!stop&&s.held)stop=s;});
+ var h='<div class="pm-eye">Flow</div><div class="ad-nm">'+(r.unread?'Not read yet'
+    :(f*100).toFixed(0)+'% reaches the crown')+'</div>'
+  +'<div class="pm-eye">How it is built</div><p class="ad-p">'
+  +'The seven seats pass signal in series, root upward. Each one passes a share '
+  +'and the column carries the product of all seven, so one shut seat closes '
+  +'the column whatever the six above it are doing. This is the number the Body '
+  +'page draws as a channel, and where it pinches is where the work is.</p>'
+  +'<div class="pm-eye">Seat by seat</div><div class="ad-rows">'
+  +seats.slice().reverse().map(function(s){
+    return '<div class="ad-r static"><span class="ad-k">'
+     +cr(K2B[s.p.k],s.pass*100,{size:'xs',raw:s.pass.toFixed(2)})+esc(s.p.n)+'</span>'
+     +'<span class="ad-m">'+Math.round(s.pass*100)+'%</span></div>';}).join('')+'</div>'
+  +'<div class="pm-eye">Where it stops</div><p class="ad-p">'
+  +(stop?'The column closes at the <b>'+esc(String(stop.p.n).toLowerCase())+'</b>, which is '
+    +'carrying <b>'+stop.hot+'</b> address'+(stop.hot===1?'':'es')+'. Clear those and the '
+    +'seats above it open with them.'
+   :'No seat is holding enough to close the column.')+'</p>';
  rdShell(h);}
 
 /* BALANCE. which way the field discharges, and what it is built from. */

@@ -484,12 +484,39 @@ function render(){
     +cr(r.darkB,r.SQm*10,{size:'xs',raw:r.SQm.toFixed(1)})+'<span><b>SQ</b></span></button>'
   +'<button class="kb" data-q="pole" title="The coherent opposite, installed. 0 to 1 across the nine axes.">'
     +cr('Heart',r.poleMean*100,{size:'xs',raw:r.poleMean.toFixed(2)})+'<span><b>Pole</b></span></button>'
-  /* the three axes. the engine has computed X, Y and Z on every reading
-     since the rebuild and nothing has ever drawn them. */
-  +'<button class="kb" data-q="xyz" title="Vitality, awareness and will. The mean of the three, 0 to 1.">'
-    +cr('Solar',r.unread?0:(r.X+r.Y+r.Z)/3*100,
-      {size:'xs',raw:r.unread?'\u2013':((r.X+r.Y+r.Z)/3).toFixed(2)})
-    +'<span><b>Energy</b></span></button>';
+  /* THE CONSOLE AVERAGED THREE READINGS AND SHOWED THE AVERAGE.
+
+     One pill said Energy and behind it sat vitality, awareness and will,
+     three independent lines meaned into a single figure. The drill behind
+     that pill already says, in its own words, that they do not average into
+     a score: they say which of the three is carrying and which is short. An
+     average is exactly the thing that cannot say that. Every one of the three
+     has been computed on every reading since the rebuild and the console
+     printed their mean.
+
+     They are their own pills now. Nothing new is measured and nothing is
+     renamed: will is will, which the codex defines as available directed
+     force, and it is not the same quantity as flow.
+
+     Flow is. It is the throughput of the seven seats, one times the next, the
+     share of signal that reaches the crown from the root, and it is what the
+     Body page draws as a channel. It was computed and drawn there and read
+     nowhere else. It reads here. */
+  +'<button class="kb" data-q="xyz" title="Vitality. What is left after apathy and the shadow weight.">'
+    +cr('Solar',r.unread?0:r.X*100,{size:'xs',raw:r.unread?'\u2013':r.X.toFixed(2)})
+    +'<span><b>Vitality</b></span></button>'
+  +'<button class="kb" data-q="xyz" title="Awareness. Intention read against distortion.">'
+    +cr('3rd Eye',r.unread?0:r.Y*100,{size:'xs',raw:r.unread?'\u2013':r.Y.toFixed(2)})
+    +'<span><b>Awareness</b></span></button>'
+  +'<button class="kb" data-q="xyz" title="Will. Integrity carried through a clear segment.">'
+    +cr('Root',r.unread?0:r.Z*100,{size:'xs',raw:r.unread?'\u2013':r.Z.toFixed(2)})
+    +'<span><b>Will</b></span></button>'
+  +(function(){
+    var f=flSpeed();
+    return '<button class="kb" data-q="flow" title="Flow. What reaches the crown from the root, '
+     +'every seat multiplied by the next.">'
+     +cr('Heart',r.unread?0:f*100,{size:'xs',raw:r.unread?'\u2013':f.toFixed(2)})
+     +'<span><b>Flow</b></span></button>';})();
  /* who. proportions, not one label. */
  (function(){
   var aff=(r.aff||[]).map(function(v,i){return {i:i,nm:(ARCH[i]||{}).nm||'',v:v};})
