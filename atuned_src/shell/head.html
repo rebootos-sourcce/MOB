@@ -676,6 +676,16 @@ canvas#cv{display:block;grid-column:2;grid-row:2;width:100%;height:100%;
 /* the arithmetic under a reading. It is how the number was computed and it is
    not what the number means, so it sits under the meaning and reads quieter. */
 .probe .tt-q{font-family:var(--num);font-size:11px;opacity:.6;letter-spacing:.01em}
+/* the rail's tooltip. Same object as the canvas probe, fixed rather than
+   absolute because it hangs off a rail that scrolls inside the page. */
+.railtip{position:fixed;max-width:288px;pointer-events:none}
+/* A NAMED THING IN THE RAIL IS A BUTTON, and it has to look like one on
+   hover without becoming a row of boxes at rest. */
+.kbjump{width:100%;background:none;border:0;padding:4px 6px;margin:0 -6px;
+ border-radius:var(--r-xs);cursor:pointer;text-align:left;font:inherit;color:inherit;
+ transition:background .14s}
+.kbjump:hover{background:var(--panel-2)}
+.kbjump:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
 /* The key is a strip in flow above the canvas, never over it. Each element
    is a button that opens its reading on the right. The tier block sits
    absolute at top right, so the strip leaves it room. */

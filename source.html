@@ -676,6 +676,16 @@ canvas#cv{display:block;grid-column:2;grid-row:2;width:100%;height:100%;
 /* the arithmetic under a reading. It is how the number was computed and it is
    not what the number means, so it sits under the meaning and reads quieter. */
 .probe .tt-q{font-family:var(--num);font-size:11px;opacity:.6;letter-spacing:.01em}
+/* the rail's tooltip. Same object as the canvas probe, fixed rather than
+   absolute because it hangs off a rail that scrolls inside the page. */
+.railtip{position:fixed;max-width:288px;pointer-events:none}
+/* A NAMED THING IN THE RAIL IS A BUTTON, and it has to look like one on
+   hover without becoming a row of boxes at rest. */
+.kbjump{width:100%;background:none;border:0;padding:4px 6px;margin:0 -6px;
+ border-radius:var(--r-xs);cursor:pointer;text-align:left;font:inherit;color:inherit;
+ transition:background .14s}
+.kbjump:hover{background:var(--panel-2)}
+.kbjump:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
 /* The key is a strip in flow above the canvas, never over it. Each element
    is a button that opens its reading on the right. The tier block sits
    absolute at top right, so the strip leaves it room. */
@@ -12235,6 +12245,40 @@ function renderBal(r){
   +'</div>'
   +'<div class="bal-tr"><i></i>'+tick
   +'<span class="bal-m" style="left:'+pc.toFixed(1)+'%;background:'+c+'"></span></div>';}
+/* ---- the rail's doors. one delegated set, on the rail itself ---- */
+var _KBJ=false;
+function wireKbJump(){
+ if(_KBJ)return; _KBJ=true;
+ var host=document.body; if(!host)return;
+ var tip=document.getElementById('railtip');
+ if(!tip){tip=document.createElement('div');tip.id='railtip';tip.className='probe railtip';
+  document.body.appendChild(tip);}
+ function show(el){
+  var t=el.getAttribute('data-tip')||''; if(!t){hide();return;}
+  var nm=el.querySelector('.tn'), b=el.getBoundingClientRect();
+  tip.innerHTML='<b>'+esc(nm?nm.textContent:'')+'</b><hr>'+esc(t)
+   +(el.getAttribute('data-kbs')?'<hr><b>Click to read it.</b>':'');
+  tip.classList.add('on');
+  var tb=tip.getBoundingClientRect();
+  /* left of the rail, because the rail is against the right edge and a
+     tooltip that opens rightward opens off the screen. */
+  tip.style.left=Math.max(8,b.left-tb.width-10)+'px';
+  tip.style.top=Math.max(8,Math.min(innerHeight-tb.height-8,b.top-4))+'px';}
+ function hide(){tip.classList.remove('on');}
+ host.addEventListener('pointerover',function(e){
+  var el=e.target.closest?e.target.closest('.kbjump'):null;
+  if(el)show(el); else if(!e.target.closest||!e.target.closest('#railtip'))hide();});
+ host.addEventListener('pointerleave',hide,true);
+ host.addEventListener('click',function(e){
+  var el=e.target.closest?e.target.closest('.kbjump'):null; if(!el)return;
+  var sec=el.getAttribute('data-kbs'), t=el.getAttribute('data-kbt');
+  if(!sec||!t)return;
+  hide();
+  KB_SEC=sec; KB_Q='';
+  setTab(TAB.KNOW);
+  var row=(kbRows(sec)||[]).filter(function(x){return x.t===t;})[0];
+  if(row)kbOpen(row);});}
+
 function railTop(r){
  var e=document.getElementById('railtop'); if(!e)return;
  /* "18 of 112 held" read as a score out of a total, which is a test rather
@@ -12405,9 +12449,21 @@ function render(){
      knows the seven seats, so passing Architect where it wanted Heart resolved
      to the alarm red and printed Imperium 100% in the colour this product
      reserves for something being wrong. */
-  function prow(k,n,pct,col,glyph,title){
-   return '<div class="tierow pill"><span class="tk">'+k+'</span>'
-    +'<span class="tn">'+esc(n)+'</span>'
+  /* EVERY NAMED THING IN THIS RAIL IS A DOOR.
+
+     Warrior, Sage, Creator, Imperium. A person reading their own reading has
+     no idea what any of those words mean and the rail offered no way to find
+     out: the only explanation anywhere was a native browser title on the
+     ring, which is the wrong size, the wrong place, and gone on touch.
+
+     The row carries the meaning now, on hover, in the product's own tooltip,
+     and it is a button: press it and the knowledge page opens on that entry.
+     Nothing is a dead end that has a name. */
+  function prow(k,n,pct,col,glyph,title,kb,gloss){
+   return '<button type="button" class="tierow pill kbjump" '
+    +(kb?'data-kbs="'+esc(kb[0])+'" data-kbt="'+esc(kb[1])+'" ':'')
+    +'data-tip="'+esc(gloss||title||'')+'">'
+    +'<span class="tk">'+k+'</span>'
     /* hot:false. cr() turns anything past the hot threshold into the alarm
        colour, which is right for a charge and wrong for a share: one selected
        domain is 100 percent of the selection and printed Imperium in the
@@ -12415,15 +12471,21 @@ function render(){
        never an alarm. */
     +cr('Heart',pct,{size:'xs',raw:Math.round(pct)+'%',glyph:glyph,label:n,
       title:title,color:col,hot:false})
-    +'</div>';}
+    +'</button>';}
   var ah=aff.slice(0,3).map(function(x,i){
    var A=ARCH[x.i]||{};
    return prow(T[i],x.nm,x.v/tot*100,seatCol('Heart'),A.ic?'<path d="'+A.ic+'"/>':null,
-    x.nm+'. '+(A.v||'')+' Share of how the blueprint expresses.');}).join('');
+    x.nm+'. '+(A.v||'')+' Share of how the blueprint expresses.',
+    ['arch',x.nm],
+    'An archetype. '+x.nm+' '+(A.v||'')+'. It is native and was there before '
+    +'anything was conditioned, so it is not released. The work changes where '
+    +'it is pointed.');}).join('');
   var dsh=S.doms.map(function(di,i){var d=DOMAINS[di];
    return d?prow(T[i]||'Also',d.nm,100/(S.doms.length||1),ROOTCOL[d.r],
     d.ic?'<path d="'+d.ic+'"/>':null,
-    d.nm+', '+d.r+' root. '+(d.d||'')):'';}).join('');
+    d.nm+', '+d.r+' root. '+(d.d||''),
+    ['dom',d.nm],
+    'A blueprint domain, on the '+d.r+' root. '+(d.d||'')):'';}).join('');
   var held=W.filter(function(n){return n.sq>=4;}).length;
   var inst=W.filter(function(n){return n.pole>=4;}).length;
   /* WHERE TO START. Only while there is nothing to read, because a call to
@@ -12486,6 +12548,14 @@ function render(){
   var o=rows[+el.dataset.i];
   var same=S.pin&&S.pin.nm===o.nm&&S.pin.kind===o.kind;
   S.pin=same?null:o; runDrill(S.pin); render();});});
+ /* THE RAIL'S DOORS AND THEIR TOOLTIPS, WIRED ONCE.
+
+    Delegated on the rail rather than bound per row, because the rail is
+    rebuilt on every render and a listener per row per frame is a leak with a
+    name. Hover shows the meaning in the product's own tooltip. Press takes
+    the person to the knowledge page with that entry already open, so a word
+    they did not know is two gestures from being a word they do. */
+ wireKbJump();
  renderAcc(r); renderSpirit(); renderPol2(r); syncMx();
  $('fire').innerHTML=rows.length
   ? '<div class="pm-eye" style="color:var(--gold);margin-bottom:8px">Running now</div>'
