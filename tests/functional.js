@@ -1509,6 +1509,51 @@ ok(leak.length===0,'no key, customer id or card field is anywhere in the build: 
  await pa.close();
 }
 
+
+console.log('\n=== a stranger is a stranger, whoever was on screen before ===');
+/* THE RULE, not the number: visiting a demo persona must not change what the
+   blank profile has measured. The blank's own contents are the person's
+   business and this file has been writing to them for a thousand lines, so
+   the assertion is the DELTA across a round trip, which is the thing that
+   actually broke and is true whatever the blank happens to hold.
+
+   loadP read CURP to recover the custom persona's own laws, and CURP is not
+   repointed to the target until eight lines later, so the blank inherited the
+   previous persona's twenty one law scores and kept them. saveProfile then
+   persisted them. Measured on a fresh page before the fix: loadP(0) alone
+   gave unread true and measured 0; loadP(14) then loadP(0) gave unread false,
+   measured 21, law mean 9.72 and the word Mastery, off Lance's numbers, on a
+   profile where nobody had entered anything. */
+const base=await page.evaluate(()=>{loadP(0);const r=compute();
+ return {unread:r.unread,measured:r.measured,
+  laws:SINAMES.map(l=>S.law[l]).join(','),
+  unset:SINAMES.filter(l=>LAW_UNSET[l]).length};});
+for(const via of [14,6,1]){
+ const s=await page.evaluate(v=>{loadP(v);loadP(0);const r=compute();
+  return {unread:r.unread,measured:r.measured,nm:PEOPLE[v].nm,
+   laws:SINAMES.map(l=>S.law[l]).join(','),
+   unset:SINAMES.filter(l=>LAW_UNSET[l]).length};},via);
+ ok(s.measured===base.measured,'the blank measures the same after a trip through '+s.nm
+   +', got '+s.measured+' want '+base.measured);
+ ok(s.unread===base.unread,'and is as unread as before after '+s.nm);
+ ok(s.unset===base.unset,'and the same laws are unset after '+s.nm
+   +', got '+s.unset+' want '+base.unset);
+ ok(s.laws===base.laws,'and not one law value moved after '+s.nm);
+}
+/* AND THE PRISTINE CASE, on a page of its own with the store cleared, because
+   that is the state a stranger actually arrives in. */
+const strg=await browser.newPage({viewport:{width:1600,height:1000}});
+await strg.goto(FILE,{waitUntil:'load'}); await booted(strg); await strg.waitForTimeout(400);
+await strg.evaluate(()=>{try{localStorage.clear();}catch(e){}});
+await strg.reload({waitUntil:'load'}); await booted(strg); await strg.waitForTimeout(700);
+const pris=await strg.evaluate(()=>{loadP(14);loadP(0);const r=compute();
+ return {unread:r.unread,measured:r.measured,tier:r.tier,
+  unset:SINAMES.filter(l=>LAW_UNSET[l]).length};});
+ok(pris.unread===true,'a stranger who looked at a persona first is still unread');
+ok(pris.measured===0,'and has measured nothing, got '+pris.measured);
+ok(pris.unset===21,'and carries 21 unset laws, got '+pris.unset);
+await strg.close();
+
 await browser.close();
 
 console.log('\n===== '+PASS+' passed, '+FAIL+' failed =====');

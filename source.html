@@ -14702,8 +14702,27 @@ function loadP(i){
     one is left unmeasured and stays unmeasured until the intake writes a real
     score. */
  var LS=lawsFor(p);
+ /* THE CUSTOM PERSONA'S OWN LAWS COME FROM ITS OWN PROFILE, never from CURP.
+    This read CURP, and at this point in loadP CURP is still whoever was
+    loaded BEFORE this call: it is not repointed until eight lines below. So
+    arriving at You from any demo persona copied that persona's twenty one law
+    scores into the blank and kept them as measurements. saveProfile then
+    persisted them, so it did not wash out on the next render either.
+
+    Measured, both on a fresh page. loadP(0) alone: unread true, measured 0,
+    21 laws unset, CQ 42.3 with no tier printed. loadP(14) then loadP(0):
+    unread false, measured 21, law mean 9.72, Truth 9.9, CQ 94.2 and the word
+    Mastery, off Lance's numbers, on a profile where nobody had entered
+    anything. Every guard in the product that checks unread before printing a
+    band, a tier or a reading was passing for a stranger.
+
+    This is the second route into the failure FINDINGS-fixed.md already
+    recorded once. That fix corrected the seeding and left the ordering, which
+    is why it came back wearing a different cause. The target profile is the
+    only thing entitled to answer what the target profile has measured. */
+ var OWN=PROF_BY[p.nm];
  SINAMES.forEach(function(l){
-  var v=(p.you&&CURP&&CURP.laws)?CURP.laws[l]:undefined;
+  var v=(p.you&&OWN&&OWN.laws)?OWN.laws[l]:undefined;
   /* The placeholder is unchanged, so the field geometry is unchanged. What
      changes is only whether it is allowed to persist as a measurement: on the
      custom persona an unmeasured law is seeded and marked, and saveProfile
