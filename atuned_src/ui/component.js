@@ -19,7 +19,17 @@ var HOT_AT=90;                         /* the alarm band. severity gets its own 
    and every renderer after it wants one. */
 const svgI=function(p){return '<svg viewBox="0 0 24 24">'+p+'</svg>';};
 function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
-function seatCol(b){return (S.theme==='snow'?PAL_LIGHT[b]:PAL[b])||'var(--gold)';}
+/* THE COLOUR A SEAT WEARS DEPENDS ON WHAT IT IS SITTING ON, and this knew
+   about one light ground out of two. Lumen arrived with paper rails and the
+   dark palette went onto them unchanged, so Weaver, Solar and half the
+   readings in the rail were drawn in colours meant for a black panel. Every
+   value written by JS rather than by a token had the same fault, which is why
+   the rail looked washed while the sheet looked right. */
+function seatCol(b){
+ var P = S.theme==='lumen' ? PAL_VIVID
+       : S.theme==='snow'  ? PAL_LIGHT
+       : PAL;
+ return P[b]||'var(--gold)';}
 function cr(band,pct,o){
  o=o||{};
  var size=o.size||'md', G=CRGEO[size]||CRGEO.md;

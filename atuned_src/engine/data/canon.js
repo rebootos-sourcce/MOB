@@ -69,6 +69,13 @@ const BANDS=['Root','Sacral','Solar','Heart','Throat','3rd Eye','Crown'];
    are already doing the calming work. Full chroma is reserved for ALARM. */
 const PAL={'Root':'#C4635E','Sacral':'#D19255','Solar':'#D4BC70','Heart':'#6FC5A3',
  'Throat':'#65B8D4','3rd Eye':'#8296DB','Crown':'#A98BCE'};
+/* THE THIRD PALETTE. Lumen puts paper under the rails and keeps the centre
+   stage at 101010, and its whole brief is vibrancy, so neither of the other
+   two fits: the dark palette is invisible on paper and the Snow palette is
+   deepened ink, which is the opposite of what was asked for. Full chroma,
+   chosen to hold on paper and on the black stage both. */
+const PAL_VIVID={'Root':'#F02E3C','Sacral':'#FF7A00','Solar':'#C79200','Heart':'#00A85C',
+ 'Throat':'#0091C4','3rd Eye':'#3D5AFE','Crown':'#9B27E8'};
 const PAL_LIGHT={'Root':'#9B4B47','Sacral':'#8E6231','Solar':'#7E6C29','Heart':'#2A7A5C',
  'Throat':'#2C6F88','3rd Eye':'#4C5F9E','Crown':'#6E5490'};
 const GOLD='#7EB8D4', ALARM='#FF2E1F';   /* the accent. blue, ruled. */

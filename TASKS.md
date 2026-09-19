@@ -1049,3 +1049,142 @@ is a path that claims the person's identity while a reference field is still
 in `S`. A clean page shows no leak, which is why it needs the full sequence to
 reproduce.
 *Medium, and it is corruption, so it goes before any new surface.*
+
+---
+
+# Ruled 19 September, eighth note.
+
+## AD. Lumen is about vibrancy.
+
+**AD1. The panels and the top navigation are paper.** `shell/head.html`
+White paper for the left rail, the right rail and the bar. The centre display
+area stays 101010 and that has not changed.
+*Small. It reverses half of what went in an hour ago, which had every panel
+black.*
+
+**AD2. Vibrant everywhere it is not paper.** `shell/head.html`
+Flat colours super vibrant. Icons super vibrant. The centre field vibrant. His
+sentence is the spec: Lumen is about vibrancy.
+*Medium. The muted palette argued from autonomic response is a standing ruling
+and this lighting is now its named exception, so say so in the sheet.*
+
+## AE. The Field navigation is a cluster.
+
+Ten passes by the UI UX team, and the grouping is his:
+
+**AE1. Group the readings by kind.** `ui/wheel.js`, `ui/panels.js`
+CQ, DQ and SQ are one kind. Vitality, awareness and will are another and go
+lower left. Flow with them.
+*Medium.*
+
+**AE2. Severe is printed twice, so it comes out of the centre.** `ui/wheel.js`
+It is on the right already.
+*Small.*
+
+**AE3. Benign and malignant are printed twice, so they come out of the
+centre.** `ui/wheel.js`
+They are on the left console already. The text underneath them goes too.
+*Small.*
+
+**AE4. Accuracy moves to the lower right, and its label moves left of it.**
+`ui/wheel.js`
+*Small.*
+
+## AF. The compass. AND A REVERSAL HE NEEDS TO SEE.
+
+**AF1. THIS CONTRADICTS THE EARLIER RULING AND IS NOT MINE TO RESOLVE
+QUIETLY.** Earlier tonight: "the compass is a feature and should not take up
+most of the dominant space." I built to that and made it smaller. Tonight:
+"you're wrecking my compass. The compass is a centerpiece. It should be the
+entire center area."
+
+Taken as the later ruling winning, because it is unambiguous and he saw the
+result of the first. Recorded here so it is on the record rather than silently
+swapped. If the first still stands, this reverses in one line.
+*Small to reverse, once he confirms.*
+
+**AF2. The compass gets its vibrancy, and ten simulated passes.** `ui/cone.js`
+Art director, UI UX, creative director and design team. Ten iterations, each
+pitched to the ICPs, sharpened until the ICPs call it sexy.
+*Large.*
+
+**AF3. It slides in and out.** `ui/cone.js`
+He expected that and it does not do it.
+*Small.*
+
+**AF4. The compass text is information, so it goes right.** `ui/cone.js`
+*Small, and it is the same rule as AE2 and AE3.*
+
+## AG. The Field, and what it could be.
+
+**AG1. Ideas for the Field, visual and animated.** `ui/wheel.js`
+Animation, innovation, art direction and the creative director. He called the
+atomization super cool and wants that thread pulled.
+*Medium to propose, unsized to build.*
+
+## AH. The Summary becomes a page about you.
+
+**AH1. Bold names carry their icon's colour.** `ui/summary.js`
+Witness, Architect, Sage in the body text, in the colour their own mark wears.
+*Small.*
+
+**AH2. Every named thing is described as a behaviour.** `ui/summary.js`
+Witness, life path seven, air. His words: so people can see, oh, I do act like
+the sage, this is how the sage runs through me. A name with no behaviour
+attached is a label.
+*Medium, and it is the editorial rule below applied.*
+
+**AH3. "Off the floor. And nothing more" comes out.** `ui/summary.js`
+*Small.*
+
+**AH4. The centre column is purely text about you.** `ui/summary.js`
+Everything energetic, the symbols, the numbers, life path, and the whole
+mental stack, move to the right. The centre reads like an astrology page about
+you, written from the story journal and what has been released.
+*Large.*
+
+**AH5. Source AI retunes it, and the old reading goes to history.**
+`ui/summary.js`, `engine/schema.js`
+Every day the summary is tuned again from what has arrived since. The previous
+reading is kept rather than overwritten.
+*Large. It needs the seam and a ruling on what Source AI may read.*
+
+## AI. The diagnostic.
+
+**AI1. Zero to ten on one line, and tighten the design.** `ui/intakeui.js`
+His words: the numbers aren't even, and I'm just not liking that design. Run
+it a few times.
+*Medium. Six across two rows was my arithmetic for the tap floor at half a
+column; one line of eleven needs the card wider or the cells narrower, and the
+floor is not negotiable, so the card is what moves.*
+
+## AJ. THE EDITORIAL RULING. Context is key.
+
+**AJ1. Every number says what it means, from now on.** everywhere
+His example is the compass: "you read 13 below the oscillating band. You read
+13, what does that mean. Integrity 4.3, what does that mean. Coherence 13."
+
+A number with no context is not a reading, it is a score, and this product
+does not score anybody. This is a standing rule for the editorial and narrative
+team and applies to every surface, not the compass alone.
+*Large, and it is the highest leverage editorial item in the backlog.*
+
+## AK. Small and noted.
+
+**AK1. The profile and undo arrangement he likes goes right.** `shell/body.html`
+"How do you change the navigation with the profile undo, I like that for the
+right hand side, that's cool."
+*Small, and it needs one clarifying word from him about which part he means.*
+
+**AD3. The icon buttons keep a dark ground in Lumen, and I could not find why.**
+`shell/head.html`, open
+Measured on the left rail under Lumen: `.ib` computes `rgb(37,40,51)` and
+`rgb(9,10,14)`, which are the Dark palette's `--panel-2` and `--sunk`. But
+`--sunk` traced up the whole tree from that element reads `#ECECF0`, the Lumen
+value, at every level including on the button itself, and the only literal
+`#252833` in the sheet is the `:root` declaration. Three probes, no answer.
+
+Not guessed at and not papered over. The art director is reviewing this exact
+surface and has the measurement.
+*Small once the cause is known. It is a contrast fault on one control class,
+not a broken surface.*

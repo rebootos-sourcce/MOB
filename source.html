@@ -319,33 +319,41 @@ body.glasswhite .panel,body.glasswhite .glass{
    a material was doing. */
 body.lumen{
  --seat:#7EB8D4; --seat-w:0;
+ /* PAPER. The rails and the bar are paper, ruled, and the only thing that
+    stays 101010 is the centre display area where the tool draws. The first cut
+    had every panel black on the reading that a panel carries text; he has since
+    ruled the other way and named what he wants: Lumen is about vibrancy. */
  --bg:#FFFFFF;
- /* every panel carries text, so every panel is the ruled black */
- --panel:#101010; --panel-2:#171717; --sunk:#0A0A0A;
- --edge:#2B2B2B; --edge-2:#3C3C3C;
- --ink:#F7F7F7; --mid:#ADADAD; --dim:#8A8A8A;
- --root:#D2726D; --sacral:#DCA067; --solar:#DEC77E; --heart:#7BD1AF;
- --throat:#72C4E0; --eye:#8FA3E6; --crown:#B597D8;
- --accent:#2FA8D4; --gold:var(--accent); --on-accent:#05131A;
- --au:#C9A34A;
- --sky:#2FA8D4; --um:#F7F7F7;
- --good:#68CBA4; --bad:#D4736D;
- --alarm:#FF2E1F; --alarm-soft:rgba(255,46,31,.14);
- --on-flat:#0E1015;
+ --panel:#FFFFFF; --panel-2:#F4F4F6; --sunk:#ECECF0;
+ --edge:rgba(16,16,16,.13); --edge-2:rgba(16,16,16,.22);
+ --ink:#101010; --mid:#43434A; --dim:#63636B;
+ /* VIBRANT, AND THAT IS THE POINT OF THIS LIGHTING.
+
+    The muted palette argued from autonomic response is a standing ruling and
+    this is its named exception, on his word. These are the seat hues taken to
+    full chroma against paper rather than the deepened ink Snow uses, so a seat
+    reads as itself across a room instead of as a tint. */
+ --root:#F02E3C; --sacral:#FF7A00; --solar:#FFC400; --heart:#00C46A;
+ --throat:#00A9E0; --eye:#3D5AFE; --crown:#9B27E8;
+ --accent:#0091EA; --gold:var(--accent); --on-accent:#FFFFFF;
+ --au:#B8860B;
+ --sky:#0091EA; --um:#101010;
+ --good:#00A85C; --bad:#E01B24;
+ --alarm:#FF1500; --alarm-soft:rgba(255,21,0,.12);
+ --on-flat:#FFFFFF;
  --shadow:none;
  --r:4px; --r-s:4px; --r-xs:3px;
 }
-/* WHAT IS WHITE IS WHAT CARRIES NO TEXT, and that turns out to be the ground
-   alone. The first cut gave the top bar the white and a second dark ink to go
-   on it, which was me adding a rule he did not make: the bar carries the tab
-   names, and his ruling is that any background carrying text is 101010. So
-   the bar stays black with the ordinary light ink, the stage stays black, the
-   panels stay black, and the white is the space between them.
+/* THE CENTRE DISPLAY AREA IS THE ONE THING THAT STAYS BLACK. Stated twice by
+   him and unchanged across both rulings. The tools draw on it, and the vibrant
+   hues above were chosen to sit on this as well as on paper. */
+body.lumen .stage,body.lumen #emap,body.lumen #cone,body.lumen #cv,
+body.lumen .cone-cv,body.lumen .pm-well{background:#101010}
+body.lumen .stage{--ink:#F7F7F7; --mid:#B6B6BC; --dim:#8C8C94;
+ --panel:#171717; --panel-2:#1F1F22; --sunk:#0A0A0A;
+ --edge:rgba(255,255,255,.14); --edge-2:rgba(255,255,255,.24);
+ color:var(--ink)}
 
-   That cut also had two rules of mine at the same specificity fighting, and
-   the later one won, so the bar kept its dark ground while the wordmark took
-   the dark ink and disappeared. One rule now, and nothing to fight. */
-body.lumen .stage,body.lumen #emap,body.lumen #cone{background:#101010}
 /* SOLID EVERYWHERE, AND THE ICONS PUNCHIER. Ruled, and it is a second ruling
    on top of the first: "when selected, anything selected should be flat solid
    colour. In fact I want this whole design to be like flat solid colour
@@ -3625,6 +3633,13 @@ const BANDS=['Root','Sacral','Solar','Heart','Throat','3rd Eye','Crown'];
    are already doing the calming work. Full chroma is reserved for ALARM. */
 const PAL={'Root':'#C4635E','Sacral':'#D19255','Solar':'#D4BC70','Heart':'#6FC5A3',
  'Throat':'#65B8D4','3rd Eye':'#8296DB','Crown':'#A98BCE'};
+/* THE THIRD PALETTE. Lumen puts paper under the rails and keeps the centre
+   stage at 101010, and its whole brief is vibrancy, so neither of the other
+   two fits: the dark palette is invisible on paper and the Snow palette is
+   deepened ink, which is the opposite of what was asked for. Full chroma,
+   chosen to hold on paper and on the black stage both. */
+const PAL_VIVID={'Root':'#F02E3C','Sacral':'#FF7A00','Solar':'#C79200','Heart':'#00A85C',
+ 'Throat':'#0091C4','3rd Eye':'#3D5AFE','Crown':'#9B27E8'};
 const PAL_LIGHT={'Root':'#9B4B47','Sacral':'#8E6231','Solar':'#7E6C29','Heart':'#2A7A5C',
  'Throat':'#2C6F88','3rd Eye':'#4C5F9E','Crown':'#6E5490'};
 const GOLD='#7EB8D4', ALARM='#FF2E1F';   /* the accent. blue, ruled. */
@@ -8425,6 +8440,7 @@ if(typeof module!=='undefined'&&module.exports){
                   NUM_LET:NUM_LET, NUM_MASTER:NUM_MASTER, NUM_DEBT:NUM_DEBT,
                   NUM_CORE:NUM_CORE, NUM_DEBT_SAYS:NUM_DEBT_SAYS,
                   FULLNAME:FULLNAME, BIRTH:BIRTH,
+  /* palettes */  PAL_VIVID:PAL_VIVID,
   /* series */    seriesRead:seriesRead, SPANS:SPANS, spanOf:spanOf,
   /* outbox */    obQueue:obQueue, obValidate:obValidate, obDrain:obDrain,
                   obCount:obCount, obStore:obStore, obBand:obBand,
@@ -8456,7 +8472,17 @@ var HOT_AT=90;                         /* the alarm band. severity gets its own 
    and every renderer after it wants one. */
 const svgI=function(p){return '<svg viewBox="0 0 24 24">'+p+'</svg>';};
 function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
-function seatCol(b){return (S.theme==='snow'?PAL_LIGHT[b]:PAL[b])||'var(--gold)';}
+/* THE COLOUR A SEAT WEARS DEPENDS ON WHAT IT IS SITTING ON, and this knew
+   about one light ground out of two. Lumen arrived with paper rails and the
+   dark palette went onto them unchanged, so Weaver, Solar and half the
+   readings in the rail were drawn in colours meant for a black panel. Every
+   value written by JS rather than by a token had the same fault, which is why
+   the rail looked washed while the sheet looked right. */
+function seatCol(b){
+ var P = S.theme==='lumen' ? PAL_VIVID
+       : S.theme==='snow'  ? PAL_LIGHT
+       : PAL;
+ return P[b]||'var(--gold)';}
 function cr(band,pct,o){
  o=o||{};
  var size=o.size||'md', G=CRGEO[size]||CRGEO.md;
