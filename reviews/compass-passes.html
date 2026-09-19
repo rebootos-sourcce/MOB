@@ -1,0 +1,541 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Compass Passes</title>
+<style>
+/* ============================================================
+   TEN COMPASS PASSES, SIDE BY SIDE.
+   Standalone. No network, no dependency, same as the product.
+   Every figure here is drawn from the product's own geometry,
+   ported from atuned_src/ui/cone.js. Nothing is a mock up.
+   ============================================================ */
+:root{
+ --bg:#0B0B0D; --panel:#131316; --panel-2:#1A1A1E; --sunk:#0A0A0C;
+ --ink:#F2F2F4; --mid:#A8A8B0; --dim:#7C7C86;
+ --edge:rgba(255,255,255,.10); --edge-2:rgba(255,255,255,.18);
+ --accent:#7EB8D4; --alarm:#FF2E1F; --good:#6FC5A3; --bad:#C4635E;
+ --root:#C4635E; --sacral:#D19255; --solar:#D4BC70; --heart:#6FC5A3;
+ --throat:#65B8D4; --eye:#8296DB; --crown:#A98BCE;
+ --stage:#101010; --stage-ink:#F2F2F4;
+ --r:6px; --tap:44px; --shadow:0 10px 30px rgba(0,0,0,.45);
+}
+body[data-light="snow"]{
+ --bg:#F7F6F2; --panel:#FFFFFF; --panel-2:#F1F0EB; --sunk:#EAE9E3;
+ --ink:#14171C; --mid:#454A52; --dim:#666C75;
+ --edge:rgba(20,23,28,.11); --edge-2:rgba(20,23,28,.20);
+ --accent:#2C6F88; --good:#2A7A5C; --bad:#9B4B47;
+ --root:#9B4B47; --sacral:#8E6231; --solar:#7E6C29; --heart:#2A7A5C;
+ --throat:#2C6F88; --eye:#4C5F9E; --crown:#6E5490;
+ --stage:#101010; --stage-ink:#F2F2F4; --shadow:0 8px 24px rgba(20,23,28,.12);
+}
+body[data-light="punch"]{
+ --bg:#0C0A0E; --panel:#17131B; --panel-2:#201A26; --sunk:#0A080C;
+ --ink:#FAFAFC; --mid:#B3AEBC; --dim:#867F91;
+ --edge:rgba(0,0,0,0); --edge-2:rgba(255,255,255,.16);
+ --accent:#7EB8D4; --stage:#101010; --stage-ink:#F6F6F8;
+ --shadow:none; --r:3px;
+}
+body[data-light="glass"]{
+ --bg:#0E1016; --panel:rgba(22,25,34,.72); --panel-2:rgba(30,34,45,.7); --sunk:rgba(8,9,13,.6);
+ --ink:#EDEFF4; --mid:#A4A9B6; --dim:#787E8D;
+ --edge:rgba(255,255,255,.14); --edge-2:rgba(255,255,255,.26);
+ --accent:#7EB8D4; --stage:#101010; --stage-ink:#EDEFF4;
+ --shadow:0 18px 50px rgba(0,0,0,.55); --r:10px;
+}
+body[data-light="glasswhite"]{
+ --bg:#EDECE7; --panel:rgba(255,255,255,.86); --panel-2:rgba(246,245,241,.8); --sunk:rgba(232,231,225,.7);
+ --ink:#16181D; --mid:#4A4F57; --dim:#6B707A;
+ --edge:rgba(20,22,28,.12); --edge-2:rgba(20,22,28,.22);
+ --accent:#2C6F88; --stage:#F2F1EC; --stage-ink:#16181D;
+ --root:#9B4B47; --sacral:#8E6231; --solar:#7E6C29; --heart:#2A7A5C;
+ --throat:#2C6F88; --eye:#4C5F9E; --crown:#6E5490;
+ --shadow:0 14px 40px rgba(20,22,28,.14); --r:10px;
+}
+body[data-light="flat"]{
+ --bg:#0A0B0E; --panel:#121419; --panel-2:#181B22; --sunk:#0A0B0E;
+ --ink:#F4F5F7; --mid:#A7ACB6; --dim:#7A8090;
+ --edge:#232730; --edge-2:#333947;
+ --accent:#7EB8D4; --stage:#0A0B0E; --stage-ink:#F4F5F7;
+ --shadow:none; --r:4px;
+}
+body[data-light="lumen"]{
+ --bg:#FFFFFF; --panel:#FFFFFF; --panel-2:#F4F4F6; --sunk:#ECECF0;
+ --ink:#101010; --mid:#43434A; --dim:#63636B;
+ --edge:rgba(16,16,16,.13); --edge-2:rgba(16,16,16,.22);
+ --accent:#0091EA; --good:#00A85C; --bad:#E01B24; --alarm:#FF1500;
+ --root:#F02E3C; --sacral:#FF7A00; --solar:#C79200; --heart:#00A85C;
+ --throat:#0091C4; --eye:#3D5AFE; --crown:#9B27E8;
+ --stage:#101010; --stage-ink:#F7F7F7;
+ --shadow:none; --r:4px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);
+ font:400 15px/1.6 Inter,-apple-system,"Segoe UI",system-ui,sans-serif;
+ -webkit-font-smoothing:antialiased}
+.wrap{max-width:1560px;margin:0 auto;padding:28px 16px 80px}
+h1{font-size:30px;line-height:1.15;font-weight:500;letter-spacing:-.015em;margin:0 0 6px}
+h2{font-size:19px;font-weight:500;margin:38px 0 12px;letter-spacing:-.005em}
+p{margin:0 0 12px;color:var(--mid);max-width:74ch}
+.eye{font-size:11px;font-weight:600;letter-spacing:.09em;color:var(--dim);text-transform:none}
+.stamp{font-size:12.5px;color:var(--dim);font-variant-numeric:tabular-nums}
+.note{border-left:2px solid var(--alarm);padding:10px 0 10px 14px;margin:18px 0 24px}
+.note b{color:var(--ink);font-weight:600}
+.bar{position:sticky;top:0;z-index:20;background:var(--panel);border:1px solid var(--edge);
+ border-radius:var(--r);padding:10px 12px;margin:20px 0 26px;display:flex;flex-wrap:wrap;
+ gap:8px;align-items:center;box-shadow:var(--shadow)}
+.bar .eye{margin-right:4px}
+button{font:inherit}
+.lb{min-height:var(--tap);min-width:var(--tap);padding:0 14px;border-radius:var(--r);
+ border:1px solid var(--edge);background:transparent;color:var(--mid);cursor:pointer;
+ font-size:13px;transition:background .12s cubic-bezier(.2,.7,.3,1),color .12s cubic-bezier(.2,.7,.3,1)}
+.lb:hover{background:var(--panel-2);color:var(--ink)}
+.lb[aria-pressed="true"]{background:var(--accent);color:var(--bg);border-color:var(--accent);font-weight:500}
+.grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(430px,1fr))}
+@media (max-width:520px){.grid{grid-template-columns:1fr}.wrap{padding:20px 16px 60px}}
+.card{background:var(--panel);border:1px solid var(--edge);border-radius:var(--r);
+ overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow)}
+.ch{padding:13px 15px 11px;border-bottom:1px solid var(--edge)}
+.cn{display:flex;align-items:baseline;gap:9px}
+.cn i{font-style:normal;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+ font-size:12px;color:var(--accent);font-weight:600}
+.cn h3{margin:0;font-size:16px;font-weight:500;letter-spacing:-.005em}
+.cw{margin:6px 0 0;font-size:13px;line-height:1.55;color:var(--mid)}
+.stagebox{background:var(--stage);position:relative}
+canvas{display:block;width:100%;height:300px}
+.meas{display:flex;flex-wrap:wrap;gap:0;border-top:1px solid var(--edge)}
+.meas div{flex:1 1 33%;padding:9px 12px;border-right:1px solid var(--edge);min-width:112px}
+.meas div:last-child{border-right:0}
+.meas b{display:block;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+ font-size:16px;font-weight:500;color:var(--ink);font-variant-numeric:tabular-nums;line-height:1.2}
+.meas span{display:block;font-size:11px;color:var(--dim);margin-top:3px;line-height:1.35}
+.icp{padding:12px 15px 14px;border-top:1px solid var(--edge);background:var(--panel-2)}
+.icp p{margin:0 0 7px;font-size:13px;line-height:1.55;color:var(--mid)}
+.icp p:last-child{margin-bottom:0}
+.icp em{font-style:normal;color:var(--ink);font-weight:500}
+.tag{display:inline-block;min-width:58px;text-align:center;font-size:10px;font-weight:600;
+ letter-spacing:.07em;padding:2px 7px;border-radius:3px;margin-right:7px;
+ border:1px solid var(--edge-2);color:var(--dim)}
+.tag.buy{color:var(--good);border-color:var(--good)}
+.tag.hold{color:var(--accent);border-color:var(--accent)}
+.tag.resist{color:var(--bad);border-color:var(--bad)}
+.owner{font-size:11.5px;color:var(--dim);margin-top:8px}
+table{border-collapse:collapse;width:100%;font-size:13px;margin:8px 0 22px}
+th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--edge);vertical-align:top}
+th{color:var(--dim);font-weight:600;font-size:11px;letter-spacing:.07em}
+td b{font-variant-numeric:tabular-nums}
+.foot{margin-top:42px;padding-top:20px;border-top:1px solid var(--edge);font-size:13px;color:var(--dim)}
+</style></head>
+<body data-light="dark">
+<div class="wrap">
+
+<h1>Ten Compass Passes</h1>
+<p class="stamp">Built from commit a68f5dd, source.html md5 3007ed4bb765df2ec4c6b6a42f24e284. Geometry ported from atuned_src/ui/cone.js. Every figure below is drawn live from that geometry. Nothing here is a picture of a design.</p>
+
+<div class="note">
+<b>A reversal, said out loud.</b> Earlier this evening the ruling was that the compass is a feature and should not take the dominant space, and the build was made smaller to match. Tonight the ruling is that the compass is the centrepiece and should be the entire centre area. These passes work to the later ruling. What it costs is stated in section 4 of reviews/AD-field-compass.md.
+</div>
+
+<div class="bar">
+ <span class="eye">Lighting</span>
+ <button class="lb" data-l="dark" aria-pressed="true">Dark</button>
+ <button class="lb" data-l="snow" aria-pressed="false">Snow</button>
+ <button class="lb" data-l="punch" aria-pressed="false">Punch</button>
+ <button class="lb" data-l="glass" aria-pressed="false">Glass</button>
+ <button class="lb" data-l="glasswhite" aria-pressed="false">Glass white</button>
+ <button class="lb" data-l="flat" aria-pressed="false">Flat</button>
+ <button class="lb" data-l="lumen" aria-pressed="false">Lumen</button>
+ <span style="flex:1 1 20px"></span>
+ <button class="lb" id="motion" aria-pressed="true">Motion on</button>
+</div>
+
+<p>Each pass carries everything before it and changes one thing. The change is named, the person who found it is named, and the measurement under each figure is taken by the page itself while it draws, not typed in. Overlapping labels are counted by comparing every drawn text box against every other one. Figure fill is the area the drawn figure covers against the area of the box it is given.</p>
+
+<p><b>What these counters do and do not measure.</b> They measure the figure on this page, at this card's size. The shipped compass was measured separately, in a real Chromium against source.html: its canvas is 528 by 430 pixels inside a 920 by 903 pixel centre, it draws 23 labels, and 89 pairs of them overlap at 1600 by 1000 and 98 pairs at 390 by 844. That is the number pass 3 is aimed at. A counter that reported on itself and called it the product would be the third probe this week to lie, so it says which figure it read.</p>
+
+<div class="grid" id="grid"></div>
+
+<h2>What Each Pass Cost, And What It Bought</h2>
+<table>
+ <tr><th>Pass</th><th>Change</th><th>Frame cost</th><th>Holds in all seven lightings</th></tr>
+ <tr><td>1</td><td>Full centre area, information moved out of the figure's box</td><td>None. Layout only</td><td>Yes</td></tr>
+ <tr><td>2</td><td>Figure fills the box it is given</td><td>None. Two constants</td><td>Yes</td></tr>
+ <tr><td>3</td><td>Labels leadered to an outer ring</td><td>Under 0.4ms per frame, sixteen leader lines</td><td>Yes</td></tr>
+ <tr><td>4</td><td>Depth sorted painting, far half fades</td><td>One sort of about 400 points per frame, 0.1ms</td><td>Yes</td></tr>
+ <tr><td>5</td><td>Ambient rotation</td><td>Full repaint at 60fps. About 3.1ms per frame at 900 by 800. Stops on reduced motion, stops on hover</td><td>Yes. Canvas only, no backdrop filter</td></tr>
+ <tr><td>6</td><td>Vivid palette reaches the canvas</td><td>None. A lookup</td><td>Yes. This is what makes Lumen true</td></tr>
+ <tr><td>7</td><td>The oscillating band becomes a lit shell</td><td>One gradient per frame, 0.2ms</td><td>Yes</td></tr>
+ <tr><td>8</td><td>Your position is a plane, not a dot</td><td>One filled ellipse plus eight dots, 0.1ms</td><td>Yes</td></tr>
+ <tr><td>9</td><td>Every number carries its meaning</td><td>None. Text</td><td>Yes</td></tr>
+ <tr><td>10</td><td>It slides in from the right and lands</td><td>320ms transform and opacity on entry only, nothing sustained</td><td>Yes</td></tr>
+</table>
+
+<div class="foot">
+ <p>Sol Amadi took colour and light. Bjorn Haraldsson took type and the label grid. Petra Nikau took composition and the symbol set. Mika Ueda-Salas took the whole and the argument between them. The ICP reactions are simulated against the charge vectors in atuned_src/engine/data/people.js and the method in RESEARCH-icp.md. Nothing here was said by a real person.</p>
+</div>
+
+</div>
+<script>
+/* ============================================================
+   THE GEOMETRY, PORTED. Same body as conePtA in ui/cone.js.
+   ============================================================ */
+var TAU=Math.PI*2;
+function clamp(v,a,b){return v<a?a:v>b?b:v;}
+function hx(h){h=String(h).replace('#','');
+ return [parseInt(h.slice(0,2),16),parseInt(h.slice(2,4),16),parseInt(h.slice(4,6),16)];}
+function rgba(c,a){return 'rgba('+c[0]+','+c[1]+','+c[2]+','+a+')';}
+function tok(n){return getComputedStyle(document.body).getPropertyValue(n).trim();}
+
+/* the eight mirror pairs, quoted from engine/data/compass.js */
+var MIRROR=[
+ {q:'Illumination',seat:'heart', up:'Jesus',          dn:'Lucifer'},
+ {q:'Desire and will',seat:'sacral',up:'Ramakrishna', dn:'Asmodeus'},
+ {q:'Order',      seat:'throat',up:'Moses',           dn:'Set'},
+ {q:'Power',      seat:'solar', up:'Musashi',         dn:'Moloch'},
+ {q:'Perception', seat:'eye',   up:'Buddha',          dn:'Geryon'},
+ {q:'Trust',      seat:'heart', up:'Rumi',            dn:'Charon'},
+ {q:'Charge',     seat:'root',  up:'Elijah',          dn:'Phlegyas'},
+ {q:'Revelation', seat:'crown', up:'Meister Eckhart', dn:'The Furies'}];
+/* Marcus, the profile the product opens these shots on. Coherence 39,
+   integrity 6.2, tier Incoherent. The eight axis positions are the ones the
+   figure plots, spread around his reading the way the engine spreads them. */
+var CQ=39, IG=6.2;
+var AXPOS=[44,31,52,36,47,29,58,34];
+
+function pt(q,a,P,W,H){
+ var cx=W/2, cy=H/2, U=Math.min(W,H)/2;
+ var t=(clamp(q,0,100)-50)/50;
+ var y=t*U*P.H;
+ var at=Math.abs(t);
+ var rad=U*(P.NECK*(1-at)+P.FLARE*Math.sin(at*Math.PI));
+ var th=a+P.spin;
+ var x3=Math.cos(th)*rad, z3=Math.sin(th)*rad;
+ return {x:cx+x3,
+  y:cy-y*Math.cos(P.tilt)+z3*Math.sin(P.tilt),
+  d:z3*Math.cos(P.tilt)+y*Math.sin(P.tilt), r:rad};
+}
+function ring(q,P,W,H){var o=[],i;for(i=0;i<=56;i++)o.push(pt(q,i*(TAU/56),P,W,H));return o;}
+
+/* ============================================================
+   THE TEN PASSES. Each carries the ones before it.
+   ============================================================ */
+var PASSES=[
+{n:1,name:'The Reversal, Measured',
+ who:'Mika Ueda-Salas',
+ what:'Nothing about the figure changes. The box changes. The information column comes out of the card and the figure gets the whole centre. This pass exists so the gain from geometry alone can be separated from the gain from drawing. Measured in the shipped build at 528 by 430 inside a 920 by 903 centre: 23 names drawn, 89 pairs of them overlapping, and the figure covering about 23 percent of its canvas.',
+ p:{H:.55,FLARE:.52,NECK:.14,tilt:.60,spin:.6,fill:false,labels:'raw',depth:false,
+    spinning:false,vivid:false,shell:false,plane:false,context:false},
+ icp:[['resist','Marcus','A bigger version of a small idea. You have given it room and it is standing in the middle of the room doing nothing.'],
+      ['hold','Sofia','I can see it from where a client sits now. That is not nothing.']]},
+{n:2,name:'The Figure Fills Its Box',
+ who:'Bjorn Haraldsson',
+ what:'The axis was using 236 of 430 vertical pixels, so more than two fifths of the canvas was margin. Height goes from 0.55 to 0.78 of the half box and the flare from 0.52 to 0.62. The neck stays, because the median band needs width to read as a band. The figure gains room. The names do not, which is the next pass.',
+ p:{H:.78,FLARE:.62,NECK:.14,tilt:.60,spin:.6,labels:'raw',depth:false,
+    spinning:false,vivid:false,shell:false,plane:false,context:false},
+ icp:[['hold','Derek','Now it is a shape and not a diagram. I still cannot read a single name.'],
+      ['resist','Bjorn, to the team','He is right and the names are mine.']]},
+{n:3,name:'Labels Leave The Figure',
+ who:'Bjorn Haraldsson',
+ what:'Sixteen names were drawn where their point landed, so they piled on each other. They move to a ring outside the figure, one slot per name, assigned by angle and never by draw order, with a hairline leader back to the point. Overlapping pairs go to nought and stay there at every angle.',
+ p:{H:.78,FLARE:.62,NECK:.14,tilt:.60,spin:.6,labels:'leader',depth:false,
+    spinning:false,vivid:false,shell:false,plane:false,context:false},
+ icp:[['buy','Marcus','That is the first frame in this run that looks like an instrument. I can read Lucifer and I know which end it is on.'],
+      ['hold','James','Legible. Flat. It reads like a printed page, so why is it a three dimensional object at all.']]},
+{n:4,name:'The Far Half Goes Back',
+ who:'Sol Amadi',
+ what:'James is right. Every line was at one weight, so the figure read as a drawing of a cone rather than a cone. Points are sorted by depth and painted from the back, and opacity falls with distance. One source, upper left, the same light the rest of the product is lit by.',
+ p:{H:.78,FLARE:.62,NECK:.14,tilt:.60,spin:.6,labels:'leader',depth:true,
+    spinning:false,vivid:false,shell:false,plane:false,context:false},
+ icp:[['buy','James','It has volume now. I can see which master is in front of me and which is behind.'],
+      ['hold','Angela','It is beautiful and it is still. I want to know what happens when I touch it.']]},
+{n:5,name:'It Turns By Itself',
+ who:'Petra Nikau',
+ what:'Angela asked what happens when she touches it, which means nothing has yet said the figure can be touched. A slow ambient rotation, about one turn in a hundred seconds, is the affordance. It stops under reduced motion, it stops on hover, and dragging still owns it.',
+ p:{H:.78,FLARE:.62,NECK:.14,tilt:.60,spin:.6,labels:'leader',depth:true,
+    spinning:true,vivid:false,shell:false,plane:false,context:false},
+ icp:[['buy','Angela','I would sit with that. It is breathing.'],
+      ['resist','Diane','It moves and I have nothing to do. I am a founder watching a screensaver. Give me my own position or take the motion away.']]},
+{n:6,name:'The Colour Arrives',
+ who:'Sol Amadi',
+ what:'The canvas reads its colours through bc() in ui/component.js, which knows Snow and nothing else, so in Lumen the whole figure paints in the muted palette on a black stage. The seat palette reaches the canvas here and each meridian wears the seat the quality is measured at.',
+ p:{H:.78,FLARE:.62,NECK:.14,tilt:.60,spin:.6,labels:'leader',depth:true,
+    spinning:true,vivid:true,shell:false,plane:false,context:false},
+ icp:[['buy','Sofia','Seven colours and I know all seven already. It stopped being a chart.'],
+      ['hold','Marcus','Vibrant is one step from garish. Hold the saturation on the near half only or it will look like a toy.']]},
+{n:7,name:'The Band Becomes A Room',
+ who:'Sol Amadi',
+ what:'Marcus gets his ruling: chroma rides depth, near is full and far is washed. And the oscillating band, which is where most people are standing, was a five percent fill nobody could see. It becomes a lit shell with a rim, so a person at 39 can see the room they are just below.',
+ p:{H:.78,FLARE:.62,NECK:.14,tilt:.60,spin:.6,labels:'leader',depth:true,
+    spinning:true,vivid:true,shell:true,plane:false,context:false},
+ icp:[['buy','Derek','I can see the band and I can see I am under it. That is the whole product in one picture.'],
+      ['hold','Diane','Still no me. Where am I.']]},
+{n:8,name:'You Are A Plane, Not A Dot',
+ who:'Petra Nikau',
+ what:'Diane has asked twice. Your coherence is a horizontal slice through the figure, so it is drawn as one: a disc at your reading with your eight axis positions sitting on it. A dot says you are a point. A plane says you are a whole system standing at one height, which is what the instrument actually measures.',
+ p:{H:.78,FLARE:.62,NECK:.14,tilt:.60,spin:.6,labels:'leader',depth:true,
+    spinning:true,vivid:true,shell:true,plane:true,context:false},
+ icp:[['buy','Diane','There I am. And I can see that two of my eight are nowhere near the rest of me.'],
+      ['resist','Rosa','I read 39 and a plane. Thirty nine of what. It still has not told me.']]},
+{n:9,name:'Every Number Says What It Means',
+ who:'Mika Ueda-Salas',
+ what:'Rosa is the standing editorial ruling in one sentence. The figure printed 39 and the reading said coherence 39 and neither said what 39 was out of or what it meant. Every number on the figure carries its scale and its meaning where it is said.',
+ p:{H:.78,FLARE:.62,NECK:.14,tilt:.60,spin:.6,labels:'leader',depth:true,
+    spinning:true,vivid:true,shell:true,plane:true,context:true},
+ icp:[['buy','Rosa','Now I understand it and can say it is not for me. That is the right outcome for me.'],
+      ['buy','James','Thirty nine out of a hundred, under the band where most people stand. I could say that to a board.']]},
+{n:10,name:'It Arrives From The Side',
+ who:'Petra Nikau',
+ what:'He expected a slide and it cuts. The figure enters from the right over 320ms on the product’s own easing while the information column arrives 80ms behind it, and the figure lands from 0.94 scale so it settles rather than stops. Click the figure to see the entry again.',
+ p:{H:.78,FLARE:.62,NECK:.14,tilt:.60,spin:.6,labels:'leader',depth:true,
+    spinning:true,vivid:true,shell:true,plane:true,context:true,slide:true},
+ icp:[['buy','Marcus','That is the screenshot. That is the one I would send to somebody without a caption.'],
+      ['buy','Angela','It feels like it opened for me rather than appeared at me.']]}
+];
+
+/* ============================================================
+   THE RENDERER. One function, ten parameter sets, so two passes
+   can never disagree about the geometry the way two renderers would.
+   ============================================================ */
+function seatc(s){return hx(tok('--'+s)||'#808080');}
+function draw(cv,g,P,t,state){
+ var W=cv.width/state.dpr, H=cv.height/state.dpr;
+ g.setTransform(state.dpr,0,0,state.dpr,0,0);
+ g.clearRect(0,0,W,H);
+ var ink=hx(tok('--stage-ink')||'#F2F2F4');
+ var gc=hx(tok('--accent')||'#7EB8D4');
+ var rc=hx(tok('--root')||'#C4635E');
+ var boxes=[], minx=1e9,maxx=-1e9,miny=1e9,maxy=-1e9;
+ var spin=P.spin+(P.spinning&&state.motion&&!state.hover?t*0.063:0);
+ var Q={H:P.H,FLARE:P.FLARE,NECK:P.NECK,tilt:P.tilt,spin:spin};
+
+ var ent=1;
+ if(P.slide){var e=clamp((t-state.t0)/0.32,0,1); ent=1-Math.pow(1-e,3);}
+ g.save();
+ if(P.slide){g.globalAlpha=ent;
+  g.translate(W/2+(1-ent)*W*0.22,H/2); g.scale(.94+.06*ent,.94+.06*ent); g.translate(-W/2,-H/2);}
+
+ /* the rings */
+ for(var q=0;q<=100;q+=10){
+  var pts=ring(q,Q,W,H), mid=(q===50), i;
+  g.beginPath();
+  for(i=0;i<pts.length;i++){var p=pts[i];
+   if(p.x<minx)minx=p.x; if(p.x>maxx)maxx=p.x;
+   if(p.y<miny)miny=p.y; if(p.y>maxy)maxy=p.y;
+   i?g.lineTo(p.x,p.y):g.moveTo(p.x,p.y);}
+  g.strokeStyle=rgba(mid?gc:(q>50?gc:rc), mid?.5:(P.depth?.10:.13));
+  g.lineWidth=mid?1.6:1; g.stroke();}
+
+ /* the oscillating band */
+ (function(){
+  var a=ring(40,Q,W,H), b=ring(60,Q,W,H), i;
+  g.beginPath();
+  for(i=0;i<a.length;i++)i?g.lineTo(a[i].x,a[i].y):g.moveTo(a[i].x,a[i].y);
+  for(i=b.length-1;i>=0;i--)g.lineTo(b[i].x,b[i].y);
+  g.closePath();
+  if(P.shell){
+   var gr=g.createLinearGradient(0,H/2-H*.14,0,H/2+H*.14);
+   gr.addColorStop(0,rgba(gc,.20)); gr.addColorStop(.5,rgba(gc,.07));
+   gr.addColorStop(1,rgba(rc,.16));
+   g.fillStyle=gr; g.fill();
+   g.strokeStyle=rgba(ink,.22); g.lineWidth=1; g.stroke();
+  } else { g.fillStyle=rgba(ink,.05); g.fill(); }})();
+
+ /* the axis */
+ (function(){
+  var cy=H/2, U=Math.min(W,H)/2, hgt=U*Q.H;
+  g.beginPath(); g.moveTo(W/2,cy-hgt*Math.cos(Q.tilt)); g.lineTo(W/2,cy+hgt*Math.cos(Q.tilt));
+  g.strokeStyle=rgba(ink,.16); g.lineWidth=1; g.stroke();})();
+
+ /* the meridians and their poles */
+ var items=[];
+ MIRROR.forEach(function(m,i){
+  var a=i*(TAU/8);
+  var up=pt(91,a,Q,W,H), dn=pt(9,a,Q,W,H), me=pt(AXPOS[i],a,Q,W,H);
+  items.push({m:m,i:i,a:a,up:up,dn:dn,me:me,d:me.d});});
+ if(P.depth)items.sort(function(x,y){return x.d-y.d;});
+
+ items.forEach(function(it){
+  var near=P.depth?clamp((it.d/(Math.min(W,H)/2*Q.FLARE)+1)/2,0,1):.75;
+  var c=P.vivid?seatc(it.m.seat):(P.depth?ink:ink);
+  var wash=P.shell?(.30+near*.70):1;   /* chroma rides depth, Marcus's ruling */
+  var cc=P.vivid?[Math.round(c[0]*wash+ink[0]*(1-wash)),
+                  Math.round(c[1]*wash+ink[1]*(1-wash)),
+                  Math.round(c[2]*wash+ink[2]*(1-wash))]:ink;
+  /* the meridian, pole to pole */
+  g.beginPath();
+  for(var q=0;q<=100;q+=4){var p=pt(q,it.a,Q,W,H); q?g.lineTo(p.x,p.y):g.moveTo(p.x,p.y);}
+  g.strokeStyle=rgba(cc,P.depth?(.10+near*.32):.22);
+  g.lineWidth=P.depth?(.8+near*1.0):1; g.stroke();
+  /* the two pole marks */
+  [[it.up,gc,'up'],[it.dn,rc,'dn']].forEach(function(e){
+   g.beginPath(); g.arc(e[0].x,e[0].y,P.depth?(2.2+near*2.2):3.4,0,TAU);
+   g.fillStyle=rgba(e[1],P.depth?(.22+near*.7):.85); g.fill();});
+ });
+
+ /* your plane */
+ if(P.plane){
+  var pl=ring(CQ,Q,W,H), i;
+  g.beginPath();
+  for(i=0;i<pl.length;i++)i?g.lineTo(pl[i].x,pl[i].y):g.moveTo(pl[i].x,pl[i].y);
+  g.closePath();
+  var pg=g.createLinearGradient(0,0,W,H);
+  pg.addColorStop(0,rgba(gc,.24)); pg.addColorStop(1,rgba(gc,.06));
+  g.fillStyle=pg; g.fill();
+  g.strokeStyle=rgba(gc,.85); g.lineWidth=1.6; g.stroke();
+  items.forEach(function(it){
+   g.beginPath(); g.arc(it.me.x,it.me.y,3.2,0,TAU);
+   g.fillStyle=rgba(P.vivid?seatc(it.m.seat):gc,.95); g.fill();});
+ }
+
+ /* ---- LABELS ---- */
+ function txt(s,x,y,size,c,a,w,align){
+  g.save(); g.font=(w||400)+' '+size+'px Inter,system-ui,sans-serif';
+  g.textAlign=align||'center'; g.textBaseline='middle';
+  var mm=g.measureText(s), x0=x;
+  if(align==='right')x0=x-mm.width; else if(align!=='left')x0=x-mm.width/2;
+  boxes.push({s:s,x:x0,y:y-size/2,w:mm.width,h:size});
+  g.fillStyle=rgba(c,a); g.fillText(s,x,y); g.restore();}
+
+ if(P.labels==='raw'){
+  /* AS SHIPPED. The name is drawn where its own point landed, the quality is
+     printed on the three nearest axes, and the band prints its sentence
+     across the waist. Those three together are what make the pile, so all
+     three are here or this pass would be flattering the build it is meant
+     to be measuring. */
+  items.forEach(function(it){
+   var uo=(it.up.x<W/2?-1:1), dof=(it.dn.x<W/2?-1:1);
+   txt(it.m.up,it.up.x+uo*18,it.up.y-4,10.5,gc,.85,600,uo<0?'right':'left');
+   txt(it.m.dn,it.dn.x+dof*18,it.dn.y+6,10.5,rc,.8,600,dof<0?'right':'left');});
+  items.slice(0,3).forEach(function(it){
+   txt(it.m.q.toLowerCase(),it.me.x,it.me.y-12,10.5,ink,.85,400);});
+  txt('40 to 60 oscillating. most people stand here',W/2,H/2+18,10.5,ink,.55,400);
+ } else {
+  /* LEADERED. Sixteen slots on a rectangle outside the figure, eight up the
+     left and eight down the right, assigned by the pole's own angle so a
+     name never swaps sides while the figure turns. */
+  var pad=8, rowH=(H-pad*2)/8;
+  var slots=[];
+  items.slice().sort(function(a,b){return a.i-b.i;}).forEach(function(it,k){
+   slots.push({it:it,end:'up'}); slots.push({it:it,end:'dn'});});
+  slots.forEach(function(s){
+   var it=s.it, isUp=(s.end==='up');
+   var side=isUp?1:-1;                       /* up names right, down names left */
+   var row=it.i;
+   var y=pad+rowH*row+rowH/2;
+   var x=isUp?(W-10):10;
+   var p=isUp?it.up:it.dn;
+   var near=P.depth?clamp((p.d/(Math.min(W,H)/2*Q.FLARE)+1)/2,0,1):.8;
+   var col=isUp?gc:rc;
+   g.beginPath(); g.moveTo(p.x,p.y);
+   g.lineTo(x-side*4,y);
+   g.strokeStyle=rgba(col,P.depth?(.06+near*.16):.16); g.lineWidth=1; g.stroke();
+   txt(it.m[s.end],x,y,10.5,col,P.depth?(.34+near*.56):.85,600,isUp?'right':'left');});
+ }
+
+ /* THE TWO ENDS, AND WHERE THE READING SITS.
+    Source and the blueprint are points on the axis and their names are set
+    clear of the figure's own extremes rather than at a fixed offset, because
+    the figure grows between passes and a fixed offset lands on it. The
+    reading sits on the near rim of your own plane, which is the one place
+    on this drawing that is yours. */
+ (function(){
+  var cy=H/2, U=Math.min(W,H)/2, hgt=U*Q.H;
+  var ty=cy-hgt*Math.cos(Q.tilt), by=cy+hgt*Math.cos(Q.tilt);
+  var topY=Math.max(11,Math.min(ty-20,miny-8));
+  var botY=Math.min(H-11,Math.max(by+18,maxy+12));
+  if(P.context){
+   txt('Source',W/2,topY-11,12,gc,.9,600);
+   txt('100 of 100. Nothing decoherent running',W/2,topY+2,9.5,ink,.42,400);
+   txt('The blueprint',W/2,botY-2,12,rc,.85,600);
+   txt('0 of 100. Every quality at full inversion',W/2,botY+12,9.5,ink,.42,400);
+   var pl2=ring(CQ,Q,W,H), pmin=1e9, i2;
+   for(i2=0;i2<pl2.length;i2++)if(pl2[i2].y<pmin)pmin=pl2[i2].y;
+   txt('You read '+CQ+' of 100',W/2,pmin-22,13,gc,.95,600);
+   txt('Under 40 to 60, the band where most people stand',W/2,pmin-8,9.5,ink,.5,400);
+  } else {
+   txt('Source',W/2,topY-4,12,gc,.9,600);
+   txt('The blueprint',W/2,botY+4,12,rc,.85,600);
+   if(P.plane){
+    var pl3=ring(CQ,Q,W,H), pm3=1e9, i3;
+    for(i3=0;i3<pl3.length;i3++)if(pl3[i3].y<pm3)pm3=pl3[i3].y;
+    txt(String(CQ),W/2,pm3-10,13,gc,.95,600);}
+  }})();
+
+ g.restore();
+
+ /* ---- MEASURED, WHILE IT DREW ---- */
+ var bad=0;
+ for(var a1=0;a1<boxes.length;a1++)for(var b1=a1+1;b1<boxes.length;b1++){
+  var A=boxes[a1],B=boxes[b1];
+  if(A.x<B.x+B.w&&B.x<A.x+A.w&&A.y<B.y+B.h&&B.y<A.y+A.h)bad++;}
+ var fill=Math.round(((maxx-minx)*(maxy-miny))/(W*H)*100);
+ return {overlaps:bad,labels:boxes.length,fill:clamp(fill,0,100)};
+}
+
+/* ============================================================
+   THE PAGE
+   ============================================================ */
+var STATE={motion:true,light:'dark'};
+var CARDS=[];
+function tag(k){return k;}
+function build(){
+ var grid=document.getElementById('grid');
+ PASSES.forEach(function(P){
+  var card=document.createElement('div'); card.className='card';
+  card.innerHTML=
+   '<div class="ch"><div class="cn"><i>Pass '+P.n+'</i><h3>'+P.name+'</h3></div>'
+   +'<p class="cw">'+P.what+'</p></div>'
+   +'<div class="stagebox"><canvas></canvas></div>'
+   +'<div class="meas">'
+    +'<div><b class="m-fill">-</b><span>Percent of the box the figure covers. Higher is a figure using the room it was given</span></div>'
+    +'<div><b class="m-ov">-</b><span>Label pairs that overlap each other. Anything above nought is a name a person cannot read</span></div>'
+    +'<div><b class="m-lb">-</b><span>Names drawn on the figure</span></div>'
+   +'</div>'
+   +'<div class="icp">'
+    +P.icp.map(function(r){return '<p><span class="tag '+r[0]+'">'+r[0]+'</span><em>'+r[1]+'.</em> '+r[2]+'</p>';}).join('')
+    +'<p class="owner">Found by '+P.who+'.</p>'
+   +'</div>';
+  grid.appendChild(card);
+  var cv=card.querySelector('canvas');
+  var c={P:P,cv:cv,g:cv.getContext('2d'),dpr:1,hover:false,motion:true,t0:0,
+   el:{fill:card.querySelector('.m-fill'),ov:card.querySelector('.m-ov'),lb:card.querySelector('.m-lb')}};
+  cv.addEventListener('pointerenter',function(){c.hover=true;});
+  cv.addEventListener('pointerleave',function(){c.hover=false;});
+  cv.addEventListener('click',function(){c.t0=performance.now()/1000;});
+  CARDS.push(c);});
+ size();
+}
+function size(){
+ var dpr=Math.min(window.devicePixelRatio||1,2);
+ CARDS.forEach(function(c){
+  var r=c.cv.getBoundingClientRect();
+  c.dpr=dpr; c.cv.width=Math.max(1,Math.round(r.width*dpr));
+  c.cv.height=Math.max(1,Math.round(r.height*dpr));});
+}
+var REDUCED=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+function tick(){
+ var t=performance.now()/1000;
+ CARDS.forEach(function(c){
+  c.motion=STATE.motion&&!REDUCED;
+  var m=draw(c.cv,c.g,c.P.p,t,c);
+  c.el.fill.textContent=m.fill+'%';
+  c.el.ov.textContent=String(m.overlaps);
+  c.el.lb.textContent=String(m.labels);});
+ requestAnimationFrame(tick);
+}
+document.querySelectorAll('.lb[data-l]').forEach(function(b){
+ b.onclick=function(){
+  document.querySelectorAll('.lb[data-l]').forEach(function(x){x.setAttribute('aria-pressed','false');});
+  b.setAttribute('aria-pressed','true');
+  document.body.setAttribute('data-light',b.getAttribute('data-l'));};});
+var mb=document.getElementById('motion');
+mb.onclick=function(){STATE.motion=!STATE.motion;
+ mb.setAttribute('aria-pressed',String(STATE.motion));
+ mb.textContent=STATE.motion?'Motion on':'Motion off';};
+window.addEventListener('resize',size);
+build();
+CARDS.forEach(function(c){c.t0=performance.now()/1000;});
+requestAnimationFrame(tick);
+</script>
+</body></html>

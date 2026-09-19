@@ -664,11 +664,35 @@ function helpSheet(){
     skipped automatically on a return visit and no flag is stored: a person
     who wants past it presses anything, and a person who wants to watch it
     watches it. */
- var skip=function(){ if(gone)return;
+ /* AND THE PRESS THAT SKIPS DOES NOT ALSO PRESS THE APP.
+
+    .boot is pointer-events:none, so the sheet never took the press: it went
+    through to whatever was under the cursor and this handler caught it on the
+    way past. Pressing "go straight in" over the tab strip dismissed the boot
+    and navigated to that tab, which is not what the line offers. Verified by
+    clicking through the sheet onto Compass and landing on Compass.
+
+    Taken in the capture phase and stopped there, so the first press does one
+    thing. Nothing else changes: the sheet still clears itself with no script
+    at all, which is the ruling this whole block exists to keep. */
+ /* Stopping pointerdown is not enough, and the first version of this fix was
+    wrong for that reason: click is a separate event and is dispatched whatever
+    happened to the pointerdown that preceded it. Measured after that fix, a
+    press over the Energetics tab still moved the surface from 2 to 5. The
+    click that follows the skip is swallowed once, in capture, and only that
+    one. */
+ var eat=function(ev){ ev.stopPropagation(); if(ev.cancelable)ev.preventDefault(); };
+ var skip=function(e){ if(gone)return;
+  if(e&&e.type==='pointerdown'){
+   e.stopPropagation();
+   addEventListener('click',eat,{once:true,capture:true});
+   /* and if no click ever arrives, the listener does not sit there waiting to
+      eat an unrelated one later. */
+   setTimeout(function(){removeEventListener('click',eat,true);},700); }
   el.style.transition='opacity .18s cubic-bezier(.4,0,1,1)';
   el.style.opacity='0'; setTimeout(clear,190); };
- addEventListener('pointerdown',skip,{once:true});
- addEventListener('keydown',skip,{once:true});
+ addEventListener('pointerdown',skip,{once:true,capture:true});
+ addEventListener('keydown',skip,{once:true,capture:true});
  var rm=(typeof matchMedia==='function')&&matchMedia('(prefers-reduced-motion:reduce)').matches;
  if(rm)clear();})();
 

@@ -1188,3 +1188,51 @@ Not guessed at and not papered over. The art director is reviewing this exact
 surface and has the measurement.
 *Small once the cause is known. It is a contrast fault on one control class,
 not a broken surface.*
+
+## AL. The mark and boot review landed. What is fixed and what is his.
+
+**Fixed, this commit.**
+The halo was not gold. `.b-halo` read `--gold`, which is an alias for
+`--accent`, which is the sky blue, so it computed rgb(126,184,212) and the one
+real gold in the sheet, `--au`, was never read by the boot at all. He asked for
+a golden hue and the boot had never had one. Measured after: rgb(194,160,99).
+
+The skip press also pressed the app. `.boot` is pointer-events:none, so the
+sheet never took the press: it went through to whatever was under the cursor.
+A press over the Energetics tab dismissed the boot and navigated there.
+Measured before: surface 2 to 5. After: 2 to 2.
+
+My first fix for it was wrong and is recorded as wrong. Stopping pointerdown
+does nothing to the click that follows, because click is a separate event and
+is dispatched regardless. The click is swallowed once, in capture, with a
+timer so the listener never sits waiting to eat an unrelated one later.
+
+**Measured and open, not fixed.**
+
+**AL1. The heart is never visible in the boot.** `.b-s4` at 16.2px sits
+entirely inside `.b-core` at 27px and is painted after it. Contained on all
+four edges. *Small.*
+
+**AL2. The seats overshoot their position rather than their size.**
+`.b-seat{transform-origin:100px 100px}` is the viewBox centre and not each
+circle's own, so the root seat travels 51px radially. The comment beside it
+claims otherwise. *Small.*
+
+**AL3. The boot wordmark is a different mark from the header's.** Header is
+uppercase and the two lines match to 85.17px. The boot is sentence case with
+its lines 27.03px apart, and its umlaut is still placed for a lowercase u.
+*Small.*
+
+**AL4. Reduced motion clears the sheet before a second.** Those visitors see
+no mark, no name and no card at all. Changing it is a behaviour ruling, not a
+defect fix. *His.*
+
+**AL5. The boot duration contradicts itself.** CLAUDE.md says three seconds,
+the stylesheet says five was ruled later, and the sequence measures 5,287ms to
+clear rather than the 4,776ms an earlier audit reported. *His.*
+
+**Five rulings before the mark is built.** Direction A or B. The duration.
+Reduced motion. Whether the card being gold and white while the bar wordmark
+stays sky blue is right. And whether "powered by SOURCE OS" has to appear in
+the bar at all, given it sets 107.8px against ATUNED's 83.2px and the only
+untracked fit is 6.56px, below the type floor.
