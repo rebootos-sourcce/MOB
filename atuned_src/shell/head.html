@@ -1191,6 +1191,17 @@ body:not(.tab-field) .pol2{display:none}
    again, and a deck of different heights is not a deck. */
 .kb-cd{font-size:13px;line-height:1.5;color:var(--mid);
  display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+/* ---------- settings, in the centre ---------- */
+.set-wrap{display:flex;flex-direction:column;gap:20px;width:100%;
+ max-width:1040px;margin:0 auto;padding:4px 0 24px}
+.set-hd{display:flex;flex-direction:column;gap:6px}
+/* the centre has width a sheet never did, so the sections sit beside each
+   other rather than in one long scroll. */
+.set-grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(278px,1fr));
+ align-items:start}
+.set-sec{display:flex;flex-direction:column;gap:9px;padding:17px 19px;
+ border:1px solid var(--edge);border-radius:var(--r-s);background:var(--panel)}
+body.punch .set-sec{background:var(--panel-2);border-color:transparent}
 .kb-deck{margin-top:22px;padding:18px 20px;border-radius:var(--r-s);background:var(--panel-2);
  display:flex;flex-direction:column;gap:9px;align-items:flex-start}
 body.punch .kb-search input{border-color:transparent}

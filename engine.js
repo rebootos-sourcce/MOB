@@ -1629,8 +1629,13 @@ const CHG2FET={anxiety:'Anticipation',fear:'Fear',anger:'Anger',shame:'Shame',
    this codebase, so the integers are named once and never typed again.
    Order is load bearing and must not change.
    ============================================================ */
+/* SETTINGS IS INTEGER 9, APPENDED, for the same reason Compass was integer 8:
+   these are identity, they are persisted and compared, and renumbering them
+   is the bug this file has warned about since the rebuild. It is a surface
+   with no tab, reached from the profile button, because a setting is not a
+   place in the product a person navigates to as a peer of the instrument. */
 const TAB={STORY:0,SUMMARY:1,FIELD:2,ENERGY:3,ANALYTICS:4,INTAKE:5,KNOW:6,GAMES:7,
- COMPASS:8};
+ COMPASS:8,SETTINGS:9};
 /* TABDEF is DISPLAY order. TAB above is identity and does not move: the
    integers are persisted, compared and passed around, and renumbering them
    is the bug this file already warns about. Compass is a new integer at the
@@ -1655,6 +1660,10 @@ const TAB={STORY:0,SUMMARY:1,FIELD:2,ENERGY:3,ANALYTICS:4,INTAKE:5,KNOW:6,GAMES:
    Body, because the surface is a body with seven seats on it and Energy named
    the subject rather than the thing on screen. The rest already passed the
    rule and were left alone rather than churned to look busy. */
+/* SETTINGS IS NOT IN TABDEF AND THAT IS THE POINT. TABDEF is the bar, and a
+   surface in the bar is a peer of the instrument. Settings is reached from
+   the profile button and nothing else, so it has a host, a class and a
+   renderer and no door in the navigation. */
 const TABDEF=[
  {k:TAB.INTAKE,  id:'iq',    nm:'Energetics',cls:'tab-intake'},
  {k:TAB.STORY,   id:'story', nm:'Story',     cls:'tab-story'},
@@ -1663,7 +1672,14 @@ const TABDEF=[
  {k:TAB.COMPASS, id:'cone',  nm:'Compass',   cls:'tab-compass'},
  {k:TAB.KNOW,    id:'know',  nm:'Knowledge', cls:'tab-know'},
  {k:TAB.SUMMARY, id:'sum',   nm:'Summary',   cls:'tab-summary'}];
+/* SETTINGS HAS NO TABDEF ENTRY, so TABOF would fall through to the first one
+   and put the Energetics body class on the Settings surface, which is how a
+   surface with no door ends up wearing another surface's layout. It carries
+   its own entry here without being in the bar. */
+const TABEXTRA={};
+TABEXTRA[TAB.SETTINGS]={k:TAB.SETTINGS,id:'settings',nm:'Settings',cls:'tab-settings'};
 const TABOF=function(k){for(var i=0;i<TABDEF.length;i++)if(TABDEF[i].k===k)return TABDEF[i];
+ if(TABEXTRA[k])return TABEXTRA[k];
  return TABDEF[0];};
 /* A FOLDED SURFACE IS STILL A SURFACE. Analytics and Games kept their
    integers, so a stored tab from a session before the fold still resolves to
@@ -1675,6 +1691,10 @@ TABFOLD[TAB.GAMES]=TAB.KNOW;
 const TABREAL=function(k){
  if(TABFOLD[k]!==undefined)return TABFOLD[k];
  for(var i=0;i<TABDEF.length;i++)if(TABDEF[i].k===k)return k;
+ /* a real surface with no door is still a real surface. Without this,
+    setTab(TAB.SETTINGS) resolved to Summary and the profile button opened
+    the summary, which is the folded-surface bug in a new costume. */
+ if(TABEXTRA[k])return k;
  return TAB.SUMMARY;};
 
 /* ============================================================

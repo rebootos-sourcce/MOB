@@ -89,6 +89,14 @@ function setTab(i){
   var e=$(T.id); if(!e||T.id==='cv')return;
   e.classList.toggle('on',T.k===i);
   e.style.display=(T.k===i)?'flex':'none';});
+ /* Settings has a host and no TABDEF entry, so it is shown and hidden here by
+    hand. Everything in TABDEF is hidden by the loop above, which means going
+    to Settings already clears every other surface and coming back from it
+    already clears this one. */
+ (function(){var sE=$('settings'); if(!sE)return;
+  sE.classList.toggle('on',i===TAB.SETTINGS);
+  sE.style.display=(i===TAB.SETTINGS)?'flex':'none';
+  if(i===TAB.SETTINGS&&typeof renderSettings==='function')renderSettings();})();
  if(cvE) cvE.style.display=(i===TAB.FIELD)?'block':'none';
  if(vb) vb.style.display=(i===TAB.FIELD)?'flex':'none';
  /* Body's layer row lives in the sub bar now, not over the figure */
@@ -176,19 +184,28 @@ const THEMEICON={
    direction the field is moving for 2027 and 2028 is holographic
    skeuomorphism, which is refraction and real elevation rather than the blur
    and white hairline everybody shipped in 2020. */
-[['dark','Dark'],['snow','Snow'],['punch','Punch'],['glass','Glass']].forEach(function(t,i){
+/* ONE LIST AND ONE SETTER, because the settings surface shows the same four
+   and a second copy of a list of lightings is a list that will drift. */
+const LIGHTINGS=[['dark','Dark'],['snow','Snow'],['punch','Punch'],['glass','Glass']];
+function setLighting(k){
+ S.theme=k;
+ document.body.classList.toggle('snow',k==='snow');
+ document.body.classList.toggle('punch',k==='punch');
+ document.body.classList.toggle('glass',k==='glass');
+ var seg=$('themes');
+ if(seg)seg.querySelectorAll('button').forEach(function(x,j){
+  x.setAttribute('aria-pressed',LIGHTINGS[j]&&LIGHTINGS[j][0]===k);});
+ var nw=$('lightnow');
+ if(nw){var e=LIGHTINGS.filter(function(t){return t[0]===k;})[0];
+  if(e)nw.textContent=e[1];}
+ rebuildSwatches(); render();}
+LIGHTINGS.forEach(function(t,i){
  var b=document.createElement('button');b.type='button';
  b.setAttribute('aria-pressed',i===0);
  b.className='seg-i'; b.title=t[1]; b.setAttribute('aria-label',t[1]+' theme');
  b.innerHTML='<svg viewBox="0 0 24 24" width="19" height="19" aria-hidden="true">'
   +'<path d="'+THEMEICON[t[0]]+'"/></svg>';
- b.addEventListener('click',function(){S.theme=t[0];
-  document.body.classList.toggle('snow',t[0]==='snow');
-  document.body.classList.toggle('punch',t[0]==='punch');
-  document.body.classList.toggle('glass',t[0]==='glass');
-  $('themes').querySelectorAll('button').forEach(function(x,j){x.setAttribute('aria-pressed',j===i);});
-  var nw=$('lightnow'); if(nw)nw.textContent=t[1];
-  rebuildSwatches();render();});
+ b.addEventListener('click',function(){setLighting(t[0]);});
  $('themes').appendChild(b);});
 /* ---- THE LIGHTING MENU ----
    The three lighting buttons moved off the bar and into a menu on the owner's
@@ -374,6 +391,86 @@ function sheetOpen(html){
  var f=c.querySelector('button,a,input,select'); if(f)f.focus();}
 function sheetShut(){var s=$('sheet'); if(s)s.hidden=true;}
 
+/* ============================================================
+   SETTINGS, IN THE CENTRE.
+
+   It was a sheet over the top of whatever a person was reading, which is the
+   right shape for a confirmation and the wrong one for a place you go to
+   change something and then look at what changed. A modal has to be
+   dismissed before the instrument is visible again, so every setting was
+   changed with the product hidden behind it.
+
+   Same content, same setters, one surface. The sections are the same four
+   the sheet had, laid in columns because the centre has width the sheet
+   never did.
+   ============================================================ */
+function renderSettings(){
+ var host=$('settings'); if(!host)return;
+ var r=compute(), m=(typeof meterRead==='function')?meterRead(CURP):null;
+ var who=(CURP&&CURP.name)||'You';
+ var h='<div class="set-wrap">'
+  +'<div class="set-hd"><div class="pm-eye">Settings</div>'
+  +'<h2 class="kb-h">'+esc(who)+'</h2>'
+  +'<p class="kb-p">Everything here is held in this browser. Nothing has left '
+  +'this device.</p></div>'
+  +'<div class="set-grid">'
+  /* this reading */
+  +'<section class="set-sec"><div class="pm-eye">This reading</div>'
+  +'<div class="sh-row"><span>Coherence</span><b>'
+   +(r.unread?'not read yet':Math.round(r.CQ)+' of 100')+'</b></div>'
+  +'<div class="sh-row"><span>Tier</span><b>'+esc(r.unread?'not read yet':r.tier)+'</b></div>'
+  +'<div class="sh-row"><span>Addresses carrying</span><b>'+r.loaded.length+'</b></div>'
+  +(m?'<div class="sh-row"><span>Ground opened</span><b>'+m.unique+'</b></div>':'')
+  +(m&&m.next?'<div class="sh-row"><span>Next marker</span><b>'+esc(m.next.nm)
+    +', '+m.next.left+' away</b></div>':'')
+  +'</section>'
+  +planSection(m)
+  /* screen */
+  +'<section class="set-sec"><div class="pm-eye">Screen</div>'
+  +'<p class="sh-p">How much fits on one screen. This scales the whole '
+  +'interface, not just the type.</p>'
+  +'<div class="dens-list" id="densheet" style="margin-top:8px"></div></section>'
+  /* lighting, which was only ever reachable from the bar menu */
+  +'<section class="set-sec"><div class="pm-eye">Lighting</div>'
+  +'<p class="sh-p">Dark is the default. Snow is the same instrument on paper. '
+  +'Punch removes every outline and fills every shape. Glass puts the panes in '
+  +'front of a moving ground and lets them refract it.</p>'
+  +'<div class="seg" id="setthemes" style="margin-top:8px"></div></section>'
+  /* the record */
+  +'<section class="set-sec"><div class="pm-eye">Your record</div>'
+  +'<p class="sh-p">Held in this browser only. A save that fails says so '
+  +'rather than being swallowed.</p>'
+  +'<div class="sh-row"><span>Snapshots on file</span><b>'
+   +((CURP&&CURP.history&&CURP.history.length)||0)+'</b></div>'
+  +'<div class="sh-row"><span>Storage</span><b>'+(STORE_BOUND?'writing':'blocked')+'</b></div>'
+  +'</section>'
+  /* who you are becoming */
+  +'<section class="set-sec"><div class="pm-eye">Who you are becoming</div>'
+  +'<p class="sh-p">The avatar, the purpose map and the boundary. What the '
+  +'release work is aimed at.</p>'
+  +'<div class="sh-act"><button class="btn" id="setav" type="button">'
+  +'Open the avatar</button></div></section>'
+  +'</div></div>';
+ host.innerHTML=h;
+ /* the same three steps, the same setter. Re-rendering in place rather than
+    reopening a sheet, so the surface does not blink. */
+ var d=$('densheet'), now=densGet();
+ if(d){d.innerHTML=DENS.map(function(x){
+   return '<button type="button" class="dens-opt'+(x[0]===now?' on':'')+'" data-dens3="'+x[0]+'" '
+    +'aria-pressed="'+(x[0]===now)+'"><b>'+esc(x[1])+'</b><em>'+esc(x[2])+'</em></button>';}).join('');
+  d.querySelectorAll('[data-dens3]').forEach(function(b){
+   b.onclick=function(){densSet(b.getAttribute('data-dens3')); renderSettings();};});}
+ /* lighting, sharing the bar's own list and setter rather than a second copy */
+ var th=$('setthemes');
+ if(th){
+  th.innerHTML=LIGHTINGS.map(function(t){
+   return '<button type="button" data-set3="'+t[0]+'" aria-pressed="'
+    +(S.theme===t[0])+'">'+esc(t[1])+'</button>';}).join('');
+  th.querySelectorAll('[data-set3]').forEach(function(b){
+   b.onclick=function(){setLighting(b.getAttribute('data-set3')); renderSettings();};});}
+ planWire();
+ var av=$('setav'); if(av)av.onclick=function(){runAvatarDrill();};}
+
 function profileSheet(){
  var r=compute(), m=(typeof meterRead==='function')?meterRead(CURP):null;
  var who=(CURP&&CURP.name)||'You';
@@ -505,7 +602,11 @@ function helpSheet(){
 
 /* wiring, once the shell exists */
 (function(){
- var pb=$('profbtn'); if(pb)pb.onclick=profileSheet;
+ /* the profile button opens the Settings surface in the centre. The sheet
+    version is kept as a function and no longer wired to anything, because it
+    is the thing that was replaced and deleting it in the same pass as
+    rewiring hides which of the two changed something. */
+ var pb=$('profbtn'); if(pb)pb.onclick=function(){setTab(TAB.SETTINGS);};
  var hb=$('helpbtn'); if(hb)hb.onclick=helpSheet;
  var sh=$('sheet');
  if(sh)sh.addEventListener('click',function(e){if(e.target===sh)sheetShut();});
