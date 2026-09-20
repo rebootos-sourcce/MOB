@@ -1004,14 +1004,20 @@ console.log('\n=== a sentence in a label class carries plain ===');
         ============================================================ */
      if(typeof CURP!=='undefined'&&CURP){
       keep={story:CURP.story,avatar:CURP.avatar};
+      /* THE SEEDED SENTENCE HAS TO LAND SOMEWHERE, and the first one tried
+         did not: a sentence about a tight chest and a yes parsed to zero
+         imprints, so the atom drill still could not be opened and the gate
+         reported it as unreachable. The sentence is checked below rather than
+         assumed, which is the rule this repository carries about tools. */
       CURP.story={entries:[{t:Date.now(),
-       text:'I say yes while my chest tightens, because no is going to cost '
-        +'more than I have.'}]};
+       text:'I am afraid of running out of money and it sits in my gut.'}]};
       CURP.avatar={built:true,at:Date.now(),reviewedAt:null,
        pairs:[{be:'steady under load',notbe:'I snap at the people nearest me '
         +'when I am tired and afraid'}]};
       if(typeof atomIndex==='function'&&typeof BY!=='undefined'){
        const ai=atomIndex()||{};
+       if(!Object.keys(ai).length)err.push('the seeded story parsed to no '
+        +'imprints, so the atom drill has nothing to open on');
        Object.keys(ai).slice(0,4).forEach(i=>{
         if(BY[i]&&ai[i]&&ai[i][0])fire('runAtomDrill',[BY[i],ai[i][0]]);});}
      }
