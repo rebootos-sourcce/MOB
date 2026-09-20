@@ -799,16 +799,22 @@ function render(){
    +row('Heaviest',r.darkB,r.darkV.toFixed(1))
    +row('Most shut',r.weakL.nm,'at the '+r.weakL.b.toLowerCase());})();
  railStack(r); renderBal(r);
+ /* EVERY ONE OF THESE SAYS WHAT IT IS OUT OF. His instruction, and this
+    panel broke it five times in six lines: integrity 1.9, intention 1.9, pole
+    in 0.00, overshoot 0.00, distortion 10.0, on four different scales, with
+    nothing to measure any of them against. */
  $('rows').innerHTML='<span class="k">Instruments</span><br>'
-  +'integrity <b>'+r.Ig.toFixed(1)+'</b><br>intention <b>'+r.It.toFixed(1)+'</b><br>'
+  +'integrity <b>'+r.Ig.toFixed(1)+'</b> of 10<br>'
+  +'intention <b>'+r.It.toFixed(1)+'</b> of 10<br>'
   /* JOUISSANCE WAS ON EIGHTY ONE SCREENS. A French psychoanalytic term, printed
      as an instrument label to a person who has never heard it, with no gloss
      anywhere in the product. One word per concept, and the word has to say
      what the thing does: JQ is the opposite driven past the point where it
      serves. That is overshoot. The codex keeps its own word. */
-  +'pole in <b>'+r.poleMean.toFixed(2)+'</b><br>overshoot <b>'+r.JQ.toFixed(2)+'</b>'
+  +'pole in <b>'+r.poleMean.toFixed(2)+'</b> of 10<br>'
+  +'overshoot <b>'+r.JQ.toFixed(2)+'</b> of 10'
   +(r.excess.length?', '+r.excess.length+' overshot':'')+'<br>'
-  +'distortion <b>'+r.dist.toFixed(1)+'</b>';
+  +'distortion <b>'+r.dist.toFixed(1)+'</b> of 10';
  /* what is running */
  const rows=[].concat(r.sups,r.hys,r.cxs,r.sabs);
  const TIERNM={sup:'Character',hy:'Hyper-complex',cx:'Complex',sab:'Saboteur'};

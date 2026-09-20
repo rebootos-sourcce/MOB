@@ -123,6 +123,56 @@ change: SAB_PI marks the ten. Inferred clusters take an agent noun for their
 fetter, Root Flincher, Diffuse Recoiler, and carry the inferred label.
 open: the owner has not seen the nouns yet.
 
+## 2026-09-20 · owner · the mark
+
+said: the squiggle is a loop, like this, without those bars on the left and
+right. Very cute, golden ratio design, very tiny, and pure gold. And then:
+it is called awareness, lowercase.
+read: D13 closes. The soul shape was never a squiggly Q and it is in the
+repository after all, at index.html:8936, which I had told him it was not.
+change: tools/awareness.js generates it from the ratio and a measured brush.
+The name soul is gone from the tooling and the presentation.
+
+## 2026-09-20 · owner · the golden ratio and Zen
+
+said: take the art director, have him look at the golden ratio and how it is
+used in design, and Japanese Zen design aesthetics, all the details, the
+structure of it, balance, austerity, simplicity, shape. Apply those rules.
+read: the mark needed a second pass against a body of rules rather than
+against my own eye.
+change: reviews/AD-golden-zen.md, 1,299 lines with sources. Five of its
+findings verified against the running generator and fixed, the worst being
+that the stroke never crossed itself and that EYE was a phi shaped expression
+that cancels to plain R.
+open: the constants it prescribed were rejected after rendering them. Every
+ratio exact, and what they drew was a fat letter P. The defect list was right
+and the prescription was not. That is now the standing rule for this kind of
+report: verify each finding, render each prescription, and keep them separate.
+
+## 2026-09-20 · owner · the API keys
+
+said: I owe you the eleven labs voice font and the Claude key. Are there any
+spiritual type API keys that are free, or do we not need that stuff.
+read: a straight question about the architecture, and the answer was no.
+change: nothing built. Recorded on the list that neither key may be pasted
+anywhere until the server exists, because a key inside a one file build is a
+key every person who opens it can read and spend. And no spiritual service is
+needed at all: the ephemeris is already arithmetic in engine/astro.js and
+engine/birth.js, and a service would carry birth date, time and place off the
+device, which is the most identifying record in the profile.
+
+## 2026-09-20 · owner · the process
+
+said: your first order as a business when I add things is to make sure it gets
+onto the task list, and as you go through, just check it off. Every round the
+project manager is checking the task list for what needs to go in the next
+block.
+read: I had three competing ledgers, which is the thing TASKS.md's own
+preamble says must not exist.
+change: CHECKLIST.md and OUTSTANDING.md folded into TASKS.md. One list, with
+checkboxes, read at the top of every round. It paid on the first use: Ritual
+was on it as open and was already built.
+
 ## Earlier, from FEEDBACK-alexander.md
 
 See that file. Its items are in TASKS.md.

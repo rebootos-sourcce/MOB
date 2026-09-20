@@ -60,12 +60,19 @@ function lensGene(r){
    measurement and a blueprint domain is a choice.
    ============================================================ */
 
+/* which span the integrity chart is showing. its own, not the compass's, so
+   a person looking at a year here does not change what the compass shows. */
+var SUM_SPAN='quarter';
+/* a small number, spelled, for the start of a sentence */
+const SUM_WORDS=['no','One','Two','Three','Four','Five','Six','Seven','Eight','Nine'];
+function SUM_WORD(n){return SUM_WORDS[n]||String(n);}
 /* ---- the strip. all analytics at a glance, which is what was asked for. ---- */
 function sumGlance(r){
  var acc=(typeof accuracy==='function')?accuracy(r):null;
  var e=(r.X+r.Y+r.Z)/3;
  var row=[
-  ['coherence', r.darkB, r.CQ, Math.round(r.CQ)+'%', 'Where the field sits, 0 to 100.'],
+  ['coherence', r.darkB, r.CQ, Math.round(r.CQ)+'%', 'Where the field sits, 0 to 100.',
+   'of 100'],
   /* THE LABEL SAID 0 TO 10 AND THE NUMBER GOES PAST 54. Measured across the
      roster: Gordon 54.7, Tomas 45.9, Ana 22.8. It is a sum over every address
      carrying, so it has no ceiling of ten or of anything else, and a stated
@@ -77,7 +84,8 @@ function sumGlance(r){
      it is a design change, so it is the owner's. The label tells the truth in
      the meantime. */
   ['shadow weight', 'Root', r.DQ*10, r.DQ.toFixed(1),
-   'Everything held, summed across the addresses carrying it. No ceiling.'],
+   'Everything held, summed across the addresses carrying it. No ceiling.',
+   'summed, no ceiling'],
   /* THIS PRINTED THE OPPOSITE OF WHAT IT MEASURES. It was labelled "installed"
      and glossed "what has been filled in". SQm is built in compute.js from
      sum+=n.sq over the loaded addresses, and n.sq is HELD charge: an address
@@ -87,18 +95,32 @@ function sumGlance(r){
      of them that had been filled in, which is not a wording problem, it is a
      reading that says the reverse of the truth. */
   ['carried depth', 'Root', r.SQm*10, r.SQm.toFixed(1),
-   'How deep the carrying addresses run, meaned, 0 to 10.'],
+   'How deep the carrying addresses run, meaned, 0 to 10.', 'of 10'],
   /* and this said 0 to 1 while reading 8.49. It is a mean of values clamped
      to 0 and 10, so ten is the ceiling and always was. */
   ['pole', 'Heart', r.poleMean*10, r.poleMean.toFixed(2),
-   'Coherent opposites standing, 0 to 10.'],
-  ['energy', 'Solar', e*100, e.toFixed(2), 'Vitality, awareness and will, meaned, 0 to 1.']];
+   'Coherent opposites standing, 0 to 10.', 'of 10'],
+  ['energy', 'Solar', e*100, e.toFixed(2),
+   'Vitality, awareness and will, meaned, 0 to 1.', 'of 1']];
  if(acc)row.push(['identification','3rd Eye',acc.pct,acc.pct.toFixed(0)+'%',
-  'How much of you the instrument has actually measured, plus or minus '+acc.band.toFixed(0)+'.']);
+  'How much of you the instrument has actually measured, plus or minus '+acc.band.toFixed(0)+'.',
+  'of 100, plus or minus '+acc.band.toFixed(0)]);
+ /* THE SCALE IS ON THE SCREEN, NOT IN A TOOLTIP. Two rulings meet here and
+    both were being broken by the same line.
+
+    "You read 13, what does that mean." Every number says what it is out of.
+    This row printed 8.49 beside the word pole and 0.83 beside the word
+    energy, on two different scales, with nothing to measure either against.
+
+    And a title attribute is not an answer, because a phone has no hover. Eight
+    definitions in this product live only in a title and a person on a phone
+    can reach none of them. The scale is now a third line in the button, where
+    everybody can see it, and the title keeps the longer sentence. */
  return '<div class="s-glance">'+row.map(function(x){
   return '<button type="button" class="s-gl" data-gl="'+esc(x[0])+'" title="'+esc(x[4])+'">'
    +cr(x[1],x[2],{size:'sm',label:x[0],raw:x[3]})
-   +'<span class="s-gl-k">'+esc(x[0])+'</span></button>';}).join('')+'</div>';}
+   +'<span class="s-gl-k">'+esc(x[0])
+   +'<em class="s-gl-s">'+esc(x[5]||'')+'</em></span></button>';}).join('')+'</div>';}
 
 /* ---- the story. three paragraphs, in the instrument's voice. ----
 
@@ -248,8 +270,16 @@ function sumStory(r){
  }else{
   gapLine=' No avatar has been stated, so there is nothing to measure this against. '
    +'Say who you are becoming and this paragraph names what stands in the way.';}
- p.push('Momentum: the field leans <b>'+(lean.ben>=lean.mal?'benign':'malignant')
-  +'</b> at '+Math.round(Math.max(lean.ben,lean.mal))+' percent, '
+ /* "100 percent" OF WHAT. The sentence read "the field leans benign at 100
+    percent", which is a share with no denominator on a surface where a
+    percentage could mean the share of the field, the share of the stack or a
+    confidence. It is the split between the two leans, so the sentence says
+    that: benign against malignant, and the two add to a hundred. */
+ p.push('Momentum: of the two leans the field is <b>'
+  +Math.round(Math.max(lean.ben,lean.mal))+' per cent '
+  +(lean.ben>=lean.mal?'benign':'malignant')+'</b> and '
+  +(100-Math.round(Math.max(lean.ben,lean.mal)))+' per cent '
+  +(lean.ben>=lean.mal?'malignant':'benign')+', '
   +(r.benign?'which means it is expanding':'which means it is contracting')+'.'
   +(r.excess?' Installed pole is past the point where it pays, so some of the work is now costing.':'')
   +gapLine);
@@ -282,20 +312,33 @@ function sumStruct(r){
     passed the literal 'Heart' here, so a primary Warrior and a primary Sage
     printed in the same green, and the family the mark belongs to was invisible
     on the one surface that names it. The seat is on the record now. */
+ /* EVERY NAMED THING IS DESCRIBED AS A BEHAVIOUR, NOT A LABEL. Ruled.
+
+    This printed "Warrior, primary" and "Innocent, secondary", which is a
+    label with a second label under it and tells a person nothing they can
+    act on. The behaviour was already on the record and had never been
+    rendered: ARCH carries a v, and the Warrior's is "moves on the threat".
+    The rank is still there, because first and second do mean something, but
+    it is carried by the order of the rows and by the percentage, which is
+    what an ordered list with a number on it already says. */
  var aff=(r.aff||[]).map(function(v,i){return {i:i,nm:(ARCH[i]||{}).nm||'',
-   ic:(ARCH[i]||{}).ic, b:(ARCH[i]||{}).b||'Heart', v:v};})
+   ic:(ARCH[i]||{}).ic, b:(ARCH[i]||{}).b||'Heart', d:(ARCH[i]||{}).v||'', v:v};})
   .filter(function(x){return x.nm;}).sort(function(a,b){return b.v-a.v;});
  var tot=aff.reduce(function(a,x){return a+x.v;},0)||1;
  out+='<div class="pm-eye" style="margin-top:18px">Primary and secondary</div>';
  out+=aff.slice(0,4).map(function(x,i){
-  return sumStructRow(x.nm, i===0?'primary':(i===1?'secondary':'also'), x.b,
+  return sumStructRow(x.nm, x.d, x.b,
    x.v/tot*100, Math.round(x.v/tot*100)+'%', x.ic?'<path d="'+x.ic+'"/>':null,
    ' data-arch="'+x.i+'"');}).join('');
  /* masks. weight on 0 to 10, so the arc is the weight and the pill is the value. */
  if(r.maskRing&&r.maskRing.length){
   out+='<div class="pm-eye" style="margin-top:18px">Masks</div>';
   out+=r.maskRing.slice(0,6).map(function(m){
-   return sumStructRow(m.nm, (m.bands||[]).join(' and '), (m.bands||['Heart'])[0],
+   /* the mask's behaviour, not its two seats. the seats are the ring colour
+      and the drill, and a person cannot do anything with "Root and Sacral". */
+   var md=(MASKS.filter(function(x){return x.nm===m.nm;})[0]||{}).v
+     ||(m.bands||[]).join(' and ');
+   return sumStructRow(m.nm, md, (m.bands||['Heart'])[0],
     m.w*10, m.w.toFixed(1), null, ' data-mask="'+esc(m.nm)+'"');}).join('');}
  /* the seats. load is measured and the ring is the load. */
  var seats=flSeats().filter(function(x){return x.load>0;})
@@ -303,7 +346,10 @@ function sumStruct(r){
  if(seats.length){
   out+='<div class="pm-eye" style="margin-top:18px">Where it sits</div>';
   out+=seats.map(function(x){
-   return sumStructRow(x.p.n, x.held?'closed':'passing', x.p.n,
+   /* and a seat says what a closed one does rather than the word closed */
+   return sumStructRow(x.p.n,
+    x.held?'shut, so charge sits under it':'open, so charge passes through',
+    x.p.n,
     Math.min(100,x.load*100), Math.round(x.load*100)+'%', null,
     ' data-seat="'+esc(x.p.n)+'"');}).join('');}
  /* the chain. counts, never against a total. */
@@ -577,25 +623,199 @@ function sumFull(r){
     +sumToldHtml()
     +'<div class="s-readbox">'+sumStory(r)+'</div>'
     +sumOutput(r)
-    +sumGlance(r)
+    +sumAxes(r)
    +'</div>'
    /* THE INFORMATION PANEL. Everything structural, in one column, in the
       order a person asks for it: what is running, then the blueprint it runs
-      on, then the spiritual layer, then the numbers. */
+      on, then the spiritual layer, then the numbers.
+
+      AND THE GLANCE ROW COMES WITH IT. Ruled: "the centre column becomes text
+      about you, and everything energetic moves right." Six rings reading
+      coherence, shadow weight, carried depth, pole, energy and identification
+      are as energetic as anything on this page, and they were sitting under
+      the reading in the centre. The centre is the story and the actions it
+      calls for. Everything measured is on the right. */
    +'<aside class="s-side">'
+    +sumGlance(r)
     +sumStruct(r)
+    +sumLens(r)
     +sumSpirit(r)
     +sumNum(r)
    +'</aside>'
-  +'</div>';}
+  +'</div>'
+  /* INTEGRITY OVER TIME, FULL WIDTH, DAY TO FIVE YEARS. Ruled, and it is the
+     one thing this page had no version of. Coherence over time lives on the
+     compass; integrity is the other half and it is the half a person can
+     actually move, because integrity is the twenty one laws and a law closes
+     by being kept. Full width under both columns, because a line five years
+     long inside a column is a scribble. */
+  +sumIg(r);}
+
+/* ============================================================
+   WHAT YOU ARE CARRYING, IN SENTENCES, IN THE BODY.
+
+   Ruled: "the centre column becomes text about you." The centre had the
+   reading and the three action cards and then half a screen of nothing,
+   because everything else on the page is a measurement and every measurement
+   moved right.
+
+   This is the nine, written rather than tabled. The right rail already has
+   them as a table of held against opposite, which is the correct place for a
+   table, and a table is not text about anybody. What a person cannot get from
+   that table is where it is, which the engine has known all along: every one
+   of the nine carries its plexus and the part of the body it sits in, and
+   neither has ever been on this surface.
+
+   Three sentences at most, because a paragraph naming nine things is a list
+   with full stops in it.
+   ============================================================ */
+function sumAxes(r){
+ var C=(typeof CHILD!=='undefined')?CHILD:[];
+ if(!C.length)return '';
+ /* THE AXIS VALUE, NOT THE MEAN OF ITS NODES. The first cut meaned n.sq over
+    every node on the axis, and most nodes on an axis are at zero, so a person
+    whose nine axes all read half a point came out at a mean of nought and was
+    told nothing was carrying while the rail beside it listed Fear at 0.5. Two
+    panels on one screen disagreeing about whether anything is there is worse
+    than either of them being wrong alone. S.charge is what the person
+    entered and what every other surface prints. */
+ var held=C.map(function(c){
+   return {c:c, sq:+(S.charge[c.nm]||0), rep:+(S.replace[c.nm]||0)};})
+  .sort(function(a,b){return b.sq-a.sq;});
+ var live=held.filter(function(x){return x.sq>0;});
+ var standing=held.filter(function(x){return x.rep>0;})
+  .sort(function(a,b){return b.rep-a.rep;});
+ var p=[];
+ if(!live.length){
+  p.push('Nothing is carrying on any of the nine. That is the reading, not a '
+   +'gap in it.');
+ }else{
+  var top=live[0];
+  /* NO "the" IN FRONT OF THE ADDRESS. Half the nine carry a plexus, which
+     takes an article, and half carry a phrase like "Below the heart", which
+     does not. "It sits at the Below the heart" is what a template does when
+     it assumes one shape of noun. */
+  p.push('The heaviest of the nine is <b>'+esc(top.c.nm)+'</b>, at <b>'
+   +top.sq.toFixed(1)+' of 10</b>. It sits at '+esc(top.c.addr)
+   +', which you feel in the '+esc(top.c.loc)+'. The quality on the far side '
+   +'of it is <b>'+esc(top.c.opp)+'</b>.');
+  if(live.length>1){
+   var rest=live.slice(1,4);
+   p.push('Under it, '+rest.map(function(x){
+     return '<b>'+esc(x.c.nm)+'</b> in the '+esc(x.c.loc)
+      +' at '+x.sq.toFixed(1);}).join(', ')
+    /* AND THE COUNT IS COUNTED. This said "five more" whatever the number
+       was, which is the same defect as a gate that counts by hand. */
+    /* and the number is spelled, because it opens a sentence and a sentence
+       that opens with a digit reads as a list item */
+    +'. '+(live.length>4?SUM_WORD(live.length-4)+' more '
+      +(live.length-4===1?'is':'are')+' carrying something.':'')
+    +' Each one is a place in the body before it is a word.');}
+ }
+ if(standing.length){
+  p.push('Standing against them: <b>'+esc(standing[0].c.opp)+'</b> at <b>'
+   +standing[0].rep.toFixed(1)+' of 10</b>'
+   +(standing.length>1?', and '+(standing.length-1)+' other'
+     +(standing.length>2?'s':'')+' installed':'')
+   +'. An address with the opposite in does not read zero. It conducts.');}
+ return '<div class="s-axes"><div class="pm-eye">In The Body</div>'
+  +p.map(function(t){return '<p class="s-p">'+t+'</p>';}).join('')+'</div>';}
+
+/* ============================================================
+   THE FIVE LENSES, ON THE PAGE AT LAST.
+
+   He has asked for Eastern and Western on this rail twice. Both were built:
+   lensWestern, lensEastern, lensDesign and lensGene sit at the top of this
+   file, pure functions of soul, axes and laws, four of them, and NOTHING IN
+   THE BUILD HAS EVER CALLED ONE. That is the third time this session the
+   thing he asked for was already written and simply not rendered, after the
+   archetype behaviours and the mask behaviours.
+
+   One lens is deliberately gone and stays gone: lensName reduced a whole name
+   to one digit and called that the name lens, which is the Expression and one
+   of six. numerology.js does that properly and the spiritual block reads it.
+
+   Each lens says what it read, what it means, and what it was read off, which
+   is the third thing a label owes the person it is put on. Nothing here is
+   stored, so none of it can drift from the instrument.
+   ============================================================ */
+function sumLens(r){
+ var L=[lensWestern(r),lensEastern(r),lensDesign(r),lensGene(r)]
+  .filter(function(x){return x&&x.a;});
+ if(!L.length)return '';
+ return '<div class="pm-eye" style="margin-top:18px">Four Lenses</div>'
+  +'<div class="s-lens">'+L.map(function(x){
+   return '<div class="s-ln">'
+    +'<span class="s-ln-t">'+esc(x.t)+'</span>'
+    +'<b class="s-ln-a">'+esc(x.a)+'</b>'
+    +'<span class="s-ln-b">'+esc(x.b)+'</span>'
+    +'<em class="s-ln-c">read off '+esc(x.c)+'</em>'
+   +'</div>';}).join('')+'</div>';}
+
+/* ---- integrity over time ---- */
+function sumIg(r){
+ var sr=(typeof seriesRead==='function')?seriesRead(CURP,SUM_SPAN,Date.now()):null;
+ var head='<div class="s-ig"><div class="s-ig-h">'
+  +'<span class="pm-eye">Integrity Over Time</span>'
+  +'<div class="s-ig-sp">'+SPANS.map(function(sp){
+    return '<button type="button" class="cn-sb'+(sp.k===SUM_SPAN?' on':'')+'" '
+     +'data-igspan="'+sp.k+'" aria-pressed="'+(sp.k===SUM_SPAN)+'">'
+     +esc(sp.nm)+'</button>';}).join('')+'</div></div>';
+ /* THE POINTS THAT HAVE AN INTEGRITY ON THEM, which is not all of them: the
+    field carries ig as null on any snapshot written before it was recorded,
+    and a null drawn as a zero is a claim that integrity was nothing. */
+ var pts=sr?sr.pts.filter(function(x){return typeof x.ig==='number';}):[];
+ /* ONE EXIT, ONE CLOSING TAG. Two returns each closing the same wrapper reads
+    correctly at run time and counts as one div too many to the build's
+    balance check, which walks the string literals and cannot know that only
+    one of the two ever runs. The check is right to be dumb about it: a
+    renderer with two exits is a renderer with two places to forget a tag. */
+ var body;
+ if(pts.length<2){
+  body='<p class="cn-gp">'
+   +(pts.length?'One reading with an integrity on it in this span, at <b>'
+     +pts[0].ig.toFixed(1)+' of 10</b>. Two makes a line.'
+    :'Nothing on the record for this span. Every save writes a point, so this '
+     +'fills in as you go.')
+   +'</p>';}
+ else {
+  var lo=0, hi=10;                       /* integrity's real scale, both ends */
+  var t0=sr.t0, tspan=(sr.t1-sr.t0)||1;
+  var xy=pts.map(function(x){
+   return {x:((x.ms-t0)/tspan*100), y:(100-((x.ig-lo)/(hi-lo)*100))};});
+  var d=xy.map(function(q,i){return (i?'L':'M')+q.x.toFixed(2)+','+q.y.toFixed(2);}).join(' ');
+  var area=d+' L'+xy[xy.length-1].x.toFixed(2)+',100 L'+xy[0].x.toFixed(2)+',100 Z';
+  var first=pts[0].ig, last=pts[pts.length-1].ig;
+  var dir=last>first?'up':(last<first?'down':'level');
+  var col=dir==='down'?'var(--bad)':(dir==='up'?'var(--good)':'var(--accent)');
+  body=''
+  +'<svg class="s-ig-g" viewBox="0 0 100 100" preserveAspectRatio="none" '
+  +'aria-label="Integrity over the last '+esc(sr.span.nm.toLowerCase())
+  +', on a scale of nought to ten">'
+  /* the axis is nought to ten and never the range that happens to be there.
+     integrity has two real ends, so a chart drawn to fit the data would make
+     a quiet month look like a cliff and a good one look flat. */
+  +'<line x1="0" y1="50" x2="100" y2="50" stroke="var(--edge)" stroke-width="1" '
+  +'vector-effect="non-scaling-stroke"/>'
+  +'<path d="'+area+'" fill="'+col+'" opacity=".12"/>'
+  +'<path d="'+d+'" fill="none" stroke="'+col+'" stroke-width="1.6" '
+  +'vector-effect="non-scaling-stroke" stroke-linejoin="round" stroke-linecap="round"/>'
+  +'</svg>'
+  +'<div class="s-ig-f"><span>'+first.toFixed(1)+' of 10</span>'
+  +'<b>'+dir+'</b><span>'+last.toFixed(1)+' of 10</span></div>';}
+ return head+body+'</div>';}
 
 /* ---- one delegated listener for everything on this surface ---- */
 function sumWire(){
  var h=document.getElementById('sumbody'); if(!h||h.dataset.wired)return;
  h.dataset.wired='1';
  h.addEventListener('click',function(ev){
-  var b=ev.target.closest?ev.target.closest('[data-sout],[data-sp],[data-num],[data-arch],[data-dom],[data-seat],[data-mask],[data-gl]'):null;
+  var b=ev.target.closest?ev.target.closest('[data-sout],[data-sp],[data-num],[data-arch],[data-dom],[data-seat],[data-mask],[data-gl],[data-igspan]'):null;
   if(!b)return;
+  /* the integrity chart's own span. It repaints the surface rather than the
+     chart alone, so the pressed button and the drawn line cannot disagree. */
+  var ig=b.getAttribute('data-igspan');
+  if(ig){SUM_SPAN=ig; sumRender(); return;}
   /* THE TWO PRIMARY ACTIONS ON THIS PAGE DID NOTHING.
 
      The output row prints "Open it" under the protocol and "Run a release"

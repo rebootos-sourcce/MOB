@@ -2543,15 +2543,24 @@ body.punch .iq-qc{border-color:transparent;background:color-mix(in srgb,var(--c)
    pixels out of a column that has none to give, and the cells fall under the
    44px tap floor by a fraction, which is exactly the failure the design gate
    warns is not deterministic. A shadow draws the same line for no layout. */
-.iq-sl{display:grid;grid-template-columns:repeat(6,1fr);
+/* ZERO TO TEN ON ONE LINE, AND THE CELLS ARE EVEN. Both ruled, and they were
+   one fault.
+
+   Eleven buttons in six columns is two rows, and eleven into six leaves one
+   over, so the ten was given grid-column:span 2 to fill the gap. A scale whose
+   last step is twice the width of every other step is not a scale, it is a
+   scale with an argument about ten in it, and a scale that wraps is two
+   scales. Eleven columns, one row, every cell identical.
+
+   The cards hold at three across down to 1180, below which they stack and each
+   scale gets the full width of the card, so eleven cells never fall under the
+   tap floor. */
+.iq-sl{display:grid;grid-template-columns:repeat(11,1fr);
  border-radius:var(--r-xs);overflow:hidden;box-shadow:inset 0 0 0 1px var(--edge)}
 body.punch .iq-sl{box-shadow:none}
 .iq-n{min-height:var(--tap);border:0;border-right:1px solid var(--edge);
- border-top:1px solid var(--edge);
  background:var(--sunk);color:var(--mid);font-family:var(--num);font-size:13px;font-weight:500;cursor:pointer;transition:background var(--t-micro) var(--ease-out),color var(--t-micro) var(--ease-out)}
-.iq-n:nth-child(-n+6){border-top:0}
-.iq-n:nth-child(6n){border-right:0}
-.iq-n:last-child{grid-column:span 2;border-right:0}
+.iq-n:last-child{border-right:0}
 .iq-n:hover{background:var(--panel);color:var(--ink)}
 .iq-n.on{background:var(--c);border-color:var(--c);color:var(--on-accent);font-weight:600}
 @media (max-width:1180px){.iq-qs{grid-template-columns:1fr}}
@@ -2942,6 +2951,32 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
    object, which is how the canvas drew it before the names moved out */
 .cn-gl{width:13px;height:13px;flex:0 0 13px;display:block}
 /* the same icon on a drill row, where the type is a shade larger */
+/* THE FOUR LENSES. One reading each, and each says what it was read off,
+   which is what stops a lens being a horoscope. */
+.s-lens{display:grid;gap:1px;background:var(--edge);border:1px solid var(--edge);
+ border-radius:var(--r);overflow:hidden}
+.s-ln{background:var(--panel);padding:9px 12px 10px;display:flex;
+ flex-direction:column;gap:1px}
+.s-ln-t{font-size:10.5px;letter-spacing:.11em;color:var(--dim);font-weight:600}
+.s-ln-a{font-size:14px;color:var(--ink);font-weight:600;line-height:1.3}
+.s-ln-b{font-size:12.5px;color:var(--mid);line-height:1.4}
+.s-ln-c{font-style:normal;font-size:11px;color:var(--dim);margin-top:2px}
+.s-axes{margin-top:18px;border:1px solid var(--edge);border-radius:var(--r);
+ background:var(--panel);padding:14px 18px 6px}
+.s-axes .s-p{margin:0 0 12px}
+/* INTEGRITY OVER TIME, FULL WIDTH, under both columns. Ruled. A line five
+   years long inside a column is a scribble. */
+.s-ig{margin-top:22px;border:1px solid var(--edge);border-radius:var(--r);
+ background:var(--panel);padding:14px 16px 12px}
+.s-ig-h{display:flex;align-items:center;justify-content:space-between;
+ gap:14px;flex-wrap:wrap;margin-bottom:10px}
+.s-ig-sp{display:flex;gap:6px;flex-wrap:wrap}
+.s-ig-g{display:block;width:100%;height:120px}
+.s-ig-f{display:flex;align-items:baseline;justify-content:space-between;
+ margin-top:8px;font-size:12px;color:var(--dim)}
+.s-ig-f b{color:var(--ink);font-weight:600}
+.s-gl-s{display:block;font-style:normal;font-size:11px;font-weight:400;
+ color:var(--dim);letter-spacing:.01em;margin-top:1px}
 .ad-gl{width:14px;height:14px;flex:0 0 14px;display:inline-block;
  vertical-align:-2px;margin-right:6px;opacity:.82}
 .cn-nms-r .cn-nu,.cn-nms-r .cn-nd{flex-direction:row-reverse}

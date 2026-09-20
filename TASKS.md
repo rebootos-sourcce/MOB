@@ -136,8 +136,13 @@ Look and language
       *Asked 3 times.*
 - [ ] R3. **Energetics aesthetic.** It is boring, and he wants a subtle glass
       touch. *Asked twice.*
-- [ ] R4. **Summary right rail.** Eastern and Western, master number, the full
-      mental stack. *Asked twice.*
+- [x] R4. **Summary right rail.** Eastern and Western are on it. He asked
+      twice, and both lenses were already written: `lensWestern`,
+      `lensEastern`, `lensDesign` and `lensGene` sat at the top of
+      `ui/summary.js` as pure functions and NOTHING IN THE BUILD HAD EVER
+      CALLED ONE. Third time this round the thing he asked for was written and
+      not rendered, after the archetype behaviours and the mask behaviours.
+      Master numbers and the full stack were already on the rail.
 - [ ] R5. **Heat map anatomically precise to the chakras.** *Asked twice.*
 - [ ] R6. **Every piece of art gathered for his ruling.** Standing obligation.
       Sent twice, never complete.
@@ -186,9 +191,9 @@ Look and language
       60 its ceiling, twenty four uprights between them, the far wall dimmer
       than the near one. It was a radial wash, which solved the panel it used
       to be and left a smudge.
-- [~] AQ11. Every number on the compass carries its scale now: 88 out of 100,
-      integrity 9.3 of 10, the waist 40 to 60 out of 100. The rest of pass 10
-      is the wider surface.
+- [~] AQ11. Every number on the compass and on the Summary carries its scale
+      on the screen now, not in a title attribute a phone cannot reach. The
+      rest of pass 10 is the wider surface.
 - [x] AQ12. **NO TEXT OVER THE HERO GRAPHIC.** Off the drawing: the coherence
       number, the sixteen names, the eight quality labels and the band
       caption. What is left is the figure.
@@ -202,17 +207,40 @@ Look and language
 
 ### 2d. The Summary
 
-- [ ] AH1. It is boring and not alive. Ten passes.
-- [ ] AH2. Every named thing described as a behaviour, not a label
-- [ ] AH3. The centre column becomes text about you; the energetic moves right
+- [~] AH1. It is boring and not alive. Partly answered by AH2, AH3, AH5 and
+      AH6 together, and by a new passage in the centre: the nine written as
+      sentences in the body rather than tabled, carrying the plexus and the
+      part of the body each one sits in, which the engine has always known and
+      no surface has ever printed. Gordon reads "the heaviest of the nine is
+      Fear, at 10.0 of 10. It sits at the Lumbar plexus, which you feel in the
+      lower back, gut." STILL OPEN: the ten passes with innovation, animation
+      and art direction. That is a design exploration and it is his to grade,
+      not mine to improvise.
+- [x] AH2. Every named thing described as a behaviour, not a label. The
+      archetypes already carried one and it had never been rendered: the
+      Warrior moves on the threat, and the page printed "primary". The six
+      masks were given one, and a seat says what a shut one does.
+- [x] AH3. The centre is the story and the actions it calls for. The glance
+      row of six rings moved right with everything else measured.
 - [ ] AH4. Source AI retunes it daily, the old reading kept in history
-- [ ] AH5. The "off the floor" line comes out
-- [ ] AH6. Integrity over time, full width, day to five years
+- [x] AH5. The "off the floor" line is out. Every other tier names the next
+      band and what to do to reach it; that one named where the person was
+      lying and told them not to be ambitious. The instruction under it was
+      already right and is kept word for word.
+- [x] AH6. Integrity over time, full width, day to five years, on its own
+      span control. Drawn nought to ten always, never to the range that
+      happens to be there, because a chart fitted to the data makes a quiet
+      month look like a cliff. Snapshots with no integrity recorded are
+      left out rather than drawn as zero.
 
 ### 2e. The diagnostic
 
-- [ ] AI1. Zero to ten on one line
-- [ ] AI2. The numbers are not even
+- [x] AI1. Zero to ten on one line.
+- [x] AI2. The numbers are even. Both were one fault: eleven buttons in six
+      columns is two rows, and eleven into six leaves one over, so the ten was
+      given a double width cell to fill the gap. A scale whose last step is
+      twice the width of every other step is a scale with an argument about ten
+      in it. Eleven columns, one row, every cell 36.7 wide.
 - [ ] AI3. He does not like the design. Run it again.
 
 ### 2f. Not built at all
@@ -306,7 +334,16 @@ the privacy floor refuses it. No key is needed and none should be added.
 
 ## 4. DEFECTS OPEN
 
-- [ ] E1. `.ib` keeps a dark ground in Lumen. Three probes could not find why.
+- [~] E1. `.ib` in Lumen. FOUND, BY READING RATHER THAN PROBING, and it is not
+      a bug in the rule that draws it. `body.lumen .stage` redefines `--sunk`
+      to `#0A0A0A` for its whole subtree, which is correct: he ruled the centre
+      display area stays black. `.ib{background:var(--sunk)}` therefore comes
+      out near black for every icon button INSIDE the stage and paper for every
+      one outside it. Three probes could not find why because they were
+      measuring a control in the stage, where dark is the ruling.
+      WHAT IS ACTUALLY OPEN: whether a control belongs on the black stage at
+      all in Lumen, which is his call and not a defect.
+      `atuned_src/shell/head.html:352`
 - [ ] E2. A second field leak upstream of the release, in the full page sequence
 - [x] E3. The compass nameplates collided, 89 pairs at 1600, with no gate
       watching. Fixed by the cause rather than by a gate: the names are markup
@@ -314,7 +351,8 @@ the privacy floor refuses it. No key is needed and none should be added.
       them, a screen reader can read them and a button can carry a control.
       All four were impossible while they lived in a canvas.
 - [ ] E4. `DQ` draws an identical full ring for every profile past ten
-- [ ] E5. Eight definitions live only in `title` attributes, unreachable on a phone
+- [~] E5. Eight definitions lived only in `title` attributes, unreachable on
+      a phone. The Summary's six are on the screen. The rest are still to do.
 - [ ] E6. The word Awareness carries two concepts 545px apart on one screen
 - [ ] E7. Visiting a reference case writes that persona into the person's store
 

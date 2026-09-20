@@ -340,19 +340,37 @@ const SINAMES=SI.map(l=>l.nm);
    onto it. The outline is identical across all six so the family reads at a
    glance, and the mark inside is what that stage added. */
 const MASK_FACE='M4 9a8 6 0 0116 0c0 6-4 10-8 10S4 15 4 9z';
+/* AND EVERY ONE OF THEM SAYS WHAT IT DOES. Ruled: "every named thing is
+   described as a behaviour, not a label."
+
+   The archetypes already carried a v, which is a behaviour: the Warrior moves
+   on the threat. The masks carried a name and the two seats they sit at, and
+   the Summary printed "Child, Root and Sacral", which is a label wearing a
+   second label. A person reading their own mask needs to know what it does
+   when it comes on, because that is the thing they can catch themselves at.
+
+   Written in the present tense and in the second person's situation rather
+   than about them, which is the difference between a description and a
+   diagnosis. */
 const MASKS=[
  /* one eye open. nothing has been added yet. */
- {nm:'Child',b:['Root','Sacral'],ic:MASK_FACE+' M12 10v1'},
+ {nm:'Child',b:['Root','Sacral'],ic:MASK_FACE+' M12 10v1',
+  v:'gets small so somebody else decides'},
  /* two. it has learned there is someone watching. */
- {nm:'Preteen',b:['Solar','Throat'],ic:MASK_FACE+' M9 10v1 M15 10v1'},
+ {nm:'Preteen',b:['Solar','Throat'],ic:MASK_FACE+' M9 10v1 M15 10v1',
+  v:'checks the room before it says the thing'},
  /* a split down the middle, held together from outside. */
- {nm:'Teen',b:['Throat'],ic:MASK_FACE+' M12 6v13'},
+ {nm:'Teen',b:['Throat'],ic:MASK_FACE+' M12 6v13',
+  v:'pushes back on the person, not the problem'},
  /* a seam across. the two halves are joined and the join shows. */
- {nm:'Adult',b:['Sacral','Solar'],ic:MASK_FACE+' M5 12h14'},
+ {nm:'Adult',b:['Sacral','Solar'],ic:MASK_FACE+' M5 12h14',
+  v:'handles it, and files what it cost'},
  /* a squared jaw fitted over the lower half. it was issued, not grown. */
- {nm:'Professional',b:['Solar','Throat'],ic:MASK_FACE+' M8 13h8v5H8z'},
+ {nm:'Professional',b:['Solar','Throat'],ic:MASK_FACE+' M8 13h8v5H8z',
+  v:'performs competence until the feeling passes'},
  /* a ring above the face, worn where a thought is kept. */
- {nm:'Ideological',b:['3rd Eye'],ic:MASK_FACE+' M9 4a3 3 0 006 0'}];
+ {nm:'Ideological',b:['3rd Eye'],ic:MASK_FACE+' M9 4a3 3 0 006 0',
+  v:'answers from the position instead of the moment'}];
 
 /* ============================================================
    WHAT A LABEL OWES THE PERSON IT IS PUT ON.
@@ -471,7 +489,13 @@ const TIERDEF=[
   soma:'Medicating or distracting to survive the glitch. The hardware is shutting down.',
   def:'Most of the field is carrying. Very little is clear.',
   energy:'Ordinary demands read as threats. Capacity is spent before the day starts.',
-  toward:'Off the floor, and nothing more ambitious than that. One seat, one address, one line. Not a programme.'},
+  /* "OFF THE FLOOR" COMES OUT. Ruled. Every other tier's direction names the
+     next band and what to do to reach it. This one named where the person was
+     lying and told them not to be ambitious, which is a judgement about them
+     rather than an instruction about the field, and it is the one band where
+     a person is least able to hear it that way. The instruction underneath was
+     already right and is kept word for word. */
+  toward:'Corrupt, and it is reached one address at a time. One seat, one address, one line. Not a programme.'},
  {at:0, nm:'Collapsed',
   state:'Fragmented',
   soma:'Hijacked by unprocessed past data. Absolute somatic drag.',
