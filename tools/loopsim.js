@@ -78,6 +78,8 @@ const SRC={
  push:{v:1.30, s:'MINE. reviews/SPEC-ritual-accountability.md claims plus 6 from a 22:00 push and marks it unverified in repo. Swept, and EXCLUDED from the headline because push needs a server and the product is one file with no network.'},
  load:{v:0.02, s:'MINE. Extra first two day churn per choice above working memory. Swept.'},
  pfloor:{v:0.22, s:'MINE, and the largest of my guesses. The probability that somebody who did not do the full practice does the sixty second floor version instead. Precedent: Finch ships four selectable commitment levels, Baby steps to On fire, and is top decile at D1 and D7. https://finch.fandom.com/wiki/Streaks . Swept 0 to 0.35.'},
+ firstshow:{v:(0.34/0.66)/(0.19/0.81), s:'Nunes and Dreze 2006 endowed progress, 34 percent against 19 percent, applied to the CHURN HAZARD on days one and two rather than to a daily probability. That is the weaker transfer undone rather than a new claim: the paper\'s outcome is persistence to completion, not the chance of acting on a given day, so the hazard is where it belongs. Gated on the first session actually putting something on the record and SHOWING it. Swept 1.00 to the published 2.196.'},
+ awardD:{v:0.20, s:'MINE as a magnitude and it is a HALVING of a published one. Harkin 2016 d 0.40 is progress monitoring, and the paper separates monitoring the BEHAVIOUR from monitoring the OUTCOME. The record already carries the behaviour half at the full d. An award records the outcome half: an axis that held the coherent pole for seven days, an address that cleared, a band that was crossed, each with a date. Half the published d because it is the same mechanism read on a second channel and stacking a meta analysis twice would be dishonest. Swept 0 to 0.40.'},
  stake:{v:1.15, s:'MINE. One line the person writes on what is at stake, read back beside what they did. Direction from self determination theory on autonomous motivation, and precedent from I Am Sober, whose first onboarding field is why you want to stop. Swept 1.00 to 1.30.'}};
 
 /* ------------------------------------------------------------
@@ -258,7 +260,8 @@ const applyOR=(p,or)=>UNODDS(ODDS(p)*or);
    loss    a REFUSED arm. The Patel loss framed daily probability.
    ------------------------------------------------------------ */
 const BASE={sniff:'built',ifthen:0,monitor:0,halving:0,oneChoice:0,tieImprint:0,
- chain:0,floor:0,season:0,stake:0,push:0,coin:'none',assert:0,loss:0,tieRelease:0};
+ chain:0,floor:0,season:0,stake:0,award:0,firstshow:0,push:0,coin:'none',
+ assert:0,loss:0,tieRelease:0};
 const mk=(o)=>Object.assign({},BASE,o);
 const BUILT=mk({ifthen:1,monitor:1,halving:1,oneChoice:1});
 const D1=Object.assign({},BUILT,{tieImprint:1});
@@ -266,14 +269,17 @@ const D2=Object.assign({},D1,{sniff:'fold'});
 const D3=Object.assign({},D2,{sniff:'frames'});
 const D4=Object.assign({},D3,{chain:1});
 const D5=Object.assign({},D4,{floor:1});
-const D6=Object.assign({},D5,{season:1});
-const D7=Object.assign({},D6,{stake:1});
-const FINAL=D7;
+const D6=Object.assign({},D5,{award:1});
+const D7=Object.assign({},D6,{season:1});
+const D8=Object.assign({},D7,{stake:1});
+const D9=Object.assign({},D8,{firstshow:1});
+const FINAL=D9;
 const CFG={
  /* the build BEFORE the four fixes, kept so validation 3 can still check the
     machinery against the published curve. */
  current:mk({}),
- built:BUILT, d1:D1, d2:D2, d3:D3, d4:D4, d5:D5, d6:D6, d7:D7, final:FINAL,
+ built:BUILT, d1:D1, d2:D2, d3:D3, d4:D4, d5:D5, d6:D6, d7:D7, d8:D8, d9:D9,
+ final:FINAL,
  'final plus push':Object.assign({},FINAL,{push:1}),
  'final plus karma announced in advance':Object.assign({},FINAL,{coin:'contingent'}),
  'REFUSED affirmation asserted':Object.assign({},FINAL,{assert:1}),
@@ -285,6 +291,9 @@ const CFG={
  'no words in the practice':Object.assign({},FINAL,{chain:0}),
  'no floor practice':Object.assign({},FINAL,{floor:0}),
  'no season':Object.assign({},FINAL,{season:0}),
+ 'no awards':Object.assign({},FINAL,{award:0}),
+ 'the first session shows nothing':Object.assign({},FINAL,{firstshow:0}),
+ 'awards that need a release':Object.assign({},FINAL,{awardHeld:0}),
  'no stake sentence':Object.assign({},FINAL,{stake:0}),
  'reset to zero':Object.assign({},FINAL,{halving:0}),
  'full practice list':Object.assign({},FINAL,{oneChoice:0}),
@@ -345,6 +354,22 @@ function runSim(cfgName,opt){
   /* the refused arm. An asserted positive self statement, on the 800 of 1000
      at grid level four or below. */
   const assertOR=(cfg.assert&&tp.affirm&&m.grid<=4)?harm:1;
+  /* THE AWARD, AND WHO CAN REACH ONE.
+
+     Measured off engine/ladder.js MARKS and the sq>=4 release threshold: four
+     of the sixteen marks, the two Ground counts and the two clearing marks,
+     can NEVER be earned by the 465 of 1000 who reach a complete reading with
+     nothing above the release line. A quarter of the ladder is permanently
+     shut to nearly half the panel, which is why an award family that reads the
+     coherent side rather than a clearing exists at all.
+
+     awardHeld is that family. With it every reading can earn: an axis that
+     held its coherent pole for seven days is an outcome and it has a date.
+     Without it, an award is a second name for a release and the 465 get
+     nothing, which is what the config 'awards that need a release' prices. */
+  const heldOK=(cfg.awardHeld===undefined?1:cfg.awardHeld);
+  const canAward=!!cfg.award&&(m.releasable>0||!!heldOK);
+  const awardOR=canAward?d2or(opt.awardD!==undefined?opt.awardD:SRC.awardD.v):1;
 
   let live=true, last=-99, streak=0, grace=1, k=0, marks=0, done=0, floors=0;
   let firstAt=null, fullAt=null, brokeToday=false;
@@ -354,10 +379,14 @@ function runSim(cfgName,opt){
    if(cfg.ifthen) pdo=applyOR(pdo,ifthenOR);
    if(cfg.monitor)pdo=applyOR(pdo,SRC.monitor.v);
    if(cfg.chain)  pdo=applyOR(pdo,chainOR);
+   if(cfg.award)  pdo=applyOR(pdo,awardOR);
    if(cfg.stake)  pdo=applyOR(pdo,stakeOR);
    if(cfg.assert) pdo=applyOR(pdo,assertOR);
    if(cfg.push)   pdo=applyOR(pdo,push);
-   if(day<=7)     pdo=applyOR(pdo,SRC.endowed.v);
+   /* the same paper cannot pay twice. With firstshow on, the endowed term
+      covers days one and two on the hazard and days three to seven on the
+      daily probability, which is one application each. */
+   if(day<=7&&!(cfg.firstshow&&day<=2)) pdo=applyOR(pdo,SRC.endowed.v);
    if(cfg.season){const sd=((day-1)%7)+1; pdo=applyOR(pdo,1+(grad-1)*(sd-1)/6);}
    if(cfg.coin==='contingent') pdo=applyOR(pdo,SRC.overjust.v);
    if(done>0) pdo=applyOR(pdo,SRC.write.v);
@@ -381,6 +410,7 @@ function runSim(cfgName,opt){
      k+=EARN.ritual+(onFloor?0:EARN.journal);
      if(cfg.season&&day%7===0)k+=EARN.season;
      if(done===1||done===7||done===30){marks++;k+=EARN.mark;}
+     if(canAward&&(done===7||done===30||done===60))k+=EARN.award;
      if(firstAt===null&&k>=RUNCOST)firstAt=day;
      if(fullAt===null&&k>=FULLRUN)fullAt=day;}
    } else if(SPEC){
@@ -390,6 +420,27 @@ function runSim(cfgName,opt){
    let h=H[per.nm][day];
    if(SPEC){
     if(day-last<=2) h=UNODDS(ODDS(Math.min(h,0.999))/SRC.monitor.v);
+    /* THE FIRST SESSION, WHICH IS WHERE THE REMAINING LOSS IS.
+
+       Measured in this model's own exit table: 410 of 1000 leave in the first
+       two days under the design as it stood before this pass, against 421
+       before any of it, so eight passes of loop work had moved the first two
+       days by eleven people. Everything else was downstream of a day nobody
+       reached twice.
+
+       The mechanic is not a new reward. It is that the first session ENDS BY
+       SHOWING WHAT LANDED. A journal entry committed already earns the First
+       story mark today, in engine/ladder.js, and ladderHtml renders on Ritual
+       and on the Compass, so a person who writes one sentence on the Story
+       surface and stops earns a mark they never see. The first thing this
+       product ever gives somebody is invisible.
+
+       Nunes and Dreze's outcome is persistence to completion, so the odds
+       ratio goes on the hazard for the two days it covers and not on a daily
+       probability, and the pdo term that used to carry it is gone from day 1
+       and 2 rather than sitting beside it. */
+    if(cfg.firstshow&&day<=2&&done>0)
+     h=UNODDS(ODDS(Math.min(h,0.999))/(opt.firstshow!==undefined?opt.firstshow:SRC.firstshow.v));
     if(day<=2&&cfg.oneChoice)
      h=h*(1-Math.min(0.30,Math.max(0,m.wasChoices-SRC.wm.v)*loadK));
     if(!did&&streak>0&&grace===0){
@@ -498,7 +549,7 @@ function validate(){
  /* every rung adds a credit and removes nothing, so no rung may retain fewer
     at day 30 than the rung below it by more than sampling noise. Two people
     of slack, which is the same tolerance validation 3 uses. */
- const rungs=['built','d1','d2','d3','d4','d5','d6','d7'];
+ const rungs=['built','d1','d2','d3','d4','d5','d6','d7','d8','d9'];
  const got=rungs.map(r=>runSim(r).total[30]);
  for(let i=1;i<rungs.length;i++)
   ok(got[i]>=got[i-1]-2, '  '+rungs[i]+' '+got[i]+' is not below '+rungs[i-1]+' '+got[i-1]+' by more than 2');
@@ -517,10 +568,14 @@ const LADDER=[['current','the build BEFORE the four fixes, for the audit trail']
  ['d3','pass 3: and the frame layer reads the form of a sentence'],
  ['d4','pass 4: and the practice contact line is the person\'s own span'],
  ['d5','pass 5: and the affirmation is the sixty second floor version'],
- ['d6','pass 6: and the season, seven days with an end'],
- ['d7','pass 7: and the stake sentence. THE FINAL DESIGN']];
+ ['d6','pass 6: and the award family that reads the coherent side'],
+ ['d7','pass 7: and the season, seven days with an end'],
+ ['d8','pass 8: and the stake sentence'],
+ ['d9','pass 9: and the first session ends by showing what landed. THE FINAL DESIGN']];
 const ABL=['no tie to the sentence','no frame layer','no sniffer work at all',
- 'no words in the practice','no floor practice','no season','no stake sentence',
+ 'no words in the practice','no floor practice','no awards',
+ 'awards that need a release','no season','no stake sentence',
+ 'the first session shows nothing',
  'reset to zero','full practice list','no record on the surface','no if then plan'];
 
 function chainReport(){
@@ -718,6 +773,18 @@ function sweep(){
   console.log('  p '+v.toFixed(2)+'\tfinal d30 '+r.total[30]+'\t'+(r.total[30]/10).toFixed(1)
    +' points\tdelta '+((r.total[30]/10-base)>=0?'+':'')+(r.total[30]/10-base).toFixed(1));});
 
+ console.log('\nfirstshow. PUBLISHED, and swept down to nothing:');
+ [1.0,1.3,1.6,1.9,2.196].forEach(v=>{
+  const r=runSim('final',{firstshow:v});
+  console.log('  OR '+v.toFixed(3)+'\tfinal d30 '+r.total[30]+'\t'+(r.total[30]/10).toFixed(1)
+   +' points\tdelta '+((r.total[30]/10-base)>=0?'+':'')+(r.total[30]/10-base).toFixed(1));});
+
+ console.log('\nawardD. MINE, and it halves a published d of 0.40:');
+ [0,0.10,0.20,0.30,0.40].forEach(v=>{
+  const r=runSim('final',{awardD:v});
+  console.log('  d '+v.toFixed(3)+'\tfinal d30 '+r.total[30]+'\t'+(r.total[30]/10).toFixed(1)
+   +' points\tdelta '+((r.total[30]/10-base)>=0?'+':'')+(r.total[30]/10-base).toFixed(1));});
+
  console.log('\nstake. MINE:');
  [1.0,1.075,1.15,1.225,1.30].forEach(v=>{
   const r=runSim('final',{stake:v});
@@ -749,7 +816,8 @@ function sweep(){
    +runSim('final').total[30]);});
 
  console.log('\nTHE PESSIMISTIC FLOOR. Every coefficient of mine at its worst end at once.');
- const worst={chainD:0, pfloor:0, stake:1.0, grad:1.0, load:0, shock:0.40};
+ const worst={chainD:0, pfloor:0, stake:1.0, grad:1.0, load:0, shock:0.40, awardD:0,
+ firstshow:1.0};
  const pf=runSim('final',worst), pb=runSim('built',worst);
  console.log('  baseline at the pessimistic end '+(pb.total[30]/10).toFixed(1)+' points, final '
   +(pf.total[30]/10).toFixed(1)+' points, delta '

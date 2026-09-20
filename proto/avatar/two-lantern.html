@@ -34,13 +34,17 @@ button:hover{color:var(--ink);border-color:var(--gold)}
 button[aria-pressed=true]{color:var(--bg);background:var(--gold);border-color:var(--gold)}
 /* HERO. no text over the graphic, so the caption is a sibling below it. */
 .hero{background:var(--panel);border:1px solid var(--edge);border-radius:8px;
- padding:16px;flex:0 0 auto}
+ padding:16px;flex:0 1 auto;max-width:100%}
 .stage{display:block;background:#0A0B0F;border-radius:6px}
 .cap{margin-top:12px;max-width:34ch}
-.lrail span{position:absolute;left:0;font-size:10px;line-height:1.2;color:var(--dim);
- letter-spacing:.03em;transform:translateY(-50%);white-space:nowrap}
-.lrail span i{font-style:normal;color:var(--faint);display:block;font-size:9px;
- font-variant-numeric:tabular-nums}
+.lrail span{position:absolute;left:0;width:126px;font-size:10.5px;line-height:1.25;
+ color:var(--dim);letter-spacing:.03em;transform:translateY(-50%)}
+.lrail span i{font-style:normal;color:var(--faint);display:block;font-size:9.5px;
+ font-variant-numeric:tabular-nums;line-height:1.25}
+.lflat{display:none;margin-top:10px;font-size:11px;line-height:1.45}
+.lflat b{display:inline-block;min-width:66px}
+.lflat i{font-style:normal;color:var(--faint);font-variant-numeric:tabular-nums}
+@media (max-width:900px){.lrail{display:none!important}.lflat{display:block}}
 .cap .nm{font-size:16px;font-weight:600}
 .cap .rl{color:var(--dim);font-size:13px}
 .cap .sy{color:var(--faint);font-size:12.5px;font-style:italic;margin-top:5px}
@@ -195,7 +199,7 @@ function build(){
  var hero=document.createElement('div'); hero.className='hero';
  hero.innerHTML='<p class="eye">The avatar, one person, now</p>';
  var hrow=document.createElement('div');
- hrow.style.cssText='display:flex;gap:10px;align-items:flex-start';
+ hrow.style.cssText='display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap';
  hero.appendChild(hrow);
  var hc=mk(hrow,HERO_W,HERO_H,'stage');
  /* THE NAMES GO IN A RAIL, NEVER ON THE DRAWING. cone.js:213 records what it
@@ -203,11 +207,16 @@ function build(){
     colliding pairs at 1600 with no gate able to see one of them. A rail has
     line breaking, a screen reader can read it and a gate can measure it. */
  var lr=document.createElement('div'); lr.className='lrail';
- lr.style.cssText='position:relative;width:74px;height:'+HERO_H+'px;flex:0 0 74px';
+ lr.style.cssText='position:relative;width:128px;height:'+HERO_H+'px;flex:0 0 128px';
  hrow.appendChild(lr); hero.__lr=lr;
- var cap=document.createElement('div'); cap.className='cap'; hero.appendChild(cap);
- hero.__cap=cap;
- var nums=document.createElement('dl'); nums.className='num'; hero.appendChild(nums);
+ var col=document.createElement('div');
+ col.style.cssText='flex:1 1 210px;min-width:200px';
+ hrow.appendChild(col);
+ var cap=document.createElement('div'); cap.className='cap'; cap.style.marginTop='0';
+ col.appendChild(cap);
+ var lf=document.createElement('div'); lf.className='lflat'; col.appendChild(lf);
+ hero.__lf=lf;
+ var nums=document.createElement('dl'); nums.className='num'; col.appendChild(nums);
  row.appendChild(hero);
  var prog=document.createElement('div'); prog.className='card'; prog.style.flex='1 1 460px';
  prog.innerHTML='<p class="eye">The same person, four months apart</p>';
@@ -227,7 +236,7 @@ function build(){
  var grid=document.createElement('div'); grid.className='sheet'; sh.appendChild(grid);
  w.appendChild(sh);
  document.getElementById('mount').appendChild(w);
- return {hero:hc,cap:cap,nums:nums,strip:strip,pk:pk,pk2:pk2,grid:grid,lr:hero.__lr};}
+ return {hero:hc,cap:cap,nums:nums,strip:strip,pk:pk,pk2:pk2,grid:grid,lr:hero.__lr,lf:hero.__lf};}
 var UI=null;
 
 function capText(who,f){
@@ -262,7 +271,11 @@ function paint(){
  if(keys.indexOf(SEL.fr)<0)SEL.fr='m0';
  var f=frameOf(who,SEL.fr);
  UI.cap.innerHTML=capText(who,f);
- if(UI.lr&&typeof labels==='function')UI.lr.innerHTML=labels(f);
+ if(typeof labels==='function'){
+  if(UI.lr)UI.lr.innerHTML=labels(f);
+  /* the same names as a plain list on a phone, because an absolutely placed
+     rail beside a 500 pixel drawing has nowhere to go at 390 wide. */
+  if(UI.lf)UI.lf.innerHTML=flat(f);}
  UI.nums.innerHTML=numsHtml(f);
  UI.pk.querySelectorAll('[data-who]').forEach(function(b){
   b.setAttribute('aria-pressed',b.getAttribute('data-who')===who?'true':'false');});
@@ -371,6 +384,11 @@ function labels(f){
   h+='<span style="top:'+y.toFixed(1)+'px;color:'+SEATCOL[s.b]+'">'+s.b
    +'<i>'+s.touched+' touched, '+s.opened+' emptied, of '+s.n+'</i></span>';});
  return h;}
+function flat(f){
+ return f.seats.map(function(s){
+  return '<div><b style="color:'+SEATCOL[s.b]+'">'+s.b+'</b> <i>'+s.touched
+   +' touched, '+s.opened+' emptied, of '+s.n+'</i></div>';}).join('');}
+
 var KEYHTML=
  '<div class="key">'
  +'<div><b>The housing is the record</b>Seven rings, Root inside to Crown outside. Each '
