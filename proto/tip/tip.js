@@ -76,31 +76,60 @@ var TIP=(function(){
     canvas at 451,263,664,727, which is dead centre of the picture. The mark
     itself is already lit by the wheel's own hover render, so nothing is lost
     by moving the panel off the graphic. */
- function place(r,t,force,at){
+ /* THE PANEL NEVER COVERS THE TAB BAR. The bar is how a person leaves the
+    surface, and a definition that hides the way out is worse than no
+    definition. Measured before this existed: on the live Field in Glass the
+    canvas panel landed at 637,26 and sat across Knowledge, Games and
+    Summary. The bar's own bottom edge is the top inset, read once per open,
+    so nothing has to be written down and the number cannot go stale. */
+ function topFloor(){
+  var bar=document.querySelector('.top'); if(!bar)return INSET;
+  var s=getComputedStyle(bar);
+  if(s.display==='none'||s.visibility==='hidden')return INSET;
+  if(s.position!=='fixed'&&s.position!=='sticky')return INSET;
+  var b=bar.getBoundingClientRect();
+  return b.height>0?Math.max(INSET,b.bottom+INSET):INSET;}
+
+ function place(r,t,force,at,order){
   var vw=innerWidth, vh=innerHeight, w=t.w, h=t.h, out=null;
+  var TOP=topFloor();
   var fits={
    bottom: vh-r.bottom-GAP-INSET >= h,
-   top:    r.top-GAP-INSET       >= h,
+   top:    r.top-GAP-TOP         >= h,
    right:  vw-r.right-GAP-INSET  >= w,
    left:   r.left-GAP-INSET      >= w};
-  var order=['bottom','top','right','left'], side=null, i;
+  /* PLACEMENT ORDER, AND WHY THE CALLER CAN SET IT. Below, above, beside is
+     right for a row, a ring and a tab: the eye is already travelling down.
+     It is wrong for the wheel. The wheel fills the middle of the surface, so
+     above it is the tab bar and below it is the key strip, and the only
+     clear ground is beside it. The Field passes right, left, bottom, top and
+     the reason travels with the call. */
+  /* AND WHEN THE CALLER GIVES A POINT AND NO ORDER, the side follows the
+     point. A mark on the left of the wheel opens to the left, a mark on the
+     right opens to the right. The tether stays short, the eye never crosses
+     the picture to read about the picture, and the panel lands on whichever
+     rail is furthest from what the person is looking at. */
+  var ORDER=order||(at
+   ? (at.x < r.left+r.width/2 ? ['left','right','bottom','top']
+                              : ['right','left','bottom','top'])
+   : ['bottom','top','right','left']), side=null, i;
   if(force&&fits[force])side=force;
-  else for(i=0;i<order.length;i++)if(fits[order[i]]){side=order[i];break;}
+  else for(i=0;i<ORDER.length;i++)if(fits[ORDER[i]]){side=ORDER[i];break;}
   if(!side){
    /* nothing fits. take the side with the most room and shrink to it. */
-   var room={bottom:vh-r.bottom,top:r.top,right:vw-r.right,left:r.left};
+   var room={bottom:vh-r.bottom,top:r.top-TOP,right:vw-r.right,left:r.left};
    side=Object.keys(room).sort(function(a,b){return room[b]-room[a];})[0];
    if((side==='right'||side==='left') && room[side]-GAP-INSET < MINW)return null;}
   var x,y, ax=at?at.x:(r.left+r.width/2), ay=at?at.y:(r.top+r.height/2);
   if(side==='bottom'||side==='top'){
    x=ax-w/2;
    x=Math.max(INSET,Math.min(vw-w-INSET,x));
-   y=(side==='bottom')?r.bottom+GAP:r.top-GAP-h;
+   y=(side==='bottom')?r.bottom+GAP:Math.max(TOP,r.top-GAP-h);
    out={side:side,x:x,y:y,
         tx:Math.max(16,Math.min(w-16,ax-x)),ty:null};}
   else{
    y=ay-h/2;
-   y=Math.max(INSET,Math.min(vh-h-INSET,y));
+   y=Math.max(TOP,Math.min(vh-h-INSET,y));
    x=(side==='right')?r.right+GAP:r.left-GAP-w;
    out={side:side,x:x,y:y,
         tx:null,ty:Math.max(16,Math.min(h-16,ay-y))};}
@@ -155,7 +184,7 @@ var TIP=(function(){
   e.style.left='-9999px'; e.style.top='0px';
   e.style.setProperty('--dx','0px'); e.style.setProperty('--dy','0px');
   var b=e.getBoundingClientRect();
-  var p=place(rect,{w:b.width,h:b.height},d.force,d.at);
+  var p=place(rect,{w:b.width,h:b.height},d.force,d.at,d.order);
   if(!p){ document.body.classList.add('tip-force-sheet'); showAt(rect,d,owner);
           document.body.classList.remove('tip-force-sheet'); return; }
   e.setAttribute('data-side',p.side);

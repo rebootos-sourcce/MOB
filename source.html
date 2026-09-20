@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="058a3f9 2026-09-20 07:19"><head><meta charset="utf-8">
+<html lang="en" data-build="fb18dd8 2026-09-20 07:24"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -2660,6 +2660,41 @@ body.snow .rel{background:rgba(238,237,233,.82)}
 .rit-step{margin-bottom:13px}
 .rit-step b{font-size:15px;font-weight:600;display:block;margin-bottom:5px}
 .rit-step p{font-size:14px;line-height:1.7;color:var(--mid);margin:0;font-weight:300}
+/* TODAY'S RITUAL, READ BACK. The plan sits above the builder, because a plan
+   already made is what the surface is for and making another is the second
+   thing a person wants from it. Left edge in the seat colour of the accent,
+   which is how everything else in this product marks a live thing. */
+.rit-saved{margin:14px 0 4px;padding:12px 14px;border:1px solid var(--edge);
+ border-left:2px solid var(--accent);border-radius:var(--r-s);background:var(--panel-2)}
+.rit-saved.done{border-left-color:var(--heart)}
+.rit-sv-h{font-size:15px;font-weight:500;color:var(--ink);margin:3px 0 6px}
+.rit-sv-h b{font-family:var(--num);font-size:13px;font-weight:500;color:var(--dim)}
+.rit-sv-p{margin:0 0 9px;font-size:13.5px;line-height:1.6;color:var(--mid)}
+.rit-sv-ok{color:var(--heart);margin-bottom:0}
+/* ONE PRACTICE, AND THE WAY TO THE REST. Not a disclosure triangle: a sentence
+   that says how many there are, because a control that hides an unknown
+   quantity is a control a person does not press. */
+.rit-list.one{max-height:none;overflow:visible}
+.rit-more{display:block;width:100%;margin:10px 0 0;padding:9px 12px;
+ min-height:var(--tap);background:none;border:1px dashed var(--edge-2);
+ border-radius:var(--r-s);color:var(--dim);font:inherit;font-size:13px;
+ cursor:pointer;text-align:left;transition:color var(--t-micro) var(--ease-out),
+ border-color var(--t-micro) var(--ease-out)}
+.rit-more:hover{color:var(--ink);border-color:var(--accent)}
+/* THE IF THEN PLAN. Two fields and the sentence they make, which is the whole
+   mechanism: a plan naming a time and a place is acted on. The sentence is
+   under the fields rather than above them so it fills in as they are typed. */
+.rit-plan{margin:16px 0 0;padding-top:14px;border-top:1px solid var(--edge)}
+.rit-f{display:flex;align-items:center;gap:11px;margin:9px 0}
+.rit-f span{flex:0 0 52px;font-family:var(--num);font-size:11px;color:var(--dim)}
+.rit-f input{flex:1 1 auto;min-height:var(--tap);padding:7px 11px;
+ background:var(--sunk);border:1px solid var(--edge);border-radius:var(--r-xs);
+ color:var(--ink);font:inherit;font-size:14px}
+.rit-f input:focus-visible{outline:2px solid var(--accent);outline-offset:1px;
+ border-color:var(--accent)}
+.rit-if{margin:9px 0 0;font-size:13.5px;line-height:1.6;color:var(--mid)}
+/* THE RECORD, on the surface that earns it as well as inside the Compass. */
+.rit-rec{margin-top:18px;padding-top:15px;border-top:1px solid var(--edge)}
 
 /* ============================================================
    TAB VISIBILITY
@@ -3569,7 +3604,7 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
        download as atuned(1).html and leaves the first one where it was, so
        opening "the file" can mean opening last week's.
        Stamped by BUILD.sh, so it cannot be wrong or go stale. -->
-  <span class="bs-v" id="bstamp">058a3f9 2026-09-20 07:19</span></div>
+  <span class="bs-v" id="bstamp">fb18dd8 2026-09-20 07:24</span></div>
  <!-- THE WAY OUT WAS BUILT AND NEVER SHOWN.
 
       pointerdown and keydown both clear this sheet and have since it was
@@ -8993,8 +9028,29 @@ function pracDays(p){
 function streakRead(p,now){
  var days=pracDays(p), today=pracDay(now||Date.now());
  if(!days.length||today===null)return {run:0, live:false, last:null, best:0, days:0};
- var run=1; for(var i=1;i<days.length;i++){
-  if(days[i]===days[i-1]-1)run++; else break;}
+ /* THE RUN HALVES, IT DOES NOT RESET. Ruled, Bible 1133:
+    Math.max(1, Math.ceil(s/2)) with one grace day.
+
+    It used to break out of the walk at the first gap, so one missed pair of
+    days threw away a month. Measured against a thousand simulated arrivals,
+    a reset costs 36 of 1000 at day 30, and it is the wrong arithmetic as well
+    as the expensive one: Lally 2010 found that missing one opportunity did not
+    materially affect habit formation, so the penalty for a miss should be a
+    penalty and not a demolition.
+
+    Walked oldest to newest, because a rule that carries forward cannot be read
+    backwards. A gap of one day is consecutive. A gap of two is the grace day
+    and costs nothing. Three or more halves what was standing, and the day
+    being walked is already inside the halved run rather than added to it.
+
+    Nothing new is stored. This is the same day list read under a different
+    rule, so an older profile gets the new arithmetic on the next render. */
+ var asc=days.slice().reverse();
+ var run=1;
+ for(var i=1;i<asc.length;i++){
+  var gap=asc[i]-asc[i-1];
+  if(gap<=2)run++;
+  else run=Math.max(1,Math.ceil(run/2));}
  var best=1,cur=1; for(var j=1;j<days.length;j++){
   if(days[j]===days[j-1]-1){cur++; if(cur>best)best=cur;} else cur=1;}
  var gap=today-days[0];
@@ -9008,12 +9064,27 @@ function streakRead(p,now){
    pole right now, and it is the only one of the four that can go down, which
    is correct: it is a state and not a tally. */
 function ledgerRead(p){
- var mins=0; ((p&&p.rituals)||[]).forEach(function(x){mins+=(x&&+x.min)||0;});
+ /* MINUTES PRACTISED WAS MINUTES PLANNED, and it was the one label in the
+    product claiming what the data did not carry. Select the twenty minute scan,
+    press save, close the tab, and the ledger read twenty minutes practised.
+
+    A saved ritual is a plan. A ritual marked done is a thing that happened.
+    They are now two counts and they are named differently. An entry saved
+    before this existed carries no done key at all, and is read as practised
+    rather than discarded, because a person's history is not ours to delete over
+    a schema change. Only entries written from here on can be planned and not
+    yet done. */
+ var mins=0, plan=0, doneN=0;
+ ((p&&p.rituals)||[]).forEach(function(x){
+  var m=(x&&+x.min)||0; plan+=m;
+  var done=(x&&x.done!==undefined)?!!x.done:true;
+  if(done){mins+=m; doneN++;}});
  var m=(p&&p.meter)||{};
  var clear=0, carry=0;
  ((p&&p.axes)&&CHILD.forEach(function(c){
   var a=p.axes[c.nm]||{}; if((a.opp||0)>=4)clear++; if((a.held||0)>=4)carry++;}));
- return {minutes:mins, rituals:((p&&p.rituals)||[]).length,
+ return {minutes:mins, planned:plan, done:doneN,
+  rituals:((p&&p.rituals)||[]).length,
   lines:+m.lines||0, ground:((m.unique||[]).length),
   clear:clear, carry:carry, snaps:((p&&p.history)||[]).length};}
 
@@ -13867,14 +13938,36 @@ function ritFor(r){
  var first=fit.filter(function(p){return p.track===track;});
  /* at tier 1 some tracks hold nothing. say so rather than naming a track and
     then calling for a practice from a different one. */
- var called=first.length?first[0]:fit[0];
+ /* THE LIGHTEST ONE IN THE TRACK, NOT THE FIRST ONE IN THE TABLE. Measured:
+    835 of 1000 arrivals were asked for fifteen minutes or more as a first
+    practice and 585 of 1000 for twenty, because the table order happened to put
+    the long ones first. The track is the diagnosis and stays. Which practice
+    inside it is the entry is a question about what a person will actually do
+    once, and the answer is the short one. */
+ var lightest=function(set){return set.slice().sort(function(a,b){
+  return (a.min-b.min)||(a.tier-b.tier);})[0];};
+ var called=first.length?lightest(first):lightest(fit);
  return {band:band, track:track, tier:tier, called:called,
   substituted:!first.length, actualTrack:called?called.track:track, all:fit};}
 function ritOpen(fromLog){
  RIT.open=true; RIT.from=fromLog||null; RIT.sel={};
  var c=ritFor(compute());
  if(c.called)RIT.sel[c.called.k]=true;
+ RIT.all=false; RIT.when=''; RIT.where='';
  ritRender();}
+/* THE ONE ALREADY SAVED, newest first. A ritual is a plan and a plan a person
+   cannot find again is not a plan. */
+function ritLast(){
+ var a=(CURP&&CURP.rituals)||[];
+ return a.length?a[a.length-1]:null;}
+function ritToday(){
+ var r=ritLast();
+ if(!r||typeof pracDay!=='function')return null;
+ return (pracDay(r.t)===pracDay(Date.now()))?r:null;}
+/* the steps of a saved ritual, read back out of the keys it stored */
+function ritSteps(r){
+ return ((r&&r.steps)||[]).map(function(k){
+  return PRACTICE.filter(function(p){return p.k===k;})[0];}).filter(Boolean);}
 /* Closing means leaving the surface, not emptying it. While Ritual is the tab
    there is nothing behind it to go back to, so a close that blanked the host
    would leave a named tab showing an empty box. */
@@ -13896,13 +13989,39 @@ function ritRender(){
   +c.track.toLowerCase()+' track is what your state calls for. Tier '+c.tier+' and below.'
   +(c.substituted?' Nothing in that track sits at tier '+c.tier+', so the '
     +c.actualTrack.toLowerCase()+' track carries it.':'')+'</div>';
+ /* WHAT IS ALREADY SAVED, READ BACK. A plan the product forgets the moment it
+    is written is not a plan, and it was the largest hole in the loop. Today's
+    ritual sits at the top of its own surface with its when and its where, and
+    the one control that turns a plan into a thing that happened. */
+ var td=ritToday(), tdSteps=ritSteps(td);
+ if(td)
+  out+='<div class="rit-saved'+(td.done?' done':'')+'">'
+   +'<div class="pm-eye">Today\'s ritual</div>'
+   +'<div class="rit-sv-h">'+tdSteps.map(function(p){return esc(p.nm);}).join(', ')
+   +' <b>'+((+td.min)||0)+'m</b></div>'
+   +((td.when||td.where)
+     ? '<p class="rit-sv-p">When '+esc(td.when||'it is time')+', '
+       +esc(td.where?'at '+td.where:'wherever you are')+'.</p>'
+     : '<p class="rit-sv-p rel-dim">No time and no place set, so it is an '
+       +'intention rather than a plan.</p>')
+   +(td.done
+     ? '<p class="rit-sv-p rit-sv-ok">Done. It is on the record.</p>'
+     : '<button type="button" class="btn pri" id="ritdone">I did it</button>')
+   +'</div>';
  if(RIT.from&&RIT.from.length)
   out+='<div class="rit-from">After releasing '+RIT.from.length+': '
    +esc(RIT.from.slice(0,3).map(function(x){return x.name;}).join(', '))
    +(RIT.from.length>3?' and '+(RIT.from.length-3)+' more':'')+'</div>';
- out+='<div class="rit-list">';
+ /* ONE PRACTICE ON THE CARD. Nineteen choices sat here against a working
+    memory of about four, and every one of them was asked for at once. The one
+    the state calls for is the card; the rest are behind a single control, which
+    is a choice between two things rather than nineteen. Worth 19 of 1000 at day
+    thirty when measured, and the cheapest of the four fixes. */
+ var showAll=!!RIT.all;
+ out+='<div class="rit-list'+(showAll?'':' one')+'">';
  ['Somatic','Body','Energy','Mind'].forEach(function(tr){
   var set=c.all.filter(function(p){return p.track===tr;});
+  if(!showAll)set=set.filter(function(p){return c.called&&p.k===c.called.k;});
   if(!set.length)return;
   out+='<div class="rit-tr" style="--c:'+(PTRACK[tr]||GOLD)+'">'+tr+'</div>';
   set.forEach(function(p){
@@ -13913,25 +14032,96 @@ function ritRender(){
     +'<span class="rit-d">'+esc(p.d)+'</span>'
     +'<b>'+p.min+'m</b></button>';});});
  out+='</div>';
+ out+='<button type="button" class="rit-more" id="ritall">'
+  +(showAll?'Show only what is called for'
+   /* NUMWORD capitalises, because everywhere else it starts a heading. Here it
+      is mid sentence, so it is lowered rather than a second function written. */
+   :'Choose something else, '+NUMWORD(c.all.length).toLowerCase()+' practices')+'</button>';
  if(picked.length){
   out+='<div class="pm-eye" style="margin-top:16px">The ritual, '+mins+' minutes</div>'
    +'<div class="rit-how">';
   picked.forEach(function(p,i){
    out+='<div class="rit-step"><b>'+(i+1)+'. '+esc(p.nm)+'</b><p>'+esc(p.how)+'</p></div>';});
-  out+='</div>';}
+  out+='</div>';
+  /* THE IF THEN PLAN. Two fields, and they are the largest single item in the
+     whole loop: 72 of 1000 at day thirty, measured. Gollwitzer and Sheeran
+     2006, ninety four studies, d 0.65, the largest effect in the research file,
+     and the mechanism is exactly this: a plan that names a time and a place is
+     acted on and a plan that names an intention is not.
+
+     The record already carried the track, the seat, the steps and the minutes
+     and no surface ever asked when or where, so the plan was saved and could
+     not be read back. Both are optional, because a person who will not answer
+     should still be able to save. */
+  out+='<div class="rit-plan"><div class="pm-eye">When, and where</div>'
+   +'<label class="rit-f"><span>When</span>'
+   +'<input type="text" id="ritwhen" maxlength="40" placeholder="after I put the kettle on" '
+   +'value="'+esc(RIT.when||'')+'"></label>'
+   +'<label class="rit-f"><span>Where</span>'
+   +'<input type="text" id="ritwhere" maxlength="40" placeholder="the chair by the window" '
+   +'value="'+esc(RIT.where||'')+'"></label>'
+   +'<p class="rit-if">'+(RIT.when||RIT.where
+     ? 'When '+esc(RIT.when||'it is time')+', '+esc(RIT.where?'at '+RIT.where:'wherever you are')
+       +', you will '+esc(String(picked[0].nm).toLowerCase())+'.'
+     : 'A plan with a time and a place gets done. One without them does not.')
+   +'</p></div>';}
  out+='<div class="rel-act"><button class="btn" id="ritx">Close</button>'
-  +'<button class="btn pri" id="ritsave"'+(picked.length?'':' disabled')+'>Save ritual</button></div></div>';
+  +'<button class="btn pri" id="ritsave"'+(picked.length?'':' disabled')+'>Save ritual</button></div>';
+ /* THE RECORD, ON THE SURFACE THAT EARNS IT. ladderHtml() draws the streak, the
+    ledger and the marks, takes no arguments, is correct, and was called from
+    exactly one place: inside the Compass card, which measures 22 percent
+    touched. So the accountability half of this product was built, ruled, and
+    reachable by roughly one person in five. Worth 40 of 1000 at day thirty when
+    measured. Harkin 2016, a hundred and thirty eight studies, d 0.40, larger
+    when the thing is physically recorded.
+
+    The same function on both surfaces rather than a second one, because two
+    places that can report a streak is two places it can be wrong from. */
+ if(typeof ladderHtml==='function')out+='<div class="rit-rec">'+ladderHtml()+'</div>';
+ out+='</div>';
  h.innerHTML=out;
  document.querySelectorAll('[data-rit]').forEach(function(el){el.onclick=function(){
   RIT.sel[el.dataset.rit]=!RIT.sel[el.dataset.rit]; ritRender();};});
  var b;
  if((b=document.getElementById('ritx')))b.onclick=ritClose;
+ /* the ladder's control opens the builder, and on this surface the builder is
+    already open, so it clears the selection back to what is called for rather
+    than navigating anywhere. */
+ if((b=document.getElementById('ldrit')))b.onclick=function(){
+  RIT.sel={}; if(c.called)RIT.sel[c.called.k]=true; RIT.all=false; ritRender();
+  var f=document.querySelector('.rit-list'); if(f&&f.scrollIntoView)
+   f.scrollIntoView({block:'nearest'});};
+ if((b=document.getElementById('ritall')))b.onclick=function(){
+  RIT.all=!RIT.all; ritRender();};
+ /* the two fields write to state on the way past rather than on render, so the
+    sentence under them updates as they are typed and nothing is lost when the
+    card redraws. */
+ ['when','where'].forEach(function(k){
+  var el=document.getElementById('rit'+k); if(!el)return;
+  el.oninput=function(){RIT[k]=el.value;};
+  el.onchange=function(){RIT[k]=el.value; ritRender();};});
+ if((b=document.getElementById('ritdone')))b.onclick=function(){
+  var t=ritToday(); if(!t)return;
+  t.done=new Date().toISOString();
+  /* a write that can fail reports through status(), which is the standing rule */
+  try{ pSave(); if(typeof status==='function')status('Marked done.'); }
+  catch(e){ if(typeof status==='function')status('Could not save that.'); return; }
+  ritRender(); if(typeof render==='function')render();};
  if((b=document.getElementById('ritsave')))b.onclick=function(){
   if(CURP){CURP.rituals=CURP.rituals||[];
    CURP.rituals.push({t:new Date().toISOString(),track:c.track,band:c.band,
-    steps:picked.map(function(p){return p.k;}),min:mins});
+    steps:picked.map(function(p){return p.k;}),min:mins,
+    /* the plan, and done starts false so a saved ritual is a plan until the
+       person says otherwise. An older entry has no done key at all and is read
+       as practised, which is why this one is written explicitly. */
+    when:(RIT.when||''), where:(RIT.where||''), done:false});
    pSave();}
-  b.textContent='Saved'; setTimeout(ritClose,700);};}
+  b.textContent='Saved';
+  /* AND IT STAYS ON THE SURFACE. It used to close seven hundred milliseconds
+     later, which threw away the plan the person had just made and the one
+     control that puts the day on the record. */
+  RIT.sel={}; RIT.when=''; RIT.where=''; RIT.all=false;
+  setTimeout(function(){ritRender(); if(typeof render==='function')render();},420);};}
 
 try{window.__at&&window.__at('ui/ritual.js');}catch(e){}
 /* ============================================================
@@ -14828,10 +15018,20 @@ function ladderHtml(){
     : '<span class="ld-off">Today is not on the record yet.</span>')
   +'<button type="button" class="btn'+(s.gap===0?'':' pri')+'" id="ldrit">'
   +(s.gap===0?'Run another':'Build today\'s ritual')+'</button></div>';
- /* the ledger. four counts of events, no denominators. */
- var LG=[['Minutes practised',l.minutes],['Rituals saved',l.rituals],
+ /* the ledger. four counts of events, no denominators.
+
+    "Minutes practised" was minutes planned, and it was the one label in the
+    product claiming what the data did not carry: select the twenty minute scan,
+    press save, close the tab, and it read twenty minutes practised. A saved
+    ritual is now a plan and a ritual marked done is a thing that happened, and
+    the two are separate counts. Planned only prints when there is a gap between
+    them, because a person who does what they planned does not need to be told
+    the two numbers agree. */
+ var LG=[['Minutes practised',l.minutes]];
+ if(l.planned>l.minutes)LG.push(['Minutes planned, not yet done',l.planned-l.minutes]);
+ LG=LG.concat([['Rituals saved',l.rituals],
   ['Ground opened',l.ground+(l.ground===1?' address':' addresses')],
-  ['Held at the far pole',l.clear+(l.clear===1?' address':' addresses')]];
+  ['Held at the far pole',l.clear+(l.clear===1?' address':' addresses')]]);
  h+='<div class="ld-led">'+LG.map(function(x){
   return '<div class="ld-r"><span>'+x[0]+'</span><b>'+x[1]+'</b></div>';}).join('')+'</div>';
  /* the marks. icon, name, and what it meant. */
@@ -19691,5 +19891,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="001304014"></div>
+<div id="eof" hidden data-len="001316105"></div>
 </body></html>

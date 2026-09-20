@@ -2660,6 +2660,41 @@ body.snow .rel{background:rgba(238,237,233,.82)}
 .rit-step{margin-bottom:13px}
 .rit-step b{font-size:15px;font-weight:600;display:block;margin-bottom:5px}
 .rit-step p{font-size:14px;line-height:1.7;color:var(--mid);margin:0;font-weight:300}
+/* TODAY'S RITUAL, READ BACK. The plan sits above the builder, because a plan
+   already made is what the surface is for and making another is the second
+   thing a person wants from it. Left edge in the seat colour of the accent,
+   which is how everything else in this product marks a live thing. */
+.rit-saved{margin:14px 0 4px;padding:12px 14px;border:1px solid var(--edge);
+ border-left:2px solid var(--accent);border-radius:var(--r-s);background:var(--panel-2)}
+.rit-saved.done{border-left-color:var(--heart)}
+.rit-sv-h{font-size:15px;font-weight:500;color:var(--ink);margin:3px 0 6px}
+.rit-sv-h b{font-family:var(--num);font-size:13px;font-weight:500;color:var(--dim)}
+.rit-sv-p{margin:0 0 9px;font-size:13.5px;line-height:1.6;color:var(--mid)}
+.rit-sv-ok{color:var(--heart);margin-bottom:0}
+/* ONE PRACTICE, AND THE WAY TO THE REST. Not a disclosure triangle: a sentence
+   that says how many there are, because a control that hides an unknown
+   quantity is a control a person does not press. */
+.rit-list.one{max-height:none;overflow:visible}
+.rit-more{display:block;width:100%;margin:10px 0 0;padding:9px 12px;
+ min-height:var(--tap);background:none;border:1px dashed var(--edge-2);
+ border-radius:var(--r-s);color:var(--dim);font:inherit;font-size:13px;
+ cursor:pointer;text-align:left;transition:color var(--t-micro) var(--ease-out),
+ border-color var(--t-micro) var(--ease-out)}
+.rit-more:hover{color:var(--ink);border-color:var(--accent)}
+/* THE IF THEN PLAN. Two fields and the sentence they make, which is the whole
+   mechanism: a plan naming a time and a place is acted on. The sentence is
+   under the fields rather than above them so it fills in as they are typed. */
+.rit-plan{margin:16px 0 0;padding-top:14px;border-top:1px solid var(--edge)}
+.rit-f{display:flex;align-items:center;gap:11px;margin:9px 0}
+.rit-f span{flex:0 0 52px;font-family:var(--num);font-size:11px;color:var(--dim)}
+.rit-f input{flex:1 1 auto;min-height:var(--tap);padding:7px 11px;
+ background:var(--sunk);border:1px solid var(--edge);border-radius:var(--r-xs);
+ color:var(--ink);font:inherit;font-size:14px}
+.rit-f input:focus-visible{outline:2px solid var(--accent);outline-offset:1px;
+ border-color:var(--accent)}
+.rit-if{margin:9px 0 0;font-size:13.5px;line-height:1.6;color:var(--mid)}
+/* THE RECORD, on the surface that earns it as well as inside the Compass. */
+.rit-rec{margin-top:18px;padding-top:15px;border-top:1px solid var(--edge)}
 
 /* ============================================================
    TAB VISIBILITY

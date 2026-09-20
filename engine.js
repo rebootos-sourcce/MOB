@@ -4831,8 +4831,29 @@ function pracDays(p){
 function streakRead(p,now){
  var days=pracDays(p), today=pracDay(now||Date.now());
  if(!days.length||today===null)return {run:0, live:false, last:null, best:0, days:0};
- var run=1; for(var i=1;i<days.length;i++){
-  if(days[i]===days[i-1]-1)run++; else break;}
+ /* THE RUN HALVES, IT DOES NOT RESET. Ruled, Bible 1133:
+    Math.max(1, Math.ceil(s/2)) with one grace day.
+
+    It used to break out of the walk at the first gap, so one missed pair of
+    days threw away a month. Measured against a thousand simulated arrivals,
+    a reset costs 36 of 1000 at day 30, and it is the wrong arithmetic as well
+    as the expensive one: Lally 2010 found that missing one opportunity did not
+    materially affect habit formation, so the penalty for a miss should be a
+    penalty and not a demolition.
+
+    Walked oldest to newest, because a rule that carries forward cannot be read
+    backwards. A gap of one day is consecutive. A gap of two is the grace day
+    and costs nothing. Three or more halves what was standing, and the day
+    being walked is already inside the halved run rather than added to it.
+
+    Nothing new is stored. This is the same day list read under a different
+    rule, so an older profile gets the new arithmetic on the next render. */
+ var asc=days.slice().reverse();
+ var run=1;
+ for(var i=1;i<asc.length;i++){
+  var gap=asc[i]-asc[i-1];
+  if(gap<=2)run++;
+  else run=Math.max(1,Math.ceil(run/2));}
  var best=1,cur=1; for(var j=1;j<days.length;j++){
   if(days[j]===days[j-1]-1){cur++; if(cur>best)best=cur;} else cur=1;}
  var gap=today-days[0];
@@ -4846,12 +4867,27 @@ function streakRead(p,now){
    pole right now, and it is the only one of the four that can go down, which
    is correct: it is a state and not a tally. */
 function ledgerRead(p){
- var mins=0; ((p&&p.rituals)||[]).forEach(function(x){mins+=(x&&+x.min)||0;});
+ /* MINUTES PRACTISED WAS MINUTES PLANNED, and it was the one label in the
+    product claiming what the data did not carry. Select the twenty minute scan,
+    press save, close the tab, and the ledger read twenty minutes practised.
+
+    A saved ritual is a plan. A ritual marked done is a thing that happened.
+    They are now two counts and they are named differently. An entry saved
+    before this existed carries no done key at all, and is read as practised
+    rather than discarded, because a person's history is not ours to delete over
+    a schema change. Only entries written from here on can be planned and not
+    yet done. */
+ var mins=0, plan=0, doneN=0;
+ ((p&&p.rituals)||[]).forEach(function(x){
+  var m=(x&&+x.min)||0; plan+=m;
+  var done=(x&&x.done!==undefined)?!!x.done:true;
+  if(done){mins+=m; doneN++;}});
  var m=(p&&p.meter)||{};
  var clear=0, carry=0;
  ((p&&p.axes)&&CHILD.forEach(function(c){
   var a=p.axes[c.nm]||{}; if((a.opp||0)>=4)clear++; if((a.held||0)>=4)carry++;}));
- return {minutes:mins, rituals:((p&&p.rituals)||[]).length,
+ return {minutes:mins, planned:plan, done:doneN,
+  rituals:((p&&p.rituals)||[]).length,
   lines:+m.lines||0, ground:((m.unique||[]).length),
   clear:clear, carry:carry, snaps:((p&&p.history)||[]).length};}
 

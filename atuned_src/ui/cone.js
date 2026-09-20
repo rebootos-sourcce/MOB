@@ -892,10 +892,20 @@ function ladderHtml(){
     : '<span class="ld-off">Today is not on the record yet.</span>')
   +'<button type="button" class="btn'+(s.gap===0?'':' pri')+'" id="ldrit">'
   +(s.gap===0?'Run another':'Build today\'s ritual')+'</button></div>';
- /* the ledger. four counts of events, no denominators. */
- var LG=[['Minutes practised',l.minutes],['Rituals saved',l.rituals],
+ /* the ledger. four counts of events, no denominators.
+
+    "Minutes practised" was minutes planned, and it was the one label in the
+    product claiming what the data did not carry: select the twenty minute scan,
+    press save, close the tab, and it read twenty minutes practised. A saved
+    ritual is now a plan and a ritual marked done is a thing that happened, and
+    the two are separate counts. Planned only prints when there is a gap between
+    them, because a person who does what they planned does not need to be told
+    the two numbers agree. */
+ var LG=[['Minutes practised',l.minutes]];
+ if(l.planned>l.minutes)LG.push(['Minutes planned, not yet done',l.planned-l.minutes]);
+ LG=LG.concat([['Rituals saved',l.rituals],
   ['Ground opened',l.ground+(l.ground===1?' address':' addresses')],
-  ['Held at the far pole',l.clear+(l.clear===1?' address':' addresses')]];
+  ['Held at the far pole',l.clear+(l.clear===1?' address':' addresses')]]);
  h+='<div class="ld-led">'+LG.map(function(x){
   return '<div class="ld-r"><span>'+x[0]+'</span><b>'+x[1]+'</b></div>';}).join('')+'</div>';
  /* the marks. icon, name, and what it meant. */

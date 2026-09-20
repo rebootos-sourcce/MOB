@@ -1799,8 +1799,30 @@ console.log('\n27 · the ladder');
  ok(streakRead(mk([2,3,4,5,6,7,8,9]),NOW).best===8,
   'the longest run is reported after it has ended, got '
   +streakRead(mk([2,3,4,5,6,7,8,9]),NOW).best);
- /* a gap splits a run rather than merging across it */
- ok(streakRead(mk([0,1,2,5,6,7,8]),NOW).run===3,'a gap ends the current run');
+ /* THE RUN HALVES, IT DOES NOT RESET. Ruled, Bible 1133. This block used to
+    assert the opposite, that a gap ends the run, and the ruling reversed it:
+    a reset throws away a month for two missed days, costs 36 of 1000 at day 30
+    when measured, and is not what the habit literature supports either.
+
+    Four days standing, then two missed, then three more. Four halves to two,
+    and the three that follow take it to five. */
+ ok(streakRead(mk([0,1,2,5,6,7,8]),NOW).run===4,
+  'a gap halves the run rather than ending it, got '
+  +streakRead(mk([0,1,2,5,6,7,8]),NOW).run);
+ /* ONE GRACE DAY COSTS NOTHING. A single missed day is a missed day and not a
+    lapse, so the run walks straight through it. */
+ ok(streakRead(mk([0,2,3,4]),NOW).run===4,
+  'one missed day is a grace day and the run continues, got '
+  +streakRead(mk([0,2,3,4]),NOW).run);
+ /* and the halving has a floor, so it can never reach zero while there is a
+    day on the record at all */
+ ok(streakRead(mk([0,9]),NOW).run===1,
+  'a long lapse halves to the floor of one, never to nothing, got '
+  +streakRead(mk([0,9]),NOW).run);
+ /* a month standing, one lapse, and half of it survives */
+ ok(streakRead(mk([0,5,6,7,8,9,10,11,12,13,14,15]),NOW).run===6,
+  'eleven days then a lapse leaves six, got '
+  +streakRead(mk([0,5,6,7,8,9,10,11,12,13,14,15]),NOW).run);
  ok(streakRead(mk([0,1,2,5,6,7,8]),NOW).best===4,'and the longer one before it stands');
  /* two rituals on one day are one day */
  {const p=blankProfile('L');

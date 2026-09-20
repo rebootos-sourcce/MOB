@@ -30,9 +30,62 @@ is in Hollywood and visual effects is what I do. Iron Man, Marvel, those visual
 effects are pretty gnarly in a good way. Animation wise Pixar is by far the
 best. There is a soul between the two."
 
-- [ ] **SW1. Four mock ups of the Field,** ordered simple to super complex.
-  Every one of the four has to be meaningful and beautiful. Not four skins of
-  the same idea.
+- [x] **SW1. Built, measured, and in `proto/field/`.** All four run from a file
+  with zero outbound requests, no dependency and no server. Every number in them
+  is real: `engine.js` driven headless, Diane loaded off the roster, `compute()`
+  run, and the whole geometry dumped. She computes CQ 28.09, Corrupt, 8 of 112
+  above the line, 91 carrying, 13 saboteurs, 4 complexes, 1 hyper, which matches
+  the panel row in `REVIEW-fields.md`. Nothing was authored by hand.
+  - **one.html, Plumb.** 26.8 KB, no animation loop at all, 0ms.
+  - **two.html, Atmosphere.** 36.9 KB, 0.8ms median. The recommendation.
+  - **three.html, Tissue.** Raw WebGL 2, no library, 37.2 KB. The magnificent one.
+  - **four.html, Console.** 60.5 KB, 0.9ms, 1.2ms on Derek at 53 objects.
+- [x] **SW1b. The finding, and it is arithmetic rather than taste.** The chord
+  web, which is the Field's signature mechanic, is inside a legible range of 3 to
+  40 objects for **47 percent of the weighted panel**. 36 percent are over 40
+  (Derek 53, James 45, Ana 45, Gordon 66) and 16 percent are under 3 (Marcus 1).
+  It works for slightly under half the people it is for.
+- [x] **SW3 answered. Tissue does not ship, and the reason is measured.** Its
+  volumetric medium is 67 to 81 percent of its frame and renders nothing for 47
+  percent of the weighted panel, because Marcus, Angela, Sofia and Rosa all read
+  shadow weight 0.00. The expensive half of the picture is empty for half the
+  audience. Frame cost 228 to 397ms on a software rasteriser, which is a floor
+  and not a ceiling, and 73 to 106ms with the medium off. Its first render also
+  failed exactly into the cheese the brief forbade, a beaded bracelet in candy
+  pastels, and both causes and fixes are recorded rather than hidden.
+- [x] **SW1c. And building it found a defect in the existing reading.** Plumb's
+  first cut drew the seat mean and said the opposite of what it meant: Diane's
+  means run 1.29 to 3.64 of 10 against integrity 2.80 to 7.55, so the wall beat
+  the pressure at every seat and a surface built to find charge drew a picture
+  saying she has integrity. Cause is two rooms away: 83 of her 112 addresses sit
+  under the display line, so a mean over sixteen addresses is mostly averaging
+  zeroes. The seat peak reverses the ranking and is the actionable statistic.
+- [ ] **SW1d. The recommendation, pending his ruling on SW6:** Atmosphere, as how
+  the Field draws inside Dark rather than as an eighth lighting. It closes three
+  things at once: law 8 on the Field, because the nine canvas captions come off
+  the hero into a rail; layer isolation, which `REVIEW-fields.md` lists as
+  missing, done as distance rather than absence so the one circuit claim
+  survives; and it gives the zoom ladder a partner, so zoom resolves detail and
+  focus says which detail. Plumb ships as the mobile Field and the pre record
+  state. Console is a practitioner view, not the person's.
+- [?] **SW6. Lighting or renderer.** An eighth lighting with its own ground and
+  its own gate row, or a change to how the Field draws inside Dark? The
+  recommendation assumes the second, and the standing ruling says a new
+  interface is an added lighting, so these collide.
+- [?] **SW7. The gate pill against law 8.** `wheel.js` rules the gate ring always
+  carries a pill holding a dash, "because the absence is said rather than
+  hidden". Law 8 says no text on the hero, ever. Both are his rulings and they
+  cannot both hold. Same question as the nine captions, still unanswered.
+- [?] **SW8. The 5.5 second breath.** That rate is near the paced breathing
+  resonance frequency, so a large slow object breathing at it will entrain the
+  nervous system of somebody whose nervous system this product is reading.
+  Feature, side effect, or something that has to be disclosed?
+- [?] **SW9. Which statistic the seat band carries.** Peak is more actionable and
+  reverses the ranking, but `compute()` uses the mean for `darkB`, the seat the
+  background wash is tinted by, so the drawing and the wash would disagree about
+  which seat carries most.
+- [?] **SW10. The name Console.** `console` appears eleven times in the source,
+  all the JS object. One word per concept has no clause about registers.
 - [ ] **SW2. A hundred passes.** Debate it amongst the seats, challenge it, look
   at it from different perspectives, and go into the data and into what the
   product is trying to translate before drawing anything.
@@ -127,6 +180,99 @@ working memory of about four.
 
 ---
 
+## 0f. MEASURED 20 SEPTEMBER. THE RITUAL LOOP, AND WHAT IT IS WORTH.
+
+A thousand people from the real ICP distribution, run for ninety days against
+the real engine. `tools/ritualsim.js` and `PANEL-ritual-1000.md` carry the
+method, eighteen validation checks and the sensitivity sweep. As built, 59 of
+1000 are there at day 30. The four cheapest fixes take it to 167.
+
+Benchmarked against Finch (about 10 million monthly actives, published day 1 at
+54 percent and day 7 at 37) and Fabulous (Duke behavioural economics lab,
+2013). This product already beats both on diagnosis, on the miss rule and on
+the ethics, and loses to both on a loop that closes.
+
+### THE FOUR CHEAP ONES. All small, all in files that exist.
+
+- [ ] **RL1. The ritual plan is saved and never read back.** Worth **72 of
+  1000** at day 30, the largest single item and nearly free. `CURP.rituals`
+  carries track, seat, steps and minutes, and no surface asks when and where.
+  Gollwitzer and Sheeran 2006, 94 studies, d 0.65, the largest effect in the
+  research file. `ui/ritual.js:76`.
+- [ ] **RL2. The record is locked inside the Compass.** Worth **40 of 1000**.
+  `ladderHtml()` renders the streak, the ledger and the sixteen marks, takes no
+  arguments, is correct, is ruled, and is called from exactly one place:
+  `coneOpen` at `ui/cone.js:765`. The Compass measures 22 percent touched.
+  Harkin 2016, 138 studies, 19,951 participants, d 0.40.
+- [ ] **RL3. A broken run resets instead of halving.** Worth **36 of 1000**.
+  Bible 1133 rules `Math.max(1, Math.ceil(s/2))` with one grace day, which
+  never resets and never runs out. Lally 2010 supports it: missing one
+  opportunity did not materially affect habit formation. `engine/ladder.js`.
+- [ ] **RL4. Nineteen choices on the ritual card** against a working memory of
+  about four. Worth **19 of 1000**. One practice on the card, the rest behind
+  one control, and Box Breathing at 5 minutes as the entry rather than the 20
+  minute scan. 835 of 1000 are currently asked for 15 minutes or more as a
+  first practice, 585 of 1000 for 20. `ui/ritual.js:47` to `:60`.
+
+### AND THE INVERSION NOBODY MEANT
+
+- [ ] **RL5.** `r.DQ>=8` gives tier 1, so the people carrying the most load get
+  6 choices and the calmest person in the panel gets 19. Backwards.
+
+### THE EXPENSIVE HALF, WORTH LESS THAN THE CHEAP HALF
+
+- [ ] **RL6.** The card titled with the address cleared. "Fear, Root. Released
+  14 March." The one thing the panel says moves Diane.
+- [ ] **RL7.** The stake sentence, written by the person and never edited.
+- [ ] **RL8.** The season. Seven days with an end, because a thing that ends
+  cannot become a guilt engine, and the end of a season is where a person is
+  told they can stop and be glad they used it.
+- [ ] **RL9.** Karma earned and spent. Blocked on the currency ruling.
+- [ ] **RL10.** Push. Behind the server.
+
+### WHAT WAS REFUSED, WITH THE PRICE NAMED
+
+Loss framing, which is the best performing design in the literature and is
+worth roughly half again on day 30. Streak reset to zero. Variable ratio
+reward. Scarcity timers. Finch's own repair consumable, which is scarcity
+wearing kindness. A leaderboard, which would rank people who handed a machine
+their distress. Fear of missing out pushes. Each one is declined on the record
+with what it would have earned, so declining it stays a decision rather than an
+oversight.
+
+### THE ONE MEASUREMENT THAT SHOULD CHANGE THE PLAN
+
+Announcing the coin in advance and paying it for the act costs **40 of 1000 at
+day 30 and 25 at day 90** against paying the same coin for the record after the
+fact. Deci, Koestner and Ryan 1999, 128 studies, engagement contingent reward
+undermines intrinsic motivation at d -0.40. The standard free to play framing
+is worse here than no framing at all by day 60. So karma is paid for the
+record, never promised in advance for the act.
+
+### WAITING ON HIM
+
+- [?] **The currency, and it now blocks work.** Three words are live for one
+  thing in three current documents. `DESIGN-progression.md` rules exactly one
+  currency, patterns, and asks for a build gate against a second. `PRODUCT.md`
+  and AE1 say points. AK2 says karma. Which survives, and does the banned word
+  list move with it? And the half arithmetic cannot answer: is karma a **second
+  currency that buys patterns**, or the **name for patterns you earned rather
+  than were granted**? Those are different products. One has an exchange rate
+  somebody will publish. The other has none.
+- [?] **What a mark is worth.** Sixteen marks at 25 karma is 80 patterns, a
+  fifth of a tier one month, handed to somebody who never pays, on top of the
+  gift of 100. Either the rate comes down to 10 or those 80 patterns are called
+  what they are: the second half of the gift.
+- [?] **The `sq>=4` release threshold.** 465 of 1000 reach a complete reading
+  with nothing to release. Lowering it changes what the product claims about a
+  calm person, which is a product question and not an engineering one.
+- [?] Whether the record lives on Ritual, on the Compass, or both.
+- [?] Whether a karma balance is a number a person sees. Every other quantity
+  here is drawn or is a count of events, and the rulings are against printing a
+  total.
+
+---
+
 ## 0c. RULED 20 SEPTEMBER, SECOND PASS. THE ARRIVAL, THE FEATHERS AND KARMA
 
 **"I didn't give you feedback on the feathers. I don't give you feedback
@@ -145,10 +291,56 @@ information. That's a problem."
   element on the most looked at surface in the product that says nothing about
   the person is real estate spent on decoration. Either it carries a reading or
   it goes.
-- [ ] **AH2. His proposal, to be tested rather than assumed.** Each feather's
-  **length** is the percent at which the person does that thing. The **width of
-  the branches** carries the vibrancy. Hover gives the information. Click opens
-  the detail. Build it, render it, look at it, and say whether it reads.
+- [x] **AH2. His proposal, tested by rendering it. Length is right. Width is
+  wrong.** Four prototypes at `proto/feather/`, measured by isolating each mark
+  and differencing against a marks off render, counting pairs where the larger
+  reading carries less ink. Length plus width: **32 of 105 backwards on Diane,
+  37 of 88 on Tomas**. Length alone: **0 of 105 and 0 of 88**. The widest single
+  lie, on Diane: Duty reads 8.4 and carries 4,388 pixels, Unity reads 6.1 and
+  carries 4,847. The profiles that score zero are the ones whose seat loads are
+  flat, so the channel is silent there and wrong everywhere else.
+
+  **What replaces width: the vane.** Barb count and barb alpha, not width.
+  Texture rather than footprint, orthogonal to length, zero backwards pairs on
+  every profile. And it is the better symbol, because a feather carries when its
+  vane is intact.
+- [x] **AH2b. And the current feathers are worse than decoration.** Measured:
+  thirty one marks, `coreFeather` at `ui/wheel.js:266`. All thirty one tips
+  probed with the product's own `hitTest` at four zoom levels returned `core`,
+  so there is one target under all of them and it opens a drill printing the CQ
+  number the feathers are made of, which is already in the strip above and the
+  rail beside. Ink is 20,079 pixels, 23.2 percent of the core disc. Two of three
+  series are drawn on gridlines that are wrong for them, so a seat at a true 10
+  reads 9.25 and a triad at a true 1.00 reads 8.60. Eleven of the thirty one
+  pairs share an angle, and reduced motion zeroes the spin, so under reduced
+  motion eleven pairs sit permanently on top of each other. And **the blank
+  profile draws more feather than Marcus does with a full story and twenty one
+  answered laws**, 22,275 pixels against 20,358, because 28 of 31 sit at the 6.5
+  default. The screen says more about a person the less it knows.
+- [~] **AH2c. The design, specced and ready, not landed.** `DESIGN-feathers.md`
+  and `proto/feather/wheel-core.patch.js`, parse checked by splicing into a copy
+  of the real file. The twenty one laws of moral integrity grouped into the seven
+  seats they sit at, on the shell's own seat arcs so the core becomes an exploded
+  view and the seat names outside label it at no cost, which satisfies no text
+  over the hero graphic by not needing any. One scale for every mark: hub is
+  zero, rim is ten. An unanswered law is a bare quill with an open tip, so the
+  blank profile is twenty one stripped shafts rather than a full display of
+  defaults. Breath rate is the reading, two seconds at CQ 0 to five at CQ 100.
+  Twenty one wedge targets of kind `law` in `HIT`, which `describe()` and
+  `pointerdown` already serve: hover answered 21 of 21, click opened 21 of 21.
+  Frame 0.40ms median against 0.4 today. **Held pending AH5, because one open
+  question changes the design.**
+- [?] **AH5. What number is vibrancy?** His word, and it decides the second
+  channel. Seat charge inverted is the only per law quantity the engine already
+  holds. If he means conviction, frequency or recency, none of the three exist
+  and each is a new intake field.
+- [?] **AH6.** Does the triad leave the core. It is three states scored 0 to 1
+  drawn on a ring calibrated 0 to 10, and it already has its own door on the key
+  strip, so the spec takes it out. His call.
+- [?] **AH7.** Should the core stop sizing by CQ once it is open. Tomas gets a
+  94.7 pixel chart and Rosa 277.4 on the same twenty one marks, so a chart that
+  shrinks with its own reading hides the worst readings, which are the ones
+  worth looking at.
 - [ ] **AH3. A hundred passes.** UI UX, design and the art director hash it
   amongst themselves a hundred times, for the best **visual** and, his
   emphasis, the best **symbolic** representation. Symbol first.
@@ -213,9 +405,48 @@ want to be cold."
 
 ### AM. TOOLTIPS.
 
-- [ ] **AM1.** "The tooltip design is inconsistent across the board." Measured
-  and true: there are title attributes, a data-tip pill and at least one hand
-  built panel doing the same job three ways. One tooltip, everywhere.
+- [x] **AM1. He is right, and it is worse than inconsistent. There is no
+  tooltip. There are eight mechanisms doing the job of one,** plus a ninth
+  pattern that is not a tooltip and does a tooltip's job. Native `title` in
+  renderer strings (32 sites), in `shell/body.html` (4), emitted unconditionally
+  by `cr()` (36 call sites), emitted conditionally by `crBadge()`, emitted by
+  `addrRow()`, assigned as a property (10 sites), the `#railtip` panel, the
+  `#probe` panel, and three caption slots a hover writes into. `aria-describedby`
+  is used zero times across all ten surfaces.
+- [x] **AM1b. And the count of hover only definitions was wrong by a factor of
+  twenty four.** This list said eight. Measured live at 1600 with a loaded
+  profile, walking every surface: 259 distinct visible title strings, **195 of
+  them definitions that exist nowhere else on the screen**, 27 of those on
+  elements that are not focusable, so no tap design reaches them without an
+  attribute change. Eight carriers have a reachable route today.
+- [x] **AM1c. Four defects in the tooltips that do exist.** The two panels
+  disagree by 12 pixels of measure and one is absolute while the other is fixed.
+  `#railtip` renders an empty bold and a horizontal rule on half its carriers,
+  because `ui.js:509` looks for `.tn` and the depth buttons use `.n`. **`#probe`
+  sits on the hero graphic**, measured 227 by 229 inside the canvas, which is
+  DESIGN.md law 8 broken by the tooltip itself. And `.probe .tt-q` measures 3.66
+  to 1, which gate 4 cannot see because gate 4 measures type size.
+- [~] **AM2. Designed, measured, ready, not landed.** `DESIGN-tooltip.md` and
+  `proto/tip/`, runnable, with eighteen screenshots. Ten mechanisms considered
+  and nine named losers. The panel grows out of its carrier along a two pixel
+  tether in the carrier's own colour, and the tether plus a thirty pixel entry
+  mark make a T where the line arrives, which replaces the caret every other
+  tooltip draws without being one. Sheet on a coarse pointer, taking the half of
+  the window the carrier is not in. Measured on the live Field: **16.5ms, 60.6
+  frames a second with the panel open**, no backdrop filter in any of the seven
+  lightings, lowest contrast inside the panel 5.30 to 1, close control exactly
+  44 by 44, zero panel over carrier overlaps at both widths.
+- [ ] **AM2b. Step one of the migration closes AM3 on its own** and touches three
+  files: add `ui/tip.js`, insert it at MANIFEST line 35 after `ui/component.js`,
+  paste the block into `head.html`. Every existing title becomes a tap reachable
+  product tooltip, because the module falls back to `title`. No renderer is
+  touched. Five more steps retire the probe, the railtip and the caption slots,
+  then enrich file by file, then give the 27 static carriers a tabindex.
+- [?] **AM4.** Should hover open at all on a fine pointer, or is everything a
+  tap? Removing an affordance is a bigger ruling than adding one, so hover was
+  kept pending his word.
+- [?] **AM5.** What is the action line for: the eight rows that already
+  navigate, or all 195?
 - [ ] **AM2.** And it has to be good. "Design it so that it's sexy. Wow me.
   Think transition, think animation, think how can I make this interesting."
   Creative director, art director, UI UX, ten passes.
