@@ -1391,6 +1391,102 @@ touched yet. **This is a D minus.**"
 
 ---
 
+## 0w. RULED 20 SEPTEMBER. PLAIN WORDS, THE KNOWLEDGE BASE, AND AT A GLANCE.
+
+### TX. THE SCALE PHRASINGS. SCRUB THE WHOLE APP.
+
+**His ruling.** "There is some weird text that says the waist is 40 to 60 out of
+100. First of all, I told you never to write text like that any more. Scrub the
+entire app, look for stuff like that. **If you cannot use regular words to
+describe it, do not describe it.** And 40 to 60 out of 100 does not give a lot of
+specific detail."
+
+- [ ] **TX1.** This collides head on with the standing number law, which says
+  every number says what it is out of, and **his ruling wins**: the point of that
+  law was that a bare 13 means nothing, not that every figure should be dressed
+  in a denominator. Where a plain sentence can say it, the plain sentence goes.
+  Where it cannot, the number goes, not the scale.
+- [ ] **TX2. The one he found**, `ui/cone.js:752`: "The waist is 40 to 60 out of
+  100, where most people oscillate." It is the tool explaining its own middle,
+  and it should say that in words or not at all.
+- [x] **TX2b. And the distinction that makes this scrubbable rather than
+  endless.** A small scale label under a figure is the number law working: "83"
+  above "of 100, plus or minus 6" tells a person what they are looking at in two
+  words. **Prose that hides behind a scale instead of saying something is the
+  defect**, and that is what he found. So the scrub reads every one out loud as a
+  sentence and keeps the ones that survive it. Done so far: the compass hint,
+  which said "the waist is 40 to 60 out of 100 where most people oscillate" and
+  now says "the narrow middle is where most people sit"; the compass reading,
+  which printed coherence twice in two sentences; and the coherence tooltip,
+  which repeated a figure the pill beside it was already printing.
+- [ ] **TX3. The rest of them**, measured, ten sites: `cone.js:603` and `:605`,
+  `personas.js:220`, `summary.js:76` and `:108`, `ui.js:678`, `wheel.js:452`, and
+  the two in `panels.js`. Each one gets read as a sentence a person hears out
+  loud, and kept only if it survives that.
+
+### KB. THE KNOWLEDGE BASE. FIVE PASSES, FOUR SEATS.
+
+"Review the knowledge base page five times with the art director, the creative
+director, UI UX, and the writing team."
+
+- [ ] **KB1.** Click anything in the centre and the centre display area shows all
+  the information for it. The centre is the destination, not a list that links
+  elsewhere.
+- [ ] **KB2. The icons are huge and taking up too much space.**
+- [ ] **KB3. The subtext is eating the page.** "Right now we have got fear, root,
+  lumbar plexus, axis fear. That text is eating up valuable real estate." And
+  "positive intelligence, three addresses, positive intelligence, three
+  addresses" repeating down the page.
+- [ ] **KB4. What a row should be, and it is four things:** the icon, the percent
+  it is impacting you, the word, and the seat it sits at. Nothing else.
+- [ ] **KB5. Everything should have a percent.**
+- [ ] **KB6. Everything should be icon dominant.** Symbolic meaning first.
+- [ ] **KB7. The universal laws go in order, because it is a flow.** They are
+  currently not ordered as one.
+- [ ] **KB8. "Laws" is the wrong label. It is moral integrity.**
+
+### NM. AND A ONE WORD PER CONCEPT VIOLATION HE CAUGHT
+
+- [ ] **NM1.** "I do not know the difference between a node and a fetter the way
+  you are using it. **A fetter is a node. The fetters are the 108.** Which you
+  listed here between fear, anger, shame, these are the nine child emotions. Very
+  different."
+
+  **He is right and the product's own glossary agrees with him.** `kb.js` defines
+  a fetter as "a named conditional response pattern resident at a specific node
+  address, 108 fetters in the body, one per physical node." And the code then
+  calls the nine axes `CHILD`, described everywhere as the nine poled child
+  fetters. So the word carries the 108 and the 9 at once, which is exactly what
+  one word per concept forbids. The nine need their own word and he has given
+  one: **the nine child emotions.**
+
+### GL. THE SUMMARY, AT A GLANCE. THE RIGHT HAND SIDE.
+
+"My summary page on the right hand side should basically be at a glance. I
+should be able to see everything."
+
+- [ ] **GL1. The icons in the flow section do not live anywhere else.** Giant
+  icons reading predatory, dysregulation, predatory. That breaks the standing
+  rule that if it has a name it has an icon, the icon has a family, and the
+  family has a colour, because these belong to no family.
+- [ ] **GL2.** How I relate to my **integrity**, the spiritual laws of integrity.
+- [ ] **GL3.** How I relate to my **nine child emotions**.
+- [ ] **GL4.** How I relate to the **six motion axis**. His words, and the
+  product has no six of anything by that name: it has six masks, six gates in the
+  VERP set, and six koshas. Named as ambiguous rather than guessed at.
+- [ ] **GL5.** How I relate to **benign or malignant**, which is the thing the
+  lean work just built and which currently reaches no surface at all.
+
+### CMP. THE COMPASS, AGAIN
+
+- [ ] **CMP6.** It does not take the full screen.
+- [ ] **CMP7.** "I do not like this compass. The layout just needs to be
+  redesigned. It is terrible." Held deliberately: **"let us see what we are going
+  to do with the updated version first."** So no compass work starts until he has
+  seen the ritual builder redesign, because that round sets the shape language.
+
+---
+
 ## 0c. RULED 20 SEPTEMBER, SECOND PASS. THE ARRIVAL, THE FEATHERS AND KARMA
 
 **"I didn't give you feedback on the feathers. I don't give you feedback

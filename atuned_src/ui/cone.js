@@ -600,9 +600,14 @@ function coneRead(){
     against. Coherence runs nought to a hundred and integrity runs nought to
     ten, which are two different scales printed side by side in one sentence,
     so a reader with no scale is not being vague at, they are being misled. */
- return '<p class="cone-p">You read <b>'+cq+' out of 100</b>, '+band+'.</p>'
-  +'<p class="cone-p">Integrity <b>'+r.Ig.toFixed(1)+' of 10</b>. '
-  +'Coherence <b>'+cq+' of 100</b>.</p>'
+ /* AND THE SAME SCRUB HERE. This printed coherence twice in two sentences,
+    once as "you read 29 out of 100" and again as "coherence 29 of 100", which
+    is the shape he objected to and a repetition on top of it. The band already
+    says where the number sits, so the number is said once and the sentence
+    carries the meaning rather than the arithmetic. */
+ return '<p class="cone-p">You read <b>'+cq+'</b>, '+band+'.</p>'
+  +'<p class="cone-p">Your integrity is <b>'+r.Ig.toFixed(1)+'</b> against a '
+  +'clean ten.</p>'
   +'<p class="cone-p">Integrity is the hull. A hole in it means the ship takes '
   +'on water, and everything above the waterline stops mattering. Integrity '
   +'raises coherence, coherence raises what you can hold to, and that raises '
@@ -749,8 +754,18 @@ function coneOpen(inTab){
       information goes right unless it is about the tool. These two lines are
       about the tool, so they may stay under it. The reading does not, and
       does not. */
-   +'<p class="cone-hint">The waist is 40 to 60 out of 100, where most people '
-   +'oscillate. Drag to turn the figure. Press any name to read that axis.</p>'
+   /* PLAIN WORDS, OR NOTHING. Ruled: "there is some weird text that says the
+      waist is 40 to 60 out of 100. I told you never to write text like that
+      any more. If you cannot use regular words to describe it, do not describe
+      it. And 40 to 60 out of 100 does not give a lot of specific detail."
+
+      He is right and the sentence was defending itself with a scale instead of
+      saying a thing. What it was trying to convey is that the narrow middle of
+      the figure is where most people sit, and that is one clause in English.
+      The numbers went and nothing was lost, because a person looking at a
+      waisted figure can see where the waist is. */
+   +'<p class="cone-hint">The narrow middle is where most people sit. '
+   +'Drag to turn the figure. Press any name to read that axis.</p>'
   +'</div>'
   /* THE INFORMATION LAYER LEFT THE CENTRE COLUMN, and the comment that used to
      sit here is why it had to.

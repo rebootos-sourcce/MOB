@@ -314,6 +314,11 @@ const CFG={
    the run halve is met with all three. */
  'OWNER loss framing, deduction on a miss':Object.assign({},FINAL,{loss:1,sting:1}),
  'OWNER loss framing, deduction and no uplift':Object.assign({},FINAL,{loss:0,sting:1}),
+/* THE SAME MECHANIC WITH ONE GUARD: nothing can be taken until something has
+   been banked. stingGrace is how many recorded days a person needs before a
+   deduction can fire at all. It serves his ruling and puts the deduction where
+   the person can afford it. */
+ 'OWNER loss framing, nothing taken before it is earned':Object.assign({},FINAL,{loss:1,sting:1,stingGrace:7}),
  /* ablations of the final design, one thing removed at a time */
  'no tie to the sentence':Object.assign({},FINAL,{tieImprint:0}),
  'no frame layer':Object.assign({},FINAL,{sniff:'fold'}),
@@ -337,6 +342,7 @@ const EARN={ritual:1, journal:1, mark:5, award:5, season:8};
 const RUNCOST=4;      /* one address across the four channels, the floor run */
 const FULLRUN=25;     /* a release run at the cap */
 
+const TRACE={};
 function runSim(cfgName,opt){
  opt=opt||{};
  const cfg=CFG[cfgName];
@@ -423,6 +429,7 @@ function runSim(cfgName,opt){
   const awardOR=canAward?d2or(opt.awardD!==undefined?opt.awardD:SRC.awardD.v):1;
 
   let live=true, last=-99, streak=0, grace=1, k=0, marks=0, done=0, floors=0;
+  const dayTrace=[];
   let firstAt=null, fullAt=null, brokeToday=false;
   for(let day=1;day<=90;day++){
    if(!live)break;
@@ -503,10 +510,11 @@ function runSim(cfgName,opt){
        run and a spent grace day, a points deduction needs only a day you did
        not show up. Same fragility discount, so somebody with sixty days banked
        barely feels it and somebody on day two feels all of it. */
-    if(cfg.sting&&!did){
+    if(cfg.sting&&!did&&!(cfg.stingGrace&&done<cfg.stingGrace)){
      const dfrag=Math.max(0,1-done/66);
      h+=sting*dfrag;}
    }
+   dayTrace.push(did?(onFloor?2:1):0);
    if(rChurn()<Math.min(h,0.999)){
     live=false;
     const band=day<=2?'in the first two days':(day<=7?'in week one':
@@ -519,6 +527,18 @@ function runSim(cfgName,opt){
    alive[per.nm][day]++; total[day]++;
    brokeToday=false;
   }
+  /* THE LONGEST WALK OF THAT ICP, not the first one sampled. The first Marcus
+     off the stream leaves on day two, so a heat map drawn from him is one
+     square and tells you nothing about the design. The longest is the person
+     the surface has to serve at its fullest, and TRACE.n and TRACE.alive30
+     carry how rare that is so nobody reads the picture as typical. */
+  if(opt.trace&&opt.trace===per.nm){
+   TRACE.n=(TRACE.n||0)+1;
+   if(live)TRACE.alive30=(TRACE.alive30||0)+1;
+   if(!TRACE.days||dayTrace.length>TRACE.days.length){
+    TRACE.nm=per.nm; TRACE.days=dayTrace.slice(); TRACE.k=k;
+    TRACE.streak=streak; TRACE.doneN=done; TRACE.floors=floors; TRACE.marks=marks;
+    TRACE.live=live; TRACE.meas=m;}}
   karma.push(k);
   if(firstAt!==null)firstRun.push(firstAt);
   if(fullAt!==null)fullRun.push(fullAt);
@@ -564,8 +584,8 @@ function validate(){
     ritualsim measured a build in which none of these four existed. All four
     are in the source now, so BUILT turns all four on, and this asserts they
     are still there rather than trusting a memory of a commit. */
- const RIT=fs.readFileSync(path.resolve(__dirname,'../atuned_src/ui/ritual.js'),'utf8');
- const LAD=fs.readFileSync(path.resolve(__dirname,'../atuned_src/engine/ladder.js'),'utf8');
+ const RIT=fs.readFileSync(path.resolve(__dirname,'../../atuned_src/ui/ritual.js'),'utf8');
+ const LAD=fs.readFileSync(path.resolve(__dirname,'../../atuned_src/engine/ladder.js'),'utf8');
  ok(/id="ritwhen"/.test(RIT)&&/id="ritwhere"/.test(RIT),
   'fix 1, the if then plan: a when and a where field are in ui/ritual.js');
  ok(/ritToday\(\)/.test(RIT)&&/Today's ritual|Today\\'s ritual/.test(RIT),
@@ -946,10 +966,80 @@ function sweep(){
 
 console.log('\nSOURCES USED BY THE MODEL');
 Object.entries(SRC).forEach(([k,v])=>console.log('  '+k+' = '+(typeof v.v==='number'?v.v.toFixed(3):v.v)+'\n    '+v.s));
+if(typeof module!=='undefined')module.exports={runSim,TRACE};
+/* required as a module by the prototype builder, so the CLI only runs when this
+   file is the program. */
+if(require.main!==module){module.exports.CLI=false;}
+else{
 const arg=process.argv[2]||'';
 console.log('\nloopsim. 1000 people, 90 days, seed 20260920.');
 console.log('THE BOTTOM LINE: percentage points of the weighted 1000 still active at day 30.');
-if(arg==='--sweep'){sweep();}
+/* ============================================================
+   THE OWNER'S LOSS FRAMING, MEASURED RATHER THAN ARGUED.
+
+   He ruled: "If I fail an accountability I lose points, if I succeed I gain."
+   PANEL-ritual-1000.md refused loss framing and DESIGN-gamification.md priced
+   the refusal at 3.0 points of the 11.0. That price was read off an arm that
+   models the UPLIFT ONLY, so it is the ceiling of the mechanic and not the
+   mechanic. This adds the half his ruling actually contains, a deduction that
+   lands on a miss, and sweeps how hard it has to sting before the uplift stops
+   paying for it.
+   ============================================================ */
+function lossReport(){
+ if(!validate()){console.log('\nvalidation failed. report suppressed.');process.exit(1);}
+ const base=runSim('final').total[30];
+ const ceil=runSim('REFUSED loss framing').total[30];
+ console.log('\n============================================================');
+ console.log('THE OWNER RULED LOSS FRAMING. WHAT IT IS WORTH.');
+ console.log('============================================================');
+ console.log('the design as costed, no loss framing anywhere        '+base+' of 1000  '+(base/10).toFixed(1)+' points');
+ console.log('uplift only, the arm PANEL and DESIGN priced          '+ceil+' of 1000  '+(ceil/10).toFixed(1)+' points  '
+  +(((ceil-base)/10>=0?'+':'')+((ceil-base)/10).toFixed(1))+' points');
+ console.log('\nHIS MECHANIC: the uplift AND a deduction on every miss.');
+ console.log('sting is the deduction as extra one day churn, discounted by what is banked.');
+ console.log('sting\tday 1\tday 7\tday 30\tpoints\tagainst the design as costed');
+ [0,0.05,0.10,0.15,0.20,0.25,0.30,0.40,0.50].forEach(v=>{
+  const r=runSim('OWNER loss framing, deduction on a miss',{sting:v});
+  const d=(r.total[30]-base)/10;
+  console.log(v.toFixed(2)+'\t'+r.total[1]+'\t'+r.total[7]+'\t'+r.total[30]+'\t'
+   +(r.total[30]/10).toFixed(1)+'\t'+(d>=0?'+':'')+d.toFixed(1)+' points');});
+ console.log('\nAND THE DEDUCTION WITH NO UPLIFT, which is what ships if the sting');
+ console.log('lands but the behaviour change Patel measured does not transfer:');
+ console.log('sting\tday 30\tpoints\tagainst the design as costed');
+ [0.10,0.15,0.25,0.40].forEach(v=>{
+  const r=runSim('OWNER loss framing, deduction and no uplift',{sting:v});
+  const d=(r.total[30]-base)/10;
+  console.log(v.toFixed(2)+'\t'+r.total[30]+'\t'+(r.total[30]/10).toFixed(1)+'\t'+(d>=0?'+':'')+d.toFixed(1)+' points');});
+ console.log('\nTHE BREAK EVEN, to two decimals:');
+ for(let v=0.04;v<=0.12;v+=0.01){
+  const r=runSim('OWNER loss framing, deduction on a miss',{sting:+v.toFixed(2)});
+  console.log('  sting '+v.toFixed(2)+'  day 30 '+r.total[30]+'  '
+   +(((r.total[30]-base)/10)>=0?'+':'')+((r.total[30]-base)/10).toFixed(1)+' points');}
+ console.log('\nTHE SAME MECHANIC, NOTHING TAKEN BEFORE SEVEN DAYS ARE BANKED:');
+ console.log('sting\tday 1\tday 7\tday 30\tpoints\tagainst the design as costed');
+ [0.10,0.15,0.25,0.40].forEach(v=>{
+  const r=runSim('OWNER loss framing, nothing taken before it is earned',{sting:v});
+  const d=(r.total[30]-base)/10;
+  console.log(v.toFixed(2)+'\t'+r.total[1]+'\t'+r.total[7]+'\t'+r.total[30]+'\t'
+   +(r.total[30]/10).toFixed(1)+'\t'+(d>=0?'+':'')+d.toFixed(1)+' points');});
+ console.log('\nWHO PAYS FOR IT. Day 30 survivors per ICP, weight in brackets.');
+ const a=runSim('final'), b=runSim('OWNER loss framing, deduction on a miss',{sting:0.15});
+ const g=runSim('OWNER loss framing, nothing taken before it is earned',{sting:0.15});
+ const W2={Diane:180,Derek:170,Marcus:160,Angela:150,Sofia:140,James:100,Ana:50,Gordon:35,Rosa:15};
+ console.log('who\twt\tno loss\this 0.15\tdelta\tguarded 0.15\tdelta');
+ Object.keys(W2).forEach(n=>{
+  const x=a.alive[n][30]||0, y=b.alive[n][30]||0, z=g.alive[n][30]||0;
+  console.log(n+'\t'+W2[n]+'\t'+x+'\t'+y+'\t'+(y-x>=0?'+':'')+(y-x)
+   +'\t'+z+'\t\t'+(z-x>=0?'+':'')+(z-x));});
+ console.log('\nFive seeds, his mechanic at sting 0.15 against the design as costed:');
+ [20260920,11,222,3333,44444].forEach(sd=>{
+  const x=runSim('final',{seed:sd}).total[30];
+  const y=runSim('OWNER loss framing, deduction on a miss',{seed:sd,sting:0.15}).total[30];
+  console.log('  seed '+String(sd).padEnd(9)+'no loss '+x+'\this '+y
+   +'\tdelta '+((y-x)/10>=0?'+':'')+((y-x)/10).toFixed(1)+' points');});}
+if(arg==='--loss'){lossReport();}
+else if(arg==='--sweep'){sweep();}
 else if(arg==='--chain'){if(!validate())process.exit(1); chainReport();}
 else if(arg==='--validate'){process.exit(validate()?0:1);}
 else{ if(!validate()){console.log('\nvalidation failed. report suppressed.');process.exit(1);} report(); }
+}

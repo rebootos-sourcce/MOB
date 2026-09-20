@@ -675,8 +675,11 @@ function render(){
        and the strip loses three labels' worth of width. */
     +cr('Crown',r.unread?0:r.CQ,{size:'sm',text:'CQ',hot:false,
       raw:r.unread?'\u2013':Math.round(r.CQ)+'%',
-      title:'Coherence. '+(r.unread?'not read yet':Math.round(r.CQ)+' out of 100')
-       +'. What the field builds against what it costs.'})+'</button>'
+      /* THE PILL ALREADY PRINTS A PERCENT, so the tooltip saying "29 out of
+         100" beside it is the number twice and the scale once too often. The
+         sentence says what the reading means and the pill says the figure. */
+      title:'Coherence. '+(r.unread?'Not read yet.'
+        :'What the field builds against what it costs.')})+'</button>'
   +'<button class="kb" data-q="dq">'
     +cr('Root',clamp(r.DQ/14,0,1)*100,{size:'sm',text:'DQ',raw:r.DQ.toFixed(1),
       title:'Shadow weight. '+r.DQ.toFixed(1)+', summed across every address that '
