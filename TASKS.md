@@ -1501,6 +1501,114 @@ should be able to see everything."
 
 ---
 
+## 0x. THE SNIFFER SPEC ARRIVED. IT IS CANON AND IT CONTRADICTS THE ENGINE.
+
+`SNIFFER_SPEC.md`, his, built from `reviews/canon.json`, `ENGINE.json`,
+`reviews/elements.json` and `MOB_Complete_v330.html`. It says everything in it is
+already ruled unless marked OPEN and that nothing in it is invented. **So where
+it and the engine disagree, it wins until he says otherwise.**
+
+Three passes by the team, then the schema, then the algorithm, then integrate.
+His instruction.
+
+### THE CONTRADICTIONS, MEASURED BEFORE THE TEAM STARTED
+
+- [ ] **SP1. CQ is defined two different ways and the gap is 24 points on a
+  blank profile.** The spec, section 6: "**CQ is defined as the mean of these 21,
+  each scored 0 to 10, times 10.**" The engine: `CQ = It * Ig / Rz`. On a blank
+  field the engine reads **36** and the spec reads **60**. This is the single
+  largest thing in the document and it changes every reading the product has ever
+  produced. It also touches `cqCeiling`, the tier ladder, the release meter and
+  the accuracy figure.
+- [ ] **SP2. The saboteur bands are keyed on a different vocabulary.** The spec
+  gives each of the 33 a band on the nine axes, for instance Avoider at Apathy
+  6 to 8 and Fear 5 to 7. The engine's `SAB33` keys Avoider on `fear` 3 to 5 and
+  `anxiety` 5 to 8, and `anxiety` is not one of the nine. Same 33 names, same
+  shape, different numbers and different terms.
+- [ ] **SP3. Band edges are ramps, not cliffs**, and the engine uses a hard
+  floor. His measurement: a hard edge scores 94 percent on exact readings and
+  **collapses to 73 percent when the reader is off by one point**, which he calls
+  the normal condition.
+- [ ] **SP4. Intensity peaks inside the band and tapers above it.** The engine
+  has no taper.
+
+### WHAT THE ENGINE ALREADY SATISFIES, CHECKED RATHER THAN ASSUMED
+
+- [x] **Two readings per axis, never one signed number.** Guard 3. The profile
+  already carries `{held, opp}` per axis and the engine already carries
+  `S.charge` and `S.replace` as separate tables. The structure is right.
+- [x] **Surprise fires no saboteur.** Guard 6. Zero of the 33 are keyed on it.
+- [x] **Radiance is the magnitude of the vector, not a fourth axis.** Section 8,
+  and `compute.js:192` already computes exactly that.
+- [x] **All 33 saboteur names match**, including Negotiator and Catastrophizer.
+
+### THE PARTS THAT ARE NEW WORK
+
+- [ ] **SP5. The mirror principle.** Locate, charge, gates, replacement. The
+  sniffer mirrors the release protocol and **ends at an address with a named
+  replacement state, because that is what release consumes.** The `offer` field
+  is the payload and everything else is evidence for it.
+- [ ] **SP6. `because` is always emitted.** "A confidence number with no citation
+  is not inspectable, and this system's whole defence is that it shows its work."
+- [ ] **SP7. The 21 laws each get what a violation reads as**, and four are
+  **bidirectional**: Compassion, Humility, Generosity and Ownership. "A sniffer
+  that only looks for the obvious pole will miss half of them. Self abandonment
+  reads as virtue in a journal."
+- [ ] **SP8. The three axes are not three peers.** Aware/ignorant and
+  detached/attached both feed intentional/avoidant, which is the sump. Measured
+  cascade: 14.5 percent avoidance with both upstream clean, 43.2 with one
+  distorted, **71.9 with both.** And the product consequence is ruled: an
+  avoidance number shown alone reads as a character flaw, so the upstream state
+  goes with it.
+- [ ] **SP9. Dante's nine circles as a depth scale with somatic addresses.**
+  `CIRCLES` already holds them. The C8 test is called the single most sniffable
+  line in the system: **does this person's warmth cost them anything, or does it
+  require an audience.**
+- [ ] **SP10. Avoider fires in 81 percent of runs and costs 0.1 points.** Weight
+  it low or the sniffer reports Avoider on everything.
+- [ ] **SP11. Resentment is a composite**, Anger plus Apathy, not Anger. Mapping
+  it onto Anger collapsed Aggressor and Manipulator in simulation.
+
+### THE FOUR FILES THE SPEC SAYS TO LOAD ARE NOT IN THIS REPOSITORY
+
+Section 13 is titled "files to load, not retype" and names four. **None of them
+is here.** Checked directly:
+
+    reviews/elements.json        missing
+    ENGINE.json                  missing
+    reviews/canon.json           missing
+    handoff/ATUNED_SPEC.json     missing
+
+- [?] **SP14.** This matters most for `reviews/elements.json`, which the spec
+  calls **"your lexicon"** and says to load directly rather than retyping. It
+  holds 76 elements with `sh` and `co` strings, the shadow and coherent pair for
+  every one, and section 7 says that file is what the flow layers are read from.
+  Without it the expression shadows, the nature and human nature layers and the
+  coherent pole for every element have to be retyped from the specification's
+  prose, which is exactly what it tells us not to do.
+- [?] **SP15.** `ENGINE.json` is named as the source of the saboteur bands, the
+  axis addresses, the archetypes, the domains and the formulas. The band table is
+  printed in full in the specification so that part survives. The formulas are
+  not, and the CQ contradiction is a formula question.
+- [?] **SP16.** `reviews/canon.json` is named as "every ruling, with dates and
+  provenance", which is the thing that would settle the E43 inconsistency and the
+  benign and malignant conflict without asking him.
+
+**So: send the four files, or the work retypes from prose and the specification's
+own instruction is broken on the first line of section 13.**
+
+### AND ONE INTERNAL INCONSISTENCY IN THE SPEC ITSELF, RAISED NOT GUESSED
+
+- [?] **SP12.** Section 7 says 76 numbered slots with 75 live because **E43 is
+  retired**. Section 6 lists **E43 as Wisdom**, live, with a violation string. One
+  of the two is wrong and it is his document.
+- [?] **SP13. The benign and malignant polarity conflict is named as OPEN in the
+  spec**, section 12: "malignancy counts up in one place and down in another,
+  resolve before scoring anything on it." **The lean work delivered today scores
+  on it.** It has to be reconciled against this before it reaches a surface.
+
+---
+
 ## 0c. RULED 20 SEPTEMBER, SECOND PASS. THE ARRIVAL, THE FEATHERS AND KARMA
 
 **"I didn't give you feedback on the feathers. I don't give you feedback
