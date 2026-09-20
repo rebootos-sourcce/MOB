@@ -3557,8 +3557,17 @@ body:not(.tab-field) .cv-legend{display:none}
 .boot-wm .um{position:relative;display:inline-block}
 .boot-wm .um::before,.boot-wm .um::after{content:'';position:absolute;top:-.42em;
  width:.14em;height:.14em;border-radius:50%;background:var(--um)}
-.boot-wm .um::before{left:.055em}
-.boot-wm .um::after{left:.35em}
+/* THE SAME CENTRING CORRECTION THE TOP BAR GOT, WHICH THIS NEVER DID.
+   The bar's pair was moved once already, on a measurement: it sat at .408 of
+   the u's box where the glyph's own centre is .444, because the letter
+   spacing is added after the glyph. The boot card carries the same mechanism
+   and was never corrected, so the two have disagreed ever since. Measured in
+   Chromium on the built file: the boot pair's midpoint sits left of the
+   bar's by about a fortieth of the glyph, which is half a pixel at the boot
+   card's size and visible once you know.
+   The spread is unchanged, so only the centre moves. */
+.boot-wm .um::before{left:.078em}
+.boot-wm .um::after{left:.373em}
 /* THE WAY OUT, SAID QUIETLY AND LATE. It arrives at 1.5s, once the sequence
    has begun and long before the 5.2s it would otherwise run to, so a person
    who does not want the overture is never held by it without knowing. It is

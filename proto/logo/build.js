@@ -55,9 +55,18 @@ const M = { A: mark('A'), B: mark('B') };
    dotVar let one file answer to seven lightings. */
 function svg(m, id, skyC, dotC, opt) {
   opt = opt || {};
-  const attr = opt.size ? `width="${opt.size.w}" height="${opt.size.h}"` : 'width="100%"';
+  /* A LIFTED OUT FILE NEEDS AN INTRINSIC SIZE. width="100%" with
+     no height gives an svg no aspect ratio, so dropped into an
+     <img> it collapses. The source blocks carry width and height
+     in the drawing's own units instead, which gives the file a
+     ratio and leaves CSS free to override both. */
+  const attr = opt.size ? `width="${opt.size.w}" height="${opt.size.h}"`
+                        : `width="${m.vb.w.toFixed(2)}" height="${m.vb.h}"`;
   return `<svg xmlns="http://www.w3.org/2000/svg" ${attr} viewBox="${m.vb.x} ${m.vb.y} ${m.vb.w.toFixed(2)} ${m.vb.h}"`
-   + ` role="img" aria-label="Atuned"${opt.cls ? ` class="${opt.cls}"` : ''}>`
+   /* THE LABEL TAKES THE CHARACTER, NOT THE PLAIN SPELLING. An
+      aria-label is a string and a string has no stylesheet, so the
+      same ruling that puts the umlaut in a <title> puts it here. */
+   + ` role="img" aria-label="Atüned"${opt.cls ? ` class="${opt.cls}"` : ''}>`
    + `<g fill="none" stroke="${skyC}" stroke-width="${W}" stroke-linecap="butt" stroke-linejoin="round">`
    + m.letters.join('') + `</g>`
    + `<g fill="${dotC}">` + m.dots.join('') + `</g></svg>`;
@@ -85,14 +94,14 @@ const FAV_U = `<g fill="none" stroke="SKY" stroke-width="2" stroke-linecap="butt
 const FAV_A = `<g fill="none" stroke="SKY" stroke-width="2" stroke-linecap="butt">`
  + `<circle cx="8.5" cy="8.5" r="5.5"/><path d="M 14 2 L 14 15"/></g>`;
 const wrapFav = (g,sky,dot,sz) => `<svg xmlns="http://www.w3.org/2000/svg" width="${sz||16}" height="${sz||16}"`
- + ` viewBox="0 0 16 16" role="img" aria-label="Atuned">`
+ + ` viewBox="0 0 16 16" role="img" aria-label="Atüned">`
  + g.replace('SKY',sky).replace('DOT',dot) + `</svg>`;
 const fav  = (sky,dot,sz) => wrapFav(FAV_A, sky, dot, sz);
 const favU = (sky,dot,sz) => wrapFav(FAV_U, sky, dot, sz);
 /* the whole word crushed into sixteen pixels, as the evidence */
 function favWord(sky,dot,sz){
   const m = M.A, k = 16 / m.vb.w;
-  return `<svg width="${sz||16}" height="${sz||16}" viewBox="0 0 16 16" role="img" aria-label="Atuned at sixteen pixels">`
+  return `<svg width="${sz||16}" height="${sz||16}" viewBox="0 0 16 16" role="img" aria-label="Atüned at sixteen pixels">`
    + `<g transform="translate(${(2 - m.vb.x*k).toFixed(3)} ${(4.4).toFixed(1)}) scale(${k.toFixed(5)})">`
    + `<g fill="none" stroke="${sky}" stroke-width="${W}" stroke-linecap="butt" stroke-linejoin="round">`
    + m.letters.join('') + `</g><g fill="${dot}">` + m.dots.join('') + `</g></g></svg>`;
@@ -128,7 +137,7 @@ const w = s => T.push(s);
 
 w(`<!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Atuned logotype, drawn</title>
+<title>Atüned logotype, drawn</title>
 <style>
 :root{
  --bg:#0C0D12; --panel:#1A1D26; --panel2:#252833; --sunk:#090A0E;
@@ -141,18 +150,29 @@ w(`<!doctype html><html lang="en"><head><meta charset="utf-8">
 *{box-sizing:border-box}
 html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
  font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
-.wrap{max-width:1180px;margin:0 auto;padding:40px 24px 120px}
+.wrap{max-width:1040px;margin:0 auto;padding:40px 24px 120px}
 h1{font-size:30px;line-height:1.15;margin:0 0 6px;font-weight:600;letter-spacing:-.01em}
 h2{font-size:19px;margin:54px 0 4px;font-weight:600;letter-spacing:-.005em}
 h3{font-size:14.5px;margin:26px 0 4px;font-weight:600;color:var(--ink)}
 p{margin:8px 0;color:var(--mid);max-width:74ch}
 p.k{color:var(--ink)}
 .lede{font-size:17px;color:var(--mid);max-width:70ch;margin:10px 0 0}
+/* THE EYEBROW IS UPPERCASED BY THE SHEET, NOT BY THE MARKUP. The
+   house rule bans all caps copy and it is right to; the answer the
+   rest of this repository already uses is to leave the string in
+   sentence case and let the styling carry the case. */
 .eye{display:block;font-size:11px;letter-spacing:.16em;color:var(--dim);
- font-family:var(--num);margin:0 0 14px}
+ font-family:var(--num);margin:0 0 14px;text-transform:uppercase}
 hr{border:0;border-top:1px solid var(--edge);margin:44px 0 0}
 .card{background:var(--panel);border:1px solid var(--edge);border-radius:10px;padding:26px;margin:14px 0}
 .sunk{background:var(--sunk);border:1px solid var(--edge);border-radius:8px;padding:26px}
+/* A DENSE TABLE SCROLLS INSIDE ITS OWN BOX RATHER THAN TAKING THE
+   PAGE WITH IT. The colour table is seven columns and at 390 it
+   pushed the document to 657 and gave the whole page a horizontal
+   scroll, which is the one thing a phone layout may not do. */
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:12px 0;
+ border-radius:6px}
+.tw table{margin:0;min-width:560px}
 table{border-collapse:collapse;width:100%;font-size:13.5px;margin:12px 0}
 th,td{text-align:left;padding:7px 12px 7px 0;border-bottom:1px solid var(--edge);vertical-align:top}
 th{color:var(--dim);font-weight:400;font-size:11px;letter-spacing:.11em;font-family:var(--num)}
@@ -168,9 +188,9 @@ pre{background:var(--sunk);border:1px solid var(--edge);border-radius:8px;paddin
 .tag.no{border-color:rgba(255,46,31,.45);color:#FF7A6E}
 .alts{display:flex;flex-wrap:wrap;gap:10px;margin:10px 0 0}
 .alt{background:var(--sunk);border:1px solid var(--edge);border-radius:8px;
- padding:16px 18px 12px;min-width:150px;flex:0 0 auto}
+ padding:20px 22px 14px;min-width:178px;flex:0 0 auto}
 .alt.on{border-color:var(--sky);background:rgba(126,184,212,.055)}
-.alt svg{display:block;margin:0 auto 10px}
+.alt svg{display:block;margin:0 auto 14px}
 .alt b{display:block;font-family:var(--num);font-size:11px;letter-spacing:.09em;color:var(--dim)}
 .alt.on b{color:var(--sky)}
 .alt span{display:block;font-size:12px;color:var(--mid);line-height:1.45;margin-top:3px;max-width:19ch}
@@ -181,7 +201,7 @@ pre{background:var(--sunk);border:1px solid var(--edge);border-radius:8px;paddin
 .size b{display:block;font-size:12.5px;font-weight:600;margin:14px 0 0}
 .size span{display:block;font-size:11.5px;color:var(--dim);line-height:1.45;margin-top:3px}
 .size em{font-family:var(--num);font-style:normal;color:var(--mid)}
-.lights{display:grid;grid-template-columns:repeat(auto-fit,minmax(252px,1fr));gap:12px;margin:16px 0 0}
+.lights{display:grid;grid-template-columns:repeat(auto-fit,minmax(226px,1fr));gap:12px;margin:16px 0 0}
 .lt{border:1px solid var(--edge);border-radius:9px;overflow:hidden}
 .lt .bar{padding:11px 16px;display:flex;align-items:center;gap:12px;border-bottom:1px solid rgba(128,128,128,.18)}
 .lt .pg{padding:26px 16px 30px;display:flex;flex-direction:column;align-items:center;gap:14px}
@@ -195,7 +215,11 @@ pre{background:var(--sunk);border:1px solid var(--edge);border-radius:8px;paddin
 .fv .z{margin-top:14px;width:128px;height:128px;image-rendering:pixelated;display:block}
 .fv b{display:block;font-family:var(--num);font-size:10px;letter-spacing:.1em;color:var(--dim);margin-top:12px}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-@media(max-width:860px){.two{grid-template-columns:1fr}.wrap{padding:28px 16px 90px}h1{font-size:24px}}
+@media(max-width:860px){.two{grid-template-columns:1fr}.wrap{padding:28px 16px 90px}h1{font-size:24px}
+ .size{flex:1 1 100%;border-right:0;border-bottom:1px solid var(--edge)}
+ .fv{flex:1 1 50%;border-bottom:1px solid var(--edge)}
+ .alt{min-width:0;flex:1 1 44%}}
+code{overflow-wrap:anywhere}
 .who{font-size:12px;color:var(--dim);font-family:var(--num);letter-spacing:.06em;margin-top:2px}
 ul{color:var(--mid);max-width:74ch;padding-left:20px}
 li{margin:5px 0}
@@ -204,8 +228,8 @@ b.inl{color:var(--ink);font-weight:600}
  margin-right:6px;border:1px solid rgba(128,128,128,.35)}
 </style></head><body><div class="wrap">`);
 
-w(`<span class="eye">ATUNED / SOURCE OS &middot; ART DIRECTION &middot; PROTOTYPE</span>
-<h1>The Atuned logotype, drawn</h1>
+w(`<span class="eye">Atüned / Source OS &middot; Art direction &middot; Prototype</span>
+<h1>The Atüned logotype, drawn</h1>
 <p class="lede">Six letters cut as paths in the specimen&rsquo;s style, not set in it. Two complete candidates, the alternates
 they were chosen from, four sizes at actual size, and the mark on all seven lightings. Nothing on this page
 makes a network request and nothing outside <code>proto/logo/</code> was touched.</p>`);
@@ -221,7 +245,7 @@ Change the stroke in one place and all six letters stay the same weight. The num
 <tr><td>Round overshoot</td><td class="n">1.5</td><td>The a, e and d bowls are 103 across so they read the same size as the 100 wide u and n.</td></tr>
 <tr><td>a counter</td><td class="n">65 across</td><td>A true circle. The stem is tangent to the bowl rather than cutting it, which is what keeps the counter circular.</td></tr>
 <tr><td>u counter</td><td class="n">62 across</td><td>A channel with a semicircular floor of radius 31.</td></tr>
-<tr><td>e upper counter</td><td class="n">26 tall</td><td>0.40 of the a&rsquo;s. This is the number that decides the small end of the whole mark. Section 5.</td></tr>
+<tr><td>e upper counter</td><td class="n">26 tall</td><td>The a&rsquo;s is 65, so the e holds two fifths of the air the a does. This is the number that decides the small end of the whole mark. Section 5.</td></tr>
 <tr><td>t crossbar</td><td class="n">top edge at 29</td><td>Half the overshoot above the flat x height line, so it reads level with the rounds and not level with the u alone.</td></tr>
 <tr><td>t stem top</td><td class="n">4 below the d</td><td>A naked vertical reads taller than one attached to a bowl.</td></tr>
 </table>
@@ -290,7 +314,7 @@ ALT.forEach(a => {
   w(`<h3>${a.ltr} <span class="tag">${a.kind === 'specimen' ? 'specimen alternate' : 'drawing decision'}</span></h3><div class="alts">`);
   a.opts.forEach(([k,label,why]) => {
     const on = k === a.take;
-    w(`<div class="alt${on?' on':''}">${glyph(k, on ? 'var(--sky)' : 'var(--mid)', 58)}<b>${k}${on?' &middot; taken':''}</b><span>${label}. ${why}</span></div>`);
+    w(`<div class="alt${on?' on':''}">${glyph(k, on ? 'var(--sky)' : 'var(--mid)', 88)}<b>${k}${on?' &middot; taken':''}</b><span>${label}. ${why}</span></div>`);
   });
   w(`</div>`);
 });
@@ -338,6 +362,10 @@ and it is the price of a geometric e with an open mouth next to a circular d. An
 the e, which section 5 shows is the letter that can least afford it.</p>
 <p>That number is also what separates the two candidates. B&rsquo;s e is cut at 66 degrees instead of 42, which is the right
 call for the small end and gives away 83 percent of a joint at every other size.</p>
+<p>And B carries a second one, which is the more interesting of the two. <b class="inl">Its t to u joint is 20 percent over
+target as well</b>, and the reason is the foot: t2 was taken precisely to fill the hole under its own crossbar, and at a
+close setting the foot puts ink where the joint then has to make room for it. The alternate that was supposed to close
+that joint is what holds it open. Measured after it was drawn, not predicted.</p>
 <p class="k">Landed: <b class="inl">candidate A</b>. Four of its five joints hold to within half a percent of one
 another, its a and its t are the plain forms, and its e gives away the least. B is on the page because its open e is
 the better answer if the mark is ever needed at the top bar and nowhere else, and because the spur and the foot are
@@ -364,8 +392,8 @@ w(`</div>`);
 w(`<h3>What The Small End Drops, And The Number Behind It</h3>
 <p>This style has one known failure and it is not the stroke, it is the counter. A circular counter closes to a dot
 before a rectangular one closes to a slot, so the letter with the smallest counter sets the floor for the whole mark.
-Here that is the e, whose upper counter is 26 units against the a&rsquo;s 65, a ratio of 0.40. The e fills at two and a half
-times the size the a does.</p>
+Here that is the e. Its upper counter is 26 units where the a&rsquo;s is 65, so it holds two fifths of the air, and it
+fills at two and a half times the size the a does.</p>
 <table><tr><th>Size</th><th>e upper counter</th><th>Stroke</th><th>Reads</th></tr>
 <tr><td>Funnel heading, ascender 32</td><td class="n">6.4px</td><td class="n">4.7px</td><td>Open at every pixel density.</td></tr>
 <tr><td>Boot card, ascender 26</td><td class="n">5.2px</td><td class="n">3.8px</td><td>Open.</td></tr>
@@ -554,7 +582,12 @@ vector tool flattens this to outlines in one command when it needs to be a font 
 strokes cannot do is cut a single terminal at an angle the path does not already run at, which is why no sheared
 terminal appears among the alternates.</p>
 <p>Colour is two attributes, <code>stroke</code> on the letters and <code>fill</code> on the dots, so a live copy takes
-<code>var(--sky)</code> and <code>var(--um)</code> and answers to all seven lightings with no second file.</p>`);
+<code>var(--sky)</code> and <code>var(--um)</code> and answers to all seven lightings with no second file. Inline in a
+document those two resolve; saved as a standalone <code>.svg</code> they do not, so a file on disk gets literal hexes.</p>
+<p>Each block carries a width and a height in the drawing&rsquo;s own units rather than a percentage, so the file has an
+intrinsic ratio and does not collapse when it is dropped into an <code>img</code>. All four were extracted from this page,
+written to disk and opened in a browser to check that, and they render: 13 shapes and 13 shapes for the two words, 2
+and 3 for the two icons.</p>`);
 ['A','B'].forEach(k => {
   w(`<h3>Candidate ${k}, ${CANDS[k].name}</h3><pre>${esc(svg(M[k], k, 'var(--sky)', 'var(--um)').replace(/></g,'>\n<'))}</pre>`);
 });
@@ -568,8 +601,12 @@ w(`<hr><p class="who" style="margin-top:22px">Sol Amadi, light and colour. Bjorn
 Petra Nikau, composition and symbol. Mika Ueda-Salas, the whole and the argument between them.</p>
 </div></body></html>`);
 
-fs.writeFileSync(path.join(__dirname, 'index.html'), T.join('\n'));
-console.log('wrote index.html', (T.join('\n').length/1024).toFixed(1)+'kB');
+let OUT = T.join('\n');
+/* every table gets a scrolling box. done here rather than at each
+   call site so a table added later cannot forget. */
+OUT = OUT.replace(/<table/g, '<div class="tw"><table').replace(/<\/table>/g, '</table></div>');
+fs.writeFileSync(path.join(__dirname, 'index.html'), OUT);
+console.log('wrote index.html', (OUT.length/1024).toFixed(1)+'kB');
 console.log('A total', M.A.total, 'B total', M.B.total);
 LIGHT.forEach(l => console.log(' ', l.n.padEnd(12), 'sky/bar', ratio(l.sky,l.bar).toFixed(2).padStart(6),
  'dot/bar', ratio(l.prop||l.dot,l.bar).toFixed(2).padStart(6), 'dot/sky', ratio(l.prop||l.dot,l.sky).toFixed(2).padStart(6)));

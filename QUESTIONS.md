@@ -1,11 +1,17 @@
 # QUESTIONS FOR THE OWNER
 
 Every line in `TASKS.md` marked `[?]`, which is the mark for a question
-waiting on his ruling. 120 of them, across 39 sections.
-Read off commit 6c3f3d0 on 2026-09-20. Nothing here is typed by hand: answer a
+waiting on his ruling. 123 of them, across 40 sections.
+Read off commit a162ec7 on 2026-09-20. Nothing here is typed by hand: answer a
 question in TASKS.md and it leaves this file on the next run.
 
 The same list is in `QUESTIONS.html`, which opens in a browser.
+
+## 088. DELIVERED 20 SEPTEMBER. THE LOGOTYPE, DRAWN.
+
+- [ ] **LG13. The favicon cannot carry the dots, and the reason is topological.** Six proportions of the u with its dots were drawn and looked at. Every one reads as a face: two points above an open curve is a face and no proportion removes it. So the sixteen pixel cut is the a, which carries the face's two properties at once, has the widest counter in the word and is not a face. His call, and the ü cut is on the page if he overrules it.
+- [ ] **LG14. The white dots cannot literally stay white on paper,** because they sit on the ground rather than on the letter. The ruling offered: the dots are the light in the mark, and what a light is worth depends on what it stands against. On the four dark grounds nothing is brighter than a light source, so pure white, unchanged. On the three paper grounds nothing is brighter than the paper, so what can be drawn is the absence. One system, seven answers.
+- [ ] **LG18. And the real ruling underneath all of it: lowercase against the uppercase ruling.** The top bar was ruled uppercase, twice. This brief names six lowercase letters and two dots over a lowercase u, and the specimen's whole character is single storey lowercase at a very high x height. Drawn uppercase, the x height argument disappears and the letters stop being the ones the face is interesting for. The cost of moving the ruling is one re-tracking. The cost of not moving it is two cases for one mark, which is what ships today.
 
 ## 089. RULED 20 SEPTEMBER, SEVENTEENTH PASS. THE STORY PAGE IS A D.
 

@@ -25,6 +25,58 @@ reopens. Every seat adds its own.
 
 ---
 
+## 088. DELIVERED 20 SEPTEMBER. THE LOGOTYPE, DRAWN.
+
+- [x] **LG10. Two candidates, spaced by measured area rather than a table.**
+      The first cut used a sidebearing table and at eight times scale the word
+      read as two pieces. Each letter was rasterised, the background between
+      every pair integrated scanline by scanline, and each joint solved
+      against one target. Equal areas need gaps of 9, 10.3, 18.8, 21 and 28.8,
+      which is better than three to one. Equal gaps are not equal spaces and a
+      table cannot know the difference.
+- [x] **LG11. Only two of the six letters are alternates in the specimen,** so
+      the other four are drawing decisions and the page says which, with a
+      measurement on each.
+- [x] **LG12. A construction defect caught at eight times scale.** The e's
+      crossbar was cut at the ring's centreline, leaving a step at three
+      o'clock that read at normal size as the e being light on its right.
+- [?] **LG13. The favicon cannot carry the dots, and the reason is
+      topological.** Six proportions of the u with its dots were drawn and
+      looked at. Every one reads as a face: two points above an open curve is
+      a face and no proportion removes it. So the sixteen pixel cut is the a,
+      which carries the face's two properties at once, has the widest counter
+      in the word and is not a face. His call, and the ü cut is on the page if
+      he overrules it.
+- [?] **LG14. The white dots cannot literally stay white on paper,** because
+      they sit on the ground rather than on the letter. The ruling offered:
+      the dots are the light in the mark, and what a light is worth depends on
+      what it stands against. On the four dark grounds nothing is brighter
+      than a light source, so pure white, unchanged. On the three paper
+      grounds nothing is brighter than the paper, so what can be drawn is the
+      absence. One system, seven answers.
+- [x] **LG15. And that found a defect in the tokens.** Three paper lightings
+      give two different answers for the dot: two blues in the sky's own
+      family and one neutral with no hue at all. A neutral dot beside a blue
+      letter is ink from a second plate.
+- [x] **LG16. A live defect fixed on the way.** The boot card carries the same
+      dot mechanism as the top bar and never got the centring correction the
+      bar got, so the two have disagreed since. Measured before and after: the
+      boot pair's midpoint moved from 0.409 of the glyph to 0.443, which is
+      the 0.444 the original correction named.
+- [x] **LG17. There is no favicon at all.** No icon link anywhere in the
+      product. That is a new site rather than a changed one, and an inline
+      SVG keeps it inside the no network rule.
+- [?] **LG18. And the real ruling underneath all of it: lowercase against the
+      uppercase ruling.** The top bar was ruled uppercase, twice. This brief
+      names six lowercase letters and two dots over a lowercase u, and the
+      specimen's whole character is single storey lowercase at a very high x
+      height. Drawn uppercase, the x height argument disappears and the
+      letters stop being the ones the face is interesting for. The cost of
+      moving the ruling is one re-tracking. The cost of not moving it is two
+      cases for one mark, which is what ships today.
+
+---
+
 ## 089. RULED 20 SEPTEMBER, SEVENTEENTH PASS. THE STORY PAGE IS A D.
 
 His words: "The story page is a D. I think that needs to be redesigned. I need
