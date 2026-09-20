@@ -67,6 +67,10 @@ if(typeof module!=='undefined'&&module.exports){
   /* indexes */   W:W, BY:BY, ALL_SAB:ALL_SAB, S:S,
   /* soul */      buildSoul:buildSoul, affinity:affinity, bandIg:bandIg,
   /* engine */    compute:compute, suscAll:suscAll, balance:balance, OUTWARD:OUTWARD, INWARD:INWARD,
+  /* the child pattern, and the reading of it that is assumed. Both exported,
+     because a gate that cannot reach the constant cannot tell whether the
+     count it read belongs to the reading it thinks it is looking at. */
+                  childFound:childFound, CHILD_READ:CHILD_READ, SEATPRIM:SEATPRIM,
   /* THE CEILING. Absent from this contract for as long as it has existed, and
      two seats have now needed it and built their own copy instead: the
      integrity probe re-evals the whole engine source to reach it, and the

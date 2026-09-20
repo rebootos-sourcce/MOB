@@ -2188,6 +2188,68 @@ ok(rp.cap>0,'the boundary names the cap, '+rp.cap);
 ok(rp.when===rp.cap,'the when input carries the boundary\'s cap, '+rp.when+' against '+rp.cap);
 ok(rp.where===rp.cap,'and so does the where input, '+rp.where+' against '+rp.cap);
 
+console.log('\n=== the child pattern is found, marked and located ===');
+/* THE COUNT IS READ OFF THE RUN AND NEVER TYPED HERE.
+
+   childFound is the engine's answer and the panel is the rendering of it, so
+   what this asserts is that the two agree, address by address, and that the
+   blank profile lights nothing because nothing has been found. A number typed
+   into this file would be the tenth time this repository has been bitten by
+   exactly that, and the reading is his to rule on anyway: CHILD_READ is an
+   assumption and the count moves by an order of magnitude if he moves it.
+
+   The blank case is first and it is deliberately first. Every surface here
+   opens to somebody who has entered nothing, and a panel announcing a special
+   finding about a person who has not written a word is the worst version of
+   this feature. */
+{
+ const kp=await browser.newPage({viewport:{width:1600,height:1000}});
+ await kp.goto(FILE,{waitUntil:'load'}); await booted(kp);
+ const blank=await kp.evaluate(async()=>{
+  setTab(TAB.STORY); stRender();
+  await new Promise(r=>setTimeout(r,200));
+  return {engine:childFound(compute()).n,
+   pills:document.querySelectorAll('#imp .ip.kid').length,
+   rows:document.querySelectorAll('#imp .ip-kr').length,
+   figure:/Child/.test(document.getElementById('imp').innerHTML),
+   held:compute().loaded.length};});
+ ok(blank.held===0,'the blank profile holds nothing, got '+blank.held);
+ ok(blank.engine===0,'and the engine finds no child pattern on it, got '+blank.engine);
+ ok(blank.pills===0,'no pill is marked, got '+blank.pills);
+ ok(blank.rows===0,'nothing is located, got '+blank.rows);
+ ok(blank.figure===false,'and the figure is absent rather than reading nought');
+ console.log('  blank      '+blank.pills+' marked, '+blank.rows+' located');
+ const on=await kp.evaluate(async()=>{
+  loadP(GORDON()); setTab(TAB.STORY); stRender();
+  await new Promise(r=>setTimeout(r,250));
+  const k=childFound(compute());
+  const pills=[...document.querySelectorAll('#imp .ip.kid')].map(e=>+e.dataset.imp);
+  return {read:k.read, n:k.n, ids:k.found.map(x=>x.at.i), pills:pills,
+   rows:[...document.querySelectorAll('#imp .ip-kr')].map(e=>e.textContent),
+   held:compute().loaded.length,
+   figure:(document.querySelector('#imp .ip-hd')||{}).textContent||''};});
+ ok(on.n>0,'the loaded profile finds at least one, got '+on.n);
+ ok(on.pills.length===on.n,
+  'the panel marks exactly what the engine found, '+on.pills.length+' against '+on.n);
+ ok(on.ids.slice().sort().join()===on.pills.slice().sort().join(),
+  'and it marks the same addresses, engine '+on.ids.join(' ')+' against panel '+on.pills.join(' '));
+ ok(on.rows.length===on.n,'every one of them is located, '+on.rows.length+' rows against '+on.n);
+ /* a located row has to say where, or it is a list of names and not a
+    location. The seat is the word the rest of the product uses for where. */
+ const noWhere=on.rows.filter(t=>!/at the /.test(t));
+ ok(noWhere.length===0,noWhere.length+' located rows say where');
+ ok(on.n<=on.held,'and the child figure cannot exceed the held figure, '
+  +on.n+' of '+on.held);
+ ok(new RegExp('Child'+on.n).test(on.figure.replace(/\s+/g,'')),
+  'the header carries the figure beside its one word label, got '
+  +JSON.stringify(on.figure.replace(/\s+/g,' ').trim().slice(0,60)));
+ console.log('  reading    '+on.read);
+ console.log('  loaded     '+on.pills.length+' marked, '+on.rows.length
+  +' located, of '+on.held+' held');
+ on.rows.forEach(t=>console.log('    '+t.replace(/\s+/g,' ')));
+ await kp.close();
+}
+
 await browser.close();
 
 console.log('\n===== '+PASS+' passed, '+FAIL+' failed =====');

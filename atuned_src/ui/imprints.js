@@ -31,7 +31,11 @@ function impIndex(){
  BANDS.forEach(function(b){var seg=W.filter(function(n){return n.b===b;});
   bandLoad[b]=seg.reduce(function(a,n){return a+n.sq;},0)/Math.max(1,seg.length);});
  r.sabs.forEach(function(s){leaves(s).forEach(function(n){feeds[n.i]=(feeds[n.i]||0)+1;});});
- return {r:r,feeds:feeds,bandLoad:bandLoad};}
+ /* the child patterns come off the same reading as everything else in here,
+    so the Child figure is a subset of the Held figure by construction and
+    the two cannot disagree. childFound reads r.loaded, which is the line the
+    Held figure is filtered at. */
+ return {r:r,feeds:feeds,bandLoad:bandLoad,kid:childFound(r)};}
 function impPill(n,maxW,IX,ghost,inferred){
  /* three states. held carries SQ. installed carries the coherent opposite and
     is not load, so it reads as a pole and not as a zero. pending is what the
@@ -61,14 +65,29 @@ function impPill(n,maxW,IX,ghost,inferred){
 
     So an inferred chip says the fetter and the seat, which is what was
     actually read, and the title says plainly that the address is not named. */
+ /* THE CHILD PATTERN CARRIES THE SEAT'S OWN COLOUR, HARDER. Ruled: a more
+    intense colour of the chakra colour rather than a new colour, so the
+    palette and the body map keep saying the same thing. Intensity is the only
+    channel that moves, and it is the seat colour's share of the fill, which
+    is why one rule answers all seven lightings: every seat colour is darker
+    than the two paper grounds and lighter than the five others, so raising
+    its share darkens on paper and lifts on the dark ones without a second
+    rule anywhere.
+
+    A ghost is not one. childFound reads what is committed, and a pending
+    imprint has not landed, so calling it a child pattern would promise
+    something the field does not hold yet. */
+ var kid=(!ghost&&IX.kid&&IX.kid.at[n.i])||null;
  var lbl=(ghost&&inferred)?(n.cf||n.b):n.k;
  var ttl=(ghost&&inferred)
    ? (n.cf||n.b)+' at the '+String(n.b).toLowerCase()
      +'. Your words named the seat, not the address, so this is where the '
      +'charge lands and not what it is called.'
    : title;
+ if(kid)ttl=kid.ax+' sits here. '+ttl;
  return '<button class="ip'+(on?' on':'')+(hot?' hot':'')+(ghost?' ghost':'')
   +(ghost&&inferred?' infer':'')
+  +(kid?' kid':'')
   +(installed?' inst':'')+'" data-imp="'+n.i+'" '
   +'style="--c:'+c+';font-size:'+fs+'px;padding:'+pad+'px '+(+pad+7)+'px" '
   +'title="'+esc(ttl)+'">'+esc(lbl)+'<b>'+val+'</b></button>';}
@@ -101,9 +120,17 @@ function impRender(){
     wearing a label's clothes, and a comma means a second part where a name
     has one. So the label is Held, the figure rides beside it, and the other
     two counts are their own figures rather than a clause. */
+ /* AND THE PANEL SAID NOTHING ABOUT WHICH OF THEM ARE CHILDREN, which is the
+    one distinction the owner has called special. It is its own figure, its
+    label is one word for the same reason the other three are, and it is
+    absent rather than zero when nothing is found: off a blank profile nothing
+    lights because nothing has been found, and a figure reading nought is a
+    claim about a person who has not written anything yet. */
+ var kids=(IX.kid&&IX.kid.found)||[];
  var h='<div class="ip-hd"><span class="pm-eye">Held</span>'
   +'<span class="ip-n">'+held.length+'</span>'
   +(filled?'<span class="pm-eye">Filled in</span><span class="ip-n">'+filled+'</span>':'')
+  +(kids.length?'<span class="pm-eye">Child</span><span class="ip-n">'+kids.length+'</span>':'')
   +(ghosts.length?'<span class="pm-eye">Pending</span><span class="ip-n">'+ghosts.length+'</span>':'')
   +'<div class="ip-ctl">';
  IMP_GROUPS.forEach(function(gp){
@@ -116,6 +143,23 @@ function impRender(){
   h+='<div class="ip-none">You have not written anything yet. '
    +'Whatever you write gets pulled apart and collected here.</div>';
   host.innerHTML=h; impWire(); return;}
+ /* AND IT SAYS WHERE THE CHILD SITS, in the seat's own terms and not in a
+    second vocabulary: the axis, the seat it is held at, the address inside
+    that seat, and what the address is carrying. It sits above the groupings
+    because it is true of all five of them, and it is drawn in the seat's
+    colour for the same reason the pill is. The seats are counted off the rows
+    rather than stated, which is the rule this repository has been bitten by
+    nine times for breaking. */
+ if(kids.length){
+  var kseats={}; kids.forEach(function(k){kseats[k.seat]=1;});
+  var ksn=Object.keys(kseats).length;
+  h+='<div class="ip-bh ip-kh">Child patterns<em class="plain">across '
+   +ksn+(ksn===1?' seat':' seats')+'</em></div>';
+  kids.forEach(function(k){
+   h+='<div class="ip-kr" style="--c:'+seatCol(k.seat)+'">'
+    +'<span class="ip-kn">'+esc(k.ax)+'</span>'
+    +'<span class="ip-ka">at the '+esc(String(k.seat).toLowerCase())+', '
+    +esc(k.at.k)+'</span><b>'+k.at.sq.toFixed(1)+'</b></div>';});}
  function cloud(list,gl,gi){var s='<div class="ip-cloud">';
   list.forEach(function(n){s+=impPill(n,maxW,IX,gl?gl[n.i]:0,gi&&gi[n.i]);});return s+'</div>';}
  if(IMP_GROUP==='band'){

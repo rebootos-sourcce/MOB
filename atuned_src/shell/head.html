@@ -2416,6 +2416,24 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
  gap:10px;border-bottom:1px solid var(--edge);padding-bottom:5px;color:var(--c)}
 .ip-bh em{font-style:normal;color:var(--dim);font-weight:400;font-size:12px}
 .ip-cloud{display:flex;flex-wrap:wrap;gap:6px}
+/* where the child sits. one row per pattern: the axis, then the seat and the
+   address it is held at, then what it carries. The rule down the left is the
+   seat's colour at the same intensity the pill's border takes, so the block
+   and the pill it points at are visibly the same treatment. */
+.ip-kr{display:flex;align-items:baseline;gap:8px;padding:5px 0 5px 9px;
+ border-left:2px solid color-mix(in srgb,var(--c) 88%,transparent)}
+/* THE NAME KEEPS THE SEAT'S HUE AND STILL HAS TO BE READ. Straight var(--c)
+   put Heart at #5FD5A6 on Glass white's paper, which measures 1.5 to 1 and is
+   not text, it is a suggestion of text. Mixed toward the ink instead: the ink
+   is dark on the paper lightings and light on the five others, so one rule
+   darkens the name on paper and lifts it everywhere else, which is the same
+   argument the pill's fill is built on. Measured at this share across every
+   seat on all seven: the worst case is stated in the commit. */
+.ip-kn{font-family:var(--sans);font-size:13.5px;font-weight:500;
+ color:color-mix(in srgb,var(--c) 46%,var(--ink))}
+.ip-ka{flex:1 1 auto;font-size:12.5px;color:var(--mid);font-weight:300}
+.ip-kr b{font-weight:400;font-family:var(--num);font-size:12.5px;
+ color:color-mix(in srgb,var(--c) 46%,var(--ink));font-variant-numeric:tabular-nums}
 /* the figure beside its one word label. The heading used to carry three
    counts inside one string with two commas in it, which the voice gate
    refused: a label is one word and a comma means a second part. So the
@@ -2446,6 +2464,30 @@ body.impbig .st-write{display:none}
 .ip.on{box-shadow:0 0 0 2px var(--gold)}
 .ip.hot{background:var(--alarm-soft);border-color:rgba(255,46,31,.5)}
 .ip.hot b{color:var(--alarm);opacity:1}
+/* THE CHILD PATTERN. ONE CHANNEL, SEVEN ANSWERS.
+
+   Ruled: a more intense colour of the chakra colour, not a new colour. So the
+   only thing that moves is the seat colour's share of the fill, 17 to 46, and
+   the border's, 40 to 88. Nothing else: no second hue, no weight, no ring, no
+   glow. A second channel would be a second thing for a person to learn and
+   the palette would stop being the one that the body map speaks.
+
+   WHY ONE RULE COVERS ALL SEVEN LIGHTINGS. Every seat colour in all three
+   palettes is darker than the two paper grounds and lighter than the five
+   dark ones, so raising its share moves the pill AWAY from its ground in
+   whichever direction that ground lies: darker on Snow and Glass white,
+   brighter on Dark, Punch, Glass, Flat and Lumen. That is the owner's ruling
+   about the paper lightings, held by arithmetic rather than by a second rule
+   that could drift out of step with the first.
+
+   It sits after .hot on purpose. An address at nine is both alarming and a
+   child pattern, and the two do not fight over one channel: this owns the
+   fill, .hot keeps the numeral, so both read at once. */
+.ip.kid{background:color-mix(in srgb,var(--c) 58%,transparent);
+ border-color:color-mix(in srgb,var(--c) 88%,transparent)}
+/* Punch mixes against the panel rather than against transparency, because
+   nothing in Punch is see through. Same two numbers, same direction. */
+body.punch .ip.kid{background:color-mix(in srgb,var(--c) 68%,var(--panel-2))}
 /* pending. the sniffer has found it, nothing is committed. */
 .ip.ghost{background:transparent;border-style:dashed;
  border-color:color-mix(in srgb,var(--c) 45%,transparent);color:var(--mid)}

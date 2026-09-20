@@ -1061,6 +1061,106 @@ console.log('\n=== a sentence in a label class carries plain ===');
  console.log('  '+drills+' drills opened across '+drillNames.length+' openers');
 }
 
+console.log('\n=== the child treatment holds on all seven lightings ===');
+/* WHAT THIS SCORES, AND WHY IT IS NOT THE THING GATE 9 REFUSES TO SCORE.
+
+   Gate 9 says in its own words that it does not score contrast per lighting,
+   because a ground built out of color-mix defeated both probes that tried:
+   one knew only rgb() and read null, the other read back oklab off a canvas.
+   Both of those were trying to score a whole surface against its ground.
+
+   This scores one thing: a treatment against its own control. The child pill
+   and a plain pill in the SAME seat on the SAME ground, so the palette and
+   the lighting cancel and what is left is the treatment. It composites the
+   alpha itself rather than trusting a token, and it parses the one form that
+   beat the earlier probe: a computed color-mix comes back as
+   color(srgb 0.83 0.32 0.29 / 0.58), which is 0 to 1 and not 0 to 255. A
+   probe of mine read those floats as bytes and reported every seat on every
+   lighting as the same number to two decimals, which is the tell, because
+   seven colours cannot produce one number.
+
+   Two things are asserted and neither is a number typed in here. The child
+   pill is further from its ground than the plain pill is, on every lighting,
+   which is what intensity means. And it moves in the direction the ground
+   dictates: darker on the paper lightings, lighter on the dark ones, which is
+   the owner's ruling and which one rule in the sheet produces because every
+   seat colour is darker than paper and lighter than every dark ground. */
+{
+ const kd=await browser.newPage({viewport:{width:1600,height:1000}});
+ await kd.goto(FILE,{waitUntil:'load'}); await booted(kd); await kd.waitForTimeout(900);
+ const lit=await kd.evaluate(async()=>{
+  const rgb=s=>{const v=(s.match(/[\d.]+/g)||[0,0,0]).map(Number);
+   const a=/^color\(/.test(s.trim())?v.slice(0,3).map(x=>x*255):v.slice(0,3);
+   return {c:a, a:(v.length>3?v[3]:1)};};
+  const lum=c=>{const f=v=>{v/=255;return v<=0.03928?v/12.92:Math.pow((v+0.055)/1.055,2.4);};
+   return 0.2126*f(c[0])+0.7152*f(c[1])+0.0722*f(c[2]);};
+  /* the ground behind an element: the first ancestor whose own background is
+     not see through. That is what the browser paints it over. */
+  const groundOf=e=>{let n=e.parentElement;
+   while(n){const p=rgb(getComputedStyle(n).backgroundColor);
+    if(p.a>=0.999)return p.c; n=n.parentElement;}
+   return [0,0,0];};
+  const over=(e,g)=>{const f=rgb(getComputedStyle(e).backgroundColor);
+   return f.c.map((v,i)=>v*f.a+g[i]*(1-f.a));};
+  const out=[];
+  for(const L of LIGHTINGS.map(x=>x[0])){
+   setLighting(L);
+   let gi=0; for(let i=0;i<PEOPLE.length;i++)if(PEOPLE[i].nm==='Gordon')gi=i;
+   loadP(gi); setTab(TAB.STORY); stRender();
+   await new Promise(r=>setTimeout(r,220));
+   const kid=document.querySelector('#imp .ip.kid');
+   if(!kid){out.push({L,err:'no child pill'});continue;}
+   const seat=(kid.getAttribute('style')||'').match(/--c:([^;]+)/)[1];
+   const plain=[...document.querySelectorAll('#imp .ip')].filter(e=>
+    !e.classList.contains('kid')&&!e.classList.contains('ghost')
+    &&!e.classList.contains('inst')&&!e.classList.contains('hot')
+    &&(e.getAttribute('style')||'').indexOf('--c:'+seat)>=0)[0];
+   if(!plain){out.push({L,err:'no plain pill in the same seat to compare with'});continue;}
+   const g=groundOf(kid), k=over(kid,g), p=over(plain,g);
+   /* and the name in the located rows, on every seat rather than on the
+      seats this one profile happens to light. Solar is the lightest colour
+      in the palette and is the worst case on paper, and Gordon does not
+      light it, so the seats are probed rather than sampled. */
+   const probe=document.createElement('div');
+   probe.innerHTML=BANDS.map(b=>'<div class="ip-kr" style="--c:'+seatCol(b)
+    +'"><span class="ip-kn">'+b+'</span><span class="ip-ka">x</span><b>1.0</b></div>').join('');
+   document.getElementById('imp').appendChild(probe);
+   let worst=99, worstAt='';
+   [...probe.querySelectorAll('.ip-kn')].forEach(n=>{
+    const gg=groundOf(n), t=rgb(getComputedStyle(n).color).c;
+    const A=lum(t), B=lum(gg);
+    const r=(Math.max(A,B)+0.05)/(Math.min(A,B)+0.05);
+    if(r<worst){worst=r; worstAt=n.textContent;}});
+   probe.remove();
+   out.push({L, seat:seat.trim(), n:document.querySelectorAll('#imp .ip.kid').length,
+    lk:lum(k), lp:lum(p), lg:lum(g), name:worst, nameAt:worstAt});}
+  return out;});
+ const paper=[];
+ lit.forEach(r=>{
+  if(r.err){ok(false,r.L+': '+r.err);return;}
+  ok(r.n>0,r.L+': the panel marks at least one child pattern, got '+r.n);
+  const dk=Math.abs(r.lk-r.lg), dp=Math.abs(r.lp-r.lg);
+  ok(dk>dp,r.L+': the child pill stands further off its ground than a plain one, '
+   +dk.toFixed(3)+' against '+dp.toFixed(3));
+  const light=r.lg>0.5;
+  const moved=light?(r.lk<r.lp):(r.lk>r.lp);
+  ok(moved,r.L+': on a '+(light?'paper':'dark')+' ground the treatment goes '
+   +(light?'darker':'lighter')+', and it goes '+(r.lk<r.lp?'darker':'lighter'));
+  /* the located rows are text and take the text floor, not the graphic one */
+  ok(r.name>=4.5,r.L+': the located name holds 4.5 to 1 on every seat, worst is '
+   +r.nameAt+' at '+r.name.toFixed(2));
+  if(light)paper.push(r.L);
+  const ratio=(a,b)=>((Math.max(a,b)+0.05)/(Math.min(a,b)+0.05));
+  console.log('  '+r.L.padEnd(11)+(light?'paper':'dark ')
+   +'  child:plain '+ratio(r.lk,r.lp).toFixed(2)
+   +'  child:ground '+ratio(r.lk,r.lg).toFixed(2)
+   +'  name '+r.name.toFixed(2)
+   +'  '+(r.lk<r.lp?'darker':'lighter'));});
+ ok(paper.length>0&&paper.length<lit.length,
+  'the run covers both kinds of ground, '+paper.length+' paper of '+lit.length);
+ await kd.close();
+}
+
 await browser.close();
 console.log('\n===== '+PASS+' passed, '+FAIL+' failed =====');
 process.exit(FAIL?1:0);

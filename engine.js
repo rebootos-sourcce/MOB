@@ -3912,6 +3912,72 @@ function accuracy(r,prof){
  var band=5.7*0.5 + (1-cov)*6 + (1-sig)*8 + deg*4 + (1-rel)*1.2 + (1-exq)*3;
  return {pct:pct, band:band, exq:exq, sig:sig, cov:meas, rel:Math.round(rel*100), relN:rel,
   held:held, inst:inst, deg:deg, signal:Math.round(sig*100)};}
+
+/* ============================================================
+   THE CHILD PATTERN. WHICH READING THIS IS, AND WHY IT IS AN ASSUMPTION.
+
+   Ruled by the owner that a child pattern is special and has to be
+   highlighted and located. What was never ruled is which of three things the
+   phrase means, and the engine carries all three, so the count is not a
+   detail of the wording. Measured on the roster the gates already load, at
+   the same line compute() loads an address at:
+
+     a) one of the nine in CHILD.      blank 0, James 4, Ana 8, Gordon 9
+     b) a pattern imprinted in childhood, which is what AGES is for.
+                                       blank 0, and 0 on every profile in
+                                       the roster, because the age ladder
+                                       stores nothing: AGE_ANS is a module
+                                       variable in the drill and no profile
+                                       field exists to hold a finding. The
+                                       ceiling is the sixteen year rows.
+     c) a child in the address ladder, meaning an address carrying while its
+        seat's primary is carrying too.
+                                       blank 0, James 9, Ana 20, Gordon 90
+
+   Nine against ninety is the whole feature, which is why it is his call and
+   not mine. CHILD_READ is the assumption, it is 'axis', and it is the
+   narrowest of the three that is defensible: the nine are named, computed
+   and drawn already, and (b) cannot be built at all until a profile has
+   somewhere to keep a finding, which is a schema change and his.
+
+   AND THERE IS NO SECOND LINE ANYWHERE IN HERE. The line an address carries
+   at is compute()'s own, so childFound takes the reading rather than
+   re-testing sq against a 4 typed a second time. The first cut tested
+   S.charge on the axis instead, which counted nine axes for James where four
+   of them have an address at or above the line: an axis can carry 5 and land
+   nothing, because susceptibility and band relief scale it down per address.
+   A figure of nine beside a panel showing four is the defect this repository
+   has been bitten by nine times, in a new place.
+   ============================================================ */
+const CHILD_READ='axis';
+/* the parent of an address in the ladder: the first address in its band,
+   which is the plexus the seat is named for. Root is the lumbar plexus,
+   Heart is the cardiac plexus. Derived, so a reordering of NODES moves it. */
+const SEATPRIM={};
+BANDS.forEach(function(b){SEATPRIM[b]=W.filter(function(n){return n.b===b;})[0];});
+function childFound(r){
+ var held=(r&&r.loaded)||[], out=[], at={};
+ if(CHILD_READ==='ladder'){
+  var on={}; held.forEach(function(n){on[n.i]=1;});
+  held.forEach(function(n){
+   var par=SEATPRIM[n.b];
+   if(!par||par.i===n.i||!on[par.i])return;
+   out.push({ax:n.cf||n.b, seat:n.b, at:n, under:par});});
+ } else {
+  /* one address per axis: where that child emotion sits heaviest. An axis
+     with nothing at or above the line has no location, so it is not found.
+     Sorted so the panel reads heaviest first, the way the pills do. */
+  var by={};
+  held.forEach(function(n){
+   if(!n.cf)return;
+   if(!by[n.cf]||n.sq>by[n.cf].sq)by[n.cf]=n;});
+  CHILD.forEach(function(c){
+   var n=by[c.nm]; if(!n)return;
+   out.push({ax:c.nm, opp:c.opp, seat:n.b, at:n,
+    n:held.filter(function(x){return x.cf===c.nm;}).length});});
+  out.sort(function(a,b){return b.at.sq-a.at.sq;});}
+ out.forEach(function(k){at[k.at.i]=k;});
+ return {read:CHILD_READ, found:out, at:at, n:out.length};}
 /* ============================================================
    THE PLAN. What a person is on, what it grants, and what it
    lets them see.
@@ -7456,6 +7522,10 @@ if(typeof module!=='undefined'&&module.exports){
   /* indexes */   W:W, BY:BY, ALL_SAB:ALL_SAB, S:S,
   /* soul */      buildSoul:buildSoul, affinity:affinity, bandIg:bandIg,
   /* engine */    compute:compute, suscAll:suscAll, balance:balance, OUTWARD:OUTWARD, INWARD:INWARD,
+  /* the child pattern, and the reading of it that is assumed. Both exported,
+     because a gate that cannot reach the constant cannot tell whether the
+     count it read belongs to the reading it thinks it is looking at. */
+                  childFound:childFound, CHILD_READ:CHILD_READ, SEATPRIM:SEATPRIM,
   /* THE CEILING. Absent from this contract for as long as it has existed, and
      two seats have now needed it and built their own copy instead: the
      integrity probe re-evals the whole engine source to reach it, and the

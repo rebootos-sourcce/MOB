@@ -3343,5 +3343,52 @@ g('36 · the ceiling is reachable, and it is what coherence reads with nothing h
   +lowCeil.toFixed(2)+' at law 3 against '+highCeil.toFixed(2)+' at law 9');
 }
 
+g('37 \u00b7 the child pattern, and the reading it is under');
+/* THE COUNT IS READ OFF THE RUN. Which of three things "child pattern" means
+   is the owner's to rule and the three differ by an order of magnitude, so
+   nothing here asserts a number: it asserts the contract, which holds under
+   any reading, and prints what the roster produced under the one assumed.
+
+   The contract. Every found pattern sits at an address that is carrying, so
+   the figure can never exceed the held figure on any surface. Nothing is
+   found on an empty field. The index and the list are the same set. And
+   under the axis reading, no child emotion is located twice, because the
+   point of it is one address per axis and not a second copy of the cloud. */
+{
+ const {childFound,CHILD_READ,SEATPRIM}=E;
+ ok(typeof childFound==='function','childFound is reachable from the contract');
+ ok(typeof CHILD_READ==='string'&&CHILD_READ.length>0,
+  'and the reading it is under is named, '+CHILD_READ);
+ ok(BANDS.every(b=>SEATPRIM[b]&&SEATPRIM[b].b===b),
+  'every seat has a primary address and it sits in that seat');
+ const empty=reset(0,0,6);
+ ok(childFound(empty).n===0,'nothing is found on an empty field, got '+childFound(empty).n);
+ ok(childFound(empty).found.length===0,'and nothing is located on it');
+ ok(childFound().n===0,'and a call with no reading at all returns nothing rather than throwing');
+ let anyFound=0;
+ PEOPLE.forEach(p=>{
+  S.doms=[p.dom];S.arcs=[p.a1,p.a2];S.roots=[];buildSoul();
+  CHARGES.forEach(c=>{S.charge[c]=p.c[c]||0;S.replace[c]=(p.rep&&p.rep[c])||0;});
+  const LS=LAWSET[p.nm]||{_:5.5};
+  SINAMES.forEach(l=>S.law[l]=LS[l]!==undefined?LS[l]:LS._);
+  const r=compute(), k=childFound(r);
+  anyFound+=k.n;
+  ok(k.n<=r.loaded.length,p.nm+': the child count cannot exceed the held count, '
+   +k.n+' of '+r.loaded.length);
+  ok(k.found.every(x=>r.loaded.indexOf(x.at)>=0),
+   p.nm+': every child pattern sits at an address that is carrying');
+  ok(Object.keys(k.at).length===k.found.length,
+   p.nm+': the index and the list are one set, '+Object.keys(k.at).length
+   +' against '+k.found.length);
+  ok(k.found.every(x=>!!x.seat&&!!x.ax),p.nm+': each one names its axis and its seat');
+  if(CHILD_READ==='axis'){
+   const ax=k.found.map(x=>x.ax);
+   ok(new Set(ax).size===ax.length,p.nm+': no axis is located twice, '+ax.join(' '));
+   ok(k.n<=CHILD.length,p.nm+': and it cannot exceed the nine, got '+k.n);}
+  console.log('  '+p.nm.padEnd(9)+String(r.loaded.length).padStart(4)+' held, '
+   +String(k.n).padStart(3)+' child');});
+ ok(anyFound>0,'the roster finds some, '+anyFound+' across it');
+}
+
 console.log('\n===== '+P+' passed, '+F+' failed =====');
 process.exit(F?1:0);
