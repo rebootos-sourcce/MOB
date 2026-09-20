@@ -662,9 +662,10 @@ function helpSheet(){
   document.body.classList.add('booted'); }
  el.addEventListener('animationend',function(e){
   if(e.animationName==='bootOut')clear();});
- /* the floor. 5.2s is the end of the sequence, bookends included, and this
-    sits just past it. */
- setTimeout(clear,5400);
+ /* the floor. 5.26s is the end of the sequence now, five beats and the
+    quicker fade included, and this sits just past it. A dropped animationend
+    must never leave the sheet standing over a working instrument. */
+ setTimeout(clear,5450);
  /* AND THERE IS A WAY OUT. Anything over 600ms needs one, and this is five
     seconds. It is the overture and it is worth watching, so it is not
     skipped automatically on a return visit and no flag is stored: a person

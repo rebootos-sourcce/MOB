@@ -782,7 +782,16 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
  content:'';position:absolute;left:14px;right:14px;bottom:5px;height:1.5px;
  border-radius:2px;background:var(--accent)}
 .vt[aria-pressed=true] svg{stroke:var(--accent)}
-.vt svg{width:17px;height:17px;stroke:currentColor;stroke-width:1.6;fill:none;
+/* FIVE PER CENT DOWN. Ruled: "the navigation icons, can you reduce those down
+   by let's say five per cent, it is just kind of large."
+
+   17 to 16.15, carried as a token rather than typed into four rules, because
+   the same size is set in four places and four copies of one number is how
+   three of them end up stale. The button's own tap target does not move: this
+   is the drawing inside it, not the thing a thumb has to hit. */
+:root{--icon-nav:16.15px}
+.vt svg{width:var(--icon-nav);height:var(--icon-nav);stroke:currentColor;
+ stroke-width:1.6;fill:none;
  stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}
 .vt .n{display:block}
 /* the top-level surface switch. .vt carries the look, .tabtop marks the role.
@@ -2499,7 +2508,7 @@ body.punch .iq-sh{border-bottom-color:transparent}
 .iq-shd{font-size:12.5px;color:var(--dim)}
 .iq-gl{width:22px;height:22px;flex:0 0 auto;display:grid;place-items:center;
  color:var(--c);align-self:center}
-.iq-gl svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.5;
+.iq-gl svg{width:var(--icon-nav);height:var(--icon-nav);fill:none;stroke:currentColor;stroke-width:1.5;
  stroke-linecap:round;stroke-linejoin:round}
 .iq-gl.big svg{width:19px;height:19px}
 /* TWO LAW CARDS ACROSS, NOT THREE QUESTIONS ACROSS. Drawn by the owner, and
@@ -2853,14 +2862,40 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
 .boot{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;
  align-items:center;justify-content:center;gap:26px;background:#000;
  pointer-events:none;
- animation:bootOut .58s cubic-bezier(.4,0,1,1) 4.62s forwards}
+ /* THE FADE IS QUICK AND IT IS EASED AT BOTH ENDS. Ruled: "a fade in very
+    very quick, a nice little ease in, ease out, so it is just smooth."
+
+    It was .58s on cubic-bezier(.4,0,1,1), which accelerates the whole way and
+    never eases out: it arrives at full speed and stops dead. Half the length
+    on a curve that is eased at both ends, which is the standard ease in out
+    and what smooth actually means. The sheet is gone at 5.26s, a shade sooner
+    than the 5.20 it used to end at, so the five beats are bought out of the
+    sequence rather than added to a person's wait. */
+ animation:bootOut .24s cubic-bezier(.4,0,.2,1) 5.02s forwards}
 /* the opening beat. Everything inside is held back behind it, so the first
    thing on screen is nothing, on purpose, for a third of a second. */
 .boot::before{content:'';position:absolute;inset:0;background:#000;z-index:2;
  animation:bootIn .46s cubic-bezier(.4,0,1,1) .34s forwards}
 @keyframes bootIn{to{opacity:0}}
+/* FIVE BEATS AT THE TAIL. Ruled, and the count is the animation's iteration
+   count rather than five keyframes written out, so five is five and cannot
+   drift to four by somebody editing a percentage.
+
+   The whole mark beats, not one part of it. The core already carries an
+   anticipation and a squash through bootCore and holds its end state with
+   both, so a second transform animation on the same element would fight it
+   for the property. The group above it is free, which is where a beat belongs
+   anyway: a heartbeat moves the whole body.
+
+   They start at 4.10s, as the wordmark finishes landing, and the last one
+   closes at 5.05s, which is where the fade takes over. */
 .boot-svg{width:min(42vmin,300px);height:min(42vmin,300px);overflow:visible;
- fill:none;stroke-linecap:round}
+ fill:none;stroke-linecap:round;transform-origin:50% 50%;
+ animation:bootBeat .19s cubic-bezier(.4,0,.2,1) 4.10s 5 both}
+@keyframes bootBeat{
+ 0%  {transform:scale(1)}
+ 42% {transform:scale(1.034)}
+ 100%{transform:scale(1)}}
 /* ANTICIPATION and SQUASH. The core draws in before it releases, flattens as
    it expands and rounds as it lands. */
 .b-core{fill:var(--accent);transform-origin:100px 100px;opacity:0;
@@ -3074,6 +3109,10 @@ body:not(.tab-field) .cv-legend{display:none}
 .pol2-mv{will-change:transform}
 .pol2-mk,.pol2-dot,.pol2-ring{pointer-events:none}
 @keyframes bootOut{to{opacity:0;visibility:hidden}}
+/* the beat is motion, so somebody who asked the machine to stop moving does
+   not get five of them. Same rule as everything else in this sheet: the end
+   state, not a faster version. */
+@media (prefers-reduced-motion:reduce){.boot-svg{animation:none}}
 /* the body says the boot is over. Nothing depends on it yet and it is not
    decoration: it is the hook a later surface uses to hold its own entrance
    until the instrument is actually on screen. */
@@ -3193,7 +3232,7 @@ body.tab-settings .mid .col{display:none}
  border-color:color-mix(in srgb,var(--c) 40%,var(--edge))}
 .ac-ixb.on .ac-gl{color:var(--c)}
 .ac-gl{width:20px;height:20px;flex:0 0 auto;display:grid;place-items:center;color:var(--dim)}
-.ac-gl svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.5;
+.ac-gl svg{width:var(--icon-nav);height:var(--icon-nav);fill:none;stroke:currentColor;stroke-width:1.5;
  stroke-linecap:round;stroke-linejoin:round}
 .ac-pane{min-width:0;display:flex;flex-direction:column;gap:14px}
 .ac-ph{font-size:20px;font-weight:400;color:var(--ink);letter-spacing:.005em;
@@ -3732,6 +3771,92 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
  </div>
 </div>
 <script>
+/* ============================================================
+   THE BOOT GUARD. First thing in the script, before any data.
+
+   The owner reported a build where the top navigation was gone, the centre
+   did not render, and the left rail was there. That is the exact signature of
+   a script that started and then threw: the rail is static markup in the
+   document, and the tab bar and every surface are built by code.
+
+   It could not be reproduced here. Seven viewport sizes, five shapes of
+   stored profile including garbage, and scripts disabled: all of them either
+   boot correctly or show the noscript notice. So the cause is something about
+   his machine that this container does not have, and guessing at it is how
+   two hours get spent on the wrong thing.
+
+   What is wrong regardless of the cause is that the failure was SILENT. A
+   half built shell looks like a product with missing features rather than
+   like a crash, and a person cannot report what they cannot see. Every write
+   that can fail reports through status(); a boot that fails has to report
+   too, and it cannot use status() because status() may not exist yet.
+
+   So: catch the first error, show it, and say what to send back. The message
+   is plain DOM built by hand, with no dependency on anything this file loads
+   after it, because everything after it is what might be broken.
+   ============================================================ */
+(function(){
+ var BOOTED=false, SHOWN=false;
+ /* the app calls this at the end of its own init. anything that stops the
+    script reaching that line leaves BOOTED false. */
+ window.__bootOk=function(){BOOTED=true;};
+ function show(what,where){
+  if(SHOWN)return; SHOWN=true;
+  try{
+   var d=document.createElement('div');
+   d.setAttribute('role','alert');
+   d.style.cssText='position:fixed;inset:0;z-index:99999;background:#0E0E0F;'
+    +'color:#E6E7EA;font:15px/1.6 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;'
+    +'display:flex;align-items:center;justify-content:center;padding:32px;'
+    +'-webkit-font-smoothing:antialiased';
+   var box=document.createElement('div');
+   box.style.cssText='max-width:62ch';
+   var h=document.createElement('h1');
+   h.textContent='This build stopped while it was starting up.';
+   h.style.cssText='font-size:22px;margin:0 0 10px;font-weight:600;letter-spacing:-.01em';
+   var p1=document.createElement('p');
+   p1.textContent='The instrument is built in the browser, so when the script '
+    +'stops early you are left looking at the frame: the left rail is in the '
+    +'document, and the navigation and every surface are not. Nothing you have '
+    +'entered is lost. It is still in this browser.';
+   p1.style.cssText='margin:0 0 14px;color:#C9CBD2';
+   var p2=document.createElement('p');
+   p2.textContent='Send this line back and it names the cause exactly:';
+   p2.style.cssText='margin:0 0 8px;color:#8A8C94;font-size:13.5px';
+   var pre=document.createElement('pre');
+   pre.textContent=what+'\n'+where+'\n'+navigator.userAgent;
+   pre.style.cssText='margin:0;padding:14px 16px;background:#141518;'
+    +'border:1px solid #26282E;border-radius:10px;white-space:pre-wrap;'
+    +'word-break:break-word;font:12px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;'
+    +'color:#D6A93B;-webkit-user-select:text;user-select:text';
+   box.appendChild(h);box.appendChild(p1);box.appendChild(p2);box.appendChild(pre);
+   d.appendChild(box);
+   (document.body||document.documentElement).appendChild(d);
+   /* the boot sheet fades on a CSS animation whether or not scripts ran, so it
+      has to be taken off by hand or it uncovers this and then covers it again */
+   var bt=document.getElementById('boot'); if(bt)bt.style.display='none';
+  }catch(e){
+   /* if even that fails, the document is beyond help and the console is all
+      that is left. Saying nothing is still not an option. */
+   try{document.title='Atuned failed to start: '+what;}catch(e2){}}}
+ window.addEventListener('error',function(e){
+  if(BOOTED)return;                 /* after boot, a throw is not a dead app */
+  show(String((e&&e.message)||'unknown error'),
+       String((e&&e.filename)||'')+' line '+((e&&e.lineno)||'?'));});
+ window.addEventListener('unhandledrejection',function(e){
+  if(BOOTED)return;
+  show('unhandled promise rejection: '+String((e&&e.reason&&e.reason.message)||e.reason||''),'');});
+ /* AND A THROW IS NOT THE ONLY WAY TO FAIL. A script that is truncated, or
+    that a browser refuses to parse past some point, never reaches the end and
+    never throws at run time either. So the guard also checks, once, that the
+    app said it finished. Eight seconds is past the boot sheet's own five and
+    a bit, on a machine slower than any this has been measured on. */
+ setTimeout(function(){
+  if(BOOTED)return;
+  var tb=document.getElementById('tabbar');
+  show('the script never reached the end of its own start up',
+       'navigation built: '+(tb&&tb.children.length?tb.children.length+' tabs':'none'));},8000);
+})();
 /* ============================================================
    THE 112 ADDRESSES. 108 somatic, seated at a named plexus or
    nerve, plus 4 field anchors above and below the body.
@@ -4312,20 +4437,35 @@ const MIRROR=[
   up:'Elijah',   upd:'Grounded fire. Intensity moving through the body without destroying the container or the target.',
   dn:'Phlegyas', dnd:'Charge split at the root. Outward as rage or inward as paralysis. The same current, no clean exit.',
   ask:'Where does this person’s intensity go when it has nowhere to land?', ic:'M13 2.5L5.5 13.5H11L10 21.5l7.5-11H12z', dic:'M12 3v8M12 15v6M6 9l-2.6-2.6M18 9l2.6-2.6M4 13.5h3.4M16.6 13.5H20'},
- /* ECKHART IS OUT. Ruled: classic figures only. He was the one name on the
-    eight that was not classical, and the axis is Revelation at the Crown,
-    which is direct knowing with the doctrine dropped. Lao Tzu carries it, and
-    he is already canon in this file at the horizontal. The line that names
-    him is the opening of the Tao Te Ching read as this axis: a doctrine that
-    says of itself that it is not the thing. SUBJECT TO HIS CONFIRMATION. The
-    removal is his ruling; who replaces Eckhart is his material, not mine, and
-    an axis with no coherent pole breaks the figure, so this is a stated
-    assumption rather than a silent choice. */
+ /* ECKHART IS OUT AND JESUS TAKES THE CROWN. Both ruled. Eckhart was the one
+    name on the eight that was not classical. Lao Tzu held the axis for one
+    commit as a stated assumption, flagged as needing confirmation, and the
+    confirmation came back as somebody else: "that would be Jesus at the very
+    top. That's love. Love transmutes all. That's the highest charge."
+
+    SO JESUS STANDS AT TWO POLES ON THIS FIGURE, and that is the owner's
+    canon rather than a mistake to route around. He is the coherent pole of
+    Illumination at the Heart, which is love generated from within and freely
+    given, and of Revelation at the Crown, which is love as the thing every
+    other frequency reorganises around. The codex already carries both: the
+    master list has him at the Ananda apex under the name Christ, and the
+    mirror pairs have him at the Heart under the name Jesus.
+
+    ONE FIGURE, ONE NAME. Christ and Jesus were one person under two names
+    across two lists in this file, which is the rule about one word per
+    concept broken in the canon itself. Jesus is the name the figure carries,
+    because it is the one the eight mirror pairs already used, and the master
+    list now uses it too.
+
+    OPEN, AND HIS: whether the Crown axis is still called Revelation now that
+    love rather than direct knowing stands at the top of it. */
  {k:'RE', q:'Revelation', seat:'Crown',
-  up:'Lao Tzu', upd:'Direct knowing. The name that can be named is not the thing, so the doctrine is set down once it has done its work.',
+  up:'Jesus', upd:'Love as the highest charge. The state every other frequency reorganises around, and the one that transmutes what it meets rather than opposing it.',
   dn:'The Furies',      dnd:'Map replacing territory permanently. The belief system defended against any experience that contradicts it.',
   ask:'Can this person update their framework when direct experience contradicts it?',
-  ic:'M12 3.5a6 6 0 013.5 10.9V17h-7v-2.6A6 6 0 0112 3.5M9.5 20h5',
+  /* the same radiant he carries at the Heart, because it is the same figure
+     and a second drawing would be a second concept. */
+  ic:'M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1M12 8a4 4 0 110 8 4 4 0 010-8',
   dic:'M4 5h16v12H4zM8 9h8M8 13h5'}];
 
 /* ---- THE TWELVE, ON THE COORDINATE SYSTEM ----
@@ -4341,7 +4481,9 @@ const MIRROR=[
 const MASTERS=[
  {nm:'Akhenaten', ax:'X',  of:'Sat apex',            was:'Truth and light',      d:'Maximum Sat. Energy conducting without distortion. The output is literal light.'},
  {nm:'Buddha',    ax:'Y',  of:'Chit apex',           was:'Wisdom and awareness', d:'Be with the emotions, do not become them. The awareness layer kept clean without identification locking the wave into a node.'},
- {nm:'Christ',    ax:'Z',  of:'Ananda apex',         was:'Love',                 d:'Maximum expansion, the state in which every other frequency can reorganise around the coherent signal. The body is the instrument.'},
+ /* CHRIST WAS JESUS UNDER A SECOND NAME. One figure, one name, and the mirror
+    pairs already used this one. */
+ {nm:'Jesus',     ax:'Z',  of:'Ananda apex',         was:'Love',                 d:'Maximum expansion, the state in which every other frequency can reorganise around the coherent signal. The body is the instrument.'},
  {nm:'Krishna',   ax:'Z',  of:'Ananda in motion',    was:'Flow',                 d:'The field wants to move, and most suffering is the result of blocking that motion.'},
  {nm:'Rama',      ax:'∑', of:'all three held',  was:'Alignment',            d:'Sat, Chit and Ananda clear at once. Duty as the spine that keeps all three upright under pressure.'},
  {nm:'Lao Tzu',   ax:'⊥', of:'horizontal',      was:'Non resistance',       d:'Perpendicular to the vertical axes. Stop the activity generating the interference.'},
@@ -4350,18 +4492,20 @@ const MASTERS=[
  {nm:'Musashi',   ax:'∴', of:'practice layer',  was:'Discipline',           d:'Sustained application of will at the node level over time. Two steps forward, one step back. Failure as data, not judgement.'},
  {nm:'Ramakrishna',ax:'Z', of:'desire surrendered',  was:'Devotion',             d:'Wanting that moves toward something beyond the self.'},
  {nm:'Elijah',    ax:'Z',  of:'charge grounded',     was:'Fire',                 d:'Intensity moving through the body without destroying the container or the target.'},
- /* ECKHART'S ROW IS GONE FROM HERE TOO, and it does not get a replacement,
-    because duplicating a name already on this list would make twelve by
-    counting somebody twice. The list is ELEVEN until he names the twelfth.
+ /* ELEVEN, AND IT IS ELEVEN ON PURPOSE NOW RATHER THAN BY ACCIDENT.
 
-    That is a real hole and it is stated rather than papered over. The codex
-    says the twelve are the union of the nine placed on the axes and the
-    three that come only from the mirror pairs. Lao Tzu now carries Revelation
-    on the mirror axis and he was already here at the horizontal, so the union
-    lost a member rather than swapping one. BOOK-ERRATA carries the
-    arithmetic and this is now the second entry in it.
+    Eckhart's row went with the ruling that took him off the mirror axis.
+    Jesus carries Revelation now and he is already on this list at the Ananda
+    apex, so the union did not gain a member: the codex's twelve is eleven
+    distinct people until the owner names another, and the honest thing is to
+    say so rather than to pad it.
 
-    HIS CALL: which classical figure anchors Revelation at the Crown. */];
+    Christ and Jesus were the same figure under two names across these two
+    lists, which is the one word per concept rule broken inside the canon. It
+    is one name now, and unifying it did not change the count because they
+    were never two people.
+
+    BOOK-ERRATA carries the arithmetic. */];
 
 /* ---- THE DECOHERENT BLUEPRINT, THE DQ TERMINUS ----
    "These are not mythological figures. They are behavioural modes,
@@ -16659,9 +16803,10 @@ function helpSheet(){
   document.body.classList.add('booted'); }
  el.addEventListener('animationend',function(e){
   if(e.animationName==='bootOut')clear();});
- /* the floor. 5.2s is the end of the sequence, bookends included, and this
-    sits just past it. */
- setTimeout(clear,5400);
+ /* the floor. 5.26s is the end of the sequence now, five beats and the
+    quicker fade included, and this sits just past it. A dropped animationend
+    must never leave the sheet standing over a working instrument. */
+ setTimeout(clear,5450);
  /* AND THERE IS A WAY OUT. Anything over 600ms needs one, and this is five
     seconds. It is the overture and it is worth watching, so it is not
     skipped automatically on a return visit and no flag is stored: a person
@@ -18627,4 +18772,10 @@ layout(); mxKey(); wireSections(); loadP(0);
    wonder which of the two is the live one. */
 setTab(TAB.FIELD);
 requestAnimationFrame(loop);
+/* THE LAST LINE OF THE START UP SAYS SO. The boot guard at the top of the
+   script watches for this and, if it never comes, puts the reason on the
+   screen instead of leaving the frame standing with nothing in it. It is the
+   last statement on purpose: anything that stops the script before here is
+   exactly what the guard exists to report. */
+if(typeof window.__bootOk==='function')window.__bootOk();
 </script></body></html>

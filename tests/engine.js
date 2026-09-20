@@ -1049,6 +1049,20 @@ g('21 \u00b7 the compass. two cones, eight axes, a descent');
   +'twelfth, got '+MASTERS.length);
  ok(!MASTERS.some(m=>/Eckhart/.test(m.nm))&&!MIRROR.some(m=>/Eckhart/.test(m.up)),
   'and Eckhart is out of both lists, as ruled');
+ /* JESUS AT THE CROWN, RULED, AND HE STANDS AT TWO POLES. That is the owner's
+    canon and not a duplicate to route around: love generated from within at
+    the Heart, and love as the highest charge at the Crown. Pinned, because a
+    name at two poles is exactly the kind of thing a later edit would
+    "tidy up" without knowing it was asked for. */
+ ok(MIRROR.some(m=>m.seat==='Crown'&&m.up==='Jesus'),
+  'Jesus carries the Crown, as ruled');
+ ok(MIRROR.filter(m=>m.up==='Jesus').length===2,
+  'and stands at two poles, at the Heart and at the Crown, which is his canon');
+ /* ONE FIGURE, ONE NAME. Christ and Jesus were the same person under two
+    names across the two lists, which is one word per concept broken inside
+    the canon itself. */
+ ok(!MASTERS.some(m=>m.nm==='Christ')&&MASTERS.some(m=>m.nm==='Jesus'),
+  'and Christ is not a second name for him on the master list');
  /* NOBODY IS ON THIS LIST TWICE. The first cut of the removal put Akhenaten
     in Eckhart's row and he was already the first entry, which would have kept
     the count at twelve by counting one man twice. */

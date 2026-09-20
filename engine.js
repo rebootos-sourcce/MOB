@@ -578,20 +578,35 @@ const MIRROR=[
   up:'Elijah',   upd:'Grounded fire. Intensity moving through the body without destroying the container or the target.',
   dn:'Phlegyas', dnd:'Charge split at the root. Outward as rage or inward as paralysis. The same current, no clean exit.',
   ask:'Where does this person’s intensity go when it has nowhere to land?', ic:'M13 2.5L5.5 13.5H11L10 21.5l7.5-11H12z', dic:'M12 3v8M12 15v6M6 9l-2.6-2.6M18 9l2.6-2.6M4 13.5h3.4M16.6 13.5H20'},
- /* ECKHART IS OUT. Ruled: classic figures only. He was the one name on the
-    eight that was not classical, and the axis is Revelation at the Crown,
-    which is direct knowing with the doctrine dropped. Lao Tzu carries it, and
-    he is already canon in this file at the horizontal. The line that names
-    him is the opening of the Tao Te Ching read as this axis: a doctrine that
-    says of itself that it is not the thing. SUBJECT TO HIS CONFIRMATION. The
-    removal is his ruling; who replaces Eckhart is his material, not mine, and
-    an axis with no coherent pole breaks the figure, so this is a stated
-    assumption rather than a silent choice. */
+ /* ECKHART IS OUT AND JESUS TAKES THE CROWN. Both ruled. Eckhart was the one
+    name on the eight that was not classical. Lao Tzu held the axis for one
+    commit as a stated assumption, flagged as needing confirmation, and the
+    confirmation came back as somebody else: "that would be Jesus at the very
+    top. That's love. Love transmutes all. That's the highest charge."
+
+    SO JESUS STANDS AT TWO POLES ON THIS FIGURE, and that is the owner's
+    canon rather than a mistake to route around. He is the coherent pole of
+    Illumination at the Heart, which is love generated from within and freely
+    given, and of Revelation at the Crown, which is love as the thing every
+    other frequency reorganises around. The codex already carries both: the
+    master list has him at the Ananda apex under the name Christ, and the
+    mirror pairs have him at the Heart under the name Jesus.
+
+    ONE FIGURE, ONE NAME. Christ and Jesus were one person under two names
+    across two lists in this file, which is the rule about one word per
+    concept broken in the canon itself. Jesus is the name the figure carries,
+    because it is the one the eight mirror pairs already used, and the master
+    list now uses it too.
+
+    OPEN, AND HIS: whether the Crown axis is still called Revelation now that
+    love rather than direct knowing stands at the top of it. */
  {k:'RE', q:'Revelation', seat:'Crown',
-  up:'Lao Tzu', upd:'Direct knowing. The name that can be named is not the thing, so the doctrine is set down once it has done its work.',
+  up:'Jesus', upd:'Love as the highest charge. The state every other frequency reorganises around, and the one that transmutes what it meets rather than opposing it.',
   dn:'The Furies',      dnd:'Map replacing territory permanently. The belief system defended against any experience that contradicts it.',
   ask:'Can this person update their framework when direct experience contradicts it?',
-  ic:'M12 3.5a6 6 0 013.5 10.9V17h-7v-2.6A6 6 0 0112 3.5M9.5 20h5',
+  /* the same radiant he carries at the Heart, because it is the same figure
+     and a second drawing would be a second concept. */
+  ic:'M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1M12 8a4 4 0 110 8 4 4 0 010-8',
   dic:'M4 5h16v12H4zM8 9h8M8 13h5'}];
 
 /* ---- THE TWELVE, ON THE COORDINATE SYSTEM ----
@@ -607,7 +622,9 @@ const MIRROR=[
 const MASTERS=[
  {nm:'Akhenaten', ax:'X',  of:'Sat apex',            was:'Truth and light',      d:'Maximum Sat. Energy conducting without distortion. The output is literal light.'},
  {nm:'Buddha',    ax:'Y',  of:'Chit apex',           was:'Wisdom and awareness', d:'Be with the emotions, do not become them. The awareness layer kept clean without identification locking the wave into a node.'},
- {nm:'Christ',    ax:'Z',  of:'Ananda apex',         was:'Love',                 d:'Maximum expansion, the state in which every other frequency can reorganise around the coherent signal. The body is the instrument.'},
+ /* CHRIST WAS JESUS UNDER A SECOND NAME. One figure, one name, and the mirror
+    pairs already used this one. */
+ {nm:'Jesus',     ax:'Z',  of:'Ananda apex',         was:'Love',                 d:'Maximum expansion, the state in which every other frequency can reorganise around the coherent signal. The body is the instrument.'},
  {nm:'Krishna',   ax:'Z',  of:'Ananda in motion',    was:'Flow',                 d:'The field wants to move, and most suffering is the result of blocking that motion.'},
  {nm:'Rama',      ax:'∑', of:'all three held',  was:'Alignment',            d:'Sat, Chit and Ananda clear at once. Duty as the spine that keeps all three upright under pressure.'},
  {nm:'Lao Tzu',   ax:'⊥', of:'horizontal',      was:'Non resistance',       d:'Perpendicular to the vertical axes. Stop the activity generating the interference.'},
@@ -616,18 +633,20 @@ const MASTERS=[
  {nm:'Musashi',   ax:'∴', of:'practice layer',  was:'Discipline',           d:'Sustained application of will at the node level over time. Two steps forward, one step back. Failure as data, not judgement.'},
  {nm:'Ramakrishna',ax:'Z', of:'desire surrendered',  was:'Devotion',             d:'Wanting that moves toward something beyond the self.'},
  {nm:'Elijah',    ax:'Z',  of:'charge grounded',     was:'Fire',                 d:'Intensity moving through the body without destroying the container or the target.'},
- /* ECKHART'S ROW IS GONE FROM HERE TOO, and it does not get a replacement,
-    because duplicating a name already on this list would make twelve by
-    counting somebody twice. The list is ELEVEN until he names the twelfth.
+ /* ELEVEN, AND IT IS ELEVEN ON PURPOSE NOW RATHER THAN BY ACCIDENT.
 
-    That is a real hole and it is stated rather than papered over. The codex
-    says the twelve are the union of the nine placed on the axes and the
-    three that come only from the mirror pairs. Lao Tzu now carries Revelation
-    on the mirror axis and he was already here at the horizontal, so the union
-    lost a member rather than swapping one. BOOK-ERRATA carries the
-    arithmetic and this is now the second entry in it.
+    Eckhart's row went with the ruling that took him off the mirror axis.
+    Jesus carries Revelation now and he is already on this list at the Ananda
+    apex, so the union did not gain a member: the codex's twelve is eleven
+    distinct people until the owner names another, and the honest thing is to
+    say so rather than to pad it.
 
-    HIS CALL: which classical figure anchors Revelation at the Crown. */];
+    Christ and Jesus were the same figure under two names across these two
+    lists, which is the one word per concept rule broken inside the canon. It
+    is one name now, and unifying it did not change the count because they
+    were never two people.
+
+    BOOK-ERRATA carries the arithmetic. */];
 
 /* ---- THE DECOHERENT BLUEPRINT, THE DQ TERMINUS ----
    "These are not mythological figures. They are behavioural modes,

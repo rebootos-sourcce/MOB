@@ -782,7 +782,16 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
  content:'';position:absolute;left:14px;right:14px;bottom:5px;height:1.5px;
  border-radius:2px;background:var(--accent)}
 .vt[aria-pressed=true] svg{stroke:var(--accent)}
-.vt svg{width:17px;height:17px;stroke:currentColor;stroke-width:1.6;fill:none;
+/* FIVE PER CENT DOWN. Ruled: "the navigation icons, can you reduce those down
+   by let's say five per cent, it is just kind of large."
+
+   17 to 16.15, carried as a token rather than typed into four rules, because
+   the same size is set in four places and four copies of one number is how
+   three of them end up stale. The button's own tap target does not move: this
+   is the drawing inside it, not the thing a thumb has to hit. */
+:root{--icon-nav:16.15px}
+.vt svg{width:var(--icon-nav);height:var(--icon-nav);stroke:currentColor;
+ stroke-width:1.6;fill:none;
  stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}
 .vt .n{display:block}
 /* the top-level surface switch. .vt carries the look, .tabtop marks the role.
@@ -2499,7 +2508,7 @@ body.punch .iq-sh{border-bottom-color:transparent}
 .iq-shd{font-size:12.5px;color:var(--dim)}
 .iq-gl{width:22px;height:22px;flex:0 0 auto;display:grid;place-items:center;
  color:var(--c);align-self:center}
-.iq-gl svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.5;
+.iq-gl svg{width:var(--icon-nav);height:var(--icon-nav);fill:none;stroke:currentColor;stroke-width:1.5;
  stroke-linecap:round;stroke-linejoin:round}
 .iq-gl.big svg{width:19px;height:19px}
 /* TWO LAW CARDS ACROSS, NOT THREE QUESTIONS ACROSS. Drawn by the owner, and
@@ -2853,14 +2862,40 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
 .boot{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;
  align-items:center;justify-content:center;gap:26px;background:#000;
  pointer-events:none;
- animation:bootOut .58s cubic-bezier(.4,0,1,1) 4.62s forwards}
+ /* THE FADE IS QUICK AND IT IS EASED AT BOTH ENDS. Ruled: "a fade in very
+    very quick, a nice little ease in, ease out, so it is just smooth."
+
+    It was .58s on cubic-bezier(.4,0,1,1), which accelerates the whole way and
+    never eases out: it arrives at full speed and stops dead. Half the length
+    on a curve that is eased at both ends, which is the standard ease in out
+    and what smooth actually means. The sheet is gone at 5.26s, a shade sooner
+    than the 5.20 it used to end at, so the five beats are bought out of the
+    sequence rather than added to a person's wait. */
+ animation:bootOut .24s cubic-bezier(.4,0,.2,1) 5.02s forwards}
 /* the opening beat. Everything inside is held back behind it, so the first
    thing on screen is nothing, on purpose, for a third of a second. */
 .boot::before{content:'';position:absolute;inset:0;background:#000;z-index:2;
  animation:bootIn .46s cubic-bezier(.4,0,1,1) .34s forwards}
 @keyframes bootIn{to{opacity:0}}
+/* FIVE BEATS AT THE TAIL. Ruled, and the count is the animation's iteration
+   count rather than five keyframes written out, so five is five and cannot
+   drift to four by somebody editing a percentage.
+
+   The whole mark beats, not one part of it. The core already carries an
+   anticipation and a squash through bootCore and holds its end state with
+   both, so a second transform animation on the same element would fight it
+   for the property. The group above it is free, which is where a beat belongs
+   anyway: a heartbeat moves the whole body.
+
+   They start at 4.10s, as the wordmark finishes landing, and the last one
+   closes at 5.05s, which is where the fade takes over. */
 .boot-svg{width:min(42vmin,300px);height:min(42vmin,300px);overflow:visible;
- fill:none;stroke-linecap:round}
+ fill:none;stroke-linecap:round;transform-origin:50% 50%;
+ animation:bootBeat .19s cubic-bezier(.4,0,.2,1) 4.10s 5 both}
+@keyframes bootBeat{
+ 0%  {transform:scale(1)}
+ 42% {transform:scale(1.034)}
+ 100%{transform:scale(1)}}
 /* ANTICIPATION and SQUASH. The core draws in before it releases, flattens as
    it expands and rounds as it lands. */
 .b-core{fill:var(--accent);transform-origin:100px 100px;opacity:0;
@@ -3074,6 +3109,10 @@ body:not(.tab-field) .cv-legend{display:none}
 .pol2-mv{will-change:transform}
 .pol2-mk,.pol2-dot,.pol2-ring{pointer-events:none}
 @keyframes bootOut{to{opacity:0;visibility:hidden}}
+/* the beat is motion, so somebody who asked the machine to stop moving does
+   not get five of them. Same rule as everything else in this sheet: the end
+   state, not a faster version. */
+@media (prefers-reduced-motion:reduce){.boot-svg{animation:none}}
 /* the body says the boot is over. Nothing depends on it yet and it is not
    decoration: it is the hook a later surface uses to hold its own entrance
    until the instrument is actually on screen. */
@@ -3193,7 +3232,7 @@ body.tab-settings .mid .col{display:none}
  border-color:color-mix(in srgb,var(--c) 40%,var(--edge))}
 .ac-ixb.on .ac-gl{color:var(--c)}
 .ac-gl{width:20px;height:20px;flex:0 0 auto;display:grid;place-items:center;color:var(--dim)}
-.ac-gl svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.5;
+.ac-gl svg{width:var(--icon-nav);height:var(--icon-nav);fill:none;stroke:currentColor;stroke-width:1.5;
  stroke-linecap:round;stroke-linejoin:round}
 .ac-pane{min-width:0;display:flex;flex-direction:column;gap:14px}
 .ac-ph{font-size:20px;font-weight:400;color:var(--ink);letter-spacing:.005em;

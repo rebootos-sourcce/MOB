@@ -49,6 +49,8 @@ The four the project manager has promoted. Ordered by what unblocks the most.
       at the render every time.
 - [x] **N0c. Rename soul to awareness everywhere.** `tools/awareness.js`,
       `tools/awarenesspage.js`, `reviews/awareness.html`.
+- [ ] **N5. The five beats and the fade are in. The funnel is next.** `AO0`
+      Zero pages exist and he thought it was built.
 - [ ] **N4. The copy editor pass on every number.** standing, `AR1`
       A number that does not say what it is out of does not print. This is his
       instruction to me, not a task he has to keep catching.
@@ -301,13 +303,37 @@ Look and language
 - [?] D3. Video hosting: 15.4 MB against a one file build with no network
 - [?] D4. Films 7 and 8 are numbered opposite to the engine
 - [?] D5. Three laws carry two names, and Balance collides with the wheel strip
-- [?] D6. What Source AI may read
+- [x] D6. **RULED. What Source AI reads, and what it is for.**
+      His words, 20 September, and they answer a systems question rather than
+      a permissions one. It reads:
+      the spiritual overlap behaviour, because agreement across five systems
+      read independently off one birth date is what shows consistency;
+      the psychology structure;
+      the knowledge base;
+      and it measures all of that against CQ, spiritual integrity, intention,
+      expression, and the way a person communicates in their story.
+      Out of that it takes a snapshot of behavioural energies and motion, at
+      whatever structure the question lands on: saboteur, complex, hyper
+      complex, archetype, it does not matter, because it is one connected
+      system. Not driving each other. A FLOW, FROM INTENTION TO OUTPUT.
+      `reviews/SPEC-source-ai.md`
+      *Still his, separately: whether any of it may leave the device. This
+      ruling says what the model reads, not where the model runs.*
 - [?] D7. The mark: direction A or B
 - [?] D8. The boot: three seconds or five
 - [?] D9. Nine release rulings, including what a mask is
 - [?] D10. The therapy equivalence claim, before the funnel ships
 - [?] D11. The opening surface. Summary, then Field, then Avatar.
 - [?] D12. Two factor auth, yes or no
+- [x] D19. **Jesus carries the Crown. Ruled.** "That would be Jesus at the
+      very top. That's love. Love transmutes all. That's the highest charge."
+      He stands at two poles now, the Heart and the Crown, which is his canon
+      and is pinned by a gate so a later edit cannot tidy it away. Christ and
+      Jesus were one figure under two names across two lists and are one name.
+      The master list stays eleven, because unifying two names for one person
+      does not add a person.
+- [?] D20. Whether the Crown axis is still called Revelation now that love
+      rather than direct knowing stands at the top of it.
 - [x] D18. **THE MARK IS CALLED AWARENESS, LOWERCASE.** Ruled 20 September.
       He said "just call it sol, lowercase" and corrected himself in the same
       breath: "actually, it's called awareness." Awareness stands, sol is

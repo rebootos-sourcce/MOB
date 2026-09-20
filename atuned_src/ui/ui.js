@@ -959,3 +959,9 @@ layout(); mxKey(); wireSections(); loadP(0);
    wonder which of the two is the live one. */
 setTab(TAB.FIELD);
 requestAnimationFrame(loop);
+/* THE LAST LINE OF THE START UP SAYS SO. The boot guard at the top of the
+   script watches for this and, if it never comes, puts the reason on the
+   screen instead of leaving the frame standing with nothing in it. It is the
+   last statement on purpose: anything that stops the script before here is
+   exactly what the guard exists to report. */
+if(typeof window.__bootOk==='function')window.__bootOk();
