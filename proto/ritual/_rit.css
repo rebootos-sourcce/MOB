@@ -102,7 +102,7 @@ h1,h2,h3{font-weight:600;letter-spacing:-.01em;margin:0}
 /* ---------- controls ---------- */
 select,button,textarea,input{font:inherit;color:inherit}
 select{background:var(--panel-2);border:1px solid var(--edge);border-radius:999px;
- padding:9px 14px;min-height:var(--tap);max-width:230px}
+ padding:9px 14px;min-height:var(--tap);max-width:230px;min-width:0}
 .btn{background:var(--panel-2);border:1px solid var(--edge);color:var(--ink);
  border-radius:999px;min-height:var(--tap);padding:9px 17px;font-size:14px;
  font-weight:400;cursor:pointer;transition:all var(--t-micro) var(--ease-out)}
@@ -224,11 +224,11 @@ textarea:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--gold);
    A day before the record starts has no pixel and no baseline under it. A
    day that has not happened is not a failure.
    ============================================================ */
-.wave{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:var(--pxgap);
- align-items:end}
+.wave{display:grid;grid-template-columns:repeat(7,minmax(var(--tap),1fr));
+ gap:var(--pxgap);align-items:end}
 .wcol{display:flex;flex-direction:column;align-items:center;gap:var(--pxgap);
  background:none;border:0;padding:6px 2px;margin:0;cursor:pointer;color:inherit;
- border-radius:var(--r-xs);min-height:var(--tap);
+ border-radius:var(--r-xs);min-height:var(--tap);min-width:var(--tap);
  transition:background var(--t-micro) var(--ease-out)}
 .wcol:hover{background:var(--panel-2)}
 .wcol.today{background:color-mix(in srgb,var(--accent) 9%,transparent)}
@@ -428,7 +428,7 @@ textarea:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--gold);
  .fig-n{font-size:28px}
  .wrap{padding:0 16px}
  .brand{width:100%;margin-bottom:4px}
- select{max-width:none;flex:1 1 100%}
+ select{max-width:none;flex:1 1 100%;min-width:0;width:100%}
  .wdl{grid-template-columns:repeat(7,1fr);gap:3px}
  .wdi b{font-size:11px}
  body{padding-bottom:36px}}

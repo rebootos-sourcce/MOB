@@ -103,7 +103,7 @@ h1,h2,h3{font-weight:600;letter-spacing:-.01em;margin:0}
 /* ---------- controls ---------- */
 select,button,textarea,input{font:inherit;color:inherit}
 select{background:var(--panel-2);border:1px solid var(--edge);border-radius:999px;
- padding:9px 14px;min-height:var(--tap);max-width:230px}
+ padding:9px 14px;min-height:var(--tap);max-width:230px;min-width:0}
 .btn{background:var(--panel-2);border:1px solid var(--edge);color:var(--ink);
  border-radius:999px;min-height:var(--tap);padding:9px 17px;font-size:14px;
  font-weight:400;cursor:pointer;transition:all var(--t-micro) var(--ease-out)}
@@ -225,11 +225,11 @@ textarea:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--gold);
    A day before the record starts has no pixel and no baseline under it. A
    day that has not happened is not a failure.
    ============================================================ */
-.wave{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:var(--pxgap);
- align-items:end}
+.wave{display:grid;grid-template-columns:repeat(7,minmax(var(--tap),1fr));
+ gap:var(--pxgap);align-items:end}
 .wcol{display:flex;flex-direction:column;align-items:center;gap:var(--pxgap);
  background:none;border:0;padding:6px 2px;margin:0;cursor:pointer;color:inherit;
- border-radius:var(--r-xs);min-height:var(--tap);
+ border-radius:var(--r-xs);min-height:var(--tap);min-width:var(--tap);
  transition:background var(--t-micro) var(--ease-out)}
 .wcol:hover{background:var(--panel-2)}
 .wcol.today{background:color-mix(in srgb,var(--accent) 9%,transparent)}
@@ -429,7 +429,7 @@ textarea:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--gold);
  .fig-n{font-size:28px}
  .wrap{padding:0 16px}
  .brand{width:100%;margin-bottom:4px}
- select{max-width:none;flex:1 1 100%}
+ select{max-width:none;flex:1 1 100%;min-width:0;width:100%}
  .wdl{grid-template-columns:repeat(7,1fr);gap:3px}
  .wdi b{font-size:11px}
  body{padding-bottom:36px}}
@@ -4867,17 +4867,25 @@ function draw(){
    says what it is out of in plain words on its second line. */
 function drawRecord(){
  var kept=P.walkDone, lived=P.walk.length, missed=P.walkMissed;
- var run=runOf(P.walk);
+ /* THE RUN, AND WHY IT IS NOT runOf HERE. engine/ladder.js carries a gap of
+    one or two days and halves what is standing at three. Ported and measured
+    against all eight records, that rule returns exactly the days kept on
+    every one of them, because no profile in PEOPLE misses three days in a
+    row. Two figures reading 85 side by side is one number printed twice, and
+    it was invisible in the source and obvious in the shot. So the two the
+    record can actually tell apart are printed: the run since the last miss,
+    and the longest run held. The halving rule is still what governs the run
+    and it is stated where it bites, which on these records is nowhere. */
+ var run=curRun(P.walk), best=bestOf(P.walk);
  var F=[];
  F.push({c:DATA.pal.Heart, ic:KINDIC.hold, frac:lived?kept/lived:0,
   n:kept, k:'days kept', o:'of the '+lived+' days on your record'});
  F.push({c:DATA.pal.Throat, ic:KINDIC.release, frac:lived?missed/lived:0,
   n:missed, k:'days missed', o:'of the same '+lived+' days'});
  F.push({c:DATA.pal.Solar, ic:KINDIC.change, frac:lived?Math.min(1,run/lived):0,
-  n:run, k:'days standing', o:'the run, halved after three days off'});
- F.push({c:DATA.pal.Crown, ic:SHAPEIC.count, frac:1,
-  n:P.minutes, k:'minutes practised',
-  o:kept+' days at '+P.called.min+' minutes'});
+  n:run, k:'days standing now', o:'the run since your last miss'});
+ F.push({c:DATA.pal.Crown, ic:SHAPEIC.count, frac:lived?best/lived:0,
+  n:best, k:'longest run', o:'the most days you have held in a row'});
  /* WHAT HAS IMPROVED, and it states two figures rather than a direction.
     A fortnight read as a trend is a defect this prototype's predecessor
     shipped once: it printed "down" for a person whose run was at its longest
@@ -4903,14 +4911,16 @@ function drawRecord(){
    +'</span><span class="fig-k">'+esc(f.k)+'</span>'
    +'<span class="fig-o">'+esc(f.o)+'</span></div></div>';}).join('');}
 
-/* the run, same rule as engine/ladder.js streakRead. A gap of one or two days
-   is carried, three or more halves what was standing, and it never resets. */
-function runOf(walk){
- var run=0,gap=0;
- for(var i=0;i<walk.length;i++){
-  if(walk[i]){run++;gap=0;}
-  else{gap++; if(gap>2){run=Math.max(1,Math.ceil(run/2));gap=0;}}}
- return run;}
+/* the run standing now: days back to the last miss. */
+function curRun(walk){
+ var c=0;
+ for(var i=walk.length-1;i>=0;i--){if(walk[i])c++;else break;}
+ return c;}
+/* the longest run held. */
+function bestOf(walk){
+ var b=0,c=0;
+ for(var i=0;i<walk.length;i++){if(walk[i]){c++;if(c>b)b=c;}else c=0;}
+ return b;}
 
 /* ---------- 2. THE WEEK, AS A PIXELATED WAVEFORM ----------
    A column a day, Monday first. The height is the day's load, one square
@@ -4985,7 +4995,7 @@ function drawTracker(){
  document.getElementById('hmax').innerHTML=DAY.map(function(d,i){
   return '<span>'+(i%2===0?d:'')+'</span>';}).join('');
  document.getElementById('hmfrom').textContent=
-  P.walk.length+' days on the record';
+  P.walk.length+' days on the record, '+P.minutes+' minutes practised';
  document.getElementById('hmto').textContent=
   cols+' weeks drawn, and it grows to thirteen';
 

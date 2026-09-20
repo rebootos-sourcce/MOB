@@ -52,9 +52,9 @@ const SEL='button,input,select,textarea,a[href],[role=button]';
    const v=[...document.querySelectorAll('#sheet '+s)].filter(e=>e.offsetParent!==null);
    return {n:v.length, small:v.filter(e=>{const r=e.getBoundingClientRect();
      return r.width>0&&(r.width<44||r.height<44);})
-    .map(e=>(e.id||e.className||e.tagName)+' '
+    .map(e=>((e.id||(typeof e.className==='string'?e.className:e.tagName))+' '
      +Math.round(e.getBoundingClientRect().width)+'x'
-     +Math.round(e.getBoundingClientRect().height))};},SEL);
+     +Math.round(e.getBoundingClientRect().height)))};},SEL);
   await pg.evaluate(()=>document.getElementById('s-close').click());
 
   /* a stance card, where there is one. It is the shape that needed solving,
@@ -91,17 +91,24 @@ const SEL='button,input,select,textarea,a[href],[role=button]';
    const vis=[...document.querySelectorAll(s)].filter(e=>e.offsetParent!==null);
    const wave=vis.filter(e=>e.classList.contains('wcol'));
    const ctrls=vis.filter(e=>!e.classList.contains('wcol'));
-   /* ANYTHING WITH A POINTER AND NO BUTTON ROLE IS COUNTED TOO. The calendar's
-      heat map cells had cursor:pointer and a click path and were <i>, so the
-      touch target check never saw them. */
+   /* ANYTHING WITH A POINTER AND NO INTERACTIVE ANCESTOR IS COUNTED TOO. The
+      calendar's heat map cells had cursor:pointer and a click path and were
+      <i>, so the touch target check never saw them.
+
+      THE FIRST CUT OF THIS CHECK LIED, and it is the known good case rule in
+      CLAUDE.md biting: cursor is inherited, so every span inside a button
+      came back as its own sub 44 target and the run reported forty false
+      failures. What makes an element a target is having no interactive
+      ancestor, which is exactly the calendar's case and not this one. */
+   const name=e=>((e.id||(typeof e.className==='string'?e.className:e.tagName)
+     ||e.tagName)+' '+Math.round(e.getBoundingClientRect().width)+'x'
+     +Math.round(e.getBoundingClientRect().height));
    const sneaky=[...document.querySelectorAll('body *')].filter(e=>
     e.offsetParent!==null && !e.matches(s) &&
-    getComputedStyle(e).cursor==='pointer');
+    getComputedStyle(e).cursor==='pointer' &&
+    !e.parentElement.closest(s));
    const small=[...vis,...sneaky].filter(e=>{const r=e.getBoundingClientRect();
-     return r.width>0&&(r.width<44||r.height<44);})
-    .map(e=>(e.id||e.className||e.tagName)+' '
-     +Math.round(e.getBoundingClientRect().width)+'x'
-     +Math.round(e.getBoundingClientRect().height));
+     return r.width>0&&(r.width<44||r.height<44);}).map(name);
    out.controls=ctrls.length; out.waveCols=wave.length;
    out.choices=ctrls.length+(wave.length?1:0);
    out.sneaky=sneaky.length;

@@ -225,17 +225,25 @@ function draw(){
    says what it is out of in plain words on its second line. */
 function drawRecord(){
  var kept=P.walkDone, lived=P.walk.length, missed=P.walkMissed;
- var run=runOf(P.walk);
+ /* THE RUN, AND WHY IT IS NOT runOf HERE. engine/ladder.js carries a gap of
+    one or two days and halves what is standing at three. Ported and measured
+    against all eight records, that rule returns exactly the days kept on
+    every one of them, because no profile in PEOPLE misses three days in a
+    row. Two figures reading 85 side by side is one number printed twice, and
+    it was invisible in the source and obvious in the shot. So the two the
+    record can actually tell apart are printed: the run since the last miss,
+    and the longest run held. The halving rule is still what governs the run
+    and it is stated where it bites, which on these records is nowhere. */
+ var run=curRun(P.walk), best=bestOf(P.walk);
  var F=[];
  F.push({c:DATA.pal.Heart, ic:KINDIC.hold, frac:lived?kept/lived:0,
   n:kept, k:'days kept', o:'of the '+lived+' days on your record'});
  F.push({c:DATA.pal.Throat, ic:KINDIC.release, frac:lived?missed/lived:0,
   n:missed, k:'days missed', o:'of the same '+lived+' days'});
  F.push({c:DATA.pal.Solar, ic:KINDIC.change, frac:lived?Math.min(1,run/lived):0,
-  n:run, k:'days standing', o:'the run, halved after three days off'});
- F.push({c:DATA.pal.Crown, ic:SHAPEIC.count, frac:1,
-  n:P.minutes, k:'minutes practised',
-  o:kept+' days at '+P.called.min+' minutes'});
+  n:run, k:'days standing now', o:'the run since your last miss'});
+ F.push({c:DATA.pal.Crown, ic:SHAPEIC.count, frac:lived?best/lived:0,
+  n:best, k:'longest run', o:'the most days you have held in a row'});
  /* WHAT HAS IMPROVED, and it states two figures rather than a direction.
     A fortnight read as a trend is a defect this prototype's predecessor
     shipped once: it printed "down" for a person whose run was at its longest
@@ -261,14 +269,16 @@ function drawRecord(){
    +'</span><span class="fig-k">'+esc(f.k)+'</span>'
    +'<span class="fig-o">'+esc(f.o)+'</span></div></div>';}).join('');}
 
-/* the run, same rule as engine/ladder.js streakRead. A gap of one or two days
-   is carried, three or more halves what was standing, and it never resets. */
-function runOf(walk){
- var run=0,gap=0;
- for(var i=0;i<walk.length;i++){
-  if(walk[i]){run++;gap=0;}
-  else{gap++; if(gap>2){run=Math.max(1,Math.ceil(run/2));gap=0;}}}
- return run;}
+/* the run standing now: days back to the last miss. */
+function curRun(walk){
+ var c=0;
+ for(var i=walk.length-1;i>=0;i--){if(walk[i])c++;else break;}
+ return c;}
+/* the longest run held. */
+function bestOf(walk){
+ var b=0,c=0;
+ for(var i=0;i<walk.length;i++){if(walk[i]){c++;if(c>b)b=c;}else c=0;}
+ return b;}
 
 /* ---------- 2. THE WEEK, AS A PIXELATED WAVEFORM ----------
    A column a day, Monday first. The height is the day's load, one square
@@ -343,7 +353,7 @@ function drawTracker(){
  document.getElementById('hmax').innerHTML=DAY.map(function(d,i){
   return '<span>'+(i%2===0?d:'')+'</span>';}).join('');
  document.getElementById('hmfrom').textContent=
-  P.walk.length+' days on the record';
+  P.walk.length+' days on the record, '+P.minutes+' minutes practised';
  document.getElementById('hmto').textContent=
   cols+' weeks drawn, and it grows to thirteen';
 
