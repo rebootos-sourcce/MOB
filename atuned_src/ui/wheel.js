@@ -419,7 +419,12 @@ function solCore(r,base){
      product holds. */
   var sm=big*0.26;
   if(sm>=11){
-   g.fillStyle=rgba(ink,.5);
+   /* INK() rather than ink. solCore has no `ink` in scope, drawWheel does, and
+      the difference only showed above zoom 1 because below it the core is too
+      small for this line to be drawn at all. It threw, the draw aborted, and
+      every hit target on the surface went with it: 136 at zoom 1 and zero at
+      2.3, 3.3 and 4.3. The functional gate caught it. */
+   g.fillStyle=rgba(INK(),.5);
    g.font='400 '+sm.toFixed(1)+'px Inter, system-ui, sans-serif';
    g.fillText('of 100', CX, CY+big*0.30+sm*1.75);}
   g.restore();}

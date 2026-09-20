@@ -741,6 +741,131 @@ that is helpful to me."**
 
 ---
 
+## 0n. DELIVERED 20 SEPTEMBER. THE AVATAR, AND THE LEVER NOBODY NAMED.
+
+`DESIGN-avatar.md` rewritten and `proto/avatar/` with three runnable approaches
+plus an index. The prototypes load the product's own `engine.js` and compute
+live, so nothing in them is a stored frame: run a release, turn any of the
+twenty one law pegs, state a pair, take a hard month, go back to arrival.
+
+### THE FINDING, AND IT IS ARITHMETIC BEFORE IT IS ETHICS
+
+An avatar driven by the reading is useless before it is cruel. Measured by
+replicating `ui/release.js:88` exactly, twelve runs at eight addresses:
+
+    who      now    twelve releases    two points on the weakest three laws
+    Marcus   39.2   40.5               42.5
+    Sofia    56.6   57.3               61.6
+    Gordon    0.8    3.9                1.1
+    Diane    28.1   34.8               31.5
+
+A quarter of all release work moves Marcus 1.3 points and never changes his
+band. Two points on three laws moves him 3.3. **It reverses for Gordon.** Which
+lever is yours is a property of the person, and this product has never said so
+on any surface.
+
+- [x] **AV1 to AV5 delivered.** Recommendation is the armature: 0.20ms median,
+  5.8 KB of drawing code, and the only one of the three that needs no teaching,
+  which matters because he rejected two Field concepts for exactly that.
+- [x] **Three channels that never trade.** Record is append only. Reach is the
+  only thing a person moves directly. Weather is grey and sits off the figure.
+  A hard month leaves every record number byte identical while the reading
+  falls, so **no demotion is expressible**. That is the answer to the risk that
+  an avatar tells somebody they are worth more when they are less distressed.
+- [ ] **AV7. The avatar has no writer.** `avatar.pairs` has three readers and
+  zero writers. `avatar.built` is set only by `validateProfile` from an import
+  that until this round had no control, so the monthly review clock could never
+  fire. The two journal questions `drills.js:709` promises do not exist. It is
+  one of the four doors on a blank profile and the only one that cannot be
+  walked through.
+
+### THREE DEFECTS IT FOUND IN FILES IT DID NOT OWN
+
+- [ ] **AV8. `summary.js:273` prints a guaranteed false all clear.** It reads
+  `pair.becoming` and `pair.seat`; the schema is `{be, notbe}`. `blocked` is
+  always empty, so it always says "Every seat your avatar depends on is
+  passing." It has never fired wrongly only because nothing can write a pair,
+  and it becomes dangerous the moment a writer lands.
+- [ ] **AV9. `drills.js:706` prints done of total**, a count against a total,
+  which law 5 and CLAUDE.md both forbid.
+- [ ] **AV10. `cqCeiling` and `cqHeadroom` are not exported**, so the headless
+  gate cannot reach the most consequential number in the avatar design. Same
+  finding the integrity census reached independently.
+- [ ] **AV11. The weight sorted release queue never reaches the Crown or the
+  third eye** for Diane, Marcus or Gordon across twelve runs. Stating a Heart
+  pair takes Heart contact from 0 to 15 on Gordon, which is the argument for
+  wiring the stated pair into the queue order.
+
+### WAITING ON HIM
+
+- [?] **Does the avatar replace the Field as the surface the app opens on, or
+  sit beside it?** This blocks everything else in the design.
+- [?] **A quarter of releases moves Marcus 1.3 and three laws move him 3.3. Do
+  we tell him?** It is the truest thing the instrument can say and it also says
+  the release is not his lever.
+
+---
+
+## 0o. RULED 20 SEPTEMBER, NINTH PASS. THE PILLS CHOSEN, AND VIBRANCY ANSWERED.
+
+### PC. THE PILLS. TWO OF THE TEN SURVIVE.
+
+- [x] **PC1. Ring and pill, and chip.** His picks out of the ten. Everything
+  else on that page is reference now, not a candidate. Split, which was built
+  because the product needs a held value and its opposite on one circle, is not
+  among them, so that need is still open and has to be met inside the two that
+  won rather than by a third shape.
+- [x] **PC2. Numbers one point smaller.** Applied: large 19 to 18, medium 15 to
+  14, small 12.5 to 11.5.
+- [?] **PC3. And half a point smaller inside the circle, which the type floor
+  refuses.** The extra small pill prints at 11.5 and the letters inside a ring
+  print at 11, and eleven is the floor `tests/design.js` gate 4 enforces. A
+  half point below it is 10.5 and the gate fails by name. So extra small stayed
+  at 11.5 and the ring letters stayed at 11, and this is his to rule: either
+  the floor moves, which it should not, or those two hold where they are.
+- [ ] **PC4.** Low priority, his words, so it rides the next pass that already
+  touches these files rather than starting one.
+
+### VB. VIBRANCY, ANSWERED BY HIM, AND IT ALREADY EXISTS.
+
+**His clarification.** "Vibrancy and vital energy are tied together. The more you
+release, the brighter you are, the more biophotons you release, the brighter the
+auric field."
+
+- [x] **VB1. That reading is already in the engine and it already behaves that
+  way.** `radiance`, at `engine/compute.js:192`, is the magnitude of the three
+  axes: the square root of X squared plus Y squared plus Z squared, over the
+  square root of three. Vitality, awareness and will, as one length.
+- [x] **VB2. Measured, and it does what he said.** Nine axes held at 7 read
+  radiance 0.296. The same profile cleared to 1 reads 0.791. **Clearing raises
+  it by 0.495 of 1.** The more you release, the brighter it is, which is his
+  sentence and the engine's arithmetic agreeing without anything being built.
+- [x] **VB3. So my earlier answer was wrong and is withdrawn.** I ruled vibrancy
+  was movement over time and costed a snapshot field for it. His reading is
+  better and free: it is a live quantity, it is already computed, and it needs
+  no schema change at all.
+- [ ] **VB4. One line stays out of the copy, and it was already ruled once this
+  session.** The drawing may get brighter as a person releases, because that is
+  a true statement about `radiance`. The claim that this is measurable photon
+  emission may not, because ultraweak photon emission from tissue is real, comes
+  from reactive oxygen species, and has never been shown to carry nervous system
+  state. The four glossary entries asserting otherwise were corrected earlier
+  today. The mechanic is his and it is kept. The measurement claim is the thing
+  that stays off the surface.
+
+### ART. THE STYLE, LOGGED.
+
+- [x] **ART1.** "Atmosphere and tissue. We do not like that style of art, so
+  just notice, put that as a log." Logged as a standing preference and not only
+  as two rejected concepts: the volumetric, soft focus, atmospheric treatment is
+  not this product's look. Recorded here so the next art pass does not rediscover
+  it by building it.
+- [x] **ART2.** With the earlier verdict, that gives the art direction two
+  negatives and one positive to work from. Not bulky. Not atmospheric. And the
+  thing he responded to was the armature, which is line, structure and no haze.
+
+---
+
 ## 0c. RULED 20 SEPTEMBER, SECOND PASS. THE ARRIVAL, THE FEATHERS AND KARMA
 
 **"I didn't give you feedback on the feathers. I don't give you feedback

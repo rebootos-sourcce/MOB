@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The lean, two channels</title>
+<style>
+:root{--bg:#0d0e14;--pa:#14161f;--pb:#191c27;--ink:#e7e5de;--dim:#8d8b84;--line:#272a36;
+ --gold:#DFCC7E;--bad:#CF5953;--body:#c4c2bb;--mean:#65CFA5;--seat:#8296DB;--warn:#C9924A}
+@media (prefers-color-scheme: light){:root:not([data-theme="dark"]){
+ --bg:#faf9f5;--pa:#fff;--pb:#f4f2ec;--ink:#1a1b22;--dim:#6d6b64;--line:#e3e1d9;
+ --gold:#8a7420;--bad:#a63f3a;--body:#42413c;--mean:#1d7a55;--seat:#41539b;--warn:#8a5f1e}}
+:root[data-theme="light"]{--bg:#faf9f5;--pa:#fff;--pb:#f4f2ec;--ink:#1a1b22;--dim:#6d6b64;
+ --line:#e3e1d9;--gold:#8a7420;--bad:#a63f3a;--body:#42413c;--mean:#1d7a55;--seat:#41539b;--warn:#8a5f1e}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);padding:0 16px 72px;
+ font:400 15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+.wrap{max-width:1040px;margin:0 auto}
+h1{font-size:23px;font-weight:600;letter-spacing:-.01em;margin:38px 0 6px}
+h2{font-size:11.5px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;
+ color:var(--dim);margin:36px 0 12px}
+p{color:var(--body);max-width:66ch;margin:0 0 13px}
+.lede{color:var(--ink)}
+b{font-weight:600;color:var(--ink)}
+code{font:12.5px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--gold)}
+.card{background:var(--pa);border:1px solid var(--line);border-radius:10px;padding:15px;margin:0 0 14px}
+.pick{display:flex;flex-wrap:wrap;gap:7px;margin:0 0 12px}
+button{font:500 12.5px/1 inherit;color:var(--dim);background:var(--pb);cursor:pointer;
+ border:1px solid var(--line);border-radius:99px;padding:8px 13px}
+button:hover{color:var(--ink);border-color:var(--dim)}
+button[aria-pressed="true"]{color:var(--bg);background:var(--ink);border-color:var(--ink)}
+textarea{width:100%;min-height:150px;resize:vertical;background:var(--pb);color:var(--ink);
+ border:1px solid var(--line);border-radius:8px;padding:11px 12px;
+ font:400 14px/1.6 inherit}
+textarea:focus{outline:none;border-color:var(--dim)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.ch{background:var(--pa);border:1px solid var(--line);border-radius:10px;padding:14px}
+.chh{display:flex;justify-content:space-between;align-items:baseline;margin:0 0 10px}
+.chn{font-size:13px;font-weight:600;letter-spacing:.02em}
+.cho{font-size:11.5px;color:var(--dim)}
+.bar{height:8px;border-radius:99px;background:var(--pb);overflow:hidden;display:flex;margin:0 0 9px}
+.bs{background:var(--mean)}
+.bl{background:var(--bad)}
+/* COUNTED IS NOT ADMITTED, and a solid red bar for cues the gate threw away
+   reads as a verdict the page does not make. A lack segment the frame did not
+   admit is drawn as an outline, which is the product's own ruling about ring
+   and not fill, and the admitted part is drawn solid inside it. */
+.bv{background:transparent;border:1px solid var(--bad);border-radius:99px}
+.unread{border:1px dashed var(--line);border-radius:99px;height:8px;background:none;margin:0 0 9px}
+.rowl{display:flex;justify-content:space-between;gap:12px;font-size:12.5px;padding:4px 0;
+ border-top:1px solid var(--line);color:var(--dim)}
+.rowl b{font-variant-numeric:tabular-nums;white-space:nowrap}
+.hits{margin:9px 0 0;font-size:12.5px;line-height:1.75}
+.hit{display:inline-block;border:1px solid;border-radius:5px;padding:1px 6px;margin:0 4px 4px 0;
+ font:12px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace}
+.hs{border-color:var(--mean);color:var(--mean)}
+.hl{border-color:var(--bad);color:var(--bad)}
+.hf{border-color:var(--seat);color:var(--seat)}
+.ha{border-color:var(--warn);color:var(--warn)}
+.none{color:var(--dim);font-size:12.5px}
+table{border-collapse:collapse;width:100%;font-size:13px;margin:2px 0 8px}
+th{text-align:left;font-weight:600;font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;
+ color:var(--dim);padding:7px 10px 7px 0;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:7px 10px 7px 0;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}
+td:first-child,th:first-child{position:sticky;left:0;background:var(--bg)}
+td:first-child{color:var(--ink);font-weight:500;white-space:nowrap}
+.wide{overflow-x:auto}
+.up{color:var(--bad)}.dn{color:var(--mean)}.flat{color:var(--dim)}
+.stamp{font:11.5px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--dim);
+ margin:26px 0 0;padding-top:12px;border-top:1px solid var(--line);white-space:pre-wrap}
+.key{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--dim);margin:0 0 14px}
+.key span{display:inline-flex;align-items:center;gap:6px}
+.key i{width:11px;height:11px;border-radius:3px;border:1px solid;display:inline-block}
+.gate{background:var(--pb);border:1px solid var(--line);border-radius:8px;padding:12px 13px;
+ font:12.5px/1.7 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--body);
+ overflow-x:auto;white-space:pre}
+.verdict{font-size:13px;font-weight:600;margin:11px 0 0;padding:10px 12px;border-radius:8px;
+ border:1px solid}
+.vok{border-color:var(--mean);color:var(--mean)}
+.vno{border-color:var(--bad);color:var(--bad)}
+.vq{border-color:var(--dim);color:var(--dim)}
+@media (max-width:720px){.two{grid-template-columns:1fr}}
+</style></head><body><div class="wrap">
+
+<h1>The lean, two channels</h1>
+<p class="lede">Empathy against its lack, accountability against its lack, counted separately
+and summed afterwards. This page runs the engine that is in the build. Nothing here is a
+reimplementation, so it cannot drift from what the product does.</p>
+<p>The reading is about a story, not about a person. A story that blames outward is a story
+that blames outward. Nothing on this page is a diagnosis and no surface in the product prints
+one.</p>
+
+<h2>Pick an account, or write one</h2>
+<div class="pick" id="pick"></div>
+<div class="card"><textarea id="ta" spellcheck="false"></textarea>
+<div class="rowl" style="border:0;padding-top:9px"><span id="why">Type and it reads as you go.</span>
+<b id="wc"></b></div></div>
+
+<div id="verdict"></div>
+
+<h2>The two channels</h2>
+<div class="key">
+ <span><i style="border-color:var(--mean);background:var(--mean)"></i>shown</span>
+ <span><i style="border-color:var(--bad);background:var(--bad)"></i>lack, admitted</span>
+ <span><i style="border-color:var(--bad)"></i>lack, counted and not admitted</span>
+ <span><i style="border-color:var(--seat)"></i>frame, the writer acted upon</span>
+ <span><i style="border-color:var(--warn)"></i>frame, the writer acting</span>
+</div>
+<div class="two" id="chans"></div>
+
+<h2>The frame gate, in full</h2>
+<p>A lack cue is admitted in proportion to the writer's own agency and damped by evidence of
+being acted upon. With no agency evidence nothing on the lack side is read at all. This is the
+whole of the arithmetic and there is nothing else behind it.</p>
+<div class="gate" id="gate"></div>
+
+<h2>What the field says, and what the story adds</h2>
+<div class="card" id="blend"></div>
+
+<h2>Every account, shipped scanner against this one</h2>
+<p>The shipped column was measured by loading the previous build of the engine in node and
+running these same six texts through it. It is not quoted from anywhere.</p>
+<div class="wide"><table id="tbl"></table></div>
+<p id="inv"></p>
+
+<div class="stamp" id="stamp"></div>
+</div>
+
+<script>ENGINE_HERE</script>
+<script>
+var E=(typeof module!=='undefined'&&module.exports)?module.exports:window;
+var ACC=ACCOUNTS_HERE;
+var SHIPPED=SHIPPED_HERE;
+var STAMP=STAMP_HERE;
+
+var CUR=Object.keys(ACC)[0];
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function n1(x){return (Math.round(x*10)/10).toFixed(1);}
+
+function pick(){
+ document.getElementById('pick').innerHTML=Object.keys(ACC).map(function(k){
+  return '<button data-k="'+k+'" aria-pressed="'+(k===CUR)+'">'+esc(ACC[k].nm)+'</button>';
+ }).join('')+'<button data-k="" aria-pressed="false">clear</button>';
+ Array.prototype.forEach.call(document.querySelectorAll('#pick button'),function(b){
+  b.onclick=function(){CUR=b.getAttribute('data-k');
+   document.getElementById('ta').value=CUR?ACC[CUR].t:'';
+   pick(); draw();};});}
+
+function chanCard(nm,shown,lack,of,read,admitted,hitsS,hitsL){
+ var sp=of?shown/of*100:0, lp=of?lack/of*100:0;
+ var ap=of?admitted/of*100:0, vp=lp-ap;
+ return '<div class="ch"><div class="chh"><span class="chn">'+nm+'</span>'
+  +'<span class="cho">'+(of?(of+' matched phrase'+(of===1?'':'s')):'nothing matched')+'</span></div>'
+  +(of?('<div class="bar"><span class="bs" style="width:'+sp+'%"></span>'
+        +'<span class="bl" style="width:'+ap+'%"></span>'
+        +'<span class="bv" style="width:'+vp+'%"></span></div>')
+     :'<div class="unread"></div>')
+  +'<div class="rowl"><span>shown</span><b>'+shown+' of '+of+'</b></div>'
+  +'<div class="rowl"><span>lack, cues counted</span><b>'+lack+' of '+of+'</b></div>'
+  +'<div class="rowl"><span>lack, admitted after the gate</span><b>'+n1(admitted)+'</b></div>'
+  +'<div class="rowl"><span>channel read</span><b>'+(read?'yes':'no, under the floor of '+E.LEAN_MIN_CH)+'</b></div>'
+  +'<div class="hits">'+(hitsS.length||hitsL.length
+    ? hitsS.map(function(p){return '<span class="hit hs">'+esc(p)+'</span>';}).join('')
+      +hitsL.map(function(p){return '<span class="hit hl">'+esc(p)+'</span>';}).join('')
+    : '<span class="none">no phrase on this channel</span>')+'</div></div>';}
+
+function draw(){
+ var txt=document.getElementById('ta').value;
+ E.gatesClear();
+ var s=E.leanScan(txt);
+ E.leanApply(txt);
+ var r=E.compute();
+ var L=E.leanRead(r);
+ var words=txt.trim()?txt.trim().split(/\s+/).length:0;
+ document.getElementById('wc').textContent=words+' word'+(words===1?'':'s');
+
+ var by={emp:[],empLack:[],acc:[],accLack:[],fs:[],fo:[]};
+ s.hits.forEach(function(h){
+  if(h.k)by[h.k].push(h.p);
+  else if(h.fr==='self')by.fs.push(h.p); else by.fo.push(h.p);});
+
+ document.getElementById('chans').innerHTML=
+  chanCard('Empathy',s.emp,s.empLack,s.emp+s.empLack,L.empathy.read,
+   s.empLack*s.admit,by.emp,by.empLack)
+  +chanCard('Accountability',s.acc,s.accLack,s.acc+s.accLack,L.accountability.read,
+   s.accLack*s.admit,by.acc,by.accLack);
+
+ var self=s.self+s.acc;
+ document.getElementById('gate').textContent=
+  'agency evidence    self action '+s.self+'  plus accountability taken '+s.acc+'  = '+self+'\n'
+ +'report evidence    the writer acted upon                            = '+s.other+'\n'
+ +'weight             one report marker outweighs '+E.LEAN_FRAME_W+' agency markers\n'
+ +'\n'
+ +(self<=0
+   ? 'admitted = 0, because there is no agency evidence at all.\n'
+     +'           the '+s.rawLack+' lack cue'+(s.rawLack===1?'':'s')+' found '
+     +(s.rawLack?'were counted and read as reporting, not deflection.':'is nothing to gate.')
+   : 'admitted   '+self+' / ( '+self+' + '+E.LEAN_FRAME_W+' x '+s.other+' ) = '
+     +n1(s.admit*100)+' of 100 of the lack cues\n'
+     +'lack       '+s.rawLack+' cue'+(s.rawLack===1?'':'s')+' x '+(Math.round(s.admit*1000)/1000)
+     +' = '+n1(s.malignant)+' admitted')
+ +'\n\nframe markers      '
+ +(by.fo.length||by.fs.length
+   ? (by.fo.length?'acted upon: '+by.fo.join(', '):'')
+     +(by.fo.length&&by.fs.length?'\n                   ':'')
+     +(by.fs.length?'acting: '+by.fs.join(', '):'')
+   : 'none');
+
+ var fieldMal=Math.max(0,Math.min(100,r.malig||0));
+ document.getElementById('blend').innerHTML=
+  '<div class="rowl" style="border:0"><span>the field on its own, from coherence</span>'
+  +'<b>'+n1(fieldMal)+' of 100 malignant</b></div>'
+  +'<div class="rowl"><span>this story on its own</span><b>'
+  +(s.benign+s.malignant? n1(s.malignant/(s.benign+s.malignant)*100)+' of 100 malignant'
+    :'nothing to read')+'</b></div>'
+  +'<div class="rowl"><span>how much of the reading the story carries</span><b>'
+  +n1(L.trust*100)+' of 100, capped at '+(E.LEAN_TRUST_CAP*100)+'</b></div>'
+  +'<div class="rowl"><span>the blended reading</span><b>'+n1(L.mal)
+  +' of 100 malignant, '+n1(L.ben)+' benign</b></div>'
+  +'<div class="rowl"><span>what it was read from</span><b>'+esc(L.src)+'</b></div>';
+
+ var base=28.0, v=document.getElementById('verdict');
+ var kind=CUR?ACC[CUR].kind:'own';
+ if(!txt.trim()){v.innerHTML='<div class="verdict vq">Nothing entered. The channels report'
+  +' not read, which is a legitimate answer and the right one here.</div>';}
+ else if(kind==='harm'){
+  var okk=L.mal<=base+1.5;
+  v.innerHTML='<div class="verdict '+(okk?'vok':'vno')+'">An account of being harmed. '
+   +'It reads '+n1(L.mal)+' of 100 malignant against '+n1(base)+' for a field with no story at '
+   +'all, and its '+s.rawLack+' blame cues WERE counted. '
+   +(okk?'The frame held.':'THE FRAME DID NOT HOLD. The design is wrong.')+'</div>';}
+ else if(kind==='defl'){
+  v.innerHTML='<div class="verdict '+(L.mal>base?'vok':'vno')+'">An account that refuses its own '
+   +'part. It reads '+n1(L.mal)+' of 100 against '+n1(base)+' for an unread field, so the lack '
+   +'side is not switched off, it is gated.</div>';}
+ else if(kind==='own'){
+  v.innerHTML='<div class="verdict '+(L.mal<base?'vok':'vno')+'">An account of doing harm and '
+   +'owning it. It reads '+n1(L.mal)+' of 100 against '+n1(base)+' for an unread field.</div>';}
+ else{v.innerHTML='<div class="verdict vq">Your own text. There is no expected answer for it, '
+  +'which is the point of the box.</div>';}
+}
+
+function table(){
+ var rows=Object.keys(ACC).filter(function(k){return ACC[k].t;});
+ var h='<tr><th>Account</th><th>What it is</th><th>Shipped</th><th>Now</th><th>Move</th>'
+  +'<th>Lack cues</th><th>Admitted</th><th>Frame</th></tr>';
+ var live={};
+ rows.forEach(function(k){
+  E.gatesClear(); var s=E.leanApply(ACC[k].t); var L=E.leanRead(E.compute());
+  live[k]={mal:L.mal,s:s};});
+ rows.forEach(function(k){
+  var was=SHIPPED[k], now=live[k].mal, s=live[k].s, d=now-was;
+  var cls=Math.abs(d)<0.5?'flat':(d>0?'up':'dn');
+  h+='<tr><td>'+esc(ACC[k].nm)+'</td><td>'+esc(ACC[k].says)+'</td>'
+   +'<td>'+n1(was)+'</td><td>'+n1(now)+'</td>'
+   +'<td class="'+cls+'">'+(d>0?'+':'')+n1(d)+'</td>'
+   +'<td>'+s.rawLack+'</td><td>'+n1(s.malignant)+'</td>'
+   +'<td>'+s.self+' acting, '+s.other+' acted upon</td></tr>';});
+ document.getElementById('tbl').innerHTML=h;
+ var harm=rows.filter(function(k){return ACC[k].kind==='harm';});
+ var dk=rows.filter(function(k){return ACC[k].kind==='defl';})[0];
+ var worstH=Math.max.apply(null,harm.map(function(k){return live[k].mal;}));
+ var wasWorstH=Math.max.apply(null,harm.map(function(k){return SHIPPED[k];}));
+ document.getElementById('inv').innerHTML='<b>The inversion, stated as a number.</b> On the '
+  +'shipped scanner the worst harm account read '+n1(wasWorstH)+' of 100 malignant and the '
+  +'deflection read '+n1(SHIPPED[dk])+', so the person who did nothing wrong scored '
+  +n1(wasWorstH/SHIPPED[dk])+' times worse than the person refusing their own part. Now the '
+  +'worst harm account reads '+n1(worstH)+' and the deflection reads '+n1(live[dk].mal)+'.';}
+
+document.getElementById('ta').addEventListener('input',function(){
+ if(CUR){CUR='';pick();} draw();});
+pick();
+document.getElementById('ta').value=ACC[CUR].t;
+draw(); table();
+document.getElementById('stamp').textContent=STAMP;
+</script>
+</body></html>
