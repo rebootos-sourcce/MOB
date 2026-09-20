@@ -78,7 +78,11 @@ a.btn:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
 @media(min-width:560px){ .three{grid-template-columns:1fr 1fr 1fr} }
 @media(max-width:400px){
  h1{font-size:33px} .lead{font-size:21px} h2{font-size:22px}
- .close p{font-size:20px} .tools li{flex-wrap:wrap} .tools li b{flex-basis:100%}
+ .close p{font-size:20px} .tools li{flex-wrap:wrap}
+ /* the seat dot stayed on the row and the name dropped below it, which
+    orphaned a coloured dot on a line of its own. The name takes the rest
+    of row one and only the description wraps. */
+ .tools li b{flex-basis:calc(100% - 19px)} .tools li span{flex-basis:100%}
 }
 </style></head><body>
 <div class="wrap">

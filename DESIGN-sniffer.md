@@ -1013,9 +1013,15 @@ bodies. Two lines change and two fields are added.
 
 ### What it costs, so the decision is priced
 
-- **Every reading the product has produced moves.** Mean CQ across the roster
-  goes from 33.86 to 53.7 on the estimator path, and tiers move with it: Rosa
-  Even to Coherent, James Corrupt to Oscillating, Ana Corrupt to Oscillating.
+- **Every reading the product has produced moves, and every tier with it.**
+  Measured: mean CQ across the 14 reference profiles goes from **33.86 to 53.27**
+  on the estimator path, and **14 of 14 profiles change tier.** Not some.
+  Tomas goes Severe to Oscillating, Gordon Severe to Oscillating, Rosa Even to
+  Compounding, Sofia and Lance Incoherent to Gaining. The blank profile goes
+  Incoherent to Even. **There is no profile in this repository whose stated tier
+  survives this change**, so every screenshot, every copy line that names a tier
+  and every threshold in the ladder is measuring against a distribution that
+  will not exist any more.
 - **`cqCeiling` and `cqHeadroom` need rewriting**, because the ceiling of the
   audited definition is 100 by construction and the ceiling of the estimator is a
   different function.
@@ -1032,8 +1038,9 @@ bodies. Two lines change and two fields are added.
 - **And one thing it silently fixes.** `benign` is `CQ >= 50` and `malig` is
   `(50-CQ)/50*100`. A blank profile reads 28 of 100 malignant today, which
   `DESIGN-lean.md` raises as its open item 7. Under either spec definition a
-  blank profile reads 60 and `malig` becomes 0. **The CQ ruling and the lean
-  seat's open item are the same question.**
+  blank profile reads 60 and `malig` becomes 0. Measured: **28 to 0, and
+  `benign` flips from false to true.** **The CQ ruling and the lean seat's open
+  item are the same question.**
 
 ## THE LEAN WORK AND THE BENIGN / MALIGNANT OPEN ITEM
 

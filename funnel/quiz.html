@@ -19,7 +19,10 @@ body{font-size:17px;line-height:1.6}
  width:.14em;height:.14em;border-radius:50%;background:var(--dim)}
 .wm .um::before{left:.05em}
 .wm .um::after{left:.36em}
-.bar{height:4px;background:var(--sunk);border-radius:2px;margin-top:10px;overflow:hidden}
+/* THE TRACK WAS INVISIBLE. --sunk against --bg is a fifth of a stop, so on
+   the first screen the bar had no frame and the fill had nothing to fill.
+   Measured on the shot, not read off the sheet. */
+.bar{height:4px;background:var(--panel-2);border-radius:2px;margin-top:10px;overflow:hidden}
 .bar i{display:block;height:100%;background:var(--accent);border-radius:2px;
  transition:width .22s ease}
 
