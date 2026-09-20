@@ -818,3 +818,394 @@ which is a sixth rather than a half. **The refusal got cheaper as the honest
 design got better.** That is the commercial argument for the hard line and it
 is the first time this repository has been able to make it with a number.
 
+---
+
+# 7. THE ITERATIONS
+
+Nine passes. Each one is the pass before it with exactly one thing added, and
+each was measured before the next was designed. Every cell is people of 1000.
+
+| Pass | What it added | d1 | d7 | d30 | Bottom line | Delta |
+|---|---|---|---|---|---|---|
+| | the build before the four fixes, for the audit trail | 582 | 139 | 69 | 6.9 | |
+| **base** | **the build at commit 0e63f4b** | 742 | 308 | **89** | **8.9** | **0.0** |
+| 1 | the ritual is titled with the sentence it came from | 742 | 308 | 89 | 8.9 | +0.0 |
+| 2 | and the stemmer folds a word to its family | 744 | 310 | 91 | 9.1 | +0.2 |
+| 3 | and the frame layer reads the form of a sentence | 745 | 315 | 110 | 11.0 | +2.1 |
+| 4 | and the practice carries the person's own span | 746 | 323 | 130 | 13.0 | +4.1 |
+| 5 | and the affirmation is the sixty second floor | 748 | 327 | 147 | 14.7 | +5.8 |
+| 6 | and the award family that reads the coherent side | 749 | 329 | 163 | 16.3 | +7.4 |
+| 7 | and the season, seven days with an end | 749 | 330 | 165 | 16.5 | +7.6 |
+| 8 | and the stake sentence | 749 | 330 | 167 | 16.7 | +7.8 |
+| **9** | **and the first session ends by showing what landed** | **818** | **402** | **199** | **19.9** | **+11.0** |
+
+## What each pass taught, which is the part worth keeping
+
+**Pass 1 was worth exactly nothing, and it was the most useful pass.** Tying
+the ritual to the sentence it came from is the item `PANEL-ritual-1000.md` said
+moves Diane. It moved nobody, because under the build **0 of 1000 of the panel
+write a sentence the instrument can cut a quotation out of**. A mechanic that
+depends on content is worth zero until the content arrives. That is the finding
+that redirected the whole pass into section 5.
+
+**Passes 2 and 3 are the same mechanic at two strengths** and the difference
+between them is the difference between widening a vocabulary and changing what
+kind of thing is read. The fold is worth +0.2. The frame layer is worth +1.9
+more on top of it, and it unlocks passes 4 and 5, which is why its ablation
+value is 5.0 rather than 1.9.
+
+**Passes 4 and 5 are the content chain paying out**, +2.0 and +1.7. They could
+not have been run in any order before pass 3.
+
+**Passes 6, 7 and 8 are worth 1.6, 0.2 and 0.2.** Three mechanics, half a
+point between the last two. This is where the pass would have stopped if the
+target had been five points, and the design would have been worse for it.
+
+**Pass 9 is worth 3.2 points on its own and it came out of the exit table.**
+After eight passes the model said 264 of 1000 were still leaving in the first
+two days, against 255 before any of it. Eight passes of loop design had moved
+the first two days by nine people in a thousand. Everything built so far was
+downstream of a day most people never reached twice.
+
+The mechanic is not a new reward. **The first session ends by showing what
+landed.** A journal entry committed already earns the First story mark today,
+in `engine/ladder.js`, and `ladderHtml()` renders on Ritual and on the Compass,
+so a person who writes one sentence on the Story surface and stops has earned a
+mark they will never see. The first thing this product ever gives somebody is
+invisible.
+
+## And the two corrections the tool made to itself
+
+**One.** The first cut drew the practice, the floor and the churn from one
+random stream. The floor draw only happens on a day the practice was not done,
+so two configurations that differ anywhere consume a different number of random
+numbers and every draw after the first divergence is a different draw. The
+symptom: the asserted affirmation arm, which applies an odds ratio below one to
+eight hundred of the thousand and can only make things worse, reported nine
+people **better**. Three streams now, one per purpose. Validation 6 asserts the
+refused arm is not better and the loss arm is not worse, so the defect cannot
+come back silently.
+
+**Two.** The replacement streams were seeded as `seed + index * constant`, and
+mulberry32's first output off a structured seed is not independent of that
+seed, so day one drew from a sequence of correlated first values. Validation 3
+caught it immediately: Derek's day one came out at 70 percent of 170 against a
+published 62, thirteen people outside a six point tolerance, while every other
+row passed. The seed is scrambled through a splitmix style finaliser and each
+stream discards four draws before anybody reads it.
+
+Both are recorded in the tool's own comments rather than quietly fixed, which
+is this repository's standing rule and it earned its keep twice in one pass.
+
+---
+
+# 8. THE RESULT
+
+## 8.1 Whole sample
+
+| | Day 1 | Day 7 | Day 14 | Day 30 | Day 60 | Day 90 |
+|---|---|---|---|---|---|---|
+| Baseline, of 1000 | 742 | 308 | 188 | **89** | 37 | 10 |
+| Final, of 1000 | 818 | 402 | 295 | **199** | 136 | 74 |
+
+**Baseline 8.9 points. Final 19.9 points. Delta +11.0 points.**
+
+Across nine seeds: baseline mean 9.0 points, range 7.5 to 10.3. Final mean 19.8
+points, range 18.6 to 21.5. **Delta mean 10.8 points, range 9.6 to 12.0, and 8
+of 9 seeds clear the ten point target.** The headline stays on the declared
+seed so the number cannot be shopped for, and the spread is printed beside it
+so nobody has to take it on trust.
+
+## 8.2 Per ICP, averaged over nine seeds
+
+A row of fifteen cannot carry a one seed claim. The first cut of this table
+read three people of sampling noise on James as a regression, so it is averaged.
+
+| Who | of | d30 baseline | d30 final | People | Points of that row | Points of 1000 |
+|---|---|---|---|---|---|---|
+| Diane | 180 | 18.0 | 30.0 | +12.0 | +6.7 | +1.2 |
+| Derek | 170 | 7.7 | 17.4 | +9.8 | +5.8 | +1.0 |
+| **Marcus** | 160 | 19.3 | **49.4** | **+30.1** | **+18.8** | **+3.0** |
+| Angela | 150 | 8.0 | 21.3 | +13.3 | +8.9 | +1.3 |
+| **Sofia** | 140 | 22.8 | **53.4** | **+30.7** | **+21.9** | **+3.1** |
+| James | 100 | 4.1 | 11.6 | +7.4 | +7.4 | +0.7 |
+| Ana | 50 | 9.7 | 14.7 | +5.0 | +10.0 | +0.5 |
+| Gordon | 35 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 |
+| Rosa | 15 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 |
+
+**Where the gain is, and it is not where the last pass put it.** Marcus and
+Sofia carry 6.1 of the 11.0 points between them, and both of them are inside
+the 465 of 1000 who cannot run a release. They are the people this design was
+built for: a complete reading, nothing above the release line, four of sixteen
+marks permanently shut, and until now no way for the loop to say where their
+ritual came from. The content chain gives them a quotation instead of a
+release, the Held award gives them a ladder, and their day thirty roughly
+doubles and then some.
+
+**Where it is not.** Gordon and Rosa, zero. Correct and the product should not
+chase either. Gordon's published day 7 is 0.00 percent and the calibration will
+not let him live whatever is built. Rosa reads 100 coherence, has nothing to
+release, and her own persona line reads as **coherent** through the frame
+layer, which is the instrument working. A settled person is not a retention
+problem.
+
+## 8.3 What the model can say about an exit
+
+| | Baseline, of 1000 | Final, of 1000 |
+|---|---|---|
+| exits where the ritual was tied to nothing of the person's own | **401** | **15** |
+| exits in the first two days | 274 | 281 |
+| exits where a broken run contributed | 172 | 147 |
+
+**The middle row is the honest one.** The design moves the first two days by
+almost nothing even after pass 9, because pass 9 raises survival from that day
+rather than reducing the exits on it. The thing the design genuinely closes is
+the first row: a loop that had nothing of the person's own in it for 401 of
+1000 now has it for all but 15.
+
+## 8.4 Against the outside, stated properly
+
+| | Baseline | Final | Finch | Category |
+|---|---|---|---|---|
+| D1 | 74.2 percent of 1000 | 81.8 percent of 1000 | 54 percent | 25 to 26 percent |
+| D7 | 30.8 percent of 1000 | 40.2 percent of 1000 | 37 percent | 11 to 13 percent |
+| D30 | 8.9 percent of 1000 | 19.9 percent of 1000 | not published | 2.78 to 7 percent |
+
+**And the two warnings from the last pass still apply and are not decoration.**
+The two product columns are a weighted ICP panel and not an install cohort.
+`RESEARCH-icp.md` weights by willingness to pay and ability to find the
+product, so it is a warmer sample by construction and its day 1 is not
+comparable to Finch's on equal terms. Finch's 54 and 37 are measured on real
+installs by a third party. **The honest claim is that this design reaches past
+Finch's published shape on a warmer sample, not that it beats Finch.** Anyone
+who states it the other way is quoting a simulation as a measurement.
+
+---
+
+# 9. WHAT THE AVATAR HAS TO DO
+
+Stated as a requirement on the other seat, not as a proposal about what it
+looks like. `DESIGN-avatar.md` owns it. These are the four things the loop
+needs from it, and if it does not do them the loop does not close.
+
+**1. One frame that changes when a release lands, on the surface the release
+happened on.** The loop pays out here or it does not pay out. Everything in
+section 6 is a record, and a record is read. The avatar is the only thing in
+the design that a person **watches**, which is his own word for it. If a person
+has to navigate to see it, it is a page in the product and not the centre of it.
+
+**2. Seven regions that map to the seven seats, so an award at the solar
+changes the solar and nothing else.** The seat colours are already fixed in
+`PAL` and every other surface already obeys them. An avatar whose change is
+global tells a person nothing they did not already know from a number.
+
+**3. A state that can only be read, never scored.** No bar, no percentage, no
+level, and never a count against a total. It may look better and it may not say
+how much better. This is the same ruling every other surface in the product
+carries and the avatar is the surface most likely to break it, because a
+character that improves is the most natural place in any product to print a
+level.
+
+**4. A still frame for the 465 of 1000 who cannot release.** This is the
+requirement most likely to be missed, so it is stated hardest. Marcus, Angela,
+Sofia and Rosa reach a complete reading with nothing above the release
+threshold, and **an avatar driven only by releases never moves for 46.5 percent
+of the weighted panel.** They are also, per section 8.2, where 6.1 of the 11.0
+points in this design come from. What their avatar shows is **holding**, not
+clearing: the Held award family, an axis that stayed at its coherent pole. If
+the avatar has one state for cleared and one state for nothing, nearly half the
+people this design retains watch a figure that never changes.
+
+**And one thing the avatar must not do.** Section 2.7. Voidpet Garden is the
+nearest thing in market to "what is Atuned, your avatar", and the criticism it
+draws is that the creature collection ate the mental health product it was
+attached to. There is no collection here. There is one figure and it is the
+reading.
+
+---
+
+# 10. THE PITCH
+
+**What changed.** Five things, in the order they are worth.
+
+1. **The sniffer reads sentences instead of words.** A stemmer so one lexicon
+   entry covers its family, and eighteen frames that match the **form** of a
+   sentence rather than its vocabulary. Measured on the repository's own
+   fourteen persona voices, the product goes from reading **1 of 14** to **9 of
+   14**, and weighted across the nine ICPs from **0 of 1000 to 935 of 1000**.
+2. **The practice is built out of the person's own sentence.** A frame match is
+   a verbatim quotation, so the thing that reads the charge and the thing that
+   cuts the quotation are one match. The practice holds their words, not ours.
+3. **The affirmation is a sentence to test, not a sentence to believe.** Their
+   own claim with one word hedged, both halves shown, editable, and it enters
+   as the sixty second floor version of the ritual so a bad day is still a day
+   kept.
+4. **Three award families, and the third one is why.** A mark counts what you
+   did, an award records what moved. Four of the sixteen marks can never be
+   earned by 465 of 1000, so one family needs a reading and nothing else.
+5. **The first session ends by showing what landed.** The First story mark is
+   already earned by committing one entry and is already invisible where it is
+   earned. Worth more than any other single mechanic in the design.
+
+**What it is worth.** Karma pays for the record after the fact, never in
+advance for the act, and it closes the free tier's arithmetic: a daily
+practitioner reaches a release run at the cap **every week and a bit** on 35
+percent of tier one's monthly volume, so it more than doubles a free person's
+rate and comes nowhere near cannibalising a subscription. Announcing the coin
+in advance instead costs **3.2 points**. Loss framing, which every free to play
+product in this category would ship, is worth **3.0 points** and is refused.
+
+**The two numbers.**
+
+> **8.9 points of 1000 still active at day thirty today.**
+> **19.9 points with this design. Plus 11.0, against a target of ten.**
+
+Measured by `tools/loopsim.js` at seed 20260920, 42 checks passing, on the same
+machinery that reproduces the published curve. Across nine seeds the delta
+averages 10.8 and 8 of 9 clear ten.
+
+---
+
+# 11. HOW THIS COULD BE WRONG
+
+Eight ways, worst first. The first two would change the answer.
+
+**1. The frame layer was written after reading the lines it was then measured
+on.** Eighteen frames, fourteen voices, and I had read all fourteen. The 9 of
+14 and the 935 of 1000 are **in sample and are an upper bound**. The held out
+test is the first hundred real entries and it has not been run, because there
+are no real entries. If the true out of sample rate is half the measured one,
+the frame layer's 5.0 points is closer to 2.5 and the delta is nearer eight
+than eleven. **This is the single thing most likely to be wrong and it is the
+largest item in the ablation.** The fold is not in sample and is not affected:
+nineteen suffix rules that never saw a persona line, measured on an independent
+63 word probe.
+
+**2. Four coefficients are mine and together they carry most of the number.**
+With every credit coefficient of mine at zero and the break shock left alone,
+the baseline reads 7.8 points and the final 9.3, so **the delta at that end is
++1.5 points, not +11.0.** What survives there is only what is measured: the
+content chain's throughput per ICP and the four fixes already built. Taking the
+break shock to its harshest as well takes both arms down and the delta to +1.1.
+Every one of the four is swept in `--sweep` and the single worst case for each
+is: chain effect at zero, +10.1; floor probability at zero, +9.2; first session
+at no effect, +7.7; award effect at zero, +10.2. **No single one of them takes
+the design below eight points. All four at once takes it to one and a half.**
+
+**3. The baseline is calibrated, not predicted.** The per persona hazard is
+inverted out of four published points in `reviews/simulation-quarter.md` 6.3,
+and those points were hand derived in that document rather than measured on
+people. If they are wrong everything here is wrong by the same factor. The only
+defence is that the whole output is a delta, so a common scaling error mostly
+cancels in the comparison and not in the levels.
+
+**4. Six of the nine ICPs are forced toward zero by the calibration.** Gordon
+and Rosa cannot survive to day thirty whatever is built, and Diane, Derek,
+Angela and James are at exactly 0.00 percent on the published day 90. Day 90 in
+every table here is a floor.
+
+**5. Effect sizes are being moved to a different outcome than they were
+measured on.** Symons and Johnson is recall. Harkin is goal attainment.
+Gollwitzer is plan enactment. Nunes and Dreze is completion. All are applied
+here to a daily probability of practising or to a churn hazard. The d to odds
+ratio conversion is the standard logistic approximation and is itself an
+approximation. **Nothing in the cited literature measured app retention.** The
+transfer discount, halving Symons and halving Harkin for the second channel, is
+mine and is the reason those two are swept from zero.
+
+**6. One person cannot quit twice and cannot come back.** A single absorbing
+exit. Real people lapse for three weeks and return, and the season is built for
+exactly that case, so the model **understates** the season. Its 0.1 points
+should be read as a lower bound and it is the item I would most expect to be
+undervalued here.
+
+**7. The model assumes a person who practises also writes.** The loop is one
+act in the design, journal to imprint to release to ritual, so the simulation
+treats them as one draw. A person who opens the app, marks yesterday's ritual
+done and leaves has kept a day without adding content, and this model cannot
+see that person at all. It probably overstates how much content the average
+retained person generates and therefore how often the chain refreshes.
+
+**8. The awards are the weakest justified mechanic in the design.** Half of
+Harkin's d, applied to a second channel of the same mechanism, for effectively
+everybody. It is the one place a meta analysis is used twice. At zero the
+design still reaches +10.2, which is the defence, and the awards' real case is
+the measured one: four of sixteen marks shut to 465 of 1000.
+
+---
+
+# 12. THE QUESTIONS I CANNOT ANSWER
+
+Nine, and each says whose they are. He asked every team to ask rather than
+guess, so these are asked rather than resolved.
+
+**1. Which word survives, and what kind of thing it is. His.** Patterns, points
+or karma. `DESIGN-progression.md` 2.2 rules there is exactly one currency and
+it is patterns, with a build gate to stop a second one appearing.
+`TASKS.md` AK2 names karma and AK4 says badges pay it. This design is costed on
+the cheap reading, that **karma is the name for patterns you earned rather than
+a second unit that buys them**, because that is the only one of the three that
+passes the existing gate and it is his own line about karmic patterns made
+literal. If he rules the other way, every rate in section 6.4 multiplies by an
+exchange rate he sets and nothing else changes.
+
+**2. What a mark and an award are worth. His.** Sixteen marks at 5 patterns is
+80 patterns, which is 20 percent of one tier one month handed to somebody who
+never pays, on top of the gift of 100. Either that is called the second half of
+the gift, out loud, or the rate comes down. Awards compound it and there is no
+ceiling on how many Held awards a person can accumulate over years, which needs
+a rule before it needs a rate.
+
+**3. Does the affirmation get shown to a person at all before they approve it,
+or is it proposed silently? His, and it is a safety question rather than a
+design one.** The design shows the struck word and the hedge together and asks
+the person to keep it or write their own. The alternative is that the product
+never shows an unapproved sentence at all and only offers to help write one.
+The first is warmer and is what shipped in the prototype. The second is safer
+for somebody in acute distress and `DESIGN-progression.md` section 4 already
+has a crisis gate that could carry it. I do not know which he wants.
+
+**4. If the accounts fork puts a model behind the sign in seam, does the frame
+layer become the fallback or the engine? His, and it decides how much more to
+invest here.** Eighteen frames took an afternoon. A hundred and eighty would
+take a week and would still lose to a model on out of sample text. If a model
+is coming, the frame layer should be capped at whatever makes the offline path
+honest and no larger. If it is not coming, it is the product's reading engine
+and deserves a seat of its own.
+
+**5. The `sq >= 4` release threshold. His, and it is the oldest open item.**
+465 of 1000 reach a complete reading with nothing to release and four of
+sixteen marks permanently shut. This design deliberately routes around it
+rather than waiting on it, and routing around it is worth 6.1 of the 11.0
+points. But the hole is still there, and lowering the threshold changes what
+the product claims about a calm person, which is a product question and not a
+tuning one.
+
+**6. Does a person see their karma balance as a number? His.** Every other
+quantity in this product is drawn or is a count of events. A balance is
+neither. The prototype prints it, at `proto/game/one.html`, because a bank a
+person cannot read is not a bank. It is the one place this design may be
+breaking a standing rule and I would rather be told than assume.
+
+**7. Is the floor day recorded as equal to a full day on the record? Mine to
+propose, his to rule.** The design pays it one pattern instead of two and marks
+it as a floor day, so the record tells the truth and the streak still counts
+it. The alternative, that a floor day is simply a day, is simpler and is what
+Finch does with Baby steps. I chose the honest one and it may be the colder one.
+
+**8. What happens to an award a person no longer holds. Mine, unresolved.** The
+Held family records that an axis stayed at its coherent pole for seven
+readings. If it falls back six months later, the award is still a true fact
+about a date, so it stays. But a wall of awards about a state a person is no
+longer in is its own kind of cruelty, and I do not have a rule for it yet that
+is not either dishonest or unkind.
+
+**9. Whether the ten point target is the right target. Mine to raise.** The
+bottom line moved from 8.9 to 19.9 points, which is a doubling, and the
+category median at day thirty is under 3 percent of installs. Reaching the
+target does not mean the product retains. It means the model says this design
+retains twice what the current build does on a panel that is warm by
+construction. **The first hundred real people will answer in a week what this
+document argued about for a day**, and the thing to instrument first is the
+content chain's out of sample span rate, because objection 2 in section 3 says
+that is where the whole number lives.

@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="73a94ac 2026-09-20 14:14"><head><meta charset="utf-8">
+<html lang="en" data-build="97b0797 2026-09-20 14:30"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -3799,7 +3799,7 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
        download as atuned(1).html and leaves the first one where it was, so
        opening "the file" can mean opening last week's.
        Stamped by BUILD.sh, so it cannot be wrong or go stale. -->
-  <span class="bs-v" id="bstamp">73a94ac 2026-09-20 14:14</span></div>
+  <span class="bs-v" id="bstamp">97b0797 2026-09-20 14:30</span></div>
  <!-- THE WAY OUT WAS BUILT AND NEVER SHOWN.
 
       pointerdown and keydown both clear this sheet and have since it was
@@ -8180,9 +8180,24 @@ var Q3=[
  {k:'neutral',q:'On an ordinary day, how often do you STEM without deciding to?'}];
 var IQ_STEM={
  Truth:'say the true thing', Transparency:'let yourself be seen as you are',
- Expression:'say what is actually there', Unity:'act as if the other is not separate',
+ /* JUSTICE AND HUMILITY WERE RENAMED AND THIS TABLE WAS MISSED, so six of the
+    sixty three questions asked a person "how often do you justice?" and "how
+    often do you humility?" and shipped that way. The rename was carried into
+    SI, into HARM and into the migration table at schema.js, and stopped here.
+    The `||` fallback below is what hid it: without it the intake would have
+    printed undefined and this would have been found the day it landed. The
+    fallback is gone now, so the next missed rename throws instead of reading
+    like a broken sentence to somebody answering questions about themselves.
+
+    The two phrases are written to the same pattern as the other nineteen: a
+    verb the person can picture doing, no abstraction, nothing they are scored
+    against that they cannot recognise. They are mine rather than his, so they
+    are the first thing to overrule. */
+ Justice:'give the other what is actually theirs',
+ Humility:'let the world be more right than you',
+ Unity:'act as if the other is not separate',
  Awareness:'notice what you are doing while you do it', Nature:'let things be what they are',
- Presence:'stay in the room with what is happening', Discernment:'tell the real from the plausible',
+ Presence:'stay in the room with what is happening',
  Equanimity:'stay level when it moves', Compassion:'feel it without fixing it',
  Forgiveness:'put it down', Generosity:'give without a ledger',
  'Aesthetic Beauty':'make the thing well', Courage:'move toward what you are avoiding',
@@ -8193,7 +8208,11 @@ var IQ_STEM={
 function iqList(){ var out=[];
  SI.forEach(function(l,li){ Q3.forEach(function(t,ti){
   out.push({law:l.nm, band:l.b, side:t.k, i:li*3+ti, block:li,
-   q:t.q.replace('STEM',(IQ_STEM[l.nm]||l.nm.toLowerCase()))});});});
+   /* NO FALLBACK. See the note on the table above: the fallback substituted the
+      law's own name as a verb, which reads as a sentence and therefore hid a
+      missed rename for as long as it existed. A missing phrase is a defect and
+      has to look like one. */
+   q:t.q.replace('STEM',IQ_STEM[l.nm])});});});
  return out;}
 function iqScore(p){
  if(!p||!p.intake||!p.intake.answers)return {};
@@ -9639,6 +9658,10 @@ if(typeof module!=='undefined'&&module.exports){
                   bindStore:bindStore, PKEY:PKEY, pPersist:pPersist, saveState:saveState,
                   storeBound:function(){return STORE_BOUND;},
   /* intake */    iqList:iqList, iqScore:iqScore, iqApply:iqApply,
+  /* exported so the gate can assert it against SI in both directions. The
+     rename that missed this table shipped six broken questions, and a table
+     no test can reach is a table with no owner. */
+                  IQ_STEM:IQ_STEM,
   /* sniffer */   scanStory:scanStory, parseStory:parseStory, applyStory:applyStory,
                   pathOf:pathOf, seatOf:seatOf, SEATXY:SEATXY, PATHSEAT:PATHSEAT,
   /* birth */     sunSign:sunSign, moonSign:moonSign, risingSign:risingSign,
@@ -20418,5 +20441,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="001343839"></div>
+<div id="eof" hidden data-len="001345236"></div>
 </body></html>
