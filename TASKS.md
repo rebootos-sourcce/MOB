@@ -21,6 +21,83 @@ reopens. Every seat adds its own.
 
 ---
 
+## 0v. RULED 20 SEPTEMBER, FIFTH PASS. B, AND IT IS A CALENDAR.
+
+### RC. THE RITUAL BUILDER IS DESIGN B, AS A CALENDAR.
+
+Ruled: "for the ritual design, let's start with B. But this needs to look like
+a calendar."
+
+- [x] **RC1. Design B is the one.** The board. The other two are parked, not
+      deleted, because the compass ring and the run height are still the best
+      objects in their own shapes and B may take them.
+- [ ] **RC2. It sorts by day, week and month.** His words. Three spans on one
+      surface, not three surfaces.
+- [ ] **RC3. It shows what is running and what is due today.** Two different
+      questions and the calendar has to answer both without being read twice.
+- [ ] **RC4. Rituals are organised by what they are for, and there are three
+      kinds.** The ones a person always has to do for the avatar to be
+      fulfilled or manifest. The ones designed to transform behaviour. The
+      ones that belong to the release protocol. That is the sort order, and
+      it is the first thing about the ritual builder that is his model rather
+      than a comp's.
+- [ ] **RC5. The person chooses what they are optimising for.** Avatar,
+      personal development, growth, their call. The builder serves the choice
+      rather than assuming one.
+- [ ] **RC6. Colour.** His words: "I need colours." Against the kind, or
+      against the seat, or against the track. One of the three, and the seat
+      is already spoken for everywhere else in the product.
+- [?] **RC7. Where do you add from.** Ruled open by him: "you need to be able
+      to add but we need to figure out the system for adding. Like where are
+      you adding from?" This is the question the queue below answers.
+
+### TG. THE TAG SYSTEM, AND WHETHER IT EARNS ITS PLACE.
+
+His words, and he raised the doubt himself: "they add tags and the tags use
+the data, and that actually gets a really good question, which is, a tag
+system, do we need one? We're using a lot of language but it seems like it
+would have a limited use case. Anyway, float this by the team. Have them
+review the software, see if the tag system is worth doing."
+
+- [ ] **TG1. The team reviews the built software and answers it with
+      evidence,** not with an opinion. The product already carries eleven
+      families of named things, so the question is whether a tag adds a
+      dimension none of them has or duplicates one that exists.
+- [ ] **TG2. If it is worth doing, name every place it is used** before any
+      of it is built. He can see it in the ritual builder and "in a few
+      places". A tag system built for one surface is a schema change that
+      earns nothing.
+- [ ] **TG3. Tags touch the schema, so they touch the record,** and the record
+      goes off device at sign in. Anything a person can type is a field a
+      practitioner may later see. That has to be settled with the tag, not
+      after it.
+
+### QU. THE QUEUE. WHAT TO DO NEXT, AND WHO PROPOSES IT.
+
+His words: "I want to generate a queue and I want the queue organized. The
+sniffer will help generate a queue. The avatar, which also I guess uses the tag
+system, can also help generate a queue."
+
+- [ ] **QU1. The queue is the answer to RC7.** A person adds from the queue
+      rather than from a list of everything, which is the same cognitive load
+      item as everywhere else: the open architectural number is 57 to 71
+      simultaneous choices against a working memory of about four.
+- [ ] **QU2. The sniffer proposes into it,** off what the story actually said.
+      Open, already asked and still unanswered: whether the sniffer adds to
+      tomorrow's ritual by itself or proposes and waits for the person.
+- [ ] **QU3. The avatar proposes into it,** off what is missing for the avatar
+      to progress. This is the first thing that makes the avatar the
+      centrepiece rather than a picture of one.
+- [ ] **QU4. Ordered, not listed.** A queue that is a list is a backlog, and
+      the product already has one of those.
+
+### AT. THE ACCOUNTABILITY TRACKER.
+
+- [ ] **AT1. He passed it: "number two is okay."** The weekday read stands.
+      Everything else in this section is the calendar above.
+
+---
+
 ## 0w. MEASURED 20 SEPTEMBER. THE SAFETY REFERRAL HAS NEVER FIRED.
 
 Found by three failing rows in the functional gate, which were failing because

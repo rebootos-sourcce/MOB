@@ -1,233 +1,231 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Atuned</title>
-<meta name="description" content="A somatic diagnostic instrument. Find out where the strain sits in your body and what it costs you.">
+<meta name="description" content="Mindset programming is the cause. This reads where it sits in your body and what it costs.">
+<!-- tokens.css is generated from the app's own stylesheet by tools/tokens.py.
+     It is linked and not copied, because a palette copied by hand is correct
+     on the day it is copied and wrong afterwards. It is a sibling file, so
+     this page still makes no request off the machine it is opened on. -->
+<link rel="stylesheet" href="tokens.css">
 <style>
-:root{
- /* THE SURFACE RAMP WAS NARROWER THAN A PRINTING TOLERANCE.
-
-    Measured: --bg to --panel was 1.08 to 1 and --bg to --panel-2 was 1.14.
-    Four declared levels of surface spanning a sixth of a stop, which is why
-    the page squints down to three vertical grey slabs and the eye lands on
-    nothing first. The architecture of every screen rested on a distinction
-    that was not visible.
-
-    The ground goes down and the raised surfaces go up, so the range opens
-    from both ends rather than lightening the product. Muted is a saturation
-    ruling and not a contrast one, and this changes no hue. */
- --bg:#0C0D12; --panel:#1A1D26; --panel-2:#252833; --sunk:#090A0E;
- --edge:rgba(255,255,255,.09); --edge-2:rgba(255,255,255,.14);
- /* --dim WAS BELOW AA EVERYWHERE IT APPEARED, and it is the only token
-    marking the second tier of the information architecture: every eyebrow,
-    every key label, every explanatory subline. Measured at 3.70 to 1 on
-    --panel-2 and 3.92 on --panel, and it carried 104 of the 105 contrast
-    failures on the Summary in Dark. One value, 104 defects.
-
-    It also matters more than the ratio suggests. Six of the thirteen people
-    in the reference sample are 57 or older, and contrast sensitivity falls
-    materially past 55. At 3.70 that half of the sample loses the whole layer
-    that tells them what they are looking at. */
- --ink:#EFEDE8; --mid:#B4B0A8; --dim:#94908A;
- --root:#CF5953; --sacral:#D19255; --solar:#D4BC70;
- --heart:#65CFA5; --throat:#65B8D4; --eye:#8296DB; --crown:#A883D6;
- --alarm:#FF2E1F; --alarm-soft:rgba(255,46,31,.16);
- /* THE ACCENT IS BLUE. Ruled. It was gold since the rebuild and the owner
-    never chose it: he chose the blue, which is the original app's own
-    --law-accent:#7eb8d4, used there in thirteen places. --accent is the one
-    source of truth and --gold is kept as its alias because sixty places in
-    this sheet already read that name. Nothing reads a literal.
-
-    --on-accent is the ink that sits on top of a filled accent. It was
-    var(--on-accent), a warm near black chosen against gold, and a warm ink on a cool
-    fill is the one thing that would still have read as the old palette.
-
-    --um is the umlaut on the wordmark. It sits on the bar rather than on the
-    letter, so it answers to the background. White on dark, as ruled. */
- --accent:#7EB8D4; --gold:var(--accent); --on-accent:#0B1418;
- /* TRUE GOLD, SEPARATE FROM --gold.
-
-    --gold is an alias for the accent and has been since the accent was ruled
-    blue, so everything reaching for "gold" gets blue. That is correct for the
-    eyebrows and the rules that were gold before the ruling, and it is wrong
-    for the one thing that was asked for in actual gold: Source OS under the
-    wordmark rendered in the blue accent, twice, because the token lied about
-    its own name.
-
-    --au is gold. Muted, warm, sitting next to the Solar seat without becoming
-    it, and dark enough on paper to hold. Nothing else uses it unless it is
-    asked for by name. */
- --au:#C2A063;
- /* the ink on a solid seat colour. every seat in this palette is light
-    enough that one dark ink holds on all seven, in every lighting. */
- --on-flat:#0E1015;
- --sky:#7EB8D4; --um:#FFFFFF;
- /* #CB5F59 measures 4.01 against --panel-2 and 4.44 against the seat tinted
-    panel. It is not carrying text today, it is a three pixel marker and a
-    seven percent wash, so the 4.5 text threshold is not the one it has to
-    clear. Moved anyway: a marker that thin at four to one is hard to see at
-    all past about fifty five, and three of the nine reference people are
-    fifty seven or older. #D4736D measures 4.87 and 5.40 on the same two.
-    Snow's own value is 5.62 and does not move. */
- --good:#68CBA4; --bad:#D4736D;
- /* Lexend is a wide face by design, which is why the rail clipped: Witness
-    rendered as Wit. Inter is narrower at the same size and carries more
-    characters per line without dropping the point size. The font tuner is
-    gone on the owner's ruling, so this is the one face and there is no
-    per person override to keep working. */
- --sans:'Inter','Inter Tight',system-ui,-apple-system,'Segoe UI',sans-serif;
- /* ONE FAMILY MEANT ONE FAMILY, AND THIS TOKEN NAMED A SECOND ONE.
-
-    The comment above it said Lexend carries the digits. Lexend was never in
-    the build. When Google Fonts went, Inter was embedded as a variable font
-    and Lexend was not, so document.fonts lists exactly one family and every
-    number in this product, every reading, every allowance, every tabular
-    column, was falling through to system-ui. Which face that is depends on
-    the machine, so the one thing this token existed to guarantee, that
-    columns of figures line up, was the one thing it could not do.
-
-    document.fonts.check('12px Lexend') returns true, which is what hid this:
-    check answers whether the text can be rendered at all, and a fallback
-    counts. The list of loaded families is the honest reader and it has one
-    entry.
-
-    Inter carries the digits now, which is a statement about a font that is
-    actually here. Tabular figures are a feature of Inter and every column in
-    the sheet already asks for them with font-variant-numeric. */
- --num:'Inter','Inter Tight',system-ui,-apple-system,sans-serif;
- --r:16px; --r-s:11px; --r-xs:8px;
- /* Minimum touch target. 69 of the interactive elements measured under 44px,
-    which is the floor a finger needs. The number lives here so it cannot
-    drift back into forty separate padding declarations. */
- --tap:44px;
- /* Motion. Measured before this block existed: 381 of 384 live animated
-    elements ran on the browser default ease, a symmetric curve that reads as
-    mechanical because it decelerates as slowly as it accelerates. The four
-    hand written beziers in this sheet sat on one live element. Three curves
-    and four durations, named for the job, so a hover and a tab cannot drift
-    to the same speed again.
-
-    out  for a thing arriving. fast off the mark, long settle.
-    in   for a thing leaving. it does not need to be watched out.
-    land for a thing that lands. one overshoot, no ring. */
- --ease-out:cubic-bezier(.22,1,.36,1);
- --ease-in:cubic-bezier(.4,0,1,1);
- --ease-land:cubic-bezier(.34,1.56,.64,1);
- /* hover, press, focus. below about 100ms a change reads as a jump with no
-    cause; above about 150 the pointer has already left. */
- --t-micro:120ms;
- /* one thing entering or leaving. */
- --t-element:220ms;
- /* a panel or a rail, which carries more area and so needs more time. */
- --t-surface:320ms;
- /* a whole tab. the longest thing the product is allowed to take. */
- --t-context:420ms;
- /* the spacing scale. three steps. 6 between things in one control, 10
-    between controls, 16 between blocks. gaps of 5, 7, 8, 9 and 11 were all
-    doing one of those three jobs with no reason stated, so they read as
-    drift rather than as rhythm. */
- --g1:6px; --g2:10px; --g3:16px;
- --shadow:0 12px 34px rgba(0,0,0,.34);
-}
-
-/* ============================================================
-   THE LANDING. The ad does not say download the app. It says take
-   the test.
-
-   It is deliberately the lightest page in the product. Everything
-   heavy lives one click away in quiz.html, because a landing page
-   that takes two seconds to paint has already lost the people it
-   was built for. Nothing here is fetched. No font, no script, no
-   analytics, no request of any kind.
-
-   Show, not tell. Ruled. The figure is the same column the app's
-   boot draws and the same one the welcome carries, so a person who
-   goes on meets a thing they have already seen.
-   ============================================================ */
 *{box-sizing:border-box}
-html,body{height:100%}
-body{margin:0;background:var(--bg);color:var(--ink);
- font:400 16px/1.65 var(--sans);
- display:flex;flex-direction:column;align-items:center;justify-content:center;
- padding:40px 22px;text-align:center;-webkit-font-smoothing:antialiased}
-.wrap{max-width:560px;width:100%}
-/* THE FIGURE. Seven seats on a spine under a gold halo, at rest. It arrives
-   root to crown in a hundred and seventy millisecond step, which is the boot's
-   rhythm halved, so the page has a pulse without anything moving afterwards. */
-.fig{display:block;margin:0 auto 34px;width:min(30vmin,150px);height:auto;
- overflow:visible;fill:none;stroke-linecap:round}
-.fig .halo{stroke:var(--au);stroke-width:1.4;opacity:0;
- animation:up .6s var(--ease-out) .72s forwards}
-.fig .spine{stroke:var(--edge-2);stroke-width:1.4;
- stroke-dasharray:120;stroke-dashoffset:120;
- animation:draw .85s var(--ease-out) .1s forwards}
-.fig circle{opacity:0;animation:up .5s var(--ease-out) both}
-@keyframes draw{to{stroke-dashoffset:0}}
-@keyframes up{0%{opacity:0;transform:translateY(3px)}100%{opacity:.92;transform:none}}
-h1{font-size:clamp(26px,5vw,34px);font-weight:300;letter-spacing:.055em;
- margin:0 0 14px;line-height:1.25}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
+ font-family:var(--sans);-webkit-text-size-adjust:100%}
+body{font-size:17px;line-height:1.62}
+.wrap{max-width:720px;margin:0 auto;padding:40px 16px 64px}
+.fig{display:block;width:92px;height:auto;margin:0 auto 18px}
+.fig .spine{stroke:var(--edge-2);stroke-width:1.4}
+.fig .halo{fill:none;stroke:var(--crown);stroke-width:1.2;opacity:.6}
+h1{font-size:40px;line-height:1;letter-spacing:-.02em;margin:0;text-align:center;font-weight:600}
 h1 .um{position:relative;display:inline-block}
 h1 .um::before,h1 .um::after{content:'';position:absolute;top:-.44em;
  width:.13em;height:.13em;border-radius:50%;background:var(--um)}
 h1 .um::before{left:.05em}
 h1 .um::after{left:.34em}
-.sub{font-size:clamp(17px,2.6vw,20px);font-weight:300;color:var(--ink);
- margin:0 0 20px;line-height:1.45}
-p{color:var(--mid);margin:0 0 15px;font-size:15.5px;line-height:1.68}
-p.q{color:var(--dim);font-size:14px;margin-top:26px}
-.go{display:inline-flex;align-items:center;justify-content:center;
- min-height:var(--tap);padding:14px 30px;margin:20px 0 6px;
- background:var(--accent);color:var(--on-accent);border:0;
- border-radius:999px;font:inherit;font-size:16px;font-weight:500;
- letter-spacing:.015em;text-decoration:none;cursor:pointer;
- transition:transform var(--t-micro) var(--ease-out),
-            filter var(--t-micro) var(--ease-out)}
-.go:hover{filter:brightness(1.08)}
-.go:active{transform:scale(.985)}
-.go:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
-.meta{display:flex;gap:7px 18px;justify-content:center;flex-wrap:wrap;
- margin:16px 0 0;font-family:var(--num);font-size:12px;color:var(--dim)}
-.meta span{white-space:nowrap}
-.foot{margin-top:40px;font-family:var(--num);font-size:11.5px;color:var(--dim);
- line-height:1.9}
-.foot b{color:var(--mid);font-weight:400}
-@media (prefers-reduced-motion:reduce){
- .fig *{animation:none!important;opacity:.92;stroke-dashoffset:0}}
+.sub{text-align:center;color:var(--mid);font-size:13px;letter-spacing:.14em;
+ text-transform:uppercase;margin:12px 0 0}
+.lead{font-size:25px;line-height:1.36;margin:36px 0 0;letter-spacing:-.01em}
+.lead b{font-weight:600}
+p{margin:16px 0 0}
+section{margin-top:52px;padding-top:28px;border-top:1px solid var(--edge)}
+.eye{display:block;font-size:11.5px;letter-spacing:.17em;text-transform:uppercase;
+ color:var(--accent);margin:0 0 10px}
+h2{font-size:26px;line-height:1.2;margin:0;letter-spacing:-.015em;font-weight:600}
+h3{font-size:17px;margin:0;font-weight:600}
+.bill{list-style:none;margin:20px 0 0;padding:0}
+.bill li{padding:9px 0 9px 20px;position:relative;color:var(--mid);
+ border-bottom:1px solid var(--edge)}
+.bill li::before{content:'';position:absolute;left:0;top:19px;width:7px;height:7px;
+ border-radius:50%;border:1.4px solid var(--root)}
+.bill li b{color:var(--ink);font-weight:600}
+.three{display:grid;gap:1px;margin:24px 0 0;background:var(--edge);
+ border:1px solid var(--edge);border-radius:10px;overflow:hidden}
+.three div{background:var(--panel);padding:14px 16px}
+.three b{display:block;font-size:12px;letter-spacing:.11em;text-transform:uppercase;
+ color:var(--dim);font-weight:600}
+.three span{display:block;margin-top:5px;color:var(--ink);font-size:16px}
+.step{display:flex;gap:14px;margin-top:22px;align-items:flex-start}
+.step i{flex:0 0 34px;height:34px;border-radius:50%;border:1.5px solid var(--edge-2);
+ display:flex;align-items:center;justify-content:center;font-style:normal;
+ font-size:13px;color:var(--ink);font-weight:600;margin-top:2px}
+.step p{margin:5px 0 0;color:var(--mid)}
+.step.s1 i{border-color:var(--throat);color:var(--throat)}
+.step.s2 i{border-color:var(--sacral);color:var(--sacral)}
+.step.s3 i{border-color:var(--heart);color:var(--heart)}
+.step.s4 i{border-color:var(--root);color:var(--root)}
+.tools{list-style:none;margin:24px 0 0;padding:0}
+.tools li{display:flex;gap:12px;padding:11px 0;border-bottom:1px solid var(--edge);
+ align-items:baseline}
+.tools li i{flex:0 0 7px;height:7px;border-radius:50%;margin-top:8px;font-style:normal}
+.tools li b{flex:0 0 96px;font-weight:600}
+.tools li span{color:var(--mid);flex:1 1 auto;min-width:0}
+.open{margin:26px 0 0;padding:18px 18px 20px;border:1px solid var(--edge-2);
+ border-radius:10px;background:var(--panel)}
+.open h3{margin-bottom:6px}
+.open p{color:var(--mid);margin-top:8px}
+.cta{margin-top:30px;text-align:center}
+a.btn{display:inline-block;background:var(--accent);color:var(--on-accent);
+ text-decoration:none;font-weight:600;font-size:18px;padding:16px 34px;border-radius:9px;
+ min-height:52px;line-height:20px}
+a.btn:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+.meta{margin:14px 0 0;font-size:13px;color:var(--dim)}
+.close{margin-top:52px;padding-top:28px;border-top:1px solid var(--edge-2)}
+.close p{font-size:24px;line-height:1.38;margin:0;letter-spacing:-.01em}
+.close p+p{margin-top:2px}
+.close .last{color:var(--accent)}
+.foot{margin-top:48px;padding-top:20px;border-top:1px solid var(--edge);
+ font-size:13px;color:var(--dim)}
+@media(min-width:560px){ .three{grid-template-columns:1fr 1fr 1fr} }
+@media(max-width:400px){
+ h1{font-size:33px} .lead{font-size:21px} h2{font-size:22px}
+ .close p{font-size:20px} .tools li{flex-wrap:wrap} .tools li b{flex-basis:100%}
+}
 </style></head><body>
 <div class="wrap">
- <svg class="fig" viewBox="0 0 200 178" aria-hidden="true">
-  <ellipse class="halo" cx="100" cy="21" rx="13" ry="4.4"/>
-  <line class="spine" x1="100" y1="160" x2="100" y2="40"/>
-  <circle cx="100" cy="160" r="4.6" style="fill:var(--root);animation-delay:.24s"/>
-  <circle cx="100" cy="140" r="4.6" style="fill:var(--sacral);animation-delay:.31s"/>
-  <circle cx="100" cy="120" r="4.6" style="fill:var(--solar);animation-delay:.38s"/>
-  <circle cx="100" cy="100" r="4.6" style="fill:var(--heart);animation-delay:.45s"/>
-  <circle cx="100" cy="80"  r="4.6" style="fill:var(--throat);animation-delay:.52s"/>
-  <circle cx="100" cy="60"  r="4.6" style="fill:var(--eye);animation-delay:.59s"/>
-  <circle cx="100" cy="40"  r="4.6" style="fill:var(--crown);animation-delay:.66s"/>
- </svg>
 
- <h1>At<span class="um">u</span>ned</h1>
- <p class="sub">Most of the strain we have agreed to call normal is making us ill.
- This shows you where it sits, and what it costs.</p>
+<!-- BEAT 1. THE PAIN. Nothing is explained before it is recognised. -->
+<svg class="fig" viewBox="0 0 200 178" aria-hidden="true">
+ <ellipse class="halo" cx="100" cy="21" rx="13" ry="4.4"/>
+ <line class="spine" x1="100" y1="160" x2="100" y2="40"/>
+ <circle cx="100" cy="160" r="4.6" style="fill:var(--root)"/>
+ <circle cx="100" cy="140" r="4.6" style="fill:var(--sacral)"/>
+ <circle cx="100" cy="120" r="4.6" style="fill:var(--solar)"/>
+ <circle cx="100" cy="100" r="4.6" style="fill:var(--heart)"/>
+ <circle cx="100" cy="80"  r="4.6" style="fill:var(--throat)"/>
+ <circle cx="100" cy="60"  r="4.6" style="fill:var(--eye)"/>
+ <circle cx="100" cy="40"  r="4.6" style="fill:var(--crown)"/>
+</svg>
+<h1>At<span class="um">u</span>ned</h1>
+<p class="sub">Instruments for the body you are running</p>
 
- <p>Twenty one questions about how you actually behave, not how you feel.
- Three ways each, because one way is a mood and three is a reading.</p>
+<p class="lead">You are tired in a way that sleep does not fix, and the same
+month keeps arriving.</p>
 
- <a class="go" href="quiz.html">Take the reading</a>
+<ul class="bill">
+ <li><b>The same argument</b>, with a different person, in the same words.</li>
+ <li><b>A tight jaw</b> before you are properly awake.</li>
+ <li><b>Work you used to make</b> and stopped making, and you know the month you stopped.</li>
+ <li><b>One conversation</b> you have not had, going into its second year.</li>
+ <li><b>Gut, sleep, shoulders, breath.</b> A body sending the bill for something
+  the mind filed away.</li>
+</ul>
 
- <div class="meta">
-  <span>About eight minutes</span>
-  <span>No account</span>
-  <span>Nothing leaves this device</span>
+<p>Most of the strain we have agreed to call normal is making us ill. It gets
+called stress, or a phase, or your personality. It is none of those.</p>
+
+<!-- BEAT 2. THE CAUSE, in his words and not softened. -->
+<section>
+ <span class="eye">The cause</span>
+ <h2>Mindset programming.</h2>
+ <p>A set of instructions laid down early, still running, and running you. It was
+ written by things that happened to you before you could read, and it has never
+ been reviewed. It is not a mood and it is not a personality.</p>
+ <div class="three">
+  <div><b>Mental</b><span>The loop. The rumination. The version of yourself you argue with.</span></div>
+  <div><b>Physical</b><span>The gut, the jaw, the lower back, the sleep, the immune bill.</span></div>
+  <div><b>Spiritual</b><span>Meaning gone flat. Nothing lands. Nothing is worth starting.</span></div>
  </div>
+ <p>And stagnation, which nobody counts as illness and which costs the most
+ years.</p>
+</section>
 
- <p class="q">No judgment. Nothing here grades you. It reads what runs, tells you
- where it is held, and gives you something to do about it.</p>
+<!-- BEAT 3. THE SEPARATION AS A STRESS RESPONSE OUT OF THE STORY. -->
+<section>
+ <span class="eye">What is actually happening</span>
+ <h2>Your story fires as a threat, and the mind leaves the body.</h2>
+ <p>Something happened. You made a meaning out of it. The meaning hardened into a
+ rule. The rule now fires as a stress response, and under a stress response the
+ mind goes up and the body goes quiet. That split is the injury.</p>
+ <p>The mind runs a story the body is paying for. The body holds a charge the
+ mind will not look at. They stop speaking to each other. Everything on the list
+ above is that gap, reported from one side or the other.</p>
+ <p>The measure of the gap is coherence. Coherence is the alignment between what
+ arrives from the world, how you read it, what you intend, and what you then do.
+ Four stations, one circuit. When coherence is low the circuit leaks, and the leak
+ shows up as mental, physical and spiritual disease. Every practice you have tried
+ was reaching for coherence without a way to read it.</p>
+</section>
 
- <div class="foot">
-  <b>Nothing is sent anywhere.</b> This page makes no request of any kind, and
-  neither does the reading. Your answers stay in this browser until you carry
-  them somewhere yourself.
+<!-- BEAT 4. THE PURPOSE. -->
+<section>
+ <span class="eye">What it is for</span>
+ <h2>This is a purpose based product.</h2>
+ <p>It exists to close the gap between your mind and your body, and to hand you
+ your own instructions so you can change them. That is the whole purpose and
+ there is not a second one underneath it.</p>
+ <p>It is not built to hold your attention. It is a mirror and a set of
+ instruments. It says: this is you, this is what is running you, from the top to
+ the bottom, and here is the order to take it apart in.</p>
+</section>
+
+<!-- BEAT 5. HOW IT WORKS. The ruled loop: discover, play, flow, body. -->
+<section>
+ <span class="eye">How it works</span>
+ <h2>Discover, play, flow, body.</h2>
+ <div class="step s1"><i>1</i><div><h3>Discover</h3>
+  <p>You write what happened, in your own words. The engine reads the charge out
+  of the words, not out of a questionnaire about your feelings.</p></div></div>
+ <div class="step s2"><i>2</i><div><h3>Play</h3>
+  <p>A short ritual and real games. Brain release, built out of what you just
+  entered. The practice comes from your own material.</p></div></div>
+ <div class="step s3"><i>3</i><div><h3>Flow</h3>
+  <p>The charge gets named, seated and released. One address at a time, in an
+  order the instrument works out, because doing it in the wrong order is why the
+  last attempt did not hold.</p></div></div>
+ <div class="step s4"><i>4</i><div><h3>Body</h3>
+  <p>The reading lands on a body map at a named plexus or a named nerve. Your
+  avatar carries the load and changes as the load comes off. You watch it.</p></div></div>
+ <div class="open">
+  <h3>The whole system is readable</h3>
+  <p>Every table the reading runs on is open inside the product. The 112
+  addresses and the plexus each one sits at. The 21 laws of integrity. The
+  saboteurs, what triggers them, and the sentence each one says in your head. The
+  arithmetic that turns all of it into one coherence figure.</p>
+  <p>Open them and check the work against your own life. Nobody else in this
+  category will show you theirs.</p>
  </div>
-</div>
-</body></html>
+</section>
+
+<!-- BEAT 6. THE TOOLS. Named as the product names them. No count stated. -->
+<section>
+ <span class="eye">The tools</span>
+ <h2>Each one reads a different side of the same thing.</h2>
+ <ul class="tools">
+  <li><i style="background:var(--crown)"></i><b>Energetics</b><span>Your blueprint, from a date, a time and a place. Nothing else is stored.</span></li>
+  <li><i style="background:var(--sacral)"></i><b>Ritual</b><span>A short daily practice, assembled from what you entered.</span></li>
+  <li><i style="background:var(--throat)"></i><b>Story</b><span>You write it. The engine reads the charge out of it.</span></li>
+  <li><i style="background:var(--eye)"></i><b>Field</b><span>The 112 addresses, lit by what is currently held.</span></li>
+  <li><i style="background:var(--root)"></i><b>Body</b><span>Where it sits. A named plexus. A named nerve. A location you can put a hand on.</span></li>
+  <li><i style="background:var(--heart)"></i><b>Compass</b><span>The direction out of each address, one step at a time.</span></li>
+  <li><i style="background:var(--solar)"></i><b>Knowledge</b><span>Every table the reading runs on, readable.</span></li>
+  <li><i style="background:var(--accent)"></i><b>Games</b><span>Brain release. It counts toward the loop.</span></li>
+  <li><i style="background:var(--mid)"></i><b>Summary</b><span>The whole reading on one screen, in order of cost.</span></li>
+ </ul>
+</section>
+
+<!-- BEAT 7. TAKE THE TEST, then the close, verbatim. -->
+<section>
+ <span class="eye">Take the test</span>
+ <h2>A hundred questions about how you actually live.</h2>
+ <p>One question at a time. They are scored against the 21 laws of integrity, and
+ some of them will be uncomfortable to answer honestly. That is the instrument
+ working.</p>
+ <p>At the end you get your coherence, the laws that are thinnest, the saboteurs
+ that are running, and where in the body the load is sitting.</p>
+ <div class="cta">
+  <a class="btn" href="quiz.html">Take the test</a>
+  <p class="meta">One question per screen. Stop and come back. Nothing you answer
+  leaves your browser.</p>
+ </div>
+ <div class="close">
+  <p>No one is coming to save you.</p>
+  <p>Do it yourself.</p>
+  <p>The software is the key and the roadmap.</p>
+  <p class="last">You are the door.</p>
+ </div>
+</section>
+
+<p class="foot">This page makes no request of any kind. It reads self report. A
+clinician reads a person, and those are different jobs.</p>
+
+</div></body></html>

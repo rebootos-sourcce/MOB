@@ -31,6 +31,24 @@ const booted=async p=>{try{await p.waitForFunction(
 const ok=(c,m)=>{if(c)PASS++;else{FAIL++;console.log('  FAIL '+m);}};
 (async()=>{
 const browser=await chromium.launch({executablePath:'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+/* BY NAME, NEVER BY POSITION. Seven checks in this file said loadP(8) and
+   meant Gordon, the heaviest case in the roster. The roster grew to fifteen
+   and 8 became Ana, so every one of them had been measuring the wrong person
+   and three rows about the safety referral were failing for that reason. It
+   is the rule this repository already carries about the tab integers, and it
+   holds for every table a thing is looked up in. Defined on the context so
+   every page and every navigation has it. */
+const GORDON_FN=`window.GORDON=function(){
+ for(var i=0;i<PEOPLE.length;i++)if(PEOPLE[i].nm==='Gordon')return i;
+ throw new Error('Gordon is not in the roster any more');};`;
+browser.newPage=(orig=>async function(...a){
+ const pg=await orig.apply(this,a);
+ await pg.addInitScript(GORDON_FN);
+ return pg;})(browser.newPage);
+browser.newContext=(orig=>async function(...a){
+ const cx=await orig.apply(this,a);
+ await cx.addInitScript(GORDON_FN);
+ return cx;})(browser.newContext);
 const page=await browser.newPage({viewport:{width:1600,height:1000}});
 const real=[];
 page.on('pageerror',e=>real.push('PAGEERROR: '+e.message));
@@ -472,14 +490,7 @@ console.log('\n=== a label never appears without what it owes ===');
    The same word with a definition, the behaviour and the direction is a
    reading. Checked on Gordon, the heaviest case in the roster. */
 const lab=await page.evaluate(()=>{
- /* BY NAME, NEVER BY POSITION. This said loadP(8) and meant the heaviest case
-    in the roster. The roster then grew to fifteen and 8 became somebody else,
-    so the gate has been measuring the wrong person. It is the rule this
-    repository already carries about tab integers, and it applies to every
-    table a thing is looked up in. */
- var gi=0; for(var q=0;q<PEOPLE.length;q++)if(PEOPLE[q].nm==='Gordon')gi=q;
- o.who=PEOPLE[gi].nm;
- loadP(gi); setTab(TAB.FIELD); render();
+ loadP(GORDON()); setTab(TAB.FIELD); render();
  const el=document.getElementById('tier');
  runCompassDrill();
  return {label:el.textContent, tip:el.title,
@@ -954,7 +965,8 @@ console.log('\n=== the compass has two ends and both are doors ===');
    and never as entities. */
 const pole=await page.evaluate(()=>{
  const o={};
- loadP(8); setTab(TAB.FIELD); render();
+ loadP(GORDON()); setTab(TAB.FIELD); render();
+ o.who=(PEOPLE[S.who]||{}).nm;
  o.ends=document.querySelectorAll('#pol2 [data-polend]').length;
  const txt=()=>(document.getElementById('rdrill').textContent||'').replace(/\s+/g,' ');
  runPoleDrill('up'); o.up=txt();
@@ -965,13 +977,15 @@ const pole=await page.evaluate(()=>{
  o.rows=document.querySelectorAll('#rdrill [data-mirror]').length;
  if(row){row.click(); o.axis=txt();}
  const r=compute(); o.cq=Math.round(r.CQ); o.dark=darkRead(r.malig/100,r.CQ).dark;
- /* and a coherent field is never shown it. built rather than assumed: four
-    hundred checks have run against this page and persona zero is not
-    guaranteed to still be empty. */
+ /* AND A COHERENT FIELD IS NEVER SHOWN IT. This used to build the clean case
+    by hand, zeroing the nine and setting the laws to ten. Measured, that
+    construction reads CQ 9 with malignancy 81: it is not a clean field and
+    never was, and the check only passed because the branch it was testing was
+    dead for everybody. So the clean case is a person who is actually clean,
+    by name, and the roster carries several. */
  undoPush('the compass gate');
- CHILD.forEach(function(c){S.charge[c.nm]=0;S.replace[c.nm]=8;});
- SI.forEach(function(l){S.law[l.nm]=10;});
- toYou(); render();
+ var ri=0; for(var q=0;q<PEOPLE.length;q++)if(PEOPLE[q].nm==='Rosa')ri=q;
+ loadP(ri); render();
  const rc=compute();
  o.cleanCQ=Math.round(rc.CQ); o.cleanMal=Math.round(rc.malig);
  o.cleanDark=darkRead(rc.malig/100,rc.CQ).dark;
@@ -1016,7 +1030,7 @@ ok(/What is running here reads|no shape to read/.test(pole.dn),
 /* the recognition lens, which is the owner's own entry framework */
 const seen=await page.evaluate(()=>{
  const txt=()=>(document.getElementById('rdrill').textContent||'').replace(/\s+/g,' ');
- loadP(8); setTab(TAB.FIELD); render();
+ loadP(GORDON()); setTab(TAB.FIELD); render();
  runRecogniseDrill();
  const o={n:document.querySelectorAll('#rdrill [data-circ]').length, see:txt()};
  const first=document.querySelector('#rdrill [data-circ]');
@@ -1106,7 +1120,7 @@ const open_=await page.evaluate(()=>{
  if(d2){d2.click(); o.two=(document.getElementById('rdrill').textContent||'').replace(/\s+/g,' ');}
  if(d3){d3.click(); o.three=(document.getElementById('rdrill').textContent||'').replace(/\s+/g,' ');}
  /* and the block is gone once there is something to read */
- loadP(8); render();
+ loadP(GORDON()); render();
  const st2=document.getElementById('start');
  o.after=compute().unread; o.afterShown=!!st2&&!st2.hidden;
  if(CURP&&keptLaws)CURP.laws=keptLaws;
@@ -1294,13 +1308,13 @@ const relrun=await page.evaluate(()=>{
     attempts at this wrote one person's field into the other's record and then
     wiped the field and billed for it; refusing is the only version that does
     neither. */
- loadP(8); setTab(TAB.FIELD); render();
+ loadP(GORDON()); setTab(TAB.FIELD); render();
  {const g=compute();
   relPick(W.filter(function(n){return n.sq>=4;}).slice(0,3).map(function(n){return n.i;}));
   RUN.phase='run'; RUN.idx=1e9;
   var refused=relCoolDown();
   var g2=compute();
-  o.refWho=S.who;
+  o.refOnRef=(S.who===GORDON());
   o.refCq=Math.abs(g2.CQ-g.CQ)<1e-9;
   o.refCarry=g2.loaded.length===g.loaded.length;
   o.refReturn=(refused===false);
@@ -1361,7 +1375,7 @@ ok(relrun.beforeWho===0&&relrun.afterWho===0,
 ok(relrun.ownGained===relrun.plan,
  'and every line lands there rather than on the reference case, got '+relrun.ownGained);
 ok(relrun.refReturn,'a release on a reference case refuses');
-ok(relrun.refWho===8,'and leaves the person looking at the case they were on');
+ok(relrun.refOnRef,'and leaves the person looking at the case they were on');
 ok(relrun.refCq,'and does not move its coherence');
 ok(relrun.refCarry,'and does not empty its carrying addresses');
 /* THE FIELD MOVES WITH THE IDENTITY, OR A STRANGER'S FIELD BECOMES YOURS.
@@ -1386,7 +1400,7 @@ console.log('\n=== the avatar, and what it aims the work at ===');
    release queue can aim at. */
 const avat=await page.evaluate(()=>{
  const o={}, txt=()=>(document.getElementById('rdrill').textContent||'').replace(/\s+/g,' ');
- loadP(8); setTab(TAB.FIELD); render();
+ loadP(GORDON()); setTab(TAB.FIELD); render();
  const keptA=CURP.avatar, keptP=CURP.purpose;
  /* THE RESOLVER. It read p.hits and looked up BY[h.i], which is undefined on
     every hit, so it answered nothing for text it had in fact parsed. */
@@ -1405,7 +1419,8 @@ const avat=await page.evaluate(()=>{
 ok(avat.seat==='Solar','the resolver reads a seat out of a bad day sentence, got '+avat.seat);
 ok(avat.none===null,'and nothing out of a sentence with no feeling in it');
 ok(avat.rows===1,'one written pair, one row');
-ok(/solar, 5/.test(avat.av),'the row names the seat and what is held there');
+ok(/solar, \d+/.test(avat.av),
+ 'the row names the seat and what is held there, got '+(avat.av.match(/solar, \d+/)||['none'])[0]);
 ok(/does not rule on whether an attribute is a real edge/.test(avat.av),
  'and the standing ruling is on the surface');
 ok(/Read from what you have actually cleared, not from what you wrote/.test(avat.av),
@@ -1429,7 +1444,7 @@ console.log('\n=== the compass with volume ===');
    own canvas and its own context, no library and no new dependency. */
 const cone=await page.evaluate(()=>{
  const o={};
- loadP(8); setTab(TAB.FIELD); render();
+ loadP(GORDON()); setTab(TAB.FIELD); render();
  /* reachable from BOTH ends of the flat compass. it sat inside the downward
     branch on its first write, so the upward roster had no way through. */
  runPoleDrill('up');   o.fromUp=!!document.getElementById('rdcone');

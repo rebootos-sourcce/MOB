@@ -31,7 +31,7 @@ var QQ=[
 {l:'Truth',c:'Apathy',q:'You soften a true thing until the person hearing it can no longer hear it.'},
 {l:'Truth',c:'Sad',q:'There is a sentence you have not said at home. You have known it for months.'},
 {l:'Truth',c:'Apathy',q:'Somebody asks how you are and the answer is out of your mouth before you have checked.'},
-{l:'Truth',c:'Disgust',q:'You catch yourself telling a version of your life you have stopped believing.'},
+{l:'Truth',c:'Shock',q:'You catch yourself telling a version of your life you have stopped believing.'},
 
 /* ---------- Transparency. Throat. ---------- */
 {l:'Transparency',c:'Fear',q:'You keep one part of your life in a separate room, and keeping it there costs you sleep.'},
@@ -44,7 +44,7 @@ var QQ=[
 {l:'Justice',c:'Anger',q:'You carry a debt somebody owes you and it is louder at night than in the day.'},
 {l:'Justice',c:'Anger',q:'You take less than your share and then resent the person who let you.'},
 {l:'Justice',c:'Anger',q:'You keep score in a close relationship and the other person does not know there is a score.'},
-{l:'Justice',c:'Shame',q:'Something unfair lands on somebody smaller than you and you say nothing.'},
+{l:'Justice',c:'Fear',q:'Something unfair lands on somebody smaller than you and you say nothing.'},
 
 /* ---------- Unity. Crown. ---------- */
 {l:'Unity',c:'Sad',q:'You are in a full room and the distance between you and everybody in it does not close.'},
@@ -54,7 +54,7 @@ var QQ=[
 
 /* ---------- Awareness. Crown. ---------- */
 {l:'Awareness',c:'Shock',q:'You arrive somewhere and cannot account for the twenty minutes before it.'},
-{l:'Awareness',c:'Anger',q:'You learn you were angry from how you spoke to somebody, not from feeling it.'},
+{l:'Awareness',c:'Shock',q:'You learn you were angry from how you spoke to somebody, not from feeling it.'},
 {l:'Awareness',c:'Shock',q:'The same argument starts again and you cannot find the moment you entered it.'},
 {l:'Awareness',c:'Anticipation',q:'Your hand is on the phone before you notice deciding to reach for it.'},
 {l:'Awareness',c:'Fear',q:'Your body tells you first and you overrule it.'},
@@ -82,7 +82,7 @@ var QQ=[
 /* ---------- Equanimity. 3rd Eye. ---------- */
 {l:'Equanimity',c:'Surprise',q:'A small thing goes wrong and the whole day goes with it.'},
 {l:'Equanimity',c:'Anger',q:'Your voice is up before you have decided to raise it.'},
-{l:'Equanimity',c:'Anger',q:'You are level all day and then something breaks over nothing at home.'},
+{l:'Equanimity',c:'Shock',q:'You are level all day and then something breaks over nothing at home.'},
 {l:'Equanimity',c:'Anticipation',q:'Your jaw is tight when you notice it, and you notice it most days.'},
 {l:'Equanimity',c:'Shock',q:'You need the last word before you can put the thing down.'},
 
