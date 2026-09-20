@@ -34,14 +34,26 @@ const FILE=path.resolve(process.argv[2]||'source.html');
 const LOG=path.resolve(__dirname,'..','MONITOR.log');
 const sh=c=>{try{return cp.execSync(c,{encoding:'utf8'}).trim();}catch(e){return '?';}};
 
-/* every surface, by the integer that is its identity. Names are for the log. */
-const TABS=[['story',0],['summary',1],['field',2],['body',3],['intake',5],
-            ['knowledge',6],['games',7],['compass',8],['settings',9]];
+/* EVERY SURFACE, READ OUT OF TABDEF AT RUN TIME. This was a hand written list
+   of nine pairs and the product grew past it: Ritual took integer 10 and the
+   watch never looked at it, which is the third time a count typed into a gate
+   has gone stale because the thing it counts moved. Settings is appended by
+   hand because it is deliberately not in TABDEF, having no door in the bar. */
+const TABS_JS=`(function(){var a=TABDEF.map(function(t){return [t.nm.toLowerCase(),t.k,t.id];});
+ Object.keys(TABEXTRA).forEach(function(k){var t=TABEXTRA[k];
+  a.push([t.nm.toLowerCase(),t.k,t.id]);});
+ return a;})()`;
 const WIDTHS=[[1600,1000,'desktop'],[390,844,'phone']];
 /* a surface is empty below this much markup. Chosen against a measured
    floor: the thinnest healthy surface in the build is the compass at about
    1,900 characters, and a host that failed to render sits under 200. */
 const FLOOR=400;
+/* AND A CANVAS IS COUNTED IN LIT SAMPLES, NOT CHARACTERS, so it needs its own
+   floor. Measured on this build: the Field on a blank profile lights 254 of
+   the sampled pixels and on a loaded one 1,038, while a canvas that never
+   drew lights none at all. Sixty is well clear of both the blank reading and
+   of zero, which is the distinction this watch exists to make. */
+const FLOOR_CANVAS=60;
 
 (async()=>{
  const md5=sh('md5sum '+FILE).slice(0,8);
@@ -68,21 +80,45 @@ const FLOOR=400;
   const errs=[]; p.on('pageerror',e=>errs.push(e.message.slice(0,140)));
   await p.goto('file://'+FILE); await p.waitForTimeout(7000);
   const L=await p.evaluate(()=>PEOPLE.findIndex(x=>x.nm==='Lance'));
+  const TABS=await p.evaluate(TABS_JS);
   for(const who of ['blank','loaded']){
    if(who==='loaded')await p.evaluate(i=>loadP(i),L);
-   for(const [nm,t] of TABS){
+   for(const [nm,t,hid] of TABS){
     await p.evaluate(k=>setTab(k),t); await p.waitForTimeout(420);
-    const r=await p.evaluate(()=>{
-     const st=document.querySelector('.stage'); if(!st)return null;
-     const vis=[...st.children].filter(e=>{const s=getComputedStyle(e);
-      const b=e.getBoundingClientRect();
-      return s.display!=='none'&&b.width>0&&b.height>0;});
-     const host=vis[0]||null;
-     return {host:host?(host.id||host.className.toString().slice(0,12)):'NONE',
-      markup:host?host.innerHTML.length:0,
-      text:host?host.innerText.trim().length:0,
-      visible:vis.length};});
-    const bad=!r||r.markup<FLOOR;
+    /* THE HOST IS LOOKED UP BY ITS ID, never by its position in the stage.
+       This read the first visible child of .stage, and the Field's two key
+       strips are visible children of .stage on every tab, so from the moment
+       they landed the watch measured the same strip nine times and reported
+       nine identical numbers under the heading "all surfaces render". A watch
+       that cannot see a surface is worse than no watch, and the rule the
+       project already carries is that anything needing a tab's entry looks it
+       up by identity rather than by where it happens to sit. */
+    const r=await p.evaluate(id=>{
+     const host=document.getElementById(id); if(!host)return null;
+     const s=getComputedStyle(host), b=host.getBoundingClientRect();
+     const shown=(s.display!=='none'&&b.width>0&&b.height>0);
+     if(!shown)return {host:id+' HIDDEN',markup:0,text:0,visible:0};
+     /* A CANVAS HAS NO MARKUP AND NEVER WILL. The Field is a canvas, so
+        counting its innerHTML reported zero for a surface that was drawing
+        correctly, which is the same class of mistake as reading innerText on
+        the Body's SVG. The honest reader for a canvas is its pixels: sample
+        the drawn bitmap and count how many are not the page ground. The count
+        stands in for markup in the log so one column still means one thing,
+        "how much of this surface is actually there". */
+     if(host.tagName==='CANVAS'){
+      var w=host.width,h=host.height;
+      if(!w||!h)return {host:id+' canvas 0x0',markup:0,text:0,visible:1};
+      var cx=host.getContext('2d'), d=null;
+      try{ d=cx.getImageData(0,0,w,h).data; }catch(e){ d=null; }
+      if(!d)return {host:id+' canvas unreadable',markup:0,text:0,visible:1};
+      var lit=0;
+      for(var i=3;i<d.length;i+=4*97)if(d[i]>8)lit++;
+      return {host:id+' '+w+'x'+h,markup:lit,text:0,visible:1};}
+     return {host:id,
+      markup:host.innerHTML.length,
+      text:host.innerText.trim().length,
+      visible:1};},hid);
+    const bad=!r||r.markup<(/ \d+x\d+$/.test(r.host)?FLOOR_CANVAS:FLOOR);
     rows.push([wn,who,nm,bad?'EMPTY':'ok',r?r.markup:0,r?r.text:0,r?r.host:'-']);
     if(bad)fails.push(wn+'/'+who+'/'+nm+' rendered '+(r?r.markup:0)+' characters');}}
   errs.forEach(e=>{rows.push([wn,'-','pageerror','ERROR',0,0,e]); fails.push(wn+' threw: '+e);});

@@ -759,6 +759,21 @@ g('19b \u00b7 the empty field says it is empty');
  ok(r1.unread===false,'one held address makes it a reading');
  ok(r1.tier&&r1.tier.length>0,'and the tier means something');
  S.charge.Fear=0; compute();
+ /* AND CHARGE UNDER THE DISPLAY LINE IS STILL CHARGE SOMEBODY ENTERED.
+    unread is a claim about whether anything was entered, not about whether it
+    crossed SQ 4. Measured before this: all nine axes at 3.9, 107 addresses
+    carrying, loaded 0, DQ 0.0, unread true, so Summary showed the four doors
+    and said nothing had been entered while the release control offered those
+    same 107 addresses and spent eight patterns a press on them. The display
+    line is unchanged and DQ still reads 0, which is true. */
+ CHARGES.forEach(c=>{S.charge[c]=3.9;});
+ const r2=compute();
+ ok(r2.loaded.length===0,'charge at 3.9 is still below the line, nothing is held');
+ ok(r2.under>0,'and it is reported as carrying underneath, got '+r2.under);
+ ok(r2.unread===false,
+  'so the reading does not claim nothing was entered, with '+r2.under
+  +' addresses carrying');
+ CHARGES.forEach(c=>{S.charge[c]=0;}); compute();
 }
 
 g('18b \u00b7 undo');

@@ -152,7 +152,6 @@ function compute(){
     everything downstream needs it, but the field says plainly that nothing has
     been read yet and every surface that names a tier checks this first. */
  const measured=SI.filter(function(l){return CURP&&CURP.laws&&CURP.laws[l.nm]!=null;}).length;
- const unread=(loaded.length===0&&measured===0);
  /* BELOW THE LINE. An address counts as carrying at SQ 4. Under that the
     charge is real, a person entered it, and every surface reported nothing
     held. Setting all nine axes to 4 gave an identical reading to setting them
@@ -161,6 +160,15 @@ function compute(){
     arithmetic is built on, but the fact that there is charge underneath it is
     now reportable instead of invisible. */
  const under=W.filter(function(n){return n.sq>0&&n.sq<4;}).length;
+ /* AND UNREAD COUNTS IT, because unread is a claim that nothing was entered
+    and not a claim that nothing crossed the display line. Measured with all
+    nine axes at 3.9: 107 addresses carrying, DQ 0.0, unread true, so Summary
+    showed the four doors and said nothing had been entered while the release
+    control offered the same 107 addresses and spent eight patterns a press on
+    them. One surface billing for a field another surface denies exists is the
+    worst version of this, so under is counted here. The display line is
+    unchanged: DQ still reads 0 and nothing is called held, which is true. */
+ const unread=(loaded.length===0&&measured===0&&under===0);
  /* benign and malig were CQ restated: malig was (50 minus CQ) doubled, so a
     surface asking whether a field was malignant AND decoherent was asking one
     question twice and could never get a no from one and a yes from the other.

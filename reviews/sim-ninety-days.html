@@ -53,6 +53,9 @@ hr{border:0;border-top:1px solid var(--line);margin:3rem 0}
  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--ink3);
  border-left:2px solid var(--line);padding-left:1.1rem;max-width:34rem}
 .stamp b{color:var(--ink2);font-weight:400}
+.stamp span{overflow-wrap:anywhere}
+@media(max-width:520px){.stamp{grid-template-columns:1fr;gap:.1rem}
+ .stamp b{margin-top:.6rem}}
 
 /* contents */
 nav.toc{background:var(--bg2);border:1px solid var(--line);border-radius:10px;
@@ -91,6 +94,15 @@ tbody tr:last-child td{border-bottom:0}
 tbody tr:hover{background:var(--bg2)}
 td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
 tr.tot td{background:var(--bg3);font-weight:640}
+/* ON A NARROW SCREEN THE CELLS STOP WRAPPING. A wide table that wraps its last
+   column off the right edge leaves rows three lines tall and visibly empty, and
+   a reader cannot tell there is anything there. Held on one line, the cut is the
+   affordance: the content is plainly sliced and the container scrolls. */
+@media(max-width:760px){
+ .scroller{box-shadow:inset -14px 0 12px -12px rgba(0,0,0,.45)}
+ th,td{white-space:nowrap;max-width:26rem;overflow:hidden;text-overflow:ellipsis}
+ table{font-size:.85rem}
+}
 
 /* quote */
 blockquote{margin:1.5rem 0;padding:.2rem 0 .2rem 1.2rem;border-left:2px solid var(--line);
@@ -143,13 +155,17 @@ blockquote.screen{border-left-color:var(--line);font-family:ui-monospace,SFMono-
 footer{margin-top:4rem;padding-top:2rem;border-top:1px solid var(--line);
  font-size:.86rem;color:var(--ink3)}
 footer a{color:var(--ink2)}
-.themer{position:fixed;top:12px;right:12px;z-index:9;background:var(--bg2);color:var(--ink2);
- border:1px solid var(--line);border-radius:99px;padding:.5rem .9rem;font-size:.76rem;
- cursor:pointer;min-height:44px;min-width:44px}
-@media print{.themer,nav.toc{display:none}body{background:#fff;color:#000}}
+/* THE LIGHTING CONTROL SITS IN THE MASTHEAD, NOT OVER THE TEXT. Fixed to a
+   corner it covers a line of the document at every scroll position, which is a
+   control hiding content it is not in charge of. */
+.themer{background:var(--bg2);color:var(--ink2);border:1px solid var(--line);
+ border-radius:99px;padding:.5rem 1rem;font-size:.78rem;cursor:pointer;
+ min-height:44px;min-width:44px;margin:2.6rem 0 0}
+.themer:hover{color:var(--ink);border-color:var(--ink3)}
+@media print{.themer,nav.toc{display:none}body{background:#fff;color:#000}
+ .scroller{box-shadow:none;overflow:visible}th,td{white-space:normal}}
 </style></head>
 <body>
-<button class="themer" id="th" type="button">Light</button>
 <div class="wrap">
 
 <header class="mast">
@@ -159,14 +175,14 @@ footer a{color:var(--ink2)}
  people in the roster, each at the reading this build actually gives them. What
  they do, what they see, where they stop, and the sentence that stops them.</p>
  <div class="stamp">
-  <b>build</b><span>commit 124421d plus an uncommitted working tree</span>
-  <b>file</b><span>source.html, 1,190,443 bytes</span>
-  <b>md5</b><span>f304c29532ea8c2dfa9c683fab5b8051</span>
+  <b>measured</b><span>source.html at md5 f304c29532ea8c2dfa9c683fab5b8051,<br>built from the working tree at commit 124421d</span>
+  <b>re-checked</b><span>every headline finding against md5 d95e5d5a79a1e93726719d57c0c2bfd2<br>at commit d71e30d, which landed while this was being written.<br>Identical on every one</span>
   <b>driven</b><span>Chromium 1194, file://, 1600x1000 and 390x844</span>
   <b>sessions</b><span>nineteen, 7,400 ms boot wait on each</span>
   <b>errors</b><span>zero page errors on every surface, both widths</span>
   <b>requests</b><span>three, all local: the file and the two rasters</span>
  </div>
+ <button class="themer" id="th" type="button">Light</button>
 </header>
 
 <nav class="toc">
@@ -1269,7 +1285,10 @@ vectors.</p>
 <p>Everything labelled <span class="tag t-m">measured</span> is a fact about
 <code>source.html</code> at md5
 <code>f304c29532ea8c2dfa9c683fab5b8051</code>, verified by executing it in
-Chromium at 1600x1000 and 390x844 this session, and by looking at the images.</p>
+Chromium at 1600x1000 and 390x844 this session, and by looking at the images. The
+build moved once while this was being written, to md5
+<code>d95e5d5a79a1e93726719d57c0c2bfd2</code> at commit d71e30d. Every headline
+finding was re-driven against that build and came back identical.</p>
 <p><strong>No figure here is evidence about any human being and none of it should
 be quoted as research.</strong> Two landing pages and five people with phones
 would replace half of it with measurements, and both are cheaper than the

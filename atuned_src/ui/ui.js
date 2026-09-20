@@ -862,7 +862,7 @@ function render(){
 let last=0;
 function loop(ts){
  if(!REDUCED)S.t+=(last?Math.min(.05,(ts-last)/1e3):0);
- last=ts; stepRel(ts);
+ last=ts;
  var r=compute();
  if(S.tab===TAB.FIELD){draw(r);drawAura(r);renderPol2(r);}
  else if(S.tab===TAB.ENERGY){drawAura(r);}

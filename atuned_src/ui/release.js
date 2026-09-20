@@ -50,18 +50,36 @@ function relCoolDown(){
     actually did rather than asserting that it did something. A control must
     never claim success before it has it, and "released" is not the same claim
     as "your coherence moved". */
- /* THE REPOINT COMES BEFORE THE WRITE, NOT AFTER IT.
+ /* YOU CANNOT RELEASE SOMEBODY ELSE'S PATTERNS, AND THE ANSWER IS TO REFUSE.
 
-    "The person who ran it is the person who is charged" was already ruled and
-    the meter half was already fixed. The field half was not: the release wrote
-    into whatever field was loaded, and only then moved the pointer, so a run
-    started while a reference case was on screen emptied that case's addresses
-    and the person's own field never moved.
+    This is my defect and the second attempt at it. The first version wrote the
+    release into whichever field was loaded and then moved the pointer, so a
+    run started on a reference case emptied that case and left the person's own
+    record carrying its charge. The fix was to repoint first, which stopped the
+    leak and broke the surface: repointing before the read meant the whole run
+    executed against the person's own empty field while the queue had been
+    built from the case's addresses.
 
-    Repointing first means the write lands on the person's own charge, and a
-    person releasing charge they do not carry moves nothing, which is the
-    honest outcome rather than a borrowed one. */
- toYou();
+    Measured on the second version: Sofia 57.18, Diane 28.65, Marcus 39.17 and
+    James 12.79 all landed on CQ 42.3, every carrying address zeroed, the
+    profile silently switched to Custom and twenty five patterns spent. Four
+    presses spent the whole gift. That is worse than the bug it replaced.
+
+    Both versions were answering the wrong question. A reference case is a
+    demonstration, not a record, and releasing its addresses is not a thing a
+    person can coherently do: the patterns are theirs and the charge is not.
+    So the run refuses and says which profile it is on. Refusing costs nothing
+    and the alternative destroys a field and bills for it.
+
+    The meter ruling is untouched. When a person runs their own release they
+    are the person charged, which is what it always meant. */
+ if(typeof S!=='undefined'&&S.who!==0){
+  RUN.done=false; RUN.phase='pick';
+  if(typeof status==='function')
+   status('You are looking at '+((PEOPLE[S.who]||{}).nm||'a reference case')
+    +', which is a worked example rather than your record. Switch to your own '
+    +'profile to run a release.','fail');
+  return false; }
  var _pre=compute(); RUN.cq0=_pre.CQ; RUN.ceil0=cqCeiling();
  /* the release empties addresses and installs their opposites. it is the
     largest single write this product makes and it had no way back. */

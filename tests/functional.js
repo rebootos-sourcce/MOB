@@ -1154,16 +1154,35 @@ const relrun=await page.evaluate(()=>{
     earlier step in this page is not blamed on the release. */
  o.youBefore=Object.keys(PEOPLE[0].c||{}).reduce(function(a,k){
    return a+(+PEOPLE[0].c[k]||0);},0);
+ /* A RELEASE ON A REFERENCE CASE REFUSES, and that is what this block now
+    checks first. A reference case is a demonstration, not a record: the
+    patterns would be the person's and the charge would not. Two earlier
+    attempts at this wrote one person's field into the other's record and then
+    wiped the field and billed for it; refusing is the only version that does
+    neither. */
  loadP(8); setTab(TAB.FIELD); render();
+ {const g=compute();
+  relPick(W.filter(function(n){return n.sq>=4;}).slice(0,3).map(function(n){return n.i;}));
+  RUN.phase='run'; RUN.idx=1e9;
+  var refused=relCoolDown();
+  var g2=compute();
+  o.refWho=S.who;
+  o.refCq=Math.abs(g2.CQ-g.CQ)<1e-9;
+  o.refCarry=g2.loaded.length===g.loaded.length;
+  o.refReturn=(refused===false);
+  RUN.done=false; RUN.phase='pick'; RUN.queue=[]; RUN.plan=[]; RUN.log=[];}
+ /* and now the person's own, which is the path that actually runs */
+ loadP(0); setTab(TAB.FIELD); render();
  const held=W.filter(n=>n.sq>=4).slice(0,3).map(n=>n.i);
  relPick(held);
  o.plan=RUN.plan.length;
  o.setup=(document.getElementById('rel').textContent||'').replace(/\s+/g,' ');
  o.distinct=new Set(RUN.plan).size;
- /* THE PERSON WHO RAN IT IS THE PERSON CHARGED. toYou repoints CURP at the
-    person's own record and it used to be called AFTER the meter wrote, so a run
-    started while a reference case was loaded charged the reference case and
-    then moved the pointer away. */
+ /* THE PERSON WHO RAN IT IS THE PERSON CHARGED, and nothing in the run moves
+    who that is. An earlier build repointed CURP at the person's own record
+    part way through, which charged one record and wrote the field of another;
+    the repoint is gone and the refusal above stands in its place, so the run
+    both starts and ends on whoever pressed it. */
  o.beforeWho=S.who;
  const ownBefore=(PROF_BY[PEOPLE[0].nm].meter.unique||[]).length;
  RUN.phase='run'; RUN.idx=RUN.plan.length-1;
@@ -1203,9 +1222,14 @@ ok(new RegExp(relrun.plan+' thought lines of new ground').test(relrun.setup),
  'the setup says what it costs before anybody begins, quoting '+relrun.plan);
 ok(new RegExp(relrun.plan+' of your allowance').test(relrun.setup),
  'and that it comes out of the allowance');
-ok(relrun.beforeWho===8&&relrun.afterWho===0,'the run ends on the person\'s own record');
+ok(relrun.beforeWho===0&&relrun.afterWho===0,
+ 'the run starts and ends on the person\'s own record, no repoint in the middle');
 ok(relrun.ownGained===relrun.plan,
  'and every line lands there rather than on the reference case, got '+relrun.ownGained);
+ok(relrun.refReturn,'a release on a reference case refuses');
+ok(relrun.refWho===8,'and leaves the person looking at the case they were on');
+ok(relrun.refCq,'and does not move its coherence');
+ok(relrun.refCarry,'and does not empty its carrying addresses');
 /* THE FIELD MOVES WITH THE IDENTITY, OR A STRANGER'S FIELD BECOMES YOURS.
    Measured before the fix: a person whose nine axes were all zero came out of a
    release run started on James carrying 50.6 of his charge, saved and

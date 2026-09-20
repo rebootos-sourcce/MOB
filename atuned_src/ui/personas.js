@@ -411,7 +411,6 @@ function loadP(i){
  syncSoul();syncCh();syncLw();renderSpirit();renderIntake();render();}
 
 /* ---- release button ---- */
-var REL=null;
 $('bRel').addEventListener('click',function(){
  var hot=W.filter(function(n){return n.sq>=4;}).sort(function(a,b){return b.sq-a.sq;});
  if(hot.length){relPick(hot.slice(0,8).map(function(n){return n.i;}));return;}
@@ -438,12 +437,17 @@ $('bRel').addEventListener('click',function(){
     from the real thing: the numbers simply changed and there was no way back.
     A control must never claim to have done something it has not done, and it
     must never do something destructive it was not asked to do. */
- status('Nothing is held above the line, so there is nothing to release. '
-  +'Write a story or set a charge first.','warn');});
-function stepRel(now){
- if(!REL)return;
- var k=Math.min(1,(now-REL.t0)/2800), e=1-Math.pow(1-k,3);
- CHARGES.forEach(function(c){S.charge[c]=REL.c[c]*(1-e);
-  S.replace[c]=(S.replace[c]||0)+Math.max(0,(e-0.45)/0.55)*(REL.c[c]/10)*8*0.04;});
- SINAMES.forEach(function(x){S.law[x]=REL.l[x]+(10-REL.l[x])*e*.55;});
- syncCh();syncLw();render();if(k>=1)REL=null;}
+ /* AND THE REASON IS NOT THE SAME FOR EVERYBODY WHO LANDS HERE. The old copy
+    said nothing was held above the line, which was the wrong line: this branch
+    only runs when nothing is carrying at any depth. A person who has answered
+    the intake and nothing else is in a different position from a person who has
+    entered nothing at all, and telling them both to write a story leaves the
+    first one thinking sixty three answers did nothing. The intake measures how
+    they act. A story is what puts an address on the map. */
+ var _m=compute().measured;
+ status(_m>0
+  ?'Nothing is carrying, so there is nothing to release. The intake measured '
+   +_m+' of the 21 laws, which is how you act, not what you hold. A story is '
+   +'what puts an address on the map.'
+  :'Nothing is carrying, so there is nothing to release. Write a story or set '
+   +'a charge first.','warn');});

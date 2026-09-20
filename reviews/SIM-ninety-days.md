@@ -6,11 +6,14 @@ they see, where they stop, and the sentence that stops them.
 
 Run under the UI and UX seat, from the build and not from the documents.
 
-    build      commit 124421d plus an uncommitted working tree
-    file       source.html, 1,190,443 bytes
-    md5        f304c29532ea8c2dfa9c683fab5b8051
+    measured   source.html at md5 f304c29532ea8c2dfa9c683fab5b8051,
+               built from the working tree at commit 124421d
+    re-checked the headline findings against md5 d95e5d5a79a1e93726719d57c0c2bfd2
+               at commit d71e30d, which landed while this was being written.
+               Identical on every one.
     driven     Chromium 1194, file://, 1600x1000 and 390x844
     boot wait  7,400 ms on every session
+    sessions   nineteen
     errors     zero page errors across every session below
     requests   three, all local: the file and the two rasters
 
@@ -1203,7 +1206,10 @@ engine's real output on the repository's own fictional vectors.
 
 Everything labelled **measured** is a fact about `source.html` at md5
 `f304c29532ea8c2dfa9c683fab5b8051`, verified by executing it in Chromium at
-1600x1000 and 390x844 this session, and by looking at the images.
+1600x1000 and 390x844 this session, and by looking at the images. The build
+moved once while this was being written, to md5
+`d95e5d5a79a1e93726719d57c0c2bfd2` at commit d71e30d. Every headline finding was
+re-driven against that build and came back identical.
 
 Everything labelled **cited** carries its source.
 

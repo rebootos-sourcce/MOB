@@ -1,3 +1,317 @@
+# TASKS
+
+**The one list.** Ruled 19 September: every request goes on this list the turn
+it is made, before any code is written, and it is checked off as it is built.
+The project manager reads this file at the top of every round and promotes what
+goes in the next block. `CHECKLIST.md` and `OUTSTANDING.md` were two competing
+ledgers and are folded in here; the whole point of one list is that there is
+nothing to reconcile.
+
+Below the ledger is **the record**: the twelve notes in the order he gave them,
+kept because a task without its wording loses what he actually asked for.
+
+## How a line moves
+
+`[ ]` open. `[x]` built and gated. `[~]` specced, not built. `[?]` waiting on
+his ruling. Nothing takes an `[x]` without a measurement: built, gated, pushed.
+Not written, not specced, not proposed.
+
+A defect found in passing is a line here, not a sentence in a report nobody
+reopens. Every seat adds its own.
+
+---
+
+## 0. THE NEXT BLOCK
+
+The four the project manager has promoted. Ordered by what unblocks the most.
+
+- [x] **N1. Ritual gets a door.** DONE, and it was already done. TAB.RITUAL is
+      integer 10, it sits second in `TABDEF` in his order (intake, ritual,
+      story), `#rit` is its host and `panels.js` opens it on the tab.
+      Measured: 4,790 characters of markup, opening on "Build A Ritual".
+      I had it in the open column and it was built. Checked before building.
+- [ ] **N2. The avatar becomes a page.** new surface. Set up the avatar, build
+      the game plan, set the goals, information on the right, Summary a button
+      underneath. It is also the release designer: what the avatar is set to
+      becomes the ritual's priority order. *Large.*
+- [ ] **N3. The Summary is boring.** `ui/summary.js` Ten passes, innovation and
+      animation and art. Every named thing described as a behaviour, not a
+      label. The centre column becomes text about you and everything energetic
+      moves right. *Large.*
+- [ ] **N0. The soul loop, drawn.** RULED 20 September and it is the last
+      piece the mark was waiting on. One stroke crossing itself into a small
+      closed eye, no bars, golden ratio, tiny, pure gold. It sits at the crown
+      of the stack. *Small to draw, and it unblocks the mark.*
+- [ ] **N4. The copy editor pass on every number.** standing, `AR1`
+      A number that does not say what it is out of does not print. This is his
+      instruction to me, not a task he has to keep catching.
+
+---
+
+## 1. BUILT AND GATED
+
+The diagnostic and the energetics
+
+- [x] A1. Energetics: three framings side by side `ui/intakeui.js`
+- [x] A2. Two law cards, chakra frames, as drawn `ui/intakeui.js`
+- [x] A3. Laws grouped by seat, crown to root `ui/intakeui.js`
+- [x] A4. How to answer: a ten is a hundred out of a hundred `ui/intakeui.js`
+- [x] A5. Identity rolls up on save, edit reopens it `ui/intakeui.js`, `engine/schema.js`
+
+The account area
+
+- [x] A7. A standard account area, six sections `ui/account.js`
+- [x] A8. Security, privacy, account, billing and tier `ui/account.js`
+- [x] A9. Customer feedback and support in help `ui/account.js`
+- [x] A10. The alpha questionnaire, his eleven questions `ui/account.js`
+- [x] A11. Rate the product `ui/account.js`
+
+The compass and the Field
+
+- [x] A12. The compass opens flat `ui/cone.js`
+- [x] A13. Flat, Regulation, Layers to the upper left `ui/cone.js`
+- [x] A14. The lower left block comes out `ui/cone.js`
+- [x] A15. Spans become a graph, lower right, opens Summary `ui/cone.js`, `engine/ladder.js`
+- [x] A23. The app opens on the Field `engine/core.js`
+- [x] AE1. The Field top row is two strips, one line each `ui/ui.js`, `shell/head.html`
+
+Look and language
+
+- [x] A6. Undo and redo are just the arrows `shell/body.html`, `ui/panels.js`
+- [x] A16. Archetypes wear their chakra colours `engine/data/canon.js`, `ui/summary.js`
+- [x] A17. Benign or malignant becomes one word, Orientation `shell/body.html`
+- [x] A18. SOURCE OS all caps, half a point down `shell/head.html`
+- [x] A19. Lumen, the seventh lighting `shell/head.html`
+- [x] A20. Lumen: paper rails and bar, vibrant, black stage `shell/head.html`
+- [x] A21. Lumen: anything selected is a solid fill `shell/head.html`
+- [x] A22. Summary bolds carry their family colour `ui/summary.js`
+- [x] A24. The halo is gold `shell/head.html`
+- [x] AT2a. The mark drawn from the stack `reviews/AD-mark-stack.md`
+
+## 1b. DEFECTS FIXED, THAT HE DID NOT HAVE TO ASK FOR
+
+- [x] B1. A release on a reference case wrote a stranger's field into his
+      record. 50.6 of borrowed charge. Two fixes were worse than the bug: the
+      second wiped every field to 42.3 and billed for it. It refuses now.
+- [x] B2. The fetters caption said "nothing carrying yet" on every profile.
+      Ana: 41 carrying, 41 drawn.
+- [x] B3. Every number in the product had no font. `--num` named a face that is
+      not in the build.
+- [x] B4. Two knowledge base titles were abbreviations.
+- [x] B5. The skip press also pressed the app underneath.
+- [x] B6. Two scale labels were false. DQ "0 to 10" read 54.7.
+- [x] B7. The canvas never went vibrant in Lumen. `bc()` did not know it.
+- [x] B8. Gate 13 never tested the seventh lighting.
+- [x] B9. Gate 9 counted six lightings by hand and the product grew.
+- [x] B10. Settings was in no screenshot harness.
+- [x] B11. `--bad` was too thin to see past about fifty five.
+- [x] B12. A profile from an older build killed the centre render.
+- [x] B13. The boundary refused a null avatar and dropped the whole profile.
+- [x] B14. `unread` claimed nothing had been entered while 107 addresses were
+      carrying under the display line, and the release billed eight patterns a
+      press against them. `engine/compute.js`
+- [x] B15. The old destructive release animation was still loaded in the frame
+      loop, unreachable but one assignment from zeroing every charge again.
+      `ui/personas.js`, `ui/ui.js`
+- [x] B16. The release's empty state told a person who had answered the intake
+      to write a story, with no word about what the intake did measure.
+
+---
+
+## 2. OPEN, IN THE ORDER IT WAS GIVEN
+
+### 2a. Asked more than once, and still not built
+
+- [ ] R1. **Knowledge base restructure.** Nature, human nature, integrity. A
+      paragraph each, headers on one line with icons, narrative framing.
+      *Asked 3 times.*
+- [ ] R2. **Editorial sweep to plain language.** Nothing that reads as jargon.
+      *Asked 3 times.*
+- [ ] R3. **Energetics aesthetic.** It is boring, and he wants a subtle glass
+      touch. *Asked twice.*
+- [ ] R4. **Summary right rail.** Eastern and Western, master number, the full
+      mental stack. *Asked twice.*
+- [ ] R5. **Heat map anatomically precise to the chakras.** *Asked twice.*
+- [ ] R6. **Every piece of art gathered for his ruling.** Standing obligation.
+      Sent twice, never complete.
+
+### 2b. The Field
+
+- [ ] F1. The six axis icons are barely visible and carry no pill with a percent
+- [ ] F2. The rainbow bands at the centre: say what they are, make them clickable
+- [ ] F3. Subtle motion outside the ring
+- [ ] F4. The atomization is nine scroll notches deep and effectively not in the
+      product
+- [ ] F5. Coherence is printed four times on one screen
+
+### 2c. The compass. Nothing from the eleventh note is built.
+
+- [ ] AQ1. The shape is an arrow up and an arrow down `ui/cone.js`
+- [ ] AQ2. Coherent at the top, decoherent at the bottom
+- [ ] AQ3. Halo at the top, pitchfork at the bottom
+- [ ] AQ4. The marker oscillates in the person's own range
+- [ ] AQ5. Every teacher takes their seat colour. Musashi power, Buddha
+      perception, Rumi love.
+- [ ] AQ6. Eckhart comes out. Classic figures only.
+- [ ] AQ7. Every figure gets an icon
+- [ ] AQ8. The opposites take the desaturated version of the light colours
+- [ ] AQ9. The names sit left and right and light up as you wheel
+- [ ] AQ10. The band becomes a room
+- [ ] AQ11. Pass 10 is the one, and every number carries its scale
+- [ ] AQ12. **NO TEXT OVER THE HERO GRAPHIC, EVER.** The 39 in the middle goes.
+- [ ] AQ14. The bottom information goes right unless it is about the tool
+- [ ] AQ15. Flat becomes all solid. No outlines on buttons anywhere.
+- [ ] AQ16. "Powered by SOURCE OS" on the intro card
+- [x] AQ13. The plane is out. He tried it and ruled against it.
+
+### 2d. The Summary
+
+- [ ] AH1. It is boring and not alive. Ten passes.
+- [ ] AH2. Every named thing described as a behaviour, not a label
+- [ ] AH3. The centre column becomes text about you; the energetic moves right
+- [ ] AH4. Source AI retunes it daily, the old reading kept in history
+- [ ] AH5. The "off the floor" line comes out
+- [ ] AH6. Integrity over time, full width, day to five years
+
+### 2e. The diagnostic
+
+- [ ] AI1. Zero to ten on one line
+- [ ] AI2. The numbers are not even
+- [ ] AI3. He does not like the design. Run it again.
+
+### 2f. Not built at all
+
+- [ ] AO0. **The funnel.** Zero pages exist. He thought it was built.
+- [ ] AS2. **The developer end.** No server, no auth, no record store. The
+      single biggest unwritten thing in the project.
+- [ ] AS1. Login and password, and what they unlock
+- [ ] AO3. **The avatar as a page**, and as the release designer (`AN13`).
+      `runAvatarDrill` in `ui/drills.js` exists and is reached from a component
+      click and one sheet control. It is a drill, not a surface.
+- [ ] AN7. The somatic opener and the signal test. PARTLY: The Signal Test is
+      a row in `engine/data/practice.js` with a name and three minutes against
+      it, and nothing runs. The opener does not exist at all.
+- [ ] AN4. Points, badges, achievements, the store
+- [ ] AN3. The tutorial and onboarding, which is the core loop
+- [ ] U1. **Undo on applying a story.** Applying bakes charge in irreversibly.
+- [ ] C1. The ritual spec, 1,496 lines, unwired
+- [ ] C2. The phone spec, 1,132 lines, unwired
+- [ ] C3. **The release rebuild.** His flagship. Nine rulings attached.
+- [ ] I1. Imprints as its own tab, with the thermometer counters
+- [ ] C4. The fetters surface rebuild. Nine marks, not ninety seven.
+- [ ] AN12. Migration of what is left in the old Atuned app
+- [ ] AS4. The enterprise and app store checklist
+- [ ] AN14. Beat the top two ritual and accountability trackers
+- [ ] AO6. Value based questions for the ICPs
+
+### 2g. The closing review, before anything is called complete
+
+- [ ] AP1. The architecture, schemas, frameworks and the CQ score, run six times
+- [ ] AP2. Simulated against the personas
+- [x] AP3. A thirty and ninety day simulation of onboarding
+      `reviews/SIM-ninety-days.md`
+- [ ] AP4. The focus group at scale
+- [ ] AP5. Then the release
+
+---
+
+## 3. WAITING ON A RULING FROM HIM
+
+- [?] D1. The twelve onboarding questions, sent as HTML
+- [?] D3. Video hosting: 15.4 MB against a one file build with no network
+- [?] D4. Films 7 and 8 are numbered opposite to the engine
+- [?] D5. Three laws carry two names, and Balance collides with the wheel strip
+- [?] D6. What Source AI may read
+- [?] D7. The mark: direction A or B
+- [?] D8. The boot: three seconds or five
+- [?] D9. Nine release rulings, including what a mask is
+- [?] D10. The therapy equivalence claim, before the funnel ships
+- [?] D11. The opening surface. Summary, then Field, then Avatar.
+- [?] D12. Two factor auth, yes or no
+- [x] D13. **The soul shape is RULED. It is a loop.** Sent 20 September with a
+      drawing: one stroke that crosses itself into a small closed eye and runs
+      on. No bars either side; those belong to the character around it. Golden
+      ratio in the proportion, very tiny, pure gold, and cute. Not a squiggly
+      Q. `reviews/AD-soul-loop.md`, and it is the crown of the mark stack.
+      Tasks it unblocks: `AT2` the mark, `AT3`, and the stack's top layer.
+- [?] D14. Does the intake reach the release? It measures how you act; charge
+      comes from a story. There is no path between them and that may be right.
+      His call, and the copy now says which is which.
+- [?] D15. Paywall enforcement
+- [?] D17. **The two API keys, and where they may live.** Offered 20 September:
+      the ElevenLabs voice and the Claude key. Neither can go in `source.html`,
+      because the file is one file with no backend and a key in it is a key
+      every person who opens it can read and spend. They belong in the server's
+      environment, and the server is `AS2`, which does not exist. Nothing to
+      hold them safely yet, so they are not to be pasted anywhere until it does.
+      The Claude key is also gated on `D6`, what Source AI may read.
+
+## 3b. ANSWERED, SO IT IS NOT A RULING ANY MORE
+
+**Spiritual APIs: we need none, and that is a property worth keeping.**
+Asked 20 September. Everything of that kind is computed in the engine, host
+free, with no network: `julianDay`, `sunLon`, `moonLon` and `designJD` in
+`engine/astro.js`, `chineseYear` in `engine/birth.js`, the gate wheel, the
+numerology. A free ephemeris service would replace arithmetic the product
+already does with a network call that carries a person's birth date, time and
+place off the device. That is the most identifying record in the profile and
+the privacy floor refuses it. No key is needed and none should be added.
+- [?] D16. Whether the top rung is one bit (CQ restated) or two (Shape and
+      Control)
+
+---
+
+## 4. DEFECTS OPEN
+
+- [ ] E1. `.ib` keeps a dark ground in Lumen. Three probes could not find why.
+- [ ] E2. A second field leak upstream of the release, in the full page sequence
+- [ ] E3. The compass nameplates collide, 89 pairs at 1600, and no gate watches
+- [ ] E4. `DQ` draws an identical full ring for every profile past ten
+- [ ] E5. Eight definitions live only in `title` attributes, unreachable on a phone
+- [ ] E6. The word Awareness carries two concepts 545px apart on one screen
+- [ ] E7. Visiting a reference case writes that persona into the person's store
+
+---
+
+## 5. SPECCED, NOT BUILT
+
+- [~] C1. Ritual and the accountability tracker `reviews/SPEC-ritual-accountability.md`
+- [~] C2. The phone build `reviews/SPEC-phone.md`
+- [~] C3. The release, seven passes and nine rulings `reviews/REVIEW-release.md`
+- [~] C4. The fetters surface rebuild `reviews/FIX-fetters.md`
+- [~] C5. The Field and the compass, ten passes `reviews/AD-field-compass.md`
+- [~] C6. The Summary rewrite and context clauses `reviews/COPY-summary-context.md`
+- [~] C7. The mark and the boot `reviews/AD-mark-and-boot.md`, `reviews/AD-mark-stack.md`
+- [~] C8. The legal floor `reviews/LEGAL-floor.md`
+- [~] C9. The knowledge base films `reviews/IA-kb-video.md`
+- [~] C10. The account area's visual system `reviews/AD-account-help.md`
+- [~] C11. The feedback instrument `reviews/SPEC-feedback-instrument.md`
+- [~] C12. Enterprise and the stores `reviews/SPEC-enterprise-and-stores.md`
+
+---
+
+## 6. STANDING RULES, NOT TASKS
+
+- **AR1. Context is key.** Every number says what it is out of, or it does not
+  print. His instruction to me: "this is your job to make sure it is no longer
+  happening."
+- **AQ12. No text over the hero graphic, ever.**
+- **AN6. Onboarding is humble and warm. We do not do mechanical.**
+- **AO5. Every piece of art he has not ruled on is gathered and sent.**
+- **Every build goes as a download named `atuned.html`, with the commit and the
+  md5 stated.** Never a preview. He cannot open markdown.
+- **The engine stays host free. `source.html` stays one file.**
+- No em dashes. Never 108, the count is 112. Sentence case body, title case
+  headers. One word per concept. Port, do not rebuild.
+
+---
+---
+
+# THE RECORD
+
+What he said, note by note, in the order he said it. The ledger above is what
+gets worked; this is where the wording is kept.
+
 # Backlog
 
 One list. It merges the measured technical items from `STABILITY.md` with the
