@@ -219,6 +219,36 @@ function atomGrow(n,a,hw,base,c,al){
   g.fillStyle=rgba(mixc(c,[255,255,255],on?.8:.4),al*(on?1:.7)); g.fill();
   HIT.push({k:'atom',n:n,x:CX+Math.cos(aa)*r1,y:CY+Math.sin(aa)*r1,rad:9,
    v:x});});}
+/* ============================================================
+   WHAT IS STILL UNDER THE CURRENT DEPTH, IN ONE SENTENCE.
+
+   Ruled: "the atomization is nine scroll notches deep and effectively not in
+   the product." It is reachable, and it has been since the threshold came
+   down from 5.20 to 2.60, but nothing anywhere says it exists. A layer a
+   person can only find by scrolling past the point where they expected
+   anything to happen is a layer nobody finds.
+
+   So the legend under the wheel names the next thing down and how to reach
+   it. It is about the tool, which is what may sit under the tool. It never
+   carries a reading, and it says nothing about a layer the person's own
+   record cannot fill: offering to show what put a pattern somewhere, to
+   somebody who has written no story, would be an empty room with a sign on
+   it.
+   ============================================================ */
+const LEGEND_BASE='The ring is the seven seats, from the root at the top round '
+ +'to the crown. Press a band to open it, or any single mark on it to open '
+ +'that address.';
+function wheelLegend(){
+ var z=S.zoom||1;
+ var next=null;
+ if(z<FET_STEP[0])next='the patterns each address is running';
+ else if(z<FET_STEP[1])next='what each pattern has compounded into';
+ else if(z<ATOM_STEP){
+  /* only offered when the record can actually fill it */
+  var by=atomIndex()||{};
+  if(Object.keys(by).length)next='the moments that put each pattern there';}
+ return LEGEND_BASE+(next?' Scroll in on the wheel for '+next+'.':'');}
+
 /* how far in each layer is, 0 to 1, over a ramp of its own threshold. */
 function coreLayerA(i){
  var z=S.zoom||1, t=CORE_STEP[i];
@@ -342,16 +372,23 @@ function solCore(r,base){
  /* The number gives up most of its size once the parts are showing, because
     by then the parts are what is being read and the number is the caption.
     It never goes: the parts are what the number is made of. */
- var ns=Math.max(13,Math.round(cr0*(0.58-open*0.42)));
- if(open>0.05){
-  var nr=ns*0.92;
-  var nb=g.createRadialGradient(CX,CY+cr0*.02-ns*0.06,nr*0.35,CX,CY+cr0*.02-ns*0.06,nr);
-  nb.addColorStop(0,rgba(LIGHT()?[250,249,245]:[14,15,22],0.80*open));
-  nb.addColorStop(1,rgba(LIGHT()?[250,249,245]:[14,15,22],0));
-  g.fillStyle=nb;g.beginPath();g.arc(CX,CY+cr0*.02-ns*0.06,nr,0,TAU);g.fill();}
- txt(r.unread?'\u2013':String(Math.round(r.CQ)),CX,CY+cr0*.02,ns,
-  open>0.35?(LIGHT()?[26,20,8]:[240,238,232]):[26,20,8],
-  lerp(.55,.95,coh),500);
+ /* THE NUMBER COMES OFF THE CORE, and the comment above is the argument it
+    beat for a long time: the parts are what the number is made of, so losing
+    the number loses the point. Two later rulings outrank it.
+
+    No text over the hero graphic, ever. The wheel is the hero graphic of this
+    surface and the coherence figure was set in the middle of it, at up to
+    half the core's diameter.
+
+    And coherence was printed four times on one screen: the strip above the
+    wheel, the core, the right rail's pill, and the tier word, which is
+    coherence restated in a word. Four sayings of one number is not emphasis,
+    it is the surface having no idea what it is for.
+
+    Nothing is lost. The strip directly above the wheel carries "1% CQ" and
+    the rail carries it again, so the number is two inches away in both
+    directions. The core itself stays: it is sized and lit by coherence, which
+    is the drawing doing the work rather than a caption doing it. */
  HIT.push({k:'core',x:CX,y:CY,rad:cr0*1.5});
  return cr0;}
 
@@ -375,21 +412,38 @@ function verpArrows(cr0){
   /* the stem. its weight is the share, its length is fixed and short */
   g.beginPath();g.moveTo(CX+Math.cos(a)*cr0*1.12,CY+Math.sin(a)*cr0*1.12);
   g.lineTo(x-Math.cos(a)*(R+3),y-Math.sin(a)*(R+3));
-  g.strokeStyle=rgba(c,.25+f*.6);g.lineWidth=1+f*3;g.lineCap='round';g.stroke();g.lineCap='butt';
+  g.strokeStyle=rgba(c,(evid?.25:.40)+f*.6);g.lineWidth=1+f*3;
+  g.lineCap='round';g.stroke();g.lineCap='butt';
   /* the ring. a dim track, then the share closing clockwise from the top */
   g.beginPath();g.arc(x,y,R,0,TAU);g.fillStyle=rgba(bgc,.92);g.fill();
-  g.beginPath();g.arc(x,y,R,0,TAU);g.strokeStyle=rgba(c,.22);g.lineWidth=2.4;g.stroke();
+  g.beginPath();g.arc(x,y,R,0,TAU);
+  g.strokeStyle=rgba(c,evid?.22:.42);g.lineWidth=2.4;g.stroke();
   if(f>0){g.beginPath();g.arc(x,y,R,-Math.PI/2,-Math.PI/2+TAU*f);
    g.strokeStyle=rgba(c,.95);g.lineWidth=2.4;g.lineCap='round';g.stroke();g.lineCap='butt';}
   /* the glyph */
+  /* THE GLYPH IS LEGIBLE WHETHER OR NOT THERE IS A STORY. Ruled: "our six
+     axis icons, they are barely visible." They were drawn at half alpha on
+     any profile with no story run, which is most profiles most of the time,
+     and half alpha on a dark wheel is the difference between a control and a
+     smudge. A thing that has not been read yet still has to be seen: that is
+     how a person learns it exists and presses it. */
   var P=new Path2D(GATEGLYPH[v.k]), sc=15/24;
   g.save();g.translate(x-7.5,y-7.5);g.scale(sc,sc);
-  g.lineWidth=1.9/sc;g.lineCap='round';g.lineJoin='round';g.strokeStyle=rgba(ink,evid?.9:.5);g.stroke(P);g.restore();
-  /* the pill at the lower right, only once there is a story to count */
-  if(evid){var px=x+R-3, py=y+R-5, pw=v.pct>=100?26:22, ph=12;
-   roundRect(px,py,pw,ph,6);g.fillStyle=rgba(c,1);g.fill();
-   g.save();g.font='600 8.5px Inter, system-ui, sans-serif';g.textAlign='center';g.textBaseline='middle';
-   g.fillStyle=rgba(bgc,1);g.fillText(v.pct+'%',px+pw/2,py+ph/2+.5);g.restore();}
+  g.lineWidth=1.9/sc;g.lineCap='round';g.lineJoin='round';
+  g.strokeStyle=rgba(ink,evid?.95:.82);g.stroke(P);g.restore();
+  /* AND THE PILL IS ALWAYS THERE. Ruled in the same breath: they carry no
+     pill with the percent. It was drawn only once a story had run, so the one
+     thing telling a person what the ring is measuring appeared and
+     disappeared. It appears always and holds a dash when nothing has been
+     read, which is the pattern this product already uses everywhere else: the
+     figure is never invented, and the absence is said rather than hidden. */
+  {var px=x+R-3, py=y+R-5, pw=(evid&&v.pct>=100)?26:22, ph=12;
+   roundRect(px,py,pw,ph,6);
+   g.fillStyle=evid?rgba(c,1):rgba(ink,.22);g.fill();
+   g.save();g.font='600 8.5px Inter, system-ui, sans-serif';
+   g.textAlign='center';g.textBaseline='middle';
+   g.fillStyle=evid?rgba(bgc,1):rgba(ink,.72);
+   g.fillText(evid?v.pct+'%':'\u2013',px+pw/2,py+ph/2+.5);g.restore();}
   HIT.push({k:'gate',v:v,x:x,y:y,rad:R+9});}
  hi.forEach(function(v,i){gate(v,i,hi.length,true);});
  lo.forEach(function(v,i){gate(v,i,lo.length,false);});
@@ -612,7 +666,8 @@ function drawWheel(r,L){
  const lr=[U*.44,U*.40,U*.33,U*.255][L];
  g.beginPath();g.arc(CX,CY,lr,0,TAU);g.strokeStyle=rgba(ink,.12);g.lineWidth=1;g.stroke();
  pill('21 laws · integrity '+r.Ig.toFixed(1),lr-U*.035);
- if(L===0){txt('CQ',CX,CY+cr0*1.75,13,gc,.9,600);txt(r.tier,CX,CY+cr0*2.3,12.5,ink,.62,400);}
+ /* AND THE WORD CQ AND THE TIER WORD GO WITH IT, for the same two reasons.
+    The tier is coherence said as a word, which was the fourth printing. */
 
  /* --- archetypes, C and D --- */
  if(L>=2){for(let j=0;j<12;j++){
@@ -680,8 +735,25 @@ function drawWheel(r,L){
    const hw=TAU/108*(.43+fg*.24);
    atomGrow(n,a,hw,R_SHELL+3+(carrying?ld*U*.075*fn:0),nodeCol(n),aa2);});}
  pill('112 addresses · SQ · '+r.loaded.length+' loaded',R.shell+14);
+ /* THE SEVEN SEAT BANDS ARE TARGETS. Ruled: "the rainbow bands at the centre,
+    say what they are and make them clickable." They were seven names drawn
+    around the outside of the shell and nothing else: not a word about what
+    they are, and no way to press one. Every individual node in the ring was
+    already pressable, so a person could open one address of a hundred and
+    twelve and could not open the seat the whole coloured arc belongs to.
+
+    The target is the arc the seat's nodes actually occupy, from the first to
+    the last, plus the radius the name runs out to, so pressing the colour and
+    pressing the word both land. It opens the seat's own reading, which the
+    Summary has been able to open all along. */
  if(L>=1)BANDS.forEach(b=>{const seg=W.filter(n=>n.b===b);
-  radialTxt(b,meanAng(seg.map(n=>n.ang)),R.shell*1.058,12,bc(b),.9,600);});
+  if(!seg.length)return;
+  var am=meanAng(seg.map(n=>n.ang));
+  radialTxt(b,am,R.shell*1.058,12,bc(b),.9,600);
+  var angs=seg.map(n=>n.ang).sort(function(x,y){return x-y;});
+  HIT.push({k:'seat',b:b,cx:CX,cy:CY,
+   a0:angs[0]-TAU/216, a1:angs[angs.length-1]+TAU/216,
+   r0:R.shell-U*.02, r1:R.shell*1.058+U*.10});});
 
  /* --- domains, D only --- */
  if(L===3){for(let d=0;d<19;d++){

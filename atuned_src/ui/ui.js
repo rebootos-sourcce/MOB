@@ -143,6 +143,12 @@ cv.addEventListener('pointerdown',function(e){
   else S.arcs=[h.j].concat(S.arcs.filter(function(z){return z!==h.j;}).slice(0,3));
   buildSoul();S.pin=null;syncSoul();saveYou();render();return;}
  if(h.k==='law'){S.pin=null;runLawDrill(SI[h.j]);render();return;}
+ /* a seat band opens the seat. runSeatDrill takes the APC entry rather than a
+    name, looked up here rather than passed a string it would have to parse,
+    which is how the Summary already calls it. */
+ if(h.k==='seat'){S.pin=null;
+  var sc=APC.filter(function(x){return x.b===h.b;})[0];
+  if(sc)runSeatDrill(sc); render(); return;}
  /* an atom holds, and holding it lights that one line and opens what it is.
     Pressing the one you are holding lets it go. */
  if(h.k==='atom'){
@@ -196,7 +202,17 @@ function setZoom(z,ax,ay){
  var wx=(ax-CX)/U, wy=(ay-CY)/U;
  S.zoom=nz; reframe();
  S.panx += ax-(CX+wx*U); S.pany += ay-(CY+wy*U);
- reframe(); render(); paintDepth();}
+ reframe(); render(); paintDepth(); paintLegend();}
+/* the legend names whatever is still under the current depth, so it changes
+   as a person scrolls in and goes quiet at the bottom. */
+function paintLegend(){
+ var e=document.getElementById('cvlegend');
+ if(!e||typeof wheelLegend!=='function')return;
+ /* WRITTEN ONLY WHEN IT CHANGES. render runs on every interaction and the
+    frame loop runs sixty times a second, and a textContent assignment that
+    sets the same string is still a DOM write and still invalidates. */
+ var t=wheelLegend();
+ if(e.textContent!==t)e.textContent=t;}
 cv.addEventListener('wheel',function(e){
  if(S.tab!==TAB.FIELD)return;
  e.preventDefault();
@@ -555,6 +571,7 @@ function railTop(r){
   :'Nothing has been read yet. Write a story or set a charge.';}
 function render(){
  if(typeof paintUndo==='function')paintUndo();
+ if(typeof paintLegend==='function')paintLegend();
  const r=compute(), p=PEOPLE[S.who];
  /* the tier is a name for a person. it is not printed off the defaults, and it
     never appears without what it owes: the definition, the behaviour and the

@@ -149,12 +149,28 @@ Look and language
 
 ### 2b. The Field
 
-- [ ] F1. The six axis icons are barely visible and carry no pill with a percent
-- [ ] F2. The rainbow bands at the centre: say what they are, make them clickable
+- [x] F1. The six gates are legible and each carries its pill. They were drawn
+      at half alpha with no pill at all on any profile with no story run,
+      which is most profiles most of the time. The pill holds a dash when
+      nothing has been read, which is the pattern this product already uses:
+      the figure is never invented and the absence is said rather than hidden.
+- [x] F2. The seven seat bands say what they are and open. Every individual
+      node in the ring was already pressable and the seat the whole coloured
+      arc belongs to was not. A legend under the wheel says what the ring is.
 - [ ] F3. Subtle motion outside the ring
-- [ ] F4. The atomization is nine scroll notches deep and effectively not in the
-      product
-- [ ] F5. Coherence is printed four times on one screen
+- [x] F4. The atomization is named rather than moved. It is reachable and has
+      been since the threshold came down from 5.20 to 2.60, and nothing
+      anywhere said it existed. The legend names whatever is still under the
+      current depth and how to reach it, and it offers the atom layer only to
+      somebody whose record can fill it, because offering to show what put a
+      pattern somewhere to a person who has written no story is an empty room
+      with a sign on it.
+- [x] F5. Coherence is printed twice, in the strip and in the rail. The core's
+      number and the tier word came off the wheel, which also closes the
+      standing rule: the wheel is this surface's hero graphic and the reading
+      was set in the middle of it at half the core's diameter. The core stays
+      and is still sized and lit by coherence, which is the drawing doing the
+      work rather than a caption doing it.
 
 ### 2c. The compass. Nothing from the eleventh note is built.
 

@@ -1175,11 +1175,20 @@ body.punch .s-row{border-bottom-color:transparent}
    the panel, where it can be read. */
 body.tab-field .stage,body.tab-energy .stage,body.tab-compass .stage,
 #emap,#cone{background:#101010}
+/* THREE ROWS, NOT TWO. The third is the legend's, and it is its own row
+   because the alternatives both failed a gate. Under the wheel it ran through
+   the lower key strip, and then through the wheel's own nameplates at depth 3,
+   where the plates reach furthest down. Sharing the top strip's row made it
+   fight the three pills for the same line.
+
+   A row of its own costs the wheel about twenty pixels of height, which the
+   wheel already handles because it is sized from its box, and it buys a line
+   that cannot collide with anything by construction. */
 .stage{--lane:128px;position:relative;display:grid;
  grid-template-columns:var(--lane) minmax(0,1fr) var(--lane);
- grid-template-rows:auto minmax(0,1fr);
+ grid-template-rows:auto auto minmax(0,1fr);
  align-items:center;min-height:0;border-radius:var(--r);overflow:hidden}
-canvas#cv{display:block;grid-column:2;grid-row:2;width:100%;height:100%;
+canvas#cv{display:block;grid-column:2;grid-row:3;width:100%;height:100%;
  min-width:0;min-height:0;touch-action:none;cursor:crosshair}
 /* On a coarse pointer the wheel must not eat a scroll. touch-action:none
    made the canvas a dead zone across the thumb rest, which is also how a
@@ -1375,7 +1384,10 @@ body:not(.tab-field) .acc{display:none}
    declared the same properties, so it floated over every other tab. */
 /* the compass shares the right edge with the accuracy block, which is 124
    tall. it stops above it rather than running behind it. */
-.pol2{grid-column:3;grid-row:2;z-index:4;cursor:pointer;height:100%;
+/* the pole meter rides with the wheel, so it moved down a row with it when the
+   legend took row 2. A child left on the old row would have sat in the
+   legend's line at full height and squeezed it to nothing. */
+.pol2{grid-column:3;grid-row:3;z-index:4;cursor:pointer;height:100%;
  display:flex;align-items:center;justify-content:flex-end;background:none;border:0;
  padding:0 16px 0 8px;margin:0}
 .pol2:hover svg{opacity:.85}
@@ -2953,6 +2965,30 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
 /* the same icon on a drill row, where the type is a shade larger */
 /* THE FOUR LENSES. One reading each, and each says what it was read off,
    which is what stops a lens being a horoscope. */
+/* the legend under the wheel. tool information, so it may sit under the tool.
+   it never carries a reading. */
+/* IT LIVES AT THE TOP, WITH THE OTHER KEY, AND THE COLLIDE GATE IS WHY.
+
+   Two attempts at the bottom of the stage and the gate refused both. At
+   bottom 8 it ran straight through the lower key strip. At bottom 64 it
+   cleared the strip and ran under the wheel's own nameplates at depth 3,
+   where the plates reach furthest down: four of them at 1680 wide and one at
+   2560. The gate exists for exactly that and it caught it both times.
+
+   The bottom of a wheel that grows is not free space, and treating it as free
+   space is the same mistake as the strip that covered the atoms. The top strip
+   is: it is a fixed band above the drawing, the plates never reach it, and the
+   three pills there leave most of its width empty. So the legend goes there,
+   on one line, right of the pills.
+
+   One line, ellipsised. It is orientation, not a paragraph, and a sentence
+   that wraps at the top of the stage pushes the wheel down. */
+.cv-legend{grid-column:1/-1;grid-row:2;position:relative;z-index:4;
+ align-self:start;margin:0;padding:6px 14px 8px;
+ text-align:left;font-size:11.5px;line-height:1.5;color:var(--dim);
+ pointer-events:none}
+body:not(.tab-field) .cv-legend{display:none}
+@media(max-width:1180px){.cv-legend{grid-row:auto;order:2}}
 .s-lens{display:grid;gap:1px;background:var(--edge);border:1px solid var(--edge);
  border-radius:var(--r);overflow:hidden}
 .s-ln{background:var(--panel);padding:9px 12px 10px;display:flex;
