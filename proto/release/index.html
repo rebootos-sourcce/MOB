@@ -1,0 +1,877 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The release, heard</title>
+
+<!-- REQUEST LOG. Patched before any other script so nothing can slip under it.
+     Lifted from proto/sheet/sheet.src.html, which lifted it from proto/avatar.
+     Audio is the first capability in this product that could reach a network
+     without anybody deciding to, so this page counts every channel a browser
+     has for leaving the machine and prints the count at the foot.
+
+     speechSynthesis is the one it cannot see. A synthesis request on Chrome
+     and on Edge leaves through the browser's own process, not through any
+     surface a page can wrap, so no request log on any page will ever record
+     it. That is the whole reason the voice notice exists further down: the
+     page cannot prove the claim, so it has to state it before it speaks. -->
+<script>
+window.__REQ=[];
+(function(){
+ var log=function(kind,url){try{window.__REQ.push({kind:kind,url:String(url)});}catch(e){}};
+ var f=window.fetch;
+ if(f)window.fetch=function(u){log('fetch',u&&u.url||u);return f.apply(this,arguments);};
+ var xo=XMLHttpRequest.prototype.open;
+ XMLHttpRequest.prototype.open=function(m,u){log('xhr',u);return xo.apply(this,arguments);};
+ var NI=window.Image;
+ if(NI)window.Image=function(){var i=new NI();
+  Object.defineProperty(i,'src',{set:function(v){log('image',v);},get:function(){return '';}});
+  return i;};
+ var WS=window.WebSocket;
+ if(WS)window.WebSocket=function(u){log('websocket',u);throw new Error('blocked');};
+ var ES=window.EventSource;
+ if(ES)window.EventSource=function(u){log('eventsource',u);throw new Error('blocked');};
+ if(navigator.sendBeacon)navigator.sendBeacon=function(u){log('beacon',u);return false;};
+ try{new PerformanceObserver(function(l){l.getEntries().forEach(function(e){
+  if(e.name&&!/^(data:|blob:|about:)/.test(e.name)&&e.name!==location.href)
+   log('resource',e.name);});}).observe({type:'resource',buffered:true});}catch(e){}
+})();
+</script>
+
+<style>
+/* the product's own tokens, read off atuned_src/shell/head.html */
+*{box-sizing:border-box}
+:root{--bg:#0C0D12;--panel:#1A1D26;--panel-2:#252833;--sunk:#090A0E;
+ --ink:#EFEDE8;--mid:#B4B0A8;--dim:#94908A;--accent:#7EB8D4;--on-accent:#0B1418;
+ --line:rgba(255,255,255,.08);--line2:rgba(255,255,255,.14);--warm:#CB5F59;
+ --alarm:#FF2E1F;--r:14px;
+ --num:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+html,body{margin:0;background:var(--bg);color:var(--ink)}
+body{font:16px/1.5 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Inter,sans-serif;
+ -webkit-font-smoothing:antialiased;padding:0 0 64px}
+.wrap{max-width:1060px;margin:0 auto;padding:0 16px}
+.wrap.run{max-width:900px}
+h1,h2,h3{font-weight:600;letter-spacing:-.01em;margin:0}
+.eye{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);font-weight:600}
+.dim{color:var(--dim)}.mid{color:var(--mid)}
+.note{font-size:13px;color:var(--dim);line-height:1.6}
+.bar{display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid var(--line);
+ margin-bottom:20px;flex-wrap:wrap}
+.brand{font-weight:700;letter-spacing:.16em;font-size:12px;color:var(--mid)}
+select,button,input{font:inherit;color:inherit}
+select,input[type=number]{background:var(--panel-2);border:1px solid var(--line2);
+ border-radius:10px;padding:9px 12px;min-height:44px}
+input[type=number]{width:84px;font-family:var(--num);text-align:center}
+.btn{background:transparent;border:1px solid var(--line2);border-radius:11px;
+ padding:11px 16px;min-height:44px;min-width:44px;cursor:pointer;color:var(--ink);
+ transition:border-color .15s,color .15s}
+.btn:hover{border-color:var(--accent);color:var(--accent)}
+.btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.btn.pri{background:var(--accent);color:var(--on-accent);border-color:var(--accent);font-weight:600}
+.btn.on{border-color:var(--accent);color:var(--accent)}
+.btn[aria-disabled=true]{opacity:.45;cursor:default}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:18px}
+
+/* ---------- the ring. copied in shape from ui/component.js cr(), including
+     the one rule that matters: the glyph is stroked and never filled. -------- */
+.cr{display:inline-flex;align-items:center;gap:8px}
+.cr .ring{position:relative;flex:0 0 auto}
+.cr .ring svg.arc{transform:rotate(-90deg);display:block}
+.cr .ring .gl{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+.cr .ring .gl svg{fill:none;stroke:var(--c);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.cr .v{font-family:var(--num);font-weight:500;font-variant-numeric:tabular-nums;
+ font-size:13px;color:var(--mid)}
+
+/* ---------- the panel before it begins ---------- */
+.pre{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:18px;align-items:start}
+@media(max-width:900px){.pre{grid-template-columns:1fr}}
+.rows{margin-top:6px}
+.row{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid var(--line);
+ min-height:44px}
+.row:last-child{border-bottom:0}
+.row .t{flex:1;min-width:0}
+.row .t b{font-weight:600;display:block;letter-spacing:-.01em}
+.row .t span{font-size:13px;color:var(--dim);display:block}
+.row .c{font-family:var(--num);font-size:13px;color:var(--mid);white-space:nowrap}
+.pick{width:100%;text-align:left;background:transparent;border:0;border-bottom:1px solid var(--line);
+ display:flex;align-items:center;gap:14px;padding:12px 4px;min-height:52px;cursor:pointer}
+.pick:hover{background:rgba(255,255,255,.03)}
+.pick .t b{font-weight:500}
+.pick[aria-pressed=true] .t b{font-weight:600;color:var(--accent)}
+.pick .mark{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--line2);flex:none}
+.pick[aria-pressed=true] .mark{border-color:var(--accent);
+ box-shadow:inset 0 0 0 4px var(--bg),inset 0 0 0 11px var(--accent)}
+.picklist{max-height:380px;overflow:auto;border:1px solid var(--line);border-radius:12px;
+ padding:0 12px;margin-top:10px}
+.figs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px;margin-top:4px}
+.fig{padding:12px 0}
+.fig b{display:block;font-size:26px;font-weight:600;letter-spacing:-.02em;line-height:1.15;
+ font-family:var(--num);font-variant-numeric:tabular-nums}
+.fig b small{font-size:13px;font-weight:500;letter-spacing:0;margin-left:5px;color:var(--mid);
+ font-family:inherit}
+.fields{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;margin-top:14px}
+.field label{display:block;font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+ color:var(--dim);font-weight:600;margin-bottom:6px}
+.acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+
+/* ---------- the flow ---------- */
+.stage{position:relative;border-radius:var(--r);background:var(--sunk);
+ border:1px solid var(--line);padding:26px 18px 18px;min-height:min(760px,calc(100vh - 92px));
+ display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0}
+.side{position:absolute;top:0;bottom:0;width:58px;display:flex;align-items:center;
+ justify-content:center;color:var(--dim);font-size:11px;letter-spacing:.14em;
+ text-transform:uppercase;font-weight:600}
+.side span{writing-mode:vertical-rl;transform:rotate(180deg)}
+.side.l{left:0;border-right:1px solid var(--line)}
+.side.r{right:0;border-left:1px solid var(--line)}
+.side.lit{color:var(--accent);background:linear-gradient(to var(--dir),
+ color-mix(in srgb,var(--accent) 12%,transparent),transparent)}
+.side.l.lit{--dir:right}.side.r.lit{--dir:left}
+.plate{display:flex;align-items:center;gap:12px;margin-bottom:22px}
+.plate .nm{font-size:15px;font-weight:600}
+.plate .ad{font-size:13px;color:var(--dim)}
+.speak{font-size:clamp(21px,3.2vw,32px);line-height:1.38;font-weight:500;letter-spacing:-.02em;
+ text-align:center;max-width:26ch;margin:0 auto;min-height:3.2em;
+ hyphens:none;overflow-wrap:normal;word-break:keep-all;text-wrap:balance;
+ display:flex;align-items:center;justify-content:center}
+.half{margin-bottom:10px;text-align:center}
+.clock{display:flex;gap:26px;align-items:flex-end;justify-content:center;margin-top:24px}
+.clock .fig b{font-size:30px}
+.dial{display:block;margin:18px auto 0}
+.runacts{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:22px}
+.sndbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:14px}
+.statusline{margin-top:12px;font-size:13px;color:var(--mid);min-height:20px}
+.statusline.fail{color:var(--warm)}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media(max-width:560px){
+ .stage{padding:22px 66px 16px}
+ .figs{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .clock{gap:18px}}
+.foot{margin-top:28px;padding-top:16px;border-top:1px solid var(--line);font-size:12px;
+ color:var(--dim);line-height:1.7}
+code{font-family:var(--num);font-size:12px;color:var(--mid)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+ <div class="bar" id="bar">
+  <span class="brand">ATUNED &middot; RELEASE</span>
+  <label class="eye" for="who" style="margin-left:4px">Profile</label>
+  <select id="who" aria-label="Profile"></select>
+  <span class="dim" id="cq" style="font-size:13px"></span>
+  <span style="flex:1"></span>
+  <button class="btn" id="reset">Start over</button>
+ </div>
+
+ <div id="app"></div>
+
+ <p class="statusline" id="status" role="status" aria-live="polite"></p>
+
+ <div class="foot" id="foot"></div>
+</div>
+
+<!-- The engine, referenced and never copied. Every figure on this page is read
+     out of it at run time. -->
+<script src="../../engine.js"></script>
+<script>
+/* ============================================================
+   THE RELEASE, HEARD. A prototype for TASKS 0c2.
+
+   What this page is for: the release protocol is the one surface in this
+   product that was designed to be heard and ships as text on a screen at a
+   fixed 2.2 seconds a line. The arithmetic under it is right and is not
+   touched here. What is prototyped is the panel in front of it, the sound,
+   and the clock.
+
+   Three rules held throughout.
+
+   1. Sound carries nothing on its own. Every fact the audio states is also
+      on the screen, in words, at the same moment. Sound is off by default,
+      it is remembered, and it can be turned off mid run without stopping.
+   2. Every figure is read off engine.js for the loaded profile. Where the
+      engine has no field for something, the page says so rather than
+      inventing a number.
+   3. Nothing under 44 by 44, and the clock is real minutes and seconds.
+   ============================================================ */
+
+var $=function(id){return document.getElementById(id);};
+function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;')
+ .replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function status(m,kind){var el=$('status'); if(!el)return;
+ el.className='statusline'+(kind==='fail'?' fail':'');
+ el.textContent=m||'';
+ if(m&&kind!=='fail'){clearTimeout(status._t);status._t=setTimeout(function(){
+  if(el.textContent===m)el.textContent='';},2400);}}
+
+/* ---- the profile. the personas are engine data; seeding them is a UI job in
+   the product, so the two lines that do it are here rather than imported. ---- */
+function loadWho(i){
+ var p=PEOPLE[i];
+ S.who=i; S.dom=p.dom; S.doms=p.doms?p.doms.slice():[p.dom];
+ S.a1=p.a1; S.a2=p.a2; S.arcs=[p.a1,p.a2]; S.roots=p.roots?p.roots.slice():[];
+ S.charge={}; Object.keys(p.c||{}).forEach(function(k){S.charge[k]=p.c[k];});
+ S.replace={}; Object.keys(p.rep||{}).forEach(function(k){S.replace[k]=p.rep[k];});
+ buildSoul();
+ REL.profile=blankProfile(p.nm);
+ return compute();}
+
+/* ============================================================
+   THE FOUR CHANNELS, and they are the built ones. Right then left, limit
+   before truth, exactly as ui/release.js has them.
+
+   The book names the poles: "Right side: outward expression (gross). Left
+   side: inner world (subtle)." So the words beside R and L are read off that
+   and not invented.
+   ============================================================ */
+var CHAN=[['R','Right','limit'],['L','Left','limit'],['R','Right','truth'],['L','Left','truth']];
+var SIDEWORD={R:'outward',L:'inward'};
+
+/* THE GATES. The book's own chain, and its own graduated entry.
+   "Month 1: letting go of believing only. Month 2: believing, thinking, and
+   feeling. Month 3 and beyond: full ten-gate chain." */
+var GATES={
+ 1:['believing'],
+ 3:['believing','thinking','feeling'],
+ 10:['believing','perceiving','thinking','behaving','acting','feeling',
+     'speaking','saying','voicing','doing']};
+
+/* THE ENTRY PHRASINGS, from the Interchangeability Principle. "Let go. Give
+   up. Forgive myself. Forgive others. Same mechanic. Different entry points."
+   They rotate because the book says the resistance to one of them is the
+   diagnostic. */
+var ENTRY=['I let go of ','I give up ','I forgive myself for '];
+
+var REL={
+ who:0, profile:null, sel:[], dose:50, pace:1, gates:10,
+ phase:'pre', steps:[], at:0, paused:false,
+ t0:0, plannedMs:0, doneMs:0, stepT:null, clockT:null,
+ voice:false, bed:false, haptics:false, vx:null, spoke:0, spokeMs:0};
+
+/* ============================================================
+   SOUND. Synthesis only, and the whole of it is four earcons and one bed.
+
+   THE FAMILY, and it has one rule. Every sound in it is a sine plus at most
+   one partial, through one lowpass, at or under 0.09 of full scale. The
+   meaning is carried by two things and nothing else: which way the pitch
+   moves, and which side it comes from. A sound that stays still is a stop. A
+   sound that moves up is an arrival. A sound that comes from the right is the
+   right channel. That is the entire vocabulary, and it is four members
+   because the fortieth hearing of a fifth one is the one that gets the sound
+   turned off for good.
+
+   THE RATE IS THE DESIGN. A run at the canonical dose speaks six hundred
+   lines. None of them chimes. The earcon marks a boundary, never a beat, so
+   a run of any length makes at most eleven sounds: one for each channel
+   change, one at the cross, one at the cooldown.
+
+   Everything below 150 Hz is off the table, because it turns to mud on a
+   laptop, and everything sits between 330 and 900 so that it is clear of the
+   speech band it has to share a room with.
+   ============================================================ */
+var AC=null, BUS=null, BED=null;
+function audioOn(){
+ if(AC)return true;
+ try{ AC=new (window.AudioContext||window.webkitAudioContext)();
+  BUS=AC.createGain(); BUS.gain.value=1; BUS.connect(AC.destination);
+  return true; }
+ catch(e){ AC=null; status('This browser would not open an audio channel. The run works in silence.','fail');
+  return false; }}
+
+/* one earcon. waveform, frequency, envelope in milliseconds, filter, gain,
+   pan. every number here is a number and not a preset. */
+function tone(o){
+ if(!AC||!REL.voice)return;
+ var t=AC.currentTime+(o.at||0);
+ var g=AC.createGain(), f=AC.createBiquadFilter(), p=AC.createStereoPanner?AC.createStereoPanner():null;
+ f.type='lowpass'; f.frequency.value=o.lp; f.Q.value=0.7;
+ var osc=AC.createOscillator(); osc.type='sine';
+ osc.frequency.setValueAtTime(o.f0,t);
+ if(o.f1&&o.f1!==o.f0) osc.frequency.exponentialRampToValueAtTime(o.f1,t+o.ms/1000);
+ osc.connect(g);
+ if(o.partial){ var o2=AC.createOscillator(); o2.type='sine';
+  o2.frequency.setValueAtTime(o.f0*o.partial,t);
+  var g2=AC.createGain(); g2.gain.value=o.partialGain||0.10;
+  o2.connect(g2); g2.connect(g); o2.start(t); o2.stop(t+o.ms/1000+0.08); }
+ g.gain.setValueAtTime(0.0001,t);
+ g.gain.exponentialRampToValueAtTime(o.peak,t+o.a/1000);
+ if(o.hold) g.gain.setValueAtTime(o.peak,t+(o.a+o.hold)/1000);
+ g.gain.exponentialRampToValueAtTime(0.0001,t+o.ms/1000);
+ g.connect(f);
+ if(p){p.pan.value=o.pan||0; f.connect(p); p.connect(BUS);} else f.connect(BUS);
+ osc.start(t); osc.stop(t+o.ms/1000+0.08);}
+
+/* TURN. The channel changes. 8 ms attack reads as a click, which is what a
+   change of side should read as. It is panned to the side that is now live,
+   at 0.7 and never at 1.0, because hard panning is uncomfortable on
+   headphones and collapses to nothing on a laptop pair anyway. */
+function earTurn(side,half){
+ tone({f0:half==='truth'?784:587, f1:half==='truth'?784:587, a:8, ms:190,
+  lp:2200, peak:0.06, partial:2, partialGain:0.10, pan:side==='R'?0.7:-0.7});
+ buzz(side==='R'?[12]:[12]);}
+
+/* CROSS. Release to truth, and it is the one moment the book marks with a
+   word of its own: "transition through release." Two notes, a rising fifth,
+   with a 25 ms attack so it swells rather than clicks. Centred, and it is the
+   only centred moving sound, because both channels have just been addressed
+   and the cross belongs to neither.
+
+   It fires once per address rather than once per run, because the run is
+   address major: an address is released and sealed before the next one opens.
+   That is the book's own constraint and not a layout choice. "The released
+   address is open territory until the coherent opposite is installed;
+   whatever frequency the system encounters first will fill the space." */
+function earCross(){
+ tone({f0:587,f1:587,a:25,ms:220,lp:2800,peak:0.09,partial:2,partialGain:0.08,pan:0});
+ tone({f0:880,f1:880,a:25,ms:420,lp:2800,peak:0.09,partial:2,partialGain:0.08,pan:0,at:0.13});
+ buzz([30,60,30]);}
+
+/* CLOSE. The cooldown opens. One low note with a fifth over it and a 2.4
+   second decay, through a darker filter than anything before it, so the
+   protocol gets darker as it ends. A single sustained note is the whole
+   statement. */
+function earClose(){
+ tone({f0:392,f1:392,a:40,hold:200,ms:2400,lp:1600,peak:0.07,partial:1.5,
+  partialGain:0.14,pan:0});
+ buzz([90]);}
+
+/* HALT. End pressed. The only sound in the family whose pitch does not move,
+   which is what makes it read as a stop: everything else goes somewhere. */
+function earHalt(){
+ tone({f0:330,f1:330,a:6,ms:260,lp:1200,peak:0.05,pan:0});
+ buzz([20,40,20]);}
+
+/* HAPTICS. Android Chrome has navigator.vibrate and iOS Safari has nothing,
+   so this is a layer on one platform and silence on the other. It is
+   choreographed with the sound rather than beside it: the same boundary, the
+   same length, so a person feeling it and a person hearing it are being told
+   the same thing at the same instant. Off by default, like the sound. */
+function buzz(pat){
+ if(!REL.haptics||!navigator.vibrate)return;
+ try{navigator.vibrate(pat);}catch(e){}}
+
+/* THE BED. Two sine oscillators a few hertz apart, panned hard left and
+   right, which is a binaural beat and needs headphones to be one at all.
+
+   The frequencies are the book's, not mine. "Theta, relaxed state. Most
+   somatic release work happens here." "Alpha, the mind is programmable
+   because it is not yet moving too fast. Most susceptible to installation
+   work." So the beat is 6.0 Hz under the release half and 10.0 Hz under the
+   truth half, and it crosses over the twelve seconds around the transition,
+   which is the only moment in the run where the bed moves at all.
+
+   Carrier at 200 Hz, which is above the mud floor and inside the 200 to 500
+   band where a beat is actually perceptible. Gain 0.025, about 32 dB under
+   full scale, which is a room tone and not a treatment.
+
+   What it claims: nothing. The entrainment claim is the book's and this page
+   does not repeat it as a finding. It is a floor under the voice. */
+var BED_CARRIER=200, BED_THETA=6.0, BED_ALPHA=10.0, BED_GAIN=0.025;
+function bedStart(){
+ if(!AC||!REL.bed||BED)return;
+ var g=AC.createGain(); g.gain.setValueAtTime(0.0001,AC.currentTime);
+ g.gain.exponentialRampToValueAtTime(BED_GAIN,AC.currentTime+4);
+ g.connect(BUS);
+ function leg(freq,pan){
+  var o=AC.createOscillator(); o.type='sine'; o.frequency.value=freq;
+  var p=AC.createStereoPanner?AC.createStereoPanner():null;
+  if(p){p.pan.value=pan;o.connect(p);p.connect(g);} else o.connect(g);
+  o.start(); return o;}
+ BED={g:g, l:leg(BED_CARRIER,-1), r:leg(BED_CARRIER+BED_THETA,1)};}
+function bedTo(beat){
+ if(!BED||!AC)return;
+ BED.r.frequency.cancelScheduledValues(AC.currentTime);
+ BED.r.frequency.setValueAtTime(BED.r.frequency.value,AC.currentTime);
+ BED.r.frequency.linearRampToValueAtTime(BED_CARRIER+beat,AC.currentTime+12);}
+function bedStop(){
+ if(!BED||!AC)return;
+ var b=BED; BED=null;
+ try{ b.g.gain.exponentialRampToValueAtTime(0.0001,AC.currentTime+3);
+  b.l.stop(AC.currentTime+3.2); b.r.stop(AC.currentTime+3.2); }catch(e){}}
+
+/* ============================================================
+   THE VOICE, AND WHAT IT HAS TO SAY BEFORE IT OPENS.
+
+   The standing ruling covers the microphone: browser speech recognition is a
+   network service, so the control says so in one line before it opens.
+   Synthesis needs the same line and a different answer, because the answer
+   differs by platform and the platform will tell you.
+
+   SpeechSynthesisVoice carries localService. Where it is true the voice runs
+   on the machine. Where it is false the text is sent to the vendor to be
+   spoken, which on Chrome and on Edge is the default for their best voices.
+   So this picks a local voice where one exists, says which it got, and never
+   speaks before the line has been shown.
+   ============================================================ */
+function voiceList(){
+ try{ return (window.speechSynthesis&&speechSynthesis.getVoices())||[]; }catch(e){ return []; }}
+function voicePick(){
+ var vs=voiceList(); if(!vs.length)return null;
+ var en=vs.filter(function(v){return /^en/i.test(v.lang||'');});
+ var pool=en.length?en:vs;
+ var local=pool.filter(function(v){return v.localService;});
+ return local[0]||pool[0]||null;}
+function voiceSay(){
+ if(!window.speechSynthesis)
+  return {ok:false,line:'This browser has no speech synthesis. The run reads on the screen.'};
+ var v=voicePick();
+ if(!v)return {ok:true,unknown:true,
+  line:'The browser has not named its voices yet. Press the voice control again once it has.'};
+ if(v.localService)return {ok:true,local:true,v:v,
+  line:'The voice is '+v.name+', and it runs on this machine. The words go nowhere.'};
+ return {ok:true,local:false,v:v,
+  line:'The voice is '+v.name+', and it is a network service. The words are sent to the browser '
+   +'vendor to be spoken. Turn the voice off and the run reads on the screen.'};}
+
+function speak(text,onend){
+ if(!REL.voice||!window.speechSynthesis){ if(onend)onend(); return false; }
+ try{
+  var u=new SpeechSynthesisUtterance(text);
+  var v=REL.vx||voicePick(); if(v)u.voice=v;
+  u.rate=Math.max(0.5,Math.min(1.4,0.86*REL.pace));
+  u.pitch=0.95; u.volume=1;
+  var began=Date.now();
+  u.onend=function(){ REL.spoke++; REL.spokeMs+=Date.now()-began; if(onend)onend(); };
+  u.onerror=function(){ if(onend)onend(); };
+  speechSynthesis.speak(u); return true;
+ }catch(e){ if(onend)onend(); return false; }}
+function speakStop(){ try{ if(window.speechSynthesis)speechSynthesis.cancel(); }catch(e){} }
+
+/* ============================================================
+   THE SELECTION, AND WHAT IT COSTS.
+
+   Every figure in the panel comes from one of four engine calls and none of
+   them is a number written by hand.
+
+     n.sq            what the address is carrying, 0 to 10
+     n.n             where it sits, the plexus or the nerve
+     CHILD[].opp     the coherent opposite that installs on the same pass
+     meterPlan       the exact keys the run opens, so the cost is a count of
+                     real keys and not a multiplication
+     planAllowance   what is left, and what it is left of
+   ============================================================ */
+function carrying(){
+ return NODES.filter(function(n){return n.cf&&n.sq>0;})
+  .sort(function(a,b){return b.sq-a.sq;});}
+function oppOf(n){
+ var c=CHILD.filter(function(x){return x.nm===n.cf;})[0];
+ return c?c.opp:'';}
+function iconOf(n){
+ var c=CHILD.filter(function(x){return x.nm===n.cf;})[0];
+ return c&&c.ic?c.ic:'';}
+function planKeys(){
+ var chans=CHAN.map(function(c){return c[0]+c[2];});
+ return meterPlan(REL.profile,REL.sel.slice(),chans,RUN_MAX);}
+function costBy(keys){
+ var m={}; (keys||[]).forEach(function(k){var id=+String(k).split(':')[0]; m[id]=(m[id]||0)+1;});
+ return m;}
+function allowance(){
+ return planAllowance(REL.profile&&REL.profile.plan,
+  ((REL.profile&&REL.profile.meter&&REL.profile.meter.unique)||[]).length);}
+
+/* WHAT THE RUN FREES. This is ui/release.js's own arithmetic, restated so the
+   panel can price the trade before a person commits to it rather than after.
+   coolDown takes 21 per cent of the weight plus 2. It is on release.js's 0 to
+   100 scale there and is divided back to the product's 0 to 10 weight here,
+   because Summary prints a weight on 0 to 10 and one word may not mean two
+   scales. Naming it, because the port has to pick one and it is not my pick. */
+function freedBy(ids){
+ var f=0;
+ (ids||[]).forEach(function(i){var n=BY[i]; if(!n)return;
+  f+=Math.round(n.sq*10*0.21+2);});
+ return f/10;}
+
+/* ============================================================
+   THE SCRIPT OF A RUN. His words where he has written them down, and the
+   book's where it has. Nothing in this array was composed for this page
+   except the three lines already shipping in ui/release.js.
+   ============================================================ */
+function patternWord(n){ return String(n.k||'').toLowerCase(); }
+
+function buildSteps(){
+ var out=[];
+ /* THE OPENING. His recording is the first thing and it is the one asset in
+    this product that cannot be generated. It is not in this repository, so
+    the page refuses rather than faking it, and the synthetic voice reads the
+    shipping line instead. */
+ out.push({kind:'open',half:'open',text:'Sit down. Put both feet on the floor.',
+  ask:'his recording'});
+ out.push({kind:'open',half:'open',text:'Move your awareness inside your body.'});
+ out.push({kind:'open',half:'open',text:'Feel what your body is doing mechanically.'});
+ out.push({kind:'open',half:'open',text:'Keep your awareness inside your body.'});
+ out.push({kind:'open',half:'open',
+  text:'Each line names one pattern. Follow it in thought as it lands.'});
+
+ var gates=GATES[REL.gates]||GATES[10];
+ var chain=gates.length>1
+  ? gates.slice(0,-1).join(', ')+' and '+gates[gates.length-1]
+  : gates[0];
+
+ REL.sel.forEach(function(id){
+  var n=BY[id]; if(!n)return;
+  var pat=patternWord(n), opp=oppOf(n);
+  CHAN.forEach(function(ch){
+   var half=ch[2]==='limit'?'release':'truth';
+   /* the head of the block is the full statement at the gate depth chosen,
+      said once. the passes under it are the short entries. */
+   out.push({kind:'head',half:half,side:ch[0],node:id,
+    text:half==='release'
+     ? 'I am letting go of '+chain+' '+pat+'.'
+     : (opp?opp+', at the '+String(n.n||'address').toLowerCase()+'.':'No pole at this address.')});
+   for(var i=0;i<REL.dose;i++){
+    out.push({kind:'pass',half:half,side:ch[0],node:id,
+     text:half==='release'
+      ? ENTRY[i%ENTRY.length]+pat+'.'
+      : (opp?opp+'.':'No pole.')});}});});
+
+ /* THE COOLDOWN. The book's own end state. "When this state is active, stop
+    the active protocol work. Switch to observation." And the route the charge
+    takes, which is the one sensation line in the whole flow that names a
+    place: "Up the channel. Out the mouth." */
+ out.push({kind:'cool',half:'cool',text:'Stop the work. Stay where you are.'});
+ out.push({kind:'cool',half:'cool',
+  text:'The charge moves up the channel and out through the mouth.'});
+ out.push({kind:'cool',half:'cool',text:'Notice which place answers.'});
+ return out;}
+
+/* HOW LONG A LINE TAKES, and the estimate corrects itself.
+
+   A timer that lies is worse than no timer, and speech synthesis will not say
+   in advance how long it needs. So the first estimate is words times 0.40
+   seconds, which is about 150 a minute and is an unhurried instructional
+   rate, and from the moment the voice has spoken its first line the estimate
+   is replaced by the measured average of what it actually took. The clock
+   the person reads is a measurement within about a minute of starting. */
+var WORD_S=0.40, GAP_S=0.30;
+function stepMs(st){
+ var w=String(st.text||'').trim().split(/\s+/).length;
+ var per=(REL.spoke>3)?(REL.spokeMs/REL.spoke/1000/Math.max(1,w)):WORD_S;
+ var s=(w*per+GAP_S)/Math.max(0.5,REL.pace);
+ if(st.kind==='head')s+=0.6;
+ if(st.kind==='cool'||st.kind==='open')s+=1.2;
+ return Math.round(s*1000);}
+function plannedMs(){
+ return REL.steps.reduce(function(a,s){return a+stepMs(s);},0);}
+function remainMs(){
+ var a=0; for(var i=REL.at;i<REL.steps.length;i++)a+=stepMs(REL.steps[i]);
+ return a;}
+function mmss(ms){
+ var s=Math.max(0,Math.round(ms/1000));
+ return Math.floor(s/60)+':'+String(s%60).padStart(2,'0');}
+
+/* ============================================================
+   RENDER
+   ============================================================ */
+function ringSVG(col,pct,ic,box){
+ box=box||34; var r=(box-5)/2, C=2*Math.PI*r, off=C*(1-Math.max(0,Math.min(100,pct))/100);
+ return '<span class="cr" style="--c:'+col+'"><span class="ring">'
+  +'<svg class="arc" width="'+box+'" height="'+box+'" aria-hidden="true">'
+  +'<circle cx="'+box/2+'" cy="'+box/2+'" r="'+r+'" fill="none" stroke="rgba(128,128,128,.22)" stroke-width="2.6"/>'
+  +'<circle cx="'+box/2+'" cy="'+box/2+'" r="'+r+'" fill="none" stroke="'+col+'" stroke-width="2.6" '
+  +'stroke-linecap="round" stroke-dasharray="'+C.toFixed(1)+'" stroke-dashoffset="'+off.toFixed(1)+'"/></svg>'
+  +'<span class="gl"><svg viewBox="0 0 24 24" width="'+Math.round(box*0.38)+'" height="'+Math.round(box*0.38)
+  +'" aria-hidden="true"><path d="'+esc(ic)+'"/></svg></span></span>'
+  +'<span class="v">'+Math.round(pct)+'%</span></span>';}
+
+function fig(label,value,unit){
+ return '<div class="fig"><div class="eye">'+esc(label)+'</div>'
+  +'<b>'+esc(value)+(unit?'<small>'+esc(unit)+'</small>':'')+'</b></div>';}
+
+function renderPre(){
+ $('bar').style.display='';
+ document.querySelector('.wrap').classList.remove('run');
+ var keys=planKeys(), cost=costBy(keys), al=allowance();
+ var ms=0; REL.steps=buildSteps(); ms=plannedMs();
+ var freed=freedBy(REL.sel);
+ var v=voiceSay();
+
+ var rows=REL.sel.map(function(id){
+  var n=BY[id]; if(!n)return '';
+  var col=PAL[n.b]||'#7EB8D4', pct=n.sq*10, c=cost[id]||0;
+  return '<div class="row">'+ringSVG(col,pct,iconOf(n),40)
+   +'<div class="t"><b>'+esc(n.k)+'</b>'
+   +'<span>'+esc(n.b)+' &middot; '+esc(n.n)+'</span>'
+   +'<span>toward '+esc(oppOf(n)||'no pole')+'</span></div>'
+   +'<div class="c">'+c+' patterns</div></div>';}).join('');
+
+ if(!REL.sel.length)
+  rows='<p class="note">Nothing is selected, so there is nothing to release. '
+   +'Open the list and choose an address that is carrying.</p>';
+
+ var carry=carrying();
+ var list=carry.slice(0,24).map(function(n){
+  var on=REL.sel.indexOf(n.i)>=0, col=PAL[n.b]||'#7EB8D4';
+  return '<button class="pick" type="button" aria-pressed="'+(on?'true':'false')+'" data-id="'+n.i+'">'
+   +'<span class="mark" aria-hidden="true"></span>'
+   +ringSVG(col,n.sq*10,iconOf(n),28)
+   +'<span class="t"><b>'+esc(n.k)+'</b><span>'+esc(n.b)+' &middot; '+esc(n.n)+'</span></span>'
+   +'</button>';}).join('');
+
+ $('app').innerHTML=
+ '<div class="pre">'
+ +' <div class="card">'
+ +'  <div class="eye">Run a release</div>'
+ +'  <h2 style="margin:6px 0 2px;font-size:22px">'+esc((PEOPLE[REL.who]||{}).nm||'You')+'</h2>'
+ +'  <p class="note" style="margin:4px 0 0">Per cent is of what that address can hold. '
+ +'  Patterns are the unit the allowance is counted in, and a rerun of ground already open costs nothing. '
+ +'  The reframe half speaks the coherent opposite as a state, because the engine carries nine states '
+ +'  and not a sentence for each address.</p>'
+ +'  <div class="rows">'+rows+'</div>'
+ +'  <div class="acts">'
+ +'   <button class="btn" id="open">Change selection</button>'
+ +'   <button class="btn" id="dense3">Heaviest three</button>'
+ +'   <button class="btn" id="dense6">Heaviest six</button>'
+ +'  </div>'
+ +'  <div id="listwrap" hidden><div class="picklist">'+list+'</div>'
+ +'   <p class="note">'+carry.length+' addresses are carrying something on this profile. '
+ +'   The heaviest 24 are listed.</p></div>'
+ +' </div>'
+
+ +' <div class="card">'
+ +'  <div class="figs">'
+ +fig('Opens',String(keys.length),'patterns')
+ +fig('Frees',freed.toFixed(1),'weight')
+ +fig('Planned',mmss(ms),'')
+ +fig('Allowance',String(Math.max(0,al.left-keys.length)),'patterns')
+ +'  </div>'
+ +'  <p class="note">Allowance is what is left once this run is charged, of the '+al.of
+ +'  you were given. Planned is minutes and seconds at the pace below, measured again '
+ +'  from the voice once it has spoken.</p>'
+
+ +'  <div class="fields">'
+ +'   <div class="field"><label for="dose">Passes</label>'
+ +'    <input type="number" id="dose" min="1" max="50" step="1" value="'+REL.dose+'"></div>'
+ +'   <div class="field"><label for="pace">Pace</label>'
+ +'    <input type="number" id="pace" min="0.5" max="2" step="0.1" value="'+REL.pace+'"></div>'
+ +'   <div class="field"><label for="gates">Gates</label>'
+ +'    <select id="gates">'
+ +'     <option value="1"'+(REL.gates===1?' selected':'')+'>1</option>'
+ +'     <option value="3"'+(REL.gates===3?' selected':'')+'>3</option>'
+ +'     <option value="10"'+(REL.gates===10?' selected':'')+'>10</option>'
+ +'    </select></div>'
+ +'  </div>'
+ +'  <p class="note">Fifty passes a channel is the full dose. '
+ +'  Pace 1 is speaking pace. The chain builds month by month: one gate, then three, then ten.</p>'
+
+ +'  <div class="sndbar">'
+ +'   <button class="btn'+(REL.voice?' on':'')+'" id="tv" aria-pressed="'+(REL.voice?'true':'false')+'">Voice</button>'
+ +'   <button class="btn'+(REL.bed?' on':'')+'" id="tb" aria-pressed="'+(REL.bed?'true':'false')+'">Bed</button>'
+ +'   <button class="btn'+(REL.haptics?' on':'')+'" id="th" aria-pressed="'+(REL.haptics?'true':'false')+'">Buzz</button>'
+ +'  </div>'
+ +'  <p class="note">'+esc(v.line)+'<br>'
+ +'  The bed is two tones a few hertz apart and needs headphones to be one. '
+ +'  Every line the voice says is on the screen at the same moment, so silence loses nothing. '
+ +'  Sound is off until you turn it on and it stays off next time.<br>'
+ +'  The opening is a recording of his voice in the product and it is not in this build, '
+ +'  so the synthetic voice reads it here.</p>'
+
+ +'  <div class="acts">'
+ +'   <button class="btn pri" id="go"'+(REL.sel.length?'':' aria-disabled="true"')+'>Begin</button>'
+ +'  </div>'
+ +' </div>'
+ +'</div>';
+
+ $('open').onclick=function(){var w=$('listwrap'); w.hidden=!w.hidden;
+  this.textContent=w.hidden?'Change selection':'Close the list';};
+ $('dense3').onclick=function(){REL.sel=carry.slice(0,3).map(function(n){return n.i;});renderPre();};
+ $('dense6').onclick=function(){REL.sel=carry.slice(0,6).map(function(n){return n.i;});renderPre();};
+ Array.prototype.forEach.call(document.querySelectorAll('.pick'),function(b){
+  b.onclick=function(){
+   var id=+b.dataset.id, k=REL.sel.indexOf(id);
+   if(k>=0)REL.sel.splice(k,1); else REL.sel.push(id);
+   var open=!$('listwrap').hidden;
+   renderPre(); if(open)$('open').click();};});
+ $('dose').onchange=function(){REL.dose=Math.max(1,Math.min(50,+this.value||1));renderPre();};
+ $('pace').onchange=function(){REL.pace=Math.max(0.5,Math.min(2,+this.value||1));renderPre();};
+ $('gates').onchange=function(){REL.gates=+this.value;renderPre();};
+ $('tv').onclick=function(){toggleVoice();renderPre();};
+ $('tb').onclick=function(){REL.bed=!REL.bed;remember();renderPre();};
+ $('th').onclick=function(){REL.haptics=!REL.haptics;remember();renderPre();};
+ $('go').onclick=function(){ if(!REL.sel.length){
+   status('Nothing is selected, so there is nothing to release. Choose an address that is carrying.','fail');
+   return;} begin();};}
+
+function toggleVoice(){
+ REL.voice=!REL.voice;
+ if(REL.voice){
+  var v=voiceSay();
+  if(!v.ok){REL.voice=false;status(v.line,'fail');}
+  else {REL.vx=v.v||null; status(v.line);}}
+ else { speakStop(); }
+ remember();}
+
+/* the sound setting is remembered, and it is remembered off. localStorage can
+   throw in a private window, so every read and write is wrapped and the page
+   renders correctly when it comes back empty. */
+function remember(){
+ try{localStorage.setItem('rel.snd',JSON.stringify(
+  {v:REL.voice,b:REL.bed,h:REL.haptics}));}catch(e){}}
+function recall(){
+ try{var o=JSON.parse(localStorage.getItem('rel.snd')||'{}');
+  REL.voice=!!o.v; REL.bed=!!o.b; REL.haptics=!!o.h;}catch(e){}}
+
+/* ---------------- the flow ---------------- */
+function begin(){
+ REL.steps=buildSteps(); REL.at=0; REL.paused=false; REL.phase='run';
+ REL.plannedMs=plannedMs(); REL.t0=Date.now();
+ if(REL.voice||REL.bed) audioOn();
+ if(REL.bed) bedStart();
+ renderRun(); stepGo();
+ clearInterval(REL.clockT);
+ REL.clockT=setInterval(function(){ if(!REL.paused)paintClock(); },250);}
+
+function stepGo(){
+ clearTimeout(REL.stepT);
+ if(REL.at>=REL.steps.length){ finish(); return; }
+ var st=REL.steps[REL.at], prev=REL.steps[REL.at-1];
+
+ if(prev){
+  if(prev.half!=='truth'&&st.half==='truth'){ earCross(); bedTo(BED_ALPHA); }
+  else if(prev.half==='truth'&&st.half==='release'){ earTurn(st.side,st.half); bedTo(BED_THETA); }
+  else if(st.side&&st.side!==prev.side){ earTurn(st.side,st.half); }
+  else if(prev.half!=='cool'&&st.half==='cool'){ earClose(); }}
+ else if(st.side){ earTurn(st.side,st.half); }
+
+ paintRun();
+ var ms=stepMs(st), moved=false;
+ var next=function(){ if(moved)return; moved=true;
+  if(REL.paused){ REL.pendNext=true; return; }
+  REL.at++; stepGo(); };
+ if(REL.voice&&window.speechSynthesis){ speak(st.text,next); REL.stepT=setTimeout(next,ms+9000); }
+ else REL.stepT=setTimeout(next,ms);}
+
+function finish(){
+ clearTimeout(REL.stepT); clearInterval(REL.clockT);
+ bedStop(); speakStop();
+ REL.phase='done'; renderDone();}
+
+function endRun(){
+ clearTimeout(REL.stepT); speakStop(); earHalt();
+ /* THE END CONTROL ENDS INTO THE COOLDOWN and never into nothing. A protocol
+    that opened an address and then closed the window has left it open. */
+ var i=REL.steps.length-1;
+ while(i>0&&REL.steps[i-1].half==='cool')i--;
+ REL.at=i; stepGo();}
+
+function renderRun(){
+ $('bar').style.display='none';
+ document.querySelector('.wrap').classList.add('run');
+ $('app').innerHTML=
+ '<div class="stage" id="stage">'
+ +' <div class="side l" id="sl"><span>Left, inward</span></div>'
+ +' <div class="side r" id="sr"><span>Right, outward</span></div>'
+ +' <div class="half eye" id="halfline" aria-live="polite"></div>'
+ +' <div class="plate" id="plate"></div>'
+ +' <p class="speak" id="speak"></p>'
+ +' <svg class="dial" id="dial" width="96" height="96" viewBox="0 0 96 96" aria-hidden="true"></svg>'
+ +' <div class="clock">'
+ +'  <div class="fig"><div class="eye">Left</div><b id="cleft">0:00</b></div>'
+ +'  <div class="fig"><div class="eye">Planned</div><b id="cplan">0:00</b></div>'
+ +' </div>'
+ +' <div class="runacts">'
+ +'  <button class="btn" id="pause">Pause</button>'
+ +'  <button class="btn" id="end">End</button>'
+ +'  <button class="btn'+(REL.voice?' on':'')+'" id="tv2" aria-pressed="'+(REL.voice?'true':'false')+'">Voice</button>'
+ +'  <button class="btn'+(REL.bed?' on':'')+'" id="tb2" aria-pressed="'+(REL.bed?'true':'false')+'">Bed</button>'
+ +' </div>'
+ +'</div>';
+ $('pause').onclick=function(){
+  REL.paused=!REL.paused;
+  this.textContent=REL.paused?'Resume':'Pause';
+  if(REL.paused){ speakStop(); }
+  else if(REL.pendNext){ REL.pendNext=false; REL.at++; stepGo(); }
+  else { stepGo(); }};
+ $('end').onclick=endRun;
+ $('tv2').onclick=function(){ toggleVoice();
+  this.classList.toggle('on',REL.voice); this.setAttribute('aria-pressed',REL.voice?'true':'false');
+  if(REL.voice)audioOn(); };
+ $('tb2').onclick=function(){ REL.bed=!REL.bed; remember();
+  this.classList.toggle('on',REL.bed); this.setAttribute('aria-pressed',REL.bed?'true':'false');
+  if(REL.bed){audioOn();bedStart();} else bedStop(); };
+ paintRun(); paintClock();}
+
+function paintRun(){
+ var st=REL.steps[Math.min(REL.at,REL.steps.length-1)]; if(!st)return;
+ var n=st.node?BY[st.node]:null;
+ var half=st.half==='release'?'Release':st.half==='truth'?'Reframe'
+   :st.half==='cool'?'Cooldown':'Opening';
+ var word=st.side?(st.side==='R'?'right':'left'):'';
+ $('halfline').textContent=half+(word?', '+word+' channel':'');
+ $('sl').classList.toggle('lit',st.side==='L');
+ $('sr').classList.toggle('lit',st.side==='R');
+ $('plate').innerHTML=n
+  ? ringSVG(PAL[n.b]||'#7EB8D4',n.sq*10,iconOf(n),34)
+    +'<span><span class="nm">'+esc(n.k)+'</span><br>'
+    +'<span class="ad">'+esc(n.b)+' &middot; '+esc(n.n)+'</span></span>'
+  : (st.ask?'<span class="ad">The opening recording is not in this build, so the '
+     +'synthetic voice reads it.</span>':'');
+ $('speak').textContent=st.text;
+ var p=REL.steps.length?REL.at/REL.steps.length:0, r=40, C=2*Math.PI*r;
+ $('dial').innerHTML='<circle cx="48" cy="48" r="'+r+'" fill="none" stroke="rgba(128,128,128,.20)" stroke-width="3"/>'
+  +'<circle cx="48" cy="48" r="'+r+'" fill="none" stroke="var(--accent)" stroke-width="3" '
+  +'stroke-linecap="round" transform="rotate(-90 48 48)" stroke-dasharray="'+C.toFixed(1)+'" '
+  +'stroke-dashoffset="'+(C*(1-p)).toFixed(1)+'"/>';}
+
+function paintClock(){
+ if(!$('cleft'))return;
+ $('cleft').textContent=mmss(remainMs());
+ $('cplan').textContent=mmss(REL.plannedMs);}
+
+function renderDone(){
+ $('bar').style.display='';
+ document.querySelector('.wrap').classList.remove('run');
+ var keys=planKeys();
+ var m=meterRun(REL.profile,keys);
+ var al=allowance();
+ var freed=freedBy(REL.sel);
+ var rows=REL.sel.map(function(id){
+  var n=BY[id]; if(!n)return '';
+  return '<div class="row">'+ringSVG(PAL[n.b]||'#7EB8D4',n.sq*10,iconOf(n),34)
+   +'<div class="t"><b>'+esc(n.k)+'</b><span>toward '+esc(oppOf(n)||'no pole')+'</span></div></div>';}).join('');
+ $('app').innerHTML=
+ '<div class="pre"><div class="card">'
+ +' <div class="eye">Released</div>'
+ +' <p class="note" style="margin:8px 0 0">Release empties the address and the coherent opposite '
+ +' installs on the same pass. Peak rebound is days four to six. Completion is day twenty seven.</p>'
+ +' <div class="rows">'+rows+'</div>'
+ +'</div>'
+ +'<div class="card"><div class="figs">'
+ +fig('Opened',String(m.added),'patterns')
+ +fig('Freed',freed.toFixed(1),'weight')
+ +fig('Spoke',String(REL.at),'lines')
+ +fig('Allowance',String(al.left),'patterns')
+ +'</div>'
+ +'<p class="note">'+esc(al.say)+'. This page does not write to a record, so the allowance '
+ +'returns to where it started on the next run.</p>'
+ +'<div class="acts"><button class="btn pri" id="again">Done</button></div>'
+ +'</div></div>';
+ $('again').onclick=function(){REL.phase='pre';REL.profile=blankProfile((PEOPLE[REL.who]||{}).nm);renderPre();};}
+
+/* ---------------- boot ---------------- */
+function boot(){
+ recall();
+ $('who').innerHTML=PEOPLE.map(function(p,i){
+  return '<option value="'+i+'">'+esc(p.nm)+'</option>';}).join('');
+ $('who').value=String(REL.who);
+ $('who').onchange=function(){ REL.who=+this.value; pick(); };
+ $('reset').onclick=function(){ REL.phase='pre'; pick(); };
+ pick();
+ if(window.speechSynthesis&&typeof speechSynthesis.onvoiceschanged!=='undefined')
+  speechSynthesis.onvoiceschanged=function(){ if(REL.phase==='pre')renderPre(); };
+ $('foot').innerHTML='Every figure is read off <code>engine.js</code> at run time for the '
+  +'profile selected. The four channels, the plan and the allowance are the built ones. '
+  +'The sound is synthesised on the page: four earcons and one two tone bed, no asset, no file. '
+  +'Requests made by this page: <b id="reqn">0</b>.';
+ setTimeout(function(){ var el=$('reqn');
+  if(el)el.textContent=String((window.__REQ||[]).filter(function(r){
+   return !/engine\.js$/.test(r.url||'');}).length); },1200);}
+
+function pick(){
+ clearTimeout(REL.stepT); clearInterval(REL.clockT); speakStop(); bedStop();
+ var r=loadWho(REL.who);
+ $('cq').textContent='Coherence '+r.CQ.toFixed(1);
+ REL.sel=carrying().slice(0,3).map(function(n){return n.i;});
+ renderPre();}
+
+boot();
+</script>
+</body></html>

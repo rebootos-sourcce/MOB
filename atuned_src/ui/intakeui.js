@@ -287,7 +287,9 @@ function renderIntake(){
       rows+='<button class="iq-n'+(v===n?' on':'')+'" data-a="'+idx+'" data-v="'+n+'">'+n+'</button>';
      rows+='</div></div>';});
     if(s)rows+='<div class="iq-find open"><b>'+l.nm+', '+s.score.toFixed(1)+'</b><br>'
-     +'spread '+s.spread+'. '+s.lean+'</div>';
+     /* joined by a comma, the same as the closed row six lines above. A full
+        stop with a lower case clause after it is a broken sentence. */
+     +'spread '+s.spread+', '+s.lean+'.</div>';
     rows+='</div>';}
    rows+='</div>';});
   if(!rows) return;

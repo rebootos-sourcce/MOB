@@ -177,8 +177,13 @@ function runLawDrill(l){
   +' Seated at the '+l.b.toLowerCase()+', where <b>'+hot.length+'</b> address'
   +(hot.length===1?' is':'es are')+' held.</p>';
  h+= sc
+  /* ONE SENTENCE, NOT A STOP AND THEN A LOWER CASE CLAUSE. It printed
+     "Spread 3.6. holds when it costs, slips when unseen", which is a full stop
+     with a sentence after it starting in lower case. The intake prints the
+     same two facts joined by a comma and reads correctly, so this joins them
+     the same way. */
   ? '<div class="pm-eye">From your diagnostic</div><p class="ad-p">Spread <b>'+sc.spread
-    +'</b>. '+sc.lean+'</p>'
+    +'</b>, '+sc.lean+'.</p>'
   : '<div class="pm-eye">Not measured</div><p class="ad-p">Not answered in the diagnostic, so '
     +'it defaults to '+v.toFixed(1)+'. Three questions would replace the guess.</p>';
  if(hot.length)h+='<div class="pm-eye">Held here</div><div class="ad-rows">'

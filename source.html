@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="9829040 2026-09-20 20:58"><head><meta charset="utf-8">
+<html lang="en" data-build="64529da 2026-09-20 21:16"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -968,7 +968,7 @@ body:not(.hassub) .subbar{display:none}
    element that prints a name opts out with plain, which is the escape hatch
    this block already has. */
 .pm-eye,.tier1,.sub,.sp-hd,.rit-tr,.ip-bh,.sum-lt,.kb-h,.sh-h,.ad-nm,.gm-on,
-.eyebrow,.lbl{text-transform:capitalize}
+.eyebrow,.lbl,.ac-gh{text-transform:capitalize}
 /* THE HATCH REACHED FIVE CLASSES OF THIRTEEN, and the eight it did not reach
    is where the defect lived. Measured on three profiles across ten surfaces at
    both widths: 99 distinct strings sit in these classes and 42 of them are
@@ -7868,7 +7868,10 @@ const TABDEF=[
  /* GAMES COMES BACK OUT. Ruled, and it reverses the fold that put it inside
     Knowledge to get the bar to seven. They are independent games, a place a
     person goes for brain release, and a game folded into a reference page is
-    neither. The bar is eight. */
+    neither.
+
+    The count that used to sit here said eight and the table beneath it holds
+    nine. It is gone: this array is the bar, and its length is the answer. */
  {k:TAB.GAMES,   id:'games', nm:'Games',     cls:'tab-games'},
  {k:TAB.SUMMARY, id:'sum',   nm:'Summary',   cls:'tab-summary'}];
 /* SETTINGS HAS NO TABDEF ENTRY, so TABOF would fall through to the first one
@@ -9238,19 +9241,32 @@ function ritTarget(o){
    unit:null, period:null, src:'PRACTICE[].min',
    because:pr.nm+' is '+pr.min+' minutes and the library carries no count for '
     +'it, so it is one span held or crossed and not a number of things'};}
- if(q.axis&&CHARGES.indexOf(q.axis)>=0){
-  var m=cardDepth(q.axis,'m'), f=cardDepth(q.axis,'f');
+ if(q.axis){
+  /* THE NODE TABLE'S CHARGE COLUMN IS NOT THE NINE AXES, which a release row
+     hands straight in. Measured on NODES: 12 rows carry Sadness, 13 Resentment
+     and 12 Joy, and none of those three is one of the nine. CHG2FET is the
+     engine's own map from the charge vocabulary to the axis, keyed lowercase,
+     and it answers Sadness with Sad. It has no answer for Joy, which is not one
+     of the nine at all, or for Resentment, which the sniffer rules a composite
+     of Anger and Apathy: two axes means two cards and there is no single count,
+     so both are refused by name below rather than rounded to the nearer axis. */
+  var ax=CHARGES.indexOf(q.axis)>=0?q.axis
+   :(CHG2FET[String(q.axis).toLowerCase()]||null);
+  if(!ax)return {shape:null, target:null, src:null,
+   because:q.axis+' is in the node table\'s charge column and is not one of the '
+    +'nine axes, and nothing maps it to one, so there is no card and no count'};
+  var m=cardDepth(ax,'m'), f=cardDepth(ax,'f');
   var printed=Math.min(m,f);
   if(printed>0)return {shape:'count', target:printed, unit:'lines',
-   period:'a run', src:'cardDepth('+q.axis+')',
-   because:'the printed card for '+q.axis+' carries '+printed
+   period:'a run', axis:ax, src:'cardDepth('+ax+')',
+   because:'the printed card for '+ax+' carries '+printed
     +' paired lines on a side, and the session is every line on it'};
-  return {shape:'count', target:C3_BAND_N, unit:'lines', period:'a run',
+  return {shape:'count', target:C3_BAND_N, unit:'lines', period:'a run', axis:ax,
    src:C3_BAND_N===null?null:'C3_BAND[].lo and .hi',
    because:C3_BAND_N===null
     ?'the escalation bands are no longer one size, so which band a run opens '
      +'at decides the count and nothing here knows it'
-    :q.axis+' has no printed card, so the lines come off the generator, whose '
+    :ax+' has no printed card, so the lines come off the generator, whose '
      +'curve is five bands of '+C3_BAND_N+' and whose session is one band'};}
  if(q.law&&SINAMES.indexOf(q.law)>=0)
   return {shape:'stance', target:null, law:q.law, unit:null, period:null,
@@ -16802,7 +16818,9 @@ function renderIntake(){
       rows+='<button class="iq-n'+(v===n?' on':'')+'" data-a="'+idx+'" data-v="'+n+'">'+n+'</button>';
      rows+='</div></div>';});
     if(s)rows+='<div class="iq-find open"><b>'+l.nm+', '+s.score.toFixed(1)+'</b><br>'
-     +'spread '+s.spread+'. '+s.lean+'</div>';
+     /* joined by a comma, the same as the closed row six lines above. A full
+        stop with a lower case clause after it is a broken sentence. */
+     +'spread '+s.spread+', '+s.lean+'.</div>';
     rows+='</div>';}
    rows+='</div>';});
   if(!rows) return;
@@ -17228,9 +17246,10 @@ function ritRender(){
  out+='</div>';
  out+='<button type="button" class="rit-more" id="ritall">'
   +(showAll?'Show only what is called for'
-   /* NUMWORD capitalises, because everywhere else it starts a heading. Here it
-      is mid sentence, so it is lowered rather than a second function written. */
-   :'Choose something else, '+NUMWORD(c.all.length).toLowerCase()+' practices')+'</button>';
+   /* NO COUNT IN A LABEL. Ruled in COPY.md, and this one also had a comma in
+      it: "Choose something else, the four practices" is not a thing anybody
+      says out loud. The list behind the control says how many it holds. */
+   :'Choose something else')+'</button>';
  if(picked.length){
   out+='<div class="pm-eye plain" style="margin-top:16px">The ritual, '+mins+' minutes</div>'
    +'<div class="rit-how">';
@@ -18476,8 +18495,13 @@ function runLawDrill(l){
   +' Seated at the '+l.b.toLowerCase()+', where <b>'+hot.length+'</b> address'
   +(hot.length===1?' is':'es are')+' held.</p>';
  h+= sc
+  /* ONE SENTENCE, NOT A STOP AND THEN A LOWER CASE CLAUSE. It printed
+     "Spread 3.6. holds when it costs, slips when unseen", which is a full stop
+     with a sentence after it starting in lower case. The intake prints the
+     same two facts joined by a comma and reads correctly, so this joins them
+     the same way. */
   ? '<div class="pm-eye">From your diagnostic</div><p class="ad-p">Spread <b>'+sc.spread
-    +'</b>. '+sc.lean+'</p>'
+    +'</b>, '+sc.lean+'.</p>'
   : '<div class="pm-eye">Not measured</div><p class="ad-p">Not answered in the diagnostic, so '
     +'it defaults to '+v.toFixed(1)+'. Three questions would replace the guess.</p>';
  if(hot.length)h+='<div class="pm-eye">Held here</div><div class="ad-rows">'
@@ -23588,5 +23612,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="001529746"></div>
+<div id="eof" hidden data-len="001531302"></div>
 </body></html>

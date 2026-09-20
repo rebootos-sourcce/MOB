@@ -99,7 +99,10 @@ const TABDEF=[
  /* GAMES COMES BACK OUT. Ruled, and it reverses the fold that put it inside
     Knowledge to get the bar to seven. They are independent games, a place a
     person goes for brain release, and a game folded into a reference page is
-    neither. The bar is eight. */
+    neither.
+
+    The count that used to sit here said eight and the table beneath it holds
+    nine. It is gone: this array is the bar, and its length is the answer. */
  {k:TAB.GAMES,   id:'games', nm:'Games',     cls:'tab-games'},
  {k:TAB.SUMMARY, id:'sum',   nm:'Summary',   cls:'tab-summary'}];
 /* SETTINGS HAS NO TABDEF ENTRY, so TABOF would fall through to the first one

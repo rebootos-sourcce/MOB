@@ -3262,6 +3262,34 @@ g('35 · a generated ritual takes its target from a field, not from a literal');
   +JSON.stringify(Object.keys(spread)));
  ok(Object.keys(spread).indexOf('1')<0,
   'and no axis comes back with a target of one, which is the literal this replaces');
+ /* THE CHARGE COLUMN IS NOT THE NINE AXES, and a release row hands it in
+    straight. Measured on the node table rather than typed: Sadness, Resentment
+    and Joy all appear in it and none is one of the nine. Sadness resolves
+    through the engine's own CHG2FET; the other two are refused, because Joy is
+    not an axis and Resentment is a composite of two and so has no single card.
+    Without this a release row on a Sadness address got no target at all. */
+ {
+  const col={}; NODES.forEach(n=>{if(n.c)col[n.c]=1;});
+  const off=Object.keys(col).filter(c=>CHARGES.indexOf(c)<0);
+  ok(off.length>0,'the node charge column carries names that are not axes, '
+   +JSON.stringify(off));
+  const sad=ritTarget({axis:'Sadness'});
+  ok(sad.shape==='count'&&sad.axis==='Sad'&&sad.target>0,
+   'Sadness resolves through CHG2FET to Sad and takes a real target, '
+   +sad.axis+' '+sad.target);
+  ['Joy','Resentment'].forEach(c=>{
+   const r=ritTarget({axis:c});
+   ok(r.shape===null&&r.target===null,
+    c+' is refused rather than rounded to the nearest axis');
+   ok(new RegExp(c).test(r.because),'and says which name it refused, '+r.because.slice(0,40));});
+  /* and every name in that column either resolves or is refused by name, so a
+     release row can never come back with a shape and no target. */
+  Object.keys(col).forEach(c=>{
+   const r=ritTarget({axis:c});
+   ok((r.shape==='count'&&typeof r.target==='number')||(r.shape===null&&r.target===null),
+    c+' either takes a count with a number or is refused outright, got '
+    +r.shape+' '+r.target);});
+ }
  /* a stance has none until the day supplies it */
  const st=ritTarget({law:SINAMES[0]});
  ok(st.shape==='stance'&&st.target===null,

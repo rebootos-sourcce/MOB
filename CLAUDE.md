@@ -113,9 +113,16 @@ that now carries it and every caller of `setTab` goes through it.
 
 Games (7) was folded into Knowledge and has been unfolded again, on the ruling
 recorded at `engine/core.js`: they are independent games, somewhere a person
-goes for brain release, and a game folded into a reference page is neither. The
-bar is eight. This paragraph said otherwise for longer than it was true, which
-is how a file that describes the code stops being usable as one.
+goes for brain release, and a game folded into a reference page is neither. This paragraph
+said otherwise for longer than it was true, which is how a file that describes
+the code stops being usable as one.
+
+And then it said the bar is eight, in that same sentence, for longer than that
+was true either. TABDEF carries nine. A count typed into the paragraph warning
+against counts typed into paragraphs is the tenth time this repository has been
+bitten by exactly this, and it is the reason the gate counts were cut out of
+this file rather than corrected. The number is not written here any more:
+`TABDEF` is the bar, and its length is the answer.
 
 **A tab host that carries a folded surface cannot also be one.** `#sum` holds
 `#sumbody` and `#ana`. `#know` held `#knowbody` and `#games` until Games was

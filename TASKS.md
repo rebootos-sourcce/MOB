@@ -1,5 +1,9 @@
 # TASKS
 
+**The order lives in `PRIORITY.md`.** This file stays the record and nothing is
+reordered or removed from it. What gets built next, what is blocked, what is
+stopped and which of his rulings unblock the most are there.
+
 **The one list.** Ruled 19 September: every request goes on this list the turn
 it is made, before any code is written, and it is checked off as it is built.
 The project manager reads this file at the top of every round and promotes what

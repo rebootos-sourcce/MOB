@@ -421,10 +421,24 @@ opened" is not.
 **What this rule does not reach, said rather than left to be found.** An
 eyebrow over a paragraph is not a figure's label and stays as long as it needs
 to be: "How it runs through you" sits over prose and labels nothing that can be
-counted. The gate only reads a label that stands immediately in front of a run
-time value, which is the shape a figure actually ships in, and the two shapes
-it reads are the row pair `['Minutes practised', l.minutes]` and the label
-element that is followed by an element opened at the end of its literal.
+counted. The gate only reads a label that stands immediately in front of a
+figure, which is the shape a figure actually ships in, and it reads two of
+them: the row pair `['Minutes practised', l.minutes]`, and a label element
+standing immediately in front of an element the stylesheet sets in the numeric
+typeface. Both class lists are read off `shell/head.html` at run time, the
+label set from the rule that capitalises it and the figure set from the rule
+that gives it `var(--num)`, so neither can go stale when a class joins either
+rule. Only a selector that is the element itself counts as a figure: `.rec-big`
+is one, `.rit-sv-h b` is a row that happens to hold one, and the first cut of
+the gate could not tell them apart and reported "Today's ritual" as a figure
+label.
+
+**One thing it collides with, and the collision is the owner's to settle.**
+`COPY.md` rules two labels by name that carry a figure and take two words,
+"Filled in" and "Carrying", and its Label section allows two or three words.
+They sit on the Field rail with a figure beside each. This rule does not
+overturn a ruling, so they stand as written and the gate does not reach them.
+When he rules on it, one of the two documents moves.
 
 **And the unit is not the label.** "85 days" is one figure carrying its own
 unit. It does not become "85" with "days" promoted into the label, which would

@@ -109,9 +109,10 @@ function ritRender(){
  out+='</div>';
  out+='<button type="button" class="rit-more" id="ritall">'
   +(showAll?'Show only what is called for'
-   /* NUMWORD capitalises, because everywhere else it starts a heading. Here it
-      is mid sentence, so it is lowered rather than a second function written. */
-   :'Choose something else, '+NUMWORD(c.all.length).toLowerCase()+' practices')+'</button>';
+   /* NO COUNT IN A LABEL. Ruled in COPY.md, and this one also had a comma in
+      it: "Choose something else, the four practices" is not a thing anybody
+      says out loud. The list behind the control says how many it holds. */
+   :'Choose something else')+'</button>';
  if(picked.length){
   out+='<div class="pm-eye plain" style="margin-top:16px">The ritual, '+mins+' minutes</div>'
    +'<div class="rit-how">';

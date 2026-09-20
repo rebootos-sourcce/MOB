@@ -3360,7 +3360,10 @@ const TABDEF=[
  /* GAMES COMES BACK OUT. Ruled, and it reverses the fold that put it inside
     Knowledge to get the bar to seven. They are independent games, a place a
     person goes for brain release, and a game folded into a reference page is
-    neither. The bar is eight. */
+    neither.
+
+    The count that used to sit here said eight and the table beneath it holds
+    nine. It is gone: this array is the bar, and its length is the answer. */
  {k:TAB.GAMES,   id:'games', nm:'Games',     cls:'tab-games'},
  {k:TAB.SUMMARY, id:'sum',   nm:'Summary',   cls:'tab-summary'}];
 /* SETTINGS HAS NO TABDEF ENTRY, so TABOF would fall through to the first one
@@ -4718,19 +4721,32 @@ function ritTarget(o){
    unit:null, period:null, src:'PRACTICE[].min',
    because:pr.nm+' is '+pr.min+' minutes and the library carries no count for '
     +'it, so it is one span held or crossed and not a number of things'};}
- if(q.axis&&CHARGES.indexOf(q.axis)>=0){
-  var m=cardDepth(q.axis,'m'), f=cardDepth(q.axis,'f');
+ if(q.axis){
+  /* THE NODE TABLE'S CHARGE COLUMN IS NOT THE NINE AXES, which a release row
+     hands straight in. Measured on NODES: 12 rows carry Sadness, 13 Resentment
+     and 12 Joy, and none of those three is one of the nine. CHG2FET is the
+     engine's own map from the charge vocabulary to the axis, keyed lowercase,
+     and it answers Sadness with Sad. It has no answer for Joy, which is not one
+     of the nine at all, or for Resentment, which the sniffer rules a composite
+     of Anger and Apathy: two axes means two cards and there is no single count,
+     so both are refused by name below rather than rounded to the nearer axis. */
+  var ax=CHARGES.indexOf(q.axis)>=0?q.axis
+   :(CHG2FET[String(q.axis).toLowerCase()]||null);
+  if(!ax)return {shape:null, target:null, src:null,
+   because:q.axis+' is in the node table\'s charge column and is not one of the '
+    +'nine axes, and nothing maps it to one, so there is no card and no count'};
+  var m=cardDepth(ax,'m'), f=cardDepth(ax,'f');
   var printed=Math.min(m,f);
   if(printed>0)return {shape:'count', target:printed, unit:'lines',
-   period:'a run', src:'cardDepth('+q.axis+')',
-   because:'the printed card for '+q.axis+' carries '+printed
+   period:'a run', axis:ax, src:'cardDepth('+ax+')',
+   because:'the printed card for '+ax+' carries '+printed
     +' paired lines on a side, and the session is every line on it'};
-  return {shape:'count', target:C3_BAND_N, unit:'lines', period:'a run',
+  return {shape:'count', target:C3_BAND_N, unit:'lines', period:'a run', axis:ax,
    src:C3_BAND_N===null?null:'C3_BAND[].lo and .hi',
    because:C3_BAND_N===null
     ?'the escalation bands are no longer one size, so which band a run opens '
      +'at decides the count and nothing here knows it'
-    :q.axis+' has no printed card, so the lines come off the generator, whose '
+    :ax+' has no printed card, so the lines come off the generator, whose '
      +'curve is five bands of '+C3_BAND_N+' and whose session is one band'};}
  if(q.law&&SINAMES.indexOf(q.law)>=0)
   return {shape:'stance', target:null, law:q.law, unit:null, period:null,
