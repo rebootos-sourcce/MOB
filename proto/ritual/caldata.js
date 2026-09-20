@@ -108,10 +108,15 @@ WHO.forEach(nm=>{
  const prof=Object.assign({},P,{rituals:[],axes:S.axes,meter:S.meter,history:[]});
  const lad=ladderRead(prof,TODAY);
 
- /* the day by day walk, from the simulator, at the design as costed */
- Object.keys(SIM.TRACE).forEach(k=>delete SIM.TRACE[k]);
- SIM.runSim('final',{trace:nm});
- const t=Object.assign({},SIM.TRACE);
+ /* EVERYTHING READ OFF r IS READ HERE, BEFORE THE SIMULATOR RUNS.
+    compute() reads and writes shared state, which is the impure core
+    CLAUDE.md names, and r.carrying points into it. The first cut of this file
+    read the seat loads and the releasable addresses AFTER runSim, and by then
+    runSim had called compute() a few thousand times and r.carrying held the
+    last simulated profile instead of this one. Gordon's ninety seven
+    releasable addresses came back as zero and the release lane of the queue
+    was empty for all eight people. GATE 5 below reloads each profile from
+    scratch and refuses to write if the extracted numbers have moved. */
 
  /* seat loads, summed off the live imprints. This is what the avatar's own
     gap function measures: avatarGap calls a seat clear when its load is zero,
@@ -125,6 +130,9 @@ WHO.forEach(nm=>{
 
  /* the releasable addresses, at the sq >= 4 threshold ui/personas.js:418
     builds the release queue at. Same rule PANEL 3.1 counts with. */
+ const carryingN=r.carrying.length;
+ const releasableN=r.carrying.filter(x=>x.sq>=4).length;
+ const weakL=r.weakL||null;
  const rel=r.carrying.filter(x=>x.sq>=4)
   .sort((a,b)=>b.sq-a.sq).slice(0,3)
   .map(x=>({addr:x.n, fetter:x.k, seat:x.b, axis:x.c, sq:+x.sq.toFixed(2),
@@ -142,6 +150,12 @@ WHO.forEach(nm=>{
     be built. That is not a placeholder, it is what is missing. */
  const av=avatarBlank();
 
+ /* the day by day walk, from the simulator, at the design as costed. It runs
+    last because it destroys the shared state everything above reads. */
+ Object.keys(SIM.TRACE).forEach(k=>delete SIM.TRACE[k]);
+ SIM.runSim('final',{trace:nm});
+ const t=Object.assign({},SIM.TRACE);
+
  out.profiles[nm]={
   nm, age:P.age, role:P.role, weight:WT[nm]||0, says:P.says||'',
   CQ:+(+r.CQ).toFixed(1), DQ:+(+r.DQ).toFixed(2),
@@ -150,9 +164,7 @@ WHO.forEach(nm=>{
   called:c.called?{k:c.called.k,nm:c.called.nm,min:c.called.min,
     track:c.called.track,tier:c.called.tier}:null,
   fit:c.all.map(p=>({k:p.k,nm:p.nm,min:p.min,track:p.track,tier:p.tier})),
-  seats, carryingN:r.carrying.length,
-  releasableN:r.carrying.filter(x=>x.sq>=4).length, rel,
-  weakL:r.weakL||null,
+  seats, carryingN, releasableN, rel, weakL,
   snOffer, snImprints:(sn.parsed&&sn.parsed.imprints||[]).length,
   avatarBuilt:!!av.built, avatarPairs:(av.pairs||[]).length,
   ledger:lad.ledger, streak:lad.streak,
@@ -292,16 +304,44 @@ Object.entries(D12).forEach(([nm,[seat,tr,ti,pn,mn]])=>{
   fail(nm+' against 1.2: got '+o.seat+'/'+got+'/'+o.tier+'/'+o.called.nm);});
 console.error('        seven profiles, five columns each');
 
-/* GATE 4. Every proposal names a real engine export. */
-console.error('GATE 4  every queue row names a real engine.js export');
+/* GATE 4. Every proposal names a real source: either a function engine.js
+   exports, or a field compute() puts on its own return. A proposal that can
+   name neither is a decoration and this file will not write it. */
+console.error('GATE 4  every queue row names a real engine.js source');
+const RREF=loadPerson(PEOPLE.filter(p=>p.nm==='Gordon')[0]);
+const isSrc=s=>(typeof E[s]==='function')||(s in E)||(s in RREF);
 let rows=0, srcs={};
 Object.values(out.profiles).forEach(o=>o.queue.forEach(q=>{
  rows++; srcs[q.src]=(srcs[q.src]||0)+1;
- const ok=(typeof E[q.src]==='function')||(q.src in E);
- if(!ok)fail('queue row cites '+q.src+', which engine.js does not export');
+ if(!isSrc(q.src))
+  fail('queue row cites '+q.src+', which is neither an engine.js export nor a '
+   +'field of compute()');
  if(!q.because)fail('queue row with no because: '+q.nm);}));
 console.error('        '+rows+' rows across '+WHO.length+' profiles, sources: '
  +Object.entries(srcs).map(([k,v])=>k+' '+v).join(', '));
+
+/* GATE 5. THE ONE THAT CAUGHT THIS FILE'S OWN BUG.
+   Reload every profile from scratch, with nothing else having run in between,
+   and check the numbers written into cal.json against the reload. compute()
+   reads shared state, so any read taken after the simulator has run is a read
+   of somebody else's field. This gate does not care why a number moved. It
+   refuses to write if one did. */
+console.error('GATE 5  every extracted number survives a clean reload');
+let drift=0;
+WHO.forEach(nm=>{
+ const o=out.profiles[nm];
+ const r=loadPerson(PEOPLE.filter(p=>p.nm===nm)[0]);
+ const relN=r.carrying.filter(x=>x.sq>=4).length;
+ const seatN=Object.keys(r.carrying.reduce((a,x)=>(a[x.b]=1,a),{})).length;
+ if(o.carryingN!==r.carrying.length){
+  drift++; fail(nm+' carrying '+o.carryingN+' in cal.json, '+r.carrying.length+' on reload');}
+ if(o.releasableN!==relN){
+  drift++; fail(nm+' releasable '+o.releasableN+' in cal.json, '+relN+' on reload');}
+ if(o.seats.length!==seatN){
+  drift++; fail(nm+' seats '+o.seats.length+' in cal.json, '+seatN+' on reload');}
+ if(o.weakL&&r.weakL&&o.weakL.nm!==r.weakL.nm){
+  drift++; fail(nm+' weakest law '+o.weakL.nm+' in cal.json, '+r.weakL.nm+' on reload');}});
+console.error('        '+(drift?drift+' numbers moved':'eight profiles, four numbers each, none moved'));
 
 if(bad){console.error('\n'+bad+' failures. refusing to write cal.json.');process.exit(1);}
 
