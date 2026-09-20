@@ -21,6 +21,42 @@ reopens. Every seat adds its own.
 
 ---
 
+## 0b2. RULED 20 SEPTEMBER. THE LOGO.
+
+His words: "For the Atuned app, I want the logo designed in that font style.
+Blue, two white dots over the u." With a specimen: a geometric monoline display
+face, circular counters, single storey forms, and several alternates per
+letter.
+
+- [ ] **LG1. Drawn, not typed.** The specimen is an image of a typeface this
+      project does not have and may not have a licence to. A logo should be
+      outlines anyway: it has to hold at a favicon's size, survive seven
+      lightings, and never depend on a font loading. So the six letters are
+      drawn as paths in that style rather than set in that face.
+- [x] **LG2. The dots already exist and are already measured.** The wordmark
+      carries two dots over the u, positioned at the glyph's own centre after
+      a correction: they sat at 0.408 of the u's box where the centre is
+      0.444, because the letter spacing is added after the glyph. That
+      measurement carries into the drawing.
+- [ ] **LG3. Blue is the product's own blue,** which is the sky token, and it
+      already changes per lighting: it is one blue on dark and a much deeper
+      one on paper. The logo has to be specified against both rather than as
+      one hex.
+- [ ] **LG4. The dots are white and that is the one colour that does not
+      move.** On the paper lightings the token is nearly black, so a white dot
+      on a deep blue u is a different relationship there. Decide it rather
+      than inheriting it.
+- [ ] **LG5. It has to work at four sizes:** the boot card, the top bar, a
+      favicon, and whatever the funnel puts at the top of a page.
+- [ ] **LG6. The specimen's alternates are the interesting part.** A face with
+      three forms of a and four of s is offering a choice, and for a logotype
+      the choice is the design: which a, which e, which d, and why.
+- [ ] **LG7. It replaces a wordmark that is currently live type.** Say what
+      changes at every site that draws it, including the boot animation, which
+      builds the mark from its own paths.
+
+---
+
 ## 0c2. RULED 20 SEPTEMBER, FOURTEENTH PASS. THE RELEASE FLOW. HIGH PRIORITY.
 
 He asked why this is broken and why it has not been added. Measured before
