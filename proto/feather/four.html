@@ -1,0 +1,544 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Feather prototype 4</title>
+<style>
+:root{
+ --bg:#0b0c10; --ink:#e8e6e1; --dim:#8b8a87; --line:#24262e;
+ --panel:#121319; --accent:#7EB8D4;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
+ font:14px/1.5 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+ -webkit-font-smoothing:antialiased}
+.wrap{display:grid;grid-template-columns:200px 1fr 300px;gap:0;min-height:100vh}
+@media(max-width:900px){.wrap{grid-template-columns:1fr}}
+.rail{border-right:1px solid var(--line);padding:16px 14px;display:flex;flex-direction:column;gap:14px}
+.rail.r{border-right:0;border-left:1px solid var(--line)}
+.eye{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin:0 0 6px}
+h1{font-size:15px;font-weight:600;margin:0 0 2px;letter-spacing:-.01em}
+.sub{font-size:12px;color:var(--dim);margin:0 0 4px}
+button{font:inherit;color:var(--ink);background:transparent;border:1px solid var(--line);
+ border-radius:7px;padding:6px 9px;cursor:pointer;text-align:left;
+ transition:border-color 120ms cubic-bezier(.22,1,.36,1),background 120ms cubic-bezier(.22,1,.36,1)}
+button:hover{border-color:#3b3f4d;background:#15161d}
+button[aria-pressed=true]{border-color:var(--accent);color:var(--accent)}
+.pbtn{display:flex;justify-content:space-between;gap:8px;width:100%}
+.pbtn i{font-style:normal;color:var(--dim);font-variant-numeric:tabular-nums}
+.wrap>*{min-width:0}
+.stage{position:relative;min-width:0;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:16px;min-height:640px}
+canvas{display:block;touch-action:none;cursor:crosshair}
+#probe{position:absolute;pointer-events:none;max-width:290px;background:rgba(14,15,20,.97);
+ border:1px solid var(--line);border-radius:9px;padding:9px 11px;font-size:12px;line-height:1.45;
+ opacity:0;transform:translateY(4px);
+ transition:opacity 120ms cubic-bezier(.22,1,.36,1),transform 120ms cubic-bezier(.22,1,.36,1);
+ box-shadow:0 8px 28px rgba(0,0,0,.6);z-index:5}
+#probe.on{opacity:1;transform:translateY(0)}
+#probe u{display:block;text-decoration:none;font-size:10px;letter-spacing:.12em;
+ text-transform:uppercase;color:var(--dim);margin-bottom:2px}
+#probe b.nm{font-size:15px;font-weight:600;display:block;margin-bottom:5px}
+#probe hr{border:0;border-top:1px solid var(--line);margin:6px 0}
+#probe .big{font-size:19px;font-weight:600;font-variant-numeric:tabular-nums}
+#probe .say{color:var(--dim);font-size:11px}
+.legend{font-size:11px;color:var(--dim);line-height:1.6}
+.num{font-variant-numeric:tabular-nums}
+#drill{font-size:12px;line-height:1.55}
+#drill .nm{font-size:17px;font-weight:600;margin:2px 0 8px}
+#drill .row{display:flex;justify-content:space-between;gap:10px;padding:4px 0;
+ border-bottom:1px solid var(--line)}
+#drill .row b{font-variant-numeric:tabular-nums;font-weight:600}
+#drill p{margin:8px 0;color:#c3c1bd}
+.bar{height:5px;border-radius:3px;background:#1b1d25;overflow:hidden;margin-top:3px}
+.bar i{display:block;height:100%;border-radius:3px;transition:width 260ms cubic-bezier(.22,1,.36,1)}
+.mini{font-size:11px;color:var(--dim)}
+.tog{display:flex;gap:6px;flex-wrap:wrap}
+.tog button{padding:4px 8px;font-size:11px}
+.ft{font-size:11px;color:var(--dim);font-variant-numeric:tabular-nums}
+.nav a{color:var(--dim);text-decoration:none;font-size:11px;display:block;padding:2px 0}
+.nav a.on{color:var(--accent)}
+</style></head><body>
+<div class="wrap">
+ <div class="rail">
+  <div><p class="eye">Prototype</p><h1>Four. The moult</h1><p class="sub">Length is the law you keep. The deficit is drawn as loose barbs between the tip and the rim, drifting at the size of the gap.</p></div>
+  <div><p class="eye">Profile</p><div id="who" class="tog" style="flex-direction:column"></div></div>
+  <div><p class="eye">Motion</p><div class="tog">
+    <button id="tmot" aria-pressed="true">Motion on</button>
+    <button id="tring" aria-pressed="true">Rings on</button></div>
+   <p class="ft" id="ft">measuring</p></div>
+  <div class="nav"><p class="eye">Variants</p>
+   <a href="one.html" >One. His proposal</a>
+   <a href="two.html" >Two. Length alone</a>
+   <a href="three.html" >Three. Seven wings</a>
+   <a href="four.html" class="on">Four. The moult</a>
+   <a href="index.html">All four, side by side</a></div>
+ </div>
+ <div class="stage" id="stage">
+  <canvas id="cv" width="680" height="680"></canvas>
+  <div id="probe"></div>
+ </div>
+ <div class="rail r">
+  <div><p class="eye">Detail</p><div id="drill"><p class="mini">Click any feather.</p></div></div>
+  <div><p class="eye">How to read it</p><p class="legend" id="leg"></p></div>
+ </div>
+</div>
+<script>
+"use strict";
+/* bare mode, for the four up comparison page: the mark and nothing else. */
+if(location.search.indexOf('bare')>=0){
+ document.documentElement.classList.add('bare');
+ const st=document.createElement('style');
+ st.textContent='.rail{display:none}.wrap{grid-template-columns:1fr}'
+  +'.stage{min-height:0;height:100vh;padding:6px}';
+ document.head.appendChild(st);}
+const MODE=4;
+const D={"seats":[{"b":"Root","a0":-1.5999,"a1":-0.669},{"b":"Sacral","a0":-0.669,"a1":0.2618},{"b":"Solar","a0":0.2618,"a1":1.1926},{"b":"Heart","a0":1.1926,"a1":2.0653},{"b":"Throat","a0":2.0653,"a1":2.7634},{"b":"3rd Eye","a0":2.7634,"a1":3.4616},{"b":"Crown","a0":3.4616,"a1":4.6833}],"laws":[{"nm":"Truth","b":"Throat","ic":"M12 3v11 M9 17a3 3 0 006 0 3 3 0 00-6 0"},{"nm":"Transparency","b":"Throat","ic":"M4 4h16v16H4z M8 20L20 8"},{"nm":"Justice","b":"Throat","ic":"M12 4v4 M4 8h16 M4 8l-2 5h4z M20 8l-2 5h4z"},{"nm":"Unity","b":"Crown","ic":"M10 7a5 5 0 100 10 5 5 0 100-10 M14 7a5 5 0 110 10 5 5 0 110-10"},{"nm":"Awareness","b":"Crown","ic":"M3 16h18 M7 16a5 5 0 0110 0"},{"nm":"Nature","b":"Crown","ic":"M12 21V6 M12 13L7 9 M12 16l5-4 M12 10l4-3"},{"nm":"Presence","b":"3rd Eye","ic":"M12 11.4v1.2 M4 12a8 8 0 1116 0 8 8 0 01-16 0"},{"nm":"Humility","b":"3rd Eye","ic":"M4 11h16 M4 11a8 8 0 0016 0"},{"nm":"Equanimity","b":"3rd Eye","ic":"M3 10h18v4H3z M12 10v4"},{"nm":"Compassion","b":"Heart","ic":"M12 19c-4-3-7-5-7-8a4 4 0 017-2 4 4 0 017 2c0 3-3 5-7 8"},{"nm":"Forgiveness","b":"Heart","ic":"M9 9H7a4 4 0 000 6h2 M15 15h2a4 4 0 000-6h-2"},{"nm":"Generosity","b":"Heart","ic":"M5 13a7 7 0 0014 0 M12 11V3 M9 6l3-3 3 3"},{"nm":"Aesthetic Beauty","b":"Heart","ic":"M3 6h18v12H3z M3 18a12 12 0 0112-12"},{"nm":"Courage","b":"Solar","ic":"M12 21V4 M8 8l4-4 4 4 M6 14h12"},{"nm":"Duty","b":"Solar","ic":"M4 8h16 M7 8v12 M17 8v12"},{"nm":"Responsibility","b":"Solar","ic":"M4 9h16v5H4z M9 14v5 M15 14v5 M9 19h6"},{"nm":"Accountability","b":"Solar","ic":"M6 4v16 M18 4v16 M6 13h12 M9 8l2 2 4-4"},{"nm":"Temperance","b":"Sacral","ic":"M5 5h6l-3 6z M13 19h6l-3-6z M11 10l2 4"},{"nm":"Detachment","b":"Sacral","ic":"M3 12h5 M16 12h5 M10 7v10 M14 7v10"},{"nm":"Non-Harm","b":"Root","ic":"M4 12a8 8 0 1116 0 8 8 0 01-16 0 M8 12h8"},{"nm":"Patience","b":"Root","ic":"M7 4h10 M7 20h10 M7 4l5 8 5-8 M7 20l5-8 5 8"}],"bands":["Root","Sacral","Solar","Heart","Throat","3rd Eye","Crown"],"pal":{"Root":"#CF5953","Sacral":"#D19255","Solar":"#D4BC70","Heart":"#65CFA5","Throat":"#65B8D4","3rd Eye":"#8296DB","Crown":"#A883D6"},"people":[{"nm":"You","CQ":42.3,"tier":"Oscillating","Ig":6.5,"It":6.5,"Rz":1,"unread":true,"measured":0,"laws":{"Truth":6.5,"Transparency":6.5,"Justice":6.5,"Unity":6.5,"Awareness":6.5,"Nature":6.5,"Presence":6.5,"Humility":6.5,"Equanimity":6.5,"Compassion":6.5,"Forgiveness":6.5,"Generosity":6.5,"Aesthetic Beauty":6.5,"Courage":6.5,"Duty":6.5,"Responsibility":6.5,"Accountability":6.5,"Temperance":6.5,"Detachment":6.5,"Non-Harm":6.5,"Patience":6.5},"meas":{"Truth":false,"Transparency":false,"Justice":false,"Unity":false,"Awareness":false,"Nature":false,"Presence":false,"Humility":false,"Equanimity":false,"Compassion":false,"Forgiveness":false,"Generosity":false,"Aesthetic Beauty":false,"Courage":false,"Duty":false,"Responsibility":false,"Accountability":false,"Temperance":false,"Detachment":false,"Non-Harm":false,"Patience":false},"load":{"Root":0,"Sacral":0,"Solar":0,"Heart":0,"Throat":0,"3rd Eye":0,"Crown":0},"bandIg":{"Root":6.5,"Sacral":6.5,"Solar":6.5,"Heart":6.5,"Throat":6.5,"3rd Eye":6.5,"Crown":6.5}},{"nm":"Sofia","CQ":57.2,"tier":"Even","Ig":7.71,"It":7.42,"Rz":1,"unread":false,"measured":21,"laws":{"Truth":7.6,"Transparency":7.6,"Justice":7.6,"Unity":7.6,"Awareness":7.6,"Nature":7.6,"Presence":7.6,"Humility":7.6,"Equanimity":7.6,"Compassion":8.6,"Forgiveness":7.6,"Generosity":8.2,"Aesthetic Beauty":7.6,"Courage":7.6,"Duty":7.6,"Responsibility":7.6,"Accountability":7.6,"Temperance":3.3,"Detachment":2.9,"Non-Harm":9.1,"Patience":7.6},"meas":{"Truth":true,"Transparency":true,"Justice":true,"Unity":true,"Awareness":true,"Nature":true,"Presence":true,"Humility":true,"Equanimity":true,"Compassion":true,"Forgiveness":true,"Generosity":true,"Aesthetic Beauty":true,"Courage":true,"Duty":true,"Responsibility":true,"Accountability":true,"Temperance":true,"Detachment":true,"Non-Harm":true,"Patience":true},"load":{"Root":0.23,"Sacral":0.61,"Solar":0.11,"Heart":0.19,"Throat":0.68,"3rd Eye":0.43,"Crown":0.15},"bandIg":{"Root":8.35,"Sacral":3.1,"Solar":7.6,"Heart":8,"Throat":7.6,"3rd Eye":7.6,"Crown":7.6}},{"nm":"Diane","CQ":28.6,"tier":"Corrupt","Ig":5.94,"It":5.66,"Rz":1.175,"unread":false,"measured":21,"laws":{"Truth":6.1,"Transparency":6.1,"Justice":6.1,"Unity":6.1,"Awareness":6.1,"Nature":6.1,"Presence":6.1,"Humility":6.1,"Equanimity":6.1,"Compassion":6.1,"Forgiveness":6.1,"Generosity":6.1,"Aesthetic Beauty":6.1,"Courage":6.1,"Duty":8.4,"Responsibility":8.1,"Accountability":7.6,"Temperance":2.8,"Detachment":3.4,"Non-Harm":6.1,"Patience":3},"meas":{"Truth":true,"Transparency":true,"Justice":true,"Unity":true,"Awareness":true,"Nature":true,"Presence":true,"Humility":true,"Equanimity":true,"Compassion":true,"Forgiveness":true,"Generosity":true,"Aesthetic Beauty":true,"Courage":true,"Duty":true,"Responsibility":true,"Accountability":true,"Temperance":true,"Detachment":true,"Non-Harm":true,"Patience":true},"load":{"Root":1.41,"Sacral":1.32,"Solar":3.64,"Heart":2.25,"Throat":2.42,"3rd Eye":1.29,"Crown":1.61},"bandIg":{"Root":4.55,"Sacral":3.1,"Solar":7.55,"Heart":6.1,"Throat":6.1,"3rd Eye":6.1,"Crown":6.1}},{"nm":"Marcus","CQ":39.2,"tier":"Incoherent","Ig":6.23,"It":6.29,"Rz":1,"unread":false,"measured":21,"laws":{"Truth":7.9,"Transparency":6.4,"Justice":6.4,"Unity":3.3,"Awareness":6.4,"Nature":6.4,"Presence":6.4,"Humility":8.8,"Equanimity":6.4,"Compassion":2.8,"Forgiveness":2.4,"Generosity":6.4,"Aesthetic Beauty":9.2,"Courage":6.4,"Duty":6.4,"Responsibility":6.4,"Accountability":6.4,"Temperance":6.4,"Detachment":6.4,"Non-Harm":6.4,"Patience":6.4},"meas":{"Truth":true,"Transparency":true,"Justice":true,"Unity":true,"Awareness":true,"Nature":true,"Presence":true,"Humility":true,"Equanimity":true,"Compassion":true,"Forgiveness":true,"Generosity":true,"Aesthetic Beauty":true,"Courage":true,"Duty":true,"Responsibility":true,"Accountability":true,"Temperance":true,"Detachment":true,"Non-Harm":true,"Patience":true},"load":{"Root":1.01,"Sacral":1.14,"Solar":0.95,"Heart":1.13,"Throat":1.31,"3rd Eye":0.9,"Crown":1.07},"bandIg":{"Root":6.4,"Sacral":6.4,"Solar":6.4,"Heart":5.2,"Throat":6.9,"3rd Eye":7.2,"Crown":5.37}},{"nm":"James","CQ":12.8,"tier":"Severe","Ig":4.31,"It":4.33,"Rz":1.457,"unread":false,"measured":21,"laws":{"Truth":6.9,"Transparency":2.9,"Justice":4.4,"Unity":2.8,"Awareness":4.4,"Nature":4.4,"Presence":4.4,"Humility":4.4,"Equanimity":4.4,"Compassion":2.6,"Forgiveness":2.7,"Generosity":4.4,"Aesthetic Beauty":4.4,"Courage":4.4,"Duty":4.4,"Responsibility":4.4,"Accountability":7.8,"Temperance":4.4,"Detachment":4.4,"Non-Harm":4.4,"Patience":4.4},"meas":{"Truth":true,"Transparency":true,"Justice":true,"Unity":true,"Awareness":true,"Nature":true,"Presence":true,"Humility":true,"Equanimity":true,"Compassion":true,"Forgiveness":true,"Generosity":true,"Aesthetic Beauty":true,"Courage":true,"Duty":true,"Responsibility":true,"Accountability":true,"Temperance":true,"Detachment":true,"Non-Harm":true,"Patience":true},"load":{"Root":2.69,"Sacral":3.68,"Solar":2.49,"Heart":3.34,"Throat":2.06,"3rd Eye":2.24,"Crown":2.17},"bandIg":{"Root":4.4,"Sacral":4.4,"Solar":5.25,"Heart":3.53,"Throat":4.73,"3rd Eye":4.4,"Crown":3.87}},{"nm":"Rosa","CQ":100,"tier":"Mastery","Ig":10,"It":10,"Rz":1,"unread":false,"measured":21,"laws":{"Truth":9.6,"Transparency":9.6,"Justice":9.6,"Unity":9.8,"Awareness":9.6,"Nature":9.6,"Presence":10,"Humility":9.6,"Equanimity":10,"Compassion":10,"Forgiveness":9.6,"Generosity":9.6,"Aesthetic Beauty":9.6,"Courage":9.6,"Duty":9.6,"Responsibility":9.6,"Accountability":9.6,"Temperance":9.6,"Detachment":9.6,"Non-Harm":10,"Patience":9.9},"meas":{"Truth":true,"Transparency":true,"Justice":true,"Unity":true,"Awareness":true,"Nature":true,"Presence":true,"Humility":true,"Equanimity":true,"Compassion":true,"Forgiveness":true,"Generosity":true,"Aesthetic Beauty":true,"Courage":true,"Duty":true,"Responsibility":true,"Accountability":true,"Temperance":true,"Detachment":true,"Non-Harm":true,"Patience":true},"load":{"Root":0,"Sacral":0,"Solar":0,"Heart":0,"Throat":0,"3rd Eye":0,"Crown":0},"bandIg":{"Root":9.95,"Sacral":9.6,"Solar":9.6,"Heart":9.7,"Throat":9.6,"3rd Eye":9.87,"Crown":9.67}},{"nm":"Tomas","CQ":2.9,"tier":"Collapsed","Ig":3.08,"It":3.09,"Rz":3.295,"unread":false,"measured":21,"laws":{"Truth":2.5,"Transparency":3.1,"Justice":3.1,"Unity":3.1,"Awareness":3.1,"Nature":3.1,"Presence":3.1,"Humility":3.1,"Equanimity":3.1,"Compassion":3.1,"Forgiveness":3.1,"Generosity":3.1,"Aesthetic Beauty":3.1,"Courage":2.3,"Duty":3.8,"Responsibility":3.1,"Accountability":3.1,"Temperance":3.1,"Detachment":3.1,"Non-Harm":4.1,"Patience":2.4},"meas":{"Truth":true,"Transparency":true,"Justice":true,"Unity":true,"Awareness":true,"Nature":true,"Presence":true,"Humility":true,"Equanimity":true,"Compassion":true,"Forgiveness":true,"Generosity":true,"Aesthetic Beauty":true,"Courage":true,"Duty":true,"Responsibility":true,"Accountability":true,"Temperance":true,"Detachment":true,"Non-Harm":true,"Patience":true},"load":{"Root":6.69,"Sacral":4.7,"Solar":5.16,"Heart":4.11,"Throat":3.66,"3rd Eye":5.32,"Crown":6.12},"bandIg":{"Root":3.25,"Sacral":3.1,"Solar":3.07,"Heart":3.1,"Throat":2.9,"3rd Eye":3.1,"Crown":3.1}}]};
+/* ---------- the product's own helpers, copied, not reinvented ---------- */
+const TAU=Math.PI*2;
+const clamp=(v,a,b)=>v<a?a:v>b?b:v;
+const lerp=(a,b,t)=>a+(b-a)*t;
+function hx(h){h=h.replace('#','');return [parseInt(h.slice(0,2),16),parseInt(h.slice(2,4),16),parseInt(h.slice(4,6),16)];}
+function rgba(c,a){return 'rgba('+c[0]+','+c[1]+','+c[2]+','+(+a).toFixed(3)+')';}
+function mixc(a,b,t){return [Math.round(lerp(a[0],b[0],t)),Math.round(lerp(a[1],b[1],t)),Math.round(lerp(a[2],b[2],t))];}
+function cqRamp(cq){
+ var t=clamp(cq,0,100)/100;
+ var ST=[[0.00,[58,23,20]],[0.28,[163,58,50]],[0.50,[90,96,112]],
+         [0.76,[126,184,212]],[1.00,[234,244,249]]];
+ for(var i=1;i<ST.length;i++){
+  if(t<=ST[i][0]){var a=ST[i-1],b=ST[i],f=(t-a[0])/(b[0]-a[0]);
+   return [Math.round(a[1][0]+(b[1][0]-a[1][0])*f),
+           Math.round(a[1][1]+(b[1][1]-a[1][1])*f),
+           Math.round(a[1][2]+(b[1][2]-a[1][2])*f)];}}
+ return ST[ST.length-1][1];}
+const PALRGB={};Object.keys(D.pal).forEach(k=>PALRGB[k]=hx(D.pal[k]));
+function bc(b){return PALRGB[b]||[140,140,140];}
+const INK=[232,230,225];
+
+/* ---------- state ---------- */
+const cv=document.getElementById('cv'),g=cv.getContext('2d');
+let CW=680,CH=680,CX=340,CY=340,DPR=1;
+let HIT=[];
+let P=D.people[3];            /* Marcus, a real loaded profile */
+let T=0,MOT=true,RINGS=true,PIN=null,HOVER=null,ONLY=-1;
+const REDUCED=matchMedia('(prefers-reduced-motion: reduce)').matches;
+if(REDUCED)MOT=false;
+
+function fit(){
+ const st=document.getElementById('stage');
+ /* the canvas is a grid item and a grid item's own width can push the column
+    wider, so measuring the column and then sizing the canvas from it is a
+    feedback loop. it measured 680 inside a 390 viewport. the window is the
+    honest bound. */
+ const s=Math.min(st.clientWidth-32,window.innerWidth-32,window.innerHeight-64,760);
+ const px=Math.max(280,s);
+ DPR=Math.min(2,window.devicePixelRatio||1);
+ cv.style.width=px+'px';cv.style.height=px+'px';
+ cv.width=Math.round(px*DPR);cv.height=Math.round(px*DPR);
+ CW=px;CH=px;CX=px/2;CY=px/2;
+ g.setTransform(DPR,0,0,DPR,0,0);}
+
+/* ---------- the geometry. every number here is arithmetic on a reading. ----------
+   RIM is where a value of 10 lands. Every mark, every layer, one constant,
+   so the quarter-step rings are true for all of them. */
+const RIM=0.93;
+/* HUB. Twenty one spokes meeting at one point is a knot, and the knot is where
+   every short reading lives, so the readings that matter most were the ones
+   buried. Every feather is based on a hub ring instead. The hub ring is zero,
+   the rim is ten, and a law at zero is a tick on the hub with no feather on
+   it, which is the honest drawing of nothing. */
+const HUB=0.15;
+function rOf(v){return (HUB+(RIM-HUB)*clamp(v,0,10)/10);}
+/* the seven seat arcs, taken from the shell of the real wheel so the core is an
+   exploded view of the ring around it rather than a separate diagram. */
+const SEAT={};D.seats.forEach(s=>SEAT[s.b]=s);
+/* each law gets an equal share of its own seat's arc. a seat holding four laws
+   is four slots wide, which is true: it holds four. */
+const SLOT=[];
+(function(){
+ const bySeat={};D.laws.forEach(l=>{(bySeat[l.b]=bySeat[l.b]||[]).push(l);});
+ D.laws.forEach(l=>{
+  const grp=bySeat[l.b], k=grp.indexOf(l), n=grp.length;
+  const s=SEAT[l.b]; let a0=s.a0,a1=s.a1; if(a1<a0)a1+=TAU;
+  const w=(a1-a0)/n;
+  SLOT.push({nm:l.nm,b:l.b,i:SLOT.length,k:k,n:n,
+   a:a0+w*(k+0.5), a0:a0+w*k, a1:a0+w*(k+1), w:w});});
+})();
+function coreR(){ /* the product sizes the core by CQ. copied, so the prototype
+   inherits the real problem that a low reading gets a small figure. */
+ const coh=P.CQ/100;
+ const sz=coh<0.5?lerp(0.34,0.72,coh/0.5):lerp(0.72,1.06,(coh-0.5)/0.5);
+ return CW*0.40*sz*(1+0.95);}       /* open is 1 at the zoom these layers live at */
+function lawV(nm){return P.laws[nm]||0;}
+/* VIBRANCY, defined. The charge sitting on the seat the law is seated at,
+   inverted. 0 means the seat is carrying its whole load, 1 means it is clear.
+   Scaled over 0 to 7, which is the measured range across the reference roster
+   (0.0 at Rosa to 6.7 at Tomas), so the channel uses its width. */
+function vib(b){return clamp(1-(P.load[b]||0)/7,0,1);}
+/* BREATH. The rate is the reading, not a constant. A coherent field breathes
+   slow and deep, an incoherent one fast and shallow, which is what a nervous
+   system does. Period 5.0s at CQ 100 down to 2.0s at CQ 0. */
+function breath(phase){
+ if(!MOT)return 0;
+ const per=lerp(2.0,5.0,P.CQ/100), amp=lerp(0.010,0.030,P.CQ/100);
+ return Math.sin((T/per)*TAU+phase)*amp;}
+
+/* ---------- one feather ---------- */
+/* a rachis out from the centre, barbs either side, a vane behind at low alpha.
+   len is the reading. wid is the half width. dens is 0 to 1 and moves how many
+   barbs there are and how strongly they are drawn. */
+function feather(a,len,wid,col,al,dens){
+ if(len<=1||al<=0.01)return;
+ const ca=Math.cos(a),sa=Math.sin(a),nx=-sa,ny=ca;
+ const bx=CX+ca*len*0.05,by=CY+sa*len*0.05;
+ const tx=CX+ca*len,ty=CY+sa*len;
+ g.beginPath();g.moveTo(bx,by);
+ g.quadraticCurveTo(CX+ca*len*0.42+nx*wid,CY+sa*len*0.42+ny*wid,tx,ty);
+ g.quadraticCurveTo(CX+ca*len*0.42-nx*wid,CY+sa*len*0.42-ny*wid,bx,by);
+ g.closePath();
+ g.fillStyle=rgba(col,al*0.14*(0.35+0.65*dens));g.fill();
+ const n=Math.max(3,Math.round(len/9*lerp(0.45,1.25,dens)));
+ g.lineWidth=Math.max(0.7,wid*0.16);
+ g.strokeStyle=rgba(col,al*lerp(0.18,0.74,dens));
+ for(let i=1;i<=n;i++){
+  const f=i/(n+1),px=CX+ca*len*f,py=CY+sa*len*f;
+  const bw=wid*Math.sin(f*Math.PI);
+  g.beginPath();g.moveTo(px-nx*bw,py-ny*bw);
+  g.quadraticCurveTo(px+ca*len*0.05,py+sa*len*0.05,px+nx*bw,py+ny*bw);
+  g.stroke();}
+ g.beginPath();g.moveTo(bx,by);g.lineTo(tx,ty);
+ g.strokeStyle=rgba(col,al*0.98);
+ g.lineWidth=Math.max(1,wid*0.26);g.lineCap='round';g.stroke();g.lineCap='butt';}
+
+/* the same feather, based on the hub ring rather than on the centre. len is
+   still the reading: the rachis runs from the hub to the tip and its length is
+   the value over ten across the hub to rim span. */
+function feather2(a,r0,r1,wid,col,al,dens){
+ const L=r1-r0;
+ if(al<=0.01)return;
+ const ca=Math.cos(a),sa=Math.sin(a),nx=-sa,ny=ca;
+ const bx=CX+ca*r0,by=CY+sa*r0,tx=CX+ca*r1,ty=CY+sa*r1;
+ /* the tick on the hub. a law at zero is still a law and still a target. */
+ g.beginPath();g.arc(bx,by,Math.max(1.4,wid*0.11),0,TAU);
+ g.fillStyle=rgba(col,al*0.55);g.fill();
+ if(L<=2)return;
+ const mid=r0+L*0.42;
+ g.beginPath();g.moveTo(bx,by);
+ g.quadraticCurveTo(CX+ca*mid+nx*wid,CY+sa*mid+ny*wid,tx,ty);
+ g.quadraticCurveTo(CX+ca*mid-nx*wid,CY+sa*mid-ny*wid,bx,by);
+ g.closePath();
+ g.fillStyle=rgba(col,al*0.085*(0.35+0.65*dens));g.fill();
+ const n=Math.max(2,Math.round(L/10*lerp(0.5,1.15,dens)));
+ g.lineWidth=Math.max(0.7,wid*0.17);
+ g.strokeStyle=rgba(col,al*lerp(0.16,0.70,dens));
+ for(let i=1;i<=n;i++){
+  const f=i/(n+1),rr=r0+L*f,px=CX+ca*rr,py=CY+sa*rr;
+  const bw=wid*Math.sin(f*Math.PI);
+  g.beginPath();g.moveTo(px-nx*bw,py-ny*bw);
+  g.quadraticCurveTo(px+ca*L*0.05,py+sa*L*0.05,px+nx*bw,py+ny*bw);
+  g.stroke();}
+ g.beginPath();g.moveTo(bx,by);g.lineTo(tx,ty);
+ g.strokeStyle=rgba(col,al*0.98);
+ g.lineWidth=Math.max(1,wid*0.28);g.lineCap='round';g.stroke();g.lineCap='butt';
+ /* the tip. the end of the reading has to be findable, so it is a mark and not
+    where the ink happens to stop. */
+ g.beginPath();g.arc(tx,ty,Math.max(1.6,wid*0.15),0,TAU);
+ g.fillStyle=rgba(mixc(col,[255,255,255],0.4),al*0.9);g.fill();}
+/* A LAW NOBODY HAS ANSWERED. The rachis and nothing else, at the blank value,
+   so the mark is present and targetable and says plainly that it is not a
+   reading. The tip is hollow rather than filled: an open ring is the product's
+   own glyph for not yet. */
+function quill(a,r0,r1,wid,col,al){
+ const ca=Math.cos(a),sa=Math.sin(a);
+ g.beginPath();g.moveTo(CX+ca*r0,CY+sa*r0);g.lineTo(CX+ca*r1,CY+sa*r1);
+ g.strokeStyle=rgba(col,al*0.80);g.lineWidth=Math.max(1,wid*0.20);
+ g.lineCap='round';g.stroke();g.lineCap='butt';
+ g.beginPath();g.arc(CX+ca*r1,CY+sa*r1,Math.max(2.2,wid*0.17),0,TAU);
+ g.strokeStyle=rgba(col,al*0.95);g.lineWidth=1.2;g.stroke();}
+
+/* WHAT IS LEFT. The span between the tip and the rim is the part of that law
+   the person does not keep, drawn as three faint combs and a dotted spine. It
+   is static: a thing that says "this is missing" does not need to move, and it
+   is on screen at every one of the twenty one at once. */
+function deficit(a,r1,rim,col,dim){
+ const gap=rim-r1; if(gap<6)return;
+ const ca=Math.cos(a),sa=Math.sin(a),nx=-sa,ny=ca;
+ g.save();
+ g.setLineDash([2,5]);g.lineWidth=1;
+ g.strokeStyle=rgba(col,0.17*dim);
+ g.beginPath();g.moveTo(CX+ca*r1,CY+sa*r1);g.lineTo(CX+ca*rim,CY+sa*rim);g.stroke();
+ g.setLineDash([]);
+ const n=Math.min(4,Math.max(1,Math.round(gap/34)));
+ g.strokeStyle=rgba(col,0.13*dim);g.lineWidth=1;
+ for(let i=1;i<=n;i++){
+  const rr=r1+gap*(i/(n+1)), px=CX+ca*rr,py=CY+sa*rr, bw=gap*0.045+3;
+  g.beginPath();g.moveTo(px-nx*bw,py-ny*bw);g.lineTo(px+nx*bw,py+ny*bw);g.stroke();}
+ g.restore();}
+
+/* ---------- the four marks ---------- */
+function drawMarks(cr0){
+ const rim=cr0*RIM;
+ SLOT.forEach(function(s,i){
+  if(ONLY>=0&&ONLY!==i)return;
+  const v=lawV(s.nm), col=bc(s.b), vv=vib(s.b);
+  const lit=(HOVER&&HOVER.k==='law'&&HOVER.j===i)||(PIN&&PIN.j===i);
+  const dim=(HOVER&&HOVER.k==='law'&&HOVER.j!==i)?0.42:1;
+  const al=(lit?1:0.86)*dim;
+  /* the breath leads at the Root and arrives late at the Crown, so the figure
+     overlaps rather than pumping. one phase offset per seat. */
+  const ph=D.bands.indexOf(s.b)/7*1.05;
+  const br=1+breath(ph);
+  const len=rim*(v/10)*br;                    /* modes 1 and 3, from the centre */
+  const hb=cr0*HUB, tip=cr0*rOf(v)*br;        /* modes 2 and 4, from the hub */
+  const a=s.a;
+  if(MODE===1){
+   /* HIS PROPOSAL. width of the branches is vibrancy. */
+   const wid=lerp(0.012,0.090,vv)*cr0;
+   feather(a,len,wid,col,al,0.75);
+  }else if(MODE===2){
+   /* THE RULING. constant width, vibrancy as vane density and barb alpha,
+      and the deficit drawn from the tip to the rim so the mark says what it
+      is out of without a word being set over the graphic. */
+   const wid=0.046*cr0;
+   deficit(a,tip,rim,col,dim);
+   /* AN UNANSWERED LAW IS NOT A READING AND IS NOT DRAWN AS ONE.
+      The blank profile sits at 6.5 on all twenty one, so the old mark drew a
+      perfect rosette for somebody who had typed nothing, and it was the
+      fullest figure in the roster. A law nobody has answered gets a bare
+      quill: rachis, no vane, no barbs, at the blank value, with the dotted
+      spine still running to the rim. A shaft with no vane carries no air. */
+   if(P.meas[s.nm])feather2(a,hb,tip,wid,col,al,vv);
+   else quill(a,hb,tip,wid,col,al*0.55);
+  }else if(MODE===3){
+   /* SEVEN WINGS. handled per seat below, nothing per law here. */
+  }else if(MODE===4){
+   /* THE MOULT. the law you keep is attached. the part you do not is loose. */
+   const wid=0.046*cr0;
+   if(P.meas[s.nm])feather2(a,hb,tip,wid,col,al,vv);
+   else quill(a,hb,tip,wid,col,al*0.55);
+   const len=tip, gap=rim-tip;
+   if(gap>8){
+    const nloose=Math.max(1,Math.round(gap/26));
+    for(let q=0;q<nloose;q++){
+     const f=(q+0.5)/nloose;
+     const dr=len+gap*f;
+     const drift=MOT?Math.sin(T*lerp(0.5,1.6,(10-v)/10)+i*1.7+q)*0.055:0;
+     const aa=a+drift;
+     const px=CX+Math.cos(aa)*dr,py=CY+Math.sin(aa)*dr;
+     const nx=-Math.sin(aa),ny=Math.cos(aa);
+     const bw=wid*0.62*(1-f*0.45);
+     g.beginPath();
+     g.moveTo(px-nx*bw,py-ny*bw);
+     g.quadraticCurveTo(px+Math.cos(aa)*7,py+Math.sin(aa)*7,px+nx*bw,py+ny*bw);
+     g.strokeStyle=rgba(col,0.30*al*(1-f*0.5));g.lineWidth=1.1;g.stroke();}}
+  }
+ });
+ if(MODE===3){
+  /* SEVEN WINGS. one quill per seat along the seat's bisector, its laws as
+     barb pairs hung off that quill at their own lengths. */
+  D.bands.forEach(function(b){
+   const s=SEAT[b];let a0=s.a0,a1=s.a1;if(a1<a0)a1+=TAU;
+   const mid=(a0+a1)/2;
+   const grp=SLOT.filter(x=>x.b===b);
+   const mean=grp.reduce((t,x)=>t+lawV(x.nm),0)/grp.length;
+   const col=bc(b),vv=vib(b);
+   const ph=D.bands.indexOf(b)/7*1.05;
+   const quill=rim*(mean/10)*(1+breath(ph));
+   const lit=HOVER&&HOVER.k==='law'&&SLOT[HOVER.j].b===b;
+   const al=lit?1:0.86;
+   const ca=Math.cos(mid),sa=Math.sin(mid);
+   g.beginPath();g.moveTo(CX+ca*cr0*0.04,CY+sa*cr0*0.04);
+   g.lineTo(CX+ca*quill,CY+sa*quill);
+   g.strokeStyle=rgba(col,al*0.95);g.lineWidth=Math.max(1.6,cr0*0.013);
+   g.lineCap='round';g.stroke();g.lineCap='butt';
+   grp.forEach(function(x,k){
+    const v=lawV(x.nm);
+    const f=(k+1)/(grp.length+1);
+    const base=quill*f*0.92+cr0*0.06;
+    const bx=CX+ca*base,by=CY+sa*base;
+    const side=(k%2?1:-1);
+    const spread=lerp(0.34,0.58,vv)*side;
+    const bl=rim*(v/10)*0.62;
+    const aa=mid+spread;
+    const litf=(HOVER&&HOVER.k==='law'&&HOVER.j===x.i)||(PIN&&PIN.j===x.i);
+    g.beginPath();g.moveTo(bx,by);
+    g.quadraticCurveTo(bx+Math.cos(mid)*bl*0.45,by+Math.sin(mid)*bl*0.45,
+                       bx+Math.cos(aa)*bl,by+Math.sin(aa)*bl);
+    g.strokeStyle=rgba(col,(litf?1:0.62)*al);
+    g.lineWidth=Math.max(1.2,cr0*lerp(0.004,0.011,vv));g.stroke();
+    /* a tick at the tip so the length has an end a person can find */
+    g.beginPath();g.arc(bx+Math.cos(aa)*bl,by+Math.sin(aa)*bl,litf?3.4:2.0,0,TAU);
+    g.fillStyle=rgba(col,(litf?1:0.7)*al);g.fill();});});}
+}
+
+/* ---------- the figure ---------- */
+function draw(){
+ g.clearRect(0,0,CW,CH);
+ HIT=[];
+ const cr0=coreR();
+ const gc=cqRamp(P.CQ);
+ const coh=P.CQ/100;
+ /* the halo, as the product draws it */
+ const glow=coh<=0.5?0:(coh-0.5)/0.5;
+ if(glow>0){
+  const halo=g.createRadialGradient(CX,CY,cr0*0.90,CX,CY,cr0*(1.18+glow*1.5));
+  halo.addColorStop(0,rgba(mixc(gc,[255,255,255],0.35),glow*0.55));
+  halo.addColorStop(0.42,rgba(mixc(gc,[0,0,0],0.4),glow*0.14));
+  halo.addColorStop(1,rgba(gc,0));
+  g.fillStyle=halo;g.beginPath();g.arc(CX,CY,cr0*(1.18+glow*1.5),0,TAU);g.fill();}
+ /* the shell, open. a dark base so the marks read as inside. */
+ g.beginPath();g.arc(CX,CY,cr0,0,TAU);g.fillStyle=rgba([16,17,25],0.90);g.fill();
+ g.beginPath();g.arc(CX,CY,cr0,0,TAU);g.fillStyle=rgba(gc,0.38);g.fill();
+ g.lineWidth=Math.max(1.2,cr0*0.05);g.strokeStyle=rgba(mixc(gc,[0,0,0],0.45),0.9);g.stroke();
+ g.save();g.beginPath();g.arc(CX,CY,cr0*0.985,0,TAU);g.clip();
+ /* the scale. four quarter steps, and 10 is the rim, for every mark. */
+ const HUBBED=(MODE===2||MODE===4);
+ const ringR=f=>HUBBED?cr0*(HUB+(RIM-HUB)*f):cr0*RIM*f;
+ if(RINGS)[0,0.25,0.5,0.75,1].forEach(function(f){
+  if(f===0&&!HUBBED)return;
+  g.beginPath();g.arc(CX,CY,ringR(f),0,TAU);
+  g.strokeStyle=rgba(INK,0.055+(f===1?0.07:f===0.5?0.04:f===0?0.05:0));
+  g.lineWidth=1;g.stroke();});
+ /* the seat sectors. faint spokes on the shell's own seat boundaries, so the
+    seven groups read without a word being set over the graphic. */
+ if(RINGS)D.bands.forEach(function(b){
+  const s=SEAT[b];
+  g.beginPath();g.moveTo(CX,CY);
+  g.lineTo(CX+Math.cos(s.a0)*cr0*RIM,CY+Math.sin(s.a0)*cr0*RIM);
+  g.strokeStyle=rgba(bc(b),0.10);g.lineWidth=1;g.stroke();});
+ drawMarks(cr0);
+ /* the scale again, faintly, over the ink. twenty one vanes at low alpha add up
+    to an opaque field in the inner half and the rings were lost under it. */
+ if(RINGS)[0.25,0.5,0.75,1].forEach(function(f){
+  g.beginPath();g.arc(CX,CY,ringR(f),0,TAU);
+  g.strokeStyle=rgba(INK,f===1?0.10:0.045);g.lineWidth=1;g.stroke();});
+ g.restore();
+ /* the rim, last, so nothing leaks past it */
+ g.beginPath();g.arc(CX,CY,cr0,0,TAU);
+ g.strokeStyle=rgba(mixc(gc,[255,255,255],0.5),lerp(0.4,0.95,coh));g.lineWidth=1.4;g.stroke();
+ /* ---- hit targets. the same array everything else uses, wedge entries in the
+    same shape the wheel already pushes for laws, seats, archetypes and domains.
+    THE TARGET IS THE SECTOR, NOT THE FEATHER. A law at 1 of 10 is a short mark
+    and it is the one a person most wants to press, so the target does not
+    shrink with the reading. */
+ SLOT.forEach(function(s,i){
+  HIT.push({k:'law',j:i,nm:s.nm,b:s.b,cx:CX,cy:CY,
+   a0:s.a-s.w*0.5,a1:s.a+s.w*0.5,r0:cr0*0.06,r1:cr0*RIM});});
+}
+
+/* ---------- pointer. the product's own two pass scan, copied. ---------- */
+function hitTest(px,py){
+ const nz=x=>{while(x<-Math.PI)x+=TAU;while(x>Math.PI)x-=TAU;return x;};
+ for(let i=HIT.length-1;i>=0;i--){const h=HIT[i];
+  if(h.x!==undefined){if(Math.hypot(px-h.x,py-h.y)<=h.rad)return h;continue;}
+  const d=Math.hypot(px-h.cx,py-h.cy);if(d<h.r0||d>h.r1)continue;
+  const a=Math.atan2(py-h.cy,px-h.cx);
+  if(nz(a-h.a0)>=0&&nz(h.a1-a)>=0)return h;}
+ return null;}
+const loc=e=>{const b=cv.getBoundingClientRect();return [e.clientX-b.left,e.clientY-b.top];};
+
+/* ---------- what the tooltip says ---------- */
+function hold(v){ /* the sentence for a value out of ten, mechanical */
+ if(v>=9)return 'You hold it almost everywhere';
+ if(v>=7)return 'You hold it most of the time';
+ if(v>=5)return 'You hold it about half the time';
+ if(v>=3)return 'You hold it some of the time';
+ return 'You rarely hold it';}
+function vsay(b){
+ const ld=P.load[b]||0;
+ if(ld<1)return 'so it costs nothing to keep';
+ if(ld<3)return 'so it costs something to keep';
+ if(ld<5)return 'so it is kept against pressure';
+ return 'so keeping it is expensive';}
+function describe(h){
+ const s=SLOT[h.j],v=lawV(s.nm),vv=vib(s.b),ld=P.load[s.b]||0;
+ return '<u>one of the twenty one you are weighed against</u>'
+  +'<b class="nm">'+s.nm+'</b>'
+  +'<span class="big" style="color:'+D.pal[s.b]+'">'+v.toFixed(1)+'</span> of 10<hr>'
+  +'<span class="say">'+s.b+' seat. '+hold(v)+'.<br>'
+  +'The seat carries <b>'+ld.toFixed(1)+'</b> of 10, '+vsay(s.b)+'.</span>'
+  +(P.meas[s.nm]?'':'<hr><span class="say">Not answered yet. This is the blank value, not a reading of you.</span>')
+  +'<hr><b>Click for the detail.</b>';}
+function drill(j){
+ const s=SLOT[j],v=lawV(s.nm),ld=P.load[s.b]||0;
+ const grp=SLOT.filter(x=>x.b===s.b);
+ const rows=grp.map(function(x){const xv=lawV(x.nm);
+  return '<div class="row"><span>'+x.nm+'</span><b>'+xv.toFixed(1)+'</b></div>'
+   +'<div class="bar"><i style="width:'+(xv*10).toFixed(0)+'%;background:'+D.pal[s.b]+'"></i></div>';}).join('');
+ document.getElementById('drill').innerHTML=
+  '<p class="eye">Law '+(j+1)+' of 21</p><div class="nm">'+s.nm+'</div>'
+  +'<div class="row"><span>You keep it at</span><b>'+v.toFixed(1)+' of 10</b></div>'
+  +'<div class="row"><span>Seat</span><b>'+s.b+'</b></div>'
+  +'<div class="row"><span>Charge on that seat</span><b>'+ld.toFixed(1)+' of 10</b></div>'
+  +'<div class="row"><span>Answered</span><b>'+(P.meas[s.nm]?'yes':'not yet')+'</b></div>'
+  +'<p>The '+s.b+' seat holds '+grp.length+' of the twenty one. Their mean is this '
+  +'seat\u2019s integrity, <b>'+(P.bandIg[s.b]).toFixed(1)+' of 10</b>.</p>'
+  +rows
+  +'<p class="mini">Integrity is the mean of all twenty one, '+P.Ig.toFixed(1)+' of 10. '
+  +'Coherence is intention times integrity over resistance, '+P.CQ.toFixed(0)+' of 100.</p>';}
+
+cv.addEventListener('pointermove',function(e){
+ const L=loc(e),h=hitTest(L[0],L[1]),pr=document.getElementById('probe');
+ HOVER=h;
+ if(!h){pr.classList.remove('on');cv.style.cursor='crosshair';return;}
+ cv.style.cursor='pointer';
+ pr.innerHTML=describe(h);
+ const w=pr.offsetWidth||290,hh=pr.offsetHeight||140;
+ const st=cv.getBoundingClientRect(),sg=document.getElementById('stage').getBoundingClientRect();
+ pr.style.left=Math.max(4,Math.min(sg.width-w-4,(st.left-sg.left)+L[0]+16))+'px';
+ pr.style.top=Math.max(4,Math.min(sg.height-hh-4,(st.top-sg.top)+L[1]+16))+'px';
+ pr.classList.add('on');});
+cv.addEventListener('pointerleave',function(){HOVER=null;document.getElementById('probe').classList.remove('on');});
+cv.addEventListener('pointerdown',function(e){
+ const L=loc(e),h=hitTest(L[0],L[1]);
+ if(!h){PIN=null;return;}
+ PIN=(PIN&&PIN.j===h.j)?null:{j:h.j};
+ if(PIN)drill(h.j);
+ else document.getElementById('drill').innerHTML='<p class="mini">Click any feather.</p>';});
+
+/* ---------- chrome ---------- */
+const who=document.getElementById('who');
+D.people.forEach(function(pp,i){
+ const b=document.createElement('button');b.className='pbtn';
+ b.innerHTML='<span>'+pp.nm+'</span><i>CQ '+pp.CQ+'</i>';
+ b.setAttribute('aria-pressed',pp===P);
+ b.onclick=function(){P=pp;PIN=null;
+  document.getElementById('drill').innerHTML='<p class="mini">Click any feather.</p>';
+  [].forEach.call(who.children,function(c,k){c.setAttribute('aria-pressed',D.people[k]===P);});
+  legend();};
+ who.appendChild(b);});
+document.getElementById('tmot').onclick=function(){MOT=!MOT;this.setAttribute('aria-pressed',MOT);
+ this.textContent=MOT?'Motion on':'Motion off';};
+document.getElementById('tring').onclick=function(){RINGS=!RINGS;this.setAttribute('aria-pressed',RINGS);
+ this.textContent=RINGS?'Rings on':'Rings off';};
+function legend(){
+ const L={
+  1:'Twenty one feathers, one per law of moral integrity. Length is the law, 0 at the centre and 10 at the rim. The width of the branches is vibrancy, which here is how clear the seat that law sits in is.',
+  2:'Twenty one feathers, one per law. A law you have not answered is a bare quill with an open tip, because a blank is not a reading. The inner ring is 0 and the rim is 10, and length is the only thing that carries a number. Vibrancy moves how many barbs the vane has and how hard they are drawn, never the width. The dotted spine from the tip to the rim is the part you do not keep.',
+  3:'Seven quills, one per seat, each as long as that seat\u2019s integrity. The two to four laws it holds hang off it at their own lengths. The seat is a shape.',
+  4:'Twenty one feathers. Length is the law you keep. The loose barbs between the tip and the rim are the part you do not, and they drift faster the larger the gap.'}[MODE];
+ document.getElementById('leg').textContent=L+' Profile: '+P.nm+', integrity '+P.Ig.toFixed(1)+' of 10, coherence '+P.CQ+' of 100.'
+  +(P.measured===0?' Nothing answered yet, so every law is at the blank value.':'');}
+
+/* ---------- the loop, and the frame budget ---------- */
+let times=[],last=performance.now();
+function frame(now){
+ T=now/1000;
+ const t0=performance.now();
+ draw();
+ times.push(performance.now()-t0);
+ if(times.length>120){
+  const s=times.slice().sort((a,b)=>a-b);
+  document.getElementById('ft').textContent=
+   'draw '+s[60].toFixed(2)+'ms median, '+s[114].toFixed(2)+'ms p95, '+
+   HIT.length+' targets';
+  times=[];}
+ requestAnimationFrame(frame);}
+window.addEventListener('resize',function(){fit();});
+fit();legend();requestAnimationFrame(frame);
+/* exposed so a probe can measure this page the way the gates measure the app */
+window.__F={get HIT(){return HIT;},hitTest:hitTest,get SLOT(){return SLOT;},
+ only:function(i){ONLY=(i===undefined?-1:i);},rings:function(b){RINGS=b;},
+ get MODE(){return MODE;}, lawV:lawV, vib:vib, rOf:rOf, HUB:HUB, RIM:RIM,
+ setP:function(i){P=D.people[i];legend();},get P(){return P;},
+ setMot:function(b){MOT=b;},coreR:coreR,get CX(){return CX;},get CY(){return CY;},
+ draw:draw,describe:describe};
+</script></body></html>

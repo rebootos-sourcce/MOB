@@ -218,7 +218,11 @@ function renderAcc(r){
   +'<span class="acc-l"><b>Accuracy</b>'
   +(un?'<em>nothing read yet</em>'
      :'<em>of 100, plus or minus '+a.band.toFixed(0)+'</em>')+'</span>'
-  +cr('Crown',un?0:a.pct,{size:'lg',raw:un?'\u2013':a.pct.toFixed(0),label:'accuracy'})
+  /* AND IT NEVER PRINTS RED. Ruled: "ninety six percent flow accuracy and
+     yet it is red, red is a colour of danger, that is bad colouring." A
+     well measured person is the good case and the ring says so. */
+  +cr('Crown',un?0:a.pct,{size:'lg',raw:un?'\u2013':a.pct.toFixed(0),
+    label:'accuracy',hot:false})
   +'</button>';
  var bt=document.getElementById('accbtn');
  if(bt)bt.onclick=function(){runAccDrill();};}

@@ -97,7 +97,10 @@ function anaRender(){
     percentage is never printed off a default. */
  out+='<div class="ab-hero">'
   +cr(r.darkB,r.unread?0:r.CQ,{size:'lg',label:'coherence',
-    raw:r.unread?'\u2013':null, hot:r.unread?false:undefined,
+    /* HIGH COHERENCE IS THE GOOD END, so it never prints red. cr reddens
+       anything past ninety, which is right for a charge and backwards for
+       every reading whose high end is the one a person is working toward. */
+    raw:r.unread?'\u2013':null, hot:false,
     color:r.unread?'var(--dim)':null})
   +'<div><div class="pm-eye">'+(r.unread?'Coherence, not read yet'
     :'Coherence, '+r.tier.toLowerCase()+', 0 to 100')+'</div>'

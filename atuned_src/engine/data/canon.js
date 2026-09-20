@@ -66,9 +66,17 @@ var ARCH18=[['Warrior','Controller','Solar'],['Caregiver','Pleaser','Heart'],
 const BANDS=['Root','Sacral','Solar','Heart','Throat','3rd Eye','Crown'];
 /* Hue is the language and does not move. Chroma comes down 30 to 40 percent on
    the warm three, which carry the arousal, and slightly on the cool four, which
-   are already doing the calming work. Full chroma is reserved for ALARM. */
-const PAL={'Root':'#C4635E','Sacral':'#D19255','Solar':'#D4BC70','Heart':'#6FC5A3',
- 'Throat':'#65B8D4','3rd Eye':'#8296DB','Crown':'#A98BCE'};
+   are already doing the calming work. Full chroma is reserved for ALARM.
+
+   AND THE FAMILY NOW READS AS ONE. Ruled: "some of these colours are dull and
+   some are vibrant, punch the dull ones up about ten percent, on the dark
+   version." Three sat outside the group: Crown at 41 saturation, Heart at 43
+   and Root at 46, against 54 to 57 for the other four. Each of those three
+   takes ten points of saturation with hue and lightness held, which closes the
+   spread from 17 points to 7. Contrast on the dark ground was checked after,
+   and the lowest of the seven is Root at 4.8 to 1. */
+const PAL={'Root':'#CF5953','Sacral':'#D19255','Solar':'#D4BC70','Heart':'#65CFA5',
+ 'Throat':'#65B8D4','3rd Eye':'#8296DB','Crown':'#A883D6'};
 /* THE THIRD PALETTE. Lumen puts paper under the rails and keeps the centre
    stage at 101010, and its whole brief is vibrancy, so neither of the other
    two fits: the dark palette is invisible on paper and the Snow palette is
@@ -138,7 +146,7 @@ const SURPKEY=/SHOCK|BETRAYAL|OVERSENSITIV|STARTLE|PANIC/i;
 const ANTKEY=/EXPECTATION|ANXIETY|WORRY|HYPERVIGIL|DREAD|ANTICIPAT|OBSESS|COMPULS/i;
 
 const ROOTD=['Architect','Engine','Weaver','Witness'];
-const ROOTCOL={Architect:'#8296DB',Engine:'#D19255',Weaver:'#6FC5A3',Witness:'#A98BCE'};
+const ROOTCOL={Architect:'#8296DB',Engine:'#D19255',Weaver:'#65CFA5',Witness:'#A883D6'};
 /* nineteen named blueprint domains under the four roots. the original header
    comment claimed eighteen with four unnamed; the data has always been
    nineteen named, and DARC divides by nineteen. */
@@ -348,6 +356,40 @@ const MASKS=[
    business record: a person opening this product to read themselves must
    never find a percentage saying how likely they are to buy, next to their
    own reading. It is in BUYERS.md. */
+/* ============================================================
+   THE TEN TIERS CARRY THEIR OWN COLOUR.
+
+   Ruled: "I do not like that it says I am 88 per cent embodied on the right
+   hand side and yet my button is not symbolic. The colour is not symbolic."
+   He was right and the reason was worse than an oversight: the tier ring was
+   drawn in r.darkB, the colour of the seat carrying the most. So a person at
+   Embodied whose heaviest seat happened to be the Root got a red ring on the
+   best reading but one, and the colour was saying something true about a
+   different question.
+
+   THE RAMP IS ARGUED, NOT PICKED. It runs cool and clear at the top, warms
+   through the middle where the work is, and DESATURATES at the floor rather
+   than reddening further. That last part is the whole of it. Numb is not more
+   alarming than frustrated, it is less present, and a palette that shouts
+   loudest at the bottom is a palette that tells somebody at the floor that
+   they are an emergency. Chroma falls away as coherence does, so collapse
+   reads as the colour going out of the picture, which is what it is.
+
+   Every value sits in the same muted family as the seat palette above, and
+   none of them is the alarm red, which this product reserves for a thing that
+   is actually wrong rather than for a person who is low.
+   ============================================================ */
+const TIERCOL={
+ 'Mastery':     '#E4D9A8',   /* clear light. nothing held, nothing shouting */
+ 'Embodied':    '#8FD0A8',
+ 'Compounding': '#65CFA5',   /* the heart green, because this is where it builds */
+ 'Gaining':     '#74C1C4',
+ 'Even':        '#65B8D4',   /* the throat blue. receptive, level */
+ 'Oscillating': '#8296DB',   /* swinging, and the third eye blue is the seat of it */
+ 'Incoherent':  '#C9A96A',   /* warm, a caution and not an alarm */
+ 'Corrupt':     '#C98A5E',
+ 'Severe':      '#B2857C',   /* chroma coming out. numb is less present, not louder */
+ 'Collapsed':   '#A28A88'};  /* the colour nearly gone. the floor is quiet */
 const TIERDEF=[
  {at:91, nm:'Mastery',
   state:'Sovereign',

@@ -78,8 +78,8 @@ font-display:swap;src:url(data:font/woff2;base64,d09GMgABAAAAALyAABUAAAAB4CAAALw
     materially past 55. At 3.70 that half of the sample loses the whole layer
     that tells them what they are looking at. */
  --ink:#EFEDE8; --mid:#B4B0A8; --dim:#94908A;
- --root:#C4635E; --sacral:#D19255; --solar:#D4BC70;
- --heart:#6FC5A3; --throat:#65B8D4; --eye:#8296DB; --crown:#A98BCE;
+ --root:#CF5953; --sacral:#D19255; --solar:#D4BC70;
+ --heart:#65CFA5; --throat:#65B8D4; --eye:#8296DB; --crown:#A883D6;
  --alarm:#FF2E1F; --alarm-soft:rgba(255,46,31,.16);
  /* THE ACCENT IS BLUE. Ruled. It was gold since the rebuild and the owner
     never chose it: he chose the blue, which is the original app's own
@@ -339,8 +339,14 @@ body.lumen{
     this is its named exception, on his word. These are the seat hues taken to
     full chroma against paper rather than the deepened ink Snow uses, so a seat
     reads as itself across a room instead of as a tint. */
- --root:#F02E3C; --sacral:#FF7A00; --solar:#FFC400; --heart:#00C46A;
- --throat:#00A9E0; --eye:#3D5AFE; --crown:#9B27E8;
+ /* AND THEY MATCH PAL_VIVID, WHICH THEY DID NOT. The sheet had Solar at
+    FFC400, Heart at 00C46A and Throat at 00A9E0 while canon.js had C79200,
+    00A85C and 0091C4, so one lighting painted a seat two different colours
+    depending on whether the sheet or the JS drew it. FFC400 measured 1.60
+    to 1 on white, which is invisible on the paper this lighting puts under
+    the rails. The JS values win, because the canvas cannot read a token. */
+ --root:#F02E3C; --sacral:#FF7A00; --solar:#C79200; --heart:#00A85C;
+ --throat:#0091C4; --eye:#3D5AFE; --crown:#9B27E8;
  --accent:#0091EA; --gold:var(--accent); --on-accent:#FFFFFF;
  --au:#B8860B;
  --sky:#0091EA; --um:#101010;
@@ -405,7 +411,9 @@ body.flat{
  --panel-2:#181B22;
  --sunk:#0A0B0E;
  --edge:#232730; --edge-2:#2E333E;
- --ink:#F7F6F3; --mid:#A9A69F; --dim:#767369;
+ /* Flat's --dim measured 3.88 on its own panel. Dark's and Snow's were both
+    lifted for exactly this and Flat was missed. Hue and saturation held. */
+ --ink:#F7F6F3; --mid:#A9A69F; --dim:#878378;
  --accent:#5FD4C4; --gold:var(--accent); --on-accent:#05100E;
  --sky:#5FD4C4; --um:#F7F6F3;
  --shadow:none;
@@ -857,7 +865,6 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
 .seg-i svg{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 .seg-i[aria-pressed=true] svg{stroke:var(--on-accent)}
 .seg-i svg path:first-child{fill:none}
-.seg-i[data-solid] svg path:first-child{fill:currentColor}
 /* ---------- THE GLASS MENU ----------
    Apple Glass, on the owner's ruling, and what that actually is: a surface
    that takes its colour from what is behind it rather than from a swatch. So
@@ -1112,7 +1119,7 @@ body.punch .tp{font-weight:600}
 .s-chip-v{font-family:var(--num);font-size:11px;color:var(--dim)}
 .s-agree{display:flex;flex-direction:column;gap:5px;margin-top:16px}
 .s-ag,.s-dg{font-size:13.5px;line-height:1.55;padding:8px 0 8px 13px;color:var(--mid);
- border-left:2px solid var(--good,#6FC5A3)}
+ border-left:2px solid var(--good,#65CFA5)}
 .s-dg{border-left-color:var(--alarm)}
 
 /* NUMEROLOGY. six numbers, then every name on its own. The number is the
@@ -1235,10 +1242,20 @@ canvas#cv{display:block;grid-column:2;grid-row:3;width:100%;height:100%;
    absolute at top right, so the strip leaves it room. */
 .key{grid-column:1/-1;grid-row:1;position:relative;z-index:4;width:100%;box-sizing:border-box;
  align-self:start;display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:12px 300px 0 14px}
-.kb{display:inline-flex;align-items:center;gap:6px;min-height:var(--tap);padding:2px 9px 2px 4px;
+.kb{display:inline-flex;align-items:center;gap:6px;min-height:var(--tap);padding:2px 4px;
  background:transparent;border:1px solid var(--edge);border-radius:var(--r-xs);
  color:var(--mid);font:inherit;font-size:12px;cursor:pointer;text-align:left;white-space:nowrap}
 .kb:hover{background:var(--sunk);color:var(--ink)}
+/* THE LETTERS IN THE RING. Ruled: CQ, DQ and SQ are essentially an icon, so
+   they sit where an icon sits. Tabular figures and tight tracking, because
+   two characters in a small ring have to read as a unit rather than as two
+   letters that happen to be near each other. */
+.cr .gl-t{display:flex;align-items:center;justify-content:center;
+ font-family:var(--num);font-size:11px;font-weight:600;letter-spacing:-.03em;
+ color:var(--c);font-variant-numeric:tabular-nums;line-height:1}
+/* the strip is rings now, so the button is the ring and nothing else, and the
+   padding is stated once. Two .kb rules both setting padding is a rule that
+   depends on which one loses, which the design gate now refuses. */
 .kb b{color:var(--ink);font-family:var(--num);font-weight:500;margin-right:4px}
 body.punch .kb{border-color:transparent;background:var(--panel-2)}
 /* the wheel is the main graphic. in Punch it carries a fifth more colour. */
@@ -2877,7 +2894,9 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
     and what smooth actually means. The sheet is gone at 5.26s, a shade sooner
     than the 5.20 it used to end at, so the five beats are bought out of the
     sequence rather than added to a person's wait. */
- animation:bootOut .24s cubic-bezier(.4,0,.2,1) 5.02s forwards}
+ /* two seconds longer than it was. Ruled. The figure settles at 4.06 and
+    stands still for the rest, which is the beat the brief asked for. */
+ animation:bootOut .24s cubic-bezier(.4,0,.2,1) 7.02s forwards}
 /* the opening beat. Everything inside is held back behind it, so the first
    thing on screen is nothing, on purpose, for a third of a second. */
 .boot::before{content:'';position:absolute;inset:0;background:#000;z-index:2;
@@ -2897,11 +2916,30 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
    closes at 5.05s, which is where the fade takes over. */
 .boot-svg{width:min(42vmin,300px);height:min(42vmin,300px);overflow:visible;
  fill:none;stroke-linecap:round;transform-origin:50% 50%;
- animation:bootBeat .19s cubic-bezier(.4,0,.2,1) 4.10s 5 both}
-@keyframes bootBeat{
- 0%  {transform:scale(1)}
- 42% {transform:scale(1.034)}
- 100%{transform:scale(1)}}
+ animation:bootSettle .92s cubic-bezier(.22,1,.36,1) 3.14s both}
+/* THE PULSE IS GONE. Ruled: "it does this weird pulse at the end, I'm not a
+   fan. Squash and stretch is one of my favourite things in animation, find a
+   way to give this thing more character."
+
+   Five identical scale beats is a heartbeat, and a heartbeat on a figure that
+   has just finished assembling reads as a loading spinner rather than as a
+   creature. This is one move instead of five: the figure gathers, releases,
+   overshoots and settles, on non uniform scale so volume is roughly conserved
+   the way it is in drawn animation. Wider means shorter and taller means
+   narrower, which is the whole trick and the reason it reads as mass rather
+   than as a zoom.
+
+   It comes to rest at 4.06 seconds, one second earlier than the pulse did,
+   and the sheet then holds for two seconds longer. Both ruled. A held end is
+   the Zen half of the brief: the last thing a person sees before the product
+   is the figure standing still. */
+@keyframes bootSettle{
+ 0%  {transform:scale(1,1)}
+ 16% {transform:scale(1.065,.90)}   /* gathers. wider, shorter. */
+ 40% {transform:scale(.935,1.115)}  /* releases. narrower, taller. */
+ 62% {transform:scale(1.028,.976)}  /* follow through, halved */
+ 80% {transform:scale(.992,1.008)}
+ 100%{transform:scale(1,1)}}
 /* ANTICIPATION and SQUASH. The core draws in before it releases, flattens as
    it expands and rounds as it lands. */
 .b-core{fill:var(--accent);transform-origin:100px 100px;opacity:0;
@@ -2931,13 +2969,13 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
    the engine, and a boot in colours that nearly match the product is worse
    than one that does not try. These are canon.js values, copied, and
    tests/design.js gate 11 fails if the two ever part company. */
-.b-s1{fill:#C4635E;animation-delay:1.18s}   /* Root */
+.b-s1{fill:#CF5953;animation-delay:1.18s}   /* Root */
 .b-s2{fill:#D19255;animation-delay:1.30s}   /* Sacral */
 .b-s3{fill:#D4BC70;animation-delay:1.42s}   /* Solar */
-.b-s4{fill:#6FC5A3;animation-delay:1.54s}   /* Heart */
+.b-s4{fill:#65CFA5;animation-delay:1.54s}   /* Heart */
 .b-s5{fill:#65B8D4;animation-delay:1.66s}   /* Throat */
 .b-s6{fill:#8296DB;animation-delay:1.78s}   /* 3rd Eye */
-.b-s7{fill:#A98BCE;animation-delay:1.90s}   /* Crown */
+.b-s7{fill:#A883D6;animation-delay:1.90s}   /* Crown */
 /* ARCS and OVERLAPPING ACTION. The ring is an arc and it begins at 0.95s,
    while the last two seats are still arriving. Nothing waits for the thing
    before it to come to a stop. */
@@ -2958,8 +2996,13 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
    never read by the boot at all. Measured against every lighting's own bar
    ground, --au clears 4.5 to 1 in all seven and 3 to 1 by at least half
    again, so it needs no per lighting override. */
-.b-halo{stroke:var(--au);stroke-width:1.4;opacity:0;transform-origin:100px 26px;
- animation:bootHalo 1.15s cubic-bezier(.34,1.56,.64,1) 3.22s both}
+/* AND IT IS OFF THE TOP OF THE HEAD. Ruled: "the halo is too close to the
+   top." It sat 5 units above the crown seat in a 200 unit frame, which on
+   screen is close enough to read as resting on the scalp rather than floating
+   over it. Moved to 21, which doubles the gap to 10. It also arrives earlier
+   now, so the squash is the last thing that moves. */
+.b-halo{stroke:var(--au);stroke-width:1.4;opacity:0;transform-origin:100px 21px;
+ animation:bootHalo 1.05s cubic-bezier(.34,1.56,.64,1) 2.62s both}
 @keyframes bootHalo{
  0%{opacity:0;transform:scale(.6)}
  55%{opacity:.95;transform:scale(1.14)}
@@ -3055,6 +3098,22 @@ body:not(.tab-field) .cv-legend{display:none}
 .ob-dots{display:flex;gap:6px;justify-content:center;margin-top:18px}
 .ob-dot{width:6px;height:6px;border-radius:50%;background:var(--edge-2)}
 .ob-dot.on{background:var(--accent)}
+/* THE FIGURE ON THE WELCOME. Centred, generous, and the only thing on the
+   screen with any size to it. The seats fade up root to crown in a hundred and
+   seventy millisecond step, which is the boot's own rhythm halved, so it reads
+   as the same creature taking a breath rather than as a second animation.
+
+   Under the type floor question: this carries no text, so it has none to be
+   under. Height is capped in vmin as well as pixels because at 390 by 844 a
+   300 pixel figure and three lines of copy do not both fit above the fold. */
+.ob-fig{display:block;margin:2px auto 20px;width:min(34vmin,168px);
+ height:auto;overflow:visible;fill:none;stroke-linecap:round}
+.ob-fig-h{stroke:var(--au);stroke-width:1.4;opacity:.8}
+.ob-fig-s{stroke:var(--edge-2);stroke-width:1.4}
+.ob-fig-d{opacity:0;animation:obDot .52s cubic-bezier(.22,1,.36,1) both}
+@keyframes obDot{0%{opacity:0;transform:translateY(3px)}100%{opacity:.92;transform:none}}
+@media (prefers-reduced-motion:reduce){
+ .ob-fig-d{animation:none;opacity:.92}}
 .ob-grid{display:grid;gap:1px;background:var(--edge);border:1px solid var(--edge);
  border-radius:var(--r);overflow:hidden;margin:4px 0 2px}
 .ob-g{background:var(--panel-2);padding:10px 13px;display:flex;
@@ -3123,7 +3182,7 @@ body:not(.tab-field) .cv-legend{display:none}
  .cn-nr,.cn-nms-r .cn-nr{border-left:0;border-right:0;border-bottom:2px solid transparent;
   align-items:center;padding:2px 4px}}
 .boot-wm{display:flex;flex-direction:column;align-items:center;gap:4px;opacity:0;
- animation:bootWm .92s cubic-bezier(.22,1,.36,1) 3.54s both}
+ animation:bootWm .92s cubic-bezier(.22,1,.36,1) 3.20s both}
 @keyframes bootWm{0%{opacity:0;transform:translateY(8px)}100%{opacity:1;transform:none}}
 .boot-wm .bn{font-family:var(--sans);font-size:23px;font-weight:400;
  letter-spacing:.075em;color:var(--sky);line-height:1;position:relative}
@@ -3134,7 +3193,7 @@ body:not(.tab-field) .cv-legend{display:none}
    beside the wordmark above: the gate that bans all caps copy is correct, and
    a logotype answers it with styling rather than with an exception. */
 .boot-wm .bs{font-family:var(--sans);font-size:9px;font-weight:500;
- line-height:1;margin-top:5px;display:flex;align-items:baseline;gap:.5em}
+ line-height:1;margin-top:8px;display:flex;align-items:baseline;gap:.5em}
 .boot-wm .bs-by{letter-spacing:.04em;color:var(--dim);font-weight:400}
 .boot-wm .bs-nm{letter-spacing:.19em;margin-right:-.19em;color:var(--ink);
  text-transform:uppercase}
@@ -3174,6 +3233,11 @@ body:not(.tab-field) .cv-legend{display:none}
    not get five of them. Same rule as everything else in this sheet: the end
    state, not a faster version. */
 @media (prefers-reduced-motion:reduce){.boot-svg{animation:none}}
+/* THE TRADEMARK. Not registered yet and it goes in anyway, ruled. Superscript
+   at a third of the name, tracked off the final d rather than after the
+   tracking the logotype adds, or it floats away from the word. */
+.boot-wm .btm{font-size:.34em;font-weight:500;vertical-align:.85em;
+ letter-spacing:0;margin-left:-.02em;color:var(--sky);opacity:.72}
 /* the body says the boot is over. Nothing depends on it yet and it is not
    decoration: it is the hook a later surface uses to hold its own entrance
    until the instrument is actually on screen. */

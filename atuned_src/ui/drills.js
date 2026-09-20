@@ -249,7 +249,7 @@ function runXYZDrill(){
   +'a score, they say which of the three is carrying and which is short. Yours reads shortest at <b>'
   +low[0]+'</b>.</p>'
   +'<div class="ad-rows">'+A.map(function(a){
-    return '<div class="ad-r static"><span class="ad-k">'+cr(a[2],a[1]*100,{size:'xs',raw:a[1].toFixed(2)})
+    return '<div class="ad-r static"><span class="ad-k">'+cr(a[2],a[1]*100,{size:'xs',raw:a[1].toFixed(2),hot:false})
      +a[0]+'</span><span class="ad-m">'+(a[1]*100).toFixed(0)+'%</span></div>';}).join('')+'</div>'
   +A.map(function(a){return '<div class="pm-eye">'+a[0]+'</div><p class="ad-p">'+a[3]+'</p>';}).join('');
  rdShell(h);}
@@ -305,7 +305,7 @@ function runFlowDrill(){
   +'<div class="pm-eye">Seat by seat</div><div class="ad-rows">'
   +seats.slice().reverse().map(function(s){
     return '<div class="ad-r static"><span class="ad-k">'
-     +cr(K2B[s.p.k],s.pass*100,{size:'xs',raw:s.pass.toFixed(2)})+esc(s.p.n)+'</span>'
+     +cr(K2B[s.p.k],s.pass*100,{size:'xs',raw:s.pass.toFixed(2),hot:false})+esc(s.p.n)+'</span>'
      +'<span class="ad-m">'+Math.round(s.pass*100)+'%</span></div>';}).join('')+'</div>'
   +'<div class="pm-eye">Where it stops</div><p class="ad-p">'
   +(stop?'The column closes at the <b>'+esc(String(stop.p.n).toLowerCase())+'</b>, which is '
@@ -476,7 +476,7 @@ function runPoleDrill(end){
   var pos=mirrorAt(load,bandIg(m.seat));
   var c=seatCol(m.seat);
   h+='<button type="button" class="ad-r" data-mirror="'+m.k+'" title="'+esc(m.ask)+'">'
-   +cr(m.seat,pos,{size:'xs',raw:String(pos)})
+   +cr(m.seat,pos,{size:'xs',raw:String(pos),hot:false})
    +'<span>'+esc(up?m.up:m.dn)+'</span>'
    +'<em style="color:'+c+'">'+esc(m.q.toLowerCase())+'</em></button>';});
  h+='</div>';
@@ -697,7 +697,7 @@ function runAvatarDrill(){
   rows.forEach(function(r,i){
    var g2=r.gap;
    h+='<button type="button" class="ad-r" data-avp="'+i+'">'
-    +(g2?cr(g2.seat,g2.at,{size:'xs',raw:String(g2.at)}):'')
+    +(g2?cr(g2.seat,g2.at,{size:'xs',raw:String(g2.at),hot:false}):'')
     +'<span>'+esc(r.pair.be)+'</span>'
     +'<em>'+(g2?(g2.clear?'clear':esc(String(g2.seat).toLowerCase())+', '+g2.load.toFixed(1))
       :'not resolved')+'</em></button>';});
@@ -879,7 +879,7 @@ function runMirrorDrill(k){
   +'<p class="ad-p"><b>'+esc(m.ask)+'</b></p>'
   +'<div class="pm-eye">Where you sit</div>'
   +'<div class="ad-rows"><div class="ad-r static">'
-   +cr(m.seat,pos,{size:'sm',raw:String(pos)})
+   +cr(m.seat,pos,{size:'sm',raw:String(pos),hot:false})
    +'<span class="ad-k">'+esc(m.dn)+' at nought, '+esc(m.up)+' at a hundred</span>'
    +'<span class="ad-v" style="color:'+c+'">'+pos+'</span></div></div>'
   +'<p class="ad-p">Read from what is held at the '+String(m.seat).toLowerCase()
@@ -917,7 +917,9 @@ function runCompassDrill(){
  h+='<div class="pm-eye">The whole scale</div><div class="ad-rows">'
   +TIERDEF.map(function(t){
     return '<div class="ad-r static'+(t.nm===r.tier&&!r.unread?' on':'')+'" title="'+esc(t.soma||t.def)+'">'
-     +'<span class="ad-k">'+esc(t.nm)
+     /* ten bands, ten colours, so the ladder reads as a gradient a person
+        can place themselves on rather than as ten identical rows. */
+     +'<span class="ad-k" style="color:'+(TIERCOL[t.nm]||'var(--ink)')+'">'+esc(t.nm)
      +(t.state?'<em>'+esc(t.state)+'</em>':'')+'</span>'
      +'<span class="ad-v">'+tierRange(t)+'</span></div>';}).join('')
   +'</div>';

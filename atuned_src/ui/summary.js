@@ -71,8 +71,9 @@ function sumGlance(r){
  var acc=(typeof accuracy==='function')?accuracy(r):null;
  var e=(r.X+r.Y+r.Z)/3;
  var row=[
+  /* the glance row's coherence ring reads the tier too, for the same reason */
   ['coherence', r.darkB, r.CQ, Math.round(r.CQ)+'%', 'Where the field sits, 0 to 100.',
-   'of 100'],
+   'of 100', TIERCOL[r.tier]],
   /* THE LABEL SAID 0 TO 10 AND THE NUMBER GOES PAST 54. Measured across the
      roster: Gordon 54.7, Tomas 45.9, Ana 22.8. It is a sum over every address
      carrying, so it has no ceiling of ten or of anything else, and a stated
@@ -118,7 +119,13 @@ function sumGlance(r){
     everybody can see it, and the title keeps the longer sentence. */
  return '<div class="s-glance">'+row.map(function(x){
   return '<button type="button" class="s-gl" data-gl="'+esc(x[0])+'" title="'+esc(x[4])+'">'
-   +cr(x[1],x[2],{size:'sm',label:x[0],raw:x[3]})
+   +cr(x[1],x[2],{size:'sm',label:x[0],raw:x[3],color:x[6]||undefined,
+     /* A READING WHERE HIGH IS THE GOOD END NEVER PRINTS RED. Ruled: "96 per
+        cent flow accuracy and yet it is red. Red is a colour of danger. That
+        is bad colouring." cr reddens anything past ninety, which is correct
+        for shadow weight and exactly backwards for coherence, energy and
+        identification. */
+     hot:(x[0]==='shadow weight'||x[0]==='carried depth')?undefined:false})
    +'<span class="s-gl-k">'+esc(x[0])
    +'<em class="s-gl-s">'+esc(x[5]||'')+'</em></span></button>';}).join('')+'</div>';}
 
@@ -291,9 +298,14 @@ function sumStory(r){
   +'</div>';}
 
 /* ---- structures at a glance. the right hand panel. ---- */
-function sumStructRow(nm,sub,band,pct,raw,glyph,data){
+/* hot is handed in because these rows carry two opposite kinds of reading.
+   A mask weight and a seat load are charge, where high is the cost. An
+   archetype share is a proportion of a blueprint, where high is only how
+   much of the blueprint it is. The alarm colour belongs to the first kind
+   and nowhere near the second. */
+function sumStructRow(nm,sub,band,pct,raw,glyph,data,hot){
  return '<button type="button" class="s-row"'+(data||'')+'>'
-  +cr(band,pct,{size:'sm',raw:raw,glyph:glyph,label:nm})
+  +cr(band,pct,{size:'sm',raw:raw,glyph:glyph,label:nm,hot:hot})
   +'<span class="s-row-t"><b>'+esc(nm)+'</b>'+(sub?'<em>'+esc(sub)+'</em>':'')+'</span></button>';}
 function sumStruct(r){
  var out='<div class="s-struct">';
@@ -329,7 +341,7 @@ function sumStruct(r){
  out+=aff.slice(0,4).map(function(x,i){
   return sumStructRow(x.nm, x.d, x.b,
    x.v/tot*100, Math.round(x.v/tot*100)+'%', x.ic?'<path d="'+x.ic+'"/>':null,
-   ' data-arch="'+x.i+'"');}).join('');
+   ' data-arch="'+x.i+'"', false);}).join('');
  /* masks. weight on 0 to 10, so the arc is the weight and the pill is the value. */
  if(r.maskRing&&r.maskRing.length){
   out+='<div class="pm-eye" style="margin-top:18px">Masks</div>';
@@ -540,8 +552,16 @@ function sumPlate(r){
    +(CURP&&CURP.who&&CURP.who.line?'<div class="s-pwho">'+esc(CURP.who.line)+'</div>':'')
   +'</div>'
   +'<div class="s-pl-r">'
-   +cr(r.darkB,r.CQ,{size:'lg',label:'coherence',raw:Math.round(r.CQ)+'%',hot:false})
-   +'<div class="s-pband"><b>'+esc(r.tier)+'</b>'
+   /* THE TIER'S OWN COLOUR, not the heaviest seat's. Ruled. The plate is the
+      one place on this page that names the band, so its ring has to mean the
+      band. It was drawn in r.darkB, so a person at Embodied whose heaviest
+      seat was the Root got a red ring on the second best reading there is. */
+   +cr(r.darkB,r.CQ,{size:'lg',label:'coherence',raw:Math.round(r.CQ)+'%',hot:false,
+      color:TIERCOL[r.tier]||undefined})
+   /* and the word wears it too. A ring in one colour beside the same band
+      printed in the body colour reads as two facts, not one. */
+   +'<div class="s-pband"><b style="color:'+(TIERCOL[r.tier]||'var(--ink)')+'">'
+   +esc(r.tier)+'</b>'
    +(t&&t.state?'<em>'+esc(t.state)+'</em>':'')+'</div>'
   +'</div>'
   /* the direction out, which has never been on a surface a touch screen can

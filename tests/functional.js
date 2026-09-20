@@ -21,7 +21,13 @@ const booted=async p=>{try{await p.waitForFunction(
     getting past it here is not the same as not testing it. */
  try{ await p.waitForTimeout(600);
    await p.evaluate(()=>{ if(typeof OB!=='undefined'&&OB.open&&typeof obClose==='function')obClose(); });
-   await p.waitForTimeout(120); }catch(e){}};
+   await p.waitForTimeout(120); }catch(e){}
+ /* AND THE FIELD'S ENTRANCE IS LET FINISH. It assembles on arrival, so for
+    its first second the parts are on their way to where they belong and a
+    measurement taken then measures the animation. Waited out rather than
+    turned off, because it is real and a person sees it. */
+ try{ await p.waitForFunction(
+   ()=>typeof enterOver!=='function'||enterOver(),null,{timeout:4000}); }catch(e){}};
 const ok=(c,m)=>{if(c)PASS++;else{FAIL++;console.log('  FAIL '+m);}};
 (async()=>{
 const browser=await chromium.launch({executablePath:'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});

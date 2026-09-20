@@ -21,6 +21,334 @@ reopens. Every seat adds its own.
 
 ---
 
+## 0d. RULED 20 SEPTEMBER, THIRD PASS. THE SKUNK WORKS AND THE RITUAL
+
+### SW. FOUR FIELDS. THE SKUNK WORKS BRIEF.
+
+His words: "This is a skunk works team. Grab anybody else who you need. My work
+is in Hollywood and visual effects is what I do. Iron Man, Marvel, those visual
+effects are pretty gnarly in a good way. Animation wise Pixar is by far the
+best. There is a soul between the two."
+
+- [ ] **SW1. Four mock ups of the Field,** ordered simple to super complex.
+  Every one of the four has to be meaningful and beautiful. Not four skins of
+  the same idea.
+- [ ] **SW2. A hundred passes.** Debate it amongst the seats, challenge it, look
+  at it from different perspectives, and go into the data and into what the
+  product is trying to translate before drawing anything.
+- [ ] **SW3. Number three is the one that breaks the frame.** Entirely
+  different, more magnificent than the rest. WebGL is on the table for it. He
+  knows the cost may rule it out and wants it drawn anyway.
+- [ ] **SW4. The reference is named:** Marvel for effect, Pixar for animation,
+  and the product sits between them. Not cheesy. It has to still look right in
+  ten years.
+- [ ] **SW5. The team.** Art director, the JavaScript seat, creative director,
+  UI UX, and anybody they pull in. They are all directors and they all have
+  their personas.
+- [ ] **SW6. A new lighting carries it, never a replacement.** Standing ruling
+  reaffirmed: a new interface is a ninth or tenth lighting added beside the
+  seven, and the seven do not change. Energetics gets the same treatment once
+  the Field lands.
+- [ ] **SW7. The bar.** "We are taking everything to a B now, so how can we
+  build on top of what we have and make the wow factor pull out."
+
+### AO. THE WORDMARK.
+
+- [ ] **AO1.** Three more pixels between Atuned and Source OS. He reconsidered
+  the Source OS treatment itself and left it alone, so only the gap moves.
+
+### AP. GAMIFICATION, AND THE RITUAL BUILDER.
+
+- [ ] **AP1. "Where is our gamification."** A fair question with a short answer:
+  specced, not built. It has to be baked into the ritual rather than bolted
+  beside it.
+- [ ] **AP2. Simulate the ritual builder a thousand times** with the ICPs, real
+  world. Design, UI UX, creative director and the project manager.
+- [ ] **AP3. Benchmark against the top two ritual builders and accountability
+  trackers on the planet,** named, measured, and beaten. Research on the
+  internet, not from memory.
+
+---
+
+## 0e. MEASURED 20 SEPTEMBER. FOUR BREAKS IN THE FUNNEL.
+
+Found by running a thousand simulated arrivals from the real ICP distribution
+through the real build, not by reading the code. `tools/flowsim.js` and
+`PANEL-flow-1000.md` carry the method and the validation. As built, 14 of 1000
+are still there at day 30. These four are why, and they are defects rather
+than design.
+
+- [ ] **FB1. Three of the four doors on Summary write nothing.** The surface
+  says "four ways in, any one of them fills this page." Driven three levels
+  deep, each of three doors leaves the charge sum at 0.00 and `unread` still
+  true. `runAgeYear` says so in its own copy: "Nothing is stored here, and
+  nothing is scored." `ui/component.js` STARTD, `ui/drills.js:589`, `:685`,
+  `:806`. Either they write or they stop claiming to.
+- [ ] **FB2. Charge spreads instead of concentrating, so a richer story reads
+  as less.** Reproduced directly against the built engine, and this corrects
+  the sharper claim that no entry path reaches the release. A 48 word story
+  with 2 imprints loads 5 addresses. A 51 word story with 11 imprints loads
+  **zero**, topping out at 2.78 against a load line of 4. More signal in, less
+  out. `engine/sniff.js:239` writes `touched[f]*0.35` across every fetter the
+  story names, so the same total charge divided more ways clears nothing. The
+  person who writes the fullest account is the one told nothing is held.
+- [ ] **FB3. The release is reachable in principle and not in practice.**
+  `stRelPanel` already has a "found" source that runs on what the story just
+  found rather than on what crossed the load line, and the control still comes
+  up disabled. Verify against FB2 before changing the threshold: lowering the
+  load line globally would load noise and flip `unread`, which is the defect
+  that was fixed this session.
+- [ ] **FB4. All sixteen four letter seeds print the same reading.** INTJ, ENFP
+  and ISTJ all give CQ 36.0, Incoherent, Frustrated, 0 held, 107 under,
+  `seedShare` 1.00. The charge vectors differ and the headline does not, so the
+  one input a person gives before writing anything has no visible consequence.
+- [ ] **FB5. Minutes practised is minutes planned.** The streak counts distinct
+  days in `p.rituals`, written only by the Save ritual button. Nothing records
+  that a ritual was performed. Select a twenty minute scan, press save, close
+  the tab: twenty minutes practised and a day on the streak. It is the one
+  label in the product claiming what the data does not carry.
+- [ ] **FB6. Nobody reaches Seven days.** 0 of 1000 earn it. The day seven
+  mechanism lives in `ladderHtml` on Compass, and Compass sits at left 382
+  against a tab strip 348 wide, so for most arrivals it is off screen.
+- [ ] **FB7. Undo restores the reading and leaves the bill.** `undoState`
+  captures the nine charges, the nine opposites, the twenty one laws and the
+  soul. It does not capture `p.meter`, `p.history` or `p.story.entries`, and
+  `meterRun` has no remove. The spend is the one irreversible act and it is
+  the one undo does not cover.
+- [ ] **FB8. The load gate in the simulation is a judgement, not a
+  measurement,** and between a third and two thirds of everything the model
+  reports as lost hangs on it. Five people on the Field at 390 and at 1600,
+  one task, settles it for the price of the floor already ruled. Nothing in
+  the fix list should be spent against until that runs.
+
+Measured choice counts, which update the figure in CLAUDE.md upward: 72 to 102
+simultaneous choices per screen at 1600 across nine surfaces, against a
+working memory of about four.
+
+---
+
+## 0c. RULED 20 SEPTEMBER, SECOND PASS. THE ARRIVAL, THE FEATHERS AND KARMA
+
+**"I didn't give you feedback on the feathers. I don't give you feedback
+because there's so much volume of information that I can't read everything."**
+Taken as a finding about the reports, not about him. Shorter replies, and a
+question asked rather than a report filed.
+
+### AH. THE FEATHERS. THE CORE GRAPHIC.
+
+His words: "When I zoomed in on it, I thought it was interesting, I thought it
+was really pretty, and I went to go click on it and I couldn't do anything with
+it. So we have an element that is taking up real estate that provides no actual
+information. That's a problem."
+
+- [ ] **AH1. The defect.** The core feathers carry no reading and no door. An
+  element on the most looked at surface in the product that says nothing about
+  the person is real estate spent on decoration. Either it carries a reading or
+  it goes.
+- [ ] **AH2. His proposal, to be tested rather than assumed.** Each feather's
+  **length** is the percent at which the person does that thing. The **width of
+  the branches** carries the vibrancy. Hover gives the information. Click opens
+  the detail. Build it, render it, look at it, and say whether it reads.
+- [ ] **AH3. A hundred passes.** UI UX, design and the art director hash it
+  amongst themselves a hundred times, for the best **visual** and, his
+  emphasis, the best **symbolic** representation. Symbol first.
+- [ ] **AH4. Answer what the feathers are.** He asked what the shape symbolises
+  and the answer was given from the code. Whatever it becomes has to be sayable
+  in one line in a tooltip.
+
+### AI. THE INTRO ANIMATION.
+
+- [ ] **AI1.** Two more seconds on the end.
+- [ ] **AI2.** And it settles one second sooner. Longer tail, earlier rest.
+- [ ] **AI3.** **Kill the pulse at the end.** "It does this weird pulse at the
+  end. I'm not a fan." Replace with squash and stretch. His words: "squash and
+  stretch to me is one of my favourite things in animation anyway, so let's
+  find a way to give this thing more character."
+- [ ] **AI4.** The halo sits too close to the top.
+- [ ] **AI5.** **Powered by Source OS.** Source OS aligned underneath Atuned.
+  "powered by" very small, to its left.
+- [ ] **AI6.** A trademark mark on Atuned. Not registered yet, and it goes in
+  anyway, on his ruling.
+
+### AJ. THE ARRIVAL. WHAT A PERSON MEETS COMING OFF THE FUNNEL.
+
+His words, and they are the brief: "I want to be greeted. I want to be
+welcomed. This is a highly intentional, highly impactful, highly purposeful
+results as a service product. We're coming from the highest of high. This is a
+mirror of the person. We're going to be showing them their inside. We don't
+want to be cold."
+
+- [ ] **AJ1.** Greeted and welcomed. Warm. The current first screen is neither.
+- [ ] **AJ2. The substance of the welcome,** in his order: this is you, and it
+  is okay. No judgment. We walk you through you and show you how you run. We
+  show how these patterns operate inside you and how they influence your
+  behaviour. The stress we have conditioned as normal is making us sick, and
+  this tool shows you how and where, and gives you the what and the how.
+- [ ] **AJ3. The term.** "Body mind complex." He likes it because it says what
+  it is. Ontological wellness for the body mind complex. Copy and brand to rule
+  on whether it is the product's own word.
+- [ ] **AJ4. It should read as a secret site.** "I'm coming here off the funnel
+  to effectively what looks like a secret site that is welcoming me into a
+  brand new universe that is going to show me me from the inside."
+- [ ] **AJ5. Show, not tell.** Japanese Zen. Not text heavy. The welcome is
+  carried by what a person sees, not by paragraphs. Art direction, storyboards
+  and UX own this, not copy alone.
+- [ ] **AJ6.** Simulate the arrival ten times and float it to the creative
+  director before it is built.
+
+### AK. KARMA. THE REFERRAL AND THE COIN.
+
+- [ ] **AK1. Referral.** Invite a friend, get 25 unique patterns, or the equal
+  amount of the coin.
+- [ ] **AK2. The coin is karma,** for now. The karma bank.
+- [ ] **AK3. An icon for karma.** Ring, not fill, like everything else with a
+  name.
+- [ ] **AK4.** Achievements and badges pay karma. "Whenever you get an
+  achievement or badge, that's your good karma."
+- [ ] **AK5. Say what karma is,** in the product, "because all the stories
+  basically are karmic patterns. That's really funny." He is right that it is
+  the same mechanic under two names, and that is the reason to name it.
+- [ ] **AK6.** Where the referral integration sits is open. It needs a server,
+  so it is behind the funnel work.
+
+### AM. TOOLTIPS.
+
+- [ ] **AM1.** "The tooltip design is inconsistent across the board." Measured
+  and true: there are title attributes, a data-tip pill and at least one hand
+  built panel doing the same job three ways. One tooltip, everywhere.
+- [ ] **AM2.** And it has to be good. "Design it so that it's sexy. Wow me.
+  Think transition, think animation, think how can I make this interesting."
+  Creative director, art director, UI UX, ten passes.
+- [ ] **AM3.** A phone has no hover, and eight definitions in this product live
+  only in a title attribute. The one tooltip has to be reachable by tap.
+
+### AL. STANDING, FROM THIS ROUND ON.
+
+- [ ] **AL1. Ten passes, and ask questions.** Every team kicks a brief around
+  ten times before building, and **asks when it is uncertain what something
+  means** rather than guessing. His explicit instruction.
+- [ ] **AL2. The teams go and look.** Research modern technique on the internet,
+  continuously, from now on. Not once.
+- [ ] **AL3. Three pillars, fulfilled out of the gate: privacy, security,
+  mirror.** These are the launch conditions, not features.
+- [ ] **AL4. Shorter replies.** He cannot read the volume, so a reply is the
+  finding and the question, not the working.
+
+### WAITING ON HIM, FROM THIS ROUND
+
+- [?] **The Universal Law videos.** He asked whether he ever gave them. He has
+  not. Nothing has arrived in this session and there is no video anywhere in
+  the repository. Needed before anything is built on them.
+- [?] Whether "body mind complex" is the product's own term or a description.
+- [?] What the feathers are meant to mean, if his length and vibrancy proposal
+  is not the answer.
+
+---
+
+## 0b. RULED 20 SEPTEMBER, THE AESTHETICS AND SYSTEMS PASS
+
+**"This is taking it from a C plus to a B. This is very important, because now
+it means we have a product."** His framing, and it governs everything in this
+section: the wins from here are the bigger ones, not more features.
+
+### AA. What the product is, which goes in the brief
+
+- [ ] AA1. **The design brief carries the ethic, not just the rules.** His
+      words, and they are the closest thing this project has to a statement of
+      what it is: "you are a soul, this is the structure of your psyche, this
+      is what it looks like, this is how it connects to the physical, these are
+      the patterns that run through the physical. We are giving them the full
+      inside out." Teams take those ethics and keep them in the background.
+- [ ] AA2. **The eye must have ease.** Symbolic tools you can click, understood
+      at a glance, professional, collapsible, smooth animation between
+      everything. Whoever designed it looked like they went hunting for ways to
+      improve it.
+- [ ] AA3. **Hierarchy is top down and inside out.** Energetically there is
+      always a top and always an inside. The content flows that way or it is
+      not saying anything.
+- [ ] AA4. **Nothing on screen that does not tell you something about the
+      person.** Frivolous information is removed, not shrunk.
+- [ ] AA5. **Scrub the whole document set.** Everything tweaked and changed
+      this session goes into the design brief and the product brief, and every
+      seat's own material is brought current.
+- [ ] AA6. **Wow, on top of the Zen.** "Holy fucking shit, that's me. That's
+      all of me." Aesthetic beauty is the focus of this pass.
+
+### AB. Colour and symbol, which is where he started
+
+- [ ] AB1. **THE TEN TIERS GET SYMBOLIC COLOURS.** "I do not like that it says
+      I am 88 per cent embodied on the right hand side and yet my button is not
+      symbolic. The colour is not symbolic." Mastery through Collapsed, ten
+      colours that mean their tier, locked into the design.
+- [ ] AB2. **A GOOD READING MUST NEVER PRINT RED.** "96 per cent flow accuracy
+      and yet it is red. Red is a colour of danger. That is bad colouring."
+      Every reading where high is the good end says so. Partly fixed on the key
+      strip already and clearly not everywhere.
+- [ ] AB3. **The whole colour tree against its iconography.** One pass, every
+      family, does the colour agree with what the icon means.
+- [ ] AB4. **Dull colours up about ten per cent in saturation, dark version
+      only.** Some are vibrant and some are dull and they read as two systems.
+
+### AC. Frequency, a new product surface
+
+- [ ] AC1. **Find your frequency.** Pairs a person with others on a like
+      frequency. A networking and social tool. New, and it is the first thing
+      in this product that involves another person.
+- [ ] AC2. **Cohorts inside it**, to keep people practising. His case: somebody
+      parked at 92 who feels great and has no reason to move.
+      *Both are large, both need the record store, and both touch the privacy
+      floor hard. A cohort lead never sees the story cloud, ruled.*
+
+### AD. Layers, which is the mirror he is describing
+
+- [ ] AD1. **See yourself in layers, turned on and off.** Click any chunk of
+      the reading and open it.
+- [ ] AD2. **Heat maps, one per structure.** Saboteurs, complexes, hyper
+      complexes, masks. Each its own map.
+- [ ] AD3. **A pain map you can select.**
+
+### AE. The core mechanic, stated plainly for the first time
+
+- [ ] AE1. **Journal into imprints into release is the core loop, and it is
+      what earns points.** The ritual system is dynamic and works with all
+      three. Points buy patterns for somebody who will not pay. Paying gets
+      discounts, and later new tools, techniques and rendering scripts for the
+      avatar.
+
+### AF. The work the teams do to reach a B
+
+- [ ] AF1. **Every seat researches its own field for modern technique** and
+      brings it back into its data set.
+- [ ] AF2. **A guru seat joins the team, called CQ**, carrying chakras, energy,
+      somatics and mindset transformation.
+- [ ] AF3. **An information architect who understands human behaviour**, to
+      debate structure and flow against the ICPs.
+- [ ] AF4. **Simulate the flow with the ICPs a thousand times.** Onboarding
+      through ninety days. Find the friction points. Does it feel sticky. Do
+      they understand what they are doing. Who stays five minutes and who stays
+      a year.
+- [ ] AF5. **Check the architecture against the user flow.**
+- [ ] AF6. **Do we need a graphics specialist**, HTML5 or WebGL, to take the
+      rendering to another layer. And a traditional designer for a crisper
+      sense of taste. His question, and it is a hiring question rather than a
+      task.
+- [ ] AF7. **A QA smoke test, and does the maths add up.** Where is it
+      breaking.
+- [ ] AF8. **Tooltips must work, and the language must mean something.** No
+      "sixty eight of fifty three". Attuned language, written the way the copy
+      seat already knows how to write to people.
+
+### AG. Ruled and narrow
+
+- [ ] AG1. **A new interface design may be ADDED, never substituted.** If a
+      seat wants one it becomes a seventh or eighth lighting as a beta. The
+      existing ones do not change.
+- [ ] AG2. Change his persona line from "54, author". *He named
+      "ornithological systems engineer" in the same breath as a rimshot, so the
+      line itself is a question rather than a ruling.*
+
+---
+
 ## 0. THE NEXT BLOCK
 
 The four the project manager has promoted. Ordered by what unblocks the most.
@@ -275,7 +603,11 @@ Look and language
       it, and nothing runs. The opener does not exist at all.
 - [ ] AN4. Points, badges, achievements, the store
 - [ ] AN3. The tutorial and onboarding, which is the core loop
-- [ ] U1. **Undo on applying a story.** Applying bakes charge in irreversibly.
+- [x] U1. **Undo on applying a story.** Built, and this line was stale for
+  longer than it was true. `engine/undo.js` is unlimited, `UNDO_MAX=0`, with a
+  redo stack, and `ui/storyui.js:82` pushes a snapshot labelled "committing
+  the story" before the charge lands. A6 in section 1 already had it as done,
+  so the same item sat in two columns.
 - [ ] C1. The ritual spec, 1,496 lines, unwired
 - [ ] C2. The phone spec, 1,132 lines, unwired
 - [ ] C3. **The release rebuild.** His flagship. Nine rulings attached.

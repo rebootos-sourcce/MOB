@@ -654,6 +654,74 @@ console.log('\n=== 14 -  the boot says how to get past it ===');
  await pb.close();
 }
 
+/* ============================================================
+   GATE 15. THE ALARM LAW.
+
+   Ruled: "I have got 96 per cent flow accuracy and yet it is red. Red is a
+   colour of danger. That is bad colouring."
+
+   cr() reddens anything at or past ninety, which is correct for a charge and
+   exactly backwards for every reading whose high end is the one a person is
+   working toward. That had been a defect twice and was held by convention
+   across nineteen call sites with nothing watching it, which is how it came
+   back the second time.
+
+   Two halves, because a gate that only forbids can be satisfied by breaking
+   the mechanism. The first says no good end reading is ever in the alarm
+   state. The second says the alarm still fires on a charge, so the first is
+   passing because the rule is kept and not because the colour is dead.
+   ============================================================ */
+console.log('\n=== the alarm law ===');
+{
+ /* A LOADED PROFILE, because an empty one prints dashes and proves nothing.
+    Diane is a real fixture and her readings straddle the threshold. */
+ await page.evaluate(()=>{loadP(2);setTab(TAB.SUMMARY);render();});
+ await page.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));
+ /* the labels whose high end is the good end. Every one of them is a share, a
+    proportion, a pass rate or a measure of how well read somebody is. */
+ const GOOD=['accuracy','coherence','flow','integrity','identification',
+   'share','replace','opposite','pass','open'];
+ const bad=await page.evaluate(G=>{
+  const out=[];
+  document.querySelectorAll('.cr').forEach(e=>{
+   const t=(e.getAttribute('title')||'').toLowerCase();
+   if(!G.some(g=>t.indexOf(g)>=0))return;
+   const arc=e.querySelector('.arc circle:last-child');
+   const st=arc?getComputedStyle(arc).stroke:'';
+   if(e.classList.contains('hot')||/rgb\(\s*255,\s*46,\s*31\s*\)/.test(st))
+    out.push(t.slice(0,44));});
+  return out;},GOOD);
+ ok(bad.length===0,'no good end reading prints in the alarm colour, got '
+   +JSON.stringify(bad.slice(0,4)));
+ /* AND THE MECHANISM IS STILL LIVE. A ring built past the threshold with no
+    hot decision has to redden, or the gate above is passing on a corpse. */
+ const fires=await page.evaluate(()=>{
+  const d=document.createElement('div');
+  d.innerHTML=cr('Root',96,{size:'sm',label:'shadow weight'});
+  document.body.appendChild(d);
+  const e=d.querySelector('.cr');
+  const arc=e.querySelector('.arc circle:last-child');
+  const r={hot:e.classList.contains('hot'),stroke:getComputedStyle(arc).stroke};
+  d.remove(); return r;});
+ ok(fires.hot,'and a charge past ninety still reddens, so the rule is kept '
+   +'rather than the colour removed');
+ ok(/rgb\(\s*255,\s*46,\s*31\s*\)/.test(fires.stroke),
+   'and the alarm arc is the alarm colour, got '+fires.stroke);
+ /* THE TIER COLOURS ARE THE TIER'S, not the heaviest seat's. Ruled: "I do not
+    like that it says I am 88 per cent embodied and the colour is not
+    symbolic. We have got our ten tiers now, we should have colours that
+    reflect those tiers." */
+ const tc=await page.evaluate(()=>{
+  const r=compute();
+  const e=document.querySelector('.s-pband b');
+  return {tier:r.tier, want:TIERCOL[r.tier]||null,
+    got:e?getComputedStyle(e).color:null};});
+ ok(tc.want!==null,'every tier has a colour, missing for '+tc.tier);
+ const hex2rgb=h=>'rgb('+[1,3,5].map(i=>parseInt(h.substr(i,2),16)).join(', ')+')';
+ ok(tc.got===hex2rgb(tc.want),
+   'and the band on the plate wears it, wanted '+hex2rgb(tc.want)+' got '+tc.got);
+}
+
 await browser.close();
 console.log('\n===== '+PASS+' passed, '+FAIL+' failed =====');
 process.exit(FAIL?1:0);

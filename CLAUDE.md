@@ -202,8 +202,11 @@ network and fails on any request that is not one of the two local rasters.
 
 Mine to build when asked:
 
-- **Undo.** Applying a story bakes charge into the axes irreversibly. Largest
-  remaining gap in the product.
+- **Undo is built, and this paragraph said otherwise for longer than it was
+  true,** which is the same failure mode the Games paragraph above records.
+  `engine/undo.js` is unlimited, `UNDO_MAX=0`, carries a redo stack, and
+  `ui/storyui.js:82` snapshots before the charge lands. What remains is not
+  undo, it is that the arrows are the only route to it.
 - **A seed decay policy.** A stated four letter type writes charge onto the
   nine axes and `seedShare` reports how much of the field is still that seed.
   Whether it should fade on its own, or only move when the person moves it,

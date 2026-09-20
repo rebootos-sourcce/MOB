@@ -401,14 +401,15 @@ function railStack(r){
    return '<div class="stk-r static"><span class="stk-l">'
     +cr(c.seat,v*10,{size:'xs',raw:v.toFixed(1),glyph:'<path d="'+c.ic+'"/>'})+esc(c.nm)+'</span>'
     +'<span class="stk-p">'+esc(c.opp)
-    +cr('Heart',p*10,{size:'xs',raw:p.toFixed(1),glyph:'<path d="'+c.ic+'"/>'})+'</span></div>';}).join('');}
+    +cr('Heart',p*10,{size:'xs',raw:p.toFixed(1),hot:false,
+      glyph:'<path d="'+c.ic+'"/>'})+'</span></div>';}).join('');}
  else{
   var list={sab:r.sabs,cx:r.cxs,hy:r.hys,sup:r.sups}[STACK_TAB]||[];
   h+=list.length?'<div class="stk-hd"><span>weight</span><span>opposite in</span></div>':'';
   h+=list.length?list.map(function(o,i){var p=poleOf(o);
    return '<button type="button" class="stk-r'+(S.pin===o?' on':'')+'" data-sk="'+STACK_TAB+'" data-si="'+i+'">'
     +'<span class="stk-l">'+crPat(o,'xs')+esc(o.nm)+(o.unnamed?'<em>inferred</em>':'')+'</span>'
-    +'<span class="stk-p">'+cr('Heart',p*10,{size:'xs',raw:p.toFixed(1)})+'</span></button>';}).join('')
+    +'<span class="stk-p">'+cr('Heart',p*10,{size:'xs',raw:p.toFixed(1),hot:false})+'</span></button>';}).join('')
    :'<div class="rnone">Nothing at this layer.</div>';}
  e.innerHTML=h;}
 /* THE BALANCE STRIP, AND WHICH END IS WHICH.
@@ -546,8 +547,13 @@ function railTop(r){
 
     One line, in plain words, from the same table the drill reads. */
  var td=r.unread?null:TIER_BY[r.tier];
+ /* THE BAND'S OWN COLOUR, here as on the plate. Ten tiers, ten colours,
+    and the rail was drawing the heaviest seat's instead, so the rail and the
+    plate disagreed about what colour a person's band is. High coherence is
+    the good end, so it never reddens. */
+ var tcol=(!r.unread&&TIERCOL[r.tier])||null;
  e.innerHTML=cr(r.darkB, r.unread?0:r.CQ, {size:'sm', label:'coherence',
-   raw:r.unread?'\u2013':undefined})
+   raw:r.unread?'\u2013':undefined, hot:false, color:tcol||undefined})
   /* THE TIER IS A CONTROL WHEREVER IT LIVES. Taking the word off the Field
      centre was ruled, and it took the only tappable route to the definition
      with it: there was exactly one tier control in the product and it was the
@@ -556,8 +562,9 @@ function railTop(r){
      audience arrives on phones. So the word in the rail is the button now. */
   +'<button type="button" class="rt-t tierbtn" id="tier" title="'
   +esc(td?(td.def+'  '+td.energy+'  Toward: '+td.toward)
-       :'Nothing has been read yet. Write a story or set a charge.')+'">'
-  +esc(r.unread?'not read yet':r.tier)+'</button>'
+       :'Nothing has been read yet. Write a story or set a charge.')+'"'
+  +(tcol?' style="color:'+tcol+'"':'')
+  +'>'+esc(r.unread?'not read yet':r.tier)+'</button>'
   +'<span class="rt-d">'+esc(r.unread
     ? 'Nothing entered yet. Write what happened and this fills in.'
     : (td?td.def:''))+'</span>';
@@ -659,7 +666,7 @@ function render(){
    /* the same rule as the core: nothing is printed off the defaults. the ring
       still draws, because an empty ring is the honest picture of an empty
       field, and the tail carries a dash rather than a number nobody entered. */
-   '<button class="kb" data-q="cq" title="Coherence. 0 to 100. What the field builds against what it costs.">'
+   '<button class="kb" data-q="cq">'
     /* HOT IS FOR A READING WHERE HIGH IS WRONG.
 
        cr() reddens anything past the hot threshold, which is right for shadow
@@ -668,13 +675,21 @@ function render(){
        at 1.0 all printed in the colour this product reserves for something
        being wrong. The domain pill had the same defect and was fixed the same
        way: the pills that climb toward health say so. */
-    +cr('Crown',r.unread?0:r.CQ,{size:'xs',label:'CQ',hot:false,
-      raw:r.unread?'\u2013':undefined})+'<span><b>CQ</b></span></button>'
-  +'<button class="kb" data-q="dq" title="Shadow weight. The summed charge across every address that is carrying.">'
-    +cr('Root',clamp(r.DQ/14,0,1)*100,{size:'xs',raw:r.DQ.toFixed(1)})
-    +'<span><b>DQ</b></span></button>'
-  +'<button class="kb" data-q="sq" title="Segment depth. 0 to 10. How deep the held charge sits at the addresses carrying it.">'
-    +cr(r.darkB,r.SQm*10,{size:'xs',raw:r.SQm.toFixed(1)})+'<span><b>SQ</b></span></button>'
+    /* THE LETTERS GO IN THE RING AND THE WORDS GO TO THE TOOLTIP. Ruled: the
+       three letters are essentially an icon, so they sit where an icon sits,
+       and the strip loses three labels' worth of width. */
+    +cr('Crown',r.unread?0:r.CQ,{size:'sm',text:'CQ',hot:false,
+      raw:r.unread?'\u2013':Math.round(r.CQ)+'%',
+      title:'Coherence. '+(r.unread?'not read yet':Math.round(r.CQ)+' out of 100')
+       +'. What the field builds against what it costs.'})+'</button>'
+  +'<button class="kb" data-q="dq">'
+    +cr('Root',clamp(r.DQ/14,0,1)*100,{size:'sm',text:'DQ',raw:r.DQ.toFixed(1),
+      title:'Shadow weight. '+r.DQ.toFixed(1)+', summed across every address that '
+       +'is carrying, with no ceiling.'})+'</button>'
+  +'<button class="kb" data-q="sq">'
+    +cr(r.darkB,r.SQm*10,{size:'sm',text:'SQ',raw:r.SQm.toFixed(1),
+      title:'Segment depth. '+r.SQm.toFixed(1)+' of 10. How deep the held charge '
+       +'sits at the addresses carrying it.'})+'</button>'
   /* THE CONSOLE AVERAGED THREE READINGS AND SHOWED THE AVERAGE.
 
      One pill said Energy and behind it sat vitality, awareness and will,
@@ -705,20 +720,33 @@ function render(){
     rather than just fit. */
  (function(){
   var f=flSpeed(), lo=$('keylo'); if(!lo)return;
+  /* SYMBOLIC ICONS AND NO LABELS, ruled in the same breath as the letters
+     above. These four had no icon because the word was always beside them,
+     and the word is what is being removed. Every title now carries the scale
+     as well as the name, because the tooltip is the only place the name lives
+     and a name without its scale is the thing the copy editor rule stops. */
   lo.innerHTML=
-   '<button class="kb" data-q="xyz" title="Vitality. What is left after apathy and the shadow weight.">'
-    +cr('Solar',r.unread?0:r.X*100,{size:'xs',hot:false,raw:r.unread?'\u2013':r.X.toFixed(2)})
-    +'<span><b>Vitality</b></span></button>'
-  +'<button class="kb" data-q="xyz" title="Awareness of the instrument. Intention read against distortion. Not the rail section of the same name.">'
-    +cr('3rd Eye',r.unread?0:r.Y*100,{size:'xs',hot:false,raw:r.unread?'\u2013':r.Y.toFixed(2)})
-    +'<span><b>Awareness</b></span></button>'
-  +'<button class="kb" data-q="xyz" title="Will. Integrity carried through a clear segment.">'
-    +cr('Root',r.unread?0:r.Z*100,{size:'xs',hot:false,raw:r.unread?'\u2013':r.Z.toFixed(2)})
-    +'<span><b>Will</b></span></button>'
-  +'<button class="kb" data-q="flow" title="Flow. What reaches the crown from the root, '
-    +'every seat multiplied by the next.">'
-    +cr('Heart',r.unread?0:f*100,{size:'xs',hot:false,raw:r.unread?'\u2013':f.toFixed(2)})
-    +'<span><b>Flow</b></span></button>';})();
+   '<button class="kb" data-q="xyz">'
+    +cr('Solar',r.unread?0:r.X*100,{size:'sm',hot:false,glyph:QICON.vitality,
+      raw:r.unread?'\u2013':r.X.toFixed(2),
+      title:'Vitality. '+(r.unread?'not read yet':r.X.toFixed(2)+' of 1')
+       +'. What is left after apathy and the shadow weight.'})+'</button>'
+  +'<button class="kb" data-q="xyz">'
+    +cr('3rd Eye',r.unread?0:r.Y*100,{size:'sm',hot:false,glyph:QICON.awareness,
+      raw:r.unread?'\u2013':r.Y.toFixed(2),
+      title:'Awareness of the instrument. '+(r.unread?'not read yet':r.Y.toFixed(2)+' of 1')
+       +'. Intention read against distortion. Not the rail section of the same name.'})+'</button>'
+  +'<button class="kb" data-q="xyz">'
+    +cr('Root',r.unread?0:r.Z*100,{size:'sm',hot:false,glyph:QICON.will,
+      raw:r.unread?'\u2013':r.Z.toFixed(2),
+      title:'Will. '+(r.unread?'not read yet':r.Z.toFixed(2)+' of 1')
+       +'. Integrity carried through a clear segment.'})+'</button>'
+  +'<button class="kb" data-q="flow">'
+    +cr('Heart',r.unread?0:f*100,{size:'sm',hot:false,glyph:QICON.flow,
+      raw:r.unread?'\u2013':f.toFixed(2),
+      title:'Flow. '+(r.unread?'not read yet':f.toFixed(2)+' of 1')
+       +'. What reaches the crown from the root, every seat multiplied by the next.'})
+    +'</button>';})();
  /* who. proportions, not one label. */
  (function(){
   var aff=(r.aff||[]).map(function(v,i){return {i:i,nm:(ARCH[i]||{}).nm||'',v:v};})

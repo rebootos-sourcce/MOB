@@ -1,0 +1,484 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Atmosphere</title>
+<style>
+:root{
+ --bg:#0C0D12; --panel:#13151C; --panel-2:#181A22; --edge:#23262F;
+ --ink:#EFEDE8; --dim:#94908A; --accent:#7EB8D4; --alarm:#FF2E1F;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);
+ font:400 15px/1.55 Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
+ -webkit-font-smoothing:antialiased}
+.wrap{max-width:1560px;margin:0 auto;padding:24px 16px 56px}
+.eyebrow{font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+ color:var(--dim);font-weight:600}
+h1{font:600 26px/1.2 Inter,system-ui,sans-serif;margin:6px 0 2px;letter-spacing:-.01em}
+.sub{color:var(--dim);font-size:13.5px;margin:0 0 20px;max-width:74ch}
+.cols{display:grid;grid-template-columns:1fr 316px;gap:20px;align-items:start}
+.stagewrap{min-width:0}
+/* the focus control. it sets which layer is SHARP, it never removes a layer. */
+.focus{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 12px}
+.focus button{appearance:none;background:var(--panel);color:var(--dim);
+ border:1px solid var(--edge);border-radius:8px;
+ min-height:44px;padding:0 15px;font:500 13px/1 Inter,system-ui,sans-serif;
+ cursor:pointer;display:inline-flex;align-items:center;gap:8px}
+.focus button:hover{color:var(--ink);border-color:#31353f}
+.focus button[aria-pressed="true"]{color:var(--ink);border-color:var(--accent);
+ box-shadow:inset 0 0 0 1px var(--accent)}
+.focus button svg{width:18px;height:18px;fill:none;stroke:currentColor;
+ stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.stage{position:relative;aspect-ratio:1/1;width:100%;
+ max-width:min(940px, calc(100vh - 330px));
+ margin:0 auto;border-radius:14px;overflow:hidden;background:#0A0B10}
+.stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+#far{filter:none;opacity:.9}
+/* the caption rail. this is where the nine on canvas pills went. */
+.rings{display:grid;grid-template-columns:repeat(auto-fit,minmax(132px,1fr));
+ gap:1px;background:var(--edge);border:1px solid var(--edge);border-radius:10px;
+ overflow:hidden;margin:14px 0 0}
+.rings>div{background:var(--panel);padding:10px 12px}
+.rings b{display:block;font:600 10.5px/1.3 Inter,system-ui,sans-serif;
+ letter-spacing:.11em;text-transform:uppercase;color:var(--dim);margin-bottom:4px}
+.rings span{font-size:13px;font-variant-numeric:tabular-nums}
+.rings em{font-style:normal;display:block;color:var(--dim);font-size:11.5px;margin-top:2px}
+.rings>div[data-sharp="1"]{background:var(--panel-2);box-shadow:inset 2px 0 0 var(--accent)}
+.rail{display:flex;flex-direction:column;gap:10px;min-width:0}
+.card{background:var(--panel);border:1px solid var(--edge);border-radius:10px;
+ padding:12px 13px}
+.card>b{display:block;font:600 10.5px/1.3 Inter,system-ui,sans-serif;
+ letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:9px}
+.q{display:flex;align-items:center;gap:10px;padding:5px 0}
+.q .cr{position:relative;width:38px;height:38px;flex:0 0 38px}
+.q .cr svg{position:absolute;inset:0}
+.q .cr .gl{position:absolute;inset:0;display:flex;align-items:center;
+ justify-content:center;font:600 10px/1 Inter,system-ui,sans-serif;letter-spacing:.04em}
+.q .cr .gl svg{position:static;width:17px;height:17px;fill:none;
+ stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.q .t{min-width:0}
+.q .t i{font-style:normal;display:block;font-size:13.5px}
+.q .t em{font-style:normal;display:block;color:var(--dim);font-size:11.5px}
+.focusline{font-size:12.5px;color:var(--dim);line-height:1.5}
+.focusline b{color:var(--ink);font-weight:600}
+.lead{font-size:13px;line-height:1.5}
+.lead b{display:block;font-size:14px;margin-bottom:2px}
+.lead span{color:var(--dim)}
+.plist{margin:0;padding:0;list-style:none;font-size:12.5px}
+.plist li{display:grid;grid-template-columns:1fr auto;gap:8px;padding:4px 0;
+ border-top:1px solid var(--edge)}
+.plist li:first-child{border-top:0}
+.plist li span{color:var(--dim);font-variant-numeric:tabular-nums}
+.foot{margin:26px 0 0;color:var(--dim);font-size:12px;line-height:1.7;
+ border-top:1px solid var(--edge);padding-top:16px}
+.foot code{font:400 11.5px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;
+ color:var(--ink);background:var(--panel-2);padding:1px 5px;border-radius:4px}
+@media (max-width:1040px){
+ .cols{grid-template-columns:1fr}
+}
+@media (max-width:640px){
+ .wrap{padding:18px 16px 44px}
+ h1{font-size:22px}
+ .focus button{padding:0 12px;font-size:12.5px}
+ .rings{grid-template-columns:1fr 1fr}
+}
+</style></head><body>
+<div class="wrap">
+ <div class="eyebrow">Field · lighting two of four</div>
+ <h1>Atmosphere</h1>
+ <p class="sub">The wheel that ships today, with two changes. Nothing is hidden
+  to isolate a layer: the layer in focus is sharp and the rest go to distance,
+  so depth does the work a toggle was doing. And every word comes off the
+  drawing into the rail under it.</p>
+
+ <div class="cols">
+  <div class="stagewrap">
+   <div class="focus" id="focus"></div>
+   <div class="stage" id="stage">
+    <canvas id="far"></canvas>
+    <canvas id="near"></canvas>
+   </div>
+   <div class="rings" id="rings"></div>
+  </div>
+  <div class="rail" id="rail"></div>
+ </div>
+ <div class="foot" id="foot"></div>
+</div>
+<script>
+const F={"who":"Diane","age":46,"role":"founder, second company","says":"I work until the work is done and the work is never done. Rest feels like a moral failure.","CQ":28.09,"DQ":3.51,"SQm":4.39,"Ig":5.9,"It":5.6,"Rz":1.175,"tier":"Corrupt","tierCol":"#C98A5E","X":0.765,"Y":0.495,"Z":0.331,"rad":0.56,"dist":6.02,"darkB":"Solar","darkV":3.64,"nL":8,"nC":91,"under":83,"JQ":0.58,"pole":0.84,"lean":0.086,"outM":4.75,"inM":4,"pi":4,"si":3,"piNm":"Creator","siNm":"Caregiver","gov":"Turned inward","steer":"withheld","dch":"Anticipation","weakL":"Temperance","ch":[["Fear",6,0],["Anger",5,0],["Shame",5,0],["Disgust",3,0],["Apathy",2,9.2],["Shock",4,0],["Sad",3,0],["Surprise",3,0],["Anticipation",8,8.8]],"bIg":[["Root",4.35],["Sacral",2.8],["Solar",7.55],["Heart",6.1],["Throat",6.1],["3rd Eye",6.1],["Crown",6.1]],"laws":[["Truth","Throat",6.1,"M12 3v11 M9 17a3 3 0 006 0 3 3 0 00-6 0"],["Transparency","Throat",6.1,"M4 4h16v16H4z M8 20L20 8"],["Justice","Throat",6.1,"M12 4v4 M4 8h16 M4 8l-2 5h4z M20 8l-2 5h4z"],["Unity","Crown",6.1,"M10 7a5 5 0 100 10 5 5 0 100-10 M14 7a5 5 0 110 10 5 5 0 110-10"],["Awareness","Crown",6.1,"M3 16h18 M7 16a5 5 0 0110 0"],["Nature","Crown",6.1,"M12 21V6 M12 13L7 9 M12 16l5-4 M12 10l4-3"],["Presence","3rd Eye",6.1,"M12 11.4v1.2 M4 12a8 8 0 1116 0 8 8 0 01-16 0"],["Humility","3rd Eye",6.1,"M4 11h16 M4 11a8 8 0 0016 0"],["Equanimity","3rd Eye",6.1,"M3 10h18v4H3z M12 10v4"],["Compassion","Heart",6.1,"M12 19c-4-3-7-5-7-8a4 4 0 017-2 4 4 0 017 2c0 3-3 5-7 8"],["Forgiveness","Heart",6.1,"M9 9H7a4 4 0 000 6h2 M15 15h2a4 4 0 000-6h-2"],["Generosity","Heart",6.1,"M5 13a7 7 0 0014 0 M12 11V3 M9 6l3-3 3 3"],["Aesthetic Beauty","Heart",6.1,"M3 6h18v12H3z M3 18a12 12 0 0112-12"],["Courage","Solar",6.1,"M12 21V4 M8 8l4-4 4 4 M6 14h12"],["Duty","Solar",8.4,"M4 8h16 M7 8v12 M17 8v12"],["Responsibility","Solar",8.1,"M4 9h16v5H4z M9 14v5 M15 14v5 M9 19h6"],["Accountability","Solar",7.6,"M6 4v16 M18 4v16 M6 13h12 M9 8l2 2 4-4"],["Temperance","Sacral",2.2,"M5 5h6l-3 6z M13 19h6l-3-6z M11 10l2 4"],["Detachment","Sacral",3.4,"M3 12h5 M16 12h5 M10 7v10 M14 7v10"],["Non-Harm","Root",6.1,"M4 12a8 8 0 1116 0 8 8 0 01-16 0 M8 12h8"],["Patience","Root",2.6,"M7 4h10 M7 20h10 M7 4l5 8 5-8 M7 20l5-8 5 8"]],"aff":[0.088,0.114,0.33,0.854,1,0.638,0.594,0.467,0.153,0.088,0.087,0.087],"arch":["Warrior","Sage","Rebel","Caregiver","Creator","Magician","Ruler","Explorer","Lover","Jester","Everyman","Innocent"],"masks":[["Child",1.38,-0.669],["Preteen",3.12,1.42],["Teen",2.42,2.414],["Adult",2.49,0.262],["Professional",3.12,1.42],["Ideological",1.29,3.113]],"doms":[["Knowledge","Architect",0.08],["Justice","Architect",0.082],["Imperium","Architect",0.1],["Duty","Architect",0.188],["Fate","Architect",0.435],["Power","Engine",0.805],["Creation","Engine",1],["Dissolution","Engine",0.866],["Descent","Engine",0.669],["Death","Engine",0.38],["Connection","Weaver",0.632],["Exchange","Weaver",0.55],["Restoration","Weaver",0.266],["Provision","Weaver",0.114],["Play","Weaver",0.083],["Nature","Witness",0.08],["Trickster","Witness",0.08],["Mystery","Witness",0.08],["Guardian","Witness",0.08]],"gates":[["aware","Awareness","higher",0,0.7],["detach","Detachment","higher",0,0.6],["intent","Intention","higher",0,0.75],["ignore","Ignorance","lower",0,1.3],["attach","Attachment","lower",0,1.35],["averse","Aversion","lower",0,1.25]],"gg":{"aware":"M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12zM12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0-6 0","detach":"M10 14m-6 0a6 6 0 1 0 12 0a6 6 0 1 0-12 0M19 5m-2 0a2 2 0 1 0 4 0a2 2 0 1 0-4 0","intent":"M12 20V5M6 11l6-6 6 6","ignore":"M2 12s4 5 10 5 10-5 10-5M6 15l-2 3M12 17v3M18 15l2 3","attach":"M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1.5 1.5M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1.5-1.5","averse":"M3 19C3 9 21 9 21 19M12 15m-2 0a2 2 0 1 0 4 0a2 2 0 1 0-4 0"},"pal":{"Root":"#CF5953","Sacral":"#D19255","Solar":"#D4BC70","Heart":"#65CFA5","Throat":"#65B8D4","3rd Eye":"#8296DB","Crown":"#A883D6"},"pv":{"Root":"#F02E3C","Sacral":"#FF7A00","Solar":"#C79200","Heart":"#00A85C","Throat":"#0091C4","3rd Eye":"#3D5AFE","Crown":"#9B27E8"},"child":[["Fear","Trust","Root","M12 3l8 14H4z","lower back, gut","Lumbar plexus"],["Anger","Equanimity","Solar","M13 2L4 14h6l-1 8 9-12h-6z","upper abdomen","Celiac plexus"],["Shame","Worth","Sacral","M5 20V9a7 7 0 0114 0v11M9 20v-6h6v6","pelvic floor","Pudendal plexus"],["Disgust","Acceptance","Sacral","M4 8c4 4 12 4 16 0M6 16c3-3 9-3 12 0","lower abdomen, skin","Sacral and dermis"],["Apathy","Vitality","Throat","M4 12h16M4 7h16M4 17h16","base of neck","Shoulder girdle and throat"],["Shock","Groundedness","3rd Eye","M12 12m-9 0a9 9 0 1018 0 9 9 0 10-18 0M12 12m-4.5 0a4.5 4.5 0 109 0 4.5 4.5 0 10-9 0","forehead, skin","Prefrontal and dermis"],["Sad","Joy","Heart","M12 20s-8-5-8-11a4 4 0 018-2 4 4 0 018 2c0 6-8 11-8 11z","centre chest","Cardiac plexus"],["Surprise","Readiness","Heart","M12 3v18M7 7c-3 2-3 9 0 11M17 7c3 2 3 9 0 11","upper torso","Upper chest and back"],["Anticipation","Presence","Solar","M12 4v11M8 11l4 4 4-4M6 20h12","lower sternum","Below the heart"]],"W":[[1,"Fear","Root","Fear",-1.571,2.197,0,0,0.448,0],[2,"Shame","Root","Shame",-1.513,2.381,0,0,0.583,0],[3,"Guilt","Root","Shame",-1.454,2.381,0,0,0.583,0],[4,"Control","Root","Fear",-1.396,2.197,0,0,0.448,0],[5,"Insecurity","Root","Fear",-1.338,2.197,0,0,0.448,0],[6,"Victimhood","Root","Sad",-1.28,1.099,0,0,0.448,0],[7,"Scarcity","Root","Fear",-1.222,2.204,0,0,0.449,0],[8,"Root_08_Unnamed","Root","",-1.164,0,0,0,0.449,0],[9,"Possession","Root","Shock",-1.105,1.469,0,0,0.449,0],[10,"Lethargy","Root","Sad",-1.047,1.102,0,0,0.449,0],[11,"Resistance","Root","Fear",-0.989,2.204,0,0,0.449,0],[12,"Compulsion","Root","Anticipation",-0.931,0,7.408,4.469,0.449,3.52],[13,"Disconnection","Root","Sad",-0.873,1.128,0,0,0.46,0],[14,"Escapism","Root","Apathy",-0.814,0,7.745,6.992,0.46,4.361],[15,"Panic","Root","Surprise",-0.756,1.128,0,0,0.46,0],[16,"Collapse","Root","Sad",-0.698,1.128,0,0,0.46,0],[17,"Addiction","Sacral","Apathy",-0.64,0,7.345,6.533,0.46,3.363],[18,"Lust","Sacral","Apathy",-0.582,0,7.345,6.533,0.46,3.363],[19,"Envy","Sacral","Anger",-0.524,2.941,0,0,0.667,0],[20,"Jealousy","Sacral","Anger",-0.465,2.941,0,0,0.667,0],[21,"Co-Dependency","Sacral","Disgust",-0.407,1.765,0,0,0.667,0],[22,"Shame Of Desire","Sacral","Apathy",-0.349,0,7.345,6.44,0.513,3.363],[23,"Hypersexuality","Sacral","Apathy",-0.291,0,7.345,6.44,0.513,3.363],[24,"Avoidance Of Pleasure","Sacral","Apathy",-0.233,0,7.345,6.179,0.661,3.363],[25,"Manipulation Through Emotion","Sacral","Anger",-0.175,3.791,0,0,0.859,0],[26,"Oversensitivity","Sacral","Surprise",-0.116,1.75,0,0,0.661,0],[27,"Fantasy","Sacral","Apathy",-0.058,0,7.345,6.179,0.661,3.363],[28,"Infatuation","Sacral","Apathy",0,0,7.345,6.179,0.661,3.363],[29,"Obsession","Sacral","Anticipation",0.058,0,7.026,2.36,0.661,2.565],[30,"Guilt Of Pleasure","Sacral","Apathy",0.116,0,7.345,5.787,0.883,3.363],[31,"Need For Approval","Sacral","Shame",0.175,5.065,0,0,1.148,0],[32,"Excess Emotion","Sacral","Shock",0.233,3.117,0,0,0.883,0],[33,"Pride","Solar","Anger",0.291,3.92,0,0,1.148,0],[34,"Arrogance","Solar","Anger",0.349,3.92,0,0,1.148,0],[35,"Competition","Solar","Anger",0.407,3.92,0,0,1.148,0],[36,"Anger","Solar","Anger",0.465,4.439,0,0,1.3,0],[37,"Judgment","Solar","Anger",0.524,4.439,0,0,1.3,0],[38,"Entitlement","Solar","Anger",0.582,4.439,0,0,1.3,0],[39,"Rebellion","Solar","Anger",0.64,4.439,0,0,1.3,0],[40,"Perfectionism","Solar","Fear",0.698,4.097,0,0,1,0],[41,"Force","Solar","Fear",0.756,3.769,0,0,0.92,0],[42,"Rigidity","Solar","Fear",0.814,3.769,0,0,0.92,0],[43,"Resentment (Solar)","Solar","Anger",0.873,4.083,0,0,1.196,0],[44,"Unworthiness","Solar","Sad",0.931,1.885,0,0,0.92,0],[45,"Anxiety","Solar","Anticipation",0.989,0,8.196,3.171,0.92,5.491],[46,"Self-Judgment (Solar)","Solar","Shame",1.047,4.083,0,0,1.196,0],[47,"Need To Win","Solar","Anger",1.105,3.558,0,0,1.042,0],[48,"Superiority","Solar","Anger",1.164,3.558,0,0,1.042,0],[49,"Hatred","Heart","Anger",1.222,3.876,0,0,1.042,0],[50,"Resentment (Heart)","Heart","Anger",1.28,3.876,0,0,1.042,0],[51,"Self-Judgment (Heart)","Heart","Shame",1.338,3.876,0,0,1.042,0],[52,"Betrayal","Heart","Surprise",1.396,1.789,0,0,0.802,0],[53,"Separation","Heart","Sad",1.454,1.402,0,0,0.628,0],[54,"Martyrdom","Heart","Sad",1.513,1.402,0,0,0.628,0],[55,"Longing","Heart","Sad",1.571,1.402,0,0,0.628,0],[56,"Closed Heart","Heart","Sad",1.629,1.402,0,0,0.628,0],[57,"Manipulative Kindness","Heart","Anger",1.687,3.037,0,0,0.817,0],[58,"Expectation","Heart","Anticipation",1.745,0,7.839,3.202,0.779,4.598],[59,"Blame","Heart","Anger",1.804,3.767,0,0,1.013,0],[60,"False Love","Heart","Disgust",1.862,2.26,0,0,1.013,0],[61,"Rejection","Heart","Sad",1.92,1.739,0,0,0.779,0],[62,"Avoidance Of Grief","Heart","Sad",1.978,1.739,0,0,0.779,0],[63,"Need To Be Needed","Heart","Disgust",2.036,2.26,0,0,1.013,0],[64,"Deceit","Throat","Disgust",2.094,2.118,0,0,0.949,0],[65,"Self-Silencing","Throat","Shame",2.153,3.53,0,0,0.949,0],[66,"People Pleasing","Throat","Shame",2.211,3.53,0,0,0.949,0],[67,"Lying","Throat","Disgust",2.269,2.118,0,0,0.949,0],[68,"Interrupting","Throat","Anger",2.327,3.53,0,0,0.949,0],[69,"Comparison","Throat","Shame",2.385,3.53,0,0,0.949,0],[70,"Excuse","Throat","Disgust",2.443,1.623,0,0,0.727,0],[71,"Stage Performing","Throat","Shock",2.502,1.664,0,0,0.559,0],[72,"Speaking To Be Right","Throat","Anger",2.56,2.704,0,0,0.727,0],[73,"Manic Expression","Throat","Shock",2.618,1.664,0,0,0.559,0],[74,"Talking To Avoid Feeling","Throat","Shock",2.676,1.664,0,0,0.559,0],[75,"Spiritual Language To Manipulate","Throat","Disgust",2.734,1.359,0,0,0.609,0],[76,"Delusion","3rd Eye","Disgust",2.793,1.359,0,0,0.609,0],[77,"Cynicism","3rd Eye","Disgust",2.851,1.359,0,0,0.609,0],[78,"Distrust","3rd Eye","Fear",2.909,2.09,0,0,0.468,0],[79,"Hypervigilance","3rd Eye","Anticipation",2.967,0,7.839,5.052,0.468,4.598],[80,"Dogma","3rd Eye","Disgust",3.025,1.359,0,0,0.609,0],[81,"Overanalysis","3rd Eye","Shock",3.083,1.338,0,0,0.45,0],[82,"Projection","3rd Eye","Disgust",3.142,1.305,0,0,0.585,0],[83,"Paranoia","3rd Eye","Fear",3.2,2.007,0,0,0.45,0],[84,"Distortion","3rd Eye","Disgust",3.258,1.305,0,0,0.585,0],[85,"Doubt","3rd Eye","Fear",3.316,2.007,0,0,0.45,0],[86,"Idealism","3rd Eye","Apathy",3.374,0,8.195,7.526,0.45,5.488],[87,"Lack Of Discernment","3rd Eye","Disgust",3.432,1.3,0,0,0.582,0],[88,"Doubt Of God","Crown","Anger",3.491,2.166,0,0,0.582,0],[89,"Hubris","Crown","Anger",3.549,2.166,0,0,0.582,0],[90,"Spiritual Pride","Crown","Disgust",3.607,1.3,0,0,0.582,0],[91,"Nihilism","Crown","Sad",3.665,1,0,0,0.448,0],[92,"Spiritual Escapism","Crown","Apathy",3.723,0,8.195,7.529,0.448,5.488],[93,"False Humility","Crown","Shame",3.782,2.166,0,0,0.582,0],[94,"Seeking Validation","Crown","Shame",3.84,2.166,0,0,0.582,0],[95,"Savior Complex","Crown","Disgust",3.898,1.3,0,0,0.582,0],[96,"Condemnation","Crown","Anger",3.956,2.166,0,0,0.582,0],[97,"Need To Be Special","Crown","Disgust",4.014,1.3,0,0,0.582,0],[98,"Unworthy Of God","Crown","Sad",4.072,1,0,0,0.448,0],[99,"Knowing Better Than God","Crown","Anger",4.131,2.166,0,0,0.582,0],[100,"Denial Of Truth","Crown","Anger",4.189,2.166,0,0,0.582,0],[101,"Rejection Of Spirit","Crown","Sad",4.247,1,0,0,0.448,0],[102,"Fear Of God","Crown","Anger",4.305,2.166,0,0,0.582,0],[103,"Anger At God","Crown","Anger",4.363,2.166,0,0,0.582,0],[104,"Forgetfulness","Crown","Sad",4.422,1,0,0,0.448,0],[105,"Denial Of Light","Crown","Anger",4.48,2.166,0,0,0.582,0],[106,"Rejection Of Unity","Crown","Sad",4.538,1,0,0,0.448,0],[107,"Self-Exclusion","Crown","Shame",4.596,2.166,0,0,0.582,0],[108,"Endless Seeking","Crown","Sad",4.654,1,0,0,0.448,0]],"sabs":[["People-Pleaser",5.5,0.078,"Collapse","Sacral",0,0,[[0.175,"Sacral",1.148,5.065],[-0.175,"Sacral",0.859,3.791],[0.233,"Sacral",0.883,3.117]]],["Imposter",5.5,0.078,"Collapse","Sacral",0,0,[[0.175,"Sacral",1.148,5.065],[-0.175,"Sacral",0.859,3.791],[0.233,"Sacral",0.883,3.117]]],["Manipulator",5.5,0.553,"Predatory","Solar",0,0,[[0.465,"Solar",1.3,4.439],[0.524,"Solar",1.3,4.439],[0.582,"Solar",1.3,4.439],[0.64,"Solar",1.3,4.439]]],["Diffuse Drifter overshot",5.488,-2.734,"Enmeshment","3rd Eye",1,1,[[3.374,"3rd Eye",0.45,0],[3.723,"Crown",0.448,0]]],["Deflector",5,0.078,"Collapse","Sacral",0,0,[[0.175,"Sacral",1.148,5.065],[-0.175,"Sacral",0.859,3.791],[0.233,"Sacral",0.883,3.117]]],["Dreamer",4.5,1.409,"Collapse","Heart",0,0,[[1.222,"Heart",1.042,3.876],[1.28,"Heart",1.042,3.876],[1.338,"Heart",1.042,3.876],[1.804,"Heart",1.013,3.767]]],["Aggressor",4.251,0.752,"Predatory","Solar",0,0,[[0.465,"Solar",1.3,4.439],[1.222,"Heart",1.042,3.876],[0.582,"Solar",1.3,4.439]]],["Diffuse Hider",4.138,1.22,"Collapse","Sacral",0,1,[[0.175,"Sacral",1.148,5.065],[1.047,"Solar",1.196,4.083],[1.338,"Heart",1.042,3.876],[2.385,"Throat",0.949,3.53]]],["Stickler",4,0.078,"Rigidity","Sacral",0,0,[[0.175,"Sacral",1.148,5.065],[-0.175,"Sacral",0.859,3.791],[0.233,"Sacral",0.883,3.117]]],["Solar Striker",3.984,0.674,"Grandiosity","Solar",0,1,[[0.349,"Solar",1.148,3.92],[0.407,"Solar",1.148,3.92],[0.64,"Solar",1.3,4.439],[0.873,"Solar",1.196,4.083],[1.105,"Solar",1.042,3.558]]],["Superior",3.972,0.676,"Grandiosity","Solar",0,0,[[1.164,"Solar",1.042,3.558],[0.291,"Solar",1.148,3.92],[0.582,"Solar",1.3,4.439]]],["Hyper-Achiever",3.858,0.717,"Grandiosity","Solar",0,0,[[0.291,"Solar",1.148,3.92],[0.698,"Solar",1,4.097],[1.164,"Solar",1.042,3.558]]],["Solar Flincher",3.769,0.785,"Dysregulation","Solar",0,1,[[0.756,"Solar",0.92,3.769],[0.814,"Solar",0.92,3.769]]]],"cxs":[["Solar Striker + Superior",3.978,0.675,"Grandiosity",[[0.674,3.984],[0.676,3.972]]],["Manipulator + Aggressor",4.876,0.652,"Predatory",[[0.553,5.5],[0.752,4.251]]],["People-Pleaser + Imposter",5.5,0.078,"Collapse",[[0.078,5.5],[0.078,5.5]]],["Deflector + Dreamer",4.75,0.743,"Collapse",[[0.078,5],[1.409,4.5]]]],"hys":[["Collapse",5.125,0.411,"the structure gives way downward and stays down",[[0.078,5.5],[0.743,4.75]]]],"sups":[]};
+var TAU=Math.PI*2, PAL=F.pal;
+var BANDS=['Root','Sacral','Solar','Heart','Throat','3rd Eye','Crown'];
+function hx(h){var n=parseInt(String(h).slice(1),16);return [(n>>16)&255,(n>>8)&255,n&255];}
+function rgba(c,a){return 'rgba('+c[0]+','+c[1]+','+c[2]+','+(+a).toFixed(3)+')';}
+function mixc(a,b,t){return a.map(function(v,i){return Math.round(v+(b[i]-v)*t);});}
+function clamp(v,a,b){return v<a?a:v>b?b:v;}
+function lerp(a,b,t){return a+(b-a)*t;}
+function cqRamp(cq){var t=clamp(cq,0,100)/100;
+ var ST=[[0,[58,23,20]],[0.28,[163,58,50]],[0.50,[90,96,112]],
+         [0.76,[126,184,212]],[1,[234,244,249]]];
+ for(var i=1;i<ST.length;i++){if(t<=ST[i][0]){var a=ST[i-1],b=ST[i],f=(t-a[0])/(b[0]-a[0]);
+  return [Math.round(a[1][0]+(b[1][0]-a[1][0])*f),Math.round(a[1][1]+(b[1][1]-a[1][1])*f),
+          Math.round(a[1][2]+(b[1][2]-a[1][2])*f)];}}
+ return ST[4][1];}
+var INK=[239,237,232], GOLDC=hx('#7EB8D4');
+function bc(b){return hx(PAL[b]||'#7EB8D4');}
+
+/* ============================================================
+   THE FOUR LAYERS, AND FOCUS IS DISTANCE RATHER THAN ABSENCE.
+
+   The shipped Field has a depth ladder that ADDS a layer per step and a zoom
+   that adds more. Layer isolation is the named gap: a person who wants to see
+   only the chain has no way to quieten the rest. Hiding is the wrong answer
+   because the whole argument of this surface is that the layers are one
+   circuit. So the layer in focus draws to the near canvas at full contrast and
+   everything else draws to a half resolution canvas that is scaled up, which
+   is the same trick the shipped aura uses and it costs a quarter of the fill.
+   ============================================================ */
+var LAYERS=[
+ {k:'charge',   nm:'Charge',   ic:'M13 2L4 14h6l-1 8 9-12h-6z',
+  d:'The three quotients and the 112 addresses carrying them.'},
+ {k:'patterns', nm:'Patterns', ic:'M12 5a7 7 0 100 14 7 7 0 100-14M12 9a3 3 0 100 6 3 3 0 100-6',
+  d:'The saboteurs running on top of the charge, and which addresses built each one.'},
+ {k:'chains',   nm:'Chains',   ic:'M9 9H7a4 4 0 000 6h2M15 15h2a4 4 0 000-6h-2M9 12h6',
+  d:'How a pattern compounds. Saboteur to complex to hyper complex, inward.'},
+ {k:'seats',    nm:'Seats',    ic:'M4 19h16M4 14h16M4 9h16M4 4h16',
+  d:'The seven seats, what each holds and the integrity it is held against.'}];
+var FOCUS='charge';
+
+/* --- the seat reading, read off F --- */
+var SEAT=BANDS.map(function(b){
+ var s=F.W.filter(function(n){return n[2]===b;});
+ var angs=s.map(function(n){return n[4];});
+ return {b:b,n:s.length,
+  load:s.reduce(function(a,n){return a+n[5];},0)/s.length,
+  pole:s.reduce(function(a,n){return a+n[7];},0)/s.length,
+  ig:F.bIg.filter(function(x){return x[0]===b;})[0][1],
+  a0:Math.min.apply(null,angs),a1:Math.max.apply(null,angs)};});
+var HEAVY=F.W.slice().sort(function(a,b){return b[5]-a[5];})[0];
+
+/* --- the canvases. near is full resolution, far is half and upscaled. --- */
+var near=document.getElementById('near'), ng=near.getContext('2d');
+var far=document.getElementById('far'),  fg=far.getContext('2d');
+var CW=0,CH=0,CX=0,CY=0,U=0,DPR=1,FAR=0.5;
+var REDUCED=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+function size(){
+ var r=document.getElementById('stage').getBoundingClientRect();
+ DPR=Math.min(2,window.devicePixelRatio||1);
+ CW=Math.round(r.width); CH=Math.round(r.height);
+ near.width=Math.round(CW*DPR); near.height=Math.round(CH*DPR);
+ far.width=Math.round(CW*DPR*FAR); far.height=Math.round(CH*DPR*FAR);
+ CX=CW/2; CY=CH/2; U=Math.min(CW,CH)*0.5;
+}
+
+/* one arc band, in whichever context is current */
+var g=ng;
+function arcP(r0,r1,a0,a1){
+ g.beginPath();
+ g.arc(CX,CY,r1,a0,a1);
+ g.arc(CX,CY,r0,a1,a0,true);
+ g.closePath();}
+function quad(a0,r0,a1,r1,pull,st,w,dash){
+ var am=Math.atan2(Math.sin(a0)+Math.sin(a1),Math.cos(a0)+Math.cos(a1));
+ var rm=(r0+r1)/2*pull;
+ g.beginPath();
+ g.moveTo(CX+Math.cos(a0)*r0,CY+Math.sin(a0)*r0);
+ g.quadraticCurveTo(CX+Math.cos(am)*rm,CY+Math.sin(am)*rm,
+                    CX+Math.cos(a1)*r1,CY+Math.sin(a1)*r1);
+ if(dash)g.setLineDash(dash);
+ g.strokeStyle=st;g.lineWidth=w;g.stroke();g.setLineDash([]);}
+
+var R={}, T0=performance.now();
+function geom(){
+ R={shell:U*.68, sab:U*.545, cx:U*.425, hy:U*.335, gate:U*.20, core:U*.115};}
+
+/* ---- 1. THE WASH. area of effect, behind everything. ---- */
+function drawWash(t){
+ var reach=lerp(.20,.58,F.CQ/100), dens=clamp(F.DQ/7,0,1);
+ var warm=bc('Heart'), lead=bc(F.darkB);
+ var gr0=g.createRadialGradient(CX,CY,0,CX,CY,Math.max(CW,CH)*reach);
+ gr0.addColorStop(0,rgba(GOLDC,.30*F.rad));
+ gr0.addColorStop(.34,rgba(GOLDC,.09*F.rad));
+ gr0.addColorStop(1,rgba(GOLDC,0));
+ g.fillStyle=gr0;g.fillRect(0,0,CW,CH);
+ [[.13+Math.sin(t)*.05,.19+Math.cos(t*.8)*.05],[.87+Math.cos(t*.7)*.05,.25+Math.sin(t)*.05],
+  [.09,.83+Math.sin(t*.6)*.05],[.91,.79+Math.cos(t*.9)*.05]].forEach(function(xy,i){
+  var c=i%2?warm:lead;
+  var gr=g.createRadialGradient(xy[0]*CW,xy[1]*CH,0,xy[0]*CW,xy[1]*CH,
+    Math.max(CW,CH)*(.28+dens*.36));
+  gr.addColorStop(0,rgba(c,.26*dens));gr.addColorStop(1,rgba(c,0));
+  g.fillStyle=gr;g.fillRect(0,0,CW,CH);});}
+
+/* ---- 2. THE CHORDS. weight from w, tension from susceptibility. ---- */
+function w01(w){return clamp((w-3.5)/3.0,0,1);}
+function ten01(s){return clamp((s-0.45)/0.85,0,1);}
+function sag(base,t){return base*(1.28-0.62*t);}
+function drawChains(a){
+ if(a<=0.01)return;
+ F.sabs.forEach(function(s){var k=w01(s[1]);
+  s[7].forEach(function(p){
+   quad(p[0],R.shell*.92,s[2],R.sab,sag(.42,ten01(p[2])),
+    rgba(bc(p[1]),a*.46*(0.55+k*0.80)),1.6*(0.45+k*1.45),s[6]?[3,3]:null);});});
+ F.cxs.forEach(function(c){var k=w01(c[1]);
+  c[4].forEach(function(p){
+   quad(p[0],R.sab,c[2],R.cx,sag(.44,w01(p[1])),
+    rgba(bc('Solar'),a*.62*(0.55+k*0.80)),2.4*(0.45+k*1.45));});});
+ F.hys.forEach(function(h){var k=w01(h[1]);
+  h[4].forEach(function(p){
+   quad(p[0],R.cx,h[2],R.hy,sag(.46,w01(p[1])),
+    rgba(bc('Sacral'),a*.74*(0.60+k*0.70)),3.2*(0.50+k*1.30));});});}
+
+/* ---- 3. THE BEADS. one per pattern, sphere shaded. ---- */
+function bead(ang,rad,size,c,a){
+ var x=CX+Math.cos(ang)*rad, y=CY+Math.sin(ang)*rad;
+ var b2=g.createRadialGradient(x-size*.35,y-size*.4,size*.06,x,y,size);
+ b2.addColorStop(0,rgba(mixc(c,[255,255,255],.72),a));
+ b2.addColorStop(.5,rgba(c,a));
+ b2.addColorStop(1,rgba(mixc(c,[0,0,0],.45),a));
+ g.fillStyle=b2;g.beginPath();g.arc(x,y,size,0,TAU);g.fill();
+ g.beginPath();g.arc(x-size*.32,y-size*.36,size*.24,0,TAU);
+ g.fillStyle='rgba(255,255,255,'+(0.7*a).toFixed(3)+')';g.fill();}
+function drawBeads(a){
+ if(a<=0.01)return;
+ F.sabs.forEach(function(s){bead(s[2],R.sab,5.4,bc(s[4]),a);});
+ F.cxs.forEach(function(c){bead(c[2],R.cx,7.2,bc('Solar'),a);});
+ F.hys.forEach(function(h){bead(h[2],R.hy,10,bc('Sacral'),a);});}
+
+/* ---- 4. THE SHELL. 112 addresses. SQ. ---- */
+function drawShell(a,enter){
+ var hw=TAU/108*0.43;
+ F.W.forEach(function(n){
+  var ea=enter(n[2]); if(ea<=0)return;
+  var ang=n[4]+(1-ea)*0.19, ld=clamp(n[5]/10,0,1)*ea;
+  var carrying=n[5]>=4;
+  var d=U*.016+ld*U*.088, r0=R.shell-d;
+  arcP(r0,R.shell,ang-hw,ang+hw);
+  var c=bc(n[2]);
+  var gr=g.createRadialGradient(CX,CY,r0,CX,CY,R.shell);
+  gr.addColorStop(0,rgba(mixc(c,[0,0,0],.36),a*(carrying?.34+ld*.6:.08)));
+  gr.addColorStop(1,rgba(mixc(c,[255,255,255],.44),a*(carrying?.7:.15)));
+  g.fillStyle=gr;g.fill();
+  /* the alarm edge is reserved and earned. nothing here reaches it. */
+  if(n[5]>=9){g.strokeStyle=rgba(hx('#FF2E1F'),a*.85);g.lineWidth=1.4;g.stroke();}});}
+
+/* ---- 5. THE SEAT BANDS. held outward, integrity inward. from lighting one. ---- */
+function drawSeats(a){
+ if(a<=0.01)return;
+ var pad=TAU/108*0.42;
+ SEAT.forEach(function(s){
+  var col=bc(s.b), a0=s.a0-pad, a1=s.a1+pad;
+  var ho=s.load/10*(U*.20), hi=s.ig/10*(U*.115);
+  arcP(R.shell*1.035,R.shell*1.035+ho,a0,a1);
+  g.fillStyle=rgba(col,a*.58);g.fill();
+  arcP(R.shell*1.035-hi,R.shell*1.035,a0,a1);
+  g.fillStyle=rgba(mixc(col,INK,.55),a*.17);g.fill();
+  g.beginPath();g.arc(CX,CY,R.shell*1.035,a0,a1);
+  g.strokeStyle=rgba(mixc(col,INK,.4),a*.42);g.lineWidth=1;g.stroke();});}
+
+/* ---- 6. THE SIX GATES. ring on a stem, and the pill holds a dash when
+   nothing has been read. no story is committed on this profile, so all six
+   read a dash rather than inventing a percent. ---- */
+function drawGates(cr0,a){
+ var hi=F.gates.filter(function(v){return v[2]==='higher';});
+ var lo=F.gates.filter(function(v){return v[2]==='lower';});
+ var evid=F.gates.some(function(v){return v[3]>0;});
+ var RR=Math.max(11,U*.037), rr=cr0*1.3+U*.085;
+ function gate(v,i,n,up){
+  var ang=(up?-Math.PI/2:Math.PI/2)+(i-(n-1)/2)*0.72;
+  var x=CX+Math.cos(ang)*rr, y=CY+Math.sin(ang)*rr;
+  var c=up?bc('Heart'):bc('Root'), f=v[3]/100;
+  g.beginPath();
+  g.moveTo(CX+Math.cos(ang)*cr0*1.12,CY+Math.sin(ang)*cr0*1.12);
+  g.lineTo(x-Math.cos(ang)*(RR+3),y-Math.sin(ang)*(RR+3));
+  g.strokeStyle=rgba(c,a*((evid?.25:.40)+f*.6));
+  g.lineWidth=1+f*3;g.lineCap='round';g.stroke();g.lineCap='butt';
+  g.beginPath();g.arc(x,y,RR,0,TAU);g.fillStyle=rgba([23,25,34],a*.92);g.fill();
+  g.beginPath();g.arc(x,y,RR,0,TAU);
+  g.strokeStyle=rgba(c,a*(evid?.22:.42));g.lineWidth=2.4;g.stroke();
+  if(f>0){g.beginPath();g.arc(x,y,RR,-Math.PI/2,-Math.PI/2+TAU*f);
+   g.strokeStyle=rgba(c,a*.95);g.lineWidth=2.4;g.lineCap='round';g.stroke();
+   g.lineCap='butt';}
+  var P=new Path2D(F.gg[v[0]]), sc=(RR*1.15)/24;
+  g.save();g.translate(x-RR*0.575,y-RR*0.575);g.scale(sc,sc);
+  g.lineWidth=1.9/sc;g.lineCap='round';g.lineJoin='round';
+  g.strokeStyle=rgba(INK,a*(evid?.95:.82));g.stroke(P);g.restore();}
+ hi.forEach(function(v,i){gate(v,i,hi.length,true);});
+ lo.forEach(function(v,i){gate(v,i,lo.length,false);});}
+
+/* ---- 7. THE CORE. sized and lit by coherence, and it prints nothing. ---- */
+function drawCore(t,a){
+ var coh=F.CQ/100, breathe=REDUCED?0:Math.sin(t*1.4)*.05;
+ var sz=coh<0.5?lerp(0.34,0.72,coh/0.5):lerp(0.72,1.06,(coh-0.5)/0.5);
+ var cr0=U*.26*sz*(1+breathe);
+ var gc=cqRamp(F.CQ);
+ var glow=coh<=0.5?0:(coh-0.5)/0.5;
+ if(glow>0){
+  var halo=g.createRadialGradient(CX,CY,cr0*.90,CX,CY,cr0*(1.18+glow*1.5));
+  halo.addColorStop(0,rgba(mixc(gc,[255,255,255],.35),a*glow*0.92));
+  halo.addColorStop(.42,rgba(mixc(gc,[0,0,0],.4),a*glow*0.18));
+  halo.addColorStop(1,rgba(gc,0));
+  g.fillStyle=halo;g.beginPath();g.arc(CX,CY,cr0*(1.18+glow*1.5),0,TAU);g.fill();}
+ g.beginPath();g.arc(CX,CY,cr0,0,TAU);g.fillStyle=rgba(gc,a);g.fill();
+ g.lineWidth=Math.max(1.2,cr0*.05);
+ g.strokeStyle=rgba(mixc(gc,[0,0,0],.45),a*.9);g.stroke();
+ var sh=g.createRadialGradient(CX-cr0*.3,CY-cr0*.42,cr0*.04,CX-cr0*.1,CY-cr0*.15,cr0*.95);
+ sh.addColorStop(0,rgba(mixc(gc,[255,255,255],.4),a*.45));
+ sh.addColorStop(.55,rgba(gc,0));
+ g.fillStyle=sh;g.beginPath();g.arc(CX,CY,cr0,0,TAU);g.fill();
+ g.beginPath();g.arc(CX-cr0*.3,CY-cr0*.36,cr0*.24,0,TAU);
+ g.fillStyle='rgba(255,255,252,'+(lerp(.28,.85,coh)*a).toFixed(2)+')';g.fill();
+ return cr0;}
+
+/* ---- 8. THE LEAD LINE. one focus, and it runs OUTSIDE the last ring so the
+   word it points at is off the drawing. ---- */
+function drawLead(a){
+ var ang=HEAVY[4], col=bc(HEAVY[2]);
+ var r0=R.shell*1.035+SEAT.filter(function(s){return s.b===HEAVY[2];})[0].load/10*(U*.20)+4;
+ var r1=U*0.975;
+ g.beginPath();
+ g.moveTo(CX+Math.cos(ang)*r0,CY+Math.sin(ang)*r0);
+ g.lineTo(CX+Math.cos(ang)*r1,CY+Math.sin(ang)*r1);
+ g.strokeStyle=rgba(mixc(col,[255,255,255],.35),a*.9);
+ g.lineWidth=1.4;g.stroke();
+ g.beginPath();g.arc(CX+Math.cos(ang)*r1,CY+Math.sin(ang)*r1,4.5,0,TAU);
+ g.strokeStyle=rgba(mixc(col,[255,255,255],.45),a);g.lineWidth=1.8;g.stroke();}
+
+/* ============================================================
+   THE PASS. Two contexts. Everything not in focus is drawn to the half
+   resolution canvas and scaled up, which is the distance. The layer in focus
+   is drawn sharp on top.
+   ============================================================ */
+var FRAMES=[], LASTMS=0, ENTER0=performance.now();
+function enterFor(b){
+ if(REDUCED)return 1;
+ var i=BANDS.indexOf(b); if(i<0)i=0;
+ var e=performance.now()-ENTER0-i*62;
+ if(e<=0)return 0; if(e>=380)return 1;
+ var k=e/380; return 1-Math.pow(1-k,3);}
+
+function sharpness(layer){return FOCUS===layer?1:0;}
+function frame(){
+ var t0=performance.now();
+ var t=REDUCED?0:(t0-T0)/1000;
+ geom();
+ /* --- the far pass. half resolution, everything out of focus. --- */
+ g=fg;
+ fg.setTransform(DPR*FAR,0,0,DPR*FAR,0,0);
+ fg.clearRect(0,0,CW,CH);
+ g.save();g.globalAlpha=0.44;drawWash(t*0.09);g.restore();
+ if(!sharpness('chains'))    drawChains(0.62);
+ if(!sharpness('patterns'))  drawBeads(0.55);
+ if(!sharpness('charge'))  { drawShell(0.55,enterFor); }
+ if(!sharpness('seats'))     drawSeats(0.50);
+ /* --- the near pass. full resolution, the layer in focus, plus the core and
+    the gates, which belong to the instrument at every focus. --- */
+ g=ng;
+ ng.setTransform(DPR,0,0,DPR,0,0);
+ ng.clearRect(0,0,CW,CH);
+ if(sharpness('chains'))    drawChains(1);
+ if(sharpness('patterns')) {drawChains(0.18);drawBeads(1);}
+ if(sharpness('charge'))     drawShell(1,enterFor);
+ if(sharpness('seats'))      drawSeats(1);
+ var cr0=drawCore(t,1);
+ drawGates(cr0,1);
+ if(sharpness('charge')||sharpness('seats'))drawLead(1);
+ var ms=performance.now()-t0;
+ FRAMES.push(ms); if(FRAMES.length>120)FRAMES.shift();
+ LASTMS=ms;
+ window.__FRAME_MS=FRAMES.slice();
+ requestAnimationFrame(frame);}
+
+/* ---- the focus control ---- */
+function svgi(d){return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="'+d+'"/></svg>';}
+function drawFocus(){
+ document.getElementById('focus').innerHTML=LAYERS.map(function(l){
+  return '<button type="button" data-k="'+l.k+'" aria-pressed="'
+   +(FOCUS===l.k?'true':'false')+'" title="'+l.d+'">'+svgi(l.ic)+l.nm+'</button>';}).join('');
+ document.getElementById('focus').querySelectorAll('button').forEach(function(b){
+  b.addEventListener('click',function(){FOCUS=b.dataset.k;drawFocus();drawRings();});});}
+
+/* ---- the caption rail. the nine on canvas pills live here now. ---- */
+var RINGDEF=[
+ {k:'charge',  nm:'Addresses',  v:function(){return F.nL+' of 112 above the line';},
+  e:function(){return F.nC+' of 112 carry something';}},
+ {k:'patterns',nm:'Saboteurs',  v:function(){return F.sabs.length+' of 33 named';},
+  e:function(){return 'plus the inferred clusters';}},
+ {k:'chains',  nm:'Complexes',  v:function(){return F.cxs.length+' pairs';},
+  e:function(){return 'two saboteurs in one family';}},
+ {k:'chains',  nm:'Hyper',      v:function(){return F.hys.length+' of 16 families';},
+  e:function(){return F.hys.length?F.hys[0][0]:'none formed';}},
+ {k:'chains',  nm:'Character',  v:function(){return F.sups.length+' formed';},
+  e:function(){return 'two hyper complexes, weight 5.6 of 10';}},
+ {k:'seats',   nm:'Seats',      v:function(){return '7 of 7';},
+  e:function(){return F.darkB+' carries most';}},
+ {k:'charge',  nm:'Gates',      v:function(){return '6, all unread';},
+  e:function(){return 'no story committed';}}];
+function drawRings(){
+ document.getElementById('rings').innerHTML=RINGDEF.map(function(r){
+  return '<div data-sharp="'+(FOCUS===r.k?1:0)+'"><b>'+r.nm+'</b>'
+   +'<span>'+r.v()+'</span><em>'+r.e()+'</em></div>';}).join('');}
+
+/* ---- the right rail ---- */
+function crEl(letters,pct,col,raw){
+ var r=15.5,C2=TAU*r,off=C2*(1-clamp(pct,0,100)/100);
+ return '<div class="q"><span class="cr" style="color:'+col+'">'
+  +'<svg width="38" height="38" aria-hidden="true">'
+  +'<circle cx="19" cy="19" r="'+r+'" fill="none" stroke="rgba(128,128,128,.22)" stroke-width="3"/>'
+  +'<circle cx="19" cy="19" r="'+r+'" fill="none" stroke="'+col+'" stroke-width="3" '
+  +'stroke-linecap="round" stroke-dasharray="'+C2.toFixed(1)+'" '
+  +'stroke-dashoffset="'+off.toFixed(1)+'"/></svg>'
+  +'<span class="gl">'+letters+'</span></span>'
+  +'<span class="t"><i>'+raw+'</i><em>'+arguments[4]+'</em></span></div>';}
+function drawRail(){
+ var gc=cqRamp(F.CQ), gcs='rgb('+gc.join(',')+')';
+ var lead=F.sabs[0];
+ document.getElementById('rail').innerHTML=
+ '<div class="card"><b>The three quotients</b>'
+ +crEl('CQ',F.CQ,gcs,F.CQ.toFixed(1)+' of 100','coherence')
+ +crEl('DQ',F.DQ/10.8*100,PAL[F.darkB],F.DQ.toFixed(2)+' of 10.8 possible here','shadow weight')
+ +crEl('SQ',F.SQm*10,PAL.Solar,F.SQm.toFixed(2)+' of 10','mean charge above the line')
+ +'</div>'
+ +'<div class="card"><b>In focus</b><div class="focusline" id="fl"></div></div>'
+ +'<div class="card"><b>The one address</b><div class="lead">'
+ +'<b>'+HEAVY[1]+'</b><span>'+HEAVY[2]+' seat, SQ '+HEAVY[5].toFixed(2)+' of 10. '
+ +'The lead line on the drawing points here.</span></div></div>'
+ +'<div class="card"><b>Heaviest patterns</b><ul class="plist">'
+ +F.sabs.slice(0,7).map(function(s){
+   return '<li>'+s[0]+'<span>'+s[1].toFixed(2)+' of 10</span></li>';}).join('')
+ +'</ul></div>'
+ +'<div class="card"><b>The six gates</b><ul class="plist">'
+ +F.gates.map(function(v){
+   return '<li>'+v[1]+'<span>'+(v[3]>0?v[3]+'% of the story':'no story read')
+    +'</span></li>';}).join('')
+ +'</ul></div>'
+ +'<div class="card"><b>Frame cost</b><div class="focusline" id="fps">measuring</div></div>';
+ syncFocusLine();}
+function syncFocusLine(){
+ var l=LAYERS.filter(function(x){return x.k===FOCUS;})[0];
+ var el=document.getElementById('fl');
+ if(el)el.innerHTML='<b>'+l.nm+'.</b> '+l.d
+  +' The other three layers are still drawn, at half resolution and lower '
+  +'contrast, so the circuit stays whole.';}
+var _df=drawFocus;
+drawFocus=function(){_df();syncFocusLine();};
+
+size();geom();drawFocus();drawRings();drawRail();
+window.addEventListener('resize',function(){size();});
+requestAnimationFrame(frame);
+setInterval(function(){
+ var el=document.getElementById('fps'); if(!el||!FRAMES.length)return;
+ var s=FRAMES.slice().sort(function(a,b){return a-b;});
+ el.innerHTML='<b>'+s[Math.floor(s.length*0.5)].toFixed(1)+' ms</b> median, '
+  +s[Math.floor(s.length*0.95)].toFixed(1)+' ms at the 95th, over '
+  +FRAMES.length+' frames at '+CW+' by '+CH+'.';},600);
+
+document.getElementById('foot').innerHTML=
+ 'Profile <code>'+F.who+', '+F.age+', '+F.role+'</code>, computed headless from '
+ +'<code>engine.js</code>. Coherence '+F.CQ.toFixed(1)+' of 100, '+F.nL
+ +' of 112 addresses above the display line, '+F.sabs.length+' saboteurs, '
+ +F.cxs.length+' complexes, '+F.hys.length+' hyper complex. '
+ +'Chord width is the pattern weight and chord sag is susceptibility, which '
+ +'runs 0.45 to 1.30 and is the one quantity in the geometry that varies per '
+ +'connection. No text is drawn on the canvas.';
+</script></body></html>

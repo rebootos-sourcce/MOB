@@ -37,6 +37,11 @@ function cr(band,pct,o){
  var C=2*Math.PI*G.r, off=C*(1-p/100);
  var col=o.color||seatCol(band);
  var hot=(o.hot!==undefined)?o.hot:(p>=HOT_AT);
+ /* THE CENTRE TAKES LETTERS AS WELL AS A DRAWING. Ruled: "CQ, DQ, SQ is
+    essentially an icon, make this a centre ring element instead of a pill."
+    For those three the letters are the icon, because they are the names
+    everything in this product calls them by and a drawing would be a second
+    name for a thing that already has one. Everything else gets a drawing. */
  var glyph=o.glyph||SEATGLYPH[band]||SEATGLYPH._;
  var val=(o.raw!=null)?o.raw:(Math.round(p)+'%');
  var cls='cr '+size+(hot?' hot':'')+(o.act?' act':'')+(o.on?' on':'');
@@ -50,8 +55,45 @@ function cr(band,pct,o){
    +'<circle cx="'+(G.box/2)+'" cy="'+(G.box/2)+'" r="'+G.r+'" fill="none" stroke="'
     +(hot?'var(--alarm)':col)+'" stroke-width="'+G.w+'" stroke-linecap="round" '
     +'stroke-dasharray="'+C.toFixed(1)+'" stroke-dashoffset="'+off.toFixed(1)+'"/></svg>'
-   +'<span class="gl"><svg viewBox="0 0 24 24" aria-hidden="true">'+glyph+'</svg></span></span>'
+   +(o.text?'<span class="gl gl-t">'+esc(o.text)+'</span>'
+          :'<span class="gl"><svg viewBox="0 0 24 24" aria-hidden="true">'+glyph+'</svg></span>')+'</span>'
   +'<span class="v">'+esc(val)+'</span></'+tag+'>';}
+/* ============================================================
+   THE FOUR THAT MOVE THROUGH A PERSON, DRAWN.
+
+   Ruled: the strip becomes a ring with the icon in the centre and a pill
+   with the number, and the words go to their tooltips, which saves the space
+   four labels were taking. CQ, DQ and SQ carry their letters. These four had
+   no icon at all, because they had never needed one while the word was
+   sitting next to them.
+
+   Each is argued from what the reading is rather than from what the word
+   sounds like, which is the rule the rest of the icon set keeps. Ring, never
+   fill, on the same 24 unit grid.
+   ============================================================ */
+/* wrapped as markup, not as bare path data, because cr() drops the glyph
+   straight into an svg and SEATGLYPH hands it a <path> element. Bare d data
+   rendered as an empty ring, which is the one thing a glyph must never be. */
+function qp(d){return '<path d="'+d+'"/>';}
+const QICON_D={
+ /* VITALITY. What is left after apathy and the shadow weight, so it is a
+    shoot: the thing that grows back when the weight comes off. */
+ vitality:'M12 21v-8M12 13c0-3.4 2.4-6 5.6-6.4C17.2 10 15 12.6 12 13'
+   +'M12 13c0-2.8-2-5-4.7-5.4C7.7 10.4 9.6 12.4 12 13M9 21h6',
+ /* AWARENESS. Intention read against distortion. An aperture, because
+    awareness in this product is the width of what gets through, and the eye
+    is already spoken for by perception. */
+ awareness:'M12 3.5a8.5 8.5 0 110 17 8.5 8.5 0 010-17M12 3.5L17.8 9.3'
+   +'M20.5 12h-8.2M17.8 14.7L12 20.5M6.2 14.7L12 8.9M3.5 12h8.2M6.2 9.3L12 15.1',
+ /* WILL. Integrity carried through a clear segment, so it is force through a
+    gap: the shaft goes all the way and the gap is what it had to pass. */
+ will:'M12 21V4M12 4l-4 4M12 4l4 4M5 13.5h3.2M15.8 13.5H19',
+ /* FLOW. Every seat multiplied by the next, root to crown, so it is what
+    rises through and keeps rising. */
+ flow:'M6 19c3-2.4 3-5.6 0-8 3-2.4 3-5.6 0-8M12 19c3-2.4 3-5.6 0-8 3-2.4 3-5.6 0-8'
+   +'M18 19c3-2.4 3-5.6 0-8 3-2.4 3-5.6 0-8'};
+const QICON={};
+Object.keys(QICON_D).forEach(function(k){QICON[k]=qp(QICON_D[k]);});
 /* an address, a saboteur or a seat, rendered as one object */
 function crNode(n,size,o){o=o||{};
  return cr(n.b, n.sq*10, Object.assign({size:size||'sm', raw:n.sq.toFixed(1),
@@ -99,6 +141,11 @@ function crBadge(band,pct,o){
  var p=Math.max(0,Math.min(100,pct||0));
  var C=2*Math.PI*G.r, off=C*(1-p/100);
  var col=o.color||seatCol(band);
+ /* THE CENTRE TAKES LETTERS AS WELL AS A DRAWING. Ruled: "CQ, DQ, SQ is
+    essentially an icon, make this a centre ring element instead of a pill."
+    For those three the letters are the icon, because they are the names
+    everything in this product calls them by and a drawing would be a second
+    name for a thing that already has one. Everything else gets a drawing. */
  var glyph=o.glyph||SEATGLYPH[band]||SEATGLYPH._;
  var val=(o.raw!=null)?o.raw:(Math.round(p)+'%');
  var half=G.box/2;

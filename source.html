@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="a8c4f7a 2026-09-20 05:46"><head><meta charset="utf-8">
+<html lang="en" data-build="656d3bd 2026-09-20 07:06"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -78,8 +78,8 @@ font-display:swap;src:url(data:font/woff2;base64,d09GMgABAAAAALyAABUAAAAB4CAAALw
     materially past 55. At 3.70 that half of the sample loses the whole layer
     that tells them what they are looking at. */
  --ink:#EFEDE8; --mid:#B4B0A8; --dim:#94908A;
- --root:#C4635E; --sacral:#D19255; --solar:#D4BC70;
- --heart:#6FC5A3; --throat:#65B8D4; --eye:#8296DB; --crown:#A98BCE;
+ --root:#CF5953; --sacral:#D19255; --solar:#D4BC70;
+ --heart:#65CFA5; --throat:#65B8D4; --eye:#8296DB; --crown:#A883D6;
  --alarm:#FF2E1F; --alarm-soft:rgba(255,46,31,.16);
  /* THE ACCENT IS BLUE. Ruled. It was gold since the rebuild and the owner
     never chose it: he chose the blue, which is the original app's own
@@ -339,8 +339,14 @@ body.lumen{
     this is its named exception, on his word. These are the seat hues taken to
     full chroma against paper rather than the deepened ink Snow uses, so a seat
     reads as itself across a room instead of as a tint. */
- --root:#F02E3C; --sacral:#FF7A00; --solar:#FFC400; --heart:#00C46A;
- --throat:#00A9E0; --eye:#3D5AFE; --crown:#9B27E8;
+ /* AND THEY MATCH PAL_VIVID, WHICH THEY DID NOT. The sheet had Solar at
+    FFC400, Heart at 00C46A and Throat at 00A9E0 while canon.js had C79200,
+    00A85C and 0091C4, so one lighting painted a seat two different colours
+    depending on whether the sheet or the JS drew it. FFC400 measured 1.60
+    to 1 on white, which is invisible on the paper this lighting puts under
+    the rails. The JS values win, because the canvas cannot read a token. */
+ --root:#F02E3C; --sacral:#FF7A00; --solar:#C79200; --heart:#00A85C;
+ --throat:#0091C4; --eye:#3D5AFE; --crown:#9B27E8;
  --accent:#0091EA; --gold:var(--accent); --on-accent:#FFFFFF;
  --au:#B8860B;
  --sky:#0091EA; --um:#101010;
@@ -405,7 +411,9 @@ body.flat{
  --panel-2:#181B22;
  --sunk:#0A0B0E;
  --edge:#232730; --edge-2:#2E333E;
- --ink:#F7F6F3; --mid:#A9A69F; --dim:#767369;
+ /* Flat's --dim measured 3.88 on its own panel. Dark's and Snow's were both
+    lifted for exactly this and Flat was missed. Hue and saturation held. */
+ --ink:#F7F6F3; --mid:#A9A69F; --dim:#878378;
  --accent:#5FD4C4; --gold:var(--accent); --on-accent:#05100E;
  --sky:#5FD4C4; --um:#F7F6F3;
  --shadow:none;
@@ -857,7 +865,6 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
 .seg-i svg{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 .seg-i[aria-pressed=true] svg{stroke:var(--on-accent)}
 .seg-i svg path:first-child{fill:none}
-.seg-i[data-solid] svg path:first-child{fill:currentColor}
 /* ---------- THE GLASS MENU ----------
    Apple Glass, on the owner's ruling, and what that actually is: a surface
    that takes its colour from what is behind it rather than from a swatch. So
@@ -1112,7 +1119,7 @@ body.punch .tp{font-weight:600}
 .s-chip-v{font-family:var(--num);font-size:11px;color:var(--dim)}
 .s-agree{display:flex;flex-direction:column;gap:5px;margin-top:16px}
 .s-ag,.s-dg{font-size:13.5px;line-height:1.55;padding:8px 0 8px 13px;color:var(--mid);
- border-left:2px solid var(--good,#6FC5A3)}
+ border-left:2px solid var(--good,#65CFA5)}
 .s-dg{border-left-color:var(--alarm)}
 
 /* NUMEROLOGY. six numbers, then every name on its own. The number is the
@@ -1235,10 +1242,20 @@ canvas#cv{display:block;grid-column:2;grid-row:3;width:100%;height:100%;
    absolute at top right, so the strip leaves it room. */
 .key{grid-column:1/-1;grid-row:1;position:relative;z-index:4;width:100%;box-sizing:border-box;
  align-self:start;display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:12px 300px 0 14px}
-.kb{display:inline-flex;align-items:center;gap:6px;min-height:var(--tap);padding:2px 9px 2px 4px;
+.kb{display:inline-flex;align-items:center;gap:6px;min-height:var(--tap);padding:2px 4px;
  background:transparent;border:1px solid var(--edge);border-radius:var(--r-xs);
  color:var(--mid);font:inherit;font-size:12px;cursor:pointer;text-align:left;white-space:nowrap}
 .kb:hover{background:var(--sunk);color:var(--ink)}
+/* THE LETTERS IN THE RING. Ruled: CQ, DQ and SQ are essentially an icon, so
+   they sit where an icon sits. Tabular figures and tight tracking, because
+   two characters in a small ring have to read as a unit rather than as two
+   letters that happen to be near each other. */
+.cr .gl-t{display:flex;align-items:center;justify-content:center;
+ font-family:var(--num);font-size:11px;font-weight:600;letter-spacing:-.03em;
+ color:var(--c);font-variant-numeric:tabular-nums;line-height:1}
+/* the strip is rings now, so the button is the ring and nothing else, and the
+   padding is stated once. Two .kb rules both setting padding is a rule that
+   depends on which one loses, which the design gate now refuses. */
 .kb b{color:var(--ink);font-family:var(--num);font-weight:500;margin-right:4px}
 body.punch .kb{border-color:transparent;background:var(--panel-2)}
 /* the wheel is the main graphic. in Punch it carries a fifth more colour. */
@@ -2877,7 +2894,9 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
     and what smooth actually means. The sheet is gone at 5.26s, a shade sooner
     than the 5.20 it used to end at, so the five beats are bought out of the
     sequence rather than added to a person's wait. */
- animation:bootOut .24s cubic-bezier(.4,0,.2,1) 5.02s forwards}
+ /* two seconds longer than it was. Ruled. The figure settles at 4.06 and
+    stands still for the rest, which is the beat the brief asked for. */
+ animation:bootOut .24s cubic-bezier(.4,0,.2,1) 7.02s forwards}
 /* the opening beat. Everything inside is held back behind it, so the first
    thing on screen is nothing, on purpose, for a third of a second. */
 .boot::before{content:'';position:absolute;inset:0;background:#000;z-index:2;
@@ -2897,11 +2916,30 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
    closes at 5.05s, which is where the fade takes over. */
 .boot-svg{width:min(42vmin,300px);height:min(42vmin,300px);overflow:visible;
  fill:none;stroke-linecap:round;transform-origin:50% 50%;
- animation:bootBeat .19s cubic-bezier(.4,0,.2,1) 4.10s 5 both}
-@keyframes bootBeat{
- 0%  {transform:scale(1)}
- 42% {transform:scale(1.034)}
- 100%{transform:scale(1)}}
+ animation:bootSettle .92s cubic-bezier(.22,1,.36,1) 3.14s both}
+/* THE PULSE IS GONE. Ruled: "it does this weird pulse at the end, I'm not a
+   fan. Squash and stretch is one of my favourite things in animation, find a
+   way to give this thing more character."
+
+   Five identical scale beats is a heartbeat, and a heartbeat on a figure that
+   has just finished assembling reads as a loading spinner rather than as a
+   creature. This is one move instead of five: the figure gathers, releases,
+   overshoots and settles, on non uniform scale so volume is roughly conserved
+   the way it is in drawn animation. Wider means shorter and taller means
+   narrower, which is the whole trick and the reason it reads as mass rather
+   than as a zoom.
+
+   It comes to rest at 4.06 seconds, one second earlier than the pulse did,
+   and the sheet then holds for two seconds longer. Both ruled. A held end is
+   the Zen half of the brief: the last thing a person sees before the product
+   is the figure standing still. */
+@keyframes bootSettle{
+ 0%  {transform:scale(1,1)}
+ 16% {transform:scale(1.065,.90)}   /* gathers. wider, shorter. */
+ 40% {transform:scale(.935,1.115)}  /* releases. narrower, taller. */
+ 62% {transform:scale(1.028,.976)}  /* follow through, halved */
+ 80% {transform:scale(.992,1.008)}
+ 100%{transform:scale(1,1)}}
 /* ANTICIPATION and SQUASH. The core draws in before it releases, flattens as
    it expands and rounds as it lands. */
 .b-core{fill:var(--accent);transform-origin:100px 100px;opacity:0;
@@ -2931,13 +2969,13 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
    the engine, and a boot in colours that nearly match the product is worse
    than one that does not try. These are canon.js values, copied, and
    tests/design.js gate 11 fails if the two ever part company. */
-.b-s1{fill:#C4635E;animation-delay:1.18s}   /* Root */
+.b-s1{fill:#CF5953;animation-delay:1.18s}   /* Root */
 .b-s2{fill:#D19255;animation-delay:1.30s}   /* Sacral */
 .b-s3{fill:#D4BC70;animation-delay:1.42s}   /* Solar */
-.b-s4{fill:#6FC5A3;animation-delay:1.54s}   /* Heart */
+.b-s4{fill:#65CFA5;animation-delay:1.54s}   /* Heart */
 .b-s5{fill:#65B8D4;animation-delay:1.66s}   /* Throat */
 .b-s6{fill:#8296DB;animation-delay:1.78s}   /* 3rd Eye */
-.b-s7{fill:#A98BCE;animation-delay:1.90s}   /* Crown */
+.b-s7{fill:#A883D6;animation-delay:1.90s}   /* Crown */
 /* ARCS and OVERLAPPING ACTION. The ring is an arc and it begins at 0.95s,
    while the last two seats are still arriving. Nothing waits for the thing
    before it to come to a stop. */
@@ -2958,8 +2996,13 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
    never read by the boot at all. Measured against every lighting's own bar
    ground, --au clears 4.5 to 1 in all seven and 3 to 1 by at least half
    again, so it needs no per lighting override. */
-.b-halo{stroke:var(--au);stroke-width:1.4;opacity:0;transform-origin:100px 26px;
- animation:bootHalo 1.15s cubic-bezier(.34,1.56,.64,1) 3.22s both}
+/* AND IT IS OFF THE TOP OF THE HEAD. Ruled: "the halo is too close to the
+   top." It sat 5 units above the crown seat in a 200 unit frame, which on
+   screen is close enough to read as resting on the scalp rather than floating
+   over it. Moved to 21, which doubles the gap to 10. It also arrives earlier
+   now, so the squash is the last thing that moves. */
+.b-halo{stroke:var(--au);stroke-width:1.4;opacity:0;transform-origin:100px 21px;
+ animation:bootHalo 1.05s cubic-bezier(.34,1.56,.64,1) 2.62s both}
 @keyframes bootHalo{
  0%{opacity:0;transform:scale(.6)}
  55%{opacity:.95;transform:scale(1.14)}
@@ -3055,6 +3098,22 @@ body:not(.tab-field) .cv-legend{display:none}
 .ob-dots{display:flex;gap:6px;justify-content:center;margin-top:18px}
 .ob-dot{width:6px;height:6px;border-radius:50%;background:var(--edge-2)}
 .ob-dot.on{background:var(--accent)}
+/* THE FIGURE ON THE WELCOME. Centred, generous, and the only thing on the
+   screen with any size to it. The seats fade up root to crown in a hundred and
+   seventy millisecond step, which is the boot's own rhythm halved, so it reads
+   as the same creature taking a breath rather than as a second animation.
+
+   Under the type floor question: this carries no text, so it has none to be
+   under. Height is capped in vmin as well as pixels because at 390 by 844 a
+   300 pixel figure and three lines of copy do not both fit above the fold. */
+.ob-fig{display:block;margin:2px auto 20px;width:min(34vmin,168px);
+ height:auto;overflow:visible;fill:none;stroke-linecap:round}
+.ob-fig-h{stroke:var(--au);stroke-width:1.4;opacity:.8}
+.ob-fig-s{stroke:var(--edge-2);stroke-width:1.4}
+.ob-fig-d{opacity:0;animation:obDot .52s cubic-bezier(.22,1,.36,1) both}
+@keyframes obDot{0%{opacity:0;transform:translateY(3px)}100%{opacity:.92;transform:none}}
+@media (prefers-reduced-motion:reduce){
+ .ob-fig-d{animation:none;opacity:.92}}
 .ob-grid{display:grid;gap:1px;background:var(--edge);border:1px solid var(--edge);
  border-radius:var(--r);overflow:hidden;margin:4px 0 2px}
 .ob-g{background:var(--panel-2);padding:10px 13px;display:flex;
@@ -3123,7 +3182,7 @@ body:not(.tab-field) .cv-legend{display:none}
  .cn-nr,.cn-nms-r .cn-nr{border-left:0;border-right:0;border-bottom:2px solid transparent;
   align-items:center;padding:2px 4px}}
 .boot-wm{display:flex;flex-direction:column;align-items:center;gap:4px;opacity:0;
- animation:bootWm .92s cubic-bezier(.22,1,.36,1) 3.54s both}
+ animation:bootWm .92s cubic-bezier(.22,1,.36,1) 3.20s both}
 @keyframes bootWm{0%{opacity:0;transform:translateY(8px)}100%{opacity:1;transform:none}}
 .boot-wm .bn{font-family:var(--sans);font-size:23px;font-weight:400;
  letter-spacing:.075em;color:var(--sky);line-height:1;position:relative}
@@ -3134,7 +3193,7 @@ body:not(.tab-field) .cv-legend{display:none}
    beside the wordmark above: the gate that bans all caps copy is correct, and
    a logotype answers it with styling rather than with an exception. */
 .boot-wm .bs{font-family:var(--sans);font-size:9px;font-weight:500;
- line-height:1;margin-top:5px;display:flex;align-items:baseline;gap:.5em}
+ line-height:1;margin-top:8px;display:flex;align-items:baseline;gap:.5em}
 .boot-wm .bs-by{letter-spacing:.04em;color:var(--dim);font-weight:400}
 .boot-wm .bs-nm{letter-spacing:.19em;margin-right:-.19em;color:var(--ink);
  text-transform:uppercase}
@@ -3174,6 +3233,11 @@ body:not(.tab-field) .cv-legend{display:none}
    not get five of them. Same rule as everything else in this sheet: the end
    state, not a faster version. */
 @media (prefers-reduced-motion:reduce){.boot-svg{animation:none}}
+/* THE TRADEMARK. Not registered yet and it goes in anyway, ruled. Superscript
+   at a third of the name, tracked off the final d rather than after the
+   tracking the logotype adds, or it floats away from the word. */
+.boot-wm .btm{font-size:.34em;font-weight:500;vertical-align:.85em;
+ letter-spacing:0;margin-left:-.02em;color:var(--sky);opacity:.72}
 /* the body says the boot is over. Nothing depends on it yet and it is not
    decoration: it is the hook a later surface uses to hold its own entrance
    until the instrument is actually on screen. */
@@ -3450,7 +3514,7 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
 <div id="ob" class="ob" style="display:none"></div>
 <div id="boot" class="boot" aria-hidden="true">
  <svg viewBox="0 0 200 200" class="boot-svg">
-  <g class="b-halo"><ellipse cx="100" cy="26" rx="13" ry="4.4"/></g>
+  <g class="b-halo"><ellipse cx="100" cy="21" rx="13" ry="4.4"/></g>
   <line class="b-spine" x1="100" y1="160" x2="100" y2="40"/>
   <circle class="b-seat b-s1" cx="100" cy="160" r="4.6"/>
   <circle class="b-seat b-s2" cx="100" cy="140" r="4.6"/>
@@ -3496,7 +3560,7 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
       sentence case in the markup and in the rendering, and only the name
       itself is uppercased, by the sheet, the way the wordmark above it has
       always done it. -->
- <div class="boot-wm"><span class="bn">At<span class="um">u</span>ned</span>
+ <div class="boot-wm"><span class="bn">At<span class="um">u</span>ned<sup class="btm">™</sup></span>
   <span class="bs"><span class="bs-by">Powered by</span><span class="bs-nm">Source OS</span></span>
   <!-- WHICH BUILD THIS ACTUALLY IS, on the one screen every person sees every
        time. Two builds were sent with a fix in them and the same failure came
@@ -3505,7 +3569,7 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
        download as atuned(1).html and leaves the first one where it was, so
        opening "the file" can mean opening last week's.
        Stamped by BUILD.sh, so it cannot be wrong or go stale. -->
-  <span class="bs-v" id="bstamp">a8c4f7a 2026-09-20 05:46</span></div>
+  <span class="bs-v" id="bstamp">656d3bd 2026-09-20 07:06</span></div>
  <!-- THE WAY OUT WAS BUILT AND NEVER SHOWN.
 
       pointerdown and keydown both clear this sheet and have since it was
@@ -4202,9 +4266,17 @@ var ARCH18=[['Warrior','Controller','Solar'],['Caregiver','Pleaser','Heart'],
 const BANDS=['Root','Sacral','Solar','Heart','Throat','3rd Eye','Crown'];
 /* Hue is the language and does not move. Chroma comes down 30 to 40 percent on
    the warm three, which carry the arousal, and slightly on the cool four, which
-   are already doing the calming work. Full chroma is reserved for ALARM. */
-const PAL={'Root':'#C4635E','Sacral':'#D19255','Solar':'#D4BC70','Heart':'#6FC5A3',
- 'Throat':'#65B8D4','3rd Eye':'#8296DB','Crown':'#A98BCE'};
+   are already doing the calming work. Full chroma is reserved for ALARM.
+
+   AND THE FAMILY NOW READS AS ONE. Ruled: "some of these colours are dull and
+   some are vibrant, punch the dull ones up about ten percent, on the dark
+   version." Three sat outside the group: Crown at 41 saturation, Heart at 43
+   and Root at 46, against 54 to 57 for the other four. Each of those three
+   takes ten points of saturation with hue and lightness held, which closes the
+   spread from 17 points to 7. Contrast on the dark ground was checked after,
+   and the lowest of the seven is Root at 4.8 to 1. */
+const PAL={'Root':'#CF5953','Sacral':'#D19255','Solar':'#D4BC70','Heart':'#65CFA5',
+ 'Throat':'#65B8D4','3rd Eye':'#8296DB','Crown':'#A883D6'};
 /* THE THIRD PALETTE. Lumen puts paper under the rails and keeps the centre
    stage at 101010, and its whole brief is vibrancy, so neither of the other
    two fits: the dark palette is invisible on paper and the Snow palette is
@@ -4274,7 +4346,7 @@ const SURPKEY=/SHOCK|BETRAYAL|OVERSENSITIV|STARTLE|PANIC/i;
 const ANTKEY=/EXPECTATION|ANXIETY|WORRY|HYPERVIGIL|DREAD|ANTICIPAT|OBSESS|COMPULS/i;
 
 const ROOTD=['Architect','Engine','Weaver','Witness'];
-const ROOTCOL={Architect:'#8296DB',Engine:'#D19255',Weaver:'#6FC5A3',Witness:'#A98BCE'};
+const ROOTCOL={Architect:'#8296DB',Engine:'#D19255',Weaver:'#65CFA5',Witness:'#A883D6'};
 /* nineteen named blueprint domains under the four roots. the original header
    comment claimed eighteen with four unnamed; the data has always been
    nineteen named, and DARC divides by nineteen. */
@@ -4484,6 +4556,40 @@ const MASKS=[
    business record: a person opening this product to read themselves must
    never find a percentage saying how likely they are to buy, next to their
    own reading. It is in BUYERS.md. */
+/* ============================================================
+   THE TEN TIERS CARRY THEIR OWN COLOUR.
+
+   Ruled: "I do not like that it says I am 88 per cent embodied on the right
+   hand side and yet my button is not symbolic. The colour is not symbolic."
+   He was right and the reason was worse than an oversight: the tier ring was
+   drawn in r.darkB, the colour of the seat carrying the most. So a person at
+   Embodied whose heaviest seat happened to be the Root got a red ring on the
+   best reading but one, and the colour was saying something true about a
+   different question.
+
+   THE RAMP IS ARGUED, NOT PICKED. It runs cool and clear at the top, warms
+   through the middle where the work is, and DESATURATES at the floor rather
+   than reddening further. That last part is the whole of it. Numb is not more
+   alarming than frustrated, it is less present, and a palette that shouts
+   loudest at the bottom is a palette that tells somebody at the floor that
+   they are an emergency. Chroma falls away as coherence does, so collapse
+   reads as the colour going out of the picture, which is what it is.
+
+   Every value sits in the same muted family as the seat palette above, and
+   none of them is the alarm red, which this product reserves for a thing that
+   is actually wrong rather than for a person who is low.
+   ============================================================ */
+const TIERCOL={
+ 'Mastery':     '#E4D9A8',   /* clear light. nothing held, nothing shouting */
+ 'Embodied':    '#8FD0A8',
+ 'Compounding': '#65CFA5',   /* the heart green, because this is where it builds */
+ 'Gaining':     '#74C1C4',
+ 'Even':        '#65B8D4',   /* the throat blue. receptive, level */
+ 'Oscillating': '#8296DB',   /* swinging, and the third eye blue is the seat of it */
+ 'Incoherent':  '#C9A96A',   /* warm, a caution and not an alarm */
+ 'Corrupt':     '#C98A5E',
+ 'Severe':      '#B2857C',   /* chroma coming out. numb is less present, not louder */
+ 'Collapsed':   '#A28A88'};  /* the colour nearly gone. the floor is quiet */
 const TIERDEF=[
  {at:91, nm:'Mastery',
   state:'Sovereign',
@@ -5486,7 +5592,7 @@ var KB_KEY=function(s){return String(s||'').replace(/^[Tt]he\s+/,'').toLowerCase
 var SABDEF={"negotiator":{"c":"S01","d":"Argues against your own intentions. Always sounds reasonable. Never says stop forever, says stop today. The fear of discomfort is mild enough to be rationalized away. The happiness available from the easier option is just high enough to make the rationalization feel earned. Together they produce the internal diplomat who can talk you out of anything, not through force, but through the perfectly reasonable argument that now is not the right moment. The most dangerous saboteur in the system because it sounds exactly like you.","t":"The moment between intending to do the necessary thing and beginning to do it. The pause.","i":"Begin the action before the internal dialogue completes. Remove the pause. The Negotiator only has power in the gap between intention and motion. Close the gap.","q":"I can start tomorrow. / Just this once. / I've earned a break."},"controller":{"c":"S02","d":"Hypervigilance at the level of outcomes. The foundation of the Type A pattern. Not a personality trait, a fear response that has been running so long it looks like a management style. The fear underneath: something will go wrong, someone will get hurt, or the situation will fall apart if I release my grip. Self-control registers as 10. Anything less registers as loss. The delta between perceived control and actual control is the zone of active saboteur behavior. Anger layers in as a do-as-I-say mechanism, authority used to close the control gap quickly. Entitlement provides the justification: it is not just that I need to control this. It is that I am right to. Competition drives the adversarial edge, not just winning but not-losing, which is a different frequency entirely.","t":"The moment control begins to slip. Uncertainty in outcomes. Others not performing to expectation. Delegation without confirmation. Silence where confirmation should be.","i":"Control is not a state. It is a belief held under pressure. The person fails control the same way a person fails a landing, only if they quit. Recognize that the need to be in control and the experience of being out of control are both charges, not conditions. Neither is real. Locate the fear underneath. Release the fear. The control behavior loses its substrate.","q":"If I don't control this, something will go wrong."},"victim":{"c":"S03","d":"Focuses on internal feelings and victim mentality for attention. Martyrdom.","t":"When accountability is required.","i":"Identify one thing within your control. Take one action on it.","q":"This keeps happening to me."},"perfectionist":{"c":"S04","d":"Continuous pressure to do better. Anxiety about imperfections in self and others.","t":"Before completion or release of work.","i":"Set a fixed completion time. Release at that time regardless of state.","q":"It is not good enough yet."},"pleaser":{"c":"S05","d":"Indirectly tries to gain acceptance by helping, pleasing, rescuing, or flattering.","t":"When there is potential for disapproval or when a boundary is needed.","i":"State a preference or limit once. Do not explain or apologize.","q":"My worth depends on making others happy."},"hyper achiever":{"c":"S06","d":"Dependent on constant performance for self-respect. Workaholic.","t":"When performance is not being measured or when rest is available.","i":"Rest without producing for one hour. No metrics.","q":"My worth is in my output."},"hyper rational":{"c":"S07","d":"Processes everything through logic. Impatient with emotional concerns.","t":"When emotional input is offered.","i":"Name the emotion present in the room before analyzing the problem.","q":"If I can't explain it, it isn't real."},"hyper vigilant":{"c":"S08","d":"Continuous anxiety about potential dangers. Constant risk management.","t":"When the environment changes or trust is required.","i":"Identify one thing that is safe. Hold that for 60 seconds.","q":"The threat is always just ahead."},"restless":{"c":"S09","d":"Constant search for new activities. Rarely at peace with the current moment.","t":"When the current situation becomes familiar or stable.","i":"Stay with the current thing for twice as long as the impulse to move suggests.","q":"The next thing will be better."},"stickler":{"c":"S10","d":"Perfectionism and need for order. Anxiety when standards are not met.","t":"When the environment or person deviates from the correct way.","i":"Identify one situation where your standard is serving your fear, not your values.","q":"There is a right way and a wrong way."},"judge":{"c":"S11","d":"Judges self and others. Replays past failures. The master saboteur, activates all others.","t":"When someone, including self, falls short of standard.","i":"Find one thing that is right about the situation being judged.","q":"Someone is responsible for this."},"deflector":{"c":"S12","d":"Does not own. Justification to avoid accountability.","t":"When direct accountability or personal disclosure is required.","i":"Stay with the direct question for 10 seconds before redirecting.","q":"If they knew the real me they would leave."},"dramatizer":{"c":"S13","d":"Amplifies the emotional intensity of situations to generate attention or movement.","t":"When intensity of feeling is present and an audience is available.","i":"Reduce the intensity of the next statement by half.","q":"My pain must be visible to matter."},"worrywart":{"c":"S14","d":"Runs continuous worst-case scenarios. Mistakes anxiety for planning.","t":"When the future is uncertain.","i":"Name the specific worst case. Name one action if it occurs.","q":"Worrying is preparation."},"loner":{"c":"S15","d":"Withdraws from contact as protection. Independence as defense, not a value. Fear of rejection co-mingling with shame of belonging at sufficient magnitude. The person does not experience themselves as afraid, they experience themselves as preferring solitude. Release the fear and sad nodes and the solitude remains if chosen, not if driven.","t":"When connection is available and would be beneficial.","i":"Make one direct request for connection.","q":"Needing others is weakness."},"people pleaser":{"c":"S16","d":"Approval-seeking at the expense of authenticity.","t":"When approval is uncertain or a boundary is needed.","i":"Identify the response that serves the relationship rather than the approval.","q":"If they don't like me I have failed."},"skeptic":{"c":"S17","d":"Defaults to distrust and doubt. Skepticism as protection against disappointment.","t":"When new information challenges the current model.","i":"Sit with the new information for 24 hours before dismissing it.","q":"Trust gets you hurt."},"dreamer":{"c":"S18","d":"Lives in possibility without building the bridge toward it. Avoids the friction of execution.","t":"When the gap between vision and current reality is visible.","i":"Identify one concrete step. Execute it today.","q":"Someday the conditions will be right."},"procrastinator":{"c":"S19","d":"Delays action on important tasks. Mistakes motion for progress.","t":"When the important task is clear and available.","i":"Begin. Not finish. Not plan. Begin. Three minutes.","q":"I work better under pressure."},"imposter":{"c":"S20","d":"Believes their competence is unearned and discoverable as fraud.","t":"When competence is being evaluated or recognition is offered.","i":"Identify one thing you know that the room does not. State it.","q":"They will find out I do not belong here."},"aggressor":{"c":"S21","d":"Uses anger and force to override resistance. Mistakes compliance for agreement.","t":"When authority is challenged or outcome is not proceeding as required.","i":"Pause 5 seconds. Name the fear underneath the anger before responding.","q":"Aggression gets results."},"martyr":{"c":"S22","d":"Sacrifices for others to generate obligation or moral authority.","t":"When sacrifice has been made and goes unrecognized.","i":"Identify whether the sacrifice was chosen or performed. If performed, stop.","q":"I give everything and receive nothing."},"cynic":{"c":"S23","d":"Undermines possibility through pre-emptive dismissal.","t":"When hope or enthusiasm is present in self or others.","i":"Identify one thing good about the situation being dismissed.","q":"Optimism is naive."},"manipulator":{"c":"S24","d":"Achieves outcomes indirectly through influence, withholding, or positioning.","t":"When the direct approach feels risky.","i":"State the actual need directly. Once. Without positioning.","q":"Direct requests make me vulnerable."},"overthinker":{"c":"S25","d":"Loops on decisions past the point of useful analysis.","t":"When a decision is required and the outcome is uncertain.","i":"Set a decision time limit. Decide at that limit. Do not extend it.","q":"More analysis will produce the right answer."},"escapist":{"c":"S26","d":"Uses pleasure, distraction, or movement to exit discomfort before it resolves.","t":"When the present moment is uncomfortable and an exit is available.","i":"Stay in the discomfort for two minutes. Name what is present.","q":"I just need to not feel this right now."},"avoider":{"c":"S33","d":"Declines the engagement before it can cost anything. Not fleeing discomfort the way the Escapist does, and not arguing the way the Negotiator does. Simply not present for it.","t":"When something asks to be dealt with and not dealing with it carries no immediate penalty.","i":"Name the thing being avoided out loud, then do the smallest piece of it.","q":"If I stay unaware, nothing can land on me."},"nihilist":{"c":"S27","d":"Removes the foundation of meaning as a pre-emptive strike against disappointment.","t":"When meaning is required to justify effort.","i":"Identify one action worth doing regardless of meaning. Do it.","q":"Nothing matters enough to sustain effort."},"innocent":{"c":"S28","d":"Maintains deliberate unawareness to avoid responsibility or conflict.","t":"When complexity, conflict, or moral weight is present.","i":"Name one thing you know that you are pretending not to know.","q":"I don't want to be involved."},"pessimist":{"c":"S29","d":"Pre-empts positive outcomes by building a case against them before they materialize.","t":"When a positive outcome is possible.","i":"Identify the best plausible case. Operate from that.","q":"It will not work out."},"catastrophizer":{"c":"S30","d":"Projects the worst possible outcome onto every uncertainty. Distinguishable from Worrywart by magnitude, Catastrophizer reaches existential threat from ordinary uncertainty.","t":"Any unresolved uncertainty.","i":"Describe the actual current situation without projection. Stay in the present tense.","q":"This will destroy everything."},"enabler":{"c":"S31","d":"Supports others' destructive patterns to maintain relationship or avoid conflict. Distinct from Pleaser: the Enabler supports behavior they recognize as harmful.","t":"When someone they care about is repeating a destructive pattern.","i":"Name what you see. Once. Without attachment to the response.","q":"If I say something they will leave."},"control freak":{"c":"S32","d":"The colloquial name for the Controller and Hyper-Vigilant composite at Type A intensity. Hypervigilance running on outcomes and on threat at the same time. The body is scanning forward (what could go wrong) and downward (am I in command of this) in continuous loop. Reads to other people as competence under pressure. Reads in the body as never landing. The same fear that drives Controller (something will go wrong if I release grip) and the same fear that drives Hyper-Vigilant (the threat is just ahead) co-mingle here at sufficient magnitude that they cannot be felt as separate. Distinct from Controller alone: Control Freak does not wait for the control gap to open before acting. Distinct from Hyper-Vigilant alone: Control Freak organizes the scan around its own agency, not around external monitoring. Type A is the social presentation. The somatic state is sustained sympathetic activation that the body has normalized as baseline.","t":"Any environment the person did not configure. Any outcome the person did not design. Any silence where confirmation should be.","i":"Lock the jaw, the shoulders, and the diaphragm for a count of five. Notice they were already locked. Release on the exhale. The release is not a relaxation technique, it is a demonstration that the body can hold a state without scanning it. Repeat until the scan stops without being asked to.","q":"If I am not running this, no one is."}};
 var DOMDEF={"knowledge":{"n":"I","c":"pattern recognition, codification, teaching, symbolic thinking. The person who reads before being asked to. Somatic knowledge is true knowledge, once it's in the body, deception doesn't work on you. You can feel the lie before it forms a word.","x":"over-intellectualization, false certainty, knowledge as a barrier rather than a bridge."},"communication":{"n":"II","c":"bridging, translation, precision of language, fast cognition. The connector, the person who translates between people, between ideas, between worlds.","x":"manipulation, inconsistency, information as leverage."},"power":{"n":"III","c":"physical courage, boundary enforcement, protection of what matters. Directed aggression at obstacles, not people.","x":"domination, violence without purpose, war as identity."},"imperium":{"n":"IV","c":"governance, structural authority, organizing chaos into function. sees how systems should be organized.","x":"domination, entitlement, autocracy."},"creation":{"n":"V","c":"building, executing, bringing vision into form. Always needed to make things. When you can't create it feels like disconnection, like the system is broken. Financial stress kills creativity not motivationally but anatomically: the survival charge consumes the current before it reaches the generative center. When the root clears, the sacral opens, the creative current flows again. Not as discipline. As a natural consequence of the channel being clear.","x":"perfectionism as paralysis, identity tied to output."},"dissolution":{"n":"VI","c":"deliberate dissolution, clearing what's false or finished, making space for what comes next. Sees what needs to end.","x":"destruction as identity, nihilism, chaos without rebuilding."},"love":{"n":"VII","c":"union, intimacy, the force that draws beings into genuine contact. Love as a state the person generates, not receives. Always knew what brings people together.","x":"codependency, possession, love as completion rather than addition."},"healing":{"n":"VIII","c":"directed intervention, active clearing, creating conditions in which restoration happens. Finds the broken thing in any room.","x":"rescuer complex, martyrdom, healing as identity."},"sacrifice":{"n":"IX","c":"voluntary descent, the chosen ordeal, sacrifice as the mechanism that produces insight unavailable any other way. The knowledge that comes from what was given up, not accumulated. The true utilization of experience: consume as much as possible, then don't hang onto the definitions. Words illuminate, they don't contain.","x":"suffering as identity, the descent without return."},"justice":{"n":"X","c":"discernment of what's real and what's false. Accountability without cruelty. Moral disorder doesn't just feel wrong, it triggers the nervous system. When truth is a 10, anything less is somatic. You can feel the lie before it forms a word. If you lie, you dysregulate your own nervous system.","x":"rigid judgment, self-righteousness, justice as control."},"trickster":{"n":"XI","c":"disruption of rigid patterns, revealing what's hidden through inversion, innovation through disorder. Sees the absurdity in what everyone else treats as fixed.","x":"deception as lifestyle, instability mistaken for freedom."},"nature":{"n":"XII","c":"alignment with biological truth, growth through patience rather than force. Thinks in cycles rather than straight lines.","x":"rejection of structure, naturalism as escape from complexity."},"mystery":{"n":"XIII","c":"navigation of the unseen, death and rebirth as structural realities. Can hold darkness without being consumed. Always drawn to what's hidden.","x":"obsession with shadow, nihilism, identity built on the margin."},"duty":{"n":"XIV","c":"right action regardless of personal cost. Loyalty to what's true, not what's comfortable. Does the right thing even when no one is watching.","x":"rigidity, losing self in obligation, duty performed for an audience."},"play":{"n":"XV","c":"the generative state of pure engagement. Awe. Creativity for its own sake. Not the absence of seriousness, the intelligence serious people miss. Always able to find what's alive in something.","x":"avoidance through play, irresponsibility, lightness that refuses depth."},"death":{"n":"XVI","c":"completion. Endings held cleanly. The threshold kept, the thread cut when the thread is finished, presence with what's dying without flinching. Releases what's done so renewal has room.","x":"morbidity, clinging that refuses every ending, or dealing endings as power."},"fate":{"n":"XVII","c":"reads the pattern and its timing. Knows what must unfold and when to move. Acts at the right moment without forcing the thread.","x":"fatalism, abdication of choice, reading the pattern as an excuse to never act."},"guardian":{"n":"XVIII","c":"the watch kept. A perimeter held so what's inside can live. Protection without possession, sanctuary without walls that strangle.","x":"overprotection that smothers, vigilance that never rests, walls against life itself."},"provision":{"n":"XIX","c":"the one who makes sure there's enough, and not only for today. Supply held against a season nobody can see yet. The granary, the harvest, the wage. Provides for, rather than trades with.","x":"worth measured only in what's furnished, hoarding dressed as prudence, the provider who can't be provided for."}};
 var KB_RENAME={"descent":"Sacrifice","connection":"Love","exchange":"Communication","restoration":"Healing"};
-var GLOSS=[{"t":"Address","d":"The specific location in the body’s energetic architecture where a pattern is resident. Every fetter, every tag, every limiting belief has an address. The release work operates at the address--not at the level of thought or behavior."},{"t":"Allostatic load","d":"The accumulated physiological cost of chronic stress responses. The body’s equivalent of compound interest on unresolved charge. The release work reduces allostatic load by addressing it at the address layer."},{"t":"Archetype","d":"One of 12 universal character templates, and the third rung on the native side of the stack. Domains express as the blueprint; the blueprint branches into archetypes. A separate rung from the blueprint rather than another name for it. Native and present before conditioning, which is why it isn't held in tissue and not released: the work changes where it's pointed, not what it is."},{"t":"Ascension","d":"No longer affected, triggered, or stimulated by the external environment, or by your own emotions. You've ascended emotions controlling you. The environment loses its grip because survival patterns are no longer running as commands. A state definition, not a threshold: it carries no release count. It's not a destination--an operating state."},{"t":"Attention","d":"The ability to focus awareness. Two types: nonfocused attention and focused attention. Attention is the steering; will is the force."},{"t":"Aura","d":"The biophoton field generated by the state of the nervous system. Measurable. Determines social magnetism or repulsion. Reflects the charge load in the underlying nodes."},{"t":"Awareness","d":"The aperture of perception of the soul."},{"t":"Biophoton field","d":"The measurable light field generated by the state of the nervous system. The physical substrate of the aura. Its quality reflects the charge load in the underlying nodes and determines how the practitioner is received in social space."},{"t":"Chakra","d":"The nonphysical field generated by a nerve plexus. It's not a metaphor--a field with measurable properties. Seven primary chakras, each generated by its corresponding nerve plexus."},{"t":"Charge","d":"Stored survival energy held at a node. Installed by a stress response that never finished. Felt as heat, pressure, tingling, or weight when accessed."},{"t":"Clair","d":"A perceptual channel beyond the five physical senses. Clairvoyance (seeing), clairaudience (hearing), clairsentience (feeling), claircognizance (knowing), and others. Soma fields fragment them; clearing soma allows them to operate in unison."},{"t":"Coherence","d":"Measurable reduction of internal contradiction. The state in which intention, behavior, and nervous system response are aligned. CQ measures it."},{"t":"Replacement state","d":"The specific behavioral, emotional, and somatic expression of the quality a pattern suppresses--installed at the same address as the released charge. Not a generic positive. The exact quality the pattern is blocking."},{"t":"Consciousness","d":"Energy as information, perceived through two experiences. The macro is unbound and unfocused: infinite consciousness. The opposite pole is localized conscious awareness. Same thing, different aperture."},{"t":"CQ","d":"Coherence Quotient. (Intention × Integrity) ÷ Resistance. Baseline: 100. Measures the degree to which the system operates without internal contradiction."},{"t":"Distortion","d":"Intention read through loaded nodes. The signal is intact, the instrument is bent. Not a formula variable: distortion and SQ were the same reading under two names. It survives as a description of what happens to intention, not as a term that gets multiplied by anything."},{"t":"DQ","d":"Decoherence. DQ = 100 − CQ. Derived, not measured. There's no separate instrument for it, and any build that reports one is reporting arithmetic as though it were a reading. A high DQ means the system is consuming energy maintaining internal contradictions."},{"t":"Drag","d":"The combined load that reduces available willpower. Fetters, clenched muscles, inflammation, loaded nodes--all produce drag on the mind-body-spirit connection. Drag is why willpower feels like a limited resource."},{"t":"Earth Star","d":"Field node at the center point between the feet. Anchors the system to the planet."},{"t":"Ego","d":"Body consciousness. The mind attached to the physical, never present, toggling between thinking and feeling to navigate the world out of fear. The ego is the mask of our character. It's the total sum of DQ, all the SQ running, and all the patterns and awareness that come with body consciousness."},{"t":"Fetter","d":"A named conditional response pattern resident at a specific node address. 108 fetters in the body, one per physical node. 112 total addresses include 4 field nodes just outside the body, two above the crown, two below the feet. Fires when matching input arrives, regardless of how long ago it was installed."},{"t":"Five paths","d":"Five primary orientations toward the work: Krishna (flow), Buddha (awareness), Christ (somatics), Rama (alignment), Lao Tzu (horizontal). All paths lead to the same Source. The Anchor Principle operates underneath all five."},{"t":"Hardened mask","d":"The layer of conditioning that doesn't clear with time, life change, or most therapeutic modalities. Requires active address-level release work. Distinguished from practice-maintained conditioning, which life change alone can clear."},{"t":"Hyper-complex","d":"One of 8 named clusters of saboteurs operating as a unified behavioral system. More severe than a single saboteur--a self-reinforcing architecture of patterns that maintain each other."},{"t":"Integrity","d":"The total sum of your coherence, which upregulates the nervous system. It does that by moving you through and maintaining moral structure. Integrity is a ship’s hull. A hole in the hull means the ship takes on water. Integrity has to be at a hundred percent for the hull, and for CQ, to hold. Measured as compliance with the 21 Laws of Moral Integrity."},{"t":"Intention","d":"The intended outcome. Part willpower, part desire, part motivation. Moving toward something registers as pleasure. If no outcome has been formed, avoidance takes the slot by default."},{"t":"Justification mechanic","d":"The body’s defense of its own installed patterns. Blame, deflection, rationalization--all are the tag’s immune response. The body defends the signal because the truth is too difficult to face. Narcissism is the justification mechanic at high intensity."},{"t":"Karma","d":"The results of your thoughts and physical actions put out into the world, and the cause-and-effect energy that comes back to you from those actions. It's cyclical, an echo. Its purpose is to come back so you can learn the lesson, overcome, and transmit the karma so it never comes back. Karma is cause and effect in interaction."},{"t":"Kosha","d":"A perceptual layer through which experience is filtered. Six layers: physical, energetic, mental, wisdom, bliss, and linguistic. Each transforms the signal passing through it."},{"t":"Kundalini","d":"The stored vital energy at the base of the spine. Rises root to crown when enough nodes are cleared for the channel to conduct."},{"t":"Letting go","d":"The release protocol. Runs two mechanics in sequence: (1) reducing charge at the address, (2) installing the replacement state while the address is open. Different from affirmation, which skips the first mechanic."},{"t":"Limiting belief","d":"A tag that compresses the full range of experience into a limited label. Every identification is a limiting belief by definition--not as a judgment but as a mechanism. The label is always smaller than the experience."},{"t":"Mask","d":"The accumulated distortion functioning as an identity construct. What most people call ‘their personality’--the conditioned firing of patterns stored at specific addresses. The mask isn't who you are."},{"t":"Memory","d":"The result of the vritti and identification. Sensory input and emotional input, once identified, stored in the body."},{"t":"Merkaba","d":"A geometric field structure used in the release protocol. Top spinning left, bottom spinning right. Opposing rotations distort the node’s current flow, creating conditions for release."},{"t":"Node","d":"An address in the body’s energetic architecture. 108 physical nodes in the body. 4 field nodes just outside it: the Earth Star at the center point between the feet, the Sol Star just above the crown, and the Gaia Gateway below the Earth Star, and the Stellar Gateway above the Sol Star. 112 total."},{"t":"OJAS","d":"Sanskrit, meaning vigour. It isn't an acronym and there are no letters to expand; every instance spelled OJOS in earlier drafts was a transcription error that propagated. Vital energy in meditation, held as a cocoon of energy around you. It spins without you having to drive it, and it naturally stimulates the nervous system and releases stress from the body. The protocol developed for Stage 4 and Stage 5 nodes, the ones too dense or too numb to feel. Restores enough signal for release work to begin."},{"t":"Perception","d":"The ability to intuit and perceive, and to translate energy into a symbolic form that can be perceived and understood. Perceiving the sensory input to make sense of things."},{"t":"Plexus","d":"A physical nerve cluster. The plexus is the hardware; the chakra is the field it generates. Disruption at the plexus level produces disruption at the chakra level."},{"t":"Presence","d":"The ability to project one’s energy to be perceived and felt by others."},{"t":"Primary node","d":"The primary loaded node in a field of surrounding nodes. Clear the primary node and the surrounding field releases on its own. Working secondary nodes without finding the primary node produces partial release."},{"t":"Pure perception","d":"All the clairs operating in unison without distortion. Not an absence of thought--a state of full multi-sensory field coherence. Available as soma load reduces and the barriers between the clairs dissolve."},{"t":"Reading-as-release","d":"The protocol in which reading a properly constructed Letting Go sequence produces somatic release at the anatomical address the sequence specifies. No additional visualization required. Both mechanics run through the act of reading."},{"t":"Release","d":"The discharge of stored charge through the nervous system. Physical and observable: heat, shaking, tears, breath shifts. The pattern loses its power source."},{"t":"Resistance","d":"The denominator in the CQ formula. All drag combined--every fetter, loaded node, and inflammatory process that opposes the flow of signal through the system. Resistance is what the release work reduces."},{"t":"Saboteur","d":"One of 33 named behavioral patterns that contract a fetter into characteristic repeating behavior. Each has a specific belief structure, body location, and emotional signature."},{"t":"Self-unraveling state","d":"The body’s autonomous release state when enough gates have cleared. The soma fields begin releasing without active protocol work. The operational success criterion of a release session: not the node is cleared, the body is releasing on its own."},{"t":"Signal chain","d":"The full processing loop: field of awareness → senses → nervous system → brain → intelligence layer → relation layer → three axes → emotional layer → superego → koshas → archetypes → main field. The loop completes moment to moment."},{"t":"Soma","d":"The energetic field generated by the nervous system’s state. Accumulated soma creates load. Overlapping soma fields fragment the perceptive layer, forming barriers the awareness can't see through."},{"t":"Sol Star","d":"Field node just above the crown. The point through which the system extends beyond the body and opens to the field."},{"t":"Source","d":"The ground state of the field before any pattern is installed. The operating system underneath the operating system. What remains when all patterns are cleared."},{"t":"Superego","d":"The protective structure of the superficial mind. The story impressions handed down from an adult. The ego is more sophisticated because the ego is somatic in nature. The superego is superficial structure protecting beliefs."},{"t":"Tag","d":"The moment a charged experience is named and coded at a node address. The name locks the experience in. The tag is what the body scans for in all future input, firing the resident pattern when it finds a match."},{"t":"Two mechanics","d":"The two operations required for a complete release: (1) Release--the charge at the address reduces; (2) Embodied Truth--the replacement state is installed while the address is open. Both are required in sequence. The first without the second leaves no alternative at the address."},{"t":"Vritti","d":"A sensory input waveform and emotional input waveform. It channels across the nervous system, from the external field through the nervous system into the brain, where it's composited and perceived, and where awareness uses the sensory input to perceive. Once identified, the vritti is what collapses the nerve, the chakra, and the field of awareness."},{"t":"Willpower","d":"Available directed force. A measurement, not a character trait. It runs as a battery with a daily charge; sleep sets the starting level and moving through resistance spends it. High drag means low willpower. Release the charges, drag reduces, willpower rises. Not a separate instrument: will is directed intention, and any drag on it reads as resistance, which is already measured."}];
+var GLOSS=[{"t":"Address","d":"The specific location in the body’s energetic architecture where a pattern is resident. Every fetter, every tag, every limiting belief has an address. The release work operates at the address--not at the level of thought or behavior."},{"t":"Allostatic load","d":"The accumulated physiological cost of chronic stress responses. The body’s equivalent of compound interest on unresolved charge. The release work reduces allostatic load by addressing it at the address layer."},{"t":"Archetype","d":"One of 12 universal character templates, and the third rung on the native side of the stack. Domains express as the blueprint; the blueprint branches into archetypes. A separate rung from the blueprint rather than another name for it. Native and present before conditioning, which is why it isn't held in tissue and not released: the work changes where it's pointed, not what it is."},{"t":"Ascension","d":"No longer affected, triggered, or stimulated by the external environment, or by your own emotions. You've ascended emotions controlling you. The environment loses its grip because survival patterns are no longer running as commands. A state definition, not a threshold: it carries no release count. It's not a destination--an operating state."},{"t":"Attention","d":"The ability to focus awareness. Two types: nonfocused attention and focused attention. Attention is the steering; will is the force."},{"t":"Aura","d":"The field this model holds is generated by the state of the nervous system. Not measured by this instrument, and not measured by any instrument this product knows of. Ultraweak photon emission from living tissue is real and comes from reactive oxygen species; it has never been shown to carry nervous system state. Held here as a model of how presence is received, not as a reading."},{"t":"Awareness","d":"The aperture of perception of the soul."},{"t":"Biophoton field","d":"Ultraweak photon emission from living tissue. Real, measured in laboratories since the 1950s, and understood to come from reactive oxygen species rather than from nervous system state. This product names it as the physical thing it is and does not claim it carries the aura. Nothing in the engine reads it."},{"t":"Chakra","d":"A seat. In this model, the nonphysical field generated by a nerve plexus. Seven of them, root to crown. The seven count and the plexus correspondence are a modern Western reading: the source traditions give five, six, eight and more, and the welding of seats to nerve plexuses dates to 1927. Held because it is the vocabulary the work is done in, not because it has been measured."},{"t":"Charge","d":"Stored survival energy held at a node. Installed by a stress response that never finished. Felt as heat, pressure, tingling, or weight when accessed."},{"t":"Clair","d":"A perceptual channel beyond the five physical senses. Clairvoyance (seeing), clairaudience (hearing), clairsentience (feeling), claircognizance (knowing), and others. Soma fields fragment them; clearing soma allows them to operate in unison."},{"t":"Coherence","d":"Reduction of internal contradiction, computed rather than measured. The state in which intention, behavior, and nervous system response are aligned. CQ measures it."},{"t":"Replacement state","d":"The specific behavioral, emotional, and somatic expression of the quality a pattern suppresses--installed at the same address as the released charge. Not a generic positive. The exact quality the pattern is blocking."},{"t":"Consciousness","d":"Energy as information, perceived through two experiences. The macro is unbound and unfocused: infinite consciousness. The opposite pole is localized conscious awareness. Same thing, different aperture."},{"t":"CQ","d":"Coherence Quotient. (Intention × Integrity) ÷ Resistance. Baseline: 100. Measures the degree to which the system operates without internal contradiction."},{"t":"Distortion","d":"Intention read through loaded nodes. The signal is intact, the instrument is bent. Not a formula variable: distortion and SQ were the same reading under two names. It survives as a description of what happens to intention, not as a term that gets multiplied by anything."},{"t":"DQ","d":"Decoherence. DQ = 100 − CQ. Derived, not measured. There's no separate instrument for it, and any build that reports one is reporting arithmetic as though it were a reading. A high DQ means the system is consuming energy maintaining internal contradictions."},{"t":"Drag","d":"The combined load that reduces available willpower. Fetters, clenched muscles, inflammation, loaded nodes--all produce drag on the mind-body-spirit connection. Drag is why willpower feels like a limited resource."},{"t":"Earth Star","d":"Field node at the center point between the feet. Anchors the system to the planet."},{"t":"Ego","d":"Body consciousness. The mind attached to the physical, never present, toggling between thinking and feeling to navigate the world out of fear. The ego is the mask of our character. It's the total sum of DQ, all the SQ running, and all the patterns and awareness that come with body consciousness."},{"t":"Fetter","d":"A named conditional response pattern resident at a specific node address. 108 fetters in the body, one per physical node. 112 total addresses include 4 field nodes just outside the body, two above the crown, two below the feet. Fires when matching input arrives, regardless of how long ago it was installed."},{"t":"Five paths","d":"Five primary orientations toward the work: Krishna (flow), Buddha (awareness), Christ (somatics), Rama (alignment), Lao Tzu (horizontal). All paths lead to the same Source. The Anchor Principle operates underneath all five."},{"t":"Hardened mask","d":"The layer of conditioning that doesn't clear with time, life change, or most therapeutic modalities. Requires active address-level release work. Distinguished from practice-maintained conditioning, which life change alone can clear."},{"t":"Hyper-complex","d":"One of 8 named clusters of saboteurs operating as a unified behavioral system. More severe than a single saboteur--a self-reinforcing architecture of patterns that maintain each other."},{"t":"Integrity","d":"The total sum of your coherence, which upregulates the nervous system. It does that by moving you through and maintaining moral structure. Integrity is a ship’s hull. A hole in the hull means the ship takes on water. Integrity has to be at a hundred percent for the hull, and for CQ, to hold. Measured as compliance with the 21 Laws of Moral Integrity."},{"t":"Intention","d":"The intended outcome. Part willpower, part desire, part motivation. Moving toward something registers as pleasure. If no outcome has been formed, avoidance takes the slot by default."},{"t":"Justification mechanic","d":"The body’s defense of its own installed patterns. Blame, deflection, rationalization--all are the tag’s immune response. The body defends the signal because the truth is too difficult to face. Narcissism is the justification mechanic at high intensity."},{"t":"Karma","d":"The results of your thoughts and physical actions put out into the world, and the cause-and-effect energy that comes back to you from those actions. It's cyclical, an echo. Its purpose is to come back so you can learn the lesson, overcome, and transmit the karma so it never comes back. Karma is cause and effect in interaction."},{"t":"Kosha","d":"A perceptual layer through which experience is filtered. Six layers: physical, energetic, mental, wisdom, bliss, and linguistic. Each transforms the signal passing through it."},{"t":"Kundalini","d":"The stored vital energy at the base of the spine. Rises root to crown when enough nodes are cleared for the channel to conduct."},{"t":"Letting go","d":"The release protocol. Runs two mechanics in sequence: (1) reducing charge at the address, (2) installing the replacement state while the address is open. Different from affirmation, which skips the first mechanic."},{"t":"Limiting belief","d":"A tag that compresses the full range of experience into a limited label. Every identification is a limiting belief by definition--not as a judgment but as a mechanism. The label is always smaller than the experience."},{"t":"Mask","d":"The accumulated distortion functioning as an identity construct. What most people call ‘their personality’--the conditioned firing of patterns stored at specific addresses. The mask isn't who you are."},{"t":"Memory","d":"The result of the vritti and identification. Sensory input and emotional input, once identified, stored in the body."},{"t":"Merkaba","d":"A geometric field structure used in the release protocol. Top spinning left, bottom spinning right. Opposing rotations distort the node’s current flow, creating conditions for release."},{"t":"Node","d":"An address in the body’s energetic architecture. 108 physical nodes in the body. 4 field nodes just outside it: the Earth Star at the center point between the feet, the Sol Star just above the crown, and the Gaia Gateway below the Earth Star, and the Stellar Gateway above the Sol Star. 112 total."},{"t":"OJAS","d":"Sanskrit, meaning vigour. It isn't an acronym and there are no letters to expand; every instance spelled OJOS in earlier drafts was a transcription error that propagated. Vital energy in meditation, held as a cocoon of energy around you. It spins without you having to drive it, and it naturally stimulates the nervous system and releases stress from the body. The protocol developed for Stage 4 and Stage 5 nodes, the ones too dense or too numb to feel. Restores enough signal for release work to begin."},{"t":"Perception","d":"The ability to intuit and perceive, and to translate energy into a symbolic form that can be perceived and understood. Perceiving the sensory input to make sense of things."},{"t":"Plexus","d":"A physical nerve cluster. The plexus is the hardware; the chakra is the field it generates. Disruption at the plexus level produces disruption at the chakra level."},{"t":"Presence","d":"The ability to project one’s energy to be perceived and felt by others."},{"t":"Primary node","d":"The primary loaded node in a field of surrounding nodes. Clear the primary node and the surrounding field releases on its own. Working secondary nodes without finding the primary node produces partial release."},{"t":"Pure perception","d":"All the clairs operating in unison without distortion. Not an absence of thought--a state of full multi-sensory field coherence. Available as soma load reduces and the barriers between the clairs dissolve."},{"t":"Reading-as-release","d":"The protocol in which reading a properly constructed Letting Go sequence produces somatic release at the anatomical address the sequence specifies. No additional visualization required. Both mechanics run through the act of reading."},{"t":"Release","d":"The discharge of stored charge through the nervous system. Physical and observable: heat, shaking, tears, breath shifts. The pattern loses its power source."},{"t":"Resistance","d":"The denominator in the CQ formula. All drag combined--every fetter, loaded node, and inflammatory process that opposes the flow of signal through the system. Resistance is what the release work reduces."},{"t":"Saboteur","d":"One of 33 named behavioral patterns that contract a fetter into characteristic repeating behavior. Each has a specific belief structure, body location, and emotional signature."},{"t":"Self-unraveling state","d":"The body’s autonomous release state when enough gates have cleared. The soma fields begin releasing without active protocol work. The operational success criterion of a release session: not the node is cleared, the body is releasing on its own."},{"t":"Signal chain","d":"The full processing loop: field of awareness → senses → nervous system → brain → intelligence layer → relation layer → three axes → emotional layer → superego → koshas → archetypes → main field. The loop completes moment to moment."},{"t":"Soma","d":"The energetic field generated by the nervous system’s state. Accumulated soma creates load. Overlapping soma fields fragment the perceptive layer, forming barriers the awareness can't see through."},{"t":"Sol Star","d":"Field node just above the crown. The point through which the system extends beyond the body and opens to the field."},{"t":"Source","d":"The ground state of the field before any pattern is installed. The operating system underneath the operating system. What remains when all patterns are cleared."},{"t":"Superego","d":"The protective structure of the superficial mind. The story impressions handed down from an adult. The ego is more sophisticated because the ego is somatic in nature. The superego is superficial structure protecting beliefs."},{"t":"Tag","d":"The moment a charged experience is named and coded at a node address. The name locks the experience in. The tag is what the body scans for in all future input, firing the resident pattern when it finds a match."},{"t":"Two mechanics","d":"The two operations required for a complete release: (1) Release--the charge at the address reduces; (2) Embodied Truth--the replacement state is installed while the address is open. Both are required in sequence. The first without the second leaves no alternative at the address."},{"t":"Vritti","d":"A sensory input waveform and emotional input waveform. It channels across the nervous system, from the external field through the nervous system into the brain, where it's composited and perceived, and where awareness uses the sensory input to perceive. Once identified, the vritti is what collapses the nerve, the chakra, and the field of awareness."},{"t":"Willpower","d":"Available directed force. A measurement, not a character trait. It runs as a battery with a daily charge; sleep sets the starting level and moving through resistance spends it. High drag means low willpower. Release the charges, drag reduces, willpower rises. Not a separate instrument: will is directed intention, and any drag on it reads as resistance, which is already measured."}];
 var HARM=[{"c":"E01","t":"All Is One","a":"nature","ch":"Chapter 19"},{"c":"E02","t":"All Is Motion","a":"nature","ch":"Chapter 19"},{"c":"E03","t":"Polarity","a":"nature","ch":"Chapter 19"},{"c":"E04","t":"All Fields Correspond","a":"nature","ch":"Chapter 19"},{"c":"E05","t":"Like Fields Attract","a":"nature","ch":"Chapter 19"},{"c":"E06","t":"Inspired Action","a":"nature","ch":"Chapter 19"},{"c":"E07","t":"Transmutation","a":"nature","ch":"Chapter 19"},{"c":"E08","t":"Cause & Effect","a":"nature","ch":"Chapter 19"},{"c":"E09","t":"Compensation","a":"nature","ch":"Chapter 19"},{"c":"E10","t":"Potential","a":"nature","ch":"Chapter 19"},{"c":"E11","t":"Relativity","a":"nature","ch":"Chapter 19"},{"c":"E12","t":"Rhythm","a":"nature","ch":"Chapter 19"},{"c":"E13","t":"Gender","a":"nature","ch":"Chapter 19"},{"c":"E14","t":"Form","a":"human","ch":"Chapter 19"},{"c":"E15","t":"Archetype","a":"human","ch":"Chapter 19"},{"c":"E16","t":"Biofield","a":"human","ch":"Chapter 19"},{"c":"E17","t":"Attunement","a":"human","ch":"Chapter 19"},{"c":"E18","t":"Perception","a":"human","ch":"Chapter 19"},{"c":"E19","t":"Intelligence","a":"human","ch":"Chapter 19"},{"c":"E20","t":"Pleasure & Pain","a":"human","ch":"Chapter 19"},{"c":"E21","t":"The Three Axes","a":"human","ch":"Chapter 19"},{"c":"E22","t":"Symbol","a":"human","ch":"Chapter 19"},{"c":"E23","t":"Identity","a":"human","ch":"Chapter 19"},{"c":"E24","t":"Choice","a":"human","ch":"Chapter 19"},{"c":"E25","t":"Ego","a":"human","ch":"Chapter 19"},{"c":"E26","t":"Intention","a":"human","ch":"Chapter 19"},{"c":"E27","t":"Action","a":"human","ch":"Chapter 19"},{"c":"E28","t":"Memory","a":"human","ch":"Chapter 19"},{"c":"E29","t":"Truth","a":"spirit","ch":"Chapter 19"},{"c":"E30","t":"Transparency","a":"spirit","ch":"Chapter 19"},{"c":"E31","t":"Unity","a":"spirit","ch":"Chapter 19"},{"c":"E32","t":"Awareness","a":"spirit","ch":"Chapter 19"},{"c":"E33","t":"Presence","a":"spirit","ch":"Chapter 19"},{"c":"E34","t":"Equanimity","a":"spirit","ch":"Chapter 19"},{"c":"E35","t":"Compassion","a":"spirit","ch":"Chapter 19"},{"c":"E36","t":"Forgiveness","a":"spirit","ch":"Chapter 19"},{"c":"E37","t":"Courage","a":"spirit","ch":"Chapter 19"},{"c":"E38","t":"Temperance","a":"spirit","ch":"Chapter 19"},{"c":"E39","t":"Duty","a":"spirit","ch":"Chapter 19"},{"c":"E40","t":"Accountability","a":"spirit","ch":"Chapter 19"},{"c":"E41","t":"Justice","a":"spirit","ch":"Chapter 19"},{"c":"E42","t":"Non-Harm","a":"spirit","ch":"Chapter 19"},{"c":"E43","t":"Responsibility","a":"spirit","ch":"Chapter 19"},{"c":"E44","t":"Humility","a":"spirit","ch":"Chapter 19"},{"c":"E45","t":"Generosity","a":"spirit","ch":"Chapter 19"},{"c":"E46","t":"Detachment","a":"spirit","ch":"Chapter 19"},{"c":"E47","t":"Patience","a":"spirit","ch":"Chapter 19"},{"c":"E48","t":"Aesthetic Beauty","a":"spirit","ch":"Chapter 19"},{"c":"E49","t":"Nature","a":"spirit","ch":"Chapter 19"},{"c":"E50","t":"Peace","a":"express","ch":"Chapter 19"},{"c":"E51","t":"Play","a":"express","ch":"Chapter 19"},{"c":"E52","t":"Curiosity","a":"express","ch":"Chapter 19"},{"c":"E53","t":"Creativity","a":"express","ch":"Chapter 19"},{"c":"E54","t":"Flow","a":"express","ch":"Chapter 19"},{"c":"E55","t":"Wonder","a":"express","ch":"Chapter 19"},{"c":"E56","t":"Order","a":"express","ch":"Chapter 19"},{"c":"E57","t":"Love","a":"express","ch":"Chapter 19"},{"c":"E58","t":"Purpose","a":"express","ch":"Chapter 19"},{"c":"E59","t":"Will","a":"express","ch":"Chapter 19"},{"c":"E60","t":"Fear · Safety","a":"emotion","ch":"Chapter 19"},{"c":"E61","t":"Anger · Calm","a":"emotion","ch":"Chapter 19"},{"c":"E62","t":"Shame · Worth","a":"emotion","ch":"Chapter 19"},{"c":"E63","t":"Disgust · Acceptance","a":"emotion","ch":"Chapter 19"},{"c":"E64","t":"Apathy · Joy","a":"emotion","ch":"Chapter 19"},{"c":"E65","t":"Shock","a":"emotion","ch":"Chapter 19"},{"c":"E66","t":"Sad · Happy","a":"emotion","ch":"Chapter 19"},{"c":"E67","t":"Surprise","a":"emotion","ch":"Chapter 19"},{"c":"E68","t":"Anticipation","a":"emotion","ch":"Chapter 19"},{"c":"E69","t":"Physical","a":"measure","ch":"Chapter 19"},{"c":"E70","t":"Intellectual","a":"measure","ch":"Chapter 19"},{"c":"E71","t":"Emotional","a":"measure","ch":"Chapter 19"},{"c":"E72","t":"Wisdom","a":"measure","ch":"Chapter 19"},{"c":"E73","t":"Adversity","a":"measure","ch":"Chapter 19"},{"c":"E74","t":"Coherence","a":"measure","ch":"Chapter 19"},{"c":"E75","t":"Meta- Awareness","a":"meta","ch":"Chapter 19"},{"c":"E76","t":"Coherence","a":"meta","ch":"Chapter 19"}];
 var HARM_AX={nature:'Laws of Nature',human:'Laws of Human Nature',spirit:'Laws of Moral Integrity',
  express:'Laws of Expression',emotion:'The nine architectures',measure:'The instruments',meta:'The frame'};
@@ -9220,7 +9326,7 @@ if(typeof module!=='undefined'&&module.exports){
                  DARK_MAL:DARK_MAL, DARK_CQ:DARK_CQ,
                  GOVERN:GOVERN, quadrant:quadrant, outwardShare:outwardShare, organisedShare:organisedShare, ORG_W:ORG_W,
                  FAM_OUT:FAM_OUT, FAM_IN:FAM_IN, GOV_ORG:GOV_ORG, GOV_MAL:GOV_MAL, GOV_ANGEL:GOV_ANGEL,
-  /* labels */   TIERDEF:TIERDEF, TIER_BY:TIER_BY, tierOf:tierOf,
+  /* labels */   TIERDEF:TIERDEF, TIER_BY:TIER_BY, tierOf:tierOf, TIERCOL:TIERCOL,
                  MEDIAN:MEDIAN, MEDIAN_LO:MEDIAN_LO, MEDIAN_HI:MEDIAN_HI,
                  medianRange:medianRange, tierTop:tierTop, tierRange:tierRange,
   /* astro */     julianDay:julianDay, sunLon:sunLon, moonLon:moonLon, gmst:gmst,
@@ -9339,6 +9445,11 @@ function cr(band,pct,o){
  var C=2*Math.PI*G.r, off=C*(1-p/100);
  var col=o.color||seatCol(band);
  var hot=(o.hot!==undefined)?o.hot:(p>=HOT_AT);
+ /* THE CENTRE TAKES LETTERS AS WELL AS A DRAWING. Ruled: "CQ, DQ, SQ is
+    essentially an icon, make this a centre ring element instead of a pill."
+    For those three the letters are the icon, because they are the names
+    everything in this product calls them by and a drawing would be a second
+    name for a thing that already has one. Everything else gets a drawing. */
  var glyph=o.glyph||SEATGLYPH[band]||SEATGLYPH._;
  var val=(o.raw!=null)?o.raw:(Math.round(p)+'%');
  var cls='cr '+size+(hot?' hot':'')+(o.act?' act':'')+(o.on?' on':'');
@@ -9352,8 +9463,45 @@ function cr(band,pct,o){
    +'<circle cx="'+(G.box/2)+'" cy="'+(G.box/2)+'" r="'+G.r+'" fill="none" stroke="'
     +(hot?'var(--alarm)':col)+'" stroke-width="'+G.w+'" stroke-linecap="round" '
     +'stroke-dasharray="'+C.toFixed(1)+'" stroke-dashoffset="'+off.toFixed(1)+'"/></svg>'
-   +'<span class="gl"><svg viewBox="0 0 24 24" aria-hidden="true">'+glyph+'</svg></span></span>'
+   +(o.text?'<span class="gl gl-t">'+esc(o.text)+'</span>'
+          :'<span class="gl"><svg viewBox="0 0 24 24" aria-hidden="true">'+glyph+'</svg></span>')+'</span>'
   +'<span class="v">'+esc(val)+'</span></'+tag+'>';}
+/* ============================================================
+   THE FOUR THAT MOVE THROUGH A PERSON, DRAWN.
+
+   Ruled: the strip becomes a ring with the icon in the centre and a pill
+   with the number, and the words go to their tooltips, which saves the space
+   four labels were taking. CQ, DQ and SQ carry their letters. These four had
+   no icon at all, because they had never needed one while the word was
+   sitting next to them.
+
+   Each is argued from what the reading is rather than from what the word
+   sounds like, which is the rule the rest of the icon set keeps. Ring, never
+   fill, on the same 24 unit grid.
+   ============================================================ */
+/* wrapped as markup, not as bare path data, because cr() drops the glyph
+   straight into an svg and SEATGLYPH hands it a <path> element. Bare d data
+   rendered as an empty ring, which is the one thing a glyph must never be. */
+function qp(d){return '<path d="'+d+'"/>';}
+const QICON_D={
+ /* VITALITY. What is left after apathy and the shadow weight, so it is a
+    shoot: the thing that grows back when the weight comes off. */
+ vitality:'M12 21v-8M12 13c0-3.4 2.4-6 5.6-6.4C17.2 10 15 12.6 12 13'
+   +'M12 13c0-2.8-2-5-4.7-5.4C7.7 10.4 9.6 12.4 12 13M9 21h6',
+ /* AWARENESS. Intention read against distortion. An aperture, because
+    awareness in this product is the width of what gets through, and the eye
+    is already spoken for by perception. */
+ awareness:'M12 3.5a8.5 8.5 0 110 17 8.5 8.5 0 010-17M12 3.5L17.8 9.3'
+   +'M20.5 12h-8.2M17.8 14.7L12 20.5M6.2 14.7L12 8.9M3.5 12h8.2M6.2 9.3L12 15.1',
+ /* WILL. Integrity carried through a clear segment, so it is force through a
+    gap: the shaft goes all the way and the gap is what it had to pass. */
+ will:'M12 21V4M12 4l-4 4M12 4l4 4M5 13.5h3.2M15.8 13.5H19',
+ /* FLOW. Every seat multiplied by the next, root to crown, so it is what
+    rises through and keeps rising. */
+ flow:'M6 19c3-2.4 3-5.6 0-8 3-2.4 3-5.6 0-8M12 19c3-2.4 3-5.6 0-8 3-2.4 3-5.6 0-8'
+   +'M18 19c3-2.4 3-5.6 0-8 3-2.4 3-5.6 0-8'};
+const QICON={};
+Object.keys(QICON_D).forEach(function(k){QICON[k]=qp(QICON_D[k]);});
 /* an address, a saboteur or a seat, rendered as one object */
 function crNode(n,size,o){o=o||{};
  return cr(n.b, n.sq*10, Object.assign({size:size||'sm', raw:n.sq.toFixed(1),
@@ -9401,6 +9549,11 @@ function crBadge(band,pct,o){
  var p=Math.max(0,Math.min(100,pct||0));
  var C=2*Math.PI*G.r, off=C*(1-p/100);
  var col=o.color||seatCol(band);
+ /* THE CENTRE TAKES LETTERS AS WELL AS A DRAWING. Ruled: "CQ, DQ, SQ is
+    essentially an icon, make this a centre ring element instead of a pill."
+    For those three the letters are the icon, because they are the names
+    everything in this product calls them by and a drawing would be a second
+    name for a thing that already has one. Everything else gets a drawing. */
  var glyph=o.glyph||SEATGLYPH[band]||SEATGLYPH._;
  var val=(o.raw!=null)?o.raw:(Math.round(p)+'%');
  var half=G.box/2;
@@ -9992,7 +10145,14 @@ function solCore(r,base){
     that asks for the parts, so the sphere gives them room. It is the one
     dimension on the wheel that is not a reading, and it is not pretending to
     be: the lengths inside it are the reading and they scale with it. */
- const cr0=base*sz*(1+breathe)*(1+open*0.95);
+ /* THE CORE BLOOMS LAST, once the ring is whole, because the core is what the
+    ring adds up to. It arrives out of nothing rather than out of small, so
+    the ring is briefly a ring around an empty middle, which is the moment the
+    figure reads as assembled rather than revealed. */
+ /* out of a third, never out of nothing. A core at zero is a reading that has
+    vanished, and this figure is the only thing on the surface. */
+ const ce=0.34+0.66*enterA(ENTER_CORE,ENTER_SPAN);
+ const cr0=base*sz*(1+breathe)*(1+open*0.95)*ce;
  var gc=cqRamp(r.CQ);
  /* the glow is earned. nothing below the median, then it opens out. */
  var glow = coh<=0.5 ? 0 : (coh-0.5)/0.5;
@@ -10060,12 +10220,15 @@ function solCore(r,base){
    click. No text is drawn over the wheel. The long labelled arrows were
    read as too long and as text hovering over the construct. */
 function verpArrows(cr0){
+ /* the six arrive with the core and just after it, because they are read off
+    the core rather than off the ring */
+ var ge=0.4+0.6*enterA(ENTER_CORE+80,ENTER_SPAN);
  var V=verpRead(), evid=V.some(function(v){return v.pct>0;});
  if(!evid) V=V.map(function(v){return {k:v.k,nm:v.nm,side:v.side,mult:v.mult,d:v.d,pct:0,n:0};});
  var hi=V.filter(function(v){return v.side==='higher';});
  var lo=V.filter(function(v){return v.side==='lower';});
  var ink=INK(), bgc=LIGHT()?[248,247,243]:[23,25,34];
- var R=13, rr=cr0*1.3+34;
+ var R=13*ge, rr=cr0*1.3+34;
  function gate(v,i,n,up){
   var a=(up?-Math.PI/2:Math.PI/2)+(i-(n-1)/2)*0.72;
   var x=CX+Math.cos(a)*rr, y=CY+Math.sin(a)*rr;
@@ -10216,6 +10379,72 @@ function fetGrown(n,a,hw,r0,c,ld,fg,fn){
  if(n.disp>=6&&fn>0.45)
   radialTxt(n.k,a,R_SHELL+9+hl,11.5,mixc(c,[255,255,255],.3),.6+fn*.4,600);}
 var R_SHELL=0;
+/* ============================================================
+   THE FIELD ASSEMBLES WHEN YOU LAND ON IT.
+
+   His question: the field almost looks like a character, and the elements are
+   separate, so what if they each moved into place. And a colour animation of
+   the bands. As a one time event.
+
+   So it is one, and it is the seven seats arriving in turn rather than a
+   hundred and eight things fading up together. Root first and crown last,
+   which is the order the body fills and the order every other reading in this
+   product is given in, so the motion says something rather than decorating
+   something. That sweep IS the colour animation of the bands: the seats are
+   the rainbow, and taking them in turn is the only way to see that they are
+   seven things and not one gradient.
+
+   Each address swings the last few degrees into place and settles out of a
+   slight lift, which is what makes it read as parts assembling rather than a
+   picture fading up. The core blooms last, after the ring is whole, because
+   the core is what the ring adds up to.
+
+   ONE TIME, AND ONLY ON ARRIVAL. It runs when the Field is entered, not on
+   every repaint, or a person dragging the wheel would watch it reassemble
+   under their hand. Reduced motion gets the end state on the first frame:
+   somebody who asked the machine to stop moving has not asked it to move
+   less, which is the rule the rest of this build already keeps.
+   ============================================================ */
+/* MEASURED AND CUT DOWN. The first cut ran 1.9 seconds with the core absent
+   for the first 1.28 of them, and the functional gate returned 44 failures
+   because for well over a second the instrument genuinely was not there. The
+   gate was right twice: a person landing on the Field and reaching for
+   something in that window finds nothing either, and an entrance that has to
+   be waited out is not an entrance, it is a loading screen.
+
+   Under a second end to end now, and the core is never at nothing: it arrives
+   out of a third of its size rather than out of zero, so the figure is
+   complete from the first frame and what moves is how complete it looks. */
+const ENTER_SPAN=380, ENTER_STAGGER=62, ENTER_CORE=300, ENTER_TOTAL=900;
+var ENTER_T0=null, ENTER_SEEN=false;
+function enterStart(){
+ /* ONCE A SESSION, NOT ONCE A VISIT. Ruled: "as a one time event." It was
+    firing on every arrival at the Field, so a person who stepped to Knowledge
+    and back watched the figure assemble again, which turns an entrance into a
+    tax on navigation. It also made every measurement of this surface a race,
+    because anything that looked at the Field within 900ms of a tab change was
+    measuring the animation rather than the figure. */
+ if(ENTER_SEEN)return;
+ ENTER_SEEN=true;
+ /* null means never run, zero means run and finished. Both answer 1 from
+    enterA, and only one of them is worth starting a clock for. */
+ ENTER_T0=REDUCED?0:performance.now();}
+function enterOver(){
+ return ENTER_T0===null||ENTER_T0===0||(performance.now()-ENTER_T0)>ENTER_TOTAL;}
+/* how far into its own arrival one part is, 0 to 1, eased out so everything
+   decelerates into place instead of stopping dead */
+function enterA(delay,span){
+ if(ENTER_T0===null||ENTER_T0===0)return 1;
+ var e=performance.now()-ENTER_T0-delay;
+ if(e<=0)return 0;
+ if(e>=(span||ENTER_SPAN))return 1;
+ var k=e/(span||ENTER_SPAN);
+ return 1-Math.pow(1-k,3);}
+/* one seat's turn. Root is 0 and Crown is 6, so the sweep runs up the body. */
+function enterSeat(b){
+ var i=BANDS.indexOf(b); if(i<0)i=0;
+ return enterA(i*ENTER_STAGGER,ENTER_SPAN);}
+
 function drawWheel(r,L){
  const ink=INK(),p=S.pin,gc=GOLDC();
  const shellR=[U*.62,U*.68,U*.74,U*.78][L];
@@ -10351,7 +10580,14 @@ function drawWheel(r,L){
 
  /* --- THE SHELL. 108 addresses. SQ. present at every depth. --- */
  const fg=fetA(0), fn=fetA(1);
- W.forEach(n=>{const a=n.ang,ld=clamp(n.disp/10,0,1);
+ W.forEach(n=>{
+  /* its seat's turn to arrive. Nothing is drawn before its turn, which is
+     what makes the sweep visible: a band that is merely dim is a band that is
+     already there. */
+  const ea=enterSeat(n.b);
+  if(ea<=0)return;
+  /* the last few degrees of travel, and the lift it settles out of */
+  const a=n.ang+(1-ea)*0.19, ld=clamp(n.disp/10,0,1)*ea;
   /* the slice widens a little as the fetters grow, so a grown address is a
      shape you can hit rather than a hair you have to aim at */
   const hw=TAU/108*(.43+fg*.24);
@@ -10370,7 +10606,11 @@ function drawWheel(r,L){
   if(S.hover===n||S.pin===n){g.strokeStyle=rgba(gc,1);g.lineWidth=2;g.stroke();}
   if(fg>0&&carrying)fetGrown(n,a,hw,r0,c,ld,fg,fn);
   /* the target grows with the shape. r0 is where the address now starts. */
-  HIT.push({k:'node',n,cx:CX,cy:CY,a0:a-hw,a1:a+hw,
+  /* THE TARGET IS WHERE IT LANDS, NOT WHERE IT IS MID FLIGHT. A hit box that
+     travels with the animation would move under a pointer that had already
+     found it, which is worse than no box at all for the second and a half it
+     lasts. */
+  HIT.push({k:'node',n,cx:CX,cy:CY,a0:n.ang-hw,a1:n.ang+hw,
    r0:Math.min(R.shell*.85,r0-4),r1:R.shell*1.02+(fn>0&&carrying?U*.05:0)});});
 
  /* AND PAST THE FETTERS, WHAT PUT THE CHARGE THERE.
@@ -11291,7 +11531,9 @@ function renderShelf(r,seats,speed,stop,dom,loadedTot,marks){
  var el=document.getElementById('eshelf'); if(!el)return;
  var sh='<div class="pm-hd">'
   +'<div><div class="pm-eye">Flow through</div>'
-  +cr(K2B[dom.p.k], speed*100, {size:'lg',label:'flow through'})
+  /* flow through is a share that passes, so its high end is the good one and
+    it never prints in the alarm colour. */
+  +cr(K2B[dom.p.k], speed*100, {size:'lg',label:'flow through',hot:false})
   +'<div class="pm-sub">'+(stop?('stops at the '+stop.p.n.toLowerCase())
     :(loadedTot?'passing every seat':'nothing held'))+'</div></div>'
   /* The label used to swap identity with the state, reading "Heaviest seat"
@@ -11963,8 +12205,9 @@ function sumGlance(r){
  var acc=(typeof accuracy==='function')?accuracy(r):null;
  var e=(r.X+r.Y+r.Z)/3;
  var row=[
+  /* the glance row's coherence ring reads the tier too, for the same reason */
   ['coherence', r.darkB, r.CQ, Math.round(r.CQ)+'%', 'Where the field sits, 0 to 100.',
-   'of 100'],
+   'of 100', TIERCOL[r.tier]],
   /* THE LABEL SAID 0 TO 10 AND THE NUMBER GOES PAST 54. Measured across the
      roster: Gordon 54.7, Tomas 45.9, Ana 22.8. It is a sum over every address
      carrying, so it has no ceiling of ten or of anything else, and a stated
@@ -12010,7 +12253,13 @@ function sumGlance(r){
     everybody can see it, and the title keeps the longer sentence. */
  return '<div class="s-glance">'+row.map(function(x){
   return '<button type="button" class="s-gl" data-gl="'+esc(x[0])+'" title="'+esc(x[4])+'">'
-   +cr(x[1],x[2],{size:'sm',label:x[0],raw:x[3]})
+   +cr(x[1],x[2],{size:'sm',label:x[0],raw:x[3],color:x[6]||undefined,
+     /* A READING WHERE HIGH IS THE GOOD END NEVER PRINTS RED. Ruled: "96 per
+        cent flow accuracy and yet it is red. Red is a colour of danger. That
+        is bad colouring." cr reddens anything past ninety, which is correct
+        for shadow weight and exactly backwards for coherence, energy and
+        identification. */
+     hot:(x[0]==='shadow weight'||x[0]==='carried depth')?undefined:false})
    +'<span class="s-gl-k">'+esc(x[0])
    +'<em class="s-gl-s">'+esc(x[5]||'')+'</em></span></button>';}).join('')+'</div>';}
 
@@ -12183,9 +12432,14 @@ function sumStory(r){
   +'</div>';}
 
 /* ---- structures at a glance. the right hand panel. ---- */
-function sumStructRow(nm,sub,band,pct,raw,glyph,data){
+/* hot is handed in because these rows carry two opposite kinds of reading.
+   A mask weight and a seat load are charge, where high is the cost. An
+   archetype share is a proportion of a blueprint, where high is only how
+   much of the blueprint it is. The alarm colour belongs to the first kind
+   and nowhere near the second. */
+function sumStructRow(nm,sub,band,pct,raw,glyph,data,hot){
  return '<button type="button" class="s-row"'+(data||'')+'>'
-  +cr(band,pct,{size:'sm',raw:raw,glyph:glyph,label:nm})
+  +cr(band,pct,{size:'sm',raw:raw,glyph:glyph,label:nm,hot:hot})
   +'<span class="s-row-t"><b>'+esc(nm)+'</b>'+(sub?'<em>'+esc(sub)+'</em>':'')+'</span></button>';}
 function sumStruct(r){
  var out='<div class="s-struct">';
@@ -12221,7 +12475,7 @@ function sumStruct(r){
  out+=aff.slice(0,4).map(function(x,i){
   return sumStructRow(x.nm, x.d, x.b,
    x.v/tot*100, Math.round(x.v/tot*100)+'%', x.ic?'<path d="'+x.ic+'"/>':null,
-   ' data-arch="'+x.i+'"');}).join('');
+   ' data-arch="'+x.i+'"', false);}).join('');
  /* masks. weight on 0 to 10, so the arc is the weight and the pill is the value. */
  if(r.maskRing&&r.maskRing.length){
   out+='<div class="pm-eye" style="margin-top:18px">Masks</div>';
@@ -12432,8 +12686,16 @@ function sumPlate(r){
    +(CURP&&CURP.who&&CURP.who.line?'<div class="s-pwho">'+esc(CURP.who.line)+'</div>':'')
   +'</div>'
   +'<div class="s-pl-r">'
-   +cr(r.darkB,r.CQ,{size:'lg',label:'coherence',raw:Math.round(r.CQ)+'%',hot:false})
-   +'<div class="s-pband"><b>'+esc(r.tier)+'</b>'
+   /* THE TIER'S OWN COLOUR, not the heaviest seat's. Ruled. The plate is the
+      one place on this page that names the band, so its ring has to mean the
+      band. It was drawn in r.darkB, so a person at Embodied whose heaviest
+      seat was the Root got a red ring on the second best reading there is. */
+   +cr(r.darkB,r.CQ,{size:'lg',label:'coherence',raw:Math.round(r.CQ)+'%',hot:false,
+      color:TIERCOL[r.tier]||undefined})
+   /* and the word wears it too. A ring in one colour beside the same band
+      printed in the body colour reads as two facts, not one. */
+   +'<div class="s-pband"><b style="color:'+(TIERCOL[r.tier]||'var(--ink)')+'">'
+   +esc(r.tier)+'</b>'
    +(t&&t.state?'<em>'+esc(t.state)+'</em>':'')+'</div>'
   +'</div>'
   /* the direction out, which has never been on a surface a touch screen can
@@ -12844,7 +13106,10 @@ function anaRender(){
     percentage is never printed off a default. */
  out+='<div class="ab-hero">'
   +cr(r.darkB,r.unread?0:r.CQ,{size:'lg',label:'coherence',
-    raw:r.unread?'\u2013':null, hot:r.unread?false:undefined,
+    /* HIGH COHERENCE IS THE GOOD END, so it never prints red. cr reddens
+       anything past ninety, which is right for a charge and backwards for
+       every reading whose high end is the one a person is working toward. */
+    raw:r.unread?'\u2013':null, hot:false,
     color:r.unread?'var(--dim)':null})
   +'<div><div class="pm-eye">'+(r.unread?'Coherence, not read yet'
     :'Coherence, '+r.tier.toLowerCase()+', 0 to 100')+'</div>'
@@ -14835,7 +15100,7 @@ function runXYZDrill(){
   +'a score, they say which of the three is carrying and which is short. Yours reads shortest at <b>'
   +low[0]+'</b>.</p>'
   +'<div class="ad-rows">'+A.map(function(a){
-    return '<div class="ad-r static"><span class="ad-k">'+cr(a[2],a[1]*100,{size:'xs',raw:a[1].toFixed(2)})
+    return '<div class="ad-r static"><span class="ad-k">'+cr(a[2],a[1]*100,{size:'xs',raw:a[1].toFixed(2),hot:false})
      +a[0]+'</span><span class="ad-m">'+(a[1]*100).toFixed(0)+'%</span></div>';}).join('')+'</div>'
   +A.map(function(a){return '<div class="pm-eye">'+a[0]+'</div><p class="ad-p">'+a[3]+'</p>';}).join('');
  rdShell(h);}
@@ -14891,7 +15156,7 @@ function runFlowDrill(){
   +'<div class="pm-eye">Seat by seat</div><div class="ad-rows">'
   +seats.slice().reverse().map(function(s){
     return '<div class="ad-r static"><span class="ad-k">'
-     +cr(K2B[s.p.k],s.pass*100,{size:'xs',raw:s.pass.toFixed(2)})+esc(s.p.n)+'</span>'
+     +cr(K2B[s.p.k],s.pass*100,{size:'xs',raw:s.pass.toFixed(2),hot:false})+esc(s.p.n)+'</span>'
      +'<span class="ad-m">'+Math.round(s.pass*100)+'%</span></div>';}).join('')+'</div>'
   +'<div class="pm-eye">Where it stops</div><p class="ad-p">'
   +(stop?'The column closes at the <b>'+esc(String(stop.p.n).toLowerCase())+'</b>, which is '
@@ -15062,7 +15327,7 @@ function runPoleDrill(end){
   var pos=mirrorAt(load,bandIg(m.seat));
   var c=seatCol(m.seat);
   h+='<button type="button" class="ad-r" data-mirror="'+m.k+'" title="'+esc(m.ask)+'">'
-   +cr(m.seat,pos,{size:'xs',raw:String(pos)})
+   +cr(m.seat,pos,{size:'xs',raw:String(pos),hot:false})
    +'<span>'+esc(up?m.up:m.dn)+'</span>'
    +'<em style="color:'+c+'">'+esc(m.q.toLowerCase())+'</em></button>';});
  h+='</div>';
@@ -15283,7 +15548,7 @@ function runAvatarDrill(){
   rows.forEach(function(r,i){
    var g2=r.gap;
    h+='<button type="button" class="ad-r" data-avp="'+i+'">'
-    +(g2?cr(g2.seat,g2.at,{size:'xs',raw:String(g2.at)}):'')
+    +(g2?cr(g2.seat,g2.at,{size:'xs',raw:String(g2.at),hot:false}):'')
     +'<span>'+esc(r.pair.be)+'</span>'
     +'<em>'+(g2?(g2.clear?'clear':esc(String(g2.seat).toLowerCase())+', '+g2.load.toFixed(1))
       :'not resolved')+'</em></button>';});
@@ -15465,7 +15730,7 @@ function runMirrorDrill(k){
   +'<p class="ad-p"><b>'+esc(m.ask)+'</b></p>'
   +'<div class="pm-eye">Where you sit</div>'
   +'<div class="ad-rows"><div class="ad-r static">'
-   +cr(m.seat,pos,{size:'sm',raw:String(pos)})
+   +cr(m.seat,pos,{size:'sm',raw:String(pos),hot:false})
    +'<span class="ad-k">'+esc(m.dn)+' at nought, '+esc(m.up)+' at a hundred</span>'
    +'<span class="ad-v" style="color:'+c+'">'+pos+'</span></div></div>'
   +'<p class="ad-p">Read from what is held at the '+String(m.seat).toLowerCase()
@@ -15503,7 +15768,9 @@ function runCompassDrill(){
  h+='<div class="pm-eye">The whole scale</div><div class="ad-rows">'
   +TIERDEF.map(function(t){
     return '<div class="ad-r static'+(t.nm===r.tier&&!r.unread?' on':'')+'" title="'+esc(t.soma||t.def)+'">'
-     +'<span class="ad-k">'+esc(t.nm)
+     /* ten bands, ten colours, so the ladder reads as a gradient a person
+        can place themselves on rather than as ten identical rows. */
+     +'<span class="ad-k" style="color:'+(TIERCOL[t.nm]||'var(--ink)')+'">'+esc(t.nm)
      +(t.state?'<em>'+esc(t.state)+'</em>':'')+'</span>'
      +'<span class="ad-v">'+tierRange(t)+'</span></div>';}).join('')
   +'</div>';
@@ -16561,6 +16828,10 @@ function setTab(i){
     it survived a pass. It sits after the class now, where the canvas is
     actually on screen. */
  if(i===TAB.FIELD&&typeof layout==='function')layout();
+ /* THE FIELD ASSEMBLES ON ARRIVAL, once per arrival. Here rather than in the
+    renderer, because the renderer runs sixty times a second and arriving is
+    something that happens once. */
+ if(i===TAB.FIELD&&typeof enterStart==='function')enterStart();
  document.body.classList.toggle('hassub',i===TAB.FIELD||i===TAB.ENERGY);
  ['probe','howto','key','tier','pol'].forEach(function(id){
   var e=$(id); if(e)e.style.display=(i===TAB.FIELD)?'':'none';});
@@ -16932,7 +17203,9 @@ function profileSheet(){
      figure. */
   +'<div class="sh-row"><span>Coherence, 0 to 100</span><b>'
    +(r.unread?'not read yet':String(Math.round(r.CQ)))+'</b></div>'
-  +'<div class="sh-row"><span>Tier</span><b>'+esc(r.unread?'not read yet':r.tier)+'</b></div>'
+  +'<div class="sh-row"><span>Tier</span><b'
+  +(r.unread?'':' style="color:'+(TIERCOL[r.tier]||'var(--ink)')+'"')+'>'
+  +esc(r.unread?'not read yet':r.tier)+'</b></div>'
   /* "of 112" was a count against a total, which is the one thing a reading
      may never be. The number of addresses carrying is the fact. */
   +'<div class="sh-row"><span>Addresses carrying</span><b>'+r.loaded.length+'</b></div>'
@@ -17881,7 +18154,11 @@ function renderAcc(r){
   +'<span class="acc-l"><b>Accuracy</b>'
   +(un?'<em>nothing read yet</em>'
      :'<em>of 100, plus or minus '+a.band.toFixed(0)+'</em>')+'</span>'
-  +cr('Crown',un?0:a.pct,{size:'lg',raw:un?'\u2013':a.pct.toFixed(0),label:'accuracy'})
+  /* AND IT NEVER PRINTS RED. Ruled: "ninety six percent flow accuracy and
+     yet it is red, red is a colour of danger, that is bad colouring." A
+     well measured person is the good case and the ring says so. */
+  +cr('Crown',un?0:a.pct,{size:'lg',raw:un?'\u2013':a.pct.toFixed(0),
+    label:'accuracy',hot:false})
   +'</button>';
  var bt=document.getElementById('accbtn');
  if(bt)bt.onclick=function(){runAccDrill();};}
@@ -18173,6 +18450,29 @@ function obPick(){
  OB.neutral=OB_NEUTRAL[Math.floor(Math.random()*OB_NEUTRAL.length)];
  OB.charged=c;}
 
+/* THE FIGURE, AT REST. Ruled: "show, not tell, Japanese Zen, we do not have to
+   go super text heavy," and separately, "when I come to this page off the
+   funnel I need to be welcomed, there is something here that needs to be like,
+   these people see me."
+
+   Text cannot do that and a stock illustration would be a lie. So the welcome
+   carries the same column the boot just drew: seven seats on a spine with a
+   gold halo over the crown, standing still. A person has watched it assemble
+   four seconds ago, and meeting it again at rest is the product saying this is
+   the thing, and it is you, without a sentence.
+
+   Drawn here rather than shared with the boot because the boot sheet is
+   removed from the document and this one has to outlive it. */
+function obFigure(){
+ var y=[160,140,120,100,80,60,40];
+ var col=['Root','Sacral','Solar','Heart','Throat','3rd Eye','Crown'];
+ return '<svg class="ob-fig" viewBox="0 0 200 178" aria-hidden="true">'
+  +'<ellipse class="ob-fig-h" cx="100" cy="21" rx="13" ry="4.4"/>'
+  +'<line class="ob-fig-s" x1="100" y1="160" x2="100" y2="40"/>'
+  +y.map(function(yy,i){
+    return '<circle class="ob-fig-d" cx="100" cy="'+yy+'" r="4.6" '
+     +'style="fill:'+seatCol(col[i])+';animation-delay:'+(0.1+i*0.07).toFixed(2)+'s"/>';}).join('')
+  +'</svg>';}
 function obOpen(replay){
  var h=document.getElementById('ob'); if(!h)return;
  OB.open=true; OB.step=0; OB.felt=null; OB.replay=!!replay;
@@ -18202,25 +18502,40 @@ function obRender(){
  var h=document.getElementById('ob'); if(!h)return;
  var s=OB.step, out='';
  if(s===0){
-  /* HIS WORDS, WARMED. The ruling carries the sentences and the ruling also
-     says humble and warm, so they are said the way somebody says them to a
-     person rather than the way a product says them to a market. */
-  out=obCard('Welcome','This one is for you.',
-   '<p class="ob-p">Nobody is coming to save you. That is not a hard thing, it '
-   +'is the good news, because it means the work is yours and it is available.</p>'
-   +'<p class="ob-p">This helps you recognise the patterns that quietly cost you: '
-   +'the ones that make you weaker than you are, in your body, in your thinking '
-   +'and in what you can hold to. You are not the first person to carry them and '
-   +'you are not carrying them alone.</p>'
+  /* THE WELCOME. Ruled twice, and the second ruling moved it.
+
+     It opened on "nobody is coming to save you," which is his sentence and a
+     true one, and it is the wrong first sentence. He said: "I want to be
+     greeted, I want to be welcomed. This is a mirror of the person. We are
+     going to be showing them their inside. We do not want to be cold. We just
+     want to let them know, hey, this is you, and it is okay. No judgment."
+
+     So the hard sentence moves one screen in, where it belongs, and the first
+     screen is a figure and eleven words. Show, not tell. Everything that used
+     to be here is still in the product and none of it is said first. */
+  out=obCard('Welcome','This is you, and it is okay.',
+   obFigure()
+   +'<p class="ob-p">No judgment. Nothing here grades you. This one is for you, '
+   +'and whatever you find in it, you are not carrying it alone.</p>'
    +'<p class="ob-p ob-dim">Two minutes. One thing to try. Nothing to fill in.</p>',
-   '<button type="button" class="btn pri" data-ob="next">Start</button>'
+   '<button type="button" class="btn pri" data-ob="next">Come in</button>'
    +'<button type="button" class="btn" data-ob="skip">Not now</button>');
  }
  else if(s===1){
-  out=obCard('What this is','An instrument, not an opinion.',
-   '<p class="ob-p">Everything here is measured from something you entered. '
-   +'It never invents a number, and where it has not read something it says so '
-   +'rather than guessing.</p>'
+  /* HIS SENTENCE, AND IT IS THE ONE THAT EARNS THE PRODUCT. "The stress that
+     we condition as normal is actually making us sick, and this tool shows you
+     how and where, and it gives you the what and the how." It is said second
+     rather than first, because it is a claim and a claim needs somebody
+     already in the room.
+
+     And the thing it reads is named: the body mind complex. His term, kept
+     because it says what it is. */
+  out=obCard('What this is','We walk you through you.',
+   '<p class="ob-p">Most of the strain we have agreed to call normal is making '
+   +'us ill. This shows you where it sits in the body, what it costs you, and '
+   +'what to do about it.</p>'
+   +'<p class="ob-p">It reads one thing: the body mind complex. How you run, '
+   +'which patterns are running, and where they are held.</p>'
    +'<div class="ob-grid">'
    +[['You write what happened','in your own words, not a questionnaire'],
      ['It finds where that sits','a place in the body, not a label'],
@@ -18228,7 +18543,10 @@ function obRender(){
      ['And you watch it move','the same numbers, over months']]
     .map(function(x){return '<div class="ob-g"><b>'+esc(x[0])+'</b>'
       +'<span>'+esc(x[1])+'</span></div>';}).join('')
-   +'</div>',
+   +'</div>'
+   +'<p class="ob-p ob-dim">Nothing here is invented. Where it has not read '
+   +'something it says so rather than guessing. The work is yours, which is the '
+   +'good news, because it means it is available.</p>',
    '<button type="button" class="btn pri" data-ob="next">Then try one thing</button>'
    +'<button type="button" class="btn" data-ob="back">Back</button>');
  }
@@ -18712,14 +19030,15 @@ function railStack(r){
    return '<div class="stk-r static"><span class="stk-l">'
     +cr(c.seat,v*10,{size:'xs',raw:v.toFixed(1),glyph:'<path d="'+c.ic+'"/>'})+esc(c.nm)+'</span>'
     +'<span class="stk-p">'+esc(c.opp)
-    +cr('Heart',p*10,{size:'xs',raw:p.toFixed(1),glyph:'<path d="'+c.ic+'"/>'})+'</span></div>';}).join('');}
+    +cr('Heart',p*10,{size:'xs',raw:p.toFixed(1),hot:false,
+      glyph:'<path d="'+c.ic+'"/>'})+'</span></div>';}).join('');}
  else{
   var list={sab:r.sabs,cx:r.cxs,hy:r.hys,sup:r.sups}[STACK_TAB]||[];
   h+=list.length?'<div class="stk-hd"><span>weight</span><span>opposite in</span></div>':'';
   h+=list.length?list.map(function(o,i){var p=poleOf(o);
    return '<button type="button" class="stk-r'+(S.pin===o?' on':'')+'" data-sk="'+STACK_TAB+'" data-si="'+i+'">'
     +'<span class="stk-l">'+crPat(o,'xs')+esc(o.nm)+(o.unnamed?'<em>inferred</em>':'')+'</span>'
-    +'<span class="stk-p">'+cr('Heart',p*10,{size:'xs',raw:p.toFixed(1)})+'</span></button>';}).join('')
+    +'<span class="stk-p">'+cr('Heart',p*10,{size:'xs',raw:p.toFixed(1),hot:false})+'</span></button>';}).join('')
    :'<div class="rnone">Nothing at this layer.</div>';}
  e.innerHTML=h;}
 /* THE BALANCE STRIP, AND WHICH END IS WHICH.
@@ -18857,8 +19176,13 @@ function railTop(r){
 
     One line, in plain words, from the same table the drill reads. */
  var td=r.unread?null:TIER_BY[r.tier];
+ /* THE BAND'S OWN COLOUR, here as on the plate. Ten tiers, ten colours,
+    and the rail was drawing the heaviest seat's instead, so the rail and the
+    plate disagreed about what colour a person's band is. High coherence is
+    the good end, so it never reddens. */
+ var tcol=(!r.unread&&TIERCOL[r.tier])||null;
  e.innerHTML=cr(r.darkB, r.unread?0:r.CQ, {size:'sm', label:'coherence',
-   raw:r.unread?'\u2013':undefined})
+   raw:r.unread?'\u2013':undefined, hot:false, color:tcol||undefined})
   /* THE TIER IS A CONTROL WHEREVER IT LIVES. Taking the word off the Field
      centre was ruled, and it took the only tappable route to the definition
      with it: there was exactly one tier control in the product and it was the
@@ -18867,8 +19191,9 @@ function railTop(r){
      audience arrives on phones. So the word in the rail is the button now. */
   +'<button type="button" class="rt-t tierbtn" id="tier" title="'
   +esc(td?(td.def+'  '+td.energy+'  Toward: '+td.toward)
-       :'Nothing has been read yet. Write a story or set a charge.')+'">'
-  +esc(r.unread?'not read yet':r.tier)+'</button>'
+       :'Nothing has been read yet. Write a story or set a charge.')+'"'
+  +(tcol?' style="color:'+tcol+'"':'')
+  +'>'+esc(r.unread?'not read yet':r.tier)+'</button>'
   +'<span class="rt-d">'+esc(r.unread
     ? 'Nothing entered yet. Write what happened and this fills in.'
     : (td?td.def:''))+'</span>';
@@ -18970,7 +19295,7 @@ function render(){
    /* the same rule as the core: nothing is printed off the defaults. the ring
       still draws, because an empty ring is the honest picture of an empty
       field, and the tail carries a dash rather than a number nobody entered. */
-   '<button class="kb" data-q="cq" title="Coherence. 0 to 100. What the field builds against what it costs.">'
+   '<button class="kb" data-q="cq">'
     /* HOT IS FOR A READING WHERE HIGH IS WRONG.
 
        cr() reddens anything past the hot threshold, which is right for shadow
@@ -18979,13 +19304,21 @@ function render(){
        at 1.0 all printed in the colour this product reserves for something
        being wrong. The domain pill had the same defect and was fixed the same
        way: the pills that climb toward health say so. */
-    +cr('Crown',r.unread?0:r.CQ,{size:'xs',label:'CQ',hot:false,
-      raw:r.unread?'\u2013':undefined})+'<span><b>CQ</b></span></button>'
-  +'<button class="kb" data-q="dq" title="Shadow weight. The summed charge across every address that is carrying.">'
-    +cr('Root',clamp(r.DQ/14,0,1)*100,{size:'xs',raw:r.DQ.toFixed(1)})
-    +'<span><b>DQ</b></span></button>'
-  +'<button class="kb" data-q="sq" title="Segment depth. 0 to 10. How deep the held charge sits at the addresses carrying it.">'
-    +cr(r.darkB,r.SQm*10,{size:'xs',raw:r.SQm.toFixed(1)})+'<span><b>SQ</b></span></button>'
+    /* THE LETTERS GO IN THE RING AND THE WORDS GO TO THE TOOLTIP. Ruled: the
+       three letters are essentially an icon, so they sit where an icon sits,
+       and the strip loses three labels' worth of width. */
+    +cr('Crown',r.unread?0:r.CQ,{size:'sm',text:'CQ',hot:false,
+      raw:r.unread?'\u2013':Math.round(r.CQ)+'%',
+      title:'Coherence. '+(r.unread?'not read yet':Math.round(r.CQ)+' out of 100')
+       +'. What the field builds against what it costs.'})+'</button>'
+  +'<button class="kb" data-q="dq">'
+    +cr('Root',clamp(r.DQ/14,0,1)*100,{size:'sm',text:'DQ',raw:r.DQ.toFixed(1),
+      title:'Shadow weight. '+r.DQ.toFixed(1)+', summed across every address that '
+       +'is carrying, with no ceiling.'})+'</button>'
+  +'<button class="kb" data-q="sq">'
+    +cr(r.darkB,r.SQm*10,{size:'sm',text:'SQ',raw:r.SQm.toFixed(1),
+      title:'Segment depth. '+r.SQm.toFixed(1)+' of 10. How deep the held charge '
+       +'sits at the addresses carrying it.'})+'</button>'
   /* THE CONSOLE AVERAGED THREE READINGS AND SHOWED THE AVERAGE.
 
      One pill said Energy and behind it sat vitality, awareness and will,
@@ -19016,20 +19349,33 @@ function render(){
     rather than just fit. */
  (function(){
   var f=flSpeed(), lo=$('keylo'); if(!lo)return;
+  /* SYMBOLIC ICONS AND NO LABELS, ruled in the same breath as the letters
+     above. These four had no icon because the word was always beside them,
+     and the word is what is being removed. Every title now carries the scale
+     as well as the name, because the tooltip is the only place the name lives
+     and a name without its scale is the thing the copy editor rule stops. */
   lo.innerHTML=
-   '<button class="kb" data-q="xyz" title="Vitality. What is left after apathy and the shadow weight.">'
-    +cr('Solar',r.unread?0:r.X*100,{size:'xs',hot:false,raw:r.unread?'\u2013':r.X.toFixed(2)})
-    +'<span><b>Vitality</b></span></button>'
-  +'<button class="kb" data-q="xyz" title="Awareness of the instrument. Intention read against distortion. Not the rail section of the same name.">'
-    +cr('3rd Eye',r.unread?0:r.Y*100,{size:'xs',hot:false,raw:r.unread?'\u2013':r.Y.toFixed(2)})
-    +'<span><b>Awareness</b></span></button>'
-  +'<button class="kb" data-q="xyz" title="Will. Integrity carried through a clear segment.">'
-    +cr('Root',r.unread?0:r.Z*100,{size:'xs',hot:false,raw:r.unread?'\u2013':r.Z.toFixed(2)})
-    +'<span><b>Will</b></span></button>'
-  +'<button class="kb" data-q="flow" title="Flow. What reaches the crown from the root, '
-    +'every seat multiplied by the next.">'
-    +cr('Heart',r.unread?0:f*100,{size:'xs',hot:false,raw:r.unread?'\u2013':f.toFixed(2)})
-    +'<span><b>Flow</b></span></button>';})();
+   '<button class="kb" data-q="xyz">'
+    +cr('Solar',r.unread?0:r.X*100,{size:'sm',hot:false,glyph:QICON.vitality,
+      raw:r.unread?'\u2013':r.X.toFixed(2),
+      title:'Vitality. '+(r.unread?'not read yet':r.X.toFixed(2)+' of 1')
+       +'. What is left after apathy and the shadow weight.'})+'</button>'
+  +'<button class="kb" data-q="xyz">'
+    +cr('3rd Eye',r.unread?0:r.Y*100,{size:'sm',hot:false,glyph:QICON.awareness,
+      raw:r.unread?'\u2013':r.Y.toFixed(2),
+      title:'Awareness of the instrument. '+(r.unread?'not read yet':r.Y.toFixed(2)+' of 1')
+       +'. Intention read against distortion. Not the rail section of the same name.'})+'</button>'
+  +'<button class="kb" data-q="xyz">'
+    +cr('Root',r.unread?0:r.Z*100,{size:'sm',hot:false,glyph:QICON.will,
+      raw:r.unread?'\u2013':r.Z.toFixed(2),
+      title:'Will. '+(r.unread?'not read yet':r.Z.toFixed(2)+' of 1')
+       +'. Integrity carried through a clear segment.'})+'</button>'
+  +'<button class="kb" data-q="flow">'
+    +cr('Heart',r.unread?0:f*100,{size:'sm',hot:false,glyph:QICON.flow,
+      raw:r.unread?'\u2013':f.toFixed(2),
+      title:'Flow. '+(r.unread?'not read yet':f.toFixed(2)+' of 1')
+       +'. What reaches the crown from the root, every seat multiplied by the next.'})
+    +'</button>';})();
  /* who. proportions, not one label. */
  (function(){
   var aff=(r.aff||[]).map(function(v,i){return {i:i,nm:(ARCH[i]||{}).nm||'',v:v};})
@@ -19345,5 +19691,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="001282549"></div>
+<div id="eof" hidden data-len="001304014"></div>
 </body></html>

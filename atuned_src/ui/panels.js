@@ -143,6 +143,10 @@ function setTab(i){
     it survived a pass. It sits after the class now, where the canvas is
     actually on screen. */
  if(i===TAB.FIELD&&typeof layout==='function')layout();
+ /* THE FIELD ASSEMBLES ON ARRIVAL, once per arrival. Here rather than in the
+    renderer, because the renderer runs sixty times a second and arriving is
+    something that happens once. */
+ if(i===TAB.FIELD&&typeof enterStart==='function')enterStart();
  document.body.classList.toggle('hassub',i===TAB.FIELD||i===TAB.ENERGY);
  ['probe','howto','key','tier','pol'].forEach(function(id){
   var e=$(id); if(e)e.style.display=(i===TAB.FIELD)?'':'none';});
@@ -514,7 +518,9 @@ function profileSheet(){
      figure. */
   +'<div class="sh-row"><span>Coherence, 0 to 100</span><b>'
    +(r.unread?'not read yet':String(Math.round(r.CQ)))+'</b></div>'
-  +'<div class="sh-row"><span>Tier</span><b>'+esc(r.unread?'not read yet':r.tier)+'</b></div>'
+  +'<div class="sh-row"><span>Tier</span><b'
+  +(r.unread?'':' style="color:'+(TIERCOL[r.tier]||'var(--ink)')+'"')+'>'
+  +esc(r.unread?'not read yet':r.tier)+'</b></div>'
   /* "of 112" was a count against a total, which is the one thing a reading
      may never be. The number of addresses carrying is the fact. */
   +'<div class="sh-row"><span>Addresses carrying</span><b>'+r.loaded.length+'</b></div>'

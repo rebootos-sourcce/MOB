@@ -331,7 +331,14 @@ function solCore(r,base){
     that asks for the parts, so the sphere gives them room. It is the one
     dimension on the wheel that is not a reading, and it is not pretending to
     be: the lengths inside it are the reading and they scale with it. */
- const cr0=base*sz*(1+breathe)*(1+open*0.95);
+ /* THE CORE BLOOMS LAST, once the ring is whole, because the core is what the
+    ring adds up to. It arrives out of nothing rather than out of small, so
+    the ring is briefly a ring around an empty middle, which is the moment the
+    figure reads as assembled rather than revealed. */
+ /* out of a third, never out of nothing. A core at zero is a reading that has
+    vanished, and this figure is the only thing on the surface. */
+ const ce=0.34+0.66*enterA(ENTER_CORE,ENTER_SPAN);
+ const cr0=base*sz*(1+breathe)*(1+open*0.95)*ce;
  var gc=cqRamp(r.CQ);
  /* the glow is earned. nothing below the median, then it opens out. */
  var glow = coh<=0.5 ? 0 : (coh-0.5)/0.5;
@@ -399,12 +406,15 @@ function solCore(r,base){
    click. No text is drawn over the wheel. The long labelled arrows were
    read as too long and as text hovering over the construct. */
 function verpArrows(cr0){
+ /* the six arrive with the core and just after it, because they are read off
+    the core rather than off the ring */
+ var ge=0.4+0.6*enterA(ENTER_CORE+80,ENTER_SPAN);
  var V=verpRead(), evid=V.some(function(v){return v.pct>0;});
  if(!evid) V=V.map(function(v){return {k:v.k,nm:v.nm,side:v.side,mult:v.mult,d:v.d,pct:0,n:0};});
  var hi=V.filter(function(v){return v.side==='higher';});
  var lo=V.filter(function(v){return v.side==='lower';});
  var ink=INK(), bgc=LIGHT()?[248,247,243]:[23,25,34];
- var R=13, rr=cr0*1.3+34;
+ var R=13*ge, rr=cr0*1.3+34;
  function gate(v,i,n,up){
   var a=(up?-Math.PI/2:Math.PI/2)+(i-(n-1)/2)*0.72;
   var x=CX+Math.cos(a)*rr, y=CY+Math.sin(a)*rr;
@@ -555,6 +565,72 @@ function fetGrown(n,a,hw,r0,c,ld,fg,fn){
  if(n.disp>=6&&fn>0.45)
   radialTxt(n.k,a,R_SHELL+9+hl,11.5,mixc(c,[255,255,255],.3),.6+fn*.4,600);}
 var R_SHELL=0;
+/* ============================================================
+   THE FIELD ASSEMBLES WHEN YOU LAND ON IT.
+
+   His question: the field almost looks like a character, and the elements are
+   separate, so what if they each moved into place. And a colour animation of
+   the bands. As a one time event.
+
+   So it is one, and it is the seven seats arriving in turn rather than a
+   hundred and eight things fading up together. Root first and crown last,
+   which is the order the body fills and the order every other reading in this
+   product is given in, so the motion says something rather than decorating
+   something. That sweep IS the colour animation of the bands: the seats are
+   the rainbow, and taking them in turn is the only way to see that they are
+   seven things and not one gradient.
+
+   Each address swings the last few degrees into place and settles out of a
+   slight lift, which is what makes it read as parts assembling rather than a
+   picture fading up. The core blooms last, after the ring is whole, because
+   the core is what the ring adds up to.
+
+   ONE TIME, AND ONLY ON ARRIVAL. It runs when the Field is entered, not on
+   every repaint, or a person dragging the wheel would watch it reassemble
+   under their hand. Reduced motion gets the end state on the first frame:
+   somebody who asked the machine to stop moving has not asked it to move
+   less, which is the rule the rest of this build already keeps.
+   ============================================================ */
+/* MEASURED AND CUT DOWN. The first cut ran 1.9 seconds with the core absent
+   for the first 1.28 of them, and the functional gate returned 44 failures
+   because for well over a second the instrument genuinely was not there. The
+   gate was right twice: a person landing on the Field and reaching for
+   something in that window finds nothing either, and an entrance that has to
+   be waited out is not an entrance, it is a loading screen.
+
+   Under a second end to end now, and the core is never at nothing: it arrives
+   out of a third of its size rather than out of zero, so the figure is
+   complete from the first frame and what moves is how complete it looks. */
+const ENTER_SPAN=380, ENTER_STAGGER=62, ENTER_CORE=300, ENTER_TOTAL=900;
+var ENTER_T0=null, ENTER_SEEN=false;
+function enterStart(){
+ /* ONCE A SESSION, NOT ONCE A VISIT. Ruled: "as a one time event." It was
+    firing on every arrival at the Field, so a person who stepped to Knowledge
+    and back watched the figure assemble again, which turns an entrance into a
+    tax on navigation. It also made every measurement of this surface a race,
+    because anything that looked at the Field within 900ms of a tab change was
+    measuring the animation rather than the figure. */
+ if(ENTER_SEEN)return;
+ ENTER_SEEN=true;
+ /* null means never run, zero means run and finished. Both answer 1 from
+    enterA, and only one of them is worth starting a clock for. */
+ ENTER_T0=REDUCED?0:performance.now();}
+function enterOver(){
+ return ENTER_T0===null||ENTER_T0===0||(performance.now()-ENTER_T0)>ENTER_TOTAL;}
+/* how far into its own arrival one part is, 0 to 1, eased out so everything
+   decelerates into place instead of stopping dead */
+function enterA(delay,span){
+ if(ENTER_T0===null||ENTER_T0===0)return 1;
+ var e=performance.now()-ENTER_T0-delay;
+ if(e<=0)return 0;
+ if(e>=(span||ENTER_SPAN))return 1;
+ var k=e/(span||ENTER_SPAN);
+ return 1-Math.pow(1-k,3);}
+/* one seat's turn. Root is 0 and Crown is 6, so the sweep runs up the body. */
+function enterSeat(b){
+ var i=BANDS.indexOf(b); if(i<0)i=0;
+ return enterA(i*ENTER_STAGGER,ENTER_SPAN);}
+
 function drawWheel(r,L){
  const ink=INK(),p=S.pin,gc=GOLDC();
  const shellR=[U*.62,U*.68,U*.74,U*.78][L];
@@ -690,7 +766,14 @@ function drawWheel(r,L){
 
  /* --- THE SHELL. 108 addresses. SQ. present at every depth. --- */
  const fg=fetA(0), fn=fetA(1);
- W.forEach(n=>{const a=n.ang,ld=clamp(n.disp/10,0,1);
+ W.forEach(n=>{
+  /* its seat's turn to arrive. Nothing is drawn before its turn, which is
+     what makes the sweep visible: a band that is merely dim is a band that is
+     already there. */
+  const ea=enterSeat(n.b);
+  if(ea<=0)return;
+  /* the last few degrees of travel, and the lift it settles out of */
+  const a=n.ang+(1-ea)*0.19, ld=clamp(n.disp/10,0,1)*ea;
   /* the slice widens a little as the fetters grow, so a grown address is a
      shape you can hit rather than a hair you have to aim at */
   const hw=TAU/108*(.43+fg*.24);
@@ -709,7 +792,11 @@ function drawWheel(r,L){
   if(S.hover===n||S.pin===n){g.strokeStyle=rgba(gc,1);g.lineWidth=2;g.stroke();}
   if(fg>0&&carrying)fetGrown(n,a,hw,r0,c,ld,fg,fn);
   /* the target grows with the shape. r0 is where the address now starts. */
-  HIT.push({k:'node',n,cx:CX,cy:CY,a0:a-hw,a1:a+hw,
+  /* THE TARGET IS WHERE IT LANDS, NOT WHERE IT IS MID FLIGHT. A hit box that
+     travels with the animation would move under a pointer that had already
+     found it, which is worse than no box at all for the second and a half it
+     lasts. */
+  HIT.push({k:'node',n,cx:CX,cy:CY,a0:n.ang-hw,a1:n.ang+hw,
    r0:Math.min(R.shell*.85,r0-4),r1:R.shell*1.02+(fn>0&&carrying?U*.05:0)});});
 
  /* AND PAST THE FETTERS, WHAT PUT THE CHARGE THERE.

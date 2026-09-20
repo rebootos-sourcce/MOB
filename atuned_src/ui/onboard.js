@@ -55,6 +55,29 @@ function obPick(){
  OB.neutral=OB_NEUTRAL[Math.floor(Math.random()*OB_NEUTRAL.length)];
  OB.charged=c;}
 
+/* THE FIGURE, AT REST. Ruled: "show, not tell, Japanese Zen, we do not have to
+   go super text heavy," and separately, "when I come to this page off the
+   funnel I need to be welcomed, there is something here that needs to be like,
+   these people see me."
+
+   Text cannot do that and a stock illustration would be a lie. So the welcome
+   carries the same column the boot just drew: seven seats on a spine with a
+   gold halo over the crown, standing still. A person has watched it assemble
+   four seconds ago, and meeting it again at rest is the product saying this is
+   the thing, and it is you, without a sentence.
+
+   Drawn here rather than shared with the boot because the boot sheet is
+   removed from the document and this one has to outlive it. */
+function obFigure(){
+ var y=[160,140,120,100,80,60,40];
+ var col=['Root','Sacral','Solar','Heart','Throat','3rd Eye','Crown'];
+ return '<svg class="ob-fig" viewBox="0 0 200 178" aria-hidden="true">'
+  +'<ellipse class="ob-fig-h" cx="100" cy="21" rx="13" ry="4.4"/>'
+  +'<line class="ob-fig-s" x1="100" y1="160" x2="100" y2="40"/>'
+  +y.map(function(yy,i){
+    return '<circle class="ob-fig-d" cx="100" cy="'+yy+'" r="4.6" '
+     +'style="fill:'+seatCol(col[i])+';animation-delay:'+(0.1+i*0.07).toFixed(2)+'s"/>';}).join('')
+  +'</svg>';}
 function obOpen(replay){
  var h=document.getElementById('ob'); if(!h)return;
  OB.open=true; OB.step=0; OB.felt=null; OB.replay=!!replay;
@@ -84,25 +107,40 @@ function obRender(){
  var h=document.getElementById('ob'); if(!h)return;
  var s=OB.step, out='';
  if(s===0){
-  /* HIS WORDS, WARMED. The ruling carries the sentences and the ruling also
-     says humble and warm, so they are said the way somebody says them to a
-     person rather than the way a product says them to a market. */
-  out=obCard('Welcome','This one is for you.',
-   '<p class="ob-p">Nobody is coming to save you. That is not a hard thing, it '
-   +'is the good news, because it means the work is yours and it is available.</p>'
-   +'<p class="ob-p">This helps you recognise the patterns that quietly cost you: '
-   +'the ones that make you weaker than you are, in your body, in your thinking '
-   +'and in what you can hold to. You are not the first person to carry them and '
-   +'you are not carrying them alone.</p>'
+  /* THE WELCOME. Ruled twice, and the second ruling moved it.
+
+     It opened on "nobody is coming to save you," which is his sentence and a
+     true one, and it is the wrong first sentence. He said: "I want to be
+     greeted, I want to be welcomed. This is a mirror of the person. We are
+     going to be showing them their inside. We do not want to be cold. We just
+     want to let them know, hey, this is you, and it is okay. No judgment."
+
+     So the hard sentence moves one screen in, where it belongs, and the first
+     screen is a figure and eleven words. Show, not tell. Everything that used
+     to be here is still in the product and none of it is said first. */
+  out=obCard('Welcome','This is you, and it is okay.',
+   obFigure()
+   +'<p class="ob-p">No judgment. Nothing here grades you. This one is for you, '
+   +'and whatever you find in it, you are not carrying it alone.</p>'
    +'<p class="ob-p ob-dim">Two minutes. One thing to try. Nothing to fill in.</p>',
-   '<button type="button" class="btn pri" data-ob="next">Start</button>'
+   '<button type="button" class="btn pri" data-ob="next">Come in</button>'
    +'<button type="button" class="btn" data-ob="skip">Not now</button>');
  }
  else if(s===1){
-  out=obCard('What this is','An instrument, not an opinion.',
-   '<p class="ob-p">Everything here is measured from something you entered. '
-   +'It never invents a number, and where it has not read something it says so '
-   +'rather than guessing.</p>'
+  /* HIS SENTENCE, AND IT IS THE ONE THAT EARNS THE PRODUCT. "The stress that
+     we condition as normal is actually making us sick, and this tool shows you
+     how and where, and it gives you the what and the how." It is said second
+     rather than first, because it is a claim and a claim needs somebody
+     already in the room.
+
+     And the thing it reads is named: the body mind complex. His term, kept
+     because it says what it is. */
+  out=obCard('What this is','We walk you through you.',
+   '<p class="ob-p">Most of the strain we have agreed to call normal is making '
+   +'us ill. This shows you where it sits in the body, what it costs you, and '
+   +'what to do about it.</p>'
+   +'<p class="ob-p">It reads one thing: the body mind complex. How you run, '
+   +'which patterns are running, and where they are held.</p>'
    +'<div class="ob-grid">'
    +[['You write what happened','in your own words, not a questionnaire'],
      ['It finds where that sits','a place in the body, not a label'],
@@ -110,7 +148,10 @@ function obRender(){
      ['And you watch it move','the same numbers, over months']]
     .map(function(x){return '<div class="ob-g"><b>'+esc(x[0])+'</b>'
       +'<span>'+esc(x[1])+'</span></div>';}).join('')
-   +'</div>',
+   +'</div>'
+   +'<p class="ob-p ob-dim">Nothing here is invented. Where it has not read '
+   +'something it says so rather than guessing. The work is yours, which is the '
+   +'good news, because it means it is available.</p>',
    '<button type="button" class="btn pri" data-ob="next">Then try one thing</button>'
    +'<button type="button" class="btn" data-ob="back">Back</button>');
  }

@@ -9,7 +9,9 @@ function renderShelf(r,seats,speed,stop,dom,loadedTot,marks){
  var el=document.getElementById('eshelf'); if(!el)return;
  var sh='<div class="pm-hd">'
   +'<div><div class="pm-eye">Flow through</div>'
-  +cr(K2B[dom.p.k], speed*100, {size:'lg',label:'flow through'})
+  /* flow through is a share that passes, so its high end is the good one and
+    it never prints in the alarm colour. */
+  +cr(K2B[dom.p.k], speed*100, {size:'lg',label:'flow through',hot:false})
   +'<div class="pm-sub">'+(stop?('stops at the '+stop.p.n.toLowerCase())
     :(loadedTot?'passing every seat':'nothing held'))+'</div></div>'
   /* The label used to swap identity with the state, reading "Heaviest seat"
