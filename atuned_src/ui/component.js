@@ -355,13 +355,26 @@ function roundRect(x,y,w,h,r){
  if(g.roundRect){g.beginPath();g.roundRect(x,y,w,h,r);return;}
  g.beginPath();g.moveTo(x+r,y);g.arcTo(x+w,y,x+w,y+h,r);g.arcTo(x+w,y+h,x,y+h,r);
  g.arcTo(x,y+h,x,y,r);g.arcTo(x,y,x+w,y,r);g.closePath();}
-function pill(t,rad){const ink=INK();g.save();
- g.font="600 11px Inter, system-ui, sans-serif";g.textAlign='center';g.textBaseline='middle';
- const w=g.measureText(t).width+18;
- g.fillStyle=LIGHT()?'rgba(255,255,255,.94)':'rgba(25,27,35,.94)';
- roundRect(CX-w/2,CY-rad-10,w,20,10);g.fill();
- g.strokeStyle=rgba(ink,.13);g.lineWidth=1;g.stroke();
- g.fillStyle=rgba(ink,.62);g.fillText(t,CX,CY-rad);g.restore();}
+/* THE BAND CAPTIONS ARE OFF THE HERO, AND pill() WENT WITH THEM.
+
+   Ruled, and it settles a collision that had been open all session between
+   law 8, no text over the hero graphic ever, and the ruling that said the gate
+   ring must always carry its pill so the absence is said rather than hidden.
+
+   His words: "Get rid of all that overlay. You do not need 112 addresses, SQ,
+   loaded, because you already have your SQ in the upper left, and the addresses
+   are already visible in the field. Twenty one laws, integrity six point five,
+   get rid of all that. Your integrity should be at the centre point of your
+   feathers, because your integrity is your CQ."
+
+   That is the whole rule in one sentence. A caption naming a ring is text
+   floating on the picture and it goes. A figure at the centre of the thing it
+   describes is the picture saying its own name and it stays. Nine captions came
+   off the Field and one number went back into the core.
+
+   The function is deleted rather than left with no callers, because a drawing
+   helper nobody calls is the next person's invitation to caption something.
+   It is in the history if a surface with a different ruling ever needs it. */
 /* the rAF loop honours reduced motion: the field stops breathing. */
 var REDUCED=(window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches);
 

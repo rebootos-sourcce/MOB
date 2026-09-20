@@ -8,6 +8,118 @@ var B2K={Crown:'crown','3rd Eye':'eye',Throat:'throat',Heart:'heart',
  Solar:'solar',Sacral:'sacral',Root:'root'};
 var K2B={};Object.keys(B2K).forEach(function(b){K2B[B2K[b]]=b;});
 var PMC={};BANDS.forEach(function(b){PMC[b]=PAL[b];});
+
+/* ============================================================
+   PASS TWO, THE CANON. And the measurement that makes it the first thing the
+   sniffer does rather than a widening of the table.
+
+   The owner asked whether the sniffer has the logic supplied by the book.
+   Measured, and this is the answer that mattered most:
+
+     the nine axes the instrument scores   1 of 9 resolved. sad. that is all.
+                                           fear, anger, shame, disgust, apathy,
+                                           shock, surprise and anticipation were
+                                           not words this scanner could find.
+     the seven cue words the thirty three
+     saboteurs are defined by              0 of 7 resolved.
+     the thirty three saboteurs themselves all 33 are named in the book, so the
+                                           canon is sourced. the vocabulary that
+                                           reaches it was not.
+
+   So a person could write i am full of anger and the instrument that scores an
+   Anger axis, and defines eleven of its thirty three saboteurs by an anger
+   range, read nothing at all. Not a tuning problem. The scoring layer and the
+   reading layer did not share a vocabulary.
+
+   NOTHING HERE IS AUTHORED. Every seat comes from CHG2SEAT and every fetter
+   from CHG2FET, which are the app's own existing answers and already have an
+   owner. The amount is derived by a stated rule, below. If the owner moves a
+   charge to a different seat, this pass moves with it and no second table is
+   left behind holding the old answer, which is the defect this whole design
+   exists to prevent.
+   ============================================================ */
+/* THE AMOUNT, DERIVED, because a typed number here would be a magic number in
+   the most load bearing row of the table.
+
+   A bare axis noun is the LEAST specific evidence in its family. I was furious
+   is a stronger report than I have anger, and the table already prices that:
+   the Anger family runs 16 for defensive to 24 for furious. So the bare noun
+   takes the floor of its own family, never the median and never the top. Where
+   an axis has no authored family at all, and three of the nine do not, it takes
+   the lowest charged amount anywhere in the table. Both are read off the table
+   at load, so a retuned neighbour retunes this and the gate asserts the rule
+   rather than the number. Precision over recall: a false positive in a somatic
+   reading costs more than a miss. */
+function lexFamilyFloor(){
+ var fam={}, all=[];
+ Object.keys(LEX).forEach(function(k){
+  var e=LEX[k], amt=e[LEX_AMT];
+  if(amt<=0) return;
+  all.push(amt);
+  var f=e[LEX_FET]!=null?e[LEX_FET]:(ADJ2CHG[k]?CHG2FET[ADJ2CHG[k]]:null);
+  if(!f) return;
+  if(fam[f]===undefined||amt<fam[f]) fam[f]=amt;});
+ all.sort(function(a,b){return a-b;});
+ return {fam:fam, floor:all.length?all[0]:12};}
+
+/* THE WORDS THIS PASS OWES. Two sets, and they overlap.
+     the nine axis names, lowercased. these are what compute() scores.
+     every cue word SAB33 defines a saboteur by. these are what the saboteur
+     layer reads, and a saboteur nothing can trigger is a dead row.
+   Both are read off the canon at load. Neither is a list typed here, so
+   neither can fall out of step with the table it came from. */
+function lexCanonWords(){
+ var want={};
+ CHARGES.forEach(function(c){want[String(c).toLowerCase()]=1;});
+ SAB33.forEach(function(r){r[1].forEach(function(p){want[p[0]]=1;});});
+ return Object.keys(want).sort();}
+
+function lexCanon(){
+ var fl=lexFamilyFloor(), axis={};
+ CHARGES.forEach(function(c){axis[String(c).toLowerCase()]=c;});
+ var out={added:0,already:0,unseated:[],identity:[],floor:fl.floor,fam:fl.fam};
+ lexCanonWords().forEach(function(w){
+  /* ALREADY RESOLVES, SO NOTHING IS OWED. sad is the case: the axis is named
+     Sad, CHG2SEAT answers for sadness and not for sad, and the authored table
+     already seats sad at the heart, which is where CHG2SEAT puts sadness. The
+     pass does not need a seat it was never going to use. */
+  if(LEX[w]){out.already++;return;}
+  var bn=CHG2SEAT[w];
+  /* THE FETTER, AND THE ONE DERIVATION THAT IS NOT AN INVENTION. CHG2FET
+     answers for anxiety and not for anticipation, so the axis Anticipation had
+     no route from its own name. Where the word IS an axis name, the fetter is
+     that axis: the same string, by identity. Anything else would be a guess and
+     is refused below instead. */
+  var fet=CHG2FET[w]||axis[w]||null;
+  if(fet&&!CHG2FET[w])out.identity.push(w);
+  /* A WORD WITH NO SEAT IS NOT GUESSED AT. CHG2SEAT is the owner's ruling about
+     where a charge is held. The 112 addresses carry a second answer, in cf, and
+     the two DISAGREE for four of the nine axes: cf makes Shame modal at the
+     throat where CHG2SEAT says sacral, and Apathy modal at the sacral where
+     CHG2SEAT says throat, and Surprise and Anticipation are three way and five
+     way ties with no modal band at all. So cf is not a fallback, it is an open
+     question, and a pass that picked one of two disagreeing answers would be
+     laundering a ruling nobody has made. Reported by name, and the gate fails
+     on it, so it gets ruled rather than defaulted. */
+  if(!bn||!B2K[bn]||!fet){out.unseated.push(w);return;}
+  var amt=fl.fam[fet]!==undefined?fl.fam[fet]:fl.floor;
+  var a=lexAdd(w,B2K[bn],amt,fet,{src:'canon',from:'CHG2SEAT and CHG2FET',
+   rule:'family floor',cite:'canon'});
+  if(a.ok&&!a.already)out.added++; else if(a.already)out.already++;
+  /* and the charge name, so the imprint comes back NAMED. a person who wrote
+     the axis by its own name has named it, and an imprint marked inferred off
+     that word would be the instrument disowning the plainest evidence it ever
+     gets. */
+  chgAdd(w,w,{src:'canon',from:'CHARGES and SAB33',rule:'identity',cite:'canon'});});
+ return out;}
+
+/* THE ORDER IS LOAD BEARING. Canon first, then the fold, so the fold can take
+   an inflection of a canon word and never the other way round: a fold entry
+   generated off a key that did not exist yet would silently not be generated,
+   and the gate would then be asserting the absence of a bug it had itself
+   introduced. Both run before scanStory can be called. */
+var LEXCANONRUN=lexCanon();
+var LEXFOLDRUN=lexFold();
 function scanStory(text){
  var src=' '+String(text||'').toLowerCase().replace(/[^a-z' ]+/g,' ').replace(/\s+/g,' ')+' ';
  var hits=[];

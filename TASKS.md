@@ -866,6 +866,97 @@ auric field."
 
 ---
 
+## 0p. RULED 20 SEPTEMBER, TENTH PASS. THE ONBOARDING, AND THE TWO TESTS.
+
+### OB. THE ONBOARDING, HIS NOTES, VERBATIM WHERE THEY ARE HIS
+
+- [ ] **OB1.** "I do not want to see how many screens I have to go through."
+  The dots go.
+- [ ] **OB2.** One button to move forward. Not two.
+- [ ] **OB3.** "Get rid of that, not now." The second control goes with it.
+- [ ] **OB4.** "Welcome" goes. It reads **"Hello,"**.
+- [ ] **OB5.** "This is you" stays. **"and it is okay" goes.**
+- [ ] **OB6.** "No judgment, nothing here grades you" goes. His reason is the
+  right one and it is a copy rule worth keeping: **we have not set anything up
+  that would make a person think they were being graded, so denying it plants
+  the idea.** A reassurance against a fear nobody has is an accusation.
+- [ ] **OB7.** Speak directly to who they are, what they are, and their pain
+  points.
+- [ ] **OB8.** "We walk you through" goes. **Everything should be symbolic.**
+- [ ] **OB9. No pop ups.** One screen, not a sheet over the product.
+- [ ] **OB10. Icons for everything.**
+- [ ] **OB11.** "You write what happened. It finds where it lands." That is
+  **discover, play, flow.** It wants iconography, shown **as a loop**, with the
+  words.
+- [ ] **OB12.** The control says **Next**. Not "then try one thing".
+- [ ] **OB13. Too much text. Super, super simple.** His words twice.
+- [ ] **OB14. What the onboarding is actually for, and this reverses what is
+  built.** "Each page should navigate you through: here is what the Field does,
+  here is what Energy does, here is how they work for you, here is what the core
+  loop does." It is a tour of the instrument, not a first reading.
+- [ ] **OB15. And the hard constraint on all of it.** "At no point are we
+  talking about results or purpose."
+
+### SIG. THE SIGNAL TEST. WHAT IS BUILT IS NOT IT.
+
+"This is not the signal test. The signal test is very personal. It has nothing
+to do with any of this text here. Go do research on the signal test, come back
+with your findings."
+
+**His description, which is the specification:**
+
+- [ ] **SIG1.** Ask a person to take a second and turn their senses inward.
+- [ ] **SIG2.** Think **yes** ten times. Think **no** ten times.
+- [ ] **SIG3.** Feel the difference in quality between the two.
+- [ ] **SIG4.** One is positive, uplifting, expansive. The other is contractive
+  or heavy.
+- [ ] **SIG5.** **We all feel it differently and the words we would use will be
+  different.** So the test may not ask a person to pick from a list of words,
+  which is close to what the current build does and is why it is wrong.
+- [ ] **SIG6. The point.** A thought has a sensation in the body. That is the
+  mind body connection, and feeling it is what highlights the problem.
+
+### OBS. THE OBSERVER TEST. A DIFFERENT THING, AND IT DOES NOT EXIST.
+
+- [ ] **OBS1.** It walks a person back down their senses as a stack: feeling,
+  smelling, listening, tasting, hearing, thought.
+- [ ] **OBS2.** Until they realise there is a process of them perceiving the
+  frequency and the sensation of thought, sitting in the stack **before** all
+  the other senses.
+- [ ] **OBS3. Awareness is a stack perceiving all the other senses.**
+- [ ] **OBS4. Why it matters, and this is the product's own thesis stated
+  plainly.** That is what you actually are. You, before emotional programming
+  and sensory input. This tool exists to repair the mind body connection and
+  then to help you understand who and what you are, by integrating any story
+  that precedes awareness.
+
+### FTH. THE FEATHERS, NOTED AND NOT ACTED ON
+
+- [ ] **FTH1.** "Sofia's is actually interesting. It is the tightest looking
+  feather, it looks the most detailed. I do not have a name for it though, and I
+  do not know what you have done with the new one, so I do not want to give you
+  any instructions on it yet." Recorded, no action taken, awaiting his look at
+  the redesign.
+
+### ATM. ATMOSPHERE IS NOT DEAD AFTER ALL
+
+- [ ] **ATM1.** "There is something interesting about the atmosphere design now
+  that I am looking at it again. It is not great. I want the team to review this
+  and figure out how they would improve it." So it reopens: rejected as shipped,
+  worth improving. That sits beside the standing log that the volumetric and
+  atmospheric style is not this product's look, and the two together are the
+  brief: keep whatever was interesting, lose the haze.
+
+### VID. THE UNIVERSAL LAW VIDEOS
+
+- [?] **VID1.** He has pointed at `G:\My Drive\Production\### TULA\Claude
+  Code\Atuned Videos`. **That is a path on his own machine and nothing in this
+  session can reach it.** This runs in an isolated container with no access to
+  his drive. They have to be attached to a message, or pushed to the repository,
+  or put somewhere fetchable. Named here so it is not mistaken for delivered.
+
+---
+
 ## 0c. RULED 20 SEPTEMBER, SECOND PASS. THE ARRIVAL, THE FEATHERS AND KARMA
 
 **"I didn't give you feedback on the feathers. I don't give you feedback

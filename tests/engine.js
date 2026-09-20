@@ -2393,5 +2393,189 @@ g('31 · the lean, two channels and the frame that gates one of them');
  }
 }
 
+
+g('32 · the sniffer knows what it is looking for');
+/* WHAT THIS GROUP ASSERTS, and why it exists at all.
+
+   The owner asked whether the sniffer has the information and the logic the
+   canon supplies. Measured before this group was written: 1 of the 9 axes the
+   instrument scores resolved in the lexicon, and 0 of the 7 cue words the 33
+   saboteurs are defined by. So the scoring layer and the reading layer did not
+   share a vocabulary, and nothing anywhere would have said so.
+
+   This asserts CLOSURE, not accuracy. Accuracy needs a labelled set of real
+   stories and there is not one yet, and a gate that pretends otherwise is
+   worse than no gate. What is checkable without labels is that every word the
+   canon is built out of can be found, that every entry says where it came
+   from, and that the fold cannot smuggle in a reading. All three were false. */
+{
+ const {LEX,ADJ2CHG,LEXMETA,CHGMETA,LEX_SEAT,LEX_AMT,LEX_FET,LEX_SEATS,LEX_SRC,
+        LEX_AMT_MAX,LEX_FOLD_RULES,LEX_FOLD_OK,LEX_FOLD_NO,LEXCANONRUN,LEXFOLDRUN,
+        lexAdd,chgAdd,lexRefuse,lexKeyOk,lexFold,lexCanon,lexCanonWords,
+        lexFamilyFloor,scanStory,parseStory,CHG2SEAT,CHG2FET}=E;
+ const resolves=w=>scanStory(w).length>0;
+
+ /* ---- the thing that was wrong. every count says what it is out of. ---- */
+ const axes=CHARGES.map(c=>String(c).toLowerCase());
+ const missAx=axes.filter(w=>!resolves(w));
+ ok(missAx.length===0,'every one of the '+axes.length+' axis names resolves in the '
+  +'lexicon, '+missAx.length+' do not: '+JSON.stringify(missAx));
+ const cue={};SAB33.forEach(r=>r[1].forEach(p=>{cue[p[0]]=1;}));
+ const cues=Object.keys(cue).sort();
+ const missCue=cues.filter(w=>!resolves(w));
+ ok(missCue.length===0,'every one of the '+cues.length+' cue words the '+SAB33.length
+  +' saboteurs are defined by resolves, '+missCue.length+' do not: '+JSON.stringify(missCue));
+ /* AND IT RESOLVES TO THE RIGHT AXIS, not merely to something. A word that
+    finds a seat and the wrong fetter is worse than a word that finds nothing,
+    because the person is then told about a charge they did not report. */
+ const wrong=axes.filter(w=>{
+  const im=parseStory('i am full of '+w).imprints;
+  return !im.length||!im.some(i=>i.fetter===CHG2FET[w]||i.fetter===CHARGES.find(c=>String(c).toLowerCase()===w));});
+ ok(wrong.length===0,'and each axis name reads as its own axis, '+wrong.length
+  +' of '+axes.length+' do not: '+JSON.stringify(wrong));
+ /* AND IT IS NAMED, NOT INFERRED. inferred is the flag that decides what the
+    product may print as a finding. A person who wrote the axis by its own name
+    has named it, and an imprint marked inferred off that word would have the
+    instrument disowning the plainest evidence it ever gets. */
+ const inferred=axes.filter(w=>{
+  const im=parseStory('i am full of '+w).imprints;
+  return im.length&&im.every(i=>i.inferred);});
+ ok(inferred.length===0,'and reads as NAMED rather than inferred, '+inferred.length
+  +' of '+axes.length+' do not: '+JSON.stringify(inferred));
+
+ /* ---- the canon pass invented nothing ---- */
+ ok(LEXCANONRUN.unseated.length===0,'every canon word the pass owes has a seat in '
+  +'CHG2SEAT, '+LEXCANONRUN.unseated.length+' do not: '+JSON.stringify(LEXCANONRUN.unseated));
+ ok(LEXCANONRUN.added+LEXCANONRUN.already===lexCanonWords().length,
+  'the canon pass accounts for every word it owes, '+(LEXCANONRUN.added+LEXCANONRUN.already)
+  +' of '+lexCanonWords().length);
+ const fl=lexFamilyFloor();
+ const canon=Object.keys(LEXMETA).filter(k=>LEXMETA[k].src==='canon');
+ ok(canon.length===LEXCANONRUN.added,'and every one of the '+canon.length
+  +' it added is marked canon');
+ /* THE AMOUNT IS DERIVED AND NOT TYPED. This is the assertion that stops a
+    magic number appearing in the most load bearing row of the table. */
+ const typed=canon.filter(k=>{
+  const f=LEX[k][LEX_FET], want=fl.fam[f]!==undefined?fl.fam[f]:fl.floor;
+  return LEX[k][LEX_AMT]!==want;});
+ ok(typed.length===0,'every canon amount is its axis family floor, '+typed.length
+  +' of '+canon.length+' are not: '+JSON.stringify(typed));
+ const seatmoved=canon.filter(k=>E.B2K[CHG2SEAT[k]]!==LEX[k][LEX_SEAT]);
+ ok(seatmoved.length===0,'and every canon seat is the one CHG2SEAT gives it, '
+  +seatmoved.length+' of '+canon.length+' are not: '+JSON.stringify(seatmoved));
+
+ /* ---- the fold changes the surface form and nothing else ---- */
+ const fold=Object.keys(LEXMETA).filter(k=>LEXMETA[k].src==='fold');
+ ok(fold.length===LEX_FOLD_OK.filter(f=>!LEX_FOLD_NO[f]).length,
+  'the fold admitted '+fold.length+' of the '+LEX_FOLD_OK.length+' forms on the allow '
+  +'list, '+Object.keys(LEX_FOLD_NO).length+' of which are refused by name');
+ ok(LEXFOLDRUN.unreachable.length===0,'every admitted form is reachable from a real '
+  +'key by a named rule, '+LEXFOLDRUN.unreachable.length+' are not: '
+  +JSON.stringify(LEXFOLDRUN.unreachable));
+ const drift=fold.filter(f=>{
+  const b=LEXMETA[f].from, e=LEX[f], be=LEX[b];
+  return !be||e[LEX_SEAT]!==be[LEX_SEAT]||e[LEX_AMT]!==be[LEX_AMT]
+   ||String(e[LEX_FET])!==String(be[LEX_FET]);});
+ ok(drift.length===0,'a fold carries its base seat, amount and stated fetter '
+  +'unchanged, '+drift.length+' of '+fold.length+' do not: '+JSON.stringify(drift));
+ const chgdrift=fold.filter(f=>ADJ2CHG[LEXMETA[f].from]&&ADJ2CHG[f]!==ADJ2CHG[LEXMETA[f].from]);
+ ok(chgdrift.length===0,'and its base charge name, '+chgdrift.length+' do not: '
+  +JSON.stringify(chgdrift));
+ /* THE RULE IS RE-DERIVED RATHER THAN TRUSTED. A form hand typed into the allow
+    list with no reachable base would pass a spelling check and fail this. */
+ const unreach=LEX_FOLD_OK.filter(f=>{
+  const base=Object.keys(LEX).filter(k=>k.indexOf(' ')<0&&LEXMETA[k]&&LEXMETA[k].src!=='fold');
+  return !base.some(k=>LEX_FOLD_RULES.some(r=>r[1](k)&&r[2](k)===f));});
+ ok(unreach.length===0,'every form on the allow list is generated by one of the '
+  +LEX_FOLD_RULES.length+' rules, '+unreach.length+' of '+LEX_FOLD_OK.length
+  +' are not: '+JSON.stringify(unreach));
+ /* THE REFUSALS ARE REFUSED, WITH A REASON. Two of the four fold off coherent
+    keys, where a false positive lowers a reading rather than raising it. */
+ const leaked=Object.keys(LEX_FOLD_NO).filter(f=>LEX[f]);
+ ok(leaked.length===0,'a refused form never reaches the table, '+leaked.length
+  +' of '+Object.keys(LEX_FOLD_NO).length+' did: '+JSON.stringify(leaked));
+ ok(Object.keys(LEX_FOLD_NO).every(f=>typeof LEX_FOLD_NO[f]==='string'&&LEX_FOLD_NO[f].length>20),
+  'and every refusal states its reason');
+
+ /* ---- provenance covers the table exactly, in both directions ---- */
+ const noMeta=Object.keys(LEX).filter(k=>!LEXMETA[k]);
+ const orphan=Object.keys(LEXMETA).filter(k=>!LEX[k]);
+ ok(noMeta.length===0,'every one of the '+Object.keys(LEX).length+' entries says where '
+  +'it came from, '+noMeta.length+' do not: '+JSON.stringify(noMeta.slice(0,8)));
+ ok(orphan.length===0,'and the provenance table names no entry that does not exist, '
+  +orphan.length+' do: '+JSON.stringify(orphan.slice(0,8)));
+ const badsrc=Object.keys(LEXMETA).filter(k=>LEX_SRC.indexOf(LEXMETA[k].src)<0);
+ ok(badsrc.length===0,'every source is one of the '+LEX_SRC.length+' named, '
+  +badsrc.length+' are not: '+JSON.stringify(badsrc.slice(0,8)));
+ ok(Object.keys(CHGMETA).length===Object.keys(ADJ2CHG).length,
+  'the charge name table is covered the same way, '+Object.keys(CHGMETA).length
+  +' of '+Object.keys(ADJ2CHG).length);
+ /* derived entries must name what they were derived FROM, or the provenance is
+    a label rather than a trail. */
+ const noFrom=Object.keys(LEXMETA).filter(k=>LEXMETA[k].src!=='authored'&&!LEXMETA[k].from);
+ ok(noFrom.length===0,'every derived entry names its source table or base word, '
+  +noFrom.length+' do not: '+JSON.stringify(noFrom.slice(0,8)));
+
+ /* ---- every entry validates against its own schema, and none is a dead row ---- */
+ const bad=[];
+ Object.keys(LEX).forEach(k=>{
+  const e=LEX[k];
+  const errs=lexRefuse(k,e[LEX_SEAT],e[LEX_AMT],e[LEX_FET]!=null?e[LEX_FET]:null);
+  if(errs.length)bad.push(k+': '+errs[0]);});
+ ok(bad.length===0,'every one of the '+Object.keys(LEX).length+' entries passes the '
+  +'boundary it is added through, '+bad.length+' do not: '+JSON.stringify(bad.slice(0,6)));
+ /* A DEAD ROW LOOKS LIVE. A key the normaliser can never produce, a capital or
+    a comma or a double space, sits in the table forever matching nothing. */
+ const dead=Object.keys(LEX).filter(k=>!scanStory(k).some(h=>h.t===k));
+ ok(dead.length===0,'every entry can actually be found by the scanner, '+dead.length
+  +' of '+Object.keys(LEX).length+' cannot: '+JSON.stringify(dead.slice(0,8)));
+ const deadA=Object.keys(ADJ2CHG).filter(k=>!scanStory(k).some(h=>h.kind==='adj'&&h.t===k));
+ ok(deadA.length===0,'and every charge name entry too, '+deadA.length+' of '
+  +Object.keys(ADJ2CHG).length+' cannot: '+JSON.stringify(deadA.slice(0,8)));
+ const deadP=[];E.PHRASES.forEach(r=>r[0].forEach(p=>{
+  if(!scanStory(p).some(h=>h.kind==='phrase'&&h.t===p))deadP.push(p);}));
+ ok(deadP.length===0,'and every phrase, '+deadP.length+' cannot: '+JSON.stringify(deadP.slice(0,6)));
+
+ /* ---- the boundary REFUSES, which is the half a happy path never tests ---- */
+ const before=Object.keys(LEX).length;
+ const no=[
+  ['a key with a capital',       ()=>lexAdd('Furious','solar',18,null,{src:'canon'})],
+  ['a key with a comma',         ()=>lexAdd('so, tired','solar',18,null,{src:'canon'})],
+  ['a seat that does not exist', ()=>lexAdd('newword','spleen',18,null,{src:'canon'})],
+  ['an amount of zero',          ()=>lexAdd('newword','solar',0,null,{src:'canon'})],
+  ['an amount past the ceiling', ()=>lexAdd('newword','solar',LEX_AMT_MAX+1,null,{src:'canon'})],
+  ['a fractional amount',        ()=>lexAdd('newword','solar',18.5,null,{src:'canon'})],
+  ['a negative charged entry',   ()=>lexAdd('newword','solar',-18,null,{src:'canon'})],
+  ['a positive coherent entry',  ()=>lexAdd('newword','coherent',12,null,{src:'canon'})],
+  ['a fetter off the nine axes', ()=>lexAdd('newword','solar',18,'Rage',{src:'canon'})],
+  ['a source not on the list',   ()=>lexAdd('newword','solar',18,null,{src:'vibes'})],
+  ['moving a key to a new seat', ()=>lexAdd('furious','heart',18,null,{src:'canon'})]];
+ no.forEach(c=>{const r=c[1]();
+  ok(!r.ok&&typeof r.why==='string'&&r.why.length>0,'the boundary refuses '+c[0]
+   +' and says why'+(r.ok?'':': '+r.why));});
+ ok(Object.keys(LEX).length===before,'and refusing wrote nothing, still '+before+' entries');
+ ok(chgAdd('furious','sadness',{src:'canon'}).ok===false,
+  'and the charge table refuses to move a word to a different axis');
+ ok(lexKeyOk('wiped out')&&lexKeyOk("cant breathe")&&!lexKeyOk('Wiped Out')
+  &&!lexKeyOk('wiped  out')&&!lexKeyOk(''),'a key is a form the normaliser can produce');
+
+ /* ---- the passes are idempotent, so a re-run cannot double the table ---- */
+ const n1=Object.keys(LEX).length, a1=Object.keys(ADJ2CHG).length;
+ const c2=lexCanon(), f2=lexFold();
+ ok(Object.keys(LEX).length===n1&&Object.keys(ADJ2CHG).length===a1,
+  'running both passes again adds nothing, '+Object.keys(LEX).length+' of '+n1);
+ ok(c2.added===0&&f2.added===0,'and both report they added nothing');
+
+ /* ---- and the sniffer is still the sniffer ---- */
+ reset(5,0,6);
+ const t='i am full of anger and i cannot keep going';
+ ok(JSON.stringify(parseStory(t))===JSON.stringify(parseStory(t)),
+  're-parsing gives back the same reading');
+ const seen=parseStory('i am full of anger');
+ ok(seen.imprints.length>0&&seen.imprints.every(i=>i.amt>0&&E.BY[i.node]),
+  'a canon word lands on a real address with weight');
+ ok(!/diagnos|disorder/i.test(JSON.stringify(seen)),'and names no diagnosis');
+}
+
 console.log('\n===== '+P+' passed, '+F+' failed =====');
 process.exit(F?1:0);

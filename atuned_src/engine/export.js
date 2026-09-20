@@ -104,6 +104,27 @@ if(typeof module!=='undefined'&&module.exports){
      no test can reach is a table with no owner. */
                   IQ_STEM:IQ_STEM,
   /* sniffer */   scanStory:scanStory, parseStory:parseStory, applyStory:applyStory,
+  /* the lexicon's schema and its provenance. exported because the gate has to
+     be able to prove the validator REFUSES, and because a provenance table no
+     test can reach is a provenance table with no owner, which is the defect
+     this whole layer exists to close. lexAdd and chgAdd are load time builders:
+     they are what the canon and fold passes are made of, and nothing calls them
+     after boot. */
+  /* the two canon tables the canon pass derives every seat and fetter from.
+     exported so the gate can assert the derivation against them rather than
+     against a number typed into the test, which is the failure this repository
+     has been bitten by seven times. */
+                  CHG2SEAT:CHG2SEAT, CHG2FET:CHG2FET, B2K:B2K, K2BAND:K2BAND,
+                  LEX_SEAT:LEX_SEAT, LEX_AMT:LEX_AMT, LEX_FET:LEX_FET,
+                  LEX_SEATS:LEX_SEATS, LEX_SRC:LEX_SRC, LEX_AMT_MAX:LEX_AMT_MAX,
+                  LEXMETA:LEXMETA, CHGMETA:CHGMETA,
+                  lexKeyOk:lexKeyOk, lexRefuse:lexRefuse,
+                  lexAdd:lexAdd, chgAdd:chgAdd,
+                  LEX_FOLD_RULES:LEX_FOLD_RULES, LEX_FOLD_OK:LEX_FOLD_OK,
+                  LEX_FOLD_NO:LEX_FOLD_NO, lexFold:lexFold,
+                  lexCanon:lexCanon, lexCanonWords:lexCanonWords,
+                  lexFamilyFloor:lexFamilyFloor,
+                  LEXCANONRUN:LEXCANONRUN, LEXFOLDRUN:LEXFOLDRUN,
                   pathOf:pathOf, seatOf:seatOf, SEATXY:SEATXY, PATHSEAT:PATHSEAT,
   /* birth */     sunSign:sunSign, moonSign:moonSign, risingSign:risingSign,
                   lifePath:lifePath, spiritual:spiritual, converge:converge,

@@ -356,6 +356,7 @@ function solCore(r,base){
  g.beginPath();g.arc(CX,CY,cr0,0,TAU);g.fillStyle=rgba(gc,1-open*0.62);g.fill();
  g.lineWidth=Math.max(1.2,cr0*.05);g.strokeStyle=rgba(mixc(gc,[0,0,0],.45),.9);g.stroke();
  coreInside(r,cr0);
+
  var sh=g.createRadialGradient(CX-cr0*.3,CY-cr0*.42,cr0*.04,CX-cr0*.1,CY-cr0*.15,cr0*.95);
  sh.addColorStop(0,rgba(mixc(gc,[255,255,255],.4),.45*(1-open)));
  sh.addColorStop(.55,rgba(gc,0));
@@ -404,11 +405,29 @@ function solCore(r,base){
     the tier's own colour, with its scale under it in small type, because
     every number says what it is out of. And it is suppressed on an unread
     field, because a percentage is never printed off a default. */
+ /* AND THE NUMBER GOES ON LAST. It was drawn before coreInside and the
+    feathers painted straight over it, so the core showed the scale line with
+    nothing above it. A screenshot caught it; the pixel counts did not,
+    because they could not tell the number from the sphere. */
  if(!r.unread){
   var cqc=(typeof TIERCOL!=='undefined'&&TIERCOL[r.tier])||'#'+gc.map(function(n){
     return ('0'+Math.round(n).toString(16)).slice(-2);}).join('');
   var big=Math.max(15,Math.min(cr0*0.52,64));
   g.save();
+  /* A BACKING DISC, because the number sits at the centre of the feathers and
+     the feathers radiate from exactly there. Drawn last it was on top and
+     still unreadable, tangled in twenty one strokes of similar weight. The
+     disc is the core's own colour darkened rather than a panel, so it reads as
+     the middle of the sphere going deeper and not as a label pasted on it.
+
+     Sized off the type rather than off the core, so it is always exactly as
+     big as the thing it has to carry. */
+  var pad=big*0.62;
+  var back=g.createRadialGradient(CX,CY,pad*0.2,CX,CY,pad*1.25);
+  back.addColorStop(0,rgba(mixc(gc,[0,0,0],.62),.92));
+  back.addColorStop(.62,rgba(mixc(gc,[0,0,0],.62),.72));
+  back.addColorStop(1,rgba(mixc(gc,[0,0,0],.62),0));
+  g.beginPath();g.arc(CX,CY,pad*1.25,0,TAU);g.fillStyle=back;g.fill();
   g.textAlign='center'; g.textBaseline='alphabetic';
   g.fillStyle=cqc;
   g.font='500 '+big.toFixed(1)+'px Inter, system-ui, sans-serif';
@@ -773,7 +792,6 @@ function drawWheel(r,L){
   HIT.push({k:'law',j:i,cx:CX,cy:CY,a0:a-.075,a1:a+.075,r0:r0*.88,r1:r1+U*.03});});
  const lr=[U*.44,U*.40,U*.33,U*.255][L];
  g.beginPath();g.arc(CX,CY,lr,0,TAU);g.strokeStyle=rgba(ink,.12);g.lineWidth=1;g.stroke();
- pill('21 laws · integrity '+r.Ig.toFixed(1),lr-U*.035);
  /* AND THE WORD CQ AND THE TIER WORD GO WITH IT, for the same two reasons.
     The tier is coherence said as a word, which was the fourth printing. */
 
@@ -785,7 +803,7 @@ function drawWheel(r,L){
   g.fillStyle=rgba(gc,lead?.55+v*.4:sec?.28+v*.28:.05+v*.1);g.fill();
   radialTxt(ARCH[j].nm,am,R.arch-U*.048,lead?13:11.5,lead?gc:ink,lead?1:sec?.78:.32,lead?600:400);
   HIT.push({k:'arch',j,cx:CX,cy:CY,a0,a1,r0:R.arch-U*.07,r1:R.arch+4});}
-  pill('12 archetypes',R.arch+13);}
+}
 
  /* --- masks, D only --- */
  if(L===3){r.maskRing.forEach((m,i)=>{
@@ -794,7 +812,7 @@ function drawWheel(r,L){
   g.fillStyle=rgba(LIGHT()?[110,96,64]:[224,214,186],.06+v*.5);g.fill();
   radialTxt(m.nm,am,R.mask-U*.05,11.5,ink,.24+v*.56,400);
   HIT.push({k:'mk',o:m,cx:CX,cy:CY,a0,a1,r0:R.mask-U*.056,r1:R.mask+3});});
-  pill('6 masks',R.mask+13);}
+}
 
  /* --- THE SHELL. 108 addresses. SQ. present at every depth. --- */
  const fg=fetA(0), fn=fetA(1);
@@ -853,7 +871,6 @@ function drawWheel(r,L){
    const a=n.ang, ld=clamp(n.disp/10,0,1), carrying=n.disp>=4;
    const hw=TAU/108*(.43+fg*.24);
    atomGrow(n,a,hw,R_SHELL+3+(carrying?ld*U*.075*fn:0),nodeCol(n),aa2);});}
- pill('112 addresses · SQ · '+r.loaded.length+' loaded',R.shell+14);
  /* THE SEVEN SEAT BANDS ARE TARGETS. Ruled: "the rainbow bands at the centre,
     say what they are and make them clickable." They were seven names drawn
     around the outside of the shell and nothing else: not a word about what
@@ -881,7 +898,7 @@ function drawWheel(r,L){
   arcP(R.dom-U*.012,R.dom,a0+.008,a1-.008);g.fillStyle=rgba(c,sel?.95:.08+v*.45);g.fill();
   radialTxt(DOMAINS[d].nm,am,R.dom-U*.032,sel?12.5:11,sel?c:ink,sel?1:.3+v*.45,sel?600:400);
   HIT.push({k:'dom',j:d,cx:CX,cy:CY,a0,a1,r0:R.dom-U*.055,r1:R.dom+4});}
-  pill('19 domains · '+DOMAINS[S.dom].r,R.dom+14);}
+}
 
  /* --- beads. B shows saboteurs. C and D show the whole chain. --- */
  function bead(o,rad,size,c){const x=CX+Math.cos(o.ang)*rad,y=CY+Math.sin(o.ang)*rad;
@@ -969,7 +986,7 @@ function drawWheel(r,L){
      heaviest things: the wheel is showing structure by then, and the right rail
      carries every name in full. */
   if(L===1)r.sabs.slice(0,6).forEach(s=>nameplate(s,R.sab,bc(s.parts[0].b),6.2));
-  pill('saboteurs · '+r.sabs.length,R.sab+13);}
+}
  if(L>=2){r.cxs.forEach(c=>bead(c,R.cx,7.2,bc('Solar')));
   r.hys.forEach(h=>bead(h,R.hy,10,bc('Sacral')));
   r.sups.forEach(u=>bead(u,R.sup,13,bc('Root')));
@@ -978,9 +995,7 @@ function drawWheel(r,L){
      the bead, where there is space. */
   r.hys.slice(0,3).forEach(h=>flatplate(h,R.hy,bc('Sacral'),10));
   r.sups.slice(0,2).forEach(u=>flatplate(u,R.sup,bc('Root'),13));
-  pill('complexes · '+r.cxs.length,R.cx+13);
-  pill('hyper · '+r.hys.length,R.hy+13);
-  if(r.sups.length)pill('character · '+r.sups.length,R.sup+13);}
+}
 }
 /* Under prefers-reduced-motion the clock is frozen and disp snaps straight to
    sq, so after the first frame the wheel is provably identical until someone
