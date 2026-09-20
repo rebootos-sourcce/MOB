@@ -141,7 +141,9 @@ function iqSealedCard(p){
  var sd=p.seed;
  return '<div class="iq-sealed">'
   +'<div class="iq-sl-l">'
-   +'<div class="pm-eye">Who This Is</div>'
+   /* the same label as the form under it, written the same way. It read
+      "Who This Is" here and "Who this is" there, in one file. */
+   +'<div class="pm-eye">Who this is</div>'
    +'<div class="iq-sl-nm">'+esc(nm||'Unnamed')+'</div>'
    +(bits.length?'<div class="iq-sl-bt">'+esc(bits.join(' · '))+'</div>':'')
    +(sd?'<div class="iq-sl-bt">seeded from '+esc(sd.type)+'</div>':'')

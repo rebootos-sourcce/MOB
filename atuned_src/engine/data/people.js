@@ -199,7 +199,7 @@ var SIGN_RUNS={
  Scorpio:'goes all the way down or does not go',
  Sagittarius:'widens the frame until the problem looks smaller',
  Capricorn:'builds the structure and then lives inside it',
- Aquarius:'stands outside the group in order to see it',
+ Aquarius:'stands outside the group to see it',
  Pisces:'dissolves the boundary and absorbs what is there'};
 var HD_RUNS={
  Manifestor:'initiates without waiting. the cost is the resistance it creates',

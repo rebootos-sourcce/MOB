@@ -66,8 +66,15 @@ def strings_js(path):
         s = open(path, encoding='utf-8').read()
     except OSError:
         return []
-    s = re.sub(r'/\*.*?\*/', ' ', s, flags=re.S)
-    s = re.sub(r'(?m)^\s*//.*$', ' ', s)
+    # THE NEWLINES IN A COMMENT ARE KEPT, so a reported line number is the
+    # real one. Collapsing a block comment to a single space put every finding
+    # in this file dozens of lines early, and a gate that names the wrong line
+    # sends a writer to the wrong string. literals_raw already did it this way;
+    # this function did not, which is one probe disagreeing with another about
+    # the same file.
+    s = re.sub(r'/\*.*?\*/',
+               lambda m: '\n' * m.group(0).count('\n'), s, flags=re.S)
+    s = re.sub(r'(?m)^\s*//.*$', '', s)
     s = GLUE.sub('', s)
     out = []
     for m in re.finditer(r"'((?:[^'\\\n]|\\.)*)'", s):

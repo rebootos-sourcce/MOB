@@ -409,6 +409,48 @@ function applyStory(text){
    lower solar plexus, bilateral at the lung edges; CHILD puts it at the upper
    chest and back with the Heart seat. A somatic address is the thing this
    product points at on a body, so that is his call and not a rounding. */
+/* AND THE WORD `address` MEANT TWO DIFFERENT THINGS, WHICH IS THE DEFECT THIS
+   BLOCK NOW CARRIES THE FIX FOR.
+
+   In this product an address is a row of the 112 address table: it has an
+   index, a seat, a fetter and a name out of the `n` column, Lumbar Plexus and
+   Cardiac Plexus and Pudendal Nerve. The spec's column above is a somatic
+   REGION, in the spec's own shorthand, and the two vocabularies overlap in
+   wording without being the same thing.
+
+   So this layer emitted `address:'Inferior Cardiac'` and a reading named a
+   place the product does not have. Measured before it was touched, against the
+   112 names rather than argued: all NINE of the spec's regions fail the table,
+   not just the one a seat noticed. The table has Cardiac Plexus, Cardiac Nerve
+   Plexus and Great Cardiac Nerve and nothing called Inferior Cardiac; it has
+   Lumbar Plexus and nothing called Lumbar; and Dermis, Shoulder / Throat,
+   Below the heart and Lower solar plexus, bilateral at lung edges are prose
+   locations that were never going to be rows.
+
+   It is not an address missing from the table and the table is not moving for
+   it. A somatic address is the thing this product points at on a body and the
+   112 are the owner's, so composing a tenth from a spec shorthand is exactly
+   the invention the sniffer is not allowed to make. Nor can it be derived from
+   the axis: an axis spans up to six seats in the node table, so axis to seat is
+   not a function and axis to address is not one either.
+
+   WHAT IT IS DERIVED FROM INSTEAD. The reading already placed addresses on the
+   body: parseStory returns imprints, each carrying a node id out of the 112 and
+   the fetter that put it there. So the address an axis is offered at is the
+   heaviest address that reading itself placed on that axis, resolved through
+   the node table's own `n` column. It is a real row, it is the person's own
+   text and not a table lookup on the axis name, and it is what release
+   consumes, because release runs at an address.
+
+   Measured after: over the 231 word lexicon as single word stories plus 33 two
+   word pairs, 260 of 268 offers resolve to a real address and 8 do not, every
+   one of them Apathy, which is the exhaustion case where the stated fetter is
+   recovered from the hits after the imprint layer dropped it and no imprint
+   carries it. Those emit a null address and say so rather than naming a place.
+
+   The spec's words are not discarded. They move to `region`, which is what
+   they are, so the spec's contract is still legible in the output and nothing
+   claims to be one of the 112 that is not. */
 var SPEC_POLE={
  Fear:        {addr:'Lumbar',                                      pole:'Safety / Ground'},
  Anger:       {addr:'Celiac',                                      pole:'Calm / Integrated Power'},
@@ -419,6 +461,20 @@ var SPEC_POLE={
  Sad:         {addr:'Inferior Cardiac',                            pole:'Happy / Restoration'},
  Surprise:    {addr:'Lower solar plexus, bilateral at lung edges', pole:'Readiness'},
  Anticipation:{addr:'Below the heart',                             pole:'Presence'}};
+
+/* the 112 address table's own names, by node id. Built off NODES rather than
+   typed, so a row renamed there renames here and the four field anchors, which
+   carry no `n`, are absent rather than present as undefined. */
+var NODE_ADDR={}; NODES.forEach(function(n){ if(n.n) NODE_ADDR[n.i]=n.n; });
+/* THE ADDRESS AN AXIS IS OFFERED AT. The heaviest address the same reading
+   already placed on that axis, resolved to the name the node table uses.
+   null rather than a guess when the reading placed none. */
+function axisAddr(imprints,axis){
+ var best=null;
+ (imprints||[]).forEach(function(im){
+  if(!im||im.fetter!==axis||im.node==null||!NODE_ADDR[im.node])return;
+  if(!best||im.amt>best.amt)best=im;});
+ return best?NODE_ADDR[best.node]:null;}
 
 /* RESENTMENT, AS THE COMPOSITE THE SPEC RULES IT IS.
 
@@ -611,7 +667,10 @@ function sniffAxes(p){
      than being split nine ways by an assumption nobody made. */
   var k=Math.round(Math.min(10,coh/3)*10)/10;
   out.push({axis:c, shadow:s, coherent:k,
-   address:SPEC_POLE[c]?SPEC_POLE[c].addr:null,
+   /* a row of the 112, off this reading's own imprints, or null. The spec's
+      somatic region keeps its words beside it under its own name. */
+   address:axisAddr(p.imprints,c),
+   region:SPEC_POLE[c]?SPEC_POLE[c].addr:null,
    because: s>0?(cited[c]||[]).slice(0,3)
     :['nothing in the text reached this axis'],
    coherentBecause: k>0

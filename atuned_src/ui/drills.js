@@ -172,7 +172,7 @@ function runLawDrill(l){
     +'</b>. '+sc.lean+'</p>'
   : '<div class="pm-eye">Not measured</div><p class="ad-p">Not answered in the diagnostic, so '
     +'it defaults to '+v.toFixed(1)+'. Three questions would replace the guess.</p>';
- if(hot.length)h+='<div class="pm-eye">Held at this seat</div><div class="ad-rows">'
+ if(hot.length)h+='<div class="pm-eye">Held here</div><div class="ad-rows">'
   +hot.slice(0,6).map(addrRow).join('')+'</div>';
  rdShell(h);}
 
@@ -367,8 +367,12 @@ function runAtomDrill(n,x){
   +esc(n.cf||'unrouted')+'</b> axis'+(cf&&cf.opp?', against <b>'+esc(cf.opp)+'</b>':'')
   +'. It is holding <b>'+n.sq.toFixed(1)+'</b> and the opposite is installed at <b>'
   +(n.pole||0).toFixed(1)+'</b>.</p>'
+  /* ONE CONTROL, ONE LABEL. The same button, the same data-prot attribute and
+     the same handler, two hundred lines above this one, says "Run the protocol
+     here", which is the phrasing COPY.md carries as the example and the
+     phrasing the refusal beside it uses. This one said "Run a release here". */
   +(n.cf?'<div class="ad-acts"><button class="btn ad-prot" data-prot="'+n.i
-    +'">Run a release here</button></div>':'');
+    +'">Run the protocol here</button></div>':'');
  rdShell(h);}
 
 /* FLOW. WHAT REACHES THE CROWN FROM THE ROOT.
@@ -412,7 +416,7 @@ function runBalDrill(){
  var h='<div class="pm-eye">Balance</div><div class="ad-nm">'
   +(!b.read?'not enough held to read'
     :b.lean===0?'even':(Math.abs(b.lean)*100).toFixed(0)+'% '+(b.lean>0?'outward':'inward'))+'</div>'
-  +'<div class="pm-eye">How it is read</div><p class="ad-p">The nine axes split by the direction the '
+  +'<div class="pm-eye">How to read it</div><p class="ad-p">The nine axes split by the direction the '
   +'body takes under them. Four discharge outward, five withdraw inward. Four against five is not a '
   +'fair sum, so the means are what compare. Outward mean <b>'+b.outMean.toFixed(1)
   +'</b> against inward mean <b>'+b.inMean.toFixed(1)+'</b>.'
@@ -438,7 +442,7 @@ function runSeatDrill(c){
     return '<div class="ad-r static"><span class="ad-k">'+esc(x[0])+'</span>'
      +'<span class="ad-m">'+x[1]+' released, '+x[2]+' installed</span></div>';}).join('')
   +'</div>'
-  +'<div class="pm-eye">Addresses at this seat</div><div class="ad-rows">'
+  +'<div class="pm-eye">Addresses here</div><div class="ad-rows">'
   +W.filter(function(n){return n.b===c.b;}).slice(0,10).map(addrRow).join('')+'</div>';
  rdShell(h);}
 
@@ -536,7 +540,7 @@ function runTeacherDrill(m,end){
   +'<div class="pm-eye">What this is</div><p class="ad-p">'+esc(d)+'</p>'
   +'<div class="pm-eye">The other end</div><p class="ad-p"><b>'+esc(other)+'</b>. '
   +esc(od)+'</p>'
-  +'<div class="pm-eye">Where you sit on it</div><p class="ad-p">'
+  +'<div class="pm-eye">Where you sit</div><p class="ad-p">'
   +(r.unread
     ?'Nothing has been entered yet, so this axis has no reading. It is still the axis.'
     :'The '+esc(String(m.seat).toLowerCase())+' is carrying <b>'
@@ -701,7 +705,13 @@ function runRecogniseDrill(){
  var host=document.getElementById('rdrill');
  if(host)host.querySelectorAll('[data-circ]').forEach(function(b){
   b.onclick=function(){runCircleDrill(+b.getAttribute('data-circ'));};});}
-/* one depth, what it is, where it sits, and the way out of it */
+/* ONE LABEL FOR ONE SLOT. The list of addresses belonging to whatever is on
+   screen was called four things: "Addresses at this seat", "Its addresses",
+   "The addresses there" and "Addresses here". One slot, four names, so a
+   person re-parses the same row on every surface. It is "Addresses here"
+   everywhere, and the held subset of it is "Held here".
+
+   one depth, what it is, where it sits, and the way out of it */
 function runCircleDrill(n){
  var c=CIRCLES.filter(function(x){return x.c===n;})[0]; if(!c)return;
  var seat=(c.at.match(/Crown|Sacral|Solar|Root|Third eye|Heart|Throat/i)||[''])[0];
@@ -716,7 +726,7 @@ function runCircleDrill(n){
  if(seat){
   var grp=W.filter(function(x){return x.b===seat;}).sort(function(a,b){return b.sq-a.sq;}).slice(0,5);
   if(grp.length){
-   h+='<div class="pm-eye">The addresses there</div><div class="ad-rows">'
+   h+='<div class="pm-eye">Addresses here</div><div class="ad-rows">'
     +grp.map(function(x){return addrRow(x);}).join('')+'</div>';}}
  h+='<p class="ad-p">The governor is a name for the pattern, not a person and not a thing '
   +'that exists. It is still recognisable because the pattern is still running.</p>';

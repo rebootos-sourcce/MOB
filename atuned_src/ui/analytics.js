@@ -261,7 +261,7 @@ function anaDrill(){
   h+='<p class="ad-p">'+esc(d.d||'')+'. It owns <b>'+own.length+'</b> addresses across '
    +bands.join(', ')+'. <b>'+ld.length+'</b> are held, which is what the domain currently '
    +'costs you rather than gives you.</p>'
-   +'<div class="pm-eye">Its addresses</div>'
+   +'<div class="pm-eye">Addresses here</div>'
    +rows(own.slice().sort(function(a,b){return b.sq-a.sq;}).slice(0,10))+storyBlock(bands);
  } else if(P.k==='chain'){
   var o=[].concat(r.sups,r.hys,r.cxs,r.sabs).filter(function(x){return x.nm===P.nm;})[0];
@@ -283,7 +283,7 @@ function anaDrill(){
    +(S.replace[c.nm]||0).toFixed(1)+'</b>. Coherence is the centre of this axis, not either '
    +'end. It seats <b>'+own2.length+'</b> addresses, <b>'
    +own2.filter(function(n){return n.sq>=4;}).length+'</b> held.</p>'
-   +'<div class="pm-eye">Its addresses</div>'
+   +'<div class="pm-eye">Addresses here</div>'
    +rows(own2.slice().sort(function(a,b){return b.sq-a.sq;}).slice(0,10));
  } else if(P.k==='seat'){
   var s2=flSeats().filter(function(x){return x.p.n===P.nm;})[0];
@@ -296,7 +296,7 @@ function anaDrill(){
     +'<div class="pm-eye">Moral integrity seated here</div><div class="pm-chips">'
     +SI.filter(function(l){return l.b===bn;}).map(function(l){
       return '<span class="pm-chip">'+l.nm+' '+S.law[l.nm].toFixed(1)+'</span>';}).join('')+'</div>'
-    +'<div class="pm-eye" style="margin-top:12px">Its addresses</div>'+rows(seg.slice(0,10))
+    +'<div class="pm-eye" style="margin-top:12px">Addresses here</div>'+rows(seg.slice(0,10))
     +storyBlock([bn]);}
  } else if(P.k==='arch'){
   var ai=-1; ARCH.forEach(function(x,i){if(x.nm===P.nm)ai=i;});

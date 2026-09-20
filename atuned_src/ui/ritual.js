@@ -133,7 +133,7 @@ function ritRender(){
      through the boundary carried a five thousand character when that this
      surface would then render. One number, named in schema.js beside the
      refusal that enforces it. */
-  out+='<div class="rit-plan"><div class="pm-eye plain">When, and where</div>'
+  out+='<div class="rit-plan"><div class="pm-eye plain">When and where</div>'
    +'<label class="rit-f"><span>When</span>'
    +'<input type="text" id="ritwhen" maxlength="'+RIT_PLAN_MAX+'" placeholder="after I put the kettle on" '
    +'value="'+esc(RIT.when||'')+'"></label>'

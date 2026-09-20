@@ -44,7 +44,9 @@ var ACC_SECS=[
  {k:'privacy', nm:'Privacy',       b:'Heart',
   ic:'<rect x="4.5" y="10.5" width="15" height="9.5" rx="2"/>'
     +'<path d="M8 10.5V7.8a4 4 0 018 0v2.7"/>'},
- {k:'billing', nm:'Billing And Tier',b:'Solar',
+ /* ONE WORD, AND THE WORD SAYS WHAT THE SURFACE DOES. Ruled in COPY.md, and
+    every other section here is one word. A tier is what the billing is for. */
+ {k:'billing', nm:'Billing',b:'Solar',
   ic:'<rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10.5h18"/>'},
  {k:'help',    nm:'Help',          b:'Sacral',
   ic:'<circle cx="12" cy="12" r="8.4"/><path d="M9.6 9.6a2.5 2.5 0 114 2.4c-.9.6-1.6 1-1.6 2"/>'
@@ -350,8 +352,9 @@ function accDelete(){
    back as something the person never said. It will not catch a first name in a
    sentence, and nothing here claims that it does.
    ============================================================ */
-var OB_TITLE={question:'Ask A Question',bug:'Report Something Broken',
- rating:'Rate The Product',feedback:'Product Feedback'};
+/* sentence case, because sh-h is capitalised by the sheet */
+var OB_TITLE={question:'Ask a question',bug:'Report something broken',
+ rating:'Rate the product',feedback:'Product feedback'};
 var OB_LEAD={
  question:'Ask anything about what a reading means, what a control does, or why '
   +'the instrument said what it said.',

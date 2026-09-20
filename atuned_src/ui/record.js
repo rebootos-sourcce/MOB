@@ -77,24 +77,43 @@ function recRender(){
   +'<span>'+esc(recWhen(b.t))+'</span></div>';
 
  /* ground opened first, because it is the only one that cannot drift */
- h+='<div class="rec-lead"><div class="pm-eye">Ground opened, all time</div>'
-  +'<div class="rec-big">'+m.unique+'</div>'
-  +'<div class="sum-lc">'+(m.unique?'addresses and channels opened at least once, from '
-    +m.lines+' lines spoken':'nothing opened yet')
-  +(m.estimate?'. Your own horizon reads about '+m.estimate+', give or take '+(m.estimateHigh-m.estimate)+'.':'.')
-  +'</div>';
+ /* A FIGURE'S LABEL IS ONE WORD, AND THE HORIZON WAS SAID TWICE. Ruled by
+    name: "of the same 90 days. We should need a rule never to write shit like
+    that." This card is the corpse the rule was written against. It read
+
+      Ground opened, all time
+      12
+      addresses and channels opened at least once, from 47 lines spoken.
+      Your own horizon reads about 300, give or take 40.
+
+    a three word label with a comma in it, a bare figure, and two sentences
+    under the figure, the second of which states the horizon that the Next
+    block four lines below states again. Same number, twice, on one card.
+
+    So: the label is one word, the unit rides on the figure, the one fact the
+    line adds stays, and the horizon is said once, where the distance to the
+    next marker is. */
+ h+='<div class="rec-lead"><div class="pm-eye">Opened</div>'
+  +'<div class="rec-big">'+m.unique+(m.unique===1?' address':' addresses')+'</div>'
+  +'<div class="sum-lc">'+(m.unique
+    ? 'opened at least once, from '+m.lines+(m.lines===1?' line':' lines')+' spoken'
+    : 'nothing opened yet')+'.</div>';
  /* THE LADDER IS THEIRS. A threshold is a fraction of what a person is
     carrying, and what a person is carrying follows how long they have been
     alive to accumulate it. So the distance is computed against them the
     moment a birth date exists, and until it does the surface says whose
     numbers it is showing rather than letting a stranger's total read as
     their own. */
+ /* AND BOTH NUMBERS HERE SAY WHAT THEY ARE. "12 of new ground away" is
+    twelve of what, and "at 50 of about 300" is fifty of what. Both are counts
+    of addresses and neither said so. */
  if(m.next)
   h+='<div class="rec-next"><span class="pm-eye">Next</span>'
    +'<b>'+esc(m.next.nm)+'</b>'
-   +'<span class="rec-nl">'+m.next.left+' of new ground away</span>'
+   +'<span class="rec-nl">'+m.next.left
+     +(m.next.left===1?' address':' addresses')+' of new ground away</span>'
    +'<span class="rec-ns">'+(m.scaled
-     ?'your own scale, at '+m.next.at+' of about '+m.estimate
+     ?'your own scale, '+m.next.at+' addresses of about '+m.estimate
      :'the reference scale. Give a birth date and this becomes yours')+'</span>'
    +'</div>';
  h+='</div>';

@@ -185,7 +185,7 @@ function sumEntries(){
 function sumToldHtml(){
  var es=sumEntries();
  if(!es.length)return '';
- return '<div class="s-told"><div class="pm-eye">What You Told It</div>'
+ return '<div class="s-told"><div class="pm-eye">What you told it</div>'
   +es.map(function(e){
     var d=new Date(e.t);
     return '<div class="s-told-e"><time>'+(isNaN(d)?'':d.toLocaleDateString())
@@ -749,7 +749,7 @@ function sumAxes(r){
    +(standing.length>1?', and '+(standing.length-1)+' other'
      +(standing.length>2?'s':'')+' installed':'')
    +'. An address with the opposite in does not read zero. It conducts.');}
- return '<div class="s-axes"><div class="pm-eye">In The Body</div>'
+ return '<div class="s-axes"><div class="pm-eye">In the body</div>'
   +p.map(function(t){return '<p class="s-p">'+t+'</p>';}).join('')+'</div>';}
 
 /* ============================================================
@@ -787,7 +787,7 @@ function sumLens(r){
 function sumIg(r){
  var sr=(typeof seriesRead==='function')?seriesRead(CURP,SUM_SPAN,Date.now()):null;
  var head='<div class="s-ig"><div class="s-ig-h">'
-  +'<span class="pm-eye">Integrity Over Time</span>'
+  +'<span class="pm-eye">Integrity over time</span>'
   +'<div class="s-ig-sp">'+SPANS.map(function(sp){
     return '<button type="button" class="cn-sb'+(sp.k===SUM_SPAN?' on':'')+'" '
      +'data-igspan="'+sp.k+'" aria-pressed="'+(sp.k===SUM_SPAN)+'">'

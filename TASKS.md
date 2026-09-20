@@ -21,6 +21,63 @@ reopens. Every seat adds its own.
 
 ---
 
+## 0g2. RULED 20 SEPTEMBER, ELEVENTH PASS. THE MECHANISM, IN HIS WORDS.
+
+He wrote the narrative flow himself and it solves the problem PO2 raised. The
+claim is gone and nothing was softened to lose it: he replaced a therapeutic
+claim with a mechanism, which is stronger, because a mechanism can be checked.
+
+### NF. THE NARRATIVE FLOW. HIS WORDS, KEPT AS THE SPINE.
+
+"Our bodies are naturally expressive. Stress forces the body to contract. When
+we identify with that contraction it creates a bias in the mind and a kink of
+resistance in the form of that stress response. We condition that stress
+response and eventually that node turns into a cluster. We begin to
+procrastinate more, feel anxious more, feel more shy, more depressed, more
+overwhelmed. Eventually those clusters form networks, where the body begins to
+tense up in different locations. The problem begins. Now our nervous system has
+these kinks all over it, blocking the natural energy flow of the body.
+
+Atuned helps you identify the point of origin of the stress response, and
+integrates the kink, the cluster and the network. And in doing so, brings inner
+peace mentally and physically. It accelerates the mind body connection and it
+naturally releases stress from the body.
+
+There is nothing like this. It holds up a mirror to you and peers directly into
+your soul. This is you. We help you become the best version of yourself. In
+mind, body, spirit and soul."
+
+- [x] **NF1. This is not a positioning paragraph, it is the engine's own
+      ladder in plain words.** Checked: `compute()` builds saboteurs, then
+      complexes from pairs of them, then hyper complexes from families of
+      those, then the superego above that. His node, cluster and network are
+      those rungs, named for a person instead of for a developer. A
+      positioning line that is a true description of the arithmetic can be
+      verified, which is the strongest thing a claim can be.
+- [x] **NF2. And it answers PO2 without losing anything.** The word heals is
+      gone and the mechanism is sharper than the claim it replaced. Nobody had
+      to soften it.
+- [ ] **NF3. It is the spine for the funnel, the about page and the how it
+      works page,** in that order, because it is already a storyboard: state,
+      contraction, identification, conditioning, cluster, network, symptom,
+      then the instrument.
+- [ ] **NF4. Two phrases are still claims rather than mechanism,** and they
+      are the only two: brings inner peace mentally and physically, and
+      naturally releases stress from the body. Both are ordinary wellness
+      language rather than the regulated kind, so neither carries the exposure
+      the earlier line did. Worth him knowing which two they are, because
+      everything else in the paragraph is checkable and these two are not.
+- [ ] **NF5. "There is nothing like this" now has a sentence behind it.**
+      Searched: the shelf is crowded and the nearest thing is a skill tree a
+      person fills in by hand. Nothing derives the reading from a person's own
+      story and nothing inverts the gauge so the work is removing drag. That
+      is what is first, and it is narrow enough to defend.
+- [ ] **NF6. The close carries the becoming line** and the two sit together:
+      this is you, and we help you become the best version of yourself, in
+      mind, body, spirit and soul.
+
+---
+
 ## 0h2. DELIVERED 20 SEPTEMBER. THE RITUAL PAGE, SECOND REBUILD, AND THE BOOT CARD.
 
 - [x] **BT5. The build stamp is off the boot card,** ruled. It stays on the

@@ -67,6 +67,20 @@ if(typeof module!=='undefined'&&module.exports){
   /* indexes */   W:W, BY:BY, ALL_SAB:ALL_SAB, S:S,
   /* soul */      buildSoul:buildSoul, affinity:affinity, bandIg:bandIg,
   /* engine */    compute:compute, suscAll:suscAll, balance:balance, OUTWARD:OUTWARD, INWARD:INWARD,
+  /* THE CEILING. Absent from this contract for as long as it has existed, and
+     two seats have now needed it and built their own copy instead: the
+     integrity probe re-evals the whole engine source to reach it, and the
+     avatar rise sim recomputes the reach by hand beside a comment saying why.
+     A number no caller can reach is a number with no owner, which is the same
+     defect the lean tables and IQ_STEM were fixed for.
+
+     It is the one the owner has ruled most important. His words are that a
+     person is already the most powerful version of themselves and the limiters
+     are what hold them down, so cqCeiling is the person and the reading is the
+     drag against it. Nothing on the ceiling's own path was missing beside
+     these two: bandIg, verpFactor, mirrorAt, clamp, W, S, BANDS and SINAMES
+     are all already here, which is why this is two lines and not a group. */
+                  cqCeiling:cqCeiling, cqHeadroom:cqHeadroom,
   /* seed */      TYPE16:TYPE16, SEED16:SEED16, seedAxes:seedAxes, seedApply:seedApply,
                   seedClear:seedClear, seedShare:seedShare, seedValid:seedValid, accuracy:accuracy, sab33Detect:sab33Detect,
                   sabLevels:sabLevels, exprFill:exprFill, exprRead:exprRead,

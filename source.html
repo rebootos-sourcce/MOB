@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="1db92ac 2026-09-20 20:31"><head><meta charset="utf-8">
+<html lang="en" data-build="ed4170e 2026-09-20 20:42"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -6129,7 +6129,7 @@ var SIGN_RUNS={
  Scorpio:'goes all the way down or does not go',
  Sagittarius:'widens the frame until the problem looks smaller',
  Capricorn:'builds the structure and then lives inside it',
- Aquarius:'stands outside the group in order to see it',
+ Aquarius:'stands outside the group to see it',
  Pisces:'dissolves the boundary and absorbs what is there'};
 var HD_RUNS={
  Manifestor:'initiates without waiting. the cost is the resistance it creates',
@@ -14496,10 +14496,12 @@ try{window.__at&&window.__at('ui/map.js');}catch(e){}
 function renderShelf(r,seats,speed,stop,dom,loadedTot,marks){
  var el=document.getElementById('eshelf'); if(!el)return;
  var sh='<div class="pm-hd">'
-  +'<div><div class="pm-eye">Flow through</div>'
+  /* FLOW, NOT FLOW THROUGH. Ruled in COPY.md by name, and the quantity is
+     called Flow on the key strip and in its own drill. One word per concept. */
+  +'<div><div class="pm-eye">Flow</div>'
   /* flow through is a share that passes, so its high end is the good one and
     it never prints in the alarm colour. */
-  +cr(K2B[dom.p.k], speed*100, {size:'lg',label:'flow through',hot:false})
+  +cr(K2B[dom.p.k], speed*100, {size:'lg',label:'flow',hot:false})
   +'<div class="pm-sub">'+(stop?('stops at the '+stop.p.n.toLowerCase())
     :(loadedTot?'passing every seat':'nothing held'))+'</div></div>'
   /* The label used to swap identity with the state, reading "Heaviest seat"
@@ -15291,7 +15293,7 @@ function sumEntries(){
 function sumToldHtml(){
  var es=sumEntries();
  if(!es.length)return '';
- return '<div class="s-told"><div class="pm-eye">What You Told It</div>'
+ return '<div class="s-told"><div class="pm-eye">What you told it</div>'
   +es.map(function(e){
     var d=new Date(e.t);
     return '<div class="s-told-e"><time>'+(isNaN(d)?'':d.toLocaleDateString())
@@ -15855,7 +15857,7 @@ function sumAxes(r){
    +(standing.length>1?', and '+(standing.length-1)+' other'
      +(standing.length>2?'s':'')+' installed':'')
    +'. An address with the opposite in does not read zero. It conducts.');}
- return '<div class="s-axes"><div class="pm-eye">In The Body</div>'
+ return '<div class="s-axes"><div class="pm-eye">In the body</div>'
   +p.map(function(t){return '<p class="s-p">'+t+'</p>';}).join('')+'</div>';}
 
 /* ============================================================
@@ -15893,7 +15895,7 @@ function sumLens(r){
 function sumIg(r){
  var sr=(typeof seriesRead==='function')?seriesRead(CURP,SUM_SPAN,Date.now()):null;
  var head='<div class="s-ig"><div class="s-ig-h">'
-  +'<span class="pm-eye">Integrity Over Time</span>'
+  +'<span class="pm-eye">Integrity over time</span>'
   +'<div class="s-ig-sp">'+SPANS.map(function(sp){
     return '<button type="button" class="cn-sb'+(sp.k===SUM_SPAN?' on':'')+'" '
      +'data-igspan="'+sp.k+'" aria-pressed="'+(sp.k===SUM_SPAN)+'">'
@@ -16253,7 +16255,7 @@ function anaDrill(){
   h+='<p class="ad-p">'+esc(d.d||'')+'. It owns <b>'+own.length+'</b> addresses across '
    +bands.join(', ')+'. <b>'+ld.length+'</b> are held, which is what the domain currently '
    +'costs you rather than gives you.</p>'
-   +'<div class="pm-eye">Its addresses</div>'
+   +'<div class="pm-eye">Addresses here</div>'
    +rows(own.slice().sort(function(a,b){return b.sq-a.sq;}).slice(0,10))+storyBlock(bands);
  } else if(P.k==='chain'){
   var o=[].concat(r.sups,r.hys,r.cxs,r.sabs).filter(function(x){return x.nm===P.nm;})[0];
@@ -16275,7 +16277,7 @@ function anaDrill(){
    +(S.replace[c.nm]||0).toFixed(1)+'</b>. Coherence is the centre of this axis, not either '
    +'end. It seats <b>'+own2.length+'</b> addresses, <b>'
    +own2.filter(function(n){return n.sq>=4;}).length+'</b> held.</p>'
-   +'<div class="pm-eye">Its addresses</div>'
+   +'<div class="pm-eye">Addresses here</div>'
    +rows(own2.slice().sort(function(a,b){return b.sq-a.sq;}).slice(0,10));
  } else if(P.k==='seat'){
   var s2=flSeats().filter(function(x){return x.p.n===P.nm;})[0];
@@ -16288,7 +16290,7 @@ function anaDrill(){
     +'<div class="pm-eye">Moral integrity seated here</div><div class="pm-chips">'
     +SI.filter(function(l){return l.b===bn;}).map(function(l){
       return '<span class="pm-chip">'+l.nm+' '+S.law[l.nm].toFixed(1)+'</span>';}).join('')+'</div>'
-    +'<div class="pm-eye" style="margin-top:12px">Its addresses</div>'+rows(seg.slice(0,10))
+    +'<div class="pm-eye" style="margin-top:12px">Addresses here</div>'+rows(seg.slice(0,10))
     +storyBlock([bn]);}
  } else if(P.k==='arch'){
   var ai=-1; ARCH.forEach(function(x,i){if(x.nm===P.nm)ai=i;});
@@ -16458,7 +16460,9 @@ function iqSealedCard(p){
  var sd=p.seed;
  return '<div class="iq-sealed">'
   +'<div class="iq-sl-l">'
-   +'<div class="pm-eye">Who This Is</div>'
+   /* the same label as the form under it, written the same way. It read
+      "Who This Is" here and "Who this is" there, in one file. */
+   +'<div class="pm-eye">Who this is</div>'
    +'<div class="iq-sl-nm">'+esc(nm||'Unnamed')+'</div>'
    +(bits.length?'<div class="iq-sl-bt">'+esc(bits.join(' · '))+'</div>':'')
    +(sd?'<div class="iq-sl-bt">seeded from '+esc(sd.type)+'</div>':'')
@@ -17049,7 +17053,7 @@ function ritRender(){
      through the boundary carried a five thousand character when that this
      surface would then render. One number, named in schema.js beside the
      refusal that enforces it. */
-  out+='<div class="rit-plan"><div class="pm-eye plain">When, and where</div>'
+  out+='<div class="rit-plan"><div class="pm-eye plain">When and where</div>'
    +'<label class="rit-f"><span>When</span>'
    +'<input type="text" id="ritwhen" maxlength="'+RIT_PLAN_MAX+'" placeholder="after I put the kettle on" '
    +'value="'+esc(RIT.when||'')+'"></label>'
@@ -17756,7 +17760,11 @@ function coneRead(){
 function coneGraph(){
  var sr=seriesRead(CURP,CONE.span,Date.now());
  var h='<div class="cn-gr" id="cngraph">'
-  +'<div class="cn-gh"><span class="pm-eye">Coherence Over Time</span>'
+  /* SENTENCE CASE IN THE SOURCE. The sheet capitalises this class, so title
+     case typed in as well is a second copy of a rule in the one place it can
+     disagree with the first. Every other label in the product is written in
+     sentence case for that reason. */
+  +'<div class="cn-gh"><span class="pm-eye">Coherence over time</span>'
   +'<div class="cn-spans">'
   +SPANS.map(function(sp){
     return '<button type="button" class="cn-sb'+(sp.k===CONE.span?' on':'')+'" '
@@ -18024,7 +18032,8 @@ function ladderHtml(){
     thing a person built is not deleted by their having stopped. */
  h+='<div class="ld-streak'+(s.live?' live':'')+'">'
   +'<span class="ld-n">'+s.run+'</span>'
-  +'<span class="ld-u">'+(s.run===1?'day':'days')+(s.live?' running':' , last run')+'</span>'
+  /* the space before the comma was on the screen: "14 days , last run". */
+  +'<span class="ld-u">'+(s.run===1?'day':'days')+(s.live?' running':', last run')+'</span>'
   +'</div>';
  if(!s.days)
   h+='<p class="ld-p">Nothing on the record yet. Build one ritual and save it, '
@@ -18055,11 +18064,23 @@ function ladderHtml(){
     the two are separate counts. Planned only prints when there is a gap between
     them, because a person who does what they planned does not need to be told
     the two numbers agree. */
- var LG=[['Minutes practised',l.minutes]];
- if(l.planned>l.minutes)LG.push(['Minutes planned, not yet done',l.planned-l.minutes]);
- LG=LG.concat([['Rituals saved',l.rituals],
-  ['Ground opened',l.ground+(l.ground===1?' address':' addresses')],
-  ['Held at the far pole',l.clear+(l.clear===1?' address':' addresses')]]);
+ /* A FIGURE'S LABEL IS ONE WORD, and the unit rides on the figure. Ruled, by
+    name: "instead of 85 days kept, just one word. Recurring, missed, active,
+    streak." Five rows here carried a phrase each and one of them carried a
+    clause, "Minutes planned, not yet done", which is a sentence wearing a
+    label's clothes. The denominator rule that produced them still holds: it
+    is satisfied on the figure, where the unit belongs, rather than in a
+    second line of prose under it.
+
+    AND THE LAST ROW WAS WRONG ABOUT WHAT IT COUNTS. ledgerRead walks CHILD,
+    which is the nine axes, so clear is a count of axes and the row printed it
+    as addresses. A label that names the wrong unit is not a style defect. */
+ var LG=[['Practised',l.minutes+(l.minutes===1?' minute':' minutes')]];
+ if(l.planned>l.minutes)LG.push(['Planned',
+  (l.planned-l.minutes)+((l.planned-l.minutes)===1?' minute':' minutes')]);
+ LG=LG.concat([['Saved',l.rituals+(l.rituals===1?' ritual':' rituals')],
+  ['Opened',l.ground+(l.ground===1?' address':' addresses')],
+  ['Installed',l.clear+(l.clear===1?' axis':' axes')]]);
  h+='<div class="ld-led">'+LG.map(function(x){
   return '<div class="ld-r"><span>'+x[0]+'</span><b>'+x[1]+'</b></div>';}).join('')+'</div>';
  /* the marks. icon, name, and what it meant. */
@@ -18251,7 +18272,7 @@ function runLawDrill(l){
     +'</b>. '+sc.lean+'</p>'
   : '<div class="pm-eye">Not measured</div><p class="ad-p">Not answered in the diagnostic, so '
     +'it defaults to '+v.toFixed(1)+'. Three questions would replace the guess.</p>';
- if(hot.length)h+='<div class="pm-eye">Held at this seat</div><div class="ad-rows">'
+ if(hot.length)h+='<div class="pm-eye">Held here</div><div class="ad-rows">'
   +hot.slice(0,6).map(addrRow).join('')+'</div>';
  rdShell(h);}
 
@@ -18446,8 +18467,12 @@ function runAtomDrill(n,x){
   +esc(n.cf||'unrouted')+'</b> axis'+(cf&&cf.opp?', against <b>'+esc(cf.opp)+'</b>':'')
   +'. It is holding <b>'+n.sq.toFixed(1)+'</b> and the opposite is installed at <b>'
   +(n.pole||0).toFixed(1)+'</b>.</p>'
+  /* ONE CONTROL, ONE LABEL. The same button, the same data-prot attribute and
+     the same handler, two hundred lines above this one, says "Run the protocol
+     here", which is the phrasing COPY.md carries as the example and the
+     phrasing the refusal beside it uses. This one said "Run a release here". */
   +(n.cf?'<div class="ad-acts"><button class="btn ad-prot" data-prot="'+n.i
-    +'">Run a release here</button></div>':'');
+    +'">Run the protocol here</button></div>':'');
  rdShell(h);}
 
 /* FLOW. WHAT REACHES THE CROWN FROM THE ROOT.
@@ -18491,7 +18516,7 @@ function runBalDrill(){
  var h='<div class="pm-eye">Balance</div><div class="ad-nm">'
   +(!b.read?'not enough held to read'
     :b.lean===0?'even':(Math.abs(b.lean)*100).toFixed(0)+'% '+(b.lean>0?'outward':'inward'))+'</div>'
-  +'<div class="pm-eye">How it is read</div><p class="ad-p">The nine axes split by the direction the '
+  +'<div class="pm-eye">How to read it</div><p class="ad-p">The nine axes split by the direction the '
   +'body takes under them. Four discharge outward, five withdraw inward. Four against five is not a '
   +'fair sum, so the means are what compare. Outward mean <b>'+b.outMean.toFixed(1)
   +'</b> against inward mean <b>'+b.inMean.toFixed(1)+'</b>.'
@@ -18517,7 +18542,7 @@ function runSeatDrill(c){
     return '<div class="ad-r static"><span class="ad-k">'+esc(x[0])+'</span>'
      +'<span class="ad-m">'+x[1]+' released, '+x[2]+' installed</span></div>';}).join('')
   +'</div>'
-  +'<div class="pm-eye">Addresses at this seat</div><div class="ad-rows">'
+  +'<div class="pm-eye">Addresses here</div><div class="ad-rows">'
   +W.filter(function(n){return n.b===c.b;}).slice(0,10).map(addrRow).join('')+'</div>';
  rdShell(h);}
 
@@ -18615,7 +18640,7 @@ function runTeacherDrill(m,end){
   +'<div class="pm-eye">What this is</div><p class="ad-p">'+esc(d)+'</p>'
   +'<div class="pm-eye">The other end</div><p class="ad-p"><b>'+esc(other)+'</b>. '
   +esc(od)+'</p>'
-  +'<div class="pm-eye">Where you sit on it</div><p class="ad-p">'
+  +'<div class="pm-eye">Where you sit</div><p class="ad-p">'
   +(r.unread
     ?'Nothing has been entered yet, so this axis has no reading. It is still the axis.'
     :'The '+esc(String(m.seat).toLowerCase())+' is carrying <b>'
@@ -18780,7 +18805,13 @@ function runRecogniseDrill(){
  var host=document.getElementById('rdrill');
  if(host)host.querySelectorAll('[data-circ]').forEach(function(b){
   b.onclick=function(){runCircleDrill(+b.getAttribute('data-circ'));};});}
-/* one depth, what it is, where it sits, and the way out of it */
+/* ONE LABEL FOR ONE SLOT. The list of addresses belonging to whatever is on
+   screen was called four things: "Addresses at this seat", "Its addresses",
+   "The addresses there" and "Addresses here". One slot, four names, so a
+   person re-parses the same row on every surface. It is "Addresses here"
+   everywhere, and the held subset of it is "Held here".
+
+   one depth, what it is, where it sits, and the way out of it */
 function runCircleDrill(n){
  var c=CIRCLES.filter(function(x){return x.c===n;})[0]; if(!c)return;
  var seat=(c.at.match(/Crown|Sacral|Solar|Root|Third eye|Heart|Throat/i)||[''])[0];
@@ -18795,7 +18826,7 @@ function runCircleDrill(n){
  if(seat){
   var grp=W.filter(function(x){return x.b===seat;}).sort(function(a,b){return b.sq-a.sq;}).slice(0,5);
   if(grp.length){
-   h+='<div class="pm-eye">The addresses there</div><div class="ad-rows">'
+   h+='<div class="pm-eye">Addresses here</div><div class="ad-rows">'
     +grp.map(function(x){return addrRow(x);}).join('')+'</div>';}}
  h+='<p class="ad-p">The governor is a name for the pattern, not a person and not a thing '
   +'that exists. It is still recognisable because the pattern is still running.</p>';
@@ -19843,24 +19874,43 @@ function recRender(){
   +'<span>'+esc(recWhen(b.t))+'</span></div>';
 
  /* ground opened first, because it is the only one that cannot drift */
- h+='<div class="rec-lead"><div class="pm-eye">Ground opened, all time</div>'
-  +'<div class="rec-big">'+m.unique+'</div>'
-  +'<div class="sum-lc">'+(m.unique?'addresses and channels opened at least once, from '
-    +m.lines+' lines spoken':'nothing opened yet')
-  +(m.estimate?'. Your own horizon reads about '+m.estimate+', give or take '+(m.estimateHigh-m.estimate)+'.':'.')
-  +'</div>';
+ /* A FIGURE'S LABEL IS ONE WORD, AND THE HORIZON WAS SAID TWICE. Ruled by
+    name: "of the same 90 days. We should need a rule never to write shit like
+    that." This card is the corpse the rule was written against. It read
+
+      Ground opened, all time
+      12
+      addresses and channels opened at least once, from 47 lines spoken.
+      Your own horizon reads about 300, give or take 40.
+
+    a three word label with a comma in it, a bare figure, and two sentences
+    under the figure, the second of which states the horizon that the Next
+    block four lines below states again. Same number, twice, on one card.
+
+    So: the label is one word, the unit rides on the figure, the one fact the
+    line adds stays, and the horizon is said once, where the distance to the
+    next marker is. */
+ h+='<div class="rec-lead"><div class="pm-eye">Opened</div>'
+  +'<div class="rec-big">'+m.unique+(m.unique===1?' address':' addresses')+'</div>'
+  +'<div class="sum-lc">'+(m.unique
+    ? 'opened at least once, from '+m.lines+(m.lines===1?' line':' lines')+' spoken'
+    : 'nothing opened yet')+'.</div>';
  /* THE LADDER IS THEIRS. A threshold is a fraction of what a person is
     carrying, and what a person is carrying follows how long they have been
     alive to accumulate it. So the distance is computed against them the
     moment a birth date exists, and until it does the surface says whose
     numbers it is showing rather than letting a stranger's total read as
     their own. */
+ /* AND BOTH NUMBERS HERE SAY WHAT THEY ARE. "12 of new ground away" is
+    twelve of what, and "at 50 of about 300" is fifty of what. Both are counts
+    of addresses and neither said so. */
  if(m.next)
   h+='<div class="rec-next"><span class="pm-eye">Next</span>'
    +'<b>'+esc(m.next.nm)+'</b>'
-   +'<span class="rec-nl">'+m.next.left+' of new ground away</span>'
+   +'<span class="rec-nl">'+m.next.left
+     +(m.next.left===1?' address':' addresses')+' of new ground away</span>'
    +'<span class="rec-ns">'+(m.scaled
-     ?'your own scale, at '+m.next.at+' of about '+m.estimate
+     ?'your own scale, '+m.next.at+' addresses of about '+m.estimate
      :'the reference scale. Give a birth date and this becomes yours')+'</span>'
    +'</div>';
  h+='</div>';
@@ -21098,7 +21148,9 @@ var ACC_SECS=[
  {k:'privacy', nm:'Privacy',       b:'Heart',
   ic:'<rect x="4.5" y="10.5" width="15" height="9.5" rx="2"/>'
     +'<path d="M8 10.5V7.8a4 4 0 018 0v2.7"/>'},
- {k:'billing', nm:'Billing And Tier',b:'Solar',
+ /* ONE WORD, AND THE WORD SAYS WHAT THE SURFACE DOES. Ruled in COPY.md, and
+    every other section here is one word. A tier is what the billing is for. */
+ {k:'billing', nm:'Billing',b:'Solar',
   ic:'<rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10.5h18"/>'},
  {k:'help',    nm:'Help',          b:'Sacral',
   ic:'<circle cx="12" cy="12" r="8.4"/><path d="M9.6 9.6a2.5 2.5 0 114 2.4c-.9.6-1.6 1-1.6 2"/>'
@@ -21404,8 +21456,9 @@ function accDelete(){
    back as something the person never said. It will not catch a first name in a
    sentence, and nothing here claims that it does.
    ============================================================ */
-var OB_TITLE={question:'Ask A Question',bug:'Report Something Broken',
- rating:'Rate The Product',feedback:'Product Feedback'};
+/* sentence case, because sh-h is capitalised by the sheet */
+var OB_TITLE={question:'Ask a question',bug:'Report something broken',
+ rating:'Rate the product',feedback:'Product feedback'};
 var OB_LEAD={
  question:'Ask anything about what a reading means, what a control does, or why '
   +'the instrument said what it said.',
@@ -22094,8 +22147,12 @@ function obRender(){
      to be here is still in the product and none of it is said first. */
   out=obCard('Welcome','This is you, and it is okay.',
    obFigure()
-   +'<p class="ob-p">No judgment. Nothing here grades you. This one is for you, '
-   +'and whatever you find in it, you are not carrying it alone.</p>'
+   /* HIS TWO SENTENCES, AND THEN IT STOPS. "No judgment. Nothing here grades
+      you." is the ruling and it stands. A third clause had been added to it,
+      "you are not carrying it alone", which answers a fear nobody has raised
+      on this screen and claims companionship this product does not provide:
+      it is not a coach, a friend or a guide. Silence is a copy decision. */
+   +'<p class="ob-p">No judgment. Nothing here grades you. This one is for you.</p>'
    +'<p class="ob-p ob-dim">Two minutes. One thing to try. Nothing to fill in.</p>',
    '<button type="button" class="btn pri" data-ob="next">Come in</button>'
    +'<button type="button" class="btn" data-ob="skip">Not now</button>');
@@ -22109,24 +22166,35 @@ function obRender(){
 
      And the thing it reads is named: the body mind complex. His term, kept
      because it says what it is. */
-  out=obCard('What this is','We walk you through you.',
+  /* A MIRROR, NOT A GUIDE. "We walk you through you" is a guide claim and it
+     is the only place in the product that speaks as we. His own sentence for
+     what this is, kept as he says it: everything that is running you, from the
+     top to the bottom. */
+  out=obCard('What this is','Everything that is running you, top to bottom.',
    '<p class="ob-p">Most of the strain we have agreed to call normal is making '
    +'us ill. This shows you where it sits in the body, what it costs you, and '
    +'what to do about it.</p>'
    +'<p class="ob-p">It reads one thing: the body mind complex. How you run, '
    +'which patterns are running, and where they are held.</p>'
    +'<div class="ob-grid">'
-   +[['You write what happened','in your own words, not a questionnaire'],
-     ['It finds where that sits','a place in the body, not a label'],
+   /* TWO OF THESE FOUR DEFINED A THING BY WHAT IT IS NOT, on the first
+      screen a person sees, in the file that runs antithesis at five times the
+      house rate. The replacements are positive and concrete, and the first is
+      copy this product already ships in the story box. */
+   +[['You write what happened','the day, in your own words'],
+     ['It finds where that sits','a named plexus or a named nerve'],
      ['You clear what is there','one address at a time'],
      ['And you watch it move','the same numbers, over months']]
     .map(function(x){return '<div class="ob-g"><b>'+esc(x[0])+'</b>'
       +'<span>'+esc(x[1])+'</span></div>';}).join('')
    +'</div>'
+   /* "which is the good news" is the writer telling a person how to feel
+      about a fact. The fact is the sentence. */
    +'<p class="ob-p ob-dim">Nothing here is invented. Where it has not read '
-   +'something it says so rather than guessing. The work is yours, which is the '
-   +'good news, because it means it is available.</p>',
-   '<button type="button" class="btn pri" data-ob="next">Then try one thing</button>'
+   +'something it says so rather than guessing. The work is yours.</p>',
+   /* a control names what it does, and it starts on the verb. "Then" is
+      narration, and nobody says it pressing a button. */
+   '<button type="button" class="btn pri" data-ob="next">Try one thing</button>'
    +'<button type="button" class="btn" data-ob="back">Back</button>');
  }
  else if(s===2){
@@ -22140,8 +22208,11 @@ function obRender(){
    +'in your body changes, and do not go looking for it, just let it be there '
    +'or not.</p>'
    +'<div class="ob-word ob-word-n">'+esc(OB.neutral)+'</div>'
-   +'<p class="ob-p ob-dim">Most people get nothing from that one. That is the '
-   +'point of it. Now the second.</p>'
+   /* "Most people get nothing from that one" is a claim about a population
+      this instrument has never measured. What is true is why the word is
+      there, so that is what it says. */
+   +'<p class="ob-p ob-dim">That word is the flat one, so nothing is the '
+   +'expected answer. Now the second.</p>'
    +'<div class="ob-word ob-word-c">'+esc(OB.charged.nm.toLowerCase())+'</div>'
    +'<p class="ob-p">Where did that one land? There is no right answer, and '
    +'nothing at all is an answer.</p>'
@@ -23275,5 +23346,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="001510724"></div>
+<div id="eof" hidden data-len="001515210"></div>
 </body></html>

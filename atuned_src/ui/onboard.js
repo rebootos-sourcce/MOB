@@ -120,8 +120,12 @@ function obRender(){
      to be here is still in the product and none of it is said first. */
   out=obCard('Welcome','This is you, and it is okay.',
    obFigure()
-   +'<p class="ob-p">No judgment. Nothing here grades you. This one is for you, '
-   +'and whatever you find in it, you are not carrying it alone.</p>'
+   /* HIS TWO SENTENCES, AND THEN IT STOPS. "No judgment. Nothing here grades
+      you." is the ruling and it stands. A third clause had been added to it,
+      "you are not carrying it alone", which answers a fear nobody has raised
+      on this screen and claims companionship this product does not provide:
+      it is not a coach, a friend or a guide. Silence is a copy decision. */
+   +'<p class="ob-p">No judgment. Nothing here grades you. This one is for you.</p>'
    +'<p class="ob-p ob-dim">Two minutes. One thing to try. Nothing to fill in.</p>',
    '<button type="button" class="btn pri" data-ob="next">Come in</button>'
    +'<button type="button" class="btn" data-ob="skip">Not now</button>');
@@ -135,24 +139,35 @@ function obRender(){
 
      And the thing it reads is named: the body mind complex. His term, kept
      because it says what it is. */
-  out=obCard('What this is','We walk you through you.',
+  /* A MIRROR, NOT A GUIDE. "We walk you through you" is a guide claim and it
+     is the only place in the product that speaks as we. His own sentence for
+     what this is, kept as he says it: everything that is running you, from the
+     top to the bottom. */
+  out=obCard('What this is','Everything that is running you, top to bottom.',
    '<p class="ob-p">Most of the strain we have agreed to call normal is making '
    +'us ill. This shows you where it sits in the body, what it costs you, and '
    +'what to do about it.</p>'
    +'<p class="ob-p">It reads one thing: the body mind complex. How you run, '
    +'which patterns are running, and where they are held.</p>'
    +'<div class="ob-grid">'
-   +[['You write what happened','in your own words, not a questionnaire'],
-     ['It finds where that sits','a place in the body, not a label'],
+   /* TWO OF THESE FOUR DEFINED A THING BY WHAT IT IS NOT, on the first
+      screen a person sees, in the file that runs antithesis at five times the
+      house rate. The replacements are positive and concrete, and the first is
+      copy this product already ships in the story box. */
+   +[['You write what happened','the day, in your own words'],
+     ['It finds where that sits','a named plexus or a named nerve'],
      ['You clear what is there','one address at a time'],
      ['And you watch it move','the same numbers, over months']]
     .map(function(x){return '<div class="ob-g"><b>'+esc(x[0])+'</b>'
       +'<span>'+esc(x[1])+'</span></div>';}).join('')
    +'</div>'
+   /* "which is the good news" is the writer telling a person how to feel
+      about a fact. The fact is the sentence. */
    +'<p class="ob-p ob-dim">Nothing here is invented. Where it has not read '
-   +'something it says so rather than guessing. The work is yours, which is the '
-   +'good news, because it means it is available.</p>',
-   '<button type="button" class="btn pri" data-ob="next">Then try one thing</button>'
+   +'something it says so rather than guessing. The work is yours.</p>',
+   /* a control names what it does, and it starts on the verb. "Then" is
+      narration, and nobody says it pressing a button. */
+   '<button type="button" class="btn pri" data-ob="next">Try one thing</button>'
    +'<button type="button" class="btn" data-ob="back">Back</button>');
  }
  else if(s===2){
@@ -166,8 +181,11 @@ function obRender(){
    +'in your body changes, and do not go looking for it, just let it be there '
    +'or not.</p>'
    +'<div class="ob-word ob-word-n">'+esc(OB.neutral)+'</div>'
-   +'<p class="ob-p ob-dim">Most people get nothing from that one. That is the '
-   +'point of it. Now the second.</p>'
+   /* "Most people get nothing from that one" is a claim about a population
+      this instrument has never measured. What is true is why the word is
+      there, so that is what it says. */
+   +'<p class="ob-p ob-dim">That word is the flat one, so nothing is the '
+   +'expected answer. Now the second.</p>'
    +'<div class="ob-word ob-word-c">'+esc(OB.charged.nm.toLowerCase())+'</div>'
    +'<p class="ob-p">Where did that one land? There is no right answer, and '
    +'nothing at all is an answer.</p>'

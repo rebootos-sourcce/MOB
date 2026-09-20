@@ -634,7 +634,11 @@ function coneRead(){
 function coneGraph(){
  var sr=seriesRead(CURP,CONE.span,Date.now());
  var h='<div class="cn-gr" id="cngraph">'
-  +'<div class="cn-gh"><span class="pm-eye">Coherence Over Time</span>'
+  /* SENTENCE CASE IN THE SOURCE. The sheet capitalises this class, so title
+     case typed in as well is a second copy of a rule in the one place it can
+     disagree with the first. Every other label in the product is written in
+     sentence case for that reason. */
+  +'<div class="cn-gh"><span class="pm-eye">Coherence over time</span>'
   +'<div class="cn-spans">'
   +SPANS.map(function(sp){
     return '<button type="button" class="cn-sb'+(sp.k===CONE.span?' on':'')+'" '
@@ -902,7 +906,8 @@ function ladderHtml(){
     thing a person built is not deleted by their having stopped. */
  h+='<div class="ld-streak'+(s.live?' live':'')+'">'
   +'<span class="ld-n">'+s.run+'</span>'
-  +'<span class="ld-u">'+(s.run===1?'day':'days')+(s.live?' running':' , last run')+'</span>'
+  /* the space before the comma was on the screen: "14 days , last run". */
+  +'<span class="ld-u">'+(s.run===1?'day':'days')+(s.live?' running':', last run')+'</span>'
   +'</div>';
  if(!s.days)
   h+='<p class="ld-p">Nothing on the record yet. Build one ritual and save it, '
@@ -933,11 +938,23 @@ function ladderHtml(){
     the two are separate counts. Planned only prints when there is a gap between
     them, because a person who does what they planned does not need to be told
     the two numbers agree. */
- var LG=[['Minutes practised',l.minutes]];
- if(l.planned>l.minutes)LG.push(['Minutes planned, not yet done',l.planned-l.minutes]);
- LG=LG.concat([['Rituals saved',l.rituals],
-  ['Ground opened',l.ground+(l.ground===1?' address':' addresses')],
-  ['Held at the far pole',l.clear+(l.clear===1?' address':' addresses')]]);
+ /* A FIGURE'S LABEL IS ONE WORD, and the unit rides on the figure. Ruled, by
+    name: "instead of 85 days kept, just one word. Recurring, missed, active,
+    streak." Five rows here carried a phrase each and one of them carried a
+    clause, "Minutes planned, not yet done", which is a sentence wearing a
+    label's clothes. The denominator rule that produced them still holds: it
+    is satisfied on the figure, where the unit belongs, rather than in a
+    second line of prose under it.
+
+    AND THE LAST ROW WAS WRONG ABOUT WHAT IT COUNTS. ledgerRead walks CHILD,
+    which is the nine axes, so clear is a count of axes and the row printed it
+    as addresses. A label that names the wrong unit is not a style defect. */
+ var LG=[['Practised',l.minutes+(l.minutes===1?' minute':' minutes')]];
+ if(l.planned>l.minutes)LG.push(['Planned',
+  (l.planned-l.minutes)+((l.planned-l.minutes)===1?' minute':' minutes')]);
+ LG=LG.concat([['Saved',l.rituals+(l.rituals===1?' ritual':' rituals')],
+  ['Opened',l.ground+(l.ground===1?' address':' addresses')],
+  ['Installed',l.clear+(l.clear===1?' axis':' axes')]]);
  h+='<div class="ld-led">'+LG.map(function(x){
   return '<div class="ld-r"><span>'+x[0]+'</span><b>'+x[1]+'</b></div>';}).join('')+'</div>';
  /* the marks. icon, name, and what it meant. */

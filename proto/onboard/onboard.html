@@ -1,0 +1,616 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Onboarding, rebuilt</title>
+<!-- ============================================================
+     THE ONBOARDING, HIS SPECIFICATION.
+
+     Brief: TASKS.md 0p, OB1 to OB15 and SIG1 to SIG6. Every ruling in
+     those two blocks is his and is quoted where it decides something.
+
+     THE FOUR RULES THAT FIGHT, AND THE ONE OBJECT THAT SETTLES THEM.
+
+       OB1   no count of screens
+       OB2   one button forward
+       OB11  icons, shown as a loop
+       OB13  way too much text, super simple
+       OB15  at no point results or purpose
+
+     They fight because an onboarding normally buys patience with a
+     progress indicator, and every progress indicator is a count. The
+     UX floor is explicit that the indicator is what buys the patience
+     and is not decoration, so it cannot simply be deleted.
+
+     The settlement is that there is exactly ONE progress object in the
+     whole flow and it is the loop itself. The ring is the indicator.
+     Progress is ANGULAR, not ordinal: a ring shows position without
+     showing a remainder, because a circle has no last place. The Next
+     button does not advance a page, it turns the ring a quarter. And
+     the fourth press does not land on a final screen, it closes the
+     ring, sweeps the arc back to discover and opens the product. So
+     there is nothing to count and nothing to count towards.
+
+     The same ring carries progress at three scales, which is why a
+     person never has to learn a second indicator:
+
+       one close over 8s     the settle
+       one close over 20s    a word, ten beats of two seconds
+       one quarter a press   the four stations of the loop
+
+     THE ORDER, AND IT REVERSES WHAT SHIPS. The signal test runs first,
+     before the tour. Two reasons and the second is the stronger one.
+     Time to the first act falls from 47 seconds to about 3. And the
+     tour's four lines describe tools that read charge out of a body: a
+     person who has just felt a word land reads them as a fact about
+     something that happened to them, and a person who reads them first
+     reads them as a claim. Mechanic before name, which is the Nintendo
+     order and the Half-Life 2 order.
+
+     THE OBSERVER TEST IS NOT HERE AND IS NOT NAMED. RESEARCH-signal.md
+     rules it out of onboarding on five grounds, his own book first:
+     "The Observer does not unlock at the beginning of the work." It is
+     a six minute practice row, offered before the first release. It is
+     not even named on this surface, because naming an exercise a person
+     cannot run is a control with no affordance, and the only thing a
+     bare name could carry is purpose, which OB15 forbids.
+
+     THE ENGINE IS REFERENCED, NEVER COPIED. Two prototypes in this
+     repository carried a byte identical copy of engine.js and both had
+     to be fixed, because a copy goes stale in silence. PAL and BANDS
+     are read off it at run time.
+
+     ZERO OUTBOUND REQUESTS. No webfont, no image, no analytics. The
+     typeface is the system stack. The port inherits the embedded Inter
+     that the build already carries.
+     ============================================================ -->
+<style>
+/* ---- tokens, lifted from atuned_src/shell/head.html so the prototype
+       reads in the product's palette rather than a new one ---- */
+:root{
+ --bg:#0C0D12; --panel:#1A1D26; --panel-2:#252833; --sunk:#090A0E;
+ --ink:#EFEDE8; --mid:#B4B0A8; --dim:#94908A;
+ --line:#2E3240; --accent:#7EB8D4; --on-accent:#0B1418;
+ --sans:'Inter','Inter Tight',system-ui,-apple-system,'Segoe UI',sans-serif;
+ --ring:236px;   /* the loop, desktop */
+ --pad:248px;    /* the circle, desktop */
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--bg); color:var(--ink); font-family:var(--sans);
+ font-size:16px; line-height:1.5; -webkit-font-smoothing:antialiased}
+
+/* THE SURFACE IS A SURFACE, NOT A SHEET. OB9, "no pop ups". What ships
+   today is role=dialog aria-modal over the product, so a stranger's
+   first sight of the app is a card covering an app. This owns the
+   viewport instead and hands it over when it is done. */
+.surface{min-height:100dvh; display:flex; flex-direction:column;
+ align-items:center; justify-content:center; padding:32px 16px; gap:0;
+ text-align:center}
+
+/* ---- type. 16px floor, measure held at 50 to 75 characters ---- */
+h1{font-size:30px; line-height:1.24; font-weight:500; letter-spacing:-.01em;
+ margin:0 0 26px; max-width:22ch}
+h1 span{display:block}
+h1 .two{color:var(--mid)}
+h2{font-size:20px; font-weight:500; margin:0 0 8px; max-width:30ch}
+p{font-size:16px; margin:0; max-width:56ch; color:var(--mid)}
+.dim{color:var(--dim); font-size:15px}
+
+/* ---- the one forward control. OB2, OB12: it says Next. ---- */
+.acts{margin-top:30px; display:flex; gap:10px; justify-content:center}
+button{font:inherit; cursor:pointer; border-radius:4px;
+ min-height:44px; min-width:44px; padding:0 22px;
+ background:transparent; color:var(--mid); border:1px solid var(--line)}
+button.pri{background:var(--accent); color:var(--on-accent);
+ border-color:var(--accent); font-weight:500; padding:0 34px}
+button:focus-visible{outline:2px solid var(--accent); outline-offset:3px}
+
+/* THE EXIT, AND IT IS NOT A SECOND FORWARD CONTROL. OB2 says one button
+   to move forward and OB3 struck the second control, which was "Not
+   now" sitting beside "Come in" on the welcome. Both are honoured: no
+   screen here carries two ways onward. The feedback floor separately
+   requires a way to leave anything running over ten seconds, and the
+   paced run is 52 seconds, so Leave is present for exactly those
+   screens and nowhere else. */
+.leave{position:fixed; top:14px; right:14px; border-color:transparent;
+ color:var(--dim); padding:0 14px; font-size:14px}
+
+/* ---- the loop. One object, three scales. Icons are ring, not fill. ---- */
+.loopwrap{position:relative; width:var(--ring); height:var(--ring);
+ margin:0 auto 22px; flex:none}
+.loop{width:100%; height:100%; overflow:visible}
+.track{fill:none; stroke:var(--line); stroke-width:1.5}
+.arc{fill:none; stroke:var(--accent); stroke-width:2.2; stroke-linecap:round;
+ transform:rotate(-90deg); transform-origin:50% 50%;
+ transition:stroke-dashoffset .28s linear}
+.arc.paced{transition:none}
+.st circle{fill:var(--bg); stroke:var(--line); stroke-width:1.4}
+.st path,.st line,.st polyline,.st rect,.st ellipse{fill:none; stroke:var(--dim);
+ stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round}
+.st text{fill:var(--dim); font-size:11px; letter-spacing:.06em;
+ font-family:var(--sans)}
+.st{opacity:0; transition:opacity .4s ease}
+.st.shown{opacity:1}
+.st.lit circle{stroke:var(--accent)}
+.st.lit path,.st.lit line,.st.lit polyline,.st.lit rect,.st.lit ellipse{stroke:var(--accent)}
+.st.lit text{fill:var(--ink)}
+
+/* the figure at rest, seven seats on a spine. The boot has just drawn
+   this assembling, and meeting it again standing still is the product
+   saying this is the thing, without a sentence. */
+.fig{width:150px; height:auto; margin:0 auto 26px; display:block}
+.fig .sp{stroke:var(--line); stroke-width:1.4; fill:none}
+.fig .hd{fill:none; stroke:var(--line); stroke-width:1.4}
+.fig .dt{stroke:none}
+
+/* ---- the word, on a beat ---- */
+.stagearea{height:104px; display:flex; align-items:center; justify-content:center}
+.word{font-size:46px; font-weight:300; letter-spacing:.02em; color:var(--ink);
+ opacity:0; transition:opacity .45s ease}
+.word.on{opacity:1}
+
+/* ---- the circle. No labels, no axes, no words on it. SIG5: a person
+       may not be handed a vocabulary before they have felt anything,
+       so the capture is a gesture and the shape is theirs. ---- */
+.padwrap{display:flex; flex-direction:column; align-items:center; gap:12px}
+.pad{width:var(--pad); height:var(--pad); max-width:100%; touch-action:none;
+ cursor:crosshair}
+.pad .rim{fill:var(--sunk); stroke:var(--line); stroke-width:1.4}
+.pad .cross{stroke:var(--line); stroke-width:.8; opacity:.5}
+.pad .mk{fill:var(--accent); stroke:none}
+.pad .mk.no{fill:var(--mid)}
+.pad .tail{fill:none; stroke:var(--accent); stroke-width:1.2; opacity:.35}
+.pad .gap{stroke:var(--ink); stroke-width:1.2; stroke-dasharray:3 4; opacity:.6}
+.pad text{fill:var(--dim); font-size:9px; font-family:var(--sans)}
+.pad:focus-visible{outline:2px solid var(--accent); outline-offset:4px; border-radius:50%}
+
+/* ---- the tour card ---- */
+.tool{display:flex; flex-direction:column; align-items:center; gap:10px}
+.toolname{font-size:13px; letter-spacing:.14em; text-transform:lowercase;
+ color:var(--accent)}
+.rows{display:flex; flex-direction:column; gap:14px; margin:0 auto;
+ max-width:34ch; text-align:left}
+.row{display:flex; gap:12px; align-items:flex-start}
+.row svg{flex:none; width:26px; height:26px; margin-top:1px}
+.row svg *{fill:none; stroke:var(--dim); stroke-width:1.5;
+ stroke-linecap:round; stroke-linejoin:round}
+.row span{font-size:16px; color:var(--mid); line-height:1.4}
+
+.sr{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0)}
+
+@media (prefers-reduced-motion:reduce){
+ .arc,.word,.st{transition:none}
+}
+@media (max-width:430px){
+ :root{--ring:206px; --pad:206px}
+ h1{font-size:25px; margin-bottom:22px}
+ .word{font-size:38px}
+ .surface{padding:26px 16px}
+ .leave{top:10px; right:10px}
+}
+</style>
+</head><body>
+
+<div class="surface" id="surface"></div>
+<div class="sr" role="status" aria-live="polite" id="live"></div>
+
+<!-- the engine is referenced, never copied. PAL and BANDS are read off it. -->
+<script src="../../engine.js"></script>
+<script>
+/* ============================================================
+   PACING. Every duration is a decision. The argument is beside it.
+   ============================================================ */
+var REP=10;          /* his. SIG2: think yes ten times, think no ten times. */
+var BEAT_MS=2000;    /* MINE, and it is the one open number. See below. */
+var SETTLE_MS=8000;  /* one long out breath, and the ring closes on it */
+var HOLD_MS=4000;    /* the gap between the two words */
+
+/* WHY 2000 AND NOT 3000. RESEARCH-signal.md argued 3000 from semantic
+   satiation: Lambert and Jakobovits put onset at roughly ten to fifty
+   repetitions when a word is repeated two to three times a second. That
+   citation bounds the FAST end and says nothing about the slow end. At
+   2000 ms a word arrives 0.5 times a second, a quarter of the satiation
+   rate, so the word stays loaded and the same citation still covers it.
+
+   What 1000 ms buys, and it is the reason to spend it. The paced run is
+   52 seconds instead of 81. Walked with the reference profiles, 81
+   seconds is the figure that loses Diane and James: it is the same
+   objection RESEARCH-signal.md used to keep the six minute observer test
+   out of first run, and it does not stop applying because the exercise
+   got shorter. 52 seconds holds Diane. Whether 2 seconds is long enough
+   to feel anything is not something I can measure, so the beat is one
+   named constant and Q4 in RESEARCH-signal.md is still open and still
+   his. DESIGN-onboard.md carries it as question 2.
+
+     SETTLE 8 + yes 20 + HOLD 4 + no 20  =  52 seconds paced
+   ============================================================ */
+
+/* ---- what the run holds. Nothing is persisted. Q5 is his and unanswered,
+        so this prototype writes nothing and says so rather than inventing
+        a field the schema has not agreed to. ---- */
+var D={
+ yes:{x:0,y:0,touched:false,trace:[]},
+ no :{x:0,y:0,touched:false,trace:[]},
+ leftAt:null
+};
+var step=0, timers=[], padKey=null, frames=[];
+
+function T(fn,ms){timers.push(setTimeout(fn,ms));}
+function clearT(){timers.forEach(clearTimeout);timers=[];}
+function say(s){document.getElementById('live').textContent=s;}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){
+ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+
+/* ============================================================
+   THE LOOP. Four stations, drawn as a circle and never as a column.
+   FL2 is explicit: "a numbered column of four says the fourth one is
+   the end, which is the opposite of a loop."
+
+   THE STATION TO TOOL MAPPING, AND IT IS A COLLISION I DID NOT INVENT.
+   DESIGN-gamification.md allocates the quarters by mechanic: play is
+   the ritual and flow is the record, and the record now lives on the
+   Ritual surface. Following that table names one surface at two
+   stations, so a person finishes the tour able to name three doors.
+   OB14's whole brief is that they can name the doors, and it names the
+   Field and Energy in particular, so on this surface the mapping below
+   wins and the gamification table keeps its own job, which is costing
+   mechanics for retention. Both are his. Question 1 in DESIGN-onboard.md.
+   ============================================================ */
+var STATIONS=[
+ {w:'discover', tool:'Story',
+  line:'You write the day. It reads charge out of the words.',
+  /* a line of writing with one mark read off it */
+  ic:'<path d="M5 7h10M5 11h14M5 15h8"/><circle cx="17.5" cy="15.5" r="2.6"/>'},
+ {w:'play', tool:'Field',
+  line:'Nine axes carry the charge. You move what is there.',
+  /* a wheel with one spoke pulled out */
+  ic:'<circle cx="12" cy="12" r="8"/><path d="M12 4v4M12 16v4M4 12h4M16 12h4"/><circle cx="12" cy="12" r="2.3"/>'},
+ {w:'flow', tool:'Ritual',
+  line:'A practice comes out of the reading. You mark the day.',
+  /* a run of marks, one of them kept */
+  ic:'<path d="M4 16h3M9 16h3M14 16h3"/><path d="M19 16h1"/><path d="M6 11l2.4 2.4L13 7"/>'},
+ {w:'embody', tool:'Body',
+  line:'Seven seats. The charge sits at one of them.',
+  /* the spine, three seats on it */
+  ic:'<path d="M12 4v16"/><circle cx="12" cy="7" r="1.9"/><circle cx="12" cy="12" r="1.9"/><circle cx="12" cy="17" r="1.9"/>'}
+];
+
+var R=42, CIRC=2*Math.PI*R;   /* the ring, in its own 100 unit box */
+
+/* stations sit at 12, 3, 6 and 9 o'clock. The word rides outside the
+   ring and the icon inside it, so neither crosses the arc. */
+function stationXY(i){
+ var a=(-90+i*90)*Math.PI/180;
+ return {x:50+R*Math.cos(a), y:50+R*Math.sin(a), a:a};
+}
+function loopSVG(o){
+ o=o||{};
+ var frac=(o.frac==null?0:o.frac), lit=(o.lit==null?-1:o.lit);
+ var shown=!!o.stations;
+ var h='<svg class="loop" viewBox="0 0 100 100" aria-hidden="true">'
+  +'<circle class="track" cx="50" cy="50" r="'+R+'"/>'
+  +'<circle class="arc'+(o.paced?' paced':'')+'" id="arc" cx="50" cy="50" r="'+R+'" '
+   +'stroke-dasharray="'+CIRC.toFixed(2)+'" '
+   +'stroke-dashoffset="'+(CIRC*(1-frac)).toFixed(2)+'"/>';
+ STATIONS.forEach(function(s,i){
+  var p=stationXY(i);
+  /* the word sits outside, pushed along the radius, and is anchored so
+     it never overlaps the ring at any of the four positions */
+  var ox=p.x+Math.cos(p.a)*13, oy=p.y+Math.sin(p.a)*13;
+  var anc=(i===1?'start':i===3?'end':'middle');
+  var dy=(i===0?-1:i===2?7:3.6);
+  h+='<g class="st'+(shown?' shown':'')+(i<=lit?' lit':'')+'">'
+   +'<circle cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="8.4"/>'
+   +'<g transform="translate('+(p.x-6.2).toFixed(1)+','+(p.y-6.2).toFixed(1)+') scale(0.517)">'
+   +s.ic+'</g>'
+   +'<text x="'+ox.toFixed(1)+'" y="'+(oy+dy).toFixed(1)+'" text-anchor="'+anc+'">'+s.w+'</text>'
+   +'</g>';});
+ return '<div class="loopwrap">'+h+'</svg></div>';
+}
+/* the arc is driven by one CSS property, so the browser composites it and
+   nothing runs per frame. Measured in the shot harness. */
+function arcTo(frac,ms){
+ var a=document.getElementById('arc'); if(!a)return;
+ if(ms!=null){a.style.transition='stroke-dashoffset '+ms+'ms linear';}
+ requestAnimationFrame(function(){
+  a.setAttribute('stroke-dashoffset',(CIRC*(1-frac)).toFixed(2));});
+}
+
+/* ============================================================
+   THE FIGURE AT REST. Seven seats on a spine, coloured off the engine's
+   own PAL so the prototype cannot drift from the product's palette.
+   ============================================================ */
+function figSVG(){
+ var y=[150,131,112,93,74,55,36];
+ var bands=(typeof BANDS!=='undefined')?BANDS:
+  ['Root','Sacral','Solar','Heart','Throat','3rd Eye','Crown'];
+ var pal=(typeof PAL!=='undefined')?PAL:{};
+ return '<svg class="fig" viewBox="0 0 120 172" aria-hidden="true">'
+  +'<ellipse class="hd" cx="60" cy="20" rx="13" ry="4.4"/>'
+  +'<line class="sp" x1="60" y1="150" x2="60" y2="36"/>'
+  +y.map(function(yy,i){
+    return '<circle class="dt" cx="60" cy="'+yy+'" r="4.4" fill="'
+      +(pal[bands[i]]||'#94908A')+'"/>';}).join('')
+  +'</svg>';}
+
+/* ============================================================
+   THE CIRCLE. Unitless, unlabelled, and the marker starts at the centre.
+
+   THE CENTRE IS "NOTHING MOVED", WHICH REMOVES A CONTROL. The earlier
+   prototype carried a separate "Nothing moved" button beside the pad,
+   which put two choices on a screen whose target is one. The centre of
+   the circle already means nothing moved, so the button is gone.
+
+   AND THE AMBIGUITY THAT CREATES IS RECORDED RATHER THAN SWALLOWED. A
+   marker resting at the centre because nothing moved and a marker
+   resting at the centre because the person never understood the circle
+   are the same picture. So `touched` is recorded separately, and the
+   readout says "not shown" for one and "nothing moved" for the other.
+   Never lie about a failure, including a failure to capture.
+   ============================================================ */
+function padSVG(k,opt){
+ opt=opt||{};
+ var p=D[k]||{x:0,y:0};
+ var h='<svg class="pad" id="pad" viewBox="-100 -100 200 200" '
+  +'role="application" tabindex="0" '
+  +'aria-label="Show what the word did. Move the marker out from the centre '
+  +'in any direction, as far as you want."'
+  +(opt.both?' aria-readonly="true"':'')+'>'
+  +'<circle class="rim" cx="0" cy="0" r="96"/>'
+  +'<line class="cross" x1="-96" y1="0" x2="96" y2="0"/>'
+  +'<line class="cross" x1="0" y1="-96" x2="0" y2="96"/>';
+ if(opt.both){
+  var a=D.yes, b=D.no;
+  h+='<line class="gap" x1="'+(a.x*96).toFixed(1)+'" y1="'+(-a.y*96).toFixed(1)
+   +'" x2="'+(b.x*96).toFixed(1)+'" y2="'+(-b.y*96).toFixed(1)+'"/>'
+   +'<circle class="mk" cx="'+(a.x*96).toFixed(1)+'" cy="'+(-a.y*96).toFixed(1)+'" r="7"/>'
+   +'<text x="'+(a.x*96).toFixed(1)+'" y="'+(-a.y*96-12).toFixed(1)+'" text-anchor="middle">yes</text>'
+   +'<circle class="mk no" cx="'+(b.x*96).toFixed(1)+'" cy="'+(-b.y*96).toFixed(1)+'" r="7"/>'
+   +'<text x="'+(b.x*96).toFixed(1)+'" y="'+(-b.y*96-12).toFixed(1)+'" text-anchor="middle">no</text>';
+ }else{
+  if(p.trace.length>1){
+   h+='<polyline class="tail" points="'+p.trace.map(function(t){
+    return (t.x*96).toFixed(1)+','+(-t.y*96).toFixed(1);}).join(' ')+'"/>';}
+  h+='<circle class="mk'+(k==='no'?' no':'')+'" cx="'+(p.x*96).toFixed(1)
+   +'" cy="'+(-p.y*96).toFixed(1)+'" r="8"/>';
+ }
+ return h+'</svg>';
+}
+function wirePad(k){
+ var pad=document.getElementById('pad'); if(!pad)return;
+ padKey=k;
+ var down=false;
+ function set(x,y){
+  var r=Math.sqrt(x*x+y*y); if(r>1){x/=r;y/=r;}
+  var p=D[k]; p.x=x; p.y=y; p.touched=true;
+  if(p.trace.length<400)p.trace.push({x:x,y:y,t:Date.now()});
+  var mk=pad.querySelector('.mk');
+  if(mk){mk.setAttribute('cx',(x*96).toFixed(1));mk.setAttribute('cy',(-y*96).toFixed(1));}
+ }
+ function fromEvent(e){
+  var b=pad.getBoundingClientRect();
+  set(((e.clientX-b.left)/b.width*2-1), -((e.clientY-b.top)/b.height*2-1));
+ }
+ pad.addEventListener('pointerdown',function(e){down=true;
+  if(pad.setPointerCapture)pad.setPointerCapture(e.pointerId);
+  fromEvent(e); e.preventDefault();});
+ pad.addEventListener('pointermove',function(e){if(down)fromEvent(e);});
+ pad.addEventListener('pointerup',function(){down=false;});
+ pad.addEventListener('pointercancel',function(){down=false;});
+ /* keyboard, because a gesture control with no key route is a control
+    half the people cannot reach */
+ pad.addEventListener('keydown',function(e){
+  var p=D[k], s=.08, m={ArrowUp:[0,s],ArrowDown:[0,-s],ArrowLeft:[-s,0],ArrowRight:[s,0]};
+  if(!m[e.key])return; e.preventDefault();
+  set(p.x+m[e.key][0], p.y+m[e.key][1]);});
+}
+
+/* ============================================================
+   RENDER. One state per call, one choice per screen.
+   ============================================================ */
+function render(){
+ clearT();
+ var s=document.getElementById('surface'), h='';
+ var leave='<button type="button" class="leave" data-go="out">Leave</button>';
+
+ /* ---- 0. Hello. OB4 and OB5: "Welcome" goes, it reads "Hello,". "This
+        is you" stays and "and it is okay" goes. OB6 struck "No judgment,
+        nothing here grades you" and his reason is the copy rule: we have
+        not set up anything that would make a person think they were being
+        graded, so denying it plants the idea. Nothing replaces it. ---- */
+ if(step===0){
+  h='<h1><span>Hello,</span><span class="two">this is you.</span></h1>'
+   +figSVG()
+   +'<div class="acts"><button type="button" class="pri" data-go="next">Next</button></div>';
+ }
+
+ /* ---- 1. The settle, and the only prose in the flow.
+
+        Three lines, twenty two words, each with its own icon, read while
+        the ring closes over eight seconds. The pause has to happen
+        anyway, so the instruction costs no time at all. That is the
+        whole trick for OB13: the text budget is spent inside a wait. ---- */
+ else if(step===1){
+  h=leave
+   +loopSVG({frac:0,paced:true})
+   +'<div class="rows">'
+   +[['<path d="M4 13h16"/><path d="M8 9l-4 4 4 4"/><circle cx="19" cy="13" r="2.2"/>',
+      'A word arrives ten times. Think it as it lands.'],
+     ['<path d="M12 3v18"/><circle cx="12" cy="8" r="2"/><circle cx="12" cy="14" r="2"/><path d="M7 20h10"/>',
+      'Keep some attention on your body.'],
+     ['<circle cx="12" cy="12" r="9"/><circle cx="16" cy="9" r="2.4"/><path d="M12 12l4-3"/>',
+      'Move the marker to show what moved.']]
+    .map(function(r){return '<div class="row"><svg viewBox="0 0 24 24">'+r[0]
+      +'</svg><span>'+esc(r[1])+'</span></div>';}).join('')
+   +'</div>';
+  s.innerHTML=h; bind(); arcTo(1,SETTLE_MS);
+  say('The first word arrives when the ring closes.');
+  T(function(){step=2;render();},SETTLE_MS);
+  return;
+ }
+
+ /* ---- 2 and 4. The word, ten beats. His SIG1 to SIG3: turn the senses
+        inward, think yes ten times, think no ten times, feel the quality
+        difference. The person generates both states, which is the whole
+        difference from what ships: the built screen contrasts a dull word
+        the product chose against a loaded word the product chose. ---- */
+ else if(step===2||step===4){
+  var isYes=(step===2), k=isYes?'yes':'no';
+  h=leave
+   +loopSVG({frac:0,paced:true})
+   +'<div class="stagearea"><div class="word" id="w">'+k+'</div></div>'
+   +'<div class="padwrap">'+padSVG(k)
+   +'<p class="dim">Move the marker.</p></div>';
+  s.innerHTML=h; bind(); wirePad(k);
+  arcTo(1,REP*BEAT_MS);
+  say(isYes?'The first word.':'The second word.');
+  runBeats(function(){step=isYes?3:5;render();});
+  return;
+ }
+
+ /* ---- 3. The hold. Reused verbatim from proto/signal/signal.html. ---- */
+ else if(step===3){
+  h=leave+loopSVG({frac:0,paced:true})
+   +'<h2>Stay with what is left of it.</h2>';
+  s.innerHTML=h; bind(); arcTo(1,HOLD_MS);
+  T(function(){step=4;render();},HOLD_MS);
+  return;
+ }
+
+ /* ---- 5. The two marks.
+
+        No number, no slider, no text box, no list of words. SIG5 rules
+        out the list, the standing ruling rules out a count against a
+        total, and RESEARCH-signal.md rules out telling a person where
+        they should have felt it. What is left is the picture, which is
+        the only honest readout: two marks and the distance between them.
+
+        The heading is the one claim available and it is his own:
+        a thought produced a sensation, and the person noticed it. ---- */
+ else if(step===5){
+  var a=D.yes, b=D.no;
+  var shown=a.touched&&b.touched;
+  var flat=shown&&(Math.sqrt(a.x*a.x+a.y*a.y)<.06)&&(Math.sqrt(b.x*b.x+b.y*b.y)<.06);
+  var head, note='';
+  if(!shown){
+   head='The circle recorded nothing.';
+   note='<p class="dim">Nothing was shown for '
+    +(!a.touched&&!b.touched?'either word':(!a.touched?'the first word':'the second word'))+'.</p>';
+  }else if(flat){
+   head='Both marks are at the centre.';
+   note='<p class="dim">Nothing moved on this run.</p>';
+  }else{
+   head='A thought moved your body.';
+  }
+  h='<h2>'+esc(head)+'</h2>'
+   +'<div class="padwrap" style="margin-top:18px">'+padSVG('yes',{both:true})+'</div>'
+   +note
+   +'<div class="acts"><button type="button" class="pri" data-go="next">Next</button></div>';
+ }
+
+ /* ---- 6 to 9. The four stations. One tool a press, one line each, and
+        the press turns the ring a quarter.
+
+        OB15 is the hard constraint and it decides every one of these
+        four lines: "at no point are we talking about results or
+        purpose." So each line is a mechanism in the present tense with
+        no benefit attached. Nothing here says what a person will get,
+        how they will feel, or what it is for.
+
+        OB14 asks for four things and its third is "here is how they work
+        for you", which as written is a purpose sentence and cannot be
+        built beside OB15. The fourth item, the core loop, is the ring
+        itself, which has been on screen since the settle. ---- */
+ else if(step>=6&&step<=9){
+  var i=step-6, st=STATIONS[i];
+  h=loopSVG({frac:(i+1)/4, lit:i, stations:true})
+   +'<div class="tool"><span class="toolname">'+esc(st.w)+'</span>'
+   +'<h2>'+esc(st.tool)+'</h2>'
+   +'<p>'+esc(st.line)+'</p></div>'
+   +'<div class="acts"><button type="button" class="pri" data-go="next">Next</button></div>';
+  s.innerHTML=h; bind();
+  /* the arc is redrawn at its new quarter, and on the fourth press the
+     ring closes and the arc sweeps back to discover as the product
+     opens. Nothing here is an end. */
+  say(st.w+'. '+st.tool+'.');
+  return;
+ }
+
+ /* ---- 10. Not a screen. The ring closes, the arc returns to discover
+        and the product opens. There is no final card to count towards,
+        which is the other half of the answer to OB1. ---- */
+ else{
+  h=loopSVG({frac:1, lit:3, stations:true})
+   +'<p class="dim">Opening.</p>';
+  s.innerHTML=h;
+  T(function(){arcTo(0,900);},60);
+  T(function(){done();},1100);
+  return;
+ }
+
+ s.innerHTML=h; bind();
+}
+
+/* ---- the ten beats. A word fades in, holds, fades out. ---- */
+function runBeats(after){
+ var i=0;
+ (function beat(){
+  var w=document.getElementById('w'); if(!w)return;
+  w.classList.add('on');
+  T(function(){var e=document.getElementById('w'); if(e)e.classList.remove('on');},
+    Math.round(BEAT_MS*0.62));
+  i++;
+  if(i<REP)T(beat,BEAT_MS); else T(after,BEAT_MS);
+ })();
+}
+
+function bind(){
+ var s=document.getElementById('surface');
+ s.querySelectorAll('[data-go]').forEach(function(b){
+  b.addEventListener('click',function(){
+   var k=b.getAttribute('data-go');
+   if(k==='out'){D.leftAt=step; clearT(); done(); return;}
+   if(k==='next'){step++; render();}
+  });});
+}
+/* the forward control is also the space bar and the return key, because
+   a person reaching for one button should not have to find it twice */
+addEventListener('keydown',function(e){
+ if(e.key==='Escape'){D.leftAt=step; clearT(); done(); return;}
+ if(e.key!=='Enter'&&e.key!==' ')return;
+ if(document.activeElement&&document.activeElement.id==='pad')return;
+ var b=document.querySelector('[data-go="next"]');
+ if(b){e.preventDefault(); b.click();}
+});
+
+/* ---- the hand over. In the product this is where the surface releases
+       the viewport and the app renders on the Field. Here it reports what
+       the run holds, so the port can see exactly what would be stored if
+       Q5 comes back yes, and that nothing is stored today. ---- */
+function done(){
+ var s=document.getElementById('surface');
+ s.innerHTML='<h2>The product opens here.</h2>'
+  +'<p class="dim">Nothing was written. Whether the run is stored is open '
+  +'and is question 3 in DESIGN-onboard.md.</p>'
+  +'<div class="rows" style="margin-top:22px;font-size:14px"><div class="row">'
+  +'<span style="font-family:ui-monospace,monospace;font-size:13px;color:var(--dim)">'
+  +esc(JSON.stringify({
+     yes:{x:+D.yes.x.toFixed(3),y:+D.yes.y.toFixed(3),shown:D.yes.touched,
+          samples:D.yes.trace.length},
+     no:{x:+D.no.x.toFixed(3),y:+D.no.y.toFixed(3),shown:D.no.touched,
+         samples:D.no.trace.length},
+     leftAt:D.leftAt},null,1))
+  +'</span></div></div>'
+  +'<div class="acts"><button type="button" data-go="restart">Run it again</button></div>';
+ s.querySelector('[data-go="restart"]').addEventListener('click',function(){
+  D={yes:{x:0,y:0,touched:false,trace:[]},no:{x:0,y:0,touched:false,trace:[]},leftAt:null};
+  step=0; render();});
+}
+
+/* ---- the harness reads these. Nothing in the product does. ---- */
+window.OBP={D:D, go:function(n){step=n; render();}, step:function(){return step;},
+ STATIONS:STATIONS, PACE:{REP:REP,BEAT_MS:BEAT_MS,SETTLE_MS:SETTLE_MS,HOLD_MS:HOLD_MS}};
+
+render();
+</script>
+</body></html>
