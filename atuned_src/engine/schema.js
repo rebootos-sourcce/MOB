@@ -315,6 +315,111 @@ var RIT_PLAN_MAX=40;
 var RIT_TRACK={}, RIT_STEP={}, RIT_MIN_MAX=0;
 PRACTICE.forEach(function(pr){
  RIT_TRACK[pr.track]=1; RIT_STEP[pr.k]=1; RIT_MIN_MAX+=pr.min;});
+
+/* ============================================================
+   THE SHAPE AND THE TARGET OF A GENERATED RITUAL.
+
+   His design for the ring: "it tells you how many you're actually supposed to
+   do in the session. So if it's four things, you'll have four dashes. If you've
+   got ten, then you'll have ten dashes."
+
+   The ring is built and the generator was not feeding it. Measured by the seat
+   that built it: 50 of the 52 rows the engine's queue generates carried a
+   target of one, so every ring in the panel was a single dash, and the counts
+   that make the idea visible existed only in the nine rows the owner wrote
+   himself. A parameter that does not vary is a parameter nobody can read.
+
+   A target of one was not a reading, it was a literal typed at each of four
+   push sites. So the three shapes are told apart HERE, off the tables, and a
+   target is returned only for the shape that is a count.
+
+   WHICH FIELD, NAMED, because a derivation nobody can check is a magic number
+   with a better story:
+
+     A PRACTICE IS A WINDOW AND ITS PARAMETER IS `PRACTICE[].min`. The practice
+     library carries exactly two numbers per row, min and tier. tier is a
+     difficulty and min is a duration, and neither is a count of anything a
+     person does twice. So a practice has no count, and a thing with no count is
+     not a count shape: it is a span with an edge, held or crossed once, which
+     is the window. The minutes are what it costs and the window already takes
+     one dash on that page, so nothing here invents a number and the parameter
+     line gets a real field instead of a literal.
+
+     A RELEASE IS A COUNT AND ITS TARGET IS THE NUMBER OF LINES THERE ARE TO
+     SPEAK. Where the axis has one of the owner's printed production cards the
+     target is `cardDepth`, the paired lines that card actually carries on a
+     side: five for Anger, Sad and Anticipation, which is five statements in the
+     session and five dashes. Where it does not, the 3C generator is what
+     supplies the lines, and its escalation curve is five bands of ten in
+     `C3_BAND`, one band being the nervous system pacing the spec calls non
+     negotiable. So the session is one band, and the target is that band's own
+     size read off `lo` and `hi`. Ten.
+
+     THE TWO SIDES OF A CARD ARE READ AT THEIR FLOOR. cardDepth takes a pole and
+     the masculine and feminine sides carry five each on all three cards today,
+     so the two agree and nothing is being chosen. The floor is taken rather
+     than either side by name, so if a card is ever written with an uneven pair
+     the target is the number of lines the thinner side can actually give.
+
+     AND IF THE BANDS EVER STOP AGREEING, THIS REFUSES. A run opens at the band
+     the charge puts it in and the generator does not know which, which is only
+     safe while every band is the same size. C3_BAND_N is null the moment they
+     differ, and a null target draws as unknown rather than as ten.
+
+     A STANCE HAS NONE UNTIL THE DAY SUPPLIES ONE. A law with no practice
+     against it is practised when a moment asks for it, so before the day has
+     tested it there is no number, and one dash would be a claim.
+
+   WHAT IS STILL HIS. Whether a release session is one band of ten or the whole
+   channel of fifty, and whether a sitting is honestly a window and therefore
+   marked held or broken rather than counted. Both are named in the report and
+   neither is decided here.
+
+   NOTHING RECOGNISED IS REFUSED BY NAME. An argument naming no practice, no
+   axis and no law returns a null shape and says so, rather than defaulting to a
+   count of one, which is the defect this exists to remove.
+   ============================================================ */
+var RIT_SHAPES=['count','window','stance'];
+/* the size of one band of the escalation curve, off C3_BAND rather than typed,
+   and null if the five ever stop agreeing. */
+var C3_BAND_N=(function(){
+ var seen={};
+ C3_BAND.forEach(function(b){seen[b.hi-b.lo+1]=1;});
+ var k=Object.keys(seen);
+ return k.length===1?+k[0]:null;})();
+function ritTarget(o){
+ var q=o||{};
+ if(q.practice){
+  var pr=null;
+  PRACTICE.forEach(function(x){if(x.k===q.practice)pr=x;});
+  if(!pr)return {shape:null, target:null, src:null,
+   because:'no practice in the library is keyed '+q.practice};
+  return {shape:'window', target:null, minutes:pr.min, what:pr.nm,
+   unit:null, period:null, src:'PRACTICE[].min',
+   because:pr.nm+' is '+pr.min+' minutes and the library carries no count for '
+    +'it, so it is one span held or crossed and not a number of things'};}
+ if(q.axis&&CHARGES.indexOf(q.axis)>=0){
+  var m=cardDepth(q.axis,'m'), f=cardDepth(q.axis,'f');
+  var printed=Math.min(m,f);
+  if(printed>0)return {shape:'count', target:printed, unit:'lines',
+   period:'a run', src:'cardDepth('+q.axis+')',
+   because:'the printed card for '+q.axis+' carries '+printed
+    +' paired lines on a side, and the session is every line on it'};
+  return {shape:'count', target:C3_BAND_N, unit:'lines', period:'a run',
+   src:C3_BAND_N===null?null:'C3_BAND[].lo and .hi',
+   because:C3_BAND_N===null
+    ?'the escalation bands are no longer one size, so which band a run opens '
+     +'at decides the count and nothing here knows it'
+    :q.axis+' has no printed card, so the lines come off the generator, whose '
+     +'curve is five bands of '+C3_BAND_N+' and whose session is one band'};}
+ if(q.law&&SINAMES.indexOf(q.law)>=0)
+  return {shape:'stance', target:null, law:q.law, unit:null, period:null,
+   src:'SI',
+   because:q.law+' is a law and not a practice, so the day decides when it is '
+    +'tested and how often, and there is no count until it has'};
+ return {shape:null, target:null, src:null,
+  because:'nothing here names a practice, one of the nine axes or one of the '
+   +'twenty one laws, so there is no shape to read and no target to give'};}
 function vRitual(errs,i,x){
  var path='rituals['+i+']';
  if(!x||typeof x!=='object'||Array.isArray(x)){errs.push(path+' is not an object'); return null;}

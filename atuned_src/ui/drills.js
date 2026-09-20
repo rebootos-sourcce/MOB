@@ -88,8 +88,13 @@ function rdCase(h){
  return String(h).replace(RD_CASE,
   function(all,cls,body){
    var t=body.replace(/<[^>]*>/g,'').replace(/\s+/g,' ').trim();
+   /* AND A VALUE WRITTEN IN LOWER CASE IS A READING, NOT A NAME. This
+      product writes a name with its capital on it, so a string that starts
+      lower case is a reading and a reading is never titled: "not read yet"
+      came back as "Not Read Yet", which reads like a proper noun. Four words
+      was not enough on its own to tell the two apart. */
    var label=t&&!/[,;:]\s*\S*[A-Za-z]/.test(t)&&!/[.!?]\s+\S/.test(t)
-    &&t.split(/\s+/).length<=4;
+    &&t.split(/\s+/).length<=4&&/^[A-Z0-9]/.test(t);
    return '<div class="'+cls+(label?'':' plain')+'">'+body+'</div>';});}
 function rdShell(h){
  h=rdCase(h);
@@ -135,8 +140,12 @@ function runDrill(o){
      +'will not shut, rather than will not open.'
    : 'Built from <b>'+lv.length+'</b> held addresses across '+bs.join(', ')+'. It fires when '
      +'those carry at once, and the output bends on the way out.')
-  +(o.kind==='sup'?' A character layer is not something you have. It is something you cannot '
-   +'see as separate from you, which is why it costs more than it looks like it should.':'')
+  /* SUBJECT FIRST, ONE SENTENCE, NO GLOSS. This was two sentences, the first
+     defining the thing by what it is not and the second deferring its subject
+     by two words and then explaining itself with a which. Same length, one
+     gloss gone, and it starts on the noun. */
+  +(o.kind==='sup'?' A character layer costs more than it looks like it should, '
+   +'because you cannot see it as separate from you.':'')
   +(o.score?' Matched at <b>'+o.score+'%</b>'
     +(o.exact?', every charge inside its range.':'.'):'')+'</p>'
   +'<div class="pm-eye">The opposite</div><p class="ad-p">'
@@ -234,7 +243,7 @@ addEventListener('click',function(e){
 function runCoreDrill(){
  var r=compute();
  var h='<div class="pm-eye">The core</div>'
-  +'<div class="ad-nm">'+(r.unread?'Not read yet'
+  +'<div class="ad-nm">'+(r.unread?'not read yet'
     :'CQ '+Math.round(r.CQ)+', '+r.tier.toLowerCase())+'</div>'
   +'<div class="pm-eye">What coherence is</div><p class="ad-p">'
   +'Coherence is the alignment between the world around you, what arrives from '
@@ -387,7 +396,7 @@ function runAtomDrill(n,x){
 function runFlowDrill(){
  var r=compute(), seats=flSeats(), f=flSpeed();
  var stop=null; seats.slice().reverse().forEach(function(s){if(!stop&&s.held)stop=s;});
- var h='<div class="pm-eye">Flow</div><div class="ad-nm">'+(r.unread?'Not read yet'
+ var h='<div class="pm-eye">Flow</div><div class="ad-nm">'+(r.unread?'not read yet'
     :(f*100).toFixed(0)+'% reaches the crown')+'</div>'
   +'<div class="pm-eye">How it is built</div><p class="ad-p">'
   +'The seven seats pass signal in series, root upward. Each one passes a share '
@@ -999,7 +1008,7 @@ function runCompassDrill(){
     from it silently. It reads TIERDEF now, which is the only one. */
  var me=r.unread?null:TIER_BY[r.tier];
  var h='<div class="pm-eye">The compass</div><div class="ad-nm">'
-  +(r.unread?'Not read yet':'CQ '+Math.round(cq)+', '+r.tier.toLowerCase())+'</div>'
+  +(r.unread?'not read yet':'CQ '+Math.round(cq)+', '+r.tier.toLowerCase())+'</div>'
   +'<div class="pm-eye">How to read it</div><p class="ad-p">The line runs 0 at the base to 100 at the crown, and the word changes every ten points. '
   +'Above '+MEDIAN+' the field builds more than it costs. Below '+MEDIAN+' it costs more than it builds. '
   +MEDIAN_LO+' to '+MEDIAN_HI+' is the median range, where the reading crosses the line in both directions'

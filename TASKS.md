@@ -21,6 +21,83 @@ reopens. Every seat adds its own.
 
 ---
 
+## 0f2. RULED 20 SEPTEMBER, TWELFTH PASS. SATURATION, THE TWO DIALS, THE FEATHERS.
+
+### SA2. THE SATURATION, RULED AND DONE.
+
+- [x] **SA5. Every seat and tier colour is twelve percent more saturated.**
+      Seventeen colours moved: the seven seats, the ten tiers, and the four
+      root colours, plus the boot sheet's own copy of the palette, which
+      carries a gate that fails if the two part company. The funnel's tokens
+      are generated from the stylesheet, so they followed.
+
+### TD. THE TWO DIALS. BALANCE AND AWARENESS, ONE DESIGN.
+
+His words: "Why do I have two different designs for balance and awareness? I
+just want balance. Style, clean line, icons at the end. A percent of what you
+lean towards, masculine and feminine. A colour bar that's going towards it. I
+want the same thing for awareness. I want a big icon-ish with an 84 and a
+little pill under it. I want a thin line, and I want to see the percent of
+which side people lean towards. We want to see their oscillation range. That's
+what that is. The benign malignant is the oscillation of the compass."
+
+- [ ] **TD1. One design, used twice.** Two dials reading the same kind of
+      thing in two shapes is the collision this product keeps finding: one
+      concept, two renderings.
+- [ ] **TD2. The parts, in his order.** A thin clean line. Icons at the two
+      ends. A figure with a pill under it. A colour bar leaning towards the
+      side a person leans to, with the percent said.
+- [x] **TD3. And he named what the dial actually measures.** It is an
+      oscillation range, not a point: benign against malignant is the swing of
+      the compass rather than a position on it. That is a different object
+      from a percentage and the drawing has to show a range, not a dot.
+- [ ] **TD4. Which means the figure and the range may disagree,** and the
+      honest drawing shows both: where a person sits and how far they swing.
+      A single number for a quantity that oscillates is the same defect as a
+      hard band edge on a reading that moves.
+
+### FE. THE FEATHERS. WHAT LENGTH AND WIDTH ACTUALLY MEAN.
+
+- [ ] **FE1. Hover gives a tooltip, click gives the full reading.** The one
+      tooltip already exists and reaches 195 carriers; the feathers are drawn
+      on a canvas, so they have no element to carry one and need hit testing
+      the way the wheel's other atoms already do.
+- [x] **FE2. His guess about width is wrong, and it is worth knowing why.**
+      Length is the value: every feather runs from the centre out by its own
+      number over ten, so the rim is ten and a feather reaching a third of the
+      way is a three. Width is not a quantity at all. It is a constant per
+      layer, three fixed widths for the three rings: the twenty one laws are
+      the thinnest, the seven seats are the middle, the triad is the fattest.
+      So a fat feather is not a strong one, it is a feather from the inner
+      ring.
+- [ ] **FE3. That is a chart defect and his instinct found it.** Width reads
+      as magnitude to every eye that has ever seen a chart, and here it is
+      carrying a category. The three layers could be told apart by something
+      that is not a magnitude channel, which would free width to carry a real
+      quantity, and how often a practice is done is a candidate he named
+      himself.
+
+### PZ. PRIORITISE THE LIST.
+
+- [ ] **PZ1. Through the project manager, with the technical director and the
+      art director.** His instruction. The list is past four hundred lines and
+      a list nobody can act on is the same defect as a document with a stale
+      number in it.
+- [x] **PZ2. Onboarding is off.** Ruled. That seat is standing down and
+      writing what it measured to the design file so the work is not lost.
+
+### LK. THE COPY WATCH.
+
+- [ ] **LK1. The marketing and branding seats stay on watch for his own
+      words.** His words: "I'm talking a lot here and I don't know it's gold.
+      To me it's all gold. To you, I don't know." Two of the strongest lines
+      in this product arrived that way in one day: the becoming close, and the
+      whole mechanism paragraph that replaced a regulated claim. So the
+      instruction is right and it needs somewhere to live rather than
+      somebody's memory.
+
+---
+
 ## 0g2. RULED 20 SEPTEMBER, ELEVENTH PASS. THE MECHANISM, IN HIS WORDS.
 
 He wrote the narrative flow himself and it solves the problem PO2 raised. The

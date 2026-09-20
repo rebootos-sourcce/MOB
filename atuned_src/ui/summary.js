@@ -282,9 +282,15 @@ function sumStory(r){
     percentage could mean the share of the field, the share of the stack or a
     confidence. It is the split between the two leans, so the sentence says
     that: benign against malignant, and the two add to a hundred. */
- p.push('Momentum: of the two leans the field is <b>'
+ /* AND THE LABEL COMES OFF THE FRONT OF IT. "Momentum:" is a Label and the
+    rest of the string is a Reading, so one string was doing two jobs, and
+    neither of the other two paragraphs on this surface carries a label. The
+    sentence also opened on its denominator, "of the two leans the field is",
+    which defers its subject by five words. Both ends are still named and they
+    still add to a hundred, which is what that clause was there for. */
+ p.push('The field leans <b>'
   +Math.round(Math.max(lean.ben,lean.mal))+' per cent '
-  +(lean.ben>=lean.mal?'benign':'malignant')+'</b> and '
+  +(lean.ben>=lean.mal?'benign':'malignant')+'</b> against '
   +(100-Math.round(Math.max(lean.ben,lean.mal)))+' per cent '
   +(lean.ben>=lean.mal?'malignant':'benign')+', '
   +(r.benign?'which means it is expanding':'which means it is contracting')+'.'

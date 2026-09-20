@@ -188,6 +188,10 @@ if(typeof module!=='undefined'&&module.exports){
      test, and RIT_PLAN_MAX so the surface and the boundary are one number */
                   RIT_KEYS:RIT_KEYS, ENT_KEYS:ENT_KEYS,
                   RIT_PLAN_MAX:RIT_PLAN_MAX, RIT_MIN_MAX:RIT_MIN_MAX,
+  /* the ring's parameter. ritTarget tells the three shapes apart off the
+     tables and returns a target only for the one that is a count, so a
+     generator has somewhere to read it from instead of typing a one. */
+                  ritTarget:ritTarget, RIT_SHAPES:RIT_SHAPES, C3_BAND_N:C3_BAND_N,
   /* palettes */  PAL_VIVID:PAL_VIVID,
   /* series */    seriesRead:seriesRead, SPANS:SPANS, spanOf:spanOf,
   /* outbox */    obQueue:obQueue, obValidate:obValidate, obDrain:obDrain,

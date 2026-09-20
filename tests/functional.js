@@ -1349,7 +1349,20 @@ console.log('\n=== the opening, which is the one thing it asks a stranger to do 
 {const words=await page.evaluate(async()=>{
   obOpen(true); const t=document.querySelector('.ob-card').innerText; obClose(); return t;});
  ok(/for you/i.test(words),'the first card speaks to the person');
- ok(/alone/i.test(words),'and says they are not alone in it');
+ /* RE-RULED, and the row it replaces is the failure mode this repository has
+    already turned a fixed defect into twice. It asserted the literal word
+    "alone", which came from a clause that has since been cut: "you are not
+    carrying it alone" answers a fear nobody has raised on that screen and
+    claims companionship this product does not provide, being neither a coach,
+    a friend nor a guide.
+
+    What the owner ruled is the warmth, and he gave the words for it: "hey,
+    this is you, and it is okay. No judgment." So the row asserts those two,
+    which is the thing worth protecting, rather than a word that was never in
+    the ruling. A gate that asserts a sentence fails the day the sentence is
+    improved. */
+ ok(/it is okay/i.test(words)&&/no judg/i.test(words),
+   'and it is warm in the two phrases he ruled, it is okay and no judgment');
  ok(!/[0-9]+%/.test(words),'and prints no percentage at a stranger');}
 
 console.log('\n=== the navigation is in the document and cannot drift ===');

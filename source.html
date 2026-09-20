@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="ed4170e 2026-09-20 20:42"><head><meta charset="utf-8">
+<html lang="en" data-build="95f0736 2026-09-20 20:51"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -78,8 +78,8 @@ font-display:swap;src:url(data:font/woff2;base64,d09GMgABAAAAALyAABUAAAAB4CAAALw
     materially past 55. At 3.70 that half of the sample loses the whole layer
     that tells them what they are looking at. */
  --ink:#EFEDE8; --mid:#B4B0A8; --dim:#94908A;
- --root:#CF5953; --sacral:#D19255; --solar:#D4BC70;
- --heart:#65CFA5; --throat:#65B8D4; --eye:#8296DB; --crown:#A883D6;
+ --root:#D6524C; --sacral:#D8924E; --solar:#DABF6A;
+ --heart:#5FD5A6; --throat:#5EBBDB; --eye:#7D93E0; --crown:#A77EDB;
  --alarm:#FF2E1F; --alarm-soft:rgba(255,46,31,.16);
  /* THE ACCENT IS BLUE. Ruled. It was gold since the rebuild and the owner
     never chose it: he chose the blue, which is the original app's own
@@ -1157,7 +1157,7 @@ body.punch .tp{font-weight:600}
 .s-chip-v{font-family:var(--num);font-size:11px;color:var(--dim)}
 .s-agree{display:flex;flex-direction:column;gap:5px;margin-top:16px}
 .s-ag,.s-dg{font-size:13.5px;line-height:1.55;padding:8px 0 8px 13px;color:var(--mid);
- border-left:2px solid var(--good,#65CFA5)}
+ border-left:2px solid var(--good,#5FD5A6)}
 .s-dg{border-left-color:var(--alarm)}
 
 /* NUMEROLOGY. six numbers, then every name on its own. The number is the
@@ -3311,13 +3311,13 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
    the engine, and a boot in colours that nearly match the product is worse
    than one that does not try. These are canon.js values, copied, and
    tests/design.js gate 11 fails if the two ever part company. */
-.b-s1{fill:#CF5953;animation-delay:1.18s}   /* Root */
-.b-s2{fill:#D19255;animation-delay:1.30s}   /* Sacral */
-.b-s3{fill:#D4BC70;animation-delay:1.42s}   /* Solar */
-.b-s4{fill:#65CFA5;animation-delay:1.54s}   /* Heart */
-.b-s5{fill:#65B8D4;animation-delay:1.66s}   /* Throat */
-.b-s6{fill:#8296DB;animation-delay:1.78s}   /* 3rd Eye */
-.b-s7{fill:#A883D6;animation-delay:1.90s}   /* Crown */
+.b-s1{fill:#D6524C;animation-delay:1.18s}   /* Root */
+.b-s2{fill:#D8924E;animation-delay:1.30s}   /* Sacral */
+.b-s3{fill:#DABF6A;animation-delay:1.42s}   /* Solar */
+.b-s4{fill:#5FD5A6;animation-delay:1.54s}   /* Heart */
+.b-s5{fill:#5EBBDB;animation-delay:1.66s}   /* Throat */
+.b-s6{fill:#7D93E0;animation-delay:1.78s}   /* 3rd Eye */
+.b-s7{fill:#A77EDB;animation-delay:1.90s}   /* Crown */
 /* ARCS and OVERLAPPING ACTION. The ring is an arc and it begins at 0.95s,
    while the last two seats are still arriving. Nothing waits for the thing
    before it to come to a stop. */
@@ -4844,8 +4844,8 @@ const BANDS=['Root','Sacral','Solar','Heart','Throat','3rd Eye','Crown'];
    takes ten points of saturation with hue and lightness held, which closes the
    spread from 17 points to 7. Contrast on the dark ground was checked after,
    and the lowest of the seven is Root at 4.8 to 1. */
-const PAL={'Root':'#CF5953','Sacral':'#D19255','Solar':'#D4BC70','Heart':'#65CFA5',
- 'Throat':'#65B8D4','3rd Eye':'#8296DB','Crown':'#A883D6'};
+const PAL={'Root':'#D6524C','Sacral':'#D8924E','Solar':'#DABF6A','Heart':'#5FD5A6',
+ 'Throat':'#5EBBDB','3rd Eye':'#7D93E0','Crown':'#A77EDB'};
 /* THE THIRD PALETTE. Lumen puts paper under the rails and keeps the centre
    stage at 101010, and its whole brief is vibrancy, so neither of the other
    two fits: the dark palette is invisible on paper and the Snow palette is
@@ -4915,7 +4915,7 @@ const SURPKEY=/SHOCK|BETRAYAL|OVERSENSITIV|STARTLE|PANIC/i;
 const ANTKEY=/EXPECTATION|ANXIETY|WORRY|HYPERVIGIL|DREAD|ANTICIPAT|OBSESS|COMPULS/i;
 
 const ROOTD=['Architect','Engine','Weaver','Witness'];
-const ROOTCOL={Architect:'#8296DB',Engine:'#D19255',Weaver:'#65CFA5',Witness:'#A883D6'};
+const ROOTCOL={Architect:'#7D93E0',Engine:'#D8924E',Weaver:'#5FD5A6',Witness:'#A77EDB'};
 /* nineteen named blueprint domains under the four roots. the original header
    comment claimed eighteen with four unnamed; the data has always been
    nineteen named, and DARC divides by nineteen. */
@@ -5151,16 +5151,16 @@ const MASKS=[
    is actually wrong rather than for a person who is low.
    ============================================================ */
 const TIERCOL={
- 'Mastery':     '#E4D9A8',   /* clear light. nothing held, nothing shouting */
- 'Embodied':    '#8FD0A8',
- 'Compounding': '#65CFA5',   /* the heart green, because this is where it builds */
- 'Gaining':     '#74C1C4',
- 'Even':        '#65B8D4',   /* the throat blue. receptive, level */
- 'Oscillating': '#8296DB',   /* swinging, and the third eye blue is the seat of it */
- 'Incoherent':  '#C9A96A',   /* warm, a caution and not an alarm */
- 'Corrupt':     '#C98A5E',
- 'Severe':      '#B2857C',   /* chroma coming out. numb is less present, not louder */
- 'Collapsed':   '#A28A88'};  /* the colour nearly gone. the floor is quiet */
+ 'Mastery':     '#E8DBA4',   /* clear light. nothing held, nothing shouting */
+ 'Embodied':    '#8BD4A7',
+ 'Compounding': '#5FD5A6',   /* the heart green, because this is where it builds */
+ 'Gaining':     '#6FC5C9',
+ 'Even':        '#5EBBDB',   /* the throat blue. receptive, level */
+ 'Oscillating': '#7D93E0',   /* swinging, and the third eye blue is the seat of it */
+ 'Incoherent':  '#CFAB64',   /* warm, a caution and not an alarm */
+ 'Corrupt':     '#CF8958',
+ 'Severe':      '#B58379',   /* chroma coming out. numb is less present, not louder */
+ 'Collapsed':   '#A48986'};  /* the colour nearly gone. the floor is quiet */
 const TIERDEF=[
  {at:91, nm:'Mastery',
   state:'Sovereign',
@@ -9155,6 +9155,111 @@ var RIT_PLAN_MAX=40;
 var RIT_TRACK={}, RIT_STEP={}, RIT_MIN_MAX=0;
 PRACTICE.forEach(function(pr){
  RIT_TRACK[pr.track]=1; RIT_STEP[pr.k]=1; RIT_MIN_MAX+=pr.min;});
+
+/* ============================================================
+   THE SHAPE AND THE TARGET OF A GENERATED RITUAL.
+
+   His design for the ring: "it tells you how many you're actually supposed to
+   do in the session. So if it's four things, you'll have four dashes. If you've
+   got ten, then you'll have ten dashes."
+
+   The ring is built and the generator was not feeding it. Measured by the seat
+   that built it: 50 of the 52 rows the engine's queue generates carried a
+   target of one, so every ring in the panel was a single dash, and the counts
+   that make the idea visible existed only in the nine rows the owner wrote
+   himself. A parameter that does not vary is a parameter nobody can read.
+
+   A target of one was not a reading, it was a literal typed at each of four
+   push sites. So the three shapes are told apart HERE, off the tables, and a
+   target is returned only for the shape that is a count.
+
+   WHICH FIELD, NAMED, because a derivation nobody can check is a magic number
+   with a better story:
+
+     A PRACTICE IS A WINDOW AND ITS PARAMETER IS `PRACTICE[].min`. The practice
+     library carries exactly two numbers per row, min and tier. tier is a
+     difficulty and min is a duration, and neither is a count of anything a
+     person does twice. So a practice has no count, and a thing with no count is
+     not a count shape: it is a span with an edge, held or crossed once, which
+     is the window. The minutes are what it costs and the window already takes
+     one dash on that page, so nothing here invents a number and the parameter
+     line gets a real field instead of a literal.
+
+     A RELEASE IS A COUNT AND ITS TARGET IS THE NUMBER OF LINES THERE ARE TO
+     SPEAK. Where the axis has one of the owner's printed production cards the
+     target is `cardDepth`, the paired lines that card actually carries on a
+     side: five for Anger, Sad and Anticipation, which is five statements in the
+     session and five dashes. Where it does not, the 3C generator is what
+     supplies the lines, and its escalation curve is five bands of ten in
+     `C3_BAND`, one band being the nervous system pacing the spec calls non
+     negotiable. So the session is one band, and the target is that band's own
+     size read off `lo` and `hi`. Ten.
+
+     THE TWO SIDES OF A CARD ARE READ AT THEIR FLOOR. cardDepth takes a pole and
+     the masculine and feminine sides carry five each on all three cards today,
+     so the two agree and nothing is being chosen. The floor is taken rather
+     than either side by name, so if a card is ever written with an uneven pair
+     the target is the number of lines the thinner side can actually give.
+
+     AND IF THE BANDS EVER STOP AGREEING, THIS REFUSES. A run opens at the band
+     the charge puts it in and the generator does not know which, which is only
+     safe while every band is the same size. C3_BAND_N is null the moment they
+     differ, and a null target draws as unknown rather than as ten.
+
+     A STANCE HAS NONE UNTIL THE DAY SUPPLIES ONE. A law with no practice
+     against it is practised when a moment asks for it, so before the day has
+     tested it there is no number, and one dash would be a claim.
+
+   WHAT IS STILL HIS. Whether a release session is one band of ten or the whole
+   channel of fifty, and whether a sitting is honestly a window and therefore
+   marked held or broken rather than counted. Both are named in the report and
+   neither is decided here.
+
+   NOTHING RECOGNISED IS REFUSED BY NAME. An argument naming no practice, no
+   axis and no law returns a null shape and says so, rather than defaulting to a
+   count of one, which is the defect this exists to remove.
+   ============================================================ */
+var RIT_SHAPES=['count','window','stance'];
+/* the size of one band of the escalation curve, off C3_BAND rather than typed,
+   and null if the five ever stop agreeing. */
+var C3_BAND_N=(function(){
+ var seen={};
+ C3_BAND.forEach(function(b){seen[b.hi-b.lo+1]=1;});
+ var k=Object.keys(seen);
+ return k.length===1?+k[0]:null;})();
+function ritTarget(o){
+ var q=o||{};
+ if(q.practice){
+  var pr=null;
+  PRACTICE.forEach(function(x){if(x.k===q.practice)pr=x;});
+  if(!pr)return {shape:null, target:null, src:null,
+   because:'no practice in the library is keyed '+q.practice};
+  return {shape:'window', target:null, minutes:pr.min, what:pr.nm,
+   unit:null, period:null, src:'PRACTICE[].min',
+   because:pr.nm+' is '+pr.min+' minutes and the library carries no count for '
+    +'it, so it is one span held or crossed and not a number of things'};}
+ if(q.axis&&CHARGES.indexOf(q.axis)>=0){
+  var m=cardDepth(q.axis,'m'), f=cardDepth(q.axis,'f');
+  var printed=Math.min(m,f);
+  if(printed>0)return {shape:'count', target:printed, unit:'lines',
+   period:'a run', src:'cardDepth('+q.axis+')',
+   because:'the printed card for '+q.axis+' carries '+printed
+    +' paired lines on a side, and the session is every line on it'};
+  return {shape:'count', target:C3_BAND_N, unit:'lines', period:'a run',
+   src:C3_BAND_N===null?null:'C3_BAND[].lo and .hi',
+   because:C3_BAND_N===null
+    ?'the escalation bands are no longer one size, so which band a run opens '
+     +'at decides the count and nothing here knows it'
+    :q.axis+' has no printed card, so the lines come off the generator, whose '
+     +'curve is five bands of '+C3_BAND_N+' and whose session is one band'};}
+ if(q.law&&SINAMES.indexOf(q.law)>=0)
+  return {shape:'stance', target:null, law:q.law, unit:null, period:null,
+   src:'SI',
+   because:q.law+' is a law and not a practice, so the day decides when it is '
+    +'tested and how often, and there is no count until it has'};
+ return {shape:null, target:null, src:null,
+  because:'nothing here names a practice, one of the nine axes or one of the '
+   +'twenty one laws, so there is no shape to read and no target to give'};}
 function vRitual(errs,i,x){
  var path='rituals['+i+']';
  if(!x||typeof x!=='object'||Array.isArray(x)){errs.push(path+' is not an object'); return null;}
@@ -10170,6 +10275,48 @@ function applyStory(text){
    lower solar plexus, bilateral at the lung edges; CHILD puts it at the upper
    chest and back with the Heart seat. A somatic address is the thing this
    product points at on a body, so that is his call and not a rounding. */
+/* AND THE WORD `address` MEANT TWO DIFFERENT THINGS, WHICH IS THE DEFECT THIS
+   BLOCK NOW CARRIES THE FIX FOR.
+
+   In this product an address is a row of the 112 address table: it has an
+   index, a seat, a fetter and a name out of the `n` column, Lumbar Plexus and
+   Cardiac Plexus and Pudendal Nerve. The spec's column above is a somatic
+   REGION, in the spec's own shorthand, and the two vocabularies overlap in
+   wording without being the same thing.
+
+   So this layer emitted `address:'Inferior Cardiac'` and a reading named a
+   place the product does not have. Measured before it was touched, against the
+   112 names rather than argued: all NINE of the spec's regions fail the table,
+   not just the one a seat noticed. The table has Cardiac Plexus, Cardiac Nerve
+   Plexus and Great Cardiac Nerve and nothing called Inferior Cardiac; it has
+   Lumbar Plexus and nothing called Lumbar; and Dermis, Shoulder / Throat,
+   Below the heart and Lower solar plexus, bilateral at lung edges are prose
+   locations that were never going to be rows.
+
+   It is not an address missing from the table and the table is not moving for
+   it. A somatic address is the thing this product points at on a body and the
+   112 are the owner's, so composing a tenth from a spec shorthand is exactly
+   the invention the sniffer is not allowed to make. Nor can it be derived from
+   the axis: an axis spans up to six seats in the node table, so axis to seat is
+   not a function and axis to address is not one either.
+
+   WHAT IT IS DERIVED FROM INSTEAD. The reading already placed addresses on the
+   body: parseStory returns imprints, each carrying a node id out of the 112 and
+   the fetter that put it there. So the address an axis is offered at is the
+   heaviest address that reading itself placed on that axis, resolved through
+   the node table's own `n` column. It is a real row, it is the person's own
+   text and not a table lookup on the axis name, and it is what release
+   consumes, because release runs at an address.
+
+   Measured after: over the 231 word lexicon as single word stories plus 33 two
+   word pairs, 260 of 268 offers resolve to a real address and 8 do not, every
+   one of them Apathy, which is the exhaustion case where the stated fetter is
+   recovered from the hits after the imprint layer dropped it and no imprint
+   carries it. Those emit a null address and say so rather than naming a place.
+
+   The spec's words are not discarded. They move to `region`, which is what
+   they are, so the spec's contract is still legible in the output and nothing
+   claims to be one of the 112 that is not. */
 var SPEC_POLE={
  Fear:        {addr:'Lumbar',                                      pole:'Safety / Ground'},
  Anger:       {addr:'Celiac',                                      pole:'Calm / Integrated Power'},
@@ -10180,6 +10327,20 @@ var SPEC_POLE={
  Sad:         {addr:'Inferior Cardiac',                            pole:'Happy / Restoration'},
  Surprise:    {addr:'Lower solar plexus, bilateral at lung edges', pole:'Readiness'},
  Anticipation:{addr:'Below the heart',                             pole:'Presence'}};
+
+/* the 112 address table's own names, by node id. Built off NODES rather than
+   typed, so a row renamed there renames here and the four field anchors, which
+   carry no `n`, are absent rather than present as undefined. */
+var NODE_ADDR={}; NODES.forEach(function(n){ if(n.n) NODE_ADDR[n.i]=n.n; });
+/* THE ADDRESS AN AXIS IS OFFERED AT. The heaviest address the same reading
+   already placed on that axis, resolved to the name the node table uses.
+   null rather than a guess when the reading placed none. */
+function axisAddr(imprints,axis){
+ var best=null;
+ (imprints||[]).forEach(function(im){
+  if(!im||im.fetter!==axis||im.node==null||!NODE_ADDR[im.node])return;
+  if(!best||im.amt>best.amt)best=im;});
+ return best?NODE_ADDR[best.node]:null;}
 
 /* RESENTMENT, AS THE COMPOSITE THE SPEC RULES IT IS.
 
@@ -10372,7 +10533,10 @@ function sniffAxes(p){
      than being split nine ways by an assumption nobody made. */
   var k=Math.round(Math.min(10,coh/3)*10)/10;
   out.push({axis:c, shadow:s, coherent:k,
-   address:SPEC_POLE[c]?SPEC_POLE[c].addr:null,
+   /* a row of the 112, off this reading's own imprints, or null. The spec's
+      somatic region keeps its words beside it under its own name. */
+   address:axisAddr(p.imprints,c),
+   region:SPEC_POLE[c]?SPEC_POLE[c].addr:null,
    because: s>0?(cited[c]||[]).slice(0,3)
     :['nothing in the text reached this axis'],
    coherentBecause: k>0
@@ -10617,6 +10781,11 @@ function sniffDepth(text){
    address carrying most is the one release should be offered at first, and it
    carries the disagreement with CHILD by name rather than hiding it. */
 var OFFER_MAX=3;
+/* THE OFFER'S ADDRESS IS THE AXIS ROW'S, not a second lookup on the axis name.
+   sniffAxes has already resolved it against the 112 through this reading's own
+   imprints, and re-deriving it here would be a second copy of one rule and a
+   place for the two to disagree. A row that carries no address at all reads as
+   null, which is the honest answer and not the spec region. */
 function sniffOffer(axes){
  return axes.filter(function(a){return a.shadow>0;})
   .sort(function(a,b){return b.shadow-a.shadow;})
@@ -10624,11 +10793,14 @@ function sniffOffer(axes){
   .map(function(a){
    var sp=SPEC_POLE[a.axis], ch=CHILD.find(function(c){return c.nm===a.axis;});
    var differs=ch&&sp&&sp.pole.toLowerCase().indexOf(String(ch.opp).toLowerCase())<0;
-   return {address:sp?sp.addr:null, axis:a.axis,
+   var at=(a.address===undefined)?null:a.address;
+   return {address:at, region:sp?sp.addr:null, axis:a.axis,
     replacement:sp?sp.pole:null,
     shadow:a.shadow, coherent:a.coherent,
-    because:['the '+a.axis+' axis carries '+a.shadow+' of 10 of shadow load at '+
-      (sp?sp.addr:'an unnamed address'),
+    because:['the '+a.axis+' axis carries '+a.shadow+' of 10 of shadow load'+
+      (at?' and this reading places it heaviest at '+at
+         :', and this reading placed no address on it, so there is nowhere to '+
+          'name'),
      'every shadow in the system has a named coherent opposite at the same '+
       'address, and detecting the shadow is what names the replacement to offer']
      .concat(a.because.slice(0,2)),
@@ -11808,6 +11980,20 @@ if(typeof module!=='undefined'&&module.exports){
   /* indexes */   W:W, BY:BY, ALL_SAB:ALL_SAB, S:S,
   /* soul */      buildSoul:buildSoul, affinity:affinity, bandIg:bandIg,
   /* engine */    compute:compute, suscAll:suscAll, balance:balance, OUTWARD:OUTWARD, INWARD:INWARD,
+  /* THE CEILING. Absent from this contract for as long as it has existed, and
+     two seats have now needed it and built their own copy instead: the
+     integrity probe re-evals the whole engine source to reach it, and the
+     avatar rise sim recomputes the reach by hand beside a comment saying why.
+     A number no caller can reach is a number with no owner, which is the same
+     defect the lean tables and IQ_STEM were fixed for.
+
+     It is the one the owner has ruled most important. His words are that a
+     person is already the most powerful version of themselves and the limiters
+     are what hold them down, so cqCeiling is the person and the reading is the
+     drag against it. Nothing on the ceiling's own path was missing beside
+     these two: bandIg, verpFactor, mirrorAt, clamp, W, S, BANDS and SINAMES
+     are all already here, which is why this is two lines and not a group. */
+                  cqCeiling:cqCeiling, cqHeadroom:cqHeadroom,
   /* seed */      TYPE16:TYPE16, SEED16:SEED16, seedAxes:seedAxes, seedApply:seedApply,
                   seedClear:seedClear, seedShare:seedShare, seedValid:seedValid, accuracy:accuracy, sab33Detect:sab33Detect,
                   sabLevels:sabLevels, exprFill:exprFill, exprRead:exprRead,
@@ -11915,6 +12101,10 @@ if(typeof module!=='undefined'&&module.exports){
      test, and RIT_PLAN_MAX so the surface and the boundary are one number */
                   RIT_KEYS:RIT_KEYS, ENT_KEYS:ENT_KEYS,
                   RIT_PLAN_MAX:RIT_PLAN_MAX, RIT_MIN_MAX:RIT_MIN_MAX,
+  /* the ring's parameter. ritTarget tells the three shapes apart off the
+     tables and returns a target only for the one that is a count, so a
+     generator has somewhere to read it from instead of typing a one. */
+                  ritTarget:ritTarget, RIT_SHAPES:RIT_SHAPES, C3_BAND_N:C3_BAND_N,
   /* palettes */  PAL_VIVID:PAL_VIVID,
   /* series */    seriesRead:seriesRead, SPANS:SPANS, spanOf:spanOf,
   /* outbox */    obQueue:obQueue, obValidate:obValidate, obDrain:obDrain,
@@ -15390,9 +15580,15 @@ function sumStory(r){
     percentage could mean the share of the field, the share of the stack or a
     confidence. It is the split between the two leans, so the sentence says
     that: benign against malignant, and the two add to a hundred. */
- p.push('Momentum: of the two leans the field is <b>'
+ /* AND THE LABEL COMES OFF THE FRONT OF IT. "Momentum:" is a Label and the
+    rest of the string is a Reading, so one string was doing two jobs, and
+    neither of the other two paragraphs on this surface carries a label. The
+    sentence also opened on its denominator, "of the two leans the field is",
+    which defers its subject by five words. Both ends are still named and they
+    still add to a hundred, which is what that clause was there for. */
+ p.push('The field leans <b>'
   +Math.round(Math.max(lean.ben,lean.mal))+' per cent '
-  +(lean.ben>=lean.mal?'benign':'malignant')+'</b> and '
+  +(lean.ben>=lean.mal?'benign':'malignant')+'</b> against '
   +(100-Math.round(Math.max(lean.ben,lean.mal)))+' per cent '
   +(lean.ben>=lean.mal?'malignant':'benign')+', '
   +(r.benign?'which means it is expanding':'which means it is contracting')+'.'
@@ -16874,11 +17070,14 @@ function relRender(){
    +(Math.abs(_mv)<0.05?'did not move.'
      :(_mv>0?'up ':'down ')+Math.abs(_mv).toFixed(1)+', now '+_now.CQ.toFixed(1)+'.')
    +' '+(_left<1.5
-     ?'Release has about '+_left.toFixed(1)+' left to give you. What is holding the '
-      +'reading down now is integrity, which is the twenty one laws, and those move '
-      +'when you answer them or when what you do changes. Not from here.'
-     :'Release has about '+_left.toFixed(1)+' more in it before integrity is the '
-      +'only thing left holding the reading down.')
+     /* THE NUMBER SAYS WHAT IT IS, AND THE SENTENCE STOPS. "about 1.2 left to
+        give you" is one point two of what, and the sentence after it ran to
+        thirty words with its subject deferred and a gloss in the middle. */
+     ?'Release has about '+_left.toFixed(1)+' points left to give you. Integrity '
+      +'holds the reading down from here, and integrity is the twenty one laws. '
+      +'They move when you answer them, and when what you do changes.'
+     :'Release has about '+_left.toFixed(1)+' points more in it before integrity '
+      +'is the only thing holding the reading down.')
    +'</div>'
    +'<div class="rel-note">Release empties the address. The coherent opposite is '
    +'installing on the same pass. The rebound is day four and a half. Completion is day '
@@ -18188,8 +18387,13 @@ function rdCase(h){
  return String(h).replace(RD_CASE,
   function(all,cls,body){
    var t=body.replace(/<[^>]*>/g,'').replace(/\s+/g,' ').trim();
+   /* AND A VALUE WRITTEN IN LOWER CASE IS A READING, NOT A NAME. This
+      product writes a name with its capital on it, so a string that starts
+      lower case is a reading and a reading is never titled: "not read yet"
+      came back as "Not Read Yet", which reads like a proper noun. Four words
+      was not enough on its own to tell the two apart. */
    var label=t&&!/[,;:]\s*\S*[A-Za-z]/.test(t)&&!/[.!?]\s+\S/.test(t)
-    &&t.split(/\s+/).length<=4;
+    &&t.split(/\s+/).length<=4&&/^[A-Z0-9]/.test(t);
    return '<div class="'+cls+(label?'':' plain')+'">'+body+'</div>';});}
 function rdShell(h){
  h=rdCase(h);
@@ -18235,8 +18439,12 @@ function runDrill(o){
      +'will not shut, rather than will not open.'
    : 'Built from <b>'+lv.length+'</b> held addresses across '+bs.join(', ')+'. It fires when '
      +'those carry at once, and the output bends on the way out.')
-  +(o.kind==='sup'?' A character layer is not something you have. It is something you cannot '
-   +'see as separate from you, which is why it costs more than it looks like it should.':'')
+  /* SUBJECT FIRST, ONE SENTENCE, NO GLOSS. This was two sentences, the first
+     defining the thing by what it is not and the second deferring its subject
+     by two words and then explaining itself with a which. Same length, one
+     gloss gone, and it starts on the noun. */
+  +(o.kind==='sup'?' A character layer costs more than it looks like it should, '
+   +'because you cannot see it as separate from you.':'')
   +(o.score?' Matched at <b>'+o.score+'%</b>'
     +(o.exact?', every charge inside its range.':'.'):'')+'</p>'
   +'<div class="pm-eye">The opposite</div><p class="ad-p">'
@@ -18334,7 +18542,7 @@ addEventListener('click',function(e){
 function runCoreDrill(){
  var r=compute();
  var h='<div class="pm-eye">The core</div>'
-  +'<div class="ad-nm">'+(r.unread?'Not read yet'
+  +'<div class="ad-nm">'+(r.unread?'not read yet'
     :'CQ '+Math.round(r.CQ)+', '+r.tier.toLowerCase())+'</div>'
   +'<div class="pm-eye">What coherence is</div><p class="ad-p">'
   +'Coherence is the alignment between the world around you, what arrives from '
@@ -18487,7 +18695,7 @@ function runAtomDrill(n,x){
 function runFlowDrill(){
  var r=compute(), seats=flSeats(), f=flSpeed();
  var stop=null; seats.slice().reverse().forEach(function(s){if(!stop&&s.held)stop=s;});
- var h='<div class="pm-eye">Flow</div><div class="ad-nm">'+(r.unread?'Not read yet'
+ var h='<div class="pm-eye">Flow</div><div class="ad-nm">'+(r.unread?'not read yet'
     :(f*100).toFixed(0)+'% reaches the crown')+'</div>'
   +'<div class="pm-eye">How it is built</div><p class="ad-p">'
   +'The seven seats pass signal in series, root upward. Each one passes a share '
@@ -19099,7 +19307,7 @@ function runCompassDrill(){
     from it silently. It reads TIERDEF now, which is the only one. */
  var me=r.unread?null:TIER_BY[r.tier];
  var h='<div class="pm-eye">The compass</div><div class="ad-nm">'
-  +(r.unread?'Not read yet':'CQ '+Math.round(cq)+', '+r.tier.toLowerCase())+'</div>'
+  +(r.unread?'not read yet':'CQ '+Math.round(cq)+', '+r.tier.toLowerCase())+'</div>'
   +'<div class="pm-eye">How to read it</div><p class="ad-p">The line runs 0 at the base to 100 at the crown, and the word changes every ten points. '
   +'Above '+MEDIAN+' the field builds more than it costs. Below '+MEDIAN+' it costs more than it builds. '
   +MEDIAN_LO+' to '+MEDIAN_HI+' is the median range, where the reading crosses the line in both directions'
@@ -21200,9 +21408,8 @@ function accAccount(){
    +'<input type="text" id="acnm" value="'+esc((CURP&&CURP.name)||'')+'" '
    +'aria-label="Profile name"></div>'
    +accRow('Profiles on this device',PROFILES.length,{num:true}),
-   'The profile picker sits in the top bar today. It is a demo control in the '
-   +'navigation of a product about to grow accounts, and it comes out of there '
-   +'when sign in lands.');
+   'The profile picker sits in the top bar today. It is a demo control, and it '
+   +'comes out of the bar when sign in lands.');
  /* IDENTITY IS READ OUT HERE AND EDITED NOWHERE BUT ENERGETICS. Two editors
     for one field is two answers to one question. */
  h+=accGroup('Identity',
@@ -21255,9 +21462,9 @@ function accSecurity(){
    +accStub('Two factor','not set')
    +accStub('Sessions and devices','this browser only')
    +accStub('Recent account activity','nothing to show'),
-   'Every row here waits on sign in. When it lands it is a one time code to '
-   +'the address or a signed link, never the address alone, because an address '
-   +'alone would be the key to somatic and psychological self report.');}
+   'Every row here waits on sign in. It will be a one time code to the '
+   +'address, or a signed link. Never the address alone, because an address '
+   +'alone is the key to somatic and psychological self report.');}
 
 /* ---------- 4.4 privacy. the one section here that is not generic ---------- */
 var ACC_HELD=[
@@ -21285,16 +21492,20 @@ function accPrivacy(){
      +'a reload. Export is the only way to keep it.');
  h+=accGroup('Who Has Sight',
    accRow('People with sight of this record','nobody'),
-   'Nobody sees this but you. When a practitioner can be granted sight it is '
-   +'explicit, it is listed here by name with what they see and when you '
-   +'granted it, and revoking is one press on the row. Never a silent default.');
- h+=accGroup('Improve The Models',
+   'Nobody sees this but you. A practitioner gets sight only when you grant '
+   +'it. The grant is listed here by name, with what they see and the date you '
+   +'gave it, and one press on the row takes it back. Never a silent default.');
+ h+=accGroup('Improve the Models',
    accTog('Use my stories to refine the reading','acmodel',
      !!(CURP&&CURP.ui&&CURP.ui.model)),
    'Off unless you turn it on. What would be used is the story with nothing '
    +'that identifies you attached, and the record and the story are never held '
    +'together. Saying no keeps the product whole.');
- h+=accGroup('Getting It Out, And Getting Rid Of It',
+ h+=/* A HEADING IS A THING A PERSON WOULD SAY. This one read "Getting It Out,
+   And Getting Rid Of It": seven words, a comma, and a conjunction capitalised
+   in a file that is otherwise in title case. It names two controls, so it
+   says their two names. */
+ accGroup('Export and Delete',
    accAct('Export this record','acexp',{btn:'Copy'})
    +accAct('Delete this record','acdel',{btn:'Delete',danger:true}),
    'Delete removes this record from this browser now. There is no store yet, '
@@ -22841,8 +23052,13 @@ function railTop(r){
        :'Nothing has been read yet. Write a story or set a charge.')+'"'
   +(tcol?' style="color:'+tcol+'"':'')
   +'>'+esc(r.unread?'not read yet':r.tier)+'</button>'
+  /* ONE STATE, ONE SENTENCE. The button's own title two lines above says
+     "Nothing has been read yet. Write a story or set a charge." for the same
+     unread field, and this said the same thing a second way, three words
+     shorter and missing the auxiliary, an inch away on the same rail. The
+     empty state is said one way across the app. */
   +'<span class="rt-d">'+esc(r.unread
-    ? 'Nothing entered yet. Write what happened and this fills in.'
+    ? 'Nothing has been read yet. Write a story or set a charge.'
     : (td?td.def:''))+'</span>';
  /* and a tap gets the whole thing, because hover is not a route on the device
     most of this audience arrives on. */
@@ -23346,5 +23562,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="001515210"></div>
+<div id="eof" hidden data-len="001528272"></div>
 </body></html>

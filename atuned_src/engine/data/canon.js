@@ -258,8 +258,8 @@ const BANDS=['Root','Sacral','Solar','Heart','Throat','3rd Eye','Crown'];
    takes ten points of saturation with hue and lightness held, which closes the
    spread from 17 points to 7. Contrast on the dark ground was checked after,
    and the lowest of the seven is Root at 4.8 to 1. */
-const PAL={'Root':'#CF5953','Sacral':'#D19255','Solar':'#D4BC70','Heart':'#65CFA5',
- 'Throat':'#65B8D4','3rd Eye':'#8296DB','Crown':'#A883D6'};
+const PAL={'Root':'#D6524C','Sacral':'#D8924E','Solar':'#DABF6A','Heart':'#5FD5A6',
+ 'Throat':'#5EBBDB','3rd Eye':'#7D93E0','Crown':'#A77EDB'};
 /* THE THIRD PALETTE. Lumen puts paper under the rails and keeps the centre
    stage at 101010, and its whole brief is vibrancy, so neither of the other
    two fits: the dark palette is invisible on paper and the Snow palette is
@@ -329,7 +329,7 @@ const SURPKEY=/SHOCK|BETRAYAL|OVERSENSITIV|STARTLE|PANIC/i;
 const ANTKEY=/EXPECTATION|ANXIETY|WORRY|HYPERVIGIL|DREAD|ANTICIPAT|OBSESS|COMPULS/i;
 
 const ROOTD=['Architect','Engine','Weaver','Witness'];
-const ROOTCOL={Architect:'#8296DB',Engine:'#D19255',Weaver:'#65CFA5',Witness:'#A883D6'};
+const ROOTCOL={Architect:'#7D93E0',Engine:'#D8924E',Weaver:'#5FD5A6',Witness:'#A77EDB'};
 /* nineteen named blueprint domains under the four roots. the original header
    comment claimed eighteen with four unnamed; the data has always been
    nineteen named, and DARC divides by nineteen. */
@@ -565,16 +565,16 @@ const MASKS=[
    is actually wrong rather than for a person who is low.
    ============================================================ */
 const TIERCOL={
- 'Mastery':     '#E4D9A8',   /* clear light. nothing held, nothing shouting */
- 'Embodied':    '#8FD0A8',
- 'Compounding': '#65CFA5',   /* the heart green, because this is where it builds */
- 'Gaining':     '#74C1C4',
- 'Even':        '#65B8D4',   /* the throat blue. receptive, level */
- 'Oscillating': '#8296DB',   /* swinging, and the third eye blue is the seat of it */
- 'Incoherent':  '#C9A96A',   /* warm, a caution and not an alarm */
- 'Corrupt':     '#C98A5E',
- 'Severe':      '#B2857C',   /* chroma coming out. numb is less present, not louder */
- 'Collapsed':   '#A28A88'};  /* the colour nearly gone. the floor is quiet */
+ 'Mastery':     '#E8DBA4',   /* clear light. nothing held, nothing shouting */
+ 'Embodied':    '#8BD4A7',
+ 'Compounding': '#5FD5A6',   /* the heart green, because this is where it builds */
+ 'Gaining':     '#6FC5C9',
+ 'Even':        '#5EBBDB',   /* the throat blue. receptive, level */
+ 'Oscillating': '#7D93E0',   /* swinging, and the third eye blue is the seat of it */
+ 'Incoherent':  '#CFAB64',   /* warm, a caution and not an alarm */
+ 'Corrupt':     '#CF8958',
+ 'Severe':      '#B58379',   /* chroma coming out. numb is less present, not louder */
+ 'Collapsed':   '#A48986'};  /* the colour nearly gone. the floor is quiet */
 const TIERDEF=[
  {at:91, nm:'Mastery',
   state:'Sovereign',

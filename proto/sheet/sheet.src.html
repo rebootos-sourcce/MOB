@@ -1,0 +1,852 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The avatar as a character sheet</title>
+<!-- REQUEST LOG. Patched before any other script so nothing can slip under it.
+     This block is proto/avatar/dash.src.html's, verbatim and deliberately so:
+     two prototypes proving zero requests with two different harnesses prove
+     two different things. Every channel a browser has for leaving the machine
+     is wrapped, counted and printed at the foot of the page. -->
+<script>
+window.__REQ=[];
+(function(){
+ var log=function(kind,url){try{window.__REQ.push({kind:kind,url:String(url)});}catch(e){}};
+ var f=window.fetch;
+ if(f)window.fetch=function(u){log('fetch',u&&u.url||u);return f.apply(this,arguments);};
+ var xo=XMLHttpRequest.prototype.open;
+ XMLHttpRequest.prototype.open=function(m,u){log('xhr',u);return xo.apply(this,arguments);};
+ var NI=window.Image;
+ if(NI)window.Image=function(){var i=new NI();
+  Object.defineProperty(i,'src',{set:function(v){log('image',v);},get:function(){return '';}});
+  return i;};
+ var WS=window.WebSocket;
+ if(WS)window.WebSocket=function(u){log('websocket',u);throw new Error('blocked');};
+ var ES=window.EventSource;
+ if(ES)window.EventSource=function(u){log('eventsource',u);throw new Error('blocked');};
+ if(navigator.sendBeacon)navigator.sendBeacon=function(u){log('beacon',u);return false;};
+ try{new PerformanceObserver(function(l){l.getEntries().forEach(function(e){
+  if(e.name&&!/^(data:|blob:|about:)/.test(e.name)&&e.name!==location.href)
+   log('resource',e.name);});}).observe({type:'resource',buffered:true});}catch(e){}
+})();
+</script>
+<style>
+/* the product's own tokens, read off atuned_src/shell/head.html */
+*{box-sizing:border-box}
+:root{--bg:#0C0D12;--panel:#1A1D26;--panel-2:#252833;--sunk:#090A0E;
+ --ink:#EFEDE8;--mid:#B4B0A8;--dim:#94908A;--accent:#7EB8D4;--on-accent:#0B1418;
+ --line:rgba(255,255,255,.08);--line2:rgba(255,255,255,.14);--warm:#CB5F59;--r:14px}
+html,body{margin:0;background:var(--bg);color:var(--ink)}
+body{font:16px/1.5 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Inter,sans-serif;
+ -webkit-font-smoothing:antialiased;padding:0 0 56px}
+.wrap{max-width:1460px;margin:0 auto;padding:0 16px}
+h1,h2,h3{font-weight:600;letter-spacing:-.01em;margin:0}
+.eye{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);font-weight:600}
+.dim{color:var(--dim)}.mid{color:var(--mid)}
+.bar{display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid var(--line);
+ margin-bottom:20px;flex-wrap:wrap}
+.brand{font-weight:700;letter-spacing:.16em;font-size:12px;color:var(--mid)}
+select,button,input{font:inherit;color:inherit}
+select{background:var(--panel-2);border:1px solid var(--line2);border-radius:10px;
+ padding:9px 12px;min-height:44px}
+.btn{background:transparent;border:1px solid var(--line2);border-radius:11px;
+ padding:11px 16px;min-height:44px;cursor:pointer;color:var(--ink);transition:.15s}
+.btn:hover{border-color:var(--accent);color:var(--accent)}
+.btn.pri{background:var(--accent);color:var(--on-accent);border-color:var(--accent);font-weight:600}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:18px}
+.note{font-size:13px;color:var(--dim);line-height:1.6}
+
+/* THREE COLUMNS AT 1600, and his own layout: the figure, the sheet, and the
+   cells down the right of it. One column under 1180. */
+.sheet{display:grid;grid-template-columns:minmax(264px,308px) minmax(420px,1fr) minmax(280px,330px);
+ gap:18px;align-items:start}
+.stage{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);
+ padding:14px 14px 10px;position:sticky;top:14px}
+#fig{display:block;width:100%;max-width:292px;margin:0 auto;height:auto;touch-action:manipulation}
+#masks{display:block;width:100%;max-width:292px;margin:10px auto 0;height:auto;
+ image-rendering:pixelated}
+.col{display:grid;gap:14px}
+
+/* THE CEILING. The headline is the inversion: the bar is drawn at full length
+   and what is inside it is the load. Addressed by its own id, because ".ceil b"
+   would also match every value in the same card, which is a defect this
+   repository has already paid for once. */
+#held{display:block;font-size:52px;font-weight:600;letter-spacing:-.03em;line-height:1}
+#held small{font-size:20px;font-weight:600;letter-spacing:-.01em;margin-left:6px}
+.ceil .of{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);
+ font-weight:600;margin-top:5px}
+.track{position:relative;height:18px;margin:16px 0 8px;background:var(--sunk);
+ border:1px solid var(--line2);border-radius:9px;overflow:hidden;display:flex}
+.track span{display:block;height:100%}
+.track .sopen{background:var(--accent)}
+.track .sheld{background:repeating-linear-gradient(135deg,rgba(203,95,89,.85) 0 5px,rgba(203,95,89,.5) 5px 10px)}
+.track .sempt{background:transparent}
+.keys{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--dim)}
+.keys i{display:inline-block;width:11px;height:11px;border-radius:3px;
+ vertical-align:-1px;margin-right:5px}
+
+/* SEAT ROWS. One slot, one label, the value carries the state. */
+.seats{display:grid;gap:7px;margin-top:4px}
+.srow{display:grid;grid-template-columns:74px 1fr 42px 40px;gap:10px;align-items:center;
+ font-size:13px;min-height:26px}
+.srow em{font-style:normal;color:var(--mid)}
+.sbar{height:10px;background:var(--sunk);border:1px solid var(--line);border-radius:5px;
+ overflow:hidden;display:flex}
+.sbar span{display:block;height:100%}
+.srow b{font-weight:600;font-variant-numeric:tabular-nums;text-align:right;font-size:12.5px}
+.srow u{text-decoration:none;font-size:12px;color:var(--dim);text-align:right;
+ font-variant-numeric:tabular-nums}
+.srow.stop em{color:var(--ink);font-weight:600}
+.srow.stop{position:relative}
+.srow.stop:before{content:'';position:absolute;left:-10px;top:5px;bottom:5px;width:2px;
+ background:var(--ink);border-radius:1px}
+
+/* STATS. One word on the label, the unit on the figure. */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.stat{background:var(--panel-2);border:1px solid var(--line);border-radius:11px;padding:11px 12px}
+.stat b{display:block;font-size:21px;font-weight:600;letter-spacing:-.02em;line-height:1.2}
+.stat span{font-size:11px;color:var(--dim);letter-spacing:.03em;display:block;margin-top:2px}
+
+/* THE SUMMARY. Four readings, each under one word. */
+.sum{display:grid;gap:12px;margin-top:4px}
+.sblk .eye{margin-bottom:3px}
+.sblk p{margin:0;font-size:14px;line-height:1.55}
+
+/* THE DOORS */
+.door{display:flex;gap:12px;align-items:center;justify-content:space-between;
+ background:var(--panel-2);border:1px solid var(--line2);border-radius:12px;
+ padding:13px 14px;min-height:44px;width:100%;cursor:pointer;text-align:left;transition:.15s}
+.door:hover{border-color:var(--accent)}
+.door u{text-decoration:none;display:block}
+.door u .deye{display:block;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
+ color:var(--dim);font-weight:600;margin-bottom:3px}
+.door u b{display:block;font-size:14.5px;font-weight:600}
+.door u span{display:block;font-size:12.5px;color:var(--dim);margin-top:1px}
+.door svg{flex:0 0 auto;stroke:var(--dim);fill:none;stroke-width:1.6}
+.door:hover svg{stroke:var(--accent)}
+
+/* THE CELLS. Two sets of stories, and the right hand one resolves to a seat. */
+.cell{border-top:1px solid var(--line);padding:11px 0}
+.cell:first-child{border-top:0}
+.cell .full{font-size:14.5px;font-weight:600;line-height:1.4}
+.cell .lim{font-size:13px;color:var(--mid);line-height:1.5;margin-top:3px}
+.cell .at{display:flex;align-items:center;gap:7px;margin-top:6px;font-size:12px;color:var(--dim)}
+.cell .at i{width:9px;height:9px;border-radius:50%;border:1.5px solid currentColor;
+ display:inline-block}
+.cell .bar2{height:6px;flex:1;background:var(--sunk);border:1px solid var(--line);
+ border-radius:4px;overflow:hidden}
+.cell .bar2 span{display:block;height:100%}
+.ex{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);
+ border:1px solid var(--line2);border-radius:6px;padding:1px 5px;margin-left:6px}
+.edit{margin-top:14px;padding-top:14px;border-top:1px solid var(--line2);display:grid;gap:8px}
+.edit input{background:var(--sunk);border:1px solid var(--line2);border-radius:10px;
+ padding:11px 12px;min-height:44px;width:100%}
+.edit input:focus{outline:none;border-color:var(--accent)}
+.edit label{font-size:11.5px;color:var(--dim);display:block;margin-bottom:4px}
+
+.foot{margin-top:28px;padding-top:14px;border-top:1px solid var(--line);font-size:12.5px;
+ color:var(--dim);line-height:1.7}
+.reqlog{font:12px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--dim)}
+.ok{color:#8FD0A8}
+#status{min-height:20px;font-size:13px;color:var(--mid)}
+@media(max-width:1180px){
+ .sheet{grid-template-columns:minmax(264px,308px) 1fr}
+ .cells{grid-column:1/-1}
+}
+@media(max-width:900px){
+ .sheet{grid-template-columns:1fr}
+ .stage{order:-1;position:static}
+ /* THE FIGURE GETS SMALLER RATHER THAN SHORTER. Cropping it would cut the
+    legs off, and at full width it took the whole first screen on a phone and
+    pushed the one sentence this page exists for under the fold. */
+ #fig{max-width:208px}
+ #held{font-size:42px}
+ .srow{grid-template-columns:66px 1fr 40px 38px}
+}
+</style></head>
+<body>
+<div class="wrap">
+
+<div class="bar">
+  <span class="brand">ATUNED</span>
+  <span class="dim" style="font-size:12.5px">Character sheet</span>
+  <span style="flex:1"></span>
+  <label class="dim" style="font-size:12px">Profile
+    <select id="who" aria-label="Which profile to draw"></select></label>
+  <button class="btn" id="run" type="button">Run a release of eight</button>
+  <button class="btn" id="hard" type="button">A hard month</button>
+  <button class="btn" id="reset" type="button">Back to arrival</button>
+</div>
+
+<div id="status" role="status" aria-live="polite"></div>
+
+<div class="sheet">
+
+  <!-- THE HERO. The silhouette, the seven seats on it, and the masks under it. -->
+  <div class="stage">
+    <canvas id="fig" width="584" height="912" aria-label="A silhouette with the seven seats marked on it, each seat drawn as a ring at its ceiling with the part that conducts filled in"></canvas>
+    <div class="eye" style="margin-top:8px">The masks</div>
+    <canvas id="masks" width="584" height="336" aria-label="Six masks in pixel form, one per era, filling from the bottom as the instrument reads charge at that era's seats"></canvas>
+    <div class="note" id="maskfoot" style="margin-top:6px"></div>
+    <div class="note" id="figfoot" style="margin-top:8px;padding-top:8px;border-top:1px solid var(--line)"></div>
+  </div>
+
+  <div class="col">
+
+    <!-- THE INVERSION, AND IT IS THE FIRST THING ON THE PAGE. -->
+    <div class="card ceil">
+      <div class="eye">Already at full</div>
+      <b id="held"></b>
+      <div class="of" id="heldof" title="Addresses holding something, of the 112. Read off the engine's own carrying list."></div>
+      <div class="track" id="track" aria-hidden="true">
+        <span class="sopen" id="sopen"></span>
+        <span class="sheld" id="sheld"></span>
+        <span class="sempt" id="sempt"></span>
+      </div>
+      <div class="keys" id="keys">
+        <span><i style="background:var(--accent)"></i>open</span>
+        <span><i style="background:rgba(203,95,89,.7)"></i>held</span>
+        <span><i style="border:1px solid var(--line2);background:none"></i>no opposite in</span>
+      </div>
+      <div class="note" id="ceilnote" style="margin-top:10px"></div>
+    </div>
+
+    <div class="card">
+      <div class="eye">The seven seats</div>
+      <div class="seats" id="seats"></div>
+    </div>
+
+    <div class="card">
+      <div class="eye">How it is going</div>
+      <div class="sum" id="sum"></div>
+    </div>
+
+    <button class="door" id="drit" type="button">
+      <u><span class="deye">Ritual</span><b id="ritline"></b><span id="ritsub"></span></u>
+      <svg width="20" height="20" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
+    </button>
+
+    <button class="door" id="dsum" type="button">
+      <u><span class="deye">Summary</span><b id="sumline"></b><span id="sumsub"></span></u>
+      <svg width="20" height="20" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
+    </button>
+
+  </div>
+
+  <!-- THE CELLS. His own layout: down the right of the information. -->
+  <div class="col cells">
+    <div class="card">
+      <div class="eye">At full, and the limiter</div>
+      <div class="note" id="cellnote" style="margin:6px 0 4px"></div>
+      <div class="stats" id="aimstat" style="grid-template-columns:repeat(2,1fr);margin:10px 0 12px"></div>
+      <div id="cells"></div>
+      <div class="edit">
+        <div>
+          <label for="inbe">At full, in your own words</label>
+          <input id="inbe" type="text" maxlength="120" autocomplete="off"
+            placeholder="Somebody who is straight with people">
+        </div>
+        <div>
+          <label for="innot">The same thing on a bad day</label>
+          <input id="innot" type="text" maxlength="200" autocomplete="off"
+            placeholder="I told him what he wanted to hear and went home angry">
+        </div>
+        <button class="btn" id="addpair" type="button">Add the pair</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="foot">
+  <div id="perf"></div>
+  <div class="reqlog" id="req" style="margin-top:8px"></div>
+  <div style="margin-top:10px">The seat to plexus correspondence and the seven count are a
+  modern Western reading. The source traditions give five, six, eight and more, and the welding
+  of seats to nerve plexuses dates to 1927. Kundalini is a model and the mask is a model. Every
+  number on this page is computed from what the engine holds about a field, and a consistent
+  internal system built on a model is worth having and is not a measurement. This product says
+  the same about the aura and the biophoton field.</div>
+  <div style="margin-top:10px" id="ceilfoot"></div>
+</div>
+</div>
+<!-- the engine and the rise are REFERENCED, never copied. A copy goes stale in
+     silence and the prototype then measures a build nobody ships. Two
+     prototypes in this repository carried a byte identical engine and both
+     were fixed for that reason. build-sheet.js inlines these three files into
+     sheet.html, which is then one file with no siblings. -->
+<script src="../../engine.js"></script>
+<script src="../avatar/rise.js"></script>
+<script src="sheet.js"></script>
+<script>
+/* ============================================================
+   THE CHARACTER SHEET. Every figure is read off engine.js at run time.
+
+   engine.js is a separate classic script in this same document, so its top
+   level bindings live in the shared script scope and are reached by name. They
+   are NOT reliably properties of window: const and let are not, function
+   declarations and var are. That is recorded in DESIGN-avatar.md section 26
+   and it is why nothing here reads window.PAL.
+
+   cqCeiling IS reachable here, by name and on window, because it is a function
+   declaration. It is absent from engine/export.js, so a node probe cannot
+   reach it, and that is what "missing from export.js" means. It is measured on
+   this page in the foot, and the measurement is the reason it is not the
+   ceiling this sheet draws.
+   ============================================================ */
+var R=window.RISE, X=window.SHEET;
+var E={W:W, BANDS:BANDS, S:S, SI:SI, bandIg:bandIg, PEOPLE:PEOPLE, MASKS:MASKS,
+       CHARGES:CHARGES, SINAMES:SINAMES, LAWSET:LAWSET, buildSoul:buildSoul,
+       compute:compute, PRACTICE:PRACTICE, tierOf:tierOf, PAL:PAL, PMBANDS:PMBANDS,
+       parseStory:parseStory, avatarGap:avatarGap, avatarProgress:avatarProgress,
+       BODYPATH:BODYPATH, PMS:PMS, PMTX:PMTX, PMTY:PMTY};
+var PMB=PMBANDS;
+var ROSTER=['Marcus','Diane','Sofia','Angela','Derek','James','Ana','Gordon','Tomas','Rosa'];
+/* the seat to track table is ui/ritual.js:7 and is not in the engine, so it is
+   carried here rather than guessed. */
+var TRACK4={Root:'Body',Sacral:'Somatic',Solar:'Somatic',Heart:'Body',
+            Throat:'Mind','3rd Eye':'Mind',Crown:'Energy'};
+var WHO='Marcus', BASE=null, RUNS=0, EMPTY=false, PAIRS=[];
+
+/* AUTHORED SAMPLE TEXT, and it is labelled as such on the surface. No profile
+   in the roster carries an avatar pair, because nothing in the product can
+   write one yet, so a sheet about the two sets of stories has nothing to draw
+   without this. Every one of these is a sentence, not a reading: the seat
+   beside it is computed, the words are not. */
+var SAMPLE={
+ /* written as objects rather than as two element arrays, because a pair of
+    strings in an array literal is the exact shape the voice gate reads as a
+    figure's label and its value, and eleven sentences came back as eleven
+    labels nine words long. The gate is right about the shape. */
+ Marcus:[{be:'Somebody who says the hard thing on the day',
+          notbe:'I sat in the meeting and said nothing while he took the credit'},
+         {be:'Somebody who keeps his word',
+          notbe:'I said I would and I did not show up'}],
+ Gordon:[{be:'Somebody who is steady with the people at home',
+          notbe:'I shouted at her and slammed the door'},
+         {be:'Somebody who rests before he is empty',
+          notbe:'I am running on empty and I cannot keep going'}],
+ Sofia:[{be:'Somebody who asks for what she needs',
+         notbe:'I made myself small in front of him and laughed it off'}],
+ Diane:[{be:'Somebody who is present with them',
+         notbe:'I was going over it the whole evening and I was not there'}],
+ Angela:[{be:'Somebody who does not need the room to like her',
+          notbe:'I was mortified and I could not stop thinking about it'}],
+ Derek:[{be:'Somebody who stops when the body says stop',
+         notbe:'I am burnt out and I took one more anyway'}],
+ James:[{be:'Somebody who is straight about the money',
+         notbe:'I did not tell them and they do not know'}],
+ Ana:[{be:'Somebody who is not afraid of the phone',
+       notbe:'I am dreading it and I have been holding my breath all morning'}],
+ Tomas:[{be:'Somebody who lets it land',
+         notbe:'Nothing matters and I feel hollow about all of it'}],
+ Rosa:[]
+};
+function esc(s){return String(s==null?'':s)
+ .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+ .replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
+function status(m){document.getElementById('status').textContent=m||'';}
+function set(id,v){document.getElementById(id).innerHTML=v;}
+
+function load(nm){
+ var p=null;
+ for(var i=0;i<E.PEOPLE.length;i++)if(E.PEOPLE[i].nm===nm)p=E.PEOPLE[i];
+ if(!p)return null;
+ S.dom=p.dom; S.a1=p.a1; S.a2=p.a2; S.doms=[p.dom]; S.arcs=[p.a1,p.a2]; S.roots=[];
+ E.buildSoul();
+ E.CHARGES.forEach(function(c){
+  S.charge[c]=EMPTY?0:((p.c&&p.c[c]!==undefined)?p.c[c]:0);
+  S.replace[c]=EMPTY?0:((p.rep&&p.rep[c])||0);});
+ var LS=E.LAWSET[nm]||{_:5.5};
+ E.SINAMES.forEach(function(l){
+  S.law[l]=EMPTY?6:((LS[l]!==undefined)?LS[l]:(LS._!==undefined?LS._:5.5));});
+ return E.compute();}
+
+/* THE SET POINT ON AN AIM. The load at the aim's seat on the day it was set,
+   which is what turns a completion into a measurement rather than a claim. It
+   is stamped once, when the pair is written, and never recomputed: the same
+   class of stored fact as meter.firsts and avatar.rise0. */
+function stamp(pr){
+ var seat=X.pairSeat(E,pr.notbe);
+ pr.at=new Date().toISOString();
+ pr.sq0=seat?X.seatLoad(E,seat):null;
+ return pr;}
+function loadPairs(){
+ PAIRS=(EMPTY?[]:(SAMPLE[WHO]||[])).map(function(p){
+  return stamp({be:p.be,notbe:p.notbe,sample:true});});}
+
+/* one release run of eight, ui/release.js:88 verbatim */
+function release(){
+ var r=E.compute(), q=r.carrying.slice(0,8);
+ if(!q.length){status('Nothing is carrying, so there is nothing to release.');return;}
+ q.forEach(function(n){
+  var d=Math.abs(-Math.round(n.sq*10*0.21+2));
+  var same=0; q.forEach(function(x){if(x.cf===n.cf)same++;});
+  var share=d/10/Math.max(1,same);
+  S.charge[n.cf]=Math.max(0,Math.min(10,(S.charge[n.cf]||0)-share));
+  S.replace[n.cf]=Math.max(0,Math.min(10,(S.replace[n.cf]||0)+share*0.62));});
+ RUNS++;
+ status('Eight addresses released. '+RUNS+' run'+(RUNS===1?'':'s')+' since arrival.');}
+
+/* ============================================================
+   THE FIGURE.
+
+   The silhouette is BODYPATH under the pain map's own transform, PMS, PMTX and
+   PMTY out of engine/data/figure.js, so this figure and the Body page are one
+   drawing seen twice and no coordinate is invented. Measured, that transform
+   puts the body at x 28.5 to 71.5 and y 2 to 98 in a 100 by 100 box, centred
+   on 50, which is where PMBANDS already puts the seats.
+
+   THE RING IS THE CEILING AND IT NEVER CHANGES SIZE. The arc inside it is what
+   conducts. That is the inversion drawn: a person cannot make the ring bigger,
+   only clear what is inside it. Ring, never fill.
+
+   THE RING RADIUS IS NOT PMBANDS.r. Those radii are the address scatter on the
+   pain map, 8 to 13 in a space where neighbouring seats sit 6.5 apart, so
+   drawn as rings on a full body they overlap into one blur. They are mapped
+   onto 2.0 to 2.9 here, which keeps their order and their relative size and
+   keeps the largest inside half the smallest gap. Checked at both widths.
+
+   Breath rate is the reading, ruled in DESIGN-feathers.md and kept identical
+   to proto/avatar/dash.src.html so the two surfaces cannot disagree: period
+   2.0 seconds at coherence 0 and 5.0 at 100, amplitude 0.010 to 0.030 of the
+   radius, one seventh of a cycle of phase per seat so the root leads. Nothing
+   else on this figure moves.
+   ============================================================ */
+var REDUCED=(window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches);
+var FR=[], CR=null, CQ=0, BODY=null;
+function seatY(b){for(var i=0;i<PMB.length;i++)if(PMB[i].b===b)return PMB[i].yp;return 50;}
+function seatRad(b){
+ for(var i=0;i<PMB.length;i++)if(PMB[i].b===b)return 2.0+(PMB[i].r-8)/5*0.9;
+ return 2.4;}
+
+function draw(){
+ var c=document.getElementById('fig'), g=c.getContext('2d');
+ var dpr=Math.min(2,window.devicePixelRatio||1);
+ var W0=c.clientWidth||292, H=Math.round(W0*100/64);
+ if(c.width!==Math.round(W0*dpr)){c.width=Math.round(W0*dpr);c.height=Math.round(H*dpr);}
+ c.style.height=H+'px';
+ var t0=performance.now();
+ g.setTransform(dpr,0,0,dpr,0,0);
+ g.clearRect(0,0,W0,H);
+ var u=W0/64;                              /* the 100 box, cropped to x 18..82 */
+ var PX=function(v){return (v-18)*u;}, PY=function(v){return v*u;}, cx=PX(50);
+
+ /* THE SILHOUETTE. Filled faint with a faint outline, which is exactly what
+    ui/map.js:236 does with the same path. */
+ if(!BODY&&window.Path2D)BODY=new Path2D(E.BODYPATH);
+ if(BODY){
+  g.save();
+  g.translate(PX(0),PY(0));
+  g.scale(u,u);
+  g.translate(E.PMTX,E.PMTY);
+  g.scale(E.PMS,E.PMS);
+  g.fillStyle='rgba(150,152,160,.085)'; g.fill(BODY);
+  g.strokeStyle='rgba(239,237,232,.30)';
+  g.lineWidth=1.6/(u*E.PMS);
+  g.stroke(BODY);
+  g.restore();}
+
+ var t=performance.now()/1000;
+ var per=2.0+(CQ/100)*3.0, amp=0.010+(CQ/100)*0.020;
+
+ /* THE SEVEN SEATS. Always drawn, including on a field with nothing in it: a
+    person has seven seats before this product touches them. What they do not
+    have yet is a reading. */
+ BANDS.forEach(function(b,i){
+  var y=PY(seatY(b)), rr=seatRad(b)*u;
+  var ph=(i/7)*Math.PI*2;
+  if(!REDUCED&&CR)rr*=1+amp*Math.sin(t/per*Math.PI*2-ph);
+  var s=CR?CR.seats[b]:null, stop=(CR&&CR.limiter===b);
+  /* the ceiling ring, at full, always */
+  g.strokeStyle=CR?'rgba(148,144,138,.30)':'rgba(148,144,138,.5)';
+  g.lineWidth=stop?2:1.4;
+  g.beginPath(); g.arc(cx,y,rr,0,Math.PI*2); g.stroke();
+  if(!s)return;
+  /* what conducts, from the top, clockwise */
+  var a0=-Math.PI/2, a1=a0+(s.open/100)*Math.PI*2;
+  g.strokeStyle=PAL[b]; g.lineWidth=stop?3.2:2.4;
+  g.beginPath(); g.arc(cx,y,rr,a0,a1); g.stroke();
+  /* what charge is holding down, continuing round in the same seat's colour
+     at a quarter of the weight, so chroma is not carrying the reading */
+  var a2=a1+(s.held/100)*Math.PI*2;
+  g.strokeStyle=PAL[b]; g.globalAlpha=0.30; g.lineWidth=stop?3.2:2.4;
+  g.beginPath(); g.arc(cx,y,rr,a1,a2); g.stroke(); g.globalAlpha=1;
+  if(stop){
+   g.strokeStyle='rgba(239,237,232,.55)'; g.lineWidth=1; g.setLineDash([2,3]);
+   g.beginPath(); g.arc(cx,y,rr+4.5,0,Math.PI*2); g.stroke(); g.setLineDash([]);}
+ });
+ FR.push(performance.now()-t0); if(FR.length>600)FR.shift();
+}
+
+/* ============================================================
+   THE MASK STRIP, IN PIXELS.
+
+   WHY PIXELS, ARGUED RATHER THAN ASSUMED. Everything else on this screen is
+   drawn as the body: a continuous silhouette, anatomical coordinates, rings
+   that breathe at the rate of a reading. A mask is not the body. GLOSS: "the
+   accumulated distortion functioning as an identity construct. What most
+   people call their personality." A quantised grid at eight by eleven says
+   constructed in the one register that cannot be mistaken for anatomy, and it
+   says it without a word of copy. Coarse is made, smooth is body.
+
+   WHAT THE REGISTER CHANGE IS NOT ALLOWED TO BRING. No saturation lift, no
+   outline on the pixel, no dither, no scanline, no animation. The colours are
+   the seat colours out of PAL at their shipped values, so the strip is the
+   product's palette at a lower resolution rather than a second palette.
+
+   THE SHAPE IS AUTHORED AND ONLY THE FILL IS READ. The eleven rows below are a
+   drawing. What the engine decides is how far up the fill reaches and what
+   colour it is, and nothing else.
+   ============================================================ */
+var MASKART={
+ /* the outline, shared, and the seam per mask. o is the ring, i is inside it. */
+ base:['..####..',
+       '.#....#.',
+       '#......#',
+       '#......#',
+       '#......#',
+       '#......#',
+       '#......#',
+       '.#....#.',
+       '.#....#.',
+       '..#..#..',
+       '...##...'],
+ seam:{
+  'Child':       ['....','    ',[[3,5],[4,5]]],
+  'Preteen':     ['....','    ',[[2,4],[5,4]]],
+  'Teen':        ['....','    ',[[3,2],[3,3],[3,4],[3,5],[3,6],[3,7],[4,2],[4,3],[4,4],[4,5],[4,6],[4,7]]],
+  'Adult':       ['....','    ',[[1,5],[2,5],[3,5],[4,5],[5,5],[6,5]]],
+  'Professional':['....','    ',[[2,6],[3,6],[4,6],[5,6],[2,7],[5,7],[2,8],[3,8],[4,8],[5,8]]],
+  'Ideological': ['....','    ',[[2,2],[3,1],[4,1],[5,2]]]
+ }
+};
+var MASKROWS=null;
+function maskCells(){
+ if(MASKROWS)return MASKROWS;
+ /* which cells are inside the outline, worked out from the drawing rather than
+    typed a second time, because two lists of the same shape drift. */
+ var b=MASKART.base, inside=[];
+ for(var y=0;y<b.length;y++){
+  var row=b[y], lo=row.indexOf('#'), hi=row.lastIndexOf('#');
+  for(var x=0;x<row.length;x++)
+   if(row[x]!=='#'&&x>lo&&x<hi)inside.push([x,y]);}
+ MASKROWS={inside:inside, h:b.length, w:b[0].length};
+ return MASKROWS;}
+
+function drawMasks(){
+ var c=document.getElementById('masks'), g=c.getContext('2d');
+ var dpr=Math.min(2,window.devicePixelRatio||1);
+ var W0=c.clientWidth||292;
+ var cellW=Math.floor(W0/3), P=Math.max(3,Math.floor(cellW/13));   /* pixel size */
+ var M=maskCells();
+ var rowH=M.h*P+20, H=rowH*2+6;
+ if(c.width!==Math.round(W0*dpr)){c.width=Math.round(W0*dpr);c.height=Math.round(H*dpr);}
+ c.style.height=H+'px';
+ g.setTransform(dpr,0,0,dpr,0,0);
+ g.imageSmoothingEnabled=false;
+ g.clearRect(0,0,W0,H);
+ var rows=CR?CR.masks:E.MASKS.map(function(m){return {nm:m.nm,pct:null,lead:null};});
+ rows.forEach(function(m,i){
+  var col=i%3, rw=Math.floor(i/3);
+  var ox=col*cellW+Math.floor((cellW-M.w*P)/2), oy=rw*rowH;
+  var colr=(m.pct!=null&&m.lead)?PAL[m.lead]:null;
+  /* the inside, sunk, so the mask reads as a vessel and the fill level is
+     legible against it rather than against the card. */
+  g.fillStyle='rgba(9,10,14,.9)';
+  M.inside.forEach(function(q){g.fillRect(ox+q[0]*P,oy+q[1]*P,P,P);});
+  /* the outline, always. The mask exists as a shape before it carries
+     anything, which is what makes the fill legible as a reading. */
+  var b=MASKART.base;
+  g.fillStyle='rgba(148,144,138,.46)';
+  for(var y=0;y<b.length;y++)for(var x=0;x<b[y].length;x++)
+   if(b[y][x]==='#')g.fillRect(ox+x*P,oy+y*P,P,P);
+  /* the fill, from the bottom of the inside upward */
+  if(colr&&m.pct>0){
+   var lit=Math.round(M.inside.length*Math.min(1,m.pct/100));
+   var order=M.inside.slice().sort(function(a,b2){return b2[1]-a[1]||a[0]-b2[0];});
+   g.fillStyle=colr;
+   order.slice(0,lit).forEach(function(q){g.fillRect(ox+q[0]*P,oy+q[1]*P,P,P);});}
+  /* the seam, which is what tells the six apart, in ink so it reads on a lit
+     mask and on an empty one. */
+  var sm=(MASKART.seam[m.nm]||[])[2]||[];
+  g.fillStyle='rgba(239,237,232,.58)';
+  sm.forEach(function(q){g.fillRect(ox+q[0]*P,oy+q[1]*P,P,P);});
+  /* the name, at the type floor */
+  g.font='600 11px ui-sans-serif,system-ui,sans-serif';
+  g.textAlign='center'; g.textBaseline='top';
+  g.fillStyle='rgba(180,176,168,.9)';
+  g.fillText(m.nm,col*cellW+cellW/2,oy+M.h*P+4);
+ });
+}
+
+/* ============================================================
+   THE BLOCKS
+   ============================================================ */
+function r1(x){return Math.round(x);}
+function paint(){
+ var r=E.compute();
+ CQ=r.CQ;
+ CR=r.unread?null:X.ceilRead(E,R,r);
+ if(CR)CR.masks=X.maskRead(E,r);
+ document.getElementById('track').style.display=r.unread?'none':'flex';
+ document.getElementById('keys').style.display=r.unread?'none':'flex';
+ document.getElementById('held').style.display=r.unread?'none':'block';
+ if(r.unread)return paintEmpty();
+ if(!BASE)BASE=R.riseBase(E);
+
+ /* THE HEADLINE. The figure is what is holding the ceiling down, and it goes
+    down as a person works. A ceiling drawn as a number would be the same
+    number for everybody, so the ceiling is the bar and the reading is inside
+    it. */
+ set('held',CR.limiters+'<small>addresses</small>');
+ document.getElementById('heldof').textContent='Limiters';
+ var so=CR.mean.open, sh=CR.mean.held;
+ document.getElementById('sopen').style.width=so.toFixed(2)+'%';
+ document.getElementById('sheld').style.width=sh.toFixed(2)+'%';
+ document.getElementById('sempt').style.width=(100-so-sh).toFixed(2)+'%';
+ document.getElementById('ceilnote').textContent=
+  'The bar is your ceiling and it is the same one everybody has: every charge gone and the '
+  +'coherent opposite installed at every address. Nothing on this page raises it. Across the '
+  +'seven seats, '+r1(so)+' out of a hundred conducts, '+r1(sh)+' is held down by charge and '
+  +r1(CR.mean.empty)+' has no opposite installed in it yet. A release empties the middle one. '
+  +'The second half of the protocol fills the last one.';
+
+ /* THE SEVEN SEATS. Crown at the top so the column reads the way a body does.
+    Four columns: the seat, its ceiling drawn full with the load in it, what
+    conducts, and the change since arrival. */
+ var was=BASE?R.riseFrom(E,BASE.t,null):null;
+ set('seats',BANDS.slice().reverse().map(function(b){
+  var s=CR.seats[b], stop=(CR.limiter===b);
+  var d=was?Math.round((CR.rise.t[b]-was.t[b])*100):null;
+  return '<div class="srow'+(stop?' stop':'')+'" title="'+esc(b)
+   +': conducts '+r1(s.open)+' out of a hundred, '+r1(s.held)+' held by charge at '
+   +s.holding+' address'+(s.holding===1?'':'es')+', '+r1(s.empty)+' with no opposite in. '
+   +'Conduct at this seat reads '+s.ig.toFixed(1)+' out of ten.">'
+   +'<em>'+esc(b)+'</em>'
+   +'<span class="sbar">'
+    +'<span style="width:'+s.open.toFixed(2)+'%;background:'+PAL[b]+'"></span>'
+    +'<span style="width:'+s.held.toFixed(2)+'%;background:'+PAL[b]+';opacity:.30"></span>'
+   +'</span>'
+   +'<b>'+r1(s.open)+'</b>'
+   /* NOTHING, not a zero. Seven zeroes down a column on the morning somebody
+      arrives is the wall of absence this project has already learned about. */
+   +'<u>'+(!d?'':(d>0?'+'+d:String(d)))+'</u></div>';}).join('')
+  +'<div class="note" style="margin-top:9px">Every bar is the same length, because every '
+  +'seat has the same ceiling. The bright part conducts. The dim part is held down by charge '
+  +'at the addresses on that seat. What is left is where no opposite has been installed yet. '
+  +'The last column is the change since you arrived.</div>');
+
+ /* THE SUMMARY. His four, and the third one refuses rather than guessing. */
+ var sm=X.summaryRead(E,R,r,CR,BASE,TRACK4);
+ var seat=CR.limiter, low=seat.toLowerCase(), s=CR.seats[seat];
+ var h='';
+ h+='<div class="sblk"><div class="eye">State</div><p>'+esc(sm.tier.nm)+'. '
+  +esc(sm.tier.state)+'.</p></div>';
+ /* what could be better: the seat costing the most, and both levers priced */
+ var lv=sm.lever, lvs='';
+ if(lv){
+  lvs='Twelve release runs at your '+low+', one a week for a quarter, takes that seat from '
+   +r1(lv.now*100)+' out of a hundred to '+r1(lv.release.to*100)+'. Two points on '
+   +esc(String(lv.law.nm).toLowerCase())+' takes it to '+r1(lv.law.to*100)+'. '
+   +(lv.bigger==='law'?'The law is the lever here.'
+     :'The release is the lever here, and the '+low+' is carried by '+lv.law.count
+      +' of the twenty one laws.');}
+ h+='<div class="sblk"><div class="eye">Better</div><p>The <strong>'+esc(low)+'</strong> is '
+  +'holding '+r1(s.held)+' of its ceiling down, at '+s.holding+' address'
+  +(s.holding===1?'':'es')+'. '+lvs+'</p></div>';
+ h+='<div class="sblk"><div class="eye">Slipping</div><p>'
+  +(sm.slipping
+    ? 'Your '+esc(sm.slipping.b.toLowerCase())+' is '+Math.abs(r1(sm.slipping.d))
+      +' points lower than when you arrived.'
+    : (sm.gained
+       ? 'Nothing is lower than when you arrived. Your '+esc(sm.gained.b.toLowerCase())
+         +' is '+r1(sm.gained.d)+' points higher.'
+       : 'Nothing has moved since you arrived, so there is nothing to compare yet. This '
+         +'reads against the mark taken on your first reading and against nothing else.'))
+  +'</p></div>';
+ var pr=null, tr=sm.next.track||'Body';
+ E.PRACTICE.forEach(function(p){if(p.track===tr&&(!pr||p.min<pr.min))pr=p;});
+ h+='<div class="sblk"><div class="eye">Next</div><p>'
+  +(s.at?'<strong>'+esc(s.at.k)+'</strong> at the '+esc(String(s.at.n).toLowerCase())
+    +', weight '+s.at.sq.toFixed(1)+', which is the heaviest thing on your '+esc(low)+'. '
+   :'')
+  +(pr?esc(pr.nm)+', '+pr.min+' minutes, is the shortest practice on the '+tr.toLowerCase()
+    +' track, which is the track your '+low+' maps to.':'')
+  +'</p></div>';
+ set('sum',h);
+
+ /* THE DOORS. The label never changes; the value under it carries the state. */
+ document.getElementById('ritline').textContent=pr?pr.nm:'Nothing set';
+ document.getElementById('ritsub').textContent=pr
+  ?(pr.min+' minutes, set against your '+low+'. This is where the sheet sets a ritual.')
+  :'Nothing is set against this seat yet.';
+ document.getElementById('sumline').textContent=sm.tier.nm+'. '+sm.tier.state+'.';
+ document.getElementById('sumsub').textContent=sm.tier.def;
+
+ paintCells();
+ document.getElementById('figfoot').textContent=
+  'Each ring is that seat at its ceiling and the ring never changes size. The bright arc is '
+  +'what conducts, the dim arc is what charge is holding down, and the dashed ring marks the '
+  +'seat costing the most. The seats breathe at the rate the reading sets, and nothing else '
+  +'on the figure moves.';
+ document.getElementById('maskfoot').textContent=
+  'Six masks, one per era, in the order they were put on. Each fills from the bottom as the '
+  +'instrument reads charge at the seats that era sits on, in the colour of whichever of its '
+  +'seats is carrying more. Writing is what fills them.';
+ /* the ceiling that was tried first, and the measurement that ruled it out.
+    Printed on the surface rather than kept in the design document, because a
+    figure a reviewer cannot see is a figure nobody checks. */
+ var cc=(typeof cqCeiling==='function')?cqCeiling():null;
+ document.getElementById('ceilfoot').textContent=cc==null?''
+  :('cqCeiling on this profile reads '+cc.toFixed(1)+' against a coherence of '+r.CQ.toFixed(1)
+    +', so it leaves '+Math.max(0,cc-r.CQ).toFixed(1)+' points of headroom. It holds the '
+    +'twenty one laws where they are, so it is the ceiling this person’s conduct allows '
+    +'rather than the ceiling the sheet draws. Reachable here by name and absent from '
+    +'engine/export.js, so no headless probe can read it.');
+}
+
+/* THE EMPTY STATE, AND ON THIS PAGE IT IS THE STRONGEST STATE THERE IS.
+   The claim the whole sheet makes is true before a person enters anything: the
+   ceiling is already there and it is the same one everybody has. What is not
+   there yet is the reading. So the ceiling draws and no figure reads zero. */
+function paintEmpty(){
+ document.getElementById('heldof').textContent='';
+ document.getElementById('ceilnote').textContent=
+  'Your ceiling is already drawn and it is the same one everybody has: every charge gone and '
+  +'the coherent opposite installed at every address. Nothing in this product raises it. What '
+  +'has not been read yet is what is holding it down.';
+ set('seats',BANDS.slice().reverse().map(function(b){
+  return '<div class="srow"><em>'+esc(b)+'</em>'
+   +'<span class="sbar"></span><b></b><u></u></div>';}).join('')
+  +'<div class="note" style="margin-top:9px">Seven seats, each drawn at the ceiling everybody '
+  +'has. Nothing has been read yet, so nothing is drawn inside them.</div>');
+ set('sum','<div class="sblk"><div class="eye">Start</div><p>Nothing has been read yet. Four '
+  +'ways in, and none of them asks you to know anything first.</p></div>'
+  +[['Write what happened','The day, in your own words. The engine reads the charge out of it.'],
+    ['Read nine sentences','For anyone who cannot think of themselves as the problem. None of them is a diagnosis.'],
+    ['Go year by year','Three to eighteen. For anyone who cannot think of anything they identify with, which is most people.'],
+    ['Say who you are becoming','The pair on the right. At full in your own words, and the same thing on a bad day.']]
+   .map(function(d){return '<div class="sblk" style="border-top:1px solid var(--line);'
+    +'padding-top:10px"><b style="font-size:14px;font-weight:600">'+d[0]+'</b>'
+    +'<div class="note">'+d[1]+'</div></div>';}).join(''));
+ document.getElementById('ritline').textContent='Nothing saved yet';
+ document.getElementById('ritsub').textContent=
+  'A ritual is set against the seat that is costing the most, once there is a reading.';
+ document.getElementById('sumline').textContent='No reading yet';
+ document.getElementById('sumsub').textContent='It opens once something is entered.';
+ set('aimstat','');
+ set('cells','');
+ document.getElementById('cellnote').textContent=
+  'Two sets, written as a pair. The left is who you are at your best, in your own words. The '
+  +'right is the same attribute on a bad day, and it is the half that resolves to a seat, '
+  +'because a value has no address and a sentence about a bad day does.';
+ document.getElementById('figfoot').textContent=
+  'The body, and the seven seats on it, each drawn at the ceiling everybody has.';
+ document.getElementById('maskfoot').textContent=
+  'Six masks, one per era, empty. They fill from the bottom as you write, in the colour of '
+  +'the seat that is carrying.';
+ document.getElementById('ceilfoot').textContent='';
+}
+
+/* THE CELLS. Two sets of stories, the right hand one resolved to a seat. */
+function paintCells(){
+ var a=X.aimsRead(E,PAIRS);
+ var st='';
+ if(a.of){
+  /* THE DENOMINATOR IS THE ONE THE FIGURE IS ACTUALLY OUT OF. An aim that
+     resolves to no seat cannot be clear or unclear, so counting it in the
+     denominator of cleared would report a failure the reading never made. */
+  st+='<div class="stat" title="Aims whose seat is clear of everything it was holding, of the '
+   +'aims that resolve to a seat. The engine’s own reading, avatarProgress."><b>'
+   +a.cleared+' of '+a.resolved+'</b><span>Cleared</span></div>';
+  /* and nothing until something has actually been released, because a figure
+     that reads zero on the morning somebody arrives is furniture. */
+  if(a.pct)st+='<div class="stat" title="Of the weight at the seats your aims name, measured '
+   +'against the day each pair was written."><b style="font-size:18px">'+a.pct
+   +' per cent</b><span>Released</span></div>';
+  else if(a.resolved<a.of)st+='<div class="stat" title="Aims whose right hand sentence names '
+   +'a charge the lexicon carries."><b>'+a.resolved+' of '+a.of
+   +'</b><span>Resolved</span></div>';}
+ set('aimstat',st);
+ document.getElementById('cellnote').textContent=a.of
+  ?('Two sets, written as a pair. The right hand half is the one that resolves to a seat, '
+    +'because a value has no address and a sentence about a bad day does.')
+  :('Two sets, written as a pair. Nothing is written yet. The left is who you are at your '
+    +'best, in your own words. The right is the same attribute on a bad day.');
+ set('cells',a.rows.map(function(x){
+  var col=x.seat?PAL[x.seat]:'var(--dim)';
+  var h='<div class="cell"><div class="full">'+esc(x.pair.be)
+   +(x.pair.sample?'<span class="ex">Example</span>':'')+'</div>'
+   +'<div class="lim">'+esc(x.pair.notbe)+'</div>';
+  if(x.resolved){
+   /* THE FIGURE IS A PER CENT ONCE SOMETHING HAS MOVED AND A WEIGHT BEFORE
+      THAT. Nought per cent on the day a pair is written is arithmetically
+      true and reads as a failure, and the weight is the thing a person can
+      actually act on. */
+   var pc=x.pct==null?null:x.pct;
+   h+='<div class="at" style="color:'+col+'"><i></i>'
+    +'<span style="color:var(--mid)">'+esc(x.seat.toLowerCase())+'</span>'
+    +'<span class="bar2"><span style="width:'+(pc==null?0:pc)+'%;background:'+col+'"></span></span>'
+    +'<span title="Of the weight at this seat on the day the pair was written.">'
+    +(pc?pc+' per cent':'weight '+x.load.toFixed(1))+'</span></div>';
+  }else{
+   h+='<div class="at">Not resolved. The right hand sentence names no charge the lexicon '
+    +'carries, so there is no seat to aim at.</div>';}
+  return h+'</div>';}).join(''));
+}
+
+/* ============================================================
+   BOOT
+   ============================================================ */
+function reload(){BASE=null;RUNS=0;load(WHO);loadPairs();paint();}
+function boot(){
+ var sel=document.getElementById('who');
+ sel.innerHTML=ROSTER.map(function(n){
+   return '<option'+(n===WHO?' selected':'')+'>'+n+'</option>';}).join('')
+  +'<option value="__empty">A first ever open</option>';
+ sel.onchange=function(){
+  EMPTY=(sel.value==='__empty');
+  WHO=EMPTY?'Marcus':sel.value;
+  reload();
+  status(EMPTY?'A field with nothing in it.':'');};
+ document.getElementById('run').onclick=function(){release();paint();};
+ document.getElementById('hard').onclick=function(){
+  E.CHARGES.forEach(function(c){S.charge[c]=Math.min(10,S.charge[c]+2.2);});
+  E.compute(); paint();
+  status('Every axis up 2.2. What is held rises and the ceiling does not move.');};
+ document.getElementById('reset').onclick=function(){reload();status('Back to arrival.');};
+ document.getElementById('addpair').onclick=function(){
+  var be=document.getElementById('inbe').value.trim();
+  var nb=document.getElementById('innot').value.trim();
+  if(!be||!nb){status('A pair needs both halves. A value has no address on its own.');return;}
+  PAIRS.push(stamp({be:be,notbe:nb}));
+  document.getElementById('inbe').value='';
+  document.getElementById('innot').value='';
+  paint();
+  var seat=X.pairSeat(E,nb);
+  status(seat?('That resolves to your '+seat.toLowerCase()+'.')
+   :'That sentence names no charge the lexicon carries, so it resolves to no seat.');};
+ document.getElementById('dsum').onclick=function(){
+  status('This is the door into the summary page.');};
+ document.getElementById('drit').onclick=function(){
+  status('This is the door into the ritual page.');};
+ reload();
+ (function loop(){draw();drawMasks();requestAnimationFrame(loop);})();
+ setInterval(function(){
+  if(FR.length<30)return;
+  var s=FR.slice().sort(function(a,b){return a-b;});
+  document.getElementById('perf').textContent=
+   'Hero redraw, median '+s[Math.floor(s.length/2)].toFixed(2)+' ms, 95th '
+   +s[Math.floor(s.length*0.95)].toFixed(2)+' ms, against a 16.7 ms frame. Measured in this '
+   +'page over the last '+s.length+' frames.';
+  var q=window.__REQ||[];
+  document.getElementById('req').innerHTML=q.length
+   ?'Outbound requests: '+q.length+'. '+q.map(function(x){return esc(x.kind+' '+x.url);}).join(' | ')
+   :'<span class="ok">Outbound requests: 0.</span> Counted by wrapping fetch, XMLHttpRequest, '
+    +'Image, WebSocket, EventSource and sendBeacon before any other script, and by a '
+    +'PerformanceObserver on every resource the document loads.';
+ },1000);
+}
+boot();
+</script>
+</body></html>

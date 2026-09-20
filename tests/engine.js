@@ -3158,5 +3158,162 @@ g('33 · the sniffer contract, and the four guards that are testable');
  }
 }
 
+g('34 · every name the sniffer can emit as an address is in the 112 table');
+/* THE ROW EXISTS BECAUSE A READING NAMED A PLACE THE PRODUCT DOES NOT HAVE.
+   sniffStory returned "Inferior Cardiac" on a panel profile and the 112 address
+   table carries no such row: it has Cardiac Plexus, Cardiac Nerve Plexus and
+   Great Cardiac Nerve. All nine of the spec's somatic regions failed the table,
+   not just that one, because the spec's Address column is a region in the
+   spec's shorthand and an address in this product is a row of the 112.
+
+   That is the same class of defect as a reading naming a law that does not
+   exist, which a gate caught last week, so this walks the EMITTER rather than
+   checking one string: every story the lexicon can produce, every axis row and
+   every offer row, and every name that comes out has to be in the table. A
+   hand written list of expected names would have passed the broken build. */
+{
+ const {sniffStory,SPEC_POLE,LEX}=E;
+ const TABLE={}; NODES.forEach(n=>{if(n.n)TABLE[n.n]=1;});
+ ok(Object.keys(TABLE).length>0,'the node table has names to check against, '
+  +Object.keys(TABLE).length);
+ const seen={}; let rows=0, namedRows=0;
+ const walk=t=>{
+  const r=sniffStory(t);
+  r.axes.forEach(a=>{rows++; if(a.address!==null){namedRows++; seen[a.address]=1;}});
+  r.offer.forEach(o=>{rows++; if(o.address!==null){namedRows++; seen[o.address]=1;}});};
+ const keys=Object.keys(LEX);
+ ok(keys.length>0,'the lexicon has words to build stories from, '+keys.length);
+ keys.forEach(k=>walk('i am '+k+' about all of it'));
+ for(let i=0;i<keys.length;i+=7)
+  walk('i felt '+keys[i]+' and then '+keys[(i+3)%keys.length]+' and it would not stop');
+ PEOPLE.forEach(p=>walk(p.says||''));
+ walk('');
+ ok(rows>0&&namedRows>0,'the walk reached '+rows+' rows and '+namedRows+' named an address');
+ const off=Object.keys(seen).filter(a=>!TABLE[a]);
+ ok(off.length===0,'every address the sniffer emitted is a row of the table, '
+  +off.length+' are not: '+JSON.stringify(off.slice(0,5)));
+ /* AND THE REGION IS NEVER EMITTED AS AN ADDRESS AGAIN. The spec's words are
+    still in the output, under `region`, which is what they are. This asserts
+    the two fields have not been folded back together. */
+ const regions={}; CHARGES.forEach(c=>{if(SPEC_POLE[c])regions[SPEC_POLE[c].addr]=1;});
+ const leaked=Object.keys(seen).filter(a=>regions[a]&&!TABLE[a]);
+ ok(leaked.length===0,'and no spec region reached the address field, '
+  +JSON.stringify(leaked));
+ const one=sniffStory('i am so ashamed of myself');
+ ok(one.axes.every(a=>'region' in a),'every axis row still carries the spec region');
+ ok(one.offer.every(o=>'region' in o),'and so does every offer');
+ ok(one.offer.length>0&&one.offer.every(o=>o.replacement&&o.address),
+  'and an offer that has an address still names both it and the replacement');
+ /* THE NULL CASE IS A READING, NOT A HOLE, and it is the composite. resentment
+    splits half to Anger and half to Apathy, and only the Anger half has a seat
+    in the lexicon, so the Apathy half carries shadow that no imprint ever
+    placed. Eight of the 270 rows the walk above reaches are exactly this, and
+    every one of them is Apathy. That offers a null address and says why, rather
+    than naming Shoulder / Throat, which is the region the spec puts Apathy at
+    and is not a row of the table. */
+ const comp=sniffStory('i am resentful about all of it');
+ const ap=comp.offer.filter(o=>o.axis==='Apathy')[0];
+ ok(ap&&ap.address===null,'an axis reached only through the composite offers a null '
+  +'address rather than a name, '+(ap?JSON.stringify(ap.address):'no apathy offer'));
+ ok(ap&&/placed no address/.test(ap.because.join(' ')),'and says so in its because');
+ ok(ap&&ap.region==='Shoulder / Throat',
+  'while still carrying the spec region it would have printed, '+(ap?ap.region:'none'));
+}
+
+g('35 · a generated ritual takes its target from a field, not from a literal');
+/* 50 of the 52 rows the queue generates carried a target of one, so every ring
+   in the panel drew a single dash and the parameter the ring exists to carry did
+   not vary. ritTarget tells the three shapes apart off the tables and returns a
+   target only for the one that is a count. */
+{
+ const {ritTarget,RIT_SHAPES,C3_BAND_N,C3_BAND,cardDepth,PRACTICE,CHARGES,SINAMES}=E;
+ ok(typeof ritTarget==='function','ritTarget is reachable from outside the engine');
+ /* every practice in the library, and the minutes are the library's own */
+ const shapes={};
+ PRACTICE.forEach(pr=>{
+  const t=ritTarget({practice:pr.k});
+  shapes[t.shape]=(shapes[t.shape]||0)+1;
+  ok(t.minutes===pr.min,pr.k+' carries the library\'s own minutes, '+t.minutes+' against '+pr.min);
+  ok(t.target===null,pr.k+' is given no target, because the library holds no count for it');
+  ok(t.src==='PRACTICE[].min',pr.k+' says which field it read, '+t.src);});
+ ok(shapes.window===PRACTICE.length,'every practice reads as a window, '
+  +shapes.window+' of '+PRACTICE.length);
+ /* every axis is a count and every count has a number */
+ CHARGES.forEach(c=>{
+  const t=ritTarget({axis:c});
+  ok(t.shape==='count',c+' reads as a count');
+  ok(typeof t.target==='number'&&t.target>0,c+' has a real target, '+t.target);
+  const printed=Math.min(cardDepth(c,'m'),cardDepth(c,'f'));
+  ok(t.target===(printed>0?printed:C3_BAND_N),
+   c+' takes '+(printed>0?'its printed card\'s line count':'one band of the curve')
+   +', '+t.target);
+  ok(t.src&&/cardDepth|C3_BAND/.test(t.src),c+' names the field it read, '+t.src);});
+ /* the band size is read off the table and not typed here */
+ ok(C3_BAND_N===C3_BAND[0].hi-C3_BAND[0].lo+1,
+  'the band size is the table\'s own, '+C3_BAND_N);
+ ok(C3_BAND.every(b=>b.hi-b.lo+1===C3_BAND_N),
+  'and every band is that size, which is what makes one band a session');
+ /* THE FINDING THIS ROW EXISTS FOR. The target has to VARY, because a
+    parameter that is the same for everybody is a parameter nobody can read. */
+ const spread={};
+ CHARGES.forEach(c=>{spread[ritTarget({axis:c}).target]=1;});
+ ok(Object.keys(spread).length>1,
+  'the target varies across the axes rather than being one number, '
+  +JSON.stringify(Object.keys(spread)));
+ ok(Object.keys(spread).indexOf('1')<0,
+  'and no axis comes back with a target of one, which is the literal this replaces');
+ /* a stance has none until the day supplies it */
+ const st=ritTarget({law:SINAMES[0]});
+ ok(st.shape==='stance'&&st.target===null,
+  'a law reads as a stance with no target, '+st.shape+' '+st.target);
+ /* and it refuses rather than defaulting */
+ ok(ritTarget({}).shape===null&&ritTarget({}).target===null,
+  'an argument naming nothing is refused rather than defaulted to a count of one');
+ ok(ritTarget({practice:'nosuchpractice'}).shape===null,
+  'and a practice key the library does not carry is refused by name');
+ ok(/nosuchpractice/.test(ritTarget({practice:'nosuchpractice'}).because),
+  'saying which key it was');
+ ok(RIT_SHAPES.length===3&&RIT_SHAPES.indexOf('count')>=0
+  &&RIT_SHAPES.indexOf('window')>=0&&RIT_SHAPES.indexOf('stance')>=0,
+  'and there are exactly three shapes, named');
+}
+
+g('36 · the ceiling is reachable, and it is what coherence reads with nothing held');
+/* cqCeiling and cqHeadroom decide a sentence a person reads and were absent
+   from the contract, so no gate could see them and two seats built their own
+   copy instead. The invariant is the one the design names: with every charge and
+   every replacement at zero, cqCeiling's inputs ARE compute's, so the two must
+   agree exactly. That is what catches a change made to one copy of the formula
+   and not the other. */
+{
+ const {cqCeiling,cqHeadroom}=E;
+ ok(typeof cqCeiling==='function','cqCeiling is reachable from outside the engine');
+ ok(typeof cqHeadroom==='function','and so is cqHeadroom');
+ const r=reset(0,0,6);
+ near(r.CQ,cqCeiling(),1e-9,
+  'with nothing held the reading IS the ceiling, so the two copies of the formula agree');
+ near(cqHeadroom(r.CQ),0,1e-9,'and the headroom is nothing, because there is nothing to release');
+ /* and it does not move the field it reads */
+ const before=JSON.stringify(S.charge)+JSON.stringify(S.replace)+JSON.stringify(S.law);
+ cqCeiling(); cqHeadroom(r.CQ);
+ ok(JSON.stringify(S.charge)+JSON.stringify(S.replace)+JSON.stringify(S.law)===before,
+  'and reading the ceiling mutates nothing');
+ /* THE CEILING IS THE PERSON AND THE READING IS THE DRAG. Load the field and
+    the reading has to fall while the ceiling holds, because release works on
+    resistance and cannot manufacture integrity. */
+ const loaded=reset(6,0,6);
+ const ceil=cqCeiling();
+ ok(loaded.CQ<ceil,'a loaded field reads below its own ceiling, '
+  +loaded.CQ.toFixed(2)+' against '+ceil.toFixed(2));
+ ok(cqHeadroom(loaded.CQ)>0,'so there is headroom in it, '+cqHeadroom(loaded.CQ).toFixed(2));
+ near(cqHeadroom(loaded.CQ),ceil-loaded.CQ,1e-9,'and the headroom is exactly the gap');
+ ok(cqHeadroom(ceil+10)===0,'a reading above the ceiling reports no headroom rather than a negative one');
+ /* the laws are the only lever on it, which is the ruling the number carries */
+ const low=reset(0,0,3), lowCeil=cqCeiling();
+ const high=reset(0,0,9), highCeil=cqCeiling();
+ ok(highCeil>lowCeil,'the ceiling rises with the laws and nothing else, '
+  +lowCeil.toFixed(2)+' at law 3 against '+highCeil.toFixed(2)+' at law 9');
+}
+
 console.log('\n===== '+P+' passed, '+F+' failed =====');
 process.exit(F?1:0);

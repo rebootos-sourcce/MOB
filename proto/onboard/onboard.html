@@ -118,6 +118,11 @@ button:focus-visible{outline:2px solid var(--accent); outline-offset:3px}
 /* ---- the loop. One object, three scales. Icons are ring, not fill. ---- */
 .loopwrap{position:relative; width:var(--ring); height:var(--ring);
  margin:0 auto 22px; flex:none}
+/* THE SIX O'CLOCK WORD LIVES OUTSIDE THE BOX. The ring's SVG overflows on
+   purpose so the four words can sit outside the track, which means the
+   layout box is 236px and the drawing is taller. Measured at 1600, "flow"
+   landed on top of "Story". The tour screen pays for the overflow. */
+.tourloop .loopwrap{margin-bottom:46px}
 .loop{width:100%; height:100%; overflow:visible}
 .track{fill:none; stroke:var(--line); stroke-width:1.5}
 .arc{fill:none; stroke:var(--accent); stroke-width:2.2; stroke-linecap:round;
@@ -127,7 +132,7 @@ button:focus-visible{outline:2px solid var(--accent); outline-offset:3px}
 .st circle{fill:var(--bg); stroke:var(--line); stroke-width:1.4}
 .st path,.st line,.st polyline,.st rect,.st ellipse{fill:none; stroke:var(--dim);
  stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round}
-.st text{fill:var(--dim); font-size:11px; letter-spacing:.06em;
+.st text{fill:var(--dim); font-size:5.4px; letter-spacing:.14px;
  font-family:var(--sans)}
 .st{opacity:0; transition:opacity .4s ease}
 .st.shown{opacity:1}
@@ -138,9 +143,9 @@ button:focus-visible{outline:2px solid var(--accent); outline-offset:3px}
 /* the figure at rest, seven seats on a spine. The boot has just drawn
    this assembling, and meeting it again standing still is the product
    saying this is the thing, without a sentence. */
-.fig{width:150px; height:auto; margin:0 auto 26px; display:block}
-.fig .sp{stroke:var(--line); stroke-width:1.4; fill:none}
-.fig .hd{fill:none; stroke:var(--line); stroke-width:1.4}
+.fig{width:200px; height:auto; margin:0 auto 26px; display:block}
+.fig .sp{stroke:var(--line); stroke-width:1.6; fill:none}
+.fig .hd{fill:none; stroke:var(--line); stroke-width:1.6}
 .fig .dt{stroke:none}
 
 /* ---- the word, on a beat ---- */
@@ -155,23 +160,23 @@ button:focus-visible{outline:2px solid var(--accent); outline-offset:3px}
 .padwrap{display:flex; flex-direction:column; align-items:center; gap:12px}
 .pad{width:var(--pad); height:var(--pad); max-width:100%; touch-action:none;
  cursor:crosshair}
-.pad .rim{fill:var(--sunk); stroke:var(--line); stroke-width:1.4}
-.pad .cross{stroke:var(--line); stroke-width:.8; opacity:.5}
+.pad .rim{fill:var(--sunk); stroke:var(--line); stroke-width:1.6}
+.pad .cross{stroke:var(--line); stroke-width:.9; opacity:.7}
 .pad .mk{fill:var(--accent); stroke:none}
-.pad .mk.no{fill:var(--mid)}
+.pad .mk.no{fill:none; stroke:var(--mid); stroke-width:2.4}
 .pad .tail{fill:none; stroke:var(--accent); stroke-width:1.2; opacity:.35}
 .pad .gap{stroke:var(--ink); stroke-width:1.2; stroke-dasharray:3 4; opacity:.6}
-.pad text{fill:var(--dim); font-size:9px; font-family:var(--sans)}
+.pad text{fill:var(--mid); font-size:13px; font-family:var(--sans)}
 .pad:focus-visible{outline:2px solid var(--accent); outline-offset:4px; border-radius:50%}
 
 /* ---- the tour card ---- */
 .tool{display:flex; flex-direction:column; align-items:center; gap:10px}
 .toolname{font-size:13px; letter-spacing:.14em; text-transform:lowercase;
  color:var(--accent)}
-.rows{display:flex; flex-direction:column; gap:14px; margin:0 auto;
- max-width:34ch; text-align:left}
+.rows{display:flex; flex-direction:column; gap:16px; margin:0 auto;
+ max-width:46ch; text-align:left}
 .row{display:flex; gap:12px; align-items:flex-start}
-.row svg{flex:none; width:26px; height:26px; margin-top:1px}
+.row svg{flex:none; width:28px; height:28px; margin-top:0}
 .row svg *{fill:none; stroke:var(--dim); stroke-width:1.5;
  stroke-linecap:round; stroke-linejoin:round}
 .row span{font-size:16px; color:var(--mid); line-height:1.4}
@@ -275,7 +280,8 @@ var STATIONS=[
   ic:'<path d="M12 4v16"/><circle cx="12" cy="7" r="1.9"/><circle cx="12" cy="12" r="1.9"/><circle cx="12" cy="17" r="1.9"/>'}
 ];
 
-var R=42, CIRC=2*Math.PI*R;   /* the ring, in its own 100 unit box */
+var R=42, CIRC=2*Math.PI*R;      /* the loop, in its own 100 unit box */
+var PADCIRC=2*Math.PI*96;        /* the same arc, run round the pad's rim */
 
 /* stations sit at 12, 3, 6 and 9 o'clock. The word rides outside the
    ring and the icon inside it, so neither crosses the arc. */
@@ -289,17 +295,28 @@ function loopSVG(o){
  var shown=!!o.stations;
  var h='<svg class="loop" viewBox="0 0 100 100" aria-hidden="true">'
   +'<circle class="track" cx="50" cy="50" r="'+R+'"/>'
+  /* THE OFFSET IS A STYLE, NOT AN ATTRIBUTE. The first cut wrote
+     stroke-dashoffset as a presentation attribute and transitioned it, and
+     every paced screen shot with the ring already closed: Chromium does not
+     reliably start a transition when a presentation attribute is replaced.
+     Shots at 260 ms showed a complete circle on an eight second settle.
+     Looking at the images is what caught it. */
   +'<circle class="arc'+(o.paced?' paced':'')+'" id="arc" cx="50" cy="50" r="'+R+'" '
-   +'stroke-dasharray="'+CIRC.toFixed(2)+'" '
-   +'stroke-dashoffset="'+(CIRC*(1-frac)).toFixed(2)+'"/>';
- STATIONS.forEach(function(s,i){
+   +'style="stroke-dasharray:'+CIRC.toFixed(2)+';stroke-dashoffset:'
+   +(CIRC*(1-frac)).toFixed(2)+'"/>';
+ /* THE STATIONS ARE NOT IN THE DOCUMENT UNTIL THE TOUR BEGINS. The first
+    cut drew them at opacity 0 on the paced screens so the reveal would be a
+    fade. Measured, that put four words into the text tree of every screen
+    that was supposed to carry none: the word count read 28 on the settle
+    where the copy is 24. Invisible text is still text. */
+ if(shown)STATIONS.forEach(function(s,i){
   var p=stationXY(i);
   /* the word sits outside, pushed along the radius, and is anchored so
      it never overlaps the ring at any of the four positions */
   var ox=p.x+Math.cos(p.a)*13, oy=p.y+Math.sin(p.a)*13;
   var anc=(i===1?'start':i===3?'end':'middle');
   var dy=(i===0?-1:i===2?7:3.6);
-  h+='<g class="st'+(shown?' shown':'')+(i<=lit?' lit':'')+'">'
+  h+='<g class="st shown'+(i<=lit?' lit':'')+'">'
    +'<circle cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="8.4"/>'
    +'<g transform="translate('+(p.x-6.2).toFixed(1)+','+(p.y-6.2).toFixed(1)+') scale(0.517)">'
    +s.ic+'</g>'
@@ -309,11 +326,12 @@ function loopSVG(o){
 }
 /* the arc is driven by one CSS property, so the browser composites it and
    nothing runs per frame. Measured in the shot harness. */
-function arcTo(frac,ms){
+function arcTo(frac,ms,circ){
  var a=document.getElementById('arc'); if(!a)return;
- if(ms!=null){a.style.transition='stroke-dashoffset '+ms+'ms linear';}
- requestAnimationFrame(function(){
-  a.setAttribute('stroke-dashoffset',(CIRC*(1-frac)).toFixed(2));});
+ var C=(circ==null?CIRC:circ);
+ if(ms!=null)a.style.transition='stroke-dashoffset '+ms+'ms linear';
+ requestAnimationFrame(function(){requestAnimationFrame(function(){
+  a.style.strokeDashoffset=(C*(1-frac)).toFixed(2);});});
 }
 
 /* ============================================================
@@ -326,7 +344,7 @@ function figSVG(){
   ['Root','Sacral','Solar','Heart','Throat','3rd Eye','Crown'];
  var pal=(typeof PAL!=='undefined')?PAL:{};
  return '<svg class="fig" viewBox="0 0 120 172" aria-hidden="true">'
-  +'<ellipse class="hd" cx="60" cy="20" rx="13" ry="4.4"/>'
+  +'<ellipse class="hd" cx="60" cy="27" rx="13" ry="4.4"/>'
   +'<line class="sp" x1="60" y1="150" x2="60" y2="36"/>'
   +y.map(function(yy,i){
     return '<circle class="dt" cx="60" cy="'+yy+'" r="4.4" fill="'
@@ -351,22 +369,34 @@ function figSVG(){
 function padSVG(k,opt){
  opt=opt||{};
  var p=D[k]||{x:0,y:0};
+ /* the two mark version is a picture and carries no role and no tabindex,
+    because a read only figure in the tab order is a control that does
+    nothing. The live version is role=application and is reachable by key. */
  var h='<svg class="pad" id="pad" viewBox="-100 -100 200 200" '
-  +'role="application" tabindex="0" '
-  +'aria-label="Show what the word did. Move the marker out from the centre '
-  +'in any direction, as far as you want."'
-  +(opt.both?' aria-readonly="true"':'')+'>'
+  +(opt.both?'aria-hidden="true"'
+    :'role="application" tabindex="0" aria-label="Show what the word did. '
+    +'Move the marker out from the centre in any direction, as far as you want."')
+  +'>'
   +'<circle class="rim" cx="0" cy="0" r="96"/>'
+  +(opt.arc?'<circle class="arc paced" id="arc" cx="0" cy="0" r="96" '
+   +'style="stroke-dasharray:'+PADCIRC.toFixed(2)+';stroke-dashoffset:'
+   +PADCIRC.toFixed(2)+'"/>':'')
   +'<line class="cross" x1="-96" y1="0" x2="96" y2="0"/>'
   +'<line class="cross" x1="0" y1="-96" x2="0" y2="96"/>';
  if(opt.both){
   var a=D.yes, b=D.no;
+  /* SHAPE AS WELL AS COLOUR, AND THE LABEL CLAMPED INSIDE THE RIM. Measured
+     at 390 the two words rendered at about nine pixels, which is unreadable,
+     and a mark near the top rim put its own label outside the viewBox. The
+     yes mark is a disc and the no mark is a ring, so the pair is still
+     separable with the labels unread or the colours unseen. */
+  var lab=function(v){var y=-v.y*96-15; return y<-80?(-v.y*96+22):y;};
   h+='<line class="gap" x1="'+(a.x*96).toFixed(1)+'" y1="'+(-a.y*96).toFixed(1)
    +'" x2="'+(b.x*96).toFixed(1)+'" y2="'+(-b.y*96).toFixed(1)+'"/>'
-   +'<circle class="mk" cx="'+(a.x*96).toFixed(1)+'" cy="'+(-a.y*96).toFixed(1)+'" r="7"/>'
-   +'<text x="'+(a.x*96).toFixed(1)+'" y="'+(-a.y*96-12).toFixed(1)+'" text-anchor="middle">yes</text>'
-   +'<circle class="mk no" cx="'+(b.x*96).toFixed(1)+'" cy="'+(-b.y*96).toFixed(1)+'" r="7"/>'
-   +'<text x="'+(b.x*96).toFixed(1)+'" y="'+(-b.y*96-12).toFixed(1)+'" text-anchor="middle">no</text>';
+   +'<circle class="mk" cx="'+(a.x*96).toFixed(1)+'" cy="'+(-a.y*96).toFixed(1)+'" r="8"/>'
+   +'<text x="'+(a.x*96).toFixed(1)+'" y="'+lab(a).toFixed(1)+'" text-anchor="middle">yes</text>'
+   +'<circle class="mk no" cx="'+(b.x*96).toFixed(1)+'" cy="'+(-b.y*96).toFixed(1)+'" r="8"/>'
+   +'<text x="'+(b.x*96).toFixed(1)+'" y="'+lab(b).toFixed(1)+'" text-anchor="middle">no</text>';
  }else{
   if(p.trace.length>1){
    h+='<polyline class="tail" points="'+p.trace.map(function(t){
@@ -411,13 +441,17 @@ function wirePad(k){
 function render(){
  clearT();
  var s=document.getElementById('surface'), h='';
+ s.classList.remove('tourloop');
  var leave='<button type="button" class="leave" data-go="out">Leave</button>';
 
  /* ---- 0. Hello. OB4 and OB5: "Welcome" goes, it reads "Hello,". "This
         is you" stays and "and it is okay" goes. OB6 struck "No judgment,
         nothing here grades you" and his reason is the copy rule: we have
         not set up anything that would make a person think they were being
-        graded, so denying it plants the idea. Nothing replaces it. ---- */
+        graded, so denying it plants the idea. Nothing replaces it.
+
+        The ring is not on this screen. One object a screen: here it is the
+        figure, and the ring arrives with the settle. ---- */
  if(step===0){
   h='<h1><span>Hello,</span><span class="two">this is you.</span></h1>'
    +figSVG()
@@ -456,13 +490,16 @@ function render(){
         the product chose against a loaded word the product chose. ---- */
  else if(step===2||step===4){
   var isYes=(step===2), k=isYes?'yes':'no';
+  /* THE ARC RUNS ROUND THE RIM OF THE CIRCLE THE PERSON IS TOUCHING. The
+     first cut drew the progress ring above the pad, which put two circles of
+     nearly the same size on one screen and made the undraggable one look like
+     the control. One circle, and it carries both jobs. */
   h=leave
-   +loopSVG({frac:0,paced:true})
    +'<div class="stagearea"><div class="word" id="w">'+k+'</div></div>'
-   +'<div class="padwrap">'+padSVG(k)
+   +'<div class="padwrap">'+padSVG(k,{arc:true})
    +'<p class="dim">Move the marker.</p></div>';
   s.innerHTML=h; bind(); wirePad(k);
-  arcTo(1,REP*BEAT_MS);
+  arcTo(1,REP*BEAT_MS,PADCIRC);
   say(isYes?'The first word.':'The second word.');
   runBeats(function(){step=isYes?3:5;render();});
   return;
@@ -523,8 +560,12 @@ function render(){
         itself, which has been on screen since the settle. ---- */
  else if(step>=6&&step<=9){
   var i=step-6, st=STATIONS[i];
+  /* the station word is on the ring and is not repeated here. The first cut
+     printed it again above the tool name, which is one word twice on a screen
+     carrying twelve. */
+  s.classList.add('tourloop');
   h=loopSVG({frac:(i+1)/4, lit:i, stations:true})
-   +'<div class="tool"><span class="toolname">'+esc(st.w)+'</span>'
+   +'<div class="tool">'
    +'<h2>'+esc(st.tool)+'</h2>'
    +'<p>'+esc(st.line)+'</p></div>'
    +'<div class="acts"><button type="button" class="pri" data-go="next">Next</button></div>';
@@ -540,6 +581,7 @@ function render(){
         and the product opens. There is no final card to count towards,
         which is the other half of the answer to OB1. ---- */
  else{
+  s.classList.add('tourloop');
   h=loopSVG({frac:1, lit:3, stations:true})
    +'<p class="dim">Opening.</p>';
   s.innerHTML=h;

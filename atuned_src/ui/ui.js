@@ -562,8 +562,13 @@ function railTop(r){
        :'Nothing has been read yet. Write a story or set a charge.')+'"'
   +(tcol?' style="color:'+tcol+'"':'')
   +'>'+esc(r.unread?'not read yet':r.tier)+'</button>'
+  /* ONE STATE, ONE SENTENCE. The button's own title two lines above says
+     "Nothing has been read yet. Write a story or set a charge." for the same
+     unread field, and this said the same thing a second way, three words
+     shorter and missing the auxiliary, an inch away on the same rail. The
+     empty state is said one way across the app. */
   +'<span class="rt-d">'+esc(r.unread
-    ? 'Nothing entered yet. Write what happened and this fills in.'
+    ? 'Nothing has been read yet. Write a story or set a charge.'
     : (td?td.def:''))+'</span>';
  /* and a tap gets the whole thing, because hover is not a route on the device
     most of this audience arrives on. */

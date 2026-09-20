@@ -8,20 +8,22 @@
 <style>
 /* FALLBACK TOKENS ONLY, AND tokens.css OVERRIDES EVERY ONE OF THEM. The link
    sits after this block so the generated palette wins whenever it is present.
-   The full argument is in about.html and is not repeated here. 27 tokens. */
+   The full argument is in about.html and is not repeated here. The block holds
+   exactly the tokens this page reads and nothing else, checked against var()
+   uses in this file and against tokens.css value by value rather than counted
+   by hand. */
 :root{
  --bg:#0C0D12; --panel:#1A1D26; --panel-2:#252833;
  --edge:rgba(255,255,255,.09); --edge-2:rgba(255,255,255,.14);
  --ink:#EFEDE8; --mid:#B4B0A8; --dim:#94908A;
- --root:#CF5953; --sacral:#D19255; --solar:#D4BC70;
- --heart:#65CFA5; --throat:#65B8D4; --eye:#8296DB; --crown:#A883D6;
+ --sacral:#D19255; --throat:#65B8D4; --eye:#8296DB;
  --accent:#7EB8D4; --on-accent:#0B1418;
  --au:#C2A063; --um:#FFFFFF; --good:#68CBA4;
  --sans:'Inter','Inter Tight',system-ui,-apple-system,'Segoe UI',sans-serif;
  --num:'Inter','Inter Tight',system-ui,-apple-system,sans-serif;
  --r-s:11px; --tap:44px;
  --ease-out:cubic-bezier(.22,1,.36,1); --t-micro:120ms;
- --g1:6px; --g2:10px; --g3:16px;
+ --g2:10px; --g3:16px;
 }
 
 *{box-sizing:border-box}
@@ -101,10 +103,21 @@ thead th{background:var(--panel-2);font-size:11.5px;letter-spacing:.14em;
 tbody tr:last-child td{border-bottom:0}
 td.n,th.n{font-family:var(--num);font-variant-numeric:tabular-nums;
  white-space:nowrap}
+/* A COLUMN WHOSE VALUE IS THE SAME ON EVERY ROW IS NOT A COLUMN. The first cut
+   carried a Sees column reading "the whole reading" five times, which squeezed
+   the table at 390 into three line cells and spent the widest column in the
+   layout repeating the page's own lead line. It is in the caption now, said
+   once, and the one rung that differs says so in its own cell. */
 td.rung{font-weight:600}
+td.rung i{display:block;font-style:normal;font-weight:400;font-size:13.5px;
+ color:var(--dim);line-height:1.35;margin-top:2px}
+th.r,td.r{text-align:right}
 td.price{font-weight:600;font-size:18px}
 tbody tr.free td{background:var(--panel-2)}
-tbody tr.four td{box-shadow:inset 2px 0 0 var(--au)}
+/* THE GOLD RULE MARKS THE ROW ONCE, AT ITS LEFT EDGE. On every cell it drew
+   four vertical gold rules through one row and read as a ruled grid rather
+   than as a mark. Caught at 390, where the row is tallest. */
+tbody tr.four td:first-child{box-shadow:inset 2px 0 0 var(--au)}
 .wide{overflow-x:auto}
 
 /* ---- the state of checkout. One line, said once, not repeated and not
@@ -132,6 +145,9 @@ a.btn.ghost{background:transparent;color:var(--ink);
  box-shadow:inset 0 0 0 1px var(--edge-2)}
 a.btn:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
 .meta{margin:14px 0 0;font-size:13px;color:var(--dim)}
+.bd p a{color:var(--accent);text-decoration:none;
+ border-bottom:1px solid var(--edge-2)}
+.bd p a:hover,.bd p a:focus-visible{border-bottom-color:var(--accent)}
 
 .close{margin-top:56px;padding-top:30px;border-top:1px solid var(--edge-2)}
 .close p{font-size:26px;line-height:1.36;margin:0;letter-spacing:-.015em}
@@ -225,6 +241,16 @@ ground.</span></p>
   <p class="m">A pattern is one thought line, at one address, by way of one
   channel. Reading it in thought spends it. Nothing here asks you to say anything
   out loud.</p>
+  <!-- HIS CHAIN IS THE SPINE HERE TOO, AND IT IS LOAD BEARING RATHER THAN
+       DECORATIVE: what a pattern buys is one kink, and a tier is the rate at
+       which the cluster and the network above it come apart. The full chain is
+       on the about page and is not restated here, because a price list that
+       re-explains the product has stopped being a price list. -->
+  <p class="m">What a pattern takes apart is a kink: one address holding a stress
+  response. Clusters are built out of kinks and networks are built out of
+  clusters, so a rung on this ladder is a rate at which you can integrate the
+  kink, the cluster and the network. <a href="about.html">The chain is on the
+  about page</a>, with the arithmetic under each rung of it.</p>
   <ul class="figs">
    <li><em>Lines</em><strong>21,400 in total</strong>
     <span>The field holds 112 addresses and 107 of them can be released, at four
@@ -267,30 +293,30 @@ ground.</span></p>
  <div class="bd">
   <div class="ladder"><div class="wide">
   <table>
-   <caption>Patterns are new ground opened. Prices are dollars a month.</caption>
-   <thead><tr><th>Rung</th><th class="n">Patterns</th><th class="n">A week</th>
-    <th>Sees</th><th class="n">Price</th></tr></thead>
+   <caption>Every rung sees the whole reading. Patterns are new ground opened,
+    and prices are dollars a month.</caption>
+   <thead><tr><th>Rung</th><th class="n">Patterns</th><th class="n r">A week</th>
+    <th class="n r">Price</th></tr></thead>
    <tbody>
     <tr class="free"><td class="rung">Free</td><td class="n">10 a week</td>
-     <td class="n">10</td><td>The whole reading</td><td class="n price">0</td></tr>
+     <td class="n r">10</td><td class="n r price">0</td></tr>
     <tr><td class="rung">One</td><td class="n">400 a month</td>
-     <td class="n">100</td><td>The whole reading</td><td class="n price">12</td></tr>
+     <td class="n r">100</td><td class="n r price">12</td></tr>
     <tr><td class="rung">Two</td><td class="n">800 a month</td>
-     <td class="n">200</td><td>The whole reading</td><td class="n price">29</td></tr>
+     <td class="n r">200</td><td class="n r price">29</td></tr>
     <tr><td class="rung">Three</td><td class="n">1,200 a month</td>
-     <td class="n">300</td><td>The whole reading</td><td class="n price">59</td></tr>
-    <tr class="four"><td class="rung">Four</td><td class="n">1,200 a month</td>
-     <td class="n">300</td><td>The whole reading, and the people you lead</td>
-     <td class="n price">99</td></tr>
+     <td class="n r">300</td><td class="n r price">59</td></tr>
+    <tr class="four"><td class="rung">Four<i>and the people you lead</i></td>
+     <td class="n">1,200 a month</td>
+     <td class="n r">300</td><td class="n r price">99</td></tr>
    </tbody>
   </table>
   </div></div>
   <p class="state"><b>Checkout is not open yet</b>, so nothing on this table can be
   charged today. The gift above needs no card and no account.</p>
   <p class="m">The free rung banks. Ten a week against a run of 25 means one
-  release every two and a half weeks, which is the pace rather than a shortfall.
-  Invite somebody and you get 50 patterns when they join, up to four invitations
-  a month.</p>
+  release every two and a half weeks. The pace is deliberate. Invite somebody and
+  you get 50 patterns when they join, up to four invitations a month.</p>
  </div>
 </section>
 
@@ -382,10 +408,13 @@ ground.</span></p>
  </div>
 </section>
 
+<!-- THE CLOSE IS HIS AND IT STAYS WHOLE, and it is the same close as the about
+     page carries. One close for the funnel. A second one written for this page
+     would be a pricing page arguing with the brand. -->
 <div class="close">
- <p>Sight is free.</p>
- <p>Ground costs.</p>
- <p class="last">Start with the hundred.</p>
+ <p>This is you.</p>
+ <p>We help you become the best version of yourself.</p>
+ <p class="last">In mind, body, spirit and soul.</p>
 </div>
 
 <p class="foot">This page makes no request of any kind. It reads self report. A

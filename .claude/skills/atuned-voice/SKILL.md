@@ -375,17 +375,22 @@ in `check.py` so that no writer has to hold it, and the gate fails on it.
 
 ### V17. A Figure's Label Is One Word
 
-    FAIL  ui/record.js:80    Ground opened, all time
+    FAIL  ui/record.js      Ground opened, all time
                              12
-                             addresses and channels opened at least once,
-                             from 47 lines spoken
-    FIX   ui/record.js:80    Opened
+                             addresses and channels opened at least once, from
+                             47 lines spoken. Your own horizon reads about 300,
+                             give or take 40.
+    SHIPS ui/record.js:96    Opened
                              12 addresses
-                             [tooltip] Addresses and channels opened at least
-                             once, from 47 lines spoken.
+                             opened at least once, from 47 lines spoken.
 
-    FAIL  ui/cone.js:937     Minutes planned, not yet done          30
-    FIX                      Planned                        30 minutes
+    FAIL  ui/cone.js         Minutes planned, not yet done          30
+    SHIPS ui/cone.js:953     Planned                        30 minutes
+
+The record card is the corpse the rule was written against and it carried the
+second defect too: the horizon, about 300, was stated under the figure and
+stated again four lines below it in the Next block. Same number, twice, on one
+card, which is the "of the same 90 days" he was pointing at.
 
 His, and he asked for it by name. "The buttons still have that noodly text on
 them. 85 days kept, of the 90 days on your record. Of the same 90 days. We

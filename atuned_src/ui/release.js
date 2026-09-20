@@ -196,11 +196,14 @@ function relRender(){
    +(Math.abs(_mv)<0.05?'did not move.'
      :(_mv>0?'up ':'down ')+Math.abs(_mv).toFixed(1)+', now '+_now.CQ.toFixed(1)+'.')
    +' '+(_left<1.5
-     ?'Release has about '+_left.toFixed(1)+' left to give you. What is holding the '
-      +'reading down now is integrity, which is the twenty one laws, and those move '
-      +'when you answer them or when what you do changes. Not from here.'
-     :'Release has about '+_left.toFixed(1)+' more in it before integrity is the '
-      +'only thing left holding the reading down.')
+     /* THE NUMBER SAYS WHAT IT IS, AND THE SENTENCE STOPS. "about 1.2 left to
+        give you" is one point two of what, and the sentence after it ran to
+        thirty words with its subject deferred and a gloss in the middle. */
+     ?'Release has about '+_left.toFixed(1)+' points left to give you. Integrity '
+      +'holds the reading down from here, and integrity is the twenty one laws. '
+      +'They move when you answer them, and when what you do changes.'
+     :'Release has about '+_left.toFixed(1)+' points more in it before integrity '
+      +'is the only thing holding the reading down.')
    +'</div>'
    +'<div class="rel-note">Release empties the address. The coherent opposite is '
    +'installing on the same pass. The rebound is day four and a half. Completion is day '

@@ -96,9 +96,8 @@ function accAccount(){
    +'<input type="text" id="acnm" value="'+esc((CURP&&CURP.name)||'')+'" '
    +'aria-label="Profile name"></div>'
    +accRow('Profiles on this device',PROFILES.length,{num:true}),
-   'The profile picker sits in the top bar today. It is a demo control in the '
-   +'navigation of a product about to grow accounts, and it comes out of there '
-   +'when sign in lands.');
+   'The profile picker sits in the top bar today. It is a demo control, and it '
+   +'comes out of the bar when sign in lands.');
  /* IDENTITY IS READ OUT HERE AND EDITED NOWHERE BUT ENERGETICS. Two editors
     for one field is two answers to one question. */
  h+=accGroup('Identity',
@@ -151,9 +150,9 @@ function accSecurity(){
    +accStub('Two factor','not set')
    +accStub('Sessions and devices','this browser only')
    +accStub('Recent account activity','nothing to show'),
-   'Every row here waits on sign in. When it lands it is a one time code to '
-   +'the address or a signed link, never the address alone, because an address '
-   +'alone would be the key to somatic and psychological self report.');}
+   'Every row here waits on sign in. It will be a one time code to the '
+   +'address, or a signed link. Never the address alone, because an address '
+   +'alone is the key to somatic and psychological self report.');}
 
 /* ---------- 4.4 privacy. the one section here that is not generic ---------- */
 var ACC_HELD=[
@@ -181,16 +180,20 @@ function accPrivacy(){
      +'a reload. Export is the only way to keep it.');
  h+=accGroup('Who Has Sight',
    accRow('People with sight of this record','nobody'),
-   'Nobody sees this but you. When a practitioner can be granted sight it is '
-   +'explicit, it is listed here by name with what they see and when you '
-   +'granted it, and revoking is one press on the row. Never a silent default.');
- h+=accGroup('Improve The Models',
+   'Nobody sees this but you. A practitioner gets sight only when you grant '
+   +'it. The grant is listed here by name, with what they see and the date you '
+   +'gave it, and one press on the row takes it back. Never a silent default.');
+ h+=accGroup('Improve the Models',
    accTog('Use my stories to refine the reading','acmodel',
      !!(CURP&&CURP.ui&&CURP.ui.model)),
    'Off unless you turn it on. What would be used is the story with nothing '
    +'that identifies you attached, and the record and the story are never held '
    +'together. Saying no keeps the product whole.');
- h+=accGroup('Getting It Out, And Getting Rid Of It',
+ h+=/* A HEADING IS A THING A PERSON WOULD SAY. This one read "Getting It Out,
+   And Getting Rid Of It": seven words, a comma, and a conjunction capitalised
+   in a file that is otherwise in title case. It names two controls, so it
+   says their two names. */
+ accGroup('Export and Delete',
    accAct('Export this record','acexp',{btn:'Copy'})
    +accAct('Delete this record','acdel',{btn:'Delete',danger:true}),
    'Delete removes this record from this browser now. There is no store yet, '

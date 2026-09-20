@@ -22,14 +22,18 @@
    one and nothing here can be the value that ships.
 
    What this block buys is that the page opens correctly with no siblings,
-   which is the standing ruling on anything sent to the owner. These are the
-   26 tokens this page actually reads, and nothing else. */
+   which is the standing ruling on anything sent to the owner. The block holds
+   exactly the tokens this page reads and nothing else, measured rather than
+   counted by hand: a number typed into a comment that the file then grows past
+   is the defect this repository has been bitten by seven times. Checked by
+   diffing the declarations here against var() uses in this file, and against
+   tokens.css value by value. */
 :root{
- --bg:#0C0D12; --panel:#1A1D26; --panel-2:#252833;
+ --bg:#0C0D12; --panel:#1A1D26;
  --edge:rgba(255,255,255,.09); --edge-2:rgba(255,255,255,.14);
  --ink:#EFEDE8; --mid:#B4B0A8; --dim:#94908A;
  --root:#CF5953; --sacral:#D19255; --solar:#D4BC70;
- --heart:#65CFA5; --throat:#65B8D4; --eye:#8296DB; --crown:#A883D6;
+ --heart:#65CFA5; --eye:#8296DB;
  --accent:#7EB8D4; --on-accent:#0B1418;
  /* --au IS THE REAL GOLD AND --gold IS AN ALIAS FOR THE BLUE ACCENT. The
     generated file records that Source OS under the wordmark rendered blue
@@ -39,7 +43,7 @@
  --num:'Inter','Inter Tight',system-ui,-apple-system,sans-serif;
  --r-s:11px; --tap:44px;
  --ease-out:cubic-bezier(.22,1,.36,1); --t-micro:120ms;
- --g1:6px; --g2:10px; --g3:16px;
+ --g2:10px; --g3:16px;
 }
 
 *{box-sizing:border-box}
@@ -102,6 +106,29 @@ h3{font-size:17px;margin:0;font-weight:600}
  overflow:hidden}
 .nots li{background:var(--panel);padding:12px 16px;color:var(--mid)}
 .nots li b{color:var(--ink);font-weight:600}
+
+/* ---- THE CHAIN. His storyboard, in his order, eight rungs down a rail.
+
+       It is a rail and not a row of cards because the thing being shown is a
+       sequence with a direction: each rung is caused by the one above it, and a
+       row of equal cards says they are parallel. The rail is one hairline, the
+       rung marks are rings and never fills, and the three coloured marks are
+       the three places the sequence changes kind: the natural state, the first
+       symptom a person would recognise, and the instrument entering. ---- */
+.chain{list-style:none;margin:24px 0 0;padding:0 0 0 30px;position:relative}
+.chain::before{content:'';position:absolute;left:5px;top:8px;bottom:8px;
+ width:1px;background:var(--edge-2)}
+.chain li{position:relative;padding:0 0 16px}
+.chain li:last-child{padding-bottom:0}
+.chain li::before{content:'';position:absolute;left:-30px;top:8px;width:11px;
+ height:11px;border-radius:50%;border:1.5px solid var(--edge-2);
+ background:var(--bg)}
+.chain b{font-weight:600}
+.chain span{color:var(--mid)}
+.chain .open::before{border-color:var(--heart)}
+.chain .hurt::before{border-color:var(--root)}
+.chain .tool::before{border-color:var(--accent);border-width:2.5px}
+.chain .tool b{color:var(--accent)}
 
 /* ---- the three claims under Why now ---- */
 .three{display:grid;gap:1px;margin:24px 0 0;background:var(--edge);
@@ -227,20 +254,42 @@ a.btn:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
   <p class="m">So the work is subtraction. Nothing is added to a person here. The
   instrument finds what is carrying load, names the place in the body it sits,
   and takes it off one address at a time.</p>
-  <p class="m">Becoming does not take lifetimes. Take the first load off today.</p>
+  <p class="m">This tool is about helping you become. Becoming does not take
+  lifetimes, and the first load comes off today.</p>
  </div>
 </section>
 
 <!-- 2. ABOUT. The definition, first clause, Encarta E1. And the not list,
         which does more work than the is list. "Journey" is a refused word and
-        is not on it: the gate catches it and the shelf is full of it. -->
+        is not on it: the gate catches it and the shelf is full of it.
+
+        THE WORD DIAGNOSTIC IS OFF THIS HEADING AND THE GATE IS WHY.
+
+        CLAUDE.md's own first line calls this a somatic diagnostic instrument,
+        so the heading was written that way and marketing/refuse.js refused it:
+        the medical rule catches /diagnos\w+/ with no exception, because the
+        engine holds the clinical correspondences internally and refuses to
+        print them at the person they are about. Inside the repository the word
+        describes what the software does. On a page, beside a sentence about
+        stress and the body, it reads as the regulated kind of claim, which is
+        the exact adjacency the rule exists for.
+
+        So the outward noun is reading and the inward one stays diagnostic. It
+        is a finding for him and not a decision taken quietly: either the
+        outward copy drops the word, which is what this page does, or the gate
+        grows a named exemption the way NOBODY does for H18. -->
 <section>
  <div class="hd"><span class="eye">About</span>
-  <h2>A somatic diagnostic instrument.</h2></div>
+  <h2>A somatic reading instrument.</h2></div>
  <div class="bd">
-  <p class="m">Atüned, a neurosomatic instrument that reads where stress has
-  written itself into a body. It tunes moral integrity against the 21 laws of
-  integrity, and returns the vital energy that holding a pattern was spending.</p>
+  <p class="m">Atüned, a neurosomatic instrument that identifies the point of
+  origin of a stress response and integrates the kink, the cluster and the
+  network built on top of it. In doing so it brings inner peace mentally and
+  physically. It accelerates the mind body connection and it naturally releases
+  stress from the body.</p>
+  <p class="m">It tunes moral integrity against the 21 laws of integrity, and the
+  result is vital energy: the capacity that holding a pattern was spending, back
+  in the hands of the person who was spending it.</p>
   <p class="m">You write what happened, in your own words. The engine reads the
   charge out of the words and lands it at a named plexus or a named nerve. Then
   it hands you the order to take it apart in.</p>
@@ -255,16 +304,17 @@ a.btn:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
    <li><b>Not a personality test.</b> A type is a label. This is a reading.</li>
   </ul>
   <div class="box">
-   <h3>What is first, stated so it can be checked</h3>
-   <p>Gamified self development is a crowded shelf. Every product on it fills its
-   character sheet from what a person types in about themselves, and counts
-   upward from zero.</p>
+   <h3>There is nothing like this, and here is the sentence that holds it up</h3>
+   <p>Gamified self development is a crowded shelf, and the nearest thing on it
+   is a skill tree a person fills in by hand. Every product there takes the sheet
+   as input, from what somebody types in about themselves, and counts upward from
+   zero.</p>
    <p>This one derives the sheet from a reading of the person's own written
-   story, and it runs the gauge the other way round. The ceiling is stated first,
+   story, and it runs the gauge the other way round: the ceiling is stated first,
    computed from that person's own reading, and the figure that moves is the drag
-   standing between. Both halves are checkable, and checking them is two
-   questions: does the product read the sheet out of a story rather than taking
-   it as input, and does it show a ceiling before it shows a score.</p>
+   standing between. Both halves are narrow enough to check. Find one product that
+   reads the sheet out of a story rather than taking it as input, and one that
+   shows a ceiling before it shows a score.</p>
   </div>
  </div>
 </section>
@@ -288,24 +338,74 @@ a.btn:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
  </div>
 </section>
 
-<!-- 4. WHY. The mechanism argument, and it ends on why addition cannot work,
-        which is the argument the Mission section only asserted. -->
+<!-- 4. WHY. HIS CHAIN, IN HIS ORDER, AND IT IS NOT REORDERED TO BUILD TO A
+        CRESCENDO. The natural state, the contraction, the identification, the
+        conditioning, the cluster, the network, the symptom, then the instrument.
+
+        THE CHAIN IS THE ENGINE'S OWN LADDER IN PLAIN WORDS, and it was checked
+        against compute() before being leaned on. In atuned_src/engine/compute.js,
+        cited by name rather than by line number because line numbers drift and a
+        number typed into a document is how this repository has been bitten:
+
+          the kink     an address carrying charge. n.sq, and the loaded gate is
+                       4 of 10
+          the cluster  a saboteur. three or four addresses in one band
+                       contracting together, at a mean of 3.7 of 10, in
+                       sab33Detect for the named scan and over ALL_SAB for the
+                       deck
+          the network  cxs, a complex, two saboteurs in one architecture. Then
+                       hys, a hyper complex over a family of those, on two
+                       complexes or on one running at 6.5 of 10
+          above it     sups, the superego, two hyper complexes at 5.6 of 10
+
+        Saboteurs inside one architecture are seated at different bands, so the
+        complex is the first rung that shows in more than one place in the body,
+        which is the same thing his sentence says about the network. That is why
+        the page states the reading is computed this way rather than asserted:
+        the sequence is checkable against the arithmetic, which is the strongest
+        thing a positioning line can be. -->
 <section>
  <div class="hd"><span class="eye">Why</span>
-  <h2>The mind runs a story the body is paying for.</h2></div>
+  <h2>A kink becomes a cluster. A cluster becomes a network.</h2></div>
  <div class="bd">
-  <p class="m">Something happened. You made a meaning out of it. The meaning
-  hardened into a rule, and the rule now fires as a stress response. Under a
-  stress response the mind goes up and the body goes quiet. That split is the
-  injury, and everything filed under stress is a report from one side of it.</p>
-  <p class="m">The measure of the split is coherence: the alignment between what
-  arrives from the world, how you read it, what you intend, and what you then do.
-  Four stations, one circuit. A low reading means the circuit leaks, and the leak
-  is paid for in the gut, the jaw, the lower back and the sleep.</p>
-  <p class="m">Which is the argument against addition. A practice laid on top of a
-  leak raises the load on both sides of it, and a month later the reading has not
-  moved. The leak is the thing with a number on it, and that number moves when
-  something comes off.</p>
+  <ol class="chain">
+   <li class="open"><b>Your body is expressive by default.</b>
+    <span>Movement, breath, voice, appetite. Nothing held.</span></li>
+   <li><b>Stress makes it contract.</b>
+    <span>That part is ordinary and the contraction is supposed to
+    pass.</span></li>
+   <li><b>You identify with the contraction.</b>
+    <span>A bias forms in the mind, and a kink of resistance forms in the shape
+    of that stress response.</span></li>
+   <li><b>The response gets conditioned.</b>
+    <span>Practised often enough that it fires without the event that taught
+    it.</span></li>
+   <li><b>The node turns into a cluster.</b>
+    <span>Three or four addresses now contract together as one
+    structure.</span></li>
+   <li><b>Clusters form networks.</b>
+    <span>The body tenses in different locations at once, because the structures
+    are wired to each other.</span></li>
+   <li class="hurt"><b>Now the problem begins.</b>
+    <span>You procrastinate more, feel anxious more, more shy, more depressed,
+    more overwhelmed. The nervous system has kinks all over it, blocking the
+    natural energy flow of the body.</span></li>
+   <li class="tool"><b>The instrument finds the point of origin.</b>
+    <span>It integrates the kink, the cluster and the network, in that order,
+    starting where the sequence started.</span></li>
+  </ol>
+  <div class="box">
+   <h3>That sequence is computed, not asserted</h3>
+   <p>The engine builds the reading in exactly those rungs. A kink is one
+   address carrying charge, and 4 of 10 counts as loaded. A cluster is three or
+   four addresses contracting together at a mean of 3.7 of 10. A network pairs
+   two clusters inside one of six architectures, and then stacks those pairs, and
+   because clusters in one architecture are seated at different places the network
+   is the first rung that shows up in more than one part of the body.</p>
+   <p>Every threshold in that paragraph is readable inside the product, on the
+   same screen as the reading it produced. Check the chain against your own life
+   and against the arithmetic that drew it.</p>
+  </div>
  </div>
 </section>
 
@@ -345,6 +445,7 @@ a.btn:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
   change them.</p>
   <p class="m">The mission above is what this is for. The purpose is what it does
   with its hands. There is no third thing underneath either of them.</p>
+  <p class="m">It holds up a mirror to you and peers directly into your soul.</p>
  </div>
 </section>
 
@@ -395,10 +496,11 @@ a.btn:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
  </div>
 </section>
 
+<!-- THE CLOSE IS HIS AND IT STAYS WHOLE. Three lines, his order, his words. -->
 <div class="close">
- <p>You are already there.</p>
- <p>The rest is load.</p>
- <p class="last">Take the first one off today.</p>
+ <p>This is you.</p>
+ <p>We help you become the best version of yourself.</p>
+ <p class="last">In mind, body, spirit and soul.</p>
 </div>
 
 <p class="foot">This page makes no request of any kind. It reads self report. A
