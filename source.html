@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="283ea48 2026-09-20 15:45"><head><meta charset="utf-8">
+<html lang="en" data-build="8913431 2026-09-20 16:20"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -3185,41 +3185,35 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
    They start at 4.10s, as the wordmark finishes landing, and the last one
    closes at 5.05s, which is where the fade takes over. */
 .boot-svg{width:min(42vmin,300px);height:min(42vmin,300px);overflow:visible;
- fill:none;stroke-linecap:round;transform-origin:50% 50%;
- animation:bootSettle .92s cubic-bezier(.22,1,.36,1) 3.14s both}
-/* THE PULSE IS GONE. Ruled: "it does this weird pulse at the end, I'm not a
-   fan. Squash and stretch is one of my favourite things in animation, find a
-   way to give this thing more character."
+ fill:none;stroke-linecap:round;transform-origin:50% 50%}
+/* THE SQUASH AND STRETCH IS GONE, AND SO IS THE PULSE BEFORE IT. Ruled twice,
+   and the second ruling is the plain one: "get rid of the squash and stretch
+   from the intro animation. Doesn't look good."
 
-   Five identical scale beats is a heartbeat, and a heartbeat on a figure that
-   has just finished assembling reads as a loading spinner rather than as a
-   creature. This is one move instead of five: the figure gathers, releases,
-   overshoots and settles, on non uniform scale so volume is roughly conserved
-   the way it is in drawn animation. Wider means shorter and taller means
-   narrower, which is the whole trick and the reason it reads as mass rather
-   than as a zoom.
+   Both were answers to the same brief, "find a way to give this thing more
+   character," and both put the character in the wrong place. A pulse read as
+   a loading spinner. A non uniform scale reads as a wobble on a figure that
+   is meant to be a standing body, and a body that changes width is a body
+   that is made of rubber. The character is already in the build: the spine
+   rises root to crown, seven seats arrive ninety milliseconds apart and each
+   overshoots, the ring draws while the last two are still landing, and the
+   halo breathes once at the end. That is timing, staging, overlapping action
+   and secondary action doing the work, which is where it belongs.
 
-   It comes to rest at 4.06 seconds, one second earlier than the pulse did,
-   and the sheet then holds for two seconds longer. Both ruled. A held end is
-   the Zen half of the brief: the last thing a person sees before the product
-   is the figure standing still. */
-@keyframes bootSettle{
- 0%  {transform:scale(1,1)}
- 16% {transform:scale(1.065,.90)}   /* gathers. wider, shorter. */
- 40% {transform:scale(.935,1.115)}  /* releases. narrower, taller. */
- 62% {transform:scale(1.028,.976)}  /* follow through, halved */
- 80% {transform:scale(.992,1.008)}
- 100%{transform:scale(1,1)}}
-/* ANTICIPATION and SQUASH. The core draws in before it releases, flattens as
-   it expands and rounds as it lands. */
+   So the figure now assembles and stands still. Nothing has been added in
+   their place; the held end was already the point of it. */
+/* ANTICIPATION, and uniform scale. The core draws in before it releases and
+   overshoots its size on the way out. It no longer flattens: the width and
+   the height move together, so it reads as a thing arriving rather than as a
+   thing being squeezed. */
 .b-core{fill:var(--accent);transform-origin:100px 100px;opacity:0;
  animation:bootCore 2.1s cubic-bezier(.34,1.56,.64,1) .62s both}
 @keyframes bootCore{
- 0%  {opacity:0;transform:scale(.35) scaleY(1)}
- 14% {opacity:1;transform:scale(.22) scaleY(1.25)}   /* draws in */
- 46% {opacity:1;transform:scale(1.22) scaleY(.82)}   /* stretches out */
- 74% {opacity:1;transform:scale(.92) scaleY(1.08)}
- 100%{opacity:1;transform:scale(1) scaleY(1)}}
+ 0%  {opacity:0;transform:scale(.35)}
+ 14% {opacity:1;transform:scale(.22)}   /* draws in. anticipation, kept. */
+ 46% {opacity:1;transform:scale(1.22)}  /* releases past its size */
+ 74% {opacity:1;transform:scale(.92)}
+ 100%{opacity:1;transform:scale(1)}}
 /* STAGING. The spine rises root to crown before anything sits on it. */
 .b-spine{stroke:var(--edge-2);stroke-width:1.4;
  stroke-dasharray:120;stroke-dashoffset:120;
@@ -3839,7 +3833,7 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
        download as atuned(1).html and leaves the first one where it was, so
        opening "the file" can mean opening last week's.
        Stamped by BUILD.sh, so it cannot be wrong or go stale. -->
-  <span class="bs-v" id="bstamp">283ea48 2026-09-20 15:45</span></div>
+  <span class="bs-v" id="bstamp">8913431 2026-09-20 16:20</span></div>
  <!-- THE WAY OUT WAS BUILT AND NEVER SHOWN.
 
       pointerdown and keydown both clear this sheet and have since it was
@@ -4251,7 +4245,7 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
    after it, because everything after it is what might be broken.
    ============================================================ */
 (function(){
- var BOOTED=false, SHOWN=false, AT='nothing loaded';
+ var BOOTED=false, SHOWN=false, AT='nothing had loaded yet';
  /* EVERY MODULE SAYS IT FINISHED. BUILD.sh writes one call to this after each
     file, so when the script stops the guard can name the module it stopped
     after instead of saying it stopped somewhere. */
@@ -4345,7 +4339,20 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
     +'border:1px solid #26282E;border-radius:10px;white-space:pre-wrap;'
     +'word-break:break-word;font:12px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;'
     +'color:#D6A93B;-webkit-user-select:text;user-select:text';
-   box.appendChild(h);box.appendChild(p1);box.appendChild(p2);box.appendChild(pre);
+   /* AND SAY WHAT TO DO. The message named the failure precisely and then left
+      the person holding it with nothing to try. The two causes have different
+      answers and the guard already knows which one it is looking at, so it
+      can give the right one instead of a general apology. */
+   var p0=document.createElement('p');
+   p0.textContent=eof
+    ? 'Reload the page. The file itself is whole, so this is something that '
+      +'happened while it was starting, and a second run often clears it.'
+    : 'The file did not finish arriving, so there is nothing wrong with the '
+      +'build. Save it to your machine and open it from there. A large file '
+      +'viewed inside a preview pane is the usual way this happens.';
+   p0.style.cssText='margin:0 0 14px;color:#E6E7EA;font-weight:500';
+   box.appendChild(h);box.appendChild(p0);box.appendChild(p1);
+   box.appendChild(p2);box.appendChild(pre);
    d.appendChild(box);
    (document.body||document.documentElement).appendChild(d);
    /* the boot sheet fades on a CSS animation whether or not scripts ran, so it
@@ -4432,14 +4439,26 @@ const HCX_LIB=[
 try{window.__at&&window.__at('engine/data/nodes.js');}catch(e){}
 /* ============================================================
    THE ARTWORK.
-   The original inlined two ~35KB base64 PNGs. They are external
-   here: cacheable, swappable, and diffable. If either file is
-   absent the vector body path below renders in its place, so the
-   Energy Map is never blank.
-     fig-fetter.png   every layer except pain
-     fig-pain.png     the nerve map, for the pain layer
+   The original inlined two ~35KB base64 PNGs. They were made
+   external here so they would be cacheable, swappable and
+   diffable, and then they were never added. So every load asked
+   for two files that have never existed in this repository, got
+   two ERR_FILE_NOT_FOUND back, and fell through to the vector
+   body, which is what has been on screen the whole time.
+
+   Two failed requests is not nothing. The standing ruling is one
+   file with no dependencies and no network, and a build that
+   reaches for a neighbour it does not have is not that. It also
+   put two 404s in the log of any server this is ever served from,
+   which is the kind of noise that hides a real one.
+
+   So the names are empty and the probe below skips an empty name.
+   The raster path is kept, because swappable art is still wanted
+   and the code for it is written and correct. A host that has the
+   files sets these two and everything downstream works unchanged.
+   Nothing is requested until one of them is named.
    ============================================================ */
-var FIG_FETTER='fig-fetter.png', FIG_PAIN='fig-pain.png';
+var FIG_FETTER='', FIG_PAIN='';
 var FIG_FETTER_AR=0.50395, FIG_PAIN_AR=0.47925;
 var ART_OK={};
 
@@ -4474,8 +4493,191 @@ try{window.__at&&window.__at('engine/data/nerves.js');}catch(e){}
    [name, [[charge, lo, hi], ...]]. A range is a BAND, not a floor:
    below it the saboteur has not formed, above it the charge has
    escalated past this one into a heavier profile.
+
+   PORTED 2026-09-20 FROM SNIFFER_SPEC.md SECTION 3, which the owner rules is
+   canon and not a proposal. The shipped table and the spec's table carried the
+   same 33 names in the same shape and disagreed on 17 of the 33 rows, so this
+   is not a tuning change, it is two vocabularies being reduced to one.
+
+   WHAT WAS WRONG WITH THE SHIPPED TABLE, measured before it was touched with
+   proto/sniffer/sab.js rather than argued:
+
+     17 of 33 rows carried different numbers or different fetters.
+     5 rows changed arity. the spec gives Victim, Judge, Martyr and Control
+       Freak a third fetter and reduces Innocent to one.
+     2 rows keyed on `anxiety`, WHICH IS NOT ONE OF THE NINE AXES. core.js
+       papered over it with `L.anxiety=L.anticipation`, so Avoider and Restless
+       were being read off a term the instrument does not score.
+     Apathy keyed NOTHING. The shipped table never mentioned apathy or
+       anticipation, so one of the nine axes fired no saboteur at all while the
+       spec keys twelve rows on it. That is the single largest thing this port
+       fixes and no amount of retuning the other sixteen rows would have found
+       it.
+
+   KEYS ARE THE ENGINE'S OWN CHARGE VOCABULARY, lowercase, with the Sad axis
+   spelled `sadness`, so CHG2SEAT and sabLevels keep working across the port
+   with no change to either file. Anticipation is spelled out where the shipped
+   table said anxiety. Nothing here is transliterated by hand twice: the same
+   table is transcribed once more in proto/sniffer/bands.js and the gate asserts
+   the two agree row for row, so a typo in one is a failure rather than a
+   silent disagreement.
+
+   WHAT THE PORT MOVES, measured on the 14 stated profiles in people.js with
+   proto/sniffer/cohort.js. Every profile but Rosa reads differently. Ana's
+   third saboteur goes from Judge to Manipulator, Derek loses Avoider
+   altogether, and Lance goes from nothing to Innocent. Readings in this
+   product have moved.
    ============================================================ */
-var SAB33=[["Avoider",[["fear",3,5],["anxiety",5,8]]],["Controller",[["fear",7,10],["anger",5,8]]],["Victim",[["sadness",6,8],["anger",4,6]]],["Perfectionist",[["disgust",5,7],["anger",4,6]]],["Pleaser",[["fear",2,4],["shame",5,8]]],["Hyper-Achiever",[["fear",4,6],["shame",6,9]]],["Hyper-Rational",[["shock",2,4],["disgust",3,5]]],["Hyper-Vigilant",[["fear",7,9],["anger",5,7]]],["Restless",[["fear",3,5],["anxiety",5,8]]],["Stickler",[["disgust",4,6],["anger",4,6]]],["Judge",[["disgust",6,8],["anger",5,7]]],["Deflector",[["shame",4,6],["anger",4,6]]],["Dramatizer",[["shock",6,8],["sadness",4,6]]],["Worrywart",[["fear",6,8],["sadness",3,5]]],["Loner",[["sadness",6,8],["fear",5,7]]],["People-Pleaser",[["shame",3,5],["fear",5,8]]],["Skeptic",[["disgust",5,7],["shock",3,5]]],["Dreamer",[["sadness",2,4],["fear",3,6]]],["Procrastinator",[["fear",4,6],["sadness",3,5]]],["Imposter",[["shame",5,7],["fear",4,6]]],["Aggressor",[["anger",7,9],["shame",4,7]]],["Martyr",[["sadness",6,8],["anger",4,6]]],["Cynic",[["disgust",6,8],["sadness",4,6]]],["Manipulator",[["anger",6,8],["fear",5,8]]],["Overthinker",[["fear",5,7],["shame",4,6]]],["Escapist",[["fear",6,8],["sadness",5,8]]],["Nihilist",[["disgust",7,9],["sadness",5,7]]],["Innocent",[["fear",2,4],["shock",4,7]]],["Pessimist",[["sadness",5,7],["fear",4,6]]],["Catastrophizer",[["fear",8,10],["sadness",6,8]]],["Enabler",[["shame",4,6],["sadness",5,8]]],["Control Freak",[["fear",7,9],["anger",5,7]]],["Negotiator",[["fear",3,5],["shame",4,7]]]];
+var SAB33=[
+ ["Negotiator",     [["fear",4,6],["apathy",3,5]]],
+ ["Controller",     [["fear",7,10],["anger",5,8]]],
+ ["Victim",         [["sadness",6,8],["anger",5,7],["apathy",2,5]]],
+ ["Perfectionist",  [["disgust",5,7],["anger",4,6]]],
+ ["Pleaser",        [["apathy",3,5],["fear",3,8]]],
+ ["Hyper-Achiever", [["apathy",5,7],["fear",4,8]]],
+ ["Hyper-Rational", [["shock",2,4],["disgust",3,6]]],
+ ["Hyper-Vigilant", [["fear",7,9],["anger",5,7]]],
+ ["Restless",       [["apathy",5,7],["fear",2,4]]],
+ ["Stickler",       [["disgust",4,6],["anger",4,6]]],
+ ["Judge",          [["disgust",6,8],["anger",5,7],["apathy",3,6]]],
+ ["Deflector",      [["shame",4,6],["anger",4,6]]],
+ ["Dramatizer",     [["shock",6,8],["sadness",4,6]]],
+ ["Worrywart",      [["fear",6,8],["sadness",3,5]]],
+ ["Loner",          [["sadness",6,8],["fear",5,7]]],
+ ["People-Pleaser", [["apathy",4,6],["shame",3,5]]],
+ ["Skeptic",        [["disgust",5,7],["shock",3,5]]],
+ ["Dreamer",        [["apathy",3,5],["sadness",2,4]]],
+ ["Procrastinator", [["fear",4,6],["sadness",3,5]]],
+ ["Imposter",       [["shame",5,7],["fear",4,6]]],
+ ["Aggressor",      [["anger",6,9],["apathy",4,7]]],
+ ["Martyr",         [["sadness",6,8],["shame",5,7],["apathy",3,5]]],
+ ["Cynic",          [["disgust",6,8],["sadness",4,6]]],
+ ["Manipulator",    [["anger",5,8],["apathy",4,7]]],
+ ["Overthinker",    [["fear",5,7],["shame",4,6]]],
+ ["Escapist",       [["apathy",4,6],["fear",6,8]]],
+ ["Nihilist",       [["disgust",7,9],["sadness",5,7]]],
+ ["Innocent",       [["fear",2,4]]],
+ ["Pessimist",      [["sadness",5,7],["fear",4,6]]],
+ ["Catastrophizer", [["fear",8,10],["sadness",6,8]]],
+ ["Enabler",        [["apathy",3,5],["shame",4,6]]],
+ ["Control Freak",  [["fear",7,9],["anger",5,7],["anticipation",5,7]]],
+ ["Avoider",        [["apathy",6,8],["fear",5,7]]]];
+
+/* ============================================================
+   THE BAND EDGE. Ruled: "a band edge is a ramp, not a cliff."
+
+   The shipped rule, in core.js sabLevels and sab33Detect, was a three step
+   staircase over a level ROUNDED TO AN INTEGER FIRST: full membership flat
+   across the band, a half step at exactly one integer outside it, zero beyond.
+   Two things follow from that and both are defects.
+
+   The rounding means the spec's own example is not quite the bug. 6.9 and 7.1
+   both round to 7, so they are in fact the same answer. The cliff is real and
+   it sits at x.5, not at the band edge: 6.4 and 6.6 are different answers, and
+   nothing about a body changes across a fifth of a point.
+
+   And flat-inside cannot express "intensity peaks inside the band", which the
+   spec states outright. A reading at the very edge of the band and a reading
+   dead centre were the same number.
+
+   EVERY WIDTH HAS A REASON. Measured with proto/sniffer/ramp.js, which checks
+   itself against a known good case in both directions and refuses to run if
+   either fails.
+
+   SAB_EDGE 0.75   membership at the band edge. Not 1, because a peak needs
+                   somewhere to fall to. Not lower, because the edge is inside
+                   the band the canon states and must not read as half absent.
+   SAB_BELOW 2     points under the low edge before membership reaches zero.
+                   Two, so a reading ONE point under the band, which the spec
+                   calls the normal condition of a reader, keeps half the
+                   membership it would have had at the edge. One would put the
+                   normal error at zero, which is the failure being fixed.
+   SAB_ABOVE 3     points over the high edge before zero, wider than below on
+                   the spec's own asymmetry, "tapers above it". The reason it
+                   is asymmetric: the low edge is a threshold of PRESENCE and
+                   under it the configuration has not formed, while the high
+                   edge is a threshold of DISPLACEMENT and over it the
+                   configuration HAS formed and is being overrun by a heavier
+                   one. Evidence that decays is not evidence that never arrived.
+
+   WHAT THE RAMP BUYS, AND WHAT IT DOES NOT. Stated plainly because the
+   measurement did not say what this seat expected.
+
+   It buys resolution. The largest move in confidence one tenth of a point of
+   input can cause falls from 0.5000 to 0.0375, thirteen times finer. That is
+   the whole of the "no practitioner reads a body to a tenth of a point"
+   argument and it needs no cohort to establish.
+
+   It buys steadiness. Mean absolute move in confidence under an off by one
+   reading falls 9 to 15 percent.
+
+   IT DOES NOT BUY SET AGREEMENT, and the first measurement said so: behind a
+   hard floor the ramp scored 54.4 against the staircase's 58.8, WORSE. The
+   finding is that a ramp inside the membership does nothing while the OUTPUT
+   is still a cliff. The edge simply moved from the band to the floor. That is
+   why sniffStory emits ranked confidence with no boolean firing set, and why
+   this file carries no firing threshold at all.
+   ============================================================ */
+var SAB_EDGE=0.75, SAB_BELOW=2, SAB_ABOVE=3;
+function sabMember(lvl,lo,hi){
+ var m=(lo+hi)/2, h=(hi-lo)/2;
+ if(lvl>=lo&&lvl<=hi) return h>0?1-(1-SAB_EDGE)*Math.abs(lvl-m)/h:1;
+ if(lvl<lo)  return Math.max(0,SAB_EDGE*(1-(lo-lvl)/SAB_BELOW));
+ return Math.max(0,SAB_EDGE*(1-(lvl-hi)/SAB_ABOVE));}
+
+/* COMBINING THE FETTERS. The geometric mean, and the spec's own sentence is
+   the argument: "a saboteur is a configuration of fetters at specific
+   intensities. Break the co-mingling and the saboteur is gone." An arithmetic
+   mean cannot go. On a three part row it averages 1, 1 and 0 to 0.67 and fires
+   with one fetter entirely absent, and the shipped code used the arithmetic
+   mean. It had no three part rows so it never showed; the port adds four, so
+   this stopped being academic at the moment the table landed. */
+function sabFetters(parts,L){
+ var p=1;
+ for(var i=0;i<parts.length;i++){
+  var f=sabMember(L[parts[i][0]]||0,parts[i][1],parts[i][2]);
+  if(f<=0) return 0;
+  p*=f;}
+ return Math.pow(p,1/parts.length);}
+
+/* ============================================================
+   SPECIFICITY. How much a row is worth once its fetters are read.
+
+   TWO WEIGHTS, AND BOTH ARE DERIVED RATHER THAN TYPED.
+
+   1. ARITY. A configuration naming one fetter is the least specific claim in
+      the table and a configuration naming three is the most, so confidence
+      scales with how much the row had to find. This is the same rule
+      lexicon.js already applies to a bare axis noun taking its family floor:
+      less specific evidence is worth less. It is also the fix for a defect the
+      port introduced and this seat did not expect. The spec reduces Innocent
+      to a single fetter, Fear 2 to 4, and a one part row beats a multi part row
+      under ANY conjunctive combination because it has nothing to disagree with.
+      Measured on the 14 stated profiles, Innocent reached the top three in 38.4
+      percent of runs, which is the "fires on everything" shape the spec warns
+      about, moved from Avoider onto Innocent by the port itself.
+
+   2. AVOIDER, held low on the owner's ruling. The spec: "Avoider fires in 81
+      percent of runs and costs 0.1 points. Weight it low or your sniffer will
+      report Avoider on everything." The ruling is implemented. THE PREMISE IS
+      NOT TRUE OF THIS POPULATION and it is raised rather than buried: measured
+      on the ported bands over the 14 stated profiles, Avoider reaches the top
+      three in 1.4 percent of runs, not 81. Whatever cohort produced 81 is not
+      in this repository. The weight is applied because he ruled it; this seat
+      reports that on the data here it suppresses a row that was already quiet,
+      and that Innocent is the row his sentence actually describes.
+   ============================================================ */
+var SAB_ARITY={1:0.80,2:1.00,3:1.10};
+var SABW={Avoider:0.55};
+function sabWeight(nm,parts){
+ return (SABW[nm]!==undefined?SABW[nm]:1)*(SAB_ARITY[parts.length]||1);}
+
+/* THE CONFIDENCE, 0 to 1. Fetter membership times specificity, clamped,
+   because a weight over 1 must not manufacture certainty. */
+function sabConfidence(nm,parts,L){
+ var f=sabFetters(parts,L);
+ if(f<=0) return 0;
+ return Math.max(0,Math.min(1,f*sabWeight(nm,parts)));}
 
 /* the authored clinical composition per saboteur. the original carried this
    and never read it; it is the sub-line on every named saboteur drill now. */
@@ -5211,12 +5413,40 @@ function mirrorAt(seatLoad, seatIg){
    says so once, with the referral attached, and never as a label on
    a person. */
 const DARK_MAL=0.55, DARK_CQ=31;
-function darkRead(outward, CQ){
- /* outward is the shape axis, nought to one, and CQ is the coherence axis.
+/* IT WAS BEING HANDED THE WRONG AXIS, AND SO IT NEVER FIRED FOR ANYBODY.
+
+   The parameter was named outward and the only caller passed `r.outward`,
+   which is the SHAPE axis: where what is running points, outward at other
+   people or inward at the person. Malignancy is a different measurement and
+   the engine already computes it, as `malig`, nought to a hundred.
+
+   Everything downstream of this line reads as malignancy. The variable is
+   called mal, the sentence says "the shape is malignant", and `refer` is the
+   safety rule that puts a licensed clinician on the surface. So the function
+   was right and the argument was wrong, which is the worst way round: it
+   returned a confident false.
+
+   Measured across the roster of fifteen before the change: nought people read
+   dark. Gordon sits at CQ 1 with malignancy 98 and read false, because his
+   harm points inward more than outward and outward is all this was given. The
+   referral has never been shown to anybody. After the change six read dark,
+   all of them under CQ 16 with malignancy 69 or higher, and every coherent
+   field still reads false, Angela included, whose shape is the most outward
+   in the roster at 0.87 and whose malignancy is 18.
+
+   This file already carries the ruling that makes the old behaviour wrong:
+   the material "named outward harm and gave it a face, inward harm never got
+   one", and this product refuses that. Reading malignancy off the outward
+   share is that same mistake wearing an argument.
+
+   The body keeps its bodies and its signature shape. One name and one caller
+   moved. */
+function darkRead(mal01, CQ){
+ /* mal01 is the malignancy axis, nought to one, and CQ is the coherence axis.
     Two measurements, not one twice. An unreadable shape is never dark. */
- if(outward===null||outward===undefined)
+ if(mal01===null||mal01===undefined)
   return {mal:null,cq:Math.round(CQ),dark:false,step:null,refer:false,say:''};
- var mal=clamp(outward,0,1);
+ var mal=clamp(mal01,0,1);
  var dark=(mal>=DARK_MAL)&&(CQ<DARK_CQ);
  return {mal:Math.round(mal*100), cq:Math.round(CQ),
   dark:dark,
@@ -7012,7 +7242,15 @@ var LEX_SEATS=['root','sacral','solar','heart','throat','eye','crown','coherent'
      fold      an ordinary surface form of a key already present, generated by
                a stated rule and admitted only where a named corpus confirms
                the form is real writing. */
-var LEX_SRC=['authored','canon','fold'];
+/* A FOURTH SOURCE, DECLARED. `composite` is a word whose reading is two
+   fetters rather than one, seated by the pass at the bottom of sniff.js off the
+   unanimous seat and family floor of the members already in the table. It is a
+   separate source from `canon` because its derivation is different and a
+   reviewer asking where an entry came from must get one answer rather than a
+   family of them. The validator refused every composite entry until this line
+   existed, which is the validator working: a new provenance is declared here or
+   it does not reach the table. */
+var LEX_SRC=['authored','canon','fold','composite'];
 var LEX_AMT_MAX=30;
 /* key -> {src, from, rule, cite}. Covers LEX exactly, in both directions, and
    the gate asserts that, because a provenance table with holes in it is worse
@@ -7221,6 +7459,213 @@ function lexFold(){
    vocabulary, its schema, its validator and its rules live with the vocabulary,
    and the passes are RUN at the top of sniff.js, which is the first module
    where the canon tables are in scope and still before anything can scan. */
+
+/* ============================================================
+   THE LAW VIOLATION CUES · SNIFFER_SPEC.md section 6.
+
+   WHAT THIS IS FOR, in one sentence: the spec rules that CQ is the mean of the
+   21 laws, so a law violation is not decorative, it is the input to the
+   coherence number, and the sniffer is asked to detect where a law is being
+   violated in journal text.
+
+   THE PRIVACY RULING, CHECKED FIRST RATHER THAN LAST. Every cue below is
+   matched against text that is already in the person's own browser by a pure
+   function with no host access. No name, no record and nothing off a device is
+   read, and nothing is sent anywhere. The ruling permits this. It does not
+   permit the evaluation this table actually needs, which is written down under
+   WHAT CANNOT BE EVALUATED at the bottom of this block.
+
+   WHERE THE WORDS COME FROM, AND THE ADMISSION THAT MATTERS MOST. Section 13
+   of the spec names `reviews/elements.json` as "your lexicon" and says to load
+   it directly rather than retype it. IT IS NOT IN THIS REPOSITORY, along with
+   ENGINE.json, reviews/canon.json and handoff/ATUNED_SPEC.json. So there was
+   no lexicon to load and this table could not be built the way the spec says
+   to build it.
+
+   What was done instead, and its limit stated rather than hidden: every cue
+   below is derived from a string the spec itself prints in the section 6
+   violation column, plus that string's ordinary English inflections. Nothing
+   is invented from a clinical vocabulary and nothing is imported from another
+   instrument. The cost is recall: a violation column entry like "Opacity.
+   Energy diverted to concealment" yields perhaps four reachable words, so this
+   table is a floor on what the 21 laws can detect and not a serious attempt at
+   them. lawCoverage() reports the size of the hole rather than letting an
+   average hide it.
+
+   THE FOUR BIDIRECTIONAL LAWS ARE KEYED IN BOTH DIRECTIONS, on the spec's own
+   warning: "a sniffer that only looks for the obvious pole will miss half of
+   them, self-abandonment reads as virtue in a journal." Compassion, Humility,
+   Generosity and Ownership each carry two cue sets and the output names which
+   direction fired. A law read in the wrong direction is worse than a law not
+   read, because the product would praise the thing it is meant to surface.
+
+   PRECISION OVER RECALL, the same ruling the rest of this file runs on. A false
+   positive here tells a person their Truth is violated, which is an accusation.
+   So the phrases are specific and the single common words that would catch
+   everything are refused: `harm`, `pride`, `wrong` and `late` are not cues.
+   ============================================================ */
+var LAW_SELF='self', LAW_OTHER='other', LAW_ONE='single';
+/* [law, direction, [cues]]. direction is LAW_ONE unless the law is one of the
+   four the spec rules bidirectional. `e` is the spec's element number, carried
+   so the output contract can emit it and so a renumbering is a visible diff. */
+var LAWCUE=[
+ [29,'Truth',           LAW_ONE,  ['lied','i lied','told them i','made it up','not the whole truth',
+                                   'i said i had','pretended i','covered for','deceived','a white lie']],
+ [30,'Transparency',    LAW_ONE,  ['did not tell','kept it from','they do not know','behind their back',
+                                   'nobody knows i','hid it','i hid','concealed','kept quiet about']],
+ [31,'Unity',           LAW_ONE,  ['us and them','those people','not one of us','they are all',
+                                   'people like that','my side','cut them off','nothing to do with me']],
+ [32,'Awareness',       LAW_ONE,  ['before i knew it','i just reacted','snapped at','lost it with',
+                                   'came out of nowhere','without thinking','i was triggered']],
+ [33,'Presence',        LAW_ONE,  ['going over it','kept replaying','rehearsing','could not be there',
+                                   'somewhere else','i was not there','in my head the whole']],
+ [34,'Equanimity',      LAW_ONE,  ['depends on whether','only if','ruined the whole','set me off',
+                                   'threw me','could not settle','on edge all']],
+ /* BIDIRECTIONAL. the spec: "Indifference OR self-abandonment, withheld in
+    either direction." withheld outward is indifference, withheld inward is
+    the one that reads as virtue. */
+ [35,'Compassion',      LAW_OTHER,['not my problem','they brought it on','deserved it','do not care what happens',
+                                   'their own fault','no sympathy for']],
+ [35,'Compassion',      LAW_SELF, ['i should be able to','no right to feel','others have it worse',
+                                   'i do not matter','put myself last','i will manage','no time for myself']],
+ [36,'Forgiveness',     LAW_ONE,  ['will never forgive','still owe me','after what they did','i want them to',
+                                   'holding it against','have not forgotten','they will pay']],
+ [37,'Courage',         LAW_ONE,  ['put it off','did not bring it up','said nothing','walked away from',
+                                   'changed the subject','could not face','kept avoiding','never said']],
+ [38,'Temperance',      LAW_ONE,  ['one more','again last night','more than i meant','could not stop at',
+                                   'takes more now','every night this week','went overboard']],
+ [39,'Duty',            LAW_ONE,  ['said i would and','let them down','did not show up','broke my word',
+                                   'promised and','backed out','went back on']],
+ /* BIDIRECTIONAL. the spec: "Victimhood inward, justification outward. One
+    move, two directions." */
+ [40,'Ownership',       LAW_OTHER,['made me','not my fault','because they','if they had not',
+                                   'had no choice','forced me','anyone would have']],
+ [40,'Ownership',       LAW_SELF, ['all my fault','i ruined','i always do this','everything is my',
+                                   'i am the problem','i deserve this','no good at anything']],
+ [41,'Justice',         LAW_ONE,  ['they got away with','not fair that','wanted them punished',
+                                   'looked the other way','turned a blind eye','let it slide because']],
+ [42,'Non-Harm',        LAW_ONE,  ['i humiliated','made them cry','said it to hurt','wanted it to sting',
+                                   'did not care who got','collateral','i lashed out at']],
+ [43,'Wisdom',          LAW_ONE,  ['sounded right','told myself that','easier to believe','convinced myself',
+                                   'justified it','knew better and','a good story about']],
+ /* BIDIRECTIONAL. the spec: "Pride and grandiosity, OR the inverse
+    self-abasement." */
+ [44,'Humility',        LAW_OTHER,['nobody else could','above all this','they should be grateful',
+                                   'i am the only one who','beneath me','better than them at']],
+ [44,'Humility',        LAW_SELF, ['who am i to','not qualified to','i am nothing','worthless',
+                                   'do not deserve to','make myself small']],
+ /* BIDIRECTIONAL. the spec: "Circuit broken. Hoarding on giving, entitlement
+    on receiving." */
+ [45,'Generosity',      LAW_OTHER,['keeping it for','not sharing','what do i get','owe me',
+                                   'entitled to','my share first']],
+ [45,'Generosity',      LAW_SELF, ['could not accept','refused the help','did not let them',
+                                   'i do not need anyone','turned down the offer']],
+ [46,'Detachment',      LAW_ONE,  ['has to go my way','cannot let go of','kept checking',
+                                   'needed it to be','could not let them','clinging to','fixated on']],
+ [47,'Patience',        LAW_ONE,  ['right now','cannot wait','forced it','pushed it through',
+                                   'should have happened by','sick of waiting','made it happen faster']],
+ [48,'Aesthetic Beauty',LAW_ONE,  ['the mess','piles of','noise the whole','cluttered','could not think in',
+                                   'chaos in here']],
+ [49,'Nature',          LAW_ONE,  ['have not been outside','screens all','under strip lights',
+                                   'no daylight','four walls','not seen the sky']]];
+
+/* THE FIVE EXPRESSION SHADOWS the spec names as high value for journal text:
+   Flow to Block, Curiosity to Apathy, Play to Rigidity, Purpose to
+   Driftlessness, Will to Resignation. Only these five, because the other five
+   of the ten and all 28 of nature and human nature need elements.json, which
+   is not here. The engine's own EXPR table carries six of the spec's ten names
+   and four it does not, and its shadow word differs on every one of these five,
+   so this is a separate table rather than an edit to EXPR: EXPR has other
+   callers and moving its strings would move surfaces this pass did not measure. */
+var EXPRCUE=[
+ [54,'Flow',     'Block',         ['could not get started','stuck on','staring at it','nothing came',
+                                   'kept stopping','blocked','no traction']],
+ [55,'Curiosity','Apathy',        ['do not care any more','what is the point','stopped wondering',
+                                   'all the same to me','not interested in anything']],
+ [56,'Play',     'Rigidity',      ['has to be done properly','no time for that','not funny',
+                                   'we do it this way','cannot just','there are rules']],
+ [57,'Purpose',  'Driftlessness', ['no idea what i am doing','going nowhere','drifting',
+                                   'why am i even','no direction','same thing every day']],
+ [58,'Will',     'Resignation',   ['gave up on','no use trying','it is what it is','nothing i can do',
+                                   'stopped fighting','accepted that i will never']]];
+
+/* DANTE, SECTION 9, AND ONLY WHERE IT IS ACTUALLY SNIFFABLE.
+
+   The spec gives nine circles with a pattern and a somatic address each, and
+   says of the eighth: "C8's test is the single most sniffable line in the whole
+   system. Performed warmth versus generated warmth is detectable in text:
+   praise that arrives with an audience, generosity narrated rather than done."
+   That is a test, so it is implemented as one.
+
+   The other eight are behavioural taxonomy without a phrase table, and no
+   elements.json to derive one from. Four have enough of a stated pattern to
+   reach with the spec's own words and are keyed thinly. Four are left empty and
+   REPORTED empty, because a circle scored off two guessed phrases would be a
+   depth reading of a person built on nothing, which is the worst thing in this
+   document to get wrong. depth returns null rather than a low confidence
+   guess: refusing to read is a legitimate answer and it is the right one here. */
+var DANTECUE=[
+ ['C1','Limbo',    'Disbelief, spiritual bypass through rationalism',
+  ['none of it is real','just brain chemistry','all in the mind','nothing means anything really']],
+ ['C2','Lust',     'Grandiose entitlement, self-appointed arbiter',[]],
+ ['C3','Gluttony', 'Consumption as substitution',
+  ['ate until','filled the gap with','instead of calling','something to take the edge']],
+ ['C4','Greed',    'Scarcity identity, worth measured in possession',
+  ['never enough','what i am worth','cannot afford to','they have more']],
+ ['C5','Wrath and Sloth','The same suppressed charge, out as attack or in as shutdown',
+  ['did not get out of bed','blew up at','could not move all','went off at']],
+ ['C6','Heresy',   'Doctrine as identity armor',[]],
+ ['C7','Violence', 'Against others, against self, against nature',[]],
+ /* the test, and it is a test rather than a word list: warmth that requires an
+    audience. a marker of display standing within range of a marker of giving. */
+ ['C8','Fraud',    'Performed warmth. Does it cost them anything, or require an audience',[]],
+ ['C9','Treachery','Complete inversion, stasis at terminal velocity',[]]];
+var C8_GIVE=['helped','gave','looked after','paid for','stayed with','covered for','supported'];
+var C8_AUDIENCE=['everyone saw','posted','in front of','made sure they knew','told everyone',
+ 'people noticed','on the group chat','announced'];
+var C8_WINDOW=12;      /* words. one sentence of reach, the same span the lean's
+                          negation rule uses for the same reason: wider and the
+                          marker belongs to a different sentence. */
+
+/* WHAT THIS TABLE CAN AND CANNOT REACH, reported rather than averaged. The
+   whole birth module once sat at zero coverage while the average read 92
+   percent, so this returns the unreached list and not only the number. */
+function lawCoverage(){
+ var laws={}, bidir={};
+ LAWCUE.forEach(function(r){
+  laws[r[1]]=(laws[r[1]]||0)+r[3].length;
+  if(r[2]!==LAW_ONE)bidir[r[1]]=(bidir[r[1]]||0)+1;});
+ var thin=Object.keys(laws).filter(function(l){return laws[l]<6;});
+ return {laws:Object.keys(laws).length, cues:Object.keys(laws).reduce(function(a,l){return a+laws[l];},0),
+  bidirectional:Object.keys(bidir).sort(), thin:thin.sort(),
+  expression:EXPRCUE.length, expressionAbsent:5,
+  circles:DANTECUE.length, circlesKeyed:DANTECUE.filter(function(c){return c[3].length;}).length,
+  nature:0, human:0,
+  missing:['reviews/elements.json','ENGINE.json','reviews/canon.json','handoff/ATUNED_SPEC.json']};}
+
+/* WHAT CANNOT BE EVALUATED, AND IT IS NOT A SMALL LIST.
+
+   There is no labelled set. Nobody has taken journal text and marked which of
+   the 21 laws it violates, so nothing below is validated and none of it may be
+   called accurate. What CAN be measured without labels, and is, in
+   tests/engine.js and proto/sniffer: that a cue fires where it should, that it
+   does not fire on the negation of itself, that the bidirectional four report a
+   direction, that the same text read twice gives the same answer, and that
+   nothing fires on empty input.
+
+   What it would take to evaluate this honestly, in order of cost:
+     1. a labelled set. 200 journal entries, two independent raters per entry
+        marking law and direction, agreement measured before the matcher is
+        scored against it. The raters may not be the author of this table.
+     2. a negation and subject audit. This table inherits no negation handling,
+        so "i did not lie to them" fires Truth. verp.js solved this for its own
+        lists with a three word lookback and that mechanism should be shared
+        rather than copied, which is a change to a file this seat does not own.
+     3. the privacy ruling on the set itself. A labelled corpus of journal text
+        is the most sensitive artefact this product could hold, and the ruling
+        that the story without the record is what refines the models is exactly
+        what makes it possible at all. It needs consent language and the owner's
+        ruling that it is allowed before a single entry is collected. */
 
 try{window.__at&&window.__at('engine/lexicon.js');}catch(e){}
 
@@ -9382,6 +9827,546 @@ function applyStory(text){
  if(calm)CHARGES.forEach(function(c){S.charge[c]=clamp(S.charge[c]-calm/140,0,10);});
  return {parsed:p, applied:touched};}
 
+/* ============================================================
+   SNIFFSTORY · THE OUTPUT CONTRACT, SNIFFER_SPEC.md SECTION 10.
+
+   scanStory, parseStory and applyStory are untouched and keep their bodies and
+   signatures, on the standing ruling. This is a new layer above them. It reads
+   what they already produce and emits the shape the spec specifies, so release
+   has something to consume that is not a bag of internal fields.
+
+   offer IS THE PAYLOAD. Everything else is evidence for it. The spec is explicit
+   that the sniffer's job is to end at an address with a named replacement state,
+   because that is exactly what release consumes, so offer is built first in
+   intent and emitted last in the object.
+
+   BECAUSE IS ALWAYS EMITTED. Every confidence in this output carries the
+   citation that produced it. A confidence with no citation is not inspectable,
+   and this instrument's whole defence is that it shows its work. The gate
+   asserts it on every saboteur, and it is asserted rather than trusted because
+   a missing citation is invisible in a rendered panel.
+
+   WHAT THIS LAYER DOES NOT DO, stated so nobody has to discover it:
+     it does not mutate. applyStory is still the only function that mutates.
+     it does not score another person. there is no subject model, so every hit
+       lands on the writer, which satisfies guard 2 by having no mechanism
+       rather than by a rule. a frame layer would need the rule.
+     it emits no clinical label. guard 1 is a translation column and never an
+       equals sign, so no mode name reaches this output as a condition.
+     it names no diagnosis and the gate asserts that too.
+   ============================================================ */
+
+/* THE SPEC'S COHERENT POLES AND ADDRESSES, section 2, which is the table the
+   offer is built from.
+
+   THIS DISAGREES WITH CHILD AND THE SPEC WINS, on the owner's ruling. Measured:
+   4 of the 9 coherent poles differ and one address differs materially.
+
+     Fear    spec Safety / Ground          CHILD Trust
+     Anger   spec Calm / Integrated Power  CHILD Equanimity
+     Apathy  spec Joy / Aliveness          CHILD Vitality
+     Sad     spec Happy / Restoration      CHILD Joy
+
+   AND THE TWO TABLES COLLIDE ON ONE WORD. The spec offers Joy at Apathy. CHILD
+   offers Joy at Sad. So a person could be offered Joy for their apathy on this
+   output and Joy for their sadness on every other surface in the product, which
+   is one word naming two different addresses. That is not something this seat
+   may settle by picking one: CHILD.opp is read by the wheel, the summary, the
+   drills and the release control, and moving it moves readings on surfaces this
+   pass has not measured. So the spec's table is used HERE, where the spec rules
+   the contract, the disagreement is named in the output as poleDiffers, and the
+   reconciliation is raised for the owner rather than performed.
+
+   The address differs materially on one axis. Surprise: the spec puts it at the
+   lower solar plexus, bilateral at the lung edges; CHILD puts it at the upper
+   chest and back with the Heart seat. A somatic address is the thing this
+   product points at on a body, so that is his call and not a rounding. */
+var SPEC_POLE={
+ Fear:        {addr:'Lumbar',                                      pole:'Safety / Ground'},
+ Anger:       {addr:'Celiac',                                      pole:'Calm / Integrated Power'},
+ Shame:       {addr:'Pudendal',                                    pole:'Worth / Self-respect'},
+ Disgust:     {addr:'Sacral / Dermis',                             pole:'Acceptance / Equanimity'},
+ Apathy:      {addr:'Shoulder / Throat',                           pole:'Joy / Aliveness'},
+ Shock:       {addr:'Dermis',                                      pole:'Groundedness'},
+ Sad:         {addr:'Inferior Cardiac',                            pole:'Happy / Restoration'},
+ Surprise:    {addr:'Lower solar plexus, bilateral at lung edges', pole:'Readiness'},
+ Anticipation:{addr:'Below the heart',                             pole:'Presence'}};
+
+/* RESENTMENT, AS THE COMPOSITE THE SPEC RULES IT IS.
+
+   "Resentment mapped onto Anger collapsed Aggressor and Manipulator in
+   simulation. Resentment is ruled as a composite, Anger plus Apathy, the grudge
+   held. Sniff it as the composite, not as Anger."
+
+   The shipped lexicon seats resentment at the solar plexus with no stated
+   fetter, so the fetter is inferred from the seat and comes back Anger alone,
+   which is exactly the mapping the spec names as the defect. The LEX row format
+   holds ONE fetter, so a composite cannot be expressed in it without changing a
+   schema that has other callers.
+
+   So the composite lives here, as a table this layer applies, and the charge is
+   SPLIT rather than doubled: half to each side. Doubling would let one word
+   carry twice the load of any other word in the table, which is a magic number
+   dressed as a composite. Split is the reading "the grudge held" actually
+   describes: anger that has stopped moving.
+
+   THE LEGACY PATH STILL READS IT AS ANGER, and that is stated rather than
+   quietly half fixed. applyStory keeps its body on the standing ruling, so
+   S.charge still takes resentment onto Anger alone. Moving that is a one line
+   change to parseStory and it is specified in DESIGN-sniffer.md for whoever
+   rules that the field should move with the contract. */
+var LEXCOMP={resentment:['Anger','Apathy'], resentful:['Anger','Apathy'],
+ bitter:['Anger','Apathy'], bitterness:['Anger','Apathy'], grudge:['Anger','Apathy'],
+ begrudge:['Anger','Apathy'], embittered:['Anger','Apathy']};
+
+/* A COMPOSITE KEY THE SCANNER CANNOT REACH IS A DEAD ROW, and three of these
+   were. Found by the gate rather than by reading: `grudge`, `begrudge` and
+   `embittered` are ordinary resentment words, they were in this table, and none
+   of them was in LEX, so each scored 0 and 0 while the table asserted it was a
+   composite. The first cut of the gate missed it because it exercised only
+   `resentful`, which IS seated. It exercises every key now.
+
+   THE SEAT AND THE AMOUNT ARE DERIVED, not typed, by the same rule lexCanon
+   already runs on: a key with no entry takes the seat its already seated family
+   members share, and the FLOOR of their amounts. The floor and not the median,
+   because an unseated word is the least evidenced member of its own family, and
+   because a typed number in a table this load bearing is a magic number waiting
+   to be questioned. Every seated member of this composite sits at the solar
+   plexus, so the seat is unanimous and nothing is being chosen.
+
+   THE STATED FETTER IS ANGER AND THAT IS NOT THE COMPOSITE CONTRADICTING
+   ITSELF. LEX holds one fetter per row and the composite holds two, so the row
+   states the seat's own reading and LEXCOMP does the split above it. That is
+   the same division of labour the exhaustion ruling uses: the seat says where,
+   the table above says what.
+
+   IF THE SEAT IS NOT UNANIMOUS the pass refuses rather than picking, and the
+   gate fails on the refusal, so it gets ruled instead of defaulted. */
+function lexComposite(){
+ var out={added:0,already:0,unseated:[],split:[],seat:null,amt:null};
+ var seats={}, amts=[];
+ Object.keys(LEXCOMP).forEach(function(k){
+  var e=LEX[k];
+  if(!e)return;
+  out.already++;
+  seats[e[LEX_SEAT]]=1;
+  if(e[LEX_AMT]>0)amts.push(e[LEX_AMT]);});
+ var sk=Object.keys(seats);
+ if(sk.length!==1||!amts.length){
+  out.split=sk;
+  Object.keys(LEXCOMP).forEach(function(k){if(!LEX[k])out.unseated.push(k);});
+  return out;}
+ amts.sort(function(a,b){return a-b;});
+ out.seat=sk[0]; out.amt=amts[0];
+ Object.keys(LEXCOMP).forEach(function(k){
+  if(LEX[k])return;
+  var a=lexAdd(k,out.seat,out.amt,'Anger',
+   {src:'composite',from:'the seated members of LEXCOMP',
+    rule:'unanimous seat, family floor',cite:'canon'});
+  if(a.ok&&!a.already)out.added++;
+  else out.unseated.push(k);});
+ return out;}
+var LEXCOMPRUN=lexComposite();
+
+/* ---------- the shared matcher ----------
+   ONE SCANNER FOR EVERY PHRASE TABLE IN THIS LAYER, with the two rules the rest
+   of the engine already learned the expensive way.
+
+   PRECEDENCE. Longest first, and a longer match blocks the shorter ones inside
+   it, which is scanStory's rule and the reason 'let them think' beats 'let
+   them' in the lean. Without it, a table containing both 'not my fault' and 'my
+   fault' reads a denial as an admission.
+
+   NEGATION. A match is void if a negator stands within the three words directly
+   before it. Ported from verp.js, including its width and its reason: three is
+   one clause of run up, and wider voids phrases whose negator belonged to the
+   previous sentence. Without it "i did not lie to them" fires Truth, which is
+   the instrument accusing a person of the thing they just denied.
+
+   This is the single biggest known weakness of the law table and it is handled
+   here rather than left. It is still not subject handling: "she lied to me"
+   fires Truth on the writer, and that is guard 2's problem, named in
+   DESIGN-sniffer.md and not solved by this pass. */
+var LAW_NEG=['not','no','never','nobody','none','cannot','cant','did',
+ 'didnt','dont','wont','wasnt','isnt','havent','hasnt','couldnt','wouldnt','refuse','refused'];
+var LAW_NEG_W=3;
+function lawNorm(text){
+ return ' '+String(text||'').toLowerCase().replace(/[^a-z' ]+/g,' ')
+  .replace(/'/g,'').replace(/\s+/g,' ')+' ';}
+function lawNegated(src,at){
+ var before=src.slice(0,at).trim().split(' ');
+ var run=before.slice(Math.max(0,before.length-LAW_NEG_W));
+ return run.some(function(w){return LAW_NEG.indexOf(w)>=0;});}
+/* every cue from every row, longest first, bounded by spaces, a longer match
+   blocking the shorter ones inside it. returns one entry per surviving hit. */
+function lawMatch(src,rows,cueAt){
+ var all=[];
+ rows.forEach(function(r,ri){r[cueAt].forEach(function(c){all.push({c:c,ri:ri});});});
+ all.sort(function(a,b){return b.c.length-a.c.length;});
+ var taken=[], out=[];
+ all.forEach(function(x){
+  var needle=' '+x.c.replace(/'/g,'')+' ', at=src.indexOf(needle);
+  while(at>=0){
+   var hi=at+needle.length-1;
+   if(!taken.some(function(t){return at<t.hi&&hi>t.at;})&&!lawNegated(src,at)){
+    taken.push({at:at,hi:hi});
+    out.push({row:rows[x.ri],ri:x.ri,cue:x.c,at:at});}
+   at=src.indexOf(needle,at+1);}});
+ return out.sort(function(a,b){return a.at-b.at;});}
+
+/* ---------- axes · two readings, never one signed number ----------
+   Guard 3. The shadow load and the coherent load are built in two separate
+   passes over the same hits and never subtracted from one another, because a
+   person can hold real Safety in one context and real Fear in another and one
+   signed number cannot say that.
+
+   The shadow comes off the seat totals parseStory already computes, mapped to
+   the axis through the fetter the hit names. The coherent comes off the hits
+   seated at `coherent`, which is the lexicon's own eighth seat for words that
+   pull the other way. Both are normalised to 0 through 10 by the same divisor
+   parseStory uses, so the two numbers are on one scale even though they are
+   independent. */
+function sniffAxes(p){
+ var shadow={}, coh=0, cited={};
+ CHARGES.forEach(function(c){shadow[c]=0;});
+ /* a hit that states its fetter states its axis. one that does not is routed
+    through the seat's reading, which parseStory has already resolved into
+    imprints, so this does not re-derive it and cannot disagree with it. */
+ p.imprints.forEach(function(im){
+  if(!im.fetter||shadow[im.fetter]===undefined)return;
+  shadow[im.fetter]+=im.amt;
+  (cited[im.fetter]=cited[im.fetter]||[]).push(
+   im.stated?'the text named '+im.fetter.toLowerCase():
+   im.inferred?'read from the '+im.band+' seat, no address named':
+   'at '+im.name);});
+ /* A STATED FETTER THAT parseStory DROPPED, RECOVERED. Measured, and it is the
+    reason this block exists rather than trusting the imprints alone.
+
+    "i am angry and exhausted" returned Anger 10 and Apathy 0. The owner's
+    exhaustion ruling is that exhaustion sits at the solar plexus and is NOT
+    anger, and parseStory honours that through its stateHere branch, but that
+    branch only runs when the seat has NO address for any wanted fetter. Here
+    `angry` puts Anger in wanted, the solar plexus carries ten Anger addresses,
+    so seg is non empty, the branch is skipped and the one thing the sentence
+    actually said about apathy is discarded. The same happens to every stated
+    fetter whose seat is shared with a co-occurring axis.
+
+    parseStory keeps its body on the standing ruling, so this is repaired here
+    and only where it was dropped: a stated fetter that no imprint carries is
+    added at the floor of what the hit itself scored. A fetter the imprints DID
+    carry is left alone, so nothing is counted twice. The one line change to
+    parseStory that would fix it at source is written down in DESIGN-sniffer.md
+    for whoever rules on it. */
+ var carried={};
+ p.imprints.forEach(function(im){if(im.fetter)carried[im.fetter]=1;});
+ p.hits.forEach(function(h){
+  if(!h.fet||carried[h.fet]||shadow[h.fet]===undefined)return;
+  shadow[h.fet]+=Math.abs(h.amt||0)/3;
+  (cited[h.fet]=cited[h.fet]||[]).push('"'+h.t+'" states '+h.fet+
+   ', and its seat is shared with another axis so the imprint layer dropped it');});
+ /* the composite. resentment is anger that has stopped moving, so it splits. */
+ p.hits.forEach(function(h){
+  var comp=LEXCOMP[h.t];
+  if(!comp)return;
+  var each=Math.abs(h.amt||0)/3/comp.length;
+  comp.forEach(function(f){
+   if(shadow[f]===undefined)return;
+   shadow[f]+=each;
+   (cited[f]=cited[f]||[]).push('"'+h.t+'" is the composite Anger and Apathy, split');});});
+ p.hits.forEach(function(h){if(h.band==='coherent')coh+=Math.abs(h.amt||0);});
+ var out=[];
+ CHARGES.forEach(function(c){
+  var s=Math.round(Math.min(10,shadow[c])*10)/10;
+  /* the coherent load is not apportioned per axis, because the lexicon's
+     coherent seat does not say WHICH axis a calm word answers. So it is
+     reported as one field level reading on every axis and says so, rather
+     than being split nine ways by an assumption nobody made. */
+  var k=Math.round(Math.min(10,coh/3)*10)/10;
+  out.push({axis:c, shadow:s, coherent:k,
+   address:SPEC_POLE[c]?SPEC_POLE[c].addr:null,
+   because: s>0?(cited[c]||[]).slice(0,3)
+    :['nothing in the text reached this axis'],
+   coherentBecause: k>0
+    ?['the text carries '+k+' of coherent language, not apportioned by axis']
+    :['no coherent language in the text'],
+   /* named against inferred, carried up from the imprints, because it decides
+      what a renderer is allowed to print as a finding. */
+   named:(cited[c]||[]).some(function(w){return w.indexOf('named')===0||w.indexOf('the text named')===0;})});});
+ return out;}
+
+/* ---------- saboteurs · ranked confidence, no boolean firing set ----------
+   THERE IS NO FIRING THRESHOLD HERE AND THAT IS DELIBERATE. The first
+   measurement of the ramp put it BEHIND a hard floor at 0.6 and it scored
+   WORSE than the staircase it replaced, 54.4 against 58.8 on set agreement. The
+   finding is that a ramp inside the membership buys nothing while the OUTPUT is
+   still a cliff: the edge moved from the band to the floor.
+
+   So the output is a ranked list with a confidence on every row and nothing is
+   discarded by a line. SAB_SHOW bounds what is RENDERED, which is a display
+   decision a renderer may change, and not a claim that row 4 is absent.
+
+   Measured on the ported bands, proto/sniffer/ramp.js and cohort.js:
+     resolution   the largest move in confidence one tenth of a point of input
+                  can cause falls from 0.5000 to 0.0375. thirteen times finer.
+     steadiness   mean absolute move in confidence under an off by one reading
+                  falls 9 to 15 percent.
+     set agree    a dead tie, 51.4 against 51.4 on the 14 stated profiles. the
+                  ramp helps Ana, Derek and Marcus and hurts James, Nkem and
+                  Wren. It redistributes stability, it does not add it, and
+                  saying otherwise would be inheriting a number.
+
+   THIS SEAT COULD NOT REPRODUCE THE SPEC'S 94 AND 73. Those need the cohort
+   they were measured on, and it is not in this repository. What is reported
+   above is what this seat can stand behind with its definition stated. */
+var SAB_SHOW=6;
+function sniffSaboteurs(axes){
+ var L={}, F={Fear:'fear',Anger:'anger',Shame:'shame',Disgust:'disgust',Apathy:'apathy',
+  Shock:'shock',Sad:'sadness',Surprise:'surprise',Anticipation:'anticipation'};
+ axes.forEach(function(a){L[F[a.axis]||String(a.axis).toLowerCase()]=a.shadow;});
+ var out=[];
+ SAB33.forEach(function(row,i){
+  var nm=row[0], parts=row[1], conf=sabConfidence(nm,parts,L);
+  if(conf<=0)return;
+  /* THE CITATION, and it is the whole reason this row is inspectable. Every
+     part says its level, its band, where in the band it sat, and what the
+     membership came out as, so a person can see why and a reviewer can see
+     where it is wrong. */
+  var because=parts.map(function(p){
+   var lvl=Math.round((L[p[0]]||0)*10)/10, m=sabMember(lvl,p[1],p[2]);
+   var where=lvl<p[1]?'under the band':lvl>p[2]?'over the band':'in the band';
+   return AXOF(p[0])+' '+lvl+' '+where+' '+p[1]+' to '+p[2]+
+    ', ramp '+(Math.round(m*100)/100);});
+  var w=sabWeight(nm,parts);
+  if(w!==1)because.push(parts.length===1
+   ?'one fetter only, so the claim is the least specific in the table and is held at '+w
+   :'held at '+w+' on the ruling that this row fires on everything');
+  out.push({id:'S'+String(i+1<10?'0':'')+(i+1), name:nm,
+   confidence:Math.round(conf*100)/100, because:because, weight:w,
+   fetters:parts.map(function(p){return AXOF(p[0]);})});});
+ out.sort(function(a,b){return b.confidence-a.confidence||
+  (a.name<b.name?-1:a.name>b.name?1:0);});
+ return out;}
+function AXOF(k){return {fear:'Fear',anger:'Anger',shame:'Shame',disgust:'Disgust',
+ apathy:'Apathy',shock:'Shock',sadness:'Sad',surprise:'Surprise',
+ anticipation:'Anticipation'}[k]||k;}
+
+/* ---------- laws · with the direction on the four that need it ----------
+   The score is the violation load, 0 through 10, and it is a COUNT scaled and
+   clamped rather than a model, which is what the evidence supports. Two cues is
+   not twice the violation of one, so it is a diminishing curve: the first cue
+   carries most of the reading and the tenth carries almost none. The shape is
+   the same asymptote verp.js uses for its trust ramp, for the same reason, that
+   a handful of substring matches must not buy certainty. */
+function sniffLaws(text){
+ var src=lawNorm(text), hits=lawMatch(src,LAWCUE,3), by={};
+ hits.forEach(function(h){
+  var r=h.row, key=r[0]+'|'+r[2];
+  if(!by[key])by[key]={e:r[0],law:r[1],direction:r[2],n:0,cues:[]};
+  by[key].n++;
+  if(by[key].cues.indexOf(h.cue)<0)by[key].cues.push(h.cue);});
+ return Object.keys(by).map(function(k){
+  var v=by[k];
+  var score=Math.round(10*(v.n/(v.n+2))*10)/10;
+  var vio=LAWVIO[v.law]?LAWVIO[v.law][v.direction]||LAWVIO[v.law].single:null;
+  return {e:v.e, law:v.law, violation:vio, score:score,
+   direction:v.direction===LAW_ONE?null:v.direction,
+   because:v.cues.slice(0,3).map(function(c){return '"'+c+'" in the text';})
+    .concat(v.direction!==LAW_ONE
+     ?['read in the '+v.direction+' direction, which the spec rules is the half a one sided reader misses']
+     :[])};})
+  .sort(function(a,b){return b.score-a.score||a.e-b.e;});}
+/* the violation reading per law, the spec's own strings from section 6, and both
+   readings on the four it rules bidirectional. */
+var LAWVIO={
+ Truth:{single:'Deception'}, Transparency:{single:'Opacity'}, Unity:{single:'Division'},
+ Awareness:{single:'Reactivity'}, Presence:{single:'Absence'}, Equanimity:{single:'Volatility'},
+ Compassion:{other:'Indifference', self:'Self-abandonment'},
+ Forgiveness:{single:'Resentment'}, Courage:{single:'Avoidance'},
+ Temperance:{single:'Overindulgence'}, Duty:{single:'Betrayal'},
+ Ownership:{other:'Justification outward', self:'Victimhood inward'},
+ Justice:{single:'Corruption'}, 'Non-Harm':{single:'Cruelty and carelessness'},
+ Wisdom:{single:'Folly and sophistry'},
+ Humility:{other:'Pride and grandiosity', self:'Self-abasement'},
+ Generosity:{other:'Hoarding on giving', self:'Entitlement on receiving'},
+ Detachment:{single:'Attachment'}, Patience:{single:'Forcing or scattering'},
+ 'Aesthetic Beauty':{single:'Chaos'}, Nature:{single:'Synthetic departure'}};
+
+/* ---------- flow · expression only, and the two empty lenses say why ---------- */
+function sniffFlow(text){
+ var src=lawNorm(text), hits=lawMatch(src,EXPRCUE,3), by={};
+ hits.forEach(function(h){var r=h.row;
+  if(!by[r[0]])by[r[0]]={e:r[0],law:r[1],shadow:r[2],cues:[]};
+  if(by[r[0]].cues.indexOf(h.cue)<0)by[r[0]].cues.push(h.cue);});
+ var expr=Object.keys(by).map(function(k){var v=by[k];
+  return {e:v.e, law:v.law, shadow:v.shadow,
+   because:v.cues.slice(0,3).map(function(c){return '"'+c+'" in the text';})};});
+ /* NOT ZERO, UNREADABLE, and the difference matters. An empty array with no
+    explanation reads as "nothing violated". These two lenses are 28 of the
+    spec's 76 slots and the file that carries their shadow strings is not in
+    this repository, so the honest answer is that they were not read. */
+ return {nature:[], human:[], expression:expr,
+  unread:['nature','human'],
+  because:['the 13 nature and 15 human nature elements carry their shadow strings in '+
+   'reviews/elements.json, which is not in this repository, so they were not read '+
+   'rather than read as clean']};}
+
+/* ---------- gates · two upstream feeding one sump ----------
+   Section 8, and it is ruled that this is not three peers.
+
+       Aware / Ignorant   --+
+                            +--> Intentional / Avoidant   the sump
+       Detached / Attached--+
+
+   THE CASCADE IS FITTED TO HIS OWN THREE NUMBERS AND NOT TO A CURVE THIS SEAT
+   PREFERRED. The spec measures avoidance at 14.5 percent with both upstream
+   clean, 43.2 with one distorted and 71.9 with both. Those three points are
+   exactly linear: 43.2 minus 14.5 is 28.7, and 71.9 minus 43.2 is 28.7 to the
+   tenth. So the cascade has a base and one step, both read straight off his
+   measurement, and there is no third parameter to tune.
+
+       avoidance = 14.5 + 28.7 x (aware distortion + detached distortion)
+
+   with each distortion 0 through 1. It reproduces all three of his points
+   exactly and generalises to the continuous case, which is what a story gives.
+
+   GUARD 5 IS STRUCTURAL HERE, not advisory. "An avoidance number shown alone is
+   a readout of everything upstream, not a trait. Show the upstream state with
+   it or it reads as a character flaw." So avoidance is not a bare number on
+   this object: it sits inside `intentional` next to the two upstream readings
+   that produced it and a because that names them. A renderer that prints the
+   number has the upstream state in its hand and cannot avoid having been given
+   it. That is as far as an engine can enforce a rendering rule. */
+var GATE_BASE=14.5, GATE_STEP=28.7;
+function sniffGates(text){
+ var s=(typeof verpScan==='function')?verpScan(text):{hits:{},total:0};
+ var h=s.hits||{};
+ function side(up,down){
+  var u=h[up]||0, d=h[down]||0, n=u+d;
+  return {clean:n?u/n:null, distortion:n?d/n:null, n:n, read:n>0};}
+ var aware=side('aware','ignore'), det=side('detach','attach');
+ /* no evidence is not a clean reading. with nothing matched the upstream is
+    unread and the cascade is not run, because running it on assumed zeros
+    would report 14.5 percent avoidance to somebody who wrote nothing about it. */
+ var read=aware.read&&det.read;
+ var dist=read?(aware.distortion+det.distortion):null;
+ return {
+  aware:    aware.read?Math.round(aware.clean*100)/100:null,
+  detached: det.read  ?Math.round(det.clean  *100)/100:null,
+  intentional: read?{
+   avoidance:Math.round((GATE_BASE+GATE_STEP*dist)*10)/10,
+   of:100,
+   upstream:{aware:Math.round(aware.clean*100)/100,
+             detached:Math.round(det.clean*100)/100},
+   because:['aware against ignorant read '+aware.n+' cues, '+
+             Math.round(aware.distortion*100)+' of 100 distorted',
+            'detached against attached read '+det.n+' cues, '+
+             Math.round(det.distortion*100)+' of 100 distorted',
+            'the sump is 14.5 of 100 with both upstream clean and rises 28.7 '+
+             'for each one distorted, which is his measured cascade']}:null,
+  read:read, cues:s.total,
+  because:read?['both upstream gates were read from the text']
+   :['the text matched '+s.total+' gate cues, and the sump is not computed '+
+     'without both upstream readings, because assuming them clean would report '+
+     'an avoidance number nobody entered']};}
+
+/* ---------- depth · Dante, and null rather than a guess ----------
+   The C8 test is implemented as a test because the spec calls it one: warmth
+   that requires an audience. A giving marker and a display marker inside one
+   sentence's reach of each other. Everything else is a thin phrase table or an
+   empty one, and four of the nine circles are empty and reported so.
+
+   depth returns null when nothing reads. A depth reading is the heaviest thing
+   in this output and a low confidence guess at it is worse than no reading,
+   because a person told they are in the eighth circle on two matched substrings
+   has been handed a verdict the instrument cannot support. */
+function sniffDepth(text){
+ var src=lawNorm(text), best=null, why=[];
+ /* the C8 test first, because it outranks a word list: it is a relation
+    between two markers rather than the presence of one. */
+ var give=[], aud=[];
+ C8_GIVE.forEach(function(c){var at=src.indexOf(' '+c+' ');
+  while(at>=0){if(!lawNegated(src,at))give.push(at);at=src.indexOf(' '+c+' ',at+1);}});
+ C8_AUDIENCE.forEach(function(c){var at=src.indexOf(' '+c+' ');
+  while(at>=0){aud.push(at);at=src.indexOf(' '+c+' ',at+1);}});
+ if(give.length&&aud.length){
+  var near=give.some(function(g){return aud.some(function(a){
+   return Math.abs(src.slice(Math.min(g,a),Math.max(g,a)).split(' ').length)<=C8_WINDOW;});});
+  if(near) best={circle:'C8', pattern:'Fraud. Performed warmth',
+   confidence:0.4,
+   because:['a giving marker and a display marker inside one sentence of each other',
+    'the spec\'s test: does the warmth cost anything, or does it require an audience',
+    'confidence is held at 0.4 because this is one relation in one sentence and '+
+    'not a pattern across entries']};}
+ if(!best){
+  var hits=lawMatch(src,DANTECUE,3), tal={};
+  hits.forEach(function(h){var c=h.row;
+   if(!tal[c[0]])tal[c[0]]={circle:c[0],pattern:c[1]+'. '+c[2],cues:[]};
+   if(tal[c[0]].cues.indexOf(h.cue)<0)tal[c[0]].cues.push(h.cue);});
+  var ks=Object.keys(tal).sort(function(a,b){return tal[b].cues.length-tal[a].cues.length;});
+  if(ks.length){var t=tal[ks[0]];
+   best={circle:t.circle, pattern:t.pattern,
+    confidence:Math.round(Math.min(0.5,t.cues.length*0.15)*100)/100,
+    because:t.cues.slice(0,3).map(function(c){return '"'+c+'" in the text';})
+     .concat(['confidence is capped at 0.5 for every circle but C8, because a '+
+      'circle read off a phrase list is weaker evidence than a test'])};}}
+ if(!best) return {circle:null, confidence:0, pattern:null,
+  because:['nothing in the text reached a circle. four of the nine carry no cue '+
+   'table at all and are reported unkeyed rather than clean'],
+  unkeyed:DANTECUE.filter(function(c){return !c[3].length&&c[0]!=='C8';})
+   .map(function(c){return c[0];})};
+ best.unkeyed=DANTECUE.filter(function(c){return !c[3].length&&c[0]!=='C8';})
+  .map(function(c){return c[0];});
+ return best;}
+
+/* ---------- offer · the payload ----------
+   The spec: "offer is the payload. Everything else is evidence for it. The
+   sniffer's job is to end at an address with a named replacement state, because
+   that is exactly what release consumes."
+
+   So this is the one field that must never come back empty when the axes carried
+   anything, and the gate asserts that. It is ordered by shadow load, because the
+   address carrying most is the one release should be offered at first, and it
+   carries the disagreement with CHILD by name rather than hiding it. */
+var OFFER_MAX=3;
+function sniffOffer(axes){
+ return axes.filter(function(a){return a.shadow>0;})
+  .sort(function(a,b){return b.shadow-a.shadow;})
+  .slice(0,OFFER_MAX)
+  .map(function(a){
+   var sp=SPEC_POLE[a.axis], ch=CHILD.find(function(c){return c.nm===a.axis;});
+   var differs=ch&&sp&&sp.pole.toLowerCase().indexOf(String(ch.opp).toLowerCase())<0;
+   return {address:sp?sp.addr:null, axis:a.axis,
+    replacement:sp?sp.pole:null,
+    shadow:a.shadow, coherent:a.coherent,
+    because:['the '+a.axis+' axis carries '+a.shadow+' of 10 of shadow load at '+
+      (sp?sp.addr:'an unnamed address'),
+     'every shadow in the system has a named coherent opposite at the same '+
+      'address, and detecting the shadow is what names the replacement to offer']
+     .concat(a.because.slice(0,2)),
+    /* named where the two tables disagree, so a renderer can decline to print
+       a replacement the rest of the product contradicts. */
+    poleDiffers:differs?{spec:sp.pole, child:ch.opp}:null};});}
+
+/* ---------- the contract ---------- */
+function sniffStory(text){
+ var p=parseStory(text);
+ var axes=sniffAxes(p);
+ return {
+  axes:      axes,
+  saboteurs: sniffSaboteurs(axes).slice(0,SAB_SHOW),
+  laws:      sniffLaws(text),
+  flow:      sniffFlow(text),
+  gates:     sniffGates(text),
+  depth:     sniffDepth(text),
+  offer:     sniffOffer(axes),
+  /* the working, kept, because a contract that discards its own evidence cannot
+     be audited and re-parsing is what makes the atom layer possible. */
+  parsed:    p,
+  /* WHAT THIS READING DOES NOT KNOW. Carried in the output rather than left to
+     a reviewer to remember, because every one of these is a place a renderer
+     could otherwise print a clean reading over a hole. */
+  gaps:      (typeof lawCoverage==='function')?lawCoverage():null};}
+
 try{window.__at&&window.__at('engine/sniff.js');}catch(e){}
 
 /* ============================================================
@@ -10571,6 +11556,30 @@ if(typeof module!=='undefined'&&module.exports){
      no test can reach is a table with no owner. */
                   IQ_STEM:IQ_STEM,
   /* sniffer */   scanStory:scanStory, parseStory:parseStory, applyStory:applyStory,
+  /* THE OUTPUT CONTRACT, SNIFFER_SPEC.md section 10. sniffStory is the one
+     entry point a caller needs; the seven part builders are exported beside it
+     because the gate asserts each part on its own and a part no test can reach
+     is a part with no owner, which is the defect this layer exists to close. */
+                  sniffStory:sniffStory, sniffAxes:sniffAxes,
+                  sniffSaboteurs:sniffSaboteurs, sniffLaws:sniffLaws,
+                  sniffFlow:sniffFlow, sniffGates:sniffGates,
+                  sniffDepth:sniffDepth, sniffOffer:sniffOffer,
+                  SPEC_POLE:SPEC_POLE, LEXCOMP:LEXCOMP, LAWVIO:LAWVIO,
+                  lexComposite:lexComposite, LEXCOMPRUN:LEXCOMPRUN,
+                  SAB_SHOW:SAB_SHOW, OFFER_MAX:OFFER_MAX,
+                  GATE_BASE:GATE_BASE, GATE_STEP:GATE_STEP,
+  /* the band edge. sabMember is the ramp itself and the gate asserts it is
+     continuous where the shipped staircase was not, so it has to be reachable.
+     sabConfidence and sabWeight carry the specificity ruling. */
+                  sabMember:sabMember, sabFetters:sabFetters,
+                  sabConfidence:sabConfidence, sabWeight:sabWeight,
+                  SAB_EDGE:SAB_EDGE, SAB_BELOW:SAB_BELOW, SAB_ABOVE:SAB_ABOVE,
+                  SAB_ARITY:SAB_ARITY, SABW:SABW,
+  /* the law, expression and depth cue tables, and the coverage report that
+     refuses to let an average hide the hole in them. */
+                  LAWCUE:LAWCUE, EXPRCUE:EXPRCUE, DANTECUE:DANTECUE,
+                  lawCoverage:lawCoverage, C8_GIVE:C8_GIVE, C8_AUDIENCE:C8_AUDIENCE,
+                  LAW_SELF:LAW_SELF, LAW_OTHER:LAW_OTHER, LAW_ONE:LAW_ONE,
   /* the lexicon's schema and its provenance. exported because the gate has to
      be able to prove the validator REFUSES, and because a provenance table no
      test can reach is a provenance table with no owner, which is the defect
@@ -12457,6 +13466,7 @@ try{window.__at&&window.__at('ui/wheel.js');}catch(e){}
 (function(){
  if(typeof Image==='undefined')return;                 /* node, or no DOM */
  [FIG_FETTER,FIG_PAIN].forEach(function(src){
+  if(!src)return;                                      /* nothing named, nothing asked for */
   var im=new Image();
   im.onload =function(){ART_OK[src]=1;
    if(typeof render==='function'&&S.tab===TAB.ENERGY)render();};
@@ -17178,7 +18188,10 @@ function runPoleDrill(end){
   h+='</div><p class="ad-p">They appeared at moments of maximum collective decoherence. '
    +'That is the law of rhythm running at the scale of a civilisation rather than a person.</p>';
  } else {
-  var dk=darkRead(r.outward,r.CQ), circ=circleAt(r.CQ);
+  /* malignancy, not the outward share. See the note on darkRead: the two are
+     different measurements and passing the second one meant this read false
+     for every person in the roster, the heaviest case included. */
+  var dk=darkRead(r.malig/100,r.CQ), circ=circleAt(r.CQ);
   h+='<div class="pm-eye">The blueprint, where the downward cone ends</div><div class="ad-rows">';
   BLUEPRINT.forEach(function(x){
    h+='<div class="ad-r static" title="'+esc(x.d)+'"><span class="ad-k">'
@@ -21569,5 +22582,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="001411259"></div>
+<div id="eof" hidden data-len="001470629"></div>
 </body></html>

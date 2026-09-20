@@ -524,7 +524,10 @@ function runPoleDrill(end){
   h+='</div><p class="ad-p">They appeared at moments of maximum collective decoherence. '
    +'That is the law of rhythm running at the scale of a civilisation rather than a person.</p>';
  } else {
-  var dk=darkRead(r.outward,r.CQ), circ=circleAt(r.CQ);
+  /* malignancy, not the outward share. See the note on darkRead: the two are
+     different measurements and passing the second one meant this read false
+     for every person in the roster, the heaviest case included. */
+  var dk=darkRead(r.malig/100,r.CQ), circ=circleAt(r.CQ);
   h+='<div class="pm-eye">The blueprint, where the downward cone ends</div><div class="ad-rows">';
   BLUEPRINT.forEach(function(x){
    h+='<div class="ad-r static" title="'+esc(x.d)+'"><span class="ad-k">'

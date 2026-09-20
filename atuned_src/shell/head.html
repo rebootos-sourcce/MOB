@@ -3185,41 +3185,35 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
    They start at 4.10s, as the wordmark finishes landing, and the last one
    closes at 5.05s, which is where the fade takes over. */
 .boot-svg{width:min(42vmin,300px);height:min(42vmin,300px);overflow:visible;
- fill:none;stroke-linecap:round;transform-origin:50% 50%;
- animation:bootSettle .92s cubic-bezier(.22,1,.36,1) 3.14s both}
-/* THE PULSE IS GONE. Ruled: "it does this weird pulse at the end, I'm not a
-   fan. Squash and stretch is one of my favourite things in animation, find a
-   way to give this thing more character."
+ fill:none;stroke-linecap:round;transform-origin:50% 50%}
+/* THE SQUASH AND STRETCH IS GONE, AND SO IS THE PULSE BEFORE IT. Ruled twice,
+   and the second ruling is the plain one: "get rid of the squash and stretch
+   from the intro animation. Doesn't look good."
 
-   Five identical scale beats is a heartbeat, and a heartbeat on a figure that
-   has just finished assembling reads as a loading spinner rather than as a
-   creature. This is one move instead of five: the figure gathers, releases,
-   overshoots and settles, on non uniform scale so volume is roughly conserved
-   the way it is in drawn animation. Wider means shorter and taller means
-   narrower, which is the whole trick and the reason it reads as mass rather
-   than as a zoom.
+   Both were answers to the same brief, "find a way to give this thing more
+   character," and both put the character in the wrong place. A pulse read as
+   a loading spinner. A non uniform scale reads as a wobble on a figure that
+   is meant to be a standing body, and a body that changes width is a body
+   that is made of rubber. The character is already in the build: the spine
+   rises root to crown, seven seats arrive ninety milliseconds apart and each
+   overshoots, the ring draws while the last two are still landing, and the
+   halo breathes once at the end. That is timing, staging, overlapping action
+   and secondary action doing the work, which is where it belongs.
 
-   It comes to rest at 4.06 seconds, one second earlier than the pulse did,
-   and the sheet then holds for two seconds longer. Both ruled. A held end is
-   the Zen half of the brief: the last thing a person sees before the product
-   is the figure standing still. */
-@keyframes bootSettle{
- 0%  {transform:scale(1,1)}
- 16% {transform:scale(1.065,.90)}   /* gathers. wider, shorter. */
- 40% {transform:scale(.935,1.115)}  /* releases. narrower, taller. */
- 62% {transform:scale(1.028,.976)}  /* follow through, halved */
- 80% {transform:scale(.992,1.008)}
- 100%{transform:scale(1,1)}}
-/* ANTICIPATION and SQUASH. The core draws in before it releases, flattens as
-   it expands and rounds as it lands. */
+   So the figure now assembles and stands still. Nothing has been added in
+   their place; the held end was already the point of it. */
+/* ANTICIPATION, and uniform scale. The core draws in before it releases and
+   overshoots its size on the way out. It no longer flattens: the width and
+   the height move together, so it reads as a thing arriving rather than as a
+   thing being squeezed. */
 .b-core{fill:var(--accent);transform-origin:100px 100px;opacity:0;
  animation:bootCore 2.1s cubic-bezier(.34,1.56,.64,1) .62s both}
 @keyframes bootCore{
- 0%  {opacity:0;transform:scale(.35) scaleY(1)}
- 14% {opacity:1;transform:scale(.22) scaleY(1.25)}   /* draws in */
- 46% {opacity:1;transform:scale(1.22) scaleY(.82)}   /* stretches out */
- 74% {opacity:1;transform:scale(.92) scaleY(1.08)}
- 100%{opacity:1;transform:scale(1) scaleY(1)}}
+ 0%  {opacity:0;transform:scale(.35)}
+ 14% {opacity:1;transform:scale(.22)}   /* draws in. anticipation, kept. */
+ 46% {opacity:1;transform:scale(1.22)}  /* releases past its size */
+ 74% {opacity:1;transform:scale(.92)}
+ 100%{opacity:1;transform:scale(1)}}
 /* STAGING. The spine rises root to crown before anything sits on it. */
 .b-spine{stroke:var(--edge-2);stroke-width:1.4;
  stroke-dasharray:120;stroke-dashoffset:120;

@@ -10,6 +10,7 @@
 (function(){
  if(typeof Image==='undefined')return;                 /* node, or no DOM */
  [FIG_FETTER,FIG_PAIN].forEach(function(src){
+  if(!src)return;                                      /* nothing named, nothing asked for */
   var im=new Image();
   im.onload =function(){ART_OK[src]=1;
    if(typeof render==='function'&&S.tab===TAB.ENERGY)render();};

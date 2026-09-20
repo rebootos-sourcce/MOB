@@ -472,7 +472,14 @@ console.log('\n=== a label never appears without what it owes ===');
    The same word with a definition, the behaviour and the direction is a
    reading. Checked on Gordon, the heaviest case in the roster. */
 const lab=await page.evaluate(()=>{
- loadP(8); setTab(TAB.FIELD); render();
+ /* BY NAME, NEVER BY POSITION. This said loadP(8) and meant the heaviest case
+    in the roster. The roster then grew to fifteen and 8 became somebody else,
+    so the gate has been measuring the wrong person. It is the rule this
+    repository already carries about tab integers, and it applies to every
+    table a thing is looked up in. */
+ var gi=0; for(var q=0;q<PEOPLE.length;q++)if(PEOPLE[q].nm==='Gordon')gi=q;
+ o.who=PEOPLE[gi].nm;
+ loadP(gi); setTab(TAB.FIELD); render();
  const el=document.getElementById('tier');
  runCompassDrill();
  return {label:el.textContent, tip:el.title,
@@ -957,7 +964,7 @@ const pole=await page.evaluate(()=>{
  const row=document.querySelector('#rdrill [data-mirror]');
  o.rows=document.querySelectorAll('#rdrill [data-mirror]').length;
  if(row){row.click(); o.axis=txt();}
- const r=compute(); o.cq=Math.round(r.CQ); o.dark=darkRead(r.outward,r.CQ).dark;
+ const r=compute(); o.cq=Math.round(r.CQ); o.dark=darkRead(r.malig/100,r.CQ).dark;
  /* and a coherent field is never shown it. built rather than assumed: four
     hundred checks have run against this page and persona zero is not
     guaranteed to still be empty. */
@@ -967,7 +974,7 @@ const pole=await page.evaluate(()=>{
  toYou(); render();
  const rc=compute();
  o.cleanCQ=Math.round(rc.CQ); o.cleanMal=Math.round(rc.malig);
- o.cleanDark=darkRead(rc.outward,rc.CQ).dark;
+ o.cleanDark=darkRead(rc.malig/100,rc.CQ).dark;
  runPoleDrill('dn'); o.clean=txt();
  undoPop();
  return o;});
@@ -985,6 +992,7 @@ ok(/not a verdict/.test(pole.axis),'and saying it is not a verdict');
 /* THE SAFETY RULE, carried out of the book. Gordon is the heaviest case in
    the roster and sits under the floor with a malignant shape, which is the one
    configuration the codex says to refer out rather than work. */
+ok(pole.who==='Gordon','the heaviest case is the one being read, got '+pole.who);
 ok(pole.dark===true,'the heaviest case reads malignant and decoherent at once, CQ '+pole.cq);
 ok(/licensed clinician/.test(pole.dn),'and the referral is on the surface, not only in the book');
 ok(/reading of what is running, not of who/.test(pole.dn),

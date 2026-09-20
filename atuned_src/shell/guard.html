@@ -41,7 +41,7 @@
    after it, because everything after it is what might be broken.
    ============================================================ */
 (function(){
- var BOOTED=false, SHOWN=false, AT='nothing loaded';
+ var BOOTED=false, SHOWN=false, AT='nothing had loaded yet';
  /* EVERY MODULE SAYS IT FINISHED. BUILD.sh writes one call to this after each
     file, so when the script stops the guard can name the module it stopped
     after instead of saying it stopped somewhere. */
@@ -135,7 +135,20 @@
     +'border:1px solid #26282E;border-radius:10px;white-space:pre-wrap;'
     +'word-break:break-word;font:12px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;'
     +'color:#D6A93B;-webkit-user-select:text;user-select:text';
-   box.appendChild(h);box.appendChild(p1);box.appendChild(p2);box.appendChild(pre);
+   /* AND SAY WHAT TO DO. The message named the failure precisely and then left
+      the person holding it with nothing to try. The two causes have different
+      answers and the guard already knows which one it is looking at, so it
+      can give the right one instead of a general apology. */
+   var p0=document.createElement('p');
+   p0.textContent=eof
+    ? 'Reload the page. The file itself is whole, so this is something that '
+      +'happened while it was starting, and a second run often clears it.'
+    : 'The file did not finish arriving, so there is nothing wrong with the '
+      +'build. Save it to your machine and open it from there. A large file '
+      +'viewed inside a preview pane is the usual way this happens.';
+   p0.style.cssText='margin:0 0 14px;color:#E6E7EA;font-weight:500';
+   box.appendChild(h);box.appendChild(p0);box.appendChild(p1);
+   box.appendChild(p2);box.appendChild(pre);
    d.appendChild(box);
    (document.body||document.documentElement).appendChild(d);
    /* the boot sheet fades on a CSS animation whether or not scripts ran, so it

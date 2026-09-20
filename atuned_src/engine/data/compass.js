@@ -263,12 +263,40 @@ function mirrorAt(seatLoad, seatIg){
    says so once, with the referral attached, and never as a label on
    a person. */
 const DARK_MAL=0.55, DARK_CQ=31;
-function darkRead(outward, CQ){
- /* outward is the shape axis, nought to one, and CQ is the coherence axis.
+/* IT WAS BEING HANDED THE WRONG AXIS, AND SO IT NEVER FIRED FOR ANYBODY.
+
+   The parameter was named outward and the only caller passed `r.outward`,
+   which is the SHAPE axis: where what is running points, outward at other
+   people or inward at the person. Malignancy is a different measurement and
+   the engine already computes it, as `malig`, nought to a hundred.
+
+   Everything downstream of this line reads as malignancy. The variable is
+   called mal, the sentence says "the shape is malignant", and `refer` is the
+   safety rule that puts a licensed clinician on the surface. So the function
+   was right and the argument was wrong, which is the worst way round: it
+   returned a confident false.
+
+   Measured across the roster of fifteen before the change: nought people read
+   dark. Gordon sits at CQ 1 with malignancy 98 and read false, because his
+   harm points inward more than outward and outward is all this was given. The
+   referral has never been shown to anybody. After the change six read dark,
+   all of them under CQ 16 with malignancy 69 or higher, and every coherent
+   field still reads false, Angela included, whose shape is the most outward
+   in the roster at 0.87 and whose malignancy is 18.
+
+   This file already carries the ruling that makes the old behaviour wrong:
+   the material "named outward harm and gave it a face, inward harm never got
+   one", and this product refuses that. Reading malignancy off the outward
+   share is that same mistake wearing an argument.
+
+   The body keeps its bodies and its signature shape. One name and one caller
+   moved. */
+function darkRead(mal01, CQ){
+ /* mal01 is the malignancy axis, nought to one, and CQ is the coherence axis.
     Two measurements, not one twice. An unreadable shape is never dark. */
- if(outward===null||outward===undefined)
+ if(mal01===null||mal01===undefined)
   return {mal:null,cq:Math.round(CQ),dark:false,step:null,refer:false,say:''};
- var mal=clamp(outward,0,1);
+ var mal=clamp(mal01,0,1);
  var dark=(mal>=DARK_MAL)&&(CQ<DARK_CQ);
  return {mal:Math.round(mal*100), cq:Math.round(CQ),
   dark:dark,

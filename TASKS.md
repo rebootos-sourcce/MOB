@@ -21,6 +21,118 @@ reopens. Every seat adds its own.
 
 ---
 
+## 0w. MEASURED 20 SEPTEMBER. THE SAFETY REFERRAL HAS NEVER FIRED.
+
+Found by three failing rows in the functional gate, which were failing because
+the gate itself was reading the wrong person. Both halves are the same defect
+wearing two hats: a thing looked up by where it sits instead of by what it is.
+
+- [x] **SF1. `darkRead` was handed the shape axis and asked for malignancy.**
+      Its one caller passed `r.outward`, which measures where what is running
+      points, outward at other people or inward at the person. The engine
+      computes malignancy separately as `malig`. Everything inside the
+      function reads as malignancy: the variable is `mal`, the sentence says
+      the shape is malignant, and `refer` is the rule that puts a licensed
+      clinician on the surface. It returned a confident false.
+- [x] **SF2. Measured before: nought of fifteen people read dark.** Gordon
+      sits at CQ 1 with malignancy 98 and read false, because his harm points
+      inward more than outward and outward was all it was given. So the
+      referral has never been shown to anybody, on any profile, since it was
+      written.
+- [x] **SF3. Measured after: six of fifteen,** all under CQ 16 with
+      malignancy 69 or higher. Every coherent field still reads false,
+      including Angela, whose shape is the most outward in the roster at 0.87
+      and whose malignancy is 18. Nobody is swept in by coherence.
+- [x] **SF4. `compass.js` already carried the argument against the old
+      behaviour.** The material "named outward harm and gave it a face, inward
+      harm never got one", and this product refuses that. Reading malignancy
+      off the outward share is that same mistake with an argument attached.
+- [x] **SF5. The gate said `loadP(8)` and meant the heaviest case.** The
+      roster grew to fifteen and 8 became Ana, so the gate has been measuring
+      somebody else. It looks Gordon up by name now, and asserts which person
+      it got before it asserts anything about them. This is the tab integer
+      rule applied to a second table.
+- [?] **SF6. His call, and it should be made before this ships.** Six people
+      in the roster now reach a surface that names Psychopathy and
+      Machiavellianism and puts a clinician on the screen. The copy is careful
+      and says it is a reading of what is running and not of who is running
+      it. The thresholds are malignancy 0.55 with CQ under 31, and the
+      referral at CQ under 11. Those two numbers decide who sees it, and they
+      have never been tested against a real person because the branch was
+      dead.
+
+---
+
+## 0x. RULED 20 SEPTEMBER, FOURTH PASS. THE DOOR, THE BOOT, AND THE FUNNEL
+
+### BT. THE BOOT AND THE BUILD.
+
+- [x] **BT1. The squash and stretch is out of the intro.** His words: "get rid
+      of the squash and stretch from the intro animation. Doesn't look good."
+      `bootSettle` is deleted and `bootCore` is uniform scale. The anticipation
+      stays, the overshoot stays, the held end stays. Nothing was added back.
+- [x] **BT2. The build asked for two files it has never carried.**
+      `fig-fetter.png` and `fig-pain.png` were made external and then never
+      added, so every load fetched two names that do not exist, took two
+      ERR_FILE_NOT_FOUND, and fell through to the vector body. The names are
+      empty and the probe skips an empty name. Measured after: zero requests.
+- [x] **BT3. The gate whitelisted them, which is why nobody saw it.** Gate 7
+      allowed any request matching the two rasters. A whitelist for a file
+      that does not exist is a gate that passes a failure. The floor is now
+      zero outbound requests of any kind.
+- [ ] **BT4. "This build stopped while it was starting up."** Reported by him
+      on the file opened in the view pane. NOT REPRODUCED here: ten seconds
+      from `file://`, and ten seconds inside a sandboxed iframe, both boot
+      clean with nine tabs and no alert. The guard has two triggers and only
+      one of them is a throw; the other fires when the script never reaches
+      the end of its own start up, which is the exact signature of a file
+      that arrived truncated. A 1.4 MB file streamed into a preview pane is
+      the likeliest way for that to happen, which makes this the same defect
+      as 0z and not a separate one. What is owed regardless: the message
+      should say what to do, not only what happened.
+
+### FN. THE FUNNEL IS A ONE PAGER THAT SPEAKS TO PAIN.
+
+His words, close to verbatim: "when I land on the Atuned funnel, this is a one
+pager talking directly to my pain. Letting me know that mindset programming is
+the cause of mental, physical and spiritual disease and stagnation. It's a
+stress response from our story that separates the mind and body. This is a
+purpose based product. This is how it works. These are the tools. Take the
+test."
+
+- [ ] **FN1. Rebuild the landing on that spine.** Pain, cause, the separation,
+      the purpose, how it works, the tools, the test. Seven beats, in that
+      order, one page.
+- [ ] **FN2. The close is his and it is not softened.** "No one is coming to
+      save you. Do it yourself. The software is the key and the roadmap. You
+      are the door."
+- [?] **FN3. Running comments on the landing page,** so people can add
+      feedback and ask questions directly, automated. NEEDS A SERVER. It is
+      the second thing on this list that does, after the record store, and it
+      should share that seam rather than open a new one. His call on whether
+      it ships with the funnel or waits for accounts.
+
+### QZ. THE QUIZ IS THE DIAGNOSIS THAT SELLS.
+
+- [ ] **QZ1. Rebuild the quiz on the twenty one spiritual laws of integrity.**
+      Not the current sixty three.
+- [ ] **QZ2. One hundred questions, written by the marketing seat with the
+      copy seat,** around pain points and what actually brings somebody to a
+      product like this. His words: "the questions need to be heartfelt and
+      speak to people's pain. We need to understand where they're coming
+      from." They are here for a reason and the product has to name it.
+- [ ] **QZ3. The through line is coherence.** A low CQ promotes mental,
+      physical and spiritual disease. The questions exist to give a person a
+      snapshot of the impact and of the problem.
+- [ ] **QZ4. The result is a summary of what the issues are and which
+      saboteurs are running,** and then the door to the software.
+- [ ] **QZ5. A hundred questions is a load problem before it is a copy
+      problem.** The open architectural item is 57 to 71 simultaneous
+      choices against a working memory of about four. One question per screen
+      or it does not ship.
+
+---
+
 ## 0y. THE RITUAL BUILDER, MEASURED AND COMPED. 20 SEPTEMBER.
 
 Three runnable designs at `proto/ritual/`: compass, board, tape. Standalone,

@@ -4,8 +4,191 @@
    [name, [[charge, lo, hi], ...]]. A range is a BAND, not a floor:
    below it the saboteur has not formed, above it the charge has
    escalated past this one into a heavier profile.
+
+   PORTED 2026-09-20 FROM SNIFFER_SPEC.md SECTION 3, which the owner rules is
+   canon and not a proposal. The shipped table and the spec's table carried the
+   same 33 names in the same shape and disagreed on 17 of the 33 rows, so this
+   is not a tuning change, it is two vocabularies being reduced to one.
+
+   WHAT WAS WRONG WITH THE SHIPPED TABLE, measured before it was touched with
+   proto/sniffer/sab.js rather than argued:
+
+     17 of 33 rows carried different numbers or different fetters.
+     5 rows changed arity. the spec gives Victim, Judge, Martyr and Control
+       Freak a third fetter and reduces Innocent to one.
+     2 rows keyed on `anxiety`, WHICH IS NOT ONE OF THE NINE AXES. core.js
+       papered over it with `L.anxiety=L.anticipation`, so Avoider and Restless
+       were being read off a term the instrument does not score.
+     Apathy keyed NOTHING. The shipped table never mentioned apathy or
+       anticipation, so one of the nine axes fired no saboteur at all while the
+       spec keys twelve rows on it. That is the single largest thing this port
+       fixes and no amount of retuning the other sixteen rows would have found
+       it.
+
+   KEYS ARE THE ENGINE'S OWN CHARGE VOCABULARY, lowercase, with the Sad axis
+   spelled `sadness`, so CHG2SEAT and sabLevels keep working across the port
+   with no change to either file. Anticipation is spelled out where the shipped
+   table said anxiety. Nothing here is transliterated by hand twice: the same
+   table is transcribed once more in proto/sniffer/bands.js and the gate asserts
+   the two agree row for row, so a typo in one is a failure rather than a
+   silent disagreement.
+
+   WHAT THE PORT MOVES, measured on the 14 stated profiles in people.js with
+   proto/sniffer/cohort.js. Every profile but Rosa reads differently. Ana's
+   third saboteur goes from Judge to Manipulator, Derek loses Avoider
+   altogether, and Lance goes from nothing to Innocent. Readings in this
+   product have moved.
    ============================================================ */
-var SAB33=[["Avoider",[["fear",3,5],["anxiety",5,8]]],["Controller",[["fear",7,10],["anger",5,8]]],["Victim",[["sadness",6,8],["anger",4,6]]],["Perfectionist",[["disgust",5,7],["anger",4,6]]],["Pleaser",[["fear",2,4],["shame",5,8]]],["Hyper-Achiever",[["fear",4,6],["shame",6,9]]],["Hyper-Rational",[["shock",2,4],["disgust",3,5]]],["Hyper-Vigilant",[["fear",7,9],["anger",5,7]]],["Restless",[["fear",3,5],["anxiety",5,8]]],["Stickler",[["disgust",4,6],["anger",4,6]]],["Judge",[["disgust",6,8],["anger",5,7]]],["Deflector",[["shame",4,6],["anger",4,6]]],["Dramatizer",[["shock",6,8],["sadness",4,6]]],["Worrywart",[["fear",6,8],["sadness",3,5]]],["Loner",[["sadness",6,8],["fear",5,7]]],["People-Pleaser",[["shame",3,5],["fear",5,8]]],["Skeptic",[["disgust",5,7],["shock",3,5]]],["Dreamer",[["sadness",2,4],["fear",3,6]]],["Procrastinator",[["fear",4,6],["sadness",3,5]]],["Imposter",[["shame",5,7],["fear",4,6]]],["Aggressor",[["anger",7,9],["shame",4,7]]],["Martyr",[["sadness",6,8],["anger",4,6]]],["Cynic",[["disgust",6,8],["sadness",4,6]]],["Manipulator",[["anger",6,8],["fear",5,8]]],["Overthinker",[["fear",5,7],["shame",4,6]]],["Escapist",[["fear",6,8],["sadness",5,8]]],["Nihilist",[["disgust",7,9],["sadness",5,7]]],["Innocent",[["fear",2,4],["shock",4,7]]],["Pessimist",[["sadness",5,7],["fear",4,6]]],["Catastrophizer",[["fear",8,10],["sadness",6,8]]],["Enabler",[["shame",4,6],["sadness",5,8]]],["Control Freak",[["fear",7,9],["anger",5,7]]],["Negotiator",[["fear",3,5],["shame",4,7]]]];
+var SAB33=[
+ ["Negotiator",     [["fear",4,6],["apathy",3,5]]],
+ ["Controller",     [["fear",7,10],["anger",5,8]]],
+ ["Victim",         [["sadness",6,8],["anger",5,7],["apathy",2,5]]],
+ ["Perfectionist",  [["disgust",5,7],["anger",4,6]]],
+ ["Pleaser",        [["apathy",3,5],["fear",3,8]]],
+ ["Hyper-Achiever", [["apathy",5,7],["fear",4,8]]],
+ ["Hyper-Rational", [["shock",2,4],["disgust",3,6]]],
+ ["Hyper-Vigilant", [["fear",7,9],["anger",5,7]]],
+ ["Restless",       [["apathy",5,7],["fear",2,4]]],
+ ["Stickler",       [["disgust",4,6],["anger",4,6]]],
+ ["Judge",          [["disgust",6,8],["anger",5,7],["apathy",3,6]]],
+ ["Deflector",      [["shame",4,6],["anger",4,6]]],
+ ["Dramatizer",     [["shock",6,8],["sadness",4,6]]],
+ ["Worrywart",      [["fear",6,8],["sadness",3,5]]],
+ ["Loner",          [["sadness",6,8],["fear",5,7]]],
+ ["People-Pleaser", [["apathy",4,6],["shame",3,5]]],
+ ["Skeptic",        [["disgust",5,7],["shock",3,5]]],
+ ["Dreamer",        [["apathy",3,5],["sadness",2,4]]],
+ ["Procrastinator", [["fear",4,6],["sadness",3,5]]],
+ ["Imposter",       [["shame",5,7],["fear",4,6]]],
+ ["Aggressor",      [["anger",6,9],["apathy",4,7]]],
+ ["Martyr",         [["sadness",6,8],["shame",5,7],["apathy",3,5]]],
+ ["Cynic",          [["disgust",6,8],["sadness",4,6]]],
+ ["Manipulator",    [["anger",5,8],["apathy",4,7]]],
+ ["Overthinker",    [["fear",5,7],["shame",4,6]]],
+ ["Escapist",       [["apathy",4,6],["fear",6,8]]],
+ ["Nihilist",       [["disgust",7,9],["sadness",5,7]]],
+ ["Innocent",       [["fear",2,4]]],
+ ["Pessimist",      [["sadness",5,7],["fear",4,6]]],
+ ["Catastrophizer", [["fear",8,10],["sadness",6,8]]],
+ ["Enabler",        [["apathy",3,5],["shame",4,6]]],
+ ["Control Freak",  [["fear",7,9],["anger",5,7],["anticipation",5,7]]],
+ ["Avoider",        [["apathy",6,8],["fear",5,7]]]];
+
+/* ============================================================
+   THE BAND EDGE. Ruled: "a band edge is a ramp, not a cliff."
+
+   The shipped rule, in core.js sabLevels and sab33Detect, was a three step
+   staircase over a level ROUNDED TO AN INTEGER FIRST: full membership flat
+   across the band, a half step at exactly one integer outside it, zero beyond.
+   Two things follow from that and both are defects.
+
+   The rounding means the spec's own example is not quite the bug. 6.9 and 7.1
+   both round to 7, so they are in fact the same answer. The cliff is real and
+   it sits at x.5, not at the band edge: 6.4 and 6.6 are different answers, and
+   nothing about a body changes across a fifth of a point.
+
+   And flat-inside cannot express "intensity peaks inside the band", which the
+   spec states outright. A reading at the very edge of the band and a reading
+   dead centre were the same number.
+
+   EVERY WIDTH HAS A REASON. Measured with proto/sniffer/ramp.js, which checks
+   itself against a known good case in both directions and refuses to run if
+   either fails.
+
+   SAB_EDGE 0.75   membership at the band edge. Not 1, because a peak needs
+                   somewhere to fall to. Not lower, because the edge is inside
+                   the band the canon states and must not read as half absent.
+   SAB_BELOW 2     points under the low edge before membership reaches zero.
+                   Two, so a reading ONE point under the band, which the spec
+                   calls the normal condition of a reader, keeps half the
+                   membership it would have had at the edge. One would put the
+                   normal error at zero, which is the failure being fixed.
+   SAB_ABOVE 3     points over the high edge before zero, wider than below on
+                   the spec's own asymmetry, "tapers above it". The reason it
+                   is asymmetric: the low edge is a threshold of PRESENCE and
+                   under it the configuration has not formed, while the high
+                   edge is a threshold of DISPLACEMENT and over it the
+                   configuration HAS formed and is being overrun by a heavier
+                   one. Evidence that decays is not evidence that never arrived.
+
+   WHAT THE RAMP BUYS, AND WHAT IT DOES NOT. Stated plainly because the
+   measurement did not say what this seat expected.
+
+   It buys resolution. The largest move in confidence one tenth of a point of
+   input can cause falls from 0.5000 to 0.0375, thirteen times finer. That is
+   the whole of the "no practitioner reads a body to a tenth of a point"
+   argument and it needs no cohort to establish.
+
+   It buys steadiness. Mean absolute move in confidence under an off by one
+   reading falls 9 to 15 percent.
+
+   IT DOES NOT BUY SET AGREEMENT, and the first measurement said so: behind a
+   hard floor the ramp scored 54.4 against the staircase's 58.8, WORSE. The
+   finding is that a ramp inside the membership does nothing while the OUTPUT
+   is still a cliff. The edge simply moved from the band to the floor. That is
+   why sniffStory emits ranked confidence with no boolean firing set, and why
+   this file carries no firing threshold at all.
+   ============================================================ */
+var SAB_EDGE=0.75, SAB_BELOW=2, SAB_ABOVE=3;
+function sabMember(lvl,lo,hi){
+ var m=(lo+hi)/2, h=(hi-lo)/2;
+ if(lvl>=lo&&lvl<=hi) return h>0?1-(1-SAB_EDGE)*Math.abs(lvl-m)/h:1;
+ if(lvl<lo)  return Math.max(0,SAB_EDGE*(1-(lo-lvl)/SAB_BELOW));
+ return Math.max(0,SAB_EDGE*(1-(lvl-hi)/SAB_ABOVE));}
+
+/* COMBINING THE FETTERS. The geometric mean, and the spec's own sentence is
+   the argument: "a saboteur is a configuration of fetters at specific
+   intensities. Break the co-mingling and the saboteur is gone." An arithmetic
+   mean cannot go. On a three part row it averages 1, 1 and 0 to 0.67 and fires
+   with one fetter entirely absent, and the shipped code used the arithmetic
+   mean. It had no three part rows so it never showed; the port adds four, so
+   this stopped being academic at the moment the table landed. */
+function sabFetters(parts,L){
+ var p=1;
+ for(var i=0;i<parts.length;i++){
+  var f=sabMember(L[parts[i][0]]||0,parts[i][1],parts[i][2]);
+  if(f<=0) return 0;
+  p*=f;}
+ return Math.pow(p,1/parts.length);}
+
+/* ============================================================
+   SPECIFICITY. How much a row is worth once its fetters are read.
+
+   TWO WEIGHTS, AND BOTH ARE DERIVED RATHER THAN TYPED.
+
+   1. ARITY. A configuration naming one fetter is the least specific claim in
+      the table and a configuration naming three is the most, so confidence
+      scales with how much the row had to find. This is the same rule
+      lexicon.js already applies to a bare axis noun taking its family floor:
+      less specific evidence is worth less. It is also the fix for a defect the
+      port introduced and this seat did not expect. The spec reduces Innocent
+      to a single fetter, Fear 2 to 4, and a one part row beats a multi part row
+      under ANY conjunctive combination because it has nothing to disagree with.
+      Measured on the 14 stated profiles, Innocent reached the top three in 38.4
+      percent of runs, which is the "fires on everything" shape the spec warns
+      about, moved from Avoider onto Innocent by the port itself.
+
+   2. AVOIDER, held low on the owner's ruling. The spec: "Avoider fires in 81
+      percent of runs and costs 0.1 points. Weight it low or your sniffer will
+      report Avoider on everything." The ruling is implemented. THE PREMISE IS
+      NOT TRUE OF THIS POPULATION and it is raised rather than buried: measured
+      on the ported bands over the 14 stated profiles, Avoider reaches the top
+      three in 1.4 percent of runs, not 81. Whatever cohort produced 81 is not
+      in this repository. The weight is applied because he ruled it; this seat
+      reports that on the data here it suppresses a row that was already quiet,
+      and that Innocent is the row his sentence actually describes.
+   ============================================================ */
+var SAB_ARITY={1:0.80,2:1.00,3:1.10};
+var SABW={Avoider:0.55};
+function sabWeight(nm,parts){
+ return (SABW[nm]!==undefined?SABW[nm]:1)*(SAB_ARITY[parts.length]||1);}
+
+/* THE CONFIDENCE, 0 to 1. Fetter membership times specificity, clamped,
+   because a weight over 1 must not manufacture certainty. */
+function sabConfidence(nm,parts,L){
+ var f=sabFetters(parts,L);
+ if(f<=0) return 0;
+ return Math.max(0,Math.min(1,f*sabWeight(nm,parts)));}
 
 /* the authored clinical composition per saboteur. the original carried this
    and never read it; it is the sub-line on every named saboteur drill now. */

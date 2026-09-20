@@ -30,7 +30,11 @@ console.log('\n=== 1 · load ===');
    which is the state this repo is in, so the two file misses are expected and
    named. Everything else is a real error. The font miss used to be on this
    list and is not any more: the typeface is carried in the file. */
-const KNOWN=/fig-fetter\.png|fig-pain\.png/;
+/* NOTHING IS KNOWN ANY MORE. The two rasters were whitelisted here and never
+   existed, so this gate passed two failed requests a load for as long as it
+   has been running. The floor is zero outbound requests, which is what the
+   product has always claimed and can now be held to. */
+const KNOWN=/$^/;
 const realErrs=errs.filter(e=>!KNOWN.test(e)&&!/ERR_FILE_NOT_FOUND/.test(e));
 ok(realErrs.length===0,'console errors: '+realErrs.slice(0,5).join(' | '));
 console.log('  errors:',errs.length);
@@ -229,8 +233,8 @@ console.log('\n=== 7 \u00b7 nothing leaves the device ===');
  /* the two rasters are the only thing this product ever reaches for, and they
     are relative, so on a server they would be two requests to that server and
     nowhere else. A third of anything is a regression. */
- const off=asked.filter(u=>!/fig-fetter\.png|fig-pain\.png/.test(u));
- ok(off.length===0,'no outbound request beyond the two local rasters: '+off.slice(0,4).join(' | '));
+ ok(asked.length===0,'no outbound request at all, and the count is '+asked.length
+  +(asked.length?': '+asked.slice(0,4).join(' | '):''));
  ok(asked.every(u=>u.indexOf('googleapis')<0&&u.indexOf('gstatic')<0),
   'and nothing at all goes to a font host');
  console.log('  outbound requests:',asked.length?asked.slice(0,4).join(' | '):'none');

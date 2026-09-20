@@ -104,6 +104,30 @@ if(typeof module!=='undefined'&&module.exports){
      no test can reach is a table with no owner. */
                   IQ_STEM:IQ_STEM,
   /* sniffer */   scanStory:scanStory, parseStory:parseStory, applyStory:applyStory,
+  /* THE OUTPUT CONTRACT, SNIFFER_SPEC.md section 10. sniffStory is the one
+     entry point a caller needs; the seven part builders are exported beside it
+     because the gate asserts each part on its own and a part no test can reach
+     is a part with no owner, which is the defect this layer exists to close. */
+                  sniffStory:sniffStory, sniffAxes:sniffAxes,
+                  sniffSaboteurs:sniffSaboteurs, sniffLaws:sniffLaws,
+                  sniffFlow:sniffFlow, sniffGates:sniffGates,
+                  sniffDepth:sniffDepth, sniffOffer:sniffOffer,
+                  SPEC_POLE:SPEC_POLE, LEXCOMP:LEXCOMP, LAWVIO:LAWVIO,
+                  lexComposite:lexComposite, LEXCOMPRUN:LEXCOMPRUN,
+                  SAB_SHOW:SAB_SHOW, OFFER_MAX:OFFER_MAX,
+                  GATE_BASE:GATE_BASE, GATE_STEP:GATE_STEP,
+  /* the band edge. sabMember is the ramp itself and the gate asserts it is
+     continuous where the shipped staircase was not, so it has to be reachable.
+     sabConfidence and sabWeight carry the specificity ruling. */
+                  sabMember:sabMember, sabFetters:sabFetters,
+                  sabConfidence:sabConfidence, sabWeight:sabWeight,
+                  SAB_EDGE:SAB_EDGE, SAB_BELOW:SAB_BELOW, SAB_ABOVE:SAB_ABOVE,
+                  SAB_ARITY:SAB_ARITY, SABW:SABW,
+  /* the law, expression and depth cue tables, and the coverage report that
+     refuses to let an average hide the hole in them. */
+                  LAWCUE:LAWCUE, EXPRCUE:EXPRCUE, DANTECUE:DANTECUE,
+                  lawCoverage:lawCoverage, C8_GIVE:C8_GIVE, C8_AUDIENCE:C8_AUDIENCE,
+                  LAW_SELF:LAW_SELF, LAW_OTHER:LAW_OTHER, LAW_ONE:LAW_ONE,
   /* the lexicon's schema and its provenance. exported because the gate has to
      be able to prove the validator REFUSES, and because a provenance table no
      test can reach is a provenance table with no owner, which is the defect

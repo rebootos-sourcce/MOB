@@ -1,13 +1,25 @@
 /* ============================================================
    THE ARTWORK.
-   The original inlined two ~35KB base64 PNGs. They are external
-   here: cacheable, swappable, and diffable. If either file is
-   absent the vector body path below renders in its place, so the
-   Energy Map is never blank.
-     fig-fetter.png   every layer except pain
-     fig-pain.png     the nerve map, for the pain layer
+   The original inlined two ~35KB base64 PNGs. They were made
+   external here so they would be cacheable, swappable and
+   diffable, and then they were never added. So every load asked
+   for two files that have never existed in this repository, got
+   two ERR_FILE_NOT_FOUND back, and fell through to the vector
+   body, which is what has been on screen the whole time.
+
+   Two failed requests is not nothing. The standing ruling is one
+   file with no dependencies and no network, and a build that
+   reaches for a neighbour it does not have is not that. It also
+   put two 404s in the log of any server this is ever served from,
+   which is the kind of noise that hides a real one.
+
+   So the names are empty and the probe below skips an empty name.
+   The raster path is kept, because swappable art is still wanted
+   and the code for it is written and correct. A host that has the
+   files sets these two and everything downstream works unchanged.
+   Nothing is requested until one of them is named.
    ============================================================ */
-var FIG_FETTER='fig-fetter.png', FIG_PAIN='fig-pain.png';
+var FIG_FETTER='', FIG_PAIN='';
 var FIG_FETTER_AR=0.50395, FIG_PAIN_AR=0.47925;
 var ART_OK={};
 

@@ -2601,5 +2601,372 @@ g('32 · the sniffer knows what it is looking for');
  ok(!/diagnos|disorder/i.test(JSON.stringify(seen)),'and names no diagnosis');
 }
 
+g('33 · the sniffer contract, and the four guards that are testable');
+/* ADDITIVE. Nothing above this line is changed.
+
+   SNIFFER_SPEC.md section 11 lists eight guards and calls them non negotiable.
+   Four of them are assertions a headless gate can actually make and they are
+   made here. The other four are not, and saying which is which is part of the
+   job: guard 1 no diagnosis and guard 2 never score another person are
+   satisfied by the absence of a mechanism rather than by a rule, so the most a
+   gate can do is assert no clinical string reaches the output; guard 5 show
+   upstream with any avoidance number is a rendering rule, so what is asserted
+   is that the engine makes it impossible to hand a renderer the number without
+   the upstream beside it; guard 8 label the estimator is a UI rule and lives in
+   a file this group does not own.
+
+   EVERY ONE OF THESE WAS BROKEN ON PURPOSE AND THE FAILURE NAME RECORDED
+   BEFORE IT WAS PUT BACK. The names are in TDD-sniffer.md. A gate nobody has
+   seen fail is a gate nobody has tested. */
+{
+ const {sniffStory,sniffAxes,sniffSaboteurs,sniffLaws,sniffFlow,sniffGates,
+        sniffDepth,sniffOffer,sabMember,sabFetters,sabConfidence,sabWeight,
+        SAB_EDGE,SAB_BELOW,SAB_ABOVE,SABW,SAB_ARITY,LAWCUE,EXPRCUE,DANTECUE,
+        lawCoverage,SPEC_POLE,LEXCOMP,LAWVIO,GATE_BASE,GATE_STEP,parseStory}=E;
+
+ /* ---- GUARD 3 · two readings per axis, never one signed number ---- */
+ const two=sniffStory('i am afraid and i am calm and settled about the rest of it');
+ ok(two.axes.length===CHARGES.length,'every axis is reported, '+two.axes.length+' of '+CHARGES.length);
+ ok(two.axes.every(a=>typeof a.shadow==='number'&&typeof a.coherent==='number'),
+  'each axis carries a shadow AND a coherent number');
+ ok(two.axes.every(a=>a.shadow>=0&&a.coherent>=0),
+  'neither reading is ever negative, so neither is a signed collapse of the other');
+ /* THE ASSERTION THAT ACTUALLY CATCHES THE COLLAPSE. A signed single number
+    cannot hold a high shadow and a high coherent at once, so the gate builds
+    exactly that field and asserts both survive. */
+ {
+  const both=sniffAxes(parseStory('i am terrified and i am calm and rested and content'));
+  const f=both.find(a=>a.axis==='Fear');
+  ok(f&&f.shadow>0,'a field with real fear reports real fear, '+(f?f.shadow:'none'));
+  const anyCoh=both.some(a=>a.coherent>0);
+  ok(anyCoh,'and the coherent reading in the same text is not cancelled by it');
+  ok(!both.some(a=>a.shadow<0||a.coherent<0),
+   'and nothing went negative, which is what a collapse looks like');
+ }
+
+ /* ---- GUARD 4 · band edges are ramps, not cliffs ---- */
+ /* CONTINUITY. The shipped staircase rounded the level first, so 6.4 and 6.6
+    were different answers. The ramp must not have a step anywhere. */
+ {
+  let worst=0, at=null;
+  for(let v=0;v<=10.0001;v+=0.05){
+   const a=sabMember(Math.round(v*100)/100,7,9), b=sabMember(Math.round((v+0.05)*100)/100,7,9);
+   if(Math.abs(a-b)>worst){worst=Math.abs(a-b);at=v;}}
+  ok(worst<0.05,'the ramp has no step: largest move per twentieth of a point is '+
+   worst.toFixed(4)+' near '+(at===null?'nowhere':at.toFixed(2)));
+  ok(sabMember(6.45,7,9)>0&&sabMember(6.55,7,9)>0,
+   'and a reading half a point under the band still carries membership');
+  ok(Math.abs(sabMember(6.45,7,9)-sabMember(6.55,7,9))<0.05,
+   'and the two of them are nearly the same answer, which is the whole ruling');
+ }
+ /* IT PEAKS INSIDE THE BAND AND TAPERS ABOVE, both stated by the spec. */
+ ok(sabMember(8,7,9)>sabMember(7,7,9)&&sabMember(8,7,9)>sabMember(9,7,9),
+  'membership peaks inside the band rather than sitting flat across it');
+ ok(sabMember(7,7,9)===SAB_EDGE&&sabMember(9,7,9)===SAB_EDGE,
+  'and both edges sit at SAB_EDGE, '+SAB_EDGE);
+ ok(sabMember(9+SAB_ABOVE,7,9)===0&&sabMember(7-SAB_BELOW,7,9)===0,
+  'membership reaches zero at SAB_BELOW under and SAB_ABOVE over');
+ ok(SAB_ABOVE>SAB_BELOW,'and the taper above is wider than the ramp below, '+
+  SAB_ABOVE+' against '+SAB_BELOW+', which is the spec\'s asymmetry');
+ ok(sabMember(10,7,9)>0,'a reading one point over the band still reads, '+sabMember(10,7,9));
+ /* AND IT IS MONOTONE ON EACH SIDE, which is what makes it a ramp and not a bump. */
+ {
+  /* tenths as integers, because accumulating 0.1 in a float walks off the
+     midpoint and the reversal it then reports is the loop's and not the ramp's.
+     The peak of band 7 to 9 is exactly 8, so the two halves split there. */
+  let mono=true, where=null;
+  for(let i=40;i<80;i++){const a=sabMember(i/10,7,9),b=sabMember((i+1)/10,7,9);
+   if(b<a-1e-9){mono=false;where=i/10;}}
+  for(let i=80;i<130;i++){const a=sabMember(i/10,7,9),b=sabMember((i+1)/10,7,9);
+   if(b>a+1e-9){mono=false;where=i/10;}}
+  ok(mono,'membership rises to the peak at 8 and falls after it, with no reversal'+
+   (where===null?'':' (reversed at '+where+')'));
+ }
+ /* THE CONJUNCTION. Break one fetter and the saboteur is gone, which is the
+    spec's own sentence about what a saboteur is. */
+ ok(sabFetters([['fear',7,9],['anger',5,7]],{fear:8,anger:0})===0,
+  'a configuration with one fetter absent scores zero, not an average');
+ ok(sabFetters([['fear',7,9],['anger',5,7],['apathy',3,5]],{fear:8,anger:6,apathy:0})===0,
+  'and that holds on a three part row, where an arithmetic mean would have fired at 0.67');
+
+ /* ---- GUARD 6 · Surprise fires no saboteur ---- */
+ {
+  const keyed=[];
+  SAB33.forEach(r=>r[1].forEach(p=>{if(p[0]==='surprise')keyed.push(r[0]);}));
+  ok(keyed.length===0,'no row of the 33 keys on surprise, '+
+   (keyed.length?keyed.join(', '):'zero of 33'));
+  /* and the behaviour, not only the table: a field that is pure Surprise must
+     produce nothing. asserted separately because a table can be right while a
+     fallback in the reader invents a row anyway. */
+  const only={}; CHARGES.forEach(c=>only[c]=0); only.Surprise=9;
+  const axes=CHARGES.map(c=>({axis:c,shadow:only[c],coherent:0}));
+  ok(sniffSaboteurs(axes).length===0,'and a field of nothing but Surprise fires none');
+ }
+ /* EVERY BAND TERM IS ONE OF THE NINE. The shipped table keyed two rows on
+    `anxiety`, which is not an axis, so the reader papered over it with an alias
+    and those two rows were scored off a term the instrument does not carry. */
+ {
+  const F={Fear:'fear',Anger:'anger',Shame:'shame',Disgust:'disgust',Apathy:'apathy',
+   Shock:'shock',Sad:'sadness',Surprise:'surprise',Anticipation:'anticipation'};
+  const okKeys={}; CHARGES.forEach(c=>okKeys[F[c]]=1);
+  const bad=[];
+  SAB33.forEach(r=>r[1].forEach(p=>{if(!okKeys[p[0]])bad.push(r[0]+' on '+p[0]);}));
+  ok(bad.length===0,'every band term is one of the nine axes'+(bad.length?': '+bad.join(', '):''));
+  /* and no axis but Surprise is left keying nothing, which is how Apathy came
+     to score no saboteur at all before the port. */
+  const used={}; SAB33.forEach(r=>r[1].forEach(p=>used[p[0]]=1));
+  const silent=CHARGES.filter(c=>!used[F[c]]);
+  ok(silent.length===1&&silent[0]==='Surprise',
+   'and Surprise is the only axis keying nothing, '+
+   (silent.length?silent.join(', '):'none')+' silent');
+ }
+
+ /* ---- GUARD · because is present on every saboteur emitted ---- */
+ {
+  const r=sniffStory('i am terrified and furious and i feel nothing at all any more');
+  ok(r.saboteurs.length>0,'a loaded field emits saboteurs, '+r.saboteurs.length);
+  ok(r.saboteurs.every(s=>Array.isArray(s.because)&&s.because.length>0),
+   'every saboteur emitted carries a because');
+  ok(r.saboteurs.every(s=>s.because.every(b=>typeof b==='string'&&b.length>8)),
+   'and every citation is a string that says something');
+  /* THE CITATION MUST NAME THE EVIDENCE, not merely exist. A because that does
+     not mention the fetter and its band is not inspectable, which is the whole
+     point of the field. */
+  ok(r.saboteurs.every(s=>s.fetters.every(f=>
+   s.because.some(b=>b.indexOf(f)>=0))),
+   'and every fetter in the row is named in the citation');
+  ok(r.saboteurs.every(s=>s.because.some(b=>/band/.test(b)&&/ramp/.test(b))),
+   'and the citation states the band and the ramp value that produced it');
+  /* and it holds for every part of the output that carries a confidence */
+  ok(r.axes.every(a=>Array.isArray(a.because)&&a.because.length>0),
+   'every axis carries a because, including the ones reading zero');
+  ok(r.laws.every(l=>Array.isArray(l.because)&&l.because.length>0),
+   'every law carries a because');
+  ok(r.offer.every(o=>Array.isArray(o.because)&&o.because.length>0),
+   'every offer carries a because');
+  ok(Array.isArray(r.gates.because)&&r.gates.because.length>0,'the gates carry a because');
+  ok(Array.isArray(r.depth.because)&&r.depth.because.length>0,
+   'and depth carries one even when it reads nothing');
+ }
+
+ /* ---- the contract shape, section 10 ---- */
+ {
+  const r=sniffStory('i put it off again and i could not face it');
+  ['axes','saboteurs','laws','flow','gates','depth','offer'].forEach(k=>
+   ok(r[k]!==undefined,'the contract emits '+k));
+  ok(r.flow.nature!==undefined&&r.flow.human!==undefined&&r.flow.expression!==undefined,
+   'flow carries all three lenses');
+  ok(r.flow.unread.indexOf('nature')>=0&&r.flow.unread.indexOf('human')>=0,
+   'and names nature and human as UNREAD rather than reporting them clean');
+  ok(r.flow.because.length>0&&/elements\.json/.test(r.flow.because[0]),
+   'and says which file they needed');
+ }
+ /* OFFER IS THE PAYLOAD, so it is never empty when an axis carried something. */
+ {
+  const r=sniffStory('i am so ashamed of myself');
+  ok(r.axes.some(a=>a.shadow>0),'the text loaded an axis');
+  ok(r.offer.length>0,'so offer is not empty, '+r.offer.length);
+  ok(r.offer.every(o=>o.replacement&&o.address),
+   'and every offer names an address AND a replacement state');
+  const blank=sniffStory('');
+  ok(blank.offer.length===0,'and an empty story offers nothing rather than guessing');
+  ok(blank.axes.length===CHARGES.length,'while still reporting every axis as zero');
+ }
+ /* GUARD 5, as far as an engine can enforce it. The avoidance number cannot be
+    handed over without the upstream that produced it. */
+ {
+  const r=sniffStory('i noticed it and i let it go and then i avoided the call and it had me');
+  ok(r.gates.intentional&&typeof r.gates.intentional.avoidance==='number',
+   'the sump is computed when both upstream gates read');
+  ok(r.gates.intentional.upstream&&r.gates.intentional.upstream.aware!==undefined&&
+     r.gates.intentional.upstream.detached!==undefined,
+   'and the avoidance number is inside an object that carries both upstream readings');
+  ok(r.gates.intentional.because.length>=3,
+   'and a because naming what upstream did, so it cannot read as a trait');
+  ok(r.gates.intentional.of===100,'and the number says what it is out of');
+  const none=sniffStory('the weather was cold');
+  ok(none.gates.intentional===null&&none.gates.read===false,
+   'with no gate evidence the sump is not computed at all');
+  ok(/nobody entered/.test(none.gates.because.join(' ')),
+   'and it says why rather than reporting a clean 14.5');
+  /* the cascade is his three measured points, so they are asserted as points */
+  near(GATE_BASE,14.5,0.001,'the cascade base is his measured 14.5');
+  near(GATE_BASE+GATE_STEP,43.2,0.001,'one upstream distorted is his measured 43.2');
+  near(GATE_BASE+GATE_STEP*2,71.9,0.001,'both distorted is his measured 71.9');
+ }
+
+ /* ---- GUARD 1 and 2, as far as they are assertable ---- */
+ {
+  const r=sniffStory('my father died last year and my partner cut me out of the deal');
+  const j=JSON.stringify(r);
+  ok(!/diagnos|disorder|syndrome|patholog/i.test(j),'the output names no diagnosis');
+  ok(!/narciss|sociopath|psychopath|machiavell/i.test(j),
+   'and no clinical label from the hyper-complex translation column reaches it');
+  /* never score another person. the text names a partner who acted; the readout
+     must still be about the writer, and the only assertion available is that no
+     field of the output is about anybody else. */
+  ok(r.offer.every(o=>CHARGES.indexOf(o.axis)>=0),
+   'every offer lands on one of the writer\'s own nine axes');
+  ok(r.axes.length===CHARGES.length,'and there is exactly one set of axes, not one per person named');
+ }
+ /* the four bidirectional laws report a direction, because the spec rules that
+    a one sided reader misses half of them and self-abandonment reads as virtue. */
+ {
+  const self=sniffLaws('others have it worse and i do not matter and it is all my fault');
+  ok(self.length>0,'the self directed reading fires, '+self.length+' laws');
+  ok(self.every(l=>l.direction===null||l.direction==='self'||l.direction==='other'),
+   'and every law either names a direction or is single poled');
+  const c=self.find(l=>l.law==='Compassion');
+  ok(c&&c.direction==='self','Compassion reads in the self direction on self-abandonment');
+  ok(c&&c.violation==='Self-abandonment','and names the violation for that direction');
+  const other=sniffLaws('not my problem, they deserved it, they brought it on themselves');
+  const c2=other.find(l=>l.law==='Compassion');
+  ok(c2&&c2.direction==='other','and in the other direction on indifference');
+  ok(c2&&c2.violation==='Indifference','with the other direction\'s violation string');
+  /* all four of them, and every one carries two entries in the cue table */
+  ['Compassion','Humility','Generosity','Ownership'].forEach(l=>{
+   const n=LAWCUE.filter(r=>r[1]===l).length;
+   ok(n===2,l+' is keyed in both directions, '+n+' cue sets');});
+  /* and the single poled ones are not accidentally doubled */
+  const dbl=[];
+  const seen={};
+  LAWCUE.forEach(r=>{seen[r[1]]=(seen[r[1]]||0)+1;});
+  Object.keys(seen).forEach(l=>{if(seen[l]>1&&['Compassion','Humility','Generosity','Ownership'].indexOf(l)<0)dbl.push(l);});
+  ok(dbl.length===0,'and no single poled law is keyed twice'+(dbl.length?': '+dbl.join(', '):''));
+ }
+ /* NEGATION. Inherited from verp.js rather than reinvented, and asserted,
+    because without it the instrument accuses a person of what they denied. */
+ ok(sniffLaws('i lied to them').some(l=>l.law==='Truth'),'a plain admission fires Truth');
+ ok(!sniffLaws('i never lied to them').some(l=>l.law==='Truth'),
+  'and its denial does not');
+ ok(!sniffLaws('i did not put it off').some(l=>l.law==='Courage'),
+  'and a denied avoidance does not fire Courage');
+ /* PRECEDENCE. The longer phrase wins, which is what stops a denial reading as
+    an admission when both strings are in the table. */
+ {
+  const o=sniffLaws('it was not my fault at all');
+  ok(!o.some(l=>l.law==='Ownership'&&l.direction==='self'),
+   'a denial of self blame does not fire the self direction');
+ }
+
+ /* ---- RESENTMENT AS THE COMPOSITE, and the collision it was ruled to fix ---- */
+ {
+  /* EVERY WORD IN THE COMPOSITE TABLE, not one of them. The first cut of this
+     test read only "resentful", so breaking the `resentment` key on purpose left
+     it green: the other six keys still carried Apathy and the behaviour looked
+     intact. A guard that passes while the thing it guards is broken is worse
+     than no guard, so each key is exercised on its own. */
+  Object.keys(LEXCOMP).forEach(k=>{
+   const one=sniffStory('i am '+k+' about all of it');
+   const an=one.axes.find(x=>x.axis==='Anger'), ap=one.axes.find(x=>x.axis==='Apathy');
+   ok(an.shadow>0&&ap.shadow>0,'"'+k+'" lands on BOTH Anger and Apathy, '+
+    an.shadow+' and '+ap.shadow);});
+  const r=sniffStory('i am resentful about all of it');
+  const a=r.axes.find(x=>x.axis==='Anger'), p=r.axes.find(x=>x.axis==='Apathy');
+  ok(a.shadow>0&&p.shadow>0,'resentment lands on BOTH Anger and Apathy, '+
+   a.shadow+' and '+p.shadow);
+  /* NO DEAD ROWS. The pass reports what it could not seat and the gate fails on
+     it, so a composite word the scanner cannot reach gets ruled rather than
+     sitting in the table looking live. This is how the three above were found. */
+  ok(E.LEXCOMPRUN.unseated.length===0,
+   'every composite key is reachable by the scanner'+
+   (E.LEXCOMPRUN.unseated.length?': '+E.LEXCOMPRUN.unseated.join(', ')+' are not':''));
+  ok(E.LEXCOMPRUN.split.length===0,
+   'and the seated members share one seat, so nothing was chosen between two answers');
+  ok(E.LEXCOMPRUN.seat&&E.LEXCOMPRUN.amt>0,
+   'and the seat and amount were derived off the table rather than typed, '+
+   E.LEXCOMPRUN.seat+' at '+E.LEXCOMPRUN.amt);
+  ok(Object.keys(LEXCOMP).every(k=>LEXCOMP[k].length===2&&
+     LEXCOMP[k].indexOf('Anger')>=0&&LEXCOMP[k].indexOf('Apathy')>=0),
+   'and every composite key is the ruled pair, Anger and Apathy, '+
+   Object.keys(LEXCOMP).length+' words');
+  ok(LEXCOMP.resentment&&LEXCOMP.resentment.length===2,
+   'and the composite table says so rather than the reader guessing');
+  ok(r.axes.some(x=>x.because.some(b=>/composite/.test(b))),
+   'and the citation says it is a composite');
+  /* the spec's own reason for the ruling: the pair that collapsed. */
+  const nm=r.saboteurs.map(s=>s.name);
+  ok(nm.indexOf('Aggressor')>=0&&nm.indexOf('Manipulator')>=0,
+   'and Aggressor and Manipulator both appear, which is the collapse it was ruled to fix');
+  ok(r.saboteurs.find(s=>s.name==='Aggressor').confidence!==
+     r.saboteurs.find(s=>s.name==='Manipulator').confidence,
+   'at different confidences, so they are distinguished rather than merely both present');
+ }
+
+ /* ---- THE SPECIFICITY WEIGHTS, and both have a stated reason ---- */
+ ok(SABW.Avoider<1,'Avoider is held low on the ruling, '+SABW.Avoider);
+ ok(SAB_ARITY[1]<SAB_ARITY[2]&&SAB_ARITY[2]<SAB_ARITY[3],
+  'a one fetter row is worth less than a two and a two less than a three');
+ ok(sabWeight('Innocent',[['fear',2,4]])<sabWeight('Imposter',[['shame',5,7],['fear',4,6]]),
+  'so Innocent, the only single fetter row, does not outrank a two fetter row on arity alone');
+ ok(sabConfidence('Innocent',[['fear',2,4]],{fear:3})<=1,
+  'and no weight manufactures a confidence over 1');
+ ok(sabConfidence('Avoider',[['apathy',6,8],['fear',5,7]],{apathy:7,fear:6})<
+    sabConfidence('Escapist',[['apathy',4,6],['fear',6,8]],{apathy:5,fear:7}),
+  'and a dead centre Avoider scores under a dead centre Escapist, which is the ruling');
+
+ /* ---- THE PORT, checked against a second transcription ---- */
+ {
+  ok(SAB33.length===33,'33 rows, '+SAB33.length);
+  const names={}; SAB33.forEach(r=>{names[r[0]]=(names[r[0]]||0)+1;});
+  ok(Object.keys(names).length===33,'and no name appears twice');
+  ok(SAB33.every(r=>r[1].length>=1&&r[1].length<=3),'every row carries one to three fetters');
+  ok(SAB33.every(r=>r[1].every(p=>p[1]<=p[2]&&p[1]>=0&&p[2]<=10)),
+   'every band is ordered and inside 0 to 10');
+  const three=SAB33.filter(r=>r[1].length===3).map(r=>r[0]);
+  ok(three.length===4,'four rows carry a third fetter after the port, '+three.join(', '));
+  const one=SAB33.filter(r=>r[1].length===1).map(r=>r[0]);
+  ok(one.length===1&&one[0]==='Innocent','and Innocent is the only single fetter row');
+ }
+ /* ---- THE COVERAGE REPORT, because an average hides a hole ---- */
+ {
+  const c=lawCoverage();
+  ok(c.laws===21,'all 21 laws are keyed, '+c.laws);
+  ok(c.bidirectional.length===4,'four are keyed in both directions, '+c.bidirectional.join(', '));
+  ok(c.nature===0&&c.human===0,
+   'nature and human nature are reported as zero coverage rather than omitted');
+  ok(c.missing.length===4,'and the four files the spec says to load are named as missing');
+  ok(c.expression===5&&c.expressionAbsent===5,
+   'five of the ten expression elements are keyed and the other five are reported absent');
+  ok(c.circlesKeyed<c.circles,
+   'and not every circle is keyed, '+c.circlesKeyed+' of '+c.circles);
+ }
+ /* ---- DEPTH REFUSES TO GUESS ---- */
+ {
+  const none=sniffDepth('the meeting ran long and then i went home');
+  ok(none.circle===null&&none.confidence===0,'depth reads nothing rather than guessing low');
+  ok(none.unkeyed.length===4,'and names the four circles it cannot key at all');
+  const c8=sniffDepth('i helped her move and i made sure they knew about it');
+  ok(c8.circle==='C8','the C8 test fires on warmth that needed an audience');
+  ok(c8.confidence<=0.5,'and its confidence is held low, '+c8.confidence);
+  const cost=sniffDepth('i helped her move and told nobody');
+  ok(cost.circle!=='C8','and warmth that cost something without an audience does not fire it');
+ }
+ /* ---- THE SPEC POLE TABLE, and the disagreement it is carrying ---- */
+ {
+  ok(Object.keys(SPEC_POLE).length===9,'the spec pole table covers all nine axes');
+  ok(CHARGES.every(c=>SPEC_POLE[c]&&SPEC_POLE[c].pole&&SPEC_POLE[c].addr),
+   'and every axis has both an address and a replacement state');
+  const r=sniffStory('i am afraid');
+  const o=r.offer[0];
+  ok(o.poleDiffers&&o.poleDiffers.spec==='Safety / Ground'&&o.poleDiffers.child==='Trust',
+   'and where it disagrees with CHILD the output SAYS so rather than hiding it');
+  /* the collision, asserted, because it is the reason it must be ruled */
+  const apathy=SPEC_POLE.Apathy.pole, sadChild=CHILD.find(c=>c.nm==='Sad').opp;
+  ok(apathy.indexOf(sadChild)>=0,
+   'the spec offers '+sadChild+' at Apathy while CHILD offers it at Sad, which is one word at two addresses');
+ }
+ /* ---- AND THE SNIFFER IS STILL THE SNIFFER ---- */
+ {
+  const t='i am full of anger and i cannot keep going';
+  ok(JSON.stringify(sniffStory(t))===JSON.stringify(sniffStory(t)),
+   're-reading the same story gives back the same contract');
+  ok(E.scanStory&&E.parseStory&&E.applyStory,'and the three original functions are still there');
+  const before=JSON.stringify(S.charge);
+  sniffStory(t);
+  ok(JSON.stringify(S.charge)===before,'and reading a story through the contract mutates nothing');
+ }
+}
+
 console.log('\n===== '+P+' passed, '+F+' failed =====');
 process.exit(F?1:0);

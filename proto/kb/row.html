@@ -1,6 +1,6 @@
 <!doctype html><html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>The codex as it ships</title>
+<title>The row</title>
 <style>
 :root{
  --bg:#0C0D12; --panel:#1A1D26; --panel-2:#252833; --sunk:#090A0E;
@@ -45,24 +45,44 @@ svg.g{fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round}
 .scale{font-size:11px;color:var(--dim);font-family:var(--sans)}
 @media(max-width:760px){.pw{max-width:none}}
 
-.kb-grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(236px,1fr))}
-.kb-c{position:relative;display:flex;flex-direction:column;gap:7px;padding:15px 15px 16px;
- border:1px solid var(--edge);border-radius:var(--r-s);background:var(--panel);
- text-align:left;min-height:150px;overflow:hidden}
-.kb-cs{position:absolute;left:0;right:0;top:0;height:3px;background:var(--c);opacity:.9}
-.kb-ch{display:flex;align-items:center;gap:8px;min-height:24px}
-.kb-cg{width:24px;height:24px;display:grid;place-items:center;color:var(--c)}
-.kb-cn{font-size:16px;font-weight:500;color:var(--ink);line-height:1.25}
-.kb-cb{font-size:11.5px;color:var(--dim);margin-top:-3px}
-.kb-cd{font-size:13px;line-height:1.5;color:var(--mid);
- display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
-.top{display:flex;flex-direction:column;gap:14px;padding:18px 0 16px}
-.sr{display:flex;gap:10px;flex-wrap:wrap}
-@media(max-width:760px){.kb-grid{grid-template-columns:1fr}}
+
+.sp{padding:22px 0 60px;display:flex;flex-direction:column;gap:34px}
+.blk{display:flex;flex-direction:column;gap:12px}
+.blk h3{margin:0;font-size:15px;font-weight:500;color:var(--ink);text-transform:capitalize}
+.blk p{margin:0;font-size:13px;line-height:1.6;color:var(--mid);max-width:72ch}
+.frame{border:1px solid var(--edge);border-radius:var(--r-s);background:var(--panel);
+ padding:14px 16px}
+.frame.w390{max-width:374px}
+.rw{display:flex;align-items:center;gap:12px;min-height:56px;
+ border-bottom:1px solid var(--edge);padding:0 2px;width:100%}
+.rw:last-child{border-bottom:0}
+.rwt{min-width:0;display:flex;flex-direction:column;gap:1px}
+.rwn{font-size:15px;font-weight:500;color:var(--ink);line-height:1.2;
+ white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rws{font-size:11.5px;color:var(--dim);line-height:1.2}
+.rwv{margin-left:auto;font-family:var(--num);font-size:14px;font-weight:500;
+ color:var(--ink);font-variant-numeric:tabular-nums;flex:0 0 auto}
+.rwv.z{color:var(--dim);font-weight:400}
+.rwv.off{color:var(--dim);font-weight:400}
+/* the anatomy. one row, exploded, with every measurement on it */
+.an{position:relative;padding:40px 0 74px}
+.an .rw{max-width:420px;border-bottom:1px dashed var(--edge-2)}
+.cal{position:absolute;font-size:10.5px;color:var(--accent);font-family:var(--num);
+ white-space:nowrap}
+.tbl{width:100%;border-collapse:collapse;font-size:12.5px}
+.tbl th{text-align:left;font-weight:500;color:var(--dim);font-size:11px;
+ letter-spacing:.05em;padding:0 12px 7px 0;border-bottom:1px solid var(--edge-2)}
+.tbl td{padding:7px 12px 7px 0;border-bottom:1px solid var(--edge);color:var(--mid);
+ vertical-align:top}
+.tbl td b{color:var(--ink);font-weight:500}
+.tbl td.n{font-family:var(--num);color:var(--ink);text-align:right;
+ font-variant-numeric:tabular-nums}
+.two{display:grid;gap:22px;grid-template-columns:1fr 390px;align-items:start}
+@media(max-width:900px){.two{grid-template-columns:1fr}.frame.w390{max-width:none}}
 </style></head><body>
 <div class="pnote">
- <b>The codex as it ships</b>
- <span>the current card, rebuilt from the same engine tables, so the comparison is like for like</span>
+ <b>The row</b>
+ <span>Four things, at both widths, with what each percent is a percent of</span>
  <label>profile <select id="who"><option>Diane</option><option>Marcus</option><option>Gordon</option></select></label>
  <span id="stat"></span>
 </div>
@@ -100,55 +120,59 @@ const PAL=KBMETA.PAL;
    for the universal laws the axis. One rule, and the colour system never bends. */
 const col=s=>PAL[s]||PAL.Heart;
 const rowCol=r=>r.col||col(r.seat||r.s);
-var WHO='Diane', SEC='node';
+var WHO='Diane';
 const KEYS=Object.keys(KBDATA.shape);
-function rows(sec){
- const sh=KBDATA.shape[sec], rd=KBDATA.read[WHO][sec];
+function rows(sec){const sh=KBDATA.shape[sec], rd=KBDATA.read[WHO][sec];
  return sh.rows.map((r,i)=>Object.assign({},r,{p:rd[i]}));}
-function head(){
- const sh=KBDATA.shape;
- return '<div class="tabs">'+KEYS.map(k=>
-  '<button class="tb'+(SEC===k?' on':'')+'" data-k="'+k+'">'+sh[k].label
-  +' <b>'+sh[k].rows.length+'</b></button>').join('')+'</div>';}
-function wire(){
- document.querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>{SEC=b.dataset.k;draw();});
- const w=document.getElementById('who');
- if(w){w.value=WHO;w.onchange=()=>{WHO=w.value;draw();};}}
-function stat(){
- const rs=rows(SEC), has=rs.filter(r=>r.p!=null).length;
- document.getElementById('stat').textContent=
-  rs.length+' rows, '+has+' carry a reading';}
-addEventListener('DOMContentLoaded',draw);
-
+function line(r){const c=rowCol(r);
+ return '<div class="rw" style="--c:'+c+'">'+ring(r.p,c,r.ic,44,3.6,20)
+  +'<span class="rwt"><span class="rwn">'+r.t+'</span>'
+  +'<span class="rws">'+r.s+'</span></span>'
+  +'<span class="rwv'+(r.p==null?' off':(r.p?'':' z'))+'">'
+  +(r.p==null?'\u2013':r.p+'%')+'</span></div>';}
 function draw(){
- /* THE BASELINE RENDERS WHAT SHIPS, WHICH IS 108. The shared blob carries all
-    112 because the four field anchors belong in the deck and the shipping code
-    drops them by filtering NODES down to W. The baseline drops them the same
-    way, or the comparison stops being like for like. */
- const rs=rows(SEC).filter(r=>r.s!=='field anchor'), sh=KBDATA.shape[SEC];
- let h='<div class="top"><div class="eye">The codex</div>'
-  +'<h2 class="kh">Every part of the system, open</h2>'
-  +'<p class="kp">Nothing here is held back. These are the same tables the reading runs on, '
-  +'the whole structure it is built from, and it is open because a mirror you cannot inspect '
-  +'is not a mirror. Take any card.</p>'
-  +'<div class="sr"><input class="sch" placeholder="Search addresses, fetters, saboteurs, laws, domains"></div>'
-  +head()+'</div><div class="kb-grid">';
- rs.forEach(r=>{
-  const c=rowCol(r);
-  /* the subtext the current build prints, reconstructed */
-  const sub=SEC==='node'?(r.t+' plexus, axis '+r.t)
-   :SEC==='sab'?((r.fam?'':'')+'Positive Intelligence, 3 addresses')
-   :SEC==='law'?('seated at the '+r.s.toLowerCase())
-   :SEC==='harm'?(r.no+', Chapter 19. '+(r.p!=null?'scored by the intake':'read, not scored'))
-   :(r.fam||('toward its opposite. '+r.s));
-  h+='<div class="kb-c" style="--c:'+c+'"><span class="kb-cs"></span>'
-   +'<span class="kb-ch"><span class="kb-cg">'
-   +mark(r.ic,19,1.5)+'</span></span>'
-   +'<span class="kb-cn">'+r.t+'</span>'
-   +'<span class="kb-cb">'+r.s+'</span>'
-   +'<span class="kb-cd">'+sub+'</span></div>';});
+ let h='<div class="sp">';
+ /* 1. the anatomy */
+ const fear=rows('child')[0];
+ h+='<div class="blk"><h3>The row is four things</h3>'
+  +'<p>The icon, the percent it is impacting the person, the word, and the seat. '
+  +'Nothing else. The ring around the mark is the percent drawn as a shape, so the '
+  +'figure and the ring are one reading in two channels rather than two readings.</p>'
+  +'<div class="frame an">'+line(fear)
+  +'<span class="cal" style="left:2px;top:14px">44 ring &middot; 3.6 stroke &middot; 20 mark</span>'
+  +'<span class="cal" style="left:68px;bottom:34px">15 name, 11.5 seat, 56 row</span>'
+  +'<span class="cal" style="right:2px;top:14px">tabular, ink, right aligned</span>'
+  +'<span class="cal" style="left:2px;bottom:14px">tap target 56 by the full row width, floor is 44</span>'
+  +'</div></div>';
+ /* 2. every family, one row each, at 1600 and at 390 */
+ h+='<div class="blk"><h3>Every deck, one row each</h3>'
+  +'<p>The same row carries all eleven decks. The colour is always the seat, the mark '
+  +'is always the thing\u2019s own, and the percent always says what it is of.</p>'
+  +'<div class="two"><div class="frame">'
+  +KEYS.map(k=>{const r=rows(k)[0];return line(r);}).join('')
+  +'</div><div class="frame w390">'
+  +KEYS.map(k=>{const r=rows(k)[1]||rows(k)[0];return line(r);}).join('')
+  +'</div></div></div>';
+ /* 3. the percent table */
+ h+='<div class="blk"><h3>What each percent is a percent of</h3>'
+  +'<table class="tbl"><tr><th>Deck</th><th>Rows</th><th>Carry a reading</th>'
+  +'<th>The percent is</th></tr>';
+ let tot=0, car=0;
+ KEYS.forEach(k=>{const rs=rows(k), has=rs.filter(r=>r.p!=null).length;
+  tot+=rs.length; car+=has;
+  h+='<tr><td><b>'+KBDATA.shape[k].label+'</b></td><td class="n">'+rs.length
+   +'</td><td class="n">'+has+'</td><td>'+KBDATA.shape[k].of+'</td></tr>';});
+ h+='<tr><td><b>Eleven decks</b></td><td class="n">'+tot+'</td><td class="n">'+car
+  +'</td><td>'+Math.round(car/tot*100)+' of every hundred rows can print an honest figure</td></tr>'
+  +'<tr><td><b>Glossary</b></td><td class="n">'+KBMETA.glossCount+'</td><td class="n">0</td>'
+  +'<td>a definition has no reading, so it stops being a deck and becomes the answer the search returns</td></tr>'
+  +'</table></div>';
  h+='</div>';
  document.getElementById('app').innerHTML=h;
- wire(); stat();}
+ const s=document.createElement('style'); s.textContent=RINGCSS; document.head.appendChild(s);
+ const w=document.getElementById('who');
+ if(w){w.value=WHO;w.onchange=()=>{WHO=w.value;draw();};}
+ document.getElementById('stat').textContent='Diane, Marcus and Gordon, off the engine';}
+addEventListener('DOMContentLoaded',draw);
 
 </script></body></html>
