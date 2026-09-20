@@ -1,1 +1,13 @@
-</script></body></html>
+</script>
+<!-- THE END OF FILE MARKER.
+
+     A build that arrives incomplete is indistinguishable, from the inside,
+     from a build that stopped running: in both cases the instrument is not
+     there and nothing threw. This element is the last thing in the document,
+     so if the boot guard cannot find it the file itself is short, and that is
+     a different problem with a different fix.
+
+     data-len is the byte length the build wrote, stamped by BUILD.sh, so the
+     guard can say what arrived against what was sent. -->
+<div id="eof" hidden data-len="BUILD_LEN"></div>
+</body></html>

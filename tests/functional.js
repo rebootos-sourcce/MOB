@@ -1147,6 +1147,62 @@ ok(!/72%|28%/.test(virginSweep.pol),'and prints no percentage off the defaults')
 /* the roster itself is always there. only the descent read is conditional. */
 ok(/Satan frozen/.test(pole.clean),'while the nine circles stay readable to anybody');
 
+console.log('\n=== the navigation is in the document and cannot drift ===');
+/* THE BAR IS HARD CODED NOW, on his ruling after three builds in a row where
+   the top menu was missing: it was nine buttons built in a loop at start up,
+   so it existed only if the script reached that loop.
+
+   Markup that duplicates a list in the engine is markup that goes stale, and
+   this repository has been bitten by a hand written count five times. So the
+   two are compared here, by identity integer and by name and in order, and
+   the gate fails on any disagreement rather than waiting for somebody to
+   notice a tab that opens the wrong surface. */
+{const nav=await page.evaluate(()=>{
+  const btns=[...document.querySelectorAll('#tabbar [data-tabk]')];
+  return {markup:btns.map(b=>[+b.getAttribute('data-tabk'),b.textContent.trim()]),
+          def:TABDEF.map(t=>[t.k,t.nm]),
+          wired:btns.filter(b=>b.getAttribute('data-tabk')!==null).length,
+          pressed:btns.filter(b=>b.getAttribute('aria-pressed')==='true')
+                      .map(b=>b.textContent.trim())};});
+ ok(nav.markup.length===nav.def.length,
+  'the bar has as many buttons as TABDEF has entries, '
+  +nav.markup.length+' against '+nav.def.length);
+ ok(JSON.stringify(nav.markup)===JSON.stringify(nav.def),
+  'and every one matches TABDEF by integer, by name and in order'
+  +(JSON.stringify(nav.markup)===JSON.stringify(nav.def)?''
+    :'  markup '+JSON.stringify(nav.markup)+'  def '+JSON.stringify(nav.def)));
+ ok(nav.wired===nav.markup.length,'every button carries its own tab integer');
+ ok(nav.pressed.length===1,'exactly one tab reads as pressed, got '+nav.pressed.length);
+}
+/* AND PRESSING ONE STILL MOVES THE SURFACE. A hard coded bar that is not wired
+   is a picture of a menu. */
+{const moved=await page.evaluate(async()=>{
+  const b=[...document.querySelectorAll('#tabbar [data-tabk]')]
+    .filter(x=>+x.getAttribute('data-tabk')!==S.tab)[0];
+  const want=+b.getAttribute('data-tabk');
+  b.click(); await new Promise(r=>setTimeout(r,320));
+  return {want:want, got:S.tab,
+          pressed:b.getAttribute('aria-pressed')};});
+ ok(moved.got===moved.want,'pressing a tab moves the surface, asked '
+  +moved.want+' got '+moved.got);
+ ok(moved.pressed==='true','and the button it pressed reads as pressed');}
+await page.evaluate(()=>setTab(TAB.FIELD));
+
+console.log('\n=== the build says which build it is, and how much of it arrived ===');
+/* Two builds went out with a fix in them and the same failure came back both
+   times, and there was no way to tell from this side which file was open. */
+/* read off the root element, not off the boot card: the card is removed from
+   the document once the sequence ends, which is precisely when a person asks
+   which build they have. */
+{const st=await page.evaluate(()=>{
+  const e=document.getElementById('eof');
+  return {stamp:(document.documentElement.getAttribute('data-build')||'').trim(),
+          len:e?e.getAttribute('data-len'):''};});
+ ok(/^[0-9a-f]{7,}\s+\d{4}-\d{2}-\d{2}/.test(st.stamp),
+  'the document carries the commit and the build time, got '+JSON.stringify(st.stamp));
+ ok(/^\d{9}$/.test(st.len),
+  'and the end of file marker carries the byte length, got '+JSON.stringify(st.len));}
+
 console.log('\n=== a release run spends thought lines, and charges the right person ===');
 const relrun=await page.evaluate(()=>{
  const o={};

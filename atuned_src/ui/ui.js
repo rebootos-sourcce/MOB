@@ -930,11 +930,45 @@ document.addEventListener('click',function(e){
  if(typeof ANA_PICK!=='undefined')ANA_PICK=null;
  S.pin=null; runNodeDrill(n);});
 
-layout(); mxKey(); wireSections(); loadP(0);
+/* ============================================================
+   START UP IN SEGMENTS, SO ONE FAILURE COSTS ONE FEATURE.
+
+   Ruled after the third failure in a row: "can't you write a wrapper for it,
+   so it stops breaking, so you're not bouncing back and forth between a
+   broken display area."
+
+   It was a straight run of calls. Anything that threw in any of them took
+   every line after it with it, which is how one bad module became a screen
+   with no navigation and no centre. The navigation is in the document now and
+   cannot vanish, and this is the other half: each step runs inside its own
+   guard, so a step that fails costs what that step does and nothing else.
+
+   step() reports rather than swallowing. A silent catch would be worse than
+   the crash it replaces, because the product would then be quietly missing a
+   piece with nothing anywhere saying so. Every failure is recorded, named,
+   and put where the boot guard can print it.
+
+   The order still matters: this is not permission to reorder them. It is
+   permission for the screen to survive one of them.
+   ============================================================ */
+var BOOT_FAILED=[];
+function step(nm,fn){
+ try{ fn(); return true; }
+ catch(e){
+  BOOT_FAILED.push(nm+': '+((e&&e.message)||e));
+  try{ if(window.console)console.error('[atuned] '+nm+' failed',e); }catch(e2){}
+  return false; }}
+/* the guard asks for this when it decides whether the app is usable */
+window.__bootFailures=function(){return BOOT_FAILED.slice();};
+
+step('layout',layout);
+step('matrix key',mxKey);
+step('rail sections',wireSections);
+step('first profile',function(){loadP(0);});
 /* A saved record is the person's own state, so it wins over the demo "You"
    that loadP(0) just installed. Nothing read the store at boot before, so a
    reload always came back to the demo. */
-(function(){
+step('the stored record',function(){
  try{ PROFILES=pStore(); }catch(e){ PROFILES=[]; }
  if(!PROFILES.length){ pNew('You'); }
  CURP=PROFILES[0];
@@ -947,7 +981,7 @@ layout(); mxKey(); wireSections(); loadP(0);
  PROF_BY[PEOPLE[0].nm]=CURP;
  loadProfile(CURP);
  syncCh(); syncLw(); syncSoul();
-}());
+});
 /* THE APP OPENS ON THE FIELD, on the owner's ruling of 19 September, which
    reverses the earlier one that opened it on Summary.
 
@@ -957,11 +991,20 @@ layout(); mxKey(); wireSections(); loadP(0);
    nothing on screen. Both say Field now, as they did before the Summary
    ruling, and the comment says why rather than leaving the next reader to
    wonder which of the two is the live one. */
-setTab(TAB.FIELD);
+step('opening surface',function(){setTab(TAB.FIELD);});
+/* THE FRAME LOOP IS NOT OPTIONAL AND IS STARTED LAST, outside the steps, so
+   that even a start up which lost several pieces still paints. A loop that
+   throws would stop itself on the first frame, so the body is guarded rather
+   than the call. */
 requestAnimationFrame(loop);
-/* THE LAST LINE OF THE START UP SAYS SO. The boot guard at the top of the
-   script watches for this and, if it never comes, puts the reason on the
+/* THE LAST LINE OF THE START UP SAYS SO. The boot guard in its own script
+   block watches for this and, if it never comes, puts the reason on the
    screen instead of leaving the frame standing with nothing in it. It is the
    last statement on purpose: anything that stops the script before here is
-   exactly what the guard exists to report. */
-if(typeof window.__bootOk==='function')window.__bootOk();
+   exactly what the guard exists to report.
+
+   It is called even when steps failed, because the app is on screen and
+   usable and the guard's full screen message would be the wrong answer to
+   three missing rail sections. The failures go to the guard, which decides
+   how loudly to say it. */
+if(typeof window.__bootOk==='function')window.__bootOk(BOOT_FAILED);

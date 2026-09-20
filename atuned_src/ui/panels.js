@@ -146,8 +146,10 @@ function setTab(i){
  document.body.classList.toggle('hassub',i===TAB.FIELD||i===TAB.ENERGY);
  ['probe','howto','key','tier','pol'].forEach(function(id){
   var e=$(id); if(e)e.style.display=(i===TAB.FIELD)?'':'none';});
- document.querySelectorAll('.tabtop').forEach(function(x,j){
-  x.setAttribute('aria-pressed',TABDEF[j]&&TABDEF[j].k===i);});
+ /* pressed state read off each button's own integer, never off its position
+    in a list that could be a different length than TABDEF. */
+ document.querySelectorAll('.tabtop').forEach(function(x){
+  x.setAttribute('aria-pressed',+x.getAttribute('data-tabk')===i);});
  /* THE RAIL OPENS WHAT THE SURFACE IS ABOUT.
 
     The Body page's whole reading is flow through the seven seats, and the
@@ -197,12 +199,21 @@ function setTab(i){
     surface. */
  if(i===TAB.COMPASS)coneOpen(true); else if(CONE.open&&CONE.tab)coneClose();
  render(); paintSections();}
-TABDEF.forEach(function(T,i){
- var b=document.createElement('button');b.className='vt tabtop';b.type='button';
- b.setAttribute('aria-pressed',T.k===S.tab);
- b.innerHTML='<span class="n">'+T.nm+'</span>';
- b.addEventListener('click',function(){setTab(T.k);});
- $('tabbar').appendChild(b);});
+/* THE BAR IS IN THE DOCUMENT AND THIS ONLY WIRES IT. Ruled, and the reason is
+   in the markup beside the buttons: nine buttons built in a loop meant the top
+   menu existed only if the script reached the loop, so every start up failure
+   took the navigation with it.
+
+   The buttons carry their tab integer in data-tabk, which is the identity
+   integer and never the position, so the markup and TABDEF cannot disagree
+   about which button is which. A gate proves the two lists match. */
+(function(){
+ var bar=$('tabbar'); if(!bar)return;
+ bar.querySelectorAll('[data-tabk]').forEach(function(b){
+  var k=+b.getAttribute('data-tabk');
+  b.setAttribute('aria-pressed',k===S.tab);
+  b.addEventListener('click',function(){setTab(k);});});
+}());
 /* measured once the strip exists, and again whenever the window changes */
 if(typeof paintTabEdge==='function')paintTabEdge();
 const VICON=[

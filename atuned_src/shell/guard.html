@@ -41,12 +41,56 @@
    after it, because everything after it is what might be broken.
    ============================================================ */
 (function(){
- var BOOTED=false, SHOWN=false;
- /* the app calls this at the end of its own init. anything that stops the
-    script reaching that line leaves BOOTED false. */
- window.__bootOk=function(){BOOTED=true;};
+ var BOOTED=false, SHOWN=false, AT='nothing loaded';
+ /* EVERY MODULE SAYS IT FINISHED. BUILD.sh writes one call to this after each
+    file, so when the script stops the guard can name the module it stopped
+    after instead of saying it stopped somewhere. */
+ window.__at=function(f){AT=f;};
+ /* the app calls this at the end of its own init, and hands over anything
+    that failed along the way. */
+ window.__bootOk=function(failed){
+  BOOTED=true;
+  /* A PARTIAL START UP IS NOT A DEAD APP AND MUST NOT BE SHOUTED AT LIKE ONE.
+     The start up runs in guarded steps now, so it can lose the rail sections
+     and still put a working instrument on screen. A full screen message would
+     be the wrong answer to that. It goes in the console and on a quiet line
+     the person can press, and the product stays usable. */
+  if(failed&&failed.length)quiet(failed);};
+ /* the quiet version. one line, bottom of the screen, dismissible. */
+ function quiet(failed){
+  try{
+   var d=document.createElement('button');
+   d.type='button';
+   d.textContent=failed.length+' part'+(failed.length>1?'s':'')
+    +' of this build did not start. Press to see which.';
+   d.style.cssText='position:fixed;left:50%;bottom:14px;transform:translateX(-50%);'
+    +'z-index:9998;background:#2A1F0B;color:#E8C36A;border:1px solid #5A4415;'
+    +'border-radius:8px;padding:7px 13px;font:12px/1.4 system-ui,sans-serif;'
+    +'cursor:pointer;max-width:92vw';
+   d.onclick=function(){show(failed.join('  |  '),'after '+AT);};
+   (document.body||document.documentElement).appendChild(d);
+  }catch(e){}}
  function show(what,where){
   if(SHOWN)return; SHOWN=true;
+  /* WAIT FOR THE DOCUMENT BEFORE JUDGING IT. An error inside the script block
+     fires while the parser is still inside that block, so everything after it,
+     including the end of file marker, does not exist yet. Checking then
+     reported every syntax error as a truncated download, which is a guard
+     lying about the thing it exists to identify, and that is worse than no
+     guard at all.
+
+     The message is not lost, it is held until the parser has finished, which
+     is what readyState says. A second and a half is the ceiling in case the
+     document never completes, because a person who cannot see the app should
+     not also be made to wait for it. */
+  if(document.readyState==='loading'){
+   var fired=false;
+   var go=function(){ if(fired)return; fired=true; paint(what,where); };
+   document.addEventListener('DOMContentLoaded',go);
+   setTimeout(go,1500);
+   return;}
+  paint(what,where);}
+ function paint(what,where){
   try{
    var d=document.createElement('div');
    d.setAttribute('role','alert');
@@ -74,9 +118,19 @@
       back both times, and there was no way to tell whether the file being
       opened was the file that was sent. */
    var stamp='build unknown';
-   try{var bs=document.getElementById('bstamp');
-     if(bs&&bs.textContent)stamp='build '+bs.textContent;}catch(e){}
-   pre.textContent=stamp+'\n'+what+'\n'+where+'\n'+navigator.userAgent;
+   try{var v=document.documentElement.getAttribute('data-build');
+     if(v)stamp='build '+v;}catch(e){}
+   /* WHAT ARRIVED AGAINST WHAT WAS SENT. A file that is cut short and a script
+      that stopped running look identical from the inside: the instrument is
+      not there and nothing threw. The end of file marker is the last element
+      in the document, so if it is missing the file itself is short, which is a
+      different problem with a different fix. */
+   var eof=null, arrived='unknown';
+   try{ eof=document.getElementById('eof');
+     arrived=eof?('whole file, '+eof.getAttribute('data-len')+' bytes')
+                :'THE FILE IS SHORT. The end of it never arrived.'; }catch(e){}
+   pre.textContent=stamp+'\n'+arrived+'\nstopped after '+AT
+    +'\n'+what+'\n'+where+'\n'+navigator.userAgent;
    pre.style.cssText='margin:0;padding:14px 16px;background:#141518;'
     +'border:1px solid #26282E;border-radius:10px;white-space:pre-wrap;'
     +'word-break:break-word;font:12px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;'
@@ -107,7 +161,7 @@
   if(BOOTED)return;
   var tb=document.getElementById('tabbar');
   show('the script never reached the end of its own start up',
-       'navigation built: '+(tb&&tb.children.length?tb.children.length+' tabs':'none'));},8000);
+       'navigation present: '+(tb&&tb.children.length?tb.children.length+' tabs':'none'));},8000);
 })();
 
 </script>

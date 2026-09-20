@@ -17,7 +17,26 @@ for f in $MODS; do
   esac
 done
 
-cat $MODS > "$OUT"
+# EVERY MODULE SAYS IT FINISHED.
+#
+# A build came back from the owner reporting that the script never reached the
+# end of its own start up, with nothing thrown, on a current Chrome. Nothing
+# thrown and not finished is a very small set of causes and guessing between
+# them had already cost two rounds, so the build now records how far it got.
+#
+# One line after each module. The guard reads the last one and names it, which
+# turns "it stopped somewhere" into "it stopped after engine/schema.js".
+#
+# Injected here rather than written into the modules, because a checkpoint a
+# person has to remember to add is a checkpoint that is missing from the one
+# module that needed it.
+: > "$OUT"
+for f in $MODS; do
+  cat "$f" >> "$OUT"
+  case "$f" in *.js)
+    printf '\ntry{window.__at&&window.__at(%s);}catch(e){}\n' "'$f'" >> "$OUT" ;;
+  esac
+done
 
 # WHICH BUILD THIS IS, STAMPED INTO THE FILE ITSELF.
 #
@@ -39,6 +58,16 @@ s=io.open(p,encoding='utf-8').read()
 if 'BUILD_STAMP' not in s:
     print('the build stamp placeholder is gone from the shell'); sys.exit(1)
 s=s.replace('BUILD_STAMP',stamp)
+# THE LENGTH IS WRITTEN LAST, AT A FIXED WIDTH, so writing it cannot change it.
+# Substituting a number of a different length than the placeholder moves the
+# total, which is a fixed point problem nobody needs: the placeholder is nine
+# characters and the number is written zero padded to nine.
+if 'BUILD_LEN' not in s:
+    print('the end of file marker is gone from the shell'); sys.exit(1)
+# BYTES, NOT CHARACTERS. The file carries an umlaut and a middle dot among
+# other things, so a character count and a byte count differ by 177 here, and
+# the number a browser and a download can both check is the byte count.
+s=s.replace('BUILD_LEN','%09d'%len(s.encode('utf-8')))
 io.open(p,'w',encoding='utf-8').write(s)
 PY2
 
