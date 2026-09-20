@@ -254,6 +254,14 @@ is the one thing it will not do. Send `source.html` as an attachment, named
 md5 so it is clear which build it is. The file is one file with no
 dependencies and no network, so it runs from wherever it lands.
 
+**Attach the file, never render it.** The rule above was followed and the build
+still would not come off the screen. An HTML file sent without saying how to
+present it defaults to render, and in the view pane a rendered file has no
+download in its dropdown and no right click save, so the owner sat looking at a
+working app he could not keep. Send it with the card set to attach. State the
+second route beside it: the branch is pushed, so every file also has a raw
+address he can save from a browser. A build he cannot save has not shipped.
+
 ## Records
 
 `MILESTONES.md` is the sequenced plan, scrubbed by five disciplines, and it

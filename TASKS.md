@@ -21,6 +21,33 @@ reopens. Every seat adds its own.
 
 ---
 
+## 0z. RULED 20 SEPTEMBER. THE BUILD WILL NOT COME OFF THE SCREEN.
+
+His words: "in the view pane window, I can't download anything. So if I click on
+the tuned HTML, it opens it up in the pane window, which is great. But in the
+dropdown, I no longer have download. And I can't right click on it and download.
+So I'm stuck and I cannot get my HTML files. This is critical."
+
+The delivery is part of the build. A build he cannot save has not shipped.
+
+- [x] **DL1. Send every build with the file card set to attach, not render.**
+      The default for an HTML file is render, which is the preview he is stuck
+      in. Attach gives a save card instead. Four files resent this way at
+      08104bf.
+- [x] **DL2. Name the second route, so one broken card never strands him
+      again.** The branch is pushed, so every file has a raw address he can
+      save from the browser. Stated with the build.
+- [ ] **DL3. State commit and md5 beside every file, always.** Already the
+      ruling for `source.html`; extend it to the funnel, the quiz and any
+      other page sent, because he now receives more than one file at a time
+      and cannot tell two builds apart by looking.
+- [ ] **DL4. One archive instead of four cards** if the save card fails too.
+      A zip is not an HTML file and cannot be previewed, so it has no
+      render path to fall into. Not built; the attach fix is the cheaper one
+      and is measured first.
+
+---
+
 ## 0d. RULED 20 SEPTEMBER, THIRD PASS. THE SKUNK WORKS AND THE RITUAL
 
 ### SW. FOUR FIELDS. THE SKUNK WORKS BRIEF.
