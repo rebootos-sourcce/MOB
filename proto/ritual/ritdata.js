@@ -312,6 +312,12 @@ const STANCE4LAW={}; LIB.filter(x=>x.shape==='stance').forEach(x=>{STANCE4LAW[x.
 
 function queueFor(o){
  const q=[];
+ /* everything already proposed, so no practice is offered under two kinds.
+    forSeat takes this set and takes the next one in the same ordering, which
+    is not a new rule: it is the next element of the rule already applied. */
+ const used={};
+ if(o.called)used[o.called.k]=1;
+ const take=p=>{if(p)used[p.k]=1; return p;};
 
  if(!o.avatarBuilt)
   q.push({kind:'hold', by:'avatar', src:'avatarBlank', weight:1e6,
@@ -320,7 +326,7 @@ function queueFor(o){
     +'and nothing to hold a daily ritual to.'});
 
  o.seats.slice(0,2).forEach((s,i)=>{
-  const p=forSeat(s.b,o.tier); if(!p)return;
+  const p=take(forSeat(s.b,o.tier,used)); if(!p)return;
   q.push({kind:'hold', by:'avatar', src:'avatarGap', weight:s.load,
    nm:p.nm, min:p.min, track:p.track, seat:s.b, unit:'a day',
    shape:'count', target:1, cunit:'a day', period:'a day',
@@ -329,7 +335,7 @@ function queueFor(o){
     +' track is what moves a '+s.b.toLowerCase()+'.'});});
 
  if(o.weakL){
-  const p=forSeat(o.weakL.b,o.tier,o.called?{[o.called.k]:1}:{});
+  const p=take(forSeat(o.weakL.b,o.tier,used));
   if(p)q.push({kind:'change', by:'you', src:'weakL', weight:500,
    nm:p.nm, min:p.min, track:p.track, seat:o.weakL.b, law:o.weakL.nm,
    unit:'a day', shape:'count', target:1, cunit:'a day', period:'a day',
@@ -537,6 +543,21 @@ console.error('        '+LIB.filter(x=>x.shape==='stance')
    20 September 2026 is a Sunday. A week that starts on Monday puts it in the
    last cell. Off by one here would print a person's Saturday under Sunday and
    nothing on the page would look wrong. */
+/* GATE 9. NO PRACTICE IS PROPOSED UNDER TWO KINDS.
+   It was, on Gordon: his root seat and his weakest law both land on the body
+   track at tier 1, so Box Breathing stood in the always on band and the
+   behaviour band at once. Invisible in the data and obvious in the shot. */
+console.error('GATE 9  no ritual is proposed under two kinds');
+Object.values(out.profiles).forEach(o=>{
+ const seen={};
+ if(o.called)seen[o.called.nm]='the standing ritual';
+ o.queue.forEach(q=>{
+  if(seen[q.nm])fail(o.nm+' is offered '+q.nm+' as '+q.kind+' and it is already '
+   +seen[q.nm]);
+  seen[q.nm]=q.kind;});});
+console.error('        eight profiles, '
+ +Object.values(out.profiles).reduce((a,o)=>a+o.queue.length,0)+' rows, each name once');
+
 console.error('GATE 8  the week starts on Monday and today lands on Sunday');
 if(new Date(TODAY).getUTCDay()!==0)
  fail('TODAY is not a Sunday, so the Monday first week is laid out wrong');

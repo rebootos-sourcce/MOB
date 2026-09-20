@@ -313,7 +313,8 @@ function cellsFor(dayIx){
 
 function drawWeek(){
  document.getElementById('keys').innerHTML=DATA.kinds.map(function(K){
-  var n=M.items.filter(function(it){return it.kind===K.k;}).length;
+  var n=M.items.filter(function(it){
+   return it.kind===K.k&&!it.once&&!it.whenCalled;}).length;
   return '<span class="key" style="--c:'+DATA.pal[K.band]+'">'
    +'<i></i><b>'+esc(K.nm)+'</b> <em>'+n+'</em></span>';}).join('');
 
@@ -448,8 +449,9 @@ function drawBands(){
     +'<div class="card-b"><div class="card-n">'+esc(it.nm)+'</div>'
     +'<div class="card-p">'+esc(paramLine(it))
     +(it.whenCalled?' · not on the week':'')+'</div></div>'
-    +(it.standing?markRing(it)
-      :'<span class="offertag">offered</span>')+'</div>';});
+    +(it.once?'<span class="offertag">'+(it.standing?'taken':'offered')+'</span>'
+      :(it.standing?markRing(it)
+        :'<span class="offertag">offered</span>'))+'</div>';});
   h+='</div></div>';});
  document.getElementById('bands').innerHTML=h;}
 

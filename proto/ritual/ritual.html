@@ -186,7 +186,7 @@ textarea:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--gold);
 .fig-n{font-family:var(--num);font-size:34px;font-weight:400;line-height:1;
  letter-spacing:-.02em;font-variant-numeric:tabular-nums;color:var(--ink);
  display:block}
-.fig-n.wait{font-size:20px;color:var(--dim);letter-spacing:0}
+.fig-n.wait{font-size:24px;color:var(--dim);letter-spacing:-.01em}
 .fig-k{font-size:12.5px;color:var(--ink);display:block;margin-top:6px;
  font-weight:500}
 .fig-o{font-size:11.5px;color:var(--dim);display:block;margin-top:2px;
@@ -296,7 +296,10 @@ textarea:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--gold);
 .hm i.on{background:var(--c);border-color:var(--c)}
 .hm i.fl{background:transparent;border-color:var(--edge-2)}
 .hm i.no{background:transparent;border-color:transparent}
+.hm.run{grid-auto-flow:row;grid-template-rows:none;
+ grid-template-columns:repeat(auto-fill,var(--cell));gap:4px}
 .hmrow{display:flex;gap:12px;align-items:flex-start}
+.hmax[hidden]{display:none}
 .hmax{display:grid;grid-template-rows:repeat(7,var(--cell));gap:3px;
  font-size:10px;color:var(--dim);line-height:var(--cell);text-align:right;
  flex:0 0 auto}
@@ -1360,8 +1363,8 @@ window.RITDATA={
      "by": "you",
      "src": "weakL",
      "weight": 500,
-     "nm": "Box Breathing",
-     "min": 5,
+     "nm": "Controlled Breath",
+     "min": 10,
      "track": "Body",
      "seat": "Throat",
      "law": "Transparency",
@@ -1458,8 +1461,8 @@ window.RITDATA={
      "by": "avatar",
      "src": "avatarGap",
      "weight": 101.65,
-     "nm": "The Signal Test",
-     "min": 3,
+     "nm": "The Emotional Scan",
+     "min": 20,
      "track": "Somatic",
      "seat": "Sacral",
      "unit": "a day",
@@ -1951,8 +1954,8 @@ window.RITDATA={
      "by": "you",
      "src": "weakL",
      "weight": 500,
-     "nm": "The Signal Test",
-     "min": 3,
+     "nm": "Feel the Resistance",
+     "min": 10,
      "track": "Somatic",
      "seat": "Sacral",
      "law": "Temperance",
@@ -2032,8 +2035,8 @@ window.RITDATA={
      "by": "avatar",
      "src": "avatarGap",
      "weight": 58.32,
-     "nm": "The Somatic Truth Check",
-     "min": 2,
+     "nm": "The Signal Test",
+     "min": 3,
      "track": "Somatic",
      "seat": "Solar",
      "unit": "a day",
@@ -2572,8 +2575,8 @@ window.RITDATA={
      "by": "avatar",
      "src": "avatarGap",
      "weight": 12.72,
-     "nm": "Box Breathing",
-     "min": 5,
+     "nm": "Controlled Breath",
+     "min": 10,
      "track": "Body",
      "seat": "Root",
      "unit": "a day",
@@ -3067,8 +3070,8 @@ window.RITDATA={
      "by": "you",
      "src": "weakL",
      "weight": 500,
-     "nm": "The Somatic Truth Check",
-     "min": 2,
+     "nm": "The Signal Test",
+     "min": 3,
      "track": "Somatic",
      "seat": "Sacral",
      "law": "Detachment",
@@ -3102,8 +3105,8 @@ window.RITDATA={
      "by": "avatar",
      "src": "avatarGap",
      "weight": 8.13,
-     "nm": "Active Listening",
-     "min": 10,
+     "nm": "Noting Meditation",
+     "min": 15,
      "track": "Mind",
      "seat": "Throat",
      "unit": "a day",
@@ -3514,9 +3517,9 @@ window.RITDATA={
      "by": "you",
      "src": "weakL",
      "weight": 500,
-     "nm": "The Emotional Scan",
-     "min": 20,
-     "track": "Somatic",
+     "nm": "Controlled Breath",
+     "min": 10,
+     "track": "Body",
      "seat": "Sacral",
      "law": "Temperance",
      "unit": "a day",
@@ -3595,8 +3598,8 @@ window.RITDATA={
      "by": "avatar",
      "src": "avatarGap",
      "weight": 60.34,
-     "nm": "The Signal Test",
-     "min": 3,
+     "nm": "The Emotional Scan",
+     "min": 20,
      "track": "Somatic",
      "seat": "Solar",
      "unit": "a day",
@@ -3612,9 +3615,9 @@ window.RITDATA={
      "by": "avatar",
      "src": "avatarGap",
      "weight": 49.36,
-     "nm": "The Signal Test",
-     "min": 3,
-     "track": "Somatic",
+     "nm": "Box Breathing",
+     "min": 5,
+     "track": "Body",
      "seat": "Crown",
      "unit": "a day",
      "shape": "count",
@@ -4393,8 +4396,8 @@ window.RITDATA={
      "by": "you",
      "src": "weakL",
      "weight": 500,
-     "nm": "Box Breathing",
-     "min": 5,
+     "nm": "Controlled Breath",
+     "min": 10,
      "track": "Body",
      "seat": "Heart",
      "law": "Compassion",
@@ -4489,8 +4492,8 @@ window.RITDATA={
      "by": "avatar",
      "src": "avatarGap",
      "weight": 58.9,
-     "nm": "The Signal Test",
-     "min": 3,
+     "nm": "The Emotional Scan",
+     "min": 20,
      "track": "Somatic",
      "seat": "Sacral",
      "unit": "a day",
@@ -5035,7 +5038,8 @@ function cellsFor(dayIx){
 
 function drawWeek(){
  document.getElementById('keys').innerHTML=DATA.kinds.map(function(K){
-  var n=M.items.filter(function(it){return it.kind===K.k;}).length;
+  var n=M.items.filter(function(it){
+   return it.kind===K.k&&!it.once&&!it.whenCalled;}).length;
   return '<span class="key" style="--c:'+DATA.pal[K.band]+'">'
    +'<i></i><b>'+esc(K.nm)+'</b> <em>'+n+'</em></span>';}).join('');
 
@@ -5170,8 +5174,9 @@ function drawBands(){
     +'<div class="card-b"><div class="card-n">'+esc(it.nm)+'</div>'
     +'<div class="card-p">'+esc(paramLine(it))
     +(it.whenCalled?' · not on the week':'')+'</div></div>'
-    +(it.standing?markRing(it)
-      :'<span class="offertag">offered</span>')+'</div>';});
+    +(it.once?'<span class="offertag">'+(it.standing?'taken':'offered')+'</span>'
+      :(it.standing?markRing(it)
+        :'<span class="offertag">offered</span>'))+'</div>';});
   h+='</div></div>';});
  document.getElementById('bands').innerHTML=h;}
 
