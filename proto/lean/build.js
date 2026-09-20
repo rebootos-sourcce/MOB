@@ -69,7 +69,9 @@ html=html.replace('ENGINE_HERE',()=>eng)
  .replace('STAMP_HERE',()=>JSON.stringify(stamp));
 if(/ENGINE_HERE|ACCOUNTS_HERE|SHIPPED_HERE|STAMP_HERE/.test(html))
  throw new Error('a placeholder was left in the page');
-if(/—/.test(html)) throw new Error('em dash in the page');
+/* written by codepoint so this guard does not itself put the character it
+   forbids into a source file. */
+if(html.indexOf(String.fromCharCode(0x2014))>=0) throw new Error('em dash in the page');
 fs.writeFileSync(path.join(__dirname,'lean.html'),html);
 fs.writeFileSync(path.join(__dirname,'accounts.json'),JSON.stringify(ACC,null,1));
 console.log('wrote lean.html and accounts.json');

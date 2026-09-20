@@ -388,9 +388,21 @@ function leanNegated(src,at){
   n++;}
  return false;}
 
-var LEANKEYS=null;
+/* The sorted key list is built once and kept, because sorting the whole table on
+   every story is work with one answer. THE CACHE IS KEYED ON THE SIZE OF THE
+   TABLES rather than on a bare null, so a list edited at run time is picked up
+   instead of silently having no effect. A cache that ignores its own input is
+   how a table edit looks like it landed and did not. */
+var LEANKEYS=null, LEANKEYN=-1;
+function leanCount(){
+ var n=0;
+ LEANCH.forEach(function(c){n+=LEANLEX[c.k].length;});
+ Object.keys(LEANFRAME).forEach(function(s){n+=LEANFRAME[s].length;});
+ return n;}
 function leanKeys(){
- if(LEANKEYS) return LEANKEYS;
+ var n=leanCount();
+ if(LEANKEYS&&LEANKEYN===n) return LEANKEYS;
+ LEANKEYN=n;
  var rows=[];
  LEANCH.forEach(function(c){LEANLEX[c.k].forEach(function(p){
   rows.push({p:p,k:c.k,fr:null});});});

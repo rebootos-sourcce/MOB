@@ -141,7 +141,7 @@ its span. This one is the reason the gate has a table driven nested pair check
 rather than one example: there are 18 nested pairs in the table and any of them
 could have done the same thing.
 
-Then the gate, and seven deliberate breakages to prove it fires. Those are
+Then the gate, and eight deliberate breakages to prove it fires. Those are
 below.
 
 ## THE CHANNELS
@@ -448,11 +448,15 @@ which half it is.
 
 Group 31 in `tests/engine.js`, additive. Nothing existing was changed.
 
-Read off the run: **914 passed, 0 failed**, against 843 before, so the group
-adds 71 assertions.
+**Group 31 adds 75 assertions.** That is the stable number: the engine gate
+stood at 843 before it and 914 after, measured on the same tree minutes apart.
+The repository total is not quoted here on purpose. Other seats are landing
+groups in the same file while this is written, and it reached 960 within the
+hour, so a total typed into this document would be wrong before it was read.
+Read the total off the run.
 
 A check that has never failed is not yet a check. Every mechanism was broken on
-purpose, the gate run, and the file put back. All seven fired, each on the
+purpose, the gate run, and the file put back. All eight fired, each on the
 assertion meant to catch it.
 
 | Breakage | Result |
@@ -464,6 +468,7 @@ assertion meant to catch it.
 | `let it go` put back on the benign list, as shipped | **1 failed**, `let it go is lean.emp and verp.detach` |
 | the same phrase placed on both sides | **1 failed**, `i forgave in emp and accLack` |
 | the raw lack count persisted instead of the admitted weight | **2 failed**, the reading went from 28 to 34.4 on a reload |
+| the sorted phrase cache keyed on a bare null, ignoring its input | **1 failed**, a phrase added to a table looked like it landed and had no effect |
 
 The last one is worth naming. The frame is not in the profile and cannot be
 reapplied on the way back in, so if the raw count were written a harm account
@@ -492,8 +497,8 @@ questions shipped.
 
 ## WHAT IT COSTS
 
-- **Engine size.** `atuned_src/engine/verp.js` goes from 102 lines to 572.
-  `engine.js` from 815 to 832 top level declarations. The built `source.html`
+- **Engine size.** `atuned_src/engine/verp.js` goes from 102 lines to 584.
+  `engine.js` gains 18 top level declarations, every one of them named `LEAN` or `lean`, which `tools/equiv.py` reports as a named diff against the last commit before this pass. The built `source.html`
   grew by about 36 kilobytes on a 1.38 megabyte file.
 - **Runtime.** One pass over the normalised text per phrase, 372 phrases,
   longest first. `tests/engine.js` still runs in well under a second. Nothing
@@ -568,6 +573,8 @@ He has instructed every team to ask rather than guess, so these are asked.
 - `/home/user/MOB/proto/lean/lean.html` the standalone page, engine inlined
 - `/home/user/MOB/proto/lean/lean.src.html` and `build.js` and `build.sh` what makes it
 - `/home/user/MOB/proto/lean/accounts.json` the six accounts, one copy, shared
+- `/home/user/MOB/proto/lean/harm-probe.js` the harm test, runnable, refuses to
+  run if its own known good check fails
 
 The prototype runs the engine that is in the build rather than a copy of it, and
 prints the md5 of the engine it was built from, so a page that has drifted says

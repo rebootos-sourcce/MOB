@@ -752,20 +752,37 @@ function coneOpen(inTab){
    +'<p class="cone-hint">The waist is 40 to 60 out of 100, where most people '
    +'oscillate. Drag to turn the figure. Press any name to read that axis.</p>'
   +'</div>'
-  /* THE INFORMATION LAYER IS ON THE RIGHT. Ruled, and it is his standing rule
-     for this product: the reading and the record went in a column under the
-     figure on the left, which is a second information layer facing the one
-     that already exists. */
-  +'<div class="cone-info">'
-   /* THE READING AT THE TOP, THE RECORD IN THE MIDDLE, THE GRAPH PINNED AT
-      THE BOTTOM. He asked for the graph in the lower right and a column that
-      simply stacks puts it below the fold, which is the same as not having it.
-      The middle is the only part that scrolls. */
-   +'<div class="cone-txt">'+coneRead()+'</div>'
-   +'<div class="cone-mid">'+ladderHtml()+'</div>'
-   +coneGraph()
-  /* cone-info, cone-body, cone-card */
-  +'</div></div></div>';
+  /* THE INFORMATION LAYER LEFT THE CENTRE COLUMN, and the comment that used to
+     sit here is why it had to.
+
+     It said the information layer is on the right, which is his standing rule,
+     and then put the column on the right OF THE CARD. The card is in the centre
+     stage, so a thousand one hundred characters of prose were sitting in the
+     column he had reserved for hero art, and the figure was down to 528 pixels
+     of a 920 pixel card to make room for them.
+
+     His words: "You have a ton of information on the right of the compass where
+     it says you read 42 out of 100 inside an oscillating band, where I told you
+     specifically that the centre column is for hero art. All that text,
+     including integrity is the hull and a hole means the ship takes on water,
+     that is all information that belongs in the information pane."
+
+     Right of the card is not the information pane. The information pane is the
+     rail, which is where every other reading in this product opens. So the
+     reading, the record and the graph go there through the same shell the
+     drills use, which also gives them the back control every other panel got
+     this round. The centre column holds the figure and the controls that change
+     it, and nothing else. */
+  /* two closers, not three. The third belonged to cone-info, which is gone.
+     The build's div counter caught it before anything ran. */
+  +'</div></div>';
+ /* THE READING, THE RECORD AND THE GRAPH, IN THE RAIL. Pushed after the card
+    is in the document, because coneGraph measures. Not pushed when the compass
+    is a sheet over another surface, since the rail belongs to what is behind
+    it and overwriting that would take away the thing a person was reading. */
+ if(inTab&&typeof rdShell==='function')
+  rdShell('<div class="cone-read">'+coneRead()+'</div>'
+   +'<div class="cone-rec">'+ladderHtml()+'</div>'+coneGraph());
  CONE.cv=document.getElementById('conecv');
  CONE.g=CONE.cv?CONE.cv.getContext('2d'):null;
  coneLayout(); coneTick();

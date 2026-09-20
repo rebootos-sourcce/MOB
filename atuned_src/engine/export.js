@@ -80,7 +80,7 @@ if(typeof module!=='undefined'&&module.exports){
                   LEANCH:LEANCH, LEANLEX:LEANLEX, LEANCUE:LEANCUE,
                   LEANFRAME:LEANFRAME, LEANOUT:LEANOUT,
                   leanAdmit:leanAdmit, leanSeries:leanSeries, leanChan:leanChan,
-                  leanNegated:leanNegated, LEANNEG:LEANNEG, LEAN_NEG_W:LEAN_NEG_W,
+                  leanNegated:leanNegated, leanCount:leanCount, LEANNEG:LEANNEG, LEAN_NEG_W:LEAN_NEG_W,
   /* VERPCUE was reachable as a browser global and absent from the contract,
      so no test could check the lean tables against it. One phrase in both
      moves two instruments on one occurrence, which is what 'let it go' did. */
@@ -122,6 +122,7 @@ if(typeof module!=='undefined'&&module.exports){
                   lexAdd:lexAdd, chgAdd:chgAdd,
                   LEX_FOLD_RULES:LEX_FOLD_RULES, LEX_FOLD_OK:LEX_FOLD_OK,
                   LEX_FOLD_NO:LEX_FOLD_NO, lexFold:lexFold,
+                  LEX_DEAD:LEX_DEAD,
                   lexCanon:lexCanon, lexCanonWords:lexCanonWords,
                   lexFamilyFloor:lexFamilyFloor,
                   LEXCANONRUN:LEXCANONRUN, LEXFOLDRUN:LEXFOLDRUN,

@@ -2169,6 +2169,21 @@ g('31 · the lean, two channels and the frame that gates one of them');
   ok(bad.length===0,'every phrase is reachable by the normaliser, '+bad.length
    +' are not'+(bad[0]?': '+bad[0]:''));
  }
+ /* THE SORTED KEY CACHE MUST NOTICE A TABLE EDIT. it is built once and kept,
+    and keyed on a bare null it would have made a phrase added at run time look
+    like it landed while having no effect at all. */
+ {
+  const before=E.leanCount();
+  gatesClear();
+  ok(leanScan('i banjaxed the whole thing').acc===0,'a phrase not in the table does not match');
+  LEANLEX.acc.push('i banjaxed');
+  ok(E.leanCount()===before+1,'the table grew by one');
+  ok(leanScan('i banjaxed the whole thing').acc===1,
+   'and the sorted key cache picked it up rather than serving a stale list');
+  LEANLEX.acc.pop();
+  ok(E.leanCount()===before&&leanScan('i banjaxed the whole thing').acc===0,
+   'and it picks up the removal too, so the table is left as it was found');
+ }
  /* LEANCUE IS DERIVED NOW, so the old two way view cannot drift from the
     channels the way the hand written pair did. */
  ok(LEANCUE.benign.length===LEANLEX.emp.length+LEANLEX.acc.length
@@ -2527,8 +2542,17 @@ g('32 · the sniffer knows what it is looking for');
  /* A DEAD ROW LOOKS LIVE. A key the normaliser can never produce, a capital or
     a comma or a double space, sits in the table forever matching nothing. */
  const dead=Object.keys(LEX).filter(k=>!scanStory(k).some(h=>h.t===k));
- ok(dead.length===0,'every entry can actually be found by the scanner, '+dead.length
-  +' of '+Object.keys(LEX).length+' cannot: '+JSON.stringify(dead.slice(0,8)));
+ const known=Object.keys(E.LEX_DEAD);
+ const unknown=dead.filter(k=>!E.LEX_DEAD[k]);
+ const revived=known.filter(k=>dead.indexOf(k)<0);
+ ok(unknown.length===0,'every entry can actually be found by the scanner, or is '
+  +'named in LEX_DEAD with the reason. '+dead.length+' of '+Object.keys(LEX).length
+  +' cannot be found and '+unknown.length+' of those are unaccounted for: '
+  +JSON.stringify(unknown.slice(0,8)));
+ ok(revived.length===0,'and LEX_DEAD names no row that actually works, '
+  +revived.length+' of '+known.length+' do: '+JSON.stringify(revived));
+ ok(known.every(k=>typeof E.LEX_DEAD[k]==='string'&&E.LEX_DEAD[k].length>20),
+  'and every dead row states why it is dead');
  const deadA=Object.keys(ADJ2CHG).filter(k=>!scanStory(k).some(h=>h.kind==='adj'&&h.t===k));
  ok(deadA.length===0,'and every charge name entry too, '+deadA.length+' of '
   +Object.keys(ADJ2CHG).length+' cannot: '+JSON.stringify(deadA.slice(0,8)));

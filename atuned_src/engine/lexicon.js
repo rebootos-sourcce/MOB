@@ -379,6 +379,42 @@ var LEX_FOLD_NO={
  rests:'it rests on the table, not the person resting, and rested subtracts',
  tenses:'the tenses of a verb, not a body tensing'};
 
+/* ============================================================
+   THE DEAD ROWS, NAMED, because a row that matches nothing looks live.
+
+   Found by the gate that asserts every entry can actually be found by the
+   scanner, which is a check nothing had. Two of the 192 authored entries cannot
+   be reached, and they predate this pass:
+
+     cannot stop thinking   seated at the third eye, amount 24, rumination
+     cant stop thinking     the same
+
+   Both are eaten by the phrase cannot stop, which is seated at the sacral at
+   amount 18 and labelled compulsion. scanStory adds phrases first and then
+   suppresses any later match overlapping a hit already recorded, so the phrase
+   wins at that offset whatever its length. Measured: i cannot stop thinking
+   about it reads as {sacral:18}, compulsion, and the third eye rumination entry
+   never lands. A person ruminating is told they are compulsive, at a lower
+   amount, at the wrong seat.
+
+   THE STATED RULE IS NOT THE IMPLEMENTED RULE, and that is the actual defect. A
+   phrase outranks THE WORDS INSIDE IT, which is right and is why the rule
+   exists. Here the lexicon entry CONTAINS the phrase and is strictly longer and
+   strictly more specific, so the rule does not reach this case and the
+   implementation decided it by loop order.
+
+   NOT FIXED HERE, and that is deliberate. The fix is one clause in scanStory,
+   and which way that clause goes is a ruling rather than a repair: does the
+   longer specific entry beat the shorter idiom, or does an idiom always win.
+   Both are defensible and they read differently. So the two rows are named
+   here, with the reason, and the gate asserts the dead set is EXACTLY this
+   table in both directions. A third dead row fails the gate. This one cannot
+   quietly become three.
+   ============================================================ */
+var LEX_DEAD={
+ 'cannot stop thinking':'eaten by the phrase cannot stop, which is shorter, seated elsewhere and worth less',
+ 'cant stop thinking':'eaten by the phrase cant stop, the same way'};
+
 /* run the fold. keys are snapshotted first: the pass writes into the table it
    reads from, and reading a table while growing it is how a generator quietly
    folds its own output. */

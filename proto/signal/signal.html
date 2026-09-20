@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The signal test</title>
+<!--
+  PROTOTYPE. The signal test as the owner described it, not as it is built.
+
+  "Asking a person to take a second, turn their senses inward, think yes ten
+  times, think no ten times, feel a quality difference between the two. That's
+  the mind body connection... We all feel it differently, the words we would
+  use to describe it will be different."
+
+  So this hands the person no words and no list of locations. It gives them a
+  pad with no labels on it and asks them to show the shape of what they felt
+  while they are still feeling it. Capture is live, under the pulsing word,
+  because a report taken afterwards is a memory of a sensation and not the
+  sensation.
+
+  One file, no dependencies, no network request of any kind.
+-->
+<style>
+:root{
+ --bg:#0C0D12; --panel:#1A1D26; --panel-2:#252833; --sunk:#090A0E;
+ --ink:#EFEDE8; --mid:#B4B0A8; --dim:#94908A;
+ --accent:#7EB8D4; --on-accent:#0B1418;
+ --line:#2E323E;
+ --yes:#7EB8D4; --no:#C08A6E;
+ --pad:248px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+ background:var(--bg); color:var(--ink); min-height:100vh;
+ font:400 16px/1.55 "Inter","Helvetica Neue",Arial,system-ui,sans-serif;
+ -webkit-font-smoothing:antialiased;
+ display:flex; align-items:center; justify-content:center;
+ padding:24px 16px;
+}
+.shell{width:100%; max-width:560px}
+.card{
+ background:var(--panel); border:1px solid var(--line); border-radius:6px;
+ padding:28px 26px 22px; position:relative;
+}
+.eye{
+ display:block; font-size:11px; letter-spacing:.14em; text-transform:uppercase;
+ color:var(--dim); margin:0 0 14px;
+}
+h1{font-size:23px; line-height:1.28; font-weight:500; margin:0 0 14px; letter-spacing:-.01em}
+h2{font-size:18px; line-height:1.34; font-weight:500; margin:0 0 12px}
+p{margin:0 0 12px; color:var(--mid); max-width:62ch}
+p.tight{margin-bottom:6px}
+.dim{color:var(--dim); font-size:14px}
+.acts{display:flex; gap:10px; flex-wrap:wrap; margin-top:20px; align-items:center}
+button{
+ font:inherit; font-size:15px; min-height:44px; padding:0 18px;
+ background:transparent; color:var(--ink);
+ border:1px solid var(--line); border-radius:4px; cursor:pointer;
+}
+button:hover{border-color:var(--dim)}
+button.pri{background:var(--accent); color:var(--on-accent); border-color:var(--accent)}
+button.pri:hover{filter:brightness(1.08)}
+button.quiet{border-color:transparent; color:var(--dim); padding:0 10px}
+button.quiet:hover{color:var(--mid); border-color:transparent}
+button:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+button[disabled]{opacity:.42; cursor:default}
+
+/* ---- the leave control. Always present, because a beat that runs for
+        seventy five seconds must be leavable at any point in it. ---- */
+.leave{position:absolute; top:12px; right:12px; min-height:34px; font-size:13px}
+
+/* ---- the settle ring ---- */
+.ring{display:block; margin:26px auto 18px}
+.ring circle{fill:none; stroke-width:1.4}
+.ring .track{stroke:var(--line)}
+.ring .arc{stroke:var(--accent); stroke-linecap:round; transform:rotate(-90deg); transform-origin:50% 50%}
+
+/* ---- the pulsing word ---- */
+.stagearea{
+ min-height:104px; display:flex; align-items:center; justify-content:center;
+ margin:6px 0 4px;
+}
+.word{
+ font-size:46px; font-weight:300; letter-spacing:.02em; line-height:1;
+ opacity:0; transition:opacity .9s linear;
+}
+.word.on{opacity:1}
+.word.yes{color:var(--yes)}
+.word.no{color:var(--no)}
+@media (prefers-reduced-motion:reduce){ .word{transition:none} }
+
+/* ---- the pips. Ten marks that fill. Not a count against a total. ---- */
+.pips{display:flex; gap:7px; justify-content:center; margin:0 0 20px}
+.pip{width:7px; height:7px; border-radius:50%; border:1px solid var(--line); background:transparent}
+.pip.lit{background:var(--accent); border-color:var(--accent)}
+
+/* ---- the pad. No labels, no axes, no words. ---- */
+.padwrap{display:flex; flex-direction:column; align-items:center; gap:10px}
+.pad{
+ width:var(--pad); height:var(--pad); max-width:100%;
+ background:var(--sunk); border:1px solid var(--line); border-radius:50%;
+ touch-action:none; cursor:crosshair; display:block;
+}
+.padhint{font-size:13px; color:var(--dim); text-align:center; max-width:34ch}
+/* the nothing control keeps a border. A control drawn as a caption is a
+   control a person does not know is there, which is the same as not having
+   one, and "nothing" is a real reading this exercise has to be able to take. */
+#nothingbtn{border-color:var(--line); color:var(--mid); padding:0 16px}
+#nothingbtn:hover{color:var(--ink); border-color:var(--dim)}
+
+/* ---- the read back ---- */
+.readout{
+ display:flex; gap:18px; align-items:flex-start; margin:18px 0 6px; flex-wrap:wrap;
+}
+.slab{
+ flex:1 1 180px; background:var(--panel-2); border:1px solid var(--line);
+ border-radius:4px; padding:12px 14px;
+}
+.slab b{display:block; font-size:12px; letter-spacing:.1em; text-transform:uppercase;
+ color:var(--dim); font-weight:500; margin-bottom:6px}
+.slab span{font-size:15px; color:var(--ink)}
+label.fld{display:block; margin:16px 0 0}
+label.fld b{display:block; font-size:13px; color:var(--mid); font-weight:400; margin-bottom:6px}
+input[type=text]{
+ font:inherit; font-size:16px; width:100%; min-height:44px; padding:0 12px;
+ background:var(--sunk); color:var(--ink); border:1px solid var(--line); border-radius:4px;
+}
+input[type=text]:focus-visible{outline:2px solid var(--accent); outline-offset:1px; border-color:var(--accent)}
+input[type=range]{width:100%; min-height:44px; accent-color:var(--accent)}
+.ends{display:flex; justify-content:space-between; font-size:13px; color:var(--dim)}
+.sep{border:0; border-top:1px solid var(--line); margin:20px 0 0}
+table{width:100%; border-collapse:collapse; font-size:14px; margin:10px 0 0}
+td{padding:5px 0; color:var(--mid); vertical-align:top}
+td:first-child{color:var(--dim); width:44%; padding-right:12px}
+@media (max-width:420px){
+ :root{--pad:206px}
+ .card{padding:22px 18px 18px}
+ h1{font-size:20px}
+ .word{font-size:38px}
+}
+</style>
+</head><body>
+<div class="shell"><div class="card" id="card" role="dialog" aria-modal="true" aria-label="The signal test"></div></div>
+<div aria-live="polite" role="status" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)" id="live"></div>
+
+<script>
+/* ============================================================
+   PACING. Every duration here is a decision and is argued in
+   RESEARCH-signal.md.
+
+   REP_MS is 3000 and not 500. Lambert and Jakobovits put the onset of
+   semantic satiation at roughly ten to fifty repetitions when a word is
+   repeated two to three times a second. Ten fast repetitions is therefore
+   the one pace that would empty the word of meaning by the end of the
+   beat, which is the opposite of the exercise. A three second beat keeps
+   the word loaded and makes the whole run seventy five seconds of paced
+   attention.
+   ============================================================ */
+var REP=10, REP_MS=3000, SETTLE_MS=15000, HOLD_MS=6000;
+
+var D={
+ settleStart:0,
+ yes:{v:null, trace:[], nothing:false},
+ no :{v:null, trace:[], nothing:false},
+ sepReported:null,
+ wordYes:'', wordNo:'',
+ leftAt:null
+};
+var step=0, timers=[], padCtx=null, padActive=null;
+
+function T(fn,ms){ timers.push(setTimeout(fn,ms)); }
+function clearT(){ timers.forEach(clearTimeout); timers=[]; }
+function say(s){ document.getElementById('live').textContent=s; }
+function esc(s){ return String(s).replace(/[&<>"]/g,function(c){
+ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+
+/* ---- geometry. The pad is unitless and unlabelled. ---- */
+function vec(p){
+ if(!p||p.nothing||!p.v) return null;
+ var x=p.v.x, y=p.v.y;
+ return {x:x, y:y, r:Math.sqrt(x*x+y*y), a:Math.atan2(-y,x)};
+}
+function sepGeom(){
+ var a=vec(D.yes), b=vec(D.no);
+ if(!a||!b) return null;
+ var dx=a.x-b.x, dy=a.y-b.y;
+ return Math.min(1, Math.sqrt(dx*dx+dy*dy)/2);
+}
+function angleBetween(){
+ var a=vec(D.yes), b=vec(D.no);
+ if(!a||!b||a.r<0.06||b.r<0.06) return null;
+ var d=Math.abs(a.a-b.a); if(d>Math.PI) d=2*Math.PI-d;
+ return d*180/Math.PI;
+}
+
+/* ============================================================
+   RENDER
+   ============================================================ */
+function render(){
+ clearT();
+ var c=document.getElementById('card'), h='';
+ var leave='<button type="button" class="quiet leave" data-go="out">Leave</button>';
+
+ if(step===0){
+  h=leave
+   +'<span class="eye">The signal test</span>'
+   +'<h1>Two words, and the difference between them.</h1>'
+   +'<p>This takes about two minutes and it runs on its own once it starts. '
+   +'Somewhere you will not be interrupted is better.</p>'
+   +'<p>You will be shown one word ten times, then a second word ten times. '
+   +'Each one arrives slowly. Think it as it arrives and turn your attention '
+   +'inward while it is there.</p>'
+   +'<p>Under each word there is a circle. Move the marker to show what the '
+   +'word did, while it is doing it. Out, in, up, down, however far. The '
+   +'circle has no labels on it because the shape is yours.</p>'
+   +'<div class="acts"><button type="button" class="pri" data-go="settle">Start</button></div>';
+ }
+
+ else if(step===1){
+  h=leave
+   +'<span class="eye">Settle</span>'
+   +'<h2>Turn your senses inward.</h2>'
+   +'<p class="tight">Follow the ring. Breathe out for as long as it takes to close.</p>'
+   +ringSVG()
+   +'<p class="dim" id="settletick">The first word arrives when the ring completes.</p>';
+  c.innerHTML=h; runSettle(); bind(); return;
+ }
+
+ else if(step===2||step===4){
+  var isYes=(step===2), key=isYes?'yes':'no';
+  h=leave
+   +'<span class="eye">'+(isYes?'The first word':'The second word')+'</span>'
+   +'<div class="stagearea"><div class="word '+key+'" id="w">'+(isYes?'yes':'no')+'</div></div>'
+   +'<div class="pips" id="pips">'+Array(REP+1).join().split(',')
+     .map(function(){return '<span class="pip"></span>';}).join('')+'</div>'
+   +'<div class="padwrap">'+padSVG(key)
+   +'<p class="padhint">Move the marker while the word is there.</p>'
+   +'<button type="button" class="quiet" data-nothing="'+key+'" id="nothingbtn">'
+   +(D[key].nothing?'Marked: nothing moved':'Nothing moved')+'</button>'
+   +'</div>';
+  c.innerHTML=h; bind(); wirePad(key); runBeats(key); return;
+ }
+
+ else if(step===3){
+  h=leave
+   +'<span class="eye">Hold</span>'
+   +'<h2>Stay with what is left of it.</h2>'
+   +'<p>Do not do anything. The second word arrives shortly.</p>'
+   +ringSVG();
+  c.innerHTML=h; runHold(4); bind(); return;
+ }
+
+ else if(step===5){
+  var g=sepGeom(), ang=angleBetween();
+  var pre=(g===null)?50:Math.round(g*100);
+  if(D.sepReported===null) D.sepReported=pre;
+  h=leave
+   +'<span class="eye">The difference</span>'
+   +'<h2>How far apart were the two.</h2>'
+   +'<p>The circle recorded where you put each marker. That is what you showed. '
+   +'This asks what you felt, which is the other half and is not the same thing.</p>'
+   +'<div class="readout">'
+   +'<div class="slab"><b>First word</b><span>'+markText('yes')+'</span></div>'
+   +'<div class="slab"><b>Second word</b><span>'+markText('no')+'</span></div>'
+   +'</div>'
+   +'<label class="fld"><b>Set this to the distance between them.</b>'
+   +'<input type="range" min="0" max="100" value="'+D.sepReported+'" id="sep" '
+   +'aria-label="distance between the two"></label>'
+   +'<div class="ends"><span>The same</span><span>Nothing alike</span></div>'
+   +'<hr class="sep">'
+   +'<p class="dim" style="margin-top:14px">One word each, if one is there. Yours, not '
+   +'from a list. It is kept and shown back to you, and it is not scored.</p>'
+   +'<label class="fld"><b>The first word felt</b>'
+   +'<input type="text" id="wy" maxlength="24" autocomplete="off" spellcheck="false" '
+   +'placeholder="one word, yours" value="'+esc(D.wordYes)+'"></label>'
+   +'<label class="fld"><b>The second word felt</b>'
+   +'<input type="text" id="wn" maxlength="24" autocomplete="off" spellcheck="false" '
+   +'placeholder="one word, yours" value="'+esc(D.wordNo)+'"></label>'
+   +'<div class="acts"><button type="button" class="pri" data-go="end">Done</button></div>';
+ }
+
+ else {
+  var g2=sepGeom(), a2=angleBetween();
+  h='<span class="eye">What was captured</span>'
+   +'<h2>A thought moved your body, and you watched it.</h2>'
+   +'<p>Two words with no power over you. One of them did something the other '
+   +'did not. That is the connection between a thought and the tissue, and it '
+   +'is the thing this instrument reads.</p>'
+   +'<table><tbody>'
+   +row('First word, marker', markText('yes'))
+   +row('Second word, marker', markText('no'))
+   +row('Separation, from the markers', g2===null?'not read':(Math.round(g2*100)+' out of 100'))
+   +row('Separation, as you set it', D.sepReported===null?'not set':(D.sepReported+' out of 100'))
+   +row('Angle between them', a2===null?'not read':(Math.round(a2)+' degrees out of 180'))
+   +row('Your words', (D.wordYes||D.wordNo)?esc([D.wordYes,D.wordNo].filter(Boolean).join(', ')):'none given')
+   +row('Samples recorded', (D.yes.trace.length+D.no.trace.length)+' marker positions')
+   +'</tbody></table>'
+   +'<hr class="sep">'
+   +'<p class="dim" style="margin-top:14px">This is a record of what you showed and '
+   +'what you said. It is not a measurement of your body and it does not decide '
+   +'anything about you. Nothing here is written to a profile in this prototype.</p>'
+   +'<div class="acts"><button type="button" class="pri" data-go="again">Run it again</button>'
+   +'<button type="button" data-go="dump">Show the captured record</button></div>'
+   +'<pre id="dump" style="display:none;white-space:pre-wrap;font-size:12px;color:var(--dim);'
+   +'background:var(--sunk);border:1px solid var(--line);border-radius:4px;padding:12px;'
+   +'margin-top:14px;overflow:auto"></pre>';
+ }
+ c.innerHTML=h; bind();
+}
+function row(k,v){ return '<tr><td>'+k+'</td><td>'+v+'</td></tr>'; }
+function markText(k){
+ var p=D[k];
+ if(p.nothing) return 'nothing moved';
+ var v=vec(p);
+ if(!v) return 'not placed';
+ var deg=Math.round(v.a*180/Math.PI);
+ return Math.round(v.r*100)+' out from centre, at '+deg+' degrees';
+}
+
+/* ---- the settle ring, reused for the hold ---- */
+function ringSVG(){
+ return '<svg class="ring" width="132" height="132" viewBox="0 0 132 132" aria-hidden="true">'
+  +'<circle class="track" cx="66" cy="66" r="52"/>'
+  +'<circle class="arc" id="arc" cx="66" cy="66" r="52" '
+  +'stroke-dasharray="326.7" stroke-dashoffset="326.7"/></svg>';
+}
+function runArc(ms,done){
+ var arc=document.getElementById('arc'), t0=performance.now(), C=326.7;
+ (function tick(now){
+  var p=Math.min(1,(now-t0)/ms);
+  if(arc) arc.setAttribute('stroke-dashoffset',String(C*(1-p)));
+  if(p<1) requestAnimationFrame(tick); else done&&done();
+ })(t0);
+}
+function runSettle(){ D.settleStart=Date.now(); say('Settling.'); runArc(SETTLE_MS,function(){ step=2; render(); }); }
+function runHold(next){ say('Hold.'); runArc(HOLD_MS,function(){ step=next; render(); }); }
+
+/* ---- the pad ---- */
+function padSVG(k){
+ var col=(k==='yes')?'var(--yes)':'var(--no)';
+ return '<svg class="pad" id="pad" viewBox="-100 -100 200 200" role="application" '
+  +'aria-label="show what the word did. drag the marker, or use the arrow keys." tabindex="0">'
+  +'<circle cx="0" cy="0" r="99" fill="none" stroke="var(--line)"/>'
+  +'<circle cx="0" cy="0" r="66" fill="none" stroke="var(--line)" stroke-opacity=".5"/>'
+  +'<circle cx="0" cy="0" r="33" fill="none" stroke="var(--line)" stroke-opacity=".5"/>'
+  +'<circle cx="0" cy="0" r="2.2" fill="var(--dim)"/>'
+  +'<polyline id="trace" fill="none" stroke="'+col+'" stroke-opacity=".28" stroke-width="1.4" points=""/>'
+  +'<circle id="mk" cx="0" cy="0" r="7" fill="'+col+'" fill-opacity=".9"/></svg>';
+}
+function wirePad(k){
+ var pad=document.getElementById('pad');
+ if(!pad) return;
+ padActive=k;
+ if(D[k].v) place(D[k].v.x,D[k].v.y,false);
+ function fromEvent(e){
+  var r=pad.getBoundingClientRect();
+  var cx=(e.touches?e.touches[0].clientX:e.clientX), cy=(e.touches?e.touches[0].clientY:e.clientY);
+  var x=((cx-r.left)/r.width)*200-100, y=((cy-r.top)/r.height)*200-100;
+  var m=Math.sqrt(x*x+y*y); if(m>99){ x=x/m*99; y=y/m*99; }
+  place(x/99,y/99,true);
+ }
+ var down=false;
+ pad.addEventListener('pointerdown',function(e){ down=true; pad.setPointerCapture&&pad.setPointerCapture(e.pointerId); fromEvent(e); e.preventDefault(); });
+ pad.addEventListener('pointermove',function(e){ if(down) fromEvent(e); });
+ pad.addEventListener('pointerup',function(){ down=false; });
+ pad.addEventListener('pointercancel',function(){ down=false; });
+ pad.addEventListener('keydown',function(e){
+  var s={'ArrowUp':[0,-0.08],'ArrowDown':[0,0.08],'ArrowLeft':[-0.08,0],'ArrowRight':[0.08,0]}[e.key];
+  if(!s) return;
+  e.preventDefault();
+  var v=D[k].v||{x:0,y:0}, x=v.x+s[0], y=v.y+s[1];
+  var m=Math.sqrt(x*x+y*y); if(m>1){ x/=m; y/=m; }
+  place(x,y,true);
+ });
+}
+function place(x,y,record){
+ var k=padActive; if(!k) return;
+ D[k].v={x:x,y:y};
+ if(record){ D[k].nothing=false; D[k].trace.push({x:+x.toFixed(3),y:+y.toFixed(3),t:Date.now()}); }
+ var mk=document.getElementById('mk'), tr=document.getElementById('trace');
+ if(mk){ mk.setAttribute('cx',(x*99).toFixed(1)); mk.setAttribute('cy',(y*99).toFixed(1)); }
+ if(tr) tr.setAttribute('points',D[k].trace.slice(-70).map(function(p){
+  return (p.x*99).toFixed(1)+','+(p.y*99).toFixed(1);}).join(' '));
+ var nb=document.getElementById('nothingbtn');
+ if(nb) nb.textContent='Nothing moved';
+}
+
+/* ---- the ten beats ---- */
+function runBeats(k){
+ var w=document.getElementById('w'), pips=document.getElementById('pips');
+ var i=0;
+ say((k==='yes'?'First':'Second')+' word beginning.');
+ (function beat(){
+  if(i>=REP){ step=(k==='yes')?3:5; T(render,700); return; }
+  if(w) w.classList.add('on');
+  if(pips&&pips.children[i]) pips.children[i].classList.add('lit');
+  T(function(){ if(w) w.classList.remove('on'); },REP_MS-1200);
+  i++; T(beat,REP_MS);
+ })();
+}
+
+/* ---- one listener ---- */
+function bind(){
+ var c=document.getElementById('card');
+ c.querySelectorAll('[data-go]').forEach(function(b){
+  b.addEventListener('click',function(){
+   var g=b.getAttribute('data-go');
+   if(g==='settle'){ step=1; render(); }
+   else if(g==='end'){
+    var s=document.getElementById('sep'); if(s) D.sepReported=+s.value;
+    var wy=document.getElementById('wy'), wn=document.getElementById('wn');
+    D.wordYes=wy?wy.value.trim():''; D.wordNo=wn?wn.value.trim():'';
+    step=6; render();
+   }
+   else if(g==='again'){
+    clearT();
+    D={settleStart:0,yes:{v:null,trace:[],nothing:false},no:{v:null,trace:[],nothing:false},
+       sepReported:null,wordYes:'',wordNo:'',leftAt:null};
+    step=0; render();
+   }
+   else if(g==='dump'){
+    var d=document.getElementById('dump');
+    d.style.display='block'; d.textContent=JSON.stringify(D,null,1);
+   }
+   else if(g==='out'){
+    clearT(); D.leftAt=step;
+    document.getElementById('card').innerHTML=
+     '<span class="eye">Left</span><h2>Stopped where you stopped.</h2>'
+     +'<p>Nothing was kept from a run that did not finish.</p>'
+     +'<div class="acts"><button type="button" class="pri" data-go="again">Start again</button></div>';
+    bind();
+   }
+  });
+ });
+ var nb=c.querySelector('[data-nothing]');
+ if(nb) nb.addEventListener('click',function(){
+  var k=nb.getAttribute('data-nothing');
+  D[k].nothing=true; D[k].v=null; D[k].trace=[];
+  var mk=document.getElementById('mk'), tr=document.getElementById('trace');
+  if(mk){ mk.setAttribute('cx','0'); mk.setAttribute('cy','0'); }
+  if(tr) tr.setAttribute('points','');
+  nb.textContent='Marked: nothing moved';
+ });
+}
+addEventListener('keydown',function(e){ if(e.key==='Escape'){ clearT(); step=0; render(); } });
+render();
+</script>
+</body></html>

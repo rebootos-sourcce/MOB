@@ -957,6 +957,53 @@ with your findings."
 
 ---
 
+## 0q. RULED 20 SEPTEMBER. THE COMPASS, AND WHY NOTHING EXISTS. PRIORITY.
+
+### CMP. THE COMPASS. THREE FINDINGS, ALL HIS, ALL CONFIRMED BY LOOKING.
+
+- [ ] **CMP1. The centre column is for hero art and it is full of prose.**
+  Measured on the card at 1600: the figure gets 528 pixels and an information
+  column beside it gets 340, carrying 1,107 characters. "You read 29 out of 100,
+  below the oscillating band. Integrity 5.9 of 10. Integrity is the hull. A hole
+  in it means the ship takes on water." All of that belongs in the information
+  pane. **This was a deliberate decision in an earlier round, committed as "the
+  compass opens flat, the information moves right", and he is reversing it.**
+- [ ] **CMP2. The art changed and he never asked for it.** Four commits touched
+  the compass look: `849636d` look development, `42917ed` symbols and a reading
+  instead of a caption, `2015f8a` the information moving right, `caeb033` the
+  eleventh note. None of them was asked for. Recorded so the next art change
+  has to be requested rather than proposed.
+- [ ] **CMP3. An equal number of bands, one per law of integrity.** His ruling.
+  The figure currently names eight axes down its sides as master and inversion
+  pairs. Twenty one laws means twenty one equal bands, and that is a redesign of
+  the figure rather than a change to its labels.
+
+### WHY NOTHING EXISTS, AND IT IS THE DEFECT ALREADY MEASURED THREE TIMES
+
+He is right that the saboteurs are not there, and it is not a crash. Measured on
+a blank profile, which is what a real arrival has:
+
+    Fetters      9     the nine axes always exist
+    Saboteurs    none
+    Complexes    none
+    Hyper        none
+    Character    none
+
+Nothing resolves because nothing is above the load line of 4, and nothing gets
+above the load line because the sniffer cannot read ordinary writing. That is
+FB2, FB3, SN1 to SN4 and the 465 of 1000 who cannot release, all surfacing on
+one screen. **The rails are not inside any tab host, so `monitor.js` has never
+looked at them and every "all surfaces render" this session was blind to it.**
+
+- [ ] **CMP4. `monitor.js` must walk the rails.** It takes the tab host by id
+  and the stack, the key strips and the shelf sit outside all of them. A watch
+  that cannot see the thing a person says is broken is not a watch.
+- [ ] **CMP5. `#eshelf` renders nothing on the Field.** Zero markup. `renderShelf`
+  in `ui/mapshelf.js` writes there and the element is empty at 1600 on a loaded
+  profile. Separate from the above and not yet explained.
+
+---
+
 ## 0c. RULED 20 SEPTEMBER, SECOND PASS. THE ARRIVAL, THE FEATHERS AND KARMA
 
 **"I didn't give you feedback on the feathers. I don't give you feedback

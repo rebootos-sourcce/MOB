@@ -1977,7 +1977,10 @@ body.dens-wide{--ui:1.1}
 .keylo .kb{pointer-events:auto}
 @media (max-width:1180px){
  .keylo{position:static;margin:0 14px 10px;order:9;flex-wrap:wrap}}
-.cone-body{display:grid;grid-template-columns:1fr 340px;gap:16px;align-items:start;
+/* ONE COLUMN. The information that filled the second one has gone to the rail,
+   which is what "the information pane" meant, so the figure takes the whole
+   card. It was 528 pixels of a 920 pixel card and it is the hero art. */
+.cone-body{display:grid;grid-template-columns:1fr;gap:16px;align-items:start;
  min-height:0}
 .cone-fig{position:relative;min-width:0}
 .cone-cv{display:block;width:100%;height:min(54vh,470px);touch-action:none;cursor:grab;

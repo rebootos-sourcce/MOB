@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="12227ba 2026-09-20 15:02"><head><meta charset="utf-8">
+<html lang="en" data-build="31763cb 2026-09-20 15:09"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -1977,7 +1977,10 @@ body.dens-wide{--ui:1.1}
 .keylo .kb{pointer-events:auto}
 @media (max-width:1180px){
  .keylo{position:static;margin:0 14px 10px;order:9;flex-wrap:wrap}}
-.cone-body{display:grid;grid-template-columns:1fr 340px;gap:16px;align-items:start;
+/* ONE COLUMN. The information that filled the second one has gone to the rail,
+   which is what "the information pane" meant, so the figure takes the whole
+   card. It was 528 pixels of a 920 pixel card and it is the hero art. */
+.cone-body{display:grid;grid-template-columns:1fr;gap:16px;align-items:start;
  min-height:0}
 .cone-fig{position:relative;min-width:0}
 .cone-cv{display:block;width:100%;height:min(54vh,470px);touch-action:none;cursor:grab;
@@ -3830,7 +3833,7 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
        download as atuned(1).html and leaves the first one where it was, so
        opening "the file" can mean opening last week's.
        Stamped by BUILD.sh, so it cannot be wrong or go stale. -->
-  <span class="bs-v" id="bstamp">12227ba 2026-09-20 15:02</span></div>
+  <span class="bs-v" id="bstamp">31763cb 2026-09-20 15:09</span></div>
  <!-- THE WAY OUT WAS BUILT AND NEVER SHOWN.
 
       pointerdown and keydown both clear this sheet and have since it was
@@ -6567,9 +6570,21 @@ function leanNegated(src,at){
   n++;}
  return false;}
 
-var LEANKEYS=null;
+/* The sorted key list is built once and kept, because sorting 372 phrases on
+   every story is work with one answer. THE CACHE IS KEYED ON THE SIZE OF THE
+   TABLES rather than on a bare null, so a list edited at run time is picked up
+   instead of silently having no effect. A cache that ignores its own input is
+   how a table edit looks like it landed and did not. */
+var LEANKEYS=null, LEANKEYN=-1;
+function leanCount(){
+ var n=0;
+ LEANCH.forEach(function(c){n+=LEANLEX[c.k].length;});
+ Object.keys(LEANFRAME).forEach(function(s){n+=LEANFRAME[s].length;});
+ return n;}
 function leanKeys(){
- if(LEANKEYS) return LEANKEYS;
+ var n=leanCount();
+ if(LEANKEYS&&LEANKEYN===n) return LEANKEYS;
+ LEANKEYN=n;
  var rows=[];
  LEANCH.forEach(function(c){LEANLEX[c.k].forEach(function(p){
   rows.push({p:p,k:c.k,fr:null});});});
@@ -7131,6 +7146,42 @@ var LEX_FOLD_NO={
  laughing:'the person laughing, where laughed in this table means being laughed at',
  rests:'it rests on the table, not the person resting, and rested subtracts',
  tenses:'the tenses of a verb, not a body tensing'};
+
+/* ============================================================
+   THE DEAD ROWS, NAMED, because a row that matches nothing looks live.
+
+   Found by the gate that asserts every entry can actually be found by the
+   scanner, which is a check nothing had. Two of the 192 authored entries cannot
+   be reached, and they predate this pass:
+
+     cannot stop thinking   seated at the third eye, amount 24, rumination
+     cant stop thinking     the same
+
+   Both are eaten by the phrase cannot stop, which is seated at the sacral at
+   amount 18 and labelled compulsion. scanStory adds phrases first and then
+   suppresses any later match overlapping a hit already recorded, so the phrase
+   wins at that offset whatever its length. Measured: i cannot stop thinking
+   about it reads as {sacral:18}, compulsion, and the third eye rumination entry
+   never lands. A person ruminating is told they are compulsive, at a lower
+   amount, at the wrong seat.
+
+   THE STATED RULE IS NOT THE IMPLEMENTED RULE, and that is the actual defect. A
+   phrase outranks THE WORDS INSIDE IT, which is right and is why the rule
+   exists. Here the lexicon entry CONTAINS the phrase and is strictly longer and
+   strictly more specific, so the rule does not reach this case and the
+   implementation decided it by loop order.
+
+   NOT FIXED HERE, and that is deliberate. The fix is one clause in scanStory,
+   and which way that clause goes is a ruling rather than a repair: does the
+   longer specific entry beat the shorter idiom, or does an idiom always win.
+   Both are defensible and they read differently. So the two rows are named
+   here, with the reason, and the gate asserts the dead set is EXACTLY this
+   table in both directions. A third dead row fails the gate. This one cannot
+   quietly become three.
+   ============================================================ */
+var LEX_DEAD={
+ 'cannot stop thinking':'eaten by the phrase cannot stop, which is shorter, seated elsewhere and worth less',
+ 'cant stop thinking':'eaten by the phrase cant stop, the same way'};
 
 /* run the fold. keys are snapshotted first: the pass writes into the table it
    reads from, and reading a table while growing it is how a generator quietly
@@ -10490,7 +10541,7 @@ if(typeof module!=='undefined'&&module.exports){
                   LEANCH:LEANCH, LEANLEX:LEANLEX, LEANCUE:LEANCUE,
                   LEANFRAME:LEANFRAME, LEANOUT:LEANOUT,
                   leanAdmit:leanAdmit, leanSeries:leanSeries, leanChan:leanChan,
-                  leanNegated:leanNegated, LEANNEG:LEANNEG, LEAN_NEG_W:LEAN_NEG_W,
+                  leanNegated:leanNegated, leanCount:leanCount, LEANNEG:LEANNEG, LEAN_NEG_W:LEAN_NEG_W,
   /* VERPCUE was reachable as a browser global and absent from the contract,
      so no test could check the lean tables against it. One phrase in both
      moves two instruments on one occurrence, which is what 'let it go' did. */
@@ -10520,6 +10571,11 @@ if(typeof module!=='undefined'&&module.exports){
      this whole layer exists to close. lexAdd and chgAdd are load time builders:
      they are what the canon and fold passes are made of, and nothing calls them
      after boot. */
+  /* the two canon tables the canon pass derives every seat and fetter from.
+     exported so the gate can assert the derivation against them rather than
+     against a number typed into the test, which is the failure this repository
+     has been bitten by seven times. */
+                  CHG2SEAT:CHG2SEAT, CHG2FET:CHG2FET, B2K:B2K, K2BAND:K2BAND,
                   LEX_SEAT:LEX_SEAT, LEX_AMT:LEX_AMT, LEX_FET:LEX_FET,
                   LEX_SEATS:LEX_SEATS, LEX_SRC:LEX_SRC, LEX_AMT_MAX:LEX_AMT_MAX,
                   LEXMETA:LEXMETA, CHGMETA:CHGMETA,
@@ -10527,6 +10583,7 @@ if(typeof module!=='undefined'&&module.exports){
                   lexAdd:lexAdd, chgAdd:chgAdd,
                   LEX_FOLD_RULES:LEX_FOLD_RULES, LEX_FOLD_OK:LEX_FOLD_OK,
                   LEX_FOLD_NO:LEX_FOLD_NO, lexFold:lexFold,
+                  LEX_DEAD:LEX_DEAD,
                   lexCanon:lexCanon, lexCanonWords:lexCanonWords,
                   lexFamilyFloor:lexFamilyFloor,
                   LEXCANONRUN:LEXCANONRUN, LEXFOLDRUN:LEXFOLDRUN,
@@ -16382,20 +16439,37 @@ function coneOpen(inTab){
    +'<p class="cone-hint">The waist is 40 to 60 out of 100, where most people '
    +'oscillate. Drag to turn the figure. Press any name to read that axis.</p>'
   +'</div>'
-  /* THE INFORMATION LAYER IS ON THE RIGHT. Ruled, and it is his standing rule
-     for this product: the reading and the record went in a column under the
-     figure on the left, which is a second information layer facing the one
-     that already exists. */
-  +'<div class="cone-info">'
-   /* THE READING AT THE TOP, THE RECORD IN THE MIDDLE, THE GRAPH PINNED AT
-      THE BOTTOM. He asked for the graph in the lower right and a column that
-      simply stacks puts it below the fold, which is the same as not having it.
-      The middle is the only part that scrolls. */
-   +'<div class="cone-txt">'+coneRead()+'</div>'
-   +'<div class="cone-mid">'+ladderHtml()+'</div>'
-   +coneGraph()
-  /* cone-info, cone-body, cone-card */
-  +'</div></div></div>';
+  /* THE INFORMATION LAYER LEFT THE CENTRE COLUMN, and the comment that used to
+     sit here is why it had to.
+
+     It said the information layer is on the right, which is his standing rule,
+     and then put the column on the right OF THE CARD. The card is in the centre
+     stage, so a thousand one hundred characters of prose were sitting in the
+     column he had reserved for hero art, and the figure was down to 528 pixels
+     of a 920 pixel card to make room for them.
+
+     His words: "You have a ton of information on the right of the compass where
+     it says you read 42 out of 100 inside an oscillating band, where I told you
+     specifically that the centre column is for hero art. All that text,
+     including integrity is the hull and a hole means the ship takes on water,
+     that is all information that belongs in the information pane."
+
+     Right of the card is not the information pane. The information pane is the
+     rail, which is where every other reading in this product opens. So the
+     reading, the record and the graph go there through the same shell the
+     drills use, which also gives them the back control every other panel got
+     this round. The centre column holds the figure and the controls that change
+     it, and nothing else. */
+  /* two closers, not three. The third belonged to cone-info, which is gone.
+     The build's div counter caught it before anything ran. */
+  +'</div></div>';
+ /* THE READING, THE RECORD AND THE GRAPH, IN THE RAIL. Pushed after the card
+    is in the document, because coneGraph measures. Not pushed when the compass
+    is a sheet over another surface, since the rail belongs to what is behind
+    it and overwriting that would take away the thing a person was reading. */
+ if(inTab&&typeof rdShell==='function')
+  rdShell('<div class="cone-read">'+coneRead()+'</div>'
+   +'<div class="cone-rec">'+ladderHtml()+'</div>'+coneGraph());
  CONE.cv=document.getElementById('conecv');
  CONE.g=CONE.cv?CONE.cv.getContext('2d'):null;
  coneLayout(); coneTick();
@@ -21467,5 +21541,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="001404829"></div>
+<div id="eof" hidden data-len="001409284"></div>
 </body></html>
