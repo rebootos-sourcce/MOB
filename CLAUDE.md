@@ -161,6 +161,24 @@ only. Muted palette argued from autonomic response. Icons are ring, not fill.
 
 **Port, do not rebuild.** The arithmetic core keeps its bodies and signatures.
 
+## The loop, and the centre. Ruled 20 September.
+
+**The process is discover, play, flow, body.** His words, and it is the spine
+everything else serves. Nothing ships that does not move a person through those
+four.
+
+**The avatar is the centrepiece.** "What is Atuned? Your avatar." Not a page in
+the product, the centre of it. A person watches their avatar improve and the
+improvement is driven by releases and by going through the loop above. The
+layers are sewn: the avatar to the ritual, the ritual to the psyche, the psyche
+to the body locations, the body to the story. One complete system.
+
+**The content chain, also his words.** What a person enters in the journal is
+added to the imprints. Part of that becomes a story they have to release. Part
+becomes a practice inside the ritual. Sometimes it becomes an affirmation, also
+in the ritual. The gamification exists to keep that turning, which means the
+content has to be driven enough to make it sticky.
+
 ## What this project is becoming
 
 **The fork is called. This becomes an accounts product.** Ruled by the owner.

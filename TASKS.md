@@ -273,6 +273,103 @@ record, never promised in advance for the act.
 
 ---
 
+## 0g. RULED 20 SEPTEMBER, FOURTH PASS. THE AVATAR IS THE CENTREPIECE.
+
+**The loop has a name now, and it is canon.** Discover, play, flow, body. Every
+block below serves it.
+
+**And the centre moved.** His words: "It is also tied into the avatar. You are
+looking at your avatar improve, shown by the releases, by going through the
+discover play flow mechanic. So the avatar itself becomes the centrepiece. What
+is Atuned? Your avatar. So we are sewing all of its layers. The avatar is tied
+into the ritual, which is tied into the psyche and the body locations and the
+story. It is one complete system."
+
+### BLOCK A. THE INFORMATION SYSTEM. TOOLTIPS AS CANON.
+
+- [ ] **IS1.** "It sounds like we need a system for tooltips or providing system
+  based information. That is just canon." A system, not a component.
+- [ ] **IS2.** The seats on it: designer, systems architect, full stack
+  developer, copy editor, and anybody else the team needs.
+- [ ] **IS3.** Simulate what is needed in the tooltip, a hundred passes.
+- [ ] **IS4.** Go to the internet. Find the award winning, exceptional, commer
+  cially successful tooltip and in product information systems, and use them as
+  comps by name.
+- [ ] **IS5.** Design a really simple system around our tools and how
+  information is provided. Simple is the requirement, not an aspiration.
+
+### BLOCK B. THE FEATHERS, AND WHAT THEY ARE WIRED TO.
+
+- [ ] **FS1.** "Feathers and the mechanics of the system that they are tied
+  into, the laws of integrity, and any other system that is hooked up to that.
+  Do we need a system for these?" Answer it with evidence, either way.
+
+### BLOCK C. GAMIFICATION. THE BIG ONE. "TAKE THE TIME YOU NEED."
+
+- [ ] **GM1. The process is discover, play, flow, and body.** Named by him, and
+  it is now the spine the gamification serves. Nothing ships that does not move
+  a person through those four.
+- [ ] **GM2.** A badge, award and reward system that is sticky and motivates a
+  person to earn.
+- [ ] **GM3. The content chain, in his words.** What a person enters in the
+  journal is added to the imprints. Part of that becomes a story they have to
+  release. Part of it becomes a ritual, a practice inside the ritual. Sometimes
+  it becomes an affirmation, also in the ritual. The gamification exists to keep
+  that loop turning, "so the content has to be driven enough to make that
+  process sticky."
+- [ ] **GM4. The method he asked for, not a shortcut to the answer.** The team
+  argues, fights, goes to the internet, finds the products that are exceptional
+  at this, uses them as named comps, debates, simulates against the ICPs, and
+  **iterates the game design and the core loop until the ICP bottom line goes up
+  ten points.** Then pitches him the changes.
+- [ ] **GM5.** And the pitch is a pitch: what changed, what it is worth, and the
+  number before and after.
+
+### BLOCK D. THE AVATAR SYSTEM. THE CENTREPIECE.
+
+- [ ] **AV1. What is Atuned? Your avatar.** The avatar is the centre of the
+  product, not a page in it.
+- [ ] **AV2.** A person watches their avatar improve, and the improvement is
+  driven by releases and by going through discover, play, flow, body.
+- [ ] **AV3. Sew the layers.** The avatar is tied into the ritual, the ritual
+  into the psyche, the psyche into the body locations, the body into the story.
+  One complete system, and it has to be designed as one.
+- [ ] **AV4. The team asks him questions about what the avatar system could be.**
+  His explicit instruction. Questions, not a finished proposal presented as a
+  ruling.
+- [ ] **AV5. Atmosphere and lighting.** Anything that pulls people in and keeps
+  them there.
+
+### BLOCK E. THE DOCUMENTATION SCRUB.
+
+- [ ] **DS1.** Scrub the whole thread and the creative brief. Everything ruled,
+  changed or tweaked has to be in the documents.
+- [ ] **DS2.** Technical design documents. Who needs one, and then they write it.
+- [ ] **DS3.** The design docs, the systems docs, the logic systems, the
+  architecture and the algorithms, all documented.
+- [ ] **DS4.** As many simulation passes as it takes until it feels steady,
+  consistent and satisfactory.
+- [ ] **DS5.** Comps against exceptional products throughout, "because we are
+  going to beat them at retention, and at information."
+
+### STANDING, ADDED THIS PASS
+
+- [ ] **AL5. Run the blocks, and keep running until there are no blocks left.**
+  Then show him the HTML documents to review.
+- [ ] **AL6.** He reviews the four HTML prototypes separately and will send
+  feedback on them on their own.
+
+### WAITING ON HIM, FROM THIS PASS
+
+- [?] **"Personal tested. I am not sure what you mean by that."** I do not know
+  which phrase this is answering. Nothing in the last report or in the
+  documents uses it. Named here rather than guessed at.
+- [?] The four from the previous pass are still open and still block work: the
+  coin, what vibrancy is, law 8 against the gate pill, and whether Atmosphere is
+  an eighth lighting or a change to how the Field draws in Dark.
+
+---
+
 ## 0c. RULED 20 SEPTEMBER, SECOND PASS. THE ARRIVAL, THE FEATHERS AND KARMA
 
 **"I didn't give you feedback on the feathers. I don't give you feedback
