@@ -1,0 +1,3418 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Ritual, the calendar</title><style>
+/* the product's own tokens, read off atuned_src/shell/head.html */
+*{box-sizing:border-box}
+:root{--bg:#0C0D12;--panel:#1A1D26;--panel-2:#252833;--sunk:#090A0E;
+ --ink:#EFEDE8;--mid:#B4B0A8;--dim:#94908A;--accent:#7EB8D4;--on-accent:#0B1418;
+ --line:rgba(255,255,255,.08);--line2:rgba(255,255,255,.14);--warm:#CB5F59;
+ --r:14px}
+html,body{margin:0;background:var(--bg);color:var(--ink)}
+body{font:16px/1.5 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Inter,sans-serif;
+ -webkit-font-smoothing:antialiased;padding:0 0 64px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px}
+h1,h2,h3{font-weight:600;letter-spacing:-.01em;margin:0}
+.eye{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);
+ font-weight:600}
+.dim{color:var(--dim)}.mid{color:var(--mid)}
+.bar{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid var(--line);
+ margin-bottom:22px;flex-wrap:wrap}
+.brand{font-weight:700;letter-spacing:.16em;font-size:12px;color:var(--mid)}
+select,button{font:inherit;color:inherit}
+select{background:var(--panel-2);border:1px solid var(--line2);border-radius:10px;
+ padding:9px 12px;min-height:44px}
+.btn{background:transparent;border:1px solid var(--line2);border-radius:11px;
+ padding:11px 16px;min-height:44px;cursor:pointer;color:var(--ink);transition:.15s}
+.btn:hover{border-color:var(--accent);color:var(--accent)}
+.btn.pri{background:var(--accent);color:var(--on-accent);border-color:var(--accent);font-weight:600}
+.btn.pri:hover{filter:brightness(1.08);color:var(--on-accent)}
+.btn.on{border-color:var(--accent);color:var(--accent)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:20px}
+.note{font-size:13px;color:var(--dim);line-height:1.6}
+/* A CELL IS A FIXED SIZE AND THE GRID DOES NOT STRETCH IT. Stretched to the
+   width of a 1600 column the squares became a checkerboard, and on a person
+   with seven days of history the empty ones became a wall of absence: eighty
+   four black squares against seven gold. That is a count against a total drawn
+   in pixels, and it is the one thing this product refuses. */
+/* The square grows to fill the card it is in. A fixed cell drew two weeks
+   as a sliver in a card sized for thirteen, which is the wall of absence
+   again in the opposite direction: an empty card instead of empty squares. */
+.hm{display:grid;grid-auto-flow:column;grid-template-rows:repeat(7,var(--cell,14px));
+ gap:3px;justify-content:start}
+.hm i{width:var(--cell,14px);height:var(--cell,14px);border-radius:3px;background:var(--sunk);
+ border:1px solid var(--line);display:block;cursor:default}
+.hm i.on{background:var(--k);border-color:var(--k)}
+.hm i.fl{background:transparent;border-color:var(--k);border-width:1.5px}
+.hm i.no{background:transparent;border-color:rgba(255,255,255,.05)}
+.hm.edit i{cursor:pointer}
+.hm.edit i:hover{outline:1.5px solid var(--accent);outline-offset:1px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.stat{background:var(--panel-2);border:1px solid var(--line);border-radius:11px;padding:13px 14px}
+.stat b{display:block;font-size:26px;font-weight:600;letter-spacing:-.02em;line-height:1.15}
+.stat span{font-size:11.5px;color:var(--dim);letter-spacing:.04em}
+.foot{margin-top:34px;padding-top:16px;border-top:1px solid var(--line);font-size:12.5px;
+ color:var(--dim);line-height:1.7}
+@media(max-width:560px){
+ .wrap{padding:0 16px}
+ .stats{grid-template-columns:repeat(2,1fr)}
+ body{padding-bottom:40px}}
+
+</style></head><body>
+<div class="wrap">
+ <div class="bar">
+  <span class="brand">ATUNED &middot; RITUAL</span>
+  <select id="who" aria-label="Profile"></select>
+  <span style="flex:1"></span>
+  <!-- THE SPAN. One object at three resolutions, not three pages and not a
+       tab bar with a count on it. The grid below keeps its row axis, its
+       colour and its sort order at every stop, and only the column count and
+       the cell's resolution change: thirty five cells, seven, one. -->
+  <div class="seg" id="span" role="group" aria-label="Span"></div>
+  <button class="btn" id="qbtn">Queue</button>
+  <button class="btn" id="edit">Edit</button>
+ </div>
+
+ <!-- WHAT IS DUE. The first of the two questions, answered before the
+      calendar is read, in one strip that never moves. -->
+ <div class="due" id="due"></div>
+
+ <div class="two">
+  <div class="calwrap">
+   <div class="calhead"><div class="eye" id="calttl"></div><div class="note" id="calnote"></div></div>
+   <div id="cal"></div>
+  </div>
+
+  <div class="side">
+   <!-- WHAT IS STANDING. The second question. Standing and not running,
+        because running is this product's word for a saboteur. -->
+   <div class="card">
+    <div class="eye">Standing</div>
+    <div id="stand"></div>
+   </div>
+   <div class="card">
+    <div class="eye">Over time</div>
+    <div class="stats" id="stats" style="margin-top:14px;grid-template-columns:1fr 1fr"></div>
+    <div id="bars" style="margin-top:18px"></div>
+   </div>
+  </div>
+ </div>
+ <div class="foot" id="foot"></div>
+</div>
+
+<!-- THE QUEUE. His answer to where you are adding from. Ordered by the load
+     each proposal is aimed at, labelled by who proposed it, and every row
+     carries the engine function it came out of. -->
+<div class="qmask" id="qmask" hidden></div>
+<aside class="q" id="q" hidden aria-label="Queue">
+ <div class="qhead">
+  <div><div class="eye">Queue</div><div class="note" id="qnote"></div></div>
+  <button class="btn ic" id="qclose" aria-label="Close queue">&#215;</button>
+ </div>
+ <div class="qopt"><span class="eye" style="letter-spacing:.1em">Ordered for</span>
+  <div class="seg sm" id="opt" role="group" aria-label="Ordered for"></div></div>
+ <div id="qlist"></div>
+</aside>
+
+<style>
+/* ---------- the kind, which is the only thing carrying colour here ----------
+   One colour axis on one grid. The glyph carries the track by its shape and
+   takes the kind's colour, so a person reads one legend and not two. */
+.k-hold{--kc:#CF5953}
+.k-change{--kc:#65CFA5}
+.k-release{--kc:#65B8D4}
+
+.seg{display:flex;background:var(--sunk);border:1px solid var(--line);border-radius:12px;padding:3px}
+.seg button{background:transparent;border:0;border-radius:9px;padding:0 16px;min-height:38px;
+ cursor:pointer;color:var(--dim);font-size:13.5px;transition:.15s;white-space:nowrap}
+.seg button:hover{color:var(--ink)}
+.seg button[aria-pressed=true]{background:var(--panel-2);color:var(--ink);
+ box-shadow:0 1px 0 rgba(255,255,255,.05) inset}
+.seg.sm button{padding:0 12px;min-height:36px;font-size:12.5px}
+.btn.ic{padding:0;width:44px;min-height:44px;font-size:20px;line-height:1}
+
+/* ---------- the due strip ---------- */
+.due{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.due .dlab{font-size:13px;color:var(--dim);margin-right:2px}
+.chip{display:flex;align-items:center;gap:9px;min-height:46px;padding:0 15px 0 11px;
+ background:var(--panel);border:1px solid var(--line);border-radius:13px;cursor:pointer;
+ font:inherit;color:var(--ink);transition:.15s;text-align:left}
+.chip:hover{border-color:var(--kc)}
+.chip.on{border-color:var(--kc);background:color-mix(in srgb,var(--kc) 10%,var(--panel))}
+.chip b{font-size:13.5px;font-weight:600;display:block;line-height:1.25}
+.chip i{font-style:normal;font-size:11.5px;color:var(--dim);display:block}
+.chip.on i{color:var(--kc)}
+.chip .rg{flex:none;display:grid;place-items:center;width:26px;height:26px}
+.due .clear{font-size:13px;color:var(--dim);padding:0 2px}
+
+/* ---------- the calendar ---------- */
+.two{display:grid;grid-template-columns:1.25fr 1fr;gap:16px;align-items:start}
+.calwrap{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:18px}
+.calhead{display:flex;justify-content:space-between;align-items:baseline;gap:14px;
+ margin-bottom:14px;flex-wrap:wrap}
+.side{display:grid;gap:14px}
+
+.grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.dow{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);
+ text-align:center;padding-bottom:6px}
+/* A DAY THE PERSON HAS NOT LIVED THROUGH IS NOT DRAWN. Not an empty square,
+   not a faint square, nothing. An empty grid cell is a tally of failures
+   arriving through a layout constant. */
+.cell{border-radius:9px;min-height:52px;padding:6px 6px 5px;display:flex;flex-direction:column;
+ justify-content:space-between;background:transparent;border:1px solid transparent;
+ font:inherit;color:inherit;text-align:left}
+.cell.live{background:var(--sunk);border-color:var(--line)}
+.cell.ahead{background:transparent;border-color:rgba(255,255,255,.05)}
+.cell.today{border-color:var(--accent);border-width:1.5px;padding:5.5px 5.5px 4.5px}
+.cell u{font-size:11.5px;color:var(--dim);text-decoration:none;font-variant-numeric:tabular-nums}
+.cell.today u{color:var(--accent);font-weight:600}
+.cell .mk{display:flex;gap:3px;align-items:flex-end;min-height:9px}
+.cell .mk s{flex:1;height:8px;border-radius:3px;text-decoration:none;display:block;
+ background:transparent;border:1px solid rgba(255,255,255,.16);max-width:26px}
+.cell .mk s.on{background:var(--kc);border-color:var(--kc)}
+.grid.edit .cell.live{cursor:pointer}
+.grid.edit .cell.live:hover{outline:1.5px solid var(--accent);outline-offset:1px}
+
+/* week: the same grid, seven columns, one row, more resolution per cell */
+.grid.week .cell{min-height:150px;gap:8px;justify-content:flex-start;padding:9px 8px}
+.grid.week .cell u{margin-bottom:2px}
+.wrow{display:flex;align-items:center;gap:6px;font-size:11.5px;line-height:1.25;width:100%}
+.wrow .dot{width:7px;height:7px;border-radius:50%;background:var(--kc);flex:none}
+.wrow.off .dot{background:transparent;border:1px solid rgba(255,255,255,.22)}
+.wrow span{color:var(--mid);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.wrow.off span{color:var(--dim)}
+
+/* day: one column, three sections, and design B's board lives in here */
+.sect{padding:16px 0;border-top:1px solid var(--line)}
+.sect:first-child{border-top:0;padding-top:4px}
+.shead{display:flex;align-items:center;gap:10px;margin-bottom:13px}
+.shead .sg{display:grid;place-items:center;width:30px;height:30px;border-radius:9px;
+ background:color-mix(in srgb,var(--kc) 12%,transparent);flex:none}
+.shead b{font-size:14px;font-weight:600;color:var(--kc);letter-spacing:-.005em}
+.shead i{font-style:normal;font-size:12.5px;color:var(--dim)}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:10px}
+.tile{background:var(--panel-2);border:1px solid var(--line);border-radius:12px;
+ padding:14px 10px 12px;display:flex;flex-direction:column;align-items:center;gap:8px;
+ cursor:pointer;transition:.16s;min-height:44px;text-align:center;font:inherit;color:inherit}
+.tile:hover{border-color:var(--kc)}
+.tile .ring{position:relative;width:64px;height:64px}
+.tile .ring>svg{position:absolute;inset:0}
+.tile .ring .gl{position:absolute;inset:0;display:grid;place-items:center}
+.tile b{font-size:13px;font-weight:600;line-height:1.3}
+.tile span{font-size:11.5px;color:var(--dim);font-variant-numeric:tabular-nums}
+.tile.done b{color:var(--kc)}
+.empty{font-size:13px;color:var(--dim);line-height:1.6;background:var(--sunk);
+ border:1px dashed var(--line);border-radius:12px;padding:14px 16px}
+.empty button{background:transparent;border:0;color:var(--accent);cursor:pointer;
+ font:inherit;text-decoration:underline;text-underline-offset:3px;padding:0;min-height:0}
+
+/* ---------- standing ---------- */
+.srow{display:flex;align-items:center;gap:11px;padding:12px 0;border-top:1px solid var(--line)}
+.srow:first-of-type{border-top:0}
+.srow .sg{display:grid;place-items:center;width:32px;height:32px;border-radius:10px;
+ background:color-mix(in srgb,var(--kc) 12%,transparent);flex:none}
+.srow .tx{flex:1;min-width:0}
+.srow b{display:block;font-size:13.5px;font-weight:600;line-height:1.3}
+.srow i{font-style:normal;font-size:11.5px;color:var(--dim)}
+.srow em{font-style:normal;font-size:12px;color:var(--kc);font-variant-numeric:tabular-nums;
+ text-align:right;flex:none}
+
+/* ---------- the accountability read, unchanged from design B ---------- */
+.wk{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--dim);margin-bottom:7px}
+.wk u{flex:1;height:7px;border-radius:4px;background:var(--sunk);text-decoration:none;
+ display:block;overflow:hidden}
+.wk u b{display:block;height:100%;background:var(--accent);border-radius:4px}
+.wk em{font-style:normal;font-variant-numeric:tabular-nums;color:var(--mid);min-width:52px;
+ text-align:right}
+
+/* ---------- the queue ---------- */
+.qmask{position:fixed;inset:0;background:rgba(6,7,10,.62);z-index:40}
+.q{position:fixed;top:0;right:0;bottom:0;width:min(440px,100%);background:var(--panel);
+ border-left:1px solid var(--line2);z-index:41;overflow:auto;padding:18px 18px 40px}
+.qhead{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;margin-bottom:14px}
+.qopt{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+.qrow{padding:15px 0;border-top:1px solid var(--line);display:flex;gap:12px;align-items:flex-start}
+.qrow .sg{display:grid;place-items:center;width:34px;height:34px;border-radius:10px;
+ background:color-mix(in srgb,var(--kc) 12%,transparent);flex:none;margin-top:2px}
+.qrow .tx{flex:1;min-width:0}
+.qrow b{font-size:14px;font-weight:600;display:block;line-height:1.3}
+.qrow .meta{font-size:11.5px;color:var(--kc);margin:3px 0 5px}
+.qrow p{margin:0 0 10px;font-size:12.5px;color:var(--mid);line-height:1.55}
+.qrow .acts{display:flex;gap:8px}
+.qrow .acts button{min-height:44px;padding:0 15px;border-radius:11px;cursor:pointer;
+ font:inherit;font-size:13px;border:1px solid var(--line2);background:transparent;color:var(--ink)}
+.qrow .acts .yes{border-color:var(--kc);color:var(--kc)}
+.qrow .acts .yes:hover{background:color-mix(in srgb,var(--kc) 14%,transparent)}
+.qrow .acts .no:hover{border-color:var(--line2);color:var(--dim)}
+.by{display:inline-block;font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;
+ color:var(--dim);border:1px solid var(--line);border-radius:6px;padding:2px 6px;
+ vertical-align:1px;margin-left:7px}
+
+@media(max-width:980px){
+ .two{grid-template-columns:1fr}
+ .grid.week{grid-template-columns:1fr;gap:6px}
+ .grid.week .dow{display:none}
+ .grid.week .cell{min-height:0;flex-direction:row;align-items:center;gap:12px;padding:11px 12px}
+ .grid.week .cell u{min-width:58px;margin:0}
+ .grid.week .wk7{flex:1;display:flex;flex-direction:column;gap:5px;min-width:0}
+}
+@media(max-width:560px){
+ .bar{gap:10px}
+ .seg{width:100%;order:3}.seg button{flex:1;padding:0 8px}
+ .calwrap{padding:13px}
+ .grid{gap:3px}
+ .cell{min-height:46px;padding:5px 4px 4px;border-radius:7px}
+ .cell .mk s{max-width:none}
+ .tiles{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+
+<script>
+/* ============================================================
+   SHARED BY THE THREE PROTOTYPES. Inlined into each one at build, so every
+   page runs with no sibling file. Nothing here reaches the network.
+
+   ICONOGRAPHY. Four tracks, four glyphs, RING AND NOT FILL, which is the
+   standing ruling. Each is a stroke path in a 24 box and carries the track's
+   colour, so the glyph and the colour say the same thing twice and a person
+   who cannot tell the blue from the green still reads the shape.
+   ============================================================ */
+var TRACKS={
+ Somatic:{c:'#DBBF68', ic:'M12 21c-4 0-7-3-7-6s2-5 4-5 3 1 3 3-1 3-2 3',
+   nm:'Somatic', d:'sensation, read directly'},
+ Body:{c:'#68CBA4', ic:'M12 4a8 8 0 100 16 8 8 0 100-16 M4 12h16',
+   nm:'Body', d:'breath, and the nervous system'},
+ Energy:{c:'#AF89D6', ic:'M12 8a4 4 0 100 8 4 4 0 100-8 M12 2v3 M12 19v3 M2 12h3 M19 12h3',
+   nm:'Energy', d:'attention, held at a point'},
+ Mind:{c:'#7B97E2', ic:'M4 8h16 M4 12h10 M4 16h13',
+   nm:'Mind', d:'thought, watched and not followed'}};
+var SEATC={Root:'#CF5953',Sacral:'#D19255',Solar:'#D4BC70',Heart:'#65CFA5',
+ Throat:'#65B8D4','3rd Eye':'#8296DB',Crown:'#A883D6'};
+/* where each seat sits on the dial, in degrees clockwise from the top. Root at
+   the bottom and Crown at the top, because that is where they sit on the body
+   and the figure on every other surface already draws them that way. */
+var SEATDEG={Crown:0,'3rd Eye':26,Throat:51,Heart:77,Solar:103,Sacral:129,Root:180};
+var SEATORDER=['Crown','3rd Eye','Throat','Heart','Solar','Sacral','Root'];
+
+function svgIc(path,c,sz){
+ return '<svg viewBox="0 0 24 24" width="'+(sz||20)+'" height="'+(sz||20)+'" fill="none" '
+ +'stroke="'+c+'" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">'
+ +'<path d="'+path+'"/></svg>';}
+
+/* THE RUN, READ OFF A WALK. Same rule as engine/ladder.js streakRead: a gap of
+   one or two days is carried, three or more halves what was standing, and it
+   never resets. Ported rather than reinvented so the prototype cannot claim a
+   number the build would not. */
+function runOf(walk){
+ var run=0,gap=0;
+ for(var i=0;i<walk.length;i++){
+  if(walk[i]){run++;gap=0;}
+  else{gap++; if(gap>2){run=Math.max(1,Math.ceil(run/2));gap=0;}}}
+ return run;}
+function bestOf(walk){var b=0,c=0;
+ for(var i=0;i<walk.length;i++){if(walk[i]){c++;if(c>b)b=c;}else c=0;}return b;}
+
+/* THE SPAN IS EARNED, NOT FIXED. A thirteen week grid drawn for somebody with
+   seven days on the record is eighty four empty squares beside seven full
+   ones, which reads as a tally of failures nobody asked for. The grid starts
+   at the history it has, rounded up to a whole week with one week of room
+   ahead, and grows to the cap. Nothing is ever drawn that the person has not
+   lived through.  */
+function spanOf(walk,cap){
+ return Math.max(2,Math.min(cap||13,Math.ceil(walk.length/7)+1));}
+/* the walk laid out as calendar weeks ending today, so the heat map has a
+   weekday axis and is not just a run of squares. */
+function weeksOf(walk,cols){
+ cols=cols||13; var cells=cols*7, out=[];
+ var pad=cells-walk.length;
+ for(var i=0;i<cells;i++){
+  var j=i-pad;
+  out.push(j<0?null:(walk[j]===undefined?null:walk[j]));}
+ return out;}
+
+/* ARC. One segment of a ring, drawn as a stroked path so nothing is ever
+   filled. a0 and a1 in degrees clockwise from the top. */
+function arc(cx,cy,r,a0,a1){
+ var p=function(a){var t=(a-90)*Math.PI/180;
+  return [cx+r*Math.cos(t),cy+r*Math.sin(t)];};
+ var s=p(a0), e=p(a1), big=(a1-a0)>180?1:0;
+ return 'M'+s[0].toFixed(2)+' '+s[1].toFixed(2)
+  +'A'+r+' '+r+' 0 '+big+' 1 '+e[0].toFixed(2)+' '+e[1].toFixed(2);}
+
+/* a name made possessive without producing Marcuss */
+function poss(n){return n+(/s$/i.test(n)?'\u2019':'\u2019s');}
+function plural(n,w){return n+' '+w+(n===1?'':'s');}
+
+var DATA={
+ "profiles": {
+  "Marcus": {
+   "nm": "Marcus",
+   "age": 44,
+   "role": "creative director · ICP",
+   "weight": 160,
+   "says": "I can see what is wrong with anything in four seconds. It has cost me two studios.",
+   "CQ": 39.2,
+   "DQ": 0,
+   "seat": "Throat",
+   "track": "Mind",
+   "tier": 3,
+   "substituted": false,
+   "actualTrack": "Mind",
+   "called": {
+    "k": "listen",
+    "nm": "Active Listening",
+    "min": 10,
+    "track": "Mind",
+    "tier": 2
+   },
+   "fit": [
+    {
+     "k": "escan",
+     "nm": "The Emotional Scan",
+     "min": 20,
+     "track": "Somatic",
+     "tier": 1
+    },
+    {
+     "k": "box",
+     "nm": "Box Breathing",
+     "min": 5,
+     "track": "Body",
+     "tier": 1
+    },
+    {
+     "k": "slow",
+     "nm": "Controlled Breath",
+     "min": 10,
+     "track": "Body",
+     "tier": 1
+    },
+    {
+     "k": "sig",
+     "nm": "The Signal Test",
+     "min": 3,
+     "track": "Somatic",
+     "tier": 1
+    },
+    {
+     "k": "sysbreath",
+     "nm": "Systematic Body Breathing",
+     "min": 15,
+     "track": "Body",
+     "tier": 2
+    },
+    {
+     "k": "resist",
+     "nm": "Feel the Resistance",
+     "min": 10,
+     "track": "Somatic",
+     "tier": 2
+    },
+    {
+     "k": "truth",
+     "nm": "The Somatic Truth Check",
+     "min": 2,
+     "track": "Somatic",
+     "tier": 2
+    },
+    {
+     "k": "heartpt",
+     "nm": "Heart Point Focus",
+     "min": 10,
+     "track": "Energy",
+     "tier": 2
+    },
+    {
+     "k": "noting",
+     "nm": "Noting Meditation",
+     "min": 15,
+     "track": "Mind",
+     "tier": 2
+    },
+    {
+     "k": "listen",
+     "nm": "Active Listening",
+     "min": 10,
+     "track": "Mind",
+     "tier": 2
+    },
+    {
+     "k": "observer",
+     "nm": "The Observer Technique",
+     "min": 20,
+     "track": "Somatic",
+     "tier": 3
+    },
+    {
+     "k": "detect",
+     "nm": "The Detection Practice",
+     "min": 20,
+     "track": "Somatic",
+     "tier": 3
+    },
+    {
+     "k": "hands",
+     "nm": "Healing Hands",
+     "min": 15,
+     "track": "Energy",
+     "tier": 3
+    },
+    {
+     "k": "hardtrauma",
+     "nm": "Hard Trauma Meditation",
+     "min": 20,
+     "track": "Somatic",
+     "tier": 3
+    },
+    {
+     "k": "superego",
+     "nm": "Superego Pattern Meditation",
+     "min": 20,
+     "track": "Mind",
+     "tier": 3
+    },
+    {
+     "k": "chakra",
+     "nm": "Individual Chakra Meditation",
+     "min": 20,
+     "track": "Energy",
+     "tier": 3
+    },
+    {
+     "k": "candle",
+     "nm": "Candle Visualisation",
+     "min": 15,
+     "track": "Mind",
+     "tier": 3
+    }
+   ],
+   "seats": [
+    {
+     "b": "Crown",
+     "load": 22.44,
+     "n": 21
+    },
+    {
+     "b": "Sacral",
+     "load": 18.21,
+     "n": 14
+    },
+    {
+     "b": "Heart",
+     "load": 16.97,
+     "n": 13
+    },
+    {
+     "b": "Root",
+     "load": 16.12,
+     "n": 13
+    },
+    {
+     "b": "Throat",
+     "load": 15.71,
+     "n": 12
+    },
+    {
+     "b": "Solar",
+     "load": 15.15,
+     "n": 15
+    },
+    {
+     "b": "3rd Eye",
+     "load": 10.82,
+     "n": 11
+    }
+   ],
+   "carryingN": 99,
+   "releasableN": 0,
+   "rel": [],
+   "weakL": {
+    "nm": "Forgiveness",
+    "b": "Heart",
+    "ic": "M9 9H7a4 4 0 000 6h2 M15 15h2a4 4 0 000-6h-2"
+   },
+   "snOffer": [],
+   "snImprints": 0,
+   "avatarBuilt": false,
+   "avatarPairs": 0,
+   "ledger": {
+    "minutes": 0,
+    "planned": 0,
+    "done": 0,
+    "rituals": 0,
+    "lines": 0,
+    "ground": 0,
+    "clear": 0,
+    "carry": 0,
+    "snaps": 0
+   },
+   "streak": {
+    "run": 0,
+    "live": false,
+    "last": null,
+    "best": 0,
+    "days": 0
+   },
+   "earned": [],
+   "next": "First run",
+   "walk": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    2,
+    0,
+    2,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    0,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    0,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    0,
+    1,
+    1,
+    1,
+    0,
+    1,
+    1
+   ],
+   "walkDone": 85,
+   "walkStreak": 2,
+   "sampled": 160,
+   "survived": 32,
+   "queue": [
+    {
+     "i": 0,
+     "kind": "hold",
+     "by": "avatar",
+     "src": "avatarBlank",
+     "weight": 1000000,
+     "nm": "Build the avatar",
+     "min": null,
+     "unit": "once",
+     "because": "Nothing is written on either side yet, so there is no gap to close and nothing to hold a daily ritual to."
+    },
+    {
+     "i": 1,
+     "kind": "change",
+     "by": "you",
+     "src": "weakL",
+     "weight": 500,
+     "nm": "Box Breathing",
+     "min": 5,
+     "track": "Body",
+     "seat": "Heart",
+     "law": "Forgiveness",
+     "unit": "a day",
+     "because": "forgiveness is the weakest of your twenty one laws. It seats at the heart, and the body track is what moves a heart."
+    },
+    {
+     "i": 2,
+     "kind": "hold",
+     "by": "avatar",
+     "src": "avatarGap",
+     "weight": 22.44,
+     "nm": "Heart Point Focus",
+     "min": 10,
+     "track": "Energy",
+     "seat": "Crown",
+     "unit": "a day",
+     "because": "Your crown carries 21 live imprints, more than any other seat. The energy track is what moves a crown."
+    },
+    {
+     "i": 3,
+     "kind": "hold",
+     "by": "avatar",
+     "src": "avatarGap",
+     "weight": 18.21,
+     "nm": "The Somatic Truth Check",
+     "min": 2,
+     "track": "Somatic",
+     "seat": "Sacral",
+     "unit": "a day",
+     "because": "Your sacral carries 14 live imprints, more than all but one. The somatic track is what moves a sacral."
+    }
+   ]
+  },
+  "Gordon": {
+   "nm": "Gordon",
+   "age": 58,
+   "role": "managing partner",
+   "weight": 35,
+   "says": "There is nothing wrong with me. Four people left in a year and each had their reasons.",
+   "CQ": 0.8,
+   "DQ": 55.19,
+   "seat": "Throat",
+   "track": "Mind",
+   "tier": 1,
+   "substituted": true,
+   "actualTrack": "Somatic",
+   "called": {
+    "k": "sig",
+    "nm": "The Signal Test",
+    "min": 3,
+    "track": "Somatic",
+    "tier": 1
+   },
+   "fit": [
+    {
+     "k": "escan",
+     "nm": "The Emotional Scan",
+     "min": 20,
+     "track": "Somatic",
+     "tier": 1
+    },
+    {
+     "k": "box",
+     "nm": "Box Breathing",
+     "min": 5,
+     "track": "Body",
+     "tier": 1
+    },
+    {
+     "k": "slow",
+     "nm": "Controlled Breath",
+     "min": 10,
+     "track": "Body",
+     "tier": 1
+    },
+    {
+     "k": "sig",
+     "nm": "The Signal Test",
+     "min": 3,
+     "track": "Somatic",
+     "tier": 1
+    }
+   ],
+   "seats": [
+    {
+     "b": "Root",
+     "load": 105.64,
+     "n": 15
+    },
+    {
+     "b": "Sacral",
+     "load": 101.65,
+     "n": 16
+    },
+    {
+     "b": "Heart",
+     "load": 90.82,
+     "n": 15
+    },
+    {
+     "b": "Crown",
+     "load": 87.3,
+     "n": 21
+    },
+    {
+     "b": "Throat",
+     "load": 83.26,
+     "n": 12
+    },
+    {
+     "b": "Solar",
+     "load": 67.34,
+     "n": 16
+    },
+    {
+     "b": "3rd Eye",
+     "load": 50.36,
+     "n": 12
+    }
+   ],
+   "carryingN": 107,
+   "releasableN": 97,
+   "rel": [
+    {
+     "addr": "Gluteal Nerve",
+     "fetter": "Possession",
+     "seat": "Root",
+     "axis": "Shock",
+     "sq": 9.51,
+     "replacement": "Groundedness"
+    },
+    {
+     "addr": "Thoracic Ganglia",
+     "fetter": "Blame",
+     "seat": "Heart",
+     "axis": "Anger",
+     "sq": 8.52,
+     "replacement": "Calm / Integrated Power"
+    },
+    {
+     "addr": "Anterior Thoracic Roots",
+     "fetter": "False Love",
+     "seat": "Heart",
+     "axis": "Disgust",
+     "sq": 8.52,
+     "replacement": "Acceptance / Equanimity"
+    }
+   ],
+   "weakL": {
+    "nm": "Transparency",
+    "b": "Throat",
+    "ic": "M4 4h16v16H4z M8 20L20 8"
+   },
+   "snOffer": [],
+   "snImprints": 0,
+   "avatarBuilt": false,
+   "avatarPairs": 0,
+   "ledger": {
+    "minutes": 0,
+    "planned": 0,
+    "done": 0,
+    "rituals": 0,
+    "lines": 0,
+    "ground": 0,
+    "clear": 0,
+    "carry": 0,
+    "snaps": 0
+   },
+   "streak": {
+    "run": 0,
+    "live": false,
+    "last": null,
+    "best": 0,
+    "days": 0
+   },
+   "earned": [],
+   "next": "First run",
+   "walk": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+   ],
+   "walkDone": 7,
+   "walkStreak": 7,
+   "sampled": 35,
+   "survived": 0,
+   "queue": [
+    {
+     "i": 0,
+     "kind": "hold",
+     "by": "avatar",
+     "src": "avatarBlank",
+     "weight": 1000000,
+     "nm": "Build the avatar",
+     "min": null,
+     "unit": "once",
+     "because": "Nothing is written on either side yet, so there is no gap to close and nothing to hold a daily ritual to."
+    },
+    {
+     "i": 1,
+     "kind": "change",
+     "by": "you",
+     "src": "weakL",
+     "weight": 500,
+     "nm": "The Signal Test",
+     "min": 3,
+     "track": "Somatic",
+     "seat": "Throat",
+     "law": "Transparency",
+     "unit": "a day",
+     "because": "transparency is the weakest of your twenty one laws. It seats at the throat, and the mind track is what moves a throat."
+    },
+    {
+     "i": 2,
+     "kind": "release",
+     "by": "you",
+     "src": "carrying",
+     "weight": 209.51,
+     "nm": "The Observer Technique",
+     "min": 20,
+     "track": "Somatic",
+     "addr": "Gluteal Nerve",
+     "axis": "Shock",
+     "replacement": "Groundedness",
+     "fetter": "Possession",
+     "unit": "when called",
+     "because": "Possession is held at Gluteal Nerve, above the line release opens at. The far pole there is Groundedness."
+    },
+    {
+     "i": 3,
+     "kind": "release",
+     "by": "you",
+     "src": "carrying",
+     "weight": 208.52,
+     "nm": "The Observer Technique",
+     "min": 20,
+     "track": "Somatic",
+     "addr": "Thoracic Ganglia",
+     "axis": "Anger",
+     "replacement": "Calm / Integrated Power",
+     "fetter": "Blame",
+     "unit": "when called",
+     "because": "Blame is held at Thoracic Ganglia, above the line release opens at. The far pole there is Calm / Integrated Power."
+    },
+    {
+     "i": 4,
+     "kind": "release",
+     "by": "you",
+     "src": "carrying",
+     "weight": 208.52,
+     "nm": "The Observer Technique",
+     "min": 20,
+     "track": "Somatic",
+     "addr": "Anterior Thoracic Roots",
+     "axis": "Disgust",
+     "replacement": "Acceptance / Equanimity",
+     "fetter": "False Love",
+     "unit": "when called",
+     "because": "False Love is held at Anterior Thoracic Roots, above the line release opens at. The far pole there is Acceptance / Equanimity."
+    },
+    {
+     "i": 5,
+     "kind": "hold",
+     "by": "avatar",
+     "src": "avatarGap",
+     "weight": 105.64,
+     "nm": "Box Breathing",
+     "min": 5,
+     "track": "Body",
+     "seat": "Root",
+     "unit": "a day",
+     "because": "Your root carries 15 live imprints, more than any other seat. The body track is what moves a root."
+    },
+    {
+     "i": 6,
+     "kind": "hold",
+     "by": "avatar",
+     "src": "avatarGap",
+     "weight": 101.65,
+     "nm": "The Signal Test",
+     "min": 3,
+     "track": "Somatic",
+     "seat": "Sacral",
+     "unit": "a day",
+     "because": "Your sacral carries 16 live imprints, more than all but one. The somatic track is what moves a sacral."
+    }
+   ]
+  },
+  "Diane": {
+   "nm": "Diane",
+   "age": 46,
+   "role": "founder, second company · ICP",
+   "weight": 180,
+   "says": "I work until the work is done and the work is never done. Rest feels like a moral failure.",
+   "CQ": 28.1,
+   "DQ": 3.51,
+   "seat": "Solar",
+   "track": "Somatic",
+   "tier": 3,
+   "substituted": false,
+   "actualTrack": "Somatic",
+   "called": {
+    "k": "truth",
+    "nm": "The Somatic Truth Check",
+    "min": 2,
+    "track": "Somatic",
+    "tier": 2
+   },
+   "fit": [
+    {
+     "k": "escan",
+     "nm": "The Emotional Scan",
+     "min": 20,
+     "track": "Somatic",
+     "tier": 1
+    },
+    {
+     "k": "box",
+     "nm": "Box Breathing",
+     "min": 5,
+     "track": "Body",
+     "tier": 1
+    },
+    {
+     "k": "slow",
+     "nm": "Controlled Breath",
+     "min": 10,
+     "track": "Body",
+     "tier": 1
+    },
+    {
+     "k": "sig",
+     "nm": "The Signal Test",
+     "min": 3,
+     "track": "Somatic",
+     "tier": 1
+    },
+    {
+     "k": "sysbreath",
+     "nm": "Systematic Body Breathing",
+     "min": 15,
+     "track": "Body",
+     "tier": 2
+    },
+    {
+     "k": "resist",
+     "nm": "Feel the Resistance",
+     "min": 10,
+     "track": "Somatic",
+     "tier": 2
+    },
+    {
+     "k": "truth",
+     "nm": "The Somatic Truth Check",
+     "min": 2,
+     "track": "Somatic",
+     "tier": 2
+    },
+    {
+     "k": "heartpt",
+     "nm": "Heart Point Focus",
+     "min": 10,
+     "track": "Energy",
+     "tier": 2
+    },
+    {
+     "k": "noting",
+     "nm": "Noting Meditation",
+     "min": 15,
+     "track": "Mind",
+     "tier": 2
+    },
+    {
+     "k": "listen",
+     "nm": "Active Listening",
+     "min": 10,
+     "track": "Mind",
+     "tier": 2
+    },
+    {
+     "k": "observer",
+     "nm": "The Observer Technique",
+     "min": 20,
+     "track": "Somatic",
+     "tier": 3
+    },
+    {
+     "k": "detect",
+     "nm": "The Detection Practice",
+     "min": 20,
+     "track": "Somatic",
+     "tier": 3
+    },
+    {
+     "k": "hands",
+     "nm": "Healing Hands",
+     "min": 15,
+     "track": "Energy",
+     "tier": 3
+    },
+    {
+     "k": "hardtrauma",
+     "nm": "Hard Trauma Meditation",
+     "min": 20,
+     "track": "Somatic",
+     "tier": 3
+    },
+    {
+     "k": "superego",
+     "nm": "Superego Pattern Meditation",
+     "min": 20,
+     "track": "Mind",
+     "tier": 3
+    },
+    {
+     "k": "chakra",
+     "nm": "Individual Chakra Meditation",
+     "min": 20,
+     "track": "Energy",
+     "tier": 3
+    },
+    {
+     "k": "candle",
+     "nm": "Candle Visualisation",
+     "min": 15,
+     "track": "Mind",
+     "tier": 3
+    }
+   ],
+   "seats": [
+    {
+     "b": "Solar",
+     "load": 58.32,
+     "n": 15
+    },
+    {
+     "b": "Heart",
+     "load": 33.82,
+     "n": 14
+    },
+    {
+     "b": "Crown",
+     "load": 33.72,
+     "n": 20
+    },
+    {
+     "b": "Throat",
+     "load": 29.04,
+     "n": 12
+    },
+    {
+     "b": "Root",
+     "load": 22.82,
+     "n": 13
+    },
+    {
+     "b": "Sacral",
+     "load": 21.37,
+     "n": 7
+    },
+    {
+     "b": "3rd Eye",
+     "load": 15.43,
+     "n": 10
+    }
+   ],
+   "carryingN": 91,
+   "releasableN": 8,
+   "rel": [
+    {
+     "addr": "Iliac Branches",
+     "fetter": "Need For Approval",
+     "seat": "Sacral",
+     "axis": "Shame",
+     "sq": 5.06,
+     "replacement": "Worth / Self-respect"
+    },
+    {
+     "addr": "Celiac Plexus",
+     "fetter": "Anger",
+     "seat": "Solar",
+     "axis": "Anger",
+     "sq": 4.44,
+     "replacement": "Calm / Integrated Power"
+    },
+    {
+     "addr": "Splanchnic Plexus",
+     "fetter": "Judgment",
+     "seat": "Solar",
+     "axis": "Anger",
+     "sq": 4.44,
+     "replacement": "Calm / Integrated Power"
+    }
+   ],
+   "weakL": {
+    "nm": "Temperance",
+    "b": "Sacral",
+    "ic": "M5 5h6l-3 6z M13 19h6l-3-6z M11 10l2 4"
+   },
+   "snOffer": [],
+   "snImprints": 0,
+   "avatarBuilt": false,
+   "avatarPairs": 0,
+   "ledger": {
+    "minutes": 0,
+    "planned": 0,
+    "done": 0,
+    "rituals": 0,
+    "lines": 0,
+    "ground": 0,
+    "clear": 0,
+    "carry": 0,
+    "snaps": 0
+   },
+   "streak": {
+    "run": 0,
+    "live": false,
+    "last": null,
+    "best": 0,
+    "days": 0
+   },
+   "earned": [],
+   "next": "First run",
+   "walk": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    2,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    0,
+    1,
+    1,
+    1,
+    1,
+    1,
+    0,
+    1,
+    1,
+    1,
+    1,
+    1,
+    0,
+    1,
+    1,
+    1,
+    1,
+    0,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    0,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    0,
+    1,
+    1,
+    0,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+   ],
+   "walkDone": 83,
+   "walkStreak": 9,
+   "sampled": 180,
+   "survived": 0,
+   "queue": [
+    {
+     "i": 0,
+     "kind": "hold",
+     "by": "avatar",
+     "src": "avatarBlank",
+     "weight": 1000000,
+     "nm": "Build the avatar",
+     "min": null,
+     "unit": "once",
+     "because": "Nothing is written on either side yet, so there is no gap to close and nothing to hold a daily ritual to."
+    },
+    {
+     "i": 1,
+     "kind": "change",
+     "by": "you",
+     "src": "weakL",
+     "weight": 500,
+     "nm": "The Somatic Truth Check",
+     "min": 2,
+     "track": "Somatic",
+     "seat": "Sacral",
+     "law": "Temperance",
+     "unit": "a day",
+     "because": "temperance is the weakest of your twenty one laws. It seats at the sacral, and the somatic track is what moves a sacral."
+    },
+    {
+     "i": 2,
+     "kind": "release",
+     "by": "you",
+     "src": "carrying",
+     "weight": 205.06,
+     "nm": "The Observer Technique",
+     "min": 20,
+     "track": "Somatic",
+     "addr": "Iliac Branches",
+     "axis": "Shame",
+     "replacement": "Worth / Self-respect",
+     "fetter": "Need For Approval",
+     "unit": "when called",
+     "because": "Need For Approval is held at Iliac Branches, above the line release opens at. The far pole there is Worth / Self-respect."
+    },
+    {
+     "i": 3,
+     "kind": "release",
+     "by": "you",
+     "src": "carrying",
+     "weight": 204.44,
+     "nm": "The Observer Technique",
+     "min": 20,
+     "track": "Somatic",
+     "addr": "Celiac Plexus",
+     "axis": "Anger",
+     "replacement": "Calm / Integrated Power",
+     "fetter": "Anger",
+     "unit": "when called",
+     "because": "Anger is held at Celiac Plexus, above the line release opens at. The far pole there is Calm / Integrated Power."
+    },
+    {
+     "i": 4,
+     "kind": "release",
+     "by": "you",
+     "src": "carrying",
+     "weight": 204.44,
+     "nm": "The Observer Technique",
+     "min": 20,
+     "track": "Somatic",
+     "addr": "Splanchnic Plexus",
+     "axis": "Anger",
+     "replacement": "Calm / Integrated Power",
+     "fetter": "Judgment",
+     "unit": "when called",
+     "because": "Judgment is held at Splanchnic Plexus, above the line release opens at. The far pole there is Calm / Integrated Power."
+    },
+    {
+     "i": 5,
+     "kind": "hold",
+     "by": "avatar",
+     "src": "avatarGap",
+     "weight": 58.32,
+     "nm": "The Somatic Truth Check",
+     "min": 2,
+     "track": "Somatic",
+     "seat": "Solar",
+     "unit": "a day",
+     "because": "Your solar carries 15 live imprints, more than any other seat. The somatic track is what moves a solar."
+    },
+    {
+     "i": 6,
+     "kind": "hold",
+     "by": "avatar",
+     "src": "avatarGap",
+     "weight": 33.82,
+     "nm": "Box Breathing",
+     "min": 5,
+     "track": "Body",
+     "seat": "Heart",
+     "unit": "a day",
+     "because": "Your heart carries 14 live imprints, more than all but one. The body track is what moves a heart."
+    }
+   ]
+  },
+  "Angela": {
+   "nm": "Angela",
+   "age": 36,
+   "role": "seeker, six modalities · ICP",
+   "weight": 150,
+   "says": "Everything happens for a reason. I have said that at three funerals and I believed it each time.",
+   "CQ": 40.9,
+   "DQ": 0,
+   "seat": "Root",
+   "track": "Body",
+   "tier": 3,
+   "substituted": false,
+   "actualTrack": "Body",
+   "called": {
+    "k": "box",
+    "nm": "Box Breathing",
+    "min": 5,
+    "track": "Body",
+    "tier": 1
+   },
+   "fit": [
+    {
+     "k": "escan",
+     "nm": "The Emotional Scan",
+     "min": 20,
+     "track": "Somatic",
+     "tier": 1
+    },
+    {
+     "k": "box",
+     "nm": "Box Breathing",
+     "min": 5,
+     "track": "Body",
+     "tier": 1
+    },
+    {
+     "k": "slow",
+     "nm": "Controlled Breath",
+     "min": 10,
+     "track": "Body",
+     "tier": 1
+    },
+    {
+     "k": "sig",
+     "nm": "The Signal Test",
+     "min": 3,
+     "track": "Somatic",
+     "tier": 1
+    },
+    {
+     "k": "sysbreath",
+     "nm": "Systematic Body Breathing",
+     "min": 15,
+     "track": "Body",
+     "tier": 2
+    },
+    {
+     "k": "resist",
+     "nm": "Feel the Resistance",
+     "min": 10,
+     "track": "Somatic",
+     "tier": 2
+    },
+    {
+     "k": "truth",
+     "nm": "The Somatic Truth Check",
+     "min": 2,
+     "track": "Somatic",
+     "tier": 2
+    },
+    {
+     "k": "heartpt",
+     "nm": "Heart Point Focus",
+     "min": 10,
+     "track": "Energy",
+     "tier": 2
+    },
+    {
+     "k": "noting",
+     "nm": "Noting Meditation",
+     "min": 15,
+     "track": "Mind",
+     "tier": 2
+    },
+    {
+     "k": "listen",
+     "nm": "Active Listening",
+     "min": 10,
+     "track": "Mind",
+     "tier": 2
+    },
+    {
+     "k": "observer",
+     "nm": "The Observer Technique",
+     "min": 20,
+     "track": "Somatic",
+     "tier": 3
+    },
+    {
+     "k": "detect",
+     "nm": "The Detection Practice",
+     "min": 20,
+     "track": "Somatic",
+     "tier": 3
+    },
+    {
+     "k": "hands",
+     "nm": "Healing Hands",
+     "min": 15,
+     "track": "Energy",
+     "tier": 3
+    },
+    {
+     "k": "hardtrauma",
+     "nm": "Hard Trauma Meditation",
+     "min": 20,
+     "track": "Somatic",
+     "tier": 3
+    },
+    {
+     "k": "superego",
+     "nm": "Superego Pattern Meditation",
+     "min": 20,
+     "track": "Mind",
+     "tier": 3
+    },
+    {
+     "k": "chakra",
+     "nm": "Individual Chakra Meditation",
+     "min": 20,
+     "track": "Energy",
+     "tier": 3
+    },
+    {
+     "k": "candle",
+     "nm": "Candle Visualisation",
+     "min": 15,
+     "track": "Mind",
+     "tier": 3
+    }
+   ],
+   "seats": [
+    {
+     "b": "Root",
+     "load": 12.72,
+     "n": 11
+    },
+    {
+     "b": "Crown",
+     "load": 10.37,
+     "n": 12
+    },
+    {
+     "b": "Solar",
+     "load": 9.15,
+     "n": 15
+    },
+    {
+     "b": "Sacral",
+     "load": 8.87,
+     "n": 15
+    },
+    {
+     "b": "Throat",
+     "load": 5.68,
+     "n": 8
+    },
+    {
+     "b": "3rd Eye",
+     "load": 5.53,
+     "n": 6
+    },
+    {
+     "b": "Heart",
+     "load": 5.27,
+     "n": 7
+    }
+   ],
+   "carryingN": 74,
+   "releasableN": 0,
+   "rel": [],
+   "weakL": {
+    "nm": "Humility",
+    "b": "3rd Eye",
+    "ic": "M4 11h16 M4 11a8 8 0 0016 0"
+   },
+   "snOffer": [
+    {
+     "addr": "Inferior Cardiac",
+     "axis": "Sad",
+     "replacement": "Happy / Restoration",
+     "shadow": 8
+    }
+   ],
+   "snImprints": 4,
+   "avatarBuilt": false,
+   "avatarPairs": 0,
+   "ledger": {
+    "minutes": 0,
+    "planned": 0,
+    "done": 0,
+    "rituals": 0,
+    "lines": 0,
+    "ground": 0,
+    "clear": 0,
+    "carry": 0,
+    "snaps": 0
+   },
+   "streak": {
+    "run": 0,
+    "live": false,
+    "last": null,
+    "best": 0,
+    "days": 0
+   },
+   "earned": [],
+   "next": "First run",
+   "walk": [
+    1,
+    1,
+    1,
+    1,
+    0,
+    1,
+    1,
+    1,
+    2,
+    2,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    0,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    0,
+    0,
+    1,
+    1,
+    1
+   ],
+   "walkDone": 86,
+   "walkStreak": 3,
+   "sampled": 150,
+   "survived": 0,
+   "queue": [
+    {
+     "i": 0,
+     "kind": "hold",
+     "by": "avatar",
+     "src": "avatarBlank",
+     "weight": 1000000,
+     "nm": "Build the avatar",
+     "min": null,
+     "unit": "once",
+     "because": "Nothing is written on either side yet, so there is no gap to close and nothing to hold a daily ritual to."
+    },
+    {
+     "i": 1,
+     "kind": "change",
+     "by": "you",
+     "src": "weakL",
+     "weight": 500,
+     "nm": "Active Listening",
+     "min": 10,
+     "track": "Mind",
+     "seat": "3rd Eye",
+     "law": "Humility",
+     "unit": "a day",
+     "because": "humility is the weakest of your twenty one laws. It seats at the 3rd eye, and the mind track is what moves a 3rd eye."
+    },
+    {
+     "i": 2,
+     "kind": "release",
+     "by": "sniffer",
+     "src": "sniffStory",
+     "weight": 408,
+     "nm": "The Observer Technique",
+     "min": 20,
+     "track": "Somatic",
+     "addr": "Inferior Cardiac",
+     "axis": "Sad",
+     "replacement": "Happy / Restoration",
+     "unit": "when called",
+     "because": "Your own words carry sad at Inferior Cardiac. The far pole there is Happy / Restoration."
+    },
+    {
+     "i": 3,
+     "kind": "hold",
+     "by": "avatar",
+     "src": "avatarGap",
+     "weight": 12.72,
+     "nm": "Box Breathing",
+     "min": 5,
+     "track": "Body",
+     "seat": "Root",
+     "unit": "a day",
+     "because": "Your root carries 11 live imprints, more than any other seat. The body track is what moves a root."
+    },
+    {
+     "i": 4,
+     "kind": "hold",
+     "by": "avatar",
+     "src": "avatarGap",
+     "weight": 10.37,
+     "nm": "Heart Point Focus",
+     "min": 10,
+     "track": "Energy",
+     "seat": "Crown",
+     "unit": "a day",
+     "because": "Your crown carries 12 live imprints, more than all but one. The energy track is what moves a crown."
+    }
+   ]
+  },
+  "Sofia": {
+   "nm": "Sofia",
+   "age": 41,
+   "role": "somatic practitioner · ICP",
+   "weight": 140,
+   "says": "I hold the room for everyone. I have not been held in four years and I would not know how to ask.",
+   "CQ": 56.6,
+   "DQ": 0,
+   "seat": "Throat",
+   "track": "Mind",
+   "tier": 3,
+   "substituted": false,
+   "actualTrack": "Mind",
+   "called": {
+    "k": "listen",
+    "nm": "Active Listening",
+    "min": 10,
+    "track": "Mind",
+    "tier": 2
+   },
+   "fit": [
+    {
+     "k": "escan",
+     "nm": "The Emotional Scan",
+     "min": 20,
+     "track": "Somatic",
+     "tier": 1
+    },
+    {
+     "k": "box",
+     "nm": "Box Breathing",
+     "min": 5,
+     "track": "Body",
+     "tier": 1
+    },
+    {
+     "k": "slow",
+     "nm": "Controlled Breath",
+     "min": 10,
+     "track": "Body",
+     "tier": 1
+    },
+    {
+     "k": "sig",
+     "nm": "The Signal Test",
+     "min": 3,
+     "track": "Somatic",
+     "tier": 1
+    },
+    {
+     "k": "sysbreath",
+     "nm": "Systematic Body Breathing",
+     "min": 15,
+     "track": "Body",
+     "tier": 2
+    },
+    {
+     "k": "resist",
+     "nm": "Feel the Resistance",
+     "min": 10,
+     "track": "Somatic",
+     "tier": 2
+    },
+    {
+     "k": "truth",
+     "nm": "The Somatic Truth Check",
+     "min": 2,
+     "track": "Somatic",
+     "tier": 2
+    },
+    {
+     "k": "heartpt",
+     "nm": "Heart Point Focus",
+     "min": 10,
+     "track": "Energy",
+     "tier": 2
+    },
+    {
+     "k": "noting",
+     "nm": "Noting Meditation",
+     "min": 15,
+     "track": "Mind",
+     "tier": 2
+    },
+    {
+     "k": "listen",
+     "nm": "Active Listening",
+     "min": 10,
+     "track": "Mind",
+     "tier": 2
+    },
+    {
+     "k": "observer",
+     "nm": "The Observer Technique",
+     "min": 20,
+     "track": "Somatic",
+     "tier": 3
+    },
+    {
+     "k": "detect",
+     "nm": "The Detection Practice",
+     "min": 20,
+     "track": "Somatic",
+     "tier": 3
+    },
+    {
+     "k": "hands",
+     "nm": "Healing Hands",
+     "min": 15,
+     "track": "Energy",
+     "tier": 3
+    },
+    {
+     "k": "hardtrauma",
+     "nm": "Hard Trauma Meditation",
+     "min": 20,
+     "track": "Somatic",
+     "tier": 3
+    },
+    {
+     "k": "superego",
+     "nm": "Superego Pattern Meditation",
+     "min": 20,
+     "track": "Mind",
+     "tier": 3
+    },
+    {
+     "k": "chakra",
+     "nm": "Individual Chakra Meditation",
+     "min": 20,
+     "track": "Energy",
+     "tier": 3
+    },
+    {
+     "k": "candle",
+     "nm": "Candle Visualisation",
+     "min": 15,
+     "track": "Mind",
+     "tier": 3
+    }
+   ],
+   "seats": [
+    {
+     "b": "Sacral",
+     "load": 9.98,
+     "n": 13
+    },
+    {
+     "b": "Throat",
+     "load": 8.13,
+     "n": 10
+    },
+    {
+     "b": "3rd Eye",
+     "load": 5.15,
+     "n": 9
+    },
+    {
+     "b": "Root",
+     "load": 3.61,
+     "n": 6
+    },
+    {
+     "b": "Crown",
+     "load": 3.16,
+     "n": 7
+    },
+    {
+     "b": "Heart",
+     "load": 2.84,
+     "n": 5
+    },
+    {
+     "b": "Solar",
+     "load": 1.79,
+     "n": 2
+    }
+   ],
+   "carryingN": 52,
+   "releasableN": 0,
+   "rel": [],
+   "weakL": {
+    "nm": "Detachment",
+    "b": "Sacral",
+    "ic": "M3 12h5 M16 12h5 M10 7v10 M14 7v10"
+   },
+   "snOffer": [],
+   "snImprints": 0,
+   "avatarBuilt": false,
+   "avatarPairs": 0,
+   "ledger": {
+    "minutes": 0,
+    "planned": 0,
+    "done": 0,
+    "rituals": 0,
+    "lines": 0,
+    "ground": 0,
+    "clear": 0,
+    "carry": 0,
+    "snaps": 0
+   },
+   "streak": {
+    "run": 0,
+    "live": false,
+    "last": null,
+    "best": 0,
+    "days": 0
+   },
+   "earned": [],
+   "next": "First run",
+   "walk": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    2,
+    1,
+    1,
+    1,
+    2,
+    1,
+    1,
+    1,
+    1,
+    0,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    0,
+    1,
+    1,
+    1,
+    1,
+    1,
+    0,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    2,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    2,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    2,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    2,
+    1,
+    1,
+    0,
+    1,
+    1
+   ],
+   "walkDone": 86,
+   "walkStreak": 2,
+   "sampled": 140,
+   "survived": 35,
+   "queue": [
+    {
+     "i": 0,
+     "kind": "hold",
+     "by": "avatar",
+     "src": "avatarBlank",
+     "weight": 1000000,
+     "nm": "Build the avatar",
+     "min": null,
+     "unit": "once",
+     "because": "Nothing is written on either side yet, so there is no gap to close and nothing to hold a daily ritual to."
+    },
+    {
+     "i": 1,
+     "kind": "change",
+     "by": "you",
+     "src": "weakL",
+     "weight": 500,
+     "nm": "The Somatic Truth Check",
+     "min": 2,
+     "track": "Somatic",
+     "seat": "Sacral",
+     "law": "Detachment",
+     "unit": "a day",
+     "because": "detachment is the weakest of your twenty one laws. It seats at the sacral, and the somatic track is what moves a sacral."
+    },
+    {
+     "i": 2,
+     "kind": "hold",
+     "by": "avatar",
+     "src": "avatarGap",
+     "weight": 9.98,
+     "nm": "The Somatic Truth Check",
+     "min": 2,
+     "track": "Somatic",
+     "seat": "Sacral",
+     "unit": "a day",
+     "because": "Your sacral carries 13 live imprints, more than any other seat. The somatic track is what moves a sacral."
+    },
+    {
+     "i": 3,
+     "kind": "hold",
+     "by": "avatar",
+     "src": "avatarGap",
+     "weight": 8.13,
+     "nm": "Active Listening",
+     "min": 10,
+     "track": "Mind",
+     "seat": "Throat",
+     "unit": "a day",
+     "because": "Your throat carries 10 live imprints, more than all but one. The mind track is what moves a throat."
+    }
+   ]
+  },
+  "Derek": {
+   "nm": "Derek",
+   "age": 39,
+   "role": "high performer, endurance · ICP",
+   "weight": 170,
+   "says": "Pain is information. I have raced on a stress fracture. I would do it again.",
+   "CQ": 15,
+   "DQ": 10.09,
+   "seat": "Solar",
+   "track": "Somatic",
+   "tier": 1,
+   "substituted": false,
+   "actualTrack": "Somatic",
+   "called": {
+    "k": "sig",
+    "nm": "The Signal Test",
+    "min": 3,
+    "track": "Somatic",
+    "tier": 1
+   },
+   "fit": [
+    {
+     "k": "escan",
+     "nm": "The Emotional Scan",
+     "min": 20,
+     "track": "Somatic",
+     "tier": 1
+    },
+    {
+     "k": "box",
+     "nm": "Box Breathing",
+     "min": 5,
+     "track": "Body",
+     "tier": 1
+    },
+    {
+     "k": "slow",
+     "nm": "Controlled Breath",
+     "min": 10,
+     "track": "Body",
+     "tier": 1
+    },
+    {
+     "k": "sig",
+     "nm": "The Signal Test",
+     "min": 3,
+     "track": "Somatic",
+     "tier": 1
+    }
+   ],
+   "seats": [
+    {
+     "b": "Solar",
+     "load": 60.34,
+     "n": 16
+    },
+    {
+     "b": "Crown",
+     "load": 49.36,
+     "n": 20
+    },
+    {
+     "b": "Root",
+     "load": 46.78,
+     "n": 13
+    },
+    {
+     "b": "Throat",
+     "load": 34.62,
+     "n": 9
+    },
+    {
+     "b": "Heart",
+     "load": 34.17,
+     "n": 15
+    },
+    {
+     "b": "Sacral",
+     "load": 32.26,
+     "n": 7
+    },
+    {
+     "b": "3rd Eye",
+     "load": 25.59,
+     "n": 10
+    }
+   ],
+   "carryingN": 90,
+   "releasableN": 20,
+   "rel": [
+    {
+     "addr": "Iliac Branches",
+     "fetter": "Need For Approval",
+     "seat": "Sacral",
+     "axis": "Shame",
+     "sq": 6.75,
+     "replacement": "Worth / Self-respect"
+    },
+    {
+     "addr": "Uterovaginal Plexus",
+     "fetter": "Manipulation Through Emotion",
+     "seat": "Sacral",
+     "axis": "Anger",
+     "sq": 5.96,
+     "replacement": "Calm / Integrated Power"
+    },
+    {
+     "addr": "Pudendal Nerve",
+     "fetter": "Shame",
+     "seat": "Root",
+     "axis": "Shame",
+     "sq": 5.4,
+     "replacement": "Worth / Self-respect"
+    }
+   ],
+   "weakL": {
+    "nm": "Temperance",
+    "b": "Sacral",
+    "ic": "M5 5h6l-3 6z M13 19h6l-3-6z M11 10l2 4"
+   },
+   "snOffer": [],
+   "snImprints": 0,
+   "avatarBuilt": false,
+   "avatarPairs": 0,
+   "ledger": {
+    "minutes": 0,
+    "planned": 0,
+    "done": 0,
+    "rituals": 0,
+    "lines": 0,
+    "ground": 0,
+    "clear": 0,
+    "carry": 0,
+    "snaps": 0
+   },
+   "streak": {
+    "run": 0,
+    "live": false,
+    "last": null,
+    "best": 0,
+    "days": 0
+   },
+   "earned": [],
+   "next": "First run",
+   "walk": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    0,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    0,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    0,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    0,
+    1,
+    1,
+    1,
+    1,
+    0,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    0,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    2,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+   ],
+   "walkDone": 84,
+   "walkStreak": 17,
+   "sampled": 170,
+   "survived": 0,
+   "queue": [
+    {
+     "i": 0,
+     "kind": "hold",
+     "by": "avatar",
+     "src": "avatarBlank",
+     "weight": 1000000,
+     "nm": "Build the avatar",
+     "min": null,
+     "unit": "once",
+     "because": "Nothing is written on either side yet, so there is no gap to close and nothing to hold a daily ritual to."
+    },
+    {
+     "i": 1,
+     "kind": "change",
+     "by": "you",
+     "src": "weakL",
+     "weight": 500,
+     "nm": "The Signal Test",
+     "min": 3,
+     "track": "Somatic",
+     "seat": "Sacral",
+     "law": "Temperance",
+     "unit": "a day",
+     "because": "temperance is the weakest of your twenty one laws. It seats at the sacral, and the somatic track is what moves a sacral."
+    },
+    {
+     "i": 2,
+     "kind": "release",
+     "by": "you",
+     "src": "carrying",
+     "weight": 206.75,
+     "nm": "The Observer Technique",
+     "min": 20,
+     "track": "Somatic",
+     "addr": "Iliac Branches",
+     "axis": "Shame",
+     "replacement": "Worth / Self-respect",
+     "fetter": "Need For Approval",
+     "unit": "when called",
+     "because": "Need For Approval is held at Iliac Branches, above the line release opens at. The far pole there is Worth / Self-respect."
+    },
+    {
+     "i": 3,
+     "kind": "release",
+     "by": "you",
+     "src": "carrying",
+     "weight": 205.96,
+     "nm": "The Observer Technique",
+     "min": 20,
+     "track": "Somatic",
+     "addr": "Uterovaginal Plexus",
+     "axis": "Anger",
+     "replacement": "Calm / Integrated Power",
+     "fetter": "Manipulation Through Emotion",
+     "unit": "when called",
+     "because": "Manipulation Through Emotion is held at Uterovaginal Plexus, above the line release opens at. The far pole there is Calm / Integrated Power."
+    },
+    {
+     "i": 4,
+     "kind": "release",
+     "by": "you",
+     "src": "carrying",
+     "weight": 205.4,
+     "nm": "The Observer Technique",
+     "min": 20,
+     "track": "Somatic",
+     "addr": "Pudendal Nerve",
+     "axis": "Shame",
+     "replacement": "Worth / Self-respect",
+     "fetter": "Shame",
+     "unit": "when called",
+     "because": "Shame is held at Pudendal Nerve, above the line release opens at. The far pole there is Worth / Self-respect."
+    },
+    {
+     "i": 5,
+     "kind": "hold",
+     "by": "avatar",
+     "src": "avatarGap",
+     "weight": 60.34,
+     "nm": "The Signal Test",
+     "min": 3,
+     "track": "Somatic",
+     "seat": "Solar",
+     "unit": "a day",
+     "because": "Your solar carries 16 live imprints, more than any other seat. The somatic track is what moves a solar."
+    },
+    {
+     "i": 6,
+     "kind": "hold",
+     "by": "avatar",
+     "src": "avatarGap",
+     "weight": 49.36,
+     "nm": "The Signal Test",
+     "min": 3,
+     "track": "Somatic",
+     "seat": "Crown",
+     "unit": "a day",
+     "because": "Your crown carries 20 live imprints, more than all but one. The energy track is what moves a crown."
+    }
+   ]
+  },
+  "Rosa": {
+   "nm": "Rosa",
+   "age": 61,
+   "role": "retired midwife",
+   "weight": 15,
+   "says": "Nothing in particular. Things do not sit on me the way they used to.",
+   "CQ": 100,
+   "DQ": 0,
+   "seat": "Root",
+   "track": "Body",
+   "tier": 3,
+   "substituted": false,
+   "actualTrack": "Body",
+   "called": {
+    "k": "box",
+    "nm": "Box Breathing",
+    "min": 5,
+    "track": "Body",
+    "tier": 1
+   },
+   "fit": [
+    {
+     "k": "escan",
+     "nm": "The Emotional Scan",
+     "min": 20,
+     "track": "Somatic",
+     "tier": 1
+    },
+    {
+     "k": "box",
+     "nm": "Box Breathing",
+     "min": 5,
+     "track": "Body",
+     "tier": 1
+    },
+    {
+     "k": "slow",
+     "nm": "Controlled Breath",
+     "min": 10,
+     "track": "Body",
+     "tier": 1
+    },
+    {
+     "k": "sig",
+     "nm": "The Signal Test",
+     "min": 3,
+     "track": "Somatic",
+     "tier": 1
+    },
+    {
+     "k": "sysbreath",
+     "nm": "Systematic Body Breathing",
+     "min": 15,
+     "track": "Body",
+     "tier": 2
+    },
+    {
+     "k": "resist",
+     "nm": "Feel the Resistance",
+     "min": 10,
+     "track": "Somatic",
+     "tier": 2
+    },
+    {
+     "k": "truth",
+     "nm": "The Somatic Truth Check",
+     "min": 2,
+     "track": "Somatic",
+     "tier": 2
+    },
+    {
+     "k": "heartpt",
+     "nm": "Heart Point Focus",
+     "min": 10,
+     "track": "Energy",
+     "tier": 2
+    },
+    {
+     "k": "noting",
+     "nm": "Noting Meditation",
+     "min": 15,
+     "track": "Mind",
+     "tier": 2
+    },
+    {
+     "k": "listen",
+     "nm": "Active Listening",
+     "min": 10,
+     "track": "Mind",
+     "tier": 2
+    },
+    {
+     "k": "observer",
+     "nm": "The Observer Technique",
+     "min": 20,
+     "track": "Somatic",
+     "tier": 3
+    },
+    {
+     "k": "detect",
+     "nm": "The Detection Practice",
+     "min": 20,
+     "track": "Somatic",
+     "tier": 3
+    },
+    {
+     "k": "hands",
+     "nm": "Healing Hands",
+     "min": 15,
+     "track": "Energy",
+     "tier": 3
+    },
+    {
+     "k": "hardtrauma",
+     "nm": "Hard Trauma Meditation",
+     "min": 20,
+     "track": "Somatic",
+     "tier": 3
+    },
+    {
+     "k": "superego",
+     "nm": "Superego Pattern Meditation",
+     "min": 20,
+     "track": "Mind",
+     "tier": 3
+    },
+    {
+     "k": "chakra",
+     "nm": "Individual Chakra Meditation",
+     "min": 20,
+     "track": "Energy",
+     "tier": 3
+    },
+    {
+     "k": "candle",
+     "nm": "Candle Visualisation",
+     "min": 15,
+     "track": "Mind",
+     "tier": 3
+    }
+   ],
+   "seats": [],
+   "carryingN": 0,
+   "releasableN": 0,
+   "rel": [],
+   "weakL": {
+    "nm": "Truth",
+    "b": "Throat",
+    "ic": "M12 3v11 M9 17a3 3 0 006 0 3 3 0 00-6 0"
+   },
+   "snOffer": [],
+   "snImprints": 0,
+   "avatarBuilt": false,
+   "avatarPairs": 0,
+   "ledger": {
+    "minutes": 0,
+    "planned": 0,
+    "done": 0,
+    "rituals": 0,
+    "lines": 0,
+    "ground": 0,
+    "clear": 0,
+    "carry": 0,
+    "snaps": 0
+   },
+   "streak": {
+    "run": 0,
+    "live": false,
+    "last": null,
+    "best": 0,
+    "days": 0
+   },
+   "earned": [],
+   "next": "First run",
+   "walk": [
+    0,
+    0,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    0,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+   ],
+   "walkDone": 21,
+   "walkStreak": 9,
+   "sampled": 15,
+   "survived": 0,
+   "queue": [
+    {
+     "i": 0,
+     "kind": "hold",
+     "by": "avatar",
+     "src": "avatarBlank",
+     "weight": 1000000,
+     "nm": "Build the avatar",
+     "min": null,
+     "unit": "once",
+     "because": "Nothing is written on either side yet, so there is no gap to close and nothing to hold a daily ritual to."
+    },
+    {
+     "i": 1,
+     "kind": "change",
+     "by": "you",
+     "src": "weakL",
+     "weight": 500,
+     "nm": "Active Listening",
+     "min": 10,
+     "track": "Mind",
+     "seat": "Throat",
+     "law": "Truth",
+     "unit": "a day",
+     "because": "truth is the weakest of your twenty one laws. It seats at the throat, and the mind track is what moves a throat."
+    }
+   ]
+  },
+  "James": {
+   "nm": "James",
+   "age": 57,
+   "role": "C-suite, third turnaround · ICP",
+   "weight": 100,
+   "says": "I make the call and I sleep fine. People find that cold. It is what they hired.",
+   "CQ": 12,
+   "DQ": 9.19,
+   "seat": "Sacral",
+   "track": "Somatic",
+   "tier": 1,
+   "substituted": false,
+   "actualTrack": "Somatic",
+   "called": {
+    "k": "sig",
+    "nm": "The Signal Test",
+    "min": 3,
+    "track": "Somatic",
+    "tier": 1
+   },
+   "fit": [
+    {
+     "k": "escan",
+     "nm": "The Emotional Scan",
+     "min": 20,
+     "track": "Somatic",
+     "tier": 1
+    },
+    {
+     "k": "box",
+     "nm": "Box Breathing",
+     "min": 5,
+     "track": "Body",
+     "tier": 1
+    },
+    {
+     "k": "slow",
+     "nm": "Controlled Breath",
+     "min": 10,
+     "track": "Body",
+     "tier": 1
+    },
+    {
+     "k": "sig",
+     "nm": "The Signal Test",
+     "min": 3,
+     "track": "Somatic",
+     "tier": 1
+    }
+   ],
+   "seats": [
+    {
+     "b": "Sacral",
+     "load": 58.9,
+     "n": 14
+    },
+    {
+     "b": "Heart",
+     "load": 51.14,
+     "n": 14
+    },
+    {
+     "b": "Crown",
+     "load": 46.08,
+     "n": 18
+    },
+    {
+     "b": "Root",
+     "load": 43.06,
+     "n": 12
+    },
+    {
+     "b": "Solar",
+     "load": 39.89,
+     "n": 15
+    },
+    {
+     "b": "3rd Eye",
+     "load": 26.91,
+     "n": 11
+    },
+    {
+     "b": "Throat",
+     "load": 24.92,
+     "n": 6
+    }
+   ],
+   "carryingN": 90,
+   "releasableN": 18,
+   "rel": [
+    {
+     "addr": "Thoracic Ganglia",
+     "fetter": "Blame",
+     "seat": "Heart",
+     "axis": "Anger",
+     "sq": 6.32,
+     "replacement": "Calm / Integrated Power"
+    },
+    {
+     "addr": "Internal Pudendal Nerve",
+     "fetter": "Envy",
+     "seat": "Sacral",
+     "axis": "Resentment",
+     "sq": 5.76,
+     "replacement": null
+    },
+    {
+     "addr": "Obturator Nerve",
+     "fetter": "Jealousy",
+     "seat": "Sacral",
+     "axis": "Resentment",
+     "sq": 5.76,
+     "replacement": null
+    }
+   ],
+   "weakL": {
+    "nm": "Compassion",
+    "b": "Heart",
+    "ic": "M12 19c-4-3-7-5-7-8a4 4 0 017-2 4 4 0 017 2c0 3-3 5-7 8"
+   },
+   "snOffer": [],
+   "snImprints": 0,
+   "avatarBuilt": false,
+   "avatarPairs": 0,
+   "ledger": {
+    "minutes": 0,
+    "planned": 0,
+    "done": 0,
+    "rituals": 0,
+    "lines": 0,
+    "ground": 0,
+    "clear": 0,
+    "carry": 0,
+    "snaps": 0
+   },
+   "streak": {
+    "run": 0,
+    "live": false,
+    "last": null,
+    "best": 0,
+    "days": 0
+   },
+   "earned": [],
+   "next": "First run",
+   "walk": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    0,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    2,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    0,
+    1,
+    0,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+   ],
+   "walkDone": 87,
+   "walkStreak": 15,
+   "sampled": 100,
+   "survived": 0,
+   "queue": [
+    {
+     "i": 0,
+     "kind": "hold",
+     "by": "avatar",
+     "src": "avatarBlank",
+     "weight": 1000000,
+     "nm": "Build the avatar",
+     "min": null,
+     "unit": "once",
+     "because": "Nothing is written on either side yet, so there is no gap to close and nothing to hold a daily ritual to."
+    },
+    {
+     "i": 1,
+     "kind": "change",
+     "by": "you",
+     "src": "weakL",
+     "weight": 500,
+     "nm": "Box Breathing",
+     "min": 5,
+     "track": "Body",
+     "seat": "Heart",
+     "law": "Compassion",
+     "unit": "a day",
+     "because": "compassion is the weakest of your twenty one laws. It seats at the heart, and the body track is what moves a heart."
+    },
+    {
+     "i": 2,
+     "kind": "release",
+     "by": "you",
+     "src": "carrying",
+     "weight": 206.32,
+     "nm": "The Observer Technique",
+     "min": 20,
+     "track": "Somatic",
+     "addr": "Thoracic Ganglia",
+     "axis": "Anger",
+     "replacement": "Calm / Integrated Power",
+     "fetter": "Blame",
+     "unit": "when called",
+     "because": "Blame is held at Thoracic Ganglia, above the line release opens at. The far pole there is Calm / Integrated Power."
+    },
+    {
+     "i": 3,
+     "kind": "release",
+     "by": "you",
+     "src": "carrying",
+     "weight": 205.76,
+     "nm": "The Observer Technique",
+     "min": 20,
+     "track": "Somatic",
+     "addr": "Internal Pudendal Nerve",
+     "axis": "Resentment",
+     "replacement": null,
+     "fetter": "Envy",
+     "unit": "when called",
+     "because": "Envy is held at Internal Pudendal Nerve, above the line release opens at. The far pole there is null."
+    },
+    {
+     "i": 4,
+     "kind": "release",
+     "by": "you",
+     "src": "carrying",
+     "weight": 205.76,
+     "nm": "The Observer Technique",
+     "min": 20,
+     "track": "Somatic",
+     "addr": "Obturator Nerve",
+     "axis": "Resentment",
+     "replacement": null,
+     "fetter": "Jealousy",
+     "unit": "when called",
+     "because": "Jealousy is held at Obturator Nerve, above the line release opens at. The far pole there is null."
+    },
+    {
+     "i": 5,
+     "kind": "hold",
+     "by": "avatar",
+     "src": "avatarGap",
+     "weight": 58.9,
+     "nm": "The Signal Test",
+     "min": 3,
+     "track": "Somatic",
+     "seat": "Sacral",
+     "unit": "a day",
+     "because": "Your sacral carries 14 live imprints, more than any other seat. The somatic track is what moves a sacral."
+    },
+    {
+     "i": 6,
+     "kind": "hold",
+     "by": "avatar",
+     "src": "avatarGap",
+     "weight": 51.14,
+     "nm": "Box Breathing",
+     "min": 5,
+     "track": "Body",
+     "seat": "Heart",
+     "unit": "a day",
+     "because": "Your heart carries 14 live imprints, more than all but one. The body track is what moves a heart."
+    }
+   ]
+  }
+ },
+ "kinds": [
+  {
+   "k": "hold",
+   "nm": "Always on",
+   "fam": "Practice",
+   "band": "Root",
+   "d": "the avatar does not manifest without these",
+   "src": "carrying",
+   "cadence": "every day"
+  },
+  {
+   "k": "change",
+   "nm": "Behaviour",
+   "fam": "Structure",
+   "band": "Heart",
+   "d": "aimed at the law that is running weakest",
+   "src": "weakL",
+   "cadence": "every day"
+  },
+  {
+   "k": "release",
+   "nm": "Release",
+   "fam": "Ground",
+   "band": "Throat",
+   "d": "the protocol, at one address",
+   "src": "sniffStory",
+   "cadence": "when called"
+  }
+ ],
+ "today": 1789862400000,
+ "pal": {
+  "Root": "#CF5953",
+  "Sacral": "#D19255",
+  "Solar": "#D4BC70",
+  "Heart": "#65CFA5",
+  "Throat": "#65B8D4",
+  "3rd Eye": "#8296DB",
+  "Crown": "#A883D6"
+ },
+ "practiceN": 17,
+ "lawN": 21
+};
+
+var D=DATA.profiles, KINDS=DATA.kinds, cur='Marcus', span='month', EDIT=false,
+    QOPEN=false, opt='hold', RIT={}, REF={}, MS=86400000, TODAY=DATA.today;
+
+/* THE KIND CARRIES THE COLOUR, AND THE COLOUR IS NOT NEW.
+   MARKS already sorts the sixteen earned marks into three families, each
+   family already sits at a band, and PAL already gives that band a colour.
+   The three kinds are those three families: the always on kind is what the
+   Practice marks count, the behaviour kind is what the Structure marks count,
+   the release kind is what the Ground marks count. So this table is a lookup
+   into the product's own palette and not a fourth colour system. */
+var KC={hold:DATA.pal.Root, change:DATA.pal.Heart, release:DATA.pal.Throat};
+var KIC={
+ /* a closed ring standing on a line. what holds. */
+ hold:'M12 4a8 8 0 010 16 8 8 0 010-16 M3 21.5h18',
+ /* a path that runs, then turns. what changes. */
+ change:'M4 19.5v-6a5 5 0 015-5h8 M13.5 5L17 8.5 13.5 12',
+ /* a ring open at the bottom, and the charge leaving downward, which is the
+    direction this product's own physics moves it. */
+ release:'M16 19.5a8 8 0 10-8 0 M12 9v9 M8.5 14.5l3.5 3.5 3.5-3.5'};
+var K={}; KINDS.forEach(function(x){K[x.k]=x;});
+var DOW=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+var MON=['January','February','March','April','May','June','July','August',
+ 'September','October','November','December'];
+
+function kg(k,sz,c){return svgIc(KIC[k],c||KC[k],sz||18);}
+function dayMs(i,len){return TODAY-(len-1-i)*MS;}   /* walk index to a date */
+function idxOf(ms,len){return len-1-Math.round((TODAY-ms)/MS);}
+function dstr(ms){var d=new Date(ms);
+ return DOW[(d.getUTCDay()+6)%7]+' '+d.getUTCDate()+' '+MON[d.getUTCMonth()];}
+
+/* ---------- the rituals a person has standing ----------
+   ONE TO BEGIN, NOT SIX WITH FIVE HOLES IN IT. The reading calls for one
+   practice and the engine calls for no others, so the board opens with one and
+   the queue is the route to the rest. An empty kind says what would fill it.
+   The always on ritual carries the real walk out of losssim.js. Anything added
+   starts today, because nothing in PEOPLE carries a second history and drawing
+   one would be inventing it. */
+function rits(){
+ if(RIT[cur])return RIT[cur];
+ var d=D[cur], len=d.walk.length;
+ RIT[cur]=[{k:d.called.k, nm:d.called.nm, min:d.called.min, track:d.called.track,
+   kind:'hold', cadence:'every day', from:0, walk:d.walk.slice()}];
+ return RIT[cur];}
+function refused(){if(!REF[cur])REF[cur]={};return REF[cur];}
+function len(){return D[cur].walk.length;}
+function has(kind){return rits().filter(function(r){return r.kind===kind;});}
+
+/* due today. A ritual on every day is due every day. A ritual called when the
+   reading calls for it is due only on a day the reading called, which for the
+   release kind is any day an address sits above the line. */
+function dueOn(r,i){
+ if(i>len()-1)return r.cadence==='every day';
+ if(i<r.from)return false;
+ return r.cadence==='every day'||(r.cadence==='when called'&&D[cur].releasableN>0);}
+function didOn(r,i){return i>=0&&i<r.walk.length&&!!r.walk[i];}
+function kindOn(kind,i){
+ var rs=has(kind).filter(function(r){return dueOn(r,i);});
+ if(!rs.length)return null;
+ return rs.every(function(r){return didOn(r,i);})?'on':'due';}
+
+/* ---------- the due strip ---------- */
+function due(){
+ var i=len()-1, h='<span class="dlab">Due, '+dstr(TODAY)+'</span>', open=0;
+ if(span==='day'){
+  KINDS.forEach(function(x){if(kindOn(x.k,i)==='due')open++;});
+  document.getElementById('due').innerHTML=h+'<span class="clear">'
+   +(open?plural(open,'kind')+' still open below.'
+         :'Everything due today is on the record.')+'</span>';
+  return;}
+ KINDS.forEach(function(x){
+  var st=kindOn(x.k,i);
+  if(st===null){h+='<button class="chip k-'+x.k+'" data-k="'+x.k
+    +'" style="opacity:.5"><span class="rg">'+kg(x.k,20,'var(--dim)')
+    +'</span><span><b>'+x.nm+'</b><i>nothing standing</i></span></button>';return;}
+  if(st==='due')open++;
+  h+='<button class="chip k-'+x.k+(st==='on'?' on':'')+'" data-k="'+x.k+'">'
+   +'<span class="rg">'+ringSvg(st==='on'?1:0,KC[x.k],26)
+   +'<span style="position:absolute">'+kg(x.k,13,st==='on'?KC[x.k]:'var(--dim)')
+   +'</span></span><span><b>'+x.nm+'</b><i>'
+   +(st==='on'?'on the record':has(x.k).length+(has(x.k).length===1?' due':' due'))
+   +'</i></span></button>';});
+ document.getElementById('due').innerHTML=h;
+ document.getElementById('due').querySelectorAll('[data-k]').forEach(function(el){
+  el.onclick=function(){
+   var rs=has(el.dataset.k); if(!rs.length){openQ(el.dataset.k);return;}
+   var i=len()-1, all=rs.every(function(r){return didOn(r,i);});
+   rs.forEach(function(r){if(dueOn(r,i))r.walk[i]=all?0:1;}); draw();};});}
+
+/* ---------- the ring ---------- */
+function ringSvg(frac,c,sz){
+ var r=(sz/2)-3, cx=sz/2;
+ var s='<svg viewBox="0 0 '+sz+' '+sz+'" width="'+sz+'" height="'+sz+'">';
+ s+='<circle cx="'+cx+'" cy="'+cx+'" r="'+r+'" fill="none" stroke="rgba(255,255,255,.11)" stroke-width="2.4"/>';
+ if(frac>0)s+='<path d="'+arc(cx,cx,r,0,Math.min(359.9,frac*360))+'" fill="none" stroke="'+c
+  +'" stroke-width="2.4" stroke-linecap="round"/>';
+ return s+'</svg>';}
+
+/* ---------- the calendar, at three resolutions ----------
+   THE SAME OBJECT EVERY TIME. Seven columns of days, the kinds in their fixed
+   order inside every cell, the colour carrying the kind. What changes between
+   the stops is how many columns are on screen and how much of each day is
+   drawn. Nothing moves, nothing is renamed, and the sort order never reorders.  */
+function gridDays(){
+ var L=len(), first=TODAY-(L-1)*MS, out=[];
+ if(span==='day')return [{ms:TODAY,i:L-1}];
+ if(span==='week'){
+  var back=(new Date(TODAY).getUTCDay()+6)%7;
+  for(var w=0;w<7;w++){var ms=TODAY-(back-w)*MS; out.push({ms:ms,i:idxOf(ms,L)});}
+  return out;}
+ /* month: the calendar month today sits in, padded to whole weeks, Monday
+    first. Days before the person's first day are drawn as nothing at all. */
+ var t=new Date(TODAY), y=t.getUTCFullYear(), m=t.getUTCMonth();
+ var s=Date.UTC(y,m,1), e=Date.UTC(y,m+1,0);
+ s-=((new Date(s).getUTCDay()+6)%7)*MS;
+ e+=(6-((new Date(e).getUTCDay()+6)%7))*MS;
+ for(var ms=s;ms<=e;ms+=MS)out.push({ms:ms,i:idxOf(ms,L),out:ms<first});
+ return out;}
+
+function cal(){
+ var el=document.getElementById('cal'), L=len();
+ document.getElementById('calttl').textContent=
+  span==='day'?'Today':(span==='week'?'This week':MON[new Date(TODAY).getUTCMonth()]
+   +' '+new Date(TODAY).getUTCFullYear());
+ if(span==='day'){ el.innerHTML=dayView();
+  document.getElementById('calnote').textContent=
+   plural(rits().length,'ritual')+' standing, in three kinds.';
+  el.querySelectorAll('[data-r]').forEach(function(b){b.onclick=function(){
+   var r=rits()[+b.dataset.r], i=L-1; r.walk[i]=r.walk[i]?0:1; draw();};});
+  el.querySelectorAll('[data-add]').forEach(function(b){
+   b.onclick=function(){openQ(b.dataset.add);};});
+  return;}
+ var days=gridDays();
+ var h='<div class="grid'+(span==='week'?' week':'')+(EDIT?' edit':'')+'">';
+ if(span==='month'||window.innerWidth>980)
+  h+=DOW.map(function(d){return '<div class="dow">'+d+'</div>';}).join('');
+ days.forEach(function(d){
+  if(d.out){h+='<div class="cell"></div>';return;}
+  var live=d.i>=0&&d.i<=L-1, ahead=d.i>L-1, dt=new Date(d.ms).getUTCDate();
+  var cls='cell'+(live?' live':(ahead?' ahead':''))+(d.ms===TODAY?' today':'');
+  h+='<button class="'+cls+'" data-d="'+d.i+'"'+((!live&&!ahead)?' disabled':'')+'>';
+  h+='<u>'+(span==='week'?DOW[(new Date(d.ms).getUTCDay()+6)%7]+' '+dt:dt)+'</u>';
+  if(span==='week'){
+   h+='<div class="wk7">';
+   KINDS.forEach(function(x){
+    has(x.k).forEach(function(r){
+     if(!dueOn(r,d.i))return; var on=didOn(r,d.i);
+     h+='<span class="wrow k-'+x.k+(on?'':' off')+'"><s class="dot"></s>'
+      +'<span>'+r.nm+'</span></span>';});});
+   h+='</div>';}
+  else{
+   h+='<div class="mk">';
+   KINDS.forEach(function(x){var st=live?kindOn(x.k,d.i):(ahead?kindOn(x.k,d.i):null);
+    if(st===null)return;
+    h+='<s class="k-'+x.k+(st==='on'?' on':'')+'"></s>';});
+   h+='</div>';}
+  h+='</button>';});
+ el.innerHTML=h+'</div>';
+ var seen=days.filter(function(d){return !d.out&&d.i>=0&&d.i<=L-1;}).length;
+ document.getElementById('calnote').textContent=EDIT
+  ? 'Tap a day to put it on the record or take it off.'
+  : (span==='week'?'Seven days, and every ritual due on each.'
+     :plural(seen,'day')+' of this month on the record. One cell a day.');
+ if(EDIT)el.querySelectorAll('.cell.live').forEach(function(b){b.onclick=function(){
+  var i=+b.dataset.d; has('hold').forEach(function(r){
+   if(i>=r.from)r.walk[i]=r.walk[i]?0:1;}); draw();};});
+ else el.querySelectorAll('.cell').forEach(function(b){b.onclick=function(){
+  if(b.dataset.d===undefined)return; setSpan(span==='month'?'week':'day');};});}
+
+function dayView(){
+ var L=len(), i=L-1;
+ return KINDS.map(function(x){
+  var rs=has(x.k);
+  var h='<div class="sect k-'+x.k+'"><div class="shead"><span class="sg">'
+   +kg(x.k,17)+'</span><span><b>'+x.nm+'</b> <i>'+x.d+'</i></span></div>';
+  if(!rs.length){
+   h+='<div class="empty">Nothing standing here yet. '
+    +'<button data-add="'+x.k+'">Open the queue</button> to put something in it.</div>';
+   return h+'</div>';}
+  h+='<div class="tiles">'+rs.map(function(r){
+   var j=rits().indexOf(r), on=didOn(r,i), tr=TRACKS[r.track]||TRACKS.Body;
+   return '<button class="tile'+(on?' done':'')+'" data-r="'+j+'">'
+    +'<span class="ring">'+ringSvg(on?1:0,KC[x.k],64)
+    +'<span class="gl">'+svgIc(tr.ic,on?KC[x.k]:'var(--mid)',24)+'</span></span>'
+    +'<b>'+r.nm+'</b><span>'+r.min+' min &middot; '+r.cadence+'</span></button>';})
+   .join('')+'</div>';
+  return h+'</div>';}).join('');}
+
+/* ---------- standing ---------- */
+function stand(){
+ var el=document.getElementById('stand'), rs=rits();
+ el.innerHTML=rs.map(function(r){
+  var tr=TRACKS[r.track]||TRACKS.Body, run=runOf(r.walk.slice(r.from));
+  return '<div class="srow k-'+r.kind+'"><span class="sg">'+svgIc(tr.ic,KC[r.kind],17)
+   +'</span><span class="tx"><b>'+r.nm+'</b><i>'+K[r.kind].nm.toLowerCase()
+   +' &middot; '+r.min+' min &middot; '+r.cadence+'</i></span>'
+   +'<em>'+(run?plural(run,'day'):'not yet')+'</em></div>';}).join('');}
+
+/* ---------- the accountability read. Passed as built, and not redesigned. ---- */
+function stats(){
+ var d=D[cur], base=has('hold')[0]||rits()[0], w=base.walk;
+ var done=w.filter(Boolean).length, best=bestOf(w), run=runOf(w), mins=0;
+ rits().forEach(function(r){mins+=r.walk.filter(Boolean).length*r.min;});
+ document.getElementById('stats').innerHTML=[
+  '<b>'+run+'</b><span>'+(run===1?'day standing':'days standing')+'</span>',
+  '<b>'+best+'</b><span>longest run, in days</span>',
+  '<b>'+done+'</b><span>days practised</span>',
+  '<b>'+mins+'</b><span>minutes recorded</span>'
+ ].map(function(x){return '<div class="stat">'+x+'</div>';}).join('');
+ var hit=[0,0,0,0,0,0,0], tot=[0,0,0,0,0,0,0];
+ var cells=weeksOf(w,spanOf(w,13));
+ cells.forEach(function(v,i){if(v===null)return;var r=i%7;tot[r]++;if(v)hit[r]++;});
+ var FLOOR=4;
+ if(Math.min.apply(null,tot)<FLOOR){
+  var need=FLOOR-Math.min.apply(null,tot);
+  document.getElementById('bars').innerHTML=
+   '<div class="eye" style="margin-bottom:10px">Which day you keep it</div>'
+   +'<p class="note">Not enough weeks yet to say. '+plural(need,'more week')
+   +' and this reads which weekday you keep and which one you lose.</p>';
+  return;}
+ document.getElementById('bars').innerHTML=
+  '<div class="eye" style="margin-bottom:10px">Which day you keep it</div>'
+  +DOW.map(function(n,i){var p=tot[i]?Math.round(hit[i]/tot[i]*100):0;
+   return '<div class="wk"><span style="min-width:30px">'+n+'</span>'
+    +'<u><b style="width:'+p+'%"></b></u><em>'+hit[i]+' of '+tot[i]+'</em></div>';})
+  .join('');}
+
+/* ---------- the queue ---------- */
+function openQ(k){if(k)opt=k;QOPEN=true;draw();
+ var f=document.querySelector('#q .qrow .yes');if(f)f.focus();}
+function closeQ(){QOPEN=false;draw();document.getElementById('qbtn').focus();}
+function qlist(){
+ var d=D[cur], ref=refused(), got={};
+ rits().forEach(function(r){got[r.k+'|'+r.kind]=1;});
+ return d.queue.filter(function(q){
+  return !ref[q.i]&&!got[(q.nm==='Build the avatar'?'av':'')+'|'+q.kind];})
+  .filter(function(q){return !rits().some(function(r){return r.nm===q.nm&&r.kind===q.kind;});})
+  .slice()
+  /* ORDERED, NOT LISTED. The order is the load each proposal is aimed at.
+     What the person is optimising for lifts one kind to the top and hides
+     nothing, which is the whole of his "the user gets to choose". */
+  .sort(function(a,b){return (b.kind===opt)-(a.kind===opt)||b.weight-a.weight;});}
+function queue(){
+ var d=D[cur], list=qlist();
+ document.getElementById('qnote').innerHTML=
+  'Ordered by the load each one is aimed at. '+plural(list.length,'proposal')+' waiting.';
+ document.getElementById('qlist').innerHTML=list.length?list.map(function(q){
+  return '<div class="qrow k-'+q.kind+'"><span class="sg">'+kg(q.kind,18)+'</span>'
+   +'<span class="tx"><b>'+q.nm+'</b><span class="by">'+q.by+'</span>'
+   +'<div class="meta">'+K[q.kind].nm.toLowerCase()
+   +(q.min?' &middot; '+q.min+' min':'')+' &middot; '+q.unit+'</div>'
+   +'<p>'+q.because+'</p><span class="acts">'
+   +'<button class="yes" data-add="'+q.i+'">Add</button>'
+   +'<button class="no" data-no="'+q.i+'">Not now</button></span></span></div>';})
+  .join('')
+  :'<p class="note" style="padding-top:14px">Nothing waiting. The queue refills when '
+   +'the field moves or you tell it something new.</p>';
+ document.getElementById('qlist').querySelectorAll('[data-add]').forEach(function(b){
+  b.onclick=function(){add(+b.dataset.add);};});
+ document.getElementById('qlist').querySelectorAll('[data-no]').forEach(function(b){
+  b.onclick=function(){refused()[+b.dataset.no]=1;draw();};});}
+function add(i){
+ var q=D[cur].queue.filter(function(x){return x.i===i;})[0];
+ if(!q)return;
+ if(!q.min){refused()[i]=1;draw();return;}   /* build the avatar is not a practice */
+ var L=len();
+ rits().push({k:q.nm, nm:q.nm, min:q.min, track:q.track||'Somatic', kind:q.kind,
+  cadence:q.unit==='when called'?'when called':'every day',
+  from:L-1, walk:D[cur].walk.map(function(){return 0;})});
+ draw();}
+
+/* ---------- controls ---------- */
+function setSpan(s){span=s;draw();}
+function segs(id,items,get,set){
+ document.getElementById(id).innerHTML=items.map(function(x){
+  return '<button data-v="'+x[0]+'" aria-pressed="'+(get()===x[0])+'">'+x[1]+'</button>';})
+  .join('');
+ document.getElementById(id).querySelectorAll('[data-v]').forEach(function(b){
+  b.onclick=function(){set(b.dataset.v);};});}
+
+var sel=document.getElementById('who');
+Object.keys(D).forEach(function(k){var o=document.createElement('option');
+ o.value=k;o.textContent=D[k].nm+', '+D[k].age+', '+D[k].role.replace(' · ICP','');
+ sel.appendChild(o);});
+sel.value=cur;sel.onchange=function(){cur=sel.value;span='month';draw();};
+document.getElementById('edit').onclick=function(){EDIT=!EDIT;draw();};
+document.getElementById('qbtn').onclick=function(){QOPEN?closeQ():openQ();};
+document.getElementById('qclose').onclick=closeQ;
+document.getElementById('qmask').onclick=closeQ;
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&QOPEN)closeQ();});
+
+function draw(){
+ var d=D[cur];
+ segs('span',[['day','Day'],['week','Week'],['month','Month']],
+  function(){return span;},setSpan);
+ segs('opt',KINDS.map(function(x){return [x.k,x.nm];}),function(){return opt;},
+  function(v){opt=v;draw();});
+ var eb=document.getElementById('edit');
+ eb.className='btn'+(EDIT?' on':''); eb.textContent=EDIT?'Done':'Edit';
+ document.getElementById('q').hidden=!QOPEN;
+ document.getElementById('qmask').hidden=!QOPEN;
+ due(); cal(); stand(); stats(); if(QOPEN)queue();
+ document.getElementById('foot').innerHTML=
+  'The ritual builder as a calendar. Design B made a calendar: one grid at three spans, '
+  +'sorted by the three kinds, and the queue is where a person adds from. '
+  +'<b>Every number is real.</b> Seat, track, tier and practice come from <b>engine.js</b> '
+  +'through the build’s own <b>ritFor</b> rule. The queue’s proposals come from '
+  +'<b>compute().carrying</b>, <b>compute().weakL</b>, <b>sniffStory</b> and '
+  +'<b>avatarBlank</b>, and <b>caldata.js</b> refuses to write if any row cannot name '
+  +'its source. The '+d.walk.length+' days on the always on lane are '+d.nm
+  +'’s longest walk out of <b>losssim.js</b>; '+d.survived+' of '+d.sampled+' '
+  +d.nm+'s in the panel reached day ninety, so it is the best case for this person. '
+  +'The other two lanes carry no history because nothing in <b>PEOPLE</b> holds a second '
+  +'one, and inventing it would be the only fabricated number on the page. '
+  +'The sniffer reads '+d.nm+'’s own words and returns '
+  +(d.snOffer.length?plural(d.snOffer.length,'address'):'nothing')
+  +', which is the defect measured at <b>TASKS.md</b> 0j and not a blank.';}
+draw();
+</script>
+
+</body></html>

@@ -1,0 +1,527 @@
+<div class="wrap">
+ <div class="bar">
+  <span class="brand">ATUNED &middot; RITUAL</span>
+  <select id="who" aria-label="Profile"></select>
+  <span style="flex:1"></span>
+  <!-- THE SPAN. One object at three resolutions, not three pages and not a
+       tab bar with a count on it. The grid below keeps its row axis, its
+       colour and its sort order at every stop, and only the column count and
+       the cell's resolution change: thirty five cells, seven, one. -->
+  <div class="seg" id="span" role="group" aria-label="Span"></div>
+  <button class="btn" id="qbtn">Queue</button>
+  <button class="btn" id="edit">Edit</button>
+ </div>
+
+ <!-- WHAT IS DUE. The first of the two questions, answered before the
+      calendar is read, in one strip that never moves. -->
+ <div class="due" id="due"></div>
+
+ <div class="two">
+  <div class="calwrap">
+   <div class="calhead"><div class="eye" id="calttl"></div><div class="note" id="calnote"></div></div>
+   <div id="cal"></div>
+  </div>
+
+  <div class="side">
+   <!-- WHAT IS STANDING. The second question. Standing and not running,
+        because running is this product's word for a saboteur. -->
+   <div class="card">
+    <div class="eye">Standing</div>
+    <div id="stand"></div>
+   </div>
+   <div class="card">
+    <div class="eye">Over time</div>
+    <div class="stats" id="stats" style="margin-top:14px;grid-template-columns:1fr 1fr"></div>
+    <div id="bars" style="margin-top:18px"></div>
+   </div>
+  </div>
+ </div>
+ <div class="foot" id="foot"></div>
+</div>
+
+<!-- THE QUEUE. His answer to where you are adding from. Ordered by the load
+     each proposal is aimed at, labelled by who proposed it, and every row
+     carries the engine function it came out of. -->
+<div class="qmask" id="qmask" hidden></div>
+<aside class="q" id="q" hidden aria-label="Queue">
+ <div class="qhead">
+  <div><div class="eye">Queue</div><div class="note" id="qnote"></div></div>
+  <button class="btn ic" id="qclose" aria-label="Close queue">&#215;</button>
+ </div>
+ <div class="qopt"><span class="eye" style="letter-spacing:.1em">Ordered for</span>
+  <div class="seg sm" id="opt" role="group" aria-label="Ordered for"></div></div>
+ <div id="qlist"></div>
+</aside>
+
+<style>
+/* ---------- the kind, which is the only thing carrying colour here ----------
+   One colour axis on one grid. The glyph carries the track by its shape and
+   takes the kind's colour, so a person reads one legend and not two. */
+.k-hold{--kc:#CF5953}
+.k-change{--kc:#65CFA5}
+.k-release{--kc:#65B8D4}
+
+.seg{display:flex;background:var(--sunk);border:1px solid var(--line);border-radius:12px;padding:3px}
+.seg button{background:transparent;border:0;border-radius:9px;padding:0 16px;min-height:38px;
+ cursor:pointer;color:var(--dim);font-size:13.5px;transition:.15s;white-space:nowrap}
+.seg button:hover{color:var(--ink)}
+.seg button[aria-pressed=true]{background:var(--panel-2);color:var(--ink);
+ box-shadow:0 1px 0 rgba(255,255,255,.05) inset}
+.seg.sm button{padding:0 12px;min-height:36px;font-size:12.5px}
+.btn.ic{padding:0;width:44px;min-height:44px;font-size:20px;line-height:1}
+
+/* ---------- the due strip ---------- */
+.due{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.due .dlab{font-size:13px;color:var(--dim);margin-right:2px}
+.chip{display:flex;align-items:center;gap:9px;min-height:46px;padding:0 15px 0 11px;
+ background:var(--panel);border:1px solid var(--line);border-radius:13px;cursor:pointer;
+ font:inherit;color:var(--ink);transition:.15s;text-align:left}
+.chip:hover{border-color:var(--kc)}
+.chip.on{border-color:var(--kc);background:color-mix(in srgb,var(--kc) 10%,var(--panel))}
+.chip b{font-size:13.5px;font-weight:600;display:block;line-height:1.25}
+.chip i{font-style:normal;font-size:11.5px;color:var(--dim);display:block}
+.chip.on i{color:var(--kc)}
+.chip .rg{flex:none;display:grid;place-items:center;width:26px;height:26px}
+.due .clear{font-size:13px;color:var(--dim);padding:0 2px}
+
+/* ---------- the calendar ---------- */
+.two{display:grid;grid-template-columns:1.25fr 1fr;gap:16px;align-items:start}
+.calwrap{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:18px}
+.calhead{display:flex;justify-content:space-between;align-items:baseline;gap:14px;
+ margin-bottom:14px;flex-wrap:wrap}
+.side{display:grid;gap:14px}
+
+.grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.dow{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);
+ text-align:center;padding-bottom:6px}
+/* A DAY THE PERSON HAS NOT LIVED THROUGH IS NOT DRAWN. Not an empty square,
+   not a faint square, nothing. An empty grid cell is a tally of failures
+   arriving through a layout constant. */
+.cell{border-radius:9px;min-height:52px;padding:6px 6px 5px;display:flex;flex-direction:column;
+ justify-content:space-between;background:transparent;border:1px solid transparent;
+ font:inherit;color:inherit;text-align:left}
+.cell.live{background:var(--sunk);border-color:var(--line)}
+.cell.ahead{background:transparent;border-color:rgba(255,255,255,.05)}
+.cell.today{border-color:var(--accent);border-width:1.5px;padding:5.5px 5.5px 4.5px}
+.cell u{font-size:11.5px;color:var(--dim);text-decoration:none;font-variant-numeric:tabular-nums}
+.cell.today u{color:var(--accent);font-weight:600}
+.cell .mk{display:flex;gap:3px;align-items:flex-end;min-height:9px}
+.cell .mk s{flex:1;height:8px;border-radius:3px;text-decoration:none;display:block;
+ background:transparent;border:1px solid rgba(255,255,255,.16);max-width:26px}
+.cell .mk s.on{background:var(--kc);border-color:var(--kc)}
+.grid.edit .cell.live{cursor:pointer}
+.grid.edit .cell.live:hover{outline:1.5px solid var(--accent);outline-offset:1px}
+
+/* week: the same grid, seven columns, one row, more resolution per cell */
+.grid.week .cell{min-height:150px;gap:8px;justify-content:flex-start;padding:9px 8px}
+.grid.week .cell u{margin-bottom:2px}
+.wrow{display:flex;align-items:center;gap:6px;font-size:11.5px;line-height:1.25;width:100%}
+.wrow .dot{width:7px;height:7px;border-radius:50%;background:var(--kc);flex:none}
+.wrow.off .dot{background:transparent;border:1px solid rgba(255,255,255,.22)}
+.wrow span{color:var(--mid);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.wrow.off span{color:var(--dim)}
+
+/* day: one column, three sections, and design B's board lives in here */
+.sect{padding:16px 0;border-top:1px solid var(--line)}
+.sect:first-child{border-top:0;padding-top:4px}
+.shead{display:flex;align-items:center;gap:10px;margin-bottom:13px}
+.shead .sg{display:grid;place-items:center;width:30px;height:30px;border-radius:9px;
+ background:color-mix(in srgb,var(--kc) 12%,transparent);flex:none}
+.shead b{font-size:14px;font-weight:600;color:var(--kc);letter-spacing:-.005em}
+.shead i{font-style:normal;font-size:12.5px;color:var(--dim)}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:10px}
+.tile{background:var(--panel-2);border:1px solid var(--line);border-radius:12px;
+ padding:14px 10px 12px;display:flex;flex-direction:column;align-items:center;gap:8px;
+ cursor:pointer;transition:.16s;min-height:44px;text-align:center;font:inherit;color:inherit}
+.tile:hover{border-color:var(--kc)}
+.tile .ring{position:relative;width:64px;height:64px}
+.tile .ring>svg{position:absolute;inset:0}
+.tile .ring .gl{position:absolute;inset:0;display:grid;place-items:center}
+.tile b{font-size:13px;font-weight:600;line-height:1.3}
+.tile span{font-size:11.5px;color:var(--dim);font-variant-numeric:tabular-nums}
+.tile.done b{color:var(--kc)}
+.empty{font-size:13px;color:var(--dim);line-height:1.6;background:var(--sunk);
+ border:1px dashed var(--line);border-radius:12px;padding:14px 16px}
+.empty button{background:transparent;border:0;color:var(--accent);cursor:pointer;
+ font:inherit;text-decoration:underline;text-underline-offset:3px;padding:0;min-height:0}
+
+/* ---------- standing ---------- */
+.srow{display:flex;align-items:center;gap:11px;padding:12px 0;border-top:1px solid var(--line)}
+.srow:first-of-type{border-top:0}
+.srow .sg{display:grid;place-items:center;width:32px;height:32px;border-radius:10px;
+ background:color-mix(in srgb,var(--kc) 12%,transparent);flex:none}
+.srow .tx{flex:1;min-width:0}
+.srow b{display:block;font-size:13.5px;font-weight:600;line-height:1.3}
+.srow i{font-style:normal;font-size:11.5px;color:var(--dim)}
+.srow em{font-style:normal;font-size:12px;color:var(--kc);font-variant-numeric:tabular-nums;
+ text-align:right;flex:none}
+
+/* ---------- the accountability read, unchanged from design B ---------- */
+.wk{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--dim);margin-bottom:7px}
+.wk u{flex:1;height:7px;border-radius:4px;background:var(--sunk);text-decoration:none;
+ display:block;overflow:hidden}
+.wk u b{display:block;height:100%;background:var(--accent);border-radius:4px}
+.wk em{font-style:normal;font-variant-numeric:tabular-nums;color:var(--mid);min-width:52px;
+ text-align:right}
+
+/* ---------- the queue ---------- */
+.qmask{position:fixed;inset:0;background:rgba(6,7,10,.62);z-index:40}
+.q{position:fixed;top:0;right:0;bottom:0;width:min(440px,100%);background:var(--panel);
+ border-left:1px solid var(--line2);z-index:41;overflow:auto;padding:18px 18px 40px}
+.qhead{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;margin-bottom:14px}
+.qopt{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+.qrow{padding:15px 0;border-top:1px solid var(--line);display:flex;gap:12px;align-items:flex-start}
+.qrow .sg{display:grid;place-items:center;width:34px;height:34px;border-radius:10px;
+ background:color-mix(in srgb,var(--kc) 12%,transparent);flex:none;margin-top:2px}
+.qrow .tx{flex:1;min-width:0}
+.qrow b{font-size:14px;font-weight:600;display:block;line-height:1.3}
+.qrow .meta{font-size:11.5px;color:var(--kc);margin:3px 0 5px}
+.qrow p{margin:0 0 10px;font-size:12.5px;color:var(--mid);line-height:1.55}
+.qrow .acts{display:flex;gap:8px}
+.qrow .acts button{min-height:44px;padding:0 15px;border-radius:11px;cursor:pointer;
+ font:inherit;font-size:13px;border:1px solid var(--line2);background:transparent;color:var(--ink)}
+.qrow .acts .yes{border-color:var(--kc);color:var(--kc)}
+.qrow .acts .yes:hover{background:color-mix(in srgb,var(--kc) 14%,transparent)}
+.qrow .acts .no:hover{border-color:var(--line2);color:var(--dim)}
+.by{display:inline-block;font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;
+ color:var(--dim);border:1px solid var(--line);border-radius:6px;padding:2px 6px;
+ vertical-align:1px;margin-left:7px}
+
+@media(max-width:980px){
+ .two{grid-template-columns:1fr}
+ .grid.week{grid-template-columns:1fr;gap:6px}
+ .grid.week .dow{display:none}
+ .grid.week .cell{min-height:0;flex-direction:row;align-items:center;gap:12px;padding:11px 12px}
+ .grid.week .cell u{min-width:58px;margin:0}
+ .grid.week .wk7{flex:1;display:flex;flex-direction:column;gap:5px;min-width:0}
+}
+@media(max-width:560px){
+ .bar{gap:10px}
+ .seg{width:100%;order:3}.seg button{flex:1;padding:0 8px}
+ .calwrap{padding:13px}
+ .grid{gap:3px}
+ .cell{min-height:46px;padding:5px 4px 4px;border-radius:7px}
+ .cell .mk s{max-width:none}
+ .tiles{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+
+<script>
+var D=DATA.profiles, KINDS=DATA.kinds, cur='Marcus', span='month', EDIT=false,
+    QOPEN=false, opt='hold', RIT={}, REF={}, MS=86400000, TODAY=DATA.today;
+
+/* THE KIND CARRIES THE COLOUR, AND THE COLOUR IS NOT NEW.
+   MARKS already sorts the sixteen earned marks into three families, each
+   family already sits at a band, and PAL already gives that band a colour.
+   The three kinds are those three families: the always on kind is what the
+   Practice marks count, the behaviour kind is what the Structure marks count,
+   the release kind is what the Ground marks count. So this table is a lookup
+   into the product's own palette and not a fourth colour system. */
+var KC={hold:DATA.pal.Root, change:DATA.pal.Heart, release:DATA.pal.Throat};
+var KIC={
+ /* a closed ring standing on a line. what holds. */
+ hold:'M12 4a8 8 0 010 16 8 8 0 010-16 M3 21.5h18',
+ /* a path that runs, then turns. what changes. */
+ change:'M4 19.5v-6a5 5 0 015-5h8 M13.5 5L17 8.5 13.5 12',
+ /* a ring open at the bottom, and the charge leaving downward, which is the
+    direction this product's own physics moves it. */
+ release:'M16 19.5a8 8 0 10-8 0 M12 9v9 M8.5 14.5l3.5 3.5 3.5-3.5'};
+var K={}; KINDS.forEach(function(x){K[x.k]=x;});
+var DOW=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+var MON=['January','February','March','April','May','June','July','August',
+ 'September','October','November','December'];
+
+function kg(k,sz,c){return svgIc(KIC[k],c||KC[k],sz||18);}
+function dayMs(i,len){return TODAY-(len-1-i)*MS;}   /* walk index to a date */
+function idxOf(ms,len){return len-1-Math.round((TODAY-ms)/MS);}
+function dstr(ms){var d=new Date(ms);
+ return DOW[(d.getUTCDay()+6)%7]+' '+d.getUTCDate()+' '+MON[d.getUTCMonth()];}
+
+/* ---------- the rituals a person has standing ----------
+   ONE TO BEGIN, NOT SIX WITH FIVE HOLES IN IT. The reading calls for one
+   practice and the engine calls for no others, so the board opens with one and
+   the queue is the route to the rest. An empty kind says what would fill it.
+   The always on ritual carries the real walk out of losssim.js. Anything added
+   starts today, because nothing in PEOPLE carries a second history and drawing
+   one would be inventing it. */
+function rits(){
+ if(RIT[cur])return RIT[cur];
+ var d=D[cur], len=d.walk.length;
+ RIT[cur]=[{k:d.called.k, nm:d.called.nm, min:d.called.min, track:d.called.track,
+   kind:'hold', cadence:'every day', from:0, walk:d.walk.slice()}];
+ return RIT[cur];}
+function refused(){if(!REF[cur])REF[cur]={};return REF[cur];}
+function len(){return D[cur].walk.length;}
+function has(kind){return rits().filter(function(r){return r.kind===kind;});}
+
+/* due today. A ritual on every day is due every day. A ritual called when the
+   reading calls for it is due only on a day the reading called, which for the
+   release kind is any day an address sits above the line. */
+function dueOn(r,i){
+ if(i>len()-1)return r.cadence==='every day';
+ if(i<r.from)return false;
+ return r.cadence==='every day'||(r.cadence==='when called'&&D[cur].releasableN>0);}
+function didOn(r,i){return i>=0&&i<r.walk.length&&!!r.walk[i];}
+function kindOn(kind,i){
+ var rs=has(kind).filter(function(r){return dueOn(r,i);});
+ if(!rs.length)return null;
+ return rs.every(function(r){return didOn(r,i);})?'on':'due';}
+
+/* ---------- the due strip ---------- */
+function due(){
+ var i=len()-1, h='<span class="dlab">Due, '+dstr(TODAY)+'</span>', open=0;
+ if(span==='day'){
+  KINDS.forEach(function(x){if(kindOn(x.k,i)==='due')open++;});
+  document.getElementById('due').innerHTML=h+'<span class="clear">'
+   +(open?plural(open,'kind')+' still open below.'
+         :'Everything due today is on the record.')+'</span>';
+  return;}
+ KINDS.forEach(function(x){
+  var st=kindOn(x.k,i);
+  if(st===null){h+='<button class="chip k-'+x.k+'" data-k="'+x.k
+    +'" style="opacity:.5"><span class="rg">'+kg(x.k,20,'var(--dim)')
+    +'</span><span><b>'+x.nm+'</b><i>nothing standing</i></span></button>';return;}
+  if(st==='due')open++;
+  h+='<button class="chip k-'+x.k+(st==='on'?' on':'')+'" data-k="'+x.k+'">'
+   +'<span class="rg">'+ringSvg(st==='on'?1:0,KC[x.k],26)
+   +'<span style="position:absolute">'+kg(x.k,13,st==='on'?KC[x.k]:'var(--dim)')
+   +'</span></span><span><b>'+x.nm+'</b><i>'
+   +(st==='on'?'on the record':has(x.k).length+(has(x.k).length===1?' due':' due'))
+   +'</i></span></button>';});
+ document.getElementById('due').innerHTML=h;
+ document.getElementById('due').querySelectorAll('[data-k]').forEach(function(el){
+  el.onclick=function(){
+   var rs=has(el.dataset.k); if(!rs.length){openQ(el.dataset.k);return;}
+   var i=len()-1, all=rs.every(function(r){return didOn(r,i);});
+   rs.forEach(function(r){if(dueOn(r,i))r.walk[i]=all?0:1;}); draw();};});}
+
+/* ---------- the ring ---------- */
+function ringSvg(frac,c,sz){
+ var r=(sz/2)-3, cx=sz/2;
+ var s='<svg viewBox="0 0 '+sz+' '+sz+'" width="'+sz+'" height="'+sz+'">';
+ s+='<circle cx="'+cx+'" cy="'+cx+'" r="'+r+'" fill="none" stroke="rgba(255,255,255,.11)" stroke-width="2.4"/>';
+ if(frac>0)s+='<path d="'+arc(cx,cx,r,0,Math.min(359.9,frac*360))+'" fill="none" stroke="'+c
+  +'" stroke-width="2.4" stroke-linecap="round"/>';
+ return s+'</svg>';}
+
+/* ---------- the calendar, at three resolutions ----------
+   THE SAME OBJECT EVERY TIME. Seven columns of days, the kinds in their fixed
+   order inside every cell, the colour carrying the kind. What changes between
+   the stops is how many columns are on screen and how much of each day is
+   drawn. Nothing moves, nothing is renamed, and the sort order never reorders.  */
+function gridDays(){
+ var L=len(), first=TODAY-(L-1)*MS, out=[];
+ if(span==='day')return [{ms:TODAY,i:L-1}];
+ if(span==='week'){
+  var back=(new Date(TODAY).getUTCDay()+6)%7;
+  for(var w=0;w<7;w++){var ms=TODAY-(back-w)*MS; out.push({ms:ms,i:idxOf(ms,L)});}
+  return out;}
+ /* month: the calendar month today sits in, padded to whole weeks, Monday
+    first. Days before the person's first day are drawn as nothing at all. */
+ var t=new Date(TODAY), y=t.getUTCFullYear(), m=t.getUTCMonth();
+ var s=Date.UTC(y,m,1), e=Date.UTC(y,m+1,0);
+ s-=((new Date(s).getUTCDay()+6)%7)*MS;
+ e+=(6-((new Date(e).getUTCDay()+6)%7))*MS;
+ for(var ms=s;ms<=e;ms+=MS)out.push({ms:ms,i:idxOf(ms,L),out:ms<first});
+ return out;}
+
+function cal(){
+ var el=document.getElementById('cal'), L=len();
+ document.getElementById('calttl').textContent=
+  span==='day'?'Today':(span==='week'?'This week':MON[new Date(TODAY).getUTCMonth()]
+   +' '+new Date(TODAY).getUTCFullYear());
+ if(span==='day'){ el.innerHTML=dayView();
+  document.getElementById('calnote').textContent=
+   plural(rits().length,'ritual')+' standing, in three kinds.';
+  el.querySelectorAll('[data-r]').forEach(function(b){b.onclick=function(){
+   var r=rits()[+b.dataset.r], i=L-1; r.walk[i]=r.walk[i]?0:1; draw();};});
+  el.querySelectorAll('[data-add]').forEach(function(b){
+   b.onclick=function(){openQ(b.dataset.add);};});
+  return;}
+ var days=gridDays();
+ var h='<div class="grid'+(span==='week'?' week':'')+(EDIT?' edit':'')+'">';
+ if(span==='month'||window.innerWidth>980)
+  h+=DOW.map(function(d){return '<div class="dow">'+d+'</div>';}).join('');
+ days.forEach(function(d){
+  if(d.out){h+='<div class="cell"></div>';return;}
+  var live=d.i>=0&&d.i<=L-1, ahead=d.i>L-1, dt=new Date(d.ms).getUTCDate();
+  var cls='cell'+(live?' live':(ahead?' ahead':''))+(d.ms===TODAY?' today':'');
+  h+='<button class="'+cls+'" data-d="'+d.i+'"'+((!live&&!ahead)?' disabled':'')+'>';
+  h+='<u>'+(span==='week'?DOW[(new Date(d.ms).getUTCDay()+6)%7]+' '+dt:dt)+'</u>';
+  if(span==='week'){
+   h+='<div class="wk7">';
+   KINDS.forEach(function(x){
+    has(x.k).forEach(function(r){
+     if(!dueOn(r,d.i))return; var on=didOn(r,d.i);
+     h+='<span class="wrow k-'+x.k+(on?'':' off')+'"><s class="dot"></s>'
+      +'<span>'+r.nm+'</span></span>';});});
+   h+='</div>';}
+  else{
+   h+='<div class="mk">';
+   KINDS.forEach(function(x){var st=live?kindOn(x.k,d.i):(ahead?kindOn(x.k,d.i):null);
+    if(st===null)return;
+    h+='<s class="k-'+x.k+(st==='on'?' on':'')+'"></s>';});
+   h+='</div>';}
+  h+='</button>';});
+ el.innerHTML=h+'</div>';
+ var seen=days.filter(function(d){return !d.out&&d.i>=0&&d.i<=L-1;}).length;
+ document.getElementById('calnote').textContent=EDIT
+  ? 'Tap a day to put it on the record or take it off.'
+  : (span==='week'?'Seven days, and every ritual due on each.'
+     :plural(seen,'day')+' of this month on the record. One cell a day.');
+ if(EDIT)el.querySelectorAll('.cell.live').forEach(function(b){b.onclick=function(){
+  var i=+b.dataset.d; has('hold').forEach(function(r){
+   if(i>=r.from)r.walk[i]=r.walk[i]?0:1;}); draw();};});
+ else el.querySelectorAll('.cell').forEach(function(b){b.onclick=function(){
+  if(b.dataset.d===undefined)return; setSpan(span==='month'?'week':'day');};});}
+
+function dayView(){
+ var L=len(), i=L-1;
+ return KINDS.map(function(x){
+  var rs=has(x.k);
+  var h='<div class="sect k-'+x.k+'"><div class="shead"><span class="sg">'
+   +kg(x.k,17)+'</span><span><b>'+x.nm+'</b> <i>'+x.d+'</i></span></div>';
+  if(!rs.length){
+   h+='<div class="empty">Nothing standing here yet. '
+    +'<button data-add="'+x.k+'">Open the queue</button> to put something in it.</div>';
+   return h+'</div>';}
+  h+='<div class="tiles">'+rs.map(function(r){
+   var j=rits().indexOf(r), on=didOn(r,i), tr=TRACKS[r.track]||TRACKS.Body;
+   return '<button class="tile'+(on?' done':'')+'" data-r="'+j+'">'
+    +'<span class="ring">'+ringSvg(on?1:0,KC[x.k],64)
+    +'<span class="gl">'+svgIc(tr.ic,on?KC[x.k]:'var(--mid)',24)+'</span></span>'
+    +'<b>'+r.nm+'</b><span>'+r.min+' min &middot; '+r.cadence+'</span></button>';})
+   .join('')+'</div>';
+  return h+'</div>';}).join('');}
+
+/* ---------- standing ---------- */
+function stand(){
+ var el=document.getElementById('stand'), rs=rits();
+ el.innerHTML=rs.map(function(r){
+  var tr=TRACKS[r.track]||TRACKS.Body, run=runOf(r.walk.slice(r.from));
+  return '<div class="srow k-'+r.kind+'"><span class="sg">'+svgIc(tr.ic,KC[r.kind],17)
+   +'</span><span class="tx"><b>'+r.nm+'</b><i>'+K[r.kind].nm.toLowerCase()
+   +' &middot; '+r.min+' min &middot; '+r.cadence+'</i></span>'
+   +'<em>'+(run?plural(run,'day'):'not yet')+'</em></div>';}).join('');}
+
+/* ---------- the accountability read. Passed as built, and not redesigned. ---- */
+function stats(){
+ var d=D[cur], base=has('hold')[0]||rits()[0], w=base.walk;
+ var done=w.filter(Boolean).length, best=bestOf(w), run=runOf(w), mins=0;
+ rits().forEach(function(r){mins+=r.walk.filter(Boolean).length*r.min;});
+ document.getElementById('stats').innerHTML=[
+  '<b>'+run+'</b><span>'+(run===1?'day standing':'days standing')+'</span>',
+  '<b>'+best+'</b><span>longest run, in days</span>',
+  '<b>'+done+'</b><span>days practised</span>',
+  '<b>'+mins+'</b><span>minutes recorded</span>'
+ ].map(function(x){return '<div class="stat">'+x+'</div>';}).join('');
+ var hit=[0,0,0,0,0,0,0], tot=[0,0,0,0,0,0,0];
+ var cells=weeksOf(w,spanOf(w,13));
+ cells.forEach(function(v,i){if(v===null)return;var r=i%7;tot[r]++;if(v)hit[r]++;});
+ var FLOOR=4;
+ if(Math.min.apply(null,tot)<FLOOR){
+  var need=FLOOR-Math.min.apply(null,tot);
+  document.getElementById('bars').innerHTML=
+   '<div class="eye" style="margin-bottom:10px">Which day you keep it</div>'
+   +'<p class="note">Not enough weeks yet to say. '+plural(need,'more week')
+   +' and this reads which weekday you keep and which one you lose.</p>';
+  return;}
+ document.getElementById('bars').innerHTML=
+  '<div class="eye" style="margin-bottom:10px">Which day you keep it</div>'
+  +DOW.map(function(n,i){var p=tot[i]?Math.round(hit[i]/tot[i]*100):0;
+   return '<div class="wk"><span style="min-width:30px">'+n+'</span>'
+    +'<u><b style="width:'+p+'%"></b></u><em>'+hit[i]+' of '+tot[i]+'</em></div>';})
+  .join('');}
+
+/* ---------- the queue ---------- */
+function openQ(k){if(k)opt=k;QOPEN=true;draw();
+ var f=document.querySelector('#q .qrow .yes');if(f)f.focus();}
+function closeQ(){QOPEN=false;draw();document.getElementById('qbtn').focus();}
+function qlist(){
+ var d=D[cur], ref=refused(), got={};
+ rits().forEach(function(r){got[r.k+'|'+r.kind]=1;});
+ return d.queue.filter(function(q){
+  return !ref[q.i]&&!got[(q.nm==='Build the avatar'?'av':'')+'|'+q.kind];})
+  .filter(function(q){return !rits().some(function(r){return r.nm===q.nm&&r.kind===q.kind;});})
+  .slice()
+  /* ORDERED, NOT LISTED. The order is the load each proposal is aimed at.
+     What the person is optimising for lifts one kind to the top and hides
+     nothing, which is the whole of his "the user gets to choose". */
+  .sort(function(a,b){return (b.kind===opt)-(a.kind===opt)||b.weight-a.weight;});}
+function queue(){
+ var d=D[cur], list=qlist();
+ document.getElementById('qnote').innerHTML=
+  'Ordered by the load each one is aimed at. '+plural(list.length,'proposal')+' waiting.';
+ document.getElementById('qlist').innerHTML=list.length?list.map(function(q){
+  return '<div class="qrow k-'+q.kind+'"><span class="sg">'+kg(q.kind,18)+'</span>'
+   +'<span class="tx"><b>'+q.nm+'</b><span class="by">'+q.by+'</span>'
+   +'<div class="meta">'+K[q.kind].nm.toLowerCase()
+   +(q.min?' &middot; '+q.min+' min':'')+' &middot; '+q.unit+'</div>'
+   +'<p>'+q.because+'</p><span class="acts">'
+   +'<button class="yes" data-add="'+q.i+'">Add</button>'
+   +'<button class="no" data-no="'+q.i+'">Not now</button></span></span></div>';})
+  .join('')
+  :'<p class="note" style="padding-top:14px">Nothing waiting. The queue refills when '
+   +'the field moves or you tell it something new.</p>';
+ document.getElementById('qlist').querySelectorAll('[data-add]').forEach(function(b){
+  b.onclick=function(){add(+b.dataset.add);};});
+ document.getElementById('qlist').querySelectorAll('[data-no]').forEach(function(b){
+  b.onclick=function(){refused()[+b.dataset.no]=1;draw();};});}
+function add(i){
+ var q=D[cur].queue.filter(function(x){return x.i===i;})[0];
+ if(!q)return;
+ if(!q.min){refused()[i]=1;draw();return;}   /* build the avatar is not a practice */
+ var L=len();
+ rits().push({k:q.nm, nm:q.nm, min:q.min, track:q.track||'Somatic', kind:q.kind,
+  cadence:q.unit==='when called'?'when called':'every day',
+  from:L-1, walk:D[cur].walk.map(function(){return 0;})});
+ draw();}
+
+/* ---------- controls ---------- */
+function setSpan(s){span=s;draw();}
+function segs(id,items,get,set){
+ document.getElementById(id).innerHTML=items.map(function(x){
+  return '<button data-v="'+x[0]+'" aria-pressed="'+(get()===x[0])+'">'+x[1]+'</button>';})
+  .join('');
+ document.getElementById(id).querySelectorAll('[data-v]').forEach(function(b){
+  b.onclick=function(){set(b.dataset.v);};});}
+
+var sel=document.getElementById('who');
+Object.keys(D).forEach(function(k){var o=document.createElement('option');
+ o.value=k;o.textContent=D[k].nm+', '+D[k].age+', '+D[k].role.replace(' · ICP','');
+ sel.appendChild(o);});
+sel.value=cur;sel.onchange=function(){cur=sel.value;span='month';draw();};
+document.getElementById('edit').onclick=function(){EDIT=!EDIT;draw();};
+document.getElementById('qbtn').onclick=function(){QOPEN?closeQ():openQ();};
+document.getElementById('qclose').onclick=closeQ;
+document.getElementById('qmask').onclick=closeQ;
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&QOPEN)closeQ();});
+
+function draw(){
+ var d=D[cur];
+ segs('span',[['day','Day'],['week','Week'],['month','Month']],
+  function(){return span;},setSpan);
+ segs('opt',KINDS.map(function(x){return [x.k,x.nm];}),function(){return opt;},
+  function(v){opt=v;draw();});
+ var eb=document.getElementById('edit');
+ eb.className='btn'+(EDIT?' on':''); eb.textContent=EDIT?'Done':'Edit';
+ document.getElementById('q').hidden=!QOPEN;
+ document.getElementById('qmask').hidden=!QOPEN;
+ due(); cal(); stand(); stats(); if(QOPEN)queue();
+ document.getElementById('foot').innerHTML=
+  'The ritual builder as a calendar. Design B made a calendar: one grid at three spans, '
+  +'sorted by the three kinds, and the queue is where a person adds from. '
+  +'<b>Every number is real.</b> Seat, track, tier and practice come from <b>engine.js</b> '
+  +'through the build’s own <b>ritFor</b> rule. The queue’s proposals come from '
+  +'<b>compute().carrying</b>, <b>compute().weakL</b>, <b>sniffStory</b> and '
+  +'<b>avatarBlank</b>, and <b>caldata.js</b> refuses to write if any row cannot name '
+  +'its source. The '+d.walk.length+' days on the always on lane are '+d.nm
+  +'’s longest walk out of <b>losssim.js</b>; '+d.survived+' of '+d.sampled+' '
+  +d.nm+'s in the panel reached day ninety, so it is the best case for this person. '
+  +'The other two lanes carry no history because nothing in <b>PEOPLE</b> holds a second '
+  +'one, and inventing it would be the only fabricated number on the page. '
+  +'The sniffer reads '+d.nm+'’s own words and returns '
+  +(d.snOffer.length?plural(d.snOffer.length,'address'):'nothing')
+  +', which is the defect measured at <b>TASKS.md</b> 0j and not a blank.';}
+draw();
+</script>
