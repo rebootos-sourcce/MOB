@@ -1,0 +1,338 @@
+{
+ "390": {
+  "bar": 9,
+  "rows": [
+   {
+    "nm": "Energetics",
+    "id": "iq",
+    "k": 5,
+    "total": 119,
+    "by": {
+     "top": 14,
+     "sub": 0,
+     "left": 52,
+     "right": 19,
+     "sheet": 0,
+     "centre": 34
+    },
+    "under44": 1,
+    "small": [
+     "wtu 18x44"
+    ]
+   },
+   {
+    "nm": "Ritual",
+    "id": "rit",
+    "k": 10,
+    "total": 92,
+    "by": {
+     "top": 14,
+     "sub": 0,
+     "left": 52,
+     "right": 19,
+     "sheet": 0,
+     "centre": 7
+    },
+    "under44": 0,
+    "small": []
+   },
+   {
+    "nm": "Story",
+    "id": "story",
+    "k": 0,
+    "total": 103,
+    "by": {
+     "top": 14,
+     "sub": 0,
+     "left": 52,
+     "right": 19,
+     "sheet": 0,
+     "centre": 18
+    },
+    "under44": 0,
+    "small": []
+   },
+   {
+    "nm": "Field",
+    "id": "cv",
+    "k": 2,
+    "total": 99,
+    "by": {
+     "top": 14,
+     "sub": 4,
+     "left": 52,
+     "right": 20,
+     "sheet": 0,
+     "centre": 9
+    },
+    "under44": 0,
+    "small": []
+   },
+   {
+    "nm": "Body",
+    "id": "emap",
+    "k": 3,
+    "total": 105,
+    "by": {
+     "top": 14,
+     "sub": 7,
+     "left": 52,
+     "right": 32,
+     "sheet": 0,
+     "centre": 0
+    },
+    "under44": 0,
+    "small": []
+   },
+   {
+    "nm": "Compass",
+    "id": "cone",
+    "k": 8,
+    "total": 106,
+    "by": {
+     "top": 14,
+     "sub": 0,
+     "left": 52,
+     "right": 29,
+     "sheet": 0,
+     "centre": 11
+    },
+    "under44": 0,
+    "small": []
+   },
+   {
+    "nm": "Knowledge",
+    "id": "know",
+    "k": 6,
+    "total": 221,
+    "by": {
+     "top": 14,
+     "sub": 0,
+     "left": 52,
+     "right": 29,
+     "sheet": 0,
+     "centre": 126
+    },
+    "under44": 0,
+    "small": []
+   },
+   {
+    "nm": "Games",
+    "id": "games",
+    "k": 7,
+    "total": 98,
+    "by": {
+     "top": 14,
+     "sub": 0,
+     "left": 52,
+     "right": 29,
+     "sheet": 0,
+     "centre": 3
+    },
+    "under44": 0,
+    "small": []
+   },
+   {
+    "nm": "Summary",
+    "id": "sum",
+    "k": 1,
+    "total": 85,
+    "by": {
+     "top": 14,
+     "sub": 0,
+     "left": 52,
+     "right": 15,
+     "sheet": 0,
+     "centre": 4
+    },
+    "under44": 0,
+    "small": []
+   },
+   {
+    "nm": "Settings",
+    "id": "settings",
+    "k": 9,
+    "total": 23,
+    "by": {
+     "top": 14,
+     "sub": 0,
+     "left": 0,
+     "right": 0,
+     "sheet": 0,
+     "centre": 9
+    },
+    "under44": 0,
+    "small": []
+   }
+  ]
+ },
+ "1600": {
+  "bar": 9,
+  "rows": [
+   {
+    "nm": "Energetics",
+    "id": "iq",
+    "k": 5,
+    "total": 119,
+    "by": {
+     "top": 14,
+     "sub": 0,
+     "left": 52,
+     "right": 19,
+     "sheet": 0,
+     "centre": 34
+    },
+    "under44": 3,
+    "small": [
+     "wtu 18x44",
+     "iq-hd 428x44",
+     "iq-hd 428x44"
+    ]
+   },
+   {
+    "nm": "Ritual",
+    "id": "rit",
+    "k": 10,
+    "total": 92,
+    "by": {
+     "top": 14,
+     "sub": 0,
+     "left": 52,
+     "right": 19,
+     "sheet": 0,
+     "centre": 7
+    },
+    "under44": 0,
+    "small": []
+   },
+   {
+    "nm": "Story",
+    "id": "story",
+    "k": 0,
+    "total": 103,
+    "by": {
+     "top": 14,
+     "sub": 0,
+     "left": 52,
+     "right": 19,
+     "sheet": 0,
+     "centre": 18
+    },
+    "under44": 0,
+    "small": []
+   },
+   {
+    "nm": "Field",
+    "id": "cv",
+    "k": 2,
+    "total": 99,
+    "by": {
+     "top": 14,
+     "sub": 4,
+     "left": 52,
+     "right": 20,
+     "sheet": 0,
+     "centre": 9
+    },
+    "under44": 0,
+    "small": []
+   },
+   {
+    "nm": "Body",
+    "id": "emap",
+    "k": 3,
+    "total": 105,
+    "by": {
+     "top": 14,
+     "sub": 7,
+     "left": 52,
+     "right": 32,
+     "sheet": 0,
+     "centre": 0
+    },
+    "under44": 0,
+    "small": []
+   },
+   {
+    "nm": "Compass",
+    "id": "cone",
+    "k": 8,
+    "total": 106,
+    "by": {
+     "top": 14,
+     "sub": 0,
+     "left": 52,
+     "right": 29,
+     "sheet": 0,
+     "centre": 11
+    },
+    "under44": 0,
+    "small": []
+   },
+   {
+    "nm": "Knowledge",
+    "id": "know",
+    "k": 6,
+    "total": 221,
+    "by": {
+     "top": 14,
+     "sub": 0,
+     "left": 52,
+     "right": 29,
+     "sheet": 0,
+     "centre": 126
+    },
+    "under44": 0,
+    "small": []
+   },
+   {
+    "nm": "Games",
+    "id": "games",
+    "k": 7,
+    "total": 98,
+    "by": {
+     "top": 14,
+     "sub": 0,
+     "left": 52,
+     "right": 29,
+     "sheet": 0,
+     "centre": 3
+    },
+    "under44": 0,
+    "small": []
+   },
+   {
+    "nm": "Summary",
+    "id": "sum",
+    "k": 1,
+    "total": 85,
+    "by": {
+     "top": 14,
+     "sub": 0,
+     "left": 52,
+     "right": 15,
+     "sheet": 0,
+     "centre": 4
+    },
+    "under44": 0,
+    "small": []
+   },
+   {
+    "nm": "Settings",
+    "id": "settings",
+    "k": 9,
+    "total": 23,
+    "by": {
+     "top": 14,
+     "sub": 0,
+     "left": 0,
+     "right": 0,
+     "sheet": 0,
+     "centre": 9
+    },
+    "under44": 0,
+    "small": []
+   }
+  ]
+ }
+}
