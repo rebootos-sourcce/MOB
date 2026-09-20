@@ -40,20 +40,18 @@ reopens. Every seat adds its own.
 - [x] **LG12. A construction defect caught at eight times scale.** The e's
       crossbar was cut at the ring's centreline, leaving a step at three
       o'clock that read at normal size as the e being light on its right.
-- [?] **LG13. The favicon cannot carry the dots, and the reason is
-      topological.** Six proportions of the u with its dots were drawn and
-      looked at. Every one reads as a face: two points above an open curve is
-      a face and no proportion removes it. So the sixteen pixel cut is the a,
-      which carries the face's two properties at once, has the widest counter
-      in the word and is not a face. His call, and the ü cut is on the page if
-      he overrules it.
-- [?] **LG14. The white dots cannot literally stay white on paper,** because
-      they sit on the ground rather than on the letter. The ruling offered:
-      the dots are the light in the mark, and what a light is worth depends on
-      what it stands against. On the four dark grounds nothing is brighter
-      than a light source, so pure white, unchanged. On the three paper
-      grounds nothing is brighter than the paper, so what can be drawn is the
-      absence. One system, seven answers.
+- [~] **LG13. Superseded by FV1, where he ruled the ring instead of a
+      letter.** Six proportions of the u with its dots were drawn and every
+      one reads as a face, so the sixteen pixel letter cut was going to be
+      the a. The ring answers it without the letter argument at all. Both
+      letter cuts are drawn and neither ships. Nothing here is waiting on
+      him.
+- [~] **LG14. Answered at LG14 ANSWERED. White on the four dark grounds,
+      dark grey on the three paper grounds.** The dots sit on the ground
+      rather than on the letter, so what a light is worth depends on what it
+      stands against. One rule, seven answers. The ruling and its
+      measurement are recorded on that line and nothing here is waiting on
+      him.
 - [x] **LG15. And that found a defect in the tokens.** Three paper lightings
       give two different answers for the dot: two blues in the sky's own
       family and one neutral with no hue at all. A neutral dot beside a blue
@@ -66,14 +64,13 @@ reopens. Every seat adds its own.
 - [x] **LG17. There is no favicon at all.** No icon link anywhere in the
       product. That is a new site rather than a changed one, and an inline
       SVG keeps it inside the no network rule.
-- [?] **LG18. And the real ruling underneath all of it: lowercase against the
-      uppercase ruling.** The top bar was ruled uppercase, twice. This brief
-      names six lowercase letters and two dots over a lowercase u, and the
-      specimen's whole character is single storey lowercase at a very high x
-      height. Drawn uppercase, the x height argument disappears and the
-      letters stop being the ones the face is interesting for. The cost of
-      moving the ruling is one re-tracking. The cost of not moving it is two
-      cases for one mark, which is what ships today.
+- [ ] **LG18. Held open by him at LG18 REFRAMED, so it is not a question
+      this round.** The top bar was ruled uppercase, twice. This mark is six
+      lowercase letters and two dots over a lowercase u, and the specimen's
+      character is single storey lowercase at a very high x height. Drawn
+      uppercase, the x height argument disappears. The open work is that the
+      rounds carry both cases until the cut is chosen, and two cases for one
+      mark is what ships today.
 
 ---
 
@@ -102,8 +99,8 @@ the child patterns. Wording kept where it is his.
       rounds, drawn at the sizes the mark is actually used at, with touching
       and not touching shown as two states of the same cut rather than as two
       cuts.
-- [?] **TY4. How many rounds is "a couple"?** Two is the literal reading and
-      what is planned. Does he want three?
+- [?] **TY4. Is a couple of rounds two, or three?** His own word, and two is
+      the literal reading and what is planned.
 
 ### FV. THE FAVICON. RULED, AND IT IS NOT A LETTER.
 
@@ -115,11 +112,11 @@ the child patterns. Wording kept where it is his.
       boot mark and the key strip. The favicon is that ring at sixteen, thirty
       two and one hundred and eighty pixels, drawn as a band rather than as
       seven separate marks.
-- [?] **FV3. The band rhythm, and he gave both readings:** "either one, one,
-      one, one, one, one, or one, two, one, two, one, two." Equal arcs, or
-      alternating weights. Both get drawn. Note that six numbers were said for
-      seven seats, so the seventh is the question inside the question: does the
-      odd seat take the wide slot or the narrow one?
+- [?] **FV3. Which band rhythm, equal arcs or alternating weights?** Art
+      director asks. His words: "either one, one, one, one, one, one, or
+      one, two, one, two, one, two." Both get drawn. Six numbers were said
+      for seven seats, so the answer also has to say whether the odd seat
+      takes the wide slot or the narrow one.
 - [ ] **FV4. And there is no favicon in the product at all today,** which the
       logo seat found and which is why this is a build and not a swap.
 
@@ -129,12 +126,10 @@ the child patterns. Wording kept where it is his.
       grey."** So the light inverts rather than disappearing: pure white on the
       four dark grounds, dark grey on the three paper grounds. One rule, seven
       answers, and no ground gets a dot that vanishes into it.
-- [?] **LG18 REFRAMED, and it is not a ruling yet.** His words: "well, now
-      before we were using a regular font, now we are using typography. So for
-      LG18, just know that now we are exploring." So lowercase against the
-      uppercase ruling is not settled and is not being asked for a decision
-      this round. The question is held open deliberately and the rounds carry
-      both cases until the cut is chosen.
+- [ ] **LG18 REFRAMED. Not a ruling, and not a question.** His words: "well,
+      now before we were using a regular font, now we are using typography.
+      So for LG18, just know that now we are exploring." The open work is
+      that the rounds carry both cases until the cut is chosen.
 
 ### CP. THE CHILD PATTERN, HIGHLIGHTED AND LOCATED.
 
@@ -152,11 +147,10 @@ the child patterns. Wording kept where it is his.
       to locate when we are finding a child pattern." The panel counts held and
       filled in today and says nothing about which of them are children, so it
       gains the one distinction that matters and says where the child sits.
-- [?] **CP4. What counts as found?** The engine has child emotions as a named
-      set of nine and it has the address ladder. Whether a child pattern is a
-      member of that set, or any node whose parent is also charged, decides
-      whether this highlights nine things or a hundred and twelve. His call,
-      and the difference is the whole feature.
+- [?] **CP4. Is a child pattern one of the nine child emotions, or any node
+      whose parent is also charged?** Systems director asks. The first
+      highlights nine things. The second highlights a hundred and twelve.
+      The difference is the whole feature.
 
 ### QD. THE QUESTIONS DOCUMENT ASKS NOTHING, AND THAT IS A REAL DEFECT.
 
@@ -167,17 +161,31 @@ the child patterns. Wording kept where it is his.
       by the seat that found them, so a document titled questions is a
       document of statements. A list that asks nothing cannot be answered,
       which is why it has been sent three times and returned nothing.
-- [ ] **QD2. Every `[?]` line carries an explicit question, ending in a
+- [x] **QD2. Every `[?]` line carries an explicit question, ending in a
       question mark,** and the question comes first so it is answerable without
-      reading the finding under it.
-- [ ] **QD3. And the generator gates it.** `tools/questions.js` exits non zero
+      reading the finding under it. Done on the eighteenth pass. 127 lines were
+      marked `[?]` before the pass and the gate refused 102 of them, 91 with no
+      question mark at all and 11 where a sentence closed ahead of the question.
+      Six lines asked him nothing and left the set: LG13 and LG14, both answered
+      elsewhere in this file; LG18 and LG18 REFRAMED, held open by his own words;
+      NV10, which is his instruction to show him an example; and the tracking
+      line in pass 0g that points at four questions asked on their own lines.
+      121 remain and the run reads them all as questions.
+- [x] **QD3. And the generator gates it.** `tools/questions.js` exits non zero
       on a `[?]` line with no question mark in it, so the defect cannot come
       back the way the stale counts in `CLAUDE.md` came back seven times. The
       rule this repository already carries: read the count off the run, and do
       not ship a document that asserts something the file does not support.
-- [ ] **QD4. It also names who is asking.** His words: "so I need the questions
+      Built, with a second check beside it: the question has to come first, so
+      no sentence may close ahead of the question mark. Neither check carries a
+      number. It prints the identifier and the `TASKS.md` line of every offender
+      and writes nothing at all when it fails, and it was run against the
+      version of this file before the pass to prove it bites.
+- [x] **QD4. It also names who is asking.** His words: "so I need the questions
       from the team." A question with a seat on it is a question he can weigh
-      against what that seat is for, and an unattributed one is a riddle.
+      against what that seat is for, and an unattributed one is a riddle. Every
+      one of the 121 names the seat by its role, or names him where the question
+      is his own, and the page says so under the count.
 
 ### BC. THE BOOT CARD. RULED AND BUILT.
 
@@ -197,10 +205,72 @@ His words: "The story page is a D. I think that needs to be redesigned. I need
 four designs by the art team, the creative team. Right now it's really visually
 unimpressive and uninteresting. It's really dull and it doesn't feel inspired."
 
-- [ ] **SD1. Four designs, from art and creative together.** Not one
+- [x] **SD1. Four designs, from art and creative together. Delivered.** Four
+      beliefs about what the surface is, one prototype each, in
+      `proto/story4/` with `DESIGN-story4.md` beside them. The instrument
+      gives the journal an axis. The mirror refuses to touch the sentence and
+      answers beside it. The body draws the route on the anatomy. The bench
+      treats the story as stock. Measured in one run: choices on the surface
+      28 for the mirror against 39 on the page shipping today, 40 for the
+      instrument, 47 for the body. Nothing under 44 by 44, no request off
+      file, no page error, twenty shots looked at. The seat's own
+      recommendation is the mirror, with the body second on a case it says it
+      cannot measure. Not one
       refinement of what exists. The last pass fixed what the box was made of,
       measured and argued, and he is saying the result is still dull. Those
       are different problems: one is construction and one is invention.
+### ST. WHAT THE FOUR DESIGNS FOUND UNDERNEATH THEM.
+
+- [ ] **ST1. The highlighter reads the sentence twice, by two different
+      rules, and that is the defect under the whole surface.** The scanner
+      records `hit.at` on every hit and the page discards it, then re-matches
+      with its own regular expression. Measured on the 87 word story the
+      prototypes carry: the engine reads 8 hits and the shipping page lights
+      4. It cannot light a coherent word, cannot light an idiom as one thing,
+      and never prints the name the engine already holds, where "stayed quiet"
+      is `silenced`. All four prototypes route around it with `normMap` and
+      `marksOf`, which rebuild the engine's own normalisation and keep the
+      original index of every character. Port that, do not rebuild it.
+- [ ] **ST2. `SEATXY`'s y is anatomical and its x is tracing noise.** Third
+      eye sits 7.04 points left of the midline off three traced branches, root
+      2.75 right off twenty five. Drawn, the third eye lands on the shoulder.
+- [ ] **ST3. And `pathOf` reads that x when it computes `span`,** so the
+      distance a story travels is inflated by tracing noise. That is a number
+      the product prints, computed off a coordinate that was never drawable.
+      Engine seat, and it is the same shape as the probe defects this file
+      already records: a figure is only as good as the thing it is read off.
+- [ ] **ST4. `parseStory().path` has returned order, distance, direction,
+      dwell and both ends on every parse and no surface draws one step of
+      it.** The invention the story page was asked for is already computed.
+- [?] **SQ1. Which of the four beliefs is the story page?** Art and creative
+      ask, together. Not which layout: the drawing follows the sentence. The
+      instrument shows its trace, the mirror gives your words back beside the
+      line they came from, the body draws the route where it happens, the
+      bench cuts the story into parts and works them. If none of the four is
+      it, the sentence that is right is the answer and the design follows it.
+- [?] **SQ2. Do the coherent words deserve a colour, or is unlit correct?**
+      Art director asks. "I slept well" and "I was grateful" take charge off
+      every seat rather than putting it on one, so they belong to no seat and
+      have no colour to take. All four prototypes draw them deliberately
+      unlit, which makes them the only marks on the page with no colour.
+- [?] **SQ3. Does a person see the route, or does it stay in the drawer?**
+      Systems director asks. `path` has computed order, distance, direction,
+      dwell and both ends on every parse since it was written, and nothing
+      renders one step of it. It is either the most interesting thing the
+      engine knows about a story or it is bookkeeping.
+- [?] **SQ4. Does filled in stay on the story page, or leave it?** UX
+      architect asks. The mirror moves it off entirely, on the argument that
+      nothing filled in can be released, so nothing there is a choice on this
+      surface. The other three keep it.
+- [?] **SQ5. Is the phone where a person actually writes?** UX architect
+      asks, and it changes the recommendation. The mirror loses its alignment
+      at 390 and becomes a list. The body keeps its figure and pays about 190
+      pixels for it. If the phone is the real surface, that comparison is the
+      whole decision.
+- [x] **ST5. `oneLine` printed "Held at a weight of 2.1" about a pending
+      place that is not held.** Found and fixed in all four prototypes, and it
+      is the same cure and disease collision the imprints panel had.
+
 - [x] **SD2. And the construction work stands underneath whichever wins.** The
       journal was built out of the form control token set, darker than the
       page it sits on, and the live fetter lighting was happening inside that
@@ -250,11 +320,11 @@ the ICPs are unanimously at 80 percent."
 
 ### NV. THE PARENT AND CHILD MENU.
 
-- [?] **NV10. He wants to see it before he rules on it.** His words: "I don't
-      know about the parent and child, I have to see that as an example." So
-      the prototype is the answer to the question rather than a proposal that
-      assumes one, and both readings of what a parent does when pressed have
-      to be in it.
+- [ ] **NV10. He has answered this one: show him an example first.** His
+      words: "I don't know about the parent and child, I have to see that as
+      an example." So the open work is a prototype carrying both readings of
+      what a parent does when pressed, and MN8 is the question it puts in
+      front of him.
 
 ---
 
@@ -294,11 +364,11 @@ they need to start left justified with the top menu items."
       intake surface. Integer 5 does not move.
 - [ ] **MN7. The sub tools start left justified with the top menu items,**
       not under the logo.
-- [?] **MN8. Nothing is said about what a parent does when pressed.** Ritual
-      and Story are surfaces in their own right. Tools and Insight may be
-      containers with no surface of their own, and that is a different kind of
-      object. His call, and the answer decides whether pressing Tools opens
-      Field or opens nothing.
+- [?] **MN8. When a parent is pressed, does it open its first child or open
+      nothing?** UX architect asks. Ritual and Story are surfaces in their
+      own right. Tools and Insight may be containers with no surface of
+      their own, which is a different kind of object. He rules it off the
+      prototype named at NV10.
 
 ### GU. SHARPEN THE INTERFACE.
 
@@ -364,9 +434,9 @@ information. We have a spec for this. This isn't following the spec."
       of figures into a picture that can be read at a glance. It also answers
       the register question the last pass raised, because VGA is a stated era
       rather than pixel art in general.
-- [?] **MS24. He picks the resolution, from a couple of mask sheets.** Show
-      them fully filled in, the design, and the pixelisation with the colours
-      on. His call and he asked for options rather than an answer.
+- [?] **MS24. Which mask resolution do you want?** His call, and he asked
+      for options rather than an answer. Two sheets go out: fully filled in,
+      and the pixelisation with the colours on.
 - [ ] **MS25. The mask pair defect is still open** from the last pass: two of
       the six masks carry the same seat pair, so their figures can never
       differ on any profile.
@@ -389,25 +459,27 @@ information. We have a spec for this. This isn't following the spec."
       by fifty lines is 22,400 lines, 12.4 hours, 134 megabytes. Recording
       only the block heads is still 12.5. The recording can only ever be the
       frame.
-- [?] **RV13. Three options priced and his to rule.** Embed the frame at 16
-      kbps for 160 kilobytes, which is 29 per cent on the wire. Fetch it,
-      which is zero bytes and fails the network gate that currently proves the
-      claim. Or synthesise everything, which is zero bytes because the whole
-      sound system is 3,210 characters of code. The recommendation is
-      synthesise now and embed his frame when the recording exists.
+- [?] **RV13. Embed your recorded frame, fetch it, or synthesise every
+      voice?** Technical director asks. Embedding at 16 kbps is 160
+      kilobytes, which is 29 per cent on the wire. Fetching is zero bytes
+      and fails the network gate that proves the no network claim. Synthesis
+      is zero bytes, because the whole sound system is 3,210 characters of
+      code. The recommendation is synthesise now and embed the frame when
+      the recording exists. Same ruling as RV7.
 - [x] **RV14. The one file ruling survives, and not narrowly.** No dependency,
       no request, no build step. The sound is oscillator code.
-- [?] **RV15. A pattern and a pass are two things and the ladder prices
-      one.** His dose is two hundred statements at one address; the meter
-      opens one line per channel per run, so the built fifty and fifty is
-      fifty separate runs rather than one sitting. The prototype reads a
-      pattern as a unique line of new ground, priced, and a pass as one spoken
-      repetition, free. That is the only reading where the ladder and the book
-      both survive, and it decides what a tier buys.
-- [?] **RV16. The reframe half has nothing to say.** The engine carries nine
-      coherent opposites as state nouns and the book's form is I am the state,
-      but I am worth is not a sentence. The book names 364 embodied truths in
-      an appendix this product does not have.
+- [?] **RV15. Is a pattern a new line at an address, and a pass one spoken
+      repetition?** Game director asks. His dose is two hundred statements
+      at one address. The meter opens one line per channel per run, so the
+      built fifty and fifty is fifty separate runs rather than one sitting.
+      Pricing a pattern as new ground and a pass as free is the only reading
+      where the ladder and the book both survive, and it decides what a tier
+      buys.
+- [?] **RV16. Where do the reframe lines come from?** Narrative director
+      asks. The engine carries nine coherent opposites as state nouns and
+      the book's form is I am the state, but I am worth is not a sentence.
+      The book names 364 embodied truths in an appendix this product does
+      not have.
 - [x] **EN10. The ritual target comes from a field now, not a literal.** A
       practice is a window and its parameter is its own minutes. A release is
       a count and its target is the number of lines there are to speak. A
@@ -486,12 +558,13 @@ story seat proved it and the defect is worse than the report.
 - [x] **SR6. Run release was two pixels under the fold,** bottom edge at 1002
       in a 1000 pixel viewport, which is exactly what he was pointing at. It
       sits at 208 now.
-- [?] **SY10. Five questions came back and the first two are collisions in his
-      own rulings.** The cost line he struck three times exists because a
-      person choosing three patterns was quoted three while the run spent up
-      to twenty five from a grant of ten; it has moved to the release runner's
-      first frame so nobody is billed without seeing the bill. And the pace
-      default of one is faster than every named speed the panel had.
+- [?] **SY10. Does the release pace default stay at one, which is faster
+      than every speed the panel named?** Project manager asks. Two of his
+      own rulings collided here and both are handled. The cost line he
+      struck three times exists because a person choosing three patterns was
+      quoted three while the run spent up to twenty five from a grant of
+      ten, and that line has moved to the release runner's first frame so
+      nobody is billed without seeing the bill.
 
 ---
 
@@ -580,25 +653,26 @@ meant to be heard is being read.
       exist; the counts and the audio do not.
 - [ ] **RV6. A cooldown at the end.** Built, and it will need rewriting for a
       flow that is heard.
-- [?] **RV7. Audio is a whole new capability and it has consequences.** A
-      voice recording is a binary asset in a product whose standing ruling is
-      one file with no dependencies. Embedded as base64 it is large, and the
-      build already had to be compressed to arrive at all. This needs a
-      ruling: embed it, fetch it at the one network seam the accounts fork
-      opens, or synthesise everything and keep no recording.
-- [?] **RV8. Browser speech synthesis is a local voice on most platforms and
-      a network service on some.** The privacy ruling already covers speech
-      recognition and has to be extended to say which.
+- [?] **RV7. Embed the voice, fetch it at the sign in seam, or synthesise
+      and keep no recording?** Technical director asks. A recording is a
+      binary asset in a product ruled one file with no dependencies.
+      Embedded as base64 it is large, and the build already had to be
+      compressed to arrive at all. Same ruling as RV13.
+- [?] **RV8. Does the privacy ruling allow a speech voice that is a network
+      service on some platforms?** Technical director asks. Browser speech
+      synthesis is a local voice on most platforms and a service on others.
+      The ruling already covers speech recognition and has to say which way
+      synthesis goes.
 
 ### RM. THE REFERENCE HE NAMED IS NOT IN THIS REPOSITORY.
 
-- [?] **RM1. He says the mobile app we dropped in a long time ago has a
-      fantastic release flow and to review it five times.** Searched: there is
-      no such file here. `DESIGN-mobile.md` and `DESIGN-mobile-icp.md` exist
-      and are design notes rather than the app. `index.html` in the root is
-      the book, at 5.9 megabytes, and it carries 457 mentions of release, so
-      the protocol text is likely extractable from it. The app itself needs to
-      be handed over or it cannot be reviewed.
+- [?] **RM1. Where is the mobile app whose release flow you want reviewed?**
+      Project manager asks. Searched: there is no such file here.
+      `DESIGN-mobile.md` and `DESIGN-mobile-icp.md` exist and are design
+      notes rather than the app. `index.html` in the root is the book, at
+      5.9 megabytes, and it carries 457 mentions of release, so the protocol
+      text is likely extractable from it. The app itself has to be handed
+      over or it cannot be reviewed five times.
 
 ### RC2. THE CONTROLS HE NAMED.
 
@@ -713,11 +787,12 @@ onboarding ever coming back, and two are fixed here.
       instead of reading a description of it. That settles four queued items
       with one object and it is worth keeping whether or not this is ever
       built.
-- [?] **OB25. Two collisions in his own rulings, named rather than resolved.**
-      One queued line asks the onboarding to say how the tools work for a
-      person, and the line after it forbids talking about purpose. And the
-      gamification allocation names one surface at two stations, which leaves
-      a person able to name three doors where the brief is four.
+- [?] **OB25. Which holds, onboarding saying how a tool works for a person,
+      or the ban on talking about purpose?** UX architect asks. Two of his
+      own rulings collide there, one queued line against the line after it.
+      A second collision sits with it: the gamification allocation names one
+      surface at two stations, which leaves a person able to name three
+      doors where the brief is four.
 
 ---
 
@@ -905,9 +980,11 @@ mind, body, spirit and soul."
       null." to a person. And the sniffer names an address the 112 address
       table does not carry, which is an engine finding and not that seat's to
       fix.
-- [?] **RT21. Four of his own questions came back,** the sharpest being where
-      a target should come from so the ring has a count to draw, and what a
-      session is: ten affirmations is a day's count, not a sitting's.
+- [?] **RT21. What sets the target the ritual ring counts against?** Game
+      director asks. Four of his own questions came back and this is the
+      sharpest, because without a target the ring has no count to draw. The
+      next one under it: what a session is, since ten affirmations is a
+      day's count and not a sitting's.
 
 ---
 
@@ -995,15 +1072,17 @@ downgrading their solar plexus. So the sniffer should find that."
 
 ### IJ. THE INTAKE BECOMES THE JOURNAL.
 
-- [?] **IJ1. "Tell me who you are and the person you want to become."** His
-      framing, and it collapses two surfaces into one. That is a scope
-      decision, not a copy change.
+- [?] **IJ1. Do the intake and the journal become one surface?** UX
+      architect asks. His framing: "Tell me who you are and the person you
+      want to become." That collapses two surfaces into one, which is a
+      scope decision and not a copy change.
 - [ ] **IJ2. By tag or by voice.** Voice is a network service in the browser,
       so the control says so before it opens. Standing ruling.
-- [?] **IJ3. Tags or stories for the two sets.** He said he does not know. The
-      systems answer so far is that a closed field validated against a table
-      earns its place and free text does not, and "who I want to become" is
-      the hardest thing in the product to put in a closed field.
+- [?] **IJ3. Tags or free text, for who you are and who you want to
+      become?** Systems director asks. He said he does not know. The systems
+      answer so far is that a closed field validated against a table earns
+      its place and free text does not, and who I want to become is the
+      hardest thing in the product to put in a closed field.
 
 ### BC. THE BRAND LINE, AND IT IS HIS.
 
@@ -1070,9 +1149,10 @@ that to the list. A copy sweep."
       and stop being a legend on the surface.
 - [ ] **RT8. Add, remove, generate and history all need a visible home.** He
       found add and nothing else. Auto generation belongs with add.
-- [?] **RT9. Is what is set pulled from the avatar?** His question, and it is
-      the right one: if the avatar names the seat, the protocol for that seat
-      is what is set, and the two surfaces are one system.
+- [?] **RT9. Is what is set pulled from the avatar?** His own question, in
+      his words, and it is the right one. If the avatar names the seat, the
+      protocol for that seat is what is set, and the two surfaces are one
+      system.
 - [ ] **RT10. Simulate the whole page against the panel a thousand times.**
       His words: frictionless, the most effective flow, the highest success
       rate for organisation, user performance, data and aesthetics.
@@ -1168,20 +1248,22 @@ them should be deducible by length.
       copy goes stale in silence and the prototype then measures a build
       nobody ships. It reads the real file now and the built page still makes
       no request at all.
-- [?] **KU12. The normaliser is his.** The engine's ceiling means clearing
-      alone tops a seat out at 85 of a hundred and only the installed opposite
-      finishes it. That is a claim about what reconnecting the kundalini
-      means, not an implementation detail.
-- [?] **KU13. `Root_08_Unnamed` carries no fetter, so the root can never fully
-      conduct and the rise can never read 100 for anybody.** Two fully
+- [?] **KU12. Does clearing alone top a seat out at 85, with only the
+      installed opposite finishing it?** Guru asks. That is the engine's
+      ceiling today. It is a claim about what reconnecting the kundalini
+      means rather than an implementation detail, so the normaliser is his.
+- [?] **KU13. Does `Root_08_Unnamed` get a fetter, so the rise can read
+      100?** Systems director asks. It carries none, so the root can never
+      fully conduct and the rise can never read 100 for anybody. Two fully
       installed people read 99. Already on his list, and this is a second
       reason to settle it.
 - [?] **KU14. Does the rise replace coherence as the headline anywhere
-      else?** They answer to different levers, and a person shown both will
-      ask which one is them.
-- [?] **KU15. May a practitioner see the rise?** It is engine derived so it
-      qualifies under the existing rule, but one number about a whole channel
-      is a different thing from a list of saboteurs.
+      else?** Narrative director asks. They answer to different levers, and
+      a person shown both will ask which one is them.
+- [?] **KU15. May a practitioner see the rise?** Systems director asks. It
+      is engine derived so it qualifies under the existing rule, but one
+      number about a whole channel is a different thing from a list of
+      saboteurs.
 
 ---
 
@@ -1205,10 +1287,11 @@ argument is measured rather than argued.
       can show.** Not most. None. Clipping won on measurement against both
       alternatives, and its cost is that every derived colour arrives fully
       saturated, against the standing muted ruling.
-- [?] **CB4. Root and Crown agree with the shipped palette within five
-      degrees,** which is agreement reached from an unrelated argument and is
-      evidence for what ships. The middle five disagree by 20 to 38 degrees,
-      worst at the 3rd Eye. Not resolved either way. His.
+- [?] **CB4. Does the shipped palette stand, now that the harmonic
+      derivation agrees on two seats and disagrees on five?** Art director
+      asks. Root and Crown agree within five degrees, which is agreement
+      reached from an unrelated argument and is evidence for what ships. The
+      middle five disagree by 20 to 38 degrees, worst at the 3rd Eye.
 - [x] **CB5. It is measurably worse at the thing a palette has to do.** 35 of
       56 colour on ground pairs fail the contrast floor against 25 for the
       palette that ships.
@@ -1229,11 +1312,13 @@ argument is measured rather than argued.
       address with the contrast floor cleared in all seven lightings.
       Recommended at five steps rather than ten, because nobody learns ten and
       this repository already carries the working memory measurement.
-- [?] **CB9. And it is blocked on a ruling, not a build.** Nothing says what
-      high or low inside a band means. Until it does, a lightness ladder
-      encodes a rank the addresses do not have.
-- [?] **CB10. The four field anchors have no seat and therefore no band.** Any
-      scheme has to say what they wear.
+- [?] **CB9. What does high or low inside a band mean?** Art director asks.
+      Nothing says. Until something does, a lightness ladder encodes a rank
+      the addresses do not have, so this is blocked on a ruling and not on a
+      build.
+- [?] **CB10. What colour do the four field anchors wear?** Art director
+      asks. They have no seat and therefore no band, and any scheme has to
+      say.
 - [x] **CB11. The honest part is in the study in full and not in a
       footnote.** A chakra has no measured frequency. The table used is
       Solfeggio, whose source is nameable and is numerology rather than
@@ -1349,20 +1434,24 @@ bands in his order, cards that open, the journal snippet, and where to improve.
 
 ### RQ. FIVE QUESTIONS, ALL HIS.
 
-- [?] **RQ1. The behaviour default is Monday to Friday.** Taken because his
-      own example varies by weekday and nobody ruled a default. Keep, or every
-      day?
-- [?] **RQ2. Always on is always the top three, and the engine proposes two
-      daily holds plus one that happens once.** May the third slot be a one
-      off prerequisite, or must all three be daily practices?
-- [?] **RQ3. Always on is root red, so at week scale the waveform is mostly
-      red.** Confirm, or move always on to the heart and behaviour to the
-      root. This is CL12 carried forward and now visible.
-- [?] **RQ4. A stance day with no test counts as neither kept nor missed,**
-      which means a stance can never lower a rate. Agreed, or does an untested
-      day count as kept?
-- [?] **RQ5. Release runs when called, so it never takes a waveform pixel.**
-      Should a release be schedulable onto a weekday like the other two?
+- [?] **RQ1. Does a behaviour ritual default to Monday to Friday, or to
+      every day?** Game director asks. Monday to Friday is what is built,
+      taken because his own example varies by weekday and nobody ruled a
+      default.
+- [?] **RQ2. May the third always on slot be a one off prerequisite, or must
+      all three be daily practices?** Game director asks. Always on is
+      always the top three, and the engine proposes two daily holds plus one
+      that happens once.
+- [?] **RQ3. Is always on root red, or does always on move to the heart and
+      behaviour to the root?** Art director asks. At week scale the waveform
+      is mostly red as it stands. This is CL12 carried forward and now
+      visible.
+- [?] **RQ4. Does a stance day with no test count as kept, or as neither?**
+      Game director asks. Neither is what is built, which means a stance can
+      never lower a rate.
+- [?] **RQ5. Can a release be scheduled onto a weekday, like the other
+      two?** Game director asks. Release runs when called, so it never takes
+      a waveform pixel today.
 
 ---
 
@@ -1442,10 +1531,11 @@ bands in his order, cards that open, the journal snippet, and where to improve.
 - [ ] **MK7. 508 of 1000 sit below the level the buyer grid calls a market.**
       So coverage of the whole panel is the wrong target: it counts 508 who
       cannot be reached and 106 who must not be aimed at.
-- [?] **MK8. Three decisions at the end of the marketing README.** Four hooks
-      built properly or seventeen thinly. Whether the Throat seat stays the
-      only seat with no hook. Whether the clear entry offering confirmation
-      rather than relief is the right offer.
+- [?] **MK8. Four hooks built properly, or seventeen thinly?** Marketing
+      director asks. Two more sit with it at the end of the marketing
+      README: whether the Throat seat stays the only seat with no hook, and
+      whether the clear entry offering confirmation rather than relief is
+      the right offer.
 - [ ] **MK9. Source OS appears nowhere in the funnel,** although FN4 asks for
       it by name, and the landing's title uses the plain spelling while the
       page uses the umlaut.
@@ -1579,13 +1669,14 @@ colours to show precisely where they are in the band."
 - [ ] **CH4. The palette is argued from autonomic response,** which is the
       standing ruling, and a wavelength conversion is a different argument. If
       the two disagree, the disagreement is the finding and it goes to him.
-- [?] **CH5. The honest part, and it belongs in the record.** The seat to
-      plexus correspondence and the seven count are a modern Western reading;
-      the glossary already says so. A frequency in hertz for a chakra is not a
-      measured quantity. Deriving a colour from it is a consistent internal
-      system, which is worth having, and it is not a measurement. The product
-      says so about the aura and the biophoton field already and should say it
-      here in the same voice.
+- [?] **CH5. May the copy call the chakra colour a consistent internal
+      system rather than a measurement?** Guru asks. The seat to plexus
+      correspondence and the seven count are a modern Western reading, and
+      the glossary already says so. A frequency in hertz for a chakra is not
+      a measured quantity. Deriving a colour from it is worth having and it
+      is not a measurement. The product already says exactly this about the
+      aura and the biophoton field, and it should say it here in the same
+      voice.
 
 ### AP. ACTIVE AND PASSIVE. A SECOND CUT ACROSS THE THREE KINDS.
 
@@ -1674,9 +1765,9 @@ Practise honesty. Practise compassion.
       and they are the two that map straight onto the laws. They are also the
       hardest to mark succeeded or failed honestly, which is the interesting
       problem.
-- [?] **RB11. What are the parameters on a card.** His open question, in his
-      words: "I'm not sure what the parameters are yet." The three shapes
-      above are the input to answering it.
+- [?] **RB11. What are the parameters on a behaviour card?** His own open
+      question, in his words: "I'm not sure what the parameters are yet."
+      The three shapes above are the input to answering it.
 
 ### RJ. THE PAGE FEEDS THE REST OF THE PRODUCT.
 
@@ -1714,17 +1805,16 @@ causes across our human complex."
 - [ ] **PO1. Take the line into the brand seat** and keep what is his: the
       neurosomatic framing, moral integrity as the thing being tuned, vital
       energy as the result, and stress as the cause.
-- [?] **PO2. The word heals is a medical claim and it is a real exposure, not
-      a style note.** A product that says it heals disease is making a
-      therapeutic claim, and the advertising regulators in every market this
-      would sell in treat that as the regulated kind. This product already
-      draws the line correctly inside itself: the compass says it is a reading
-      of what is running and not of who is running it, and the referral says a
-      configuration needs a licensed clinician alongside and not instead. The
-      outward copy would be saying something the product itself refuses to
-      say. His call, and it needs to be an informed one rather than an edit I
-      make quietly: what the line can say without the claim, or the claim with
-      the evidence a regulator asks for.
+- [?] **PO2. What can the positioning line say without the word heals, or do
+      you want the claim with the evidence a regulator asks for?** Guru
+      asks, and it is an exposure rather than a style note. A product that
+      says it heals disease is making a therapeutic claim, and the
+      advertising regulators in every market this would sell in treat that
+      as the regulated kind. The product already draws the line correctly
+      inside itself: the compass says it reads what is running and not who
+      is running it, and the referral says a configuration needs a licensed
+      clinician alongside and not instead. The outward copy would say what
+      the product itself refuses to say.
 - [ ] **PO3. World's first needs a defensible sentence behind it,** for the
       same reason. What exactly is first.
 
@@ -1757,12 +1847,12 @@ more sense. That way the percent makes sense to the entire system."
       ladder makes the percent mean the same thing here as it does everywhere
       else. Five stages against a ten point scale is two numbers wearing one
       name.
-- [?] **NS3. Find the five icons before drawing ten.** He says we have them. A
-      first search of the source finds no table of nerve states at all, so
-      either they live somewhere this search did not reach, or they exist as
-      artwork outside the repository, or they were described and never built.
-      Ask him which before anything is drawn, because redrawing an existing
-      set is the one outcome nobody wants.
+- [?] **NS3. Where are the five nerve state icons you say we have?** Art
+      director asks. A first search of the source finds no table of nerve
+      states at all, so either they live somewhere this search did not
+      reach, or they exist as artwork outside the repository, or they were
+      described and never built. Redrawing an existing set is the one
+      outcome nobody wants.
 - [ ] **NS4. The scale is linear between the stages.** His words: "the percent
       is just linear, right, with our stages. If you do zero to ten you can
       fill it in."
@@ -1932,20 +2022,23 @@ month to week to day, and the grid is its own navigation.
       and reproduces the panel's column exactly. And `build-data.js` cites a
       section A1 that does not exist in that file. Its numbers are right and
       its citation is not.
-- [?] **CL12. The colour mapping, and it is the most arguable of the three.**
-      Always on takes Root red because the practice marks seat there and Root
-      is this product's ground rather than an alarm. Confirm, or move always on
-      to Heart and behaviour to Root.
-- [?] **CL13. The always on ritual has two candidate sources and they
-      disagree.** The reading picks by the darkest band, the avatar picks by
-      the seat carrying the most live imprints. For Marcus those are two
-      different seats. Which one owns it.
-- [?] **CL14. Does a release ritual recur on a schedule,** or only on days an
-      address sits above the line, which is the default taken.
-- [?] **CL15. May the queue be empty.** It empties when a person refuses
-      everything and stays empty until the field moves or they write something
-      new. A queue that refills itself is a nag, and the standing engagement
-      rule is that a person must be able to stop and be glad they used it.
+- [?] **CL12. Does always on take Root red, or does always on move to Heart
+      and behaviour to Root?** Art director asks. Root is what is built,
+      because the practice marks seat there and Root is this product's
+      ground rather than an alarm. Same ruling as RQ3, where it is visible
+      at week scale.
+- [?] **CL13. Which source owns the always on ritual, the darkest band or
+      the seat carrying the most live imprints?** Systems director asks. The
+      reading picks the first, the avatar picks the second, and for Marcus
+      those are two different seats.
+- [?] **CL14. Does a release ritual recur on a schedule, or only on days an
+      address sits above the line?** Game director asks. The second is the
+      default taken.
+- [?] **CL15. May the release queue be empty?** Game director asks. It
+      empties when a person refuses everything and stays empty until the
+      field moves or they write something new. A queue that refills itself
+      is a nag, and the standing engagement rule is that a person must be
+      able to stop and be glad they used it.
 
 ---
 
@@ -1989,21 +2082,22 @@ month to week to day, and the grid is its own navigation.
       print a family line and a generic way out where the other two print the
       sentence the saboteur says. Three cards also repeat the same family line
       word for word.
-- [?] **FD10. The honest midpoint of the scale reads Corrupt.** Answering every
-      question in the middle lands at 24. Coherence goes as the square of the
-      law mean, so a pain led instrument answered honestly puts most people
-      between 24 and 56. The arithmetic is his. The one dial that is not is the
-      map from an answer to a charge, which is linear today.
-- [?] **FD11. Running comments need a server, and the seam is half built.**
-      The engine already carries the outbox: a queue, a validator, an allow
-      list of eight keys and a deny list of forty odd covering name, email,
-      story, coherence and location, capped at twenty queued and six hundred
-      characters. That is a comment with everything identifying already
-      refused. What does not exist is the thing it sends to. It should share
-      the record store's controller: one account, one identity, one deletion
-      path. And moderation is not optional under copy about disease, because
-      an unmoderated thread fills with medical claims and with people
-      disclosing in public exactly what this product keeps private.
+- [?] **FD10. Does the map from an answer to a charge stay linear?** AI
+      director asks. Answering every question in the middle lands at 24,
+      which reads Corrupt. Coherence goes as the square of the law mean, so
+      a pain led instrument answered honestly puts most people between 24
+      and 56. The arithmetic is his and stands. That one dial is the only
+      part of it nobody has ruled.
+- [?] **FD11. Do running comments share the record store's controller?**
+      Technical director asks. The engine already carries the outbox: a
+      queue, a validator, an allow list of eight keys and a deny list of
+      forty odd covering name, email, story, coherence and location, capped
+      at twenty queued and six hundred characters. That is a comment with
+      everything identifying already refused. What does not exist is the
+      thing it sends to. One account, one identity, one deletion path is the
+      cheap answer. Moderation is not optional under copy about disease,
+      because an unmoderated thread fills with medical claims and with
+      people disclosing in public exactly what this product keeps private.
 
 ### TA. THE TAG SYSTEM. THE ANSWER IS NO, AND THE ARGUMENT IS SHORT.
 
@@ -2066,28 +2160,31 @@ that a closed field of three values is what he actually described.
       another was discarded. Now 10 and 8.7.
 - [x] **SN4. The cascade has no free parameter.** His own three numbers are
       exactly linear, so the step is his and not a fit.
-- [?] **SN5. The laws are not the same twenty one.** Nineteen are shared. The
-      spec has Ownership and Wisdom; the engine has Responsibility and
-      Accountability. This is the divisor in the coherence definition, so it
-      has to be answered before anything downstream can be.
-- [?] **SN6. The spec defines coherence as the mean of the laws times ten.**
-      Under that definition, measured: releasing every charge moves coherence
-      by nothing at all, and all fourteen reference profiles read exactly the
-      same number because none of them carries law data. Adopting it changes
-      the tier of fourteen profiles out of fourteen. It may still be right. It
-      retires the release meter on that path, which is the decision.
-- [?] **SN7. And it reaches the lean work through the back.** Malignancy is
-      computed off coherence, so either spec definition takes a blank profile
-      from 28 malignant to nought and flips benign. That is the same question
-      being asked in two places and it should be ruled once.
-- [?] **SN8. Which address owns Joy.** The spec says the apathy axis, the
-      engine says the sad axis. One word, two places in a body.
-- [?] **SN9. Avoider or Innocent.** His weight ruling is implemented and
-      Avoider now fires on 1.4 percent rather than the 81 the spec implies,
-      while Innocent fires on 38.4 because the spec reduced it to one fetter.
-      Move the weight, or give Innocent a second fetter.
-- [?] **SN10. Surprise's address.** Lower solar plexus at the lung edges, or
-      upper chest and back at the heart seat. A place, not a wording.
+- [?] **SN5. Which twenty one laws are canon, the spec's Ownership and
+      Wisdom or the engine's Responsibility and Accountability?** AI
+      director asks. Nineteen are shared. This is the divisor in the
+      coherence definition, so nothing downstream can be answered before it.
+- [?] **SN6. Does coherence become the mean of the laws times ten?** AI
+      director asks. Measured under that definition: releasing every charge
+      moves coherence by nothing at all, and all fourteen reference profiles
+      read exactly the same number because none of them carries law data.
+      Adopting it changes the tier of fourteen profiles out of fourteen and
+      retires the release meter on that path. It may still be right.
+- [?] **SN7. Is malignancy still computed off coherence, under whichever
+      definition you pick?** AI director asks. Either spec definition takes
+      a blank profile from 28 malignant to nought and flips it benign. It is
+      SN6 reaching the lean work through the back, and it should be ruled
+      once.
+- [?] **SN8. Which address owns Joy, the apathy axis or the sad axis?** AI
+      director asks. The spec says the first and the engine says the second.
+      One word, two places in a body.
+- [?] **SN9. Move the Avoider weight, or give Innocent a second fetter?** AI
+      director asks. His weight ruling is implemented and Avoider now fires
+      on 1.4 percent rather than the 81 the spec implies, while Innocent
+      fires on 38.4 because the spec reduced it to one fetter.
+- [?] **SN10. Where does Surprise sit, the lower solar plexus at the lung
+      edges or the upper chest and back at the heart seat?** AI director
+      asks. A place, not a wording.
 - [ ] **SN11. The honest limit, and it is the highest value thing left.** There
       is no subject handling, so "she lied to me" fires the truth law on the
       writer. The guard against reading a person through somebody else's story
@@ -2124,9 +2221,10 @@ a calendar."
 - [ ] **RC6. Colour.** His words: "I need colours." Against the kind, or
       against the seat, or against the track. One of the three, and the seat
       is already spoken for everywhere else in the product.
-- [?] **RC7. Where do you add from.** Ruled open by him: "you need to be able
-      to add but we need to figure out the system for adding. Like where are
-      you adding from?" This is the question the queue below answers.
+- [?] **RC7. Where does a person add a ritual from?** His own question, in
+      his words: "you need to be able to add but we need to figure out the
+      system for adding. Like where are you adding from?" The queue below is
+      the proposed answer.
 
 ### TG. THE TAG SYSTEM, AND WHETHER IT EARNS ITS PLACE.
 
@@ -2206,14 +2304,14 @@ wearing two hats: a thing looked up by where it sits instead of by what it is.
       somebody else. It looks Gordon up by name now, and asserts which person
       it got before it asserts anything about them. This is the tab integer
       rule applied to a second table.
-- [?] **SF6. His call, and it should be made before this ships.** Six people
-      in the roster now reach a surface that names Psychopathy and
-      Machiavellianism and puts a clinician on the screen. The copy is careful
-      and says it is a reading of what is running and not of who is running
-      it. The thresholds are malignancy 0.55 with CQ under 31, and the
-      referral at CQ under 11. Those two numbers decide who sees it, and they
-      have never been tested against a real person because the branch was
-      dead.
+- [?] **SF6. Are the referral thresholds right, malignancy 0.55 with CQ
+      under 31 and the clinician at CQ under 11?** Guru asks, and it should
+      be answered before this ships. Six people in the roster now reach a
+      surface that names Psychopathy and Machiavellianism and puts a
+      clinician on the screen. The copy is careful and says it is a reading
+      of what is running and not of who is running it. Those two numbers
+      decide who sees it, and they have never been tested against a real
+      person because the branch was dead.
 
 ---
 
@@ -2267,11 +2365,12 @@ test."
 - [ ] **FN2. The close is his and it is not softened.** "No one is coming to
       save you. Do it yourself. The software is the key and the roadmap. You
       are the door."
-- [?] **FN3. Running comments on the landing page,** so people can add
-      feedback and ask questions directly, automated. NEEDS A SERVER. It is
-      the second thing on this list that does, after the record store, and it
-      should share that seam rather than open a new one. His call on whether
-      it ships with the funnel or waits for accounts.
+- [?] **FN3. Do running comments ship with the funnel, or wait for
+      accounts?** Sales director asks. They let people add feedback and ask
+      questions on the landing page, and they need a server. It is the
+      second thing on this list that does, after the record store, and it
+      should share that seam rather than open a new one. Same server as
+      FD11.
 
 ### QZ. THE QUIZ IS THE DIAGNOSIS THAT SELLS.
 
@@ -2307,8 +2406,8 @@ the deduction that lands on a miss. With the deduction in, his mechanic breaks
 even at a sting of 0.07 and costs retention above it. At a sting a person would
 feel it is minus 1.9 points, robust across five seeds.
 
-- [?] **RB1. The sting.** How much comes off on a missed day. This is the one
-      number the whole mechanic turns on, and it is his.
+- [?] **RB1. How much comes off on a missed day?** Game director asks. The
+      sting is the one number the whole mechanic turns on, and it is his.
 - [x] **RB2. The seven day guard.** Nothing is taken until seven days are
       banked. Worth 2.6 points, more than the mechanic itself, because the
       whole first week is where the leaving happens. Modelled, not built.
@@ -2326,10 +2425,11 @@ feel it is minus 1.9 points, robust across five seeds.
       invisible in source.
 - [ ] **RB7. The record becomes the other half of this surface,** not its own
       tab and not the Compass.
-- [?] **RB8. Five questions, and no more than five.** The sting; one ritual a
-      day or a stack; whether the dial is the seven seats or the twenty one
-      laws; the record as half this surface or its own tab; whether the sniffer
-      adds to tomorrow's ritual or proposes and waits.
+- [?] **RB8. One ritual a day, or a stack?** Game director asks. Four more
+      sit with it, and no more than five in total: the sting at RB1; whether
+      the dial is the seven seats or the twenty one laws; whether the record
+      is half this surface or its own tab; and whether the sniffer adds to
+      tomorrow's ritual or proposes and waits.
 
 ---
 
@@ -2407,24 +2507,29 @@ best. There is a soul between the two."
   survives; and it gives the zoom ladder a partner, so zoom resolves detail and
   focus says which detail. Plumb ships as the mobile Field and the pre record
   state. Console is a practitioner view, not the person's.
-- [?] **SW6. Lighting or renderer.** An eighth lighting with its own ground and
-  its own gate row, or a change to how the Field draws inside Dark? The
-  recommendation assumes the second, and the standing ruling says a new
-  interface is an added lighting, so these collide.
-- [?] **SW7. The gate pill against law 8.** `wheel.js` rules the gate ring always
-  carries a pill holding a dash, "because the absence is said rather than
-  hidden". Law 8 says no text on the hero, ever. Both are his rulings and they
-  cannot both hold. Same question as the nine captions, still unanswered.
-- [?] **SW8. The 5.5 second breath.** That rate is near the paced breathing
-  resonance frequency, so a large slow object breathing at it will entrain the
-  nervous system of somebody whose nervous system this product is reading.
-  Feature, side effect, or something that has to be disclosed?
-- [?] **SW9. Which statistic the seat band carries.** Peak is more actionable and
-  reverses the ranking, but `compute()` uses the mean for `darkB`, the seat the
-  background wash is tinted by, so the drawing and the wash would disagree about
-  which seat carries most.
-- [?] **SW10. The name Console.** `console` appears eleven times in the source,
-  all the JS object. One word per concept has no clause about registers.
+- [?] **SW6. Is Atmosphere an eighth lighting, or a change to how the Field
+  draws inside Dark?** Art director asks. An eighth lighting brings its own
+  ground and its own gate row. The recommendation assumes the second, and
+  the standing ruling says a new interface is an added lighting, so the two
+  collide.
+- [?] **SW7. Which holds, the gate pill that says the absence or law 8 that
+  forbids text on the hero?** Art director asks. `wheel.js` rules the gate
+  ring always carries a pill holding a dash, "because the absence is said
+  rather than hidden". Both are his rulings and they cannot both hold. Same
+  question as the nine captions.
+- [?] **SW8. Is a 5.5 second breath a feature, a side effect, or something
+  that has to be disclosed?** Guru asks. That rate is near the paced
+  breathing resonance frequency, so a large slow object breathing at it will
+  entrain the nervous system of somebody whose nervous system this product
+  is reading.
+- [?] **SW9. Does the seat band carry the peak or the mean?** Systems
+  director asks. Peak is more actionable and reverses the ranking, but
+  `compute()` uses the mean for `darkB`, the seat the background wash is
+  tinted by, so the drawing and the wash would disagree about which seat
+  carries most.
+- [?] **SW10. Can a surface be called Console while `console` is the JS
+  object?** Narrative director asks. It appears eleven times in the source,
+  all the object. One word per concept has no clause about registers.
 - [ ] **SW2. A hundred passes.** Debate it amongst the seats, challenge it, look
   at it from different perspectives, and go into the data and into what the
   product is trying to translate before drawing anything.
@@ -2637,25 +2742,30 @@ record, never promised in advance for the act.
 
 ### WAITING ON HIM
 
-- [?] **The currency, and it now blocks work.** Three words are live for one
-  thing in three current documents. `DESIGN-progression.md` rules exactly one
-  currency, patterns, and asks for a build gate against a second. `PRODUCT.md`
-  and AE1 say points. AK2 says karma. Which survives, and does the banned word
-  list move with it? And the half arithmetic cannot answer: is karma a **second
-  currency that buys patterns**, or the **name for patterns you earned rather
-  than were granted**? Those are different products. One has an exchange rate
+- [?] **Which word survives for the currency, patterns, points or karma?**
+  Game director asks, and it now blocks work. Three words are live for one
+  thing in three current documents. `DESIGN-progression.md` rules exactly
+  one currency, patterns, and asks for a build gate against a second.
+  `PRODUCT.md` and AE1 say points. AK2 says karma. Two more ride on the
+  answer: does the banned word list move with it, and is karma a second
+  currency that buys patterns or the name for patterns you earned rather
+  than were granted? Those are different products. One has an exchange rate
   somebody will publish. The other has none.
-- [?] **What a mark is worth.** Sixteen marks at 25 karma is 80 patterns, a
-  fifth of a tier one month, handed to somebody who never pays, on top of the
-  gift of 100. Either the rate comes down to 10 or those 80 patterns are called
-  what they are: the second half of the gift.
-- [?] **The `sq>=4` release threshold.** 465 of 1000 reach a complete reading
-  with nothing to release. Lowering it changes what the product claims about a
-  calm person, which is a product question and not an engineering one.
-- [?] Whether the record lives on Ritual, on the Compass, or both.
-- [?] Whether a karma balance is a number a person sees. Every other quantity
-  here is drawn or is a count of events, and the rulings are against printing a
-  total.
+- [?] **Does a mark stay at 25 karma, or come down to 10?** Game director
+  asks. Sixteen marks at 25 is 80 patterns, a fifth of a tier one month,
+  handed to somebody who never pays, on top of the gift of 100. Either the
+  rate comes down or those 80 patterns are called what they are: the second
+  half of the gift.
+- [?] **Does the `sq>=4` release threshold come down?** Systems director
+  asks. 465 of 1000 reach a complete reading with nothing to release.
+  Lowering it changes what the product claims about a calm person, which is
+  a product question and not an engineering one.
+- [?] **Where does the record live, on Ritual, on the Compass, or both?** UX
+  architect asks.
+- [?] **Does a person see a karma balance as a number?** Game director asks.
+  Every other quantity here is drawn or is a count of events, and the
+  rulings are against printing a total. Asked again below, where the
+  prototype prints it.
 
 ---
 
@@ -2747,12 +2857,16 @@ story. It is one complete system."
 
 ### WAITING ON HIM, FROM THIS PASS
 
-- [?] **"Personal tested. I am not sure what you mean by that."** I do not know
-  which phrase this is answering. Nothing in the last report or in the
-  documents uses it. Named here rather than guessed at.
-- [?] The four from the previous pass are still open and still block work: the
-  coin, what vibrancy is, law 8 against the gate pill, and whether Atmosphere is
-  an eighth lighting or a change to how the Field draws in Dark.
+- [?] **Which line of ours were you reading when you wrote "personal
+  tested"?** Narrative director asks. His words: "Personal tested. I am not
+  sure what you mean by that." Nothing in the last report or in the
+  documents uses that phrase, so it is named here rather than guessed at.
+- [ ] The four from the previous pass are still open and still block work:
+  the coin, what vibrancy is, law 8 against the gate pill, and whether
+  Atmosphere is an eighth lighting or a change to how the Field draws in
+  Dark. Each of the four is asked on its own line, at the currency question
+  above, at AH5, at SW7 and at SW6. This line tracks them and asks nothing
+  of its own.
 
 ---
 
@@ -2883,11 +2997,12 @@ make safe.
 
 ### WAITING ON HIM
 
-- [?] **What a surface calls it.** Benign and malignant are his words and are
-  right inside the engine. Whether a person reads those two words about their
-  own writing is his call and nobody else's.
-- [?] Whether a lack of empathy and a lack of accountability are one reading or
-  two on the surface. They are two in the arithmetic either way.
+- [?] **Does a person read the words benign and malignant about their own
+  writing?** Narrative director asks. Both are his words and both are right
+  inside the engine. What a surface calls it is his call and nobody else's.
+- [?] **Are a lack of empathy and a lack of accountability one reading on
+  the surface, or two?** Narrative director asks. They are two in the
+  arithmetic either way.
 
 ---
 
@@ -2959,15 +3074,18 @@ itself twice on the way with both failures recorded in its own comments.
 
 ### WAITING ON HIM, FROM THIS
 
-- [?] **Which word survives**, still. The whole design is costed on karma being
-  the name for patterns you earned rather than a second unit, because that is
-  the only reading that passes the gate `DESIGN-progression.md` already asks for.
-- [?] **Does a person see their karma balance as a number?** The prototype
-  prints it, and it is the one place this design may be breaking the standing
-  rule against printing a total.
-- [?] If the accounts fork puts a model behind the sign in seam, is the frame
-  layer the fallback or the engine? It decides whether to spend another week
-  there.
+- [?] **Which word survives for the currency, patterns, points or karma?**
+  Game director asks, still, and it is the same question as the currency
+  line in the ritual loop pass. The whole design is costed on karma being
+  the name for patterns you earned rather than a second unit, because that
+  is the only reading that passes the gate `DESIGN-progression.md` already
+  asks for.
+- [?] **Does a person see their karma balance as a number?** Game director
+  asks. The prototype prints it, and it is the one place this design may be
+  breaking the standing rule against printing a total.
+- [?] **If the accounts fork puts a model behind the sign in seam, is the
+  frame layer the fallback or the engine?** AI director asks. It decides
+  whether to spend another week there.
 
 ---
 
@@ -3025,11 +3143,12 @@ loading nothing.
 
 ### WAITING ON HIM, AND THESE ARE THE ONES THAT BLOCK
 
-- [?] Is the lexicon supposed to be derived from The Mechanics of Being, or is
-  it allowed to be a separate instrument vocabulary with its own justification?
-- [?] When a person writes the name of an axis plainly, "I was afraid", should
-  that land on the axis directly, or is a named feeling deliberately weaker
-  evidence than a described behaviour?
+- [?] **Is the lexicon derived from The Mechanics of Being, or a separate
+  instrument vocabulary with its own justification?** AI director asks, and
+  it blocks. Asked again at Q2, with the word counts on it.
+- [?] **When a person writes "I was afraid", does that land on the axis
+  directly, or is a named feeling weaker evidence than a described
+  behaviour?** AI director asks, and it blocks.
 
 ---
 
@@ -3137,11 +3256,13 @@ on any surface.
 
 ### WAITING ON HIM
 
-- [?] **Does the avatar replace the Field as the surface the app opens on, or
-  sit beside it?** This blocks everything else in the design.
-- [?] **A quarter of releases moves Marcus 1.3 and three laws move him 3.3. Do
-  we tell him?** It is the truest thing the instrument can say and it also says
-  the release is not his lever.
+- [?] **Does the avatar replace the Field as the surface the app opens on,
+  or sit beside it?** UX architect asks. This blocks everything else in the
+  avatar design. Same question as D11, which carries the history.
+- [?] **Do we tell a person that a quarter of his releases move him 1.3
+  while three laws move him 3.3?** Narrative director asks. Those are
+  Marcus's numbers. It is the truest thing the instrument can say and it
+  also says the release is not his lever.
 
 ---
 
@@ -3156,12 +3277,12 @@ on any surface.
   won rather than by a third shape.
 - [x] **PC2. Numbers one point smaller.** Applied: large 19 to 18, medium 15 to
   14, small 12.5 to 11.5.
-- [?] **PC3. And half a point smaller inside the circle, which the type floor
-  refuses.** The extra small pill prints at 11.5 and the letters inside a ring
-  print at 11, and eleven is the floor `tests/design.js` gate 4 enforces. A
-  half point below it is 10.5 and the gate fails by name. So extra small stayed
-  at 11.5 and the ring letters stayed at 11, and this is his to rule: either
-  the floor moves, which it should not, or those two hold where they are.
+- [?] **PC3. Does the type floor hold at eleven points, so the pill and the
+  ring letters stay where they are?** Art director asks. He asked for half a
+  point smaller inside the circle. The extra small pill prints at 11.5 and
+  the letters inside a ring print at 11, and eleven is the floor
+  `tests/design.js` gate 4 enforces, so a half point below it fails by name.
+  Both stayed where they were. The floor should not move.
 - [ ] **PC4.** Low priority, his words, so it rides the next pass that already
   touches these files rather than starting one.
 
@@ -3299,11 +3420,12 @@ with your findings."
 
 ### VID. THE UNIVERSAL LAW VIDEOS
 
-- [?] **VID1.** He has pointed at `G:\My Drive\Production\### TULA\Claude
-  Code\Atuned Videos`. **That is a path on his own machine and nothing in this
-  session can reach it.** This runs in an isolated container with no access to
-  his drive. They have to be attached to a message, or pushed to the repository,
-  or put somewhere fetchable. Named here so it is not mistaken for delivered.
+- [?] **VID1. Where can the Universal Law videos be fetched from?** Project
+  manager asks. He has pointed at `G:\My Drive\Production\### TULA\Claude
+  Code\Atuned Videos`, which is a path on his own machine, and this runs in
+  an isolated container with no access to his drive. They have to be
+  attached to a message, or pushed to the repository, or put somewhere
+  fetchable. Named here so it is not mistaken for delivered.
 
 ---
 
@@ -3409,18 +3531,22 @@ cannot separate it from the behavioural kind.
 
 ### THREE THINGS FOR HIM
 
-- [?] **What does a surface say?** "Your accountability is 34 of 100" is a
-  verdict on a person from a keyword count and the seat refused to ship it.
-  Three alternatives are laid out in `DESIGN-lean.md` for him to rule between.
-- [?] **May the history whitelist gain one line?** `validateProfile` rebuilds
-  every snapshot from a whitelist, measured at 16 keys written and 15 returned
-  with `lean` silently dropped and `ok: true`. The seat declined to ship a field
-  that looks stored and is not, which is the right call and this repository's own
-  recurring defect. Without that line there is no per snapshot lean, ever.
-- [?] **How is this ever evaluated honestly?** There is no labelled set, and the
-  privacy ruling forbids holding the record joined to the story. The only route
-  is a small hand labelled set of stories without records, labelled by somebody
-  other than the author of the lists.
+- [?] **What does a surface say instead of "Your accountability is 34 of
+  100"?** Narrative director asks. That sentence is a verdict on a person
+  from a keyword count and the seat refused to ship it. Three alternatives
+  are laid out in `DESIGN-lean.md` for him to rule between.
+- [?] **May the history whitelist gain one line, so lean is stored per
+  snapshot?** Systems director asks. `validateProfile` rebuilds every
+  snapshot from a whitelist, measured at 16 keys written and 15 returned
+  with `lean` silently dropped and `ok: true`. The seat declined to ship a
+  field that looks stored and is not, which is the right call and this
+  repository's own recurring defect. Without that line there is no per
+  snapshot lean, ever.
+- [?] **How is the sniffer ever evaluated honestly?** AI director asks.
+  There is no labelled set, and the privacy ruling forbids holding the
+  record joined to the story. The only route is a small hand labelled set of
+  stories without records, labelled by somebody other than the author of the
+  lists.
 
 ### AND ONE DEFECT OUTSIDE ITS OWNERSHIP
 
@@ -3503,26 +3629,34 @@ they felt, and whether the same word returns next session.
   the word hollows out before the beat ends. The prototype uses a 3000ms beat
   for that reason.
 
-### SIX PLACES THE BOOK AND HIS SPOKEN DESCRIPTION DISAGREE
+### WHERE THE BOOK AND HIS SPOKEN DESCRIPTION DISAGREE
 
-- [?] Aloud, as the book says, or thought, as he said.
-- [?] Location, as the book says, or quality, as he said.
-- [?] No repetition count in the book against ten each in his description.
-- [?] The order of the senses. His spoken list names the auditory channel twice.
-- [?] **The sharpest one.** Book line 3339: **"The Observer is not the awareness.
-  It is what is aware of the awareness."** That separates two layers his spoken
-  description collapses into one, and `kb.js` currently follows the book.
+- [?] **Is the signal test spoken aloud, as the book has it, or thought, as
+  you described it?** Guru asks.
+- [?] **Does a person report the location of the sensation, as the book has
+  it, or its quality, as you described it?** Guru asks.
+- [?] **Is there a repetition count, ten each as you described, or none as
+  the book has it?** Guru asks.
+- [?] **What is the order of the senses?** Guru asks. His spoken list names
+  the auditory channel twice, so one of them is standing in for a channel
+  nobody has named.
+- [?] **On the Observer, which moves, the book or `kb.js`?** Guru asks, and
+  it is the sharpest of the six. Book line 3339: **"The Observer is not the
+  awareness. It is what is aware of the awareness."** That separates two
+  layers his spoken description collapses into one, and `kb.js` currently
+  follows the book.
 
 ### AND A COLLISION WITH THE GAMIFICATION NOW IN SCOPE
 
-- [?] **SIG17.** The systematic review of self caught methodologies, 39 of 790
-  studies, finds that **incentivising self catching produces over reporting.**
-  The observer test's "that landed" tap is the only signal it collects, and
-  feeding it points, badges or a streak would destroy it. The two features
-  cannot both have it.
-- [?] **SIG18.** And the question under all of it: does either exercise need to
-  produce a number at all? Both could capture nothing but a timestamp and still
-  do what he described.
+- [?] **SIG17. Does the observer tap stay out of the points ladder?** Guru
+  asks. The systematic review of self caught methodologies, 39 of 790
+  studies, finds that **incentivising self catching produces over
+  reporting.** The "that landed" tap is the only signal the test collects,
+  and feeding it points, badges or a streak would destroy it. The two
+  features cannot both have it.
+- [?] **SIG18. Does either exercise need to produce a number at all?** Guru
+  asks, and it sits under all of it. Both could capture nothing but a
+  timestamp and still do what he described.
 
 ---
 
@@ -3583,57 +3717,67 @@ reading would be a regression nothing could see.
 
 ### THE THIRTEEN QUESTIONS, AND THE TWO THAT DECIDE THE REST
 
-- [?] **Q1. When a person writes in the journal, are they reporting an event or
-  stating a stance?** The fourteen persona voices this product ships are all
-  stance: "Rest feels like a moral failure." "There is nothing wrong with me."
-  **A vocabulary cannot reach a stance.** Today the instrument is built for
-  events and every held example is a stance. If the journal receives stance, the
-  frame layer is the product and the lexicon is a side show.
+- [?] **Q1. When a person writes in the journal, are they reporting an event
+  or stating a stance?** AI director asks. The fourteen persona voices this
+  product ships are all stance: "Rest feels like a moral failure." "There is
+  nothing wrong with me." **A vocabulary cannot reach a stance.** Today the
+  instrument is built for events and every held example is a stance. If the
+  journal receives stance, the frame layer is the product and the lexicon is
+  a side show.
 - [?] **Q2. Is the lexicon derived from the book, or a separate instrument
-  vocabulary with its own justification?** 87 of 192 authored words appear in the
-  book, 105 do not, and 8 of 124 idiom phrases do. Both answers are defensible
-  and they are different products.
+  vocabulary with its own justification?** AI director asks. 87 of 192
+  authored words appear in the book, 105 do not, and 8 of 124 idiom phrases
+  do. Both answers are defensible and they are different products.
 
 ### THE THREE THAT CHANGE EVERY READING EVER PRODUCED
 
-- [?] **Q3. Does it read negation?** "I was angry" and "I was not angry" both
-  give solar 18. "I am not afraid but I could be afraid" gives root 32, **double**
-  what "I am afraid" gives. A denial currently raises the reading.
-- [?] **Q4. Is the charge the same when a person did it as when it was done to
-  them?** "I shouted at him" and "he shouted at me" both give solar 24. The 112
-  addresses already distinguish the two.
-- [?] **Q5. Is a charge a person has released still a charge?** "I panic every
-  day" and "I used to panic and I do not any more" both give root 28. The loop is
-  release, so a person writing about a release is charged by their own account of
-  it.
+- [?] **Q3. Does the sniffer read negation?** AI director asks. "I was
+  angry" and "I was not angry" both give solar 18. "I am not afraid but I
+  could be afraid" gives root 32, **double** what "I am afraid" gives. A
+  denial currently raises the reading.
+- [?] **Q4. Is the charge the same when a person did it as when it was done
+  to them?** AI director asks. "I shouted at him" and "he shouted at me"
+  both give solar 24. The 112 addresses already distinguish the two.
+- [?] **Q5. Is a charge a person has released still a charge?** AI director
+  asks. "I panic every day" and "I used to panic and I do not any more" both
+  give root 28. The loop is release, so a person writing about a release is
+  charged by their own account of it.
 
 ### FOUR CONTRADICTIONS INSIDE THE CANON
 
-- [?] **Q6. Where a charge sits has two answers and they disagree.** `CHG2SEAT`
-  says Shame is sacral; the addresses make Shame modal at the throat 3 to 1. It
-  says Apathy is throat; the addresses make it sacral 8 to 0 and the throat
-  carries no Apathy address at all.
-- [?] **Q7. Surprise appears 0 times in 117,716 words of the book**, has no
-  authored vocabulary, and is scored on every reading and drives two saboteurs.
-  Is it an axis the canon argues for?
-- [?] **Q8. What does the number 24 mean?** 181 charged amounts, range 12 to 28,
-  median 24, and no stated scale anywhere. One sentence naming the top of the
-  range makes the other 180 auditable.
-- [?] **Q9. When a longer specific entry contains a shorter idiom, which wins?**
-  "I cannot stop thinking about it" reads as compulsion at the sacral, because
-  the idiom "cannot stop" outranks the entry "cannot stop thinking" at the third
-  eye. A person ruminating is told they are compulsive. Wrong seat, less charge.
+- [?] **Q6. Which is right about where a charge sits, `CHG2SEAT` or the
+  addresses?** AI director asks. `CHG2SEAT` says Shame is sacral; the
+  addresses make Shame modal at the throat 3 to 1. It says Apathy is throat;
+  the addresses make it sacral 8 to 0, and the throat carries no Apathy
+  address at all.
+- [?] **Q7. Is Surprise an axis the canon argues for?** AI director asks. It
+  appears 0 times in 117,716 words of the book, has no authored vocabulary,
+  is scored on every reading and drives two saboteurs.
+- [?] **Q8. What does the number 24 mean?** AI director asks. 181 charged
+  amounts, range 12 to 28, median 24, and no stated scale anywhere. One
+  sentence naming the top of the range makes the other 180 auditable.
+- [?] **Q9. When a longer specific entry contains a shorter idiom, which
+  wins?** AI director asks. "I cannot stop thinking about it" reads as
+  compulsion at the sacral, because the idiom "cannot stop" outranks the
+  entry "cannot stop thinking" at the third eye. A person ruminating is told
+  they are compulsive. Wrong seat, less charge.
 
 ### AND THE ONE THE SEAT WOULD ASK FIRST
 
-- [?] **Q13. `inferred:false` is reporting green while the product prints an
-  address nobody named.** "I was furious" returns four imprints named **Pride,
-  Arrogance, Competition and Anger, all flagged `inferred:false`**, which says
-  the person named it. The flag is truthful about what it guards, the axis, but
-  **no word ever names an address**: the four are a susceptibility sort. So the
-  flag built to stop exactly this is green while the product tells somebody they
-  have Pride because they wrote furious. Either the flag splits in two, axis and
-  address, or a reading stops printing address names.
+- [?] **Q13. Does the `inferred` flag split into axis and address, or does a
+  reading stop printing address names?** AI director asks, and the seat
+  would ask it first. "I was furious" returns four imprints named **Pride,
+  Arrogance, Competition and Anger, all flagged `inferred:false`**, which
+  says the person named it. The flag is truthful about what it guards, the
+  axis, but **no word ever names an address**: the four are a susceptibility
+  sort. So the flag built to stop exactly this is green while the product
+  tells somebody they have Pride because they wrote furious.
+- [ ] **Q10, Q11 and Q12 are not in this file.** The heading above says
+  thirteen questions and the ledger carries ten: Q1 to Q9 and Q13. Nothing in
+  this repository holds the other three. Either they were asked and never
+  written down, or the count is wrong, and the AI seat owns which. A number
+  typed into a heading that the list does not support is this repository's own
+  recurring defect.
 
 ### WHERE IT DISPUTED THE BRIEF, AND WAS RIGHT TO
 
@@ -3929,33 +4073,39 @@ is here.** Checked directly:
     reviews/canon.json           missing
     handoff/ATUNED_SPEC.json     missing
 
-- [?] **SP14.** This matters most for `reviews/elements.json`, which the spec
-  calls **"your lexicon"** and says to load directly rather than retyping. It
-  holds 76 elements with `sh` and `co` strings, the shadow and coherent pair for
-  every one, and section 7 says that file is what the flow layers are read from.
-  Without it the expression shadows, the nature and human nature layers and the
-  coherent pole for every element have to be retyped from the specification's
-  prose, which is exactly what it tells us not to do.
-- [?] **SP15.** `ENGINE.json` is named as the source of the saboteur bands, the
-  axis addresses, the archetypes, the domains and the formulas. The band table is
-  printed in full in the specification so that part survives. The formulas are
-  not, and the CQ contradiction is a formula question.
-- [?] **SP16.** `reviews/canon.json` is named as "every ruling, with dates and
-  provenance", which is the thing that would settle the E43 inconsistency and the
-  benign and malignant conflict without asking him.
+- [?] **SP14. Can `reviews/elements.json` be pushed to the repository?** AI
+  director asks. The spec calls it **"your lexicon"** and says to load it
+  directly rather than retyping. It holds 76 elements with `sh` and `co`
+  strings, the shadow and coherent pair for every one, and section 7 says
+  that file is what the flow layers are read from. Without it the expression
+  shadows, the nature and human nature layers and the coherent pole for
+  every element have to be retyped from the specification's prose, which is
+  exactly what it tells us not to do.
+- [?] **SP15. Can `ENGINE.json` be pushed, or are the formulas printed
+  somewhere we already have?** AI director asks. It is named as the source
+  of the saboteur bands, the axis addresses, the archetypes, the domains and
+  the formulas. The band table is printed in full in the specification so
+  that part survives. The formulas are not, and the CQ contradiction is a
+  formula question.
+- [?] **SP16. Can `reviews/canon.json` be pushed?** AI director asks. It is
+  named as "every ruling, with dates and provenance", which is the thing
+  that would settle the E43 inconsistency and the benign and malignant
+  conflict without asking him at all.
 
 **So: send the four files, or the work retypes from prose and the specification's
 own instruction is broken on the first line of section 13.**
 
 ### AND ONE INTERNAL INCONSISTENCY IN THE SPEC ITSELF, RAISED NOT GUESSED
 
-- [?] **SP12.** Section 7 says 76 numbered slots with 75 live because **E43 is
-  retired**. Section 6 lists **E43 as Wisdom**, live, with a violation string. One
-  of the two is wrong and it is his document.
-- [?] **SP13. The benign and malignant polarity conflict is named as OPEN in the
-  spec**, section 12: "malignancy counts up in one place and down in another,
-  resolve before scoring anything on it." **The lean work delivered today scores
-  on it.** It has to be reconciled against this before it reaches a surface.
+- [?] **SP12. Is E43 retired, or live as Wisdom?** AI director asks. Section
+  7 says 76 numbered slots with 75 live because **E43 is retired**. Section
+  6 lists **E43 as Wisdom**, live, with a violation string. One of the two
+  is wrong and it is his document.
+- [?] **SP13. Does malignancy count up or down?** AI director asks. The spec
+  names the polarity conflict as OPEN, section 12: "malignancy counts up in
+  one place and down in another, resolve before scoring anything on it."
+  **The lean work delivered today scores on it.** It has to be reconciled
+  before it reaches a surface.
 
 ---
 
@@ -4016,17 +4166,19 @@ information. That's a problem."
   `pointerdown` already serve: hover answered 21 of 21, click opened 21 of 21.
   Frame 0.40ms median against 0.4 today. **Held pending AH5, because one open
   question changes the design.**
-- [?] **AH5. What number is vibrancy?** His word, and it decides the second
-  channel. Seat charge inverted is the only per law quantity the engine already
-  holds. If he means conviction, frequency or recency, none of the three exist
-  and each is a new intake field.
-- [?] **AH6.** Does the triad leave the core. It is three states scored 0 to 1
-  drawn on a ring calibrated 0 to 10, and it already has its own door on the key
-  strip, so the spec takes it out. His call.
-- [?] **AH7.** Should the core stop sizing by CQ once it is open. Tomas gets a
-  94.7 pixel chart and Rosa 277.4 on the same twenty one marks, so a chart that
-  shrinks with its own reading hides the worst readings, which are the ones
-  worth looking at.
+- [?] **AH5. What number is vibrancy?** Art director asks. His word, and it
+  decides the second channel on a feather. Seat charge inverted is the only
+  per law quantity the engine already holds. If he means conviction,
+  frequency or recency, none of the three exist and each is a new intake
+  field.
+- [?] **AH6. Does the triad leave the core graphic?** Art director asks. It
+  is three states scored 0 to 1 drawn on a ring calibrated 0 to 10, and it
+  already has its own door on the key strip, so the spec takes it out. His
+  call.
+- [?] **AH7. Does the core stop sizing by CQ once it is open?** Art director
+  asks. Tomas gets a 94.7 pixel chart and Rosa 277.4 on the same twenty one
+  marks, so a chart that shrinks with its own reading hides the worst
+  readings, which are the ones worth looking at.
 - [ ] **AH3. A hundred passes.** UI UX, design and the art director hash it
   amongst themselves a hundred times, for the best **visual** and, his
   emphasis, the best **symbolic** representation. Symbol first.
@@ -4150,11 +4302,11 @@ want to be cold."
   product tooltip, because the module falls back to `title`. No renderer is
   touched. Five more steps retire the probe, the railtip and the caption slots,
   then enrich file by file, then give the 27 static carriers a tabindex.
-- [?] **AM4.** Should hover open at all on a fine pointer, or is everything a
-  tap? Removing an affordance is a bigger ruling than adding one, so hover was
-  kept pending his word.
-- [?] **AM5.** What is the action line for: the eight rows that already
-  navigate, or all 195?
+- [?] **AM4. Does hover open a tooltip on a fine pointer, or is everything a
+  tap?** UX architect asks. Removing an affordance is a bigger ruling than
+  adding one, so hover was kept pending his word.
+- [?] **AM5. Is the action line for the eight rows that already navigate, or
+  for all 195?** UX architect asks.
 - [ ] **AM2.** And it has to be good. "Design it so that it's sexy. Wow me.
   Think transition, think animation, think how can I make this interesting."
   Creative director, art director, UI UX, ten passes.
@@ -4175,12 +4327,15 @@ want to be cold."
 
 ### WAITING ON HIM, FROM THIS ROUND
 
-- [?] **The Universal Law videos.** He asked whether he ever gave them. He has
-  not. Nothing has arrived in this session and there is no video anywhere in
-  the repository. Needed before anything is built on them.
-- [?] Whether "body mind complex" is the product's own term or a description.
-- [?] What the feathers are meant to mean, if his length and vibrancy proposal
-  is not the answer.
+- [?] **Where can the Universal Law videos be fetched from?** Project
+  manager asks. He asked whether he ever gave them. He has not. Nothing has
+  arrived in this session and there is no video anywhere in the repository.
+  Same ask as VID1, and nothing is built on them until they land.
+- [?] **Is "body mind complex" the product's own term, or a description?**
+  Narrative director asks.
+- [?] **What are the feathers meant to mean, if length and vibrancy is not
+  the answer?** Art director asks. Vibrancy is the half of his proposal
+  nobody can compute, which is AH5.
 
 ---
 
@@ -4570,10 +4725,16 @@ Look and language
 
 ## 3. WAITING ON A RULING FROM HIM
 
-- [?] D1. The twelve onboarding questions, sent as HTML
-- [?] D3. Video hosting: 15.4 MB against a one file build with no network
-- [?] D4. Films 7 and 8 are numbered opposite to the engine
-- [?] D5. Three laws carry two names, and Balance collides with the wheel strip
+- [?] D1. **Do the twelve onboarding questions stand as sent?** UX architect
+      asks. They went out as HTML and nothing has come back on them.
+- [?] D3. **Where do the videos live, at 15.4 megabytes against a one file
+      build with no network?** Technical director asks.
+- [?] D4. **Which numbering is right for films 7 and 8, the films or the
+      engine?** Systems director asks. They are numbered opposite to each
+      other.
+- [?] D5. **Which of the two names survives, for each of the three laws that
+      carry two?** Narrative director asks. And Balance collides with the
+      wheel strip, so that one needs a second answer.
 - [x] D6. **RULED. What Source AI reads, and what it is for.**
       His words, 20 September, and they answer a systems question rather than
       a permissions one. It reads:
@@ -4590,12 +4751,16 @@ Look and language
       `reviews/SPEC-source-ai.md`
       *Still his, separately: whether any of it may leave the device. This
       ruling says what the model reads, not where the model runs.*
-- [?] D7. The mark: direction A or B
-- [?] D8. The boot: three seconds or five
-- [?] D9. Nine release rulings, including what a mask is
-- [?] D10. The therapy equivalence claim, before the funnel ships
-- [?] D11. The opening surface. Summary, then Field, then Avatar.
-- [?] D12. Two factor auth, yes or no
+- [?] D7. **Does the mark go direction A or direction B?** Art director
+      asks.
+- [?] D8. **Does the boot run three seconds or five?** Art director asks.
+- [?] D9. **What is a mask?** Game director asks. It is the first of nine
+      release rulings waiting on him.
+- [?] D10. **Can the therapy equivalence claim stand?** Guru asks, and it
+      has to be answered before the funnel ships.
+- [?] D11. **Which surface does the app open on?** UX architect asks. It was
+      Summary, then Field, and the avatar design asks for Avatar.
+- [?] D12. **Two factor auth, yes or no?** Technical director asks.
 - [x] D19. **Jesus carries the Crown. Ruled.** "That would be Jesus at the
       very top. That's love. Love transmutes all. That's the highest charge."
       He stands at two poles now, the Heart and the Crown, which is his canon
@@ -4603,8 +4768,9 @@ Look and language
       Jesus were one figure under two names across two lists and are one name.
       The master list stays eleven, because unifying two names for one person
       does not add a person.
-- [?] D20. Whether the Crown axis is still called Revelation now that love
-      rather than direct knowing stands at the top of it.
+- [?] D20. **Is the Crown axis still called Revelation, now that love rather
+      than direct knowing stands at the top of it?** Narrative director
+      asks.
 - [x] D18. **THE MARK IS CALLED AWARENESS, LOWERCASE.** Ruled 20 September.
       He said "just call it sol, lowercase" and corrected himself in the same
       breath: "actually, it's called awareness." Awareness stands, sol is
@@ -4618,17 +4784,22 @@ Look and language
       ratio in the proportion, very tiny, pure gold, and cute. Not a squiggly
       Q. `reviews/AD-soul-loop.md`, and it is the crown of the mark stack.
       Tasks it unblocks: `AT2` the mark, `AT3`, and the stack's top layer.
-- [?] D14. Does the intake reach the release? It measures how you act; charge
-      comes from a story. There is no path between them and that may be right.
-      His call, and the copy now says which is which.
-- [?] D15. Paywall enforcement
-- [?] D17. **The two API keys, and where they may live.** Offered 20 September:
-      the ElevenLabs voice and the Claude key. Neither can go in `source.html`,
-      because the file is one file with no backend and a key in it is a key
-      every person who opens it can read and spend. They belong in the server's
-      environment, and the server is `AS2`, which does not exist. Nothing to
-      hold them safely yet, so they are not to be pasted anywhere until it does.
-      The Claude key is also gated on `D6`, what Source AI may read.
+- [?] D14. **Does the intake reach the release?** UX architect asks. The
+      intake measures how you act and charge comes from a story. There is no
+      path between them and that may be right. His call, and the copy now
+      says which is which.
+- [?] D15. **What enforces the paywall, in one file a person already has?**
+      Sales director asks.
+- [?] D17. **Do both API keys wait until the server exists?** Technical
+      director asks. Offered 20 September: the ElevenLabs voice and the
+      Claude key. Neither can go in `source.html`, because the file is one
+      file with no backend and a key in it is a key every person who opens
+      it can read and spend. They belong in the server's environment, and
+      the server is `AS2`, which does not exist. Nothing holds them safely
+      yet, so they are not to be pasted anywhere until it does. The Claude
+      key is also gated on `D6`, what Source AI may read.
+- [?] D16. **Is the top rung one bit, CQ restated, or two, Shape and
+      Control?** Systems director asks.
 
 ## 3b. ANSWERED, SO IT IS NOT A RULING ANY MORE
 
@@ -4640,8 +4811,6 @@ numerology. A free ephemeris service would replace arithmetic the product
 already does with a network call that carries a person's birth date, time and
 place off the device. That is the most identifying record in the profile and
 the privacy floor refuses it. No key is needed and none should be added.
-- [?] D16. Whether the top rung is one bit (CQ restated) or two (Shape and
-      Control)
 
 ---
 
