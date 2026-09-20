@@ -820,11 +820,13 @@ console.log('\n=== one tooltip ===');
 
    WHAT THIS DOES NOT REACH, named rather than left to be discovered. It walks
    surfaces, so it sees the centre column, both rails and anything else in the
-   document at the time. A drill renders into #rdrill on a click and is swept
-   only if one is open, so the .ad-nm strings inside drills.js are not watched
-   here. Measured statically at the time of writing: about thirty literals in
-   drill markup read as sentences. That is the next extension of this gate and
-   it is a bigger copy pass than this one.
+   document at the time. A drill renders into #rdrill on a click and a help
+   sheet into its own host, so neither is swept unless one is open. On the day
+   this gate was written a static scan of the source found 24 literals in that
+   markup that read as sentences: twenty in drills.js, two in panels.js, one in
+   record.js and one in knowledge.js, which is the surface another seat is
+   rebuilding. Extending the walk to open every drill is the next step and it
+   is a bigger copy pass than this one was.
    ============================================================ */
 console.log('\n=== a sentence in a label class carries plain ===');
 {
@@ -870,10 +872,21 @@ console.log('\n=== a sentence in a label class carries plain ===');
   const a=TABDEF.map(t=>[t.nm.toLowerCase(),t.k]);
   Object.keys(TABEXTRA).forEach(k=>a.push([TABEXTRA[k].nm.toLowerCase(),TABEXTRA[k].k]));
   return a;});
+ /* THREE PROFILES, AND THE HEAVY ONE IS FOUND RATHER THAN TYPED. A test that
+    said loadP(8) and meant the heaviest person in a roster that then grew is
+    on this repository's list of numbers that went stale, so the heaviest is
+    asked for at run time. More load means more strings, and a string that only
+    renders on a full field is exactly the one nobody looks at. */
+ const HEAVY=await page.evaluate(()=>{
+  let best=0,bi=0;
+  PEOPLE.forEach((p,i)=>{const n=((p.story&&p.story.entries)||[]).length
+    +Object.keys(p.charge||{}).length;
+   if(n>best){best=n;bi=i;}});
+  return bi;});
  const seen=new Map(); let selfok=true, n=0;
  for(const [w,h] of [[1600,1000],[390,844]]){
   await page.setViewportSize({width:w,height:h});
-  for(const who of ['blank',2]){
+  for(const who of ['blank',0,HEAVY]){
    if(who!=='blank')await page.evaluate(i=>loadP(i),who);
    for(const [nm,t] of TABS){
     await page.evaluate(k=>setTab(k),t);

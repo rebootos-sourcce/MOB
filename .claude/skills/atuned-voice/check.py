@@ -182,7 +182,10 @@ CAPS = re.compile(r'\b[A-Z]{3,}\b')
 CAPS_OK = {'CQ', 'SQ', 'DQ', 'IQ', 'MBTI', 'INFJ', 'ENTP', 'JSON', 'HTML',
            'CSS', 'URL', 'API', 'OK', 'AM', 'PM', 'UTC'}
 
-EMDASH = '—'
+# built from its codepoint so this file does not itself contain one. The
+# ruling is no em dashes anywhere, and a gate that breaks the rule it enforces
+# is the tool lying about the thing it watches.
+EMDASH = chr(0x2014)
 
 BUCKETS = ('menu', 'label', 'value', 'definition', 'instruction',
            'reading', 'refusal')

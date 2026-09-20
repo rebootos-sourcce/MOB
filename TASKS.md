@@ -21,6 +21,70 @@ reopens. Every seat adds its own.
 
 ---
 
+## 0p. DELIVERED 20 SEPTEMBER. THE CODEX, THE RENAME, AND THREE LAYOUT DEFECTS.
+
+### KB. THE KNOWLEDGE BASE, REBUILT.
+
+- [x] **KB1. Rows above the fold went from 12 to 39 at 1600 and 1 to 5 on a
+      phone.** Row height 150 to 56, codex header 288 to 158. Five decks now
+      fit whole on one screen where one did before: the child emotions, the
+      saboteurs, moral integrity, the cards and the stack.
+- [x] **KB2. The mark is composed, so it stops colliding.** The seat is the
+      ring colour and the axis is the glyph inside it, both tables already
+      shipped. Seven distinct marks become forty and the worst collision falls
+      from 21 rows to 10.
+- [x] **KB3. 258 of 332 rows carry a figure and 74 honestly cannot.** None is
+      invented. The design document said 260 and the run says 258; the two are
+      axis cards the engine carries no axis for, and the run is right.
+- [x] **KB4. The glossary left the decks and became what the search answers
+      with,** which is both the honest resolution and the largest single
+      removal of repeated subtext from the page.
+- [x] **KB5. A defect caught three times in three coats.** The universal laws
+      deck breaks by axis, and the first cut had every row answer with its
+      axis under a heading that already said it. The second said one identical
+      sentence on 55 rows. The third gives those rows no fourth line at all,
+      because a line with nothing of its own to say should not be drawn.
+
+### RN. THE RENAME. THE NINE ARE CHILD EMOTIONS.
+
+- [x] **RN1. Done as specified and no key moved.** User visible uses of the
+      word fetter went from 22 to 17, and all 17 now mean the 112. Nothing
+      uses it for the nine. No persisted key was in the blast radius and no
+      schema bump was needed.
+- [x] **RN2. Gated so neither can regress.** The eleven deck names, the three
+      absent old names, the rail, the stack tab, the phrase child fetter
+      absent from every surface, the deck carrying 112, and the chip printing
+      112.
+- [x] **RN3. The deck was showing 108 of the 112.** The four field anchors
+      live in a different table from the rest and appeared in no deck at all,
+      so the surface whose whole job is listing every address was four short,
+      and a chip counting its own rows would have printed the one number this
+      product must never say.
+
+### LY. THREE LAYOUT DEFECTS, ALL PRE EXISTING, ALL FIXED HERE.
+
+- [x] **LY1. A new surface starts at its own top.** On a phone the whole app
+      scrolls in one container and arriving at a surface did not take the view
+      back to the top of it. Measured at 390: after reading down the codex and
+      pressing Compass, the container sat at 4636 and the compass sat at minus
+      4114, off screen by more than four screens. It reads as the tab doing
+      nothing, which is the worst kind of defect because a person presses it
+      again and it still does nothing. Now zero and on screen.
+- [x] **LY2. The Field's key strip belonged to every surface.** Absolutely
+      positioned inside the stage at z-index 3 with no tab guard at all, so it
+      sat on top of whatever every other surface had in that corner. This file
+      already carried the lesson from the other direction: the render watch
+      once took it as the surface host and measured it nine times because it
+      is visible on every tab. It was a layout defect then and nobody read it
+      as one.
+- [x] **LY3. The glossary said 108 to a person,** in two entries, and the
+      search now answers with them so they are more prominent than before.
+      Reworded rather than find and replaced, because the anatomy really is
+      the body's nodes plus four field nodes and changing the number would
+      have made the definition wrong.
+
+---
+
 ## 0q. RULED 20 SEPTEMBER, SEVENTH PASS. THE RITUAL PAGE AS A SYSTEM.
 
 He has seen the calendar and ruled against it on aesthetic: "this doesn't

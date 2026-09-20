@@ -2041,6 +2041,15 @@ body.dens-wide{--ui:1.1}
    a story and finding no reachable atom anywhere.
 
    The container passes the pointer through and only the chips take it. */
+/* AND IT BELONGS TO THE FIELD, WHICH NOTHING SAID UNTIL NOW. It is absolutely
+   positioned inside .stage at z-index 3 with no tab guard at all, so the
+   Field's key strip sat on top of whatever every other surface had in that
+   corner, the codex's lower rows included. This file already carries the
+   lesson from the other direction: the render watch took the first visible
+   child of .stage as the surface host and measured this strip nine times,
+   because it is visible on every tab. It was a layout defect then and nobody
+   read it as one. One line, on the surface that owns the strip. */
+body:not(.tab-field) .keylo{display:none}
 .keylo{position:absolute;left:14px;bottom:14px;z-index:3;display:flex;gap:8px;
  flex-wrap:nowrap;pointer-events:none}
 .keylo .kb{pointer-events:auto}

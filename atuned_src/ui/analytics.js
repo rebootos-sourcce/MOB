@@ -176,9 +176,14 @@ function anaRender(){
     printed "Moral Integrity, 21 Of The 76 Laws, Each 0 To 10, None Shut". The
     frame is still owed to the person and it is prose, so it goes in the prose
     class underneath. "each 0 to 10" is the struck phrasing and the plain words
-    for that scale are the ones the intake already uses: never to every time. */
+    for that scale are the ones the intake already uses: never to every time.
+
+    "scored" was the first word here and terms.py caught it: this product says
+    a reading is not a score, and drills.js tells a person in as many words
+    that nothing is scored. The intake already counts what a person has
+    answered, so answered is the word. */
  out+='<div class="pm-eye" style="margin-top:20px">Moral integrity</div>'
-  +'<p class="sum-p">21 of the 76 laws, each scored from never to every time.</p>'
+  +'<p class="sum-p">21 of the 76 laws, each answered from never to every time.</p>'
   +'<div class="ana-laws">';
  laws.forEach(function(l){
   out+='<div class="ana-lw'+(l.v<4?' shut':'')+'" title="'+l.nm+' '+l.v.toFixed(1)+'">'

@@ -163,6 +163,25 @@ function setTab(i){
     something that happens once. */
  if(i===TAB.FIELD&&typeof enterStart==='function')enterStart();
  document.body.classList.toggle('hassub',i===TAB.FIELD||i===TAB.ENERGY);
+ /* A NEW SURFACE STARTS AT ITS OWN TOP.
+
+    On a phone the whole app scrolls inside one container, and arriving at a
+    surface did not take the view back to the top of it. So a person who had
+    read down the codex and then pressed Compass landed four thousand pixels
+    below the compass, on a screen showing the bottom of a surface they had
+    just left. Measured at 390: the container sat at 4636 and the compass sat
+    at minus 4114, which is off screen by more than four screens.
+
+    It reads as the tab doing nothing, which is the worst kind of defect
+    because a person presses it again and it still does nothing.
+
+    Only the container that actually scrolls, and only when it has moved, so
+    this writes nothing on a surface that was already at its top. */
+ (function(){
+  var sc=document.scrollingElement||document.documentElement;
+  [document.querySelector('.tip-sheet'),document.querySelector('.stage'),sc]
+   .forEach(function(el){ if(el&&el.scrollTop)el.scrollTop=0; });
+  if(typeof scrollTo==='function'&&sc&&sc.scrollTop)scrollTo(0,0);})();
  ['probe','howto','key','tier','pol'].forEach(function(id){
   var e=$(id); if(e)e.style.display=(i===TAB.FIELD)?'':'none';});
  /* pressed state read off each button's own integer, never off its position
