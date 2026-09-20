@@ -481,25 +481,36 @@ function runPoleDrill(end){
    +'<em style="color:'+c+'">'+esc(m.q.toLowerCase())+'</em></button>';});
  h+='</div>';
  if(up){
-  h+='<div class="pm-eye">The twelve, and where each one stood</div><div class="ad-rows">';
+  h+='<div class="pm-eye">'+NUMWORD(MASTERS.length)+', And Where Each One Stood'
+   +'</div><div class="ad-rows">';
+  /* IF IT HAS A NAME IT HAS AN ICON. Ruled: "every figure gets an icon. Rumi,
+     Buddha, Geryon, Moloch, all of them. Today they are names with marks on
+     some and nothing on others." The sixteen mirror poles had theirs; these
+     three lists were the ones with nothing. Names that appear on both reuse
+     the mirror icon rather than getting a second drawing. */
   MASTERS.forEach(function(x){
    h+='<div class="ad-r static" title="'+esc(x.d)+'">'
-    +'<span class="ad-k">'+esc(x.nm)+'</span>'
+    +'<span class="ad-k">'+adGl(x.ic)+esc(x.nm)+'</span>'
     +'<span class="ad-v">'+esc(x.was.toLowerCase())+'</span></div>';});
+  /* THE COUNT IS READ, NEVER TYPED. This heading said "the twelve" while the
+     list under it held eleven, from the moment Eckhart came out on a ruling.
+     Three gates in this repository have already failed on a number somebody
+     typed into a label and the product then grew past. */
   h+='</div><p class="ad-p">They appeared at moments of maximum collective decoherence. '
    +'That is the law of rhythm running at the scale of a civilisation rather than a person.</p>';
  } else {
   var dk=darkRead(r.outward,r.CQ), circ=circleAt(r.CQ);
   h+='<div class="pm-eye">The blueprint, where the downward cone ends</div><div class="ad-rows">';
   BLUEPRINT.forEach(function(x){
-   h+='<div class="ad-r static" title="'+esc(x.d)+'"><span class="ad-k">'+esc(x.nm)+'</span></div>';});
+   h+='<div class="ad-r static" title="'+esc(x.d)+'"><span class="ad-k">'
+    +adGl(x.ic)+esc(x.nm)+'</span></div>';});
   h+='</div>';
   h+='<div class="pm-eye">The descent, nine depths</div><div class="ad-rows">';
   CIRCLES.forEach(function(c){
    var here=circ&&circ.c===c.c;
    h+='<div class="ad-r static'+(here?' on':'')+'" title="'+esc(c.p+' '+c.at+'.')+'">'
     +'<span class="ad-k">'+esc(c.nm)+'</span>'
-    +'<span class="ad-v">'+esc(c.by)+'</span></div>';});
+    +'<span class="ad-v">'+adGl(c.ic)+esc(c.by)+'</span></div>';});
   h+='</div>';
   h+='<p class="ad-p">Read as a taxonomy rather than a poem. Each depth is a behaviour at a '
    +'specific compression, and the floor is stasis rather than power: no flow, no movement, '
@@ -629,6 +640,23 @@ function runCircleDrill(n){
    or a saboteur wearing a virtue. That is the owner's standing
    ruling and the monthly review exists because of it.
    ============================================================ */
+/* ONE NAMED FIGURE'S ICON, AS MARKUP. currentColor, so it takes the colour of
+   the row it sits in and can never disagree with the name beside it. Nothing
+   when the figure has no icon, rather than an empty box. */
+function adGl(d){
+ if(!d)return '';
+ return '<svg class="ad-gl" viewBox="0 0 24 24" aria-hidden="true">'
+  +'<path d="'+d+'" fill="none" stroke="currentColor" stroke-width="1.7" '
+  +'stroke-linecap="round" stroke-linejoin="round"/></svg>';}
+/* A COUNT IN A HEADING IS WRITTEN OUT, AND IT IS READ RATHER THAN TYPED.
+   "The twelve" sat above a list of eleven for as long as it took to notice,
+   because the number was in the string. Sentence case headers spell a small
+   number, which is the house style, so this spells it. */
+const NUMWORDS=['Zero','One','Two','Three','Four','Five','Six','Seven','Eight',
+ 'Nine','Ten','Eleven','Twelve','Thirteen','Fourteen','Fifteen','Sixteen',
+ 'Seventeen','Eighteen','Nineteen','Twenty'];
+function NUMWORD(n){
+ return 'The '+((NUMWORDS[n]||String(n)).toLowerCase());}
 function avOf(){ return (CURP&&CURP.avatar)||avatarBlank(); }
 function avRows(){
  var av=avOf();

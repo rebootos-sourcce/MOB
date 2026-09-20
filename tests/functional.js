@@ -1772,10 +1772,36 @@ console.log('\n=== a reading is not a score ===');
    this exact reason and left the number it was actually about. Held addresses
    were printed against the addresses at their seat in two more.
 
-   What is allowed and is deliberately not caught here: a length, like the
-   intake's progress bar, because a bar is not a number; and a ratio that names
-   its own denominator as a method rather than as a total of the person, which
-   the convergence line does in its own next sentence. */
+   A COUNT IS NOT A SCALE, AND THIS GATE COULD NOT TELL THEM APART.
+
+   Two rulings met here and the gate caught the collision, which is what it is
+   for. Never print a count against a total is one. Context is key, every
+   number says what it is out of, is the other, and it was given later and
+   given as an instruction to me rather than as a task: "you read 13, what
+   does that mean. A number without its scale is my job to stop."
+
+   They are not in conflict once the two things are named properly.
+
+     A COUNT is a tally of discrete things against how many of them exist.
+     Three of nine fetters, eleven of twenty one laws, forty of a hundred and
+     twelve nodes. The denominator is the size of a set, the numerator is how
+     much of it the person has, and the pair reads as a score out of a
+     possible score. That is the thing that shames and it stays banned.
+
+     A SCALE is a measurement against the range the measurement runs on.
+     Coherence out of a hundred, integrity of ten. The denominator is not a
+     quantity of anything, it is where the ruler ends. Without it the number
+     is meaningless, which is the whole of his complaint.
+
+   So the two scale bounds this instrument actually uses, ten and a hundred,
+   are allowed, and every other denominator is still refused. That is narrow
+   on purpose: a rule that allowed any round number would let "40 of 100
+   addresses" back in, and an address count is a count whatever it is out of.
+
+   Still not caught, deliberately: a length, like the intake's progress bar,
+   because a bar is not a number; and a ratio that names its denominator as a
+   method rather than as a total of the person, which the convergence line
+   does in its own next sentence. */
 for(const w of [[1600,1000],[390,844]]){
  const pg=await browser.newPage({viewport:{width:w[0],height:w[1]}});
  await pg.goto(FILE,{waitUntil:'load'}); await booted(pg); await pg.waitForTimeout(700);
@@ -1786,9 +1812,19 @@ for(const w of [[1600,1000],[390,844]]){
    for(const t of [0,1,2,3,5,6,7,8,9]){
     setTab(t); await new Promise(r=>setTimeout(r,300));
     const txt=document.body.innerText||'';
-    const RE=/\b(\d{1,3})\s*(?:of|out of)\s*(\d{1,3})\b/gi;
+    const RE=/\b(\d{1,3}(?:\.\d)?)\s*(?:of|out of)\s*(\d{1,3})\b/gi;
+    /* the two bounds the instrument's rulers actually end at, and nothing
+       else. a denominator that is the size of a set is still a count. */
+    const SCALE={10:1,100:1};
     let m; while((m=RE.exec(txt))){
-     if(+m[2]>+m[1]&&+m[2]>1)bad.push('tab '+t+': '+m[0]);}}
+     if(SCALE[m[2]])continue;
+     if(+m[2]>+m[1]&&+m[2]>1)bad.push('tab '+t+': '+m[0]);}
+    /* AND THE OTHER HALF OF THE SAME RULING IS NOW GATED TOO. A scale that is
+       allowed is not a scale that is present, so the compass, which is the
+       surface he named, has to carry one. Anything else would be the gate
+       licensing the defect it was rewritten to permit. */
+    if(t===8&&!/\b\d{1,3}\s*(?:of|out of)\s*100\b/.test(txt)&&!/unread/i.test(txt)
+       &&/You read/i.test(txt))bad.push('tab 8: a reading with no scale on it');}
    return bad;},who);
   ok(hits.length===0,'no count against a total at '+w[0]+' for '+who
     +(hits.length?', found '+hits.slice(0,4).join(', '):''));

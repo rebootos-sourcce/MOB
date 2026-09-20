@@ -554,8 +554,17 @@ const MIRROR=[
   up:'Elijah',   upd:'Grounded fire. Intensity moving through the body without destroying the container or the target.',
   dn:'Phlegyas', dnd:'Charge split at the root. Outward as rage or inward as paralysis. The same current, no clean exit.',
   ask:'Where does this person’s intensity go when it has nowhere to land?', ic:'M13 2.5L5.5 13.5H11L10 21.5l7.5-11H12z', dic:'M12 3v8M12 15v6M6 9l-2.6-2.6M18 9l2.6-2.6M4 13.5h3.4M16.6 13.5H20'},
+ /* ECKHART IS OUT. Ruled: classic figures only. He was the one name on the
+    eight that was not classical, and the axis is Revelation at the Crown,
+    which is direct knowing with the doctrine dropped. Lao Tzu carries it, and
+    he is already canon in this file at the horizontal. The line that names
+    him is the opening of the Tao Te Ching read as this axis: a doctrine that
+    says of itself that it is not the thing. SUBJECT TO HIS CONFIRMATION. The
+    removal is his ruling; who replaces Eckhart is his material, not mine, and
+    an axis with no coherent pole breaks the figure, so this is a stated
+    assumption rather than a silent choice. */
  {k:'RE', q:'Revelation', seat:'Crown',
-  up:'Meister Eckhart', upd:'Direct knowing. Doctrine made unnecessary by experience.',
+  up:'Lao Tzu', upd:'Direct knowing. The name that can be named is not the thing, so the doctrine is set down once it has done its work.',
   dn:'The Furies',      dnd:'Map replacing territory permanently. The belief system defended against any experience that contradicts it.',
   ask:'Can this person update their framework when direct experience contradicts it?',
   ic:'M12 3.5a6 6 0 013.5 10.9V17h-7v-2.6A6 6 0 0112 3.5M9.5 20h5',
@@ -583,7 +592,18 @@ const MASTERS=[
  {nm:'Musashi',   ax:'∴', of:'practice layer',  was:'Discipline',           d:'Sustained application of will at the node level over time. Two steps forward, one step back. Failure as data, not judgement.'},
  {nm:'Ramakrishna',ax:'Z', of:'desire surrendered',  was:'Devotion',             d:'Wanting that moves toward something beyond the self.'},
  {nm:'Elijah',    ax:'Z',  of:'charge grounded',     was:'Fire',                 d:'Intensity moving through the body without destroying the container or the target.'},
- {nm:'Meister Eckhart',ax:'Y', of:'revelation',      was:'Direct knowing',       d:'The framework dropped because what it pointed at has been encountered.'}];
+ /* ECKHART'S ROW IS GONE FROM HERE TOO, and it does not get a replacement,
+    because duplicating a name already on this list would make twelve by
+    counting somebody twice. The list is ELEVEN until he names the twelfth.
+
+    That is a real hole and it is stated rather than papered over. The codex
+    says the twelve are the union of the nine placed on the axes and the
+    three that come only from the mirror pairs. Lao Tzu now carries Revelation
+    on the mirror axis and he was already here at the horizontal, so the union
+    lost a member rather than swapping one. BOOK-ERRATA carries the
+    arithmetic and this is now the second entry in it.
+
+    HIS CALL: which classical figure anchors Revelation at the Crown. */];
 
 /* ---- THE DECOHERENT BLUEPRINT, THE DQ TERMINUS ----
    "These are not mythological figures. They are behavioural modes,
@@ -620,6 +640,67 @@ const CASCADE=[
  {nm:'The Energy Vampire',d:'Extracting emotional resource from others to sustain the self. No internal generative charge. It runs on borrowed current.'},
  {nm:'The Demon',         d:'Chaotic destructive reactivity without self awareness. No gap between stimulus and response.'},
  {nm:'The Devil',         d:'Calculated manipulation and deliberate domination. Not reactive, strategic. Awareness is present and deployed against coherence.'}];
+
+/* ---- THE ICONS FOR EVERYTHING ELSE WITH A NAME ----
+   Ruled: "every figure gets an icon. Rumi, Buddha, Geryon, Moloch, all of
+   them. Today they are names with marks on some and nothing on others."
+
+   The sixteen mirror poles already carried theirs. Everything below did not,
+   and it is a standing rule of this product that if a thing has a name it has
+   an icon, the icon has a family and the family has a colour.
+
+   Where a name already appears on a mirror pair the icon is REUSED rather
+   than redrawn. Buddha on the master list and Buddha on the perception axis
+   are one person, and drawing him twice differently is how one concept ends
+   up with two marks.
+
+   All on the same 24 unit grid as every other icon here. Ring, not fill. */
+const IC_REUSE={};
+MIRROR.forEach(function(m){IC_REUSE[m.up]=m.ic; IC_REUSE[m.dn]=m.dic;});
+/* the ones nobody has drawn yet, each one argued from what the figure does
+   rather than from what the figure looked like */
+const IC_NEW={
+ /* the Aten: a disc whose rays reach down and end in hands. the one image
+    Akhenaten actually left, and it is light arriving rather than light held */
+ 'Akhenaten':'M12 3.5a3.5 3.5 0 110 7 3.5 3.5 0 010-7M9 11.5l-2.6 5.4M12 12v6.2M15 11.5l2.6 5.4M5.4 18.4h2M11 19.6h2M16.6 18.4h2',
+ /* the same radiant as illumination, because Christ and Jesus are one name
+    on two lists and this product does not give one concept two marks */
+ 'Christ':null,
+ /* flow: two waves out of phase, which is what the field does when nothing
+    is blocking it */
+ 'Krishna':'M3 10c3-4 6 4 9 0s6-4 9 0M3 16c3-4 6 4 9 0s6-4 9 0',
+ /* all three axes held at once, meeting on one spine */
+ 'Rama':'M12 21V9.5M12 9.5L5 4M12 9.5L19 4M12 9.5V3M6.5 14.5h11',
+ /* the horizontal: a level line, and the water underneath it that goes round
+    rather than through */
+ 'Lao Tzu':'M3 8.5h18M3 14.5c3-3.2 6 3.2 9 0s6-3.2 9 0M3 19h18'};
+/* cold, structured extraction. the crown inverted, because that is what the
+   codex calls it: order in service of control rather than governance */
+IC_NEW['Malak']='M19 16.5l-3.6-4.2L12 18.5l-3.4-6.2L5 16.5v-9h14zM5 20h14';
+/* appetite without direction. a flame with a mouth in it */
+IC_NEW['Baal']='M12 21.5c-3.4 0-5.6-2.3-5.6-5.2 0-3.4 3.1-4.8 3.9-8 .4 1.8 1.5 2.8 2.5 3.5 1.5 1.3 2.3 2.5 2.3 4.5 0 2.9-1.8 5.2-3.1 5.2M9.7 16.5h4.6';
+/* the judge. scales, and they are what the second circle is weighed on */
+IC_NEW['Minos']='M12 4v16M6 8.5h12M6 8.5L3.5 14h5zM18 8.5L15.5 14h5zM8.5 20h7';
+/* three mouths, one appetite, none of them filled */
+IC_NEW['Cerberus']='M6 18.5a2.6 2.6 0 110-5.2 2.6 2.6 0 010 5.2M12 18.5a2.6 2.6 0 110-5.2 2.6 2.6 0 010 5.2M18 18.5a2.6 2.6 0 110-5.2 2.6 2.6 0 010 5.2M6 13.3V8M12 13.3V5.5M18 13.3V8';
+/* worth measured in what has been kept. a purse, closed */
+IC_NEW['Plutus']='M8 8.5h8l2.3 8.4a1.9 1.9 0 01-1.9 2.4H7.6a1.9 1.9 0 01-1.9-2.4zM9.6 8.5V7a2.4 2.4 0 014.8 0v1.5M12 12v4.2M10.6 13.2h2.8';
+/* the pattern out of containment. horns, and the two legs still walking */
+IC_NEW['Minotaur']='M4 5.5c0 5.2 3.6 8.4 8 8.4s8-3.2 8-8.4M4 5.5v3.2M20 5.5v3.2M8.8 13.2L7.2 19.5M15.2 13.2l1.6 6.3';
+/* stasis at terminal velocity. not fire, ice: no flow, no movement, nothing
+   completing anywhere */
+IC_NEW['Satan frozen']='M12 3v18M4.2 7.5l15.6 9M4.2 16.5l15.6-9M12 6.2L9.6 4.4M12 6.2l2.4-1.8M12 17.8l-2.4 1.8M12 17.8l2.4 1.8';
+function icOf(nm){
+ if(IC_NEW[nm])return IC_NEW[nm];
+ if(nm==='Christ')return IC_REUSE['Jesus']||null;
+ return IC_REUSE[nm]||null;}
+MASTERS.forEach(function(x){x.ic=icOf(x.nm);});
+BLUEPRINT.forEach(function(x){x.ic=icOf(x.nm);});
+CIRCLES.forEach(function(c){c.ic=icOf(c.by);});
+/* CASCADE HAS NO ICONS AND THAT IS DELIBERATE. Nothing in the build renders
+   it, so an icon there would be a path nobody draws, which is the same class
+   of dead weight as the release animation that sat in the frame loop for
+   weeks. It gets icons on the turn something renders it. */
 
 /* ---- THE NARCISSISM DESCENT ----
    Three steps, and the third one is not ours to work on. The codex

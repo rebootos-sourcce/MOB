@@ -352,3 +352,102 @@ fetch from Drive and the package install, and pulling fifteen megabytes of
 video through the connector would have filled the context without answering
 anything. Everything above is from the file names, the numbering and the
 engine table. No claim is made about what is in the footage.
+
+---
+
+## The Twelve Are Eleven, And That Is A Live Hole
+
+**Ruled 20 September: "Eckhart comes out. Classic figures only."**
+
+Meister Eckhart was the one name on the eight mirror pairs that was not
+classical. He held Revelation at the Crown, which the codex reads as direct
+knowing, with the doctrine dropped once experience has replaced it.
+
+He held two rows. One on `MIRROR`, as the coherent pole of the Revelation
+axis. One on `MASTERS`, as a coordinate on the cone. Taking him off both is
+what the ruling says to do, and it leaves two different holes.
+
+**The mirror axis is filled, under a stated assumption.** Lao Tzu carries
+Revelation now, because an axis with no coherent pole breaks the figure and
+the compass draws eight of them. The line naming him is the opening of the
+Tao Te Ching read as this axis: a doctrine that says of itself that it is not
+the thing it points at, and is therefore set down once it has done its work.
+That choice is the engine's, not the book's, and it is flagged in the source
+as subject to his confirmation.
+
+**The master list is not filled, and must not be.** The codex states twelve:
+"Every ascended master held a specific position on the Sat, Chit and Ananda
+coordinate system." The twelve are the union of the nine placed on the axes
+and the three that come only from the mirror pairs. Lao Tzu was already on
+that list, at the horizontal, so promoting him to Revelation did not swap a
+member into the union. It removed one. The list is **eleven**.
+
+The first cut of this change put Akhenaten in Eckhart's row, which would have
+restored twelve by counting one man twice. That is worse than eleven and the
+gate now refuses it by name.
+
+`tests/engine.js` pins the count at eleven rather than loosening it, because
+a gate that stops counting stops catching. When the twelfth is named the
+assertion goes back to twelve and both comments come out.
+
+**Which of the two should move: the book, or the engine.** The engine, once he
+says who. The codex's twelve is the claim; the engine is currently one short
+of carrying it.
+
+**Whose call: his.** Which classical figure anchors Revelation at the Crown.
+
+---
+
+## The Mark Measured Against Its Own Claims
+
+Not a disagreement between the codex and the engine. A disagreement between a
+file's comments and the file's own arithmetic, recorded here because it is the
+same failure mode and the same remedy: measure the thing rather than describe
+it.
+
+`tools/awareness.js`, first pass, claimed in its header that every proportion
+is a power of the golden ratio. Measured against the built curves, five of its
+statements were false.
+
+**The stroke did not cross itself.** The whole description of the mark is one
+stroke that crosses itself. The ascent and the exit centrelines never
+intersected: nearest approach one unit, at a height of 29 out of 100. The ink
+is wide enough that the two legs overlapped, so the rendered picture showed a
+closed eye and the geometry did not have one. Three passes of looking at it did
+not find this, because looking cannot. 342 degrees of turn is the first value
+that actually crosses. 315 does not.
+
+**`CROSS` named a place the drawing does not have.** Exported as 38.1966 with
+a comment calling it where the stroke meets itself. Nine and a half units from
+anything that happens anywhere on the mark. It is solved off the built curves
+now and returns null when there is no crossing, which is an answer.
+
+**`EYE` was a phi shaped costume on a number that was not the eye.** Written
+as `R*2-R*PHI/PHI`, which multiplies and divides by the same number and cancels
+to exactly `R`. It read 9.017 where the eye was 9.918, and it was exported, in
+a file whose header says every proportion is a power of the ratio. This is the
+worst of the five, because it is the failure the whole golden ratio literature
+warns about, committed in the source rather than in a marketing document.
+
+**The mark was reversible.** `width(0)` and `width(1)` were the same number to
+the last digit and both terminals were the same flat chord. A stranger could
+not tell which end the brush started at, because the geometry did not say. A
+single stroke that carries no direction is a shape. It lands at a chord now and
+sweeps to nothing.
+
+**The brush was told the wrong story about where it was.** The width ran across
+six Beziers by their index rather than by their length, so the four short arcs
+of the turn took two thirds of the profile and each long leg took a sixth. That
+is why the exit kept rendering as a wire whatever was adjusted at that end. It
+runs on arc length now.
+
+**And one thing the art director got wrong, recorded for the same reason.** The
+prescribed constants were a brush of twice the height over phi to the fifth on
+a loop at the height over phi to the fourth. Every ratio in them was exact, the
+eye landed on one over phi cubed and then on one over root five, and the thing
+they drew was a fat letter P. The defect list was right and the prescription
+was not. The constants are the height over phi to the fifth for both the
+display radius and the brush, which is his drawing measured.
+
+**Whose call: mine, and done.** Nothing here is the owner's material. It is a
+file that described itself incorrectly.

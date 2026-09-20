@@ -38,10 +38,17 @@ The four the project manager has promoted. Ordered by what unblocks the most.
       animation and art. Every named thing described as a behaviour, not a
       label. The centre column becomes text about you and everything energetic
       moves right. *Large.*
-- [ ] **N0. The soul loop, drawn.** RULED 20 September and it is the last
-      piece the mark was waiting on. One stroke crossing itself into a small
-      closed eye, no bars, golden ratio, tiny, pure gold. It sits at the crown
-      of the stack. *Small to draw, and it unblocks the mark.*
+- [x] **N0. The awareness mark, drawn.** Built, `tools/soulloop.js` generates
+      it and `reviews/soul-loop.html` presents it. Sent 20 September.
+- [x] **N0b. Awareness, redrawn against the golden ratio and Zen.** The art
+      director's research is at `reviews/AD-golden-zen.md`, 1,299 lines with
+      sources. Five defects verified against the running generator and fixed.
+      Its prescribed CONSTANTS were rejected after rendering them: exact on
+      every ratio, and what they drew was a fat letter P. The defect list was
+      right and the prescription was not, which is the reason the rule is look
+      at the render every time.
+- [x] **N0c. Rename soul to awareness everywhere.** `tools/awareness.js`,
+      `tools/awarenesspage.js`, `reviews/awareness.html`.
 - [ ] **N4. The copy editor pass on every number.** standing, `AR1`
       A number that does not say what it is out of does not print. This is his
       instruction to me, not a task he has to keep catching.
@@ -146,22 +153,51 @@ Look and language
 
 ### 2c. The compass. Nothing from the eleventh note is built.
 
-- [ ] AQ1. The shape is an arrow up and an arrow down `ui/cone.js`
-- [ ] AQ2. Coherent at the top, decoherent at the bottom
-- [ ] AQ3. Halo at the top, pitchfork at the bottom
-- [ ] AQ4. The marker oscillates in the person's own range
-- [ ] AQ5. Every teacher takes their seat colour. Musashi power, Buddha
-      perception, Rumi love.
-- [ ] AQ6. Eckhart comes out. Classic figures only.
-- [ ] AQ7. Every figure gets an icon
-- [ ] AQ8. The opposites take the desaturated version of the light colours
-- [ ] AQ9. The names sit left and right and light up as you wheel
-- [ ] AQ10. The band becomes a room
-- [ ] AQ11. Pass 10 is the one, and every number carries its scale
-- [ ] AQ12. **NO TEXT OVER THE HERO GRAPHIC, EVER.** The 39 in the middle goes.
-- [ ] AQ14. The bottom information goes right unless it is about the tool
-- [ ] AQ15. Flat becomes all solid. No outlines on buttons anywhere.
-- [ ] AQ16. "Powered by SOURCE OS" on the intro card
+- [x] AQ1. The shape is an arrow up and an arrow down. Shaft, barb, point,
+      three sections each way, straight sided. The spindle is gone.
+- [x] AQ2. Coherent at the top, decoherent at the bottom. Source and The
+      blueprint are out.
+- [x] AQ3. Halo at the top, pitchfork at the bottom. The third glyph, ego
+      compression, came off a two ended axis.
+- [x] AQ4. The marker oscillates in the person's own range, read from their
+      own history through `seriesRead`. No history holds still, one reading
+      holds still, two or more swings the width of the range. Where most
+      people oscillate is drawn as ticks at 40 and 60.
+- [x] AQ5. Every teacher takes their seat colour.
+- [x] AQ6. Eckhart comes out. Lao Tzu carries Revelation, SUBJECT TO HIS
+      CONFIRMATION, and the master list is eleven until he names the twelfth.
+      `BOOK-ERRATA.md` carries it.
+- [x] AQ7. Every figure gets an icon. The sixteen mirror poles carry theirs
+      into the new rail. The eleven masters, the four blueprint archetypes and
+      the nine circle governors have them now, reusing the mirror icon wherever
+      a name is on both lists rather than drawing one person twice. Ten new
+      drawings: the Aten, flow, alignment, the level, the inverted crown, the
+      flame with a mouth, the scales, three heads, the purse, the horns and the
+      snowflake. CASCADE is deliberately left: nothing renders it, and an icon
+      nobody draws is the dead weight the release animation already taught us
+      about.
+- [x] AQ8. The opposites take the desaturated twin of the same hue, not a
+      separate red. Saturation out, lightness left alone, so they stay
+      legible at the floor.
+- [x] AQ9. The names sit left and right in their own rail, four axes a side,
+      in seat colours with icons. The row facing the viewer lights. Hovering
+      aims the figure at it and it eases, never snaps.
+- [x] AQ10. The band becomes a room. The ring at 40 is its floor, the ring at
+      60 its ceiling, twenty four uprights between them, the far wall dimmer
+      than the near one. It was a radial wash, which solved the panel it used
+      to be and left a smudge.
+- [~] AQ11. Every number on the compass carries its scale now: 88 out of 100,
+      integrity 9.3 of 10, the waist 40 to 60 out of 100. The rest of pass 10
+      is the wider surface.
+- [x] AQ12. **NO TEXT OVER THE HERO GRAPHIC.** Off the drawing: the coherence
+      number, the sixteen names, the eight quality labels and the band
+      caption. What is left is the figure.
+- [x] AQ14. The bottom information goes right unless it is about the tool.
+      One line under the figure, and it is about the tool.
+- [x] AQ15. Flat becomes all solid. Every control takes a panel ground and
+      loses its border. Focus stays an outline, because it is not decoration.
+- [x] AQ16. "Powered by SOURCE OS" on the intro card. Two spans, so the name
+      uppercases and the sentence does not.
 - [x] AQ13. The plane is out. He tried it and ruled against it.
 
 ### 2d. The Summary
@@ -228,6 +264,13 @@ Look and language
 - [?] D10. The therapy equivalence claim, before the funnel ships
 - [?] D11. The opening surface. Summary, then Field, then Avatar.
 - [?] D12. Two factor auth, yes or no
+- [x] D18. **THE MARK IS CALLED AWARENESS, LOWERCASE.** Ruled 20 September.
+      He said "just call it sol, lowercase" and corrected himself in the same
+      breath: "actually, it's called awareness." Awareness stands, sol is
+      superseded and is recorded only so nobody reinstates it. Everything that
+      says soul renames: `tools/soulloop.js`, `reviews/soul-loop.html`, the
+      layer in the stack, and the copy on every surface that names it.
+      *Small, and it is a find and replace with a gate behind it.*
 - [x] D13. **The soul shape is RULED. It is a loop.** Sent 20 September with a
       drawing: one stroke that crosses itself into a small closed eye and runs
       on. No bars either side; those belong to the character around it. Golden
@@ -265,7 +308,11 @@ the privacy floor refuses it. No key is needed and none should be added.
 
 - [ ] E1. `.ib` keeps a dark ground in Lumen. Three probes could not find why.
 - [ ] E2. A second field leak upstream of the release, in the full page sequence
-- [ ] E3. The compass nameplates collide, 89 pairs at 1600, and no gate watches
+- [x] E3. The compass nameplates collided, 89 pairs at 1600, with no gate
+      watching. Fixed by the cause rather than by a gate: the names are markup
+      in a rail now, so they have line breaking, the collide gate can see
+      them, a screen reader can read them and a button can carry a control.
+      All four were impossible while they lived in a canvas.
 - [ ] E4. `DQ` draws an identical full ring for every profile past ten
 - [ ] E5. Eight definitions live only in `title` attributes, unreachable on a phone
 - [ ] E6. The word Awareness carries two concepts 545px apart on one screen

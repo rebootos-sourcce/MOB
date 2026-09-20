@@ -25,26 +25,44 @@ else may.
 
     ./atuned_src/BUILD.sh              parse checks, div balance, no em dashes
     ./atuned_src/BUILD-engine.sh       and asserts the engine is host free
-    node tests/engine.js               279, headless, 0.1s
-    node tests/functional.js           262, real Chromium
-    node tests/collide.js              40, no overlapping nameplates
-    node tests/design.js               22, and it is green now
+    node tests/engine.js               832, headless, 0.1s
+    node tests/functional.js           720, real Chromium
+    node tests/collide.js              100, no overlapping nameplates
+    node tests/design.js               94, and it is green now
     node tools/monitor.js             every surface renders, and it logs
 
-`monitor.js` is the render watch. It walks all nine surfaces at 1600 and at
-390, on a blank profile and a loaded one, asserts the noscript notice, and
+Those counts were 279, 262, 40 and 22 in this file for long enough that they
+stopped being usable. A number typed into a document that the product then
+grows past is the same defect as a number typed into a gate, and this
+repository has now been bitten by it five times: three gates that counted by
+hand, a heading that said "the twelve" above a list of eleven, and this
+paragraph. Read the count off the run.
+
+`monitor.js` is the render watch. It reads TABDEF and TABEXTRA at run time and
+walks every surface they name, at 1600 and at 390, on a blank profile and a
+loaded one, asserts the noscript notice, and
 appends one stamped block to `MONITOR.log` carrying the commit, the md5,
 whether the tree was dirty and the markup size of every surface. It exits non
 zero on an empty surface, so "the centre column is broken again" is answered
 by diffing two blocks of the log rather than by starting from a screenshot.
 
-Two lessons are built into the check and must not be optimised out. innerText
+Three lessons are built into the check and must not be optimised out. innerText
 does not see SVG, so the Body page reports zero characters of text while
 rendering forty seven elements correctly, and a surface therefore passes on
-markup size with text recorded beside it. And a CSS animation runs without
-scripts, so the boot sheet fades on its own and uncovers a complete looking
-shell with nothing in it, which is exactly what a preview pane showed the
-owner and why the noscript assertion is in there.
+markup size with text recorded beside it. A canvas has no innerHTML at all, so
+the Field is counted in lit pixels against its own floor: counting its markup
+reported zero for a surface that was drawing correctly. And a CSS animation
+runs without scripts, so the boot sheet fades on its own and uncovers a
+complete looking shell with nothing in it, which is exactly what a preview pane
+showed the owner and why the noscript assertion is in there.
+
+And one lesson learned by this file failing. The watch took the first visible
+child of `.stage` as the surface host. The Field's two key strips are visible
+children of `.stage` on every tab, so from the moment they landed it measured
+the same strip nine times and printed nine identical numbers under the heading
+"all surfaces render". It looks the host up by its id now. The rule the project
+already carries covers it: anything needing a tab's entry looks it up by
+identity, never by where it happens to sit.
 
 Browser gates need `NODE_PATH` pointing at a playwright install and are run
 from the repo root. `design.js` used to fail one check in a sandbox with no

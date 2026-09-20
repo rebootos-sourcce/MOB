@@ -414,6 +414,30 @@ body.flat .s-readbox,body.flat .s-out{background:var(--panel);
 body.flat #bgaura{opacity:.22}
 body.flat .btn.pri{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
 body.flat .crb-v{background:var(--panel-2);border-color:var(--edge-2)}
+/* NO OUTLINES ON BUTTONS, ANYWHERE. Ruled for Flat.
+
+   Flat carried an outline on every control and a fill on almost none, so a
+   lighting named for having no depth was drawing the one thing that only
+   exists to suggest an edge. A control reads as pressable because it has a
+   ground of its own, not because it has a line around it.
+
+   Every control takes a solid panel ground and loses its border. The pressed
+   state takes the accent as a solid fill, which is the only state that needs
+   to be louder than its neighbours. Focus is untouched and stays an outline,
+   because a focus ring is not decoration and removing it would take the
+   keyboard with it. */
+body.flat .btn,body.flat .vt,body.flat .cn-sb,body.flat .pm-lb,body.flat .pm-rb,
+body.flat .st-mic,body.flat .ac-ixb,body.flat .ad-r,body.flat .rel-row,
+body.flat .iq-n,body.flat .cr,body.flat .tab,body.flat .acc-l,body.flat .rt-t,
+body.flat .ab-f,body.flat .cn-gmore,body.flat .ob-b{
+ border-color:transparent;background:var(--panel-2)}
+body.flat .btn:hover,body.flat .vt:hover,body.flat .cn-sb:hover,
+body.flat .ac-ixb:hover,body.flat .ad-r:hover{background:var(--edge-2)}
+body.flat .vt[aria-pressed=true],body.flat .cn-sb.on,body.flat .ac-ixb.on,
+body.flat .iq-n.on{background:var(--accent);color:var(--on-accent);
+ border-color:transparent}
+body.flat .tab.on{background:transparent;color:var(--accent)}
+body.flat :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
 body.glass .glass,body.glass .panel,body.glass .sheet-card,body.glass .rd-card,
 body.glass .sum-card,body.glass .gmenu,body.glass .cone-card{
@@ -2878,13 +2902,81 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
  0%{opacity:0;transform:scale(.6)}
  55%{opacity:.95;transform:scale(1.14)}
  100%{opacity:.8;transform:scale(1)}}
+/* ============================================================
+   THE COMPASS NAME RAILS. Four axes each side of the figure.
+
+   They flank the drawing rather than sitting under it, because the figure is
+   a column of its own and a list under it would push the graph off the fold
+   again. Each row is one mirror pair: the quality, the coherent pole, and the
+   inversion beneath it in the desaturated twin of the same hue.
+
+   No outline on the row. The seat colour is on the type and on a two pixel
+   edge that only appears when the row is the one facing the viewer, which is
+   what "lights up as you wheel round" has to mean on a rail that is always
+   present.
+   ============================================================ */
+.cn-nms{position:absolute;top:8%;display:flex;flex-direction:column;gap:10px;
+ z-index:2;pointer-events:auto;max-width:158px}
+.cn-nms-l{left:0;align-items:flex-start;text-align:left}
+.cn-nms-r{right:0;align-items:flex-end;text-align:right}
+.cn-nr{display:flex;flex-direction:column;gap:1px;background:none;border:0;
+ border-left:2px solid transparent;padding:3px 8px;cursor:pointer;
+ font:inherit;color:inherit;transition:border-color .18s,opacity .18s;
+ opacity:.55}
+.cn-nms-r .cn-nr{border-left:0;border-right:2px solid transparent;align-items:flex-end}
+.cn-nr:hover,.cn-nr:focus-visible{opacity:1}
+.cn-nr.front{opacity:1;border-color:var(--ax)}
+/* THE QUALITY, IN SENTENCE CASE AT THE TYPE FLOOR. It was 9px and uppercased,
+   which broke two gates at once and both were right. Nine is under the floor
+   and this is a string a person reads to use the thing, not a wordmark read
+   once. And uppercase as a way of making a label quieter is the habit the
+   all caps rule exists to stop: the way to make a line recede is colour and
+   weight, which is what it does now. */
+.cn-nq{font-size:11px;font-weight:500;letter-spacing:.02em;
+ color:var(--dim);line-height:1.3}
+.cn-nu{font-size:12.5px;font-weight:600;color:var(--ax);line-height:1.25;
+ display:flex;align-items:center;gap:5px}
+.cn-nd{font-size:11.5px;font-weight:500;color:var(--axd);line-height:1.25;
+ display:flex;align-items:center;gap:5px}
+/* the icon sits on the figure side of its name, so the pair reads as one
+   object, which is how the canvas drew it before the names moved out */
+.cn-gl{width:13px;height:13px;flex:0 0 13px;display:block}
+/* the same icon on a drill row, where the type is a shade larger */
+.ad-gl{width:14px;height:14px;flex:0 0 14px;display:inline-block;
+ vertical-align:-2px;margin-right:6px;opacity:.82}
+.cn-nms-r .cn-nu,.cn-nms-r .cn-nd{flex-direction:row-reverse}
+/* THE FIGURE KEEPS ITS OWN WIDTH. The rails are absolute so the canvas is not
+   squeezed by them, and the canvas gets side padding so the drawing does not
+   run under the names. Below this width the rails go under the figure in one
+   row each, because two 158px columns and a readable figure do not fit on a
+   phone. */
+.cone-fig{position:relative}
+/* THE RAIL CLEARS THE CONTROLS. Flat, Regulation and Layers sit in the upper
+   left of the figure, so the left rail starts below them. Measured against
+   that cluster, not guessed: it sets 44 tall with 12 of gap above it. */
+@media(min-width:900px){.cn-nms{top:74px}}
+@media(max-width:899px){
+ .cn-nms{position:static;flex-direction:row;flex-wrap:wrap;max-width:none;
+  gap:6px 14px;justify-content:center;margin:6px 0}
+ .cn-nms-l,.cn-nms-r{align-items:center;text-align:center}
+ .cn-nr,.cn-nms-r .cn-nr{border-left:0;border-right:0;border-bottom:2px solid transparent;
+  align-items:center;padding:2px 4px}}
 .boot-wm{display:flex;flex-direction:column;align-items:center;gap:4px;opacity:0;
  animation:bootWm .92s cubic-bezier(.22,1,.36,1) 3.54s both}
 @keyframes bootWm{0%{opacity:0;transform:translateY(8px)}100%{opacity:1;transform:none}}
 .boot-wm .bn{font-family:var(--sans);font-size:23px;font-weight:400;
  letter-spacing:.075em;color:var(--sky);line-height:1;position:relative}
+/* THE SUBTITLE IS NOW A PAIR, so it is laid out as one. "Powered by" is
+   quieter and untracked, because tracking is what makes a name read as a
+   logotype and this half is a sentence. The name keeps the tracking and takes
+   the case from here rather than from the markup, for the reason written
+   beside the wordmark above: the gate that bans all caps copy is correct, and
+   a logotype answers it with styling rather than with an exception. */
 .boot-wm .bs{font-family:var(--sans);font-size:9px;font-weight:500;
- letter-spacing:.19em;color:var(--ink);line-height:1;margin-top:4px}
+ line-height:1;margin-top:5px;display:flex;align-items:baseline;gap:.5em}
+.boot-wm .bs-by{letter-spacing:.04em;color:var(--dim);font-weight:400}
+.boot-wm .bs-nm{letter-spacing:.19em;margin-right:-.19em;color:var(--ink);
+ text-transform:uppercase}
 .boot-wm .um{position:relative;display:inline-block}
 .boot-wm .um::before,.boot-wm .um::after{content:'';position:absolute;top:-.42em;
  width:.14em;height:.14em;border-radius:50%;background:var(--um)}

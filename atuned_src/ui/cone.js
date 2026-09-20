@@ -28,7 +28,14 @@
    so nothing is taken away by starting where a person can read. */
 var CONE={open:false, tab:false, spin:0.6, tilt:0.60, drag:null, raf:null, t:0,
  cv:null, g:null, dpr:1, hits:[], flat:true, layers:false, reg:false,
- span:'quarter'};
+ span:'quarter',
+ /* WHERE THE FIGURE IS BEING ASKED TO TURN TO, and nothing when nobody is
+    asking. Ruled: "hovering one spins the figure to that person, quickly, and
+    never snaps." A target plus an ease is the only way to have both: a
+    written assignment to spin would snap, and an animation without a target
+    cannot be aimed. front is which axis is nearest the viewer right now, so
+    the rail can light up without asking the renderer. */
+ spinTo:null, front:0};
 /* THE FLAT VERSION IS THE SAME FIGURE WITH THE TILT TAKEN OUT.
 
    A second renderer for a 2D compass would be a second thing to keep true and
@@ -43,21 +50,50 @@ function coneTilt(){return CONE.flat?0.0001:CONE.tilt;}
    is height times cos plus radius times sin, and it has to leave room for the
    pole names, which sit outside the figure entirely. At the widest tilt the
    clamp allows this comes to about 0.86 of the half box. */
-const CONE_H=0.55;
+/* AND THE BUDGET IS LARGER NOW THAT THE NAMES ARE OFF IT. The comment above
+   is why this was 0.55: the sixteen pole names sat outside the figure and had
+   to be kept on the canvas. They are markup in the rail now, so the whole
+   height belongs to the drawing again and the only things still outside it
+   are the two pole words and their glyphs. Measured against those. */
+/* AND IT IS NOT ONE NUMBER, because the budget genuinely is not. A tilted
+   ring reaches below the axis point it sits on by its own radius times the
+   sine of the tilt, so the same height that fits flat runs off the card as
+   soon as the figure turns. Measured at the widest tilt the clamp allows:
+   0.72 flat comes to 0.72 of the half box, and tilted it comes to
+   0.72 x cos plus 0.52 x sin, which is 0.89, and the two pole words sit
+   outside that again. So the height is solved from the reach instead of
+   guessed, and the flat default gets the whole card it can use. */
+/* declared above coneH because coneH solves against it. this file's order is
+   the load order and a constant a function reads belongs before it. */
 const CONE_FLARE=0.52;    /* how fast it widens away from the waist */
+const CONE_REACH=0.74;   /* how far down the drawing may go, pole words aside */
+const CONE_H_FLAT=0.72;
+function coneH(){
+ var tl=coneTilt();
+ if(CONE.flat)return CONE_H_FLAT;
+ return Math.min(CONE_H_FLAT,
+  (CONE_REACH-CONE_FLARE*Math.sin(tl))/Math.max(0.2,Math.cos(tl)));}
 /* THE WAIST IS A NECK, NOT A POINT. Two true cones meet at a point and the
    figure pinches to nothing exactly where the median range lives, which is
    the one part of the scale a person is most likely to be in. A minimum
    radius makes it a neck, the median reads as a band with width, and the
    rings read as ellipses instead of collapsing to a line. */
 const CONE_NECK=0.14;
+/* WHERE THE ARROW STOPS BEING A SHAFT AND STARTS BEING A HEAD, and where the
+   head is widest. Both as a share of the distance from the median to a pole.
+   The head takes the last third, which is the proportion a drawn arrow
+   carries: much shorter and it reads as a spike, much longer and the shaft
+   disappears and it is a cone again. */
+const ARROW_SHOULDER=0.64;
+const ARROW_HEAD=0.76;
 /* THE THREE POLE GLYPHS, on the 24 unit grid every icon in this product uses.
    Ring, not fill, like the rest. A halo is a ring with nothing in it. Ego
    compression is a ring with two arrows pressing on it. The pitchfork is a
    pitchfork. */
 const GL_HALO='M4 12 A8 3.4 0 1 0 20 12 A8 3.4 0 1 0 4 12';
-const GL_COMPRESS='M12 5.5 A5 5 0 1 0 12 18.5 A5 5 0 1 0 12 5.5'
- +'M1.5 12H5M3.5 9.5L1.5 12l2 2.5M22.5 12H19M20.5 9.5l2 2.5l-2 2.5';
+/* GL_COMPRESS is gone with the third glyph it drew. A constant nothing draws
+   is how the destructive release animation survived in this build for weeks,
+   so an unused path does not stay in the file. */
 const GL_FORK='M12 21V9M6 9V3.5M12 9V3M18 9V3.5M5 9h14';
 
 /* one point on the surface, by angle in radians rather than by meridian, so a
@@ -65,7 +101,7 @@ const GL_FORK='M12 21V9M6 9V3.5M12 9V3M18 9V3.5M5 9h14';
 function conePtA(q,a,W,H){
  var cx=W/2, cy=H/2, U=Math.min(W,H)/2;
  var t=(clamp(q,0,100)-50)/50;                    /* -1 at the floor, 1 at the crown */
- var y=t*U*CONE_H;
+ var y=t*U*coneH();
  /* THE FIGURE IS TERMINATED AT BOTH ENDS. Ruled.
 
     It was two true cones opening away from the waist, so the widest part of
@@ -80,8 +116,42 @@ function conePtA(q,a,W,H){
     than an hourglass. The neck survives because the median range is the one
     part of the scale most people are standing in and it needs width to be
     read as a band. */
+ /* AN ARROW UP AND AN ARROW DOWN. Ruled: "the shape is wrong. It is meant to
+    be an arrow up and an arrow down. It is a compass. What is drawn is
+    something else."
+
+    He is right and the spindle above is what he was looking at. A sine
+    through the half gives a smooth bulge that peaks halfway and eases back,
+    which is a lens, or a rugby ball, or a spindle. Nothing about it is an
+    arrow, and an arrow is the one shape that says direction, which is the
+    only thing a compass is for.
+
+    Three sections each way, and the arithmetic is the drawing.
+
+      shaft     out of the neck to ARROW_SHOULDER, holding a narrow constant
+                width. A shaft is the part that is not saying anything yet.
+      barb      a short flare from the shoulder to ARROW_HEAD, which is where
+                the head is widest. Short, because a long flare is a bulge.
+      point     a straight line from the widest part to nothing at the pole.
+                Straight, not eased: an eased taper rounds the tip and a
+                rounded tip is a balloon.
+
+    The neck survives, for the reason it was put in. The median band is where
+    most people stand and it needs width to be read as a band. So the shaft
+    starts at the neck's width rather than at zero, and the two arrows meet
+    on a band rather than on a point. */
  var at=Math.abs(t);
- var rad=U*(CONE_NECK*(1-at) + CONE_FLARE*Math.sin(at*Math.PI));
+ var rad;
+ if(at<=ARROW_SHOULDER){
+  /* the shaft, tapering only slightly, so the neck still reads as the widest
+     part of the middle rather than as a pinch in a parallel tube */
+  rad=U*(CONE_NECK*(1-at/ARROW_SHOULDER*0.34));}
+ else if(at<=ARROW_HEAD){
+  var k=(at-ARROW_SHOULDER)/(ARROW_HEAD-ARROW_SHOULDER);
+  rad=U*(CONE_NECK*0.66+(CONE_FLARE-CONE_NECK*0.66)*k);}
+ else {
+  var k2=(at-ARROW_HEAD)/(1-ARROW_HEAD);
+  rad=U*CONE_FLARE*(1-k2);}
  var th=a+CONE.spin;
  var x3=Math.cos(th)*rad, z3=Math.sin(th)*rad;
  return {x:cx+x3,
@@ -134,7 +204,8 @@ function coneDraw(){
   var grp=W_ADDR().filter(function(n){return n.b===m.seat;});
   var load=grp.length?grp.reduce(function(a,n){return a+n.sq;},0)/grp.length:0;
   var pos=mirrorAt(load,bandIg(m.seat));
-  return {m:m, i:i, pos:pos, p:conePt(pos,i,W,H), c:hx(seatCol(m.seat))};});
+  return {m:m, i:i, pos:pos, p:conePt(pos,i,W,H),
+   c:hx(seatCol(m.seat)), cd:coneDull(hx(seatCol(m.seat)))};});
  if(!r.unread){
   g.beginPath();
   here.forEach(function(h,i){i?g.lineTo(h.p.x,h.p.y):g.moveTo(h.p.x,h.p.y);});
@@ -142,65 +213,45 @@ function coneDraw(){
   g.fillStyle=rgba(gc,.10); g.fill();
   g.strokeStyle=rgba(gc,.55); g.lineWidth=1.4; g.stroke();}
 
- /* names and marks, back to front, so nothing near is hidden by something far */
- var byNear=here.slice().sort(function(a,b){return b.p.d-a.p.d;});
- byNear.forEach(function(h,i){h.rank=i;});
+ /* THE SIXTEEN NAMES ARE OFF THE DRAWING. Ruled twice over and it took both
+    rulings to see it.
+
+    "No text over the hero graphic, ever" is the standing rule. And the names
+    now sit left and right in their own rail, where they light up as the
+    figure wheels round, which is the other ruling. Once they are in the rail
+    they are on the drawing as well, which is sixteen words of duplication
+    printed on top of the one thing the surface exists to show.
+
+    Measured before this: 89 colliding pairs at 1600 wide, and no gate
+    watching a single one of them, because a radial layout has no line
+    breaking and a painted word cannot be measured by anything that measures
+    markup. The rail has line breaking, the collide gate can see it, a screen
+    reader can read it and a button can carry a control. All four were
+    impossible while the names lived in a canvas.
+
+    What stays on the figure is the figure: the eight seat coloured meridians,
+    the ribbon joining where this person sits on each one, and a node at each
+    position. A node is not text. */
  here.slice().sort(function(a,b){return a.p.d-b.p.d;}).forEach(function(h){
-  var near=(h.p.d>=0), a=near?1:.42;
-  if(!r.unread){
-   g.beginPath(); g.arc(h.p.x,h.p.y,near?5:3.6,0,Math.PI*2);
-   g.fillStyle=rgba(h.c,a); g.fill();}
-  /* the coherent pole above, the inverted pole below, on the same meridian */
-  /* THE NAMES COME OFF THE POLES.
-
-     Closing the figure at both ends made every meridian converge on one point,
-     so eight teachers stacked on top of each other at the crown and eight
-     inversions at the floor. Terminating the ends is right and putting names
-     on a point is not.
-
-     Each name now sits at the widest part of its own meridian, around four
-     fifths of the way out, which is the one place on that meridian where it
-     has room and where the figure is actually saying something: the widest
-     point is the furthest a behaviour on that axis has travelled from the
-     quality it started as. The poles keep Source and the blueprint, which are
-     the two things that genuinely are single points. */
-  var up=conePt(91,h.i,W,H), dn=conePt(9,h.i,W,H);
-  /* FLAT MODE COLLAPSES THE MERIDIANS ONTO ONE LINE, so eight names land on
-     top of each other at each end. With the tilt gone there is no depth to
-     separate them, so they are separated by hand: each meridian steps its
-     label away from the axis by its own index. The spinning version needs
-     none of this because the projection does it. */
-  if(CONE.flat){
-   var step=(h.i-3.5)*15;
-   up=({x:up.x,y:up.y-Math.abs(step)*0.9,d:up.d});
-   dn=({x:dn.x,y:dn.y+Math.abs(step)*0.9,d:dn.d});}
-  var hv=CONE.hover&&CONE.hover.m===h.m?CONE.hover.end:null;
-  var uo=(up.x<W/2?-1:1), dof=(dn.x<W/2?-1:1);
-  /* the name runs away from the figure, so it never starts on top of its own
-     glyph. Centred text on a radial layout is what put them in the same
-     place. */
-  coneTxt(g,h.m.up,up.x+uo*22,up.y-4,near?12:10.5,gc,hv==='up'?1:(near?.95:.30),600,
-   uo<0?'right':'left');
-  coneTxt(g,h.m.dn,dn.x+dof*22,dn.y+6,near?12:10.5,rc,hv==='dn'?1:(near?.9:.28),600,
-   dof<0?'right':'left');
-  /* the glyph, on the figure side of the name, so the two read as one object.
-     every named thing in this product carries a symbol and these were the
-     last sixteen without one. */
-  coneGlyph(g,h.m.ic, up.x+uo*10,up.y-5,gc,hv==='up'?1:(near?.88:.26));
-  coneGlyph(g,h.m.dic,dn.x+dof*10,dn.y+6,rc,hv==='dn'?1:(near?.85:.24));
-  /* AND THEY ARE TARGETS. Clicking a name did nothing at all: the whole
-     figure had no hit testing, so eight teachers and eight inversions were
-     drawn as though they were buttons and were not. */
-  CONE.hits.push({x:up.x+uo*22,y:up.y-4,r:30,m:h.m,end:'up'});
-  CONE.hits.push({x:dn.x+dof*22,y:dn.y+6,r:30,m:h.m,end:'dn'});
-  /* the quality is named on the three nearest only. eight at once on a figure
-     this size is a pile, and a pile is not a reading. */
-  if(h.rank<3)coneTxt(g,h.m.q.toLowerCase(),h.p.x,h.p.y-12,10.5,h.c,.85,400);});
+  if(r.unread)return;
+  var near=(h.p.d>=0);
+  /* the node nearest the viewer is larger, and the one facing the rail's lit
+     row is larger again, so the rail and the drawing point at each other */
+  var lit=(h.i===CONE.front);
+  g.beginPath(); g.arc(h.p.x,h.p.y,lit?7:(near?5:3.6),0,Math.PI*2);
+  g.fillStyle=rgba(h.c,near?1:.42); g.fill();
+  if(lit){
+   g.beginPath(); g.arc(h.p.x,h.p.y,12,0,Math.PI*2);
+   g.strokeStyle=rgba(h.c,.45); g.lineWidth=1.2; g.stroke();}
+  /* AND THE NODE IS THE TARGET NOW. The hit boxes used to sit on the painted
+     names, thirty units wide, two per axis. One box per axis, on the node, is
+     what is left once the names are gone. */
+  CONE.hits.push({x:h.p.x,y:h.p.y,r:16,m:h.m,end:'up'});});
 
  /* the axis, and what sits at each end of it */
  (function(){
   var top=conePt(100,0,W,H), bot=conePt(0,0,W,H);
-  var cy=H/2, U=Math.min(W,H)/2, hgt=U*CONE_H;
+  var cy=H/2, U=Math.min(W,H)/2, hgt=U*coneH();
   g.beginPath(); g.moveTo(W/2,cy-hgt*Math.cos(coneTilt()));
   g.lineTo(W/2,cy+hgt*Math.cos(coneTilt()));
   g.strokeStyle=rgba(ink,.16); g.lineWidth=1; g.stroke();
@@ -215,14 +266,19 @@ function coneDraw(){
      The halo is a ring with nothing inside it, which is what Source is. Ego
      compression is a ring squeezed from both sides, which is what it does.
      The pitchfork stands beside it. */
+  /* COHERENT AT THE TOP, DECOHERENT AT THE BOTTOM. Ruled, replacing Source
+     and The blueprint. Those two named where the figure pointed; these two
+     name what it measures, and they are the same two words every other
+     surface in this product uses for the same axis. One word per concept.
+
+     Halo above, pitchfork below, and nothing else on the axis. Ego
+     compression was a third glyph on a two ended axis and it made the floor
+     read as two ideas rather than one. */
   var ty=cy-hgt*Math.cos(coneTilt()), by=cy+hgt*Math.cos(coneTilt());
   coneGlyph(g,GL_HALO,W/2,ty-48,gc,.9);
-  coneTxt(g,'Source',W/2,ty-26,13,gc,.9,600);
-  coneTxt(g,'The blueprint',W/2,by+30,13,rc,.85,600);
-  /* the pair sits beside the word, not under it: under it is where the floor
-     teachers already are and two glyphs landed on Asmodeus. */
-  coneGlyph(g,GL_COMPRESS,W/2-104,by+30,rc,.85);
-  coneGlyph(g,GL_FORK,W/2+104,by+30,rc,.85);
+  coneTxt(g,'Coherent',W/2,ty-26,13,gc,.9,600);
+  coneTxt(g,'Decoherent',W/2,by+30,13,rc,.85,600);
+  coneGlyph(g,GL_FORK,W/2,by+52,rc,.85);
 
   /* THE MEDIAN IS WHERE NEARLY EVERYONE IS STANDING, SO PUT THEM IN IT.
 
@@ -236,26 +292,42 @@ function coneDraw(){
      band moves the way a band of oscillating people moves. They are not data
      about anybody: they are the shape of the range, and the caption says the
      range rather than letting a dot be mistaken for a person. */
-  var U3=Math.min(W,H)/2;
-  var b40=conePtA(40,Math.PI/2,W,H), b60=conePtA(60,Math.PI/2,W,H);
-  var byT=Math.min(b40.y,b60.y), byB=Math.max(b40.y,b60.y);
-  /* A HARD RECTANGLE ACROSS THE CANVAS IS NOT A BAND ON A FIGURE.
+  /* THE BAND BECOMES A ROOM. Ruled, from pass 7, and he said it directly.
 
-     The first cut filled the full width at a flat alpha and the band read as
-     a panel behind the drawing rather than a stretch of it. It fades at both
-     edges and at both ends, so it belongs to the figure. */
-  /* and it fades in every direction, not just up and down: a linear gradient
-     down a rectangle still cuts hard at its left and right edges, and two
-     vertical cuts across a round figure read as a panel behind it again. */
-  g.save();
-  var bcy=(byT+byB)/2, brx=U3*0.92, bry=Math.max(6,(byB-byT)/2);
-  g.translate(W/2,bcy); g.scale(1,bry/brx);
-  var bg=g.createRadialGradient(0,0,0,0,0,brx);
-  bg.addColorStop(0,rgba(ink,.075)); bg.addColorStop(0.62,rgba(ink,.045));
-  bg.addColorStop(1,rgba(ink,0));
-  g.beginPath(); g.arc(0,0,brx,0,Math.PI*2);
-  g.fillStyle=bg; g.fill();
-  g.restore();
+     It was a wash: a radial gradient behind the waist, fading at the edges so
+     it would not read as a panel. That solved the panel and left a smudge.
+     A smudge is not somewhere a person is standing, and standing in it with
+     everybody else is the whole reading the band exists to give.
+
+     A room is the same two rings with the space between them built. The ring
+     at forty is its floor and the ring at sixty is its ceiling, so those are
+     drawn as the ellipses the projection already gives. Twenty four uprights
+     join them, which is what turns two ellipses into a volume rather than two
+     ellipses. The far half of the wall is dimmer than the near half, which is
+     the only thing that makes a wireframe read as something you are inside
+     rather than something you are looking at. The floor takes a faint fill so
+     there is ground under the souls.
+
+     Nothing here is new data. It is the same forty and sixty, built. */
+  var ROOM=24;
+  var rFl=[], rCe=[];
+  for(var ri=0;ri<=ROOM;ri++){
+   var ra=ri/ROOM*Math.PI*2;
+   rFl.push(conePtA(40,ra,W,H)); rCe.push(conePtA(60,ra,W,H));}
+  /* the floor, filled, so the souls have ground rather than air */
+  g.beginPath();
+  rFl.forEach(function(pt,i){i?g.lineTo(pt.x,pt.y):g.moveTo(pt.x,pt.y);});
+  g.closePath(); g.fillStyle=rgba(ink,.055); g.fill();
+  /* the uprights, each one dimmed by its own depth */
+  for(var wi=0;wi<ROOM;wi++){
+   var nearW=(rFl[wi].d>=0);
+   g.beginPath(); g.moveTo(rFl[wi].x,rFl[wi].y); g.lineTo(rCe[wi].x,rCe[wi].y);
+   g.strokeStyle=rgba(ink,nearW?.17:.07); g.lineWidth=1; g.stroke();}
+  /* and the floor and ceiling edges, which are what close it */
+  [[rFl,.30],[rCe,.20]].forEach(function(pair){
+   g.beginPath();
+   pair[0].forEach(function(pt,i){i?g.lineTo(pt.x,pt.y):g.moveTo(pt.x,pt.y);});
+   g.strokeStyle=rgba(ink,pair[1]); g.lineWidth=1.2; g.stroke();});
   /* and the souls read. At .17 they were under the grain of the ground. */
   for(var si=0;si<18;si++){
    var ph=si*2.399963, spd=0.20+((si*37)%11)/38;
@@ -263,8 +335,11 @@ function coneDraw(){
    var sp2=conePtA(50+sw*9.2,ph+CONE.spin*0.4,W,H);
    g.beginPath(); g.arc(sp2.x,sp2.y,2.1,0,Math.PI*2);
    g.fillStyle=rgba(ink,.34+sw*0.14); g.fill();}
-  coneTxt(g,'40 to 60 oscillating. most people stand here',
-   W/2,byB+16,10.5,ink,.5,400);})();
+  /* AND ITS CAPTION IS NOT PRINTED ON THE DRAWING. Same rule as the sixteen
+     names and the coherence number. It is tool information, which may sit
+     under the figure, so it does: coneHint carries it as markup below the
+     canvas, where it wraps, where it can be read by something that is not an
+     eye, and where it is not lying across the band it describes. */})();
 
  /* the reading itself, on the axis at its own height */
  /* ============================================================
@@ -284,7 +359,7 @@ function coneDraw(){
     carrying sixteen names.
     ============================================================ */
  if(CONE.reg){
-  var cyR=H/2, UR=Math.min(W,H)/2, hR=UR*CONE_H;
+  var cyR=H/2, UR=Math.min(W,H)/2, hR=UR*coneH();
   var laws=SI.map(function(l){return {nm:l.nm,v:S.law[l.nm]||0,b:l.b};})
    .sort(function(a,b){return b.v-a.v;});
   var up=laws.slice(0,3), dn=laws.slice(-3).reverse();
@@ -348,25 +423,77 @@ function coneDraw(){
 
  if(cq!==null){
   var cyy=H/2, U2=Math.min(W,H)/2;
-  /* AND YOUR OWN MARKER OSCILLATES, IF THAT IS WHAT YOU ARE DOING.
+  /* THE MARKER OSCILLATES IN YOUR OWN RANGE. Ruled: "a dot, a circle,
+     oscillating across the range the data says is yours, and showing where
+     most people oscillate."
 
-     A person between forty and sixty is not sitting at a number, they are
-     swinging through one, which is the whole meaning of the band they are
-     standing in. Drawn as a fixed dot it read as a settled position and said
-     the opposite of the truth.
+     It used to swing plus or minus 2.4 for anybody between forty and sixty
+     and hold still for everybody else. That is a decoration, not a reading:
+     the same wobble for two people with nothing in common, and none at all
+     for somebody who genuinely swings twenty points between forty and
+     seventy. The range is the person's own history, which the engine already
+     reads for the graph in the information column, so this asks the same
+     reader rather than owning a second one.
 
-     The swing is drawn, the number printed is the reading and not the
-     wobble, and a marker outside the band holds still, because outside the
-     band a person is not oscillating. */
-  var osc=(cq>40&&cq<60)?Math.sin(CONE.t*0.55)*2.4:0;
-  var y=((cq+osc-50)/50)*U2*CONE_H;
-  var my=cyy-y*Math.cos(coneTilt());
+     Three states, and they are honestly different. No history is no claim, so
+     the marker holds still. One reading is a point and not a range, so it
+     also holds still. Two or more is a range and it swings the width of it.
+
+     WHERE MOST PEOPLE OSCILLATE is drawn as well, as the pair of ticks at
+     forty and sixty on the axis, so a person can see their own swing against
+     the common one instead of being told about it. */
+  var mine=null;
+  try{ var sr2=seriesRead(CURP,CONE.span,Date.now());
+       if(sr2.state==='line'&&sr2.hi>sr2.lo)mine={lo:sr2.lo,hi:sr2.hi}; }catch(e){}
+  var yOf=function(q){return cyy-(((q-50)/50)*U2*coneH())*Math.cos(coneTilt());};
+  /* THE COMMON RANGE, as two ticks rather than a third band. The waist
+     already fills forty to sixty and a second fill on top of it would read as
+     one wider band. */
+  [40,60].forEach(function(q){
+   var ty2=yOf(q);
+   g.beginPath(); g.moveTo(W/2-15,ty2); g.lineTo(W/2-9,ty2);
+   g.moveTo(W/2+9,ty2); g.lineTo(W/2+15,ty2);
+   g.strokeStyle=rgba(ink,.30); g.lineWidth=1; g.stroke();});
+  var osc=0;
+  if(mine){
+   var half=(mine.hi-mine.lo)/2, mid=(mine.hi+mine.lo)/2;
+   osc=(mid-cq)+Math.sin(CONE.t*0.55)*half;
+   /* the person's own range, drawn on the axis as the span it is */
+   var ya=yOf(mine.hi), yb=yOf(mine.lo);
+   g.beginPath(); g.moveTo(W/2,ya); g.lineTo(W/2,yb);
+   g.strokeStyle=rgba(cq>=50?gc:rc,.34); g.lineWidth=3; g.stroke();
+   [ya,yb].forEach(function(yy){
+    g.beginPath(); g.moveTo(W/2-7,yy); g.lineTo(W/2+7,yy);
+    g.strokeStyle=rgba(cq>=50?gc:rc,.55); g.lineWidth=1.4; g.stroke();});}
+  var my=yOf(cq+osc);
   if(osc){
    g.beginPath(); g.arc(W/2,my,13,0,Math.PI*2);
    g.strokeStyle=rgba(cq>=50?gc:rc,.22); g.lineWidth=1; g.stroke();}
   g.beginPath(); g.arc(W/2,my,7,0,Math.PI*2);
-  g.fillStyle=rgba(cq>=50?gc:rc,.95); g.fill();
-  coneTxt(g,String(Math.round(cq)),W/2+20,my+4,15,cq>=50?gc:rc,1,500);}}
+  g.fillStyle=rgba(cq>=50?gc:rc,.95); g.fill();}}
+ /* NO TEXT OVER THE HERO GRAPHIC, EVER. Standing rule, and this is where it
+    was broken worst: the coherence number was printed in 15 point beside the
+    marker, in the middle of the figure, saying 39 and nothing else. Two
+    faults in one. It sat on the drawing, and it was a number with no scale,
+    which is the thing the copy editor rule exists to stop.
+
+    Nothing is lost by taking it off. coneRead already prints the same reading
+    in the information column, where it says what it is out of and which side
+    of the band it falls on. The marker keeps its position and its oscillation,
+    which is what the figure is for. */
+/* THE DESATURATED TWIN OF A SEAT COLOUR, for the inverted pole.
+
+   Ruled: "the opposites take the dark version of the light colours, and they
+   stay legible and visible." Legible is the constraint, so this pulls
+   saturation out and leaves lightness alone rather than multiplying the
+   channels down, which is what turns a seat colour into mud at the floor of
+   a dark figure. It takes an rgb triple and returns one. */
+function coneDull(c){
+ if(!c||c.length<3)return c;
+ var r=c[0],g2=c[1],b=c[2];
+ var l=0.2126*r+0.7152*g2+0.0722*b;          /* the colour's own lightness */
+ var k=0.42;                                  /* how much hue survives */
+ return [Math.round(l+(r-l)*k), Math.round(l+(g2-l)*k), Math.round(l+(b-l)*k)];}
 /* one pole glyph, on the 24 unit grid every other icon in this product uses */
 function coneGlyph(g,p,x,y,c,a){
  if(!p||a<0.06)return;
@@ -396,9 +523,39 @@ function coneLayout(){
  var b=c.getBoundingClientRect();
  CONE.dpr=Math.min(devicePixelRatio||1,2);
  c.width=Math.max(1,b.width*CONE.dpr); c.height=Math.max(1,b.height*CONE.dpr);}
+/* WHICH AXIS IS NEAREST THE VIEWER. The meridians sit at even eighths of a
+   turn from the spin, so the front one is whichever eighth the spin has
+   reached. It is read rather than tracked, so it cannot fall out of step with
+   what is drawn. */
+function coneFront(){
+ /* the projection puts a meridian nearest the viewer when sin of its angle is
+    one, so axis i is at the front when i eighths plus the spin reach a
+    quarter turn. Read off the same arithmetic conePtA uses, not a second
+    convention that could drift from it. */
+ var per=Math.PI*2/8;
+ var i=Math.round((Math.PI/2-CONE.spin)/per)%8; if(i<0)i+=8;
+ return i;}
+/* THE SPIN A NAME IS ASKING FOR. Turning axis i to the front means the spin
+   has to reach minus i eighths, and it has to get there the short way round
+   or a hover on the neighbour sends the figure most of a turn backwards. */
+function coneAimAt(i){
+ var per=Math.PI*2/8, want=Math.PI/2-i*per, turn=Math.PI*2;
+ var d=((want-CONE.spin)%turn+turn)%turn;
+ if(d>Math.PI)d-=turn;
+ CONE.spinTo=CONE.spin+d;}
 function coneTick(){
  if(!CONE.open)return;
- if(!REDUCED&&!CONE.drag)CONE.spin+=0.0022;
+ /* EASED, NEVER SNAPPED. Ruled. Twelve per cent of the remaining distance a
+    frame settles inside about a third of a second, which is quick, and it
+    arrives rather than stopping. The target is released once it is close
+    enough to see, and the idle drift takes over again. */
+ if(CONE.spinTo!==null&&!CONE.drag){
+  var gap=CONE.spinTo-CONE.spin;
+  if(Math.abs(gap)<0.004){CONE.spin=CONE.spinTo; CONE.spinTo=null;}
+  else CONE.spin+=gap*0.12;}
+ else if(!REDUCED&&!CONE.drag)CONE.spin+=0.0022;
+ {var f=coneFront();
+  if(f!==CONE.front){CONE.front=f; coneNamesSync();}}
  /* the figure had a spin and no clock. Anything that has to breathe rather
     than turn needs its own time, and the band of souls at the median does. */
  if(!REDUCED)CONE.t+=1/60;
@@ -438,8 +595,14 @@ function coneRead(){
  var band=cq>=60?'above the oscillating band':cq<=40?'below the oscillating band'
   :'inside the oscillating band, where most people stand';
  var rising=r.Ig>=5;
- return '<p class="cone-p">You read <b>'+cq+'</b>, '+band+'. '
-  +'Integrity <b>'+r.Ig.toFixed(1)+'</b>, coherence <b>'+cq+'</b>.</p>'
+ /* EVERY NUMBER SAYS WHAT IT IS OUT OF. His instruction, and this line broke
+    it twice: "you read 88" and "integrity 9.3" with nothing to measure either
+    against. Coherence runs nought to a hundred and integrity runs nought to
+    ten, which are two different scales printed side by side in one sentence,
+    so a reader with no scale is not being vague at, they are being misled. */
+ return '<p class="cone-p">You read <b>'+cq+' out of 100</b>, '+band+'.</p>'
+  +'<p class="cone-p">Integrity <b>'+r.Ig.toFixed(1)+' of 10</b>. '
+  +'Coherence <b>'+cq+' of 100</b>.</p>'
   +'<p class="cone-p">Integrity is the hull. A hole in it means the ship takes '
   +'on water, and everything above the waterline stops mattering. Integrity '
   +'raises coherence, coherence raises what you can hold to, and that raises '
@@ -503,6 +666,59 @@ function coneGraph(){
    +'<span>'+Math.round(sr.last)+'</span></div>';}
  h+='<button type="button" class="cn-gmore" id="cngomore">Open the summary</button>';
  return h+'</div>';}
+/* ============================================================
+   THE NAMES SIT LEFT AND RIGHT, AND LIGHT UP AS YOU WHEEL ROUND.
+
+   Ruled: "the names sit left and right and light up as you wheel round.
+   Hovering one spins the figure to that person, quickly, and never snaps."
+
+   Sixteen names were drawn into the canvas and nowhere else, which cost three
+   things. They collide, because a radial layout has no line breaking and
+   nothing watches them. They cannot be read by anything but an eye, so the
+   whole axis list was invisible to a screen reader and to a search. And they
+   could not carry a control, so the figure had to grow its own hit testing to
+   make a painted word behave like a button.
+
+   Four axes each side, in their seat colours, with the inversion under its
+   own coherent pole so a mirror pair reads as one row rather than two lists.
+   The row nearest the viewer lights. Hovering a row aims the figure at it and
+   the ease does the rest.
+   ============================================================ */
+function coneNames(side){
+ var half=MIRROR.map(function(m,i){return {m:m,i:i};})
+  .filter(function(x){return side==='l'?(x.i<4):(x.i>=4);});
+ return '<div class="cn-nms cn-nms-'+side+'">'
+  +half.map(function(x){
+   var c=seatCol(x.m.seat), cd=rgbcss(coneDull(hx(c)));
+   return '<button type="button" class="cn-nr" data-cnax="'+x.i+'" '
+    +'style="--ax:'+c+';--axd:'+cd+'" '
+    +'title="Turn the figure to '+esc(x.m.up)+' and '+esc(x.m.dn)+'">'
+    /* IF IT HAS A NAME IT HAS AN ICON. Standing rule, and the rail would have
+       broken it the moment the names came off the canvas, where both poles
+       were drawn with their glyph beside them. The same two paths come with
+       them. One 24 unit grid, ring not fill, like every other icon here. */
+    +'<span class="cn-nq">'+esc(x.m.q)+'</span>'
+    +'<span class="cn-nu">'+cnGl(x.m.ic)+esc(x.m.up)+'</span>'
+    +'<span class="cn-nd">'+cnGl(x.m.dic)+esc(x.m.dn)+'</span>'
+    +'</button>';}).join('')
+  +'</div>';}
+/* one rgb triple as a css colour, so the desaturated twin can be handed to
+   the sheet the same way the seat colour is */
+function rgbcss(c){return 'rgb('+c[0]+','+c[1]+','+c[2]+')';}
+/* one mirror glyph as markup. currentColor, so the row's own colour carries
+   it and the icon can never disagree with the name beside it. */
+function cnGl(d){
+ if(!d)return '';
+ return '<svg class="cn-gl" viewBox="0 0 24 24" aria-hidden="true">'
+  +'<path d="'+d+'" fill="none" stroke="currentColor" stroke-width="1.7" '
+  +'stroke-linecap="round" stroke-linejoin="round"/></svg>';}
+/* WHICH ROW IS LIT, updated from the tick rather than from a repaint. Redrawing
+   the rail every frame would rebuild sixteen buttons sixty times a second and
+   throw away the hover the person is currently on. */
+function coneNamesSync(){
+ var rows=document.querySelectorAll('[data-cnax]');
+ for(var i=0;i<rows.length;i++)
+  rows[i].classList.toggle('front',+rows[i].getAttribute('data-cnax')===CONE.front);}
 function coneOpen(inTab){
  var h=document.getElementById('cone'); if(!h)return;
  CONE.open=true; CONE.tab=!!inTab;
@@ -518,6 +734,7 @@ function coneOpen(inTab){
      Each one says what it does now. "Flat" told a person nothing, which is
      exactly what he reported: he did not know what those buttons were for. */
   +'<div class="cone-body"><div class="cone-fig">'
+   +coneNames('l')+coneNames('r')
    +'<canvas id="conecv" class="cone-cv" role="img" '
    +'aria-label="Two cones meeting at the median. Eight axes, each with a coherent pole above and its inversion below."></canvas>'
    +'<div class="cone-ctl">'
@@ -528,7 +745,12 @@ function coneOpen(inTab){
     +'<button type="button" class="cn-b" data-cn="layers" '
      +'title="Show the rings the axes are stacked on">Layers</button>'
    +'</div>'
-   +'<p class="cone-hint">Drag to turn it. Click any name to read that axis.</p>'
+   /* THE TOOL SAYS WHAT IT IS, UNDER THE FIGURE. Ruled: the bottom
+      information goes right unless it is about the tool. These two lines are
+      about the tool, so they may stay under it. The reading does not, and
+      does not. */
+   +'<p class="cone-hint">The waist is 40 to 60 out of 100, where most people '
+   +'oscillate. Drag to turn the figure. Press any name to read that axis.</p>'
   +'</div>'
   /* THE INFORMATION LAYER IS ON THE RIGHT. Ruled, and it is his standing rule
      for this product: the reading and the record went in a column under the
@@ -564,6 +786,21 @@ function coneOpen(inTab){
  h.querySelectorAll('[data-cnspan]').forEach(function(b){
   var k=b.getAttribute('data-cnspan');
   b.onclick=function(){CONE.span=k; coneOpen(CONE.tab);};});
+ /* HOVER AIMS, PRESS READS. Aiming on hover is what he asked for and it must
+    not also open something: a pointer crossing the rail on its way somewhere
+    else would fire four drills. Leaving the rail releases the target and the
+    idle drift resumes from wherever it had got to, which is why it never
+    snaps back either. */
+ h.querySelectorAll('[data-cnax]').forEach(function(b){
+  var i=+b.getAttribute('data-cnax');
+  b.onmouseenter=function(){coneAimAt(i);};
+  b.onfocus=function(){coneAimAt(i);};
+  b.onmouseleave=function(){CONE.spinTo=null;};
+  b.onclick=function(){
+   var m=MIRROR[i]; if(!m)return;
+   coneAimAt(i);
+   if(typeof runTeacherDrill==='function')runTeacherDrill(m,'up');};});
+ coneNamesSync();
  /* the graph is a door onto the long version of itself. Ruled. */
  var gm=document.getElementById('cngomore'), gr=document.getElementById('cngraph');
  function toSum(){setTab(TAB.SUMMARY);}

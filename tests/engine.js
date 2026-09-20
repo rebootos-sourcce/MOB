@@ -1032,12 +1032,35 @@ g('21 \u00b7 the compass. two cones, eight axes, a descent');
  ok(MIRROR.some(m=>m.up==='Jesus'&&m.dn==='Lucifer'),'illumination is Jesus against Lucifer');
  ok(MIRROR.some(m=>m.up==='Buddha'),'and Buddha holds perception');
 
- ok(MASTERS.length===12,'twelve masters anchor the cone, got '+MASTERS.length);
+ /* ELEVEN, AND THE MISSING ONE IS A KNOWN HOLE RATHER THAN A DRIFT.
+
+    This asserted twelve and caught the change the moment it landed, which is
+    what it is for. Meister Eckhart came out on a ruling, classic figures
+    only. He was the only name on the eight mirror pairs that was not
+    classical. Lao Tzu carries Revelation now and was already on this list at
+    the horizontal, so the union lost a member instead of swapping one and the
+    count fell to eleven.
+
+    The number is pinned at eleven rather than loosened to "some", because a
+    gate that stops counting is a gate that stops catching. When he names the
+    twelfth it goes back to twelve and this comment goes with it. BOOK-ERRATA
+    carries it as an open disagreement between the codex and the engine. */
+ ok(MASTERS.length===11,'eleven masters anchor the cone until he names the '
+  +'twelfth, got '+MASTERS.length);
+ ok(!MASTERS.some(m=>/Eckhart/.test(m.nm))&&!MIRROR.some(m=>/Eckhart/.test(m.up)),
+  'and Eckhart is out of both lists, as ruled');
+ /* NOBODY IS ON THIS LIST TWICE. The first cut of the removal put Akhenaten
+    in Eckhart's row and he was already the first entry, which would have kept
+    the count at twelve by counting one man twice. */
+ {const seen={},dupe=[];
+  MASTERS.forEach(m=>{if(seen[m.nm])dupe.push(m.nm);seen[m.nm]=1;});
+  ok(dupe.length===0,'and no master is listed twice'
+   +(dupe.length?'  '+dupe.join(', '):''));}
  /* the union arithmetic: the coordinate list and the mirror pairs overlap, and
-    the union is exactly twelve. if either list moves, this catches it. */
+    every coherent pole has to be on the list. if either moves, this catches it. */
  const upNames=new Set(MIRROR.map(m=>m.up));
  const missing=[...upNames].filter(n=>!MASTERS.some(x=>x.nm===n)&&n!=='Jesus');
- ok(missing.length===0,'every coherent pole is one of the twelve'
+ ok(missing.length===0,'every coherent pole is one of the masters'
   +(missing.length?'  missing: '+missing.join(', '):''));
  ok(BLUEPRINT.length===4,'four blueprint archetypes, got '+BLUEPRINT.length);
  ok(CIRCLES.length===9&&CIRCLES.every((c,i)=>c.c===i+1),'nine circles in order');
