@@ -96,9 +96,16 @@ function impRender(){
     no number. */
  var held=live.filter(function(n){return n.sq>=4;});
  var filled=live.length-held.length;
- var h='<div class="ip-hd"><span class="pm-eye">Held, '+held.length
-  +(filled?', filled in '+filled:'')
-  +(ghosts.length?', pending '+ghosts.length:'')+'</span><div class="ip-ctl">';
+ /* AND THE LABEL IS ONE WORD, which the new voice gate caught in this very
+    string within minutes of landing. "Held, 8, filled in 13" is three counts
+    wearing a label's clothes, and a comma means a second part where a name
+    has one. So the label is Held, the figure rides beside it, and the other
+    two counts are their own figures rather than a clause. */
+ var h='<div class="ip-hd"><span class="pm-eye">Held</span>'
+  +'<span class="ip-n">'+held.length+'</span>'
+  +(filled?'<span class="pm-eye">Filled in</span><span class="ip-n">'+filled+'</span>':'')
+  +(ghosts.length?'<span class="pm-eye">Pending</span><span class="ip-n">'+ghosts.length+'</span>':'')
+  +'<div class="ip-ctl">';
  IMP_GROUPS.forEach(function(gp){
   h+='<button class="ip-g'+(IMP_GROUP===gp[0]?' on':'')+'" data-ig="'+gp[0]+'">'+gp[1]+'</button>';});
  h+='<button class="ip-max" id="impmax" title="'+(IMP_BIG?'shrink':'full width')+'">'

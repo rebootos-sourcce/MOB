@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="c873356 2026-09-20 21:21"><head><meta charset="utf-8">
+<html lang="en" data-build="fc91329 2026-09-20 21:26"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -14953,9 +14953,16 @@ function impRender(){
     no number. */
  var held=live.filter(function(n){return n.sq>=4;});
  var filled=live.length-held.length;
- var h='<div class="ip-hd"><span class="pm-eye">Held, '+held.length
-  +(filled?', filled in '+filled:'')
-  +(ghosts.length?', pending '+ghosts.length:'')+'</span><div class="ip-ctl">';
+ /* AND THE LABEL IS ONE WORD, which the new voice gate caught in this very
+    string within minutes of landing. "Held, 8, filled in 13" is three counts
+    wearing a label's clothes, and a comma means a second part where a name
+    has one. So the label is Held, the figure rides beside it, and the other
+    two counts are their own figures rather than a clause. */
+ var h='<div class="ip-hd"><span class="pm-eye">Held</span>'
+  +'<span class="ip-n">'+held.length+'</span>'
+  +(filled?'<span class="pm-eye">Filled in</span><span class="ip-n">'+filled+'</span>':'')
+  +(ghosts.length?'<span class="pm-eye">Pending</span><span class="ip-n">'+ghosts.length+'</span>':'')
+  +'<div class="ip-ctl">';
  IMP_GROUPS.forEach(function(gp){
   h+='<button class="ip-g'+(IMP_GROUP===gp[0]?' on':'')+'" data-ig="'+gp[0]+'">'+gp[1]+'</button>';});
  h+='<button class="ip-max" id="impmax" title="'+(IMP_BIG?'shrink':'full width')+'">'
@@ -23632,5 +23639,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="001532415"></div>
+<div id="eof" hidden data-len="001532928"></div>
 </body></html>
