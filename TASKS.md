@@ -21,6 +21,53 @@ reopens. Every seat adds its own.
 
 ---
 
+## 0e2. MEASURED 20 SEPTEMBER. WHAT THE ONBOARDING PASS LEFT BEHIND.
+
+Onboarding is off, ruled. That seat stood down and wrote what it measured to
+`DESIGN-onboard.md` rather than dropping it, which is the point of standing a
+seat down rather than killing it. Three defects came out that do not depend on
+onboarding ever coming back, and two are fixed here.
+
+- [x] **OB20. A failed save was swallowed into an empty catch.** The first run
+      set its flag and called save without checking what came back, so if
+      storage was full or blocked the flag never persisted, nothing said so,
+      and the onboarding reopened on every launch with no explanation. A flow
+      that will not close and will not say why is the worst shape a first run
+      can take. `account.js` does the same call correctly one file over. It
+      reports now, and the sheet still closes, because trapping somebody
+      inside it to punish a storage failure helps nobody.
+- [x] **OB21. A control was changing its own identity.** It read "Choose one
+      to go on" until a seat was picked and then became "Next". The rule is
+      already written down in this product, beside the shelf that swapped its
+      heading with its value: a slot keeps its label and the value carries the
+      state. The word is Next, disabled says it is not ready, and the reason
+      sits beside it where a screen reader reaches it too.
+- [ ] **OB22. A prototype prints a count against a total on a reading.**
+      `proto/signal/signal.html` says 62 out of 100 and 74 degrees out of 180.
+      Cheap to fix now and it is in a prototype rather than the build.
+- [x] **OB23. The measurements are kept and they are the useful part.** Four
+      screens, 372 words, a four dot counter on every one, and 47 seconds of
+      reading before a person is asked to do anything with their body. The
+      first thing to press lands at about 69 seconds. All six recorded defects
+      in the shipped signal test reproduced against the running build rather
+      than against the source.
+- [x] **OB24. And it reached an answer to the fight before it stopped.** One
+      progress object for the whole flow, and it is the loop itself: the ring
+      is the indicator, so progress is angular rather than ordinal, and a
+      circle has no last place, so there is nothing to count and nothing to
+      count towards. Next turns the ring a quarter rather than advancing a
+      page, so a person performs the loop with the only control on screen
+      instead of reading a description of it. That settles four queued items
+      with one object and it is worth keeping whether or not this is ever
+      built.
+- [?] **OB25. Two collisions in his own rulings, named rather than resolved.**
+      One queued line asks the onboarding to say how the tools work for a
+      person, and the line after it forbids talking about purpose. And the
+      gamification allocation names one surface at two stations, which leaves
+      a person able to name three doors where the brief is four.
+
+---
+
 ## 0f2. RULED 20 SEPTEMBER, TWELFTH PASS. SATURATION, THE TWO DIALS, THE FEATHERS.
 
 ### SA2. THE SATURATION, RULED AND DONE.

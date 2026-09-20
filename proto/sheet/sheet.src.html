@@ -287,11 +287,11 @@ select{background:var(--panel-2);border:1px solid var(--line2);border-radius:10p
    declarations and var are. That is recorded in DESIGN-avatar.md section 26
    and it is why nothing here reads window.PAL.
 
-   cqCeiling IS reachable here, by name and on window, because it is a function
-   declaration. It is absent from engine/export.js, so a node probe cannot
-   reach it, and that is what "missing from export.js" means. It is measured on
-   this page in the foot, and the measurement is the reason it is not the
-   ceiling this sheet draws.
+   cqCeiling is reachable here by name and on window, because it is a function
+   declaration. It was absent from engine/export.js when this page was started,
+   which is why no headless probe could read it, and another seat added it
+   during this pass. Either way it is measured on this page in the foot, and
+   the measurement is the reason it is not the ceiling this sheet draws.
    ============================================================ */
 var R=window.RISE, X=window.SHEET;
 var E={W:W, BANDS:BANDS, S:S, SI:SI, bandIg:bandIg, PEOPLE:PEOPLE, MASKS:MASKS,
@@ -689,10 +689,17 @@ function paint(){
   +'what conducts, the dim arc is what charge is holding down, and the dashed ring marks the '
   +'seat costing the most. The seats breathe at the rate the reading sets, and nothing else '
   +'on the figure moves.';
+ /* THE DUPLICATE IS NAMED ON THE SURFACE. Two of the six read the same pair of
+    seats, so their figures can never differ, and a person who notices two
+    identical masks and is not told why has found a defect rather than a
+    reading. It is a table defect and it is reported rather than drawn over. */
+ var tw=CR.masks.filter(function(m){return m.twins.length;});
  document.getElementById('maskfoot').textContent=
   'Six masks, one per era, in the order they were put on. Each fills from the bottom as the '
   +'instrument reads charge at the seats that era sits on, in the colour of whichever of its '
-  +'seats is carrying more. Writing is what fills them.';
+  +'seats is carrying more. Writing is what fills them.'
+  +(tw.length?(' '+tw[0].nm.toLowerCase()+' and '+tw[0].twins.join(' and ').toLowerCase()
+    +' sit on the same two seats, so those two always read the same.'):'');
  /* the ceiling that was tried first, and the measurement that ruled it out.
     Printed on the surface rather than kept in the design document, because a
     figure a reviewer cannot see is a figure nobody checks. */
@@ -701,8 +708,9 @@ function paint(){
   :('cqCeiling on this profile reads '+cc.toFixed(1)+' against a coherence of '+r.CQ.toFixed(1)
     +', so it leaves '+Math.max(0,cc-r.CQ).toFixed(1)+' points of headroom. It holds the '
     +'twenty one laws where they are, so it is the ceiling this person’s conduct allows '
-    +'rather than the ceiling the sheet draws. Reachable here by name and absent from '
-    +'engine/export.js, so no headless probe can read it.');
+    +'rather than the ceiling the sheet draws. It was absent from engine/export.js when this '
+    +'page was started, and another seat added it mid pass, so a headless probe reaches it '
+    +'now as well as this page does.');
 }
 
 /* THE EMPTY STATE, AND ON THIS PAGE IT IS THE STRONGEST STATE THERE IS.

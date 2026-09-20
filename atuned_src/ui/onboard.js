@@ -89,7 +89,26 @@ function obOpen(replay){
 function obClose(){
  var h=document.getElementById('ob'); if(!h)return;
  OB.open=false; h.style.display='none'; h.innerHTML='';
- try{ if(CURP){ CURP.onboarded=true; pSave(); } }catch(e){}
+ /* EVERY WRITE THAT CAN FAIL REPORTS, and this one did not.
+
+    It ignored what pSave returned and swallowed any throw into an empty
+    catch. `account.js` does the same call correctly one file over: it checks
+    the return and reports through status(). So if storage is full or blocked,
+    the flag never persisted, nothing said so, and the onboarding reopened on
+    every single launch with no explanation a person could act on. A flow that
+    will not close and will not say why is the worst shape a first run can
+    take.
+
+    It says so now, and it says the one thing a person can do about it. The
+    sheet still closes either way, because trapping somebody inside it to
+    punish a storage failure helps nobody. */
+ try{
+  if(CURP){ CURP.onboarded=true;
+   if(!pSave()&&typeof status==='function')
+    status('This browser would not save. The first run will open again.','fail'); }
+ }catch(e){
+  if(typeof status==='function')
+   status('This browser would not save. The first run will open again.','fail'); }
  if(typeof render==='function')render();}
 
 /* ---- the steps ---- */
@@ -195,8 +214,15 @@ function obRender(){
       +'" data-obseat="'+esc(b)+'" style="--c:'+seatCol(b)+'">'+esc(b)+'</button>';}).join('')
    +'<button type="button" class="ob-seat'+(OB.felt==='none'?' on':'')
    +'" data-obseat="none">Nothing</button></div>',
+   /* A SLOT KEEPS ITS LABEL AND THE VALUE CARRIES THE STATE. This read
+      "Choose one to go on" until a seat was picked and then became "Next",
+      so the control changed identity under the pointer. The rule is already
+      written down in this product, next to the shelf that swapped its own
+      heading with its own value. The word stays Next; disabled is what says
+      it is not ready, and the accessible name says why. */
    '<button type="button" class="btn pri" data-ob="next"'
-   +(OB.felt?'':' disabled')+'>'+(OB.felt?'Next':'Choose one to go on')+'</button>'
+   +(OB.felt?'':' disabled aria-describedby="ob-need"')+'>Next</button>'
+   +(OB.felt?'':'<span id="ob-need" class="ob-need">Choose one to go on.</span>')
    +'<button type="button" class="btn" data-ob="back">Back</button>');
  }
  else {
