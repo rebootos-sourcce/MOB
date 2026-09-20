@@ -19,6 +19,29 @@ done
 
 cat $MODS > "$OUT"
 
+# WHICH BUILD THIS IS, STAMPED INTO THE FILE ITSELF.
+#
+# Two builds went out with a fix in them and the same failure came back both
+# times, and there was no way to tell from this side whether the file being
+# opened was the file that was sent. A browser saves a second download of the
+# same name as atuned(1).html and leaves the first where it was, so "I opened
+# the file" can mean last week's. The stamp settles that in one glance, on the
+# one screen every person sees every time.
+#
+# It is written after the concatenation, so the placeholder cannot survive
+# into a shipped file, and the check below fails the build if it does.
+STAMP="$(git -C .. rev-parse --short HEAD 2>/dev/null || echo nogit)"
+STAMP="$STAMP $(date -u +%Y-%m-%d\ %H:%M)"
+python3 - "$OUT" "$STAMP" <<'PY2'
+import io,sys
+p,stamp=sys.argv[1],sys.argv[2]
+s=io.open(p,encoding='utf-8').read()
+if 'BUILD_STAMP' not in s:
+    print('the build stamp placeholder is gone from the shell'); sys.exit(1)
+s=s.replace('BUILD_STAMP',stamp)
+io.open(p,'w',encoding='utf-8').write(s)
+PY2
+
 # the shell must close every div it opens
 python3 - "$OUT" <<'PY'
 import re,sys

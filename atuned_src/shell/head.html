@@ -3083,6 +3083,12 @@ body:not(.tab-field) .cv-legend{display:none}
 .boot-wm .bs-by{letter-spacing:.04em;color:var(--dim);font-weight:400}
 .boot-wm .bs-nm{letter-spacing:.19em;margin-right:-.19em;color:var(--ink);
  text-transform:uppercase}
+/* the build stamp. quiet, selectable, and under the type floor on purpose:
+   it is not copy a person reads to use the thing, it is a serial number, and
+   gate 4 carries a named exception for that class. */
+.boot-wm .bs-v{display:block;margin-top:9px;font-size:9px;letter-spacing:.06em;
+ color:var(--dim);opacity:.72;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+ -webkit-user-select:text;user-select:text}
 .boot-wm .um{position:relative;display:inline-block}
 .boot-wm .um::before,.boot-wm .um::after{content:'';position:absolute;top:-.42em;
  width:.14em;height:.14em;border-radius:50%;background:var(--um)}

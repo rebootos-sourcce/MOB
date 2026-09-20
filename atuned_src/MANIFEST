@@ -1,6 +1,6 @@
 shell/head.html
 shell/body.html
-shell/guard.js
+shell/guard.html
 engine/data/nodes.js
 engine/data/figure.js
 engine/data/nerves.js

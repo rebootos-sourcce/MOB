@@ -117,7 +117,15 @@
       itself is uppercased, by the sheet, the way the wordmark above it has
       always done it. -->
  <div class="boot-wm"><span class="bn">At<span class="um">u</span>ned</span>
-  <span class="bs"><span class="bs-by">Powered by</span><span class="bs-nm">Source OS</span></span></div>
+  <span class="bs"><span class="bs-by">Powered by</span><span class="bs-nm">Source OS</span></span>
+  <!-- WHICH BUILD THIS ACTUALLY IS, on the one screen every person sees every
+       time. Two builds were sent with a fix in them and the same failure came
+       back both times, and there was no way to tell from here whether the file
+       being opened was the file that was sent. A browser saves a second
+       download as atuned(1).html and leaves the first one where it was, so
+       opening "the file" can mean opening last week's.
+       Stamped by BUILD.sh, so it cannot be wrong or go stale. -->
+  <span class="bs-v" id="bstamp">BUILD_STAMP</span></div>
  <!-- THE WAY OUT WAS BUILT AND NEVER SHOWN.
 
       pointerdown and keydown both clear this sheet and have since it was
@@ -454,4 +462,3 @@
   </div></div>
  </div>
 </div>
-<script>

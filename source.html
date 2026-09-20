@@ -3083,6 +3083,12 @@ body:not(.tab-field) .cv-legend{display:none}
 .boot-wm .bs-by{letter-spacing:.04em;color:var(--dim);font-weight:400}
 .boot-wm .bs-nm{letter-spacing:.19em;margin-right:-.19em;color:var(--ink);
  text-transform:uppercase}
+/* the build stamp. quiet, selectable, and under the type floor on purpose:
+   it is not copy a person reads to use the thing, it is a serial number, and
+   gate 4 carries a named exception for that class. */
+.boot-wm .bs-v{display:block;margin-top:9px;font-size:9px;letter-spacing:.06em;
+ color:var(--dim);opacity:.72;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+ -webkit-user-select:text;user-select:text}
 .boot-wm .um{position:relative;display:inline-block}
 .boot-wm .um::before,.boot-wm .um::after{content:'';position:absolute;top:-.42em;
  width:.14em;height:.14em;border-radius:50%;background:var(--um)}
@@ -3433,7 +3439,15 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
       itself is uppercased, by the sheet, the way the wordmark above it has
       always done it. -->
  <div class="boot-wm"><span class="bn">At<span class="um">u</span>ned</span>
-  <span class="bs"><span class="bs-by">Powered by</span><span class="bs-nm">Source OS</span></span></div>
+  <span class="bs"><span class="bs-by">Powered by</span><span class="bs-nm">Source OS</span></span>
+  <!-- WHICH BUILD THIS ACTUALLY IS, on the one screen every person sees every
+       time. Two builds were sent with a fix in them and the same failure came
+       back both times, and there was no way to tell from here whether the file
+       being opened was the file that was sent. A browser saves a second
+       download as atuned(1).html and leaves the first one where it was, so
+       opening "the file" can mean opening last week's.
+       Stamped by BUILD.sh, so it cannot be wrong or go stale. -->
+  <span class="bs-v" id="bstamp">5a4c7e2 2026-09-20 03:54</span></div>
  <!-- THE WAY OUT WAS BUILT AND NEVER SHOWN.
 
       pointerdown and keydown both clear this sheet and have since it was
@@ -3770,6 +3784,23 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
   </div></div>
  </div>
 </div>
+<!-- ============================================================
+     THE BOOT GUARD, IN A SCRIPT BLOCK OF ITS OWN.
+
+     It was written inside the main block, which made it useless against the
+     failure it was written for. The whole instrument is ONE script tag: a
+     syntax error anywhere in it stops the browser parsing the entire block,
+     so nothing in that block runs, including a guard sitting at the top of
+     it. The app would be dead and the guard would be dead with it, which is
+     exactly what the owner kept seeing.
+
+     A separate tag is parsed and run independently. A parse error in the main
+     block now leaves this one alive to say so.
+
+     And <noscript> does not help here. It fires when scripts are turned OFF.
+     With scripts on and a block that will not parse, the browser runs nothing
+     and shows no notice, which is the silent version of the failure.
+     ============================================================ -->
 <script>
 /* ============================================================
    THE BOOT GUARD. First thing in the script, before any data.
@@ -3821,10 +3852,17 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
     +'entered is lost. It is still in this browser.';
    p1.style.cssText='margin:0 0 14px;color:#C9CBD2';
    var p2=document.createElement('p');
-   p2.textContent='Send this line back and it names the cause exactly:';
+   p2.textContent='Send these lines back. They name the cause exactly, and the '
+    +'first one says which build this actually is.';
    p2.style.cssText='margin:0 0 8px;color:#8A8C94;font-size:13.5px';
    var pre=document.createElement('pre');
-   pre.textContent=what+'\n'+where+'\n'+navigator.userAgent;
+   /* THE BUILD STAMP GOES FIRST. Two fixes went out and the same failure came
+      back both times, and there was no way to tell whether the file being
+      opened was the file that was sent. */
+   var stamp='build unknown';
+   try{var bs=document.getElementById('bstamp');
+     if(bs&&bs.textContent)stamp='build '+bs.textContent;}catch(e){}
+   pre.textContent=stamp+'\n'+what+'\n'+where+'\n'+navigator.userAgent;
    pre.style.cssText='margin:0;padding:14px 16px;background:#141518;'
     +'border:1px solid #26282E;border-radius:10px;white-space:pre-wrap;'
     +'word-break:break-word;font:12px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;'
@@ -3857,6 +3895,9 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
   show('the script never reached the end of its own start up',
        'navigation built: '+(tb&&tb.children.length?tb.children.length+' tabs':'none'));},8000);
 })();
+
+</script>
+<script>
 /* ============================================================
    THE 112 ADDRESSES. 108 somatic, seated at a named plexus or
    nerve, plus 4 field anchors above and below the body.
