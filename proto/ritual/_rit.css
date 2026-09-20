@@ -78,7 +78,7 @@
  --t-micro:120ms; --t-element:220ms;
  /* the waveform pixel. One number, so the column, the cap and the baseline
     cannot drift apart. */
- --px:30px; --pxgap:4px;
+ --px:40px; --pxgap:4px;
  --cell:13px;}
 html,body{margin:0;background:var(--bg);color:var(--ink)}
 body{font:16px/1.5 var(--sans);-webkit-font-smoothing:antialiased;padding:0 0 56px}
@@ -224,8 +224,16 @@ textarea:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--gold);
    A day before the record starts has no pixel and no baseline under it. A
    day that has not happened is not a failure.
    ============================================================ */
-.wave{display:grid;grid-template-columns:repeat(7,minmax(var(--tap),1fr));
- gap:var(--pxgap);align-items:end}
+/* THE WEEK USES THE PANEL'S WIDTH. At 1600 the calendar put a seven cell week
+   in the top left of a 730 pixel panel and left the rest of it empty, which is
+   his "weight space isn't wasted" made visible. The waveform takes the left of
+   the panel and the key, the legend and the note stack down the right, so the
+   panel carries three things instead of one and a third of it. */
+.weekgrid{display:grid;grid-template-columns:auto minmax(200px,1fr);gap:22px;
+ align-items:start}
+.weekside{display:flex;flex-direction:column;gap:14px;min-width:0}
+.wave{display:grid;grid-template-columns:repeat(7,calc(var(--px) + 8px));
+ gap:var(--pxgap);align-items:end;justify-content:start}
 .wcol{display:flex;flex-direction:column;align-items:center;gap:var(--pxgap);
  background:none;border:0;padding:6px 2px;margin:0;cursor:pointer;color:inherit;
  border-radius:var(--r-xs);min-height:var(--tap);min-width:var(--tap);
@@ -249,7 +257,7 @@ textarea:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--gold);
 .wdate{font-size:11px;color:var(--dim);font-family:var(--num);
  font-variant-numeric:tabular-nums}
 /* the band key, which is also the legend for the colour */
-.keys{display:flex;flex-wrap:wrap;gap:var(--g1);margin-bottom:14px}
+.keys{display:flex;flex-wrap:wrap;gap:var(--g1)}
 .key{display:inline-flex;align-items:center;gap:7px;padding:5px 11px 5px 7px;
  border-radius:999px;background:color-mix(in srgb,var(--c) 9%,transparent);
  border:1px solid color-mix(in srgb,var(--c) 30%,transparent);font-size:12.5px;
@@ -258,7 +266,7 @@ textarea:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--gold);
 .key b{color:var(--ink);font-weight:500}
 .key em{font-style:normal;color:var(--dim);font-family:var(--num);
  font-variant-numeric:tabular-nums}
-.marks{display:flex;flex-wrap:wrap;gap:16px;margin-top:14px;padding-top:12px;
+.marks{display:flex;flex-wrap:wrap;gap:10px 16px;padding-top:12px;
  border-top:1px solid var(--edge)}
 .mk{display:inline-flex;align-items:center;gap:7px;font-size:11.5px;
  color:var(--dim)}
@@ -389,8 +397,8 @@ textarea:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--gold);
 .qrow-w{font-size:12px;color:var(--dim);margin-top:4px;line-height:1.5}
 
 /* ---------- to the journal ---------- */
-.jrow{display:flex;gap:var(--g1);align-items:stretch;flex-wrap:wrap}
-.jrow textarea{flex:1 1 220px;min-width:0;min-height:var(--tap);
+.jrow{display:flex;gap:var(--g1);align-items:center;flex-wrap:wrap;margin-top:var(--g1)}
+#jtext{display:block;width:100%;min-height:var(--tap);
  background:var(--sunk);border:1px solid var(--edge);border-radius:var(--r-s);
  padding:11px 13px;color:var(--ink);font-size:14px;line-height:1.5;resize:vertical}
 #jnote{margin-top:9px}
@@ -416,14 +424,18 @@ textarea:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--gold);
 #status[data-kind=fail]{color:var(--bad);font-weight:500}
 
 .foot{margin-top:28px;padding-top:15px;border-top:1px solid var(--edge);
- font-size:12.5px;color:var(--dim);line-height:1.7;max-width:96ch}
+ font-size:12.5px;color:var(--dim);line-height:1.7}
+.foot p{margin:0 0 11px;max-width:78ch}
+.foot p:last-child{margin-bottom:0}
 .foot b{color:var(--mid);font-weight:500}
 
 @media(max-width:1080px){
  .grid{grid-template-columns:minmax(0,1fr)}
  .rec{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:760px){
+ .weekgrid{grid-template-columns:minmax(0,1fr);gap:16px}}
 @media(max-width:640px){
- :root{--px:26px;--cell:11px}
+ :root{--px:34px;--cell:11px}
  .rec{grid-template-columns:repeat(2,1fr)}
  .fig-n{font-size:28px}
  .wrap{padding:0 16px}
@@ -433,5 +445,5 @@ textarea:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--gold);
  .wdi b{font-size:11px}
  body{padding-bottom:36px}}
 @media(max-width:420px){
- :root{--px:22px;--pxgap:3px}
+ :root{--px:30px;--pxgap:3px}
  .rec{grid-template-columns:repeat(2,1fr)}}

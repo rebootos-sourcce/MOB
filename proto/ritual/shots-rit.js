@@ -48,9 +48,18 @@ const SEL='button,input,select,textarea,a[href],[role=button]';
   await pg.evaluate(()=>{const c=document.querySelector('[data-open]');if(c)c.click();});
   await pg.waitForTimeout(200);
   await pg.screenshot({path:__dirname+'/rit-'+WHO+'-card-'+tag+'.png',fullPage:true});
+  /* THE SAME CONVENTION AS THE WEEK. A uniform row of seven weekday toggles
+     is one object a person reaches for, not seven decisions, so it counts as
+     one and the cell count is printed beside it. Counting every cell put the
+     card at 24 against a working memory of about four, which is a number that
+     describes the counting rule and not the surface. */
   const cardM=await pg.evaluate(s=>{
    const v=[...document.querySelectorAll('#sheet '+s)].filter(e=>e.offsetParent!==null);
-   return {n:v.length, small:v.filter(e=>{const r=e.getBoundingClientRect();
+   const grid=e=>e.classList.contains('dayb')||e.classList.contains('histb');
+   const cells=v.filter(grid), ctrls=v.filter(e=>!grid(e));
+   const rows=new Set(cells.map(e=>e.parentElement.id||'g')).size;
+   return {n:ctrls.length+rows, ctrls:ctrls.length, cells:cells.length, rows:rows,
+    small:v.filter(e=>{const r=e.getBoundingClientRect();
      return r.width>0&&(r.width<44||r.height<44);})
     .map(e=>((e.id||(typeof e.className==='string'?e.className:e.tagName))+' '
      +Math.round(e.getBoundingClientRect().width)+'x'
@@ -138,7 +147,8 @@ const SEL='button,input,select,textarea,a[href],[role=button]';
    +'  (controls '+m.controls+' + the week as one object, '+m.waveCols+' columns)'
    +'  words '+m.wordsNoFoot
    +'  redraw '+m.redraw.median+'ms median, '+m.redraw.worst+'ms worst');
-  console.log('  card    choices '+cardM.n
+  console.log('  card    choices '+cardM.n+'  (controls '+cardM.ctrls
+   +' + '+cardM.rows+' weekday rows as one object each, '+cardM.cells+' cells)'
    +'   queue   choices '+queueM.n+' over '+queueM.rows+' rows');
   console.log('  horizontal scroll: '+m.scrollW+' against a viewport of '+m.clientW
    +(m.scrollW>m.clientW?'  FAIL':'  none'));

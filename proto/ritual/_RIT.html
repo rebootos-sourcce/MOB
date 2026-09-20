@@ -18,15 +18,19 @@
    <!-- 2. THE WEEK. Monday first, ruled. -->
    <section class="glass" id="weekp">
     <span class="eyebrow">This Week</span>
-    <div class="keys" id="keys"></div>
-    <div class="wave" id="wave"></div>
-    <div class="marks">
-     <span class="mk"><i class="kept"></i>kept</span>
-     <span class="mk"><i class="miss"></i>missed</span>
-     <span class="mk"><i class="set"></i>set, not marked</span>
-     <span class="mk"><i class="off"></i>offered, not taken</span>
+    <div class="weekgrid">
+     <div class="wave" id="wave"></div>
+     <div class="weekside">
+      <div class="keys" id="keys"></div>
+      <div class="marks">
+       <span class="mk"><i class="kept"></i>kept</span>
+       <span class="mk"><i class="miss"></i>missed</span>
+       <span class="mk"><i class="set"></i>set, not marked</span>
+       <span class="mk"><i class="off"></i>offered, not taken</span>
+      </div>
+      <p class="note" id="wavenote"></p>
+     </div>
     </div>
-    <p class="note" id="wavenote" style="margin-top:12px"></p>
    </section>
 
    <!-- THE ACCOUNTABILITY TRACKER. The little boxes. -->
@@ -42,12 +46,6 @@
     <p class="note" id="wdnote" style="margin-top:12px"></p>
    </section>
 
-   <!-- FEEDBACK. A page that only records is a log. -->
-   <section class="glass" id="fbp">
-    <span class="eyebrow">Where To Improve</span>
-    <div class="fb" id="fb"></div>
-   </section>
-
   </div>
   <div class="colR">
 
@@ -60,9 +58,9 @@
    <!-- THE SNIPPET TO THE JOURNAL. -->
    <section class="glass" id="jp">
     <span class="eyebrow">To The Journal</span>
+    <textarea id="jtext" rows="2" placeholder="One sentence on the day"
+     aria-label="One sentence on the day"></textarea>
     <div class="jrow">
-     <textarea id="jtext" rows="2" placeholder="One sentence on the day"
-      aria-label="One sentence on the day"></textarea>
      <button class="btn pri" id="jsend" type="button">Send</button>
      <button class="btn" id="jrec" type="button">Record</button>
     </div>
@@ -72,10 +70,16 @@
     <div id="jsaid" hidden></div>
    </section>
 
+   <!-- FEEDBACK. A page that only records is a log. -->
+   <section class="glass" id="fbp">
+    <span class="eyebrow">Where To Improve</span>
+    <div class="fb" id="fb"></div>
+   </section>
+
   </div>
  </div>
 
- <p class="foot" id="foot"></p>
+ <div class="foot" id="foot"></div>
 </div>
 
 <div class="veil" id="veil" hidden>
@@ -253,13 +257,13 @@ function drawRecord(){
  if(P.improved){
   var d=P.improved.diff;
   F.push({c:DATA.pal.Root, ic:SHAPEIC.window, frac:P.improved.now/P.improved.window,
-   n:P.improved.now, k:'days kept, last four weeks',
+   n:P.improved.now, k:'kept, last four weeks',
    o:P.improved.before+' in the four before. '
     +(d===0?'No change.':(Math.abs(d)===1?'One day apart.':Math.abs(d)+' days apart.'))});}
  else{
   F.push({c:DATA.pal.Root, ic:SHAPEIC.window, frac:0, wait:true,
    n:(P.improveNeed-P.walk.length)+' days to go',
-   k:'days kept, last four weeks',
+   k:'kept, last four weeks',
    o:'It reads two windows of four weeks against each other, so it opens at '
     +P.improveNeed+' days on the record'});}
 
@@ -348,7 +352,7 @@ function drawTracker(){
   var j=i-pad;
   var v=(j<0||P.walk[j]===undefined)?null:!!P.walk[j];
   h+='<i class="'+(v===null?'no':(v?'on':'fl'))+'"'
-   +' style="--c:'+DATA.pal.Heart+'"></i>';}
+   +' style="--c:'+bandC('hold')+'"></i>';}
  document.getElementById('hm').innerHTML=h;
  document.getElementById('hmax').innerHTML=DAY.map(function(d,i){
   return '<span>'+(i%2===0?d:'')+'</span>';}).join('');
@@ -374,7 +378,7 @@ function drawTracker(){
  box.innerHTML=P.wd.map(function(x,i){
   var f=x.lived?x.kept/x.lived:0;
   return '<div class="wdi'+(f===lo?' lo':'')+'"><span>'+x.d+'</span>'
-   +cr({c:DATA.pal.Heart, t:'', ic:KINDIC.hold, frac:f, size:'sm', v:''})
+   +cr({c:bandC('hold'), ic:KINDIC.hold, frac:f, size:'sm', v:''})
    +'<b>'+x.kept+' of '+x.lived+'</b></div>';}).join('');
  note.textContent='Days kept against days lived, one weekday at a time.';}
 
@@ -437,16 +441,16 @@ function drawBands(){
 function drawFeedback(){
  var f=P.feedback, out=[];
  if(f.state==='waiting'){
-  out.push({c:DATA.pal.Heart, ic:KINDIC.hold,
+  out.push({c:bandC('hold'), ic:KINDIC.hold,
    t:'Your record is <b>'+P.walk.length+' days</b>. A weekday rate needs four '
     +'weeks behind it, so there are <b>'+f.need+' days</b> before this page can '
     +'say which day you lose. Until then the run is the only figure that moves.'});}
  else if(f.flat){
-  out.push({c:DATA.pal.Heart, ic:KINDIC.hold,
+  out.push({c:bandC('hold'), ic:KINDIC.hold,
    t:'You keep it at the same rate every weekday, <b>'+f.best.kept+' of '
     +f.best.lived+'</b>. Nothing here points at a day.'});}
  else{
-  out.push({c:DATA.pal.Heart, ic:KINDIC.hold,
+  out.push({c:bandC('hold'), ic:KINDIC.hold,
    t:'<b>'+f.worst.d+'</b> is the day you lose, kept <b>'+f.worst.kept+' of the '
     +f.worst.lived+'</b> you have lived. '+f.best.d+' is the one you hold, '
     +f.best.kept+' of '+f.best.lived+'. Move one behaviour onto '+f.worst.d
@@ -459,12 +463,12 @@ function drawFeedback(){
     +f.practice.wanted.toLowerCase()+' track at your tier, '+f.practice.min
     +' minutes.'});}
  if(f.releasable>0){
-  out.push({c:DATA.pal.Throat, ic:KINDIC.release,
+  out.push({c:bandC('release'), ic:KINDIC.release,
    t:'<b>'+f.releasable+' addresses</b> sit above the line release opens at. '
     +'<b>'+esc(f.protocol)+'</b> runs at one of them, 20 minutes, and the '
     +'release band is where it goes.'});}
  else{
-  out.push({c:DATA.pal.Throat, ic:KINDIC.release,
+  out.push({c:bandC('release'), ic:KINDIC.release,
    t:'Nothing sits above the line release opens at, so the release band stays '
     +'empty. It fills when an address goes over.'});}
  document.getElementById('fb').innerHTML=out.map(function(o){
@@ -746,7 +750,8 @@ function drawFoot(){
   +'those cells would be the only fabricated figure on the page. Marks never '
   +'run backwards: taking an offer sets it from today forward, because nobody '
   +'kept a ritual they had not taken.');
- document.getElementById('foot').innerHTML=f.join(' ');}
+ document.getElementById('foot').innerHTML=
+  f.map(function(x){return '<p>'+x+'</p>';}).join('');}
 
 /* ============================================================
    WIRING. One delegated listener, so a redraw cannot orphan a handler.

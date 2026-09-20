@@ -148,21 +148,26 @@ function planNextSight(){ return null; }
    stored: it is always the unique count minus what has been granted, so the
    two cannot drift. */
 function planAllowance(pl,uniqueCount){
- /* IT IS A COUNT, AND IT WAS BEING HANDED THE LIST.
-    `planSection` passed `m.unique`, which is the array of pattern keys, not
-    its length. An empty array coerces to 0 and looked correct, so this read
-    right on a blank profile and only ever broke for somebody who had done
-    the work: an array of three coerces to NaN, so `say` printed "NaN left
-    this week" and the source flipped from gift to free, telling a person they
-    had spent a grant they still had.
+ /* IT TAKES A COUNT, AND IT NOW SAYS SO RATHER THAN TRUSTING IT.
 
-    Both halves are fixed. The caller passes a length, and this refuses to
-    emit NaN from any input, because an arithmetic function that can return a
-    number nobody can read is a function that will. A list is accepted and
-    measured rather than refused, since a list is what the profile stores and
-    reading its length is what the caller meant. */
- /* Array.isArray, not a length check: a string has a length too, so the
-    first cut read the string "x" as one pattern spent. */
+    Two shapes of the same word live in this codebase and they are easy to
+    confuse. `CURP.meter.unique` is the array of pattern keys, and
+    `meterRead().unique` is already its length. The plan panel reads the
+    second, which is correct, and I misread it as the first and changed a
+    caller that was never broken. Checked afterwards, properly: that field is
+    a number, and no build has ever shown a person a NaN here.
+
+    What is worth keeping from the wrong turn is the guard. An array coerces
+    to NaN the moment it holds more than one item, so a future caller handing
+    this a list would put an unreadable number on the one surface that tells
+    somebody what they have paid for and what is left. This takes either
+    shape and can no longer emit NaN from any input. Array.isArray rather
+    than a length check, because a string has a length too and the first cut
+    read "x" as one pattern spent.
+
+    The rule this broke is the one already written down here: reproduce the
+    failure before fixing it. A direct call with a hand made array is not the
+    caller, and I did not go and look at what the caller actually passes. */
  var n=Array.isArray(uniqueCount)?uniqueCount.length:uniqueCount;
  n=Number(n); if(!isFinite(n))n=0;
  var used=Math.max(0,n);

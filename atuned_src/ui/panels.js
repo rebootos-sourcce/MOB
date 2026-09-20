@@ -677,7 +677,7 @@ function profileSheet(){
 function planSection(m){
  var pl=(CURP&&CURP.plan)||null;
  var t=planOf(pl), st=planState(pl);
- var al=planAllowance(pl,((m&&m.unique)||[]).length);   /* the count, not the list */
+ var al=planAllowance(pl,(m&&m.unique)||0);   /* meterRead().unique is already a count */
  var up=planUpgrade(pl);
  var yr=planYear(t.k);
  var h='<div class="sh-sec"><div class="pm-eye">Your plan</div>'

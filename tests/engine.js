@@ -455,7 +455,7 @@ g('15c \u00b7 the boundary');
  ok(/could not save/.test(String(importError())),'and says the save failed: '+importError());
 }
 
-g('15d · the two nested bags');
+g('15e \u00b7 the two nested bags');
 /* THE BOUNDARY IS STRICT AND TWO BAGS WALKED PAST IT. rituals was accepted on
    one condition, that each entry is an object, and story.entries was a bare
    slice. plan.secret and plan.email are refused by name one level up and were
