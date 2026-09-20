@@ -576,10 +576,9 @@ function sumMonth(){
  var out=[];
  if(!P.improved){
   out.push({c:'var(--accent)', ic:KINDIC.hold,
-   t:'Your record is <b>'+P.walk.length+' days</b>. A month against the month '
-    +'before reads four weeks against the four before it, so it opens at '
-    +P.improveNeed+' days and there are <b>'+(P.improveNeed-P.walk.length)
-    +' to go</b>.'});}
+   t:'Your record is <b>'+P.walk.length+' days</b>. A month reads four weeks '
+    +'against the four before it. That opens at '+P.improveNeed
+    +' days, and there are <b>'+(P.improveNeed-P.walk.length)+' to go</b>.'});}
  else{
   var d=P.improved.diff;
   out.push({c:DATA.pal.Throat, ic:SHAPEIC.window,
@@ -715,7 +714,7 @@ function fields(it){
      return '<option'+(it.period===p?' selected':'')+'>'+p+'</option>';}).join('')
    +'</select></div>';
   if(it.min)h+='<div class="frow"><span>It costs</span>'
-   +'<span class="unit n">'+it.min+' minutes, out of PRACTICE</span></div>';
+   +'<span class="unit n">'+it.min+' minutes, out of the practice table</span></div>';
   h+='<p class="note">The ring carries the target as dashes, so a target of '
    +'four is four dashes and a dash lights as you do one. '
    +(it.target>1?'Press the ring once per '+esc((it.unit||'times')
@@ -762,8 +761,8 @@ function fields(it){
      +(it.days[i]?'true':'false')+'" style="--c:'+seatC(it)+'">'+d
      +'</button>';}).join('')+'</span></div>';}
  else if(it.whenCalled){
-  h+='<p class="note">Release runs when it is called rather than on a day, so '
-   +'it carries no weekdays and draws nothing on the week.</p>';}
+  h+='<p class="note">Release runs when it is called. It carries no weekdays '
+   +'and draws nothing on the week.</p>';}
 
  if(it.standing&&!it.once){
   h+='<span class="eyebrow" style="margin:16px 0 8px">This Week</span>'
@@ -1024,28 +1023,27 @@ function drawFoot(){
   +'of <b>losssim.js</b>, whose forty two checks still pass.');
  f.push('<b>The ring carries the parameter.</b> A count shows its target as '
   +'dashes, so four things is four dashes and ten is ten. A window shows one, '
-  +'because a window is one edge held or crossed and not a number of things. '
-  +'A stance shows a dot ring until a day tests it, because a stance has no '
-  +'count a person sets, and then it takes the number the day supplied with '
-  +'the ones met lit. The readable cap is computed off the ring’s own '
-  +'circumference rather than chosen, and past it the ring falls back to one '
-  +'arc with the number in the middle.');
+  +'because a window is one edge held or crossed. A stance shows a dot ring '
+  +'until a day tests it, because a stance has no count a person sets. It then '
+  +'takes the number the day supplied, with the ones met lit. The readable cap '
+  +'is computed off the ring’s own circumference. Past it the ring falls '
+  +'back to one arc with the number in the middle.');
  f.push('<b>A figure takes one word.</b> The denominator rule and the one word '
   +'rule collided and produced a paragraph under every headline number. The '
-  +'arc beside each figure was already carrying the share, so the word stands '
-  +'alone and the sentence is on the tile rather than on the page.');
+  +'arc beside each figure was already carrying the share. So the word stands '
+  +'alone, and the sentence moved onto the tile.');
  f.push('<b>Two things here are mine and are open.</b> A behaviour offer '
   +'defaults to Monday through Friday, because his own example varies by '
   +'weekday and nobody has ruled the default. And the always on band shows the '
-  +'standing ritual plus the two heaviest proposals, which is three, because '
-  +'he ruled always on is always the top three and no profile in <b>PEOPLE</b> '
-  +'holds more than one standing ritual.');
- f.push('<b>What the record does not hold.</b> Nothing in <b>PEOPLE</b> carries '
-  +'a second or third ritual, so the behaviour and release bands have no '
-  +'history and their bars are drawn as offers rather than as days. Inventing '
-  +'those bars would be the only fabricated figure on the page. Marks never '
-  +'run backwards: taking an offer sets it from today forward, because nobody '
-  +'kept a ritual they had not taken.');
+  +'standing ritual plus the two heaviest proposals, which is three. He ruled '
+  +'always on is always the top three, and no reference profile holds more '
+  +'than one standing ritual.');
+ f.push('<b>What the record does not hold.</b> No reference profile carries a '
+  +'second or third ritual. So the behaviour and release bands have no history '
+  +'and their bars are drawn as offers. Inventing those bars would be the only '
+  +'fabricated figure on the page. Marks never run backwards: taking an offer '
+  +'sets it from today forward, because nobody kept a ritual they had not '
+  +'taken.');
  document.getElementById('foot').innerHTML=
   f.map(function(x){return '<p>'+x+'</p>';}).join('');}
 

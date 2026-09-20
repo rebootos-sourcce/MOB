@@ -21,6 +21,111 @@ reopens. Every seat adds its own.
 
 ---
 
+## 0i2. RULED 20 SEPTEMBER, TENTH PASS. THE AVATAR IS A CHARACTER SHEET.
+
+Blocked for strategy, as he asked. Four blocks, and they are not equal: one is
+a philosophy that reorders the product, one is a mechanic already half built,
+one is a surface, and one is a brand line.
+
+### BL. THE BLOCK THAT REORDERS EVERYTHING ELSE.
+
+His words, and they are the clearest statement of what this product believes:
+"The reality is that you're already the most powerful version of yourself.
+You're already there. It's the limiters that are inhibiting you. So we want to
+find the limiters and release the limiters."
+
+- [ ] **BL1. That is not a tagline, it is a spec.** A character sheet whose
+      numbers go up as you earn them is every other gamified app. A character
+      sheet whose numbers are already high and are being held down is this
+      one. The stat is the ceiling; the reading is the drag against it. That
+      one inversion decides every gauge on the page.
+- [ ] **BL2. The engine already computes it and nothing surfaces it.** The
+      release ceiling is what coherence reads once every charge is gone. That
+      is the most powerful version, and it already exists as a number.
+- [ ] **BL3. Nothing found in the world does this.** Searched: gamified self
+      development is a crowded shelf, and the nearest is a skill tree a person
+      fills in by hand. None derives the sheet from a reading of the person's
+      own story, and none inverts the gauge so the work is removing drag
+      rather than adding points. That is the gap and it is worth naming in the
+      marketing map.
+
+### CS2. THE CHARACTER SHEET ITSELF.
+
+- [ ] **CS6. The hero is the silhouette with the seats on it.** Already drawn
+      twice in this product, on the Body page and on the funnel.
+- [ ] **CS7. Two sets of stories: who I am, and who I want to become.** Cells
+      down the side to put them in. Whether they are tags, stories, or both is
+      open below.
+- [ ] **CS8. The sheet says what is trending and how well it is going.**
+- [ ] **CS9. It lets a person set the rituals that accelerate it,** from the
+      sheet, which is the queue and the protocol already built.
+- [ ] **CS10. Completing a ritual moves the avatar.** The loop closes here and
+      this is the line that makes the sheet a game rather than a report.
+- [ ] **CS11. A summary: how I am doing, what I could do better, where I am
+      slipping, what it recommends next.** Daily, weekly, monthly, which is
+      the same summary the ritual page is getting.
+
+### MK2. THE MASKS AS PIXEL ART, AND THIS IS THE ORIGINAL IDEA.
+
+His words: "A side graphic in pixel mode, pixel art, made up of the chakra
+colours of our masks. Almost like a UI display, maybe 300 pixels. As people
+enter their story the masks begin to fill in. Child mask, preteen mask, teen
+mask, adult mask, professional mask."
+
+- [ ] **MK10. The six masks already exist in the engine** and already carry a
+      seat each, so the colour is not a new decision.
+- [ ] **MK11. It fills in as a person writes.** That is the first thing in the
+      product that visibly rewards the journal, and it rewards it with
+      evidence rather than with points.
+- [ ] **MK12. Pixel art is a deliberate register change** from everything else
+      on the screen. Argue it or lose it: this product's look is argued from
+      autonomic response and pixel art is a different argument.
+
+### SB. THE SNIFFER FINDS THE LIMITER, AND HE NAMED THE MECHANIC.
+
+His words: "Every behaviour is, if you're modifying discipline, if you're
+setting rituals for discipline to follow through on the things you say you're
+going to do, that's power, that's solar plexus. So if a person is describing
+their lack of value or self worth or confidence or self respect, they're
+downgrading their solar plexus. So the sniffer should find that."
+
+- [ ] **SB13. This is the sniffer's job description in one sentence,** and it
+      is a better one than the spec has: a person's words about themselves
+      name the seat they are holding down. The lexicon already maps words to
+      axes and seats, so this is a coverage question rather than a new
+      mechanism.
+- [ ] **SB14. Measure the named case before anything else.** Take self worth,
+      confidence, self respect and follow through, and measure what the
+      sniffer currently returns for each. If it does not reach the solar
+      plexus, that is the first hole to fill and it is his own example.
+- [ ] **SB15. He stopped himself mid sentence on the slots for eyes, ears,
+      nose and mouth,** so it is recorded as raised and not specified. What
+      was underneath it is real: improve communication, improve perception,
+      and those are seats the product already has.
+
+### IJ. THE INTAKE BECOMES THE JOURNAL.
+
+- [?] **IJ1. "Tell me who you are and the person you want to become."** His
+      framing, and it collapses two surfaces into one. That is a scope
+      decision, not a copy change.
+- [ ] **IJ2. By tag or by voice.** Voice is a network service in the browser,
+      so the control says so before it opens. Standing ruling.
+- [?] **IJ3. Tags or stories for the two sets.** He said he does not know. The
+      systems answer so far is that a closed field validated against a table
+      earns its place and free text does not, and "who I want to become" is
+      the hardest thing in the product to put in a closed field.
+
+### BC. THE BRAND LINE, AND IT IS HIS.
+
+- [ ] **BC1. "This tool is about helping you become. The avatar is about
+      becoming."** To the brand and marketing seats.
+- [ ] **BC2. "If you want to become the best version of yourself, don't wait
+      lifetimes. Do it today. Start now."** His words. It carries the whole
+      philosophy above and it does it without a medical claim, which the
+      earlier positioning line could not.
+
+---
+
 ## 0j2. RULED 20 SEPTEMBER, NINTH PASS. THE RITUAL PAGE IS A C MINUS.
 
 ### NW. THE RULE HE ASKED FOR BY NAME.

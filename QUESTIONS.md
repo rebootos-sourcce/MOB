@@ -1,11 +1,16 @@
 # QUESTIONS FOR THE OWNER
 
 Every line in `TASKS.md` marked `[?]`, which is the mark for a question
-waiting on his ruling. 106 of them, across 30 sections.
-Read off commit 0f91e17 on 2026-09-20. Nothing here is typed by hand: answer a
+waiting on his ruling. 108 of them, across 31 sections.
+Read off commit 3100edd on 2026-09-20. Nothing here is typed by hand: answer a
 question in TASKS.md and it leaves this file on the next run.
 
 The same list is in `QUESTIONS.html`, which opens in a browser.
+
+## 0i2. RULED 20 SEPTEMBER, TENTH PASS. THE AVATAR IS A CHARACTER SHEET.
+
+- [ ] **IJ1. "Tell me who you are and the person you want to become."** His framing, and it collapses two surfaces into one. That is a scope decision, not a copy change.
+- [ ] **IJ3. Tags or stories for the two sets.** He said he does not know. The systems answer so far is that a closed field validated against a table earns its place and free text does not, and "who I want to become" is the hardest thing in the product to put in a closed field.
 
 ## 0j2. RULED 20 SEPTEMBER, NINTH PASS. THE RITUAL PAGE IS A C MINUS.
 

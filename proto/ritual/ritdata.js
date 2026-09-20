@@ -80,7 +80,11 @@ function forSeat(seat,tier,skip){
 
 const SIM=require(path.resolve(__dirname,'losssim.js'));
 const TODAY=Date.UTC(2026,8,20);           /* Sunday 20 September 2026 */
-const WHO=['Marcus','Gordon','Diane','Angela','Sofia','Derek','Rosa','James'];
+/* ALL NINE OF THE PANEL, NOT EIGHT. Ana is 50 of the thousand in
+   losssim.js PANEL and was not extracted, so a surface simulation against the
+   panel had a fiftieth of it missing and had to say so. She is in now. */
+const WHO=['Marcus','Gordon','Diane','Angela','Sofia','Derek','Rosa','James',
+           'Ana'];
 const WT={Diane:180,Derek:170,Marcus:160,Angela:150,Sofia:140,James:100,
           Ana:50,Gordon:35,Rosa:15};
 

@@ -57,7 +57,36 @@ function rdClose(){ANA_PICK=null;S.pin=null;
    The control moves to the top and sticks there, it says where it goes rather
    than saying close, and escape does the same thing. The bottom one stays,
    because a person who did read to the end should not have to scroll back up. */
+/* A LABEL IS A NAME FOR A REGION. A STATEMENT TAKES PLAIN.
+
+   The rule is the stylesheet's and is stated there in full: a label is four
+   words or fewer with no comma and a word after it, and it keeps the capital
+   on every word. Everything else is a statement, takes plain, and stays in
+   sentence case.
+
+   It is applied here, once, to the markup on its way into the panel, rather
+   than judged at each of forty sites. The reason is measured. A drill eyebrow
+   is a statement more often than it is a name, and until the surface walk
+   learned to open a drill nothing read any of them: eighty eight distinct
+   strings in these two classes came back titled on the screen, including
+   "Law Of Integrity, Throat", "What Did You Argue About With A Friend, And
+   Which Corner Did You Take?" and "Depth 2, Lust". Every one of them is
+   written correctly in the source, in sentence case, because the transform is
+   what does the capitalising. They were only wrong on the screen.
+
+   Deciding it here also means the next drill somebody writes is right without
+   their having to remember, which is the only version of this rule that does
+   not rot. A site that has already chosen plain keeps it: this only reads the
+   bare class. */
+function rdCase(h){
+ return String(h).replace(/<div class="(pm-eye|ad-nm)">([\s\S]*?)<\/div>/g,
+  function(all,cls,body){
+   var t=body.replace(/<[^>]*>/g,'').replace(/\s+/g,' ').trim();
+   var label=t&&!/[,;:]\s*\S*[A-Za-z]/.test(t)&&!/[.!?]\s+\S/.test(t)
+    &&t.split(/\s+/).length<=4;
+   return '<div class="'+cls+(label?'':' plain')+'">'+body+'</div>';});}
 function rdShell(h){
+ h=rdCase(h);
  var b=rdOpen(); if(!b)return;
  var backTo=(typeof TABDEF!=='undefined'&&typeof S!=='undefined')
   ? (TABDEF.filter(function(t){return t.k===S.tab;})[0]||{}).nm : '';
@@ -534,7 +563,11 @@ function runPoleDrill(end){
    +'<em style="color:'+c+'">'+esc(m.q.toLowerCase())+'</em></button>';});
  h+='</div>';
  if(up){
-  h+='<div class="pm-eye">'+NUMWORD(MASTERS.length)+', And Where Each One Stood'
+  /* AND IT IS WRITTEN IN SENTENCE CASE. Title case was typed into this one
+     string by hand, so it printed "The Eleven, And Where Each One Stood" and
+     would have gone on doing it with the transform turned off. The source is
+     sentence case everywhere and the sheet does the capitalising. */
+  h+='<div class="pm-eye">'+NUMWORD(MASTERS.length)+', and where each one stood'
    +'</div><div class="ad-rows">';
   /* IF IT HAS A NAME IT HAS AN ICON. Ruled: "every figure gets an icon. Rumi,
      Buddha, Geryon, Moloch, all of them. Today they are names with marks on
