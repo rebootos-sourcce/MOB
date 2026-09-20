@@ -339,7 +339,18 @@
      subtitle says what the control does rather than restating the schema.
      "nine poled axes, held state then coherent opposite" is the data model
      read aloud. -->
-     <div class="tier1">4 &middot; Child emotions <span>the left slider is how much you carry it, the right is how much of its opposite is in place</span></div>
+     <!-- A PARAGRAPH IN A LABEL IS NOT A CASE PROBLEM. Nineteen words sat in
+     the span of a tier1 and the capitalize rule title cased all of them, and
+     the second clause started lowercase after a comma so it read as a
+     sentence broken in half. The label is the label and the prose goes in the
+     prose class, which on this rail is stk-def, the class that already
+     carries the definition of held and opposite.
+
+     It was also wrong about the controls. "the left slider is how much you
+     carry it" describes one axis and these two sliders set all nine at once,
+     which is the only thing about them a person cannot work out by looking. -->
+     <div class="tier1">4 &middot; Child emotions</div>
+     <p class="stk-def">Both sliders set all nine axes at once.</p>
      <div class="bulk"><label for="allCh">held</label><input type="range" id="allCh" min="0" max="10" step="0.5" value="3"></div>
      <div class="bulk"><label for="allRep">opposite</label><input type="range" id="allRep" min="0" max="10" step="0.5" value="0"></div>
      <div id="chg"></div>
@@ -352,7 +363,7 @@
    <div class="lsec" data-sec="matrix">
     <button class="lsec-hd" type="button"><span>Matrix</span><i></i></button>
     <div class="lsec-bd">
-     <div class="lbl">19 domains &times; 9 child emotions</div>
+     <div class="lbl plain">19 domains &times; 9 child emotions</div>
      <div class="mx" id="mx"></div>
      <div class="mxk" id="mxk"></div>
     </div>

@@ -969,9 +969,42 @@ body:not(.hassub) .subbar{display:none}
    this block already has. */
 .pm-eye,.tier1,.sub,.sp-hd,.rit-tr,.ip-bh,.sum-lt,.kb-h,.sh-h,.ad-nm,.gm-on,
 .eyebrow,.lbl{text-transform:capitalize}
-/* the exceptions, where a capital on every word would be wrong: running prose
-   that happens to use a header class, and anything already an acronym. */
-.pm-eye.plain,.sub.plain,.tier1.plain,.sh-h.plain,.kb-h.plain{text-transform:none}
+/* THE HATCH REACHED FIVE CLASSES OF THIRTEEN, and the eight it did not reach
+   is where the defect lived. Measured on three profiles across ten surfaces at
+   both widths: 99 distinct strings sit in these classes and 42 of them are
+   whole statements rather than names. The rendered result included "Moral
+   Integrity, 21 Of The 76 Laws, Each 0 To 10, None Shut", "Nothing Held, 2
+   Installed" and "The Statement Runs Nine Gates At Once". None of that is
+   visible in the source, because the source is written in sentence case and
+   correctly so: the transform does the capitalising, which is the whole point
+   of doing it here. It is only visible on the screen.
+
+   THE RULE, and it is a rule rather than a judgement per string.
+
+     A label is a short name for a region: four words or fewer, and no comma
+     with a word after it. A label keeps the capital on every word.
+
+     Everything else is a sentence. A sentence takes plain and stays in
+     sentence case.
+
+   A comma with a word after it is the sharpest mark of the two, because a
+   comma means a second part and a name has one part. "Imprints, 21" is a name
+   with a count on it and stays a label. "Coherence, corrupt, 0 to 100" is a
+   statement and does not. Four words is the length at which a name stops
+   sounding like one, and the only four word label in the product is the
+   Letting Go deck, which is a proper name and reads correctly either way.
+
+   The hatch now covers every class in the list above, so the decision is
+   always available where the string is written. tests/design.js walks the
+   classes on every surface and fails by name on a sentence without plain. */
+.pm-eye.plain,.tier1.plain,.sub.plain,.sp-hd.plain,.rit-tr.plain,.ip-bh.plain,
+.sum-lt.plain,.kb-h.plain,.sh-h.plain,.ad-nm.plain,.gm-on.plain,.eyebrow.plain,
+.lbl.plain{text-transform:none}
+/* AND ONE CHILD, because .ip-bh is two buckets in one row by design: the seat
+   name on the left is a label and the reading on the right is a value. The row
+   keeps the transform for the name, the em opts out for the reading, so
+   "nothing held, 15 installed" is not printed back as a title. */
+.ip-bh em.plain{text-transform:none}
 .tier1{font-size:11px;font-weight:600;color:var(--gold);margin-bottom:9px;line-height:1.45}
 .tier1 span{display:block;color:var(--dim);font-weight:400;font-size:13px;margin-top:3px}
 /* reading text. 16px floor, 50 to 75 character measure. */

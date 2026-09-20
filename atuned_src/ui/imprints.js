@@ -99,7 +99,13 @@ function impRender(){
    var heldN=seg.filter(function(n){return n.sq>=4;});
    var instN=seg.filter(function(n){return n.sq<4&&n.pole>=4;});
    var sum=heldN.reduce(function(a,n){return a+n.sq;},0);
-   h+='<div class="ip-bh" style="--c:'+seatCol(b)+'">'+b+'<em>'
+   /* TWO BUCKETS IN ONE ROW, which is the design: the seat name on the left
+      is a label and the reading on the right is a value. The row carried the
+      capital on every word straight into the value, so "nothing held, 15
+      installed" was printed back as "Nothing Held, 15 Installed", a reading
+      wearing a title. Every em in this renderer is a value, so every em opts
+      out and the seat name keeps the rule. */
+   h+='<div class="ip-bh" style="--c:'+seatCol(b)+'">'+b+'<em class="plain">'
     +(heldN.length?heldN.length+' held, '+sum.toFixed(1):'nothing held')
     +(instN.length?', '+instN.length+' installed':'')
     +(gs.length?', '+gs.length+' pending':'')+'</em></div>';
@@ -112,7 +118,7 @@ function impRender(){
    var seg=live.filter(function(n){return n.cf===c.nm;});
    if(!seg.length)return;
    h+='<div class="ip-bh" style="--c:'+seatCol(c.seat)+'">'+c.nm+' toward '+c.opp
-    +'<em>held '+(S.charge[c.nm]||0).toFixed(1)+', opposite '+(S.replace[c.nm]||0).toFixed(1)
+    +'<em class="plain">held '+(S.charge[c.nm]||0).toFixed(1)+', opposite '+(S.replace[c.nm]||0).toFixed(1)
     +'</em></div>'+cloud(seg);});
  } else if(IMP_GROUP==='sab'){
   if(!IX.r.sabs.length) h+='<div class="ip-none">Nothing is compounding yet.</div>';
@@ -120,7 +126,7 @@ function impRender(){
    var lv=leaves(s).filter(function(n){return n.sq>=4;});
    if(!lv.length)return;
    h+='<div class="ip-bh" style="--c:'+(s.over?'var(--alarm)':seatCol(lv[0].b))+'">'+esc(s.nm)
-    +'<em>'+(s.score?s.score+'% match, ':'')+'weight '+s.w.toFixed(1)+'</em></div>'+cloud(lv);});
+    +'<em class="plain">'+(s.score?s.score+'% match, ':'')+'weight '+s.w.toFixed(1)+'</em></div>'+cloud(lv);});
  } else if(IMP_GROUP==='story'){
   /* grouped by the entry that put the weight there */
   var ents=((CURP&&CURP.story&&CURP.story.entries)||[]);
@@ -129,7 +135,7 @@ function impRender(){
    var bandsIn=Object.keys(e.bands||{}).map(function(k){return K2BAND[k];}).filter(Boolean);
    var seg=live.filter(function(n){return bandsIn.indexOf(n.b)>=0;});
    h+='<div class="ip-bh" style="--c:var(--gold)">Entry '+(ents.length-i)
-    +'<em>'+new Date(e.t).toLocaleDateString()+', '+e.imprints+' imprints</em></div>'
+    +'<em class="plain">'+new Date(e.t).toLocaleDateString()+', '+e.imprints+' imprints</em></div>'
     +'<div class="ad-q">'+esc(e.text.slice(0,130))+(e.text.length>130?'…':'')+'</div>'
     +cloud(seg.slice(0,12));});
  } else {
@@ -137,7 +143,7 @@ function impRender(){
   exprRead().sort(function(a,b){return a.fill-b.fill;}).forEach(function(e){
    var seg=live.filter(function(n){return n.b===e.b;});
    h+='<div class="ip-bh" style="--c:'+seatCol(e.b)+'">'+e.nm
-    +'<em>fill '+e.fill.toFixed(1)+', leaks '+e.sh+'</em></div>'
+    +'<em class="plain">fill '+e.fill.toFixed(1)+', leaks '+e.sh+'</em></div>'
     +(seg.length?cloud(seg):'<div class="ip-none" style="padding:6px 0">nothing held at the '
       +e.b.toLowerCase()+'</div>');});}
  var picked=Object.keys(IMP_PICK).filter(function(k){return IMP_PICK[k];});

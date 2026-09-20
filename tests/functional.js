@@ -188,11 +188,14 @@ const kb=await page.evaluate(()=>{
     are also .kb-t, so an unscoped count reads 13. The eleven being asserted
     are the knowledge sections. */
  const secs=[...document.querySelectorAll('#knowbody .kb-t')].length;
- /* .kb-c, not .kb-r. The codex entries became cards: an entry is a named
-    thing with a seat, a family and a reading, and a page of rows says none of
-    them is special. Verified against the running page before this selector
-    moved: 108 cards, a card opens its drill, and search narrows to 12. */
- const rows=()=>document.querySelectorAll('.kb-c').length;
+ /* .kb-row, and the card is gone. The card was 236 by 150 carrying a 19 pixel
+    glyph, nine tenths of one percent of its own area, plus three clamped lines
+    of subtext that were 78 percent of every character on the page. The owner
+    ruled the entry down to four things: the icon, the percent, the word and
+    what it is associated with. Measured after the change, counted in a
+    screenshot: twelve entries above the fold became thirty nine at 1600 and
+    one became six on a phone. */
+ const rows=()=>document.querySelectorAll('.kb-row').length;
  const all=rows();
  /* search narrows, and a term that is in no table finds nothing anywhere */
  KB_Q='fear'; kbRender(); const hit=rows();
@@ -203,19 +206,24 @@ const kb=await page.evaluate(()=>{
  let opened=0, empty=[], walked=0, marks={};
  ['addr','fetter','sab','law','mask','dom','arch','gate','card','seat','harm','gloss'].forEach(k=>{
   KB_SEC=k; kbRender();
-  if(!document.querySelectorAll('.kb-c').length){empty.push(k);return;}
+  if(!document.querySelectorAll('.kb-row').length){empty.push(k);return;}
   walked++;
-  {const ps=[...document.querySelectorAll('.kb-c')].map(c=>{
+  {const ps=[...document.querySelectorAll('.kb-row')].map(c=>{
     const a=c.querySelector('svg path'); return a?a.getAttribute('d'):null;});
    marks[k]={n:ps.length, uniq:new Set(ps.filter(Boolean)).size,
     blank:ps.filter(x=>!x).length};}
-  document.querySelector('.kb-c').click();
+  document.querySelector('.kb-row').click();
   if(document.getElementById('rdrill').textContent.length>40)opened++;});
- KB_SEC='addr'; kbRender();
+ KB_SEC='addr'; KB_Q=''; kbRender();
+ /* what the deck chip prints, and how many rows carry no figure */
+ const chipEl=[...document.querySelectorAll('#knowbody [data-kb]')]
+  .find(e=>e.getAttribute('data-kb')==='addr');
+ const chip=chipEl?(chipEl.querySelector('b')||{}).textContent:'';
+ const dash=[...document.querySelectorAll('.kb-rv.off')].length;
  /* the deck deals only from what is held, and a card names a real address */
  loadP(6); const pool=deckSize(), held=compute().loaded.length;
  deckDeal(); const card=DECK_CARD; deckClose();
- return {secs,all,hit,none,foundAll,opened,walked,marks,empty,pool,held,
+ return {secs,all,hit,none,foundAll,opened,walked,marks,empty,pool,held,chip,dash,
   cardIsHeld:!!(card&&card.n&&card.n.sq>=4), rank:card?card.rank:0,
   names:[...document.querySelectorAll('[data-kb]')].map(e=>e.textContent.trim()
    .replace(/\s+\d+$/,''))};});
@@ -225,14 +233,48 @@ const kb=await page.evaluate(()=>{
    matters is that every deck the codex claims to hold is reachable by name.
    The owner asked where the stack and the universal laws were: both were here
    under names that did not say what they held, so those two are named here. */
-{const want=['Nodes','Fetters','Saboteurs','Laws','Masks','Domains','Archetypes',
-  'Gates','The cards','The stack','Universal laws','Glossary'];
+{const want=['Fetters','Child emotions','Saboteurs','Moral integrity','Masks',
+  'Domains','Archetypes','Gates','The cards','The stack','Universal laws'];
  const miss=want.filter(w=>kb.names.indexOf(w)<0);
  ok(miss.length===0,'every deck is reachable by name'
   +(miss.length?', missing '+miss.join(', '):'')+', '+kb.names.length+' decks');
  ok(kb.names.indexOf('The catalog')<0&&kb.names.indexOf('The 76 laws')<0,
-  'and neither old name survives');}
-ok(kb.all>100,'addresses list in full, got '+kb.all);
+  'and neither old name survives');
+ /* ONE WORD PER CONCEPT, AND THIS ONE WAS CARRYING TWO.
+
+    The owner: "I do not know the difference between a node and a fetter the
+    way you are using it. A fetter is a node. The fetters are the 108. Which
+    you listed here between fear, anger, shame, these are the nine child
+    emotions. Very different."
+
+    He is right and the product's own glossary already agreed with him: a
+    fetter is "a named conditional response pattern resident at a specific
+    node address, one per physical node". That is the 112. The nine are the
+    poled axes those patterns run on.
+
+    So the deck of addresses is Fetters and the deck of nine is Child
+    emotions, and neither old label may come back. The keys did not move:
+    addr and fetter are identity and identity is never renamed here, which is
+    why this asserts on what a person reads rather than on a key. */
+ ok(kb.names.indexOf('Nodes')<0,
+  'and the deck of addresses is no longer called Nodes');
+ ok(kb.names.indexOf('Laws')<0,
+  'and the twenty one are Moral integrity, not Laws');
+ /* the glossary is not a deck. A name is glossed once, in one table, and the
+    search shows it; fifty six rows whose whole content is a definition are an
+    answer to a question rather than a deck of readings. */
+ ok(kb.names.indexOf('Glossary')<0,
+  'and the glossary is not a deck, it is what the search answers with');}
+/* ALL 112, NEVER 108. W is the 108 somatic addresses and the four field
+   anchors carry Field-Above and Field-Below, which are not seats, so they fell
+   out of W and appeared in no deck: the surface that exists to list every
+   address was showing 108 of the 112 the product states. A deck chip counting
+   its own rows would have printed 108 to a person, and the count stated to
+   users is 112. The four are in. The engine computes no sq for them, so they
+   print an en dash rather than a figure. */
+ok(kb.all===112,'the fetters deck carries all 112 addresses, got '+kb.all);
+ok(kb.chip==='112','and the deck chip says 112, got '+kb.chip);
+ok(kb.dash===4,'four of them carry no figure because the engine reads none, got '+kb.dash);
 ok(kb.hit>0&&kb.hit<kb.all,'search narrows, '+kb.all+' to '+kb.hit);
 ok(kb.none===0&&kb.foundAll===0,'a term in no table finds nothing in any section');
 ok(kb.empty.length===0,'every section has rows, empty: '+kb.empty.join(','));
@@ -256,7 +298,17 @@ ok(kb.opened===kb.walked,'every section opens a drill, got '+kb.opened
    refused is a deck of many cards showing a single mark, which is the shape
    the bug had, and any card with no mark at all.
 --------------------------------------------------------------------------- */
+/* addr is composed: the colour around the mark is the seat and the mark inside
+   it is the axis, because 108 named addresses wearing 7 marks is the icon rule
+   inverted. Both tables already ship, nothing new was drawn, and the distinct
+   marks went from 7 to 40 with the worst collision falling from 21 rows to 10.
+   Asserted as a floor rather than a literal: a new axis is a reason to have
+   more marks, never a reason to fail. */
 {const want={law:21, mask:6, sab:6, harm:27, fetter:9};
+ const floor={addr:30};
+ Object.keys(floor).forEach(k=>{const m=kb.marks[k];
+  ok(m&&m.uniq>=floor[k],'the '+k+' deck composes its mark, '
+   +(m?m.uniq:0)+' distinct against a floor of '+floor[k]);});
  const bad=[];
  Object.keys(kb.marks).forEach(k=>{
   const m=kb.marks[k];

@@ -879,7 +879,10 @@ function render(){
          line printed "bipolar and ADHD" to the person it was about, with no
          clinician and nothing attached. Also: jouissance was a French
          psychoanalytic term dropped on a stranger with no gloss. */
-      +'<p class="sub">'+(o.over?'the cure done past the point where it helps, and not able to stop.'
+      /* plain. The sub here is a reading about the person, not a subheader:
+         "you cannot see it as separate from you" came back as "You Cannot See
+         It As Separate From You", which is a sentence wearing a title. */
+      +'<p class="sub plain">'+(o.over?'the cure done past the point where it helps, and not able to stop.'
         :esc(o.auth||o.d||NOTE[o.kind]))+'</p>'
       +'<div class="w">'+crPat(o,'md')+'</div></div>';}).join('')
     +(rows.length>4?'<div class="rnone">and '+(rows.length-4)+' more below</div>':'')

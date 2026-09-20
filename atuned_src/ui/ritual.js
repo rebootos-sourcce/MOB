@@ -113,7 +113,7 @@ function ritRender(){
       is mid sentence, so it is lowered rather than a second function written. */
    :'Choose something else, '+NUMWORD(c.all.length).toLowerCase()+' practices')+'</button>';
  if(picked.length){
-  out+='<div class="pm-eye" style="margin-top:16px">The ritual, '+mins+' minutes</div>'
+  out+='<div class="pm-eye plain" style="margin-top:16px">The ritual, '+mins+' minutes</div>'
    +'<div class="rit-how">';
   picked.forEach(function(p,i){
    out+='<div class="rit-step"><b>'+(i+1)+'. '+esc(p.nm)+'</b><p>'+esc(p.how)+'</p></div>';});
@@ -128,7 +128,7 @@ function ritRender(){
      and no surface ever asked when or where, so the plan was saved and could
      not be read back. Both are optional, because a person who will not answer
      should still be able to save. */
-  out+='<div class="rit-plan"><div class="pm-eye">When, and where</div>'
+  out+='<div class="rit-plan"><div class="pm-eye plain">When, and where</div>'
    +'<label class="rit-f"><span>When</span>'
    +'<input type="text" id="ritwhen" maxlength="40" placeholder="after I put the kettle on" '
    +'value="'+esc(RIT.when||'')+'"></label>'

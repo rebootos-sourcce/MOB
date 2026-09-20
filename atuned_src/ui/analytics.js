@@ -102,12 +102,23 @@ function anaRender(){
        every reading whose high end is the one a person is working toward. */
     raw:r.unread?'\u2013':null, hot:false,
     color:r.unread?'var(--dim)':null})
-  +'<div><div class="pm-eye">'+(r.unread?'Coherence, not read yet'
-    :'Coherence, '+r.tier.toLowerCase()+', 0 to 100')+'</div>'
+  /* ONE SLOT, ONE LABEL. This read "Coherence, corrupt, 0 to 100" and it was
+     doing three jobs: naming the slot, printing the tier and stating the
+     range. The label changed identity with the data, which is the thing a
+     person has to re-parse every time the reading moves, and "0 to 100" is the
+     phrasing the owner struck: if you cannot use regular words to describe it,
+     do not describe it. The regular words for a coherence number are the tier
+     word itself, so the tier moves to the front of the reading where a value
+     belongs and the label stays put. */
+  +'<div><div class="pm-eye">Coherence</div>'
   +'<div class="ab-say">'
-  +(r.unread?'Nothing has been entered, so none of this is measured yet. Every figure '
+  +(r.unread?'Not read yet. Nothing has been entered, so none of this is measured yet. Every figure '
     +'below is drawn from the blueprint you have selected and not from a reading.'
-   :(loud?'<b>'+esc(loud.nm)+'</b> is the biggest thing running. ':'Nothing is compounding. ')
+   /* THE TIER WORD, which used to live in the label. It is the reading in
+      plain words and it goes first, because it is the one thing on this
+      surface a person reads before anything else. */
+   :'<b>'+esc(r.tier)+'</b>. '
+   +(loud?'<b>'+esc(loud.nm)+'</b> is the biggest thing running. ':'Nothing is compounding. ')
    /* a count against a total is a score, and this is not a score */
    +(stop?'Flow stops at the <b>'+stop.p.n.toLowerCase()+'</b>. ':'Every seat is passing. ')
    +(held.length?'<b>'+held.length+'</b> address'+(held.length===1?' is':'es are')
@@ -161,15 +172,24 @@ function anaRender(){
  var shutL=laws.filter(function(l){return l.v<4;});
  /* 21 of the 76, and the 21 are the Laws of Moral Integrity. Saying "the 21
     laws" with no frame reads as though there were only 21. */
- out+='<div class="pm-eye" style="margin-top:20px">Moral integrity, 21 of the 76 laws, each 0 to 10'
-  +(shutL.length?', '+shutL.length+' shut':', none shut')+'</div><div class="ana-laws">';
+ /* THE LABEL IS THE LABEL. This was a whole statement in an eyebrow, so it
+    printed "Moral Integrity, 21 Of The 76 Laws, Each 0 To 10, None Shut". The
+    frame is still owed to the person and it is prose, so it goes in the prose
+    class underneath. "each 0 to 10" is the struck phrasing and the plain words
+    for that scale are the ones the intake already uses: never to every time. */
+ out+='<div class="pm-eye" style="margin-top:20px">Moral integrity</div>'
+  +'<p class="sum-p">21 of the 76 laws, each scored from never to every time.</p>'
+  +'<div class="ana-laws">';
  laws.forEach(function(l){
   out+='<div class="ana-lw'+(l.v<4?' shut':'')+'" title="'+l.nm+' '+l.v.toFixed(1)+'">'
    +'<s><u style="height:'+Math.max(4,Math.round(l.v/10*60))+'px;background:'
    +seatCol(l.b)+'"></u></s><span>'+l.nm.slice(0,3)+'</span></div>';});
  out+='</div>';
- if(shutL.length)out+='<p class="sum-p">Shut: <b>'
-  +shutL.map(function(l){return l.nm;}).join(', ')+'</b>.</p>';
+ /* AND THE SHUT COUNT, which the eyebrow used to carry. The none shut case
+    was said there too and would have been lost, so this line answers in both
+    directions rather than only when there is bad news. */
+ out+='<p class="sum-p">'+(shutL.length?'Shut: <b>'
+  +shutL.map(function(l){return l.nm;}).join(', ')+'</b>.':'None shut.')+'</p>';
  if(H.length>1){
   out+='<div class="pm-eye" style="margin-top:20px">'+H.length+' sessions</div>'
    +'<p class="sum-p">One bar per session. Height is CQ on 0 to 100, colour is the darkest seat. '

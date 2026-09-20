@@ -452,7 +452,7 @@ function sumNum(r){
  if(N.lifePath!==null)rows.unshift(['lifePath','Life path',N.lifePath,'the birth date']);
  if(N.birthday!==null)rows.push(['birthday','Birthday',N.birthday,'the day of the month, unreduced']);
  if(N.maturity!==null)rows.push(['maturity','Maturity',N.maturity,'life path plus expression']);
- var out='<div class="s-numer"><div class="pm-eye">Numerology, in full</div>'
+ var out='<div class="s-numer"><div class="pm-eye plain">Numerology, in full</div>'
   +'<p class="s-p">Read off <b>'+esc(N.parts.map(function(p){
     return p.charAt(0)+p.slice(1).toLowerCase();}).join(' '))+'</b>. Pythagorean, with 11, 22 '
   +'and 33 surviving reduction at every step.</p>'
@@ -499,8 +499,12 @@ function sumRender(){
 function sumUnread(r){
  return '<div class="sum-hero">'
   +cr(r.darkB,0,{size:'lg',label:'coherence',raw:'–',hot:false,color:'var(--dim)'})
-  +'<div><div class="pm-eye">Coherence, not read yet</div>'
-  +'<div class="sum-line">Nothing has been entered, so there is nothing to read. '
+  /* ONE SLOT, ONE LABEL, the same correction as the analytics hero. The
+     label said "Coherence, not read yet" and the line directly under it says
+     the same thing in a full sentence, so the label was both changing with the
+     data and repeating the line. */
+  +'<div><div class="pm-eye">Coherence</div>'
+  +'<div class="sum-line">Not read yet. Nothing has been entered, so there is nothing to read. '
   +'The arithmetic underneath works and it is not being shown, because a number off a '
   +'default is a number about the default and not about you.</div></div></div>'
   +'<div class="sum-start">'+startHTML('Four ways in. None of them asks you to know a term '
@@ -586,9 +590,14 @@ function sumOutput(r){
    +(sub?'<div class="s-out-s">'+esc(sub)+'</div>':'')
    +(act||'')+'</div>';};
  return '<div class="s-outrow">'
-  +(rit?card('The protocol this calls for',rit.nm||'A practice',
+  /* A LABEL, NOT A CLAUSE. "The protocol this calls for" is five words and
+     came back as "The Protocol This Calls For". card() writes one eyebrow for
+     every card in this row, so the fix belongs in the string rather than in a
+     per call opt out: the row is driven by the reading, which is what "this
+     calls for" was there to say, and the row says it already. */
+  +(rit?card('The protocol',rit.nm||'A practice',
      rit.how||rit.d||'','<button class="btn s-oact" data-sout="rit">Open it</button>')
-    :card('The protocol this calls for','Not enough read yet',
+    :card('The protocol','Not enough read yet',
      'Write what happened and this fills in',''))
   /* WHAT RELEASE HAS LEFT IN IT, said before the person spends the time, and
      only when there is something to spend it on.
@@ -622,7 +631,9 @@ function sumOutput(r){
      r.heaviest.b+' seat, below the line at '+r.heaviest.sq.toFixed(1)
       +'. The heaviest thing you are holding',
      '<button class="btn s-oact" data-sout="rel" data-n="'+r.heaviest.i+'">Run a release</button>');
-    if(r.heaviest)return card('What moves the reading now','The twenty one laws',
+    /* four words, so it is a label. "now" was the fifth and it was carrying
+       nothing: the whole surface is the reading now. */
+    if(r.heaviest)return card('What moves the reading','The twenty one laws',
      'Release has about '+rhead.toFixed(1)+' left in it for you. The rest of the reading '
      +'is integrity, and that moves when you answer the laws or when what you do changes',
      '<button class="btn s-oact" data-sout="iq">Answer the laws</button>');

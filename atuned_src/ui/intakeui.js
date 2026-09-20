@@ -37,23 +37,44 @@ function iqAccuracy(){
     paragraph of nine lines followed by a second card of three more, and a
     person about to answer sixty three questions reads neither. One panel per
     fact, side by side, each short enough to finish. */
+ /* THREE HEADINGS, AND TWO OF THEM WERE WRONG BEFORE THE CASE RULE TOUCHED
+    THEM. They were also written in title case by hand, which is what the
+    stylesheet exists to stop: the transform does the capitalising so nobody
+    has to remember the rule while writing a heading.
+
+    "A Ten Is A Hundred Out Of A Hundred" is the phrasing the owner struck. A
+    number has to say what it is out of in regular words, and a hundred out of
+    a hundred is not regular words, it is the same number said twice. The scale
+    key eight lines down already says it properly: never, about half the time,
+    every time. So the heading names the panel and the panel says what a ten
+    means, which is what it was already doing underneath.
+
+    "This Is Accuracy, Not Judgment" denies a judgement nobody raised. A
+    reassurance against a fear that has not been mentioned is how the idea gets
+    planted, and a person about to answer sixty three questions about their own
+    integrity does not need to be told it is not a verdict. The panel gives two
+    examples of an accurate answer, so the heading says that and nothing more.
+
+    The first heading keeps its words and takes plain, because it carries a
+    comma and a comma means a second part. */
  var P=[
-  ['Moral integrity, three ways',
+  ['Moral integrity, three ways',true,
    'Each law is asked once where it costs you something, once where nobody would know, '
    +'and once on an ordinary day. The gap between the three is the reading, so answering '
    +'the same law differently is the point rather than a mistake.'],
-  ['A Ten Is A Hundred Out Of A Hundred',
+  ['What a ten means',false,
    'Not what you intend and not what you would like to be true. What you actually do, '
    +'every time, without exception. A nine means you slip about one time in ten, and that '
    +'is a real number this instrument can use.'],
-  ['This Is Accuracy, Not Judgment',
+  ['What accuracy looks like',false,
    'Do you go to the gym four days a week like you say. Do you tell the truth to yourself '
    +'as readily as you tell it to other people. Everybody slips, and the slip is what is '
    +'being measured.']];
  return '<div class="iq-acc">'
   +'<div class="iq-accg">'
-  +P.map(function(x){return '<div class="iq-accp"><div class="pm-eye">'+x[0]+'</div>'
-    +'<p>'+x[1]+'</p></div>';}).join('')
+  +P.map(function(x){return '<div class="iq-accp"><div class="pm-eye'
+    +(x[1]?' plain':'')+'">'+x[0]+'</div>'
+    +'<p>'+x[2]+'</p></div>';}).join('')
   +'</div>'
   +'<p class="iq-sc-key"><b>0</b> never <span>·</span> <b>5</b> about half the time '
   +'<span>·</span> <b>10</b> every time <span>·</span> '
