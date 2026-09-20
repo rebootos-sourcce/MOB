@@ -32,9 +32,12 @@ select{background:var(--panel-2);border:1px solid var(--line2);border-radius:10p
    with seven days of history the empty ones became a wall of absence: eighty
    four black squares against seven gold. That is a count against a total drawn
    in pixels, and it is the one thing this product refuses. */
-.hm{display:grid;grid-auto-flow:column;grid-template-rows:repeat(7,14px);
+/* The square grows to fill the card it is in. A fixed cell drew two weeks
+   as a sliver in a card sized for thirteen, which is the wall of absence
+   again in the opposite direction: an empty card instead of empty squares. */
+.hm{display:grid;grid-auto-flow:column;grid-template-rows:repeat(7,var(--cell,14px));
  gap:3px;justify-content:start}
-.hm i{width:14px;height:14px;border-radius:3px;background:var(--sunk);
+.hm i{width:var(--cell,14px);height:var(--cell,14px);border-radius:3px;background:var(--sunk);
  border:1px solid var(--line);display:block;cursor:default}
 .hm i.on{background:var(--k);border-color:var(--k)}
 .hm i.fl{background:transparent;border-color:var(--k);border-width:1.5px}
@@ -2061,6 +2064,9 @@ function heat(){
  var d=D[cur], w=walk(), tr=TRACKS[d.substituted?d.actualTrack:d.track];
  var cols=spanOf(w,13), cells=weeksOf(w,cols), h=document.getElementById('hm');
  h.style.setProperty('--k',tr.c); h.className='hm'+(EDIT?' edit':'');
+ var room=(h.parentNode&&h.parentNode.clientWidth||320)-4;
+ var cell=Math.max(14,Math.min(40,Math.floor((room-(cols-1)*3)/cols)));
+ h.style.setProperty('--cell',cell+'px');
  h.innerHTML=cells.map(function(v,i){
   return '<i class="'+(v===1?'on':v===2?'fl':v===0?'no':'')+'" data-i="'+i+'"></i>';}).join('');
  if(EDIT)h.querySelectorAll('i').forEach(function(el){el.onclick=function(){
@@ -2089,7 +2095,7 @@ function stats(){
  cells.forEach(function(v,i){ if(v===null)return; var r=i%7; tot[r]++; if(v)hit[r]++; });
  var tr=TRACKS[d.substituted?d.actualTrack:d.track];
  /* AN ANALYTIC NEEDS EVIDENCE BEFORE IT SPEAKS. On seven days of history
-    every weekday read 100 in 100 and the chart said nothing while looking as
+    every weekday read as a full bar and the chart said nothing while looking as
     though it had. Four weeks is the floor: below it the panel says what it is
     waiting for instead of drawing seven full bars off one sample each. */
  var FLOOR=4;
@@ -2103,7 +2109,7 @@ function stats(){
  var bars=NM.map(function(n,i){
   var p=tot[i]?Math.round(hit[i]/tot[i]*100):0;
   return '<div class="wk" style="--tc:'+tr.c+'"><span style="min-width:30px">'+n+'</span>'
-   +'<u><b style="width:'+p+'%"></b></u><em>'+p+' in 100</em></div>';}).join('');
+   +'<u><b style="width:'+p+'%"></b></u><em>'+hit[i]+' of '+tot[i]+'</em></div>';}).join('');
  document.getElementById('bars').innerHTML=
   '<div class="eye" style="margin-bottom:10px">Which day you keep it</div>'+bars;}
 

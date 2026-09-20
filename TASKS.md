@@ -21,6 +21,45 @@ reopens. Every seat adds its own.
 
 ---
 
+## 0y. THE RITUAL BUILDER, MEASURED AND COMPED. 20 SEPTEMBER.
+
+Three runnable designs at `proto/ritual/`: compass, board, tape. Standalone,
+no network, real numbers read from `engine.js` through the build's own `ritFor`
+and checked against the thousand person panel before they are written.
+
+**The loss framing measurement reverses what two earlier documents assumed.**
+Both priced the refusal as a sacrifice worth three points. They priced the
+wrong arm: the simulator only modelled the uplift half of his ruling and never
+the deduction that lands on a miss. With the deduction in, his mechanic breaks
+even at a sting of 0.07 and costs retention above it. At a sting a person would
+feel it is minus 1.9 points, robust across five seeds.
+
+- [?] **RB1. The sting.** How much comes off on a missed day. This is the one
+      number the whole mechanic turns on, and it is his.
+- [x] **RB2. The seven day guard.** Nothing is taken until seven days are
+      banked. Worth 2.6 points, more than the mechanic itself, because the
+      whole first week is where the leaving happens. Modelled, not built.
+- [ ] **RB3. Who pays.** The deduction lands hardest on the people who cannot
+      run a release yet, who are 465 of the panel of 1000 and have four of the
+      marks permanently shut to them. A ladder that takes from somebody who
+      cannot earn is a fine, not a game.
+- [x] **RB4. The record grid fills its card.** Two weeks of history drew as a
+      sliver in a card sized for thirteen, which is the wall of absence in the
+      opposite direction. The cell now grows with the span.
+- [x] **RB5. No scale phrasing on the weekday read.** It said 92 in 100. It
+      says 12 of 13 Mondays.
+- [ ] **RB6. `.pm-eye` carries `text-transform:capitalize`,** so the shipped
+      build reads Build A Ritual. A voice violation visible on screen and
+      invisible in source.
+- [ ] **RB7. The record becomes the other half of this surface,** not its own
+      tab and not the Compass.
+- [?] **RB8. Five questions, and no more than five.** The sting; one ritual a
+      day or a stack; whether the dial is the seven seats or the twenty one
+      laws; the record as half this surface or its own tab; whether the sniffer
+      adds to tomorrow's ritual or proposes and waits.
+
+---
+
 ## 0z. RULED 20 SEPTEMBER. THE BUILD WILL NOT COME OFF THE SCREEN.
 
 His words: "in the view pane window, I can't download anything. So if I click on
