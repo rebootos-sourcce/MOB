@@ -240,20 +240,24 @@ textarea:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--gold);
  border-radius:var(--r-xs);min-height:var(--tap);min-width:var(--tap);
  transition:background var(--t-micro) var(--ease-out)}
 .wcol:hover{background:var(--panel-2)}
-.wcol.today{background:color-mix(in srgb,var(--accent) 9%,transparent)}
+.wcol.today .wbase{background:var(--accent);height:3px}
 .wstack{display:flex;flex-direction:column-reverse;gap:var(--pxgap);
  align-items:center;justify-content:flex-start}
 .px{width:var(--px);height:var(--px);border-radius:3px;display:block}
 .px.kept{background:var(--c);border:1px solid var(--c)}
-.px.miss{background:transparent;border:1px solid var(--edge-2)}
+.px.miss{background:var(--sunk);border:1px solid var(--edge-2);
+ box-shadow:inset 0 1px 3px rgba(0,0,0,.5)}
 .px.set{background:color-mix(in srgb,var(--c) 22%,transparent);
  border:1px solid color-mix(in srgb,var(--c) 34%,transparent)}
 .px.off{background:transparent;
- border:1px dashed color-mix(in srgb,var(--c) 52%,transparent)}
-.wbase{width:var(--px);height:2px;border-radius:1px;background:var(--edge-2)}
+ border:1px solid color-mix(in srgb,var(--c) 26%,transparent)}
+.wbase{width:var(--px);height:2px;border-radius:1px;background:var(--edge-2);
+ flex:0 0 auto}
 .wbase.none{background:transparent}
 .wd{font-size:11px;font-weight:600;color:var(--dim);letter-spacing:0;
- margin-top:6px}
+ margin-top:6px;line-height:1.3;text-align:center}
+.wd em{display:block;font-style:normal;font-weight:400;font-size:10.5px;
+ font-family:var(--num);font-variant-numeric:tabular-nums;opacity:.75}
 .wcol.today .wd{color:var(--accent)}
 .wdate{font-size:11px;color:var(--dim);font-family:var(--num);
  font-variant-numeric:tabular-nums}
@@ -273,10 +277,10 @@ textarea:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--gold);
  color:var(--dim)}
 .mk i{width:13px;height:13px;border-radius:3px;flex:0 0 auto}
 .mk i.kept{background:var(--mid)}
-.mk i.miss{border:1px solid var(--edge-2)}
+.mk i.miss{background:var(--sunk);border:1px solid var(--edge-2)}
 .mk i.set{background:color-mix(in srgb,var(--mid) 26%,transparent);
  border:1px solid var(--edge)}
-.mk i.off{border:1px dashed var(--edge-2)}
+.mk i.off{border:1px solid rgba(255,255,255,.22)}
 
 /* ============================================================
    THE ACCOUNTABILITY TRACKER. The little boxes.
@@ -338,7 +342,7 @@ textarea:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--gold);
  justify-content:center;padding:0;transition:background var(--t-micro) var(--ease-out)}
 .mkbtn:hover{background:color-mix(in srgb,var(--c) 16%,transparent)}
 .mkbtn svg{display:block;transform:rotate(-90deg)}
-.offertag{font-size:11px;font-weight:600;color:var(--c);flex:0 0 auto;
+.offertag{font-size:11px;font-weight:600;color:var(--dim);flex:0 0 auto;
  padding-right:4px}
 
 /* ============================================================
@@ -373,7 +377,7 @@ textarea:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--gold);
  gap:3px;padding:4px 6px;color:var(--dim);font-size:10px;font-weight:600}
 .histb i{width:12px;height:12px;border-radius:3px;display:block}
 .histb i.kept{background:var(--c);border:1px solid var(--c)}
-.histb i.miss{border:1px solid var(--edge-2)}
+.histb i.miss{background:var(--sunk);border:1px solid var(--edge-2)}
 .histb i.set{background:color-mix(in srgb,var(--c) 22%,transparent);
  border:1px solid var(--edge)}
 .histb i.no{border:1px dashed var(--edge)}
@@ -411,6 +415,14 @@ textarea:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--gold);
 #jmic{margin-top:11px;padding:13px 15px;border-radius:var(--r-s);
  background:var(--sunk);border:1px solid var(--edge-2)}
 #jmic .body{margin-bottom:11px;font-size:14px}
+
+/* ---------- the three shapes ---------- */
+.shapes{display:flex;flex-direction:column;gap:11px}
+.shrow{display:flex;gap:11px;align-items:flex-start}
+.shb{min-width:0}
+.shn{font-size:14px;font-weight:500;color:var(--ink);line-height:1.3}
+.shd{font-size:12.5px;color:var(--mid);margin-top:3px;line-height:1.5}
+.shm{font-size:11.5px;color:var(--dim);margin-top:3px;line-height:1.45}
 
 /* ---------- where to improve ---------- */
 .fb{display:flex;flex-direction:column;gap:11px}
@@ -498,6 +510,12 @@ textarea:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--gold);
     <p class="note" id="wdnote" style="margin-top:12px"></p>
    </section>
 
+   <!-- FEEDBACK. A page that only records is a log. -->
+   <section class="glass" id="fbp">
+    <span class="eyebrow">Where To Improve</span>
+    <div class="fb" id="fb"></div>
+   </section>
+
   </div>
   <div class="colR">
 
@@ -522,10 +540,12 @@ textarea:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--gold);
     <div id="jsaid" hidden></div>
    </section>
 
-   <!-- FEEDBACK. A page that only records is a log. -->
-   <section class="glass" id="fbp">
-    <span class="eyebrow">Where To Improve</span>
-    <div class="fb" id="fb"></div>
+   <!-- THE THREE SHAPES, NAMED ON THE SURFACE. The card parameters are the
+        shape's, so a person who cannot tell the three apart cannot read a
+        card. It was only in the footnote, which is where nothing is read. -->
+   <section class="glass" id="shapep">
+    <span class="eyebrow">The Three Shapes</span>
+    <div class="shapes" id="shapes"></div>
    </section>
 
   </div>
@@ -852,6 +872,7 @@ window.RITDATA={
     {
      "d": "Mon",
      "full": "Monday",
+     "date": 14,
      "kept": false,
      "lived": true,
      "today": false
@@ -859,6 +880,7 @@ window.RITDATA={
     {
      "d": "Tue",
      "full": "Tuesday",
+     "date": 15,
      "kept": true,
      "lived": true,
      "today": false
@@ -866,6 +888,7 @@ window.RITDATA={
     {
      "d": "Wed",
      "full": "Wednesday",
+     "date": 16,
      "kept": true,
      "lived": true,
      "today": false
@@ -873,6 +896,7 @@ window.RITDATA={
     {
      "d": "Thu",
      "full": "Thursday",
+     "date": 17,
      "kept": true,
      "lived": true,
      "today": false
@@ -880,6 +904,7 @@ window.RITDATA={
     {
      "d": "Fri",
      "full": "Friday",
+     "date": 18,
      "kept": false,
      "lived": true,
      "today": false
@@ -887,6 +912,7 @@ window.RITDATA={
     {
      "d": "Sat",
      "full": "Saturday",
+     "date": 19,
      "kept": true,
      "lived": true,
      "today": false
@@ -894,6 +920,7 @@ window.RITDATA={
     {
      "d": "Sun",
      "full": "Sunday",
+     "date": 20,
      "kept": true,
      "lived": true,
      "today": true
@@ -1209,6 +1236,7 @@ window.RITDATA={
     {
      "d": "Mon",
      "full": "Monday",
+     "date": 14,
      "kept": true,
      "lived": true,
      "today": false
@@ -1216,6 +1244,7 @@ window.RITDATA={
     {
      "d": "Tue",
      "full": "Tuesday",
+     "date": 15,
      "kept": true,
      "lived": true,
      "today": false
@@ -1223,6 +1252,7 @@ window.RITDATA={
     {
      "d": "Wed",
      "full": "Wednesday",
+     "date": 16,
      "kept": true,
      "lived": true,
      "today": false
@@ -1230,6 +1260,7 @@ window.RITDATA={
     {
      "d": "Thu",
      "full": "Thursday",
+     "date": 17,
      "kept": true,
      "lived": true,
      "today": false
@@ -1237,6 +1268,7 @@ window.RITDATA={
     {
      "d": "Fri",
      "full": "Friday",
+     "date": 18,
      "kept": true,
      "lived": true,
      "today": false
@@ -1244,6 +1276,7 @@ window.RITDATA={
     {
      "d": "Sat",
      "full": "Saturday",
+     "date": 19,
      "kept": true,
      "lived": true,
      "today": false
@@ -1251,6 +1284,7 @@ window.RITDATA={
     {
      "d": "Sun",
      "full": "Sunday",
+     "date": 20,
      "kept": true,
      "lived": true,
      "today": true
@@ -1788,6 +1822,7 @@ window.RITDATA={
     {
      "d": "Mon",
      "full": "Monday",
+     "date": 14,
      "kept": true,
      "lived": true,
      "today": false
@@ -1795,6 +1830,7 @@ window.RITDATA={
     {
      "d": "Tue",
      "full": "Tuesday",
+     "date": 15,
      "kept": true,
      "lived": true,
      "today": false
@@ -1802,6 +1838,7 @@ window.RITDATA={
     {
      "d": "Wed",
      "full": "Wednesday",
+     "date": 16,
      "kept": true,
      "lived": true,
      "today": false
@@ -1809,6 +1846,7 @@ window.RITDATA={
     {
      "d": "Thu",
      "full": "Thursday",
+     "date": 17,
      "kept": true,
      "lived": true,
      "today": false
@@ -1816,6 +1854,7 @@ window.RITDATA={
     {
      "d": "Fri",
      "full": "Friday",
+     "date": 18,
      "kept": true,
      "lived": true,
      "today": false
@@ -1823,6 +1862,7 @@ window.RITDATA={
     {
      "d": "Sat",
      "full": "Saturday",
+     "date": 19,
      "kept": true,
      "lived": true,
      "today": false
@@ -1830,6 +1870,7 @@ window.RITDATA={
     {
      "d": "Sun",
      "full": "Sunday",
+     "date": 20,
      "kept": true,
      "lived": true,
      "today": true
@@ -2364,6 +2405,7 @@ window.RITDATA={
     {
      "d": "Mon",
      "full": "Monday",
+     "date": 14,
      "kept": true,
      "lived": true,
      "today": false
@@ -2371,6 +2413,7 @@ window.RITDATA={
     {
      "d": "Tue",
      "full": "Tuesday",
+     "date": 15,
      "kept": true,
      "lived": true,
      "today": false
@@ -2378,6 +2421,7 @@ window.RITDATA={
     {
      "d": "Wed",
      "full": "Wednesday",
+     "date": 16,
      "kept": false,
      "lived": true,
      "today": false
@@ -2385,6 +2429,7 @@ window.RITDATA={
     {
      "d": "Thu",
      "full": "Thursday",
+     "date": 17,
      "kept": false,
      "lived": true,
      "today": false
@@ -2392,6 +2437,7 @@ window.RITDATA={
     {
      "d": "Fri",
      "full": "Friday",
+     "date": 18,
      "kept": true,
      "lived": true,
      "today": false
@@ -2399,6 +2445,7 @@ window.RITDATA={
     {
      "d": "Sat",
      "full": "Saturday",
+     "date": 19,
      "kept": true,
      "lived": true,
      "today": false
@@ -2406,6 +2453,7 @@ window.RITDATA={
     {
      "d": "Sun",
      "full": "Sunday",
+     "date": 20,
      "kept": true,
      "lived": true,
      "today": true
@@ -2890,6 +2938,7 @@ window.RITDATA={
     {
      "d": "Mon",
      "full": "Monday",
+     "date": 14,
      "kept": true,
      "lived": true,
      "today": false
@@ -2897,6 +2946,7 @@ window.RITDATA={
     {
      "d": "Tue",
      "full": "Tuesday",
+     "date": 15,
      "kept": true,
      "lived": true,
      "today": false
@@ -2904,6 +2954,7 @@ window.RITDATA={
     {
      "d": "Wed",
      "full": "Wednesday",
+     "date": 16,
      "kept": true,
      "lived": true,
      "today": false
@@ -2911,6 +2962,7 @@ window.RITDATA={
     {
      "d": "Thu",
      "full": "Thursday",
+     "date": 17,
      "kept": true,
      "lived": true,
      "today": false
@@ -2918,6 +2970,7 @@ window.RITDATA={
     {
      "d": "Fri",
      "full": "Friday",
+     "date": 18,
      "kept": false,
      "lived": true,
      "today": false
@@ -2925,6 +2978,7 @@ window.RITDATA={
     {
      "d": "Sat",
      "full": "Saturday",
+     "date": 19,
      "kept": true,
      "lived": true,
      "today": false
@@ -2932,6 +2986,7 @@ window.RITDATA={
     {
      "d": "Sun",
      "full": "Sunday",
+     "date": 20,
      "kept": true,
      "lived": true,
      "today": true
@@ -3330,6 +3385,7 @@ window.RITDATA={
     {
      "d": "Mon",
      "full": "Monday",
+     "date": 14,
      "kept": true,
      "lived": true,
      "today": false
@@ -3337,6 +3393,7 @@ window.RITDATA={
     {
      "d": "Tue",
      "full": "Tuesday",
+     "date": 15,
      "kept": true,
      "lived": true,
      "today": false
@@ -3344,6 +3401,7 @@ window.RITDATA={
     {
      "d": "Wed",
      "full": "Wednesday",
+     "date": 16,
      "kept": true,
      "lived": true,
      "today": false
@@ -3351,6 +3409,7 @@ window.RITDATA={
     {
      "d": "Thu",
      "full": "Thursday",
+     "date": 17,
      "kept": true,
      "lived": true,
      "today": false
@@ -3358,6 +3417,7 @@ window.RITDATA={
     {
      "d": "Fri",
      "full": "Friday",
+     "date": 18,
      "kept": true,
      "lived": true,
      "today": false
@@ -3365,6 +3425,7 @@ window.RITDATA={
     {
      "d": "Sat",
      "full": "Saturday",
+     "date": 19,
      "kept": true,
      "lived": true,
      "today": false
@@ -3372,6 +3433,7 @@ window.RITDATA={
     {
      "d": "Sun",
      "full": "Sunday",
+     "date": 20,
      "kept": true,
      "lived": true,
      "today": true
@@ -3797,6 +3859,7 @@ window.RITDATA={
     {
      "d": "Mon",
      "full": "Monday",
+     "date": 14,
      "kept": true,
      "lived": true,
      "today": false
@@ -3804,6 +3867,7 @@ window.RITDATA={
     {
      "d": "Tue",
      "full": "Tuesday",
+     "date": 15,
      "kept": true,
      "lived": true,
      "today": false
@@ -3811,6 +3875,7 @@ window.RITDATA={
     {
      "d": "Wed",
      "full": "Wednesday",
+     "date": 16,
      "kept": true,
      "lived": true,
      "today": false
@@ -3818,6 +3883,7 @@ window.RITDATA={
     {
      "d": "Thu",
      "full": "Thursday",
+     "date": 17,
      "kept": true,
      "lived": true,
      "today": false
@@ -3825,6 +3891,7 @@ window.RITDATA={
     {
      "d": "Fri",
      "full": "Friday",
+     "date": 18,
      "kept": true,
      "lived": true,
      "today": false
@@ -3832,6 +3899,7 @@ window.RITDATA={
     {
      "d": "Sat",
      "full": "Saturday",
+     "date": 19,
      "kept": true,
      "lived": true,
      "today": false
@@ -3839,6 +3907,7 @@ window.RITDATA={
     {
      "d": "Sun",
      "full": "Sunday",
+     "date": 20,
      "kept": true,
      "lived": true,
      "today": true
@@ -4195,6 +4264,7 @@ window.RITDATA={
     {
      "d": "Mon",
      "full": "Monday",
+     "date": 14,
      "kept": true,
      "lived": true,
      "today": false
@@ -4202,6 +4272,7 @@ window.RITDATA={
     {
      "d": "Tue",
      "full": "Tuesday",
+     "date": 15,
      "kept": true,
      "lived": true,
      "today": false
@@ -4209,6 +4280,7 @@ window.RITDATA={
     {
      "d": "Wed",
      "full": "Wednesday",
+     "date": 16,
      "kept": true,
      "lived": true,
      "today": false
@@ -4216,6 +4288,7 @@ window.RITDATA={
     {
      "d": "Thu",
      "full": "Thursday",
+     "date": 17,
      "kept": true,
      "lived": true,
      "today": false
@@ -4223,6 +4296,7 @@ window.RITDATA={
     {
      "d": "Fri",
      "full": "Friday",
+     "date": 18,
      "kept": true,
      "lived": true,
      "today": false
@@ -4230,6 +4304,7 @@ window.RITDATA={
     {
      "d": "Sat",
      "full": "Saturday",
+     "date": 19,
      "kept": true,
      "lived": true,
      "today": false
@@ -4237,6 +4312,7 @@ window.RITDATA={
     {
      "d": "Sun",
      "full": "Sunday",
+     "date": 20,
      "kept": true,
      "lived": true,
      "today": true
@@ -4876,7 +4952,8 @@ function restQueue(){
    be stale relative to anything else on it.
    ============================================================ */
 function draw(){
- drawRecord(); drawWeek(); drawTracker(); drawBands(); drawFeedback(); drawFoot();}
+ drawRecord(); drawWeek(); drawTracker(); drawBands(); drawShapes();
+ drawFeedback(); drawFoot();}
 
 /* ---------- 1. THE RECORD ----------
    His first item. Five figures, each a ring, a pill and a label, and each one
@@ -4979,15 +5056,22 @@ function drawWeek(){
    +' aria-label="'+esc(w.full)+', '+cs.length+' set">'
    +'<span class="wstack">'+body+stack+'</span>'
    +'<span class="wbase'+(w.lived?'':' none')+'"></span>'
-   +'<span class="wd">'+w.d+'</span></button>';}
+   +'<span class="wd">'+w.d+'<em>'+w.date+'</em></span></button>';}
  document.getElementById('wave').innerHTML=h;
 
  var lived=P.week.filter(function(w){return w.lived;}).length;
+ var set=M.items.filter(function(it){return it.standing&&!it.once;}).length;
+ var off=M.items.filter(function(it){return !it.standing&&!it.once
+   &&!it.whenCalled;}).length;
  var note='';
  if(lived<7)note='Your record starts inside this week, so '+(7-lived)
-  +' of these days have no cell under them. Nothing was missed there.';
- else note='Seven days, the three kinds stacked in the same order up each one. '
-  +'Press a day to mark it.';
+  +' of these days have no cell under them. Nothing was missed there. ';
+ note+=set+(set===1?' ritual is':' rituals are')+' set, so a column is '
+  +(set===1?'one':set)+' tall where nothing else lands. '
+  +(off?'The '+off+' faint '+(off===1?'square is one':'squares are')
+    +' the queue proposes and nobody has taken, so '+(off===1?'it counts':'they count')
+    +' towards nothing. Take one and its column grows from today.'
+   :'Press a day to mark it.');
  document.getElementById('wavenote').textContent=note;}
 
 /* ---------- THE ACCOUNTABILITY TRACKER ----------
@@ -5006,7 +5090,7 @@ function drawTracker(){
   var j=i-pad;
   var v=(j<0||P.walk[j]===undefined)?null:!!P.walk[j];
   h+='<i class="'+(v===null?'no':(v?'on':'fl'))+'"'
-   +' style="--c:'+bandC('hold')+'"></i>';}
+   +' style="--c:var(--accent)"></i>';}
  document.getElementById('hm').innerHTML=h;
  document.getElementById('hmax').innerHTML=DAY.map(function(d,i){
   return '<span>'+(i%2===0?d:'')+'</span>';}).join('');
@@ -5032,7 +5116,7 @@ function drawTracker(){
  box.innerHTML=P.wd.map(function(x,i){
   var f=x.lived?x.kept/x.lived:0;
   return '<div class="wdi'+(f===lo?' lo':'')+'"><span>'+x.d+'</span>'
-   +cr({c:bandC('hold'), ic:KINDIC.hold, frac:f, size:'sm', v:''})
+   +cr({c:'var(--accent)', ic:KINDIC.hold, frac:f, size:'sm', v:''})
    +'<b>'+x.kept+' of '+x.lived+'</b></div>';}).join('');
  note.textContent='Days kept against days lived, one weekday at a time.';}
 
@@ -5092,19 +5176,31 @@ function drawBands(){
  document.getElementById('bands').innerHTML=h;}
 
 /* ---------- FEEDBACK. The protocols and techniques, by name. ---------- */
+/* the three shapes, named where a person reads a card rather than only in a
+   footnote. Each one says what it records, because that is the difference
+   between them and it is what decides how a day is marked. */
+function drawShapes(){
+ var C={count:DATA.pal.Root, window:DATA.pal.Heart, stance:DATA.pal.Throat};
+ document.getElementById('shapes').innerHTML=DATA.shapes.map(function(sh){
+  return '<div class="shrow" style="--c:'+C[sh.k]+'">'
+   +cr({c:C[sh.k],ic:SHAPEIC[sh.k],frac:1,size:'sm',v:''})
+   +'<div class="shb"><div class="shn">'+esc(sh.nm)+'</div>'
+   +'<div class="shd">'+esc(sh.d)+'</div>'
+   +'<div class="shm">marked on '+esc(sh.mark)+'</div></div></div>';}).join('');}
+
 function drawFeedback(){
  var f=P.feedback, out=[];
  if(f.state==='waiting'){
-  out.push({c:bandC('hold'), ic:KINDIC.hold,
+  out.push({c:'var(--accent)', ic:KINDIC.hold,
    t:'Your record is <b>'+P.walk.length+' days</b>. A weekday rate needs four '
     +'weeks behind it, so there are <b>'+f.need+' days</b> before this page can '
     +'say which day you lose. Until then the run is the only figure that moves.'});}
  else if(f.flat){
-  out.push({c:bandC('hold'), ic:KINDIC.hold,
+  out.push({c:'var(--accent)', ic:KINDIC.hold,
    t:'You keep it at the same rate every weekday, <b>'+f.best.kept+' of '
     +f.best.lived+'</b>. Nothing here points at a day.'});}
  else{
-  out.push({c:bandC('hold'), ic:KINDIC.hold,
+  out.push({c:'var(--accent)', ic:KINDIC.hold,
    t:'<b>'+f.worst.d+'</b> is the day you lose, kept <b>'+f.worst.kept+' of the '
     +f.worst.lived+'</b> you have lived. '+f.best.d+' is the one you hold, '
     +f.best.kept+' of '+f.best.lived+'. Move one behaviour onto '+f.worst.d

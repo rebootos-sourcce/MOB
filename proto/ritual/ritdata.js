@@ -245,7 +245,8 @@ WHO.forEach(nm=>{
  const week=[];
  for(let i=0;i<7;i++){
   const j=walk.length-7+i;
-  week.push({d:DAY[i], full:DAYFULL[i],
+  const dt=new Date(TODAY-(TODAYIX-i)*864e5);
+  week.push({d:DAY[i], full:DAYFULL[i], date:dt.getUTCDate(),
    kept: j<0?null:(walk[j]===undefined?null:!!walk[j]),
    lived: j>=0&&walk[j]!==undefined,
    today: i===TODAYIX});}

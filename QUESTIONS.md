@@ -1,11 +1,15 @@
 # QUESTIONS FOR THE OWNER
 
 Every line in `TASKS.md` marked `[?]`, which is the mark for a question
-waiting on his ruling. 92 of them, across 25 sections.
-Read off commit 4dfb9e6 on 2026-09-20. Nothing here is typed by hand: answer a
+waiting on his ruling. 93 of them, across 26 sections.
+Read off commit ae76024 on 2026-09-20. Nothing here is typed by hand: answer a
 question in TASKS.md and it leaves this file on the next run.
 
 The same list is in `QUESTIONS.html`, which opens in a browser.
+
+## 0n. DELIVERED 20 SEPTEMBER. THE VOICE, THE CASE SCRUB, AND THE MARKETING SYSTEM.
+
+- [ ] **MK8. Three decisions at the end of the marketing README.** Four hooks built properly or seventeen thinly. Whether the Throat seat stays the only seat with no hook. Whether the clear entry offering confirmation rather than relief is the right offer.
 
 ## 0o. RULED 20 SEPTEMBER, EIGHTH PASS. THE AVATAR IS THE DASHBOARD.
 

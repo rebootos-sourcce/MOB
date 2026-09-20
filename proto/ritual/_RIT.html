@@ -46,6 +46,12 @@
     <p class="note" id="wdnote" style="margin-top:12px"></p>
    </section>
 
+   <!-- FEEDBACK. A page that only records is a log. -->
+   <section class="glass" id="fbp">
+    <span class="eyebrow">Where To Improve</span>
+    <div class="fb" id="fb"></div>
+   </section>
+
   </div>
   <div class="colR">
 
@@ -70,10 +76,12 @@
     <div id="jsaid" hidden></div>
    </section>
 
-   <!-- FEEDBACK. A page that only records is a log. -->
-   <section class="glass" id="fbp">
-    <span class="eyebrow">Where To Improve</span>
-    <div class="fb" id="fb"></div>
+   <!-- THE THREE SHAPES, NAMED ON THE SURFACE. The card parameters are the
+        shape's, so a person who cannot tell the three apart cannot read a
+        card. It was only in the footnote, which is where nothing is read. -->
+   <section class="glass" id="shapep">
+    <span class="eyebrow">The Three Shapes</span>
+    <div class="shapes" id="shapes"></div>
    </section>
 
   </div>
@@ -222,7 +230,8 @@ function restQueue(){
    be stale relative to anything else on it.
    ============================================================ */
 function draw(){
- drawRecord(); drawWeek(); drawTracker(); drawBands(); drawFeedback(); drawFoot();}
+ drawRecord(); drawWeek(); drawTracker(); drawBands(); drawShapes();
+ drawFeedback(); drawFoot();}
 
 /* ---------- 1. THE RECORD ----------
    His first item. Five figures, each a ring, a pill and a label, and each one
@@ -325,15 +334,22 @@ function drawWeek(){
    +' aria-label="'+esc(w.full)+', '+cs.length+' set">'
    +'<span class="wstack">'+body+stack+'</span>'
    +'<span class="wbase'+(w.lived?'':' none')+'"></span>'
-   +'<span class="wd">'+w.d+'</span></button>';}
+   +'<span class="wd">'+w.d+'<em>'+w.date+'</em></span></button>';}
  document.getElementById('wave').innerHTML=h;
 
  var lived=P.week.filter(function(w){return w.lived;}).length;
+ var set=M.items.filter(function(it){return it.standing&&!it.once;}).length;
+ var off=M.items.filter(function(it){return !it.standing&&!it.once
+   &&!it.whenCalled;}).length;
  var note='';
  if(lived<7)note='Your record starts inside this week, so '+(7-lived)
-  +' of these days have no cell under them. Nothing was missed there.';
- else note='Seven days, the three kinds stacked in the same order up each one. '
-  +'Press a day to mark it.';
+  +' of these days have no cell under them. Nothing was missed there. ';
+ note+=set+(set===1?' ritual is':' rituals are')+' set, so a column is '
+  +(set===1?'one':set)+' tall where nothing else lands. '
+  +(off?'The '+off+' faint '+(off===1?'square is one':'squares are')
+    +' the queue proposes and nobody has taken, so '+(off===1?'it counts':'they count')
+    +' towards nothing. Take one and its column grows from today.'
+   :'Press a day to mark it.');
  document.getElementById('wavenote').textContent=note;}
 
 /* ---------- THE ACCOUNTABILITY TRACKER ----------
@@ -352,7 +368,7 @@ function drawTracker(){
   var j=i-pad;
   var v=(j<0||P.walk[j]===undefined)?null:!!P.walk[j];
   h+='<i class="'+(v===null?'no':(v?'on':'fl'))+'"'
-   +' style="--c:'+bandC('hold')+'"></i>';}
+   +' style="--c:var(--accent)"></i>';}
  document.getElementById('hm').innerHTML=h;
  document.getElementById('hmax').innerHTML=DAY.map(function(d,i){
   return '<span>'+(i%2===0?d:'')+'</span>';}).join('');
@@ -378,7 +394,7 @@ function drawTracker(){
  box.innerHTML=P.wd.map(function(x,i){
   var f=x.lived?x.kept/x.lived:0;
   return '<div class="wdi'+(f===lo?' lo':'')+'"><span>'+x.d+'</span>'
-   +cr({c:bandC('hold'), ic:KINDIC.hold, frac:f, size:'sm', v:''})
+   +cr({c:'var(--accent)', ic:KINDIC.hold, frac:f, size:'sm', v:''})
    +'<b>'+x.kept+' of '+x.lived+'</b></div>';}).join('');
  note.textContent='Days kept against days lived, one weekday at a time.';}
 
@@ -438,19 +454,31 @@ function drawBands(){
  document.getElementById('bands').innerHTML=h;}
 
 /* ---------- FEEDBACK. The protocols and techniques, by name. ---------- */
+/* the three shapes, named where a person reads a card rather than only in a
+   footnote. Each one says what it records, because that is the difference
+   between them and it is what decides how a day is marked. */
+function drawShapes(){
+ var C={count:DATA.pal.Root, window:DATA.pal.Heart, stance:DATA.pal.Throat};
+ document.getElementById('shapes').innerHTML=DATA.shapes.map(function(sh){
+  return '<div class="shrow" style="--c:'+C[sh.k]+'">'
+   +cr({c:C[sh.k],ic:SHAPEIC[sh.k],frac:1,size:'sm',v:''})
+   +'<div class="shb"><div class="shn">'+esc(sh.nm)+'</div>'
+   +'<div class="shd">'+esc(sh.d)+'</div>'
+   +'<div class="shm">marked on '+esc(sh.mark)+'</div></div></div>';}).join('');}
+
 function drawFeedback(){
  var f=P.feedback, out=[];
  if(f.state==='waiting'){
-  out.push({c:bandC('hold'), ic:KINDIC.hold,
+  out.push({c:'var(--accent)', ic:KINDIC.hold,
    t:'Your record is <b>'+P.walk.length+' days</b>. A weekday rate needs four '
     +'weeks behind it, so there are <b>'+f.need+' days</b> before this page can '
     +'say which day you lose. Until then the run is the only figure that moves.'});}
  else if(f.flat){
-  out.push({c:bandC('hold'), ic:KINDIC.hold,
+  out.push({c:'var(--accent)', ic:KINDIC.hold,
    t:'You keep it at the same rate every weekday, <b>'+f.best.kept+' of '
     +f.best.lived+'</b>. Nothing here points at a day.'});}
  else{
-  out.push({c:bandC('hold'), ic:KINDIC.hold,
+  out.push({c:'var(--accent)', ic:KINDIC.hold,
    t:'<b>'+f.worst.d+'</b> is the day you lose, kept <b>'+f.worst.kept+' of the '
     +f.worst.lived+'</b> you have lived. '+f.best.d+' is the one you hold, '
     +f.best.kept+' of '+f.best.lived+'. Move one behaviour onto '+f.worst.d

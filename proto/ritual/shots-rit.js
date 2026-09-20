@@ -76,6 +76,26 @@ const SEL='button,input,select,textarea,a[href],[role=button]';
    await pg.screenshot({path:__dirname+'/rit-'+WHO+'-stance-'+tag+'.png',fullPage:true});
    await pg.evaluate(()=>document.getElementById('s-close').click());}
 
+  /* THE MECHANIC, DEMONSTRATED RATHER THAN DESCRIBED. Every offer on the
+     page taken, so the waveform shows the shape he asked for: a column per
+     day whose height is that day's load, varying because a behaviour is set
+     on weekdays and always on is set on all seven. Nothing here is fabricated
+     data: it is the real proposals, taken by a real control, counting from
+     today forward. */
+  await pg.evaluate(()=>{
+   let n=0;
+   while(document.querySelector('.card.offer')&&n<8){
+    document.querySelector('.card.offer').click();
+    const t=document.getElementById('s-take'); if(t)t.click(); n++;}
+   const c=document.getElementById('s-close'); if(c)c.click();});
+  await pg.waitForTimeout(220);
+  await pg.screenshot({path:__dirname+'/rit-'+WHO+'-taken-'+tag+'.png',fullPage:true});
+  await pg.reload(); await pg.waitForTimeout(260);
+  await pg.evaluate(n=>{const s=document.getElementById('who');
+   if(s&&[...s.options].some(o=>o.value===n)){s.value=n;
+    s.dispatchEvent(new Event('change',{bubbles:true}));}},WHO);
+  await pg.waitForTimeout(160);
+
   /* the queue */
   await pg.evaluate(()=>document.getElementById('addbtn').click());
   await pg.waitForTimeout(200);

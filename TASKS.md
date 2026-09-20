@@ -21,6 +21,92 @@ reopens. Every seat adds its own.
 
 ---
 
+## 0n. DELIVERED 20 SEPTEMBER. THE VOICE, THE CASE SCRUB, AND THE MARKETING SYSTEM.
+
+### VD. THE VOICE IS A LOADABLE SKILL NOW.
+
+- [x] **VD1. `.claude/skills/atuned-voice/`,** loaded before any user facing
+      string, beside the UX skill. The anchor is stated as eight moves rather
+      than a mood, and its limits are stated too: Encarta's subject is not
+      reading the entry and ours is, so it cannot instruct, never admits a
+      limit, never names a cost and is cold about something that cannot be
+      hurt by it. The ruling is keep the register, move the stance.
+- [x] **VD2. Sixteen micro rules, each with a failing line and its fix,**
+      drawn from copy this product actually ships rather than a strawman.
+- [x] **VD3. A gate that can fail a line,** `check.py`, and no house number is
+      typed into it: the distribution a candidate is measured against is
+      computed off the shipping copy on every run, because a voice gate
+      carrying a hardcoded median would have been the tenth time this
+      repository was bitten by a typed number.
+- [x] **VD4. It prints what it did not check** instead of a score, because a
+      score with the unmeasurable part left out is a lie about how much has
+      been checked.
+- [x] **VD5. The release preamble was 15.4 seconds before the first
+      address,** seven lines of which two read the heading aloud. Three lines
+      now, 6.6 seconds, one thing each.
+- [ ] **VD6. The best copy in the product is the hundred questions,** and it
+      runs at double the house median length. Short is not the test. Naming a
+      physical event is the test, and a six word sentence that names no event
+      is the shorter failure.
+
+### CS. THE CASE SCRUB, AND THE GATE THAT HOLDS IT.
+
+- [x] **CS1. 99 distinct strings measured in thirteen label classes, 42 read
+      as sentences,** and all 42 now render in sentence case. The rule is
+      stated rather than applied by taste: a label is four words or fewer with
+      no comma followed by a word. A comma means a second part and a name has
+      one part.
+- [x] **CS2. Three strings were wrong before the case transform touched
+      them.** One used the struck scale phrasing. One denied a judgement
+      nobody had raised. One was a nineteen word paragraph inside a label that
+      also described the wrong thing: it explained one axis where the control
+      sets all nine.
+- [x] **CS3. The gate reads the class list off the stylesheet at run time,**
+      walks every surface at both widths on three profiles, and fails by name.
+      2258 strings walked, none left. Proved by breaking it twice.
+- [ ] **CS4. 24 strings sit past a surface walk's reach,** inside drills. The
+      walk has to open every drill to see them.
+- [ ] **CS5. The fetters rail reads Child emotions above 4 · Child Emotions,**
+      same words, two cases, five pixels apart. Pre existing and more visible
+      now the paragraph between them is gone.
+
+### MK. THE MARKETING SYSTEM. ADDRESS BY FIELD, NOT BY PERSON.
+
+- [x] **MK1. His question 3 is answered and it is not close.** A line served
+      off a person's own reading names the charge they are heaviest at for 872
+      of 894 eligible. By state, 462. By role, 437. Across fifteen runs field
+      wins all fifteen, and state beats role in only five, which means neither
+      pre reading label is a key and getting a reading is the only thing the
+      top of the funnel is for.
+- [x] **MK2. Both his claims hold.** A burned out executive and a burned out
+      athlete are both modally the same charge. One role with two states needs
+      two different lines.
+- [x] **MK3. The seat is load bearing, not decorative.** It is where the
+      sentence's physical noun comes from, so the same charge at two seats is
+      two hooks. The matcher refuses to fall back to a charge only key even
+      though that would lift coverage by 119 people.
+- [x] **MK4. The refusal is code, not a paragraph,** with a deliberate
+      violation written against every rule, because a gate nobody has broken
+      on purpose is a gate nobody has tested. Two things it cannot check are
+      named in the file rather than omitted.
+- [x] **MK5. And it does not argue that manipulation is ineffective,** which
+      would be false. It rests on the two measurements already here.
+- [ ] **MK6. Sad is the heaviest charge for one person in a thousand,** and
+      for none of the two hundred behind the grief door. A hook written at
+      sadness reaches almost nobody.
+- [ ] **MK7. 508 of 1000 sit below the level the buyer grid calls a market.**
+      So coverage of the whole panel is the wrong target: it counts 508 who
+      cannot be reached and 106 who must not be aimed at.
+- [?] **MK8. Three decisions at the end of the marketing README.** Four hooks
+      built properly or seventeen thinly. Whether the Throat seat stays the
+      only seat with no hook. Whether the clear entry offering confirmation
+      rather than relief is the right offer.
+- [ ] **MK9. Source OS appears nowhere in the funnel,** although FN4 asks for
+      it by name, and the landing's title uses the plain spelling while the
+      page uses the umlaut.
+
+---
+
 ## 0p. DELIVERED 20 SEPTEMBER. THE CODEX, THE RENAME, AND THREE LAYOUT DEFECTS.
 
 ### KB. THE KNOWLEDGE BASE, REBUILT.
