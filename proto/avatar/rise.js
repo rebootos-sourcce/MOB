@@ -213,3 +213,10 @@ if (typeof module !== 'undefined' && module.exports)
   module.exports = { OPEN_CAP: OPEN_CAP, riseSeats: riseSeats, seatTrans: seatTrans,
     riseRead: riseRead, riseFrom: riseFrom, riseReach: riseReach,
     riseLevers: riseLevers, riseBase: riseBase, riseDelta: riseDelta };
+
+/* In a browser there is no module system, so the same object is hung on the
+   window under one name. The page reads window.RISE and nothing else. */
+if (typeof window !== 'undefined')
+  window.RISE = { OPEN_CAP: OPEN_CAP, riseSeats: riseSeats, seatTrans: seatTrans,
+    riseRead: riseRead, riseFrom: riseFrom, riseReach: riseReach,
+    riseLevers: riseLevers, riseBase: riseBase, riseDelta: riseDelta };

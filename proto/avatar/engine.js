@@ -52,14 +52,26 @@ const HCX_LIB=[
   "ic":"M12 3a9 9 0 019 9 M21 12a9 9 0 01-9 9 M12 21a9 9 0 01-9-9 M3 12a9 9 0 019-9"}];
 /* ============================================================
    THE ARTWORK.
-   The original inlined two ~35KB base64 PNGs. They are external
-   here: cacheable, swappable, and diffable. If either file is
-   absent the vector body path below renders in its place, so the
-   Energy Map is never blank.
-     fig-fetter.png   every layer except pain
-     fig-pain.png     the nerve map, for the pain layer
+   The original inlined two ~35KB base64 PNGs. They were made
+   external here so they would be cacheable, swappable and
+   diffable, and then they were never added. So every load asked
+   for two files that have never existed in this repository, got
+   two ERR_FILE_NOT_FOUND back, and fell through to the vector
+   body, which is what has been on screen the whole time.
+
+   Two failed requests is not nothing. The standing ruling is one
+   file with no dependencies and no network, and a build that
+   reaches for a neighbour it does not have is not that. It also
+   put two 404s in the log of any server this is ever served from,
+   which is the kind of noise that hides a real one.
+
+   So the names are empty and the probe below skips an empty name.
+   The raster path is kept, because swappable art is still wanted
+   and the code for it is written and correct. A host that has the
+   files sets these two and everything downstream works unchanged.
+   Nothing is requested until one of them is named.
    ============================================================ */
-var FIG_FETTER='fig-fetter.png', FIG_PAIN='fig-pain.png';
+var FIG_FETTER='', FIG_PAIN='';
 var FIG_FETTER_AR=0.50395, FIG_PAIN_AR=0.47925;
 var ART_OK={};
 
@@ -90,8 +102,191 @@ var SEATXY=(function(){
    [name, [[charge, lo, hi], ...]]. A range is a BAND, not a floor:
    below it the saboteur has not formed, above it the charge has
    escalated past this one into a heavier profile.
+
+   PORTED 2026-09-20 FROM SNIFFER_SPEC.md SECTION 3, which the owner rules is
+   canon and not a proposal. The shipped table and the spec's table carried the
+   same 33 names in the same shape and disagreed on 17 of the 33 rows, so this
+   is not a tuning change, it is two vocabularies being reduced to one.
+
+   WHAT WAS WRONG WITH THE SHIPPED TABLE, measured before it was touched with
+   proto/sniffer/sab.js rather than argued:
+
+     17 of 33 rows carried different numbers or different fetters.
+     5 rows changed arity. the spec gives Victim, Judge, Martyr and Control
+       Freak a third fetter and reduces Innocent to one.
+     2 rows keyed on `anxiety`, WHICH IS NOT ONE OF THE NINE AXES. core.js
+       papered over it with `L.anxiety=L.anticipation`, so Avoider and Restless
+       were being read off a term the instrument does not score.
+     Apathy keyed NOTHING. The shipped table never mentioned apathy or
+       anticipation, so one of the nine axes fired no saboteur at all while the
+       spec keys twelve rows on it. That is the single largest thing this port
+       fixes and no amount of retuning the other sixteen rows would have found
+       it.
+
+   KEYS ARE THE ENGINE'S OWN CHARGE VOCABULARY, lowercase, with the Sad axis
+   spelled `sadness`, so CHG2SEAT and sabLevels keep working across the port
+   with no change to either file. Anticipation is spelled out where the shipped
+   table said anxiety. Nothing here is transliterated by hand twice: the same
+   table is transcribed once more in proto/sniffer/bands.js and the gate asserts
+   the two agree row for row, so a typo in one is a failure rather than a
+   silent disagreement.
+
+   WHAT THE PORT MOVES, measured on the 14 stated profiles in people.js with
+   proto/sniffer/cohort.js. Every profile but Rosa reads differently. Ana's
+   third saboteur goes from Judge to Manipulator, Derek loses Avoider
+   altogether, and Lance goes from nothing to Innocent. Readings in this
+   product have moved.
    ============================================================ */
-var SAB33=[["Avoider",[["fear",3,5],["anxiety",5,8]]],["Controller",[["fear",7,10],["anger",5,8]]],["Victim",[["sadness",6,8],["anger",4,6]]],["Perfectionist",[["disgust",5,7],["anger",4,6]]],["Pleaser",[["fear",2,4],["shame",5,8]]],["Hyper-Achiever",[["fear",4,6],["shame",6,9]]],["Hyper-Rational",[["shock",2,4],["disgust",3,5]]],["Hyper-Vigilant",[["fear",7,9],["anger",5,7]]],["Restless",[["fear",3,5],["anxiety",5,8]]],["Stickler",[["disgust",4,6],["anger",4,6]]],["Judge",[["disgust",6,8],["anger",5,7]]],["Deflector",[["shame",4,6],["anger",4,6]]],["Dramatizer",[["shock",6,8],["sadness",4,6]]],["Worrywart",[["fear",6,8],["sadness",3,5]]],["Loner",[["sadness",6,8],["fear",5,7]]],["People-Pleaser",[["shame",3,5],["fear",5,8]]],["Skeptic",[["disgust",5,7],["shock",3,5]]],["Dreamer",[["sadness",2,4],["fear",3,6]]],["Procrastinator",[["fear",4,6],["sadness",3,5]]],["Imposter",[["shame",5,7],["fear",4,6]]],["Aggressor",[["anger",7,9],["shame",4,7]]],["Martyr",[["sadness",6,8],["anger",4,6]]],["Cynic",[["disgust",6,8],["sadness",4,6]]],["Manipulator",[["anger",6,8],["fear",5,8]]],["Overthinker",[["fear",5,7],["shame",4,6]]],["Escapist",[["fear",6,8],["sadness",5,8]]],["Nihilist",[["disgust",7,9],["sadness",5,7]]],["Innocent",[["fear",2,4],["shock",4,7]]],["Pessimist",[["sadness",5,7],["fear",4,6]]],["Catastrophizer",[["fear",8,10],["sadness",6,8]]],["Enabler",[["shame",4,6],["sadness",5,8]]],["Control Freak",[["fear",7,9],["anger",5,7]]],["Negotiator",[["fear",3,5],["shame",4,7]]]];
+var SAB33=[
+ ["Negotiator",     [["fear",4,6],["apathy",3,5]]],
+ ["Controller",     [["fear",7,10],["anger",5,8]]],
+ ["Victim",         [["sadness",6,8],["anger",5,7],["apathy",2,5]]],
+ ["Perfectionist",  [["disgust",5,7],["anger",4,6]]],
+ ["Pleaser",        [["apathy",3,5],["fear",3,8]]],
+ ["Hyper-Achiever", [["apathy",5,7],["fear",4,8]]],
+ ["Hyper-Rational", [["shock",2,4],["disgust",3,6]]],
+ ["Hyper-Vigilant", [["fear",7,9],["anger",5,7]]],
+ ["Restless",       [["apathy",5,7],["fear",2,4]]],
+ ["Stickler",       [["disgust",4,6],["anger",4,6]]],
+ ["Judge",          [["disgust",6,8],["anger",5,7],["apathy",3,6]]],
+ ["Deflector",      [["shame",4,6],["anger",4,6]]],
+ ["Dramatizer",     [["shock",6,8],["sadness",4,6]]],
+ ["Worrywart",      [["fear",6,8],["sadness",3,5]]],
+ ["Loner",          [["sadness",6,8],["fear",5,7]]],
+ ["People-Pleaser", [["apathy",4,6],["shame",3,5]]],
+ ["Skeptic",        [["disgust",5,7],["shock",3,5]]],
+ ["Dreamer",        [["apathy",3,5],["sadness",2,4]]],
+ ["Procrastinator", [["fear",4,6],["sadness",3,5]]],
+ ["Imposter",       [["shame",5,7],["fear",4,6]]],
+ ["Aggressor",      [["anger",6,9],["apathy",4,7]]],
+ ["Martyr",         [["sadness",6,8],["shame",5,7],["apathy",3,5]]],
+ ["Cynic",          [["disgust",6,8],["sadness",4,6]]],
+ ["Manipulator",    [["anger",5,8],["apathy",4,7]]],
+ ["Overthinker",    [["fear",5,7],["shame",4,6]]],
+ ["Escapist",       [["apathy",4,6],["fear",6,8]]],
+ ["Nihilist",       [["disgust",7,9],["sadness",5,7]]],
+ ["Innocent",       [["fear",2,4]]],
+ ["Pessimist",      [["sadness",5,7],["fear",4,6]]],
+ ["Catastrophizer", [["fear",8,10],["sadness",6,8]]],
+ ["Enabler",        [["apathy",3,5],["shame",4,6]]],
+ ["Control Freak",  [["fear",7,9],["anger",5,7],["anticipation",5,7]]],
+ ["Avoider",        [["apathy",6,8],["fear",5,7]]]];
+
+/* ============================================================
+   THE BAND EDGE. Ruled: "a band edge is a ramp, not a cliff."
+
+   The shipped rule, in core.js sabLevels and sab33Detect, was a three step
+   staircase over a level ROUNDED TO AN INTEGER FIRST: full membership flat
+   across the band, a half step at exactly one integer outside it, zero beyond.
+   Two things follow from that and both are defects.
+
+   The rounding means the spec's own example is not quite the bug. 6.9 and 7.1
+   both round to 7, so they are in fact the same answer. The cliff is real and
+   it sits at x.5, not at the band edge: 6.4 and 6.6 are different answers, and
+   nothing about a body changes across a fifth of a point.
+
+   And flat-inside cannot express "intensity peaks inside the band", which the
+   spec states outright. A reading at the very edge of the band and a reading
+   dead centre were the same number.
+
+   EVERY WIDTH HAS A REASON. Measured with proto/sniffer/ramp.js, which checks
+   itself against a known good case in both directions and refuses to run if
+   either fails.
+
+   SAB_EDGE 0.75   membership at the band edge. Not 1, because a peak needs
+                   somewhere to fall to. Not lower, because the edge is inside
+                   the band the canon states and must not read as half absent.
+   SAB_BELOW 2     points under the low edge before membership reaches zero.
+                   Two, so a reading ONE point under the band, which the spec
+                   calls the normal condition of a reader, keeps half the
+                   membership it would have had at the edge. One would put the
+                   normal error at zero, which is the failure being fixed.
+   SAB_ABOVE 3     points over the high edge before zero, wider than below on
+                   the spec's own asymmetry, "tapers above it". The reason it
+                   is asymmetric: the low edge is a threshold of PRESENCE and
+                   under it the configuration has not formed, while the high
+                   edge is a threshold of DISPLACEMENT and over it the
+                   configuration HAS formed and is being overrun by a heavier
+                   one. Evidence that decays is not evidence that never arrived.
+
+   WHAT THE RAMP BUYS, AND WHAT IT DOES NOT. Stated plainly because the
+   measurement did not say what this seat expected.
+
+   It buys resolution. The largest move in confidence one tenth of a point of
+   input can cause falls from 0.5000 to 0.0375, thirteen times finer. That is
+   the whole of the "no practitioner reads a body to a tenth of a point"
+   argument and it needs no cohort to establish.
+
+   It buys steadiness. Mean absolute move in confidence under an off by one
+   reading falls 9 to 15 percent.
+
+   IT DOES NOT BUY SET AGREEMENT, and the first measurement said so: behind a
+   hard floor the ramp scored 54.4 against the staircase's 58.8, WORSE. The
+   finding is that a ramp inside the membership does nothing while the OUTPUT
+   is still a cliff. The edge simply moved from the band to the floor. That is
+   why sniffStory emits ranked confidence with no boolean firing set, and why
+   this file carries no firing threshold at all.
+   ============================================================ */
+var SAB_EDGE=0.75, SAB_BELOW=2, SAB_ABOVE=3;
+function sabMember(lvl,lo,hi){
+ var m=(lo+hi)/2, h=(hi-lo)/2;
+ if(lvl>=lo&&lvl<=hi) return h>0?1-(1-SAB_EDGE)*Math.abs(lvl-m)/h:1;
+ if(lvl<lo)  return Math.max(0,SAB_EDGE*(1-(lo-lvl)/SAB_BELOW));
+ return Math.max(0,SAB_EDGE*(1-(lvl-hi)/SAB_ABOVE));}
+
+/* COMBINING THE FETTERS. The geometric mean, and the spec's own sentence is
+   the argument: "a saboteur is a configuration of fetters at specific
+   intensities. Break the co-mingling and the saboteur is gone." An arithmetic
+   mean cannot go. On a three part row it averages 1, 1 and 0 to 0.67 and fires
+   with one fetter entirely absent, and the shipped code used the arithmetic
+   mean. It had no three part rows so it never showed; the port adds four, so
+   this stopped being academic at the moment the table landed. */
+function sabFetters(parts,L){
+ var p=1;
+ for(var i=0;i<parts.length;i++){
+  var f=sabMember(L[parts[i][0]]||0,parts[i][1],parts[i][2]);
+  if(f<=0) return 0;
+  p*=f;}
+ return Math.pow(p,1/parts.length);}
+
+/* ============================================================
+   SPECIFICITY. How much a row is worth once its fetters are read.
+
+   TWO WEIGHTS, AND BOTH ARE DERIVED RATHER THAN TYPED.
+
+   1. ARITY. A configuration naming one fetter is the least specific claim in
+      the table and a configuration naming three is the most, so confidence
+      scales with how much the row had to find. This is the same rule
+      lexicon.js already applies to a bare axis noun taking its family floor:
+      less specific evidence is worth less. It is also the fix for a defect the
+      port introduced and this seat did not expect. The spec reduces Innocent
+      to a single fetter, Fear 2 to 4, and a one part row beats a multi part row
+      under ANY conjunctive combination because it has nothing to disagree with.
+      Measured on the 14 stated profiles, Innocent reached the top three in 38.4
+      percent of runs, which is the "fires on everything" shape the spec warns
+      about, moved from Avoider onto Innocent by the port itself.
+
+   2. AVOIDER, held low on the owner's ruling. The spec: "Avoider fires in 81
+      percent of runs and costs 0.1 points. Weight it low or your sniffer will
+      report Avoider on everything." The ruling is implemented. THE PREMISE IS
+      NOT TRUE OF THIS POPULATION and it is raised rather than buried: measured
+      on the ported bands over the 14 stated profiles, Avoider reaches the top
+      three in 1.4 percent of runs, not 81. Whatever cohort produced 81 is not
+      in this repository. The weight is applied because he ruled it; this seat
+      reports that on the data here it suppresses a row that was already quiet,
+      and that Innocent is the row his sentence actually describes.
+   ============================================================ */
+var SAB_ARITY={1:0.80,2:1.00,3:1.10};
+var SABW={Avoider:0.55};
+function sabWeight(nm,parts){
+ return (SABW[nm]!==undefined?SABW[nm]:1)*(SAB_ARITY[parts.length]||1);}
+
+/* THE CONFIDENCE, 0 to 1. Fetter membership times specificity, clamped,
+   because a weight over 1 must not manufacture certainty. */
+function sabConfidence(nm,parts,L){
+ var f=sabFetters(parts,L);
+ if(f<=0) return 0;
+ return Math.max(0,Math.min(1,f*sabWeight(nm,parts)));}
 
 /* the authored clinical composition per saboteur. the original carried this
    and never read it; it is the sub-line on every named saboteur drill now. */
@@ -289,7 +484,9 @@ const ARCH=[
  {nm:'Everyman', v:'stays with the room',   b:'Root', ic:'M12 8m-4 0a4 4 0 108 0 4 4 0 10-8 0M4 21c0-5 4-7 8-7s8 2 8 7'},
  {nm:'Innocent', v:'takes it at face value',b:'Crown', ic:'M12 12m-5 0a5 5 0 1010 0 5 5 0 10-10 0M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2'}];
 
-/* the 21 Laws of Spiritual Integrity, each seated at the band it governs.
+/* the 21 Laws of Moral Integrity, each seated at the band it governs. The
+   book calls this set the Laws of Spiritual Integrity; the owner ruled moral,
+   so moral is what the product says and BOOK-ERRATA.md carries the difference.
    integrity is not one aggregate: a closed law dims its own band. */
 /* EVERY LAW WEARS ITS OWN MARK. Ruled: if it has a name, it has an icon, and
    the icon has a family and the family has a colour. The colour is the seat,
@@ -825,12 +1022,40 @@ function mirrorAt(seatLoad, seatIg){
    says so once, with the referral attached, and never as a label on
    a person. */
 const DARK_MAL=0.55, DARK_CQ=31;
-function darkRead(outward, CQ){
- /* outward is the shape axis, nought to one, and CQ is the coherence axis.
+/* IT WAS BEING HANDED THE WRONG AXIS, AND SO IT NEVER FIRED FOR ANYBODY.
+
+   The parameter was named outward and the only caller passed `r.outward`,
+   which is the SHAPE axis: where what is running points, outward at other
+   people or inward at the person. Malignancy is a different measurement and
+   the engine already computes it, as `malig`, nought to a hundred.
+
+   Everything downstream of this line reads as malignancy. The variable is
+   called mal, the sentence says "the shape is malignant", and `refer` is the
+   safety rule that puts a licensed clinician on the surface. So the function
+   was right and the argument was wrong, which is the worst way round: it
+   returned a confident false.
+
+   Measured across the roster of fifteen before the change: nought people read
+   dark. Gordon sits at CQ 1 with malignancy 98 and read false, because his
+   harm points inward more than outward and outward is all this was given. The
+   referral has never been shown to anybody. After the change six read dark,
+   all of them under CQ 16 with malignancy 69 or higher, and every coherent
+   field still reads false, Angela included, whose shape is the most outward
+   in the roster at 0.87 and whose malignancy is 18.
+
+   This file already carries the ruling that makes the old behaviour wrong:
+   the material "named outward harm and gave it a face, inward harm never got
+   one", and this product refuses that. Reading malignancy off the outward
+   share is that same mistake wearing an argument.
+
+   The body keeps its bodies and its signature shape. One name and one caller
+   moved. */
+function darkRead(mal01, CQ){
+ /* mal01 is the malignancy axis, nought to one, and CQ is the coherence axis.
     Two measurements, not one twice. An unreadable shape is never dark. */
- if(outward===null||outward===undefined)
+ if(mal01===null||mal01===undefined)
   return {mal:null,cq:Math.round(CQ),dark:false,step:null,refer:false,say:''};
- var mal=clamp(outward,0,1);
+ var mal=clamp(mal01,0,1);
  var dark=(mal>=DARK_MAL)&&(CQ<DARK_CQ);
  return {mal:Math.round(mal*100), cq:Math.round(CQ),
   dark:dark,
@@ -1466,7 +1691,7 @@ var KB_KEY=function(s){return String(s||'').replace(/^[Tt]he\s+/,'').toLowerCase
 var SABDEF={"negotiator":{"c":"S01","d":"Argues against your own intentions. Always sounds reasonable. Never says stop forever, says stop today. The fear of discomfort is mild enough to be rationalized away. The happiness available from the easier option is just high enough to make the rationalization feel earned. Together they produce the internal diplomat who can talk you out of anything, not through force, but through the perfectly reasonable argument that now is not the right moment. The most dangerous saboteur in the system because it sounds exactly like you.","t":"The moment between intending to do the necessary thing and beginning to do it. The pause.","i":"Begin the action before the internal dialogue completes. Remove the pause. The Negotiator only has power in the gap between intention and motion. Close the gap.","q":"I can start tomorrow. / Just this once. / I've earned a break."},"controller":{"c":"S02","d":"Hypervigilance at the level of outcomes. The foundation of the Type A pattern. Not a personality trait, a fear response that has been running so long it looks like a management style. The fear underneath: something will go wrong, someone will get hurt, or the situation will fall apart if I release my grip. Self-control registers as 10. Anything less registers as loss. The delta between perceived control and actual control is the zone of active saboteur behavior. Anger layers in as a do-as-I-say mechanism, authority used to close the control gap quickly. Entitlement provides the justification: it is not just that I need to control this. It is that I am right to. Competition drives the adversarial edge, not just winning but not-losing, which is a different frequency entirely.","t":"The moment control begins to slip. Uncertainty in outcomes. Others not performing to expectation. Delegation without confirmation. Silence where confirmation should be.","i":"Control is not a state. It is a belief held under pressure. The person fails control the same way a person fails a landing, only if they quit. Recognize that the need to be in control and the experience of being out of control are both charges, not conditions. Neither is real. Locate the fear underneath. Release the fear. The control behavior loses its substrate.","q":"If I don't control this, something will go wrong."},"victim":{"c":"S03","d":"Focuses on internal feelings and victim mentality for attention. Martyrdom.","t":"When accountability is required.","i":"Identify one thing within your control. Take one action on it.","q":"This keeps happening to me."},"perfectionist":{"c":"S04","d":"Continuous pressure to do better. Anxiety about imperfections in self and others.","t":"Before completion or release of work.","i":"Set a fixed completion time. Release at that time regardless of state.","q":"It is not good enough yet."},"pleaser":{"c":"S05","d":"Indirectly tries to gain acceptance by helping, pleasing, rescuing, or flattering.","t":"When there is potential for disapproval or when a boundary is needed.","i":"State a preference or limit once. Do not explain or apologize.","q":"My worth depends on making others happy."},"hyper achiever":{"c":"S06","d":"Dependent on constant performance for self-respect. Workaholic.","t":"When performance is not being measured or when rest is available.","i":"Rest without producing for one hour. No metrics.","q":"My worth is in my output."},"hyper rational":{"c":"S07","d":"Processes everything through logic. Impatient with emotional concerns.","t":"When emotional input is offered.","i":"Name the emotion present in the room before analyzing the problem.","q":"If I can't explain it, it isn't real."},"hyper vigilant":{"c":"S08","d":"Continuous anxiety about potential dangers. Constant risk management.","t":"When the environment changes or trust is required.","i":"Identify one thing that is safe. Hold that for 60 seconds.","q":"The threat is always just ahead."},"restless":{"c":"S09","d":"Constant search for new activities. Rarely at peace with the current moment.","t":"When the current situation becomes familiar or stable.","i":"Stay with the current thing for twice as long as the impulse to move suggests.","q":"The next thing will be better."},"stickler":{"c":"S10","d":"Perfectionism and need for order. Anxiety when standards are not met.","t":"When the environment or person deviates from the correct way.","i":"Identify one situation where your standard is serving your fear, not your values.","q":"There is a right way and a wrong way."},"judge":{"c":"S11","d":"Judges self and others. Replays past failures. The master saboteur, activates all others.","t":"When someone, including self, falls short of standard.","i":"Find one thing that is right about the situation being judged.","q":"Someone is responsible for this."},"deflector":{"c":"S12","d":"Does not own. Justification to avoid accountability.","t":"When direct accountability or personal disclosure is required.","i":"Stay with the direct question for 10 seconds before redirecting.","q":"If they knew the real me they would leave."},"dramatizer":{"c":"S13","d":"Amplifies the emotional intensity of situations to generate attention or movement.","t":"When intensity of feeling is present and an audience is available.","i":"Reduce the intensity of the next statement by half.","q":"My pain must be visible to matter."},"worrywart":{"c":"S14","d":"Runs continuous worst-case scenarios. Mistakes anxiety for planning.","t":"When the future is uncertain.","i":"Name the specific worst case. Name one action if it occurs.","q":"Worrying is preparation."},"loner":{"c":"S15","d":"Withdraws from contact as protection. Independence as defense, not a value. Fear of rejection co-mingling with shame of belonging at sufficient magnitude. The person does not experience themselves as afraid, they experience themselves as preferring solitude. Release the fear and sad nodes and the solitude remains if chosen, not if driven.","t":"When connection is available and would be beneficial.","i":"Make one direct request for connection.","q":"Needing others is weakness."},"people pleaser":{"c":"S16","d":"Approval-seeking at the expense of authenticity.","t":"When approval is uncertain or a boundary is needed.","i":"Identify the response that serves the relationship rather than the approval.","q":"If they don't like me I have failed."},"skeptic":{"c":"S17","d":"Defaults to distrust and doubt. Skepticism as protection against disappointment.","t":"When new information challenges the current model.","i":"Sit with the new information for 24 hours before dismissing it.","q":"Trust gets you hurt."},"dreamer":{"c":"S18","d":"Lives in possibility without building the bridge toward it. Avoids the friction of execution.","t":"When the gap between vision and current reality is visible.","i":"Identify one concrete step. Execute it today.","q":"Someday the conditions will be right."},"procrastinator":{"c":"S19","d":"Delays action on important tasks. Mistakes motion for progress.","t":"When the important task is clear and available.","i":"Begin. Not finish. Not plan. Begin. Three minutes.","q":"I work better under pressure."},"imposter":{"c":"S20","d":"Believes their competence is unearned and discoverable as fraud.","t":"When competence is being evaluated or recognition is offered.","i":"Identify one thing you know that the room does not. State it.","q":"They will find out I do not belong here."},"aggressor":{"c":"S21","d":"Uses anger and force to override resistance. Mistakes compliance for agreement.","t":"When authority is challenged or outcome is not proceeding as required.","i":"Pause 5 seconds. Name the fear underneath the anger before responding.","q":"Aggression gets results."},"martyr":{"c":"S22","d":"Sacrifices for others to generate obligation or moral authority.","t":"When sacrifice has been made and goes unrecognized.","i":"Identify whether the sacrifice was chosen or performed. If performed, stop.","q":"I give everything and receive nothing."},"cynic":{"c":"S23","d":"Undermines possibility through pre-emptive dismissal.","t":"When hope or enthusiasm is present in self or others.","i":"Identify one thing good about the situation being dismissed.","q":"Optimism is naive."},"manipulator":{"c":"S24","d":"Achieves outcomes indirectly through influence, withholding, or positioning.","t":"When the direct approach feels risky.","i":"State the actual need directly. Once. Without positioning.","q":"Direct requests make me vulnerable."},"overthinker":{"c":"S25","d":"Loops on decisions past the point of useful analysis.","t":"When a decision is required and the outcome is uncertain.","i":"Set a decision time limit. Decide at that limit. Do not extend it.","q":"More analysis will produce the right answer."},"escapist":{"c":"S26","d":"Uses pleasure, distraction, or movement to exit discomfort before it resolves.","t":"When the present moment is uncomfortable and an exit is available.","i":"Stay in the discomfort for two minutes. Name what is present.","q":"I just need to not feel this right now."},"avoider":{"c":"S33","d":"Declines the engagement before it can cost anything. Not fleeing discomfort the way the Escapist does, and not arguing the way the Negotiator does. Simply not present for it.","t":"When something asks to be dealt with and not dealing with it carries no immediate penalty.","i":"Name the thing being avoided out loud, then do the smallest piece of it.","q":"If I stay unaware, nothing can land on me."},"nihilist":{"c":"S27","d":"Removes the foundation of meaning as a pre-emptive strike against disappointment.","t":"When meaning is required to justify effort.","i":"Identify one action worth doing regardless of meaning. Do it.","q":"Nothing matters enough to sustain effort."},"innocent":{"c":"S28","d":"Maintains deliberate unawareness to avoid responsibility or conflict.","t":"When complexity, conflict, or moral weight is present.","i":"Name one thing you know that you are pretending not to know.","q":"I don't want to be involved."},"pessimist":{"c":"S29","d":"Pre-empts positive outcomes by building a case against them before they materialize.","t":"When a positive outcome is possible.","i":"Identify the best plausible case. Operate from that.","q":"It will not work out."},"catastrophizer":{"c":"S30","d":"Projects the worst possible outcome onto every uncertainty. Distinguishable from Worrywart by magnitude, Catastrophizer reaches existential threat from ordinary uncertainty.","t":"Any unresolved uncertainty.","i":"Describe the actual current situation without projection. Stay in the present tense.","q":"This will destroy everything."},"enabler":{"c":"S31","d":"Supports others' destructive patterns to maintain relationship or avoid conflict. Distinct from Pleaser: the Enabler supports behavior they recognize as harmful.","t":"When someone they care about is repeating a destructive pattern.","i":"Name what you see. Once. Without attachment to the response.","q":"If I say something they will leave."},"control freak":{"c":"S32","d":"The colloquial name for the Controller and Hyper-Vigilant composite at Type A intensity. Hypervigilance running on outcomes and on threat at the same time. The body is scanning forward (what could go wrong) and downward (am I in command of this) in continuous loop. Reads to other people as competence under pressure. Reads in the body as never landing. The same fear that drives Controller (something will go wrong if I release grip) and the same fear that drives Hyper-Vigilant (the threat is just ahead) co-mingle here at sufficient magnitude that they cannot be felt as separate. Distinct from Controller alone: Control Freak does not wait for the control gap to open before acting. Distinct from Hyper-Vigilant alone: Control Freak organizes the scan around its own agency, not around external monitoring. Type A is the social presentation. The somatic state is sustained sympathetic activation that the body has normalized as baseline.","t":"Any environment the person did not configure. Any outcome the person did not design. Any silence where confirmation should be.","i":"Lock the jaw, the shoulders, and the diaphragm for a count of five. Notice they were already locked. Release on the exhale. The release is not a relaxation technique, it is a demonstration that the body can hold a state without scanning it. Repeat until the scan stops without being asked to.","q":"If I am not running this, no one is."}};
 var DOMDEF={"knowledge":{"n":"I","c":"pattern recognition, codification, teaching, symbolic thinking. The person who reads before being asked to. Somatic knowledge is true knowledge, once it's in the body, deception doesn't work on you. You can feel the lie before it forms a word.","x":"over-intellectualization, false certainty, knowledge as a barrier rather than a bridge."},"communication":{"n":"II","c":"bridging, translation, precision of language, fast cognition. The connector, the person who translates between people, between ideas, between worlds.","x":"manipulation, inconsistency, information as leverage."},"power":{"n":"III","c":"physical courage, boundary enforcement, protection of what matters. Directed aggression at obstacles, not people.","x":"domination, violence without purpose, war as identity."},"imperium":{"n":"IV","c":"governance, structural authority, organizing chaos into function. sees how systems should be organized.","x":"domination, entitlement, autocracy."},"creation":{"n":"V","c":"building, executing, bringing vision into form. Always needed to make things. When you can't create it feels like disconnection, like the system is broken. Financial stress kills creativity not motivationally but anatomically: the survival charge consumes the current before it reaches the generative center. When the root clears, the sacral opens, the creative current flows again. Not as discipline. As a natural consequence of the channel being clear.","x":"perfectionism as paralysis, identity tied to output."},"dissolution":{"n":"VI","c":"deliberate dissolution, clearing what's false or finished, making space for what comes next. Sees what needs to end.","x":"destruction as identity, nihilism, chaos without rebuilding."},"love":{"n":"VII","c":"union, intimacy, the force that draws beings into genuine contact. Love as a state the person generates, not receives. Always knew what brings people together.","x":"codependency, possession, love as completion rather than addition."},"healing":{"n":"VIII","c":"directed intervention, active clearing, creating conditions in which restoration happens. Finds the broken thing in any room.","x":"rescuer complex, martyrdom, healing as identity."},"sacrifice":{"n":"IX","c":"voluntary descent, the chosen ordeal, sacrifice as the mechanism that produces insight unavailable any other way. The knowledge that comes from what was given up, not accumulated. The true utilization of experience: consume as much as possible, then don't hang onto the definitions. Words illuminate, they don't contain.","x":"suffering as identity, the descent without return."},"justice":{"n":"X","c":"discernment of what's real and what's false. Accountability without cruelty. Moral disorder doesn't just feel wrong, it triggers the nervous system. When truth is a 10, anything less is somatic. You can feel the lie before it forms a word. If you lie, you dysregulate your own nervous system.","x":"rigid judgment, self-righteousness, justice as control."},"trickster":{"n":"XI","c":"disruption of rigid patterns, revealing what's hidden through inversion, innovation through disorder. Sees the absurdity in what everyone else treats as fixed.","x":"deception as lifestyle, instability mistaken for freedom."},"nature":{"n":"XII","c":"alignment with biological truth, growth through patience rather than force. Thinks in cycles rather than straight lines.","x":"rejection of structure, naturalism as escape from complexity."},"mystery":{"n":"XIII","c":"navigation of the unseen, death and rebirth as structural realities. Can hold darkness without being consumed. Always drawn to what's hidden.","x":"obsession with shadow, nihilism, identity built on the margin."},"duty":{"n":"XIV","c":"right action regardless of personal cost. Loyalty to what's true, not what's comfortable. Does the right thing even when no one is watching.","x":"rigidity, losing self in obligation, duty performed for an audience."},"play":{"n":"XV","c":"the generative state of pure engagement. Awe. Creativity for its own sake. Not the absence of seriousness, the intelligence serious people miss. Always able to find what's alive in something.","x":"avoidance through play, irresponsibility, lightness that refuses depth."},"death":{"n":"XVI","c":"completion. Endings held cleanly. The threshold kept, the thread cut when the thread is finished, presence with what's dying without flinching. Releases what's done so renewal has room.","x":"morbidity, clinging that refuses every ending, or dealing endings as power."},"fate":{"n":"XVII","c":"reads the pattern and its timing. Knows what must unfold and when to move. Acts at the right moment without forcing the thread.","x":"fatalism, abdication of choice, reading the pattern as an excuse to never act."},"guardian":{"n":"XVIII","c":"the watch kept. A perimeter held so what's inside can live. Protection without possession, sanctuary without walls that strangle.","x":"overprotection that smothers, vigilance that never rests, walls against life itself."},"provision":{"n":"XIX","c":"the one who makes sure there's enough, and not only for today. Supply held against a season nobody can see yet. The granary, the harvest, the wage. Provides for, rather than trades with.","x":"worth measured only in what's furnished, hoarding dressed as prudence, the provider who can't be provided for."}};
 var KB_RENAME={"descent":"Sacrifice","connection":"Love","exchange":"Communication","restoration":"Healing"};
-var GLOSS=[{"t":"Address","d":"The specific location in the body’s energetic architecture where a pattern is resident. Every fetter, every tag, every limiting belief has an address. The release work operates at the address--not at the level of thought or behavior."},{"t":"Allostatic load","d":"The accumulated physiological cost of chronic stress responses. The body’s equivalent of compound interest on unresolved charge. The release work reduces allostatic load by addressing it at the address layer."},{"t":"Archetype","d":"One of 12 universal character templates, and the third rung on the native side of the stack. Domains express as the blueprint; the blueprint branches into archetypes. A separate rung from the blueprint rather than another name for it. Native and present before conditioning, which is why it isn't held in tissue and not released: the work changes where it's pointed, not what it is."},{"t":"Ascension","d":"No longer affected, triggered, or stimulated by the external environment, or by your own emotions. You've ascended emotions controlling you. The environment loses its grip because survival patterns are no longer running as commands. A state definition, not a threshold: it carries no release count. It's not a destination--an operating state."},{"t":"Attention","d":"The ability to focus awareness. Two types: nonfocused attention and focused attention. Attention is the steering; will is the force."},{"t":"Aura","d":"The field this model holds is generated by the state of the nervous system. Not measured by this instrument, and not measured by any instrument this product knows of. Ultraweak photon emission from living tissue is real and comes from reactive oxygen species; it has never been shown to carry nervous system state. Held here as a model of how presence is received, not as a reading."},{"t":"Awareness","d":"The aperture of perception of the soul."},{"t":"Biophoton field","d":"Ultraweak photon emission from living tissue. Real, measured in laboratories since the 1950s, and understood to come from reactive oxygen species rather than from nervous system state. This product names it as the physical thing it is and does not claim it carries the aura. Nothing in the engine reads it."},{"t":"Chakra","d":"A seat. In this model, the nonphysical field generated by a nerve plexus. Seven of them, root to crown. The seven count and the plexus correspondence are a modern Western reading: the source traditions give five, six, eight and more, and the welding of seats to nerve plexuses dates to 1927. Held because it is the vocabulary the work is done in, not because it has been measured."},{"t":"Charge","d":"Stored survival energy held at a node. Installed by a stress response that never finished. Felt as heat, pressure, tingling, or weight when accessed."},{"t":"Clair","d":"A perceptual channel beyond the five physical senses. Clairvoyance (seeing), clairaudience (hearing), clairsentience (feeling), claircognizance (knowing), and others. Soma fields fragment them; clearing soma allows them to operate in unison."},{"t":"Coherence","d":"Reduction of internal contradiction, computed rather than measured. The state in which intention, behavior, and nervous system response are aligned. CQ measures it."},{"t":"Replacement state","d":"The specific behavioral, emotional, and somatic expression of the quality a pattern suppresses--installed at the same address as the released charge. Not a generic positive. The exact quality the pattern is blocking."},{"t":"Consciousness","d":"Energy as information, perceived through two experiences. The macro is unbound and unfocused: infinite consciousness. The opposite pole is localized conscious awareness. Same thing, different aperture."},{"t":"CQ","d":"Coherence Quotient. (Intention × Integrity) ÷ Resistance. Baseline: 100. Measures the degree to which the system operates without internal contradiction."},{"t":"Distortion","d":"Intention read through loaded nodes. The signal is intact, the instrument is bent. Not a formula variable: distortion and SQ were the same reading under two names. It survives as a description of what happens to intention, not as a term that gets multiplied by anything."},{"t":"DQ","d":"Decoherence. DQ = 100 − CQ. Derived, not measured. There's no separate instrument for it, and any build that reports one is reporting arithmetic as though it were a reading. A high DQ means the system is consuming energy maintaining internal contradictions."},{"t":"Drag","d":"The combined load that reduces available willpower. Fetters, clenched muscles, inflammation, loaded nodes--all produce drag on the mind-body-spirit connection. Drag is why willpower feels like a limited resource."},{"t":"Earth Star","d":"Field node at the center point between the feet. Anchors the system to the planet."},{"t":"Ego","d":"Body consciousness. The mind attached to the physical, never present, toggling between thinking and feeling to navigate the world out of fear. The ego is the mask of our character. It's the total sum of DQ, all the SQ running, and all the patterns and awareness that come with body consciousness."},{"t":"Fetter","d":"A named conditional response pattern resident at a specific node address. 108 fetters in the body, one per physical node. 112 total addresses include 4 field nodes just outside the body, two above the crown, two below the feet. Fires when matching input arrives, regardless of how long ago it was installed."},{"t":"Five paths","d":"Five primary orientations toward the work: Krishna (flow), Buddha (awareness), Christ (somatics), Rama (alignment), Lao Tzu (horizontal). All paths lead to the same Source. The Anchor Principle operates underneath all five."},{"t":"Hardened mask","d":"The layer of conditioning that doesn't clear with time, life change, or most therapeutic modalities. Requires active address-level release work. Distinguished from practice-maintained conditioning, which life change alone can clear."},{"t":"Hyper-complex","d":"One of 8 named clusters of saboteurs operating as a unified behavioral system. More severe than a single saboteur--a self-reinforcing architecture of patterns that maintain each other."},{"t":"Integrity","d":"The total sum of your coherence, which upregulates the nervous system. It does that by moving you through and maintaining moral structure. Integrity is a ship’s hull. A hole in the hull means the ship takes on water. Integrity has to be at a hundred percent for the hull, and for CQ, to hold. Measured as compliance with the 21 Laws of Moral Integrity."},{"t":"Intention","d":"The intended outcome. Part willpower, part desire, part motivation. Moving toward something registers as pleasure. If no outcome has been formed, avoidance takes the slot by default."},{"t":"Justification mechanic","d":"The body’s defense of its own installed patterns. Blame, deflection, rationalization--all are the tag’s immune response. The body defends the signal because the truth is too difficult to face. Narcissism is the justification mechanic at high intensity."},{"t":"Karma","d":"The results of your thoughts and physical actions put out into the world, and the cause-and-effect energy that comes back to you from those actions. It's cyclical, an echo. Its purpose is to come back so you can learn the lesson, overcome, and transmit the karma so it never comes back. Karma is cause and effect in interaction."},{"t":"Kosha","d":"A perceptual layer through which experience is filtered. Six layers: physical, energetic, mental, wisdom, bliss, and linguistic. Each transforms the signal passing through it."},{"t":"Kundalini","d":"The stored vital energy at the base of the spine. Rises root to crown when enough nodes are cleared for the channel to conduct."},{"t":"Letting go","d":"The release protocol. Runs two mechanics in sequence: (1) reducing charge at the address, (2) installing the replacement state while the address is open. Different from affirmation, which skips the first mechanic."},{"t":"Limiting belief","d":"A tag that compresses the full range of experience into a limited label. Every identification is a limiting belief by definition--not as a judgment but as a mechanism. The label is always smaller than the experience."},{"t":"Mask","d":"The accumulated distortion functioning as an identity construct. What most people call ‘their personality’--the conditioned firing of patterns stored at specific addresses. The mask isn't who you are."},{"t":"Memory","d":"The result of the vritti and identification. Sensory input and emotional input, once identified, stored in the body."},{"t":"Merkaba","d":"A geometric field structure used in the release protocol. Top spinning left, bottom spinning right. Opposing rotations distort the node’s current flow, creating conditions for release."},{"t":"Node","d":"An address in the body’s energetic architecture. 108 physical nodes in the body. 4 field nodes just outside it: the Earth Star at the center point between the feet, the Sol Star just above the crown, and the Gaia Gateway below the Earth Star, and the Stellar Gateway above the Sol Star. 112 total."},{"t":"OJAS","d":"Sanskrit, meaning vigour. It isn't an acronym and there are no letters to expand; every instance spelled OJOS in earlier drafts was a transcription error that propagated. Vital energy in meditation, held as a cocoon of energy around you. It spins without you having to drive it, and it naturally stimulates the nervous system and releases stress from the body. The protocol developed for Stage 4 and Stage 5 nodes, the ones too dense or too numb to feel. Restores enough signal for release work to begin."},{"t":"Perception","d":"The ability to intuit and perceive, and to translate energy into a symbolic form that can be perceived and understood. Perceiving the sensory input to make sense of things."},{"t":"Plexus","d":"A physical nerve cluster. The plexus is the hardware; the chakra is the field it generates. Disruption at the plexus level produces disruption at the chakra level."},{"t":"Presence","d":"The ability to project one’s energy to be perceived and felt by others."},{"t":"Primary node","d":"The primary loaded node in a field of surrounding nodes. Clear the primary node and the surrounding field releases on its own. Working secondary nodes without finding the primary node produces partial release."},{"t":"Pure perception","d":"All the clairs operating in unison without distortion. Not an absence of thought--a state of full multi-sensory field coherence. Available as soma load reduces and the barriers between the clairs dissolve."},{"t":"Reading-as-release","d":"The protocol in which reading a properly constructed Letting Go sequence produces somatic release at the anatomical address the sequence specifies. No additional visualization required. Both mechanics run through the act of reading."},{"t":"Release","d":"The discharge of stored charge through the nervous system. Physical and observable: heat, shaking, tears, breath shifts. The pattern loses its power source."},{"t":"Resistance","d":"The denominator in the CQ formula. All drag combined--every fetter, loaded node, and inflammatory process that opposes the flow of signal through the system. Resistance is what the release work reduces."},{"t":"Saboteur","d":"One of 33 named behavioral patterns that contract a fetter into characteristic repeating behavior. Each has a specific belief structure, body location, and emotional signature."},{"t":"Self-unraveling state","d":"The body’s autonomous release state when enough gates have cleared. The soma fields begin releasing without active protocol work. The operational success criterion of a release session: not the node is cleared, the body is releasing on its own."},{"t":"Signal chain","d":"The full processing loop: field of awareness → senses → nervous system → brain → intelligence layer → relation layer → three axes → emotional layer → superego → koshas → archetypes → main field. The loop completes moment to moment."},{"t":"Soma","d":"The energetic field generated by the nervous system’s state. Accumulated soma creates load. Overlapping soma fields fragment the perceptive layer, forming barriers the awareness can't see through."},{"t":"Sol Star","d":"Field node just above the crown. The point through which the system extends beyond the body and opens to the field."},{"t":"Source","d":"The ground state of the field before any pattern is installed. The operating system underneath the operating system. What remains when all patterns are cleared."},{"t":"Superego","d":"The protective structure of the superficial mind. The story impressions handed down from an adult. The ego is more sophisticated because the ego is somatic in nature. The superego is superficial structure protecting beliefs."},{"t":"Tag","d":"The moment a charged experience is named and coded at a node address. The name locks the experience in. The tag is what the body scans for in all future input, firing the resident pattern when it finds a match."},{"t":"Two mechanics","d":"The two operations required for a complete release: (1) Release--the charge at the address reduces; (2) Embodied Truth--the replacement state is installed while the address is open. Both are required in sequence. The first without the second leaves no alternative at the address."},{"t":"Vritti","d":"A sensory input waveform and emotional input waveform. It channels across the nervous system, from the external field through the nervous system into the brain, where it's composited and perceived, and where awareness uses the sensory input to perceive. Once identified, the vritti is what collapses the nerve, the chakra, and the field of awareness."},{"t":"Willpower","d":"Available directed force. A measurement, not a character trait. It runs as a battery with a daily charge; sleep sets the starting level and moving through resistance spends it. High drag means low willpower. Release the charges, drag reduces, willpower rises. Not a separate instrument: will is directed intention, and any drag on it reads as resistance, which is already measured."}];
+var GLOSS=[{"t":"Address","d":"The specific location in the body’s energetic architecture where a pattern is resident. Every fetter, every tag, every limiting belief has an address. The release work operates at the address--not at the level of thought or behavior."},{"t":"Allostatic load","d":"The accumulated physiological cost of chronic stress responses. The body’s equivalent of compound interest on unresolved charge. The release work reduces allostatic load by addressing it at the address layer."},{"t":"Archetype","d":"One of 12 universal character templates, and the third rung on the native side of the stack. Domains express as the blueprint; the blueprint branches into archetypes. A separate rung from the blueprint rather than another name for it. Native and present before conditioning, which is why it isn't held in tissue and not released: the work changes where it's pointed, not what it is."},{"t":"Ascension","d":"No longer affected, triggered, or stimulated by the external environment, or by your own emotions. You've ascended emotions controlling you. The environment loses its grip because survival patterns are no longer running as commands. A state definition, not a threshold: it carries no release count. It's not a destination--an operating state."},{"t":"Attention","d":"The ability to focus awareness. Two types: nonfocused attention and focused attention. Attention is the steering; will is the force."},{"t":"Aura","d":"The field this model holds is generated by the state of the nervous system. Not measured by this instrument, and not measured by any instrument this product knows of. Ultraweak photon emission from living tissue is real and comes from reactive oxygen species; it has never been shown to carry nervous system state. Held here as a model of how presence is received, not as a reading."},{"t":"Awareness","d":"The aperture of perception of the soul."},{"t":"Biophoton field","d":"Ultraweak photon emission from living tissue. Real, measured in laboratories since the 1950s, and understood to come from reactive oxygen species rather than from nervous system state. This product names it as the physical thing it is and does not claim it carries the aura. Nothing in the engine reads it."},{"t":"Chakra","d":"A seat. In this model, the nonphysical field generated by a nerve plexus. Seven of them, root to crown. The seven count and the plexus correspondence are a modern Western reading: the source traditions give five, six, eight and more, and the welding of seats to nerve plexuses dates to 1927. Held because it is the vocabulary the work is done in, not because it has been measured."},{"t":"Charge","d":"Stored survival energy held at a node. Installed by a stress response that never finished. Felt as heat, pressure, tingling, or weight when accessed."},{"t":"Clair","d":"A perceptual channel beyond the five physical senses. Clairvoyance (seeing), clairaudience (hearing), clairsentience (feeling), claircognizance (knowing), and others. Soma fields fragment them; clearing soma allows them to operate in unison."},{"t":"Coherence","d":"Reduction of internal contradiction, computed rather than measured. The state in which intention, behavior, and nervous system response are aligned. CQ measures it."},{"t":"Replacement state","d":"The specific behavioral, emotional, and somatic expression of the quality a pattern suppresses--installed at the same address as the released charge. Not a generic positive. The exact quality the pattern is blocking."},{"t":"Consciousness","d":"Energy as information, perceived through two experiences. The macro is unbound and unfocused: infinite consciousness. The opposite pole is localized conscious awareness. Same thing, different aperture."},{"t":"CQ","d":"Coherence Quotient. (Intention × Integrity) ÷ Resistance. Baseline: 100. Measures the degree to which the system operates without internal contradiction."},{"t":"Distortion","d":"Intention read through loaded nodes. The signal is intact, the instrument is bent. Not a formula variable: distortion and SQ were the same reading under two names. It survives as a description of what happens to intention, not as a term that gets multiplied by anything."},{"t":"DQ","d":"Decoherence. DQ = 100 − CQ. Derived, not measured. There's no separate instrument for it, and any build that reports one is reporting arithmetic as though it were a reading. A high DQ means the system is consuming energy maintaining internal contradictions."},{"t":"Drag","d":"The combined load that reduces available willpower. Fetters, clenched muscles, inflammation, loaded nodes--all produce drag on the mind-body-spirit connection. Drag is why willpower feels like a limited resource."},{"t":"Earth Star","d":"Field node at the center point between the feet. Anchors the system to the planet."},{"t":"Ego","d":"Body consciousness. The mind attached to the physical, never present, toggling between thinking and feeling to navigate the world out of fear. The ego is the mask of our character. It's the total sum of DQ, all the SQ running, and all the patterns and awareness that come with body consciousness."},{"t":"Fetter","d":"A named conditional response pattern resident at a specific node address. One per physical node, and 112 addresses in all: the nodes in the body, plus four field nodes just outside it, two above the crown and two below the feet. Fires when matching input arrives, regardless of how long ago it was installed."},{"t":"Five paths","d":"Five primary orientations toward the work: Krishna (flow), Buddha (awareness), Christ (somatics), Rama (alignment), Lao Tzu (horizontal). All paths lead to the same Source. The Anchor Principle operates underneath all five."},{"t":"Hardened mask","d":"The layer of conditioning that doesn't clear with time, life change, or most therapeutic modalities. Requires active address-level release work. Distinguished from practice-maintained conditioning, which life change alone can clear."},{"t":"Hyper-complex","d":"One of 8 named clusters of saboteurs operating as a unified behavioral system. More severe than a single saboteur--a self-reinforcing architecture of patterns that maintain each other."},{"t":"Integrity","d":"The total sum of your coherence, which upregulates the nervous system. It does that by moving you through and maintaining moral structure. Integrity is a ship’s hull. A hole in the hull means the ship takes on water. Integrity has to be at a hundred percent for the hull, and for CQ, to hold. Measured as compliance with the 21 Laws of Moral Integrity."},{"t":"Intention","d":"The intended outcome. Part willpower, part desire, part motivation. Moving toward something registers as pleasure. If no outcome has been formed, avoidance takes the slot by default."},{"t":"Justification mechanic","d":"The body’s defense of its own installed patterns. Blame, deflection, rationalization--all are the tag’s immune response. The body defends the signal because the truth is too difficult to face. Narcissism is the justification mechanic at high intensity."},{"t":"Karma","d":"The results of your thoughts and physical actions put out into the world, and the cause-and-effect energy that comes back to you from those actions. It's cyclical, an echo. Its purpose is to come back so you can learn the lesson, overcome, and transmit the karma so it never comes back. Karma is cause and effect in interaction."},{"t":"Kosha","d":"A perceptual layer through which experience is filtered. Six layers: physical, energetic, mental, wisdom, bliss, and linguistic. Each transforms the signal passing through it."},{"t":"Kundalini","d":"The stored vital energy at the base of the spine. Rises root to crown when enough nodes are cleared for the channel to conduct."},{"t":"Letting go","d":"The release protocol. Runs two mechanics in sequence: (1) reducing charge at the address, (2) installing the replacement state while the address is open. Different from affirmation, which skips the first mechanic."},{"t":"Limiting belief","d":"A tag that compresses the full range of experience into a limited label. Every identification is a limiting belief by definition--not as a judgment but as a mechanism. The label is always smaller than the experience."},{"t":"Mask","d":"The accumulated distortion functioning as an identity construct. What most people call ‘their personality’--the conditioned firing of patterns stored at specific addresses. The mask isn't who you are."},{"t":"Memory","d":"The result of the vritti and identification. Sensory input and emotional input, once identified, stored in the body."},{"t":"Merkaba","d":"A geometric field structure used in the release protocol. Top spinning left, bottom spinning right. Opposing rotations distort the node’s current flow, creating conditions for release."},{"t":"Node","d":"An address in the body’s energetic architecture. The nodes in the body, and four field nodes just outside it: the Earth Star at the center point between the feet, the Sol Star just above the crown, and the Gaia Gateway below the Earth Star, and the Stellar Gateway above the Sol Star. 112 total."},{"t":"OJAS","d":"Sanskrit, meaning vigour. It isn't an acronym and there are no letters to expand; every instance spelled OJOS in earlier drafts was a transcription error that propagated. Vital energy in meditation, held as a cocoon of energy around you. It spins without you having to drive it, and it naturally stimulates the nervous system and releases stress from the body. The protocol developed for Stage 4 and Stage 5 nodes, the ones too dense or too numb to feel. Restores enough signal for release work to begin."},{"t":"Perception","d":"The ability to intuit and perceive, and to translate energy into a symbolic form that can be perceived and understood. Perceiving the sensory input to make sense of things."},{"t":"Plexus","d":"A physical nerve cluster. The plexus is the hardware; the chakra is the field it generates. Disruption at the plexus level produces disruption at the chakra level."},{"t":"Presence","d":"The ability to project one’s energy to be perceived and felt by others."},{"t":"Primary node","d":"The primary loaded node in a field of surrounding nodes. Clear the primary node and the surrounding field releases on its own. Working secondary nodes without finding the primary node produces partial release."},{"t":"Pure perception","d":"All the clairs operating in unison without distortion. Not an absence of thought--a state of full multi-sensory field coherence. Available as soma load reduces and the barriers between the clairs dissolve."},{"t":"Reading-as-release","d":"The protocol in which reading a properly constructed Letting Go sequence produces somatic release at the anatomical address the sequence specifies. No additional visualization required. Both mechanics run through the act of reading."},{"t":"Release","d":"The discharge of stored charge through the nervous system. Physical and observable: heat, shaking, tears, breath shifts. The pattern loses its power source."},{"t":"Resistance","d":"The denominator in the CQ formula. All drag combined--every fetter, loaded node, and inflammatory process that opposes the flow of signal through the system. Resistance is what the release work reduces."},{"t":"Saboteur","d":"One of 33 named behavioral patterns that contract a fetter into characteristic repeating behavior. Each has a specific belief structure, body location, and emotional signature."},{"t":"Self-unraveling state","d":"The body’s autonomous release state when enough gates have cleared. The soma fields begin releasing without active protocol work. The operational success criterion of a release session: not the node is cleared, the body is releasing on its own."},{"t":"Signal chain","d":"The full processing loop: field of awareness → senses → nervous system → brain → intelligence layer → relation layer → three axes → emotional layer → superego → koshas → archetypes → main field. The loop completes moment to moment."},{"t":"Soma","d":"The energetic field generated by the nervous system’s state. Accumulated soma creates load. Overlapping soma fields fragment the perceptive layer, forming barriers the awareness can't see through."},{"t":"Sol Star","d":"Field node just above the crown. The point through which the system extends beyond the body and opens to the field."},{"t":"Source","d":"The ground state of the field before any pattern is installed. The operating system underneath the operating system. What remains when all patterns are cleared."},{"t":"Superego","d":"The protective structure of the superficial mind. The story impressions handed down from an adult. The ego is more sophisticated because the ego is somatic in nature. The superego is superficial structure protecting beliefs."},{"t":"Tag","d":"The moment a charged experience is named and coded at a node address. The name locks the experience in. The tag is what the body scans for in all future input, firing the resident pattern when it finds a match."},{"t":"Two mechanics","d":"The two operations required for a complete release: (1) Release--the charge at the address reduces; (2) Embodied Truth--the replacement state is installed while the address is open. Both are required in sequence. The first without the second leaves no alternative at the address."},{"t":"Vritti","d":"A sensory input waveform and emotional input waveform. It channels across the nervous system, from the external field through the nervous system into the brain, where it's composited and perceived, and where awareness uses the sensory input to perceive. Once identified, the vritti is what collapses the nerve, the chakra, and the field of awareness."},{"t":"Willpower","d":"Available directed force. A measurement, not a character trait. It runs as a battery with a daily charge; sleep sets the starting level and moving through resistance spends it. High drag means low willpower. Release the charges, drag reduces, willpower rises. Not a separate instrument: will is directed intention, and any drag on it reads as resistance, which is already measured."}];
 var HARM=[{"c":"E01","t":"All Is One","a":"nature","ch":"Chapter 19"},{"c":"E02","t":"All Is Motion","a":"nature","ch":"Chapter 19"},{"c":"E03","t":"Polarity","a":"nature","ch":"Chapter 19"},{"c":"E04","t":"All Fields Correspond","a":"nature","ch":"Chapter 19"},{"c":"E05","t":"Like Fields Attract","a":"nature","ch":"Chapter 19"},{"c":"E06","t":"Inspired Action","a":"nature","ch":"Chapter 19"},{"c":"E07","t":"Transmutation","a":"nature","ch":"Chapter 19"},{"c":"E08","t":"Cause & Effect","a":"nature","ch":"Chapter 19"},{"c":"E09","t":"Compensation","a":"nature","ch":"Chapter 19"},{"c":"E10","t":"Potential","a":"nature","ch":"Chapter 19"},{"c":"E11","t":"Relativity","a":"nature","ch":"Chapter 19"},{"c":"E12","t":"Rhythm","a":"nature","ch":"Chapter 19"},{"c":"E13","t":"Gender","a":"nature","ch":"Chapter 19"},{"c":"E14","t":"Form","a":"human","ch":"Chapter 19"},{"c":"E15","t":"Archetype","a":"human","ch":"Chapter 19"},{"c":"E16","t":"Biofield","a":"human","ch":"Chapter 19"},{"c":"E17","t":"Attunement","a":"human","ch":"Chapter 19"},{"c":"E18","t":"Perception","a":"human","ch":"Chapter 19"},{"c":"E19","t":"Intelligence","a":"human","ch":"Chapter 19"},{"c":"E20","t":"Pleasure & Pain","a":"human","ch":"Chapter 19"},{"c":"E21","t":"The Three Axes","a":"human","ch":"Chapter 19"},{"c":"E22","t":"Symbol","a":"human","ch":"Chapter 19"},{"c":"E23","t":"Identity","a":"human","ch":"Chapter 19"},{"c":"E24","t":"Choice","a":"human","ch":"Chapter 19"},{"c":"E25","t":"Ego","a":"human","ch":"Chapter 19"},{"c":"E26","t":"Intention","a":"human","ch":"Chapter 19"},{"c":"E27","t":"Action","a":"human","ch":"Chapter 19"},{"c":"E28","t":"Memory","a":"human","ch":"Chapter 19"},{"c":"E29","t":"Truth","a":"spirit","ch":"Chapter 19"},{"c":"E30","t":"Transparency","a":"spirit","ch":"Chapter 19"},{"c":"E31","t":"Unity","a":"spirit","ch":"Chapter 19"},{"c":"E32","t":"Awareness","a":"spirit","ch":"Chapter 19"},{"c":"E33","t":"Presence","a":"spirit","ch":"Chapter 19"},{"c":"E34","t":"Equanimity","a":"spirit","ch":"Chapter 19"},{"c":"E35","t":"Compassion","a":"spirit","ch":"Chapter 19"},{"c":"E36","t":"Forgiveness","a":"spirit","ch":"Chapter 19"},{"c":"E37","t":"Courage","a":"spirit","ch":"Chapter 19"},{"c":"E38","t":"Temperance","a":"spirit","ch":"Chapter 19"},{"c":"E39","t":"Duty","a":"spirit","ch":"Chapter 19"},{"c":"E40","t":"Accountability","a":"spirit","ch":"Chapter 19"},{"c":"E41","t":"Justice","a":"spirit","ch":"Chapter 19"},{"c":"E42","t":"Non-Harm","a":"spirit","ch":"Chapter 19"},{"c":"E43","t":"Responsibility","a":"spirit","ch":"Chapter 19"},{"c":"E44","t":"Humility","a":"spirit","ch":"Chapter 19"},{"c":"E45","t":"Generosity","a":"spirit","ch":"Chapter 19"},{"c":"E46","t":"Detachment","a":"spirit","ch":"Chapter 19"},{"c":"E47","t":"Patience","a":"spirit","ch":"Chapter 19"},{"c":"E48","t":"Aesthetic Beauty","a":"spirit","ch":"Chapter 19"},{"c":"E49","t":"Nature","a":"spirit","ch":"Chapter 19"},{"c":"E50","t":"Peace","a":"express","ch":"Chapter 19"},{"c":"E51","t":"Play","a":"express","ch":"Chapter 19"},{"c":"E52","t":"Curiosity","a":"express","ch":"Chapter 19"},{"c":"E53","t":"Creativity","a":"express","ch":"Chapter 19"},{"c":"E54","t":"Flow","a":"express","ch":"Chapter 19"},{"c":"E55","t":"Wonder","a":"express","ch":"Chapter 19"},{"c":"E56","t":"Order","a":"express","ch":"Chapter 19"},{"c":"E57","t":"Love","a":"express","ch":"Chapter 19"},{"c":"E58","t":"Purpose","a":"express","ch":"Chapter 19"},{"c":"E59","t":"Will","a":"express","ch":"Chapter 19"},{"c":"E60","t":"Fear · Safety","a":"emotion","ch":"Chapter 19"},{"c":"E61","t":"Anger · Calm","a":"emotion","ch":"Chapter 19"},{"c":"E62","t":"Shame · Worth","a":"emotion","ch":"Chapter 19"},{"c":"E63","t":"Disgust · Acceptance","a":"emotion","ch":"Chapter 19"},{"c":"E64","t":"Apathy · Joy","a":"emotion","ch":"Chapter 19"},{"c":"E65","t":"Shock","a":"emotion","ch":"Chapter 19"},{"c":"E66","t":"Sad · Happy","a":"emotion","ch":"Chapter 19"},{"c":"E67","t":"Surprise","a":"emotion","ch":"Chapter 19"},{"c":"E68","t":"Anticipation","a":"emotion","ch":"Chapter 19"},{"c":"E69","t":"Physical","a":"measure","ch":"Chapter 19"},{"c":"E70","t":"Intellectual","a":"measure","ch":"Chapter 19"},{"c":"E71","t":"Emotional","a":"measure","ch":"Chapter 19"},{"c":"E72","t":"Wisdom","a":"measure","ch":"Chapter 19"},{"c":"E73","t":"Adversity","a":"measure","ch":"Chapter 19"},{"c":"E74","t":"Coherence","a":"measure","ch":"Chapter 19"},{"c":"E75","t":"Meta- Awareness","a":"meta","ch":"Chapter 19"},{"c":"E76","t":"Coherence","a":"meta","ch":"Chapter 19"}];
 var HARM_AX={nature:'Laws of Nature',human:'Laws of Human Nature',spirit:'Laws of Moral Integrity',
  express:'Laws of Expression',emotion:'The nine architectures',measure:'The instruments',meta:'The frame'};
@@ -2176,9 +2401,21 @@ function leanNegated(src,at){
   n++;}
  return false;}
 
-var LEANKEYS=null;
+/* The sorted key list is built once and kept, because sorting the whole table on
+   every story is work with one answer. THE CACHE IS KEYED ON THE SIZE OF THE
+   TABLES rather than on a bare null, so a list edited at run time is picked up
+   instead of silently having no effect. A cache that ignores its own input is
+   how a table edit looks like it landed and did not. */
+var LEANKEYS=null, LEANKEYN=-1;
+function leanCount(){
+ var n=0;
+ LEANCH.forEach(function(c){n+=LEANLEX[c.k].length;});
+ Object.keys(LEANFRAME).forEach(function(s){n+=LEANFRAME[s].length;});
+ return n;}
 function leanKeys(){
- if(LEANKEYS) return LEANKEYS;
+ var n=leanCount();
+ if(LEANKEYS&&LEANKEYN===n) return LEANKEYS;
+ LEANKEYN=n;
  var rows=[];
  LEANCH.forEach(function(c){LEANLEX[c.k].forEach(function(p){
   rows.push({p:p,k:c.k,fr:null});});});
@@ -2546,6 +2783,482 @@ var PHRASES=[
  [['hated myself','disgusted with myself','ashamed of myself'],'throat',24,'self-attack'],
  [['do not show anyone','dont show anyone','not until it is perfect'],'sacral',18,'concealment'],
  [['find out i am','find out im','they will know','see through me'],'root',24,'exposure']];
+
+/* ============================================================
+   WHAT AN ENTRY IS, WHERE IT CAME FROM, AND WHAT IT MAY ASSERT.
+
+   The three tables above were authored and nothing recorded their provenance,
+   so the repository could not answer the owner's own question: does the
+   sniffer have the logic supplied by the book. Measured, the answer was no in
+   two directions at once. Nine of the nine axes the instrument scores, and
+   seven of the seven cue words the thirty three saboteurs are defined by, were
+   not words the scanner could find: one of nine and zero of seven resolved.
+   And of the 192 authored words, 87 appear anywhere in the book and 105 do
+   not, so more than half the vocabulary had no stated source at all.
+
+   Neither of those is fixed by typing more words in. They are fixed by an
+   entry knowing what it is. So an entry now has a schema, a source, and a
+   validator that refuses rather than clamps, and every entry that is not hand
+   authored is DERIVED by a named pass from a table that already has an owner.
+
+   An entry is [seat, amount, fetter]. Positions are named below because a
+   table read by index is a table nobody can search.
+
+     seat     WHERE in the body the charge is held. One of LEX_SEATS. Always
+              asserted, because the scanner genuinely knows it: the table says
+              so and nothing was inferred to get there.
+     amount   HOW MUCH, on the authored 12 to 28 curve. Signed: a coherent
+              entry subtracts. parseStory divides by 3 and applyStory scales
+              by 0.35, so this number is not a charge and must never be read
+              as one.
+     fetter   WHICH of the nine axes, and it is OPTIONAL BY DESIGN. Present
+              means the word named the axis itself and the reading may say so.
+              Absent means the seat is known and the axis is not, and
+              parseStory will mark the imprint inferred. That flag is the
+              whole difference between evidence and an accusation, and the
+              product has already shipped the accusation once.
+
+   WHAT AN ENTRY MAY NEVER ASSERT: a saboteur, an architecture, a diagnosis, a
+   verdict, or a person. A word is evidence that a word was written. Every
+   claim past that is made downstream, by a named stage, and says which it is.
+   ============================================================ */
+var LEX_SEAT=0, LEX_AMT=1, LEX_FET=2;
+var LEX_SEATS=['root','sacral','solar','heart','throat','eye','crown','coherent'];
+/* WHERE AN ENTRY CAME FROM. This list is the spec, not a summary of one.
+   A source not on it is refused by name, including by whoever adds a helpful
+   one later, because the gate asserts the set exactly.
+     authored  hand written. the 192 above. no stated source and that is the
+               open question, not a defect to be hidden.
+     canon     derived from a canon table that already has an owner: the nine
+               axes, and the seats and fetters CHG2SEAT and CHG2FET already
+               assign them. No new number is invented by this pass.
+     fold      an ordinary surface form of a key already present, generated by
+               a stated rule and admitted only where a named corpus confirms
+               the form is real writing. */
+/* A FOURTH SOURCE, DECLARED. `composite` is a word whose reading is two
+   fetters rather than one, seated by the pass at the bottom of sniff.js off the
+   unanimous seat and family floor of the members already in the table. It is a
+   separate source from `canon` because its derivation is different and a
+   reviewer asking where an entry came from must get one answer rather than a
+   family of them. The validator refused every composite entry until this line
+   existed, which is the validator working: a new provenance is declared here or
+   it does not reach the table. */
+var LEX_SRC=['authored','canon','fold','composite'];
+var LEX_AMT_MAX=30;
+/* key -> {src, from, rule, cite}. Covers LEX exactly, in both directions, and
+   the gate asserts that, because a provenance table with holes in it is worse
+   than none: it reads as though everything in it were sourced. */
+var LEXMETA={};
+Object.keys(LEX).forEach(function(k){
+ LEXMETA[k]={src:'authored',from:null,rule:null,cite:null};});
+var CHGMETA={};
+Object.keys(ADJ2CHG).forEach(function(k){
+ CHGMETA[k]={src:'authored',from:null,rule:null,cite:null};});
+
+/* THE BOUNDARY, in validateProfile's and obValidate's posture: refuse by name,
+   never clamp, never accept in silence. A clamped amount reads back as a
+   reading the author never wrote. */
+function lexKeyOk(k){
+ /* exactly the surface forms scanStory's normalisation can produce: lowercase
+    letters, apostrophes and single interior spaces. A key with a capital or a
+    comma in it can never match anything and is a dead row that looks live. */
+ return typeof k==='string' && /^[a-z']+( [a-z']+)*$/.test(k);}
+
+function lexRefuse(k,seat,amt,fet){
+ var errs=[];
+ if(!lexKeyOk(k)) errs.push('the key '+JSON.stringify(k)+' is not a form the scanner can ever match');
+ if(LEX_SEATS.indexOf(seat)<0) errs.push(k+' names the seat '+seat+', which is not one of the '+LEX_SEATS.length);
+ if(typeof amt!=='number'||amt!==Math.round(amt)||amt===0||Math.abs(amt)>LEX_AMT_MAX)
+  errs.push(k+' carries the amount '+amt+', and an amount is a non zero integer no further than '+LEX_AMT_MAX+' from zero');
+ if((amt<0)!==(seat==='coherent'))
+  errs.push(k+' is seated at '+seat+' with amount '+amt+', and only a coherent entry subtracts');
+ if(fet!=null&&CHARGES.indexOf(fet)<0)
+  errs.push(k+' states the child emotion '+fet+', which is not one of the nine axes');
+ if(LEX[k]&&LEX[k][LEX_SEAT]!==seat)
+  errs.push(k+' is already seated at '+LEX[k][LEX_SEAT]+' and this would move it to '+seat);
+ return errs;}
+
+/* ONE ENTRY. Already present with the same seat is a no op and says so, so a
+   pass can be re-run without silently doubling the table. */
+function lexAdd(k,seat,amt,fet,meta){
+ var errs=lexRefuse(k,seat,amt,fet);
+ if(errs.length) return {ok:false,why:errs[0],errs:errs};
+ if(LEX_SRC.indexOf(meta&&meta.src)<0)
+  return {ok:false,why:'the source '+(meta&&meta.src)+' is not one of '+LEX_SRC.join(', '),errs:[]};
+ if(LEX[k]) return {ok:true,already:true};
+ LEX[k]=fet!=null?[seat,amt,fet]:[seat,amt];
+ LEXMETA[k]={src:meta.src,from:meta.from||null,rule:meta.rule||null,cite:meta.cite||null};
+ return {ok:true,already:false};}
+
+/* AND THE CHARGE NAME, which is the other half of the same entry.
+   ADJ2CHG is the surface form to axis name table. Its name says adjective and
+   its job is wider than that: it is what makes an imprint NAMED rather than
+   inferred, and a person writes the noun as often as the adjective. Renaming
+   it touches the export contract and two tools, so the rename is named and
+   deferred rather than done in the same pass as the vocabulary. Nothing may be
+   added to it except through here. */
+function chgAdd(k,chg,meta){
+ if(!lexKeyOk(k)) return {ok:false,why:'the key '+JSON.stringify(k)+' is not a matchable form'};
+ if(typeof chg!=='string'||!chg) return {ok:false,why:k+' names no charge'};
+ if(ADJ2CHG[k]&&ADJ2CHG[k]!==chg)
+  return {ok:false,why:k+' already names '+ADJ2CHG[k]+' and this would move it to '+chg};
+ if(LEX_SRC.indexOf(meta&&meta.src)<0)
+  return {ok:false,why:'the source '+(meta&&meta.src)+' is not one of '+LEX_SRC.join(', ')};
+ if(ADJ2CHG[k]) return {ok:true,already:true};
+ ADJ2CHG[k]=chg;
+ CHGMETA[k]={src:meta.src,from:meta.from||null,rule:meta.rule||null,cite:meta.cite||null};
+ return {ok:true,already:false};}
+
+/* ============================================================
+   PASS ONE, THE FOLD. And the reason it is a list and not a stemmer.
+
+   Measured. 29 of 63 ordinary inflections of words already in the table did
+   not resolve, so the table was written in one form and people write in
+   another. The obvious fix is a stemmer. It was prototyped and it is the wrong
+   instrument here, and the numbers are the argument:
+
+   The fourteen rules below, run over the 145 single word keys, generate 438
+   forms. Of those 438, thirty one are confirmed by a corpus this repository
+   actually holds. Seven percent. The other 407 are strings like ashams and
+   anxiousing: harmless, because they never occur, and corrosive, because a
+   lexicon nobody can read is a lexicon nobody can audit, and this product
+   shows a person why.
+
+   Worse, three of the thirty one confirmed forms are real English words with a
+   different meaning, and two of those three fold off COHERENT keys, which
+   subtract. A stemmer would have had the word contents lowering somebody's
+   reading. A false positive in a somatic reading costs more than a miss, so
+   the refusals are by name, in the table below, with the reason.
+
+   So: the rules stay in the engine, because they are pure and tiny and the
+   gate uses them to prove that every admitted form is reachable from a real
+   key. The corpus stays out, because the engine may not read a file. What
+   crosses the boundary is the confirmed list, and proto/sniffer/ holds the
+   tool that produced it and re-runs it when a corpus grows.
+
+   THE CORPUS, NAMED. index.html, the owner's own book, 117,716 words and
+   7,667 distinct surface forms, plus the fourteen persona voices the product
+   ships. A form neither confirms is not admitted, because admitting it is an
+   unmeasured claim. When the record store exists there will be a third and
+   much better corpus, and this list grows by re-running the tool rather than
+   by anybody's judgement about what a person might write.
+
+   A FOLD CHANGES THE SURFACE FORM AND NOTHING ELSE. Same seat, same amount,
+   same stated fetter, same charge name. The gate asserts all four, so a fold
+   can never be the back door through which a new reading arrives.
+   ============================================================ */
+var LEX_FOLD_RULES=[
+ ['s',   function(k){return !/(s|x|z|ch|sh|y)$/.test(k);},                   function(k){return k+'s';}],
+ ['es',  function(k){return /(s|x|z|ch|sh)$/.test(k);},                      function(k){return k+'es';}],
+ ['ies', function(k){return /[^aeiou]y$/.test(k);},                          function(k){return k.slice(0,-1)+'ies';}],
+ ['ed',  function(k){return /[^ey]$/.test(k)&&!/(ed|ing|ness)$/.test(k);},   function(k){return k+'ed';}],
+ ['d',   function(k){return /e$/.test(k);},                                  function(k){return k+'d';}],
+ ['ied', function(k){return /[^aeiou]y$/.test(k);},                          function(k){return k.slice(0,-1)+'ied';}],
+ ['ing', function(k){return /[^ey]$/.test(k)&&!/(ed|ing)$/.test(k);},        function(k){return k+'ing';}],
+ ['eing',function(k){return /e$/.test(k);},                                  function(k){return k.slice(0,-1)+'ing';}],
+ ['ped', function(k){return /[^aeiou][aeiou][pgmnt]$/.test(k);},             function(k){return k+k.slice(-1)+'ed';}],
+ ['ping',function(k){return /[^aeiou][aeiou][pgmnt]$/.test(k);},             function(k){return k+k.slice(-1)+'ing';}],
+ /* backward, off a past participle the table already holds */
+ ['V',   function(k){return /[a-z]{3}ed$/.test(k);},                         function(k){return k.slice(0,-2)+'ing';}],
+ ['Vs',  function(k){return /[a-z]{3}ed$/.test(k);},                         function(k){return k.slice(0,-2)+'s';}],
+ ['Vy',  function(k){return /[a-z]{2}ied$/.test(k);},                        function(k){return k.slice(0,-3)+'ying';}],
+ ['ness',function(k){return /[a-z]{4}$/.test(k)&&!/(ness|ion|ity|ing|ed|s)$/.test(k);},function(k){return k+'ness';}]];
+
+/* THE ALLOW LIST. Twenty seven forms. Every one is generated by a rule above
+   from a key above, and confirmed by the named corpus. The gate asserts both,
+   so a form hand typed in here with no reachable base is refused. */
+var LEX_FOLD_OK=['abandoning','betrays','calmed','calming','clenching','dismissing',
+ 'draining','drains','flattens','funerals','hurts','interrupting','interrupts',
+ 'isolating','losses','numbness','overwhelming','rejecting','rejects','resting',
+ 'screaming','settling','snapping','tensed','terrifying','tightness','yelling'];
+
+/* THE REFUSE LIST, and read this before adding to the one above. Each of these
+   IS generated by a rule and IS confirmed by the corpus, and each is refused
+   because the form is a different word in ordinary use. Two of the four fold
+   off coherent keys, where a false positive lowers a reading rather than
+   raising it, which is the more dangerous direction and the harder one to
+   notice. */
+var LEX_FOLD_NO={
+ contents:'the contents of a box, not the state of being content, and content subtracts',
+ laughing:'the person laughing, where laughed in this table means being laughed at',
+ rests:'it rests on the table, not the person resting, and rested subtracts',
+ tenses:'the tenses of a verb, not a body tensing'};
+
+/* ============================================================
+   THE DEAD ROWS, NAMED, because a row that matches nothing looks live.
+
+   Found by the gate that asserts every entry can actually be found by the
+   scanner, which is a check nothing had. Two of the 192 authored entries cannot
+   be reached, and they predate this pass:
+
+     cannot stop thinking   seated at the third eye, amount 24, rumination
+     cant stop thinking     the same
+
+   Both are eaten by the phrase cannot stop, which is seated at the sacral at
+   amount 18 and labelled compulsion. scanStory adds phrases first and then
+   suppresses any later match overlapping a hit already recorded, so the phrase
+   wins at that offset whatever its length. Measured: i cannot stop thinking
+   about it reads as {sacral:18}, compulsion, and the third eye rumination entry
+   never lands. A person ruminating is told they are compulsive, at a lower
+   amount, at the wrong seat.
+
+   THE STATED RULE IS NOT THE IMPLEMENTED RULE, and that is the actual defect. A
+   phrase outranks THE WORDS INSIDE IT, which is right and is why the rule
+   exists. Here the lexicon entry CONTAINS the phrase and is strictly longer and
+   strictly more specific, so the rule does not reach this case and the
+   implementation decided it by loop order.
+
+   NOT FIXED HERE, and that is deliberate. The fix is one clause in scanStory,
+   and which way that clause goes is a ruling rather than a repair: does the
+   longer specific entry beat the shorter idiom, or does an idiom always win.
+   Both are defensible and they read differently. So the two rows are named
+   here, with the reason, and the gate asserts the dead set is EXACTLY this
+   table in both directions. A third dead row fails the gate. This one cannot
+   quietly become three.
+   ============================================================ */
+var LEX_DEAD={
+ 'cannot stop thinking':'eaten by the phrase cannot stop, which is shorter, seated elsewhere and worth less',
+ 'cant stop thinking':'eaten by the phrase cant stop, the same way'};
+
+/* run the fold. keys are snapshotted first: the pass writes into the table it
+   reads from, and reading a table while growing it is how a generator quietly
+   folds its own output. */
+function lexFold(){
+ var base=Object.keys(LEX).filter(function(k){return k.indexOf(' ')<0;});
+ var made={}, out={added:0,already:0,refused:[],unreachable:[]};
+ base.forEach(function(k){
+  LEX_FOLD_RULES.forEach(function(r){
+   if(!r[1](k)) return;
+   var f=r[2](k);
+   if(LEX[f]||made[f]) return;
+   made[f]={from:k,rule:r[0]};});});
+ LEX_FOLD_OK.forEach(function(f){
+  if(LEX_FOLD_NO[f]){out.refused.push(f);return;}
+  if(!made[f]){out.unreachable.push(f);return;}
+  var k=made[f].from, e=LEX[k];
+  var a=lexAdd(f,e[LEX_SEAT],e[LEX_AMT],e[LEX_FET]!=null?e[LEX_FET]:null,
+   {src:'fold',from:k,rule:made[f].rule,cite:'corpus'});
+  if(a.ok&&!a.already)out.added++; else if(a.already)out.already++;
+  /* the charge name folds with the form. without this the folded word gets a
+     seat and no axis, so the imprint comes back inferred, and inferred is the
+     flag that decides what the product is allowed to say out loud. */
+  if(ADJ2CHG[k])chgAdd(f,ADJ2CHG[k],{src:'fold',from:k,rule:made[f].rule,cite:'corpus'});});
+ out.generated=Object.keys(made).length;
+ return out;}
+/* lexFold is NOT run here, and the reason is load order. lexRefuse checks a
+   stated fetter against CHARGES, and CHARGES is declared in core.js, which
+   MANIFEST loads after this file. Touching it from here throws at parse, which
+   is the failure this repository's load order rule exists to prevent. So the
+   vocabulary, its schema, its validator and its rules live with the vocabulary,
+   and the passes are RUN at the top of sniff.js, which is the first module
+   where the canon tables are in scope and still before anything can scan. */
+
+/* ============================================================
+   THE LAW VIOLATION CUES · SNIFFER_SPEC.md section 6.
+
+   WHAT THIS IS FOR, in one sentence: the spec rules that CQ is the mean of the
+   21 laws, so a law violation is not decorative, it is the input to the
+   coherence number, and the sniffer is asked to detect where a law is being
+   violated in journal text.
+
+   THE PRIVACY RULING, CHECKED FIRST RATHER THAN LAST. Every cue below is
+   matched against text that is already in the person's own browser by a pure
+   function with no host access. No name, no record and nothing off a device is
+   read, and nothing is sent anywhere. The ruling permits this. It does not
+   permit the evaluation this table actually needs, which is written down under
+   WHAT CANNOT BE EVALUATED at the bottom of this block.
+
+   WHERE THE WORDS COME FROM, AND THE ADMISSION THAT MATTERS MOST. Section 13
+   of the spec names `reviews/elements.json` as "your lexicon" and says to load
+   it directly rather than retype it. IT IS NOT IN THIS REPOSITORY, along with
+   ENGINE.json, reviews/canon.json and handoff/ATUNED_SPEC.json. So there was
+   no lexicon to load and this table could not be built the way the spec says
+   to build it.
+
+   What was done instead, and its limit stated rather than hidden: every cue
+   below is derived from a string the spec itself prints in the section 6
+   violation column, plus that string's ordinary English inflections. Nothing
+   is invented from a clinical vocabulary and nothing is imported from another
+   instrument. The cost is recall: a violation column entry like "Opacity.
+   Energy diverted to concealment" yields perhaps four reachable words, so this
+   table is a floor on what the 21 laws can detect and not a serious attempt at
+   them. lawCoverage() reports the size of the hole rather than letting an
+   average hide it.
+
+   THE FOUR BIDIRECTIONAL LAWS ARE KEYED IN BOTH DIRECTIONS, on the spec's own
+   warning: "a sniffer that only looks for the obvious pole will miss half of
+   them, self-abandonment reads as virtue in a journal." Compassion, Humility,
+   Generosity and Ownership each carry two cue sets and the output names which
+   direction fired. A law read in the wrong direction is worse than a law not
+   read, because the product would praise the thing it is meant to surface.
+
+   PRECISION OVER RECALL, the same ruling the rest of this file runs on. A false
+   positive here tells a person their Truth is violated, which is an accusation.
+   So the phrases are specific and the single common words that would catch
+   everything are refused: `harm`, `pride`, `wrong` and `late` are not cues.
+   ============================================================ */
+var LAW_SELF='self', LAW_OTHER='other', LAW_ONE='single';
+/* [law, direction, [cues]]. direction is LAW_ONE unless the law is one of the
+   four the spec rules bidirectional. `e` is the spec's element number, carried
+   so the output contract can emit it and so a renumbering is a visible diff. */
+var LAWCUE=[
+ [29,'Truth',           LAW_ONE,  ['lied','i lied','told them i','made it up','not the whole truth',
+                                   'i said i had','pretended i','covered for','deceived','a white lie']],
+ [30,'Transparency',    LAW_ONE,  ['did not tell','kept it from','they do not know','behind their back',
+                                   'nobody knows i','hid it','i hid','concealed','kept quiet about']],
+ [31,'Unity',           LAW_ONE,  ['us and them','those people','not one of us','they are all',
+                                   'people like that','my side','cut them off','nothing to do with me']],
+ [32,'Awareness',       LAW_ONE,  ['before i knew it','i just reacted','snapped at','lost it with',
+                                   'came out of nowhere','without thinking','i was triggered']],
+ [33,'Presence',        LAW_ONE,  ['going over it','kept replaying','rehearsing','could not be there',
+                                   'somewhere else','i was not there','in my head the whole']],
+ [34,'Equanimity',      LAW_ONE,  ['depends on whether','only if','ruined the whole','set me off',
+                                   'threw me','could not settle','on edge all']],
+ /* BIDIRECTIONAL. the spec: "Indifference OR self-abandonment, withheld in
+    either direction." withheld outward is indifference, withheld inward is
+    the one that reads as virtue. */
+ [35,'Compassion',      LAW_OTHER,['not my problem','they brought it on','deserved it','do not care what happens',
+                                   'their own fault','no sympathy for']],
+ [35,'Compassion',      LAW_SELF, ['i should be able to','no right to feel','others have it worse',
+                                   'i do not matter','put myself last','i will manage','no time for myself']],
+ [36,'Forgiveness',     LAW_ONE,  ['will never forgive','still owe me','after what they did','i want them to',
+                                   'holding it against','have not forgotten','they will pay']],
+ [37,'Courage',         LAW_ONE,  ['put it off','did not bring it up','said nothing','walked away from',
+                                   'changed the subject','could not face','kept avoiding','never said']],
+ [38,'Temperance',      LAW_ONE,  ['one more','again last night','more than i meant','could not stop at',
+                                   'takes more now','every night this week','went overboard']],
+ [39,'Duty',            LAW_ONE,  ['said i would and','let them down','did not show up','broke my word',
+                                   'promised and','backed out','went back on']],
+ /* BIDIRECTIONAL. the spec: "Victimhood inward, justification outward. One
+    move, two directions." */
+ [40,'Ownership',       LAW_OTHER,['made me','not my fault','because they','if they had not',
+                                   'had no choice','forced me','anyone would have']],
+ [40,'Ownership',       LAW_SELF, ['all my fault','i ruined','i always do this','everything is my',
+                                   'i am the problem','i deserve this','no good at anything']],
+ [41,'Justice',         LAW_ONE,  ['they got away with','not fair that','wanted them punished',
+                                   'looked the other way','turned a blind eye','let it slide because']],
+ [42,'Non-Harm',        LAW_ONE,  ['i humiliated','made them cry','said it to hurt','wanted it to sting',
+                                   'did not care who got','collateral','i lashed out at']],
+ [43,'Wisdom',          LAW_ONE,  ['sounded right','told myself that','easier to believe','convinced myself',
+                                   'justified it','knew better and','a good story about']],
+ /* BIDIRECTIONAL. the spec: "Pride and grandiosity, OR the inverse
+    self-abasement." */
+ [44,'Humility',        LAW_OTHER,['nobody else could','above all this','they should be grateful',
+                                   'i am the only one who','beneath me','better than them at']],
+ [44,'Humility',        LAW_SELF, ['who am i to','not qualified to','i am nothing','worthless',
+                                   'do not deserve to','make myself small']],
+ /* BIDIRECTIONAL. the spec: "Circuit broken. Hoarding on giving, entitlement
+    on receiving." */
+ [45,'Generosity',      LAW_OTHER,['keeping it for','not sharing','what do i get','owe me',
+                                   'entitled to','my share first']],
+ [45,'Generosity',      LAW_SELF, ['could not accept','refused the help','did not let them',
+                                   'i do not need anyone','turned down the offer']],
+ [46,'Detachment',      LAW_ONE,  ['has to go my way','cannot let go of','kept checking',
+                                   'needed it to be','could not let them','clinging to','fixated on']],
+ [47,'Patience',        LAW_ONE,  ['right now','cannot wait','forced it','pushed it through',
+                                   'should have happened by','sick of waiting','made it happen faster']],
+ [48,'Aesthetic Beauty',LAW_ONE,  ['the mess','piles of','noise the whole','cluttered','could not think in',
+                                   'chaos in here']],
+ [49,'Nature',          LAW_ONE,  ['have not been outside','screens all','under strip lights',
+                                   'no daylight','four walls','not seen the sky']]];
+
+/* THE FIVE EXPRESSION SHADOWS the spec names as high value for journal text:
+   Flow to Block, Curiosity to Apathy, Play to Rigidity, Purpose to
+   Driftlessness, Will to Resignation. Only these five, because the other five
+   of the ten and all 28 of nature and human nature need elements.json, which
+   is not here. The engine's own EXPR table carries six of the spec's ten names
+   and four it does not, and its shadow word differs on every one of these five,
+   so this is a separate table rather than an edit to EXPR: EXPR has other
+   callers and moving its strings would move surfaces this pass did not measure. */
+var EXPRCUE=[
+ [54,'Flow',     'Block',         ['could not get started','stuck on','staring at it','nothing came',
+                                   'kept stopping','blocked','no traction']],
+ [55,'Curiosity','Apathy',        ['do not care any more','what is the point','stopped wondering',
+                                   'all the same to me','not interested in anything']],
+ [56,'Play',     'Rigidity',      ['has to be done properly','no time for that','not funny',
+                                   'we do it this way','cannot just','there are rules']],
+ [57,'Purpose',  'Driftlessness', ['no idea what i am doing','going nowhere','drifting',
+                                   'why am i even','no direction','same thing every day']],
+ [58,'Will',     'Resignation',   ['gave up on','no use trying','it is what it is','nothing i can do',
+                                   'stopped fighting','accepted that i will never']]];
+
+/* DANTE, SECTION 9, AND ONLY WHERE IT IS ACTUALLY SNIFFABLE.
+
+   The spec gives nine circles with a pattern and a somatic address each, and
+   says of the eighth: "C8's test is the single most sniffable line in the whole
+   system. Performed warmth versus generated warmth is detectable in text:
+   praise that arrives with an audience, generosity narrated rather than done."
+   That is a test, so it is implemented as one.
+
+   The other eight are behavioural taxonomy without a phrase table, and no
+   elements.json to derive one from. Four have enough of a stated pattern to
+   reach with the spec's own words and are keyed thinly. Four are left empty and
+   REPORTED empty, because a circle scored off two guessed phrases would be a
+   depth reading of a person built on nothing, which is the worst thing in this
+   document to get wrong. depth returns null rather than a low confidence
+   guess: refusing to read is a legitimate answer and it is the right one here. */
+var DANTECUE=[
+ ['C1','Limbo',    'Disbelief, spiritual bypass through rationalism',
+  ['none of it is real','just brain chemistry','all in the mind','nothing means anything really']],
+ ['C2','Lust',     'Grandiose entitlement, self-appointed arbiter',[]],
+ ['C3','Gluttony', 'Consumption as substitution',
+  ['ate until','filled the gap with','instead of calling','something to take the edge']],
+ ['C4','Greed',    'Scarcity identity, worth measured in possession',
+  ['never enough','what i am worth','cannot afford to','they have more']],
+ ['C5','Wrath and Sloth','The same suppressed charge, out as attack or in as shutdown',
+  ['did not get out of bed','blew up at','could not move all','went off at']],
+ ['C6','Heresy',   'Doctrine as identity armor',[]],
+ ['C7','Violence', 'Against others, against self, against nature',[]],
+ /* the test, and it is a test rather than a word list: warmth that requires an
+    audience. a marker of display standing within range of a marker of giving. */
+ ['C8','Fraud',    'Performed warmth. Does it cost them anything, or require an audience',[]],
+ ['C9','Treachery','Complete inversion, stasis at terminal velocity',[]]];
+var C8_GIVE=['helped','gave','looked after','paid for','stayed with','covered for','supported'];
+var C8_AUDIENCE=['everyone saw','posted','in front of','made sure they knew','told everyone',
+ 'people noticed','on the group chat','announced'];
+var C8_WINDOW=12;      /* words. one sentence of reach, the same span the lean's
+                          negation rule uses for the same reason: wider and the
+                          marker belongs to a different sentence. */
+
+/* WHAT THIS TABLE CAN AND CANNOT REACH, reported rather than averaged. The
+   whole birth module once sat at zero coverage while the average read 92
+   percent, so this returns the unreached list and not only the number. */
+function lawCoverage(){
+ var laws={}, bidir={};
+ LAWCUE.forEach(function(r){
+  laws[r[1]]=(laws[r[1]]||0)+r[3].length;
+  if(r[2]!==LAW_ONE)bidir[r[1]]=(bidir[r[1]]||0)+1;});
+ var thin=Object.keys(laws).filter(function(l){return laws[l]<6;});
+ return {laws:Object.keys(laws).length, cues:Object.keys(laws).reduce(function(a,l){return a+laws[l];},0),
+  bidirectional:Object.keys(bidir).sort(), thin:thin.sort(),
+  expression:EXPRCUE.length, expressionAbsent:5,
+  circles:DANTECUE.length, circlesKeyed:DANTECUE.filter(function(c){return c[3].length;}).length,
+  nature:0, human:0,
+  missing:['reviews/elements.json','ENGINE.json','reviews/canon.json','handoff/ATUNED_SPEC.json']};}
+
+/* WHAT CANNOT BE EVALUATED, AND IT IS NOT A SMALL LIST.
+
+   There is no labelled set. Nobody has taken journal text and marked which of
+   the 21 laws it violates, so nothing below is validated and none of it may be
+   called accurate. What CAN be measured without labels, and is, in
+   tests/engine.js and proto/sniffer: that a cue fires where it should, that it
+   does not fire on the negation of itself, that the bidirectional four report a
+   direction, that the same text read twice gives the same answer, and that
+   nothing fires on empty input.
+
+   What it would take to evaluate this honestly, in order of cost:
+     1. a labelled set. 200 journal entries, two independent raters per entry
+        marking law and direction, agreement measured before the matcher is
+        scored against it. The raters may not be the author of this table.
+     2. a negation and subject audit. This table inherits no negation handling,
+        so "i did not lie to them" fires Truth. verp.js solved this for its own
+        lists with a three word lookback and that mechanism should be shared
+        rather than copied, which is a change to a file this seat does not own.
+     3. the privacy ruling on the set itself. A labelled corpus of journal text
+        is the most sensitive artefact this product could hold, and the ruling
+        that the story without the record is what refines the models is exactly
+        what makes it possible at all. It needs consent language and the owner's
+        ruling that it is allowed before a single entry is collected. */
 
 /* ============================================================
    DERIVED INDEXES
@@ -3346,11 +4059,34 @@ function planNextSight(){ return null; }
    stored: it is always the unique count minus what has been granted, so the
    two cannot drift. */
 function planAllowance(pl,uniqueCount){
- var used=Math.max(0,uniqueCount||0);
+ /* IT TAKES A COUNT, AND IT NOW SAYS SO RATHER THAN TRUSTING IT.
+
+    Two shapes of the same word live in this codebase and they are easy to
+    confuse. `CURP.meter.unique` is the array of pattern keys, and
+    `meterRead().unique` is already its length. The plan panel reads the
+    second, which is correct, and I misread it as the first and changed a
+    caller that was never broken. Checked afterwards, properly: that field is
+    a number, and no build has ever shown a person a NaN here.
+
+    What is worth keeping from the wrong turn is the guard. An array coerces
+    to NaN the moment it holds more than one item, so a future caller handing
+    this a list would put an unreadable number on the one surface that tells
+    somebody what they have paid for and what is left. This takes either
+    shape and can no longer emit NaN from any input. Array.isArray rather
+    than a length check, because a string has a length too and the first cut
+    read "x" as one pattern spent.
+
+    The rule this broke is the one already written down here: reproduce the
+    failure before fixing it. A direct call with a hand made array is not the
+    caller, and I did not go and look at what the caller actually passes. */
+ var n=Array.isArray(uniqueCount)?uniqueCount.length:uniqueCount;
+ n=Number(n); if(!isFinite(n))n=0;
+ var used=Math.max(0,n);
  var giftLeft=Math.max(0,100-used);
  if(giftLeft>0)return {source:'gift', left:giftLeft, of:100, inGift:true,
   base:0, spent:used, runs:Math.floor(giftLeft/RUN_MIN),
-  say:giftLeft+' of the gift left'};
+  /* what it is of, in words. "92 of the gift left" says ninety two of what. */
+  say:giftLeft+' patterns left of the '+100+' you were given'};
  var t=planOf(pl);
  /* The grant comes from the tier that is IN FORCE, not from the number
     written on the record, unless the plan is live and the host has written
@@ -3843,6 +4579,165 @@ function vRange(errs,path,v,lo,hi){
  if(!NUM(v)){errs.push(path+' is not a number');return null;}
  if(v<lo||v>hi){errs.push(path+' is '+v+', outside '+lo+' to '+hi);return null;}
  return v;}
+/* ============================================================
+   THE TWO NESTED BAGS. Both escaped the boundary above.
+
+   plan refuses customer, subscription, email, key, secret and token by name.
+   rituals was accepted on one condition, that each entry is an object, so a
+   ritual arrived with no errors at all carrying a track that is not a track,
+   a seat that is not a seat, a step naming no practice, a negative length, a
+   five thousand character when where the surface caps at forty, a hundred
+   thousand character note, and the keys secret and email: refused by name one
+   level up and passed silently one level down. story.entries was a bare
+   slice, and three surfaces call .slice and .length on entry.text.
+
+   A CLOSED KEY SET RATHER THAN A SECOND DENY LIST. OB_NEVER in outbox.js
+   names about forty things that may never leave the device, and it is the
+   wrong table to import here: it is about what goes out rather than what
+   comes in, and it names date, key, type, story and answers, which are
+   legitimate field names elsewhere in this same profile. OB_KEYS is the
+   posture worth copying instead, and a closed set refuses what nobody thought
+   of rather than only what somebody did, including the field whoever adds one
+   six months from now forgets to declare. The gate then asserts that every
+   name on OB_NEVER is refused inside both bags, so the deny list still
+   protects them and there is no second copy of it to drift.
+   ============================================================ */
+function vKeys(errs,path,x,allow){
+ Object.keys(x).forEach(function(k){
+  if(allow.indexOf(k)<0)errs.push(path+' may not carry '+k);});}
+function vDate(errs,path,t){
+ if(typeof t!=='string'||isNaN(new Date(t).getTime())){
+  errs.push(path+' is not a date'); return null;}
+ return t;}
+/* A CEILING IS REFUSED AND NEVER TRUNCATED, which is obValidate's rule and is
+   the same reason: a silently cut sentence reads back to the person as
+   something they never said. */
+function vStr(errs,path,s,cap){
+ if(typeof s!=='string'){errs.push(path+' is not a string'); return null;}
+ if(cap&&s.length>cap){
+  errs.push(path+' is '+s.length+' characters and the cap is '+cap); return null;}
+ return s;}
+/* WHAT A RITUAL MAY CARRY. t, track, band, steps and min are the original
+   five. when, where and done were added later, so an older entry has none of
+   the three and they are filled rather than required. */
+var RIT_KEYS=['t','track','band','steps','min','when','where','done'];
+/* The when and where cap, and ui/ritual.js writes this into the two inputs
+   rather than repeating 40, because the boundary and the surface have to agree
+   about it and the two places in this repository that used the number 6 had to
+   agree and did not. */
+var RIT_PLAN_MAX=40;
+/* The tracks, the steps and the longest ritual there is, read off the practice
+   library rather than typed here. A practice added to that table is accepted
+   by the boundary the moment it exists, and a step naming nothing is refused
+   without anybody having to remember this file. The minutes ceiling is the
+   whole library summed, which is every practice picked once and is the longest
+   ritual the builder can produce. */
+var RIT_TRACK={}, RIT_STEP={}, RIT_MIN_MAX=0;
+PRACTICE.forEach(function(pr){
+ RIT_TRACK[pr.track]=1; RIT_STEP[pr.k]=1; RIT_MIN_MAX+=pr.min;});
+function vRitual(errs,i,x){
+ var path='rituals['+i+']';
+ if(!x||typeof x!=='object'||Array.isArray(x)){errs.push(path+' is not an object'); return null;}
+ vKeys(errs,path,x,RIT_KEYS);
+ var q={};
+ /* THE DAY IS REQUIRED AND IS NEVER INVENTED. pracDay reads t and the streak
+    is counted in the days it returns, so filling a missing t from now would
+    hand somebody a day they did not practise, which is the 9999 that reads as
+    a 10 wearing a different hat. Every ritual the app has ever written carries
+    t, so requiring it cannot refuse an older profile. */
+ var t=vDate(errs,path+'.t',x.t);
+ if(t!==null)q.t=t;
+ /* A TRACK OR A SEAT NOBODY RECORDED IS LEFT EMPTY RATHER THAN NAMED, the way
+    an unmeasured law is left null. Defaulting to Body and Root would write a
+    diagnosis nothing measured. Nothing reads either one back off a saved
+    ritual yet, so empty costs nothing here and a default would cost the
+    truth. */
+ q.track='';
+ if(x.track!==undefined){
+  if(RIT_TRACK[x.track])q.track=x.track;
+  else errs.push(path+'.track is not a track in the practice library: '+x.track);}
+ q.band='';
+ if(x.band!==undefined){
+  if(BANDS.indexOf(x.band)>=0)q.band=x.band;
+  else errs.push(path+'.band is not a seat: '+x.band);}
+ /* A STEP NAMES A PRACTICE OR IT NAMES NOTHING, and ritSteps drops what it
+    cannot find, so an unnamed step reads on the surface as a ritual with fewer
+    steps than it was saved with. A list longer than the library is not a
+    ritual either: the builder writes one entry per practice picked, so the
+    count of practices is the most a ritual can hold, and that bound is also
+    what stops one valid key arriving a hundred thousand times. */
+ q.steps=[];
+ if(x.steps!==undefined){
+  if(!Array.isArray(x.steps))errs.push(path+'.steps is not a list');
+  else if(x.steps.length>PRACTICE.length)
+   errs.push(path+'.steps holds '+x.steps.length+', which is more than the '
+    +PRACTICE.length+' practices there are');
+  else x.steps.forEach(function(k,j){
+   if(RIT_STEP[k])q.steps.push(k);
+   else errs.push(path+'.steps['+j+'] names no practice: '+k);});}
+ /* the length, in minutes, and a negative one was the finding. Not floored:
+    every minute in the library is whole, so a fraction can only come from a
+    hand written file and rounding it would be a silent edit. */
+ q.min=0;
+ var mn=vRange(errs,path+'.min',x.min,0,RIT_MIN_MAX);
+ if(mn!==null)q.min=mn;
+ ['when','where'].forEach(function(f){
+  q[f]='';
+  if(x[f]===undefined)return;
+  var s=vStr(errs,path+'.'+f,x[f],RIT_PLAN_MAX);
+  if(s!==null)q[f]=s;});
+ /* DONE IS NOT FILLED, AND THAT IS DELIBERATE. ledgerRead reads an entry with
+    no done key at all as practised, because minutes planned and minutes
+    practised were one number until they were split and a person's history is
+    not ours to delete over a schema change. Writing done:false here would move
+    every older ritual out of the practised column on the way through the
+    boundary. It is a boolean from the builder and a stamp from the control
+    that marks the day done, so both are taken and nothing else is. */
+ if(x.done!==undefined){
+  if(typeof x.done==='boolean')q.done=x.done;
+  else{
+   var d=vDate(errs,path+'.done',x.done);
+   if(d!==null)q.done=d;}}
+ return q;}
+/* WHAT A STORY ENTRY MAY CARRY. The same four since the first build. */
+var ENT_KEYS=['t','text','imprints','bands'];
+function vEntry(errs,i,x){
+ var path='story.entries['+i+']';
+ if(!x||typeof x!=='object'||Array.isArray(x)){errs.push(path+' is not an object'); return null;}
+ vKeys(errs,path,x,ENT_KEYS);
+ var q={};
+ var t=vDate(errs,path+'.t',x.t);
+ if(t!==null)q.t=t;
+ /* NO LENGTH IS INVENTED FOR THE TEXT. The story box enforces no cap on
+    purpose: it is the one field in the product a person is asked to fill with
+    prose, so there is no surface number to check against and guessing one here
+    would refuse an entry somebody wrote. What is checked is that it is a
+    string, because Imprints and Analytics both call .slice and .length on it
+    with no guard, so one imported number in place of a text threw the surface
+    rather than the import. An entry is its text and no writer has ever omitted
+    it, so a missing one is corruption rather than an older record. */
+ var tx=vStr(errs,path+'.text',x.text);
+ if(tx!==null)q.text=tx;
+ /* the count the entry reported when it was committed, printed beside the
+    date. Not recomputed from the text: the sniffer has moved since the oldest
+    of these were written, and recomputing would rewrite what the person was
+    told at the time. */
+ q.imprints=0;
+ var im=vRange(errs,path+'.imprints',x.imprints,0,1e6);
+ if(im!==null)q.imprints=im;
+ /* bands is keyed by the sniffer's own seat keys, so a key that is not one of
+    them is refused by name rather than dropped. Analytics reads it as
+    e.bands[B2K[seat]] and Imprints maps every key through K2BAND, so a key
+    neither table holds is weight sitting at a seat that does not exist. */
+ q.bands={};
+ if(x.bands!==undefined){
+  if(!x.bands||typeof x.bands!=='object'||Array.isArray(x.bands))
+   errs.push(path+'.bands is not an object');
+  else Object.keys(x.bands).forEach(function(k){
+   if(!K2BAND[k]){errs.push(path+'.bands names no seat: '+k); return;}
+   var v=vRange(errs,path+'.bands.'+k,x.bands[k],0,1e6);
+   if(v!==null)q.bands[k]=v;});}
+ return q;}
 function validateProfile(o){
  var errs=[];
  if(!o||typeof o!=='object'||Array.isArray(o))return {ok:false, errs:['not an object']};
@@ -3910,8 +4805,14 @@ function validateProfile(o){
    CHARGES.forEach(function(c){
     var v=vRange(errs,'seed.axes.'+c,o.seed.axes?o.seed.axes[c]:3,0,10);
     p.seed.axes[c]=v===null?3:v;});}}
- /* logs. shape checked, contents left alone: they are the person's own text. */
- if(o.story&&Array.isArray(o.story.entries))p.story.entries=o.story.entries.slice();
+ /* logs. the text inside an entry is the person's own and is never edited,
+    but the bag it arrives in is checked like everything else. The shape around
+    it was the whole of what this line used to check. */
+ if(o.story&&typeof o.story==='object'){
+  if(Array.isArray(o.story.entries))p.story.entries=o.story.entries
+   .map(function(x,i){return vEntry(errs,i,x);}).filter(Boolean);
+  else if(o.story.entries!==undefined)errs.push('story.entries is not a list');}
+ else if(o.story!==undefined&&o.story!==null)errs.push('story is not an object');
  if(o.meter&&typeof o.meter==='object'){
   var mp=vRange(errs,'meter.lines',o.meter.lines,0,1e9);
   if(mp!==null)p.meter.lines=Math.floor(mp);
@@ -4018,7 +4919,9 @@ function validateProfile(o){
      return typeof x==='string'&&x.length>0&&x.length<200;});});}
   else if(o.purpose.sides!==undefined)errs.push('purpose.sides is not an object');}
  else if(o.purpose!==undefined&&o.purpose!==null)errs.push('purpose is not an object');
- if(Array.isArray(o.rituals))p.rituals=o.rituals.filter(function(x){return x&&typeof x==='object';});
+ if(Array.isArray(o.rituals))p.rituals=o.rituals
+  .map(function(x,i){return vRitual(errs,i,x);}).filter(Boolean);
+ else if(o.rituals!==undefined&&o.rituals!==null)errs.push('rituals is not a list');
  /* A snapshot is strictly typed numbers and the record calls toFixed on them,
     so "the person's own text" does not apply here. An unchecked history
     crashed the record view on the first render after an import. */
@@ -4342,6 +5245,118 @@ var B2K={Crown:'crown','3rd Eye':'eye',Throat:'throat',Heart:'heart',
  Solar:'solar',Sacral:'sacral',Root:'root'};
 var K2B={};Object.keys(B2K).forEach(function(b){K2B[B2K[b]]=b;});
 var PMC={};BANDS.forEach(function(b){PMC[b]=PAL[b];});
+
+/* ============================================================
+   PASS TWO, THE CANON. And the measurement that makes it the first thing the
+   sniffer does rather than a widening of the table.
+
+   The owner asked whether the sniffer has the logic supplied by the book.
+   Measured, and this is the answer that mattered most:
+
+     the nine axes the instrument scores   1 of 9 resolved. sad. that is all.
+                                           fear, anger, shame, disgust, apathy,
+                                           shock, surprise and anticipation were
+                                           not words this scanner could find.
+     the seven cue words the thirty three
+     saboteurs are defined by              0 of 7 resolved.
+     the thirty three saboteurs themselves all 33 are named in the book, so the
+                                           canon is sourced. the vocabulary that
+                                           reaches it was not.
+
+   So a person could write i am full of anger and the instrument that scores an
+   Anger axis, and defines eleven of its thirty three saboteurs by an anger
+   range, read nothing at all. Not a tuning problem. The scoring layer and the
+   reading layer did not share a vocabulary.
+
+   NOTHING HERE IS AUTHORED. Every seat comes from CHG2SEAT and every fetter
+   from CHG2FET, which are the app's own existing answers and already have an
+   owner. The amount is derived by a stated rule, below. If the owner moves a
+   charge to a different seat, this pass moves with it and no second table is
+   left behind holding the old answer, which is the defect this whole design
+   exists to prevent.
+   ============================================================ */
+/* THE AMOUNT, DERIVED, because a typed number here would be a magic number in
+   the most load bearing row of the table.
+
+   A bare axis noun is the LEAST specific evidence in its family. I was furious
+   is a stronger report than I have anger, and the table already prices that:
+   the Anger family runs 16 for defensive to 24 for furious. So the bare noun
+   takes the floor of its own family, never the median and never the top. Where
+   an axis has no authored family at all, and three of the nine do not, it takes
+   the lowest charged amount anywhere in the table. Both are read off the table
+   at load, so a retuned neighbour retunes this and the gate asserts the rule
+   rather than the number. Precision over recall: a false positive in a somatic
+   reading costs more than a miss. */
+function lexFamilyFloor(){
+ var fam={}, all=[];
+ Object.keys(LEX).forEach(function(k){
+  var e=LEX[k], amt=e[LEX_AMT];
+  if(amt<=0) return;
+  all.push(amt);
+  var f=e[LEX_FET]!=null?e[LEX_FET]:(ADJ2CHG[k]?CHG2FET[ADJ2CHG[k]]:null);
+  if(!f) return;
+  if(fam[f]===undefined||amt<fam[f]) fam[f]=amt;});
+ all.sort(function(a,b){return a-b;});
+ return {fam:fam, floor:all.length?all[0]:12};}
+
+/* THE WORDS THIS PASS OWES. Two sets, and they overlap.
+     the nine axis names, lowercased. these are what compute() scores.
+     every cue word SAB33 defines a saboteur by. these are what the saboteur
+     layer reads, and a saboteur nothing can trigger is a dead row.
+   Both are read off the canon at load. Neither is a list typed here, so
+   neither can fall out of step with the table it came from. */
+function lexCanonWords(){
+ var want={};
+ CHARGES.forEach(function(c){want[String(c).toLowerCase()]=1;});
+ SAB33.forEach(function(r){r[1].forEach(function(p){want[p[0]]=1;});});
+ return Object.keys(want).sort();}
+
+function lexCanon(){
+ var fl=lexFamilyFloor(), axis={};
+ CHARGES.forEach(function(c){axis[String(c).toLowerCase()]=c;});
+ var out={added:0,already:0,unseated:[],identity:[],floor:fl.floor,fam:fl.fam};
+ lexCanonWords().forEach(function(w){
+  /* ALREADY RESOLVES, SO NOTHING IS OWED. sad is the case: the axis is named
+     Sad, CHG2SEAT answers for sadness and not for sad, and the authored table
+     already seats sad at the heart, which is where CHG2SEAT puts sadness. The
+     pass does not need a seat it was never going to use. */
+  if(LEX[w]){out.already++;return;}
+  var bn=CHG2SEAT[w];
+  /* THE FETTER, AND THE ONE DERIVATION THAT IS NOT AN INVENTION. CHG2FET
+     answers for anxiety and not for anticipation, so the axis Anticipation had
+     no route from its own name. Where the word IS an axis name, the fetter is
+     that axis: the same string, by identity. Anything else would be a guess and
+     is refused below instead. */
+  var fet=CHG2FET[w]||axis[w]||null;
+  if(fet&&!CHG2FET[w])out.identity.push(w);
+  /* A WORD WITH NO SEAT IS NOT GUESSED AT. CHG2SEAT is the owner's ruling about
+     where a charge is held. The 112 addresses carry a second answer, in cf, and
+     the two DISAGREE for four of the nine axes: cf makes Shame modal at the
+     throat where CHG2SEAT says sacral, and Apathy modal at the sacral where
+     CHG2SEAT says throat, and Surprise and Anticipation are three way and five
+     way ties with no modal band at all. So cf is not a fallback, it is an open
+     question, and a pass that picked one of two disagreeing answers would be
+     laundering a ruling nobody has made. Reported by name, and the gate fails
+     on it, so it gets ruled rather than defaulted. */
+  if(!bn||!B2K[bn]||!fet){out.unseated.push(w);return;}
+  var amt=fl.fam[fet]!==undefined?fl.fam[fet]:fl.floor;
+  var a=lexAdd(w,B2K[bn],amt,fet,{src:'canon',from:'CHG2SEAT and CHG2FET',
+   rule:'family floor',cite:'canon'});
+  if(a.ok&&!a.already)out.added++; else if(a.already)out.already++;
+  /* and the charge name, so the imprint comes back NAMED. a person who wrote
+     the axis by its own name has named it, and an imprint marked inferred off
+     that word would be the instrument disowning the plainest evidence it ever
+     gets. */
+  chgAdd(w,w,{src:'canon',from:'CHARGES and SAB33',rule:'identity',cite:'canon'});});
+ return out;}
+
+/* THE ORDER IS LOAD BEARING. Canon first, then the fold, so the fold can take
+   an inflection of a canon word and never the other way round: a fold entry
+   generated off a key that did not exist yet would silently not be generated,
+   and the gate would then be asserting the absence of a bug it had itself
+   introduced. Both run before scanStory can be called. */
+var LEXCANONRUN=lexCanon();
+var LEXFOLDRUN=lexFold();
 function scanStory(text){
  var src=' '+String(text||'').toLowerCase().replace(/[^a-z' ]+/g,' ').replace(/\s+/g,' ')+' ';
  var hits=[];
@@ -4367,7 +5382,7 @@ function scanStory(text){
     /* A WORD MAY NAME ITS OWN FETTER, and some have to.
 
        LEX was [seat, intensity] and the fetter was then inferred from the
-       seat's modal one. That works while a seat carries the fetter the word
+       seat's modal one. That works while a seat carries the child emotion the word
        means, and the exhaustion family proves it does not always: the owner
        ruled that exhaustion sits at the solar plexus and is NOT anger, and the
        solar plexus carries ten Anger addresses and no Apathy address at all.
@@ -4502,7 +5517,7 @@ function parseStory(text){
      one Shame address at the heart was enough to route the whole heart band --
      including everything the despair idioms carried -- onto Shame, and grief
      was filed as shame. A named fetter now has to hold at least a quarter of
-     the band, otherwise the band's own modal fetter is the better read. */
+     the band, otherwise the band's own modal child emotion is the better read. */
   var seg=anyNamed? all.filter(function(n){return wanted[n.cf];}) : [];
   /* DID THE TEXT NAME THIS, OR DID WE INFER IT? The answer decides what the
      product is allowed to SAY, and until now it said the same thing either
@@ -4576,6 +5591,546 @@ function applyStory(text){
   .reduce(function(a,h){return a+Math.abs(h.amt);},0);
  if(calm)CHARGES.forEach(function(c){S.charge[c]=clamp(S.charge[c]-calm/140,0,10);});
  return {parsed:p, applied:touched};}
+
+/* ============================================================
+   SNIFFSTORY · THE OUTPUT CONTRACT, SNIFFER_SPEC.md SECTION 10.
+
+   scanStory, parseStory and applyStory are untouched and keep their bodies and
+   signatures, on the standing ruling. This is a new layer above them. It reads
+   what they already produce and emits the shape the spec specifies, so release
+   has something to consume that is not a bag of internal fields.
+
+   offer IS THE PAYLOAD. Everything else is evidence for it. The spec is explicit
+   that the sniffer's job is to end at an address with a named replacement state,
+   because that is exactly what release consumes, so offer is built first in
+   intent and emitted last in the object.
+
+   BECAUSE IS ALWAYS EMITTED. Every confidence in this output carries the
+   citation that produced it. A confidence with no citation is not inspectable,
+   and this instrument's whole defence is that it shows its work. The gate
+   asserts it on every saboteur, and it is asserted rather than trusted because
+   a missing citation is invisible in a rendered panel.
+
+   WHAT THIS LAYER DOES NOT DO, stated so nobody has to discover it:
+     it does not mutate. applyStory is still the only function that mutates.
+     it does not score another person. there is no subject model, so every hit
+       lands on the writer, which satisfies guard 2 by having no mechanism
+       rather than by a rule. a frame layer would need the rule.
+     it emits no clinical label. guard 1 is a translation column and never an
+       equals sign, so no mode name reaches this output as a condition.
+     it names no diagnosis and the gate asserts that too.
+   ============================================================ */
+
+/* THE SPEC'S COHERENT POLES AND ADDRESSES, section 2, which is the table the
+   offer is built from.
+
+   THIS DISAGREES WITH CHILD AND THE SPEC WINS, on the owner's ruling. Measured:
+   4 of the 9 coherent poles differ and one address differs materially.
+
+     Fear    spec Safety / Ground          CHILD Trust
+     Anger   spec Calm / Integrated Power  CHILD Equanimity
+     Apathy  spec Joy / Aliveness          CHILD Vitality
+     Sad     spec Happy / Restoration      CHILD Joy
+
+   AND THE TWO TABLES COLLIDE ON ONE WORD. The spec offers Joy at Apathy. CHILD
+   offers Joy at Sad. So a person could be offered Joy for their apathy on this
+   output and Joy for their sadness on every other surface in the product, which
+   is one word naming two different addresses. That is not something this seat
+   may settle by picking one: CHILD.opp is read by the wheel, the summary, the
+   drills and the release control, and moving it moves readings on surfaces this
+   pass has not measured. So the spec's table is used HERE, where the spec rules
+   the contract, the disagreement is named in the output as poleDiffers, and the
+   reconciliation is raised for the owner rather than performed.
+
+   The address differs materially on one axis. Surprise: the spec puts it at the
+   lower solar plexus, bilateral at the lung edges; CHILD puts it at the upper
+   chest and back with the Heart seat. A somatic address is the thing this
+   product points at on a body, so that is his call and not a rounding. */
+var SPEC_POLE={
+ Fear:        {addr:'Lumbar',                                      pole:'Safety / Ground'},
+ Anger:       {addr:'Celiac',                                      pole:'Calm / Integrated Power'},
+ Shame:       {addr:'Pudendal',                                    pole:'Worth / Self-respect'},
+ Disgust:     {addr:'Sacral / Dermis',                             pole:'Acceptance / Equanimity'},
+ Apathy:      {addr:'Shoulder / Throat',                           pole:'Joy / Aliveness'},
+ Shock:       {addr:'Dermis',                                      pole:'Groundedness'},
+ Sad:         {addr:'Inferior Cardiac',                            pole:'Happy / Restoration'},
+ Surprise:    {addr:'Lower solar plexus, bilateral at lung edges', pole:'Readiness'},
+ Anticipation:{addr:'Below the heart',                             pole:'Presence'}};
+
+/* RESENTMENT, AS THE COMPOSITE THE SPEC RULES IT IS.
+
+   "Resentment mapped onto Anger collapsed Aggressor and Manipulator in
+   simulation. Resentment is ruled as a composite, Anger plus Apathy, the grudge
+   held. Sniff it as the composite, not as Anger."
+
+   The shipped lexicon seats resentment at the solar plexus with no stated
+   fetter, so the fetter is inferred from the seat and comes back Anger alone,
+   which is exactly the mapping the spec names as the defect. The LEX row format
+   holds ONE fetter, so a composite cannot be expressed in it without changing a
+   schema that has other callers.
+
+   So the composite lives here, as a table this layer applies, and the charge is
+   SPLIT rather than doubled: half to each side. Doubling would let one word
+   carry twice the load of any other word in the table, which is a magic number
+   dressed as a composite. Split is the reading "the grudge held" actually
+   describes: anger that has stopped moving.
+
+   THE LEGACY PATH STILL READS IT AS ANGER, and that is stated rather than
+   quietly half fixed. applyStory keeps its body on the standing ruling, so
+   S.charge still takes resentment onto Anger alone. Moving that is a one line
+   change to parseStory and it is specified in DESIGN-sniffer.md for whoever
+   rules that the field should move with the contract. */
+var LEXCOMP={resentment:['Anger','Apathy'], resentful:['Anger','Apathy'],
+ bitter:['Anger','Apathy'], bitterness:['Anger','Apathy'], grudge:['Anger','Apathy'],
+ begrudge:['Anger','Apathy'], embittered:['Anger','Apathy']};
+
+/* A COMPOSITE KEY THE SCANNER CANNOT REACH IS A DEAD ROW, and three of these
+   were. Found by the gate rather than by reading: `grudge`, `begrudge` and
+   `embittered` are ordinary resentment words, they were in this table, and none
+   of them was in LEX, so each scored 0 and 0 while the table asserted it was a
+   composite. The first cut of the gate missed it because it exercised only
+   `resentful`, which IS seated. It exercises every key now.
+
+   THE SEAT AND THE AMOUNT ARE DERIVED, not typed, by the same rule lexCanon
+   already runs on: a key with no entry takes the seat its already seated family
+   members share, and the FLOOR of their amounts. The floor and not the median,
+   because an unseated word is the least evidenced member of its own family, and
+   because a typed number in a table this load bearing is a magic number waiting
+   to be questioned. Every seated member of this composite sits at the solar
+   plexus, so the seat is unanimous and nothing is being chosen.
+
+   THE STATED FETTER IS ANGER AND THAT IS NOT THE COMPOSITE CONTRADICTING
+   ITSELF. LEX holds one fetter per row and the composite holds two, so the row
+   states the seat's own reading and LEXCOMP does the split above it. That is
+   the same division of labour the exhaustion ruling uses: the seat says where,
+   the table above says what.
+
+   IF THE SEAT IS NOT UNANIMOUS the pass refuses rather than picking, and the
+   gate fails on the refusal, so it gets ruled instead of defaulted. */
+function lexComposite(){
+ var out={added:0,already:0,unseated:[],split:[],seat:null,amt:null};
+ var seats={}, amts=[];
+ Object.keys(LEXCOMP).forEach(function(k){
+  var e=LEX[k];
+  if(!e)return;
+  out.already++;
+  seats[e[LEX_SEAT]]=1;
+  if(e[LEX_AMT]>0)amts.push(e[LEX_AMT]);});
+ var sk=Object.keys(seats);
+ if(sk.length!==1||!amts.length){
+  out.split=sk;
+  Object.keys(LEXCOMP).forEach(function(k){if(!LEX[k])out.unseated.push(k);});
+  return out;}
+ amts.sort(function(a,b){return a-b;});
+ out.seat=sk[0]; out.amt=amts[0];
+ Object.keys(LEXCOMP).forEach(function(k){
+  if(LEX[k])return;
+  var a=lexAdd(k,out.seat,out.amt,'Anger',
+   {src:'composite',from:'the seated members of LEXCOMP',
+    rule:'unanimous seat, family floor',cite:'canon'});
+  if(a.ok&&!a.already)out.added++;
+  else out.unseated.push(k);});
+ return out;}
+var LEXCOMPRUN=lexComposite();
+
+/* ---------- the shared matcher ----------
+   ONE SCANNER FOR EVERY PHRASE TABLE IN THIS LAYER, with the two rules the rest
+   of the engine already learned the expensive way.
+
+   PRECEDENCE. Longest first, and a longer match blocks the shorter ones inside
+   it, which is scanStory's rule and the reason 'let them think' beats 'let
+   them' in the lean. Without it, a table containing both 'not my fault' and 'my
+   fault' reads a denial as an admission.
+
+   NEGATION. A match is void if a negator stands within the three words directly
+   before it. Ported from verp.js, including its width and its reason: three is
+   one clause of run up, and wider voids phrases whose negator belonged to the
+   previous sentence. Without it "i did not lie to them" fires Truth, which is
+   the instrument accusing a person of the thing they just denied.
+
+   This is the single biggest known weakness of the law table and it is handled
+   here rather than left. It is still not subject handling: "she lied to me"
+   fires Truth on the writer, and that is guard 2's problem, named in
+   DESIGN-sniffer.md and not solved by this pass. */
+var LAW_NEG=['not','no','never','nobody','none','cannot','cant','did',
+ 'didnt','dont','wont','wasnt','isnt','havent','hasnt','couldnt','wouldnt','refuse','refused'];
+var LAW_NEG_W=3;
+function lawNorm(text){
+ return ' '+String(text||'').toLowerCase().replace(/[^a-z' ]+/g,' ')
+  .replace(/'/g,'').replace(/\s+/g,' ')+' ';}
+function lawNegated(src,at){
+ var before=src.slice(0,at).trim().split(' ');
+ var run=before.slice(Math.max(0,before.length-LAW_NEG_W));
+ return run.some(function(w){return LAW_NEG.indexOf(w)>=0;});}
+/* every cue from every row, longest first, bounded by spaces, a longer match
+   blocking the shorter ones inside it. returns one entry per surviving hit. */
+function lawMatch(src,rows,cueAt){
+ var all=[];
+ rows.forEach(function(r,ri){r[cueAt].forEach(function(c){all.push({c:c,ri:ri});});});
+ all.sort(function(a,b){return b.c.length-a.c.length;});
+ var taken=[], out=[];
+ all.forEach(function(x){
+  var needle=' '+x.c.replace(/'/g,'')+' ', at=src.indexOf(needle);
+  while(at>=0){
+   var hi=at+needle.length-1;
+   if(!taken.some(function(t){return at<t.hi&&hi>t.at;})&&!lawNegated(src,at)){
+    taken.push({at:at,hi:hi});
+    out.push({row:rows[x.ri],ri:x.ri,cue:x.c,at:at});}
+   at=src.indexOf(needle,at+1);}});
+ return out.sort(function(a,b){return a.at-b.at;});}
+
+/* ---------- axes · two readings, never one signed number ----------
+   Guard 3. The shadow load and the coherent load are built in two separate
+   passes over the same hits and never subtracted from one another, because a
+   person can hold real Safety in one context and real Fear in another and one
+   signed number cannot say that.
+
+   The shadow comes off the seat totals parseStory already computes, mapped to
+   the axis through the fetter the hit names. The coherent comes off the hits
+   seated at `coherent`, which is the lexicon's own eighth seat for words that
+   pull the other way. Both are normalised to 0 through 10 by the same divisor
+   parseStory uses, so the two numbers are on one scale even though they are
+   independent. */
+function sniffAxes(p){
+ var shadow={}, coh=0, cited={};
+ CHARGES.forEach(function(c){shadow[c]=0;});
+ /* a hit that states its fetter states its axis. one that does not is routed
+    through the seat's reading, which parseStory has already resolved into
+    imprints, so this does not re-derive it and cannot disagree with it. */
+ p.imprints.forEach(function(im){
+  if(!im.fetter||shadow[im.fetter]===undefined)return;
+  shadow[im.fetter]+=im.amt;
+  (cited[im.fetter]=cited[im.fetter]||[]).push(
+   im.stated?'the text named '+im.fetter.toLowerCase():
+   im.inferred?'read from the '+im.band+' seat, no address named':
+   'at '+im.name);});
+ /* A STATED FETTER THAT parseStory DROPPED, RECOVERED. Measured, and it is the
+    reason this block exists rather than trusting the imprints alone.
+
+    "i am angry and exhausted" returned Anger 10 and Apathy 0. The owner's
+    exhaustion ruling is that exhaustion sits at the solar plexus and is NOT
+    anger, and parseStory honours that through its stateHere branch, but that
+    branch only runs when the seat has NO address for any wanted fetter. Here
+    `angry` puts Anger in wanted, the solar plexus carries ten Anger addresses,
+    so seg is non empty, the branch is skipped and the one thing the sentence
+    actually said about apathy is discarded. The same happens to every stated
+    fetter whose seat is shared with a co-occurring axis.
+
+    parseStory keeps its body on the standing ruling, so this is repaired here
+    and only where it was dropped: a stated fetter that no imprint carries is
+    added at the floor of what the hit itself scored. A fetter the imprints DID
+    carry is left alone, so nothing is counted twice. The one line change to
+    parseStory that would fix it at source is written down in DESIGN-sniffer.md
+    for whoever rules on it. */
+ var carried={};
+ p.imprints.forEach(function(im){if(im.fetter)carried[im.fetter]=1;});
+ p.hits.forEach(function(h){
+  if(!h.fet||carried[h.fet]||shadow[h.fet]===undefined)return;
+  shadow[h.fet]+=Math.abs(h.amt||0)/3;
+  (cited[h.fet]=cited[h.fet]||[]).push('"'+h.t+'" states '+h.fet+
+   ', and its seat is shared with another axis so the imprint layer dropped it');});
+ /* the composite. resentment is anger that has stopped moving, so it splits. */
+ p.hits.forEach(function(h){
+  var comp=LEXCOMP[h.t];
+  if(!comp)return;
+  var each=Math.abs(h.amt||0)/3/comp.length;
+  comp.forEach(function(f){
+   if(shadow[f]===undefined)return;
+   shadow[f]+=each;
+   (cited[f]=cited[f]||[]).push('"'+h.t+'" is the composite Anger and Apathy, split');});});
+ p.hits.forEach(function(h){if(h.band==='coherent')coh+=Math.abs(h.amt||0);});
+ var out=[];
+ CHARGES.forEach(function(c){
+  var s=Math.round(Math.min(10,shadow[c])*10)/10;
+  /* the coherent load is not apportioned per axis, because the lexicon's
+     coherent seat does not say WHICH axis a calm word answers. So it is
+     reported as one field level reading on every axis and says so, rather
+     than being split nine ways by an assumption nobody made. */
+  var k=Math.round(Math.min(10,coh/3)*10)/10;
+  out.push({axis:c, shadow:s, coherent:k,
+   address:SPEC_POLE[c]?SPEC_POLE[c].addr:null,
+   because: s>0?(cited[c]||[]).slice(0,3)
+    :['nothing in the text reached this axis'],
+   coherentBecause: k>0
+    ?['the text carries '+k+' of coherent language, not apportioned by axis']
+    :['no coherent language in the text'],
+   /* named against inferred, carried up from the imprints, because it decides
+      what a renderer is allowed to print as a finding. */
+   named:(cited[c]||[]).some(function(w){return w.indexOf('named')===0||w.indexOf('the text named')===0;})});});
+ return out;}
+
+/* ---------- saboteurs · ranked confidence, no boolean firing set ----------
+   THERE IS NO FIRING THRESHOLD HERE AND THAT IS DELIBERATE. The first
+   measurement of the ramp put it BEHIND a hard floor at 0.6 and it scored
+   WORSE than the staircase it replaced, 54.4 against 58.8 on set agreement. The
+   finding is that a ramp inside the membership buys nothing while the OUTPUT is
+   still a cliff: the edge moved from the band to the floor.
+
+   So the output is a ranked list with a confidence on every row and nothing is
+   discarded by a line. SAB_SHOW bounds what is RENDERED, which is a display
+   decision a renderer may change, and not a claim that row 4 is absent.
+
+   Measured on the ported bands, proto/sniffer/ramp.js and cohort.js:
+     resolution   the largest move in confidence one tenth of a point of input
+                  can cause falls from 0.5000 to 0.0375. thirteen times finer.
+     steadiness   mean absolute move in confidence under an off by one reading
+                  falls 9 to 15 percent.
+     set agree    a dead tie, 51.4 against 51.4 on the 14 stated profiles. the
+                  ramp helps Ana, Derek and Marcus and hurts James, Nkem and
+                  Wren. It redistributes stability, it does not add it, and
+                  saying otherwise would be inheriting a number.
+
+   THIS SEAT COULD NOT REPRODUCE THE SPEC'S 94 AND 73. Those need the cohort
+   they were measured on, and it is not in this repository. What is reported
+   above is what this seat can stand behind with its definition stated. */
+var SAB_SHOW=6;
+function sniffSaboteurs(axes){
+ var L={}, F={Fear:'fear',Anger:'anger',Shame:'shame',Disgust:'disgust',Apathy:'apathy',
+  Shock:'shock',Sad:'sadness',Surprise:'surprise',Anticipation:'anticipation'};
+ axes.forEach(function(a){L[F[a.axis]||String(a.axis).toLowerCase()]=a.shadow;});
+ var out=[];
+ SAB33.forEach(function(row,i){
+  var nm=row[0], parts=row[1], conf=sabConfidence(nm,parts,L);
+  if(conf<=0)return;
+  /* THE CITATION, and it is the whole reason this row is inspectable. Every
+     part says its level, its band, where in the band it sat, and what the
+     membership came out as, so a person can see why and a reviewer can see
+     where it is wrong. */
+  var because=parts.map(function(p){
+   var lvl=Math.round((L[p[0]]||0)*10)/10, m=sabMember(lvl,p[1],p[2]);
+   var where=lvl<p[1]?'under the band':lvl>p[2]?'over the band':'in the band';
+   return AXOF(p[0])+' '+lvl+' '+where+' '+p[1]+' to '+p[2]+
+    ', ramp '+(Math.round(m*100)/100);});
+  var w=sabWeight(nm,parts);
+  if(w!==1)because.push(parts.length===1
+   ?'one child emotion only, so the claim is the least specific in the table and is held at '+w
+   :'held at '+w+' on the ruling that this row fires on everything');
+  out.push({id:'S'+String(i+1<10?'0':'')+(i+1), name:nm,
+   confidence:Math.round(conf*100)/100, because:because, weight:w,
+   fetters:parts.map(function(p){return AXOF(p[0]);})});});
+ out.sort(function(a,b){return b.confidence-a.confidence||
+  (a.name<b.name?-1:a.name>b.name?1:0);});
+ return out;}
+function AXOF(k){return {fear:'Fear',anger:'Anger',shame:'Shame',disgust:'Disgust',
+ apathy:'Apathy',shock:'Shock',sadness:'Sad',surprise:'Surprise',
+ anticipation:'Anticipation'}[k]||k;}
+
+/* ---------- laws · with the direction on the four that need it ----------
+   The score is the violation load, 0 through 10, and it is a COUNT scaled and
+   clamped rather than a model, which is what the evidence supports. Two cues is
+   not twice the violation of one, so it is a diminishing curve: the first cue
+   carries most of the reading and the tenth carries almost none. The shape is
+   the same asymptote verp.js uses for its trust ramp, for the same reason, that
+   a handful of substring matches must not buy certainty. */
+function sniffLaws(text){
+ var src=lawNorm(text), hits=lawMatch(src,LAWCUE,3), by={};
+ hits.forEach(function(h){
+  var r=h.row, key=r[0]+'|'+r[2];
+  if(!by[key])by[key]={e:r[0],law:r[1],direction:r[2],n:0,cues:[]};
+  by[key].n++;
+  if(by[key].cues.indexOf(h.cue)<0)by[key].cues.push(h.cue);});
+ return Object.keys(by).map(function(k){
+  var v=by[k];
+  var score=Math.round(10*(v.n/(v.n+2))*10)/10;
+  var vio=LAWVIO[v.law]?LAWVIO[v.law][v.direction]||LAWVIO[v.law].single:null;
+  return {e:v.e, law:v.law, violation:vio, score:score,
+   direction:v.direction===LAW_ONE?null:v.direction,
+   because:v.cues.slice(0,3).map(function(c){return '"'+c+'" in the text';})
+    .concat(v.direction!==LAW_ONE
+     ?['read in the '+v.direction+' direction, which the spec rules is the half a one sided reader misses']
+     :[])};})
+  .sort(function(a,b){return b.score-a.score||a.e-b.e;});}
+/* the violation reading per law, the spec's own strings from section 6, and both
+   readings on the four it rules bidirectional. */
+var LAWVIO={
+ Truth:{single:'Deception'}, Transparency:{single:'Opacity'}, Unity:{single:'Division'},
+ Awareness:{single:'Reactivity'}, Presence:{single:'Absence'}, Equanimity:{single:'Volatility'},
+ Compassion:{other:'Indifference', self:'Self-abandonment'},
+ Forgiveness:{single:'Resentment'}, Courage:{single:'Avoidance'},
+ Temperance:{single:'Overindulgence'}, Duty:{single:'Betrayal'},
+ Ownership:{other:'Justification outward', self:'Victimhood inward'},
+ Justice:{single:'Corruption'}, 'Non-Harm':{single:'Cruelty and carelessness'},
+ Wisdom:{single:'Folly and sophistry'},
+ Humility:{other:'Pride and grandiosity', self:'Self-abasement'},
+ Generosity:{other:'Hoarding on giving', self:'Entitlement on receiving'},
+ Detachment:{single:'Attachment'}, Patience:{single:'Forcing or scattering'},
+ 'Aesthetic Beauty':{single:'Chaos'}, Nature:{single:'Synthetic departure'}};
+
+/* ---------- flow · expression only, and the two empty lenses say why ---------- */
+function sniffFlow(text){
+ var src=lawNorm(text), hits=lawMatch(src,EXPRCUE,3), by={};
+ hits.forEach(function(h){var r=h.row;
+  if(!by[r[0]])by[r[0]]={e:r[0],law:r[1],shadow:r[2],cues:[]};
+  if(by[r[0]].cues.indexOf(h.cue)<0)by[r[0]].cues.push(h.cue);});
+ var expr=Object.keys(by).map(function(k){var v=by[k];
+  return {e:v.e, law:v.law, shadow:v.shadow,
+   because:v.cues.slice(0,3).map(function(c){return '"'+c+'" in the text';})};});
+ /* NOT ZERO, UNREADABLE, and the difference matters. An empty array with no
+    explanation reads as "nothing violated". These two lenses are 28 of the
+    spec's 76 slots and the file that carries their shadow strings is not in
+    this repository, so the honest answer is that they were not read. */
+ return {nature:[], human:[], expression:expr,
+  unread:['nature','human'],
+  because:['the 13 nature and 15 human nature elements carry their shadow strings in '+
+   'reviews/elements.json, which is not in this repository, so they were not read '+
+   'rather than read as clean']};}
+
+/* ---------- gates · two upstream feeding one sump ----------
+   Section 8, and it is ruled that this is not three peers.
+
+       Aware / Ignorant   --+
+                            +--> Intentional / Avoidant   the sump
+       Detached / Attached--+
+
+   THE CASCADE IS FITTED TO HIS OWN THREE NUMBERS AND NOT TO A CURVE THIS SEAT
+   PREFERRED. The spec measures avoidance at 14.5 percent with both upstream
+   clean, 43.2 with one distorted and 71.9 with both. Those three points are
+   exactly linear: 43.2 minus 14.5 is 28.7, and 71.9 minus 43.2 is 28.7 to the
+   tenth. So the cascade has a base and one step, both read straight off his
+   measurement, and there is no third parameter to tune.
+
+       avoidance = 14.5 + 28.7 x (aware distortion + detached distortion)
+
+   with each distortion 0 through 1. It reproduces all three of his points
+   exactly and generalises to the continuous case, which is what a story gives.
+
+   GUARD 5 IS STRUCTURAL HERE, not advisory. "An avoidance number shown alone is
+   a readout of everything upstream, not a trait. Show the upstream state with
+   it or it reads as a character flaw." So avoidance is not a bare number on
+   this object: it sits inside `intentional` next to the two upstream readings
+   that produced it and a because that names them. A renderer that prints the
+   number has the upstream state in its hand and cannot avoid having been given
+   it. That is as far as an engine can enforce a rendering rule. */
+var GATE_BASE=14.5, GATE_STEP=28.7;
+function sniffGates(text){
+ var s=(typeof verpScan==='function')?verpScan(text):{hits:{},total:0};
+ var h=s.hits||{};
+ function side(up,down){
+  var u=h[up]||0, d=h[down]||0, n=u+d;
+  return {clean:n?u/n:null, distortion:n?d/n:null, n:n, read:n>0};}
+ var aware=side('aware','ignore'), det=side('detach','attach');
+ /* no evidence is not a clean reading. with nothing matched the upstream is
+    unread and the cascade is not run, because running it on assumed zeros
+    would report 14.5 percent avoidance to somebody who wrote nothing about it. */
+ var read=aware.read&&det.read;
+ var dist=read?(aware.distortion+det.distortion):null;
+ return {
+  aware:    aware.read?Math.round(aware.clean*100)/100:null,
+  detached: det.read  ?Math.round(det.clean  *100)/100:null,
+  intentional: read?{
+   avoidance:Math.round((GATE_BASE+GATE_STEP*dist)*10)/10,
+   of:100,
+   upstream:{aware:Math.round(aware.clean*100)/100,
+             detached:Math.round(det.clean*100)/100},
+   because:['aware against ignorant read '+aware.n+' cues, '+
+             Math.round(aware.distortion*100)+' of 100 distorted',
+            'detached against attached read '+det.n+' cues, '+
+             Math.round(det.distortion*100)+' of 100 distorted',
+            'the sump is 14.5 of 100 with both upstream clean and rises 28.7 '+
+             'for each one distorted, which is his measured cascade']}:null,
+  read:read, cues:s.total,
+  because:read?['both upstream gates were read from the text']
+   :['the text matched '+s.total+' gate cues, and the sump is not computed '+
+     'without both upstream readings, because assuming them clean would report '+
+     'an avoidance number nobody entered']};}
+
+/* ---------- depth · Dante, and null rather than a guess ----------
+   The C8 test is implemented as a test because the spec calls it one: warmth
+   that requires an audience. A giving marker and a display marker inside one
+   sentence's reach of each other. Everything else is a thin phrase table or an
+   empty one, and four of the nine circles are empty and reported so.
+
+   depth returns null when nothing reads. A depth reading is the heaviest thing
+   in this output and a low confidence guess at it is worse than no reading,
+   because a person told they are in the eighth circle on two matched substrings
+   has been handed a verdict the instrument cannot support. */
+function sniffDepth(text){
+ var src=lawNorm(text), best=null, why=[];
+ /* the C8 test first, because it outranks a word list: it is a relation
+    between two markers rather than the presence of one. */
+ var give=[], aud=[];
+ C8_GIVE.forEach(function(c){var at=src.indexOf(' '+c+' ');
+  while(at>=0){if(!lawNegated(src,at))give.push(at);at=src.indexOf(' '+c+' ',at+1);}});
+ C8_AUDIENCE.forEach(function(c){var at=src.indexOf(' '+c+' ');
+  while(at>=0){aud.push(at);at=src.indexOf(' '+c+' ',at+1);}});
+ if(give.length&&aud.length){
+  var near=give.some(function(g){return aud.some(function(a){
+   return Math.abs(src.slice(Math.min(g,a),Math.max(g,a)).split(' ').length)<=C8_WINDOW;});});
+  if(near) best={circle:'C8', pattern:'Fraud. Performed warmth',
+   confidence:0.4,
+   because:['a giving marker and a display marker inside one sentence of each other',
+    'the spec\'s test: does the warmth cost anything, or does it require an audience',
+    'confidence is held at 0.4 because this is one relation in one sentence and '+
+    'not a pattern across entries']};}
+ if(!best){
+  var hits=lawMatch(src,DANTECUE,3), tal={};
+  hits.forEach(function(h){var c=h.row;
+   if(!tal[c[0]])tal[c[0]]={circle:c[0],pattern:c[1]+'. '+c[2],cues:[]};
+   if(tal[c[0]].cues.indexOf(h.cue)<0)tal[c[0]].cues.push(h.cue);});
+  var ks=Object.keys(tal).sort(function(a,b){return tal[b].cues.length-tal[a].cues.length;});
+  if(ks.length){var t=tal[ks[0]];
+   best={circle:t.circle, pattern:t.pattern,
+    confidence:Math.round(Math.min(0.5,t.cues.length*0.15)*100)/100,
+    because:t.cues.slice(0,3).map(function(c){return '"'+c+'" in the text';})
+     .concat(['confidence is capped at 0.5 for every circle but C8, because a '+
+      'circle read off a phrase list is weaker evidence than a test'])};}}
+ if(!best) return {circle:null, confidence:0, pattern:null,
+  because:['nothing in the text reached a circle. four of the nine carry no cue '+
+   'table at all and are reported unkeyed rather than clean'],
+  unkeyed:DANTECUE.filter(function(c){return !c[3].length&&c[0]!=='C8';})
+   .map(function(c){return c[0];})};
+ best.unkeyed=DANTECUE.filter(function(c){return !c[3].length&&c[0]!=='C8';})
+  .map(function(c){return c[0];});
+ return best;}
+
+/* ---------- offer · the payload ----------
+   The spec: "offer is the payload. Everything else is evidence for it. The
+   sniffer's job is to end at an address with a named replacement state, because
+   that is exactly what release consumes."
+
+   So this is the one field that must never come back empty when the axes carried
+   anything, and the gate asserts that. It is ordered by shadow load, because the
+   address carrying most is the one release should be offered at first, and it
+   carries the disagreement with CHILD by name rather than hiding it. */
+var OFFER_MAX=3;
+function sniffOffer(axes){
+ return axes.filter(function(a){return a.shadow>0;})
+  .sort(function(a,b){return b.shadow-a.shadow;})
+  .slice(0,OFFER_MAX)
+  .map(function(a){
+   var sp=SPEC_POLE[a.axis], ch=CHILD.find(function(c){return c.nm===a.axis;});
+   var differs=ch&&sp&&sp.pole.toLowerCase().indexOf(String(ch.opp).toLowerCase())<0;
+   return {address:sp?sp.addr:null, axis:a.axis,
+    replacement:sp?sp.pole:null,
+    shadow:a.shadow, coherent:a.coherent,
+    because:['the '+a.axis+' axis carries '+a.shadow+' of 10 of shadow load at '+
+      (sp?sp.addr:'an unnamed address'),
+     'every shadow in the system has a named coherent opposite at the same '+
+      'address, and detecting the shadow is what names the replacement to offer']
+     .concat(a.because.slice(0,2)),
+    /* named where the two tables disagree, so a renderer can decline to print
+       a replacement the rest of the product contradicts. */
+    poleDiffers:differs?{spec:sp.pole, child:ch.opp}:null};});}
+
+/* ---------- the contract ---------- */
+function sniffStory(text){
+ var p=parseStory(text);
+ var axes=sniffAxes(p);
+ return {
+  axes:      axes,
+  saboteurs: sniffSaboteurs(axes).slice(0,SAB_SHOW),
+  laws:      sniffLaws(text),
+  flow:      sniffFlow(text),
+  gates:     sniffGates(text),
+  depth:     sniffDepth(text),
+  offer:     sniffOffer(axes),
+  /* the working, kept, because a contract that discards its own evidence cannot
+     be audited and re-parsing is what makes the atom layer possible. */
+  parsed:    p,
+  /* WHAT THIS READING DOES NOT KNOW. Carried in the output rather than left to
+     a reviewer to remember, because every one of these is a place a renderer
+     could otherwise print a clean reading over a hole. */
+  gaps:      (typeof lawCoverage==='function')?lawCoverage():null};}
 
 /* ============================================================
    ASTRO. The actual sky, computed here, offline, from the birth
@@ -5726,7 +7281,7 @@ if(typeof module!=='undefined'&&module.exports){
                   LEANCH:LEANCH, LEANLEX:LEANLEX, LEANCUE:LEANCUE,
                   LEANFRAME:LEANFRAME, LEANOUT:LEANOUT,
                   leanAdmit:leanAdmit, leanSeries:leanSeries, leanChan:leanChan,
-                  leanNegated:leanNegated, LEANNEG:LEANNEG, LEAN_NEG_W:LEAN_NEG_W,
+                  leanNegated:leanNegated, leanCount:leanCount, LEANNEG:LEANNEG, LEAN_NEG_W:LEAN_NEG_W,
   /* VERPCUE was reachable as a browser global and absent from the contract,
      so no test could check the lean tables against it. One phrase in both
      moves two instruments on one occurrence, which is what 'let it go' did. */
@@ -5750,6 +7305,52 @@ if(typeof module!=='undefined'&&module.exports){
      no test can reach is a table with no owner. */
                   IQ_STEM:IQ_STEM,
   /* sniffer */   scanStory:scanStory, parseStory:parseStory, applyStory:applyStory,
+  /* THE OUTPUT CONTRACT, SNIFFER_SPEC.md section 10. sniffStory is the one
+     entry point a caller needs; the seven part builders are exported beside it
+     because the gate asserts each part on its own and a part no test can reach
+     is a part with no owner, which is the defect this layer exists to close. */
+                  sniffStory:sniffStory, sniffAxes:sniffAxes,
+                  sniffSaboteurs:sniffSaboteurs, sniffLaws:sniffLaws,
+                  sniffFlow:sniffFlow, sniffGates:sniffGates,
+                  sniffDepth:sniffDepth, sniffOffer:sniffOffer,
+                  SPEC_POLE:SPEC_POLE, LEXCOMP:LEXCOMP, LAWVIO:LAWVIO,
+                  lexComposite:lexComposite, LEXCOMPRUN:LEXCOMPRUN,
+                  SAB_SHOW:SAB_SHOW, OFFER_MAX:OFFER_MAX,
+                  GATE_BASE:GATE_BASE, GATE_STEP:GATE_STEP,
+  /* the band edge. sabMember is the ramp itself and the gate asserts it is
+     continuous where the shipped staircase was not, so it has to be reachable.
+     sabConfidence and sabWeight carry the specificity ruling. */
+                  sabMember:sabMember, sabFetters:sabFetters,
+                  sabConfidence:sabConfidence, sabWeight:sabWeight,
+                  SAB_EDGE:SAB_EDGE, SAB_BELOW:SAB_BELOW, SAB_ABOVE:SAB_ABOVE,
+                  SAB_ARITY:SAB_ARITY, SABW:SABW,
+  /* the law, expression and depth cue tables, and the coverage report that
+     refuses to let an average hide the hole in them. */
+                  LAWCUE:LAWCUE, EXPRCUE:EXPRCUE, DANTECUE:DANTECUE,
+                  lawCoverage:lawCoverage, C8_GIVE:C8_GIVE, C8_AUDIENCE:C8_AUDIENCE,
+                  LAW_SELF:LAW_SELF, LAW_OTHER:LAW_OTHER, LAW_ONE:LAW_ONE,
+  /* the lexicon's schema and its provenance. exported because the gate has to
+     be able to prove the validator REFUSES, and because a provenance table no
+     test can reach is a provenance table with no owner, which is the defect
+     this whole layer exists to close. lexAdd and chgAdd are load time builders:
+     they are what the canon and fold passes are made of, and nothing calls them
+     after boot. */
+  /* the two canon tables the canon pass derives every seat and fetter from.
+     exported so the gate can assert the derivation against them rather than
+     against a number typed into the test, which is the failure this repository
+     has been bitten by seven times. */
+                  CHG2SEAT:CHG2SEAT, CHG2FET:CHG2FET, B2K:B2K, K2BAND:K2BAND,
+                  LEX_SEAT:LEX_SEAT, LEX_AMT:LEX_AMT, LEX_FET:LEX_FET,
+                  LEX_SEATS:LEX_SEATS, LEX_SRC:LEX_SRC, LEX_AMT_MAX:LEX_AMT_MAX,
+                  LEXMETA:LEXMETA, CHGMETA:CHGMETA,
+                  lexKeyOk:lexKeyOk, lexRefuse:lexRefuse,
+                  lexAdd:lexAdd, chgAdd:chgAdd,
+                  LEX_FOLD_RULES:LEX_FOLD_RULES, LEX_FOLD_OK:LEX_FOLD_OK,
+                  LEX_FOLD_NO:LEX_FOLD_NO, lexFold:lexFold,
+                  LEX_DEAD:LEX_DEAD,
+                  lexCanon:lexCanon, lexCanonWords:lexCanonWords,
+                  lexFamilyFloor:lexFamilyFloor,
+                  LEXCANONRUN:LEXCANONRUN, LEXFOLDRUN:LEXFOLDRUN,
                   pathOf:pathOf, seatOf:seatOf, SEATXY:SEATXY, PATHSEAT:PATHSEAT,
   /* birth */     sunSign:sunSign, moonSign:moonSign, risingSign:risingSign,
                   lifePath:lifePath, spiritual:spiritual, converge:converge,
@@ -5769,6 +7370,11 @@ if(typeof module!=='undefined'&&module.exports){
                   saveState:saveState,
                   validateProfile:validateProfile, loadProfile:loadProfile,
                   blankProfile:blankProfile,
+  /* the two nested bags' closed key sets, exported so the gate can assert
+     them against OB_NEVER rather than against a second list typed in the
+     test, and RIT_PLAN_MAX so the surface and the boundary are one number */
+                  RIT_KEYS:RIT_KEYS, ENT_KEYS:ENT_KEYS,
+                  RIT_PLAN_MAX:RIT_PLAN_MAX, RIT_MIN_MAX:RIT_MIN_MAX,
   /* palettes */  PAL_VIVID:PAL_VIVID,
   /* series */    seriesRead:seriesRead, SPANS:SPANS, spanOf:spanOf,
   /* outbox */    obQueue:obQueue, obValidate:obValidate, obDrain:obDrain,
