@@ -217,6 +217,26 @@ function measure(){
 function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;
  let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;
  return ((t^t>>>14)>>>0)/4294967296;};}
+/* A STREAM PER PERSON PER PURPOSE, AND IT HAS TO BE HASHED AND WARMED.
+
+   The first attempt seeded each stream with seed + index * a large constant.
+   mulberry32's first output off a structured seed is not independent of the
+   seed, so day one drew from a sequence of correlated first values and
+   validation 3 caught it immediately: Derek's day one came out at 70 percent
+   of 170 against a published 62, thirteen people outside a six point
+   tolerance. Every other row passed, which is exactly how a defect like this
+   gets shipped.
+
+   The seed is scrambled through a splitmix64 style finaliser and the stream
+   discards four draws before anybody reads it. Validation 3 passes on all
+   nine rows after both. */
+function stream(seed,ix,purpose){
+ let h=(seed>>>0)^Math.imul(ix+1,0x9E3779B1)^Math.imul(purpose+1,0x85EBCA77);
+ h=Math.imul(h^(h>>>16),0x21F0AAAD); h=Math.imul(h^(h>>>15),0x735A2D97);
+ h=(h^(h>>>15))>>>0;
+ const r=mulberry32(h);
+ r();r();r();r();
+ return r;}
 function surv(pts,day){
  if(day<=0)return 1;
  for(let i=1;i<pts.length;i++){
@@ -319,7 +339,22 @@ function runSim(cfgName,opt){
  const pfl=opt.pfloor!==undefined?opt.pfloor:SRC.pfloor.v;
  const stakeOR=opt.stake!==undefined?opt.stake:SRC.stake.v;
  const harm=opt.harm!==undefined?opt.harm:SRC.assertHarm.v;
- const rnd=mulberry32(opt.seed||20260920);
+ /* THREE STREAMS, NOT ONE, AND THIS IS A CORRECTION TO A TOOL THAT WAS LYING.
+
+    The first cut drew the practice, the floor and the churn from one stream.
+    The floor draw only happens on a day the practice was NOT done, so two
+    configurations that differ anywhere consume a different number of random
+    numbers and every draw after the first divergence is a different draw. The
+    symptom was unmistakable once it was looked for: the asserted affirmation
+    arm, which applies an odds ratio BELOW one to eight hundred of the
+    thousand and can only make things worse, reported nine people BETTER than
+    the tested arm. That was the stream, not the mechanic.
+
+    Each purpose now has its own stream, seeded from the run seed and the
+    person's index, so a person's practice draw on day 40 is the same number
+    whatever else the configuration changed. An ablation is then a comparison
+    of one term rather than of two different dice. */
+ const seed=opt.seed||20260920;
  const meas={}; measure().forEach(m=>{meas[m.nm]=m;});
  const people=[];
  for(const row of PANEL) for(let i=0;i<row.w;i++) people.push({nm:row.nm});
@@ -330,8 +365,13 @@ function runSim(cfgName,opt){
  const total=new Array(91).fill(0);
  const SPEC=cfgName!=='current';
 
+ let PIX=0;
  for(const per of people){
   const m=meas[per.nm];
+  PIX++;
+  const rPractice=stream(seed,PIX,0);
+  const rFloor   =stream(seed,PIX,1);
+  const rChurn   =stream(seed,PIX,2);
   const tp=m.tp[cfg.sniff]||{span:false,affirm:false};
   /* IS THE RITUAL TIED TO SOMETHING OF THE PERSON'S OWN.
 
@@ -396,12 +436,12 @@ function runSim(cfgName,opt){
       assumed away. */
    const mins=m.min;
    pdo=pdo*(1-Math.min(0.35,Math.max(0,(mins-5))*0.012));
-   let did=rnd()<pdo, onFloor=false;
+   let did=rPractice()<pdo, onFloor=false;
    /* THE FLOOR. Sixty seconds on the person's own affirmation, held against
       the body rather than repeated at it. It counts, and that is the whole
       mechanic: a day a person could not give twenty minutes to is still a day
       they kept. Finch ships four commitment levels for the same reason. */
-   if(!did&&canFloor&&rnd()<pfl){did=true; onFloor=true; floors++;}
+   if(!did&&canFloor&&rFloor()<pfl){did=true; onFloor=true; floors++;}
    if(did){
     done++;
     if(day-last===1)streak++; else streak=1;
@@ -448,7 +488,7 @@ function runSim(cfgName,opt){
      h+=shock*frag*(cfg.halving?0.5:1);
      brokeToday=true;}
    }
-   if(rnd()<Math.min(h,0.999)){
+   if(rChurn()<Math.min(h,0.999)){
     live=false;
     const band=day<=2?'in the first two days':(day<=7?'in week one':
       (day<=30?'between day 8 and day 30':'after day 30'));
@@ -545,7 +585,28 @@ function validate(){
    .some(f=>f.seat==='coherent'),
   'and the frame layer can read the coherent side, not only load');
 
- console.log('\nVALIDATION 6. The ladder is monotone where it has to be.');
+ console.log('\nVALIDATION 6. The streams are independent, so an ablation is one term.');
+ const a1=runSim('final').total[30], a2=runSim('final').total[30];
+ ok(a1===a2,'the same configuration run twice returns the same number, '+a1);
+ /* a flag the walk cannot reach must change nothing at all. tieRelease is
+    read only where tieImprint already decided the answer for these people, so
+    turning coin to a name the model does not branch on must be inert. */
+ const inert=Object.assign({},CFG.final,{coin:'posthoc'});
+ CFG['__inert']=inert;
+ ok(runSim('__inert').total[30]===a1,
+  'and a flag the walk does not branch on changes nothing, '+runSim('__inert').total[30]);
+ delete CFG['__inert'];
+ /* and the refused arm has to come out WORSE, because its odds ratio is below
+    one for 800 of 1000 and it can do nothing else. Under one shared stream
+    this check failed by nine people and that is why the streams were split. */
+ const asrt=runSim('REFUSED affirmation asserted').total[30];
+ ok(asrt<=a1,'the asserted affirmation arm is not better than the tested one, '
+  +asrt+' against '+a1);
+ const lossArm=runSim('REFUSED loss framing').total[30];
+ ok(lossArm>=a1,'and the loss framed arm is not worse than the control one, '
+  +lossArm+' against '+a1+', which is the whole reason it is refused rather than missed');
+
+ console.log('\nVALIDATION 7. The ladder is monotone where it has to be.');
  /* every rung adds a credit and removes nothing, so no rung may retain fewer
     at day 30 than the rung below it by more than sampling noise. Two people
     of slack, which is the same tolerance validation 3 uses. */
@@ -668,6 +729,21 @@ function report(){
   console.log([k,r.total[1],r.total[7],r.total[14],r.total[30],r.total[60],r.total[90],
    bl.toFixed(1)+' points',(k==='current'?'':(bl-base>=0?'+':'')+(bl-base).toFixed(1)+' points'),what].join('\t'));});
  const fin=runs.final.total[30]/10;
+ /* NINE SEEDS, BECAUSE A ROW OF FIFTEEN CANNOT CARRY A ONE SEED CLAIM. The
+    headline stays on the declared seed so the number cannot be shopped for,
+    and the spread is printed beside it so nobody has to take it on trust. */
+ const SEEDS=[20260920,11,222,3333,44444,555555,6666666,77,888];
+ const bs=SEEDS.map(sd=>runSim('built',{seed:sd}).total[30]/10);
+ const fs2=SEEDS.map(sd=>runSim('final',{seed:sd}).total[30]/10);
+ const ds=fs2.map((v,i)=>v-bs[i]);
+ const mean=a=>a.reduce((x,y)=>x+y,0)/a.length;
+ console.log('\nacross '+SEEDS.length+' seeds: baseline mean '+mean(bs).toFixed(1)
+  +' points, range '+Math.min(...bs).toFixed(1)+' to '+Math.max(...bs).toFixed(1)
+  +'; final mean '+mean(fs2).toFixed(1)+' points, range '+Math.min(...fs2).toFixed(1)
+  +' to '+Math.max(...fs2).toFixed(1)+'; delta mean '+mean(ds).toFixed(1)
+  +' points, range '+Math.min(...ds).toFixed(1)+' to '+Math.max(...ds).toFixed(1)+'.');
+ console.log('  seeds reaching the ten point target: '+ds.filter(d=>d>=10).length
+  +' of '+SEEDS.length+'.');
  console.log('\nBASELINE '+base.toFixed(1)+' points of 1000 at day 30. FINAL '+fin.toFixed(1)
   +' points. DELTA '+(fin-base>=0?'+':'')+(fin-base).toFixed(1)+' points.');
  console.log('Target was ten points. '+((fin-base)>=10?'Reached.':'NOT REACHED, short by '
@@ -693,11 +769,16 @@ function report(){
   PANEL.forEach(r=>{
    const row=[1,7,14,30,60,90].map(d=>runs[k].alive[r.nm][d]);
    console.log([r.nm,r.w].concat(row).concat([(100*row[3]/r.w).toFixed(1)+' percent']).join('\t'));});});
- console.log('\nthe move, per ICP, in people of that row and in points of that row:');
+ console.log('\nthe move, per ICP, AVERAGED OVER NINE SEEDS, because a row of fifteen');
+ console.log('cannot carry a one seed claim and the first cut of this table read three');
+ console.log('people of sampling noise on James as a regression.');
+ const SEEDS2=[20260920,11,222,3333,44444,555555,6666666,77,888];
+ const B=SEEDS2.map(sd=>runSim('built',{seed:sd})), Fz=SEEDS2.map(sd=>runSim('final',{seed:sd}));
  console.log(['who','of','d30 baseline','d30 final','people','points of the row','points of 1000'].join('\t'));
  PANEL.forEach(r=>{
-  const a=runs.built.alive[r.nm][30], b=runs.final.alive[r.nm][30];
-  console.log([r.nm,r.w,a,b,(b-a>=0?'+':'')+(b-a),
+  const a=B.reduce((x,R)=>x+R.alive[r.nm][30],0)/B.length;
+  const b=Fz.reduce((x,R)=>x+R.alive[r.nm][30],0)/Fz.length;
+  console.log([r.nm,r.w,a.toFixed(1),b.toFixed(1),(b-a>=0?'+':'')+(b-a).toFixed(1),
    ((b-a)/r.w*100>=0?'+':'')+((b-a)/r.w*100).toFixed(1),
    ((b-a)/10>=0?'+':'')+((b-a)/10).toFixed(1)].join('\t'));});
 
@@ -815,15 +896,28 @@ function sweep(){
   console.log('  OR '+h.toFixed(2)+'\td30 '+r.total[30]+'\tagainst the tested affirmation at '
    +runSim('final').total[30]);});
 
- console.log('\nTHE PESSIMISTIC FLOOR. Every coefficient of mine at its worst end at once.');
- const worst={chainD:0, pfloor:0, stake:1.0, grad:1.0, load:0, shock:0.40, awardD:0,
- firstshow:1.0};
+ console.log('\nTWO FLOORS, BECAUSE ONE OF THEM CONFLATES TWO THINGS.');
+ /* (a) isolates the credits. Every coefficient that lifts a probability or
+    credits a hazard is set to nothing and the break shock is left at its
+    point estimate, so the comparison is about what MY OPTIMISM is worth.
+    (b) is the whole model pessimistic at once, including a harsher break
+    shock, which lowers both arms and therefore shrinks the absolute delta
+    without saying anything about the design. Both are reported because
+    quoting only (b) understates and quoting only (a) overstates. */
+ const noCredit={chainD:0, pfloor:0, stake:1.0, grad:1.0, load:0, awardD:0, firstshow:1.0};
+ const na=runSim('final',noCredit), nb=runSim('built',noCredit);
+ console.log('  (a) every credit coefficient of mine at zero, break shock left alone:');
+ console.log('      baseline '+(nb.total[30]/10).toFixed(1)+' points, final '
+  +(na.total[30]/10).toFixed(1)+' points, delta '
+  +((na.total[30]-nb.total[30])/10>=0?'+':'')+((na.total[30]-nb.total[30])/10).toFixed(1)+' points.');
+ console.log('      What survives there is only what is MEASURED: the content chain\'s');
+ console.log('      throughput per ICP and the four fixes already in the build.');
+ const worst=Object.assign({shock:0.40},noCredit);
  const pf=runSim('final',worst), pb=runSim('built',worst);
- console.log('  baseline at the pessimistic end '+(pb.total[30]/10).toFixed(1)+' points, final '
+ console.log('  (b) and the same with the break shock at its harshest too:');
+ console.log('      baseline '+(pb.total[30]/10).toFixed(1)+' points, final '
   +(pf.total[30]/10).toFixed(1)+' points, delta '
   +((pf.total[30]-pb.total[30])/10>=0?'+':'')+((pf.total[30]-pb.total[30])/10).toFixed(1)+' points.');
- console.log('  At that end the design keeps only what is MEASURED: the content chain\'s');
- console.log('  throughput and the four fixes already built. Nothing of mine survives it.');
 
  console.log('\nseed. Five seeds, day 30 of 1000, baseline and final:');
  [20260920,11,222,3333,44444].forEach(sd=>{

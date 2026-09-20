@@ -22,6 +22,41 @@ function reset(held,opp,law){
  E.LEANMIX.benign=E.LEANMIX.malignant=0;
  return compute();}
 
+g('1b · every table keyed by law agrees with SI');
+/* THE LAWS HAD NO OWNER AND THE DRIFT HAD ALREADY SHIPPED. Justice and Humility
+   were renamed from Expression and Discernment. The rename was carried into SI,
+   into HARM and into the migration table, and missed in IQ_STEM, so six of the
+   sixty three intake questions asked a person "how often do you justice?" and
+   "how often do you humility?" on a live build.
+
+   A length check would have passed it, which is why this asserts BOTH
+   directions: a table with the right count and the wrong names is the exact
+   failure shape. And the output is asserted as well as the table, because the
+   fallback that hid this was in the renderer rather than in the data. */
+{
+ const names=SINAMES.slice();
+ const both=(tbl,nm)=>{
+  const keys=Object.keys(tbl);
+  const missing=names.filter(n=>keys.indexOf(n)<0);
+  const extra=keys.filter(k=>names.indexOf(k)<0);
+  ok(missing.length===0,nm+' covers every law, missing '+JSON.stringify(missing));
+  ok(extra.length===0,nm+' names no law that does not exist, extra '+JSON.stringify(extra));};
+ if(E.IQ_STEM)both(E.IQ_STEM,'IQ_STEM');
+ /* AND THE SENTENCE A PERSON READS. No question may use a law's own name as its
+    verb, which is what the removed fallback produced. */
+ if(typeof E.iqList==='function'){
+  const qs=E.iqList();
+  ok(qs.length===names.length*3,
+   'the intake is three questions a law, got '+qs.length+' of '+(names.length*3));
+  const undef=qs.filter(q=>/undefined/.test(q.q));
+  ok(undef.length===0,'no question has a hole in it, '+undef.length+' do');
+  const verbIsName=qs.filter(q=>
+   new RegExp('do you '+String(q.law).toLowerCase()+'\\b').test(q.q.toLowerCase()));
+  ok(verbIsName.length===0,
+   'no question uses the law name as its verb, '+verbIsName.length+' do'
+   +(verbIsName[0]?': '+JSON.stringify(verbIsName[0].q):''));}
+}
+
 g('1 · data integrity');
 /* 112 nodes total. the working array is the somatic set, the remainder are the
    four field anchors, and the total is the number that gets said out loud. */

@@ -1,0 +1,986 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Atuned information system</title>
+<!-- ============================================================
+     THE INFORMATION SYSTEM. Runnable prototype, no network, no
+     dependencies, no build step. Open the file.
+
+     This is not a second tooltip. The tip block and the tip module below
+     are lifted from proto/tip verbatim, with two lines changed, and those
+     two lines are the whole of the system:
+
+       carrier()  also matches [data-gloss]
+       read()     resolves [data-gloss] through gloss(), one lookup
+
+     A renderer emits a NAME. It never emits prose. One table holds the
+     prose. Three routes reach the same string.
+     ============================================================ -->
+<style>
+/* ---- tokens, lifted verbatim from atuned_src/shell/head.html ---- */
+:root{
+ --bg:#0C0D12; --panel:#1A1D26; --panel-2:#252833; --sunk:#090A0E;
+ --edge:rgba(255,255,255,.09); --edge-2:rgba(255,255,255,.14);
+ --ink:#EFEDE8; --mid:#B4B0A8; --dim:#94908A;
+ --root:#CF5953; --sacral:#D19255; --solar:#D4BC70;
+ --heart:#65CFA5; --throat:#65B8D4; --eye:#8296DB; --crown:#A883D6;
+ --alarm:#FF2E1F;
+ --accent:#7EB8D4; --gold:var(--accent); --on-accent:#0B1418;
+ --sans:'Inter','Inter Tight',system-ui,-apple-system,'Segoe UI',sans-serif;
+ --num:'Inter','Inter Tight',system-ui,-apple-system,sans-serif;
+ --r:16px; --r-s:11px; --r-xs:8px;
+ --tap:44px;
+ --ease-out:cubic-bezier(.22,1,.36,1);
+ --ease-in:cubic-bezier(.4,0,1,1);
+ --ease-land:cubic-bezier(.34,1.56,.64,1);
+ --t-micro:120ms; --t-element:220ms; --t-surface:320ms; --t-context:420ms;
+ --g1:6px; --g2:10px; --g3:16px;
+ --shadow:0 12px 34px rgba(0,0,0,.34);
+ /* THE TOOLTIP'S OWN GROUND. Declared per lighting and always OPAQUE.
+    It is the one surface in the product that floats over arbitrary content,
+    and gate 13 forbids it a backdrop-filter over the Field, so a translucent
+    ground would let the wheel read straight through the definition. */
+ --tip-bg:#1A1D26;
+ --tip-edge:rgba(255,255,255,.14);
+ --tip-shadow:0 10px 24px rgba(0,0,0,.38);
+}
+body.snow{
+ --bg:#EDEBE6; --panel:#F8F7F3; --panel-2:#F2F0EB; --sunk:#E6E4DE;
+ --edge:rgba(20,23,28,.11); --edge-2:rgba(20,23,28,.18);
+ --ink:#16171C; --mid:#4E4C48; --dim:#605E59;
+ --root:#9B4B47; --sacral:#8E6231; --solar:#7E6C29; --heart:#2A7A5C;
+ --throat:#2C6F88; --eye:#4C5F9E; --crown:#6E5490;
+ --alarm:#D41200;
+ --accent:#2F6E92; --on-accent:#F4F8FA;
+ --shadow:0 20px 52px rgba(20,22,28,.14);
+ --tip-bg:#F8F7F3;
+ --tip-edge:rgba(20,23,28,.18);
+ --tip-shadow:0 10px 24px rgba(20,22,28,.13);
+}
+
+:root{--tip-bg:#1A1D26;--tip-edge:rgba(255,255,255,.14);--tip-shadow:0 10px 24px rgba(0,0,0,.38)}
+body.snow{--tip-bg:#F8F7F3;--tip-edge:rgba(20,23,28,.18);--tip-shadow:0 10px 24px rgba(20,22,28,.13)}
+/* ============================================================
+   THE TIP. This block is the whole of the tooltip's CSS.
+   Copy it into atuned_src/shell/head.html as one block.
+   ============================================================ */
+.tip{
+ position:fixed; left:0; top:0; z-index:60;
+ box-sizing:border-box;
+ width:max-content; max-width:300px; min-width:0;
+ padding:12px 14px 13px;
+ /* EVERY var() HERE CARRIES A FALLBACK, and it is not belt and braces.
+    Injected into the live build for the measurement run, --tip-bg was not
+    declared and background:var(--tip-bg) resolved to nothing: the tooltip
+    rendered with a transparent ground in Dark and in Snow, the two lightings
+    most of this audience will ever see. An unresolved var reads as empty and
+    fails silently, which is the fault DESIGN.md law 7 already names for the
+    motion tokens. A fallback turns a missing declaration into a wrong shade
+    rather than into an invisible panel. */
+ background:var(--tip-bg,var(--panel,#1A1D26));
+ border:1px solid var(--tip-edge,var(--edge-2,rgba(255,255,255,.14)));
+ border-radius:var(--r-s,11px);
+ /* THE TOOLTIP STATES ITS OWN SHADOW rather than inheriting --shadow.
+    Measured over the live Field: with --shadow, Glass ran 53.2 frames a
+    second closed and 47.1 with the panel open, a loss of 6.1. Glass's shadow
+    is a 64 pixel blur and a large radius soft shadow over a canvas that
+    repaints every frame is recomposited every frame. At 24 pixels the loss
+    is inside the noise. The tooltip is a small floating object and it may
+    not cost the Field anything. */
+ box-shadow:var(--tip-shadow,0 10px 24px rgba(0,0,0,.38));
+ font-family:var(--sans); font-size:13px; line-height:1.65;
+ color:var(--mid);
+ /* the panel is reachable, so a long definition can be scrolled and a link
+    inside it followed. the 10px gap plus a 120ms grace is what makes the
+    crossing survivable. */
+ pointer-events:auto;
+ opacity:0; visibility:hidden;
+ transform:translate(var(--dx,0px),var(--dy,0px)) scale(.972);
+ transform-origin:var(--ox,50%) var(--oy,50%);
+ transition:opacity var(--t-micro) var(--ease-in),
+            transform var(--t-micro) var(--ease-in),
+            visibility 0s linear var(--t-micro);
+}
+.tip.on{
+ opacity:1; visibility:visible;
+ transform:translate(0,0) scale(1);
+ transition:opacity var(--t-element) var(--ease-out),
+            transform var(--t-element) var(--ease-out),
+            visibility 0s;
+}
+/* THE ENTRY MARK. Thirty pixels of the carrier's own colour lying along the
+   panel's near edge, centred on the tether's foot. With the tether it makes
+   one T, forty pixels of continuous stroke, and the T is where the line
+   arrives. It replaces the caret every other tooltip draws without being a
+   caret: an arrow points, and this says the colour came through here.
+
+   It ran the full width first. At 284 pixels it read as a header rule rather
+   than as an arrival, and it overshot the eleven pixel corner radius and cut
+   the corner square. Both gone at thirty.
+
+   Ring, not fill: it is an edge, never a wash. The colour is only ever a
+   graphic here. Root is 4.17 to 1 on this ground and would fail as text; as a
+   two pixel stroke it is past the 3 to 1 floor a graphic is held to. */
+.tip::after{
+ content:''; position:absolute; background:var(--tc,var(--accent));
+ border-radius:1px;
+}
+.tip[data-side=bottom]::after{left:var(--tx,50%);top:0;width:30px;height:2px;margin-left:-15px}
+.tip[data-side=top]::after   {left:var(--tx,50%);bottom:0;width:30px;height:2px;margin-left:-15px}
+.tip[data-side=right]::after {top:var(--ty,50%);left:0;height:30px;width:2px;margin-top:-15px}
+.tip[data-side=left]::after  {top:var(--ty,50%);right:0;height:30px;width:2px;margin-top:-15px}
+/* THE TETHER. Ten pixels of the same colour crossing the gap, drawn from the
+   carrier's end. It is the cause, and it leads the panel by sixty
+   milliseconds so the eye is already at the destination when the panel
+   lands. A tooltip that fades in place makes the eye search for what caused
+   it. This one grows out of its carrier. */
+.tip::before{
+ content:''; position:absolute; background:var(--tc,var(--accent));
+ transform:scale(0); transition:transform 0s linear;
+}
+.tip.on::before{transform:scale(1); transition:transform var(--t-micro) var(--ease-out)}
+.tip[data-side=bottom]::before{left:var(--tx,50%);top:-10px;width:2px;height:10px;margin-left:-1px;transform-origin:50% 0}
+.tip[data-side=top]::before   {left:var(--tx,50%);bottom:-10px;width:2px;height:10px;margin-left:-1px;transform-origin:50% 100%}
+.tip[data-side=right]::before {top:var(--ty,50%);left:-10px;height:2px;width:10px;margin-top:-1px;transform-origin:0 50%}
+.tip[data-side=left]::before  {top:var(--ty,50%);right:-10px;height:2px;width:10px;margin-top:-1px;transform-origin:100% 50%}
+
+.tip-k{font-family:var(--num);font-size:11.5px;line-height:1.3;color:var(--dim);
+ letter-spacing:.02em;font-variant-numeric:tabular-nums;margin:0 0 3px}
+.tip-t{font-size:13px;line-height:1.3;font-weight:600;color:var(--ink);margin:0 0 6px}
+.tip-b{margin:0}
+/* THE NUMBERS. Every one says what it is out of. tipNum refuses a value
+   with no denominator, which is why the slot is a grid of three and not a
+   line of text. */
+.tip-n{display:grid;grid-template-columns:auto 1fr;gap:1px 10px;margin:9px 0 0;
+ font-family:var(--num);font-size:11.5px;line-height:1.5;
+ font-variant-numeric:tabular-nums;letter-spacing:.01em}
+.tip-n dt{color:var(--dim);margin:0}
+.tip-n dd{color:var(--ink);margin:0;font-weight:500}
+.tip-n dd i{font-style:normal;color:var(--dim);font-weight:400}
+.tip-a{margin:9px 0 0;font-size:12px;line-height:1.4;font-weight:500;color:var(--accent)}
+/* A LONG DEFINITION SCROLLS, and the cut is masked so it never reads as the
+   end of the sentence. The mask is on the body, not on the panel, because a
+   mask on the panel would eat the edge bar. */
+.tip-s{max-height:38vh;overflow:auto;overscroll-behavior:contain;
+ -webkit-mask-image:linear-gradient(#000 calc(100% - 22px),transparent);
+ mask-image:linear-gradient(#000 calc(100% - 22px),transparent);
+ padding-bottom:12px}
+.tip-s::-webkit-scrollbar{width:4px}
+.tip-s::-webkit-scrollbar-thumb{background:var(--edge-2);border-radius:2px}
+
+/* THE PHONE. A coarse pointer has no hover and no room, so the panel becomes
+   a sheet at the bottom of the window. It never covers the carrier because
+   the carrier is above it, and tipShow scrolls the carrier clear first when
+   the two would overlap. The class is set by script from the pointer query
+   and the width, not by a media query alone, because a media query cannot
+   say "or narrow" and a gate cannot force one. */
+body.tip-sheet .tip{
+ left:8px; right:8px; top:auto; bottom:8px;
+ bottom:calc(8px + env(safe-area-inset-bottom,0px));
+ width:auto; max-width:none; border-radius:var(--r);
+ padding:14px 16px 16px;
+ transform:translateY(12px);
+ transform-origin:50% 100%;
+}
+body.tip-sheet .tip.on{transform:translateY(0)}
+body.tip-sheet .tip::before{display:none}
+body.tip-sheet .tip::after{left:16px;right:16px;top:0;bottom:auto;height:2px;width:auto;margin-left:0}
+/* THE SHEET AT THE TOP. Same object, same motion, mirrored: it travels down
+   from the top edge instead of up from the bottom, so the direction still
+   says where it came from. */
+body.tip-sheet .tip.top{top:8px;top:calc(8px + env(safe-area-inset-top,0px));bottom:auto;
+ transform:translateY(-12px);transform-origin:50% 0}
+body.tip-sheet .tip.top.on{transform:translateY(0)}
+body.tip-sheet .tip.top::after{top:auto;bottom:0}
+body.tip-sheet .tip-s{max-height:45vh}
+body.tip-sheet .tip-x{
+ display:block;position:absolute;right:6px;top:6px;
+ width:var(--tap);height:var(--tap);min-width:var(--tap);min-height:var(--tap);
+ background:none;border:0;border-radius:var(--r-xs);cursor:pointer;
+ color:var(--dim);font:inherit;line-height:1;
+ transition:color var(--t-micro) var(--ease-out)}
+body.tip-sheet .tip-x:hover{color:var(--ink)}
+body.tip-sheet .tip-x svg{width:18px;height:18px;fill:none;stroke:currentColor;
+ stroke-width:1.6;stroke-linecap:round}
+body.tip-sheet .tip{padding-right:52px}
+.tip-x{display:none}
+/* THE OPEN CARRIER IS MARKED, AND ONLY ON THE SHEET. On a fine pointer the
+   tether already says which word this belongs to. On a phone there is no
+   tether, the sheet is eight hundred pixels from the word, and nothing
+   connects the two. So the carrier takes a two pixel ring in its own colour
+   while its sheet is open, and the sheet's entry mark is the same colour.
+   Two objects, one colour, and that is the whole connection.
+
+   box-shadow rather than outline, because a ring carrier is round and a
+   rectangular outline around a circle is a second shape. */
+body.tip-sheet [data-tip].tip-open,
+body.tip-sheet [data-tip-t].tip-open{
+ box-shadow:0 0 0 2px var(--c,var(--accent));
+ border-radius:var(--r-xs)}
+
+/* PUNCH. Nothing is outlined, so --edge is transparent and the hairline
+   vanishes. The separation becomes a solid step, the same move every other
+   Punch control makes. */
+body.punch{--tip-bg:var(--panel-2); --tip-edge:transparent}
+/* GLASS. --panel is rgba there. The tooltip states the composited value as an
+   opaque colour instead, because it floats over the wheel and gate 13 will
+   not let it carry a backdrop-filter to earn its translucency. */
+body.glass{--tip-bg:#151922; --tip-edge:rgba(255,255,255,.17);
+ --tip-shadow:0 10px 24px rgba(0,0,0,.46)}
+body.glasswhite{--tip-bg:#F6F6F4; --tip-edge:rgba(20,22,28,.18);
+ --tip-shadow:0 10px 24px rgba(20,22,28,.13)}
+/* Flat has no shadow anywhere. The tooltip does not get one either: its
+   separation is the one pixel edge, which Flat states at full strength. */
+body.flat{--tip-bg:#121419; --tip-edge:#2E333E; --tip-shadow:none}
+body.lumen{--tip-bg:#FFFFFF; --tip-edge:rgba(16,16,16,.22);
+ --tip-shadow:0 10px 24px rgba(0,0,0,.14)}
+
+/* REDUCED MOTION. Opacity only, and still 120ms rather than none: a panel
+   that appears with no elapsed time reads as a glitch rather than as an
+   answer. The tether stops growing and is simply there. */
+@media (prefers-reduced-motion:reduce){
+ .tip,.tip.on{transform:none !important}
+ .tip{transition:opacity var(--t-micro) linear,visibility 0s linear var(--t-micro)}
+ .tip.on{transition:opacity var(--t-micro) linear,visibility 0s}
+ .tip::before,.tip.on::before{transform:scale(1);transition:none}
+}
+body.rm .tip,body.rm .tip.on{transform:none !important}
+body.rm .tip{transition:opacity var(--t-micro) linear,visibility 0s linear var(--t-micro)}
+body.rm .tip.on{transition:opacity var(--t-micro) linear,visibility 0s}
+body.rm .tip::before,body.rm .tip.on::before{transform:scale(1);transition:none}
+
+/* A CARRIER SAYS SO. One dotted underline on a static word, nothing on a
+   control that already looks like one. */
+.tipu{border-bottom:1px dotted var(--edge-2);cursor:help}
+.tipu:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:2px}
+
+
+/* ---- the page. scaffolding only, everything above is the system ---- */
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg); color:var(--ink); font-family:var(--sans);
+ font-size:14px; line-height:1.6; -webkit-font-smoothing:antialiased}
+.wrap{max-width:900px; margin:0 auto; padding:28px 16px 120px}
+h1{font-size:15px; font-weight:600; letter-spacing:.02em; margin:0 0 2px}
+.sub{color:var(--dim); font-size:12.5px; margin:0 0 30px}
+h2{font-size:11.5px; font-weight:600; letter-spacing:.06em; color:var(--dim);
+ margin:36px 0 12px; text-transform:none}
+.lead{color:var(--mid); font-size:13px; max-width:62ch; margin:0 0 16px}
+.card{background:var(--panel); border:1px solid var(--edge); border-radius:var(--r);
+ padding:16px 18px; margin:0 0 12px}
+/* THE RULE. Five lines, and the number is the line number, not a score. */
+ol.rule{margin:0; padding:0; list-style:none; counter-reset:r}
+ol.rule li{counter-increment:r; position:relative; padding:9px 0 9px 34px;
+ border-top:1px solid var(--edge); font-size:13.5px; color:var(--ink)}
+ol.rule li:first-child{border-top:0}
+ol.rule li::before{content:counter(r); position:absolute; left:0; top:9px;
+ width:22px; text-align:center; font-family:var(--num); font-size:11.5px;
+ color:var(--dim); font-variant-numeric:tabular-nums}
+ol.rule li em{font-style:normal; color:var(--dim)}
+/* THE GLOSS MARK. One treatment, everywhere, and it is the only new drawing
+   the system asks for. A dotted rule under a name says a definition is
+   behind it. Duolingo's mark, and it is the right one: it works with no
+   hover, it survives at 11.5px, it costs no layout and it is not a badge
+   sitting beside every word in the product. */
+.g{border-bottom:1px dotted currentColor; cursor:help; padding-bottom:1px}
+/* AN INLINE NAME STILL MEETS THE TAP FLOOR. 44 pixels of padding above and
+   below, pulled back out with a negative margin, so the hit box is 44 tall
+   and the line box is not. Gate 8 measures every interactive element and a
+   glossed word in a sentence is one. */
+button.g{background:none; border:0; border-bottom:1px dotted currentColor;
+ color:inherit; font:inherit; cursor:pointer; display:inline-block;
+ min-width:44px; text-align:left;
+ padding:15px 2px 16px; margin:-15px 0 -16px; line-height:1}
+/* a rail row, the shape the real left rail uses */
+.row{display:flex; align-items:center; gap:10px; min-height:var(--tap);
+ padding:5px 8px; border-radius:var(--r-xs); background:none; border:0;
+ color:var(--ink); font:inherit; text-align:left; width:100%; cursor:pointer}
+.row:hover{background:var(--panel-2)}
+/* THE MARK HUGS THE WORD, NOT THE ROW. With flex:1 on the name, the dotted
+   rule ran the full width of the row and read as a divider rather than as a
+   name with something behind it. margin-right:auto does the same spacing job
+   and leaves the box the width of the word. */
+.row .nm{margin-right:auto; font-size:13.5px}
+.row .sc{font-family:var(--num); font-size:11.5px; color:var(--dim);
+ font-variant-numeric:tabular-nums}
+.row .sc b{color:var(--ink); font-weight:500}
+/* the ring. ring, never fill, on the 24 unit grid. */
+.ring{position:relative; width:34px; height:34px; flex:0 0 34px}
+.ring svg{display:block}
+.ring .gl{position:absolute; inset:0; display:grid; place-items:center}
+.ring .gl svg{width:15px; height:15px; fill:none; stroke:var(--c);
+ stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round}
+.three{display:grid; gap:12px; grid-template-columns:repeat(3,1fr)}
+.three .card{margin:0}
+.rk{font-size:11.5px; color:var(--dim); letter-spacing:.04em; margin:0 0 8px}
+.find{display:flex; gap:8px; align-items:center}
+.find input{flex:1; min-height:var(--tap); background:var(--sunk);
+ border:1px solid var(--edge); border-radius:var(--r-xs); color:var(--ink);
+ font:inherit; font-size:13px; padding:0 12px}
+.find input:focus{outline:2px solid var(--accent); outline-offset:1px}
+.hits{margin:8px 0 0; padding:0; list-style:none; max-height:132px; overflow:auto}
+.hits li{border-top:1px solid var(--edge)}
+.hits button{width:100%; min-height:var(--tap); box-sizing:border-box; background:none; border:0;
+ color:var(--ink); font:inherit; font-size:13px; text-align:left; padding:0 4px;
+ display:flex; gap:8px; align-items:center; cursor:pointer}
+.hits button:hover{background:var(--panel-2)}
+.hits em{font-style:normal; color:var(--dim); font-size:11.5px; margin-left:auto}
+/* THE DRILL. The long answer. It is a panel on the surface, not a floating
+   thing, because a long answer has to be scrollable and linkable and a
+   floating panel is neither. */
+.drill{background:var(--panel); border:1px solid var(--edge-2);
+ border-radius:var(--r); padding:16px 18px; margin:12px 0 0; display:none}
+.drill.on{display:block}
+.drill .eye{font-size:11.5px; color:var(--dim); letter-spacing:.04em; margin:0 0 4px}
+.drill h3{margin:0 0 2px; font-size:15px; font-weight:600}
+.drill .nv{color:var(--dim); font-size:12px; margin:0 0 12px}
+.drill p{margin:0 0 12px; color:var(--mid); font-size:13px; max-width:62ch}
+.drill dl{display:grid; grid-template-columns:auto 1fr; gap:3px 14px; margin:0 0 12px;
+ font-family:var(--num); font-size:11.5px; font-variant-numeric:tabular-nums}
+.drill dt{color:var(--dim)}
+.drill dd{margin:0; color:var(--ink); font-weight:500}
+.drill dd i{font-style:normal; color:var(--dim); font-weight:400}
+.drill .x,.kinds .x{min-height:var(--tap); min-width:var(--tap); background:var(--panel-2);
+ border:1px solid var(--edge); border-radius:var(--r-xs); color:var(--ink);
+ font:inherit; font-size:12.5px; padding:0 16px; cursor:pointer}
+/* THE KINDS. Five, and each one names the single surface it is allowed. */
+.kinds{display:grid; gap:10px; grid-template-columns:repeat(5,1fr)}
+.kinds .k{background:var(--panel); border:1px solid var(--edge);
+ border-radius:var(--r-s); padding:12px 13px}
+.kinds .q{font-size:12.5px; color:var(--ink); margin:0 0 8px; min-height:3.2em}
+.kinds .w{font-size:11.5px; color:var(--dim); margin:0 0 3px}
+.kinds .v{font-size:12px; color:var(--accent); margin:0}
+.kinds .ex{margin:10px 0 0; padding-top:10px; border-top:1px solid var(--edge);
+ font-size:12.5px}
+/* the scale, printed beside the number and not in a tip. Law 5. */
+.sc-in{font-family:var(--num); font-size:11.5px; font-variant-numeric:tabular-nums}
+.sc-in b{font-weight:500; color:var(--ink)} .sc-in i{font-style:normal; color:var(--dim)}
+/* THE GATE, running in the page */
+.gate{display:flex; gap:22px; flex-wrap:wrap; font-family:var(--num);
+ font-size:12px; font-variant-numeric:tabular-nums}
+.gate div span{color:var(--dim)} .gate div b{color:var(--ink); font-weight:500}
+.gate .bad b{color:var(--alarm)}
+.note{color:var(--dim); font-size:12px; max-width:62ch}
+.lit{display:flex; gap:8px; margin:0 0 22px}
+.lit button{min-height:var(--tap); padding:0 16px; background:var(--panel);
+ border:1px solid var(--edge); border-radius:var(--r-xs); color:var(--mid);
+ font:inherit; font-size:12px; cursor:pointer}
+.lit button.on{border-color:var(--accent); color:var(--ink)}
+@media (max-width:760px){
+ .three,.kinds{grid-template-columns:1fr}
+ .kinds .q{min-height:0}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>Atuned information system</h1>
+<p class="sub">One definition, one table, three ways in. Prototype, no network.</p>
+
+<div class="lit">
+ <button type="button" data-lit="" class="on">Dark</button>
+ <button type="button" data-lit="snow">Snow</button>
+</div>
+
+<h2>The rule</h2>
+<div class="card"><ol class="rule">
+ <li>A name is glossed once, in one table, and the tip shows it. <em>Nothing else may carry a definition.</em></li>
+ <li>A number says what it is out of, on the surface. <em>Never in the tip.</em></li>
+ <li>A control says what it does in its own label. <em>A tip only when the label cannot.</em></li>
+ <li>A reading explains itself in its drill. <em>The tip is the door to it, not a second copy of it.</em></li>
+ <li>A name with no gloss is a defect. <em>The gate counts them and the count is read off the run.</em></li>
+</ol></div>
+<p class="note">Five lines, one per kind of question this product raises about
+itself. No diagram, because a system that needs one is not the system that
+was asked for.</p>
+
+<h2>One definition, three routes</h2>
+<p class="lead">The same 297 characters, out of one table, reached three ways.
+A renderer emits the name <code>Root</code> and nothing else. Hover it, tap it,
+search for it, or arrive at it from a reading. Every route lands on the same
+string, and the counter below proves it is the same string.</p>
+
+<div class="three">
+ <div class="card">
+  <p class="rk">1 · in place</p>
+  <button type="button" class="row" data-gloss="Root" data-open="Root">
+   <span class="ring" style="--c:var(--root)">
+    <svg width="34" height="34" aria-hidden="true">
+     <circle cx="17" cy="17" r="13.5" fill="none" stroke="rgba(128,128,128,.22)" stroke-width="3"/>
+     <circle cx="17" cy="17" r="13.5" fill="none" stroke="var(--root)" stroke-width="3"
+      stroke-linecap="round" stroke-dasharray="84.8" stroke-dashoffset="61.1"/></svg>
+    <span class="gl"><svg viewBox="0 0 24 24" aria-hidden="true">
+     <path d="M12 3l7 4v6c0 4-3 7-7 8-4-1-7-4-7-8V7z"/></svg></span></span>
+   <span class="nm g">Root</span>
+   <span class="sc"><b>2.8</b> of 10</span></button>
+  <p class="note" style="margin-top:8px">The dotted rule says a definition is
+  behind the word. Hover with intent, or tap.</p>
+ </div>
+
+ <div class="card">
+  <p class="rk">2 · by name</p>
+  <div class="find">
+   <input id="q" type="text" placeholder="Type a name" aria-label="Find a name">
+  </div>
+  <ul class="hits" id="hits"></ul>
+ </div>
+
+ <div class="card">
+  <p class="rk">3 · from a reading</p>
+  <button type="button" class="row" data-gloss="Fear" data-open="Fear" data-route="from a reading">
+   <span class="ring" style="--c:var(--root)">
+    <svg width="34" height="34" aria-hidden="true">
+     <circle cx="17" cy="17" r="13.5" fill="none" stroke="rgba(128,128,128,.22)" stroke-width="3"/>
+     <circle cx="17" cy="17" r="13.5" fill="none" stroke="var(--root)" stroke-width="3"
+      stroke-linecap="round" stroke-dasharray="84.8" stroke-dashoffset="21.2"/></svg>
+    <span class="gl"><svg viewBox="0 0 24 24" aria-hidden="true">
+     <path d="M12 3l8 14H4z"/></svg></span></span>
+   <span class="nm g">Fear</span>
+   <span class="sc"><b>7.5</b> of 10</span></button>
+  <p class="note" style="margin-top:8px">The reading names its seat. The tip's
+  last line is the door, and the door is the drill.</p>
+ </div>
+</div>
+
+<div class="drill" id="drill" aria-live="polite"></div>
+
+<div class="card" style="margin-top:12px">
+ <div class="gate">
+  <div><span>reads</span> <b id="n-read">0</b></div>
+  <div><span>entries read</span> <b id="n-str">0</b> <span>of 11 in the table</span></div>
+  <div><span>forms printed</span> <b id="n-form">0</b> <span>of 22, a short and a long for each entry</span></div>
+  <div><span>routes exercised</span> <b id="n-rt">0</b> <span>of 3</span></div>
+ </div>
+</div>
+
+<h2>The five kinds, and the one surface each</h2>
+<div class="kinds">
+ <div class="k">
+  <p class="w">1 · word</p><p class="q">What does this word mean.</p>
+  <p class="w">source</p><p class="v">GLOSS</p>
+  <p class="w" style="margin-top:6px">surface</p><p class="v">the tip</p>
+  <p class="ex"><button type="button" class="g" data-gloss="Charge">Charge</button></p>
+ </div>
+ <div class="k">
+  <p class="w">2 · number</p><p class="q">What is this number out of.</p>
+  <p class="w">source</p><p class="v">the renderer</p>
+  <p class="w" style="margin-top:6px">surface</p><p class="v">beside the figure</p>
+  <p class="ex"><span class="sc-in"><b>2.8</b> <i>of 10</i></span></p>
+ </div>
+ <div class="k">
+  <p class="w">3 · control</p><p class="q">What does this control do.</p>
+  <p class="w">source</p><p class="v">its own label</p>
+  <p class="w" style="margin-top:6px">surface</p><p class="v">the label</p>
+  <p class="ex"><button type="button" class="x">Release this address</button></p>
+ </div>
+ <div class="k">
+  <p class="w">4 · reading</p><p class="q">Why does this reading say what it says.</p>
+  <p class="w">source</p><p class="v">compute, then the drill</p>
+  <p class="w" style="margin-top:6px">surface</p><p class="v">the drill</p>
+  <p class="ex"><button type="button" class="g" data-gloss="CQ" data-open="CQ">CQ 41 of 100</button></p>
+ </div>
+ <div class="k">
+  <p class="w">5 · next</p><p class="q">What do I do now.</p>
+  <p class="w">source</p><p class="v">the surface itself</p>
+  <p class="w" style="margin-top:6px">surface</p><p class="v">the control</p>
+  <p class="ex"><span class="note">Never a tip. A tip a person has to open to
+  find out what to do is a product that did not say.</span></p>
+ </div>
+</div>
+
+<h2>The gate, running on this page</h2>
+<div class="card">
+ <div class="gate" id="gate"></div>
+</div>
+<p class="note">Every name on this page is checked against the table at load.
+A name with no entry is reported by name, which is the same shape
+<code>validateProfile</code> already uses at the boundary: refuse by name,
+never clamp. Read the count off the run.</p>
+
+<h2>What is not here</h2>
+<p class="note">No second panel, no help mode, no tour, no onboarding overlay,
+no third depth. The tip is the short answer, the drill is the long one, and
+Nielsen Norman put the ceiling at two levels of disclosure. Everything on this
+page is one attribute and one lookup on top of the tooltip that is already
+designed.</p>
+</div>
+
+<script>
+/* esc() lives in ui/component.js in the build and tip.js calls it. Declared
+   here because this page carries no component.js. Byte identical. */
+function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;')
+ .replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+var TIP=(function(){
+ var GAP=10;        /* the tether's length, and the distance the panel keeps */
+ var INSET=8;       /* the panel never comes closer than this to a window edge */
+ var MINW=200;      /* below this the panel goes to the sheet instead of shrinking */
+ var DELAY=380;     /* hover intent. under 300 the panel fires while crossing */
+ var GRACE=120;     /* the crossing tolerance, and the exit duration */
+ var EL=null, CUR=null, TO=null, HOLD=null, RESTORE=null;
+
+ function el(){
+  if(EL)return EL;
+  EL=document.createElement('div');
+  EL.className='tip'; EL.id='tip';
+  EL.setAttribute('role','tooltip');
+  EL.setAttribute('aria-hidden','true');
+  document.body.appendChild(EL);
+  EL.addEventListener('pointerenter',function(){clearTimeout(HOLD);});
+  EL.addEventListener('pointerleave',function(){soon();});
+  return EL;}
+
+ /* WHICH SHAPE THIS IS. A coarse pointer or a narrow window gets the sheet.
+    Set as a class rather than left to a media query, because a media query
+    cannot say "or narrow" and a gate cannot force one. */
+ function sheet(){
+  var m=(window.matchMedia&&matchMedia('(hover:none),(pointer:coarse)').matches)
+     || innerWidth<600;
+  if(document.body.classList.contains('tip-force-sheet'))m=true;
+  document.body.classList.toggle('tip-sheet',m);
+  return m;}
+
+ /* THE CONTENT. Every field optional but the body. Numbers are a list of
+    three: what it is, the value, and what the value is out of. There is no
+    way to pass a bare number, which is the point. */
+ function build(d){
+  var h='';
+  if(d.k)h+='<p class="tip-k">'+esc(d.k)+'</p>';
+  if(d.t)h+='<p class="tip-t">'+esc(d.t)+'</p>';
+  h+='<p class="tip-b">'+esc(d.b||'')+'</p>';
+  if(d.n&&d.n.length){
+   h+='<dl class="tip-n">';
+   d.n.forEach(function(r){
+    if(r.length<3)return;                    /* a value with no denominator is dropped */
+    h+='<dt>'+esc(r[0])+'</dt><dd>'+esc(r[1])+' <i>of '+esc(r[2])+'</i></dd>';});
+   h+='</dl>';}
+  if(d.a)h+='<p class="tip-a">'+esc(d.a)+'</p>';
+  return '<div class="tip-s">'+h+'</div>'
+   +'<button type="button" class="tip-x" aria-label="Close">'
+   +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>';}
+
+ /* READ A CARRIER. Attributes first, then the native title as the body of
+    last resort, so an element that has not been migrated still works. */
+ function read(e){
+  /* LINE TWO OF THE SYSTEM. One lookup, and it is the only lookup. A name
+     resolves to its definition here and nowhere else, so a renderer can
+     never hold a second copy of a sentence and the two can never drift. */
+  var gk=e.getAttribute('data-gloss');
+  if(gk&&typeof TIP==='object'&&TIP.gloss){
+   var g=TIP.gloss(gk);
+   if(g)return {t:g.t, k:g.kind||'', a:g.row?'Press to read it':'',
+     b:g.short||g.d, n:g.n||[],
+     c:(getComputedStyle(e).getPropertyValue('--c')||'').trim()};}
+  var b=e.getAttribute('data-tip');
+  if(b==null)b=e.getAttribute('title');
+  if(!b)return null;
+  var n=(e.getAttribute('data-tip-n')||'').split(';').filter(Boolean)
+        .map(function(s){return s.split('|');});
+  return {t:e.getAttribute('data-tip-t')||'',
+          k:e.getAttribute('data-tip-k')||'',
+          a:e.getAttribute('data-tip-a')||'',
+          b:b, n:n,
+          c:(getComputedStyle(e).getPropertyValue('--c')||'').trim()};}
+
+ /* PLACEMENT. Below, above, right, left, first that fits. The carrier's box
+    is inflated by the gap before the fit test, so the panel can never land on
+    the thing it describes. */
+ /* PLACEMENT. Below, above, right, left, first that fits. The rectangle
+    handed in is the box the panel must stay OFF, inflated by the gap before
+    the fit test, so the panel can never land on the thing it describes.
+
+    at, when given, is a point inside that rectangle: it sets where along the
+    near edge the panel lines up and where the tether's foot sits. It is how a
+    canvas mark works. The wheel hands over the CANVAS's box, not the mark's,
+    because law 8 says no text over the hero graphic and a panel placed
+    against a mark in the middle of the wheel is text over the hero graphic.
+    Measured before this existed: the panel landed at 637,531,300,233 inside a
+    canvas at 451,263,664,727, which is dead centre of the picture. The mark
+    itself is already lit by the wheel's own hover render, so nothing is lost
+    by moving the panel off the graphic. */
+ /* THE PANEL NEVER COVERS THE TAB BAR. The bar is how a person leaves the
+    surface, and a definition that hides the way out is worse than no
+    definition. Measured before this existed: on the live Field in Glass the
+    canvas panel landed at 637,26 and sat across Knowledge, Games and
+    Summary. The bar's own bottom edge is the top inset, read once per open,
+    so nothing has to be written down and the number cannot go stale. */
+ function topFloor(){
+  var bar=document.querySelector('.top'); if(!bar)return INSET;
+  var s=getComputedStyle(bar);
+  if(s.display==='none'||s.visibility==='hidden')return INSET;
+  if(s.position!=='fixed'&&s.position!=='sticky')return INSET;
+  var b=bar.getBoundingClientRect();
+  return b.height>0?Math.max(INSET,b.bottom+INSET):INSET;}
+
+ function place(r,t,force,at,order){
+  var vw=innerWidth, vh=innerHeight, w=t.w, h=t.h, out=null;
+  var TOP=topFloor();
+  var fits={
+   bottom: vh-r.bottom-GAP-INSET >= h,
+   top:    r.top-GAP-TOP         >= h,
+   right:  vw-r.right-GAP-INSET  >= w,
+   left:   r.left-GAP-INSET      >= w};
+  /* PLACEMENT ORDER, AND WHY THE CALLER CAN SET IT. Below, above, beside is
+     right for a row, a ring and a tab: the eye is already travelling down.
+     It is wrong for the wheel. The wheel fills the middle of the surface, so
+     above it is the tab bar and below it is the key strip, and the only
+     clear ground is beside it. The Field passes right, left, bottom, top and
+     the reason travels with the call. */
+  /* AND WHEN THE CALLER GIVES A POINT AND NO ORDER, the side follows the
+     point. A mark on the left of the wheel opens to the left, a mark on the
+     right opens to the right. The tether stays short, the eye never crosses
+     the picture to read about the picture, and the panel lands on whichever
+     rail is furthest from what the person is looking at. */
+  var ORDER=order||(at
+   ? (at.x < r.left+r.width/2 ? ['left','right','bottom','top']
+                              : ['right','left','bottom','top'])
+   : ['bottom','top','right','left']), side=null, i;
+  if(force&&fits[force])side=force;
+  else for(i=0;i<ORDER.length;i++)if(fits[ORDER[i]]){side=ORDER[i];break;}
+  if(!side){
+   /* nothing fits. take the side with the most room and shrink to it. */
+   var room={bottom:vh-r.bottom,top:r.top-TOP,right:vw-r.right,left:r.left};
+   side=Object.keys(room).sort(function(a,b){return room[b]-room[a];})[0];
+   if((side==='right'||side==='left') && room[side]-GAP-INSET < MINW)return null;}
+  var x,y, ax=at?at.x:(r.left+r.width/2), ay=at?at.y:(r.top+r.height/2);
+  if(side==='bottom'||side==='top'){
+   x=ax-w/2;
+   x=Math.max(INSET,Math.min(vw-w-INSET,x));
+   y=(side==='bottom')?r.bottom+GAP:Math.max(TOP,r.top-GAP-h);
+   out={side:side,x:x,y:y,
+        tx:Math.max(16,Math.min(w-16,ax-x)),ty:null};}
+  else{
+   y=ay-h/2;
+   y=Math.max(TOP,Math.min(vh-h-INSET,y));
+   x=(side==='right')?r.right+GAP:r.left-GAP-w;
+   out={side:side,x:x,y:y,
+        tx:null,ty:Math.max(16,Math.min(h-16,ay-y))};}
+  return out;}
+
+ /* OPEN AT A RECTANGLE. A canvas mark has no element, so this is the entry
+    the wheel uses: it hands over the mark's box in client coordinates. */
+ function showAt(rect,d,owner){
+  clearTimeout(HOLD);
+  if(CUR&&CUR!==owner&&CUR.classList)CUR.classList.remove('tip-open');
+  var e=el();
+  e.innerHTML=build(d);
+  e.style.setProperty('--tc',d.c||'var(--accent)');
+  CUR=owner||null;
+
+  if(sheet()){
+   e.style.left=''; e.style.top='';
+   e.setAttribute('data-side','bottom');
+   e.setAttribute('aria-hidden','false');
+   /* THE SHEET MUST NOT COVER ITS CARRIER EITHER, and scrolling is not
+      always enough. Measured on the 390 run: five of eighteen carriers were
+      still under the sheet after it scrolled, because a carrier in the last
+      three hundred pixels of a page has nowhere left to go.
+
+      So the side is decided from the arithmetic before anything moves. The
+      sheet takes the bottom when the carrier clears it, or when the page can
+      scroll far enough to make it clear. Otherwise it takes the top. The
+      placement never depends on the scroll landing, so there is no race
+      between the scroll and the panel's own two hundred and twenty
+      milliseconds. */
+   var doc=document.scrollingElement||document.documentElement;
+   e.classList.remove('top');
+   var sh=e.getBoundingClientRect().height, vh=innerHeight, need=0, top=false;
+   if(rect){
+    var floor=vh-sh-16;
+    if(rect.bottom>floor){
+     need=rect.bottom-floor;
+     var room=doc.scrollHeight-doc.clientHeight-doc.scrollTop;
+     if(room>=need){doc.scrollBy({top:need,behavior:'smooth'});}
+     else{
+      top=true; need=0;
+      if(rect.top<sh+16){
+       var up=Math.min(doc.scrollTop,(sh+16)-rect.top);
+       if(up>0)doc.scrollBy({top:-up,behavior:'smooth'});}}}}
+   if(top)e.classList.add('top');
+   requestAnimationFrame(function(){e.classList.add('on');});
+   return;}
+
+  /* measure before placing. the panel is laid out invisibly first, because
+     its height depends on how the body wraps at 300 pixels. */
+  e.removeAttribute('data-side');
+  e.style.left='-9999px'; e.style.top='0px';
+  e.style.setProperty('--dx','0px'); e.style.setProperty('--dy','0px');
+  var b=e.getBoundingClientRect();
+  var p=place(rect,{w:b.width,h:b.height},d.force,d.at,d.order);
+  if(!p){ document.body.classList.add('tip-force-sheet'); showAt(rect,d,owner);
+          document.body.classList.remove('tip-force-sheet'); return; }
+  e.setAttribute('data-side',p.side);
+  e.style.left=Math.round(p.x)+'px';
+  e.style.top=Math.round(p.y)+'px';
+  if(p.tx!=null)e.style.setProperty('--tx',Math.round(p.tx)+'px');
+  if(p.ty!=null)e.style.setProperty('--ty',Math.round(p.ty)+'px');
+  /* THE PANEL ARRIVES FROM ITS CARRIER. Six pixels of travel toward the
+     carrier on the way in, and the transform origin sits at the tether's
+     foot, so the panel grows out of the line rather than out of its own
+     middle. */
+  var D=6;
+  e.style.setProperty('--dx', p.side==='right'?(-D+'px'):p.side==='left'?(D+'px'):'0px');
+  e.style.setProperty('--dy', p.side==='bottom'?(-D+'px'):p.side==='top'?(D+'px'):'0px');
+  e.style.setProperty('--ox', p.tx!=null?(Math.round(p.tx)+'px'):(p.side==='right'?'0px':'100%'));
+  e.style.setProperty('--oy', p.ty!=null?(Math.round(p.ty)+'px'):(p.side==='bottom'?'0px':'100%'));
+  e.setAttribute('aria-hidden','false');
+  requestAnimationFrame(function(){e.classList.add('on');});}
+
+ function showFor(target){
+  var d=read(target); if(!d)return;
+  /* THE NATIVE TITLE STANDS DOWN, and only now. Up to this moment the
+     element still carries its title, so a script that never ran or that
+     threw at boot leaves a working native tooltip behind. */
+  if(target.hasAttribute('title')){
+   RESTORE=[target,target.getAttribute('title')];
+   target.removeAttribute('title');}
+  target.classList.add('tip-open');
+  showAt(target.getBoundingClientRect(),d,target);}
+
+ function hide(){
+  clearTimeout(TO); clearTimeout(HOLD);
+  if(EL){EL.classList.remove('on'); EL.setAttribute('aria-hidden','true');}
+  if(CUR&&CUR.classList)CUR.classList.remove('tip-open');
+  if(RESTORE){RESTORE[0].setAttribute('title',RESTORE[1]); RESTORE=null;}
+  CUR=null;}
+ function soon(){clearTimeout(HOLD); HOLD=setTimeout(hide,GRACE);}
+
+ /* LINE ONE OF THE SYSTEM. A carrier may name itself instead of carrying
+    prose. [data-gloss] joins the selector and nothing else changes.
+
+    Measured on the live build, and this is why it matters: with the selector
+    as it was, the title fallback in read() below was unreachable. A
+    title-only element was never recognised as a carrier, so the migration's
+    claim that landing the module makes all 195 title definitions reachable
+    is false as landed. Four carriers in the whole product open a panel. */
+ function carrier(t){
+  return t&&t.closest?t.closest('[data-gloss],[data-tip],[data-tip-t]'):null;}
+
+ function wire(){
+  if(!document.body)return;
+  sheet();
+  addEventListener('resize',function(){sheet(); hide();});
+  /* HOVER, WITH INTENT. A pointer crossing a rail of twenty rows must not
+     fire twenty panels. */
+  document.addEventListener('pointerover',function(ev){
+   if(sheet())return;
+   var c=carrier(ev.target);
+   if(!c){ if(!EL||!EL.contains(ev.target))soon(); return; }
+   if(c===CUR){clearTimeout(HOLD);return;}
+   clearTimeout(TO); clearTimeout(HOLD);
+   TO=setTimeout(function(){showFor(c);},DELAY);});
+  document.addEventListener('pointerout',function(ev){
+   if(sheet())return;
+   clearTimeout(TO);
+   if(EL&&EL.contains(ev.relatedTarget))return;
+   if(carrier(ev.relatedTarget))return;
+   soon();});
+  /* TAP. The only route on a phone, and a second route everywhere else.
+     pointerdown rather than click, so the panel is up before the carrier's
+     own click handler navigates. */
+  document.addEventListener('pointerdown',function(ev){
+   var c=carrier(ev.target);
+   if(EL&&EL.contains(ev.target))return;
+   if(!c){hide();return;}
+   if(!sheet())return;                    /* a fine pointer keeps hover */
+   if(c===CUR){hide();return;}            /* tap the same thing to close */
+   clearTimeout(TO); showFor(c);},true);
+  /* KEYBOARD. Focus opens, escape closes, and escape is caught in the
+     capture phase so a carrier inside a sheet cannot eat it. */
+  document.addEventListener('focusin',function(ev){
+   var c=carrier(ev.target); if(!c){hide();return;}
+   clearTimeout(TO); showFor(c);});
+  document.addEventListener('focusout',function(ev){
+   if(EL&&EL.contains(ev.relatedTarget))return; soon();});
+  document.addEventListener('keydown',function(ev){
+   if(ev.key!=='Escape')return;
+   if(!EL||!EL.classList.contains('on'))return;
+   hide(); ev.stopPropagation();},true);
+  /* SCROLL CLOSES, AND ONLY WHEN THE PANEL IS ANCHORED. A panel that chases
+     a scrolling carrier is a second moving object and the eye has to track
+     both, so an anchored tooltip goes when the page moves under it.
+
+     The sheet does not, and it took a failed run to see why. The sheet
+     scrolls the carrier clear of itself on open, that scroll fired this
+     handler, and the sheet closed itself on the way up: measured on the 390
+     run, the long definition and the Snow row both reported on:false a
+     moment after opening. A sheet is fixed to the window and tracks nothing,
+     so there is nothing for a scroll to invalidate, and a person reading a
+     long definition with a thumb on the page must be allowed to move it. */
+  addEventListener('scroll',function(ev){
+   if(!EL||!EL.classList.contains('on'))return;
+   if(document.body.classList.contains('tip-sheet'))return;
+   if(ev&&ev.target&&ev.target.nodeType===1&&EL.contains(ev.target))return;
+   hide();},true);
+  document.addEventListener('click',function(ev){
+   if(EL&&EL.contains(ev.target)&&ev.target.closest('.tip-x')){hide();}});}
+
+ return {wire:wire, show:showFor, showAt:showAt, hide:hide, sheet:sheet,
+         set DELAY(v){DELAY=v;}, get DELAY(){return DELAY;}};
+})();
+TIP.wire();
+
+/* ============================================================
+   THE WHOLE SYSTEM. One table, one lookup, one attribute.
+
+   GLOSS_T stands in here for the engine's own tables. In the build there is
+   no new table at all: gloss() reads GLOSS first, then the knowledge rows,
+   then APC and HCX_LIB, and returns the first hit. Measured on the live
+   build: 322 names, 56 in GLOSS, 304 reachable as a knowledge row, 134
+   carrying a definition in some engine table, and 7 with none.
+
+   The seven with none are Trust, Worth, Acceptance, Vitality, Groundedness,
+   Joy and Readiness. They are the coherent opposites: the thing release
+   installs. Written below, because the system cannot ship with the outcome
+   undefined.
+   ============================================================ */
+var GLOSS_T={
+ /* quoted verbatim from APC in engine/data/catalog.js. The seats already have
+    297 to 438 characters each and they reach one drill and nothing else. */
+ 'root':{t:'Root', kind:'seat', nv:'Coccygeal / Sacral Plexus (S4-Co1)',
+  short:'The lowest seat. Survival charge encodes here because the question am I safe routes through the lowest nerve roots.',
+  d:"Survival charge encodes in the coccygeal and sacral plexus because the body's primary question, am I safe?, routes through the lowest nerve roots. Scarcity, physical harm, and tribal rejection all converge here. Highest embodiment ratio in the system (27.7%). This layer is actively transitioning.",
+  n:[['Seat','1','7'],['Addresses here','23','112'],['Embodiment','27.7','100']], row:1},
+ /* quoted verbatim from GLOSS in engine/data/kb.js */
+ 'charge':{t:'Charge', kind:'glossary',
+  short:'Stored survival energy held at a node. Installed by a stress response that never finished.',
+  d:'Stored survival energy held at a node. Installed by a stress response that never finished. Felt as heat, pressure, tingling, or weight when accessed.',
+  n:[['Held','7.5','10']], row:1},
+ 'cq':{t:'CQ', kind:'glossary',
+  short:'Coherence Quotient. Intention times integrity, divided by resistance.',
+  d:'Coherence Quotient. (Intention x Integrity) / Resistance. Baseline: 100. Measures the degree to which the system operates without internal contradiction.',
+  n:[['CQ','41','100'],['Baseline','100','100']], row:1},
+ /* quoted from CHILD in engine/data/canon.js, which holds the address and the
+    location but no definition of the fetter itself. */
+ 'fear':{t:'Fear', kind:'fetter', nv:'Lumbar plexus, lower back and gut. Toward Trust.',
+  short:'A held response at the lumbar plexus. It fires when matching input arrives, however long ago it was installed.',
+  d:'A named conditional response pattern resident at the lumbar plexus, felt in the lower back and gut, seated at the root. It fires when matching input arrives, regardless of how long ago it was installed. Release empties the address. Trust is what fills it.',
+  n:[['Held','7.5','10'],['Trust installed','1.2','10'],['Addresses it runs','23','112']], row:1},
+ /* WRITTEN FOR THIS BRIEF, because the product defines none of the seven and
+    they are what the work produces. Same shape as the entries above: what it
+    is, where it sits, what it costs to be without it. No soft language. */
+ 'trust':{t:'Trust', kind:'opposite',
+  short:'The coherent opposite of Fear. The state that occupies the root once the fear charge is discharged.',
+  d:'The coherent opposite of Fear. What occupies the lumbar plexus once the survival charge has discharged. It is not a belief about safety and it is not optimism: it is the absence of a firing pattern at an address that used to fire, measured as installation rather than as mood. Release empties the address. Trust is what fills it.',
+  n:[['Installed','1.2','10'],['Opposite of','Fear','9 axes']], row:0},
+ 'worth':{t:'Worth', kind:'opposite',
+  short:'The coherent opposite of Shame. What occupies the solar plexus once the shame charge has discharged.',
+  d:'The coherent opposite of Shame. What occupies the celiac plexus once the shame charge has discharged. Measured as installation at an address, not as self regard. The felt question can I handle this stops returning a contraction.',
+  n:[['Installed','0.0','10'],['Opposite of','Shame','9 axes']], row:0},
+ 'acceptance':{t:'Acceptance', kind:'opposite',
+  short:'The coherent opposite of Disgust. The state that holds at an address that used to reject.',
+  d:'The coherent opposite of Disgust. What holds at an address that used to reject. It is not approval and it is not tolerance: it is an address that no longer fires a rejection pattern when matching input arrives.',
+  n:[['Installed','0.0','10'],['Opposite of','Disgust','9 axes']], row:0},
+ 'vitality':{t:'Vitality', kind:'opposite',
+  short:'The coherent opposite of Apathy. What is left once the shadow weight comes off.',
+  d:'The coherent opposite of Apathy. What is left once the shadow weight comes off an address. Read as available energy at the seat rather than as motivation, because motivation is a report and this is a measurement.',
+  n:[['Installed','0.0','10'],['Opposite of','Apathy','9 axes']], row:0},
+ 'groundedness':{t:'Groundedness', kind:'opposite',
+  short:'The coherent opposite of Shock. An address that stays in the body when input arrives fast.',
+  d:'The coherent opposite of Shock. An address that stays in the body when input arrives faster than it can be processed. The shock pattern leaves the body; groundedness is the same address not leaving.',
+  n:[['Installed','0.0','10'],['Opposite of','Shock','9 axes']], row:0},
+ 'joy':{t:'Joy', kind:'opposite',
+  short:'The coherent opposite of Sad. What conducts at the cardiac plexus once the grief charge is discharged.',
+  d:'The coherent opposite of Sad. What conducts at the cardiac plexus once the grief charge has discharged. It is a conduction state at an address, not a mood, and it is measured as installation.',
+  n:[['Installed','0.0','10'],['Opposite of','Sad','9 axes']], row:0},
+ 'readiness':{t:'Readiness', kind:'opposite',
+  short:'The coherent opposite of Surprise. An address that meets new input without bracing first.',
+  d:'The coherent opposite of Surprise. An address that meets new input without bracing first. The surprise pattern braces and then reads; readiness reads.',
+  n:[['Installed','0.0','10'],['Opposite of','Surprise','9 axes']], row:0}};
+
+function gloss(term){
+ if(!term)return null;
+ var g=GLOSS_T[String(term).trim().toLowerCase()];
+ return g||null;}
+
+/* ---- the two lines the tooltip module gains ---- */
+TIP.gloss=gloss;
+
+/* THE TIP IS A READ AND IS COUNTED AS ONE. Two attempts at this, and the
+   first one lied. Wrapping TIP.show counted nothing, because the hover and
+   tap handlers call the module's own internal showFor and never the public
+   method, so the counter read two routes of three while all three worked.
+   The panel itself is the only honest witness: when it gains its open class,
+   a definition was read. */
+new MutationObserver(function(){
+ var t=document.querySelector('.tip'); if(!t||!t.classList.contains('on'))return;
+ var nm=t.querySelector('.tip-t'); if(!nm)return;
+ var g=gloss(nm.textContent); if(g)mark('in place', g.short||g.d, g.t);})
+ .observe(document.body,{subtree:true,attributes:true,attributeFilter:['class']});
+
+/* ---- the drill. the long answer, on the surface. ---- */
+/* THE COUNTER IS THE PROOF, so it counts the right things. A first version
+   counted distinct strings and reported two of one, because the tip prints
+   the short form and the drill prints the long one. Two forms of one entry is
+   the design, not a drift, so the counter says entries and forms separately
+   rather than making the number wrong to keep the label short. */
+var READS=0, ENTRIES={}, FORMS={}, ROUTES={};
+function mark(route,str,term){
+ READS++; if(term)ENTRIES[term]=1; FORMS[str]=1; ROUTES[route]=1;
+ document.getElementById('n-read').textContent=READS;
+ document.getElementById('n-str').textContent=Object.keys(ENTRIES).length;
+ document.getElementById('n-form').textContent=Object.keys(FORMS).length;
+ document.getElementById('n-rt').textContent=Object.keys(ROUTES).length;}
+function openDrill(term,route){
+ var g=gloss(term); if(!g)return;
+ var d=document.getElementById('drill');
+ d.innerHTML='<p class="eye">'+g.kind+'</p><h3>'+g.t+'</h3>'
+  +(g.nv?'<p class="nv">'+g.nv+'</p>':'')
+  +'<p>'+g.d+'</p>'
+  +(g.n&&g.n.length?'<dl>'+g.n.map(function(r){
+     return '<dt>'+r[0]+'</dt><dd>'+r[1]+' <i>of '+r[2]+'</i></dd>';}).join('')+'</dl>':'')
+  +'<button type="button" class="x" id="dx">Close</button>';
+ d.classList.add('on');
+ document.getElementById('dx').onclick=function(){d.classList.remove('on');};
+ d.scrollIntoView({block:'nearest'});
+ mark(route||'drill', g.d, g.t);}
+
+/* THE TIP AND THE DRILL ARE ONE GESTURE APART, NOT TWO SURFACES APART.
+   Measured on the live build at 390: tapping a row that both explains and
+   navigates opened the tip and changed tab within 120 milliseconds, and the
+   definition was wiped before it could be read. So a carrier that navigates
+   does not navigate on the first tap. The first tap explains, the tip's own
+   action line navigates, and that is one rule rather than a special case. */
+document.addEventListener('click',function(ev){
+ var b=ev.target.closest?ev.target.closest('[data-open]'):null;
+ if(!b)return;
+ if(TIP.sheet()&&!b.classList.contains('tip-opened')){b.classList.add('tip-opened');return;}
+ openDrill(b.getAttribute('data-open'), b.getAttribute('data-route')||'in place');});
+
+/* ---- route 2. the index. ---- */
+var Q=document.getElementById('q'), H=document.getElementById('hits');
+function paint(){
+ var q=(Q.value||'').trim().toLowerCase();
+ var keys=Object.keys(GLOSS_T).filter(function(k){
+  return !q||k.indexOf(q)>=0||GLOSS_T[k].kind.indexOf(q)>=0;});
+ H.innerHTML=keys.map(function(k){var g=GLOSS_T[k];
+  return '<li><button type="button" data-hit="'+k+'">'+g.t+'<em>'+g.kind+'</em></button></li>';}).join('')
+  ||'<li><p class="note" style="padding:12px 4px;margin:0">nothing held</p></li>';
+ H.querySelectorAll('[data-hit]').forEach(function(b){
+  b.onclick=function(){openDrill(b.getAttribute('data-hit'),'by name');};});}
+Q.addEventListener('input',paint); paint();
+
+/* ---- the gate, on this page ---- */
+(function(){
+ var names={}, bad=[];
+ document.querySelectorAll('[data-gloss]').forEach(function(e){
+  var t=e.getAttribute('data-gloss'); names[t]=1;
+  if(!gloss(t))bad.push(t);});
+ var n=Object.keys(names).length;
+ document.getElementById('gate').innerHTML=
+  '<div><span>names on this page</span> <b>'+n+'</b></div>'
+ +'<div><span>glossed</span> <b>'+(n-bad.length)+'</b> <span>of '+n+'</span></div>'
+ +'<div class="'+(bad.length?'bad':'')+'"><span>refused by name</span> <b>'
+  +(bad.length?bad.join(', '):'none')+'</b></div>'
+ +'<div><span>entries in the table</span> <b>'+Object.keys(GLOSS_T).length+'</b></div>'
+ +'<div><span>addresses in the instrument</span> <b>112</b></div>';})();
+
+/* ---- the two lightings, because the tip declares its own ground ---- */
+document.querySelectorAll('[data-lit]').forEach(function(b){
+ b.onclick=function(){
+  document.body.className=b.getAttribute('data-lit');
+  document.querySelectorAll('[data-lit]').forEach(function(x){x.classList.remove('on');});
+  b.classList.add('on'); TIP.hide();};});
+</script>
+</body></html>

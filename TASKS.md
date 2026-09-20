@@ -417,6 +417,77 @@ story. It is one complete system."
 
 ---
 
+## 0h. RULED 20 SEPTEMBER, FIFTH PASS. THE BAR, STATED.
+
+**His sentence, and it is the whole product brief.** "This has got to be rock
+solid. You have got to feel like this is the very first tool that makes you feel
+like you are not only seeing yourself, but you are able to fine tune who you
+are."
+
+Read the second half. **Fine tune.** Not read, not receive, not be told. Every
+surface from here has to be an instrument a person adjusts, not a chart they
+look at. A readout that cannot be turned is a report, and he has never asked for
+a report.
+
+### PL. THE PILLS. TEN OF THEM.
+
+- [ ] **PL1.** "The pill designs are okay, but I do not have enough to work off
+  of. Give me ten pill designs." Ten distinct treatments of the ring and pill,
+  not ten colourways of one.
+- [ ] **PL2.** They have to hold every case the component actually meets: four
+  sizes, letters in the centre, a drawing in the centre, a charge where high is
+  bad, a share where high is good, an unread dash, a selected state, a clickable
+  state, and a phone.
+
+### FLD. THE FIELD. ATMOSPHERE AND TISSUE ARE BOTH REJECTED.
+
+- [x] **FLD1.** His verdict: "I do not like the atmosphere design. And I do not
+  like the tissue design. They are too bulky, too simple. There are some
+  interesting things about it, but it does not make as intuitive sense."
+- [ ] **FLD2.** So the recommendation is dead. Atmosphere was the ship
+  candidate and Tissue was the magnificent one, and the two rejections are the
+  same rejection: **bulky, and not intuitive.** Bulk is the mark carrying more
+  ink than reading. Intuitive is a person knowing what it says without being
+  taught.
+- [ ] **FLD3.** Next round is aimed at that, and at the bar above: the Field has
+  to be a thing you turn, not a picture you receive. Plumb and Console were not
+  rejected and are not confirmed either, so they stay live.
+
+### VIB. VIBRANCY. HE SHOULD NOT HAVE HAD TO ANSWER THIS.
+
+- [x] **VIB1.** "I am not sure what you want me to do with this vibrancy thing."
+  Fair, and my fault: he used the word first and then was asked what it meant,
+  which is a question handed back rather than work done. Decided below and his
+  to overrule rather than his to originate.
+- [ ] **VIB2. Vibrancy is movement.** Length is where a law stands. Vibrancy is
+  whether it is rising, holding or falling, drawn as the vane: a full vane is
+  one being actively exercised, a ragged one is one being let go. It is the only
+  reading of his word that is both symbolically true of a feather and visible
+  changing as a person works, which is what "fine tune who you are" requires.
+- [ ] **VIB3. What it costs, measured.** Nothing derives it today: `snapshot()`
+  at `engine/schema.js:153` stores CQ, DQ, SQ, pole, JQ, radiance, five counts,
+  the dark seat, the tier and the archetype, and **not the twenty one laws**. So
+  it needs one additive field, an array of 21 on the snapshot. The schema is
+  already additive and v1 still loads, so nothing recomputes and no older
+  profile breaks.
+- [ ] **VIB4. And a person with no history is not a person at zero.** With one
+  snapshot or none the vane is full and neutral rather than empty, because an
+  unknown is not a nothing. The unanswered law is already a bare quill, which is
+  a different statement and stays different.
+- [ ] **VIB5.** The two alternatives, recorded so the choice is visible: seat
+  charge inverted, which is free and available today but is a seat level number
+  shared by up to four laws; and conviction or frequency, which do not exist and
+  each cost a new intake field.
+
+### AVS. THE AVATAR SYSTEM. HE WANTS TO SEE IT.
+
+- [ ] **AVS1.** "I also want you to design the avatar system. I want to see what
+  that looks like." Running. The bar above is now part of that brief: the avatar
+  is the thing a person fine tunes, which is the difference between an avatar
+  and a portrait.
+
+---
+
 ## 0c. RULED 20 SEPTEMBER, SECOND PASS. THE ARRIVAL, THE FEATHERS AND KARMA
 
 **"I didn't give you feedback on the feathers. I don't give you feedback

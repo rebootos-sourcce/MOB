@@ -86,6 +86,10 @@ if(typeof module!=='undefined'&&module.exports){
                   bindStore:bindStore, PKEY:PKEY, pPersist:pPersist, saveState:saveState,
                   storeBound:function(){return STORE_BOUND;},
   /* intake */    iqList:iqList, iqScore:iqScore, iqApply:iqApply,
+  /* exported so the gate can assert it against SI in both directions. The
+     rename that missed this table shipped six broken questions, and a table
+     no test can reach is a table with no owner. */
+                  IQ_STEM:IQ_STEM,
   /* sniffer */   scanStory:scanStory, parseStory:parseStory, applyStory:applyStory,
                   pathOf:pathOf, seatOf:seatOf, SEATXY:SEATXY, PATHSEAT:PATHSEAT,
   /* birth */     sunSign:sunSign, moonSign:moonSign, risingSign:risingSign,

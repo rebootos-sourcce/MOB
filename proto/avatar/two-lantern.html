@@ -3,423 +3,731 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>The Lantern</title>
 <style>
-:root{
- --bg:#0C0D12; --panel:#13151C; --panel2:#191C24; --edge:#262A34;
- --ink:#E8E6E1; --dim:#94908A; --faint:#5E5B57;
- --gold:#7EB8D4; --alarm:#FF2E1F;
- --root:#CF5953; --sacral:#D19255; --solar:#D4BC70; --heart:#65CFA5;
- --throat:#65B8D4; --eye:#8296DB; --crown:#A883D6;
-}
+:root{--bg:#0C0D12;--panel:#13151C;--panel2:#191C24;--edge:#262A34;
+ --ink:#E8E6E1;--dim:#94908A;--faint:#5E5B57;--gold:#7EB8D4;--alarm:#FF2E1F}
 *{box-sizing:border-box}
 html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
  font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
- -webkit-font-smoothing:antialiased}
-.wrap{max-width:1560px;margin:0 auto;padding:22px 16px 60px}
+ -webkit-font-smoothing:antialiased;overflow-x:hidden}
+.wrap{max-width:1560px;margin:0 auto;padding:20px 16px 60px}
 h1{font-size:25px;line-height:1.15;margin:0 0 4px;font-weight:600;letter-spacing:-.01em}
-.sub{color:var(--dim);font-size:14px;margin:0 0 18px;max-width:78ch}
-.eye{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);
- margin:0 0 7px}
+.sub{color:var(--dim);font-size:14px;margin:0 0 14px;max-width:82ch}
+.eye{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin:0 0 7px}
 h2{font-size:12px;letter-spacing:.13em;text-transform:uppercase;color:var(--dim);
- margin:30px 0 10px;font-weight:600;border-top:1px solid var(--edge);padding-top:12px}
-p{margin:0 0 9px;max-width:80ch}
-.dim{color:var(--dim)}
-.faint{color:var(--faint)}
-b{font-weight:600}
-.row{display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap}
+ margin:28px 0 10px;font-weight:600;border-top:1px solid var(--edge);padding-top:12px}
+h3{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);
+ margin:14px 0 6px;font-weight:600}
+p{margin:0 0 9px;max-width:84ch}
+.dim{color:var(--dim)} .faint{color:var(--faint)} b{font-weight:600}
+.row{display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap;min-width:0}
+.row>*{min-width:0}
 .card{background:var(--panel);border:1px solid var(--edge);border-radius:8px;padding:14px}
-.pick{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 14px}
+.pick{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 12px}
 button{font:inherit;font-size:12.5px;color:var(--dim);background:transparent;
  border:1px solid var(--edge);border-radius:5px;padding:5px 11px;cursor:pointer}
 button:hover{color:var(--ink);border-color:var(--gold)}
 button[aria-pressed=true]{color:var(--bg);background:var(--gold);border-color:var(--gold)}
-/* HERO. no text over the graphic, so the caption is a sibling below it. */
+button.act{color:var(--ink);border-color:var(--gold)}
+button:disabled{opacity:.34;cursor:default;border-color:var(--edge);color:var(--faint)}
 .hero{background:var(--panel);border:1px solid var(--edge);border-radius:8px;
- padding:16px;flex:0 1 auto;max-width:100%}
-.stage{display:block;background:#0A0B0F;border-radius:6px}
-.cap{margin-top:12px;max-width:34ch}
-.lrail span{position:absolute;left:0;width:126px;font-size:10.5px;line-height:1.25;
+ padding:14px;flex:0 1 auto;max-width:100%}
+.stage{display:block;background:#0A0B0F;border-radius:6px;max-width:100%;height:auto}
+.hrow{display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap}
+.lrail{position:relative;flex:0 0 130px;width:130px}
+.lrail span{position:absolute;left:0;width:128px;font-size:10.5px;line-height:1.25;
  color:var(--dim);letter-spacing:.03em;transform:translateY(-50%)}
 .lrail span i{font-style:normal;color:var(--faint);display:block;font-size:9.5px;
  font-variant-numeric:tabular-nums;line-height:1.25}
-.lflat{display:none;margin-top:10px;font-size:11px;line-height:1.45}
-.lflat b{display:inline-block;min-width:66px}
+.lflat{display:none;margin-top:10px;font-size:11px;line-height:1.5}
+.lflat b{display:inline-block;min-width:64px}
 .lflat i{font-style:normal;color:var(--faint);font-variant-numeric:tabular-nums}
-@media (max-width:900px){.lrail{display:none!important}.lflat{display:block}}
+@media (max-width:980px){.lrail{display:none!important}.lflat{display:block}}
+.cap{max-width:34ch}
 .cap .nm{font-size:16px;font-weight:600}
 .cap .rl{color:var(--dim);font-size:13px}
 .cap .sy{color:var(--faint);font-size:12.5px;font-style:italic;margin-top:5px}
-.strip{display:flex;gap:10px;flex-wrap:wrap}
-.fr{background:var(--panel2);border:1px solid var(--edge);border-radius:7px;padding:10px}
-.fr canvas{display:block;background:#0A0B0F;border-radius:4px}
-.fr .lb{font-size:11px;color:var(--dim);margin-top:8px;max-width:19ch;line-height:1.35}
-.num{display:grid;grid-template-columns:auto auto;gap:2px 14px;font-size:12.5px;
- margin-top:10px}
-.num dt{color:var(--dim)}
-.num dd{margin:0;text-align:right;font-variant-numeric:tabular-nums}
+.num{display:grid;grid-template-columns:auto auto;gap:2px 12px;font-size:12.5px;margin:10px 0 0}
+.num dt{color:var(--dim)} .num dd{margin:0;text-align:right;font-variant-numeric:tabular-nums}
 .num dd em{color:var(--faint);font-style:normal;font-size:11px}
-table{border-collapse:collapse;font-size:12.5px;width:100%;max-width:1100px}
+.num dt.hd{grid-column:1/3;font-size:10px;letter-spacing:.11em;text-transform:uppercase;
+ margin-top:8px;color:var(--faint)}
+.strip{display:flex;gap:9px;flex-wrap:wrap}
+.fr{background:var(--panel2);border:1px solid var(--edge);border-radius:7px;padding:9px}
+.fr canvas{display:block;background:#0A0B0F;border-radius:4px;max-width:100%;height:auto}
+.fr .lb{font-size:11px;color:var(--dim);margin-top:7px;max-width:20ch;line-height:1.35}
+.fr .lb b{color:var(--ink)}
+/* THE PEGS. twenty one laws, grouped by the seat each is seated at. */
+.pegs{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:4px 16px}
+.pgrp{margin-bottom:6px}
+.pgrp>h4{margin:8px 0 3px;font:600 10px/1 inherit;letter-spacing:.11em;text-transform:uppercase}
+.peg{display:flex;align-items:center;gap:8px;font-size:11.5px;padding:1px 0}
+.peg label{flex:1 1 auto;color:var(--dim);white-space:nowrap;overflow:hidden;
+ text-overflow:ellipsis}
+.peg input{flex:0 0 78px;width:78px;accent-color:var(--gold);height:14px;margin:0}
+.peg .v{flex:0 0 46px;text-align:right;font-variant-numeric:tabular-nums;color:var(--ink);
+ font-size:11px}
+.peg .v em{color:var(--faint);font-style:normal}
+.pair{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:6px}
+.pair input[type=text]{flex:1 1 220px;min-width:0;font:inherit;font-size:12.5px;
+ background:var(--panel2);border:1px solid var(--edge);color:var(--ink);border-radius:5px;
+ padding:5px 8px}
+.pair input::placeholder{color:var(--faint)}
+table{border-collapse:collapse;font-size:12.5px;width:100%;min-width:620px;max-width:1120px}
+.tscroll{max-width:1120px;overflow-x:auto;scrollbar-color:var(--edge) transparent}
 th,td{text-align:left;padding:5px 11px 5px 0;border-bottom:1px solid var(--edge);
  font-variant-numeric:tabular-nums}
-th{color:var(--faint);font-weight:500;font-size:10.5px;letter-spacing:.09em;
- text-transform:uppercase}
-.sheet{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:10px;
- max-width:1100px}
-.sheet .c{background:var(--panel2);border:1px solid var(--edge);border-radius:6px;padding:7px}
-.sheet canvas{display:block;background:#0A0B0F;border-radius:3px;width:100%;height:auto}
-.sheet .t{font-size:10px;color:var(--faint);margin-top:6px;line-height:1.3}
-.key{display:flex;gap:18px;flex-wrap:wrap;font-size:12.5px;color:var(--dim);
- max-width:1100px}
-.key div{max-width:30ch}
-.key b{color:var(--ink);display:block;font-size:11px;letter-spacing:.08em;
+th{color:var(--faint);font-weight:500;font-size:10.5px;letter-spacing:.09em;text-transform:uppercase}
+.sheet{display:grid;grid-template-columns:repeat(auto-fill,minmax(106px,1fr));gap:9px;max-width:1120px}
+.sheet .c{background:var(--panel2);border:1px solid var(--edge);border-radius:6px;padding:6px}
+.sheet canvas{display:block;background:#0A0B0F;border-radius:3px;max-width:100%;height:auto}
+.sheet .t{font-size:10px;color:var(--faint);margin-top:5px;line-height:1.3}
+.key{display:flex;gap:16px;flex-wrap:wrap;font-size:12.5px;color:var(--dim);max-width:1120px}
+.key div{max-width:29ch}
+.key b{color:var(--ink);display:block;font-size:10.5px;letter-spacing:.08em;
  text-transform:uppercase;margin-bottom:3px}
+.warn{border-left:2px solid var(--gold);padding-left:12px;color:var(--dim);font-size:13.5px;max-width:82ch}
 .cost{font-variant-numeric:tabular-nums;font-size:12.5px;color:var(--dim)}
 .cost b{color:var(--ink)}
-.warn{border-left:2px solid var(--gold);padding-left:12px;color:var(--dim);
- font-size:13.5px;max-width:78ch}
-@media (max-width:760px){
- .wrap{padding:18px 16px 50px}
- h1{font-size:21px}
- .row{gap:12px}
- .hero,.card{width:100%}
- .stage{width:100%;height:auto}
- .sheet{grid-template-columns:repeat(auto-fill,minmax(88px,1fr))}
-}
+.lever{font-size:13px;color:var(--dim);max-width:82ch;margin-top:8px}
+.lever b{color:var(--ink)}
+@media (max-width:760px){.wrap{padding:16px 16px 50px}h1{font-size:21px}
+ .hero,.card{width:100%}.peg input{flex:0 0 64px;width:64px}}
 </style></head><body><div class="wrap">
 <p class="eye">Proto, avatar, approach two of three</p>
 <h1>The Lantern</h1>
-<p class="sub">No body. A housing that closes as the record accumulates, and a light sized by the one quantity in the engine that only ever rises. The weather is a veil of grey shutters that block the light and never touch a ring. This is the Field’s own language, so nothing here is a second vocabulary to learn.</p>
+<p class="sub">No body. A housing that closes as the record accumulates, a light sized by the one quantity in the engine that only ever rises, and a dotted boundary the light cannot pass. Clearing walks the bead outward. Turning a peg moves the boundary the bead is walking toward. This is the Field’s own language, so nothing here is a second vocabulary to learn.</p>
 <div id="mount"></div>
 
 <h2>What This Refuses To Draw</h2>
-<p class="warn">It refuses anatomy entirely, which means it cannot be read as a claim about a body part. It refuses to size the light by coherence, which is the obvious move and the wrong one, because coherence barely moves under release: Marcus goes from 39.2 to 40.5 over twelve runs. It refuses any count on the graphic.</p>
-
+<p class="warn">It refuses anatomy entirely, so it cannot be read as a claim about a body part. It refuses to size the light by coherence, which is the obvious move and the wrong one, because coherence barely moves under release: Marcus goes from 39.2 to 40.5 over twelve runs. It refuses any count on the graphic.</p>
 <h2>The Symbol Argument</h2>
-<p class="dim">A lantern is a housing and a light, and the two are independent: a good housing with no fuel is dark, and a bright flame in a broken housing does not carry. That is exactly the relation between a record and a reading. It also inherits the ring not fill rule without an argument, because a lantern is drawn as edges. The light is the installed coherent opposite, which relCoolDown puts in at 62 percent of what it removed, and which is the only quantity in the whole engine that cannot fall when a person does the work.</p>
-
+<p class="dim">A lantern is a housing and a light and the two are independent: a good housing with no fuel is dark, and a bright flame in a broken housing does not carry. That is exactly the relation between a record and a reading. It inherits ring not fill without an argument, because a lantern is drawn as edges. The light is the installed coherent opposite, which relCoolDown puts in at 62 percent of what it removed, and which is the only quantity in the whole engine that cannot fall when a person does the work.</p>
+<h2>Not Bulky, And Nothing To Be Taught</h2>
+<p class="dim">Six kinds of mark and six readings, which is one more than the armature carries and is the honest cost of having no anatomy to hang them on. It is the least bulky of the three by ink: the whole figure is concentric strokes and one low alpha wash, and it holds at 100 pixels square in the contact sheet, which the other two barely do. It is the worst of the three on nothing to be taught. Housing, light, boundary and bead all need one sentence each, which is four sentences before a person can read their own picture, and the owner has already named that failure mode by name.</p>
 <h2>The Honest Risk</h2>
 <p class="warn">It may not read as you. The Proteus effect literature is consistent that identification with a self representation is what changes behaviour, and a ring diagram gives a person nothing to identify with and nothing to make their own without adding cosmetics, which is the treadmill this whole document is trying to avoid. It is also the approach most likely to be mistaken for the Field, which is a real cost: two surfaces that look the same are one surface with a bug.</p>
 
 <h2>Frame Cost, Measured In This Page</h2>
 <p class="cost" id="cost">measuring</p>
-<p class="faint" style="font-size:12px">One 2D canvas, the same surface the Field already owns.
+<p class="faint" style="font-size:12px">One 2D canvas, the surface the Field already owns.
  Median and 95th percentile of the hero draw over 600 frames, device pixel ratio applied.
- Nothing is promoted to its own layer and nothing carries a backdrop filter.</p>
+ Nothing is promoted to its own layer and nothing carries a backdrop filter. The figure
+ redraws on every frame including while a peg is moving, so this is the worst case and not
+ the resting one.</p>
 
-<h2>Every Number On This Page</h2>
-<p class="dim">Comes out of <span class="faint">engine.js</span> at run time through
- <span class="faint">proto/avatar/gen.js</span>, which replicates the release arithmetic at
- <span class="faint">atuned_src/ui/release.js:88</span> verbatim. Nothing is typed in.
- The four columns are the same four points for every profile, so a drawing cannot be tuned
- to one of them.</p>
-<table id="tbl"></table>
+<h2>Where Every Number Comes From</h2>
+<p class="dim">This page loads <span class="faint">engine.js</span>, the product's own
+ arithmetic core, and calls <span class="faint">compute()</span> on every change. Nothing
+ is precomputed and nothing is typed in. The release control replicates
+ <span class="faint">atuned_src/ui/release.js:88</span>. The reach is
+ <span class="faint">cqCeiling()</span> at <span class="faint">compute.js:263</span> and
+ each seat's own reach is <span class="faint">mirrorAt(0, bandIg(seat))</span> from
+ <span class="faint">data/compass.js:253</span>. Turn a peg and watch both move.</p>
+<p class="faint" style="font-size:11px" id="tnote"></p>
+<div class="tscroll"><table id="tbl"></table></div>
 </div>
-<script>
-window.AVDATA={"Diane":{"nm":"Diane","age":46,"role":"founder, second company · ICP","says":"I work until the work is done and the work is never done. Rest feels like a moral failure.","frames":{"m0":{"label":"Month 0. Nothing run.","CQ":28.09,"tier":"Corrupt","tierCol":"#C98A5E","DQ":3.51,"Ig":5.9,"It":5.6,"poleMean":0.839,"SQm":4.39,"carrying":91,"loaded":8,"under":83,"unread":false,"heaviest":{"k":"Need For Approval","b":"Sacral","sq":5.06,"cf":"Shame","opp":"Worth"},"chainHeld":12,"chainOver":1,"cxs":4,"hys":1,"sups":0,"hyHeld":["Collapse"],"hyOver":[],"darkB":"Solar","weakL":"Temperance","dch":"Anticipation","balance":0.086,"seats":[{"b":"Root","n":16,"load":1.426,"pole":0.716,"peak":2.38,"ig":4.35,"mirror":70,"carrying":13,"opened":0,"touched":0,"laws":2},{"b":"Sacral","n":16,"load":1.336,"pole":3.289,"peak":5.06,"ig":2.8,"mirror":64,"carrying":7,"opened":0,"touched":0,"laws":2},{"b":"Solar","n":16,"load":3.645,"pole":0.198,"peak":4.44,"ig":7.55,"mirror":68,"carrying":15,"opened":0,"touched":0,"laws":4},{"b":"Heart","n":15,"load":2.255,"pole":0.213,"peak":3.88,"ig":6.1,"mirror":71,"carrying":14,"opened":0,"touched":0,"laws":4},{"b":"Throat","n":12,"load":2.42,"pole":0,"peak":3.53,"ig":6.1,"mirror":70,"carrying":12,"opened":0,"touched":0,"laws":3},{"b":"3rd Eye","n":12,"load":1.286,"pole":1.048,"peak":2.09,"ig":6.1,"mirror":77,"carrying":10,"opened":0,"touched":0,"laws":3},{"b":"Crown","n":21,"load":1.606,"pole":0.359,"peak":2.17,"ig":6.1,"mirror":75,"carrying":20,"opened":0,"touched":0,"laws":3}],"rec":{"runs":0,"addr":0,"touch":0,"seats":0,"emptied":0,"laws":21,"days":0}},"m1":{"label":"Month 1. Four runs.","CQ":33.16,"tier":"Incoherent","tierCol":"#C9A96A","DQ":0,"Ig":5.92,"It":5.61,"poleMean":0.884,"SQm":0,"carrying":76,"loaded":0,"under":76,"unread":false,"heaviest":{"k":"False Love","b":"Heart","sq":1.46,"cf":"Disgust","opp":"Acceptance"},"chainHeld":0,"chainOver":1,"cxs":0,"hys":0,"sups":0,"hyHeld":[],"hyOver":[],"darkB":"Heart","weakL":"Temperance","dch":"Anticipation","balance":0.201,"seats":[{"b":"Root","n":16,"load":0.261,"pole":0.762,"peak":0.63,"ig":4.35,"mirror":77,"carrying":11,"opened":2,"touched":0,"laws":2},{"b":"Sacral","n":16,"load":0.406,"pole":3.289,"peak":1.31,"ig":2.8,"mirror":70,"carrying":7,"opened":0,"touched":4,"laws":2},{"b":"Solar","n":16,"load":0.824,"pole":0.198,"peak":1.21,"ig":7.55,"mirror":86,"carrying":15,"opened":0,"touched":8,"laws":4},{"b":"Heart","n":15,"load":0.854,"pole":0.213,"peak":1.46,"ig":6.1,"mirror":80,"carrying":14,"opened":0,"touched":3,"laws":4},{"b":"Throat","n":12,"load":0.604,"pole":0,"peak":1.35,"ig":6.1,"mirror":81,"carrying":12,"opened":0,"touched":2,"laws":3},{"b":"3rd Eye","n":12,"load":0.38,"pole":1.097,"peak":0.76,"ig":6.1,"mirror":83,"carrying":8,"opened":2,"touched":0,"laws":3},{"b":"Crown","n":21,"load":0.248,"pole":0.53,"peak":0.71,"ig":6.1,"mirror":84,"carrying":9,"opened":11,"touched":0,"laws":3}],"rec":{"runs":4,"addr":15,"touch":17,"seats":4,"emptied":3,"laws":21,"days":28}},"m3":{"label":"Month 3. Twelve runs.","CQ":34.78,"tier":"Incoherent","tierCol":"#C9A96A","DQ":0,"Ig":6.08,"It":5.72,"poleMean":1.42,"SQm":0,"carrying":0,"loaded":0,"under":0,"unread":true,"heaviest":null,"chainHeld":0,"chainOver":1,"cxs":0,"hys":0,"sups":0,"hyHeld":[],"hyOver":[],"darkB":"Root","weakL":"Temperance","dch":"Anticipation","balance":0.275,"seats":[{"b":"Root","n":16,"load":0,"pole":1.384,"peak":0,"ig":4.35,"mirror":79,"carrying":0,"opened":13,"touched":0,"laws":2},{"b":"Sacral","n":16,"load":0,"pole":3.473,"peak":0,"ig":2.8,"mirror":73,"carrying":0,"opened":7,"touched":4,"laws":2},{"b":"Solar","n":16,"load":0,"pole":0.761,"peak":0,"ig":7.55,"mirror":91,"carrying":0,"opened":15,"touched":9,"laws":4},{"b":"Heart","n":15,"load":0,"pole":0.613,"peak":0,"ig":6.1,"mirror":85,"carrying":0,"opened":14,"touched":5,"laws":4},{"b":"Throat","n":12,"load":0,"pole":0.714,"peak":0,"ig":6.1,"mirror":85,"carrying":0,"opened":12,"touched":2,"laws":3},{"b":"3rd Eye","n":12,"load":0,"pole":1.689,"peak":0,"ig":6.1,"mirror":85,"carrying":0,"opened":10,"touched":0,"laws":3},{"b":"Crown","n":21,"load":0,"pole":1.214,"peak":0,"ig":6.1,"mirror":85,"carrying":0,"opened":20,"touched":0,"laws":3}],"rec":{"runs":12,"addr":91,"touch":20,"seats":4,"emptied":7,"laws":21,"days":84}},"bad":{"label":"Month 4. A hard month on top of twelve runs.","CQ":32.73,"tier":"Incoherent","tierCol":"#C9A96A","DQ":0,"Ig":5.87,"It":5.57,"poleMean":0.741,"SQm":0,"carrying":84,"loaded":0,"under":84,"unread":false,"heaviest":{"k":"Need For Approval","b":"Sacral","sq":2.11,"cf":"Shame","opp":"Worth"},"chainHeld":0,"chainOver":1,"cxs":0,"hys":0,"sups":0,"hyHeld":[],"hyOver":[],"darkB":"Solar","weakL":"Temperance","dch":"Anticipation","balance":0.137,"seats":[{"b":"Root","n":16,"load":0.19,"pole":0.715,"peak":0.55,"ig":4.35,"mirror":77,"carrying":13,"opened":13,"touched":0,"laws":2},{"b":"Sacral","n":16,"load":0.577,"pole":2.633,"peak":2.11,"ig":2.8,"mirror":69,"carrying":7,"opened":7,"touched":4,"laws":2},{"b":"Solar","n":16,"load":1.274,"pole":0.12,"peak":1.73,"ig":7.55,"mirror":83,"carrying":15,"opened":15,"touched":9,"laws":4},{"b":"Heart","n":15,"load":1.064,"pole":0.136,"peak":1.65,"ig":6.1,"mirror":79,"carrying":14,"opened":14,"touched":5,"laws":4},{"b":"Throat","n":12,"load":0.784,"pole":0,"peak":1.49,"ig":6.1,"mirror":80,"carrying":12,"opened":12,"touched":2,"laws":3},{"b":"3rd Eye","n":12,"load":0.304,"pole":1.066,"peak":0.64,"ig":6.1,"mirror":83,"carrying":6,"opened":10,"touched":0,"laws":3},{"b":"Crown","n":21,"load":0.208,"pole":0.461,"peak":0.57,"ig":6.1,"mirror":84,"carrying":17,"opened":20,"touched":0,"laws":3}],"rec":{"runs":12,"addr":91,"touch":20,"seats":4,"emptied":7,"laws":21,"days":114}}}},"Marcus":{"nm":"Marcus","age":44,"role":"creative director · ICP","says":"I can see what is wrong with anything in four seconds. It has cost me two studios.","frames":{"m0":{"label":"Month 0. Nothing run.","CQ":39.17,"tier":"Incoherent","tierCol":"#C9A96A","DQ":0,"Ig":6.23,"It":6.29,"poleMean":0.478,"SQm":0,"carrying":99,"loaded":0,"under":99,"unread":false,"heaviest":{"k":"Co-Dependency","b":"Sacral","sq":2.51,"cf":"Disgust","opp":"Acceptance"},"chainHeld":0,"chainOver":1,"cxs":0,"hys":0,"sups":0,"hyHeld":[],"hyOver":[],"darkB":"Throat","weakL":"Forgiveness","dch":"Disgust","balance":0.257,"seats":[{"b":"Root","n":16,"load":1.008,"pole":0.783,"peak":1.46,"ig":6.4,"mirror":80,"carrying":13,"opened":0,"touched":0,"laws":2},{"b":"Sacral","n":16,"load":1.138,"pole":0.848,"peak":2.51,"ig":6.4,"mirror":79,"carrying":14,"opened":0,"touched":0,"laws":2},{"b":"Solar","n":16,"load":0.947,"pole":0.399,"peak":1.26,"ig":6.4,"mirror":80,"carrying":15,"opened":0,"touched":0,"laws":4},{"b":"Heart","n":15,"load":1.131,"pole":0.839,"peak":2.44,"ig":5.2,"mirror":75,"carrying":13,"opened":0,"touched":0,"laws":4},{"b":"Throat","n":12,"load":1.309,"pole":0,"peak":2.07,"ig":6.9,"mirror":80,"carrying":12,"opened":0,"touched":0,"laws":3},{"b":"3rd Eye","n":12,"load":0.901,"pole":0.548,"peak":1.31,"ig":7.2,"mirror":84,"carrying":11,"opened":0,"touched":0,"laws":3},{"b":"Crown","n":21,"load":1.069,"pole":0,"peak":1.79,"ig":5.37,"mirror":76,"carrying":21,"opened":0,"touched":0,"laws":3}],"rec":{"runs":0,"addr":0,"touch":0,"seats":0,"emptied":0,"laws":21,"days":0}},"m1":{"label":"Month 1. Four runs.","CQ":39.31,"tier":"Incoherent","tierCol":"#C9A96A","DQ":0,"Ig":6.24,"It":6.29,"poleMean":0.523,"SQm":0,"carrying":79,"loaded":0,"under":79,"unread":false,"heaviest":{"k":"Scarcity","b":"Root","sq":0.86,"cf":"Fear","opp":"Trust"},"chainHeld":0,"chainOver":1,"cxs":0,"hys":0,"sups":0,"hyHeld":[],"hyOver":[],"darkB":"Root","weakL":"Forgiveness","dch":"Anticipation","balance":0.258,"seats":[{"b":"Root","n":16,"load":0.555,"pole":0.783,"peak":0.86,"ig":6.4,"mirror":83,"carrying":13,"opened":0,"touched":10,"laws":2},{"b":"Sacral","n":16,"load":0.366,"pole":0.848,"peak":0.67,"ig":6.4,"mirror":84,"carrying":14,"opened":0,"touched":7,"laws":2},{"b":"Solar","n":16,"load":0.075,"pole":0.53,"peak":0.26,"ig":6.4,"mirror":86,"carrying":5,"opened":10,"touched":0,"laws":4},{"b":"Heart","n":15,"load":0.319,"pole":0.852,"peak":0.66,"ig":5.2,"mirror":80,"carrying":13,"opened":0,"touched":5,"laws":4},{"b":"Throat","n":12,"load":0.3,"pole":0.024,"peak":0.53,"ig":6.9,"mirror":86,"carrying":11,"opened":1,"touched":2,"laws":3},{"b":"3rd Eye","n":12,"load":0.085,"pole":0.648,"peak":0.24,"ig":7.2,"mirror":89,"carrying":5,"opened":6,"touched":0,"laws":3},{"b":"Crown","n":21,"load":0.181,"pole":0.048,"peak":0.54,"ig":5.37,"mirror":81,"carrying":18,"opened":3,"touched":0,"laws":3}],"rec":{"runs":4,"addr":20,"touch":24,"seats":4,"emptied":4,"laws":21,"days":28}},"m3":{"label":"Month 3. Twelve runs.","CQ":40.5,"tier":"Incoherent","tierCol":"#C9A96A","DQ":0,"Ig":6.35,"It":6.37,"poleMean":0.886,"SQm":0,"carrying":0,"loaded":0,"under":0,"unread":true,"heaviest":null,"chainHeld":0,"chainOver":1,"cxs":0,"hys":0,"sups":0,"hyHeld":[],"hyOver":[],"darkB":"Root","weakL":"Forgiveness","dch":"Anticipation","balance":0.507,"seats":[{"b":"Root","n":16,"load":0,"pole":0.981,"peak":0,"ig":6.4,"mirror":86,"carrying":0,"opened":13,"touched":13,"laws":2},{"b":"Sacral","n":16,"load":0,"pole":1.092,"peak":0,"ig":6.4,"mirror":86,"carrying":0,"opened":14,"touched":7,"laws":2},{"b":"Solar","n":16,"load":0,"pole":0.968,"peak":0,"ig":6.4,"mirror":86,"carrying":0,"opened":15,"touched":0,"laws":4},{"b":"Heart","n":15,"load":0,"pole":1.117,"peak":0,"ig":5.2,"mirror":82,"carrying":0,"opened":13,"touched":5,"laws":4},{"b":"Throat","n":12,"load":0,"pole":0.493,"peak":0,"ig":6.9,"mirror":88,"carrying":0,"opened":12,"touched":2,"laws":3},{"b":"3rd Eye","n":12,"load":0,"pole":1.226,"peak":0,"ig":7.2,"mirror":89,"carrying":0,"opened":11,"touched":0,"laws":3},{"b":"Crown","n":21,"load":0,"pole":0.458,"peak":0,"ig":5.37,"mirror":82,"carrying":0,"opened":21,"touched":0,"laws":3}],"rec":{"runs":12,"addr":99,"touch":27,"seats":4,"emptied":7,"laws":21,"days":84}},"bad":{"label":"Month 4. A hard month on top of twelve runs.","CQ":38.95,"tier":"Incoherent","tierCol":"#C9A96A","DQ":0,"Ig":6.21,"It":6.27,"poleMean":0.411,"SQm":0,"carrying":96,"loaded":0,"under":96,"unread":false,"heaviest":{"k":"Possession","b":"Root","sq":1.94,"cf":"Shock","opp":"Groundedness"},"chainHeld":0,"chainOver":1,"cxs":0,"hys":0,"sups":0,"hyHeld":[],"hyOver":[],"darkB":"Root","weakL":"Forgiveness","dch":"Anticipation","balance":0.175,"seats":[{"b":"Root","n":16,"load":1.139,"pole":0.592,"peak":1.94,"ig":6.4,"mirror":79,"carrying":13,"opened":13,"touched":13,"laws":2},{"b":"Sacral","n":16,"load":1.044,"pole":0.723,"peak":1.82,"ig":6.4,"mirror":80,"carrying":14,"opened":14,"touched":7,"laws":2},{"b":"Solar","n":16,"load":0.262,"pole":0.353,"peak":0.46,"ig":6.4,"mirror":85,"carrying":15,"opened":15,"touched":0,"laws":4},{"b":"Heart","n":15,"load":0.799,"pole":0.693,"peak":1.26,"ig":5.2,"mirror":77,"carrying":13,"opened":13,"touched":5,"laws":4},{"b":"Throat","n":12,"load":0.706,"pole":0.012,"peak":0.97,"ig":6.9,"mirror":84,"carrying":12,"opened":12,"touched":2,"laws":3},{"b":"3rd Eye","n":12,"load":0.148,"pole":0.592,"peak":0.61,"ig":7.2,"mirror":88,"carrying":8,"opened":11,"touched":0,"laws":3},{"b":"Crown","n":21,"load":0.564,"pole":0.001,"peak":0.98,"ig":5.37,"mirror":79,"carrying":21,"opened":21,"touched":0,"laws":3}],"rec":{"runs":12,"addr":99,"touch":27,"seats":4,"emptied":7,"laws":21,"days":114}}}},"Gordon":{"nm":"Gordon","age":58,"role":"managing partner","says":"There is nothing wrong with me. Four people left in a year and each had their reasons.","frames":{"m0":{"label":"Month 0. Nothing run.","CQ":0.82,"tier":"Collapsed","tierCol":"#A28A88","DQ":55.19,"Ig":1.75,"It":1.76,"poleMean":0,"SQm":5.69,"carrying":107,"loaded":97,"under":10,"unread":false,"heaviest":{"k":"Possession","b":"Root","sq":9.51,"cf":"Shock","opp":"Groundedness"},"chainHeld":39,"chainOver":0,"cxs":19,"hys":6,"sups":2,"hyHeld":["Rigidity","Dysregulation","Predatory","Collapse","Dissociation","Grandiosity"],"hyOver":[],"darkB":"Throat","weakL":"Transparency","dch":"Fear","balance":-0.017,"seats":[{"b":"Root","n":16,"load":6.603,"pole":0,"peak":9.51,"ig":1.9,"mirror":28,"carrying":15,"opened":0,"touched":0,"laws":2},{"b":"Sacral","n":16,"load":6.353,"pole":0,"peak":8.37,"ig":1.9,"mirror":30,"carrying":16,"opened":0,"touched":0,"laws":2},{"b":"Solar","n":16,"load":4.209,"pole":0,"peak":4.66,"ig":2.18,"mirror":44,"carrying":16,"opened":0,"touched":0,"laws":4},{"b":"Heart","n":15,"load":6.055,"pole":0,"peak":8.52,"ig":1.45,"mirror":30,"carrying":15,"opened":0,"touched":0,"laws":4},{"b":"Throat","n":12,"load":6.938,"pole":0,"peak":7.91,"ig":1.37,"mirror":24,"carrying":12,"opened":0,"touched":0,"laws":3},{"b":"3rd Eye","n":12,"load":4.197,"pole":0,"peak":4.85,"ig":1.9,"mirror":43,"carrying":12,"opened":0,"touched":0,"laws":3},{"b":"Crown","n":21,"load":4.157,"pole":0,"peak":5.1,"ig":1.63,"mirror":42,"carrying":21,"opened":0,"touched":0,"laws":3}],"rec":{"runs":0,"addr":0,"touch":0,"seats":0,"emptied":0,"laws":21,"days":0}},"m1":{"label":"Month 1. Four runs.","CQ":2.64,"tier":"Collapsed","tierCol":"#A28A88","DQ":3.4,"Ig":1.75,"It":1.76,"poleMean":0,"SQm":4.25,"carrying":107,"loaded":8,"under":99,"unread":false,"heaviest":{"k":"Expectation","b":"Heart","sq":4.81,"cf":"Anticipation","opp":"Presence"},"chainHeld":21,"chainOver":0,"cxs":10,"hys":3,"sups":1,"hyHeld":["Collapse","Dysregulation","Rigidity"],"hyOver":[],"darkB":"Root","weakL":"Transparency","dch":"Shame","balance":0.046,"seats":[{"b":"Root","n":16,"load":3.167,"pole":0,"peak":4.54,"ig":1.9,"mirror":50,"carrying":15,"opened":0,"touched":7,"laws":2},{"b":"Sacral","n":16,"load":2.504,"pole":0,"peak":3.92,"ig":1.9,"mirror":54,"carrying":16,"opened":0,"touched":4,"laws":2},{"b":"Solar","n":16,"load":1.447,"pole":0,"peak":1.98,"ig":2.18,"mirror":61,"carrying":16,"opened":0,"touched":0,"laws":4},{"b":"Heart","n":15,"load":2.791,"pole":0,"peak":4.81,"ig":1.45,"mirror":50,"carrying":15,"opened":0,"touched":6,"laws":4},{"b":"Throat","n":12,"load":3.045,"pole":0,"peak":3.97,"ig":1.37,"mirror":48,"carrying":12,"opened":0,"touched":3,"laws":3},{"b":"3rd Eye","n":12,"load":1.373,"pole":0,"peak":2.15,"ig":1.9,"mirror":61,"carrying":12,"opened":0,"touched":0,"laws":3},{"b":"Crown","n":21,"load":1.345,"pole":0,"peak":2.07,"ig":1.63,"mirror":60,"carrying":21,"opened":0,"touched":0,"laws":3}],"rec":{"runs":4,"addr":0,"touch":20,"seats":4,"emptied":0,"laws":21,"days":28}},"m3":{"label":"Month 3. Twelve runs.","CQ":3.87,"tier":"Collapsed","tierCol":"#A28A88","DQ":0,"Ig":2,"It":1.94,"poleMean":0.815,"SQm":0,"carrying":28,"loaded":0,"under":28,"unread":false,"heaviest":{"k":"Expectation","b":"Heart","sq":0.78,"cf":"Anticipation","opp":"Presence"},"chainHeld":0,"chainOver":0,"cxs":0,"hys":0,"sups":0,"hyHeld":[],"hyOver":[],"darkB":"Root","weakL":"Transparency","dch":"Shame","balance":0.017,"seats":[{"b":"Root","n":16,"load":0.321,"pole":0.167,"peak":0.72,"ig":1.9,"mirror":67,"carrying":11,"opened":4,"touched":8,"laws":2},{"b":"Sacral","n":16,"load":0.095,"pole":0.548,"peak":0.37,"ig":1.9,"mirror":69,"carrying":5,"opened":11,"touched":6,"laws":2},{"b":"Solar","n":16,"load":0,"pole":1.393,"peak":0,"ig":2.18,"mirror":70,"carrying":0,"opened":16,"touched":0,"laws":4},{"b":"Heart","n":15,"load":0.23,"pole":0.415,"peak":0.78,"ig":1.45,"mirror":66,"carrying":6,"opened":9,"touched":6,"laws":4},{"b":"Throat","n":12,"load":0.239,"pole":0.433,"peak":0.62,"ig":1.37,"mirror":66,"carrying":6,"opened":6,"touched":5,"laws":3},{"b":"3rd Eye","n":12,"load":0,"pole":1.378,"peak":0,"ig":1.9,"mirror":69,"carrying":0,"opened":12,"touched":0,"laws":3},{"b":"Crown","n":21,"load":0,"pole":1.255,"peak":0,"ig":1.63,"mirror":68,"carrying":0,"opened":21,"touched":0,"laws":3}],"rec":{"runs":12,"addr":79,"touch":25,"seats":4,"emptied":7,"laws":21,"days":84}},"bad":{"label":"Month 4. A hard month on top of twelve runs.","CQ":3.25,"tier":"Collapsed","tierCol":"#A28A88","DQ":0,"Ig":1.81,"It":1.8,"poleMean":0.178,"SQm":0,"carrying":80,"loaded":0,"under":80,"unread":false,"heaviest":{"k":"Possession","b":"Root","sq":3.02,"cf":"Shock","opp":"Groundedness"},"chainHeld":11,"chainOver":0,"cxs":5,"hys":1,"sups":0,"hyHeld":["Dysregulation"],"hyOver":[],"darkB":"Root","weakL":"Transparency","dch":"Shame","balance":0.01,"seats":[{"b":"Root","n":16,"load":1.986,"pole":0,"peak":3.02,"ig":1.9,"mirror":57,"carrying":15,"opened":4,"touched":8,"laws":2},{"b":"Sacral","n":16,"load":1.58,"pole":0.003,"peak":2.84,"ig":1.9,"mirror":59,"carrying":16,"opened":11,"touched":6,"laws":2},{"b":"Solar","n":16,"load":0.047,"pole":0.444,"peak":0.24,"ig":2.18,"mirror":70,"carrying":7,"opened":16,"touched":0,"laws":4},{"b":"Heart","n":15,"load":1.541,"pole":0.023,"peak":2.66,"ig":1.45,"mirror":58,"carrying":15,"opened":9,"touched":6,"laws":4},{"b":"Throat","n":12,"load":1.596,"pole":0.029,"peak":2.36,"ig":1.37,"mirror":57,"carrying":12,"opened":6,"touched":5,"laws":3},{"b":"3rd Eye","n":12,"load":0.077,"pole":0.405,"peak":0.39,"ig":1.9,"mirror":69,"carrying":4,"opened":12,"touched":0,"laws":3},{"b":"Crown","n":21,"load":0.172,"pole":0.313,"peak":0.62,"ig":1.63,"mirror":67,"carrying":11,"opened":21,"touched":0,"laws":3}],"rec":{"runs":12,"addr":79,"touch":25,"seats":4,"emptied":7,"laws":21,"days":114}}}},"Sofia":{"nm":"Sofia","age":41,"role":"somatic practitioner · ICP","says":"I hold the room for everyone. I have not been held in four years and I would not know how to ask.","frames":{"m0":{"label":"Month 0. Nothing run.","CQ":56.57,"tier":"Even","tierCol":"#65B8D4","DQ":0,"Ig":7.68,"It":7.37,"poleMean":2.975,"SQm":0,"carrying":52,"loaded":0,"under":52,"unread":false,"heaviest":{"k":"Need For Approval","b":"Sacral","sq":1.54,"cf":"Shame","opp":"Worth"},"chainHeld":0,"chainOver":6,"cxs":3,"hys":1,"sups":0,"hyHeld":[],"hyOver":["Enabling"],"darkB":"Throat","weakL":"Detachment","dch":"Sad","balance":-0.123,"seats":[{"b":"Root","n":16,"load":0.226,"pole":2.409,"peak":0.8,"ig":8.35,"mirror":92,"carrying":6,"opened":0,"touched":0,"laws":2},{"b":"Sacral","n":16,"load":0.624,"pole":1.168,"peak":1.54,"ig":2.75,"mirror":69,"carrying":13,"opened":0,"touched":0,"laws":2},{"b":"Solar","n":16,"load":0.112,"pole":5.675,"peak":0.9,"ig":7.6,"mirror":90,"carrying":2,"opened":0,"touched":0,"laws":4},{"b":"Heart","n":15,"load":0.189,"pole":3.85,"peak":0.88,"ig":8,"mirror":91,"carrying":5,"opened":0,"touched":0,"laws":4},{"b":"Throat","n":12,"load":0.678,"pole":1.23,"peak":1.2,"ig":7.6,"mirror":87,"carrying":10,"opened":0,"touched":0,"laws":3},{"b":"3rd Eye","n":12,"load":0.43,"pole":0.978,"peak":1.2,"ig":7.6,"mirror":88,"carrying":9,"opened":0,"touched":0,"laws":3},{"b":"Crown","n":21,"load":0.15,"pole":4.242,"peak":0.63,"ig":7.6,"mirror":90,"carrying":7,"opened":0,"touched":0,"laws":3}],"rec":{"runs":0,"addr":0,"touch":0,"seats":0,"emptied":0,"laws":21,"days":0}},"m1":{"label":"Month 1. Four runs.","CQ":56.86,"tier":"Even","tierCol":"#65B8D4","DQ":0,"Ig":7.7,"It":7.38,"poleMean":3.048,"SQm":0,"carrying":14,"loaded":0,"under":14,"unread":false,"heaviest":{"k":"Excess Emotion","b":"Sacral","sq":0.29,"cf":"Shock","opp":"Groundedness"},"chainHeld":0,"chainOver":6,"cxs":3,"hys":1,"sups":0,"hyHeld":[],"hyOver":["Enabling"],"darkB":"Throat","weakL":"Detachment","dch":"Sad","balance":-0.227,"seats":[{"b":"Root","n":16,"load":0.014,"pole":2.492,"peak":0.19,"ig":8.35,"mirror":94,"carrying":2,"opened":4,"touched":0,"laws":2},{"b":"Sacral","n":16,"load":0.048,"pole":1.21,"peak":0.29,"ig":2.75,"mirror":72,"carrying":6,"opened":7,"touched":8,"laws":2},{"b":"Solar","n":16,"load":0,"pole":5.708,"peak":0,"ig":7.6,"mirror":91,"carrying":0,"opened":2,"touched":2,"laws":4},{"b":"Heart","n":15,"load":0.004,"pole":3.916,"peak":0.05,"ig":8,"mirror":92,"carrying":1,"opened":4,"touched":0,"laws":4},{"b":"Throat","n":12,"load":0.052,"pole":1.31,"peak":0.21,"ig":7.6,"mirror":91,"carrying":3,"opened":7,"touched":7,"laws":3},{"b":"3rd Eye","n":12,"load":0.007,"pole":1.073,"peak":0.07,"ig":7.6,"mirror":91,"carrying":2,"opened":7,"touched":4,"laws":3},{"b":"Crown","n":21,"load":0,"pole":4.346,"peak":0,"ig":7.6,"mirror":91,"carrying":0,"opened":7,"touched":0,"laws":3}],"rec":{"runs":4,"addr":38,"touch":21,"seats":4,"emptied":7,"laws":21,"days":28}},"m3":{"label":"Month 3. Twelve runs.","CQ":57.28,"tier":"Even","tierCol":"#65B8D4","DQ":0,"Ig":7.73,"It":7.41,"poleMean":3.156,"SQm":0,"carrying":0,"loaded":0,"under":0,"unread":true,"heaviest":null,"chainHeld":0,"chainOver":6,"cxs":3,"hys":1,"sups":0,"hyHeld":[],"hyOver":["Enabling"],"darkB":"Root","weakL":"Detachment","dch":"Sad","balance":-0.274,"seats":[{"b":"Root","n":16,"load":0,"pole":2.577,"peak":0,"ig":8.35,"mirror":94,"carrying":0,"opened":6,"touched":1,"laws":2},{"b":"Sacral","n":16,"load":0,"pole":1.384,"peak":0,"ig":2.75,"mirror":72,"carrying":0,"opened":13,"touched":8,"laws":2},{"b":"Solar","n":16,"load":0,"pole":5.733,"peak":0,"ig":7.6,"mirror":91,"carrying":0,"opened":2,"touched":2,"laws":4},{"b":"Heart","n":15,"load":0,"pole":3.985,"peak":0,"ig":8,"mirror":92,"carrying":0,"opened":5,"touched":0,"laws":4},{"b":"Throat","n":12,"load":0,"pole":1.537,"peak":0,"ig":7.6,"mirror":91,"carrying":0,"opened":10,"touched":10,"laws":3},{"b":"3rd Eye","n":12,"load":0,"pole":1.251,"peak":0,"ig":7.6,"mirror":91,"carrying":0,"opened":9,"touched":5,"laws":3},{"b":"Crown","n":21,"load":0,"pole":4.406,"peak":0,"ig":7.6,"mirror":91,"carrying":0,"opened":7,"touched":0,"laws":3}],"rec":{"runs":12,"addr":52,"touch":26,"seats":5,"emptied":7,"laws":21,"days":84}},"bad":{"label":"Month 4. A hard month on top of twelve runs.","CQ":54.58,"tier":"Even","tierCol":"#65B8D4","DQ":0,"Ig":7.52,"It":7.25,"poleMean":2.459,"SQm":0,"carrying":52,"loaded":0,"under":52,"unread":false,"heaviest":{"k":"Oversensitivity","b":"Sacral","sq":1.6,"cf":"Surprise","opp":"Readiness"},"chainHeld":0,"chainOver":6,"cxs":3,"hys":1,"sups":0,"hyHeld":[],"hyOver":["Enabling"],"darkB":"Sacral","weakL":"Detachment","dch":"Sad","balance":-0.072,"seats":[{"b":"Root","n":16,"load":0.22,"pole":1.862,"peak":1.33,"ig":8.35,"mirror":92,"carrying":6,"opened":6,"touched":1,"laws":2},{"b":"Sacral","n":16,"load":1.022,"pole":0.91,"peak":1.6,"ig":2.75,"mirror":66,"carrying":13,"opened":13,"touched":8,"laws":2},{"b":"Solar","n":16,"load":0.078,"pole":4.658,"peak":0.67,"ig":7.6,"mirror":90,"carrying":2,"opened":2,"touched":2,"laws":4},{"b":"Heart","n":15,"load":0.195,"pole":3.212,"peak":0.76,"ig":8,"mirror":91,"carrying":5,"opened":5,"touched":0,"laws":4},{"b":"Throat","n":12,"load":0.92,"pole":0.995,"peak":1.24,"ig":7.6,"mirror":85,"carrying":10,"opened":10,"touched":10,"laws":3},{"b":"3rd Eye","n":12,"load":0.614,"pole":0.703,"peak":1.12,"ig":7.6,"mirror":87,"carrying":9,"opened":9,"touched":5,"laws":3},{"b":"Crown","n":21,"load":0.098,"pole":3.719,"peak":0.44,"ig":7.6,"mirror":90,"carrying":7,"opened":7,"touched":0,"laws":3}],"rec":{"runs":12,"addr":52,"touch":26,"seats":5,"emptied":7,"laws":21,"days":114}}}},"Blank":{"nm":"Blank","age":"","role":"nothing entered","says":"","frames":{"m0":{"label":"Nothing entered.","CQ":36,"tier":"Incoherent","tierCol":"#C9A96A","DQ":0,"Ig":6,"It":6,"poleMean":0,"SQm":0,"carrying":0,"loaded":0,"under":0,"unread":true,"heaviest":null,"chainHeld":0,"chainOver":0,"cxs":0,"hys":0,"sups":0,"hyHeld":[],"hyOver":[],"darkB":"Root","weakL":"Truth","dch":"Fear","balance":0,"seats":[{"b":"Root","n":16,"load":0,"pole":0,"peak":0,"ig":6,"mirror":85,"carrying":0,"opened":0,"touched":0,"laws":2},{"b":"Sacral","n":16,"load":0,"pole":0,"peak":0,"ig":6,"mirror":85,"carrying":0,"opened":0,"touched":0,"laws":2},{"b":"Solar","n":16,"load":0,"pole":0,"peak":0,"ig":6,"mirror":85,"carrying":0,"opened":0,"touched":0,"laws":4},{"b":"Heart","n":15,"load":0,"pole":0,"peak":0,"ig":6,"mirror":85,"carrying":0,"opened":0,"touched":0,"laws":4},{"b":"Throat","n":12,"load":0,"pole":0,"peak":0,"ig":6,"mirror":85,"carrying":0,"opened":0,"touched":0,"laws":3},{"b":"3rd Eye","n":12,"load":0,"pole":0,"peak":0,"ig":6,"mirror":85,"carrying":0,"opened":0,"touched":0,"laws":3},{"b":"Crown","n":21,"load":0,"pole":0,"peak":0,"ig":6,"mirror":85,"carrying":0,"opened":0,"touched":0,"laws":3}],"rec":{"runs":0,"addr":0,"touch":0,"seats":0,"emptied":0,"laws":0,"days":0}}}},"_meta":{"PAL":{"Root":"#CF5953","Sacral":"#D19255","Solar":"#D4BC70","Heart":"#65CFA5","Throat":"#65B8D4","3rd Eye":"#8296DB","Crown":"#A883D6"},"PMBANDS":[{"k":"crown","nm":"Crown","b":"Crown","yp":4.98,"r":9,"c":"#A883D6"},{"k":"eye","nm":"Third Eye","b":"3rd Eye","yp":12.56,"r":8,"c":"#8296DB"},{"k":"throat","nm":"Throat","b":"Throat","yp":20.91,"r":9,"c":"#65B8D4"},{"k":"heart","nm":"Heart","b":"Heart","yp":30.51,"r":13,"c":"#65CFA5"},{"k":"solar","nm":"Solar","b":"Solar","yp":40.21,"r":11,"c":"#D4BC70"},{"k":"sacral","nm":"Sacral","b":"Sacral","yp":47.02,"r":10,"c":"#D19255"},{"k":"root","nm":"Root","b":"Root","yp":53.55,"r":12,"c":"#CF5953"}],"BANDS":["Root","Sacral","Solar","Heart","Throat","3rd Eye","Crown"],"TIERCOL":{"Mastery":"#E4D9A8","Embodied":"#8FD0A8","Compounding":"#65CFA5","Gaining":"#74C1C4","Even":"#65B8D4","Oscillating":"#8296DB","Incoherent":"#C9A96A","Corrupt":"#C98A5E","Severe":"#B2857C","Collapsed":"#A28A88"},"SEATLAW":{"Root":["Non-Harm","Patience"],"Sacral":["Temperance","Detachment"],"Solar":["Courage","Duty","Responsibility","Accountability"],"Heart":["Compassion","Forgiveness","Generosity","Aesthetic Beauty"],"Throat":["Truth","Transparency","Justice"],"3rd Eye":["Presence","Humility","Equanimity"],"Crown":["Unity","Awareness","Nature"]},"CHILD":[{"nm":"Fear","opp":"Trust","seat":"Root","addr":"Lumbar plexus","loc":"lower back, gut"},{"nm":"Anger","opp":"Equanimity","seat":"Solar","addr":"Celiac plexus","loc":"upper abdomen"},{"nm":"Shame","opp":"Worth","seat":"Sacral","addr":"Pudendal plexus","loc":"pelvic floor"},{"nm":"Disgust","opp":"Acceptance","seat":"Sacral","addr":"Sacral and dermis","loc":"lower abdomen, skin"},{"nm":"Apathy","opp":"Vitality","seat":"Throat","addr":"Shoulder girdle and throat","loc":"base of neck"},{"nm":"Shock","opp":"Groundedness","seat":"3rd Eye","addr":"Prefrontal and dermis","loc":"forehead, skin"},{"nm":"Sad","opp":"Joy","seat":"Heart","addr":"Cardiac plexus","loc":"centre chest"},{"nm":"Surprise","opp":"Readiness","seat":"Heart","addr":"Upper chest and back","loc":"upper torso"},{"nm":"Anticipation","opp":"Presence","seat":"Solar","addr":"Below the heart","loc":"lower sternum"}],"NADDR":{"Root":16,"Sacral":16,"Solar":16,"Heart":15,"Throat":12,"3rd Eye":12,"Crown":21},"total":108}};
-
-</script>
+<script src="engine.js"></script>
 <script>
 
 /* ============================================================
-   SHARED. Nothing here draws. It reads the dataset, holds the
-   palette and builds the shell the three approaches share.
+   THE LIVE HARNESS.
+
+   The page loads engine.js and computes. Nothing on this page is
+   a stored frame, so every control is the real control and every
+   number is the product's own arithmetic.
+
+   THREE CHANNELS, AND THEY ARE THE WHOLE DESIGN.
+
+   RECORD.  Append only. Built from facts with dates on them: an
+            address a release has touched, an address taken to
+            nothing, a seat reached, a run done. No arithmetic in
+            this product can take one of those back, so nothing
+            drawn from them can ever be a demotion.
+   WEATHER. Today. Load at a seat, what is carrying, what the
+            chain is running. It moves both ways and it is allowed
+            to.
+   REACH.   How far this person could get by clearing alone, which
+            is cqCeiling, and per seat mirrorAt(0, bandIg(seat)).
+            It is the only channel a person can move directly, and
+            the only one they move by changing what they do rather
+            than by clearing what they hold.
+
+   The record and the reach never trade against each other, and
+   neither is ever the same mark as the weather.
    ============================================================ */
-var D=window.AVDATA, M=D._meta;
-var WHO=['Diane','Marcus','Gordon','Sofia','Blank'];
-var FRAMES=[['m0','Month 0'],['m1','Month 1'],['m3','Month 3'],['bad','Month 4']];
 var SEATCOL={'Root':'#CF5953','Sacral':'#D19255','Solar':'#D4BC70','Heart':'#65CFA5',
  'Throat':'#65B8D4','3rd Eye':'#8296DB','Crown':'#A883D6'};
-var GOLD='#7EB8D4', INK='#E8E6E1', DIM='#94908A', FAINT='#4A4844';
-var BANDS=M.BANDS;
-/* seat y as a fraction of figure height, off engine/data/practice.js PMBANDS,
-   which is the same space the pain map places its regions in. */
-var SEATY={}; M.PMBANDS.forEach(function(b){SEATY[b.b]=b.yp/100;});
-var SEATR={}; M.PMBANDS.forEach(function(b){SEATR[b.b]=b.r;});
+/* GOLD is already a global, declared const in engine/data/canon.js:87. A var of
+   the same name at the top level of a second script is a SyntaxError, not a
+   shadow, and it takes the whole page down before boot(). The accent is read
+   off the engine rather than restated, which is also the right answer: one
+   source for the one true gold. */
+var WHO=['Diane','Marcus','Gordon','Sofia','Blank'];
+/* seat y as a fraction of the figure, off PMBANDS, the same numbers the pain
+   map places its regions with */
+var SEATY={},SEATR={};
+PMBANDS.forEach(function(b){SEATY[b.b]=b.yp/100;SEATR[b.b]=b.r;});
 function hx(h){h=h.replace('#','');return [parseInt(h.substr(0,2),16),
  parseInt(h.substr(2,2),16),parseInt(h.substr(4,2),16)];}
 function rgba(h,a){var c=hx(h);return 'rgba('+c[0]+','+c[1]+','+c[2]+','+a+')';}
 function lerp(a,b,t){return a+(b-a)*t;}
-function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
+function cl(v,a,b){return Math.max(a,Math.min(b,v));}
 var REDUCED=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-/* a canvas sized for the device, so a hairline is a hairline */
+/* ---------------- the live record ---------------- */
+var L={who:'Diane', charge:{}, replace:{}, law:{},
+       rec:{touch:{}, addr:{}, runs:0, days:0}, pair:null, seatPick:null};
+function arrive(who){
+ L.who=who; L.rec={touch:{},addr:{},runs:0,days:0}; L.pair=null; L.seatPick=null;
+ if(who==='Blank'){
+  S.doms=[0];S.arcs=[0,1];S.roots=[];buildSoul();
+  CHARGES.forEach(function(c){S.charge[c]=0;S.replace[c]=0;});
+  SINAMES.forEach(function(l){S.law[l]=6;});
+ } else {
+  var p=PEOPLE.filter(function(x){return x.nm===who;})[0];
+  S.doms=[p.dom];S.arcs=[p.a1,p.a2];S.roots=[];buildSoul();
+  CHARGES.forEach(function(c){S.charge[c]=p.c[c]||0;S.replace[c]=(p.rep&&p.rep[c])||0;});
+  var LS=LAWSET[who]||{_:5.5};
+  SINAMES.forEach(function(l){S.law[l]=LS[l]!==undefined?LS[l]:LS._;});}
+ stash();}
+function stash(){
+ CHARGES.forEach(function(c){L.charge[c]=S.charge[c];L.replace[c]=S.replace[c];});
+ SINAMES.forEach(function(l){L.law[l]=S.law[l];});}
+function restore(){
+ CHARGES.forEach(function(c){S.charge[c]=L.charge[c];S.replace[c]=L.replace[c];});
+ SINAMES.forEach(function(l){S.law[l]=L.law[l];});}
+
+/* ONE RELEASE. atuned_src/ui/release.js:88 to 99, arithmetic unchanged. The
+   queue is the heaviest eight, or the heaviest eight AT THE STATED SEAT when a
+   pair has been written, which is the whole point of writing one: the right
+   hand sentence steers the release, because that is what is in the way. */
+function runRelease(){
+ restore();
+ var r=compute();
+ var pool=r.carrying;
+ if(L.seatPick)
+  pool=r.carrying.filter(function(n){return n.b===L.seatPick;})
+   .concat(r.carrying.filter(function(n){return n.b!==L.seatPick;}));
+ var q=pool.slice(0,8).filter(function(n){return n.cf;});
+ if(!q.length)return false;
+ var before={}; W.forEach(function(n){if(n.sq>0)before[n.i]=1;});
+ q.forEach(function(n){
+  var w0=n.sq*10, d=-Math.round(w0*0.21+2);
+  var share=Math.abs(d)/10/Math.max(1,q.filter(function(y){return y.cf===n.cf;}).length);
+  S.charge[n.cf]=cl((S.charge[n.cf]||0)-share,0,10);
+  S.replace[n.cf]=cl((S.replace[n.cf]||0)+share*0.62,0,10);
+  L.rec.touch[n.i]=1;});
+ compute();                    /* W.sq is only written by compute() */
+ W.forEach(function(n){if(before[n.i]&&n.sq<=0)L.rec.addr[n.i]=1;});
+ L.rec.runs++; L.rec.days+=7;
+ stash(); return true;}
+/* A HARD MONTH. Charge comes back at every axis, which is what an intake after
+   a bad stretch does to the field. Nothing in the record moves. */
+function hardMonth(){
+ restore();
+ CHARGES.forEach(function(c){S.charge[c]=cl((S.charge[c]||0)+2.2,0,10);});
+ L.rec.days+=30; compute(); stash();}
+/* TURN A PEG. One law, one value. This is the only control on the page that
+   moves the reach, because the reach is integrity and integrity is the
+   twenty one laws. */
+function turn(nm,v){restore(); S.law[nm]=cl(v,0,10); compute(); stash();}
+
+/* STATE A PAIR. The right hand sentence goes to the real story parser and comes
+   back as a seat, exactly as ui/drills.js:672 does it: imprints, not hits, and
+   the heaviest band wins. */
+function readSeat(text){
+ var p=parseStory(String(text||''));
+ if(!p||!p.imprints||!p.imprints.length)return null;
+ var t={}; p.imprints.forEach(function(x){if(x&&x.band)t[x.band]=(t[x.band]||0)+(x.amt||1);});
+ var best=null,bv=0;
+ Object.keys(t).forEach(function(b){if(t[b]>bv){bv=t[b];best=b;}});
+ return best;}
+
+/* ---------------- the view the drawings are handed ---------------- */
+function view(){
+ restore();
+ var r=compute();
+ var ceil=cqCeiling();
+ var seats=BANDS.map(function(b){
+  var g=W.filter(function(n){return n.b===b;});
+  var load=g.reduce(function(a,n){return a+n.sq;},0)/g.length;
+  var ig=bandIg(b);
+  return {b:b, n:g.length,
+   load:load, pole:g.reduce(function(a,n){return a+n.pole;},0)/g.length,
+   ig:ig, carrying:g.filter(function(n){return n.sq>0;}).length,
+   touched:g.filter(function(n){return L.rec.touch[n.i];}).length,
+   opened:g.filter(function(n){return L.rec.addr[n.i];}).length,
+   /* WHERE THIS SEAT STANDS AND HOW FAR IT REACHES. Both out of 100 and both
+      from the engine: mirrorAt is data/compass.js:253. */
+   at:mirrorAt(load,ig), reach:mirrorAt(0,ig),
+   laws:SI.filter(function(l){return l.b===b;})
+     .map(function(l){return {nm:l.nm,v:S.law[l.nm],ic:l.ic};})};});
+ return {who:L.who, CQ:r.CQ, tier:r.tier, tierCol:TIERCOL[r.tier],
+  ceiling:ceil, headroom:Math.max(0,ceil-r.CQ),
+  carrying:r.carrying.length, loaded:r.loaded.length, under:r.under, unread:r.unread,
+  poleMean:r.poleMean, DQ:r.DQ, Ig:r.Ig, It:r.It,
+  chainHeld:r.sabs.filter(function(s){return !s.over;}).length,
+  chainOver:r.sabs.filter(function(s){return s.over;}).length,
+  heaviest:r.heaviest, darkB:r.darkB, weakL:r.weakL.nm,
+  seats:seats, seatPick:L.seatPick, pair:L.pair,
+  rec:{touch:Object.keys(L.rec.touch).length, addr:Object.keys(L.rec.addr).length,
+   runs:L.rec.runs, days:L.rec.days,
+   seats:BANDS.filter(function(b){return W.some(function(n){
+    return n.b===b&&L.rec.touch[n.i];});}).length}};}
+
+/* the breath. the rate is the reading, ported from DESIGN-feathers. */
+function breath(cq,t,i){
+ if(REDUCED)return 0;
+ return Math.sin((t/lerp(2.0,5.0,cl(cq,0,100)/100))*Math.PI*2+(i||0)/7*1.05)
+  *lerp(0.010,0.030,cl(cq,0,100)/100);}
+
 function mk(host,w,h,cls){
  var c=document.createElement('canvas'); if(cls)c.className=cls;
  var dpr=Math.min(2,window.devicePixelRatio||1);
  c.width=Math.round(w*dpr); c.height=Math.round(h*dpr);
  c.style.width=w+'px'; c.style.height=h+'px';
- c.__dpr=dpr; c.__w=w; c.__h=h;
- host.appendChild(c); return c;}
+ c.__dpr=dpr;c.__w=w;c.__h=h; host.appendChild(c); return c;}
 function ctxOf(c){var x=c.getContext('2d');
  x.setTransform(c.__dpr,0,0,c.__dpr,0,0); x.clearRect(0,0,c.__w,c.__h); return x;}
 
-/* THE TWO CHANNELS, NAMED ONCE.
+/* ============================================================
+   THE SHELL. Controls first, because this is an instrument.
+   ============================================================ */
+var U={};
+var PAIRS=[
+ {be:'I leave work at work', notbe:'I take every meeting home with me and I cannot put it down'},
+ {be:'I say the thing in the room', notbe:'I swallow it and I am furious about it for a week'},
+ {be:'I let people carry their own weight', notbe:'I am ashamed when I need anything from anyone'},
+ {be:'I stop when the work is enough', notbe:'I am afraid that if I rest it all falls over'}];
 
-   RECORD is append only. It is built out of facts with dates on them: an
-   address a release has touched, an address taken to nothing, a seat reached,
-   a run done. No arithmetic in this product can take one of those back, so
-   nothing drawn from them can ever be a demotion.
-
-   WEATHER is today. Load at a seat, what is carrying, what the chain is
-   running. It moves both ways and it is allowed to.
-
-   The two never trade against each other and they are never the same mark. */
-function record(f){
- return {touch:f.rec.touch, emptied:f.rec.addr, seats:f.rec.seats, runs:f.rec.runs,
-  days:f.rec.days, laws:f.rec.laws};}
-function weather(f){
- return {CQ:f.CQ, tier:f.tier, carrying:f.carrying, held:f.chainHeld, over:f.chainOver,
-  heaviest:f.heaviest};}
-/* seat record as a fraction of that seat's own address count, which is how a
-   number says what it is out of without printing a count against a total */
-function seatRec(s){return {touch:s.touched/s.n, emptied:s.opened/s.n, n:s.n};}
-
-/* BREATH. The rate is the reading, ported from DESIGN-feathers: slow and deep
-   against fast and shallow, which is what an autonomic system does. Off under
-   reduced motion, and off means the end state and not a slower one. */
-function breath(cq,t,seatIdx){
- if(REDUCED)return 0;
- var period=lerp(2.0,5.0,clamp(cq,0,100)/100);
- var amp=lerp(0.010,0.030,clamp(cq,0,100)/100);
- return Math.sin((t/period)*Math.PI*2 + (seatIdx||0)/7*1.05)*amp;}
-
-/* ---- the shell ---- */
-var SEL={who:'Diane', fr:'m3'};
-function frameOf(who,fr){var p=D[who]; return (p.frames[fr]||p.frames.m0);}
-function build(){
- var w=document.createElement('div');
- /* the picker */
- var pk=document.createElement('div'); pk.className='pick';
- WHO.forEach(function(n){var b=document.createElement('button');
-  b.textContent=n==='Blank'?'A blank record':(n+', '+D[n].age);
-  b.onclick=function(){SEL.who=n;paint();};
-  b.setAttribute('data-who',n); pk.appendChild(b);});
- w.appendChild(pk);
- /* hero plus progression */
- var row=document.createElement('div'); row.className='row';
- var hero=document.createElement('div'); hero.className='hero';
- hero.innerHTML='<p class="eye">The avatar, one person, now</p>';
- var hrow=document.createElement('div');
- hrow.style.cssText='display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap';
- hero.appendChild(hrow);
- var hc=mk(hrow,HERO_W,HERO_H,'stage');
- /* THE NAMES GO IN A RAIL, NEVER ON THE DRAWING. cone.js:213 records what it
-    cost to learn that: sixteen names painted on the Compass figure and 89
-    colliding pairs at 1600 with no gate able to see one of them. A rail has
-    line breaking, a screen reader can read it and a gate can measure it. */
- var lr=document.createElement('div'); lr.className='lrail';
- lr.style.cssText='position:relative;width:128px;height:'+HERO_H+'px;flex:0 0 128px';
- hrow.appendChild(lr); hero.__lr=lr;
- var col=document.createElement('div');
- col.style.cssText='flex:1 1 210px;min-width:200px';
- hrow.appendChild(col);
- var cap=document.createElement('div'); cap.className='cap'; cap.style.marginTop='0';
- col.appendChild(cap);
- var lf=document.createElement('div'); lf.className='lflat'; col.appendChild(lf);
- hero.__lf=lf;
- var nums=document.createElement('dl'); nums.className='num'; col.appendChild(nums);
- row.appendChild(hero);
- var prog=document.createElement('div'); prog.className='card'; prog.style.flex='1 1 460px';
- prog.innerHTML='<p class="eye">The same person, four months apart</p>';
- var strip=document.createElement('div'); strip.className='strip'; prog.appendChild(strip);
- var pk2=document.createElement('div'); pk2.className='pick'; pk2.style.margin='14px 0 0';
- prog.appendChild(pk2);
- var keyh=document.createElement('div'); keyh.innerHTML=
-  '<h2 style="margin-top:24px">The Two Channels</h2>'+KEYHTML;
- prog.appendChild(keyh);
- row.appendChild(prog);
- w.appendChild(row);
- /* the contact sheet */
- var sh=document.createElement('div');
- sh.innerHTML='<h2>Every Profile, Every Month. The Contact Sheet</h2>'
-  +'<p class="dim">Seventeen drawings. A design that only reads on a loaded profile has '
-  +'failed, so the refuser and the flat reader are in here at full size beside the rest.</p>';
- var grid=document.createElement('div'); grid.className='sheet'; sh.appendChild(grid);
- w.appendChild(sh);
- document.getElementById('mount').appendChild(w);
- return {hero:hc,cap:cap,nums:nums,strip:strip,pk:pk,pk2:pk2,grid:grid,lr:hero.__lr,lf:hero.__lf};}
-var UI=null;
-
-function capText(who,f){
- var p=D[who];
- return '<div class="nm">'+(who==='Blank'?'A record with nothing in it':p.nm)+'</div>'
-  +'<div class="rl">'+(p.role||'')+(p.age?', '+p.age:'')+'</div>'
-  +(p.says?'<div class="sy">'+p.says+'</div>':'')
-  +'<div class="rl" style="margin-top:7px">'+f.label+'</div>';}
-function numsHtml(f){
- var r=record(f), w=weather(f);
- function row(k,v,s){return '<dt>'+k+'</dt><dd>'+v+(s?' <em>'+s+'</em>':'')+'</dd>';}
- return '<dt style="color:#7EB8D4;grid-column:1/3;font-size:10.5px;letter-spacing:.1em;'
-  +'text-transform:uppercase;margin-top:4px">The record, append only</dt>'
-  +row('Runs done',r.runs,'')
-  +row('Days on it',r.days,'')
-  +row('Addresses touched',r.touch,'of 108')
-  +row('Addresses emptied',r.emptied,'of 108')
-  +row('Seats reached',r.seats,'of 7')
-  +'<dt style="color:#94908A;grid-column:1/3;font-size:10.5px;letter-spacing:.1em;'
-  +'text-transform:uppercase;margin-top:9px">Today, and it moves both ways</dt>'
-  +row('Coherence',w.CQ.toFixed(1),'of 100')
-  +row('Reads',w.tier,'')
-  +row('Carrying',w.carrying,'addresses')
-  +row('Chain, held',w.held,'')
-  +row('Chain, overshot',w.over,'')
-  +(w.heaviest?row('Heaviest',w.heaviest.k.slice(0,18),w.heaviest.b):'');}
-
-function paint(){
- if(!UI)UI=build();
- var who=SEL.who, p=D[who];
- var keys=Object.keys(p.frames);
- if(keys.indexOf(SEL.fr)<0)SEL.fr='m0';
- var f=frameOf(who,SEL.fr);
- UI.cap.innerHTML=capText(who,f);
- if(typeof labels==='function'){
-  if(UI.lr)UI.lr.innerHTML=labels(f);
-  /* the same names as a plain list on a phone, because an absolutely placed
-     rail beside a 500 pixel drawing has nowhere to go at 390 wide. */
-  if(UI.lf)UI.lf.innerHTML=flat(f);}
- UI.nums.innerHTML=numsHtml(f);
- UI.pk.querySelectorAll('[data-who]').forEach(function(b){
-  b.setAttribute('aria-pressed',b.getAttribute('data-who')===who?'true':'false');});
- /* the four month strip */
- UI.strip.innerHTML=''; UI.pk2.innerHTML='';
- FRAMES.forEach(function(fx){
-  var ff=p.frames[fx[0]]; if(!ff)return;
-  var d=document.createElement('div'); d.className='fr';
-  UI.strip.appendChild(d);
-  var c=mk(d,STRIP_W,STRIP_H);
-  draw(ctxOf(c),STRIP_W,STRIP_H,ff,0,'strip');
-  var lb=document.createElement('div'); lb.className='lb';
-  /* rec.emptied is a count of SEATS and rec.addr is a count of ADDRESSES.
-     This printed the seat count under the word addresses, which is the exact
-     defect the number law is about: a number that does not say what it is. */
-  lb.innerHTML='<b>'+fx[1]+'</b><br>'+ff.rec.touch+' touched, '+ff.rec.addr+' emptied<br>'
-   +'reads '+ff.CQ.toFixed(1)+' of 100';
-  d.appendChild(lb);
-  var b=document.createElement('button'); b.textContent=fx[1];
-  b.setAttribute('aria-pressed',fx[0]===SEL.fr?'true':'false');
-  b.onclick=function(){SEL.fr=fx[0];paint();};
-  UI.pk2.appendChild(b);});
- /* the contact sheet */
- UI.grid.innerHTML='';
+function boot(){
+ arrive('Diane');
+ var m=document.getElementById('mount');
+ /* who */
+ var pk=el('div','pick'); m.appendChild(pk);
  WHO.forEach(function(n){
-  FRAMES.forEach(function(fx){
-   var ff=D[n].frames[fx[0]]; if(!ff)return;
-   var d=document.createElement('div'); d.className='c'; UI.grid.appendChild(d);
-   var c=mk(d,SHEET_W,SHEET_H);
-   draw(ctxOf(c),SHEET_W,SHEET_H,ff,0,'sheet');
-   var t=document.createElement('div'); t.className='t';
-   t.innerHTML='<b style="color:#94908A">'+(n==='Blank'?'Blank':n)+'</b> '+fx[1].replace('Month ','m')
-    +'<br>'+ff.rec.touch+'t '+ff.rec.emptied+'e<br>'+ff.CQ.toFixed(0)+' of 100';
-   d.appendChild(t);});});
- table();
- if(!RAF.on){RAF.on=1; tick();}}
+  var b=el('button'); b.textContent=(n==='Blank')?'A blank record':(n+', '+
+   (PEOPLE.filter(function(x){return x.nm===n;})[0]||{}).age);
+  b.setAttribute('data-who',n);
+  b.onclick=function(){arrive(n);paint();};
+  pk.appendChild(b);});
+ /* hero row */
+ var row=el('div','row'); m.appendChild(row);
+ var hero=el('div','hero'); row.appendChild(hero);
+ hero.appendChild(elp('eye','The avatar, now. Press the controls and it moves.'));
+ var hrow=el('div','hrow'); hero.appendChild(hrow);
+ U.hero=mk(hrow,HERO_W,HERO_H,'stage');
+ U.lr=el('div','lrail'); U.lr.style.height=HERO_H+'px'; hrow.appendChild(U.lr);
+ var col=el('div'); col.style.cssText='flex:0 1 224px;min-width:186px;max-width:244px';
+ hrow.appendChild(col);
+ U.cap=el('div','cap'); col.appendChild(U.cap);
+ U.lf=el('div','lflat'); col.appendChild(U.lf);
+ U.nums=el('dl','num'); col.appendChild(U.nums);
+ /* the controls */
+ var ctl=el('div','card'); ctl.style.flex='1 1 480px'; row.appendChild(ctl);
+ ctl.appendChild(elp('eye','Three verbs. Run, turn, state.'));
+ U.verbs=el('div','pick'); ctl.appendChild(U.verbs);
+ ctl.appendChild(elh('h3','Turn. The twenty one laws, seated where they govern.'));
+ ctl.appendChild(elp('faint',
+  'These are the only control in the product that moves the reach, because the reach is '
+  +'integrity and integrity is the laws. Clearing moves the figure. Turning moves how far '
+  +'the figure can go. A law is a statement about conduct, and the instrument does not rule '
+  +'on whether you have earned it. It does not have to: a peg you turn without changing '
+  +'anything buys a reach the figure will never travel to, and the gap is drawn.'));
+ U.pegs=el('div','pegs'); ctl.appendChild(U.pegs);
+ ctl.appendChild(elh('h3','State. Who you are becoming, and who you are not.'));
+ ctl.appendChild(elp('faint',
+  'Written as a pair, because a value has no address and a sentence about a bad day does. '
+  +'The right half goes to the real story parser and comes back as a seat, and that seat '
+  +'goes to the head of the release queue. The left half is never released.'));
+ U.pair=el('div'); ctl.appendChild(U.pair);
+ U.lever=el('div','lever'); ctl.appendChild(U.lever);
+ ctl.appendChild(elh('h3','The two channels, and the third'));
+ var kd=el('div'); kd.innerHTML=KEYHTML; ctl.appendChild(kd);
+ /* the lever strip */
+ var sec=el('div'); m.appendChild(sec);
+ sec.appendChild(elh('h2','Which Lever Is Yours. Computed For This Person, Now'));
+ sec.appendChild(elp('dim',
+  'The same person under four treatments, each computed from where they stand this moment. '
+  +'Twelve releases is a quarter of work at one run a week. Two points on the weakest three '
+  +'is a change in what they do. For some people one of these is worth several times the '
+  +'other, and the product has never said so.'));
+ U.strip=el('div','strip'); sec.appendChild(U.strip);
+ /* the contact sheet */
+ var sh=el('div'); m.appendChild(sh);
+ sh.appendChild(elh('h2','Every Profile Under Every Treatment. The Contact Sheet'));
+ sh.appendChild(elp('dim',
+  'Twenty drawings, all live. A design that only reads on a loaded profile has failed, so '
+  +'the refuser, the flat reader and the blank record are in here beside the rest.'));
+ U.grid=el('div','sheet'); sh.appendChild(U.grid);
+ paint();
+ requestAnimationFrame(tick);}
 
-/* ---- the frame cost meter ---- */
-var RAF={on:0,t0:0,s:[]};
+function el(t,c){var e=document.createElement(t||'div'); if(c)e.className=c; return e;}
+function elp(c,txt){var e=el('p',c); e.textContent=txt; return e;}
+function elh(t,txt){var e=el(t); e.textContent=txt; return e;}
+
+/* ---------------- the treatments, all computed live ---------------- */
+function snap(){
+ var st={c:{},r:{},l:{}};
+ CHARGES.forEach(function(k){st.c[k]=S.charge[k];st.r[k]=S.replace[k];});
+ SINAMES.forEach(function(k){st.l[k]=S.law[k];});
+ return st;}
+function put(st){
+ CHARGES.forEach(function(k){S.charge[k]=st.c[k];S.replace[k]=st.r[k];});
+ SINAMES.forEach(function(k){S.law[k]=st.l[k];});}
+function relSilent(n){
+ for(var i=0;i<(n||1);i++){
+  var r=compute(), q=r.carrying.slice(0,8).filter(function(x){return x.cf;});
+  if(!q.length)return;
+  q.forEach(function(x){var w0=x.sq*10,d=-Math.round(w0*0.21+2);
+   var sh=Math.abs(d)/10/Math.max(1,q.filter(function(y){return y.cf===x.cf;}).length);
+   S.charge[x.cf]=cl((S.charge[x.cf]||0)-sh,0,10);
+   S.replace[x.cf]=cl((S.replace[x.cf]||0)+sh*0.62,0,10);});}}
+function pegsUp(){
+ SI.slice().sort(function(a,b){return S.law[a.nm]-S.law[b.nm];}).slice(0,3)
+  .forEach(function(l){S.law[l.nm]=cl(S.law[l.nm]+2,0,10);});}
+var TREAT=[
+ {k:'now',  nm:'As they stand',      f:function(){}},
+ {k:'rel',  nm:'Twelve releases',    f:function(){relSilent(12);}},
+ {k:'law',  nm:'Two points on the weakest three', f:function(){pegsUp();}},
+ {k:'both', nm:'Both',               f:function(){pegsUp();relSilent(12);}}];
+/* run a treatment and hand back a view, leaving the live state exactly as found */
+function treated(fn){
+ restore(); var st=snap(); fn(); var v=view0(); put(st); compute(); return v;}
+function view0(){
+ var r=compute(), ceil=cqCeiling();
+ var seats=BANDS.map(function(b){
+  var g=W.filter(function(n){return n.b===b;});
+  var load=g.reduce(function(a,n){return a+n.sq;},0)/g.length, ig=bandIg(b);
+  return {b:b,n:g.length,load:load,pole:g.reduce(function(a,n){return a+n.pole;},0)/g.length,
+   ig:ig,carrying:g.filter(function(n){return n.sq>0;}).length,
+   touched:g.filter(function(n){return L.rec.touch[n.i];}).length,
+   opened:g.filter(function(n){return L.rec.addr[n.i];}).length,
+   at:mirrorAt(load,ig),reach:mirrorAt(0,ig),
+   laws:SI.filter(function(l){return l.b===b;}).map(function(l){
+    return {nm:l.nm,v:S.law[l.nm]};})};});
+ return {who:L.who,CQ:r.CQ,tier:r.tier,ceiling:ceil,headroom:Math.max(0,ceil-r.CQ),
+  carrying:r.carrying.length,loaded:r.loaded.length,under:r.under,unread:r.unread,
+  poleMean:r.poleMean,DQ:r.DQ,Ig:r.Ig,It:r.It,
+  chainHeld:r.sabs.filter(function(s){return !s.over;}).length,
+  chainOver:r.sabs.filter(function(s){return s.over;}).length,
+  heaviest:r.heaviest,darkB:r.darkB,weakL:r.weakL.nm,seats:seats,
+  seatPick:L.seatPick,pair:L.pair,
+  rec:{touch:Object.keys(L.rec.touch).length,addr:Object.keys(L.rec.addr).length,
+   runs:L.rec.runs,days:L.rec.days,
+   seats:BANDS.filter(function(b){return W.some(function(n){
+    return n.b===b&&L.rec.touch[n.i];});}).length}};}
+
+/* ---------------- paint ---------------- */
+var V=null;
+function paint(){
+ V=view();
+ /* who */
+ document.querySelectorAll('[data-who]').forEach(function(b){
+  b.setAttribute('aria-pressed',b.getAttribute('data-who')===L.who?'true':'false');});
+ /* caption and numbers */
+ var p=PEOPLE.filter(function(x){return x.nm===L.who;})[0];
+ U.cap.innerHTML='<div class="nm">'+(L.who==='Blank'?'A record with nothing in it':L.who)
+  +'</div><div class="rl">'+(p?(p.role+', '+p.age):'nothing entered')+'</div>'
+  +(p?'<div class="sy">'+p.says+'</div>':'')
+  +'<div class="rl" style="margin-top:6px">'+V.rec.runs+' run'+(V.rec.runs===1?'':'s')
+  +', '+V.rec.days+' day'+(V.rec.days===1?'':'s')+' on the record</div>';
+ U.nums.innerHTML=numsHtml(V);
+ if(typeof labels==='function'){U.lr.innerHTML=labels(V);U.lf.innerHTML=flat(V);}
+ /* the verbs */
+ U.verbs.innerHTML='';
+ addVerb('Run a release',function(){if(runRelease())paint();},V.carrying===0);
+ addVerb('Run four',function(){for(var i=0;i<4;i++)runRelease();paint();},V.carrying===0);
+ addVerb('A hard month',function(){hardMonth();paint();},false);
+ addVerb('Back to arrival',function(){arrive(L.who);paint();},false);
+ /* the pegs */
+ pegs();
+ /* the pair */
+ pairUI();
+ /* the lever sentence, and it is the whole point of the surface */
+ lever();
+ /* the strip and the sheet */
+ strip(); sheet(); table();}
+
+function addVerb(t,fn,off){
+ var b=el('button','act'); b.textContent=t; b.disabled=!!off; b.onclick=fn;
+ U.verbs.appendChild(b);}
+
+function numsHtml(v){
+ function r(k,val,s){return '<dt>'+k+'</dt><dd>'+val+(s?' <em>'+s+'</em>':'')+'</dd>';}
+ return '<dt class="hd" style="color:'+GOLD+'">The record, append only</dt>'
+  +r('Addresses touched',v.rec.touch,'of 108')
+  +r('Addresses emptied',v.rec.addr,'of 108')
+  +r('Seats reached',v.rec.seats,'of 7')
+  +'<dt class="hd">The reach. Turn a peg and it moves</dt>'
+  +r('Could read',v.ceiling.toFixed(1),'of 100')
+  +r('Still in a release',v.headroom.toFixed(1),'points')
+  +'<dt class="hd">Today. It moves both ways</dt>'
+  +r('Reads',v.CQ.toFixed(1),'of 100')
+  +r('Band',v.tier,'')
+  +r('Carrying',v.carrying,'addresses')
+  +r('Chain, held',v.chainHeld,'')
+  +r('Chain, overshot',v.chainOver,'')
+  +(v.heaviest?r('Heaviest',v.heaviest.k.slice(0,16),v.heaviest.b):'');}
+
+function pegs(){
+ var h='';
+ BANDS.forEach(function(b){
+  var s=V.seats.filter(function(x){return x.b===b;})[0];
+  h+='<div class="pgrp"><h4 style="color:'+SEATCOL[b]+'">'+b
+   +' <span style="color:#5E5B57;letter-spacing:0;text-transform:none;font-weight:400">'
+   +'reaches '+s.reach+' of 100, standing at '+s.at+'</span></h4>';
+  s.laws.forEach(function(l){
+   h+='<div class="peg"><label title="'+l.nm+'">'+l.nm+'</label>'
+    +'<input type="range" min="0" max="10" step="0.1" value="'+l.v.toFixed(1)
+    +'" data-law="'+l.nm+'" aria-label="'+l.nm+', 0 to 10">'
+    +'<span class="v">'+l.v.toFixed(1)+' <em>of 10</em></span></div>';});
+  h+='</div>';});
+ U.pegs.innerHTML=h;
+ U.pegs.querySelectorAll('[data-law]').forEach(function(i){
+  i.oninput=function(){
+   turn(i.getAttribute('data-law'),parseFloat(i.value));
+   /* repaint the numbers and the drawing without rebuilding the slider, so the
+      thumb does not jump out from under a finger mid drag */
+   V=view();
+   i.parentNode.querySelector('.v').innerHTML=parseFloat(i.value).toFixed(1)+' <em>of 10</em>';
+   U.nums.innerHTML=numsHtml(V);
+   if(typeof labels==='function'){U.lr.innerHTML=labels(V);U.lf.innerHTML=flat(V);}
+   lever();};
+  i.onchange=function(){paint();};});}
+
+function pairUI(){
+ var h='<div class="pair">'
+  +'<input type="text" id="pbe" placeholder="At my best I..." value="'
+  +(L.pair?esc(L.pair.be):'')+'">'
+  +'<input type="text" id="pnb" placeholder="And not. On a bad day..." value="'
+  +(L.pair?esc(L.pair.notbe):'')+'">'
+  +'<button id="pgo">State it</button>'
+  +(L.pair?'<button id="pclr">Clear it</button>':'')+'</div>';
+ h+='<div class="pick" style="margin:7px 0 0">';
+ PAIRS.forEach(function(pr,i){
+  h+='<button data-pp="'+i+'" style="font-size:11.5px">'+esc(pr.be)+'</button>';});
+ h+='</div>';
+ h+='<p class="faint" style="margin-top:6px">'
+  +(L.pair
+    ? (L.seatPick
+       ? ('The parser read that as the <b style="color:'+SEATCOL[L.seatPick]+'">'
+          +L.seatPick.toLowerCase()+'</b>. That seat is at the head of the queue and it is '
+          +'marked on the figure. The left hand sentence is never released.')
+       : 'The parser could not read a feeling out of the second sentence. Say it again with one in.')
+    : 'Nothing stated. The queue is sorted by weight alone.')+'</p>';
+ U.pair.innerHTML=h;
+ var go=document.getElementById('pgo');
+ if(go)go.onclick=function(){
+  var be=document.getElementById('pbe').value.trim();
+  var nb=document.getElementById('pnb').value.trim();
+  if(!be||!nb){L.pair=null;L.seatPick=null;paint();return;}
+  L.pair={be:be,notbe:nb}; L.seatPick=readSeat(nb); paint();};
+ var cr=document.getElementById('pclr');
+ if(cr)cr.onclick=function(){L.pair=null;L.seatPick=null;paint();};
+ U.pair.querySelectorAll('[data-pp]').forEach(function(b){
+  b.onclick=function(){
+   var pr=PAIRS[+b.getAttribute('data-pp')];
+   L.pair={be:pr.be,notbe:pr.notbe}; L.seatPick=readSeat(pr.notbe); paint();};});}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;')
+ .replace(/"/g,'&quot;');}
+
+/* THE SENTENCE THIS WHOLE SURFACE EXISTS TO SAY. Which lever is yours, in
+   points, computed from where the person stands this moment. */
+function lever(){
+ var now=treated(function(){});
+ var rel=treated(function(){relSilent(12);});
+ var law=treated(function(){pegsUp();});
+ var dRel=rel.CQ-now.CQ, dLaw=law.CQ-now.CQ;
+ var big=(dLaw>dRel*1.4)?'turning':((dRel>dLaw*1.4)?'clearing':'both');
+ var say;
+ if(now.unread)
+  say='Nothing has been entered, so there is no lever to name yet. Every number on this '
+   +'page is a reading of the defaults and not of a person.';
+ else if(big==='turning')
+  say='<b>Turning is your lever.</b> A quarter of releases is worth <b>'+dRel.toFixed(1)
+   +'</b> points to you. Two points on your weakest three laws is worth <b>'+dLaw.toFixed(1)
+   +'</b>. You are polishing inside a box, and the box is what moves.';
+ else if(big==='clearing')
+  say='<b>Clearing is your lever.</b> A quarter of releases is worth <b>'+dRel.toFixed(1)
+   +'</b> points to you, against <b>'+dLaw.toFixed(1)+'</b> for two points on your weakest '
+   +'three laws. There is too much in the way for conduct to be the thing that moves first.';
+ else
+  say='<b>Both levers are live.</b> A quarter of releases is worth <b>'+dRel.toFixed(1)
+   +'</b> points and two points on your weakest three laws is worth <b>'+dLaw.toFixed(1)
+   +'</b>. They add: together they are worth <b>'
+   +(treated(function(){pegsUp();relSilent(12);}).CQ-now.CQ).toFixed(1)+'</b>.';
+ U.lever.innerHTML=say+' <span class="faint">Weakest three right now: '
+  +SI.slice().sort(function(a,b){return S.law[a.nm]-S.law[b.nm];}).slice(0,3)
+    .map(function(l){return l.nm.toLowerCase()+' at '+S.law[l.nm].toFixed(1);}).join(', ')
+  +'.</span>';}
+
+function strip(){
+ U.strip.innerHTML='';
+ TREAT.forEach(function(tr){
+  var v=treated(tr.f);
+  var d=el('div','fr'); U.strip.appendChild(d);
+  var c=mk(d,STRIP_W,STRIP_H);
+  draw(ctxOf(c),STRIP_W,STRIP_H,v,0,'strip');
+  var lb=el('div','lb');
+  lb.innerHTML='<b>'+tr.nm+'</b><br>reads '+v.CQ.toFixed(1)+' of 100<br>'
+   +'reaches '+v.ceiling.toFixed(1)+' of 100<br>'
+   +v.carrying+' carrying';
+  d.appendChild(lb);});}
+
+/* SAVE AND PUT BACK THE WHOLE OF L, NOT FOUR OF ITS FIELDS.
+
+   The contact sheet and the evidence table walk every profile, and walking one
+   calls arrive(), which calls stash(), which overwrites L.charge, L.replace and
+   L.law with that profile's arrival values. Putting back only who, rec and pair
+   left the live field sitting at arrival, so every control on the page worked
+   once and then silently undid itself: four releases moved the figure, the
+   repaint put the charge back, and the next four releases produced identical
+   numbers. Found by driving the controls rather than by reading the code.
+   Nothing here is the drawing's fault and it is exactly the class of defect a
+   page that only gets screenshotted never shows. */
+function hold(){
+ var h={who:L.who,rec:L.rec,pair:L.pair,seat:L.seatPick,c:{},r:{},l:{}};
+ CHARGES.forEach(function(k){h.c[k]=L.charge[k];h.r[k]=L.replace[k];});
+ SINAMES.forEach(function(k){h.l[k]=L.law[k];});
+ return h;}
+function give(h){
+ L.who=h.who; L.rec=h.rec; L.pair=h.pair; L.seatPick=h.seat;
+ CHARGES.forEach(function(k){L.charge[k]=h.c[k];L.replace[k]=h.r[k];});
+ SINAMES.forEach(function(k){L.law[k]=h.l[k];});
+ restore(); compute();}
+
+function sheet(){
+ U.grid.innerHTML='';
+ var h=hold();
+ WHO.forEach(function(n){
+  arrive(n);
+  TREAT.forEach(function(tr){
+   var v=treated(tr.f);
+   var d=el('div','c'); U.grid.appendChild(d);
+   var c=mk(d,SHEET_W,SHEET_H);
+   draw(ctxOf(c),SHEET_W,SHEET_H,v,0,'sheet');
+   var t=el('div','t');
+   t.innerHTML='<b style="color:#94908A">'+(n==='Blank'?'Blank':n)+'</b> '+tr.nm.toLowerCase()
+    +'<br>reads '+v.CQ.toFixed(0)+', reaches '+v.ceiling.toFixed(0);
+   d.appendChild(t);});});
+ give(h);}
+
+function table(){
+ var t=document.getElementById('tbl'); if(!t)return;
+ var h0=hold();
+ var h='<tr><th>Who</th><th>Treatment</th><th>Reads<br>of 100</th><th>Band</th>'
+  +'<th>Reaches<br>of 100</th><th>Left in a<br>release</th><th>Carrying</th>'
+  +'<th>Chain<br>held</th><th>Chain<br>overshot</th><th>Installed<br>pole mean</th></tr>';
+ WHO.forEach(function(n){
+  arrive(n);
+  TREAT.forEach(function(tr){
+   var v=treated(tr.f);
+   h+='<tr><td>'+(n==='Blank'?'Blank record':n)+'</td><td>'+tr.nm+'</td><td>'
+    +v.CQ.toFixed(1)+'</td><td>'+v.tier+'</td><td>'+v.ceiling.toFixed(1)+'</td><td>'
+    +v.headroom.toFixed(1)+'</td><td>'+v.carrying+'</td><td>'+v.chainHeld+'</td><td>'
+    +v.chainOver+'</td><td>'+v.poleMean.toFixed(3)+'</td></tr>';});});
+ t.innerHTML=h;
+ give(h0);
+ var nt=document.getElementById('tnote');
+ if(nt)nt.textContent=(document.documentElement.clientWidth<760)
+  ?'Ten columns. The table scrolls sideways at this width.':'';}
+
+/* ---------------- the frame cost meter ---------------- */
+var RAF={t0:0,s:[]};
 function tick(){
- var f=frameOf(SEL.who,SEL.fr);
- var t=RAF.t0?(performance.now()-RAF.t0)/1000:0;
  if(!RAF.t0)RAF.t0=performance.now();
+ var t=(performance.now()-RAF.t0)/1000;
  var a=performance.now();
- draw(ctxOf(UI.hero),HERO_W,HERO_H,f,t,'hero');
+ draw(ctxOf(U.hero),HERO_W,HERO_H,V,t,'hero');
  var b=performance.now();
- if(RAF.s.length<600)RAF.s.push(b-a);
- if(RAF.s.length===600||RAF.s.length%60===0)report();
+ if(RAF.s.length<600){RAF.s.push(b-a); if(RAF.s.length%30===0)report();}
  requestAnimationFrame(tick);}
 function report(){
  var s=RAF.s.slice().sort(function(a,b){return a-b;});
  var med=s[Math.floor(s.length/2)], p95=s[Math.floor(s.length*0.95)];
- document.getElementById('cost').innerHTML=
-  '<b>'+med.toFixed(2)+'ms</b> median, <b>'+p95.toFixed(2)+'ms</b> at the 95th, over '
-  +s.length+' frames at '+HERO_W+' by '+HERO_H+', device pixel ratio '
-  +(Math.min(2,window.devicePixelRatio||1))+'. That is '
-  +(med/16.7*100).toFixed(1)+' percent of a 16.7ms budget.'
+ var e=document.getElementById('cost'); if(!e)return;
+ e.innerHTML='<b>'+med.toFixed(2)+'ms</b> median, <b>'+p95.toFixed(2)
+  +'ms</b> at the 95th, over '+s.length+' frames at '+HERO_W+' by '+HERO_H
+  +', device pixel ratio '+(Math.min(2,window.devicePixelRatio||1))+'. That is <b>'
+  +(med/16.7*100).toFixed(1)+' percent</b> of a 16.7ms budget.'
   +(REDUCED?' Reduced motion is on, so the figure sits at its end state.':'');}
 
-/* ---- the numbers, as a table, because a picture is not evidence ---- */
-function table(){
- var t=document.getElementById('tbl'); if(!t)return;
- var h='<tr><th>Who</th><th>Month</th><th>Runs</th><th>Touched<br>of 108</th>'
-  +'<th>Emptied<br>of 108</th><th>Seats<br>of 7</th><th>Reads<br>of 100</th><th>Band</th>'
-  +'<th>Carrying</th><th>Chain held</th><th>Chain overshot</th></tr>';
- WHO.forEach(function(n){FRAMES.forEach(function(fx){
-  var f=D[n].frames[fx[0]]; if(!f)return;
-  h+='<tr><td>'+(n==='Blank'?'Blank record':n)+'</td><td>'+fx[1]+'</td><td>'+f.rec.runs
-   +'</td><td>'+f.rec.touch+'</td><td>'+f.rec.addr+'</td><td>'+f.rec.seats
-   +'</td><td>'+f.CQ.toFixed(1)+'</td><td>'+f.tier+'</td><td>'+f.carrying
-   +'</td><td>'+f.chainHeld+'</td><td>'+f.chainOver+'</td></tr>';});});
- t.innerHTML=h;}
+</script>
+<script>
 
 /* ============================================================
    APPROACH TWO. THE LANTERN.
 
-   No body at all. A housing and a light inside it.
+   No body at all. A housing, a light inside it, and a boundary
+   the light cannot pass.
 
-   Seven concentric arcs, Root innermost to Crown outermost, and
-   each arc closes as the record at that seat accumulates. A
-   complete housing is seven closed rings. That is a thing that can
-   be watched over months and it cannot go backwards.
+   Seven concentric arcs, Root innermost to Crown outermost, each
+   closing as the record at that seat accumulates. A complete
+   housing is seven closed rings, and it is a thing that can be
+   watched over months and cannot go backwards.
 
    The light is the installed side: the coherent opposite that
-   `relCoolDown` puts in at 62 percent of what it took out. It is
-   the one quantity in the whole engine that rises only when a
-   person does the work, so it is the one honest thing to make
-   light out of.
+   relCoolDown puts in at 62 percent of what it took out. It is
+   the one quantity in the engine that rises only when a person
+   does the work, so it is the one honest thing to make light of.
 
-   The weather is the veil. Grey occluders between the light and
-   the housing, one band per carrying address group, and they come
-   back on a hard month. They block light. They never touch a ring.
+   The boundary is the reach. A dotted ring at cqCeiling, and a
+   solid bead on the same line at where the reading stands now.
+   Clearing walks the bead outward. Turning a peg moves the ring
+   the bead is walking toward.
 
    This is the Field's own language, so it costs nothing new to
-   learn: ring not fill, the breath rate is the reading, the seat
-   palette does the naming. It is also the approach that risks a
-   person not recognising themselves in it.
+   learn. It is also the approach that risks a person not finding
+   themselves in it.
    ============================================================ */
-var HERO_W=400, HERO_H=400, STRIP_W=146, STRIP_H=146, SHEET_W=100, SHEET_H=100;
-
-/* the seven rings, named in a rail down the side, innermost first */
-function labels(f){
- var h='', n=f.seats.length;
- f.seats.forEach(function(s,i){
-  var y=18+ (HERO_H-36)*(i/(n-1));
-  h+='<span style="top:'+y.toFixed(1)+'px;color:'+SEATCOL[s.b]+'">'+s.b
-   +'<i>'+s.touched+' touched, '+s.opened+' emptied, of '+s.n+'</i></span>';});
- return h;}
-function flat(f){
- return f.seats.map(function(s){
-  return '<div><b style="color:'+SEATCOL[s.b]+'">'+s.b+'</b> <i>'+s.touched
-   +' touched, '+s.opened+' emptied, of '+s.n+'</i></div>';}).join('');}
-
+var HERO_W=400, HERO_H=400, STRIP_W=136, STRIP_H=136, SHEET_W=100, SHEET_H=100;
 var KEYHTML=
  '<div class="key">'
- +'<div><b>The housing is the record</b>Seven rings, Root inside to Crown outside. Each '
- +'closes as work at that seat accumulates, and the dotted remainder is what is left of '
- +'that seat.</div>'
- +'<div><b>The light is the installed side</b>Sized by the coherent opposite the release '
- +'put in. It is the only quantity in the engine that moves in one direction only.</div>'
- +'<div><b>The veil is today</b>Grey bands between the light and the housing, one per '
- +'group of carrying addresses. They block light and they never move a ring.</div>'
+ +'<div><b>The housing, the record</b>Seven rings, Root inside to Crown outside, each '
+ +'closing as work at that seat accumulates.</div>'
+ +'<div><b>The outer dotted ring, the reach</b>Where the reading gets with nothing held. '
+ +'The pegs move it and nothing else does.</div>'
+ +'<div><b>The bead on that ring, today</b>Where the reading actually stands. The gap '
+ +'between bead and ring is what a release still has in it.</div>'
+ +'<div><b>The light and the shutters</b>The light is the installed opposite. The grey '
+ +'shutters are what is carrying, one per address, and they block light without moving a '
+ +'ring.</div>'
  +'</div>';
 
-function draw(x,W,H,f,t,mode){
- var small=(mode!=='hero');
- var cx=W/2, cy=H/2, R=Math.min(W,H)/2-(small?7:16);
- var r0=R*0.30, step=(R-r0)/6.4;
- x.lineCap='round';
- var byB={}; f.seats.forEach(function(s){byB[s.b]=s;});
+function labels(v){
+ var h='', n=v.seats.length;
+ v.seats.forEach(function(s,i){
+  var y=16+(HERO_H-32)*(i/(n-1));
+  h+='<span style="top:'+y.toFixed(1)+'px;color:'+SEATCOL[s.b]
+   +(v.seatPick===s.b?';font-weight:600':'')+'">'+s.b
+   +'<i>'+s.touched+' touched, '+s.opened+' emptied, of '+s.n+'<br>'
+   +'reaches '+s.reach+' of 100</i></span>';});
+ return h;}
+function flat(v){
+ return v.seats.map(function(s){
+  return '<div><b style="color:'+SEATCOL[s.b]+'">'+s.b+'</b> <i>'+s.touched+' touched, '
+   +s.opened+' emptied, of '+s.n+'. Reaches '+s.reach+' of 100</i></div>';}).join('');}
 
- /* THE LIGHT. Radius off the installed pole mean, which runs 0 at a refuser to
-    3.16 at a practitioner across the roster, so the channel uses its width.
-    Drawn as stacked rings of falling alpha rather than a filled disc, because
-    ring not fill holds here too and a stroked halo reads as emission. */
- var pm=clamp(f.poleMean/3.4,0,1);
- var lit=r0*lerp(0.34,1.00,pm)*(1+breath(f.CQ,t,0));
- /* THE ONE PLACE THIS DOCUMENT ASKS FOR A FILL, and it is argued rather than
-    assumed. Ring not fill is an icon rule: a mark that names a thing is drawn
-    as an edge so it reads at badge size. A light source is not a mark that
-    names a thing, it is the thing, and a light drawn only as edges reads as a
-    dartboard, which is what the first render of this page actually produced.
-    The wash tops out at 0.11 alpha and every edge in the figure is still a
-    stroke. */
+function draw(x,W,H,v,t,mode){
+ if(!v)return;
+ var small=(mode!=='hero');
+ var cx=W/2, cy=H/2, R=Math.min(W,H)/2-(small?6:14);
+ var r0=R*0.28, step=(R*0.86-r0)/6.6;
+ x.lineCap='round';
+ var byB={}; v.seats.forEach(function(s){byB[s.b]=s;});
+
+ /* THE LIGHT. Radius off the installed pole mean, 0 at a refuser to 3.16 at a
+    practitioner across the roster, so the channel uses its own width. */
+ var pm=cl(v.poleMean/3.4,0,1);
+ var lit=r0*lerp(0.34,1.00,pm)*(1+breath(v.CQ,t,0));
+ /* THE ONE FILL IN THIS DOCUMENT, and it is argued rather than assumed. Ring
+    not fill is an icon rule: a mark that NAMES a thing is drawn as an edge so
+    it reads at badge size. A light source is not a mark that names a thing, it
+    is the thing, and a light drawn only as edges reads as a dartboard, which
+    is exactly what the first render of this page produced. The wash tops out
+    at 0.11 alpha and every edge in the figure is still a stroke. */
  var gr=x.createRadialGradient(cx,cy,0,cx,cy,lit*1.9);
  gr.addColorStop(0,rgba('#E8E6E1',lerp(0.02,0.11,pm)));
  gr.addColorStop(0.5,rgba('#E8E6E1',lerp(0.01,0.045,pm)));
@@ -427,53 +735,62 @@ function draw(x,W,H,f,t,mode){
  x.fillStyle=gr; x.beginPath(); x.arc(cx,cy,lit*1.9,0,Math.PI*2); x.fill();
  var steps=small?3:5;
  for(var i=steps;i>0;i--){
-  var rr=lit*(0.30+0.70*(i/steps));
   x.strokeStyle=rgba('#E8E6E1',lerp(0.05,0.26,1-i/steps)*lerp(0.35,1,pm));
   x.lineWidth=small?0.9:1.3;
-  x.beginPath(); x.arc(cx,cy,rr,0,Math.PI*2); x.stroke();}
- /* and the one hard edge, so the light has a boundary rather than fading into
-    nothing. a light with no edge is a glow, and a glow is a mood. */
- x.strokeStyle=rgba('#E8E6E1',lerp(0.10,0.55,pm)); x.lineWidth=small?0.9:1.3;
- x.beginPath(); x.arc(cx,cy,lit,0,Math.PI*2); x.stroke();
+  x.beginPath(); x.arc(cx,cy,lit*(0.30+0.70*(i/steps)),0,Math.PI*2); x.stroke();}
 
  /* THE HOUSING */
  BANDS.forEach(function(b,i){
-  var s=byB[b], r=seatRec(s);
-  var rad=r0+step*(i+1)+ (small?0:0);
-  var br=breath(f.CQ,t,i);
-  rad=rad*(1+br*0.45);
-  /* the track, so the ring says what it is out of */
+  var s=byB[b];
+  var rad=(r0+step*(i+1))*(1+breath(v.CQ,t,i)*0.45);
   x.strokeStyle=rgba('#E8E6E1',0.085); x.lineWidth=small?0.7:0.9;
   x.setLineDash([1,3]); x.beginPath(); x.arc(cx,cy,rad,0,Math.PI*2); x.stroke();
   x.setLineDash([]);
-  /* emptied, dim and wide */
-  if(r.emptied>0){
-   x.strokeStyle=rgba(SEATCOL[b],0.34); x.lineWidth=small?2.2:3.6;
-   x.beginPath(); x.arc(cx,cy,rad,-Math.PI/2,-Math.PI/2+Math.PI*2*r.emptied); x.stroke();}
-  /* touched, bright and narrow, on top */
-  if(r.touch>0){
+  if(s.opened>0){
+   x.strokeStyle=rgba(SEATCOL[b],0.34); x.lineWidth=small?2.1:3.4;
+   x.beginPath(); x.arc(cx,cy,rad,-Math.PI/2,-Math.PI/2+Math.PI*2*(s.opened/s.n)); x.stroke();}
+  if(s.touched>0){
    x.strokeStyle=rgba(SEATCOL[b],0.96); x.lineWidth=small?1.3:1.9;
-   x.beginPath(); x.arc(cx,cy,rad,-Math.PI/2,-Math.PI/2+Math.PI*2*r.touch); x.stroke();}
-  /* THE VEIL. one bar per carrying address at this seat, capped so a fully
-     loaded seat is a shutter and not a solid. grey. it sits inside the ring it
-     belongs to, between the light and the housing. */
-  /* one shutter per carrying address, placed on that seat's own ring, so a
-     seat carrying 12 of 16 is three quarters shuttered whatever the mean load
-     is. alpha carries the load, count carries the spread. */
+   x.beginPath(); x.arc(cx,cy,rad,-Math.PI/2,-Math.PI/2+Math.PI*2*(s.touched/s.n)); x.stroke();}
+  /* one shutter per carrying address on that seat's own ring, so a seat
+     carrying twelve of sixteen is three quarters shuttered whatever the mean
+     load is. alpha carries the load, count carries the spread. */
   var n=Math.min(s.n,s.carrying);
   if(n>0){
-   x.strokeStyle=rgba('#94908A',clamp(0.16+clamp(s.load/7,0,1)*0.56,0,0.78));
+   x.strokeStyle=rgba('#94908A',cl(0.16+cl(s.load/7,0,1)*0.56,0,0.78));
    x.lineWidth=small?1.4:2.4;
    var half=step*0.34;
    for(var k=0;k<n;k++){
     var a=(k/s.n)*Math.PI*2-Math.PI/2;
     x.beginPath();
     x.moveTo(cx+Math.cos(a)*(rad-half),cy+Math.sin(a)*(rad-half));
-    x.lineTo(cx+Math.cos(a)*(rad-half*0.1),cy+Math.sin(a)*(rad-half*0.1));
-    x.stroke();}}});
+    x.lineTo(cx+Math.cos(a)*(rad-half*0.1),cy+Math.sin(a)*(rad-half*0.1)); x.stroke();}}
+  if(v.seatPick===b){
+   x.strokeStyle=rgba(SEATCOL[b],0.9); x.lineWidth=small?1:1.4;
+   [-1,1].forEach(function(sg){
+    x.beginPath();
+    x.moveTo(cx+sg*(rad-step*0.42),cy); x.lineTo(cx+sg*(rad+step*0.42),cy); x.stroke();});}});
+
+ /* THE REACH, and the bead on it. The ring is where this reading gets with
+    nothing held. The bead is where it stands. The arc between them is what a
+    release still has in it, and the pegs move the ring under the hand. */
+ var rRe=R*lerp(0.30,1.00,cl(v.ceiling,0,100)/100);
+ x.strokeStyle=rgba(GOLD,0.34); x.lineWidth=small?0.9:1.2;
+ x.setLineDash([1.4,3.2]); x.beginPath(); x.arc(cx,cy,rRe,0,Math.PI*2); x.stroke();
+ x.setLineDash([]);
+ var rAt=R*lerp(0.30,1.00,cl(v.CQ,0,100)/100);
+ x.strokeStyle=rgba('#E8E6E1',0.26); x.lineWidth=small?0.8:1;
+ x.beginPath(); x.arc(cx,cy,rAt,0,Math.PI*2); x.stroke();
+ /* the bead, at the top, on the standing ring */
+ x.strokeStyle=rgba(GOLD,0.95); x.lineWidth=small?1.3:1.8;
+ x.beginPath(); x.arc(cx,cy-rAt,small?2:3,0,Math.PI*2); x.stroke();
+ /* and the gap between them, drawn as the one radial line in the figure */
+ if(rRe-rAt>1.5){
+  x.strokeStyle=rgba(GOLD,0.30); x.lineWidth=small?0.8:1;
+  x.setLineDash([1,2.4]);
+  x.beginPath(); x.moveTo(cx,cy-rAt); x.lineTo(cx,cy-rRe); x.stroke(); x.setLineDash([]);}
 }
 
-paint();
-
 </script>
+<script>boot();</script>
 </body></html>

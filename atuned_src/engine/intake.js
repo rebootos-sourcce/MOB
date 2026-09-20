@@ -9,9 +9,24 @@ var Q3=[
  {k:'neutral',q:'On an ordinary day, how often do you STEM without deciding to?'}];
 var IQ_STEM={
  Truth:'say the true thing', Transparency:'let yourself be seen as you are',
- Expression:'say what is actually there', Unity:'act as if the other is not separate',
+ /* JUSTICE AND HUMILITY WERE RENAMED AND THIS TABLE WAS MISSED, so six of the
+    sixty three questions asked a person "how often do you justice?" and "how
+    often do you humility?" and shipped that way. The rename was carried into
+    SI, into HARM and into the migration table at schema.js, and stopped here.
+    The `||` fallback below is what hid it: without it the intake would have
+    printed undefined and this would have been found the day it landed. The
+    fallback is gone now, so the next missed rename throws instead of reading
+    like a broken sentence to somebody answering questions about themselves.
+
+    The two phrases are written to the same pattern as the other nineteen: a
+    verb the person can picture doing, no abstraction, nothing they are scored
+    against that they cannot recognise. They are mine rather than his, so they
+    are the first thing to overrule. */
+ Justice:'give the other what is actually theirs',
+ Humility:'let the world be more right than you',
+ Unity:'act as if the other is not separate',
  Awareness:'notice what you are doing while you do it', Nature:'let things be what they are',
- Presence:'stay in the room with what is happening', Discernment:'tell the real from the plausible',
+ Presence:'stay in the room with what is happening',
  Equanimity:'stay level when it moves', Compassion:'feel it without fixing it',
  Forgiveness:'put it down', Generosity:'give without a ledger',
  'Aesthetic Beauty':'make the thing well', Courage:'move toward what you are avoiding',
@@ -22,7 +37,11 @@ var IQ_STEM={
 function iqList(){ var out=[];
  SI.forEach(function(l,li){ Q3.forEach(function(t,ti){
   out.push({law:l.nm, band:l.b, side:t.k, i:li*3+ti, block:li,
-   q:t.q.replace('STEM',(IQ_STEM[l.nm]||l.nm.toLowerCase()))});});});
+   /* NO FALLBACK. See the note on the table above: the fallback substituted the
+      law's own name as a verb, which reads as a sentence and therefore hid a
+      missed rename for as long as it existed. A missing phrase is a defect and
+      has to look like one. */
+   q:t.q.replace('STEM',IQ_STEM[l.nm])});});});
  return out;}
 function iqScore(p){
  if(!p||!p.intake||!p.intake.answers)return {};

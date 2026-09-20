@@ -1,0 +1,443 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Atuned information system</title>
+<!-- ============================================================
+     THE INFORMATION SYSTEM. Runnable prototype, no network, no
+     dependencies, no build step. Open the file.
+
+     This is not a second tooltip. The tip block and the tip module below
+     are lifted from proto/tip verbatim, with two lines changed, and those
+     two lines are the whole of the system:
+
+       carrier()  also matches [data-gloss]
+       read()     resolves [data-gloss] through gloss(), one lookup
+
+     A renderer emits a NAME. It never emits prose. One table holds the
+     prose. Three routes reach the same string.
+     ============================================================ -->
+<style>
+/*@TOKENS@*/
+/*@TIPCSS@*/
+/* ---- the page. scaffolding only, everything above is the system ---- */
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg); color:var(--ink); font-family:var(--sans);
+ font-size:14px; line-height:1.6; -webkit-font-smoothing:antialiased}
+.wrap{max-width:900px; margin:0 auto; padding:28px 16px 120px}
+h1{font-size:15px; font-weight:600; letter-spacing:.02em; margin:0 0 2px}
+.sub{color:var(--dim); font-size:12.5px; margin:0 0 30px}
+h2{font-size:11.5px; font-weight:600; letter-spacing:.06em; color:var(--dim);
+ margin:36px 0 12px; text-transform:none}
+.lead{color:var(--mid); font-size:13px; max-width:62ch; margin:0 0 16px}
+.card{background:var(--panel); border:1px solid var(--edge); border-radius:var(--r);
+ padding:16px 18px; margin:0 0 12px}
+/* THE RULE. Five lines, and the number is the line number, not a score. */
+ol.rule{margin:0; padding:0; list-style:none; counter-reset:r}
+ol.rule li{counter-increment:r; position:relative; padding:9px 0 9px 34px;
+ border-top:1px solid var(--edge); font-size:13.5px; color:var(--ink)}
+ol.rule li:first-child{border-top:0}
+ol.rule li::before{content:counter(r); position:absolute; left:0; top:9px;
+ width:22px; text-align:center; font-family:var(--num); font-size:11.5px;
+ color:var(--dim); font-variant-numeric:tabular-nums}
+ol.rule li em{font-style:normal; color:var(--dim)}
+/* THE GLOSS MARK. One treatment, everywhere, and it is the only new drawing
+   the system asks for. A dotted rule under a name says a definition is
+   behind it. Duolingo's mark, and it is the right one: it works with no
+   hover, it survives at 11.5px, it costs no layout and it is not a badge
+   sitting beside every word in the product. */
+.g{border-bottom:1px dotted currentColor; cursor:help; padding-bottom:1px}
+/* AN INLINE NAME STILL MEETS THE TAP FLOOR. 44 pixels of padding above and
+   below, pulled back out with a negative margin, so the hit box is 44 tall
+   and the line box is not. Gate 8 measures every interactive element and a
+   glossed word in a sentence is one. */
+button.g{background:none; border:0; border-bottom:1px dotted currentColor;
+ color:inherit; font:inherit; cursor:pointer; display:inline-block;
+ min-width:44px; text-align:left;
+ padding:15px 2px 16px; margin:-15px 0 -16px; line-height:1}
+/* a rail row, the shape the real left rail uses */
+.row{display:flex; align-items:center; gap:10px; min-height:var(--tap);
+ padding:5px 8px; border-radius:var(--r-xs); background:none; border:0;
+ color:var(--ink); font:inherit; text-align:left; width:100%; cursor:pointer}
+.row:hover{background:var(--panel-2)}
+/* THE MARK HUGS THE WORD, NOT THE ROW. With flex:1 on the name, the dotted
+   rule ran the full width of the row and read as a divider rather than as a
+   name with something behind it. margin-right:auto does the same spacing job
+   and leaves the box the width of the word. */
+.row .nm{margin-right:auto; font-size:13.5px}
+.row .sc{font-family:var(--num); font-size:11.5px; color:var(--dim);
+ font-variant-numeric:tabular-nums}
+.row .sc b{color:var(--ink); font-weight:500}
+/* the ring. ring, never fill, on the 24 unit grid. */
+.ring{position:relative; width:34px; height:34px; flex:0 0 34px}
+.ring svg{display:block}
+.ring .gl{position:absolute; inset:0; display:grid; place-items:center}
+.ring .gl svg{width:15px; height:15px; fill:none; stroke:var(--c);
+ stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round}
+.three{display:grid; gap:12px; grid-template-columns:repeat(3,1fr)}
+.three .card{margin:0}
+.rk{font-size:11.5px; color:var(--dim); letter-spacing:.04em; margin:0 0 8px}
+.find{display:flex; gap:8px; align-items:center}
+.find input{flex:1; min-height:var(--tap); background:var(--sunk);
+ border:1px solid var(--edge); border-radius:var(--r-xs); color:var(--ink);
+ font:inherit; font-size:13px; padding:0 12px}
+.find input:focus{outline:2px solid var(--accent); outline-offset:1px}
+.hits{margin:8px 0 0; padding:0; list-style:none; max-height:132px; overflow:auto}
+.hits li{border-top:1px solid var(--edge)}
+.hits button{width:100%; min-height:var(--tap); box-sizing:border-box; background:none; border:0;
+ color:var(--ink); font:inherit; font-size:13px; text-align:left; padding:0 4px;
+ display:flex; gap:8px; align-items:center; cursor:pointer}
+.hits button:hover{background:var(--panel-2)}
+.hits em{font-style:normal; color:var(--dim); font-size:11.5px; margin-left:auto}
+/* THE DRILL. The long answer. It is a panel on the surface, not a floating
+   thing, because a long answer has to be scrollable and linkable and a
+   floating panel is neither. */
+.drill{background:var(--panel); border:1px solid var(--edge-2);
+ border-radius:var(--r); padding:16px 18px; margin:12px 0 0; display:none}
+.drill.on{display:block}
+.drill .eye{font-size:11.5px; color:var(--dim); letter-spacing:.04em; margin:0 0 4px}
+.drill h3{margin:0 0 2px; font-size:15px; font-weight:600}
+.drill .nv{color:var(--dim); font-size:12px; margin:0 0 12px}
+.drill p{margin:0 0 12px; color:var(--mid); font-size:13px; max-width:62ch}
+.drill dl{display:grid; grid-template-columns:auto 1fr; gap:3px 14px; margin:0 0 12px;
+ font-family:var(--num); font-size:11.5px; font-variant-numeric:tabular-nums}
+.drill dt{color:var(--dim)}
+.drill dd{margin:0; color:var(--ink); font-weight:500}
+.drill dd i{font-style:normal; color:var(--dim); font-weight:400}
+.drill .x,.kinds .x{min-height:var(--tap); min-width:var(--tap); background:var(--panel-2);
+ border:1px solid var(--edge); border-radius:var(--r-xs); color:var(--ink);
+ font:inherit; font-size:12.5px; padding:0 16px; cursor:pointer}
+/* THE KINDS. Five, and each one names the single surface it is allowed. */
+.kinds{display:grid; gap:10px; grid-template-columns:repeat(5,1fr)}
+.kinds .k{background:var(--panel); border:1px solid var(--edge);
+ border-radius:var(--r-s); padding:12px 13px}
+.kinds .q{font-size:12.5px; color:var(--ink); margin:0 0 8px; min-height:3.2em}
+.kinds .w{font-size:11.5px; color:var(--dim); margin:0 0 3px}
+.kinds .v{font-size:12px; color:var(--accent); margin:0}
+.kinds .ex{margin:10px 0 0; padding-top:10px; border-top:1px solid var(--edge);
+ font-size:12.5px}
+/* the scale, printed beside the number and not in a tip. Law 5. */
+.sc-in{font-family:var(--num); font-size:11.5px; font-variant-numeric:tabular-nums}
+.sc-in b{font-weight:500; color:var(--ink)} .sc-in i{font-style:normal; color:var(--dim)}
+/* THE GATE, running in the page */
+.gate{display:flex; gap:22px; flex-wrap:wrap; font-family:var(--num);
+ font-size:12px; font-variant-numeric:tabular-nums}
+.gate div span{color:var(--dim)} .gate div b{color:var(--ink); font-weight:500}
+.gate .bad b{color:var(--alarm)}
+.note{color:var(--dim); font-size:12px; max-width:62ch}
+.lit{display:flex; gap:8px; margin:0 0 22px}
+.lit button{min-height:var(--tap); padding:0 16px; background:var(--panel);
+ border:1px solid var(--edge); border-radius:var(--r-xs); color:var(--mid);
+ font:inherit; font-size:12px; cursor:pointer}
+.lit button.on{border-color:var(--accent); color:var(--ink)}
+@media (max-width:760px){
+ .three,.kinds{grid-template-columns:1fr}
+ .kinds .q{min-height:0}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>Atuned information system</h1>
+<p class="sub">One definition, one table, three ways in. Prototype, no network.</p>
+
+<div class="lit">
+ <button type="button" data-lit="" class="on">Dark</button>
+ <button type="button" data-lit="snow">Snow</button>
+</div>
+
+<h2>The rule</h2>
+<div class="card"><ol class="rule">
+ <li>A name is glossed once, in one table, and the tip shows it. <em>Nothing else may carry a definition.</em></li>
+ <li>A number says what it is out of, on the surface. <em>Never in the tip.</em></li>
+ <li>A control says what it does in its own label. <em>A tip only when the label cannot.</em></li>
+ <li>A reading explains itself in its drill. <em>The tip is the door to it, not a second copy of it.</em></li>
+ <li>A name with no gloss is a defect. <em>The gate counts them and the count is read off the run.</em></li>
+</ol></div>
+<p class="note">Five lines, one per kind of question this product raises about
+itself. No diagram, because a system that needs one is not the system that
+was asked for.</p>
+
+<h2>One definition, three routes</h2>
+<p class="lead">The same 297 characters, out of one table, reached three ways.
+A renderer emits the name <code>Root</code> and nothing else. Hover it, tap it,
+search for it, or arrive at it from a reading. Every route lands on the same
+string, and the counter below proves it is the same string.</p>
+
+<div class="three">
+ <div class="card">
+  <p class="rk">1 · in place</p>
+  <button type="button" class="row" data-gloss="Root" data-open="Root">
+   <span class="ring" style="--c:var(--root)">
+    <svg width="34" height="34" aria-hidden="true">
+     <circle cx="17" cy="17" r="13.5" fill="none" stroke="rgba(128,128,128,.22)" stroke-width="3"/>
+     <circle cx="17" cy="17" r="13.5" fill="none" stroke="var(--root)" stroke-width="3"
+      stroke-linecap="round" stroke-dasharray="84.8" stroke-dashoffset="61.1"/></svg>
+    <span class="gl"><svg viewBox="0 0 24 24" aria-hidden="true">
+     <path d="M12 3l7 4v6c0 4-3 7-7 8-4-1-7-4-7-8V7z"/></svg></span></span>
+   <span class="nm g">Root</span>
+   <span class="sc"><b>2.8</b> of 10</span></button>
+  <p class="note" style="margin-top:8px">The dotted rule says a definition is
+  behind the word. Hover with intent, or tap.</p>
+ </div>
+
+ <div class="card">
+  <p class="rk">2 · by name</p>
+  <div class="find">
+   <input id="q" type="text" placeholder="Type a name" aria-label="Find a name">
+  </div>
+  <ul class="hits" id="hits"></ul>
+ </div>
+
+ <div class="card">
+  <p class="rk">3 · from a reading</p>
+  <button type="button" class="row" data-gloss="Fear" data-open="Fear" data-route="from a reading">
+   <span class="ring" style="--c:var(--root)">
+    <svg width="34" height="34" aria-hidden="true">
+     <circle cx="17" cy="17" r="13.5" fill="none" stroke="rgba(128,128,128,.22)" stroke-width="3"/>
+     <circle cx="17" cy="17" r="13.5" fill="none" stroke="var(--root)" stroke-width="3"
+      stroke-linecap="round" stroke-dasharray="84.8" stroke-dashoffset="21.2"/></svg>
+    <span class="gl"><svg viewBox="0 0 24 24" aria-hidden="true">
+     <path d="M12 3l8 14H4z"/></svg></span></span>
+   <span class="nm g">Fear</span>
+   <span class="sc"><b>7.5</b> of 10</span></button>
+  <p class="note" style="margin-top:8px">The reading names its seat. The tip's
+  last line is the door, and the door is the drill.</p>
+ </div>
+</div>
+
+<div class="drill" id="drill" aria-live="polite"></div>
+
+<div class="card" style="margin-top:12px">
+ <div class="gate">
+  <div><span>reads</span> <b id="n-read">0</b></div>
+  <div><span>entries read</span> <b id="n-str">0</b> <span>of 11 in the table</span></div>
+  <div><span>forms printed</span> <b id="n-form">0</b> <span>of 22, a short and a long for each entry</span></div>
+  <div><span>routes exercised</span> <b id="n-rt">0</b> <span>of 3</span></div>
+ </div>
+</div>
+
+<h2>The five kinds, and the one surface each</h2>
+<div class="kinds">
+ <div class="k">
+  <p class="w">1 · word</p><p class="q">What does this word mean.</p>
+  <p class="w">source</p><p class="v">GLOSS</p>
+  <p class="w" style="margin-top:6px">surface</p><p class="v">the tip</p>
+  <p class="ex"><button type="button" class="g" data-gloss="Charge">Charge</button></p>
+ </div>
+ <div class="k">
+  <p class="w">2 · number</p><p class="q">What is this number out of.</p>
+  <p class="w">source</p><p class="v">the renderer</p>
+  <p class="w" style="margin-top:6px">surface</p><p class="v">beside the figure</p>
+  <p class="ex"><span class="sc-in"><b>2.8</b> <i>of 10</i></span></p>
+ </div>
+ <div class="k">
+  <p class="w">3 · control</p><p class="q">What does this control do.</p>
+  <p class="w">source</p><p class="v">its own label</p>
+  <p class="w" style="margin-top:6px">surface</p><p class="v">the label</p>
+  <p class="ex"><button type="button" class="x">Release this address</button></p>
+ </div>
+ <div class="k">
+  <p class="w">4 · reading</p><p class="q">Why does this reading say what it says.</p>
+  <p class="w">source</p><p class="v">compute, then the drill</p>
+  <p class="w" style="margin-top:6px">surface</p><p class="v">the drill</p>
+  <p class="ex"><button type="button" class="g" data-gloss="CQ" data-open="CQ">CQ 41 of 100</button></p>
+ </div>
+ <div class="k">
+  <p class="w">5 · next</p><p class="q">What do I do now.</p>
+  <p class="w">source</p><p class="v">the surface itself</p>
+  <p class="w" style="margin-top:6px">surface</p><p class="v">the control</p>
+  <p class="ex"><span class="note">Never a tip. A tip a person has to open to
+  find out what to do is a product that did not say.</span></p>
+ </div>
+</div>
+
+<h2>The gate, running on this page</h2>
+<div class="card">
+ <div class="gate" id="gate"></div>
+</div>
+<p class="note">Every name on this page is checked against the table at load.
+A name with no entry is reported by name, which is the same shape
+<code>validateProfile</code> already uses at the boundary: refuse by name,
+never clamp. Read the count off the run.</p>
+
+<h2>What is not here</h2>
+<p class="note">No second panel, no help mode, no tour, no onboarding overlay,
+no third depth. The tip is the short answer, the drill is the long one, and
+Nielsen Norman put the ceiling at two levels of disclosure. Everything on this
+page is one attribute and one lookup on top of the tooltip that is already
+designed.</p>
+</div>
+
+<script>
+/* esc() lives in ui/component.js in the build and tip.js calls it. Declared
+   here because this page carries no component.js. Byte identical. */
+function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;')
+ .replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+/*@TIPJS@*/
+
+/* ============================================================
+   THE WHOLE SYSTEM. One table, one lookup, one attribute.
+
+   GLOSS_T stands in here for the engine's own tables. In the build there is
+   no new table at all: gloss() reads GLOSS first, then the knowledge rows,
+   then APC and HCX_LIB, and returns the first hit. Measured on the live
+   build: 322 names, 56 in GLOSS, 304 reachable as a knowledge row, 134
+   carrying a definition in some engine table, and 7 with none.
+
+   The seven with none are Trust, Worth, Acceptance, Vitality, Groundedness,
+   Joy and Readiness. They are the coherent opposites: the thing release
+   installs. Written below, because the system cannot ship with the outcome
+   undefined.
+   ============================================================ */
+var GLOSS_T={
+ /* quoted verbatim from APC in engine/data/catalog.js. The seats already have
+    297 to 438 characters each and they reach one drill and nothing else. */
+ 'root':{t:'Root', kind:'seat', nv:'Coccygeal / Sacral Plexus (S4-Co1)',
+  short:'The lowest seat. Survival charge encodes here because the question am I safe routes through the lowest nerve roots.',
+  d:"Survival charge encodes in the coccygeal and sacral plexus because the body's primary question, am I safe?, routes through the lowest nerve roots. Scarcity, physical harm, and tribal rejection all converge here. Highest embodiment ratio in the system (27.7%). This layer is actively transitioning.",
+  n:[['Seat','1','7'],['Addresses here','23','112'],['Embodiment','27.7','100']], row:1},
+ /* quoted verbatim from GLOSS in engine/data/kb.js */
+ 'charge':{t:'Charge', kind:'glossary',
+  short:'Stored survival energy held at a node. Installed by a stress response that never finished.',
+  d:'Stored survival energy held at a node. Installed by a stress response that never finished. Felt as heat, pressure, tingling, or weight when accessed.',
+  n:[['Held','7.5','10']], row:1},
+ 'cq':{t:'CQ', kind:'glossary',
+  short:'Coherence Quotient. Intention times integrity, divided by resistance.',
+  d:'Coherence Quotient. (Intention x Integrity) / Resistance. Baseline: 100. Measures the degree to which the system operates without internal contradiction.',
+  n:[['CQ','41','100'],['Baseline','100','100']], row:1},
+ /* quoted from CHILD in engine/data/canon.js, which holds the address and the
+    location but no definition of the fetter itself. */
+ 'fear':{t:'Fear', kind:'fetter', nv:'Lumbar plexus, lower back and gut. Toward Trust.',
+  short:'A held response at the lumbar plexus. It fires when matching input arrives, however long ago it was installed.',
+  d:'A named conditional response pattern resident at the lumbar plexus, felt in the lower back and gut, seated at the root. It fires when matching input arrives, regardless of how long ago it was installed. Release empties the address. Trust is what fills it.',
+  n:[['Held','7.5','10'],['Trust installed','1.2','10'],['Addresses it runs','23','112']], row:1},
+ /* WRITTEN FOR THIS BRIEF, because the product defines none of the seven and
+    they are what the work produces. Same shape as the entries above: what it
+    is, where it sits, what it costs to be without it. No soft language. */
+ 'trust':{t:'Trust', kind:'opposite',
+  short:'The coherent opposite of Fear. The state that occupies the root once the fear charge is discharged.',
+  d:'The coherent opposite of Fear. What occupies the lumbar plexus once the survival charge has discharged. It is not a belief about safety and it is not optimism: it is the absence of a firing pattern at an address that used to fire, measured as installation rather than as mood. Release empties the address. Trust is what fills it.',
+  n:[['Installed','1.2','10'],['Opposite of','Fear','9 axes']], row:0},
+ 'worth':{t:'Worth', kind:'opposite',
+  short:'The coherent opposite of Shame. What occupies the solar plexus once the shame charge has discharged.',
+  d:'The coherent opposite of Shame. What occupies the celiac plexus once the shame charge has discharged. Measured as installation at an address, not as self regard. The felt question can I handle this stops returning a contraction.',
+  n:[['Installed','0.0','10'],['Opposite of','Shame','9 axes']], row:0},
+ 'acceptance':{t:'Acceptance', kind:'opposite',
+  short:'The coherent opposite of Disgust. The state that holds at an address that used to reject.',
+  d:'The coherent opposite of Disgust. What holds at an address that used to reject. It is not approval and it is not tolerance: it is an address that no longer fires a rejection pattern when matching input arrives.',
+  n:[['Installed','0.0','10'],['Opposite of','Disgust','9 axes']], row:0},
+ 'vitality':{t:'Vitality', kind:'opposite',
+  short:'The coherent opposite of Apathy. What is left once the shadow weight comes off.',
+  d:'The coherent opposite of Apathy. What is left once the shadow weight comes off an address. Read as available energy at the seat rather than as motivation, because motivation is a report and this is a measurement.',
+  n:[['Installed','0.0','10'],['Opposite of','Apathy','9 axes']], row:0},
+ 'groundedness':{t:'Groundedness', kind:'opposite',
+  short:'The coherent opposite of Shock. An address that stays in the body when input arrives fast.',
+  d:'The coherent opposite of Shock. An address that stays in the body when input arrives faster than it can be processed. The shock pattern leaves the body; groundedness is the same address not leaving.',
+  n:[['Installed','0.0','10'],['Opposite of','Shock','9 axes']], row:0},
+ 'joy':{t:'Joy', kind:'opposite',
+  short:'The coherent opposite of Sad. What conducts at the cardiac plexus once the grief charge is discharged.',
+  d:'The coherent opposite of Sad. What conducts at the cardiac plexus once the grief charge has discharged. It is a conduction state at an address, not a mood, and it is measured as installation.',
+  n:[['Installed','0.0','10'],['Opposite of','Sad','9 axes']], row:0},
+ 'readiness':{t:'Readiness', kind:'opposite',
+  short:'The coherent opposite of Surprise. An address that meets new input without bracing first.',
+  d:'The coherent opposite of Surprise. An address that meets new input without bracing first. The surprise pattern braces and then reads; readiness reads.',
+  n:[['Installed','0.0','10'],['Opposite of','Surprise','9 axes']], row:0}};
+
+function gloss(term){
+ if(!term)return null;
+ var g=GLOSS_T[String(term).trim().toLowerCase()];
+ return g||null;}
+
+/* ---- the two lines the tooltip module gains ---- */
+TIP.gloss=gloss;
+
+/* THE TIP IS A READ AND IS COUNTED AS ONE. Two attempts at this, and the
+   first one lied. Wrapping TIP.show counted nothing, because the hover and
+   tap handlers call the module's own internal showFor and never the public
+   method, so the counter read two routes of three while all three worked.
+   The panel itself is the only honest witness: when it gains its open class,
+   a definition was read. */
+new MutationObserver(function(){
+ var t=document.querySelector('.tip'); if(!t||!t.classList.contains('on'))return;
+ var nm=t.querySelector('.tip-t'); if(!nm)return;
+ var g=gloss(nm.textContent); if(g)mark('in place', g.short||g.d, g.t);})
+ .observe(document.body,{subtree:true,attributes:true,attributeFilter:['class']});
+
+/* ---- the drill. the long answer, on the surface. ---- */
+/* THE COUNTER IS THE PROOF, so it counts the right things. A first version
+   counted distinct strings and reported two of one, because the tip prints
+   the short form and the drill prints the long one. Two forms of one entry is
+   the design, not a drift, so the counter says entries and forms separately
+   rather than making the number wrong to keep the label short. */
+var READS=0, ENTRIES={}, FORMS={}, ROUTES={};
+function mark(route,str,term){
+ READS++; if(term)ENTRIES[term]=1; FORMS[str]=1; ROUTES[route]=1;
+ document.getElementById('n-read').textContent=READS;
+ document.getElementById('n-str').textContent=Object.keys(ENTRIES).length;
+ document.getElementById('n-form').textContent=Object.keys(FORMS).length;
+ document.getElementById('n-rt').textContent=Object.keys(ROUTES).length;}
+function openDrill(term,route){
+ var g=gloss(term); if(!g)return;
+ var d=document.getElementById('drill');
+ d.innerHTML='<p class="eye">'+g.kind+'</p><h3>'+g.t+'</h3>'
+  +(g.nv?'<p class="nv">'+g.nv+'</p>':'')
+  +'<p>'+g.d+'</p>'
+  +(g.n&&g.n.length?'<dl>'+g.n.map(function(r){
+     return '<dt>'+r[0]+'</dt><dd>'+r[1]+' <i>of '+r[2]+'</i></dd>';}).join('')+'</dl>':'')
+  +'<button type="button" class="x" id="dx">Close</button>';
+ d.classList.add('on');
+ document.getElementById('dx').onclick=function(){d.classList.remove('on');};
+ d.scrollIntoView({block:'nearest'});
+ mark(route||'drill', g.d, g.t);}
+
+/* THE TIP AND THE DRILL ARE ONE GESTURE APART, NOT TWO SURFACES APART.
+   Measured on the live build at 390: tapping a row that both explains and
+   navigates opened the tip and changed tab within 120 milliseconds, and the
+   definition was wiped before it could be read. So a carrier that navigates
+   does not navigate on the first tap. The first tap explains, the tip's own
+   action line navigates, and that is one rule rather than a special case. */
+document.addEventListener('click',function(ev){
+ var b=ev.target.closest?ev.target.closest('[data-open]'):null;
+ if(!b)return;
+ if(TIP.sheet()&&!b.classList.contains('tip-opened')){b.classList.add('tip-opened');return;}
+ openDrill(b.getAttribute('data-open'), b.getAttribute('data-route')||'in place');});
+
+/* ---- route 2. the index. ---- */
+var Q=document.getElementById('q'), H=document.getElementById('hits');
+function paint(){
+ var q=(Q.value||'').trim().toLowerCase();
+ var keys=Object.keys(GLOSS_T).filter(function(k){
+  return !q||k.indexOf(q)>=0||GLOSS_T[k].kind.indexOf(q)>=0;});
+ H.innerHTML=keys.map(function(k){var g=GLOSS_T[k];
+  return '<li><button type="button" data-hit="'+k+'">'+g.t+'<em>'+g.kind+'</em></button></li>';}).join('')
+  ||'<li><p class="note" style="padding:12px 4px;margin:0">nothing held</p></li>';
+ H.querySelectorAll('[data-hit]').forEach(function(b){
+  b.onclick=function(){openDrill(b.getAttribute('data-hit'),'by name');};});}
+Q.addEventListener('input',paint); paint();
+
+/* ---- the gate, on this page ---- */
+(function(){
+ var names={}, bad=[];
+ document.querySelectorAll('[data-gloss]').forEach(function(e){
+  var t=e.getAttribute('data-gloss'); names[t]=1;
+  if(!gloss(t))bad.push(t);});
+ var n=Object.keys(names).length;
+ document.getElementById('gate').innerHTML=
+  '<div><span>names on this page</span> <b>'+n+'</b></div>'
+ +'<div><span>glossed</span> <b>'+(n-bad.length)+'</b> <span>of '+n+'</span></div>'
+ +'<div class="'+(bad.length?'bad':'')+'"><span>refused by name</span> <b>'
+  +(bad.length?bad.join(', '):'none')+'</b></div>'
+ +'<div><span>entries in the table</span> <b>'+Object.keys(GLOSS_T).length+'</b></div>'
+ +'<div><span>addresses in the instrument</span> <b>112</b></div>';})();
+
+/* ---- the two lightings, because the tip declares its own ground ---- */
+document.querySelectorAll('[data-lit]').forEach(function(b){
+ b.onclick=function(){
+  document.body.className=b.getAttribute('data-lit');
+  document.querySelectorAll('[data-lit]').forEach(function(x){x.classList.remove('on');});
+  b.classList.add('on'); TIP.hide();};});
+</script>
+</body></html>

@@ -122,13 +122,20 @@ var MINE=/\b(i|we|my|me|us|our)\b/i;
 function frameIn(txt){
  var best=null;
  for(var i=0;i<FRAMES.length;i++){
-  var m=FRAMES[i].rx.exec(txt);
-  if(!m)continue;
-  /* four words in front, and they have to contain a first person pronoun */
-  var pre=txt.slice(0,m.index).split(/\s+/).slice(-4).join(' ');
-  if(!MINE.test(pre))continue;
-  if(best===null||m.index<best.at)
-   best={at:m.index, from:m[0], to:FRAMES[i].to(m), was:FRAMES[i].was};}
+  /* EVERY OCCURRENCE, NOT THE FIRST. The first cut called rx.exec once, so a
+     frame that appeared twice was only ever tested at its first position. On
+     the entry "the work is never done ... I can never say what I actually
+     mean" the first "is never" has no first person subject in front of it and
+     was correctly rejected, and the second one, which is exactly the claim
+     this branch exists for, was never looked at. The rule was right and the
+     loop threw away the evidence for it. */
+  var rx=new RegExp(FRAMES[i].rx.source,'gi'), m;
+  while((m=rx.exec(txt))!==null){
+   /* four words in front, and they have to contain a first person pronoun */
+   var pre=txt.slice(0,m.index).split(/\s+/).slice(-4).join(' ');
+   if(MINE.test(pre)&&(best===null||m.index<best.at))
+    best={at:m.index, from:m[0], to:FRAMES[i].to(m), was:FRAMES[i].was};
+   if(rx.lastIndex===m.index)rx.lastIndex++;}}
  return best;}
 /* ------------------------------------------------------------
    3. THE CHAIN. One call, and it reports what it found and what it did not.
@@ -220,17 +227,24 @@ function chainOf(text,parsed,table,frames){
     on where the charge is heaviest, the affirmation works on the claim that
     cannot be tested. Making them share one clause made the affirmation worse
     and did not make the practice better. */
- var fr=frameIn(txt);
- if(fr){
-  var as=spanAt(txt,fr.at,fr.from);
+ /* NAMED clm AND NOT fr, WHICH IS THE BUG THIS COMMENT EXISTS FOR. The frame
+    layer's matches are held in fr above, and the first cut of this block
+    declared a second var fr for the claim. var hoists, so the two shared one
+    binding and the claim overwrote the frame matches. The symptom was an
+    affirmation falling to the question form on an entry that plainly said "I
+    can never say what I actually mean", which read as the swap branch not
+    working when in fact it had been handed a different object. */
+ var clm=frameIn(txt);
+ if(clm){
+  var as=spanAt(txt,clm.at,clm.from);
   if(as){
-   var rel=fr.at-as.at;
-   if(rel>=0&&rel+fr.from.length<=as.text.length){
+   var rel=clm.at-as.at;
+   if(rel>=0&&rel+clm.from.length<=as.text.length){
     out.affirm={form:'swap',
-     text:as.text.slice(0,rel)+fr.to+as.text.slice(rel+fr.from.length),
-     ours:as.text, from:fr.from, to:fr.to, was:fr.was, at:rel,
+     text:as.text.slice(0,rel)+clm.to+as.text.slice(rel+clm.from.length),
+     ours:as.text, from:clm.from, to:clm.to, was:clm.was, at:rel,
      mine:true};                   /* one position is the app's, and it says so */
-    out.why.push('the entry claimed '+fr.was+' about itself, so the affirmation '
+    out.why.push('the entry claimed '+clm.was+' about itself, so the affirmation '
      +'is that sentence with one word hedged and the word is marked');}}}
  if(!out.affirm){
   out.affirm=out.opp

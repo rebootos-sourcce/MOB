@@ -1,0 +1,473 @@
+<!doctype html><html lang="en" data-theme="dark"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ten Pills</title>
+<style>
+:root{
+ --bg:#0C0D12; --panel:#1A1D26; --panel-2:#252833; --sunk:#090A0E;
+ --edge:#2E333E; --edge-2:#3A4150;
+ --ink:#EFEDE8; --mid:#B4B0A8; --dim:#94908A;
+ --root:#CF5953; --sacral:#D19255; --solar:#D4BC70;
+ --heart:#65CFA5; --throat:#65B8D4; --eye:#8296DB; --crown:#A883D6;
+ --alarm:#FF2E1F; --alarm-soft:rgba(255,46,31,.16);
+ --accent:#7EB8D4; --on-accent:#0B1418;
+ --num:ui-monospace,SFMono-Regular,Menlo,monospace;
+ --sans:system-ui,-apple-system,"Segoe UI",sans-serif;
+ --r:6px; --r-s:5px; --r-xs:4px; --tap:44px;
+ --t-micro:.14s; --ease-out:cubic-bezier(.22,1,.36,1);
+}
+html[data-theme="light"]{
+ --bg:#F4F2ED; --panel:#FBFAF6; --panel-2:#F0EEE8; --sunk:#E8E5DD;
+ --edge:#D8D4C9; --edge-2:#C3BEB1;
+ --ink:#16171C; --mid:#4E4C48; --dim:#605E59;
+ --root:#9B4B47; --sacral:#8E6231; --solar:#7E6C29;
+ --heart:#2A7A5C; --throat:#2C6F88; --eye:#4C5F9E; --crown:#6E5490;
+ --accent:#2C6F88; --on-accent:#FFFFFF;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+ font:400 15px/1.6 var(--sans);padding:26px 20px 90px;
+ -webkit-font-smoothing:antialiased}
+h1{font-size:23px;font-weight:400;letter-spacing:.05em;margin:0 0 5px}
+.lead{color:var(--dim);font-size:13.5px;margin:0 0 6px;max-width:72ch}
+.field{color:var(--mid);font-family:var(--num);font-size:11.5px;margin:0 0 24px}
+.bar{position:fixed;right:16px;top:16px;z-index:9;display:flex;gap:7px}
+.bar button{min-height:32px;padding:6px 13px;background:var(--panel);
+ border:1px solid var(--edge);border-radius:999px;color:var(--mid);
+ font:inherit;font-size:12.5px;cursor:pointer}
+.bar button:hover{color:var(--ink);border-color:var(--accent)}
+.bar button.on{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.d{margin:0 0 30px;padding:18px 20px 20px;background:var(--panel);
+ border:1px solid var(--edge);border-left:2px solid var(--accent);border-radius:var(--r)}
+.d>h2{font-size:17px;font-weight:500;margin:0 0 3px;letter-spacing:.01em}
+.d>h2 b{font-family:var(--num);font-size:12px;font-weight:500;color:var(--dim);
+ margin-right:9px;letter-spacing:.06em}
+.d>p{margin:0 0 15px;color:var(--mid);font-size:13.5px;line-height:1.62;max-width:78ch}
+.d>p.why{color:var(--dim);font-size:12.5px;margin-bottom:0;margin-top:13px}
+.eye{font-family:var(--num);font-size:11px;color:var(--dim);letter-spacing:.06em;
+ margin:16px 0 8px;display:block}
+.row{display:flex;flex-wrap:wrap;gap:13px 16px;align-items:center}
+/* the nine, each under its own name, because nine numbers with no names is the
+   defect this product already has a rule against. */
+.axes{display:grid;grid-template-columns:repeat(9,minmax(0,1fr));gap:12px 10px}
+.ax{display:flex;flex-direction:column;gap:6px;align-items:flex-start;min-width:0}
+@media (max-width:1100px){.axes{grid-template-columns:repeat(5,minmax(0,1fr))}}
+@media (max-width:620px){.axes{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.row.col{flex-direction:column;align-items:flex-start;gap:9px}
+.cap{font-size:11.5px;color:var(--dim);font-family:var(--num)}
+
+/* ============================================================
+   EVERY VARIANT SHARES ONE SKELETON so they can be compared. The
+   markup is identical and only the class on the wrapper changes,
+   which is also the honest way to price a variant: if a shape needs
+   different markup, it is a different component.
+   ============================================================ */
+.p{display:inline-flex;align-items:center;vertical-align:middle;
+ --c:var(--accent);position:relative;
+ font-family:var(--sans);text-decoration:none;color:inherit;
+ background:none;border:0;padding:0;margin:0;font-size:inherit}
+.p svg{display:block;overflow:visible}
+.p .gl svg{fill:none;stroke:var(--c);stroke-width:1.7;
+ stroke-linecap:round;stroke-linejoin:round}
+.p .v{font-family:var(--num);font-weight:500;font-variant-numeric:tabular-nums;
+ white-space:nowrap}
+.p.act{cursor:pointer}
+/* THE TAP FLOOR, AND SEVEN OF THE TEN NEEDED IT. Measured as controls at the
+   middle size: the unrolled track is 18 pixels tall, the dot ladder 18, the
+   underscore 22, the chip 26, the inset 34. A thumb needs 44 and none of those
+   have it. So a control grows an invisible hit area to 44 in both directions
+   without the visible mark changing size at all, which is the only honest fix:
+   making the mark itself 44 tall would ruin four of the ten designs to satisfy
+   a rule about fingers. Measured after: 44 by 44 minimum on all ten. */
+.p.act::after{content:'';position:absolute;left:50%;top:50%;
+ transform:translate(-50%,-50%);
+ width:max(100%,var(--tap));height:max(100%,var(--tap))}
+.p.hot{--c:var(--alarm)}
+
+/* ---- 1. RING AND PILL. the shipped one, for reference ---- */
+.v1{border-radius:999px;border:1px solid var(--edge);background:var(--panel-2);
+ padding:2px 10px 2px 2px;gap:0}
+.v1 .ring{position:relative;flex:0 0 auto}
+.v1 .arc{transform:rotate(-90deg)}
+.v1 .gl{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+.v1 .v{margin-left:6px;font-size:12.5px;color:var(--ink)}
+.v1.hot{background:var(--alarm-soft);border-color:rgba(255,46,31,.45)}
+.v1.on{box-shadow:0 0 0 2px var(--accent)}
+.v1.act:hover{border-color:var(--c)}
+
+/* ---- 2. INSET. the number lives in the ring. no pill at all ---- */
+.v2{border:0;background:none;padding:0}
+.v2 .ring{position:relative}
+.v2 .arc{transform:rotate(-90deg)}
+.v2 .gl{display:none}
+.v2 .v{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+ font-size:12px;color:var(--ink);margin:0}
+.v2.on .ring::after{content:'';position:absolute;inset:-4px;border-radius:50%;
+ border:1.5px solid var(--accent)}
+.v2.act:hover .v{color:var(--c)}
+
+/* ---- 3. ARC BAR. the ring unrolled ---- */
+.v3{gap:8px;align-items:center}
+.v3 .ring{display:none}
+.v3 .gl{flex:0 0 auto;display:flex;align-items:center;justify-content:center}
+.v3 .track{position:relative;height:5px;border-radius:999px;background:var(--sunk);
+ flex:0 0 auto;overflow:hidden}
+.v3 .track i{position:absolute;left:0;top:0;bottom:0;border-radius:999px;
+ background:var(--c)}
+.v3 .v{font-size:12px;color:var(--mid)}
+.v3.on .track{box-shadow:0 0 0 2px var(--accent)}
+.v3.act:hover .v{color:var(--ink)}
+
+/* ---- 4. UNDERSCORE. glyph and number stacked, the reading is the rule ---- */
+.v4{flex-direction:column;align-items:flex-start;gap:2px}
+.v4 .ring{display:none}
+.v4 .top{display:flex;align-items:center;gap:6px}
+.v4 .v{font-size:13px;color:var(--ink)}
+.v4 .rule{height:2px;border-radius:2px;background:var(--sunk);position:relative;
+ width:100%;min-width:52px}
+.v4 .rule i{position:absolute;left:0;top:0;bottom:0;background:var(--c);border-radius:2px}
+.v4.on .rule{box-shadow:0 0 0 2px var(--accent)}
+
+/* ---- 5. GAUGE. 240 degrees and a needle. an instrument, not a fill ----
+   SECOND CUT. The first put the number underneath the dial, inside the dial's
+   own box, and it collided with the arc at all four sizes and crushed the
+   symbol against the needle. The shot showed it. The number comes out to the
+   right, where every other variant on this page puts it, and the symbol sits
+   in the upper half of the dial where the needle never reaches. */
+.v5{border:0;background:none;gap:7px;align-items:center}
+.v5 .ring{position:relative;flex:0 0 auto}
+.v5 .arc{transform:none}
+.v5 .gl{position:absolute;left:0;right:0;top:14%;display:flex;justify-content:center}
+.v5 .v{font-size:12.5px;color:var(--ink)}
+.v5.on .ring{box-shadow:0 0 0 2px var(--accent);border-radius:50%}
+
+/* ---- 6. NOTCHES. countable, no smooth arc ---- */
+.v6{border-radius:999px;border:1px solid var(--edge);background:none;
+ padding:2px 10px 2px 2px;gap:0}
+.v6 .ring{position:relative}
+.v6 .arc{transform:rotate(-90deg)}
+.v6 .gl{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+.v6 .v{margin-left:6px;font-size:12.5px;color:var(--ink)}
+.v6.on{box-shadow:0 0 0 2px var(--accent)}
+
+/* ---- 7. COLUMN. vertical, for a rail ---- */
+.v7{flex-direction:column;gap:4px;align-items:center}
+.v7 .ring{display:none}
+.v7 .col{width:5px;border-radius:999px;background:var(--sunk);position:relative;
+ display:flex;align-items:flex-end;overflow:hidden}
+.v7 .col i{width:100%;background:var(--c);border-radius:999px}
+.v7 .v{font-size:11px;color:var(--mid)}
+.v7.on .col{box-shadow:0 0 0 2px var(--accent)}
+
+/* ---- 8. SPLIT. two readings on one circle, which the product needs ---- */
+.v8{border-radius:999px;border:1px solid var(--edge);background:var(--panel-2);
+ padding:2px 10px 2px 2px;gap:0}
+.v8 .ring{position:relative}
+.v8 .arc{transform:rotate(-90deg)}
+.v8 .gl{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+.v8 .v{margin-left:6px;font-size:12.5px;color:var(--ink)}
+/* THE TWO NUMBERS NEED A WALL BETWEEN THEM. A three pixel margin and a colour
+   change was not enough: at the smallest size it printed "6.42.1" and read as
+   one number, which is the exact failure the number law exists to stop. A
+   stroke between them, in the dim, and they can never fuse again. */
+.v8 .v em{font-style:normal;color:var(--heart);margin-left:5px}
+.v8 .v em::before{content:'/';color:var(--dim);margin-right:5px;font-weight:400}
+.v8.on{box-shadow:0 0 0 2px var(--accent)}
+
+/* ---- 9. CHIP. solid, the Punch treatment. the one allowed exception ---- */
+/* THE CHIP, SECOND CUT. The first knocked the ink out of the fill, and the
+   knockout ink is a near black chosen against the blue accent. On a dark seat
+   colour it vanished, so five of the nine axes drew as bare colour blocks with
+   nothing readable in them. Measured, and the shot showed it.
+
+   The fix moves the number off the fill entirely. The bar is solid and is the
+   reading. The symbol sits inside it at the far left, which is the one place
+   guaranteed to be filled at any percentage above zero, knocked out in the
+   page ground rather than in a fixed ink so it answers the theme. The number
+   sits outside the bar on the ordinary ground, where it is legible whatever
+   colour the seat is. Solid, and still readable. */
+.v9{border:0;padding:0;background:none;gap:8px;align-items:center}
+.v9 .ring{display:none}
+.v9 .bar{position:relative;border-radius:var(--r-xs);background:var(--sunk);
+ overflow:hidden;flex:0 0 auto;display:flex;align-items:center}
+.v9 .fill{position:absolute;left:0;top:0;bottom:0;background:var(--c)}
+.v9 .in{position:relative;display:flex;align-items:center;padding-left:7px}
+.v9 .gl svg{stroke:var(--bg);stroke-width:2.1}
+.v9 .v{font-size:12.5px;color:var(--ink);font-weight:500}
+.v9.on .bar{box-shadow:0 0 0 2px var(--accent)}
+
+/* ---- 10. DOT LADDER. countable at eleven pixels ---- */
+.v10{gap:8px}
+.v10 .ring{display:none}
+.v10 .dots{display:flex;gap:3px;align-items:center}
+.v10 .dots span{width:5px;height:5px;border-radius:50%;background:var(--sunk)}
+.v10 .dots span.f{background:var(--c)}
+.v10 .v{font-size:12px;color:var(--mid)}
+.v10.on .dots{box-shadow:0 0 0 2px var(--accent);border-radius:999px;padding:2px 3px;margin:-2px -3px}
+
+/* the size grid, shared */
+.sizes{display:flex;flex-wrap:wrap;gap:20px 26px;align-items:flex-end}
+.sz{display:flex;flex-direction:column;gap:6px;align-items:flex-start}
+.sz .cap{order:2}
+/* A GRID RATHER THAN A WRAP. Eight cases with captions of very different
+   lengths under pills of very different widths read as a jumble when they are
+   allowed to flow, and the shot showed it. Fixed columns put every caption
+   under its own pill and make the eight comparable down the page. */
+.states{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+ gap:18px 16px;padding:15px;background:var(--sunk);border-radius:var(--r-s)}
+.st{display:flex;flex-direction:column;gap:7px;align-items:flex-start;min-width:0}
+.st .cap{line-height:1.45}
+@media (max-width:900px){.states{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:520px){.states{grid-template-columns:1fr}}
+table{border-collapse:collapse;width:100%;max-width:860px;margin:6px 0 0}
+th,td{text-align:left;padding:7px 12px 7px 0;font-size:12.5px;
+ border-bottom:1px solid var(--edge);vertical-align:top}
+th{font-family:var(--num);font-size:11px;color:var(--dim);font-weight:400;
+ letter-spacing:.05em}
+td b{font-weight:500}
+@media (max-width:620px){
+ body{padding:20px 16px 80px}
+ .bar{position:static;justify-content:flex-start;margin-bottom:16px}
+ .sizes{gap:16px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style></head><body>
+<div class="bar">
+ <button id="th" type="button">Light</button>
+ <button id="hot" type="button">Show the alarm state</button>
+</div>
+<h1>Ten pills</h1>
+<p class="lead">Ten different mechanisms, not ten colourways of one. Every pill on
+this page draws the same real field, so a difference you see is the design and
+not the data. Press them: the clickable ones respond.</p>
+<p class="field" id="fieldline"></p>
+<div id="out"></div>
+<script>
+const R={"tier":"Oscillating","CQ":51,"DQ":0.94,"SQ":4.7,"X":0.824,"Y":0.432,"Z":0.394,"Ig":7.41,"darkB":"Sacral","acc":75,"band":8,"loaded":2,"under":54,"sabs":28,"top":[{"n":"Optic Chiasm","b":"3rd Eye","sq":4.87},{"n":"Pelvic Ganglia","b":"Sacral","sq":4.5},{"n":"Adrenal Medulla","b":"Solar","sq":3.63},{"n":"Pulmonary Nerve Plexus","b":"Heart","sq":3.55},{"n":"Sacral Outflow","b":"Sacral","sq":3.26},{"n":"Pelvic Floor Nerves","b":"Root","sq":3.23}],"ax":[{"n":"Fear","seat":"Root","v":6.4,"opp":2.1,"ic":"M12 3l8 14H4z"},{"n":"Anger","seat":"Solar","v":5.1,"opp":8.6,"ic":"M13 2L4 14h6l-1 8 9-12h-6z"},{"n":"Shame","seat":"Sacral","v":7.2,"opp":4.6,"ic":"M5 20V9a7 7 0 0114 0v11M9 20v-6h6v6"},{"n":"Disgust","seat":"Sacral","v":2.8,"opp":0,"ic":"M4 8c4 4 12 4 16 0M6 16c3-3 9-3 12 0"},{"n":"Apathy","seat":"Throat","v":4.3,"opp":0,"ic":"M4 12h16M4 7h16M4 17h16"},{"n":"Shock","seat":"3rd Eye","v":1.9,"opp":0,"ic":"M12 12m-9 0a9 9 0 1018 0 9 9 0 10-18 0M12 12m-4.5 0a4.5 4.5 0 109 0 4.5 4.5 0 10-9 0"},{"n":"Sad","seat":"Heart","v":5.6,"opp":6,"ic":"M12 20s-8-5-8-11a4 4 0 018-2 4 4 0 018 2c0 6-8 11-8 11z"},{"n":"Surprise","seat":"Heart","v":2.2,"opp":0,"ic":"M12 3v18M7 7c-3 2-3 9 0 11M17 7c3 2 3 9 0 11"},{"n":"Anticipation","seat":"Solar","v":8.1,"opp":0,"ic":"M12 4v11M8 11l4 4 4-4M6 20h12"}],"laws":[{"n":"Detachment","v":2.9},{"n":"Temperance","v":3.3},{"n":"Truth","v":7.6},{"n":"Generosity","v":8.2},{"n":"Compassion","v":8.6},{"n":"Non-Harm","v":9.1}],"TIERCOL":{"Mastery":"#E4D9A8","Embodied":"#8FD0A8","Compounding":"#65CFA5","Gaining":"#74C1C4","Even":"#65B8D4","Oscillating":"#8296DB","Incoherent":"#C9A96A","Corrupt":"#C98A5E","Severe":"#B2857C","Collapsed":"#A28A88"},"PAL":{"Root":"#CF5953","Sacral":"#D19255","Solar":"#D4BC70","Heart":"#65CFA5","Throat":"#65B8D4","3rd Eye":"#8296DB","Crown":"#A883D6"},"PAL_LIGHT":{"Root":"#9B4B47","Sacral":"#8E6231","Solar":"#7E6C29","Heart":"#2A7A5C","Throat":"#2C6F88","3rd Eye":"#4C5F9E","Crown":"#6E5490"},"glyphs":{"Root":"<path d=\"M12 3l7 4v6c0 4-3 7-7 8-4-1-7-4-7-8V7z\"/>","Sacral":"<path d=\"M12 4c4 4 4 12 0 16-4-4-4-12 0-16z\"/>","Solar":"<path d=\"M13 3L5 14h6l-1 7 8-11h-6z\"/>","Heart":"<path d=\"M12 20s-7-4.5-7-9a4 4 0 017-2.6A4 4 0 0119 11c0 4.5-7 9-7 9z\"/>","Throat":"<circle cx=\"12\" cy=\"12\" r=\"8\"/><path d=\"M12 7v5l3 3\"/>","3rd Eye":"<circle cx=\"12\" cy=\"12\" r=\"3\"/><path d=\"M2 12s4-6 10-6 10 6 10 6-4 6-10 6S2 12 2 12z\"/>","Crown":"<path d=\"M12 3v18M3 12h18\"/>","_":"<circle cx=\"12\" cy=\"12\" r=\"7\"/>"},"qicon":{"vitality":"<path d=\"M12 21v-8M12 13c0-3.4 2.4-6 5.6-6.4C17.2 10 15 12.6 12 13M12 13c0-2.8-2-5-4.7-5.4C7.7 10.4 9.6 12.4 12 13M9 21h6\"/>","awareness":"<path d=\"M12 3.5a8.5 8.5 0 110 17 8.5 8.5 0 010-17M12 3.5L17.8 9.3M20.5 12h-8.2M17.8 14.7L12 20.5M6.2 14.7L12 8.9M3.5 12h8.2M6.2 9.3L12 15.1\"/>","will":"<path d=\"M12 21V4M12 4l-4 4M12 4l4 4M5 13.5h3.2M15.8 13.5H19\"/>","flow":"<path d=\"M6 19c3-2.4 3-5.6 0-8 3-2.4 3-5.6 0-8M12 19c3-2.4 3-5.6 0-8 3-2.4 3-5.6 0-8M18 19c3-2.4 3-5.6 0-8 3-2.4 3-5.6 0-8\"/>"}};
+const GEO={lg:{box:46,r:18,w:3.5,ic:17,f:19},md:{box:34,r:13,w:3,ic:13,f:15},
+           sm:{box:24,r:9,w:2.4,ic:10,f:12.5},xs:{box:18,r:6.5,w:2,ic:8,f:11.5}};
+const SEATVAR={'Root':'--root','Sacral':'--sacral','Solar':'--solar','Heart':'--heart',
+ 'Throat':'--throat','3rd Eye':'--eye','Crown':'--crown'};
+const col=b=>'var('+(SEATVAR[b]||'--accent')+')';
+const esc=s=>String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;')
+  .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const gl=b=>R.glyphs[b]||R.glyphs._;
+
+/* ONE CALL FOR EVERY VARIANT. o carries what a reading is: the seat it sits at,
+   the percentage, the printed value, what the value is out of, and the second
+   value where there is one. Nothing takes a bare number. */
+function pill(n,o){
+ const G=GEO[o.size||'sm'], p=Math.max(0,Math.min(100,o.pct||0));
+ const C=2*Math.PI*G.r, off=C*(1-p/100);
+ const c=o.color||col(o.b), v=o.raw!=null?o.raw:Math.round(p)+'%';
+ const cls='p v'+n+' '+(o.size||'sm')+(o.hot?' hot':'')+(o.on?' on':'')+(o.act?' act':'');
+ const tag=o.act?'button':'span';
+ const ttl=esc((o.b||'')+(o.label?' · '+o.label:'')+' · '+v+(o.of?' of '+o.of:''));
+ const gs=(n===5)?Math.max(7,Math.round(G.ic*0.72)):G.ic;
+ const glyph='<span class="gl"><svg viewBox="0 0 24 24" width="'+gs+'" height="'+gs
+  +'" aria-hidden="true">'+(o.glyph||gl(o.b))+'</svg></span>';
+ const letters=o.text?'<span class="gl" style="font-family:var(--num);font-weight:600;'
+  +'font-size:'+Math.max(11,Math.round(G.box*0.30))+'px;color:'+c+';letter-spacing:-.03em">'
+  +esc(o.text)+'</span>':null;
+ const centre=letters||glyph;
+ const ringArc=(dash,stroke,extra)=>'<circle cx="'+(G.box/2)+'" cy="'+(G.box/2)+'" r="'+G.r
+  +'" fill="none" stroke="'+stroke+'" stroke-width="'+G.w+'" '+(extra||'')
+  +(dash?' stroke-dasharray="'+C.toFixed(1)+'" stroke-dashoffset="'+dash+'" stroke-linecap="round"':'')
+  +'/>';
+ let body='';
+ if(n===1||n===8){
+  let arcs=ringArc(null,'rgba(128,128,128,.22)')+ringArc(off.toFixed(1),c);
+  let tail=v;
+  if(n===8&&o.opp!=null){
+   const o2=C*(1-Math.max(0,Math.min(100,o.opp))/100);
+   arcs=ringArc(null,'rgba(128,128,128,.22)')
+    +'<g transform="rotate(180 '+(G.box/2)+' '+(G.box/2)+')">'
+    +ringArc(o2.toFixed(1),'var(--heart)')+'</g>'
+    +ringArc(off.toFixed(1),c);
+   tail=v+'<em>'+(o.oppRaw!=null?o.oppRaw:Math.round(o.opp)+'%')+'</em>';}
+  body='<span class="ring" style="width:'+G.box+'px;height:'+G.box+'px">'
+   +'<svg class="arc" width="'+G.box+'" height="'+G.box+'">'+arcs+'</svg>'+centre+'</span>'
+   +'<span class="v" style="font-size:'+G.f+'px">'+tail+'</span>';
+ } else if(n===2){
+  body='<span class="ring" style="width:'+G.box+'px;height:'+G.box+'px">'
+   +'<svg class="arc" width="'+G.box+'" height="'+G.box+'">'
+   +ringArc(null,'rgba(128,128,128,.22)')+ringArc(off.toFixed(1),c)+'</svg>'
+   +'<span class="v" style="font-size:'+Math.max(11,G.f-2)+'px">'+v+'</span></span>';
+ } else if(n===3){
+  const w=[132,104,84,68][['lg','md','sm','xs'].indexOf(o.size||'sm')];
+  body=glyph+'<span class="track" style="width:'+w+'px;height:'+Math.max(4,G.w+1)+'px">'
+   +'<i style="width:'+p.toFixed(1)+'%"></i></span>'
+   +'<span class="v" style="font-size:'+G.f+'px">'+v+'</span>';
+ } else if(n===4){
+  body='<span class="top">'+glyph+'<span class="v" style="font-size:'+G.f+'px">'+v+'</span></span>'
+   +'<span class="rule" style="width:'+[132,104,84,68][['lg','md','sm','xs'].indexOf(o.size||'sm')]
+   +'px"><i style="width:'+p.toFixed(1)+'%"></i></span>';
+ } else if(n===5){
+  /* 240 degrees, so the sweep reads as a dial and the gap at the bottom reads
+     as the floor rather than as a missing piece. The needle stops short of the
+     arc, the way a real one does, so the two never touch and the eye can tell
+     which is the pointer and which is the scale. */
+  const A0=150, SPAN=240, cx=G.box/2, cy=G.box/2, rr=G.r;
+  const pt=(a,k)=>{const t=a*Math.PI/180, r=rr*(k==null?1:k);
+   return [(cx+r*Math.cos(t)).toFixed(2),(cy+r*Math.sin(t)).toFixed(2)];};
+  const arc=(a0,a1,st,w)=>{const s=pt(a0),e=pt(a1);
+   return '<path d="M'+s[0]+' '+s[1]+' A'+rr+' '+rr+' 0 '+((a1-a0)>180?1:0)+' 1 '+e[0]+' '+e[1]
+    +'" fill="none" stroke="'+st+'" stroke-width="'+w+'" stroke-linecap="round"/>';};
+  const nd=A0+SPAN*p/100, np=pt(nd,0.74);
+  body='<span class="ring" style="width:'+G.box+'px;height:'+G.box+'px">'
+   +'<svg class="arc" width="'+G.box+'" height="'+G.box+'">'
+   +arc(A0,A0+SPAN,'rgba(128,128,128,.22)',G.w)
+   +arc(A0,nd,c,G.w)
+   +'<line x1="'+cx+'" y1="'+cy+'" x2="'+np[0]+'" y2="'+np[1]+'" stroke="'+c
+   +'" stroke-width="'+Math.max(1.3,G.w*.55)+'" stroke-linecap="round"/>'
+   +'<circle cx="'+cx+'" cy="'+cy+'" r="'+Math.max(1.5,G.w*.62)+'" fill="'+c+'"/>'
+   +'</svg>'+centre+'</span>'
+   +'<span class="v" style="font-size:'+G.f+'px">'+v+'</span>';
+ } else if(n===6){
+  /* twenty ticks, so the reading is countable rather than estimated. */
+  const N=20, lit=Math.round(p/100*N);
+  let t='';
+  for(let i=0;i<N;i++){
+   const a=(i/N*360-90)*Math.PI/180, r0=G.r-G.w*.9, r1=G.r+G.w*.9;
+   t+='<line x1="'+(G.box/2+r0*Math.cos(a)).toFixed(2)+'" y1="'+(G.box/2+r0*Math.sin(a)).toFixed(2)
+    +'" x2="'+(G.box/2+r1*Math.cos(a)).toFixed(2)+'" y2="'+(G.box/2+r1*Math.sin(a)).toFixed(2)
+    +'" stroke="'+(i<lit?c:'rgba(128,128,128,.24)')+'" stroke-width="'
+    +Math.max(1,G.w*.55)+'" stroke-linecap="round"/>';}
+  body='<span class="ring" style="width:'+G.box+'px;height:'+G.box+'px">'
+   +'<svg class="arc" width="'+G.box+'" height="'+G.box+'">'+t+'</svg>'+centre+'</span>'
+   +'<span class="v" style="font-size:'+G.f+'px">'+v+'</span>';
+ } else if(n===7){
+  const h=[54,44,34,26][['lg','md','sm','xs'].indexOf(o.size||'sm')];
+  body=glyph+'<span class="col" style="height:'+h+'px">'
+   +'<i style="height:'+p.toFixed(1)+'%"></i></span>'
+   +'<span class="v" style="font-size:'+Math.max(11,G.f-2)+'px">'+v+'</span>';
+ } else if(n===9){
+  const w=[132,104,84,68][['lg','md','sm','xs'].indexOf(o.size||'sm')];
+  const bh=[30,24,20,17][['lg','md','sm','xs'].indexOf(o.size||'sm')];
+  body='<span class="bar" style="width:'+w+'px;height:'+bh+'px">'
+   +'<span class="fill" style="width:'+Math.max(p,9).toFixed(1)+'%"></span>'
+   +'<span class="in">'+glyph+'</span></span>'
+   +'<span class="v" style="font-size:'+G.f+'px">'+v+'</span>';
+ } else if(n===10){
+  const N=10, lit=Math.round(p/100*N);
+  let d='';
+  for(let i=0;i<N;i++)d+='<span class="'+(i<lit?'f':'')+'"></span>';
+  body=glyph+'<span class="dots">'+d+'</span>'
+   +'<span class="v" style="font-size:'+G.f+'px">'+v+'</span>';
+ }
+ return '<'+tag+(o.act?' type="button"':'')+' class="'+cls+'" style="--c:'+c+'" title="'+ttl+'">'
+  +body+'</'+tag+'>';
+}
+
+/* ---- the readings this page draws, all real ---- */
+const READ={
+ charge:{b:R.darkB,pct:Math.min(100,R.top[0].sq*10),raw:R.top[0].sq.toFixed(1),
+   of:'10',label:'charge at '+R.top[0].n,hot:R.top[0].sq*10>=90},
+ share:{b:'Crown',pct:R.acc,raw:String(R.acc),of:'100, plus or minus '+R.band,
+   label:'identification'},
+ coh:{b:'Throat',pct:R.CQ,raw:Math.round(R.CQ)+'%',of:'100',label:'coherence',
+   color:R.TIERCOL[R.tier]},
+ vit:{b:'Solar',pct:R.X*100,raw:Math.round(R.X*100)+'%',of:'100',label:'vitality',
+   glyph:R.qicon.vitality},
+ unread:{b:'Heart',pct:0,raw:'–',of:'nothing read yet',label:'coherence',
+   color:'var(--dim)'},
+ split:{b:'Root',pct:R.ax[0].v*10,raw:R.ax[0].v.toFixed(1),of:'10',
+   opp:R.ax[0].opp*10,oppRaw:R.ax[0].opp.toFixed(1),label:R.ax[0].n+', held and opposite'},
+ cq:{b:'Crown',pct:R.CQ,text:'CQ',raw:Math.round(R.CQ)+'%',of:'100',label:'coherence'},
+ dq:{b:'Root',pct:Math.min(100,R.DQ/14*100),text:'DQ',raw:R.DQ.toFixed(1),of:'14',
+   label:'decoherence'},
+ sq:{b:'Sacral',pct:R.SQ*10,text:'SQ',raw:R.SQ.toFixed(1),of:'10',label:'shadow weight'}
+};
+const V=[
+ [1,'Ring and pill','The one that ships today. A stroked arc, the symbol inside it, and the number in a pill beside it.',
+  'Kept as the control. Everything below is measured against it, and two of the ten only exist because this one cannot do what they do.'],
+ [2,'Inset','The number moves inside the ring and the pill disappears. The symbol goes, because two things cannot both be in the middle.',
+  'Smallest footprint of the ten, and the only one that costs no horizontal space at all. What it gives up is the symbol, so it can only be used where the label is already next to it.'],
+ [3,'Unrolled','The ring is cut and laid flat. Symbol at the left, track in the middle, number at the right.',
+  'A straight line compares better than a circle: put six of these in a column and the eye ranks them without reading a digit. Six rings in a column do not do that. This is the one for a rail.'],
+ [4,'Underscore','No ring and no track. The reading is the length of the rule under the row.',
+  'The quietest of the ten. It reads as typography rather than as a chart, which is the Zen end of the brief, and it survives being small better than any ring does.'],
+ [5,'Gauge','Two hundred and forty degrees and a needle that stops short of the scale. The gap at the bottom is the floor, not a missing piece.',
+  'The only one that reads as an instrument rather than as a progress bar, which is what this product is. It is the most expensive of the ten to draw, three paths and two shapes against one circle, and at the smallest size the needle and the scale are within two pixels of each other.'],
+ [6,'Notches','Twenty ticks around the circle, and the lit ones are the reading.',
+  'Countable. A smooth arc is estimated and this is counted, which matters on a product where every number has to say what it is out of. Twenty ticks means each tick is five of a hundred and that is legible at the two larger sizes only.'],
+ [7,'Column','Vertical. Symbol on top, the bar as the reading, number underneath.',
+  'The only one that packs sideways. Nine of these fit in the width of three rings, which is the shape the nine axes actually want.'],
+ [8,'Split','Two readings on one circle. The charge clockwise from the top, the opposite anticlockwise from the bottom, in the heart green.',
+  'This is the one the product needs and does not have. Every axis carries a held value and an opposite value, and today they are drawn as two separate rings that a person has to mentally pair. One circle, one glance.'],
+ [9,'Chip','Solid. The bar is the reading and the symbol is knocked out of it in the page ground. The number sits outside, where it stays legible whatever colour the seat is.',
+  'The declared exception to ring not fill, and it is the Punch treatment: nothing outlined, everything solid. It is the loudest of the ten and the only one that works at a distance, so it belongs on a hero and nowhere near a rail.'],
+ [10,'Dot ladder','Ten dots. The filled ones are the reading.',
+  'Ten dots means one dot is ten of a hundred, so it says less than the others on purpose. It is the only one that is still exactly readable at eleven pixels, and it never lies about precision it does not have.']
+];
+const SZ=['lg','md','sm','xs'];
+function render(){
+ const hot=document.getElementById('hot').classList.contains('on');
+ document.getElementById('fieldline').textContent=
+  'The field behind every pill on this page: '+R.tier.toLowerCase()+', coherence '
+  +Math.round(R.CQ)+' of 100, '+R.loaded+' addresses above the line, '+R.under
+  +' under it, '+R.sabs+' saboteurs running, heaviest seat the '+R.darkB.toLowerCase()+'.';
+ let h='';
+ V.forEach(function(d){
+  const n=d[0];
+  h+='<div class="d"><h2><b>'+String(n).padStart(2,'0')+'</b>'+d[1]+'</h2><p>'+d[2]+'</p>';
+  h+='<span class="eye">Four sizes, on a charge where high is the cost</span><div class="sizes">';
+  SZ.forEach(function(s){
+   const o=Object.assign({},READ.charge,{size:s,hot:hot&&READ.charge.hot});
+   h+='<span class="sz">'+pill(n,o)+'<span class="cap">'+s+'</span></span>';});
+  h+='</div>';
+  h+='<span class="eye">The cases it has to hold</span><div class="states">';
+  [['high is good, never red',Object.assign({},READ.share,{size:'md'})],
+   ['the tier colour',Object.assign({},READ.coh,{size:'md'})],
+   ['a drawn symbol',Object.assign({},READ.vit,{size:'md'})],
+   ['letters, not a drawing',Object.assign({},READ.cq,{size:'md'})],
+   ['nothing read yet',Object.assign({},READ.unread,{size:'md'})],
+   ['held and opposite',Object.assign({},READ.split,{size:'md'})],
+   ['selected',Object.assign({},READ.charge,{size:'md',on:true})],
+   ['a control',Object.assign({},READ.charge,{size:'md',act:true})]
+  ].forEach(function(x){
+   h+='<span class="st">'+pill(n,x[1])+'<span class="cap">'+x[0]+'</span></span>';});
+  h+='</div>';
+  h+='<span class="eye">Nine axes in a row, which is the real test</span><div class="axes">';
+  R.ax.forEach(function(a){
+   h+='<span class="ax">'+pill(n,{b:a.seat,pct:a.v*10,raw:a.v.toFixed(1),of:'10',
+     label:a.n,size:'xs',opp:a.opp*10,oppRaw:a.opp.toFixed(1),hot:hot&&a.v*10>=90})
+    +'<span class="cap">'+a.n.toLowerCase()+'</span></span>';});
+  h+='</div>';
+  h+='<p class="why">'+d[3]+'</p></div>';});
+ h+='<div class="d"><h2><b>--</b>Where each one belongs</h2>'
+  +'<p>Read off the page above rather than argued from taste.</p>'
+  +'<p class="why">One thing applies to all ten. Seven of them are under the '
+  +'forty four pixel tap floor when they are used as a control: the unrolled '
+  +'track and the dot ladder are eighteen pixels tall, the underscore twenty '
+  +'two, the chip twenty six, the inset thirty four. Every control on this page '
+  +'carries an invisible hit area grown to forty four in both directions, and '
+  +'the visible mark does not change size. Growing the marks themselves would '
+  +'ruin four of the ten designs to satisfy a rule about fingers.</p><table>'
+  +'<tr><th>Pill</th><th>Its one advantage</th><th>What it gives up</th><th>Put it</th></tr>'
+  +[['01 Ring and pill','Says everything at once','Widest of the ten','Anywhere one reading stands alone'],
+    ['02 Inset','No horizontal cost','The symbol','Beside a label that already names it'],
+    ['03 Unrolled','Ranks without reading','The circle, so it stops being a ring','A rail of six or more'],
+    ['04 Underscore','Reads as type, not chart','Precision at a glance','Summary prose and quiet rows'],
+    ['05 Gauge','Reads as an instrument','Height, and drawing cost','A hero reading, one per screen'],
+    ['06 Notches','Counted, not estimated','Legibility under 24 pixels','The two larger sizes only'],
+    ['07 Column','Packs sideways, nine in three','Any long label','The nine axes, and a phone'],
+    ['08 Split','Two values, one glance','Simplicity','Every axis, which all carry two'],
+    ['09 Chip','Works across a room','Every rule about outlines','A hero, in Punch'],
+    ['10 Dot ladder','Honest at eleven pixels','Everything under ten percent','The smallest rows in the product']]
+   .map(function(r){return '<tr><td><b>'+r[0]+'</b></td><td>'+r[1]+'</td><td>'+r[2]
+    +'</td><td>'+r[3]+'</td></tr>';}).join('')
+  +'</table></div>';
+ document.getElementById('out').innerHTML=h;
+}
+document.getElementById('th').onclick=function(){
+ const l=document.documentElement.getAttribute('data-theme')==='light';
+ document.documentElement.setAttribute('data-theme',l?'dark':'light');
+ this.textContent=l?'Light':'Dark';};
+document.getElementById('hot').onclick=function(){
+ this.classList.toggle('on');render();};
+document.addEventListener('click',function(e){
+ const b=e.target.closest&&e.target.closest('.p.act');
+ if(!b)return;
+ b.classList.toggle('on');});
+render();
+</script></body></html>
