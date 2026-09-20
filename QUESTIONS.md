@@ -1,11 +1,17 @@
 # QUESTIONS FOR THE OWNER
 
 Every line in `TASKS.md` marked `[?]`, which is the mark for a question
-waiting on his ruling. 98 of them, across 27 sections.
-Read off commit 79a7613 on 2026-09-20. Nothing here is typed by hand: answer a
+waiting on his ruling. 101 of them, across 28 sections.
+Read off commit 459e42b on 2026-09-20. Nothing here is typed by hand: answer a
 question in TASKS.md and it leaves this file on the next run.
 
 The same list is in `QUESTIONS.html`, which opens in a browser.
+
+## 0k2. DELIVERED 20 SEPTEMBER. THE CHAKRA BAND STUDY, AND IT LOSES.
+
+- [ ] **CB4. Root and Crown agree with the shipped palette within five degrees,** which is agreement reached from an unrelated argument and is evidence for what ships. The middle five disagree by 20 to 38 degrees, worst at the 3rd Eye. Not resolved either way. His.
+- [ ] **CB9. And it is blocked on a ruling, not a build.** Nothing says what high or low inside a band means. Until it does, a lightness ladder encodes a rank the addresses do not have.
+- [ ] **CB10. The four field anchors have no seat and therefore no band.** Any scheme has to say what they wear.
 
 ## 0m. DELIVERED 20 SEPTEMBER. THE RITUAL PAGE, IN HIS ORDER.
 

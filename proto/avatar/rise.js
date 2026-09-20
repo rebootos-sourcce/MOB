@@ -145,52 +145,67 @@ function riseReach(E) {
    bodies on a copy, not by modelling them. */
 function riseLevers(E, seat) {
   var g = E.W.filter(function (n) { return n.b === seat; });
-  var now = seatTrans(E, seat), relief = E.bandIg(seat) / 10;
+  var now = seatTrans(E, seat);
   var norm = function (arr) {
     return Math.max(0, Math.min(1,
       (arr.reduce(function (a, v) { return a + v; }, 0) / arr.length) / OPEN_CAP));
   };
-  /* LEVER ONE, one release run. ui/release.js:88 takes 21 percent of the
-     weight plus 2 off each address and installs 62 percent of what it removed
-     as the opposite. Eight addresses at this seat, heaviest first. */
-  var q = g.filter(function (n) { return n.sq > 0; })
-           .sort(function (a, b) { return b.sq - a.sq; }).slice(0, 8);
-  var relT = norm(g.map(function (n) {
-    if (q.indexOf(n) < 0) return n.open;
-    var d = Math.abs(-Math.round(n.sq * 10 * 0.21 + 2));
-    var share = d / 10 / Math.max(1, q.filter(function (x) { return x.cf === n.cf; }).length);
-    var held2 = Math.max(0, n.held - share * (1 - relief * 0.42));
-    var rep2 = Math.min(10, n.rep + share * 0.62);
-    var sq2 = Math.max(0, Math.min(10, held2 - rep2 * 0.86));
-    var pole2 = Math.max(0, Math.min(10, rep2 - held2));
-    return Math.max(0, Math.min(OPEN_CAP, 1 - sq2 / 10 + pole2 / 26));
-  }));
-  /* LEVER TWO, the weakest law carrying this seat, up two points. bandIg is
-     the mean of the laws at the seat, engine/core.js. */
+  /* Both levers are run on LOCAL COPIES of charge and replace. Nothing in S is
+     touched, because a probe in this repository once read shared state left by
+     another run and reported a whole lane as empty. */
+  var openOf = function (n, ch, rp, relief) {
+    var held = n.cf ? Math.max(0, Math.min(10, (ch[n.cf] || 0) * n.susc * (1 - relief * 0.42))) : 0;
+    var rep = n.cf ? Math.max(0, Math.min(10, (rp[n.cf] || 0) * (0.72 + 0.28 * relief))) : 0;
+    var sq = Math.max(0, Math.min(10, held - rep * 0.86));
+    var pole = Math.max(0, Math.min(10, rep - held));
+    return { open: Math.max(0, Math.min(OPEN_CAP, 1 - sq / 10 + pole / 26)), sq: sq };
+  };
+  var copy = function (o) { var c = {}; for (var k in o) c[k] = o[k]; return c; };
+
+  /* LEVER ONE. A QUARTER OF RELEASE WORK AT THIS SEAT, twelve runs of eight at
+     one a week, which is the unit the roster table already uses. One run moves
+     a seat by under two points and a person cannot act on that, so the honest
+     comparison is the one a quarter of work actually buys.
+     ui/release.js:88 verbatim: 21 percent of the weight plus 2 off each address
+     in the run, and 62 percent of what it removed installed as the opposite. */
+  var ch = copy(E.S.charge), rp = copy(E.S.replace), relief = E.bandIg(seat) / 10;
+  var RUNS = 12, touched = {};
+  for (var run = 0; run < RUNS; run++) {
+    var live = g.map(function (n) { return { n: n, sq: openOf(n, ch, rp, relief).sq }; })
+                .filter(function (x) { return x.sq > 0; })
+                .sort(function (a, b) { return b.sq - a.sq; }).slice(0, 8);
+    if (!live.length) break;
+    live.forEach(function (x) {
+      touched[x.n.i] = 1;
+      var d = Math.abs(-Math.round(x.sq * 10 * 0.21 + 2));
+      var same = live.filter(function (y) { return y.n.cf === x.n.cf; }).length;
+      var share = d / 10 / Math.max(1, same);
+      ch[x.n.cf] = Math.max(0, Math.min(10, (ch[x.n.cf] || 0) - share));
+      rp[x.n.cf] = Math.max(0, Math.min(10, (rp[x.n.cf] || 0) + share * 0.62));
+    });
+  }
+  var relT = norm(g.map(function (n) { return openOf(n, ch, rp, relief).open; }));
+
+  /* LEVER TWO. Two points on the weakest law carrying this seat. bandIg is the
+     mean of the laws at the seat, engine/core.js, so raising one raises the
+     relief at every address here. It is a change a person makes once. */
   var here = E.SI.filter(function (l) { return l.b === seat; });
   var weak = here.slice().sort(function (a, b) { return E.S.law[a.nm] - E.S.law[b.nm]; })[0];
-  var lawT = now, lawNm = null;
+  var lawT = now, lawNm = null, lawAt = null;
   if (weak) {
-    lawNm = weak.nm;
+    lawNm = weak.nm; lawAt = E.S.law[weak.nm];
     var ig2 = here.reduce(function (a, l) {
       return a + (l.nm === weak.nm ? Math.min(10, E.S.law[l.nm] + 2) : E.S.law[l.nm]);
     }, 0) / here.length;
-    var r2 = ig2 / 10;
     lawT = norm(g.map(function (n) {
-      var held2 = n.cf ? Math.max(0, Math.min(10,
-        E.S.charge[n.cf] * n.susc * (1 - r2 * 0.42))) : 0;
-      var rep2 = n.cf ? Math.max(0, Math.min(10,
-        (E.S.replace[n.cf] || 0) * (0.72 + 0.28 * r2))) : 0;
-      var sq2 = Math.max(0, Math.min(10, held2 - rep2 * 0.86));
-      var pole2 = Math.max(0, Math.min(10, rep2 - held2));
-      return Math.max(0, Math.min(OPEN_CAP, 1 - sq2 / 10 + pole2 / 26));
+      return openOf(n, E.S.charge, E.S.replace, ig2 / 10).open;
     }));
   }
   var dR = relT - now, dL = lawT - now;
   return {
-    seat: seat, now: now,
-    release: { to: relT, d: dR, n: q.length },
-    law: { nm: lawNm, to: lawT, d: dL, count: here.length },
+    seat: seat, now: now, runs: RUNS,
+    release: { to: relT, d: dR, n: Object.keys(touched).length },
+    law: { nm: lawNm, at: lawAt, to: lawT, d: dL, count: here.length },
     bigger: dL > dR ? 'law' : (dR > dL ? 'release' : 'level')
   };
 }

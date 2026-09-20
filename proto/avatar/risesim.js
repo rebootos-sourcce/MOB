@@ -259,6 +259,9 @@ J.run7 = { rise: med(hr), cq: +med(hc).toFixed(1), smallC: smallC };
 
 /* ------------------------------------------------------------ */
 head(8, 'THE DIRECTION OUT AT THE BLOCKED SEAT. Release, or the law carrying that seat.');
+say('  A quarter of release work at the blocked seat, twelve runs of eight at one a week,');
+say('  against two points on the weakest of the laws carrying that seat. They are not the');
+say('  same size of act and the report says so rather than calling it a fair race.');
 var P8 = thousand(JIT), bg = { release: 0, law: 0, level: 0 }, lawNm = {};
 P8.forEach(function (x) {
   var r = load(x.nm, JIT, x.rnd), k = R.riseRead(E, r);

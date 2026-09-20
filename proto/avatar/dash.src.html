@@ -472,14 +472,19 @@ function paint(){
  document.getElementById('stopat').innerHTML=sent;
  var rt='';
  if(lv){
-  var rp=pctOf(lv.release.to)-pctOf(lv.now), lp=pctOf(lv.law.to)-pctOf(lv.now);
-  if(lv.bigger==='release')
-   rt='Run a release of eight at your '+shut.toLowerCase()+'. It moves that seat '+rp
-    +' points where two points on '+lv.law.nm.toLowerCase()+' moves it '+lp+'.';
-  else
-   rt='Two points on '+lv.law.nm.toLowerCase()+' moves that seat '+lp
-    +' points where a release of eight moves it '+rp+'. The law is your lever here, not the release.';
-  rt+=' The '+shut.toLowerCase()+' is carried by '+lv.law.count+' of the twenty one laws.';}
+  /* BOTH LEVERS CARRY WHAT THEY COST, because they are not the same size of
+     act. A quarter of release work against one change of conduct is not a fair
+     race and the sentence must not pretend it is: it names the work beside the
+     number so a person prices it themselves. */
+  var n0=pctOf(lv.now), nr=pctOf(lv.release.to), nl=pctOf(lv.law.to);
+  var seat=shut.toLowerCase();
+  rt='Twelve release runs at your '+seat+', one a week for a quarter, takes that seat '
+   +'from '+n0+' out of a hundred to '+nr+'. '
+   +'Two points on '+lv.law.nm.toLowerCase()+' takes it to '+nl+'. ';
+  rt+=(lv.bigger==='law')
+   ? 'The law is the lever here. The '+seat+' is carried by '+lv.law.count+' of the twenty one laws.'
+   : 'The release is the lever here. The '+seat+' is carried by '+lv.law.count
+     +' of the twenty one laws, and moving them moves this seat less than the work does.';}
  document.getElementById('route').innerHTML=rt;
 
  /* WHAT IS IMPROVING. Dated facts and the rise since the baseline. Nothing here

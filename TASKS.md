@@ -21,6 +21,67 @@ reopens. Every seat adds its own.
 
 ---
 
+## 0k2. DELIVERED 20 SEPTEMBER. THE CHAKRA BAND STUDY, AND IT LOSES.
+
+He asked to see it first, so this is a study and nothing landed. The
+recommendation is to keep the derivation and not take colour from it, and the
+argument is measured rather than argued.
+
+- [x] **CB1. The derivation works and is shown step by step.** Seat to stated
+      frequency, seven points cut into seven tiling bands at the geometric
+      midpoints, the interval structure compressed by one stated exponent
+      because the table spans more octaves than visible light does, then
+      wavelength to colour by the standard analytic fit and matrix. Checked
+      against tabulated values and two known contrast ratios before it
+      produced a figure, and it independently reproduced this repository's own
+      recorded Root contrast of 4.17.
+- [x] **CB2. Octave transposition, the obvious bridge, fails and is shown
+      failing.** Three seats land outside visible light entirely.
+- [x] **CB3. Nought of 251 wavelengths in the window are inside what a screen
+      can show.** Not most. None. Clipping won on measurement against both
+      alternatives, and its cost is that every derived colour arrives fully
+      saturated, against the standing muted ruling.
+- [?] **CB4. Root and Crown agree with the shipped palette within five
+      degrees,** which is agreement reached from an unrelated argument and is
+      evidence for what ships. The middle five disagree by 20 to 38 degrees,
+      worst at the 3rd Eye. Not resolved either way. His.
+- [x] **CB5. It is measurably worse at the thing a palette has to do.** 35 of
+      56 colour on ground pairs fail the contrast floor against 25 for the
+      palette that ships.
+- [x] **CB6. And the fourth failure settles it: it dissolves the seat
+      boundaries, which is what the colour is for.** 31 seated addresses
+      derive to a hue nearer another seat's centre than their own, all six
+      neighbouring pairs blur, three of them at under a degree, and Solar's
+      high addresses and Heart's low ones come out the same green. The shipped
+      palette misfiles none. Found by looking at the grid after the numbers
+      had already passed, which is the reason the rule about looking at
+      pictures exists.
+- [x] **CB7. Root would get one colour for its sixteen addresses,** because
+      everything above 608.5 nm clips to the same red and Root's whole band
+      sits there. The seat that most needs separation gets none.
+- [ ] **CB8. The alternative that works: position ships as value, not hue.**
+      Seat hue and saturation exactly as they ship, position driving lightness
+      only, the ladder flipping direction on paper. One distinct colour per
+      address with the contrast floor cleared in all seven lightings.
+      Recommended at five steps rather than ten, because nobody learns ten and
+      this repository already carries the working memory measurement.
+- [?] **CB9. And it is blocked on a ruling, not a build.** Nothing says what
+      high or low inside a band means. Until it does, a lightness ladder
+      encodes a rank the addresses do not have.
+- [?] **CB10. The four field anchors have no seat and therefore no band.** Any
+      scheme has to say what they wear.
+- [x] **CB11. The honest part is in the study in full and not in a
+      footnote.** A chakra has no measured frequency. The table used is
+      Solfeggio, whose source is nameable and is numerology rather than
+      measurement, and which was not a chakra table when it was published. No
+      frequency table with anything behind it beyond assertion exists. The
+      band is a stated system and the colours out of it are internally
+      consistent rather than true, which is worth building and is not a
+      measurement, and this product already says exactly that about the aura
+      and the biophoton field.
+
+---
+
 ## 0l. DELIVERED 20 SEPTEMBER. THE TWO UNVALIDATED BAGS ARE CLOSED.
 
 VB1, VB2 and VB3 are built. `validateProfile` keeps its signature and its
