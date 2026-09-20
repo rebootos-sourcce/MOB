@@ -21,6 +21,75 @@ reopens. Every seat adds its own.
 
 ---
 
+## 0m. DELIVERED 20 SEPTEMBER. THE RITUAL PAGE, IN HIS ORDER.
+
+Built to his layout: stats on top, the week second starting Monday, the three
+bands in his order, cards that open, the journal snippet, and where to improve.
+
+### RA. THE AESTHETIC COMPLAINT, MEASURED RATHER THAN GUESSED.
+
+- [x] **RA1. Eight things separated the calendar from the product,** four of
+      them breaking a standing ruling. The loudest was the all caps eyebrow,
+      which is four words of CSS and also fails the design gate's own row.
+- [x] **RA2. The ring and value pill was ported whole** rather than redrawn.
+      Summary prints eleven of them and Compass four, and the calendar had
+      none, which is most of why it read as a different product.
+- [x] **RA3. Three radius rungs, pill buttons, tabular numerals, and the
+      product's own token names.** One word per concept applies to CSS
+      variables too, and the calendar had invented a second set.
+- [x] **RA4. The build now fails on an uppercase transform in the sheet,** so
+      that tell cannot come back.
+
+### RS. THE THREE SHAPES, AND THE THIRD ONE IS SOLVED.
+
+- [x] **RS1. Count and window are straightforward.** A count reaches a number
+      over a period and is marked on the number you did. A window has an edge
+      you hold or cross and is marked on held, or the minute it broke.
+- [x] **RS2. A stance is marked on two numbers the day supplies,** times
+      tested and times met, with a third state for a day that never tested it.
+      That answers RB11: the parameters on a card are its shape's. A binary
+      lies both ways, and a nought to ten rating is the intake's job and would
+      let a tracker write onto a law.
+- [x] **RS3. A stance seats on a real law, and a gate proves it.** Practise
+      honesty lands on Truth, at the throat, because there is no law called
+      Honesty. The gate caught that on its first run.
+
+### RD. SEVEN DEFECTS THE PICTURES SHOWED AND THE SOURCE DID NOT.
+
+- [x] **RD1. Gordon was offered the same practice as always on and as
+      behaviour at once,** because his root seat and his weakest law both land
+      on the body track at his tier. A gate now refuses any ritual proposed
+      under two kinds.
+- [x] **RD2. Days standing returned exactly days kept on all eight records,**
+      because under the halving rule nobody misses three in a row. Two figures
+      reading 85 side by side. Replaced with the run since the last miss and
+      the longest run, which the record can tell apart.
+- [x] **RD3. Ninety root red cells read as an alarm,** so the record grid
+      takes the accent. A day is not a kind.
+- [ ] **RD4. The week still reads mostly empty at 1600.** Three rows tall with
+      most cells as faint outlines, and a tall void under the block. It is
+      honest, because those cells are proposals nobody has taken, but his
+      brief was that space is not wasted and a waveform reads as a waveform.
+
+### RQ. FIVE QUESTIONS, ALL HIS.
+
+- [?] **RQ1. The behaviour default is Monday to Friday.** Taken because his
+      own example varies by weekday and nobody ruled a default. Keep, or every
+      day?
+- [?] **RQ2. Always on is always the top three, and the engine proposes two
+      daily holds plus one that happens once.** May the third slot be a one
+      off prerequisite, or must all three be daily practices?
+- [?] **RQ3. Always on is root red, so at week scale the waveform is mostly
+      red.** Confirm, or move always on to the heart and behaviour to the
+      root. This is CL12 carried forward and now visible.
+- [?] **RQ4. A stance day with no test counts as neither kept nor missed,**
+      which means a stance can never lower a rate. Agreed, or does an untested
+      day count as kept?
+- [?] **RQ5. Release runs when called, so it never takes a waveform pixel.**
+      Should a release be schedulable onto a weekday like the other two?
+
+---
+
 ## 0n. DELIVERED 20 SEPTEMBER. THE VOICE, THE CASE SCRUB, AND THE MARKETING SYSTEM.
 
 ### VD. THE VOICE IS A LOADABLE SKILL NOW.

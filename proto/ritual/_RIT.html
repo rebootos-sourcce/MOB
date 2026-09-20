@@ -142,6 +142,9 @@ function cr(o){
 
 var esc=function(s){return String(s).replace(/[&<>"]/g,function(m){
  return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m];});};
+/* a because is built from a law or an address name that is correct lowercase
+   mid sentence and wrong as the first word of a paragraph. */
+var cap=function(s){s=String(s); return s.charAt(0).toUpperCase()+s.slice(1);};
 
 /* the status writer. One writer, and it never claims a success it has not
    had. Failures hold on screen; confirmations clear after 2.4 seconds,
@@ -270,11 +273,14 @@ function drawRecord(){
    o:P.improved.before+' in the four before. '
     +(d===0?'No change.':(Math.abs(d)===1?'One day apart.':Math.abs(d)+' days apart.'))});}
  else{
-  F.push({c:DATA.pal.Root, ic:SHAPEIC.window, frac:0, wait:true,
-   n:(P.improveNeed-P.walk.length)+' days to go',
+  /* IT OVERFLOWED THE TILE TO FIVE LINES ON GORDON and broke the rhythm of a
+     row whose other four are two. Same information, two lines. */
+  F.push({c:DATA.pal.Root, ic:SHAPEIC.window, wait:true,
+   frac:P.walk.length/P.improveNeed,
+   n:(P.improveNeed-P.walk.length)+' days',
    k:'kept, last four weeks',
-   o:'It reads two windows of four weeks against each other, so it opens at '
-    +P.improveNeed+' days on the record'});}
+   o:'it reads four weeks against the four before, so it opens at '
+    +P.improveNeed+' days'});}
 
  document.getElementById('rec').innerHTML=F.map(function(f){
   return '<div class="fig">'+cr({c:f.c,ic:f.ic,frac:f.frac,size:'lg',v:''})
@@ -339,44 +345,77 @@ function drawWeek(){
  document.getElementById('wave').innerHTML=h;
 
  var lived=P.week.filter(function(w){return w.lived;}).length;
- var set=M.items.filter(function(it){return it.standing&&!it.once;}).length;
- var off=M.items.filter(function(it){return !it.standing&&!it.once
-   &&!it.whenCalled;}).length;
+ /* THE NOTE COUNTED EVERY STANDING RITUAL and the waveform draws only the
+    ones that land on a weekday, so Gordon read "5 rituals are set, so a
+    column is 5 tall" over a column three high: release runs when called and
+    Build the avatar happens once, and neither takes a pixel. Two counts of
+    two different things printed as one. */
+ var onWeek=function(it){return !it.once&&!it.whenCalled;};
+ var set=M.items.filter(function(it){return it.standing&&onWeek(it);}).length;
+ var off=M.items.filter(function(it){return !it.standing&&onWeek(it);}).length;
+ var lo=99,hi=0;
+ for(var k=0;k<7;k++){var n=cellsFor(k).length;
+  if(n<lo)lo=n; if(n>hi)hi=n;}
  var note='';
  if(lived<7)note='Your record starts inside this week, so '+(7-lived)
   +' of these days have no cell under them. Nothing was missed there. ';
- note+=set+(set===1?' ritual is':' rituals are')+' set, so a column is '
-  +(set===1?'one':set)+' tall where nothing else lands. '
-  +(off?'The '+off+' faint '+(off===1?'square is one':'squares are')
-    +' the queue proposes and nobody has taken, so '+(off===1?'it counts':'they count')
-    +' towards nothing. Take one and its column grows from today.'
-   :'Press a day to mark it.');
+ if(!hi)note+='Nothing lands on a weekday yet. Take one from the queue and a '
+  +'column appears under the day you set it on.';
+ else{
+  note+=(set+off)+(set+off===1?' ritual lands':' rituals land')+' on the week. '
+   +'A column is as tall as that day\u2019s load, so they run '
+   +(lo===hi?(hi===1?'one':hi)+' tall.':lo+' to '+hi+' tall.');
+  note+=off?' The faint '+(off===1?'square is one':'squares are')
+    +' the queue proposes and nobody has taken, so '
+    +(off===1?'it counts':'they count')
+    +' towards nothing. Take one and it starts counting from today.'
+   :' Press a day to mark it.';}
  document.getElementById('wavenote').textContent=note;}
 
 /* ---------- THE ACCOUNTABILITY TRACKER ----------
    The span is earned. A thirteen week grid drawn for somebody with seven days
    on the record is eighty four empty squares beside seven full ones, which is
    a tally of failures nobody asked for. */
+/* THE SPAN IS EARNED. A thirteen week grid drawn for somebody with seven days
+   on the record is eighty four empty squares beside seven full ones, which is
+   a tally of failures nobody asked for. The +1 week of room ahead that the
+   calendar carried padded a wholly blank column in beside Gordon's seven
+   days, which is the same defect one week wide, so it is gone. */
 function spanOf(walk,cap){
- return Math.max(2,Math.min(cap||13,Math.ceil(walk.length/7)+1));}
+ return Math.max(1,Math.min(cap||13,Math.ceil(walk.length/7)));}
+
+function cell(v){
+ return '<i class="'+(v===null?'no':(v?'on':'fl'))+'"'
+  +' style="--c:var(--accent)"></i>';}
 
 function drawTracker(){
- var cols=spanOf(P.walk,13), cells=cols*7, pad=cells-P.walk.length;
- /* TODAY IS SUNDAY, so the last column's last row is today and the grid is
-    laid out Monday at the top. */
- var h='';
- for(var i=0;i<cells;i++){
-  var j=i-pad;
-  var v=(j<0||P.walk[j]===undefined)?null:!!P.walk[j];
-  h+='<i class="'+(v===null?'no':(v?'on':'fl'))+'"'
-   +' style="--c:var(--accent)"></i>';}
- document.getElementById('hm').innerHTML=h;
- document.getElementById('hmax').innerHTML=DAY.map(function(d,i){
-  return '<span>'+(i%2===0?d:'')+'</span>';}).join('');
+ var box=document.getElementById('hm'), ax=document.getElementById('hmax');
+ var grid=P.walk.length>=P.wdFloor;
+ box.className=grid?'hm':'hm run';
+ if(grid){
+  /* TODAY IS SUNDAY, so the last column's last row is today and the grid is
+     laid out Monday at the top. */
+  var cols=spanOf(P.walk,13), cells=cols*7, pad=cells-P.walk.length, h='';
+  for(var i=0;i<cells;i++){
+   var j=i-pad;
+   h+=cell((j<0||P.walk[j]===undefined)?null:!!P.walk[j]);}
+  box.innerHTML=h;
+  ax.hidden=false;
+  ax.innerHTML=DAY.map(function(d,i){
+   return '<span>'+(i%2===0?d:'')+'</span>';}).join('');
+  document.getElementById('hmto').textContent=
+   cols+(cols===1?' week drawn':' weeks drawn')+', and it grows to thirteen';}
+ else{
+  /* A WEEKDAY AXIS NEEDS FOUR OF EACH WEEKDAY BEHIND IT. Below that the boxes
+     are one run of days: the same object without an axis it cannot carry, and
+     no blank column padded in beside a short record. Same four week floor the
+     weekday rates and the feedback already use, so it is one rule. */
+  ax.hidden=true;
+  box.innerHTML=P.walk.map(function(v){return cell(!!v);}).join('');
+  document.getElementById('hmto').textContent=
+   'one box a day, and it becomes a weekday grid at '+P.wdFloor+' days';}
  document.getElementById('hmfrom').textContent=
   P.walk.length+' days on the record, '+P.minutes+' minutes practised';
- document.getElementById('hmto').textContent=
-  cols+' weeks drawn, and it grows to thirteen';
 
  /* which weekday you keep it. Four weeks is the floor: on seven days every
     weekday read as a clean run and the chart said nothing while looking as
@@ -402,6 +441,11 @@ function drawTracker(){
 /* ---------- 3, 4, 5. THE THREE BANDS ---------- */
 function paramLine(it){
  if(it.once)return 'once';
+ /* a release is a protocol run at one address. Its own technique is the
+    useful half of the line and the count shape says nothing here. */
+ if(it.whenCalled)
+  return (it.via||'the protocol')+' · when called'
+   +(it.min?' · '+it.min+' min':'');
  if(it.shape==='count'){
   var t=(it.target===null||it.target===undefined)?null:it.target;
   var s=t===null?'no target set yet'
@@ -447,8 +491,7 @@ function drawBands(){
     +' role="button" tabindex="0" data-open="'+it.id+'">'
     +cr({c:c, ic:glyph, frac:1, size:'sm', v:''})
     +'<div class="card-b"><div class="card-n">'+esc(it.nm)+'</div>'
-    +'<div class="card-p">'+esc(paramLine(it))
-    +(it.whenCalled?' · not on the week':'')+'</div></div>'
+    +'<div class="card-p">'+esc(paramLine(it))+'</div></div>'
     +(it.once?'<span class="offertag">'+(it.standing?'taken':'offered')+'</span>'
       :(it.standing?markRing(it)
         :'<span class="offertag">offered</span>'))+'</div>';});
@@ -568,7 +611,7 @@ function fields(it){
 
  /* the weekdays. His: you are setting when you practise the ritual. */
  if(!it.once&&!it.whenCalled){
-  h+='<div class="frow"><span>Set on</span><span class="days" id="f-days">'
+  h+='<div class="frow wide"><span>Set on</span><span class="days" id="f-days">'
    +DAY.map(function(d,i){
     return '<button class="dayb" type="button" data-day="'+i+'" aria-pressed="'
      +(it.days[i]?'true':'false')+'" style="--c:'+bandC(it.kind)+'">'+d
@@ -605,7 +648,7 @@ function openCard(id){
   +'<h2 id="sheet-h">'+esc(it.nm)+'</h2>'
   +'<div class="shape">'+(SH?esc(SH.nm)+' · '+esc(SH.d)
     :'Once · it has no shape and no day')+'</div>'
-  +(it.because?'<p class="because">'+esc(it.because)+'</p>':'')
+  +(it.because?'<p class="because">'+esc(cap(it.because))+'</p>':'')
   +fields(it)
   +'<div class="sheet-f">'
   +(it.standing
@@ -675,7 +718,7 @@ function openQueue(){
    +'<div class="qrow-b"><div class="qrow-n">'+esc(q.nm)+'</div>'
    +'<div class="qrow-w">'+esc(kindOf(q.kind).nm)+' · proposed by '
    +esc(q.by)+' · '+esc(q.src)+'</div>'
-   +'<div class="qrow-w">'+esc(q.because)+'</div></div></div>';});
+   +'<div class="qrow-w">'+esc(cap(q.because))+'</div></div></div>';});
  h+='<div class="sheet-f"><span class="sp"></span>'
   +'<button class="btn" type="button" id="s-close">Close</button></div>';
  s.innerHTML=h;

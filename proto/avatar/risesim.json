@@ -1,0 +1,52 @@
+{
+ "run1": {
+  "drawable": 1000,
+  "unreadBar": 54
+ },
+ "run2": {
+  "lo": 5,
+  "med": 33,
+  "hi": 99,
+  "bkt": [
+   87,
+   488,
+   270,
+   140,
+   15
+  ]
+ },
+ "run3": {
+  "Root": 50,
+  "Sacral": 207,
+  "Solar": 443,
+  "Heart": 35,
+  "Throat": 259,
+  "3rd Eye": 0,
+  "Crown": 6
+ },
+ "run4": {
+  "dRise": 31,
+  "dCQ": 2.9,
+  "moved": 985,
+  "stuckCQ": 468
+ },
+ "run5": 1000,
+ "run6": {
+  "fell": -9,
+  "keptFrom": 1000
+ },
+ "run7": {
+  "rise": 28,
+  "cq": 2.2,
+  "smallC": 530
+ },
+ "run8": {
+  "release": 863,
+  "law": 122,
+  "level": 15
+ },
+ "run10": {
+  "med": 3,
+  "worst": 10
+ }
+}

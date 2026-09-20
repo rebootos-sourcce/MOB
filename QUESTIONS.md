@@ -1,11 +1,19 @@
 # QUESTIONS FOR THE OWNER
 
 Every line in `TASKS.md` marked `[?]`, which is the mark for a question
-waiting on his ruling. 93 of them, across 26 sections.
-Read off commit ae76024 on 2026-09-20. Nothing here is typed by hand: answer a
+waiting on his ruling. 98 of them, across 27 sections.
+Read off commit ece59f3 on 2026-09-20. Nothing here is typed by hand: answer a
 question in TASKS.md and it leaves this file on the next run.
 
 The same list is in `QUESTIONS.html`, which opens in a browser.
+
+## 0m. DELIVERED 20 SEPTEMBER. THE RITUAL PAGE, IN HIS ORDER.
+
+- [ ] **RQ1. The behaviour default is Monday to Friday.** Taken because his own example varies by weekday and nobody ruled a default. Keep, or every day?
+- [ ] **RQ2. Always on is always the top three, and the engine proposes two daily holds plus one that happens once.** May the third slot be a one off prerequisite, or must all three be daily practices?
+- [ ] **RQ3. Always on is root red, so at week scale the waveform is mostly red.** Confirm, or move always on to the heart and behaviour to the root. This is CL12 carried forward and now visible.
+- [ ] **RQ4. A stance day with no test counts as neither kept nor missed,** which means a stance can never lower a rate. Agreed, or does an untested day count as kept?
+- [ ] **RQ5. Release runs when called, so it never takes a waveform pixel.** Should a release be schedulable onto a weekday like the other two?
 
 ## 0n. DELIVERED 20 SEPTEMBER. THE VOICE, THE CASE SCRUB, AND THE MARKETING SYSTEM.
 
