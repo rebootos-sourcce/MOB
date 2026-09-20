@@ -395,7 +395,11 @@ function paint(){
 
  var rise=document.querySelector('.rise');
  if(unread){
-  document.getElementById('pct').textContent='—';
+  /* NO PLACEHOLDER GLYPH WHERE A NUMBER GOES. A dash in a 54 pixel slot reads
+     as a reading the page could not fetch. The slot is emptied and the sentence
+     under it carries the whole of what is true. */
+  document.getElementById('pct').textContent='';
+  document.getElementById('pct').style.display='none';
   document.getElementById('pctof').textContent='Nothing has been read yet, so there is no rise to draw.';
   document.getElementById('tnow').style.width='0%';
   document.getElementById('tfrm').style.left='0%';
@@ -429,6 +433,7 @@ function paint(){
  var d=R.riseDelta(E,r,BASE);
 
  /* THE HEADLINE */
+ document.getElementById('pct').style.display='block';
  document.getElementById('pct').textContent=K.pct;
  document.getElementById('pctof').textContent='of the way from your root to your crown';
  document.getElementById('tnow').style.width=K.pct+'%';
