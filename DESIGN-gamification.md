@@ -862,10 +862,11 @@ point between the last two. This is where the pass would have stopped if the
 target had been five points, and the design would have been worse for it.
 
 **Pass 9 is worth 3.2 points on its own and it came out of the exit table.**
-After eight passes the model said 264 of 1000 were still leaving in the first
-two days, against 255 before any of it. Eight passes of loop design had moved
-the first two days by nine people in a thousand. Everything built so far was
-downstream of a day most people never reached twice.
+After eight passes the model said **416 of 1000 were still leaving in the first
+two days, against 428 before any of it.** Eight passes of loop design had moved
+the first two days by twelve people in a thousand. Everything built so far was
+downstream of a day most people never reached twice. Pass nine moves the same
+figure to **289**.
 
 The mechanic is not a new reward. **The first session ends by showing what
 landed.** A journal entry committed already earns the First story mark today,
@@ -951,17 +952,19 @@ problem.
 
 ## 8.3 What the model can say about an exit
 
-| | Baseline, of 1000 | Final, of 1000 |
-|---|---|---|
-| exits where the ritual was tied to nothing of the person's own | **401** | **15** |
-| exits in the first two days | 274 | 281 |
-| exits where a broken run contributed | 172 | 147 |
+| | Baseline, of 1000 | After eight passes | Final, of 1000 |
+|---|---|---|---|
+| exits where the ritual was tied to nothing of the person's own | **458** | 15 | **15** |
+| exits in the first two days | **428** | 416 | **289** |
+| exits where a broken run contributed | 309 | 123 | 150 |
+| total exits inside ninety days | 990 | 931 | 926 |
 
-**The middle row is the honest one.** The design moves the first two days by
-almost nothing even after pass 9, because pass 9 raises survival from that day
-rather than reducing the exits on it. The thing the design genuinely closes is
-the first row: a loop that had nothing of the person's own in it for 401 of
-1000 now has it for all but 15.
+**Read the middle column before the last one.** Eight passes of loop design
+closed the first row almost completely and moved the first two days by twelve
+people in a thousand. Pass nine moved it by a hundred and twenty seven. The
+design closes two different holes and they needed two different kinds of work:
+a loop that had nothing of the person's own in it for 458 of 1000, and a first
+session that gave a person nothing they could see.
 
 ## 8.4 Against the outside, stated properly
 

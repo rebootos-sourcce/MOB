@@ -189,6 +189,17 @@ function arrive(who){
   CHARGES.forEach(function(c){S.charge[c]=p.c[c]||0;S.replace[c]=(p.rep&&p.rep[c])||0;});
   var LS=LAWSET[who]||{_:5.5};
   SINAMES.forEach(function(l){S.law[l]=LS[l]!==undefined?LS[l]:LS._;});}
+ /* THE RECORD THE ENGINE READS ITSELF.
+
+    compute() derives `measured` from CURP.laws and `unread` from
+    loaded, measured and under together. With CURP left null this page
+    told a person who had just cleared all 99 of their addresses that
+    nothing had been entered, because loaded, under and measured were all
+    zero at once. The reference cases DO have all twenty one laws, in
+    LAWSET, so the record is written here and the engine reads a true one.
+    A blank record keeps its nulls, which is what a blank record is. */
+ CURP=blankProfile(who==='Blank'?'blank':who);
+ if(who!=='Blank')SINAMES.forEach(function(l){CURP.laws[l]=S.law[l];});
  stash();}
 function stash(){
  CHARGES.forEach(function(c){L.charge[c]=S.charge[c];L.replace[c]=S.replace[c];});
@@ -230,7 +241,12 @@ function hardMonth(){
 /* TURN A PEG. One law, one value. This is the only control on the page that
    moves the reach, because the reach is integrity and integrity is the
    twenty one laws. */
-function turn(nm,v){restore(); S.law[nm]=cl(v,0,10); compute(); stash();}
+function turn(nm,v){
+ restore(); S.law[nm]=cl(v,0,10);
+ /* a turned peg is an answered law, so the record says so and the engine's
+    own measured count follows the control rather than lagging it */
+ if(CURP&&CURP.laws)CURP.laws[nm]=S.law[nm];
+ compute(); stash();}
 
 /* STATE A PAIR. The right hand sentence goes to the real story parser and comes
    back as a seat, exactly as ui/drills.js:672 does it: imprints, not hits, and
@@ -588,12 +604,17 @@ function strip(){
    Nothing here is the drawing's fault and it is exactly the class of defect a
    page that only gets screenshotted never shows. */
 function hold(){
- var h={who:L.who,rec:L.rec,pair:L.pair,seat:L.seatPick,c:{},r:{},l:{}};
+ /* CURP goes in here too. Walking the sheet calls arrive() for every profile
+    and arrive() writes CURP, so the live record was left holding the last
+    profile walked, which is the blank one. compute() reads CURP.laws for
+    `measured` and `measured` feeds `unread`, so a person who had just cleared
+    all 99 of their addresses was told nothing had been entered. */
+ var h={who:L.who,rec:L.rec,pair:L.pair,seat:L.seatPick,cur:CURP,c:{},r:{},l:{}};
  CHARGES.forEach(function(k){h.c[k]=L.charge[k];h.r[k]=L.replace[k];});
  SINAMES.forEach(function(k){h.l[k]=L.law[k];});
  return h;}
 function give(h){
- L.who=h.who; L.rec=h.rec; L.pair=h.pair; L.seatPick=h.seat;
+ L.who=h.who; L.rec=h.rec; L.pair=h.pair; L.seatPick=h.seat; CURP=h.cur;
  CHARGES.forEach(function(k){L.charge[k]=h.c[k];L.replace[k]=h.r[k];});
  SINAMES.forEach(function(k){L.law[k]=h.l[k];});
  restore(); compute();}

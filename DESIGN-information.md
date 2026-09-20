@@ -570,7 +570,8 @@ Long form, for the drill:
 > address. Trust is what fills it.
 
 Third person, physical, states what it is not because the wrong reading is
-predictable, ends on the mechanism. 336 characters long, 108 short.
+predictable, ends on the mechanism. The long form is 329 characters and the
+short form is 99.
 
 *Kind 2, number.* On the surface, beside the figure, no interaction:
 

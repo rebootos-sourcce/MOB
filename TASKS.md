@@ -488,6 +488,150 @@ a report.
 
 ---
 
+## 0i. RULED 20 SEPTEMBER, SIXTH PASS. BENIGN AND MALIGNANT, AS A SYSTEM.
+
+**His words.** "I want the team to intake this, review this ten times, and then
+build a system for benign and malignant. Include the sniffer that listens for
+these words. We are looking for a lack of empathy or empathy, lack of
+accountability or accountability. Work this into our algorithm for our sniffer
+so that we can now start to track people's benign and malignant behaviour as
+well. This is a very cool feature."
+
+### WHAT ALREADY EXISTS, MEASURED BEFORE ANYTHING IS BUILT
+
+Half of this is built and he may not know it. `engine/verp.js` carries
+`LEANCUE`, twenty one benign phrases against twenty malignant ones, scanned by
+`leanScan`, accumulated by `leanApply`, persisted at `p.gates.lean` and read by
+`leanRead`, which blends the story cues against the field's own malignancy on a
+trust weight that caps at 0.62. `compute()` already returns `benign` and
+`malig`, and `engine/birth.js` already reads them.
+
+So this is not a new feature. It is an unnamed one with no channels, no surface
+and no record over time.
+
+- [ ] **BM1. Channels, which is the actual ask.** Today there is one axis and
+  everything lands on it. He named two dimensions: **empathy against its lack**,
+  and **accountability against its lack**. Those are different behaviours and
+  they have to be counted separately before they are summed, or the reading
+  cannot say which one is moving.
+- [ ] **BM2. The lexicon is the work, not the plumbing.** Forty one phrases is
+  a sketch. The existing list already mixes the two channels without saying so:
+  "i understood" and "listened" are empathy, "my fault" and "owned it" are
+  accountability, "not my problem" and "their fault" are the lack of the second.
+  Sort what exists, then extend each channel properly.
+- [ ] **BM3. Track it over time.** "So that we can now start to track people's
+  benign and malignant behaviour." Nothing does. `snapshot()` at
+  `engine/schema.js:153` stores fourteen fields and none of them is the lean, so
+  a person's direction on this cannot be drawn. Same additive fix as the laws.
+- [ ] **BM4. Ten passes before building.** His instruction, and it matters more
+  here than anywhere else this session.
+
+### THE CONSTRAINT THAT IS NOT NEGOTIABLE
+
+A word matcher that reports a person as malignant is a verdict on a person from
+a keyword count, and this product's standing rulings forbid exactly that: never
+a diagnosis, never a verdict, throughput and not outcome. The defensible version
+tracks **what the account does**, not what the person is. A story that blames
+outward is a story that blames outward; it is not a malignant human being. The
+engine may keep his word, because it is his and it is internal. What a surface
+says to a person is a separate decision and it has to be made deliberately.
+
+The failure mode is specific and worth naming: somebody writing honestly about
+being harmed will use the language of blame, because they were blamed against.
+A system that scores that as malignant punishes the person for telling the
+truth about what happened to them, which is the one thing this product exists to
+make safe.
+
+### WAITING ON HIM
+
+- [?] **What a surface calls it.** Benign and malignant are his words and are
+  right inside the engine. Whether a person reads those two words about their
+  own writing is his call and nobody else's.
+- [?] Whether a lack of empathy and a lack of accountability are one reading or
+  two on the surface. They are two in the arithmetic either way.
+
+---
+
+## 0j. MEASURED 20 SEPTEMBER. THE SNIFFER CANNOT READ ORDINARY WRITING.
+
+**Three seats reached this independently, from three directions, and they agree.
+It is the largest single defect in the product.**
+
+- The flow simulation: thirteen of fourteen of this repository's own persona
+  `says` lines return zero imprints, so Commit stays disabled on the product's
+  own copy about its own customers.
+- My own reproduction: a fifty one word story with eleven imprints loads **zero**
+  addresses while a forty eight word story with two imprints loads five. More
+  signal in, less out.
+- The gamification pass, measuring span coverage against the same fourteen
+  voices: the sniffer can cut a verbatim quotation out of **1 of 14**. Weighted
+  across the panel that is **0 of 1000**.
+
+And the cause is now named rather than guessed. It is not vocabulary. **Twenty
+nine of sixty three ordinary inflections of words `LEX` already holds are not
+read, and the misses include fear, shame and anger, which are the names of three
+of the nine axes.** People write a situation and a consequence with no emotion
+word in the sentence at all.
+
+- [ ] **SN1. A stemmer fold.** Measured: takes span coverage from 1 of 14 to 2
+  of 14, and 0 of 1000 to 150 of 1000. Cheap and not sufficient on its own.
+- [ ] **SN2. A frame layer**, which is the one that matters. Measured with the
+  fold: **9 of 14 and 935 of 1000.** Removing the sniffer work from the
+  gamification design costs 5.7 points of the 11.0, the largest item in its
+  ablation.
+- [ ] **SN3. And the honest caveat is recorded with it.** The eighteen frames
+  were written after reading the fourteen voices they were measured on, so 9 of
+  14 is in sample and an upper bound. If the true rate is half, the delta is
+  nearer eight than eleven.
+- [ ] **SN4.** This is the same root as FB2 and FB3 and the release wall. One
+  ruling on the load line of 4 serves all of them.
+
+## 0k. DELIVERED 20 SEPTEMBER. GAMIFICATION, AND IT CLEARED THE TARGET.
+
+**Baseline 8.9 points, final 19.9 points, delta +11.0 against a target of ten.**
+Percentage of the weighted thousand still active on day thirty, defined once and
+not moved. Across nine seeds the delta averages 10.8, range 9.6 to 12.0, and
+eight of nine clear ten. `tools/loopsim.js`, forty two checks, and it corrected
+itself twice on the way with both failures recorded in its own comments.
+
+- [x] **GM1 to GM5 delivered.** `DESIGN-gamification.md` and `proto/game/`.
+- [x] **The content chain, which nobody had designed.** Journal to practice is a
+  frame match, so the thing that reads the charge and the thing that cuts the
+  quotation are one match, and the practice carries the person's own clause.
+  Journal to affirmation is not an assertion: it is their own claim with one
+  word hedged, both halves shown, editable. If the entry asserts no absolute
+  about itself then nothing is asserted and the coherent opposite is handed over
+  as a question instead. Wood, Perunovic and Lee 2009 is the reason, and it
+  matters because 800 of 1000 arrive at grid level four or below.
+- [x] **Every span is a verbatim substring of what the person wrote.** Forty two
+  chain runs, zero failures. That property is what makes the feature safe.
+- [x] **Three parts.** A mark counts what you did, an award records what moved,
+  karma is what either pays. The third family exists because **four of the
+  sixteen marks can never be earned by the 465 of 1000 with nothing above the
+  release line**, which nobody had noticed because the ladder correctly never
+  prints how many marks there are.
+- [x] **The ethics got cheaper.** Refusing loss framing, streak reset, variable
+  reward, scarcity, leaderboards and fear of missing out was priced at **3.0
+  points**, a sixth of the design, against the half that `PANEL-ritual-1000.md`
+  estimated. First time this repository can make that argument with a number.
+- [ ] **AV6, on the avatar seat.** An avatar driven only by releases never moves
+  for the 465 of 1000 who cannot release, and Marcus and Sofia, both inside that
+  465, carry 6.1 of the 11.0 points. It needs a still frame for them.
+
+### WAITING ON HIM, FROM THIS
+
+- [?] **Which word survives**, still. The whole design is costed on karma being
+  the name for patterns you earned rather than a second unit, because that is
+  the only reading that passes the gate `DESIGN-progression.md` already asks for.
+- [?] **Does a person see their karma balance as a number?** The prototype
+  prints it, and it is the one place this design may be breaking the standing
+  rule against printing a total.
+- [?] If the accounts fork puts a model behind the sign in seam, is the frame
+  layer the fallback or the engine? It decides whether to spend another week
+  there.
+
+---
+
 ## 0c. RULED 20 SEPTEMBER, SECOND PASS. THE ARRIVAL, THE FEATHERS AND KARMA
 
 **"I didn't give you feedback on the feathers. I don't give you feedback
