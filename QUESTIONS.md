@@ -1,11 +1,22 @@
 # QUESTIONS FOR THE OWNER
 
 Every line in `TASKS.md` marked `[?]`, which is the mark for a question
-waiting on his ruling. 76 of them, across 20 sections.
-Read off commit abf8f1f on 2026-09-20. Nothing here is typed by hand: answer a
+waiting on his ruling. 84 of them, across 21 sections.
+Read off commit 78964c3 on 2026-09-20. Nothing here is typed by hand: answer a
 question in TASKS.md and it leaves this file on the next run.
 
 The same list is in `QUESTIONS.html`, which opens in a browser.
+
+## 0u. DELIVERED 20 SEPTEMBER. THE FUNNEL, THE TAGS, AND THE SNIFFER.
+
+- [ ] **FD10. The honest midpoint of the scale reads Corrupt.** Answering every question in the middle lands at 24. Coherence goes as the square of the law mean, so a pain led instrument answered honestly puts most people between 24 and 56. The arithmetic is his. The one dial that is not is the map from an answer to a charge, which is linear today.
+- [ ] **FD11. Running comments need a server, and the seam is half built.** The engine already carries the outbox: a queue, a validator, an allow list of eight keys and a deny list of forty odd covering name, email, story, coherence and location, capped at twenty queued and six hundred characters. That is a comment with everything identifying already refused. What does not exist is the thing it sends to. It should share the record store's controller: one account, one identity, one deletion path. And moderation is not optional under copy about disease, because an unmoderated thread fills with medical claims and with people disclosing in public exactly what this product keeps private.
+- [ ] **SN5. The laws are not the same twenty one.** Nineteen are shared. The spec has Ownership and Wisdom; the engine has Responsibility and Accountability. This is the divisor in the coherence definition, so it has to be answered before anything downstream can be.
+- [ ] **SN6. The spec defines coherence as the mean of the laws times ten.** Under that definition, measured: releasing every charge moves coherence by nothing at all, and all fourteen reference profiles read exactly the same number because none of them carries law data. Adopting it changes the tier of fourteen profiles out of fourteen. It may still be right. It retires the release meter on that path, which is the decision.
+- [ ] **SN7. And it reaches the lean work through the back.** Malignancy is computed off coherence, so either spec definition takes a blank profile from 28 malignant to nought and flips benign. That is the same question being asked in two places and it should be ruled once.
+- [ ] **SN8. Which address owns Joy.** The spec says the apathy axis, the engine says the sad axis. One word, two places in a body.
+- [ ] **SN9. Avoider or Innocent.** His weight ruling is implemented and Avoider now fires on 1.4 percent rather than the 81 the spec implies, while Innocent fires on 38.4 because the spec reduced it to one fetter. Move the weight, or give Innocent a second fetter.
+- [ ] **SN10. Surprise's address.** Lower solar plexus at the lung edges, or upper chest and back at the heart seat. A place, not a wording.
 
 ## 0v. RULED 20 SEPTEMBER, FIFTH PASS. B, AND IT IS A CALENDAR.
 

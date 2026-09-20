@@ -218,15 +218,26 @@ function scored(){
   p.axes[c.nm]={held: chgN[c.nm]?Math.round(chgSum[c.nm]/chgN[c.nm]*10)/10:0, opp:0};});
  return {p:p, laws:laws, answered:n};}
 
-/* THE SAME SABOTEUR ARCHITECTURE CAN BE REPORTED UNDER TWO NAMES WHEN IT SITS
-   ON THE SAME ADDRESSES AND THE SAME WEIGHT, which measured as two identical
-   cards side by side on a flat field. One card per set of addresses. */
+/* ONE CARD PER ARCHITECTURE, TWO WAYS.
+
+   Two names can sit on the same addresses at the same weight, which printed as
+   two identical cards side by side on a flat field. And one name can be
+   detected twice on two different address clusters, because the charge range
+   scan and the cluster scan both reach it: that printed Worrywart at the top of
+   the reading and again three cards later, same definition, same sentence,
+   different addresses. Both read as a broken page to somebody meeting the
+   instrument for the first time. The name is the thing a person carries away,
+   so the name is the key, and the heaviest instance of it is the one shown.
+   Found by looking at the rendered page. It is invisible in the markup. */
 function topSabs(r,max){
- var seen={},out=[];
+ var seenSig={},seenName={},out=[];
  r.sabs.forEach(function(s){
   if(out.length>=max)return;
+  var name=s.nm.toLowerCase();
+  if(seenName[name])return;
   var sig=s.parts.map(function(n){return n.i;}).sort().join(',')+'|'+s.w.toFixed(2);
-  if(seen[sig])return; seen[sig]=1; out.push(s);});
+  if(seenSig[sig])return;
+  seenSig[sig]=1; seenName[name]=1; out.push(s);});
  return out;}
 
 /* ============================================================
@@ -305,13 +316,14 @@ function viewRead(){
  /* ---- 2. WHAT THE ISSUES ARE ---- */
  +'<section><span class="eye">The issues</span>'
  +'<h2>Where it is thinnest.</h2>'
- +'<p>Each law is scored on its own points. These are the ones carrying the least, '
+ +'<p>Each law is scored out of ten. These are the five holding the least, '
  +'and they are where the leak is.</p>'
  +'<ul class="laws">'+thin.map(lawRow).join('')+'</ul>'
  +'<p>Holding best: '+held.map(function(l){return esc(l.nm);}).join(', ')+'.</p>'
  +'<h2 style="margin-top:34px">Where the load is sitting.</h2>'
  +'<p>The nine charges from your answers land on the 112 addresses, each one '
- +'seated at a named plexus or nerve. This is the mean load per seat.</p>'
+ +'seated at a named plexus or nerve. This is the average load each seat is '
+ +'carrying, out of ten.</p>'
  +'<ul class="seats">'+bandload.map(function(x){
    return '<li><b>'+esc(x.b)+'</b><span class="tr"><i style="width:'
     +(Math.min(100,x.v*10))+'%;background:'+cv(x.b)+'"></i></span><em>'

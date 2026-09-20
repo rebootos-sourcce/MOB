@@ -21,6 +21,155 @@ reopens. Every seat adds its own.
 
 ---
 
+## 0u. DELIVERED 20 SEPTEMBER. THE FUNNEL, THE TAGS, AND THE SNIFFER.
+
+### FD. THE FUNNEL AND THE HUNDRED, BUILT.
+
+- [x] **FD1. The landing is rewritten on his seven beats** and the close is
+      verbatim. "Human potential, unlocked" sits on the purpose beat with the
+      lock named in the same breath, which is what keeps it inside the voice
+      rulings rather than a slogan.
+- [x] **FD2. A hundred questions on the twenty one laws,** read out of `SI` in
+      the engine rather than retyped, and the quiz refuses by name at load if a
+      question names a law or a charge the engine does not carry. Sixteen laws
+      get five points and five get four. Interleaved one law at a time, so a
+      person who stops after twenty one screens still gets a reading.
+- [x] **FD3. One question per screen, measured on all hundred.** One question
+      and at most seven interactive elements per screen, against an open
+      architectural item of 57 to 71. No screen states a count of any kind.
+      Tapping an answer is the step forward; there is no second button.
+- [x] **FD4. Zero off machine requests, zero page errors, no horizontal
+      scroll, nothing under 44 pixels,** at both widths.
+- [x] **FD5. The handover was broken and is fixed.** The page linked a
+      generated stylesheet and loaded the engine as a sibling, which is right
+      for the source and unsendable: a file that needs two neighbours is a file
+      he cannot open from wherever it lands. `funnel/BUILD-single.sh` inlines
+      them into `funnel/dist/`, refuses to finish if either page still reaches
+      for a sibling, and points the landing's door at the quiz's download name.
+      Both proved to open alone.
+- [x] **FD6. Two scales said nothing about what they were out of.** The laws
+      and the seat loads printed bare figures under a heading. They say out of
+      ten now, in words.
+- [ ] **FD7. Both pages are one narrow column on a wide screen.** The landing
+      runs 4588 pixels tall at 1600 and the reading 3899, with the sides empty.
+      A measure that reads well is not the same as a page that uses its width,
+      and this is the full screen complaint in a new place.
+- [ ] **FD8. The landing has no figure.** The avatar is the centrepiece of the
+      product and the first page a stranger sees carries type and rules only.
+- [ ] **FD9. Two of the four saboteur cards on the reading are thin.** Root
+      Flincher and Diffuse Bracer are generated names with no entry, so they
+      print a family line and a generic way out where the other two print the
+      sentence the saboteur says. Three cards also repeat the same family line
+      word for word.
+- [?] **FD10. The honest midpoint of the scale reads Corrupt.** Answering every
+      question in the middle lands at 24. Coherence goes as the square of the
+      law mean, so a pain led instrument answered honestly puts most people
+      between 24 and 56. The arithmetic is his. The one dial that is not is the
+      map from an answer to a charge, which is linear today.
+- [?] **FD11. Running comments need a server, and the seam is half built.**
+      The engine already carries the outbox: a queue, a validator, an allow
+      list of eight keys and a deny list of forty odd covering name, email,
+      story, coherence and location, capped at twenty queued and six hundred
+      characters. That is a comment with everything identifying already
+      refused. What does not exist is the thing it sends to. It should share
+      the record store's controller: one account, one identity, one deletion
+      path. And moderation is not optional under copy about disease, because
+      an unmoderated thread fills with medical claims and with people
+      disclosing in public exactly what this product keeps private.
+
+### TA. THE TAG SYSTEM. THE ANSWER IS NO, AND THE ARGUMENT IS SHORT.
+
+He asked whether it was worth doing. The recommendation is that it is not, and
+that a closed field of three values is what he actually described.
+
+- [x] **TA1. The product already carries 28 naming systems and 396 named
+      members,** plus 336 lexicon entries whose whole job is mapping a person's
+      own words onto them. Every candidate use of a tag resolves to a family
+      that exists. The retrieval case is built five ways already.
+- [x] **TA2. The word is taken, by the opposite concept.** The glossary defines
+      a tag as the moment a charged experience is named and coded at an
+      address, and says the name locks the experience in. In this product a tag
+      is the injury the instrument exists to release. Inviting a person to add
+      their own is the named cause offered as a tool.
+- [x] **TA3. The three kinds are a field, not a tag.** The avatar kind is
+      mandatory, mandatory needs a denominator, and free text destroys the
+      count the moment somebody types daily instead of Daily. A tag also
+      carries no magnitude, so it cannot order the queue, which is QU4.
+- [ ] **TA4. Build `ritual.kind` validated the way `plan.tier` is,** three
+      values, refused by name. Additive, so a ritual with no kind reads as an
+      older record and fills from the blank. No version bump.
+- [ ] **TA5. Colour goes against the kind.** That answers RC6.
+- [ ] **TA6. Build the person supplied weight instead,** which DECISIONS
+      already ruled and which is unbuilt. A number range checks, sorts, orders
+      the queue, and never carries a name off the device.
+
+### VB. THE TWO BAGS NOBODY VALIDATES. FOUND WHILE PRICING THE TAGS.
+
+- [ ] **VB1. `rituals` is accepted on one condition: that each entry is an
+      object.** A ritual passed with no errors carrying a track that is not a
+      track, a seat that is not a seat, a step that is not a practice, a
+      negative length, a five thousand character field where the surface caps
+      at forty, and a hundred thousand character note.
+- [ ] **VB2. And it carried `secret` and an `email`.** Those two names are
+      refused by name at the top level of the profile. Inside a ritual the same
+      names pass silently. The boundary's first real caller is the record fetch
+      at sign in, so this is a hole on the path the accounts fork opens.
+- [ ] **VB3. `story.entries` is a bare slice** and is the second bag.
+
+### SN. THE SNIFFER SPEC. PORTED, GATED, AND THE CQ QUESTION IS HIS.
+
+- [x] **SN1. The bands are ported, 33 of 33,** checked against a second
+      independent transcription so a typo fails rather than disagreeing
+      silently. Seventeen rows differed. The headline was understated: Apathy
+      keyed nothing at all in the shipped table while the spec keys twelve rows
+      on it, and two rows keyed a word that is not one of the nine. Nine of
+      fourteen reference profiles now read a different named saboteur set.
+      Coherence and DQ unmoved.
+- [x] **SN2. The ramp is built and the measurement did not go the expected
+      way, which is reported straight.** A ramp inside the membership bought
+      nothing while the output was still a hard yes or no: the edge simply
+      moved from the band to the confidence floor. So the boolean firing set is
+      gone and the output is ranked confidence. What the ramp does buy is
+      resolution thirteen times finer and steadier confidence. On top three
+      agreement it is a dead tie. His 94 and 73 could not be reproduced here
+      because they need his cohort.
+- [x] **SN3. A defect nobody asked about.** "I am angry and exhausted" returned
+      Anger 10 and Apathy 0, because a stated charge sharing a seat with
+      another was discarded. Now 10 and 8.7.
+- [x] **SN4. The cascade has no free parameter.** His own three numbers are
+      exactly linear, so the step is his and not a fit.
+- [?] **SN5. The laws are not the same twenty one.** Nineteen are shared. The
+      spec has Ownership and Wisdom; the engine has Responsibility and
+      Accountability. This is the divisor in the coherence definition, so it
+      has to be answered before anything downstream can be.
+- [?] **SN6. The spec defines coherence as the mean of the laws times ten.**
+      Under that definition, measured: releasing every charge moves coherence
+      by nothing at all, and all fourteen reference profiles read exactly the
+      same number because none of them carries law data. Adopting it changes
+      the tier of fourteen profiles out of fourteen. It may still be right. It
+      retires the release meter on that path, which is the decision.
+- [?] **SN7. And it reaches the lean work through the back.** Malignancy is
+      computed off coherence, so either spec definition takes a blank profile
+      from 28 malignant to nought and flips benign. That is the same question
+      being asked in two places and it should be ruled once.
+- [?] **SN8. Which address owns Joy.** The spec says the apathy axis, the
+      engine says the sad axis. One word, two places in a body.
+- [?] **SN9. Avoider or Innocent.** His weight ruling is implemented and
+      Avoider now fires on 1.4 percent rather than the 81 the spec implies,
+      while Innocent fires on 38.4 because the spec reduced it to one fetter.
+      Move the weight, or give Innocent a second fetter.
+- [?] **SN10. Surprise's address.** Lower solar plexus at the lung edges, or
+      upper chest and back at the heart seat. A place, not a wording.
+- [ ] **SN11. The honest limit, and it is the highest value thing left.** There
+      is no subject handling, so "she lied to me" fires the truth law on the
+      writer. The guard against reading a person through somebody else's story
+      is satisfied by there being no mechanism, not by a rule.
+- [ ] **SN12. Nothing in the law layer may be called accuracy.** It is a
+      coverage floor. A real figure needs a labelled set with two raters who
+      are not the table's author, and his ruling that such a corpus may exist.
+
+---
+
 ## 0v. RULED 20 SEPTEMBER, FIFTH PASS. B, AND IT IS A CALENDAR.
 
 ### RC. THE RITUAL BUILDER IS DESIGN B, AS A CALENDAR.

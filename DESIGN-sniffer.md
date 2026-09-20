@@ -1079,3 +1079,53 @@ sharply for every profile, the story half of the blend gains relative weight,
 and **the harm accounts get worse rather than better** because the field is no
 longer diluting them. That is measurable before it ships and it should be
 measured rather than discovered.
+
+## WHAT NEEDS HIS RULING
+
+Five, and they are the five that block integration rather than the five that are
+most interesting. Everything else in this document was decided by the rule that
+the spec wins.
+
+**1 · E43, and the divisor of the coherence number.** Section 7 says 76 slots
+with 75 live because **E43 is retired**. Section 6 lists **E43 as Wisdom, live,
+with a violation string**. And the engine's 21 laws are not the spec's 21: they
+share 19 names, the spec has Ownership and Wisdom, the engine has Responsibility
+and Accountability, which is Ownership split in two. So there are three
+questions folded into one and all three change arithmetic. Is Wisdom live? Is
+Ownership one law or two? **Is the mean over 21 or over 20?** Audited CQ cannot be
+implemented until this is answered, because the divisor is the answer.
+
+**2 · Once a person has answered all 21 laws, should releasing charge stop moving
+their coherence number?** Section 6 taken literally says yes, and it is measured:
+a full release of every charge moves audited CQ by **0.0**. That may be exactly
+right, because releasing charge and closing a law are not the same act. But it
+retires the release meter on the audited path, `cqCeiling` and `cqHeadroom`
+become constants, and **14 of 14 reference profiles change tier.** It needs
+saying out loud rather than arriving as a side effect.
+
+**3 · Which address owns Joy?** The spec offers **Joy / Aliveness at Apathy**.
+`CHILD` offers **Joy at Sad**. One word, two places in a body. The sniffer emits
+the spec's table and flags the disagreement on every offer, but a person cannot
+be offered Joy for their apathy on one surface and for their sadness on every
+other one.
+
+**4 · Avoider or Innocent?** The ruling to weight Avoider low is implemented. The
+premise behind it does not hold on the data here: measured on the ported bands
+over the 14 stated profiles, **Avoider reaches the top three in 1.4 percent of
+runs, not 81.** The row that actually fires on everything is **Innocent, at 38.4
+percent**, and it does so because the spec reduces it to a single fetter and a
+one part row beats a multi part row under any conjunctive rule. Two ways to
+settle it: move the weight to Innocent, or give Innocent a second fetter. The
+arity weight currently absorbs it, which works and is derived, but it is a
+general rule standing in for a specific ruling.
+
+**5 · Surprise's somatic address.** The spec puts it at the **lower solar plexus,
+bilateral at the lung edges**. `CHILD` puts it at the **upper chest and back**
+with the **Heart** seat. This is the one address where the two disagree about a
+place rather than a wording, and a somatic address is the thing this product
+points at on a body.
+
+**Noted and not asked, because it does not block anything.** The engine has a
+fifth rung the spec's firing order does not name: `sups`, pairs of
+hyper-complexes. The five step descent chain in section 5 is the only candidate
+for it and the correspondence is not stated. It can wait.
