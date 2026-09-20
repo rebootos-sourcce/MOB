@@ -698,7 +698,8 @@ function paint(){
   'Six masks, one per era, in the order they were put on. Each fills from the bottom as the '
   +'instrument reads charge at the seats that era sits on, in the colour of whichever of its '
   +'seats is carrying more. Writing is what fills them.'
-  +(tw.length?(' '+tw[0].nm.toLowerCase()+' and '+tw[0].twins.join(' and ').toLowerCase()
+  +(tw.length?(' The '+tw[0].nm.toLowerCase()+' and the '
+    +tw[0].twins.join(' and the ').toLowerCase()
     +' sit on the same two seats, so those two always read the same.'):'');
  /* the ceiling that was tried first, and the measurement that ruled it out.
     Printed on the surface rather than kept in the design document, because a

@@ -25,9 +25,9 @@ if(/src="(\.\.\/)*[^"]+\.js"/.test(out))
 if(/<(script|link|img)[^>]+(src|href)=["']?(?!#)(https?:|\/\/)/i.test(out))
  throw new Error('an outbound reference survived');
 if(out.indexOf('—')>=0)throw new Error('an em dash is in the page');
-/* the count. engine.js legitimately carries the lower figure in its own
-   arithmetic, so this reads the page's own markup and scripts rather than the
-   inlined engine. */
+/* the count. engine.js carries the lower figure in its own arithmetic and
+   rise.js carries it in one comment, and neither is a string stated to a
+   person, so this reads the two files this folder owns. */
 var mine=src+own;
 if(/\b108\b/.test(mine))throw new Error('the count stated to a person is 112');
 fs.writeFileSync(path.join(d,'sheet.html'),out);

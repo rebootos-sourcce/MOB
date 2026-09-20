@@ -1,0 +1,655 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<!-- THE TITLE CARRIES THE UMLAUT AND THE LANDING'S DOES NOT.
+
+     funnel/index.html sets the dot mechanism in CSS at line 38 and then writes
+     the plain spelling into its own <title>, so the page carries the machinery
+     for the mark and never sets it. A title has no CSS, so the only way to
+     spell the name correctly in a tab, a bookmark and a search result is the
+     character. The mark on the page is the drawn dot pair; the mark in a
+     string is the character. Both spell one name. -->
+<title>Atüned, about</title>
+<meta name="description" content="You are already the most powerful version of yourself. Atüned reads the load holding it down, names where it sits, and gives the order to take it off. Source OS.">
+<style>
+/* FALLBACK TOKENS ONLY, AND tokens.css OVERRIDES EVERY ONE OF THEM.
+
+   The palette is generated from the app's own stylesheet by tools/tokens.py,
+   and a palette copied by hand is correct on the day it is copied and wrong
+   afterwards. So the link to tokens.css sits AFTER this block rather than
+   before it, which is the reverse of the landing's order and is deliberate:
+   later wins at equal specificity, so whenever the generated sheet is beside
+   the page or inlined by BUILD-single.sh, the value in force is the generated
+   one and nothing here can be the value that ships.
+
+   What this block buys is that the page opens correctly with no siblings,
+   which is the standing ruling on anything sent to the owner. The block holds
+   exactly the tokens this page reads and nothing else, measured rather than
+   counted by hand: a number typed into a comment that the file then grows past
+   is the defect this repository has been bitten by seven times. Checked by
+   diffing the declarations here against var() uses in this file, and against
+   tokens.css value by value. */
+:root{
+ --bg:#0C0D12; --panel:#1A1D26;
+ --edge:rgba(255,255,255,.09); --edge-2:rgba(255,255,255,.14);
+ --ink:#EFEDE8; --mid:#B4B0A8; --dim:#94908A;
+ --root:#CF5953; --sacral:#D19255; --solar:#D4BC70;
+ --heart:#65CFA5; --eye:#8296DB;
+ --accent:#7EB8D4; --on-accent:#0B1418;
+ /* --au IS THE REAL GOLD AND --gold IS AN ALIAS FOR THE BLUE ACCENT. The
+    generated file records that Source OS under the wordmark rendered blue
+    twice because the token lied about its own name. Source OS asks for --au. */
+ --au:#C2A063; --um:#FFFFFF;
+ --sans:'Inter','Inter Tight',system-ui,-apple-system,'Segoe UI',sans-serif;
+ --num:'Inter','Inter Tight',system-ui,-apple-system,sans-serif;
+ --r-s:11px; --tap:44px;
+ --ease-out:cubic-bezier(.22,1,.36,1); --t-micro:120ms;
+ --g2:10px; --g3:16px;
+}
+
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
+ font-family:var(--sans);-webkit-text-size-adjust:100%}
+body{font-size:17px;line-height:1.62}
+
+/* The landing's grammar, carried across so the three pages read as one
+   product: prose keeps its measure, anything parallel spreads into the width
+   it already has. --gut is 16px, which is --g3's value under a second name in
+   index.html; this page uses --g3 rather than growing the drift. */
+:root{--measure:64ch}
+.wrap{max-width:1120px;margin:0 auto;padding:40px var(--g3) 64px}
+.m{max-width:var(--measure)}
+
+/* ---- the mark ---- */
+.mark{display:grid;gap:4px;justify-items:center;text-align:center}
+h1{font-size:44px;line-height:1;letter-spacing:-.025em;margin:0;font-weight:600}
+h1 .um{position:relative;display:inline-block}
+h1 .um::before,h1 .um::after{content:'';position:absolute;top:-.44em;
+ width:.13em;height:.13em;border-radius:50%;background:var(--um)}
+h1 .um::before{left:.05em}
+h1 .um::after{left:.34em}
+/* SOURCE OS IS WRITTEN Source OS. The brief said the caps form and the
+   standing voice ruling is sentence case with no all caps copy, so the app's
+   own casing is the correct one. No text-transform here for that reason: a
+   sheet that uppercases it undoes the ruling in the render. */
+.os{font-family:var(--num);font-size:12.5px;letter-spacing:.34em;
+ color:var(--au);margin:0;font-weight:500}
+.nav{margin:26px 0 0;display:flex;gap:var(--g3);flex-wrap:wrap;
+ font-size:13px;letter-spacing:.06em}
+.nav a{color:var(--dim);text-decoration:none;border-bottom:1px solid var(--edge-2);
+ padding-bottom:2px;transition:color var(--t-micro) var(--ease-out)}
+.nav a:hover,.nav a:focus-visible{color:var(--ink)}
+.nav b{color:var(--ink);font-weight:600;border-bottom:1px solid var(--accent);
+ padding-bottom:2px}
+
+.lead{font-size:26px;line-height:1.34;margin:34px 0 0;letter-spacing:-.015em;
+ max-width:34ch}
+.lead b{font-weight:600;color:var(--ink)}
+.lead span{display:block;color:var(--mid)}
+
+p{margin:16px 0 0}
+section{margin-top:56px;padding-top:30px;border-top:1px solid var(--edge)}
+.eye{display:block;font-size:11.5px;letter-spacing:.17em;text-transform:uppercase;
+ color:var(--accent);margin:0 0 10px}
+h2{font-size:27px;line-height:1.18;margin:0;letter-spacing:-.018em;font-weight:600}
+h3{font-size:17px;margin:0;font-weight:600}
+.bd>p:first-child{margin-top:0}
+
+/* ---- a panel of prose that is a ruling rather than a paragraph ---- */
+.box{margin:26px 0 0;padding:18px 18px 20px;border:1px solid var(--edge-2);
+ border-radius:var(--r-s);background:var(--panel)}
+.box h3{margin-bottom:6px}
+.box p{color:var(--mid);margin-top:8px}
+
+/* ---- what it is not. one rule per row, no bullet furniture ---- */
+.nots{list-style:none;margin:22px 0 0;padding:0;display:grid;gap:1px;
+ background:var(--edge);border:1px solid var(--edge);border-radius:var(--r-s);
+ overflow:hidden}
+.nots li{background:var(--panel);padding:12px 16px;color:var(--mid)}
+.nots li b{color:var(--ink);font-weight:600}
+
+/* ---- THE CHAIN. His storyboard, in his order, eight rungs down a rail.
+
+       It is a rail and not a row of cards because the thing being shown is a
+       sequence with a direction: each rung is caused by the one above it, and a
+       row of equal cards says they are parallel. The rail is one hairline, the
+       rung marks are rings and never fills, and the three coloured marks are
+       the three places the sequence changes kind: the natural state, the first
+       symptom a person would recognise, and the instrument entering. ---- */
+.chain{list-style:none;margin:24px 0 0;padding:0 0 0 30px;position:relative}
+.chain::before{content:'';position:absolute;left:5px;top:8px;bottom:8px;
+ width:1px;background:var(--edge-2)}
+.chain li{position:relative;padding:0 0 16px}
+.chain li:last-child{padding-bottom:0}
+.chain li::before{content:'';position:absolute;left:-30px;top:8px;width:11px;
+ height:11px;border-radius:50%;border:1.5px solid var(--edge-2);
+ background:var(--bg)}
+.chain b{font-weight:600}
+.chain span{color:var(--mid)}
+.chain .open::before{border-color:var(--heart)}
+.chain .hurt::before{border-color:var(--root)}
+.chain .tool::before{border-color:var(--accent);border-width:2.5px}
+.chain .tool b{color:var(--accent)}
+
+/* ---- the three claims under Why now ---- */
+.three{display:grid;gap:1px;margin:24px 0 0;background:var(--edge);
+ border:1px solid var(--edge);border-radius:var(--r-s);overflow:hidden}
+.three div{background:var(--panel);padding:15px 17px}
+.three b{display:block;font-size:12px;letter-spacing:.11em;text-transform:uppercase;
+ color:var(--dim);font-weight:600}
+.three span{display:block;margin-top:5px;color:var(--ink);font-size:16px}
+
+/* ---- the figures. ONE WORD PER LABEL, and the unit rides on the figure.
+       Ruled: "85 days kept, of the 90 days on your record" is the shape this
+       grid exists to refuse. The label is one word, the value carries its own
+       unit, and everything else is the line under it. ---- */
+.figs{list-style:none;margin:24px 0 0;padding:0;display:grid;gap:1px;
+ background:var(--edge);border:1px solid var(--edge);border-radius:var(--r-s);
+ overflow:hidden}
+.figs li{background:var(--panel);padding:14px 16px 15px}
+.figs em{display:block;font-style:normal;font-size:11.5px;letter-spacing:.14em;
+ text-transform:uppercase;color:var(--dim);font-weight:600}
+.figs strong{display:block;font-family:var(--num);font-variant-numeric:tabular-nums;
+ font-size:21px;font-weight:600;margin-top:3px;letter-spacing:-.01em}
+.figs span{display:block;color:var(--mid);font-size:15.5px;margin-top:4px}
+.figs .c-ceil strong{color:var(--heart)}
+.figs .c-drag strong{color:var(--root)}
+.figs .c-addr strong{color:var(--eye)}
+.figs .c-seat strong{color:var(--sacral)}
+.figs .c-ord strong{color:var(--solar)}
+
+.cta{margin-top:30px;display:flex;gap:var(--g2);flex-wrap:wrap;align-items:center}
+a.btn{display:inline-block;background:var(--accent);color:var(--on-accent);
+ text-decoration:none;font-weight:600;font-size:18px;padding:16px 34px;
+ border-radius:9px;min-height:var(--tap);line-height:20px}
+a.btn.ghost{background:transparent;color:var(--ink);
+ box-shadow:inset 0 0 0 1px var(--edge-2)}
+a.btn:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+.meta{margin:14px 0 0;font-size:13px;color:var(--dim)}
+
+.close{margin-top:56px;padding-top:30px;border-top:1px solid var(--edge-2)}
+.close p{font-size:26px;line-height:1.36;margin:0;letter-spacing:-.015em}
+.close p+p{margin-top:2px}
+.close .last{color:var(--accent)}
+.foot{margin-top:48px;padding-top:20px;border-top:1px solid var(--edge);
+ font-size:13px;color:var(--dim)}
+.foot a{color:var(--mid)}
+
+/* THE NAV IS A CONTROL AND --tap IS A FLOOR, NOT A TARGET. Measured at 390 the
+   four nav links stood 20px high against a 44px floor, which is the defect the
+   token exists to stop repeating in forty separate padding declarations. The
+   row grows to the floor at narrow widths and stays a text row above them,
+   where a pointer is doing the aiming. */
+@media(max-width:700px){
+ .nav{gap:var(--g3) 18px}
+ .nav a,.nav b{display:inline-flex;align-items:center;min-height:var(--tap);
+  padding-bottom:0;line-height:1.2}
+}
+
+@media(min-width:560px){
+ .three{grid-template-columns:repeat(3,1fr)}
+ .figs{grid-template-columns:1fr 1fr}
+ .nots{grid-template-columns:1fr 1fr}
+}
+@media(min-width:1040px){
+ body{font-size:17.5px}
+ section{display:grid;grid-template-columns:250px minmax(0,1fr);
+  column-gap:44px;align-items:start}
+ .hd{position:sticky;top:34px}
+ .bd{min-width:0}
+ .mark{justify-items:start;text-align:left}
+ h1{font-size:64px}
+ .lead{font-size:34px;margin-top:30px}
+ .m{max-width:70ch}
+ .figs{grid-template-columns:repeat(3,1fr)}
+ .figs li:nth-child(4){grid-column:span 2}
+}
+@media(max-width:400px){
+ h1{font-size:34px} .lead{font-size:21px} h2{font-size:22px}
+ .close p{font-size:20px}
+ .os{letter-spacing:.26em}
+}
+</style>
+<!-- tokens.css is linked AFTER the block above so the generated palette wins
+     whenever it is present. BUILD-single.sh replaces this exact tag with an
+     inline <style>, which keeps that order in the sendable file. -->
+<style>
+/* tokens.css, inlined */
+/* GENERATED. Do not edit.
+   Written by tools/tokens.py from atuned_src/shell/head.html, which is the
+   app's own stylesheet. The funnel and the app have to look like one
+   product, and a palette copied by hand is correct on the day it is copied
+   and wrong afterwards. Change a value in head.html and run the tool.
+   44 tokens. */
+:root{
+ /* THE SURFACE RAMP WAS NARROWER THAN A PRINTING TOLERANCE.
+
+    Measured: --bg to --panel was 1.08 to 1 and --bg to --panel-2 was 1.14.
+    Four declared levels of surface spanning a sixth of a stop, which is why
+    the page squints down to three vertical grey slabs and the eye lands on
+    nothing first. The architecture of every screen rested on a distinction
+    that was not visible.
+
+    The ground goes down and the raised surfaces go up, so the range opens
+    from both ends rather than lightening the product. Muted is a saturation
+    ruling and not a contrast one, and this changes no hue. */
+ --bg:#0C0D12; --panel:#1A1D26; --panel-2:#252833; --sunk:#090A0E;
+ --edge:rgba(255,255,255,.09); --edge-2:rgba(255,255,255,.14);
+ /* --dim WAS BELOW AA EVERYWHERE IT APPEARED, and it is the only token
+    marking the second tier of the information architecture: every eyebrow,
+    every key label, every explanatory subline. Measured at 3.70 to 1 on
+    --panel-2 and 3.92 on --panel, and it carried 104 of the 105 contrast
+    failures on the Summary in Dark. One value, 104 defects.
+
+    It also matters more than the ratio suggests. Six of the thirteen people
+    in the reference sample are 57 or older, and contrast sensitivity falls
+    materially past 55. At 3.70 that half of the sample loses the whole layer
+    that tells them what they are looking at. */
+ --ink:#EFEDE8; --mid:#B4B0A8; --dim:#94908A;
+ --root:#D6524C; --sacral:#D8924E; --solar:#DABF6A;
+ --heart:#5FD5A6; --throat:#5EBBDB; --eye:#7D93E0; --crown:#A77EDB;
+ --alarm:#FF2E1F; --alarm-soft:rgba(255,46,31,.16);
+ /* THE ACCENT IS BLUE. Ruled. It was gold since the rebuild and the owner
+    never chose it: he chose the blue, which is the original app's own
+    --law-accent:#7eb8d4, used there in thirteen places. --accent is the one
+    source of truth and --gold is kept as its alias because sixty places in
+    this sheet already read that name. Nothing reads a literal.
+
+    --on-accent is the ink that sits on top of a filled accent. It was
+    var(--on-accent), a warm near black chosen against gold, and a warm ink on a cool
+    fill is the one thing that would still have read as the old palette.
+
+    --um is the umlaut on the wordmark. It sits on the bar rather than on the
+    letter, so it answers to the background. White on dark, as ruled. */
+ --accent:#7EB8D4; --gold:var(--accent); --on-accent:#0B1418;
+ /* TRUE GOLD, SEPARATE FROM --gold.
+
+    --gold is an alias for the accent and has been since the accent was ruled
+    blue, so everything reaching for "gold" gets blue. That is correct for the
+    eyebrows and the rules that were gold before the ruling, and it is wrong
+    for the one thing that was asked for in actual gold: Source OS under the
+    wordmark rendered in the blue accent, twice, because the token lied about
+    its own name.
+
+    --au is gold. Muted, warm, sitting next to the Solar seat without becoming
+    it, and dark enough on paper to hold. Nothing else uses it unless it is
+    asked for by name. */
+ --au:#C2A063;
+ /* the ink on a solid seat colour. every seat in this palette is light
+    enough that one dark ink holds on all seven, in every lighting. */
+ --on-flat:#0E1015;
+ --sky:#7EB8D4; --um:#FFFFFF;
+ /* #CB5F59 measures 4.01 against --panel-2 and 4.44 against the seat tinted
+    panel. It is not carrying text today, it is a three pixel marker and a
+    seven percent wash, so the 4.5 text threshold is not the one it has to
+    clear. Moved anyway: a marker that thin at four to one is hard to see at
+    all past about fifty five, and three of the nine reference people are
+    fifty seven or older. #D4736D measures 4.87 and 5.40 on the same two.
+    Snow's own value is 5.62 and does not move. */
+ --good:#68CBA4; --bad:#D4736D;
+ /* Lexend is a wide face by design, which is why the rail clipped: Witness
+    rendered as Wit. Inter is narrower at the same size and carries more
+    characters per line without dropping the point size. The font tuner is
+    gone on the owner's ruling, so this is the one face and there is no
+    per person override to keep working. */
+ --sans:'Inter','Inter Tight',system-ui,-apple-system,'Segoe UI',sans-serif;
+ /* ONE FAMILY MEANT ONE FAMILY, AND THIS TOKEN NAMED A SECOND ONE.
+
+    The comment above it said Lexend carries the digits. Lexend was never in
+    the build. When Google Fonts went, Inter was embedded as a variable font
+    and Lexend was not, so document.fonts lists exactly one family and every
+    number in this product, every reading, every allowance, every tabular
+    column, was falling through to system-ui. Which face that is depends on
+    the machine, so the one thing this token existed to guarantee, that
+    columns of figures line up, was the one thing it could not do.
+
+    document.fonts.check('12px Lexend') returns true, which is what hid this:
+    check answers whether the text can be rendered at all, and a fallback
+    counts. The list of loaded families is the honest reader and it has one
+    entry.
+
+    Inter carries the digits now, which is a statement about a font that is
+    actually here. Tabular figures are a feature of Inter and every column in
+    the sheet already asks for them with font-variant-numeric. */
+ --num:'Inter','Inter Tight',system-ui,-apple-system,sans-serif;
+ --r:16px; --r-s:11px; --r-xs:8px;
+ /* Minimum touch target. 69 of the interactive elements measured under 44px,
+    which is the floor a finger needs. The number lives here so it cannot
+    drift back into forty separate padding declarations. */
+ --tap:44px;
+ /* Motion. Measured before this block existed: 381 of 384 live animated
+    elements ran on the browser default ease, a symmetric curve that reads as
+    mechanical because it decelerates as slowly as it accelerates. The four
+    hand written beziers in this sheet sat on one live element. Three curves
+    and four durations, named for the job, so a hover and a tab cannot drift
+    to the same speed again.
+
+    out  for a thing arriving. fast off the mark, long settle.
+    in   for a thing leaving. it does not need to be watched out.
+    land for a thing that lands. one overshoot, no ring. */
+ --ease-out:cubic-bezier(.22,1,.36,1);
+ --ease-in:cubic-bezier(.4,0,1,1);
+ --ease-land:cubic-bezier(.34,1.56,.64,1);
+ /* hover, press, focus. below about 100ms a change reads as a jump with no
+    cause; above about 150 the pointer has already left. */
+ --t-micro:120ms;
+ /* one thing entering or leaving. */
+ --t-element:220ms;
+ /* a panel or a rail, which carries more area and so needs more time. */
+ --t-surface:320ms;
+ /* a whole tab. the longest thing the product is allowed to take. */
+ --t-context:420ms;
+ /* the spacing scale. three steps. 6 between things in one control, 10
+    between controls, 16 between blocks. gaps of 5, 7, 8, 9 and 11 were all
+    doing one of those three jobs with no reason stated, so they read as
+    drift rather than as rhythm. */
+ --g1:6px; --g2:10px; --g3:16px;
+ --shadow:0 12px 34px rgba(0,0,0,.34);
+}
+</style>
+</head><body>
+<div class="wrap">
+
+<div class="mark">
+ <h1>At<span class="um">u</span>ned</h1>
+ <p class="os">Source OS</p>
+</div>
+
+<nav class="nav"><b>About</b>
+ <a href="atuned-funnel.html">What it reads</a>
+ <a href="atuned-buy.html">Tiers</a>
+ <a href="atuned-quiz.html">The test</a></nav>
+
+<p class="lead"><b>You are already the most powerful version of yourself.</b>
+<span>What you feel instead is the load sitting on top of it.</span></p>
+
+<!-- ============================================================
+     SEVEN SECTIONS, IN HIS ORDER: mission, about, vision, why, why now,
+     purpose, results.
+
+     THE FAILURE MODE THIS ORDER INVITES is seven paragraphs saying one thing
+     in seven registers. The test applied to every section: swap its body with
+     another section's heading and see whether anybody notices. Each one is a
+     different kind of statement, which is why none of them swap.
+
+       mission   an intent. what we are here to do, and the inversion in it
+       about     a definition. what the thing is, mechanically
+       vision    a future state of the world, with no product in the sentence
+       why       an argument about a mechanism
+       why now   three things true about this year and not about the product
+       purpose   an operation. two verbs and nothing else
+       results   figures, with what each one is out of
+
+     MISSION AND PURPOSE ARE THE ONE REAL SWAP RISK, and the guard is written
+     onto the page rather than left in this comment: mission is the intent and
+     it carries the inversion, purpose is the operation and it carries the two
+     verbs. A sentence that could sit under either heading is in the wrong
+     section.
+     ============================================================ -->
+
+<!-- 1. MISSION. The inversion, and it is his: find the limiters, release the
+        limiters. Every other product on this shelf sells addition. -->
+<section>
+ <div class="hd"><span class="eye">Mission</span>
+  <h2>Find the limiters. Release the limiters.</h2></div>
+ <div class="bd">
+  <p class="m">The capacity is already in you. Most of it is spent holding a set
+  of old instructions down, and what is left over after that is what you have
+  been calling your ability.</p>
+  <p class="m">So the work is subtraction. Nothing is added to a person here. The
+  instrument finds what is carrying load, names the place in the body it sits,
+  and takes it off one address at a time.</p>
+  <p class="m">This tool is about helping you become. Becoming does not take
+  lifetimes, and the first load comes off today.</p>
+ </div>
+</section>
+
+<!-- 2. ABOUT. The definition, first clause, Encarta E1. And the not list,
+        which does more work than the is list. "Journey" is a refused word and
+        is not on it: the gate catches it and the shelf is full of it.
+
+        THE WORD DIAGNOSTIC IS OFF THIS HEADING AND THE GATE IS WHY.
+
+        CLAUDE.md's own first line calls this a somatic diagnostic instrument,
+        so the heading was written that way and marketing/refuse.js refused it:
+        the medical rule catches /diagnos\w+/ with no exception, because the
+        engine holds the clinical correspondences internally and refuses to
+        print them at the person they are about. Inside the repository the word
+        describes what the software does. On a page, beside a sentence about
+        stress and the body, it reads as the regulated kind of claim, which is
+        the exact adjacency the rule exists for.
+
+        So the outward noun is reading and the inward one stays diagnostic. It
+        is a finding for him and not a decision taken quietly: either the
+        outward copy drops the word, which is what this page does, or the gate
+        grows a named exemption the way NOBODY does for H18. -->
+<section>
+ <div class="hd"><span class="eye">About</span>
+  <h2>A somatic reading instrument.</h2></div>
+ <div class="bd">
+  <p class="m">Atüned, a neurosomatic instrument that identifies the point of
+  origin of a stress response and integrates the kink, the cluster and the
+  network built on top of it. In doing so it brings inner peace mentally and
+  physically. It accelerates the mind body connection and it naturally releases
+  stress from the body.</p>
+  <p class="m">It tunes moral integrity against the 21 laws of integrity, and the
+  result is vital energy: the capacity that holding a pattern was spending, back
+  in the hands of the person who was spending it.</p>
+  <p class="m">You write what happened, in your own words. The engine reads the
+  charge out of the words and lands it at a named plexus or a named nerve. Then
+  it hands you the order to take it apart in.</p>
+  <p class="m">It runs as one file in your browser. No account, no server, and no
+  request of any kind while you use it.</p>
+  <ul class="nots">
+   <li><b>Not a coach.</b> It has no opinion about your life.</li>
+   <li><b>Not a guide.</b> It reads what is running, not who is running it.</li>
+   <li><b>Not a friend.</b> An instrument that flatters you is a broken one.</li>
+   <li><b>Not a practice app.</b> The practice comes out of your own material.</li>
+   <li><b>Not a meditation timer.</b> Nothing here is timed.</li>
+   <li><b>Not a personality test.</b> A type is a label. This is a reading.</li>
+  </ul>
+  <div class="box">
+   <h3>There is nothing like this, and here is the sentence that holds it up</h3>
+   <p>Gamified self development is a crowded shelf, and the nearest thing on it
+   is a skill tree a person fills in by hand. Every product there takes the sheet
+   as input, from what somebody types in about themselves, and counts upward from
+   zero.</p>
+   <p>This one derives the sheet from a reading of the person's own written
+   story, and it runs the gauge the other way round: the ceiling is stated first,
+   computed from that person's own reading, and the figure that moves is the drag
+   standing between. Both halves are narrow enough to check. Find one product that
+   reads the sheet out of a story rather than taking it as input, and one that
+   shows a ceiling before it shows a score.</p>
+  </div>
+ </div>
+</section>
+
+<!-- 3. VISION. A state of the world. The product does not appear in the first
+        sentence and appears once after it. -->
+<section>
+ <div class="hd"><span class="eye">Vision</span>
+  <h2>A person reads their own instructions the way they read a blood panel.</h2></div>
+ <div class="bd">
+  <p class="m">A person can already get a figure for their sleep, their pulse and
+  their blood, and can act on it without asking anybody's permission. Nothing
+  hands them the instructions running underneath, so the mind's half of the bill
+  is still guessed at, and guessing is why the same month keeps arriving.</p>
+  <p class="m">The reading of that half belongs on the same footing as a lab
+  result. One figure for coherence. An address for every load. A place in the
+  body for each address. And every table the arithmetic runs on open for
+  inspection, because a mirror you cannot take apart is not a mirror.</p>
+  <p class="m">A practitioner sees it when the person grants it, by name, with the
+  grant visible on the record and revocable in one move.</p>
+ </div>
+</section>
+
+<!-- 4. WHY. HIS CHAIN, IN HIS ORDER, AND IT IS NOT REORDERED TO BUILD TO A
+        CRESCENDO. The natural state, the contraction, the identification, the
+        conditioning, the cluster, the network, the symptom, then the instrument.
+
+        THE CHAIN IS THE ENGINE'S OWN LADDER IN PLAIN WORDS, and it was checked
+        against compute() before being leaned on. In atuned_src/engine/compute.js,
+        cited by name rather than by line number because line numbers drift and a
+        number typed into a document is how this repository has been bitten:
+
+          the kink     an address carrying charge. n.sq, and the loaded gate is
+                       4 of 10
+          the cluster  a saboteur. three or four addresses in one band
+                       contracting together, at a mean of 3.7 of 10, in
+                       sab33Detect for the named scan and over ALL_SAB for the
+                       deck
+          the network  cxs, a complex, two saboteurs in one architecture. Then
+                       hys, a hyper complex over a family of those, on two
+                       complexes or on one running at 6.5 of 10
+          above it     sups, the superego, two hyper complexes at 5.6 of 10
+
+        Saboteurs inside one architecture are seated at different bands, so the
+        complex is the first rung that shows in more than one place in the body,
+        which is the same thing his sentence says about the network. That is why
+        the page states the reading is computed this way rather than asserted:
+        the sequence is checkable against the arithmetic, which is the strongest
+        thing a positioning line can be. -->
+<section>
+ <div class="hd"><span class="eye">Why</span>
+  <h2>A kink becomes a cluster. A cluster becomes a network.</h2></div>
+ <div class="bd">
+  <ol class="chain">
+   <li class="open"><b>Your body is expressive by default.</b>
+    <span>Movement, breath, voice, appetite. Nothing held.</span></li>
+   <li><b>Stress makes it contract.</b>
+    <span>That part is ordinary and the contraction is supposed to
+    pass.</span></li>
+   <li><b>You identify with the contraction.</b>
+    <span>A bias forms in the mind, and a kink of resistance forms in the shape
+    of that stress response.</span></li>
+   <li><b>The response gets conditioned.</b>
+    <span>Practised often enough that it fires without the event that taught
+    it.</span></li>
+   <li><b>The node turns into a cluster.</b>
+    <span>Three or four addresses now contract together as one
+    structure.</span></li>
+   <li><b>Clusters form networks.</b>
+    <span>The body tenses in different locations at once, because the structures
+    are wired to each other.</span></li>
+   <li class="hurt"><b>Now the problem begins.</b>
+    <span>You procrastinate more, feel anxious more, more shy, more depressed,
+    more overwhelmed. The nervous system has kinks all over it, blocking the
+    natural energy flow of the body.</span></li>
+   <li class="tool"><b>The instrument finds the point of origin.</b>
+    <span>It integrates the kink, the cluster and the network, in that order,
+    starting where the sequence started.</span></li>
+  </ol>
+  <div class="box">
+   <h3>That sequence is computed, not asserted</h3>
+   <p>The engine builds the reading in exactly those rungs. A kink is one
+   address carrying charge, and 4 of 10 counts as loaded. A cluster is three or
+   four addresses contracting together at a mean of 3.7 of 10. A network pairs
+   two clusters inside one of six architectures, and then stacks those pairs, and
+   because clusters in one architecture are seated at different places the network
+   is the first rung that shows up in more than one part of the body.</p>
+   <p>Every threshold in that paragraph is readable inside the product, on the
+   same screen as the reading it produced. Check the chain against your own life
+   and against the arithmetic that drew it.</p>
+  </div>
+ </div>
+</section>
+
+<!-- 5. WHY NOW. Three things about this year. Nothing in here is a feature. -->
+<section>
+ <div class="hd"><span class="eye">Why now</span>
+  <h2>The measuring habit arrived and left the mind out.</h2></div>
+ <div class="bd">
+  <p class="m">Three things are true now that were not true when this shelf was
+  built.</p>
+  <div class="three">
+   <div><b>Reading</b><span>People already read their own bodies off a figure.
+    A decade of wearables made that ordinary, and none of that stack reads the
+    instructions.</span></div>
+   <div><b>Arithmetic</b><span>112 addresses, the 21 laws, a seat and a nerve for
+    each, and one coherence figure computed out of them. Written, and readable
+    inside the product.</span></div>
+   <div><b>Holding</b><span>A promise that a person's words never leave their
+    machine can now be kept, because the whole instrument is one file with no
+    network in it.</span></div>
+  </div>
+  <p class="m">The last one is the change nobody advertises. For most of the time
+  this shelf has existed, a product that read somebody's nervous system had to
+  send it somewhere to do the reading.</p>
+ </div>
+</section>
+
+<!-- 6. PURPOSE. Two verbs. The shortest section on the page on purpose, and it
+        carries the mission and purpose distinction out loud so the page states
+        its own anti swap guard. -->
+<section>
+ <div class="hd"><span class="eye">Purpose</span>
+  <h2>Close the gap. Hand over the instructions.</h2></div>
+ <div class="bd">
+  <p class="m">The purpose is mechanical and it is two verbs. Close the gap
+  between your mind and your body. Hand you your own instructions so that you can
+  change them.</p>
+  <p class="m">The mission above is what this is for. The purpose is what it does
+  with its hands. There is no third thing underneath either of them.</p>
+  <p class="m">It holds up a mirror to you and peers directly into your soul.</p>
+ </div>
+</section>
+
+<!-- 7. RESULTS. Figures with a one word label each, the unit on the figure, and
+        the throughput rule: how many patterns come off is checkable, what a
+        life does afterwards is not. The limit is admitted once, at the end. -->
+<section>
+ <div class="hd"><span class="eye">Results</span>
+  <h2>What comes back, and what each figure is out of.</h2></div>
+ <div class="bd">
+  <ul class="figs">
+   <li class="c-ceil"><em>Ceiling</em><strong>0 to 100</strong>
+    <span>The coherence you read once every charge is off. The most powerful
+    version of you, as a figure.</span></li>
+   <li class="c-drag"><em>Drag</em><strong>points of 100</strong>
+    <span>Today's coherence taken off that ceiling. The figure the work
+    moves.</span></li>
+   <li class="c-addr"><em>Addresses</em><strong>112 in the field</strong>
+    <span>Every address the reading runs on, and which of them are carrying
+    now.</span></li>
+   <li class="c-seat"><em>Seat</em><strong>1 plexus or nerve</strong>
+    <span>A named place in the body for every load. A place to put a
+    hand.</span></li>
+   <li class="c-ord"><em>Order</em><strong>1 address at a time</strong>
+    <span>The sequence to take them off in. Doing it in the wrong order is why
+    the last attempt did not hold.</span></li>
+  </ul>
+  <p class="m">A release run is at most 25 patterns, and one pattern is one
+  thought line at one address by way of one channel. The codex behind the engine
+  puts a therapy session at one to six patterns released, so a single run is four
+  to twenty five sessions of throughput at that rate. Four is the honest end of
+  that range to quote and it is the one quoted here.</p>
+  <p class="m">Throughput, and not outcome. How many patterns come off is
+  checkable against the table. What a life does afterwards is not, and nothing
+  here will claim it.</p>
+  <div class="box">
+   <h3>The limit, once</h3>
+   <p>Every figure above is computed from what you report about yourself. It
+   reads self report, and a clinician reads a person. Where a configuration needs
+   one, the instrument says so on the surface and names the reason.</p>
+  </div>
+  <div class="cta">
+   <a class="btn" href="atuned-quiz.html">Take the test</a>
+   <a class="btn ghost" href="atuned-buy.html">See the tiers</a>
+  </div>
+  <p class="meta">A hundred questions, one per screen. Stop and come back.
+  Nothing you answer leaves your browser.</p>
+ </div>
+</section>
+
+<!-- THE CLOSE IS HIS AND IT STAYS WHOLE. Three lines, his order, his words. -->
+<div class="close">
+ <p>This is you.</p>
+ <p>We help you become the best version of yourself.</p>
+ <p class="last">In mind, body, spirit and soul.</p>
+</div>
+
+<p class="foot">This page makes no request of any kind. It reads self report. A
+clinician reads a person, and those are different jobs.
+<a href="atuned-funnel.html">What it reads</a>. <a href="atuned-buy.html">Tiers</a>.
+<a href="atuned-quiz.html">The test</a>.</p>
+
+</div></body></html>

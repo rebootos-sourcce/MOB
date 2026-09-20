@@ -21,6 +21,68 @@ reopens. Every seat adds its own.
 
 ---
 
+## 0d2. RULED 20 SEPTEMBER, THIRTEENTH PASS. THE STORY PAGE. HIGH PRIORITY.
+
+His words: "This is high priority. The most important portion of the product
+has gotten the least amount of attention."
+
+He is right, and the record supports him. Story is the surface the whole
+content chain starts at, and every pass today went to the ritual page, the
+codex, the avatar, the funnel and the compass. Story has not been rebuilt once.
+
+### SY. THE JOURNAL BOX, WHICH DOES NOT FEEL LIKE ONE.
+
+- [ ] **SY1. Too much copy in and around the box,** and "The Day" goes.
+- [ ] **SY2. A circular record button, lower right, inside the field.** Press
+      it and recording restarts.
+- [ ] **SY3. A red light, upper left, while it is listening.** The one
+      unmissable signal that a microphone is open. The privacy line still has
+      to be said before it opens, which is the standing ruling, but the light
+      is what says it is happening now.
+- [ ] **SY4. Otherwise click in and type.** No mode to choose first.
+- [ ] **SY5. The box has to carry the weight of what it is.** His words: "the
+      story is our journal, and there's an aesthetic or a feel that's missing
+      the importance of what this is." This is the one item on the list that
+      is a feeling rather than a rule, and it is the most important one on the
+      page.
+- [x] **SY6. Commit is already just Commit.** He caught himself.
+
+### SR. THE RELEASE PANEL, RUN FROM THE STORY.
+
+- [ ] **SR1. It is a small panel and the release runs from here.**
+- [ ] **SR2. Select what to run from the imprints panel, including several.**
+      So "heaviest in this story" stops being the selector and becomes at most
+      a default.
+- [ ] **SR3. Pace is a field a person types into, default one.**
+- [ ] **SR4. Run release, not Run a release,** and the control sits above the
+      fold, not under it.
+- [ ] **SR5. The release buttons are redesigned.** Named by him and not
+      specified, so it needs a proposal rather than a guess.
+
+### SI. THE IMPRINTS PANEL, AND WHAT SELECTING TELLS YOU.
+
+- [ ] **SI1. An imprints button upper right opens the full page.**
+- [ ] **SI2. Press one imprint and it tells you about that one.**
+- [ ] **SI3. Press several and it tells you about each, and then how they work
+      through you together.** That last clause is the interesting one and
+      nothing in the product does it yet: the engine already builds complexes
+      out of pairs, so the answer to "how do these two work together" is a
+      thing it can compute rather than a sentence somebody writes.
+
+### SX. THE SMALL TEXT, AND A WORD THAT MEANS NOTHING.
+
+- [ ] **SX1. "Addresses" is a meaningless term to a person.** His ruling, and
+      it needs a sweep of the whole app rather than one surface: it is one of
+      the most used words in the product.
+- [ ] **SX2. All the counting subtext goes.** Three addresses, twelve
+      patterns, about twenty six seconds, fifteen at the third eye. His words:
+      people can count how many patterns are under the third eye.
+- [ ] **SX3. Every story cloud pill takes the product's own figure
+      treatment,** the ring with the number in it, so one component is used
+      everywhere instead of a second design living on this page.
+
+---
+
 ## 0e2. MEASURED 20 SEPTEMBER. WHAT THE ONBOARDING PASS LEFT BEHIND.
 
 Onboarding is off, ruled. That seat stood down and wrote what it measured to

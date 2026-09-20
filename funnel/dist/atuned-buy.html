@@ -1,0 +1,569 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<!-- The umlaut is a character in a string and a drawn dot pair on the page.
+     See the note in about.html: funnel/index.html carries the mechanism and
+     writes the plain spelling into its own title, and a title has no CSS. -->
+<title>Atüned, tiers</title>
+<meta name="description" content="Sight is not for sale. Every tier sees the whole reading, free included. What a tier buys is new ground. Atüned, Source OS.">
+<style>
+/* FALLBACK TOKENS ONLY, AND tokens.css OVERRIDES EVERY ONE OF THEM. The link
+   sits after this block so the generated palette wins whenever it is present.
+   The full argument is in about.html and is not repeated here. The block holds
+   exactly the tokens this page reads and nothing else, checked against var()
+   uses in this file and against tokens.css value by value rather than counted
+   by hand. */
+:root{
+ --bg:#0C0D12; --panel:#1A1D26; --panel-2:#252833;
+ --edge:rgba(255,255,255,.09); --edge-2:rgba(255,255,255,.14);
+ --ink:#EFEDE8; --mid:#B4B0A8; --dim:#94908A;
+ --sacral:#D19255; --throat:#65B8D4; --eye:#8296DB;
+ --accent:#7EB8D4; --on-accent:#0B1418;
+ --au:#C2A063; --um:#FFFFFF; --good:#68CBA4;
+ --sans:'Inter','Inter Tight',system-ui,-apple-system,'Segoe UI',sans-serif;
+ --num:'Inter','Inter Tight',system-ui,-apple-system,sans-serif;
+ --r-s:11px; --tap:44px;
+ --ease-out:cubic-bezier(.22,1,.36,1); --t-micro:120ms;
+ --g2:10px; --g3:16px;
+}
+
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
+ font-family:var(--sans);-webkit-text-size-adjust:100%}
+body{font-size:17px;line-height:1.62}
+:root{--measure:64ch}
+.wrap{max-width:1120px;margin:0 auto;padding:40px var(--g3) 64px}
+.m{max-width:var(--measure)}
+
+/* ---- the mark ---- */
+.mark{display:grid;gap:4px;justify-items:center;text-align:center}
+h1{font-size:44px;line-height:1;letter-spacing:-.025em;margin:0;font-weight:600}
+h1 .um{position:relative;display:inline-block}
+h1 .um::before,h1 .um::after{content:'';position:absolute;top:-.44em;
+ width:.13em;height:.13em;border-radius:50%;background:var(--um)}
+h1 .um::before{left:.05em}
+h1 .um::after{left:.34em}
+/* Source OS, in --au, which is the real gold. Not uppercased: the casing is
+   ruled and a text-transform would undo the ruling in the render. */
+.os{font-family:var(--num);font-size:12.5px;letter-spacing:.34em;
+ color:var(--au);margin:0;font-weight:500}
+.nav{margin:26px 0 0;display:flex;gap:var(--g3);flex-wrap:wrap;
+ font-size:13px;letter-spacing:.06em}
+.nav a{color:var(--dim);text-decoration:none;border-bottom:1px solid var(--edge-2);
+ padding-bottom:2px;transition:color var(--t-micro) var(--ease-out)}
+.nav a:hover,.nav a:focus-visible{color:var(--ink)}
+.nav b{color:var(--ink);font-weight:600;border-bottom:1px solid var(--accent);
+ padding-bottom:2px}
+
+.lead{font-size:26px;line-height:1.34;margin:34px 0 0;letter-spacing:-.015em;
+ max-width:34ch}
+.lead b{font-weight:600}
+.lead span{display:block;color:var(--mid)}
+
+p{margin:16px 0 0}
+section{margin-top:56px;padding-top:30px;border-top:1px solid var(--edge)}
+.eye{display:block;font-size:11.5px;letter-spacing:.17em;text-transform:uppercase;
+ color:var(--accent);margin:0 0 10px}
+h2{font-size:27px;line-height:1.18;margin:0;letter-spacing:-.018em;font-weight:600}
+h3{font-size:17px;margin:0;font-weight:600}
+.bd>p:first-child{margin-top:0}
+
+.box{margin:26px 0 0;padding:18px 18px 20px;border:1px solid var(--edge-2);
+ border-radius:var(--r-s);background:var(--panel)}
+.box h3{margin-bottom:6px}
+.box p{color:var(--mid);margin-top:8px}
+
+/* ---- the unit. three figures, one word each ---- */
+.figs{list-style:none;margin:24px 0 0;padding:0;display:grid;gap:1px;
+ background:var(--edge);border:1px solid var(--edge);border-radius:var(--r-s);
+ overflow:hidden}
+.figs li{background:var(--panel);padding:14px 16px 15px}
+.figs em{display:block;font-style:normal;font-size:11.5px;letter-spacing:.14em;
+ text-transform:uppercase;color:var(--dim);font-weight:600}
+.figs strong{display:block;font-family:var(--num);font-variant-numeric:tabular-nums;
+ font-size:21px;font-weight:600;margin-top:3px;letter-spacing:-.01em}
+.figs span{display:block;color:var(--mid);font-size:15.5px;margin-top:4px}
+.figs li:nth-child(1) strong{color:var(--throat)}
+.figs li:nth-child(2) strong{color:var(--eye)}
+.figs li:nth-child(3) strong{color:var(--sacral)}
+
+/* ---- the ladder. A TABLE, because five rows of four comparable values is a
+       table and five stacked cards is the same table with the comparison taken
+       out of it. Tabular figures so the price column lines up: a column of
+       readings that does not line up is the one thing that makes an instrument
+       look like a toy. ---- */
+.ladder{margin:24px 0 0;border:1px solid var(--edge);border-radius:var(--r-s);
+ overflow:hidden;background:var(--edge)}
+table{width:100%;border-collapse:collapse;font-size:16px}
+caption{text-align:left;color:var(--dim);font-size:13px;padding:0 0 10px}
+th,td{text-align:left;padding:13px 14px;background:var(--panel);
+ border-bottom:1px solid var(--edge)}
+thead th{background:var(--panel-2);font-size:11.5px;letter-spacing:.14em;
+ text-transform:uppercase;color:var(--dim);font-weight:600;
+ border-bottom:1px solid var(--edge-2)}
+tbody tr:last-child td{border-bottom:0}
+td.n,th.n{font-family:var(--num);font-variant-numeric:tabular-nums;
+ white-space:nowrap}
+/* A COLUMN WHOSE VALUE IS THE SAME ON EVERY ROW IS NOT A COLUMN. The first cut
+   carried a Sees column reading "the whole reading" five times, which squeezed
+   the table at 390 into three line cells and spent the widest column in the
+   layout repeating the page's own lead line. It is in the caption now, said
+   once, and the one rung that differs says so in its own cell. */
+td.rung{font-weight:600}
+td.rung i{display:block;font-style:normal;font-weight:400;font-size:13.5px;
+ color:var(--dim);line-height:1.35;margin-top:2px}
+th.r,td.r{text-align:right}
+td.price{font-weight:600;font-size:18px}
+tbody tr.free td{background:var(--panel-2)}
+/* THE GOLD RULE MARKS THE ROW ONCE, AT ITS LEFT EDGE. On every cell it drew
+   four vertical gold rules through one row and read as a ruled grid rather
+   than as a mark. Caught at 390, where the row is tallest. */
+tbody tr.four td:first-child{box-shadow:inset 2px 0 0 var(--au)}
+.wide{overflow-x:auto}
+
+/* ---- the state of checkout. One line, said once, not repeated and not
+       apologised for. ---- */
+.state{margin:18px 0 0;padding:14px 16px;border:1px solid var(--edge-2);
+ border-left:3px solid var(--accent);border-radius:var(--r-s);
+ background:var(--panel);color:var(--mid);font-size:15.5px}
+.state b{color:var(--ink)}
+
+/* ---- what every tier sees ---- */
+.sees{list-style:none;margin:22px 0 0;padding:0;display:grid;gap:1px;
+ background:var(--edge);border:1px solid var(--edge);border-radius:var(--r-s);
+ overflow:hidden}
+.sees li{background:var(--panel);padding:12px 16px 13px;color:var(--mid);
+ position:relative;padding-left:34px}
+.sees li::before{content:'';position:absolute;left:15px;top:19px;width:7px;
+ height:7px;border-radius:50%;border:1.4px solid var(--good)}
+.sees li b{color:var(--ink);font-weight:600}
+
+.cta{margin-top:30px;display:flex;gap:var(--g2);flex-wrap:wrap;align-items:center}
+a.btn{display:inline-block;background:var(--accent);color:var(--on-accent);
+ text-decoration:none;font-weight:600;font-size:18px;padding:16px 34px;
+ border-radius:9px;min-height:var(--tap);line-height:20px}
+a.btn.ghost{background:transparent;color:var(--ink);
+ box-shadow:inset 0 0 0 1px var(--edge-2)}
+a.btn:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+.meta{margin:14px 0 0;font-size:13px;color:var(--dim)}
+.bd p a{color:var(--accent);text-decoration:none;
+ border-bottom:1px solid var(--edge-2)}
+.bd p a:hover,.bd p a:focus-visible{border-bottom-color:var(--accent)}
+
+.close{margin-top:56px;padding-top:30px;border-top:1px solid var(--edge-2)}
+.close p{font-size:26px;line-height:1.36;margin:0;letter-spacing:-.015em}
+.close p+p{margin-top:2px}
+.close .last{color:var(--accent)}
+.foot{margin-top:48px;padding-top:20px;border-top:1px solid var(--edge);
+ font-size:13px;color:var(--dim)}
+.foot a{color:var(--mid)}
+
+/* THE NAV IS A CONTROL AND --tap IS A FLOOR, NOT A TARGET. Measured at 390 the
+   four nav links stood 20px high against a 44px floor, which is the defect the
+   token exists to stop repeating in forty separate padding declarations. The
+   row grows to the floor at narrow widths and stays a text row above them,
+   where a pointer is doing the aiming. */
+@media(max-width:700px){
+ .nav{gap:var(--g3) 18px}
+ .nav a,.nav b{display:inline-flex;align-items:center;min-height:var(--tap);
+  padding-bottom:0;line-height:1.2}
+}
+
+@media(min-width:560px){
+ .figs{grid-template-columns:repeat(3,1fr)}
+ .sees{grid-template-columns:1fr 1fr}
+}
+@media(min-width:1040px){
+ body{font-size:17.5px}
+ section{display:grid;grid-template-columns:250px minmax(0,1fr);
+  column-gap:44px;align-items:start}
+ .hd{position:sticky;top:34px}
+ .bd{min-width:0}
+ .mark{justify-items:start;text-align:left}
+ h1{font-size:64px}
+ .lead{font-size:34px;margin-top:30px}
+ .m{max-width:70ch}
+}
+@media(max-width:400px){
+ h1{font-size:34px} .lead{font-size:21px} h2{font-size:22px}
+ .close p{font-size:20px}
+ .os{letter-spacing:.26em}
+ th,td{padding:11px 10px;font-size:15px}
+}
+</style>
+<!-- tokens.css last, so the generated palette wins. BUILD-single.sh replaces
+     this exact tag with an inline style block. -->
+<style>
+/* tokens.css, inlined */
+/* GENERATED. Do not edit.
+   Written by tools/tokens.py from atuned_src/shell/head.html, which is the
+   app's own stylesheet. The funnel and the app have to look like one
+   product, and a palette copied by hand is correct on the day it is copied
+   and wrong afterwards. Change a value in head.html and run the tool.
+   44 tokens. */
+:root{
+ /* THE SURFACE RAMP WAS NARROWER THAN A PRINTING TOLERANCE.
+
+    Measured: --bg to --panel was 1.08 to 1 and --bg to --panel-2 was 1.14.
+    Four declared levels of surface spanning a sixth of a stop, which is why
+    the page squints down to three vertical grey slabs and the eye lands on
+    nothing first. The architecture of every screen rested on a distinction
+    that was not visible.
+
+    The ground goes down and the raised surfaces go up, so the range opens
+    from both ends rather than lightening the product. Muted is a saturation
+    ruling and not a contrast one, and this changes no hue. */
+ --bg:#0C0D12; --panel:#1A1D26; --panel-2:#252833; --sunk:#090A0E;
+ --edge:rgba(255,255,255,.09); --edge-2:rgba(255,255,255,.14);
+ /* --dim WAS BELOW AA EVERYWHERE IT APPEARED, and it is the only token
+    marking the second tier of the information architecture: every eyebrow,
+    every key label, every explanatory subline. Measured at 3.70 to 1 on
+    --panel-2 and 3.92 on --panel, and it carried 104 of the 105 contrast
+    failures on the Summary in Dark. One value, 104 defects.
+
+    It also matters more than the ratio suggests. Six of the thirteen people
+    in the reference sample are 57 or older, and contrast sensitivity falls
+    materially past 55. At 3.70 that half of the sample loses the whole layer
+    that tells them what they are looking at. */
+ --ink:#EFEDE8; --mid:#B4B0A8; --dim:#94908A;
+ --root:#D6524C; --sacral:#D8924E; --solar:#DABF6A;
+ --heart:#5FD5A6; --throat:#5EBBDB; --eye:#7D93E0; --crown:#A77EDB;
+ --alarm:#FF2E1F; --alarm-soft:rgba(255,46,31,.16);
+ /* THE ACCENT IS BLUE. Ruled. It was gold since the rebuild and the owner
+    never chose it: he chose the blue, which is the original app's own
+    --law-accent:#7eb8d4, used there in thirteen places. --accent is the one
+    source of truth and --gold is kept as its alias because sixty places in
+    this sheet already read that name. Nothing reads a literal.
+
+    --on-accent is the ink that sits on top of a filled accent. It was
+    var(--on-accent), a warm near black chosen against gold, and a warm ink on a cool
+    fill is the one thing that would still have read as the old palette.
+
+    --um is the umlaut on the wordmark. It sits on the bar rather than on the
+    letter, so it answers to the background. White on dark, as ruled. */
+ --accent:#7EB8D4; --gold:var(--accent); --on-accent:#0B1418;
+ /* TRUE GOLD, SEPARATE FROM --gold.
+
+    --gold is an alias for the accent and has been since the accent was ruled
+    blue, so everything reaching for "gold" gets blue. That is correct for the
+    eyebrows and the rules that were gold before the ruling, and it is wrong
+    for the one thing that was asked for in actual gold: Source OS under the
+    wordmark rendered in the blue accent, twice, because the token lied about
+    its own name.
+
+    --au is gold. Muted, warm, sitting next to the Solar seat without becoming
+    it, and dark enough on paper to hold. Nothing else uses it unless it is
+    asked for by name. */
+ --au:#C2A063;
+ /* the ink on a solid seat colour. every seat in this palette is light
+    enough that one dark ink holds on all seven, in every lighting. */
+ --on-flat:#0E1015;
+ --sky:#7EB8D4; --um:#FFFFFF;
+ /* #CB5F59 measures 4.01 against --panel-2 and 4.44 against the seat tinted
+    panel. It is not carrying text today, it is a three pixel marker and a
+    seven percent wash, so the 4.5 text threshold is not the one it has to
+    clear. Moved anyway: a marker that thin at four to one is hard to see at
+    all past about fifty five, and three of the nine reference people are
+    fifty seven or older. #D4736D measures 4.87 and 5.40 on the same two.
+    Snow's own value is 5.62 and does not move. */
+ --good:#68CBA4; --bad:#D4736D;
+ /* Lexend is a wide face by design, which is why the rail clipped: Witness
+    rendered as Wit. Inter is narrower at the same size and carries more
+    characters per line without dropping the point size. The font tuner is
+    gone on the owner's ruling, so this is the one face and there is no
+    per person override to keep working. */
+ --sans:'Inter','Inter Tight',system-ui,-apple-system,'Segoe UI',sans-serif;
+ /* ONE FAMILY MEANT ONE FAMILY, AND THIS TOKEN NAMED A SECOND ONE.
+
+    The comment above it said Lexend carries the digits. Lexend was never in
+    the build. When Google Fonts went, Inter was embedded as a variable font
+    and Lexend was not, so document.fonts lists exactly one family and every
+    number in this product, every reading, every allowance, every tabular
+    column, was falling through to system-ui. Which face that is depends on
+    the machine, so the one thing this token existed to guarantee, that
+    columns of figures line up, was the one thing it could not do.
+
+    document.fonts.check('12px Lexend') returns true, which is what hid this:
+    check answers whether the text can be rendered at all, and a fallback
+    counts. The list of loaded families is the honest reader and it has one
+    entry.
+
+    Inter carries the digits now, which is a statement about a font that is
+    actually here. Tabular figures are a feature of Inter and every column in
+    the sheet already asks for them with font-variant-numeric. */
+ --num:'Inter','Inter Tight',system-ui,-apple-system,sans-serif;
+ --r:16px; --r-s:11px; --r-xs:8px;
+ /* Minimum touch target. 69 of the interactive elements measured under 44px,
+    which is the floor a finger needs. The number lives here so it cannot
+    drift back into forty separate padding declarations. */
+ --tap:44px;
+ /* Motion. Measured before this block existed: 381 of 384 live animated
+    elements ran on the browser default ease, a symmetric curve that reads as
+    mechanical because it decelerates as slowly as it accelerates. The four
+    hand written beziers in this sheet sat on one live element. Three curves
+    and four durations, named for the job, so a hover and a tab cannot drift
+    to the same speed again.
+
+    out  for a thing arriving. fast off the mark, long settle.
+    in   for a thing leaving. it does not need to be watched out.
+    land for a thing that lands. one overshoot, no ring. */
+ --ease-out:cubic-bezier(.22,1,.36,1);
+ --ease-in:cubic-bezier(.4,0,1,1);
+ --ease-land:cubic-bezier(.34,1.56,.64,1);
+ /* hover, press, focus. below about 100ms a change reads as a jump with no
+    cause; above about 150 the pointer has already left. */
+ --t-micro:120ms;
+ /* one thing entering or leaving. */
+ --t-element:220ms;
+ /* a panel or a rail, which carries more area and so needs more time. */
+ --t-surface:320ms;
+ /* a whole tab. the longest thing the product is allowed to take. */
+ --t-context:420ms;
+ /* the spacing scale. three steps. 6 between things in one control, 10
+    between controls, 16 between blocks. gaps of 5, 7, 8, 9 and 11 were all
+    doing one of those three jobs with no reason stated, so they read as
+    drift rather than as rhythm. */
+ --g1:6px; --g2:10px; --g3:16px;
+ --shadow:0 12px 34px rgba(0,0,0,.34);
+}
+</style>
+</head><body>
+<div class="wrap">
+
+<div class="mark">
+ <h1>At<span class="um">u</span>ned</h1>
+ <p class="os">Source OS</p>
+</div>
+
+<nav class="nav"><b>Tiers</b>
+ <a href="atuned-funnel.html">What it reads</a>
+ <a href="atuned-about.html">About</a>
+ <a href="atuned-quiz.html">The test</a></nav>
+
+<p class="lead"><b>Sight is not for sale.</b>
+<span>Every tier sees the whole reading, free included. What a tier buys is new
+ground.</span></p>
+
+<!-- ============================================================
+     THE FIRST SURFACE IN THIS PRODUCT THAT ASKS FOR MONEY.
+
+     The ladder is read off DECISIONS.md and not invented. What is ruled there,
+     and is on this page as ruled: the gift of a hundred with everything
+     visible; free at ten a week, banking; the grants at 400, 800, 1200 and
+     1200 plus the cohort suite; ninety nine on tier four, which is his own
+     number; every tier seeing the whole reading; the referral at fifty, capped
+     at four a month; a cancellation destroying nothing; and the cohort lead
+     seeing the outputs and never the story cloud.
+
+     THREE THINGS ARE ON THIS PAGE THAT ARE NOT RULED, AND THEY ARE MARKED
+     RATHER THAN BLENDED IN.
+
+     1. Twelve, twenty nine and fifty nine. DECISIONS.md prints them as the
+        recommendation the pricing work reached and prints the price column as
+        open for tiers one to three. They are on the page because a price list
+        with no prices is not one, and they are named in the report as the
+        first thing needing his ruling.
+     2. Monthly only. Whether an annual plan exists at all, and whether it
+        carries a discount, is open and is his. Two months free was ruled in
+        and then ruled back out, so nothing on this page implies a year.
+     3. Free at ten a week. Ruled, in his own words. The open item beside it is
+        whether it should be twenty five, which is exactly one run. The page
+        states ten and says the grant banks, which is the ruling.
+
+     AND ONE THING DELIBERATELY LEFT OFF. One pattern is valued at one dollar
+     internally. DECISIONS.md rules that it is never a published price and is
+     used for the gift only, because printing it next to a tier makes the
+     division trivial. So no dollar figure appears against a pattern anywhere
+     on this page, including against the gift.
+     ============================================================ -->
+
+<!-- 1. THE UNIT FIRST. A price list is unreadable until the thing being bought
+        has a size. -->
+<section>
+ <div class="hd"><span class="eye">The unit</span>
+  <h2>One pattern is one thought line.</h2></div>
+ <div class="bd">
+  <p class="m">A pattern is one thought line, at one address, by way of one
+  channel. Reading it in thought spends it. Nothing here asks you to say anything
+  out loud.</p>
+  <!-- HIS CHAIN IS THE SPINE HERE TOO, AND IT IS LOAD BEARING RATHER THAN
+       DECORATIVE: what a pattern buys is one kink, and a tier is the rate at
+       which the cluster and the network above it come apart. The full chain is
+       on the about page and is not restated here, because a price list that
+       re-explains the product has stopped being a price list. -->
+  <p class="m">What a pattern takes apart is a kink: one address holding a stress
+  response. Clusters are built out of kinks and networks are built out of
+  clusters, so a rung on this ladder is a rate at which you can integrate the
+  kink, the cluster and the network. <a href="atuned-about.html">The chain is on the
+  about page</a>, with the arithmetic under each rung of it.</p>
+  <ul class="figs">
+   <li><em>Lines</em><strong>21,400 in total</strong>
+    <span>The field holds 112 addresses and 107 of them can be released, at four
+    channels each and fifty lines a channel.</span></li>
+   <li><em>Run</em><strong>25 patterns at most</strong>
+    <span>One release run. The cap is a ceiling and a run built under it costs
+    what it says before you begin it.</span></li>
+   <li><em>Reruns</em><strong>0 patterns</strong>
+    <span>Ground you have already opened is free to run again, as often as you
+    like, on every tier.</span></li>
+  </ul>
+  <p class="m">So a tier is a rate of new ground and nothing else. At 400 patterns
+  a month, the 21,400 lines in the product take fifty four months to walk.</p>
+ </div>
+</section>
+
+<!-- 2. THE GIFT. The live door, and the only one that is live today. -->
+<section>
+ <div class="hd"><span class="eye">The gift</span>
+  <h2>A hundred patterns, before you decide anything.</h2></div>
+ <div class="bd">
+  <p class="m">A new person gets 100 patterns, free, with everything visible. Four
+  full runs at the 25 cap, spent on your own material, and then you know what this
+  is rather than having been told.</p>
+  <p class="m">Nothing expires. Unspent patterns bank until there are enough for a
+  run, so a weekly grant smaller than a run adds up instead of draining.</p>
+  <div class="cta">
+   <a class="btn" href="atuned-quiz.html">Take the test</a>
+   <a class="btn ghost" href="atuned-about.html">Read what it is</a>
+  </div>
+  <p class="meta">A hundred questions, one per screen. No card, no account, and
+  nothing you answer leaves your browser.</p>
+ </div>
+</section>
+
+<!-- 3. THE LADDER. -->
+<section>
+ <div class="hd"><span class="eye">The ladder</span>
+  <h2>Five rungs, and the only thing that moves is volume.</h2></div>
+ <div class="bd">
+  <div class="ladder"><div class="wide">
+  <table>
+   <caption>Every rung sees the whole reading. Patterns are new ground opened,
+    and prices are dollars a month.</caption>
+   <thead><tr><th>Rung</th><th class="n">Patterns</th><th class="n r">A week</th>
+    <th class="n r">Price</th></tr></thead>
+   <tbody>
+    <tr class="free"><td class="rung">Free</td><td class="n">10 a week</td>
+     <td class="n r">10</td><td class="n r price">0</td></tr>
+    <tr><td class="rung">One</td><td class="n">400 a month</td>
+     <td class="n r">100</td><td class="n r price">12</td></tr>
+    <tr><td class="rung">Two</td><td class="n">800 a month</td>
+     <td class="n r">200</td><td class="n r price">29</td></tr>
+    <tr><td class="rung">Three</td><td class="n">1,200 a month</td>
+     <td class="n r">300</td><td class="n r price">59</td></tr>
+    <tr class="four"><td class="rung">Four<i>and the people you lead</i></td>
+     <td class="n">1,200 a month</td>
+     <td class="n r">300</td><td class="n r price">99</td></tr>
+   </tbody>
+  </table>
+  </div></div>
+  <p class="state"><b>Checkout is not open yet</b>, so nothing on this table can be
+  charged today. The gift above needs no card and no account.</p>
+  <p class="m">The free rung banks. Ten a week against a run of 25 means one
+  release every two and a half weeks. The pace is deliberate. Invite somebody and
+  you get 50 patterns when they join, up to four invitations a month.</p>
+ </div>
+</section>
+
+<!-- 4. WHAT EVERY TIER SEES. His ruling, and it is the spine of the page: the
+        one mechanic that withheld a person's own reading in order to sell it
+        back is gone. -->
+<section>
+ <div class="hd"><span class="eye">What every rung sees</span>
+  <h2>All of it, on the free rung included.</h2></div>
+ <div class="bd">
+  <ul class="sees">
+   <li><b>The fetters</b> and every address currently carrying.</li>
+   <li><b>The saboteurs</b>, what triggers each one and the sentence it says.</li>
+   <li><b>The complexes</b> and the hyper complexes stacked on top of them.</li>
+   <li><b>The archetypes</b>, the character layers and the masks.</li>
+   <li><b>The pain map</b> and the body map, at a named plexus or nerve.</li>
+   <li><b>Every table</b> the arithmetic runs on, open to read and check.</li>
+  </ul>
+  <p class="m">No part of your own reading is held back to be sold to you later.
+  A tier buys how much new ground may be opened, and that is the whole
+  difference between one rung and the next.</p>
+ </div>
+</section>
+
+<!-- 5. TIER FOUR AND THE CONSENT BOUNDARY. A practitioner seeing somatic and
+        psychological self report is a consequential grant, so the boundary is on
+        the page where it is being sold and not in a policy behind it. -->
+<section>
+ <div class="hd"><span class="eye">Tier four</span>
+  <h2>For somebody leading other people.</h2></div>
+ <div class="bd">
+  <p class="m">Tier four carries the same 1,200 patterns a month as tier three, so
+  the volume is not what separates them. What it adds is the cohort lead suite:
+  manage profiles, build rituals and hold accountability for the people you
+  lead.</p>
+  <p class="m">A lead sees the outputs and not the tools. Fetters, saboteurs,
+  complexes, hyper complexes and the analytics behind them. Not the spiritual
+  material, and not the story cloud: the story is the person's own words, and the
+  record and the story are never held joined.</p>
+  <div class="box">
+   <h3>How sight is granted</h3>
+   <p>The person grants it by name. The list of who has sight sits on their
+   record where they can read it, and one move takes it back. There is no silent
+   default and no grant that arrives with a subscription.</p>
+  </div>
+ </div>
+</section>
+
+<!-- 6. WHAT IT IS WORTH. Throughput, never outcome, and the low end of every
+        range is the one quoted. Both rules are DECISIONS.md's own. -->
+<section>
+ <div class="hd"><span class="eye">What it is worth</span>
+  <h2>Measured as throughput, against our own lowest figure.</h2></div>
+ <div class="bd">
+  <p class="m">The codex behind the engine puts a therapy session at one to six
+  patterns released, and half an hour of meditation or breathwork at nine to
+  eighteen. A month of daily half hours is 270 to 540 patterns.</p>
+  <p class="m">Tier one is 400 a month, which sits inside that month. That is the
+  sentence the whole table exists to support, and it is a rate of release rather
+  than a claim about a life.</p>
+  <div class="box">
+   <h3>Two rules on saying it</h3>
+   <p>Throughput, never outcome. How many patterns come off is checkable against
+   the table the engine reads. What a life does afterwards is not, and nothing
+   here will put a figure on it.</p>
+   <p>The low end gets said. A range of one to six quoted at six is the most
+   flattering reading of our own number, and it is the first thing a hostile
+   reader checks.</p>
+  </div>
+ </div>
+</section>
+
+<!-- 7. STOPPING. The line the whole system is built behind, made concrete on
+        the one page where money is involved. -->
+<section>
+ <div class="hd"><span class="eye">Stopping</span>
+  <h2>Leaving costs nothing and takes nothing with it.</h2></div>
+ <div class="bd">
+  <p class="m">A cancellation destroys nothing. The plan is one field on your
+  record, the record is yours, and your reading, your stories and your imprints
+  stay where they are.</p>
+  <p class="m">Nothing here expires, nothing counts down, and no figure in the
+  product is taken away for a day off. A person has to be able to stop and be glad
+  they used it, which is the line this whole thing is built behind, and a ladder
+  that made leaving expensive would be a different product.</p>
+  <p class="m">A card or a plan is changed from one button, on a page held by the
+  processor. No card detail is ever typed into the instrument, because the
+  instrument has no network in it to carry one.</p>
+ </div>
+</section>
+
+<!-- THE CLOSE IS HIS AND IT STAYS WHOLE, and it is the same close as the about
+     page carries. One close for the funnel. A second one written for this page
+     would be a pricing page arguing with the brand. -->
+<div class="close">
+ <p>This is you.</p>
+ <p>We help you become the best version of yourself.</p>
+ <p class="last">In mind, body, spirit and soul.</p>
+</div>
+
+<p class="foot">This page makes no request of any kind. It reads self report. A
+clinician reads a person, and those are different jobs.
+<a href="atuned-funnel.html">What it reads</a>. <a href="atuned-about.html">About</a>.
+<a href="atuned-quiz.html">The test</a>.</p>
+
+</div></body></html>

@@ -36,8 +36,15 @@ const WHO=(process.argv[2]||'Marcus,Gordon,Sofia,__empty').split(',');
    await pg.waitForTimeout(500);
    const tag=who==='__empty'?'empty':who;
    await pg.screenshot({path:path.join(__dirname,'sheet-'+tag+'-'+w[0]+'.png'),fullPage:true});
+   /* SIX RUNS AND NOT TWELVE. A quarter of release work is the unit every
+      other document in this repository uses, and at twelve runs the lighter
+      profiles empty completely: the release drains the nine axes rather than
+      the addresses, so Marcus reaches charge nought, compute() returns unread
+      and the worked shot came back showing the first ever open screen. That
+      is worth knowing and it is in DESIGN-sheet.md, and it makes a useless
+      picture. Six runs is half a quarter and it shows a sheet mid work. */
    if(who!=='__empty'){
-    for(let i=0;i<12;i++){await pg.click('#run');}
+    for(let i=0;i<6;i++){await pg.click('#run');}
     await pg.waitForTimeout(400);
     await pg.screenshot({path:path.join(__dirname,'sheet-'+tag+'-worked-'+w[0]+'.png'),fullPage:true});
     await pg.click('#reset');
