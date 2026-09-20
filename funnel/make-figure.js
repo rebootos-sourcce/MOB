@@ -38,8 +38,28 @@ var VAR={root:'--root',sacral:'--sacral',solar:'--solar',heart:'--heart',
 
 function n(v,d){return (+v).toFixed(d==null?2:d);}
 
+/* THE VIEWBOX IS THE FIGURE, NOT THE BOX IT WAS DRAWN IN.
+
+   Everything here is expressed in the Body page's 0 to 100 square, but the
+   body only occupies the middle of it, so at 320 pixels wide the figure drew
+   about 145 and sat in dead air. The bounds are measured off the path's own
+   coordinates rather than typed in: every number pair in BODYPATH is a point
+   or a control point, so their extent is a superset of the curve's and is
+   safe to crop to. The nerve map is checked against it too, because a branch
+   outside the crop would be cut. */
+var bx=[],by=[];
+(function(){
+ var nums=e.BODYPATH.match(/-?\d*\.?\d+/g)||[];
+ for(var i=0;i+1<nums.length;i+=2){
+  bx.push(PMTX+PMS*(+nums[i])); by.push(PMTY+PMS*(+nums[i+1])); }
+ e.NERVEBR.forEach(function(br){br.p.forEach(function(q){bx.push(q[0]);by.push(q[1]);});});})();
+var pad=1.5;
+var VX=Math.min.apply(null,bx)-pad, VY=Math.min.apply(null,by)-pad;
+var VW=Math.max.apply(null,bx)+pad-VX, VH=Math.max.apply(null,by)+pad-VY;
+
 var out=[];
-out.push('<svg class="hero" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" aria-hidden="true">');
+out.push('<svg class="hero" viewBox="'+n(VX)+' '+n(VY)+' '+n(VW)+' '+n(VH)
+ +'" preserveAspectRatio="xMidYMid meet" aria-hidden="true">');
 
 /* one radial gradient per seat, in that seat's own colour. the seats are not
    discs: charge is heat in tissue and heat has no edge, which is the ruling
@@ -101,5 +121,5 @@ if(i<0||j<0)throw new Error('index.html is missing the figure markers');
 var before=html.slice(i+A.length,j);
 html=html.slice(0,i+A.length)+'\n'+svg+'\n'+html.slice(j);
 fs.writeFileSync(page,html);
-console.log('figure: '+e.NERVEBR.length+' nerve branches, '+SEATS.length+' seats, '
- +svg.length+' bytes'+(before.trim()===svg?' (unchanged)':' (rewritten)'));
+console.log('figure: '+e.NERVEBR.length+' nerve branches, '+SEATS.length+' seats, viewBox '
+ +n(VX)+' '+n(VY)+' '+n(VW)+' '+n(VH)+', '+svg.length+' bytes'+(before.trim()===svg?' (unchanged)':' (rewritten)'));
