@@ -17,7 +17,7 @@ for(let rw=0;rw<9;rw++)for(let c=0;c<19;c++){
      ?'<br><b>1.3× affinity pair</b> for '+DOMAINS[c].r:'');});
  $('mx').appendChild(b);MXC.push(b);}
 $('mx').addEventListener('mouseleave',mxKey);
-function mxKey(){$('mxk').innerHTML='Columns are domains, rows are child fetters. '
+function mxKey(){$('mxk').innerHTML='Columns are domains, rows are child emotions. '
  +'Brightness is the SQ held in that cell. A gold ring is a <b>1.3× affinity pair</b>. '
  +'Click any cell.<div class="mxrow">'
  +ROOTD.map(function(rd){return '<span><i style="background:'+ROOTCOL[rd]+'"></i>'+rd+'</span>';}).join('')
@@ -241,11 +241,11 @@ function runAccDrill(){
   +'means one family fits and the others do not. A wide one means several fit about as '
   +'well, and the name is a guess.</p>'
   +'<div class="pm-eye">What is limiting it</div>'
-  +'<p class="ad-p">'+esc(w.length?w.join('. '):'Laws, signal and expression are all full.')+'</p>'
+  +'<p class="ad-p">'+esc(w.length?w.join('. '):'Moral integrity, signal and expression are all full.')+'</p>'
   +'<div class="pm-eye">How reliable</div>'
   +'<p class="ad-p">'+(a.relN>=0.6?'Reliable':(a.relN>=0.3?'Partial':'Not callable'))
   +'. <b>'+a.rel+'%</b> of the laws are spread three or more, which is what separates one '
-  +'family from another. Laws sitting close together name nothing.</p>');}
+  +'family from another. Laws of integrity sitting close together name nothing.</p>');}
 
 /* ---- personas ---- */
 /* CUSTOM, and a line a person can actually read.

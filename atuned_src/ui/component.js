@@ -18,6 +18,20 @@ var HOT_AT=90;                         /* the alarm band. severity gets its own 
 /* one stroked icon, 24 unit box. declared here because this file loads first
    and every renderer after it wants one. */
 const svgI=function(p){return '<svg viewBox="0 0 24 24">'+p+'</svg>';};
+/* A MARK IS EITHER PATH DATA OR FINISHED MARKUP, and the tables hold both.
+   CHILD, SI, HCX_LIB, GATEGLYPH and the nineteen domains carry a bare d
+   string. SEATGLYPH carries a finished <path> or <circle>, because a seat's
+   mark is sometimes two shapes and one d attribute cannot hold a circle.
+
+   Every renderer that wrapped a mark in <path d="..."> without asking which
+   it had got a nested path for the seven seats, which draws nothing and
+   throws 'Expected moveto path command' once per row. It is invisible in a
+   screenshot and loud in the console, which is where it was found. One
+   emitter reads the first character, so a seat never renders as a broken
+   path again. */
+function glyphPath(ic){
+ if(!ic)return SEATGLYPH._;
+ return String(ic).charAt(0)==='<' ? ic : '<path d="'+ic+'"/>';}
 function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 /* THE COLOUR A SEAT WEARS DEPENDS ON WHAT IT IS SITTING ON, and this knew
    about one light ground out of two. Lumen arrived with paper rails and the
@@ -149,7 +163,13 @@ function crBadge(band,pct,o){
  var glyph=o.glyph||SEATGLYPH[band]||SEATGLYPH._;
  var val=(o.raw!=null)?o.raw:(Math.round(p)+'%');
  var half=G.box/2;
- return '<span class="crb '+size+'" style="--c:'+col+'"'
+ /* BARE IS THE RING WITHOUT ITS PILL. The codex row carries the figure at the
+    far right of the row, where it aligns with every other figure in the
+    column, so a pill overlapping the mark would be the same reading printed
+    twice two centimetres apart. The geometry stays here rather than being
+    redrawn, which is the porting rule: same box, same radius, same stroke. */
+ var bare=!!o.bare;
+ return '<span class="crb '+size+(bare?' bare':'')+'" style="--c:'+col+'"'
   +(o.title?' title="'+esc(o.title)+'"':'')+'>'
   +'<svg class="crb-a" width="'+G.box+'" height="'+G.box+'" aria-hidden="true">'
   +'<circle cx="'+half+'" cy="'+half+'" r="'+G.r+'" fill="none" '
@@ -158,7 +178,7 @@ function crBadge(band,pct,o){
    +'stroke-width="'+G.w+'" stroke-linecap="round" '
    +'stroke-dasharray="'+C.toFixed(1)+'" stroke-dashoffset="'+off.toFixed(1)+'"/></svg>'
   +'<span class="crb-g"><svg viewBox="0 0 24 24" aria-hidden="true">'+glyph+'</svg></span>'
-  +'<span class="crb-v">'+esc(val)+'</span></span>';}
+  +(bare?'':'<span class="crb-v">'+esc(val)+'</span>')+'</span>';}
 /* an address as a badge. the same reading the ring carried, in the shape the
    ruling asked for. */
 function crbNode(n,size,o){o=o||{};

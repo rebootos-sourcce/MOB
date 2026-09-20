@@ -52,8 +52,8 @@ function impPill(n,maxW,IX,ghost,inferred){
       :' · SQ '+n.sq.toFixed(1)+' · pain '+painOf(n,IX.bandLoad)+' · feeds '+(IX.feeds[n.i]||0)));
  /* WHAT THE SENTENCE NAMED, OR WHAT THE SEAT IS. Never the address name on an
     inferred hit. The scan reads a seat and an intensity out of a sentence, and
-    when the words name no fetter the address is chosen by a fallback: the
-    seat's modal fetter, sorted by susceptibility, first four. Printing the
+    when the words name no child emotion the address is chosen by a fallback:
+    the seat's modal emotion, sorted by susceptibility, first four. Printing the
     address name there told a person who had been cut out of a deal that they
     were carrying Deceit and Lying, and a person whose father had died that
     they were carrying Martyrdom. The charge is real and the seat is real. The

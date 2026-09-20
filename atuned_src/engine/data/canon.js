@@ -386,7 +386,9 @@ const ARCH=[
  {nm:'Everyman', v:'stays with the room',   b:'Root', ic:'M12 8m-4 0a4 4 0 108 0 4 4 0 10-8 0M4 21c0-5 4-7 8-7s8 2 8 7'},
  {nm:'Innocent', v:'takes it at face value',b:'Crown', ic:'M12 12m-5 0a5 5 0 1010 0 5 5 0 10-10 0M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2'}];
 
-/* the 21 Laws of Spiritual Integrity, each seated at the band it governs.
+/* the 21 Laws of Moral Integrity, each seated at the band it governs. The
+   book calls this set the Laws of Spiritual Integrity; the owner ruled moral,
+   so moral is what the product says and BOOK-ERRATA.md carries the difference.
    integrity is not one aggregate: a closed law dims its own band. */
 /* EVERY LAW WEARS ITS OWN MARK. Ruled: if it has a name, it has an icon, and
    the icon has a family and the family has a colour. The colour is the seat,

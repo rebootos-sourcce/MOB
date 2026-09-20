@@ -484,7 +484,9 @@ const ARCH=[
  {nm:'Everyman', v:'stays with the room',   b:'Root', ic:'M12 8m-4 0a4 4 0 108 0 4 4 0 10-8 0M4 21c0-5 4-7 8-7s8 2 8 7'},
  {nm:'Innocent', v:'takes it at face value',b:'Crown', ic:'M12 12m-5 0a5 5 0 1010 0 5 5 0 10-10 0M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2'}];
 
-/* the 21 Laws of Spiritual Integrity, each seated at the band it governs.
+/* the 21 Laws of Moral Integrity, each seated at the band it governs. The
+   book calls this set the Laws of Spiritual Integrity; the owner ruled moral,
+   so moral is what the product says and BOOK-ERRATA.md carries the difference.
    integrity is not one aggregate: a closed law dims its own band. */
 /* EVERY LAW WEARS ITS OWN MARK. Ruled: if it has a name, it has an icon, and
    the icon has a family and the family has a colour. The colour is the seat,
@@ -2871,7 +2873,7 @@ function lexRefuse(k,seat,amt,fet){
  if((amt<0)!==(seat==='coherent'))
   errs.push(k+' is seated at '+seat+' with amount '+amt+', and only a coherent entry subtracts');
  if(fet!=null&&CHARGES.indexOf(fet)<0)
-  errs.push(k+' states the fetter '+fet+', which is not one of the nine axes');
+  errs.push(k+' states the child emotion '+fet+', which is not one of the nine axes');
  if(LEX[k]&&LEX[k][LEX_SEAT]!==seat)
   errs.push(k+' is already seated at '+LEX[k][LEX_SEAT]+' and this would move it to '+seat);
  return errs;}
@@ -5190,7 +5192,7 @@ function scanStory(text){
     /* A WORD MAY NAME ITS OWN FETTER, and some have to.
 
        LEX was [seat, intensity] and the fetter was then inferred from the
-       seat's modal one. That works while a seat carries the fetter the word
+       seat's modal one. That works while a seat carries the child emotion the word
        means, and the exhaustion family proves it does not always: the owner
        ruled that exhaustion sits at the solar plexus and is NOT anger, and the
        solar plexus carries ten Anger addresses and no Apathy address at all.
@@ -5325,7 +5327,7 @@ function parseStory(text){
      one Shame address at the heart was enough to route the whole heart band --
      including everything the despair idioms carried -- onto Shame, and grief
      was filed as shame. A named fetter now has to hold at least a quarter of
-     the band, otherwise the band's own modal fetter is the better read. */
+     the band, otherwise the band's own modal child emotion is the better read. */
   var seg=anyNamed? all.filter(function(n){return wanted[n.cf];}) : [];
   /* DID THE TEXT NAME THIS, OR DID WE INFER IT? The answer decides what the
      product is allowed to SAY, and until now it said the same thing either
@@ -5711,7 +5713,7 @@ function sniffSaboteurs(axes){
     ', ramp '+(Math.round(m*100)/100);});
   var w=sabWeight(nm,parts);
   if(w!==1)because.push(parts.length===1
-   ?'one fetter only, so the claim is the least specific in the table and is held at '+w
+   ?'one child emotion only, so the claim is the least specific in the table and is held at '+w
    :'held at '+w+' on the ruling that this row fires on everything');
   out.push({id:'S'+String(i+1<10?'0':'')+(i+1), name:nm,
    confidence:Math.round(conf*100)/100, because:because, weight:w,

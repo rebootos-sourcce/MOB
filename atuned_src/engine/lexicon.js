@@ -276,7 +276,7 @@ function lexRefuse(k,seat,amt,fet){
  if((amt<0)!==(seat==='coherent'))
   errs.push(k+' is seated at '+seat+' with amount '+amt+', and only a coherent entry subtracts');
  if(fet!=null&&CHARGES.indexOf(fet)<0)
-  errs.push(k+' states the fetter '+fet+', which is not one of the nine axes');
+  errs.push(k+' states the child emotion '+fet+', which is not one of the nine axes');
  if(LEX[k]&&LEX[k][LEX_SEAT]!==seat)
   errs.push(k+' is already seated at '+LEX[k][LEX_SEAT]+' and this would move it to '+seat);
  return errs;}

@@ -83,7 +83,11 @@ select{background:var(--panel-2);border:1px solid var(--line2);border-radius:10p
   <div class="side">
    <!-- WHAT IS STANDING. The second question. Standing and not running,
         because running is this product's word for a saboteur. -->
-   <div class="card">
+   <!-- AT THE DAY SPAN THIS CARD IS THE DAY VIEW PRINTED TWICE. The only
+        thing it carried that the tiles did not was the run, so the run moves
+        onto the tile and the card stands down for that one span. Nothing is
+        lost and a whole block of repetition goes. -->
+   <div class="card" id="standcard">
     <div class="eye">Standing</div>
     <div id="stand"></div>
    </div>
@@ -146,13 +150,16 @@ select{background:var(--panel-2);border:1px solid var(--line2);border-radius:10p
 /* ---------- the calendar ---------- */
 .two{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:16px;
  align-items:start}
-.two.month{align-items:stretch}
 .two.week{grid-template-columns:minmax(0,1.95fr) minmax(0,1fr)}
 .stat b{font-size:22px}
 .calwrap{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);
  padding:18px;display:flex;flex-direction:column}
-#cal{flex:1;display:flex;flex-direction:column}
-#cal .grid.month{flex:1;grid-auto-rows:minmax(64px,1fr)}
+#cal{display:flex;flex-direction:column}
+/* THE CELL SHRINKS TO WHAT IT HOLDS. Stretching the rows to fill the column
+   beside the side rail is what made a month cell a hundred pixel box around a
+   thirty four pixel ring. A short card next to a tall rail is ordinary. A tall
+   card with a void inside it is the defect. */
+#cal .grid.month{grid-auto-rows:minmax(56px,auto)}
 #cal .grid.week{grid-auto-rows:minmax(112px,auto)}
 .calhead{display:flex;justify-content:space-between;align-items:baseline;gap:14px;
  margin-bottom:14px;flex-wrap:wrap}
@@ -165,24 +172,28 @@ select{background:var(--panel-2);border:1px solid var(--line2);border-radius:10p
 /* A DAY THE PERSON HAS NOT LIVED THROUGH IS NOT DRAWN. Not an empty square,
    not a faint square, nothing. An empty grid cell is a tally of failures
    arriving through a layout constant. */
-.cell{border-radius:9px;min-height:64px;padding:6px 6px 5px;display:flex;flex-direction:column;
+.cell{border-radius:9px;min-height:56px;padding:6px;display:flex;flex-direction:column;
  justify-content:space-between;background:transparent;border:1px solid transparent;
  font:inherit;color:inherit;text-align:left}
 .cell.live{background:var(--sunk);border-color:var(--line)}
 .cell.ahead{background:transparent;border-color:rgba(255,255,255,.05)}
-.cell.today{border-color:rgba(239,237,232,.7);border-width:1.5px;padding:5.5px 5.5px 4.5px}
+.cell.today{border-color:rgba(239,237,232,.7);border-width:1.5px;padding:5px}
 .cell u{font-size:11.5px;color:var(--dim);text-decoration:none;font-variant-numeric:tabular-nums}
 .cell.today u{color:var(--ink);font-weight:600}
 .cell.pale u{opacity:.42}
-.cell.pre{background:transparent;border-color:transparent}
-.cell .mk{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;min-height:9px}
-/* EVERY KIND KEEPS ITS LANE WHETHER OR NOT IT HAS ANYTHING IN IT. Always on is
-   the left third of every cell, behaviour the middle, release the right, so the
-   sort order is a position a person learns once and the colour says it twice. */
-.cell .mk s{height:8px;border-radius:3px;text-decoration:none;display:block;
- background:transparent;border:1px solid transparent}
-.cell.live .mk s.due{border-color:rgba(255,255,255,.17)}
-.cell .mk s.on{background:var(--kc);border-color:var(--kc)}
+
+/* THE MONTH CELL IS A RING WITH ITS DATE INSIDE IT. It was a tall box with an
+   eight pixel dash near the bottom, which is the wall of absence in a third
+   shape: the largest object on the page was the part with nothing in it. A
+   ring is the grammar this product already uses on the tiles and the chips, so
+   the day earns its cell at every span instead of only at two of them, and the
+   cell shrinks to the ring rather than the ring floating in the cell. */
+.grid.month .cell{align-items:center;justify-content:center;gap:0;padding:6px 4px}
+.dring{position:relative;width:40px;height:40px;display:grid;place-items:center}
+.dring svg{position:absolute;inset:0;width:100%;height:100%}
+.dring u{position:relative;font-size:12px;line-height:1}
+.grid.month .cell.today .dring u{color:var(--ink);font-weight:600}
+.grid.month .cell.pale{background:transparent;border-color:transparent}
 .grid.edit .cell.live{cursor:pointer}
 .grid.edit .cell.live:hover{outline:1.5px solid rgba(239,237,232,.75);outline-offset:1px}
 
@@ -219,6 +230,7 @@ select{background:var(--panel-2);border:1px solid var(--line2);border-radius:10p
 .tile b{font-size:13px;font-weight:600;line-height:1.3}
 .tile span{font-size:11.5px;color:var(--dim);font-variant-numeric:tabular-nums}
 .tile.done b{color:var(--kc)}
+.tile em{font-style:normal;font-size:11.5px;color:var(--kc);font-variant-numeric:tabular-nums}
 .empty{display:block;width:100%;text-align:left;font:inherit;font-size:13px;
  color:var(--dim);line-height:1.6;background:var(--sunk);cursor:pointer;
  border:1px dashed var(--line);border-radius:12px;padding:15px 16px;min-height:60px;
@@ -286,8 +298,10 @@ select{background:var(--panel-2);border:1px solid var(--line2);border-radius:10p
  .seg{width:100%;order:3}.seg button{flex:1;padding:0 8px}
  .calwrap{padding:13px}
  .grid{gap:3px}
- .cell{min-height:46px;padding:5px 4px 4px;border-radius:7px}
- .cell .mk s{max-width:none}
+ .cell{min-height:48px;padding:5px 3px;border-radius:7px}
+ .calwrap{padding:13px 10px}
+ .dring{width:30px;height:30px}
+ .dring u{font-size:10.5px}
  .tile{width:calc(50% - 5px)}
 }
 </style>
@@ -3239,6 +3253,36 @@ function due(){
    var i=len()-1, all=rs.every(function(r){return didOn(r,i);});
    rs.forEach(function(r){if(dueOn(r,i))r.walk[i]=all?0:1;}); draw();};});}
 
+/* ---------- the day, as a ring ----------
+   CL10 asked why the month reads as one colour. The honest half of the answer
+   is that Marcus's past IS one kind: he has ninety days of an always on
+   practice and nothing else, and no drawing of that data can put three colours
+   on it without inventing two histories. What was wrong was not the mapping,
+   it was that a flat dash could only ever say one thing about a day.
+
+   So the ring carries the kinds that day actually asked for, split between
+   them and in the kinds' order, clockwise from the top. A day that asked for
+   one thing is a whole ring in that kind's colour. A day that asked for three
+   is a ring in three arcs. The denominator is never a total this product
+   invented, it is what that day was due, which is the same thing Streaks'
+   own aggregate ring counts against.
+
+   Recorded is the kind's colour at full weight. Due and not recorded is the
+   same arc as a hairline, so a miss is legible and is never given a colour of
+   its own. A sector for a kind that was not due is not drawn at all, so no
+   empty slot is ever offered. */
+function dayRing(i,isToday){
+ var due=[];
+ KINDS.forEach(function(x){var st=kindOn(x.k,i); if(st!==null)due.push({k:x.k,on:st==='on'});});
+ if(!due.length)return '';
+ var C=20, R=16, n=due.length, gap=n>1?9:0, seg=360/n;
+ var o='<svg viewBox="0 0 40 40" aria-hidden="true">';
+ due.forEach(function(d,j){
+  var a0=j*seg+gap/2, a1=Math.min((j+1)*seg-gap/2,359.9);
+  o+='<path d="'+arc(C,C,R,a0,a1)+'" fill="none" stroke="'+KC[d.k]+'" stroke-linecap="round" '
+   +'stroke-width="'+(d.on?3:2)+'" opacity="'+(d.on?1:.58)+'"/>';});
+ return o+'</svg>';}
+
 /* ---------- the ring ---------- */
 function ringSvg(frac,c,sz){
  var r=(sz/2)-3, cx=sz/2;
@@ -3260,19 +3304,25 @@ function gridDays(){
   var back=(new Date(TODAY).getUTCDay()+6)%7;
   for(var w=0;w<7;w++){var ms=TODAY-(back-w)*MS; out.push({ms:ms,i:idxOf(ms,L)});}
   return out;}
- /* month: the calendar month today sits in, padded to whole weeks, Monday
-    first. Days before the person's first day are drawn as nothing at all. */
+ /* MONTH, AND THE SPAN IS EARNED. This file already carries the rule and
+    then broke it in a third shape. spanOf in _common.js says: the grid holds
+    the history it has, rounded up to a whole week, with one week of room
+    ahead, and grows to the cap. Drawing the whole calendar month regardless
+    gave Marcus two void rows past today and gave Gordon two void rows before
+    his first day as well, and on this surface the void was the largest object
+    on the page.
+
+    So the month is the weeks of this month the person has lived through,
+    ending one week after the week today sits in, and never wider than the
+    month. Nothing is drawn that has not happened except that one week of
+    room, and that week is drawn as dates and nothing else. */
  var t=new Date(TODAY), y=t.getUTCFullYear(), m=t.getUTCMonth();
- var s=Date.UTC(y,m,1), e=Date.UTC(y,m+1,0);
- s-=((new Date(s).getUTCDay()+6)%7)*MS;
+ var wk=function(x){return x-((new Date(x).getUTCDay()+6)%7)*MS;};
+ var s=wk(Date.UTC(y,m,1)), e=Date.UTC(y,m+1,0);
  e+=(6-((new Date(e).getUTCDay()+6)%7))*MS;
- for(var ms=s;ms<=e;ms+=MS){
-  var inM=new Date(ms).getUTCMonth()===m;
-  /* out: padding from the month either side, and drawn as nothing.
-     pre: a day of this month from before the person's first day, drawn as its
-     number and nothing else. */
-  out.push({ms:ms,i:idxOf(ms,L),out:(ms<first&&!inM)||(!inM&&ms<first),
-   pre:inM&&ms<first});}
+ var from=Math.max(s,Math.min(wk(first),wk(TODAY)));
+ var to=Math.min(e,wk(TODAY)+13*MS);
+ for(var ms=from;ms<=to;ms+=MS)out.push({ms:ms,i:idxOf(ms,L)});
  return out;}
 
 function cal(){
@@ -3295,9 +3345,6 @@ function cal(){
    .join('')+'</div>';
  h+='<div class="grid '+span+(EDIT?' edit':'')+'">';
  days.forEach(function(d){
-  if(d.out){h+='<div class="cell"></div>';return;}
-  if(d.pre){h+='<div class="cell pale"><u>'+new Date(d.ms).getUTCDate()
-   +'</u><div class="mk"></div></div>';return;}
   /* A DATE IS NOT A SLOT. A day before the person's first is drawn as its
      number and nothing else: no square, no outline, no mark. That is a month
      whose earlier days are not theirs yet. An empty square in the same place
@@ -3305,8 +3352,12 @@ function cal(){
      for a day they are being told they did not fill. */
   var live=d.i>=0&&d.i<=L-1, ahead=d.i>L-1, dt=new Date(d.ms).getUTCDate();
   var cls='cell'+(live?' live':(ahead?' ahead':''))+(d.ms===TODAY?' today':'')
-   +(span==='month'&&new Date(d.ms).getUTCMonth()!==new Date(TODAY).getUTCMonth()?' pale':'');
+   +((!live||new Date(d.ms).getUTCMonth()!==new Date(TODAY).getUTCMonth())?' pale':'');
   h+='<button class="'+cls+'" data-d="'+d.i+'"'+((!live&&!ahead)?' disabled':'')+'>';
+  if(span==='month'){
+   /* the date lives inside the ring, so the cell is the ring and nothing else */
+   h+='<span class="dring">'+(live?dayRing(d.i,d.ms===TODAY):'')
+    +'<u>'+dt+'</u></span></button>'; return;}
   h+='<u>'+(span==='week'?DOW[(new Date(d.ms).getUTCDay()+6)%7]+' '+dt:dt)+'</u>';
   if(span==='week'){
    h+='<div class="wk7">';
@@ -3315,15 +3366,6 @@ function cal(){
      if(!dueOn(r,d.i))return; var on=didOn(r,d.i);
      h+='<span class="wrow k-'+x.k+(on?'':' off')+'"><s class="dot"></s>'
       +'<span>'+r.nm+'</span></span>';});});
-   h+='</div>';}
-  else{
-   /* NOTHING IS DRAWN AHEAD OF TODAY. A day that has not happened has nothing
-      on the record and nothing missing from it, and seven empty slots drawn
-      forward is a tally of failures a person has not had the chance to make. */
-   h+='<div class="mk">';
-   KINDS.forEach(function(x){
-    var st=live?kindOn(x.k,d.i):null;
-    h+='<s class="k-'+x.k+(st==='on'?' on':(st==='due'?' due':''))+'"></s>';});
    h+='</div>';}
   h+='</button>';});
  el.innerHTML=h+'</div>';
@@ -3336,7 +3378,7 @@ function cal(){
  document.getElementById('calnote').textContent=EDIT
   ? 'Tap a day to put it on the record or take it off.'
   : (span==='week'?'Seven days, and the three kinds in the same order down each.'
-     :plural(seen,'day')+' of this month on the record. One cell a day.');
+     :plural(seen,'day')+' on the record. Each ring splits by what the day asked for.');
  if(EDIT)el.querySelectorAll('.cell.live').forEach(function(b){b.onclick=function(){
   var i=+b.dataset.d; has('hold').forEach(function(r){
    if(i>=r.from)r.walk[i]=r.walk[i]?0:1;}); draw();};});
@@ -3358,7 +3400,10 @@ function dayView(){
    return '<button class="tile'+(on?' done':'')+'" data-r="'+j+'">'
     +'<span class="ring">'+ringSvg(on?1:0,KC[x.k],64)
     +'<span class="gl">'+svgIc(tr.ic,on?KC[x.k]:'var(--mid)',24)+'</span></span>'
-    +'<b>'+r.nm+'</b><span>'+r.min+' min &middot; '+r.cadence+'</span></button>';})
+    +'<b>'+r.nm+'</b><span>'+r.min+' min &middot; '+r.cadence+'</span>'
+    +'<em>'+(runOf(r.walk.slice(r.from))
+      ?plural(runOf(r.walk.slice(r.from)),'day')+' standing':'starts today')
+    +'</em></button>';})
    .join('')+'</div>';
   return h+'</div>';}).join('');}
 
@@ -3485,6 +3530,7 @@ function draw(){
  document.getElementById('q').hidden=!QOPEN;
  document.getElementById('qmask').hidden=!QOPEN;
  document.getElementById('two').className='two '+span;
+ document.getElementById('standcard').hidden=(span==='day');
  due(); cal(); stand(); stats(); if(QOPEN)queue();
  document.getElementById('foot').innerHTML=
   'The ritual builder as a calendar. Design B made a calendar: one grid at three spans, '

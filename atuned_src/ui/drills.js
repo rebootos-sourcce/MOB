@@ -64,7 +64,7 @@ function runDrill(o){
  var h='<div class="pm-eye">'+(TN[o.kind]||'Pattern')+(o.over?', overshot':'')+'</div>'
   +'<div class="ad-nm">'+esc(o.nm)+'</div>'
   +(o.auth?'<div class="ad-sub">'+esc(o.auth)+'</div>':'')
-  +(o.kind==='sab'&&o.unnamed?'<div class="ad-sub">Inferred. The library has no name for this cluster, so it is named for its seat and its fetter.</div>'
+  +(o.kind==='sab'&&o.unnamed?'<div class="ad-sub">Inferred. The library has no name for this cluster, so it is named for its seat and its child emotion.</div>'
    :(o.kind==='sab'&&SAB_PI.indexOf(o.nm)>=0?'<div class="ad-sub">One of the ten Positive Intelligence saboteurs, after Shirzad Chamine.</div>':''))
   +'<div class="pm-eye">How it runs through you</div><p class="ad-p">'
   +(o.over
@@ -249,7 +249,7 @@ function runQDrill(q){
  else {
   var inst=CHARGES.filter(function(c){return (S.replace[c]||0)>=4;});
   h='<div class="pm-eye">Pole</div><div class="ad-nm">'+r.poleMean.toFixed(2)+' coherent opposite in</div>'
-   +'<div class="pm-eye">How it is built</div><p class="ad-p">Each child fetter has a coherent opposite. Fear to trust, anger to equanimity. '
+   +'<div class="pm-eye">How it is built</div><p class="ad-p">Each child emotion has a coherent opposite. Fear to trust, anger to equanimity. '
    +'Release empties the address, replace fills it with the opposite, and the pole is how much of that opposite is installed, 0 to 1 averaged across the nine.</p>'
    +'<div class="pm-eye">Installed</div><p class="ad-p">'+(inst.length?inst.map(function(c){
      var o=CHILD.filter(function(x){return x.nm===c;})[0];return esc(o.opp)+' over '+esc(c);}).join(', ')+'.':'Nothing installed yet.')+'</p>';}
@@ -382,7 +382,7 @@ function runSeatDrill(c){
 function runFetterDrill(c){
  var held=S.charge[c.nm]||0, inst=S.replace[c.nm]||0;
  var at=W.filter(function(n){return n.cf===c.nm;});
- var h='<div class="pm-eye">Child fetter</div><div class="ad-nm">'+esc(c.nm)+'</div>'
+ var h='<div class="pm-eye">Child emotion</div><div class="ad-nm">'+esc(c.nm)+'</div>'
   +'<div class="ad-sub">toward '+esc(c.opp)+'</div>'
   +'<div class="pm-eye">Where it sits</div><p class="ad-p">'+esc(c.addr)+', at '+esc(c.loc)
   +'. Seated at the '+esc(c.seat).toLowerCase()+'.</p>'

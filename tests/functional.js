@@ -958,6 +958,36 @@ await phone.close();
 console.log('\n=== real JS errors across all of the above ===');
 ok(real.length===0,'JS errors: '+real.slice(0,4).join(' | '));
 console.log('  count:',real.length);
+console.log('\n=== settings does not take the rail with it when it leaves ===');
+/* Settings has no entry in TABDEF, by design, and setTab cleared the body's
+   tab class from TABDEF alone while adding it from TABDEF plus TABEXTRA. So
+   tab-settings went on and never came off, and the rule that collapses the
+   right rail on Settings stayed applied on every surface for the rest of the
+   session. The centre column kept rendering, so nothing looked broken.
+
+   Asserted on the class and on the measured rail, because the class is the
+   cause and the rail is what a person loses. */
+const stuck=await page.evaluate(()=>{
+ const railW=()=>{const r=document.querySelector('[data-rail]');
+  return r?Math.round(r.getBoundingClientRect().width):-1;};
+ const o={};
+ setTab(TAB.FIELD); render(); o.before=railW();
+ setTab(TAB.SETTINGS); render(); o.onSettings=railW();
+ setTab(TAB.FIELD); render();
+ o.after=railW();
+ o.cls=document.body.className;
+ /* every extra surface, not only Settings, because the defect is the table
+    and not the tab */
+ o.leftOver=Object.keys(TABEXTRA).filter(function(k){
+  var T=TABEXTRA[k];
+  return T&&T.cls&&document.body.classList.contains(T.cls);});
+ return o;});
+ok(stuck.before>0,'the rail is on the screen to begin with, measured '+stuck.before);
+ok(stuck.after===stuck.before,
+ 'and it is the same width after a visit to settings, was '+stuck.before+' now '+stuck.after);
+ok(stuck.leftOver.length===0,
+ 'no folded surface leaves its body class behind: '+(stuck.leftOver.join(' ')||'none'));
+
 console.log('\n=== the compass has two ends and both are doors ===');
 /* The cone was a picture of a direction with nothing at either end of it. The
    top is anchored by the twelve, the bottom by the blueprint and the nine

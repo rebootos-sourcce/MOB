@@ -150,10 +150,16 @@ function mtBlock(c){
 /* ---- the shell ---- */
 function gmRender(){
  var host=document.getElementById('games'); if(!host)return;
- var h='<div class="kb-top"><div class="kb-hd"><div class="pm-eye">Games</div>'
+ /* GAMES BORROWED THE CODEX'S HEADER AND THE CODEX'S HEADER CHANGED.
+    kb-hd and kb-tabs were the stacked title block and the wrapping chip row.
+    The codex now runs one baseline and a strip that scrolls, so those two
+    rules went with the card, and the CSS coverage gate caught this surface
+    still emitting them. Games keeps the shape it wants under its own gm-
+    prefix rather than depending on another surface's internals. */
+ var h='<div class="kb-top"><div class="gm-hd"><div class="pm-eye">Games</div>'
   +'<h2 class="kb-h">The instrument at practice speed</h2>'
   +'<p class="kb-p">Both deal from your own field. Neither invents a pattern.</p></div>'
-  +'<div class="kb-tabs" role="tablist">'
+  +'<div class="gm-tabs" role="tablist">'
   +'<button type="button" role="tab" class="kb-t'+(GAME==='lg'?' on':'')+'" data-gm="lg" '
    +'aria-selected="'+(GAME==='lg')+'">The letting go run</button>'
   +'<button type="button" role="tab" class="kb-t'+(GAME==='mt'?' on':'')+'" data-gm="mt" '
@@ -207,7 +213,7 @@ function gmRender(){
 
  if(GAME==='mt'){
   if(!MT.cards.length){
-   h+='<div class="gm-intro"><p class="gm-p">Eight pairs of fetter marks, face down. Match a pair '
+   h+='<div class="gm-intro"><p class="gm-p">Eight pairs of child emotion marks, face down. Match a pair '
     +'and it opens: what it is, how it runs through you, and what the coherent opposite is.</p>'
     +'<button class="btn pri" id="mtgo">Deal the marks</button></div>';}
   else{

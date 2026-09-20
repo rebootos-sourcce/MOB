@@ -21,6 +21,37 @@ reopens. Every seat adds its own.
 
 ---
 
+## 0s. MEASURED 20 SEPTEMBER. SETTINGS TOOK THE RIGHT RAIL WITH IT.
+
+- [x] **RW1. The render watch walks the rails now.** It has walked the centre
+      column since the first day, one host per surface, looked up by id. The
+      rails were never walked: they hold many hosts, they are shared across
+      surfaces, and each is written by a different renderer, so a rail host
+      that renders nothing looks exactly like one that is meant to be empty. A
+      hidden host is not a failure. A host that is on the screen, has been
+      given room, and has nothing in it, is.
+- [x] **RW2. It found a defect on its first run.** Once the app visited
+      Settings, the right rail never came back. Every surface after it, at both
+      widths, on a blank profile and a loaded one, until a reload. The centre
+      column kept rendering, so from the outside nothing looked broken: the
+      rail was simply gone.
+- [x] **RW3. The cause is the same mistake in a new place.** `setTab` cleared
+      the body's tab class from `TABDEF` and added it from `TABDEF` plus
+      `TABEXTRA`. Settings is deliberately not in `TABDEF`, having no door in
+      the bar, so its class went on and never came off, and the rule that
+      collapses the rail on Settings stayed applied everywhere. One table read,
+      two tables written.
+- [x] **RW4. Gated three ways.** The rail is the same width after a visit to
+      Settings as before it, the class is gone, and no folded surface in
+      `TABEXTRA` leaves a class behind, which covers Analytics and anything
+      folded later rather than Settings alone.
+- [x] **RW5. And a backlog line was wrong.** CMP5 said `#eshelf` renders
+      nothing on the Field. It is `display:none` off the Energy tab by design,
+      which is correct, and the walk found 135 visible rail hosts across every
+      surface on two profiles with none of them empty. Closed as not a defect.
+
+---
+
 ## 0t. DELIVERED 20 SEPTEMBER. THE RITUAL CALENDAR.
 
 `proto/ritual/calendar.html`, standalone, no network, every number real. Design

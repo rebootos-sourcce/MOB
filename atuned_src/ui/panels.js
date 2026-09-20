@@ -112,7 +112,22 @@ function setTab(i){
  var lb=$('lbar'), rb=$('rbar');
  if(lb) lb.style.display=(i===TAB.ENERGY)?'flex':'none';
  if(rb) rb.style.display=(i===TAB.ENERGY&&PMLAYER==='pain')?'flex':'none';
+ /* CLEAR FROM BOTH TABLES, BECAUSE THE ADD READS BOTH.
+    This cleared TABDEF only. Settings is deliberately not in TABDEF, having no
+    door in the bar, so its class went on through TABOF and never came off. The
+    body then carried tab-settings for the rest of the session on top of
+    whatever tab the person moved to, and the rule that collapses the right
+    rail on Settings stayed applied everywhere. The centre column kept
+    rendering, so from the outside nothing looked broken: the rail was simply
+    gone, on every surface, until a reload.
+
+    Found by the render watch on its first run after it was taught to walk the
+    rails, which is the whole argument for teaching it. It is also the same
+    mistake this repository keeps making in new places: a thing looked up in
+    one table and written from two. */
  TABDEF.forEach(function(T){document.body.classList.remove(T.cls);});
+ Object.keys(TABEXTRA).forEach(function(k){
+  var T=TABEXTRA[k]; if(T&&T.cls)document.body.classList.remove(T.cls);});
  document.body.classList.add(TABOF(i).cls);   /* by key, not by position */
  /* THE TAB ARRIVES RATHER THAN APPEARING. Switching surfaces was a single
     frame cut: one host went to display:none and the next to flex, which gives

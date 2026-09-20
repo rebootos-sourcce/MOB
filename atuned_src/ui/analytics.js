@@ -262,7 +262,7 @@ function anaDrill(){
    h+='<p class="ad-p">Vritti '+s2.p.vt+', seated at '+s2.p.seat+'. It passes <b>'
     +Math.round(s2.pass*100)+'%</b> of what reaches it. <b>'+s2.hot+'</b> address'
     +(s2.hot===1?' is':'es are')+' held here.</p>'
-    +'<div class="pm-eye">Laws seated here</div><div class="pm-chips">'
+    +'<div class="pm-eye">Moral integrity seated here</div><div class="pm-chips">'
     +SI.filter(function(l){return l.b===bn;}).map(function(l){
       return '<span class="pm-chip">'+l.nm+' '+S.law[l.nm].toFixed(1)+'</span>';}).join('')+'</div>'
     +'<div class="pm-eye" style="margin-top:12px">Its addresses</div>'+rows(seg.slice(0,10))

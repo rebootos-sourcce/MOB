@@ -38,7 +38,7 @@ function iqAccuracy(){
     person about to answer sixty three questions reads neither. One panel per
     fact, side by side, each short enough to finish. */
  var P=[
-  ['Twenty One Laws, Three Ways',
+  ['Moral integrity, three ways',
    'Each law is asked once where it costs you something, once where nobody would know, '
    +'and once on an ordinary day. The gap between the three is the reading, so answering '
    +'the same law differently is the point rather than a mistake.'],

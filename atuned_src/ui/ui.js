@@ -366,7 +366,9 @@ function railStack(r){
     a complex, a lattice a hyper complex, and a filled silhouette the character
     layer, which is the one a person cannot see as separate from themselves. */
  var TABS=[
-  ['fet','Fetters',CHILD.length,
+  /* the key is 'fet' and stays 'fet': a key is identity and identity is
+     never renamed here. The label is what a person reads and it moves. */
+  ['fet','Child emotions',CHILD.length,
    'M12 4.5a3.6 3.6 0 013.6 3.6v7.8a3.6 3.6 0 01-7.2 0V8.1A3.6 3.6 0 0112 4.5'],
   ['sab','Saboteurs',r.sabs.length,
    'M8.6 4.8a3.4 3.4 0 013.4 3.4v3.4a3.4 3.4 0 01-6.8 0V8.2a3.4 3.4 0 013.4-3.4'

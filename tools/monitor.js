@@ -120,7 +120,32 @@ const FLOOR_CANVAS=60;
       visible:1};},hid);
     const bad=!r||r.markup<(/ \d+x\d+$/.test(r.host)?FLOOR_CANVAS:FLOOR);
     rows.push([wn,who,nm,bad?'EMPTY':'ok',r?r.markup:0,r?r.text:0,r?r.host:'-']);
-    if(bad)fails.push(wn+'/'+who+'/'+nm+' rendered '+(r?r.markup:0)+' characters');}}
+    if(bad)fails.push(wn+'/'+who+'/'+nm+' rendered '+(r?r.markup:0)+' characters');
+    /* AND THE RAILS, WHICH NOTHING WAS WATCHING. The centre column is one
+       host per surface and this walked it from the first day. The rails are
+       not: they hold many hosts, they are shared across surfaces, and each
+       one is written by a different renderer. A rail host that renders
+       nothing looks exactly like a rail host that is meant to be empty, so
+       the failure has no signature at all from outside.
+
+       A host that is hidden is not a failure: the shelf is display none off
+       the Energy tab and that is the design. A host that is on the screen,
+       has been given room, and has nothing in it, is. That is the whole
+       rule, and it is why this measures only what is visible. */
+    const rl=await p.evaluate(()=>[].map.call(
+      document.querySelectorAll('[data-rail] [id]'),
+      function(e){
+       var b=e.getBoundingClientRect(), st=getComputedStyle(e);
+       var shown=(st.display!=='none'&&st.visibility!=='hidden'
+                  &&b.width>0&&b.height>0&&e.offsetParent!==null);
+       return {id:e.id, shown:shown, n:(e.innerHTML||'').length};})
+     .filter(function(x){return x.shown;}));
+    const hollow=rl.filter(x=>x.n===0);
+    rows.push([wn,who,nm+' rails',hollow.length?'EMPTY':'ok',
+      rl.length,hollow.length,
+      hollow.length?hollow.map(x=>'#'+x.id).join(' '):rl.length+' hosts, none hollow']);
+    if(hollow.length)fails.push(wn+'/'+who+'/'+nm+' rail host '
+      +hollow.map(x=>'#'+x.id).join(' ')+' is on the screen with nothing in it');}}
   errs.forEach(e=>{rows.push([wn,'-','pageerror','ERROR',0,0,e]); fails.push(wn+' threw: '+e);});
   await c.close();}
  await b.close();

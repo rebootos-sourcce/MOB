@@ -60,20 +60,25 @@ button.lnk:hover,a.lnk:hover{color:var(--ink)}
 
 /* ---- the reading ---- */
 .read h1{font-size:30px;line-height:1.16;letter-spacing:-.02em;margin:0;font-weight:600}
-.read h2{font-size:22px;margin:0;letter-spacing:-.015em;font-weight:600}
+.read h2{font-size:24px;margin:0;letter-spacing:-.018em;font-weight:600}
+.read h3{font-size:16px;margin:0 0 2px;font-weight:600}
 .read section{margin-top:44px;padding-top:26px;border-top:1px solid var(--edge)}
+.read section:first-child{margin-top:8px;padding-top:0;border-top:0}
 .read p{margin:14px 0 0}
-.cq{display:flex;align-items:baseline;gap:14px;margin-top:22px}
+.read .sm{font-size:15.5px;color:var(--mid)}
+.cqrow{display:grid;gap:8px;margin-top:20px}
+.cq{display:flex;align-items:baseline;gap:14px}
 .cq b{font-family:var(--num);font-size:68px;line-height:.9;letter-spacing:-.03em;
  font-weight:600}
 .cq span{font-size:19px;font-weight:600}
-.tierbox{margin-top:18px;border:1px solid var(--edge-2);border-radius:10px;
+.cqsay p:first-child{margin-top:8px}
+.tierbox{margin-top:20px;border:1px solid var(--edge-2);border-radius:10px;
  background:var(--panel);padding:16px 18px}
-.tierbox dl{margin:0}
+.tierbox dl{margin:0;display:grid;gap:14px}
 .tierbox dt{font-size:11.5px;letter-spacing:.13em;text-transform:uppercase;
- color:var(--dim);margin-top:12px}
-.tierbox dt:first-child{margin-top:0}
+ color:var(--dim)}
 .tierbox dd{margin:4px 0 0}
+.two{display:grid;gap:30px}
 .seats{list-style:none;margin:22px 0 0;padding:0}
 .seats li{display:flex;align-items:center;gap:10px;padding:6px 0}
 .seats li b{flex:0 0 74px;font-size:13px;font-weight:600;color:var(--mid)}
@@ -89,23 +94,23 @@ button.lnk:hover,a.lnk:hover{color:var(--ink)}
 .laws li .tr i{display:block;height:100%;border-radius:4px}
 .laws li em{flex:0 0 34px;text-align:right;font-family:var(--num);font-size:13px;
  font-style:normal;color:var(--mid)}
-.sab{margin-top:20px;border:1px solid var(--edge);border-radius:10px;
+.sabs{display:grid;gap:16px;margin-top:18px}
+.sab{border:1px solid var(--edge);border-radius:10px;
  background:var(--panel);padding:16px 18px}
 .sab h3{margin:0;font-size:18px;font-weight:600}
 .sab .fam{font-size:13px;color:var(--dim);margin-top:3px}
-.sab p{margin:10px 0 0;color:var(--mid);font-size:16px}
 .sab .said{margin-top:12px;padding-left:12px;border-left:2px solid var(--edge-2);
  color:var(--ink);font-style:italic}
-.sab .addr{margin-top:12px;font-size:14px;color:var(--dim)}
-.sab .addr b{color:var(--mid);font-weight:600}
-.sab .out{margin-top:12px;font-size:15px;color:var(--mid)}
-.sab .out b{color:var(--ink);font-weight:600}
+/* every slot on every card is the same object, so they are one class */
+.sab .sl{margin-top:11px;font-size:15px;color:var(--mid);line-height:1.5}
+.sab .sl b{color:var(--ink);font-weight:600}
 .scope{margin-top:22px;border:1px solid var(--edge);border-radius:10px;
  padding:14px 16px;font-size:15px;color:var(--mid)}
 .scope b{color:var(--ink)}
 .door{margin-top:44px;padding:22px 18px 24px;border:1px solid var(--accent);
  border-radius:10px;background:var(--panel)}
 .door h2{margin-bottom:0}
+.doorbd{display:grid;gap:4px}
 .acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
 button.act{background:var(--panel-2);color:var(--ink);border:1px solid var(--edge-2);
  border-radius:9px;padding:14px 20px;font:inherit;font-weight:600;min-height:52px;cursor:pointer}
@@ -116,6 +121,29 @@ button.act:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 .close p{font-size:23px;line-height:1.38;margin:0;letter-spacing:-.01em}
 .close .last{color:var(--accent)}
 .foot{margin-top:40px;font-size:13px;color:var(--dim)}
+@media(min-width:760px){
+ .sabs{grid-template-columns:1fr 1fr}
+ .doorbd{grid-template-columns:minmax(0,1fr) auto;gap:26px;align-items:center}
+ .acts{margin-top:0}
+}
+/* THE READING WAS ONE NARROW COLUMN ON A WIDE SCREEN, 3926 pixels tall with
+   the sides empty, because five thin laws, seven seat loads and four cards
+   were all being drawn one narrow item at a time. The heading moves into its
+   own column and the parallel blocks spread. Scoped to the reading: the
+   question screen keeps its measure. */
+@media(min-width:1040px){
+ body[data-state="read"] .wrap{max-width:1120px}
+ .read section{display:grid;grid-template-columns:250px minmax(0,1fr);
+  column-gap:44px;align-items:start}
+ .read .hd{position:sticky;top:60px}
+ .read .bd{min-width:0}
+ .cqrow{grid-template-columns:auto minmax(0,1fr);gap:34px;align-items:center}
+ .cqsay p:first-child{margin-top:0}
+ .cq b{font-size:86px}
+ .tierbox dl{grid-template-columns:repeat(3,1fr);gap:24px}
+ .two{grid-template-columns:1fr 1fr;gap:44px}
+ .scope,.door,.close,.read>.foot{max-width:1120px}
+}
 @media(max-width:400px){
  .q{font-size:22px} .read h1{font-size:25px} .cq b{font-size:54px}
  .laws li b{flex-basis:104px} .close p{font-size:19px}
@@ -295,60 +323,70 @@ function viewRead(){
   var g=W.filter(function(n){return n.b===b;});
   return {b:b, v:g.reduce(function(a,n){return a+n.sq;},0)/g.length};});
 
+ /* the family definition is printed the first time its family appears and not
+    again. Three cards in a row carrying "the swing overshoots at both ends"
+    word for word is the repetition the knowledge pass already measured on
+    another surface, and it makes four readings look like one. */
+ var seenFam={};
+
  var h='<div class="read">'
 
  /* ---- 1. THE SNAPSHOT OF IMPACT ---- */
- +'<span class="eye">The snapshot</span>'
- +'<h1>This is what the hundred read.</h1>'
- +'<div class="cq"><b>'+Math.round(r.CQ)+'</b><span>'+esc(r.tier)+'</span></div>'
+ +'<section><div class="hd"><span class="eye">The snapshot</span>'
+ +'<h1>This is what the hundred read.</h1></div><div class="bd">'
+ +'<div class="cqrow"><div class="cq"><b>'+Math.round(r.CQ)+'</b><span>'+esc(r.tier)+'</span></div>'
+ +'<div class="cqsay">'
  +'<p>That is your coherence. One hundred is every law closed with nothing held '
  +'in the body. Coherence is the alignment between what arrives, how you read it, '
  +'what you intend, and what you then do.</p>'
  +'<p>When it is low the circuit leaks, and the leak is what promotes mental, '
  +'physical and spiritual disease. That is the mechanism, and it is the reason '
- +'this instrument exists.</p>'
+ +'this instrument exists.</p></div></div>'
  +'<div class="tierbox"><dl>'
- +'<dt>What '+esc(r.tier)+' means</dt><dd>'+esc(t.def||'')+'</dd>'
- +'<dt>What it does to a day</dt><dd>'+esc(t.energy||'')+'</dd>'
- +'<dt>'+towardLabel(t.toward)+'</dt><dd>'+esc(t.toward||'')+'</dd>'
- +'</dl></div>'
+ +'<div><dt>What '+esc(r.tier)+' means</dt><dd>'+esc(t.def||'')+'</dd></div>'
+ +'<div><dt>What it does to a day</dt><dd>'+esc(t.energy||'')+'</dd></div>'
+ +'<div><dt>'+towardLabel(t.toward)+'</dt><dd>'+esc(t.toward||'')+'</dd></div>'
+ +'</dl></div></div></section>'
 
  /* ---- 2. WHAT THE ISSUES ARE ---- */
- +'<section><span class="eye">The issues</span>'
- +'<h2>Where it is thinnest.</h2>'
- +'<p>Each law is scored out of ten. These are the five holding the least, '
- +'and they are where the leak is.</p>'
- +'<ul class="laws">'+thin.map(lawRow).join('')+'</ul>'
- +'<p>Holding best: '+held.map(function(l){return esc(l.nm);}).join(', ')+'.</p>'
- +'<h2 style="margin-top:34px">Where the load is sitting.</h2>'
- +'<p>The nine charges from your answers land on the 112 addresses, each one '
- +'seated at a named plexus or nerve. This is the average load each seat is '
- +'carrying, out of ten.</p>'
- +'<ul class="seats">'+bandload.map(function(x){
-   return '<li><b>'+esc(x.b)+'</b><span class="tr"><i style="width:'
-    +(Math.min(100,x.v*10))+'%;background:'+cv(x.b)+'"></i></span><em>'
-    +x.v.toFixed(1)+'</em></li>';}).join('')+'</ul>'
- +'<p>'+esc(r.darkB)+' is carrying the most. '
- +(r.heaviest?('The heaviest single address is '+esc(r.heaviest.k)+', at the '
-   +esc(r.heaviest.n||'field')+'. '):'')
- +r.carrying.length+' addresses are carrying something, and '+r.loaded.length
- +' of them are above the line where it starts to cost.</p>'
- +'</section>'
+ +'<section><div class="hd"><span class="eye">The issues</span>'
+ +'<h2>Where it is thinnest, and where it is sitting.</h2></div><div class="bd">'
+ +'<div class="two">'
+  +'<div><h3>The five laws holding least</h3>'
+  +'<p class="sm">Each law is scored out of ten.</p>'
+  +'<ul class="laws">'+thin.map(lawRow).join('')+'</ul>'
+  +'<p class="sm">Holding best: '+held.map(function(l){return esc(l.nm);}).join(', ')+'.</p></div>'
+  +'<div><h3>The load at each seat</h3>'
+  +'<p class="sm">The nine charges from your answers land on the 112 addresses, '
+  +'each one seated at a named plexus or nerve. Average load per seat, out of ten.</p>'
+  +'<ul class="seats">'+bandload.map(function(x){
+    return '<li><b>'+esc(x.b)+'</b><span class="tr"><i style="width:'
+     +(Math.min(100,x.v*10))+'%;background:'+cv(x.b)+'"></i></span><em>'
+     +x.v.toFixed(1)+'</em></li>';}).join('')+'</ul>'
+  +'<p class="sm">'+esc(r.darkB)+' is carrying the most. '
+  +(r.heaviest?('The heaviest single address is '+esc(r.heaviest.k)+', at the '
+    +esc(r.heaviest.n||'field')+'. '):'')
+  +r.carrying.length+' addresses are carrying something, and '+r.loaded.length
+  +' of them are above the line where it starts to cost.</p></div>'
+ +'</div></div></section>'
 
  /* ---- 3. WHICH SABOTEURS ARE RUNNING ---- */
- +'<section><span class="eye">What is running</span>'
- +'<h2>'+(sabs.length?'The saboteurs your answers have lit.':'No saboteur is firing hard enough to name.')+'</h2>'
+ +'<section><div class="hd"><span class="eye">What is running</span>'
+ +'<h2>'+(sabs.length?'The saboteurs your answers have lit.':'No saboteur is firing hard enough to name.')+'</h2></div>'
+ +'<div class="bd">'
  +(sabs.length
-   ?'<p>A saboteur is a contraction of several addresses acting together. These '
-    +'are the ones running hardest, with the addresses each one runs on.</p>'
-    +sabs.map(sabCard).join('')
+   ?'<p style="margin-top:0" class="sm">A saboteur is a contraction of several '
+    +'addresses acting together. These are the ones running hardest.</p>'
+    +'<div class="sabs">'+sabs.map(function(x){return sabCard(x,seenFam);}).join('')+'</div>'
+    +'<p class="sm">Every address named above carries its own direction in the '
+    +'Compass. '
     +(r.sabs.length>sabs.length
-      ?'<p>'+(r.sabs.length-sabs.length)+' more are firing under these, and they '
+      ?(r.sabs.length-sabs.length)+' more saboteurs are firing under these, and they '
        +'compound into '+r.cxs.length+' complexes. The instrument names all of '
-       +'them and works out the order to take them apart in.</p>':'')
-   :'<p>Charge is present and no cluster has reached the weight where the '
+       +'them and works out the order to take them apart in.':'')+'</p>'
+   :'<p style="margin-top:0">Charge is present and no cluster has reached the weight where the '
     +'instrument will name one. That is a real result and not an empty one.</p>')
- +'</section>'
+ +'</div></section>'
 
  /* ---- THE SCOPE. What this read and what it did not. ---- */
  +'<div class="scope"><b>What this is.</b> A hundred points on the 21 laws, and '
@@ -360,6 +398,7 @@ function viewRead(){
  /* ---- 4. THE DOOR ---- */
  +'<div class="door"><span class="eye">The door</span>'
  +'<h2>Take the record with you.</h2>'
+ +'<div class="doorbd">'
  +'<p>There is no account and no server, so nothing here can be fetched later by '
  +'anybody, including us. Save the record, open Atuned, and the reading carries on '
  +'from where this stopped: your story, the ritual, the body map, the avatar, and '
@@ -368,7 +407,7 @@ function viewRead(){
   +'<button class="act go" id="dl">Save my record</button>'
   +'<button class="act" id="copy">Copy it instead</button>'
   +'<button class="act" id="again">Change an answer</button>'
- +'</div><p class="note" id="dlnote"></p></div>'
+ +'</div></div><p class="note" id="dlnote"></p></div>'
 
  +'<div class="close">'
  +'<p>No one is coming to save you.</p><p>Do it yourself.</p>'
@@ -388,28 +427,67 @@ function viewRead(){
   return '<li><b>'+esc(l.nm)+'</b><span class="tr"><i style="width:'+(l.v*10)
    +'%;background:'+cv(l.b)+'"></i></span><em>'+l.v.toFixed(1)+'</em></li>';}
 
- /* EVERY NAME THIS PAGE PUTS ON A PERSON CARRIES A DEFINITION, THE BEHAVIOUR IT
-    PRODUCES AND THE DIRECTION OUT. A word like Catastrophizer with nothing
-    attached is a judgement. The family line and the addresses are always
-    available; the sentence it says and the way out come from the engine's own
-    saboteur table when it carries an entry for that name. */
- function sabCard(s){
+ /* EVERY CARD IS THE SAME KIND OF OBJECT.
+
+    Two of the four were thin. A generated name like Root Flincher carries no
+    entry in the engine's saboteur table, so it printed a family line, its
+    addresses and one borrowed sentence about a way out, beside two cards that
+    printed what the thing does and what it says in your head. Side by side,
+    two read as real and two as filler.
+
+    A generated name is not less real, it is unwritten, and everything needed
+    to write it is already on its own addresses: `d` is what each address
+    produces and `a` is the faculty it costs. So both kinds of card now carry
+    the same four load bearing slots, what it does, what it runs on, what it
+    costs and the way out, filled from the authored table where there is one
+    and composed from the addresses where there is not. Nothing is invented.
+    The one slot that stays authored only is the sentence it says in your head,
+    because putting words in somebody's mouth is not something to compose. */
+ function sabCard(s,seen){
   var d=(typeof SABDEF!=='undefined'&&SABDEF)?SABDEF[s.nm.toLowerCase()]:null;
   var fam=HCX_LIB.filter(function(x){return x.nm===s.hcx;})[0];
-  var famline=fam?fam.d:(FAM_POLE_NOTE(s));
+  /* parts arrive unsorted for the cluster scan, and "the heaviest of them" has
+     to be true when it is said. */
+  var parts=s.parts.slice().sort(function(a,b){return (b.sq||0)-(a.sq||0);}).slice(0,4);
+  var top=parts[0]||{k:'',n:''};
   var h='<div class="sab"><h3>'+esc(s.nm)+'</h3>'
-   +'<div class="fam">'+esc(s.hcx)+': '+esc(famline)+'</div>';
-  if(d&&d.d)h+='<p>'+esc(firstSentences(d.d,2))+'</p>';
+   +'<div class="fam">'+esc(s.hcx)
+   +(seen[s.hcx]?'':': '+esc(fam?fam.d:'a contraction that has hardened into a shape'))
+   +'</div>';
+  seen[s.hcx]=1;
+  h+='<div class="sl"><b>What it does:</b> '
+   +(d&&d.d?esc(firstSentences(d.d,2))
+          :esc('It shows up as '+listOf(parts.map(function(n){return low(n.d);}))+'.'))
+   +'</div>';
   if(d&&d.q)h+='<div class="said">'+esc(d.q.split(' / ')[0])+'</div>';
-  h+='<div class="addr"><b>It runs on:</b> '+s.parts.slice(0,4).map(function(n){
+  h+='<div class="sl"><b>It runs on:</b> '+parts.map(function(n){
    return esc(n.k)+(n.n?' at the '+esc(n.n):'');}).join('. ')+'.</div>';
-  if(d&&d.t)h+='<div class="out"><b>It fires when:</b> '+esc(firstSentences(d.t,1))+'</div>';
-  h+='<div class="out"><b>The way out:</b> '
+  h+='<div class="sl"><b>What it touches:</b> '
+   +esc(cap(listOf(parts.map(function(n){return low(clause(n.a));}))))+'.</div>';
+  /* the generated names are built out of the charge and the seat: Root
+     Flincher is the root seat and Fear. So the trigger is on the addresses
+     too, and the composed card gets the same slot the authored one has.
+     cf is the child fetter, which is always one of the nine; c is a display
+     word and is not. */
+  if(d&&d.t)h+='<div class="sl"><b>It fires when:</b> '+esc(firstSentences(d.t,1))+'</div>';
+  else{
+   var cnt={},best='',seats=[];
+   parts.forEach(function(nd){ if(!nd.cf)return; cnt[nd.cf]=(cnt[nd.cf]||0)+1;
+    if(!best||cnt[nd.cf]>cnt[best])best=nd.cf;
+    if(nd.b&&seats.indexOf(nd.b)<0)seats.push(nd.b);});
+   if(best)h+='<div class="sl"><b>It fires on:</b> '+esc(low(best))+', at the '
+    +esc(listOf(seats.map(function(x){return low(x);})))+'.</div>';}
+  h+='<div class="sl"><b>The way out:</b> '
    +(d&&d.i?esc(firstSentences(d.i,2))
-          :'The addresses above, one at a time. The instrument has a direction '
-           +'for each one and an order to take them in.')+'</div>';
+          :esc('Start at '+top.k+(top.n?', at the '+top.n:'')
+               +', which is the heaviest of them.'))+'</div>';
   return h+'</div>';}
- function FAM_POLE_NOTE(s){ return 'the cure for this, done past the point where it helps'; }
+ function clause(x){ return String(x||'').split(',')[0].trim(); }
+ function low(x){ x=String(x||''); return x.charAt(0).toLowerCase()+x.slice(1); }
+ function cap(x){ x=String(x||''); return x.charAt(0).toUpperCase()+x.slice(1); }
+ function listOf(a){
+  a=a.filter(function(x,i){return x&&a.indexOf(x)===i;});
+  return a.length<2?(a[0]||''):a.slice(0,-1).join(', ')+' and '+a[a.length-1];}
  /* NO LOOKBEHIND. It is unsupported in enough shipped browsers that a
     saboteur card would throw instead of printing, and a card that throws
     takes the whole reading with it. */
@@ -420,6 +498,7 @@ function viewRead(){
     while(t.charAt(start)===' ')start++; i=start-1; } }
   return (out.length?out.join(' '):t).trim();}}
 
+
 /* the record a person carries out. It is a profile the app's own boundary
    accepts, so nothing has to be translated on the way in. */
 function recordJSON(){ return JSON.stringify(saveProfile(scored().p),null,1); }
@@ -429,6 +508,7 @@ function recordJSON(){ return JSON.stringify(saveProfile(scored().p),null,1); }
    ============================================================ */
 function render(){
  if(MISSING.length||UNKNOWN.length){ el.innerHTML=viewRefusal(); fill.style.width='0'; return; }
+ document.body.setAttribute('data-state',STATE);
  el.innerHTML = STATE==='open'?viewOpen() : STATE==='q'?viewQ() : viewRead();
  fill.style.width = (STATE==='read'?100:(answered()/QQ.length*100))+'%';
  var b;

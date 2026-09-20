@@ -68,7 +68,7 @@ function renderShelf(r,seats,speed,stop,dom,loadedTot,marks){
 
  /* the legend. what a row means on THIS layer. */
  var LEG={
-  bands:[['a row','one held address and its own fetter'],['colour','the seat it lives at'],
+  bands:[['a row','one held fetter and the child emotion it runs on'],['colour','the seat it lives at'],
    ['number','SQ held there']],
   sab:[['a row','one saboteur, matched on charge ranges'],['colour','saboteur tier'],
    ['number','its weight'],['sub-line','match percentage and addresses beneath']],
@@ -140,7 +140,7 @@ function renderShelf(r,seats,speed,stop,dom,loadedTot,marks){
    +'<span>held</span><b>'+ss.hot+'</b>'
    +'<span>mean SQ</span><b>'+ss.mean.toFixed(1)+'</b>'
    +'<span>integrity</span><b>'+bandIg(bnd).toFixed(1)+'</b></div>'
-   +'<div class="pm-eye" style="margin-top:12px">Laws seated here</div><div class="pm-chips">'
+   +'<div class="pm-eye" style="margin-top:12px">Moral integrity seated here</div><div class="pm-chips">'
    +lws.map(function(l){return '<span class="pm-chip" style="opacity:'
      +(0.4+S.law[l.nm]/10*0.6).toFixed(2)+'">'+l.nm+' '+S.law[l.nm].toFixed(1)+'</span>';}).join('')+'</div>'
    +'<div class="pm-eye" style="margin-top:12px">Addresses</div><div class="pm-rows">';

@@ -145,7 +145,7 @@ function scanStory(text){
     /* A WORD MAY NAME ITS OWN FETTER, and some have to.
 
        LEX was [seat, intensity] and the fetter was then inferred from the
-       seat's modal one. That works while a seat carries the fetter the word
+       seat's modal one. That works while a seat carries the child emotion the word
        means, and the exhaustion family proves it does not always: the owner
        ruled that exhaustion sits at the solar plexus and is NOT anger, and the
        solar plexus carries ten Anger addresses and no Apathy address at all.
@@ -280,7 +280,7 @@ function parseStory(text){
      one Shame address at the heart was enough to route the whole heart band --
      including everything the despair idioms carried -- onto Shame, and grief
      was filed as shame. A named fetter now has to hold at least a quarter of
-     the band, otherwise the band's own modal fetter is the better read. */
+     the band, otherwise the band's own modal child emotion is the better read. */
   var seg=anyNamed? all.filter(function(n){return wanted[n.cf];}) : [];
   /* DID THE TEXT NAME THIS, OR DID WE INFER IT? The answer decides what the
      product is allowed to SAY, and until now it said the same thing either
@@ -666,7 +666,7 @@ function sniffSaboteurs(axes){
     ', ramp '+(Math.round(m*100)/100);});
   var w=sabWeight(nm,parts);
   if(w!==1)because.push(parts.length===1
-   ?'one fetter only, so the claim is the least specific in the table and is held at '+w
+   ?'one child emotion only, so the claim is the least specific in the table and is held at '+w
    :'held at '+w+' on the ruling that this row fires on everything');
   out.push({id:'S'+String(i+1<10?'0':'')+(i+1), name:nm,
    confidence:Math.round(conf*100)/100, because:because, weight:w,
