@@ -133,24 +133,54 @@ the child patterns. Wording kept where it is his.
 
 ### CP. THE CHILD PATTERN, HIGHLIGHTED AND LOCATED.
 
-- [ ] **CP1. "When we find a child pattern, that is very special."** His words,
+- [x] **CP1. "When we find a child pattern, that is very special."** Built, on
+      the axis reading, behind one named constant. His words,
       and the product currently says nothing when one is found. A child pattern
       is the thing the instrument is for and it arrives with no more emphasis
       than any other node.
-- [ ] **CP2. The treatment: "a more intense colour of the chakra colour, or
+- [x] **CP2. Built, and it is one channel. The treatment: "a more intense colour of the chakra colour, or
       some treatment to it, to suggest it is a child pattern."** So the
       highlight is argued from the seat the pattern sits in rather than from a
       new colour, which keeps the palette and the body map saying the same
       thing. Intensity is the channel, and it has to survive all seven
       lightings, including the two paper ones where more intense means darker.
-- [ ] **CP3. And the imprints panel locates it.** "With these imprints we want
+- [x] **CP3. Built. And the imprints panel locates it.** "With these imprints we want
       to locate when we are finding a child pattern." The panel counts held and
       filled in today and says nothing about which of them are children, so it
       gains the one distinction that matters and says where the child sits.
-- [?] **CP4. Is a child pattern one of the nine child emotions, or any node
-      whose parent is also charged?** Systems director asks. The first
-      highlights nine things. The second highlights a hundred and twelve.
-      The difference is the whole feature.
+- [?] **CP4. Is a child pattern one of the nine child emotions found at an
+      address, or an address carrying while its seat's own primary address
+      carries too?** Systems director asks, and the counts are measured off
+      the roster rather than guessed. On Gordon, the heaviest profile the
+      gates carry, 97 addresses are held: the first reading marks 9 of them
+      and the second marks 90. On Ana, 41 held, 8 against 20. On a blank
+      profile both mark nothing. The first ships today. The second lights
+      ninety of ninety seven, which is a highlight that has stopped
+      highlighting, so answering it that way asks a second question about
+      where the cut goes.
+- [?] **CP5. And if a child pattern is a childhood imprint, does a profile
+      get a field to keep one in?** Systems director asks. The age ladder
+      measured 0 on every profile in the roster, and not because nobody has a
+      childhood imprint: `AGE_ANS` is a variable inside the drill, the blank
+      profile has no age shaped key, and `ageFinding()` returns a finding that
+      dies with the tab. That reading cannot be built at all until the finding
+      is stored, which is a schema change and his.
+- [ ] **CP6. `CHILD.addr` does not resolve to an address,** which is why the
+      location is computed rather than looked up. Four of the nine match a
+      node's nerve name, one of those ambiguously, and five match nothing at
+      all. Celiac plexus is both Pride and Anger. So the child emotion's home
+      address is not a thing the data can give, and the panel names the
+      heaviest carrying address for that axis instead.
+- [ ] **CP7. Nine call sites in `tests/functional.js` say `loadP(6)` and one
+      comment beside them says Gordon, heavily loaded.** Index 6 has been Rosa
+      since the roster grew. It is exactly the `loadP(8)` defect `CLAUDE.md`
+      records, in the same file, and `GORDON()` already exists there to fix it
+      with. Found by the child pattern seat and left alone because the file was
+      not its to widen.
+- [ ] **CP8. Three surfaces draw the nine and none of them says which are
+      found.** The wheel, the body map and the Summary axis rows. Each is one
+      line once CP4 is ruled, and widening before the ruling would mean three
+      surfaces to move back instead of one.
 
 ### QD. THE QUESTIONS DOCUMENT ASKS NOTHING, AND THAT IS A REAL DEFECT.
 

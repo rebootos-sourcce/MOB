@@ -1,8 +1,8 @@
 # QUESTIONS FOR THE OWNER
 
 Every line in `TASKS.md` marked `[?]`, which is the mark for a question
-waiting on his ruling. 126 of them, across 39 sections.
-Read off commit 08de6c4 on 2026-09-20. Nothing here is typed by hand: answer a
+waiting on his ruling. 127 of them, across 39 sections.
+Read off commit 104b3aa on 2026-09-20. Nothing here is typed by hand: answer a
 question in TASKS.md and it leaves this file on the next run.
 
 Each one opens with the question and names the seat asking it. The generator
@@ -14,7 +14,8 @@ The same list is in `QUESTIONS.html`, which opens in a browser.
 
 - [ ] **TY4. Is a couple of rounds two, or three?** His own word, and two is the literal reading and what is planned.
 - [ ] **FV3. Which band rhythm, equal arcs or alternating weights?** Art director asks. His words: "either one, one, one, one, one, one, or one, two, one, two, one, two." Both get drawn. Six numbers were said for seven seats, so the answer also has to say whether the odd seat takes the wide slot or the narrow one.
-- [ ] **CP4. Is a child pattern one of the nine child emotions, or any node whose parent is also charged?** Systems director asks. The first highlights nine things. The second highlights a hundred and twelve. The difference is the whole feature.
+- [ ] **CP4. Is a child pattern one of the nine child emotions found at an address, or an address carrying while its seat's own primary address carries too?** Systems director asks, and the counts are measured off the roster rather than guessed. On Gordon, the heaviest profile the gates carry, 97 addresses are held: the first reading marks 9 of them and the second marks 90. On Ana, 41 held, 8 against 20. On a blank profile both mark nothing. The first ships today. The second lights ninety of ninety seven, which is a highlight that has stopped highlighting, so answering it that way asks a second question about where the cut goes.
+- [ ] **CP5. And if a child pattern is a childhood imprint, does a profile get a field to keep one in?** Systems director asks. The age ladder measured 0 on every profile in the roster, and not because nobody has a childhood imprint: `AGE_ANS` is a variable inside the drill, the blank profile has no age shaped key, and `ageFinding()` returns a finding that dies with the tab. That reading cannot be built at all until the finding is stored, which is a schema change and his.
 
 ## 089. RULED 20 SEPTEMBER, SEVENTEENTH PASS. THE STORY PAGE IS A D.
 
