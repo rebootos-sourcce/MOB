@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The story page, four designs</title>
+<style>
+:root{
+ --bg:#0C0D12; --panel:#1A1D26; --panel-2:#252833;
+ --edge:rgba(255,255,255,.09); --edge-2:rgba(255,255,255,.14);
+ --ink:#EFEDE8; --mid:#B4B0A8; --dim:#94908A; --accent:#7EB8D4;
+ --throat:#5EBBDB; --solar:#DABF6A; --heart:#5FD5A6; --sacral:#D8924E;
+ --sans:'Inter','Inter Tight',system-ui,-apple-system,'Segoe UI',sans-serif;
+ --r:16px; --r-xs:8px; --tap:44px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-weight:300;
+ -webkit-font-smoothing:antialiased}
+.wrap{max-width:900px;margin:0 auto;padding:44px 22px 60px}
+h1{font-size:23px;font-weight:500;margin:0 0 6px;letter-spacing:.01em}
+.sub{font-size:14.5px;line-height:1.7;color:var(--mid);margin:0 0 30px;max-width:68ch}
+a.card{display:block;text-decoration:none;color:inherit;background:var(--panel);
+ border:1px solid var(--edge);border-left:3px solid var(--c);border-radius:var(--r);
+ padding:18px 20px;margin-bottom:12px;min-height:var(--tap);
+ transition:border-color .12s cubic-bezier(.22,1,.36,1)}
+a.card:hover{border-color:var(--edge-2);border-left-color:var(--c)}
+a.card:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.n{font-size:11.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--dim)}
+.t{font-size:19px;font-weight:500;margin:4px 0 7px}
+.b{font-size:14.5px;line-height:1.7;color:var(--mid);max-width:66ch;margin:0}
+.b em{font-style:normal;color:var(--ink)}
+.foot{margin-top:28px;padding-top:18px;border-top:1px solid var(--edge);
+ font-size:13.5px;line-height:1.7;color:var(--dim);max-width:68ch}
+.foot a{color:var(--accent)}
+</style>
+</head>
+<body>
+<div class="wrap">
+ <h1>The story page, four designs</h1>
+ <p class="sub">Four arguments about what this surface is, not four layouts.
+  Each one states what it believes first and draws from there. Every figure on
+  every page is read off the engine at run time, and each page runs on its own
+  with no network.</p>
+
+ <a class="card" href="instrument.html" style="--c:var(--throat)">
+  <div class="n">One</div><div class="t">The instrument</div>
+  <p class="b"><em>The story page is an instrument, and an instrument shows
+   its trace.</em> A seven column staff down the inside edge of the journal
+   plots every word the sniffer places at the height of the line that
+   produced it, and three findings sit under it: the route through the body,
+   the seat it dwells at, and the heaviest thing in it.</p></a>
+
+ <a class="card" href="mirror.html" style="--c:var(--heart)">
+  <div class="n">Two</div><div class="t">The mirror</div>
+  <p class="b"><em>The story page is a mirror. You put a sentence in and the
+   instrument gives it back in its own words, beside the line it came
+   from.</em> Nothing is done to the writing. A leader runs out of each word
+   the engine read to a line of the instrument's own writing in the margin.</p></a>
+
+ <a class="card" href="body.html" style="--c:var(--solar)">
+  <div class="n">Three</div><div class="t">The body</div>
+  <p class="b"><em>A story is a route through a body, and the page draws the
+   route where it happens.</em> The figure is the shipping outline and the 72
+   traced nerve branches. The seats light as the words land, the route is
+   stroked between them in order, and pressing a seat is how you reach what is
+   held there.</p></a>
+
+ <a class="card" href="bench.html" style="--c:var(--sacral)">
+  <div class="n">Four</div><div class="t">The bench</div>
+  <p class="b"><em>A story is stock, and this is the bench where it is cut
+   into parts and the parts are worked.</em> Three zones and two hairlines. The
+   rack lights the parts your words are feeding while you write, and clamping
+   one turns the story down to the words it came from.</p></a>
+
+ <p class="foot">The one before is at
+  <a href="../story/story.html">proto/story/story.html</a>. The argument, the
+  measurements and the port are in the design record beside these files.</p>
+</div>
+</body>
+</html>

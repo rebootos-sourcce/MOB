@@ -1,0 +1,817 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Story, the mirror</title>
+<script>
+/* THE PAGE'S OWN REQUEST LOG. Nothing here is ever expected to fire. It is
+   installed before the engine loads so a request from any script on the page
+   is recorded, and the shot harness asserts this list and the browser's own
+   list separately. */
+window.__REQ=[];
+(function(){var f=window.fetch;
+ window.fetch=function(u){window.__REQ.push('fetch '+u);
+  return f?f.apply(window,arguments):Promise.reject(new Error('no network'));};
+ var X=window.XMLHttpRequest;
+ if(X&&X.prototype&&X.prototype.open){var o=X.prototype.open;
+  X.prototype.open=function(m,u){window.__REQ.push('xhr '+u);
+   return o.apply(this,arguments);};}})();
+</script>
+<style>
+/* ============================================================
+   DESIGN TWO. THE MIRROR.
+
+   THE BELIEF: the story page is a mirror. You put a sentence in and the
+   instrument gives it back in its own words, beside the line it came from,
+   and nothing else is on the page.
+
+   What this design does with the live lighting that the others do not: it
+   refuses to touch the sentence. No colour goes on a person's own words. The
+   instrument reaches out to them instead, with a leader off the word to a
+   line of its own writing in the right margin, at the same height. Reading
+   down the left is what you said. Reading down the right is what it read.
+
+   AND THERE IS A MEASUREMENT BEHIND THAT REFUSAL. Against the journal's own
+   ground, --panel #1A1D26, the seat colours run from 4.14 to 1 at the root to
+   9.33 to 1 at the solar plexus. Body text needs 4.5. Setting a person's word
+   in its seat colour therefore fails at the root, in red, on the seat that
+   carries fear, and passes everywhere else, which is the worst possible
+   version of the defect: it would look fine in every test and break on the
+   heaviest thing anybody writes. A rule is not text and clears at 3 to 1, so
+   the colour goes on the leader and the word keeps the person's own ink at
+   14.39 to 1.
+
+   TOKENS are copied by value from atuned_src/shell/head.html. Every one is
+   the shipping value.
+   ============================================================ */
+:root{
+ --bg:#0C0D12; --panel:#1A1D26; --panel-2:#252833; --sunk:#090A0E;
+ --edge:rgba(255,255,255,.09); --edge-2:rgba(255,255,255,.14);
+ --ink:#EFEDE8; --mid:#B4B0A8; --dim:#94908A;
+ --root:#D6524C; --sacral:#D8924E; --solar:#DABF6A;
+ --heart:#5FD5A6; --throat:#5EBBDB; --eye:#7D93E0; --crown:#A77EDB;
+ --alarm:#FF2E1F; --alarm-soft:rgba(255,46,31,.16);
+ --accent:#7EB8D4; --on-accent:#0B1418;
+ --sans:'Inter','Inter Tight',system-ui,-apple-system,'Segoe UI',sans-serif;
+ --num:'Inter','Inter Tight',system-ui,-apple-system,sans-serif;
+ --r:16px; --r-s:11px; --r-xs:8px; --tap:44px;
+ --t-micro:.12s; --t-element:.22s; --ease-out:cubic-bezier(.22,1,.36,1);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);
+ font-weight:300;-webkit-font-smoothing:antialiased}
+.pchrome{display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+ padding:12px 22px;border-bottom:1px solid var(--edge);background:var(--panel)}
+.pchrome b{font-weight:500;font-size:13px;color:var(--mid);letter-spacing:.06em;
+ text-transform:uppercase}
+.pchrome select,.pchrome button{min-height:var(--tap);background:var(--panel-2);
+ color:var(--ink);border:1px solid var(--edge);border-radius:var(--r-xs);
+ padding:8px 14px;font-family:var(--sans);font-size:13.5px;cursor:pointer}
+.pchrome .note{font-size:12.5px;color:var(--dim);flex:1 1 220px;min-width:0}
+.btn{min-height:var(--tap);display:inline-flex;align-items:center;
+ justify-content:center;gap:7px;background:var(--panel-2);
+ border:1px solid var(--edge);color:var(--mid);border-radius:var(--r-xs);
+ padding:9px 17px;font-family:var(--sans);font-size:13.5px;cursor:pointer;
+ transition:color var(--t-micro) var(--ease-out),
+  border-color var(--t-micro) var(--ease-out)}
+.btn:hover:not(:disabled){color:var(--ink);border-color:var(--edge-2)}
+.btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.btn.pri{background:var(--accent);border-color:var(--accent);
+ color:var(--on-accent);font-weight:500}
+.btn:disabled{opacity:.42;cursor:default}
+.lnk{min-height:var(--tap);display:inline-flex;align-items:center;gap:7px;
+ background:transparent;border:1px solid var(--edge);color:var(--mid);
+ border-radius:var(--r-xs);padding:8px 14px;font-family:var(--sans);
+ font-size:13px;cursor:pointer}
+.lnk:hover{color:var(--ink);border-color:var(--accent)}
+.lnk:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.lnk svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.8;
+ stroke-linecap:round;stroke-linejoin:round}
+
+/* ============================================================
+   THE RAIL. The release panel is not a card on this page, it is the one
+   strip across the top, and it is the only furniture the mirror has. It
+   sticks, so Run release is above the fold by construction rather than by
+   measurement, at every width and at every scroll position.
+   ============================================================ */
+.rail{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:10px;
+ flex-wrap:wrap;padding:9px 22px;background:var(--bg);
+ border-bottom:1px solid var(--edge)}
+.rail .sp{flex:1 1 auto;min-width:8px}
+.rl-pace{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--mid)}
+.rl-pace input{width:70px;min-height:var(--tap);background:var(--panel-2);
+ border:1px solid var(--edge);border-radius:var(--r-xs);color:var(--ink);
+ font-family:var(--num);font-size:15px;font-variant-numeric:tabular-nums;
+ padding:9px 10px;text-align:center}
+.rl-pace input:focus{outline:2px solid var(--accent);outline-offset:1px}
+.held-strip{display:flex;align-items:center;gap:7px;flex-wrap:wrap;min-height:var(--tap)}
+.strip-none{font-size:13px;color:var(--dim)}
+
+/* the two columns, and the gutter between them is where the leaders live */
+.mir{position:relative;display:grid;grid-template-columns:minmax(0,1fr) 380px;
+ gap:104px;max-width:1240px;margin:0 auto;padding:26px 22px 40px;align-items:start}
+#lead{position:absolute;inset:0;pointer-events:none;z-index:5}
+
+/* ============================================================
+   THE JOURNAL. It rises onto --panel, which is the fix the last pass
+   measured and which every design here inherits. What is different is the
+   type: 19px on 1.85 at a 46 character measure, which is a page rather than
+   a field, and the box has no heading, no eyebrow and no control row above
+   it. The first thing on the surface is the surface.
+   ============================================================ */
+.jr{position:relative;background:var(--panel);border:1px solid var(--edge);
+ border-radius:var(--r);overflow:hidden;min-height:560px;
+ transition:border-color var(--t-element) var(--ease-out)}
+.jr:focus-within{border-color:var(--edge-2)}
+.jr-ed{position:relative;display:flex;font-family:var(--sans);font-size:19px;
+ line-height:1.85;font-weight:300}
+.jr-ta,.jr-hl{flex:1 1 auto;min-height:560px;border:0;margin:0;
+ padding:46px 44px 96px;
+ font-family:inherit;font-size:inherit;line-height:inherit;font-weight:inherit;
+ white-space:pre-wrap;word-break:break-word;overflow-wrap:break-word}
+.jr-hl{position:absolute;inset:0;overflow:hidden;pointer-events:none;
+ color:var(--ink);z-index:0}
+.jr-ta{position:relative;z-index:1;resize:none;background:transparent;
+ color:transparent;caret-color:var(--accent);outline:none;overflow:auto}
+.jr-ta::selection{background:color-mix(in srgb,var(--accent) 34%,transparent)}
+.jr-ta::placeholder{color:var(--dim)}
+/* NOTHING IS DONE TO THE SENTENCE. The mark carries no colour, no fill and no
+   weight: it is the anchor the leader leaves from, and it is invisible until
+   the leader is drawn. */
+mark.mk{background:transparent;color:inherit;font:inherit}
+mark.mk.on{background:color-mix(in srgb,var(--c) 17%,transparent);border-radius:3px}
+
+.jr-live{position:absolute;left:20px;top:16px;z-index:4;display:none;
+ align-items:center;gap:9px;font-family:var(--num);font-size:12.5px;
+ letter-spacing:.07em;text-transform:uppercase;color:var(--alarm)}
+.jr.live .jr-live{display:inline-flex}
+.jr-lamp{width:11px;height:11px;border-radius:50%;background:var(--alarm);
+ box-shadow:0 0 0 4px var(--alarm-soft);animation:lamp 1.5s ease-in-out infinite}
+@keyframes lamp{0%,100%{opacity:1}50%{opacity:.38}}
+@media (prefers-reduced-motion:reduce){.jr-lamp{animation:none}}
+.jr.live{border-color:color-mix(in srgb,var(--alarm) 42%,transparent)}
+.jr-rec{position:absolute;right:20px;bottom:20px;z-index:4;width:56px;height:56px;
+ border-radius:50%;display:inline-flex;align-items:center;justify-content:center;
+ cursor:pointer;background:var(--panel-2);border:1px solid var(--edge-2);
+ color:var(--mid);transition:color var(--t-micro) var(--ease-out),
+  border-color var(--t-micro) var(--ease-out)}
+.jr-rec:hover{color:var(--ink);border-color:var(--accent)}
+.jr-rec:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.jr-rec svg{fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;
+ stroke-linejoin:round;width:22px;height:22px}
+.jr.live .jr-rec{color:var(--alarm);border-color:var(--alarm)}
+.jr.live .jr-rec svg{fill:var(--alarm);stroke:var(--alarm)}
+.foot{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:13px}
+.note{flex:1 1 260px;min-width:0;font-size:13px;line-height:1.55;color:var(--dim)}
+
+/* ============================================================
+   THE REFLECTION. One line of the instrument's own writing for every word it
+   read, held at the height of the line that produced it. No card, no border,
+   no ground: this column is a margin, not a panel, because a margin is where
+   a reader's own annotations go and that is exactly what these are.
+   ============================================================ */
+.align{position:relative}
+.re{position:absolute;left:0;right:0;display:flex;gap:9px;align-items:flex-start;
+ padding:6px 0 6px 12px;border-left:2px solid var(--c);background:transparent}
+.re.flowed{position:static;margin-bottom:8px}
+.re .rg{flex:0 0 auto;width:14px;height:14px;color:var(--c);margin-top:2px}
+.re .rg svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.9;
+ stroke-linecap:round;stroke-linejoin:round}
+.re .rt{flex:1 1 auto;min-width:0;font-size:13.5px;line-height:1.55;color:var(--mid)}
+.re .rt b{color:var(--ink);font-weight:500}
+.re.coh{border-left-color:var(--dim)}
+.re.coh .rt{color:var(--dim)}
+.re-empty{font-size:14.5px;color:var(--dim);line-height:1.72;max-width:44ch}
+
+.sect{margin-top:26px;padding-top:16px;border-top:1px solid var(--edge)}
+.eye{font-family:var(--num);font-size:11.5px;letter-spacing:.13em;
+ text-transform:uppercase;color:var(--dim)}
+.eyeline{display:flex;align-items:center;justify-content:space-between;gap:12px;
+ margin-bottom:12px}
+.sel-one{padding:13px 0;border-top:1px solid var(--edge)}
+.sel-hd{display:flex;align-items:center;gap:11px;margin-bottom:7px}
+.sel-nm{font-size:16px;font-weight:500;color:var(--ink);line-height:1.25}
+.sel-sub{font-size:12px;color:var(--dim)}
+.sel-p{font-size:14px;line-height:1.68;color:var(--mid);margin:0;max-width:58ch}
+.sel-p b{color:var(--ink);font-weight:500}
+.sel-pair{margin-top:14px;padding-top:13px;
+ border-top:1px solid color-mix(in srgb,var(--accent) 34%,transparent)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+.chip{font-size:12px;color:var(--mid);background:var(--panel-2);
+ border:1px solid var(--edge);border-radius:999px;padding:5px 11px}
+.cl-seat{display:flex;align-items:center;gap:10px;margin:16px 0 8px;
+ padding-bottom:6px;border-bottom:1px solid var(--edge);color:var(--c);
+ font-size:13px;font-weight:500}
+.cl-seat:first-child{margin-top:0}
+.cloud{display:flex;flex-wrap:wrap;gap:7px}
+.ip{min-height:var(--tap);display:inline-flex;align-items:center;gap:9px;
+ background:var(--panel-2);border:1px solid var(--edge);border-radius:999px;
+ padding:5px 15px 5px 5px;cursor:pointer;color:var(--ink);
+ font-family:var(--sans);font-size:14px;
+ transition:border-color var(--t-micro) var(--ease-out),
+  background var(--t-micro) var(--ease-out)}
+.ip:hover{border-color:var(--c)}
+.ip:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.ip.on{border-color:var(--c);background:color-mix(in srgb,var(--c) 15%,var(--panel-2))}
+.ip.ghost{border-style:dashed;border-color:var(--edge-2);color:var(--mid)}
+.crb{position:relative;display:inline-block;flex:0 0 auto;box-sizing:content-box;
+ width:34px;height:34px;padding:0 24px 8px 0}
+.crb-a{display:block;transform:rotate(-90deg)}
+.crb-g{position:absolute;left:0;top:0;width:34px;height:34px;display:grid;
+ place-items:center;color:var(--c);pointer-events:none}
+.crb-g svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.8;
+ stroke-linecap:round;stroke-linejoin:round}
+.crb-v{position:absolute;right:0;bottom:0;font-family:var(--num);font-weight:500;
+ line-height:1;background:var(--panel-2);color:var(--ink);
+ border:1px solid color-mix(in srgb,var(--c) 44%,transparent);
+ border-radius:999px;padding:1.5px 6px;white-space:nowrap;font-size:11.5px;
+ font-variant-numeric:tabular-nums}
+.ip.on .crb-v{background:var(--panel)}
+.fi{margin-top:18px;padding-top:14px;border-top:1px solid var(--edge)}
+.fi .cloud{opacity:.72}
+.fi .ip{cursor:default}
+.empty{font-size:14.5px;color:var(--dim);line-height:1.72;max-width:52ch}
+.rl-none{font-size:13.5px;color:var(--dim);line-height:1.65}
+.rl-list{display:flex;flex-direction:column;gap:2px}
+.rl-row{display:flex;align-items:center;gap:11px;min-height:var(--tap);padding:4px 0}
+.rl-nm{flex:1 1 auto;min-width:0;font-size:14px;color:var(--ink);
+ overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rl-row em{font-style:normal;font-size:12.5px;color:var(--dim)}
+
+@media (max-width:980px){
+ /* THE MIRROR LOSES ITS GEOMETRY BEFORE IT LOSES ITS CONTENT. There is no
+    margin to annotate at phone width, so the reflection stops being aligned
+    and becomes a list in the order the words landed. Same lines, same
+    ordering, and the leaders are not drawn, because a leader to something
+    that is not beside it is a line pointing off the screen. */
+ .mir{grid-template-columns:1fr;gap:20px;padding:16px 16px 28px}
+ #lead{display:none}
+ .jr{min-height:0}
+ .jr-ta,.jr-hl{padding:34px 20px 88px;min-height:0;height:40vh;font-size:17px}
+ .jr-ed{font-size:17px}
+ /* THE RAIL GIVES UP THE PILLS BEFORE IT GIVES UP A ROW. At 390 it ran to
+    three rows and 185 pixels of a 844 pixel screen, and what was taking two
+    of them was a list that the reading below already prints by name. */
+ .rail{padding:8px 16px}
+ /* the pills go and the line stays: hiding the whole strip took the "heaviest
+    thing you are carrying" line with it, which is the only thing that says
+    what a release will run when nothing has been picked. */
+ .held-strip .ip{display:none}
+ .held-strip{min-height:0}
+ .foot{gap:8px}
+ .note{flex:1 1 100%;font-size:12.5px;order:2}
+ .foot .btn{order:1}
+ .pchrome{padding:10px 16px}
+}
+</style>
+</head>
+<body>
+
+<div class="pchrome">
+ <b>Two, the mirror</b>
+ <label class="eye" for="who">Record</label>
+ <select id="who"></select>
+ <button id="fill" type="button">Put a story in the box</button>
+ <span class="note" id="pnote"></span>
+</div>
+
+<div class="rail">
+ <span class="eye">Release</span>
+ <div class="held-strip" id="strip"></div>
+ <span class="sp"></span>
+ <label class="rl-pace">Pace
+  <input id="pace" type="number" min="0.4" max="12" step="0.1" value="1"
+   inputmode="decimal" aria-label="Pace, seconds a line"> seconds a line</label>
+ <button class="btn pri" id="run" type="button">Run release</button>
+ <button class="lnk" id="toimp" type="button">Imprints
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg>
+ </button>
+</div>
+
+<div class="mir" id="mir">
+ <div>
+  <div class="jr" id="jr">
+   <div class="jr-live"><span class="jr-lamp"></span>Listening</div>
+   <div class="jr-ed">
+    <div class="jr-hl" id="hl" aria-hidden="true"></div>
+    <textarea id="ta" class="jr-ta" spellcheck="false" aria-label="Your story"
+     placeholder="What happened. In your own words."></textarea>
+   </div>
+   <button class="jr-rec" id="rec" type="button" aria-pressed="false"
+    title="Record what happened out loud."></button>
+  </div>
+  <div class="foot">
+   <span class="note">Recording sends audio to your browser's speech service.
+    Typing stays on this device.</span>
+   <button class="btn" id="clear" type="button">Clear</button>
+   <button class="btn pri" id="commit" type="button" disabled>Commit</button>
+  </div>
+ </div>
+
+ <div>
+  <div class="align" id="align"></div>
+  <div class="sect" id="selcard" hidden></div>
+  <div class="sect" id="cloudcard"></div>
+ </div>
+
+ <svg id="lead" aria-hidden="true"></svg>
+</div>
+
+<!-- The engine is referenced, never copied. A copy goes stale in silence and
+     the prototype then measures a build nobody ships. -->
+<script src="../../engine.js"></script>
+<script>
+var TEXT='', PARSED=null, PICK={}, LISTEN=false, REC=null, MARKS=[], FR=[];
+function seatCol(b){return PAL[b]||'var(--accent)';}
+function esc(s){return String(s==null?'':s)
+ .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+/* leaves() is ui/component.js:192, verbatim. */
+function leaves(o){if(!o||!o.parts)return o?[o]:[];
+ var a=[],sn={};(function dig(x){if(x.parts)x.parts.forEach(dig);
+  else if(!sn[x.i]){sn[x.i]=1;a.push(x);}})(o);return a;}
+function chainOf(r){return [].concat(r.sups,r.hys,r.cxs,r.sabs);}
+function ownersOf(r,n){return chainOf(r).filter(function(o){
+ return leaves(o).indexOf(n)>=0;});}
+/* pairPath is the one address version at ui/drills.js:192 intersected. It
+   computes nothing new. */
+function pairPath(r,a,b){return ownersOf(r,a).filter(function(o){
+ return leaves(o).indexOf(b)>=0;});}
+function pairLine(r,a,b){
+ var sh=pairPath(r,a,b);
+ if(!sh.length)return 'Nothing compounds these two. They fire on their own, '
+  +'and releasing one leaves the other where it is.';
+ function low(k){return sh.filter(function(o){return o.kind===k;})
+  .sort(function(x,y){return y.w-x.w;})[0]||null;}
+ var sab=low('sab'), cx=low('cx'), hy=low('hy'), sup=low('sup'), out=[];
+ if(sab)out.push('Both feed <b>'+esc(sab.nm)+'</b>, at a weight of '+sab.w.toFixed(1)+'.');
+ else out.push('They meet higher up than a single saboteur.');
+ if(cx)out.push(esc(sab?sab.nm:'That')+' pairs into the complex <b>'+esc(cx.nm)
+  +'</b>, at a weight of '+cx.w.toFixed(1)+'.');
+ if(hy)out.push('Above that they compound into <b>'+esc(hy.nm)+'</b>, at a weight of '
+  +hy.w.toFixed(1)+'.');
+ if(sup)out.push('And <b>'+esc(sup.nm)+'</b> is running over the top of it, at a weight of '
+  +sup.w.toFixed(1)+'.');
+ return out.join(' ');}
+/* PENDING IS NOT HELD, AND THE READING SAID IT WAS. A place this story has
+   put charge on but has not committed reads n.sq below the line, so the one
+   line reading printed "Held at a weight of 2.1" about something that is not
+   held at all. The pending amount is in the parse and is said as what it is. */
+function pendingOn(n){
+ if(!PARSED)return 0;
+ var a=0;
+ PARSED.imprints.forEach(function(im){if(im.node===n.i)a+=im.amt;});
+ return a;}
+function oneLine(r,n){
+ var c=null,i;
+ for(i=0;i<CHILD.length;i++)if(CHILD[i].nm===n.cf)c=CHILD[i];
+ var pend=pendingOn(n);
+ var s=(n.sq>=4)?('Held at a weight of '+n.sq.toFixed(1)+'. ')
+  :(pend?('Not held yet. This story puts '+pend.toFixed(1)+' on it, and Commit '
+    +'is what lands it. '):('Under the line, at a weight of '+n.sq.toFixed(1)+'. '));
+ if(c)s+='It sits on the <b>'+esc(c.nm)+' toward '+esc(c.opp)+'</b> axis, and '
+  +((S.replace[c.nm]||0)>=4?esc(c.opp)+' is already partly in.'
+   :esc(c.opp)+' is what fills it once it is emptied.');
+ else s+='A field place, with no poled axis under it.';
+ return s;}
+
+function badge(band,pct,raw,dash){
+ var r=13.5,w=3,box=34,C=2*Math.PI*r,off=C*(1-Math.max(0,Math.min(100,pct))/100);
+ var glyph=SEATGLYPH[band]||SEATGLYPH._;
+ return '<span class="crb" style="--c:'+seatCol(band)+'">'
+  +'<svg class="crb-a" width="'+box+'" height="'+box+'" aria-hidden="true">'
+  +'<circle cx="17" cy="17" r="'+r+'" fill="none" stroke="rgba(128,128,128,.22)" stroke-width="'+w+'"/>'
+  +'<circle cx="17" cy="17" r="'+r+'" fill="none" stroke="'+seatCol(band)+'" stroke-width="'+w
+   +'" stroke-linecap="'+(dash?'butt':'round')+'" stroke-dasharray="'+(dash?'3 3':C.toFixed(1))
+   +'" stroke-dashoffset="'+(dash?'0':off.toFixed(1))+'"/></svg>'
+  +'<span class="crb-g"><svg viewBox="0 0 24 24" aria-hidden="true">'+glyph+'</svg></span>'
+  +'<span class="crb-v">'+esc(raw)+'</span></span>';}
+
+/* ---- loading a reference record, the way proto/avatar already does it ---- */
+function loadWho(nm){
+ var p=null,i;
+ for(i=0;i<PEOPLE.length;i++)if(PEOPLE[i].nm===nm)p=PEOPLE[i];
+ if(!p)return;
+ S.dom=p.dom; S.a1=p.a1; S.a2=p.a2; S.doms=[p.dom]; S.arcs=[p.a1,p.a2]; S.roots=[];
+ buildSoul();
+ CHARGES.forEach(function(c){
+  S.charge[c]=(p.c&&p.c[c]!==undefined)?p.c[c]:0;
+  S.replace[c]=(p.rep&&p.rep[c])||0;});
+ var LS=LAWSET[nm]||{_:5.5};
+ SINAMES.forEach(function(l){S.law[l]=(LS[l]!==undefined)?LS[l]:(LS._!==undefined?LS._:5.5);});
+ PICK={}; paint();}
+function loadBlank(){
+ S.doms=[]; S.arcs=[]; S.roots=[]; buildSoul();
+ CHARGES.forEach(function(c){S.charge[c]=0;S.replace[c]=0;});
+ SINAMES.forEach(function(l){S.law[l]=6;});
+ PICK={}; paint();}
+
+/* ============================================================
+   THE MARKS, AND WHY THEY ARE NOT A SECOND REGEX.
+
+   scanStory normalises the text before it scans: lowercase, every character
+   that is not a letter, an apostrophe or a space becomes a space, and runs of
+   space collapse to one. hit.at is an offset into THAT string, and the engine
+   has been carrying it all along.
+
+   The shipping highlighter throws the offsets away and runs its own global
+   regex over the raw text instead, which is a second reading of the same
+   sentence by a different rule. Measured on five stories: it lights 12 terms
+   where the scanner recorded 25 hits, it cannot light a phrase as one unit
+   because it rebuilds the pattern out of single words, and it cannot light a
+   coherent word at all, so the words that take charge OFF a person are
+   invisible on the one surface whose whole job is to show the reading.
+
+   normMap rebuilds the engine's own normalisation and keeps the original
+   index of every character it keeps, so a mark lands on exactly the letters
+   the scanner scored.
+   ============================================================ */
+function normMap(t){
+ var body='',bm=[],i,c;
+ for(i=0;i<t.length;i++){
+  c=t.charAt(i).toLowerCase();
+  if(!/[a-z' ]/.test(c))c=' ';
+  body+=c; bm.push(i);}
+ var s=' ', map=[0], prev=true;
+ for(i=0;i<body.length;i++){
+  var sp=body.charAt(i)===' ';
+  if(sp&&prev)continue;
+  s+=body.charAt(i); map.push(bm[i]); prev=sp;}
+ s+=' '; map.push(t.length);
+ return {s:s,map:map};}
+
+function marksOf(t,p){
+ if(!p||!p.hits.length)return [];
+ var nm=normMap(t), raw=[];
+ p.hits.forEach(function(h){
+  if(h.at==null)return;
+  var a=h.at+1, b=h.at+String(h.t).length;
+  if(a>=nm.map.length||b>=nm.map.length)return;
+  raw.push({s:nm.map[a], e:nm.map[b]+1, kind:h.kind, band:h.band||null,
+   amt:(h.amt==null?null:h.amt), label:h.label||null, charge:h.charge||null,
+   fet:h.fet||null, coh:h.band==='coherent'});});
+ raw.sort(function(a,b){return a.s-b.s||(b.e-b.s)-(a.e-a.s);});
+ /* one mark per stretch of text. A phrase outranks the words inside it, which
+    is the scanner's own rule, and an adjective sitting on the same word as a
+    placed term merges into it rather than drawing twice. */
+ var keep=[], last=-1;
+ raw.forEach(function(m){
+  if(m.s<last){var pv=keep[keep.length-1];
+   if(pv&&m.charge&&!pv.charge)pv.charge=m.charge;
+   if(pv&&m.fet&&!pv.fet)pv.fet=m.fet;
+   if(pv&&m.band&&!pv.band){pv.band=m.band;pv.coh=m.coh;}
+   if(pv&&m.amt!=null&&pv.amt==null)pv.amt=m.amt;
+   return;}
+  m.seat=(m.band&&m.band!=='coherent')?m.band:null;
+  m.bn=m.seat?K2BAND[m.seat]:null;
+  keep.push(m); last=m.e;});
+ keep.forEach(function(m,i){m.i=i;});
+ return keep;}
+
+/* ============================================================
+   THE CLOUD, THE SELECTION AND THE RELEASE PANEL.
+
+   Inherited from the pass this design is not re-solving. What is filled in is
+   not an imprint: impLive returned sq>=4 OR pole>=4 and the panel printed the
+   length of that as a headline, so three of the six reference people were
+   told they carried between eight and forty nine imprints while holding
+   nothing. Held is the cloud. Filled in keeps its place and loses the word.
+   ============================================================ */
+var SHOW_FILLED=true, BAND_FILTER='';
+function liveHeld(){return W.filter(function(n){return n.sq>=4;})
+ .sort(function(a,b){return b.sq-a.sq;});}
+function liveFilled(){return W.filter(function(n){return n.sq<4&&n.pole>=4;})
+ .sort(function(a,b){return b.pole-a.pole;});}
+function ghosts(){
+ if(!PARSED)return [];
+ var out={},seen={};
+ PARSED.imprints.forEach(function(im){
+  if(seen[im.node])return; seen[im.node]=1;
+  var n=BY[im.node]; if(!n||n.sq>=4)return;
+  out[im.node]={node:n,amt:im.amt,inferred:!!im.inferred};});
+ return Object.keys(out).map(function(k){return out[k];});}
+function pill(n,val,pct,cls,lbl){
+ return '<button type="button" class="ip'+(PICK[n.i]?' on':'')+(cls?' '+cls:'')
+  +'" data-imp="'+n.i+'" style="--c:'+seatCol(n.b)+'">'
+  +badge(n.b,pct,val,cls==='ghost')+esc(lbl||n.k)+'</button>';}
+function paintCloud(){
+ var host=document.getElementById('cloudcard');
+ var held=liveHeld(), fill=liveFilled(), gh=ghosts();
+ var h='<div class="eyeline"><span class="eye">Imprints'
+  +(BAND_FILTER?', '+esc(BAND_FILTER):'')+'</span></div>';
+ if(BAND_FILTER){
+  held=held.filter(function(n){return n.b===BAND_FILTER;});
+  gh=gh.filter(function(x){return x.node.b===BAND_FILTER;});
+  fill=fill.filter(function(n){return n.b===BAND_FILTER;});
+  if(!held.length&&!gh.length&&!fill.length){
+   /* A SEAT WITH NOTHING IN IT IS AN ANSWER. The panel used to render an
+      empty cloud, which is indistinguishable from a panel that failed. */
+   h+='<div class="empty">Nothing is held at the '+esc(String(BAND_FILTER).toLowerCase())
+    +'. Press it again to see everything.</div>';
+   host.innerHTML=h; wireCloud(); return;}}
+ if(!held.length&&!gh.length&&!fill.length){
+  h+='<div class="empty">You have not written anything yet. Whatever you write '
+   +'gets pulled apart and collected here.</div>';
+  host.innerHTML=h; wireCloud(); return;}
+ BANDS.forEach(function(b){
+  var seg=held.filter(function(n){return n.b===b;});
+  var gs=gh.filter(function(x){return x.node.b===b;});
+  if(!seg.length&&!gs.length)return;
+  h+='<div class="cl-seat" style="--c:'+seatCol(b)+'">'+esc(b)+'</div><div class="cloud">';
+  seg.forEach(function(n){h+=pill(n,n.sq.toFixed(1),n.sq*10,'');});
+  gs.forEach(function(x){h+=pill(x.node,'+'+x.amt.toFixed(1),20,'ghost',
+   x.inferred?(x.node.cf||x.node.b):x.node.k);});
+  h+='</div>';});
+ /* FILLED IN IS NOT RELEASABLE, so whether it belongs on this surface at all
+    is a design question and not a shared one. The instrument keeps it, because
+    a readout that hides half of what it knows is not a readout. The mirror
+    sends it to the imprints page, because the mirror shows what the story is
+    about and nothing else. */
+ if(fill.length&&SHOW_FILLED){
+  h+='<div class="fi"><div class="eyeline"><span class="eye">Filled in</span></div>'
+   +'<div class="cloud">';
+  fill.forEach(function(n){h+=pill(n,n.pole.toFixed(1),n.pole*10,'');});
+  h+='</div></div>';}
+ host.innerHTML=h; wireCloud();}
+function wireCloud(){
+ document.querySelectorAll('[data-imp]').forEach(function(el){
+  el.onclick=function(){var i=+el.dataset.imp; PICK[i]=!PICK[i];
+   if(!PICK[i])delete PICK[i]; paint();};});}
+
+function paintSel(){
+ var card=document.getElementById('selcard');
+ var ids=Object.keys(PICK).map(Number).filter(function(i){return !!BY[i];});
+ if(!ids.length){card.hidden=true;card.innerHTML='';return;}
+ card.hidden=false;
+ var r=compute();
+ var h='<div class="eyeline"><span class="eye">Selected</span>'
+  +'<button class="lnk" id="unsel" type="button">Clear selection</button></div>';
+ ids.slice(0,4).forEach(function(i){
+  var n=BY[i], v=(n.sq>=4?n.sq:n.pole);
+  h+='<div class="sel-one"><div class="sel-hd">'+badge(n.b,v*10,v.toFixed(1))
+   +'<div><div class="sel-nm">'+esc(n.k)+'</div><div class="sel-sub">'+esc(n.b)
+   +(n.n?', '+esc(n.n):'')+'</div></div></div><p class="sel-p">'+oneLine(r,n)+'</p>';
+  var ow=ownersOf(r,n);
+  if(ow.length)h+='<div class="chips">'+ow.slice(0,5).map(function(o){
+   return '<span class="chip">'+esc(o.nm)+' '+o.w.toFixed(1)+'</span>';}).join('')+'</div>';
+  h+='</div>';});
+ if(ids.length>1){
+  h+='<div class="sel-pair"><div class="eye" style="margin-bottom:8px">'
+   +'How they run through you</div>';
+  for(var a=0;a<ids.length&&a<4;a++)for(var b=a+1;b<ids.length&&b<4;b++)
+   h+='<p class="sel-p" style="margin-bottom:9px"><b>'+esc(BY[ids[a]].k)+'</b> and <b>'
+    +esc(BY[ids[b]].k)+'</b>. '+pairLine(r,BY[ids[a]],BY[ids[b]])+'</p>';
+  h+='</div>';}
+ card.innerHTML=h;
+ var u=document.getElementById('unsel');
+ if(u)u.onclick=function(){PICK={};paint();};}
+
+function runPool(){
+ var ids=Object.keys(PICK).map(Number).filter(function(i){return !!BY[i];});
+ if(ids.length)return ids.map(function(i){return BY[i];});
+ return compute().carrying.slice(0,1);}
+
+/* ============================================================
+   THE REFLECTION. One line of the instrument's own writing for every word it
+   read, and it is written from what the engine actually returned rather than
+   from a template with a seat dropped into it.
+
+   A PHRASE CARRIES ITS OWN NAME. PHRASES rows are [words, seat, amount,
+   label], and the label is the reading: "bit my tongue" is silenced, "running
+   on empty" is despair. Twenty two of them ship in the engine and no surface
+   in this product has ever printed one.
+
+   AND THE INFERRED BOUNDARY IS PRINTED, NOT PAPERED OVER. parseStory marks an
+   imprint inferred when the seat was read but the address underneath it was
+   chosen by the fallback rather than by the person's words, and the comment
+   beside it is explicit: a renderer must not print the name as a finding when
+   this is true. This is the only one of the four designs that writes in
+   sentences, so it is the only one that can say so, and it says so.
+   ============================================================ */
+function cap(s){return String(s).charAt(0).toUpperCase()+String(s).slice(1);}
+var SEATSAY={'3rd Eye':'third eye','Solar':'solar plexus'};
+function seatSay(bn){return SEATSAY[bn]||String(bn).toLowerCase();}
+function reLine(m,said){
+ /* THE SECOND COHERENT WORD SAYS LESS THAN THE FIRST. Two words that both take
+    charge off produced two identical sentences, and a sentence repeated
+    verbatim four lines down reads as a fault rather than as a second reading. */
+ if(m.coh){if(said._coh)return 'Takes charge off.';
+  said._coh=1; return 'Takes charge off, and it comes off every seat at once.';}
+ if(!m.bn)return '<b>'+cap(esc(m.charge||'charge'))+'.</b> The charge is named '
+  +'and no place is given.';
+ /* WHAT THE WORD MEANT BEATS WHERE IT WENT. The first cut headed every line
+    with the seat, so two words at the solar plexus both read "Solar." and the
+    column said the same thing twice about two different feelings. A phrase
+    carries its own label, a word may name its own fetter, and an adjective
+    names a charge. Any of the three is a better head than the seat, and the
+    seat is still said in the clause after it. */
+ var nmd=m.label?cap(m.label):(m.fet||(m.charge?cap(m.charge):null));
+ var head='<b>'+esc(nmd||m.bn)+'.</b>';
+ var tail=nmd?(' It goes to the '+esc(seatSay(m.bn))+'.'):'';
+ if(said[m.bn])return head+tail;
+ said[m.bn]=1;
+ var im=(PARSED?PARSED.imprints:[]).filter(function(x){return x.band===m.bn;});
+ if(!im.length)return head+tail;
+ if(im[0].inferred)return head+tail+' The seat is read. Nothing in the '
+  +'sentence named a place in it.';
+ var nm=im.slice(0,2).map(function(x){return '<b>'+esc(x.name)+'</b>';});
+ return head+tail+' It lands on '+nm.join(' and ')+'.';}
+
+function entryHtml(m,said){
+ var c=m.bn?seatCol(m.bn):'var(--dim)';
+ return '<div class="re'+(m.coh?' coh':'')+'" data-mk="'+m.i+'" style="--c:'+c+'">'
+  +(m.bn?'<span class="rg"><svg viewBox="0 0 24 24" aria-hidden="true">'
+   +(SEATGLYPH[m.bn]||SEATGLYPH._)+'</svg></span>':'<span class="rg"></span>')
+  +'<span class="rt">'+reLine(m,said)+'</span></div>';}
+
+var HOVER=-1;
+function paintRefl(){
+ var t0=performance.now();
+ var align=document.getElementById('align');
+ var narrow=window.matchMedia('(max-width:980px)').matches;
+ if(!MARKS.length){
+  align.innerHTML='<div class="re-empty">You have not written anything yet. '
+   +'Whatever you write gets read here, beside the line it came from.</div>';
+  align.style.height=''; drawLeads(null); FR.push(performance.now()-t0); return;}
+ var said={},h='';
+ MARKS.forEach(function(m){h+=entryHtml(m,said);});
+ align.innerHTML=h;
+ var els=[].slice.call(align.querySelectorAll('.re'));
+ if(narrow){
+  els.forEach(function(e){e.classList.add('flowed');});
+  align.style.height=''; drawLeads(null); FR.push(performance.now()-t0); return;}
+ var hl=document.getElementById('hl'), ar=align.getBoundingClientRect(), mk={};
+ Array.prototype.forEach.call(hl.querySelectorAll('mark[data-mk]'),
+  function(el){mk[el.dataset.mk]=el;});
+ /* THE COLLIDE RULE, WHICH THIS REPOSITORY ALREADY HAS A GATE FOR. Two words
+    on one line want the same height, so the second is pushed down rather than
+    laid on top of the first. The leader is what keeps the link honest once a
+    line has moved off its own height. */
+ var bottom=0;
+ els.forEach(function(e){
+  var el=mk[e.dataset.mk], r=el?el.getBoundingClientRect():null;
+  var want=r?(r.top-ar.top+r.height/2-e.offsetHeight/2):(bottom+8);
+  if(want<bottom+8)want=bottom+8;
+  if(want<0)want=0;
+  e.style.top=want.toFixed(1)+'px';
+  bottom=want+e.offsetHeight;});
+ align.style.height=(bottom+18)+'px';
+ drawLeads(mk);
+ FR.push(performance.now()-t0); if(FR.length>400)FR.shift();}
+
+/* the leader. Out of the word, across the gutter, into the line that reads
+   it. A callout, which is what a technical drawing uses to point at a part
+   without writing on it. */
+function drawLeads(mk){
+ var svg=document.getElementById('lead'), mir=document.getElementById('mir');
+ var mr=mir.getBoundingClientRect();
+ svg.setAttribute('width',mr.width); svg.setAttribute('height',mr.height);
+ svg.setAttribute('viewBox','0 0 '+mr.width+' '+mr.height);
+ if(!mk){svg.innerHTML='';return;}
+ var align=document.getElementById('align');
+ var jr=document.getElementById('jr').getBoundingClientRect();
+ var gx=jr.right-mr.left+26, g='';
+ Array.prototype.forEach.call(align.querySelectorAll('.re'),function(e){
+  var i=+e.dataset.mk, el=mk[i], m=MARKS[i];
+  if(!el||!m)return;
+  var r=el.getBoundingClientRect(), er=e.getBoundingClientRect();
+  if(r.width<=0||r.height<=0)return;
+  var x1=Math.min(r.right-mr.left+2,jr.right-mr.left-10);
+  var y1=r.top-mr.top+r.height/2;
+  var x2=er.left-mr.left-2, y2=er.top-mr.top+Math.min(er.height/2,17);
+  var c=m.bn?seatCol(m.bn):'var(--dim)';
+  var on=(i===HOVER);
+  g+='<path d="M'+x1.toFixed(1)+' '+y1.toFixed(1)+' L'+gx.toFixed(1)+' '+y1.toFixed(1)
+   +' L'+(gx+20).toFixed(1)+' '+y2.toFixed(1)+' L'+x2.toFixed(1)+' '+y2.toFixed(1)
+   +'" fill="none" stroke="'+c+'" stroke-width="'+(on?1.6:1)+'" opacity="'
+   +(on?'1':'.48')+'"/>'
+   +'<circle cx="'+x1.toFixed(1)+'" cy="'+y1.toFixed(1)+'" r="'+(on?2.6:2)+'" fill="'+c+'"/>';});
+ svg.innerHTML=g;}
+
+/* the release panel is the rail, and the rail is what will run */
+function paintRel(){
+ var strip=document.getElementById('strip'), take=runPool();
+ var picked=Object.keys(PICK).length>0, run=document.getElementById('run');
+ if(!take.length){
+  strip.innerHTML='<span class="strip-none">Nothing is carrying yet, so there '
+   +'is nothing to release.</span>';
+  run.disabled=true; return;}
+ run.disabled=false;
+ strip.innerHTML=(picked?'':'<span class="strip-none">The heaviest thing you '
+   +'are carrying, until you pick something else.</span>')
+  +take.slice(0,6).map(function(n){
+   return '<span class="ip st" style="--c:'+seatCol(n.b)+';cursor:default">'
+    +badge(n.b,n.sq*10,n.sq.toFixed(1))+esc(n.k)+'</span>';}).join('');}
+
+var MIC_ON='<svg viewBox="0 0 24 24" aria-hidden="true">'
+ +'<rect x="4" y="4" width="16" height="16" rx="3"/></svg>';
+var MIC_OFF='<svg viewBox="0 0 24 24" aria-hidden="true">'
+ +'<rect x="9" y="3" width="6" height="11" rx="3"/>'
+ +'<path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3"/></svg>';
+
+function hlHtml(t){
+ if(!MARKS.length)return esc(t);
+ var out='',last=0;
+ MARKS.forEach(function(m){
+  out+=esc(t.slice(last,m.s))
+   +'<mark class="mk'+(m.i===HOVER?' on':'')+'" data-mk="'+m.i+'" style="--c:'
+   +(m.bn?seatCol(m.bn):'var(--dim)')+'">'+esc(t.slice(m.s,m.e))+'</mark>';
+  last=m.e;});
+ return out+esc(t.slice(last));}
+
+function paintJournal(){
+ var ta=document.getElementById('ta');
+ document.getElementById('hl').innerHTML=hlHtml(TEXT)+'\n';
+ document.getElementById('commit').disabled=!(PARSED&&PARSED.imprints.length);
+ var jr=document.getElementById('jr');
+ jr.classList.toggle('live',LISTEN);
+ var rec=document.getElementById('rec');
+ rec.innerHTML=LISTEN?MIC_ON:MIC_OFF;
+ rec.setAttribute('aria-pressed',LISTEN?'true':'false');
+ rec.title=LISTEN?'Recording. Press to stop and keep what it heard.'
+  :'Record what happened out loud.';
+ if(ta.value!==TEXT)ta.value=TEXT;}
+
+SHOW_FILLED=false;   /* the mirror shows what the story is about. Everything
+  else is one press away, behind Imprints. */
+function paint(){
+ MARKS=marksOf(TEXT,PARSED);
+ paintJournal(); paintRefl(); paintRel(); paintSel(); paintCloud(); note();
+ /* ONE EMPTY LINE ON AN EMPTY PAGE. The reflection and the cloud carry the
+    same sentence, so on a first ever open the mirror printed "You have not
+    written anything yet" twice, eighty pixels apart. The reflection keeps it
+    and the cloud says nothing until there is something to say. */
+ /* and the section goes with its content. Emptying the markup left the
+    section's own top rule sitting under the last line of the page, which is a
+    divider dividing nothing. */
+ var cc=document.getElementById('cloudcard');
+ cc.hidden=(!MARKS.length&&!liveHeld().length&&!ghosts().length);
+ if(cc.hidden)cc.innerHTML='';
+ wireRefl();}
+function wireRefl(){
+ var align=document.getElementById('align');
+ Array.prototype.forEach.call(align.querySelectorAll('.re'),function(e){
+  e.onmouseenter=function(){HOVER=+e.dataset.mk;
+   document.getElementById('hl').innerHTML=hlHtml(TEXT)+'\n'; paintRefl();};
+  e.onmouseleave=function(){HOVER=-1;
+   document.getElementById('hl').innerHTML=hlHtml(TEXT)+'\n'; paintRefl();};});}
+function note(){
+ var r=compute();
+ document.getElementById('pnote').textContent='Carrying '+r.carrying.length
+  +' places. Held above the line, '+r.loaded.length+'. Filled in, '
+  +liveFilled().length+'.';}
+
+(function(){
+ var sel=document.getElementById('who');
+ sel.innerHTML='<option value="">Nothing entered</option>'
+  +['Sofia','Diane','Marcus','Angela','Derek','James'].map(function(n){
+   return '<option>'+n+'</option>';}).join('');
+ sel.onchange=function(){sel.value?loadWho(sel.value):loadBlank();};
+ var ta=document.getElementById('ta');
+ ta.oninput=function(){TEXT=ta.value; PARSED=TEXT.trim()?parseStory(TEXT):null; paint();};
+ ta.onscroll=function(){var hl=document.getElementById('hl');
+  hl.scrollTop=ta.scrollTop; hl.scrollLeft=ta.scrollLeft; paintRefl();};
+ window.addEventListener('resize',function(){paintRefl();});
+ document.getElementById('clear').onclick=function(){
+  TEXT='';PARSED=null;ta.value='';paint();ta.focus();};
+ document.getElementById('commit').onclick=function(){
+  if(!PARSED||!PARSED.imprints.length)return;
+  applyStory(TEXT); TEXT='';PARSED=null;ta.value='';paint();};
+ document.getElementById('fill').onclick=function(){
+  TEXT=SAMPLE; ta.value=TEXT; PARSED=parseStory(TEXT); paint();};
+ document.getElementById('toimp').onclick=function(){
+  alert('The full imprints page. Out of scope for this prototype and it is a '
+   +'surface that already exists.');};
+ document.getElementById('run').onclick=function(){
+  var take=runPool(), pace=+document.getElementById('pace').value||1;
+  alert('Run release. '+take.map(function(n){return n.k;}).join(', ')+', at '+pace
+   +(pace===1?' second':' seconds')+' a line. The runner states what it costs on '
+   +'its first frame, which is where that belongs.');};
+ document.getElementById('rec').onclick=function(){
+  var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR){LISTEN=false;paint();
+   alert('This browser has no speech recognition. Typing works.');return;}
+  if(typeof isSecureContext!=='undefined'&&!isSecureContext){LISTEN=false;paint();
+   alert('Recording needs a secure page. Opened from a file, the browser will not '
+    +'turn the microphone on. Typing works.');return;}
+  if(REC&&LISTEN){REC.stop();LISTEN=false;paint();return;}
+  REC=new SR(); REC.continuous=true; REC.interimResults=true; REC.lang='en-US';
+  var base=TEXT;
+  REC.onresult=function(e){var s='',i;
+   for(i=e.resultIndex;i<e.results.length;i++)s+=e.results[i][0].transcript;
+   TEXT=(base+' '+s).trim(); PARSED=TEXT?parseStory(TEXT):null; paint();};
+  REC.onend=function(){LISTEN=false;paint();};
+  REC.onerror=function(){LISTEN=false;paint();};
+  try{REC.start();LISTEN=true;paint();}catch(err){LISTEN=false;paint();}};
+ loadBlank();
+})();
+var SAMPLE='I said yes to the board again and my jaw was tight the whole call. '
+ +'I stayed quiet when he took the credit. I keep waiting for somebody to tell '
+ +'me I am doing enough. Afterwards I sat in the car for twenty minutes before '
+ +'I could drive. I am angry at myself for not saying what I actually thought, '
+ +'and ashamed that I care this much what they think of me. I slept well '
+ +'though, and I was grateful walking back from the beach on Sunday.';
+</script>
+</body>
+</html>
