@@ -1,11 +1,17 @@
 # QUESTIONS FOR THE OWNER
 
 Every line in `TASKS.md` marked `[?]`, which is the mark for a question
-waiting on his ruling. 110 of them, across 33 sections.
-Read off commit 9829040 on 2026-09-20. Nothing here is typed by hand: answer a
+waiting on his ruling. 113 of them, across 34 sections.
+Read off commit 98908f2 on 2026-09-20. Nothing here is typed by hand: answer a
 question in TASKS.md and it leaves this file on the next run.
 
 The same list is in `QUESTIONS.html`, which opens in a browser.
+
+## 0c2. RULED 20 SEPTEMBER, FOURTEENTH PASS. THE RELEASE FLOW. HIGH PRIORITY.
+
+- [ ] **RV7. Audio is a whole new capability and it has consequences.** A voice recording is a binary asset in a product whose standing ruling is one file with no dependencies. Embedded as base64 it is large, and the build already had to be compressed to arrive at all. This needs a ruling: embed it, fetch it at the one network seam the accounts fork opens, or synthesise everything and keep no recording.
+- [ ] **RV8. Browser speech synthesis is a local voice on most platforms and a network service on some.** The privacy ruling already covers speech recognition and has to be extended to say which.
+- [ ] **RM1. He says the mobile app we dropped in a long time ago has a fantastic release flow and to review it five times.** Searched: there is no such file here. `DESIGN-mobile.md` and `DESIGN-mobile-icp.md` exist and are design notes rather than the app. `index.html` in the root is the book, at 5.9 megabytes, and it carries 457 mentions of release, so the protocol text is likely extractable from it. The app itself needs to be handed over or it cannot be reviewed.
 
 ## 0e2. MEASURED 20 SEPTEMBER. WHAT THE ONBOARDING PASS LEFT BEHIND.
 

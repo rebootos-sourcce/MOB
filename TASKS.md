@@ -21,6 +21,87 @@ reopens. Every seat adds its own.
 
 ---
 
+## 0c2. RULED 20 SEPTEMBER, FOURTEENTH PASS. THE RELEASE FLOW. HIGH PRIORITY.
+
+He asked why this is broken and why it has not been added. Measured before
+answering, and the answer is in two halves.
+
+**What is built and correct.** The four channels are there and they are his:
+right and left for the limit, right and left for the truth, which is his fifty
+left and fifty right of release then of reframe. The plan is built from the
+addresses selected and priced through the same meter the ladder uses. There is
+a cooldown. There is a stop control that ends into the cooldown. There is a
+timer.
+
+**What is not built at all is the audio, and that is the whole difference.**
+This product has never made a sound. There is a sound seat and no sound. The
+release runs as text on a screen at a fixed seconds per line, which is a
+reading exercise wearing the shape of a protocol. Nothing else on his list is
+missing in the same way; every other item is a surface on top of arithmetic
+that already works.
+
+**And nobody queued it,** because the release was treated as done once the
+arithmetic was right. The gates all pass. A gate cannot see that a protocol
+meant to be heard is being read.
+
+### RL. THE PANEL BEFORE IT BEGINS.
+
+- [ ] **RL1. It names what was selected,** not a count of them. "Three
+      addresses" is the exact defect he has now struck three times.
+- [ ] **RL2. Each one with its percent, where it sits in the body, and what it
+      costs.**
+- [ ] **RL3. And what the batch returns,** in points, so the trade is visible
+      before a person commits to it.
+- [ ] **RL4. Begin opens the full flow.**
+
+### RV. THE FLOW, AND IT IS HEARD RATHER THAN READ.
+
+- [ ] **RV1. His own voice opens it.** Thank you, relax, sit down, we are
+      going to walk through a release. That is a recording, not a synthesis,
+      and it is the one asset in this product that cannot be generated.
+- [ ] **RV2. Then the synthetic voice picks up at "when you're ready".**
+- [ ] **RV3. The opening instruction, his words:** think this to yourself,
+      move your awareness inside your body, feel what your body is doing
+      mechanically, keep your awareness inside your body.
+- [ ] **RV4. Then the prompt.** Letting go of believing, perceiving, thinking,
+      behaving, acting, feeling that I am, and through its cycle.
+- [ ] **RV5. Fifty left and fifty right of release, then fifty left and fifty
+      right of reframe,** scaled to the patterns selected. The four channels
+      exist; the counts and the audio do not.
+- [ ] **RV6. A cooldown at the end.** Built, and it will need rewriting for a
+      flow that is heard.
+- [?] **RV7. Audio is a whole new capability and it has consequences.** A
+      voice recording is a binary asset in a product whose standing ruling is
+      one file with no dependencies. Embedded as base64 it is large, and the
+      build already had to be compressed to arrive at all. This needs a
+      ruling: embed it, fetch it at the one network seam the accounts fork
+      opens, or synthesise everything and keep no recording.
+- [?] **RV8. Browser speech synthesis is a local voice on most platforms and
+      a network service on some.** The privacy ruling already covers speech
+      recognition and has to be extended to say which.
+
+### RM. THE REFERENCE HE NAMED IS NOT IN THIS REPOSITORY.
+
+- [?] **RM1. He says the mobile app we dropped in a long time ago has a
+      fantastic release flow and to review it five times.** Searched: there is
+      no such file here. `DESIGN-mobile.md` and `DESIGN-mobile-icp.md` exist
+      and are design notes rather than the app. `index.html` in the root is
+      the book, at 5.9 megabytes, and it carries 457 mentions of release, so
+      the protocol text is likely extractable from it. The app itself needs to
+      be handed over or it cannot be reviewed.
+
+### RC2. THE CONTROLS HE NAMED.
+
+- [ ] **RC10. An end button, to leave mid flow.** A stop exists and ends into
+      the cooldown; he wants a way out that is visible.
+- [ ] **RC11. A countdown in real minutes,** how many were selected and how
+      many remain. His words: actual time, not a slider.
+- [ ] **RC12. Select by density,** the heaviest patterns, as a way of
+      choosing rather than the only choice.
+- [ ] **RC13. An icon per pattern,** so self silencing has a face.
+
+---
+
 ## 0d2. RULED 20 SEPTEMBER, THIRTEENTH PASS. THE STORY PAGE. HIGH PRIORITY.
 
 His words: "This is high priority. The most important portion of the product
