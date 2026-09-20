@@ -77,8 +77,28 @@ function impRender(){
  var live=impLive(), ghosts=impGhosts(), IX=impIndex();
  var maxW=live.length?live[0].sq:1;
  var total=live.reduce(function(a,n){return a+n.sq;},0);
- var h='<div class="ip-hd"><span class="pm-eye">Imprints, '+live.length
-  +(ghosts.length?' and '+ghosts.length+' pending':'')+'</span><div class="ip-ctl">';
+ /* THE PANEL WAS COUNTING THE CURE AS THE DISEASE.
+
+    `impLive` returns everything at or above the line on EITHER side: sq is
+    charge held, pole is the coherent opposite installed, and a release
+    produces the second. So the heading counted both and called the sum
+    imprints. Measured on the shipping build: Sofia holds nothing and the
+    panel read "Imprints, 49". Angela 33. On James, address 31 carries a pole
+    of 4.16, so Need For Approval appeared on a page where nothing had been
+    entered, which is exactly what the owner reported and what I wrongly put
+    down to a persona still being selected. The seat rows already said it out
+    loud and contradicted themselves in the same line: nothing held, 14
+    installed.
+
+    The two are counted apart now. Held is the imprint. Installed is what the
+    work put there, and the product already has a word for it on the Summary
+    rail. A number that counts a person's progress as their load is worse than
+    no number. */
+ var held=live.filter(function(n){return n.sq>=4;});
+ var filled=live.length-held.length;
+ var h='<div class="ip-hd"><span class="pm-eye">Held, '+held.length
+  +(filled?', filled in '+filled:'')
+  +(ghosts.length?', pending '+ghosts.length:'')+'</span><div class="ip-ctl">';
  IMP_GROUPS.forEach(function(gp){
   h+='<button class="ip-g'+(IMP_GROUP===gp[0]?' on':'')+'" data-ig="'+gp[0]+'">'+gp[1]+'</button>';});
  h+='<button class="ip-max" id="impmax" title="'+(IMP_BIG?'shrink':'full width')+'">'

@@ -25,6 +25,178 @@ reopens. Every seat adds its own.
 
 ---
 
+## 08b. RULED 20 SEPTEMBER, FIFTEENTH PASS. THE AVATAR IS A BUILD, NOT A READOUT.
+
+His words: "For the avatar page, nothing here is what I've asked for. This is
+about building my avatar. Adding in data so that I can tag and have Source
+attach what I'm tagging to my releases, so that it can prioritise those
+releases, so I can become that person quicker. The right side would be the
+becoming, the left side would be release. Who is the person I'm releasing,
+right side, who's the person I'm becoming. And you should be able to edit that
+and modify it. The seven seats here aren't really telling, not giving us any
+information. We have a spec for this. This isn't following the spec."
+
+- [x] **AVS1. The spec exists and he is right that it was not followed.**
+      `engine/avatar.js` already carries the pair: a `notbe` half and a
+      becoming half, with its own note that the gap between who somebody is
+      and who they are becoming is not a mood but a measurement. Two surfaces
+      have now been built past it.
+- [ ] **AVS2. The page is a build, not a readout.** That is the whole
+      correction. Everything delivered so far reads the field and prints it.
+      He is asking for a surface a person puts data into.
+- [ ] **AVS3. Left is who is being released, right is who is being become,**
+      and both are editable.
+- [ ] **AVS4. What a person enters prioritises their releases.** This is the
+      mechanism and it is the reason the page exists: the tag is not a label,
+      it is an instruction to the queue. Become that person quicker is a
+      sorting rule, not a slogan.
+- [ ] **AVS5. The seven seats are not telling him anything,** so the seat row
+      either earns its place or goes.
+
+### MS2. THE MASKS, AND THE MOSAIC.
+
+- [ ] **MS20. The person is at the centre.** Hero element, centre frame, which
+      is the standing rule for every surface in this product.
+- [ ] **MS21. The masks sit to the right of centre.**
+- [ ] **MS22. Review the masks, and add the Jungian ones.** The engine already
+      carries twelve archetypes and six masks. Whichever one a person embodies
+      fills in.
+- [ ] **MS23. VGA, and every percent a different hue.** His words, and the
+      reason is the mosaic: a per cent that maps to its own hue turns a column
+      of figures into a picture that can be read at a glance. It also answers
+      the register question the last pass raised, because VGA is a stated era
+      rather than pixel art in general.
+- [?] **MS24. He picks the resolution, from a couple of mask sheets.** Show
+      them fully filled in, the design, and the pixelisation with the colours
+      on. His call and he asked for options rather than an answer.
+- [ ] **MS25. The mask pair defect is still open** from the last pass: two of
+      the six masks carry the same seat pair, so their figures can never
+      differ on any profile.
+
+## 08c. DELIVERED 20 SEPTEMBER. THE RELEASE FLOW AND THREE ENGINE DEFECTS.
+
+- [x] **RV10. Almost all of the script is in his own book** and was mined
+      rather than written. The dose is there verbatim: fifty release
+      statements on the left channel, fifty on the right, transition, fifty
+      embodied truth left, fifty right. So is the ten gate statement, the
+      monthly progression, the rotating entries, the awareness instruction
+      almost word for word as he said it in the brief, and the cooldown's own
+      end state.
+- [x] **RV11. And the two halves already have a frequency each, named by
+      him.** Theta is where most somatic release work happens, alpha is where
+      installation work is most susceptible. The bed maps onto the protocol
+      exactly and nothing had to be invented.
+- [x] **RV12. The body cannot be a recording at any bit rate,** and the
+      arithmetic decides it before taste does: 112 addresses by four channels
+      by fifty lines is 22,400 lines, 12.4 hours, 134 megabytes. Recording
+      only the block heads is still 12.5. The recording can only ever be the
+      frame.
+- [?] **RV13. Three options priced and his to rule.** Embed the frame at 16
+      kbps for 160 kilobytes, which is 29 per cent on the wire. Fetch it,
+      which is zero bytes and fails the network gate that currently proves the
+      claim. Or synthesise everything, which is zero bytes because the whole
+      sound system is 3,210 characters of code. The recommendation is
+      synthesise now and embed his frame when the recording exists.
+- [x] **RV14. The one file ruling survives, and not narrowly.** No dependency,
+      no request, no build step. The sound is oscillator code.
+- [?] **RV15. A pattern and a pass are two things and the ladder prices
+      one.** His dose is two hundred statements at one address; the meter
+      opens one line per channel per run, so the built fifty and fifty is
+      fifty separate runs rather than one sitting. The prototype reads a
+      pattern as a unique line of new ground, priced, and a pass as one spoken
+      repetition, free. That is the only reading where the ladder and the book
+      both survive, and it decides what a tier buys.
+- [?] **RV16. The reframe half has nothing to say.** The engine carries nine
+      coherent opposites as state nouns and the book's form is I am the state,
+      but I am worth is not a sentence. The book names 364 embodied truths in
+      an appendix this product does not have.
+- [x] **EN10. The ritual target comes from a field now, not a literal.** A
+      practice is a window and its parameter is its own minutes. A release is
+      a count and its target is the number of lines there are to speak. A
+      stance has none until the day supplies one. Projected over the fifty two
+      generated rows: eight rings of ten, six of five, twenty five windows,
+      two stance rings, two refused by name. Against fifty of fifty two at a
+      single dash before.
+- [x] **EN11. All nine of the sniffer's addresses were off the table, not
+      one.** The spec's address column is a somatic region in the spec's own
+      shorthand and this product's address is a row of the 112. Two
+      vocabularies collided on one word. The address is derived from the
+      reading itself now, and the spec's words moved to a region field, which
+      is what they are. 262 of 270 offers name a real row and none names
+      something off the table.
+- [x] **EN12. The ceiling is exported,** which two seats had built around.
+
+---
+
+## 0a2. MEASURED 20 SEPTEMBER. THE PANEL COUNTED THE CURE AS THE DISEASE.
+
+He said the story page had things loaded when he had entered nothing, and named
+one. I guessed a reference persona was still selected and I was wrong. The
+story seat proved it and the defect is worse than the report.
+
+- [x] **IM1. `impLive` returns everything at or above the line on either
+      side.** `sq` is charge held. `pole` is the coherent opposite installed,
+      which is what a release produces. The heading counted both and called
+      the sum imprints.
+- [x] **IM2. Measured on the shipping build.** Sofia holds nothing and the
+      panel read "Imprints, 49". Angela 33. On James, address 31 carries a
+      pole of 4.16, so Need For Approval appeared with a tick on a page where
+      nothing had been entered, which is his report reproduced exactly.
+- [x] **IM3. The seat rows already said it out loud and contradicted
+      themselves in one line:** nothing held, fourteen installed. That is also
+      his "fifteen something at third eye".
+- [x] **IM4. Held and installed are counted apart now,** and installed uses
+      the product's own word from the Summary rail. A number that counts a
+      person's progress as their load is worse than no number.
+- [x] **IM5. And the persona hypothesis is disproved rather than dropped.** A
+      reference persona does not survive a reload: boot loads persona zero and
+      then overwrites from the store, so the index returns to zero and unread
+      returns to true.
+
+## 09b. DELIVERED 20 SEPTEMBER. THE STORY PAGE.
+
+- [x] **SY7. The journal was a hole, measured.** Its background sits at 1.019
+      to 1 against the page, which is darker than the page it sits on, and it
+      shares its token with a twelve pixel toggle button. The Summary's
+      reading box sits at 1.153 on the panel token, with a comment beside it
+      saying why in this product's own words. So the journal was not badly
+      skinned; it was built out of the form control set and it is the one
+      consequential region in the product that sinks.
+- [x] **SY8. Three moves and none is decoration.** It rises onto the panel. It
+      takes a reading measure at seventeen pixels rather than running the
+      width of its column, because a field that wide is a form input and a
+      column at a reading measure is a page. And the live fetter lighting,
+      which already colours every address the sniffer finds while a person
+      types, becomes the centre of the treatment rather than the last thing
+      anybody notices. That is what makes it a journal, it was already built,
+      and it was happening inside a hole.
+- [x] **SY9. No serif, no paper, no shadow, no date stamp.** Those are
+      costumes for a journal rather than a journal.
+- [x] **SI4. How two imprints work together is `compute` plus `leaves`,
+      intersected.** The one address version already ships twice, identically,
+      in two files. The pair version is four lines and computes nothing new:
+      no new arithmetic and no coefficient. Verified on real records, and it
+      returns empty for a pair that shares nothing, which is also a real
+      answer the product has never had a line for.
+- [x] **SX4. Addresses becomes places, and the argument is the product's
+      own.** Three shipping strings already gloss it that way: ten places, a
+      place in the body before it is a word, notice which place answers. When
+      a term needs the same one word gloss in three places, the gloss is the
+      term. 168 occurrences across 32 files, plus a glossary head term and
+      seven entries that define themselves by it. No key renamed; 59 identity
+      sites untouched.
+- [x] **SR6. Run release was two pixels under the fold,** bottom edge at 1002
+      in a 1000 pixel viewport, which is exactly what he was pointing at. It
+      sits at 208 now.
+- [?] **SY10. Five questions came back and the first two are collisions in his
+      own rulings.** The cost line he struck three times exists because a
+      person choosing three patterns was quoted three while the run spent up
+      to twenty five from a grant of ten; it has moved to the release runner's
+      first frame so nobody is billed without seeing the bill. And the pace
+      default of one is faster than every named speed the panel had.
+
+---
+
 ## 0b2. RULED 20 SEPTEMBER. THE LOGO.
 
 His words: "For the Atuned app, I want the logo designed in that font style.

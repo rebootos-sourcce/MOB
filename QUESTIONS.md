@@ -1,11 +1,25 @@
 # QUESTIONS FOR THE OWNER
 
 Every line in `TASKS.md` marked `[?]`, which is the mark for a question
-waiting on his ruling. 113 of them, across 34 sections.
-Read off commit 64529da on 2026-09-20. Nothing here is typed by hand: answer a
+waiting on his ruling. 118 of them, across 37 sections.
+Read off commit c873356 on 2026-09-20. Nothing here is typed by hand: answer a
 question in TASKS.md and it leaves this file on the next run.
 
 The same list is in `QUESTIONS.html`, which opens in a browser.
+
+## 08b. RULED 20 SEPTEMBER, FIFTEENTH PASS. THE AVATAR IS A BUILD, NOT A READOUT.
+
+- [ ] **MS24. He picks the resolution, from a couple of mask sheets.** Show them fully filled in, the design, and the pixelisation with the colours on. His call and he asked for options rather than an answer.
+
+## 08c. DELIVERED 20 SEPTEMBER. THE RELEASE FLOW AND THREE ENGINE DEFECTS.
+
+- [ ] **RV13. Three options priced and his to rule.** Embed the frame at 16 kbps for 160 kilobytes, which is 29 per cent on the wire. Fetch it, which is zero bytes and fails the network gate that currently proves the claim. Or synthesise everything, which is zero bytes because the whole sound system is 3,210 characters of code. The recommendation is synthesise now and embed his frame when the recording exists.
+- [ ] **RV15. A pattern and a pass are two things and the ladder prices one.** His dose is two hundred statements at one address; the meter opens one line per channel per run, so the built fifty and fifty is fifty separate runs rather than one sitting. The prototype reads a pattern as a unique line of new ground, priced, and a pass as one spoken repetition, free. That is the only reading where the ladder and the book both survive, and it decides what a tier buys.
+- [ ] **RV16. The reframe half has nothing to say.** The engine carries nine coherent opposites as state nouns and the book's form is I am the state, but I am worth is not a sentence. The book names 364 embodied truths in an appendix this product does not have.
+
+## 09b. DELIVERED 20 SEPTEMBER. THE STORY PAGE.
+
+- [ ] **SY10. Five questions came back and the first two are collisions in his own rulings.** The cost line he struck three times exists because a person choosing three patterns was quoted three while the run spent up to twenty five from a grant of ten; it has moved to the release runner's first frame so nobody is billed without seeing the bill. And the pace default of one is faster than every named speed the panel had.
 
 ## 0c2. RULED 20 SEPTEMBER, FOURTEENTH PASS. THE RELEASE FLOW. HIGH PRIORITY.
 
