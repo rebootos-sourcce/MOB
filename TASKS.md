@@ -180,6 +180,13 @@ test."
 - [ ] **FN1. Rebuild the landing on that spine.** Pain, cause, the separation,
       the purpose, how it works, the tools, the test. Seven beats, in that
       order, one page.
+- [ ] **FN1b. "Human potential unlocked."** His words, added while the page was
+      being built. It is a promise line, so it belongs to the purpose beat and
+      not to the pain beat at the top: a promise placed early blunts the pain
+      that earns it. Unlocked is a metaphor about a mechanism, which is inside
+      the voice rulings. The risk is the copy around it, which is one sentence
+      away from a slogan about becoming your best self, and that is the soft
+      wellness language the product refuses.
 - [ ] **FN2. The close is his and it is not softened.** "No one is coming to
       save you. Do it yourself. The software is the key and the roadmap. You
       are the door."
