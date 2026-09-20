@@ -373,6 +373,59 @@ is carrying."
 The lower figure the codex counts is never printed in front of a person. It is
 in `check.py` so that no writer has to hold it, and the gate fails on it.
 
+### V17. A Figure's Label Is One Word
+
+    FAIL  ui/record.js:80    Ground opened, all time
+                             12
+                             addresses and channels opened at least once,
+                             from 47 lines spoken
+    FIX   ui/record.js:80    Opened
+                             12 addresses
+                             [tooltip] Addresses and channels opened at least
+                             once, from 47 lines spoken.
+
+    FAIL  ui/cone.js:937     Minutes planned, not yet done          30
+    FIX                      Planned                        30 minutes
+
+His, and he asked for it by name. "The buttons still have that noodly text on
+them. 85 days kept, of the 90 days on your record. Of the same 90 days. We
+should need a rule never to write shit like that. Instead of 85 days kept,
+just one word. Recurring, missed, active, streak."
+
+**It is the resolution of a collision between two of his own rulings.** V7
+says a number carries its unit and, where it is a share, its denominator. The
+answer given to V7 was a second line of prose under every figure, so five stat
+cards became five paragraphs and the denominator was said twice in the same
+breath. Both rules are his and both stand. What changes is where each one
+lands:
+
+    the unit rides on the figure          85 days
+    the label is one word                 Kept
+    everything else is in the tooltip     or it is not needed
+
+Recurring. Missed. Active. Streak. Kept. Opened. Planned. Practised. Saved.
+Installed. A word that names what the figure counts, in the register a person
+would use out loud.
+
+**The mechanical half, and it is two halves.** A figure's label carries no
+comma, and it is one word. A comma in a figure's label is a sentence wearing a
+label's clothes: a comma means a second part and a name has one part. An
+article is not a word for this count, so "The core" is a label and "Ground
+opened" is not.
+
+**What this rule does not reach, said rather than left to be found.** An
+eyebrow over a paragraph is not a figure's label and stays as long as it needs
+to be: "How it runs through you" sits over prose and labels nothing that can be
+counted. The gate only reads a label that stands immediately in front of a run
+time value, which is the shape a figure actually ships in, and the two shapes
+it reads are the row pair `['Minutes practised', l.minutes]` and the label
+element that is followed by an element opened at the end of its literal.
+
+**And the unit is not the label.** "85 days" is one figure carrying its own
+unit. It does not become "85" with "days" promoted into the label, which would
+buy the one word rule by breaking V7. Read the pair out loud: "kept, eighty
+five days". If that is not a thing a person would say, the label is wrong.
+
 ---
 
 ## 4. The Seats And What They Read

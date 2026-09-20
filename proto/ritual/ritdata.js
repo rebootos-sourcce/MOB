@@ -37,7 +37,7 @@
 const path=require('path'), fs=require('fs');
 const E=require(path.resolve(__dirname,'../../engine.js'));
 const {S,CHARGES,SINAMES,LAWSET,PEOPLE,buildSoul,compute,PRACTICE,ladderRead,
-       SPEC_POLE,sniffStory,avatarBlank,SI,PAL}=E;
+       SPEC_POLE,sniffStory,avatarBlank,SI,PAL,NODES}=E;
 
 /* the same port of ui/personas.js loadP that caldata.js carries. compute()
    reads shared state rather than its argument, so a profile is loaded and not
@@ -189,6 +189,14 @@ const LIB=[
 
 /* the seat and the ring icon for a law, read out of SI rather than typed. */
 const LAW={}; SI.forEach(s=>{LAW[s.nm]={nm:s.nm,seat:s.b,ic:s.ic};});
+
+/* THE SEAT OF AN ADDRESS, read out of NODES rather than parsed off a name.
+   A release row already knew its address and did not carry the seat, so the
+   surface had nothing to colour it by and every card came out the band's
+   colour. GATE 10 refuses to write if an address the queue names has no seat
+   in the table. */
+const SEAT4ADDR={}; NODES.forEach(n=>{if(n.n&&n.b)SEAT4ADDR[n.n]=n.b;});
+const seatOfAddr=a=>SEAT4ADDR[a]||null;
 
 const out={profiles:{}, kinds:KIND, shapes:SHAPE, lib:LIB, law:LAW,
            today:TODAY, pal:PAL, practiceN:PRACTICE.length, lawN:SINAMES.length};
@@ -355,19 +363,21 @@ function queueFor(o){
  o.snOffer.forEach(of=>{
   q.push({kind:'release', by:'sniffer', src:'sniffStory', weight:400+of.shadow,
    nm:of.addr, via:'The Observer Technique', min:20, track:'Somatic',
-   addr:of.addr, axis:of.axis, replacement:of.replacement, unit:'when called',
+   addr:of.addr, axis:of.axis, replacement:of.replacement,
+   seat:seatOfAddr(of.addr), unit:'when called',
    shape:'count', target:1, cunit:'a run', period:'when called',
-   because:'Your own words carry '+of.axis.toLowerCase()+' at '+of.addr
-    +'. The far pole there is '+of.replacement+'.'});});
+   because:'Your own words carry '+of.axis.toLowerCase()+' at '+of.addr+'.'
+    +(of.replacement?' The far pole there is '+of.replacement+'.':'')});});
 
  o.rel.forEach(a=>{
   q.push({kind:'release', by:'you', src:'carrying', weight:200+a.sq,
    nm:a.fetter, via:'The Observer Technique', min:20, track:'Somatic',
    addr:a.addr, axis:a.axis, replacement:a.replacement, fetter:a.fetter,
+   seat:a.seat||seatOfAddr(a.addr),
    unit:'when called', shape:'count', target:1, cunit:'a run',
    period:'when called',
-   because:a.fetter+' is held at '+a.addr+', above the line release opens at. '
-    +'The far pole there is '+a.replacement+'.'});});
+   because:a.fetter+' is held at '+a.addr+', above the line release opens at.'
+    +(a.replacement?' The far pole there is '+a.replacement+'.':'')});});
 
  q.sort((a,b)=>b.weight-a.weight);
  return q.map((x,i)=>Object.assign({i},x));}
@@ -575,6 +585,43 @@ Object.values(out.profiles).forEach(o=>{
  const tk=o.wd.reduce((a,x)=>a+x.kept,0);
  if(tk!==o.walkDone)fail(o.nm+' weekday kept is '+tk+' against '+o.walkDone);});
 console.error('        eight profiles, weekday tallies add to the walk');
+
+/* GATE 10. EVERY ADDRESS THE QUEUE NAMES IS LOOKED UP IN NODES, AND NO
+   because CARRIES A LITERAL null.
+
+   Both defects were on the surface at once and neither was visible in the
+   source. A release row had no seat, so every card on the page took the
+   band's colour and the whole of always on read as red. And an address whose
+   far pole is not in SPEC_POLE printed the sentence "The far pole there is
+   null." to a person. A value that is not there is said in words or not said
+   at all.
+
+   AND THE GATE FOUND A THIRD THING, which is why it prints rather than only
+   asserts. sniffStory names an address that the 112 address table does not
+   carry. The seat cannot be derived for it: an axis spans up to six seats in
+   NODES, so axis to seat is not a function, and the engine's own note inside
+   the offer says it read from a seat without naming an address. So the seat
+   is refused for that row, the surface colours it with the accent rather than
+   with a seat it does not know, and the address is printed here by name. */
+console.error('GATE 10  every address the queue names is looked up, and no because prints null');
+let seated=0; const offTable={};
+Object.values(out.profiles).forEach(o=>o.queue.forEach(q=>{
+ if(q.addr){
+  if(q.seat)seated++;
+  else if(SEAT4ADDR[q.addr]===undefined)offTable[q.addr]=(offTable[q.addr]||0)+1;
+  else fail(o.nm+' queue row '+q.nm+' names '+q.addr+', which is in NODES and '
+   +'still came back without a seat');}
+ if(/\b(null|undefined|NaN)\b/.test(q.because))
+  fail(o.nm+' queue row '+q.nm+' carries a because that prints a missing '
+   +'value: '+JSON.stringify(q.because));}));
+Object.values(out.profiles).forEach(o=>{
+ if(o.called&&!o.seat)fail(o.nm+' standing ritual carries no seat');});
+console.error('        '+seated+' addressed rows seated off NODES, '
+ +Object.keys(offTable).length+' address'
+ +(Object.keys(offTable).length===1?'':'es')+' named by sniffStory that the '
+ +'112 address table does not carry'
+ +(Object.keys(offTable).length?': '+Object.entries(offTable)
+   .map(([a,n])=>a+' x'+n).join(', '):''));
 
 if(bad){console.error('\n'+bad+' failures. refusing to write rit.json.');process.exit(1);}
 

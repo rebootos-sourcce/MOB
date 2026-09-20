@@ -267,6 +267,24 @@ is the one thing it will not do. Send `source.html` as an attachment, named
 md5 so it is clear which build it is. The file is one file with no
 dependencies and no network, so it runs from wherever it lands.
 
+**And the file is packed, because it kept arriving cut.** The owner saw the
+boot guard's own message three times, which is the guard working and the
+delivery failing: the file is short, the end of it never arrived. There was
+nothing to trim. The build is 821 kilobytes of script and 199 of style with no
+blob to remove, so it is compressed instead and carries its own decompressor.
+`tools/pack.js` gzips the whole build, base64s it, and wraps it in a few
+hundred bytes that inflate it with DecompressionStream and write it into the
+document. 417 kilobytes against 1.03 megabytes, still one file, still nothing
+fetched: the bytes are in the page.
+
+It also turns the silent failure loud. A truncated gzip stream cannot inflate,
+where a truncated script parses most of the way and leaves a shell. The
+watchdog sits ahead of the payload, because the first cut put the length check
+inside the loader and a cut file cuts the loader: measured at eighty percent it
+sat on "Opening the instrument" for ever, which is the same silent failure in a
+new coat. Measured at 100, 99, 95 and 50 percent on both widths: whole it
+opens, and cut it says it was cut.
+
 **Attach the file, never render it.** The rule above was followed and the build
 still would not come off the screen. An HTML file sent without saying how to
 present it defaults to render, and in the view pane a rendered file has no

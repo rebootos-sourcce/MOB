@@ -26,8 +26,20 @@ import statistics
 
 # ---------------------------------------------------------------- the corpus
 
-CORPUS = ['atuned_src/ui', 'funnel/index.html', 'funnel/quiz.html',
+# THE DATA TABLES ARE COPY. Four of the seven buckets live in
+# engine/data: the tier definitions, the glossary, the practices and the
+# printed cards are all read by a person, and the gate could not see one of
+# them until this line grew. A corpus that stops at the renderers is a gate
+# that checks where the copy is written and not where it is kept.
+CORPUS = ['atuned_src/ui', 'atuned_src/engine/data',
+          'funnel/index.html', 'funnel/quiz.html',
           'funnel/questions.js', 'atuned_src/engine/plan.js']
+
+# A COUNTEREXAMPLE IS COPY ABOUT COPY, and it is written to fail. The release
+# card rules carry the owner's own example of a truth that does not work,
+# "I am infinite cosmic abundance", keyed under bad. Failing a file for
+# holding the line it exists to refuse is the gate lying about the product.
+COUNTEREXAMPLE = re.compile(r'\b(?:bad|not|was|old|wrong|fail)\s*:\s*$')
 
 GLUE = re.compile(r"'\s*\+\s*'")
 TAGS = re.compile(r'</?(?:b|em|i|br|span|p|div|strong)[^>]*>')
@@ -63,6 +75,8 @@ def strings_js(path):
         if len(t) < 14 or not re.search(r'[a-z] [a-z]', t):
             continue
         if re.search(r'[{}#;=]|px\b|\.js\b', t):
+            continue
+        if COUNTEREXAMPLE.search(s[:m.start()]):
             continue
         out.append((path, s[:m.start()].count('\n') + 1, t))
     return out
@@ -180,7 +194,96 @@ TEMPLATE_NUM = re.compile(
 
 CAPS = re.compile(r'\b[A-Z]{3,}\b')
 CAPS_OK = {'CQ', 'SQ', 'DQ', 'IQ', 'MBTI', 'INFJ', 'ENTP', 'JSON', 'HTML',
-           'CSS', 'URL', 'API', 'OK', 'AM', 'PM', 'UTC'}
+           'CSS', 'URL', 'API', 'OK', 'AM', 'PM', 'UTC', 'ICP', 'IBS'}
+
+# ------------------------------------------------------- V17, a figure's label
+#
+# His rule, and it is the resolution of a collision between two of his own: a
+# number must say what it is out of, and the answer given to that was a second
+# line of prose under every figure. The label is one word. The unit rides on
+# the figure. Anything past that is in the tooltip or is not needed.
+#
+# THE CLASS NAMES ARE READ OFF THE STYLESHEET, never typed here. A list typed
+# into a gate is the defect this repository has been bitten by nine times.
+# A LABEL is a class the sheet capitalises, which is the sheet's own definition
+# of a name for a region. A FIGURE is a class the sheet sets in the numeric
+# typeface, which is the sheet's own definition of a number on the screen.
+#
+# Only a selector that is the element itself counts as a figure. ".rec-big"
+# is a figure; ".rit-sv-h b" is a row that happens to contain one, and the
+# first cut of this gate reported "Today's ritual" as a figure label because
+# it could not tell the two apart. Checked against that known good case before
+# it was trusted, which is the rule this repository already carries about
+# tools that lie.
+
+SHEET = 'atuned_src/shell/head.html'
+FIG_ARTICLE = re.compile(r'^(?:the|a|an)\s+', re.I)
+
+
+_SHEET_CACHE = {}
+
+
+def sheet_classes(rt):
+    """(label classes, figure classes), read off the stylesheet at run time."""
+    if rt in _SHEET_CACHE:
+        return _SHEET_CACHE[rt]
+    try:
+        css = open(os.path.join(rt, SHEET), encoding='utf-8').read()
+    except OSError:
+        _SHEET_CACHE[rt] = ([], [])
+        return _SHEET_CACHE[rt]
+    i = css.find('{text-transform:capitalize}')
+    lab = []
+    if i > 0:
+        j = max(css.rfind('}', 0, i), css.rfind('*/', 0, i))
+        lab = sorted(set(re.findall(r'\.([a-zA-Z][\w-]*)', css[j + 1:i])))
+    # SPLIT ON THE BRACES RATHER THAN MATCHING BETWEEN THEM. A pattern of the
+    # shape [^{}]*{ over a stylesheet this size took thirty one seconds and the
+    # gate read as hung. Splitting is linear and reads the same rules.
+    fig = set()
+    for chunk in css.split('}'):
+        k = chunk.rfind('{')
+        if k < 0 or 'font-family:var(--num)' not in chunk[k:]:
+            continue
+        for sel in chunk[:k].split(','):
+            sel = sel.strip().split('\n')[-1].strip()
+            # the element itself, not a descendant of it
+            if re.fullmatch(r'(?:\.[a-zA-Z][\w-]*)+', sel):
+                fig |= set(re.findall(r'\.([a-zA-Z][\w-]*)', sel))
+    _SHEET_CACHE[rt] = (lab, sorted(fig))
+    return _SHEET_CACHE[rt]
+
+
+# THE MATCH IS ONE PASS AND THE CLASS NAMES ARE COMPARED AS SETS. The first
+# cut built one regular expression with eighty seven alternatives inside a
+# class attribute and it did not return: an optional run of any character in
+# front of an alternation that size backtracks exponentially on a literal the
+# size of a rendered drill. The shape is found in one pass, the two class
+# attributes come back as strings, and membership is a set lookup.
+FIGPAIR = re.compile(
+    r'class="([^"]{1,90})"\s*>([^<>]{1,90})</(?:div|span|b|em|p|h\d)>'
+    r'\s*<(?:div|span|b|em|p|h\d)\s+class="([^"]{1,90})"')
+
+
+# the row pair: a label and a run time value, which is the other shape a
+# figure ships in. The second element must not be a literal, or the pair is a
+# table of copy rather than a figure.
+ROWPAIR = re.compile(r"\[\s*'([^'\n]{2,60})'\s*,\s*(?!')([^\n]{1,140}?)\]")
+
+
+def figure_label_fault(label):
+    """Why this label is not a figure's label, or None."""
+    t = re.sub(r'<[^>]*>', '', label).replace(chr(92) + "'", "'").strip()
+    t = re.sub(r'\s+', ' ', t).strip(' .')
+    if not t or not re.search(r'[a-z]', t):
+        return None
+    if re.search(r'[,;:]', t):
+        return ('a comma in a figure\'s label is a sentence wearing a label\'s '
+                'clothes. One word.')
+    n = len(FIG_ARTICLE.sub('', t).split())
+    if n > 1:
+        return 'a figure\'s label is one word, and this is %d.' % n
+    return None
 
 # built from its codepoint so this file does not itself contain one. The
 # ruling is no em dashes anywhere, and a gate that breaks the rule it enforces
@@ -274,6 +377,62 @@ def scan_literals(target):
                         'a run time number lands in front of this. '
                         '"N of %s" has no unit, so it cannot be read out loud.'
                         % re.sub(r'<[^>]*>', '', m.group(1)).strip()))
+    bad += scan_figures(target)
+    return bad
+
+
+def glued_files(target):
+    """(path, source with literal to literal concatenation closed up).
+
+    A figure and its label are written as two literals joined by a plus, so
+    the shape only exists once the glue is closed. The comments are blanked
+    with their newlines kept, so a reported line number is the real one."""
+    out = []
+    if os.path.isdir(target):
+        for f in sorted(os.listdir(target)):
+            out += glued_files(os.path.join(target, f))
+        return out
+    if not target.endswith('.js'):
+        return out
+    try:
+        s = open(target, encoding='utf-8').read()
+    except OSError:
+        return out
+    s = re.sub(r'/\*.*?\*/',
+               lambda m: '\n' * m.group(0).count('\n'), s, flags=re.S)
+    out.append((target, GLUE.sub('', s)))
+    return out
+
+
+def scan_figures(target):
+    """V17. A figure's label is one word.
+
+    Two shapes, because a figure ships in two. A label element standing
+    immediately in front of an element the sheet sets in the numeric face,
+    and a row pair whose second member is a run time value.
+    """
+    lab, fig = sheet_classes(root())
+    lab, fig = set(lab), set(fig)
+    bad = []
+    for path, src in glued_files(target):
+        if lab and fig:
+            for m in re.finditer(r"'((?:[^'\\\n]|\\.)*)'", src):
+                for x in FIGPAIR.finditer(m.group(1)):
+                    if not (set(x.group(1).split()) & lab):
+                        continue
+                    if not (set(x.group(3).split()) & fig):
+                        continue
+                    why = figure_label_fault(x.group(2))
+                    if why:
+                        bad.append(('figure label', path,
+                                    src[:m.start()].count('\n') + 1,
+                                    x.group(2), why))
+        for m in ROWPAIR.finditer(src):
+            why = figure_label_fault(m.group(1))
+            if why:
+                bad.append(('figure label', path,
+                            src[:m.start()].count('\n') + 1,
+                            m.group(1), why))
     return bad
 
 

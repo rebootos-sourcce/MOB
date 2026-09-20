@@ -1,0 +1,1160 @@
+<div class="wrap">
+
+ <div class="bar">
+  <div class="brand">ATUNED <b>Ritual</b></div>
+  <label class="eyebrow" for="who" style="align-self:center">Profile</label>
+  <select id="who" aria-label="Profile"></select>
+ </div>
+
+ <div id="status" role="status" aria-live="polite"></div>
+
+ <!-- 1. THE FIGURES. One word each. -->
+ <div class="rec" id="rec"></div>
+
+ <div class="grid">
+  <div class="colL">
+
+   <!-- 2. THE RECORD. The week and the tracker are one panel, because he
+        asked whether they were the same thing and the honest answer is yes:
+        one is the near view and one is the far view of the same days. -->
+   <section class="glass" id="recp">
+    <div class="phead"><span class="eyebrow">The Record</span><span class="sp"></span>
+     <button class="btn sm" id="histbtn" type="button">History</button></div>
+    <div class="week" id="week"></div>
+    <div class="under" id="keys"></div>
+    <div class="marks">
+     <span class="mk"><i class="kept"></i>kept</span>
+     <span class="mk"><i class="miss"></i>missed</span>
+     <span class="mk"><i class="set"></i>set, not marked</span>
+     <span class="mk"><i class="off"></i>offered, not taken</span>
+    </div>
+    <p class="note" id="weeknote" style="margin-top:11px"></p>
+
+    <div class="rule"></div>
+    <div class="trkrow">
+     <div>
+      <div class="hmrow">
+       <div class="hmax" id="hmax"></div>
+       <div class="hm" id="hm"></div>
+      </div>
+      <div class="hmfoot"><span id="hmfrom"></span><span id="hmto"></span></div>
+     </div>
+     <div class="hmstat" id="hmstat"></div>
+    </div>
+
+    <div class="rule"></div>
+    <span class="eyebrow" id="wdlab"></span>
+    <div class="wdl" id="wdl" style="margin-top:12px"></div>
+    <p class="note" id="wdnote" style="margin-top:12px"></p>
+   </section>
+
+   <!-- 3. THE SUMMARY. Day, week, month. -->
+   <section class="glass" id="sump">
+    <div class="phead"><span class="eyebrow">Summary</span><span class="sp"></span>
+     <span class="seg" id="sumseg" role="group" aria-label="Summary range">
+      <button type="button" data-range="day" aria-pressed="true">Day</button>
+      <button type="button" data-range="week" aria-pressed="false">Week</button>
+      <button type="button" data-range="month" aria-pressed="false">Month</button>
+     </span></div>
+    <div class="sum" id="sum"></div>
+   </section>
+
+  </div>
+  <div class="colR">
+
+   <!-- 4. THE JOURNAL, upper right, above what is set. His placement. -->
+   <section class="glass" id="jp">
+    <span class="eyebrow">To The Journal</span>
+    <textarea id="jtext" rows="2" placeholder="One sentence on the day"
+     aria-label="One sentence on the day"></textarea>
+    <div class="jrow">
+     <button class="btn pri" id="jsend" type="button">Send</button>
+     <button class="btn" id="jrec" type="button">Record</button>
+    </div>
+    <p class="note" id="jnote">It lands in the story cloud and the sniffer reads
+     it. Record sends your voice off this machine.</p>
+    <div id="jmic" hidden></div>
+    <div id="jsaid" hidden></div>
+   </section>
+
+   <!-- 5. WHAT IS SET. The three bands in his order, and the verbs beside
+        them rather than scattered. -->
+   <section class="glass" id="bandsp">
+    <div class="phead"><span class="eyebrow">What Is Set</span><span class="sp"></span>
+     <button class="btn sm pri" id="addbtn" type="button">Add a ritual</button></div>
+    <div id="bands"></div>
+   </section>
+
+  </div>
+ </div>
+
+ <div class="foot" id="foot"></div>
+</div>
+
+<div class="veil" id="veil" hidden>
+ <div class="sheet" id="sheet" role="dialog" aria-modal="true"
+  aria-labelledby="sheet-h"></div>
+</div>
+
+<script>
+/* ============================================================
+   THE RITUAL PAGE, SECOND REBUILD. Standalone. No sibling, no dependency,
+   no network.
+
+   Everything on it is read out of rit.json, which ritdata.js writes off
+   engine.js behind ten gates and refuses to write when one fails. Nothing
+   here fabricates a figure and nothing here rounds one.
+
+   WHAT MOVED, AND HIS SENTENCE FOR EACH.
+
+   A figure takes one word.     "Instead of 85 days kept, just one word.
+                                 Recurring, missed, active, streak."
+   The ring is dashed.          "If you have to do it every single day, the
+                                 dotted line will appear around the ring, and
+                                 it tells you how many you're actually
+                                 supposed to do in the session."
+   The tracker is one panel     "Is that the accountability tracker part? It
+   and it is bigger.             looks like it's not giving me data."
+   The week's cells fill.       "I want those boxes to kind of fill in the
+                                 entire box, the cell that it's in, and then
+                                 take that text and the pills and put it
+                                 underneath."
+   The icon takes the seat.     "Those icons need to be the colour of
+                                 whatever it is that they're in support of."
+   The journal is upper right.  "So it'll be your stats, and then above what
+                                 is set, the journal."
+   Where to improve is ranged.  "Like daily, weekly, monthly summary."
+   The shapes legend is gone.   "The three shapes, I'm not sure what that is.
+                                 Get rid of it."
+   Add, remove, generate and    "Where can I add my rituals? Where can I get
+   history have one home.        rid of them? Where can I generate them?
+                                 Where's the history?"
+   ============================================================ */
+
+/* ---------- ICONOGRAPHY. Ring and not fill, which is the standing ruling.
+   Stroke paths in a 24 box, no closed fill anywhere. ---------- */
+var KINDIC={
+ hold:   'M12 4a8 8 0 100 16 8 8 0 100-16 M12 12h.01',
+ change: 'M20 12a8 8 0 11-2.4-5.7 M20 4v4h-4',
+ release:'M12 4v10 M8 10l4 4 4-4 M4 20h16'};
+var SHAPEIC={
+ count: 'M6 6v12 M10 6v12 M14 6v12 M19 7l-15 10',
+ window:'M5 5v14 M19 5v14 M5 12h9',
+ stance:'M12 21V5 M7 10l5-5 5 5'};
+var CHEV='M9 5l7 7-7 7';
+
+function ic(path,c,sz){
+ return '<svg viewBox="0 0 24 24" width="'+(sz||20)+'" height="'+(sz||20)+'" '
+ +'fill="none" stroke="'+c+'" stroke-width="1.6" stroke-linecap="round" '
+ +'stroke-linejoin="round" aria-hidden="true"><path d="'+path+'"/></svg>';}
+
+/* THE COMBINED PILL AND RING, the product's grammar for a quantity.
+   Ported from ui/component.js and used by the figures and the weekday rates.
+   The card no longer uses it: a card carries a segmented ring instead. */
+function cr(o){
+ var sz=o.size||'md', c=o.c||'var(--accent)';
+ var D={lg:[46,20],md:[34,15],sm:[24,10.5]}[sz];
+ var R=D[1], C=2*Math.PI*R, f=Math.max(0,Math.min(1,o.frac===undefined?1:o.frac));
+ return '<span class="cr '+sz+'" style="--c:'+c+'">'
+  +'<span class="ring"><svg class="arc" width="'+D[0]+'" height="'+D[0]+'" '
+  +'viewBox="0 0 '+D[0]+' '+D[0]+'" aria-hidden="true">'
+  +'<circle cx="'+D[0]/2+'" cy="'+D[0]/2+'" r="'+R+'" fill="none" '
+  +'stroke="rgba(255,255,255,.10)" stroke-width="2"/>'
+  +'<circle cx="'+D[0]/2+'" cy="'+D[0]/2+'" r="'+R+'" fill="none" stroke="'+c+'" '
+  +'stroke-width="2" stroke-linecap="round" stroke-dasharray="'
+  +(C*f).toFixed(2)+' '+C.toFixed(2)+'"/></svg>'
+  +'<span class="gl">'+(o.t?'<span class="gl-t">'+o.t+'</span>'
+    :ic(o.ic,c,{lg:17,md:13,sm:10}[sz]))+'</span></span>'
+  +'<span class="v">'+(o.v===undefined?'':o.v)+'</span></span>';}
+
+/* ============================================================
+   THE SEGMENTED RING. His design, and the parameter it carries.
+
+   "If you've got a ritual, if you have to do it every single day, then the
+   dotted line will appear around the ring, and it tells you how many you're
+   actually supposed to do in the session. So if it's four things, you'll have
+   four dashes. If you've got ten, then you'll have ten dashes."
+
+   So the ring carries the session count. That is direct for a count shape,
+   where the target is the number, and it needed deciding for the two shapes
+   that have no fixed count. Both decisions are stated here rather than buried
+   in a branch.
+
+   A WINDOW TAKES ONE DASH. A window is not a number of things. It is one
+   edge, held or crossed once in the session: no phone for the first thirty
+   minutes is one hold, not thirty of anything. So the ring is a single arc
+   with a single gap, which reads as visibly one against a ring cut into
+   eight. The minutes stay on the parameter line, where they already are,
+   because the minutes are what it costs and not what it counts.
+
+   A STANCE TAKES NO DASHES UNTIL THE DAY SUPPLIES THEM, AND THAT IS WHAT THE
+   DOTTED RING IS FOR. A stance has no count a person sets. It is called when
+   the day tests it, so before the day has tested it there is no number to
+   draw and a single dash would be a claim. The ring is drawn as a fine even
+   dot ring, which says the count is not yours. The moment the day supplies
+   one, tested becomes the dash count and met becomes the dashes filled: a
+   day that tested your honesty four times is four dashes with three lit. The
+   dot ring is therefore not a decoration and not a placeholder. It is the
+   one state in the model where the parameter is unknown, drawn as unknown.
+
+   THE CAP IS MEASURED, NOT CHOSEN. A dash needs stroke to be seen and a gap
+   to be counted, so the number the ring can carry is decided by its own
+   circumference. segCap returns it. Past the cap the ring falls back to one
+   arc carrying the share and the number sits in the middle, because fifteen
+   dashes at this diameter is a texture and not a count.
+   ============================================================ */
+var SEG_MIN=3, SEG_GAP=3;
+function segCap(d,sw){
+ var r=(d-(sw||2.6))/2;
+ return Math.max(1,Math.floor(2*Math.PI*r/(SEG_MIN+SEG_GAP)));}
+
+function segRing(o){
+ var d=o.d||34, sw=o.sw||2.6, r=(d-sw)/2, cx=d/2, C=2*Math.PI*r;
+ var dim='rgba(255,255,255,.16)';
+ var ring=function(stroke,da,lc){
+  return '<circle cx="'+cx+'" cy="'+cx+'" r="'+r.toFixed(2)+'" fill="none" '
+   +'stroke="'+stroke+'" stroke-width="'+sw+'" stroke-linecap="'+(lc||'butt')
+   +'" stroke-dasharray="'+da+'"/>';};
+ var s='<svg class="segring" width="'+d+'" height="'+d+'" viewBox="0 0 '+d
+  +' '+d+'" aria-hidden="true">';
+ /* the count is not yours to set. A fine even dot ring. */
+ if(o.n===null||o.n===undefined){
+  var dots=Math.max(8,Math.round(C/6));
+  s+=ring(dim,'0.01 '+(C/dots).toFixed(3),'round');
+  return s+'</svg>';}
+ var n=Math.max(1,Math.round(o.n)), done=Math.max(0,Math.min(n,o.done||0));
+ if(n>segCap(d,sw)){
+  s+=ring(dim,C.toFixed(2));
+  if(done)s+=ring(o.c,(C*done/n).toFixed(2)+' '+C.toFixed(2),'round');
+  return s+'</svg>';}
+ var pitch=C/n, seg=Math.max(SEG_MIN,pitch-SEG_GAP), gap=pitch-seg;
+ s+=ring(dim,seg.toFixed(2)+' '+gap.toFixed(2));
+ if(done){
+  var arr=[];
+  for(var i=0;i<done;i++){arr.push(seg.toFixed(2)); arr.push(gap.toFixed(2));}
+  /* the pattern is longer than the circumference from here, so nothing after
+     the done segments draws on the first lap. */
+  arr.push('0'); arr.push(C.toFixed(2));
+  s+=ring(o.c,arr.join(' '));}
+ return s+'</svg>';}
+
+var esc=function(s){return String(s).replace(/[&<>"]/g,function(m){
+ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m];});};
+var cap=function(s){s=String(s); return s.charAt(0).toUpperCase()+s.slice(1);};
+var NWORD=['no','one','two','three','four','five','six','seven','eight','nine',
+ 'ten','eleven','twelve'];
+var words=function(n){return n>=0&&n<NWORD.length?NWORD[n]:String(n);};
+
+/* the status writer. One writer, and it never claims a success it has not
+   had. Failures hold on screen; confirmations clear after 2.4 seconds. */
+var STT=null;
+function status(msg,kind){
+ var el=document.getElementById('status');
+ el.textContent=msg||''; el.dataset.kind=kind||'ok';
+ if(STT)clearTimeout(STT);
+ if(msg&&kind!=='fail')STT=setTimeout(function(){el.textContent='';},2400);}
+
+/* ============================================================
+   THE MODEL. One per profile, built from rit.json on every switch.
+   ============================================================ */
+var DATA=null, P=null, M=null, TODAYIX=6, RANGE='day';
+var DAY=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+var DAYFULL=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+var BANDCAP=2;
+
+function kindOf(k){return DATA.kinds.filter(function(x){return x.k===k;})[0];}
+function bandC(k){return DATA.pal[kindOf(k).band];}
+/* THE COLOUR OF WHAT IT IS IN SUPPORT OF. A practice is proposed at a seat
+   and the seat has a colour in the product's own palette, so the ring takes
+   the seat's colour and the band header keeps the band's. Build the avatar
+   is aimed at no seat, so it takes the accent rather than borrowing one. */
+function seatC(it){
+ return (it.seat&&DATA.pal[it.seat])?DATA.pal[it.seat]:'var(--accent)';}
+
+function mkItem(o){
+ o.days=o.days||[1,1,1,1,1,1,1];
+ o.marks=o.marks||[null,null,null,null,null,null,null];
+ return o;}
+
+function fromQueue(q,standing){
+ var days;
+ if(q.kind==='release')days=[0,0,0,0,0,0,0];
+ else if(q.kind==='change')days=[1,1,1,1,1,0,0];
+ else days=[1,1,1,1,1,1,1];
+ return mkItem({id:'i'+(ID++), kind:q.kind, shape:q.shape, nm:q.nm,
+  target:q.target===undefined?1:q.target, unit:q.cunit||'a day',
+  period:q.period||'a day', min:q.min, track:q.track, seat:q.seat, law:q.law,
+  lib:q.lib, via:q.via, addr:q.addr, by:q.by, src:q.src,
+  what:q.what, anchor:q.anchor, minutes:q.minutes,
+  whenCalled:q.kind==='release', once:q.unit==='once',
+  standing:!!standing, because:q.because, days:days,
+  marks:[null,null,null,null,null,null,null]});}
+
+var ID=0;
+function build(nm){
+ P=DATA.profiles[nm];
+ var items=[]; ID=0;
+
+ if(P.called){
+  items.push(mkItem({id:'i'+(ID++), kind:'hold', shape:'count',
+   nm:P.called.nm, target:1, unit:'a day', period:'a day', min:P.called.min,
+   track:P.called.track, seat:P.seat, standing:true, src:'ritFor',
+   because:'The '+P.seat.toLowerCase()+' is carrying the most, so the '
+    +(P.substituted?P.actualTrack:P.track).toLowerCase()
+    +' track is what your reading calls for, at tier '+P.tier+' and below.',
+   days:[1,1,1,1,1,1,1],
+   marks:P.week.map(function(w){return w.kept===null?null:(w.kept?1:0);})}));}
+
+ var seen={hold:0,change:0,release:0};
+ P.queue.forEach(function(q){
+  if(seen[q.kind]>=BANDCAP)return;
+  seen[q.kind]++;
+  items.push(fromQueue(q,false));});
+
+ M={items:items};
+ return M;}
+
+/* the queue rows not already on a card */
+function restQueue(){
+ var on={}; M.items.forEach(function(it){on[it.nm]=1;});
+ return P.queue.filter(function(q){return !on[q.nm];});}
+/* his library, minus anything already standing */
+function restLib(){
+ var on={}; M.items.forEach(function(it){on[it.nm]=1;});
+ return DATA.lib.filter(function(x){return !on[x.nm];});}
+
+/* ============================================================
+   THE DRAW. One function, called on every change, so nothing on the page can
+   be stale relative to anything else on it.
+   ============================================================ */
+function draw(){
+ drawFigures(); drawWeek(); drawTracker(); drawSummary(); drawBands(); drawFoot();}
+
+/* ---------- 1. THE FIGURES ----------
+   His rule: a figure takes one word. Four of the five words are his own.
+   The share each one is a share of is drawn by the arc beside it, which is
+   the product's grammar and was already there. The sentence that used to sit
+   under every number is on the tile's title. */
+function curRun(walk){
+ var c=0;
+ for(var i=walk.length-1;i>=0;i--){if(walk[i])c++;else break;}
+ return c;}
+function bestOf(walk){
+ var b=0,c=0;
+ for(var i=0;i<walk.length;i++){if(walk[i]){c++;if(c>b)b=c;}else c=0;}
+ return b;}
+function onWeekday(it){return !it.once&&!it.whenCalled;}
+
+function drawFigures(){
+ var kept=P.walkDone, lived=P.walk.length, missed=P.walkMissed;
+ var run=curRun(P.walk), best=bestOf(P.walk);
+ var standing=M.items.filter(function(it){return it.standing;});
+ var recur=standing.filter(onWeekday);
+ var offered=M.items.filter(function(it){return !it.standing;}).length;
+ var F=[
+  {c:DATA.pal.Heart, ic:KINDIC.hold, frac:standing.length/Math.max(1,standing.length+offered),
+   n:standing.length, k:'active',
+   o:standing.length+' standing, and '+offered+' more offered in the queue'},
+  {c:DATA.pal.Solar, ic:KINDIC.change, frac:standing.length?recur.length/standing.length:0,
+   n:recur.length, k:'recurring',
+   o:recur.length+' of the '+standing.length+' land on a weekday. The rest run when called'},
+  {c:DATA.pal.Crown, ic:SHAPEIC.count, frac:best?run/best:0,
+   n:run, k:'streak',
+   o:'days back to your last miss, against a longest run of '+best},
+  {c:DATA.pal.Throat, ic:SHAPEIC.window, frac:lived?kept/lived:0,
+   n:kept, k:'kept', o:kept+' of the '+lived+' days on your record'},
+  {c:DATA.pal.Root, ic:KINDIC.release, frac:lived?missed/lived:0,
+   n:missed, k:'missed', o:missed+' of the same '+lived+' days'}];
+
+ document.getElementById('rec').innerHTML=F.map(function(f){
+  return '<div class="fig" title="'+esc(f.o)+'">'
+   +cr({c:f.c,ic:f.ic,frac:f.frac,size:'lg',v:''})
+   +'<div class="fig-b"><span class="fig-n">'+esc(f.n)+'</span>'
+   +'<span class="fig-k">'+esc(f.k)+'</span></div></div>';}).join('');}
+
+/* ---------- 2. THE WEEK, CELLS THAT FILL ----------
+   A cell is a fixed height box and every ritual set that day is a segment
+   inside it at flex:1, so the box is full whatever the load is. */
+function cellsFor(dayIx){
+ var out=[];
+ ['hold','change','release'].forEach(function(k){
+  M.items.forEach(function(it){
+   if(it.kind!==k||it.once)return;
+   if(!it.days[dayIx])return;
+   var st;
+   if(!it.standing)st='off';
+   else if(it.marks[dayIx]===null)st='set';
+   else if(it.marks[dayIx]>=1)st='kept';
+   else st='miss';
+   out.push({c:bandC(k),st:st,nm:it.nm});});});
+ return out;}
+
+function drawWeek(){
+ document.getElementById('keys').innerHTML=DATA.kinds.map(function(K){
+  var n=M.items.filter(function(it){
+   return it.kind===K.k&&onWeekday(it);}).length;
+  return '<span class="key" style="--c:'+DATA.pal[K.band]+'">'
+   +'<i></i><b>'+esc(K.nm)+'</b> <em>'+n+'</em></span>';}).join('');
+
+ var h='';
+ for(var i=0;i<7;i++){
+  var w=P.week[i], cs=cellsFor(i);
+  var body=cs.map(function(c){
+   return '<i class="'+c.st+'" style="--c:'+c.c+'" title="'+esc(c.nm)+'"></i>';
+  }).join('');
+  h+='<button class="dcol'+(w.today?' today':'')+'" type="button" data-day="'+i+'"'
+   +' aria-label="'+esc(w.full)+', '+cs.length+' set">'
+   +'<span class="dcell'+(cs.length?'':' none')+'">'+body+'</span>'
+   +'<span class="dlab">'+w.d+'<em>'+w.date+'</em></span></button>';}
+ document.getElementById('week').innerHTML=h;
+
+ var lived=P.week.filter(function(w){return w.lived;}).length;
+ var set=M.items.filter(function(it){return it.standing&&onWeekday(it);}).length;
+ var off=M.items.filter(function(it){return !it.standing&&onWeekday(it);}).length;
+ var lo=99,hi=0;
+ for(var k=0;k<7;k++){var n=cellsFor(k).length;
+  if(n<lo)lo=n; if(n>hi)hi=n;}
+ var note='';
+ if(lived<7)note='Your record starts inside this week, so '+words(7-lived)
+  +' of these days have no box under them. Nothing was missed there. ';
+ if(!hi)note+='Nothing lands on a weekday yet. Take one from the queue and a '
+  +'box fills under the day you set it on.';
+ else{
+  note+=cap(words(set+off))+(set+off===1?' ritual lands':' rituals land')
+   +' on the week. A box is cut into as many bars as that day carries, so they '
+   +'run '+(lo===hi?words(hi)+' deep.':words(lo)+' to '+words(hi)+' deep.');
+  note+=off?' The dashed bars are what the queue proposes and nobody has '
+    +'taken, so '+(off===1?'it counts':'they count')+' towards nothing. Take '
+    +'one and it starts counting from today.'
+   :' Press a day to mark it.';}
+ document.getElementById('weeknote').textContent=note;}
+
+/* ---------- THE RECORD GRID AND ITS NUMBERS ----------
+   "The accountability tracker right now looks like it's not giving me data.
+   It's also a feature, and so I want that bigger. It needs to be data
+   driven."
+
+   So the grid is bigger, it sits in a panel of its own that holds the whole
+   left column, and five real figures are printed under it. The span is still
+   earned: a thirteen week grid drawn for somebody with seven days on the
+   record is eighty four empty squares beside seven full ones. */
+function spanOf(walk,cap){
+ return Math.max(1,Math.min(cap||13,Math.ceil(walk.length/7)));}
+function cell(v){
+ return '<i class="'+(v===null?'no':(v?'on':'fl'))+'"'
+  +' style="--c:var(--accent)"></i>';}
+
+function drawTracker(){
+ var box=document.getElementById('hm'), ax=document.getElementById('hmax');
+ var grid=P.walk.length>=P.wdFloor;
+ box.className=grid?'hm':'hm run';
+ if(grid){
+  var cols=spanOf(P.walk,13), cells=cols*7, pad=cells-P.walk.length, h='';
+  for(var i=0;i<cells;i++){
+   var j=i-pad;
+   h+=cell((j<0||P.walk[j]===undefined)?null:!!P.walk[j]);}
+  box.innerHTML=h;
+  ax.hidden=false;
+  ax.innerHTML=DAY.map(function(d,i){
+   return '<span>'+(i%2===0?d:'')+'</span>';}).join('');
+  document.getElementById('hmto').textContent=
+   cols+(cols===1?' week drawn':' weeks drawn')+', and it grows to thirteen';}
+ else{
+  ax.hidden=true;
+  box.innerHTML=P.walk.map(function(v){return cell(!!v);}).join('');
+  document.getElementById('hmto').textContent=
+   'It becomes a weekday grid at '+P.wdFloor+' days.';}
+ /* ONE LINE, NOT TWO COLUMNS, AND THE TWO HALVES SAY DIFFERENT THINGS. The
+    grid moved beside the figures and the foot lost the width it was spreading
+    across, so the two halves met in the middle with no space between them and
+    both of them opened on "one box a day". */
+ document.getElementById('hmfrom').textContent=
+  'One box a day, oldest at the left.';
+ /* AND THE ROW COLLAPSES WHEN THE GRID IS A RUN. Seven boxes are one row
+    thirty pixels tall beside a column of five figures three hundred tall, so
+    the panel carried a void the width of the grid. Below the floor the
+    figures lie in a row under the run instead. */
+ document.querySelector('.trkrow').className='trkrow'+(grid?'':' short');
+
+ /* the numbers. Nothing here repeats a figure from the row above it: those
+    five are what is running and how the days went, these five are what the
+    record itself weighs. */
+ var best=bestOf(P.walk), run=curRun(P.walk);
+ var rate=P.walk.length?Math.round(100*P.walkDone/P.walk.length):0;
+ /* THE LABEL UNDER A FIGURE IS READ IN TITLE CASE by the product's label
+    role, so "of days kept" came out as "Of Days Kept", which is a fragment
+    wearing a heading. Every one of these is a noun phrase that survives the
+    capital. */
+ var HS=[[P.walk.length,'days on record'],
+         [P.minutes,'minutes practised'],
+         [best,'longest run'],
+         [rate+'%','keep rate'],
+         [P.queue.length,'queued']];
+ document.getElementById('hmstat').innerHTML=HS.map(function(r){
+  return '<span class="hs"><b>'+esc(r[0])+'</b><span>'+esc(r[1])
+   +'</span></span>';}).join('');
+
+ /* HIS NOTE: "Which day you keep it. I'm not sure what that word means."
+    It is the keep rate by weekday, so the slot is called that. A heading has
+    to be a thing a person would say. */
+ var lab=document.getElementById('wdlab'), wbox=document.getElementById('wdl');
+ var note=document.getElementById('wdnote');
+ lab.textContent='By Weekday';
+ if(!P.weekdayReady){
+  wbox.innerHTML='';
+  note.textContent='Your record is '+P.walk.length+' days. A weekday needs four '
+   +'of itself before its rate says anything, so this opens at '+P.wdFloor
+   +' days and there are '+(P.wdFloor-P.walk.length)+' to go.';
+  return;}
+ var rates=P.wd.map(function(x){return x.lived?x.kept/x.lived:1;});
+ var lo=Math.min.apply(null,rates);
+ wbox.innerHTML=P.wd.map(function(x,i){
+  var f=x.lived?x.kept/x.lived:0;
+  return '<div class="wdi'+(f===lo?' lo':'')+'"><span>'+x.d+'</span>'
+   +cr({c:'var(--accent)', ic:KINDIC.hold, frac:f, size:'sm', v:''})
+   +'<b>'+x.kept+' of '+x.lived+'</b></div>';}).join('');
+ note.textContent='Days kept against days lived, one weekday at a time.';}
+
+/* ---------- 3. THE SUMMARY ----------
+   Day, week and month. Each range refuses by name when the record cannot
+   carry it, and none of them carries a word like up or down against a
+   difference the record cannot hold. */
+function sumDay(){
+ var out=[];
+ var today=M.items.filter(function(it){
+  return it.standing&&!it.once&&it.days[TODAYIX];});
+ var done=today.filter(function(it){
+  var t=(it.target===null||it.target===undefined)?1:it.target;
+  return it.marks[TODAYIX]!==null&&it.marks[TODAYIX]>=t;});
+ var mins=today.reduce(function(a,it){return a+(it.min||0);},0);
+ var offered=M.items.filter(function(it){
+  return !it.standing&&!it.once&&it.days[TODAYIX];}).length;
+ if(!today.length)
+  out.push({c:'var(--accent)', ic:KINDIC.hold,
+   t:'Nothing standing is set for today. Add takes what your reading '
+    +'proposes and puts it on a day.'});
+ else
+  out.push({c:'var(--accent)', ic:KINDIC.hold,
+   t:'<b>'+cap(words(today.length))+'</b> '
+    +(today.length===1?'ritual is':'rituals are')+' set for today and <b>'
+    +words(done.length)+'</b> '+(done.length===1?'is':'are')+' marked.'
+    +(mins?' They cost <b>'+mins+' minutes</b>.':'')});
+ if(offered)
+  out.push({c:DATA.pal.Solar, ic:KINDIC.change,
+   t:'<b>'+cap(words(offered))+'</b> more '+(offered===1?'sits':'sit')
+    +' on today as an offer. An offer counts towards nothing until you take '
+    +'it, and taking one starts it from today.'});
+ out.push(releaseLine());
+ return out;}
+
+function sumWeek(){
+ var out=[];
+ var lived=P.week.filter(function(w){return w.lived;}).length;
+ if(lived<7){
+  out.push({c:'var(--accent)', ic:KINDIC.hold,
+   t:'Your record starts inside this week, so <b>'+words(7-lived)+' of the '
+    +'seven days</b> have nothing under them. A week reads at seven.'});}
+ var kept=P.week.filter(function(w){return w.kept===true;}).length;
+ var missed=P.week.filter(function(w){return w.kept===false;}).length;
+ if(lived)
+  out.push({c:DATA.pal.Throat, ic:SHAPEIC.window,
+   t:'You kept <b>'+words(kept)+'</b> of the '+words(lived)
+    +(lived===1?' day':' days')+' this week and missed <b>'+words(missed)
+    +'</b>.'});
+ /* the lightest day of the seven, by load rather than by mark, because the
+    load is what a person moves. */
+ var lo=99, loD=null;
+ for(var i=0;i<7;i++){var n=cellsFor(i).length; if(n<lo){lo=n; loD=i;}}
+ if(loD!==null)
+  out.push({c:DATA.pal.Solar, ic:KINDIC.change,
+   t:'<b>'+DAYFULL[loD]+'</b> carries the least, at '+words(lo)
+    +(lo===1?' ritual':' rituals')+'. Open a card and set it on that day to '
+    +'even the week out.'});
+ return out;}
+
+function sumMonth(){
+ var out=[];
+ if(!P.improved){
+  out.push({c:'var(--accent)', ic:KINDIC.hold,
+   t:'Your record is <b>'+P.walk.length+' days</b>. A month against the month '
+    +'before reads four weeks against the four before it, so it opens at '
+    +P.improveNeed+' days and there are <b>'+(P.improveNeed-P.walk.length)
+    +' to go</b>.'});}
+ else{
+  var d=P.improved.diff;
+  out.push({c:DATA.pal.Throat, ic:SHAPEIC.window,
+   t:'You kept <b>'+P.improved.now+' days</b> in the last four weeks and '
+    +'<b>'+P.improved.before+'</b> in the four before. '
+    +(d===0?'The two windows are level.'
+      :(Math.abs(d)===1?'One day apart.':Math.abs(d)+' days apart.'))});}
+ var best=bestOf(P.walk);
+ out.push({c:DATA.pal.Crown, ic:SHAPEIC.count,
+  t:'Your longest run is <b>'+best+(best===1?' day':' days')+'</b>, off a '
+   +'record of '+P.walk.length+'.'});
+ var f=P.feedback;
+ if(f.state==='read'&&!f.flat)
+  out.push({c:DATA.pal.Solar, ic:KINDIC.change,
+   t:'<b>'+f.worst.d+'</b> is the day you lose, kept <b>'+f.worst.kept
+    +' of the '+f.worst.lived+'</b> you have lived. '+f.best.d+' is the one '
+    +'you hold, '+f.best.kept+' of '+f.best.lived+'. Move one behaviour onto '
+    +f.worst.d+' and the box carries itself.'});
+ else if(f.state==='read')
+  out.push({c:DATA.pal.Solar, ic:KINDIC.change,
+   t:'You keep it at the same rate every weekday, <b>'+f.best.kept+' of '
+    +f.best.lived+'</b>. Nothing here points at a day.'});
+ if(f.practice&&f.seat){
+  var s=P.seats[0];
+  out.push({c:(s&&DATA.pal[s.b])||'var(--accent)', ic:SHAPEIC.count,
+   t:'Your <b>'+f.seat.toLowerCase()+'</b> carries '+s.n+' live imprints, more '
+    +'than any other seat. <b>'+esc(f.practice.nm)+'</b> is the practice on the '
+    +f.practice.wanted.toLowerCase()+' track at your tier, '+f.practice.min
+    +' minutes.'});}
+ return out;}
+
+function releaseLine(){
+ var f=P.feedback;
+ if(f.releasable>0)
+  return {c:bandC('release'), ic:KINDIC.release,
+   t:'<b>'+f.releasable+' addresses</b> sit above the line release opens at. '
+    +'<b>'+esc(f.protocol)+'</b> runs at one of them, 20 minutes, and the '
+    +'release band is where it goes.'};
+ return {c:bandC('release'), ic:KINDIC.release,
+  t:'Nothing sits above the line release opens at, so the release band stays '
+   +'empty. It fills when an address goes over.'};}
+
+function drawSummary(){
+ var out=RANGE==='day'?sumDay():(RANGE==='week'?sumWeek():sumMonth());
+ [].forEach.call(document.querySelectorAll('#sumseg button'),function(b){
+  b.setAttribute('aria-pressed',b.dataset.range===RANGE?'true':'false');});
+ document.getElementById('sum').innerHTML=out.map(function(o){
+  return '<div class="sumi">'+cr({c:o.c,ic:o.ic,frac:1,size:'sm',v:''})
+   +'<p>'+o.t+'</p></div>';}).join('');}
+
+/* ---------- 4. THE BANDS ---------- */
+function paramLine(it){
+ if(it.once)return 'once';
+ if(it.whenCalled)
+  return (it.via||'the protocol')+' · when called'
+   +(it.min?' · '+it.min+' min':'');
+ if(it.shape==='count'){
+  var t=(it.target===null||it.target===undefined)?null:it.target;
+  var s=t===null?'no target set yet'
+   :(t===1?'once '+it.period:t+' '+(it.unit||'times')+' '+it.period);
+  return 'count · '+s+(it.min?' · '+it.min+' min':'');}
+ if(it.shape==='window')
+  return 'window · '+(it.minutes||30)+' min from '+(it.anchor||'waking');
+ if(it.shape==='stance'){
+  var L=DATA.law[it.law];
+  return 'stance · on '+it.law+', at the '+(L?L.seat.toLowerCase():'');}
+ return '';}
+
+/* THE DASH COUNT. What the ring carries for this item, and null where the
+   count is not the person's to set. */
+function segOf(it){
+ if(it.shape==='stance'){
+  var t=it.tested;
+  if(t===null||t===undefined||t===0)return {n:null,done:0};
+  return {n:t, done:Math.min(t,it.met||0)};}
+ if(it.shape==='window')return {n:1, done:it.marks[TODAYIX]>=1?1:0};
+ if(it.once)return {n:1, done:it.standing?1:0};
+ var tg=(it.target===null||it.target===undefined)?null:Math.max(1,it.target);
+ if(tg===null)return {n:null,done:0};
+ return {n:tg, done:it.marks[TODAYIX]===null?0:it.marks[TODAYIX]};}
+
+function ringFor(it,asButton){
+ var c=seatC(it), sg=segOf(it), d=34;
+ var over=sg.n!==null&&sg.n>segCap(d,2.6);
+ var inner=over?'<b>'+sg.n+'</b>'
+  :ic(it.shape?SHAPEIC[it.shape]:KINDIC[it.kind],c,15);
+ var body=segRing({d:d,c:c,n:sg.n,done:sg.done})
+  +'<span class="gl">'+inner+'</span>';
+ if(!asButton)
+  return '<span class="segwrap" style="--c:'+c+'">'+body+'</span>';
+ return '<button class="segwrap" type="button" data-mark="'+it.id+'"'
+  +' style="--c:'+c+'" aria-label="Mark '+esc(it.nm)+' for today">'
+  +body+'</button>';}
+
+function drawBands(){
+ var h='';
+ DATA.kinds.forEach(function(K){
+  var bc=DATA.pal[K.band];
+  var mine=M.items.filter(function(it){return it.kind===K.k;});
+  h+='<div class="band" style="--bc:'+bc+'">'
+   +'<div class="band-h"><span class="eyebrow">'+esc(K.nm)+'</span>'
+   +'<em>'+esc(K.cadence)+'</em></div><div class="cards">';
+  if(!mine.length)
+   h+='<p class="note">Nothing is set here. The queue has what the reading '
+    +'proposes for it.</p>';
+  mine.forEach(function(it){
+   h+='<div class="card'+(it.standing?'':' offer')+'" style="--c:'+seatC(it)+'"'
+    +' role="button" tabindex="0" data-open="'+it.id+'">'
+    +ringFor(it,it.standing&&!it.once)
+    +'<div class="card-b"><div class="card-n">'+esc(it.nm)+'</div>'
+    +'<div class="card-p">'+esc(paramLine(it))+'</div></div>'
+    +(it.standing?'':'<span class="offertag">offered</span>')
+    +'<span class="chev">'+ic(CHEV,'var(--dim)',20)+'</span></div>';});
+  h+='</div></div>';});
+ document.getElementById('bands').innerHTML=h;}
+
+/* ============================================================
+   THE POPUP. Click a card and it opens, and from there the parameters are
+   edited and the ritual is removed.
+   ============================================================ */
+var OPEN=null;
+
+function fields(it){
+ var h='';
+ if(it.shape==='count'){
+  h+='<div class="frow"><span>Target</span>'
+   +'<input id="f-target" type="number" min="0" step="1" value="'
+   +(it.target===null||it.target===undefined?'':it.target)+'"'
+   +' placeholder="not set"><span class="unit">'+esc(it.unit||'times')
+   +'</span></div>'
+   +'<div class="frow"><span>Period</span><select id="f-period">'
+   +['a day','a week'].map(function(p){
+     return '<option'+(it.period===p?' selected':'')+'>'+p+'</option>';}).join('')
+   +'</select></div>';
+  if(it.min)h+='<div class="frow"><span>It costs</span>'
+   +'<span class="unit n">'+it.min+' minutes, out of PRACTICE</span></div>';
+  h+='<p class="note">The ring carries the target as dashes, so a target of '
+   +'four is four dashes and a dash lights as you do one. '
+   +(it.target>1?'Press the ring once per '+esc((it.unit||'times')
+     .replace(/e?s$/,''))+'.':'Press the ring when it is done.')+'</p>';}
+
+ else if(it.shape==='window'){
+  h+='<div class="frow"><span>Set down</span>'
+   +'<input id="f-what" type="text" value="'+esc(it.what||'')+'"></div>'
+   +'<div class="frow"><span>Starts at</span><select id="f-anchor">'
+   +['waking','first light','a clock time'].map(function(p){
+     return '<option'+(it.anchor===p?' selected':'')+'>'+p+'</option>';}).join('')
+   +'</select></div>'
+   +'<div class="frow"><span>Runs for</span>'
+   +'<input id="f-min" type="number" min="1" step="1" value="'+(it.minutes||30)
+   +'"><span class="unit">minutes</span></div>'
+   +'<p class="note">A window is one edge, held or crossed, so the ring '
+   +'carries one dash rather than a count. Broken carries the minute it broke '
+   +'at.</p>';}
+
+ else if(it.shape==='stance'){
+  var L=DATA.law[it.law]||{seat:''};
+  h+='<div class="frow"><span>Seats on</span>'
+   +'<span class="unit">'+esc(it.law)+', at the '+esc(L.seat.toLowerCase())
+   +'</span></div>'
+   +'<div class="frow"><span>Tested today</span>'
+   +'<input id="f-test" type="number" min="0" step="1" value="'
+   +(it.tested||0)+'"><span class="unit">times</span></div>'
+   +'<div class="frow"><span>Met</span>'
+   +'<input id="f-met" type="number" min="0" step="1" value="'+(it.met||0)
+   +'"><span class="unit">of those</span></div>'
+   +'<p class="note">A stance has no count you set. The day tests it, so the '
+   +'ring stays a dot ring until the day supplies a number and then takes '
+   +'that number of dashes. A day nothing tested it is a day, and it counts '
+   +'against nobody.'
+   +(it.lib==='hon'?' The engine has no law called honesty. Truth is the law '
+     +'it carries and this card names it.':'')+'</p>';}
+
+ else h+='<p class="note">This one has no parameters. It happens once.</p>';
+
+ if(!it.once&&!it.whenCalled){
+  h+='<div class="frow wide"><span>Set on</span><span class="days" id="f-days">'
+   +DAY.map(function(d,i){
+    return '<button class="dayb" type="button" data-day="'+i+'" aria-pressed="'
+     +(it.days[i]?'true':'false')+'" style="--c:'+seatC(it)+'">'+d
+     +'</button>';}).join('')+'</span></div>';}
+ else if(it.whenCalled){
+  h+='<p class="note">Release runs when it is called rather than on a day, so '
+   +'it carries no weekdays and draws nothing on the week.</p>';}
+
+ if(it.standing&&!it.once){
+  h+='<span class="eyebrow" style="margin:16px 0 8px">This Week</span>'
+   +'<span class="hist" id="f-hist">'
+   +DAY.map(function(d,i){
+     var w=P.week[i], m=it.marks[i];
+     var st=!w.lived?'no':(m===null?'set':(m>=1?'kept':'miss'));
+     return '<button class="histb" type="button" data-h="'+i+'"'
+      +(w.lived?'':' disabled')+' style="--c:'+seatC(it)+'"'
+      +' aria-label="'+DAYFULL[i]+'"><i class="'+st+'"></i>'+d+'</button>';
+    }).join('')+'</span>'
+   +'<p class="note" style="margin-top:8px">Press a day to move it between '
+   +'kept, missed and not marked. A day before your record starts has no box '
+   +'and cannot be marked.</p>';}
+ return h;}
+
+function openCard(id){
+ var it=M.items.filter(function(x){return x.id===id;})[0];
+ if(!it)return;
+ OPEN=it;
+ var c=seatC(it), K=kindOf(it.kind);
+ var SH=DATA.shapes.filter(function(s){return s.k===it.shape;})[0];
+ var s=document.getElementById('sheet');
+ s.style.setProperty('--c',c);
+ s.innerHTML='<span class="eyebrow" style="color:'+c+'">'+esc(K.nm)
+  +(it.seat?' · '+esc(it.seat):'')+'</span>'
+  +'<h2 id="sheet-h">'+esc(it.nm)+'</h2>'
+  +'<div class="shape">'+(SH?esc(SH.nm)+' · '+esc(SH.d)
+    :'Once · it has no shape and no day')+'</div>'
+  +(it.because?'<p class="because">'+esc(cap(it.because))+'</p>':'')
+  +fields(it)
+  +'<div class="sheet-f">'
+  +(it.standing
+    ?'<button class="btn del" type="button" id="s-del">Remove</button>'
+    :'<button class="btn pri" type="button" id="s-take">Take it</button>')
+  +'<span class="sp"></span>'
+  +'<button class="btn" type="button" id="s-close">Close</button></div>';
+ document.getElementById('veil').hidden=false;
+ var f=s.querySelector('button,input,select'); if(f)f.focus();}
+
+function openDay(i){
+ OPEN={day:i};
+ var w=P.week[i];
+ var rows=M.items.filter(function(it){
+  return !it.once&&it.days[i]&&it.standing;});
+ var s=document.getElementById('sheet');
+ s.style.setProperty('--c',DATA.pal.Heart);
+ var h='<span class="eyebrow">'+(w.today?'Today':'This Week')+'</span>'
+  +'<h2 id="sheet-h">'+DAYFULL[i]+'</h2>';
+ if(!w.lived)
+  h+='<p class="body" style="margin-top:12px">Your record starts after this '
+   +'day, so there is nothing on it and nothing was missed.</p>';
+ else if(!rows.length)
+  h+='<p class="body" style="margin-top:12px">Nothing standing is set on '
+   +DAYFULL[i]+'. Take something from the queue and it lands here.</p>';
+ else{
+  h+='<p class="body" style="margin-top:12px">'+cap(words(rows.length))
+   +(rows.length===1?' ritual is':' rituals are')+' set on this day. Press one '
+   +'to move it between kept, missed and not marked.</p>';
+  rows.forEach(function(it){
+   var m=it.marks[i];
+   var st=m===null?'set':(m>=1?'kept':'miss');
+   h+='<div class="card" style="--c:'+seatC(it)+'" role="button"'
+    +' tabindex="0" data-daymark="'+it.id+'">'
+    +ringFor(it,false)
+    +'<div class="card-b"><div class="card-n">'+esc(it.nm)+'</div>'
+    +'<div class="card-p">'+(st==='kept'?'kept':(st==='miss'?'missed'
+      :'not marked'))+'</div></div></div>';});}
+ h+='<div class="sheet-f"><span class="sp"></span>'
+  +'<button class="btn" type="button" id="s-close">Close</button></div>';
+ s.innerHTML=h;
+ document.getElementById('veil').hidden=false;
+ document.getElementById('s-close').focus();}
+
+/* ---------- ADD, AND GENERATE WITH IT ----------
+   "Where can I add my rituals? Where can I get rid of them? Where can I
+   generate them? Where's the history? Oh, there's an add. Maybe the auto
+   generation you can add from there."
+
+   So add holds both halves. The first is generated: what the reading
+   proposes, ordered by the load each one is aimed at, every row naming who
+   proposed it and why, from a real address. The second is the library, which
+   is his own nine, with his own numbers. Remove is on the card and the card
+   is one press away from here. */
+function openQueue(){
+ OPEN={queue:true};
+ var rest=restQueue(), lib=restLib();
+ var s=document.getElementById('sheet');
+ s.style.setProperty('--c',DATA.pal.Heart);
+ var h='<span class="eyebrow">Add A Ritual</span>'
+  +'<h2 id="sheet-h">What your reading proposes</h2>'
+  +'<p class="body" style="margin-top:12px">Generated from your reading and '
+  +'ordered by the load each one is aimed at. Refusing costs nothing and it '
+  +'does not come back.</p>';
+ if(!rest.length)
+  h+='<p class="note">Everything the reading proposes is already on a card. '
+   +'The queue fills again when the field moves or you write something new.</p>';
+ rest.forEach(function(q){
+  var c=(q.seat&&DATA.pal[q.seat])||'var(--accent)';
+  h+='<div class="qrow" style="--c:'+c+'" role="button" tabindex="0"'
+   +' data-q="'+q.i+'">'
+   +'<span class="segwrap" style="--c:'+c+'">'
+   +segRing({d:34,c:c,n:(q.shape==='stance'?null:(q.target||1)),done:0})
+   +'<span class="gl">'+ic(SHAPEIC[q.shape]||KINDIC[q.kind],c,15)+'</span></span>'
+   +'<div class="qrow-b"><div class="qrow-n">'+esc(q.nm)+'</div>'
+   +'<div class="qrow-w">'+esc(kindOf(q.kind).nm)+' · proposed by '
+   +esc(q.by)+' · '+esc(q.src)+'</div>'
+   +'<div class="qrow-w">'+esc(cap(q.because))+'</div></div></div>';});
+
+ h+='<span class="eyebrow qhead">From The Library</span>'
+  +'<p class="note" style="margin-bottom:11px">Nine behaviour rituals with '
+  +'their own numbers. A count carries its target as dashes on the ring, a '
+  +'window carries one, and a stance carries none until a day tests it.</p>';
+ if(!lib.length)
+  h+='<p class="note">Every one of the nine is already on a card.</p>';
+ lib.forEach(function(x){
+  var c=x.law&&DATA.law[x.law]?DATA.pal[DATA.law[x.law].seat]:'var(--accent)';
+  h+='<div class="qrow" style="--c:'+c+'" role="button" tabindex="0"'
+   +' data-lib="'+x.k+'">'
+   +'<span class="segwrap" style="--c:'+c+'">'
+   +segRing({d:34,c:c,n:(x.shape==='stance'?null:(x.shape==='window'?1
+      :(x.target===null?null:x.target))),done:0})
+   +'<span class="gl">'+ic(SHAPEIC[x.shape],c,15)+'</span></span>'
+   +'<div class="qrow-b"><div class="qrow-n">'+esc(x.nm)+'</div>'
+   +'<div class="qrow-w">'+esc(libLine(x))+'</div></div></div>';});
+
+ h+='<div class="sheet-f"><span class="sp"></span>'
+  +'<button class="btn" type="button" id="s-close">Close</button></div>';
+ s.innerHTML=h;
+ document.getElementById('veil').hidden=false;
+ document.getElementById('s-close').focus();}
+
+function libLine(x){
+ if(x.shape==='count')
+  return x.target===null?'Count · no target set yet'
+   :'Count · '+x.target+' '+x.unit+' '+x.period;
+ if(x.shape==='window')
+  return 'Window · '+x.minutes+' min from '+x.anchor;
+ return 'Stance · on '+x.law+', at the '
+  +(DATA.law[x.law]?DATA.law[x.law].seat.toLowerCase():'');}
+
+function libItem(x){
+ var seat=x.law&&DATA.law[x.law]?DATA.law[x.law].seat:null;
+ return mkItem({id:'i'+(ID++), kind:'change', shape:x.shape, nm:x.nm,
+  target:x.target===undefined?null:x.target, unit:x.unit||'times',
+  period:x.period||'a day', min:null, seat:seat, law:x.law, lib:x.k,
+  what:x.what, anchor:x.anchor, minutes:x.minutes,
+  whenCalled:false, once:false, standing:true, src:'owner',
+  because:'It is one of the nine you named. '+x.said,
+  days:[1,1,1,1,1,1,1], marks:[null,null,null,null,null,null,null]});}
+
+/* ---------- THE HISTORY ----------
+   He asked where it is. It is the record, day by day, newest first, and it
+   says what it does not hold rather than filling the gap. */
+function openHistory(){
+ OPEN={history:true};
+ var s=document.getElementById('sheet');
+ s.style.setProperty('--c',DATA.pal.Heart);
+ var today=DATA.today;
+ var rows='';
+ for(var i=P.walk.length-1;i>=0;i--){
+  var back=P.walk.length-1-i;
+  var dt=new Date(today-back*864e5);
+  var wd=DAYFULL[(dt.getUTCDay()+6)%7];
+  rows+='<div class="hrow"><i class="'+(P.walk[i]?'on':'off')+'"></i>'
+   +'<b>'+dt.getUTCDate()+' '+['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug',
+    'Sep','Oct','Nov','Dec'][dt.getUTCMonth()]+'</b>'
+   +(P.walk[i]?'kept':'missed')+'<em>'+wd+'</em></div>';}
+ s.innerHTML='<span class="eyebrow">History</span>'
+  +'<h2 id="sheet-h">'+P.walk.length+' days on the record</h2>'
+  +'<p class="body" style="margin-top:12px">Newest first. '+P.walkDone
+  +' kept and '+P.walkMissed+' missed, out of '+P.walk.length+'.</p>'
+  +'<div class="hscroll">'+rows+'</div>'
+  +'<p class="note" style="margin-top:12px">A day is kept or missed on the '
+  +'record. Which ritual carried it is held for the week on screen and no '
+  +'further back, because nothing in the record names one.</p>'
+  +'<div class="sheet-f"><span class="sp"></span>'
+  +'<button class="btn" type="button" id="s-close">Close</button></div>';
+ document.getElementById('veil').hidden=false;
+ document.getElementById('s-close').focus();}
+
+function closeSheet(){
+ document.getElementById('veil').hidden=true; OPEN=null;}
+
+/* ---------- writes. Every one reports, and none claims a success first. --- */
+function saveOpen(){
+ var it=OPEN; if(!it||!it.id)return;
+ var g=function(id){return document.getElementById(id);};
+ if(it.shape==='count'){
+  var t=g('f-target');
+  if(t){var v=t.value.trim();
+   if(v===''){it.target=null;}
+   else{var n=+v; if(!isFinite(n)||n<0){status('A target is a whole number of '
+     +(it.unit||'times')+' and nothing was saved.','fail');return;}
+    it.target=Math.round(n);}}
+  var p=g('f-period'); if(p)it.period=p.value;}
+ else if(it.shape==='window'){
+  var w=g('f-what'); if(w)it.what=w.value;
+  var a=g('f-anchor'); if(a)it.anchor=a.value;
+  var m=g('f-min');
+  if(m){var mv=+m.value; if(!isFinite(mv)||mv<1){status('A window runs for at '
+    +'least one minute and nothing was saved.','fail');return;}
+   it.minutes=Math.round(mv);}}
+ else if(it.shape==='stance'){
+  var te=g('f-test'), me=g('f-met');
+  if(te&&me){var tv=+te.value, mv2=+me.value;
+   if(!isFinite(tv)||tv<0||!isFinite(mv2)||mv2<0){
+    status('Both are whole numbers of times and nothing was saved.','fail');return;}
+   if(mv2>tv){status('You cannot meet a stance more times than the day tested '
+    +'it. Nothing was saved.','fail');return;}
+   it.tested=Math.round(tv); it.met=Math.round(mv2);
+   it.marks[TODAYIX]=tv===0?null:(mv2>=tv?1:0);}}
+ draw();}
+
+/* ============================================================
+   THE SNIPPET TO THE JOURNAL.
+
+   Speech recognition in a browser is a network service: the audio leaves the
+   machine and is transcribed by a server the person does not run. So the
+   control says so before it opens rather than after, and this page makes no
+   request of any kind, which the build gate and the request log both prove.
+   ============================================================ */
+function jsend(){
+ var t=document.getElementById('jtext');
+ var v=t.value.trim();
+ if(!v){status('Nothing to send. Write one sentence on the day first.','fail');return;}
+ var box=document.getElementById('jsaid');
+ box.hidden=false;
+ box.innerHTML='<b>In the story cloud:</b> '+esc(v)
+  +'<br><span class="dim">The sniffer reads it next. On this page it is held '
+  +'here and it does not leave the machine.</span>';
+ t.value='';
+ status('One sentence in the story cloud.');}
+
+function jmic(){
+ var box=document.getElementById('jmic');
+ if(!box.hidden){box.hidden=true;return;}
+ box.hidden=false;
+ box.innerHTML='<p class="body">Speech recognition in a browser is a network '
+  +'service. Your voice is sent to a server you do not run, and it is '
+  +'transcribed there rather than here. Typing keeps the sentence on this '
+  +'machine.</p>'
+  +'<button class="btn pri sm" type="button" id="jtype">Type it instead</button> '
+  +'<button class="btn sm" type="button" id="jno">Not now</button>';
+ document.getElementById('jtype').onclick=function(){
+  box.hidden=true; document.getElementById('jtext').focus();};
+ document.getElementById('jno').onclick=function(){box.hidden=true;};}
+
+/* ---------- the footnote. Where every number came from. ---------- */
+function drawFoot(){
+ var f=[];
+ f.push('<b>Every number on this page is real.</b> The seat, the track, the '
+  +'tier and the practice come out of <b>engine.js</b> through the build’s '
+  +'own <b>ritFor</b> rule. The queue’s proposals come from '
+  +'<b>compute().carrying</b>, <b>compute().weakL</b>, <b>sniffStory</b> and '
+  +'<b>avatarBlank</b>, and <b>ritdata.js</b> refuses to write if any row '
+  +'cannot name its source. The day by day record is '+P.walk.length+' days out '
+  +'of <b>losssim.js</b>, whose forty two checks still pass.');
+ f.push('<b>The ring carries the parameter.</b> A count shows its target as '
+  +'dashes, so four things is four dashes and ten is ten. A window shows one, '
+  +'because a window is one edge held or crossed and not a number of things. '
+  +'A stance shows a dot ring until a day tests it, because a stance has no '
+  +'count a person sets, and then it takes the number the day supplied with '
+  +'the ones met lit. The readable cap is computed off the ring’s own '
+  +'circumference rather than chosen, and past it the ring falls back to one '
+  +'arc with the number in the middle.');
+ f.push('<b>A figure takes one word.</b> The denominator rule and the one word '
+  +'rule collided and produced a paragraph under every headline number. The '
+  +'arc beside each figure was already carrying the share, so the word stands '
+  +'alone and the sentence is on the tile rather than on the page.');
+ f.push('<b>Two things here are mine and are open.</b> A behaviour offer '
+  +'defaults to Monday through Friday, because his own example varies by '
+  +'weekday and nobody has ruled the default. And the always on band shows the '
+  +'standing ritual plus the two heaviest proposals, which is three, because '
+  +'he ruled always on is always the top three and no profile in <b>PEOPLE</b> '
+  +'holds more than one standing ritual.');
+ f.push('<b>What the record does not hold.</b> Nothing in <b>PEOPLE</b> carries '
+  +'a second or third ritual, so the behaviour and release bands have no '
+  +'history and their bars are drawn as offers rather than as days. Inventing '
+  +'those bars would be the only fabricated figure on the page. Marks never '
+  +'run backwards: taking an offer sets it from today forward, because nobody '
+  +'kept a ritual they had not taken.');
+ document.getElementById('foot').innerHTML=
+  f.map(function(x){return '<p>'+x+'</p>';}).join('');}
+
+/* ============================================================
+   WIRING. One delegated listener, so a redraw cannot orphan a handler.
+   ============================================================ */
+document.addEventListener('click',function(e){
+ var t=e.target;
+ var mk=t.closest('[data-mark]');
+ if(mk){
+  var it=M.items.filter(function(x){return x.id===mk.dataset.mark;})[0];
+  if(it){
+   var tgt=(it.target===null||it.target===undefined)?1:Math.max(1,it.target);
+   var cur=it.marks[TODAYIX];
+   it.marks[TODAYIX]=(cur===null)?1:(cur>=tgt?null:cur+1);
+   var v=it.marks[TODAYIX];
+   status(v===null?it.nm+' is not marked today.'
+    :(v>=tgt?it.nm+' kept today.'
+      :it.nm+', '+v+' of '+tgt+' '+(it.unit||'times')+' today.'));
+   draw();}
+  return;}
+ var rg=t.closest('#sumseg button');
+ if(rg){RANGE=rg.dataset.range; drawSummary(); return;}
+ var op=t.closest('[data-open]'); if(op){openCard(op.dataset.open);return;}
+ var dy=t.closest('[data-day]');
+ if(dy&&dy.classList.contains('dcol')){openDay(+dy.dataset.day);return;}
+ if(t.id==='addbtn'){openQueue();return;}
+ if(t.id==='histbtn'){openHistory();return;}
+ if(t.id==='s-close'){closeSheet();return;}
+ if(t.id==='jsend'){jsend();return;}
+ if(t.id==='jrec'){jmic();return;}
+ if(t.id==='s-del'){
+  var d=OPEN;
+  if(d&&d.id){M.items=M.items.filter(function(x){return x.id!==d.id;});
+   status(d.nm+' is off the bands. Add still has it.');
+   closeSheet(); draw();}
+  return;}
+ if(t.id==='s-take'){
+  var k=OPEN;
+  if(k&&k.id){
+   k.standing=true;
+   for(var i=0;i<7;i++)k.marks[i]=null;
+   status(k.nm+' is standing. It counts from today.');
+   closeSheet(); draw();}
+  return;}
+ var db=t.closest('.dayb');
+ if(db&&OPEN&&OPEN.id){
+  var i2=+db.dataset.day;
+  OPEN.days[i2]=OPEN.days[i2]?0:1;
+  db.setAttribute('aria-pressed',OPEN.days[i2]?'true':'false');
+  if(!OPEN.days[i2])OPEN.marks[i2]=null;
+  status(OPEN.nm+' is '+(OPEN.days[i2]?'set on ':'off ')+DAYFULL[i2]+'.');
+  draw(); return;}
+ var hb=t.closest('.histb');
+ if(hb&&OPEN&&OPEN.id&&!hb.disabled){
+  var i3=+hb.dataset.h, m=OPEN.marks[i3];
+  OPEN.marks[i3]=(m===null)?1:(m>=1?0:null);
+  var v3=OPEN.marks[i3];
+  status(DAYFULL[i3]+' is '+(v3===null?'not marked':(v3>=1?'kept':'missed'))
+   +' for '+OPEN.nm+'.');
+  openCard(OPEN.id); draw(); return;}
+ var dm=t.closest('[data-daymark]');
+ if(dm&&OPEN&&OPEN.day!==undefined){
+  var it4=M.items.filter(function(x){return x.id===dm.dataset.daymark;})[0];
+  if(it4){var i4=OPEN.day, m4=it4.marks[i4];
+   it4.marks[i4]=(m4===null)?1:(m4>=1?0:null);
+   var v4=it4.marks[i4];
+   status(DAYFULL[i4]+' is '+(v4===null?'not marked':(v4>=1?'kept':'missed'))
+    +' for '+it4.nm+'.');
+   openDay(i4); draw();}
+  return;}
+ var qr=t.closest('[data-q]');
+ if(qr){
+  var q=P.queue.filter(function(x){return x.i===+qr.dataset.q;})[0];
+  if(q){M.items.push(fromQueue(q,true));
+   status(q.nm+' is standing. It counts from today.');
+   closeSheet(); draw();}
+  return;}
+ var lr=t.closest('[data-lib]');
+ if(lr){
+  var x=DATA.lib.filter(function(y){return y.k===lr.dataset.lib;})[0];
+  if(x){M.items.push(libItem(x));
+   status(x.nm+' is standing. It counts from today.');
+   closeSheet(); draw();}
+  return;}
+ if(t.id==='veil'){closeSheet();return;}
+},false);
+
+document.addEventListener('keydown',function(e){
+ if(e.key==='Escape'&&!document.getElementById('veil').hidden){closeSheet();return;}
+ if(e.key==='Enter'||e.key===' '){
+  var t=e.target;
+  if(t&&t.getAttribute&&t.getAttribute('role')==='button'){e.preventDefault();t.click();}}},false);
+
+document.addEventListener('change',function(e){
+ if(e.target.id==='who'){switchTo(e.target.value);return;}
+ if(OPEN&&OPEN.id&&/^f-/.test(e.target.id||''))saveOpen();},false);
+
+function switchTo(nm){
+ build(nm); RANGE='day'; draw();
+ document.getElementById('jsaid').hidden=true;
+ document.getElementById('jmic').hidden=true;
+ status('');}
+
+(function boot(){
+ DATA=window.RITDATA;
+ var sel=document.getElementById('who');
+ sel.innerHTML=Object.keys(DATA.profiles).map(function(nm){
+  var p=DATA.profiles[nm];
+  return '<option value="'+nm+'">'+nm+', '+p.age+', '+p.role+'</option>';}).join('');
+ switchTo(Object.keys(DATA.profiles)[0]);})();
+</script>

@@ -532,6 +532,13 @@ function runSim(cfgName,opt){
      square and tells you nothing about the design. The longest is the person
      the surface has to serve at its fullest, and TRACE.n and TRACE.alive30
      carry how rare that is so nobody reads the picture as typical. */
+  /* EVERY WALK, NOT ONLY THE TRACED ONE. opt.all collects one row per panel
+     member so a surface can be measured against the whole thousand rather
+     than against the single longest walk of one ICP. It is opt guarded and
+     nothing else reads it, so every figure this file already reports is
+     untouched. ritsim.js is its only caller. */
+  if(opt.all)opt.all.push({nm:per.nm, days:dayTrace.length,
+   kept:dayTrace.filter(x=>x>0).length, floors, live, done, streak, marks, k});
   if(opt.trace&&opt.trace===per.nm){
    TRACE.n=(TRACE.n||0)+1;
    if(live)TRACE.alive30=(TRACE.alive30||0)+1;

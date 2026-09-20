@@ -845,14 +845,19 @@ console.log('\n=== a sentence in a label class carries plain ===');
      &&!/\.plain/.test(r.selectorText))s=r.selectorText;});}catch(e){}});
   return s;});
  ok(!!SEL&&/\.pm-eye/.test(SEL),'the capitalize rule is in the sheet, got '+SEL);
- const WALK=function(SEL){
+ const WALK=function(a){
+  const SEL=typeof a==='string'?a:a.sel;
+  /* THE ROOT, because a drill renders into one host and walking the whole
+     document again for each of several hundred of them is the same work done
+     five hundred times. A drill sweep passes #rdrill and reads only that. */
+  const ROOT=(typeof a==='object'&&a.root&&document.querySelector(a.root))||document;
   const cap=s=>s.replace(/(^|[\s(‘'"\/-])([a-z])/g,(m,a,b)=>a+b.toUpperCase());
   /* checked against a known answer. If this is wrong nothing below it means
      anything, which is the lesson the repo already carries about tools. */
   const selfok=cap('this is accuracy, not judgment')==='This Is Accuracy, Not Judgment'
    &&cap('CQ and the field')==='CQ And The Field';
   const out=[];
-  document.querySelectorAll(SEL).forEach(e=>{
+  ROOT.querySelectorAll(SEL).forEach(e=>{
    const cells=[];
    const walk=n=>{n.childNodes.forEach(c=>{
     if(c.nodeType===3){const t=c.nodeValue.replace(/\s+/g,' ').trim();if(t)cells.push([t,n]);}
@@ -889,6 +894,7 @@ console.log('\n=== a sentence in a label class carries plain ===');
    if(n>best){best=n;bi=i;}});
   return bi;});
  const seen=new Map(); let selfok=true, n=0;
+ let drills=0, drillErr=[], drillNames=[], drillRan={};
  for(const [w,h] of [[1600,1000],[390,844]]){
   await page.setViewportSize({width:w,height:h});
   for(const who of ['blank',0,HEAVY]){
@@ -900,7 +906,102 @@ console.log('\n=== a sentence in a label class carries plain ===');
     if(!r.selfok)selfok=false;
     r.rows.forEach(x=>{n++;
      if(isSentence(x.src)&&!seen.has(x.cls+'|'+x.src))
-      seen.set(x.cls+'|'+x.src,{...x,where:'#'+(x.host||'?')+' at '+w});});}}}
+      seen.set(x.cls+'|'+x.src,{...x,where:'#'+(x.host||'?')+' at '+w});});}
+   /* ============================================================
+      AND EVERY DRILL, OPENED.
+
+      The walk above sees what a surface renders. A drill renders into
+      #rdrill on a click and nothing on any surface opens one, so until this
+      block landed the sweep could not reach a single string inside one. A
+      static scan of the source counted 24 literals in that markup reading as
+      sentences, twenty of them in drills.js, and the rule this gate enforces
+      could not touch any of them. A rule that cannot reach a string is not a
+      rule there.
+
+      THE OPENERS ARE DISCOVERED, NEVER TYPED. Every global named runSomething
+      Drill, Pair or Year is found at run time and wrapped, so opening one
+      through another one counts. The knowledge base has a single dispatcher
+      over every row it holds, which is most of them, and the rest are opened
+      from the live data tables. The gate then asserts that every discovered
+      opener ran at least once: a drill added tomorrow fails this until
+      somebody teaches the sweep how to open it, which is the only way a
+      reach gate does not go stale. Three counts typed into gates in this
+      repository have already gone stale exactly that way.
+
+      It runs once per width on each profile, inside one evaluate, because a
+      drill renders synchronously and a round trip per drill is four hundred
+      round trips.
+      ============================================================ */
+   const dr=await page.evaluate(([src,SEL])=>{
+    /* the same walker the surfaces are read with, handed to the page so the
+       harvest can happen inside one round trip per profile instead of one per
+       drill. Two harvesters would be two things that can disagree. */
+    const W=(0,eval)('('+src+')');
+    const rows=[];
+    const grab=()=>{const r=W({sel:SEL,root:'#rdrill'});
+     if(r&&r.rows)r.rows.forEach(x=>rows.push(x));};
+    const NAMES=Object.keys(window)
+     .filter(k=>/^run[A-Z]\w*(?:Drill|Pair|Year)$/.test(k)
+              &&typeof window[k]==='function').sort();
+    const ran={}, err=[];
+    const real={};
+    NAMES.forEach(k=>{real[k]=window[k];
+     window[k]=function(){ran[k]=(ran[k]||0)+1;return real[k].apply(this,arguments);};});
+    const fire=(k,args)=>{try{window[k].apply(null,args); grab();}
+     catch(e){err.push(k+': '+String(e&&e.message).slice(0,90));}};
+    try{
+     /* the knowledge base, one dispatcher, every row of every family */
+     if(typeof kbRows==='function'&&typeof kbOpen==='function'
+        &&typeof KB_SECS!=='undefined')
+      KB_SECS.concat([['gloss','']]).forEach(sec=>{
+       let kr=[]; try{kr=kbRows(sec[0])||[];}catch(e){err.push('kbRows '+sec[0]);}
+       kr.forEach(x=>{try{kbOpen(x); grab();}catch(e){
+        err.push('kbOpen '+sec[0]+': '+String(e&&e.message).slice(0,70));}});});
+     const r=(typeof compute==='function')?compute():{};
+     /* everything the dispatcher does not reach, from the live tables */
+     [['runCoreDrill',[[]]],['runXYZDrill',[[]]],['runFlowDrill',[[]]],
+      ['runBalDrill',[[]]],['runRecogniseDrill',[[]]],['runAvatarDrill',[[]]],
+      ['runPurposeDrill',[[]]],['runAgeDrill',[[]]],['runCompassDrill',[[]]],
+      ['runQDrill',[['cq'],['dq'],['sq'],['pole'],['xyz'],['flow']]],
+      ['runPoleDrill',[['up'],['dn']]]
+     ].forEach(p=>p[1].forEach(a=>fire(p[0],a)));
+     if(typeof MIRROR!=='undefined')MIRROR.forEach(m=>{
+      fire('runTeacherDrill',[m,'up']); fire('runTeacherDrill',[m,'dn']);
+      fire('runMirrorDrill',[m.k]);});
+     if(typeof CIRCLES!=='undefined')CIRCLES.forEach(c=>fire('runCircleDrill',[c.c]));
+     if(typeof AGES!=='undefined')AGES.forEach(x=>fire('runAgeYear',[x.a]));
+     if(typeof NUM_LABEL!=='undefined')Object.keys(NUM_LABEL)
+      .forEach(k=>fire('runNumDrill',[k]));
+     if(typeof CHILD!=='undefined')CHILD.forEach(c=>fire('runFetterDrill',[c]));
+     if(typeof DOMAINS!=='undefined'&&typeof CHILD!=='undefined'){
+      DOMAINS.forEach((d,i)=>fire('runCellDrill',[i,0]));
+      CHILD.forEach((c,j)=>fire('runCellDrill',[0,j]));}
+     [].concat(r.sups||[],r.hys||[],r.cxs||[],r.sabs||[])
+      .forEach(o=>fire('runDrill',[o]));
+     /* one atom: a node and the entry that put charge on it */
+     if(typeof atomIndex==='function'&&typeof BY!=='undefined'){
+      const ai=atomIndex()||{};
+      Object.keys(ai).slice(0,4).forEach(i=>{
+       if(BY[i]&&ai[i]&&ai[i][0])fire('runAtomDrill',[BY[i],ai[i][0]]);});}
+     /* the spread rows are doors on a rendered surface, so the arguments are
+        read off the doors rather than invented */
+     document.querySelectorAll('[data-sp]').forEach(b=>fire('runSpDrill',
+      [b.getAttribute('data-sp'),b.getAttribute('data-spv')]));
+     /* the avatar pairs only exist once the avatar drill has drawn them */
+     fire('runAvatarDrill',[]);
+     [...document.querySelectorAll('[data-avp]')].forEach(b=>
+      fire('runAvPair',[+b.getAttribute('data-avp')]));
+    }finally{NAMES.forEach(k=>{window[k]=real[k];});}
+    return {names:NAMES,ran:ran,err:err,rows:rows};},[WALK.toString(),SEL]);
+   drillErr=drillErr.concat(dr.err);
+   drillNames=dr.names;
+   drillRan=Object.assign(drillRan,dr.ran);
+   drills+=Object.keys(dr.ran).reduce((a,k)=>a+dr.ran[k],0);
+   dr.rows.forEach(x=>{n++;
+    if(isSentence(x.src)&&!seen.has(x.cls+'|'+x.src))
+     seen.set(x.cls+'|'+x.src,{...x,where:'#rdrill at '+w});});
+   await page.evaluate(()=>{if(typeof rdClose==='function')rdClose();}).catch(()=>{});
+  }}
  await page.setViewportSize({width:1600,height:1000});
  ok(selfok,'the capitalize simulation renders a known case correctly');
  ok(n>0,'there are strings in the label classes to test, saw '+n);
@@ -910,8 +1011,18 @@ console.log('\n=== a sentence in a label class carries plain ===');
  ok(bad.length===0,bad.length+' sentence'+(bad.length===1?'':'s')
    +' in a capitalize class without plain: '
    +bad.map(b=>'['+b.cls+'] '+b.src).slice(0,4).join(' | '));
+ /* AND THE REACH IS ASSERTED, not assumed. A drill the sweep cannot open is a
+    drill whose copy nothing reads, so an opener that never ran fails here by
+    name rather than quietly shrinking what this gate covers. */
+ const missed=drillNames.filter(k=>!drillRan[k]);
+ ok(drillNames.length>0,'the drill openers are discoverable, found '+drillNames.length);
+ ok(missed.length===0,'every drill opener was opened, '+missed.length
+   +' were not'+(missed.length?': '+missed.join(', '):''));
+ ok(drillErr.length===0,drillErr.length+' drill'+(drillErr.length===1?'':'s')
+   +' threw while opening'+(drillErr.length?': '+drillErr.slice(0,4).join(' | '):''));
  console.log('  '+n+' strings walked, '+bad.length+' sentence'
    +(bad.length===1?'':'s')+' without plain');
+ console.log('  '+drills+' drills opened across '+drillNames.length+' openers');
 }
 
 await browser.close();
