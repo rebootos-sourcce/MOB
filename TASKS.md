@@ -85,6 +85,111 @@ reopens. Every seat adds its own.
 
 ---
 
+## 0o. RULED 20 SEPTEMBER, EIGHTH PASS. THE AVATAR IS THE DASHBOARD.
+
+### AV. THE PRODUCT OPENS ON THE AVATAR, AND THE AVATAR IS A DASHBOARD.
+
+His words: "Have it start on the avatar. And the avatar is effectively a
+dashboard that gives you a ton of base information across all the tools. With
+the summary, that if you click onto it, takes you to the summary page. The
+summary needs to be the sticky part. So does the ritual. And what's improving
+on the avatar."
+
+- [ ] **AV1. The app opens on the avatar.** This reverses the ruling of 19
+      September, which reversed Summary for the Field. Everything that ruling
+      taught still holds: whatever renders there renders to somebody who has
+      entered nothing, so the empty state is the design and not an
+      afterthought.
+- [ ] **AV2. It reads across every tool, not one.** A dashboard that shows one
+      surface's numbers is that surface with a new name.
+- [ ] **AV3. Summary and ritual are the sticky parts,** and the summary block
+      is a door into the summary page.
+- [ ] **AV4. What is improving is on it.** Not what is wrong. That is a
+      different page and it already exists.
+
+### KU. THE KUNDALINI IS THE PROGRESS BAR. THIS IS THE PRIMARY GOAL.
+
+His words, and this is the clearest statement of what the avatar is for that
+the project has: "What you're improving is the conductivity of the kundalini.
+That's our primary goal with the avatar, to reconnect people's kundalini. So we
+should have progress bars of the kundalini snaking around the chakras, and we
+use that as a progress bar of how a person is doing. Where their starting point
+is and how it's rising. Whether it's blocked or open, and where it's blocked."
+
+- [ ] **KU1. The rise is the measure.** A line that snakes the seats root to
+      crown, showing how far it has risen, where it is blocked, and whether a
+      seat is open or shut. The glossary already defines it: stored vital
+      energy at the base of the spine, rising root to crown when enough nodes
+      are cleared for the channel to conduct.
+- [ ] **KU2. It is computed, not decorative.** The engine already has
+      everything this needs: load per seat, what is carrying, what has been
+      released. A bar that rises on anything other than the arithmetic is a
+      progress bar for a game nobody is playing.
+- [ ] **KU3. The starting point has to be kept,** or rising cannot be shown. A
+      person's first reading is the baseline and nothing currently stores one.
+
+### CH. THE CHAKRA BAND. COLOUR FROM THE HARMONIC RANGE.
+
+His words: "The chakras and the colour mapping and the fetters and which
+chakras they are associated with, and the harmonic range at which they operate
+within, and the hex colours that can be converted to. That way we can use real
+colours to show precisely where they are in the band."
+
+- [ ] **CH1. Derive the colour rather than pick it.** Each seat has a
+      frequency band, a band converts to a wavelength, a wavelength converts
+      to a colour. An address sitting high or low inside its seat's band then
+      has its own hex rather than its seat's, which is what "precisely where
+      they are in the band" means.
+- [ ] **CH2. He wants to see it before it lands.** His words: "let me see it
+      first." So it is a visible study before it is a schema change.
+- [ ] **CH3. It goes into the schema and the algorithm, not just the art.**
+      His ruling. That means the band is data the engine carries, and the
+      colour is a function of it rather than a table somebody typed.
+- [ ] **CH4. The palette is argued from autonomic response,** which is the
+      standing ruling, and a wavelength conversion is a different argument. If
+      the two disagree, the disagreement is the finding and it goes to him.
+- [?] **CH5. The honest part, and it belongs in the record.** The seat to
+      plexus correspondence and the seven count are a modern Western reading;
+      the glossary already says so. A frequency in hertz for a chakra is not a
+      measured quantity. Deriving a colour from it is a consistent internal
+      system, which is worth having, and it is not a measurement. The product
+      says so about the aura and the biophoton field already and should say it
+      here in the same voice.
+
+### AP. ACTIVE AND PASSIVE. A SECOND CUT ACROSS THE THREE KINDS.
+
+His words: "There's active ones and there's passive ones. The active ones are
+the ones that you need to do every day. The passive ones are the ones that are
+user set."
+
+- [ ] **AP1. Active and passive is not the same axis as the three kinds.** A
+      ritual has a kind, always on, behaviour or release, and separately it is
+      active or passive. Two fields, not one renamed.
+- [ ] **AP2. Sort by band type,** which the person chooses.
+- [ ] **AP3. Or the avatar chooses what is most effective.** His words, and
+      his reason: it lets the software read across the whole profile and
+      decide what actually needs doing. Two icons, two names, two different
+      answers. This is the auto detect from the previous pass, given its
+      second half.
+- [ ] **AP4. The release ritual is automated or user set,** his ruling, which
+      answers CL14 from the calendar pass.
+
+### TG2. TAGS COME BACK, AND THIS TIME THEY FIT.
+
+His words: "being able to edit and add tags, so the tags can set up my
+protocol, and we need to have the tags set for each major chakra."
+
+- [x] **TG4. This is the shape the tag review recommended.** That review said
+      no to free text tags on measured grounds, and yes to a closed field
+      validated against a table. Tags set for each major chakra is a closed
+      set of seven. The objection was never to the word, it was to a person
+      typing anything they like into a field the practitioner model would then
+      have to hide.
+- [ ] **TG5. A tag sets up a protocol,** which is a job no existing family
+      does, and that is what earns it.
+
+---
+
 ## 0q. RULED 20 SEPTEMBER, SEVENTH PASS. THE RITUAL PAGE AS A SYSTEM.
 
 He has seen the calendar and ruled against it on aesthetic: "this doesn't

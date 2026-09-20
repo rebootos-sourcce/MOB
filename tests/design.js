@@ -795,6 +795,11 @@ console.log('\n=== one tooltip ===');
    Shut", "Nothing Held, 15 Installed", "A Ten Is A Hundred Out Of A Hundred"
    and "The Statement Runs Nine Gates At Once".
 
+   IT IS V13 IN THE VOICE SKILL, which names this defect, quotes the imprint
+   row as its corpse, and ends "tests/design.js watches all caps; nothing
+   watches title case on a value, so this one is yours to see." This is that
+   watch. A value is never titled.
+
    THE RULE, which is the stylesheet's and is stated there in full. A label is
    a short name for a region: four words or fewer, and no comma with a word
    after it. Everything else is a sentence, takes plain, and stays in sentence

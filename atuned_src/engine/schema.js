@@ -485,9 +485,9 @@ function validateProfile(o){
    CHARGES.forEach(function(c){
     var v=vRange(errs,'seed.axes.'+c,o.seed.axes?o.seed.axes[c]:3,0,10);
     p.seed.axes[c]=v===null?3:v;});}}
- /* logs. shape checked, contents left alone: they are the person's own text. */
  /* logs. the text inside an entry is the person's own and is never edited,
-    but the bag it arrives in is checked like everything else. */
+    but the bag it arrives in is checked like everything else. The shape around
+    it was the whole of what this line used to check. */
  if(o.story&&typeof o.story==='object'){
   if(Array.isArray(o.story.entries))p.story.entries=o.story.entries
    .map(function(x,i){return vEntry(errs,i,x);}).filter(Boolean);

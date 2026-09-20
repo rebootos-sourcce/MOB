@@ -1481,8 +1481,14 @@ ok(relrun.plan>0&&relrun.plan<=25,
 ok(relrun.distinct===relrun.plan,'and never repeats a line inside one run');
 ok(new RegExp(relrun.plan+' thought lines of new ground').test(relrun.setup),
  'the setup says what it costs before anybody begins, quoting '+relrun.plan);
-ok(new RegExp(relrun.plan+' of your allowance').test(relrun.setup),
- 'and that it comes out of the allowance');
+/* THE ASSERTION IS THAT THE NUMBER SAYS WHAT IT IS OF, not that it says one
+   particular sentence. This demanded "N of your allowance", which is the
+   phrasing the voice work struck: it says N of what, and on a grant of ten a
+   week against a run that caps at twenty five it reads as a bill nobody can
+   pay. A gate that quotes copy word for word turns a fixed defect into a
+   failing row, which this repository has now done twice. */
+ok(new RegExp(relrun.plan+'\\s+patterns of the \\d+ you have left').test(relrun.setup),
+ 'and that it says what the number is out of, quoting '+relrun.plan);
 ok(relrun.beforeWho===0&&relrun.afterWho===0,
  'the run starts and ends on the person\'s own record, no repoint in the middle');
 ok(relrun.ownGained===relrun.plan,
@@ -1632,7 +1638,8 @@ const plan=await page.evaluate(()=>{
  sheetShut();
  return o;});
 ok(/On\s*Free/.test(plan.free),'a record with no plan reads free');
-ok(/100 of the gift left/.test(plan.free),'and is inside the gift');
+ok(/100 patterns left of the 100 you were given/.test(plan.free),
+ 'and is inside the gift, with both halves of the number said');
 ok(/400 of new ground a month/.test(plan.free),
  'the step up states its own figure rather than subtracting a week from a month');
 ok(/On\s*Tier two/.test(plan.two)&&/580 of 800 left this month/.test(plan.two),

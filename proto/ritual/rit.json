@@ -1,0 +1,4201 @@
+{
+ "profiles": {
+  "Marcus": {
+   "nm": "Marcus",
+   "age": 44,
+   "role": "creative director · ICP",
+   "weight": 160,
+   "says": "I can see what is wrong with anything in four seconds. It has cost me two studios.",
+   "CQ": 39.2,
+   "DQ": 0,
+   "seat": "Throat",
+   "track": "Mind",
+   "tier": 3,
+   "substituted": false,
+   "actualTrack": "Mind",
+   "called": {
+    "k": "listen",
+    "nm": "Active Listening",
+    "min": 10,
+    "track": "Mind",
+    "tier": 2,
+    "d": "Ten minutes on sound. No labelling."
+   },
+   "fit": [
+    {
+     "k": "escan",
+     "nm": "The Emotional Scan",
+     "min": 20,
+     "track": "Somatic",
+     "tier": 1
+    },
+    {
+     "k": "box",
+     "nm": "Box Breathing",
+     "min": 5,
+     "track": "Body",
+     "tier": 1
+    },
+    {
+     "k": "slow",
+     "nm": "Controlled Breath",
+     "min": 10,
+     "track": "Body",
+     "tier": 1
+    },
+    {
+     "k": "sig",
+     "nm": "The Signal Test",
+     "min": 3,
+     "track": "Somatic",
+     "tier": 1
+    },
+    {
+     "k": "sysbreath",
+     "nm": "Systematic Body Breathing",
+     "min": 15,
+     "track": "Body",
+     "tier": 2
+    },
+    {
+     "k": "resist",
+     "nm": "Feel the Resistance",
+     "min": 10,
+     "track": "Somatic",
+     "tier": 2
+    },
+    {
+     "k": "truth",
+     "nm": "The Somatic Truth Check",
+     "min": 2,
+     "track": "Somatic",
+     "tier": 2
+    },
+    {
+     "k": "heartpt",
+     "nm": "Heart Point Focus",
+     "min": 10,
+     "track": "Energy",
+     "tier": 2
+    },
+    {
+     "k": "noting",
+     "nm": "Noting Meditation",
+     "min": 15,
+     "track": "Mind",
+     "tier": 2
+    },
+    {
+     "k": "listen",
+     "nm": "Active Listening",
+     "min": 10,
+     "track": "Mind",
+     "tier": 2
+    },
+    {
+     "k": "observer",
+     "nm": "The Observer Technique",
+     "min": 20,
+     "track": "Somatic",
+     "tier": 3
+    },
+    {
+     "k": "detect",
+     "nm": "The Detection Practice",
+     "min": 20,
+     "track": "Somatic",
+     "tier": 3
+    },
+    {
+     "k": "hands",
+     "nm": "Healing Hands",
+     "min": 15,
+     "track": "Energy",
+     "tier": 3
+    },
+    {
+     "k": "hardtrauma",
+     "nm": "Hard Trauma Meditation",
+     "min": 20,
+     "track": "Somatic",
+     "tier": 3
+    },
+    {
+     "k": "superego",
+     "nm": "Superego Pattern Meditation",
+     "min": 20,
+     "track": "Mind",
+     "tier": 3
+    },
+    {
+     "k": "chakra",
+     "nm": "Individual Chakra Meditation",
+     "min": 20,
+     "track": "Energy",
+     "tier": 3
+    },
+    {
+     "k": "candle",
+     "nm": "Candle Visualisation",
+     "min": 15,
+     "track": "Mind",
+     "tier": 3
+    }
+   ],
+   "seats": [
+    {
+     "b": "Crown",
+     "load": 22.44,
+     "n": 21
+    },
+    {
+     "b": "Sacral",
+     "load": 18.21,
+     "n": 14
+    },
+    {
+     "b": "Heart",
+     "load": 16.97,
+     "n": 13
+    },
+    {
+     "b": "Root",
+     "load": 16.12,
+     "n": 13
+    },
+    {
+     "b": "Throat",
+     "load": 15.71,
+     "n": 12
+    },
+    {
+     "b": "Solar",
+     "load": 15.15,
+     "n": 15
+    },
+    {
+     "b": "3rd Eye",
+     "load": 10.82,
+     "n": 11
+    }
+   ],
+   "carryingN": 99,
+   "releasableN": 0,
+   "rel": [],
+   "weakL": {
+    "nm": "Forgiveness",
+    "b": "Heart",
+    "ic": "M9 9H7a4 4 0 000 6h2 M15 15h2a4 4 0 000-6h-2"
+   },
+   "snOffer": [],
+   "snImprints": 0,
+   "avatarBuilt": false,
+   "avatarPairs": 0,
+   "ledger": {
+    "minutes": 0,
+    "planned": 0,
+    "done": 0,
+    "rituals": 0,
+    "lines": 0,
+    "ground": 0,
+    "clear": 0,
+    "carry": 0,
+    "snaps": 0
+   },
+   "streak": {
+    "run": 0,
+    "live": false,
+    "last": null,
+    "best": 0,
+    "days": 0
+   },
+   "earned": [],
+   "next": "First run",
+   "walk": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    2,
+    0,
+    2,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    0,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    0,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    0,
+    1,
+    1,
+    1,
+    0,
+    1,
+    1
+   ],
+   "walkDone": 85,
+   "walkMissed": 5,
+   "walkStreak": 2,
+   "week": [
+    {
+     "d": "Mon",
+     "full": "Monday",
+     "kept": false,
+     "lived": true,
+     "today": false
+    },
+    {
+     "d": "Tue",
+     "full": "Tuesday",
+     "kept": true,
+     "lived": true,
+     "today": false
+    },
+    {
+     "d": "Wed",
+     "full": "Wednesday",
+     "kept": true,
+     "lived": true,
+     "today": false
+    },
+    {
+     "d": "Thu",
+     "full": "Thursday",
+     "kept": true,
+     "lived": true,
+     "today": false
+    },
+    {
+     "d": "Fri",
+     "full": "Friday",
+     "kept": false,
+     "lived": true,
+     "today": false
+    },
+    {
+     "d": "Sat",
+     "full": "Saturday",
+     "kept": true,
+     "lived": true,
+     "today": false
+    },
+    {
+     "d": "Sun",
+     "full": "Sunday",
+     "kept": true,
+     "lived": true,
+     "today": true
+    }
+   ],
+   "wd": [
+    {
+     "d": "Mon",
+     "full": "Monday",
+     "kept": 11,
+     "lived": 12
+    },
+    {
+     "d": "Tue",
+     "full": "Tuesday",
+     "kept": 13,
+     "lived": 13
+    },
+    {
+     "d": "Wed",
+     "full": "Wednesday",
+     "kept": 13,
+     "lived": 13
+    },
+    {
+     "d": "Thu",
+     "full": "Thursday",
+     "kept": 13,
+     "lived": 13
+    },
+    {
+     "d": "Fri",
+     "full": "Friday",
+     "kept": 12,
+     "lived": 13
+    },
+    {
+     "d": "Sat",
+     "full": "Saturday",
+     "kept": 10,
+     "lived": 13
+    },
+    {
+     "d": "Sun",
+     "full": "Sunday",
+     "kept": 13,
+     "lived": 13
+    }
+   ],
+   "weekdayReady": true,
+   "wdFloor": 28,
+   "improved": {
+    "now": 25,
+    "before": 26,
+    "diff": -1,
+    "window": 28
+   },
+   "improveNeed": 56,
+   "minutes": 850,
+   "sampled": 160,
+   "survived": 32,
+   "queue": [
+    {
+     "i": 0,
+     "kind": "hold",
+     "by": "avatar",
+     "src": "avatarBlank",
+     "weight": 1000000,
+     "nm": "Build the avatar",
+     "min": null,
+     "unit": "once",
+     "shape": null,
+     "because": "Nothing is written on either side yet, so there is no gap to close and nothing to hold a daily ritual to."
+    },
+    {
+     "i": 1,
+     "kind": "change",
+     "by": "you",
+     "src": "weakL",
+     "weight": 500,
+     "nm": "Box Breathing",
+     "min": 5,
+     "track": "Body",
+     "seat": "Heart",
+     "law": "Forgiveness",
+     "unit": "a day",
+     "shape": "count",
+     "target": 1,
+     "cunit": "a day",
+     "period": "a day",
+     "because": "forgiveness is the weakest of your twenty one laws. It seats at the heart, and the body track is what moves a heart."
+    },
+    {
+     "i": 2,
+     "kind": "hold",
+     "by": "avatar",
+     "src": "avatarGap",
+     "weight": 22.44,
+     "nm": "Heart Point Focus",
+     "min": 10,
+     "track": "Energy",
+     "seat": "Crown",
+     "unit": "a day",
+     "shape": "count",
+     "target": 1,
+     "cunit": "a day",
+     "period": "a day",
+     "because": "Your crown carries 21 live imprints, more than any other seat. The energy track is what moves a crown."
+    },
+    {
+     "i": 3,
+     "kind": "hold",
+     "by": "avatar",
+     "src": "avatarGap",
+     "weight": 18.21,
+     "nm": "The Somatic Truth Check",
+     "min": 2,
+     "track": "Somatic",
+     "seat": "Sacral",
+     "unit": "a day",
+     "shape": "count",
+     "target": 1,
+     "cunit": "a day",
+     "period": "a day",
+     "because": "Your sacral carries 14 live imprints, more than all but one. The somatic track is what moves a sacral."
+    }
+   ],
+   "feedback": {
+    "state": "read",
+    "worst": {
+     "d": "Saturday",
+     "kept": 10,
+     "lived": 13
+    },
+    "best": {
+     "d": "Sunday",
+     "kept": 13,
+     "lived": 13
+    },
+    "flat": false,
+    "practice": {
+     "k": "heartpt",
+     "nm": "Heart Point Focus",
+     "min": 10,
+     "track": "Energy",
+     "tier": 2,
+     "substituted": false,
+     "wanted": "Energy"
+    },
+    "seat": "Crown",
+    "protocol": "The Observer Technique",
+    "releasable": 0
+   }
+  },
+  "Gordon": {
+   "nm": "Gordon",
+   "age": 58,
+   "role": "managing partner",
+   "weight": 35,
+   "says": "There is nothing wrong with me. Four people left in a year and each had their reasons.",
+   "CQ": 0.8,
+   "DQ": 55.19,
+   "seat": "Throat",
+   "track": "Mind",
+   "tier": 1,
+   "substituted": true,
+   "actualTrack": "Somatic",
+   "called": {
+    "k": "sig",
+    "nm": "The Signal Test",
+    "min": 3,
+    "track": "Somatic",
+    "tier": 1,
+    "d": "Proof that a word with no quality of its own moves your body."
+   },
+   "fit": [
+    {
+     "k": "escan",
+     "nm": "The Emotional Scan",
+     "min": 20,
+     "track": "Somatic",
+     "tier": 1
+    },
+    {
+     "k": "box",
+     "nm": "Box Breathing",
+     "min": 5,
+     "track": "Body",
+     "tier": 1
+    },
+    {
+     "k": "slow",
+     "nm": "Controlled Breath",
+     "min": 10,
+     "track": "Body",
+     "tier": 1
+    },
+    {
+     "k": "sig",
+     "nm": "The Signal Test",
+     "min": 3,
+     "track": "Somatic",
+     "tier": 1
+    }
+   ],
+   "seats": [
+    {
+     "b": "Root",
+     "load": 105.64,
+     "n": 15
+    },
+    {
+     "b": "Sacral",
+     "load": 101.65,
+     "n": 16
+    },
+    {
+     "b": "Heart",
+     "load": 90.82,
+     "n": 15
+    },
+    {
+     "b": "Crown",
+     "load": 87.3,
+     "n": 21
+    },
+    {
+     "b": "Throat",
+     "load": 83.26,
+     "n": 12
+    },
+    {
+     "b": "Solar",
+     "load": 67.34,
+     "n": 16
+    },
+    {
+     "b": "3rd Eye",
+     "load": 50.36,
+     "n": 12
+    }
+   ],
+   "carryingN": 107,
+   "releasableN": 97,
+   "rel": [
+    {
+     "addr": "Gluteal Nerve",
+     "fetter": "Possession",
+     "seat": "Root",
+     "axis": "Shock",
+     "sq": 9.51,
+     "replacement": "Groundedness"
+    },
+    {
+     "addr": "Thoracic Ganglia",
+     "fetter": "Blame",
+     "seat": "Heart",
+     "axis": "Anger",
+     "sq": 8.52,
+     "replacement": "Calm / Integrated Power"
+    },
+    {
+     "addr": "Anterior Thoracic Roots",
+     "fetter": "False Love",
+     "seat": "Heart",
+     "axis": "Disgust",
+     "sq": 8.52,
+     "replacement": "Acceptance / Equanimity"
+    }
+   ],
+   "weakL": {
+    "nm": "Transparency",
+    "b": "Throat",
+    "ic": "M4 4h16v16H4z M8 20L20 8"
+   },
+   "snOffer": [],
+   "snImprints": 0,
+   "avatarBuilt": false,
+   "avatarPairs": 0,
+   "ledger": {
+    "minutes": 0,
+    "planned": 0,
+    "done": 0,
+    "rituals": 0,
+    "lines": 0,
+    "ground": 0,
+    "clear": 0,
+    "carry": 0,
+    "snaps": 0
+   },
+   "streak": {
+    "run": 0,
+    "live": false,
+    "last": null,
+    "best": 0,
+    "days": 0
+   },
+   "earned": [],
+   "next": "First run",
+   "walk": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+   ],
+   "walkDone": 7,
+   "walkMissed": 0,
+   "walkStreak": 7,
+   "week": [
+    {
+     "d": "Mon",
+     "full": "Monday",
+     "kept": true,
+     "lived": true,
+     "today": false
+    },
+    {
+     "d": "Tue",
+     "full": "Tuesday",
+     "kept": true,
+     "lived": true,
+     "today": false
+    },
+    {
+     "d": "Wed",
+     "full": "Wednesday",
+     "kept": true,
+     "lived": true,
+     "today": false
+    },
+    {
+     "d": "Thu",
+     "full": "Thursday",
+     "kept": true,
+     "lived": true,
+     "today": false
+    },
+    {
+     "d": "Fri",
+     "full": "Friday",
+     "kept": true,
+     "lived": true,
+     "today": false
+    },
+    {
+     "d": "Sat",
+     "full": "Saturday",
+     "kept": true,
+     "lived": true,
+     "today": false
+    },
+    {
+     "d": "Sun",
+     "full": "Sunday",
+     "kept": true,
+     "lived": true,
+     "today": true
+    }
+   ],
+   "wd": [
+    {
+     "d": "Mon",
+     "full": "Monday",
+     "kept": 1,
+     "lived": 1
+    },
+    {
+     "d": "Tue",
+     "full": "Tuesday",
+     "kept": 1,
+     "lived": 1
+    },
+    {
+     "d": "Wed",
+     "full": "Wednesday",
+     "kept": 1,
+     "lived": 1
+    },
+    {
+     "d": "Thu",
+     "full": "Thursday",
+     "kept": 1,
+     "lived": 1
+    },
+    {
+     "d": "Fri",
+     "full": "Friday",
+     "kept": 1,
+     "lived": 1
+    },
+    {
+     "d": "Sat",
+     "full": "Saturday",
+     "kept": 1,
+     "lived": 1
+    },
+    {
+     "d": "Sun",
+     "full": "Sunday",
+     "kept": 1,
+     "lived": 1
+    }
+   ],
+   "weekdayReady": false,
+   "wdFloor": 28,
+   "improved": null,
+   "improveNeed": 56,
+   "minutes": 21,
+   "sampled": 35,
+   "survived": 0,
+   "queue": [
+    {
+     "i": 0,
+     "kind": "hold",
+     "by": "avatar",
+     "src": "avatarBlank",
+     "weight": 1000000,
+     "nm": "Build the avatar",
+     "min": null,
+     "unit": "once",
+     "shape": null,
+     "because": "Nothing is written on either side yet, so there is no gap to close and nothing to hold a daily ritual to."
+    },
+    {
+     "i": 1,
+     "kind": "change",
+     "by": "you",
+     "src": "weakL",
+     "weight": 500,
+     "nm": "Box Breathing",
+     "min": 5,
+     "track": "Body",
+     "seat": "Throat",
+     "law": "Transparency",
+     "unit": "a day",
+     "shape": "count",
+     "target": 1,
+     "cunit": "a day",
+     "period": "a day",
+     "because": "transparency is the weakest of your twenty one laws. It seats at the throat, and the mind track is what moves a throat."
+    },
+    {
+     "i": 2,
+     "kind": "release",
+     "by": "you",
+     "src": "carrying",
+     "weight": 209.51,
+     "nm": "Possession",
+     "via": "The Observer Technique",
+     "min": 20,
+     "track": "Somatic",
+     "addr": "Gluteal Nerve",
+     "axis": "Shock",
+     "replacement": "Groundedness",
+     "fetter": "Possession",
+     "unit": "when called",
+     "shape": "count",
+     "target": 1,
+     "cunit": "a run",
+     "period": "when called",
+     "because": "Possession is held at Gluteal Nerve, above the line release opens at. The far pole there is Groundedness."
+    },
+    {
+     "i": 3,
+     "kind": "release",
+     "by": "you",
+     "src": "carrying",
+     "weight": 208.52,
+     "nm": "Blame",
+     "via": "The Observer Technique",
+     "min": 20,
+     "track": "Somatic",
+     "addr": "Thoracic Ganglia",
+     "axis": "Anger",
+     "replacement": "Calm / Integrated Power",
+     "fetter": "Blame",
+     "unit": "when called",
+     "shape": "count",
+     "target": 1,
+     "cunit": "a run",
+     "period": "when called",
+     "because": "Blame is held at Thoracic Ganglia, above the line release opens at. The far pole there is Calm / Integrated Power."
+    },
+    {
+     "i": 4,
+     "kind": "release",
+     "by": "you",
+     "src": "carrying",
+     "weight": 208.52,
+     "nm": "False Love",
+     "via": "The Observer Technique",
+     "min": 20,
+     "track": "Somatic",
+     "addr": "Anterior Thoracic Roots",
+     "axis": "Disgust",
+     "replacement": "Acceptance / Equanimity",
+     "fetter": "False Love",
+     "unit": "when called",
+     "shape": "count",
+     "target": 1,
+     "cunit": "a run",
+     "period": "when called",
+     "because": "False Love is held at Anterior Thoracic Roots, above the line release opens at. The far pole there is Acceptance / Equanimity."
+    },
+    {
+     "i": 5,
+     "kind": "hold",
+     "by": "avatar",
+     "src": "avatarGap",
+     "weight": 105.64,
+     "nm": "Box Breathing",
+     "min": 5,
+     "track": "Body",
+     "seat": "Root",
+     "unit": "a day",
+     "shape": "count",
+     "target": 1,
+     "cunit": "a day",
+     "period": "a day",
+     "because": "Your root carries 15 live imprints, more than any other seat. The body track is what moves a root."
+    },
+    {
+     "i": 6,
+     "kind": "hold",
+     "by": "avatar",
+     "src": "avatarGap",
+     "weight": 101.65,
+     "nm": "The Signal Test",
+     "min": 3,
+     "track": "Somatic",
+     "seat": "Sacral",
+     "unit": "a day",
+     "shape": "count",
+     "target": 1,
+     "cunit": "a day",
+     "period": "a day",
+     "because": "Your sacral carries 16 live imprints, more than all but one. The somatic track is what moves a sacral."
+    }
+   ],
+   "feedback": {
+    "state": "waiting",
+    "need": 21,
+    "practice": {
+     "k": "box",
+     "nm": "Box Breathing",
+     "min": 5,
+     "track": "Body",
+     "tier": 1,
+     "substituted": false,
+     "wanted": "Body"
+    },
+    "seat": "Root",
+    "protocol": "The Observer Technique",
+    "releasable": 97
+   }
+  },
+  "Diane": {
+   "nm": "Diane",
+   "age": 46,
+   "role": "founder, second company · ICP",
+   "weight": 180,
+   "says": "I work until the work is done and the work is never done. Rest feels like a moral failure.",
+   "CQ": 28.1,
+   "DQ": 3.51,
+   "seat": "Solar",
+   "track": "Somatic",
+   "tier": 3,
+   "substituted": false,
+   "actualTrack": "Somatic",
+   "called": {
+    "k": "truth",
+    "nm": "The Somatic Truth Check",
+    "min": 2,
+    "track": "Somatic",
+    "tier": 2,
+    "d": "Expansion is true. Contraction is distortion."
+   },
+   "fit": [
+    {
+     "k": "escan",
+     "nm": "The Emotional Scan",
+     "min": 20,
+     "track": "Somatic",
+     "tier": 1
+    },
+    {
+     "k": "box",
+     "nm": "Box Breathing",
+     "min": 5,
+     "track": "Body",
+     "tier": 1
+    },
+    {
+     "k": "slow",
+     "nm": "Controlled Breath",
+     "min": 10,
+     "track": "Body",
+     "tier": 1
+    },
+    {
+     "k": "sig",
+     "nm": "The Signal Test",
+     "min": 3,
+     "track": "Somatic",
+     "tier": 1
+    },
+    {
+     "k": "sysbreath",
+     "nm": "Systematic Body Breathing",
+     "min": 15,
+     "track": "Body",
+     "tier": 2
+    },
+    {
+     "k": "resist",
+     "nm": "Feel the Resistance",
+     "min": 10,
+     "track": "Somatic",
+     "tier": 2
+    },
+    {
+     "k": "truth",
+     "nm": "The Somatic Truth Check",
+     "min": 2,
+     "track": "Somatic",
+     "tier": 2
+    },
+    {
+     "k": "heartpt",
+     "nm": "Heart Point Focus",
+     "min": 10,
+     "track": "Energy",
+     "tier": 2
+    },
+    {
+     "k": "noting",
+     "nm": "Noting Meditation",
+     "min": 15,
+     "track": "Mind",
+     "tier": 2
+    },
+    {
+     "k": "listen",
+     "nm": "Active Listening",
+     "min": 10,
+     "track": "Mind",
+     "tier": 2
+    },
+    {
+     "k": "observer",
+     "nm": "The Observer Technique",
+     "min": 20,
+     "track": "Somatic",
+     "tier": 3
+    },
+    {
+     "k": "detect",
+     "nm": "The Detection Practice",
+     "min": 20,
+     "track": "Somatic",
+     "tier": 3
+    },
+    {
+     "k": "hands",
+     "nm": "Healing Hands",
+     "min": 15,
+     "track": "Energy",
+     "tier": 3
+    },
+    {
+     "k": "hardtrauma",
+     "nm": "Hard Trauma Meditation",
+     "min": 20,
+     "track": "Somatic",
+     "tier": 3
+    },
+    {
+     "k": "superego",
+     "nm": "Superego Pattern Meditation",
+     "min": 20,
+     "track": "Mind",
+     "tier": 3
+    },
+    {
+     "k": "chakra",
+     "nm": "Individual Chakra Meditation",
+     "min": 20,
+     "track": "Energy",
+     "tier": 3
+    },
+    {
+     "k": "candle",
+     "nm": "Candle Visualisation",
+     "min": 15,
+     "track": "Mind",
+     "tier": 3
+    }
+   ],
+   "seats": [
+    {
+     "b": "Solar",
+     "load": 58.32,
+     "n": 15
+    },
+    {
+     "b": "Heart",
+     "load": 33.82,
+     "n": 14
+    },
+    {
+     "b": "Crown",
+     "load": 33.72,
+     "n": 20
+    },
+    {
+     "b": "Throat",
+     "load": 29.04,
+     "n": 12
+    },
+    {
+     "b": "Root",
+     "load": 22.82,
+     "n": 13
+    },
+    {
+     "b": "Sacral",
+     "load": 21.37,
+     "n": 7
+    },
+    {
+     "b": "3rd Eye",
+     "load": 15.43,
+     "n": 10
+    }
+   ],
+   "carryingN": 91,
+   "releasableN": 8,
+   "rel": [
+    {
+     "addr": "Iliac Branches",
+     "fetter": "Need For Approval",
+     "seat": "Sacral",
+     "axis": "Shame",
+     "sq": 5.06,
+     "replacement": "Worth / Self-respect"
+    },
+    {
+     "addr": "Celiac Plexus",
+     "fetter": "Anger",
+     "seat": "Solar",
+     "axis": "Anger",
+     "sq": 4.44,
+     "replacement": "Calm / Integrated Power"
+    },
+    {
+     "addr": "Splanchnic Plexus",
+     "fetter": "Judgment",
+     "seat": "Solar",
+     "axis": "Anger",
+     "sq": 4.44,
+     "replacement": "Calm / Integrated Power"
+    }
+   ],
+   "weakL": {
+    "nm": "Temperance",
+    "b": "Sacral",
+    "ic": "M5 5h6l-3 6z M13 19h6l-3-6z M11 10l2 4"
+   },
+   "snOffer": [],
+   "snImprints": 0,
+   "avatarBuilt": false,
+   "avatarPairs": 0,
+   "ledger": {
+    "minutes": 0,
+    "planned": 0,
+    "done": 0,
+    "rituals": 0,
+    "lines": 0,
+    "ground": 0,
+    "clear": 0,
+    "carry": 0,
+    "snaps": 0
+   },
+   "streak": {
+    "run": 0,
+    "live": false,
+    "last": null,
+    "best": 0,
+    "days": 0
+   },
+   "earned": [],
+   "next": "First run",
+   "walk": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    2,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    0,
+    1,
+    1,
+    1,
+    1,
+    1,
+    0,
+    1,
+    1,
+    1,
+    1,
+    1,
+    0,
+    1,
+    1,
+    1,
+    1,
+    0,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    0,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    0,
+    1,
+    1,
+    0,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+   ],
+   "walkDone": 83,
+   "walkMissed": 7,
+   "walkStreak": 9,
+   "week": [
+    {
+     "d": "Mon",
+     "full": "Monday",
+     "kept": true,
+     "lived": true,
+     "today": false
+    },
+    {
+     "d": "Tue",
+     "full": "Tuesday",
+     "kept": true,
+     "lived": true,
+     "today": false
+    },
+    {
+     "d": "Wed",
+     "full": "Wednesday",
+     "kept": true,
+     "lived": true,
+     "today": false
+    },
+    {
+     "d": "Thu",
+     "full": "Thursday",
+     "kept": true,
+     "lived": true,
+     "today": false
+    },
+    {
+     "d": "Fri",
+     "full": "Friday",
+     "kept": true,
+     "lived": true,
+     "today": false
+    },
+    {
+     "d": "Sat",
+     "full": "Saturday",
+     "kept": true,
+     "lived": true,
+     "today": false
+    },
+    {
+     "d": "Sun",
+     "full": "Sunday",
+     "kept": true,
+     "lived": true,
+     "today": true
+    }
+   ],
+   "wd": [
+    {
+     "d": "Mon",
+     "full": "Monday",
+     "kept": 10,
+     "lived": 12
+    },
+    {
+     "d": "Tue",
+     "full": "Tuesday",
+     "kept": 11,
+     "lived": 13
+    },
+    {
+     "d": "Wed",
+     "full": "Wednesday",
+     "kept": 12,
+     "lived": 13
+    },
+    {
+     "d": "Thu",
+     "full": "Thursday",
+     "kept": 13,
+     "lived": 13
+    },
+    {
+     "d": "Fri",
+     "full": "Friday",
+     "kept": 12,
+     "lived": 13
+    },
+    {
+     "d": "Sat",
+     "full": "Saturday",
+     "kept": 12,
+     "lived": 13
+    },
+    {
+     "d": "Sun",
+     "full": "Sunday",
+     "kept": 13,
+     "lived": 13
+    }
+   ],
+   "weekdayReady": true,
+   "wdFloor": 28,
+   "improved": {
+    "now": 25,
+    "before": 25,
+    "diff": 0,
+    "window": 28
+   },
+   "improveNeed": 56,
+   "minutes": 166,
+   "sampled": 180,
+   "survived": 0,
+   "queue": [
+    {
+     "i": 0,
+     "kind": "hold",
+     "by": "avatar",
+     "src": "avatarBlank",
+     "weight": 1000000,
+     "nm": "Build the avatar",
+     "min": null,
+     "unit": "once",
+     "shape": null,
+     "because": "Nothing is written on either side yet, so there is no gap to close and nothing to hold a daily ritual to."
+    },
+    {
+     "i": 1,
+     "kind": "change",
+     "by": "you",
+     "src": "weakL",
+     "weight": 500,
+     "nm": "The Signal Test",
+     "min": 3,
+     "track": "Somatic",
+     "seat": "Sacral",
+     "law": "Temperance",
+     "unit": "a day",
+     "shape": "count",
+     "target": 1,
+     "cunit": "a day",
+     "period": "a day",
+     "because": "temperance is the weakest of your twenty one laws. It seats at the sacral, and the somatic track is what moves a sacral."
+    },
+    {
+     "i": 2,
+     "kind": "release",
+     "by": "you",
+     "src": "carrying",
+     "weight": 205.06,
+     "nm": "Need For Approval",
+     "via": "The Observer Technique",
+     "min": 20,
+     "track": "Somatic",
+     "addr": "Iliac Branches",
+     "axis": "Shame",
+     "replacement": "Worth / Self-respect",
+     "fetter": "Need For Approval",
+     "unit": "when called",
+     "shape": "count",
+     "target": 1,
+     "cunit": "a run",
+     "period": "when called",
+     "because": "Need For Approval is held at Iliac Branches, above the line release opens at. The far pole there is Worth / Self-respect."
+    },
+    {
+     "i": 3,
+     "kind": "release",
+     "by": "you",
+     "src": "carrying",
+     "weight": 204.44,
+     "nm": "Anger",
+     "via": "The Observer Technique",
+     "min": 20,
+     "track": "Somatic",
+     "addr": "Celiac Plexus",
+     "axis": "Anger",
+     "replacement": "Calm / Integrated Power",
+     "fetter": "Anger",
+     "unit": "when called",
+     "shape": "count",
+     "target": 1,
+     "cunit": "a run",
+     "period": "when called",
+     "because": "Anger is held at Celiac Plexus, above the line release opens at. The far pole there is Calm / Integrated Power."
+    },
+    {
+     "i": 4,
+     "kind": "release",
+     "by": "you",
+     "src": "carrying",
+     "weight": 204.44,
+     "nm": "Judgment",
+     "via": "The Observer Technique",
+     "min": 20,
+     "track": "Somatic",
+     "addr": "Splanchnic Plexus",
+     "axis": "Anger",
+     "replacement": "Calm / Integrated Power",
+     "fetter": "Judgment",
+     "unit": "when called",
+     "shape": "count",
+     "target": 1,
+     "cunit": "a run",
+     "period": "when called",
+     "because": "Judgment is held at Splanchnic Plexus, above the line release opens at. The far pole there is Calm / Integrated Power."
+    },
+    {
+     "i": 5,
+     "kind": "hold",
+     "by": "avatar",
+     "src": "avatarGap",
+     "weight": 58.32,
+     "nm": "The Somatic Truth Check",
+     "min": 2,
+     "track": "Somatic",
+     "seat": "Solar",
+     "unit": "a day",
+     "shape": "count",
+     "target": 1,
+     "cunit": "a day",
+     "period": "a day",
+     "because": "Your solar carries 15 live imprints, more than any other seat. The somatic track is what moves a solar."
+    },
+    {
+     "i": 6,
+     "kind": "hold",
+     "by": "avatar",
+     "src": "avatarGap",
+     "weight": 33.82,
+     "nm": "Box Breathing",
+     "min": 5,
+     "track": "Body",
+     "seat": "Heart",
+     "unit": "a day",
+     "shape": "count",
+     "target": 1,
+     "cunit": "a day",
+     "period": "a day",
+     "because": "Your heart carries 14 live imprints, more than all but one. The body track is what moves a heart."
+    }
+   ],
+   "feedback": {
+    "state": "read",
+    "worst": {
+     "d": "Monday",
+     "kept": 10,
+     "lived": 12
+    },
+    "best": {
+     "d": "Sunday",
+     "kept": 13,
+     "lived": 13
+    },
+    "flat": false,
+    "practice": {
+     "k": "truth",
+     "nm": "The Somatic Truth Check",
+     "min": 2,
+     "track": "Somatic",
+     "tier": 2,
+     "substituted": false,
+     "wanted": "Somatic"
+    },
+    "seat": "Solar",
+    "protocol": "The Observer Technique",
+    "releasable": 8
+   }
+  },
+  "Angela": {
+   "nm": "Angela",
+   "age": 36,
+   "role": "seeker, six modalities · ICP",
+   "weight": 150,
+   "says": "Everything happens for a reason. I have said that at three funerals and I believed it each time.",
+   "CQ": 40.9,
+   "DQ": 0,
+   "seat": "Root",
+   "track": "Body",
+   "tier": 3,
+   "substituted": false,
+   "actualTrack": "Body",
+   "called": {
+    "k": "box",
+    "nm": "Box Breathing",
+    "min": 5,
+    "track": "Body",
+    "tier": 1,
+    "d": "Four and four, or eight and eight. The entry into a grounded state."
+   },
+   "fit": [
+    {
+     "k": "escan",
+     "nm": "The Emotional Scan",
+     "min": 20,
+     "track": "Somatic",
+     "tier": 1
+    },
+    {
+     "k": "box",
+     "nm": "Box Breathing",
+     "min": 5,
+     "track": "Body",
+     "tier": 1
+    },
+    {
+     "k": "slow",
+     "nm": "Controlled Breath",
+     "min": 10,
+     "track": "Body",
+     "tier": 1
+    },
+    {
+     "k": "sig",
+     "nm": "The Signal Test",
+     "min": 3,
+     "track": "Somatic",
+     "tier": 1
+    },
+    {
+     "k": "sysbreath",
+     "nm": "Systematic Body Breathing",
+     "min": 15,
+     "track": "Body",
+     "tier": 2
+    },
+    {
+     "k": "resist",
+     "nm": "Feel the Resistance",
+     "min": 10,
+     "track": "Somatic",
+     "tier": 2
+    },
+    {
+     "k": "truth",
+     "nm": "The Somatic Truth Check",
+     "min": 2,
+     "track": "Somatic",
+     "tier": 2
+    },
+    {
+     "k": "heartpt",
+     "nm": "Heart Point Focus",
+     "min": 10,
+     "track": "Energy",
+     "tier": 2
+    },
+    {
+     "k": "noting",
+     "nm": "Noting Meditation",
+     "min": 15,
+     "track": "Mind",
+     "tier": 2
+    },
+    {
+     "k": "listen",
+     "nm": "Active Listening",
+     "min": 10,
+     "track": "Mind",
+     "tier": 2
+    },
+    {
+     "k": "observer",
+     "nm": "The Observer Technique",
+     "min": 20,
+     "track": "Somatic",
+     "tier": 3
+    },
+    {
+     "k": "detect",
+     "nm": "The Detection Practice",
+     "min": 20,
+     "track": "Somatic",
+     "tier": 3
+    },
+    {
+     "k": "hands",
+     "nm": "Healing Hands",
+     "min": 15,
+     "track": "Energy",
+     "tier": 3
+    },
+    {
+     "k": "hardtrauma",
+     "nm": "Hard Trauma Meditation",
+     "min": 20,
+     "track": "Somatic",
+     "tier": 3
+    },
+    {
+     "k": "superego",
+     "nm": "Superego Pattern Meditation",
+     "min": 20,
+     "track": "Mind",
+     "tier": 3
+    },
+    {
+     "k": "chakra",
+     "nm": "Individual Chakra Meditation",
+     "min": 20,
+     "track": "Energy",
+     "tier": 3
+    },
+    {
+     "k": "candle",
+     "nm": "Candle Visualisation",
+     "min": 15,
+     "track": "Mind",
+     "tier": 3
+    }
+   ],
+   "seats": [
+    {
+     "b": "Root",
+     "load": 12.72,
+     "n": 11
+    },
+    {
+     "b": "Crown",
+     "load": 10.37,
+     "n": 12
+    },
+    {
+     "b": "Solar",
+     "load": 9.15,
+     "n": 15
+    },
+    {
+     "b": "Sacral",
+     "load": 8.87,
+     "n": 15
+    },
+    {
+     "b": "Throat",
+     "load": 5.68,
+     "n": 8
+    },
+    {
+     "b": "3rd Eye",
+     "load": 5.53,
+     "n": 6
+    },
+    {
+     "b": "Heart",
+     "load": 5.27,
+     "n": 7
+    }
+   ],
+   "carryingN": 74,
+   "releasableN": 0,
+   "rel": [],
+   "weakL": {
+    "nm": "Humility",
+    "b": "3rd Eye",
+    "ic": "M4 11h16 M4 11a8 8 0 0016 0"
+   },
+   "snOffer": [
+    {
+     "addr": "Inferior Cardiac",
+     "axis": "Sad",
+     "replacement": "Happy / Restoration",
+     "shadow": 8
+    }
+   ],
+   "snImprints": 4,
+   "avatarBuilt": false,
+   "avatarPairs": 0,
+   "ledger": {
+    "minutes": 0,
+    "planned": 0,
+    "done": 0,
+    "rituals": 0,
+    "lines": 0,
+    "ground": 0,
+    "clear": 0,
+    "carry": 0,
+    "snaps": 0
+   },
+   "streak": {
+    "run": 0,
+    "live": false,
+    "last": null,
+    "best": 0,
+    "days": 0
+   },
+   "earned": [],
+   "next": "First run",
+   "walk": [
+    1,
+    1,
+    1,
+    1,
+    0,
+    1,
+    1,
+    1,
+    2,
+    2,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    0,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    0,
+    0,
+    1,
+    1,
+    1
+   ],
+   "walkDone": 86,
+   "walkMissed": 4,
+   "walkStreak": 3,
+   "week": [
+    {
+     "d": "Mon",
+     "full": "Monday",
+     "kept": true,
+     "lived": true,
+     "today": false
+    },
+    {
+     "d": "Tue",
+     "full": "Tuesday",
+     "kept": true,
+     "lived": true,
+     "today": false
+    },
+    {
+     "d": "Wed",
+     "full": "Wednesday",
+     "kept": false,
+     "lived": true,
+     "today": false
+    },
+    {
+     "d": "Thu",
+     "full": "Thursday",
+     "kept": false,
+     "lived": true,
+     "today": false
+    },
+    {
+     "d": "Fri",
+     "full": "Friday",
+     "kept": true,
+     "lived": true,
+     "today": false
+    },
+    {
+     "d": "Sat",
+     "full": "Saturday",
+     "kept": true,
+     "lived": true,
+     "today": false
+    },
+    {
+     "d": "Sun",
+     "full": "Sunday",
+     "kept": true,
+     "lived": true,
+     "today": true
+    }
+   ],
+   "wd": [
+    {
+     "d": "Mon",
+     "full": "Monday",
+     "kept": 12,
+     "lived": 12
+    },
+    {
+     "d": "Tue",
+     "full": "Tuesday",
+     "kept": 13,
+     "lived": 13
+    },
+    {
+     "d": "Wed",
+     "full": "Wednesday",
+     "kept": 12,
+     "lived": 13
+    },
+    {
+     "d": "Thu",
+     "full": "Thursday",
+     "kept": 11,
+     "lived": 13
+    },
+    {
+     "d": "Fri",
+     "full": "Friday",
+     "kept": 13,
+     "lived": 13
+    },
+    {
+     "d": "Sat",
+     "full": "Saturday",
+     "kept": 12,
+     "lived": 13
+    },
+    {
+     "d": "Sun",
+     "full": "Sunday",
+     "kept": 13,
+     "lived": 13
+    }
+   ],
+   "weekdayReady": true,
+   "wdFloor": 28,
+   "improved": {
+    "now": 26,
+    "before": 27,
+    "diff": -1,
+    "window": 28
+   },
+   "improveNeed": 56,
+   "minutes": 430,
+   "sampled": 150,
+   "survived": 0,
+   "queue": [
+    {
+     "i": 0,
+     "kind": "hold",
+     "by": "avatar",
+     "src": "avatarBlank",
+     "weight": 1000000,
+     "nm": "Build the avatar",
+     "min": null,
+     "unit": "once",
+     "shape": null,
+     "because": "Nothing is written on either side yet, so there is no gap to close and nothing to hold a daily ritual to."
+    },
+    {
+     "i": 1,
+     "kind": "change",
+     "by": "you",
+     "src": "weakL",
+     "weight": 500,
+     "nm": "Active Listening",
+     "min": 10,
+     "track": "Mind",
+     "seat": "3rd Eye",
+     "law": "Humility",
+     "unit": "a day",
+     "shape": "count",
+     "target": 1,
+     "cunit": "a day",
+     "period": "a day",
+     "because": "humility is the weakest of your twenty one laws. It seats at the 3rd eye, and the mind track is what moves a 3rd eye."
+    },
+    {
+     "i": 2,
+     "kind": "release",
+     "by": "sniffer",
+     "src": "sniffStory",
+     "weight": 408,
+     "nm": "Inferior Cardiac",
+     "via": "The Observer Technique",
+     "min": 20,
+     "track": "Somatic",
+     "addr": "Inferior Cardiac",
+     "axis": "Sad",
+     "replacement": "Happy / Restoration",
+     "unit": "when called",
+     "shape": "count",
+     "target": 1,
+     "cunit": "a run",
+     "period": "when called",
+     "because": "Your own words carry sad at Inferior Cardiac. The far pole there is Happy / Restoration."
+    },
+    {
+     "i": 3,
+     "kind": "hold",
+     "by": "avatar",
+     "src": "avatarGap",
+     "weight": 12.72,
+     "nm": "Box Breathing",
+     "min": 5,
+     "track": "Body",
+     "seat": "Root",
+     "unit": "a day",
+     "shape": "count",
+     "target": 1,
+     "cunit": "a day",
+     "period": "a day",
+     "because": "Your root carries 11 live imprints, more than any other seat. The body track is what moves a root."
+    },
+    {
+     "i": 4,
+     "kind": "hold",
+     "by": "avatar",
+     "src": "avatarGap",
+     "weight": 10.37,
+     "nm": "Heart Point Focus",
+     "min": 10,
+     "track": "Energy",
+     "seat": "Crown",
+     "unit": "a day",
+     "shape": "count",
+     "target": 1,
+     "cunit": "a day",
+     "period": "a day",
+     "because": "Your crown carries 12 live imprints, more than all but one. The energy track is what moves a crown."
+    }
+   ],
+   "feedback": {
+    "state": "read",
+    "worst": {
+     "d": "Thursday",
+     "kept": 11,
+     "lived": 13
+    },
+    "best": {
+     "d": "Sunday",
+     "kept": 13,
+     "lived": 13
+    },
+    "flat": false,
+    "practice": {
+     "k": "box",
+     "nm": "Box Breathing",
+     "min": 5,
+     "track": "Body",
+     "tier": 1,
+     "substituted": false,
+     "wanted": "Body"
+    },
+    "seat": "Root",
+    "protocol": "The Observer Technique",
+    "releasable": 0
+   }
+  },
+  "Sofia": {
+   "nm": "Sofia",
+   "age": 41,
+   "role": "somatic practitioner · ICP",
+   "weight": 140,
+   "says": "I hold the room for everyone. I have not been held in four years and I would not know how to ask.",
+   "CQ": 56.6,
+   "DQ": 0,
+   "seat": "Throat",
+   "track": "Mind",
+   "tier": 3,
+   "substituted": false,
+   "actualTrack": "Mind",
+   "called": {
+    "k": "listen",
+    "nm": "Active Listening",
+    "min": 10,
+    "track": "Mind",
+    "tier": 2,
+    "d": "Ten minutes on sound. No labelling."
+   },
+   "fit": [
+    {
+     "k": "escan",
+     "nm": "The Emotional Scan",
+     "min": 20,
+     "track": "Somatic",
+     "tier": 1
+    },
+    {
+     "k": "box",
+     "nm": "Box Breathing",
+     "min": 5,
+     "track": "Body",
+     "tier": 1
+    },
+    {
+     "k": "slow",
+     "nm": "Controlled Breath",
+     "min": 10,
+     "track": "Body",
+     "tier": 1
+    },
+    {
+     "k": "sig",
+     "nm": "The Signal Test",
+     "min": 3,
+     "track": "Somatic",
+     "tier": 1
+    },
+    {
+     "k": "sysbreath",
+     "nm": "Systematic Body Breathing",
+     "min": 15,
+     "track": "Body",
+     "tier": 2
+    },
+    {
+     "k": "resist",
+     "nm": "Feel the Resistance",
+     "min": 10,
+     "track": "Somatic",
+     "tier": 2
+    },
+    {
+     "k": "truth",
+     "nm": "The Somatic Truth Check",
+     "min": 2,
+     "track": "Somatic",
+     "tier": 2
+    },
+    {
+     "k": "heartpt",
+     "nm": "Heart Point Focus",
+     "min": 10,
+     "track": "Energy",
+     "tier": 2
+    },
+    {
+     "k": "noting",
+     "nm": "Noting Meditation",
+     "min": 15,
+     "track": "Mind",
+     "tier": 2
+    },
+    {
+     "k": "listen",
+     "nm": "Active Listening",
+     "min": 10,
+     "track": "Mind",
+     "tier": 2
+    },
+    {
+     "k": "observer",
+     "nm": "The Observer Technique",
+     "min": 20,
+     "track": "Somatic",
+     "tier": 3
+    },
+    {
+     "k": "detect",
+     "nm": "The Detection Practice",
+     "min": 20,
+     "track": "Somatic",
+     "tier": 3
+    },
+    {
+     "k": "hands",
+     "nm": "Healing Hands",
+     "min": 15,
+     "track": "Energy",
+     "tier": 3
+    },
+    {
+     "k": "hardtrauma",
+     "nm": "Hard Trauma Meditation",
+     "min": 20,
+     "track": "Somatic",
+     "tier": 3
+    },
+    {
+     "k": "superego",
+     "nm": "Superego Pattern Meditation",
+     "min": 20,
+     "track": "Mind",
+     "tier": 3
+    },
+    {
+     "k": "chakra",
+     "nm": "Individual Chakra Meditation",
+     "min": 20,
+     "track": "Energy",
+     "tier": 3
+    },
+    {
+     "k": "candle",
+     "nm": "Candle Visualisation",
+     "min": 15,
+     "track": "Mind",
+     "tier": 3
+    }
+   ],
+   "seats": [
+    {
+     "b": "Sacral",
+     "load": 9.98,
+     "n": 13
+    },
+    {
+     "b": "Throat",
+     "load": 8.13,
+     "n": 10
+    },
+    {
+     "b": "3rd Eye",
+     "load": 5.15,
+     "n": 9
+    },
+    {
+     "b": "Root",
+     "load": 3.61,
+     "n": 6
+    },
+    {
+     "b": "Crown",
+     "load": 3.16,
+     "n": 7
+    },
+    {
+     "b": "Heart",
+     "load": 2.84,
+     "n": 5
+    },
+    {
+     "b": "Solar",
+     "load": 1.79,
+     "n": 2
+    }
+   ],
+   "carryingN": 52,
+   "releasableN": 0,
+   "rel": [],
+   "weakL": {
+    "nm": "Detachment",
+    "b": "Sacral",
+    "ic": "M3 12h5 M16 12h5 M10 7v10 M14 7v10"
+   },
+   "snOffer": [],
+   "snImprints": 0,
+   "avatarBuilt": false,
+   "avatarPairs": 0,
+   "ledger": {
+    "minutes": 0,
+    "planned": 0,
+    "done": 0,
+    "rituals": 0,
+    "lines": 0,
+    "ground": 0,
+    "clear": 0,
+    "carry": 0,
+    "snaps": 0
+   },
+   "streak": {
+    "run": 0,
+    "live": false,
+    "last": null,
+    "best": 0,
+    "days": 0
+   },
+   "earned": [],
+   "next": "First run",
+   "walk": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    2,
+    1,
+    1,
+    1,
+    2,
+    1,
+    1,
+    1,
+    1,
+    0,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    0,
+    1,
+    1,
+    1,
+    1,
+    1,
+    0,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    2,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    2,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    2,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    2,
+    1,
+    1,
+    0,
+    1,
+    1
+   ],
+   "walkDone": 86,
+   "walkMissed": 4,
+   "walkStreak": 2,
+   "week": [
+    {
+     "d": "Mon",
+     "full": "Monday",
+     "kept": true,
+     "lived": true,
+     "today": false
+    },
+    {
+     "d": "Tue",
+     "full": "Tuesday",
+     "kept": true,
+     "lived": true,
+     "today": false
+    },
+    {
+     "d": "Wed",
+     "full": "Wednesday",
+     "kept": true,
+     "lived": true,
+     "today": false
+    },
+    {
+     "d": "Thu",
+     "full": "Thursday",
+     "kept": true,
+     "lived": true,
+     "today": false
+    },
+    {
+     "d": "Fri",
+     "full": "Friday",
+     "kept": false,
+     "lived": true,
+     "today": false
+    },
+    {
+     "d": "Sat",
+     "full": "Saturday",
+     "kept": true,
+     "lived": true,
+     "today": false
+    },
+    {
+     "d": "Sun",
+     "full": "Sunday",
+     "kept": true,
+     "lived": true,
+     "today": true
+    }
+   ],
+   "wd": [
+    {
+     "d": "Mon",
+     "full": "Monday",
+     "kept": 12,
+     "lived": 12
+    },
+    {
+     "d": "Tue",
+     "full": "Tuesday",
+     "kept": 13,
+     "lived": 13
+    },
+    {
+     "d": "Wed",
+     "full": "Wednesday",
+     "kept": 13,
+     "lived": 13
+    },
+    {
+     "d": "Thu",
+     "full": "Thursday",
+     "kept": 13,
+     "lived": 13
+    },
+    {
+     "d": "Fri",
+     "full": "Friday",
+     "kept": 11,
+     "lived": 13
+    },
+    {
+     "d": "Sat",
+     "full": "Saturday",
+     "kept": 12,
+     "lived": 13
+    },
+    {
+     "d": "Sun",
+     "full": "Sunday",
+     "kept": 12,
+     "lived": 13
+    }
+   ],
+   "weekdayReady": true,
+   "wdFloor": 28,
+   "improved": {
+    "now": 27,
+    "before": 28,
+    "diff": -1,
+    "window": 28
+   },
+   "improveNeed": 56,
+   "minutes": 860,
+   "sampled": 140,
+   "survived": 35,
+   "queue": [
+    {
+     "i": 0,
+     "kind": "hold",
+     "by": "avatar",
+     "src": "avatarBlank",
+     "weight": 1000000,
+     "nm": "Build the avatar",
+     "min": null,
+     "unit": "once",
+     "shape": null,
+     "because": "Nothing is written on either side yet, so there is no gap to close and nothing to hold a daily ritual to."
+    },
+    {
+     "i": 1,
+     "kind": "change",
+     "by": "you",
+     "src": "weakL",
+     "weight": 500,
+     "nm": "The Somatic Truth Check",
+     "min": 2,
+     "track": "Somatic",
+     "seat": "Sacral",
+     "law": "Detachment",
+     "unit": "a day",
+     "shape": "count",
+     "target": 1,
+     "cunit": "a day",
+     "period": "a day",
+     "because": "detachment is the weakest of your twenty one laws. It seats at the sacral, and the somatic track is what moves a sacral."
+    },
+    {
+     "i": 2,
+     "kind": "hold",
+     "by": "avatar",
+     "src": "avatarGap",
+     "weight": 9.98,
+     "nm": "The Somatic Truth Check",
+     "min": 2,
+     "track": "Somatic",
+     "seat": "Sacral",
+     "unit": "a day",
+     "shape": "count",
+     "target": 1,
+     "cunit": "a day",
+     "period": "a day",
+     "because": "Your sacral carries 13 live imprints, more than any other seat. The somatic track is what moves a sacral."
+    },
+    {
+     "i": 3,
+     "kind": "hold",
+     "by": "avatar",
+     "src": "avatarGap",
+     "weight": 8.13,
+     "nm": "Active Listening",
+     "min": 10,
+     "track": "Mind",
+     "seat": "Throat",
+     "unit": "a day",
+     "shape": "count",
+     "target": 1,
+     "cunit": "a day",
+     "period": "a day",
+     "because": "Your throat carries 10 live imprints, more than all but one. The mind track is what moves a throat."
+    }
+   ],
+   "feedback": {
+    "state": "read",
+    "worst": {
+     "d": "Friday",
+     "kept": 11,
+     "lived": 13
+    },
+    "best": {
+     "d": "Thursday",
+     "kept": 13,
+     "lived": 13
+    },
+    "flat": false,
+    "practice": {
+     "k": "truth",
+     "nm": "The Somatic Truth Check",
+     "min": 2,
+     "track": "Somatic",
+     "tier": 2,
+     "substituted": false,
+     "wanted": "Somatic"
+    },
+    "seat": "Sacral",
+    "protocol": "The Observer Technique",
+    "releasable": 0
+   }
+  },
+  "Derek": {
+   "nm": "Derek",
+   "age": 39,
+   "role": "high performer, endurance · ICP",
+   "weight": 170,
+   "says": "Pain is information. I have raced on a stress fracture. I would do it again.",
+   "CQ": 15,
+   "DQ": 10.09,
+   "seat": "Solar",
+   "track": "Somatic",
+   "tier": 1,
+   "substituted": false,
+   "actualTrack": "Somatic",
+   "called": {
+    "k": "sig",
+    "nm": "The Signal Test",
+    "min": 3,
+    "track": "Somatic",
+    "tier": 1,
+    "d": "Proof that a word with no quality of its own moves your body."
+   },
+   "fit": [
+    {
+     "k": "escan",
+     "nm": "The Emotional Scan",
+     "min": 20,
+     "track": "Somatic",
+     "tier": 1
+    },
+    {
+     "k": "box",
+     "nm": "Box Breathing",
+     "min": 5,
+     "track": "Body",
+     "tier": 1
+    },
+    {
+     "k": "slow",
+     "nm": "Controlled Breath",
+     "min": 10,
+     "track": "Body",
+     "tier": 1
+    },
+    {
+     "k": "sig",
+     "nm": "The Signal Test",
+     "min": 3,
+     "track": "Somatic",
+     "tier": 1
+    }
+   ],
+   "seats": [
+    {
+     "b": "Solar",
+     "load": 60.34,
+     "n": 16
+    },
+    {
+     "b": "Crown",
+     "load": 49.36,
+     "n": 20
+    },
+    {
+     "b": "Root",
+     "load": 46.78,
+     "n": 13
+    },
+    {
+     "b": "Throat",
+     "load": 34.62,
+     "n": 9
+    },
+    {
+     "b": "Heart",
+     "load": 34.17,
+     "n": 15
+    },
+    {
+     "b": "Sacral",
+     "load": 32.26,
+     "n": 7
+    },
+    {
+     "b": "3rd Eye",
+     "load": 25.59,
+     "n": 10
+    }
+   ],
+   "carryingN": 90,
+   "releasableN": 20,
+   "rel": [
+    {
+     "addr": "Iliac Branches",
+     "fetter": "Need For Approval",
+     "seat": "Sacral",
+     "axis": "Shame",
+     "sq": 6.75,
+     "replacement": "Worth / Self-respect"
+    },
+    {
+     "addr": "Uterovaginal Plexus",
+     "fetter": "Manipulation Through Emotion",
+     "seat": "Sacral",
+     "axis": "Anger",
+     "sq": 5.96,
+     "replacement": "Calm / Integrated Power"
+    },
+    {
+     "addr": "Pudendal Nerve",
+     "fetter": "Shame",
+     "seat": "Root",
+     "axis": "Shame",
+     "sq": 5.4,
+     "replacement": "Worth / Self-respect"
+    }
+   ],
+   "weakL": {
+    "nm": "Temperance",
+    "b": "Sacral",
+    "ic": "M5 5h6l-3 6z M13 19h6l-3-6z M11 10l2 4"
+   },
+   "snOffer": [],
+   "snImprints": 0,
+   "avatarBuilt": false,
+   "avatarPairs": 0,
+   "ledger": {
+    "minutes": 0,
+    "planned": 0,
+    "done": 0,
+    "rituals": 0,
+    "lines": 0,
+    "ground": 0,
+    "clear": 0,
+    "carry": 0,
+    "snaps": 0
+   },
+   "streak": {
+    "run": 0,
+    "live": false,
+    "last": null,
+    "best": 0,
+    "days": 0
+   },
+   "earned": [],
+   "next": "First run",
+   "walk": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    0,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    0,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    0,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    0,
+    1,
+    1,
+    1,
+    1,
+    0,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    0,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    2,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+   ],
+   "walkDone": 84,
+   "walkMissed": 6,
+   "walkStreak": 17,
+   "week": [
+    {
+     "d": "Mon",
+     "full": "Monday",
+     "kept": true,
+     "lived": true,
+     "today": false
+    },
+    {
+     "d": "Tue",
+     "full": "Tuesday",
+     "kept": true,
+     "lived": true,
+     "today": false
+    },
+    {
+     "d": "Wed",
+     "full": "Wednesday",
+     "kept": true,
+     "lived": true,
+     "today": false
+    },
+    {
+     "d": "Thu",
+     "full": "Thursday",
+     "kept": true,
+     "lived": true,
+     "today": false
+    },
+    {
+     "d": "Fri",
+     "full": "Friday",
+     "kept": true,
+     "lived": true,
+     "today": false
+    },
+    {
+     "d": "Sat",
+     "full": "Saturday",
+     "kept": true,
+     "lived": true,
+     "today": false
+    },
+    {
+     "d": "Sun",
+     "full": "Sunday",
+     "kept": true,
+     "lived": true,
+     "today": true
+    }
+   ],
+   "wd": [
+    {
+     "d": "Mon",
+     "full": "Monday",
+     "kept": 12,
+     "lived": 12
+    },
+    {
+     "d": "Tue",
+     "full": "Tuesday",
+     "kept": 11,
+     "lived": 13
+    },
+    {
+     "d": "Wed",
+     "full": "Wednesday",
+     "kept": 13,
+     "lived": 13
+    },
+    {
+     "d": "Thu",
+     "full": "Thursday",
+     "kept": 9,
+     "lived": 13
+    },
+    {
+     "d": "Fri",
+     "full": "Friday",
+     "kept": 13,
+     "lived": 13
+    },
+    {
+     "d": "Sat",
+     "full": "Saturday",
+     "kept": 13,
+     "lived": 13
+    },
+    {
+     "d": "Sun",
+     "full": "Sunday",
+     "kept": 13,
+     "lived": 13
+    }
+   ],
+   "weekdayReady": true,
+   "wdFloor": 28,
+   "improved": {
+    "now": 26,
+    "before": 26,
+    "diff": 0,
+    "window": 28
+   },
+   "improveNeed": 56,
+   "minutes": 252,
+   "sampled": 170,
+   "survived": 0,
+   "queue": [
+    {
+     "i": 0,
+     "kind": "hold",
+     "by": "avatar",
+     "src": "avatarBlank",
+     "weight": 1000000,
+     "nm": "Build the avatar",
+     "min": null,
+     "unit": "once",
+     "shape": null,
+     "because": "Nothing is written on either side yet, so there is no gap to close and nothing to hold a daily ritual to."
+    },
+    {
+     "i": 1,
+     "kind": "change",
+     "by": "you",
+     "src": "weakL",
+     "weight": 500,
+     "nm": "The Emotional Scan",
+     "min": 20,
+     "track": "Somatic",
+     "seat": "Sacral",
+     "law": "Temperance",
+     "unit": "a day",
+     "shape": "count",
+     "target": 1,
+     "cunit": "a day",
+     "period": "a day",
+     "because": "temperance is the weakest of your twenty one laws. It seats at the sacral, and the somatic track is what moves a sacral."
+    },
+    {
+     "i": 2,
+     "kind": "release",
+     "by": "you",
+     "src": "carrying",
+     "weight": 206.75,
+     "nm": "Need For Approval",
+     "via": "The Observer Technique",
+     "min": 20,
+     "track": "Somatic",
+     "addr": "Iliac Branches",
+     "axis": "Shame",
+     "replacement": "Worth / Self-respect",
+     "fetter": "Need For Approval",
+     "unit": "when called",
+     "shape": "count",
+     "target": 1,
+     "cunit": "a run",
+     "period": "when called",
+     "because": "Need For Approval is held at Iliac Branches, above the line release opens at. The far pole there is Worth / Self-respect."
+    },
+    {
+     "i": 3,
+     "kind": "release",
+     "by": "you",
+     "src": "carrying",
+     "weight": 205.96,
+     "nm": "Manipulation Through Emotion",
+     "via": "The Observer Technique",
+     "min": 20,
+     "track": "Somatic",
+     "addr": "Uterovaginal Plexus",
+     "axis": "Anger",
+     "replacement": "Calm / Integrated Power",
+     "fetter": "Manipulation Through Emotion",
+     "unit": "when called",
+     "shape": "count",
+     "target": 1,
+     "cunit": "a run",
+     "period": "when called",
+     "because": "Manipulation Through Emotion is held at Uterovaginal Plexus, above the line release opens at. The far pole there is Calm / Integrated Power."
+    },
+    {
+     "i": 4,
+     "kind": "release",
+     "by": "you",
+     "src": "carrying",
+     "weight": 205.4,
+     "nm": "Shame",
+     "via": "The Observer Technique",
+     "min": 20,
+     "track": "Somatic",
+     "addr": "Pudendal Nerve",
+     "axis": "Shame",
+     "replacement": "Worth / Self-respect",
+     "fetter": "Shame",
+     "unit": "when called",
+     "shape": "count",
+     "target": 1,
+     "cunit": "a run",
+     "period": "when called",
+     "because": "Shame is held at Pudendal Nerve, above the line release opens at. The far pole there is Worth / Self-respect."
+    },
+    {
+     "i": 5,
+     "kind": "hold",
+     "by": "avatar",
+     "src": "avatarGap",
+     "weight": 60.34,
+     "nm": "The Signal Test",
+     "min": 3,
+     "track": "Somatic",
+     "seat": "Solar",
+     "unit": "a day",
+     "shape": "count",
+     "target": 1,
+     "cunit": "a day",
+     "period": "a day",
+     "because": "Your solar carries 16 live imprints, more than any other seat. The somatic track is what moves a solar."
+    },
+    {
+     "i": 6,
+     "kind": "hold",
+     "by": "avatar",
+     "src": "avatarGap",
+     "weight": 49.36,
+     "nm": "The Signal Test",
+     "min": 3,
+     "track": "Somatic",
+     "seat": "Crown",
+     "unit": "a day",
+     "shape": "count",
+     "target": 1,
+     "cunit": "a day",
+     "period": "a day",
+     "because": "Your crown carries 20 live imprints, more than all but one. The energy track is what moves a crown."
+    }
+   ],
+   "feedback": {
+    "state": "read",
+    "worst": {
+     "d": "Thursday",
+     "kept": 9,
+     "lived": 13
+    },
+    "best": {
+     "d": "Sunday",
+     "kept": 13,
+     "lived": 13
+    },
+    "flat": false,
+    "practice": {
+     "k": "sig",
+     "nm": "The Signal Test",
+     "min": 3,
+     "track": "Somatic",
+     "tier": 1,
+     "substituted": false,
+     "wanted": "Somatic"
+    },
+    "seat": "Solar",
+    "protocol": "The Observer Technique",
+    "releasable": 20
+   }
+  },
+  "Rosa": {
+   "nm": "Rosa",
+   "age": 61,
+   "role": "retired midwife",
+   "weight": 15,
+   "says": "Nothing in particular. Things do not sit on me the way they used to.",
+   "CQ": 100,
+   "DQ": 0,
+   "seat": "Root",
+   "track": "Body",
+   "tier": 3,
+   "substituted": false,
+   "actualTrack": "Body",
+   "called": {
+    "k": "box",
+    "nm": "Box Breathing",
+    "min": 5,
+    "track": "Body",
+    "tier": 1,
+    "d": "Four and four, or eight and eight. The entry into a grounded state."
+   },
+   "fit": [
+    {
+     "k": "escan",
+     "nm": "The Emotional Scan",
+     "min": 20,
+     "track": "Somatic",
+     "tier": 1
+    },
+    {
+     "k": "box",
+     "nm": "Box Breathing",
+     "min": 5,
+     "track": "Body",
+     "tier": 1
+    },
+    {
+     "k": "slow",
+     "nm": "Controlled Breath",
+     "min": 10,
+     "track": "Body",
+     "tier": 1
+    },
+    {
+     "k": "sig",
+     "nm": "The Signal Test",
+     "min": 3,
+     "track": "Somatic",
+     "tier": 1
+    },
+    {
+     "k": "sysbreath",
+     "nm": "Systematic Body Breathing",
+     "min": 15,
+     "track": "Body",
+     "tier": 2
+    },
+    {
+     "k": "resist",
+     "nm": "Feel the Resistance",
+     "min": 10,
+     "track": "Somatic",
+     "tier": 2
+    },
+    {
+     "k": "truth",
+     "nm": "The Somatic Truth Check",
+     "min": 2,
+     "track": "Somatic",
+     "tier": 2
+    },
+    {
+     "k": "heartpt",
+     "nm": "Heart Point Focus",
+     "min": 10,
+     "track": "Energy",
+     "tier": 2
+    },
+    {
+     "k": "noting",
+     "nm": "Noting Meditation",
+     "min": 15,
+     "track": "Mind",
+     "tier": 2
+    },
+    {
+     "k": "listen",
+     "nm": "Active Listening",
+     "min": 10,
+     "track": "Mind",
+     "tier": 2
+    },
+    {
+     "k": "observer",
+     "nm": "The Observer Technique",
+     "min": 20,
+     "track": "Somatic",
+     "tier": 3
+    },
+    {
+     "k": "detect",
+     "nm": "The Detection Practice",
+     "min": 20,
+     "track": "Somatic",
+     "tier": 3
+    },
+    {
+     "k": "hands",
+     "nm": "Healing Hands",
+     "min": 15,
+     "track": "Energy",
+     "tier": 3
+    },
+    {
+     "k": "hardtrauma",
+     "nm": "Hard Trauma Meditation",
+     "min": 20,
+     "track": "Somatic",
+     "tier": 3
+    },
+    {
+     "k": "superego",
+     "nm": "Superego Pattern Meditation",
+     "min": 20,
+     "track": "Mind",
+     "tier": 3
+    },
+    {
+     "k": "chakra",
+     "nm": "Individual Chakra Meditation",
+     "min": 20,
+     "track": "Energy",
+     "tier": 3
+    },
+    {
+     "k": "candle",
+     "nm": "Candle Visualisation",
+     "min": 15,
+     "track": "Mind",
+     "tier": 3
+    }
+   ],
+   "seats": [],
+   "carryingN": 0,
+   "releasableN": 0,
+   "rel": [],
+   "weakL": {
+    "nm": "Truth",
+    "b": "Throat",
+    "ic": "M12 3v11 M9 17a3 3 0 006 0 3 3 0 00-6 0"
+   },
+   "snOffer": [],
+   "snImprints": 0,
+   "avatarBuilt": false,
+   "avatarPairs": 0,
+   "ledger": {
+    "minutes": 0,
+    "planned": 0,
+    "done": 0,
+    "rituals": 0,
+    "lines": 0,
+    "ground": 0,
+    "clear": 0,
+    "carry": 0,
+    "snaps": 0
+   },
+   "streak": {
+    "run": 0,
+    "live": false,
+    "last": null,
+    "best": 0,
+    "days": 0
+   },
+   "earned": [],
+   "next": "First run",
+   "walk": [
+    0,
+    0,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    0,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+   ],
+   "walkDone": 21,
+   "walkMissed": 3,
+   "walkStreak": 9,
+   "week": [
+    {
+     "d": "Mon",
+     "full": "Monday",
+     "kept": true,
+     "lived": true,
+     "today": false
+    },
+    {
+     "d": "Tue",
+     "full": "Tuesday",
+     "kept": true,
+     "lived": true,
+     "today": false
+    },
+    {
+     "d": "Wed",
+     "full": "Wednesday",
+     "kept": true,
+     "lived": true,
+     "today": false
+    },
+    {
+     "d": "Thu",
+     "full": "Thursday",
+     "kept": true,
+     "lived": true,
+     "today": false
+    },
+    {
+     "d": "Fri",
+     "full": "Friday",
+     "kept": true,
+     "lived": true,
+     "today": false
+    },
+    {
+     "d": "Sat",
+     "full": "Saturday",
+     "kept": true,
+     "lived": true,
+     "today": false
+    },
+    {
+     "d": "Sun",
+     "full": "Sunday",
+     "kept": true,
+     "lived": true,
+     "today": true
+    }
+   ],
+   "wd": [
+    {
+     "d": "Mon",
+     "full": "Monday",
+     "kept": 3,
+     "lived": 3
+    },
+    {
+     "d": "Tue",
+     "full": "Tuesday",
+     "kept": 3,
+     "lived": 3
+    },
+    {
+     "d": "Wed",
+     "full": "Wednesday",
+     "kept": 3,
+     "lived": 3
+    },
+    {
+     "d": "Thu",
+     "full": "Thursday",
+     "kept": 3,
+     "lived": 3
+    },
+    {
+     "d": "Fri",
+     "full": "Friday",
+     "kept": 2,
+     "lived": 4
+    },
+    {
+     "d": "Sat",
+     "full": "Saturday",
+     "kept": 3,
+     "lived": 4
+    },
+    {
+     "d": "Sun",
+     "full": "Sunday",
+     "kept": 4,
+     "lived": 4
+    }
+   ],
+   "weekdayReady": false,
+   "wdFloor": 28,
+   "improved": null,
+   "improveNeed": 56,
+   "minutes": 105,
+   "sampled": 15,
+   "survived": 0,
+   "queue": [
+    {
+     "i": 0,
+     "kind": "hold",
+     "by": "avatar",
+     "src": "avatarBlank",
+     "weight": 1000000,
+     "nm": "Build the avatar",
+     "min": null,
+     "unit": "once",
+     "shape": null,
+     "because": "Nothing is written on either side yet, so there is no gap to close and nothing to hold a daily ritual to."
+    },
+    {
+     "i": 1,
+     "kind": "change",
+     "by": "you",
+     "src": "weakL",
+     "weight": 500,
+     "nm": "Active Listening",
+     "min": 10,
+     "track": "Mind",
+     "seat": "Throat",
+     "law": "Truth",
+     "unit": "a day",
+     "shape": "count",
+     "target": 1,
+     "cunit": "a day",
+     "period": "a day",
+     "because": "truth is the weakest of your twenty one laws. It seats at the throat, and the mind track is what moves a throat."
+    },
+    {
+     "i": 2,
+     "kind": "change",
+     "by": "you",
+     "src": "weakL",
+     "weight": 480,
+     "nm": "Practise honesty",
+     "min": null,
+     "seat": "Throat",
+     "law": "Truth",
+     "lib": "hon",
+     "unit": "through the day",
+     "shape": "stance",
+     "because": "truth is the weakest of your twenty one laws. A stance has no count and no minutes. It seats at the throat and the day decides when it is tested."
+    }
+   ],
+   "feedback": {
+    "state": "waiting",
+    "need": 4,
+    "practice": null,
+    "seat": null,
+    "protocol": "The Observer Technique",
+    "releasable": 0
+   }
+  },
+  "James": {
+   "nm": "James",
+   "age": 57,
+   "role": "C-suite, third turnaround · ICP",
+   "weight": 100,
+   "says": "I make the call and I sleep fine. People find that cold. It is what they hired.",
+   "CQ": 12,
+   "DQ": 9.19,
+   "seat": "Sacral",
+   "track": "Somatic",
+   "tier": 1,
+   "substituted": false,
+   "actualTrack": "Somatic",
+   "called": {
+    "k": "sig",
+    "nm": "The Signal Test",
+    "min": 3,
+    "track": "Somatic",
+    "tier": 1,
+    "d": "Proof that a word with no quality of its own moves your body."
+   },
+   "fit": [
+    {
+     "k": "escan",
+     "nm": "The Emotional Scan",
+     "min": 20,
+     "track": "Somatic",
+     "tier": 1
+    },
+    {
+     "k": "box",
+     "nm": "Box Breathing",
+     "min": 5,
+     "track": "Body",
+     "tier": 1
+    },
+    {
+     "k": "slow",
+     "nm": "Controlled Breath",
+     "min": 10,
+     "track": "Body",
+     "tier": 1
+    },
+    {
+     "k": "sig",
+     "nm": "The Signal Test",
+     "min": 3,
+     "track": "Somatic",
+     "tier": 1
+    }
+   ],
+   "seats": [
+    {
+     "b": "Sacral",
+     "load": 58.9,
+     "n": 14
+    },
+    {
+     "b": "Heart",
+     "load": 51.14,
+     "n": 14
+    },
+    {
+     "b": "Crown",
+     "load": 46.08,
+     "n": 18
+    },
+    {
+     "b": "Root",
+     "load": 43.06,
+     "n": 12
+    },
+    {
+     "b": "Solar",
+     "load": 39.89,
+     "n": 15
+    },
+    {
+     "b": "3rd Eye",
+     "load": 26.91,
+     "n": 11
+    },
+    {
+     "b": "Throat",
+     "load": 24.92,
+     "n": 6
+    }
+   ],
+   "carryingN": 90,
+   "releasableN": 18,
+   "rel": [
+    {
+     "addr": "Thoracic Ganglia",
+     "fetter": "Blame",
+     "seat": "Heart",
+     "axis": "Anger",
+     "sq": 6.32,
+     "replacement": "Calm / Integrated Power"
+    },
+    {
+     "addr": "Internal Pudendal Nerve",
+     "fetter": "Envy",
+     "seat": "Sacral",
+     "axis": "Resentment",
+     "sq": 5.76,
+     "replacement": null
+    },
+    {
+     "addr": "Obturator Nerve",
+     "fetter": "Jealousy",
+     "seat": "Sacral",
+     "axis": "Resentment",
+     "sq": 5.76,
+     "replacement": null
+    }
+   ],
+   "weakL": {
+    "nm": "Compassion",
+    "b": "Heart",
+    "ic": "M12 19c-4-3-7-5-7-8a4 4 0 017-2 4 4 0 017 2c0 3-3 5-7 8"
+   },
+   "snOffer": [],
+   "snImprints": 0,
+   "avatarBuilt": false,
+   "avatarPairs": 0,
+   "ledger": {
+    "minutes": 0,
+    "planned": 0,
+    "done": 0,
+    "rituals": 0,
+    "lines": 0,
+    "ground": 0,
+    "clear": 0,
+    "carry": 0,
+    "snaps": 0
+   },
+   "streak": {
+    "run": 0,
+    "live": false,
+    "last": null,
+    "best": 0,
+    "days": 0
+   },
+   "earned": [],
+   "next": "First run",
+   "walk": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    0,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    2,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    0,
+    1,
+    0,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+   ],
+   "walkDone": 87,
+   "walkMissed": 3,
+   "walkStreak": 15,
+   "week": [
+    {
+     "d": "Mon",
+     "full": "Monday",
+     "kept": true,
+     "lived": true,
+     "today": false
+    },
+    {
+     "d": "Tue",
+     "full": "Tuesday",
+     "kept": true,
+     "lived": true,
+     "today": false
+    },
+    {
+     "d": "Wed",
+     "full": "Wednesday",
+     "kept": true,
+     "lived": true,
+     "today": false
+    },
+    {
+     "d": "Thu",
+     "full": "Thursday",
+     "kept": true,
+     "lived": true,
+     "today": false
+    },
+    {
+     "d": "Fri",
+     "full": "Friday",
+     "kept": true,
+     "lived": true,
+     "today": false
+    },
+    {
+     "d": "Sat",
+     "full": "Saturday",
+     "kept": true,
+     "lived": true,
+     "today": false
+    },
+    {
+     "d": "Sun",
+     "full": "Sunday",
+     "kept": true,
+     "lived": true,
+     "today": true
+    }
+   ],
+   "wd": [
+    {
+     "d": "Mon",
+     "full": "Monday",
+     "kept": 12,
+     "lived": 12
+    },
+    {
+     "d": "Tue",
+     "full": "Tuesday",
+     "kept": 13,
+     "lived": 13
+    },
+    {
+     "d": "Wed",
+     "full": "Wednesday",
+     "kept": 13,
+     "lived": 13
+    },
+    {
+     "d": "Thu",
+     "full": "Thursday",
+     "kept": 12,
+     "lived": 13
+    },
+    {
+     "d": "Fri",
+     "full": "Friday",
+     "kept": 13,
+     "lived": 13
+    },
+    {
+     "d": "Sat",
+     "full": "Saturday",
+     "kept": 11,
+     "lived": 13
+    },
+    {
+     "d": "Sun",
+     "full": "Sunday",
+     "kept": 13,
+     "lived": 13
+    }
+   ],
+   "weekdayReady": true,
+   "wdFloor": 28,
+   "improved": {
+    "now": 26,
+    "before": 28,
+    "diff": -2,
+    "window": 28
+   },
+   "improveNeed": 56,
+   "minutes": 261,
+   "sampled": 100,
+   "survived": 0,
+   "queue": [
+    {
+     "i": 0,
+     "kind": "hold",
+     "by": "avatar",
+     "src": "avatarBlank",
+     "weight": 1000000,
+     "nm": "Build the avatar",
+     "min": null,
+     "unit": "once",
+     "shape": null,
+     "because": "Nothing is written on either side yet, so there is no gap to close and nothing to hold a daily ritual to."
+    },
+    {
+     "i": 1,
+     "kind": "change",
+     "by": "you",
+     "src": "weakL",
+     "weight": 500,
+     "nm": "Box Breathing",
+     "min": 5,
+     "track": "Body",
+     "seat": "Heart",
+     "law": "Compassion",
+     "unit": "a day",
+     "shape": "count",
+     "target": 1,
+     "cunit": "a day",
+     "period": "a day",
+     "because": "compassion is the weakest of your twenty one laws. It seats at the heart, and the body track is what moves a heart."
+    },
+    {
+     "i": 2,
+     "kind": "change",
+     "by": "you",
+     "src": "weakL",
+     "weight": 480,
+     "nm": "Practise compassion",
+     "min": null,
+     "seat": "Heart",
+     "law": "Compassion",
+     "lib": "comp",
+     "unit": "through the day",
+     "shape": "stance",
+     "because": "compassion is the weakest of your twenty one laws. A stance has no count and no minutes. It seats at the heart and the day decides when it is tested."
+    },
+    {
+     "i": 3,
+     "kind": "release",
+     "by": "you",
+     "src": "carrying",
+     "weight": 206.32,
+     "nm": "Blame",
+     "via": "The Observer Technique",
+     "min": 20,
+     "track": "Somatic",
+     "addr": "Thoracic Ganglia",
+     "axis": "Anger",
+     "replacement": "Calm / Integrated Power",
+     "fetter": "Blame",
+     "unit": "when called",
+     "shape": "count",
+     "target": 1,
+     "cunit": "a run",
+     "period": "when called",
+     "because": "Blame is held at Thoracic Ganglia, above the line release opens at. The far pole there is Calm / Integrated Power."
+    },
+    {
+     "i": 4,
+     "kind": "release",
+     "by": "you",
+     "src": "carrying",
+     "weight": 205.76,
+     "nm": "Envy",
+     "via": "The Observer Technique",
+     "min": 20,
+     "track": "Somatic",
+     "addr": "Internal Pudendal Nerve",
+     "axis": "Resentment",
+     "replacement": null,
+     "fetter": "Envy",
+     "unit": "when called",
+     "shape": "count",
+     "target": 1,
+     "cunit": "a run",
+     "period": "when called",
+     "because": "Envy is held at Internal Pudendal Nerve, above the line release opens at. The far pole there is null."
+    },
+    {
+     "i": 5,
+     "kind": "release",
+     "by": "you",
+     "src": "carrying",
+     "weight": 205.76,
+     "nm": "Jealousy",
+     "via": "The Observer Technique",
+     "min": 20,
+     "track": "Somatic",
+     "addr": "Obturator Nerve",
+     "axis": "Resentment",
+     "replacement": null,
+     "fetter": "Jealousy",
+     "unit": "when called",
+     "shape": "count",
+     "target": 1,
+     "cunit": "a run",
+     "period": "when called",
+     "because": "Jealousy is held at Obturator Nerve, above the line release opens at. The far pole there is null."
+    },
+    {
+     "i": 6,
+     "kind": "hold",
+     "by": "avatar",
+     "src": "avatarGap",
+     "weight": 58.9,
+     "nm": "The Signal Test",
+     "min": 3,
+     "track": "Somatic",
+     "seat": "Sacral",
+     "unit": "a day",
+     "shape": "count",
+     "target": 1,
+     "cunit": "a day",
+     "period": "a day",
+     "because": "Your sacral carries 14 live imprints, more than any other seat. The somatic track is what moves a sacral."
+    },
+    {
+     "i": 7,
+     "kind": "hold",
+     "by": "avatar",
+     "src": "avatarGap",
+     "weight": 51.14,
+     "nm": "Box Breathing",
+     "min": 5,
+     "track": "Body",
+     "seat": "Heart",
+     "unit": "a day",
+     "shape": "count",
+     "target": 1,
+     "cunit": "a day",
+     "period": "a day",
+     "because": "Your heart carries 14 live imprints, more than all but one. The body track is what moves a heart."
+    }
+   ],
+   "feedback": {
+    "state": "read",
+    "worst": {
+     "d": "Saturday",
+     "kept": 11,
+     "lived": 13
+    },
+    "best": {
+     "d": "Sunday",
+     "kept": 13,
+     "lived": 13
+    },
+    "flat": false,
+    "practice": {
+     "k": "sig",
+     "nm": "The Signal Test",
+     "min": 3,
+     "track": "Somatic",
+     "tier": 1,
+     "substituted": false,
+     "wanted": "Somatic"
+    },
+    "seat": "Sacral",
+    "protocol": "The Observer Technique",
+    "releasable": 18
+   }
+  }
+ },
+ "kinds": [
+  {
+   "k": "hold",
+   "nm": "Always on",
+   "fam": "Practice",
+   "band": "Root",
+   "d": "the avatar does not manifest without these",
+   "src": "carrying",
+   "cadence": "every day"
+  },
+  {
+   "k": "change",
+   "nm": "Behaviour",
+   "fam": "Structure",
+   "band": "Heart",
+   "d": "aimed at the law that is running weakest",
+   "src": "weakL",
+   "cadence": "every day"
+  },
+  {
+   "k": "release",
+   "nm": "Release",
+   "fam": "Ground",
+   "band": "Throat",
+   "d": "the protocol, at one address",
+   "src": "sniffStory",
+   "cadence": "when called"
+  }
+ ],
+ "shapes": [
+  {
+   "k": "count",
+   "nm": "Count",
+   "d": "a number you reach, over a period",
+   "params": [
+    "target",
+    "unit",
+    "period"
+   ],
+   "mark": "the number you did"
+  },
+  {
+   "k": "window",
+   "nm": "Window",
+   "d": "a span with an edge you hold or cross",
+   "params": [
+    "what",
+    "anchor",
+    "minutes"
+   ],
+   "mark": "held, or the minute it broke at"
+  },
+  {
+   "k": "stance",
+   "nm": "Stance",
+   "d": "held through a day, and called by the day",
+   "params": [
+    "law"
+   ],
+   "mark": "times tested, and times met"
+  }
+ ],
+ "lib": [
+  {
+   "k": "grat",
+   "nm": "Gratitudes",
+   "shape": "count",
+   "target": null,
+   "unit": "gratitudes",
+   "period": "a day",
+   "src": "owner",
+   "said": "Gratitudes."
+  },
+  {
+   "k": "aff",
+   "nm": "An affirmation",
+   "shape": "count",
+   "target": 10,
+   "unit": "times",
+   "period": "a day",
+   "src": "owner",
+   "said": "An affirmation said ten times."
+  },
+  {
+   "k": "phone",
+   "nm": "No phone",
+   "shape": "window",
+   "what": "the phone",
+   "anchor": "waking",
+   "minutes": 30,
+   "src": "owner",
+   "said": "No phone for the first thirty minutes of the day."
+  },
+  {
+   "k": "news",
+   "nm": "No news",
+   "shape": "window",
+   "what": "the news",
+   "anchor": "waking",
+   "minutes": 60,
+   "src": "owner",
+   "said": "No news for the first hour."
+  },
+  {
+   "k": "wat2",
+   "nm": "Water, first thing",
+   "shape": "count",
+   "target": 2,
+   "unit": "glasses",
+   "period": "a day",
+   "src": "owner",
+   "said": "Two glasses of water first thing."
+  },
+  {
+   "k": "wat8",
+   "nm": "Water, by night",
+   "shape": "count",
+   "target": 8,
+   "unit": "glasses",
+   "period": "a day",
+   "src": "owner",
+   "said": "Eight glasses by night."
+  },
+  {
+   "k": "raw",
+   "nm": "Raw vegetables",
+   "shape": "count",
+   "target": 5,
+   "unit": "days",
+   "period": "a week",
+   "src": "owner",
+   "said": "Raw vegetables five days a week."
+  },
+  {
+   "k": "hon",
+   "nm": "Practise honesty",
+   "shape": "stance",
+   "law": "Truth",
+   "src": "owner",
+   "said": "Practise honesty.",
+   "note": "The engine has no law called honesty. Truth is the law it carries and it seats at the throat, so this card names Truth and says so."
+  },
+  {
+   "k": "comp",
+   "nm": "Practise compassion",
+   "shape": "stance",
+   "law": "Compassion",
+   "src": "owner",
+   "said": "Practise compassion."
+  }
+ ],
+ "law": {
+  "Truth": {
+   "nm": "Truth",
+   "seat": "Throat",
+   "ic": "M12 3v11 M9 17a3 3 0 006 0 3 3 0 00-6 0"
+  },
+  "Transparency": {
+   "nm": "Transparency",
+   "seat": "Throat",
+   "ic": "M4 4h16v16H4z M8 20L20 8"
+  },
+  "Justice": {
+   "nm": "Justice",
+   "seat": "Throat",
+   "ic": "M12 4v4 M4 8h16 M4 8l-2 5h4z M20 8l-2 5h4z"
+  },
+  "Unity": {
+   "nm": "Unity",
+   "seat": "Crown",
+   "ic": "M10 7a5 5 0 100 10 5 5 0 100-10 M14 7a5 5 0 110 10 5 5 0 110-10"
+  },
+  "Awareness": {
+   "nm": "Awareness",
+   "seat": "Crown",
+   "ic": "M3 16h18 M7 16a5 5 0 0110 0"
+  },
+  "Nature": {
+   "nm": "Nature",
+   "seat": "Crown",
+   "ic": "M12 21V6 M12 13L7 9 M12 16l5-4 M12 10l4-3"
+  },
+  "Presence": {
+   "nm": "Presence",
+   "seat": "3rd Eye",
+   "ic": "M12 11.4v1.2 M4 12a8 8 0 1116 0 8 8 0 01-16 0"
+  },
+  "Humility": {
+   "nm": "Humility",
+   "seat": "3rd Eye",
+   "ic": "M4 11h16 M4 11a8 8 0 0016 0"
+  },
+  "Equanimity": {
+   "nm": "Equanimity",
+   "seat": "3rd Eye",
+   "ic": "M3 10h18v4H3z M12 10v4"
+  },
+  "Compassion": {
+   "nm": "Compassion",
+   "seat": "Heart",
+   "ic": "M12 19c-4-3-7-5-7-8a4 4 0 017-2 4 4 0 017 2c0 3-3 5-7 8"
+  },
+  "Forgiveness": {
+   "nm": "Forgiveness",
+   "seat": "Heart",
+   "ic": "M9 9H7a4 4 0 000 6h2 M15 15h2a4 4 0 000-6h-2"
+  },
+  "Generosity": {
+   "nm": "Generosity",
+   "seat": "Heart",
+   "ic": "M5 13a7 7 0 0014 0 M12 11V3 M9 6l3-3 3 3"
+  },
+  "Aesthetic Beauty": {
+   "nm": "Aesthetic Beauty",
+   "seat": "Heart",
+   "ic": "M3 6h18v12H3z M3 18a12 12 0 0112-12"
+  },
+  "Courage": {
+   "nm": "Courage",
+   "seat": "Solar",
+   "ic": "M12 21V4 M8 8l4-4 4 4 M6 14h12"
+  },
+  "Duty": {
+   "nm": "Duty",
+   "seat": "Solar",
+   "ic": "M4 8h16 M7 8v12 M17 8v12"
+  },
+  "Responsibility": {
+   "nm": "Responsibility",
+   "seat": "Solar",
+   "ic": "M4 9h16v5H4z M9 14v5 M15 14v5 M9 19h6"
+  },
+  "Accountability": {
+   "nm": "Accountability",
+   "seat": "Solar",
+   "ic": "M6 4v16 M18 4v16 M6 13h12 M9 8l2 2 4-4"
+  },
+  "Temperance": {
+   "nm": "Temperance",
+   "seat": "Sacral",
+   "ic": "M5 5h6l-3 6z M13 19h6l-3-6z M11 10l2 4"
+  },
+  "Detachment": {
+   "nm": "Detachment",
+   "seat": "Sacral",
+   "ic": "M3 12h5 M16 12h5 M10 7v10 M14 7v10"
+  },
+  "Non-Harm": {
+   "nm": "Non-Harm",
+   "seat": "Root",
+   "ic": "M4 12a8 8 0 1116 0 8 8 0 01-16 0 M8 12h8"
+  },
+  "Patience": {
+   "nm": "Patience",
+   "seat": "Root",
+   "ic": "M7 4h10 M7 20h10 M7 4l5 8 5-8 M7 20l5-8 5 8"
+  }
+ },
+ "today": 1789862400000,
+ "pal": {
+  "Root": "#CF5953",
+  "Sacral": "#D19255",
+  "Solar": "#D4BC70",
+  "Heart": "#65CFA5",
+  "Throat": "#65B8D4",
+  "3rd Eye": "#8296DB",
+  "Crown": "#A883D6"
+ },
+ "practiceN": 17,
+ "lawN": 21
+}

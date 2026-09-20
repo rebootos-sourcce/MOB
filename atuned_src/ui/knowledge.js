@@ -492,7 +492,8 @@ function runCardDrill(c){
 
 /* one axis card: the track the pattern speaks, the release, the install. */
 function runAxCardDrill(c){
- var h='<div class="pm-eye">Letting go card, axis '+esc(c.num)+'</div>'
+ /* a sentence, not a name, so it keeps sentence case. See the label gate. */
+ var h='<div class="pm-eye plain">Letting go card, axis '+esc(c.num)+'</div>'
   +'<div class="ad-nm">'+esc(c.ax||c.un)+'</div>'
   +'<div class="ad-sub">toward '+esc(c.cop)+'. '+esc(c.addr)+'</div>'
   +(c.ax?'':'<div class="pm-eye">Unmatched</div><p class="ad-p">The engine carries no axis '

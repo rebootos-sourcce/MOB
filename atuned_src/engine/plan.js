@@ -148,11 +148,29 @@ function planNextSight(){ return null; }
    stored: it is always the unique count minus what has been granted, so the
    two cannot drift. */
 function planAllowance(pl,uniqueCount){
- var used=Math.max(0,uniqueCount||0);
+ /* IT IS A COUNT, AND IT WAS BEING HANDED THE LIST.
+    `planSection` passed `m.unique`, which is the array of pattern keys, not
+    its length. An empty array coerces to 0 and looked correct, so this read
+    right on a blank profile and only ever broke for somebody who had done
+    the work: an array of three coerces to NaN, so `say` printed "NaN left
+    this week" and the source flipped from gift to free, telling a person they
+    had spent a grant they still had.
+
+    Both halves are fixed. The caller passes a length, and this refuses to
+    emit NaN from any input, because an arithmetic function that can return a
+    number nobody can read is a function that will. A list is accepted and
+    measured rather than refused, since a list is what the profile stores and
+    reading its length is what the caller meant. */
+ /* Array.isArray, not a length check: a string has a length too, so the
+    first cut read the string "x" as one pattern spent. */
+ var n=Array.isArray(uniqueCount)?uniqueCount.length:uniqueCount;
+ n=Number(n); if(!isFinite(n))n=0;
+ var used=Math.max(0,n);
  var giftLeft=Math.max(0,100-used);
  if(giftLeft>0)return {source:'gift', left:giftLeft, of:100, inGift:true,
   base:0, spent:used, runs:Math.floor(giftLeft/RUN_MIN),
-  say:giftLeft+' of the gift left'};
+  /* what it is of, in words. "92 of the gift left" says ninety two of what. */
+  say:giftLeft+' patterns left of the '+100+' you were given'};
  var t=planOf(pl);
  /* The grant comes from the tier that is IN FORCE, not from the number
     written on the record, unless the plan is live and the host has written

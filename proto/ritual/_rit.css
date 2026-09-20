@@ -1,0 +1,437 @@
+/* ============================================================
+   THE APP'S OWN AESTHETIC, MEASURED OFF atuned_src/shell/head.html AND THE
+   RENDERED SUMMARY, BODY AND COMPASS SURFACES, THEN APPLIED.
+
+   He ruled the calendar out on aesthetic. It was not a taste difference and
+   it was not vague. Eight things are different between that page and the
+   product, every one of them measurable, and four of them break a standing
+   ruling on their own.
+
+   1  THE LABELS WERE ALL CAPS AND TRACKED OUT. The calendar's .eye was
+      text-transform:uppercase with letter-spacing .14em, so the page shouted
+      THIS WEEK, OVER TIME, STANDING, WHICH DAY YOU KEEP IT. The product's
+      label role at head.html:943 is 11px, weight 600, --dim, letter-spacing
+      ZERO, text-transform:capitalize. Title case on a header, sentence case
+      in body, and no all caps anywhere: that is a ruling in CLAUDE.md and
+      tests/design.js gate 4 fails on it. This is the loudest single tell and
+      it is four words of CSS.
+
+   2  EVERY FIGURE IN THE PRODUCT IS A RING AND A PILL. head.html:1024 to
+      :1088 declares .cr: a ring, a glyph or two letters inside it, an arc
+      carrying the value, then a pill with the number in it, in the seat's
+      colour, in four sizes. The Summary prints eleven of them. The Compass
+      prints four in the sub bar. The calendar printed bare numerals in
+      bordered boxes and full width red bars, neither of which appears
+      anywhere in the product. The ring is the product's grammar for a
+      quantity and the calendar did not speak it.
+
+   3  THE HEADLINE FIGURE IS LIGHT AND LARGE, NOT SMALL AND BOLD.
+      .sum-cq b is 48px at weight 400 in --num with tabular figures. The
+      Compass record prints 0 at 44px at the same weight. The calendar's
+      .stat b was 26px at weight 600. Half the size and two weights heavier
+      reads as a dashboard tile and not as a reading.
+
+   4  BUTTONS ARE PILLS. .btn at head.html:898 is border-radius:999px on
+      --panel-2. The calendar's were 11px rounded rectangles on transparent.
+
+   5  THE SEGMENTED CONTROL IS A SUNK TRACK. .seg is 3px of padding on
+      --sunk with the live segment filled in --gold. The calendar drew three
+      outlined rectangles with one greyed.
+
+   6  THE RADIUS LADDER HAS THREE RUNGS. --r 16, --r-s 11, --r-xs 8. The
+      calendar had one value, 14, and then wrote 10 and 11 by hand in four
+      places.
+
+   7  THE TOKENS WERE RENAMED. The product's hairline is --edge and --edge-2.
+      The calendar called them --line and --line2, which is the same colour
+      under a second name, and one word per concept is a ruling that governs
+      a variable as much as a label.
+
+   8  NUMERALS ARE TABULAR. .n and .num set font-variant-numeric:tabular-nums
+      on every figure in the product, so a column of numbers lines up and a
+      figure that changes does not shift the text beside it. The calendar set
+      it nowhere.
+
+   And one that is his sentence rather than a token: WEIGHT SPACE IS NOT
+   WASTED. The calendar at 1600 put a seven cell week in the top left and
+   left the whole lower left quadrant empty. Measured on the shot: about a
+   third of the page carried nothing. This page is a two column grid at every
+   width above the phone breakpoint and every region is occupied.
+   ============================================================ */
+*{box-sizing:border-box}
+:root{
+ /* read off atuned_src/shell/head.html:68 to :180, names kept */
+ --bg:#0C0D12; --panel:#1A1D26; --panel-2:#252833; --sunk:#090A0E;
+ --edge:rgba(255,255,255,.09); --edge-2:rgba(255,255,255,.14);
+ --ink:#EFEDE8; --mid:#B4B0A8; --dim:#94908A;
+ --root:#CF5953; --sacral:#D19255; --solar:#D4BC70;
+ --heart:#65CFA5; --throat:#65B8D4; --eye:#8296DB; --crown:#A883D6;
+ --accent:#7EB8D4; --gold:var(--accent); --on-accent:#0B1418;
+ --good:#68CBA4; --bad:#D4736D;
+ --sans:'Inter','Inter Tight',system-ui,-apple-system,'Segoe UI',sans-serif;
+ --num:'Inter','Inter Tight',system-ui,-apple-system,sans-serif;
+ --r:16px; --r-s:11px; --r-xs:8px;
+ --tap:44px;
+ --g1:6px; --g2:10px; --g3:16px;
+ --shadow:0 12px 34px rgba(0,0,0,.34);
+ --ease-out:cubic-bezier(.22,1,.36,1);
+ --t-micro:120ms; --t-element:220ms;
+ /* the waveform pixel. One number, so the column, the cap and the baseline
+    cannot drift apart. */
+ --px:30px; --pxgap:4px;
+ --cell:13px;}
+html,body{margin:0;background:var(--bg);color:var(--ink)}
+body{font:16px/1.5 var(--sans);-webkit-font-smoothing:antialiased;padding:0 0 56px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px}
+
+/* ---------- type roles, head.html:943 ---------- */
+h1,h2,h3{font-weight:600;letter-spacing:-.01em;margin:0}
+.eyebrow{font-size:11px;font-weight:600;color:var(--dim);letter-spacing:0;
+ font-family:var(--sans);line-height:1.45;text-transform:capitalize;display:block}
+/* the hatch. A label is four words or fewer and no comma with a word after
+   it. Everything longer is a sentence and stays in sentence case. */
+.eyebrow.plain{text-transform:none}
+.n{font-family:var(--num);font-weight:500;font-variant-numeric:tabular-nums;
+ color:var(--ink)}
+.body{font-size:16px;line-height:1.7;color:var(--mid);max-width:68ch;margin:0 0 14px}
+.body b{color:var(--ink);font-weight:600}
+.note{font-size:13px;line-height:1.65;color:var(--dim);margin:0}
+.note b{color:var(--mid);font-weight:500}
+.dim{color:var(--dim)}
+
+/* ---------- controls ---------- */
+select,button,textarea,input{font:inherit;color:inherit}
+select{background:var(--panel-2);border:1px solid var(--edge);border-radius:999px;
+ padding:9px 14px;min-height:var(--tap);max-width:230px}
+.btn{background:var(--panel-2);border:1px solid var(--edge);color:var(--ink);
+ border-radius:999px;min-height:var(--tap);padding:9px 17px;font-size:14px;
+ font-weight:400;cursor:pointer;transition:all var(--t-micro) var(--ease-out)}
+.btn:hover{background:var(--sunk);border-color:var(--edge-2)}
+.btn.pri{background:var(--gold);color:var(--on-accent);border-color:var(--gold);
+ font-weight:500}
+.btn.pri:hover{filter:brightness(1.08)}
+.btn:disabled{opacity:.4;cursor:default}
+.btn.sm{min-height:var(--tap);padding:8px 14px;font-size:13.5px}
+button:focus-visible,input:focus-visible,select:focus-visible,
+textarea:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--gold);
+ outline-offset:2px}
+.seg{display:inline-flex;gap:3px;padding:3px;border-radius:var(--r-s);
+ background:var(--sunk)}
+.seg button{background:transparent;border:0;border-radius:var(--r-xs);
+ min-height:var(--tap);padding:7px 13px;font-size:13.5px;font-weight:400;
+ color:var(--dim);cursor:pointer;transition:all var(--t-micro) var(--ease-out)}
+.seg button:hover{color:var(--ink)}
+.seg button[aria-pressed=true]{background:var(--gold);color:var(--on-accent);
+ font-weight:500}
+
+/* ---------- the panel, head.html:643 and :917 ---------- */
+.glass{background:var(--panel);border:1px solid var(--edge);border-radius:var(--r);
+ box-shadow:var(--shadow);padding:16px 18px}
+.glass>.eyebrow:first-child{margin-bottom:10px}
+.inner{background:var(--panel-2);border:1px solid var(--edge);
+ border-radius:var(--r-s);padding:14px 16px}
+
+/* ---------- THE COMBINED PILL AND RING, ported from head.html:1024 ----------
+   Ring is the container, glyph names the thing, arc carries the value, the
+   number sits in a pill in the tail. Nothing is ever filled, which is the
+   standing ruling on iconography. */
+.cr{display:inline-flex;align-items:center;vertical-align:middle;
+ border-radius:999px;background:color-mix(in srgb,var(--c) 9%,transparent);
+ border:1px solid color-mix(in srgb,var(--c) 30%,transparent);
+ padding:3px 4px 3px 3px;font-family:var(--sans);cursor:default;
+ transition:all var(--t-micro) var(--ease-out)}
+.cr .ring{position:relative;flex:0 0 auto}
+.cr .ring svg.arc{transform:rotate(-90deg);display:block}
+.cr .ring .gl{position:absolute;inset:0;display:flex;align-items:center;
+ justify-content:center}
+.cr .ring .gl svg{fill:none;stroke:var(--c);stroke-width:1.7;
+ stroke-linecap:round;stroke-linejoin:round}
+.cr .v{font-family:var(--num);font-weight:500;font-variant-numeric:tabular-nums;
+ color:var(--c);margin-left:8px;line-height:1;border-radius:999px;
+ background:color-mix(in srgb,var(--c) 17%,transparent);padding:4px 9px;
+ white-space:nowrap}
+.cr .v:empty{display:none;padding:0;margin:0;background:none}
+.cr.lg .ring svg.arc{width:46px;height:46px}
+.cr.lg .ring .gl svg{width:17px;height:17px}.cr.lg .v{font-size:18px}
+.cr.md .ring svg.arc{width:34px;height:34px}
+.cr.md .ring .gl svg{width:13px;height:13px}.cr.md .v{font-size:14px}
+.cr.sm .ring svg.arc{width:24px;height:24px}
+.cr.sm .ring .gl svg{width:10px;height:10px}
+.cr.sm .v{font-size:11.5px;margin-left:6px}.cr.sm{padding:2px 10px 2px 2px}
+.cr .gl-t{display:flex;align-items:center;justify-content:center;
+ font-family:var(--num);font-size:11px;font-weight:600;letter-spacing:-.03em;
+ color:var(--c);font-variant-numeric:tabular-nums;line-height:1}
+
+/* ---------- the bar ---------- */
+.bar{display:flex;align-items:center;gap:var(--g2);padding:14px 0 16px;
+ flex-wrap:wrap}
+.brand{font-weight:400;letter-spacing:.16em;font-size:12px;color:var(--mid);
+ margin-right:auto}
+.brand b{color:var(--ink);font-weight:500}
+
+/* ============================================================
+   THE RECORD. Headline figures, his first item.
+   "Stats on top, like my win fail, how many have I succeeded, what's
+   improved. Headline stats."
+   Every one is a ring, a pill and a label, which is the product's grammar,
+   and every one says what it is out of in plain words on its second line.
+   ============================================================ */
+.rec{display:grid;grid-template-columns:repeat(5,1fr);gap:var(--g2);
+ margin-bottom:var(--g2)}
+.fig{display:flex;align-items:center;gap:12px;background:var(--panel);
+ border:1px solid var(--edge);border-radius:var(--r);box-shadow:var(--shadow);
+ padding:14px 15px;min-width:0}
+.fig-b{min-width:0}
+.fig-n{font-family:var(--num);font-size:34px;font-weight:400;line-height:1;
+ letter-spacing:-.02em;font-variant-numeric:tabular-nums;color:var(--ink);
+ display:block}
+.fig-n.wait{font-size:20px;color:var(--dim);letter-spacing:0}
+.fig-k{font-size:12.5px;color:var(--ink);display:block;margin-top:6px;
+ font-weight:500}
+.fig-o{font-size:11.5px;color:var(--dim);display:block;margin-top:2px;
+ line-height:1.45}
+
+/* ============================================================
+   THE GRID. Two columns at every width above the phone, so nothing is a
+   lonely narrow column and no quadrant is empty.
+   ============================================================ */
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 384px;gap:var(--g2);
+ align-items:start}
+.colL,.colR{display:flex;flex-direction:column;gap:var(--g2);min-width:0}
+
+/* ============================================================
+   THE WEEK, AS A PIXELATED WAVEFORM. His image.
+
+   A column a day, Monday first, ruled. Square pixels rather than a curve.
+   The height of a column is that day's load: one pixel per ritual set for
+   that day, stacked from the baseline in band order, so the always on band
+   is the floor and behaviour and release stand on it. A day with two set is
+   two tall and a day with five is five tall, which is the shape he
+   described.
+
+   FOUR STATES AND NO MORE, because a legend a person has to learn is a cost
+   and working memory holds about four.
+
+     kept      solid, in the band's colour
+     missed    a hairline square and no colour at all. Colour never marks a
+               failure, which is the ruling the calendar established and this
+               keeps.
+     set       the band's colour at low weight. Today before it is marked,
+               and any day still ahead.
+     offered   a hairline in the band's colour. A proposal nobody has taken,
+               so it is drawn and it counts towards nothing.
+
+   A day before the record starts has no pixel and no baseline under it. A
+   day that has not happened is not a failure.
+   ============================================================ */
+.wave{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:var(--pxgap);
+ align-items:end}
+.wcol{display:flex;flex-direction:column;align-items:center;gap:var(--pxgap);
+ background:none;border:0;padding:6px 2px;margin:0;cursor:pointer;color:inherit;
+ border-radius:var(--r-xs);min-height:var(--tap);
+ transition:background var(--t-micro) var(--ease-out)}
+.wcol:hover{background:var(--panel-2)}
+.wcol.today{background:color-mix(in srgb,var(--accent) 9%,transparent)}
+.wstack{display:flex;flex-direction:column-reverse;gap:var(--pxgap);
+ align-items:center;justify-content:flex-start}
+.px{width:var(--px);height:var(--px);border-radius:3px;display:block}
+.px.kept{background:var(--c);border:1px solid var(--c)}
+.px.miss{background:transparent;border:1px solid var(--edge-2)}
+.px.set{background:color-mix(in srgb,var(--c) 22%,transparent);
+ border:1px solid color-mix(in srgb,var(--c) 34%,transparent)}
+.px.off{background:transparent;
+ border:1px dashed color-mix(in srgb,var(--c) 52%,transparent)}
+.wbase{width:var(--px);height:2px;border-radius:1px;background:var(--edge-2)}
+.wbase.none{background:transparent}
+.wd{font-size:11px;font-weight:600;color:var(--dim);letter-spacing:0;
+ margin-top:6px}
+.wcol.today .wd{color:var(--accent)}
+.wdate{font-size:11px;color:var(--dim);font-family:var(--num);
+ font-variant-numeric:tabular-nums}
+/* the band key, which is also the legend for the colour */
+.keys{display:flex;flex-wrap:wrap;gap:var(--g1);margin-bottom:14px}
+.key{display:inline-flex;align-items:center;gap:7px;padding:5px 11px 5px 7px;
+ border-radius:999px;background:color-mix(in srgb,var(--c) 9%,transparent);
+ border:1px solid color-mix(in srgb,var(--c) 30%,transparent);font-size:12.5px;
+ color:var(--mid)}
+.key i{width:11px;height:11px;border-radius:3px;background:var(--c);flex:0 0 auto}
+.key b{color:var(--ink);font-weight:500}
+.key em{font-style:normal;color:var(--dim);font-family:var(--num);
+ font-variant-numeric:tabular-nums}
+.marks{display:flex;flex-wrap:wrap;gap:16px;margin-top:14px;padding-top:12px;
+ border-top:1px solid var(--edge)}
+.mk{display:inline-flex;align-items:center;gap:7px;font-size:11.5px;
+ color:var(--dim)}
+.mk i{width:13px;height:13px;border-radius:3px;flex:0 0 auto}
+.mk i.kept{background:var(--mid)}
+.mk i.miss{border:1px solid var(--edge-2)}
+.mk i.set{background:color-mix(in srgb,var(--mid) 26%,transparent);
+ border:1px solid var(--edge)}
+.mk i.off{border:1px dashed var(--edge-2)}
+
+/* ============================================================
+   THE ACCOUNTABILITY TRACKER. The little boxes.
+   The span is earned. The grid holds the history the person has, rounded up
+   to a whole week, and grows to thirteen. A thirteen week grid drawn for
+   somebody with seven days on the record is eighty four empty squares beside
+   seven full ones, which is a tally of failures nobody asked for.
+   ============================================================ */
+.hm{display:grid;grid-auto-flow:column;grid-template-rows:repeat(7,var(--cell));
+ gap:3px;justify-content:start}
+.hm i{width:var(--cell);height:var(--cell);border-radius:3px;
+ background:var(--sunk);border:1px solid var(--edge);display:block}
+.hm i.on{background:var(--c);border-color:var(--c)}
+.hm i.fl{background:transparent;border-color:var(--edge-2)}
+.hm i.no{background:transparent;border-color:transparent}
+.hmrow{display:flex;gap:12px;align-items:flex-start}
+.hmax{display:grid;grid-template-rows:repeat(7,var(--cell));gap:3px;
+ font-size:10px;color:var(--dim);line-height:var(--cell);text-align:right;
+ flex:0 0 auto}
+.hmfoot{display:flex;justify-content:space-between;margin-top:9px;
+ font-size:11.5px;color:var(--dim)}
+
+/* the weekday rates, as rings rather than bars. A full width bar in a colour
+   is not an object this product draws anywhere. */
+.wdl{display:grid;grid-template-columns:repeat(7,1fr);gap:var(--g1);
+ margin-top:14px;padding-top:12px;border-top:1px solid var(--edge)}
+.wdi{display:flex;flex-direction:column;align-items:center;gap:5px}
+.wdi span{font-size:11px;color:var(--dim);font-weight:600}
+.wdi b{font-family:var(--num);font-size:12.5px;font-weight:500;color:var(--mid);
+ font-variant-numeric:tabular-nums}
+.wdi.lo b{color:var(--ink)}
+
+/* ============================================================
+   THE BANDS AND THE CARDS. His order: always on first and always three,
+   behaviour next, everything else release.
+   ============================================================ */
+.band{margin-bottom:var(--g3)}
+.band:last-child{margin-bottom:0}
+.band-h{display:flex;align-items:baseline;gap:8px;margin-bottom:9px}
+.band-h .eyebrow{color:var(--c)}
+.band-h em{font-style:normal;font-size:11.5px;color:var(--dim);margin-left:auto;
+ flex:0 0 auto}
+.cards{display:flex;flex-direction:column;gap:var(--g1)}
+.card{display:flex;align-items:center;gap:11px;width:100%;text-align:left;
+ background:var(--panel-2);border:1px solid var(--edge);border-radius:var(--r-s);
+ padding:9px 11px;min-height:var(--tap);cursor:pointer;color:inherit;
+ transition:all var(--t-micro) var(--ease-out)}
+.card:hover{border-color:color-mix(in srgb,var(--c) 58%,transparent)}
+.card.offer{background:transparent;border-style:dashed}
+.card-b{min-width:0;flex:1 1 auto}
+.card-n{font-size:14.5px;font-weight:500;color:var(--ink);line-height:1.3;
+ overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.card-p{font-size:11.5px;color:var(--dim);margin-top:3px;line-height:1.4;
+ font-variant-numeric:tabular-nums}
+.card-p b{color:var(--mid);font-weight:500}
+.card.offer .card-n{color:var(--mid)}
+.mkbtn{flex:0 0 auto;width:var(--tap);height:var(--tap);border-radius:999px;
+ background:transparent;border:0;cursor:pointer;display:flex;align-items:center;
+ justify-content:center;padding:0;transition:background var(--t-micro) var(--ease-out)}
+.mkbtn:hover{background:color-mix(in srgb,var(--c) 16%,transparent)}
+.mkbtn svg{display:block;transform:rotate(-90deg)}
+.offertag{font-size:11px;font-weight:600;color:var(--c);flex:0 0 auto;
+ padding-right:4px}
+
+/* ============================================================
+   THE POPUP. His: "When you click on one it's a pop up, and from there you
+   can edit, change the parameters."
+   ============================================================ */
+.veil{position:fixed;inset:0;background:rgba(6,7,10,.68);display:flex;
+ align-items:center;justify-content:center;padding:16px;z-index:40}
+.veil[hidden]{display:none}
+.sheet{width:min(560px,100%);max-height:92vh;overflow:auto;background:var(--panel);
+ border:1px solid var(--edge-2);border-radius:var(--r);box-shadow:var(--shadow);
+ padding:20px 22px}
+.sheet h2{font-size:22px;font-weight:500;letter-spacing:-.01em;margin:4px 0 0}
+.sheet .shape{font-size:12px;color:var(--c);font-weight:600;margin-top:7px}
+.frow{display:flex;align-items:center;gap:11px;margin:11px 0}
+.frow>span{flex:0 0 118px;font-size:12.5px;color:var(--dim)}
+.frow input,.frow select{flex:1 1 auto;min-width:0;min-height:var(--tap);
+ padding:8px 12px;background:var(--sunk);border:1px solid var(--edge);
+ border-radius:var(--r-s);color:var(--ink);font-family:var(--num);
+ font-variant-numeric:tabular-nums;max-width:none}
+.frow .unit{flex:0 0 auto;font-size:12.5px;color:var(--dim)}
+.days{display:flex;gap:4px;flex-wrap:wrap}
+.dayb{min-width:var(--tap);min-height:var(--tap);border-radius:var(--r-xs);
+ background:var(--sunk);border:1px solid var(--edge);color:var(--dim);
+ font-size:12px;font-weight:600;cursor:pointer;padding:0 6px}
+.dayb[aria-pressed=true]{background:var(--c);border-color:var(--c);
+ color:var(--on-accent)}
+.hist{display:flex;gap:4px;flex-wrap:wrap}
+.histb{min-width:var(--tap);min-height:var(--tap);border-radius:var(--r-xs);
+ background:var(--sunk);border:1px solid var(--edge);cursor:pointer;
+ display:flex;flex-direction:column;align-items:center;justify-content:center;
+ gap:3px;padding:4px 6px;color:var(--dim);font-size:10px;font-weight:600}
+.histb i{width:12px;height:12px;border-radius:3px;display:block}
+.histb i.kept{background:var(--c);border:1px solid var(--c)}
+.histb i.miss{border:1px solid var(--edge-2)}
+.histb i.set{background:color-mix(in srgb,var(--c) 22%,transparent);
+ border:1px solid var(--edge)}
+.histb i.no{border:1px dashed var(--edge)}
+.sheet-f{display:flex;gap:var(--g1);margin-top:18px;padding-top:15px;
+ border-top:1px solid var(--edge);flex-wrap:wrap}
+.sheet-f .sp{flex:1 1 auto}
+.btn.del{color:var(--bad);border-color:color-mix(in srgb,var(--bad) 34%,transparent)}
+.btn.del:hover{background:color-mix(in srgb,var(--bad) 12%,transparent)}
+.because{margin:13px 0 0;padding:12px 14px;border-radius:var(--r-s);
+ background:var(--sunk);border-left:3px solid var(--c);font-size:13.5px;
+ line-height:1.65;color:var(--mid)}
+.because b{color:var(--ink);font-weight:600}
+
+/* ---------- the queue ---------- */
+.qrow{display:flex;align-items:center;gap:11px;width:100%;text-align:left;
+ background:var(--panel-2);border:1px solid var(--edge);border-radius:var(--r-s);
+ padding:11px 13px;margin-bottom:var(--g1);cursor:pointer;color:inherit;
+ min-height:var(--tap);transition:all var(--t-micro) var(--ease-out)}
+.qrow:hover{border-color:color-mix(in srgb,var(--c) 58%,transparent)}
+.qrow-b{flex:1 1 auto;min-width:0}
+.qrow-n{font-size:14.5px;font-weight:500;color:var(--ink)}
+.qrow-w{font-size:12px;color:var(--dim);margin-top:4px;line-height:1.5}
+
+/* ---------- to the journal ---------- */
+.jrow{display:flex;gap:var(--g1);align-items:stretch;flex-wrap:wrap}
+.jrow textarea{flex:1 1 220px;min-width:0;min-height:var(--tap);
+ background:var(--sunk);border:1px solid var(--edge);border-radius:var(--r-s);
+ padding:11px 13px;color:var(--ink);font-size:14px;line-height:1.5;resize:vertical}
+#jnote{margin-top:9px}
+#jsaid{margin-top:11px;padding:11px 13px;border-radius:var(--r-s);
+ background:var(--sunk);border-left:3px solid var(--accent);font-size:13.5px;
+ line-height:1.6;color:var(--mid)}
+#jsaid[hidden]{display:none}
+#jmic[hidden]{display:none}
+#jmic{margin-top:11px;padding:13px 15px;border-radius:var(--r-s);
+ background:var(--sunk);border:1px solid var(--edge-2)}
+#jmic .body{margin-bottom:11px;font-size:14px}
+
+/* ---------- where to improve ---------- */
+.fb{display:flex;flex-direction:column;gap:11px}
+.fbi{display:flex;gap:11px;align-items:flex-start}
+.fbi .fbt{font-size:14px;line-height:1.6;color:var(--mid);margin:0;max-width:68ch}
+.fbi .fbt b{color:var(--ink);font-weight:600}
+
+/* ---------- status, head.html:672 ---------- */
+#status{font-size:13px;line-height:1.4;color:var(--mid);min-height:0;
+ padding:0 0 4px}
+#status:empty{display:none}
+#status[data-kind=fail]{color:var(--bad);font-weight:500}
+
+.foot{margin-top:28px;padding-top:15px;border-top:1px solid var(--edge);
+ font-size:12.5px;color:var(--dim);line-height:1.7;max-width:96ch}
+.foot b{color:var(--mid);font-weight:500}
+
+@media(max-width:1080px){
+ .grid{grid-template-columns:minmax(0,1fr)}
+ .rec{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:640px){
+ :root{--px:26px;--cell:11px}
+ .rec{grid-template-columns:repeat(2,1fr)}
+ .fig-n{font-size:28px}
+ .wrap{padding:0 16px}
+ .brand{width:100%;margin-bottom:4px}
+ select{max-width:none;flex:1 1 100%}
+ .wdl{grid-template-columns:repeat(7,1fr);gap:3px}
+ .wdi b{font-size:11px}
+ body{padding-bottom:36px}}
+@media(max-width:420px){
+ :root{--px:22px;--pxgap:3px}
+ .rec{grid-template-columns:repeat(2,1fr)}}

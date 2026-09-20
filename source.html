@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="7f13450 2026-09-20 18:56"><head><meta charset="utf-8">
+<html lang="en" data-build="4dfb9e6 2026-09-20 19:09"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -3911,7 +3911,7 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
        download as atuned(1).html and leaves the first one where it was, so
        opening "the file" can mean opening last week's.
        Stamped by BUILD.sh, so it cannot be wrong or go stale. -->
-  <span class="bs-v" id="bstamp">7f13450 2026-09-20 18:56</span></div>
+  <span class="bs-v" id="bstamp">4dfb9e6 2026-09-20 19:09</span></div>
  <!-- THE WAY OUT WAS BUILT AND NEVER SHOWN.
 
       pointerdown and keydown both clear this sheet and have since it was
@@ -8567,11 +8567,29 @@ function planNextSight(){ return null; }
    stored: it is always the unique count minus what has been granted, so the
    two cannot drift. */
 function planAllowance(pl,uniqueCount){
- var used=Math.max(0,uniqueCount||0);
+ /* IT IS A COUNT, AND IT WAS BEING HANDED THE LIST.
+    `planSection` passed `m.unique`, which is the array of pattern keys, not
+    its length. An empty array coerces to 0 and looked correct, so this read
+    right on a blank profile and only ever broke for somebody who had done
+    the work: an array of three coerces to NaN, so `say` printed "NaN left
+    this week" and the source flipped from gift to free, telling a person they
+    had spent a grant they still had.
+
+    Both halves are fixed. The caller passes a length, and this refuses to
+    emit NaN from any input, because an arithmetic function that can return a
+    number nobody can read is a function that will. A list is accepted and
+    measured rather than refused, since a list is what the profile stores and
+    reading its length is what the caller meant. */
+ /* Array.isArray, not a length check: a string has a length too, so the
+    first cut read the string "x" as one pattern spent. */
+ var n=Array.isArray(uniqueCount)?uniqueCount.length:uniqueCount;
+ n=Number(n); if(!isFinite(n))n=0;
+ var used=Math.max(0,n);
  var giftLeft=Math.max(0,100-used);
  if(giftLeft>0)return {source:'gift', left:giftLeft, of:100, inGift:true,
   base:0, spent:used, runs:Math.floor(giftLeft/RUN_MIN),
-  say:giftLeft+' of the gift left'};
+  /* what it is of, in words. "92 of the gift left" says ninety two of what. */
+  say:giftLeft+' patterns left of the '+100+' you were given'};
  var t=planOf(pl);
  /* The grant comes from the tier that is IN FORCE, not from the number
     written on the record, unless the plan is live and the host has written
@@ -9294,9 +9312,9 @@ function validateProfile(o){
    CHARGES.forEach(function(c){
     var v=vRange(errs,'seed.axes.'+c,o.seed.axes?o.seed.axes[c]:3,0,10);
     p.seed.axes[c]=v===null?3:v;});}}
- /* logs. shape checked, contents left alone: they are the person's own text. */
  /* logs. the text inside an entry is the person's own and is never edited,
-    but the bag it arrives in is checked like everything else. */
+    but the bag it arrives in is checked like everything else. The shape around
+    it was the whole of what this line used to check. */
  if(o.story&&typeof o.story==='object'){
   if(Array.isArray(o.story.entries))p.story.entries=o.story.entries
    .map(function(x,i){return vEntry(errs,i,x);}).filter(Boolean);
@@ -15579,7 +15597,7 @@ function sumUnread(r){
      the same thing in a full sentence, so the label was both changing with the
      data and repeating the line. */
   +'<div><div class="pm-eye">Coherence</div>'
-  +'<div class="sum-line">Not read yet. Nothing has been entered, so there is nothing to read. '
+  +'<div class="sum-line">Nothing has been entered, so there is nothing to read. '
   +'The arithmetic underneath works and it is not being shown, because a number off a '
   +'default is a number about the default and not about you.</div></div></div>'
   +'<div class="sum-start">'+startHTML('Four ways in. None of them asks you to know a term '
@@ -16073,12 +16091,18 @@ function anaRender(){
      belongs and the label stays put. */
   +'<div><div class="pm-eye">Coherence</div>'
   +'<div class="ab-say">'
-  +(r.unread?'Not read yet. Nothing has been entered, so none of this is measured yet. Every figure '
+  +(r.unread?'Nothing has been entered, so none of this is measured yet. Every figure '
     +'below is drawn from the blueprint you have selected and not from a reading.'
    /* THE TIER WORD, which used to live in the label. It is the reading in
       plain words and it goes first, because it is the one thing on this
-      surface a person reads before anything else. */
-   :'<b>'+esc(r.tier)+'</b>. '
+      surface a person reads before anything else.
+
+      It is attached and not left standing. "Corrupt." alone, bold, with a full
+      stop after it, is a band word with nothing on it, which is a judgement
+      and not a reading. The subject is the field, which is the right distance:
+      a person at level 3 who is defended reads a verdict in a bare label and
+      a measurement in a sentence about their field. */
+   :'The field reads <b>'+esc(r.tier.toLowerCase())+'</b>. '
    +(loud?'<b>'+esc(loud.nm)+'</b> is the biggest thing running. ':'Nothing is compounding. ')
    /* a count against a total is a score, and this is not a score */
    +(stop?'Flow stops at the <b>'+stop.p.n.toLowerCase()+'</b>. ':'Every seat is passing. ')
@@ -16109,23 +16133,23 @@ function anaRender(){
      +(acc.held?', '+acc.held+' addresses carrying':'')
      +'. A move smaller than the interval is not a reading.')+'</span></div>'
   +'</div></div><div class="ab-grid">';
- out+=anaField('Masks','the era you speak from. size is weight, 0 to 10',
+ out+=anaField('Masks','the era you speak from. the bigger the mark, the more weight it carries',
   r.maskRing.map(function(m){return {k:'mask',nm:m.nm,v:m.w,
    c:seatCol((m.bands||['Heart'])[0])};}),300,210);
  out+=anaField('Domains','the blueprint you run. yours are lit, the rest are context',
   S.doms.map(function(di){var d=DOMAINS[di];return {k:'dom',nm:d.nm,v:9,c:ROOTCOL[d.r]};})
    .concat(DOMAINS.filter(function(d,i){return S.doms.indexOf(i)<0;}).slice(0,9)
     .map(function(d){return {k:'dom',nm:d.nm,v:2,c:ROOTCOL[d.r]};})),300,210);
- out+=anaField('Archetypes','how the blueprint expresses. size is affinity, 0 to 100 percent',
+ out+=anaField('Archetypes','how the blueprint expresses. the bigger the mark, the closer the fit',
   (r.aff||[]).map(function(a,i){return {k:'arch',nm:(ARCH[i]||{}).nm||'',
    v:Math.max(0.4,a*10),c:(i===r.pi?GOLD:PAL['3rd Eye'])};}),300,210);
- out+=anaField('What is running','blue saboteur, gold complex, orange hyper, red character. size is weight, 0 to 10',
+ out+=anaField('What is running','blue saboteur, gold complex, orange hyper, red character. the bigger the mark, the more weight it carries',
   [].concat(r.sups,r.hys,r.cxs,r.sabs).slice(0,16).map(function(o){
    return {k:'chain',nm:o.nm,v:o.w,c:o.over?ALARM:(TIER[o.kind]||PAL.Throat)};}),300,210);
- out+=anaField('The nine axes','held charge on each poled axis, 0 to 10',
+ out+=anaField('The nine axes','held charge on each poled axis, out of ten',
   CHILD.map(function(c){return {k:'axis',nm:c.nm,v:Math.max(0.3,S.charge[c.nm]||0),
    c:seatCol(c.seat)};}),300,210);
- out+=anaField('The seven seats','size is how much is held there, 0 to 10',
+ out+=anaField('The seven seats','the bigger the mark, the more is held there',
   seats.map(function(s){return {k:'seat',nm:s.p.n,v:Math.max(0.3,s.hot),
    c:seatCol(K2B[s.p.k])};}),300,210);
  out+='</div>';
@@ -16642,10 +16666,27 @@ try{window.__at&&window.__at('ui/intakeui.js');}catch(e){}
    and installs the coherent opposite at 62 percent of what it removed.
    ============================================================ */
 var CHAN=[['R','Right','limit'],['L','Left','limit'],['R','Right','truth'],['L','Left','truth']];
-var OPENING=['Welcome to release and reframe.','We will be here for a few minutes.',
- 'Find a quiet space. Sit back and relax,','and turn your senses inward to feel what is released.',
- 'As the words repeat, follow along in thought.','Feel what the body is doing as the energy goes.',
- 'Let us begin.'];
+/* SEVEN LINES HELD 2.2 SECONDS EACH IS 15.4 SECONDS BEFORE THE FIRST ADDRESS.
+   Line one and line seven read the heading aloud. Line two is vaguer than the
+   product, which already printed the computed run length on the screen before
+   this one. Line three instructs a nervous system in the register this brand
+   refuses. Line four is a sensation with no place in it, in the passive with
+   the agent hidden. Line five carries an instruction and a definition in one
+   string. Line six has no mass and no direction.
+
+   Three lines, 6.6 seconds, one thing each. The somatic work line four was
+   gesturing at is done by line three with a place in it. "In thought" stays
+   because it is already the product's own term. See the house voice skill. */
+var OPENING=['Sit down. Put both feet on the floor.',
+ 'Each line names one pattern. Follow it in thought as it lands.',
+ 'Keep some attention on your body, and notice which place answers.'];
+/* what the allowance says is left, read the same way Settings reads it. */
+function relLeft(){
+ if(typeof planAllowance!=='function')return 0;
+ var m=(typeof CURP!=='undefined'&&CURP&&CURP.meter)||null;
+ var a=planAllowance((typeof CURP!=='undefined'&&CURP&&CURP.plan)||null,
+                     ((m&&m.unique)||[]).length);
+ return (a&&a.left!=null)?a.left:0;}
 var RUN={open:false,queue:[],plan:[],sec:0,idx:0,phase:'idle',speed:2.2,timer:null,
          paused:false,done:false,line:0,log:[],freed:0};
 /* THE RUN IS A PLAN OF THOUGHT LINES, ruled. One pattern is one thought line
@@ -16831,7 +16872,12 @@ function relRender(){
   var q=RUN.queue;
   out+='<div class="pm-eye">Run a release</div>'
    +'<div class="rel-node">'+q.length+(q.length===1?' address':' addresses')+'</div>'
-   +'<div class="rel-sub">'+((RUN.plan||[]).length)+' of your allowance</div>'
+   /* A NUMBER CARRIES WHAT IT IS OF. This read "25 of your allowance", which
+      says twenty five of what, and reads as a bill on a grant of ten a week
+      against a run that caps at twenty five. planAllowance already returns
+      both halves, so the honest sentence needs no new field. */
+   +'<div class="rel-sub">'+((RUN.plan||[]).length)+' patterns of the '
+   +relLeft()+' you have left</div>'
    +'<div class="rel-log">';
   q.forEach(function(n){
    out+='<div class="rel-row">'+crNode(n,'xs')
@@ -18031,8 +18077,36 @@ function rdOpen(){var b=document.getElementById('rdrill');if(!b)return null;
  /* open Selection, and leave open whatever else the person had open. */
  if(typeof OPENSEC==='object'&&OPENSEC&&OPENSEC.right){OPENSEC.right.sel=1;
   if(typeof paintSections==='function')paintSections();}
+ /* BRING THE DRILL INTO VIEW, BUT ONLY WHEN IT IS BESIDE THE SURFACE.
+
+    A drill opens in the right rail. Beside the stage, scrolling it into view
+    is the whole courtesy: a person pressed something and the answer appears
+    where they are looking.
+
+    Stacked under the stage, which is every phone, it is the opposite. The
+    rail sits below the whole surface, so this scrolled the page four
+    thousand pixels down and left a person who had pressed Compass looking at
+    a rail with the compass off the top of the screen. Measured at 390: the
+    canvas at minus 3617 with the page at 4165. It reads as the tab doing
+    nothing, which is the worst kind of defect, because the answer a person
+    tries is to press it again.
+
+    Found with a trap on scrollIntoView after two wrong theories, a scroll
+    reset and a focus move, both of which measured clean on their own and
+    neither of which was the cause. The rule the repository already carries:
+    reproduce the failure before fixing it, and re-measure after.
+
+    The test is where the rail actually is, read at run time, not a width
+    somebody typed. A rail that starts below the surface it belongs to is
+    stacked, and a stacked drill does not move the page. */
  var sec=b.closest?b.closest('.lsec'):null;
- if(sec&&sec.scrollIntoView){
+ var stage=document.querySelector('.stage');
+ var beside=true;
+ try{
+  var rr=(sec||b).getBoundingClientRect(), sr=stage?stage.getBoundingClientRect():null;
+  if(sr)beside=(rr.top<sr.bottom-8);
+ }catch(e){}
+ if(beside&&sec&&sec.scrollIntoView){
   try{sec.scrollIntoView({block:'start',behavior:REDUCED?'auto':'smooth'});}
   catch(e){sec.scrollIntoView();}}
  return b;}
@@ -19577,7 +19651,8 @@ function runCardDrill(c){
 
 /* one axis card: the track the pattern speaks, the release, the install. */
 function runAxCardDrill(c){
- var h='<div class="pm-eye">Letting go card, axis '+esc(c.num)+'</div>'
+ /* a sentence, not a name, so it keeps sentence case. See the label gate. */
+ var h='<div class="pm-eye plain">Letting go card, axis '+esc(c.num)+'</div>'
   +'<div class="ad-nm">'+esc(c.ax||c.un)+'</div>'
   +'<div class="ad-sub">toward '+esc(c.cop)+'. '+esc(c.addr)+'</div>'
   +(c.ax?'':'<div class="pm-eye">Unmatched</div><p class="ad-p">The engine carries no axis '
@@ -20191,25 +20266,6 @@ function setTab(i){
     something that happens once. */
  if(i===TAB.FIELD&&typeof enterStart==='function')enterStart();
  document.body.classList.toggle('hassub',i===TAB.FIELD||i===TAB.ENERGY);
- /* A NEW SURFACE STARTS AT ITS OWN TOP.
-
-    On a phone the whole app scrolls inside one container, and arriving at a
-    surface did not take the view back to the top of it. So a person who had
-    read down the codex and then pressed Compass landed four thousand pixels
-    below the compass, on a screen showing the bottom of a surface they had
-    just left. Measured at 390: the container sat at 4636 and the compass sat
-    at minus 4114, which is off screen by more than four screens.
-
-    It reads as the tab doing nothing, which is the worst kind of defect
-    because a person presses it again and it still does nothing.
-
-    Only the container that actually scrolls, and only when it has moved, so
-    this writes nothing on a surface that was already at its top. */
- (function(){
-  var sc=document.scrollingElement||document.documentElement;
-  [document.querySelector('.tip-sheet'),document.querySelector('.stage'),sc]
-   .forEach(function(el){ if(el&&el.scrollTop)el.scrollTop=0; });
-  if(typeof scrollTo==='function'&&sc&&sc.scrollTop)scrollTo(0,0);})();
  ['probe','howto','key','tier','pol'].forEach(function(id){
   var e=$(id); if(e)e.style.display=(i===TAB.FIELD)?'':'none';});
  /* pressed state read off each button's own integer, never off its position
@@ -20264,7 +20320,51 @@ function setTab(i){
     rather than leaving a requestAnimationFrame running behind another
     surface. */
  if(i===TAB.COMPASS)coneOpen(true); else if(CONE.open&&CONE.tab)coneClose();
- render(); paintSections();}
+ render(); paintSections();
+ tabTop(i);}
+/* A NEW SURFACE STARTS AT ITS OWN TOP.
+
+   On a phone the whole app scrolls inside one container and arriving at a
+   surface did not take the view back to the top of it. A person who had read
+   down the codex and pressed Compass landed four screens below the compass,
+   looking at the bottom of the page they had just left. It reads as the tab
+   doing nothing, which is the worst kind of defect, because the answer a
+   person tries is to press it again and it still does nothing.
+
+   Twice, and the second time is the point. The first cut ran partway through
+   setTab and measured clean on its own, then the gate still failed at 4165:
+   everything after it, the renderers and the rail, scrolls the container
+   again. So it runs last, and once more on the next frame, because a
+   renderer that lays out asynchronously would otherwise win the argument.
+
+   Only a container that has actually moved is written to, so this does
+   nothing at all on a surface already at its top. */
+function tabTop(i){
+ /* AND FOCUS HAS TO MOVE WITH THE TAB, WHICH IS THE ACTUAL CAUSE.
+
+    Resetting the scroll was not enough and the trap said why: a button on the
+    surface the person just left still held focus, and when the new surface
+    laid out the browser scrolled that button back into view. The log reads
+    74, 117, 171 and climbing, which is a smooth scroll and not a jump, so
+    nothing in this file was doing it. The browser was, correctly, keeping the
+    focused control on screen.
+
+    Blurring alone would leave focus nowhere, which is worse for anybody on a
+    keyboard. So focus goes to the button for the tab that was just pressed,
+    which is where a person on a keyboard already is and where a person on a
+    pointer expects nothing. `preventScroll` because focusing is the thing
+    that started this. */
+ var btn=document.querySelector('.tabtop[data-tabk="'+i+'"]');
+ var a=document.activeElement;
+ if(a&&a!==document.body&&a!==btn){
+  try{ if(btn&&btn.focus)btn.focus({preventScroll:true}); else if(a.blur)a.blur(); }
+  catch(e){ if(a.blur)a.blur(); }}
+ var hit=function(){
+  var sc=document.scrollingElement||document.documentElement;
+  [document.body,document.querySelector('.stage'),sc].forEach(function(el){
+   if(el&&el.scrollTop)el.scrollTop=0;});};
+ hit();
+ if(typeof requestAnimationFrame==='function')requestAnimationFrame(hit);}
 /* THE BAR IS IN THE DOCUMENT AND THIS ONLY WIRES IT. Ruled, and the reason is
    in the markup beside the buttons: nine buttons built in a loop meant the top
    menu existed only if the script reached the loop, so every start up failure
@@ -20680,7 +20780,7 @@ function profileSheet(){
 function planSection(m){
  var pl=(CURP&&CURP.plan)||null;
  var t=planOf(pl), st=planState(pl);
- var al=planAllowance(pl,(m&&m.unique)||0);
+ var al=planAllowance(pl,((m&&m.unique)||[]).length);   /* the count, not the list */
  var up=planUpgrade(pl);
  var yr=planYear(t.k);
  var h='<div class="sh-sec"><div class="pm-eye">Your plan</div>'
@@ -23123,5 +23223,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="001502064"></div>
+<div id="eof" hidden data-len="001507861"></div>
 </body></html>

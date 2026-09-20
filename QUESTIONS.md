@@ -1,11 +1,15 @@
 # QUESTIONS FOR THE OWNER
 
 Every line in `TASKS.md` marked `[?]`, which is the mark for a question
-waiting on his ruling. 91 of them, across 24 sections.
-Read off commit 7f13450 on 2026-09-20. Nothing here is typed by hand: answer a
+waiting on his ruling. 92 of them, across 25 sections.
+Read off commit 4dfb9e6 on 2026-09-20. Nothing here is typed by hand: answer a
 question in TASKS.md and it leaves this file on the next run.
 
 The same list is in `QUESTIONS.html`, which opens in a browser.
+
+## 0o. RULED 20 SEPTEMBER, EIGHTH PASS. THE AVATAR IS THE DASHBOARD.
+
+- [ ] **CH5. The honest part, and it belongs in the record.** The seat to plexus correspondence and the seven count are a modern Western reading; the glossary already says so. A frequency in hertz for a chakra is not a measured quantity. Deriving a colour from it is a consistent internal system, which is worth having, and it is not a measurement. The product says so about the aura and the biophoton field already and should say it here in the same voice.
 
 ## 0q. RULED 20 SEPTEMBER, SEVENTH PASS. THE RITUAL PAGE AS A SYSTEM.
 

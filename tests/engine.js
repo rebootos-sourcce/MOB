@@ -628,6 +628,21 @@ g('15d · the two nested bags');
   .filter(k=>!validateProfile(withEnt(Object.assign(ent(),{bands:{[k]:3}}))).ok);
  ok(badBand.length===0,'every seat key the sniffer writes is accepted, '
   +Object.keys(E.K2BAND||{}).length+' of them, '+JSON.stringify(badBand)+' refused');
+
+ /* AND THE IMPORT IS STILL ATOMIC OVER BOTH BAGS. The refusals above are only
+    worth anything if the profile carrying them never lands. 15c proves this for
+    a poisoned charge; these two prove the two bags go through the same door.
+    A store that works, because the point here is the refusal and not the save. */
+ const {pImport,importError,profiles,current,bindStore}=E;
+ bindStore(function(){return null;},function(){});
+ const held=JSON.stringify(profiles()), n=profiles().length, cur=current();
+ const sneak=withRit(Object.assign(rit(),{secret:'s'}));
+ ok(pImport(JSON.stringify(sneak))===null,'a profile hiding a secret in a ritual is not imported');
+ ok(/secret/.test(String(importError())),'and says where it was: '+importError());
+ const sneak2=withEnt(Object.assign(ent(),{text:7}));
+ ok(pImport(JSON.stringify(sneak2))===null,'and one whose entry text is a number is not imported');
+ ok(profiles().length===n&&JSON.stringify(profiles())===held&&current()===cur,
+  'the list and the current profile did not move, '+n+' before and after');
 }
 
 g('15b \u00b7 the seed');

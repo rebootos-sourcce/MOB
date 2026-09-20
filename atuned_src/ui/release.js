@@ -5,10 +5,27 @@
    and installs the coherent opposite at 62 percent of what it removed.
    ============================================================ */
 var CHAN=[['R','Right','limit'],['L','Left','limit'],['R','Right','truth'],['L','Left','truth']];
-var OPENING=['Welcome to release and reframe.','We will be here for a few minutes.',
- 'Find a quiet space. Sit back and relax,','and turn your senses inward to feel what is released.',
- 'As the words repeat, follow along in thought.','Feel what the body is doing as the energy goes.',
- 'Let us begin.'];
+/* SEVEN LINES HELD 2.2 SECONDS EACH IS 15.4 SECONDS BEFORE THE FIRST ADDRESS.
+   Line one and line seven read the heading aloud. Line two is vaguer than the
+   product, which already printed the computed run length on the screen before
+   this one. Line three instructs a nervous system in the register this brand
+   refuses. Line four is a sensation with no place in it, in the passive with
+   the agent hidden. Line five carries an instruction and a definition in one
+   string. Line six has no mass and no direction.
+
+   Three lines, 6.6 seconds, one thing each. The somatic work line four was
+   gesturing at is done by line three with a place in it. "In thought" stays
+   because it is already the product's own term. See the house voice skill. */
+var OPENING=['Sit down. Put both feet on the floor.',
+ 'Each line names one pattern. Follow it in thought as it lands.',
+ 'Keep some attention on your body, and notice which place answers.'];
+/* what the allowance says is left, read the same way Settings reads it. */
+function relLeft(){
+ if(typeof planAllowance!=='function')return 0;
+ var m=(typeof CURP!=='undefined'&&CURP&&CURP.meter)||null;
+ var a=planAllowance((typeof CURP!=='undefined'&&CURP&&CURP.plan)||null,
+                     ((m&&m.unique)||[]).length);
+ return (a&&a.left!=null)?a.left:0;}
 var RUN={open:false,queue:[],plan:[],sec:0,idx:0,phase:'idle',speed:2.2,timer:null,
          paused:false,done:false,line:0,log:[],freed:0};
 /* THE RUN IS A PLAN OF THOUGHT LINES, ruled. One pattern is one thought line
@@ -194,7 +211,12 @@ function relRender(){
   var q=RUN.queue;
   out+='<div class="pm-eye">Run a release</div>'
    +'<div class="rel-node">'+q.length+(q.length===1?' address':' addresses')+'</div>'
-   +'<div class="rel-sub">'+((RUN.plan||[]).length)+' of your allowance</div>'
+   /* A NUMBER CARRIES WHAT IT IS OF. This read "25 of your allowance", which
+      says twenty five of what, and reads as a bill on a grant of ten a week
+      against a run that caps at twenty five. planAllowance already returns
+      both halves, so the honest sentence needs no new field. */
+   +'<div class="rel-sub">'+((RUN.plan||[]).length)+' patterns of the '
+   +relLeft()+' you have left</div>'
    +'<div class="rel-log">';
   q.forEach(function(n){
    out+='<div class="rel-row">'+crNode(n,'xs')

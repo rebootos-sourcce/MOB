@@ -88,8 +88,15 @@ const RULES = [
     why: 'There are no users yet, so any user voice or user statistic is invented. A fabricated proof point is the one defect that cannot be walked back once it ships.',
     src: 'Standing. No shipped product, no user base, no data.',
     re: [
-      /\bjoin \d[\d,]*\+? (people|users|members|practitioners|readers)\b/,
-      /\b\d[\d,]*\+? (people|users|members) (have|already)\b/,
+      /* THE COMMA IS STRIPPED BEFORE THIS RUNS, AND THE FIRST CUT FORGOT.
+
+         norm() replaces punctuation with a space, so "join 40,000 people"
+         arrives as "join 40 000 people" and \d[\d,]* stopped at the space.
+         The deliberate breakage in hooksim.js validate() group 5 caught it on
+         the first run, which is the whole reason that group exists. Digits may
+         now carry the spaces the stripping left behind. */
+      /\bjoin \d[\d, ]{0,12}\+? ?(people|users|members|practitioners|readers)\b/,
+      /\b\d[\d, ]{0,12}\+? ?(people|users|members) (have|already)\b/,
       /\b(\d+|nine|eight|seven|six|five|four|three|two) (out of|in) (ten|10|five|5) (users|people|members)\b/,
       /\b(rated|loved|trusted) by (thousands|millions|\d)/,
       /\baverage (user|member) (sees|reports|gains)\b/
@@ -186,6 +193,45 @@ function norm(s) {
     .replace(/\s+/g, ' ').trim();
 }
 
+/* THE NEGATION GUARD, AND IT IS A DEFECT THIS GATE SHIPPED FOR ONE RUN.
+
+   Five of the first fourteen findings were the gate's own bug, all of one
+   kind. "It makes no claim about tissue, no diagnosis and no treatment"
+   was refused by the medical rule. "The product has no streak that resets, no
+   countdown and nothing that expires" was refused by the countdown rule. Both
+   lines are the product refusing the thing, and the gate read the word and
+   not the sentence.
+
+   That is the same failure mode the voice gate records against its own first
+   cut of the naked number check: seven findings, five of them wrong, on lines
+   that were the model of the rule rather than breaches of it. A tool that
+   lies is worse than no tool.
+
+   So a match is discarded when a negator sits in the forty characters before
+   it. Forty is a clause, measured against the real lines: the longest gap in
+   the five false findings was "makes no claim about tissue, no diagnosis", at
+   thirty one characters.
+
+   The guard is deliberately not applied to every rule. verdict and
+   reassurance are exempt, because a negation does not rescue either of them:
+   "you are not broken" plants the verdict it denies and "there is nothing to
+   be ashamed of" is the reassurance rule's own example. The exemption is
+   named here rather than left as an absence.
+
+   Group 5 in hooksim.js asserts that the nine deliberate breakages are still
+   caught with the guard in place, so the guard cannot have quietly opened the
+   gate. */
+const NEGATORS = /\b(no|not|never|nothing|none|without|neither|nor|cannot|refus\w*|declin\w*|free of|absent|does not|do not|is not|are not|has no|have no|makes no|will not|won't|hides? no)\b[^.?!]{0,40}$/;
+const NOGUARD = ['verdict', 'reassurance'];
+
+function guarded(subject, re, ruleId) {
+  if (NOGUARD.indexOf(ruleId) >= 0) return false;
+  const m = re.exec(subject);
+  if (!m) return false;
+  const before = subject.slice(Math.max(0, m.index - 40), m.index);
+  return NEGATORS.test(before);
+}
+
 /* check one string. returns the violations, each naming the rule and the
    pattern that fired, because a gate that says no without saying which rule
    is a gate nobody can act on. */
@@ -199,7 +245,9 @@ function check(text, opt) {
     r.re.forEach(re => {
       const cs = r.caseSensitive && r.caseSensitive.indexOf(String(re)) >= 0;
       const subject = cs ? raw : n;
-      if (re.test(subject)) out.push({ rule: r.id, pattern: String(re), why: r.why });
+      if (!re.test(subject)) return;
+      if (guarded(subject, new RegExp(re.source, re.flags.replace('g', '')), r.id)) return;
+      out.push({ rule: r.id, pattern: String(re), why: r.why });
     });
   });
   return out;
@@ -217,20 +265,33 @@ const BODYWORDS = ['back', 'gut', 'chest', 'abdomen', 'pelvi', 'pelvis', 'hip', 
   'mouth', 'breath', 'stomach', 'sternum', 'rib', 'head', 'face', 'hand', 'taste',
   'floor', 'chiasm', 'vagus', 'lumbar', 'sacral', 'thoracic'];
 
+/* ONE NAMED EXEMPTION, AND IT IS NAMED RATHER THAN SKIPPED QUIETLY.
+
+   H18 is the entry served to a person whose field reads clear. It has no pain
+   to speak to and nothing held anywhere in a body, which is the reading
+   itself. A physical location added to it would be an invented sensation on
+   the one line in the system whose entire job is to not invent one.
+
+   It is exempt from the physical requirement only. It still has to be in his
+   form and still has to pass all nine refusal rules. */
+const NOBODY = { H18: 'the clear entry. Nothing is held, so there is no place to name.' };
+
 function form(h) {
   const miss = [];
   const line = String(h.hook || '');
   if (!/what if /i.test(line)) miss.push('no what if question');
   if (!/\?/.test(line)) miss.push('no question mark');
   const n = norm(line);
-  if (!BODYWORDS.some(w => n.indexOf(w) >= 0)) miss.push('no physical location or sensation named');
+  if (!NOBODY[h.id] && !BODYWORDS.some(w => n.indexOf(w) >= 0)) {
+    miss.push('no physical location or sensation named');
+  }
   const sentences = line.split(/(?<=[.?])\s+/).filter(s => s.trim());
   const longest = Math.max.apply(null, sentences.map(s => s.split(/\s+/).length));
   if (longest > 26) miss.push('a sentence of ' + longest + ' words, over the 26 word ceiling');
   return miss;
 }
 
-module.exports = { RULES, JUDGEMENT, check, form, norm, BODYWORDS };
+module.exports = { RULES, JUDGEMENT, check, form, norm, BODYWORDS, NOBODY, NEGATORS, NOGUARD };
 
 if (require.main === module) {
   const arg = process.argv.slice(2).join(' ');

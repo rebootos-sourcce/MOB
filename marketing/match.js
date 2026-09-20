@@ -13,13 +13,17 @@
 
      field   charge and seat off the heaviest address. Exact. Only exists
              after the intake
-     state   one of the owner's four states. The best key before a reading,
-             measured at 531 of 1000 in hooksim.js
-     role    one of the owner's four roles. The worst key, 457 of 1000, and
-             a role door therefore names a situation and never a charge
+     state   one of the owner's four states. Names the right charge for 462
+             of the 894 eligible on the headline seed
+     role    one of the owner's four roles. 437 of 894, and the sweep says
+             the gap between state and role is noise
 
-   That ordering is the commercial argument for the intake existing: the
-   funnel's job is to move a person from the second key to the first.
+   Measured in hooksim.js. The field leads both in 15 of 15 sweep runs. State
+   and role trade places, so neither pre reading label is a key and a door
+   built on one names a situation and never a charge.
+
+   That is the commercial argument for the intake existing: the funnel's only
+   real job is to turn a label into a reading.
 
    HOST FREE. No document, no window, no fetch.
    ============================================================ */

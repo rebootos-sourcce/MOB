@@ -11,8 +11,36 @@ function rdOpen(){var b=document.getElementById('rdrill');if(!b)return null;
  /* open Selection, and leave open whatever else the person had open. */
  if(typeof OPENSEC==='object'&&OPENSEC&&OPENSEC.right){OPENSEC.right.sel=1;
   if(typeof paintSections==='function')paintSections();}
+ /* BRING THE DRILL INTO VIEW, BUT ONLY WHEN IT IS BESIDE THE SURFACE.
+
+    A drill opens in the right rail. Beside the stage, scrolling it into view
+    is the whole courtesy: a person pressed something and the answer appears
+    where they are looking.
+
+    Stacked under the stage, which is every phone, it is the opposite. The
+    rail sits below the whole surface, so this scrolled the page four
+    thousand pixels down and left a person who had pressed Compass looking at
+    a rail with the compass off the top of the screen. Measured at 390: the
+    canvas at minus 3617 with the page at 4165. It reads as the tab doing
+    nothing, which is the worst kind of defect, because the answer a person
+    tries is to press it again.
+
+    Found with a trap on scrollIntoView after two wrong theories, a scroll
+    reset and a focus move, both of which measured clean on their own and
+    neither of which was the cause. The rule the repository already carries:
+    reproduce the failure before fixing it, and re-measure after.
+
+    The test is where the rail actually is, read at run time, not a width
+    somebody typed. A rail that starts below the surface it belongs to is
+    stacked, and a stacked drill does not move the page. */
  var sec=b.closest?b.closest('.lsec'):null;
- if(sec&&sec.scrollIntoView){
+ var stage=document.querySelector('.stage');
+ var beside=true;
+ try{
+  var rr=(sec||b).getBoundingClientRect(), sr=stage?stage.getBoundingClientRect():null;
+  if(sr)beside=(rr.top<sr.bottom-8);
+ }catch(e){}
+ if(beside&&sec&&sec.scrollIntoView){
   try{sec.scrollIntoView({block:'start',behavior:REDUCED?'auto':'smooth'});}
   catch(e){sec.scrollIntoView();}}
  return b;}

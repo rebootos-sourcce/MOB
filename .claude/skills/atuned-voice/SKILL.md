@@ -51,8 +51,9 @@ reader who arrived by search rather than by page, and no room. Eight moves
 carry it. Cite them by number when you are arguing about a line.
 
 **E1. The definition arrives in the first clause.** The subject, a comma, then
-what it is. "Jazz, a form of music characterised by improvisation and a strong
-rhythmic base." No approach, no framing, no context paragraph first.
+what it is. The shape, written out rather than quoted, is "Jazz, a form of music
+characterised by improvisation and a strong rhythmic base." No approach, no
+framing, no context paragraph first.
 
 **E2. Present tense, indicative.** Things are, not have been shown to be.
 
@@ -737,6 +738,13 @@ That is Encarta's grammar, with Encarta's one prohibition lifted and nothing
 else added. Present tense. Concrete nouns. No adjective doing the work. The
 definition in the first clause. Second person, because the subject is reading.
 A cost named. No comfort anywhere.
+
+**And they are the longest copy in the product.** Measured: median 12 words
+against a house median of 6, p95 of 18 against 16, and zero hard failures. That
+is the most useful thing on this page and it is worth stating on its own line so
+nobody mistakes the gate's output for a target. Short is not the test. Naming an
+event is the test, and a sentence that names one is allowed to take twelve words
+to do it. A six word sentence that names no event is the shorter failure.
 
 When a line is not working, the fastest repair in this product is to ask what
 the physical event was, and write that instead.

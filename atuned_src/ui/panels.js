@@ -163,25 +163,6 @@ function setTab(i){
     something that happens once. */
  if(i===TAB.FIELD&&typeof enterStart==='function')enterStart();
  document.body.classList.toggle('hassub',i===TAB.FIELD||i===TAB.ENERGY);
- /* A NEW SURFACE STARTS AT ITS OWN TOP.
-
-    On a phone the whole app scrolls inside one container, and arriving at a
-    surface did not take the view back to the top of it. So a person who had
-    read down the codex and then pressed Compass landed four thousand pixels
-    below the compass, on a screen showing the bottom of a surface they had
-    just left. Measured at 390: the container sat at 4636 and the compass sat
-    at minus 4114, which is off screen by more than four screens.
-
-    It reads as the tab doing nothing, which is the worst kind of defect
-    because a person presses it again and it still does nothing.
-
-    Only the container that actually scrolls, and only when it has moved, so
-    this writes nothing on a surface that was already at its top. */
- (function(){
-  var sc=document.scrollingElement||document.documentElement;
-  [document.querySelector('.tip-sheet'),document.querySelector('.stage'),sc]
-   .forEach(function(el){ if(el&&el.scrollTop)el.scrollTop=0; });
-  if(typeof scrollTo==='function'&&sc&&sc.scrollTop)scrollTo(0,0);})();
  ['probe','howto','key','tier','pol'].forEach(function(id){
   var e=$(id); if(e)e.style.display=(i===TAB.FIELD)?'':'none';});
  /* pressed state read off each button's own integer, never off its position
@@ -236,7 +217,51 @@ function setTab(i){
     rather than leaving a requestAnimationFrame running behind another
     surface. */
  if(i===TAB.COMPASS)coneOpen(true); else if(CONE.open&&CONE.tab)coneClose();
- render(); paintSections();}
+ render(); paintSections();
+ tabTop(i);}
+/* A NEW SURFACE STARTS AT ITS OWN TOP.
+
+   On a phone the whole app scrolls inside one container and arriving at a
+   surface did not take the view back to the top of it. A person who had read
+   down the codex and pressed Compass landed four screens below the compass,
+   looking at the bottom of the page they had just left. It reads as the tab
+   doing nothing, which is the worst kind of defect, because the answer a
+   person tries is to press it again and it still does nothing.
+
+   Twice, and the second time is the point. The first cut ran partway through
+   setTab and measured clean on its own, then the gate still failed at 4165:
+   everything after it, the renderers and the rail, scrolls the container
+   again. So it runs last, and once more on the next frame, because a
+   renderer that lays out asynchronously would otherwise win the argument.
+
+   Only a container that has actually moved is written to, so this does
+   nothing at all on a surface already at its top. */
+function tabTop(i){
+ /* AND FOCUS HAS TO MOVE WITH THE TAB, WHICH IS THE ACTUAL CAUSE.
+
+    Resetting the scroll was not enough and the trap said why: a button on the
+    surface the person just left still held focus, and when the new surface
+    laid out the browser scrolled that button back into view. The log reads
+    74, 117, 171 and climbing, which is a smooth scroll and not a jump, so
+    nothing in this file was doing it. The browser was, correctly, keeping the
+    focused control on screen.
+
+    Blurring alone would leave focus nowhere, which is worse for anybody on a
+    keyboard. So focus goes to the button for the tab that was just pressed,
+    which is where a person on a keyboard already is and where a person on a
+    pointer expects nothing. `preventScroll` because focusing is the thing
+    that started this. */
+ var btn=document.querySelector('.tabtop[data-tabk="'+i+'"]');
+ var a=document.activeElement;
+ if(a&&a!==document.body&&a!==btn){
+  try{ if(btn&&btn.focus)btn.focus({preventScroll:true}); else if(a.blur)a.blur(); }
+  catch(e){ if(a.blur)a.blur(); }}
+ var hit=function(){
+  var sc=document.scrollingElement||document.documentElement;
+  [document.body,document.querySelector('.stage'),sc].forEach(function(el){
+   if(el&&el.scrollTop)el.scrollTop=0;});};
+ hit();
+ if(typeof requestAnimationFrame==='function')requestAnimationFrame(hit);}
 /* THE BAR IS IN THE DOCUMENT AND THIS ONLY WIRES IT. Ruled, and the reason is
    in the markup beside the buttons: nine buttons built in a loop meant the top
    menu existed only if the script reached the loop, so every start up failure
@@ -652,7 +677,7 @@ function profileSheet(){
 function planSection(m){
  var pl=(CURP&&CURP.plan)||null;
  var t=planOf(pl), st=planState(pl);
- var al=planAllowance(pl,(m&&m.unique)||0);
+ var al=planAllowance(pl,((m&&m.unique)||[]).length);   /* the count, not the list */
  var up=planUpgrade(pl);
  var yr=planYear(t.k);
  var h='<div class="sh-sec"><div class="pm-eye">Your plan</div>'

@@ -504,7 +504,7 @@ function sumUnread(r){
      the same thing in a full sentence, so the label was both changing with the
      data and repeating the line. */
   +'<div><div class="pm-eye">Coherence</div>'
-  +'<div class="sum-line">Not read yet. Nothing has been entered, so there is nothing to read. '
+  +'<div class="sum-line">Nothing has been entered, so there is nothing to read. '
   +'The arithmetic underneath works and it is not being shown, because a number off a '
   +'default is a number about the default and not about you.</div></div></div>'
   +'<div class="sum-start">'+startHTML('Four ways in. None of them asks you to know a term '

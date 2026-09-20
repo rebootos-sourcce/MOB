@@ -112,12 +112,18 @@ function anaRender(){
      belongs and the label stays put. */
   +'<div><div class="pm-eye">Coherence</div>'
   +'<div class="ab-say">'
-  +(r.unread?'Not read yet. Nothing has been entered, so none of this is measured yet. Every figure '
+  +(r.unread?'Nothing has been entered, so none of this is measured yet. Every figure '
     +'below is drawn from the blueprint you have selected and not from a reading.'
    /* THE TIER WORD, which used to live in the label. It is the reading in
       plain words and it goes first, because it is the one thing on this
-      surface a person reads before anything else. */
-   :'<b>'+esc(r.tier)+'</b>. '
+      surface a person reads before anything else.
+
+      It is attached and not left standing. "Corrupt." alone, bold, with a full
+      stop after it, is a band word with nothing on it, which is a judgement
+      and not a reading. The subject is the field, which is the right distance:
+      a person at level 3 who is defended reads a verdict in a bare label and
+      a measurement in a sentence about their field. */
+   :'The field reads <b>'+esc(r.tier.toLowerCase())+'</b>. '
    +(loud?'<b>'+esc(loud.nm)+'</b> is the biggest thing running. ':'Nothing is compounding. ')
    /* a count against a total is a score, and this is not a score */
    +(stop?'Flow stops at the <b>'+stop.p.n.toLowerCase()+'</b>. ':'Every seat is passing. ')
@@ -148,23 +154,23 @@ function anaRender(){
      +(acc.held?', '+acc.held+' addresses carrying':'')
      +'. A move smaller than the interval is not a reading.')+'</span></div>'
   +'</div></div><div class="ab-grid">';
- out+=anaField('Masks','the era you speak from. size is weight, 0 to 10',
+ out+=anaField('Masks','the era you speak from. the bigger the mark, the more weight it carries',
   r.maskRing.map(function(m){return {k:'mask',nm:m.nm,v:m.w,
    c:seatCol((m.bands||['Heart'])[0])};}),300,210);
  out+=anaField('Domains','the blueprint you run. yours are lit, the rest are context',
   S.doms.map(function(di){var d=DOMAINS[di];return {k:'dom',nm:d.nm,v:9,c:ROOTCOL[d.r]};})
    .concat(DOMAINS.filter(function(d,i){return S.doms.indexOf(i)<0;}).slice(0,9)
     .map(function(d){return {k:'dom',nm:d.nm,v:2,c:ROOTCOL[d.r]};})),300,210);
- out+=anaField('Archetypes','how the blueprint expresses. size is affinity, 0 to 100 percent',
+ out+=anaField('Archetypes','how the blueprint expresses. the bigger the mark, the closer the fit',
   (r.aff||[]).map(function(a,i){return {k:'arch',nm:(ARCH[i]||{}).nm||'',
    v:Math.max(0.4,a*10),c:(i===r.pi?GOLD:PAL['3rd Eye'])};}),300,210);
- out+=anaField('What is running','blue saboteur, gold complex, orange hyper, red character. size is weight, 0 to 10',
+ out+=anaField('What is running','blue saboteur, gold complex, orange hyper, red character. the bigger the mark, the more weight it carries',
   [].concat(r.sups,r.hys,r.cxs,r.sabs).slice(0,16).map(function(o){
    return {k:'chain',nm:o.nm,v:o.w,c:o.over?ALARM:(TIER[o.kind]||PAL.Throat)};}),300,210);
- out+=anaField('The nine axes','held charge on each poled axis, 0 to 10',
+ out+=anaField('The nine axes','held charge on each poled axis, out of ten',
   CHILD.map(function(c){return {k:'axis',nm:c.nm,v:Math.max(0.3,S.charge[c.nm]||0),
    c:seatCol(c.seat)};}),300,210);
- out+=anaField('The seven seats','size is how much is held there, 0 to 10',
+ out+=anaField('The seven seats','the bigger the mark, the more is held there',
   seats.map(function(s){return {k:'seat',nm:s.p.n,v:Math.max(0.3,s.hot),
    c:seatCol(K2B[s.p.k])};}),300,210);
  out+='</div>';
