@@ -540,6 +540,28 @@ function profileSheet(){
   +'<p class="sh-p">Everything is held in this browser. Nothing has left this device.</p>'
   +'<div class="sh-row"><span>Snapshots on file</span><b>'+((CURP&&CURP.history&&CURP.history.length)||0)+'</b></div>'
   +'<div class="sh-row"><span>Storage</span><b>'+(STORE_BOUND?'writing':'blocked')+'</b></div>'
+  /* THE BOUNDARY GETS ITS FIRST CALLER. validateProfile and pImport were built
+     and CLAUDE.md said so: there is no import control in the UI, so the
+     boundary's first real caller will be the record fetch at sign in. The web
+     reading is that caller, and it arrives without a server, because a person
+     carries their own record out of the quiz as a file and loads it here.
+
+     pImport is atomic. Nothing is pushed and CURP does not move until the
+     profile has validated, loaded and saved, and a failure restores what was
+     there and says why. So this can be a paste box without being a way to
+     destroy a profile by pasting the wrong thing. */
+  +'<div class="sh-imp">'
+  +'<p class="sh-p">Took the reading on the web? Load the record you saved and it '
+  +'continues from there. Nothing is fetched: the file is the handoff.</p>'
+  +'<textarea id="shimp" class="sh-ta" rows="3" spellcheck="false" '
+  +'placeholder="Paste the record, or choose the file"></textarea>'
+  +'<div class="sh-act">'
+   +'<button class="btn" id="shimpf">Choose a file</button>'
+   +'<button class="btn pri" id="shimpgo">Load it</button>'
+  +'</div>'
+  +'<p class="sh-p sh-impmsg" id="shimpmsg"></p>'
+  +'<input type="file" id="shimpfile" accept="application/json,.json" hidden>'
+  +'</div>'
   +'</div>'
   +'<div class="sh-sec"><div class="pm-eye">Who you are becoming</div>'
   +'<p class="sh-p">The avatar, the purpose map and the boundary. What the release work is '
@@ -548,6 +570,29 @@ function profileSheet(){
   +'<div class="sh-sec"><button class="btn" id="shclose">Close</button></div>';
  sheetOpen(h);
  /* the same three steps, inside the sheet, sharing one setter */
+ /* THE IMPORT, WIRED. Every write that can fail reports rather than claiming
+    success, which is the standing rule in this product. */
+ var impSay=function(t,bad){var m=$('shimpmsg'); if(!m)return;
+  m.textContent=t; m.className='sh-p sh-impmsg'+(bad?' bad':' ok');};
+ var impRun=function(txt){
+  if(!txt||!txt.trim()){impSay('Nothing to load yet.',1);return;}
+  var np=pImport(txt);
+  if(!np){ var e=(typeof importError==='function'&&importError())||['it was refused'];
+   impSay('Not loaded. '+e.join('. ')+'.',1); return; }
+  impSay('Loaded '+(np.name||'the record')+'. Nothing else was touched.');
+  if(typeof syncCh==='function')syncCh();
+  if(typeof render==='function')render();
+  if(typeof status==='function')status('Record loaded.');};
+ var ig;
+ if((ig=$('shimpgo')))ig.onclick=function(){impRun(($('shimp')||{}).value||'');};
+ if((ig=$('shimpf')))ig.onclick=function(){var f=$('shimpfile'); if(f)f.click();};
+ if((ig=$('shimpfile')))ig.onchange=function(){
+  var f=ig.files&&ig.files[0]; if(!f)return;
+  var rd=new FileReader();
+  rd.onload=function(){var t=$('shimp'); if(t)t.value=String(rd.result||'');
+   impRun(String(rd.result||''));};
+  rd.onerror=function(){impSay('That file could not be read.',1);};
+  rd.readAsText(f);};
  var d=$('densheet'), now=densGet();
  if(d){d.innerHTML=DENS.map(function(x){
    return '<button type="button" class="dens-opt'+(x[0]===now?' on':'')+'" data-dens2="'+x[0]+'" '

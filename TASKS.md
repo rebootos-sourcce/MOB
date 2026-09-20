@@ -632,6 +632,115 @@ itself twice on the way with both failures recorded in its own comments.
 
 ---
 
+## 0l. RULED 20 SEPTEMBER, SEVENTH PASS. THE SNIFFER, AND WHAT IT KNOWS.
+
+**His questions.** "Does a sniffer know what it is supposed to be sniffing? Has
+it got the information? Does it have the logic that I supply from The Mechanics
+of Being? What is the system looking for? What is the system doing? I need
+whoever is part of the team to ask me questions so that we can refine the
+sniffer so that it is exceptional. And then we need that schema, system and
+architecture design developed and added to not only the software, but our TDD
+and documentation."
+
+### THE ANSWER, MEASURED. IT DOES NOT KNOW WHAT IT IS SNIFFING.
+
+Every figure below was taken against the built engine and the book, and the
+probe was checked against a known good case first, because the first run of it
+reported zero of thirty three saboteurs in the book and was wrong.
+
+    the lexicon                192 words, 22 phrase rows, 124 phrases,
+                               66 adjectives
+    the nine axes              8 of 9 axis names are NOT in the lexicon.
+                               only "sad" is there. fear, anger, shame,
+                               disgust, apathy, shock, surprise and
+                               anticipation are not words it can find.
+    the thirty three saboteurs all 33 ARE named in the book, so the canon is
+                               sourced. they carry 7 distinct cue words
+                               between them: fear, anxiety, anger, sadness,
+                               disgust, shame, shock.
+    those 7 cue words          0 of 7 are in the lexicon.
+    provenance                 77 of 192 lexicon words appear anywhere in the
+                               book. the other 115 were written by hand with
+                               no stated source, and the file says so: its
+                               own header is about a merge, not an origin.
+
+**So: the instrument cannot find the names of the nine things it measures, and
+cannot find any of the seven words that identify its thirty three saboteurs.**
+That single fact explains every other measurement this session. One of fourteen
+span coverage. Thirteen of fourteen persona lines returning zero imprints.
+Charge spreading thin instead of concentrating. A story with eleven imprints
+loading nothing.
+
+- [ ] **SNF1.** The lexicon has no owner and no provenance. `engine/lexicon.js`
+  is a hand written table whose header documents a merge rather than a source.
+  The canon tables are sourced from the book. This one is not.
+- [ ] **SNF2. What the system is looking for has never been written down.** That
+  is his question and it does not have an answer in the repository. It has to
+  become a document before it becomes better code.
+- [ ] **SNF3. The team asks him questions.** His explicit instruction, and this
+  is the place in the product where it matters most, because the logic is his
+  and the book is his.
+- [ ] **SNF4.** Then the schema, the system and the architecture, into the
+  software AND into a technical design document AND into the documentation.
+  Three places, ruled.
+
+### WAITING ON HIM, AND THESE ARE THE ONES THAT BLOCK
+
+- [?] Is the lexicon supposed to be derived from The Mechanics of Being, or is
+  it allowed to be a separate instrument vocabulary with its own justification?
+- [?] When a person writes the name of an axis plainly, "I was afraid", should
+  that land on the axis directly, or is a named feeling deliberately weaker
+  evidence than a described behaviour?
+
+---
+
+## 0m. RULED 20 SEPTEMBER, EIGHTH PASS. MEANING, AND THE WAY BACK.
+
+### HIS TWO FINDINGS ON THE FIELD
+
+**"I am hovering over things like Rebel, refuses the frame, affinity 16 percent.
+Pre-teen, speaks from the solar throat. Innocent, takes it at face value,
+affinity 71 percent. I am currently hovering and I am getting zero information
+that is helpful to me."**
+
+**"If I click, how do I get back?"**
+
+### TT. THE RULE SET AROUND DATA AND INFORMATION.
+
+- [ ] **TT1.** "What are our rules for our tooltips?" There are none, and that is
+  the finding. A rule set has to exist before the copy is rewritten, or the next
+  person writes the same unhelpful line in a different voice.
+- [ ] **TT2. Everything must be meaningful.** His standard, and the test he just
+  applied is the right one: read the line and ask what a person can do with it.
+  "Refuses the frame, affinity 16 percent" passes no version of that test. It
+  says what the archetype is called and how much of the blueprint it is, and
+  neither is a thing about **him**.
+- [ ] **TT3. What a tooltip owes, as a first proposal to be argued.** Three
+  things and in this order: what this is, what it says about you, and what you
+  can do with it. The current copy carries only the first. "Affinity 16 percent"
+  is a share of a blueprint, and the useful sentence beside it is what a low
+  share of that archetype means for the person reading it.
+- [ ] **TT4.** The story team, the writers, editorial and copy own the sentences.
+  The rule set is theirs too, and it has to be short enough to hold in a head.
+- [ ] **TT5.** This lands on top of the information system already delivered,
+  which ruled that a name is glossed once in one table and the tip shows it.
+  That rule says WHERE a definition lives. His question is WHAT it has to say.
+  They are two halves and neither works alone.
+
+### NAV. THE WAY BACK, AND THERE IS NOT ONE.
+
+- [ ] **NAV1.** "If I click, how do I get back?" Pressing a mark on the Field
+  opens a drill and the drill replaces the surface. There is no back control, no
+  breadcrumb and no gesture that returns a person to where they were.
+- [ ] **NAV2.** This is worse than an inconvenience on this product: the Field
+  is a thing a person explores by pressing into it, so a one way door punishes
+  exactly the behaviour the surface is built to invite.
+- [ ] **NAV3.** Escape already closes some sheets and not others. One rule, one
+  control, every surface, and it has to work on a phone where there is no
+  escape key.
+
+---
+
 ## 0c. RULED 20 SEPTEMBER, SECOND PASS. THE ARRIVAL, THE FEATHERS AND KARMA
 
 **"I didn't give you feedback on the feathers. I don't give you feedback

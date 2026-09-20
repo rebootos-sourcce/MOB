@@ -261,8 +261,19 @@ var TIP=(function(){
   CUR=null;}
  function soon(){clearTimeout(HOLD); HOLD=setTimeout(hide,GRACE);}
 
+ /* A NATIVE TITLE IS A CARRIER, and leaving it out made the headline claim for
+    this module false. read() falls back to the title, which is what was meant
+    to make all one hundred and ninety five hover only definitions tap
+    reachable the moment this loaded. But carrier() never recognised a title
+    only element, so read() was never called on one. Measured after it landed:
+    280 title carriers, 8 data-tip carriers, four of those 0 by 0 pixels. Four
+    carriers in the whole product opened a panel, not one hundred and ninety
+    five.
+
+    The title is suppressed and restored around a show already, so including it
+    here cannot produce two tooltips on one element. */
  function carrier(t){
-  return t&&t.closest?t.closest('[data-tip],[data-tip-t]'):null;}
+  return t&&t.closest?t.closest('[data-tip],[data-tip-t],[title]'):null;}
 
  function wire(){
   if(!document.body)return;
@@ -286,13 +297,31 @@ var TIP=(function(){
   /* TAP. The only route on a phone, and a second route everywhere else.
      pointerdown rather than click, so the panel is up before the carrier's
      own click handler navigates. */
+  /* ON A PHONE, EXPLAIN AND NAVIGATE WERE ONE GESTURE AND THE WRONG ONE WON.
+     Measured at 390 on a rail row: at 120ms the tab had already changed and
+     the panel read correctly, and at 300ms the panel was empty, because the
+     navigation re-rendered the surface out from under it. The definition
+     arrived and was destroyed before it could be read.
+
+     So on a coarse pointer the first tap explains and the second acts, which
+     is what every other product with this problem does. The first tap's click
+     is swallowed in the capture phase rather than prevented on pointerdown,
+     because preventing a pointerdown does not reliably stop the click that
+     follows it. */
+  var EAT=null;
   document.addEventListener('pointerdown',function(ev){
    var c=carrier(ev.target);
    if(EL&&EL.contains(ev.target))return;
    if(!c){hide();return;}
    if(!sheet())return;                    /* a fine pointer keeps hover */
-   if(c===CUR){hide();return;}            /* tap the same thing to close */
-   clearTimeout(TO); showFor(c);},true);
+   if(c===CUR){EAT=null; hide(); return;} /* tap the same thing again and it acts */
+   clearTimeout(TO); showFor(c); EAT=c;},true);
+  document.addEventListener('click',function(ev){
+   if(!EAT)return;
+   var c=carrier(ev.target);
+   if(c!==EAT){EAT=null;return;}
+   EAT=null;
+   ev.stopPropagation(); ev.preventDefault();},true);
   /* KEYBOARD. Focus opens, escape closes, and escape is caught in the
      capture phase so a carrier inside a sheet cannot eat it. */
   document.addEventListener('focusin',function(ev){

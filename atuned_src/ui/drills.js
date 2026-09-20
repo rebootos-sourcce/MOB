@@ -20,11 +20,36 @@ function rdClose(){ANA_PICK=null;S.pin=null;
  var b=document.getElementById('rdrill');if(b){b.innerHTML='';b.style.display='none';}
  var none=document.getElementById('rdrill-none'); if(none)none.style.display='';
  render();}
+/* THE WAY BACK, AND IT WAS AT THE BOTTOM. Ruled: "If I click, how do I get
+   back?" A close control existed and it sat after the whole card, so on a long
+   drill a person had to read to the end of something they did not want in
+   order to leave it. That is a one way door on the one surface built to be
+   pressed into, which punishes exactly the behaviour the Field invites.
+
+   The control moves to the top and sticks there, it says where it goes rather
+   than saying close, and escape does the same thing. The bottom one stays,
+   because a person who did read to the end should not have to scroll back up. */
 function rdShell(h){
  var b=rdOpen(); if(!b)return;
- b.innerHTML='<div class="rd-card">'+h
+ var backTo=(typeof TABDEF!=='undefined'&&typeof S!=='undefined')
+  ? (TABDEF.filter(function(t){return t.k===S.tab;})[0]||{}).nm : '';
+ b.innerHTML='<div class="rd-card">'
+  +'<div class="rd-top"><button type="button" class="rd-back" id="rdback">'
+  +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>'
+  +'<span>'+esc(backTo?'Back to the '+String(backTo).toLowerCase():'Back')+'</span>'
+  +'</button></div>'
+  +h
   +'<button class="btn" id="rdx" style="margin-top:14px">Close</button></div>';
- var x=document.getElementById('rdx'); if(x)x.onclick=rdClose;}
+ var x=document.getElementById('rdx'); if(x)x.onclick=rdClose;
+ var k=document.getElementById('rdback'); if(k)k.onclick=rdClose;}
+/* ESCAPE LEAVES, the same as every other sheet in this product. It is bound
+   once rather than per drill, and it only fires when a drill is actually open,
+   so it never eats an escape another surface wanted. */
+addEventListener('keydown',function(e){
+ if(e.key!=='Escape')return;
+ var b=document.getElementById('rdrill');
+ if(!b||b.style.display==='none'||!b.innerHTML)return;
+ rdClose();});
 /* addrRow lives in component.js, beside the component it renders. */
 
 function runDrill(o){

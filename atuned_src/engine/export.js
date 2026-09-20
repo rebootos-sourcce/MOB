@@ -74,6 +74,19 @@ if(typeof module!=='undefined'&&module.exports){
                   verpRead:verpRead, verpShare:verpShare,
                   leanScan:leanScan, leanApply:leanApply, leanRead:leanRead,
                   VERPMIX:VERPMIX, LEANMIX:LEANMIX,
+  /* the lean, two channels. exported so the gate can reach the tables and
+     the weights by name. a table no test can reach is a table with no
+     owner, which is how six broken intake questions shipped. */
+                  LEANCH:LEANCH, LEANLEX:LEANLEX, LEANCUE:LEANCUE,
+                  LEANFRAME:LEANFRAME, LEANOUT:LEANOUT,
+                  leanAdmit:leanAdmit, leanSeries:leanSeries, leanChan:leanChan,
+                  leanNegated:leanNegated, LEANNEG:LEANNEG, LEAN_NEG_W:LEAN_NEG_W,
+  /* VERPCUE was reachable as a browser global and absent from the contract,
+     so no test could check the lean tables against it. One phrase in both
+     moves two instruments on one occurrence, which is what 'let it go' did. */
+                  VERPCUE:VERPCUE, VERPMULT:VERPMULT,
+                  LEAN_FRAME_W:LEAN_FRAME_W, LEAN_TRUST_CAP:LEAN_TRUST_CAP,
+                  LEAN_TRUST_HALF:LEAN_TRUST_HALF, LEAN_MIN_CH:LEAN_MIN_CH,
   /* the door */  read:read, input:input, throughput:throughput, output:output,
                   gatesClear:gatesClear, gatesLoad:gatesLoad, gatesSave:gatesSave,
   /* schema */    blankProfile:blankProfile, loadProfile:loadProfile,

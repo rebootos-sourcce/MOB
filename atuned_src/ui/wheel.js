@@ -387,15 +387,42 @@ function solCore(r,base){
     surface and the coherence figure was set in the middle of it, at up to
     half the core's diameter.
 
-    And coherence was printed four times on one screen: the strip above the
-    wheel, the core, the right rail's pill, and the tier word, which is
-    coherence restated in a word. Four sayings of one number is not emphasis,
-    it is the surface having no idea what it is for.
+    THE OWNER REVERSED THIS AND HE IS RIGHT. "What happened to my CQ number at
+    the centre of my circle? It's gone." The rule is his and so is the
+    reversal, and the distinction that resolves it is worth writing down:
+    a caption floating over a picture is text on the hero, and a figure at the
+    centre of the thing that figure describes is the hero labelling itself.
+    The core IS coherence. The number in the middle of it is not sitting on
+    top of the drawing, it is the drawing saying its own name.
 
-    Nothing is lost. The strip directly above the wheel carries "1% CQ" and
-    the rail carries it again, so the number is two inches away in both
-    directions. The core itself stays: it is sized and lit by coherence, which
-    is the drawing doing the work rather than a caption doing it. */
+    The other half of the old argument still stood and is kept: coherence was
+    printed four times on one screen, and the tier word is coherence restated
+    in a word. The core takes the number back and the tier word stays where it
+    went, so it is said twice and not four times.
+
+    It goes back the way the rest of this product states a figure. Large, in
+    the tier's own colour, with its scale under it in small type, because
+    every number says what it is out of. And it is suppressed on an unread
+    field, because a percentage is never printed off a default. */
+ if(!r.unread){
+  var cqc=(typeof TIERCOL!=='undefined'&&TIERCOL[r.tier])||'#'+gc.map(function(n){
+    return ('0'+Math.round(n).toString(16)).slice(-2);}).join('');
+  var big=Math.max(15,Math.min(cr0*0.52,64));
+  g.save();
+  g.textAlign='center'; g.textBaseline='alphabetic';
+  g.fillStyle=cqc;
+  g.font='500 '+big.toFixed(1)+'px Inter, system-ui, sans-serif';
+  g.fillText(String(Math.round(r.CQ)), CX, CY+big*0.30);
+  /* THE SCALE, ALWAYS. A bare 51 in the middle of a figure is the exact
+     defect the number law exists for. It is drawn only when there is room
+     for it to be legible, which is the eleven pixel floor the rest of the
+     product holds. */
+  var sm=big*0.26;
+  if(sm>=11){
+   g.fillStyle=rgba(ink,.5);
+   g.font='400 '+sm.toFixed(1)+'px Inter, system-ui, sans-serif';
+   g.fillText('of 100', CX, CY+big*0.30+sm*1.75);}
+  g.restore();}
  HIT.push({k:'core',x:CX,y:CY,rad:cr0*1.5});
  return cr0;}
 

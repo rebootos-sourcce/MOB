@@ -13,10 +13,14 @@ html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
 h1{font-size:25px;line-height:1.15;margin:0 0 4px;font-weight:600;letter-spacing:-.01em}
 .sub{color:var(--dim);font-size:14px;margin:0 0 14px;max-width:82ch}
 .eye{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin:0 0 7px}
-h2{font-size:12px;letter-spacing:.13em;text-transform:uppercase;color:var(--dim);
+/* NO ALL CAPS UI COPY. These headings are written in Title Case and a
+   text-transform would render them as all caps, which is the rule this
+   project does not bend. The eyebrow keeps its uppercase because the product's
+   own .pm-eye does, and an eyebrow is a label rather than copy. */
+h2{font-size:13.5px;letter-spacing:.02em;color:var(--dim);
  margin:28px 0 10px;font-weight:600;border-top:1px solid var(--edge);padding-top:12px}
-h3{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);
- margin:14px 0 6px;font-weight:600}
+h3{font-size:12.5px;letter-spacing:.01em;color:var(--ink);
+ margin:16px 0 6px;font-weight:600}
 p{margin:0 0 9px;max-width:84ch}
 .dim{color:var(--dim)} .faint{color:var(--faint)} b{font-weight:600}
 .row{display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap;min-width:0}
@@ -33,8 +37,8 @@ button:disabled{opacity:.34;cursor:default;border-color:var(--edge);color:var(--
  padding:14px;flex:0 1 auto;max-width:100%}
 .stage{display:block;background:#0A0B0F;border-radius:6px;max-width:100%;height:auto}
 .hrow{display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap}
-.lrail{position:relative;flex:0 0 130px;width:130px}
-.lrail span{position:absolute;left:0;width:128px;font-size:10.5px;line-height:1.25;
+.lrail{position:relative;flex:0 0 152px;width:152px}
+.lrail span{position:absolute;left:0;width:150px;font-size:10.5px;line-height:1.25;
  color:var(--dim);letter-spacing:.03em;transform:translateY(-50%)}
 .lrail span i{font-style:normal;color:var(--faint);display:block;font-size:9.5px;
  font-variant-numeric:tabular-nums;line-height:1.25}
@@ -49,8 +53,8 @@ button:disabled{opacity:.34;cursor:default;border-color:var(--edge);color:var(--
 .num{display:grid;grid-template-columns:auto auto;gap:2px 12px;font-size:12.5px;margin:10px 0 0}
 .num dt{color:var(--dim)} .num dd{margin:0;text-align:right;font-variant-numeric:tabular-nums}
 .num dd em{color:var(--faint);font-style:normal;font-size:11px}
-.num dt.hd{grid-column:1/3;font-size:10px;letter-spacing:.11em;text-transform:uppercase;
- margin-top:8px;color:var(--faint)}
+.num dt.hd{grid-column:1/3;font-size:11px;letter-spacing:.01em;font-weight:600;
+ margin-top:9px;color:var(--faint)}
 .strip{display:flex;gap:9px;flex-wrap:wrap}
 .fr{background:var(--panel2);border:1px solid var(--edge);border-radius:7px;padding:9px}
 .fr canvas{display:block;background:#0A0B0F;border-radius:4px;max-width:100%;height:auto}
@@ -59,7 +63,7 @@ button:disabled{opacity:.34;cursor:default;border-color:var(--edge);color:var(--
 /* THE PEGS. twenty one laws, grouped by the seat each is seated at. */
 .pegs{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:4px 16px}
 .pgrp{margin-bottom:6px}
-.pgrp>h4{margin:8px 0 3px;font:600 10px/1 inherit;letter-spacing:.11em;text-transform:uppercase}
+.pgrp>h4{margin:9px 0 3px;font:600 11.5px/1.2 inherit;letter-spacing:.01em}
 .peg{display:flex;align-items:center;gap:8px;font-size:11.5px;padding:1px 0}
 .peg label{flex:1 1 auto;color:var(--dim);white-space:nowrap;overflow:hidden;
  text-overflow:ellipsis}
@@ -76,15 +80,15 @@ table{border-collapse:collapse;font-size:12.5px;width:100%;min-width:620px;max-w
 .tscroll{max-width:1120px;overflow-x:auto;scrollbar-color:var(--edge) transparent}
 th,td{text-align:left;padding:5px 11px 5px 0;border-bottom:1px solid var(--edge);
  font-variant-numeric:tabular-nums}
-th{color:var(--faint);font-weight:500;font-size:10.5px;letter-spacing:.09em;text-transform:uppercase}
+th{color:var(--faint);font-weight:600;font-size:11px;letter-spacing:.01em}
 .sheet{display:grid;grid-template-columns:repeat(auto-fill,minmax(106px,1fr));gap:9px;max-width:1120px}
 .sheet .c{background:var(--panel2);border:1px solid var(--edge);border-radius:6px;padding:6px}
 .sheet canvas{display:block;background:#0A0B0F;border-radius:3px;max-width:100%;height:auto}
 .sheet .t{font-size:10px;color:var(--faint);margin-top:5px;line-height:1.3}
 .key{display:flex;gap:16px;flex-wrap:wrap;font-size:12.5px;color:var(--dim);max-width:1120px}
 .key div{max-width:29ch}
-.key b{color:var(--ink);display:block;font-size:10.5px;letter-spacing:.08em;
- text-transform:uppercase;margin-bottom:3px}
+.key b{color:var(--ink);display:block;font-size:11.5px;letter-spacing:.01em;
+ margin-bottom:3px}
 .warn{border-left:2px solid var(--gold);padding-left:12px;color:var(--dim);font-size:13.5px;max-width:82ch}
 .cost{font-variant-numeric:tabular-nums;font-size:12.5px;color:var(--dim)}
 .cost b{color:var(--ink)}
@@ -95,7 +99,7 @@ th{color:var(--faint);font-weight:500;font-size:10.5px;letter-spacing:.09em;text
 </style></head><body><div class="wrap">
 <p class="eye">Proto, avatar, approach one of three</p>
 <h1>The Armature</h1>
-<p class="sub">A body reduced to the parts that carry a reading, and three channels that cannot be confused. The line work is the record and it only ever completes. The outer dotted ring at each seat is the reach, and the pegs move it under your hand. The grey calipers are today, and they are allowed to come back. Nothing on the graphic is text and nothing on it is a score.</p>
+<p class="sub">A body reduced to the parts that carry a reading, and three channels that cannot be confused. The line work is the record and it only ever completes. The gauge beside each seat is the reach, and the pegs move it under your hand. The grey bar under the gauge is today, and it is allowed to come back. Nothing on the graphic is text and nothing on it is a score. Press something.</p>
 <div id="mount"></div>
 
 <h2>What This Refuses To Draw</h2>
@@ -103,7 +107,7 @@ th{color:var(--faint);font-weight:500;font-size:10.5px;letter-spacing:.09em;text
 <h2>The Symbol Argument</h2>
 <p class="dim">An armature is what a figure is built on. It is a thing you add to, which is the correct object for a record. The body is not a metaphor here: every one of the 112 addresses already carries a named plexus and a location, the seat heights come straight out of PMBANDS in engine/data/practice.js, and a body chart is the clinically validated form for somatic self report rather than a decorative choice. The broken segment is the load bearing part of the argument. A drawing that is not finished is not a damaged drawing, and a technical elevation with parts still dashed reads as work in hand.</p>
 <h2>Not Bulky, And Nothing To Be Taught</h2>
-<p class="dim">Bulky is ink without reading. Four kinds of mark carry four readings and there is no fifth: line work is the record, the dotted ring is the reach, the solid ring is where the seat stands, the grey ticks are what is carrying. No mark is drawn twice, no mark is filled, and the heaviest stroke on the figure is 2.2 pixels. Nothing to be taught is the harder test and this is the only one of the three that passes it cold: a person knows what a body is, knows that a dashed line is not finished, and knows that something pressing in from outside is pressure. The one sentence anybody needs is the caption under the figure, and if the caption were removed the drawing would still be read roughly right.</p>
+<p class="dim">Bulky is ink without reading, and the first version of this page was bulky: three concentric rings and a ring of spokes at every seat, which is twenty one circles and up to a hundred and twelve spokes on a three hundred pixel figure. It measured 11,687 lit pixels and read as a sea urchin. Splitting the channels between the body and a gauge beside it brought that to 7,582 on the same profile, a third of the ink gone with every reading kept. Four kinds of mark carry four readings and there is no fifth: line work is the record, the dotted gauge is the reach, the solid gauge and its bead are where the seat stands, the grey bar is what is carrying. Nothing to be taught is the harder test and this is the only one of the three that passes it cold: a person knows what a body is, knows that a dashed line is not finished, and knows that something pressing in from outside is pressure. The one sentence anybody needs is the caption under the figure, and if the caption were removed the drawing would still be read roughly right.</p>
 <h2>The Honest Risk</h2>
 <p class="warn">A standing human figure invites identification with body shape however hard the drawing refuses it, and a seat drawn dark on a body reads as a statement about an organ. The mitigation is that the dark channel is grey calipers outside the ring rather than a dimming of the body, so the figure is never drawn as less than itself. That is a mitigation and not a proof, and it is the thing to test on a real person at grid level two before this ships.</p>
 
@@ -167,6 +171,15 @@ var WHO=['Diane','Marcus','Gordon','Sofia','Blank'];
    map places its regions with */
 var SEATY={},SEATR={};
 PMBANDS.forEach(function(b){SEATY[b.b]=b.yp/100;SEATR[b.b]=b.r;});
+/* IF IT HAS A NAME IT HAS AN ICON. SEATGLYPH is the product's own seat mark
+   set, canon.js:93, stroked and never filled, and it inherits currentColor so
+   it can never disagree with the name beside it. */
+function glyph(b,px){
+ var d=SEATGLYPH[b]||SEATGLYPH._;
+ return '<svg viewBox="0 0 24 24" width="'+(px||11)+'" height="'+(px||11)
+  +'" style="vertical-align:-1px;margin-right:4px" aria-hidden="true">'
+  +'<g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" '
+  +'stroke-linejoin="round">'+d+'</g></svg>';}
 function hx(h){h=h.replace('#','');return [parseInt(h.substr(0,2),16),
  parseInt(h.substr(2,2),16),parseInt(h.substr(4,2),16)];}
 function rgba(h,a){var c=hx(h);return 'rgba('+c[0]+','+c[1]+','+c[2]+','+a+')';}
@@ -473,8 +486,14 @@ function addVerb(t,fn,off){
 function numsHtml(v){
  function r(k,val,s){return '<dt>'+k+'</dt><dd>'+val+(s?' <em>'+s+'</em>':'')+'</dd>';}
  return '<dt class="hd" style="color:'+GOLD+'">The record, append only</dt>'
-  +r('Addresses touched',v.rec.touch,'of 108')
-  +r('Addresses emptied',v.rec.addr,'of 108')
+  /* THE COUNT STATED TO USERS IS 112, and it is the only count this surface
+     is allowed to say. The working array W is the somatic set and the
+     remainder are the Field's four anchors; the total is what gets said out
+     loud. wheel.js:824 already prints "112 addresses" beside a loaded count
+     taken off W, so this follows the surface that is already shipping rather
+     than inventing a second denominator for the same thing. */
+  +r('Addresses touched',v.rec.touch,'of 112')
+  +r('Addresses emptied',v.rec.addr,'of 112')
   +r('Seats reached',v.rec.seats,'of 7')
   +'<dt class="hd">The reach. Turn a peg and it moves</dt>'
   +r('Could read',v.ceiling.toFixed(1),'of 100')
@@ -497,7 +516,18 @@ function cut(s,n){
    down to a floor and keeps the order, which is what a rail is for and what a
    painted name could never do. cone.js:213 records the 89 colliding pairs that
    taught this project the rule. */
+/* BANDS runs Root first and Root is at the BOTTOM of the figure, so the seven
+   y values arrive descending. Fed to a spreader that assumes ascending, every
+   gap reads as negative and every label is pushed down by the floor, which
+   stacked all seven into the bottom third and put them in the wrong order. The
+   spreader sorts, spaces and puts them back where they came from. */
 function spread(ys,gap,lo,hi){
+ var idx=ys.map(function(y,i){return i;}).sort(function(a,b){return ys[a]-ys[b];});
+ var o=layout(idx.map(function(i){return ys[i];}),gap,lo,hi);
+ var out=new Array(ys.length);
+ idx.forEach(function(i,k){out[i]=o[k];});
+ return out;}
+function layout(ys,gap,lo,hi){
  var o=ys.slice();
  for(var i=1;i<o.length;i++) if(o[i]-o[i-1]<gap) o[i]=o[i-1]+gap;
  var over=o[o.length-1]-hi;
@@ -508,7 +538,7 @@ function pegs(){
  var h='';
  BANDS.forEach(function(b){
   var s=V.seats.filter(function(x){return x.b===b;})[0];
-  h+='<div class="pgrp"><h4 style="color:'+SEATCOL[b]+'">'+b
+  h+='<div class="pgrp"><h4 style="color:'+SEATCOL[b]+'">'+glyph(b,13)+b
    +' <span style="color:#5E5B57;letter-spacing:0;text-transform:none;font-weight:400">'
    +'reaches '+s.reach+' of 100, standing at '+s.at+'</span></h4>';
   s.laws.forEach(function(l){
@@ -771,16 +801,21 @@ function seatY(g,b){return g.Y(SEATY[b]*100);}
 
 function labels(v){
  var g=geo(HERO_W,HERO_H), h='';
- var ys=spread(v.seats.map(function(s){return seatY(g,s.b);}),30,14,HERO_H-14);
+ /* three lines at 9.5 and 10.5 point is 38 pixels, so the floor is 38. It was
+    30, which is what a two line label needs, and the third line was the one
+    that wrapped. A label that wraps is a label whose height the layout does
+    not know, and six of the seven pairs overlapped. The floor is read off the
+    measured box now, which came back 49 at 150 pixels wide, so 52. */
+ var ys=spread(v.seats.map(function(s){return seatY(g,s.b);}),52,24,HERO_H-24);
  v.seats.forEach(function(s,i){
   h+='<span style="top:'+ys[i].toFixed(1)+'px;color:'+SEATCOL[s.b]
-   +(v.seatPick===s.b?';font-weight:600':'')+'">'+s.b
-   +'<i>reaches '+s.reach+', stands at '+s.at+', of 100<br>'
+   +(v.seatPick===s.b?';font-weight:600':'')+'">'+glyph(s.b)+s.b
+   +'<i>reaches '+s.reach+', stands at '+s.at+'<br>'
    +s.touched+' touched, '+s.opened+' emptied, of '+s.n+'</i></span>';});
  return h;}
 function flat(v){
  return v.seats.map(function(s){
-  return '<div><b style="color:'+SEATCOL[s.b]+'">'+s.b+'</b> <i>reaches '+s.reach
+  return '<div><b style="color:'+SEATCOL[s.b]+'">'+glyph(s.b)+s.b+'</b> <i>reaches '+s.reach
    +', stands at '+s.at+', of 100. '+s.touched+' touched, '+s.opened+' emptied, of '
    +s.n+'</i></div>';}).join('');}
 
@@ -789,7 +824,10 @@ function drawSeg(x,g,seg,built,a,wd){
  seg.p.forEach(function(pt,i){var px=g.X(pt[0]),py=g.Y(pt[1]);
   if(i===0)x.moveTo(px,py); else x.lineTo(px,py);});
  if(built){x.setLineDash([]);x.globalAlpha=a;x.lineWidth=wd;}
- else{x.setLineDash([1.6,3.4]);x.globalAlpha=a*0.40;x.lineWidth=wd*0.68;}
+ /* an unbuilt segment is unbuilt, not absent. at 0.40 of the built alpha the
+    arrival figure read as a ghost rather than as a drawing with parts still
+    dashed, which is the opposite of the argument the mark is making. */
+ else{x.setLineDash([1.6,3.4]);x.globalAlpha=a*0.56;x.lineWidth=wd*0.72;}
  x.stroke(); x.setLineDash([]); x.globalAlpha=1;}
 
 function draw(x,W,H,v,t,mode){
@@ -817,7 +855,7 @@ function draw(x,W,H,v,t,mode){
  BANDS.forEach(function(b,i){
   var s=byB[b], cx=g.X(50), cy=seatY(g,b);
   var rad=(SEATR[b]/100)*g.fw*0.92*(1+breath(v.CQ,t,i));
-  x.strokeStyle=rgba('#E8E6E1',0.10); x.lineWidth=small?0.7:0.9;
+  x.strokeStyle=rgba(SEATCOL[b],0.20); x.lineWidth=small?0.7:0.9;
   x.setLineDash([1,2.6]); x.beginPath(); x.arc(cx,cy,rad,0,Math.PI*2); x.stroke();
   x.setLineDash([]);
   if(s.opened>0){

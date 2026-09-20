@@ -1,3 +1,272 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The reading</title>
+<style>
+:root{
+ /* THE SURFACE RAMP WAS NARROWER THAN A PRINTING TOLERANCE.
+
+    Measured: --bg to --panel was 1.08 to 1 and --bg to --panel-2 was 1.14.
+    Four declared levels of surface spanning a sixth of a stop, which is why
+    the page squints down to three vertical grey slabs and the eye lands on
+    nothing first. The architecture of every screen rested on a distinction
+    that was not visible.
+
+    The ground goes down and the raised surfaces go up, so the range opens
+    from both ends rather than lightening the product. Muted is a saturation
+    ruling and not a contrast one, and this changes no hue. */
+ --bg:#0C0D12; --panel:#1A1D26; --panel-2:#252833; --sunk:#090A0E;
+ --edge:rgba(255,255,255,.09); --edge-2:rgba(255,255,255,.14);
+ /* --dim WAS BELOW AA EVERYWHERE IT APPEARED, and it is the only token
+    marking the second tier of the information architecture: every eyebrow,
+    every key label, every explanatory subline. Measured at 3.70 to 1 on
+    --panel-2 and 3.92 on --panel, and it carried 104 of the 105 contrast
+    failures on the Summary in Dark. One value, 104 defects.
+
+    It also matters more than the ratio suggests. Six of the thirteen people
+    in the reference sample are 57 or older, and contrast sensitivity falls
+    materially past 55. At 3.70 that half of the sample loses the whole layer
+    that tells them what they are looking at. */
+ --ink:#EFEDE8; --mid:#B4B0A8; --dim:#94908A;
+ --root:#CF5953; --sacral:#D19255; --solar:#D4BC70;
+ --heart:#65CFA5; --throat:#65B8D4; --eye:#8296DB; --crown:#A883D6;
+ --alarm:#FF2E1F; --alarm-soft:rgba(255,46,31,.16);
+ /* THE ACCENT IS BLUE. Ruled. It was gold since the rebuild and the owner
+    never chose it: he chose the blue, which is the original app's own
+    --law-accent:#7eb8d4, used there in thirteen places. --accent is the one
+    source of truth and --gold is kept as its alias because sixty places in
+    this sheet already read that name. Nothing reads a literal.
+
+    --on-accent is the ink that sits on top of a filled accent. It was
+    var(--on-accent), a warm near black chosen against gold, and a warm ink on a cool
+    fill is the one thing that would still have read as the old palette.
+
+    --um is the umlaut on the wordmark. It sits on the bar rather than on the
+    letter, so it answers to the background. White on dark, as ruled. */
+ --accent:#7EB8D4; --gold:var(--accent); --on-accent:#0B1418;
+ /* TRUE GOLD, SEPARATE FROM --gold.
+
+    --gold is an alias for the accent and has been since the accent was ruled
+    blue, so everything reaching for "gold" gets blue. That is correct for the
+    eyebrows and the rules that were gold before the ruling, and it is wrong
+    for the one thing that was asked for in actual gold: Source OS under the
+    wordmark rendered in the blue accent, twice, because the token lied about
+    its own name.
+
+    --au is gold. Muted, warm, sitting next to the Solar seat without becoming
+    it, and dark enough on paper to hold. Nothing else uses it unless it is
+    asked for by name. */
+ --au:#C2A063;
+ /* the ink on a solid seat colour. every seat in this palette is light
+    enough that one dark ink holds on all seven, in every lighting. */
+ --on-flat:#0E1015;
+ --sky:#7EB8D4; --um:#FFFFFF;
+ /* #CB5F59 measures 4.01 against --panel-2 and 4.44 against the seat tinted
+    panel. It is not carrying text today, it is a three pixel marker and a
+    seven percent wash, so the 4.5 text threshold is not the one it has to
+    clear. Moved anyway: a marker that thin at four to one is hard to see at
+    all past about fifty five, and three of the nine reference people are
+    fifty seven or older. #D4736D measures 4.87 and 5.40 on the same two.
+    Snow's own value is 5.62 and does not move. */
+ --good:#68CBA4; --bad:#D4736D;
+ /* Lexend is a wide face by design, which is why the rail clipped: Witness
+    rendered as Wit. Inter is narrower at the same size and carries more
+    characters per line without dropping the point size. The font tuner is
+    gone on the owner's ruling, so this is the one face and there is no
+    per person override to keep working. */
+ --sans:'Inter','Inter Tight',system-ui,-apple-system,'Segoe UI',sans-serif;
+ /* ONE FAMILY MEANT ONE FAMILY, AND THIS TOKEN NAMED A SECOND ONE.
+
+    The comment above it said Lexend carries the digits. Lexend was never in
+    the build. When Google Fonts went, Inter was embedded as a variable font
+    and Lexend was not, so document.fonts lists exactly one family and every
+    number in this product, every reading, every allowance, every tabular
+    column, was falling through to system-ui. Which face that is depends on
+    the machine, so the one thing this token existed to guarantee, that
+    columns of figures line up, was the one thing it could not do.
+
+    document.fonts.check('12px Lexend') returns true, which is what hid this:
+    check answers whether the text can be rendered at all, and a fallback
+    counts. The list of loaded families is the honest reader and it has one
+    entry.
+
+    Inter carries the digits now, which is a statement about a font that is
+    actually here. Tabular figures are a feature of Inter and every column in
+    the sheet already asks for them with font-variant-numeric. */
+ --num:'Inter','Inter Tight',system-ui,-apple-system,sans-serif;
+ --r:16px; --r-s:11px; --r-xs:8px;
+ /* Minimum touch target. 69 of the interactive elements measured under 44px,
+    which is the floor a finger needs. The number lives here so it cannot
+    drift back into forty separate padding declarations. */
+ --tap:44px;
+ /* Motion. Measured before this block existed: 381 of 384 live animated
+    elements ran on the browser default ease, a symmetric curve that reads as
+    mechanical because it decelerates as slowly as it accelerates. The four
+    hand written beziers in this sheet sat on one live element. Three curves
+    and four durations, named for the job, so a hover and a tab cannot drift
+    to the same speed again.
+
+    out  for a thing arriving. fast off the mark, long settle.
+    in   for a thing leaving. it does not need to be watched out.
+    land for a thing that lands. one overshoot, no ring. */
+ --ease-out:cubic-bezier(.22,1,.36,1);
+ --ease-in:cubic-bezier(.4,0,1,1);
+ --ease-land:cubic-bezier(.34,1.56,.64,1);
+ /* hover, press, focus. below about 100ms a change reads as a jump with no
+    cause; above about 150 the pointer has already left. */
+ --t-micro:120ms;
+ /* one thing entering or leaving. */
+ --t-element:220ms;
+ /* a panel or a rail, which carries more area and so needs more time. */
+ --t-surface:320ms;
+ /* a whole tab. the longest thing the product is allowed to take. */
+ --t-context:420ms;
+ /* the spacing scale. three steps. 6 between things in one control, 10
+    between controls, 16 between blocks. gaps of 5, 7, 8, 9 and 11 were all
+    doing one of those three jobs with no reason stated, so they read as
+    drift rather than as rhythm. */
+ --g1:6px; --g2:10px; --g3:16px;
+ --shadow:0 12px 34px rgba(0,0,0,.34);
+}
+
+/* ============================================================
+   THE QUIZ, AND THE SCORE AT THE END OF IT.
+
+   Twenty one laws asked three ways, which is the sixty three the
+   app's own intake asks, read out of the engine at run time rather
+   than copied. Copying them would be a second table with no owner,
+   which is the defect this repository has already been bitten by.
+
+   NOTHING LEAVES THE DEVICE. There is no request on this page. The
+   answers live in this browser until the person carries them out
+   themselves, which is also why there is no email box: an email as
+   the only key means anything that knows an address can retrieve a
+   person's somatic and psychological profile, and DECISIONS.md
+   forbids exactly that. The handoff is a file the person holds.
+   ============================================================ */
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+ font:400 16px/1.65 var(--sans);-webkit-font-smoothing:antialiased}
+.page{max-width:780px;margin:0 auto;padding:26px 20px 120px}
+h1{font-size:clamp(22px,4vw,28px);font-weight:300;letter-spacing:.04em;margin:0 0 6px}
+h2{font-size:19px;font-weight:500;margin:0 0 8px}
+p{color:var(--mid);margin:0 0 14px;font-size:15px;line-height:1.68}
+.eye{font-family:var(--num);font-size:11px;color:var(--dim);letter-spacing:.06em;
+ display:block;margin:0 0 7px}
+.dim{color:var(--dim);font-size:13.5px}
+.btn{min-height:var(--tap);padding:12px 22px;border-radius:999px;
+ background:none;border:1px solid var(--edge-2);color:var(--ink);
+ font:inherit;font-size:15px;cursor:pointer}
+.btn:hover{border-color:var(--accent)}
+.btn.pri{background:var(--accent);border-color:var(--accent);color:var(--on-accent);font-weight:500}
+.btn.pri:hover{filter:brightness(1.08)}
+.btn:disabled{opacity:.4;cursor:default}
+.btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.acts{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:18px}
+
+/* ---- the opening panel: what a ten means ---- */
+.accg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:18px 0}
+.accp{padding:14px 15px;background:var(--panel);border:1px solid var(--edge);
+ border-radius:var(--r-s)}
+.accp p{font-size:13.5px;margin:0;line-height:1.6}
+.key{font-family:var(--num);font-size:13px;color:var(--mid);
+ padding:12px 15px;background:var(--sunk);border-radius:var(--r-s);margin:0 0 6px}
+.key b{color:var(--ink)}
+.key span{color:var(--dim);margin:0 7px}
+@media (max-width:720px){.accg{grid-template-columns:1fr}}
+
+/* ---- progress. a bar and what is LEFT, never a count against a total ---- */
+.prog{position:sticky;top:0;z-index:5;background:var(--bg);
+ padding:12px 0 10px;margin:0 0 18px;border-bottom:1px solid var(--edge)}
+.ptrack{height:3px;border-radius:2px;background:var(--sunk);overflow:hidden}
+.ptrack i{display:block;height:100%;background:var(--accent);
+ transition:width var(--t-element) var(--ease-out)}
+.pline{display:flex;justify-content:space-between;align-items:baseline;
+ gap:12px;margin-top:8px;font-family:var(--num);font-size:11.5px;color:var(--dim)}
+.pline b{color:var(--mid);font-weight:400}
+
+/* ---- one law, three framings ---- */
+.law{margin:0 0 30px;padding:18px 20px 20px;background:var(--panel);
+ border:1px solid var(--edge);border-left:2px solid var(--c,var(--accent));
+ border-radius:var(--r-s)}
+.lh{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:3px}
+.lh b{font-size:19px;font-weight:500}
+.lh em{font-style:normal;font-family:var(--num);font-size:11px;color:var(--c,var(--accent))}
+.lseat{color:var(--dim);font-size:13px;margin:0 0 16px}
+.q3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}
+
+.qc{padding:13px 14px;background:var(--panel-2);border:1px solid var(--edge);
+ border-radius:var(--r-xs)}
+.qt{font-size:14px;line-height:1.55;margin:0 0 11px;color:var(--ink)}
+/* ELEVEN IS THE FLOOR and these were 10.5, which is the type rule the app's
+   own design gate enforces and this page was breaking 189 times. */
+.qt em{display:block;font-style:normal;font-family:var(--num);font-size:11px;
+ color:var(--dim);letter-spacing:.05em;margin-bottom:5px}
+/* ELEVEN COLUMNS THAT NEVER WRAP. As a flex row with wrap, 390 put 0 to 8 on
+   one line and stretched 9 and 10 across a second, so the two ends of the
+   scale read as different controls from the other nine. A grid of eleven
+   equal columns cannot do that at any width. Each cell is about 28 across at
+   390, which is under the tap floor sideways and cannot be otherwise with
+   eleven of them, so the height carries the target instead. */
+.sl{display:grid;grid-template-columns:repeat(11,minmax(0,1fr));gap:3px}
+.n{min-width:0;min-height:38px;padding:6px 0;
+ background:var(--sunk);border:1px solid transparent;border-radius:var(--r-xs);
+ color:var(--dim);font-family:var(--num);font-size:12.5px;cursor:pointer;
+ transition:background var(--t-micro) var(--ease-out),color var(--t-micro) var(--ease-out)}
+.n:hover{color:var(--ink);border-color:var(--edge-2)}
+.n.on{background:var(--c,var(--accent));border-color:var(--c,var(--accent));
+ color:var(--on-accent);font-weight:600}
+.n:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
+.slk{display:flex;justify-content:space-between;font-family:var(--num);
+ font-size:11px;color:var(--dim);margin-top:6px}
+.found{margin-top:14px;padding:10px 13px;background:var(--sunk);
+ border-radius:var(--r-xs);font-size:13.5px;color:var(--mid)}
+.found b{color:var(--ink);font-family:var(--num);font-weight:500}
+
+/* ---- the score ---- */
+.score{text-align:center;padding:26px 0 8px}
+.ring{display:block;margin:0 auto 6px}
+.band{font-size:clamp(26px,5vw,34px);font-weight:300;letter-spacing:.03em;margin:8px 0 2px}
+.state{color:var(--dim);font-size:14px;font-family:var(--num);margin:0 0 20px}
+.sd{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:22px 0}
+.sdc{padding:15px 16px;background:var(--panel);border:1px solid var(--edge);
+ border-radius:var(--r-s);text-align:left}
+.sdc b{display:block;font-family:var(--num);font-size:22px;font-weight:500;
+ color:var(--ink);margin-bottom:2px}
+.sdc span{display:block;font-size:12.5px;color:var(--dim);line-height:1.5}
+@media (max-width:720px){.sd{grid-template-columns:1fr}}
+.rail{margin:24px 0}
+.lr{display:grid;grid-template-columns:minmax(0,1fr) 84px 44px;gap:11px;
+ align-items:center;padding:7px 0;border-bottom:1px solid var(--edge)}
+.lr span{font-size:14px}
+.lr .tr{height:4px;border-radius:2px;background:var(--sunk);overflow:hidden}
+.lr .tr i{display:block;height:100%;border-radius:2px}
+.lr b{font-family:var(--num);font-size:13px;font-weight:500;text-align:right;color:var(--mid)}
+.take{padding:20px;background:var(--panel);border:1px solid var(--edge);
+ border-left:2px solid var(--accent);border-radius:var(--r-s);margin:26px 0}
+.warn{padding:14px 16px;background:var(--sunk);border-radius:var(--r-s);
+ font-size:13.5px;color:var(--dim);line-height:1.65;margin:18px 0}
+code{font-family:var(--num);font-size:12px;color:var(--mid);
+ background:var(--sunk);padding:2px 6px;border-radius:3px;word-break:break-all}
+.hide{display:none}
+/* THE PHONE RULES SIT LAST, and they did not, which is the whole reason the
+   scale buttons measured 38 tall on a phone after being told to be 44. The
+   media query was written next to the thing it modifies and the base rule for
+   .n came after it in the sheet, so the base won on source order at equal
+   specificity. Cascade, not a typo, and a measurement caught it rather than a
+   reading of the file. */
+@media (max-width:760px){
+ .q3{grid-template-columns:1fr}
+ /* a thumb needs forty four, and eleven buttons cannot each be forty four
+    wide on a phone, so the height carries the target instead */
+ .n{min-height:var(--tap);font-size:13px}
+ .accg{grid-template-columns:1fr}
+ .sd{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style></head><body>
+<div class="page">
+ <div id="app"></div>
+</div>
+<script>
 /* ============================================================
    THE 112 ADDRESSES. 108 somatic, seated at a named plexus or
    nerve, plus 4 field anchors above and below the body.
@@ -2211,21 +2480,12 @@ function leanAdmit(self,other){
    come out and still mean what they meant, so anything reading them is
    unaffected. Everything else on the object is new. */
 function leanScan(text){
- var src=leanNorm(text), rows=leanKeys(), hits=[], spans=[];
+ var src=leanNorm(text), rows=leanKeys(), hits=[];
  rows.forEach(function(row){
   var t=' '+row.p+' ', at=src.indexOf(t);
   while(at>=0){
-   /* SPANS, NOT HITS, DECIDE WHAT IS BLOCKED, and the difference is not
-      cosmetic. A negated long match that was merely dropped left its own
-      substring free to match, so negation on the long form was defeated by
-      the short form inside it: "none of it was my fault" voided
-      'it was my fault' and then matched 'my fault', and the deflection
-      account read one accountability cue for a sentence that refuses all of
-      it. Measured before this line was written. A voided match still
-      consumes its span. */
-   if(!spans.some(function(h){return h.at<=at&&at<h.at+h.len+1;})){
-    spans.push({at:at,len:row.p.length});
-    if(!leanNegated(src,at)) hits.push({p:row.p,k:row.k,fr:row.fr,at:at});}
+   var blocked=hits.some(function(h){return h.at<=at&&at<h.at+h.p.length+1;});
+   if(!blocked&&!leanNegated(src,at)) hits.push({p:row.p,k:row.k,fr:row.fr,at:at});
    at=src.indexOf(t,at+1);}});
  hits.sort(function(a,b){return a.at-b.at;});
  var out={benign:0,malignant:0,emp:0,empLack:0,acc:0,accLack:0,
@@ -5727,10 +5987,6 @@ if(typeof module!=='undefined'&&module.exports){
                   LEANFRAME:LEANFRAME, LEANOUT:LEANOUT,
                   leanAdmit:leanAdmit, leanSeries:leanSeries, leanChan:leanChan,
                   leanNegated:leanNegated, LEANNEG:LEANNEG, LEAN_NEG_W:LEAN_NEG_W,
-  /* VERPCUE was reachable as a browser global and absent from the contract,
-     so no test could check the lean tables against it. One phrase in both
-     moves two instruments on one occurrence, which is what 'let it go' did. */
-                  VERPCUE:VERPCUE, VERPMULT:VERPMULT,
                   LEAN_FRAME_W:LEAN_FRAME_W, LEAN_TRUST_CAP:LEAN_TRUST_CAP,
                   LEAN_TRUST_HALF:LEAN_TRUST_HALF, LEAN_MIN_CH:LEAN_MIN_CH,
   /* the door */  read:read, input:input, throughput:throughput, output:output,
@@ -5780,3 +6036,220 @@ if(typeof module!=='undefined'&&module.exports){
   /* util */      clamp:clamp, leaves:(typeof leaves==='function'?leaves:null)
  };
 }
+
+/* ============================================================
+   THE PAGE. Three states: the opening, the questions, the score.
+   ============================================================ */
+var store={};
+try{ bindStore(function(k){return localStorage.getItem(k);},
+              function(k,v){localStorage.setItem(k,v);}); }
+catch(e){ bindStore(function(k){return store[k];},function(k,v){store[k]=v;}); }
+
+var KEY='atuned.quiz.v1';
+var A={};                         /* index -> 0..10 */
+var Q=iqList();
+var STATE='open';
+var el=document.getElementById('app');
+var esc=function(s){return String(s==null?'':s)
+ .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');};
+
+/* WHAT IS KEPT, AND WHERE. The browser, and nowhere else. A save that cannot
+   happen is reported rather than swallowed, which is the rule the app already
+   carries for every write that can fail. */
+var SAVED=true;
+function save(){
+ try{ localStorage.setItem(KEY,JSON.stringify(A)); SAVED=true; }
+ catch(e){ SAVED=false; }}
+function load(){
+ try{ var r=localStorage.getItem(KEY); if(r)A=JSON.parse(r)||{}; }catch(e){A={};}}
+
+var SEATVAR={'Root':'--root','Sacral':'--sacral','Solar':'--solar','Heart':'--heart',
+ 'Throat':'--throat','3rd Eye':'--eye','Crown':'--crown'};
+var SIDE={left:'Under cost',right:'Unseen',neutral:'Ordinary day'};
+var SEATLINE={'Crown':'what you belong to','3rd Eye':'what you see',
+ 'Throat':'what you say','Heart':'what you give','Solar':'what you carry',
+ 'Sacral':'what you want','Root':'what you stand on'};
+
+function answered(){var n=0;for(var k in A)if(A[k]!=null)n++;return n;}
+function left(){return Q.length-answered();}
+
+/* the profile the answers make, built fresh every time so nothing accumulates */
+function scored(){
+ var p=blankProfile('You');
+ p.intake={answers:{},completedAt:new Date().toISOString()};
+ for(var k in A)if(A[k]!=null)p.intake.answers[+k]=A[k];
+ iqApply(p);
+ loadProfile(p);
+ return {p:p, r:compute(), s:iqScore(p)};}
+
+/* ---------- the opening ---------- */
+function viewOpen(){
+ var done=answered();
+ return '<h1>The reading</h1>'
+ +'<p>Twenty one laws, asked three ways each. The gap between the three is the '
+ +'measurement, so answering the same law differently is the point rather than '
+ +'a mistake.</p>'
+ +'<div class="accg">'
+  +'<div class="accp"><span class="eye">A ten is a hundred out of a hundred</span>'
+  +'<p>Not what you intend and not what you would like to be true. What you '
+  +'actually do, every time, without exception. A nine means you slip about one '
+  +'time in ten, and that is a real number this instrument can use.</p></div>'
+  +'<div class="accp"><span class="eye">This is accuracy, not judgment</span>'
+  +'<p>Do you go to the gym four days a week like you say. Do you tell the truth '
+  +'to yourself as readily as you tell it to other people. Everybody slips, and '
+  +'the slip is what is being measured.</p></div>'
+  +'<div class="accp"><span class="eye">Nothing leaves this device</span>'
+  +'<p>No account, no email, no request of any kind. Your answers stay in this '
+  +'browser until you carry them somewhere yourself, and you can stop whenever '
+  +'and come back.</p></div>'
+ +'</div>'
+ +'<p class="key"><b>0</b> never <span>&middot;</span> <b>5</b> about half the time '
+ +'<span>&middot;</span> <b>10</b> every time</p>'
+ +'<div class="acts"><button class="btn pri" id="go">'
+ +(done?'Carry on where you left off':'Begin')+'</button>'
+ +(done?'<button class="btn" id="reset">Start again</button>'
+   +'<span class="dim">'+left()+' left</span>':'')+'</div>';}
+
+/* ---------- the questions ---------- */
+function viewQuiz(){
+ var pct=Math.round(answered()/Q.length*100);
+ var h='<div class="prog"><div class="ptrack"><i style="width:'+pct+'%"></i></div>'
+  +'<div class="pline"><b>'+(left()===0?'All answered':left()+' left')+'</b>'
+  +'<span>'+(SAVED?'Kept in this browser':'This browser is not keeping it')+'</span>'
+  +'</div></div>';
+ /* one card per law, grouped in the order the engine holds them */
+ var byLaw={};
+ Q.forEach(function(q){ (byLaw[q.law]=byLaw[q.law]||[]).push(q); });
+ Object.keys(byLaw).forEach(function(nm){
+  var set=byLaw[nm], b=set[0].band, cv='var('+(SEATVAR[b]||'--accent')+')';
+  var vals=set.map(function(q){return A[q.i];});
+  var full=vals.every(function(v){return v!=null;});
+  h+='<div class="law" style="--c:'+cv+'">'
+   +'<div class="lh"><b>'+esc(nm)+'</b><em>'+esc(b)+'</em></div>'
+   +'<p class="lseat">'+esc(SEATLINE[b]||'')+'</p>'
+   +'<div class="q3">';
+  set.forEach(function(q){
+   h+='<div class="qc"><p class="qt"><em>'+esc(SIDE[q.side]||q.side)+'</em>'
+    +esc(q.q)+'</p><div class="sl">';
+   for(var n=0;n<=10;n++)
+    h+='<button type="button" class="n'+(A[q.i]===n?' on':'')+'" data-a="'+q.i
+      +'" data-v="'+n+'" aria-label="'+n+' out of 10">'+n+'</button>';
+   h+='</div><div class="slk"><span>never</span><span>every time</span></div></div>';});
+  h+='</div>';
+  if(full){
+   var sp=Math.max.apply(null,vals)-Math.min.apply(null,vals);
+   var mean=Math.round((vals[0]+vals[1]+vals[2])/3*10)/10;
+   h+='<div class="found"><b>'+mean+' of 10</b>, spread '+sp
+    +(sp>=3?'. The three framings disagree, which is signal.'
+          :'. The three agree, so this one is steady.')+'</div>';}
+  h+='</div>';});
+ h+='<div class="acts"><button class="btn pri" id="see"'+(left()?' disabled':'')+'>'
+  +(left()?'Answer the last '+left()+' to see the reading':'See the reading')+'</button>'
+  +'<button class="btn" id="back">Back</button></div>';
+ return h;}
+
+/* ---------- the score ---------- */
+function viewScore(){
+ var S2=scored(), r=S2.r, sc=S2.s, a=accuracy(r);
+ var tc=(typeof TIERCOL!=='undefined'&&TIERCOL[r.tier])||'var(--accent)';
+ var t=TIER_BY[r.tier]||{};
+ var C=2*Math.PI*52, off=C*(1-Math.max(0,Math.min(100,r.CQ))/100);
+ var laws=SINAMES.map(function(n){return {n:n,v:(sc[n]&&sc[n].score)||0,
+   sp:(sc[n]&&sc[n].spread)||0,b:(SI.filter(function(l){return l.nm===n;})[0]||{}).b};})
+  .sort(function(x,y){return x.v-y.v;});
+ var lo=laws.slice(0,3), hi=laws.slice(-3).reverse();
+ var h='<div class="score">'
+  +'<svg class="ring" width="140" height="140" viewBox="0 0 140 140" aria-hidden="true">'
+   +'<circle cx="70" cy="70" r="52" fill="none" stroke="rgba(128,128,128,.2)" stroke-width="5"/>'
+   +'<circle cx="70" cy="70" r="52" fill="none" stroke="'+tc+'" stroke-width="5" '
+   +'stroke-linecap="round" stroke-dasharray="'+C.toFixed(1)+'" '
+   +'stroke-dashoffset="'+off.toFixed(1)+'" transform="rotate(-90 70 70)"/>'
+   +'<text x="70" y="70" text-anchor="middle" dominant-baseline="central" '
+   +'fill="var(--ink)" font-family="var(--num)" font-size="30" font-weight="500">'
+   +Math.round(r.CQ)+'</text>'
+   +'<text x="70" y="94" text-anchor="middle" fill="var(--dim)" '
+   +'font-family="var(--num)" font-size="10.5">of 100</text>'
+  +'</svg>'
+  +'<div class="band" style="color:'+tc+'">'+esc(r.tier)+'</div>'
+  +'<div class="state">'+esc(t.state||'')+'</div></div>'
+ +'<p>'+esc(t.def||'')+'</p>'
+ +(t.energy?'<p>'+esc(t.energy)+'</p>':'')
+ +'<div class="sd">'
+  +'<div class="sdc"><b>'+r.Ig.toFixed(1)+'</b><span>Integrity, of 10. '
+  +'The mean of the twenty one, and the thing the reading is built from.</span></div>'
+  +'<div class="sdc"><b>'+Math.round(a.pct)+'</b><span>How much of you this has '
+  +'measured, of 100, plus or minus '+Math.round(a.band)+'. Only the laws so far, '
+  +'which is why it is low.</span></div>'
+  +'<div class="sdc"><b>'+laws.filter(function(l){return l.sp>=3;}).length+'</b>'
+  +'<span>Laws where the three framings disagreed by three or more. That gap is '
+  +'where the instrument can see something.</span></div>'
+ +'</div>'
+ +'<h2>Where it is thinnest</h2>'
+ +'<div class="rail">'+lo.map(row).join('')+'</div>'
+ +'<h2>Where it holds</h2>'
+ +'<div class="rail">'+hi.map(row).join('')+'</div>'
+ +'<div class="warn"><b>What this is not.</b> This is twenty one laws and nothing '
+ +'else. It has not read a story, it does not know where anything sits in your '
+ +'body, and it has measured about '+Math.round(a.pct)+' of 100 of you. It is a '
+ +'floor, not a portrait. Nothing here is a diagnosis and nothing here is medical '
+ +'advice.</div>'
+ +'<div class="take"><span class="eye">Take it with you</span>'
+ +'<h2>Your record, in your hands</h2>'
+ +'<p>There is no account and no server, so nothing can be fetched later by '
+ +'anyone including us. Save the file and open Atuned, and the reading continues '
+ +'from where this stopped.</p>'
+ +'<div class="acts">'
+  +'<button class="btn pri" id="dl">Save my record</button>'
+  +'<button class="btn" id="copy">Copy it instead</button>'
+  +'<button class="btn" id="again">Change an answer</button>'
+ +'</div>'
+ +'<p class="dim" id="dlnote" style="margin-top:12px"></p></div>';
+ return h;
+ function row(l){
+  var cv='var('+(SEATVAR[l.b]||'--accent')+')';
+  return '<div class="lr"><span>'+esc(l.n)+'</span>'
+   +'<span class="tr"><i style="width:'+(l.v*10)+'%;background:'+cv+'"></i></span>'
+   +'<b>'+l.v.toFixed(1)+'</b></div>';}}
+
+/* the record a person carries out. It is a profile the app's own boundary
+   accepts, so nothing has to be translated on the way in. */
+function recordJSON(){
+ var S2=scored();
+ return JSON.stringify(saveProfile(S2.p),null,1);}
+
+function render(){
+ el.innerHTML = STATE==='open'?viewOpen() : STATE==='quiz'?viewQuiz() : viewScore();
+ var b;
+ if((b=document.getElementById('go')))b.onclick=function(){STATE='quiz';render();scrollTo(0,0);};
+ if((b=document.getElementById('reset')))b.onclick=function(){
+  A={};save();render();};
+ if((b=document.getElementById('back')))b.onclick=function(){STATE='open';render();scrollTo(0,0);};
+ if((b=document.getElementById('see')))b.onclick=function(){STATE='score';render();scrollTo(0,0);};
+ if((b=document.getElementById('again')))b.onclick=function(){STATE='quiz';render();scrollTo(0,0);};
+ if((b=document.getElementById('dl')))b.onclick=function(){
+  var note=document.getElementById('dlnote');
+  try{
+   var blob=new Blob([recordJSON()],{type:'application/json'});
+   var u=URL.createObjectURL(blob), a=document.createElement('a');
+   a.href=u; a.download='atuned-record.json'; document.body.appendChild(a); a.click();
+   a.remove(); setTimeout(function(){URL.revokeObjectURL(u);},1000);
+   note.textContent='Saved as atuned-record.json. Open Atuned and load it from Settings.';
+  }catch(e){ note.textContent='This browser would not save the file. Use copy instead.'; }};
+ if((b=document.getElementById('copy')))b.onclick=function(){
+  var note=document.getElementById('dlnote');
+  var txt=recordJSON();
+  var ok=function(){note.textContent='Copied. Paste it into Atuned under Settings.';};
+  var no=function(){note.textContent='This browser would not copy it. Use save instead.';};
+  try{ if(navigator.clipboard&&navigator.clipboard.writeText)
+        navigator.clipboard.writeText(txt).then(ok,no);
+       else no(); }catch(e){ no(); }};
+ el.querySelectorAll('[data-a]').forEach(function(n){n.onclick=function(){
+  A[+n.dataset.a]=+n.dataset.v; save();
+  /* only the law that changed is redrawn, so the page does not jump under a
+     thumb halfway down sixty three questions */
+  var card=n.closest('.law');
+  var scrollY=window.scrollY;
+  render(); window.scrollTo(0,scrollY);};});}
+
+load(); render();
+</script></body></html>

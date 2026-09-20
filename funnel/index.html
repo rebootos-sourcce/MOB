@@ -1,0 +1,233 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Atuned</title>
+<meta name="description" content="A somatic diagnostic instrument. Find out where the strain sits in your body and what it costs you.">
+<style>
+:root{
+ /* THE SURFACE RAMP WAS NARROWER THAN A PRINTING TOLERANCE.
+
+    Measured: --bg to --panel was 1.08 to 1 and --bg to --panel-2 was 1.14.
+    Four declared levels of surface spanning a sixth of a stop, which is why
+    the page squints down to three vertical grey slabs and the eye lands on
+    nothing first. The architecture of every screen rested on a distinction
+    that was not visible.
+
+    The ground goes down and the raised surfaces go up, so the range opens
+    from both ends rather than lightening the product. Muted is a saturation
+    ruling and not a contrast one, and this changes no hue. */
+ --bg:#0C0D12; --panel:#1A1D26; --panel-2:#252833; --sunk:#090A0E;
+ --edge:rgba(255,255,255,.09); --edge-2:rgba(255,255,255,.14);
+ /* --dim WAS BELOW AA EVERYWHERE IT APPEARED, and it is the only token
+    marking the second tier of the information architecture: every eyebrow,
+    every key label, every explanatory subline. Measured at 3.70 to 1 on
+    --panel-2 and 3.92 on --panel, and it carried 104 of the 105 contrast
+    failures on the Summary in Dark. One value, 104 defects.
+
+    It also matters more than the ratio suggests. Six of the thirteen people
+    in the reference sample are 57 or older, and contrast sensitivity falls
+    materially past 55. At 3.70 that half of the sample loses the whole layer
+    that tells them what they are looking at. */
+ --ink:#EFEDE8; --mid:#B4B0A8; --dim:#94908A;
+ --root:#CF5953; --sacral:#D19255; --solar:#D4BC70;
+ --heart:#65CFA5; --throat:#65B8D4; --eye:#8296DB; --crown:#A883D6;
+ --alarm:#FF2E1F; --alarm-soft:rgba(255,46,31,.16);
+ /* THE ACCENT IS BLUE. Ruled. It was gold since the rebuild and the owner
+    never chose it: he chose the blue, which is the original app's own
+    --law-accent:#7eb8d4, used there in thirteen places. --accent is the one
+    source of truth and --gold is kept as its alias because sixty places in
+    this sheet already read that name. Nothing reads a literal.
+
+    --on-accent is the ink that sits on top of a filled accent. It was
+    var(--on-accent), a warm near black chosen against gold, and a warm ink on a cool
+    fill is the one thing that would still have read as the old palette.
+
+    --um is the umlaut on the wordmark. It sits on the bar rather than on the
+    letter, so it answers to the background. White on dark, as ruled. */
+ --accent:#7EB8D4; --gold:var(--accent); --on-accent:#0B1418;
+ /* TRUE GOLD, SEPARATE FROM --gold.
+
+    --gold is an alias for the accent and has been since the accent was ruled
+    blue, so everything reaching for "gold" gets blue. That is correct for the
+    eyebrows and the rules that were gold before the ruling, and it is wrong
+    for the one thing that was asked for in actual gold: Source OS under the
+    wordmark rendered in the blue accent, twice, because the token lied about
+    its own name.
+
+    --au is gold. Muted, warm, sitting next to the Solar seat without becoming
+    it, and dark enough on paper to hold. Nothing else uses it unless it is
+    asked for by name. */
+ --au:#C2A063;
+ /* the ink on a solid seat colour. every seat in this palette is light
+    enough that one dark ink holds on all seven, in every lighting. */
+ --on-flat:#0E1015;
+ --sky:#7EB8D4; --um:#FFFFFF;
+ /* #CB5F59 measures 4.01 against --panel-2 and 4.44 against the seat tinted
+    panel. It is not carrying text today, it is a three pixel marker and a
+    seven percent wash, so the 4.5 text threshold is not the one it has to
+    clear. Moved anyway: a marker that thin at four to one is hard to see at
+    all past about fifty five, and three of the nine reference people are
+    fifty seven or older. #D4736D measures 4.87 and 5.40 on the same two.
+    Snow's own value is 5.62 and does not move. */
+ --good:#68CBA4; --bad:#D4736D;
+ /* Lexend is a wide face by design, which is why the rail clipped: Witness
+    rendered as Wit. Inter is narrower at the same size and carries more
+    characters per line without dropping the point size. The font tuner is
+    gone on the owner's ruling, so this is the one face and there is no
+    per person override to keep working. */
+ --sans:'Inter','Inter Tight',system-ui,-apple-system,'Segoe UI',sans-serif;
+ /* ONE FAMILY MEANT ONE FAMILY, AND THIS TOKEN NAMED A SECOND ONE.
+
+    The comment above it said Lexend carries the digits. Lexend was never in
+    the build. When Google Fonts went, Inter was embedded as a variable font
+    and Lexend was not, so document.fonts lists exactly one family and every
+    number in this product, every reading, every allowance, every tabular
+    column, was falling through to system-ui. Which face that is depends on
+    the machine, so the one thing this token existed to guarantee, that
+    columns of figures line up, was the one thing it could not do.
+
+    document.fonts.check('12px Lexend') returns true, which is what hid this:
+    check answers whether the text can be rendered at all, and a fallback
+    counts. The list of loaded families is the honest reader and it has one
+    entry.
+
+    Inter carries the digits now, which is a statement about a font that is
+    actually here. Tabular figures are a feature of Inter and every column in
+    the sheet already asks for them with font-variant-numeric. */
+ --num:'Inter','Inter Tight',system-ui,-apple-system,sans-serif;
+ --r:16px; --r-s:11px; --r-xs:8px;
+ /* Minimum touch target. 69 of the interactive elements measured under 44px,
+    which is the floor a finger needs. The number lives here so it cannot
+    drift back into forty separate padding declarations. */
+ --tap:44px;
+ /* Motion. Measured before this block existed: 381 of 384 live animated
+    elements ran on the browser default ease, a symmetric curve that reads as
+    mechanical because it decelerates as slowly as it accelerates. The four
+    hand written beziers in this sheet sat on one live element. Three curves
+    and four durations, named for the job, so a hover and a tab cannot drift
+    to the same speed again.
+
+    out  for a thing arriving. fast off the mark, long settle.
+    in   for a thing leaving. it does not need to be watched out.
+    land for a thing that lands. one overshoot, no ring. */
+ --ease-out:cubic-bezier(.22,1,.36,1);
+ --ease-in:cubic-bezier(.4,0,1,1);
+ --ease-land:cubic-bezier(.34,1.56,.64,1);
+ /* hover, press, focus. below about 100ms a change reads as a jump with no
+    cause; above about 150 the pointer has already left. */
+ --t-micro:120ms;
+ /* one thing entering or leaving. */
+ --t-element:220ms;
+ /* a panel or a rail, which carries more area and so needs more time. */
+ --t-surface:320ms;
+ /* a whole tab. the longest thing the product is allowed to take. */
+ --t-context:420ms;
+ /* the spacing scale. three steps. 6 between things in one control, 10
+    between controls, 16 between blocks. gaps of 5, 7, 8, 9 and 11 were all
+    doing one of those three jobs with no reason stated, so they read as
+    drift rather than as rhythm. */
+ --g1:6px; --g2:10px; --g3:16px;
+ --shadow:0 12px 34px rgba(0,0,0,.34);
+}
+
+/* ============================================================
+   THE LANDING. The ad does not say download the app. It says take
+   the test.
+
+   It is deliberately the lightest page in the product. Everything
+   heavy lives one click away in quiz.html, because a landing page
+   that takes two seconds to paint has already lost the people it
+   was built for. Nothing here is fetched. No font, no script, no
+   analytics, no request of any kind.
+
+   Show, not tell. Ruled. The figure is the same column the app's
+   boot draws and the same one the welcome carries, so a person who
+   goes on meets a thing they have already seen.
+   ============================================================ */
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);
+ font:400 16px/1.65 var(--sans);
+ display:flex;flex-direction:column;align-items:center;justify-content:center;
+ padding:40px 22px;text-align:center;-webkit-font-smoothing:antialiased}
+.wrap{max-width:560px;width:100%}
+/* THE FIGURE. Seven seats on a spine under a gold halo, at rest. It arrives
+   root to crown in a hundred and seventy millisecond step, which is the boot's
+   rhythm halved, so the page has a pulse without anything moving afterwards. */
+.fig{display:block;margin:0 auto 34px;width:min(30vmin,150px);height:auto;
+ overflow:visible;fill:none;stroke-linecap:round}
+.fig .halo{stroke:var(--au);stroke-width:1.4;opacity:0;
+ animation:up .6s var(--ease-out) .72s forwards}
+.fig .spine{stroke:var(--edge-2);stroke-width:1.4;
+ stroke-dasharray:120;stroke-dashoffset:120;
+ animation:draw .85s var(--ease-out) .1s forwards}
+.fig circle{opacity:0;animation:up .5s var(--ease-out) both}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes up{0%{opacity:0;transform:translateY(3px)}100%{opacity:.92;transform:none}}
+h1{font-size:clamp(26px,5vw,34px);font-weight:300;letter-spacing:.055em;
+ margin:0 0 14px;line-height:1.25}
+h1 .um{position:relative;display:inline-block}
+h1 .um::before,h1 .um::after{content:'';position:absolute;top:-.44em;
+ width:.13em;height:.13em;border-radius:50%;background:var(--um)}
+h1 .um::before{left:.05em}
+h1 .um::after{left:.34em}
+.sub{font-size:clamp(17px,2.6vw,20px);font-weight:300;color:var(--ink);
+ margin:0 0 20px;line-height:1.45}
+p{color:var(--mid);margin:0 0 15px;font-size:15.5px;line-height:1.68}
+p.q{color:var(--dim);font-size:14px;margin-top:26px}
+.go{display:inline-flex;align-items:center;justify-content:center;
+ min-height:var(--tap);padding:14px 30px;margin:20px 0 6px;
+ background:var(--accent);color:var(--on-accent);border:0;
+ border-radius:999px;font:inherit;font-size:16px;font-weight:500;
+ letter-spacing:.015em;text-decoration:none;cursor:pointer;
+ transition:transform var(--t-micro) var(--ease-out),
+            filter var(--t-micro) var(--ease-out)}
+.go:hover{filter:brightness(1.08)}
+.go:active{transform:scale(.985)}
+.go:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+.meta{display:flex;gap:7px 18px;justify-content:center;flex-wrap:wrap;
+ margin:16px 0 0;font-family:var(--num);font-size:12px;color:var(--dim)}
+.meta span{white-space:nowrap}
+.foot{margin-top:40px;font-family:var(--num);font-size:11.5px;color:var(--dim);
+ line-height:1.9}
+.foot b{color:var(--mid);font-weight:400}
+@media (prefers-reduced-motion:reduce){
+ .fig *{animation:none!important;opacity:.92;stroke-dashoffset:0}}
+</style></head><body>
+<div class="wrap">
+ <svg class="fig" viewBox="0 0 200 178" aria-hidden="true">
+  <ellipse class="halo" cx="100" cy="21" rx="13" ry="4.4"/>
+  <line class="spine" x1="100" y1="160" x2="100" y2="40"/>
+  <circle cx="100" cy="160" r="4.6" style="fill:var(--root);animation-delay:.24s"/>
+  <circle cx="100" cy="140" r="4.6" style="fill:var(--sacral);animation-delay:.31s"/>
+  <circle cx="100" cy="120" r="4.6" style="fill:var(--solar);animation-delay:.38s"/>
+  <circle cx="100" cy="100" r="4.6" style="fill:var(--heart);animation-delay:.45s"/>
+  <circle cx="100" cy="80"  r="4.6" style="fill:var(--throat);animation-delay:.52s"/>
+  <circle cx="100" cy="60"  r="4.6" style="fill:var(--eye);animation-delay:.59s"/>
+  <circle cx="100" cy="40"  r="4.6" style="fill:var(--crown);animation-delay:.66s"/>
+ </svg>
+
+ <h1>At<span class="um">u</span>ned</h1>
+ <p class="sub">Most of the strain we have agreed to call normal is making us ill.
+ This shows you where it sits, and what it costs.</p>
+
+ <p>Twenty one questions about how you actually behave, not how you feel.
+ Three ways each, because one way is a mood and three is a reading.</p>
+
+ <a class="go" href="quiz.html">Take the reading</a>
+
+ <div class="meta">
+  <span>About eight minutes</span>
+  <span>No account</span>
+  <span>Nothing leaves this device</span>
+ </div>
+
+ <p class="q">No judgment. Nothing here grades you. It reads what runs, tells you
+ where it is held, and gives you something to do about it.</p>
+
+ <div class="foot">
+  <b>Nothing is sent anywhere.</b> This page makes no request of any kind, and
+  neither does the reading. Your answers stay in this browser until you carry
+  them somewhere yourself.
+ </div>
+</div>
+</body></html>

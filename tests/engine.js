@@ -2108,5 +2108,290 @@ console.log('\n30 · the outbox, and what may never leave the device');
  E.bindSend(null);
 }
 
+g('31 · the lean, two channels and the frame that gates one of them');
+/* WHAT THIS GROUP EXISTS TO CATCH, because a check that has never failed is
+   not yet a check and every assertion below was run against a deliberately
+   broken engine first. The shipped lean scored an account of being harmed as
+   more malignant than an account of doing harm and owning it, by a factor of
+   three. Four separate defects produced it and each one has its own
+   assertion here. The harm accounts are asserted as behaviour, not as
+   numbers, so tuning the weights does not fail this and inverting the
+   reading does. */
+{
+ const {LEANCH,LEANLEX,LEANCUE,LEANFRAME,LEANOUT,LEANMIX,VERPCUE,
+        leanScan,leanApply,leanRead,leanAdmit,leanSeries,gatesClear,
+        LEAN_MIN_CH,LEAN_TRUST_CAP,LEAN_NEG_W,blankProfile,saveProfile,loadProfile}=E;
+ const CH=LEANCH.map(c=>c.k);
+
+ /* ---- the channels are two, and they are separate ---- */
+ ok(LEANCH.length===4,'four counts, got '+LEANCH.length);
+ ok(new Set(LEANCH.map(c=>c.ch)).size===2,
+    'across two channels, got '+new Set(LEANCH.map(c=>c.ch)).size);
+ ok(LEANCH.filter(c=>c.dir==='shown').length===2&&LEANCH.filter(c=>c.dir==='lack').length===2,
+    'two shown and two lack');
+ ok(LEANCH.filter(c=>c.gate).length===2&&LEANCH.filter(c=>c.gate).every(c=>c.dir==='lack'),
+    'the gated counts are exactly the two lack counts');
+ CH.forEach(k=>ok(Array.isArray(LEANLEX[k])&&LEANLEX[k].length>0,
+   'channel '+k+' has a list of its own'));
+
+ /* ---- the tables cannot disagree with each other ---- */
+ /* A PHRASE IN TWO LISTS POINTS TWO WAYS. 'let them' was benign and
+    'let them think' was malignant on the shipped list, which is not caught
+    by this but by the precedence check below; an exact duplicate is. */
+ {
+  const seen={},dup=[];
+  CH.forEach(k=>LEANLEX[k].forEach(p=>{if(seen[p])dup.push(p+' in '+seen[p]+' and '+k);seen[p]=k;}));
+  Object.keys(LEANFRAME).forEach(s=>LEANFRAME[s].forEach(p=>{
+   if(seen[p])dup.push(p+' in '+seen[p]+' and frame.'+s);seen[p]='frame.'+s;}));
+  ok(dup.length===0,'no phrase sits in two lists, '+dup.length+' do'+(dup[0]?': '+dup[0]:''));
+ }
+ /* ONE OCCURRENCE MUST NOT MOVE TWO INSTRUMENTS. 'let it go' was a benign
+    lean cue and a detachment cue on the six gates, so one phrase in one
+    sentence moved the lean and the cost multiplier. */
+ {
+  const vp={};Object.keys(VERPCUE).forEach(g2=>VERPCUE[g2].forEach(p=>{vp[p]=g2;}));
+  const clash=[];
+  CH.forEach(k=>LEANLEX[k].forEach(p=>{if(vp[p])clash.push(p+' is lean.'+k+' and verp.'+vp[p]);}));
+  Object.keys(LEANFRAME).forEach(s=>LEANFRAME[s].forEach(p=>{
+   if(vp[p])clash.push(p+' is lean frame.'+s+' and verp.'+vp[p]);}));
+  ok(clash.length===0,'no phrase is a lean cue and a six gate cue, '+clash.length
+   +' are'+(clash[0]?': '+clash[0]:''));
+ }
+ /* A PHRASE THE NORMALISER CANNOT PRODUCE CAN NEVER MATCH, and it sits in
+    the table looking like coverage. The normaliser lowercases and keeps only
+    letters, apostrophes, single spaces and the sentence bar. */
+ {
+  const bad=[];
+  const check=(p,w)=>{
+   if(!/^[a-z']+( [a-z']+)*$/.test(p))bad.push(w+' '+JSON.stringify(p));};
+  CH.forEach(k=>LEANLEX[k].forEach(p=>check(p,'lean.'+k)));
+  Object.keys(LEANFRAME).forEach(s=>LEANFRAME[s].forEach(p=>check(p,'frame.'+s)));
+  ok(bad.length===0,'every phrase is reachable by the normaliser, '+bad.length
+   +' are not'+(bad[0]?': '+bad[0]:''));
+ }
+ /* LEANCUE IS DERIVED NOW, so the old two way view cannot drift from the
+    channels the way the hand written pair did. */
+ ok(LEANCUE.benign.length===LEANLEX.emp.length+LEANLEX.acc.length
+  &&LEANCUE.malignant.length===LEANLEX.empLack.length+LEANLEX.accLack.length,
+  'the two way view is the four channels and nothing else');
+ ok(LEANOUT.length>0&&LEANOUT.every(r=>r.length===2&&r[1].length>10),
+  'every phrase taken out carries a stated reason, '+LEANOUT.length+' of '+LEANOUT.length);
+
+ /* ---- defect 1 and 2. negation, and precedence ---- */
+ const scan=t=>{gatesClear();return leanScan(t);};
+ {
+  const a=scan('it was my fault');
+  ok(a.acc===1&&a.accLack===0,'taking fault reads accountability taken');
+  const b=scan('it was not my fault');
+  ok(b.acc===0&&b.accLack===1,
+   'DENYING fault does not read as taking it, got acc '+b.acc+' accLack '+b.accLack);
+  const c=scan('none of it was my fault');
+  ok(c.acc===0,
+   'and a negator the table does not carry verbatim still voids it, got acc '+c.acc);
+  const d=scan('i let them think i did not know');
+  ok(d.acc+d.emp===0&&d.accLack===1,
+   'a phrase outranks the words inside it, got shown '+(d.acc+d.emp)+' lack '+d.accLack);
+  /* AND THE SAME RULE ACROSS THE WHOLE TABLE, driven off the table rather
+     than off one example, so a pair added later is covered without anybody
+     remembering to add a case. For every phrase that contains another
+     phrase, scanning the longer one must land on the longer one's own list
+     and nothing else. This is the check that 'let them' inside
+     'let them think' would have failed. */
+  {
+   const own={};
+   CH.forEach(k=>LEANLEX[k].forEach(q=>{own[q]='lean.'+k;}));
+   Object.keys(LEANFRAME).forEach(w=>LEANFRAME[w].forEach(q=>{own[q]='frame.'+w;}));
+   const all=Object.keys(own), nest=[], wrong=[];
+   all.forEach(a=>all.forEach(b=>{
+    if(a!==b&&(' '+a+' ').indexOf(' '+b+' ')>=0) nest.push([a,b]);}));
+   nest.forEach(pr=>{
+    const h=scan(pr[0]).hits;
+    if(h.length!==1||h[0].p!==pr[0])
+     wrong.push(JSON.stringify(pr[0])+' scored '+JSON.stringify(h.map(x=>x.p)));});
+   ok(nest.length>0,'the table holds '+nest.length+' nested pairs to resolve');
+   ok(wrong.length===0,'every one of the '+nest.length
+    +' resolves to the longer phrase alone, '+wrong.length
+    +' do not'+(wrong[0]?': '+wrong[0]:''));
+  }
+  /* THE LOOK BACK MUST NOT CROSS A SENTENCE. this voided a true cue. */
+  const e=scan('i said things i cannot take back. i lied to her.');
+  ok(e.self>=2,'a negator does not reach past a full stop, got self '+e.self);
+  const f=scan('he did not hit me');
+  ok(f.other===0,'and it voids a frame marker too, got other '+f.other);
+ }
+
+ /* ---- defect 4. the frame gate, which is the whole design ---- */
+ ok(leanAdmit(0,0)===0,'no agency evidence admits nothing of the lack side');
+ ok(leanAdmit(0,9)===0,'and no amount of harm evidence changes that');
+ ok(leanAdmit(3,0)===1,'agency alone admits all of it');
+ ok(leanAdmit(1,1)<0.5,'one report marker outweighs one agency marker');
+ {
+  const blame='It was her fault. If she had just listened. She owes me.';
+  const bare=scan(blame);
+  ok(bare.accLack>=3&&bare.malignant===0,
+   'blame alone is counted and admitted at nothing, got lack '+bare.accLack
+   +' admitted '+bare.malignant);
+  const owned=scan('I shouted at her and I lied to her. '+blame);
+  ok(owned.malignant>0,'the same blame beside the writer\'s own act is admitted, got '
+   +owned.malignant.toFixed(2));
+  ok(owned.accLack>=bare.accLack,'and the raw count did not change, only the gate');
+ }
+
+ /* ---- THE HARM TEST. asserted as behaviour, not as numbers ---- */
+ /* Three accounts of real harm in plain language, and one account of doing
+    harm and owning it, and one of refusing it. The ordering is the
+    assertion. Under the shipped scanner these read 67, 60 and 51 of 100
+    malignant against 36 for the deflection, which is the inversion. */
+ {
+  const harm=[
+  `My manager took credit for the whole project in front of everyone. It was typical of them.
+   I was the only one who worked the weekend on it. They started it when they moved my name off
+   the deck. I did not tell anyone at the time because I needed the job. Nobody appreciates what
+   that cost me. They owe me that year.`,
+  `He was drunk again and he came into my room. I was eleven. I had no choice about any of it.
+   It was their fault, not mine. They always said I was making it up and they never once asked me
+   what happened. My mother should have known. Nobody believed me.`,
+  `She hit me and then she cried and I ended up apologising to her. They always turn it around.
+   I had no choice but to stay because of the kids. It was not my fault. If they had got help when
+   I asked them to stop, none of this would have happened. I said no and he would not stop.`];
+  const owning=
+  `I was wrong about how I handled her. I shouted at her and I said things I cannot take back.
+   I lied to her about where I had been and I hid it from her for months. It was my fault.
+   I apologised properly and I told her the truth and I made amends. I can see what I did.`;
+  const deflect=
+  `None of it was my fault. It was her fault from the start. If she had just listened to me once
+   I would not have had to raise my voice. I shouted at her, yes, but anyone would have.
+   What was I supposed to do. She is pathetic when she gets like that and she had it coming.
+   I kept it to myself because she did not need to know. She owes me an apology.`;
+  const readOf=t=>{reset(0,0,6);gatesClear();if(t)leanApply(t);return leanRead(compute());};
+  const base=readOf(null).mal;
+  const hm=harm.map(readOf), ow=readOf(owning), df=readOf(deflect);
+  hm.forEach((L,i)=>{
+   ok(L.mal<=base+1.5,
+    'harm account '+(i+1)+' does not read malignant, '+L.mal.toFixed(1)
+    +' of 100 against '+base.toFixed(1)+' for a field with no story at all');
+   ok(L.accountability.lack>0,
+    'and its blame language WAS counted, '+L.accountability.lack
+    +' refusal cues, so this is a frame decision and not a shorter list');
+   ok(L.frame.admit===0||L.frame.admit<0.2,
+    'the gate is what held it, admitted '+L.frame.admit.toFixed(2)+' of the lack cues');});
+  ok(ow.mal<base,'owning harm reads less malignant than an unread field, '
+   +ow.mal.toFixed(1)+' against '+base.toFixed(1));
+  ok(df.mal>base,'refusing it reads more, '+df.mal.toFixed(1)+' against '+base.toFixed(1));
+  /* THE INVERSION, ASSERTED DIRECTLY. this is the one that fails if the
+     frame gate is removed, and it fails loudly. */
+  hm.forEach((L,i)=>ok(df.mal>L.mal,
+   'deflection reads more malignant than harm account '+(i+1)+', '
+   +df.mal.toFixed(1)+' against '+L.mal.toFixed(1)));
+  hm.forEach((L,i)=>ok(ow.mal<L.mal,
+   'and owning harm reads less than harm account '+(i+1)+', '
+   +ow.mal.toFixed(1)+' against '+L.mal.toFixed(1)));
+  ok(ow.accountability.shown>=4&&ow.accountability.read,
+   'the ownership account reads on the accountability channel, '
+   +ow.accountability.shown+' of '+ow.accountability.of);
+  ok(df.accountability.lack>=5,'and the deflection account reads on its lack side, '
+   +df.accountability.lack+' of '+df.accountability.of);
+ }
+
+ /* ---- the lean is a READ and never an input ---- */
+ {
+  reset(0,0,6); gatesClear();
+  const a=compute();
+  leanApply('it was her fault and she is pathetic and she had it coming and i shouted at her');
+  const b=compute();
+  ok(a.CQ===b.CQ&&a.DQ===b.DQ,
+   'applying a story to the lean moves no number in the arithmetic, CQ '+a.CQ+' then '+b.CQ);
+ }
+
+ /* ---- refusing to read is an answer ---- */
+ {
+  reset(0,0,6); gatesClear();
+  const blank=leanRead(compute());
+  ok(blank.cues===0&&blank.src==='field only','no story, the field speaks alone');
+  ok(blank.channels===false,'and neither channel claims to have been read');
+  ok(blank.empathy.pct===null&&blank.accountability.pct===null,
+   'an unmeasured channel reports null and never a midpoint it invented');
+  ok(blank.empathy.of===0&&blank.accountability.of===0,
+   'and every count says what it is out of');
+  gatesClear(); leanApply('i listened');
+  const one=leanRead(compute());
+  ok(one.empathy.of===1&&one.empathy.read===false,
+   'one cue is under the floor of '+LEAN_MIN_CH+' and the channel reports read false');
+  gatesClear(); leanApply('i listened and i forgave her');
+  ok(leanRead(compute()).empathy.read===true,'at the floor it reports read true');
+ }
+
+ /* ---- trust. the story never speaks for the whole reading ---- */
+ {
+  let last=-1, mono=true, under=true;
+  for(let n=1;n<=60;n++){
+   gatesClear(); LEANMIX.benign=n; LEANMIX.texts=1;
+   const t=leanRead({malig:80}).trust;
+   if(t<=last)mono=false;
+   if(t>=LEAN_TRUST_CAP)under=false;
+   last=t;}
+  ok(mono,'trust rises with every additional matched phrase');
+  ok(under,'and stays under the cap at every count from 1 to 60');
+  gatesClear(); LEANMIX.benign=1e6; LEANMIX.texts=1;
+  ok(leanRead({malig:80}).trust<LEAN_TRUST_CAP,
+   'and approaches the cap of '+LEAN_TRUST_CAP+' without ever reaching it');
+  gatesClear(); LEANMIX.benign=7; LEANMIX.texts=1;
+  ok(leanRead({malig:80}).trust<LEAN_TRUST_CAP*0.5,
+   'seven matched phrases no longer buy the whole cap, they buy '
+   +leanRead({malig:80}).trust.toFixed(3));
+ }
+
+ /* ---- clearing, and what persists ---- */
+ /* LEANMIX GAINED EIGHT KEYS. zeroing two by name left six dirty across a
+    read, which is a leak between two people's stories. */
+ {
+  Object.keys(LEANMIX).forEach(k=>{LEANMIX[k]=3;});
+  gatesClear();
+  const dirty=Object.keys(LEANMIX).filter(k=>LEANMIX[k]!==0);
+  ok(dirty.length===0,'clearing zeroes every key of the mix, '+dirty.length
+   +' survived'+(dirty[0]?': '+dirty[0]:''));
+ }
+ /* A HARM ACCOUNT MUST NOT TURN MALIGNANT ON A RELOAD. the admitted weight
+    is what is written, never the raw count, because the frame is not in the
+    profile and cannot be reapplied on the way back in. */
+ {
+  reset(0,0,6); gatesClear();
+  const p=blankProfile('lean round trip');
+  leanApply(`He came into my room. I was eleven. I had no choice. It was their fault.
+   They always said I was making it up and nobody believed me.`);
+  const before=leanRead(compute()).mal;
+  saveProfile(p);
+  ok(p.gates.lean.malignant===0,
+   'nothing malignant was written for an account of being harmed, got '+p.gates.lean.malignant);
+  loadProfile(p);
+  const after=leanRead(compute()).mal;
+  near(after,before,0.001,'and the reading is the same after a save and a load');
+  ok(leanRead(compute()).channels===false,
+   'the channel split is a session number, so a reloaded profile says so rather than reporting four zeros');
+ }
+
+ /* ---- direction over time ---- */
+ {
+  const p=blankProfile('lean series');
+  ok(leanSeries(p).n===0&&leanSeries(p).of===0,'no history, no series');
+  p.history=[{t:'a',cq:80},{t:'b',cq:40},{t:'c'}];
+  const s=leanSeries(p);
+  ok(s.n===2&&s.of===3,'the series counts against the history, '+s.n+' of '+s.of);
+  ok(s.points[0].mal===0&&s.points[1].mal===20,
+   'and recovers the field lean from cq alone, got '+s.points[1].mal);
+  ok(s.storyCues===false,
+   'and states on itself that the story half is not in the record');
+ }
+
+ /* ---- the keys the surfaces read ---- */
+ {
+  reset(0,0,6); gatesClear(); leanApply('i listened and i forgave her');
+  const L=leanRead(compute());
+  ['ben','mal','src','cues'].forEach(k=>ok(L[k]!==undefined,
+   'leanRead still carries '+k+', which ui/summary.js and ui/ui.js print'));
+  near(L.ben+L.mal,100,0.001,'benign and malignant are one field, summing to 100');
+ }
+}
+
 console.log('\n===== '+P+' passed, '+F+' failed =====');
 process.exit(F?1:0);
