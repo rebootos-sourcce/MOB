@@ -1,11 +1,15 @@
 # QUESTIONS FOR THE OWNER
 
 Every line in `TASKS.md` marked `[?]`, which is the mark for a question
-waiting on his ruling. 118 of them, across 37 sections.
-Read off commit c873356 on 2026-09-20. Nothing here is typed by hand: answer a
+waiting on his ruling. 119 of them, across 38 sections.
+Read off commit c759cd9 on 2026-09-20. Nothing here is typed by hand: answer a
 question in TASKS.md and it leaves this file on the next run.
 
 The same list is in `QUESTIONS.html`, which opens in a browser.
+
+## 08a. RULED 20 SEPTEMBER, SIXTEENTH PASS. THE MENU BECOMES TWO LEVELS.
+
+- [ ] **MN8. Nothing is said about what a parent does when pressed.** Ritual and Story are surfaces in their own right. Tools and Insight may be containers with no surface of their own, and that is a different kind of object. His call, and the answer decides whether pressing Tools opens Field or opens nothing.
 
 ## 08b. RULED 20 SEPTEMBER, FIFTEENTH PASS. THE AVATAR IS A BUILD, NOT A READOUT.
 

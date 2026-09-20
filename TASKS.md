@@ -25,6 +25,71 @@ reopens. Every seat adds its own.
 
 ---
 
+## 08a. RULED 20 SEPTEMBER, SIXTEENTH PASS. THE MENU BECOMES TWO LEVELS.
+
+His words: "Big menu change. Top menu is going to be Ritual, Story, Tools.
+Under story, energetics is our intake, so let's rename energetics to Intake.
+Let's move that to a button on the left hand side above Awareness for now, so
+if I press that button it takes me to the intake page. Under tools is Field,
+Body, Compass. And then Insight, and under insight is Knowledge, Games. Move
+Summary to Story. And I do not want the sub tools to start underneath the logo,
+they need to start left justified with the top menu items."
+
+### MN. THE STRUCTURE.
+
+- [ ] **MN1. Four doors instead of nine.** Ritual, Story, Tools, Insight. The
+      bar goes from nine flat entries to four with children, which is the
+      first two level navigation this product has had.
+- [x] **MN2. And it is legal, because it is display order rather than
+      identity.** The standing ruling is that the TAB integers are never
+      renumbered: they are persisted and compared. `TABDEF` is display order
+      and may be reordered freely, and anything needing a tab's entry looks it
+      up by its key. So every surface keeps its integer and only the bar
+      changes.
+- [ ] **MN3. Story holds Summary.** Moved, not folded: the lesson already
+      written down is that a tab host carrying a folded surface cannot also be
+      one, because the parent's renderer writes the whole innerHTML of its
+      host and deletes the child on the way past.
+- [ ] **MN4. Tools holds Field, Body and Compass.**
+- [ ] **MN5. Insight holds Knowledge and Games.** Games was unfolded from
+      Knowledge once already, on the ruling that they are independent games
+      and a game folded into a reference page is neither. Grouping them under
+      a parent is not the same as folding one into the other, and the
+      difference has to be built rather than assumed.
+- [ ] **MN6. Energetics is renamed Intake** and leaves the top bar entirely.
+      It becomes a button in the left rail above Awareness that opens the
+      intake surface. Integer 5 does not move.
+- [ ] **MN7. The sub tools start left justified with the top menu items,**
+      not under the logo.
+- [?] **MN8. Nothing is said about what a parent does when pressed.** Ritual
+      and Story are surfaces in their own right. Tools and Insight may be
+      containers with no surface of their own, and that is a different kind of
+      object. His call, and the answer decides whether pressing Tools opens
+      Field or opens nothing.
+
+### GU. SHARPEN THE INTERFACE.
+
+- [ ] **GU1. His words: "this looks like a GUI, streamline it a bit, sharpen
+      it by twenty percent, thirty percent."** Not a rebuild. A pass over
+      spacing, weight, edges and density across every surface, and the two
+      seats that own it are art and UX together.
+
+### EX. EXPORT. LOW PRIORITY, HIS OWN RULING.
+
+- [ ] **EX1. A person exports their intake, their story and their summary.**
+      To PDF, Word, plain text or RTF.
+- [ ] **EX2. And it is the first thing in the product that writes a file.**
+      PDF and RTF can both be generated in the browser with no dependency,
+      which matters because the standing ruling is one file and no network.
+      Word cannot, honestly: what is usually called a Word export is either
+      RTF with a different extension or a zip a browser has to build. Say
+      which, rather than shipping a lie about the format.
+- [ ] **EX3. It is also an export of the most private thing here,** so it
+      leaves the device by the person's own hand and nothing in the product
+      may send it anywhere.
+
+---
+
 ## 08b. RULED 20 SEPTEMBER, FIFTEENTH PASS. THE AVATAR IS A BUILD, NOT A READOUT.
 
 His words: "For the avatar page, nothing here is what I've asked for. This is

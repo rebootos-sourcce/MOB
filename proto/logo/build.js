@@ -274,32 +274,54 @@ w(`<p style="margin-top:18px">Taken for candidate A: <code>a1 t1 u1 n1 e1 d1</co
 <code>a2 t2 u1 n1 e2 d1</code>. That is the only difference between the two marks worth arguing about, and section 4 says why.</p>`);
 
 /* ---------- 4. candidates ---------- */
-w(`<hr><h2>4. Two Candidates</h2>`);
+w(`<hr><h2>4. Two Candidates</h2>
+<p>Spaced by measured area, not by a sidebearing table. The first cut used a table and a minimum clearance, and at
+eight times scale the word read as two pieces, <em style="font-style:normal;color:var(--ink)">at&uuml;</em> and
+<em style="font-style:normal;color:var(--ink)">ned</em>. The table was not wrong, it was measuring the wrong thing.
+What the eye reads at a joint is the area of background between two letters, and a crossbar 19 tall inside a 103 tall
+band leaves a wide joint at a tight clearance while two full height stems at the same clearance leave a narrow one.</p>
+<p>So each letter was rasterised once at four times scale, the background between each pair integrated scanline by
+scanline, and every joint solved by bisection against one target area. The numbers in both tables are that
+measurement.</p>`);
 ['A','B'].forEach(key => {
-  const c = CANDS[key], m = M[key];
+  const c = CANDS[key], m = M[key], S = m.S;
   w(`<div class="card"><h3 style="margin-top:0;font-size:17px">Candidate ${key} &middot; ${c.name}</h3>
   <p style="margin-top:2px">${c.line}</p>
   <div class="sunk" style="margin:16px 0 0;display:flex;justify-content:center;padding:34px 26px">
    ${svg(m, 'c'+key, 'var(--sky)', 'var(--um)', { size: px(m, 48) })}</div>
-  <table style="margin-top:18px"><tr><th>Joint</th><th>Clearance</th><th>Set by</th></tr>`);
-  m.lay.forEach((s,i) => { if (s.setBy) w(`<tr><td>${s.k} to ${m.lay[i+1].k}</td><td class="n">${s.clear}</td><td>${s.setBy === 'overhang' ? 'an overhang, and it cannot tighten' : 'the spacing table'}</td></tr>`); });
-  w(`<tr><td>Total width</td><td class="n">${m.total}</td><td>Added tracking ${c.T}, minimum overhang clearance ${c.clear}.</td></tr></table></div>`);
+  <table style="margin-top:18px"><tr><th>Joint</th><th>White area</th><th>Minimum gap</th><th>What is facing what</th></tr>`);
+  const FACE = { 'a t':'Two verticals. The joint that needs the most air.',
+                 't u':'A crossbar against a stem. Nearly all air already.',
+                 'u n':'Two verticals, and the widest joint in the word.',
+                 'n e':'A vertical against a bowl, which curves away and finds its own.',
+                 'e d':'A bowl against a bowl, with the e&rsquo;s aperture already open between them.' };
+  S.order.forEach((k,i) => { if (i === S.order.length-1) return;
+    const key2 = k[0] + ' ' + S.order[i+1][0];
+    const over = S.areas[i] > S.target * 1.05;
+    w(`<tr><td>${k} to ${S.order[i+1]}</td><td class="n${over?' lo':''}">${S.areas[i]}</td><td class="n">${S.gaps[i]}</td><td>${FACE[key2]}${over?' <b class="inl">At the floor and '+Math.round((S.areas[i]/S.target-1)*100)+' percent over target.</b>':''}</td></tr>`); });
+  w(`<tr><td>Total width</td><td class="n" colspan="2">${m.total}</td><td>Target ${S.target} square units, minimum gap floor ${S.floor}.</td></tr></table></div>`);
 });
 
-w(`<h3>The finding that decides it</h3>
-<p>Candidate A is 647 units wide and candidate B is 635. <b class="inl">Twelve units, 1.9 percent.</b> Taking the tracking
-from 6 to 0 barely moves the mark, and the reason is in the two tables above: the first two joints are set by an
-overhang, the t&rsquo;s crossbar and the a&rsquo;s spur, and an overhang does not answer the tracking at all. Only the last
-three joints are elastic.</p>
-<p>So closing the tracking does not make the mark tighter, it makes it <b class="inl">lopsided</b>: the left half of the word
-stays where it is and the right half closes up. At candidate A&rsquo;s setting the five joints measure 9.5, 9.5, 24, 21, 18.
-At a wide setting of 14 they measure 17.5, 9.5, 32, 29, 26, which is worse, because the t to u joint is pinned by the
-bar and every other joint walks away from it.</p>
-<p class="k">Landed: <b class="inl">candidate A at tracking 6</b>. It is the setting where the two pinned joints and the
-three elastic ones are closest to agreeing, and it holds the ruling that the letters are given room without opening
-holes the eye then reads as gaps. B stays on the page because its three alternates are the right answer if the mark
-is ever needed at the top bar and nowhere else, where the open e earns its aperture back.</p>
-<p class="who">Bjorn found the pin. Mika landed A.</p>`);
+w(`<h3>The finding, and it decided the spacing</h3>
+<p>On candidate A, holding the same amount of white at every joint needs gaps of <b class="inl">9, 10.3, 18.8, 21 and
+28.8</b>. A spread of better than three to one. <b class="inl">Equal gaps are not equal spaces</b>, and no sidebearing
+table can know the difference, because the difference is what shape is standing at the joint rather than how far
+apart the two shapes are.</p>
+<p>One joint cannot be solved at all. <b class="inl">The e to d joint sits on the floor and is still over target</b>, 19
+percent over on A and 83 percent over on B. Its excess white is inside the e&rsquo;s own aperture rather than between the
+two letters, so closing the joint does not remove it and the two would have to overlap. It is named rather than fixed,
+and it is the price of a geometric e with an open mouth next to a circular d. Anything that closed it would be closing
+the e, which section 5 shows is the letter that can least afford it.</p>
+<p>That number is also what separates the two candidates. B&rsquo;s e is cut at 66 degrees instead of 42, which is the right
+call for the small end and gives away 83 percent of a joint at every other size.</p>
+<p class="k">Landed: <b class="inl">candidate A</b>. Four of its five joints hold to within half a percent of one
+another, its a and its t are the plain forms, and its e gives away the least. B is on the page because its open e is
+the better answer if the mark is ever needed at the top bar and nowhere else, and because the spur and the foot are
+what a close setting would need.</p>
+<p>One thing about B on the record, because it is a judgement rather than a measurement: <b class="inl">the spur on the a
+is an orphan.</b> No other letter in this word carries one, so it reads as a foot that answers nothing. It earns its
+place only in the close setting, where the hole it fills is real.</p>
+<p class="who">Bjorn found the joint. Petra called the spur. Mika landed A.</p>`);
 
 /* ---------- 5. four sizes ---------- */
 w(`<hr><h2>5. Four Sizes, Actual Size</h2>
@@ -408,14 +430,17 @@ contrast.forEach(c => {
   <td class="n">${c.l.prop ? `<span class="swatch" style="background:${c.l.prop}"></span>${c.l.prop} <span style="color:#6E6B65">h${c.hProp}</span>` : 'holds'}</td></tr>`);
 });
 w(`</table>
-<p>Contrast is stated against each element&rsquo;s own ground, which for the dot is the bar or the page and never the mark.
-The threshold a logotype answers to is 3 to 1, the graphical object one, and not the 4.5 that belongs to body text.
-Every figure above clears it in both columns, including <code>#13303F</code> at ${ratio('#13303F','#F8F7F3')} on Snow&rsquo;s bar.</p>
-<p>The dot against sky column is the one worth reading twice. It is not a legibility number, it is whether the dots
-read as a separate material from the letter, and it is the number that says the mark is two colours rather than one
-colour with a highlight. Flat is the outlier at ${ratio('#F7F6F3','#5FD4C4')}, because Flat&rsquo;s sky is a teal rather than a blue
-and a near white dot on a light teal is the weakest pairing in the set. It clears 3 to 1 on its ground and it is the
-one lighting where the mark reads as one material. Named, not fixed: Flat&rsquo;s sky is his.</p>
+<p>Contrast is stated against each element&rsquo;s own ground, which for the dot is the bar or the page and never the
+letter. The threshold a logotype answers to is 3 to 1, the graphical object one, and not the 4.5 that belongs to body
+text. Every figure in the two ground columns clears it. The weakest is <b class="inl">Lumen at 3.37</b>, the mark&rsquo;s own
+blue on white, which clears the floor with a tenth to spare and is the one lighting where the mark is close to the edge.</p>
+<p>The dot against sky column is not a gate and should not be read as one. The dots never touch the letter, there are
+8 units of air between them, and both sit on the same ground. It is reported because it answers a different question:
+whether the dots read as a second material or as a highlight on the first. At 2.17 on the dark grounds and 2.47 on
+paper they read as the same mark carrying its own light, which is what they should do. <b class="inl">Flat is the
+outlier at ${ratio('#F7F6F3','#5FD4C4')}</b>, because Flat&rsquo;s sky is a teal at hue 172 where every other lighting runs 199 to 203,
+and a near white dot on a light teal is the weakest pairing in the set. It clears its own ground and it is the one
+lighting where the mark reads as one material rather than two. Named, not fixed: Flat&rsquo;s sky is his.</p>
 <p class="who">Sol Amadi took the light. Mika ruled the inversion.</p>`);
 
 /* ---------- 7. seven lightings ---------- */
@@ -475,9 +500,10 @@ would have to move. Measured cost of moving it: the mark goes from 85.2px wide t
 its ground. It is named here rather than changed, because the lighting is his.</li>
 <li style="margin:10px 0"><b class="inl">Whether the trademark superscript stays.</b> It is on the boot card only and it was
 ruled in before registration. Against a drawn mark it is a placement decision rather than a type decision.</li>
-<li style="margin:10px 0"><b class="inl">Candidate A or candidate B.</b> A is landed here on the spacing measurement. B is
-the better mark in one place only, the top bar, where the open e buys back an aperture that is 2.6px at that size.
-Running both would be two marks, so it is one ruling and it is his.</li>
+<li style="margin:10px 0"><b class="inl">Candidate A or candidate B.</b> A is landed here, on the joint measurement. B
+is the better mark in one place only, the top bar, where its 66 degree e buys back an aperture that is 2.6px at that
+size, and it pays 83 percent of a joint everywhere else to do it. Running both would be two marks. One ruling, and
+it is his.</li>
 </ol>`);
 
 /* ---------- 10. source ---------- */
