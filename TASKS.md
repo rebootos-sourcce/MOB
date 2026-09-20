@@ -21,6 +21,102 @@ reopens. Every seat adds its own.
 
 ---
 
+## 0j2. RULED 20 SEPTEMBER, NINTH PASS. THE RITUAL PAGE IS A C MINUS.
+
+### NW. THE RULE HE ASKED FOR BY NAME.
+
+His words: "85 days kept, of the 90 days on your record. Of the same 90 days.
+We should need a rule never to write shit like that. I don't even know why you
+have it. Instead of 85 days kept, just one word. Recurring, missed, active,
+streak."
+
+- [ ] **NW1. A figure takes one word, not a sentence.** Recurring. Missed.
+      Active. Streak. The denominator rule said a number must say what it is
+      out of, and the answer to that was a second line of prose under every
+      figure, which is how five stat cards became five paragraphs. Both rules
+      are his and they collide. The resolution is that the label is one word
+      and anything a person needs beyond that is in the tooltip or is not
+      needed.
+- [ ] **NW2. It goes in the voice skill as a checkable rule,** with the
+      failing line and the fix beside it, so the gate can catch it.
+
+### CP. A COPY SWEEP OF THE WHOLE PRODUCT.
+
+His words: "which day you keep it, I'm not sure what that word means. This goes
+again to our syntax. We need a sweep of the entire thing, of all the copy. Add
+that to the list. A copy sweep."
+
+- [ ] **CP1. Every user facing string in the product, read against the voice
+      skill.** The skill and its gate exist now, so this is a pass with a tool
+      rather than an opinion.
+- [ ] **CP2. "Which day you keep it" is the named example.** A heading has to
+      be a thing a person would say.
+- [ ] **CP3. The gate's reach is the limit.** 24 strings sit inside drills
+      that no surface walk opens, and the sweep has to reach them.
+
+### RT. THE RITUAL PAGE, SECOND REBUILD.
+
+- [ ] **RT1. The ring is a dotted line, and the dashes are the count.** His
+      design, and it is the best idea in the message: if a ritual is four
+      things, the ring carries four dashes. Ten things, ten dashes. The ring
+      stops being decoration and becomes the parameter.
+- [ ] **RT2. The accountability tracker is a feature, so it gets the room.**
+      His words: it is not giving him data, he wants it bigger and data
+      driven.
+- [ ] **RT3. The week's boxes fill their cell.** Text and pills move
+      underneath them.
+- [ ] **RT4. A practice icon takes the colour of what it supports.** Active
+      Listening, Build the avatar, Heart Point Focus.
+- [ ] **RT5. The journal goes to the upper right,** under the stats and above
+      what is set.
+- [ ] **RT6. Where to improve becomes a summary: daily, weekly, monthly.**
+- [ ] **RT7. The three shapes card comes off the page.** His words: "I'm not
+      sure what that is. Get rid of it." The three shapes stay in the model
+      and stop being a legend on the surface.
+- [ ] **RT8. Add, remove, generate and history all need a visible home.** He
+      found add and nothing else. Auto generation belongs with add.
+- [?] **RT9. Is what is set pulled from the avatar?** His question, and it is
+      the right one: if the avatar names the seat, the protocol for that seat
+      is what is set, and the two surfaces are one system.
+- [ ] **RT10. Simulate the whole page against the panel a thousand times.**
+      His words: frictionless, the most effective flow, the highest success
+      rate for organisation, user performance, data and aesthetics.
+
+### CF. THE FREQUENCIES, AND WHAT THE SEARCH ACTUALLY FOUND.
+
+His instruction: search the frequencies root to crown, because if the main
+chakras have a hertz then so do the smaller ones, and the frequency between
+them should be deducible by length.
+
+- [x] **CF1. Searched. The table the study used is the table the web
+      carries.** Root 396 through Crown 963, repeated across every result. So
+      the input was already right.
+- [x] **CF2. And every source is a healing music site repeating it.** None
+      measures anything. That is the same finding the study reported from the
+      other direction, now confirmed by looking rather than by argument.
+- [ ] **CF3. His deduction is sound and is worth building.** Seven points on a
+      channel give every address between them a frequency by its position,
+      which is exactly the interpolation the band study already computes. What
+      it changes is that an address gets its own number rather than its seat's.
+- [x] **CF4. He ruled the saturation.** Derived is too vibrant, shipped is too
+      dull, and he wants it between the two and closer to vibrant. That is a
+      ruling on the one axis the study said was the cost of clipping.
+- [ ] **CF5. Which still leaves the four measured failures.** Contrast, Root
+      clipping to one colour for sixteen addresses, and the seat boundaries
+      dissolving. The saturation ruling does not answer those, and the value
+      ladder still looks like the version that survives them.
+
+### QJ. THE QUIZ AND THE ARCHETYPES.
+
+- [ ] **QJ1. Take the test into Jungian archetypes.** The engine already
+      carries twelve.
+- [ ] **QJ2. Ask the panel what would be exciting rather than deciding,** and
+      base it on what actually pulls people in. The hook matrix and the
+      thousand person panel both exist, so this is a second use of built
+      machinery.
+
+---
+
 ## 0k3. DELIVERED 20 SEPTEMBER. THE AVATAR DASHBOARD AND THE KUNDALINI RISE.
 
 - [x] **KU4. The rise is computed off the engine and nothing else.** Each seat

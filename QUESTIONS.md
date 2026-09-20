@@ -1,11 +1,15 @@
 # QUESTIONS FOR THE OWNER
 
 Every line in `TASKS.md` marked `[?]`, which is the mark for a question
-waiting on his ruling. 105 of them, across 29 sections.
-Read off commit 4713ab6 on 2026-09-20. Nothing here is typed by hand: answer a
+waiting on his ruling. 106 of them, across 30 sections.
+Read off commit 0f91e17 on 2026-09-20. Nothing here is typed by hand: answer a
 question in TASKS.md and it leaves this file on the next run.
 
 The same list is in `QUESTIONS.html`, which opens in a browser.
+
+## 0j2. RULED 20 SEPTEMBER, NINTH PASS. THE RITUAL PAGE IS A C MINUS.
+
+- [ ] **RT9. Is what is set pulled from the avatar?** His question, and it is the right one: if the avatar names the seat, the protocol for that seat is what is set, and the two surfaces are one system.
 
 ## 0k3. DELIVERED 20 SEPTEMBER. THE AVATAR DASHBOARD AND THE KUNDALINI RISE.
 
