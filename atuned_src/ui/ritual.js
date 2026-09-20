@@ -128,12 +128,17 @@ function ritRender(){
      and no surface ever asked when or where, so the plan was saved and could
      not be read back. Both are optional, because a person who will not answer
      should still be able to save. */
+  /* THE CAP COMES FROM THE BOUNDARY AND IS NOT TYPED AGAIN HERE. It was 40 in
+     the markup and nothing at all in validateProfile, so a ritual arriving
+     through the boundary carried a five thousand character when that this
+     surface would then render. One number, named in schema.js beside the
+     refusal that enforces it. */
   out+='<div class="rit-plan"><div class="pm-eye plain">When, and where</div>'
    +'<label class="rit-f"><span>When</span>'
-   +'<input type="text" id="ritwhen" maxlength="40" placeholder="after I put the kettle on" '
+   +'<input type="text" id="ritwhen" maxlength="'+RIT_PLAN_MAX+'" placeholder="after I put the kettle on" '
    +'value="'+esc(RIT.when||'')+'"></label>'
    +'<label class="rit-f"><span>Where</span>'
-   +'<input type="text" id="ritwhere" maxlength="40" placeholder="the chair by the window" '
+   +'<input type="text" id="ritwhere" maxlength="'+RIT_PLAN_MAX+'" placeholder="the chair by the window" '
    +'value="'+esc(RIT.where||'')+'"></label>'
    +'<p class="rit-if">'+(RIT.when||RIT.where
      ? 'When '+esc(RIT.when||'it is time')+', '+esc(RIT.where?'at '+RIT.where:'wherever you are')

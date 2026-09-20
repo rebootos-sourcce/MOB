@@ -169,6 +169,11 @@ if(typeof module!=='undefined'&&module.exports){
                   saveState:saveState,
                   validateProfile:validateProfile, loadProfile:loadProfile,
                   blankProfile:blankProfile,
+  /* the two nested bags' closed key sets, exported so the gate can assert
+     them against OB_NEVER rather than against a second list typed in the
+     test, and RIT_PLAN_MAX so the surface and the boundary are one number */
+                  RIT_KEYS:RIT_KEYS, ENT_KEYS:ENT_KEYS,
+                  RIT_PLAN_MAX:RIT_PLAN_MAX, RIT_MIN_MAX:RIT_MIN_MAX,
   /* palettes */  PAL_VIVID:PAL_VIVID,
   /* series */    seriesRead:seriesRead, SPANS:SPANS, spanOf:spanOf,
   /* outbox */    obQueue:obQueue, obValidate:obValidate, obDrain:obDrain,

@@ -779,6 +779,123 @@ console.log('\n=== one tooltip ===');
  ok(one.empty===0,'and none of them opens empty, '+one.empty+' did');
 }
 
+/* ============================================================
+   GATE 17. A SENTENCE IN A LABEL CLASS CARRIES PLAIN.
+
+   head.html applies text-transform:capitalize to thirteen label classes, on
+   the owner's ruling that a header takes a capital on every word. That ruling
+   stands. What it does not cover is a whole statement that happens to be
+   written in one of those classes, and that is invisible in the source: the
+   strings are written in sentence case and correctly so, because the transform
+   is what does the capitalising. It is only wrong on the screen.
+
+   Measured before the fix, on three profiles across ten surfaces at both
+   widths: 95 distinct strings in those classes and 42 of them were statements.
+   The screen carried "Moral Integrity, 21 Of The 76 Laws, Each 0 To 10, None
+   Shut", "Nothing Held, 15 Installed", "A Ten Is A Hundred Out Of A Hundred"
+   and "The Statement Runs Nine Gates At Once".
+
+   THE RULE, which is the stylesheet's and is stated there in full. A label is
+   a short name for a region: four words or fewer, and no comma with a word
+   after it. Everything else is a sentence, takes plain, and stays in sentence
+   case. A comma with a word after it is the sharpest of the two marks, because
+   a comma means a second part and a name has one part, so "Imprints, 21" is a
+   name with a count on it and stays a label while "Coherence, corrupt, 0 to
+   100" is a statement and does not.
+
+   THREE PROBE BUGS WERE WALKED INTO WHILE MEASURING THIS, and all three are
+   answered by construction here rather than left as advice.
+
+   1. textContent does not tell you what a capitalize rule renders. The render
+      is simulated, and the simulation is checked against a case whose answer
+      is known before any of its output is believed.
+   2. The style is read off the element that owns the text, not off the
+      container that matched. .ip-bh is a label and a value in one row and the
+      value opts out on its em, so reading the container reported the fix as
+      not landed.
+   3. There is no visibility filter. A collapsed accordion reports zero height,
+      and filtering on it reported that .sp-hd and .lbl did not exist at all. A
+      string in a capitalize class is wrong whether or not the section holding
+      it happens to be open.
+
+   WHAT THIS DOES NOT REACH, named rather than left to be discovered. It walks
+   surfaces, so it sees the centre column, both rails and anything else in the
+   document at the time. A drill renders into #rdrill on a click and is swept
+   only if one is open, so the .ad-nm strings inside drills.js are not watched
+   here. Measured statically at the time of writing: about thirty literals in
+   drill markup read as sentences. That is the next extension of this gate and
+   it is a bigger copy pass than this one.
+   ============================================================ */
+console.log('\n=== a sentence in a label class carries plain ===');
+{
+ /* THE CLASS LIST IS READ OFF THE SHEET, never typed here. A list typed into a
+    gate is the defect this repository has now been bitten by nine times, and
+    this one would go stale the first time a class joined the rule. */
+ const SEL=await page.evaluate(()=>{
+  let s=null;
+  [...document.styleSheets].forEach(sh=>{try{[...sh.cssRules].forEach(r=>{
+   if(r.style&&r.style.textTransform==='capitalize'&&r.selectorText
+     &&!/\.plain/.test(r.selectorText))s=r.selectorText;});}catch(e){}});
+  return s;});
+ ok(!!SEL&&/\.pm-eye/.test(SEL),'the capitalize rule is in the sheet, got '+SEL);
+ const WALK=function(SEL){
+  const cap=s=>s.replace(/(^|[\s(‘'"\/-])([a-z])/g,(m,a,b)=>a+b.toUpperCase());
+  /* checked against a known answer. If this is wrong nothing below it means
+     anything, which is the lesson the repo already carries about tools. */
+  const selfok=cap('this is accuracy, not judgment')==='This Is Accuracy, Not Judgment'
+   &&cap('CQ and the field')==='CQ And The Field';
+  const out=[];
+  document.querySelectorAll(SEL).forEach(e=>{
+   const cells=[];
+   const walk=n=>{n.childNodes.forEach(c=>{
+    if(c.nodeType===3){const t=c.nodeValue.replace(/\s+/g,' ').trim();if(t)cells.push([t,n]);}
+    else if(c.nodeType===1)walk(c);});};
+   walk(e);
+   const cls=[...e.classList].filter(c=>SEL.indexOf('.'+c)>=0).join('.')||e.className;
+   /* THE HOST ID, because the sweep is document wide and a hidden surface keeps
+      its markup. Reporting the tab that happened to be open named the wrong
+      surface: a games string was reported against energetics. The id of the
+      nearest host is what a person needs to go and find the string. */
+   const host=(e.closest('[id]')||{}).id||'';
+   cells.forEach(pair=>{const st=getComputedStyle(pair[1]);
+    if(st.textTransform!=='capitalize')return;
+    out.push({cls:cls,src:pair[0],render:cap(pair[0]),host:host});});});
+  return {selfok:selfok,rows:out};};
+ /* four words or fewer and no comma with a word after it, which is the rule
+    the stylesheet states. A full stop with a sentence after it counts too: the
+    paragraph this gate was written for began its second sentence lowercase. */
+ const isSentence=s=>{const t=s.trim();
+  return /[,;:]\s*\S*[A-Za-z]/.test(t)||/[.!?]\s+\S/.test(t)||t.split(/\s+/).length>4;};
+ const TABS=await page.evaluate(()=>{
+  const a=TABDEF.map(t=>[t.nm.toLowerCase(),t.k]);
+  Object.keys(TABEXTRA).forEach(k=>a.push([TABEXTRA[k].nm.toLowerCase(),TABEXTRA[k].k]));
+  return a;});
+ const seen=new Map(); let selfok=true, n=0;
+ for(const [w,h] of [[1600,1000],[390,844]]){
+  await page.setViewportSize({width:w,height:h});
+  for(const who of ['blank',2]){
+   if(who!=='blank')await page.evaluate(i=>loadP(i),who);
+   for(const [nm,t] of TABS){
+    await page.evaluate(k=>setTab(k),t);
+    await page.waitForTimeout(140);
+    const r=await page.evaluate(WALK,SEL);
+    if(!r.selfok)selfok=false;
+    r.rows.forEach(x=>{n++;
+     if(isSentence(x.src)&&!seen.has(x.cls+'|'+x.src))
+      seen.set(x.cls+'|'+x.src,{...x,where:'#'+(x.host||'?')+' at '+w});});}}}
+ await page.setViewportSize({width:1600,height:1000});
+ ok(selfok,'the capitalize simulation renders a known case correctly');
+ ok(n>0,'there are strings in the label classes to test, saw '+n);
+ const bad=[...seen.values()];
+ bad.forEach(b=>console.log('  SENTENCE WITHOUT plain  ['+b.cls+'] in '+b.where
+   +'\n     wrote     '+b.src+'\n     renders   '+b.render));
+ ok(bad.length===0,bad.length+' sentence'+(bad.length===1?'':'s')
+   +' in a capitalize class without plain: '
+   +bad.map(b=>'['+b.cls+'] '+b.src).slice(0,4).join(' | '));
+ console.log('  '+n+' strings walked, '+bad.length+' sentence'
+   +(bad.length===1?'':'s')+' without plain');
+}
+
 await browser.close();
 console.log('\n===== '+PASS+' passed, '+FAIL+' failed =====');
 process.exit(FAIL?1:0);

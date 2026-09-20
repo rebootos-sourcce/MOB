@@ -455,6 +455,181 @@ g('15c \u00b7 the boundary');
  ok(/could not save/.test(String(importError())),'and says the save failed: '+importError());
 }
 
+g('15d · the two nested bags');
+/* THE BOUNDARY IS STRICT AND TWO BAGS WALKED PAST IT. rituals was accepted on
+   one condition, that each entry is an object, and story.entries was a bare
+   slice. plan.secret and plan.email are refused by name one level up and were
+   passed silently one level down, which is a hole on the path the record fetch
+   at sign in opens.
+
+   Every row here was proved by breaking it: each refusal was made to fail on
+   purpose and this group caught it before it was restored. The repository has
+   been bitten by tests that passed because the branch under them was dead. */
+{
+ const {blankProfile,saveProfile,validateProfile,PRACTICE,BANDS,
+        RIT_KEYS,ENT_KEYS,RIT_PLAN_MAX,RIT_MIN_MAX,OB_NEVER}=E;
+ const base=saveProfile(blankProfile('bags'));
+ const step=PRACTICE[0].k;
+ const now=new Date().toISOString();
+ const rit=()=>({t:now,track:PRACTICE[0].track,band:'Root',steps:[step],min:PRACTICE[0].min,
+  when:'after the kettle',where:'the chair',done:false});
+ const ent=()=>({t:now,text:'I was angry and it sat in my chest',imprints:3,bands:{root:4,heart:2}});
+ const withRit=r=>{const x=JSON.parse(JSON.stringify(base)); x.rituals=[r]; return x;};
+ const withEnt=e=>{const x=JSON.parse(JSON.stringify(base)); x.story={entries:[e]}; return x;};
+ const refused=(o,what)=>{
+  const v=validateProfile(o);
+  ok(!v.ok,what+' is refused');
+  return String((v.errs||[]).join(' · '));};
+ const named=(o,what,frag)=>{
+  const e=refused(o,what);
+  ok(e.indexOf(frag)>=0,'and the refusal names '+frag+': '+e.slice(0,110));};
+
+ /* the real one first, so every refusal below is measured against a case whose
+    answer is already known */
+ const v0=validateProfile(withRit(rit()));
+ ok(v0.ok,'a ritual the builder wrote validates: '+JSON.stringify(v0.errs||[]).slice(0,140));
+ ok(JSON.stringify(v0.profile.rituals[0])===JSON.stringify(rit()),
+  'and comes back out exactly as it went in: '+JSON.stringify(v0.profile.rituals[0]).slice(0,140));
+ const e0=validateProfile(withEnt(ent()));
+ ok(e0.ok,'a story entry the app wrote validates: '+JSON.stringify(e0.errs||[]).slice(0,140));
+ ok(JSON.stringify(e0.profile.story.entries[0])===JSON.stringify(ent()),
+  'and comes back out exactly as it went in');
+
+ /* BAG ONE. THE RITUAL. */
+ ok(!validateProfile(withRit(7)).ok&&!validateProfile(withRit([1,2])).ok,
+  'a ritual that is not an object is refused');
+ named(withRit(Object.assign(rit(),{track:'Wellness'})),
+  'a track that is not a track in the practice library','.track');
+ named(withRit(Object.assign(rit(),{band:'Aura'})),'a seat that is not a seat','.band');
+ named(withRit(Object.assign(rit(),{steps:['nope']})),'a step naming no practice','.steps[0]');
+ named(withRit(Object.assign(rit(),{steps:step})),'a steps that is not a list','.steps');
+ /* the builder writes one entry per practice picked, so the library's own
+    length is the most a ritual can hold, and it is the bound that stops one
+    valid key arriving a hundred thousand times */
+ const many=[]; for(let i=0;i<PRACTICE.length+1;i++)many.push(step);
+ named(withRit(Object.assign(rit(),{steps:many})),
+  'more steps than there are practices','.steps');
+ named(withRit(Object.assign(rit(),{min:-4})),'a negative length','.min');
+ named(withRit(Object.assign(rit(),{min:RIT_MIN_MAX+1})),
+  'a length past the whole library, rather than clamped','.min');
+ ok(validateProfile(withRit(Object.assign(rit(),{min:RIT_MIN_MAX}))).ok,
+  'and every practice picked once is still a ritual, '+RIT_MIN_MAX+' minutes');
+ /* THE CAP IS THE SURFACE'S OWN AND THE VALUE IS NEVER TRUNCATED. */
+ const long='x'.repeat(RIT_PLAN_MAX+1);
+ named(withRit(Object.assign(rit(),{when:long})),'a when past the cap',
+  'is '+long.length+' characters and the cap is '+RIT_PLAN_MAX);
+ named(withRit(Object.assign(rit(),{where:'y'.repeat(5000)})),'a where past the cap','.where');
+ ok(validateProfile(withRit(Object.assign(rit(),{when:'x'.repeat(RIT_PLAN_MAX)}))).ok,
+  'and exactly the cap is accepted, '+RIT_PLAN_MAX+' characters');
+ named(withRit(Object.assign(rit(),{when:5})),'a when that is not a string','.when');
+ named(withRit(Object.assign(rit(),{done:'the day before yesterday'})),
+  'a done that is neither a boolean nor a date','.done');
+ ok(validateProfile(withRit(Object.assign(rit(),{done:now}))).ok,
+  'and the stamp the I did it control writes is a done');
+ /* THE DAY IS NEVER INVENTED. pracDay reads t and the streak is counted in the
+    days it returns, so a filled t is a day nobody practised. */
+ const noT=rit(); delete noT.t;
+ named(withRit(noT),'a ritual with no day','.t');
+ named(withRit(Object.assign(rit(),{t:'someday'})),'a day that is not a date','.t');
+ named({...base,rituals:{}},'a rituals that is not a list','rituals is not a list');
+
+ /* WHAT THE FINDING NAMED, AND THEN EVERY NAME THE OUTBOX REFUSES. OB_NEVER is
+    the outbox's table and is deliberately not imported into the boundary: it is
+    about what may not leave the device, and it names date, key, type, story and
+    answers, which are legitimate field names elsewhere in this same profile.
+    The closed key set refuses all of it anyway, and these rows are what fails
+    loudly if anybody ever widens that set to let one of them in. */
+ named(withRit(Object.assign(rit(),{secret:'s'})),'a ritual carrying a secret','may not carry secret');
+ named(withRit(Object.assign(rit(),{email:'a@b.c'})),'a ritual carrying an email','may not carry email');
+ named(withRit(Object.assign(rit(),{note:'z'.repeat(100000)})),
+  'a hundred thousand character note','may not carry note');
+ const leakedR=OB_NEVER.filter(k=>validateProfile(withRit(Object.assign(rit(),{[k]:'x'}))).ok);
+ ok(leakedR.length===0,'no name the outbox refuses passes inside a ritual, '
+  +leakedR.length+' do: '+JSON.stringify(leakedR));
+ const collideR=OB_NEVER.filter(k=>RIT_KEYS.indexOf(k)>=0);
+ ok(collideR.length===0,'and no ritual field is one of those names, '+JSON.stringify(collideR));
+
+ /* ADDITIVE. The oldest ritual the app ever wrote is five fields. */
+ const old={t:now,track:PRACTICE[0].track,band:'Root',steps:[step],min:PRACTICE[0].min};
+ const ov=validateProfile(withRit(old));
+ ok(ov.ok,'the five field ritual the first build wrote still loads: '
+  +JSON.stringify(ov.errs||[]).slice(0,120));
+ /* AND ITS MISSING DONE KEY IS STILL MISSING ON THE WAY OUT. ledgerRead reads
+    an entry with no done key at all as practised. Writing done:false at the
+    boundary would move every older ritual out of the practised column, which
+    is a person's history edited by an import. */
+ ok(!('done' in ov.profile.rituals[0]),
+  'and its minutes are still practised minutes, because done was not filled in');
+ ok(ov.profile.rituals[0].when===''&&ov.profile.rituals[0].where==='',
+  'the two fields it never had are filled from the blank');
+ /* a track or a seat nobody recorded is left empty rather than named, the way
+    an unmeasured law is left null */
+ const bare={t:now,steps:[step],min:4};
+ const bv=validateProfile(withRit(bare));
+ ok(bv.ok&&bv.profile.rituals[0].track===''&&bv.profile.rituals[0].band==='',
+  'a ritual that recorded no track and no seat is given neither');
+ ok(validateProfile({...base,rituals:[]}).ok&&validateProfile(base).ok,
+  'no rituals at all still loads');
+ /* THE TABLES ARE THE ENGINE'S OWN, NOT A LIST TYPED IN THE VALIDATOR. Every
+    track the library holds validates, and so does every practice key, so a
+    practice added to that table is accepted the moment it exists. */
+ const tracks=[]; PRACTICE.forEach(p=>{if(tracks.indexOf(p.track)<0)tracks.push(p.track);});
+ const badTrack=tracks.filter(t=>!validateProfile(withRit(Object.assign(rit(),{track:t}))).ok);
+ ok(badTrack.length===0,'every track in the practice library is a track, '
+  +tracks.length+' of them, '+JSON.stringify(badTrack)+' refused');
+ const badStep=PRACTICE.map(p=>p.k)
+  .filter(k=>!validateProfile(withRit(Object.assign(rit(),{steps:[k]}))).ok);
+ ok(badStep.length===0,'every practice in the library is a step, '+PRACTICE.length
+  +' of them, '+JSON.stringify(badStep)+' refused');
+ const badSeat=BANDS.filter(b=>!validateProfile(withRit(Object.assign(rit(),{band:b}))).ok);
+ ok(badSeat.length===0,'every seat is a seat, '+BANDS.length+' of them');
+
+ /* BAG TWO. THE STORY ENTRY. */
+ ok(!validateProfile(withEnt('a story')).ok,'an entry that is not an object is refused');
+ /* Imprints and Analytics both call .slice and .length on the text with no
+    guard, so one imported number threw the surface rather than the import */
+ named(withEnt(Object.assign(ent(),{text:7})),'a text that is not a string','.text');
+ const noText=ent(); delete noText.text;
+ named(withEnt(noText),'an entry with no text at all','.text');
+ named(withEnt(Object.assign(ent(),{t:'yesterday'})),'an entry dated yesterday','.t');
+ named(withEnt(Object.assign(ent(),{imprints:-1})),'a negative imprint count','.imprints');
+ named(withEnt(Object.assign(ent(),{imprints:'three'})),'an imprint count that is not a number','.imprints');
+ named(withEnt(Object.assign(ent(),{bands:'root'})),'a bands that is not an object','.bands');
+ named(withEnt(Object.assign(ent(),{bands:{spleen:4}})),'a band naming no seat','names no seat');
+ named(withEnt(Object.assign(ent(),{bands:{root:'a lot'}})),'a band weight that is not a number','.bands.root');
+ named(withEnt(Object.assign(ent(),{secret:'s'})),'an entry carrying a secret','may not carry secret');
+ named(withEnt(Object.assign(ent(),{email:'a@b.c'})),'an entry carrying an email','may not carry email');
+ const leakedE=OB_NEVER.filter(k=>validateProfile(withEnt(Object.assign(ent(),{[k]:'x'}))).ok);
+ ok(leakedE.length===0,'no name the outbox refuses passes inside an entry, '
+  +leakedE.length+' do: '+JSON.stringify(leakedE));
+ /* AND THE ONE OVERLAP IS THE ARGUMENT FOR NOT IMPORTING THAT TABLE. OB_NEVER
+    names imprints, because a count of what is imprinted on somebody must never
+    leave the device, and a story entry's own fourth field is called imprints.
+    Wiring the outbox's deny list into the arrival boundary would have refused
+    every entry the app has ever written. The overlap is asserted rather than
+    assumed, so a name added to either table that collides is reported here
+    instead of quietly refusing a legitimate field. */
+ const collideE=OB_NEVER.filter(k=>ENT_KEYS.indexOf(k)>=0);
+ ok(JSON.stringify(collideE)==='["imprints"]',
+  'the outbox deny list meets the entry key set at exactly imprints, got '
+  +JSON.stringify(collideE));
+ named({...base,story:{entries:{}}},'an entries that is not a list','story.entries is not a list');
+ ok(validateProfile({...base,story:{entries:[]}}).ok,'no entries at all still loads');
+ const noStory=JSON.parse(JSON.stringify(base)); delete noStory.story;
+ ok(validateProfile(noStory).ok,'and a profile with no story key loads from the blank');
+ /* AND NO LENGTH IS INVENTED FOR THE TEXT. The story box enforces no cap, on
+    purpose, so the boundary must not either: a person who wrote four thousand
+    words about their father is not corruption. */
+ ok(validateProfile(withEnt(Object.assign(ent(),{text:'w '.repeat(20000)}))).ok,
+  'a forty thousand character story is not refused, because the box has no cap');
+ /* every seat key the sniffer writes is a band key, read off the sniffer's own
+    table rather than typed here */
+ const badBand=Object.keys(E.K2BAND||{})
+  .filter(k=>!validateProfile(withEnt(Object.assign(ent(),{bands:{[k]:3}}))).ok);
+ ok(badBand.length===0,'every seat key the sniffer writes is accepted, '
+  +Object.keys(E.K2BAND||{}).length+' of them, '+JSON.stringify(badBand)+' refused');
+}
+
 g('15b \u00b7 the seed');
 {
  const {blankProfile,seedAxes,seedApply,seedClear,seedShare,seedValid,TYPE16,CHARGES,read}=E;

@@ -187,12 +187,41 @@ function kbRows(sec){
     are scored by the intake and the other fifty five are read, so those
     fifty five carry no percent: a figure off a default is a figure about the
     default. */
+ /* AND THE FOURTH THING MUST NOT BE THE HEADING SAID AGAIN.
+
+    This deck breaks into sections and the section names the axis, so a row
+    that answered "Laws of Nature" under a heading reading "Laws of nature,
+    Sat, how the field behaves" printed the heading thirteen more times. That
+    is the same defect this row was built to remove, wearing a different coat:
+    the shipping deck had twenty one law cards spending their third line
+    restating their second line as a sentence.
+
+    So under a heading the row says what the heading cannot. A scored law says
+    its seat, which is genuinely its own: Truth is at the throat, Unity at the
+    crown, Compassion at the heart.
+
+    A law the intake does not score says NOTHING, and this took two attempts.
+    The first said "read, not scored" and that is fifty five rows carrying one
+    sentence, which is the defect again in a third coat: twenty eight of them
+    are on the screen at once. There is no per row fact to put there, the dash
+    in the figure column already says the intake does not score it, and the
+    ruling is that if you cannot use regular words to describe a thing you do
+    not describe it. So the row is three things instead of four and the name
+    sits centred against its mark. A line with nothing of its own to say is
+    not a quieter line, it is a line that should not be drawn.
+
+    The axis comes back when the heading is not drawn, which is a sort by
+    weight or a search, because then the family is the only thing saying which
+    deck a row came from. That is the rule the kind label already follows. */
  if(sec==='harm') HARM.forEach(function(e){
   var scored=(e.a==='spirit'), fam=HARM_FAM[e.a]||{};
   var si=scored?kbFind(SI,e.t):null;
-  var row=kbRow('harm', e.t, HARM_AX[e.a]||e.a, (si&&si.b)||fam.b||'Heart',
+  var seat=(si&&si.b)||fam.b||'Heart';
+  var row=kbRow('harm', e.t, scored?seat:'', seat,
    scored&&S.law[e.t]!=null?kbPct(S.law[e.t]):null,
    (si&&si.ic)||fam.ic||null, e);
+  /* what the row says when nothing above it names the family */
+  row.fam=HARM_AX[e.a]||e.a;
   row.axis=e.a; out.push(row);});
  /* THE GLOSSARY IS NOT A DECK ANY MORE.
 
@@ -372,11 +401,13 @@ function kbRender(){
      moral integrity deck a high figure in a warm colour would read as an
      alarm on a law that is being kept. Colour means the seat, once. */
   var cls=x.p==null?' off':(x.p?'':' z');
+  /* the family comes back on a row whose section heading is not drawn */
+  var fam=(x.fam&&(KB_SORT==='weight'||q))?x.fam:x.s;
   h+='<button type="button" class="kb-row" data-kbi="'+i+'" style="--c:'+c+'">'
    +crBadge(seat, x.p||0, {size:'md', bare:true, color:c,
       glyph:glyphPath(x.ic), title:x.t+(x.p==null?'':' · '+x.p+'%')})
    +'<span class="kb-rt"><span class="kb-rn">'+esc(x.t)+'</span>'
-   +'<span class="kb-rs">'+esc(q?(KB_KIND[x.k]||x.k)+' · '+x.s:x.s)+'</span></span>'
+   +(fam?'<span class="kb-rs">'+esc(q?(KB_KIND[x.k]||x.k)+' · '+fam:fam)+'</span>':'')+'</span>'
    +'<span class="kb-rv'+cls+'">'+(x.p==null?'–':x.p+'%')+'</span>'
    +'</button>';});
  h+='</div>';

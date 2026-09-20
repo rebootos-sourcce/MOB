@@ -172,9 +172,14 @@ only. Muted palette argued from autonomic response. Icons are ring, not fill.
 
 ## The loop, and the centre. Ruled 20 September.
 
-**The process is discover, play, flow, body.** His words, and it is the spine
-everything else serves. Nothing ships that does not move a person through those
-four.
+**The process is discover, play, flow, embody.** His words, corrected by him:
+the last one is embody and not body. It is the spine everything else serves and
+nothing ships that does not move a person through those four.
+
+**And it is a circle, never a list.** Ruled, with his reason: "we're showing a
+core game loop mechanic." A numbered column of four says the fourth one is the
+end, which is the opposite of a loop. Anywhere the four appear together they
+close.
 
 **The avatar is the centrepiece.** "What is Atuned? Your avatar." Not a page in
 the product, the centre of it. A person watches their avatar improve and the

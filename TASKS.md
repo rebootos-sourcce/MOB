@@ -21,6 +21,120 @@ reopens. Every seat adds its own.
 
 ---
 
+## 0r. RULED 20 SEPTEMBER, SIXTH PASS. THE NERVE STATE, THE VOICE, AND THE LOOP.
+
+### NS. EVERY FETTER CARRIES ITS NERVE AND THE STATE THAT NERVE IS IN.
+
+His words: "I want to have an icon. We have our five icons that describe
+whether a nerve is open, closed, lightly impacted, moderately impacted,
+heavily impacted. So we've got five stages. We could probably split that out
+to ten, since we do everything on zero to ten. Actually that probably makes
+more sense. That way the percent makes sense to the entire system."
+
+- [ ] **NS1. Open the fetter and see the nerve.** Clicking a fetter's
+      information gives the nerve name, the icon, and the state that nerve is
+      in. The nerve names already exist in the engine; the state does not.
+- [ ] **NS2. Ten stages, not five.** His ruling, and his reason is the right
+      one: everything in this product is scored nought to ten, so a ten step
+      ladder makes the percent mean the same thing here as it does everywhere
+      else. Five stages against a ten point scale is two numbers wearing one
+      name.
+- [?] **NS3. Find the five icons before drawing ten.** He says we have them. A
+      first search of the source finds no table of nerve states at all, so
+      either they live somewhere this search did not reach, or they exist as
+      artwork outside the repository, or they were described and never built.
+      Ask him which before anything is drawn, because redrawing an existing
+      set is the one outcome nobody wants.
+- [ ] **NS4. The scale is linear between the stages.** His words: "the percent
+      is just linear, right, with our stages. If you do zero to ten you can
+      fill it in."
+- [ ] **NS5. Icons are ring, not fill.** The standing ruling, and it bites
+      here: a ten step ladder drawn as a filling shape is a fill. The ladder
+      has to read as ten distinct states in a ring.
+
+### VC. THE VOICE. THE OUTPUT READS AS AI AND HE WANTS A TEN, NOT A SIX.
+
+His words, and they are the brief: "The writing needs to feel like it's
+exceptional and right now it feels like it's AI. I need all output content copy
+to feel like our team simulated it ten times before they gave us an answer.
+They all have persona backgrounds. We know the type of content they consumed
+and the writing styles they would have consumed within that content. So the AI
+should have a deep brain about how to write content for humans, especially if
+it makes micro rule sets about how it relates to its past history and content
+and what it's learned and how it's identified with certain styles and
+techniques. So that the end output is a ten instead of an AI six."
+
+- [ ] **VC1. Write the voice as a system, not a preference.** An anchor style
+      with named moves, a warmth pass over it, and micro rules a writer can
+      check a line against. It goes in `.claude/skills/` where it loads before
+      any user facing change, beside the UX floors.
+- [ ] **VC2. The anchor he named is Encarta.** Reference style answered to him
+      separately, with a sample, and it is in the record.
+- [ ] **VC3. Every seat carries its own reading history.** The personas are
+      ad agency people. What they read is what they write like, and that is
+      what makes a rule set specific instead of general.
+- [ ] **VC4. Apply it to the funnel first.** His words: "apply it to our
+      Atuned funnel, all of their skills, let's see what they got."
+- [ ] **VC5. It needs a test, or it is a preference again.** A line either
+      passes the rules or it does not, and something has to be able to say
+      which. Otherwise this is the fourth voice document.
+
+### MS. THE MARKETING SYSTEM, AND IT PLUGS INTO THE FETTER MATRIX.
+
+His words: "The art director team and the writing team work together, simulate
+their creative with the intention of sharpening and improving. Out of our
+psychographics, the design aesthetics that pull people in, the language that
+pulls people in, the hooks that pull people in. You should know how to search
+that information and get the maximum, break it down and understand the
+psychological strings that's pulling on, and plug that into our fetter matrix
+so you know how to use communication that speaks directly to that. Create a
+system out of that. A marketing system. And then simulate it with the ICPs a
+thousand times."
+
+- [ ] **MS1. Art and copy work as one seat, not two in sequence.** The point
+      is sharpening against each other, which does not happen in a handoff.
+- [ ] **MS2. The hooks map onto the fetter matrix.** This is the idea with the
+      most in it: the product already knows which address a person is carrying,
+      so the language that reaches them is not a guess. It is a lookup.
+- [ ] **MS3. Simulate against the ICPs a thousand times,** the way the ritual
+      panel already does. That simulator exists and its shape is proven, so
+      this is a second use of a built thing rather than a new one.
+- [ ] **MS4. A psychological string pulled well and a string pulled badly look
+      the same in a conversion number.** This product refuses loss framing on
+      an argued basis and that refusal has to survive the marketing system, or
+      the system will quietly find its way back to it.
+
+### FL. THE LOOP IS A CIRCLE, AND THE LAST WORD IS EMBODY.
+
+- [ ] **FL1. Discover, play, flow, embody.** Not body. His correction.
+- [ ] **FL2. It is drawn as a circle, never a list.** His words: "we're
+      showing a core game loop mechanic." A numbered column of four says the
+      fourth one is the end, which is the opposite of a loop.
+- [x] **FL3. Recorded in CLAUDE.md,** which carried the old word and a linear
+      reading of it.
+
+### FN. THE FUNNEL, SECOND PASS. AESTHETIC, PAIN, AND THE PAGES.
+
+- [ ] **FN4. The funnel wears the app's aesthetic.** Fonts, colours, the way
+      Atuned is written, and powered by SOURCE OS. He has not chosen which
+      page it should echo, so the shared thing is the language of the design
+      and not a copy of a screen.
+- [ ] **FN5. It speaks to every level of ICP, by name.** The executive, the
+      athlete, the creative, the performer, and the anxious, the burned out,
+      the overwhelmed, the grief stricken. One page, many doors.
+- [ ] **FN6. The hook is a what if question.** His own lines, and they are
+      good enough to use: "What if you could wave it away? What if you could
+      see yourself clearly? What if you could look into a mirror and see the
+      programming running at every atom in your body? This is Atuned. Holistic
+      wellness for the body mind complex."
+- [ ] **FN7. A buy page.** First surface in the product that asks for money,
+      so the tier ladder in DECISIONS.md is the input.
+- [ ] **FN8. An about page carrying mission, vision, why, why now, purpose and
+      results.** His list, in his order. For the marketing and branding seats
+      to sharpen ten times before it is written once.
+
+---
+
 ## 0s. MEASURED 20 SEPTEMBER. SETTINGS TOOK THE RIGHT RAIL WITH IT.
 
 - [x] **RW1. The render watch walks the rails now.** It has walked the centre

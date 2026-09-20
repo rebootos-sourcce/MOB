@@ -4556,6 +4556,165 @@ function vRange(errs,path,v,lo,hi){
  if(!NUM(v)){errs.push(path+' is not a number');return null;}
  if(v<lo||v>hi){errs.push(path+' is '+v+', outside '+lo+' to '+hi);return null;}
  return v;}
+/* ============================================================
+   THE TWO NESTED BAGS. Both escaped the boundary above.
+
+   plan refuses customer, subscription, email, key, secret and token by name.
+   rituals was accepted on one condition, that each entry is an object, so a
+   ritual arrived with no errors at all carrying a track that is not a track,
+   a seat that is not a seat, a step naming no practice, a negative length, a
+   five thousand character when where the surface caps at forty, a hundred
+   thousand character note, and the keys secret and email: refused by name one
+   level up and passed silently one level down. story.entries was a bare
+   slice, and three surfaces call .slice and .length on entry.text.
+
+   A CLOSED KEY SET RATHER THAN A SECOND DENY LIST. OB_NEVER in outbox.js
+   names about forty things that may never leave the device, and it is the
+   wrong table to import here: it is about what goes out rather than what
+   comes in, and it names date, key, type, story and answers, which are
+   legitimate field names elsewhere in this same profile. OB_KEYS is the
+   posture worth copying instead, and a closed set refuses what nobody thought
+   of rather than only what somebody did, including the field whoever adds one
+   six months from now forgets to declare. The gate then asserts that every
+   name on OB_NEVER is refused inside both bags, so the deny list still
+   protects them and there is no second copy of it to drift.
+   ============================================================ */
+function vKeys(errs,path,x,allow){
+ Object.keys(x).forEach(function(k){
+  if(allow.indexOf(k)<0)errs.push(path+' may not carry '+k);});}
+function vDate(errs,path,t){
+ if(typeof t!=='string'||isNaN(new Date(t).getTime())){
+  errs.push(path+' is not a date'); return null;}
+ return t;}
+/* A CEILING IS REFUSED AND NEVER TRUNCATED, which is obValidate's rule and is
+   the same reason: a silently cut sentence reads back to the person as
+   something they never said. */
+function vStr(errs,path,s,cap){
+ if(typeof s!=='string'){errs.push(path+' is not a string'); return null;}
+ if(cap&&s.length>cap){
+  errs.push(path+' is '+s.length+' characters and the cap is '+cap); return null;}
+ return s;}
+/* WHAT A RITUAL MAY CARRY. t, track, band, steps and min are the original
+   five. when, where and done were added later, so an older entry has none of
+   the three and they are filled rather than required. */
+var RIT_KEYS=['t','track','band','steps','min','when','where','done'];
+/* The when and where cap, and ui/ritual.js writes this into the two inputs
+   rather than repeating 40, because the boundary and the surface have to agree
+   about it and the two places in this repository that used the number 6 had to
+   agree and did not. */
+var RIT_PLAN_MAX=40;
+/* The tracks, the steps and the longest ritual there is, read off the practice
+   library rather than typed here. A practice added to that table is accepted
+   by the boundary the moment it exists, and a step naming nothing is refused
+   without anybody having to remember this file. The minutes ceiling is the
+   whole library summed, which is every practice picked once and is the longest
+   ritual the builder can produce. */
+var RIT_TRACK={}, RIT_STEP={}, RIT_MIN_MAX=0;
+PRACTICE.forEach(function(pr){
+ RIT_TRACK[pr.track]=1; RIT_STEP[pr.k]=1; RIT_MIN_MAX+=pr.min;});
+function vRitual(errs,i,x){
+ var path='rituals['+i+']';
+ if(!x||typeof x!=='object'||Array.isArray(x)){errs.push(path+' is not an object'); return null;}
+ vKeys(errs,path,x,RIT_KEYS);
+ var q={};
+ /* THE DAY IS REQUIRED AND IS NEVER INVENTED. pracDay reads t and the streak
+    is counted in the days it returns, so filling a missing t from now would
+    hand somebody a day they did not practise, which is the 9999 that reads as
+    a 10 wearing a different hat. Every ritual the app has ever written carries
+    t, so requiring it cannot refuse an older profile. */
+ var t=vDate(errs,path+'.t',x.t);
+ if(t!==null)q.t=t;
+ /* A TRACK OR A SEAT NOBODY RECORDED IS LEFT EMPTY RATHER THAN NAMED, the way
+    an unmeasured law is left null. Defaulting to Body and Root would write a
+    diagnosis nothing measured. Nothing reads either one back off a saved
+    ritual yet, so empty costs nothing here and a default would cost the
+    truth. */
+ q.track='';
+ if(x.track!==undefined){
+  if(RIT_TRACK[x.track])q.track=x.track;
+  else errs.push(path+'.track is not a track in the practice library: '+x.track);}
+ q.band='';
+ if(x.band!==undefined){
+  if(BANDS.indexOf(x.band)>=0)q.band=x.band;
+  else errs.push(path+'.band is not a seat: '+x.band);}
+ /* A STEP NAMES A PRACTICE OR IT NAMES NOTHING, and ritSteps drops what it
+    cannot find, so an unnamed step reads on the surface as a ritual with fewer
+    steps than it was saved with. A list longer than the library is not a
+    ritual either: the builder writes one entry per practice picked, so the
+    count of practices is the most a ritual can hold, and that bound is also
+    what stops one valid key arriving a hundred thousand times. */
+ q.steps=[];
+ if(x.steps!==undefined){
+  if(!Array.isArray(x.steps))errs.push(path+'.steps is not a list');
+  else if(x.steps.length>PRACTICE.length)
+   errs.push(path+'.steps holds '+x.steps.length+', which is more than the '
+    +PRACTICE.length+' practices there are');
+  else x.steps.forEach(function(k,j){
+   if(RIT_STEP[k])q.steps.push(k);
+   else errs.push(path+'.steps['+j+'] names no practice: '+k);});}
+ /* the length, in minutes, and a negative one was the finding. Not floored:
+    every minute in the library is whole, so a fraction can only come from a
+    hand written file and rounding it would be a silent edit. */
+ q.min=0;
+ var mn=vRange(errs,path+'.min',x.min,0,RIT_MIN_MAX);
+ if(mn!==null)q.min=mn;
+ ['when','where'].forEach(function(f){
+  q[f]='';
+  if(x[f]===undefined)return;
+  var s=vStr(errs,path+'.'+f,x[f],RIT_PLAN_MAX);
+  if(s!==null)q[f]=s;});
+ /* DONE IS NOT FILLED, AND THAT IS DELIBERATE. ledgerRead reads an entry with
+    no done key at all as practised, because minutes planned and minutes
+    practised were one number until they were split and a person's history is
+    not ours to delete over a schema change. Writing done:false here would move
+    every older ritual out of the practised column on the way through the
+    boundary. It is a boolean from the builder and a stamp from the control
+    that marks the day done, so both are taken and nothing else is. */
+ if(x.done!==undefined){
+  if(typeof x.done==='boolean')q.done=x.done;
+  else{
+   var d=vDate(errs,path+'.done',x.done);
+   if(d!==null)q.done=d;}}
+ return q;}
+/* WHAT A STORY ENTRY MAY CARRY. The same four since the first build. */
+var ENT_KEYS=['t','text','imprints','bands'];
+function vEntry(errs,i,x){
+ var path='story.entries['+i+']';
+ if(!x||typeof x!=='object'||Array.isArray(x)){errs.push(path+' is not an object'); return null;}
+ vKeys(errs,path,x,ENT_KEYS);
+ var q={};
+ var t=vDate(errs,path+'.t',x.t);
+ if(t!==null)q.t=t;
+ /* NO LENGTH IS INVENTED FOR THE TEXT. The story box enforces no cap on
+    purpose: it is the one field in the product a person is asked to fill with
+    prose, so there is no surface number to check against and guessing one here
+    would refuse an entry somebody wrote. What is checked is that it is a
+    string, because Imprints and Analytics both call .slice and .length on it
+    with no guard, so one imported number in place of a text threw the surface
+    rather than the import. An entry is its text and no writer has ever omitted
+    it, so a missing one is corruption rather than an older record. */
+ var tx=vStr(errs,path+'.text',x.text);
+ if(tx!==null)q.text=tx;
+ /* the count the entry reported when it was committed, printed beside the
+    date. Not recomputed from the text: the sniffer has moved since the oldest
+    of these were written, and recomputing would rewrite what the person was
+    told at the time. */
+ q.imprints=0;
+ var im=vRange(errs,path+'.imprints',x.imprints,0,1e6);
+ if(im!==null)q.imprints=im;
+ /* bands is keyed by the sniffer's own seat keys, so a key that is not one of
+    them is refused by name rather than dropped. Analytics reads it as
+    e.bands[B2K[seat]] and Imprints maps every key through K2BAND, so a key
+    neither table holds is weight sitting at a seat that does not exist. */
+ q.bands={};
+ if(x.bands!==undefined){
+  if(!x.bands||typeof x.bands!=='object'||Array.isArray(x.bands))
+   errs.push(path+'.bands is not an object');
+  else Object.keys(x.bands).forEach(function(k){
+   if(!K2BAND[k]){errs.push(path+'.bands names no seat: '+k); return;}
+   var v=vRange(errs,path+'.bands.'+k,x.bands[k],0,1e6);
+   if(v!==null)q.bands[k]=v;});}
+ return q;}
 function validateProfile(o){
  var errs=[];
  if(!o||typeof o!=='object'||Array.isArray(o))return {ok:false, errs:['not an object']};
@@ -4624,7 +4783,13 @@ function validateProfile(o){
     var v=vRange(errs,'seed.axes.'+c,o.seed.axes?o.seed.axes[c]:3,0,10);
     p.seed.axes[c]=v===null?3:v;});}}
  /* logs. shape checked, contents left alone: they are the person's own text. */
- if(o.story&&Array.isArray(o.story.entries))p.story.entries=o.story.entries.slice();
+ /* logs. the text inside an entry is the person's own and is never edited,
+    but the bag it arrives in is checked like everything else. */
+ if(o.story&&typeof o.story==='object'){
+  if(Array.isArray(o.story.entries))p.story.entries=o.story.entries
+   .map(function(x,i){return vEntry(errs,i,x);}).filter(Boolean);
+  else if(o.story.entries!==undefined)errs.push('story.entries is not a list');}
+ else if(o.story!==undefined&&o.story!==null)errs.push('story is not an object');
  if(o.meter&&typeof o.meter==='object'){
   var mp=vRange(errs,'meter.lines',o.meter.lines,0,1e9);
   if(mp!==null)p.meter.lines=Math.floor(mp);
@@ -4731,7 +4896,9 @@ function validateProfile(o){
      return typeof x==='string'&&x.length>0&&x.length<200;});});}
   else if(o.purpose.sides!==undefined)errs.push('purpose.sides is not an object');}
  else if(o.purpose!==undefined&&o.purpose!==null)errs.push('purpose is not an object');
- if(Array.isArray(o.rituals))p.rituals=o.rituals.filter(function(x){return x&&typeof x==='object';});
+ if(Array.isArray(o.rituals))p.rituals=o.rituals
+  .map(function(x,i){return vRitual(errs,i,x);}).filter(Boolean);
+ else if(o.rituals!==undefined&&o.rituals!==null)errs.push('rituals is not a list');
  /* A snapshot is strictly typed numbers and the record calls toFixed on them,
     so "the person's own text" does not apply here. An unchecked history
     crashed the record view on the first render after an import. */
@@ -7180,6 +7347,11 @@ if(typeof module!=='undefined'&&module.exports){
                   saveState:saveState,
                   validateProfile:validateProfile, loadProfile:loadProfile,
                   blankProfile:blankProfile,
+  /* the two nested bags' closed key sets, exported so the gate can assert
+     them against OB_NEVER rather than against a second list typed in the
+     test, and RIT_PLAN_MAX so the surface and the boundary are one number */
+                  RIT_KEYS:RIT_KEYS, ENT_KEYS:ENT_KEYS,
+                  RIT_PLAN_MAX:RIT_PLAN_MAX, RIT_MIN_MAX:RIT_MIN_MAX,
   /* palettes */  PAL_VIVID:PAL_VIVID,
   /* series */    seriesRead:seriesRead, SPANS:SPANS, spanOf:spanOf,
   /* outbox */    obQueue:obQueue, obValidate:obValidate, obDrain:obDrain,

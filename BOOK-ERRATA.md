@@ -451,3 +451,56 @@ display radius and the brush, which is his drawing measured.
 
 **Whose call: mine, and done.** Nothing here is the owner's material. It is a
 file that described itself incorrectly.
+
+---
+
+## The Laws Of Integrity, And Which Word The Product Says
+
+Found while building the codex row, 20 September. The owner ruled the deck
+label: "the laws, it just says laws, that should be moral integrity." Applied,
+at eight sites. This entry records what the book says, because the two do not
+agree and the disagreement is now in one place instead of two.
+
+**The book calls them spiritual, not moral.** `index.html`, Chapter 19, The
+Freedom Definition, under Embodiment:
+
+> "The Laws of Spiritual Integrity are not guidelines. They are the operating
+> conditions under which the nervous system remains coherent."
+
+The engine said both. `engine/data/kb.js:21` has
+`spirit:'Laws of Moral Integrity'` and the comment over `SI` in
+`engine/data/canon.js` said "the 21 Laws of Spiritual Integrity". The comment
+moves to moral, so the code agrees with itself and with what a person now
+reads. **The owner's word wins over the book's on the surface.** Whether the
+book should move is his.
+
+**And the citation on all seventy six is wrong.** Every `HARM` row carries
+`ch:"Chapter 19"`. Chapter 19 is The Freedom Definition and contains no law
+table. The laws are numbered in four chapters:
+
+    Chapter 08   Laws of Nature            Sat / X axis      01 to 13
+    Chapter 09   Laws of Human Nature      Chit / Y axis     14 to 26
+    Chapter 10   the coherence laws        Ananda / Z axis   27 to 39
+    Chapter 11   Laws of Expression                          40 to 48
+
+Nothing renders the chapter to a person any more, because the row that printed
+it carried the subtext the owner had removed. So this costs nothing today and
+will cost something the first time anything cites a law.
+
+**Three disagreements on the coherence axis, and they are his to rule.** The
+book numbers thirteen at 27 to 39. The engine measures twenty one. It carries
+twelve of the book's thirteen by name, carrying Beauty as Aesthetic Beauty. It
+does not carry **Reverence**, which is the book's law 39. And it adds nine the
+book does not number: Justice, Humility, Equanimity, Forgiveness, Generosity,
+Temperance, Detachment, Non-Harm and Patience.
+
+The book also states, at Chapter 08, that the numbering is an argument rather
+than a sequence:
+
+> "This is a periodic table, not a curriculum. Polarity is foundational
+> because every law after position 03 assumes two-ness exists."
+
+**Whose call: his, and open.** The codex deck orders the laws by what `HARM`
+already holds and changes no membership, because reordering a set whose
+membership is in question would be two changes wearing one commit. The order
+and the membership move together or not at all.

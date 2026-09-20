@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="39d4bb7 2026-09-20 18:24"><head><meta charset="utf-8">
+<html lang="en" data-build="e6a44fa 2026-09-20 18:42"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -1756,7 +1756,7 @@ body:not(.tab-field) .pol2{display:none}
    the fold became thirty nine, and one became six. The scroll of the largest
    deck fell from 18,043 pixels on a phone to 6,605.
    ============================================================ */
-.kb-top{display:flex;flex-direction:column;gap:10px;padding:6px 0 12px}
+.kb-top{display:flex;flex-direction:column;gap:8px;padding:4px 0 10px}
 /* eyebrow, deck name and what the percent means, on one baseline. Three
    stacked blocks cost 90 pixels to say what one line says. */
 .kb-hdr{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
@@ -3902,7 +3902,7 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
        download as atuned(1).html and leaves the first one where it was, so
        opening "the file" can mean opening last week's.
        Stamped by BUILD.sh, so it cannot be wrong or go stale. -->
-  <span class="bs-v" id="bstamp">39d4bb7 2026-09-20 18:24</span></div>
+  <span class="bs-v" id="bstamp">e6a44fa 2026-09-20 18:42</span></div>
  <!-- THE WAY OUT WAS BUILT AND NEVER SHOWN.
 
       pointerdown and keydown both clear this sheet and have since it was
@@ -9059,6 +9059,165 @@ function vRange(errs,path,v,lo,hi){
  if(!NUM(v)){errs.push(path+' is not a number');return null;}
  if(v<lo||v>hi){errs.push(path+' is '+v+', outside '+lo+' to '+hi);return null;}
  return v;}
+/* ============================================================
+   THE TWO NESTED BAGS. Both escaped the boundary above.
+
+   plan refuses customer, subscription, email, key, secret and token by name.
+   rituals was accepted on one condition, that each entry is an object, so a
+   ritual arrived with no errors at all carrying a track that is not a track,
+   a seat that is not a seat, a step naming no practice, a negative length, a
+   five thousand character when where the surface caps at forty, a hundred
+   thousand character note, and the keys secret and email: refused by name one
+   level up and passed silently one level down. story.entries was a bare
+   slice, and three surfaces call .slice and .length on entry.text.
+
+   A CLOSED KEY SET RATHER THAN A SECOND DENY LIST. OB_NEVER in outbox.js
+   names about forty things that may never leave the device, and it is the
+   wrong table to import here: it is about what goes out rather than what
+   comes in, and it names date, key, type, story and answers, which are
+   legitimate field names elsewhere in this same profile. OB_KEYS is the
+   posture worth copying instead, and a closed set refuses what nobody thought
+   of rather than only what somebody did, including the field whoever adds one
+   six months from now forgets to declare. The gate then asserts that every
+   name on OB_NEVER is refused inside both bags, so the deny list still
+   protects them and there is no second copy of it to drift.
+   ============================================================ */
+function vKeys(errs,path,x,allow){
+ Object.keys(x).forEach(function(k){
+  if(allow.indexOf(k)<0)errs.push(path+' may not carry '+k);});}
+function vDate(errs,path,t){
+ if(typeof t!=='string'||isNaN(new Date(t).getTime())){
+  errs.push(path+' is not a date'); return null;}
+ return t;}
+/* A CEILING IS REFUSED AND NEVER TRUNCATED, which is obValidate's rule and is
+   the same reason: a silently cut sentence reads back to the person as
+   something they never said. */
+function vStr(errs,path,s,cap){
+ if(typeof s!=='string'){errs.push(path+' is not a string'); return null;}
+ if(cap&&s.length>cap){
+  errs.push(path+' is '+s.length+' characters and the cap is '+cap); return null;}
+ return s;}
+/* WHAT A RITUAL MAY CARRY. t, track, band, steps and min are the original
+   five. when, where and done were added later, so an older entry has none of
+   the three and they are filled rather than required. */
+var RIT_KEYS=['t','track','band','steps','min','when','where','done'];
+/* The when and where cap, and ui/ritual.js writes this into the two inputs
+   rather than repeating 40, because the boundary and the surface have to agree
+   about it and the two places in this repository that used the number 6 had to
+   agree and did not. */
+var RIT_PLAN_MAX=40;
+/* The tracks, the steps and the longest ritual there is, read off the practice
+   library rather than typed here. A practice added to that table is accepted
+   by the boundary the moment it exists, and a step naming nothing is refused
+   without anybody having to remember this file. The minutes ceiling is the
+   whole library summed, which is every practice picked once and is the longest
+   ritual the builder can produce. */
+var RIT_TRACK={}, RIT_STEP={}, RIT_MIN_MAX=0;
+PRACTICE.forEach(function(pr){
+ RIT_TRACK[pr.track]=1; RIT_STEP[pr.k]=1; RIT_MIN_MAX+=pr.min;});
+function vRitual(errs,i,x){
+ var path='rituals['+i+']';
+ if(!x||typeof x!=='object'||Array.isArray(x)){errs.push(path+' is not an object'); return null;}
+ vKeys(errs,path,x,RIT_KEYS);
+ var q={};
+ /* THE DAY IS REQUIRED AND IS NEVER INVENTED. pracDay reads t and the streak
+    is counted in the days it returns, so filling a missing t from now would
+    hand somebody a day they did not practise, which is the 9999 that reads as
+    a 10 wearing a different hat. Every ritual the app has ever written carries
+    t, so requiring it cannot refuse an older profile. */
+ var t=vDate(errs,path+'.t',x.t);
+ if(t!==null)q.t=t;
+ /* A TRACK OR A SEAT NOBODY RECORDED IS LEFT EMPTY RATHER THAN NAMED, the way
+    an unmeasured law is left null. Defaulting to Body and Root would write a
+    diagnosis nothing measured. Nothing reads either one back off a saved
+    ritual yet, so empty costs nothing here and a default would cost the
+    truth. */
+ q.track='';
+ if(x.track!==undefined){
+  if(RIT_TRACK[x.track])q.track=x.track;
+  else errs.push(path+'.track is not a track in the practice library: '+x.track);}
+ q.band='';
+ if(x.band!==undefined){
+  if(BANDS.indexOf(x.band)>=0)q.band=x.band;
+  else errs.push(path+'.band is not a seat: '+x.band);}
+ /* A STEP NAMES A PRACTICE OR IT NAMES NOTHING, and ritSteps drops what it
+    cannot find, so an unnamed step reads on the surface as a ritual with fewer
+    steps than it was saved with. A list longer than the library is not a
+    ritual either: the builder writes one entry per practice picked, so the
+    count of practices is the most a ritual can hold, and that bound is also
+    what stops one valid key arriving a hundred thousand times. */
+ q.steps=[];
+ if(x.steps!==undefined){
+  if(!Array.isArray(x.steps))errs.push(path+'.steps is not a list');
+  else if(x.steps.length>PRACTICE.length)
+   errs.push(path+'.steps holds '+x.steps.length+', which is more than the '
+    +PRACTICE.length+' practices there are');
+  else x.steps.forEach(function(k,j){
+   if(RIT_STEP[k])q.steps.push(k);
+   else errs.push(path+'.steps['+j+'] names no practice: '+k);});}
+ /* the length, in minutes, and a negative one was the finding. Not floored:
+    every minute in the library is whole, so a fraction can only come from a
+    hand written file and rounding it would be a silent edit. */
+ q.min=0;
+ var mn=vRange(errs,path+'.min',x.min,0,RIT_MIN_MAX);
+ if(mn!==null)q.min=mn;
+ ['when','where'].forEach(function(f){
+  q[f]='';
+  if(x[f]===undefined)return;
+  var s=vStr(errs,path+'.'+f,x[f],RIT_PLAN_MAX);
+  if(s!==null)q[f]=s;});
+ /* DONE IS NOT FILLED, AND THAT IS DELIBERATE. ledgerRead reads an entry with
+    no done key at all as practised, because minutes planned and minutes
+    practised were one number until they were split and a person's history is
+    not ours to delete over a schema change. Writing done:false here would move
+    every older ritual out of the practised column on the way through the
+    boundary. It is a boolean from the builder and a stamp from the control
+    that marks the day done, so both are taken and nothing else is. */
+ if(x.done!==undefined){
+  if(typeof x.done==='boolean')q.done=x.done;
+  else{
+   var d=vDate(errs,path+'.done',x.done);
+   if(d!==null)q.done=d;}}
+ return q;}
+/* WHAT A STORY ENTRY MAY CARRY. The same four since the first build. */
+var ENT_KEYS=['t','text','imprints','bands'];
+function vEntry(errs,i,x){
+ var path='story.entries['+i+']';
+ if(!x||typeof x!=='object'||Array.isArray(x)){errs.push(path+' is not an object'); return null;}
+ vKeys(errs,path,x,ENT_KEYS);
+ var q={};
+ var t=vDate(errs,path+'.t',x.t);
+ if(t!==null)q.t=t;
+ /* NO LENGTH IS INVENTED FOR THE TEXT. The story box enforces no cap on
+    purpose: it is the one field in the product a person is asked to fill with
+    prose, so there is no surface number to check against and guessing one here
+    would refuse an entry somebody wrote. What is checked is that it is a
+    string, because Imprints and Analytics both call .slice and .length on it
+    with no guard, so one imported number in place of a text threw the surface
+    rather than the import. An entry is its text and no writer has ever omitted
+    it, so a missing one is corruption rather than an older record. */
+ var tx=vStr(errs,path+'.text',x.text);
+ if(tx!==null)q.text=tx;
+ /* the count the entry reported when it was committed, printed beside the
+    date. Not recomputed from the text: the sniffer has moved since the oldest
+    of these were written, and recomputing would rewrite what the person was
+    told at the time. */
+ q.imprints=0;
+ var im=vRange(errs,path+'.imprints',x.imprints,0,1e6);
+ if(im!==null)q.imprints=im;
+ /* bands is keyed by the sniffer's own seat keys, so a key that is not one of
+    them is refused by name rather than dropped. Analytics reads it as
+    e.bands[B2K[seat]] and Imprints maps every key through K2BAND, so a key
+    neither table holds is weight sitting at a seat that does not exist. */
+ q.bands={};
+ if(x.bands!==undefined){
+  if(!x.bands||typeof x.bands!=='object'||Array.isArray(x.bands))
+   errs.push(path+'.bands is not an object');
+  else Object.keys(x.bands).forEach(function(k){
+   if(!K2BAND[k]){errs.push(path+'.bands names no seat: '+k); return;}
+   var v=vRange(errs,path+'.bands.'+k,x.bands[k],0,1e6);
+   if(v!==null)q.bands[k]=v;});}
+ return q;}
 function validateProfile(o){
  var errs=[];
  if(!o||typeof o!=='object'||Array.isArray(o))return {ok:false, errs:['not an object']};
@@ -9127,7 +9286,13 @@ function validateProfile(o){
     var v=vRange(errs,'seed.axes.'+c,o.seed.axes?o.seed.axes[c]:3,0,10);
     p.seed.axes[c]=v===null?3:v;});}}
  /* logs. shape checked, contents left alone: they are the person's own text. */
- if(o.story&&Array.isArray(o.story.entries))p.story.entries=o.story.entries.slice();
+ /* logs. the text inside an entry is the person's own and is never edited,
+    but the bag it arrives in is checked like everything else. */
+ if(o.story&&typeof o.story==='object'){
+  if(Array.isArray(o.story.entries))p.story.entries=o.story.entries
+   .map(function(x,i){return vEntry(errs,i,x);}).filter(Boolean);
+  else if(o.story.entries!==undefined)errs.push('story.entries is not a list');}
+ else if(o.story!==undefined&&o.story!==null)errs.push('story is not an object');
  if(o.meter&&typeof o.meter==='object'){
   var mp=vRange(errs,'meter.lines',o.meter.lines,0,1e9);
   if(mp!==null)p.meter.lines=Math.floor(mp);
@@ -9234,7 +9399,9 @@ function validateProfile(o){
      return typeof x==='string'&&x.length>0&&x.length<200;});});}
   else if(o.purpose.sides!==undefined)errs.push('purpose.sides is not an object');}
  else if(o.purpose!==undefined&&o.purpose!==null)errs.push('purpose is not an object');
- if(Array.isArray(o.rituals))p.rituals=o.rituals.filter(function(x){return x&&typeof x==='object';});
+ if(Array.isArray(o.rituals))p.rituals=o.rituals
+  .map(function(x,i){return vRitual(errs,i,x);}).filter(Boolean);
+ else if(o.rituals!==undefined&&o.rituals!==null)errs.push('rituals is not a list');
  /* A snapshot is strictly typed numbers and the record calls toFixed on them,
     so "the person's own text" does not apply here. An unchecked history
     crashed the record view on the first render after an import. */
@@ -11703,6 +11870,11 @@ if(typeof module!=='undefined'&&module.exports){
                   saveState:saveState,
                   validateProfile:validateProfile, loadProfile:loadProfile,
                   blankProfile:blankProfile,
+  /* the two nested bags' closed key sets, exported so the gate can assert
+     them against OB_NEVER rather than against a second list typed in the
+     test, and RIT_PLAN_MAX so the surface and the boundary are one number */
+                  RIT_KEYS:RIT_KEYS, ENT_KEYS:ENT_KEYS,
+                  RIT_PLAN_MAX:RIT_PLAN_MAX, RIT_MIN_MAX:RIT_MIN_MAX,
   /* palettes */  PAL_VIVID:PAL_VIVID,
   /* series */    seriesRead:seriesRead, SPANS:SPANS, spanOf:spanOf,
   /* outbox */    obQueue:obQueue, obValidate:obValidate, obDrain:obDrain,
@@ -16149,10 +16321,15 @@ function iqAccuracy(){
     integrity does not need to be told it is not a verdict. The panel gives two
     examples of an accurate answer, so the heading says that and nothing more.
 
-    The first heading keeps its words and takes plain, because it carries a
-    comma and a comma means a second part. */
+    The first heading was going to keep its words and take plain, and seeing
+    the three of them rendered side by side killed that: one sentence case
+    heading between two title case ones, in three identical cards in one row,
+    is a row that looks like two people built it. Three sibling headings in one
+    component are one visual unit and they take one case. So all three are
+    labels, which is also the shorter answer, and the panel under this one
+    already says which three ways. */
  var P=[
-  ['Moral integrity, three ways',true,
+  ['Asked three ways',false,
    'Each law is asked once where it costs you something, once where nobody would know, '
    +'and once on an ordinary day. The gap between the three is the reading, so answering '
    +'the same law differently is the point rather than a mistake.'],
@@ -16794,12 +16971,17 @@ function ritRender(){
      and no surface ever asked when or where, so the plan was saved and could
      not be read back. Both are optional, because a person who will not answer
      should still be able to save. */
+  /* THE CAP COMES FROM THE BOUNDARY AND IS NOT TYPED AGAIN HERE. It was 40 in
+     the markup and nothing at all in validateProfile, so a ritual arriving
+     through the boundary carried a five thousand character when that this
+     surface would then render. One number, named in schema.js beside the
+     refusal that enforces it. */
   out+='<div class="rit-plan"><div class="pm-eye plain">When, and where</div>'
    +'<label class="rit-f"><span>When</span>'
-   +'<input type="text" id="ritwhen" maxlength="40" placeholder="after I put the kettle on" '
+   +'<input type="text" id="ritwhen" maxlength="'+RIT_PLAN_MAX+'" placeholder="after I put the kettle on" '
    +'value="'+esc(RIT.when||'')+'"></label>'
    +'<label class="rit-f"><span>Where</span>'
-   +'<input type="text" id="ritwhere" maxlength="40" placeholder="the chair by the window" '
+   +'<input type="text" id="ritwhere" maxlength="'+RIT_PLAN_MAX+'" placeholder="the chair by the window" '
    +'value="'+esc(RIT.where||'')+'"></label>'
    +'<p class="rit-if">'+(RIT.when||RIT.where
      ? 'When '+esc(RIT.when||'it is time')+', '+esc(RIT.where?'at '+RIT.where:'wherever you are')
@@ -19076,12 +19258,41 @@ function kbRows(sec){
     are scored by the intake and the other fifty five are read, so those
     fifty five carry no percent: a figure off a default is a figure about the
     default. */
+ /* AND THE FOURTH THING MUST NOT BE THE HEADING SAID AGAIN.
+
+    This deck breaks into sections and the section names the axis, so a row
+    that answered "Laws of Nature" under a heading reading "Laws of nature,
+    Sat, how the field behaves" printed the heading thirteen more times. That
+    is the same defect this row was built to remove, wearing a different coat:
+    the shipping deck had twenty one law cards spending their third line
+    restating their second line as a sentence.
+
+    So under a heading the row says what the heading cannot. A scored law says
+    its seat, which is genuinely its own: Truth is at the throat, Unity at the
+    crown, Compassion at the heart.
+
+    A law the intake does not score says NOTHING, and this took two attempts.
+    The first said "read, not scored" and that is fifty five rows carrying one
+    sentence, which is the defect again in a third coat: twenty eight of them
+    are on the screen at once. There is no per row fact to put there, the dash
+    in the figure column already says the intake does not score it, and the
+    ruling is that if you cannot use regular words to describe a thing you do
+    not describe it. So the row is three things instead of four and the name
+    sits centred against its mark. A line with nothing of its own to say is
+    not a quieter line, it is a line that should not be drawn.
+
+    The axis comes back when the heading is not drawn, which is a sort by
+    weight or a search, because then the family is the only thing saying which
+    deck a row came from. That is the rule the kind label already follows. */
  if(sec==='harm') HARM.forEach(function(e){
   var scored=(e.a==='spirit'), fam=HARM_FAM[e.a]||{};
   var si=scored?kbFind(SI,e.t):null;
-  var row=kbRow('harm', e.t, HARM_AX[e.a]||e.a, (si&&si.b)||fam.b||'Heart',
+  var seat=(si&&si.b)||fam.b||'Heart';
+  var row=kbRow('harm', e.t, scored?seat:'', seat,
    scored&&S.law[e.t]!=null?kbPct(S.law[e.t]):null,
    (si&&si.ic)||fam.ic||null, e);
+  /* what the row says when nothing above it names the family */
+  row.fam=HARM_AX[e.a]||e.a;
   row.axis=e.a; out.push(row);});
  /* THE GLOSSARY IS NOT A DECK ANY MORE.
 
@@ -19261,11 +19472,13 @@ function kbRender(){
      moral integrity deck a high figure in a warm colour would read as an
      alarm on a law that is being kept. Colour means the seat, once. */
   var cls=x.p==null?' off':(x.p?'':' z');
+  /* the family comes back on a row whose section heading is not drawn */
+  var fam=(x.fam&&(KB_SORT==='weight'||q))?x.fam:x.s;
   h+='<button type="button" class="kb-row" data-kbi="'+i+'" style="--c:'+c+'">'
    +crBadge(seat, x.p||0, {size:'md', bare:true, color:c,
       glyph:glyphPath(x.ic), title:x.t+(x.p==null?'':' · '+x.p+'%')})
    +'<span class="kb-rt"><span class="kb-rn">'+esc(x.t)+'</span>'
-   +'<span class="kb-rs">'+esc(q?(KB_KIND[x.k]||x.k)+' · '+x.s:x.s)+'</span></span>'
+   +(fam?'<span class="kb-rs">'+esc(q?(KB_KIND[x.k]||x.k)+' · '+fam:fam)+'</span>':'')+'</span>'
    +'<span class="kb-rv'+cls+'">'+(x.p==null?'–':x.p+'%')+'</span>'
    +'</button>';});
  h+='</div>';
@@ -22877,5 +23090,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="001487956"></div>
+<div id="eof" hidden data-len="001500084"></div>
 </body></html>

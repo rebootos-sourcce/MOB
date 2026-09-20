@@ -208,10 +208,17 @@ const kb=await page.evaluate(()=>{
   KB_SEC=k; kbRender();
   if(!document.querySelectorAll('.kb-row').length){empty.push(k);return;}
   walked++;
-  {const ps=[...document.querySelectorAll('.kb-row')].map(c=>{
-    const a=c.querySelector('svg path'); return a?a.getAttribute('d'):null;});
+  {const cards=[...document.querySelectorAll('.kb-row')];
+   const ps=cards.map(c=>{const a=c.querySelector('svg path');
+    return a?a.getAttribute('d'):null;});
+   /* THE MARK ON A ROW IS COMPOSED OF TWO CHANNELS and one of them is colour.
+      Counting the path alone counts half the mark and would have reported the
+      fetters deck as seven marks when the seat is what separates a Root Fear
+      from a Solar Anger. The pair is what a person distinguishes, so the pair
+      is what is counted. */
+   const pairs=cards.map((c,i)=>(c.style.getPropertyValue('--c')||'')+'|'+(ps[i]||''));
    marks[k]={n:ps.length, uniq:new Set(ps.filter(Boolean)).size,
-    blank:ps.filter(x=>!x).length};}
+    pair:new Set(pairs).size, blank:ps.filter(x=>!x).length};}
   document.querySelector('.kb-row').click();
   if(document.getElementById('rdrill').textContent.length>40)opened++;});
  KB_SEC='addr'; KB_Q=''; kbRender();
@@ -298,17 +305,24 @@ ok(kb.opened===kb.walked,'every section opens a drill, got '+kb.opened
    refused is a deck of many cards showing a single mark, which is the shape
    the bug had, and any card with no mark at all.
 --------------------------------------------------------------------------- */
-/* addr is composed: the colour around the mark is the seat and the mark inside
-   it is the axis, because 108 named addresses wearing 7 marks is the icon rule
-   inverted. Both tables already ship, nothing new was drawn, and the distinct
-   marks went from 7 to 40 with the worst collision falling from 21 rows to 10.
-   Asserted as a floor rather than a literal: a new axis is a reason to have
-   more marks, never a reason to fail. */
+/* THE FETTERS DECK COMPOSES ITS MARK, AND BOTH CHANNELS ARE THE MARK.
+
+   112 named addresses wore seven marks between them, sixteen rows to a mark,
+   which is the icon rule inverted: if it has a name it has an icon. Nobody is
+   drawing 112 marks and nobody has to. Every address already states its axis
+   and every axis already has a mark, and the seat is already the ring's
+   colour. So the colour around the mark is the seat and the mark inside it is
+   the axis. Two tables that both ship, nothing new drawn.
+
+   Measured on the running deck: the pair takes the distinct marks from 7 to
+   40 and the worst collision from 21 rows to 10. Asserted as a floor, because
+   a new axis is a reason to have more marks and never a reason to fail. */
 {const want={law:21, mask:6, sab:6, harm:27, fetter:9};
  const floor={addr:30};
  Object.keys(floor).forEach(k=>{const m=kb.marks[k];
-  ok(m&&m.uniq>=floor[k],'the '+k+' deck composes its mark, '
-   +(m?m.uniq:0)+' distinct against a floor of '+floor[k]);});
+  ok(m&&m.pair>=floor[k],'the '+k+' deck composes its mark, '
+   +(m?m.pair:0)+' distinct seat and glyph pairs against a floor of '+floor[k]
+   +(m?', on '+m.uniq+' glyphs':''));});
  const bad=[];
  Object.keys(kb.marks).forEach(k=>{
   const m=kb.marks[k];
@@ -2095,6 +2109,24 @@ ok(iq.three,'and that every law is asked three ways');
 ok(iq.gap,'and that the gap between the three is the reading');
 ok(iq.resume,'and that it can be stopped and come back to');
 ok(iq.left,'and the progress line says what is left');
+
+console.log('\n=== the ritual plan cap is one number, not two ===');
+/* THE BOUNDARY AND THE SURFACE HAVE TO AGREE ABOUT FORTY. validateProfile
+   refuses a when or a where past RIT_PLAN_MAX and never truncates it, and these
+   two inputs are where a person meets that cap. The number used to be typed
+   into the markup and absent from the boundary, which is how a five thousand
+   character when got onto a record the surface then rendered. Read off the live
+   inputs rather than off the source, because the source is not what ships. */
+const rp=await page.evaluate(async()=>{
+ loadP(6); setTab(TAB.RITUAL);
+ await new Promise(r=>setTimeout(r,500));
+ const w=document.getElementById('ritwhen'), e=document.getElementById('ritwhere');
+ return {there:!!(w&&e), cap:(typeof RIT_PLAN_MAX==='number')?RIT_PLAN_MAX:null,
+  when:w?w.maxLength:-1, where:e?e.maxLength:-1};});
+ok(rp.there,'the ritual surface asks when and where');
+ok(rp.cap>0,'the boundary names the cap, '+rp.cap);
+ok(rp.when===rp.cap,'the when input carries the boundary\'s cap, '+rp.when+' against '+rp.cap);
+ok(rp.where===rp.cap,'and so does the where input, '+rp.where+' against '+rp.cap);
 
 await browser.close();
 

@@ -55,10 +55,15 @@ function iqAccuracy(){
     integrity does not need to be told it is not a verdict. The panel gives two
     examples of an accurate answer, so the heading says that and nothing more.
 
-    The first heading keeps its words and takes plain, because it carries a
-    comma and a comma means a second part. */
+    The first heading was going to keep its words and take plain, and seeing
+    the three of them rendered side by side killed that: one sentence case
+    heading between two title case ones, in three identical cards in one row,
+    is a row that looks like two people built it. Three sibling headings in one
+    component are one visual unit and they take one case. So all three are
+    labels, which is also the shorter answer, and the panel under this one
+    already says which three ways. */
  var P=[
-  ['Moral integrity, three ways',true,
+  ['Asked three ways',false,
    'Each law is asked once where it costs you something, once where nobody would know, '
    +'and once on an ordinary day. The gap between the three is the reading, so answering '
    +'the same law differently is the point rather than a mistake.'],

@@ -1,11 +1,15 @@
 # QUESTIONS FOR THE OWNER
 
 Every line in `TASKS.md` marked `[?]`, which is the mark for a question
-waiting on his ruling. 88 of them, across 22 sections.
-Read off commit 4b45de1 on 2026-09-20. Nothing here is typed by hand: answer a
+waiting on his ruling. 89 of them, across 23 sections.
+Read off commit e6a44fa on 2026-09-20. Nothing here is typed by hand: answer a
 question in TASKS.md and it leaves this file on the next run.
 
 The same list is in `QUESTIONS.html`, which opens in a browser.
+
+## 0r. RULED 20 SEPTEMBER, SIXTH PASS. THE NERVE STATE, THE VOICE, AND THE LOOP.
+
+- [ ] **NS3. Find the five icons before drawing ten.** He says we have them. A first search of the source finds no table of nerve states at all, so either they live somewhere this search did not reach, or they exist as artwork outside the repository, or they were described and never built. Ask him which before anything is drawn, because redrawing an existing set is the one outcome nobody wants.
 
 ## 0t. DELIVERED 20 SEPTEMBER. THE RITUAL CALENDAR.
 
