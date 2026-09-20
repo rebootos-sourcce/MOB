@@ -21,6 +21,71 @@ reopens. Every seat adds its own.
 
 ---
 
+## 0t. DELIVERED 20 SEPTEMBER. THE RITUAL CALENDAR.
+
+`proto/ritual/calendar.html`, standalone, no network, every number real. Design
+B became the calendar he ruled: one seven column grid at three resolutions,
+month to week to day, and the grid is its own navigation.
+
+- [x] **CL1. Three spans, one object.** Month is thirty five cells, week is
+      seven cells each tall enough to name the day's rituals, day is one cell
+      full width and that is where the board lives. The span control carries no
+      counts.
+- [x] **CL2. Standing and due are answered in one sweep.** What is standing
+      sits on the right and never moves. What is due sits above the calendar as
+      three chips, one per kind.
+- [x] **CL3. The word running had to go.** This product reserves it for a
+      saboteur, and one word per concept is a ruling. The label is standing.
+- [x] **CL4. The colour is not a new palette.** The three kinds already exist
+      in the engine as the three mark families, each family already sits at a
+      seat, and each seat already has a colour. Always on takes Root, behaviour
+      takes Heart, release takes Throat. One colour axis only: the glyph
+      carries the track by its shape.
+- [x] **CL5. Colour never marks a failure.** A missed day is a hairline, a day
+      that has not happened is nothing at all, and a day before the person
+      started has no cell under it.
+- [x] **CL6. The kind is a closed field with three values, argued from the
+      engine.** Each kind names a different function as the source of its
+      proposals: the seat loads, the weakest law, the sniffer's offer. A fourth
+      kind would need a fourth source and there is none. This lands TA4 in the
+      prototype before it lands in the build.
+- [x] **CL7. RC5 turns out not to be a fourth kind.** What a person optimises
+      for is which of the three the queue puts first, which is the ordered for
+      control.
+- [x] **CL8. The queue is ordered by the load each proposal is aimed at,** and
+      every row says who proposed it and why, in a sentence built from real
+      addresses. Refusing is Not now, it costs nothing, and it does not come
+      back.
+- [ ] **CL9. The month grid is mostly empty.** A cell is a tall black box with
+      one short dash at the bottom, and the two rows past today are void. It is
+      the wall of absence again at a third span. The dash has to earn the cell
+      or the cell has to shrink to the dash.
+- [ ] **CL10. At month span it reads as one colour.** Nearly every day is the
+      always on kind, so the three kind palette shows almost nowhere and he
+      asked for colour by name. Either the month cell shows the kinds it
+      actually carried, or the month is the wrong span to carry colour at all.
+- [ ] **CL11. The panel's practice and minutes columns are stale on seven of
+      nine rows,** proved rather than asserted: the gate re runs the old rule
+      and reproduces the panel's column exactly. And `build-data.js` cites a
+      section A1 that does not exist in that file. Its numbers are right and
+      its citation is not.
+- [?] **CL12. The colour mapping, and it is the most arguable of the three.**
+      Always on takes Root red because the practice marks seat there and Root
+      is this product's ground rather than an alarm. Confirm, or move always on
+      to Heart and behaviour to Root.
+- [?] **CL13. The always on ritual has two candidate sources and they
+      disagree.** The reading picks by the darkest band, the avatar picks by
+      the seat carrying the most live imprints. For Marcus those are two
+      different seats. Which one owns it.
+- [?] **CL14. Does a release ritual recur on a schedule,** or only on days an
+      address sits above the line, which is the default taken.
+- [?] **CL15. May the queue be empty.** It empties when a person refuses
+      everything and stays empty until the field moves or they write something
+      new. A queue that refills itself is a nag, and the standing engagement
+      rule is that a person must be able to stop and be glad they used it.
+
+---
+
 ## 0u. DELIVERED 20 SEPTEMBER. THE FUNNEL, THE TAGS, AND THE SNIFFER.
 
 ### FD. THE FUNNEL AND THE HUNDRED, BUILT.

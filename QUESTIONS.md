@@ -1,11 +1,18 @@
 # QUESTIONS FOR THE OWNER
 
 Every line in `TASKS.md` marked `[?]`, which is the mark for a question
-waiting on his ruling. 84 of them, across 21 sections.
-Read off commit 78964c3 on 2026-09-20. Nothing here is typed by hand: answer a
+waiting on his ruling. 88 of them, across 22 sections.
+Read off commit f42cd6c on 2026-09-20. Nothing here is typed by hand: answer a
 question in TASKS.md and it leaves this file on the next run.
 
 The same list is in `QUESTIONS.html`, which opens in a browser.
+
+## 0t. DELIVERED 20 SEPTEMBER. THE RITUAL CALENDAR.
+
+- [ ] **CL12. The colour mapping, and it is the most arguable of the three.** Always on takes Root red because the practice marks seat there and Root is this product's ground rather than an alarm. Confirm, or move always on to Heart and behaviour to Root.
+- [ ] **CL13. The always on ritual has two candidate sources and they disagree.** The reading picks by the darkest band, the avatar picks by the seat carrying the most live imprints. For Marcus those are two different seats. Which one owns it.
+- [ ] **CL14. Does a release ritual recur on a schedule,** or only on days an address sits above the line, which is the default taken.
+- [ ] **CL15. May the queue be empty.** It empties when a person refuses everything and stays empty until the field moves or they write something new. A queue that refills itself is a nag, and the standing engagement rule is that a person must be able to stop and be glad they used it.
 
 ## 0u. DELIVERED 20 SEPTEMBER. THE FUNNEL, THE TAGS, AND THE SNIFFER.
 

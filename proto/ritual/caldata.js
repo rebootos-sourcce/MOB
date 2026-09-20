@@ -66,10 +66,19 @@ function ritFor(r,pick){
 /* the lightest practice on the track that moves a given seat, at the tier the
    reading allows. Same rule as ritFor, aimed at a seat the reading did not
    pick, which is what the avatar and the weak law need. */
-function forSeat(seat,tier){
+function forSeat(seat,tier,skip){
+ /* skip is the set of practice keys already standing. THE SAME PRACTICE MAY
+    NOT OCCUPY TWO KINDS AT ONCE. Gordon's weakest law seats at the throat, the
+    mind track holds nothing at tier 1, so it substitutes and lands on the
+    signal test, which is already his always on ritual. The board then printed
+    the same practice twice under two headings. Taking the next one in the same
+    ordering is not a new rule, it is the next element of the rule already
+    being applied. */
+ skip=skip||{};
  const track=TRACK4BAND[seat]||'Body';
- const fit=PRACTICE.filter(p=>p.tier<=tier);
+ const fit=PRACTICE.filter(p=>p.tier<=tier&&!skip[p.k]);
  const on=fit.filter(p=>p.track===track);
+ if(!fit.length)return null;
  const c=on.length?lightest(on):lightest(fit);
  return c?{k:c.k,nm:c.nm,min:c.min,track:c.track,tier:c.tier,
            substituted:!on.length,wanted:track}:null;}
@@ -81,7 +90,17 @@ const WT={Diane:180,Derek:170,Marcus:160,Angela:150,Sofia:140,James:100,
           Ana:50,Gordon:35,Rosa:15};
 
 /* ---------- THE THREE KINDS ----------
-   Closed at three, and the argument is in DESIGN-calendar.md. Each one names
+   CLOSED AT THREE, and the argument is that each one names a different engine
+   function as the source of its proposals. Always on reads the seat loads off
+   compute().carrying, because avatarGap calls a seat clear when its load is
+   zero and an avatar cannot manifest while a seat is carrying. Behaviour reads
+   compute().weakL, the lowest of the twenty one laws. Release reads
+   sniffStory's offer and, where the story gives nothing, the addresses above
+   the release threshold. A fourth kind would need a fourth source and the
+   engine has none, and a kind a person could type would make the calendar's
+   colour legend unbounded against a working memory of about four. What a
+   person is optimising for is therefore not a fourth kind, it is which of the
+   three the queue puts first. Each one also names
    the engine function its proposals come out of, because a kind that cannot
    say where its work comes from is a label rather than a category. The colour
    is not new: MARKS already carries three families, each family already sits
@@ -206,7 +225,7 @@ function queueFor(o){
  /* THE WEAK LAW, into the behaviour kind. compute().weakL is the lowest of the
     twenty one, and it arrives already seated at a band with its own icon. */
  if(o.weakL){
-  const p=forSeat(o.weakL.b,o.tier);
+  const p=forSeat(o.weakL.b,o.tier,o.called?{[o.called.k]:1}:{});
   if(p)q.push({kind:'change', by:'you', src:'weakL', weight:500,
    nm:p.nm, min:p.min, track:p.track, seat:o.weakL.b, law:o.weakL.nm,
    unit:'a day',
@@ -220,7 +239,7 @@ function queueFor(o){
     measured defect and not a quiet blank. */
  o.snOffer.forEach(of=>{
   q.push({kind:'release', by:'sniffer', src:'sniffStory', weight:400+of.shadow,
-   nm:'The Observer Technique', min:20, track:'Somatic',
+   nm:of.addr, via:'The Observer Technique', min:20, track:'Somatic',
    addr:of.addr, axis:of.axis, replacement:of.replacement, unit:'when called',
    because:'Your own words carry '+of.axis.toLowerCase()+' at '+of.addr
     +'. The far pole there is '+of.replacement+'.'});});
@@ -229,7 +248,7 @@ function queueFor(o){
     addresses at or above the release threshold, heaviest first. */
  o.rel.forEach(a=>{
   q.push({kind:'release', by:'you', src:'carrying', weight:200+a.sq,
-   nm:'The Observer Technique', min:20, track:'Somatic',
+   nm:a.fetter, via:'The Observer Technique', min:20, track:'Somatic',
    addr:a.addr, axis:a.axis, replacement:a.replacement, fetter:a.fetter,
    unit:'when called',
    because:a.fetter+' is held at '+a.addr+', above the line release opens at. '

@@ -16,7 +16,7 @@
       calendar is read, in one strip that never moves. -->
  <div class="due" id="due"></div>
 
- <div class="two">
+ <div class="two" id="two">
   <div class="calwrap">
    <div class="calhead"><div class="eye" id="calttl"></div><div class="note" id="calnote"></div></div>
    <div id="cal"></div>
@@ -62,13 +62,14 @@
 .k-release{--kc:#65B8D4}
 
 .seg{display:flex;background:var(--sunk);border:1px solid var(--line);border-radius:12px;padding:3px}
-.seg button{background:transparent;border:0;border-radius:9px;padding:0 16px;min-height:38px;
+.seg button{background:transparent;border:0;border-radius:9px;padding:0 16px;min-height:44px;
  cursor:pointer;color:var(--dim);font-size:13.5px;transition:.15s;white-space:nowrap}
 .seg button:hover{color:var(--ink)}
 .seg button[aria-pressed=true]{background:var(--panel-2);color:var(--ink);
  box-shadow:0 1px 0 rgba(255,255,255,.05) inset}
-.seg.sm button{padding:0 12px;min-height:36px;font-size:12.5px}
-.btn.ic{padding:0;width:44px;min-height:44px;font-size:20px;line-height:1}
+.seg.sm button{padding:0 12px;min-height:44px;font-size:12.5px}
+/* flex:none, because a flex item shrinks and a 44 that shrank to 38 is a 38 */
+.btn.ic{padding:0;width:44px;min-width:44px;min-height:44px;font-size:20px;line-height:1;flex:none}
 
 /* ---------- the due strip ---------- */
 .due{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px}
@@ -85,40 +86,56 @@
 .due .clear{font-size:13px;color:var(--dim);padding:0 2px}
 
 /* ---------- the calendar ---------- */
-.two{display:grid;grid-template-columns:1.25fr 1fr;gap:16px;align-items:start}
-.calwrap{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:18px}
+.two{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:16px;
+ align-items:start}
+.two.month{align-items:stretch}
+.two.week{grid-template-columns:minmax(0,1.95fr) minmax(0,1fr)}
+.stat b{font-size:22px}
+.calwrap{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);
+ padding:18px;display:flex;flex-direction:column}
+#cal{flex:1;display:flex;flex-direction:column}
+#cal .grid.month{flex:1;grid-auto-rows:minmax(64px,1fr)}
+#cal .grid.week{grid-auto-rows:minmax(112px,auto)}
 .calhead{display:flex;justify-content:space-between;align-items:baseline;gap:14px;
  margin-bottom:14px;flex-wrap:wrap}
 .side{display:grid;gap:14px}
 
-.grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.grid,.dowrow{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
+.dowrow{margin-bottom:5px}
 .dow{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);
- text-align:center;padding-bottom:6px}
+ text-align:center}
 /* A DAY THE PERSON HAS NOT LIVED THROUGH IS NOT DRAWN. Not an empty square,
    not a faint square, nothing. An empty grid cell is a tally of failures
    arriving through a layout constant. */
-.cell{border-radius:9px;min-height:52px;padding:6px 6px 5px;display:flex;flex-direction:column;
+.cell{border-radius:9px;min-height:64px;padding:6px 6px 5px;display:flex;flex-direction:column;
  justify-content:space-between;background:transparent;border:1px solid transparent;
  font:inherit;color:inherit;text-align:left}
 .cell.live{background:var(--sunk);border-color:var(--line)}
 .cell.ahead{background:transparent;border-color:rgba(255,255,255,.05)}
-.cell.today{border-color:var(--accent);border-width:1.5px;padding:5.5px 5.5px 4.5px}
+.cell.today{border-color:rgba(239,237,232,.7);border-width:1.5px;padding:5.5px 5.5px 4.5px}
 .cell u{font-size:11.5px;color:var(--dim);text-decoration:none;font-variant-numeric:tabular-nums}
-.cell.today u{color:var(--accent);font-weight:600}
-.cell .mk{display:flex;gap:3px;align-items:flex-end;min-height:9px}
-.cell .mk s{flex:1;height:8px;border-radius:3px;text-decoration:none;display:block;
- background:transparent;border:1px solid rgba(255,255,255,.16);max-width:26px}
+.cell.today u{color:var(--ink);font-weight:600}
+.cell.pale u{opacity:.42}
+.cell.pre{background:transparent;border-color:transparent}
+.cell .mk{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;min-height:9px}
+/* EVERY KIND KEEPS ITS LANE WHETHER OR NOT IT HAS ANYTHING IN IT. Always on is
+   the left third of every cell, behaviour the middle, release the right, so the
+   sort order is a position a person learns once and the colour says it twice. */
+.cell .mk s{height:8px;border-radius:3px;text-decoration:none;display:block;
+ background:transparent;border:1px solid transparent}
+.cell.live .mk s.due{border-color:rgba(255,255,255,.17)}
 .cell .mk s.on{background:var(--kc);border-color:var(--kc)}
 .grid.edit .cell.live{cursor:pointer}
-.grid.edit .cell.live:hover{outline:1.5px solid var(--accent);outline-offset:1px}
+.grid.edit .cell.live:hover{outline:1.5px solid rgba(239,237,232,.75);outline-offset:1px}
 
 /* week: the same grid, seven columns, one row, more resolution per cell */
-.grid.week .cell{min-height:150px;gap:8px;justify-content:flex-start;padding:9px 8px}
+.grid.week .cell{min-height:112px;gap:8px;justify-content:flex-start;padding:9px 8px}
 .grid.week .cell u{margin-bottom:2px}
-.wrow{display:flex;align-items:center;gap:6px;font-size:11.5px;line-height:1.25;width:100%}
-.wrow .dot{width:7px;height:7px;border-radius:50%;background:var(--kc);flex:none}
+.grid.week .wk7{display:flex;flex-direction:column;gap:5px;min-width:0;width:100%}
+.wrow{display:flex;align-items:flex-start;gap:6px;font-size:11.5px;line-height:1.3;width:100%}
+.wrow .dot{width:7px;height:7px;border-radius:50%;background:var(--kc);flex:none;margin-top:4px}
 .wrow.off .dot{background:transparent;border:1px solid rgba(255,255,255,.22)}
-.wrow span{color:var(--mid);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.wrow span{color:var(--mid);min-width:0;flex:1;overflow-wrap:anywhere}
 .wrow.off span{color:var(--dim)}
 
 /* day: one column, three sections, and design B's board lives in here */
@@ -129,7 +146,11 @@
  background:color-mix(in srgb,var(--kc) 12%,transparent);flex:none}
 .shead b{font-size:14px;font-weight:600;color:var(--kc);letter-spacing:-.005em}
 .shead i{font-style:normal;font-size:12.5px;color:var(--dim)}
-.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:10px}
+/* A FIXED TILE WIDTH, NOT A STRETCHED TRACK. An auto grid drew a single tile
+   as one third of the row with two empty thirds beside it, which reads as a
+   layout that broke rather than as one ritual. */
+.tiles{display:flex;flex-wrap:wrap;gap:10px}
+.tile{width:170px}
 .tile{background:var(--panel-2);border:1px solid var(--line);border-radius:12px;
  padding:14px 10px 12px;display:flex;flex-direction:column;align-items:center;gap:8px;
  cursor:pointer;transition:.16s;min-height:44px;text-align:center;font:inherit;color:inherit}
@@ -140,10 +161,12 @@
 .tile b{font-size:13px;font-weight:600;line-height:1.3}
 .tile span{font-size:11.5px;color:var(--dim);font-variant-numeric:tabular-nums}
 .tile.done b{color:var(--kc)}
-.empty{font-size:13px;color:var(--dim);line-height:1.6;background:var(--sunk);
- border:1px dashed var(--line);border-radius:12px;padding:14px 16px}
-.empty button{background:transparent;border:0;color:var(--accent);cursor:pointer;
- font:inherit;text-decoration:underline;text-underline-offset:3px;padding:0;min-height:0}
+.empty{display:block;width:100%;text-align:left;font:inherit;font-size:13px;
+ color:var(--dim);line-height:1.6;background:var(--sunk);cursor:pointer;
+ border:1px dashed var(--line);border-radius:12px;padding:15px 16px;min-height:60px;
+ transition:.15s}
+.empty:hover{border-color:var(--kc);color:var(--mid)}
+.empty b{color:var(--accent);font-weight:600}
 
 /* ---------- standing ---------- */
 .srow{display:flex;align-items:center;gap:11px;padding:12px 0;border-top:1px solid var(--line)}
@@ -160,7 +183,8 @@
 .wk{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--dim);margin-bottom:7px}
 .wk u{flex:1;height:7px;border-radius:4px;background:var(--sunk);text-decoration:none;
  display:block;overflow:hidden}
-.wk u b{display:block;height:100%;background:var(--accent);border-radius:4px}
+.wk u b{display:block;height:100%;border-radius:4px;
+ background:color-mix(in srgb,var(--kc,#CF5953) 74%,var(--panel))}
 .wk em{font-style:normal;font-variant-numeric:tabular-nums;color:var(--mid);min-width:52px;
  text-align:right}
 
@@ -183,15 +207,19 @@
 .qrow .acts .yes{border-color:var(--kc);color:var(--kc)}
 .qrow .acts .yes:hover{background:color-mix(in srgb,var(--kc) 14%,transparent)}
 .qrow .acts .no:hover{border-color:var(--line2);color:var(--dim)}
-.by{display:inline-block;font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;
- color:var(--dim);border:1px solid var(--line);border-radius:6px;padding:2px 6px;
- vertical-align:1px;margin-left:7px}
+.qrow .st:not(:empty){margin-top:9px;font-size:12px;color:var(--mid);line-height:1.5;
+ border-left:2px solid var(--kc);padding-left:10px}
+/* the eyebrow class is upper case across this product and stays that way. A
+   proposer badge is content, not an eyebrow, so it is sentence case. */
+.by{display:inline-block;font-size:11px;letter-spacing:.02em;
+ color:var(--dim);border:1px solid var(--line);border-radius:6px;padding:2px 7px;
+ vertical-align:1px;margin-left:7px;font-weight:500}
 
 @media(max-width:980px){
  .two{grid-template-columns:1fr}
  .grid.week{grid-template-columns:1fr;gap:6px}
  .grid.week .dow{display:none}
- .grid.week .cell{min-height:0;flex-direction:row;align-items:center;gap:12px;padding:11px 12px}
+ .grid.week .cell{min-height:48px;flex-direction:row;align-items:center;gap:12px;padding:11px 12px}
  .grid.week .cell u{min-width:58px;margin:0}
  .grid.week .wk7{flex:1;display:flex;flex-direction:column;gap:5px;min-width:0}
 }
@@ -202,7 +230,7 @@
  .grid{gap:3px}
  .cell{min-height:46px;padding:5px 4px 4px;border-radius:7px}
  .cell .mk s{max-width:none}
- .tiles{grid-template-columns:repeat(2,1fr)}
+ .tile{width:calc(50% - 5px)}
 }
 </style>
 
@@ -232,24 +260,38 @@ var MON=['January','February','March','April','May','June','July','August',
  'September','October','November','December'];
 
 function kg(k,sz,c){return svgIc(KIC[k],c||KC[k],sz||18);}
+function cap(w){return w.charAt(0).toUpperCase()+w.slice(1);}
 function dayMs(i,len){return TODAY-(len-1-i)*MS;}   /* walk index to a date */
 function idxOf(ms,len){return len-1-Math.round((TODAY-ms)/MS);}
 function dstr(ms){var d=new Date(ms);
  return DOW[(d.getUTCDay()+6)%7]+' '+d.getUTCDate()+' '+MON[d.getUTCMonth()];}
 
 /* ---------- the rituals a person has standing ----------
-   ONE TO BEGIN, NOT SIX WITH FIVE HOLES IN IT. The reading calls for one
-   practice and the engine calls for no others, so the board opens with one and
-   the queue is the route to the rest. An empty kind says what would fill it.
-   The always on ritual carries the real walk out of losssim.js. Anything added
-   starts today, because nothing in PEOPLE carries a second history and drawing
-   one would be inventing it. */
+   ONE PER KIND, AND EACH ONE HAS A SOURCE. Not six tiles with five holes in
+   them, which is a count against a total wearing a costume, and not one tile
+   with two grey kinds beside it, which teaches the three colours as two
+   absences. The engine names a practice for each kind independently: ritFor
+   for always on, the weakest of the twenty one laws for behaviour, and the
+   heaviest address above the release line for release. Where a kind has no
+   source the kind is empty and says so, which is the honest state for the four
+   hundred and sixty five of a thousand who cannot run a release yet.
+
+   ONLY THE ALWAYS ON LANE CARRIES HISTORY. It is the walk out of losssim.js.
+   The other two start today, because nothing in PEOPLE holds a second walk and
+   drawing one would be the only invented number on the page. */
 function rits(){
  if(RIT[cur])return RIT[cur];
- var d=D[cur], len=d.walk.length;
- RIT[cur]=[{k:d.called.k, nm:d.called.nm, min:d.called.min, track:d.called.track,
-   kind:'hold', cadence:'every day', from:0, walk:d.walk.slice()}];
- return RIT[cur];}
+ var d=D[cur], L=d.walk.length, out=[], zero=d.walk.map(function(){return 0;});
+ out.push({k:d.called.k, nm:d.called.nm, min:d.called.min, track:d.called.track,
+  kind:'hold', cadence:'every day', from:0, walk:d.walk.slice(), src:'ritFor'});
+ d.queue.forEach(function(q){
+  if(!q.min)return;
+  if(q.kind==='hold')return;
+  if(out.some(function(r){return r.kind===q.kind;}))return;
+  out.push({k:q.nm, nm:q.nm, min:q.min, track:q.track||'Somatic', kind:q.kind,
+   cadence:q.unit==='when called'?'when called':'every day',
+   from:L-1, walk:zero.slice(), src:q.src, fresh:true});});
+ RIT[cur]=out; return out;}
 function refused(){if(!REF[cur])REF[cur]={};return REF[cur];}
 function len(){return D[cur].walk.length;}
 function has(kind){return rits().filter(function(r){return r.kind===kind;});}
@@ -279,7 +321,7 @@ function due(){
  KINDS.forEach(function(x){
   var st=kindOn(x.k,i);
   if(st===null){h+='<button class="chip k-'+x.k+'" data-k="'+x.k
-    +'" style="opacity:.5"><span class="rg">'+kg(x.k,20,'var(--dim)')
+    +'" style="opacity:.66"><span class="rg">'+kg(x.k,20,'var(--dim)')
     +'</span><span><b>'+x.nm+'</b><i>nothing standing</i></span></button>';return;}
   if(st==='due')open++;
   h+='<button class="chip k-'+x.k+(st==='on'?' on':'')+'" data-k="'+x.k+'">'
@@ -322,7 +364,13 @@ function gridDays(){
  var s=Date.UTC(y,m,1), e=Date.UTC(y,m+1,0);
  s-=((new Date(s).getUTCDay()+6)%7)*MS;
  e+=(6-((new Date(e).getUTCDay()+6)%7))*MS;
- for(var ms=s;ms<=e;ms+=MS)out.push({ms:ms,i:idxOf(ms,L),out:ms<first});
+ for(var ms=s;ms<=e;ms+=MS){
+  var inM=new Date(ms).getUTCMonth()===m;
+  /* out: padding from the month either side, and drawn as nothing.
+     pre: a day of this month from before the person's first day, drawn as its
+     number and nothing else. */
+  out.push({ms:ms,i:idxOf(ms,L),out:(ms<first&&!inM)||(!inM&&ms<first),
+   pre:inM&&ms<first});}
  return out;}
 
 function cal(){
@@ -332,20 +380,30 @@ function cal(){
    +' '+new Date(TODAY).getUTCFullYear());
  if(span==='day'){ el.innerHTML=dayView();
   document.getElementById('calnote').textContent=
-   plural(rits().length,'ritual')+' standing, in three kinds.';
+   plural(rits().length,'ritual')+' standing.';
   el.querySelectorAll('[data-r]').forEach(function(b){b.onclick=function(){
    var r=rits()[+b.dataset.r], i=L-1; r.walk[i]=r.walk[i]?0:1; draw();};});
   el.querySelectorAll('[data-add]').forEach(function(b){
    b.onclick=function(){openQ(b.dataset.add);};});
   return;}
  var days=gridDays();
- var h='<div class="grid'+(span==='week'?' week':'')+(EDIT?' edit':'')+'">';
+ var h='';
  if(span==='month'||window.innerWidth>980)
-  h+=DOW.map(function(d){return '<div class="dow">'+d+'</div>';}).join('');
+  h+='<div class="dowrow">'+DOW.map(function(d){return '<div class="dow">'+d+'</div>';})
+   .join('')+'</div>';
+ h+='<div class="grid '+span+(EDIT?' edit':'')+'">';
  days.forEach(function(d){
   if(d.out){h+='<div class="cell"></div>';return;}
+  if(d.pre){h+='<div class="cell pale"><u>'+new Date(d.ms).getUTCDate()
+   +'</u><div class="mk"></div></div>';return;}
+  /* A DATE IS NOT A SLOT. A day before the person's first is drawn as its
+     number and nothing else: no square, no outline, no mark. That is a month
+     whose earlier days are not theirs yet. An empty square in the same place
+     would be the wall of absence, which is a different object: a slot drawn
+     for a day they are being told they did not fill. */
   var live=d.i>=0&&d.i<=L-1, ahead=d.i>L-1, dt=new Date(d.ms).getUTCDate();
-  var cls='cell'+(live?' live':(ahead?' ahead':''))+(d.ms===TODAY?' today':'');
+  var cls='cell'+(live?' live':(ahead?' ahead':''))+(d.ms===TODAY?' today':'')
+   +(span==='month'&&new Date(d.ms).getUTCMonth()!==new Date(TODAY).getUTCMonth()?' pale':'');
   h+='<button class="'+cls+'" data-d="'+d.i+'"'+((!live&&!ahead)?' disabled':'')+'>';
   h+='<u>'+(span==='week'?DOW[(new Date(d.ms).getUTCDay()+6)%7]+' '+dt:dt)+'</u>';
   if(span==='week'){
@@ -357,17 +415,25 @@ function cal(){
       +'<span>'+r.nm+'</span></span>';});});
    h+='</div>';}
   else{
+   /* NOTHING IS DRAWN AHEAD OF TODAY. A day that has not happened has nothing
+      on the record and nothing missing from it, and seven empty slots drawn
+      forward is a tally of failures a person has not had the chance to make. */
    h+='<div class="mk">';
-   KINDS.forEach(function(x){var st=live?kindOn(x.k,d.i):(ahead?kindOn(x.k,d.i):null);
-    if(st===null)return;
-    h+='<s class="k-'+x.k+(st==='on'?' on':'')+'"></s>';});
+   KINDS.forEach(function(x){
+    var st=live?kindOn(x.k,d.i):null;
+    h+='<s class="k-'+x.k+(st==='on'?' on':(st==='due'?' due':''))+'"></s>';});
    h+='</div>';}
   h+='</button>';});
  el.innerHTML=h+'</div>';
- var seen=days.filter(function(d){return !d.out&&d.i>=0&&d.i<=L-1;}).length;
+ /* THIS MONTH'S OWN DAYS. The grid is padded to whole weeks, so the last of
+    August and the first of October sit in it, and counting the cells said
+    twenty one days of September on a month that has had twenty. */
+ var m0=new Date(TODAY).getUTCMonth();
+ var seen=days.filter(function(d){return !d.out&&d.i>=0&&d.i<=L-1
+   &&new Date(d.ms).getUTCMonth()===m0;}).length;
  document.getElementById('calnote').textContent=EDIT
   ? 'Tap a day to put it on the record or take it off.'
-  : (span==='week'?'Seven days, and every ritual due on each.'
+  : (span==='week'?'Seven days, and the three kinds in the same order down each.'
      :plural(seen,'day')+' of this month on the record. One cell a day.');
  if(EDIT)el.querySelectorAll('.cell.live').forEach(function(b){b.onclick=function(){
   var i=+b.dataset.d; has('hold').forEach(function(r){
@@ -382,8 +448,8 @@ function dayView(){
   var h='<div class="sect k-'+x.k+'"><div class="shead"><span class="sg">'
    +kg(x.k,17)+'</span><span><b>'+x.nm+'</b> <i>'+x.d+'</i></span></div>';
   if(!rs.length){
-   h+='<div class="empty">Nothing standing here yet. '
-    +'<button data-add="'+x.k+'">Open the queue</button> to put something in it.</div>';
+   h+='<button class="empty" data-add="'+x.k+'">Nothing standing here yet. '
+    +'<b>Open the queue</b> to put something in it.</button>';
    return h+'</div>';}
   h+='<div class="tiles">'+rs.map(function(r){
    var j=rits().indexOf(r), on=didOn(r,i), tr=TRACKS[r.track]||TRACKS.Body;
@@ -401,8 +467,10 @@ function stand(){
   var tr=TRACKS[r.track]||TRACKS.Body, run=runOf(r.walk.slice(r.from));
   return '<div class="srow k-'+r.kind+'"><span class="sg">'+svgIc(tr.ic,KC[r.kind],17)
    +'</span><span class="tx"><b>'+r.nm+'</b><i>'+K[r.kind].nm.toLowerCase()
+   +(r.via?' &middot; '+r.via.toLowerCase():'')
    +' &middot; '+r.min+' min &middot; '+r.cadence+'</i></span>'
-   +'<em>'+(run?plural(run,'day'):'not yet')+'</em></div>';}).join('');}
+   +'<em>'+(run?plural(run,'day'):(r.fresh?'starts today':'not yet'))+'</em></div>';})
+  .join('');}
 
 /* ---------- the accountability read. Passed as built, and not redesigned. ---- */
 function stats(){
@@ -429,7 +497,7 @@ function stats(){
  document.getElementById('bars').innerHTML=
   '<div class="eye" style="margin-bottom:10px">Which day you keep it</div>'
   +DOW.map(function(n,i){var p=tot[i]?Math.round(hit[i]/tot[i]*100):0;
-   return '<div class="wk"><span style="min-width:30px">'+n+'</span>'
+   return '<div class="wk k-'+base.kind+'"><span style="min-width:30px">'+n+'</span>'
     +'<u><b style="width:'+p+'%"></b></u><em>'+hit[i]+' of '+tot[i]+'</em></div>';})
   .join('');}
 
@@ -438,11 +506,9 @@ function openQ(k){if(k)opt=k;QOPEN=true;draw();
  var f=document.querySelector('#q .qrow .yes');if(f)f.focus();}
 function closeQ(){QOPEN=false;draw();document.getElementById('qbtn').focus();}
 function qlist(){
- var d=D[cur], ref=refused(), got={};
- rits().forEach(function(r){got[r.k+'|'+r.kind]=1;});
- return d.queue.filter(function(q){
-  return !ref[q.i]&&!got[(q.nm==='Build the avatar'?'av':'')+'|'+q.kind];})
-  .filter(function(q){return !rits().some(function(r){return r.nm===q.nm&&r.kind===q.kind;});})
+ var d=D[cur], ref=refused();
+ return d.queue.filter(function(q){return !ref[q.i];})
+  .filter(function(q){return !rits().some(function(r){return r.nm===q.nm;});})
   .slice()
   /* ORDERED, NOT LISTED. The order is the load each proposal is aimed at.
      What the person is optimising for lifts one kind to the top and hides
@@ -454,12 +520,14 @@ function queue(){
   'Ordered by the load each one is aimed at. '+plural(list.length,'proposal')+' waiting.';
  document.getElementById('qlist').innerHTML=list.length?list.map(function(q){
   return '<div class="qrow k-'+q.kind+'"><span class="sg">'+kg(q.kind,18)+'</span>'
-   +'<span class="tx"><b>'+q.nm+'</b><span class="by">'+q.by+'</span>'
+   +'<span class="tx"><b>'+q.nm+'</b><span class="by">'+cap(q.by)+'</span>'
    +'<div class="meta">'+K[q.kind].nm.toLowerCase()
+   +(q.via?' &middot; '+q.via.toLowerCase():'')
    +(q.min?' &middot; '+q.min+' min':'')+' &middot; '+q.unit+'</div>'
    +'<p>'+q.because+'</p><span class="acts">'
-   +'<button class="yes" data-add="'+q.i+'">Add</button>'
-   +'<button class="no" data-no="'+q.i+'">Not now</button></span></span></div>';})
+   +'<button class="yes" data-add="'+q.i+'">'+(q.min?'Add':'Build it')+'</button>'
+   +'<button class="no" data-no="'+q.i+'">Not now</button></span>'
+   +'<div class="st" id="st'+q.i+'"></div></span></div>';})
   .join('')
   :'<p class="note" style="padding-top:14px">Nothing waiting. The queue refills when '
    +'the field moves or you tell it something new.</p>';
@@ -470,11 +538,18 @@ function queue(){
 function add(i){
  var q=D[cur].queue.filter(function(x){return x.i===i;})[0];
  if(!q)return;
- if(!q.min){refused()[i]=1;draw();return;}   /* build the avatar is not a practice */
+ if(!q.min){
+  /* not a practice, so nothing is added and the row says so and stays put */
+  var st=document.getElementById('st'+i);
+  if(st)st.innerHTML='The avatar is built on its own surface, by writing both '
+   +'sides of a pair. That surface is not in this prototype, so nothing was '
+   +'added here.';
+  return;}
  var L=len();
- rits().push({k:q.nm, nm:q.nm, min:q.min, track:q.track||'Somatic', kind:q.kind,
+ rits().push({k:q.nm, nm:q.nm, via:q.via||null, min:q.min,
+  track:q.track||'Somatic', kind:q.kind,
   cadence:q.unit==='when called'?'when called':'every day',
-  from:L-1, walk:D[cur].walk.map(function(){return 0;})});
+  from:L-1, walk:D[cur].walk.map(function(){return 0;}), fresh:true});
  draw();}
 
 /* ---------- controls ---------- */
@@ -507,6 +582,7 @@ function draw(){
  eb.className='btn'+(EDIT?' on':''); eb.textContent=EDIT?'Done':'Edit';
  document.getElementById('q').hidden=!QOPEN;
  document.getElementById('qmask').hidden=!QOPEN;
+ document.getElementById('two').className='two '+span;
  due(); cal(); stand(); stats(); if(QOPEN)queue();
  document.getElementById('foot').innerHTML=
   'The ritual builder as a calendar. Design B made a calendar: one grid at three spans, '
