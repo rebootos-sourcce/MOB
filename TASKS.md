@@ -21,6 +21,57 @@ reopens. Every seat adds its own.
 
 ---
 
+## 0l. DELIVERED 20 SEPTEMBER. THE TWO UNVALIDATED BAGS ARE CLOSED.
+
+VB1, VB2 and VB3 are built. `validateProfile` keeps its signature and its
+contract, `pImport` stays atomic, and nothing bumped the schema version.
+
+- [x] **VB1. Rituals are validated per entry** against the engine's own
+      tables rather than a list somebody typed. Tracks and step keys are read
+      off the practice library at load, seats are the seat table, and the
+      minutes ceiling is the whole library summed, which is every practice
+      picked once.
+- [x] **VB2. The forty character cap is one number now.** It was a literal in
+      the markup and nothing at all at the boundary. The refusal declares it
+      and the surface reads it, so the two cannot drift.
+- [x] **VB3. Story entries are validated per entry** and band keys are checked
+      against the sniffer's own table.
+- [x] **VB4. A closed key set rather than a deny list.** It refuses what
+      nobody thought of, not only what somebody did, which is the posture
+      already next door in the outbox. Nineteen refusals by name, including
+      the three that started this: a ritual may not carry a secret, an email
+      or a note.
+- [x] **VB5. And the deny list would have broken the product.** The outbox
+      names `imprints` as a thing that may never leave the device, and a story
+      entry's own fourth field is called `imprints`. Wiring that table into
+      the arrival boundary would have refused every entry the app has ever
+      written. Found because a gate row written to assert the opposite failed.
+      The one overlap is now asserted, so a future collision on either table
+      is reported rather than quietly refusing a legitimate field.
+- [x] **VB6. Two fields are deliberately not filled.** A missing `done` stays
+      missing, because writing false at the boundary would move every older
+      ritual out of the practised column. And a date is required and never
+      invented, because the streak is counted in the days it returns and a
+      filled one would hand somebody a day they did not practise.
+- [x] **VB7. Proved by breaking it nineteen times,** one mutation per refusal,
+      each rebuilt and run and restored, with the rows that caught it printed.
+      Removing the ritual key set alone failed seven rows and also failed the
+      atomicity rows, because the poisoned profile imported and the list
+      moved.
+- [x] **VB8. No cap was invented on the story text.** The box enforces none on
+      purpose, so a cap at the boundary would refuse something somebody
+      actually wrote. A gate asserts a forty thousand character story is
+      accepted, so nobody adds one by accident.
+- [ ] **VB9. `ritual.kind` is deliberately off the key set,** because TA4 is
+      unbuilt and the engine holds no table of the three kinds yet. The day it
+      lands it must be added and validated against its own table. That is the
+      bargain a closed set makes and it is written at the line.
+- [ ] **VB10. A test fixture writes a ritual that is no longer legal.** It
+      goes straight to the profile and never crosses the boundary, so nothing
+      is broken, but it no longer describes a ritual the product would accept.
+
+---
+
 ## 0m. DELIVERED 20 SEPTEMBER. THE RITUAL PAGE, IN HIS ORDER.
 
 Built to his layout: stats on top, the week second starting Monday, the three

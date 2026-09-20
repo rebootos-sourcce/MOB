@@ -2,7 +2,7 @@
 
 Every line in `TASKS.md` marked `[?]`, which is the mark for a question
 waiting on his ruling. 98 of them, across 27 sections.
-Read off commit ece59f3 on 2026-09-20. Nothing here is typed by hand: answer a
+Read off commit 79a7613 on 2026-09-20. Nothing here is typed by hand: answer a
 question in TASKS.md and it leaves this file on the next run.
 
 The same list is in `QUESTIONS.html`, which opens in a browser.
