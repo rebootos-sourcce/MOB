@@ -1,8 +1,8 @@
 # QUESTIONS FOR THE OWNER
 
 Every line in `TASKS.md` marked `[?]`, which is the mark for a question
-waiting on his ruling. 127 of them, across 39 sections.
-Read off commit 104b3aa on 2026-09-20. Nothing here is typed by hand: answer a
+waiting on his ruling. 136 of them, across 39 sections.
+Read off commit dc85dc3 on 2026-09-20. Nothing here is typed by hand: answer a
 question in TASKS.md and it leaves this file on the next run.
 
 Each one opens with the question and names the seat asking it. The generator
@@ -14,6 +14,15 @@ The same list is in `QUESTIONS.html`, which opens in a browser.
 
 - [ ] **TY4. Is a couple of rounds two, or three?** His own word, and two is the literal reading and what is planned.
 - [ ] **FV3. Which band rhythm, equal arcs or alternating weights?** Art director asks. His words: "either one, one, one, one, one, one, or one, two, one, two, one, two." Both get drawn. Six numbers were said for seven seats, so the answer also has to say whether the odd seat takes the wide slot or the narrow one.
+- [ ] **TR6. Should the top bar get its own cut of the mark, tracked and weighted for thirteen pixels, rather than the wordmark scaled down?** Type and grid asks. Six of the nine cuts change fewer than 8 pixels there and one changes zero, so at that size the bar is not showing a smaller version of the mark, it is showing a different object.
+- [ ] **TR7. Is A2 kept for what the spur does to the silhouette, now that the reason given for it has been measured out?** Composition asks. The spur was argued on the hole under the t's crossbar and closes 1.17 per cent of it, 2.24 per cent when doubled. Doubling the spur trebles nothing.
+- [ ] **TR8. Does the dot law move so U3 can exist, or is U3 closed?** Composition found the collision and type and grid measured that the obvious fix is not one. The right dot and the riser share 3.5 units of ink, and the shared pixels are 3, 0 and 1 at the three sizes, so the topology changes with the size, which is worse than a collision that holds. Carrying the riser over the dots measures identical shared ink, to the hundredth, because the collision is horizontal.
+- [ ] **TR9. Does the e lose the rhythm or lose the mouth, since it cannot have both?** Two seats ask and they disagree. E3 closes its mouth to 0.88 of a pixel in the bar, which is closed. E2 cannot be spaced to the rhythm at any gap: with the letters touching its white is still 10.85 per cent over.
+- [ ] **TR10. Does the mark get one tracking, or one for the boot card and a looser one for the top bar?** Type and grid asks. The bar needs plus 6 units before every joint carries a pixel, and plus 6 at the boot card is a mark that has been opened for a size it is not being shown at.
+- [ ] **TR11. Should the e and the d touch on purpose at the small end, as a ligature?** Composition asks, against type and grid. They are touching now by accident, and a joint that closes by accident reads as a defect where one closed by design reads as a decision.
+- [ ] **TR12. Which seven hex values are canonical, the code's or the review documents'?** Art director asks. See TR2. One of them is wrong in three documents and it is not the code.
+- [ ] **TR13. Does the favicon use the muted palette or the vivid one?** Art director asks and recommends the vivid. Against an unknown browser ground the muted measures 1.62 at worst and the vivid 2.35, and because the arcs touch, neighbour separation matters as much: closest adjacent pair 47 for the muted and 61 for the vivid. `canon.js` already says the vivid set was chosen to hold on paper and on the black stage both, which is the favicon's exact problem written down before the favicon existed. It sits against the muted palette ruling, which is why it is his.
+- [ ] **TR14. Is the Flat lighting's dot white, like the other three dark lightings, or the off white it inherited?** Art director asks. Three of the four dark lightings use `#FFFFFF` and Flat uses `#F7F6F3`, which was never ruled. At white its dot to bar goes 17.05 to 18.42. Named and not changed, because a lighting is his.
 - [ ] **CP4. Is a child pattern one of the nine child emotions found at an address, or an address carrying while its seat's own primary address carries too?** Systems director asks, and the counts are measured off the roster rather than guessed. On Gordon, the heaviest profile the gates carry, 97 addresses are held: the first reading marks 9 of them and the second marks 90. On Ana, 41 held, 8 against 20. On a blank profile both mark nothing. The first ships today. The second lights ninety of ninety seven, which is a highlight that has stopped highlighting, so answering it that way asks a second question about where the cut goes.
 - [ ] **CP5. And if a child pattern is a childhood imprint, does a profile get a field to keep one in?** Systems director asks. The age ladder measured 0 on every profile in the roster, and not because nobody has a childhood imprint: `AGE_ANS` is a variable inside the drill, the blank profile has no age shaped key, and `ageFinding()` returns a finding that dies with the tab. That reading cannot be built at all until the finding is stored, which is a schema change and his.
 

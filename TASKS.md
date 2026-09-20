@@ -84,16 +84,41 @@ the child patterns. Wording kept where it is his.
 - [x] **TY0. Named, verbatim: "A1 A2, T2, U1, U2, U3, N2, E3, and E2."** Nine
       cuts out of the study, to be carried into a couple of rounds each rather
       than shown once. Written down before any of it is drawn.
-- [ ] **TY1. A couple of rounds of each of the nine.** Not a second sheet of
+- [x] **TY1. Two rounds of each of the nine, delivered.** `proto/logo/round2.html`
+      carries the nine cuts twice over and both cases,
+      `proto/logo/round3.html` carries the spacing, the favicon ring and the
+      dots on paper. No number on either sheet is typed in: every one is read
+      out of `measured.json` and the build refuses to run without it. Not a second sheet of
       the same thing: a round is a change argued from what the last round
       showed.
-- [ ] **TY2. D11 is out, and the reason is the study's fault, not his.** His
+- [x] **TY2. D11 is out, and the study now has a floor so it cannot happen
+      again.** Measured: d1 against d2 is four units in a 130 unit box, which
+      rasterises to 1 pixel in the top bar. A change ships as a choice only if
+      it moves at least 8 pixels and the changed region measures at least 3
+      pixels in its longest dimension, at 1x, at the size shown. Below that
+      the cut is drawn large with its number attached and marked refused.
+      **And the floor found something bigger: at the top bar six of the nine
+      cuts change fewer than 8 pixels and one changes zero.** The bar cannot
+      carry a letterform decision at all, so every choice is shown at the boot
+      card and the funnel heading with the bar beside it as a survival check.
+      The original line stands and is the reason this one exists.
+- [ ] **TY2b. D11 is out, and the reason is the study's fault, not his.** His
       words: "D11 is not varied enough for me to tell." A sheet whose variants
       sit inside the noise of the rendering asks him to rule on a difference he
       cannot see, which is the same defect as a gate that counts by hand. The
       next sheet varies D by an amount that survives a screenshot or it does
       not go out.
-- [ ] **TY3. Spacing is the study, not a property of it.** His words: "the
+- [x] **TY3 MEASURED, and the mark is touching itself in the product today.**
+      In the top bar at 13 pixels the t to u joint measures 1 pixel of any ink
+      and 0 solid, and the e to d joint measures 0 and 0. Nothing has to be
+      closed to get there. Nine units is 0.0692 em, which is nine tenths of a
+      pixel, and nine tenths of a pixel has nowhere to land. Closing, the e
+      and the d touch first, at minus 9 units. Opening, the bar needs plus 6
+      before every joint has a pixel of any ink and plus 9 before the tightest
+      has a solid one, and plus 6 costs 4.6 per cent of the mark's width.
+      Both collision pairs are drawn touching and not touching at all three
+      sizes.
+- [ ] **TY3b. Spacing is the study, not a property of it.** His words: "the
       spacing is very important. So touching, not touching, these things are
       very critical." So tracking and the letter pair collisions get their own
       rounds, drawn at the sizes the mark is actually used at, with touching
@@ -108,7 +133,14 @@ the child patterns. Wording kept where it is his.
       band."** This settles LG13 without needing the letter argument at all:
       the sixteen pixel cut is the ring, not the a and not the u, so the face
       the u makes at that size stops being a problem to solve.
-- [ ] **FV2. Seven colours is the seats, and the ring already exists** as the
+- [x] **FV2 DRAWN, at 16, 32 and 180, with the recommendation on the
+      arithmetic: equal arcs, touching.** Colours read off the live `PAL`
+      rather than retyped. Equal gives every seat 12 solid pixels at 16;
+      the alternating rhythms give the narrow seats 10 and 8. A three degree
+      gap costs 2 of those 12, which is a seventh of the pixels a seat has to
+      say its hue with, so the arcs touch. The band is 18.75 per cent of the
+      diameter, set by the 16 pixel end and not by the boot ring's hairline,
+      which is 0.21 of a pixel at that size. Seven colours is the seats, and the ring already exists as the
       boot mark and the key strip. The favicon is that ring at sixteen, thirty
       two and one hundred and eighty pixels, drawn as a band rather than as
       seven separate marks.
@@ -130,6 +162,83 @@ the child patterns. Wording kept where it is his.
       now before we were using a regular font, now we are using typography.
       So for LG18, just know that now we are exploring." The open work is
       that the rounds carry both cases until the cut is chosen.
+
+### TR. WHAT THE TWO ROUNDS FOUND, AND THE EIGHT THINGS THAT ARE HIS.
+
+- [ ] **TR1. `geometry.js:116` draws u2 with no right stem above the bowl.**
+      It runs down the left stem, round the bowl, then straight down to 146,
+      so it is not a u with a tail, it is a u with a stem missing. u1 and u3
+      run the same subpath upward and are correct. Found by drawing the
+      difference rather than by reading the path, and its 99 pixel delta
+      should have been read as a question the first time.
+- [ ] **TR2. The seat colours in `reviews/` disagree with the code on all
+      seven.** `PAL` in `engine/data/canon.js` reads `#D6524C #D8924E #DABF6A
+      #5FD5A6 #5EBBDB #7D93E0 #A77EDB`. Three review documents carry a
+      different seven, and Root is 20 units apart in red alone. The seat that
+      found it said the second set was in `CLAUDE.md`, and it is not: it is in
+      `reviews/AD-account-help.md`, `reviews/compass-passes.html` and
+      `reviews/mark-proposals.html`. Same class of defect as a stale count,
+      one layer further out. The code is the palette; the documents move.
+- [x] **TR3. Two sentences in the first logo study were wrong and are
+      corrected on the new sheets, with the replacement measurement beside
+      them.** The candidate B argument measured the wrong aperture: e1 and E2
+      have identical enclosed counters at every size, and what the terminal
+      opens is the mouth, not the counter. And "the e to d joint cannot be
+      solved at all" was wrong: it solves at 3 units, and E3 solves it at the
+      9 unit floor dead on target. The floor refuses it, not the geometry.
+- [x] **TR4. A ladder removed four drawings from the study rather than adding
+      four.** The n was drawn at five rises rather than as a second pair, and
+      no single step clears the pixel floor, so the n is n1 or N2 and there is
+      no intermediate worth drawing.
+- [ ] **TR5. There is still no favicon in the product.** Zero matches for
+      `favicon` or `rel="icon"` in `shell/head.html` or `source.html`. The
+      ring is drawn and measured; wiring it in is a build.
+- [?] **TR6. Should the top bar get its own cut of the mark, tracked and
+      weighted for thirteen pixels, rather than the wordmark scaled down?**
+      Type and grid asks. Six of the nine cuts change fewer than 8 pixels
+      there and one changes zero, so at that size the bar is not showing a
+      smaller version of the mark, it is showing a different object.
+- [?] **TR7. Is A2 kept for what the spur does to the silhouette, now that
+      the reason given for it has been measured out?** Composition asks. The
+      spur was argued on the hole under the t's crossbar and closes 1.17 per
+      cent of it, 2.24 per cent when doubled. Doubling the spur trebles
+      nothing.
+- [?] **TR8. Does the dot law move so U3 can exist, or is U3 closed?**
+      Composition found the collision and type and grid measured that the
+      obvious fix is not one. The right dot and the riser share 3.5 units of
+      ink, and the shared pixels are 3, 0 and 1 at the three sizes, so the
+      topology changes with the size, which is worse than a collision that
+      holds. Carrying the riser over the dots measures identical shared ink,
+      to the hundredth, because the collision is horizontal.
+- [?] **TR9. Does the e lose the rhythm or lose the mouth, since it cannot
+      have both?**
+      Two seats ask and they disagree. E3 closes its mouth to 0.88 of a pixel
+      in the bar, which is closed. E2 cannot be spaced to the rhythm at any
+      gap: with the letters touching its white is still 10.85 per cent over.
+- [?] **TR10. Does the mark get one tracking, or one for the boot card and a
+      looser one for the top bar?** Type and grid asks. The bar needs plus 6
+      units before every joint carries a pixel, and plus 6 at the boot card is
+      a mark that has been opened for a size it is not being shown at.
+- [?] **TR11. Should the e and the d touch on purpose at the small end, as a
+      ligature?** Composition asks, against type and grid. They are touching
+      now by accident, and a joint that closes by accident reads as a defect
+      where one closed by design reads as a decision.
+- [?] **TR12. Which seven hex values are canonical, the code's or the review
+      documents'?** Art director asks. See TR2. One of them is wrong in three
+      documents and it is not the code.
+- [?] **TR13. Does the favicon use the muted palette or the vivid one?** Art
+      director asks and recommends the vivid. Against an unknown browser
+      ground the muted measures 1.62 at worst and the vivid 2.35, and because
+      the arcs touch, neighbour separation matters as much: closest adjacent
+      pair 47 for the muted and 61 for the vivid. `canon.js` already says the
+      vivid set was chosen to hold on paper and on the black stage both, which
+      is the favicon's exact problem written down before the favicon existed.
+      It sits against the muted palette ruling, which is why it is his.
+- [?] **TR14. Is the Flat lighting's dot white, like the other three dark
+      lightings, or the off white it inherited?** Art director asks. Three of
+      the four dark lightings use `#FFFFFF` and Flat uses `#F7F6F3`, which was
+      never ruled. At white its dot to bar goes 17.05 to 18.42. Named and not
+      changed, because a lighting is his.
 
 ### CP. THE CHILD PATTERN, HIGHLIGHTED AND LOCATED.
 
