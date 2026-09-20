@@ -42,6 +42,14 @@ function runOf(walk){
 function bestOf(walk){var b=0,c=0;
  for(var i=0;i<walk.length;i++){if(walk[i]){c++;if(c>b)b=c;}else c=0;}return b;}
 
+/* THE SPAN IS EARNED, NOT FIXED. A thirteen week grid drawn for somebody with
+   seven days on the record is eighty four empty squares beside seven full
+   ones, which reads as a tally of failures nobody asked for. The grid starts
+   at the history it has, rounded up to a whole week with one week of room
+   ahead, and grows to the cap. Nothing is ever drawn that the person has not
+   lived through.  */
+function spanOf(walk,cap){
+ return Math.max(2,Math.min(cap||13,Math.ceil(walk.length/7)+1));}
 /* the walk laid out as calendar weeks ending today, so the heat map has a
    weekday axis and is not just a run of squares. */
 function weeksOf(walk,cols){
@@ -60,3 +68,7 @@ function arc(cx,cy,r,a0,a1){
  var s=p(a0), e=p(a1), big=(a1-a0)>180?1:0;
  return 'M'+s[0].toFixed(2)+' '+s[1].toFixed(2)
   +'A'+r+' '+r+' 0 '+big+' 1 '+e[0].toFixed(2)+' '+e[1].toFixed(2);}
+
+/* a name made possessive without producing Marcuss */
+function poss(n){return n+(/s$/i.test(n)?'\u2019':'\u2019s');}
+function plural(n,w){return n+' '+w+(n===1?'':'s');}

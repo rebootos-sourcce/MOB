@@ -1,0 +1,228 @@
+<div class="wrap">
+ <div class="bar">
+  <span class="brand">ATUNED &middot; RITUAL</span>
+  <select id="who"></select>
+  <span class="dim" id="tag" style="font-size:13px"></span>
+  <span style="flex:1"></span>
+  <button class="btn" id="edit">Edit history</button>
+ </div>
+
+ <div class="grid">
+  <!-- THE COMPASS. His word. The needle points at the seat carrying the most,
+       which is the one thing the current card never says, and the ring is the
+       day. Two facts, one object. -->
+  <div class="card cmp">
+   <div class="eye">Today</div>
+   <div class="dialwrap"><svg id="dial" viewBox="0 0 260 260" width="260" height="260"></svg></div>
+   <div id="callout"></div>
+  </div>
+
+  <!-- WHAT IS RUNNING. The daily tracker. One row per ritual, its glyph, its
+       minutes, and the control that records it. Nothing else. -->
+  <div class="card">
+   <div class="eye">What is running</div>
+   <div id="today"></div>
+   <div id="addwrap"><button class="btn" id="add">Add a ritual</button></div>
+   <div class="marks" id="marks"></div>
+  </div>
+ </div>
+
+ <!-- THE ACCOUNTABILITY TRACKER. Over time, and editable in place. -->
+ <div class="card" style="margin-top:14px">
+  <div class="hmhead">
+   <div><div class="eye">The record</div><div class="note" id="hmnote"></div></div>
+   <div class="key" id="key"></div>
+  </div>
+  <div class="hm" id="hm"></div>
+  <div class="stats" id="stats" style="margin-top:16px"></div>
+ </div>
+
+ <div class="foot" id="foot"></div>
+</div>
+
+<style>
+.grid{display:grid;grid-template-columns:300px 1fr;gap:14px;align-items:start}
+.cmp{display:flex;flex-direction:column;align-items:center;gap:6px}
+.dialwrap{position:relative;margin:4px 0}
+#callout{text-align:center}
+.co-run{font-size:13px;color:var(--mid)}
+.co-seat{font-size:13px;margin-top:7px}
+.co-seat b{font-weight:600}
+.rit{display:flex;align-items:center;gap:14px;padding:15px 0;border-bottom:1px solid var(--line)}
+.rit:last-of-type{border-bottom:0}
+.rit .g{width:42px;height:42px;border-radius:50%;border:1.5px solid var(--gc);
+ display:grid;place-items:center;flex:none}
+.rit .t{flex:1;min-width:0}
+.rit .t b{font-weight:600;display:block}
+.rit .t span{font-size:13px;color:var(--dim)}
+.rit .m{font-size:13px;color:var(--mid);font-variant-numeric:tabular-nums}
+.rit .btn{padding:10px 15px}
+.rit.done .t b{color:var(--mid)}
+.why{font-size:13.5px;color:var(--mid);line-height:1.6;margin:0 0 4px;
+ padding:13px 15px;background:var(--panel-2);border-radius:11px;
+ border-left:2px solid var(--wc)}
+.why b{color:var(--ink);font-weight:600}
+#addwrap{margin-top:16px}
+.marks{margin-top:20px;padding-top:16px;border-top:1px solid var(--line)}
+.mk{display:flex;align-items:center;gap:11px;font-size:13.5px;padding:7px 0;color:var(--mid)}
+.mk s{width:7px;height:7px;border-radius:50%;border:1.5px solid var(--mc);
+ display:inline-block;flex:none;text-decoration:none}
+.mk b{color:var(--ink);font-weight:600}
+.hmhead{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;
+ margin-bottom:13px;flex-wrap:wrap}
+.key{display:flex;gap:14px;font-size:11.5px;color:var(--dim);align-items:center}
+.key s{width:11px;height:11px;border-radius:3px;display:inline-block;margin-right:5px;
+ vertical-align:-1px;text-decoration:none}
+@media(max-width:820px){.grid{grid-template-columns:1fr}
+ .cmp{padding-bottom:22px}}
+</style>
+
+<script>
+var D=DATA, cur='Marcus', EDIT=false, W={};
+var sel=document.getElementById('who');
+Object.keys(D).forEach(function(k){var o=document.createElement('option');
+ o.value=k;o.textContent=D[k].nm+', '+D[k].age+', '+D[k].role.replace(' · ICP','');
+ sel.appendChild(o);});
+sel.value=cur; sel.onchange=function(){cur=sel.value;draw();};
+document.getElementById('edit').onclick=function(){EDIT=!EDIT;
+ this.className='btn'+(EDIT?' on':'');
+ this.textContent=EDIT?'Done editing':'Edit history';draw();};
+
+function walk(){ if(!W[cur])W[cur]=D[cur].walk.slice(); return W[cur]; }
+
+/* THE DIAL.
+   Outer ring: the seven seats, each a short arc in its own colour, the one
+   carrying the most drawn at full weight and the rest at a quarter. That is
+   the needle: the eye goes to the heavy one without a pointer having to be
+   drawn. Inner ring: the last thirty days, one tick each, so the day and the
+   history are the same object and the compass tracks daily progress the way
+   he asked.
+   Centre: the run. One number, and it says what it counts. */
+function dial(){
+ var d=D[cur], w=walk(), s=[];
+ var cx=130, cy=130;
+ /* the seat ring */
+ SEATORDER.forEach(function(nm,i){
+  var a0=SEATDEG[nm]-9, a1=SEATDEG[nm]+9, on=(nm===d.seat);
+  s.push('<path d="'+arc(cx,cy,112,a0,a1)+'" stroke="'+SEATC[nm]+'" stroke-width="'
+   +(on?9:3)+'" stroke-linecap="round" fill="none" opacity="'+(on?1:.3)+'"/>');
+  /* and mirrored on the other side, because a compass is symmetrical and the
+     seats sit on a spine rather than around a clock */
+  s.push('<path d="'+arc(cx,cy,112,360-a1,360-a0)+'" stroke="'+SEATC[nm]+'" stroke-width="'
+   +(on?9:3)+'" stroke-linecap="round" fill="none" opacity="'+(on?1:.3)+'"/>');});
+ /* the last thirty days, inner ring, one tick each, oldest first going clockwise */
+ var last=w.slice(-30), pad=30-last.length;
+ for(var i=0;i<30;i++){
+  var v=i<pad?null:last[i-pad];
+  var a=i*12, tc=TRACKS[d.substituted?d.actualTrack:d.track].c;
+  s.push('<path d="'+arc(cx,cy,90,a-4.2,a+4.2)+'" stroke="'
+   +(v?tc:'rgba(255,255,255,.07)')+'" stroke-width="'+(v===2?3:6)+'" '
+   +'stroke-linecap="round" fill="none" opacity="'+(v===2?.85:1)+'"/>');}
+ /* the centre. A ring, never a disc. */
+ s.push('<circle cx="130" cy="130" r="70" fill="none" stroke="var(--line)" stroke-width="1"/>');
+ var run=runOf(w);
+ s.push('<text x="130" y="126" text-anchor="middle" fill="var(--ink)" '
+  +'font-size="46" font-weight="600" letter-spacing="-2">'+run+'</text>');
+ s.push('<text x="130" y="151" text-anchor="middle" fill="var(--dim)" font-size="13" '
+  +'letter-spacing=".4">'+(run===1?'day running':'days running')+'</text>');
+ document.getElementById('dial').innerHTML=s.join('');
+}
+
+/* WHY THIS PRACTICE. The whole of RB12 is here and it is one sentence.
+   The current card says "Mind" in thirty pixels and never says the word
+   "because", so a breathing exercise arrives with no cause attached. This
+   names the seat, what the seat is doing, and what the practice does about it,
+   in that order, and the practice's own name comes last. */
+function why(){
+ var d=D[cur], tr=TRACKS[d.substituted?d.actualTrack:d.track];
+ var s='Your <b>'+d.seat.toLowerCase()+'</b> is carrying more than any other seat right now. '
+  +'The <b>'+(d.substituted?d.actualTrack:d.track).toLowerCase()+'</b> track is what moves it, '
+  +'and <b>'+d.called.nm.toLowerCase()+'</b> is its shortest way in at '+d.called.min+' minutes.';
+ if(d.substituted)s+=' Nothing in the '+d.track.toLowerCase()+' track is gentle enough to start on '
+  +'today, so the '+d.actualTrack.toLowerCase()+' track is carrying it.';
+ return '<p class="why" style="--wc:'+tr.c+'">'+s+'</p>';}
+
+function today(){
+ var d=D[cur], w=walk(), tr=TRACKS[d.substituted?d.actualTrack:d.track];
+ var doneToday=w.length?w[w.length-1]:0;
+ var h=why();
+ h+='<div class="rit'+(doneToday?' done':'')+'" style="--gc:'+tr.c+'">'
+  +'<span class="g">'+svgIc(tr.ic,tr.c,21)+'</span>'
+  +'<span class="t"><b>'+d.called.nm+'</b><span>'+tr.nm+' track, '+tr.d+'</span></span>'
+  +'<span class="m">'+d.called.min+' min</span>'
+  +(doneToday?'<span class="m" style="color:'+tr.c+'">Done today</span>'
+    :'<button class="btn pri" id="mark">Mark done</button>')
+  +'</div>';
+ document.getElementById('today').innerHTML=h;
+ var b=document.getElementById('mark');
+ if(b)b.onclick=function(){var ww=walk(); ww[ww.length-1]=1; draw();};}
+
+function heat(){
+ var d=D[cur], w=walk(), tr=TRACKS[d.substituted?d.actualTrack:d.track];
+ var cols=spanOf(w,13), cells=weeksOf(w,cols), h=document.getElementById('hm');
+ h.style.setProperty('--k',tr.c);
+ h.className='hm'+(EDIT?' edit':'');
+ h.innerHTML=cells.map(function(v,i){
+  return '<i class="'+(v===1?'on':v===2?'fl':v===0?'no':'')+'" data-i="'+i+'"></i>';}).join('');
+ if(EDIT)h.querySelectorAll('i').forEach(function(el){el.onclick=function(){
+  var i=+el.dataset.i, pad=cols*7-w.length, j=i-pad;
+  if(j<0||j>=w.length)return;
+  w[j]=w[j]?0:1; draw();};});
+ document.getElementById('key').innerHTML=
+  '<span><s style="background:'+tr.c+'"></s>practised</span>'
+  +'<span><s style="border:1.5px solid '+tr.c+'"></s>the short version</span>'
+  +'<span><s style="border:1px solid var(--line)"></s>nothing recorded</span>';
+ document.getElementById('hmnote').textContent=EDIT
+  ? 'Tap any day to add it or take it off.'
+  : plural(cols,'week')+' on the record, one square a day.';}
+
+function stats(){
+ var d=D[cur], w=walk();
+ var done=w.filter(function(x){return x===1;}).length;
+ var fl=w.filter(function(x){return x===2;}).length;
+ var mins=(done+fl)*d.called.min;
+ var best=bestOf(w);
+ document.getElementById('stats').innerHTML=[
+  ['<b>'+(done+fl)+'</b><span>days practised</span>'],
+  ['<b>'+best+'</b><span>longest run, in days</span>'],
+  ['<b>'+mins+'</b><span>minutes on the record</span>'],
+  ['<b>'+d.CQ+'<i style="font-size:14px;color:var(--dim);font-style:normal"> out of 100</i></b>'
+   +'<span>coherence, when last read</span>']
+ ].map(function(x){return '<div class="stat">'+x+'</div>';}).join('');}
+
+/* WHAT YOU HAVE EARNED. Named, never enumerated against a total: the ones
+   standing, and the next one with what it takes. engine/ladder.js already
+   refuses to say how many there are and this refuses it too. */
+function marks(){
+ var d=D[cur], w=walk(), done=w.filter(Boolean).length, best=bestOf(w);
+ var tr=TRACKS[d.substituted?d.actualTrack:d.track];
+ var got=[];
+ if(done>=1)got.push('First run');
+ if(best>=7)got.push('Seven days');
+ if(best>=30)got.push('Thirty days');
+ if(done*d.called.min>=60)got.push('Sixty minutes');
+ var next=best<7?['Seven days',(7-best)+' more in a row']
+  :best<30?['Thirty days',(30-best)+' more in a row']
+  :['Ninety days',(90-best)+' more in a row'];
+ var h='<div class="eye">Standing</div>';
+ h+=got.map(function(n){return '<div class="mk" style="--mc:'+tr.c+'"><s></s><b>'+n+'</b></div>';}).join('');
+ if(!got.length)h+='<div class="mk"><s style="--mc:var(--dim)"></s>Nothing yet.</div>';
+ h+='<div class="mk" style="--mc:var(--dim)"><s></s>Next, <b>'+next[0]+'</b>, '+next[1]+'.</div>';
+ document.getElementById('marks').innerHTML=h;}
+
+function draw(){
+ var d=D[cur];
+ document.getElementById('tag').textContent=d.seat+' seat  ·  '
+  +(d.substituted?d.actualTrack:d.track)+' track  ·  tier '+d.tier;
+ dial(); today(); heat(); stats(); marks();
+ var w=walk(), done=w.filter(Boolean).length;
+ document.getElementById('foot').innerHTML=
+  'Design A, the compass. Every number on this page is real. The seat, the track, the tier and '
+  +'the practice come from <b>engine.js</b> through the same <b>ritFor</b> rule the build uses, '
+  +'checked against <b>PANEL-ritual-1000.md</b> section A1. The '+w.length+' days of history are '
+  +D[cur].nm+'’s longest walk out of <b>losssim.js</b>, which is <b>tools/loopsim.js</b> with the '
+  +'owner’s loss framing arm added and all forty two of its checks still passing. '
+  +D[cur].survived+' of the '+D[cur].sampled+' people like '+D[cur].nm+' in the panel were still there at day ninety, '
+  +'so this walk is the best case for this person and not the usual one.';}
+draw();
+</script>

@@ -1419,10 +1419,24 @@ specific detail."
   now says "the narrow middle is where most people sit"; the compass reading,
   which printed coherence twice in two sentences; and the coherence tooltip,
   which repeated a figure the pill beside it was already printing.
-- [ ] **TX3. The rest of them**, measured, ten sites: `cone.js:603` and `:605`,
-  `personas.js:220`, `summary.js:76` and `:108`, `ui.js:678`, `wheel.js:452`, and
-  the two in `panels.js`. Each one gets read as a sentence a person hears out
-  loud, and kept only if it survives that.
+- [x] **TX3. The rest of them, read out loud, and the scrub is finished.** Ten
+  sites were named. **Three were prose and are fixed**, the compass hint, the
+  compass reading and the coherence tooltip. **Seven are scale labels and they
+  survive**, because read aloud they are a person being told what they are
+  looking at rather than a sentence dodging its job: "accuracy, of a hundred,
+  plus or minus nineteen" and "coherence, fifty one percent, of a hundred".
+  Those are `personas.js:220`, `summary.js:76`, `:99`, `:103` and `:108`,
+  `wheel.js:452` and the one in `panels.js`. Everything else the grep found is a
+  code comment.
+- [x] **TX4. And the functional gate had to be re-ruled**, because it encoded the
+  superseded version. It demanded the literal string "N of 100" on the compass,
+  which was right under the old ruling and wrong under the new one, and it failed
+  the moment the prose was fixed. **The thing worth protecting was never the
+  denominator**, it was that a reading is never a bare number with nothing to
+  make sense of it by. So it now asserts that: the compass reading carries either
+  a scale or the band it sits in, said in words. Both satisfy a person and only
+  one satisfies a regular expression, which is why the regular expression was the
+  wrong thing to assert.
 
 ### KB. THE KNOWLEDGE BASE. FIVE PASSES, FOUR SEATS.
 

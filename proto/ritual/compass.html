@@ -1,0 +1,2150 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Ritual, design A, the compass</title><style>
+/* the product's own tokens, read off atuned_src/shell/head.html */
+*{box-sizing:border-box}
+:root{--bg:#0C0D12;--panel:#1A1D26;--panel-2:#252833;--sunk:#090A0E;
+ --ink:#EFEDE8;--mid:#B4B0A8;--dim:#94908A;--accent:#7EB8D4;--on-accent:#0B1418;
+ --line:rgba(255,255,255,.08);--line2:rgba(255,255,255,.14);--warm:#CB5F59;
+ --r:14px}
+html,body{margin:0;background:var(--bg);color:var(--ink)}
+body{font:16px/1.5 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Inter,sans-serif;
+ -webkit-font-smoothing:antialiased;padding:0 0 64px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px}
+h1,h2,h3{font-weight:600;letter-spacing:-.01em;margin:0}
+.eye{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);
+ font-weight:600}
+.dim{color:var(--dim)}.mid{color:var(--mid)}
+.bar{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid var(--line);
+ margin-bottom:22px;flex-wrap:wrap}
+.brand{font-weight:700;letter-spacing:.16em;font-size:12px;color:var(--mid)}
+select,button{font:inherit;color:inherit}
+select{background:var(--panel-2);border:1px solid var(--line2);border-radius:10px;
+ padding:9px 12px;min-height:44px}
+.btn{background:transparent;border:1px solid var(--line2);border-radius:11px;
+ padding:11px 16px;min-height:44px;cursor:pointer;color:var(--ink);transition:.15s}
+.btn:hover{border-color:var(--accent);color:var(--accent)}
+.btn.pri{background:var(--accent);color:var(--on-accent);border-color:var(--accent);font-weight:600}
+.btn.pri:hover{filter:brightness(1.08);color:var(--on-accent)}
+.btn.on{border-color:var(--accent);color:var(--accent)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:20px}
+.note{font-size:13px;color:var(--dim);line-height:1.6}
+/* A CELL IS A FIXED SIZE AND THE GRID DOES NOT STRETCH IT. Stretched to the
+   width of a 1600 column the squares became a checkerboard, and on a person
+   with seven days of history the empty ones became a wall of absence: eighty
+   four black squares against seven gold. That is a count against a total drawn
+   in pixels, and it is the one thing this product refuses. */
+.hm{display:grid;grid-auto-flow:column;grid-template-rows:repeat(7,14px);
+ gap:3px;justify-content:start}
+.hm i{width:14px;height:14px;border-radius:3px;background:var(--sunk);
+ border:1px solid var(--line);display:block;cursor:default}
+.hm i.on{background:var(--k);border-color:var(--k)}
+.hm i.fl{background:transparent;border-color:var(--k);border-width:1.5px}
+.hm i.no{background:transparent;border-color:rgba(255,255,255,.05)}
+.hm.edit i{cursor:pointer}
+.hm.edit i:hover{outline:1.5px solid var(--accent);outline-offset:1px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.stat{background:var(--panel-2);border:1px solid var(--line);border-radius:11px;padding:13px 14px}
+.stat b{display:block;font-size:26px;font-weight:600;letter-spacing:-.02em;line-height:1.15}
+.stat span{font-size:11.5px;color:var(--dim);letter-spacing:.04em}
+.foot{margin-top:34px;padding-top:16px;border-top:1px solid var(--line);font-size:12.5px;
+ color:var(--dim);line-height:1.7}
+@media(max-width:560px){
+ .wrap{padding:0 16px}
+ .stats{grid-template-columns:repeat(2,1fr)}
+ body{padding-bottom:40px}}
+
+</style></head><body>
+<div class="wrap">
+ <div class="bar">
+  <span class="brand">ATUNED &middot; RITUAL</span>
+  <select id="who"></select>
+  <span class="dim" id="tag" style="font-size:13px"></span>
+  <span style="flex:1"></span>
+  <button class="btn" id="edit">Edit history</button>
+ </div>
+
+ <div class="grid">
+  <!-- THE COMPASS. His word. The needle points at the seat carrying the most,
+       which is the one thing the current card never says, and the ring is the
+       day. Two facts, one object. -->
+  <div class="card cmp">
+   <div class="eye">Today</div>
+   <div class="dialwrap"><svg id="dial" viewBox="0 0 260 260" width="260" height="260"></svg></div>
+   <div id="callout"></div>
+  </div>
+
+  <!-- WHAT IS RUNNING. The daily tracker. One row per ritual, its glyph, its
+       minutes, and the control that records it. Nothing else. -->
+  <div class="card">
+   <div class="eye">What is running</div>
+   <div id="today"></div>
+   <div id="addwrap"><button class="btn" id="add">Add a ritual</button></div>
+   <div class="marks" id="marks"></div>
+  </div>
+ </div>
+
+ <!-- THE ACCOUNTABILITY TRACKER. Over time, and editable in place. -->
+ <div class="card" style="margin-top:14px">
+  <div class="hmhead">
+   <div><div class="eye">The record</div><div class="note" id="hmnote"></div></div>
+   <div class="key" id="key"></div>
+  </div>
+  <div class="hm" id="hm"></div>
+  <div class="stats" id="stats" style="margin-top:16px"></div>
+ </div>
+
+ <div class="foot" id="foot"></div>
+</div>
+
+<style>
+.grid{display:grid;grid-template-columns:300px 1fr;gap:14px;align-items:start}
+.cmp{display:flex;flex-direction:column;align-items:center;gap:6px}
+.dialwrap{position:relative;margin:4px 0}
+#callout{text-align:center}
+.co-run{font-size:13px;color:var(--mid)}
+.co-seat{font-size:13px;margin-top:7px}
+.co-seat b{font-weight:600}
+.rit{display:flex;align-items:center;gap:14px;padding:15px 0;border-bottom:1px solid var(--line)}
+.rit:last-of-type{border-bottom:0}
+.rit .g{width:42px;height:42px;border-radius:50%;border:1.5px solid var(--gc);
+ display:grid;place-items:center;flex:none}
+.rit .t{flex:1;min-width:0}
+.rit .t b{font-weight:600;display:block}
+.rit .t span{font-size:13px;color:var(--dim)}
+.rit .m{font-size:13px;color:var(--mid);font-variant-numeric:tabular-nums}
+.rit .btn{padding:10px 15px}
+.rit.done .t b{color:var(--mid)}
+.why{font-size:13.5px;color:var(--mid);line-height:1.6;margin:0 0 4px;
+ padding:13px 15px;background:var(--panel-2);border-radius:11px;
+ border-left:2px solid var(--wc)}
+.why b{color:var(--ink);font-weight:600}
+#addwrap{margin-top:16px}
+.marks{margin-top:20px;padding-top:16px;border-top:1px solid var(--line)}
+.mk{display:flex;align-items:center;gap:11px;font-size:13.5px;padding:7px 0;color:var(--mid)}
+.mk s{width:7px;height:7px;border-radius:50%;border:1.5px solid var(--mc);
+ display:inline-block;flex:none;text-decoration:none}
+.mk b{color:var(--ink);font-weight:600}
+.hmhead{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;
+ margin-bottom:13px;flex-wrap:wrap}
+.key{display:flex;gap:14px;font-size:11.5px;color:var(--dim);align-items:center}
+.key s{width:11px;height:11px;border-radius:3px;display:inline-block;margin-right:5px;
+ vertical-align:-1px;text-decoration:none}
+@media(max-width:820px){.grid{grid-template-columns:1fr}
+ .cmp{padding-bottom:22px}}
+</style>
+
+<script>
+/* ============================================================
+   SHARED BY THE THREE PROTOTYPES. Inlined into each one at build, so every
+   page runs with no sibling file. Nothing here reaches the network.
+
+   ICONOGRAPHY. Four tracks, four glyphs, RING AND NOT FILL, which is the
+   standing ruling. Each is a stroke path in a 24 box and carries the track's
+   colour, so the glyph and the colour say the same thing twice and a person
+   who cannot tell the blue from the green still reads the shape.
+   ============================================================ */
+var TRACKS={
+ Somatic:{c:'#DBBF68', ic:'M12 21c-4 0-7-3-7-6s2-5 4-5 3 1 3 3-1 3-2 3',
+   nm:'Somatic', d:'sensation, read directly'},
+ Body:{c:'#68CBA4', ic:'M12 4a8 8 0 100 16 8 8 0 100-16 M4 12h16',
+   nm:'Body', d:'breath, and the nervous system'},
+ Energy:{c:'#AF89D6', ic:'M12 8a4 4 0 100 8 4 4 0 100-8 M12 2v3 M12 19v3 M2 12h3 M19 12h3',
+   nm:'Energy', d:'attention, held at a point'},
+ Mind:{c:'#7B97E2', ic:'M4 8h16 M4 12h10 M4 16h13',
+   nm:'Mind', d:'thought, watched and not followed'}};
+var SEATC={Root:'#CF5953',Sacral:'#D19255',Solar:'#D4BC70',Heart:'#65CFA5',
+ Throat:'#65B8D4','3rd Eye':'#8296DB',Crown:'#A883D6'};
+/* where each seat sits on the dial, in degrees clockwise from the top. Root at
+   the bottom and Crown at the top, because that is where they sit on the body
+   and the figure on every other surface already draws them that way. */
+var SEATDEG={Crown:0,'3rd Eye':26,Throat:51,Heart:77,Solar:103,Sacral:129,Root:180};
+var SEATORDER=['Crown','3rd Eye','Throat','Heart','Solar','Sacral','Root'];
+
+function svgIc(path,c,sz){
+ return '<svg viewBox="0 0 24 24" width="'+(sz||20)+'" height="'+(sz||20)+'" fill="none" '
+ +'stroke="'+c+'" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">'
+ +'<path d="'+path+'"/></svg>';}
+
+/* THE RUN, READ OFF A WALK. Same rule as engine/ladder.js streakRead: a gap of
+   one or two days is carried, three or more halves what was standing, and it
+   never resets. Ported rather than reinvented so the prototype cannot claim a
+   number the build would not. */
+function runOf(walk){
+ var run=0,gap=0;
+ for(var i=0;i<walk.length;i++){
+  if(walk[i]){run++;gap=0;}
+  else{gap++; if(gap>2){run=Math.max(1,Math.ceil(run/2));gap=0;}}}
+ return run;}
+function bestOf(walk){var b=0,c=0;
+ for(var i=0;i<walk.length;i++){if(walk[i]){c++;if(c>b)b=c;}else c=0;}return b;}
+
+/* THE SPAN IS EARNED, NOT FIXED. A thirteen week grid drawn for somebody with
+   seven days on the record is eighty four empty squares beside seven full
+   ones, which reads as a tally of failures nobody asked for. The grid starts
+   at the history it has, rounded up to a whole week with one week of room
+   ahead, and grows to the cap. Nothing is ever drawn that the person has not
+   lived through.  */
+function spanOf(walk,cap){
+ return Math.max(2,Math.min(cap||13,Math.ceil(walk.length/7)+1));}
+/* the walk laid out as calendar weeks ending today, so the heat map has a
+   weekday axis and is not just a run of squares. */
+function weeksOf(walk,cols){
+ cols=cols||13; var cells=cols*7, out=[];
+ var pad=cells-walk.length;
+ for(var i=0;i<cells;i++){
+  var j=i-pad;
+  out.push(j<0?null:(walk[j]===undefined?null:walk[j]));}
+ return out;}
+
+/* ARC. One segment of a ring, drawn as a stroked path so nothing is ever
+   filled. a0 and a1 in degrees clockwise from the top. */
+function arc(cx,cy,r,a0,a1){
+ var p=function(a){var t=(a-90)*Math.PI/180;
+  return [cx+r*Math.cos(t),cy+r*Math.sin(t)];};
+ var s=p(a0), e=p(a1), big=(a1-a0)>180?1:0;
+ return 'M'+s[0].toFixed(2)+' '+s[1].toFixed(2)
+  +'A'+r+' '+r+' 0 '+big+' 1 '+e[0].toFixed(2)+' '+e[1].toFixed(2);}
+
+/* a name made possessive without producing Marcuss */
+function poss(n){return n+(/s$/i.test(n)?'\u2019':'\u2019s');}
+function plural(n,w){return n+' '+w+(n===1?'':'s');}
+
+var DATA={
+ "Marcus": {
+  "nm": "Marcus",
+  "age": 44,
+  "role": "creative director · ICP",
+  "weight": 160,
+  "says": "I can see what is wrong with anything in four seconds. It has cost me two studios.",
+  "CQ": 39.2,
+  "DQ": 0,
+  "seat": "Throat",
+  "track": "Mind",
+  "tier": 3,
+  "substituted": false,
+  "actualTrack": "Mind",
+  "called": {
+   "k": "listen",
+   "nm": "Active Listening",
+   "min": 10,
+   "track": "Mind",
+   "d": "Ten minutes on sound. No labelling.",
+   "tier": 2
+  },
+  "nFit": 17,
+  "fit": [
+   {
+    "k": "escan",
+    "nm": "The Emotional Scan",
+    "min": 20,
+    "track": "Somatic",
+    "tier": 1,
+    "d": "Where the nine live in your body. The first practice in the Body Tract."
+   },
+   {
+    "k": "box",
+    "nm": "Box Breathing",
+    "min": 5,
+    "track": "Body",
+    "tier": 1,
+    "d": "Four and four, or eight and eight. The entry into a grounded state."
+   },
+   {
+    "k": "slow",
+    "nm": "Controlled Breath",
+    "min": 10,
+    "track": "Body",
+    "tier": 1,
+    "d": "Two to six breaths a minute. Gets the energy below the heart."
+   },
+   {
+    "k": "sig",
+    "nm": "The Signal Test",
+    "min": 3,
+    "track": "Somatic",
+    "tier": 1,
+    "d": "Proof that a word with no quality of its own moves your body."
+   },
+   {
+    "k": "sysbreath",
+    "nm": "Systematic Body Breathing",
+    "min": 15,
+    "track": "Body",
+    "tier": 2,
+    "d": "Breathe through each region in turn. Stimulates the whole nerve network."
+   },
+   {
+    "k": "resist",
+    "nm": "Feel the Resistance",
+    "min": 10,
+    "track": "Somatic",
+    "tier": 2,
+    "d": "Direct contact dissolves charge. No analysis, no escape."
+   },
+   {
+    "k": "truth",
+    "nm": "The Somatic Truth Check",
+    "min": 2,
+    "track": "Somatic",
+    "tier": 2,
+    "d": "Expansion is true. Contraction is distortion."
+   },
+   {
+    "k": "heartpt",
+    "nm": "Heart Point Focus",
+    "min": 10,
+    "track": "Energy",
+    "tier": 2,
+    "d": "A white point at the centre of the heart, held for ten minutes."
+   },
+   {
+    "k": "noting",
+    "nm": "Noting Meditation",
+    "min": 15,
+    "track": "Mind",
+    "tier": 2,
+    "d": "Observer of thoughts. No engagement."
+   },
+   {
+    "k": "listen",
+    "nm": "Active Listening",
+    "min": 10,
+    "track": "Mind",
+    "tier": 2,
+    "d": "Ten minutes on sound. No labelling."
+   },
+   {
+    "k": "observer",
+    "nm": "The Observer Technique",
+    "min": 20,
+    "track": "Somatic",
+    "tier": 3,
+    "d": "Memory without charge. The technique for memory-attached patterns."
+   },
+   {
+    "k": "detect",
+    "nm": "The Detection Practice",
+    "min": 20,
+    "track": "Somatic",
+    "tier": 3,
+    "d": "The pre-linguistic foundation. Building your own nervous system map."
+   },
+   {
+    "k": "hands",
+    "nm": "Healing Hands",
+    "min": 15,
+    "track": "Energy",
+    "tier": 3,
+    "d": "The palm field as a directable instrument."
+   },
+   {
+    "k": "hardtrauma",
+    "nm": "Hard Trauma Meditation",
+    "min": 20,
+    "track": "Somatic",
+    "tier": 3,
+    "d": "For the deep ones. Observer mode on a traumatic memory."
+   },
+   {
+    "k": "superego",
+    "nm": "Superego Pattern Meditation",
+    "min": 20,
+    "track": "Mind",
+    "tier": 3,
+    "d": "What you absorbed from the people who raised you."
+   },
+   {
+    "k": "chakra",
+    "nm": "Individual Chakra Meditation",
+    "min": 20,
+    "track": "Energy",
+    "tier": 3,
+    "d": "One band at a time. Five minutes of breath, ten of visualisation."
+   },
+   {
+    "k": "candle",
+    "nm": "Candle Visualisation",
+    "min": 15,
+    "track": "Mind",
+    "tier": 3,
+    "d": "Concentration training. Hold one image."
+   }
+  ],
+  "releasable": 0,
+  "ledger": {
+   "minutes": 0,
+   "planned": 0,
+   "done": 0,
+   "rituals": 0,
+   "lines": 0,
+   "ground": 0,
+   "clear": 0,
+   "carry": 0,
+   "snaps": 0
+  },
+  "streak": {
+   "run": 0,
+   "live": false,
+   "last": null,
+   "best": 0,
+   "days": 0
+  },
+  "earned": [],
+  "next": "First run",
+  "walk": [
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   2,
+   0,
+   2,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   0,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   0,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   0,
+   1,
+   1,
+   1,
+   0,
+   1,
+   1
+  ],
+  "walkDone": 85,
+  "walkFloors": 2,
+  "walkStreak": 2,
+  "walkKarma": 286,
+  "walkLive": true,
+  "sampled": 160,
+  "survived": 32
+ },
+ "Gordon": {
+  "nm": "Gordon",
+  "age": 58,
+  "role": "managing partner",
+  "weight": 35,
+  "says": "There is nothing wrong with me. Four people left in a year and each had their reasons.",
+  "CQ": 0.8,
+  "DQ": 55.19,
+  "seat": "Throat",
+  "track": "Mind",
+  "tier": 1,
+  "substituted": true,
+  "actualTrack": "Somatic",
+  "called": {
+   "k": "sig",
+   "nm": "The Signal Test",
+   "min": 3,
+   "track": "Somatic",
+   "d": "Proof that a word with no quality of its own moves your body.",
+   "tier": 1
+  },
+  "nFit": 4,
+  "fit": [
+   {
+    "k": "escan",
+    "nm": "The Emotional Scan",
+    "min": 20,
+    "track": "Somatic",
+    "tier": 1,
+    "d": "Where the nine live in your body. The first practice in the Body Tract."
+   },
+   {
+    "k": "box",
+    "nm": "Box Breathing",
+    "min": 5,
+    "track": "Body",
+    "tier": 1,
+    "d": "Four and four, or eight and eight. The entry into a grounded state."
+   },
+   {
+    "k": "slow",
+    "nm": "Controlled Breath",
+    "min": 10,
+    "track": "Body",
+    "tier": 1,
+    "d": "Two to six breaths a minute. Gets the energy below the heart."
+   },
+   {
+    "k": "sig",
+    "nm": "The Signal Test",
+    "min": 3,
+    "track": "Somatic",
+    "tier": 1,
+    "d": "Proof that a word with no quality of its own moves your body."
+   }
+  ],
+  "releasable": 97,
+  "ledger": {
+   "minutes": 0,
+   "planned": 0,
+   "done": 0,
+   "rituals": 0,
+   "lines": 0,
+   "ground": 0,
+   "clear": 0,
+   "carry": 0,
+   "snaps": 0
+  },
+  "streak": {
+   "run": 0,
+   "live": false,
+   "last": null,
+   "best": 0,
+   "days": 0
+  },
+  "earned": [],
+  "next": "First run",
+  "walk": [
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1
+  ],
+  "walkDone": 7,
+  "walkFloors": 0,
+  "walkStreak": 7,
+  "walkKarma": 37,
+  "walkLive": false,
+  "sampled": 35,
+  "survived": 0
+ },
+ "Diane": {
+  "nm": "Diane",
+  "age": 46,
+  "role": "founder, second company · ICP",
+  "weight": 180,
+  "says": "I work until the work is done and the work is never done. Rest feels like a moral failure.",
+  "CQ": 28.1,
+  "DQ": 3.51,
+  "seat": "Solar",
+  "track": "Somatic",
+  "tier": 3,
+  "substituted": false,
+  "actualTrack": "Somatic",
+  "called": {
+   "k": "truth",
+   "nm": "The Somatic Truth Check",
+   "min": 2,
+   "track": "Somatic",
+   "d": "Expansion is true. Contraction is distortion.",
+   "tier": 2
+  },
+  "nFit": 17,
+  "fit": [
+   {
+    "k": "escan",
+    "nm": "The Emotional Scan",
+    "min": 20,
+    "track": "Somatic",
+    "tier": 1,
+    "d": "Where the nine live in your body. The first practice in the Body Tract."
+   },
+   {
+    "k": "box",
+    "nm": "Box Breathing",
+    "min": 5,
+    "track": "Body",
+    "tier": 1,
+    "d": "Four and four, or eight and eight. The entry into a grounded state."
+   },
+   {
+    "k": "slow",
+    "nm": "Controlled Breath",
+    "min": 10,
+    "track": "Body",
+    "tier": 1,
+    "d": "Two to six breaths a minute. Gets the energy below the heart."
+   },
+   {
+    "k": "sig",
+    "nm": "The Signal Test",
+    "min": 3,
+    "track": "Somatic",
+    "tier": 1,
+    "d": "Proof that a word with no quality of its own moves your body."
+   },
+   {
+    "k": "sysbreath",
+    "nm": "Systematic Body Breathing",
+    "min": 15,
+    "track": "Body",
+    "tier": 2,
+    "d": "Breathe through each region in turn. Stimulates the whole nerve network."
+   },
+   {
+    "k": "resist",
+    "nm": "Feel the Resistance",
+    "min": 10,
+    "track": "Somatic",
+    "tier": 2,
+    "d": "Direct contact dissolves charge. No analysis, no escape."
+   },
+   {
+    "k": "truth",
+    "nm": "The Somatic Truth Check",
+    "min": 2,
+    "track": "Somatic",
+    "tier": 2,
+    "d": "Expansion is true. Contraction is distortion."
+   },
+   {
+    "k": "heartpt",
+    "nm": "Heart Point Focus",
+    "min": 10,
+    "track": "Energy",
+    "tier": 2,
+    "d": "A white point at the centre of the heart, held for ten minutes."
+   },
+   {
+    "k": "noting",
+    "nm": "Noting Meditation",
+    "min": 15,
+    "track": "Mind",
+    "tier": 2,
+    "d": "Observer of thoughts. No engagement."
+   },
+   {
+    "k": "listen",
+    "nm": "Active Listening",
+    "min": 10,
+    "track": "Mind",
+    "tier": 2,
+    "d": "Ten minutes on sound. No labelling."
+   },
+   {
+    "k": "observer",
+    "nm": "The Observer Technique",
+    "min": 20,
+    "track": "Somatic",
+    "tier": 3,
+    "d": "Memory without charge. The technique for memory-attached patterns."
+   },
+   {
+    "k": "detect",
+    "nm": "The Detection Practice",
+    "min": 20,
+    "track": "Somatic",
+    "tier": 3,
+    "d": "The pre-linguistic foundation. Building your own nervous system map."
+   },
+   {
+    "k": "hands",
+    "nm": "Healing Hands",
+    "min": 15,
+    "track": "Energy",
+    "tier": 3,
+    "d": "The palm field as a directable instrument."
+   },
+   {
+    "k": "hardtrauma",
+    "nm": "Hard Trauma Meditation",
+    "min": 20,
+    "track": "Somatic",
+    "tier": 3,
+    "d": "For the deep ones. Observer mode on a traumatic memory."
+   },
+   {
+    "k": "superego",
+    "nm": "Superego Pattern Meditation",
+    "min": 20,
+    "track": "Mind",
+    "tier": 3,
+    "d": "What you absorbed from the people who raised you."
+   },
+   {
+    "k": "chakra",
+    "nm": "Individual Chakra Meditation",
+    "min": 20,
+    "track": "Energy",
+    "tier": 3,
+    "d": "One band at a time. Five minutes of breath, ten of visualisation."
+   },
+   {
+    "k": "candle",
+    "nm": "Candle Visualisation",
+    "min": 15,
+    "track": "Mind",
+    "tier": 3,
+    "d": "Concentration training. Hold one image."
+   }
+  ],
+  "releasable": 8,
+  "ledger": {
+   "minutes": 0,
+   "planned": 0,
+   "done": 0,
+   "rituals": 0,
+   "lines": 0,
+   "ground": 0,
+   "clear": 0,
+   "carry": 0,
+   "snaps": 0
+  },
+  "streak": {
+   "run": 0,
+   "live": false,
+   "last": null,
+   "best": 0,
+   "days": 0
+  },
+  "earned": [],
+  "next": "First run",
+  "walk": [
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   2,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   0,
+   1,
+   1,
+   1,
+   1,
+   1,
+   0,
+   1,
+   1,
+   1,
+   1,
+   1,
+   0,
+   1,
+   1,
+   1,
+   1,
+   0,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   0,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   0,
+   1,
+   1,
+   0,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1
+  ],
+  "walkDone": 83,
+  "walkFloors": 1,
+  "walkStreak": 9,
+  "walkKarma": 275,
+  "walkLive": false,
+  "sampled": 180,
+  "survived": 0
+ },
+ "Angela": {
+  "nm": "Angela",
+  "age": 36,
+  "role": "seeker, six modalities · ICP",
+  "weight": 150,
+  "says": "Everything happens for a reason. I have said that at three funerals and I believed it each time.",
+  "CQ": 40.9,
+  "DQ": 0,
+  "seat": "Root",
+  "track": "Body",
+  "tier": 3,
+  "substituted": false,
+  "actualTrack": "Body",
+  "called": {
+   "k": "box",
+   "nm": "Box Breathing",
+   "min": 5,
+   "track": "Body",
+   "d": "Four and four, or eight and eight. The entry into a grounded state.",
+   "tier": 1
+  },
+  "nFit": 17,
+  "fit": [
+   {
+    "k": "escan",
+    "nm": "The Emotional Scan",
+    "min": 20,
+    "track": "Somatic",
+    "tier": 1,
+    "d": "Where the nine live in your body. The first practice in the Body Tract."
+   },
+   {
+    "k": "box",
+    "nm": "Box Breathing",
+    "min": 5,
+    "track": "Body",
+    "tier": 1,
+    "d": "Four and four, or eight and eight. The entry into a grounded state."
+   },
+   {
+    "k": "slow",
+    "nm": "Controlled Breath",
+    "min": 10,
+    "track": "Body",
+    "tier": 1,
+    "d": "Two to six breaths a minute. Gets the energy below the heart."
+   },
+   {
+    "k": "sig",
+    "nm": "The Signal Test",
+    "min": 3,
+    "track": "Somatic",
+    "tier": 1,
+    "d": "Proof that a word with no quality of its own moves your body."
+   },
+   {
+    "k": "sysbreath",
+    "nm": "Systematic Body Breathing",
+    "min": 15,
+    "track": "Body",
+    "tier": 2,
+    "d": "Breathe through each region in turn. Stimulates the whole nerve network."
+   },
+   {
+    "k": "resist",
+    "nm": "Feel the Resistance",
+    "min": 10,
+    "track": "Somatic",
+    "tier": 2,
+    "d": "Direct contact dissolves charge. No analysis, no escape."
+   },
+   {
+    "k": "truth",
+    "nm": "The Somatic Truth Check",
+    "min": 2,
+    "track": "Somatic",
+    "tier": 2,
+    "d": "Expansion is true. Contraction is distortion."
+   },
+   {
+    "k": "heartpt",
+    "nm": "Heart Point Focus",
+    "min": 10,
+    "track": "Energy",
+    "tier": 2,
+    "d": "A white point at the centre of the heart, held for ten minutes."
+   },
+   {
+    "k": "noting",
+    "nm": "Noting Meditation",
+    "min": 15,
+    "track": "Mind",
+    "tier": 2,
+    "d": "Observer of thoughts. No engagement."
+   },
+   {
+    "k": "listen",
+    "nm": "Active Listening",
+    "min": 10,
+    "track": "Mind",
+    "tier": 2,
+    "d": "Ten minutes on sound. No labelling."
+   },
+   {
+    "k": "observer",
+    "nm": "The Observer Technique",
+    "min": 20,
+    "track": "Somatic",
+    "tier": 3,
+    "d": "Memory without charge. The technique for memory-attached patterns."
+   },
+   {
+    "k": "detect",
+    "nm": "The Detection Practice",
+    "min": 20,
+    "track": "Somatic",
+    "tier": 3,
+    "d": "The pre-linguistic foundation. Building your own nervous system map."
+   },
+   {
+    "k": "hands",
+    "nm": "Healing Hands",
+    "min": 15,
+    "track": "Energy",
+    "tier": 3,
+    "d": "The palm field as a directable instrument."
+   },
+   {
+    "k": "hardtrauma",
+    "nm": "Hard Trauma Meditation",
+    "min": 20,
+    "track": "Somatic",
+    "tier": 3,
+    "d": "For the deep ones. Observer mode on a traumatic memory."
+   },
+   {
+    "k": "superego",
+    "nm": "Superego Pattern Meditation",
+    "min": 20,
+    "track": "Mind",
+    "tier": 3,
+    "d": "What you absorbed from the people who raised you."
+   },
+   {
+    "k": "chakra",
+    "nm": "Individual Chakra Meditation",
+    "min": 20,
+    "track": "Energy",
+    "tier": 3,
+    "d": "One band at a time. Five minutes of breath, ten of visualisation."
+   },
+   {
+    "k": "candle",
+    "nm": "Candle Visualisation",
+    "min": 15,
+    "track": "Mind",
+    "tier": 3,
+    "d": "Concentration training. Hold one image."
+   }
+  ],
+  "releasable": 0,
+  "ledger": {
+   "minutes": 0,
+   "planned": 0,
+   "done": 0,
+   "rituals": 0,
+   "lines": 0,
+   "ground": 0,
+   "clear": 0,
+   "carry": 0,
+   "snaps": 0
+  },
+  "streak": {
+   "run": 0,
+   "live": false,
+   "last": null,
+   "best": 0,
+   "days": 0
+  },
+  "earned": [],
+  "next": "First run",
+  "walk": [
+   1,
+   1,
+   1,
+   1,
+   0,
+   1,
+   1,
+   1,
+   2,
+   2,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   0,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   0,
+   0,
+   1,
+   1,
+   1
+  ],
+  "walkDone": 86,
+  "walkFloors": 2,
+  "walkStreak": 3,
+  "walkKarma": 296,
+  "walkLive": false,
+  "sampled": 150,
+  "survived": 0
+ },
+ "Sofia": {
+  "nm": "Sofia",
+  "age": 41,
+  "role": "somatic practitioner · ICP",
+  "weight": 140,
+  "says": "I hold the room for everyone. I have not been held in four years and I would not know how to ask.",
+  "CQ": 56.6,
+  "DQ": 0,
+  "seat": "Throat",
+  "track": "Mind",
+  "tier": 3,
+  "substituted": false,
+  "actualTrack": "Mind",
+  "called": {
+   "k": "listen",
+   "nm": "Active Listening",
+   "min": 10,
+   "track": "Mind",
+   "d": "Ten minutes on sound. No labelling.",
+   "tier": 2
+  },
+  "nFit": 17,
+  "fit": [
+   {
+    "k": "escan",
+    "nm": "The Emotional Scan",
+    "min": 20,
+    "track": "Somatic",
+    "tier": 1,
+    "d": "Where the nine live in your body. The first practice in the Body Tract."
+   },
+   {
+    "k": "box",
+    "nm": "Box Breathing",
+    "min": 5,
+    "track": "Body",
+    "tier": 1,
+    "d": "Four and four, or eight and eight. The entry into a grounded state."
+   },
+   {
+    "k": "slow",
+    "nm": "Controlled Breath",
+    "min": 10,
+    "track": "Body",
+    "tier": 1,
+    "d": "Two to six breaths a minute. Gets the energy below the heart."
+   },
+   {
+    "k": "sig",
+    "nm": "The Signal Test",
+    "min": 3,
+    "track": "Somatic",
+    "tier": 1,
+    "d": "Proof that a word with no quality of its own moves your body."
+   },
+   {
+    "k": "sysbreath",
+    "nm": "Systematic Body Breathing",
+    "min": 15,
+    "track": "Body",
+    "tier": 2,
+    "d": "Breathe through each region in turn. Stimulates the whole nerve network."
+   },
+   {
+    "k": "resist",
+    "nm": "Feel the Resistance",
+    "min": 10,
+    "track": "Somatic",
+    "tier": 2,
+    "d": "Direct contact dissolves charge. No analysis, no escape."
+   },
+   {
+    "k": "truth",
+    "nm": "The Somatic Truth Check",
+    "min": 2,
+    "track": "Somatic",
+    "tier": 2,
+    "d": "Expansion is true. Contraction is distortion."
+   },
+   {
+    "k": "heartpt",
+    "nm": "Heart Point Focus",
+    "min": 10,
+    "track": "Energy",
+    "tier": 2,
+    "d": "A white point at the centre of the heart, held for ten minutes."
+   },
+   {
+    "k": "noting",
+    "nm": "Noting Meditation",
+    "min": 15,
+    "track": "Mind",
+    "tier": 2,
+    "d": "Observer of thoughts. No engagement."
+   },
+   {
+    "k": "listen",
+    "nm": "Active Listening",
+    "min": 10,
+    "track": "Mind",
+    "tier": 2,
+    "d": "Ten minutes on sound. No labelling."
+   },
+   {
+    "k": "observer",
+    "nm": "The Observer Technique",
+    "min": 20,
+    "track": "Somatic",
+    "tier": 3,
+    "d": "Memory without charge. The technique for memory-attached patterns."
+   },
+   {
+    "k": "detect",
+    "nm": "The Detection Practice",
+    "min": 20,
+    "track": "Somatic",
+    "tier": 3,
+    "d": "The pre-linguistic foundation. Building your own nervous system map."
+   },
+   {
+    "k": "hands",
+    "nm": "Healing Hands",
+    "min": 15,
+    "track": "Energy",
+    "tier": 3,
+    "d": "The palm field as a directable instrument."
+   },
+   {
+    "k": "hardtrauma",
+    "nm": "Hard Trauma Meditation",
+    "min": 20,
+    "track": "Somatic",
+    "tier": 3,
+    "d": "For the deep ones. Observer mode on a traumatic memory."
+   },
+   {
+    "k": "superego",
+    "nm": "Superego Pattern Meditation",
+    "min": 20,
+    "track": "Mind",
+    "tier": 3,
+    "d": "What you absorbed from the people who raised you."
+   },
+   {
+    "k": "chakra",
+    "nm": "Individual Chakra Meditation",
+    "min": 20,
+    "track": "Energy",
+    "tier": 3,
+    "d": "One band at a time. Five minutes of breath, ten of visualisation."
+   },
+   {
+    "k": "candle",
+    "nm": "Candle Visualisation",
+    "min": 15,
+    "track": "Mind",
+    "tier": 3,
+    "d": "Concentration training. Hold one image."
+   }
+  ],
+  "releasable": 0,
+  "ledger": {
+   "minutes": 0,
+   "planned": 0,
+   "done": 0,
+   "rituals": 0,
+   "lines": 0,
+   "ground": 0,
+   "clear": 0,
+   "carry": 0,
+   "snaps": 0
+  },
+  "streak": {
+   "run": 0,
+   "live": false,
+   "last": null,
+   "best": 0,
+   "days": 0
+  },
+  "earned": [],
+  "next": "First run",
+  "walk": [
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   2,
+   1,
+   1,
+   1,
+   2,
+   1,
+   1,
+   1,
+   1,
+   0,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   0,
+   1,
+   1,
+   1,
+   1,
+   1,
+   0,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   2,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   2,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   2,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   2,
+   1,
+   1,
+   0,
+   1,
+   1
+  ],
+  "walkDone": 86,
+  "walkFloors": 6,
+  "walkStreak": 2,
+  "walkKarma": 292,
+  "walkLive": true,
+  "sampled": 140,
+  "survived": 35
+ },
+ "Derek": {
+  "nm": "Derek",
+  "age": 39,
+  "role": "high performer, endurance · ICP",
+  "weight": 170,
+  "says": "Pain is information. I have raced on a stress fracture. I would do it again.",
+  "CQ": 15,
+  "DQ": 10.09,
+  "seat": "Solar",
+  "track": "Somatic",
+  "tier": 1,
+  "substituted": false,
+  "actualTrack": "Somatic",
+  "called": {
+   "k": "sig",
+   "nm": "The Signal Test",
+   "min": 3,
+   "track": "Somatic",
+   "d": "Proof that a word with no quality of its own moves your body.",
+   "tier": 1
+  },
+  "nFit": 4,
+  "fit": [
+   {
+    "k": "escan",
+    "nm": "The Emotional Scan",
+    "min": 20,
+    "track": "Somatic",
+    "tier": 1,
+    "d": "Where the nine live in your body. The first practice in the Body Tract."
+   },
+   {
+    "k": "box",
+    "nm": "Box Breathing",
+    "min": 5,
+    "track": "Body",
+    "tier": 1,
+    "d": "Four and four, or eight and eight. The entry into a grounded state."
+   },
+   {
+    "k": "slow",
+    "nm": "Controlled Breath",
+    "min": 10,
+    "track": "Body",
+    "tier": 1,
+    "d": "Two to six breaths a minute. Gets the energy below the heart."
+   },
+   {
+    "k": "sig",
+    "nm": "The Signal Test",
+    "min": 3,
+    "track": "Somatic",
+    "tier": 1,
+    "d": "Proof that a word with no quality of its own moves your body."
+   }
+  ],
+  "releasable": 20,
+  "ledger": {
+   "minutes": 0,
+   "planned": 0,
+   "done": 0,
+   "rituals": 0,
+   "lines": 0,
+   "ground": 0,
+   "clear": 0,
+   "carry": 0,
+   "snaps": 0
+  },
+  "streak": {
+   "run": 0,
+   "live": false,
+   "last": null,
+   "best": 0,
+   "days": 0
+  },
+  "earned": [],
+  "next": "First run",
+  "walk": [
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   0,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   0,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   0,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   0,
+   1,
+   1,
+   1,
+   1,
+   0,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   0,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   2,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1
+  ],
+  "walkDone": 84,
+  "walkFloors": 1,
+  "walkStreak": 17,
+  "walkKarma": 293,
+  "walkLive": false,
+  "sampled": 170,
+  "survived": 0
+ },
+ "Rosa": {
+  "nm": "Rosa",
+  "age": 61,
+  "role": "retired midwife",
+  "weight": 15,
+  "says": "Nothing in particular. Things do not sit on me the way they used to.",
+  "CQ": 100,
+  "DQ": 0,
+  "seat": "Root",
+  "track": "Body",
+  "tier": 3,
+  "substituted": false,
+  "actualTrack": "Body",
+  "called": {
+   "k": "box",
+   "nm": "Box Breathing",
+   "min": 5,
+   "track": "Body",
+   "d": "Four and four, or eight and eight. The entry into a grounded state.",
+   "tier": 1
+  },
+  "nFit": 17,
+  "fit": [
+   {
+    "k": "escan",
+    "nm": "The Emotional Scan",
+    "min": 20,
+    "track": "Somatic",
+    "tier": 1,
+    "d": "Where the nine live in your body. The first practice in the Body Tract."
+   },
+   {
+    "k": "box",
+    "nm": "Box Breathing",
+    "min": 5,
+    "track": "Body",
+    "tier": 1,
+    "d": "Four and four, or eight and eight. The entry into a grounded state."
+   },
+   {
+    "k": "slow",
+    "nm": "Controlled Breath",
+    "min": 10,
+    "track": "Body",
+    "tier": 1,
+    "d": "Two to six breaths a minute. Gets the energy below the heart."
+   },
+   {
+    "k": "sig",
+    "nm": "The Signal Test",
+    "min": 3,
+    "track": "Somatic",
+    "tier": 1,
+    "d": "Proof that a word with no quality of its own moves your body."
+   },
+   {
+    "k": "sysbreath",
+    "nm": "Systematic Body Breathing",
+    "min": 15,
+    "track": "Body",
+    "tier": 2,
+    "d": "Breathe through each region in turn. Stimulates the whole nerve network."
+   },
+   {
+    "k": "resist",
+    "nm": "Feel the Resistance",
+    "min": 10,
+    "track": "Somatic",
+    "tier": 2,
+    "d": "Direct contact dissolves charge. No analysis, no escape."
+   },
+   {
+    "k": "truth",
+    "nm": "The Somatic Truth Check",
+    "min": 2,
+    "track": "Somatic",
+    "tier": 2,
+    "d": "Expansion is true. Contraction is distortion."
+   },
+   {
+    "k": "heartpt",
+    "nm": "Heart Point Focus",
+    "min": 10,
+    "track": "Energy",
+    "tier": 2,
+    "d": "A white point at the centre of the heart, held for ten minutes."
+   },
+   {
+    "k": "noting",
+    "nm": "Noting Meditation",
+    "min": 15,
+    "track": "Mind",
+    "tier": 2,
+    "d": "Observer of thoughts. No engagement."
+   },
+   {
+    "k": "listen",
+    "nm": "Active Listening",
+    "min": 10,
+    "track": "Mind",
+    "tier": 2,
+    "d": "Ten minutes on sound. No labelling."
+   },
+   {
+    "k": "observer",
+    "nm": "The Observer Technique",
+    "min": 20,
+    "track": "Somatic",
+    "tier": 3,
+    "d": "Memory without charge. The technique for memory-attached patterns."
+   },
+   {
+    "k": "detect",
+    "nm": "The Detection Practice",
+    "min": 20,
+    "track": "Somatic",
+    "tier": 3,
+    "d": "The pre-linguistic foundation. Building your own nervous system map."
+   },
+   {
+    "k": "hands",
+    "nm": "Healing Hands",
+    "min": 15,
+    "track": "Energy",
+    "tier": 3,
+    "d": "The palm field as a directable instrument."
+   },
+   {
+    "k": "hardtrauma",
+    "nm": "Hard Trauma Meditation",
+    "min": 20,
+    "track": "Somatic",
+    "tier": 3,
+    "d": "For the deep ones. Observer mode on a traumatic memory."
+   },
+   {
+    "k": "superego",
+    "nm": "Superego Pattern Meditation",
+    "min": 20,
+    "track": "Mind",
+    "tier": 3,
+    "d": "What you absorbed from the people who raised you."
+   },
+   {
+    "k": "chakra",
+    "nm": "Individual Chakra Meditation",
+    "min": 20,
+    "track": "Energy",
+    "tier": 3,
+    "d": "One band at a time. Five minutes of breath, ten of visualisation."
+   },
+   {
+    "k": "candle",
+    "nm": "Candle Visualisation",
+    "min": 15,
+    "track": "Mind",
+    "tier": 3,
+    "d": "Concentration training. Hold one image."
+   }
+  ],
+  "releasable": 0,
+  "ledger": {
+   "minutes": 0,
+   "planned": 0,
+   "done": 0,
+   "rituals": 0,
+   "lines": 0,
+   "ground": 0,
+   "clear": 0,
+   "carry": 0,
+   "snaps": 0
+  },
+  "streak": {
+   "run": 0,
+   "live": false,
+   "last": null,
+   "best": 0,
+   "days": 0
+  },
+  "earned": [],
+  "next": "First run",
+  "walk": [
+   0,
+   0,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   0,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1
+  ],
+  "walkDone": 21,
+  "walkFloors": 0,
+  "walkStreak": 9,
+  "walkKarma": 81,
+  "walkLive": false,
+  "sampled": 15,
+  "survived": 0
+ },
+ "James": {
+  "nm": "James",
+  "age": 57,
+  "role": "C-suite, third turnaround · ICP",
+  "weight": 100,
+  "says": "I make the call and I sleep fine. People find that cold. It is what they hired.",
+  "CQ": 12,
+  "DQ": 9.19,
+  "seat": "Sacral",
+  "track": "Somatic",
+  "tier": 1,
+  "substituted": false,
+  "actualTrack": "Somatic",
+  "called": {
+   "k": "sig",
+   "nm": "The Signal Test",
+   "min": 3,
+   "track": "Somatic",
+   "d": "Proof that a word with no quality of its own moves your body.",
+   "tier": 1
+  },
+  "nFit": 4,
+  "fit": [
+   {
+    "k": "escan",
+    "nm": "The Emotional Scan",
+    "min": 20,
+    "track": "Somatic",
+    "tier": 1,
+    "d": "Where the nine live in your body. The first practice in the Body Tract."
+   },
+   {
+    "k": "box",
+    "nm": "Box Breathing",
+    "min": 5,
+    "track": "Body",
+    "tier": 1,
+    "d": "Four and four, or eight and eight. The entry into a grounded state."
+   },
+   {
+    "k": "slow",
+    "nm": "Controlled Breath",
+    "min": 10,
+    "track": "Body",
+    "tier": 1,
+    "d": "Two to six breaths a minute. Gets the energy below the heart."
+   },
+   {
+    "k": "sig",
+    "nm": "The Signal Test",
+    "min": 3,
+    "track": "Somatic",
+    "tier": 1,
+    "d": "Proof that a word with no quality of its own moves your body."
+   }
+  ],
+  "releasable": 18,
+  "ledger": {
+   "minutes": 0,
+   "planned": 0,
+   "done": 0,
+   "rituals": 0,
+   "lines": 0,
+   "ground": 0,
+   "clear": 0,
+   "carry": 0,
+   "snaps": 0
+  },
+  "streak": {
+   "run": 0,
+   "live": false,
+   "last": null,
+   "best": 0,
+   "days": 0
+  },
+  "earned": [],
+  "next": "First run",
+  "walk": [
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   0,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   2,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   0,
+   1,
+   0,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1
+  ],
+  "walkDone": 87,
+  "walkFloors": 1,
+  "walkStreak": 15,
+  "walkKarma": 299,
+  "walkLive": false,
+  "sampled": 100,
+  "survived": 0
+ }
+};
+
+var D=DATA, cur='Marcus', EDIT=false, W={};
+var sel=document.getElementById('who');
+Object.keys(D).forEach(function(k){var o=document.createElement('option');
+ o.value=k;o.textContent=D[k].nm+', '+D[k].age+', '+D[k].role.replace(' · ICP','');
+ sel.appendChild(o);});
+sel.value=cur; sel.onchange=function(){cur=sel.value;draw();};
+document.getElementById('edit').onclick=function(){EDIT=!EDIT;
+ this.className='btn'+(EDIT?' on':'');
+ this.textContent=EDIT?'Done editing':'Edit history';draw();};
+
+function walk(){ if(!W[cur])W[cur]=D[cur].walk.slice(); return W[cur]; }
+
+/* THE DIAL.
+   Outer ring: the seven seats, each a short arc in its own colour, the one
+   carrying the most drawn at full weight and the rest at a quarter. That is
+   the needle: the eye goes to the heavy one without a pointer having to be
+   drawn. Inner ring: the last thirty days, one tick each, so the day and the
+   history are the same object and the compass tracks daily progress the way
+   he asked.
+   Centre: the run. One number, and it says what it counts. */
+function dial(){
+ var d=D[cur], w=walk(), s=[];
+ var cx=130, cy=130;
+ /* the seat ring */
+ SEATORDER.forEach(function(nm,i){
+  var a0=SEATDEG[nm]-9, a1=SEATDEG[nm]+9, on=(nm===d.seat);
+  s.push('<path d="'+arc(cx,cy,112,a0,a1)+'" stroke="'+SEATC[nm]+'" stroke-width="'
+   +(on?9:3)+'" stroke-linecap="round" fill="none" opacity="'+(on?1:.3)+'"/>');
+  /* and mirrored on the other side, because a compass is symmetrical and the
+     seats sit on a spine rather than around a clock */
+  s.push('<path d="'+arc(cx,cy,112,360-a1,360-a0)+'" stroke="'+SEATC[nm]+'" stroke-width="'
+   +(on?9:3)+'" stroke-linecap="round" fill="none" opacity="'+(on?1:.3)+'"/>');});
+ /* the last thirty days, inner ring, one tick each, oldest first going clockwise */
+ var last=w.slice(-30), pad=30-last.length;
+ for(var i=0;i<30;i++){
+  var v=i<pad?null:last[i-pad];
+  var a=i*12, tc=TRACKS[d.substituted?d.actualTrack:d.track].c;
+  s.push('<path d="'+arc(cx,cy,90,a-4.2,a+4.2)+'" stroke="'
+   +(v?tc:'rgba(255,255,255,.07)')+'" stroke-width="'+(v===2?3:6)+'" '
+   +'stroke-linecap="round" fill="none" opacity="'+(v===2?.85:1)+'"/>');}
+ /* the centre. A ring, never a disc. */
+ s.push('<circle cx="130" cy="130" r="70" fill="none" stroke="var(--line)" stroke-width="1"/>');
+ var run=runOf(w);
+ s.push('<text x="130" y="126" text-anchor="middle" fill="var(--ink)" '
+  +'font-size="46" font-weight="600" letter-spacing="-2">'+run+'</text>');
+ s.push('<text x="130" y="151" text-anchor="middle" fill="var(--dim)" font-size="13" '
+  +'letter-spacing=".4">'+(run===1?'day running':'days running')+'</text>');
+ document.getElementById('dial').innerHTML=s.join('');
+}
+
+/* WHY THIS PRACTICE. The whole of RB12 is here and it is one sentence.
+   The current card says "Mind" in thirty pixels and never says the word
+   "because", so a breathing exercise arrives with no cause attached. This
+   names the seat, what the seat is doing, and what the practice does about it,
+   in that order, and the practice's own name comes last. */
+function why(){
+ var d=D[cur], tr=TRACKS[d.substituted?d.actualTrack:d.track];
+ var s='Your <b>'+d.seat.toLowerCase()+'</b> is carrying more than any other seat right now. '
+  +'The <b>'+(d.substituted?d.actualTrack:d.track).toLowerCase()+'</b> track is what moves it, '
+  +'and <b>'+d.called.nm.toLowerCase()+'</b> is its shortest way in at '+d.called.min+' minutes.';
+ if(d.substituted)s+=' Nothing in the '+d.track.toLowerCase()+' track is gentle enough to start on '
+  +'today, so the '+d.actualTrack.toLowerCase()+' track is carrying it.';
+ return '<p class="why" style="--wc:'+tr.c+'">'+s+'</p>';}
+
+function today(){
+ var d=D[cur], w=walk(), tr=TRACKS[d.substituted?d.actualTrack:d.track];
+ var doneToday=w.length?w[w.length-1]:0;
+ var h=why();
+ h+='<div class="rit'+(doneToday?' done':'')+'" style="--gc:'+tr.c+'">'
+  +'<span class="g">'+svgIc(tr.ic,tr.c,21)+'</span>'
+  +'<span class="t"><b>'+d.called.nm+'</b><span>'+tr.nm+' track, '+tr.d+'</span></span>'
+  +'<span class="m">'+d.called.min+' min</span>'
+  +(doneToday?'<span class="m" style="color:'+tr.c+'">Done today</span>'
+    :'<button class="btn pri" id="mark">Mark done</button>')
+  +'</div>';
+ document.getElementById('today').innerHTML=h;
+ var b=document.getElementById('mark');
+ if(b)b.onclick=function(){var ww=walk(); ww[ww.length-1]=1; draw();};}
+
+function heat(){
+ var d=D[cur], w=walk(), tr=TRACKS[d.substituted?d.actualTrack:d.track];
+ var cols=spanOf(w,13), cells=weeksOf(w,cols), h=document.getElementById('hm');
+ h.style.setProperty('--k',tr.c);
+ h.className='hm'+(EDIT?' edit':'');
+ h.innerHTML=cells.map(function(v,i){
+  return '<i class="'+(v===1?'on':v===2?'fl':v===0?'no':'')+'" data-i="'+i+'"></i>';}).join('');
+ if(EDIT)h.querySelectorAll('i').forEach(function(el){el.onclick=function(){
+  var i=+el.dataset.i, pad=cols*7-w.length, j=i-pad;
+  if(j<0||j>=w.length)return;
+  w[j]=w[j]?0:1; draw();};});
+ document.getElementById('key').innerHTML=
+  '<span><s style="background:'+tr.c+'"></s>practised</span>'
+  +'<span><s style="border:1.5px solid '+tr.c+'"></s>the short version</span>'
+  +'<span><s style="border:1px solid var(--line)"></s>nothing recorded</span>';
+ document.getElementById('hmnote').textContent=EDIT
+  ? 'Tap any day to add it or take it off.'
+  : plural(cols,'week')+' on the record, one square a day.';}
+
+function stats(){
+ var d=D[cur], w=walk();
+ var done=w.filter(function(x){return x===1;}).length;
+ var fl=w.filter(function(x){return x===2;}).length;
+ var mins=(done+fl)*d.called.min;
+ var best=bestOf(w);
+ document.getElementById('stats').innerHTML=[
+  ['<b>'+(done+fl)+'</b><span>days practised</span>'],
+  ['<b>'+best+'</b><span>longest run, in days</span>'],
+  ['<b>'+mins+'</b><span>minutes on the record</span>'],
+  ['<b>'+d.CQ+'<i style="font-size:14px;color:var(--dim);font-style:normal"> out of 100</i></b>'
+   +'<span>coherence, when last read</span>']
+ ].map(function(x){return '<div class="stat">'+x+'</div>';}).join('');}
+
+/* WHAT YOU HAVE EARNED. Named, never enumerated against a total: the ones
+   standing, and the next one with what it takes. engine/ladder.js already
+   refuses to say how many there are and this refuses it too. */
+function marks(){
+ var d=D[cur], w=walk(), done=w.filter(Boolean).length, best=bestOf(w);
+ var tr=TRACKS[d.substituted?d.actualTrack:d.track];
+ var got=[];
+ if(done>=1)got.push('First run');
+ if(best>=7)got.push('Seven days');
+ if(best>=30)got.push('Thirty days');
+ if(done*d.called.min>=60)got.push('Sixty minutes');
+ var next=best<7?['Seven days',(7-best)+' more in a row']
+  :best<30?['Thirty days',(30-best)+' more in a row']
+  :['Ninety days',(90-best)+' more in a row'];
+ var h='<div class="eye">Standing</div>';
+ h+=got.map(function(n){return '<div class="mk" style="--mc:'+tr.c+'"><s></s><b>'+n+'</b></div>';}).join('');
+ if(!got.length)h+='<div class="mk"><s style="--mc:var(--dim)"></s>Nothing yet.</div>';
+ h+='<div class="mk" style="--mc:var(--dim)"><s></s>Next, <b>'+next[0]+'</b>, '+next[1]+'.</div>';
+ document.getElementById('marks').innerHTML=h;}
+
+function draw(){
+ var d=D[cur];
+ document.getElementById('tag').textContent=d.seat+' seat  ·  '
+  +(d.substituted?d.actualTrack:d.track)+' track  ·  tier '+d.tier;
+ dial(); today(); heat(); stats(); marks();
+ var w=walk(), done=w.filter(Boolean).length;
+ document.getElementById('foot').innerHTML=
+  'Design A, the compass. Every number on this page is real. The seat, the track, the tier and '
+  +'the practice come from <b>engine.js</b> through the same <b>ritFor</b> rule the build uses, '
+  +'checked against <b>PANEL-ritual-1000.md</b> section A1. The '+w.length+' days of history are '
+  +D[cur].nm+'’s longest walk out of <b>losssim.js</b>, which is <b>tools/loopsim.js</b> with the '
+  +'owner’s loss framing arm added and all forty two of its checks still passing. '
+  +D[cur].survived+' of the '+D[cur].sampled+' people like '+D[cur].nm+' in the panel were still there at day ninety, '
+  +'so this walk is the best case for this person and not the usual one.';}
+draw();
+</script>
+
+</body></html>

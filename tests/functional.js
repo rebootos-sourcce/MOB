@@ -1945,12 +1945,22 @@ for(const w of [[1600,1000],[390,844]]){
     let m; while((m=RE.exec(txt))){
      if(SCALE[m[2]])continue;
      if(+m[2]>+m[1]&&+m[2]>1)bad.push('tab '+t+': '+m[0]);}
-    /* AND THE OTHER HALF OF THE SAME RULING IS NOW GATED TOO. A scale that is
-       allowed is not a scale that is present, so the compass, which is the
-       surface he named, has to carry one. Anything else would be the gate
-       licensing the defect it was rewritten to permit. */
-    if(t===8&&!/\b\d{1,3}\s*(?:of|out of)\s*100\b/.test(txt)&&!/unread/i.test(txt)
-       &&/You read/i.test(txt))bad.push('tab 8: a reading with no scale on it');}
+    /* AND THE OTHER HALF, RE-RULED. This used to demand the literal string
+       "N of 100" on the compass, which was right under the ruling it was
+       written for and is wrong under the one that replaced it: "if you cannot
+       use regular words to describe it, do not describe it, and 40 to 60 out
+       of 100 does not give a lot of specific detail."
+
+       The thing worth protecting was never the denominator. It was that a
+       reading is never a bare number with nothing to make sense of it by. So
+       the assertion is that intent rather than that string: the compass
+       reading carries EITHER a scale OR the band it sits in, said in words.
+       Both satisfy a person. Only one satisfies a regular expression, which is
+       why the regular expression was the wrong thing to assert. */
+    if(t===8&&!/unread/i.test(txt)&&/You read/i.test(txt)
+       &&!/\b\d{1,3}\s*(?:of|out of)\s*(?:10|100)\b/.test(txt)
+       &&!/oscillating band/i.test(txt))
+     bad.push('tab 8: a reading with neither a scale nor a band to read it by');}
    return bad;},who);
   ok(hits.length===0,'no count against a total at '+w[0]+' for '+who
     +(hits.length?', found '+hits.slice(0,4).join(', '):''));

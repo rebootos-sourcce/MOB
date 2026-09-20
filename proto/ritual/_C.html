@@ -1,0 +1,202 @@
+<div class="wrap">
+ <div class="bar">
+  <span class="brand">ATUNED &middot; RITUAL</span>
+  <select id="who"></select>
+  <span class="dim" id="tag" style="font-size:13px"></span>
+  <span style="flex:1"></span>
+  <button class="btn" id="edit">Edit history</button>
+ </div>
+
+ <!-- THE TAPE IS THE HERO. His second sentence was the accountability tracker,
+      and on A and B it sits under the fold. Here the record is the page and
+      today is one line on the end of it, which is the honest shape for a
+      product whose claim is that you can see yourself move. -->
+ <div class="card tape">
+  <div class="th">
+   <div>
+    <div class="eye" id="span"></div>
+    <div class="big" id="big"></div>
+    <div class="note" id="sub"></div>
+   </div>
+   <div class="dialbox">
+    <svg id="dial" viewBox="0 0 120 120" width="120" height="120"></svg>
+    <div class="dl" id="dl"></div>
+   </div>
+  </div>
+  <svg id="tape" viewBox="0 0 900 120" preserveAspectRatio="none" class="tapesvg"></svg>
+  <div class="ax" id="ax"></div>
+ </div>
+
+ <div class="two">
+  <!-- today, as one line -->
+  <div class="card">
+   <div class="eye">Today</div>
+   <div id="today"></div>
+  </div>
+  <div class="card">
+   <div class="eye">The weeks</div>
+   <div class="hm" id="hm" style="margin-top:13px"></div>
+   <div class="note" id="hmnote" style="margin-top:10px"></div>
+  </div>
+ </div>
+
+ <div class="stats" id="stats" style="margin-top:14px"></div>
+ <div class="foot" id="foot"></div>
+</div>
+
+<style>
+.tape{padding:20px 20px 14px}
+.th{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;
+ margin-bottom:18px;flex-wrap:wrap}
+.big{font-size:40px;font-weight:600;letter-spacing:-.025em;line-height:1.1;margin-top:3px}
+.big i{font-style:normal;font-size:16px;color:var(--dim);font-weight:400;letter-spacing:0}
+.dialbox{display:flex;align-items:center;gap:13px}
+.dl{font-size:12.5px;color:var(--mid);line-height:1.55;max-width:160px}
+.dl b{color:var(--ink);font-weight:600;display:block}
+.tapesvg{width:100%;height:120px;display:block}
+.ax{display:flex;justify-content:space-between;font-size:11.5px;color:var(--dim);
+ margin-top:7px;letter-spacing:.03em}
+.two{display:grid;grid-template-columns:1.2fr 1fr;gap:14px;margin-top:14px;align-items:start}
+.rit{display:flex;align-items:center;gap:14px;margin-top:13px}
+.rit .g{width:46px;height:46px;border-radius:50%;border:1.5px solid var(--gc);
+ display:grid;place-items:center;flex:none}
+.rit .t{flex:1;min-width:0}
+.rit .t b{display:block;font-weight:600}
+.rit .t span{font-size:13px;color:var(--dim)}
+.why{font-size:13.5px;color:var(--mid);line-height:1.62;margin:14px 0 0;
+ padding-top:13px;border-top:1px solid var(--line)}
+.why b{color:var(--ink);font-weight:600}
+@media(max-width:860px){.two{grid-template-columns:1fr}
+ .big{font-size:34px}}
+</style>
+
+<script>
+var D=DATA, cur='Marcus', EDIT=false, W={};
+var sel=document.getElementById('who');
+Object.keys(D).forEach(function(k){var o=document.createElement('option');
+ o.value=k;o.textContent=D[k].nm+', '+D[k].age+', '+D[k].role.replace(' · ICP','');
+ sel.appendChild(o);});
+sel.value=cur;sel.onchange=function(){cur=sel.value;draw();};
+document.getElementById('edit').onclick=function(){EDIT=!EDIT;
+ this.className='btn'+(EDIT?' on':'');
+ this.textContent=EDIT?'Done editing':'Edit history';draw();};
+function walk(){if(!W[cur])W[cur]=D[cur].walk.slice();return W[cur];}
+
+/* THE TAPE. Ninety columns, one a day, height carrying the run standing on
+   that day rather than a flat tick. A flat tick says only whether you showed
+   up; the height says what you had built when you did, so a halving shows as a
+   step down and is legible without a legend. */
+function tape(){
+ var d=D[cur], w=walk(), tr=TRACKS[d.substituted?d.actualTrack:d.track];
+ /* THE FRAME IS EARNED, THE SAME RULE THE HEAT MAP GOT. A fixed ninety
+    column tape drew Gordon's seven days as a cluster in the corner of an
+    empty field, which is the wall of absence again in a second shape. The
+    tape holds the history it has with a little room ahead, and grows to
+    ninety. */
+ var N=Math.max(14,Math.min(90,w.length+Math.ceil(w.length*0.15)+3));
+ var pad=N-w.length, run=0, gap=0, series=[];
+ for(var i=0;i<N;i++){
+  var v=i<pad?null:w[i-pad];
+  if(v===null){series.push(null);continue;}
+  if(v){run++;gap=0;} else {gap++; if(gap>2){run=Math.max(1,Math.ceil(run/2));gap=0;}}
+  series.push({v:v,run:run});}
+ var mx=Math.max(1,Math.max.apply(null,series.map(function(s){return s?s.run:0;})));
+ var W_=900,H=120,cw=W_/N, s=[];
+ /* the baseline, so an empty stretch still reads as a stretch */
+ s.push('<line x1="0" y1="'+(H-1)+'" x2="'+W_+'" y2="'+(H-1)+'" stroke="rgba(255,255,255,.10)" stroke-width="1"/>');
+ series.forEach(function(p,i){
+  var x=i*cw+cw/2;
+  if(!p){return;}
+  var h=(p.run/mx)*(H-14);
+  if(p.v)s.push('<line x1="'+x.toFixed(1)+'" y1="'+(H-1)+'" x2="'+x.toFixed(1)+'" y2="'
+   +(H-1-h).toFixed(1)+'" stroke="'+tr.c+'" stroke-width="'+(cw*0.62).toFixed(2)
+   +'" stroke-linecap="round" opacity="'+(p.v===2?.45:.9)+'"/>');
+  else s.push('<line x1="'+x.toFixed(1)+'" y1="'+(H-1)+'" x2="'+x.toFixed(1)+'" y2="'
+   +(H-5)+'" stroke="var(--warm)" stroke-width="'+(cw*0.62).toFixed(2)+'" stroke-linecap="round" opacity=".5"/>');});
+ document.getElementById('tape').innerHTML=s.join('');
+ document.getElementById('span').textContent=plural(N,'day');
+ document.getElementById('ax').innerHTML='<span>'+plural(N,'day')+' back</span><span>today</span>';
+}
+
+/* THE DIAL, SMALL. The compass survives here as an at a glance object rather
+   than the hero: seven seat arcs, the heavy one at weight. */
+function dial(){
+ var d=D[cur],s=[];
+ SEATORDER.forEach(function(nm){
+  var on=(nm===d.seat), a0=SEATDEG[nm]-8, a1=SEATDEG[nm]+8;
+  [[a0,a1],[360-a1,360-a0]].forEach(function(p){
+   s.push('<path d="'+arc(60,60,50,p[0],p[1])+'" stroke="'+SEATC[nm]+'" stroke-width="'
+    +(on?7:2.5)+'" stroke-linecap="round" fill="none" opacity="'+(on?1:.28)+'"/>');});});
+ var tr=TRACKS[d.substituted?d.actualTrack:d.track];
+ s.push('<g transform="translate(46,46) scale(1.6)">'+svgIc(tr.ic,tr.c,18).replace(/^<svg[^>]*>|<\/svg>$/g,'')+'</g>');
+ /* written once, into the svg that is already there. Writing it twice, the
+    second time through outerHTML, replaced the node mid draw and threw the
+    glyph away. */
+ document.getElementById('dial').innerHTML=s.join('');
+ document.getElementById('dl').innerHTML='<b>'+d.seat+' is carrying most</b>'
+  +'so the '+(d.substituted?d.actualTrack:d.track).toLowerCase()+' track is what moves it.';}
+
+function today(){
+ var d=D[cur],w=walk(),tr=TRACKS[d.substituted?d.actualTrack:d.track];
+ var doneToday=w.length?w[w.length-1]:0;
+ var h='<div class="rit" style="--gc:'+tr.c+'">'
+  +'<span class="g">'+svgIc(tr.ic,tr.c,22)+'</span>'
+  +'<span class="t"><b>'+d.called.nm+'</b><span>'+tr.nm+' track · '+d.called.min+' minutes</span></span>'
+  +(doneToday?'<span class="mid" style="font-size:13px;color:'+tr.c+'">Done today</span>'
+    :'<button class="btn pri" id="mark">Mark done</button>')+'</div>';
+ h+='<p class="why">Your <b>'+d.seat.toLowerCase()+'</b> is carrying more than any other seat, '
+  +'and <b>'+d.called.nm.toLowerCase()+'</b> is the shortest way into the '
+  +(d.substituted?d.actualTrack:d.track).toLowerCase()+' track, which is what moves a '
+  +d.seat.toLowerCase()+'.'
+  +(d.substituted?' Nothing in the '+d.track.toLowerCase()+' track starts this gently today.':'')+'</p>';
+ document.getElementById('today').innerHTML=h;
+ var b=document.getElementById('mark');
+ if(b)b.onclick=function(){var ww=walk();ww[ww.length-1]=1;draw();};}
+
+function heat(){
+ var d=D[cur],w=walk(),tr=TRACKS[d.substituted?d.actualTrack:d.track];
+ var cols=spanOf(w,9), cells=weeksOf(w,cols), h=document.getElementById('hm');
+ h.style.setProperty('--k',tr.c);h.className='hm'+(EDIT?' edit':'');
+ h.innerHTML=cells.map(function(v,i){
+  return '<i class="'+(v===1?'on':v===2?'fl':v===0?'no':'')+'" data-i="'+i+'"></i>';}).join('');
+ if(EDIT)h.querySelectorAll('i').forEach(function(el){el.onclick=function(){
+  var i=+el.dataset.i, pad=cols*7-w.length, j=i-pad;
+  if(j<0||j>=w.length)return; w[j]=w[j]?0:1; draw();};});
+ document.getElementById('hmnote').textContent=EDIT
+  ? 'Tap a day to add it or take it off.'
+  : plural(cols,'week')+'. A filled square is a day you practised, an outline is the short version.';}
+
+function stats(){
+ var d=D[cur],w=walk();
+ var done=w.filter(Boolean).length, best=bestOf(w), run=runOf(w);
+ /* A FORTNIGHT AGAINST A FORTNIGHT READ NOISE AS A TREND. On a walk with
+    eighty five days practised out of ninety it printed "down" because one
+    fortnight held thirteen and the one before held fourteen, beside a run
+    standing at its longest. Missed days is the number a person can act on and
+    it cannot be read as a direction it does not have. */
+ var missed=w.filter(function(x){return !x;}).length;
+ document.getElementById('stats').innerHTML=[
+  '<b>'+done+'</b><span>days practised</span>',
+  '<b>'+best+'</b><span>longest run, in days</span>',
+  '<b>'+(done*d.called.min)+'</b><span>minutes recorded</span>',
+  '<b>'+missed+'</b><span>'+(missed===1?'day missed':'days missed')+'</span>'
+ ].map(function(x){return '<div class="stat">'+x+'</div>';}).join('');
+ document.getElementById('big').innerHTML=run+'<i> '+(run===1?'day running':'days running')+'</i>';
+ document.getElementById('sub').textContent=
+  best>run? 'Your longest was '+best+' days.' : 'This is your longest so far.';}
+
+function draw(){
+ var d=D[cur];
+ document.getElementById('tag').textContent=d.seat+' seat  ·  '
+  +(d.substituted?d.actualTrack:d.track)+' track  ·  tier '+d.tier;
+ tape(); dial(); today(); heat(); stats();
+ var w=walk();
+ document.getElementById('foot').innerHTML=
+  'Design C, the tape. The accountability record is the page and today is one line on the end of '
+  +'it. Height on the tape is the run standing on that day, so a halving reads as a step down. '
+  +'Every number is real: seat, track, tier and practice from <b>engine.js</b> through the '
+  +'build’s own <b>ritFor</b>, checked against <b>PANEL-ritual-1000.md</b> A1; the '+w.length
+  +' days of history are '+d.nm+'’s longest walk out of <b>losssim.js</b>. '+d.survived
+  +' of '+d.sampled+' '+d.nm+'s reached day ninety.';}
+draw();
+</script>

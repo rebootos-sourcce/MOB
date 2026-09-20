@@ -1,0 +1,52 @@
+/* the product's own tokens, read off atuned_src/shell/head.html */
+*{box-sizing:border-box}
+:root{--bg:#0C0D12;--panel:#1A1D26;--panel-2:#252833;--sunk:#090A0E;
+ --ink:#EFEDE8;--mid:#B4B0A8;--dim:#94908A;--accent:#7EB8D4;--on-accent:#0B1418;
+ --line:rgba(255,255,255,.08);--line2:rgba(255,255,255,.14);--warm:#CB5F59;
+ --r:14px}
+html,body{margin:0;background:var(--bg);color:var(--ink)}
+body{font:16px/1.5 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Inter,sans-serif;
+ -webkit-font-smoothing:antialiased;padding:0 0 64px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px}
+h1,h2,h3{font-weight:600;letter-spacing:-.01em;margin:0}
+.eye{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);
+ font-weight:600}
+.dim{color:var(--dim)}.mid{color:var(--mid)}
+.bar{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid var(--line);
+ margin-bottom:22px;flex-wrap:wrap}
+.brand{font-weight:700;letter-spacing:.16em;font-size:12px;color:var(--mid)}
+select,button{font:inherit;color:inherit}
+select{background:var(--panel-2);border:1px solid var(--line2);border-radius:10px;
+ padding:9px 12px;min-height:44px}
+.btn{background:transparent;border:1px solid var(--line2);border-radius:11px;
+ padding:11px 16px;min-height:44px;cursor:pointer;color:var(--ink);transition:.15s}
+.btn:hover{border-color:var(--accent);color:var(--accent)}
+.btn.pri{background:var(--accent);color:var(--on-accent);border-color:var(--accent);font-weight:600}
+.btn.pri:hover{filter:brightness(1.08);color:var(--on-accent)}
+.btn.on{border-color:var(--accent);color:var(--accent)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:20px}
+.note{font-size:13px;color:var(--dim);line-height:1.6}
+/* A CELL IS A FIXED SIZE AND THE GRID DOES NOT STRETCH IT. Stretched to the
+   width of a 1600 column the squares became a checkerboard, and on a person
+   with seven days of history the empty ones became a wall of absence: eighty
+   four black squares against seven gold. That is a count against a total drawn
+   in pixels, and it is the one thing this product refuses. */
+.hm{display:grid;grid-auto-flow:column;grid-template-rows:repeat(7,14px);
+ gap:3px;justify-content:start}
+.hm i{width:14px;height:14px;border-radius:3px;background:var(--sunk);
+ border:1px solid var(--line);display:block;cursor:default}
+.hm i.on{background:var(--k);border-color:var(--k)}
+.hm i.fl{background:transparent;border-color:var(--k);border-width:1.5px}
+.hm i.no{background:transparent;border-color:rgba(255,255,255,.05)}
+.hm.edit i{cursor:pointer}
+.hm.edit i:hover{outline:1.5px solid var(--accent);outline-offset:1px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.stat{background:var(--panel-2);border:1px solid var(--line);border-radius:11px;padding:13px 14px}
+.stat b{display:block;font-size:26px;font-weight:600;letter-spacing:-.02em;line-height:1.15}
+.stat span{font-size:11.5px;color:var(--dim);letter-spacing:.04em}
+.foot{margin-top:34px;padding-top:16px;border-top:1px solid var(--line);font-size:12.5px;
+ color:var(--dim);line-height:1.7}
+@media(max-width:560px){
+ .wrap{padding:0 16px}
+ .stats{grid-template-columns:repeat(2,1fr)}
+ body{padding-bottom:40px}}
