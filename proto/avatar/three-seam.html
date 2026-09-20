@@ -485,7 +485,24 @@ function numsHtml(v){
   +r('Carrying',v.carrying,'addresses')
   +r('Chain, held',v.chainHeld,'')
   +r('Chain, overshot',v.chainOver,'')
-  +(v.heaviest?r('Heaviest',v.heaviest.k.slice(0,16),v.heaviest.b):'');}
+  +(v.heaviest?r('Heaviest',cut(v.heaviest.k,17),v.heaviest.b):'');}
+/* a name cut mid word is a name the surface has lied about the length of */
+function cut(s,n){
+ s=String(s); if(s.length<=n)return s;
+ var t=s.slice(0,n); var sp=t.lastIndexOf(' ');
+ return (sp>4?t.slice(0,sp):t)+'…';}
+/* LABELS COLLIDE WHEN THE THING THEY NAME IS CLOSE TOGETHER. The seven seats
+   run from 4.98 to 53.55 on the figure, so the crown, the brow and the throat
+   sit 25 pixels apart while a two line label is 30 tall. The rail pushes them
+   down to a floor and keeps the order, which is what a rail is for and what a
+   painted name could never do. cone.js:213 records the 89 colliding pairs that
+   taught this project the rule. */
+function spread(ys,gap,lo,hi){
+ var o=ys.slice();
+ for(var i=1;i<o.length;i++) if(o[i]-o[i-1]<gap) o[i]=o[i-1]+gap;
+ var over=o[o.length-1]-hi;
+ if(over>0) for(var j=o.length-1;j>=0;j--) o[j]=Math.max(lo+j*gap,o[j]-over);
+ return o;}
 
 function pegs(){
  var h='';

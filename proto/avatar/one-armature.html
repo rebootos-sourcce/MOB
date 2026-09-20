@@ -485,7 +485,24 @@ function numsHtml(v){
   +r('Carrying',v.carrying,'addresses')
   +r('Chain, held',v.chainHeld,'')
   +r('Chain, overshot',v.chainOver,'')
-  +(v.heaviest?r('Heaviest',v.heaviest.k.slice(0,16),v.heaviest.b):'');}
+  +(v.heaviest?r('Heaviest',cut(v.heaviest.k,17),v.heaviest.b):'');}
+/* a name cut mid word is a name the surface has lied about the length of */
+function cut(s,n){
+ s=String(s); if(s.length<=n)return s;
+ var t=s.slice(0,n); var sp=t.lastIndexOf(' ');
+ return (sp>4?t.slice(0,sp):t)+'…';}
+/* LABELS COLLIDE WHEN THE THING THEY NAME IS CLOSE TOGETHER. The seven seats
+   run from 4.98 to 53.55 on the figure, so the crown, the brow and the throat
+   sit 25 pixels apart while a two line label is 30 tall. The rail pushes them
+   down to a floor and keeps the order, which is what a rail is for and what a
+   painted name could never do. cone.js:213 records the 89 colliding pairs that
+   taught this project the rule. */
+function spread(ys,gap,lo,hi){
+ var o=ys.slice();
+ for(var i=1;i<o.length;i++) if(o[i]-o[i-1]<gap) o[i]=o[i-1]+gap;
+ var over=o[o.length-1]-hi;
+ if(over>0) for(var j=o.length-1;j>=0;j--) o[j]=Math.max(lo+j*gap,o[j]-over);
+ return o;}
 
 function pegs(){
  var h='';
@@ -681,10 +698,10 @@ function report(){
 /* ============================================================
    APPROACH ONE. THE ARMATURE.
 
-   A body, and only the parts of a body that carry a reading: a
-   spine, seven seats on it, and the frame that hangs off them. No
-   face, no mass, no clothing, no sex, no age. An armature is what
-   a figure is built on, which is the right object for a record,
+   A body reduced to the parts that carry a reading: a spine,
+   seven seats on it, and the frame that hangs off them. No face,
+   no mass, no clothing, no sex, no age. An armature is what a
+   figure is built on, which is the right object for a record,
    because an armature is a thing you add to.
 
    The body is not a metaphor here. Every one of the 112 addresses
@@ -692,28 +709,36 @@ function report(){
    straight out of PMBANDS, the same numbers the pain map places
    its regions with.
 
-   THREE CHANNELS, THREE MARKS, AND THEY CANNOT BE CONFUSED.
-   RECORD   the line work. Continuous where a release has reached,
-            broken where it has not. Broken is not damage, it is
-            unbuilt.
-   REACH    the outer dotted ring at each seat. Where that seat
-            could get with nothing held. Turn a peg seated there
-            and it moves out, under the hand, now.
-   WEATHER  the grey calipers pressing in from outside the ring.
-            Pressure is never drawn in a seat colour, because
-            pressure is not a property of the seat.
+   THREE CHANNELS, AND THE SECOND VERSION SPLIT THEM IN TWO PLACES
+   RATHER THAN STACKING THEM. The first version drew a reach ring,
+   a standing ring and a ring of calipers concentric at every seat:
+   twenty one circles and up to a hundred and twelve spokes on a
+   three hundred pixel figure, which is a sea urchin and is exactly
+   what BULKY means. The record stays on the body, where it belongs,
+   and everything numeric moved to a gauge beside it.
+
+   BODY    the record. Line work continuous where a release has
+           reached, broken where it has not, and one ring per seat
+           carrying the arcs for touched and emptied.
+   GAUGE   the reach and where you stand. A dotted line out to what
+           this seat reaches with nothing held, a solid line out to
+           where it is, and a bead at the end of the solid one. Turn
+           a peg seated here and the dotted line grows under your
+           hand.
+   BAR     today. A grey bar under the gauge, as long as the share
+           of the seat that is carrying, as dark as what it holds.
    ============================================================ */
-var HERO_W=300, HERO_H=500, STRIP_W=128, STRIP_H=224, SHEET_W=98, SHEET_H=172;
+var HERO_W=344, HERO_H=500, STRIP_W=140, STRIP_H=210, SHEET_W=106, SHEET_H=160;
 var KEYHTML=
  '<div class="key">'
- +'<div><b>Line work, the record</b>Continuous where a release has reached, broken where it '
- +'has not. Nothing in this product can make a continuous segment broken again.</div>'
- +'<div><b>Outer dotted ring, the reach</b>How far that seat gets with nothing held. It is '
- +'the mark the pegs move, and it is the only one they move.</div>'
- +'<div><b>Solid inner ring, where you stand</b>Between the two is what a release still has '
- +'in it at that seat.</div>'
- +'<div><b>Grey ticks, today</b>One inward tick per share of the seat that is carrying. '
- +'They come back on a hard month and they move no line.</div>'
+ +'<div><b>The body, the record</b>Line work continuous where a release has reached, broken '
+ +'where it has not, and an arc on each seat ring for what has been touched and emptied. '
+ +'Nothing in this product can make a continuous segment broken again.</div>'
+ +'<div><b>The gauge, the reach</b>Dotted to what the seat reaches with nothing held, solid '
+ +'to where it stands, a bead at the end of the solid. The gap between them is what a '
+ +'release still has in it. The pegs move the dotted end and nothing else does.</div>'
+ +'<div><b>The grey bar, today</b>As long as the share of that seat which is carrying, as '
+ +'dark as what it holds. It comes back on a hard month and it moves no line.</div>'
  +'</div>';
 
 var SEG=[
@@ -733,11 +758,22 @@ var SEG=[
  {b:'Root',    m:1, p:[[55.2,90.6],[58.4,96.4],[51.4,96.8],[51.6,90.6]]},
  {b:'Sacral',  m:0, p:[[43.4,55.8],[50,59.6],[56.6,55.8]]}];
 
+/* the figure and the gauge share one vertical space and split the horizontal */
+function geo(W,H){
+ var pad=13, fh=H-pad*2;
+ var bodyW=Math.min(fh*0.44,W*0.60);
+ var gx0=Math.min(W-6, pad+bodyW+ (W>240?16:8));
+ return {pad:pad, fh:fh, fw:bodyW, cx:pad+bodyW/2,
+  gx0:gx0, gw:Math.max(10,W-6-gx0),
+  X:function(u){return pad+bodyW/2+(u-50)/100*bodyW*2;},
+  Y:function(q){return pad+q/100*fh;}};}
+function seatY(g,b){return g.Y(SEATY[b]*100);}
+
 function labels(v){
- var pad=14, fh=HERO_H-pad*2, h='';
- v.seats.forEach(function(s){
-  var y=pad+SEATY[s.b]*fh;
-  h+='<span style="top:'+y.toFixed(1)+'px;color:'+SEATCOL[s.b]
+ var g=geo(HERO_W,HERO_H), h='';
+ var ys=spread(v.seats.map(function(s){return seatY(g,s.b);}),30,14,HERO_H-14);
+ v.seats.forEach(function(s,i){
+  h+='<span style="top:'+ys[i].toFixed(1)+'px;color:'+SEATCOL[s.b]
    +(v.seatPick===s.b?';font-weight:600':'')+'">'+s.b
    +'<i>reaches '+s.reach+', stands at '+s.at+', of 100<br>'
    +s.touched+' touched, '+s.opened+' emptied, of '+s.n+'</i></span>';});
@@ -748,10 +784,6 @@ function flat(v){
    +', stands at '+s.at+', of 100. '+s.touched+' touched, '+s.opened+' emptied, of '
    +s.n+'</i></div>';}).join('');}
 
-function fig(W,H){
- var pad=14, fh=H-pad*2, fw=Math.min(fh*0.5,(W-pad*2));
- return {fh:fh,fw:fw,X:function(u){return W/2+(u-50)/100*fw*2;},
-  Y:function(q){return pad+q/100*fh;}};}
 function drawSeg(x,g,seg,built,a,wd){
  x.beginPath();
  seg.p.forEach(function(pt,i){var px=g.X(pt[0]),py=g.Y(pt[1]);
@@ -762,10 +794,10 @@ function drawSeg(x,g,seg,built,a,wd){
 
 function draw(x,W,H,v,t,mode){
  if(!v)return;
- var g=fig(W,H), small=(mode!=='hero');
+ var g=geo(W,H), small=(mode!=='hero');
  x.lineCap='round'; x.lineJoin='round';
  /* THE SPINE. The one thing a person arrives with, so it is a datum and never
-    an achievement. Faint, and the same on every figure in the roster. */
+    an achievement. Faint, and identical on every figure in the roster. */
  x.strokeStyle=rgba('#E8E6E1',0.14); x.lineWidth=small?0.8:1;
  x.beginPath(); x.moveTo(g.X(50),g.Y(3)); x.lineTo(g.X(50),g.Y(58)); x.stroke();
 
@@ -775,57 +807,65 @@ function draw(x,W,H,v,t,mode){
   var built=(s.touched>0||s.opened>0);
   var a=built?lerp(0.48,0.95,Math.min(1,(s.touched+s.opened)/s.n)):0.9;
   x.strokeStyle=SEATCOL[seg.b];
-  drawSeg(x,g,seg,built,a,small?1.1:1.5);
+  drawSeg(x,g,seg,built,a,small?1:1.4);
   if(seg.m)drawSeg(x,g,{b:seg.b,p:seg.p.map(function(pt){return [100-pt[0],pt[1]];})},
-   built,a,small?1.1:1.5);});
+   built,a,small?1:1.4);});
 
+ /* ONE RING PER SEAT, AT THE PAIN MAP'S OWN RADIUS, and it carries the record
+    and nothing else. The whole circumference is the whole seat, so an arc on
+    it already says what it is out of. */
  BANDS.forEach(function(b,i){
-  var s=byB[b], cx=g.X(50), cy=g.Y(SEATY[b]*100);
-  var br=breath(v.CQ,t,i);
-  var base=(SEATR[b]/100)*g.fw*1.02*(1+br);
-  /* THE REACH. The outer dotted ring. Where this seat gets with nothing held.
-     It is the only mark on the figure a peg moves, and it moves at once. */
-  var rReach=base*lerp(0.72,1.42,s.reach/100);
-  x.strokeStyle=rgba(SEATCOL[b],v.seatPick===b?0.40:0.26);
-  x.lineWidth=small?0.8:1; x.setLineDash([1.2,2.8]);
-  x.beginPath(); x.arc(cx,cy,rReach,0,Math.PI*2); x.stroke(); x.setLineDash([]);
-  /* WHERE IT STANDS. The solid inner ring. Between the two rings is what a
-     release still has in it at this seat, drawn rather than printed. */
-  var rAt=base*lerp(0.72,1.42,s.at/100);
-  x.strokeStyle=rgba('#E8E6E1',0.30); x.lineWidth=small?0.8:1.1;
-  x.beginPath(); x.arc(cx,cy,rAt,0,Math.PI*2); x.stroke();
-  /* THE RECORD. On the standing ring. Bright arc is touched, dim outer arc is
-     emptied, and both are drawn on a mark that already says what it is out of
-     because the whole circumference is the whole seat. */
+  var s=byB[b], cx=g.X(50), cy=seatY(g,b);
+  var rad=(SEATR[b]/100)*g.fw*0.92*(1+breath(v.CQ,t,i));
+  x.strokeStyle=rgba('#E8E6E1',0.10); x.lineWidth=small?0.7:0.9;
+  x.setLineDash([1,2.6]); x.beginPath(); x.arc(cx,cy,rad,0,Math.PI*2); x.stroke();
+  x.setLineDash([]);
   if(s.opened>0){
-   x.strokeStyle=rgba(SEATCOL[b],0.44); x.lineWidth=small?1.2:1.7;
-   x.beginPath(); x.arc(cx,cy,rAt+(small?2:3),-Math.PI/2,
+   x.strokeStyle=rgba(SEATCOL[b],0.42); x.lineWidth=small?1.2:1.7;
+   x.beginPath(); x.arc(cx,cy,rad+(small?1.8:2.6),-Math.PI/2,
     -Math.PI/2+Math.PI*2*(s.opened/s.n)); x.stroke();}
   if(s.touched>0){
-   x.strokeStyle=rgba(SEATCOL[b],0.96); x.lineWidth=small?1.6:2.2;
-   x.beginPath(); x.arc(cx,cy,rAt,-Math.PI/2,-Math.PI/2+Math.PI*2*(s.touched/s.n));
-   x.stroke();}
-  /* THE CALIPERS. Count is the share of the seat carrying, length is the load.
-     Driven by mean load alone the channel was invisible where it matters most:
-     a field carrying 84 addresses at a mean of 1.27 rounded to two ticks. */
-  var share=s.carrying/s.n;
-  var n=Math.round(share*(small?10:16));
-  if(n>0){
-   x.strokeStyle=rgba('#94908A',cl(0.26+s.load/7*0.55,0,0.86));
-   x.lineWidth=small?0.8:1.1;
-   var Ln=(small?2.5:4)+cl(s.load/7,0,1)*(small?5:9);
-   for(var k=0;k<n;k++){
-    var a2=(k/n)*Math.PI*2+0.3, r0=rReach+(small?4:6)+Ln, r1=rReach+(small?3:4);
-    x.beginPath();
-    x.moveTo(cx+Math.cos(a2)*r0,cy+Math.sin(a2)*r0);
-    x.lineTo(cx+Math.cos(a2)*r1,cy+Math.sin(a2)*r1); x.stroke();}}
-  /* THE STATED SEAT. One open bracket outside the ring, never a fill and never
-     a word. It says which seat the pair put at the head of the queue. */
+   x.strokeStyle=rgba(SEATCOL[b],0.96); x.lineWidth=small?1.5:2.1;
+   x.beginPath(); x.arc(cx,cy,rad,-Math.PI/2,-Math.PI/2+Math.PI*2*(s.touched/s.n));
+   x.stroke();}});
+
+ /* THE GAUGES. Off the body, one per seat, at the seat's own height, so the
+    eye runs straight across from a place in the body to a distance. */
+ var ys=spread(BANDS.map(function(b){return seatY(g,b);}),small?14:20,
+  g.pad+4,H-g.pad-4);
+ BANDS.forEach(function(b,i){
+  var s=byB[b], y=ys[i], x0=g.gx0, gw=g.gw;
+  var xr=x0+gw*cl(s.reach,0,100)/100;
+  var xa=x0+gw*cl(s.at,0,100)/100;
+  /* the reach. dotted, and the only mark a peg moves. */
+  x.strokeStyle=rgba(SEATCOL[b],0.34); x.lineWidth=small?0.8:1;
+  x.setLineDash([1.4,2.6]);
+  x.beginPath(); x.moveTo(x0,y); x.lineTo(xr,y); x.stroke(); x.setLineDash([]);
+  /* the stop at the end of it, so the reach has an end and not a fade */
+  x.strokeStyle=rgba(SEATCOL[b],0.42); x.lineWidth=small?0.9:1.2;
+  x.beginPath(); x.moveTo(xr,y-(small?2.5:3.5)); x.lineTo(xr,y+(small?2.5:3.5)); x.stroke();
+  /* where it stands */
+  x.strokeStyle=rgba(SEATCOL[b],0.88); x.lineWidth=small?1.3:1.8;
+  x.beginPath(); x.moveTo(x0,y); x.lineTo(xa,y); x.stroke();
+  x.strokeStyle=rgba(SEATCOL[b],0.96); x.lineWidth=small?1:1.4;
+  x.beginPath(); x.arc(xa,y,small?1.8:2.5,0,Math.PI*2); x.stroke();
+  /* TODAY. a grey bar under the gauge, as long as the share of the seat that
+     is carrying and as dark as what it holds. two facts, one mark, and it is
+     drawn below the line so it can never be mistaken for the reading. */
+  if(s.carrying>0){
+   var bw=gw*cl(s.carrying/s.n,0,1);
+   x.strokeStyle=rgba('#94908A',cl(0.22+cl(s.load/7,0,1)*0.58,0,0.82));
+   x.lineWidth=small?1.4:2;
+   x.beginPath(); x.moveTo(x0,y+(small?4:5.5)); x.lineTo(x0+bw,y+(small?4:5.5)); x.stroke();}
+  /* THE STATED SEAT. one bracket around its gauge, never a word and never a
+     fill. it says which seat the pair put at the head of the queue. */
   if(v.seatPick===b){
-   x.strokeStyle=rgba(SEATCOL[b],0.95); x.lineWidth=small?1.2:1.7;
-   var rb=rReach+(small?7:11);
-   x.beginPath(); x.arc(cx,cy,rb,-Math.PI*0.80,-Math.PI*0.20); x.stroke();
-   x.beginPath(); x.arc(cx,cy,rb,Math.PI*0.20,Math.PI*0.80); x.stroke();}});
+   x.strokeStyle=rgba(SEATCOL[b],0.95); x.lineWidth=small?1:1.4;
+   var hh=small?6:8;
+   [[x0-4,1],[x0+gw+3,-1]].forEach(function(q){
+    x.beginPath();
+    x.moveTo(q[0]+q[1]*3,y-hh); x.lineTo(q[0],y-hh);
+    x.lineTo(q[0],y+hh); x.lineTo(q[0]+q[1]*3,y+hh); x.stroke();});}});
 }
 
 </script>

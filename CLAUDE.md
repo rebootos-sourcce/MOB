@@ -25,10 +25,10 @@ else may.
 
     ./atuned_src/BUILD.sh              parse checks, div balance, no em dashes
     ./atuned_src/BUILD-engine.sh       and asserts the engine is host free
-    node tests/engine.js               838, headless, 0.1s
+    node tests/engine.js               843, headless, 0.1s
     node tests/functional.js           740, real Chromium
     node tests/collide.js              100, no overlapping nameplates
-    node tests/design.js               103, and it is green now
+    node tests/design.js               105, and it is green now
     node tools/monitor.js             every surface renders, and it logs
 
 Those counts were 279, 262, 40 and 22 in this file for long enough that they

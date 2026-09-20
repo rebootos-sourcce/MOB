@@ -2,11 +2,19 @@
 
 How this product says what it means. One layer above the tooltip.
 
-    Read against      commit 0e63f4b, source.html md5 bc24308b
-    Tree              dirty. The tooltip's migration step 1 is landed and
-                      uncommitted: ui/tip.js is new, MANIFEST and head.html
-                      are edited, source.html is rebuilt. Every number below
-                      is read against that build, not against the commit.
+    Read against      commit 2d3e0c1, source.html md5 0053d406
+    Re-read against   commit 0e63f4b, source.html md5 bc24308b
+    Tree              moving while this was written. The tooltip's migration
+                      step 1 landed as 73a94ac partway through, and the repo
+                      advanced four commits under the harness. Every figure
+                      below was taken on the earlier build and re-taken on
+                      the later one. EVERY ONE REPRODUCED EXACTLY: the
+                      validation, all ten surface counts, 637 distinct
+                      carriers, the per kind split, the coverage scan, the
+                      six ICP walks and the four live spot checks. Where a
+                      number here differs from the tooltip audit's, it is
+                      because the audit ran three commits earlier, not
+                      because the harness is unstable.
     Measured with     /opt/pw-browsers/chromium-1194, 1600x1000 and 390x844
     Profiles          Lance for the walk, the six ICP entries for the session
     Prototype         proto/info/info.html, runnable, no network
@@ -813,10 +821,13 @@ confusion, held next to their somatic self report, and the privacy rulings
 here are structural. I have built the counter in the prototype and I have not
 proposed persisting it. That is a boundary question and it is not mine.
 
-**7. `ui/tip.js` is uncommitted in the working tree.** MANIFEST, head.html and
-source.html are edited and not committed. Every number in this document is
-read against that build. If that work is reverted, steps 1 and 2 have nothing
-to attach to and the demand table is unchanged but the route table gets worse.
+**7. Nothing, and this one answered itself.** When I started, `ui/tip.js` was
+uncommitted and I was going to ask whether it was landing. It landed as
+`73a94ac` while this was being written, so steps 1 and 2 have something to
+attach to. I have left the question in because the answer is the useful part:
+the harness was re-run against the new build and every figure held, which is
+the only reason I can hand you numbers from a tree that moved four commits
+underneath them.
 Whose is it, and is it landing?
 
 ---
