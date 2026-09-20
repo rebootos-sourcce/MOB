@@ -511,7 +511,15 @@ verbatim, with the fourth one rewritten to point at the cells.
                                  against 2.6.
     shot at                      1600 by 1000 and 390 by 844, on Marcus,
                                  Gordon, Sofia and a first ever open, each
-                                 before and after a quarter of release work
+                                 before and after six releases. Six and not
+                                 twelve, for the reason in section 12.
+
+Marcus over six releases, which is the loop this page exists to report:
+
+    limiters      99  ->  53
+    seats         every one of the seven up between 7 and 11 points
+    masks         Child 11 -> 1, Teen 13 -> 1, Ideological 9 -> 1
+    an aim        95 per cent of the weight at its seat gone since it was set
 
 ---
 
@@ -537,6 +545,20 @@ dashboard never hit it because it stretches its y axis and crops the legs off.
 **Two of the six masks are one reading under two names,** found by drawing six
 gauges and looking at them rather than by reading `canon.js`. Preteen and
 Professional carry the same seat pair and can never differ.
+
+**A fully released field reads as a field nobody has entered, and the worked
+screenshot is what found it.** The shot harness ran twelve releases on Marcus
+and came back with the first ever open screen. The release drains the nine
+axes rather than the addresses, so twelve runs take a lighter profile to charge
+nought, and `unread` at `compute.js:171` is
+`loaded.length===0 && measured===0 && under===0`. **The success condition of
+the whole product returns a person to the state of never having arrived.** It
+is bounded in the shipping app, because `measured` counts the intake laws
+answered on `CURP` and anybody who has done the intake stays read, so it bites
+only somebody who wrote stories, never answered a law, and then cleared
+everything. It is not bounded in any prototype that loads a roster profile
+straight into `S`, which is all of them. The shots run six releases now and the
+finding is here rather than in a comment.
 
 **And one thing that was checked and was fine.** The ceiling arithmetic reads
 `S` and writes nothing. `probe.js` run 0 asserts that a second ceiling read
