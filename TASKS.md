@@ -21,6 +21,79 @@ reopens. Every seat adds its own.
 
 ---
 
+## 0k3. DELIVERED 20 SEPTEMBER. THE AVATAR DASHBOARD AND THE KUNDALINI RISE.
+
+- [x] **KU4. The rise is computed off the engine and nothing else.** Each seat
+      is the mean of how open its addresses are, and the rise is those seven
+      multiplied in order, because a channel is in series: a clear crown over
+      a shut solar plexus does not conduct. The engine already calls that
+      quantity `open` and already carries the comment that an address with the
+      opposite installed does not merely read zero, it conducts.
+- [x] **KU5. Two thresholds were tried and the panel refused both.** A gate at
+      the product's own carrying line put seven of ten people at full
+      conduction while carrying up to 99 addresses. Tightening it named the
+      root for nine of ten, because a series channel always blames the first
+      seat. The shipped form has no threshold in it, and both failures are
+      printed in the run rather than deleted.
+- [x] **KU6. The blocked seat is the lowest conductor, not the first under a
+      line,** which is what makes it informative: six of the seven seats get
+      named across the panel. It names the seat, what it conducts, how many
+      addresses are holding, the heaviest one by name and weight, and then
+      prices both levers against each other.
+- [x] **KU7. 985 of 1000 can be drawn a rise,** spread 5 to 99 with a median
+      of 33. A blank field returns 54 through this arithmetic, so the bar is
+      gated on the unread flag rather than trusted.
+- [x] **KU8. Twelve releases move the rise a median of 31 points and
+      coherence a median of 2.9.** 530 of 1000 can run every release the
+      product will ever offer and not move the coherence figure they were
+      shown. On coherence the laws are the lever; on the rise the release is,
+      for 985 of 1000. The rise is the channel that reports the work the
+      product is actually built around.
+- [x] **KU9. A hard month drops it a median of 9 and the baseline held for
+      1000 of 1000,** so it falls as well as rises and the from mark survives.
+- [ ] **KU10. The named seat changes a median of 3 times over twelve releases
+      and a worst of 10.** Correct arithmetic, unusable as a habit. The likely
+      fix is that a named seat holds until it clears rather than until
+      something overtakes it by a fraction. Not built, and it wants measuring.
+- [ ] **KU11. `avatar.rise0` is what the schema needs:** seven numbers keyed
+      by seat and a date, written once the first time a reading is not unread,
+      refused by name at the boundary in the tier style, an older profile
+      without it drawing the bar and losing only the from mark. Additive, no
+      version bump proposed.
+- [x] **TG6. TG4 overstated it and the systems seat corrected me.** A field
+      keyed by seat is still free text if its value is free text. What it
+      endorses is a protocol keyed by seat whose values are practice keys
+      refused against the practice table, nothing typed anywhere. The job no
+      existing family does is routing a named seat to a chosen set of
+      practices, and the rise names exactly one seat at a time, so it is the
+      first field where a person sets what happens rather than answering what
+      is.
+- [x] **TG7. It cannot be called tags in the schema.** The glossary defines a
+      tag as the naming that locks the experience in, and two more entries
+      build on that. His word stays in conversation and the field is named for
+      its job.
+- [x] **AV5. The prototype carried a byte identical copy of the engine.** The
+      funnel had the same thing and it was replaced for the same reason: a
+      copy goes stale in silence and the prototype then measures a build
+      nobody ships. It reads the real file now and the built page still makes
+      no request at all.
+- [?] **KU12. The normaliser is his.** The engine's ceiling means clearing
+      alone tops a seat out at 85 of a hundred and only the installed opposite
+      finishes it. That is a claim about what reconnecting the kundalini
+      means, not an implementation detail.
+- [?] **KU13. `Root_08_Unnamed` carries no fetter, so the root can never fully
+      conduct and the rise can never read 100 for anybody.** Two fully
+      installed people read 99. Already on his list, and this is a second
+      reason to settle it.
+- [?] **KU14. Does the rise replace coherence as the headline anywhere
+      else?** They answer to different levers, and a person shown both will
+      ask which one is them.
+- [?] **KU15. May a practitioner see the rise?** It is engine derived so it
+      qualifies under the existing rule, but one number about a whole channel
+      is a different thing from a list of saboteurs.
+
+---
+
 ## 0k2. DELIVERED 20 SEPTEMBER. THE CHAKRA BAND STUDY, AND IT LOSES.
 
 He asked to see it first, so this is a study and nothing landed. The

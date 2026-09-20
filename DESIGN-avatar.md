@@ -14,7 +14,13 @@ And, mid pass, the sharpening that changed what this document had to be:
 An avatar a person reads is a portrait. An avatar a person turns is an
 instrument. Everything below is built to the second sentence.
 
-Three runnable prototypes sit in `proto/avatar/`. They load the product's own
+**PART TWO is at the foot of this file** and it is where the current ruling
+lives: the app opens on the avatar, the avatar is a dashboard, and the kundalini
+rise is its progress bar. Everything above Part Two stands unless Part Two says
+it does not, and Part Two says so in one place only, section 16.
+
+Three runnable prototypes sit in `proto/avatar/`, and a fourth,
+`proto/avatar/dash.html`, is Part Two's. They load the product's own
 `engine.js` and compute live, so every number in them is the arithmetic and not
 a stored frame. Press them.
 
@@ -946,3 +952,575 @@ beach umbrella, where the loudest mark on the figure carried a count of runs.
 The lantern's first light was drawn as stacked rings at low alpha and read as a
 dartboard, which is what forced the one argued exception to ring not fill in
 this document.
+
+---
+---
+
+# PART TWO. THE DASHBOARD, AND THE KUNDALINI AS THE BAR
+
+Added 20 September, after his ruling recorded at `TASKS.md` 0o. Nothing above
+this line was deleted. Sections 12 and 13 carry rulings that still stand and
+section 5's honesty argument is the spine of everything below.
+
+Read off the build at commit `4713ab6`, `engine.js` md5
+`676857a14fe486609a52be230bc5a148`, not dirty in the working tree.
+`node tests/engine.js` on it: **1168 passed, 0 failed.**
+
+    proto/avatar/rise.js         the derivation, 190 lines, no browser in it
+    proto/avatar/risesim.js      the ten runs against the weighted thousand
+    proto/avatar/dash.src.html   the surface, with its two script tags
+    proto/avatar/build-dash.js   -> dash.html, one file, no siblings
+    proto/avatar/shots-dash.js   shoots and measures in the same run
+    proto/avatar/dash.html       553 KB. Open it. It needs nothing beside it.
+
+---
+
+## 16. HIS RULING, AND WHAT IT REVERSES
+
+> "What you're improving is the conductivity of the kundalini. That's our
+> primary goal with the avatar, to reconnect people's kundalini. So we should
+> have progress bars of the kundalini snaking around the chakras, and we use
+> that as a progress bar of how a person is doing. Like where their starting
+> point is and how it's rising. Whether it's blocked or open, and where it's
+> blocked."
+
+That is the clearest statement of what the avatar is for this project has, and
+it is the spine of Part Two.
+
+**It answers question 1 of section 10.** The avatar is the surface the app
+opens on. That reverses the ruling of 19 September, which itself reversed
+Summary for the Field. The lesson that ruling taught is not reversed and is
+section 22: whatever renders there renders to somebody who has entered nothing.
+
+**It answers question 3.** Both, and the split is now exact. The rise is
+today's reading and it falls on a bad month. The mark where a person started
+is a dated fact and it does not move. Nothing is taken away, because the bar
+slides back toward a mark that stays where it was.
+
+**It does not answer question 2,** which is whether the avatar is a body, a
+light or a diagram. Part Two is drawn on the armature's coordinates, since
+`PMBANDS` is where the seats already live, but the figure here is the channel
+and the seven seats rather than a body. That is a narrowing of the armature and
+not a fourth option, and it is still his to look at.
+
+---
+
+## 17. THE RISE, COMPUTED
+
+### The glossary is the specification
+
+> **Kundalini.** The stored vital energy at the base of the spine. Rises root
+> to crown when enough nodes are cleared for the channel to conduct.
+
+Three things are needed and the engine already has all three.
+
+**One. A conductivity per address.** `compute()` writes it at
+`atuned_src/engine/compute.js:61`:
+
+    n.open = clamp(1 - n.sq/10 + n.pole/26, 0, 1.18)
+
+with the engine's own comment beside it: *"an address with the opposite in does
+not merely read zero, it conducts."* That is conductivity, the engine already
+calls it `open`, and open or blocked is his own word for a seat. Nothing was
+invented to get it.
+
+**Two. A seat.** Each of the seated addresses carries `n.b`, one of the seven
+in `BANDS`. The four field addresses, Sol Star and Stellar Gateway above the
+crown and Earth Star and Gaia Gateway below the root, carry `Field-Above` and
+`Field-Below`. They are not on the channel and the rise never reads them.
+
+**Three. A way to turn seven conductivities into one height.** This is the only
+part that was a decision, and it was measured rather than chosen.
+
+### Two wrong answers, and they are in the file because they had to be run
+
+**A threshold per seat, at the product's own carrying line.** A seat conducts
+when its mean conductivity clears what an address sitting exactly on the
+display line would have, `1 - 4/10 = 0.60`, where 4 is the carrying line at
+`compute.js:64`. Measured on the roster, **seven of ten read 100 per cent while
+carrying between 52 and 99 addresses.** Marcus carries 99 and the bar said his
+channel was fully open. That is the same class of defect as the guaranteed all
+clear at `summary.js:273` in section 1, arrived at from the other direction.
+
+**A stricter threshold.** At 0.95, nine of ten read between 5 and 14 per cent
+and **every one of them was blocked at the root**, because a channel in series
+always blames the first seat. A bar pinned near zero for everybody, naming the
+same seat for everybody, carries no reading at all.
+
+The sweep is printed in `risesim.js` run 9b so both failures stay visible.
+
+### The answer, and there is no threshold in it
+
+    t(seat) = clamp( mean(n.open at that seat) / 1.18, 0, 1 )
+    cum(i)  = t(seat 1) x ... x t(seat i)          root first
+    reach   = cum(1) + cum(2) + ... + cum(7)       0 to 7 seats
+    pct     = round(100 x reach / 7)
+
+Every part is read off the engine. **1.18 is the clamp ceiling on `n.open` at
+`compute.js:61`,** so a seat cleared to nothing with no opposite installed
+transmits 1/1.18 = 0.847 and only a seat with the opposite installed transmits
+1.00. That is the engine's own claim, that clearing takes an address to zero
+and the installed pole is what makes it conduct, and the normaliser honours it
+instead of flattening it. Replacing 1.18 with 1.00 was swept: the median rise
+goes from 33 to 53 and the number of the panel reading 95 or over goes from 15
+to 128, which is the saturation the whole design is avoiding.
+
+**The product is what makes it a channel.** A shut root throttles everything
+above it, which is his model exactly. A bar that averaged the seven would tell
+a person with a clear crown over a blocked solar plexus that the channel
+conducts.
+
+### The functions used, named
+
+| Read | Where it lives | What it gives the rise |
+|---|---|---|
+| `compute()` | `engine/compute.js:43` | `n.open`, `n.sq`, `n.pole`, `n.held`, `n.susc` per address, and `r.carrying` already sorted heaviest first |
+| `n.open` | `compute.js:61` | the conductivity, and the engine's own word for it |
+| the carrying line, 4 | `compute.js:64` | the first threshold tried, and why it was dropped |
+| the clamp ceiling, 1.18 | `compute.js:61` | the normaliser |
+| `BANDS` | `engine/core.js` | the seven seats, root to crown, read by name and never by position |
+| `bandIg(seat)` | `engine/core.js:197` | the integrity local to a seat, which is one of the two levers |
+| `SI`, filtered on `.b` | `engine/data` | which of the twenty one laws carry a seat |
+| `PMBANDS` | `engine/data/practice.js:105` | the seat heights and radii, the same space the pain map uses |
+| `tierOf(CQ)` | `engine/data/canon.js` | the summary block's reading |
+| `PRACTICE` | `engine/data/practice.js` | the seventeen a protocol is chosen from |
+| `ui/release.js:88` | the release arithmetic | ported verbatim into both levers, run on local copies |
+
+**`cqCeiling` is not used and could not be.** It is still absent from
+`engine/export.js`, as section 1 recorded, so the headless probe cannot reach
+it. The rise's own reach is built the way `cqCeiling` is built and not by
+calling it: every charge at zero, the laws and installed opposites as they
+stand, held zero by construction, nothing mutated. That defect is still open
+and is not mine to fix this pass.
+
+---
+
+## 18. WHERE IT IS BLOCKED, WHICH IS THE USEFUL HALF
+
+**The blocked seat is the seat with the lowest transmission, not the first seat
+under a line.** That is the change that makes the readout carry information.
+Measured on the weighted thousand, six of the seven seats are named: the solar
+plexus for 443, the throat for 259, the sacral for 207, the root for 50, the
+heart for 35 and the crown for 6. The third eye is never named, which is
+section 5's finding about the release queue never reaching it, arriving again
+from a different direction.
+
+**The address.** `compute()` already sorted `r.carrying` heaviest first, so the
+blockage has a name, a plexus, a fetter and a weight without another sort.
+Marcus, at arrival: the throat, conducting 74 out of a hundred, twelve
+addresses holding something there, the heaviest Deceit at the cervical plexus
+at a weight of 2.1. Gordon: the throat, 26 out of a hundred, the heaviest
+Deceit at 7.9.
+
+**The direction out, and the arithmetic has exactly two.** `n.sq` is held minus
+the installed opposite, and held is charge x susceptibility x
+(1 - `bandIg(seat)`/10 x 0.42). So a seat's transmission moves on the charge,
+which a release empties, and on the laws carrying that seat, which nothing but
+conduct moves. Both are computed by running the engine's own bodies on local
+copies of `S.charge` and `S.replace`. Nothing in `S` is touched, and the file
+asserts it.
+
+**Both levers carry what they cost, because they are not the same size of act.**
+A quarter of release work at one seat against one change of conduct is not a
+fair race, and the sentence names the work beside the number rather than
+pretending it is. Marcus: twelve runs at the throat takes it from 74 to 86,
+two points on transparency takes it to 74. Gordon: 26 to 87, against 28.
+
+### The finding this surfaced, and it is the argument for the whole design
+
+**On coherence the laws are the lever. On the rise the release is the lever.**
+
+Section 5 measured that a quarter of releases moves Marcus 1.3 points of
+coherence and two points on three laws moves him 3.3, and concluded that the
+release, the thing the product is built around, is not his lever. That holds and
+it is still true.
+
+The rise reverses it, and the reason is arithmetic rather than taste. CQ is
+(Intention x Integrity) / Resistance and Integrity is the twenty one laws, so
+coherence answers to conduct. The rise reads `n.open`, which answers to `sq`,
+which is charge. Measured on the thousand:
+
+    coherence headroom   median 2.2 points of 100   530 of 1000 under 3 points
+    rise headroom        median 28 points of 100    low 0, high 49
+
+**530 of 1000 can run every release the product will ever offer them and not
+move the number they were shown. The same people have a median of 28 points of
+rise waiting.** And at the blocked seat the release is the bigger lever for 985
+of 1000, against 0 for the law.
+
+So the product's core loop finally has a channel that reports it. That is not a
+reason to build the rise; it is the reason the rise is the right primary
+measure for this product specifically, and it is computed rather than argued.
+
+---
+
+## 19. THE STARTING POINT, AND WHAT THE SCHEMA NEEDS
+
+**Nothing in the profile stores a first reading and the rise cannot be shown
+without one.** Confirmed on this build: `blankProfile()` carries
+`avatar:{built,at,reviewedAt,pairs}` and `meter:{lines,unique,firsts,first,last}`
+and there is no baseline of any kind in either.
+
+### What has to be stored
+
+    avatar: {
+      built, at, reviewedAt, pairs,           /* unchanged */
+      rise0: {                                /* NEW, and write once */
+        at:   '<ISO date>',
+        open: { Root:0.00, Sacral:0.00, Solar:0.00, Heart:0.00,
+                Throat:0.00, '3rd Eye':0.00, Crown:0.00 }
+      }
+    }
+
+**Seven numbers and a date, and nothing derived from them.** The percentage,
+the seat that was blocked at the start and the delta all read out of those
+seven through the same function that reads today's, so there is one truth and
+it is read twice. Storing the percentage as well would be two truths about one
+reading, which is the failure this repository already records under storing a
+derived value.
+
+**Keyed by seat name, never by position.** The project's own rule. A list of
+seven would tie the baseline to the order of `BANDS`, and a baseline written
+before a reorder would read as a different person's.
+
+### Why a stored derived value is the right call here, said plainly
+
+The rule is that a derived value is not stored. `rise0` is derived, so it needs
+its exemption named rather than assumed. **It is not derived from current state.
+It is derived from state that no longer exists.** That makes it the same class
+of object as `meter.firsts`, which is already in the schema and already
+append only: a dated fact about the past that cannot be recomputed because the
+past is gone. It is written once, never recomputed and never updated, and if it
+is ever rewritten the product has lost the only thing it was for.
+
+### When it is written
+
+**The first time `compute()` returns `unread:false`.** Not on arrival. A
+baseline taken from a blank profile is a baseline of the defaults: measured, a
+field with nothing in it returns 54 per cent through this arithmetic, so a
+baseline stamped there would tell a person they had fallen 20 points by
+entering their first story. `unread` is already computed and already the guard
+both reading surfaces use.
+
+### How it validates at the boundary
+
+Refuse by name, never clamp, in the style `plan.tier` and `seed.axes` already
+use:
+
+    avatar.rise0 is not an object
+    avatar.rise0.at is not a date
+    avatar.rise0.open is not an object
+    avatar.rise0.open.<name> is not a seat this build knows: <name>
+    avatar.rise0.open.Throat is 3, outside 0 to 1.18
+
+The ceiling is 1.18 because that is the clamp on `n.open`, so the boundary and
+the arithmetic agree on one number rather than each carrying its own. A key
+that is not one of the seven is refused by name rather than dropped, which is
+the `plan` pattern and not the old `rituals` pattern. A missing seat is refused
+rather than filled, because a baseline missing a seat is not an older baseline,
+it is a broken one: six of seven multiplied together is a different reading.
+
+### An older profile with no baseline
+
+**It draws.** The bar is today's rise and needs no baseline at all. What it
+cannot draw is the mark where the person started, and the surface says so
+rather than drawing a rise from nothing. That is the same pattern the ladder
+already uses when there is no birth date: the read carries `scaled:false` and
+the surface says whose numbers it is showing. `avatar.rise0` absent is an older
+profile and is filled from the blank as `null`, which is the standing rule.
+
+### The version bump
+
+**It does not need one, and it is not mine either way.** The field is additive,
+a v1 or v2 record with no `rise0` reads as an older record and is filled from
+the blank, and nothing that exists breaks. `SCHEMA_V` is already 2 on this
+build. Whether schema v2 is settled is the cross compatibility contract with
+SOURCE and it is recorded as his in `DECISIONS.md`. **This recommendation does
+not need it and does not touch it.**
+
+---
+
+## 20. THE TAGS
+
+> "being able to edit and add tags, so the tags can set up my protocol, and we
+> need to have the tags set for each major chakra."
+
+### Is this the shape the tag review endorsed
+
+**The slot is. The value is not yet, and saying otherwise would quietly reopen
+the free text version.**
+
+`DESIGN-tags.md` said no to free text tags on measured grounds and yes to a
+closed field validated against a table. `TASKS.md` TG4 reads his sentence as
+that shape on the grounds that seven chakras is a closed set of seven. **Seven
+chakras is a closed set of seven slots.** It says nothing about what goes in a
+slot, and the slot was never the objection. The objection was a person typing
+anything they like into a field the practitioner model would then have to hide,
+and a field keyed by seat is still free text if its value is free text.
+
+So the endorsement is conditional and the condition is the value.
+
+### The shape I do endorse
+
+    avatar.protocol: {
+      Root:      [ <practice key>, ... ],
+      Sacral:    [ ... ],  Solar: [ ... ],  Heart: [ ... ],
+      Throat:    [ ... ],  '3rd Eye': [ ... ],  Crown: [ ... ]
+    }
+
+Keyed by seat name. Each value a list of keys out of `PRACTICE`, which is
+seventeen entries with identity keys, four tracks and three tiers, already in
+the schema and already used this way: `ritual.steps` is a list of practice
+identity keys and is validated against them at `schema.js` today. Every key
+refused by name against the table, the list capped, and no field anywhere in it
+accepts typing. The prototype's protocol block writes only these.
+
+### The job it does that no existing family does
+
+**Nothing routes a named seat to a chosen set of practices.** Section 4's table
+already says so in the row psyche to ritual: *"Partly. The practices exist and
+are seated. Nothing routes a named pattern to one."* The rise makes that gap
+concrete, because the rise names exactly one seat at a time and that seat is
+the thing to work. `ritFor` at `ui/ritual.js` picks the lightest practice in the
+track the darkest seat maps to, which is the product choosing. `avatar.protocol`
+is the person choosing, once, per seat, and it is the first field in the product
+where a person sets what happens rather than answering what is. That is the job,
+and TG5 is right that it earns the field.
+
+### The word
+
+**It cannot be called tags in the schema.** `GLOSS` defines a tag as *"the
+moment a charged experience is named and coded at a node address. The name locks
+the experience in."* Two more entries are built on that definition. In this
+product a tag is the injury, and under one word per concept a field called tags
+would be one name for two concepts where the two are opposites. His word stays
+in the conversation, where everyone knows what he means. The field is named for
+what it does. The prototype calls it Protocol on the surface and
+`avatar.protocol` in the schema.
+
+### The price, which is small now and was not before
+
+`DESIGN-tags.md` measured that a tag array passed `validateProfile` with no
+schema change at all, because `rituals` and `story.entries` were the two bags
+the boundary did not look in. **That has been fixed since.** `RIT_KEYS`,
+`vEntry` and `ENT_KEYS` are in `schema.js` on this build and both bags are
+typed. So the field can now be added in a place where it will be checked, which
+was the condition that recommendation set.
+
+**Additive, and no version bump.** An older profile with no `avatar.protocol` is
+an older profile and is filled from the blank.
+
+---
+
+## 21. THE DASHBOARD. READING ACROSS, NOT DOWN
+
+AV2: a dashboard that shows one surface's numbers is that surface with a new
+name. What the prototype reads, and where each one comes from:
+
+| Block | The read | The tool it belongs to |
+|---|---|---|
+| The rise, and the seven seats | `n.open` over `BANDS` | the Field |
+| Where it stops | `r.carrying` filtered to the seat | the Field |
+| The two levers | `ui/release.js:88` and `bandIg` over `SI` | Release, and the Intake's laws |
+| Where it gets with nothing held | the reach, built like `cqCeiling` | Release |
+| Summary | `tierOf(r.CQ)`, name, state and definition | Summary |
+| Ritual | `PRACTICE` filtered to the blocked seat's track | Ritual |
+| What is improving | seats clear, the rise since the baseline, addresses a release has reached | Release and the meter |
+| Protocol | `PRACTICE` keys per seat | Ritual |
+
+Seven of the nine tabs are read. Analytics and Knowledge are not, and that is a
+gap rather than a decision: Analytics has `seriesRead` and `spanOf` and a
+dashboard should carry a trend off them.
+
+**Summary and ritual are the sticky parts, AV3.** They sit directly under the
+reading and above the record, they are the only two doors on the surface, and
+each is a door into its own page. The label never changes and the value under
+it carries the state, which is the standing rule: an earlier cut put the tier
+name where the label goes, so the slot changed identity every time the data
+moved.
+
+**What is improving, AV4, and not what is wrong.** Three facts and every one of
+them is either a dated fact or a comparison against a mark that cannot move:
+seats clear of what they held, points of rise since the baseline, addresses a
+release has reached. The block shows only the ones that have something in them.
+An earlier cut printed three zeroes to somebody on the morning they arrived,
+which is the wall of absence the ritual heat map already learned about, drawn in
+type instead of squares.
+
+---
+
+## 22. THE EMPTY STATE, WHICH IS THE DESIGN
+
+The ruling of 19 September taught that whatever renders on the opening surface
+renders to somebody who has entered nothing. Opening on the avatar does not
+retire that, it inherits it.
+
+**Measured: a field with nothing in it returns 54 per cent through this
+arithmetic,** because every address reads `sq` 0 and `pole` 0, so every seat
+transmits 0.847 and the product of seven is not small. Drawn, that is a claim of
+54 points to a person who has typed nothing.
+
+**So the bar does not draw on `unread`.** `compute()` already returns it. Undrawn
+it is honest; drawn it is the largest lie on the screen. 15 of the weighted
+thousand read as unread at arrival and all 15 see this state.
+
+**The channel and the seven seats still draw.** A person has a spine and seven
+seats before this product touches them. What they do not have yet is a rise. An
+earlier cut returned early when there was no reading and left a bare vertical
+line in a tall card while the copy beside it said the seven seats were drawn,
+which is a caption asserting something the picture does not show.
+
+**The card that says where it stops becomes the card that says where to start,**
+carrying the four doors verbatim from `component.js:410`. Summary reads "No
+reading yet, it opens once something is entered" and ritual reads "Nothing
+saved yet". No number anywhere on the surface reads zero.
+
+---
+
+## 23. THE TEN RUNS
+
+`node proto/avatar/risesim.js`. The panel is the weighted thousand from
+`PANEL-ritual-1000.md`, lifted verbatim out of `proto/ritual/losssim.js:93`,
+nine reference profiles carrying weights that sum to 1000, at seed 20260920.
+Nothing reweights it and the weights are printed in run 0.
+
+**One coefficient is mine,** `JIT`, the per person charge jitter that turns nine
+profiles into a thousand distinct fields. It is swept 0 to 2.0 in run 9 and
+every headline is reported at 0 as well, which is the bare weighted panel with
+none of my invention in it.
+
+**Run 0 is the self check and the report exits non zero if it fails.** Five
+assertions against answers the product already states: the blank profile
+validates, `plan.tier` platinum is refused by name, Rosa carries nothing, the
+most loaded of the nine carries 107, and the rise does not read state left by
+another profile. That last one is there because a probe in this repository once
+read shared state after another run and reported a whole lane as empty.
+
+| Run | What it measured | What it found |
+|---|---|---|
+| 1 | how many can be drawn a rise at all | **985 of 1000.** 15 read as nothing entered. A blank field returns 54 per cent, so the bar is gated on `unread`. |
+| 2 | the spread at arrival | low 5, median 33, high 99. **1 of 1000 at or under 5 per cent, 15 at or over 95.** By twenties: 87, 488, 270, 140, 15. |
+| 3 | where it is blocked | Solar 443, Throat 259, Sacral 207, Root 50, Heart 35, Crown 6, third eye none. **Six of seven seats named, the commonest at 44 per cent.** |
+| 4 | does it move for somebody doing the work | twelve releases move the rise a median of **31 points** and coherence a median of **2.9**. 985 of 1000 see the rise move 5 points or more. **468 of 1000 see coherence move under 2 points over the same quarter.** |
+| 5 | does it stay still for somebody who is not | **1000 of 1000 read exactly the same number.** The rise has no clock in it. |
+| 6 | a hard month, every axis up 2.2 | the rise fell a median of **9 points**, worst 15. **The baseline mark did not move for 1000 of 1000.** |
+| 7 | whose lever is it | rise headroom median **28** of 100, coherence headroom median **2.2**. 530 of 1000 have under 3 points of coherence to gain from every release the product will ever offer them. |
+| 8 | the direction out at the blocked seat | the release is the bigger lever for **985 of 1000**, the seat's weakest law for 0. The laws named: Accountability 228, Courage 180, Transparency 168, Temperance 144, Truth 91, Detachment 63, and six more. |
+| 9 | the sweep | median rise 32 at jitter 0 and 34 at 2.0. The normaliser at 1.00 instead of 1.18 moves the median to 53 and saturates 128 of 1000. |
+| 10 | is the blocked seat stable | the named seat changed a median of **3 times** over twelve releases, worst 10, best 0. |
+
+**Run 10 is the one with a finding I am not comfortable with.** A worst case of
+ten changes over twelve runs means the surface named a different seat almost
+every week for somebody. That is correct arithmetic, since clearing one seat
+makes the next one the constraint, and it is still a readout a person cannot
+build a habit on. The median of 3 is right. The tail is not, and the fix is
+probably that the named seat holds until the seat actually clears rather than
+until another seat overtakes it by a fraction. Not built, and it wants a
+measurement before it is.
+
+---
+
+## 24. THE HONEST PART
+
+The seat to plexus correspondence and the seven count are a modern Western
+reading. The source traditions give five, six, eight and more, and the welding
+of seats to nerve plexuses dates to 1927. `GLOSS` already says this under
+Chakra, in those words. A frequency in hertz for a seat is not a measured
+quantity and the rise is not one either. Kundalini is a model.
+
+Every number on this surface is computed from what the engine holds about a
+field, and the arithmetic is the engine's own. A consistent internal system
+built on a model is worth having, and it is not a measurement. This product
+already says exactly that about the aura and the biophoton field, and it says it
+here in the same voice, once, on the surface itself and not only in this
+document.
+
+---
+
+## 25. WHAT IS HIS AND WHAT IS MINE
+
+**His.**
+
+1. **The normaliser, if he wants it argued.** 1.18 says a seat is not fully
+   conducting until the coherent opposite is installed, so clearing alone tops
+   out at 85 of a hundred. That is the engine's claim and I have kept it, and it
+   means the bar cannot read 100 on clearing alone. It is a claim about what
+   reconnecting the kundalini means and it should be his.
+2. **`Root_08_Unnamed`.** It carries no fetter, so its conductivity is fixed at
+   1.000 where every other root address can reach 1.180. **The root can
+   therefore never transmit 1.00 and the rise can never read 100 for anybody.**
+   Measured: Rosa and Lance, both fully installed, read 99. It is already on his
+   list in `CLAUDE.md` and this is a second reason to settle it.
+3. **Schema v2.** Untouched, and nothing here needs it.
+4. **Whether the rise replaces coherence as the headline number anywhere else.**
+   Section 18 says the two answer to different levers. A person shown both will
+   ask which one is them, and the product should have one sentence ready.
+5. **Whether the practitioner may see the rise.** `leadSees` carries five
+   families and the rise is not one of them. It is engine derived, so it would
+   qualify on the existing rule, but it is a single number about a person's
+   whole channel and that is a different thing from a saboteur list.
+
+**Mine, when the above is ruled.**
+
+- The blocked seat holding until the seat clears, run 10's tail.
+- Analytics and Knowledge are not read by the dashboard and should be.
+- `cqCeiling` and `cqHeadroom` still absent from `engine/export.js`, section 1.
+
+---
+
+## 26. RECORD OF THIS PASS
+
+Six defects, and four of them were found by driving the page or the panel
+rather than by reading either.
+
+**The first threshold was wrong and only the panel said so.** Seven of ten read
+100 per cent while carrying up to 99 addresses. It looked right in the code and
+it was a full progress bar for a person who had done nothing.
+
+**The second threshold was wrong in the other direction** and named the root for
+nine of ten, which reads as a working feature until you notice the answer never
+changes.
+
+**The empty state drew a bare line while the copy said the seats were drawn.**
+Found by shooting the empty profile and looking, which is the whole argument for
+the instruction to look at the images.
+
+**A CSS selector written as `.rise b` matched every seat value in the same
+card,** and the narrow media query redeclared it after the seat rule, so under
+900 pixels the seven seat numbers rendered at 44 pixels and overran their
+column. Found at 390 and invisible at 1600. It is the same class of defect as a
+label that changes identity with the data: a selector that matches more than the
+slot it was written for.
+
+**The engine's top level bindings are not on `window`.** `PAL` is declared with
+`const`, so `window.PAL` is undefined and `var PAL` in a later script throws on
+a name already taken. The first cut of the page did both and booted to an empty
+select. Worth knowing for anything else that loads `engine.js` beside its own
+script.
+
+**Three zeroes on the morning somebody arrives.** The improving block counted
+nothing three times rather than saying what it was waiting for.
+
+**And one thing that was checked and was fine.** The lever probe runs the
+release arithmetic twelve times and the law substitution once, and both could
+have written into `S`. They run on local copies and the file asserts the seat is
+unchanged afterward, on every profile in the roster. That assertion exists
+because section 15 records two probes in this repository that read shared state
+and reported a defect that was their own.
+
+### Measured on the delivered page
+
+    outbound requests            0, at 1600 and at 390, on four profiles
+                                 counted by wrapping fetch, XMLHttpRequest,
+                                 Image, WebSocket, EventSource and sendBeacon
+                                 before any other script, and by a
+                                 PerformanceObserver on every resource
+    page errors                  0
+    simultaneous choices         10, of which 4 are the review controls that
+                                 would not ship. Six on the surface itself.
+    touch targets under 44       0
+    hero redraw                  0.20 ms median, 0.40 ms at the 95th, against
+                                 a 16.7 ms frame. 1.2 per cent of the budget.
+    shot at                      1600 by 1000 and 390 by 844, on Marcus,
+                                 Gordon, Sofia and a first ever open, each
+                                 before and after a quarter of release work

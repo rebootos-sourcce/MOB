@@ -1,11 +1,18 @@
 # QUESTIONS FOR THE OWNER
 
 Every line in `TASKS.md` marked `[?]`, which is the mark for a question
-waiting on his ruling. 101 of them, across 28 sections.
-Read off commit 459e42b on 2026-09-20. Nothing here is typed by hand: answer a
+waiting on his ruling. 105 of them, across 29 sections.
+Read off commit 4713ab6 on 2026-09-20. Nothing here is typed by hand: answer a
 question in TASKS.md and it leaves this file on the next run.
 
 The same list is in `QUESTIONS.html`, which opens in a browser.
+
+## 0k3. DELIVERED 20 SEPTEMBER. THE AVATAR DASHBOARD AND THE KUNDALINI RISE.
+
+- [ ] **KU12. The normaliser is his.** The engine's ceiling means clearing alone tops a seat out at 85 of a hundred and only the installed opposite finishes it. That is a claim about what reconnecting the kundalini means, not an implementation detail.
+- [ ] **KU13. `Root_08_Unnamed` carries no fetter, so the root can never fully conduct and the rise can never read 100 for anybody.** Two fully installed people read 99. Already on his list, and this is a second reason to settle it.
+- [ ] **KU14. Does the rise replace coherence as the headline anywhere else?** They answer to different levers, and a person shown both will ask which one is them.
+- [ ] **KU15. May a practitioner see the rise?** It is engine derived so it qualifies under the existing rule, but one number about a whole channel is a different thing from a list of saboteurs.
 
 ## 0k2. DELIVERED 20 SEPTEMBER. THE CHAKRA BAND STUDY, AND IT LOSES.
 

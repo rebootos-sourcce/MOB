@@ -56,14 +56,23 @@ select{background:var(--panel-2);border:1px solid var(--line2);border-radius:10p
 .note{font-size:13px;color:var(--dim);line-height:1.6}
 
 /* THE DASHBOARD. Figure left, blocks right. One column under 900. */
-.dash{display:grid;grid-template-columns:minmax(300px,420px) 1fr;gap:18px;align-items:start}
+/* THE FIGURE STAYS IN VIEW. The avatar is the surface, not a header on it, so
+   it is sticky: the blocks scroll past it and it is never off screen. An
+   earlier cut left a tall empty rail under a short figure while the right
+   column ran on for another seven hundred pixels. */
+.dash{display:grid;grid-template-columns:minmax(272px,320px) 1fr;gap:18px;align-items:start}
 .stage{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);
- padding:14px 14px 10px;position:relative}
-#fig{display:block;width:100%;height:auto;touch-action:manipulation}
+ padding:14px 14px 10px;position:sticky;top:14px}
+#fig{display:block;width:100%;max-width:292px;margin:0 auto;height:auto;
+ touch-action:manipulation}
 .col{display:grid;gap:14px}
 
-/* THE RISE. The headline, and the bar under it carrying three marks. */
-.rise b{display:block;font-size:54px;font-weight:600;letter-spacing:-.03em;line-height:1}
+/* THE RISE. The headline, and the bar under it carrying three marks.
+   The headline is addressed by its own id. Written as ".rise b" it also matched
+   every seat value inside the same card, and the narrow media query redeclared
+   it after the seat rule, so under 900 pixels the seven seat numbers rendered
+   at 44 pixels and overran their column. */
+#pct{display:block;font-size:54px;font-weight:600;letter-spacing:-.03em;line-height:1}
 .rise .of{font-size:14px;color:var(--mid);margin-top:2px}
 .track{position:relative;height:16px;margin:16px 0 6px;background:var(--sunk);
  border:1px solid var(--line);border-radius:9px;overflow:hidden}
@@ -99,7 +108,9 @@ select{background:var(--panel-2);border:1px solid var(--line2);border-radius:10p
  transition:.15s}
 .door:hover{border-color:var(--accent)}
 .door u{text-decoration:none;display:block}
-.door u b{display:block;font-size:14px;font-weight:600}
+.door u .deye{display:block;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
+ color:var(--dim);font-weight:600;margin-bottom:3px}
+.door u b{display:block;font-size:14.5px;font-weight:600}
 .door u span{display:block;font-size:12.5px;color:var(--dim);margin-top:1px}
 .door svg{flex:0 0 auto;stroke:var(--dim);fill:none;stroke-width:1.6}
 .door:hover svg{stroke:var(--accent)}
@@ -131,9 +142,9 @@ select{background:var(--panel-2);border:1px solid var(--line2);border-radius:10p
 #status{min-height:20px;font-size:13px;color:var(--mid)}
 @media(max-width:900px){
  .dash{grid-template-columns:1fr}
- .stage{order:-1}
+ .stage{order:-1;position:static}
  .stats{grid-template-columns:repeat(3,1fr)}
- .rise b{font-size:44px}
+ #pct{font-size:44px}
  .srow{grid-template-columns:70px 1fr 42px}
 }
 </style></head>
@@ -155,24 +166,24 @@ select{background:var(--panel-2);border:1px solid var(--line2);border-radius:10p
 
 <div class="dash">
 
-  <!-- THE HERO. The channel, the seats, and the rise snaking through them. -->
+  <!-- THE HERO. The channel, the seven seats, and the rise through them. -->
   <div class="stage">
-    <canvas id="fig" width="688" height="1000" aria-label="The channel from the base of the spine to the crown, with the rise drawn through the seven seats"></canvas>
+    <canvas id="fig" width="620" height="760" aria-label="The channel from the base of the spine to the crown, with the seven seats on it and the rise drawn through them"></canvas>
     <div class="note" id="figfoot"></div>
   </div>
 
   <div class="col">
 
     <div class="card rise">
-      <div class="eye">The rise</div>
+      <div class="eye">The kundalini rise</div>
       <b id="pct">0</b>
       <div class="of" id="pctof">of the way from your root to your crown</div>
-      <div class="track" aria-hidden="true">
+      <div class="track" id="track" aria-hidden="true">
         <span class="now" id="tnow"></span>
         <span class="frm" id="tfrm"></span>
         <span class="rch" id="trch"></span>
       </div>
-      <div class="keys">
+      <div class="keys" id="keys">
         <span><i style="background:var(--accent)"></i>where it stands</span>
         <span><i style="background:var(--dim)"></i>where it started</span>
         <span><i style="border:1.5px dashed var(--mid);background:none"></i>where it gets with nothing held</span>
@@ -181,10 +192,23 @@ select{background:var(--panel-2);border:1px solid var(--line2);border-radius:10p
     </div>
 
     <div class="card">
-      <div class="eye">Where it stops</div>
+      <div class="eye" id="stopeye">Where it stops</div>
       <div class="stop-at" id="stopat"></div>
       <div class="route" id="route"></div>
     </div>
+
+    <!-- SUMMARY AND RITUAL ARE THE STICKY PARTS, so they sit directly under the
+         reading rather than under the record. The label never changes and the
+         value under it carries the state. -->
+    <button class="door" id="dsum" type="button">
+      <u><span class="deye">Summary</span><b id="sumline"></b><span id="sumsub"></span></u>
+      <svg width="20" height="20" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
+    </button>
+
+    <button class="door" id="drit" type="button">
+      <u><span class="deye">Ritual</span><b id="ritline"></b><span id="ritsub"></span></u>
+      <svg width="20" height="20" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
+    </button>
 
     <div class="card">
       <div class="eye">What is improving</div>
@@ -192,22 +216,11 @@ select{background:var(--panel-2);border:1px solid var(--line2);border-radius:10p
       <div class="note" id="improvenote" style="margin-top:11px"></div>
     </div>
 
-    <button class="door" id="dsum" type="button">
-      <u><b id="sumline">Summary</b><span id="sumsub"></span></u>
-      <svg width="20" height="20" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
-    </button>
-
-    <button class="door" id="drit" type="button">
-      <u><b id="ritline">Ritual</b><span id="ritsub"></span></u>
-      <svg width="20" height="20" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
-    </button>
-
     <div class="card">
-      <div class="eye">Protocol, one set per seat</div>
-      <div class="note" style="margin:6px 0 10px">Each seat carries the practices that run when
-        that seat is the one stopping the rise. Pick from the seventeen the product already
-        holds. Nothing here is typed.</div>
+      <div class="eye">Protocol</div>
+      <div class="note" id="protnote" style="margin:6px 0 10px"></div>
       <div id="prot"></div>
+      <button class="btn" id="protall" type="button" style="margin-top:12px;width:100%">Set the other six seats</button>
     </div>
 
   </div>
@@ -219,13 +232,16 @@ select{background:var(--panel-2);border:1px solid var(--line2);border-radius:10p
   <div style="margin-top:10px">The seat to plexus correspondence and the seven count are a modern
   Western reading. The source traditions give five, six, eight and more, and the welding of
   seats to nerve plexuses dates to 1927. A frequency in hertz for a seat is not a measured
-  quantity and the rise is not one either. Kundalini is a model. Every number on this page is
-  computed from what the engine holds about a field, and a consistent internal system built on
-  a model is worth having and is not a measurement. This product says the same about the aura
-  and the biophoton field.</div>
+  quantity, and the rise is not one either. Kundalini is a model. Every number on this page is
+  computed from what the engine holds about a field, and a consistent internal system built on a
+  model is worth having and is not a measurement. This product says the same about the aura and
+  the biophoton field.</div>
 </div>
 
 </div>
+<!-- the engine is referenced, never copied. A copy goes stale in
+     silence and the prototype then measures a build nobody ships.
+     build-dash.js inlines this same file into dash.html. -->
 <script>
 /* ============================================================
    THE 112 ADDRESSES. 108 somatic, seated at a named plexus or
@@ -7856,18 +7872,25 @@ if (typeof window !== 'undefined')
     riseRead: riseRead, riseFrom: riseFrom, riseReach: riseReach,
     riseLevers: riseLevers, riseBase: riseBase, riseDelta: riseDelta };
 
+/* HOST FREE, AND THE SHIMS ARE NOT. Everything above the two export blocks
+   passes the engine's own rule: no document, window, navigator, localStorage,
+   fetch or new Image. If this arithmetic ever lands in atuned_src/engine/ the
+   window shim does not go with it. hostfree.py would refuse it, and the
+   engine's export path is engine/export.js rather than a window assignment. */
+
 </script>
 <script>
 /* ============================================================
    THE AVATAR DASHBOARD. Every figure is read off engine.js at run time.
-   Nothing on this page is a stored frame and nothing is a coefficient.
-   ============================================================ */
-/* engine.js is a separate classic script in this same document, so its top
+   Nothing here is a stored frame and nothing here is a coefficient.
+
+   engine.js is a separate classic script in this same document, so its top
    level const and let bindings live in the shared script scope and are reached
    by name. They are NOT properties of window, which is why an earlier cut of
    this file read window.PAL and got undefined, and why declaring var PAL here
    threw on a name the engine had already taken. rise.js wants one object, so
-   the bindings it needs are gathered into one rather than reached twice. */
+   the bindings it needs are gathered into one rather than reached twice.
+   ============================================================ */
 var R=window.RISE;
 var E={W:W, BANDS:BANDS, S:S, SI:SI, bandIg:bandIg, PEOPLE:PEOPLE,
        CHARGES:CHARGES, SINAMES:SINAMES, LAWSET:LAWSET, buildSoul:buildSoul,
@@ -7875,7 +7898,9 @@ var E={W:W, BANDS:BANDS, S:S, SI:SI, bandIg:bandIg, PEOPLE:PEOPLE,
        PMBANDS:PMBANDS};
 var PMB=PMBANDS;
 var ROSTER=['Marcus','Diane','Sofia','Angela','Derek','James','Ana','Gordon','Tomas','Rosa'];
-var WHO='Marcus', BASE=null, RUNS=0, EMPTY=false;
+var WHO='Marcus', BASE=null, RUNS=0, EMPTY=false, ALLSEATS=false;
+var TRACK={Root:'Body',Sacral:'Somatic',Solar:'Somatic',Heart:'Body',
+           Throat:'Mind','3rd Eye':'Mind',Crown:'Energy'};
 
 function status(m){document.getElementById('status').textContent=m||'';}
 
@@ -7889,7 +7914,8 @@ function load(nm){
   S.charge[c]=EMPTY?0:((p.c&&p.c[c]!==undefined)?p.c[c]:0);
   S.replace[c]=EMPTY?0:((p.rep&&p.rep[c])||0);});
  var LS=E.LAWSET[nm]||{_:5.5};
- E.SINAMES.forEach(function(l){S.law[l]=EMPTY?6:((LS[l]!==undefined)?LS[l]:(LS._!==undefined?LS._:5.5));});
+ E.SINAMES.forEach(function(l){
+  S.law[l]=EMPTY?6:((LS[l]!==undefined)?LS[l]:(LS._!==undefined?LS._:5.5));});
  return E.compute();}
 
 /* one release run of eight, ui/release.js:88 verbatim */
@@ -7912,11 +7938,17 @@ function release(){
    100 by 100 space the pain map uses, so the avatar and the body page are one
    figure seen twice and no coordinate is invented here.
 
-   Breath rate is the reading, and it is already ruled in DESIGN-feathers.md:
-   period 2.0 seconds at coherence 0 to 5.0 at 100, amplitude 0.010 to 0.030
-   of the radius, and a per seat phase offset of one seventh of a cycle so the
-   root leads. Motion that is not a reading is a lie at sixty frames a second,
-   so nothing else on this figure moves.
+   Breath rate is the reading and it is already ruled in DESIGN-feathers.md:
+   period 2.0 seconds at coherence 0 to 5.0 at 100, amplitude 0.010 to 0.030 of
+   the radius, and a per seat phase offset of one seventh of a cycle so the root
+   leads. Motion that is not a reading is a lie at sixty frames a second, so
+   nothing else on this figure moves.
+
+   THE SEVEN SEATS ARE ALWAYS DRAWN, including on a field with nothing in it. An
+   earlier cut returned early when there was no reading and left a bare vertical
+   line in a tall card while the copy beside it said the seven seats were drawn.
+   A person has a spine and seven seats before this product touches them; what
+   they do not have yet is a rise.
    ============================================================ */
 var REDUCED=(window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches);
 var FR=[], K=null, RD=null, CQ=0;
@@ -7926,97 +7958,91 @@ function seatR(b){for(var i=0;i<PMB.length;i++)if(PMB[i].b===b)return PMB[i].r;r
 function draw(){
  var c=document.getElementById('fig'), g=c.getContext('2d');
  var dpr=Math.min(2,window.devicePixelRatio||1);
- var W=c.clientWidth||344, H=Math.round(W*1000/688);
- if(c.width!==Math.round(W*dpr)){c.width=Math.round(W*dpr);c.height=Math.round(H*dpr);}
+ var W0=c.clientWidth||330, H=Math.round(W0*760/620);
+ if(c.width!==Math.round(W0*dpr)){c.width=Math.round(W0*dpr);c.height=Math.round(H*dpr);}
  c.style.height=H+'px';
  var t0=performance.now();
  g.setTransform(dpr,0,0,dpr,0,0);
- g.clearRect(0,0,W,H);
- /* the figure's own space is 0 to 100 on both axes. The seats occupy 5 to 54,
-    so the channel is drawn into the upper half and the space under the root is
-    where the two field addresses below the body would sit. */
- var sx=W/100, top=4.98, bot=53.55;
- var PY=function(v){return (v-top+6)*(H/68)};
- var PX=function(v){return v*sx};
- var cx=PX(50);
+ g.clearRect(0,0,W0,H);
 
- var t=(performance.now()/1000);
+ /* the figure's own space. The seats run 4.98 to 53.55 in the pain map's
+    coordinates and the drawing fills the canvas with that span plus one seat
+    radius of air at each end, so there is no dead half. */
+ var top=4.98, bot=53.55, pad=13;
+ var PY=function(v){return (v-top+pad/2)*(H/(bot-top+pad));};
+ var sx=W0/100, PX=function(v){return v*sx;}, cx=PX(50);
+
+ var t=performance.now()/1000;
  var per=2.0+(CQ/100)*3.0;                     /* 2.0s at 0, 5.0s at 100 */
  var amp=0.010+(CQ/100)*0.020;
 
- /* THE CHANNEL. A plain line, always the full length, because a person has a
-    spine before this product touches them. */
- g.strokeStyle='rgba(255,255,255,.10)'; g.lineWidth=1.5;
+ /* THE CHANNEL. Always the full length, because a person has a spine before
+    this product touches them. */
+ g.strokeStyle='rgba(255,255,255,.13)'; g.lineWidth=1.5;
  g.beginPath(); g.moveTo(cx,PY(bot)); g.lineTo(cx,PY(top)); g.stroke();
 
- if(!K){FR.push(performance.now()-t0);return;}
-
- /* THE RISE. Two strands crossing at every seat, which is what snaking around
-    the seats means, drawn from the root up to the height the channel reaches.
-    Lit takes the colour of the seat it is passing. Above the reach the strands
-    are drawn at the pressure grey, because what is above the rise is not
-    absent, it is not conducting yet. */
- var reach=K.reach/7, span=bot-top;
+ /* THE TWO STRANDS. They cross at every seat, which is what snaking around
+    the seats means. Drawn the whole length at the pressure grey first, so the
+    part that has not risen is visibly a channel and not an absence, then the
+    risen part is drawn over it in the colour of the seat it is passing. */
+ var span=bot-top;
  function strandAt(u,side){
-  /* u is 0 at the root and 1 at the crown */
-  var y=bot-u*span;
-  var b=BANDS[0], best=1e9;
+  var y=bot-u*span, b=BANDS[0], best=1e9;
   BANDS.forEach(function(q){var d=Math.abs(seatY(q)-y); if(d<best){best=d;b=q;}});
-  var rr=seatR(b);
-  var x=50+side*rr*Math.sin(u*Math.PI*7);
-  return {x:PX(x),y:PY(y),b:b};}
+  return {x:PX(50+side*seatR(b)*Math.sin(u*Math.PI*7)), y:PY(y), b:b};}
  [-1,1].forEach(function(side){
-  /* the unlit remainder first, so the lit line sits over it */
-  g.strokeStyle='rgba(148,144,138,.30)'; g.lineWidth=2;
+  g.strokeStyle='rgba(148,144,138,.58)'; g.lineWidth=1.6; g.lineCap='round';
   g.beginPath();
   for(var u=0;u<=1.0001;u+=0.004){var p=strandAt(u,side);
    if(u===0)g.moveTo(p.x,p.y);else g.lineTo(p.x,p.y);}
   g.stroke();
-  /* the lit portion, segment by segment so the colour follows the seat */
-  g.lineWidth=3.2; g.lineCap='round';
-  var prev=null;
+  if(!K)return;
+  g.lineWidth=3.4;
+  var prev=null, reach=K.reach/7;
   for(var v=0;v<=reach+0.0001;v+=0.004){
    var q=strandAt(Math.min(1,v),side);
    if(prev){g.strokeStyle=PAL[q.b]; g.beginPath();
     g.moveTo(prev.x,prev.y); g.lineTo(q.x,q.y); g.stroke();}
-   prev=q;}
- });
+   prev=q;}});
 
- /* THE SEATS. One ring each, and the ring is that seat's own bar: the arc
-    drawn in the seat colour is how much of that seat conducts, the rest is
-    pressure grey. Ring, never fill. */
+ /* THE SEATS. One ring each, and the ring is that seat's own bar: the arc in
+    the seat colour is how much of that seat conducts and the rest is pressure
+    grey. Ring, never fill. */
  BANDS.forEach(function(b,i){
   var y=PY(seatY(b)), rr=seatR(b)*sx;
   var ph=(i/7)*Math.PI*2;                       /* the root leads */
-  if(!REDUCED)rr*=1+amp*Math.sin(t/per*Math.PI*2-ph);
-  var frac=Math.max(0,Math.min(1,K.t[b]||0));
-  var stop=(K.blocked===b);
-  /* the pressure arc */
-  g.strokeStyle='rgba(148,144,138,.34)'; g.lineWidth=stop?2.4:1.6;
+  if(!REDUCED&&K)rr*=1+amp*Math.sin(t/per*Math.PI*2-ph);
+  var stop=(K&&K.blocked===b);
+  g.strokeStyle='rgba(148,144,138,'+(K?'.34':'.5')+')'; g.lineWidth=stop?2.4:1.6;
   g.beginPath(); g.arc(cx,y,rr,0,Math.PI*2); g.stroke();
-  /* the conducting arc, from the top, clockwise. A gap is left at the top of
-     the blocked seat so the break is a shape and not a colour. */
-  var a0=-Math.PI/2+(stop?0.30:0);
-  var a1=a0+frac*(Math.PI*2-(stop?0.60:0));
-  g.strokeStyle=PAL[b]; g.lineWidth=stop?2.8:2;
+  if(!K)return;
+  /* the conducting arc, from the top, clockwise. The blocked seat is drawn
+     with a gap at the top and a second ring outside it, so the break is a
+     shape rather than a colour: chroma comes out at the floor here, it does
+     not come in. */
+  var frac=Math.max(0,Math.min(1,K.t[b]||0));
+  var gap=stop?0.34:0;
+  var a0=-Math.PI/2+gap, a1=a0+frac*(Math.PI*2-gap*2);
+  g.strokeStyle=PAL[b]; g.lineWidth=stop?3:2;
   g.beginPath(); g.arc(cx,y,rr,a0,a1); g.stroke();
-  /* the blocked seat carries one mark outside its ring, and no text. */
   if(stop){
-   g.strokeStyle='#EFEDE8'; g.lineWidth=1.6;
-   g.beginPath(); g.moveTo(cx+rr+5,y-5); g.lineTo(cx+rr+11,y); g.lineTo(cx+rr+5,y+5); g.stroke();}
+   g.strokeStyle='rgba(239,237,232,.55)'; g.lineWidth=1;
+   g.setLineDash([2,3]);
+   g.beginPath(); g.arc(cx,y,rr+5,0,Math.PI*2); g.stroke(); g.setLineDash([]);}
  });
+
+ if(!K){FR.push(performance.now()-t0); if(FR.length>600)FR.shift(); return;}
 
  /* THE TWO MARKS ON THE CHANNEL. Where it started, which never moves, and
     where it gets with nothing held. */
  if(BASE){
-  var wf=R.riseFrom(E,BASE.t,null);
-  var yf=PY(bot-(wf.reach/7)*span);
+  var yf=PY(bot-(R.riseFrom(E,BASE.t,null).reach/7)*span);
   g.strokeStyle='#94908A'; g.lineWidth=1.5;
-  g.beginPath(); g.moveTo(cx-11,yf); g.lineTo(cx+11,yf); g.stroke();}
+  g.beginPath(); g.moveTo(cx-13,yf); g.lineTo(cx+13,yf); g.stroke();}
  if(RD){
   var yr=PY(bot-(RD.reach/7)*span);
   g.strokeStyle='#B4B0A8'; g.lineWidth=1.5; g.setLineDash([3,3]);
-  g.beginPath(); g.moveTo(cx-14,yr); g.lineTo(cx+14,yr); g.stroke(); g.setLineDash([]);}
+  g.beginPath(); g.moveTo(cx-17,yr); g.lineTo(cx+17,yr); g.stroke(); g.setLineDash([]);}
 
  FR.push(performance.now()-t0); if(FR.length>600)FR.shift();
 }
@@ -8025,54 +8051,23 @@ function draw(){
    THE BLOCKS
    ============================================================ */
 function pctOf(x){return Math.round(x*100);}
+function set(id,v){document.getElementById(id).innerHTML=v;}
+
 function paint(){
  var r=E.compute();
  CQ=r.CQ;
- var unread=r.unread;
- K=unread?null:R.riseRead(E,r);
- RD=unread?null:R.riseReach(E);
+ K=r.unread?null:R.riseRead(E,r);
+ RD=r.unread?null:R.riseReach(E);
+ document.getElementById('track').style.display=r.unread?'none':'block';
+ document.getElementById('keys').style.display=r.unread?'none':'flex';
+ document.getElementById('pct').style.display=r.unread?'none':'block';
+ document.getElementById('protall').style.display=r.unread?'none':'block';
 
- var rise=document.querySelector('.rise');
- if(unread){
-  /* NO PLACEHOLDER GLYPH WHERE A NUMBER GOES. A dash in a 54 pixel slot reads
-     as a reading the page could not fetch. The slot is emptied and the sentence
-     under it carries the whole of what is true. */
-  document.getElementById('pct').textContent='';
-  document.getElementById('pct').style.display='none';
-  document.getElementById('pctof').textContent='Nothing has been read yet, so there is no rise to draw.';
-  document.getElementById('tnow').style.width='0%';
-  document.getElementById('tfrm').style.left='0%';
-  document.getElementById('trch').style.left='0%';
-  document.getElementById('seats').innerHTML=
-   '<div class="note">The rise is computed from what your field is carrying. '
-   +'Your field is empty, so the seven seats are drawn and the rise is not.</div>';
-  document.getElementById('stopat').innerHTML=
-   '<div class="eye" style="margin-bottom:8px">Where to start</div>'
-   +'<p class="note" style="margin:0 0 10px">Nothing has been read yet. Four ways in, and none of '
-   +'them asks you to know anything first.</p>'
-   +[['Write what happened','The day, in your own words. The engine reads the charge out of it.'],
-     ['Read nine sentences','For anyone who cannot think of themselves as the problem. None of them is a diagnosis.'],
-     ['Go year by year','Three to eighteen. For anyone who cannot think of anything they identify with, which is most people.'],
-     ['Say who you are becoming','The avatar. Release empties an address and replace fills it. This is what you are filling it toward.']]
-    .map(function(d){return '<div style="padding:8px 0;border-top:1px solid var(--line)">'
-     +'<b style="font-size:14px;font-weight:600">'+d[0]+'</b>'
-     +'<div class="note">'+d[1]+'</div></div>';}).join('');
-  document.getElementById('route').textContent='';
-  document.getElementById('sumline').textContent='Summary';
-  document.getElementById('sumsub').textContent='No reading yet. It opens once something is entered.';
-  document.getElementById('ritline').textContent='Ritual';
-  document.getElementById('ritsub').textContent='No ritual saved yet.';
-  document.getElementById('improve').innerHTML='';
-  document.getElementById('improvenote').textContent=
-   'Nothing has a date on it yet. What lands here is the ground a release has opened, and it only ever adds.';
-  paintProt();
-  return;}
-
+ if(r.unread)return paintEmpty();
  if(!BASE)BASE=R.riseBase(E);
  var d=R.riseDelta(E,r,BASE);
 
  /* THE HEADLINE */
- document.getElementById('pct').style.display='block';
  document.getElementById('pct').textContent=K.pct;
  document.getElementById('pctof').textContent='of the way from your root to your crown';
  document.getElementById('tnow').style.width=K.pct+'%';
@@ -8080,87 +8075,139 @@ function paint(){
  document.getElementById('tfrm').style.left=(d.has?d.from.pct:0)+'%';
  document.getElementById('trch').style.left=RD.pct+'%';
 
- /* THE SEAT ROWS. Crown at the top so the column reads the way the body does. */
- document.getElementById('seats').innerHTML=BANDS.slice().reverse().map(function(b){
+ /* THE SEAT ROWS. Crown at the top so the column reads the way a body does. */
+ set('seats',BANDS.slice().reverse().map(function(b){
   var f=pctOf(K.t[b]);
   return '<div class="srow'+(K.blocked===b?' stop':'')+'">'
    +'<em>'+b+'</em>'
    +'<span class="sbar"><span style="width:'+f+'%;background:'+PAL[b]+'"></span></span>'
    +'<b>'+f+'</b></div>';}).join('')
-  +'<div class="note" style="margin-top:8px">Each number is how much of that seat conducts, '
-  +'out of a hundred. The rise is the seven multiplied in order, because a channel is in series: '
-  +'a clear crown over a shut solar plexus does not conduct.</div>';
+  +'<div class="note" style="margin-top:8px">Each number is that seat averaged over the '
+  +'addresses on it, out of a hundred: an address holding nothing conducts, an address '
+  +'holding charge does not, and an address with the opposite installed conducts most. '
+  +'The rise is the seven multiplied in order, because a channel is in series: a clear '
+  +'crown over a shut solar plexus does not conduct.</div>');
 
  /* WHERE IT STOPS. A seat, an address, a plexus, and one route out. */
- var at=K.at, lv=K.levers, shut=K.blocked;
- var sent='The <strong>'+shut.toLowerCase()+'</strong> costs the rise more than any other seat. '
+ var at=K.at, lv=K.levers, shut=K.blocked, seat=shut.toLowerCase();
+ document.getElementById('stopeye').textContent='Where it stops';
+ var sent='The <strong>'+seat+'</strong> costs the rise more than any other seat. '
   +'It conducts '+pctOf(K.t[shut])+' out of a hundred.';
- if(at)sent+=' '+K.holding+' address'+(K.holding===1?'':'es')+' there are holding something, '
-  +'and the heaviest is <strong>'+at.k+'</strong>, at the '+at.n.toLowerCase()
-  +', at a weight of '+at.sq.toFixed(1)+'.';
- document.getElementById('stopat').innerHTML=sent;
+ if(at)sent+=' '+K.holding+' address'+(K.holding===1?'':'es')+' there '
+  +(K.holding===1?'is':'are')+' holding something, and the heaviest is <strong>'
+  +at.k+'</strong>, at the '+at.n.toLowerCase()+', at a weight of '+at.sq.toFixed(1)+'.';
+ set('stopat',sent);
  var rt='';
  if(lv){
   /* BOTH LEVERS CARRY WHAT THEY COST, because they are not the same size of
      act. A quarter of release work against one change of conduct is not a fair
-     race and the sentence must not pretend it is: it names the work beside the
-     number so a person prices it themselves. */
+     race, and the sentence names the work beside the number rather than
+     pretending it is one. */
   var n0=pctOf(lv.now), nr=pctOf(lv.release.to), nl=pctOf(lv.law.to);
-  var seat=shut.toLowerCase();
-  rt='Twelve release runs at your '+seat+', one a week for a quarter, takes that seat '
-   +'from '+n0+' out of a hundred to '+nr+'. '
-   +'Two points on '+lv.law.nm.toLowerCase()+' takes it to '+nl+'. ';
+  rt='Twelve release runs at your '+seat+', one a week for a quarter, takes that seat from '
+   +n0+' out of a hundred to '+nr+'. Two points on '+lv.law.nm.toLowerCase()
+   +' takes it to '+nl+'. ';
   rt+=(lv.bigger==='law')
-   ? 'The law is the lever here. The '+seat+' is carried by '+lv.law.count+' of the twenty one laws.'
-   : 'The release is the lever here. The '+seat+' is carried by '+lv.law.count
-     +' of the twenty one laws, and moving them moves this seat less than the work does.';}
- document.getElementById('route').innerHTML=rt;
+   ? 'The law is the lever here.'
+   : 'The release is the lever here, and the '+seat+' is carried by '+lv.law.count
+     +' of the twenty one laws.';}
+ set('route',rt);
 
- /* WHAT IS IMPROVING. Dated facts and the rise since the baseline. Nothing here
-    can fall, because contact is stamped once and never taken back. */
+ /* WHAT IS IMPROVING. Dated facts and the rise since the baseline. Three
+    zeroes in a row on the morning somebody arrives is a wall of absence, so
+    the block says what it is waiting for instead of counting nothing. */
  var mv=d.has?(d.now.pct-d.from.pct):0;
- var seatsPassed=0; BANDS.forEach(function(b){if(K.t[b]>=0.847)seatsPassed++;});
- document.getElementById('improve').innerHTML=
-  '<div class="stat"><b>'+(mv>=0?'+':'')+mv+'</b><span>points of rise since you started</span></div>'
-  +'<div class="stat"><b>'+RUNS*8+'</b><span>addresses a release has reached</span></div>'
-  +'<div class="stat"><b>'+seatsPassed+' of 7</b><span>seats clear of what they held</span></div>';
- document.getElementById('improvenote').textContent=
-  'A release stamps the date it first reached an address, so the middle number only ever goes up. '
-  +'The rise moves both ways and the mark where you started does not move at all.';
+ var clear=0; BANDS.forEach(function(b){if(K.t[b]>=0.847)clear++;});
+ var st=[];
+ if(clear)st.push('<div class="stat"><b>'+clear+' of 7</b>'
+  +'<span>seats clear of what they held</span></div>');
+ if(mv)st.push('<div class="stat"><b>'+(mv>0?'+':'')+mv+'</b>'
+  +'<span>points of rise since you started</span></div>');
+ if(RUNS)st.push('<div class="stat"><b>'+RUNS*8+'</b>'
+  +'<span>addresses a release has reached</span></div>');
+ set('improve',st.join(''));
+ document.getElementById('improve').style.display=st.length?'grid':'none';
+ document.getElementById('improvenote').textContent=st.length<3
+  ? 'A release stamps the date it first reached an address, and what it stamps lands here. '
+    +'The rise from here is measured against where you stand today.'
+  : 'A release stamps the date it first reached an address, so that number only ever goes up. '
+    +'The rise moves both ways and the mark where you started does not move at all.';
 
- /* SUMMARY, sticky, and a door. */
+ /* SUMMARY, sticky, and a door. The label never changes; the value under it
+    carries the state, and a band word never stands on its own. */
  var ti=E.tierOf(r.CQ);
  document.getElementById('sumline').textContent=ti.nm+'. '+ti.state+'.';
  document.getElementById('sumsub').textContent=ti.def;
 
- /* RITUAL, sticky, and a door. */
- var pr=null, track={Root:'Body',Sacral:'Somatic',Solar:'Somatic',Heart:'Body',
-  Throat:'Mind','3rd Eye':'Mind',Crown:'Energy'}[shut]||'Body';
+ /* RITUAL, sticky, and a door, set against the seat that is stopping the rise. */
+ var track=TRACK[shut]||'Body', pr=null;
  E.PRACTICE.forEach(function(p){if(p.track===track&&(!pr||p.min<pr.min))pr=p;});
- document.getElementById('ritline').textContent='Ritual. '+(pr?pr.nm:'nothing set')+'.';
+ document.getElementById('ritline').textContent=pr?pr.nm:'Nothing set';
  document.getElementById('ritsub').textContent=pr
-  ?(pr.min+' minutes, on the '+track.toLowerCase()+' track, set against your '+shut.toLowerCase()+'.')
-  :'Nothing set against this seat yet.';
- paintProt();
+  ?(pr.min+' minutes, on the '+track.toLowerCase()+' track, set against your '+seat+'.')
+  :'Nothing is set against this seat yet.';
+
+ paintProt(shut);
  document.getElementById('figfoot').textContent=
-  'The seats breathe at the rate the reading sets. Nothing else on the figure moves.';
+  'The seats breathe at the rate the reading sets. The dashed ring marks the seat that stops '
+  +'the rise. Nothing else on the figure moves.';
+}
+
+function paintEmpty(){
+ document.getElementById('pctof').textContent=
+  'Nothing has been read yet, so there is no rise to draw.';
+ set('seats','<div class="note">The rise is computed from what your field is carrying. Your '
+  +'field is empty, so the channel and the seven seats are drawn and the rise is not.</div>');
+ document.getElementById('stopeye').textContent='Where to start';
+ set('stopat','<p class="note" style="margin:0">Nothing has been read yet. Four ways in, and '
+  +'none of them asks you to know anything first.</p>'
+  +[['Write what happened','The day, in your own words. The engine reads the charge out of it.'],
+    ['Read nine sentences','For anyone who cannot think of themselves as the problem. None of them is a diagnosis.'],
+    ['Go year by year','Three to eighteen. For anyone who cannot think of anything they identify with, which is most people.'],
+    ['Say who you are becoming','The avatar. Release empties an address and replace fills it. This is what you are filling it toward.']]
+   .map(function(d){return '<div style="padding:9px 0;border-top:1px solid var(--line)">'
+    +'<b style="font-size:14px;font-weight:600">'+d[0]+'</b>'
+    +'<div class="note">'+d[1]+'</div></div>';}).join(''));
+ set('route','');
+ document.getElementById('sumline').textContent='No reading yet';
+ document.getElementById('sumsub').textContent='It opens once something is entered.';
+ document.getElementById('ritline').textContent='Nothing saved yet';
+ document.getElementById('ritsub').textContent='A ritual is set against the seat that stops the rise.';
+ set('improve','');
+ document.getElementById('improvenote').textContent=
+  'Nothing has a date on it yet. What lands here is the ground a release has opened, and it '
+  +'only ever adds.';
+ document.getElementById('protnote').textContent=
+  'A protocol is set against a seat once there is a reading to set it against.';
+ set('prot','');
+ document.getElementById('figfoot').textContent=
+  'The channel and the seven seats, with nothing on them yet.';
 }
 
 /* THE PROTOCOL. Seven seats, and the value is a key out of the seventeen the
-   product already holds. No field on this page accepts typing. */
+   product already holds. Nothing on this page accepts typing.
+
+   ONLY THE SEAT THAT IS STOPPING THE RISE IS SHOWN. All seven at once is
+   twenty one choices in one block against a working memory of about four, and
+   it made the least important block the tallest thing on the screen. The other
+   six are one press away and the press says what it opens. */
 var PROT={};
-function paintProt(){
- var host=document.getElementById('prot');
- host.innerHTML=BANDS.slice().reverse().map(function(b){
+function paintProt(shut){
+ var show=ALLSEATS?BANDS.slice().reverse():[shut];
+ document.getElementById('protnote').textContent=ALLSEATS
+  ?'Each seat carries the practices that run when that seat is the one stopping the rise.'
+  :'The practices that run while your '+shut.toLowerCase()+' is the seat stopping the rise.';
+ document.getElementById('protall').textContent=ALLSEATS
+  ?'Show only the seat that is stopping the rise'
+  :'Set the other six seats';
+ set('prot',show.map(function(b){
   var sel=PROT[b]||[];
-  var track={Root:'Body',Sacral:'Somatic',Solar:'Somatic',Heart:'Body',
-   Throat:'Mind','3rd Eye':'Mind',Crown:'Energy'}[b];
-  var fit=E.PRACTICE.filter(function(p){return p.track===track;}).slice(0,3);
+  var fit=E.PRACTICE.filter(function(p){return p.track===TRACK[b];}).slice(0,3);
   return '<div class="prow"><em>'+b+'</em><div class="chips">'
    +fit.map(function(p){
     return '<button type="button" class="chip'+(sel.indexOf(p.k)>=0?' on':'')
      +'" style="--k:'+PAL[b]+'" data-seat="'+b+'" data-k="'+p.k+'">'+p.nm+'</button>';}).join('')
-   +'</div></div>';}).join('');
+   +'</div></div>';}).join(''));
 }
 document.addEventListener('click',function(e){
  var c=e.target.closest&&e.target.closest('.chip'); if(!c)return;
@@ -8168,7 +8215,7 @@ document.addEventListener('click',function(e){
  PROT[b]=PROT[b]||[];
  var i=PROT[b].indexOf(k);
  if(i>=0)PROT[b].splice(i,1); else PROT[b].push(k);
- paintProt();
+ paint();
  status(PROT[b].length
   ?PROT[b].length+' practice'+(PROT[b].length===1?'':'s')+' set against your '+b.toLowerCase()+'.'
   :'Nothing set against your '+b.toLowerCase()+'.');});
@@ -8179,7 +8226,8 @@ document.addEventListener('click',function(e){
 function reload(){BASE=null;RUNS=0;load(WHO);paint();}
 function boot(){
  var sel=document.getElementById('who');
- sel.innerHTML=ROSTER.map(function(n){return '<option'+(n===WHO?' selected':'')+'>'+n+'</option>';}).join('')
+ sel.innerHTML=ROSTER.map(function(n){
+   return '<option'+(n===WHO?' selected':'')+'>'+n+'</option>';}).join('')
   +'<option value="__empty">A first ever open</option>';
  sel.onchange=function(){
   EMPTY=(sel.value==='__empty');
@@ -8192,8 +8240,11 @@ function boot(){
   E.compute(); paint();
   status('Every axis up 2.2. The rise falls and the mark where you started does not.');};
  document.getElementById('reset').onclick=function(){reload();status('Back to arrival.');};
- document.getElementById('dsum').onclick=function(){status('This is the door into the summary page.');};
- document.getElementById('drit').onclick=function(){status('This is the door into the ritual page.');};
+ document.getElementById('protall').onclick=function(){ALLSEATS=!ALLSEATS;paint();};
+ document.getElementById('dsum').onclick=function(){
+  status('This is the door into the summary page.');};
+ document.getElementById('drit').onclick=function(){
+  status('This is the door into the ritual page.');};
  reload();
  (function loop(){draw();requestAnimationFrame(loop);})();
  setInterval(function(){
@@ -8201,8 +8252,8 @@ function boot(){
   var s=FR.slice().sort(function(a,b){return a-b;});
   document.getElementById('perf').textContent=
    'Hero redraw, median '+s[Math.floor(s.length/2)].toFixed(2)+' ms, 95th '
-   +s[Math.floor(s.length*0.95)].toFixed(2)+' ms, against a 16.7 ms frame. '
-   +'Measured in this page over the last '+s.length+' frames.';
+   +s[Math.floor(s.length*0.95)].toFixed(2)+' ms, against a 16.7 ms frame. Measured in this '
+   +'page over the last '+s.length+' frames.';
   var q=window.__REQ||[];
   document.getElementById('req').innerHTML=q.length
    ?'Outbound requests: '+q.length+'. '+q.map(function(x){return x.kind+' '+x.url;}).join(' | ')

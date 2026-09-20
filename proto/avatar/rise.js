@@ -235,3 +235,9 @@ if (typeof window !== 'undefined')
   window.RISE = { OPEN_CAP: OPEN_CAP, riseSeats: riseSeats, seatTrans: seatTrans,
     riseRead: riseRead, riseFrom: riseFrom, riseReach: riseReach,
     riseLevers: riseLevers, riseBase: riseBase, riseDelta: riseDelta };
+
+/* HOST FREE, AND THE SHIMS ARE NOT. Everything above the two export blocks
+   passes the engine's own rule: no document, window, navigator, localStorage,
+   fetch or new Image. If this arithmetic ever lands in atuned_src/engine/ the
+   window shim does not go with it. hostfree.py would refuse it, and the
+   engine's export path is engine/export.js rather than a window assignment. */
