@@ -915,6 +915,11 @@ function sniffDepth(text){
    address carrying most is the one release should be offered at first, and it
    carries the disagreement with CHILD by name rather than hiding it. */
 var OFFER_MAX=3;
+/* THE OFFER'S ADDRESS IS THE AXIS ROW'S, not a second lookup on the axis name.
+   sniffAxes has already resolved it against the 112 through this reading's own
+   imprints, and re-deriving it here would be a second copy of one rule and a
+   place for the two to disagree. A row that carries no address at all reads as
+   null, which is the honest answer and not the spec region. */
 function sniffOffer(axes){
  return axes.filter(function(a){return a.shadow>0;})
   .sort(function(a,b){return b.shadow-a.shadow;})
@@ -922,11 +927,14 @@ function sniffOffer(axes){
   .map(function(a){
    var sp=SPEC_POLE[a.axis], ch=CHILD.find(function(c){return c.nm===a.axis;});
    var differs=ch&&sp&&sp.pole.toLowerCase().indexOf(String(ch.opp).toLowerCase())<0;
-   return {address:sp?sp.addr:null, axis:a.axis,
+   var at=(a.address===undefined)?null:a.address;
+   return {address:at, region:sp?sp.addr:null, axis:a.axis,
     replacement:sp?sp.pole:null,
     shadow:a.shadow, coherent:a.coherent,
-    because:['the '+a.axis+' axis carries '+a.shadow+' of 10 of shadow load at '+
-      (sp?sp.addr:'an unnamed address'),
+    because:['the '+a.axis+' axis carries '+a.shadow+' of 10 of shadow load'+
+      (at?' and this reading places it heaviest at '+at
+         :', and this reading placed no address on it, so there is nowhere to '+
+          'name'),
      'every shadow in the system has a named coherent opposite at the same '+
       'address, and detecting the shadow is what names the replacement to offer']
      .concat(a.because.slice(0,2)),
