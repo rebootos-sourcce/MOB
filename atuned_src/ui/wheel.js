@@ -422,12 +422,16 @@ function solCore(r,base){
 
      Sized off the type rather than off the core, so it is always exactly as
      big as the thing it has to carry. */
-  var pad=big*0.62;
-  var back=g.createRadialGradient(CX,CY,pad*0.2,CX,CY,pad*1.25);
-  back.addColorStop(0,rgba(mixc(gc,[0,0,0],.62),.92));
-  back.addColorStop(.62,rgba(mixc(gc,[0,0,0],.62),.72));
-  back.addColorStop(1,rgba(mixc(gc,[0,0,0],.62),0));
-  g.beginPath();g.arc(CX,CY,pad*1.25,0,TAU);g.fillStyle=back;g.fill();
+  /* THREE FLAT DISCS, NOT A GRADIENT. The first cut built a radial gradient
+     here, and a gradient is allocated fresh on every frame of an animation
+     loop. Measured cost: the Field fell to 21.7 frames a second under dark and
+     9.4 under snow, against a floor the design gate holds. Three stacked arcs
+     at falling alpha give the same soft edge for three fills and no allocation
+     at all. */
+  var pad=big*0.62, bk=mixc(gc,[0,0,0],.62);
+  g.beginPath();g.arc(CX,CY,pad*1.25,0,TAU);g.fillStyle=rgba(bk,.34);g.fill();
+  g.beginPath();g.arc(CX,CY,pad*1.02,0,TAU);g.fillStyle=rgba(bk,.42);g.fill();
+  g.beginPath();g.arc(CX,CY,pad*0.78,0,TAU);g.fillStyle=rgba(bk,.52);g.fill();
   g.textAlign='center'; g.textBaseline='alphabetic';
   g.fillStyle=cqc;
   g.font='500 '+big.toFixed(1)+'px Inter, system-ui, sans-serif';

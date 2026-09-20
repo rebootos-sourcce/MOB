@@ -495,6 +495,44 @@ reach them. They were browser globals with no test able to see them, which is
 the condition this repository already records as how six broken intake
 questions shipped.
 
+## HOW THE GATES WERE RUN, AND ONE RED THAT WAS NOT MINE
+
+This was built in a tree several seats are writing to at the same time. It is
+worth recording because it changes how a gate result should be read.
+
+- HEAD moved four commits during this pass and another seat's commit swept
+  these files in before they were finished. The first `tools/equiv.py` run was
+  therefore a comparison of HEAD against itself and reported nothing. It was
+  re-run against the last commit that does not contain `LEANCH`, which is the
+  honest baseline, and then reported 18 new declarations, all named `LEAN` or
+  `lean`. **The tool was not lying, the baseline was wrong.** Worth saying
+  because this repository already records three probes that reported their own
+  bugs, and the instinct to blame the tool first is the wrong one.
+- `./atuned_src/BUILD.sh` went red once with `div balance -1, not 0`. It was
+  not this work: nothing here touches markup. `find atuned_src -newermt '-3
+  minutes'` named `atuned_src/ui/cone.js` and `atuned_src/shell/head.html`,
+  both being written by another seat at that moment, and the build was green on
+  the next run. A gate that goes red on somebody else's half written file is
+  still a red gate and it is recorded here rather than quietly re-run.
+- `tests/design.js` went red the same way, and harder: `classes with no CSS
+  rule: cone-read, cone-rec` plus five `the Field still animates under <theme>`
+  failures. Attributed rather than assumed. Those two class names grep to
+  exactly two lines, `atuned_src/ui/cone.js:784` and `:785`, in a file
+  `find atuned_src -newermt '-20 minutes'` lists as being written right now,
+  alongside `ui/wheel.js`, `ui/component.js` and `shell/head.html`, which are
+  where the Field's animation lives. **This work adds no CSS rule, no class, no
+  DOM and no canvas code at all**, which is checkable from the diff: it is
+  `engine/verp.js`, `engine/export.js` and `tests/engine.js`. It was green at
+  105 of 105 earlier in the same session on the same lean code.
+- `tests/engine.js` reads a different total every hour as other groups land.
+  This is why the number this document commits to is the 75 assertions group 31
+  adds and not a repository total.
+
+The honest summary: **every gate this work is capable of affecting is green,
+and the two that went red are other seats' in flight files, named above with
+the evidence.** Whoever integrates should re-run the full set against a settled
+tree rather than take this paragraph as the last word.
+
 ## WHAT IT COSTS
 
 - **Engine size.** `atuned_src/engine/verp.js` goes from 102 lines to 584.

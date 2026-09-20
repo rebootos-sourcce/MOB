@@ -116,6 +116,7 @@ button[disabled]{opacity:.42; cursor:default}
  flex:1 1 180px; background:var(--panel-2); border:1px solid var(--line);
  border-radius:4px; padding:12px 14px;
 }
+.slab svg{margin:2px auto 0}
 .slab b{display:block; font-size:12px; letter-spacing:.1em; text-transform:uppercase;
  color:var(--dim); font-weight:500; margin-bottom:6px}
 .slab span{font-size:15px; color:var(--ink)}
@@ -260,8 +261,8 @@ function render(){
    +'<p>The circle recorded where you put each marker. That is what you showed. '
    +'This asks what you felt, which is the other half and is not the same thing.</p>'
    +'<div class="readout">'
-   +'<div class="slab"><b>First word</b><span>'+markText('yes')+'</span></div>'
-   +'<div class="slab"><b>Second word</b><span>'+markText('no')+'</span></div>'
+   +'<div class="slab"><b>First word</b>'+miniPad('yes')+'</div>'
+   +'<div class="slab"><b>Second word</b>'+miniPad('no')+'</div>'
    +'</div>'
    +'<label class="fld"><b>Set this to the distance between them.</b>'
    +'<input type="range" min="0" max="100" value="'+D.sepReported+'" id="sep" '
@@ -308,6 +309,22 @@ function render(){
  c.innerHTML=h; bind();
 }
 function row(k,v){ return '<tr><td>'+k+'</td><td>'+v+'</td></tr>'; }
+/* the mark, shown back as the mark. A person reading "51 out from centre at
+   -111 degrees" learns nothing about themselves. The shape they drew is the
+   thing they made and it is the thing to give back. */
+function miniPad(k){
+ var p=D[k], col=(k==='yes')?'var(--yes)':'var(--no)';
+ if(p.nothing) return '<span>nothing moved</span>';
+ var v=vec(p);
+ if(!v) return '<span>not placed</span>';
+ return '<svg width="86" height="86" viewBox="-100 -100 200 200" aria-hidden="true" '
+  +'style="display:block">'
+  +'<circle cx="0" cy="0" r="94" fill="none" stroke="var(--line)"/>'
+  +'<circle cx="0" cy="0" r="2" fill="var(--dim)"/>'
+  +'<line x1="0" y1="0" x2="'+(v.x*94).toFixed(1)+'" y2="'+(v.y*94).toFixed(1)
+  +'" stroke="'+col+'" stroke-opacity=".4" stroke-width="3"/>'
+  +'<circle cx="'+(v.x*94).toFixed(1)+'" cy="'+(v.y*94).toFixed(1)+'" r="11" fill="'+col+'"/>'
+  +'</svg>';}
 function markText(k){
  var p=D[k];
  if(p.nothing) return 'nothing moved';

@@ -10,7 +10,7 @@ amount of adding words would have fixed. Every number below was measured on
 this build with the probes in `proto/sniffer/`, each checked against a known
 good case first.
 
-## THE TWELVE QUESTIONS
+## THE THIRTEEN QUESTIONS
 
 His logic and his book, so a guess costs more here than anywhere else in the
 product. Each of these is answerable in a sentence, each is ordered by how much
@@ -25,14 +25,15 @@ stating a stance?**
 
 Measured. The fourteen persona voices the product ships are all stance: "Rest
 feels like a moral failure." "There is nothing wrong with me." "Pain is
-information." Thirteen of the fourteen return zero imprints, and the fourteenth
-only because it happens to contain the idiom "feel nothing". Across the book,
-856 of 9,431 sentences produce any hit at all, so 91 percent of the owner's own
-prose reads as nothing. A vocabulary cannot reach a stance, because a stance
-carries no feeling word. If the journal receives stance, the frame layer is the
-product and the lexicon is a side show. If it receives events, a father dying
-and a partner lying, the lexicon is the product. Today the instrument is built
-for events and every held example is a stance.
+information." Thirteen of the fourteen returned zero imprints before this pass
+and twelve do after it, and the two that read at all read only because one
+contains the idiom "feel nothing" and the other contains the word "funerals".
+Across the book, 856 of 9,431 sentences produce any hit at all, so 91 percent
+of the owner's own prose reads as nothing. A vocabulary cannot reach a stance,
+because a stance carries no feeling word. If the journal receives stance, the
+frame layer is the product and the lexicon is a side show. If it receives
+events, a father dying and a partner lying, the lexicon is the product. Today
+the instrument is built for events and every held example is a stance.
 
 **2. Is the lexicon derived from the book, or is it a separate instrument
 vocabulary with its own justification?**
@@ -117,7 +118,7 @@ phrase. It is one clause in `scanStory` and which way it goes is a ruling, so
 the two unreachable rows are named in `LEX_DEAD` with the reason and the gate
 holds the count at two.
 
-### The three about what the product is allowed to say
+### The four about what the product is allowed to say
 
 **10. What does a reading show a person whose entry produced nothing?**
 
@@ -144,6 +145,24 @@ is never held joined to the story. Reading one entry against that person's own
 earlier entries, on their own device, is a different grant from a corpus
 leaving it, and it is the grant that would buy the most. It needs ruling before
 Source AI is designed rather than after.
+
+**13. `inferred:false` says the person named the axis. May the product then
+print the address names it chose?**
+
+This is the most consequential of the thirteen and it is the one I would ask
+first if only one could be answered. Measured, and unchanged by this pass: "I
+was furious" returns four imprints named Pride, Arrogance, Competition and
+Anger, all with `inferred:false`. The flag is telling the truth about what it
+was built to guard: the word furious does name the Anger axis. But no word ever
+names an ADDRESS, and the four addresses are the first four Anger addresses in
+the solar band by susceptibility order. So a person who wrote "I was furious" is
+carrying Pride and Arrogance according to the instrument, and the flag that
+exists to stop exactly that is reporting green.
+
+The fix is not a tuning. Either the flag splits in two, one for the axis and one
+for the address, or a reading never prints an address name at all and shows the
+band and the axis instead. The second is a smaller product and an honest one.
+Both are his call because both change what a person is told about themselves.
 
 ## WHAT THE SYSTEM IS LOOKING FOR
 
@@ -230,8 +249,12 @@ lowest charged amount anywhere in the table. Both are read off the table at
 load, so retuning a neighbour retunes this, and the gate asserts the rule
 rather than the number.
 
-**Pass two, the fold.** 29 of 63 ordinary inflections of words already in the
-table did not resolve, so the obvious fix is a stemmer. It was prototyped and
+**Pass two, the fold.** Of the ordinary inflections of words already in the
+table, 31 are confirmed by a corpus this repository holds and 0 of those 31
+resolved, so the table was written in one form and people write in another. A
+separate pass this session reported 29 of 63 by a different construction and I
+did not reproduce that figure, so the number above is mine and the method is
+stated. The obvious fix is a stemmer. It was prototyped and
 it is the wrong instrument here, and the numbers are the argument. Fourteen
 rules over the 145 single word keys generate 438 forms. 31 are confirmed by a
 corpus this repository actually holds. Seven percent. The other 407 are strings

@@ -1004,6 +1004,205 @@ looked at them and every "all surfaces render" this session was blind to it.**
 
 ---
 
+## 0r. DELIVERED 20 SEPTEMBER. BENIGN AND MALIGNANT, WITH THE HARM TEST PASSING.
+
+**The shipped lean scored survivors as malignant and deflectors as benign, and
+that is now measured in both directions rather than argued.**
+
+    account                        shipped   now     lack cues   admitted
+    bullied at work                67        28.0    6           0.00
+    a parent                       60        28.0    3           0.00
+    an assault                     51        28.0    3           0.00
+    coercive control, hardest case 41        29.4    5           0.38
+    doing harm, owned              20        22.2    0           0.00
+    doing harm, refused            36        45.9    8           8.00
+    a field with nothing entered   28        28.0    0           0.00
+
+Ordering correct in both directions. **The blame language in the harm accounts
+is still counted.** A frame gate holds it rather than a shorter word list, and
+that distinction is the whole design and is asserted in the gate.
+
+- [x] **BM1 to BM4 delivered.** Four channels, not one axis: empathy shown,
+  empathy withheld, accountability taken, accountability refused. The two lack
+  channels are gated, the two positive ones are not.
+- [x] **The lexicon went from 41 phrases to 269 scored**, plus 63 harm frame
+  markers, 40 self action markers, 11 negators and 16 entries removed with
+  written reasons. 372 table entries. Built on LIWC-22, Pennebaker, EPITOME,
+  Gottman and the Leeds Attributional Coding System, all cited by URL.
+- [x] **The frame gate, and why this shape beat the alternatives.** With no self
+  agency evidence the admitted fraction is zero whatever the harm list holds, so
+  **the safety does not depend on the harm list being complete.** An incomplete
+  list costs a missed deflection, never a survivor called malignant.
+- [x] **`tests/engine.js` group 31, 75 assertions, eight deliberate breakages
+  all fired.** Removing the frame gate fails 11 and all three harm accounts read
+  malignant again. The harm accounts are asserted as ordering rather than
+  numbers, so tuning cannot fail it and inverting does, and each is asserted to
+  have counted its blame cues, so nobody passes by deleting phrases.
+
+### FOUR SHIPPED DEFECTS IT REPRODUCED ON THE WAY
+
+- [x] `it was not my fault` scored 1 benign. A denial of fault read as taking it.
+- [x] `let them think i did not know` scored 1 benign and 1 malignant at once.
+- [x] `she made me realise i was wrong` scored 1 malignant, off `made me`.
+- [x] `let it go` moved two instruments, a lean cue and a six gate detachment
+  cue, so one phrase changed the cost multiplier on every held pattern.
+
+### AND THE RESEARCH FINDING THAT CONTRADICTED THE OBVIOUS MOVE
+
+Following LIWC literally would have broken it. Pennebaker's causal and insight
+words look like accountability entries and are not: "because I was eleven" is
+insight about being harmed, and the accountability list feeds the frame gate, so
+a wrong entry there opens the lack side on a harm account. All bare causal forms
+were cut. `i should have` is deliberately on neither channel, because the trauma
+literature ties characterological self blame to worse outcomes and a matcher
+cannot separate it from the behavioural kind.
+
+### THREE THINGS FOR HIM
+
+- [?] **What does a surface say?** "Your accountability is 34 of 100" is a
+  verdict on a person from a keyword count and the seat refused to ship it.
+  Three alternatives are laid out in `DESIGN-lean.md` for him to rule between.
+- [?] **May the history whitelist gain one line?** `validateProfile` rebuilds
+  every snapshot from a whitelist, measured at 16 keys written and 15 returned
+  with `lean` silently dropped and `ok: true`. The seat declined to ship a field
+  that looks stored and is not, which is the right call and this repository's own
+  recurring defect. Without that line there is no per snapshot lean, ever.
+- [?] **How is this ever evaluated honestly?** There is no labelled set, and the
+  privacy ruling forbids holding the record joined to the story. The only route
+  is a small hand labelled set of stories without records, labelled by somebody
+  other than the author of the lists.
+
+### AND ONE DEFECT OUTSIDE ITS OWNERSHIP
+
+- [ ] **BM5. A field with nothing entered reads 28 of 100 malignant**, because
+  `compute()` derives `malig` from CQ and CQ comes out 36 from the defaults on
+  the twenty one laws. A person who has typed nothing is not 28 percent
+  malignant. `compute.js` was out of that seat's scope and this is the same
+  class as every other reading that prints off a default.
+
+---
+
+## 0s. DELIVERED 20 SEPTEMBER. THE SIGNAL TEST, AND IT IS IN HIS BOOK.
+
+**Both exercises are already in The Mechanics of Being, in his own words, and
+they outrank everything else found.** Not under those names. The signal test is
+"Part One, System Check" at line 3323, and the observer test is "Part Three,
+Observer Sequence" at 3332, nine numbered steps. Quoted with locations in
+`RESEARCH-signal.md`.
+
+### WHY THE BUILT EXERCISE IS NOT HIS. SIX DEFECTS, `ui/onboard.js:158-183`.
+
+- [x] **SIG7. It is untimed**, and that makes the rest possible. Both words are
+  written into the document at once. A person reads the screen in four seconds
+  and clicks. His description opens with "take a second, turn their senses
+  inward" and there is no second in it.
+- [x] **SIG8. The contrast is between two stimuli the product chose**, not two
+  acts the person generates. Yes and no carry no subject matter, which is why he
+  chose them. "Fear" does, so what moves may be the person's history with the
+  word rather than the act of negating.
+- [x] **SIG9. One exposure, not ten each.** No repetition anywhere in the step.
+- [x] **SIG10. It asks for a location from a list of seven.** His specification
+  is a quality difference, and a list of seven seats is exactly the vocabulary
+  his sentence rules out.
+- [x] **SIG11. It grades the felt sense against a lookup table**, comparing the
+  picked seat to the expected one, and then says "yours is the one that counts"
+  after the comparison has already printed.
+- [x] **SIG12.** And line 172 reads "There is no right answer." Nothing had
+  suggested there was one. **Same shape as the line he struck at 123**, and the
+  rule from that ruling catches it.
+
+### HIS OWN RULING ON PLACEMENT, FROM THE BOOK
+
+- [ ] **OBS5.** Line 3321: **"The Observer does not unlock at the beginning of
+  the work. It unlocks through the sequence. Explain it and it becomes an
+  idea."** So the observer test is not onboarding material, by his own text. It
+  goes in the ritual, offered before the first release, which is the moment his
+  own backlog note about not taking a release personally already names.
+  Onboarding may say the layer exists. It may not run it.
+- [ ] **SIG13.** The signal test stays in onboarding at 81 seconds of paced
+  attention, inside the two minute budget the current screen promises.
+
+### THE CAPTURE PROBLEM, SOLVED WITHOUT NAMING A SENSATION
+
+**Capture the structure of the difference, not its content.** Six mechanisms,
+three built. What comes out is separation, stability, latency and consistency:
+four within person differences, none of which names a feeling. The one that
+matters most needs no shared vocabulary at all: a person's own word for what
+they felt, and whether the same word returns next session.
+
+### THE RESEARCH, INCLUDING THE PART THAT GOES AGAINST US
+
+- [x] The muscle testing evidence is bad and it is reported straight. Hall 2008,
+  22 studies, insufficient evidence. A 2014 double blind at 80 correct of 151
+  trials, which is 53 percent and not significant, with two of three practitioners
+  at chance.
+- [x] **And the distinction that saves the exercise.** Every one of those studies
+  tests muscle testing as an external diagnostic reading a fact about the world.
+  His signal test is a first person noticing task. **The literature condemns the
+  claim, not the exercise.**
+- [ ] **SIG14. But this product makes the condemned claim.** `engine/data/practice.js`
+  carries a row keyed `truth`, The Somatic Truth Check: "Expansion means true.
+  Contraction means distortion. Use it live, in the moment, as an instrument."
+  That is the applied kinesiology truth detection claim in this product's own
+  voice and the evidence is against it. His call.
+- [x] **SIG15. The central claim is unsourced and is marked so.** No study was
+  found testing whether thinking yes reliably produces an expansive sensation and
+  no a contractive one. The nearest support is a three link indirect chain.
+- [x] **SIG16. Ten repetitions at speed is the one pace that breaks it.**
+  Semantic satiation onsets at 10 to 50 repetitions at two to three a second, so
+  the word hollows out before the beat ends. The prototype uses a 3000ms beat
+  for that reason.
+
+### SIX PLACES THE BOOK AND HIS SPOKEN DESCRIPTION DISAGREE
+
+- [?] Aloud, as the book says, or thought, as he said.
+- [?] Location, as the book says, or quality, as he said.
+- [?] No repetition count in the book against ten each in his description.
+- [?] The order of the senses. His spoken list names the auditory channel twice.
+- [?] **The sharpest one.** Book line 3339: **"The Observer is not the awareness.
+  It is what is aware of the awareness."** That separates two layers his spoken
+  description collapses into one, and `kb.js` currently follows the book.
+
+### AND A COLLISION WITH THE GAMIFICATION NOW IN SCOPE
+
+- [?] **SIG17.** The systematic review of self caught methodologies, 39 of 790
+  studies, finds that **incentivising self catching produces over reporting.**
+  The observer test's "that landed" tap is the only signal it collects, and
+  feeding it points, badges or a streak would destroy it. The two features
+  cannot both have it.
+- [?] **SIG18.** And the question under all of it: does either exercise need to
+  produce a number at all? Both could capture nothing but a timestamp and still
+  do what he described.
+
+---
+
+## 0t. A GATE DEFECT. THE FRAME RATE ASSERTION IS LOAD SENSITIVE.
+
+`tests/design.js:617` asserts the Field animates at 30 frames a second or
+better, measured over 1400 milliseconds of `requestAnimationFrame` in a live
+Chromium. That measurement is taken on whatever machine the gate happens to be
+sharing.
+
+Measured today on one unchanged build:
+
+    design.js run on its own, three times      105 of 105, 105 of 105, 105 of 105
+    design.js run after the other three gates  103 of 105, twice, both fps
+
+- [ ] **GT1.** So the gate reports a product defect when the only thing that
+  changed is what else was running. That is the shape this repository already
+  refuses in a probe, and it is worse in a gate, because a gate that cries wolf
+  gets ignored on the day it is right.
+- [ ] **GT2.** The floor is not the thing to move. Thirty frames a second is the
+  right bar and lowering it to make a red run go green would be the exact defect
+  named above. The measurement is what has to change: a warm up discarded, the
+  median of several samples rather than one window, or the frame budget measured
+  as work done rather than as wall clock.
+- [ ] **GT3.** Until then, a red fps line in a stacked run is re-run on its own
+  before it is believed or reported, and the re-run is quoted rather than the
+  first result.
+
+---
+
 ## 0c. RULED 20 SEPTEMBER, SECOND PASS. THE ARRIVAL, THE FEATHERS AND KARMA
 
 **"I didn't give you feedback on the feathers. I don't give you feedback
