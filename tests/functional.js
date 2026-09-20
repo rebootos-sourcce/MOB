@@ -960,7 +960,14 @@ ok(sum.over===0,'nothing on the surface overflows its own box, got '+sum.over);
 /* the prose is a reading, not a template: it names what was measured */
 ok(/blueprint you were born on|no birth data/.test(sum.text),
  'the story opens on the spiritual layer');
-ok(/Momentum/.test(sum.text),'and closes on momentum');
+/* RE-RULED, for the same reason as the onboarding row above. This asserted the
+   literal word "Momentum", which was a Label glued to the front of a Reading:
+   one string doing two jobs, on a surface where neither of the other two
+   paragraphs carries a label, and a sentence that opened on its own
+   denominator. The intent is that the reading closes on which way the field
+   leans, so the row asserts that instead of the word. */
+ok(/the field leans/i.test(sum.text)&&/benign|malignant/i.test(sum.text),
+ 'and closes on which way the field leans');
 ok(!/undefined|NaN|\[object/.test(sum.text),'and nothing leaked a placeholder');
 console.log(' ',JSON.stringify({glance:sum.glance,rows:sum.structRows,chips:sum.chips,
  num:sum.numRows,rings:sum.rings}));
