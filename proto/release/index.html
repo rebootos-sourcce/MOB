@@ -251,7 +251,14 @@ var REL={
  who:0, profile:null, sel:[], dose:50, pace:1, gates:10,
  phase:'pre', steps:[], at:0, paused:false,
  t0:0, plannedMs:0, doneMs:0, stepT:null, clockT:null,
- voice:false, bed:false, haptics:false, vx:null, spoke:0, spokeMs:0};
+ /* THE VOICE IS ON. It defaulted to off, so a person pressed begin and
+    heard nothing, which is the whole complaint: a protocol meant to be
+    heard, silent by default, is a reading exercise again. He ruled the
+    synthetic voice in as the temporary one, so it opens speaking.
+    The privacy line still comes first: the panel names the voice it got
+    and whether it runs on this machine before anything is spoken, which
+    is the standing ruling, and the control turns it off. */
+ voice:true, bed:false, haptics:false, vx:null, spoke:0, spokeMs:0};
 
 /* ============================================================
    SOUND. Synthesis only, and the whole of it is four earcons and one bed.
@@ -861,8 +868,16 @@ function boot(){
  $('who').onchange=function(){ REL.who=+this.value; pick(); };
  $('reset').onclick=function(){ REL.phase='pre'; pick(); };
  pick();
+ /* AND THE LIST ARRIVES LATE. getVoices returns empty on the first call in
+    every browser that loads them asynchronously, so a pick taken at load can
+    be null while a perfectly good voice exists a moment later. This used to
+    re-render only on the pre flight, so a run that started before the list
+    landed stayed silent for its whole length. It re-picks whatever the phase
+    is now. */
  if(window.speechSynthesis&&typeof speechSynthesis.onvoiceschanged!=='undefined')
-  speechSynthesis.onvoiceschanged=function(){ if(REL.phase==='pre')renderPre(); };
+  speechSynthesis.onvoiceschanged=function(){
+   REL.vx=null;
+   if(REL.phase==='pre'&&typeof renderPre==='function')renderPre(); };
  $('foot').innerHTML='Every figure is read off <code>engine.js</code> at run time for the '
   +'profile selected. The four channels, the plan and the allowance are the built ones. '
   +'The sound is synthesised on the page: four earcons and one two tone bed, no asset, no file. '

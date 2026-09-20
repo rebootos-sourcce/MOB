@@ -25,6 +25,73 @@ reopens. Every seat adds its own.
 
 ---
 
+## 089. RULED 20 SEPTEMBER, SEVENTEENTH PASS. THE STORY PAGE IS A D.
+
+His words: "The story page is a D. I think that needs to be redesigned. I need
+four designs by the art team, the creative team. Right now it's really visually
+unimpressive and uninteresting. It's really dull and it doesn't feel inspired."
+
+- [ ] **SD1. Four designs, from art and creative together.** Not one
+      refinement of what exists. The last pass fixed what the box was made of,
+      measured and argued, and he is saying the result is still dull. Those
+      are different problems: one is construction and one is invention.
+- [x] **SD2. And the construction work stands underneath whichever wins.** The
+      journal was built out of the form control token set, darker than the
+      page it sits on, and the live fetter lighting was happening inside that
+      hole. Any of the four designs inherits that fix rather than redoing it.
+- [ ] **SD3. It is the most important surface in the product** and it has had
+      one pass where every other surface has had three or more. That is the
+      same finding the prioritisation made from the file.
+
+### CL2. RUN THE WHOLE LOOP, AND TEST IT TO A NUMBER.
+
+His words: "Run the story and print, run the entire core loop. The team should
+ask questions about this experience to the ICPs and the focus group. The ICPs
+and the focus group should know what the design brief is of our core loop. And
+I want the team to design and iterate with the ICPs testing along the way until
+the ICPs are unanimously at 80 percent."
+
+- [ ] **CL20. End to end, not surface by surface.** Every pass so far has
+      rebuilt one page. Nobody has walked discover, play, flow, embody from a
+      cold start to a completed release.
+- [ ] **CL21. The panel is told the brief before it is asked.** His ruling,
+      and it changes the method: this is not blind usability testing, it is
+      asking people who know what the loop is meant to do whether it does it.
+- [x] **CL22. Unanimously at 80 is a real bar and it is measurable.** The
+      thousand person panel exists and has been used six times today. The
+      honest part is that a simulated panel cannot answer whether something
+      feels inspired, so the number has to be attached to something a
+      simulation can actually judge, and whatever it cannot judge has to be
+      named rather than scored.
+- [ ] **CL23. Iterate with testing along the way,** not one test at the end.
+
+### RF. THE RELEASE FLOW WAS SILENT.
+
+- [x] **RF10. The voice defaulted to off,** so pressing begin played nothing.
+      A protocol meant to be heard, silent by default, is the reading exercise
+      again. It opens speaking now, and the privacy line still comes first:
+      the panel names the voice it got and whether it runs on the machine
+      before a word is spoken.
+- [x] **RF11. And the voice list arrives late.** Every browser that loads
+      voices asynchronously returns an empty list on the first call, so a pick
+      taken at load can be null while a good voice exists a moment later. The
+      old handler only re-rendered the pre flight, so a run that started
+      before the list landed stayed silent for its whole length. It re-picks
+      whatever the phase is now.
+- [x] **RF12. The synthetic voice is the temporary one, ruled.** His words:
+      use a temporary AI voice font. So the recording question stays open and
+      the flow works without it.
+
+### NV. THE PARENT AND CHILD MENU.
+
+- [?] **NV10. He wants to see it before he rules on it.** His words: "I don't
+      know about the parent and child, I have to see that as an example." So
+      the prototype is the answer to the question rather than a proposal that
+      assumes one, and both readings of what a parent does when pressed have
+      to be in it.
+
+---
+
 ## 08a. RULED 20 SEPTEMBER, SIXTEENTH PASS. THE MENU BECOMES TWO LEVELS.
 
 His words: "Big menu change. Top menu is going to be Ritual, Story, Tools.

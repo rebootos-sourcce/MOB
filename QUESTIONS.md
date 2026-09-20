@@ -1,11 +1,15 @@
 # QUESTIONS FOR THE OWNER
 
 Every line in `TASKS.md` marked `[?]`, which is the mark for a question
-waiting on his ruling. 119 of them, across 38 sections.
-Read off commit c759cd9 on 2026-09-20. Nothing here is typed by hand: answer a
+waiting on his ruling. 120 of them, across 39 sections.
+Read off commit 6c3f3d0 on 2026-09-20. Nothing here is typed by hand: answer a
 question in TASKS.md and it leaves this file on the next run.
 
 The same list is in `QUESTIONS.html`, which opens in a browser.
+
+## 089. RULED 20 SEPTEMBER, SEVENTEENTH PASS. THE STORY PAGE IS A D.
+
+- [ ] **NV10. He wants to see it before he rules on it.** His words: "I don't know about the parent and child, I have to see that as an example." So the prototype is the answer to the question rather than a proposal that assumes one, and both readings of what a parent does when pressed have to be in it.
 
 ## 08a. RULED 20 SEPTEMBER, SIXTEENTH PASS. THE MENU BECOMES TWO LEVELS.
 

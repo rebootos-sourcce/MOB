@@ -67,12 +67,36 @@ const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;
 /* ---------- the sixteen pixel cut ----------
    A separate drawing in pixel units, not the wordmark scaled down.
    The whole word at sixteen pixels puts the e's upper counter at
-   0.65 of a pixel, so the small end is the u and its dots alone. */
-const FAV = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" role="img" aria-label="Atuned">`
- + `<g fill="none" stroke="SKY" stroke-width="2" stroke-linecap="butt">`
- + `<path d="M 3 5 L 3 9 A 5 5 0 0 0 13 9 L 13 5"/></g>`
- + `<g fill="DOT"><circle cx="5" cy="2" r="1.5"/><circle cx="11" cy="2" r="1.5"/></g></svg>`;
-const fav = (sky,dot) => FAV.replace('SKY',sky).replace('DOT',dot);
+   0.64 of a pixel and the mark rasterises to a smear.
+
+   AND IT IS THE a, NOT THE u. The u carrying its two dots was
+   drawn first, because it is the owner's own instruction and the
+   distinctive part of the mark. Six proportions of it were cut and
+   looked at, at actual size and at eight times, and every one of
+   them reads as a face. Two points above an open curve is a face
+   whatever the proportions are: the reading comes from the
+   topology and not from the numbers, so no amount of tuning
+   removes it. A plate behind it makes it worse. Section 5 carries
+   the picture, because a finding like this is only worth anything
+   if the person can see it. */
+const FAV_U = `<g fill="none" stroke="SKY" stroke-width="2" stroke-linecap="butt">`
+ + `<path d="M 4 5 L 4 11 A 4 4 0 0 0 12 11 L 12 5"/></g>`
+ + `<g fill="DOT"><circle cx="6" cy="2" r="1.5"/><circle cx="10" cy="2" r="1.5"/></g>`;
+const FAV_A = `<g fill="none" stroke="SKY" stroke-width="2" stroke-linecap="butt">`
+ + `<circle cx="8.5" cy="8.5" r="5.5"/><path d="M 14 2 L 14 15"/></g>`;
+const wrapFav = (g,sky,dot,sz) => `<svg xmlns="http://www.w3.org/2000/svg" width="${sz||16}" height="${sz||16}"`
+ + ` viewBox="0 0 16 16" role="img" aria-label="Atuned">`
+ + g.replace('SKY',sky).replace('DOT',dot) + `</svg>`;
+const fav  = (sky,dot,sz) => wrapFav(FAV_A, sky, dot, sz);
+const favU = (sky,dot,sz) => wrapFav(FAV_U, sky, dot, sz);
+/* the whole word crushed into sixteen pixels, as the evidence */
+function favWord(sky,dot,sz){
+  const m = M.A, k = 16 / m.vb.w;
+  return `<svg width="${sz||16}" height="${sz||16}" viewBox="0 0 16 16" role="img" aria-label="Atuned at sixteen pixels">`
+   + `<g transform="translate(${(2 - m.vb.x*k).toFixed(3)} ${(4.4).toFixed(1)}) scale(${k.toFixed(5)})">`
+   + `<g fill="none" stroke="${sky}" stroke-width="${W}" stroke-linecap="butt" stroke-linejoin="round">`
+   + m.letters.join('') + `</g><g fill="${dot}">` + m.dots.join('') + `</g></g></svg>`;
+}
 
 /* ---------- a single letter, for the alternates strip ---------- */
 function glyph(k, sky, h) {
@@ -93,7 +117,7 @@ const SIZES = [
  { n:'Boot card',      asc:26, why:'The one place the mark is the largest thing on the screen. 26 against the current 23px type.' },
  { n:'Top bar',        asc:13, why:'Pinned to the cap height ATUNED sets today, 13.1px measured at 18px type.' },
  { n:'Funnel heading', asc:32, why:'Pinned to the cap height of the 44px h1 on funnel/index.html, 32.0px measured.' },
- { n:'Favicon',        asc:null, why:'A separate cut at sixteen pixels. The word does not go here and the u does.' } ];
+ { n:'Favicon',        asc:null, why:'A separate cut at sixteen pixels, and it is the a. The word does not go here and neither does the u.' } ];
 const px = (m, asc) => ({ w:+(m.vb.w * asc / BASE).toFixed(1), h:+(m.vb.h * asc / BASE).toFixed(1) });
 
 /* ============================================================
@@ -337,42 +361,54 @@ SIZES.forEach(s => {
 });
 w(`</div>`);
 
-w(`<h3>What the small end drops, and the number behind it</h3>
+w(`<h3>What The Small End Drops, And The Number Behind It</h3>
 <p>This style has one known failure and it is not the stroke, it is the counter. A circular counter closes to a dot
-before a rectangular one closes to a slot, so the letter with the smallest counter decides the whole mark&rsquo;s floor.
-Here that letter is the e, whose upper counter is 26 units against the a&rsquo;s 65, a ratio of 0.40. The e therefore fills
-at two and a half times the size the a does.</p>
+before a rectangular one closes to a slot, so the letter with the smallest counter sets the floor for the whole mark.
+Here that is the e, whose upper counter is 26 units against the a&rsquo;s 65, a ratio of 0.40. The e fills at two and a half
+times the size the a does.</p>
 <table><tr><th>Size</th><th>e upper counter</th><th>Stroke</th><th>Reads</th></tr>
 <tr><td>Funnel heading, ascender 32</td><td class="n">6.4px</td><td class="n">4.7px</td><td>Open at every pixel density.</td></tr>
 <tr><td>Boot card, ascender 26</td><td class="n">5.2px</td><td class="n">3.8px</td><td>Open.</td></tr>
 <tr><td>Top bar, ascender 13</td><td class="n">2.6px</td><td class="n">1.9px</td><td>Open at 2x. At 1x it is two device pixels of grey and it holds, just.</td></tr>
-<tr><td>Whole word at 16px wide</td><td class="n lo">0.65px</td><td class="n lo">0.47px</td><td>Gone. The counter fills, the dots merge into a bar, the t&rsquo;s crossbar merges with the a.</td></tr>
+<tr><td>The whole word at 16px wide</td><td class="n lo">0.64px</td><td class="n lo">0.47px</td><td>Gone. Counter fills, dots merge into a bar, the t&rsquo;s crossbar merges with the a.</td></tr>
 </table>
-<p class="k">So the favicon is not the wordmark shrunk. It is a separate cut of the u and its dots, drawn in pixel units,
-and here is everything it drops:</p>
+
+<h3>The Favicon Is The a, And This Is Why</h3>
+<p>The u carrying its two dots was drawn first, because it is his own instruction and it is the distinctive part of the
+mark. Six proportions of it were cut and looked at, at actual size and at eight times: a wide u, a narrow u, a tall u,
+the dots pulled in to the stem centres, the right stem carried up, and the whole thing knocked out of a rounded plate.
+<b class="inl">Every one of them reads as a face.</b></p>
+<p>Two points above an open curve is a face. The reading comes from the topology rather than from the proportions, so
+there is no cut that removes it, and the plate makes it worse rather than better because it turns the face into an app
+icon of a face. Here are four of them beside the a, at sixteen pixels and at seven times, on the same ground:</p>
+<div class="fav">
+ <div class="fv"><span class="sq">${favU('var(--sky)','var(--um)')}</span><span class="z">${favU('var(--sky)','var(--um)',112)}</span><b>&uuml;, the cut</b></div>
+ <div class="fv"><span class="sq">${wrapFav('<rect x="0" y="0" width="16" height="16" rx="3.4" fill="SKY"/><g fill="none" stroke="#0C0D12" stroke-width="2" stroke-linecap="butt"><path d="M 5 6 L 5 10.5 A 3 3 0 0 0 11 10.5 L 11 6"/></g><g fill="DOT"><circle cx="6.5" cy="3.4" r="1.3"/><circle cx="9.5" cy="3.4" r="1.3"/></g>','var(--sky)','var(--um)')}</span><span class="z">${wrapFav('<rect x="0" y="0" width="16" height="16" rx="3.4" fill="SKY"/><g fill="none" stroke="#0C0D12" stroke-width="2" stroke-linecap="butt"><path d="M 5 6 L 5 10.5 A 3 3 0 0 0 11 10.5 L 11 6"/></g><g fill="DOT"><circle cx="6.5" cy="3.4" r="1.3"/><circle cx="9.5" cy="3.4" r="1.3"/></g>','var(--sky)','var(--um)',112)}</span><b>&uuml;, plated</b></div>
+ <div class="fv"><span class="sq">${favWord('var(--sky)','var(--um)')}</span><span class="z">${favWord('var(--sky)','var(--um)',112)}</span><b>the word</b></div>
+ <div class="fv" style="background:rgba(126,184,212,.07)"><span class="sq">${fav('var(--sky)','var(--um)')}</span><span class="z">${fav('var(--sky)','var(--um)',112)}</span><b style="color:var(--sky)">the a &middot; taken</b></div>
+</div>
+<p style="margin-top:14px">The a is the right answer on four counts, and three of them are measurable.</p>
 <ul>
-<li><b class="inl">The word.</b> Five letters go. The u with its dots is what is distinctive, and it is the owner&rsquo;s own
-    instruction rather than a monogram invented to solve a rendering problem.</li>
-<li><b class="inl">The stroke drops from 19 percent of the x height to 22.</b> 2px on a 9px letter. Proportion loses to
-    the pixel grid, because a 1.7px stroke renders as two columns of grey and a 2px stroke renders as a stroke.</li>
-<li><b class="inl">The dots go from one stroke wide to one and a half.</b> 3px against a 2px stroke. A dot at the stroke
-    weight rasterises to a smudge at this size, and two smudges 3px apart read as one bar, which is the one thing
-    the mark cannot afford to say.</li>
-<li><b class="inl">The bowl keeps its circle.</b> This was the detail expected to go and it did not: a centreline radius
-    of 5 inside a 12px letter leaves the counter 8 across and 8 deep. Measured before it was cut.</li>
+<li><b class="inl">It is the name&rsquo;s first letter</b>, which is what a favicon is for. The &uuml; is a mechanism inside the
+    wordmark, and the wordmark is on every surface that has room for it.</li>
+<li><b class="inl">It is the one letter carrying both of the face&rsquo;s defining properties at once</b>, a true circular
+    counter and a single straight vertical. The icon therefore says what the wordmark says rather than quoting a
+    detail of it.</li>
+<li><b class="inl">It has the widest counter in the word</b>, 65 of 103 against the e&rsquo;s 26, so it is the letter that
+    survives sixteen pixels best. At sixteen its counter is 9px across against a 2px stroke.</li>
+<li><b class="inl">It is not a face.</b></li>
 </ul>
-<div class="fav">`);
-LIGHT.forEach(l => {
-  const dot = l.prop || l.dot;
-  w(`<div class="fv" style="background:${l.bar}">
-   <span class="sq">${fav(l.sky, dot)}</span>
-   <span class="z">${fav(l.sky, dot).replace('width="16" height="16"','width="128" height="128"')}</span>
-   <b style="color:${l.paper?'#6E6B65':'#94908A'}">${l.n}</b></div>`);
-});
-w(`</div>
-<p style="margin-top:12px">Top row is sixteen pixels, actual size. Bottom is the same drawing at eight times so the cut can
-be read. Nothing changes between them but the scale.</p>
-<p class="who">Petra found the dot merge. Mika cut the small size.</p>`);
+<p>And here is everything the sixteen pixel cut drops against the drawn letter, named rather than noticed:</p>
+<ul>
+<li><b class="inl">The other five letters.</b> The word at sixteen pixels is the third tile above and it is a smear.</li>
+<li><b class="inl">The stroke goes from 19 percent of the x height to 15.</b> 2px on a 13px letter. Proportion loses to
+    the pixel grid, because a 2.5px stroke renders as a stroke and a dark column beside it.</li>
+<li><b class="inl">The overshoot goes.</b> 1.5 units is 0.2 of a pixel here, and a rounding that lands on a different
+    pixel on one side than the other is worse than no overshoot at all.</li>
+<li><b class="inl">The counter keeps its circle.</b> This was the detail expected to go and it did not: a centreline
+    radius of 5.5 inside a 13px letter leaves the counter 9 across. Measured before it was cut.</li>
+</ul>
+<p class="who">Petra called the face. Mika cut the a and takes the argument with him about dropping his dots.</p>`);
 
 /* ---------- 6. colour ---------- */
 const contrast = LIGHT.map(l => ({ l,
@@ -498,6 +534,10 @@ would have to move. Measured cost of moving it: the mark goes from 85.2px wide t
 <li style="margin:10px 0"><b class="inl">Flat&rsquo;s sky is a teal, not a blue.</b> <code>#5FD4C4</code> against the other six at hue 199 to
 203. On Flat the mark is not blue and the dot to letter separation drops to ${ratio('#F7F6F3','#5FD4C4')}, the weakest in the set. It clears
 its ground. It is named here rather than changed, because the lighting is his.</li>
+<li style="margin:10px 0"><b class="inl">The favicon drops his two dots.</b> Section 5, with the picture. Every cut of
+the u and its dots reads as a face at sixteen pixels, so the icon is the a and the mechanism stays on the wordmark,
+which is on every surface with room for it. This is the one place in the brief where the answer is not what was asked
+for, it is argued rather than assumed, and the &uuml; cut is in section 10 if he overrules it.</li>
 <li style="margin:10px 0"><b class="inl">Whether the trademark superscript stays.</b> It is on the boot card only and it was
 ruled in before registration. Against a drawn mark it is a placement decision rather than a type decision.</li>
 <li style="margin:10px 0"><b class="inl">Candidate A or candidate B.</b> A is landed here, on the joint measurement. B
@@ -518,7 +558,11 @@ terminal appears among the alternates.</p>
 ['A','B'].forEach(k => {
   w(`<h3>Candidate ${k}, ${CANDS[k].name}</h3><pre>${esc(svg(M[k], k, 'var(--sky)', 'var(--um)').replace(/></g,'>\n<'))}</pre>`);
 });
-w(`<h3>The sixteen pixel cut</h3><pre>${esc(fav('var(--sky)','var(--um)').replace(/></g,'>\n<'))}</pre>`);
+w(`<h3>The sixteen pixel cut, the a</h3><pre>${esc(fav('var(--sky)','var(--um)').replace(/></g,'>\n<'))}</pre>
+<h3>The sixteen pixel cut of the &uuml;, drawn and not taken</h3>
+<p>Kept in the source because it is his instruction and because the ruling above is a judgement about what a shape
+says rather than a measurement. If it is overruled, this is the cut.</p>
+<pre>${esc(favU('var(--sky)','var(--um)').replace(/></g,'>\n<'))}</pre>`);
 
 w(`<hr><p class="who" style="margin-top:22px">Sol Amadi, light and colour. Bjorn Haraldsson, type and grid.
 Petra Nikau, composition and symbol. Mika Ueda-Salas, the whole and the argument between them.</p>

@@ -46,15 +46,17 @@ const PROBE=`(function(){
   if(COLS[0]&&COLS[0].contains(e))return 'left';
   if(COLS[1]&&COLS[1].contains(e))return 'right';
   return 'centre'; }
+ function inview(e){var r=e.getBoundingClientRect();
+  return r.bottom>0&&r.top<innerHeight&&r.right>0&&r.left<innerWidth; }
  var all=[].slice.call(document.querySelectorAll(SEL)).filter(visible);
  var by={top:0,sub:0,left:0,right:0,sheet:0,centre:0};
- var small=[];
+ var small=[],seen=0,sby={top:0,sub:0,left:0,right:0,sheet:0,centre:0};
  all.forEach(function(e){
-  by[regionOf(e)]++;
+  var rg=regionOf(e); by[rg]++; if(inview(e)){seen++;sby[rg]++;}
   var r=e.getBoundingClientRect();
   if(r.width<44||r.height<44)small.push(
    (e.id||e.className||e.tagName)+' '+Math.round(r.width)+'x'+Math.round(r.height)); });
- return {total:all.length,by:by,under44:small.length,small:small.slice(0,6)};}())`;
+ return {total:all.length,seen:seen,by:by,sby:sby,under44:small.length,small:small.slice(0,6)};}())`;
 
 (async()=>{
  const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
@@ -80,14 +82,19 @@ const PROBE=`(function(){
  fs.writeFileSync(path.join(__dirname,'count-before.json'),JSON.stringify(out,null,1));
  for(const w of Object.keys(out)){
   console.log('\n== '+w+' wide, '+out[w].bar+' doors in the bar ==');
-  console.log('surface        total  top  sub left right centre  under44');
+  console.log('surface        total   seen  top  sub left right centre  under44');
   out[w].rows.forEach(r=>console.log(
-   r.nm.padEnd(13)+String(r.total).padStart(6)+String(r.by.top).padStart(5)
+   r.nm.padEnd(13)+String(r.total).padStart(6)+String(r.seen).padStart(7)+String(r.by.top).padStart(5)
    +String(r.by.sub).padStart(5)+String(r.by.left).padStart(5)
    +String(r.by.right).padStart(6)+String(r.by.centre).padStart(7)
    +String(r.under44).padStart(9)));
-  const t=out[w].rows.map(r=>r.total);
-  console.log('range '+Math.min.apply(0,t)+' to '+Math.max.apply(0,t)
-   +', median '+t.slice().sort((a,b)=>a-b)[t.length>>1]);
+  console.log('first viewport by region:');
+  out[w].rows.forEach(r=>console.log('  '+r.nm.padEnd(12)+' top '+r.sby.top
+   +'  sub '+r.sby.sub+'  left '+r.sby.left+'  right '+r.sby.right
+   +'  centre '+r.sby.centre));
+  ['total','seen'].forEach(function(key){
+   const t=out[w].rows.filter(r=>r.nm!=='Settings').map(r=>r[key]);
+   console.log(key+': range '+Math.min.apply(0,t)+' to '+Math.max.apply(0,t)
+    +', median '+t.slice().sort((a,b)=>a-b)[t.length>>1]);});
  }
  await b.close();})();
