@@ -105,6 +105,14 @@ function accAccount(){
    +accAct('Change it','acgoiq',{btn:'Open Energetics'}),
    'Entered once on Energetics and read here. There is only ever one editor '
    +'for a field.');
+ /* REPLAYABLE, AND IT LIVES IN THE PROFILE. Ruled: "the tutorial lives in the
+    profile, toggleable and replayable, and it does not spend real charge."
+    The onboarding is the same: nothing it does writes to the nine axes, so
+    running it again costs nothing and can be offered without a warning. */
+ h+=accGroup('The Opening',
+   accAct('Run the signal test again','acob',{btn:'Open it'}),
+   'The two words and where they land. Nothing it does is written to your '
+   +'record, so it can be run as often as it is useful.');
  h+=accGroup('Sign In',
    accStub('Signed in as','not signed in')
    +accStub('Key','no key yet')
@@ -262,6 +270,9 @@ function accWire(){
   if(!v){status('A profile needs a name. Nothing was changed.','fail');nm.value=CURP.name;return;}
   CURP.name=v; pSave(); statusSaved(); renderAccount(); render();};
  var gi=$('acgoiq'); if(gi)gi.onclick=function(){setTab(TAB.INTAKE);};
+ var ob=$('acob'); if(ob)ob.onclick=function(){
+  if(typeof sheetShut==='function')sheetShut();
+  if(typeof obOpen==='function')obOpen(true);};
  /* the same three steps and the same setter as the bar menu. Two doors onto
     one setter is not a duplicate: one is for changing it while looking at the
     instrument, the other for finding it when you do not know where it is. */

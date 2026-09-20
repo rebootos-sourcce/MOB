@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="61c8c57 2026-09-20 04:51"><head><meta charset="utf-8">
+<html lang="en" data-build="68f3a96 2026-09-20 05:45"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -3030,6 +3030,55 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
  pointer-events:none}
 body:not(.tab-field) .cv-legend{display:none}
 @media(max-width:1180px){.cv-legend{grid-row:auto;order:2}}
+/* ============================================================
+   ONBOARDING. Humble and warm, which is a typographic decision
+   as much as a verbal one: wider measure, softer ground, and
+   nothing on it shaped like a form.
+   ============================================================ */
+/* NO BACKDROP FILTER, and the design gate is why. A blur over the Field costs
+   the wheel its frame rate: measured at 10.9 to 18 frames a second across the
+   lightings with one on, against a floor the gate holds. A sheet that makes
+   the instrument behind it stutter is a sheet that has already failed, and the
+   blur was a nicety. An opaque ground reads as a sheet on its own, and it also
+   stops the wheel showing through a card a person is meant to be reading. */
+.ob{position:fixed;inset:0;z-index:95;display:none;align-items:center;
+ justify-content:center;background:rgba(6,6,8,.94);padding:24px}
+.ob-card{width:min(560px,100%);max-height:88vh;overflow:auto;
+ background:var(--panel);border:1px solid var(--edge);border-radius:14px;
+ padding:26px 28px 20px}
+.ob-h{font-size:24px;line-height:1.2;margin:6px 0 14px;font-weight:600;
+ letter-spacing:-.012em;color:var(--ink)}
+.ob-p{margin:0 0 13px;font-size:15px;line-height:1.62;color:var(--mid);
+ max-width:58ch}
+.ob-dim{color:var(--dim);font-size:13.5px}
+.ob-acts{display:flex;gap:9px;flex-wrap:wrap;margin-top:18px}
+.ob-dots{display:flex;gap:6px;justify-content:center;margin-top:18px}
+.ob-dot{width:6px;height:6px;border-radius:50%;background:var(--edge-2)}
+.ob-dot.on{background:var(--accent)}
+.ob-grid{display:grid;gap:1px;background:var(--edge);border:1px solid var(--edge);
+ border-radius:var(--r);overflow:hidden;margin:4px 0 2px}
+.ob-g{background:var(--panel-2);padding:10px 13px;display:flex;
+ flex-direction:column;gap:2px}
+.ob-g b{font-size:14px;color:var(--ink);font-weight:600}
+.ob-g span{font-size:12.5px;color:var(--dim)}
+/* THE TWO WORDS. Large, alone, and with room around them, because the whole
+   practice is reading one word slowly. A word in a paragraph is read at the
+   speed of the paragraph. */
+.ob-word{font-size:34px;line-height:1.1;text-align:center;letter-spacing:-.01em;
+ padding:22px 12px;margin:6px 0 12px;border-radius:var(--r);
+ background:var(--sunk);font-weight:500}
+.ob-word-n{color:var(--dim)}
+.ob-word-c{color:var(--ink)}
+.ob-seats{display:flex;flex-wrap:wrap;gap:7px;margin:10px 0 2px}
+.ob-seat{min-height:var(--tap);padding:6px 13px;border-radius:var(--r-s);
+ border:1px solid var(--edge);background:var(--panel-2);color:var(--mid);
+ font:inherit;font-size:13px;cursor:pointer}
+.ob-seat:hover{color:var(--ink);border-color:var(--edge-2)}
+.ob-seat.on{background:var(--c,var(--accent));border-color:var(--c,var(--accent));
+ color:var(--on-accent);font-weight:600}
+@media(max-width:640px){
+ .ob{padding:12px}.ob-card{padding:20px 18px 16px}.ob-h{font-size:20px}
+ .ob-word{font-size:27px;padding:17px 10px}}
 .s-lens{display:grid;gap:1px;background:var(--edge);border:1px solid var(--edge);
  border-radius:var(--r);overflow:hidden}
 .s-ln{background:var(--panel);padding:9px 12px 10px;display:flex;
@@ -3396,6 +3445,9 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
      It removes itself. Reduced motion gets the end state and no movement,
      which is the honest version rather than a shorter animation.
      ============================================================ -->
+<!-- ONBOARDING. A sheet, not a tab: it is met once and replayed on request,
+     and a surface in the bar is a peer of the instrument, which this is not. -->
+<div id="ob" class="ob" style="display:none"></div>
 <div id="boot" class="boot" aria-hidden="true">
  <svg viewBox="0 0 200 200" class="boot-svg">
   <g class="b-halo"><ellipse cx="100" cy="26" rx="13" ry="4.4"/></g>
@@ -3453,7 +3505,7 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
        download as atuned(1).html and leaves the first one where it was, so
        opening "the file" can mean opening last week's.
        Stamped by BUILD.sh, so it cannot be wrong or go stale. -->
-  <span class="bs-v" id="bstamp">61c8c57 2026-09-20 04:51</span></div>
+  <span class="bs-v" id="bstamp">68f3a96 2026-09-20 05:45</span></div>
  <!-- THE WAY OUT WAS BUILT AND NEVER SHOWN.
 
       pointerdown and keydown both clear this sheet and have since it was
@@ -17255,6 +17307,14 @@ function accAccount(){
    +accAct('Change it','acgoiq',{btn:'Open Energetics'}),
    'Entered once on Energetics and read here. There is only ever one editor '
    +'for a field.');
+ /* REPLAYABLE, AND IT LIVES IN THE PROFILE. Ruled: "the tutorial lives in the
+    profile, toggleable and replayable, and it does not spend real charge."
+    The onboarding is the same: nothing it does writes to the nine axes, so
+    running it again costs nothing and can be offered without a warning. */
+ h+=accGroup('The Opening',
+   accAct('Run the signal test again','acob',{btn:'Open it'}),
+   'The two words and where they land. Nothing it does is written to your '
+   +'record, so it can be run as often as it is useful.');
  h+=accGroup('Sign In',
    accStub('Signed in as','not signed in')
    +accStub('Key','no key yet')
@@ -17412,6 +17472,9 @@ function accWire(){
   if(!v){status('A profile needs a name. Nothing was changed.','fail');nm.value=CURP.name;return;}
   CURP.name=v; pSave(); statusSaved(); renderAccount(); render();};
  var gi=$('acgoiq'); if(gi)gi.onclick=function(){setTab(TAB.INTAKE);};
+ var ob=$('acob'); if(ob)ob.onclick=function(){
+  if(typeof sheetShut==='function')sheetShut();
+  if(typeof obOpen==='function')obOpen(true);};
  /* the same three steps and the same setter as the bar menu. Two doors onto
     one setter is not a duplicate: one is for changing it while looking at the
     instrument, the other for finding it when you do not know where it is. */
@@ -18053,6 +18116,199 @@ $('bRel').addEventListener('click',function(){
    +'a charge first.','warn');});
 
 try{window.__at&&window.__at('ui/personas.js');}catch(e){}
+/* ============================================================
+   ONBOARDING. Humble and warm, and it has them do exactly one
+   thing.
+
+   Every line of this is his ruling and the wording of the rulings
+   is kept where it is his.
+
+   "Onboarding, humble, warm. This is for you. No one's coming to
+   save you. Save yourself. That's what this tool does. It helps
+   you recognise the patterns that impair your success and make
+   you mentally, physically and spiritually weak." Speak to their
+   pain. Inviting, welcoming, they are not alone, this is here to
+   help. AND WE DO NOT DO MECHANICAL, which settles the collision
+   between this and the instrument's own voice: the instrument is
+   mechanical about measurements and this is not a measurement.
+
+   "The somatic opener, the signal test, should be on the
+   onboarding." It is the one thing it asks them to do, and it is
+   interactive because he ruled onboarding has to capture
+   something rather than be read.
+
+   "Same onboarding for both arrivals." One flow, no branch on
+   where they came from.
+
+   "The tutorial lives in the profile, toggleable and replayable,
+   and it does not spend real charge." So does this. Nothing here
+   writes to the nine axes, nothing here is a reading, and it can
+   be run again from the account area any time.
+
+   WHAT IT CAPTURES, and why that is not a form. One answer: where
+   they felt the second word. That is a seat, it is the first real
+   parameter the instrument has about them, and it is obtained by
+   having them feel something rather than by asking them to
+   describe themselves. Everything else a form would ask for is
+   somewhere else in the product already.
+   ============================================================ */
+var OB={open:false, step:0, felt:null, neutral:null, charged:null, replay:false};
+
+/* THE TWO WORDS. The first has no quality of its own and the second does, and
+   the contrast between them is the whole proof. They are drawn from his own
+   nine rather than invented, so the charged word is a word this instrument
+   actually measures, and a person who goes looking for it later finds it.
+
+   The neutral word is deliberately dull and concrete. A neutral word that is
+   secretly evocative proves nothing. */
+const OB_NEUTRAL=['table','pavement','envelope','stairwell','doorframe'];
+function obPick(){
+ /* the charged word is the axis this person is most likely to feel, which on
+    a blank profile is the commonest one rather than a claim about them. A
+    person who has entered something gets their own heaviest. */
+ var live=null;
+ try{ live=CHILD.map(function(c){return {c:c,v:+(S.charge[c.nm]||0)};})
+   .sort(function(a,b){return b.v-a.v;})[0]; }catch(e){}
+ var c=(live&&live.v>0)?live.c:(CHILD.filter(function(x){return x.nm==='Fear';})[0]||CHILD[0]);
+ OB.neutral=OB_NEUTRAL[Math.floor(Math.random()*OB_NEUTRAL.length)];
+ OB.charged=c;}
+
+function obOpen(replay){
+ var h=document.getElementById('ob'); if(!h)return;
+ OB.open=true; OB.step=0; OB.felt=null; OB.replay=!!replay;
+ obPick(); obRender();
+ h.style.display='flex';
+ /* the sheet takes focus, because a person arriving here has nothing else to
+    do and a keyboard user should not have to find it */
+ var f=h.querySelector('button'); if(f)f.focus();}
+function obClose(){
+ var h=document.getElementById('ob'); if(!h)return;
+ OB.open=false; h.style.display='none'; h.innerHTML='';
+ try{ if(CURP){ CURP.onboarded=true; pSave(); } }catch(e){}
+ if(typeof render==='function')render();}
+
+/* ---- the steps ---- */
+function obCard(eye,title,body,acts){
+ return '<div class="ob-card" role="dialog" aria-modal="true" aria-label="'+esc(title)+'">'
+  +'<span class="pm-eye">'+esc(eye)+'</span>'
+  +'<h2 class="ob-h">'+esc(title)+'</h2>'
+  +body
+  +'<div class="ob-acts">'+acts+'</div>'
+  +'<div class="ob-dots">'+[0,1,2,3].map(function(i){
+    return '<span class="ob-dot'+(i===OB.step?' on':'')+'"></span>';}).join('')+'</div>'
+  +'</div>';}
+
+function obRender(){
+ var h=document.getElementById('ob'); if(!h)return;
+ var s=OB.step, out='';
+ if(s===0){
+  /* HIS WORDS, WARMED. The ruling carries the sentences and the ruling also
+     says humble and warm, so they are said the way somebody says them to a
+     person rather than the way a product says them to a market. */
+  out=obCard('Welcome','This one is for you.',
+   '<p class="ob-p">Nobody is coming to save you. That is not a hard thing, it '
+   +'is the good news, because it means the work is yours and it is available.</p>'
+   +'<p class="ob-p">This helps you recognise the patterns that quietly cost you: '
+   +'the ones that make you weaker than you are, in your body, in your thinking '
+   +'and in what you can hold to. You are not the first person to carry them and '
+   +'you are not carrying them alone.</p>'
+   +'<p class="ob-p ob-dim">Two minutes. One thing to try. Nothing to fill in.</p>',
+   '<button type="button" class="btn pri" data-ob="next">Start</button>'
+   +'<button type="button" class="btn" data-ob="skip">Not now</button>');
+ }
+ else if(s===1){
+  out=obCard('What this is','An instrument, not an opinion.',
+   '<p class="ob-p">Everything here is measured from something you entered. '
+   +'It never invents a number, and where it has not read something it says so '
+   +'rather than guessing.</p>'
+   +'<div class="ob-grid">'
+   +[['You write what happened','in your own words, not a questionnaire'],
+     ['It finds where that sits','a place in the body, not a label'],
+     ['You clear what is there','one address at a time'],
+     ['And you watch it move','the same numbers, over months']]
+    .map(function(x){return '<div class="ob-g"><b>'+esc(x[0])+'</b>'
+      +'<span>'+esc(x[1])+'</span></div>';}).join('')
+   +'</div>',
+   '<button type="button" class="btn pri" data-ob="next">Then try one thing</button>'
+   +'<button type="button" class="btn" data-ob="back">Back</button>');
+ }
+ else if(s===2){
+  /* THE SIGNAL TEST. The one interactive thing, and it is the somatic opener
+     he named. Two words, read slowly, and the body answers before the mind
+     does. The instruction is the whole practice: there is nothing to get
+     right, which is said out loud because a person who thinks they are being
+     tested will perform rather than feel. */
+  out=obCard('The signal test','Say these to yourself, slowly.',
+   '<p class="ob-p">Read the first word. Let it land. Notice whether anything '
+   +'in your body changes, and do not go looking for it, just let it be there '
+   +'or not.</p>'
+   +'<div class="ob-word ob-word-n">'+esc(OB.neutral)+'</div>'
+   +'<p class="ob-p ob-dim">Most people get nothing from that one. That is the '
+   +'point of it. Now the second.</p>'
+   +'<div class="ob-word ob-word-c">'+esc(OB.charged.nm.toLowerCase())+'</div>'
+   +'<p class="ob-p">Where did that one land? There is no right answer, and '
+   +'nothing at all is an answer.</p>'
+   +'<div class="ob-seats">'
+   +BANDS.map(function(b){
+     return '<button type="button" class="ob-seat'+(OB.felt===b?' on':'')
+      +'" data-obseat="'+esc(b)+'" style="--c:'+seatCol(b)+'">'+esc(b)+'</button>';}).join('')
+   +'<button type="button" class="ob-seat'+(OB.felt==='none'?' on':'')
+   +'" data-obseat="none">Nothing</button></div>',
+   '<button type="button" class="btn pri" data-ob="next"'
+   +(OB.felt?'':' disabled')+'>'+(OB.felt?'Next':'Choose one to go on')+'</button>'
+   +'<button type="button" class="btn" data-ob="back">Back</button>');
+ }
+ else {
+  /* WHAT IT READ, AND WHAT IT DOES NOT CLAIM. One signal is one signal. The
+     product's whole claim is that it does not invent a reading, and the first
+     screen a person meets is the worst possible place to break that. */
+  var said;
+  if(OB.felt==='none'){
+   said='<p class="ob-p">Nothing, and that is a real answer. Sometimes the '
+    +'word is not yours, and sometimes the signal is quiet because it has been '
+    +'quiet for a long time. Both of those are things this instrument reads, '
+    +'and neither of them is a failure.</p>';
+  }else{
+   var same=(OB.charged.seat===OB.felt);
+   said='<p class="ob-p">You felt <b>'+esc(OB.charged.nm.toLowerCase())+'</b> at '
+    +'the <b>'+esc(String(OB.felt).toLowerCase())+'</b>. '
+    +(same?'That is where this instrument reads it too, which means your felt '
+        +'sense and the measurement agree before you have entered anything.'
+       :'This instrument usually reads that one at the '
+        +esc(String(OB.charged.seat).toLowerCase())+', and yours went elsewhere. '
+        +'Yours is the one that counts. The measurement follows what you feel, '
+        +'not the other way round.')
+    +'</p>';}
+  out=obCard('What just happened',
+   'A word with no power over you moved your body.',
+   said
+   +'<p class="ob-p">That is the whole mechanism, and you have just watched it '
+   +'work. A pattern is a word, a picture or a moment that still has a hold '
+   +'somewhere. This finds where, and gives you a way to put it down.</p>'
+   +'<p class="ob-p ob-dim">Nothing has been written to your record. You can run '
+   +'this again any time from your profile.</p>',
+   '<button type="button" class="btn pri" data-ob="done">Go in</button>');
+ }
+ h.innerHTML=out;
+ var f=h.querySelector('.ob-card'); if(f)f.scrollTop=0;}
+
+/* ---- one listener for the whole sheet ---- */
+addEventListener('click',function(e){
+ if(!OB.open)return;
+ var t=e.target&&e.target.closest?e.target:null; if(!t)return;
+ var seat=t.closest?t.closest('[data-obseat]'):null;
+ if(seat){ OB.felt=seat.getAttribute('data-obseat'); obRender(); return; }
+ var b=t.closest?t.closest('[data-ob]'):null; if(!b)return;
+ var k=b.getAttribute('data-ob');
+ if(k==='next'){ if(OB.step===2&&!OB.felt)return; OB.step++; obRender(); return; }
+ if(k==='back'){ OB.step=Math.max(0,OB.step-1); obRender(); return; }
+ if(k==='skip'||k==='done'){ obClose(); return; }});
+/* escape leaves, because a sheet a person cannot dismiss is a sheet that has
+   stopped being an invitation. */
+addEventListener('keydown',function(e){
+ if(OB.open&&e.key==='Escape')obClose();});
+
+try{window.__at&&window.__at('ui/onboard.js');}catch(e){}
 
 /* ============================================================
    POINTER. Drag a segment to load or clear it, click to drill.
@@ -19047,6 +19303,19 @@ step('the stored record',function(){
    ruling, and the comment says why rather than leaving the next reader to
    wonder which of the two is the live one. */
 step('opening surface',function(){setTab(TAB.FIELD);});
+/* ONBOARDING, ON THE FIRST VISIT ONLY, and after the boot sheet has gone so
+   the two do not stack. "Same onboarding for both arrivals", so there is no
+   branch on where the person came from: the only question asked is whether
+   they have met it before, which is a flag on their own record.
+
+   It is a step like the others, so an onboarding that fails to open costs the
+   onboarding and not the instrument behind it. */
+step('onboarding',function(){
+ if(typeof obOpen!=='function')return;
+ var seen=false;
+ try{ seen=!!(CURP&&CURP.onboarded); }catch(e){}
+ if(seen)return;
+ setTimeout(function(){ try{ obOpen(false); }catch(e){} },5600);});
 /* THE FRAME LOOP IS NOT OPTIONAL AND IS STARTED LAST, outside the steps, so
    that even a start up which lost several pieces still paints. A loop that
    throws would stop itself on the first frame, so the body is guarded rather
@@ -19076,5 +19345,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="001268034"></div>
+<div id="eof" hidden data-len="001282549"></div>
 </body></html>

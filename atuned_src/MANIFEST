@@ -50,5 +50,6 @@ ui/games.js
 ui/panels.js
 ui/account.js
 ui/personas.js
+ui/onboard.js
 ui/ui.js
 shell/foot.html

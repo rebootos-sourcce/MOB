@@ -1,6 +1,8 @@
 const {chromium}=require('playwright');
 const path=require('path');
-const FILE='file://'+path.resolve('source.html');
+/* the target is overridable, so the delivery build can be put through the
+   same gates as the source build rather than being trusted. */
+const FILE='file://'+path.resolve(process.env.ATUNED_FILE||'source.html');
 let PASS=0,FAIL=0;
 /* THE BOOT IS A THREE SECOND SHEET, so every page these gates open has to be
    allowed to finish booting before anything is measured or clicked. Without
@@ -10,7 +12,16 @@ let PASS=0,FAIL=0;
    not reproduce, which is exactly the shape of this kind of race. */
 const booted=async p=>{try{await p.waitForFunction(
   ()=>document.body.classList.contains('booted'),null,{timeout:12000});}
- catch(e){/* reduced motion clears it synchronously; a miss is not a failure */}};
+ catch(e){/* reduced motion clears it synchronously; a miss is not a failure */}
+ /* AND THE OPENING IS DISMISSED, because every page here goes on to test the
+    instrument and a first visit meets the onboarding sheet over it. That is
+    real behaviour and the gate proved it by failing four Field checks the
+    moment onboarding landed, so the sheet is closed the way a person closes
+    it rather than hidden. The onboarding has a block of its own below, so
+    getting past it here is not the same as not testing it. */
+ try{ await p.waitForTimeout(600);
+   await p.evaluate(()=>{ if(typeof OB!=='undefined'&&OB.open&&typeof obClose==='function')obClose(); });
+   await p.waitForTimeout(120); }catch(e){}};
 const ok=(c,m)=>{if(c)PASS++;else{FAIL++;console.log('  FAIL '+m);}};
 (async()=>{
 const browser=await chromium.launch({executablePath:'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
@@ -1146,6 +1157,59 @@ ok(!/72%|28%/.test(virginSweep.pol),'and prints no percentage off the defaults')
   +(nums.length?'  '+nums.slice(0,5).join(', '):''));}
 /* the roster itself is always there. only the descent read is conditional. */
 ok(/Satan frozen/.test(pole.clean),'while the nine circles stay readable to anybody');
+
+console.log('\n=== the opening, which is the one thing it asks a stranger to do ===');
+/* HIS RULINGS, GATED. Humble and warm, one interactive thing, the same flow
+   for both arrivals, replayable from the profile, and it spends no charge.
+   The last of those is the one that matters most: an opening that wrote to
+   the nine axes would be a reading taken before anybody had said anything. */
+{const ob=await page.evaluate(async()=>{
+  const before=CHARGES.map(c=>+(S.charge[c]||0));
+  obOpen(true);
+  const o={opened:OB.open, steps:[], wrote:false};
+  o.steps.push(document.querySelector('.ob-h').textContent);
+  document.querySelector('[data-ob=next]').click();
+  await new Promise(r=>setTimeout(r,60));
+  o.steps.push(document.querySelector('.ob-h').textContent);
+  document.querySelector('[data-ob=next]').click();
+  await new Promise(r=>setTimeout(r,60));
+  o.steps.push(document.querySelector('.ob-h').textContent);
+  o.seats=document.querySelectorAll('[data-obseat]').length;
+  /* it will not advance until the one question is answered */
+  o.blocked=document.querySelector('[data-ob=next]').disabled;
+  document.querySelector('[data-obseat=Heart]').click();
+  await new Promise(r=>setTimeout(r,60));
+  o.freed=!document.querySelector('[data-ob=next]').disabled;
+  o.captured=OB.felt;
+  document.querySelector('[data-ob=next]').click();
+  await new Promise(r=>setTimeout(r,60));
+  o.steps.push(document.querySelector('.ob-h').textContent);
+  o.said=document.querySelector('.ob-card').innerText;
+  document.querySelector('[data-ob=done]').click();
+  await new Promise(r=>setTimeout(r,60));
+  o.closed=!OB.open;
+  const after=CHARGES.map(c=>+(S.charge[c]||0));
+  o.wrote=before.some((v,i)=>Math.abs(v-after[i])>1e-9);
+  o.flagged=!!(CURP&&CURP.onboarded);
+  return o;});
+ ok(ob.opened,'the opening opens');
+ ok(ob.steps.length===4,'four steps, got '+ob.steps.length);
+ ok(ob.seats===8,'the signal test offers seven seats and nothing, got '+ob.seats);
+ ok(ob.blocked,'it will not go on until the one question is answered');
+ ok(ob.freed&&ob.captured==='Heart','and answering it frees the way on, captured '+ob.captured);
+ ok(/moved your body/i.test(ob.said),'the last card names what just happened');
+ ok(ob.closed,'and it closes');
+ /* THE ONE THAT MATTERS. Ruled: it does not spend real charge. */
+ ok(ob.wrote===false,'and it wrote nothing to the nine axes');
+ ok(ob.flagged,'the record remembers it was met, so it does not open twice');}
+/* HUMBLE AND WARM, AND NOT MECHANICAL. His words, and the copy is checked for
+   them rather than trusted, because this is the first thing a stranger reads
+   and the instrument's own voice is the wrong voice for it. */
+{const words=await page.evaluate(async()=>{
+  obOpen(true); const t=document.querySelector('.ob-card').innerText; obClose(); return t;});
+ ok(/for you/i.test(words),'the first card speaks to the person');
+ ok(/alone/i.test(words),'and says they are not alone in it');
+ ok(!/[0-9]+%/.test(words),'and prints no percentage at a stranger');}
 
 console.log('\n=== the navigation is in the document and cannot drift ===');
 /* THE BAR IS HARD CODED NOW, on his ruling after three builds in a row where

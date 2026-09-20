@@ -992,6 +992,19 @@ step('the stored record',function(){
    ruling, and the comment says why rather than leaving the next reader to
    wonder which of the two is the live one. */
 step('opening surface',function(){setTab(TAB.FIELD);});
+/* ONBOARDING, ON THE FIRST VISIT ONLY, and after the boot sheet has gone so
+   the two do not stack. "Same onboarding for both arrivals", so there is no
+   branch on where the person came from: the only question asked is whether
+   they have met it before, which is a flag on their own record.
+
+   It is a step like the others, so an onboarding that fails to open costs the
+   onboarding and not the instrument behind it. */
+step('onboarding',function(){
+ if(typeof obOpen!=='function')return;
+ var seen=false;
+ try{ seen=!!(CURP&&CURP.onboarded); }catch(e){}
+ if(seen)return;
+ setTimeout(function(){ try{ obOpen(false); }catch(e){} },5600);});
 /* THE FRAME LOOP IS NOT OPTIONAL AND IS STARTED LAST, outside the steps, so
    that even a start up which lost several pieces still paints. A loop that
    throws would stop itself on the first frame, so the body is guarded rather

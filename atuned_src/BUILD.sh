@@ -89,3 +89,14 @@ PY
 # to notice is somebody clicking through from the page to the app who sees the
 # greens disagree. Regenerated on every build from the block above.
 python3 ../tools/tokens.py
+
+# THE DELIVERY BUILD, SMALLER, because the file was arriving cut.
+#
+# His browser reported "THE FILE IS SHORT. The end of it never arrived." with
+# the navigation present and no module loaded, which is a transfer problem and
+# not a defect in the product. Comments are 35 per cent of what was being sent
+# and are worth nothing inside a browser, so the shipped file drops them.
+#
+# Nothing is renamed, reordered or rewritten, which is why the same gates run
+# against it. See tools/slim.py.
+python3 ../tools/slim.py "$OUT" "$(dirname "$OUT")/atuned-slim.html" 

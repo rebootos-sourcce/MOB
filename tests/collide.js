@@ -1,5 +1,7 @@
 const {chromium}=require('playwright');const path=require('path');
-const FILE='file://'+path.resolve('source.html');
+/* the target is overridable, so the delivery build can be put through the
+   same gates as the source build rather than being trusted. */
+const FILE='file://'+path.resolve(process.env.ATUNED_FILE||'source.html');
 /* THE BOOT IS A THREE SECOND SHEET, so every page these gates open has to be
    allowed to finish booting before anything is measured or clicked. Without
    it the gates race the boot: they wait under a second, the sheet is still
