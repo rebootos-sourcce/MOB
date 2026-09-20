@@ -77,6 +77,120 @@ reopens. Every seat adds its own.
 
 ---
 
+## 08e. RULED 20 SEPTEMBER, EIGHTEENTH PASS. THE TYPE STUDY, AND A LIST THAT ASKS NOTHING.
+
+His notes on the logo study, on the questions document, on the boot card and on
+the child patterns. Wording kept where it is his.
+
+### TY. THE TYPE STUDY. HE PICKED THE CUTS HE WANTS DEVELOPED.
+
+- [x] **TY0. Named, verbatim: "A1 A2, T2, U1, U2, U3, N2, E3, and E2."** Nine
+      cuts out of the study, to be carried into a couple of rounds each rather
+      than shown once. Written down before any of it is drawn.
+- [ ] **TY1. A couple of rounds of each of the nine.** Not a second sheet of
+      the same thing: a round is a change argued from what the last round
+      showed.
+- [ ] **TY2. D11 is out, and the reason is the study's fault, not his.** His
+      words: "D11 is not varied enough for me to tell." A sheet whose variants
+      sit inside the noise of the rendering asks him to rule on a difference he
+      cannot see, which is the same defect as a gate that counts by hand. The
+      next sheet varies D by an amount that survives a screenshot or it does
+      not go out.
+- [ ] **TY3. Spacing is the study, not a property of it.** His words: "the
+      spacing is very important. So touching, not touching, these things are
+      very critical." So tracking and the letter pair collisions get their own
+      rounds, drawn at the sizes the mark is actually used at, with touching
+      and not touching shown as two states of the same cut rather than as two
+      cuts.
+- [?] **TY4. How many rounds is "a couple"?** Two is the literal reading and
+      what is planned. Does he want three?
+
+### FV. THE FAVICON. RULED, AND IT IS NOT A LETTER.
+
+- [x] **FV1. "For the favicon, let's do like the old ring. Seven colours in a
+      band."** This settles LG13 without needing the letter argument at all:
+      the sixteen pixel cut is the ring, not the a and not the u, so the face
+      the u makes at that size stops being a problem to solve.
+- [ ] **FV2. Seven colours is the seats, and the ring already exists** as the
+      boot mark and the key strip. The favicon is that ring at sixteen, thirty
+      two and one hundred and eighty pixels, drawn as a band rather than as
+      seven separate marks.
+- [?] **FV3. The band rhythm, and he gave both readings:** "either one, one,
+      one, one, one, one, or one, two, one, two, one, two." Equal arcs, or
+      alternating weights. Both get drawn. Note that six numbers were said for
+      seven seats, so the seventh is the question inside the question: does the
+      odd seat take the wide slot or the narrow one?
+- [ ] **FV4. And there is no favicon in the product at all today,** which the
+      logo seat found and which is why this is a build and not a swap.
+
+### LG. THE MARK, CONTINUED.
+
+- [x] **LG14 ANSWERED. "When the white dots are on paper, make them dark
+      grey."** So the light inverts rather than disappearing: pure white on the
+      four dark grounds, dark grey on the three paper grounds. One rule, seven
+      answers, and no ground gets a dot that vanishes into it.
+- [?] **LG18 REFRAMED, and it is not a ruling yet.** His words: "well, now
+      before we were using a regular font, now we are using typography. So for
+      LG18, just know that now we are exploring." So lowercase against the
+      uppercase ruling is not settled and is not being asked for a decision
+      this round. The question is held open deliberately and the rounds carry
+      both cases until the cut is chosen.
+
+### CP. THE CHILD PATTERN, HIGHLIGHTED AND LOCATED.
+
+- [ ] **CP1. "When we find a child pattern, that is very special."** His words,
+      and the product currently says nothing when one is found. A child pattern
+      is the thing the instrument is for and it arrives with no more emphasis
+      than any other node.
+- [ ] **CP2. The treatment: "a more intense colour of the chakra colour, or
+      some treatment to it, to suggest it is a child pattern."** So the
+      highlight is argued from the seat the pattern sits in rather than from a
+      new colour, which keeps the palette and the body map saying the same
+      thing. Intensity is the channel, and it has to survive all seven
+      lightings, including the two paper ones where more intense means darker.
+- [ ] **CP3. And the imprints panel locates it.** "With these imprints we want
+      to locate when we are finding a child pattern." The panel counts held and
+      filled in today and says nothing about which of them are children, so it
+      gains the one distinction that matters and says where the child sits.
+- [?] **CP4. What counts as found?** The engine has child emotions as a named
+      set of nine and it has the address ladder. Whether a child pattern is a
+      member of that set, or any node whose parent is also charged, decides
+      whether this highlights nine things or a hundred and twelve. His call,
+      and the difference is the whole feature.
+
+### QD. THE QUESTIONS DOCUMENT ASKS NOTHING, AND THAT IS A REAL DEFECT.
+
+- [ ] **QD1. His words: "these do not look like questions from the team. It
+      says Atuned questions, but there are no question marks here. These are
+      just statements."** He is right and it is measurable: the generator emits
+      every line marked `[?]` verbatim, and the lines were written as findings
+      by the seat that found them, so a document titled questions is a
+      document of statements. A list that asks nothing cannot be answered,
+      which is why it has been sent three times and returned nothing.
+- [ ] **QD2. Every `[?]` line carries an explicit question, ending in a
+      question mark,** and the question comes first so it is answerable without
+      reading the finding under it.
+- [ ] **QD3. And the generator gates it.** `tools/questions.js` exits non zero
+      on a `[?]` line with no question mark in it, so the defect cannot come
+      back the way the stale counts in `CLAUDE.md` came back seven times. The
+      rule this repository already carries: read the count off the run, and do
+      not ship a document that asserts something the file does not support.
+- [ ] **QD4. It also names who is asking.** His words: "so I need the questions
+      from the team." A question with a seat on it is a question he can weigh
+      against what that seat is for, and an unattributed one is a riddle.
+
+### BC. THE BOOT CARD. RULED AND BUILT.
+
+- [x] **BC1. "Put the word powered by above the word Source OS, and then drop
+      powered by Source OS down thirty pixels so it is standing on its own."**
+      Built. The three column version that hung the qualifier off the name's
+      left is gone, both rows centre on the wordmark, and the gap to the
+      wordmark went 8 to 38. Measured after: wordmark centre 800.0, powered by
+      centre 800.0, name centre 800.8, gap above the pair 42 against 3 inside
+      it, so it reads as two objects rather than one block of four words.
+
+---
+
 ## 089. RULED 20 SEPTEMBER, SEVENTEENTH PASS. THE STORY PAGE IS A D.
 
 His words: "The story page is a D. I think that needs to be redesigned. I need
@@ -3094,6 +3208,17 @@ auric field."
 ## 0p. RULED 20 SEPTEMBER, TENTH PASS. THE ONBOARDING, AND THE TWO TESTS.
 
 ### OB. THE ONBOARDING, HIS NOTES, VERBATIM WHERE THEY ARE HIS
+
+- [x] **OB0. And it is off for now.** Ruled 20 September: "let's turn off
+      onboarding for now." This line was said in a turn that queued nine other
+      items and was not queued itself, which is the one rule this list exists
+      to hold, so it is written down before it is built and marked built after.
+      `OB_AUTO=false` in `ui/onboard.js`, read once at the launch step in
+      `ui/ui.js`. Off means unmet, not deleted: the account area still replays
+      it and the gate still walks all four steps. Three rows added, one of them
+      a seven second watch on a blank profile, because off is a measurement.
+      **OB1 to OB9 below stay open.** They are the rewrite that has to happen
+      before it comes back on, and turning the sheet off does not close them.
 
 - [ ] **OB1.** "I do not want to see how many screens I have to go through."
   The dots go.

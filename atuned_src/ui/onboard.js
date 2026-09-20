@@ -34,6 +34,13 @@
    describe themselves. Everything else a form would ask for is
    somewhere else in the product already.
    ============================================================ */
+/* THE AUTOMATIC OPEN IS OFF. Ruled 20 September: "let's turn off onboarding
+   for now." Off means a stranger is not met by a sheet, not that the flow is
+   deleted: every step below still exists, the account area still replays it,
+   and the gate still walks all four steps through obOpen(true). One flag, read
+   in one place, so turning it back on is a single word and not an archaeology
+   exercise. */
+var OB_AUTO=false;
 var OB={open:false, step:0, felt:null, neutral:null, charged:null, replay:false};
 
 /* THE TWO WORDS. The first has no quality of its own and the second does, and

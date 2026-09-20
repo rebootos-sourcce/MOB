@@ -79,7 +79,15 @@ const PROBE=`(function(){
   }
   await p.close();
  }
- fs.writeFileSync(path.join(__dirname,'count-before.json'),JSON.stringify(out,null,1));
+ /* THE BUILD THE FIGURES CAME OFF, because source.html moves under a seat
+    reading it and a figure with no build behind it cannot be checked later.
+    It is written beside the widths and not into them: the first cut put it in
+    the same object the printer walks and the printer tried to read a viewport
+    called build. */
+ fs.writeFileSync(path.join(__dirname,'count-before.json'),JSON.stringify(
+  {build:{md5:require('crypto').createHash('md5')
+    .update(fs.readFileSync(path.resolve(FILE))).digest('hex'),
+   taken:new Date().toISOString().slice(0,10)}, widths:out},null,1));
  for(const w of Object.keys(out)){
   console.log('\n== '+w+' wide, '+out[w].bar+' doors in the bar ==');
   console.log('surface        total   seen  top  sub left right centre  under44');

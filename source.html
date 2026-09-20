@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="d2b6681 2026-09-20 21:48"><head><meta charset="utf-8">
+<html lang="en" data-build="cfb4fe7 2026-09-20 21:56"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -3541,16 +3541,24 @@ body:not(.tab-field) .cv-legend{display:none}
    the case from here rather than from the markup, for the reason written
    beside the wordmark above: the gate that bans all caps copy is correct, and
    a logotype answers it with styling rather than with an exception. */
-/* AND THE NAME IS CENTRED, NOT THE PAIR. Ruled: "centre SOURCE OS under
-   Atuned, powered by is left justified." The two were one centred row, so the
-   pair's midpoint sat under the wordmark and the name itself sat right of it.
-   Three columns with the name in the middle one puts the name exactly under
-   the wordmark at any width, and the qualifier hangs off its left. */
+/* AND IT IS TWO ROWS, NOT A ROW AND A HANGING QUALIFIER. Ruled 20 September,
+   reversing the three column version directly above it: "put the word powered
+   by above the word Source OS, and drop it down thirty pixels so it is
+   standing on its own."
+
+   Both rows centre on the wordmark, which is what the earlier ruling was
+   protecting when it said centre the name: with the qualifier stacked above
+   rather than beside, centring the pair and centring the name are the same
+   thing, so the three columns are gone and nothing is lost by their going.
+
+   Thirty pixels is taken literally, 8 to 38, because the instruction says what
+   it is for: standing on its own means the gap to the wordmark is larger than
+   the gap inside the pair, and 38 against 3 reads as two objects rather than
+   one block of four words. */
 .boot-wm .bs{font-family:var(--sans);font-size:9px;font-weight:500;
- line-height:1;margin-top:8px;align-self:stretch;
- display:grid;grid-template-columns:1fr auto 1fr;align-items:baseline}
-.boot-wm .bs-by{letter-spacing:.04em;color:var(--dim);font-weight:400;
- justify-self:end;margin-right:.5em}
+ line-height:1;margin-top:38px;
+ display:flex;flex-direction:column;align-items:center;gap:3px}
+.boot-wm .bs-by{letter-spacing:.04em;color:var(--dim);font-weight:400}
 .boot-wm .bs-nm{letter-spacing:.19em;margin-right:-.19em;color:var(--ink);
  text-transform:uppercase}
 
@@ -22339,6 +22347,13 @@ try{window.__at&&window.__at('ui/personas.js');}catch(e){}
    describe themselves. Everything else a form would ask for is
    somewhere else in the product already.
    ============================================================ */
+/* THE AUTOMATIC OPEN IS OFF. Ruled 20 September: "let's turn off onboarding
+   for now." Off means a stranger is not met by a sheet, not that the flow is
+   deleted: every step below still exists, the account area still replays it,
+   and the gate still walks all four steps through obOpen(true). One flag, read
+   in one place, so turning it back on is a single word and not an archaeology
+   exercise. */
+var OB_AUTO=false;
 var OB={open:false, step:0, felt:null, neutral:null, charged:null, replay:false};
 
 /* THE TWO WORDS. The first has no quality of its own and the second does, and
@@ -23622,6 +23637,8 @@ step('opening surface',function(){setTab(TAB.FIELD);});
    onboarding and not the instrument behind it. */
 step('onboarding',function(){
  if(typeof obOpen!=='function')return;
+ /* and the ruling that it does not open by itself is read here, once. */
+ if(typeof OB_AUTO!=='undefined'&&!OB_AUTO)return;
  var seen=false;
  try{ seen=!!(CURP&&CURP.onboarded); }catch(e){}
  if(seen)return;
@@ -23655,5 +23672,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="001534001"></div>
+<div id="eof" hidden data-len="001534939"></div>
 </body></html>

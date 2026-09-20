@@ -1,524 +1,533 @@
 {
- "390": {
-  "bar": 9,
-  "rows": [
-   {
-    "nm": "Energetics",
-    "id": "iq",
-    "k": 5,
-    "total": 119,
-    "seen": 15,
-    "by": {
-     "top": 14,
-     "sub": 0,
-     "left": 52,
-     "right": 19,
-     "sheet": 0,
-     "centre": 34
-    },
-    "sby": {
-     "top": 11,
-     "sub": 0,
-     "left": 0,
-     "right": 0,
-     "sheet": 0,
-     "centre": 4
-    },
-    "under44": 1,
-    "small": [
-     "wtu 18x44"
-    ]
-   },
-   {
-    "nm": "Ritual",
-    "id": "rit",
-    "k": 10,
-    "total": 92,
-    "seen": 14,
-    "by": {
-     "top": 14,
-     "sub": 0,
-     "left": 52,
-     "right": 19,
-     "sheet": 0,
-     "centre": 7
-    },
-    "sby": {
-     "top": 11,
-     "sub": 0,
-     "left": 0,
-     "right": 0,
-     "sheet": 0,
-     "centre": 3
-    },
-    "under44": 0,
-    "small": []
-   },
-   {
-    "nm": "Story",
-    "id": "story",
-    "k": 0,
-    "total": 103,
-    "seen": 20,
-    "by": {
-     "top": 14,
-     "sub": 0,
-     "left": 52,
-     "right": 19,
-     "sheet": 0,
-     "centre": 18
-    },
-    "sby": {
-     "top": 11,
-     "sub": 0,
-     "left": 0,
-     "right": 0,
-     "sheet": 0,
-     "centre": 9
-    },
-    "under44": 0,
-    "small": []
-   },
-   {
-    "nm": "Field",
-    "id": "cv",
-    "k": 2,
-    "total": 99,
-    "seen": 17,
-    "by": {
-     "top": 14,
-     "sub": 4,
-     "left": 52,
-     "right": 20,
-     "sheet": 0,
-     "centre": 9
-    },
-    "sby": {
-     "top": 11,
-     "sub": 2,
-     "left": 0,
-     "right": 0,
-     "sheet": 0,
-     "centre": 4
-    },
-    "under44": 0,
-    "small": []
-   },
-   {
-    "nm": "Body",
-    "id": "emap",
-    "k": 3,
-    "total": 105,
-    "seen": 18,
-    "by": {
-     "top": 14,
-     "sub": 7,
-     "left": 52,
-     "right": 32,
-     "sheet": 0,
-     "centre": 0
-    },
-    "sby": {
-     "top": 11,
-     "sub": 7,
-     "left": 0,
-     "right": 0,
-     "sheet": 0,
-     "centre": 0
-    },
-    "under44": 0,
-    "small": []
-   },
-   {
-    "nm": "Compass",
-    "id": "cone",
-    "k": 8,
-    "total": 106,
-    "seen": 22,
-    "by": {
-     "top": 14,
-     "sub": 0,
-     "left": 52,
-     "right": 29,
-     "sheet": 0,
-     "centre": 11
-    },
-    "sby": {
-     "top": 11,
-     "sub": 0,
-     "left": 0,
-     "right": 0,
-     "sheet": 0,
-     "centre": 11
-    },
-    "under44": 0,
-    "small": []
-   },
-   {
-    "nm": "Knowledge",
-    "id": "know",
-    "k": 6,
-    "total": 221,
-    "seen": 24,
-    "by": {
-     "top": 14,
-     "sub": 0,
-     "left": 52,
-     "right": 29,
-     "sheet": 0,
-     "centre": 126
-    },
-    "sby": {
-     "top": 11,
-     "sub": 0,
-     "left": 0,
-     "right": 0,
-     "sheet": 0,
-     "centre": 13
-    },
-    "under44": 0,
-    "small": []
-   },
-   {
-    "nm": "Games",
-    "id": "games",
-    "k": 7,
-    "total": 98,
-    "seen": 14,
-    "by": {
-     "top": 14,
-     "sub": 0,
-     "left": 52,
-     "right": 29,
-     "sheet": 0,
-     "centre": 3
-    },
-    "sby": {
-     "top": 11,
-     "sub": 0,
-     "left": 0,
-     "right": 0,
-     "sheet": 0,
-     "centre": 3
-    },
-    "under44": 0,
-    "small": []
-   },
-   {
-    "nm": "Summary",
-    "id": "sum",
-    "k": 1,
-    "total": 85,
-    "seen": 13,
-    "by": {
-     "top": 14,
-     "sub": 0,
-     "left": 52,
-     "right": 15,
-     "sheet": 0,
-     "centre": 4
-    },
-    "sby": {
-     "top": 11,
-     "sub": 0,
-     "left": 0,
-     "right": 0,
-     "sheet": 0,
-     "centre": 2
-    },
-    "under44": 0,
-    "small": []
-   },
-   {
-    "nm": "Settings",
-    "id": "settings",
-    "k": 9,
-    "total": 23,
-    "seen": 18,
-    "by": {
-     "top": 14,
-     "sub": 0,
-     "left": 0,
-     "right": 0,
-     "sheet": 0,
-     "centre": 9
-    },
-    "sby": {
-     "top": 11,
-     "sub": 0,
-     "left": 0,
-     "right": 0,
-     "sheet": 0,
-     "centre": 7
-    },
-    "under44": 0,
-    "small": []
-   }
-  ]
+ "build": {
+  "md5": "9cacfa16e783628cac2cc449f9a021b7",
+  "taken": "2026-09-20"
  },
- "1600": {
-  "bar": 9,
-  "rows": [
-   {
-    "nm": "Energetics",
-    "id": "iq",
-    "k": 5,
-    "total": 119,
-    "seen": 82,
-    "by": {
-     "top": 14,
-     "sub": 0,
-     "left": 52,
-     "right": 19,
-     "sheet": 0,
-     "centre": 34
+ "widths": {
+  "390": {
+   "bar": 9,
+   "rows": [
+    {
+     "nm": "Energetics",
+     "id": "iq",
+     "k": 5,
+     "total": 119,
+     "seen": 15,
+     "by": {
+      "top": 14,
+      "sub": 0,
+      "left": 52,
+      "right": 19,
+      "sheet": 0,
+      "centre": 34
+     },
+     "sby": {
+      "top": 11,
+      "sub": 0,
+      "left": 0,
+      "right": 0,
+      "sheet": 0,
+      "centre": 4
+     },
+     "under44": 2,
+     "small": [
+      "wlast 338x44",
+      "wtu 18x44"
+     ]
     },
-    "sby": {
-     "top": 14,
-     "sub": 0,
-     "left": 47,
-     "right": 8,
-     "sheet": 0,
-     "centre": 13
+    {
+     "nm": "Ritual",
+     "id": "rit",
+     "k": 10,
+     "total": 92,
+     "seen": 14,
+     "by": {
+      "top": 14,
+      "sub": 0,
+      "left": 52,
+      "right": 19,
+      "sheet": 0,
+      "centre": 7
+     },
+     "sby": {
+      "top": 11,
+      "sub": 0,
+      "left": 0,
+      "right": 0,
+      "sheet": 0,
+      "centre": 3
+     },
+     "under44": 2,
+     "small": [
+      "ritx 74x44",
+      "ritsave 106x44"
+     ]
     },
-    "under44": 3,
-    "small": [
-     "wtu 18x44",
-     "iq-hd 428x44",
-     "iq-hd 428x44"
-    ]
-   },
-   {
-    "nm": "Ritual",
-    "id": "rit",
-    "k": 10,
-    "total": 92,
-    "seen": 76,
-    "by": {
-     "top": 14,
-     "sub": 0,
-     "left": 52,
-     "right": 19,
-     "sheet": 0,
-     "centre": 7
+    {
+     "nm": "Story",
+     "id": "story",
+     "k": 0,
+     "total": 103,
+     "seen": 20,
+     "by": {
+      "top": 14,
+      "sub": 0,
+      "left": 52,
+      "right": 19,
+      "sheet": 0,
+      "centre": 18
+     },
+     "sby": {
+      "top": 11,
+      "sub": 0,
+      "left": 0,
+      "right": 0,
+      "sheet": 0,
+      "centre": 9
+     },
+     "under44": 0,
+     "small": []
     },
-    "sby": {
-     "top": 14,
-     "sub": 0,
-     "left": 47,
-     "right": 8,
-     "sheet": 0,
-     "centre": 7
+    {
+     "nm": "Field",
+     "id": "cv",
+     "k": 2,
+     "total": 99,
+     "seen": 17,
+     "by": {
+      "top": 14,
+      "sub": 4,
+      "left": 52,
+      "right": 20,
+      "sheet": 0,
+      "centre": 9
+     },
+     "sby": {
+      "top": 11,
+      "sub": 2,
+      "left": 0,
+      "right": 0,
+      "sheet": 0,
+      "centre": 4
+     },
+     "under44": 0,
+     "small": []
     },
-    "under44": 1,
-    "small": [
-     "ritall 784x44"
-    ]
-   },
-   {
-    "nm": "Story",
-    "id": "story",
-    "k": 0,
-    "total": 103,
-    "seen": 87,
-    "by": {
-     "top": 14,
-     "sub": 0,
-     "left": 52,
-     "right": 19,
-     "sheet": 0,
-     "centre": 18
+    {
+     "nm": "Body",
+     "id": "emap",
+     "k": 3,
+     "total": 105,
+     "seen": 18,
+     "by": {
+      "top": 14,
+      "sub": 7,
+      "left": 52,
+      "right": 32,
+      "sheet": 0,
+      "centre": 0
+     },
+     "sby": {
+      "top": 11,
+      "sub": 7,
+      "left": 0,
+      "right": 0,
+      "sheet": 0,
+      "centre": 0
+     },
+     "under44": 0,
+     "small": []
     },
-    "sby": {
-     "top": 14,
-     "sub": 0,
-     "left": 47,
-     "right": 8,
-     "sheet": 0,
-     "centre": 18
+    {
+     "nm": "Compass",
+     "id": "cone",
+     "k": 8,
+     "total": 106,
+     "seen": 22,
+     "by": {
+      "top": 14,
+      "sub": 0,
+      "left": 52,
+      "right": 29,
+      "sheet": 0,
+      "centre": 11
+     },
+     "sby": {
+      "top": 11,
+      "sub": 0,
+      "left": 0,
+      "right": 0,
+      "sheet": 0,
+      "centre": 11
+     },
+     "under44": 0,
+     "small": []
     },
-    "under44": 1,
-    "small": [
-     "stmic 115x44"
-    ]
-   },
-   {
-    "nm": "Field",
-    "id": "cv",
-    "k": 2,
-    "total": 99,
-    "seen": 69,
-    "by": {
-     "top": 14,
-     "sub": 4,
-     "left": 52,
-     "right": 20,
-     "sheet": 0,
-     "centre": 9
+    {
+     "nm": "Knowledge",
+     "id": "know",
+     "k": 6,
+     "total": 221,
+     "seen": 24,
+     "by": {
+      "top": 14,
+      "sub": 0,
+      "left": 52,
+      "right": 29,
+      "sheet": 0,
+      "centre": 126
+     },
+     "sby": {
+      "top": 11,
+      "sub": 0,
+      "left": 0,
+      "right": 0,
+      "sheet": 0,
+      "centre": 13
+     },
+     "under44": 0,
+     "small": []
     },
-    "sby": {
-     "top": 14,
-     "sub": 2,
-     "left": 37,
-     "right": 7,
-     "sheet": 0,
-     "centre": 9
+    {
+     "nm": "Games",
+     "id": "games",
+     "k": 7,
+     "total": 98,
+     "seen": 14,
+     "by": {
+      "top": 14,
+      "sub": 0,
+      "left": 52,
+      "right": 29,
+      "sheet": 0,
+      "centre": 3
+     },
+     "sby": {
+      "top": 11,
+      "sub": 0,
+      "left": 0,
+      "right": 0,
+      "sheet": 0,
+      "centre": 3
+     },
+     "under44": 0,
+     "small": []
     },
-    "under44": 0,
-    "small": []
-   },
-   {
-    "nm": "Body",
-    "id": "emap",
-    "k": 3,
-    "total": 105,
-    "seen": 64,
-    "by": {
-     "top": 14,
-     "sub": 7,
-     "left": 52,
-     "right": 32,
-     "sheet": 0,
-     "centre": 0
+    {
+     "nm": "Summary",
+     "id": "sum",
+     "k": 1,
+     "total": 85,
+     "seen": 13,
+     "by": {
+      "top": 14,
+      "sub": 0,
+      "left": 52,
+      "right": 15,
+      "sheet": 0,
+      "centre": 4
+     },
+     "sby": {
+      "top": 11,
+      "sub": 0,
+      "left": 0,
+      "right": 0,
+      "sheet": 0,
+      "centre": 2
+     },
+     "under44": 0,
+     "small": []
     },
-    "sby": {
-     "top": 14,
-     "sub": 7,
-     "left": 37,
-     "right": 6,
-     "sheet": 0,
-     "centre": 0
+    {
+     "nm": "Settings",
+     "id": "settings",
+     "k": 9,
+     "total": 23,
+     "seen": 18,
+     "by": {
+      "top": 14,
+      "sub": 0,
+      "left": 0,
+      "right": 0,
+      "sheet": 0,
+      "centre": 9
+     },
+     "sby": {
+      "top": 11,
+      "sub": 0,
+      "left": 0,
+      "right": 0,
+      "sheet": 0,
+      "centre": 7
+     },
+     "under44": 0,
+     "small": []
+    }
+   ]
+  },
+  "1600": {
+   "bar": 9,
+   "rows": [
+    {
+     "nm": "Energetics",
+     "id": "iq",
+     "k": 5,
+     "total": 119,
+     "seen": 82,
+     "by": {
+      "top": 14,
+      "sub": 0,
+      "left": 52,
+      "right": 19,
+      "sheet": 0,
+      "centre": 34
+     },
+     "sby": {
+      "top": 14,
+      "sub": 0,
+      "left": 47,
+      "right": 8,
+      "sheet": 0,
+      "centre": 13
+     },
+     "under44": 3,
+     "small": [
+      "wtu 18x44",
+      "iq-hd 428x44",
+      "iq-hd 428x44"
+     ]
     },
-    "under44": 0,
-    "small": []
-   },
-   {
-    "nm": "Compass",
-    "id": "cone",
-    "k": 8,
-    "total": 106,
-    "seen": 80,
-    "by": {
-     "top": 14,
-     "sub": 0,
-     "left": 52,
-     "right": 29,
-     "sheet": 0,
-     "centre": 11
+    {
+     "nm": "Ritual",
+     "id": "rit",
+     "k": 10,
+     "total": 92,
+     "seen": 76,
+     "by": {
+      "top": 14,
+      "sub": 0,
+      "left": 52,
+      "right": 19,
+      "sheet": 0,
+      "centre": 7
+     },
+     "sby": {
+      "top": 14,
+      "sub": 0,
+      "left": 47,
+      "right": 8,
+      "sheet": 0,
+      "centre": 7
+     },
+     "under44": 1,
+     "small": [
+      "ritwhen 721x44"
+     ]
     },
-    "sby": {
-     "top": 14,
-     "sub": 0,
-     "left": 47,
-     "right": 8,
-     "sheet": 0,
-     "centre": 11
+    {
+     "nm": "Story",
+     "id": "story",
+     "k": 0,
+     "total": 103,
+     "seen": 87,
+     "by": {
+      "top": 14,
+      "sub": 0,
+      "left": 52,
+      "right": 19,
+      "sheet": 0,
+      "centre": 18
+     },
+     "sby": {
+      "top": 14,
+      "sub": 0,
+      "left": 47,
+      "right": 8,
+      "sheet": 0,
+      "centre": 18
+     },
+     "under44": 0,
+     "small": []
     },
-    "under44": 0,
-    "small": []
-   },
-   {
-    "nm": "Knowledge",
-    "id": "know",
-    "k": 6,
-    "total": 221,
-    "seen": 125,
-    "by": {
-     "top": 14,
-     "sub": 0,
-     "left": 52,
-     "right": 29,
-     "sheet": 0,
-     "centre": 126
+    {
+     "nm": "Field",
+     "id": "cv",
+     "k": 2,
+     "total": 99,
+     "seen": 69,
+     "by": {
+      "top": 14,
+      "sub": 4,
+      "left": 52,
+      "right": 20,
+      "sheet": 0,
+      "centre": 9
+     },
+     "sby": {
+      "top": 14,
+      "sub": 2,
+      "left": 37,
+      "right": 7,
+      "sheet": 0,
+      "centre": 9
+     },
+     "under44": 0,
+     "small": []
     },
-    "sby": {
-     "top": 14,
-     "sub": 0,
-     "left": 47,
-     "right": 8,
-     "sheet": 0,
-     "centre": 56
+    {
+     "nm": "Body",
+     "id": "emap",
+     "k": 3,
+     "total": 105,
+     "seen": 64,
+     "by": {
+      "top": 14,
+      "sub": 7,
+      "left": 52,
+      "right": 32,
+      "sheet": 0,
+      "centre": 0
+     },
+     "sby": {
+      "top": 14,
+      "sub": 7,
+      "left": 37,
+      "right": 6,
+      "sheet": 0,
+      "centre": 0
+     },
+     "under44": 0,
+     "small": []
     },
-    "under44": 0,
-    "small": []
-   },
-   {
-    "nm": "Games",
-    "id": "games",
-    "k": 7,
-    "total": 98,
-    "seen": 72,
-    "by": {
-     "top": 14,
-     "sub": 0,
-     "left": 52,
-     "right": 29,
-     "sheet": 0,
-     "centre": 3
+    {
+     "nm": "Compass",
+     "id": "cone",
+     "k": 8,
+     "total": 106,
+     "seen": 80,
+     "by": {
+      "top": 14,
+      "sub": 0,
+      "left": 52,
+      "right": 29,
+      "sheet": 0,
+      "centre": 11
+     },
+     "sby": {
+      "top": 14,
+      "sub": 0,
+      "left": 47,
+      "right": 8,
+      "sheet": 0,
+      "centre": 11
+     },
+     "under44": 0,
+     "small": []
     },
-    "sby": {
-     "top": 14,
-     "sub": 0,
-     "left": 47,
-     "right": 8,
-     "sheet": 0,
-     "centre": 3
+    {
+     "nm": "Knowledge",
+     "id": "know",
+     "k": 6,
+     "total": 221,
+     "seen": 125,
+     "by": {
+      "top": 14,
+      "sub": 0,
+      "left": 52,
+      "right": 29,
+      "sheet": 0,
+      "centre": 126
+     },
+     "sby": {
+      "top": 14,
+      "sub": 0,
+      "left": 47,
+      "right": 8,
+      "sheet": 0,
+      "centre": 56
+     },
+     "under44": 0,
+     "small": []
     },
-    "under44": 0,
-    "small": []
-   },
-   {
-    "nm": "Summary",
-    "id": "sum",
-    "k": 1,
-    "total": 85,
-    "seen": 75,
-    "by": {
-     "top": 14,
-     "sub": 0,
-     "left": 52,
-     "right": 15,
-     "sheet": 0,
-     "centre": 4
+    {
+     "nm": "Games",
+     "id": "games",
+     "k": 7,
+     "total": 98,
+     "seen": 72,
+     "by": {
+      "top": 14,
+      "sub": 0,
+      "left": 52,
+      "right": 29,
+      "sheet": 0,
+      "centre": 3
+     },
+     "sby": {
+      "top": 14,
+      "sub": 0,
+      "left": 47,
+      "right": 8,
+      "sheet": 0,
+      "centre": 3
+     },
+     "under44": 0,
+     "small": []
     },
-    "sby": {
-     "top": 14,
-     "sub": 0,
-     "left": 47,
-     "right": 10,
-     "sheet": 0,
-     "centre": 4
+    {
+     "nm": "Summary",
+     "id": "sum",
+     "k": 1,
+     "total": 85,
+     "seen": 75,
+     "by": {
+      "top": 14,
+      "sub": 0,
+      "left": 52,
+      "right": 15,
+      "sheet": 0,
+      "centre": 4
+     },
+     "sby": {
+      "top": 14,
+      "sub": 0,
+      "left": 47,
+      "right": 10,
+      "sheet": 0,
+      "centre": 4
+     },
+     "under44": 0,
+     "small": []
     },
-    "under44": 0,
-    "small": []
-   },
-   {
-    "nm": "Settings",
-    "id": "settings",
-    "k": 9,
-    "total": 23,
-    "seen": 23,
-    "by": {
-     "top": 14,
-     "sub": 0,
-     "left": 0,
-     "right": 0,
-     "sheet": 0,
-     "centre": 9
-    },
-    "sby": {
-     "top": 14,
-     "sub": 0,
-     "left": 0,
-     "right": 0,
-     "sheet": 0,
-     "centre": 9
-    },
-    "under44": 1,
-    "small": [
-     "ac-ixb on 228x44"
-    ]
-   }
-  ]
+    {
+     "nm": "Settings",
+     "id": "settings",
+     "k": 9,
+     "total": 23,
+     "seen": 23,
+     "by": {
+      "top": 14,
+      "sub": 0,
+      "left": 0,
+      "right": 0,
+      "sheet": 0,
+      "centre": 9
+     },
+     "sby": {
+      "top": 14,
+      "sub": 0,
+      "left": 0,
+      "right": 0,
+      "sheet": 0,
+      "centre": 9
+     },
+     "under44": 2,
+     "small": [
+      "ac-ixb on 228x44",
+      "ac-ixb 228x44"
+     ]
+    }
+   ]
+  }
  }
 }

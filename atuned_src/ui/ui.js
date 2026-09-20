@@ -1039,6 +1039,8 @@ step('opening surface',function(){setTab(TAB.FIELD);});
    onboarding and not the instrument behind it. */
 step('onboarding',function(){
  if(typeof obOpen!=='function')return;
+ /* and the ruling that it does not open by itself is read here, once. */
+ if(typeof OB_AUTO!=='undefined'&&!OB_AUTO)return;
  var seen=false;
  try{ seen=!!(CURP&&CURP.onboarded); }catch(e){}
  if(seen)return;

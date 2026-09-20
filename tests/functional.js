@@ -1350,6 +1350,22 @@ console.log('\n=== the opening, which is the one thing it asks a stranger to do 
  /* THE ONE THAT MATTERS. Ruled: it does not spend real charge. */
  ok(ob.wrote===false,'and it wrote nothing to the nine axes');
  ok(ob.flagged,'the record remembers it was met, so it does not open twice');}
+/* AND IT DOES NOT OPEN BY ITSELF. Ruled 20 September: onboarding is off for
+   now. Off is a measurement and not a comment, so a fresh page with nothing
+   stored is watched past the moment the sheet used to arrive, which is 5600ms
+   after boot. The replay rows above still walk every step, which is the whole
+   point of a flag rather than a deletion: the flow is intact and unmet. */
+{const solo=await browser.newPage({viewport:{width:1600,height:1000}});
+ await solo.goto(FILE,{waitUntil:'load'});
+ await solo.waitForTimeout(7000);
+ const q=await solo.evaluate(()=>({auto:(typeof OB_AUTO==='undefined'?null:OB_AUTO),
+   open:!!(typeof OB!=='undefined'&&OB.open),
+   sheet:!!document.querySelector('.ob-card'),
+   replay:typeof obOpen==='function'}));
+ await solo.close();
+ ok(q.auto===false,'the automatic open is off by ruling, read OB_AUTO '+q.auto);
+ ok(q.open===false&&q.sheet===false,'so a stranger meets the instrument and no sheet');
+ ok(q.replay,'and the flow is still there to be replayed');}
 /* HUMBLE AND WARM, AND NOT MECHANICAL. His words, and the copy is checked for
    them rather than trusted, because this is the first thing a stranger reads
    and the instrument's own voice is the wrong voice for it. */
