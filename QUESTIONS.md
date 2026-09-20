@@ -1,11 +1,15 @@
 # QUESTIONS FOR THE OWNER
 
 Every line in `TASKS.md` marked `[?]`, which is the mark for a question
-waiting on his ruling. 108 of them, across 31 sections.
-Read off commit 3100edd on 2026-09-20. Nothing here is typed by hand: answer a
+waiting on his ruling. 109 of them, across 32 sections.
+Read off commit 1db92ac on 2026-09-20. Nothing here is typed by hand: answer a
 question in TASKS.md and it leaves this file on the next run.
 
 The same list is in `QUESTIONS.html`, which opens in a browser.
+
+## 0h2. DELIVERED 20 SEPTEMBER. THE RITUAL PAGE, SECOND REBUILD, AND THE BOOT CARD.
+
+- [ ] **RT21. Four of his own questions came back,** the sharpest being where a target should come from so the ring has a count to draw, and what a session is: ten affirmations is a day's count, not a sitting's.
 
 ## 0i2. RULED 20 SEPTEMBER, TENTH PASS. THE AVATAR IS A CHARACTER SHEET.
 

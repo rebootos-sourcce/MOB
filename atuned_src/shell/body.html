@@ -121,14 +121,20 @@
       always done it. -->
  <div class="boot-wm"><span class="bn">At<span class="um">u</span>ned<sup class="btm">™</sup></span>
   <span class="bs"><span class="bs-by">Powered by</span><span class="bs-nm">Source OS</span></span>
-  <!-- WHICH BUILD THIS ACTUALLY IS, on the one screen every person sees every
-       time. Two builds were sent with a fix in them and the same failure came
-       back both times, and there was no way to tell from here whether the file
-       being opened was the file that was sent. A browser saves a second
-       download as atuned(1).html and leaves the first one where it was, so
-       opening "the file" can mean opening last week's.
-       Stamped by BUILD.sh, so it cannot be wrong or go stale. -->
-  <span class="bs-v" id="bstamp">BUILD_STAMP</span></div>
+  <!-- THE BUILD STAMP CAME OFF THIS CARD. Ruled: "remove those numbers."
+
+       It was put here for a real reason. Two builds went out with a fix in
+       them and the same failure came back both times, and there was no way to
+       tell whether the file being opened was the file that was sent, because
+       a browser saves a second download as atuned(1).html and leaves the
+       first where it was. So "the file" can mean last week's.
+
+       That reason is served without printing a serial number on the one
+       screen every person sees every time. The stamp is on the root element
+       as data-build, where the boot guard already reads it and prints it in
+       the failure message, and where anybody can read it from the console. It
+       is off the card and it is not lost. -->
+  </div>
  <!-- THE WAY OUT WAS BUILT AND NEVER SHOWN.
 
       pointerdown and keydown both clear this sheet and have since it was

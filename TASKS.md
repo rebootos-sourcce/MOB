@@ -21,6 +21,62 @@ reopens. Every seat adds its own.
 
 ---
 
+## 0h2. DELIVERED 20 SEPTEMBER. THE RITUAL PAGE, SECOND REBUILD, AND THE BOOT CARD.
+
+- [x] **BT5. The build stamp is off the boot card,** ruled. It stays on the
+      root element where the guard already reads it and prints it in the
+      failure message, so the reason it was added is served without printing a
+      serial number on the one screen every person sees every time.
+- [x] **BT6. The name is centred under the wordmark, not the pair.** Measured:
+      wordmark centre 450, name centre 451.
+- [x] **RT11. Five figures, five one word labels.** Active, Recurring,
+      Streak, Kept, Missed, four of them his. The build now fails if a figure
+      label is more than one word, so the collision that made the paragraphs
+      cannot come back. Page words 478 to 370.
+- [x] **RT12. The dotted ring is built and gated.** The card's identity ring
+      and its mark button became one segmented ring, which removed a control
+      per card. The geometry is computed off the radius and never typed, the
+      readable cap is computed from the circumference, and the shot run reads
+      every ring back out of its own dash array and fails if the dashes drawn
+      disagree with the model.
+- [x] **RT13. And the ring answers the two shapes that have no count.** A
+      window takes one dash, because a window is one edge held or crossed and
+      not thirty of anything. A stance takes no dashes at all until the day
+      tests it, drawn as a fine dot ring, because before the day supplies a
+      number a single dash would be a claim. That is the one state in the
+      model where the parameter is unknown, drawn as unknown.
+- [x] **RT14. The week's boxes fill their cell,** each ritual a segment, so a
+      box is never part empty. The tracker and the record became one panel,
+      cells 13 pixels to 28, with five real figures beside the grid.
+- [x] **RT15. A practice ring takes its seat's colour,** so always on is no
+      longer all red. Build the avatar is aimed at no seat and takes the
+      accent rather than borrowing one.
+- [x] **RT16. Journal upper right, summary as day, week and month, the three
+      shapes legend off the surface, and add, remove, generate and history all
+      given a visible home.** He could not find remove because the card had no
+      chevron.
+- [x] **RT17. Which day you keep it is now By weekday.**
+- [ ] **RT18. 50 of the 52 rows the engine generates carry a target of one,**
+      so their ring is a single dash for everybody in the panel. The counts
+      that make his idea visible exist only in the nine he named himself. The
+      ring is built, gated and correct, and it is drawing a parameter the
+      generator does not vary yet. This is the next thing to fix on that page.
+- [ ] **RT19. The median person has five days of record and sees two of the
+      seven regions speak.** 14.2 percent ever see all seven. That is a fact
+      about retention rather than about the layout, and it decides what
+      belongs above the fold.
+- [x] **RT20. Two data defects fixed and one engine finding.** A release queue
+      row carried no seat, which is why every card wore the band's colour. A
+      null replacement was rendering the sentence "The far pole there is
+      null." to a person. And the sniffer names an address the 112 address
+      table does not carry, which is an engine finding and not that seat's to
+      fix.
+- [?] **RT21. Four of his own questions came back,** the sharpest being where
+      a target should come from so the ring has a count to draw, and what a
+      session is: ten affirmations is a day's count, not a sitting's.
+
+---
+
 ## 0i2. RULED 20 SEPTEMBER, TENTH PASS. THE AVATAR IS A CHARACTER SHEET.
 
 Blocked for strategy, as he asked. Four blocks, and they are not equal: one is

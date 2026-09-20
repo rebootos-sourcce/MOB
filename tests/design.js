@@ -944,7 +944,7 @@ console.log('\n=== a sentence in a label class carries plain ===');
      .filter(k=>/^run[A-Z]\w*(?:Drill|Pair|Year)$/.test(k)
               &&typeof window[k]==='function').sort();
     const ran={}, err=[];
-    const real={};
+    const real={}; let keep=null;
     NAMES.forEach(k=>{real[k]=window[k];
      window[k]=function(){ran[k]=(ran[k]||0)+1;return real[k].apply(this,arguments);};});
     const fire=(k,args)=>{try{window[k].apply(null,args); grab();}
@@ -962,6 +962,7 @@ console.log('\n=== a sentence in a label class carries plain ===');
      [['runCoreDrill',[[]]],['runXYZDrill',[[]]],['runFlowDrill',[[]]],
       ['runBalDrill',[[]]],['runRecogniseDrill',[[]]],['runAvatarDrill',[[]]],
       ['runPurposeDrill',[[]]],['runAgeDrill',[[]]],['runCompassDrill',[[]]],
+      ['runAccDrill',[[]]],
       ['runQDrill',[['cq'],['dq'],['sq'],['pole'],['xyz'],['flow']]],
       ['runPoleDrill',[['up'],['dn']]]
      ].forEach(p=>p[1].forEach(a=>fire(p[0],a)));
@@ -987,11 +988,40 @@ console.log('\n=== a sentence in a label class carries plain ===');
         read off the doors rather than invented */
      document.querySelectorAll('[data-sp]').forEach(b=>fire('runSpDrill',
       [b.getAttribute('data-sp'),b.getAttribute('data-spv')]));
+     /* ============================================================
+        AND THREE DRILLS HAVE NO DOOR IN THE ROSTER AT ALL.
+
+        An atom is one story entry landing on one address, and an avatar pair
+        is two sentences a person writes about themselves. Measured: every
+        reference profile carries zero story entries and zero avatar pairs, so
+        runAtomDrill and runAvPair cannot be reached from any of them however
+        many surfaces are walked. Their copy is therefore the least read copy
+        in the product, which is the opposite of what a sweep should skip.
+
+        So one of each is written, the drills are opened, and what was there
+        is put back in the finally below. The seeded sentence is one of the
+        funnel's own items rather than invented prose.
+        ============================================================ */
+     if(typeof CURP!=='undefined'&&CURP){
+      keep={story:CURP.story,avatar:CURP.avatar};
+      CURP.story={entries:[{t:Date.now(),
+       text:'I say yes while my chest tightens, because no is going to cost '
+        +'more than I have.'}]};
+      CURP.avatar={built:true,at:Date.now(),reviewedAt:null,
+       pairs:[{be:'steady under load',notbe:'I snap at the people nearest me '
+        +'when I am tired and afraid'}]};
+      if(typeof atomIndex==='function'&&typeof BY!=='undefined'){
+       const ai=atomIndex()||{};
+       Object.keys(ai).slice(0,4).forEach(i=>{
+        if(BY[i]&&ai[i]&&ai[i][0])fire('runAtomDrill',[BY[i],ai[i][0]]);});}
+     }
      /* the avatar pairs only exist once the avatar drill has drawn them */
      fire('runAvatarDrill',[]);
      [...document.querySelectorAll('[data-avp]')].forEach(b=>
       fire('runAvPair',[+b.getAttribute('data-avp')]));
-    }finally{NAMES.forEach(k=>{window[k]=real[k];});}
+    }finally{NAMES.forEach(k=>{window[k]=real[k];});
+     if(keep&&typeof CURP!=='undefined'&&CURP){
+      CURP.story=keep.story; CURP.avatar=keep.avatar;}}
     return {names:NAMES,ran:ran,err:err,rows:rows};},[WALK.toString(),SEL]);
    drillErr=drillErr.concat(dr.err);
    drillNames=dr.names;

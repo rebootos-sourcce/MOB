@@ -78,8 +78,14 @@ function rdClose(){ANA_PICK=null;S.pin=null;
    their having to remember, which is the only version of this rule that does
    not rot. A site that has already chosen plain keeps it: this only reads the
    bare class. */
+/* THE PATTERN IS BUILT FROM A STRING, not written as a regular expression
+   literal. A literal needs the closing tag's slash escaped, and BUILD.sh
+   counts opening and closing divs across the whole file to prove the shell
+   closes everything it opens. An escaped slash is not the closing tag it
+   counts, so the literal form reported the build one div out of balance. */
+var RD_CASE=new RegExp('<div class="(pm-eye|ad-nm)">([\\s\\S]*?)</div>','g');
 function rdCase(h){
- return String(h).replace(/<div class="(pm-eye|ad-nm)">([\s\S]*?)<\/div>/g,
+ return String(h).replace(RD_CASE,
   function(all,cls,body){
    var t=body.replace(/<[^>]*>/g,'').replace(/\s+/g,' ').trim();
    var label=t&&!/[,;:]\s*\S*[A-Za-z]/.test(t)&&!/[.!?]\s+\S/.test(t)
