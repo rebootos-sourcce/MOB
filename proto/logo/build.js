@@ -31,23 +31,25 @@ const LIGHT = [
 
 /* ---------- assembling a mark ---------- */
 const CANDS = {
- A: { name:'Circle',  order:['a1','t1','u1','n1','e1','d1'], T:6,  clear:9.5,
-      line:'The plain form of every letter and the tracking open. The face’s thesis with nothing spent.' },
- B: { name:'Gauge',   order:['a2','t2','u1','n1','e2','d1'], T:0,  clear:8,
-      line:'The alternates spent: the a takes a spur, the t takes a foot, the e opens its aperture.' } };
+ A: { name:'Circle',  key:'A',
+      line:'The plain form of every letter, and the joints solved to a wide target. The face\u2019s thesis with nothing spent.' },
+ B: { name:'Gauge',   key:'B',
+      line:'Three alternates spent and the joints solved to a close target: the a takes a spur, the t takes a foot, the e opens its aperture.' } };
 
-function mark(c) {
-  const lay = layout(c.order, c.T, c.clear);
+function mark(key) {
+  const S   = G.SOLVED[key];
+  const lay = S.order.map((k,i) => ({ k, x:S.pos[i], g:L[k],
+    area:S.areas[i], clear:S.gaps[i] }));
   const u   = lay.find(s => s.k[0] === 'u');
   const d   = [];
   lay.forEach(s => s.g.paths.forEach(p =>
     d.push(`<path d="${p}" transform="translate(${s.x} 0)"/>`)));
   const dots = DOT_DX.map(dx =>
     `<circle cx="${(u.x + dx).toFixed(2)}" cy="${DOT_CY}" r="${DOT_R}"/>`);
-  const vb = { x:-2, y:-2, w:lay.total + 4, h:BASE + 6 };
-  return { lay, letters:d, dots, vb, total:lay.total };
+  const vb = { x:-2, y:-2, w:S.total + 4, h:BASE + 6 };
+  return { lay, letters:d, dots, vb, total:S.total, S };
 }
-const M = { A: mark(CANDS.A), B: mark(CANDS.B) };
+const M = { A: mark('A'), B: mark('B') };
 
 /* the svg, as a string that can be lifted out whole. skyVar and
    dotVar let one file answer to seven lightings. */

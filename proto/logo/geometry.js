@@ -51,12 +51,18 @@ const circ = (cx, cy, r) =>
    at small sizes. */
 function eRing(barY, termDeg) {
   const dy   = barY - RCY;
-  const barX = RCX + Math.sqrt(RR*RR - dy*dy);         // where the bar meets the ring
+  const barX = RCX + Math.sqrt(RR*RR - dy*dy);         // where the bar crosses the ring's centreline
+  /* AND IT RUNS PAST THAT TO THE RING'S OUTER EDGE. Cut at the
+     centreline the bar's vertical cap stops 9.5 short of the ring's
+     outer contour, and every pixel between them is a step at three
+     o'clock. Seen only at eight times scale: at the top bar it
+     reads as the e being slightly light on its right. */
+  const barEnd = RCX + Math.sqrt((RCX)*(RCX) - dy*dy);
   const a0   = Math.atan2(dy, barX - RCX) * 180/Math.PI;
   const tx   = RCX + RR * Math.cos(termDeg*Math.PI/180);
   const ty   = RCY + RR * Math.sin(termDeg*Math.PI/180);
   const sweepDeg = a0 - (termDeg - 360);
-  return { bar: `M ${P(RCX-RR)} ${P(barY)} L ${P(barX)} ${P(barY)}`,
+  return { bar: `M ${P(RCX-RR)} ${P(barY)} L ${P(barEnd)} ${P(barY)}`,
            ring:`M ${P(barX)} ${P(barY)} A ${P(RR)} ${P(RR)} 0 ${sweepDeg>180?1:0} 0 ${P(tx)} ${P(ty)}`,
            upperCounter: (barY - H) - (RCY - (RR - H)),
            termDeg, sweepDeg:+sweepDeg.toFixed(1) };
@@ -212,3 +218,48 @@ Object.keys(L).forEach(k => { L[k].side = SIDE[k]; });
 
 module.exports = { W, H, XH, XL, BASE, OS, RW, RCX, RCY, RR, SR, UCY, NCY,
                    L, layout, DOT_R, DOT_CY, DOT_DX, P, circ, eRing, TBARY };
+
+/* ============================================================
+   THE SPACING, SOLVED BY AREA RATHER THAN BY TABLE.
+
+   The first cut spaced these letters with a sidebearing table and
+   a minimum clearance, and at eight times scale the word read as
+   two pieces, atu and ned. The table was not wrong, it was
+   measuring the wrong thing: the minimum gap between two letters
+   is not what the eye reads, the area of background between them
+   is. A t's crossbar is 19 tall out of 103, so a tight bar
+   clearance is still a wide joint, and two full height stems at
+   the same clearance are a narrow one.
+
+   So each letter was rasterised once at four times scale, the
+   background between each pair integrated scanline by scanline,
+   and every joint solved by bisection against one target area.
+   The measured result, in square units, with the minimum gap that
+   produced it beside it:
+
+     candidate A, target 3400, floor 9
+       a t   3392   gap 21.0      two verticals. needs the most air
+       t u   3397   gap 10.3      a crossbar against a stem
+       u n   3408   gap 28.8      two verticals and the widest joint
+       n e   3409   gap 18.8      a vertical against a bowl
+       e d   4031   gap  9.0      AT THE FLOOR AND STILL 19 PERCENT OVER
+
+   Equal areas need gaps of 9 to 28.8, a spread of better than three
+   to one. That is the whole finding: equal gaps are not equal
+   spaces, and a table cannot know the difference.
+
+   The e to d joint cannot be solved at all. Its excess white is
+   inside the e's own aperture rather than between the letters, so
+   closing the joint does not remove it and the two would have to
+   overlap. Named rather than fixed. It is 19 percent over on
+   candidate A and 83 percent over on candidate B, whose e is cut
+   at 66 degrees and gives away that much more.
+   ============================================================ */
+const SOLVED = {
+  A: { order:['a1','t1','u1','n1','e1','d1'], pos:[0,123.75,189.75,318.25,436.75,548.5],
+       total:651.5, target:3400, floor:9,
+       areas:[3392,3397,3408,3409,4031], gaps:[21,10.3,28.8,18.8,9] },
+  B: { order:['a2','t2','u1','n1','e2','d1'], pos:[0,115.5,179.25,298.75,408.25,519],
+       total:622, target:2500, floor:8,
+       areas:[2496,3006,2508,2510,4574], gaps:[12.8,8,19.8,9.8,8] } };
+module.exports.SOLVED = SOLVED;
