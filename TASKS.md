@@ -1319,6 +1319,78 @@ reading would be a regression nothing could see.
 
 ---
 
+## 0v. RULED 20 SEPTEMBER. THE RITUAL BUILDER IS A D MINUS. PRIORITY.
+
+**His verdict.** "When I come to the ritual builder, nothing that I have asked
+for is here. I asked for the ritual builder to be clean, simple, to comp against
+apps in a similar category, and that did not happen. When I come to this page
+right now it has a bunch of text, I do not know what is going on, it is
+meaningless. The design, the UI, the UX, the layout, it has not even been
+touched yet. **This is a D minus.**"
+
+**The comp he gave:** Streaks, `apps.apple.com/us/app/streaks/id963034692`.
+
+### RB. WHAT THE RITUAL BUILDER HAS TO BE
+
+- [ ] **RB1. It looks like a compass**, to track daily progress. His word, and it
+  is the same shape language as the Field and the Compass, so the product has one
+  visual grammar rather than three.
+- [ ] **RB2. Iconography for the type of ritual.** Not a list of names.
+- [ ] **RB3. A daily tracker.** What is running, and what I need to do today.
+- [ ] **RB4. An edit control** to add or remove history.
+- [ ] **RB5. A heat map**, so the work is visible over time.
+- [ ] **RB6. Analytics.** Whatever the data honestly supports.
+- [ ] **RB7. The accountability tracker shows how I have done over time**, and it
+  is a surface of its own rather than a line on a card.
+- [ ] **RB8. Clean and simple.** Said three times in one message.
+
+### RB. THE GAMIFICATION, WIRED THE WAY HE DESCRIBES IT
+
+- [ ] **RB9. Points are tied to the ritual builder and the accountability
+  tracker.** "If I fail an accountability I lose points. If I succeed I gain."
+  **This reverses a refusal made earlier today.** The gamification pass declined
+  loss framing on the evidence and priced it at 3.0 points of the 11.0. He is
+  ruling the other way on this one mechanic, and the argument and its price are
+  on the record so the decision is his with the number in front of him.
+- [ ] **RB10. The core loop, in his words.** "When I input stories I get points
+  by the type of impression that I add, and that allows me to go through my core
+  product loop of imprints and release."
+- [ ] **RB11. And the sniffer feeds it.** "The sniffer sniffs for things that
+  could go into the ritual builder to improve behaviour." That is a new consumer
+  of the sniffer and it is the first one that turns a reading into an action.
+
+### WHAT IS ON THE PAGE NOW AND SHOULD NOT BE
+
+- [ ] **RB12. "Box breathing has nothing to do with this. It says body. I do not
+  know what the hell is going on, that does not belong there."** The track is
+  picked by the heaviest seat and a root heavy reading calls the Body track, so
+  the arithmetic is behaving. **The naming is what fails**: nothing on the card
+  says why a breathing exercise arrived, so it reads as arbitrary.
+- [ ] **RB13. "The where and when does not belong there."** His call, and it
+  reverses something built today. Recorded with its price so he is ruling with
+  the number: the if then plan measured **72 of 1000 at day thirty**, the largest
+  single item in the loop, on Gollwitzer and Sheeran, ninety four studies at
+  d 0.65. It may still be the wrong surface for it.
+- [ ] **RB14. "The record does not belong there."** Also built today, also
+  measured, at **40 of 1000 at day thirty**. It was moved onto Ritual because it
+  was locked inside the Compass, which measures 22 percent touched. If it leaves
+  Ritual it needs somewhere that is not the Compass.
+
+### AND THE QUESTION HE ASKED ABOUT QUESTIONS
+
+- [x] **RB15.** "I need my team to probe me with questions. In fact, I think all
+  the director team, did they not ask questions? Did I answer them?" **They did,
+  and almost none are answered. There are 66 open questions in this file**, most
+  of them raised today, each one a place where a seat refused to guess. The
+  largest groups: fifteen from the aesthetics and systems pass, thirteen from the
+  sniffer, eight from the arrival and karma pass, seven from the signal test,
+  five from the ritual loop and five from the skunk works.
+- [ ] **RB16.** So the next thing owed to him is not more questions. It is the
+  existing sixty six, sorted so he can answer them quickly, with the ones that
+  block work marked as blocking.
+
+---
+
 ## 0c. RULED 20 SEPTEMBER, SECOND PASS. THE ARRIVAL, THE FEATHERS AND KARMA
 
 **"I didn't give you feedback on the feathers. I don't give you feedback
