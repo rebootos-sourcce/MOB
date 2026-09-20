@@ -25,18 +25,19 @@ else may.
 
     ./atuned_src/BUILD.sh              parse checks, div balance, no em dashes
     ./atuned_src/BUILD-engine.sh       and asserts the engine is host free
-    node tests/engine.js               832, headless, 0.1s
-    node tests/functional.js           720, real Chromium
+    node tests/engine.js               838, headless, 0.1s
+    node tests/functional.js           740, real Chromium
     node tests/collide.js              100, no overlapping nameplates
-    node tests/design.js               94, and it is green now
+    node tests/design.js               103, and it is green now
     node tools/monitor.js             every surface renders, and it logs
 
 Those counts were 279, 262, 40 and 22 in this file for long enough that they
 stopped being usable. A number typed into a document that the product then
 grows past is the same defect as a number typed into a gate, and this
-repository has now been bitten by it five times: three gates that counted by
-hand, a heading that said "the twelve" above a list of eleven, and this
-paragraph. Read the count off the run.
+repository has now been bitten by it seven times: three gates that counted by
+hand, a heading that said "the twelve" above a list of eleven, this paragraph
+twice, and a backlog line that said eight definitions were reachable only by
+hover where the measured number was 195. Read the count off the run.
 
 `monitor.js` is the render watch. It reads TABDEF and TABEXTRA at run time and
 walks every surface they name, at 1600 and at 390, on a blank profile and a

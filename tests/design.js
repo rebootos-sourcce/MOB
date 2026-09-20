@@ -722,6 +722,59 @@ console.log('\n=== the alarm law ===');
    'and the band on the plate wears it, wanted '+hex2rgb(tc.want)+' got '+tc.got);
 }
 
+/* ============================================================
+   GATE 16. ONE TOOLTIP.
+
+   Ruled: "the tooltip design is inconsistent across the board." The audit
+   found eight mechanisms doing the job of one, plus a ninth pattern that is
+   not a tooltip and does a tooltip's job. Two of the eight were built panels
+   and both are now retired into TIP.
+
+   A count is not the assertion, because the count will change as the
+   migration runs. What must stay true is that a carrier opens exactly one
+   panel: the moment two mechanisms read the same attribute, a control grows a
+   second tooltip, which is how this got to eight in the first place.
+   ============================================================ */
+console.log('\n=== one tooltip ===');
+{
+ await page.evaluate(()=>{loadP(2);setTab(TAB.SUMMARY);render();});
+ await page.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));
+ /* the retired panel is gone from the document and from the sheet. */
+ const dead=await page.evaluate(()=>({
+  railtip:!!document.getElementById('railtip'),
+  css:[...document.styleSheets].some(sh=>{
+   try{return [...sh.cssRules].some(r=>r.selectorText&&/\.railtip/.test(r.selectorText));}
+   catch(e){return false;}})}));
+ ok(!dead.railtip,'the retired rail panel is not in the document');
+ ok(!dead.css,'and its rule is not in the sheet');
+ /* one panel, and it is the one. Every carrier this product has is walked. */
+ const one=await page.evaluate(async()=>{
+  const cs=[...document.querySelectorAll('[data-tip],[data-tip-t]')]
+   .filter(e=>e.getBoundingClientRect().width>0);
+  if(!cs.length)return {none:true};
+  let opened=0, panels=0, empty=0;
+  for(const c of cs.slice(0,12)){
+   TIP.show(c);
+   await new Promise(r=>setTimeout(r,140));
+   const on=[...document.querySelectorAll('.tip.on,.probe.on')];
+   panels=Math.max(panels,on.length);
+   const e=document.getElementById('tip');
+   if(e&&e.classList.contains('on')){
+    opened++;
+    /* AND IT SAYS SOMETHING. The retired panel drew an empty bold and a rule
+       with nothing above it on half its carriers, which is the defect a
+       presence check would have passed. */
+    if(!e.innerText.replace(/\s/g,''))empty++;}}
+  TIP.hide();
+  return {n:cs.length, tried:Math.min(12,cs.length), opened:opened,
+   panels:panels, empty:empty};});
+ ok(!one.none,'there are carriers to test');
+ ok(one.opened===one.tried,
+  'every carrier opens the tooltip, '+one.opened+' of '+one.tried);
+ ok(one.panels<=1,'and never more than one panel at a time, saw '+one.panels);
+ ok(one.empty===0,'and none of them opens empty, '+one.empty+' did');
+}
+
 await browser.close();
 console.log('\n===== '+PASS+' passed, '+FAIL+' failed =====');
 process.exit(FAIL?1:0);

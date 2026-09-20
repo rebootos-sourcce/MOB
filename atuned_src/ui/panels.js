@@ -240,6 +240,11 @@ VIEWS.forEach(function(v,i){
     title cannot be reached on a touch screen and these four words are the
     ones the owner could not read. */
  b.setAttribute('data-tip',v.tip||v.layers);
+ /* THE NAME, HANDED OVER RATHER THAN GUESSED AT. The old panel looked for a
+    `.tn` child and these buttons carry a `.n`, so it drew an empty bold and a
+    horizontal rule with nothing above it on every one of them. The name is an
+    attribute now, so nothing has to find it in the markup. */
+ b.setAttribute('data-tip-t',v.nm);
  b.classList.add('kbjump');
  b.innerHTML=svgI(VICON[i])+'<span class="n">'+v.nm+'</span>';
  b.addEventListener('click',function(){S.view=i;S.pin=null;

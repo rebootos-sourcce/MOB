@@ -32,6 +32,7 @@ engine/ladder.js
 engine/outbox.js
 engine/export.js
 ui/component.js
+ui/tip.js
 ui/wheel.js
 ui/map.js
 ui/mapshelf.js

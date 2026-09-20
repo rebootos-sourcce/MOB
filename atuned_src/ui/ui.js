@@ -501,30 +501,25 @@ var _KBJ=false;
 function wireKbJump(){
  if(_KBJ)return; _KBJ=true;
  var host=document.body; if(!host)return;
- var tip=document.getElementById('railtip');
- if(!tip){tip=document.createElement('div');tip.id='railtip';tip.className='probe railtip';
-  document.body.appendChild(tip);}
- function show(el){
-  var t=el.getAttribute('data-tip')||''; if(!t){hide();return;}
-  var nm=el.querySelector('.tn'), b=el.getBoundingClientRect();
-  tip.innerHTML='<b>'+esc(nm?nm.textContent:'')+'</b><hr>'+esc(t)
-   +(el.getAttribute('data-kbs')?'<hr><b>Click to read it.</b>':'');
-  tip.classList.add('on');
-  var tb=tip.getBoundingClientRect();
-  /* left of the rail, because the rail is against the right edge and a
-     tooltip that opens rightward opens off the screen. */
-  tip.style.left=Math.max(8,b.left-tb.width-10)+'px';
-  tip.style.top=Math.max(8,Math.min(innerHeight-tb.height-8,b.top-4))+'px';}
- function hide(){tip.classList.remove('on');}
- host.addEventListener('pointerover',function(e){
-  var el=e.target.closest?e.target.closest('.kbjump'):null;
-  if(el)show(el); else if(!e.target.closest||!e.target.closest('#railtip'))hide();});
- host.addEventListener('pointerleave',hide,true);
+ /* #RAILTIP IS RETIRED. It was one of eight mechanisms doing one job, and
+    once TIP landed it was the second tooltip on the same element, because
+    both read data-tip off the same carriers. Two panels on one control is
+    worse than the inconsistency it was part of.
+
+    It also carried two defects of its own. It looked for a `.tn` child and
+    the depth buttons carry a `.n`, so it drew an empty bold and a horizontal
+    rule with nothing above it on half its carriers. And it measured 288 where
+    the other panel measured 300, and sat absolute where the other sat fixed.
+    Both go with it. The name and the action line are attributes now, read by
+    the one tooltip, so nothing has to find them in the markup.
+
+    What stays is the half that was never a tooltip: pressing one of these
+    opens the knowledge page on its entry. */
  host.addEventListener('click',function(e){
   var el=e.target.closest?e.target.closest('.kbjump'):null; if(!el)return;
   var sec=el.getAttribute('data-kbs'), t=el.getAttribute('data-kbt');
   if(!sec||!t)return;
-  hide();
+  if(typeof TIP!=='undefined')TIP.hide();
   KB_SEC=sec; KB_Q='';
   setTab(TAB.KNOW);
   var row=(kbRows(sec)||[]).filter(function(x){return x.t===t;})[0];
@@ -777,7 +772,9 @@ function render(){
      Nothing is a dead end that has a name. */
   function prow(k,n,pct,col,glyph,title,kb,gloss){
    return '<button type="button" class="tierow pill kbjump" '
-    +(kb?'data-kbs="'+esc(kb[0])+'" data-kbt="'+esc(kb[1])+'" ':'')
+    +(kb?'data-kbs="'+esc(kb[0])+'" data-kbt="'+esc(kb[1])+'" '
+        +'data-tip-a="Press to read it." ':'')
+    +'data-tip-t="'+esc(n)+'" '
     +'data-tip="'+esc(gloss||title||'')+'">'
     +'<span class="tk">'+k+'</span>'
     /* hot:false. cr() turns anything past the hot threshold into the alarm

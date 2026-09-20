@@ -1229,7 +1229,6 @@ canvas#cv{display:block;grid-column:2;grid-row:3;width:100%;height:100%;
 .probe .tt-q{font-family:var(--num);font-size:11px;opacity:.6;letter-spacing:.01em}
 /* the rail's tooltip. Same object as the canvas probe, fixed rather than
    absolute because it hangs off a rail that scrolls inside the page. */
-.railtip{position:fixed;max-width:288px;pointer-events:none}
 /* A NAMED THING IN THE RAIL IS A BUTTON, and it has to look like one on
    hover without becoming a row of boxes at rest. */
 .kbjump{width:100%;background:none;border:0;padding:4px 6px;margin:0 -6px;
@@ -2695,6 +2694,202 @@ body.snow .rel{background:rgba(238,237,233,.82)}
 .rit-if{margin:9px 0 0;font-size:13.5px;line-height:1.6;color:var(--mid)}
 /* THE RECORD, on the surface that earns it as well as inside the Compass. */
 .rit-rec{margin-top:18px;padding-top:15px;border-top:1px solid var(--edge)}
+:root{--tip-bg:#1A1D26;--tip-edge:rgba(255,255,255,.14);--tip-shadow:0 10px 24px rgba(0,0,0,.38)}
+body.snow{--tip-bg:#F8F7F3;--tip-edge:rgba(20,23,28,.18);--tip-shadow:0 10px 24px rgba(20,22,28,.13)}
+/* ============================================================
+   THE TIP. This block is the whole of the tooltip's CSS.
+   Copy it into atuned_src/shell/head.html as one block.
+   ============================================================ */
+.tip{
+ position:fixed; left:0; top:0; z-index:60;
+ box-sizing:border-box;
+ width:max-content; max-width:300px; min-width:0;
+ padding:12px 14px 13px;
+ /* EVERY var() HERE CARRIES A FALLBACK, and it is not belt and braces.
+    Injected into the live build for the measurement run, --tip-bg was not
+    declared and background:var(--tip-bg) resolved to nothing: the tooltip
+    rendered with a transparent ground in Dark and in Snow, the two lightings
+    most of this audience will ever see. An unresolved var reads as empty and
+    fails silently, which is the fault DESIGN.md law 7 already names for the
+    motion tokens. A fallback turns a missing declaration into a wrong shade
+    rather than into an invisible panel. */
+ background:var(--tip-bg,var(--panel,#1A1D26));
+ border:1px solid var(--tip-edge,var(--edge-2,rgba(255,255,255,.14)));
+ border-radius:var(--r-s,11px);
+ /* THE TOOLTIP STATES ITS OWN SHADOW rather than inheriting --shadow.
+    Measured over the live Field: with --shadow, Glass ran 53.2 frames a
+    second closed and 47.1 with the panel open, a loss of 6.1. Glass's shadow
+    is a 64 pixel blur and a large radius soft shadow over a canvas that
+    repaints every frame is recomposited every frame. At 24 pixels the loss
+    is inside the noise. The tooltip is a small floating object and it may
+    not cost the Field anything. */
+ box-shadow:var(--tip-shadow,0 10px 24px rgba(0,0,0,.38));
+ font-family:var(--sans); font-size:13px; line-height:1.65;
+ color:var(--mid);
+ /* the panel is reachable, so a long definition can be scrolled and a link
+    inside it followed. the 10px gap plus a 120ms grace is what makes the
+    crossing survivable. */
+ pointer-events:auto;
+ opacity:0; visibility:hidden;
+ transform:translate(var(--dx,0px),var(--dy,0px)) scale(.972);
+ transform-origin:var(--ox,50%) var(--oy,50%);
+ transition:opacity var(--t-micro) var(--ease-in),
+            transform var(--t-micro) var(--ease-in),
+            visibility 0s linear var(--t-micro);
+}
+.tip.on{
+ opacity:1; visibility:visible;
+ transform:translate(0,0) scale(1);
+ transition:opacity var(--t-element) var(--ease-out),
+            transform var(--t-element) var(--ease-out),
+            visibility 0s;
+}
+/* THE ENTRY MARK. Thirty pixels of the carrier's own colour lying along the
+   panel's near edge, centred on the tether's foot. With the tether it makes
+   one T, forty pixels of continuous stroke, and the T is where the line
+   arrives. It replaces the caret every other tooltip draws without being a
+   caret: an arrow points, and this says the colour came through here.
+
+   It ran the full width first. At 284 pixels it read as a header rule rather
+   than as an arrival, and it overshot the eleven pixel corner radius and cut
+   the corner square. Both gone at thirty.
+
+   Ring, not fill: it is an edge, never a wash. The colour is only ever a
+   graphic here. Root is 4.17 to 1 on this ground and would fail as text; as a
+   two pixel stroke it is past the 3 to 1 floor a graphic is held to. */
+.tip::after{
+ content:''; position:absolute; background:var(--tc,var(--accent));
+ border-radius:1px;
+}
+.tip[data-side=bottom]::after{left:var(--tx,50%);top:0;width:30px;height:2px;margin-left:-15px}
+.tip[data-side=top]::after   {left:var(--tx,50%);bottom:0;width:30px;height:2px;margin-left:-15px}
+.tip[data-side=right]::after {top:var(--ty,50%);left:0;height:30px;width:2px;margin-top:-15px}
+.tip[data-side=left]::after  {top:var(--ty,50%);right:0;height:30px;width:2px;margin-top:-15px}
+/* THE TETHER. Ten pixels of the same colour crossing the gap, drawn from the
+   carrier's end. It is the cause, and it leads the panel by sixty
+   milliseconds so the eye is already at the destination when the panel
+   lands. A tooltip that fades in place makes the eye search for what caused
+   it. This one grows out of its carrier. */
+.tip::before{
+ content:''; position:absolute; background:var(--tc,var(--accent));
+ transform:scale(0); transition:transform 0s linear;
+}
+.tip.on::before{transform:scale(1); transition:transform var(--t-micro) var(--ease-out)}
+.tip[data-side=bottom]::before{left:var(--tx,50%);top:-10px;width:2px;height:10px;margin-left:-1px;transform-origin:50% 0}
+.tip[data-side=top]::before   {left:var(--tx,50%);bottom:-10px;width:2px;height:10px;margin-left:-1px;transform-origin:50% 100%}
+.tip[data-side=right]::before {top:var(--ty,50%);left:-10px;height:2px;width:10px;margin-top:-1px;transform-origin:0 50%}
+.tip[data-side=left]::before  {top:var(--ty,50%);right:-10px;height:2px;width:10px;margin-top:-1px;transform-origin:100% 50%}
+
+.tip-k{font-family:var(--num);font-size:11.5px;line-height:1.3;color:var(--dim);
+ letter-spacing:.02em;font-variant-numeric:tabular-nums;margin:0 0 3px}
+.tip-t{font-size:13px;line-height:1.3;font-weight:600;color:var(--ink);margin:0 0 6px}
+.tip-b{margin:0}
+/* THE NUMBERS. Every one says what it is out of. tipNum refuses a value
+   with no denominator, which is why the slot is a grid of three and not a
+   line of text. */
+.tip-n{display:grid;grid-template-columns:auto 1fr;gap:1px 10px;margin:9px 0 0;
+ font-family:var(--num);font-size:11.5px;line-height:1.5;
+ font-variant-numeric:tabular-nums;letter-spacing:.01em}
+.tip-n dt{color:var(--dim);margin:0}
+.tip-n dd{color:var(--ink);margin:0;font-weight:500}
+.tip-n dd i{font-style:normal;color:var(--dim);font-weight:400}
+.tip-a{margin:9px 0 0;font-size:12px;line-height:1.4;font-weight:500;color:var(--accent)}
+/* A LONG DEFINITION SCROLLS, and the cut is masked so it never reads as the
+   end of the sentence. The mask is on the body, not on the panel, because a
+   mask on the panel would eat the edge bar. */
+.tip-s{max-height:38vh;overflow:auto;overscroll-behavior:contain;
+ -webkit-mask-image:linear-gradient(#000 calc(100% - 22px),transparent);
+ mask-image:linear-gradient(#000 calc(100% - 22px),transparent);
+ padding-bottom:12px}
+.tip-s::-webkit-scrollbar{width:4px}
+.tip-s::-webkit-scrollbar-thumb{background:var(--edge-2);border-radius:2px}
+
+/* THE PHONE. A coarse pointer has no hover and no room, so the panel becomes
+   a sheet at the bottom of the window. It never covers the carrier because
+   the carrier is above it, and tipShow scrolls the carrier clear first when
+   the two would overlap. The class is set by script from the pointer query
+   and the width, not by a media query alone, because a media query cannot
+   say "or narrow" and a gate cannot force one. */
+body.tip-sheet .tip{
+ left:8px; right:8px; top:auto; bottom:8px;
+ bottom:calc(8px + env(safe-area-inset-bottom,0px));
+ width:auto; max-width:none; border-radius:var(--r);
+ padding:14px 16px 16px;
+ transform:translateY(12px);
+ transform-origin:50% 100%;
+}
+body.tip-sheet .tip.on{transform:translateY(0)}
+body.tip-sheet .tip::before{display:none}
+body.tip-sheet .tip::after{left:16px;right:16px;top:0;bottom:auto;height:2px;width:auto;margin-left:0}
+/* THE SHEET AT THE TOP. Same object, same motion, mirrored: it travels down
+   from the top edge instead of up from the bottom, so the direction still
+   says where it came from. */
+body.tip-sheet .tip.top{top:8px;top:calc(8px + env(safe-area-inset-top,0px));bottom:auto;
+ transform:translateY(-12px);transform-origin:50% 0}
+body.tip-sheet .tip.top.on{transform:translateY(0)}
+body.tip-sheet .tip.top::after{top:auto;bottom:0}
+body.tip-sheet .tip-s{max-height:45vh}
+body.tip-sheet .tip-x{
+ display:block;position:absolute;right:6px;top:6px;
+ width:var(--tap);height:var(--tap);min-width:var(--tap);min-height:var(--tap);
+ background:none;border:0;border-radius:var(--r-xs);cursor:pointer;
+ color:var(--dim);font:inherit;line-height:1;
+ transition:color var(--t-micro) var(--ease-out)}
+body.tip-sheet .tip-x:hover{color:var(--ink)}
+body.tip-sheet .tip-x svg{width:18px;height:18px;fill:none;stroke:currentColor;
+ stroke-width:1.6;stroke-linecap:round}
+body.tip-sheet .tip{padding-right:52px}
+.tip-x{display:none}
+/* THE OPEN CARRIER IS MARKED, AND ONLY ON THE SHEET. On a fine pointer the
+   tether already says which word this belongs to. On a phone there is no
+   tether, the sheet is eight hundred pixels from the word, and nothing
+   connects the two. So the carrier takes a two pixel ring in its own colour
+   while its sheet is open, and the sheet's entry mark is the same colour.
+   Two objects, one colour, and that is the whole connection.
+
+   box-shadow rather than outline, because a ring carrier is round and a
+   rectangular outline around a circle is a second shape. */
+body.tip-sheet [data-tip].tip-open,
+body.tip-sheet [data-tip-t].tip-open{
+ box-shadow:0 0 0 2px var(--c,var(--accent));
+ border-radius:var(--r-xs)}
+
+/* PUNCH. Nothing is outlined, so --edge is transparent and the hairline
+   vanishes. The separation becomes a solid step, the same move every other
+   Punch control makes. */
+body.punch{--tip-bg:var(--panel-2); --tip-edge:transparent}
+/* GLASS. --panel is rgba there. The tooltip states the composited value as an
+   opaque colour instead, because it floats over the wheel and gate 13 will
+   not let it carry a backdrop-filter to earn its translucency. */
+body.glass{--tip-bg:#151922; --tip-edge:rgba(255,255,255,.17);
+ --tip-shadow:0 10px 24px rgba(0,0,0,.46)}
+body.glasswhite{--tip-bg:#F6F6F4; --tip-edge:rgba(20,22,28,.18);
+ --tip-shadow:0 10px 24px rgba(20,22,28,.13)}
+/* Flat has no shadow anywhere. The tooltip does not get one either: its
+   separation is the one pixel edge, which Flat states at full strength. */
+body.flat{--tip-bg:#121419; --tip-edge:#2E333E; --tip-shadow:none}
+body.lumen{--tip-bg:#FFFFFF; --tip-edge:rgba(16,16,16,.22);
+ --tip-shadow:0 10px 24px rgba(0,0,0,.14)}
+
+/* REDUCED MOTION. Opacity only, and still 120ms rather than none: a panel
+   that appears with no elapsed time reads as a glitch rather than as an
+   answer. The tether stops growing and is simply there. */
+@media (prefers-reduced-motion:reduce){
+ .tip,.tip.on{transform:none !important}
+ .tip{transition:opacity var(--t-micro) linear,visibility 0s linear var(--t-micro)}
+ .tip.on{transition:opacity var(--t-micro) linear,visibility 0s}
+ .tip::before,.tip.on::before{transform:scale(1);transition:none}
+}
+body.rm .tip,body.rm .tip.on{transform:none !important}
+body.rm .tip{transition:opacity var(--t-micro) linear,visibility 0s linear var(--t-micro)}
+body.rm .tip.on{transition:opacity var(--t-micro) linear,visibility 0s}
+body.rm .tip::before,body.rm .tip.on::before{transform:scale(1);transition:none}
+
+/* A CARRIER SAYS SO. One dotted underline on a static word, nothing on a
+   control that already looks like one. */
+.tipu{border-bottom:1px dotted var(--edge-2);cursor:help}
+.tipu:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:2px}
+
 
 /* ============================================================
    TAB VISIBILITY

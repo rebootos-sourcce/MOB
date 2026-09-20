@@ -137,6 +137,22 @@ than design.
   true. `runAgeYear` says so in its own copy: "Nothing is stored here, and
   nothing is scored." `ui/component.js` STARTD, `ui/drills.js:589`, `:685`,
   `:806`. Either they write or they stop claiming to.
+- [ ] **FB1b. And the specific blocker is now named, so this is buildable rather
+  than open ended.** The nine sentences door runs `runRecogniseDrill` into
+  `runCircleDrill`, which shows the depth, its prose and the addresses at its
+  seat, and offers no way to say "yes, this one runs". To write, a recognition
+  has to land on one of the nine child fetters, and **no mapping from a circle
+  to a fetter exists.** `CIRCLES` carries `c`, `nm`, `by`, `sin`, `see`, `p`,
+  `at` and `ic`, and `at` is a prose sentence with a seat name pulled out of it
+  by a regular expression. Deciding which of the nine "Greed" installs is a
+  canon decision rather than an implementation one, so it goes to him or to the
+  guru seat. Once the mapping exists the control is small: push an undo snapshot,
+  write the charge, report through `status()`, and say what it wrote.
+- [ ] **FB1c. And whatever a recognition writes has to cross the load line of
+  4,** or the door still does nothing useful: a recognition that leaves the
+  address under the line cannot be released, which is the point of recognising
+  it. Same threshold question as FB2 and FB3, so all three want one ruling
+  rather than three.
 - [ ] **FB2. Charge spreads instead of concentrating, so a richer story reads
   as less.** Reproduced directly against the built engine, and this corrects
   the sharper claim that no entry path reaches the release. A 48 word story
@@ -151,10 +167,41 @@ than design.
   up disabled. Verify against FB2 before changing the threshold: lowering the
   load line globally would load noise and flip `unread`, which is the defect
   that was fixed this session.
-- [ ] **FB4. All sixteen four letter seeds print the same reading.** INTJ, ENFP
-  and ISTJ all give CQ 36.0, Incoherent, Frustrated, 0 held, 107 under,
-  `seedShare` 1.00. The charge vectors differ and the headline does not, so the
-  one input a person gives before writing anything has no visible consequence.
+- [ ] **FB4. All sixteen four letter seeds print the same headline, and the
+  reason is now known.** Re-measured directly against the built engine, all
+  sixteen types, and the numbers are sharper than the first report:
+
+      distinct across the 16 seeds, out of 16
+        charge vector   16 of 16
+        charge sum      16 of 16      range 25.5 to 30.4
+        CQ               1 of 16      36.00 every time
+        tier             1 of 16      Incoherent every time
+        heaviest seat    2 of 16
+        held             1 of 16      zero every time
+        under the line   1 of 16      107 every time
+
+  **The seed writes the nine axes and CQ does not read them.** CQ is It times
+  Ig over Rz. Ig comes from the twenty one laws, which a seed does not touch,
+  and Rz is drag from loaded addresses, and a seed never pushes an address to
+  the load line of 4, so resistance stays at its default. Sixteen genuinely
+  different fields, one headline. Whether a stated type should move CQ is his
+  call and is already open as the seed decay policy, so this is recorded rather
+  than changed: it is an arithmetic question, and the core keeps its bodies.
+- [ ] **FB4b. And the heaviest seat moves only two ways out of sixteen, which
+  is a second finding two seats reached independently.** `darkB` is the seat
+  with the highest MEAN, and a mean over sixteen addresses is mostly averaging
+  zeroes when 107 of 112 sit under the line. The four Fields build hit the same
+  wall from the other side: drawing the seat mean made the wall beat the
+  pressure at every seat, so a surface built to find charge drew a picture
+  saying the person has integrity, and the seat PEAK reverses the ranking and is
+  the actionable statistic. `darkB` tints the background wash and picks the
+  ritual track, so changing it is not cosmetic. Same question as SW9.
+- [x] **FB4c. My own probe was wrong first, and this is the record of it.**
+  `seedApply(p,type)` takes the profile first. The first probe called it with
+  one argument, got null back, and reported that every seed writes nothing at
+  all. It does not. The corrected probe checks a known good case before it
+  reports anything, which is the rule this repository already carries and which
+  has now caught three probes.
 - [ ] **FB5. Minutes practised is minutes planned.** The streak counts distinct
   days in `p.rituals`, written only by the Save ritual button. Nothing records
   that a ritual was performed. Select a twenty minute scan, press save, close
@@ -523,7 +570,29 @@ want to be cold."
   sits on the hero graphic**, measured 227 by 229 inside the canvas, which is
   DESIGN.md law 8 broken by the tooltip itself. And `.probe .tt-q` measures 3.66
   to 1, which gate 4 cannot see because gate 4 measures type size.
-- [~] **AM2. Designed, measured, ready, not landed.** `DESIGN-tooltip.md` and
+- [x] **AM2b LANDED, and AM3 with it.** `ui/tip.js` is in the build at MANIFEST
+  line 35, the block is in the sheet, and every one of the 195 hover only
+  definitions is now reachable by tap, because the module falls back to the
+  native title. No renderer was touched to get that.
+- [x] **AM1d. And `#railtip` is retired,** because once TIP landed it was the
+  second tooltip on the same element: both read `data-tip` off the same
+  carriers, and two panels on one control is worse than the inconsistency it
+  was part of. Its two defects go with it, the empty bold and rule on half its
+  carriers and the 288 against 300 measure. Its name and action line are
+  attributes now, so nothing has to find them in the markup. The half that was
+  never a tooltip stays: pressing one of those rows still opens the knowledge
+  page on its entry.
+- [x] **AM1e. `tests/design.js` gate 16 watches the one tooltip law.** Not a
+  count, because the count changes as the migration runs. It asserts the
+  retired panel is gone from the document and from the sheet, that every
+  carrier opens the tooltip, that never more than one panel is open at once,
+  and that none of them opens empty, which is the defect a presence check would
+  have passed.
+- [ ] **AM2c. Steps three to six of the migration remain:** retire `#probe`,
+  which is the one that sits on the hero graphic, retire the three caption
+  slots, enrich file by file from `title` to `data-tip`, and give the 27 static
+  carriers a tabindex.
+- [~] **AM2. Designed, measured, ready.** `DESIGN-tooltip.md` and
   `proto/tip/`, runnable, with eighteen screenshots. Ten mechanisms considered
   and nine named losers. The panel grows out of its carrier along a two pixel
   tether in the carrier's own colour, and the tether plus a thirty pixel entry
