@@ -1203,6 +1203,122 @@ Measured today on one unchanged build:
 
 ---
 
+## 0u. DELIVERED. THE SNIFFER, AND THE THIRTEEN QUESTIONS HE ASKED FOR.
+
+**The floor is built and gated, and the headline is that the floor was never the
+problem.** After both derivation passes, 856 of 9,431 sentences of his own book
+produce any hit at all. **Nine percent.** That is no longer a vocabulary problem
+and was never going to be solved by one.
+
+    axis names that resolve            1 -> 9 of 9
+    saboteur cue words that resolve    0 -> 7 of 7
+    lexicon entries                    192 -> 229
+    charge name entries                66 -> 84
+    persona voices with an imprint     1 -> 2 of 14
+    persona voices with a route        0 -> 0 of 14
+    book sentences with a hit          609 -> 856 of 9,431
+
+Leakage checked, which matters more than the gains: over the same 9,431
+sentences, 296 readings changed, **0 sentences lost a seat and 0 band totals went
+down.** The lexicon feeds the whole product, so a change that lowered an existing
+reading would be a regression nothing could see.
+
+### TWO FIGURES OF MINE THAT DID NOT REPRODUCE
+
+- [x] **I said 77 of 192 lexicon words appear in the book. It is 87**, with 71
+  appearing twice or more.
+- [x] **I said the book is 433 KB. It is 5.9 MB**, 1,370,841 characters of text
+  and 135,635 words. I read 433 KB off a truncation notice about my own tool
+  output and reported it as the file size. Checked directly now.
+
+### THE THIRTEEN QUESTIONS, AND THE TWO THAT DECIDE THE REST
+
+- [?] **Q1. When a person writes in the journal, are they reporting an event or
+  stating a stance?** The fourteen persona voices this product ships are all
+  stance: "Rest feels like a moral failure." "There is nothing wrong with me."
+  **A vocabulary cannot reach a stance.** Today the instrument is built for
+  events and every held example is a stance. If the journal receives stance, the
+  frame layer is the product and the lexicon is a side show.
+- [?] **Q2. Is the lexicon derived from the book, or a separate instrument
+  vocabulary with its own justification?** 87 of 192 authored words appear in the
+  book, 105 do not, and 8 of 124 idiom phrases do. Both answers are defensible
+  and they are different products.
+
+### THE THREE THAT CHANGE EVERY READING EVER PRODUCED
+
+- [?] **Q3. Does it read negation?** "I was angry" and "I was not angry" both
+  give solar 18. "I am not afraid but I could be afraid" gives root 32, **double**
+  what "I am afraid" gives. A denial currently raises the reading.
+- [?] **Q4. Is the charge the same when a person did it as when it was done to
+  them?** "I shouted at him" and "he shouted at me" both give solar 24. The 112
+  addresses already distinguish the two.
+- [?] **Q5. Is a charge a person has released still a charge?** "I panic every
+  day" and "I used to panic and I do not any more" both give root 28. The loop is
+  release, so a person writing about a release is charged by their own account of
+  it.
+
+### FOUR CONTRADICTIONS INSIDE THE CANON
+
+- [?] **Q6. Where a charge sits has two answers and they disagree.** `CHG2SEAT`
+  says Shame is sacral; the addresses make Shame modal at the throat 3 to 1. It
+  says Apathy is throat; the addresses make it sacral 8 to 0 and the throat
+  carries no Apathy address at all.
+- [?] **Q7. Surprise appears 0 times in 117,716 words of the book**, has no
+  authored vocabulary, and is scored on every reading and drives two saboteurs.
+  Is it an axis the canon argues for?
+- [?] **Q8. What does the number 24 mean?** 181 charged amounts, range 12 to 28,
+  median 24, and no stated scale anywhere. One sentence naming the top of the
+  range makes the other 180 auditable.
+- [?] **Q9. When a longer specific entry contains a shorter idiom, which wins?**
+  "I cannot stop thinking about it" reads as compulsion at the sacral, because
+  the idiom "cannot stop" outranks the entry "cannot stop thinking" at the third
+  eye. A person ruminating is told they are compulsive. Wrong seat, less charge.
+
+### AND THE ONE THE SEAT WOULD ASK FIRST
+
+- [?] **Q13. `inferred:false` is reporting green while the product prints an
+  address nobody named.** "I was furious" returns four imprints named **Pride,
+  Arrogance, Competition and Anger, all flagged `inferred:false`**, which says
+  the person named it. The flag is truthful about what it guards, the axis, but
+  **no word ever names an address**: the four are a susceptibility sort. So the
+  flag built to stop exactly this is green while the product tells somebody they
+  have Pride because they wrote furious. Either the flag splits in two, axis and
+  address, or a reading stops printing address names.
+
+### WHERE IT DISPUTED THE BRIEF, AND WAS RIGHT TO
+
+- [x] **The stemmer fold is not the cheap win it was measured as.** Fourteen
+  rules over 145 keys generate 438 forms, of which 31 are confirmed by a corpus
+  this repository holds. Seven percent. The other 407 are strings like "ashams".
+  Worse, **two of them fold off coherent keys, which subtract**, so an
+  unrestricted stemmer would have had the word "contents" quietly lowering
+  somebody's reading. Four are refused by name with reasons and 27 admitted.
+
+### WHAT WAS BUILT
+
+- [x] Entries have a schema, a source and a validator. `lexAdd` and `chgAdd` are
+  the only way in, with eleven refusal classes each by name. `LEXMETA` and
+  `CHGMETA` cover their tables exactly in both directions, gated.
+- [x] The canon pass derives ten words from tables that already have an owner,
+  and **where `CHG2SEAT` has no answer it refuses to guess and reports the word**,
+  because the addresses carry a second disagreeing answer and picking one would
+  launder a ruling nobody has made.
+- [x] `tests/engine.js` group 32, 46 assertions, broken four ways on purpose and
+  each failure named the right thing. It asserts closure rather than accuracy,
+  because accuracy needs a labelled set of real stories and there is not one.
+- [x] `scanStory`, `parseStory` and `applyStory` keep their bodies and
+  signatures. Nothing in the reading path changed.
+
+### TWO DEFECTS REPRODUCED AND DELIBERATELY NOT REPAIRED
+
+- [ ] **SNF5.** `parseStory`'s stated branch takes the first stated fetter
+  **globally** rather than the one for that band, so a story stating two fetters
+  gives every band that cannot house either the first one.
+- [ ] **SNF6.** The precedence bug behind Q9 is one clause in `scanStory`, and
+  which way that clause goes is a ruling rather than a repair.
+
+---
+
 ## 0c. RULED 20 SEPTEMBER, SECOND PASS. THE ARRIVAL, THE FEATHERS AND KARMA
 
 **"I didn't give you feedback on the feathers. I don't give you feedback
