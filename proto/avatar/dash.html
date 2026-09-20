@@ -7847,8 +7847,18 @@ if (typeof window !== 'undefined')
    THE AVATAR DASHBOARD. Every figure is read off engine.js at run time.
    Nothing on this page is a stored frame and nothing is a coefficient.
    ============================================================ */
-var E=window, R=window.RISE;
-var PAL=E.PAL, BANDS=E.BANDS, PMB=E.PMBANDS, S=E.S;
+/* engine.js is a separate classic script in this same document, so its top
+   level const and let bindings live in the shared script scope and are reached
+   by name. They are NOT properties of window, which is why an earlier cut of
+   this file read window.PAL and got undefined, and why declaring var PAL here
+   threw on a name the engine had already taken. rise.js wants one object, so
+   the bindings it needs are gathered into one rather than reached twice. */
+var R=window.RISE;
+var E={W:W, BANDS:BANDS, S:S, SI:SI, bandIg:bandIg, PEOPLE:PEOPLE,
+       CHARGES:CHARGES, SINAMES:SINAMES, LAWSET:LAWSET, buildSoul:buildSoul,
+       compute:compute, PRACTICE:PRACTICE, tierOf:tierOf, PAL:PAL,
+       PMBANDS:PMBANDS};
+var PMB=PMBANDS;
 var ROSTER=['Marcus','Diane','Sofia','Angela','Derek','James','Ana','Gordon','Tomas','Rosa'];
 var WHO='Marcus', BASE=null, RUNS=0, EMPTY=false;
 
