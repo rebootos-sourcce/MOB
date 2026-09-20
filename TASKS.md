@@ -21,6 +21,124 @@ reopens. Every seat adds its own.
 
 ---
 
+## 0q. RULED 20 SEPTEMBER, SEVENTH PASS. THE RITUAL PAGE AS A SYSTEM.
+
+He has seen the calendar and ruled against it on aesthetic: "this doesn't
+follow any of our current design aesthetic." What he wants instead is described
+in enough detail to build, so this supersedes the calendar's layout and keeps
+its engine work: the three kinds, the closed field, the queue and its
+proposals, and the honest states all survive.
+
+### RU. THE SHAPE OF THE PAGE, IN HIS ORDER.
+
+- [ ] **RU1. Stats on top, as the headline.** His words: "stats on top, like my
+      win fail, how many have I succeeded, what's improved. Headline stats."
+      The page opens with the record, not with the day.
+- [ ] **RU2. The days of the week, second.** Week starts Monday. Ruled
+      explicitly: "Monday through Sunday, by the way, changes from Sunday to
+      Monday."
+- [ ] **RU3. Always on is always the top three.** Three defaults, fixed
+      position, every day.
+- [ ] **RU4. Behaviour is the next set, and it varies by day.** His example:
+      two on Monday, three on Tuesday, two on Wednesday, one on Thursday. A
+      person is setting when they practise, so the count per day is theirs.
+- [ ] **RU5. Everything else is release.** The third band, and it takes
+      whatever is left rather than being scheduled.
+- [ ] **RU6. Simple cards, and a card opens.** Click one and it is a pop up
+      with the parameters in it, editable. He has not settled what the
+      parameters are, so that is a question below and not a guess.
+- [ ] **RU7. Monday to Friday reads as a pixelated audio waveform.** His
+      image, and it is a good one: a column per day whose height is the day's
+      load, square pixels rather than a smooth curve, success and failure
+      legible along it.
+- [ ] **RU8. The accountability tracker is the little boxes,** success and
+      fail, and he wants it robust rather than decorative.
+- [ ] **RU9. No wasted space.** His test for the whole page: "it's a system I
+      can look at, it makes sense, it's structured and organised, weight space
+      isn't wasted, and it gives me some metrics on my successes."
+
+### RB. WHAT A BEHAVIOUR RITUAL ACTUALLY IS.
+
+His own list, and it is the first time the content of a ritual has been stated
+rather than inferred. Gratitudes. An affirmation said ten times. No phone for
+the first thirty minutes of the day. No news for the first hour. Two glasses of
+water first thing. Eight glasses by night. Raw vegetables five days a week.
+Practise honesty. Practise compassion.
+
+- [ ] **RB9. Build the behaviour library from that list.** Two shapes are in
+      it and they are not the same object: a thing you do a set number of
+      times, and a thing you abstain from for a set window. A tracker that
+      only understands the first cannot record the second.
+- [ ] **RB10. Practise honesty and practise compassion are a third shape.**
+      They have no count and no window, they are a stance held through a day,
+      and they are the two that map straight onto the laws. They are also the
+      hardest to mark succeeded or failed honestly, which is the interesting
+      problem.
+- [?] **RB11. What are the parameters on a card.** His open question, in his
+      words: "I'm not sure what the parameters are yet." The three shapes
+      above are the input to answering it.
+
+### RJ. THE PAGE FEEDS THE REST OF THE PRODUCT.
+
+- [ ] **RJ1. Everything on this page feeds analytics.** His words: "all that
+      gets fed to my analytics page."
+- [ ] **RJ2. A snippet goes to the journal from here.** A button, record or
+      text, a sentence like "didn't eat all my cereal today", submit, and it
+      lands in the story cloud. This is the content chain he already ruled,
+      arriving at the surface where a person actually notices the thing.
+- [ ] **RJ3. Voice input is a network service in the browser,** so the control
+      says so before it opens. The standing privacy ruling, and it bites the
+      record button specifically.
+- [ ] **RJ4. Edit, add, delete, history, progress over time.** All four on the
+      page, not behind it.
+- [ ] **RJ5. Feedback on success and failure, and where to improve,** with the
+      protocols and techniques named. A page that only records is a log.
+
+### SA. AUTO DETECT. THE QUEUE, EARNING ITS NAME.
+
+- [ ] **SA1. It recommends the protocols and the rituals first.** His words,
+      and his own note on it: "that's a good use of Source AI." The queue is
+      already built and already ordered by the load each proposal is aimed at,
+      so this is the same machine with the recommendation moved to the front.
+- [ ] **SA2. It proposes and the person disposes.** Already asked and still
+      unanswered: whether the sniffer adds to tomorrow's ritual by itself or
+      proposes and waits.
+
+### PO. THE POSITIONING LINE, AND ONE THING I WILL NOT PASS SILENTLY.
+
+His words: "Atuned is a world's first neurosomatic tool that heals the mind
+body connection. Attunes moral integrity to improve vital energy. And heals
+disease in the mind and body from the effects of stress, and the damage it
+causes across our human complex."
+
+- [ ] **PO1. Take the line into the brand seat** and keep what is his: the
+      neurosomatic framing, moral integrity as the thing being tuned, vital
+      energy as the result, and stress as the cause.
+- [?] **PO2. The word heals is a medical claim and it is a real exposure, not
+      a style note.** A product that says it heals disease is making a
+      therapeutic claim, and the advertising regulators in every market this
+      would sell in treat that as the regulated kind. This product already
+      draws the line correctly inside itself: the compass says it is a reading
+      of what is running and not of who is running it, and the referral says a
+      configuration needs a licensed clinician alongside and not instead. The
+      outward copy would be saying something the product itself refuses to
+      say. His call, and it needs to be an informed one rather than an edit I
+      make quietly: what the line can say without the claim, or the claim with
+      the evidence a regulator asks for.
+- [ ] **PO3. World's first needs a defensible sentence behind it,** for the
+      same reason. What exactly is first.
+
+### HW. THE HOW IT WORKS PAGE.
+
+- [ ] **HW1. An infographic, start to finish.** What the tool is, what it
+      does, how it works, what the purpose is, what the results are. His list
+      and his order.
+- [ ] **HW2. It carries the loop as a circle,** discover, play, flow, embody,
+      because that is the page whose whole job is showing the shape of the
+      thing.
+
+---
+
 ## 0r. RULED 20 SEPTEMBER, SIXTH PASS. THE NERVE STATE, THE VOICE, AND THE LOOP.
 
 ### NS. EVERY FETTER CARRIES ITS NERVE AND THE STATE THAT NERVE IS IN.

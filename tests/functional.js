@@ -230,7 +230,11 @@ const kb=await page.evaluate(()=>{
  /* the deck deals only from what is held, and a card names a real address */
  loadP(6); const pool=deckSize(), held=compute().loaded.length;
  deckDeal(); const card=DECK_CARD; deckClose();
- return {secs,all,hit,none,foundAll,opened,walked,marks,empty,pool,held,chip,dash,
+ const rail=[...document.querySelectorAll('.lsec-hd span')].map(e=>e.textContent.trim());
+ const stack=[...document.querySelectorAll('#stack button')]
+  .map(e=>e.textContent.trim().replace(/\s+/g,' '));
+ const text=document.body.innerText;
+ return {secs,all,hit,none,foundAll,opened,walked,marks,empty,pool,held,chip,dash,rail,stack,text,
   cardIsHeld:!!(card&&card.n&&card.n.sq>=4), rank:card?card.rank:0,
   names:[...document.querySelectorAll('[data-kb]')].map(e=>e.textContent.trim()
    .replace(/\s+\d+$/,''))};});
@@ -271,7 +275,20 @@ const kb=await page.evaluate(()=>{
     search shows it; fifty six rows whose whole content is a definition are an
     answer to a question rather than a deck of readings. */
  ok(kb.names.indexOf('Glossary')<0,
-  'and the glossary is not a deck, it is what the search answers with');}
+  'and the glossary is not a deck, it is what the search answers with');
+ /* THE RENAME REACHES EVERY SURFACE OR IT IS NOT A RENAME. The codex is one
+    of three places the nine are named. The left rail's fourth section holds
+    their sliders and the right rail's stack counts them, and a word that
+    moves in one place and not the others is how this product ends up with two
+    vocabularies for one thing, which is what it just finished removing. */
+ ok(kb.rail.indexOf('Child emotions')>=0,
+  'the left rail calls the nine child emotions, got '+kb.rail.join(', '));
+ ok(kb.rail.indexOf('Fetters')<0,
+  'and the rail no longer calls the nine fetters');
+ ok(/^Child emotions/.test(kb.stack[0]||''),
+  'the stack tab calls them child emotions, got '+(kb.stack[0]||'nothing'));
+ ok(!/child fetter/i.test(kb.text),
+  'and the phrase child fetter reaches no surface');}
 /* ALL 112, NEVER 108. W is the 108 somatic addresses and the four field
    anchors carry Field-Above and Field-Below, which are not seats, so they fell
    out of W and appeared in no deck: the surface that exists to list every

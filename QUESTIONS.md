@@ -1,11 +1,16 @@
 # QUESTIONS FOR THE OWNER
 
 Every line in `TASKS.md` marked `[?]`, which is the mark for a question
-waiting on his ruling. 89 of them, across 23 sections.
-Read off commit e6a44fa on 2026-09-20. Nothing here is typed by hand: answer a
+waiting on his ruling. 91 of them, across 24 sections.
+Read off commit 648f506 on 2026-09-20. Nothing here is typed by hand: answer a
 question in TASKS.md and it leaves this file on the next run.
 
 The same list is in `QUESTIONS.html`, which opens in a browser.
+
+## 0q. RULED 20 SEPTEMBER, SEVENTH PASS. THE RITUAL PAGE AS A SYSTEM.
+
+- [ ] **RB11. What are the parameters on a card.** His open question, in his words: "I'm not sure what the parameters are yet." The three shapes above are the input to answering it.
+- [ ] **PO2. The word heals is a medical claim and it is a real exposure, not a style note.** A product that says it heals disease is making a therapeutic claim, and the advertising regulators in every market this would sell in treat that as the regulated kind. This product already draws the line correctly inside itself: the compass says it is a reading of what is running and not of who is running it, and the referral says a configuration needs a licensed clinician alongside and not instead. The outward copy would be saying something the product itself refuses to say. His call, and it needs to be an informed one rather than an edit I make quietly: what the line can say without the claim, or the claim with the evidence a regulator asks for.
 
 ## 0r. RULED 20 SEPTEMBER, SIXTH PASS. THE NERVE STATE, THE VOICE, AND THE LOOP.
 
