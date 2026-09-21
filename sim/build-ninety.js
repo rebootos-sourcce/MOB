@@ -9,7 +9,7 @@
    ============================================================ */
 const fs=require('fs'), path=require('path');
 const P=require(path.join(__dirname,'page.js'));
-const {e,pc,n1,n2,sg,word,Word,head,stepChart,barsSigned,multiLine}=P;
+const {e,pc,n1,n2,sg,word,Word,head,buildBlock,stepChart,barsSigned,multiLine}=P;
 const need=['ninety.json','runs.json','measured.json','folded.json'];
 const J={};
 need.forEach(f=>{const p=path.join(__dirname,f);
@@ -27,6 +27,11 @@ const last=steps.length?steps[steps.length-1]:N.base;
 const hardSteps=steps.filter(s=>!chg[s.id].soft);
 const hardLast=hardSteps.length?hardSteps[hardSteps.length-1]:N.base;
 const fmax={}; N.formulaCeiling.rows.forEach(r=>fmax[r.k]=r);
+/* the ceiling rows, by name rather than by index, so a reordering of the cases
+   cannot silently point a sentence at the wrong row. */
+const CEIL0=N.ceiling[0];
+const CEILALL=N.ceiling.filter(c=>/all three/.test(c.nm))[0]||CEIL0;
+const CEILWAS=+(CEIL0.cq90-CEIL0.cq0).toFixed(2);
 const baseRow={}; N.base.rows.forEach(r=>baseRow[r.k]=r.v);
 const lastRow={}; hardLast.rows.forEach(r=>lastRow[r.k]=r.v);
 
@@ -56,6 +61,69 @@ const CEILCOL=['#94908A','#7EB8D4','#DABF6A','#A77EDB','#68CBA4','#D4736D'];
 const ceilChart=multiLine(N.ceiling.map((c,i)=>({nm:c.nm,v:c.curve,col:CEILCOL[i%CEILCOL.length],
  w:i===0?2.6:2})),{alt:'ninety days of story, release and kept practice, under each release arithmetic'});
 
+
+/* ============================================================
+   WHERE THE POINTS CAME FROM, AND WHICH OF THEM ARE THE INSTRUMENT.
+
+   Some criteria ask whether a control exists. Answer yes and the term jumps by
+   a fixed amount whatever anybody does with it: a refer control is worth five of
+   Referral and two of Monetization the moment it is on a surface, and the
+   cohort's behaviour never enters the sum. Other criteria are built out of what
+   the modelled cohort did, so they only move if somebody stays longer, writes
+   something the sniffer reads, or closes the loop.
+
+   Both are legitimate. The grade was written before any of these changes and
+   nothing here reweighted it. But a reader who is told the grade went up twenty
+   points deserves to know how much of that was a button appearing, because a
+   button appearing is cheap and is not the same news as a cohort behaving
+   differently. The split below is the one judgement on this page that is not
+   read off a run, so it is stated as a judgement and the arithmetic under it is
+   the grade's own formula.
+   ============================================================ */
+const STEPKIND={
+ 'First touch':{kind:'exists',
+  why:'boot time, the count of choices on the landing surface, the share of the bar in view, and whether a reading exists on arrival. All four are facts about the build and none of them reads the cohort.'},
+ 'Behavioral flow':{kind:'exists',
+  why:'a count of controls above the fold, per surface, off the probe.'},
+ 'Technical':{kind:'exists',
+  why:'page errors, requests, controls under the tap floor, boot time.'},
+ 'Referral':{kind:'exists',
+  why:'five points the moment a control that hands a reading to another person is on a surface. Nobody has to use it.'},
+ 'Visual and kinetic':{kind:'exists',
+  why:'carried at 8 and not measured by this pass.'},
+ 'Monetization':{kind:'split',
+  why:'six of its ten points are existence checks, four for a price and two for an enforced allowance. The other four read the share of the cohort who reach the end of the gift.'},
+ 'ICP alignment':{kind:'behaviour',
+  why:'built out of each figure\u2019s own day seven, day thirty, loop share and read share.'},
+ 'Core loop':{kind:'behaviour',
+  why:'the share who ever closed story, release and a kept practice, and how many times.'},
+ 'Emotional':{kind:'behaviour',
+  why:'the share of commits the shipped sniffer read, and the share that came back entirely inferred.'},
+ 'Retention':{kind:'behaviour',
+  why:'modelled day thirty against the category median.'}};
+/* Monetization is split exactly, using the grade\u2019s own formula rather than a
+   guess: the existence half is four for a price plus two for an enforced
+   allowance, read off the knobs the step recorded. */
+function monSplit(st){
+ const k=st.knobs||{};
+ return (k.money?4:0)+((k.enforce)?2:0);}
+const POINTS=(()=>{
+ const rows=N.formulaCeiling.rows.map(r=>{
+  const b=baseRow[r.k], a=lastRow[r.k], gain=+(a-b).toFixed(2);
+  const kind=STEPKIND[r.k].kind;
+  let ex=0, bh=0;
+  if(kind==='exists')ex=gain;
+  else if(kind==='behaviour')bh=gain;
+  else { /* Monetization */
+   ex=+(monSplit(hardLast)-monSplit(N.base)).toFixed(2);
+   bh=+(gain-ex).toFixed(2);}
+  return {k:r.k, b:b, a:a, gain:gain, ex:ex, bh:bh,
+   kind:kind, why:STEPKIND[r.k].why};});
+ return {rows:rows,
+  gain:+rows.reduce((a,r)=>a+r.gain,0).toFixed(2),
+  ex:+rows.reduce((a,r)=>a+r.ex,0).toFixed(2),
+  bh:+rows.reduce((a,r)=>a+r.bh,0).toFixed(2)};})();
+
 const HTML=head('Chasing ninety',
  'Every proposed change modelled against the same harness, the grade after each, and where the curve stops.')
 +`
@@ -64,17 +132,18 @@ const HTML=head('Chasing ninety',
 <p class="lede">The ninety day run graded ${n2(N.base.total)}. The instruction was
 to keep simulating until it reaches ninety. ${Word(N.changes.length)} changes were
 modelled, each one alone and then cumulatively, to the same stopping rule the
-baseline used. It reached ${n2(hardLast.total)}${hardLast.total<90?', and this page
-is mostly about why':''}.</p>
+baseline used. It reached ${n2(hardLast.total)}${hardLast.total<90
+?', and this page is mostly about why that is not ninety':''}.</p>
 
 <div class="big">
  <div><span class="gr">${n2(hardLast.total)}</span><span class="gl2">of 100, ${e(hardLast.letter)}</span></div>
  <p class="lede" style="margin:12px 0 0">From ${n2(N.base.total)} with every traced
  change applied. ${sg(hardLast.total-N.base.total)} points over
  ${hardSteps.length} steps. The formula&rsquo;s own maximum is
- ${N.formulaCeiling.total}, so ninety was arithmetically available and was not
- reached: the distance left is ${n1(90-hardLast.total)} points and the page names
- what each of them costs.</p>
+ ${N.formulaCeiling.total}, so ninety was arithmetically available${hardLast.total>=90
+ ? ' and it was reached. Every step that got here names the file it lands in and what it costs to build.'
+ : ' and it was not reached: the distance left is '+n1(90-hardLast.total)
+   +' points and the page names what each of them costs.'}</p>
 </div>
 
 <div class="note"><b>The rule, and it is the whole exercise.</b> The grade only
@@ -129,7 +198,7 @@ ${chart}
 <th class="num">Loop ever</th><th class="num">Stories</th><th class="num">Releases</th></tr></thead>
 <tbody>
 <tr><td>0</td><td><b>baseline, as shipped</b></td><td class="num"><b>${n2(N.base.total)}</b></td>
-<td class="num">&mdash;</td><td class="num">&mdash;</td><td class="num">${N.base.runs}</td>
+<td class="num">none</td><td class="num">none</td><td class="num">${N.base.runs}</td>
 <td class="num">${pc(N.base.d30,2)}</td><td class="num">${pc(N.base.loopEver,1)}</td>
 <td class="num">${n1(N.base.stories)}</td><td class="num">${n1(N.base.releases)}</td></tr>
 ${steps.map((s,i)=>`<tr class="${chg[s.id].soft?'soft':(s.step>=1?'win':'')}">
@@ -141,6 +210,53 @@ ${steps.map((s,i)=>`<tr class="${chg[s.id].soft?'soft':(s.step>=1?'win':'')}">
 <td class="num">${pc(s.loopEver,1)}</td><td class="num">${n1(s.stories)}</td>
 <td class="num">${n1(s.releases)}</td></tr>`).join('\n')}
 </tbody></table>
+
+
+<h2>Where the points came from</h2>
+<p class="lede">Twenty points is a large movement and the reader is owed a split.
+Some criteria ask whether a control exists and jump by a fixed amount the moment
+it does, whatever anybody does with it. Others are built out of what the modelled
+cohort did and only move if somebody stays.</p>
+<div class="grid g3" style="margin-top:16px">
+<div class="tile"><span class="n">${sg(POINTS.gain)}</span>
+<span class="l">points gained, baseline to reached</span></div>
+<div class="tile"><span class="n">${sg(POINTS.ex)}</span>
+<span class="l">from criteria that ask whether something exists</span>
+<span class="s">A button on a surface. Cheap, real, and no cohort had to do anything.</span></div>
+<div class="tile"><span class="n">${sg(POINTS.bh)}</span>
+<span class="l">from the modelled cohort behaving differently</span>
+<span class="s">Day thirty went ${pc(N.base.d30,2)} to ${pc(hardLast.d30,2)} and the loop
+${pc(N.base.loopEver,1)} to ${pc(hardLast.loopEver,1)}.</span></div>
+</div>
+<table class="tb">
+<thead><tr><th>Criterion</th><th class="num">Baseline</th><th class="num">Reached</th>
+<th class="num">Gain</th><th class="num">Exists</th><th class="num">Behaviour</th>
+<th>What the term actually reads</th></tr></thead>
+<tbody>
+${POINTS.rows.map(r=>`<tr class="${r.kind==='exists'&&r.gain>=2?'soft':(r.bh>=2?'win':'')}">
+<td><b>${e(r.k)}</b></td><td class="num">${n1(r.b)}</td><td class="num">${n1(r.a)}</td>
+<td class="num"><b>${sg(r.gain)}</b></td><td class="num">${r.ex?sg(r.ex):'none'}</td>
+<td class="num">${r.bh?sg(r.bh):'none'}</td>
+<td class="q">${r.why}</td></tr>`).join('\n')}
+<tr class="tot"><td><b>Total</b></td><td class="num"><b>${n2(N.base.total)}</b></td>
+<td class="num"><b>${n2(hardLast.total)}</b></td><td class="num"><b>${sg(POINTS.gain)}</b></td>
+<td class="num"><b>${sg(POINTS.ex)}</b></td><td class="num"><b>${sg(POINTS.bh)}</b></td>
+<td class="q">the amber rows are the instrument, the green rows are the product</td></tr>
+</tbody></table>
+<p><b>Read the amber rows sceptically and the green rows as the actual result.</b>
+C9 and C10 between them moved the grade ${sg(solo.C9.d+solo.C10.d)} applied alone
+and moved day thirty from ${pc(N.base.d30,2)} to ${pc(solo.C9.d30,2)} and
+${pc(solo.C10.d30,2)}. That is almost fourteen points for two controls existing.
+They are both worth building, C10 closes a live defect where the panel quoted a
+limit it did not enforce, and neither of them is why anybody would stay. A grade
+that pays that much for a button is telling you something about the grade. It is
+left exactly as it was written, because rewriting it here to pay less would be
+the same offence in the other direction.</p>
+<p>The ${sg(POINTS.bh)} in the behaviour column is the part that would be visible
+to a person using the product, and ${(()=>{const t=[['C5',solo.C5.d],['C3',solo.C3.d]]
+ .sort((a,b)=>b[1]-a[1]); return t.map(x=>'<b>'+x[0]+'</b> at '+sg(x[1])).join(' and ');})()}
+applied alone are most of it. Both are small pieces of work in files that already
+exist: ${e(chg.C5.file)} and ${e(chg.C3.file)}.</p>
 
 <h2>Where it flattens, and what is left</h2>
 ${flat?`<p>The curve flattens at <b>${e(flat.id)}</b>, ${e(chg[flat.id].nm)}, at
@@ -190,11 +306,31 @@ ${N.ceiling.map((c,i)=>`<tr class="${i===0?'zero':(c.cq90-c.cq0>5?'win':'')}">
 <td class="num"><b>${sg(c.cq90-c.cq0)}</b></td><td class="num">${n1(c.clear)}</td>
 <td class="num">${c.ground}</td><td>${e(c.band)}</td></tr>`).join('\n')}
 </tbody></table>
-<p>The shipped arithmetic moves the reading ${sg(N.ceiling[0].cq90-N.ceiling[0].cq0)}
-across a quarter of daily work. The three changes together move it
-${sg(N.ceiling.filter(c=>/all three/.test(c.nm))[0].cq90-N.ceiling.filter(c=>/all three/.test(c.nm))[0].cq0)}.
-That is the difference between a product a person can improve at and a product
-that records them standing still.</p>
+<p>The shipped arithmetic moves the reading ${sg(CEIL0.cq90-CEIL0.cq0)} across a
+quarter of daily work. The three changes together move it
+${sg(CEILALL.cq90-CEILALL.cq0)}, and the band after ninety days is
+&ldquo;${e(CEILALL.band)}&rdquo; either way.</p>
+<div class="note bad"><b>And that is the finding of this pass, because it is not
+the answer the backlog expected.</b> The three fixes named as the cure for the
+flat loop were the removal compounding, the install reaching the far pole, and a
+cleared address staying cleared. All three are modelled here and all three are
+applied together, on a person who does everything right for ninety consecutive
+days with no model in the way. The reading moves
+${sg(CEILALL.cq90-CEILALL.cq0)} instead of ${sg(CEILWAS)}. Addresses holding the
+opposite stay at ${n1(CEILALL.clear)}. The band does not change.
+${sg(CEILALL.cq90-CEILALL.cq0)} over a quarter of perfect daily practice is still
+standing still, so the three changes are necessary and are nowhere near
+sufficient, and the ceiling is deeper than the fix the backlog names.</div>
+<p>Where it is deeper is visible in the same table. Patterns of ground fall from
+${CEIL0.ground} to ${CEILALL.ground} as the release actually removes charge, so
+the fixes work: there is less load. The reading barely notices, which means the
+reading is not mostly built out of the load a release can reach. The height of the
+line is the intake, and the intake is
+${(()=>{const q=N.changes.filter(c=>c.id==='C11')[0];
+ return 'answered once, before day one';})()}. Until a ruling exists on whether
+somatic work moves the stated coherence at all, no arithmetic inside the release
+will move it, and this is the owner&rsquo;s call rather than a design decision:
+the quantity is shared with the book.</p>
 <p><b>And the grade barely notices, which is the most important sentence on this
 page.</b> C2a, C2b and C2c moved the total by
 ${sg(solo.C2a.d)}, ${sg(solo.C2b.d)} and ${sg(solo.C2c.d)} applied alone. Not
@@ -259,11 +395,7 @@ remove a friction only by removing what causes it, and may change arithmetic onl
 where the product&rsquo;s arithmetic would change. The one knob that is a bare
 return rate is C6n, it is 12 per cent of otherwise skipped days, nothing in this
 repository measures it, and the curve is drawn so the reader can cut it off.</p>
-<div class="stamp">source.html   md5 ${e(st.src)}
-engine.js     md5 ${e(st.engine)}
-commit        ${e(st.commit)}${st.dirty?'   working tree dirty':''}
-fold probe    md5 ${e(N.foldStamp.src)}   commit ${e(N.foldStamp.commit)}
-chromium      ${e(st.chromium)}, file://, 1600x1000 and 390x844
+<div class="stamp">${buildBlock(st,N.drift,N.foldStamp)}chromium      ${e(st.chromium)}, file://, 1600x1000 and 390x844
 measured      ${e(st.when)}
 cohort        ${COH} a run
 stopping rule mean moves under ${N.settle.threshold}, held ${N.settle.hold}, floor ${N.settle.floor}

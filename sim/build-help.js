@@ -11,7 +11,7 @@
    ============================================================ */
 const fs=require('fs'), path=require('path');
 const P=require(path.join(__dirname,'page.js'));
-const {e,pc,n1,n2,sg,word,Word,head,barsSigned}=P;
+const {e,pc,n1,n2,sg,word,Word,head,buildBlock,barsSigned}=P;
 const need=['runs.json','measured.json','folded.json','lexmeasured.json','ninety.json'];
 const J={};
 need.forEach(f=>{const p=path.join(__dirname,f);
@@ -225,7 +225,7 @@ ${ranked.map(c=>`<tr class="${c.soft?'soft':(c.d>=0.5?'win':'')}">
 <td class="num"><b>${sg(c.d)}</b><span class="fine">${(solo[c.id]||{runs:0}).runs} runs</span></td>
 <td class="q">${c.traces.map(t=>e(fnm(t))).join('. ')}</td>
 <td class="num">${c.lost}<span class="fine">met ${c.met}</span></td>
-<td class="q">${c.keeps.length?c.keeps.map(k=>e(k)).join(', '):'&mdash;'}</td>
+<td class="q">${c.keeps.length?c.keeps.map(k=>e(k)).join(', '):'nobody'}</td>
 <td class="q"><code>${e(c.file)}</code></td>
 <td class="q">${e(c.cost)}</td></tr>`).join('\n')}
 </tbody></table>
@@ -340,11 +340,7 @@ and the load problem is a desk problem.</p>
 
 <hr class="rule">
 <h2>What this is, and what it is not</h2>
-<div class="stamp">source.html   md5 ${e(st.src)}
-engine.js     md5 ${e(st.engine)}
-commit        ${e(st.commit)}${st.dirty?'   working tree dirty':''}
-fold probe    md5 ${e(fst.src)}   commit ${e(fst.commit)}${fst.moved?'   THE BUILD MOVED DURING THE PROBE':''}
-chromium      ${e(st.chromium)}, file://, 1600x1000 and 390x844
+<div class="stamp">${buildBlock(st,N.drift,fst)}chromium      ${e(st.chromium)}, file://, 1600x1000 and 390x844
 measured      ${e(st.when)}
 cohort        ${COH} a run, ${R.model.settle.runs} runs behind the baseline
 lexicon       ${Object.keys(LEX).length?LEX.patch.lexBefore+' entries to '+LEX.patch.lexAfter:''}

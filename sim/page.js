@@ -117,6 +117,30 @@ const word=n=>{
  return String(n);};
 const Word=n=>{const w=word(n); return w.charAt(0).toUpperCase()+w.slice(1);};
 
+
+/* ============================================================
+   THE BUILD BLOCK. Every page here states the build it was measured against,
+   whether that build was pinned, and whether the working tree moved under the
+   run. A page that prints a grade and not the build it graded is asking to be
+   read against whatever is on disk the day somebody opens it.
+   ============================================================ */
+function buildBlock(st,drift,fst){
+ const moved=drift&&(drift.worktreeSrc!==st.src||drift.worktreeEngine!==st.engine);
+ let t='source.html   md5 '+e(st.src)+'\n'
+  +'engine.js     md5 '+e(st.engine)+'\n'
+  +'commit        '+e(st.commit)+(st.dirty?'   working tree dirty':'')+'\n';
+ if(fst)t+='fold probe    md5 '+e(fst.src)+'   commit '+e(fst.commit)
+  +(fst.moved?'   THE BUILD MOVED DURING THE PROBE':'')+'\n';
+ if(drift&&drift.pin)t+='pinned at     '+e(drift.pin)+'\n';
+ if(drift)t+='working tree  source.html '+e(drift.worktreeSrc)
+  +'\n              engine.js   '+e(drift.worktreeEngine)+'\n';
+ if(moved)t+='\nTHE BUILD MOVED UNDER THIS RUN. Two seats were live in atuned_src and\n'
+  +'the release path while it ran. Everything measured here was measured\n'
+  +'against the pinned build above and nothing was measured against the\n'
+  +'working tree. Re-measure before reading these numbers against a newer\n'
+  +'build.\n';
+ return t;}
+
 function head(title,lede){
  return `<!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -190,4 +214,4 @@ function multiLine(series,opt){
    +`<line x1="${(W-Rr).toFixed(1)}" y1="${yy.toFixed(1)}" x2="${(W-Rr+4).toFixed(1)}" y2="${(T+10+si*17).toFixed(1)}" stroke="${s.col}" stroke-width="1" opacity=".5"/>`;});
  return `<svg class="ch" viewBox="0 0 ${W} ${Hh}" role="img" aria-label="${e(opt.alt||'')}">${g}</svg>`;}
 
-module.exports={CSS,e,pc,n1,n2,sg,word,Word,head,stepChart,barsSigned,multiLine};
+module.exports={CSS,e,pc,n1,n2,sg,word,Word,head,buildBlock,stepChart,barsSigned,multiLine};

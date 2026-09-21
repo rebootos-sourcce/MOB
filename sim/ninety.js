@@ -31,8 +31,19 @@
      node sim/ninety.js            both passes, writes sim/ninety.json
      node sim/ninety.js solo       the solo pass only
    ============================================================ */
-const fs=require('fs'), path=require('path');
+const fs=require('fs'), path=require('path'), cp=require('child_process');
 const H=require(path.join(__dirname,'harness.js'));
+/* THE DRIFT. Two seats are live in atuned_src and the release path, so the
+   working copy of the build moves while this runs. SIM_ROOT pins what is
+   measured; this records what the working tree held when the iteration started,
+   so the page can say the build moved under it instead of quietly measuring one
+   build and being read against another. */
+const REPO=path.resolve(__dirname,'..');
+const md5=f=>{try{return cp.execSync('md5sum '+JSON.stringify(path.join(REPO,f)))
+ .toString().split(' ')[0];}catch(err){return 'absent';}};
+const DRIFT={pin:process.env.SIM_ROOT||null,
+ worktreeSrc:md5('source.html'), worktreeEngine:md5('engine.js'),
+ when:new Date().toISOString()};
 const {K,resetKnobs,remeasure,runCohort,gradeOf,letterOf,ceilingCase,verifyRelease,
  sd,DAYS,SHOWUP,FRICTION,M,MEAS,FOLD,SETTLE,HOLD,FLOOR,CEIL,COHORT,E}=H;
 const LEXM=path.join(__dirname,'lexmeasured.json');
@@ -365,8 +376,9 @@ function main(){
  ceilRows.forEach(r=>console.log('ceiling  '+r.nm.padEnd(24)+r.cq0+' to '+r.cq90
   +'   opposite in at '+r.clear+' addresses   '+r.band));
 
- const out={stamp:MEAS.stamp, foldStamp:FOLD.stamp,
-  settle:{threshold:SETTLE, hold:HOLD, floor:FLOOR},
+ const out={stamp:MEAS.stamp, foldStamp:FOLD.stamp, drift:DRIFT,
+  pinned:!!process.env.SIM_ROOT, fast:!!process.env.SIM_FAST,
+  settle:{threshold:SETTLE, hold:HOLD, floor:FLOOR, ceiling:CEIL},
   cohort:COHORT, base:base, solo:solo, cum:cum,
   ceiling:ceilRows, formulaCeiling:formulaCeiling(),
   lex:LEX, lexEntries:LEXKEYS.length,

@@ -912,7 +912,13 @@ function letterOf(t){
    HOLD runs in a row, with at least FLOOR runs behind it. The run count is
    whatever that takes. Nothing here is chosen in advance except the threshold.
    ============================================================ */
-const SETTLE=0.05, HOLD=6, FLOOR=10, CEIL=400;
+/* The rule, and the one way it may be relaxed. SIM_FAST exists so a long
+   iteration can be smoke tested for crashes before it is left to run for hours.
+   Every file written by this directory records the rule that actually produced
+   it, so a run made under SIM_FAST says so on the page rather than borrowing the
+   real rule's authority. No deliverable is built from a fast run. */
+const FAST=!!process.env.SIM_FAST;
+const SETTLE=FAST?1.0:0.05, HOLD=FAST?1:6, FLOOR=FAST?2:10, CEIL=FAST?3:400;
 function sd(a){if(a.length<2)return 0; const m=a.reduce((x,y)=>x+y,0)/a.length;
  return Math.sqrt(a.reduce((x,y)=>x+(y-m)*(y-m),0)/(a.length-1));}
 
