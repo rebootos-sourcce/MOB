@@ -470,9 +470,19 @@ pays.</p>
 
 <hr class="rule">
 <h2>How this was run</h2>
-<p>The harness is the baseline&rsquo;s harness with knobs added, and the defaults
-reproduce the baseline exactly: ${n2(N.base.total)} at ${N.base.runs} runs, which
-is the same total and the same run count the earlier report settled on. A knob may
+<p>The harness is the baseline&rsquo;s harness with knobs added, and every knob
+is off by default. Whether the defaults still reproduce the baseline is checked
+rather than claimed: ${(()=>{
+ const ok=Math.abs(N.base.total-R.grade.mean)<0.005&&N.base.runs===R.model.settle.runs;
+ return ok
+  ?'this pass settled at '+n2(N.base.total)+' over '+N.base.runs
+   +' runs and the earlier report settled at '+n2(R.grade.mean)+' over '
+   +R.model.settle.runs+' runs, which is the same total and the same run count, '
+   +'so the knobs added nothing when they were all off.'
+  :'this pass settled at '+n2(N.base.total)+' over '+N.base.runs
+   +' runs against the earlier report&rsquo;s '+n2(R.grade.mean)+' over '
+   +R.model.settle.runs+' runs. They do not match, and every delta on this page '
+   +'is measured against this pass&rsquo;s own baseline rather than the earlier one.';})()} A knob may
 remove a friction only by removing what causes it, and may change arithmetic only
 where the product&rsquo;s arithmetic would change. The one knob that is a bare
 return rate is C6n, it is 12 per cent of otherwise skipped days, nothing in this
