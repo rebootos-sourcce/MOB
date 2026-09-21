@@ -157,7 +157,12 @@ function head(title,lede){
 /* a stepped line, one series, with a target rule and point labels */
 function stepChart(pts,opt){
  opt=opt||{};
- const W=880,Hh=340,L=42,Rr=120,T=18,B=64;
+ const W=880,Hh=340,L=42,T=18,B=64;
+ /* THE RIGHT GUTTER HOLDS THE RULE LABELS, so it is measured from them. A fixed
+    120 clipped "formula ceiling 96" and "reached 78.66" off the frame, which
+    removes the two numbers the chart exists to be read against. */
+ const rl=(opt.rules||[]).reduce((a,r)=>Math.max(a,String(r.nm).length),0);
+ const Rr=Math.min(300,Math.max(120,98+rl*7.2));
  const hi=opt.hi===undefined?100:opt.hi, lo=opt.lo===undefined?30:opt.lo;
  const y=v=>T+(hi-Math.max(lo,Math.min(hi,v)))/(hi-lo)*(Hh-T-B);
  const x=i=>L+(pts.length<2?0:i/(pts.length-1))*(W-L-Rr);
@@ -177,7 +182,9 @@ function stepChart(pts,opt){
   g+=`<circle cx="${x(i).toFixed(1)}" cy="${y(p.v).toFixed(1)}" r="4" fill="${opt.col||'#7EB8D4'}"/>`;
   g+=`<text class="bn" x="${x(i).toFixed(1)}" y="${(y(p.v)-11).toFixed(1)}" text-anchor="middle">${n1(p.v)}</text>`;
   g+=`<text class="ax" x="${x(i).toFixed(1)}" y="${Hh-B+20}" text-anchor="middle">${e(p.k)}</text>`;
-  if(p.k2)g+=`<text class="ax" x="${x(i).toFixed(1)}" y="${Hh-B+34}" text-anchor="middle" opacity=".7">${e(p.k2)}</text>`;});
+  /* the delta under each step sits on a tighter pitch than the step name, so it
+     is set smaller rather than allowed to touch its neighbour */
+  if(p.k2)g+=`<text class="ax" x="${x(i).toFixed(1)}" y="${Hh-B+34}" text-anchor="middle" opacity=".75" font-size="10.5">${e(p.k2)}</text>`;});
  return `<div class="chwrap"><svg class="ch" viewBox="0 0 ${W} ${Hh}" role="img" aria-label="${e(opt.alt||'')}">${g}</svg></div>`;}
 
 /* horizontal bars, signed, for a solo ranking */

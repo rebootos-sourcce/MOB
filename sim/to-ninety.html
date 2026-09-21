@@ -1,0 +1,886 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Chasing ninety</title><meta name="description" content="Every proposed change modelled against the same harness, the grade after each, and where the curve stops.">
+<style>
+:root{
+ --bg:#0C0D12; --panel:#1A1D26; --panel-2:#252833; --sunk:#090A0E;
+ --ink:#EFEDE8; --mid:#B4B0A8; --dim:#94908A; --line:rgba(239,237,232,.13);
+ --accent:#7EB8D4; --au:#C2A063; --good:#68CBA4; --bad:#D4736D;
+ --root:#D6524C; --sacral:#D8924E; --solar:#DABF6A;
+ --heart:#5FD5A6; --throat:#5EBBDB; --eye:#7D93E0; --crown:#A77EDB;
+ --w:1120px;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);
+ font:400 16px/1.62 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+ letter-spacing:.005em}
+.wrap{max-width:var(--w);margin:0 auto;padding:40px 16px 90px}
+h1{font-size:clamp(28px,4.6vw,44px);line-height:1.1;margin:0 0 10px;font-weight:600;letter-spacing:-.015em}
+h2{font-size:clamp(20px,2.6vw,26px);margin:54px 0 6px;font-weight:600;letter-spacing:-.01em}
+h3{font-size:17px;margin:0;font-weight:600}
+h2+.lede{margin-top:0;color:var(--mid)}
+p{margin:0 0 14px;max-width:74ch}
+.lede{color:var(--mid);font-size:17px}
+.eye{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin:0 0 8px}
+.rule{height:1px;background:var(--line);border:0;margin:36px 0}
+.note{border-left:2px solid var(--au);padding:2px 0 2px 16px;color:var(--mid);margin:0 0 20px;max-width:74ch}
+.note.bad{border-color:var(--bad)}
+.stamp{font:400 12.5px/1.75 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+ color:var(--dim);background:var(--sunk);border:1px solid var(--line);
+ border-radius:8px;padding:14px 16px;margin:22px 0 0;overflow-x:auto;white-space:pre}
+.grid{display:grid;gap:14px}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g2{grid-template-columns:repeat(2,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+.tile{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px}
+.tile .n{font-size:clamp(26px,3.4vw,38px);line-height:1.05;font-weight:600;letter-spacing:-.02em;display:block}
+.tile .l{color:var(--dim);font-size:13px;display:block;margin-top:6px}
+.tile .s{color:var(--mid);font-size:13.5px;display:block;margin-top:8px}
+.big{background:linear-gradient(180deg,var(--panel-2),var(--panel));
+ border:1px solid var(--line);border-radius:16px;padding:26px 24px}
+.big .gr{font-size:clamp(52px,9vw,88px);line-height:.95;font-weight:600;letter-spacing:-.035em}
+.big .gl2{font-size:clamp(22px,3vw,30px);color:var(--au);font-weight:600;margin-left:10px}
+.ch{width:100%;height:auto;display:block;overflow:visible}
+/* A CHART IS NOT A PICTURE, IT IS TYPE. Scaling an 880 wide frame into 358
+   scales its 12px labels to about 5 and the most important chart on the page
+   stops being readable exactly where it is read most. The frame keeps a minimum
+   width on a phone and scrolls inside its own box, which is what the tables
+   already do. */
+.chwrap{overflow-x:auto;margin:10px 0 6px;-webkit-overflow-scrolling:touch}
+.gl{stroke:var(--line);stroke-width:1}
+.ln{fill:none;stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+.dot{fill:var(--dim)}
+text{font:400 12px ui-sans-serif,system-ui,sans-serif}
+.ax{fill:var(--dim)}
+.bl{fill:var(--mid);font-size:12.5px}
+.bn{fill:var(--ink);font-size:12.5px}
+.lg{font-size:12.5px;font-weight:600}
+table.tb{width:100%;border-collapse:collapse;margin:14px 0 6px;font-size:14px}
+table.tb th{text-align:left;font-weight:600;font-size:11.5px;letter-spacing:.09em;
+ text-transform:uppercase;color:var(--dim);border-bottom:1px solid var(--line);
+ padding:0 12px 8px 0;vertical-align:bottom}
+table.tb td{padding:11px 12px 11px 0;border-bottom:1px solid var(--line);vertical-align:top}
+table.tb td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+table.tb tr.tot td{border-bottom:0;border-top:1px solid var(--line)}
+table.tb tr.zero td{background:rgba(212,115,109,.07)}
+table.tb tr.win td{background:rgba(104,203,164,.06)}
+table.tb tr.soft td{background:rgba(218,191,106,.06)}
+td.q{color:var(--mid);max-width:44ch}
+.fine{color:var(--dim);font-size:12.5px;display:block;margin-top:3px;line-height:1.45}
+.good{color:var(--good)} .bad{color:var(--bad)} .warn{color:var(--solar)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px}
+.card header{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.card .role{color:var(--dim);font-size:13px;margin:0;width:100%}
+.dot2{width:9px;height:9px;border-radius:50%;display:inline-block}
+dl.kv{margin:0 0 12px;display:grid;gap:3px}
+dl.kv div{display:flex;justify-content:space-between;gap:12px;align-items:baseline;
+ border-bottom:1px dotted var(--line);padding-bottom:3px}
+dl.kv dt{color:var(--dim);font-size:13px;margin:0}
+dl.kv dd{margin:0;font-variant-numeric:tabular-nums;font-size:14px;white-space:nowrap}
+.why{font-size:13.5px;color:var(--mid);margin:0 0 8px}
+.why b{color:var(--ink)}
+.split{font-size:12.5px;color:var(--dim);margin:0;border-top:1px solid var(--line);padding-top:8px}
+blockquote{margin:0 0 12px;padding:0 0 0 14px;border-left:2px solid var(--accent);
+ color:var(--ink);font-size:15px;line-height:1.55}
+blockquote p{margin:0 0 7px;max-width:52ch}
+blockquote p:last-child{margin:0}
+.tag{display:inline-block;font:600 11px/1 ui-monospace,SFMono-Regular,Menlo,monospace;
+ letter-spacing:.06em;color:var(--au);border:1px solid var(--line);border-radius:4px;
+ padding:4px 6px;background:var(--sunk);white-space:nowrap}
+.tag.g{color:var(--good)} .tag.b{color:var(--bad)} .tag.m{color:var(--mid)}
+ul,ol{margin:0 0 16px;padding-left:22px;max-width:74ch}
+li{margin-bottom:8px}
+li b{font-weight:600}
+code{font:400 13.5px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+ background:var(--sunk);border:1px solid var(--line);border-radius:4px;padding:1px 5px}
+.foot{color:var(--dim);font-size:13px;margin-top:40px}
+@media (max-width:820px){
+ .ch{min-width:700px}
+ .g3,.g2,.g4{grid-template-columns:1fr}
+ .wrap{padding:26px 16px 70px}
+ table.tb{display:block;overflow-x:auto;white-space:nowrap}
+ td.q{white-space:normal;min-width:30ch}
+ .fine{white-space:normal}
+}
+@media print{body{background:#fff;color:#111}}
+</style></head><body><div class="wrap">
+<p class="eye">At&uuml;ned, the UI and UX seat</p>
+<h1>Chasing ninety</h1>
+<p class="lede">The ninety day run graded 38.91. The instruction was
+to keep simulating until it reaches ninety. Seventeen changes were
+modelled, each one alone and then cumulatively, to the same stopping rule the
+baseline used. It reached 78.66, and this page is mostly about why that is not ninety.</p>
+
+
+<div class="big">
+ <div><span class="gr">78.66</span><span class="gl2">of 100, B</span></div>
+ <p class="lede" style="margin:12px 0 0">From 38.91 with every traced
+ change applied. +39.75 points over
+ 16 steps. The formula&rsquo;s own maximum is
+ 96, so ninety was arithmetically available and it was not reached: the distance left is 11.3 points and the page names what each of them costs.</p>
+</div>
+
+<div class="note"><b>The rule, and it is the whole exercise.</b> The grade only
+moves if the product would move. Nothing on this page gains a point by lowering a
+friction cost, raising an opening rate, reweighting a criterion or grading a
+different thing. Every step is one named product change, with the file it lands in
+and roughly what it costs to build, and the parameter it turns is the consequence
+of that change rather than the change itself. Where a consequence could be
+measured it was: the fold counts come off a Chromium probe of the shipped build,
+the sniffer&rsquo;s read rate comes off the shipped <code>parseStory</code> with
+the patch applied in memory, and the release arithmetic is driven through the
+shipped engine. One step breaks the rule on purpose, and it is marked, separated
+and reported twice.</div>
+
+<h2>Every change, alone</h2>
+<p class="lede">Each one applied by itself on the baseline, run to the same
+stopping rule, and the total compared against 38.91. Same seed
+sequence every time, so a step is paired against the baseline person by person.</p>
+<div class="chwrap"><svg class="ch" viewBox="0 0 880 476" role="img" aria-label="grade movement of each change applied alone"><line class="gl" x1="422.6275" y1="10" x2="422.6275" y2="462"/><text class="bl" x="4" y="29">C9  A way to hand it to somebody</text><rect x="422.6" y="19" width="397.4" height="15" fill="#68CBA4" opacity=".9" rx="2"/><text class="bn" x="826.0" y="31" text-anchor="start">+7.75</text><text class="bl" x="4" y="55">C5  The lexicon reads ordinary sentences</text><rect x="422.6" y="45" width="392.2" height="15" fill="#68CBA4" opacity=".9" rx="2"/><text class="bn" x="820.9" y="57" text-anchor="start">+7.65</text><text class="bl" x="4" y="81">C10  A price, and an allowance with something behind it</text><rect x="422.6" y="71" width="308.2" height="15" fill="#68CBA4" opacity=".9" rx="2"/><text class="bn" x="736.8" y="83" text-anchor="start">+6.01</text><text class="bl" x="4" y="107">C3  The release reads carrying rather than loaded</text><rect x="422.6" y="97" width="260.0" height="15" fill="#68CBA4" opacity=".9" rx="2"/><text class="bn" x="688.6" y="109" text-anchor="start">+5.07</text><text class="bl" x="4" y="133">C8  The rails ship folded</text><rect x="422.6" y="123" width="114.9" height="15" fill="#68CBA4" opacity=".9" rx="2"/><text class="bn" x="543.5" y="135" text-anchor="start">+2.24</text><text class="bl" x="4" y="159">C12  Three defects that are simply true</text><rect x="422.6" y="149" width="112.8" height="15" fill="#68CBA4" opacity=".9" rx="2"/><text class="bn" x="541.4" y="161" text-anchor="start">+2.20</text><text class="bl" x="4" y="185">C7  The two level menu</text><rect x="422.6" y="175" width="105.1" height="15" fill="#68CBA4" opacity=".9" rx="2"/><text class="bn" x="533.7" y="187" text-anchor="start">+2.05</text><text class="bl" x="4" y="211">C4  What the holding costs, printed</text><rect x="422.6" y="201" width="77.4" height="15" fill="#68CBA4" opacity=".9" rx="2"/><text class="bn" x="506.1" y="213" text-anchor="start">+1.51</text><text class="bl" x="4" y="237">C6n  And the return rate it buys</text><rect x="422.6" y="227" width="51.8" height="15" fill="#DABF6A" opacity=".9" rx="2"/><text class="bn" x="480.4" y="239" text-anchor="start">+1.01</text><text class="bl" x="4" y="263">C8b  The top collapses to two</text><rect x="422.6" y="253" width="47.2" height="15" fill="#68CBA4" opacity=".9" rx="2"/><text class="bn" x="475.8" y="265" text-anchor="start">+0.92</text><text class="bl" x="4" y="289">C6  Something asks them to come back</text><rect x="422.6" y="279" width="13.8" height="15" fill="#68CBA4" opacity=".9" rx="2"/><text class="bn" x="442.5" y="291" text-anchor="start">+0.27</text><text class="bl" x="4" y="315">C11  The record arrives at sign in</text><rect x="422.6" y="305" width="6.2" height="15" fill="#68CBA4" opacity=".9" rx="2"/><text class="bn" x="434.8" y="317" text-anchor="start">+0.12</text><text class="bl" x="4" y="341">C5b  An inferred address is a question</text><rect x="422.6" y="331" width="5.1" height="15" fill="#68CBA4" opacity=".9" rx="2"/><text class="bn" x="433.8" y="343" text-anchor="start">+0.10</text><text class="bl" x="4" y="367">C1  The narrow door</text><rect x="422.6" y="357" width="4.6" height="15" fill="#68CBA4" opacity=".9" rx="2"/><text class="bn" x="433.2" y="369" text-anchor="start">+0.09</text><text class="bl" x="4" y="393">C2c  A cleared address stays cleared</text><rect x="422.6" y="383" width="1.5" height="15" fill="#94908A" opacity=".9" rx="2"/><text class="bn" x="428.6" y="395" text-anchor="start">+0.00</text><text class="bl" x="4" y="419">C2b  The install reaches the far pole</text><rect x="419.6" y="409" width="3.1" height="15" fill="#D4736D" opacity=".9" rx="2"/><text class="bn" x="413.6" y="421" text-anchor="end">-0.06</text><text class="bl" x="4" y="445">C2a  The removal compounds inside the run</text><rect x="416.5" y="435" width="6.2" height="15" fill="#D4736D" opacity=".9" rx="2"/><text class="bn" x="410.5" y="447" text-anchor="end">-0.12</text></svg></div>
+<table class="tb">
+<thead><tr><th></th><th>The change</th><th class="num">Alone</th><th class="num">Runs</th>
+<th class="num">Day 30</th><th class="num">Loop ever</th><th class="num">Read</th>
+<th>What it actually moved</th></tr></thead>
+<tbody>
+<tr class="win">
+<td><span class="tag g">C9</span></td>
+<td><b>A way to hand it to somebody</b></td>
+<td class="num"><b>+7.75</b></td>
+<td class="num">17</td>
+<td class="num">4.68%</td>
+<td class="num">4.7%</td>
+<td class="num">50%</td>
+<td class="q">ICP alignment +0.25, Core loop +0.06, Emotional +0.06, Monetization +2.00, Retention +0.38, Referral +5.00
+</td></tr>
+<tr class="win">
+<td><span class="tag g">C5</span></td>
+<td><b>The lexicon reads ordinary sentences</b></td>
+<td class="num"><b>+7.65</b></td>
+<td class="num">18</td>
+<td class="num">7.03%</td>
+<td class="num">11.0%</td>
+<td class="num">100%</td>
+<td class="q">ICP alignment +0.81, Core loop +0.67, Emotional +4.43, Monetization +0.33, Retention +1.42
+</td></tr>
+<tr class="win">
+<td><span class="tag g">C10</span></td>
+<td><b>A price, and an allowance with something behind it</b></td>
+<td class="num"><b>+6.01</b></td>
+<td class="num">19</td>
+<td class="num">3.86%</td>
+<td class="num">4.0%</td>
+<td class="num">52%</td>
+<td class="q">Monetization +6.00
+</td></tr>
+<tr class="win">
+<td><span class="tag g">C3</span></td>
+<td><b>The release reads carrying rather than loaded</b></td>
+<td class="num"><b>+5.07</b></td>
+<td class="num">27</td>
+<td class="num">8.77%</td>
+<td class="num">17.0%</td>
+<td class="num">54%</td>
+<td class="q">ICP alignment +0.85, Core loop +1.22, Emotional +0.12, Monetization +0.68, Retention +2.20
+</td></tr>
+<tr class="win">
+<td><span class="tag g">C8</span></td>
+<td><b>The rails ship folded</b></td>
+<td class="num"><b>+2.24</b></td>
+<td class="num">15</td>
+<td class="num">4.10%</td>
+<td class="num">4.1%</td>
+<td class="num">51%</td>
+<td class="q">First touch +0.10, Behavioral flow +2.00, Retention +0.10
+</td></tr>
+<tr class="win">
+<td><span class="tag g">C12</span></td>
+<td><b>Three defects that are simply true</b></td>
+<td class="num"><b>+2.20</b></td>
+<td class="num">15</td>
+<td class="num">4.23%</td>
+<td class="num">4.0%</td>
+<td class="num">51%</td>
+<td class="q">Technical +2.00, Retention +0.17
+</td></tr>
+<tr class="win">
+<td><span class="tag g">C7</span></td>
+<td><b>The two level menu</b></td>
+<td class="num"><b>+2.05</b></td>
+<td class="num">19</td>
+<td class="num">3.96%</td>
+<td class="num">4.2%</td>
+<td class="num">53%</td>
+<td class="q">First touch +1.60, Behavioral flow +0.40
+</td></tr>
+<tr class="win">
+<td><span class="tag g">C4</span></td>
+<td><b>What the holding costs, printed</b></td>
+<td class="num"><b>+1.51</b></td>
+<td class="num">21</td>
+<td class="num">6.25%</td>
+<td class="num">6.3%</td>
+<td class="num">49%</td>
+<td class="q">ICP alignment +0.24, Core loop +0.19, Retention +1.08
+</td></tr>
+<tr class="soft">
+<td><span class="tag">C6n</span></td>
+<td><b>And the return rate it buys</b></td>
+<td class="num"><b>+1.01</b></td>
+<td class="num">19</td>
+<td class="num">5.51%</td>
+<td class="num">5.0%</td>
+<td class="num">51%</td>
+<td class="q">ICP alignment +0.13, Core loop +0.07, Retention +0.75
+<span class="fine"><b>Judged.</b> A return rate of 12% of otherwise skipped days. Nothing in this repository measures it. It is here to be subtracted.</span></td></tr>
+<tr class="win">
+<td><span class="tag g">C8b</span></td>
+<td><b>The top collapses to two</b></td>
+<td class="num"><b>+0.92</b></td>
+<td class="num">19</td>
+<td class="num">3.79%</td>
+<td class="num">4.0%</td>
+<td class="num">51%</td>
+<td class="q">First touch +0.50, Behavioral flow +0.50
+</td></tr>
+<tr class="">
+<td><span class="tag">C6</span></td>
+<td><b>Something asks them to come back</b></td>
+<td class="num"><b>+0.27</b></td>
+<td class="num">16</td>
+<td class="num">4.15%</td>
+<td class="num">4.2%</td>
+<td class="num">52%</td>
+<td class="q">Emotional +0.10, Retention +0.12
+</td></tr>
+<tr class="">
+<td><span class="tag">C11</span></td>
+<td><b>The record arrives at sign in</b></td>
+<td class="num"><b>+0.12</b></td>
+<td class="num">19</td>
+<td class="num">2.42%</td>
+<td class="num">3.2%</td>
+<td class="num">53%</td>
+<td class="q">ICP alignment -0.10, First touch +1.30, Core loop -0.06, Retention -1.06
+</td></tr>
+<tr class="">
+<td><span class="tag">C5b</span></td>
+<td><b>An inferred address is a question</b></td>
+<td class="num"><b>+0.10</b></td>
+<td class="num">19</td>
+<td class="num">4.12%</td>
+<td class="num">4.4%</td>
+<td class="num">52%</td>
+<td class="q">Emotional -0.06, Retention +0.11
+</td></tr>
+<tr class="">
+<td><span class="tag">C1</span></td>
+<td><b>The narrow door</b></td>
+<td class="num"><b>+0.09</b></td>
+<td class="num">15</td>
+<td class="num">3.85%</td>
+<td class="num">4.4%</td>
+<td class="num">53%</td>
+<td class="q">nothing above the noise
+<span class="fine"><b>Judged.</b> The door costs 3.4 minutes in the harness’s own cost table and this step sets it to 0.8. Both numbers are judgement, not measurement. The product change is real and named above, the size of it is not measured, and the model sweep bounds what that whole cost table is worth at 2.50 points.</span></td></tr>
+<tr class="">
+<td><span class="tag">C2c</span></td>
+<td><b>A cleared address stays cleared</b></td>
+<td class="num"><b>+0.00</b></td>
+<td class="num">19</td>
+<td class="num">3.86%</td>
+<td class="num">4.0%</td>
+<td class="num">52%</td>
+<td class="q">nothing above the noise
+</td></tr>
+<tr class="zero">
+<td><span class="tag">C2b</span></td>
+<td><b>The install reaches the far pole</b></td>
+<td class="num"><b>-0.06</b></td>
+<td class="num">15</td>
+<td class="num">3.67%</td>
+<td class="num">4.2%</td>
+<td class="num">52%</td>
+<td class="q">Retention -0.11
+</td></tr>
+<tr class="zero">
+<td><span class="tag">C2a</span></td>
+<td><b>The removal compounds inside the run</b></td>
+<td class="num"><b>-0.12</b></td>
+<td class="num">22</td>
+<td class="num">3.64%</td>
+<td class="num">4.1%</td>
+<td class="num">51%</td>
+<td class="q">Retention -0.15
+</td></tr>
+</tbody></table>
+<p class="fine">Stopping rule, the same one for every row: a running mean of the
+total grade that moves by less than 0.05 of a point when one more
+run of 1000 is added, held 6 runs in a row, with at least
+10 behind it. The run count is whatever that took and it is printed
+per row. The baseline settled at 19 runs with a spread of
+0.41, so a movement under about a tenth of a point is not a movement.</p>
+
+<h2>The curve</h2>
+<p class="lede">The changes applied cumulatively in descending order of what they
+moved alone. The last step is the one whose parameter is not traced, and it sits outside the green line for that reason.</p>
+<div class="chwrap"><svg class="ch" viewBox="0 0 880 340" role="img" aria-label="the grade after each change, applied cumulatively"><line class="gl" x1="42" y1="256.2" x2="652.4" y2="256.2"/><text class="ax" x="34" y="260.2" text-anchor="end">40</text><line class="gl" x1="42" y1="216.5" x2="652.4" y2="216.5"/><text class="ax" x="34" y="220.5" text-anchor="end">50</text><line class="gl" x1="42" y1="176.8" x2="652.4" y2="176.8"/><text class="ax" x="34" y="180.8" text-anchor="end">60</text><line class="gl" x1="42" y1="137.1" x2="652.4" y2="137.1"/><text class="ax" x="34" y="141.1" text-anchor="end">70</text><line class="gl" x1="42" y1="97.4" x2="652.4" y2="97.4"/><text class="ax" x="34" y="101.4" text-anchor="end">80</text><line class="gl" x1="42" y1="57.7" x2="652.4" y2="57.7"/><text class="ax" x="34" y="61.7" text-anchor="end">90</text><line class="gl" x1="42" y1="18.0" x2="652.4" y2="18.0"/><text class="ax" x="34" y="22.0" text-anchor="end">100</text><line x1="42" y1="57.7" x2="746.4" y2="57.7" stroke="#D4736D" stroke-width="1.5" stroke-dasharray="5 4" opacity=".9"/><text class="lg" x="750.4" y="61.7" fill="#D4736D">ninety</text><line x1="42" y1="33.9" x2="746.4" y2="33.9" stroke="#C2A063" stroke-width="1.5" stroke-dasharray="5 4" opacity=".9"/><text class="lg" x="750.4" y="37.9" fill="#C2A063">formula ceiling 96</text><line x1="42" y1="102.7" x2="746.4" y2="102.7" stroke="#68CBA4" stroke-width="1.5" stroke-dasharray="5 4" opacity=".9"/><text class="lg" x="750.4" y="106.7" fill="#68CBA4">reached 78.66</text><path class="ln" d="M42.0 260.5 L77.9 229.7 L113.8 195.4 L149.7 170.7 L185.6 149.3 L221.5 139.3 L257.4 130.6 L293.3 117.3 L329.2 112.6 L365.2 103.4 L401.1 102.2 L437.0 100.0 L472.9 98.9 L508.8 97.1 L544.7 97.3 L580.6 96.7 L616.5 102.7 L652.4 101.6" stroke="#7EB8D4" stroke-width="2.4"/><circle cx="42.0" cy="260.5" r="4" fill="#7EB8D4"/><text class="bn" x="42.0" y="249.5" text-anchor="middle">38.9</text><text class="ax" x="42.0" y="296" text-anchor="middle">baseline</text><text class="ax" x="42.0" y="310" text-anchor="middle" opacity=".75" font-size="10.5">38.91</text><circle cx="77.9" cy="229.7" r="4" fill="#7EB8D4"/><text class="bn" x="77.9" y="218.7" text-anchor="middle">46.7</text><text class="ax" x="77.9" y="296" text-anchor="middle">C9</text><text class="ax" x="77.9" y="310" text-anchor="middle" opacity=".75" font-size="10.5">+7.75</text><circle cx="113.8" cy="195.4" r="4" fill="#7EB8D4"/><text class="bn" x="113.8" y="184.4" text-anchor="middle">55.3</text><text class="ax" x="113.8" y="296" text-anchor="middle">C5</text><text class="ax" x="113.8" y="310" text-anchor="middle" opacity=".75" font-size="10.5">+8.64</text><circle cx="149.7" cy="170.7" r="4" fill="#7EB8D4"/><text class="bn" x="149.7" y="159.7" text-anchor="middle">61.5</text><text class="ax" x="149.7" y="296" text-anchor="middle">C10</text><text class="ax" x="149.7" y="310" text-anchor="middle" opacity=".75" font-size="10.5">+6.22</text><circle cx="185.6" cy="149.3" r="4" fill="#7EB8D4"/><text class="bn" x="185.6" y="138.3" text-anchor="middle">66.9</text><text class="ax" x="185.6" y="296" text-anchor="middle">C3</text><text class="ax" x="185.6" y="310" text-anchor="middle" opacity=".75" font-size="10.5">+5.41</text><circle cx="221.5" cy="139.3" r="4" fill="#7EB8D4"/><text class="bn" x="221.5" y="128.3" text-anchor="middle">69.4</text><text class="ax" x="221.5" y="296" text-anchor="middle">C8</text><text class="ax" x="221.5" y="310" text-anchor="middle" opacity=".75" font-size="10.5">+2.51</text><circle cx="257.4" cy="130.6" r="4" fill="#7EB8D4"/><text class="bn" x="257.4" y="119.6" text-anchor="middle">71.6</text><text class="ax" x="257.4" y="296" text-anchor="middle">C12</text><text class="ax" x="257.4" y="310" text-anchor="middle" opacity=".75" font-size="10.5">+2.20</text><circle cx="293.3" cy="117.3" r="4" fill="#7EB8D4"/><text class="bn" x="293.3" y="106.3" text-anchor="middle">75.0</text><text class="ax" x="293.3" y="296" text-anchor="middle">C7</text><text class="ax" x="293.3" y="310" text-anchor="middle" opacity=".75" font-size="10.5">+3.35</text><circle cx="329.2" cy="112.6" r="4" fill="#7EB8D4"/><text class="bn" x="329.2" y="101.6" text-anchor="middle">76.2</text><text class="ax" x="329.2" y="296" text-anchor="middle">C4</text><text class="ax" x="329.2" y="310" text-anchor="middle" opacity=".75" font-size="10.5">+1.17</text><circle cx="365.2" cy="103.4" r="4" fill="#7EB8D4"/><text class="bn" x="365.2" y="92.4" text-anchor="middle">78.5</text><text class="ax" x="365.2" y="296" text-anchor="middle">C8b</text><text class="ax" x="365.2" y="310" text-anchor="middle" opacity=".75" font-size="10.5">+2.33</text><circle cx="401.1" cy="102.2" r="4" fill="#7EB8D4"/><text class="bn" x="401.1" y="91.2" text-anchor="middle">78.8</text><text class="ax" x="401.1" y="296" text-anchor="middle">C6</text><text class="ax" x="401.1" y="310" text-anchor="middle" opacity=".75" font-size="10.5">+0.29</text><circle cx="437.0" cy="100.0" r="4" fill="#7EB8D4"/><text class="bn" x="437.0" y="89.0" text-anchor="middle">79.3</text><text class="ax" x="437.0" y="296" text-anchor="middle">C11</text><text class="ax" x="437.0" y="310" text-anchor="middle" opacity=".75" font-size="10.5">+0.55</text><circle cx="472.9" cy="98.9" r="4" fill="#7EB8D4"/><text class="bn" x="472.9" y="87.9" text-anchor="middle">79.6</text><text class="ax" x="472.9" y="296" text-anchor="middle">C5b</text><text class="ax" x="472.9" y="310" text-anchor="middle" opacity=".75" font-size="10.5">+0.28</text><circle cx="508.8" cy="97.1" r="4" fill="#7EB8D4"/><text class="bn" x="508.8" y="86.1" text-anchor="middle">80.1</text><text class="ax" x="508.8" y="296" text-anchor="middle">C1</text><text class="ax" x="508.8" y="310" text-anchor="middle" opacity=".75" font-size="10.5">+0.45</text><circle cx="544.7" cy="97.3" r="4" fill="#7EB8D4"/><text class="bn" x="544.7" y="86.3" text-anchor="middle">80.0</text><text class="ax" x="544.7" y="296" text-anchor="middle">C2c</text><text class="ax" x="544.7" y="310" text-anchor="middle" opacity=".75" font-size="10.5">-0.05</text><circle cx="580.6" cy="96.7" r="4" fill="#7EB8D4"/><text class="bn" x="580.6" y="85.7" text-anchor="middle">80.2</text><text class="ax" x="580.6" y="296" text-anchor="middle">C2b</text><text class="ax" x="580.6" y="310" text-anchor="middle" opacity=".75" font-size="10.5">+0.17</text><circle cx="616.5" cy="102.7" r="4" fill="#7EB8D4"/><text class="bn" x="616.5" y="91.7" text-anchor="middle">78.7</text><text class="ax" x="616.5" y="296" text-anchor="middle">C2a</text><text class="ax" x="616.5" y="310" text-anchor="middle" opacity=".75" font-size="10.5">-1.52</text><circle cx="652.4" cy="101.6" r="4" fill="#7EB8D4"/><text class="bn" x="652.4" y="90.6" text-anchor="middle">78.9</text><text class="ax" x="652.4" y="296" text-anchor="middle">C6n</text><text class="ax" x="652.4" y="310" text-anchor="middle" opacity=".75" font-size="10.5">+0.27</text></svg></div>
+<table class="tb">
+<thead><tr><th>Step</th><th>The change</th><th class="num">Grade</th><th class="num">Step</th>
+<th class="num">From base</th><th class="num">Runs</th><th class="num">Day 30</th>
+<th class="num">Loop ever</th><th class="num">Stories</th><th class="num">Releases</th></tr></thead>
+<tbody>
+<tr><td>0</td><td><b>baseline, as shipped</b></td><td class="num"><b>38.91</b></td>
+<td class="num">none</td><td class="num">none</td><td class="num">19</td>
+<td class="num">3.86%</td><td class="num">4.0%</td>
+<td class="num">886.7</td><td class="num">121.9</td></tr>
+<tr class="win">
+<td>1</td><td><span class="tag g">C9</span> <b>A way to hand it to somebody</b>
+<span class="fine">a new atuned_src/ui/share.js, the record boundary, and the consent surface</span></td>
+<td class="num"><b>46.66</b> D</td>
+<td class="num">+7.75</td><td class="num">+7.75</td>
+<td class="num">17</td><td class="num">4.68%</td>
+<td class="num">4.7%</td><td class="num">967.4</td>
+<td class="num">139.0</td></tr>
+<tr class="win">
+<td>2</td><td><span class="tag g">C5</span> <b>The lexicon reads ordinary sentences</b>
+<span class="fine">atuned_src/engine/data/lex.js</span></td>
+<td class="num"><b>55.30</b> C-</td>
+<td class="num">+8.64</td><td class="num">+16.39</td>
+<td class="num">15</td><td class="num">8.90%</td>
+<td class="num">12.6%</td><td class="num">1913.9</td>
+<td class="num">1121.1</td></tr>
+<tr class="win">
+<td>3</td><td><span class="tag g">C10</span> <b>A price, and an allowance with something behind it</b>
+<span class="fine">atuned_src/ui/release.js, and a tiers surface</span></td>
+<td class="num"><b>61.52</b> C</td>
+<td class="num">+6.22</td><td class="num">+22.61</td>
+<td class="num">20</td><td class="num">9.22%</td>
+<td class="num">12.4%</td><td class="num">2031.3</td>
+<td class="num">1209.7</td></tr>
+<tr class="win">
+<td>4</td><td><span class="tag g">C3</span> <b>The release reads carrying rather than loaded</b>
+<span class="fine">atuned_src/ui/release.js, atuned_src/ui/summary.js</span></td>
+<td class="num"><b>66.93</b> C+</td>
+<td class="num">+5.41</td><td class="num">+28.02</td>
+<td class="num">18</td><td class="num">16.73%</td>
+<td class="num">26.4%</td><td class="num">3930.4</td>
+<td class="num">4496.3</td></tr>
+<tr class="win">
+<td>5</td><td><span class="tag g">C8</span> <b>The rails ship folded</b>
+<span class="fine">atuned_src/shell/head.html, and a stored preference</span></td>
+<td class="num"><b>69.44</b> C+</td>
+<td class="num">+2.51</td><td class="num">+30.53</td>
+<td class="num">18</td><td class="num">17.43%</td>
+<td class="num">26.8%</td><td class="num">4034.9</td>
+<td class="num">4718.3</td></tr>
+<tr class="win">
+<td>6</td><td><span class="tag g">C12</span> <b>Three defects that are simply true</b>
+<span class="fine">atuned_src/engine/ladder.js, atuned_src/ui/summary.js, atuned_src/shell/head.html</span></td>
+<td class="num"><b>71.64</b> B-</td>
+<td class="num">+2.20</td><td class="num">+32.73</td>
+<td class="num">16</td><td class="num">17.91%</td>
+<td class="num">27.0%</td><td class="num">4078.4</td>
+<td class="num">4803.8</td></tr>
+<tr class="win">
+<td>7</td><td><span class="tag g">C7</span> <b>The two level menu</b>
+<span class="fine">atuned_src/shell/body.html, atuned_src/ui/nav.js</span></td>
+<td class="num"><b>74.99</b> B-</td>
+<td class="num">+3.35</td><td class="num">+36.08</td>
+<td class="num">18</td><td class="num">19.07%</td>
+<td class="num">28.7%</td><td class="num">4440.9</td>
+<td class="num">5159.2</td></tr>
+<tr class="win">
+<td>8</td><td><span class="tag g">C4</span> <b>What the holding costs, printed</b>
+<span class="fine">atuned_src/ui/summary.js, a new read in atuned_src/engine/read.js</span></td>
+<td class="num"><b>76.16</b> B</td>
+<td class="num">+1.17</td><td class="num">+37.25</td>
+<td class="num">18</td><td class="num">21.53%</td>
+<td class="num">30.7%</td><td class="num">4755.2</td>
+<td class="num">5760.9</td></tr>
+<tr class="win">
+<td>9</td><td><span class="tag g">C8b</span> <b>The top collapses to two</b>
+<span class="fine">atuned_src/shell/body.html</span></td>
+<td class="num"><b>78.49</b> B</td>
+<td class="num">+2.33</td><td class="num">+39.58</td>
+<td class="num">18</td><td class="num">21.53%</td>
+<td class="num">30.8%</td><td class="num">4829.0</td>
+<td class="num">5838.3</td></tr>
+<tr class="">
+<td>10</td><td><span class="tag g">C6</span> <b>Something asks them to come back</b>
+<span class="fine">the accounts seam: a service worker, a server, and a consent screen</span></td>
+<td class="num"><b>78.78</b> B</td>
+<td class="num">+0.29</td><td class="num">+39.87</td>
+<td class="num">16</td><td class="num">22.70%</td>
+<td class="num">31.2%</td><td class="num">4981.8</td>
+<td class="num">6114.2</td></tr>
+<tr class="">
+<td>11</td><td><span class="tag g">C11</span> <b>The record arrives at sign in</b>
+<span class="fine">the record fetch seam, which is the one place the app gains network</span></td>
+<td class="num"><b>79.33</b> B</td>
+<td class="num">+0.55</td><td class="num">+40.42</td>
+<td class="num">15</td><td class="num">20.25%</td>
+<td class="num">31.2%</td><td class="num">4597.4</td>
+<td class="num">5622.7</td></tr>
+<tr class="">
+<td>12</td><td><span class="tag g">C5b</span> <b>An inferred address is a question</b>
+<span class="fine">atuned_src/ui/storyui.js</span></td>
+<td class="num"><b>79.61</b> B</td>
+<td class="num">+0.28</td><td class="num">+40.70</td>
+<td class="num">15</td><td class="num">20.81%</td>
+<td class="num">31.6%</td><td class="num">4718.7</td>
+<td class="num">5843.7</td></tr>
+<tr class="">
+<td>13</td><td><span class="tag g">C1</span> <b>The narrow door</b>
+<span class="fine">atuned_src/ui/storyui.js, atuned_src/shell/body.html</span></td>
+<td class="num"><b>80.06</b> B+</td>
+<td class="num">+0.45</td><td class="num">+41.15</td>
+<td class="num">19</td><td class="num">21.69%</td>
+<td class="num">33.2%</td><td class="num">5102.5</td>
+<td class="num">6349.4</td></tr>
+<tr class="">
+<td>14</td><td><span class="tag g">C2c</span> <b>A cleared address stays cleared</b>
+<span class="fine">atuned_src/engine/compute.js and the charge model</span></td>
+<td class="num"><b>80.01</b> B+</td>
+<td class="num">-0.05</td><td class="num">+41.10</td>
+<td class="num">15</td><td class="num">21.77%</td>
+<td class="num">33.8%</td><td class="num">5036.4</td>
+<td class="num">5732.5</td></tr>
+<tr class="">
+<td>15</td><td><span class="tag g">C2b</span> <b>The install reaches the far pole</b>
+<span class="fine">atuned_src/ui/release.js</span></td>
+<td class="num"><b>80.18</b> B+</td>
+<td class="num">+0.17</td><td class="num">+41.27</td>
+<td class="num">18</td><td class="num">22.44%</td>
+<td class="num">34.1%</td><td class="num">5210.4</td>
+<td class="num">5560.6</td></tr>
+<tr class="">
+<td>16</td><td><span class="tag g">C2a</span> <b>The removal compounds inside the run</b>
+<span class="fine">atuned_src/ui/release.js, and the contract with SOURCE</span></td>
+<td class="num"><b>78.66</b> B</td>
+<td class="num">-1.52</td><td class="num">+39.75</td>
+<td class="num">18</td><td class="num">20.30%</td>
+<td class="num">36.1%</td><td class="num">5262.7</td>
+<td class="num">3077.1</td></tr>
+<tr class="soft">
+<td>17</td><td><span class="tag">C6n</span> <b>And the return rate it buys</b>
+<span class="fine">the same seam as C6</span></td>
+<td class="num"><b>78.93</b> B</td>
+<td class="num">+0.27</td><td class="num">+40.02</td>
+<td class="num">16</td><td class="num">20.65%</td>
+<td class="num">36.5%</td><td class="num">5661.1</td>
+<td class="num">3184.8</td></tr>
+</tbody></table>
+
+
+<h2>Where the points came from</h2>
+<p class="lede">Forty points is a large movement and
+the reader is owed a split.
+Some criteria ask whether a control exists and jump by a fixed amount the moment
+it does, whatever anybody does with it. Others are built out of what the modelled
+cohort did and only move if somebody stays.</p>
+<div class="grid g3" style="margin-top:16px">
+<div class="tile"><span class="n">+39.75</span>
+<span class="l">points gained, baseline to reached</span></div>
+<div class="tile"><span class="n">+21.40</span>
+<span class="l">from criteria that ask whether something exists</span>
+<span class="s">A button on a surface. Cheap, real, and no cohort had to do anything.</span></div>
+<div class="tile"><span class="n">+18.35</span>
+<span class="l">from the modelled cohort behaving differently</span>
+<span class="s">Day thirty went 3.86% to 20.30% and the loop
+4.0% to 36.1%.</span></div>
+</div>
+<table class="tb">
+<thead><tr><th>Criterion</th><th class="num">Baseline</th><th class="num">Reached</th>
+<th class="num">Gain</th><th class="num">Exists</th><th class="num">Behaviour</th>
+<th>What the term actually reads</th></tr></thead>
+<tbody>
+<tr class="win">
+<td><b>ICP alignment</b><span class="fine">the product</span></td>
+<td class="num">2.4</td><td class="num">5.6</td>
+<td class="num"><b>+3.19</b></td><td class="num">none</td>
+<td class="num">+3.19</td>
+<td class="q">built out of each figure’s own day seven, day thirty, loop share and read share.</td></tr>
+<tr class="soft">
+<td><b>First touch</b><span class="fine">the instrument</span></td>
+<td class="num">6.2</td><td class="num">9.8</td>
+<td class="num"><b>+3.60</b></td><td class="num">+3.60</td>
+<td class="num">none</td>
+<td class="q">boot time, the count of choices on the landing surface, the share of the bar in view, and whether a reading exists on arrival. All four are facts about the build and none of them reads the cohort.</td></tr>
+<tr class="win">
+<td><b>Core loop</b><span class="fine">the product</span></td>
+<td class="num">0.3</td><td class="num">3.8</td>
+<td class="num"><b>+3.47</b></td><td class="num">none</td>
+<td class="num">+3.47</td>
+<td class="q">the share who ever closed story, release and a kept practice, and how many times.</td></tr>
+<tr class="win">
+<td><b>Emotional</b><span class="fine">the product</span></td>
+<td class="num">5.5</td><td class="num">9.9</td>
+<td class="num"><b>+4.43</b></td><td class="num">none</td>
+<td class="num">+4.43</td>
+<td class="q">the share of commits the shipped sniffer read, and the share that came back entirely inferred.</td></tr>
+<tr class="soft">
+<td><b>Behavioral flow</b><span class="fine">the instrument</span></td>
+<td class="num">2.3</td><td class="num">7.1</td>
+<td class="num"><b>+4.80</b></td><td class="num">+4.80</td>
+<td class="num">none</td>
+<td class="q">a count of controls above the fold, per surface, off the probe.</td></tr>
+<tr class="">
+<td><b>Visual and kinetic</b><span class="fine">the instrument</span></td>
+<td class="num">8.0</td><td class="num">8.0</td>
+<td class="num"><b>+0.00</b></td><td class="num">none</td>
+<td class="num">none</td>
+<td class="q">carried at 8 and not measured by this pass.</td></tr>
+<tr class="soft">
+<td><b>Technical</b><span class="fine">the instrument</span></td>
+<td class="num">8.0</td><td class="num">10.0</td>
+<td class="num"><b>+2.00</b></td><td class="num">+2.00</td>
+<td class="num">none</td>
+<td class="q">page errors, requests, controls under the tap floor, boot time.</td></tr>
+<tr class="win">
+<td><b>Monetization</b><span class="fine">both, split below</span></td>
+<td class="num">0.0</td><td class="num">8.5</td>
+<td class="num"><b>+8.47</b></td><td class="num">+6.00</td>
+<td class="num">+2.47</td>
+<td class="q">six of its ten points are existence checks, four for a price and two for an enforced allowance. The other four read the share of the cohort who reach the end of the gift.</td></tr>
+<tr class="win">
+<td><b>Retention</b><span class="fine">the product</span></td>
+<td class="num">3.2</td><td class="num">8.0</td>
+<td class="num"><b>+4.79</b></td><td class="num">none</td>
+<td class="num">+4.79</td>
+<td class="q">modelled day thirty against the category median.</td></tr>
+<tr class="soft">
+<td><b>Referral</b><span class="fine">the instrument</span></td>
+<td class="num">3.0</td><td class="num">8.0</td>
+<td class="num"><b>+5.00</b></td><td class="num">+5.00</td>
+<td class="num">none</td>
+<td class="q">five points the moment a control that hands a reading to another person is on a surface. Nobody has to use it.</td></tr>
+<tr class="tot"><td><b>Total</b></td><td class="num"><b>38.91</b></td>
+<td class="num"><b>78.66</b></td><td class="num"><b>+39.75</b></td>
+<td class="num"><b>+21.40</b></td><td class="num"><b>+18.35</b></td>
+<td class="q">the split is named in the first column, not left to the tint</td></tr>
+</tbody></table>
+<p><b>Read the instrument rows sceptically and the product rows as the actual
+result.</b>
+C9 and C10 between them moved the grade +13.76 applied alone
+and moved day thirty from 3.86% to 4.68% and
+3.86%. That is almost fourteen points for two controls existing.
+They are both worth building, C10 closes a live defect where the panel quoted a
+limit it did not enforce, and neither of them is why anybody would stay. A grade
+that pays that much for a button is telling you something about the grade. It is
+left exactly as it was written, because rewriting it here to pay less would be
+the same offence in the other direction.</p>
+<p>The +18.35 in the behaviour column is the part that would be visible
+to a person using the product, and <b>C5</b> at +7.65 and <b>C3</b> at +5.07
+applied alone are most of it. Both are small pieces of work in files that already
+exist: atuned_src/engine/data/lex.js and atuned_src/ui/release.js, atuned_src/ui/summary.js.</p>
+
+
+<h2>What is still losing people after everything</h2>
+<p class="lede">The same loss column, read at the end of the curve instead of at
+the start. This is the answer to what the remaining distance is made of, and it
+is not a list of screens.</p>
+<table class="tb">
+<thead><tr><th>Sticking point</th><th class="num">Baseline</th>
+<th class="num">After every change</th><th class="num">Moved</th>
+<th>What it is</th></tr></thead>
+<tbody>
+<tr class="zero">
+<td><b>The absence became permanent</b></td><td class="num">288</td>
+<td class="num">362</td>
+<td class="num"><b>+74</b></td>
+<td class="q">A model term, not a product one. It is the hazard that ends a run of absent days, and no change on this page touches it. It rises because more people survive long enough to reach it.</td></tr>
+<tr class="zero">
+<td><b>The reading does not move</b></td><td class="num">110</td>
+<td class="num">150</td>
+<td class="num"><b>+40</b></td>
+<td class="q">Arithmetic. The reading does not move on the session somebody just spent.</td></tr>
+<tr class="win">
+<td><b>Nothing is above the line, so there is nothing to release</b></td><td class="num">89</td>
+<td class="num">77</td>
+<td class="num"><b>-12</b></td>
+<td class="q">Arithmetic, and C3 is the cheap half of it. What is left is people carrying nothing the release can reach.</td></tr>
+<tr class="zero">
+<td><b>Every story makes the number worse</b></td><td class="num">9</td>
+<td class="num">50</td>
+<td class="num"><b>+41</b></td>
+<td class="q">Arithmetic. A story only ever adds charge, so a commit can make the number worse.</td></tr>
+<tr class="zero">
+<td><b>More simultaneous choices than a working memory holds</b></td><td class="num">12</td>
+<td class="num">21</td>
+<td class="num"><b>+9</b></td>
+<td class="q">Interface. The count of choices above the fold.</td></tr>
+<tr class="">
+<td><b>The box reads nothing out of what they wrote</b></td><td class="num">68</td>
+<td class="num">under 21</td>
+<td class="num"><b>fell out of the top five</b></td>
+<td class="q">Language. The lexicon, and C5 is most of it.</td></tr>
+<tr class="">
+<td><b>There is no way to hand it to anybody</b></td><td class="num">41</td>
+<td class="num">under 21</td>
+<td class="num"><b>fell out of the top five</b></td>
+<td class="q">Interface. C9 closes it.</td></tr>
+<tr class="">
+<td><b>The intake is sixty three questions</b></td><td class="num">38</td>
+<td class="num">under 21</td>
+<td class="num"><b>fell out of the top five</b></td>
+<td class="q">The intake, and C11 moves it out of the app.</td></tr>
+</tbody></table>
+<p class="fine">The baseline column is the whole loss column out of
+<code>sim/runs.json</code>. The after column is the five the final step recorded,
+so a row that fell out of it is printed as under 21 rather than as
+zero.</p>
+<p><b>Two of the top three went up, and that is not a regression.</b> More people
+stay, so more people reach the point where the reading does not move and leave
+there instead of leaving earlier for a cheaper reason. Every interface change on
+this page succeeds at delivering more people to the same wall. That is the whole
+argument for the build order below: the wall is the thing to fix, and it is
+arithmetic that is shared with the book, so it is a ruling before it is a
+commit.</p>
+
+<h2>Where it flattens, and what is left</h2>
+<p>The curve flattens at <b>C8b</b>, the step called
+&ldquo;The top collapses to two&rdquo;, which reaches 78.49. Every one of
+the seven traced steps after it adds less than a point, and all of
+them together add +0.17.</p>
+<p><b>And the curve peaks before it ends.</b> The highest
+traced step is <b>C2b</b> at 80.18, and the
+one step after it take
+-1.52 off again: C2a -1.52.
+Those are the release changes. They cost points on the scoreboard and they are
+the changes the product most needs, which is the same sentence as the ceiling
+section below and is the reason the build order at the end of this page is not
+the ranking at the top of it.</p>
+<p>The 11.3 points between 78.66 and ninety are
+not hiding in the interface. Read down the criterion table: <b>Core loop</b> is 6.2 short, <b>ICP alignment</b> is 4.4 short, <b>Behavioral flow</b> is 2.9 short.
+Each of those is bounded by something the grade measures rather than by a screen
+that has not been drawn yet, and the bounds are named in the last column.</p>
+
+<h2>The ten criteria, before and after</h2>
+<table class="tb">
+<thead><tr><th>Criterion</th><th class="num">Baseline</th><th class="num">Reached</th>
+<th class="num">Formula max</th><th class="num">Short by</th><th>What holds it down</th></tr></thead>
+<tbody>
+<tr class="zero">
+<td><b>ICP alignment</b></td><td class="num">2.4</td>
+<td class="num"><b>5.6</b> <span class="fine">+3.19</span></td>
+<td class="num">10.0</td><td class="num">4.4</td>
+<td class="q">every figure gets what they came for inside ninety days</td></tr>
+<tr class="">
+<td><b>First touch</b></td><td class="num">6.2</td>
+<td class="num"><b>9.8</b> <span class="fine">+3.60</span></td>
+<td class="num">10.0</td><td class="num">0.2</td>
+<td class="q">boot under a second, twelve choices on the landing surface, the whole bar at 390, and a reading to show on arrival</td></tr>
+<tr class="zero">
+<td><b>Core loop</b></td><td class="num">0.3</td>
+<td class="num"><b>3.8</b> <span class="fine">+3.47</span></td>
+<td class="num">10.0</td><td class="num">6.2</td>
+<td class="q">everybody closes the loop, and closes it twelve times</td></tr>
+<tr class="">
+<td><b>Emotional</b></td><td class="num">5.5</td>
+<td class="num"><b>9.9</b> <span class="fine">+4.43</span></td>
+<td class="num">10.0</td><td class="num">0.1</td>
+<td class="q">every commit read, none of it inferred</td></tr>
+<tr class="">
+<td><b>Behavioral flow</b></td><td class="num">2.3</td>
+<td class="num"><b>7.1</b> <span class="fine">+4.80</span></td>
+<td class="num">10.0</td><td class="num">2.9</td>
+<td class="q">twelve choices or fewer above the fold on every surface at both widths</td></tr>
+<tr class="win">
+<td><b>Visual and kinetic</b></td><td class="num">8.0</td>
+<td class="num"><b>8.0</b> <span class="fine">+0.00</span></td>
+<td class="num">8.0</td><td class="num">0.0</td>
+<td class="q">carried from the earlier run at 8. This pass built no instrument for it, and inventing one to gain two points would be writing the grade rather than earning it</td></tr>
+<tr class="win">
+<td><b>Technical</b></td><td class="num">8.0</td>
+<td class="num"><b>10.0</b> <span class="fine">+2.00</span></td>
+<td class="num">10.0</td><td class="num">0.0</td>
+<td class="q">no page errors, one request, nothing under the tap floor, boot under a second</td></tr>
+<tr class="">
+<td><b>Monetization</b></td><td class="num">0.0</td>
+<td class="num"><b>8.5</b> <span class="fine">+8.47</span></td>
+<td class="num">10.0</td><td class="num">1.5</td>
+<td class="q">a price, a refer control, an enforced allowance, and most of a cohort reaching the end of the gift</td></tr>
+<tr class="">
+<td><b>Retention</b></td><td class="num">3.2</td>
+<td class="num"><b>8.0</b> <span class="fine">+4.79</span></td>
+<td class="num">10.0</td><td class="num">2.0</td>
+<td class="q">35 per cent of arrivals active in the seven days ending at day thirty</td></tr>
+<tr class="win">
+<td><b>Referral</b></td><td class="num">3.0</td>
+<td class="num"><b>8.0</b> <span class="fine">+5.00</span></td>
+<td class="num">8.0</td><td class="num">0.0</td>
+<td class="q">the formula is five for a refer control plus five times six tenths for an export that exists. It cannot read ten</td></tr>
+<tr class="tot"><td><b>Total</b></td><td class="num"><b>38.91</b></td>
+<td class="num"><b>78.66</b></td><td class="num"><b>96.0</b></td>
+<td class="num"><b>17.3</b></td>
+<td class="q">ninety needs 11.3 of those 17.3</td></tr>
+</tbody></table>
+
+<h2>The finding under the grade, re-driven</h2>
+<p class="lede">The baseline&rsquo;s own finding was not the retention curve. It
+was that the loop returns a person to where they started. Whether the release
+changes move that is not a question about retention, so it is measured on its
+own: ninety consecutive days of one story, the largest release the field offers
+and one kept practice, with no model in it at all.</p>
+<div class="chwrap"><svg class="ch" viewBox="0 0 880 300" role="img" aria-label="ninety days of story, release and kept practice, under each release arithmetic"><line class="gl" x1="42" y1="266.0" x2="708.7" y2="266.0"/><text class="ax" x="34" y="270.0" text-anchor="end">18</text><line class="gl" x1="42" y1="230.3" x2="708.7" y2="230.3"/><text class="ax" x="34" y="234.3" text-anchor="end">20</text><line class="gl" x1="42" y1="194.6" x2="708.7" y2="194.6"/><text class="ax" x="34" y="198.6" text-anchor="end">22</text><line class="gl" x1="42" y1="158.9" x2="708.7" y2="158.9"/><text class="ax" x="34" y="162.9" text-anchor="end">24</text><line class="gl" x1="42" y1="123.1" x2="708.7" y2="123.1"/><text class="ax" x="34" y="127.1" text-anchor="end">26</text><line class="gl" x1="42" y1="87.4" x2="708.7" y2="87.4"/><text class="ax" x="34" y="91.4" text-anchor="end">28</text><line class="gl" x1="42" y1="51.7" x2="708.7" y2="51.7"/><text class="ax" x="34" y="55.7" text-anchor="end">30</text><line class="gl" x1="42" y1="16.0" x2="708.7" y2="16.0"/><text class="ax" x="34" y="20.0" text-anchor="end">32</text><text class="ax" x="42.0" y="286" text-anchor="middle">day 1</text><text class="ax" x="259.2" y="286" text-anchor="middle">day 30</text><text class="ax" x="484.0" y="286" text-anchor="middle">day 60</text><text class="ax" x="708.7" y="286" text-anchor="middle">day 90</text><path class="ln" d="M42.0 141.0 L49.5 141.0 L57.0 141.0 L64.5 141.0 L72.0 141.0 L79.5 141.0 L86.9 141.0 L94.4 141.0 L101.9 141.0 L109.4 141.0 L116.9 141.0 L124.4 141.0 L131.9 141.0 L139.4 141.0 L146.9 141.0 L154.4 141.0 L161.9 141.0 L169.3 141.0 L176.8 141.0 L184.3 141.0 L191.8 141.0 L199.3 141.0 L206.8 141.0 L214.3 141.0 L221.8 141.0 L229.3 141.0 L236.8 151.0 L244.3 141.0 L251.7 141.0 L259.2 141.0 L266.7 141.0 L274.2 149.9 L281.7 193.5 L289.2 140.1 L296.7 166.9 L304.2 139.8 L311.7 135.6 L319.2 135.1 L326.7 135.1 L334.1 135.1 L341.6 135.1 L349.1 134.6 L356.6 137.6 L364.1 137.6 L371.6 137.6 L379.1 137.6 L386.6 136.5 L394.1 134.8 L401.6 134.8 L409.1 134.6 L416.6 134.6 L424.0 134.6 L431.5 134.6 L439.0 134.6 L446.5 134.6 L454.0 132.4 L461.5 130.3 L469.0 130.3 L476.5 130.3 L484.0 130.3 L491.5 128.9 L499.0 128.9 L506.4 128.9 L513.9 128.9 L521.4 128.9 L528.9 128.1 L536.4 128.1 L543.9 128.1 L551.4 128.1 L558.9 129.8 L566.4 130.3 L573.9 130.3 L581.4 131.4 L588.8 131.4 L596.3 131.4 L603.8 131.4 L611.3 131.4 L618.8 131.4 L626.3 131.4 L633.8 131.4 L641.3 131.4 L648.8 131.4 L656.3 131.4 L663.8 131.4 L671.2 131.4 L678.7 131.4 L686.2 131.4 L693.7 131.4 L701.2 131.4 L708.7 131.4" stroke="#94908A" stroke-width="2.6"/><text class="lg" x="716.7" y="30.0" fill="#94908A">shipped</text><line x1="708.7" y1="131.4" x2="712.7" y2="26.0" stroke="#94908A" stroke-width="1" opacity=".5"/><path class="ln" d="M42.0 141.0 L49.5 141.0 L57.0 141.0 L64.5 141.0 L72.0 141.0 L79.5 140.6 L86.9 140.6 L94.4 140.6 L101.9 140.6 L109.4 139.4 L116.9 136.7 L124.4 137.1 L131.9 137.1 L139.4 137.1 L146.9 139.6 L154.4 139.6 L161.9 139.6 L169.3 138.0 L176.8 139.6 L184.3 139.6 L191.8 139.6 L199.3 139.6 L206.8 141.0 L214.3 141.0 L221.8 141.0 L229.3 141.0 L236.8 134.2 L244.3 132.6 L251.7 132.6 L259.2 132.6 L266.7 139.4 L274.2 134.8 L281.7 136.4 L289.2 136.4 L296.7 132.4 L304.2 136.7 L311.7 117.3 L319.2 115.8 L326.7 115.8 L334.1 115.8 L341.6 115.8 L349.1 110.8 L356.6 121.0 L364.1 118.7 L371.6 118.7 L379.1 118.7 L386.6 110.3 L394.1 112.6 L401.6 113.5 L409.1 117.1 L416.6 117.1 L424.0 117.1 L431.5 117.1 L439.0 117.1 L446.5 117.1 L454.0 121.7 L461.5 121.9 L469.0 121.9 L476.5 121.9 L484.0 121.9 L491.5 122.6 L499.0 122.6 L506.4 122.6 L513.9 122.6 L521.4 122.6 L528.9 123.5 L536.4 123.5 L543.9 123.5 L551.4 123.5 L558.9 123.5 L566.4 123.5 L573.9 123.5 L581.4 123.5 L588.8 123.5 L596.3 123.5 L603.8 123.5 L611.3 123.5 L618.8 123.5 L626.3 119.7 L633.8 119.7 L641.3 119.7 L648.8 119.7 L656.3 119.7 L663.8 119.7 L671.2 119.7 L678.7 119.7 L686.2 119.7 L693.7 119.7 L701.2 119.7 L708.7 119.7" stroke="#7EB8D4" stroke-width="2"/><text class="lg" x="716.7" y="47.0" fill="#7EB8D4">C2a compounding</text><line x1="708.7" y1="119.7" x2="712.7" y2="43.0" stroke="#7EB8D4" stroke-width="1" opacity=".5"/><path class="ln" d="M42.0 141.0 L49.5 141.0 L57.0 141.0 L64.5 141.0 L72.0 141.0 L79.5 141.0 L86.9 141.0 L94.4 141.0 L101.9 141.0 L109.4 141.0 L116.9 141.0 L124.4 141.0 L131.9 141.0 L139.4 141.0 L146.9 141.0 L154.4 141.0 L161.9 141.0 L169.3 141.0 L176.8 141.0 L184.3 141.0 L191.8 141.0 L199.3 141.0 L206.8 141.0 L214.3 141.0 L221.8 141.0 L229.3 141.0 L236.8 141.0 L244.3 141.0 L251.7 141.0 L259.2 141.0 L266.7 135.8 L274.2 135.1 L281.7 135.1 L289.2 135.1 L296.7 134.4 L304.2 132.4 L311.7 135.6 L319.2 133.9 L326.7 133.9 L334.1 133.9 L341.6 133.9 L349.1 131.5 L356.6 131.5 L364.1 130.6 L371.6 130.6 L379.1 130.6 L386.6 126.9 L394.1 128.0 L401.6 128.0 L409.1 128.5 L416.6 128.5 L424.0 128.5 L431.5 128.5 L439.0 128.5 L446.5 128.5 L454.0 130.3 L461.5 130.3 L469.0 130.3 L476.5 130.3 L484.0 130.3 L491.5 130.3 L499.0 130.3 L506.4 130.3 L513.9 130.3 L521.4 130.3 L528.9 130.3 L536.4 130.3 L543.9 130.3 L551.4 130.3 L558.9 130.3 L566.4 130.3 L573.9 130.3 L581.4 130.3 L588.8 130.3 L596.3 130.3 L603.8 130.3 L611.3 130.3 L618.8 130.3 L626.3 130.3 L633.8 130.3 L641.3 130.3 L648.8 130.3 L656.3 130.3 L663.8 130.3 L671.2 130.3 L678.7 130.3 L686.2 130.3 L693.7 130.3 L701.2 130.3 L708.7 130.3" stroke="#DABF6A" stroke-width="2"/><text class="lg" x="716.7" y="64.0" fill="#DABF6A">C2b install to the pole</text><line x1="708.7" y1="130.3" x2="712.7" y2="60.0" stroke="#DABF6A" stroke-width="1" opacity=".5"/><path class="ln" d="M42.0 141.0 L49.5 141.0 L57.0 141.0 L64.5 141.0 L72.0 141.0 L79.5 141.0 L86.9 141.0 L94.4 141.0 L101.9 141.0 L109.4 141.0 L116.9 141.0 L124.4 141.0 L131.9 141.0 L139.4 141.0 L146.9 141.0 L154.4 141.0 L161.9 141.0 L169.3 141.0 L176.8 141.0 L184.3 141.0 L191.8 141.0 L199.3 141.0 L206.8 141.0 L214.3 141.0 L221.8 141.0 L229.3 141.0 L236.8 151.0 L244.3 141.0 L251.7 141.0 L259.2 141.0 L266.7 141.0 L274.2 149.9 L281.7 193.5 L289.2 140.1 L296.7 166.9 L304.2 139.8 L311.7 135.6 L319.2 135.1 L326.7 135.1 L334.1 135.1 L341.6 135.1 L349.1 134.6 L356.6 137.6 L364.1 137.6 L371.6 137.6 L379.1 137.6 L386.6 136.5 L394.1 134.8 L401.6 134.8 L409.1 134.6 L416.6 134.6 L424.0 134.6 L431.5 134.6 L439.0 134.6 L446.5 134.6 L454.0 132.4 L461.5 130.3 L469.0 130.3 L476.5 130.3 L484.0 130.3 L491.5 128.9 L499.0 128.9 L506.4 128.9 L513.9 128.9 L521.4 128.9 L528.9 128.1 L536.4 128.1 L543.9 128.1 L551.4 128.1 L558.9 129.8 L566.4 130.3 L573.9 130.3 L581.4 131.4 L588.8 131.4 L596.3 131.4 L603.8 131.4 L611.3 131.4 L618.8 131.4 L626.3 131.4 L633.8 131.4 L641.3 131.4 L648.8 131.4 L656.3 131.4 L663.8 131.4 L671.2 131.4 L678.7 131.4 L686.2 131.4 L693.7 131.4 L701.2 131.4 L708.7 131.4" stroke="#A77EDB" stroke-width="2"/><text class="lg" x="716.7" y="81.0" fill="#A77EDB">C2c stays cleared</text><line x1="708.7" y1="131.4" x2="712.7" y2="77.0" stroke="#A77EDB" stroke-width="1" opacity=".5"/><path class="ln" d="M42.0 141.0 L49.5 141.0 L57.0 141.0 L64.5 141.0 L72.0 141.0 L79.5 137.4 L86.9 137.4 L94.4 137.4 L101.9 137.4 L109.4 133.1 L116.9 120.5 L124.4 123.9 L131.9 123.9 L139.4 123.9 L146.9 133.1 L154.4 133.1 L161.9 133.1 L169.3 125.8 L176.8 130.8 L184.3 130.8 L191.8 130.8 L199.3 130.8 L206.8 133.3 L214.3 133.3 L221.8 133.3 L229.3 133.3 L236.8 109.0 L244.3 102.1 L251.7 102.1 L259.2 102.1 L266.7 116.2 L274.2 103.1 L281.7 109.9 L289.2 109.9 L296.7 101.7 L304.2 110.8 L311.7 112.1 L319.2 116.4 L326.7 116.4 L334.1 116.4 L341.6 110.8 L349.1 113.0 L356.6 113.0 L364.1 113.3 L371.6 113.3 L379.1 113.3 L386.6 115.6 L394.1 115.6 L401.6 115.6 L409.1 115.6 L416.6 115.6 L424.0 115.6 L431.5 115.6 L439.0 121.2 L446.5 121.2 L454.0 121.2 L461.5 121.2 L469.0 121.2 L476.5 121.2 L484.0 121.2 L491.5 121.2 L499.0 121.2 L506.4 121.2 L513.9 121.2 L521.4 121.2 L528.9 121.2 L536.4 121.2 L543.9 121.2 L551.4 121.2 L558.9 121.2 L566.4 121.2 L573.9 121.2 L581.4 121.2 L588.8 121.2 L596.3 121.2 L603.8 121.2 L611.3 121.2 L618.8 121.2 L626.3 121.2 L633.8 121.2 L641.3 121.2 L648.8 121.2 L656.3 121.2 L663.8 121.2 L671.2 121.2 L678.7 121.2 L686.2 121.2 L693.7 121.2 L701.2 121.2 L708.7 121.2" stroke="#68CBA4" stroke-width="2"/><text class="lg" x="716.7" y="98.0" fill="#68CBA4">C2 all three</text><line x1="708.7" y1="121.2" x2="712.7" y2="94.0" stroke="#68CBA4" stroke-width="1" opacity=".5"/><path class="ln" d="M42.0 141.0 L49.5 141.0 L57.0 141.0 L64.5 141.0 L72.0 141.0 L79.5 137.4 L86.9 137.4 L94.4 137.4 L101.9 137.4 L109.4 133.1 L116.9 120.5 L124.4 123.9 L131.9 123.9 L139.4 123.9 L146.9 133.1 L154.4 133.1 L161.9 133.1 L169.3 125.8 L176.8 130.8 L184.3 130.8 L191.8 130.8 L199.3 130.8 L206.8 133.3 L214.3 133.3 L221.8 133.3 L229.3 133.3 L236.8 109.0 L244.3 102.1 L251.7 102.1 L259.2 102.1 L266.7 116.2 L274.2 103.1 L281.7 109.9 L289.2 109.9 L296.7 101.7 L304.2 110.8 L311.7 112.1 L319.2 116.4 L326.7 116.4 L334.1 116.4 L341.6 110.8 L349.1 113.0 L356.6 113.0 L364.1 113.3 L371.6 113.3 L379.1 113.3 L386.6 115.6 L394.1 115.6 L401.6 115.6 L409.1 115.6 L416.6 115.6 L424.0 115.6 L431.5 115.6 L439.0 121.2 L446.5 121.2 L454.0 121.2 L461.5 121.2 L469.0 121.2 L476.5 121.2 L484.0 121.2 L491.5 121.2 L499.0 121.2 L506.4 121.2 L513.9 121.2 L521.4 121.2 L528.9 121.2 L536.4 121.2 L543.9 121.2 L551.4 121.2 L558.9 121.2 L566.4 121.2 L573.9 121.2 L581.4 121.2 L588.8 121.2 L596.3 121.2 L603.8 121.2 L611.3 121.2 L618.8 121.2 L626.3 121.2 L633.8 121.2 L641.3 121.2 L648.8 121.2 L656.3 121.2 L663.8 121.2 L671.2 121.2 L678.7 121.2 L686.2 121.2 L693.7 121.2 L701.2 121.2 L708.7 121.2" stroke="#D4736D" stroke-width="2"/><text class="lg" x="716.7" y="115.0" fill="#D4736D">C2 and C3</text><line x1="708.7" y1="121.2" x2="712.7" y2="111.0" stroke="#D4736D" stroke-width="1" opacity=".5"/></svg></div>
+<table class="tb">
+<thead><tr><th>Release arithmetic</th><th class="num">Day 1</th><th class="num">Day 90</th>
+<th class="num">Moved</th><th class="num">Addresses holding the opposite</th>
+<th class="num">Patterns of ground</th><th>Band after ninety days</th></tr></thead>
+<tbody>
+<tr class="zero">
+<td><b>shipped</b></td><td class="num">25.00</td><td class="num">25.54</td>
+<td class="num"><b>+0.54</b></td><td class="num">4.0</td>
+<td class="num">444</td><td>Corrupt</td></tr>
+<tr class="">
+<td><b>C2a compounding</b></td><td class="num">25.00</td><td class="num">26.19</td>
+<td class="num"><b>+1.19</b></td><td class="num">4.0</td>
+<td class="num">192</td><td>Corrupt</td></tr>
+<tr class="">
+<td><b>C2b install to the pole</b></td><td class="num">25.00</td><td class="num">25.60</td>
+<td class="num"><b>+0.60</b></td><td class="num">4.0</td>
+<td class="num">264</td><td>Corrupt</td></tr>
+<tr class="">
+<td><b>C2c stays cleared</b></td><td class="num">25.00</td><td class="num">25.54</td>
+<td class="num"><b>+0.54</b></td><td class="num">4.0</td>
+<td class="num">444</td><td>Corrupt</td></tr>
+<tr class="">
+<td><b>C2 all three</b></td><td class="num">25.00</td><td class="num">26.11</td>
+<td class="num"><b>+1.11</b></td><td class="num">4.0</td>
+<td class="num">80</td><td>Corrupt</td></tr>
+<tr class="">
+<td><b>C2 and C3</b></td><td class="num">25.00</td><td class="num">26.11</td>
+<td class="num"><b>+1.11</b></td><td class="num">4.0</td>
+<td class="num">80</td><td>Corrupt</td></tr>
+</tbody></table>
+<p>The shipped arithmetic moves the reading +0.54 across a
+quarter of daily work. The three changes together move it
++1.11, and the band after ninety days is
+&ldquo;Corrupt&rdquo; either way.</p>
+<div class="note bad"><b>And that is the finding of this pass, because it is not
+the answer the backlog expected.</b> The three fixes named as the cure for the
+flat loop were the removal compounding, the install reaching the far pole, and a
+cleared address staying cleared. All three are modelled here and all three are
+applied together, on a person who does everything right for ninety consecutive
+days with no model in the way. The reading moves
++1.11 instead of +0.54. Addresses holding the
+opposite stay at 4.0. The band does not change.
++1.11 over a quarter of perfect daily practice is still
+standing still, so the three changes are necessary and are nowhere near
+sufficient, and the ceiling is deeper than the fix the backlog names.</div>
+<p>Where it is deeper is visible in the same table. Patterns of ground fall from
+444 to 80 as the release actually removes charge, so
+the fixes work: there is less load. The reading barely notices, which means the
+reading is not mostly built out of the load a release can reach. The height of the
+line is the intake, and the intake is
+answered once, before day one. Until a ruling exists on whether
+somatic work moves the stated coherence at all, no arithmetic inside the release
+will move it, and this is the owner&rsquo;s call rather than a design decision:
+the quantity is shared with the book.</p>
+<p><b>And the grade barely notices, which is the most important sentence on this
+page.</b> C2a, C2b and C2c moved the total by
+-0.12, -0.06 and +0.00 applied alone. Not
+because the change is small but because almost nobody in the cohort reaches a
+release at all: 121.9 releases across 1000 arrivals in ninety
+days. An arithmetic fix that only pays off after somebody stays cannot show up in
+a grade whose retention has already collapsed, and a grade that cannot see it is
+not a reason to leave it broken. It is the reason the release goes first in the
+build order and last in the scoreboard.</p>
+
+<h2>What the remaining distance costs</h2>
+<p class="lede">Point by point, and which of them are arithmetic rather than
+interface.</p>
+<ul>
+<li><b>Core loop, 6.2 points.</b> Arithmetic. Full marks need everybody to close story, release and a kept practice, and to close it twelve times. At 121.9 releases a thousand arrivals in the baseline, this is the retention problem stated as a product number.</li>
+<li><b>ICP alignment, 4.4 points.</b> Arithmetic, and it is retention wearing a different name. The term is built out of each figure&rsquo;s own day seven, day thirty, loop share and read share, so it cannot rise until those do. Buying it costs whatever the loop costs.</li>
+<li><b>Behavioral flow, 2.9 points.</b> Interface, and it has a floor the interface cannot cross. The chrome alone is 16 controls above the fold at 1600 before any content, against a target of twelve. Folding the rails and collapsing the top and the bar is most of what can be done, and the residue is the stage: Knowledge carries 56 controls in its own centre column.</li>
+<li><b>Retention, 2.0 points.</b> Arithmetic, and the scale is the cap. Ten needs 35 per cent of arrivals active in the seven days ending at day thirty. The category median the scale is anchored on is 3.3 per cent. No interface reaches 35, and a product that did would not need a grade.</li>
+<li><b>Monetization, 1.5 points.</b> Half interface, half cohort. The price and the enforcement are days of work. The rest of the term is the share of people who reach the end of the gift, and in the baseline that is 0 of a thousand, so it cannot be bought with a screen.</li>
+<li><b>First touch, 0.2 points.</b> Interface, and it is the cheapest gap on the table.</li>
+<li><b>Emotional, 0.1 points.</b> Half interface, half language. The read share moves with the lexicon and the measurement is real. The other half of the term is the inferred share, and stating more addresses is not the same as guessing less often.</li>
+</ul>
+<p><b>Adding it up, and the arithmetic is the argument.</b> Ninety is 11.3 points away. The formula has 17.3 points of headroom left in total, so the distance exists. But 12.6 of that 17.3 sits in three criteria that are all one quantity, whether anybody stays: ICP alignment, Core loop and Retention. Everything else on the table put together is worth 4.7. So ninety cannot be reached without moving retention, and 11.3 of the 12.6 retention shaped points would have to be bought.</p>
+<p>Retention is the one that will not be bought. Ten of ten needs 35 per cent of
+arrivals active in the seven days ending at day thirty, against a category median
+of 3.3 per cent that the scale is anchored on. Every change on this page together
+took day thirty from 3.86% to 20.30%. Reaching the
+top of that scale is not a product this grade would be measuring, and the two
+criteria with no headroom at all, Visual at
+8.0 and Referral at 8.0,
+are already at their formula maximum and cannot contribute another point.</p>
+
+<h2>The build order this implies, which is not the ranking</h2>
+<p class="lede">The ranking above is by what moved the grade. The order below is
+by what moves the product, and they are different lists on purpose.</p>
+<ol>
+<li><b>C2a. The removal compounds inside the run.</b> The release takes 21 per cent of the weight once, whatever the length of the run, so a twelve line run and a three line run remove the same amount. Each line of the run takes from what is left instead. <span class="fine">Grade alone -0.12. Lands in <code>atuned_src/ui/release.js, and the contract with SOURCE</code>. Days in the code and a ruling before it. This is arithmetic the book shares, so it is the owner’s call and not a design decision.</span></li>
+<li><b>C2b. The install reaches the far pole.</b> The release installs 62 per cent of what it took, so the address is left holding less of the fetter and not the opposite state. The install is placed at the pole instead. <span class="fine">Grade alone -0.06. Lands in <code>atuned_src/ui/release.js</code>. Hours in the code, and the same ruling as C2a.</span></li>
+<li><b>C2c. A cleared address stays cleared.</b> A story may push an address that was cleared straight back over the line, so the same charge is released repeatedly and nothing accumulates. The level a release left an address at becomes a floor. <span class="fine">Grade alone +0.00. Lands in <code>atuned_src/engine/compute.js and the charge model</code>. A week. It is a new piece of state on the profile, so it is schema, and schema is the cross compatibility contract.</span></li>
+<li><b>C3. The release reads carrying rather than loaded.</b> An address enters the reading at four of ten. Below that a person carrying load at a hundred addresses is told nothing is carrying and the release has nothing to offer. The engine already returns carrying for exactly this reason and the action surfaces still read loaded. <span class="fine">Grade alone +5.07. Lands in <code>atuned_src/ui/release.js, atuned_src/ui/summary.js</code>. Hours. One word, and then the copy that goes with a reading below the line.</span></li>
+<li><b>C1. The narrow door.</b> A one line box on the surface a person already landed on, committing on enter, opening the same engine call the Story page opens. The wide door stays for the people who want it. <span class="fine">Grade alone +0.09. Lands in <code>atuned_src/ui/storyui.js, atuned_src/shell/body.html</code>. Two days. The box, the commit on enter, and the panel it opens into already exist on the Story page.</span></li>
+<li><b>C5. The lexicon reads ordinary sentences.</b> Thirty entries, each one a phrase, a seat, an amount and the address it states outright. LEX already carries the third element for this and thirty entries already use it. <span class="fine">Grade alone +7.65. Lands in <code>atuned_src/engine/data/lex.js</code>. Two days for these thirty and the gate that holds them. The general case is not two days: this patch was written against a bank of 41 sentences and a bank is not a language.</span></li>
+<li><b>C5b. An inferred address is a question.</b> Every imprint carries inferred. The panel prints it as a finding either way, so a wrong address arrives with confidence. An inferred address is printed as a question with its candidates and a way to say no. <span class="fine">Grade alone +0.10. Lands in <code>atuned_src/ui/storyui.js</code>. Two days. The flag is already on the imprint.</span></li>
+<li><b>C11. The record arrives at sign in.</b> The quiz is taken in the funnel and the record is fetched at sign in, so the landing surface has a reading on a first arrival and nobody meets a sixty three question intake inside the app. <span class="fine">Grade alone +0.12. Lands in <code>the record fetch seam, which is the one place the app gains network</code>. The accounts fork. Weeks, and it is already ruled.</span></li>
+<li><b>C12. Three defects that are simply true.</b> pracDays never reads the done flag, so a saved plan counts as a day practised. The headline rounds and the band does not, so 40.6 prints 41 beside Incoherent. One control is measured under the tap floor. <span class="fine">Grade alone +2.20. Lands in <code>atuned_src/engine/ladder.js, atuned_src/ui/summary.js, atuned_src/shell/head.html</code>. A day for all three.</span></li>
+<li><b>C7. The two level menu.</b> Nine top level entries become four parents with children, which is the structure already specified. The whole bar is then reachable on a phone and the bar stops spending half the working memory budget before any content. <span class="fine">Grade alone +2.05. Lands in <code>atuned_src/shell/body.html, atuned_src/ui/nav.js</code>. Three days. The integers are identity and may not be renumbered, so this is display order and a parent layer, not a renaming.</span></li>
+<li><b>C8. The rails ship folded.</b> Every section in both rails ships shut with its header showing, and the fold state is remembered. The mechanism is already there: every section already has a header that folds it. <span class="fine">Grade alone +2.24. Lands in <code>atuned_src/shell/head.html, and a stored preference</code>. A day. A default and a remembered state.</span></li>
+<li><b>C8b. The top collapses to two.</b> The top carries the same seven controls above the fold on every surface at both widths. Two stay, who is signed in and one menu, and the rest go behind it. <span class="fine">Grade alone +0.92. Lands in <code>atuned_src/shell/body.html</code>. Two days, and the work is deciding what those five are for rather than moving them.</span></li>
+<li><b>C4. What the holding costs, printed.</b> A line that says what the charge costs in output, on the surface that already prints the reading. Not the pain, the cost. <span class="fine">Grade alone +1.51. Lands in <code>atuned_src/ui/summary.js, a new read in atuned_src/engine/read.js</code>. Two days, and the harder half is deciding what the unit is. A number nobody can act on is worse than no line.</span></li>
+<li><b>C9. A way to hand it to somebody.</b> A control that produces a reading for another person, and the practitioner grant behind it with explicit consent, a visible list of who has sight, and revocation. <span class="fine">Grade alone +7.75. Lands in <code>a new atuned_src/ui/share.js, the record boundary, and the consent surface</code>. Two weeks. It is a consequential grant over somatic and psychological self report, so consent, the list and revocation are not optional and are most of the work.</span></li>
+<li><b>C10. A price, and an allowance with something behind it.</b> relCoolDown never reads relLeft, so the panel printed four patterns of the zero you have left and the run went ahead. The allowance is enforced, and a tier exists on a surface a person can reach. <span class="fine">Grade alone +6.01. Lands in <code>atuned_src/ui/release.js, and a tiers surface</code>. One line for the enforcement. The tier ladder is already ruled in DECISIONS.md, so the surface is a week.</span></li>
+<li><b>C6. Something asks them to come back.</b> A notification against a ritual the person set, which is the accountability seam the fork already put in scope. This step turns off the friction of nothing asking. It does not raise the return rate. <span class="fine">Grade alone +0.27. Lands in <code>the accounts seam: a service worker, a server, and a consent screen</code>. Weeks, and it is the last thing to build rather than the first. A notification calling somebody back to a loop that returns them where they started calls them back to nothing.</span></li>
+</ol>
+<p>The first four are the loop and they are worth almost nothing on the
+scoreboard. They go first anyway, because every change below them is an
+improvement to how many people reach a loop that currently returns them where
+they started, and there is no honest reason to send more people there before it
+pays.</p>
+
+<hr class="rule">
+<h2>How this was run</h2>
+<p>The harness is the baseline&rsquo;s harness with knobs added, and every knob
+is off by default. Whether the defaults still reproduce the baseline is checked
+rather than claimed: this pass settled at 38.91 over 19 runs and the earlier report settled at 38.91 over 19 runs, which is the same total and the same run count, so the knobs added nothing when they were all off. A knob may
+remove a friction only by removing what causes it, and may change arithmetic only
+where the product&rsquo;s arithmetic would change. The one knob that is a bare
+return rate is C6n, it is 12 per cent of otherwise skipped days, nothing in this
+repository measures it, and the curve is drawn so the reader can cut it off.</p>
+<div class="stamp">source.html   md5 5f2180b2b64fb30b6d484f364535d29e
+engine.js     md5 315e3ced4119eef2770f64534b10a68f
+commit        41b07e4
+fold probe    md5 5f2180b2b64fb30b6d484f364535d29e   commit 41b07e4
+pinned at     /home/user/MOB/sim/pin
+working tree  source.html c8871990c63da1611f7a6206df1ec13a
+              engine.js   417fea2e4f7c7c538fe57a5d7cc3db83
+
+THE BUILD MOVED UNDER THIS RUN. Two seats were live in atuned_src and
+the release path while it ran. Everything measured here was measured
+against the pinned build above and nothing was measured against the
+working tree. Re-measure before reading these numbers against a newer
+build.
+chromium      1194, file://, 1600x1000 and 390x844
+measured      2026-09-21T02:25:22.699Z
+cohort        1000 a run
+stopping rule mean moves under 0.05, held 6, floor 10
+runs          19 baseline, 314 across the solo pass, 290 across the cumulative pass
+people        623,000 simulated ninety day lives
+
+  node sim/measure.js       the surface, writes sim/measured.json
+  node sim/fold.js          where the load sits, writes sim/folded.json
+  node sim/lexcheck.js      the lexicon patch, writes sim/lexmeasured.json
+  node sim/harness.js       the baseline cohort, writes sim/runs.json
+  node sim/ninety.js        every change modelled, writes sim/ninety.json
+  node sim/build-ninety.js  this page
+  node sim/shot.js          renders both pages and asserts what they are
+
+  SIM_ROOT=sim/pin pins the build every step above reads, so a measurement
+  cannot have its subject change under it while other seats are working.</div>
+<p class="foot">Everything about a person&rsquo;s field on this page is the
+shipped engine&rsquo;s output on invented inputs. Everything about the surface is a
+fact about the build stamped above. Everything about when somebody opens the file
+and when they stop is a model, and it is judgement. A modelled grade is a way of
+arguing about a product with arithmetic attached, and it is not a measurement of
+one. Nothing here should be quoted as evidence about a human being.</p>
+
+</div></body></html>

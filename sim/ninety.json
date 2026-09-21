@@ -19,28 +19,34 @@
   "srcAfter": "5f2180b2b64fb30b6d484f364535d29e",
   "moved": false
  },
+ "drift": {
+  "pin": "/home/user/MOB/sim/pin",
+  "worktreeSrc": "c8871990c63da1611f7a6206df1ec13a",
+  "worktreeEngine": "417fea2e4f7c7c538fe57a5d7cc3db83",
+  "when": "2026-09-21T03:05:47.687Z"
+ },
  "pinned": true,
- "fast": true,
+ "fast": false,
  "settle": {
-  "threshold": 1,
-  "hold": 1,
-  "floor": 2,
-  "ceiling": 3
+  "threshold": 0.05,
+  "hold": 6,
+  "floor": 10,
+  "ceiling": 400
  },
  "cohort": 1000,
  "base": {
   "label": "baseline",
-  "runs": 2,
-  "settledAt": 2,
-  "total": 38.95,
+  "runs": 19,
+  "settledAt": 19,
+  "total": 38.91,
   "letter": "F",
-  "sd": 0.071,
-  "lo": 38.9,
-  "hi": 39,
+  "sd": 0.407,
+  "lo": 38,
+  "hi": 39.6,
   "rows": [
    {
     "k": "ICP alignment",
-    "v": 2.3,
+    "v": 2.41,
     "moves": true,
     "carried": false
    },
@@ -52,13 +58,13 @@
    },
    {
     "k": "Core loop",
-    "v": 0.3,
+    "v": 0.29,
     "moves": true,
     "carried": false
    },
    {
     "k": "Emotional",
-    "v": 5.5,
+    "v": 5.47,
     "moves": true,
     "carried": false
    },
@@ -88,7 +94,7 @@
    },
    {
     "k": "Retention",
-    "v": 3.35,
+    "v": 3.24,
     "moves": true,
     "carried": false
    },
@@ -99,34 +105,34 @@
     "carried": false
    }
   ],
-  "d30": 0.04,
-  "d7": 0.6435,
-  "d90": 0.002,
-  "loopEver": 0.039,
-  "readShare": 0.5252,
-  "inferShare": 0.411,
-  "stories": 892,
-  "releases": 129,
-  "minutes": 16012,
+  "d30": 0.03858,
+  "d7": 0.64611,
+  "d90": 0.00126,
+  "loopEver": 0.0404,
+  "readShare": 0.5164,
+  "inferShare": 0.4041,
+  "stories": 886.7,
+  "releases": 121.9,
+  "minutes": 15796,
   "lostTop": [
    {
     "k": "DRIFT",
-    "n": 278,
+    "n": 288,
     "nm": "The absence became permanent"
    },
    {
     "k": "F4",
-    "n": 111,
+    "n": 110,
     "nm": "The reading does not move"
    },
    {
     "k": "F3",
-    "n": 90,
+    "n": 89,
     "nm": "Nothing is above the line, so there is nothing to release"
    },
    {
     "k": "F1",
-    "n": 70,
+    "n": 68,
     "nm": "The box reads nothing out of what they wrote"
    },
    {
@@ -137,97 +143,97 @@
   ],
   "icp": {
    "Diane": {
-    "d30": 0.014,
-    "d7": 0.817,
-    "sessions": 1.26,
+    "d30": 0.016,
+    "d7": 0.853,
+    "sessions": 1.318,
     "stories": 0,
     "releases": 0,
     "loopEver": 0,
-    "cqDelta": -0.565,
-    "minutes": 2
+    "cqDelta": -0.984,
+    "minutes": 2.116
    },
    "Derek": {
-    "d30": 0.044,
-    "d7": 0.721,
-    "sessions": 2.165,
-    "stories": 0.745,
-    "releases": 0.01,
-    "loopEver": 0.009,
-    "cqDelta": -17.43,
-    "minutes": 19.45
+    "d30": 0.027,
+    "d7": 0.706,
+    "sessions": 2.154,
+    "stories": 0.759,
+    "releases": 0.028,
+    "loopEver": 0.017,
+    "cqDelta": -4.798,
+    "minutes": 19.384
    },
    "Marcus": {
-    "d30": 0.072,
-    "d7": 0.509,
-    "sessions": 1.735,
-    "stories": 0.48,
-    "releases": 0.015,
-    "loopEver": 0,
-    "cqDelta": 0,
-    "minutes": 9.7
-   },
-   "Angela": {
-    "d30": 0.007,
-    "d7": 0.703,
-    "sessions": 1.25,
-    "stories": 0.895,
+    "d30": 0.075,
+    "d7": 0.53,
+    "sessions": 1.819,
+    "stories": 0.485,
     "releases": 0.005,
     "loopEver": 0,
-    "cqDelta": 0,
-    "minutes": 11.75
+    "cqDelta": -5.814,
+    "minutes": 10.042
+   },
+   "Angela": {
+    "d30": 0.016,
+    "d7": 0.699,
+    "sessions": 1.218,
+    "stories": 0.884,
+    "releases": 0.01,
+    "loopEver": 0.002,
+    "cqDelta": -1.793,
+    "minutes": 11.653
    },
    "Sofia": {
-    "d30": 0.096,
-    "d7": 0.761,
-    "sessions": 3.31,
-    "stories": 2.905,
-    "releases": 0.505,
-    "loopEver": 0.189,
-    "cqDelta": -6.425,
-    "minutes": 46.05
+    "d30": 0.089,
+    "d7": 0.776,
+    "sessions": 3.258,
+    "stories": 2.895,
+    "releases": 0.474,
+    "loopEver": 0.182,
+    "cqDelta": -0.676,
+    "minutes": 45.158
    },
    "James": {
-    "d30": 0,
-    "d7": 0.4,
-    "sessions": 0.465,
-    "stories": 0.015,
+    "d30": 0.004,
+    "d7": 0.362,
+    "sessions": 0.408,
+    "stories": 0.023,
     "releases": 0,
     "loopEver": 0,
     "cqDelta": 0,
-    "minutes": 1.15
+    "minutes": 1.042
    },
    "Ana": {
-    "d30": 0.08,
-    "d7": 0.74,
-    "sessions": 3.25,
-    "stories": 2.9,
-    "releases": 1.08,
-    "loopEver": 0.22,
-    "cqDelta": 0,
-    "minutes": 49.25
+    "d30": 0.076,
+    "d7": 0.703,
+    "sessions": 3.094,
+    "stories": 2.792,
+    "releases": 0.977,
+    "loopEver": 0.235,
+    "cqDelta": -1.273,
+    "minutes": 46.616
    },
    "Gordon": {
     "d30": 0,
-    "d7": 0.057,
-    "sessions": 0.06,
+    "d7": 0.056,
+    "sessions": 0.058,
     "stories": 0,
     "releases": 0,
     "loopEver": 0,
     "cqDelta": 0,
-    "minutes": 0.1
+    "minutes": 0.068
    },
    "Rosa": {
     "d30": 0,
-    "d7": 0.1,
-    "sessions": 0.1,
-    "stories": 0.035,
+    "d7": 0.067,
+    "sessions": 0.137,
+    "stories": 0.007,
     "releases": 0,
     "loopEver": 0,
     "cqDelta": 0,
-    "minutes": 0.35
+    "minutes": 0.4
    }
   },
-  "seconds": 2,
+  "seconds": 17,
   "knobs": {
    "storyCost": null,
    "relTake": 0.21,
@@ -255,17 +261,17 @@
  "solo": [
   {
    "label": "C1",
-   "runs": 2,
-   "settledAt": 2,
-   "total": 38.95,
+   "runs": 15,
+   "settledAt": 15,
+   "total": 39,
    "letter": "F",
-   "sd": 0.212,
-   "lo": 38.8,
-   "hi": 39.1,
+   "sd": 0.33,
+   "lo": 38.4,
+   "hi": 39.5,
    "rows": [
     {
      "k": "ICP alignment",
-     "v": 2.45,
+     "v": 2.43,
      "moves": true,
      "carried": false
     },
@@ -277,13 +283,13 @@
     },
     {
      "k": "Core loop",
-     "v": 0.35,
+     "v": 0.32,
      "moves": true,
      "carried": false
     },
     {
      "k": "Emotional",
-     "v": 5.6,
+     "v": 5.51,
      "moves": true,
      "carried": false
     },
@@ -313,7 +319,7 @@
     },
     {
      "k": "Retention",
-     "v": 3.05,
+     "v": 3.23,
      "moves": true,
      "carried": false
     },
@@ -324,135 +330,135 @@
      "carried": false
     }
    ],
-   "d30": 0.034,
-   "d7": 0.642,
-   "d90": 0.0015,
-   "loopEver": 0.0435,
-   "readShare": 0.5439,
-   "inferShare": 0.415,
-   "stories": 1016,
-   "releases": 151,
-   "minutes": 15892,
+   "d30": 0.03853,
+   "d7": 0.64447,
+   "d90": 0.00087,
+   "loopEver": 0.0438,
+   "readShare": 0.5253,
+   "inferShare": 0.408,
+   "stories": 1020.2,
+   "releases": 134.9,
+   "minutes": 15815,
    "lostTop": [
     {
      "k": "DRIFT",
-     "n": 264,
+     "n": 270,
      "nm": "The absence became permanent"
     },
     {
      "k": "F4",
-     "n": 120,
+     "n": 123,
      "nm": "The reading does not move"
     },
     {
      "k": "F3",
-     "n": 96,
+     "n": 93,
      "nm": "Nothing is above the line, so there is nothing to release"
     },
     {
      "k": "F1",
-     "n": 67,
+     "n": 71,
      "nm": "The box reads nothing out of what they wrote"
     },
     {
      "k": "F12",
-     "n": 44,
+     "n": 42,
      "nm": "There is no way to hand it to anybody"
     }
    ],
    "icp": {
     "Diane": {
-     "d30": 0.003,
-     "d7": 0.831,
-     "sessions": 1.265,
-     "stories": 0.355,
-     "releases": 0,
+     "d30": 0.013,
+     "d7": 0.847,
+     "sessions": 1.314,
+     "stories": 0.395,
+     "releases": 0.003,
      "loopEver": 0,
-     "cqDelta": -0.57,
-     "minutes": 1.95
+     "cqDelta": -0.489,
+     "minutes": 2.087
     },
     "Derek": {
-     "d30": 0.021,
-     "d7": 0.729,
-     "sessions": 2.255,
-     "stories": 0.855,
-     "releases": 0.06,
-     "loopEver": 0.018,
-     "cqDelta": -8.715,
-     "minutes": 20.45
+     "d30": 0.03,
+     "d7": 0.725,
+     "sessions": 2.271,
+     "stories": 0.833,
+     "releases": 0.041,
+     "loopEver": 0.021,
+     "cqDelta": -1.162,
+     "minutes": 20.413
     },
     "Marcus": {
-     "d30": 0.066,
-     "d7": 0.516,
-     "sessions": 1.76,
-     "stories": 0.615,
-     "releases": 0.015,
-     "loopEver": 0.003,
-     "cqDelta": 0,
-     "minutes": 9.6
+     "d30": 0.075,
+     "d7": 0.532,
+     "sessions": 1.73,
+     "stories": 0.584,
+     "releases": 0.007,
+     "loopEver": 0.001,
+     "cqDelta": -3.075,
+     "minutes": 9.487
     },
     "Angela": {
-     "d30": 0.017,
-     "d7": 0.693,
-     "sessions": 1.14,
-     "stories": 0.865,
-     "releases": 0.005,
-     "loopEver": 0.003,
-     "cqDelta": 0,
-     "minutes": 10.65
+     "d30": 0.02,
+     "d7": 0.69,
+     "sessions": 1.207,
+     "stories": 0.919,
+     "releases": 0.015,
+     "loopEver": 0.004,
+     "cqDelta": -2.348,
+     "minutes": 11.353
     },
     "Sofia": {
-     "d30": 0.093,
-     "d7": 0.761,
-     "sessions": 3.255,
-     "stories": 3.005,
-     "releases": 0.61,
-     "loopEver": 0.2,
-     "cqDelta": -6.15,
-     "minutes": 45.85
+     "d30": 0.086,
+     "d7": 0.773,
+     "sessions": 3.29,
+     "stories": 3.015,
+     "releases": 0.534,
+     "loopEver": 0.198,
+     "cqDelta": -2.409,
+     "minutes": 45.54
     },
     "James": {
-     "d30": 0.005,
-     "d7": 0.385,
-     "sessions": 0.41,
-     "stories": 0.145,
+     "d30": 0.003,
+     "d7": 0.359,
+     "sessions": 0.399,
+     "stories": 0.141,
      "releases": 0,
      "loopEver": 0,
      "cqDelta": 0,
-     "minutes": 1
+     "minutes": 0.987
     },
     "Ana": {
-     "d30": 0.07,
-     "d7": 0.69,
-     "sessions": 3.07,
-     "stories": 2.85,
-     "releases": 1.07,
-     "loopEver": 0.23,
+     "d30": 0.073,
+     "d7": 0.664,
+     "sessions": 3.036,
+     "stories": 2.781,
+     "releases": 1.003,
+     "loopEver": 0.233,
      "cqDelta": 0,
-     "minutes": 48.25
+     "minutes": 45.313
     },
     "Gordon": {
      "d30": 0,
-     "d7": 0.057,
-     "sessions": 0.055,
-     "stories": 0.03,
+     "d7": 0.032,
+     "sessions": 0.035,
+     "stories": 0.01,
      "releases": 0,
      "loopEver": 0,
      "cqDelta": 0,
-     "minutes": 0.05
+     "minutes": 0.027
     },
     "Rosa": {
      "d30": 0,
-     "d7": 0.033,
-     "sessions": 0.065,
-     "stories": 0,
+     "d7": 0.107,
+     "sessions": 0.146,
+     "stories": 0.049,
      "releases": 0,
      "loopEver": 0,
      "cqDelta": 0,
-     "minutes": 0.2
+     "minutes": 0.44
     }
    },
-   "seconds": 2,
+   "seconds": 15,
    "knobs": {
     "storyCost": 0.8,
     "relTake": 0.21,
@@ -478,21 +484,21 @@
    },
    "id": "C1",
    "nm": "The narrow door",
-   "d": 0
+   "d": 0.09
   },
   {
    "label": "C2a",
-   "runs": 2,
-   "settledAt": 2,
-   "total": 38.5,
+   "runs": 22,
+   "settledAt": 22,
+   "total": 38.79,
    "letter": "F",
-   "sd": 0.283,
-   "lo": 38.3,
-   "hi": 38.7,
+   "sd": 0.452,
+   "lo": 37.9,
+   "hi": 39.4,
    "rows": [
     {
      "k": "ICP alignment",
-     "v": 2.2,
+     "v": 2.4,
      "moves": true,
      "carried": false
     },
@@ -504,13 +510,13 @@
     },
     {
      "k": "Core loop",
-     "v": 0.25,
+     "v": 0.29,
      "moves": true,
      "carried": false
     },
     {
      "k": "Emotional",
-     "v": 5.5,
+     "v": 5.52,
      "moves": true,
      "carried": false
     },
@@ -540,7 +546,7 @@
     },
     {
      "k": "Retention",
-     "v": 3.05,
+     "v": 3.09,
      "moves": true,
      "carried": false
     },
@@ -551,19 +557,19 @@
      "carried": false
     }
    ],
-   "d30": 0.0345,
-   "d7": 0.6405,
-   "d90": 0.001,
-   "loopEver": 0.0355,
-   "readShare": 0.5042,
-   "inferShare": 0.3801,
-   "stories": 848,
-   "releases": 68,
-   "minutes": 15298,
+   "d30": 0.03636,
+   "d7": 0.64373,
+   "d90": 0.00132,
+   "loopEver": 0.0408,
+   "readShare": 0.5125,
+   "inferShare": 0.3907,
+   "stories": 858.1,
+   "releases": 70.8,
+   "minutes": 15356,
    "lostTop": [
     {
      "k": "DRIFT",
-     "n": 278,
+     "n": 283,
      "nm": "The absence became permanent"
     },
     {
@@ -573,113 +579,113 @@
     },
     {
      "k": "F3",
-     "n": 91,
+     "n": 95,
      "nm": "Nothing is above the line, so there is nothing to release"
     },
     {
      "k": "F1",
-     "n": 72,
+     "n": 70,
      "nm": "The box reads nothing out of what they wrote"
     },
     {
      "k": "F12",
-     "n": 41,
+     "n": 40,
      "nm": "There is no way to hand it to anybody"
     }
    ],
    "icp": {
     "Diane": {
-     "d30": 0.014,
-     "d7": 0.817,
-     "sessions": 1.26,
+     "d30": 0.016,
+     "d7": 0.856,
+     "sessions": 1.324,
      "stories": 0,
      "releases": 0,
      "loopEver": 0,
-     "cqDelta": -0.565,
-     "minutes": 2
+     "cqDelta": -1.031,
+     "minutes": 2.127
     },
     "Derek": {
-     "d30": 0.044,
-     "d7": 0.721,
-     "sessions": 2.165,
-     "stories": 0.745,
-     "releases": 0.01,
-     "loopEver": 0.009,
-     "cqDelta": -17.43,
-     "minutes": 19.45
+     "d30": 0.025,
+     "d7": 0.712,
+     "sessions": 2.175,
+     "stories": 0.771,
+     "releases": 0.024,
+     "loopEver": 0.019,
+     "cqDelta": -4.144,
+     "minutes": 19.595
     },
     "Marcus": {
-     "d30": 0.072,
-     "d7": 0.509,
-     "sessions": 1.72,
-     "stories": 0.47,
-     "releases": 0.005,
+     "d30": 0.075,
+     "d7": 0.533,
+     "sessions": 1.804,
+     "stories": 0.49,
+     "releases": 0.003,
      "loopEver": 0,
-     "cqDelta": 0,
-     "minutes": 9.6
+     "cqDelta": -4.892,
+     "minutes": 9.964
     },
     "Angela": {
-     "d30": 0.007,
-     "d7": 0.703,
-     "sessions": 1.25,
-     "stories": 0.895,
-     "releases": 0.005,
-     "loopEver": 0,
-     "cqDelta": 0,
-     "minutes": 11.75
+     "d30": 0.018,
+     "d7": 0.704,
+     "sessions": 1.231,
+     "stories": 0.89,
+     "releases": 0.01,
+     "loopEver": 0.003,
+     "cqDelta": -1.991,
+     "minutes": 11.764
     },
     "Sofia": {
-     "d30": 0.071,
-     "d7": 0.771,
-     "sessions": 3.245,
-     "stories": 2.855,
-     "releases": 0.325,
-     "loopEver": 0.193,
-     "cqDelta": 0,
-     "minutes": 45.35
+     "d30": 0.088,
+     "d7": 0.763,
+     "sessions": 3.198,
+     "stories": 2.824,
+     "releases": 0.319,
+     "loopEver": 0.188,
+     "cqDelta": -0.885,
+     "minutes": 44.455
     },
     "James": {
-     "d30": 0,
-     "d7": 0.365,
-     "sessions": 0.375,
-     "stories": 0.03,
+     "d30": 0.002,
+     "d7": 0.336,
+     "sessions": 0.367,
+     "stories": 0.024,
      "releases": 0,
      "loopEver": 0,
      "cqDelta": 0,
-     "minutes": 0.9
+     "minutes": 0.914
     },
     "Ana": {
-     "d30": 0.03,
-     "d7": 0.71,
-     "sessions": 2.47,
-     "stories": 2.18,
-     "releases": 0.38,
-     "loopEver": 0.14,
+     "d30": 0.039,
+     "d7": 0.69,
+     "sessions": 2.628,
+     "stories": 2.338,
+     "releases": 0.405,
+     "loopEver": 0.216,
      "cqDelta": 0,
-     "minutes": 37.65
+     "minutes": 39.241
     },
     "Gordon": {
      "d30": 0,
-     "d7": 0.043,
-     "sessions": 0.045,
+     "d7": 0.044,
+     "sessions": 0.049,
      "stories": 0,
      "releases": 0,
      "loopEver": 0,
      "cqDelta": 0,
-     "minutes": 0
+     "minutes": 0.041
     },
     "Rosa": {
-     "d30": 0.033,
-     "d7": 0.167,
-     "sessions": 0.27,
-     "stories": 0,
+     "d30": 0.012,
+     "d7": 0.097,
+     "sessions": 0.14,
+     "stories": 0.022,
      "releases": 0,
      "loopEver": 0,
      "cqDelta": 0,
-     "minutes": 0.7
+     "minutes": 0.395
     }
    },
-   "seconds": 2,
+   "seconds": 19,
    "knobs": {
     "storyCost": null,
     "relTake": 0.21,
@@ -705,21 +711,21 @@
    },
    "id": "C2a",
    "nm": "The removal compounds inside the run",
-   "d": -0.45
+   "d": -0.12
   },
   {
    "label": "C2b",
-   "runs": 2,
-   "settledAt": 2,
-   "total": 38.45,
+   "runs": 15,
+   "settledAt": 15,
+   "total": 38.85,
    "letter": "F",
-   "sd": 0.212,
-   "lo": 38.3,
-   "hi": 38.6,
+   "sd": 0.383,
+   "lo": 38.2,
+   "hi": 39.4,
    "rows": [
     {
      "k": "ICP alignment",
-     "v": 2.3,
+     "v": 2.42,
      "moves": true,
      "carried": false
     },
@@ -731,13 +737,13 @@
     },
     {
      "k": "Core loop",
-     "v": 0.25,
+     "v": 0.29,
      "moves": true,
      "carried": false
     },
     {
      "k": "Emotional",
-     "v": 5.45,
+     "v": 5.51,
      "moves": true,
      "carried": false
     },
@@ -767,7 +773,7 @@
     },
     {
      "k": "Retention",
-     "v": 2.95,
+     "v": 3.13,
      "moves": true,
      "carried": false
     },
@@ -778,135 +784,135 @@
      "carried": false
     }
    ],
-   "d30": 0.034,
-   "d7": 0.639,
-   "d90": 0.001,
-   "loopEver": 0.0355,
-   "readShare": 0.5173,
-   "inferShare": 0.4165,
-   "stories": 824.5,
-   "releases": 82.5,
-   "minutes": 14920,
+   "d30": 0.03673,
+   "d7": 0.6434,
+   "d90": 0.00113,
+   "loopEver": 0.0421,
+   "readShare": 0.5205,
+   "inferShare": 0.4053,
+   "stories": 877.9,
+   "releases": 102.7,
+   "minutes": 15636,
    "lostTop": [
     {
      "k": "DRIFT",
-     "n": 277,
+     "n": 284,
      "nm": "The absence became permanent"
     },
     {
      "k": "F4",
-     "n": 109,
+     "n": 110,
      "nm": "The reading does not move"
     },
     {
      "k": "F3",
-     "n": 83,
+     "n": 92,
      "nm": "Nothing is above the line, so there is nothing to release"
     },
     {
      "k": "F1",
-     "n": 70,
+     "n": 68,
      "nm": "The box reads nothing out of what they wrote"
     },
     {
      "k": "F12",
-     "n": 45,
+     "n": 39,
      "nm": "There is no way to hand it to anybody"
     }
    ],
    "icp": {
     "Diane": {
-     "d30": 0.014,
-     "d7": 0.817,
-     "sessions": 1.26,
+     "d30": 0.016,
+     "d7": 0.853,
+     "sessions": 1.317,
      "stories": 0,
      "releases": 0,
      "loopEver": 0,
-     "cqDelta": -0.565,
-     "minutes": 2
+     "cqDelta": -0.895,
+     "minutes": 2.12
     },
     "Derek": {
-     "d30": 0.044,
-     "d7": 0.721,
-     "sessions": 2.165,
-     "stories": 0.745,
-     "releases": 0.01,
-     "loopEver": 0.009,
-     "cqDelta": -17.43,
-     "minutes": 19.45
+     "d30": 0.027,
+     "d7": 0.717,
+     "sessions": 2.162,
+     "stories": 0.768,
+     "releases": 0.025,
+     "loopEver": 0.018,
+     "cqDelta": -6.078,
+     "minutes": 19.48
     },
     "Marcus": {
-     "d30": 0.072,
-     "d7": 0.512,
-     "sessions": 1.73,
-     "stories": 0.47,
-     "releases": 0.01,
+     "d30": 0.073,
+     "d7": 0.525,
+     "sessions": 1.781,
+     "stories": 0.48,
+     "releases": 0.004,
      "loopEver": 0,
-     "cqDelta": 0,
-     "minutes": 9.65
+     "cqDelta": -6.877,
+     "minutes": 9.827
     },
     "Angela": {
-     "d30": 0.007,
-     "d7": 0.703,
-     "sessions": 1.25,
-     "stories": 0.895,
-     "releases": 0.005,
-     "loopEver": 0,
-     "cqDelta": 0,
-     "minutes": 11.75
+     "d30": 0.014,
+     "d7": 0.697,
+     "sessions": 1.207,
+     "stories": 0.882,
+     "releases": 0.012,
+     "loopEver": 0.002,
+     "cqDelta": -2.271,
+     "minutes": 11.553
     },
     "Sofia": {
-     "d30": 0.064,
-     "d7": 0.768,
-     "sessions": 2.975,
-     "stories": 2.615,
-     "releases": 0.36,
-     "loopEver": 0.175,
+     "d30": 0.086,
+     "d7": 0.769,
+     "sessions": 3.179,
+     "stories": 2.817,
+     "releases": 0.403,
+     "loopEver": 0.18,
      "cqDelta": 0,
-     "minutes": 41.5
+     "minutes": 44.187
     },
     "James": {
-     "d30": 0.005,
-     "d7": 0.38,
-     "sessions": 0.42,
-     "stories": 0.045,
+     "d30": 0.003,
+     "d7": 0.325,
+     "sessions": 0.36,
+     "stories": 0.025,
      "releases": 0,
      "loopEver": 0,
      "cqDelta": 0,
-     "minutes": 1.15
+     "minutes": 0.92
     },
     "Ana": {
-     "d30": 0.04,
-     "d7": 0.69,
-     "sessions": 2.63,
-     "stories": 2.35,
-     "releases": 0.57,
-     "loopEver": 0.19,
-     "cqDelta": 0,
-     "minutes": 40.2
+     "d30": 0.061,
+     "d7": 0.74,
+     "sessions": 3.135,
+     "stories": 2.821,
+     "releases": 0.8,
+     "loopEver": 0.268,
+     "cqDelta": -1.793,
+     "minutes": 47.027
     },
     "Gordon": {
      "d30": 0,
-     "d7": 0.014,
-     "sessions": 0.015,
+     "d7": 0.029,
+     "sessions": 0.03,
      "stories": 0,
      "releases": 0,
      "loopEver": 0,
      "cqDelta": 0,
-     "minutes": 0
+     "minutes": 0.04
     },
     "Rosa": {
      "d30": 0,
-     "d7": 0.1,
-     "sessions": 0.13,
-     "stories": 0,
+     "d7": 0.093,
+     "sessions": 0.137,
+     "stories": 0.009,
      "releases": 0,
      "loopEver": 0,
      "cqDelta": 0,
-     "minutes": 0.5
+     "minutes": 0.427
     }
    },
-   "seconds": 2,
+   "seconds": 13,
    "knobs": {
     "storyCost": null,
     "relTake": 0.21,
@@ -932,21 +938,21 @@
    },
    "id": "C2b",
    "nm": "The install reaches the far pole",
-   "d": -0.5
+   "d": -0.06
   },
   {
    "label": "C2c",
-   "runs": 2,
-   "settledAt": 2,
-   "total": 38.95,
+   "runs": 19,
+   "settledAt": 19,
+   "total": 38.91,
    "letter": "F",
-   "sd": 0.071,
-   "lo": 38.9,
-   "hi": 39,
+   "sd": 0.407,
+   "lo": 38,
+   "hi": 39.6,
    "rows": [
     {
      "k": "ICP alignment",
-     "v": 2.3,
+     "v": 2.41,
      "moves": true,
      "carried": false
     },
@@ -958,13 +964,13 @@
     },
     {
      "k": "Core loop",
-     "v": 0.3,
+     "v": 0.29,
      "moves": true,
      "carried": false
     },
     {
      "k": "Emotional",
-     "v": 5.5,
+     "v": 5.47,
      "moves": true,
      "carried": false
     },
@@ -994,7 +1000,7 @@
     },
     {
      "k": "Retention",
-     "v": 3.35,
+     "v": 3.24,
      "moves": true,
      "carried": false
     },
@@ -1005,34 +1011,34 @@
      "carried": false
     }
    ],
-   "d30": 0.04,
-   "d7": 0.6435,
-   "d90": 0.002,
-   "loopEver": 0.039,
-   "readShare": 0.5252,
-   "inferShare": 0.411,
-   "stories": 892,
-   "releases": 129,
-   "minutes": 16012,
+   "d30": 0.03858,
+   "d7": 0.64611,
+   "d90": 0.00126,
+   "loopEver": 0.0404,
+   "readShare": 0.5164,
+   "inferShare": 0.4041,
+   "stories": 886.7,
+   "releases": 121.9,
+   "minutes": 15796,
    "lostTop": [
     {
      "k": "DRIFT",
-     "n": 278,
+     "n": 288,
      "nm": "The absence became permanent"
     },
     {
      "k": "F4",
-     "n": 111,
+     "n": 110,
      "nm": "The reading does not move"
     },
     {
      "k": "F3",
-     "n": 90,
+     "n": 89,
      "nm": "Nothing is above the line, so there is nothing to release"
     },
     {
      "k": "F1",
-     "n": 70,
+     "n": 68,
      "nm": "The box reads nothing out of what they wrote"
     },
     {
@@ -1043,97 +1049,97 @@
    ],
    "icp": {
     "Diane": {
-     "d30": 0.014,
-     "d7": 0.817,
-     "sessions": 1.26,
+     "d30": 0.016,
+     "d7": 0.853,
+     "sessions": 1.318,
      "stories": 0,
      "releases": 0,
      "loopEver": 0,
-     "cqDelta": -0.565,
-     "minutes": 2
+     "cqDelta": -0.984,
+     "minutes": 2.116
     },
     "Derek": {
-     "d30": 0.044,
-     "d7": 0.721,
-     "sessions": 2.165,
-     "stories": 0.745,
-     "releases": 0.01,
-     "loopEver": 0.009,
-     "cqDelta": -17.43,
-     "minutes": 19.45
+     "d30": 0.027,
+     "d7": 0.706,
+     "sessions": 2.154,
+     "stories": 0.759,
+     "releases": 0.028,
+     "loopEver": 0.017,
+     "cqDelta": -4.798,
+     "minutes": 19.384
     },
     "Marcus": {
-     "d30": 0.072,
-     "d7": 0.509,
-     "sessions": 1.735,
-     "stories": 0.48,
-     "releases": 0.015,
-     "loopEver": 0,
-     "cqDelta": 0,
-     "minutes": 9.7
-    },
-    "Angela": {
-     "d30": 0.007,
-     "d7": 0.703,
-     "sessions": 1.25,
-     "stories": 0.895,
+     "d30": 0.075,
+     "d7": 0.53,
+     "sessions": 1.819,
+     "stories": 0.485,
      "releases": 0.005,
      "loopEver": 0,
-     "cqDelta": 0,
-     "minutes": 11.75
+     "cqDelta": -5.814,
+     "minutes": 10.042
+    },
+    "Angela": {
+     "d30": 0.016,
+     "d7": 0.699,
+     "sessions": 1.218,
+     "stories": 0.884,
+     "releases": 0.01,
+     "loopEver": 0.002,
+     "cqDelta": -1.793,
+     "minutes": 11.653
     },
     "Sofia": {
-     "d30": 0.096,
-     "d7": 0.761,
-     "sessions": 3.31,
-     "stories": 2.905,
-     "releases": 0.505,
-     "loopEver": 0.189,
-     "cqDelta": -6.425,
-     "minutes": 46.05
+     "d30": 0.089,
+     "d7": 0.776,
+     "sessions": 3.258,
+     "stories": 2.895,
+     "releases": 0.474,
+     "loopEver": 0.182,
+     "cqDelta": -0.676,
+     "minutes": 45.158
     },
     "James": {
-     "d30": 0,
-     "d7": 0.4,
-     "sessions": 0.465,
-     "stories": 0.015,
+     "d30": 0.004,
+     "d7": 0.362,
+     "sessions": 0.408,
+     "stories": 0.023,
      "releases": 0,
      "loopEver": 0,
      "cqDelta": 0,
-     "minutes": 1.15
+     "minutes": 1.042
     },
     "Ana": {
-     "d30": 0.08,
-     "d7": 0.74,
-     "sessions": 3.25,
-     "stories": 2.9,
-     "releases": 1.08,
-     "loopEver": 0.22,
-     "cqDelta": 0,
-     "minutes": 49.25
+     "d30": 0.076,
+     "d7": 0.703,
+     "sessions": 3.094,
+     "stories": 2.792,
+     "releases": 0.977,
+     "loopEver": 0.235,
+     "cqDelta": -1.273,
+     "minutes": 46.616
     },
     "Gordon": {
      "d30": 0,
-     "d7": 0.057,
-     "sessions": 0.06,
+     "d7": 0.056,
+     "sessions": 0.058,
      "stories": 0,
      "releases": 0,
      "loopEver": 0,
      "cqDelta": 0,
-     "minutes": 0.1
+     "minutes": 0.068
     },
     "Rosa": {
      "d30": 0,
-     "d7": 0.1,
-     "sessions": 0.1,
-     "stories": 0.035,
+     "d7": 0.067,
+     "sessions": 0.137,
+     "stories": 0.007,
      "releases": 0,
      "loopEver": 0,
      "cqDelta": 0,
-     "minutes": 0.35
+     "minutes": 0.4
     }
    },
-   "seconds": 2,
+   "seconds": 17,
    "knobs": {
     "storyCost": null,
     "relTake": 0.21,
@@ -1163,17 +1169,17 @@
   },
   {
    "label": "C3",
-   "runs": 2,
-   "settledAt": 2,
-   "total": 43.6,
+   "runs": 27,
+   "settledAt": 27,
+   "total": 43.98,
    "letter": "D-",
-   "sd": 0.424,
-   "lo": 43.3,
-   "hi": 43.9,
+   "sd": 0.595,
+   "lo": 42.9,
+   "hi": 45.3,
    "rows": [
     {
      "k": "ICP alignment",
-     "v": 3.25,
+     "v": 3.26,
      "moves": true,
      "carried": false
     },
@@ -1185,13 +1191,13 @@
     },
     {
      "k": "Core loop",
-     "v": 1.45,
+     "v": 1.51,
      "moves": true,
      "carried": false
     },
     {
      "k": "Emotional",
-     "v": 5.6,
+     "v": 5.59,
      "moves": true,
      "carried": false
     },
@@ -1215,13 +1221,13 @@
     },
     {
      "k": "Monetization",
-     "v": 0.6,
+     "v": 0.68,
      "moves": true,
      "carried": false
     },
     {
      "k": "Retention",
-     "v": 5.2,
+     "v": 5.44,
      "moves": true,
      "carried": false
     },
@@ -1232,24 +1238,24 @@
      "carried": false
     }
    ],
-   "d30": 0.0825,
-   "d7": 0.621,
-   "d90": 0.0015,
-   "loopEver": 0.1595,
-   "readShare": 0.5474,
-   "inferShare": 0.4197,
-   "stories": 1835,
-   "releases": 1802,
-   "minutes": 30331,
+   "d30": 0.08767,
+   "d7": 0.64404,
+   "d90": 0.0023,
+   "loopEver": 0.17,
+   "readShare": 0.5365,
+   "inferShare": 0.4056,
+   "stories": 1866.4,
+   "releases": 1838.7,
+   "minutes": 31325,
    "lostTop": [
     {
      "k": "DRIFT",
-     "n": 311,
+     "n": 313,
      "nm": "The absence became permanent"
     },
     {
      "k": "F4",
-     "n": 113,
+     "n": 126,
      "nm": "The reading does not move"
     },
     {
@@ -1259,108 +1265,108 @@
     },
     {
      "k": "F7",
-     "n": 42,
+     "n": 38,
      "nm": "The intake is sixty three questions"
     },
     {
      "k": "F12",
-     "n": 29,
+     "n": 37,
      "nm": "There is no way to hand it to anybody"
     }
    ],
    "icp": {
     "Diane": {
-     "d30": 0.014,
-     "d7": 0.817,
-     "sessions": 1.26,
+     "d30": 0.016,
+     "d7": 0.853,
+     "sessions": 1.326,
      "stories": 0,
      "releases": 0,
      "loopEver": 0,
-     "cqDelta": -0.565,
-     "minutes": 2
+     "cqDelta": -1.358,
+     "minutes": 2.126
     },
     "Derek": {
-     "d30": 0.074,
-     "d7": 0.662,
-     "sessions": 3.78,
-     "stories": 1.455,
-     "releases": 2.175,
-     "loopEver": 0.279,
-     "cqDelta": 0,
-     "minutes": 33.85
+     "d30": 0.099,
+     "d7": 0.72,
+     "sessions": 4.433,
+     "stories": 1.703,
+     "releases": 2.645,
+     "loopEver": 0.317,
+     "cqDelta": -1.273,
+     "minutes": 40.022
     },
     "Marcus": {
-     "d30": 0.097,
-     "d7": 0.497,
-     "sessions": 2.33,
+     "d30": 0.094,
+     "d7": 0.527,
+     "sessions": 2.277,
      "stories": 0.62,
-     "releases": 0.8,
-     "loopEver": 0.047,
-     "cqDelta": 0,
-     "minutes": 13
+     "releases": 0.641,
+     "loopEver": 0.036,
+     "cqDelta": -6.046,
+     "minutes": 12.522
     },
     "Angela": {
-     "d30": 0.033,
-     "d7": 0.727,
-     "sessions": 1.665,
-     "stories": 1.25,
-     "releases": 0.865,
-     "loopEver": 0.11,
-     "cqDelta": 0,
-     "minutes": 15.75
+     "d30": 0.036,
+     "d7": 0.717,
+     "sessions": 1.729,
+     "stories": 1.27,
+     "releases": 0.862,
+     "loopEver": 0.117,
+     "cqDelta": -2.838,
+     "minutes": 16.374
     },
     "Sofia": {
-     "d30": 0.239,
-     "d7": 0.721,
-     "sessions": 6.47,
-     "stories": 6.03,
-     "releases": 5.2,
-     "loopEver": 0.407,
-     "cqDelta": 0,
-     "minutes": 90.05
+     "d30": 0.234,
+     "d7": 0.761,
+     "sessions": 6.764,
+     "stories": 6.321,
+     "releases": 5.464,
+     "loopEver": 0.461,
+     "cqDelta": -3.086,
+     "minutes": 94.759
     },
     "James": {
      "d30": 0.005,
-     "d7": 0.34,
-     "sessions": 0.36,
-     "stories": 0.01,
-     "releases": 0,
+     "d7": 0.331,
+     "sessions": 0.367,
+     "stories": 0.022,
+     "releases": 0.001,
      "loopEver": 0,
      "cqDelta": 0,
-     "minutes": 0.95
+     "minutes": 0.926
     },
     "Ana": {
-     "d30": 0.26,
-     "d7": 0.72,
-     "sessions": 9.57,
-     "stories": 9.11,
-     "releases": 8.93,
-     "loopEver": 0.62,
-     "cqDelta": 0,
-     "minutes": 141.4
+     "d30": 0.287,
+     "d7": 0.675,
+     "sessions": 8.447,
+     "stories": 7.995,
+     "releases": 7.845,
+     "loopEver": 0.564,
+     "cqDelta": -2.746,
+     "minutes": 126.189
     },
     "Gordon": {
      "d30": 0,
-     "d7": 0.014,
-     "sessions": 0.015,
+     "d7": 0.038,
+     "sessions": 0.043,
      "stories": 0,
      "releases": 0,
      "loopEver": 0,
      "cqDelta": 0,
-     "minutes": 0
+     "minutes": 0.048
     },
     "Rosa": {
-     "d30": 0,
-     "d7": 0.1,
-     "sessions": 0.1,
-     "stories": 0.035,
+     "d30": 0.002,
+     "d7": 0.096,
+     "sessions": 0.131,
+     "stories": 0.03,
      "releases": 0,
      "loopEver": 0,
      "cqDelta": 0,
-     "minutes": 0.25
+     "minutes": 0.419
     }
    },
-   "seconds": 4,
+   "seconds": 52,
    "knobs": {
     "storyCost": null,
     "relTake": 0.21,
@@ -1386,17 +1392,17 @@
    },
    "id": "C3",
    "nm": "The release reads carrying rather than loaded",
-   "d": 4.65
+   "d": 5.07
   },
   {
    "label": "C4",
-   "runs": 2,
-   "settledAt": 2,
-   "total": 40.3,
+   "runs": 21,
+   "settledAt": 21,
+   "total": 40.42,
    "letter": "D-",
-   "sd": 0.707,
-   "lo": 39.8,
-   "hi": 40.8,
+   "sd": 0.557,
+   "lo": 39.6,
+   "hi": 41.8,
    "rows": [
     {
      "k": "ICP alignment",
@@ -1412,13 +1418,13 @@
     },
     {
      "k": "Core loop",
-     "v": 0.4,
+     "v": 0.48,
      "moves": true,
      "carried": false
     },
     {
      "k": "Emotional",
-     "v": 5.45,
+     "v": 5.48,
      "moves": true,
      "carried": false
     },
@@ -1448,7 +1454,7 @@
     },
     {
      "k": "Retention",
-     "v": 4.3,
+     "v": 4.32,
      "moves": true,
      "carried": false
     },
@@ -1459,15 +1465,15 @@
      "carried": false
     }
    ],
-   "d30": 0.062,
-   "d7": 0.6455,
-   "d90": 0.0025,
-   "loopEver": 0.0545,
-   "readShare": 0.4927,
-   "inferShare": 0.3763,
-   "stories": 1188.5,
-   "releases": 171.5,
-   "minutes": 20701,
+   "d30": 0.06252,
+   "d7": 0.64505,
+   "d90": 0.00233,
+   "loopEver": 0.0625,
+   "readShare": 0.4949,
+   "inferShare": 0.3729,
+   "stories": 1220.1,
+   "releases": 203.4,
+   "minutes": 21441,
    "lostTop": [
     {
      "k": "DRIFT",
@@ -1476,118 +1482,118 @@
     },
     {
      "k": "F4",
-     "n": 101,
+     "n": 109,
      "nm": "The reading does not move"
     },
     {
      "k": "F3",
-     "n": 96,
+     "n": 91,
      "nm": "Nothing is above the line, so there is nothing to release"
     },
     {
      "k": "F1",
-     "n": 62,
+     "n": 71,
      "nm": "The box reads nothing out of what they wrote"
     },
     {
      "k": "F12",
-     "n": 44,
+     "n": 38,
      "nm": "There is no way to hand it to anybody"
     }
    ],
    "icp": {
     "Diane": {
-     "d30": 0.019,
-     "d7": 0.836,
-     "sessions": 1.435,
+     "d30": 0.021,
+     "d7": 0.843,
+     "sessions": 1.496,
      "stories": 0,
      "releases": 0,
      "loopEver": 0,
-     "cqDelta": -1.075,
-     "minutes": 2.3
+     "cqDelta": -1.642,
+     "minutes": 2.41
     },
     "Derek": {
-     "d30": 0.053,
-     "d7": 0.718,
-     "sessions": 2.96,
-     "stories": 1.185,
-     "releases": 0.06,
-     "loopEver": 0.026,
+     "d30": 0.045,
+     "d7": 0.722,
+     "sessions": 3.089,
+     "stories": 1.119,
+     "releases": 0.09,
+     "loopEver": 0.049,
      "cqDelta": 0,
-     "minutes": 26.6
+     "minutes": 27.733
     },
     "Marcus": {
-     "d30": 0.159,
-     "d7": 0.487,
-     "sessions": 2.72,
-     "stories": 0.785,
-     "releases": 0.015,
-     "loopEver": 0.003,
-     "cqDelta": -6.375,
-     "minutes": 15
+     "d30": 0.135,
+     "d7": 0.525,
+     "sessions": 2.867,
+     "stories": 0.795,
+     "releases": 0.016,
+     "loopEver": 0.005,
+     "cqDelta": -11.583,
+     "minutes": 15.752
     },
     "Angela": {
-     "d30": 0.013,
-     "d7": 0.737,
-     "sessions": 1.335,
-     "stories": 0.93,
-     "releases": 0.01,
-     "loopEver": 0.003,
-     "cqDelta": -6.69,
-     "minutes": 12.25
+     "d30": 0.019,
+     "d7": 0.715,
+     "sessions": 1.326,
+     "stories": 0.959,
+     "releases": 0.014,
+     "loopEver": 0.004,
+     "cqDelta": -3.825,
+     "minutes": 12.571
     },
     "Sofia": {
-     "d30": 0.136,
-     "d7": 0.786,
-     "sessions": 4.72,
-     "stories": 4.24,
-     "releases": 0.86,
-     "loopEver": 0.275,
-     "cqDelta": 0,
-     "minutes": 66.15
+     "d30": 0.157,
+     "d7": 0.778,
+     "sessions": 4.826,
+     "stories": 4.384,
+     "releases": 0.973,
+     "loopEver": 0.293,
+     "cqDelta": -1.101,
+     "minutes": 67.381
     },
     "James": {
-     "d30": 0.015,
-     "d7": 0.355,
-     "sessions": 0.4,
-     "stories": 0.015,
+     "d30": 0.009,
+     "d7": 0.34,
+     "sessions": 0.39,
+     "stories": 0.027,
      "releases": 0,
      "loopEver": 0,
      "cqDelta": 0,
-     "minutes": 1
+     "minutes": 0.995
     },
     "Ana": {
-     "d30": 0.02,
-     "d7": 0.69,
-     "sessions": 2.89,
-     "stories": 2.52,
-     "releases": 0.75,
-     "loopEver": 0.21,
+     "d30": 0.073,
+     "d7": 0.666,
+     "sessions": 3.15,
+     "stories": 2.833,
+     "releases": 0.949,
+     "loopEver": 0.236,
      "cqDelta": 0,
-     "minutes": 43.3
+     "minutes": 46.862
     },
     "Gordon": {
      "d30": 0,
-     "d7": 0.086,
-     "sessions": 0.085,
+     "d7": 0.054,
+     "sessions": 0.056,
      "stories": 0,
      "releases": 0,
      "loopEver": 0,
      "cqDelta": 0,
-     "minutes": 0.05
+     "minutes": 0.057
     },
     "Rosa": {
-     "d30": 0.033,
-     "d7": 0.1,
-     "sessions": 0.2,
-     "stories": 0.035,
+     "d30": 0.013,
+     "d7": 0.086,
+     "sessions": 0.162,
+     "stories": 0.023,
      "releases": 0,
      "loopEver": 0,
      "cqDelta": 0,
-     "minutes": 0.7
+     "minutes": 0.476
     }
    },
-   "seconds": 2,
+   "seconds": 25,
    "knobs": {
     "storyCost": null,
     "relTake": 0.21,
@@ -1613,21 +1619,21 @@
    },
    "id": "C4",
    "nm": "What the holding costs, printed",
-   "d": 1.35
+   "d": 1.51
   },
   {
    "label": "C5",
-   "runs": 2,
-   "settledAt": 2,
-   "total": 46.6,
+   "runs": 18,
+   "settledAt": 18,
+   "total": 46.56,
    "letter": "D",
-   "sd": 0.849,
-   "lo": 46,
-   "hi": 47.2,
+   "sd": 0.405,
+   "lo": 45.9,
+   "hi": 47.3,
    "rows": [
     {
      "k": "ICP alignment",
-     "v": 3.2,
+     "v": 3.22,
      "moves": true,
      "carried": false
     },
@@ -1639,7 +1645,7 @@
     },
     {
      "k": "Core loop",
-     "v": 0.95,
+     "v": 0.96,
      "moves": true,
      "carried": false
     },
@@ -1669,13 +1675,13 @@
     },
     {
      "k": "Monetization",
-     "v": 0.35,
+     "v": 0.33,
      "moves": true,
      "carried": false
     },
     {
      "k": "Retention",
-     "v": 4.7,
+     "v": 4.66,
      "moves": true,
      "carried": false
     },
@@ -1686,117 +1692,117 @@
      "carried": false
     }
    ],
-   "d30": 0.071,
-   "d7": 0.6265,
-   "d90": 0.0015,
-   "loopEver": 0.106,
+   "d30": 0.07028,
+   "d7": 0.64167,
+   "d90": 0.00211,
+   "loopEver": 0.1101,
    "readShare": 1,
-   "inferShare": 0.019,
-   "stories": 1557.5,
-   "releases": 870,
-   "minutes": 25457,
+   "inferShare": 0.0171,
+   "stories": 1575.9,
+   "releases": 883.6,
+   "minutes": 26019,
    "lostTop": [
     {
      "k": "DRIFT",
-     "n": 293,
+     "n": 298,
      "nm": "The absence became permanent"
     },
     {
      "k": "F3",
-     "n": 118,
+     "n": 124,
      "nm": "Nothing is above the line, so there is nothing to release"
     },
     {
      "k": "F4",
-     "n": 110,
+     "n": 111,
      "nm": "The reading does not move"
     },
     {
-     "k": "F12",
-     "n": 42,
-     "nm": "There is no way to hand it to anybody"
+     "k": "F7",
+     "n": 40,
+     "nm": "The intake is sixty three questions"
     },
     {
-     "k": "F7",
-     "n": 39,
-     "nm": "The intake is sixty three questions"
+     "k": "F12",
+     "n": 40,
+     "nm": "There is no way to hand it to anybody"
     }
    ],
    "icp": {
     "Diane": {
-     "d30": 0.014,
-     "d7": 0.817,
-     "sessions": 1.26,
+     "d30": 0.016,
+     "d7": 0.854,
+     "sessions": 1.321,
      "stories": 0,
      "releases": 0,
      "loopEver": 0,
-     "cqDelta": -0.565,
-     "minutes": 2
+     "cqDelta": -1.038,
+     "minutes": 2.122
     },
     "Derek": {
-     "d30": 0.032,
-     "d7": 0.682,
-     "sessions": 2.41,
-     "stories": 0.98,
-     "releases": 0.295,
-     "loopEver": 0.115,
-     "cqDelta": 0,
-     "minutes": 21.8
+     "d30": 0.034,
+     "d7": 0.719,
+     "sessions": 2.469,
+     "stories": 0.909,
+     "releases": 0.25,
+     "loopEver": 0.104,
+     "cqDelta": -0.983,
+     "minutes": 22.344
     },
     "Marcus": {
-     "d30": 0.103,
-     "d7": 0.519,
-     "sessions": 2.41,
-     "stories": 0.735,
-     "releases": 0.33,
-     "loopEver": 0.038,
-     "cqDelta": -12.955,
-     "minutes": 13.15
+     "d30": 0.098,
+     "d7": 0.523,
+     "sessions": 2.291,
+     "stories": 0.634,
+     "releases": 0.248,
+     "loopEver": 0.033,
+     "cqDelta": -9.088,
+     "minutes": 12.561
     },
     "Angela": {
-     "d30": 0.03,
-     "d7": 0.68,
-     "sessions": 1.43,
-     "stories": 1.03,
-     "releases": 0.075,
-     "loopEver": 0.02,
-     "cqDelta": -18.185,
-     "minutes": 13.55
+     "d30": 0.023,
+     "d7": 0.704,
+     "sessions": 1.544,
+     "stories": 1.135,
+     "releases": 0.11,
+     "loopEver": 0.028,
+     "cqDelta": -5.048,
+     "minutes": 14.556
     },
     "Sofia": {
-     "d30": 0.225,
-     "d7": 0.768,
-     "sessions": 6.425,
-     "stories": 5.94,
-     "releases": 3.99,
-     "loopEver": 0.429,
-     "cqDelta": 0,
-     "minutes": 89.85
+     "d30": 0.234,
+     "d7": 0.754,
+     "sessions": 6.627,
+     "stories": 6.173,
+     "releases": 4.206,
+     "loopEver": 0.457,
+     "cqDelta": -3.798,
+     "minutes": 92.767
     },
     "James": {
-     "d30": 0.005,
-     "d7": 0.34,
-     "sessions": 0.365,
-     "stories": 0.03,
+     "d30": 0.004,
+     "d7": 0.346,
+     "sessions": 0.379,
+     "stories": 0.019,
      "releases": 0,
      "loopEver": 0,
-     "cqDelta": 0,
-     "minutes": 0.95
+     "cqDelta": -0.076,
+     "minutes": 0.961
     },
     "Ana": {
-     "d30": 0.2,
-     "d7": 0.68,
-     "sessions": 6.08,
-     "stories": 5.7,
-     "releases": 3.95,
-     "loopEver": 0.35,
+     "d30": 0.188,
+     "d7": 0.672,
+     "sessions": 6.014,
+     "stories": 5.672,
+     "releases": 3.916,
+     "loopEver": 0.38,
      "cqDelta": 0,
-     "minutes": 91.65
+     "minutes": 91.211
     },
     "Gordon": {
      "d30": 0,
-     "d7": 0.043,
-     "sessions": 0.045,
+     "d7": 0.041,
+     "sessions": 0.046,
      "stories": 0,
      "releases": 0,
      "loopEver": 0,
@@ -1805,16 +1811,16 @@
     },
     "Rosa": {
      "d30": 0,
-     "d7": 0.1,
-     "sessions": 0.135,
+     "d7": 0.07,
+     "sessions": 0.108,
      "stories": 0,
      "releases": 0,
      "loopEver": 0,
      "cqDelta": 0,
-     "minutes": 0.35
+     "minutes": 0.267
     }
    },
-   "seconds": 3,
+   "seconds": 28,
    "knobs": {
     "storyCost": null,
     "relTake": 0.21,
@@ -1844,17 +1850,17 @@
   },
   {
    "label": "C5b",
-   "runs": 2,
-   "settledAt": 2,
-   "total": 39.2,
+   "runs": 19,
+   "settledAt": 19,
+   "total": 39.01,
    "letter": "F",
-   "sd": 0.141,
-   "lo": 39.1,
-   "hi": 39.3,
+   "sd": 0.381,
+   "lo": 38.2,
+   "hi": 39.7,
    "rows": [
     {
      "k": "ICP alignment",
-     "v": 2.45,
+     "v": 2.44,
      "moves": true,
      "carried": false
     },
@@ -1866,13 +1872,13 @@
     },
     {
      "k": "Core loop",
-     "v": 0.3,
+     "v": 0.31,
      "moves": true,
      "carried": false
     },
     {
      "k": "Emotional",
-     "v": 5.45,
+     "v": 5.41,
      "moves": true,
      "carried": false
     },
@@ -1902,7 +1908,7 @@
     },
     {
      "k": "Retention",
-     "v": 3.5,
+     "v": 3.35,
      "moves": true,
      "carried": false
     },
@@ -1913,135 +1919,135 @@
      "carried": false
     }
    ],
-   "d30": 0.0445,
-   "d7": 0.6415,
-   "d90": 0.002,
-   "loopEver": 0.041,
-   "readShare": 0.5448,
-   "inferShare": 0.4519,
-   "stories": 956.5,
-   "releases": 155,
-   "minutes": 17069,
+   "d30": 0.04116,
+   "d7": 0.64479,
+   "d90": 0.00121,
+   "loopEver": 0.0444,
+   "readShare": 0.5232,
+   "inferShare": 0.4333,
+   "stories": 944.2,
+   "releases": 148,
+   "minutes": 16713,
    "lostTop": [
     {
      "k": "DRIFT",
-     "n": 269,
+     "n": 286,
      "nm": "The absence became permanent"
     },
     {
      "k": "F4",
-     "n": 111,
+     "n": 109,
      "nm": "The reading does not move"
     },
     {
      "k": "F3",
-     "n": 97,
+     "n": 93,
      "nm": "Nothing is above the line, so there is nothing to release"
     },
     {
      "k": "F1",
-     "n": 68,
+     "n": 72,
      "nm": "The box reads nothing out of what they wrote"
     },
     {
      "k": "F12",
-     "n": 42,
+     "n": 41,
      "nm": "There is no way to hand it to anybody"
     }
    ],
    "icp": {
     "Diane": {
-     "d30": 0.014,
-     "d7": 0.817,
-     "sessions": 1.26,
+     "d30": 0.016,
+     "d7": 0.853,
+     "sessions": 1.318,
      "stories": 0,
      "releases": 0,
      "loopEver": 0,
-     "cqDelta": -0.565,
-     "minutes": 2
+     "cqDelta": -0.984,
+     "minutes": 2.116
     },
     "Derek": {
-     "d30": 0.029,
-     "d7": 0.724,
-     "sessions": 2.23,
-     "stories": 0.775,
-     "releases": 0.01,
-     "loopEver": 0.006,
-     "cqDelta": -17.43,
-     "minutes": 20.05
+     "d30": 0.022,
+     "d7": 0.702,
+     "sessions": 2.168,
+     "stories": 0.766,
+     "releases": 0.029,
+     "loopEver": 0.018,
+     "cqDelta": -4.579,
+     "minutes": 19.584
     },
     "Marcus": {
-     "d30": 0.091,
-     "d7": 0.522,
-     "sessions": 1.98,
-     "stories": 0.555,
+     "d30": 0.081,
+     "d7": 0.535,
+     "sessions": 1.929,
+     "stories": 0.521,
      "releases": 0.005,
-     "loopEver": 0,
-     "cqDelta": 0,
-     "minutes": 10.95
+     "loopEver": 0.001,
+     "cqDelta": -3.984,
+     "minutes": 10.653
     },
     "Angela": {
-     "d30": 0.023,
-     "d7": 0.713,
-     "sessions": 1.3,
-     "stories": 0.91,
-     "releases": 0.005,
-     "loopEver": 0,
-     "cqDelta": -8.86,
-     "minutes": 12.25
+     "d30": 0.021,
+     "d7": 0.709,
+     "sessions": 1.281,
+     "stories": 0.931,
+     "releases": 0.012,
+     "loopEver": 0.004,
+     "cqDelta": -3.042,
+     "minutes": 12.237
     },
     "Sofia": {
-     "d30": 0.093,
-     "d7": 0.754,
-     "sessions": 3.28,
-     "stories": 2.88,
-     "releases": 0.505,
-     "loopEver": 0.186,
-     "cqDelta": -6.425,
-     "minutes": 45.75
+     "d30": 0.089,
+     "d7": 0.769,
+     "sessions": 3.24,
+     "stories": 2.879,
+     "releases": 0.462,
+     "loopEver": 0.181,
+     "cqDelta": -0.676,
+     "minutes": 44.974
     },
     "James": {
-     "d30": 0.01,
-     "d7": 0.375,
-     "sessions": 0.435,
-     "stories": 0.03,
+     "d30": 0.004,
+     "d7": 0.351,
+     "sessions": 0.39,
+     "stories": 0.025,
      "releases": 0,
      "loopEver": 0,
      "cqDelta": 0,
-     "minutes": 1.05
+     "minutes": 1
     },
     "Ana": {
-     "d30": 0.1,
-     "d7": 0.73,
-     "sessions": 4.19,
-     "stories": 3.85,
-     "releases": 1.62,
-     "loopEver": 0.28,
-     "cqDelta": -13.195,
-     "minutes": 63.9
+     "d30": 0.111,
+     "d7": 0.691,
+     "sessions": 4.048,
+     "stories": 3.701,
+     "releases": 1.519,
+     "loopEver": 0.305,
+     "cqDelta": -4.152,
+     "minutes": 61.242
     },
     "Gordon": {
      "d30": 0,
-     "d7": 0.029,
-     "sessions": 0.03,
+     "d7": 0.041,
+     "sessions": 0.047,
      "stories": 0,
      "releases": 0,
      "loopEver": 0,
      "cqDelta": 0,
-     "minutes": 0
+     "minutes": 0.047
     },
     "Rosa": {
      "d30": 0,
-     "d7": 0.033,
-     "sessions": 0.035,
-     "stories": 0,
+     "d7": 0.081,
+     "sessions": 0.148,
+     "stories": 0.018,
      "releases": 0,
      "loopEver": 0,
      "cqDelta": 0,
-     "minutes": 0.1
+     "minutes": 0.474
     }
    },
-   "seconds": 2,
+   "seconds": 17,
    "knobs": {
     "storyCost": null,
     "relTake": 0.21,
@@ -2067,21 +2073,21 @@
    },
    "id": "C5b",
    "nm": "An inferred address is a question",
-   "d": 0.25
+   "d": 0.1
   },
   {
    "label": "C6",
-   "runs": 2,
-   "settledAt": 2,
-   "total": 39.15,
+   "runs": 16,
+   "settledAt": 16,
+   "total": 39.18,
    "letter": "F",
-   "sd": 0.212,
-   "lo": 39,
-   "hi": 39.3,
+   "sd": 0.442,
+   "lo": 38.2,
+   "hi": 39.7,
    "rows": [
     {
      "k": "ICP alignment",
-     "v": 2.5,
+     "v": 2.46,
      "moves": true,
      "carried": false
     },
@@ -2093,13 +2099,13 @@
     },
     {
      "k": "Core loop",
-     "v": 0.25,
+     "v": 0.29,
      "moves": true,
      "carried": false
     },
     {
      "k": "Emotional",
-     "v": 5.65,
+     "v": 5.57,
      "moves": true,
      "carried": false
     },
@@ -2129,7 +2135,7 @@
     },
     {
      "k": "Retention",
-     "v": 3.25,
+     "v": 3.36,
      "moves": true,
      "carried": false
     },
@@ -2140,24 +2146,24 @@
      "carried": false
     }
    ],
-   "d30": 0.0385,
-   "d7": 0.6475,
+   "d30": 0.0415,
+   "d7": 0.64831,
    "d90": 0.001,
-   "loopEver": 0.0375,
-   "readShare": 0.5116,
-   "inferShare": 0.3597,
-   "stories": 901,
-   "releases": 116.5,
-   "minutes": 16110,
+   "loopEver": 0.0424,
+   "readShare": 0.5195,
+   "inferShare": 0.3875,
+   "stories": 928.4,
+   "releases": 127.1,
+   "minutes": 16504,
    "lostTop": [
     {
      "k": "DRIFT",
-     "n": 294,
+     "n": 286,
      "nm": "The absence became permanent"
     },
     {
      "k": "F4",
-     "n": 106,
+     "n": 112,
      "nm": "The reading does not move"
     },
     {
@@ -2167,7 +2173,7 @@
     },
     {
      "k": "F1",
-     "n": 66,
+     "n": 69,
      "nm": "The box reads nothing out of what they wrote"
     },
     {
@@ -2178,97 +2184,97 @@
    ],
    "icp": {
     "Diane": {
-     "d30": 0.008,
-     "d7": 0.839,
-     "sessions": 1.375,
+     "d30": 0.02,
+     "d7": 0.841,
+     "sessions": 1.328,
      "stories": 0,
      "releases": 0,
      "loopEver": 0,
-     "cqDelta": -0.79,
-     "minutes": 2.2
+     "cqDelta": -1.043,
+     "minutes": 2.131
     },
     "Derek": {
-     "d30": 0.026,
-     "d7": 0.706,
-     "sessions": 2.39,
-     "stories": 0.87,
-     "releases": 0.03,
-     "loopEver": 0.018,
-     "cqDelta": -5.99,
-     "minutes": 21.75
+     "d30": 0.025,
+     "d7": 0.732,
+     "sessions": 2.37,
+     "stories": 0.849,
+     "releases": 0.039,
+     "loopEver": 0.019,
+     "cqDelta": -0.749,
+     "minutes": 21.2
     },
     "Marcus": {
-     "d30": 0.072,
-     "d7": 0.522,
-     "sessions": 1.8,
-     "stories": 0.5,
-     "releases": 0.01,
-     "loopEver": 0,
-     "cqDelta": 0,
-     "minutes": 9.85
+     "d30": 0.083,
+     "d7": 0.541,
+     "sessions": 1.921,
+     "stories": 0.521,
+     "releases": 0.006,
+     "loopEver": 0.002,
+     "cqDelta": -2.321,
+     "minutes": 10.531
     },
     "Angela": {
-     "d30": 0.017,
-     "d7": 0.71,
-     "sessions": 1.365,
-     "stories": 1.01,
-     "releases": 0.03,
-     "loopEver": 0.007,
-     "cqDelta": -5.155,
-     "minutes": 13.4
+     "d30": 0.018,
+     "d7": 0.702,
+     "sessions": 1.295,
+     "stories": 0.959,
+     "releases": 0.016,
+     "loopEver": 0.004,
+     "cqDelta": -2.701,
+     "minutes": 12.456
     },
     "Sofia": {
-     "d30": 0.121,
-     "d7": 0.804,
-     "sessions": 3.41,
-     "stories": 3.06,
-     "releases": 0.6,
-     "loopEver": 0.189,
-     "cqDelta": -1.57,
-     "minutes": 48.5
+     "d30": 0.098,
+     "d7": 0.761,
+     "sessions": 3.356,
+     "stories": 2.994,
+     "releases": 0.541,
+     "loopEver": 0.199,
+     "cqDelta": -1.234,
+     "minutes": 46.913
     },
     "James": {
-     "d30": 0,
-     "d7": 0.395,
-     "sessions": 0.43,
-     "stories": 0.025,
+     "d30": 0.007,
+     "d7": 0.365,
+     "sessions": 0.402,
+     "stories": 0.022,
      "releases": 0,
      "loopEver": 0,
-     "cqDelta": 0,
-     "minutes": 1.05
+     "cqDelta": -0.275,
+     "minutes": 0.994
     },
     "Ana": {
-     "d30": 0.03,
-     "d7": 0.62,
-     "sessions": 2.1,
-     "stories": 1.82,
-     "releases": 0.42,
-     "loopEver": 0.14,
+     "d30": 0.061,
+     "d7": 0.692,
+     "sessions": 3.021,
+     "stories": 2.697,
+     "releases": 0.839,
+     "loopEver": 0.21,
      "cqDelta": 0,
-     "minutes": 30.25
+     "minutes": 45.675
     },
     "Gordon": {
-     "d30": 0,
-     "d7": 0.057,
-     "sessions": 0.06,
+     "d30": 0.002,
+     "d7": 0.048,
+     "sessions": 0.054,
      "stories": 0,
      "releases": 0,
      "loopEver": 0,
      "cqDelta": 0,
-     "minutes": 0.05
+     "minutes": 0.069
     },
     "Rosa": {
-     "d30": 0,
+     "d30": 0.004,
      "d7": 0.1,
-     "sessions": 0.2,
-     "stories": 0,
+     "sessions": 0.174,
+     "stories": 0.013,
      "releases": 0,
      "loopEver": 0,
      "cqDelta": 0,
-     "minutes": 0.55
+     "minutes": 0.556
     }
    },
-   "seconds": 2,
+   "seconds": 14,
    "knobs": {
     "storyCost": null,
     "relTake": 0.21,
@@ -2294,21 +2300,21 @@
    },
    "id": "C6",
    "nm": "Something asks them to come back",
-   "d": 0.2
+   "d": 0.27
   },
   {
    "label": "C6n",
-   "runs": 2,
-   "settledAt": 2,
-   "total": 39.65,
+   "runs": 19,
+   "settledAt": 19,
+   "total": 39.92,
    "letter": "F",
-   "sd": 0.071,
-   "lo": 39.6,
-   "hi": 39.7,
+   "sd": 0.482,
+   "lo": 39.1,
+   "hi": 40.8,
    "rows": [
     {
      "k": "ICP alignment",
-     "v": 2.55,
+     "v": 2.54,
      "moves": true,
      "carried": false
     },
@@ -2320,13 +2326,13 @@
     },
     {
      "k": "Core loop",
-     "v": 0.3,
+     "v": 0.36,
      "moves": true,
      "carried": false
     },
     {
      "k": "Emotional",
-     "v": 5.55,
+     "v": 5.52,
      "moves": true,
      "carried": false
     },
@@ -2356,7 +2362,7 @@
     },
     {
      "k": "Retention",
-     "v": 3.75,
+     "v": 3.99,
      "moves": true,
      "carried": false
     },
@@ -2367,135 +2373,135 @@
      "carried": false
     }
    ],
-   "d30": 0.05,
-   "d7": 0.648,
-   "d90": 0.0005,
-   "loopEver": 0.045,
-   "readShare": 0.5004,
-   "inferShare": 0.3646,
-   "stories": 1051,
-   "releases": 142,
-   "minutes": 18368,
+   "d30": 0.05511,
+   "d7": 0.64253,
+   "d90": 0.00016,
+   "loopEver": 0.0496,
+   "readShare": 0.5122,
+   "inferShare": 0.3866,
+   "stories": 1055.1,
+   "releases": 154.5,
+   "minutes": 18808,
    "lostTop": [
     {
      "k": "DRIFT",
-     "n": 177,
+     "n": 165,
      "nm": "The absence became permanent"
     },
     {
      "k": "F4",
-     "n": 153,
+     "n": 157,
      "nm": "The reading does not move"
     },
     {
      "k": "F3",
-     "n": 101,
+     "n": 102,
      "nm": "Nothing is above the line, so there is nothing to release"
     },
     {
      "k": "F1",
-     "n": 88,
+     "n": 90,
      "nm": "The box reads nothing out of what they wrote"
     },
     {
      "k": "F7",
-     "n": 62,
+     "n": 60,
      "nm": "The intake is sixty three questions"
     }
    ],
    "icp": {
     "Diane": {
-     "d30": 0.061,
-     "d7": 0.867,
-     "sessions": 1.96,
+     "d30": 0.053,
+     "d7": 0.844,
+     "sessions": 1.906,
      "stories": 0,
      "releases": 0,
      "loopEver": 0,
-     "cqDelta": 0,
-     "minutes": 3.2
+     "cqDelta": -0.308,
+     "minutes": 3.021
     },
     "Derek": {
-     "d30": 0.015,
-     "d7": 0.697,
-     "sessions": 2.35,
-     "stories": 0.86,
-     "releases": 0.055,
-     "loopEver": 0.021,
+     "d30": 0.025,
+     "d7": 0.719,
+     "sessions": 2.508,
+     "stories": 0.894,
+     "releases": 0.046,
+     "loopEver": 0.027,
      "cqDelta": 0,
-     "minutes": 21
+     "minutes": 22.589
     },
     "Marcus": {
-     "d30": 0.087,
-     "d7": 0.563,
-     "sessions": 2.34,
-     "stories": 0.605,
-     "releases": 0.005,
-     "loopEver": 0,
-     "cqDelta": 0,
-     "minutes": 12.6
+     "d30": 0.101,
+     "d7": 0.517,
+     "sessions": 2.426,
+     "stories": 0.661,
+     "releases": 0.004,
+     "loopEver": 0.002,
+     "cqDelta": -1.422,
+     "minutes": 13.368
     },
     "Angela": {
-     "d30": 0.023,
-     "d7": 0.69,
-     "sessions": 1.605,
-     "stories": 1.175,
-     "releases": 0.02,
-     "loopEver": 0.003,
+     "d30": 0.032,
+     "d7": 0.699,
+     "sessions": 1.576,
+     "stories": 1.14,
+     "releases": 0.019,
+     "loopEver": 0.006,
      "cqDelta": 0,
-     "minutes": 15.4
+     "minutes": 15.084
     },
     "Sofia": {
-     "d30": 0.1,
-     "d7": 0.761,
-     "sessions": 3.99,
-     "stories": 3.6,
-     "releases": 0.66,
-     "loopEver": 0.232,
-     "cqDelta": -5.41,
-     "minutes": 55.1
+     "d30": 0.104,
+     "d7": 0.766,
+     "sessions": 3.816,
+     "stories": 3.392,
+     "releases": 0.646,
+     "loopEver": 0.235,
+     "cqDelta": -0.569,
+     "minutes": 53.116
     },
     "James": {
-     "d30": 0.025,
+     "d30": 0.02,
      "d7": 0.36,
-     "sessions": 0.58,
-     "stories": 0.04,
+     "sessions": 0.568,
+     "stories": 0.034,
      "releases": 0,
      "loopEver": 0,
      "cqDelta": 0,
-     "minutes": 1.4
+     "minutes": 1.411
     },
     "Ana": {
-     "d30": 0.04,
-     "d7": 0.66,
-     "sessions": 2.77,
-     "stories": 2.45,
-     "releases": 0.74,
-     "loopEver": 0.17,
+     "d30": 0.075,
+     "d7": 0.694,
+     "sessions": 3.26,
+     "stories": 2.951,
+     "releases": 1.055,
+     "loopEver": 0.22,
      "cqDelta": 0,
-     "minutes": 40.65
+     "minutes": 48.579
     },
     "Gordon": {
-     "d30": 0.014,
-     "d7": 0.086,
-     "sessions": 0.125,
+     "d30": 0.005,
+     "d7": 0.051,
+     "sessions": 0.082,
      "stories": 0,
      "releases": 0,
      "loopEver": 0,
      "cqDelta": 0,
-     "minutes": 0.15
+     "minutes": 0.095
     },
     "Rosa": {
      "d30": 0,
-     "d7": 0.1,
-     "sessions": 0.1,
-     "stories": 0,
+     "d7": 0.07,
+     "sessions": 0.12,
+     "stories": 0.022,
      "releases": 0,
      "loopEver": 0,
      "cqDelta": 0,
-     "minutes": 0.2
+     "minutes": 0.326
     }
    },
-   "seconds": 2,
+   "seconds": 19,
    "knobs": {
     "storyCost": null,
     "relTake": 0.21,
@@ -2521,21 +2527,21 @@
    },
    "id": "C6n",
    "nm": "And the return rate it buys",
-   "d": 0.7
+   "d": 1.01
   },
   {
    "label": "C7",
-   "runs": 2,
-   "settledAt": 2,
-   "total": 41.1,
+   "runs": 19,
+   "settledAt": 19,
+   "total": 40.96,
    "letter": "D-",
-   "sd": 0,
-   "lo": 41.1,
-   "hi": 41.1,
+   "sd": 0.344,
+   "lo": 40.4,
+   "hi": 41.5,
    "rows": [
     {
      "k": "ICP alignment",
-     "v": 2.4,
+     "v": 2.38,
      "moves": true,
      "carried": false
     },
@@ -2547,13 +2553,13 @@
     },
     {
      "k": "Core loop",
-     "v": 0.3,
+     "v": 0.33,
      "moves": true,
      "carried": false
     },
     {
      "k": "Emotional",
-     "v": 5.6,
+     "v": 5.47,
      "moves": true,
      "carried": false
     },
@@ -2583,7 +2589,7 @@
     },
     {
      "k": "Retention",
-     "v": 3.3,
+     "v": 3.28,
      "moves": true,
      "carried": false
     },
@@ -2594,19 +2600,19 @@
      "carried": false
     }
    ],
-   "d30": 0.04,
-   "d7": 0.632,
-   "d90": 0.001,
-   "loopEver": 0.0395,
-   "readShare": 0.5395,
-   "inferShare": 0.4058,
-   "stories": 893.5,
-   "releases": 118.5,
-   "minutes": 15954,
+   "d30": 0.03958,
+   "d7": 0.64163,
+   "d90": 0.00105,
+   "loopEver": 0.0424,
+   "readShare": 0.5251,
+   "inferShare": 0.4171,
+   "stories": 933.1,
+   "releases": 140.1,
+   "minutes": 16377,
    "lostTop": [
     {
      "k": "DRIFT",
-     "n": 272,
+     "n": 280,
      "nm": "The absence became permanent"
     },
     {
@@ -2616,113 +2622,113 @@
     },
     {
      "k": "F3",
-     "n": 90,
+     "n": 91,
      "nm": "Nothing is above the line, so there is nothing to release"
     },
     {
      "k": "F1",
-     "n": 68,
+     "n": 72,
      "nm": "The box reads nothing out of what they wrote"
     },
     {
      "k": "F12",
-     "n": 46,
+     "n": 42,
      "nm": "There is no way to hand it to anybody"
     }
    ],
    "icp": {
     "Diane": {
-     "d30": 0.014,
-     "d7": 0.817,
-     "sessions": 1.26,
+     "d30": 0.016,
+     "d7": 0.853,
+     "sessions": 1.318,
      "stories": 0,
      "releases": 0,
      "loopEver": 0,
-     "cqDelta": -0.565,
-     "minutes": 2
+     "cqDelta": -0.984,
+     "minutes": 2.116
     },
     "Derek": {
-     "d30": 0.044,
-     "d7": 0.721,
-     "sessions": 2.165,
-     "stories": 0.745,
-     "releases": 0.01,
-     "loopEver": 0.009,
-     "cqDelta": -17.43,
-     "minutes": 19.45
+     "d30": 0.027,
+     "d7": 0.706,
+     "sessions": 2.154,
+     "stories": 0.759,
+     "releases": 0.028,
+     "loopEver": 0.017,
+     "cqDelta": -4.798,
+     "minutes": 19.384
     },
     "Marcus": {
-     "d30": 0.072,
-     "d7": 0.509,
-     "sessions": 1.735,
-     "stories": 0.48,
-     "releases": 0.015,
+     "d30": 0.075,
+     "d7": 0.53,
+     "sessions": 1.819,
+     "stories": 0.485,
+     "releases": 0.005,
      "loopEver": 0,
-     "cqDelta": 0,
-     "minutes": 9.7
+     "cqDelta": -5.814,
+     "minutes": 10.042
     },
     "Angela": {
-     "d30": 0.017,
-     "d7": 0.667,
-     "sessions": 1.36,
-     "stories": 1.01,
-     "releases": 0.015,
-     "loopEver": 0.003,
-     "cqDelta": 0,
-     "minutes": 12.85
+     "d30": 0.021,
+     "d7": 0.684,
+     "sessions": 1.396,
+     "stories": 1.027,
+     "releases": 0.016,
+     "loopEver": 0.008,
+     "cqDelta": -0.704,
+     "minutes": 13.189
     },
     "Sofia": {
-     "d30": 0.096,
-     "d7": 0.75,
-     "sessions": 3.235,
-     "stories": 2.835,
-     "releases": 0.48,
-     "loopEver": 0.193,
-     "cqDelta": -6.425,
-     "minutes": 45.1
+     "d30": 0.089,
+     "d7": 0.768,
+     "sessions": 3.219,
+     "stories": 2.855,
+     "releases": 0.467,
+     "loopEver": 0.18,
+     "cqDelta": -1.349,
+     "minutes": 44.568
     },
     "James": {
-     "d30": 0,
-     "d7": 0.385,
-     "sessions": 0.445,
-     "stories": 0.035,
+     "d30": 0.003,
+     "d7": 0.357,
+     "sessions": 0.399,
+     "stories": 0.028,
      "releases": 0,
      "loopEver": 0,
      "cqDelta": 0,
-     "minutes": 1.05
+     "minutes": 0.989
     },
     "Ana": {
-     "d30": 0.05,
-     "d7": 0.67,
-     "sessions": 3.09,
-     "stories": 2.77,
-     "releases": 0.91,
-     "loopEver": 0.21,
+     "d30": 0.085,
+     "d7": 0.68,
+     "sessions": 3.716,
+     "stories": 3.388,
+     "releases": 1.342,
+     "loopEver": 0.261,
      "cqDelta": 0,
-     "minutes": 47.4
+     "minutes": 55.432
     },
     "Gordon": {
      "d30": 0,
-     "d7": 0.086,
-     "sessions": 0.085,
+     "d7": 0.054,
+     "sessions": 0.056,
      "stories": 0,
      "releases": 0,
      "loopEver": 0,
      "cqDelta": 0,
-     "minutes": 0.1
+     "minutes": 0.074
     },
     "Rosa": {
      "d30": 0,
-     "d7": 0.067,
-     "sessions": 0.1,
-     "stories": 0,
+     "d7": 0.102,
+     "sessions": 0.138,
+     "stories": 0.015,
      "releases": 0,
      "loopEver": 0,
      "cqDelta": 0,
-     "minutes": 0.2
+     "minutes": 0.4
     }
    },
-   "seconds": 2,
+   "seconds": 17,
    "knobs": {
     "storyCost": null,
     "relTake": 0.21,
@@ -2748,21 +2754,21 @@
    },
    "id": "C7",
    "nm": "The two level menu",
-   "d": 2.15
+   "d": 2.05
   },
   {
    "label": "C8",
-   "runs": 2,
-   "settledAt": 2,
-   "total": 41.1,
+   "runs": 15,
+   "settledAt": 15,
+   "total": 41.15,
    "letter": "D-",
-   "sd": 0,
-   "lo": 41.1,
-   "hi": 41.1,
+   "sd": 0.366,
+   "lo": 40.6,
+   "hi": 41.7,
    "rows": [
     {
      "k": "ICP alignment",
-     "v": 2.3,
+     "v": 2.43,
      "moves": true,
      "carried": false
     },
@@ -2774,13 +2780,13 @@
     },
     {
      "k": "Core loop",
-     "v": 0.3,
+     "v": 0.29,
      "moves": true,
      "carried": false
     },
     {
      "k": "Emotional",
-     "v": 5.45,
+     "v": 5.48,
      "moves": true,
      "carried": false
     },
@@ -2810,7 +2816,7 @@
     },
     {
      "k": "Retention",
-     "v": 3.45,
+     "v": 3.34,
      "moves": true,
      "carried": false
     },
@@ -2821,135 +2827,135 @@
      "carried": false
     }
    ],
-   "d30": 0.044,
-   "d7": 0.638,
-   "d90": 0.0015,
-   "loopEver": 0.0375,
-   "readShare": 0.5096,
-   "inferShare": 0.4072,
-   "stories": 899.5,
-   "releases": 127,
-   "minutes": 16118,
+   "d30": 0.041,
+   "d7": 0.6422,
+   "d90": 0.00127,
+   "loopEver": 0.0411,
+   "readShare": 0.5114,
+   "inferShare": 0.3994,
+   "stories": 919.1,
+   "releases": 127.5,
+   "minutes": 16319,
    "lostTop": [
     {
      "k": "DRIFT",
-     "n": 282,
+     "n": 289,
      "nm": "The absence became permanent"
     },
     {
      "k": "F4",
-     "n": 113,
+     "n": 109,
      "nm": "The reading does not move"
     },
     {
      "k": "F3",
-     "n": 86,
+     "n": 92,
      "nm": "Nothing is above the line, so there is nothing to release"
     },
     {
      "k": "F1",
-     "n": 69,
+     "n": 70,
      "nm": "The box reads nothing out of what they wrote"
     },
     {
      "k": "F7",
-     "n": 40,
+     "n": 38,
      "nm": "The intake is sixty three questions"
     }
    ],
    "icp": {
     "Diane": {
-     "d30": 0.011,
-     "d7": 0.831,
-     "sessions": 1.34,
+     "d30": 0.014,
+     "d7": 0.851,
+     "sessions": 1.362,
      "stories": 0,
      "releases": 0,
      "loopEver": 0,
-     "cqDelta": -1.34,
-     "minutes": 2.1
+     "cqDelta": -0.903,
+     "minutes": 2.193
     },
     "Derek": {
-     "d30": 0.038,
-     "d7": 0.744,
-     "sessions": 2.39,
-     "stories": 0.86,
-     "releases": 0.035,
-     "loopEver": 0.015,
-     "cqDelta": 0,
-     "minutes": 21.3
+     "d30": 0.03,
+     "d7": 0.719,
+     "sessions": 2.319,
+     "stories": 0.825,
+     "releases": 0.039,
+     "loopEver": 0.02,
+     "cqDelta": -3.043,
+     "minutes": 20.867
     },
     "Marcus": {
-     "d30": 0.087,
-     "d7": 0.563,
-     "sessions": 2.245,
-     "stories": 0.62,
-     "releases": 0.02,
-     "loopEver": 0.003,
-     "cqDelta": -6.315,
-     "minutes": 12.35
+     "d30": 0.081,
+     "d7": 0.526,
+     "sessions": 1.947,
+     "stories": 0.544,
+     "releases": 0.007,
+     "loopEver": 0.001,
+     "cqDelta": -9.371,
+     "minutes": 10.687
     },
     "Angela": {
-     "d30": 0.023,
-     "d7": 0.667,
-     "sessions": 1.175,
-     "stories": 0.81,
-     "releases": 0.01,
-     "loopEver": 0,
-     "cqDelta": -4.89,
-     "minutes": 10.9
+     "d30": 0.018,
+     "d7": 0.7,
+     "sessions": 1.211,
+     "stories": 0.884,
+     "releases": 0.013,
+     "loopEver": 0.003,
+     "cqDelta": -2.407,
+     "minutes": 11.52
     },
     "Sofia": {
-     "d30": 0.111,
-     "d7": 0.732,
-     "sessions": 3.28,
-     "stories": 2.94,
-     "releases": 0.565,
-     "loopEver": 0.179,
-     "cqDelta": -6.425,
-     "minutes": 45.65
+     "d30": 0.097,
+     "d7": 0.768,
+     "sessions": 3.405,
+     "stories": 3.032,
+     "releases": 0.512,
+     "loopEver": 0.187,
+     "cqDelta": -0.857,
+     "minutes": 47.427
     },
     "James": {
-     "d30": 0.01,
-     "d7": 0.33,
-     "sessions": 0.36,
-     "stories": 0.025,
+     "d30": 0.005,
+     "d7": 0.332,
+     "sessions": 0.373,
+     "stories": 0.022,
      "releases": 0,
      "loopEver": 0,
      "cqDelta": 0,
-     "minutes": 0.9
+     "minutes": 0.947
     },
     "Ana": {
-     "d30": 0.03,
-     "d7": 0.7,
-     "sessions": 2.71,
-     "stories": 2.38,
-     "releases": 0.76,
-     "loopEver": 0.19,
-     "cqDelta": 0,
-     "minutes": 40.55
+     "d30": 0.072,
+     "d7": 0.685,
+     "sessions": 2.929,
+     "stories": 2.644,
+     "releases": 0.925,
+     "loopEver": 0.219,
+     "cqDelta": -1.682,
+     "minutes": 43.947
     },
     "Gordon": {
      "d30": 0,
-     "d7": 0.014,
-     "sessions": 0.015,
+     "d7": 0.027,
+     "sessions": 0.03,
      "stories": 0,
      "releases": 0,
      "loopEver": 0,
      "cqDelta": 0,
-     "minutes": 0
+     "minutes": 0.033
     },
     "Rosa": {
-     "d30": 0,
-     "d7": 0.067,
-     "sessions": 0.165,
-     "stories": 0,
+     "d30": 0.004,
+     "d7": 0.111,
+     "sessions": 0.173,
+     "stories": 0.022,
      "releases": 0,
      "loopEver": 0,
      "cqDelta": 0,
-     "minutes": 0.4
+     "minutes": 0.473
     }
    },
-   "seconds": 2,
+   "seconds": 13,
    "knobs": {
     "storyCost": null,
     "relTake": 0.21,
@@ -2975,21 +2981,21 @@
    },
    "id": "C8",
    "nm": "The rails ship folded",
-   "d": 2.15
+   "d": 2.24
   },
   {
    "label": "C8b",
-   "runs": 2,
-   "settledAt": 2,
-   "total": 39.85,
+   "runs": 19,
+   "settledAt": 19,
+   "total": 39.83,
    "letter": "F",
-   "sd": 0.071,
-   "lo": 39.8,
-   "hi": 39.9,
+   "sd": 0.351,
+   "lo": 39.1,
+   "hi": 40.5,
    "rows": [
     {
      "k": "ICP alignment",
-     "v": 2.3,
+     "v": 2.37,
      "moves": true,
      "carried": false
     },
@@ -3001,13 +3007,13 @@
     },
     {
      "k": "Core loop",
-     "v": 0.3,
+     "v": 0.29,
      "moves": true,
      "carried": false
     },
     {
      "k": "Emotional",
-     "v": 5.45,
+     "v": 5.46,
      "moves": true,
      "carried": false
     },
@@ -3037,7 +3043,7 @@
     },
     {
      "k": "Retention",
-     "v": 3.3,
+     "v": 3.2,
      "moves": true,
      "carried": false
     },
@@ -3048,135 +3054,135 @@
      "carried": false
     }
    ],
-   "d30": 0.039,
-   "d7": 0.6445,
-   "d90": 0.002,
-   "loopEver": 0.0375,
-   "readShare": 0.5201,
-   "inferShare": 0.4178,
-   "stories": 895,
-   "releases": 128.5,
-   "minutes": 16042,
+   "d30": 0.03795,
+   "d7": 0.64284,
+   "d90": 0.00126,
+   "loopEver": 0.0398,
+   "readShare": 0.5133,
+   "inferShare": 0.4046,
+   "stories": 879.1,
+   "releases": 118.8,
+   "minutes": 15614,
    "lostTop": [
     {
      "k": "DRIFT",
-     "n": 279,
+     "n": 288,
      "nm": "The absence became permanent"
     },
     {
      "k": "F4",
-     "n": 112,
+     "n": 110,
      "nm": "The reading does not move"
     },
     {
      "k": "F3",
-     "n": 89,
+     "n": 88,
      "nm": "Nothing is above the line, so there is nothing to release"
     },
     {
      "k": "F1",
-     "n": 70,
+     "n": 67,
      "nm": "The box reads nothing out of what they wrote"
     },
     {
      "k": "F12",
-     "n": 40,
+     "n": 41,
      "nm": "There is no way to hand it to anybody"
     }
    ],
    "icp": {
     "Diane": {
-     "d30": 0.014,
-     "d7": 0.817,
-     "sessions": 1.26,
+     "d30": 0.016,
+     "d7": 0.853,
+     "sessions": 1.318,
      "stories": 0,
      "releases": 0,
      "loopEver": 0,
-     "cqDelta": -0.565,
-     "minutes": 2
+     "cqDelta": -0.984,
+     "minutes": 2.116
     },
     "Derek": {
-     "d30": 0.044,
-     "d7": 0.721,
-     "sessions": 2.165,
-     "stories": 0.745,
-     "releases": 0.01,
-     "loopEver": 0.009,
-     "cqDelta": -17.43,
-     "minutes": 19.45
+     "d30": 0.027,
+     "d7": 0.706,
+     "sessions": 2.154,
+     "stories": 0.759,
+     "releases": 0.028,
+     "loopEver": 0.017,
+     "cqDelta": -4.798,
+     "minutes": 19.384
     },
     "Marcus": {
-     "d30": 0.072,
-     "d7": 0.509,
-     "sessions": 1.735,
-     "stories": 0.48,
-     "releases": 0.015,
-     "loopEver": 0,
-     "cqDelta": 0,
-     "minutes": 9.7
-    },
-    "Angela": {
-     "d30": 0.007,
-     "d7": 0.71,
-     "sessions": 1.24,
-     "stories": 0.89,
+     "d30": 0.075,
+     "d7": 0.53,
+     "sessions": 1.819,
+     "stories": 0.485,
      "releases": 0.005,
      "loopEver": 0,
-     "cqDelta": 0,
-     "minutes": 11.75
+     "cqDelta": -5.814,
+     "minutes": 10.042
+    },
+    "Angela": {
+     "d30": 0.014,
+     "d7": 0.698,
+     "sessions": 1.227,
+     "stories": 0.896,
+     "releases": 0.012,
+     "loopEver": 0.003,
+     "cqDelta": -1.378,
+     "minutes": 11.716
     },
     "Sofia": {
-     "d30": 0.093,
-     "d7": 0.771,
-     "sessions": 3.325,
-     "stories": 2.91,
-     "releases": 0.49,
-     "loopEver": 0.186,
-     "cqDelta": -6.425,
-     "minutes": 46.25
+     "d30": 0.087,
+     "d7": 0.773,
+     "sessions": 3.218,
+     "stories": 2.855,
+     "releases": 0.464,
+     "loopEver": 0.18,
+     "cqDelta": -0.676,
+     "minutes": 44.442
     },
     "James": {
-     "d30": 0,
-     "d7": 0.39,
-     "sessions": 0.465,
-     "stories": 0.02,
+     "d30": 0.005,
+     "d7": 0.341,
+     "sessions": 0.387,
+     "stories": 0.024,
      "releases": 0,
      "loopEver": 0,
      "cqDelta": 0,
-     "minutes": 1.2
+     "minutes": 0.974
     },
     "Ana": {
-     "d30": 0.07,
-     "d7": 0.74,
-     "sessions": 3.28,
-     "stories": 2.97,
-     "releases": 1.09,
-     "loopEver": 0.2,
+     "d30": 0.073,
+     "d7": 0.696,
+     "sessions": 3.011,
+     "stories": 2.709,
+     "releases": 0.937,
+     "loopEver": 0.225,
      "cqDelta": 0,
-     "minutes": 49.3
+     "minutes": 45
     },
     "Gordon": {
      "d30": 0,
-     "d7": 0.057,
-     "sessions": 0.06,
+     "d7": 0.047,
+     "sessions": 0.05,
      "stories": 0,
      "releases": 0,
      "loopEver": 0,
      "cqDelta": 0,
-     "minutes": 0.1
+     "minutes": 0.058
     },
     "Rosa": {
      "d30": 0,
-     "d7": 0.067,
-     "sessions": 0.065,
-     "stories": 0,
+     "d7": 0.07,
+     "sessions": 0.099,
+     "stories": 0.011,
      "releases": 0,
      "loopEver": 0,
      "cqDelta": 0,
-     "minutes": 0.15
+     "minutes": 0.3
     }
    },
-   "seconds": 2,
+   "seconds": 16,
    "knobs": {
     "storyCost": null,
     "relTake": 0.21,
@@ -3202,21 +3208,21 @@
    },
    "id": "C8b",
    "nm": "The top collapses to two",
-   "d": 0.9
+   "d": 0.92
   },
   {
    "label": "C9",
-   "runs": 2,
-   "settledAt": 2,
-   "total": 46.9,
+   "runs": 17,
+   "settledAt": 17,
+   "total": 46.66,
    "letter": "D",
-   "sd": 0.283,
-   "lo": 46.7,
-   "hi": 47.1,
+   "sd": 0.36,
+   "lo": 46.1,
+   "hi": 47.3,
    "rows": [
     {
      "k": "ICP alignment",
-     "v": 2.7,
+     "v": 2.66,
      "moves": true,
      "carried": false
     },
@@ -3234,7 +3240,7 @@
     },
     {
      "k": "Emotional",
-     "v": 5.6,
+     "v": 5.53,
      "moves": true,
      "carried": false
     },
@@ -3264,7 +3270,7 @@
     },
     {
      "k": "Retention",
-     "v": 3.75,
+     "v": 3.62,
      "moves": true,
      "carried": false
     },
@@ -3275,135 +3281,135 @@
      "carried": false
     }
    ],
-   "d30": 0.049,
-   "d7": 0.635,
-   "d90": 0.0015,
-   "loopEver": 0.045,
-   "readShare": 0.5259,
-   "inferShare": 0.3975,
-   "stories": 958.5,
-   "releases": 139.5,
-   "minutes": 16967,
+   "d30": 0.04676,
+   "d7": 0.63553,
+   "d90": 0.00118,
+   "loopEver": 0.0472,
+   "readShare": 0.5031,
+   "inferShare": 0.3732,
+   "stories": 967.4,
+   "releases": 139,
+   "minutes": 16986,
    "lostTop": [
     {
      "k": "DRIFT",
-     "n": 276,
+     "n": 287,
      "nm": "The absence became permanent"
     },
     {
      "k": "F4",
-     "n": 112,
+     "n": 110,
      "nm": "The reading does not move"
     },
     {
      "k": "F1",
-     "n": 97,
+     "n": 92,
      "nm": "The box reads nothing out of what they wrote"
     },
     {
      "k": "F3",
-     "n": 88,
+     "n": 89,
      "nm": "Nothing is above the line, so there is nothing to release"
     },
     {
      "k": "F7",
-     "n": 43,
+     "n": 40,
      "nm": "The intake is sixty three questions"
     }
    ],
    "icp": {
     "Diane": {
-     "d30": 0.014,
-     "d7": 0.817,
-     "sessions": 1.26,
+     "d30": 0.015,
+     "d7": 0.852,
+     "sessions": 1.319,
      "stories": 0,
      "releases": 0,
      "loopEver": 0,
-     "cqDelta": -0.565,
-     "minutes": 2
+     "cqDelta": -0.984,
+     "minutes": 2.124
     },
     "Derek": {
-     "d30": 0.044,
-     "d7": 0.721,
-     "sessions": 2.165,
-     "stories": 0.745,
-     "releases": 0.01,
-     "loopEver": 0.009,
-     "cqDelta": -17.43,
-     "minutes": 19.45
+     "d30": 0.027,
+     "d7": 0.709,
+     "sessions": 2.156,
+     "stories": 0.762,
+     "releases": 0.027,
+     "loopEver": 0.017,
+     "cqDelta": -5.363,
+     "minutes": 19.412
     },
     "Marcus": {
-     "d30": 0.091,
-     "d7": 0.563,
-     "sessions": 2.17,
-     "stories": 0.585,
-     "releases": 0.01,
-     "loopEver": 0,
-     "cqDelta": -13.83,
-     "minutes": 12.15
+     "d30": 0.094,
+     "d7": 0.515,
+     "sessions": 2.139,
+     "stories": 0.581,
+     "releases": 0.008,
+     "loopEver": 0.003,
+     "cqDelta": -9.011,
+     "minutes": 11.747
     },
     "Angela": {
-     "d30": 0.023,
-     "d7": 0.693,
-     "sessions": 1.36,
-     "stories": 1.01,
-     "releases": 0.015,
-     "loopEver": 0.003,
-     "cqDelta": -2.05,
-     "minutes": 13.1
+     "d30": 0.02,
+     "d7": 0.689,
+     "sessions": 1.325,
+     "stories": 0.973,
+     "releases": 0.016,
+     "loopEver": 0.007,
+     "cqDelta": -1.881,
+     "minutes": 12.488
     },
     "Sofia": {
-     "d30": 0.118,
-     "d7": 0.718,
-     "sessions": 3.575,
-     "stories": 3.195,
-     "releases": 0.62,
-     "loopEver": 0.214,
-     "cqDelta": 0,
-     "minutes": 50.1
+     "d30": 0.129,
+     "d7": 0.748,
+     "sessions": 3.785,
+     "stories": 3.388,
+     "releases": 0.648,
+     "loopEver": 0.23,
+     "cqDelta": -0.703,
+     "minutes": 52.935
     },
     "James": {
-     "d30": 0.01,
-     "d7": 0.36,
-     "sessions": 0.41,
-     "stories": 0.035,
+     "d30": 0.005,
+     "d7": 0.352,
+     "sessions": 0.391,
+     "stories": 0.019,
      "releases": 0,
      "loopEver": 0,
      "cqDelta": 0,
-     "minutes": 1
+     "minutes": 0.982
     },
     "Ana": {
-     "d30": 0.07,
-     "d7": 0.66,
-     "sessions": 3.04,
-     "stories": 2.73,
-     "releases": 0.94,
-     "loopEver": 0.26,
-     "cqDelta": 0,
-     "minutes": 45.3
+     "d30": 0.055,
+     "d7": 0.673,
+     "sessions": 2.732,
+     "stories": 2.454,
+     "releases": 0.802,
+     "loopEver": 0.212,
+     "cqDelta": -2.991,
+     "minutes": 40.753
     },
     "Gordon": {
      "d30": 0,
-     "d7": 0.029,
-     "sessions": 0.03,
+     "d7": 0.032,
+     "sessions": 0.035,
      "stories": 0,
      "releases": 0,
      "loopEver": 0,
      "cqDelta": 0,
-     "minutes": 0
+     "minutes": 0.041
     },
     "Rosa": {
-     "d30": 0,
-     "d7": 0.067,
-     "sessions": 0.1,
-     "stories": 0,
+     "d30": 0.004,
+     "d7": 0.071,
+     "sessions": 0.113,
+     "stories": 0.008,
      "releases": 0,
      "loopEver": 0,
      "cqDelta": 0,
-     "minutes": 0.3
+     "minutes": 0.353
     }
    },
-   "seconds": 2,
+   "seconds": 16,
    "knobs": {
     "storyCost": null,
     "relTake": 0.21,
@@ -3429,21 +3435,21 @@
    },
    "id": "C9",
    "nm": "A way to hand it to somebody",
-   "d": 7.95
+   "d": 7.75
   },
   {
    "label": "C10",
-   "runs": 2,
-   "settledAt": 2,
-   "total": 44.95,
+   "runs": 19,
+   "settledAt": 19,
+   "total": 44.92,
    "letter": "D-",
-   "sd": 0.071,
-   "lo": 44.9,
-   "hi": 45,
+   "sd": 0.4,
+   "lo": 44.1,
+   "hi": 45.5,
    "rows": [
     {
      "k": "ICP alignment",
-     "v": 2.3,
+     "v": 2.41,
      "moves": true,
      "carried": false
     },
@@ -3461,7 +3467,7 @@
     },
     {
      "k": "Emotional",
-     "v": 5.5,
+     "v": 5.47,
      "moves": true,
      "carried": false
     },
@@ -3491,7 +3497,7 @@
     },
     {
      "k": "Retention",
-     "v": 3.35,
+     "v": 3.24,
      "moves": true,
      "carried": false
     },
@@ -3502,135 +3508,135 @@
      "carried": false
     }
    ],
-   "d30": 0.04,
-   "d7": 0.6415,
-   "d90": 0.002,
-   "loopEver": 0.0395,
-   "readShare": 0.5295,
-   "inferShare": 0.4168,
-   "stories": 911,
-   "releases": 138.5,
-   "minutes": 16304,
+   "d30": 0.03863,
+   "d7": 0.64637,
+   "d90": 0.00126,
+   "loopEver": 0.0405,
+   "readShare": 0.5164,
+   "inferShare": 0.4043,
+   "stories": 888.3,
+   "releases": 122.6,
+   "minutes": 15815,
    "lostTop": [
     {
      "k": "DRIFT",
-     "n": 277,
+     "n": 288,
      "nm": "The absence became permanent"
     },
     {
      "k": "F4",
-     "n": 111,
+     "n": 110,
      "nm": "The reading does not move"
     },
     {
      "k": "F3",
-     "n": 91,
+     "n": 89,
      "nm": "Nothing is above the line, so there is nothing to release"
     },
     {
      "k": "F1",
-     "n": 70,
+     "n": 68,
      "nm": "The box reads nothing out of what they wrote"
     },
     {
      "k": "F12",
-     "n": 40,
+     "n": 41,
      "nm": "There is no way to hand it to anybody"
     }
    ],
    "icp": {
     "Diane": {
-     "d30": 0.014,
-     "d7": 0.817,
-     "sessions": 1.26,
+     "d30": 0.016,
+     "d7": 0.853,
+     "sessions": 1.318,
      "stories": 0,
      "releases": 0,
      "loopEver": 0,
-     "cqDelta": -0.565,
-     "minutes": 2
+     "cqDelta": -0.984,
+     "minutes": 2.116
     },
     "Derek": {
-     "d30": 0.044,
-     "d7": 0.721,
-     "sessions": 2.165,
-     "stories": 0.745,
-     "releases": 0.01,
-     "loopEver": 0.009,
-     "cqDelta": -17.43,
-     "minutes": 19.45
+     "d30": 0.027,
+     "d7": 0.706,
+     "sessions": 2.154,
+     "stories": 0.759,
+     "releases": 0.028,
+     "loopEver": 0.017,
+     "cqDelta": -4.798,
+     "minutes": 19.384
     },
     "Marcus": {
-     "d30": 0.072,
-     "d7": 0.509,
-     "sessions": 1.735,
-     "stories": 0.48,
-     "releases": 0.015,
-     "loopEver": 0,
-     "cqDelta": 0,
-     "minutes": 9.7
-    },
-    "Angela": {
-     "d30": 0.007,
-     "d7": 0.703,
-     "sessions": 1.25,
-     "stories": 0.895,
+     "d30": 0.075,
+     "d7": 0.53,
+     "sessions": 1.819,
+     "stories": 0.485,
      "releases": 0.005,
      "loopEver": 0,
-     "cqDelta": 0,
-     "minutes": 11.75
+     "cqDelta": -5.814,
+     "minutes": 10.042
+    },
+    "Angela": {
+     "d30": 0.016,
+     "d7": 0.699,
+     "sessions": 1.218,
+     "stories": 0.884,
+     "releases": 0.01,
+     "loopEver": 0.002,
+     "cqDelta": -1.793,
+     "minutes": 11.653
     },
     "Sofia": {
-     "d30": 0.1,
-     "d7": 0.761,
-     "sessions": 3.335,
-     "stories": 2.935,
-     "releases": 0.53,
-     "loopEver": 0.193,
-     "cqDelta": -6.425,
-     "minutes": 46.4
+     "d30": 0.09,
+     "d7": 0.776,
+     "sessions": 3.261,
+     "stories": 2.898,
+     "releases": 0.476,
+     "loopEver": 0.182,
+     "cqDelta": -0.676,
+     "minutes": 45.195
     },
     "James": {
-     "d30": 0,
-     "d7": 0.4,
-     "sessions": 0.48,
-     "stories": 0.025,
+     "d30": 0.004,
+     "d7": 0.362,
+     "sessions": 0.41,
+     "stories": 0.024,
      "releases": 0,
      "loopEver": 0,
      "cqDelta": 0,
-     "minutes": 1.2
+     "minutes": 1.047
     },
     "Ana": {
-     "d30": 0.07,
-     "d7": 0.75,
-     "sessions": 3.52,
-     "stories": 3.19,
-     "releases": 1.19,
-     "loopEver": 0.22,
-     "cqDelta": 0,
-     "minutes": 54.1
+     "d30": 0.075,
+     "d7": 0.706,
+     "sessions": 3.105,
+     "stories": 2.814,
+     "releases": 0.983,
+     "loopEver": 0.236,
+     "cqDelta": -1.273,
+     "minutes": 46.911
     },
     "Gordon": {
      "d30": 0,
-     "d7": 0.029,
-     "sessions": 0.03,
+     "d7": 0.06,
+     "sessions": 0.063,
      "stories": 0,
      "releases": 0,
      "loopEver": 0,
      "cqDelta": 0,
-     "minutes": 0
+     "minutes": 0.074
     },
     "Rosa": {
-     "d30": 0,
-     "d7": 0,
-     "sessions": 0,
-     "stories": 0,
+     "d30": 0.004,
+     "d7": 0.063,
+     "sessions": 0.108,
+     "stories": 0.004,
      "releases": 0,
      "loopEver": 0,
      "cqDelta": 0,
-     "minutes": 0
+     "minutes": 0.3
     }
    },
-   "seconds": 2,
+   "seconds": 16,
    "knobs": {
     "storyCost": null,
     "relTake": 0.21,
@@ -3656,21 +3662,21 @@
    },
    "id": "C10",
    "nm": "A price, and an allowance with something behind it",
-   "d": 6
+   "d": 6.01
   },
   {
    "label": "C11",
-   "runs": 2,
-   "settledAt": 2,
-   "total": 39.15,
+   "runs": 19,
+   "settledAt": 19,
+   "total": 39.03,
    "letter": "F",
-   "sd": 0.919,
-   "lo": 38.5,
-   "hi": 39.8,
+   "sd": 0.581,
+   "lo": 38.1,
+   "hi": 40.1,
    "rows": [
     {
      "k": "ICP alignment",
-     "v": 2.25,
+     "v": 2.31,
      "moves": true,
      "carried": false
     },
@@ -3682,13 +3688,13 @@
     },
     {
      "k": "Core loop",
-     "v": 0.2,
+     "v": 0.23,
      "moves": true,
      "carried": false
     },
     {
      "k": "Emotional",
-     "v": 5.5,
+     "v": 5.51,
      "moves": true,
      "carried": false
     },
@@ -3718,7 +3724,7 @@
     },
     {
      "k": "Retention",
-     "v": 2.4,
+     "v": 2.18,
      "moves": true,
      "carried": false
     },
@@ -3729,135 +3735,135 @@
      "carried": false
     }
    ],
-   "d30": 0.0265,
-   "d7": 0.631,
-   "d90": 0.001,
-   "loopEver": 0.031,
-   "readShare": 0.5242,
-   "inferShare": 0.4123,
-   "stories": 806,
-   "releases": 79,
-   "minutes": 12001,
+   "d30": 0.02416,
+   "d7": 0.64389,
+   "d90": 0.00089,
+   "loopEver": 0.0323,
+   "readShare": 0.5251,
+   "inferShare": 0.4107,
+   "stories": 840.1,
+   "releases": 93.8,
+   "minutes": 12527,
    "lostTop": [
     {
      "k": "DRIFT",
-     "n": 296,
+     "n": 299,
      "nm": "The absence became permanent"
     },
     {
      "k": "F4",
-     "n": 155,
+     "n": 152,
      "nm": "The reading does not move"
     },
     {
      "k": "F3",
-     "n": 103,
+     "n": 98,
      "nm": "Nothing is above the line, so there is nothing to release"
     },
     {
      "k": "F1",
-     "n": 65,
+     "n": 73,
      "nm": "The box reads nothing out of what they wrote"
     },
     {
      "k": "F12",
-     "n": 31,
+     "n": 32,
      "nm": "There is no way to hand it to anybody"
     }
    ],
    "icp": {
     "Diane": {
-     "d30": 0.006,
-     "d7": 0.856,
-     "sessions": 1.425,
+     "d30": 0.011,
+     "d7": 0.849,
+     "sessions": 1.434,
      "stories": 0,
      "releases": 0,
      "loopEver": 0,
      "cqDelta": 0,
-     "minutes": 2.25
+     "minutes": 2.3
     },
     "Derek": {
      "d30": 0.012,
-     "d7": 0.753,
-     "sessions": 1.745,
-     "stories": 0.815,
-     "releases": 0.03,
-     "loopEver": 0.009,
+     "d7": 0.712,
+     "sessions": 1.728,
+     "stories": 0.796,
+     "releases": 0.032,
+     "loopEver": 0.013,
      "cqDelta": 0,
-     "minutes": 15.55
+     "minutes": 15.584
     },
     "Marcus": {
-     "d30": 0.056,
-     "d7": 0.481,
-     "sessions": 1.435,
-     "stories": 0.485,
-     "releases": 0,
+     "d30": 0.048,
+     "d7": 0.534,
+     "sessions": 1.41,
+     "stories": 0.505,
+     "releases": 0.001,
      "loopEver": 0,
      "cqDelta": 0,
-     "minutes": 7.8
+     "minutes": 7.7
     },
     "Angela": {
-     "d30": 0.01,
-     "d7": 0.697,
-     "sessions": 1.08,
-     "stories": 1.035,
-     "releases": 0.015,
-     "loopEver": 0.01,
+     "d30": 0.011,
+     "d7": 0.714,
+     "sessions": 1.105,
+     "stories": 1.069,
+     "releases": 0.012,
+     "loopEver": 0.005,
      "cqDelta": 0,
-     "minutes": 10.3
+     "minutes": 10.495
     },
     "Sofia": {
-     "d30": 0.05,
-     "d7": 0.743,
-     "sessions": 2.23,
-     "stories": 2.23,
-     "releases": 0.325,
-     "loopEver": 0.132,
+     "d30": 0.052,
+     "d7": 0.761,
+     "sessions": 2.351,
+     "stories": 2.351,
+     "releases": 0.338,
+     "loopEver": 0.139,
      "cqDelta": 0,
-     "minutes": 31.25
+     "minutes": 32.858
     },
     "James": {
-     "d30": 0.015,
-     "d7": 0.255,
-     "sessions": 0.31,
-     "stories": 0.05,
+     "d30": 0.005,
+     "d7": 0.33,
+     "sessions": 0.367,
+     "stories": 0.035,
      "releases": 0,
      "loopEver": 0,
      "cqDelta": 0,
-     "minutes": 0.8
+     "minutes": 0.926
     },
     "Ana": {
-     "d30": 0.09,
-     "d7": 0.71,
-     "sessions": 2.36,
-     "stories": 2.36,
-     "releases": 0.55,
-     "loopEver": 0.19,
+     "d30": 0.06,
+     "d7": 0.717,
+     "sessions": 2.615,
+     "stories": 2.615,
+     "releases": 0.787,
+     "loopEver": 0.199,
      "cqDelta": 0,
-     "minutes": 33.9
+     "minutes": 39.211
     },
     "Gordon": {
      "d30": 0,
-     "d7": 0.029,
-     "sessions": 0.07,
+     "d7": 0.041,
+     "sessions": 0.055,
      "stories": 0,
      "releases": 0,
      "loopEver": 0,
      "cqDelta": 0,
-     "minutes": 0.1
+     "minutes": 0.068
     },
     "Rosa": {
      "d30": 0,
-     "d7": 0.1,
-     "sessions": 0.235,
-     "stories": 0,
+     "d7": 0.06,
+     "sessions": 0.102,
+     "stories": 0.011,
      "releases": 0,
      "loopEver": 0,
      "cqDelta": 0,
-     "minutes": 0.9
+     "minutes": 0.316
     }
    },
-   "seconds": 2,
+   "seconds": 14,
    "knobs": {
     "storyCost": null,
     "relTake": 0.21,
@@ -3883,21 +3889,21 @@
    },
    "id": "C11",
    "nm": "The record arrives at sign in",
-   "d": 0.2
+   "d": 0.12
   },
   {
    "label": "C12",
-   "runs": 2,
-   "settledAt": 2,
-   "total": 40.6,
+   "runs": 15,
+   "settledAt": 15,
+   "total": 41.11,
    "letter": "D-",
-   "sd": 0.141,
+   "sd": 0.425,
    "lo": 40.5,
-   "hi": 40.7,
+   "hi": 42.2,
    "rows": [
     {
      "k": "ICP alignment",
-     "v": 2.35,
+     "v": 2.41,
      "moves": true,
      "carried": false
     },
@@ -3909,13 +3915,13 @@
     },
     {
      "k": "Core loop",
-     "v": 0.25,
+     "v": 0.3,
      "moves": true,
      "carried": false
     },
     {
      "k": "Emotional",
-     "v": 5.4,
+     "v": 5.49,
      "moves": true,
      "carried": false
     },
@@ -3945,7 +3951,7 @@
     },
     {
      "k": "Retention",
-     "v": 3.1,
+     "v": 3.41,
      "moves": true,
      "carried": false
     },
@@ -3956,15 +3962,15 @@
      "carried": false
     }
    ],
-   "d30": 0.036,
-   "d7": 0.6475,
-   "d90": 0.002,
-   "loopEver": 0.0355,
-   "readShare": 0.5305,
-   "inferShare": 0.4375,
-   "stories": 888,
-   "releases": 124,
-   "minutes": 15710,
+   "d30": 0.04227,
+   "d7": 0.64307,
+   "d90": 0.00133,
+   "loopEver": 0.0401,
+   "readShare": 0.5077,
+   "inferShare": 0.392,
+   "stories": 900.3,
+   "releases": 126.1,
+   "minutes": 15986,
    "lostTop": [
     {
      "k": "DRIFT",
@@ -3973,118 +3979,118 @@
     },
     {
      "k": "F4",
-     "n": 107,
+     "n": 110,
      "nm": "The reading does not move"
     },
     {
      "k": "F3",
-     "n": 92,
+     "n": 88,
      "nm": "Nothing is above the line, so there is nothing to release"
     },
     {
      "k": "F1",
-     "n": 73,
+     "n": 71,
      "nm": "The box reads nothing out of what they wrote"
     },
     {
      "k": "F7",
-     "n": 44,
+     "n": 41,
      "nm": "The intake is sixty three questions"
     }
    ],
    "icp": {
     "Diane": {
-     "d30": 0.014,
-     "d7": 0.819,
-     "sessions": 1.265,
+     "d30": 0.016,
+     "d7": 0.853,
+     "sessions": 1.328,
      "stories": 0,
      "releases": 0,
      "loopEver": 0,
-     "cqDelta": -0.565,
-     "minutes": 2
+     "cqDelta": -0.895,
+     "minutes": 2.133
     },
     "Derek": {
-     "d30": 0.041,
-     "d7": 0.724,
-     "sessions": 2.205,
-     "stories": 0.78,
-     "releases": 0.015,
-     "loopEver": 0.012,
-     "cqDelta": 0,
-     "minutes": 19.6
+     "d30": 0.029,
+     "d7": 0.711,
+     "sessions": 2.179,
+     "stories": 0.769,
+     "releases": 0.027,
+     "loopEver": 0.016,
+     "cqDelta": -5.037,
+     "minutes": 19.66
     },
     "Marcus": {
-     "d30": 0.056,
-     "d7": 0.531,
-     "sessions": 1.78,
-     "stories": 0.51,
-     "releases": 0.015,
-     "loopEver": 0,
-     "cqDelta": 0,
-     "minutes": 9.65
+     "d30": 0.092,
+     "d7": 0.538,
+     "sessions": 1.932,
+     "stories": 0.52,
+     "releases": 0.006,
+     "loopEver": 0.001,
+     "cqDelta": -5.338,
+     "minutes": 10.52
     },
     "Angela": {
-     "d30": 0.003,
-     "d7": 0.71,
-     "sessions": 1.26,
-     "stories": 0.915,
-     "releases": 0.005,
-     "loopEver": 0.003,
-     "cqDelta": 0,
-     "minutes": 12
+     "d30": 0.014,
+     "d7": 0.693,
+     "sessions": 1.203,
+     "stories": 0.885,
+     "releases": 0.007,
+     "loopEver": 0.002,
+     "cqDelta": -3.685,
+     "minutes": 11.647
     },
     "Sofia": {
-     "d30": 0.086,
-     "d7": 0.743,
-     "sessions": 3.03,
-     "stories": 2.655,
-     "releases": 0.475,
-     "loopEver": 0.157,
-     "cqDelta": -6.425,
-     "minutes": 41.7
+     "d30": 0.1,
+     "d7": 0.77,
+     "sessions": 3.363,
+     "stories": 3.001,
+     "releases": 0.544,
+     "loopEver": 0.191,
+     "cqDelta": -0.857,
+     "minutes": 46.767
     },
     "James": {
-     "d30": 0.01,
-     "d7": 0.385,
-     "sessions": 0.45,
-     "stories": 0.055,
+     "d30": 0.005,
+     "d7": 0.344,
+     "sessions": 0.386,
+     "stories": 0.025,
      "releases": 0,
      "loopEver": 0,
-     "cqDelta": 0,
-     "minutes": 1.2
+     "cqDelta": -0.931,
+     "minutes": 0.993
     },
     "Ana": {
-     "d30": 0.08,
-     "d7": 0.81,
-     "sessions": 3.5,
-     "stories": 3.18,
-     "releases": 1.04,
-     "loopEver": 0.22,
-     "cqDelta": 0,
-     "minutes": 54.05
+     "d30": 0.064,
+     "d7": 0.676,
+     "sessions": 2.897,
+     "stories": 2.612,
+     "releases": 0.879,
+     "loopEver": 0.207,
+     "cqDelta": -3.411,
+     "minutes": 43.413
     },
     "Gordon": {
      "d30": 0,
-     "d7": 0.014,
-     "sessions": 0.015,
+     "d7": 0.034,
+     "sessions": 0.038,
      "stories": 0,
      "releases": 0,
      "loopEver": 0,
      "cqDelta": 0,
-     "minutes": 0
+     "minutes": 0.033
     },
     "Rosa": {
-     "d30": 0,
-     "d7": 0.133,
-     "sessions": 0.165,
-     "stories": 0,
+     "d30": 0.009,
+     "d7": 0.089,
+     "sessions": 0.133,
+     "stories": 0.028,
      "releases": 0,
      "loopEver": 0,
      "cqDelta": 0,
-     "minutes": 0.45
+     "minutes": 0.38
     }
    },
-   "seconds": 2,
+   "seconds": 13,
    "knobs": {
     "storyCost": null,
     "relTake": 0.21,
@@ -4110,7 +4116,7 @@
    },
    "id": "C12",
    "nm": "Three defects that are simply true",
-   "d": 1.65
+   "d": 2.2
   }
  ],
  "cum": {
@@ -4119,34 +4125,34 @@
    "C5",
    "C10",
    "C3",
-   "C7",
    "C8",
    "C12",
+   "C7",
    "C4",
    "C8b",
-   "C5b",
    "C6",
    "C11",
+   "C5b",
    "C1",
    "C2c",
-   "C2a",
    "C2b",
+   "C2a",
    "C6n"
   ],
   "steps": [
    {
     "label": "cum:C9",
-    "runs": 2,
-    "settledAt": 2,
-    "total": 46.9,
+    "runs": 17,
+    "settledAt": 17,
+    "total": 46.66,
     "letter": "D",
-    "sd": 0.283,
-    "lo": 46.7,
-    "hi": 47.1,
+    "sd": 0.36,
+    "lo": 46.1,
+    "hi": 47.3,
     "rows": [
      {
       "k": "ICP alignment",
-      "v": 2.7,
+      "v": 2.66,
       "moves": true,
       "carried": false
      },
@@ -4164,7 +4170,7 @@
      },
      {
       "k": "Emotional",
-      "v": 5.6,
+      "v": 5.53,
       "moves": true,
       "carried": false
      },
@@ -4194,7 +4200,7 @@
      },
      {
       "k": "Retention",
-      "v": 3.75,
+      "v": 3.62,
       "moves": true,
       "carried": false
      },
@@ -4205,135 +4211,135 @@
       "carried": false
      }
     ],
-    "d30": 0.049,
-    "d7": 0.635,
-    "d90": 0.0015,
-    "loopEver": 0.045,
-    "readShare": 0.5259,
-    "inferShare": 0.3975,
-    "stories": 958.5,
-    "releases": 139.5,
-    "minutes": 16967,
+    "d30": 0.04676,
+    "d7": 0.63553,
+    "d90": 0.00118,
+    "loopEver": 0.0472,
+    "readShare": 0.5031,
+    "inferShare": 0.3732,
+    "stories": 967.4,
+    "releases": 139,
+    "minutes": 16986,
     "lostTop": [
      {
       "k": "DRIFT",
-      "n": 276,
+      "n": 287,
       "nm": "The absence became permanent"
      },
      {
       "k": "F4",
-      "n": 112,
+      "n": 110,
       "nm": "The reading does not move"
      },
      {
       "k": "F1",
-      "n": 97,
+      "n": 92,
       "nm": "The box reads nothing out of what they wrote"
      },
      {
       "k": "F3",
-      "n": 88,
+      "n": 89,
       "nm": "Nothing is above the line, so there is nothing to release"
      },
      {
       "k": "F7",
-      "n": 43,
+      "n": 40,
       "nm": "The intake is sixty three questions"
      }
     ],
     "icp": {
      "Diane": {
-      "d30": 0.014,
-      "d7": 0.817,
-      "sessions": 1.26,
+      "d30": 0.015,
+      "d7": 0.852,
+      "sessions": 1.319,
       "stories": 0,
       "releases": 0,
       "loopEver": 0,
-      "cqDelta": -0.565,
-      "minutes": 2
+      "cqDelta": -0.984,
+      "minutes": 2.124
      },
      "Derek": {
-      "d30": 0.044,
-      "d7": 0.721,
-      "sessions": 2.165,
-      "stories": 0.745,
-      "releases": 0.01,
-      "loopEver": 0.009,
-      "cqDelta": -17.43,
-      "minutes": 19.45
+      "d30": 0.027,
+      "d7": 0.709,
+      "sessions": 2.156,
+      "stories": 0.762,
+      "releases": 0.027,
+      "loopEver": 0.017,
+      "cqDelta": -5.363,
+      "minutes": 19.412
      },
      "Marcus": {
-      "d30": 0.091,
-      "d7": 0.563,
-      "sessions": 2.17,
-      "stories": 0.585,
-      "releases": 0.01,
-      "loopEver": 0,
-      "cqDelta": -13.83,
-      "minutes": 12.15
+      "d30": 0.094,
+      "d7": 0.515,
+      "sessions": 2.139,
+      "stories": 0.581,
+      "releases": 0.008,
+      "loopEver": 0.003,
+      "cqDelta": -9.011,
+      "minutes": 11.747
      },
      "Angela": {
-      "d30": 0.023,
-      "d7": 0.693,
-      "sessions": 1.36,
-      "stories": 1.01,
-      "releases": 0.015,
-      "loopEver": 0.003,
-      "cqDelta": -2.05,
-      "minutes": 13.1
+      "d30": 0.02,
+      "d7": 0.689,
+      "sessions": 1.325,
+      "stories": 0.973,
+      "releases": 0.016,
+      "loopEver": 0.007,
+      "cqDelta": -1.881,
+      "minutes": 12.488
      },
      "Sofia": {
-      "d30": 0.118,
-      "d7": 0.718,
-      "sessions": 3.575,
-      "stories": 3.195,
-      "releases": 0.62,
-      "loopEver": 0.214,
-      "cqDelta": 0,
-      "minutes": 50.1
+      "d30": 0.129,
+      "d7": 0.748,
+      "sessions": 3.785,
+      "stories": 3.388,
+      "releases": 0.648,
+      "loopEver": 0.23,
+      "cqDelta": -0.703,
+      "minutes": 52.935
      },
      "James": {
-      "d30": 0.01,
-      "d7": 0.36,
-      "sessions": 0.41,
-      "stories": 0.035,
+      "d30": 0.005,
+      "d7": 0.352,
+      "sessions": 0.391,
+      "stories": 0.019,
       "releases": 0,
       "loopEver": 0,
       "cqDelta": 0,
-      "minutes": 1
+      "minutes": 0.982
      },
      "Ana": {
-      "d30": 0.07,
-      "d7": 0.66,
-      "sessions": 3.04,
-      "stories": 2.73,
-      "releases": 0.94,
-      "loopEver": 0.26,
-      "cqDelta": 0,
-      "minutes": 45.3
+      "d30": 0.055,
+      "d7": 0.673,
+      "sessions": 2.732,
+      "stories": 2.454,
+      "releases": 0.802,
+      "loopEver": 0.212,
+      "cqDelta": -2.991,
+      "minutes": 40.753
      },
      "Gordon": {
       "d30": 0,
-      "d7": 0.029,
-      "sessions": 0.03,
+      "d7": 0.032,
+      "sessions": 0.035,
       "stories": 0,
       "releases": 0,
       "loopEver": 0,
       "cqDelta": 0,
-      "minutes": 0
+      "minutes": 0.041
      },
      "Rosa": {
-      "d30": 0,
-      "d7": 0.067,
-      "sessions": 0.1,
-      "stories": 0,
+      "d30": 0.004,
+      "d7": 0.071,
+      "sessions": 0.113,
+      "stories": 0.008,
       "releases": 0,
       "loopEver": 0,
       "cqDelta": 0,
-      "minutes": 0.3
+      "minutes": 0.353
      }
     },
-    "seconds": 2,
+    "seconds": 16,
     "knobs": {
      "storyCost": null,
      "relTake": 0.21,
@@ -4359,18 +4365,18 @@
     },
     "id": "C9",
     "nm": "A way to hand it to somebody",
-    "step": 7.95,
-    "fromBase": 7.95
+    "step": 7.75,
+    "fromBase": 7.75
    },
    {
     "label": "cum:C5",
-    "runs": 2,
-    "settledAt": 2,
-    "total": 54.9,
-    "letter": "D+",
-    "sd": 0.849,
+    "runs": 15,
+    "settledAt": 15,
+    "total": 55.3,
+    "letter": "C-",
+    "sd": 0.537,
     "lo": 54.3,
-    "hi": 55.5,
+    "hi": 56,
     "rows": [
      {
       "k": "ICP alignment",
@@ -4386,13 +4392,13 @@
      },
      {
       "k": "Core loop",
-      "v": 1.1,
+      "v": 1.15,
       "moves": true,
       "carried": false
      },
      {
       "k": "Emotional",
-      "v": 9.9,
+      "v": 9.93,
       "moves": true,
       "carried": false
      },
@@ -4416,13 +4422,13 @@
      },
      {
       "k": "Monetization",
-      "v": 2.4,
+      "v": 2.43,
       "moves": true,
       "carried": false
      },
      {
       "k": "Retention",
-      "v": 5.2,
+      "v": 5.49,
       "moves": true,
       "carried": false
      },
@@ -4433,135 +4439,135 @@
       "carried": false
      }
     ],
-    "d30": 0.0825,
-    "d7": 0.629,
-    "d90": 0.005,
-    "loopEver": 0.123,
-    "readShare": 0.9997,
-    "inferShare": 0.016,
-    "stories": 1840.5,
-    "releases": 1067,
-    "minutes": 29442,
+    "d30": 0.089,
+    "d7": 0.63973,
+    "d90": 0.00353,
+    "loopEver": 0.1259,
+    "readShare": 0.9999,
+    "inferShare": 0.0141,
+    "stories": 1913.9,
+    "releases": 1121.1,
+    "minutes": 30747,
     "lostTop": [
      {
       "k": "DRIFT",
-      "n": 303,
+      "n": 310,
       "nm": "The absence became permanent"
      },
      {
       "k": "F3",
-      "n": 133,
+      "n": 136,
       "nm": "Nothing is above the line, so there is nothing to release"
      },
      {
       "k": "F4",
-      "n": 108,
+      "n": 111,
       "nm": "The reading does not move"
      },
      {
       "k": "F14",
-      "n": 42,
+      "n": 43,
       "nm": "Every story makes the number worse"
      },
      {
       "k": "F7",
-      "n": 41,
+      "n": 43,
       "nm": "The intake is sixty three questions"
      }
     ],
     "icp": {
      "Diane": {
-      "d30": 0.014,
-      "d7": 0.817,
-      "sessions": 1.26,
+      "d30": 0.016,
+      "d7": 0.853,
+      "sessions": 1.317,
       "stories": 0,
       "releases": 0,
       "loopEver": 0,
-      "cqDelta": -0.565,
-      "minutes": 2
+      "cqDelta": -0.895,
+      "minutes": 2.12
      },
      "Derek": {
-      "d30": 0.032,
-      "d7": 0.682,
-      "sessions": 2.41,
-      "stories": 0.98,
-      "releases": 0.295,
-      "loopEver": 0.115,
-      "cqDelta": 0,
-      "minutes": 21.8
+      "d30": 0.039,
+      "d7": 0.718,
+      "sessions": 2.488,
+      "stories": 0.925,
+      "releases": 0.26,
+      "loopEver": 0.107,
+      "cqDelta": -1.179,
+      "minutes": 22.54
      },
      "Marcus": {
-      "d30": 0.119,
-      "d7": 0.509,
-      "sessions": 2.755,
-      "stories": 0.795,
-      "releases": 0.35,
-      "loopEver": 0.031,
-      "cqDelta": -25.84,
-      "minutes": 15.05
+      "d30": 0.132,
+      "d7": 0.52,
+      "sessions": 2.923,
+      "stories": 0.841,
+      "releases": 0.382,
+      "loopEver": 0.05,
+      "cqDelta": -11.066,
+      "minutes": 15.973
      },
      "Angela": {
-      "d30": 0.043,
-      "d7": 0.72,
-      "sessions": 1.88,
-      "stories": 1.405,
-      "releases": 0.21,
-      "loopEver": 0.06,
-      "cqDelta": -9.415,
-      "minutes": 17.95
+      "d30": 0.04,
+      "d7": 0.7,
+      "sessions": 1.789,
+      "stories": 1.327,
+      "releases": 0.15,
+      "loopEver": 0.045,
+      "cqDelta": -2.725,
+      "minutes": 16.827
      },
      "Sofia": {
-      "d30": 0.289,
+      "d30": 0.31,
       "d7": 0.75,
-      "sessions": 8.26,
-      "stories": 7.8,
-      "releases": 5.52,
-      "loopEver": 0.518,
-      "cqDelta": -12.03,
-      "minutes": 115.65
+      "sessions": 8.627,
+      "stories": 8.156,
+      "releases": 5.766,
+      "loopEver": 0.525,
+      "cqDelta": -6.977,
+      "minutes": 120.493
      },
      "James": {
-      "d30": 0.005,
-      "d7": 0.36,
-      "sessions": 0.395,
-      "stories": 0.015,
+      "d30": 0.004,
+      "d7": 0.337,
+      "sessions": 0.373,
+      "stories": 0.017,
       "releases": 0,
       "loopEver": 0,
       "cqDelta": 0,
-      "minutes": 0.95
+      "minutes": 0.907
      },
      "Ana": {
-      "d30": 0.16,
-      "d7": 0.64,
-      "sessions": 5.24,
-      "stories": 4.85,
-      "releases": 3.15,
-      "loopEver": 0.34,
-      "cqDelta": -12.515,
-      "minutes": 79.7
+      "d30": 0.172,
+      "d7": 0.692,
+      "sessions": 5.936,
+      "stories": 5.576,
+      "releases": 3.725,
+      "loopEver": 0.389,
+      "cqDelta": -8.361,
+      "minutes": 89.707
      },
      "Gordon": {
       "d30": 0,
-      "d7": 0.071,
-      "sessions": 0.085,
+      "d7": 0.044,
+      "sessions": 0.047,
       "stories": 0,
       "releases": 0,
       "loopEver": 0,
       "cqDelta": 0,
-      "minutes": 0.1
+      "minutes": 0.053
      },
      "Rosa": {
       "d30": 0,
-      "d7": 0.067,
-      "sessions": 0.1,
-      "stories": 0.035,
+      "d7": 0.076,
+      "sessions": 0.135,
+      "stories": 0.019,
       "releases": 0,
       "loopEver": 0,
       "cqDelta": 0,
-      "minutes": 0.3
+      "minutes": 0.4
      }
     },
-    "seconds": 4,
+    "seconds": 28,
     "knobs": {
      "storyCost": null,
      "relTake": 0.21,
@@ -4587,22 +4593,22 @@
     },
     "id": "C5",
     "nm": "The lexicon reads ordinary sentences",
-    "step": 8,
-    "fromBase": 15.95
+    "step": 8.64,
+    "fromBase": 16.39
    },
    {
     "label": "cum:C10",
-    "runs": 2,
-    "settledAt": 2,
-    "total": 61.35,
+    "runs": 20,
+    "settledAt": 20,
+    "total": 61.52,
     "letter": "C",
-    "sd": 0.495,
-    "lo": 61,
-    "hi": 61.7,
+    "sd": 0.55,
+    "lo": 60.5,
+    "hi": 63,
     "rows": [
      {
       "k": "ICP alignment",
-      "v": 3.85,
+      "v": 3.79,
       "moves": true,
       "carried": false
      },
@@ -4614,13 +4620,13 @@
      },
      {
       "k": "Core loop",
-      "v": 1.2,
+      "v": 1.18,
       "moves": true,
       "carried": false
      },
      {
       "k": "Emotional",
-      "v": 9.9,
+      "v": 9.94,
       "moves": true,
       "carried": false
      },
@@ -4644,13 +4650,13 @@
      },
      {
       "k": "Monetization",
-      "v": 8.4,
+      "v": 8.48,
       "moves": true,
       "carried": false
      },
      {
       "k": "Retention",
-      "v": 5.5,
+      "v": 5.64,
       "moves": true,
       "carried": false
      },
@@ -4661,135 +4667,135 @@
       "carried": false
      }
     ],
-    "d30": 0.0885,
-    "d7": 0.636,
-    "d90": 0.005,
-    "loopEver": 0.1335,
-    "readShare": 0.9998,
-    "inferShare": 0.0146,
-    "stories": 1988.5,
-    "releases": 1143.5,
-    "minutes": 31673,
+    "d30": 0.0922,
+    "d7": 0.6398,
+    "d90": 0.00365,
+    "loopEver": 0.1241,
+    "readShare": 0.9999,
+    "inferShare": 0.0134,
+    "stories": 2031.3,
+    "releases": 1209.7,
+    "minutes": 32507,
     "lostTop": [
      {
       "k": "DRIFT",
-      "n": 313,
+      "n": 314,
       "nm": "The absence became permanent"
      },
      {
       "k": "F3",
-      "n": 132,
+      "n": 139,
       "nm": "Nothing is above the line, so there is nothing to release"
      },
      {
       "k": "F4",
-      "n": 108,
+      "n": 112,
       "nm": "The reading does not move"
      },
      {
       "k": "F7",
-      "n": 43,
+      "n": 42,
       "nm": "The intake is sixty three questions"
      },
      {
       "k": "F14",
-      "n": 40,
+      "n": 38,
       "nm": "Every story makes the number worse"
      }
     ],
     "icp": {
      "Diane": {
-      "d30": 0.014,
-      "d7": 0.817,
-      "sessions": 1.26,
+      "d30": 0.016,
+      "d7": 0.854,
+      "sessions": 1.321,
       "stories": 0,
       "releases": 0,
       "loopEver": 0,
-      "cqDelta": -0.565,
-      "minutes": 2
+      "cqDelta": -1.043,
+      "minutes": 2.125
      },
      "Derek": {
-      "d30": 0.032,
-      "d7": 0.682,
-      "sessions": 2.41,
-      "stories": 0.98,
-      "releases": 0.295,
-      "loopEver": 0.115,
-      "cqDelta": 0,
-      "minutes": 21.8
+      "d30": 0.034,
+      "d7": 0.716,
+      "sessions": 2.454,
+      "stories": 0.898,
+      "releases": 0.245,
+      "loopEver": 0.103,
+      "cqDelta": -0.885,
+      "minutes": 22.17
      },
      "Marcus": {
-      "d30": 0.125,
-      "d7": 0.497,
-      "sessions": 2.945,
-      "stories": 0.85,
+      "d30": 0.138,
+      "d7": 0.516,
+      "sessions": 3.028,
+      "stories": 0.867,
       "releases": 0.41,
-      "loopEver": 0.044,
-      "cqDelta": -25.545,
-      "minutes": 16.1
+      "loopEver": 0.052,
+      "cqDelta": -14.268,
+      "minutes": 16.56
      },
      "Angela": {
-      "d30": 0.047,
-      "d7": 0.72,
-      "sessions": 1.88,
-      "stories": 1.415,
-      "releases": 0.22,
-      "loopEver": 0.06,
-      "cqDelta": -9.415,
-      "minutes": 17.95
+      "d30": 0.042,
+      "d7": 0.702,
+      "sessions": 1.795,
+      "stories": 1.333,
+      "releases": 0.151,
+      "loopEver": 0.043,
+      "cqDelta": -2.044,
+      "minutes": 16.955
      },
      "Sofia": {
-      "d30": 0.311,
-      "d7": 0.8,
-      "sessions": 8.935,
-      "stories": 8.44,
-      "releases": 5.785,
-      "loopEver": 0.564,
-      "cqDelta": -12.155,
-      "minutes": 125.45
+      "d30": 0.315,
+      "d7": 0.757,
+      "sessions": 9.142,
+      "stories": 8.674,
+      "releases": 6.107,
+      "loopEver": 0.516,
+      "cqDelta": -9.326,
+      "minutes": 127.88
      },
      "James": {
-      "d30": 0.005,
-      "d7": 0.36,
-      "sessions": 0.38,
-      "stories": 0.015,
+      "d30": 0.002,
+      "d7": 0.334,
+      "sessions": 0.366,
+      "stories": 0.021,
       "releases": 0,
       "loopEver": 0,
-      "cqDelta": 0,
-      "minutes": 0.85
+      "cqDelta": -0.24,
+      "minutes": 0.91
      },
      "Ana": {
-      "d30": 0.19,
-      "d7": 0.68,
-      "sessions": 6.28,
-      "stories": 5.79,
-      "releases": 3.73,
-      "loopEver": 0.38,
-      "cqDelta": 0,
-      "minutes": 93.4
+      "d30": 0.218,
+      "d7": 0.689,
+      "sessions": 6.857,
+      "stories": 6.452,
+      "releases": 4.508,
+      "loopEver": 0.391,
+      "cqDelta": -1.28,
+      "minutes": 103.11
      },
      "Gordon": {
       "d30": 0,
-      "d7": 0.043,
-      "sessions": 0.045,
+      "d7": 0.03,
+      "sessions": 0.032,
       "stories": 0,
       "releases": 0,
       "loopEver": 0,
       "cqDelta": 0,
-      "minutes": 0.05
+      "minutes": 0.03
      },
      "Rosa": {
       "d30": 0,
-      "d7": 0.133,
-      "sessions": 0.165,
-      "stories": 0.035,
+      "d7": 0.11,
+      "sessions": 0.187,
+      "stories": 0.021,
       "releases": 0,
       "loopEver": 0,
       "cqDelta": 0,
-      "minutes": 0.55
+      "minutes": 0.595
      }
     },
-    "seconds": 4,
+    "seconds": 40,
     "knobs": {
      "storyCost": null,
      "relTake": 0.21,
@@ -4815,22 +4821,22 @@
     },
     "id": "C10",
     "nm": "A price, and an allowance with something behind it",
-    "step": 6.45,
-    "fromBase": 22.4
+    "step": 6.22,
+    "fromBase": 22.61
    },
    {
     "label": "cum:C3",
-    "runs": 2,
-    "settledAt": 2,
-    "total": 67.3,
+    "runs": 18,
+    "settledAt": 18,
+    "total": 66.93,
     "letter": "C+",
-    "sd": 0,
-    "lo": 67.3,
-    "hi": 67.3,
+    "sd": 0.336,
+    "lo": 66.3,
+    "hi": 67.4,
     "rows": [
      {
       "k": "ICP alignment",
-      "v": 4.85,
+      "v": 4.81,
       "moves": true,
       "carried": false
      },
@@ -4842,7 +4848,7 @@
      },
      {
       "k": "Core loop",
-      "v": 2.95,
+      "v": 2.87,
       "moves": true,
       "carried": false
      },
@@ -4872,13 +4878,13 @@
      },
      {
       "k": "Monetization",
-      "v": 9.5,
+      "v": 9.51,
       "moves": true,
       "carried": false
      },
      {
       "k": "Retention",
-      "v": 7.6,
+      "v": 7.34,
       "moves": true,
       "carried": false
      },
@@ -4889,29 +4895,29 @@
       "carried": false
      }
     ],
-    "d30": 0.1795,
-    "d7": 0.6325,
-    "d90": 0.024,
-    "loopEver": 0.267,
-    "readShare": 1,
-    "inferShare": 0.0216,
-    "stories": 4006,
-    "releases": 4660,
-    "minutes": 63092,
+    "d30": 0.16728,
+    "d7": 0.64033,
+    "d90": 0.02161,
+    "loopEver": 0.2639,
+    "readShare": 0.9999,
+    "inferShare": 0.0193,
+    "stories": 3930.4,
+    "releases": 4496.3,
+    "minutes": 61510,
     "lostTop": [
      {
       "k": "DRIFT",
-      "n": 392,
+      "n": 395,
       "nm": "The absence became permanent"
      },
      {
       "k": "F4",
-      "n": 106,
+      "n": 119,
       "nm": "The reading does not move"
      },
      {
       "k": "F14",
-      "n": 51,
+      "n": 46,
       "nm": "Every story makes the number worse"
      },
      {
@@ -4921,103 +4927,103 @@
      },
      {
       "k": "F6",
-      "n": 21,
+      "n": 25,
       "nm": "More simultaneous choices than a working memory holds"
      }
     ],
     "icp": {
      "Diane": {
-      "d30": 0.014,
-      "d7": 0.817,
-      "sessions": 1.26,
+      "d30": 0.016,
+      "d7": 0.854,
+      "sessions": 1.321,
       "stories": 0,
       "releases": 0,
       "loopEver": 0,
-      "cqDelta": -0.565,
-      "minutes": 2
+      "cqDelta": -1.038,
+      "minutes": 2.122
      },
      "Derek": {
-      "d30": 0.194,
+      "d30": 0.165,
       "d7": 0.712,
-      "sessions": 7.285,
-      "stories": 2.95,
-      "releases": 5.695,
-      "loopEver": 0.429,
-      "cqDelta": -17.82,
-      "minutes": 65.6
+      "sessions": 6.541,
+      "stories": 2.639,
+      "releases": 5.004,
+      "loopEver": 0.425,
+      "cqDelta": -20.708,
+      "minutes": 58.794
      },
      "Marcus": {
-      "d30": 0.194,
-      "d7": 0.512,
-      "sessions": 4.3,
-      "stories": 1.245,
-      "releases": 2.605,
-      "loopEver": 0.103,
-      "cqDelta": -25.95,
-      "minutes": 23.7
+      "d30": 0.17,
+      "d7": 0.504,
+      "sessions": 4.082,
+      "stories": 1.204,
+      "releases": 2.382,
+      "loopEver": 0.089,
+      "cqDelta": -23.269,
+      "minutes": 22.411
      },
      "Angela": {
-      "d30": 0.15,
-      "d7": 0.71,
-      "sessions": 3.805,
-      "stories": 3.02,
-      "releases": 2.755,
-      "loopEver": 0.313,
-      "cqDelta": -9.495,
-      "minutes": 36.3
+      "d30": 0.133,
+      "d7": 0.705,
+      "sessions": 3.769,
+      "stories": 2.969,
+      "releases": 2.78,
+      "loopEver": 0.299,
+      "cqDelta": -6.248,
+      "minutes": 35.833
      },
      "Sofia": {
-      "d30": 0.461,
-      "d7": 0.764,
-      "sessions": 15.135,
-      "stories": 14.565,
-      "releases": 14.605,
-      "loopEver": 0.686,
-      "cqDelta": -13.58,
-      "minutes": 211.6
+      "d30": 0.47,
+      "d7": 0.763,
+      "sessions": 15.279,
+      "stories": 14.689,
+      "releases": 14.719,
+      "loopEver": 0.712,
+      "cqDelta": -13.041,
+      "minutes": 213.728
      },
      "James": {
-      "d30": 0.005,
-      "d7": 0.325,
-      "sessions": 0.35,
-      "stories": 0.005,
+      "d30": 0.004,
+      "d7": 0.346,
+      "sessions": 0.371,
+      "stories": 0.017,
       "releases": 0,
       "loopEver": 0,
-      "cqDelta": 0,
-      "minutes": 0.85
+      "cqDelta": -0.109,
+      "minutes": 0.917
      },
      "Ana": {
-      "d30": 0.51,
-      "d7": 0.69,
-      "sessions": 16.8,
-      "stories": 16.25,
-      "releases": 16.32,
-      "loopEver": 0.69,
-      "cqDelta": -27.83,
-      "minutes": 252.55
+      "d30": 0.459,
+      "d7": 0.701,
+      "sessions": 16.191,
+      "stories": 15.707,
+      "releases": 15.733,
+      "loopEver": 0.656,
+      "cqDelta": -24.669,
+      "minutes": 243.072
      },
      "Gordon": {
       "d30": 0,
-      "d7": 0.043,
-      "sessions": 0.06,
+      "d7": 0.037,
+      "sessions": 0.042,
       "stories": 0,
       "releases": 0,
       "loopEver": 0,
       "cqDelta": 0,
-      "minutes": 0.1
+      "minutes": 0.033
      },
      "Rosa": {
-      "d30": 0,
-      "d7": 0.033,
-      "sessions": 0.035,
-      "stories": 0,
+      "d30": 0.004,
+      "d7": 0.078,
+      "sessions": 0.104,
+      "stories": 0.016,
       "releases": 0,
       "loopEver": 0,
       "cqDelta": 0,
-      "minutes": 0.05
+      "minutes": 0.3
      }
     },
-    "seconds": 9,
+    "seconds": 75,
     "knobs": {
      "storyCost": null,
      "relTake": 0.21,
@@ -5043,34 +5049,34 @@
     },
     "id": "C3",
     "nm": "The release reads carrying rather than loaded",
-    "step": 5.95,
-    "fromBase": 28.35
+    "step": 5.41,
+    "fromBase": 28.02
    },
    {
-    "label": "cum:C7",
-    "runs": 2,
-    "settledAt": 2,
-    "total": 69.4,
+    "label": "cum:C8",
+    "runs": 18,
+    "settledAt": 18,
+    "total": 69.44,
     "letter": "C+",
-    "sd": 0,
-    "lo": 69.4,
-    "hi": 69.4,
+    "sd": 0.565,
+    "lo": 68.3,
+    "hi": 70.4,
     "rows": [
      {
       "k": "ICP alignment",
-      "v": 4.75,
+      "v": 4.89,
       "moves": true,
       "carried": false
      },
      {
       "k": "First touch",
-      "v": 7.8,
+      "v": 6.3,
       "moves": false,
       "carried": false
      },
      {
       "k": "Core loop",
-      "v": 3,
+      "v": 2.96,
       "moves": true,
       "carried": false
      },
@@ -5082,7 +5088,7 @@
      },
      {
       "k": "Behavioral flow",
-      "v": 2.7,
+      "v": 4.3,
       "moves": false,
       "carried": false
      },
@@ -5100,13 +5106,13 @@
      },
      {
       "k": "Monetization",
-      "v": 9.55,
+      "v": 9.61,
       "moves": true,
       "carried": false
      },
      {
       "k": "Retention",
-      "v": 7.7,
+      "v": 7.48,
       "moves": true,
       "carried": false
      },
@@ -5117,24 +5123,252 @@
       "carried": false
      }
     ],
-    "d30": 0.1835,
-    "d7": 0.6335,
-    "d90": 0.023,
-    "loopEver": 0.27,
+    "d30": 0.17428,
+    "d7": 0.64394,
+    "d90": 0.02289,
+    "loopEver": 0.2684,
     "readShare": 0.9999,
-    "inferShare": 0.0204,
-    "stories": 4286.5,
-    "releases": 4934.5,
-    "minutes": 66429,
+    "inferShare": 0.0221,
+    "stories": 4034.9,
+    "releases": 4718.3,
+    "minutes": 63671,
     "lostTop": [
      {
       "k": "DRIFT",
-      "n": 394,
+      "n": 407,
       "nm": "The absence became permanent"
      },
      {
       "k": "F4",
-      "n": 108,
+      "n": 114,
+      "nm": "The reading does not move"
+     },
+     {
+      "k": "F14",
+      "n": 48,
+      "nm": "Every story makes the number worse"
+     },
+     {
+      "k": "F7",
+      "n": 41,
+      "nm": "The intake is sixty three questions"
+     },
+     {
+      "k": "F5",
+      "n": 16,
+      "nm": "The surface they wanted is off the tab strip"
+     }
+    ],
+    "icp": {
+     "Diane": {
+      "d30": 0.015,
+      "d7": 0.851,
+      "sessions": 1.362,
+      "stories": 0,
+      "releases": 0,
+      "loopEver": 0,
+      "cqDelta": -0.939,
+      "minutes": 2.189
+     },
+     "Derek": {
+      "d30": 0.185,
+      "d7": 0.722,
+      "sessions": 7.548,
+      "stories": 3.065,
+      "releases": 5.958,
+      "loopEver": 0.455,
+      "cqDelta": -34.075,
+      "minutes": 67.872
+     },
+     "Marcus": {
+      "d30": 0.186,
+      "d7": 0.517,
+      "sessions": 4.522,
+      "stories": 1.328,
+      "releases": 2.672,
+      "loopEver": 0.098,
+      "cqDelta": -23.724,
+      "minutes": 24.733
+     },
+     "Angela": {
+      "d30": 0.13,
+      "d7": 0.708,
+      "sessions": 3.648,
+      "stories": 2.861,
+      "releases": 2.69,
+      "loopEver": 0.282,
+      "cqDelta": -3.456,
+      "minutes": 34.811
+     },
+     "Sofia": {
+      "d30": 0.48,
+      "d7": 0.771,
+      "sessions": 15.638,
+      "stories": 15.047,
+      "releases": 15.078,
+      "loopEver": 0.719,
+      "cqDelta": -13.053,
+      "minutes": 218.889
+     },
+     "James": {
+      "d30": 0.008,
+      "d7": 0.345,
+      "sessions": 0.394,
+      "stories": 0.024,
+      "releases": 0.001,
+      "loopEver": 0,
+      "cqDelta": 0,
+      "minutes": 0.983
+     },
+     "Ana": {
+      "d30": 0.456,
+      "d7": 0.686,
+      "sessions": 15.73,
+      "stories": 15.26,
+      "releases": 15.267,
+      "loopEver": 0.649,
+      "cqDelta": -26.214,
+      "minutes": 236.128
+     },
+     "Gordon": {
+      "d30": 0,
+      "d7": 0.037,
+      "sessions": 0.039,
+      "stories": 0,
+      "releases": 0,
+      "loopEver": 0,
+      "cqDelta": 0,
+      "minutes": 0.05
+     },
+     "Rosa": {
+      "d30": 0,
+      "d7": 0.081,
+      "sessions": 0.146,
+      "stories": 0.027,
+      "releases": 0,
+      "loopEver": 0,
+      "cqDelta": 0,
+      "minutes": 0.456
+     }
+    },
+    "seconds": 77,
+    "knobs": {
+     "storyCost": null,
+     "relTake": 0.21,
+     "relInstall": 0.62,
+     "relCompound": false,
+     "relStick": false,
+     "carrying": true,
+     "costLine": false,
+     "lex": true,
+     "inferAsk": false,
+     "push": false,
+     "nudge": 0,
+     "record": false,
+     "refer": true,
+     "money": true,
+     "enforce": true,
+     "doneFlag": false,
+     "bandFix": false,
+     "tapFloor": false,
+     "menu": false,
+     "foldRails": true,
+     "foldTop": false
+    },
+    "id": "C8",
+    "nm": "The rails ship folded",
+    "step": 2.51,
+    "fromBase": 30.53
+   },
+   {
+    "label": "cum:C12",
+    "runs": 16,
+    "settledAt": 16,
+    "total": 71.64,
+    "letter": "B-",
+    "sd": 0.6,
+    "lo": 70.4,
+    "hi": 72.6,
+    "rows": [
+     {
+      "k": "ICP alignment",
+      "v": 4.89,
+      "moves": true,
+      "carried": false
+     },
+     {
+      "k": "First touch",
+      "v": 6.3,
+      "moves": false,
+      "carried": false
+     },
+     {
+      "k": "Core loop",
+      "v": 2.98,
+      "moves": true,
+      "carried": false
+     },
+     {
+      "k": "Emotional",
+      "v": 9.9,
+      "moves": true,
+      "carried": false
+     },
+     {
+      "k": "Behavioral flow",
+      "v": 4.3,
+      "moves": false,
+      "carried": false
+     },
+     {
+      "k": "Visual and kinetic",
+      "v": 8,
+      "moves": false,
+      "carried": true
+     },
+     {
+      "k": "Technical",
+      "v": 10,
+      "moves": false,
+      "carried": false
+     },
+     {
+      "k": "Monetization",
+      "v": 9.68,
+      "moves": true,
+      "carried": false
+     },
+     {
+      "k": "Retention",
+      "v": 7.58,
+      "moves": true,
+      "carried": false
+     },
+     {
+      "k": "Referral",
+      "v": 8,
+      "moves": false,
+      "carried": false
+     }
+    ],
+    "d30": 0.17912,
+    "d7": 0.64056,
+    "d90": 0.02256,
+    "loopEver": 0.2698,
+    "readShare": 0.9999,
+    "inferShare": 0.0227,
+    "stories": 4078.4,
+    "releases": 4803.8,
+    "minutes": 64426,
+    "lostTop": [
+     {
+      "k": "DRIFT",
+      "n": 409,
+      "nm": "The absence became permanent"
+     },
+     {
+      "k": "F4",
+      "n": 112,
       "nm": "The reading does not move"
      },
      {
@@ -5144,336 +5378,108 @@
      },
      {
       "k": "F7",
-      "n": 49,
-      "nm": "The intake is sixty three questions"
-     },
-     {
-      "k": "F6",
-      "n": 22,
-      "nm": "More simultaneous choices than a working memory holds"
-     }
-    ],
-    "icp": {
-     "Diane": {
-      "d30": 0.014,
-      "d7": 0.817,
-      "sessions": 1.26,
-      "stories": 0,
-      "releases": 0,
-      "loopEver": 0,
-      "cqDelta": -0.565,
-      "minutes": 2
-     },
-     "Derek": {
-      "d30": 0.194,
-      "d7": 0.712,
-      "sessions": 7.285,
-      "stories": 2.95,
-      "releases": 5.695,
-      "loopEver": 0.429,
-      "cqDelta": -17.82,
-      "minutes": 65.6
-     },
-     "Marcus": {
-      "d30": 0.194,
-      "d7": 0.512,
-      "sessions": 4.3,
-      "stories": 1.245,
-      "releases": 2.605,
-      "loopEver": 0.103,
-      "cqDelta": -25.95,
-      "minutes": 23.7
-     },
-     "Angela": {
-      "d30": 0.187,
-      "d7": 0.713,
-      "sessions": 4.785,
-      "stories": 3.925,
-      "releases": 3.69,
-      "loopEver": 0.343,
-      "cqDelta": 0,
-      "minutes": 45.55
-     },
-     "Sofia": {
-      "d30": 0.443,
-      "d7": 0.757,
-      "sessions": 14.945,
-      "stories": 14.375,
-      "releases": 14.39,
-      "loopEver": 0.686,
-      "cqDelta": -13.5,
-      "minutes": 207.7
-     },
-     "James": {
-      "d30": 0.005,
-      "d7": 0.315,
-      "sessions": 0.355,
-      "stories": 0.045,
-      "releases": 0,
-      "loopEver": 0,
-      "cqDelta": 0,
-      "minutes": 0.95
-     },
-     "Ana": {
-      "d30": 0.53,
-      "d7": 0.71,
-      "sessions": 20.14,
-      "stories": 19.59,
-      "releases": 19.6,
-      "loopEver": 0.66,
-      "cqDelta": -28.05,
-      "minutes": 302.05
-     },
-     "Gordon": {
-      "d30": 0,
-      "d7": 0.029,
-      "sessions": 0.03,
-      "stories": 0,
-      "releases": 0,
-      "loopEver": 0,
-      "cqDelta": 0,
-      "minutes": 0.05
-     },
-     "Rosa": {
-      "d30": 0,
-      "d7": 0.167,
-      "sessions": 0.23,
-      "stories": 0.035,
-      "releases": 0,
-      "loopEver": 0,
-      "cqDelta": 0,
-      "minutes": 0.65
-     }
-    },
-    "seconds": 9,
-    "knobs": {
-     "storyCost": null,
-     "relTake": 0.21,
-     "relInstall": 0.62,
-     "relCompound": false,
-     "relStick": false,
-     "carrying": true,
-     "costLine": false,
-     "lex": true,
-     "inferAsk": false,
-     "push": false,
-     "nudge": 0,
-     "record": false,
-     "refer": true,
-     "money": true,
-     "enforce": true,
-     "doneFlag": false,
-     "bandFix": false,
-     "tapFloor": false,
-     "menu": true,
-     "foldRails": false,
-     "foldTop": false
-    },
-    "id": "C7",
-    "nm": "The two level menu",
-    "step": 2.1,
-    "fromBase": 30.45
-   },
-   {
-    "label": "cum:C8",
-    "runs": 2,
-    "settledAt": 2,
-    "total": 72.1,
-    "letter": "B-",
-    "sd": 0,
-    "lo": 72.1,
-    "hi": 72.1,
-    "rows": [
-     {
-      "k": "ICP alignment",
-      "v": 4.75,
-      "moves": true,
-      "carried": false
-     },
-     {
-      "k": "First touch",
-      "v": 7.9,
-      "moves": false,
-      "carried": false
-     },
-     {
-      "k": "Core loop",
-      "v": 2.95,
-      "moves": true,
-      "carried": false
-     },
-     {
-      "k": "Emotional",
-      "v": 9.9,
-      "moves": true,
-      "carried": false
-     },
-     {
-      "k": "Behavioral flow",
-      "v": 5.5,
-      "moves": false,
-      "carried": false
-     },
-     {
-      "k": "Visual and kinetic",
-      "v": 8,
-      "moves": false,
-      "carried": true
-     },
-     {
-      "k": "Technical",
-      "v": 8,
-      "moves": false,
-      "carried": false
-     },
-     {
-      "k": "Monetization",
-      "v": 9.6,
-      "moves": true,
-      "carried": false
-     },
-     {
-      "k": "Retention",
-      "v": 7.5,
-      "moves": true,
-      "carried": false
-     },
-     {
-      "k": "Referral",
-      "v": 8,
-      "moves": false,
-      "carried": false
-     }
-    ],
-    "d30": 0.1755,
-    "d7": 0.6265,
-    "d90": 0.025,
-    "loopEver": 0.2675,
-    "readShare": 1,
-    "inferShare": 0.0185,
-    "stories": 4177.5,
-    "releases": 4890.5,
-    "minutes": 65062,
-    "lostTop": [
-     {
-      "k": "DRIFT",
-      "n": 404,
-      "nm": "The absence became permanent"
-     },
-     {
-      "k": "F4",
-      "n": 105,
-      "nm": "The reading does not move"
-     },
-     {
-      "k": "F14",
-      "n": 46,
-      "nm": "Every story makes the number worse"
-     },
-     {
-      "k": "F7",
-      "n": 44,
+      "n": 41,
       "nm": "The intake is sixty three questions"
      },
      {
       "k": "F10",
-      "n": 16,
+      "n": 19,
       "nm": "Nothing asked them to come back"
      }
     ],
     "icp": {
      "Diane": {
-      "d30": 0.011,
-      "d7": 0.828,
-      "sessions": 1.34,
+      "d30": 0.014,
+      "d7": 0.849,
+      "sessions": 1.362,
       "stories": 0,
       "releases": 0,
       "loopEver": 0,
-      "cqDelta": -1.535,
-      "minutes": 2.1
+      "cqDelta": -0.962,
+      "minutes": 2.188
      },
      "Derek": {
-      "d30": 0.191,
-      "d7": 0.665,
-      "sessions": 7.315,
-      "stories": 2.98,
-      "releases": 5.91,
-      "loopEver": 0.435,
-      "cqDelta": -35.555,
-      "minutes": 65.8
+      "d30": 0.205,
+      "d7": 0.711,
+      "sessions": 7.934,
+      "stories": 3.254,
+      "releases": 6.333,
+      "loopEver": 0.453,
+      "cqDelta": -33.089,
+      "minutes": 71.406
      },
      "Marcus": {
-      "d30": 0.178,
-      "d7": 0.481,
-      "sessions": 4.675,
-      "stories": 1.415,
-      "releases": 2.96,
-      "loopEver": 0.103,
-      "cqDelta": -25.715,
-      "minutes": 25.8
+      "d30": 0.196,
+      "d7": 0.515,
+      "sessions": 4.697,
+      "stories": 1.361,
+      "releases": 2.786,
+      "loopEver": 0.102,
+      "cqDelta": -23.661,
+      "minutes": 25.756
      },
      "Angela": {
-      "d30": 0.173,
-      "d7": 0.737,
-      "sessions": 4.69,
-      "stories": 3.825,
-      "releases": 3.6,
-      "loopEver": 0.343,
-      "cqDelta": 0,
-      "minutes": 45.05
+      "d30": 0.13,
+      "d7": 0.702,
+      "sessions": 3.729,
+      "stories": 2.947,
+      "releases": 2.763,
+      "loopEver": 0.292,
+      "cqDelta": -1.72,
+      "minutes": 35.3
      },
      "Sofia": {
-      "d30": 0.414,
-      "d7": 0.746,
-      "sessions": 13.85,
-      "stories": 13.315,
-      "releases": 13.335,
-      "loopEver": 0.654,
-      "cqDelta": -13.775,
-      "minutes": 193.35
+      "d30": 0.48,
+      "d7": 0.768,
+      "sessions": 15.499,
+      "stories": 14.92,
+      "releases": 14.938,
+      "loopEver": 0.713,
+      "cqDelta": -13.134,
+      "minutes": 216.863
      },
      "James": {
-      "d30": 0.01,
-      "d7": 0.335,
-      "sessions": 0.365,
-      "stories": 0.015,
+      "d30": 0.003,
+      "d7": 0.339,
+      "sessions": 0.382,
+      "stories": 0.021,
       "releases": 0,
       "loopEver": 0,
       "cqDelta": 0,
-      "minutes": 0.85
+      "minutes": 0.963
      },
      "Ana": {
-      "d30": 0.55,
-      "d7": 0.73,
-      "sessions": 20.62,
-      "stories": 20.1,
-      "releases": 20.1,
-      "loopEver": 0.68,
-      "cqDelta": -28.225,
-      "minutes": 308.8
+      "d30": 0.466,
+      "d7": 0.695,
+      "sessions": 15.988,
+      "stories": 15.477,
+      "releases": 15.513,
+      "loopEver": 0.656,
+      "cqDelta": -24.223,
+      "minutes": 240.237
      },
      "Gordon": {
       "d30": 0,
-      "d7": 0.043,
-      "sessions": 0.045,
+      "d7": 0.045,
+      "sessions": 0.048,
       "stories": 0,
       "releases": 0,
       "loopEver": 0,
       "cqDelta": 0,
-      "minutes": 0.1
+      "minutes": 0.056
      },
      "Rosa": {
-      "d30": 0,
-      "d7": 0.067,
-      "sessions": 0.07,
-      "stories": 0,
+      "d30": 0.004,
+      "d7": 0.1,
+      "sessions": 0.214,
+      "stories": 0.021,
       "releases": 0,
       "loopEver": 0,
       "cqDelta": 0,
-      "minutes": 0.15
+      "minutes": 0.625
      }
     },
-    "seconds": 9,
+    "seconds": 70,
     "knobs": {
      "storyCost": null,
      "relTake": 0.21,
@@ -5490,31 +5496,31 @@
      "refer": true,
      "money": true,
      "enforce": true,
-     "doneFlag": false,
-     "bandFix": false,
-     "tapFloor": false,
-     "menu": true,
+     "doneFlag": true,
+     "bandFix": true,
+     "tapFloor": true,
+     "menu": false,
      "foldRails": true,
      "foldTop": false
     },
-    "id": "C8",
-    "nm": "The rails ship folded",
-    "step": 2.7,
-    "fromBase": 33.15
+    "id": "C12",
+    "nm": "Three defects that are simply true",
+    "step": 2.2,
+    "fromBase": 32.73
    },
    {
-    "label": "cum:C12",
-    "runs": 2,
-    "settledAt": 2,
-    "total": 74.65,
+    "label": "cum:C7",
+    "runs": 18,
+    "settledAt": 18,
+    "total": 74.99,
     "letter": "B-",
-    "sd": 0.495,
+    "sd": 0.443,
     "lo": 74.3,
-    "hi": 75,
+    "hi": 75.7,
     "rows": [
      {
       "k": "ICP alignment",
-      "v": 4.85,
+      "v": 4.93,
       "moves": true,
       "carried": false
      },
@@ -5526,7 +5532,7 @@
      },
      {
       "k": "Core loop",
-      "v": 3.05,
+      "v": 3.18,
       "moves": true,
       "carried": false
      },
@@ -5556,13 +5562,13 @@
      },
      {
       "k": "Monetization",
-      "v": 9.65,
+      "v": 9.77,
       "moves": true,
       "carried": false
      },
      {
       "k": "Retention",
-      "v": 7.8,
+      "v": 7.81,
       "moves": true,
       "carried": false
      },
@@ -5573,135 +5579,135 @@
       "carried": false
      }
     ],
-    "d30": 0.1895,
-    "d7": 0.6355,
-    "d90": 0.022,
-    "loopEver": 0.2805,
-    "readShare": 1,
-    "inferShare": 0.019,
-    "stories": 4204,
-    "releases": 4930,
-    "minutes": 65300,
+    "d30": 0.19072,
+    "d7": 0.64489,
+    "d90": 0.02467,
+    "loopEver": 0.2866,
+    "readShare": 0.9999,
+    "inferShare": 0.0215,
+    "stories": 4440.9,
+    "releases": 5159.2,
+    "minutes": 68895,
     "lostTop": [
      {
       "k": "DRIFT",
-      "n": 419,
+      "n": 416,
       "nm": "The absence became permanent"
      },
      {
       "k": "F4",
-      "n": 104,
+      "n": 112,
       "nm": "The reading does not move"
      },
      {
       "k": "F14",
-      "n": 48,
+      "n": 54,
       "nm": "Every story makes the number worse"
      },
      {
       "k": "F7",
-      "n": 42,
+      "n": 43,
       "nm": "The intake is sixty three questions"
      },
      {
       "k": "F10",
-      "n": 22,
+      "n": 20,
       "nm": "Nothing asked them to come back"
      }
     ],
     "icp": {
      "Diane": {
-      "d30": 0.011,
-      "d7": 0.825,
-      "sessions": 1.345,
+      "d30": 0.014,
+      "d7": 0.852,
+      "sessions": 1.383,
       "stories": 0,
       "releases": 0,
       "loopEver": 0,
-      "cqDelta": -1.535,
-      "minutes": 2.1
+      "cqDelta": -0.904,
+      "minutes": 2.211
      },
      "Derek": {
-      "d30": 0.209,
-      "d7": 0.668,
-      "sessions": 7.96,
-      "stories": 3.27,
-      "releases": 6.5,
-      "loopEver": 0.468,
-      "cqDelta": -35.465,
-      "minutes": 71.8
+      "d30": 0.206,
+      "d7": 0.721,
+      "sessions": 8.106,
+      "stories": 3.324,
+      "releases": 6.483,
+      "loopEver": 0.463,
+      "cqDelta": -33.401,
+      "minutes": 72.817
      },
      "Marcus": {
-      "d30": 0.203,
-      "d7": 0.503,
-      "sessions": 4.485,
-      "stories": 1.32,
-      "releases": 2.685,
-      "loopEver": 0.116,
-      "cqDelta": -25.745,
-      "minutes": 24.6
+      "d30": 0.192,
+      "d7": 0.512,
+      "sessions": 4.64,
+      "stories": 1.357,
+      "releases": 2.756,
+      "loopEver": 0.102,
+      "cqDelta": -24.289,
+      "minutes": 25.361
      },
      "Angela": {
-      "d30": 0.25,
-      "d7": 0.747,
-      "sessions": 5.65,
-      "stories": 4.675,
-      "releases": 4.42,
-      "loopEver": 0.387,
-      "cqDelta": -8.58,
-      "minutes": 54.1
+      "d30": 0.201,
+      "d7": 0.696,
+      "sessions": 5.342,
+      "stories": 4.424,
+      "releases": 4.131,
+      "loopEver": 0.385,
+      "cqDelta": -8.535,
+      "minutes": 50.628
      },
      "Sofia": {
-      "d30": 0.396,
-      "d7": 0.739,
-      "sessions": 13.46,
-      "stories": 12.93,
-      "releases": 12.93,
-      "loopEver": 0.661,
-      "cqDelta": -13.485,
-      "minutes": 187.8
+      "d30": 0.474,
+      "d7": 0.774,
+      "sessions": 15.628,
+      "stories": 15.037,
+      "releases": 15.056,
+      "loopEver": 0.721,
+      "cqDelta": -13.168,
+      "minutes": 218.828
      },
      "James": {
-      "d30": 0.005,
-      "d7": 0.385,
-      "sessions": 0.425,
-      "stories": 0.025,
-      "releases": 0,
+      "d30": 0.004,
+      "d7": 0.362,
+      "sessions": 0.398,
+      "stories": 0.028,
+      "releases": 0.003,
       "loopEver": 0,
-      "cqDelta": 0,
-      "minutes": 1.05
+      "cqDelta": -0.128,
+      "minutes": 1.006
      },
      "Ana": {
-      "d30": 0.52,
-      "d7": 0.71,
-      "sessions": 18.92,
-      "stories": 18.46,
-      "releases": 18.46,
-      "loopEver": 0.64,
-      "cqDelta": -27.785,
-      "minutes": 284.95
+      "d30": 0.507,
+      "d7": 0.699,
+      "sessions": 18.272,
+      "stories": 17.74,
+      "releases": 17.77,
+      "loopEver": 0.659,
+      "cqDelta": -27.932,
+      "minutes": 274.261
      },
      "Gordon": {
       "d30": 0,
-      "d7": 0.043,
-      "sessions": 0.045,
+      "d7": 0.049,
+      "sessions": 0.052,
       "stories": 0,
       "releases": 0,
       "loopEver": 0,
       "cqDelta": 0,
-      "minutes": 0
+      "minutes": 0.056
      },
      "Rosa": {
-      "d30": 0,
-      "d7": 0.133,
-      "sessions": 0.2,
-      "stories": 0,
+      "d30": 0.004,
+      "d7": 0.1,
+      "sessions": 0.167,
+      "stories": 0.033,
       "releases": 0,
       "loopEver": 0,
       "cqDelta": 0,
-      "minutes": 0.55
+      "minutes": 0.539
      }
     },
-    "seconds": 9,
+    "seconds": 85,
     "knobs": {
      "storyCost": null,
      "relTake": 0.21,
@@ -5725,24 +5731,24 @@
      "foldRails": true,
      "foldTop": false
     },
-    "id": "C12",
-    "nm": "Three defects that are simply true",
-    "step": 2.55,
-    "fromBase": 35.7
+    "id": "C7",
+    "nm": "The two level menu",
+    "step": 3.35,
+    "fromBase": 36.08
    },
    {
     "label": "cum:C4",
-    "runs": 2,
-    "settledAt": 2,
-    "total": 76,
+    "runs": 18,
+    "settledAt": 18,
+    "total": 76.16,
     "letter": "B",
-    "sd": 0,
-    "lo": 76,
-    "hi": 76,
+    "sd": 0.424,
+    "lo": 75,
+    "hi": 77,
     "rows": [
      {
       "k": "ICP alignment",
-      "v": 5.05,
+      "v": 5.19,
       "moves": true,
       "carried": false
      },
@@ -5754,7 +5760,7 @@
      },
      {
       "k": "Core loop",
-      "v": 3.55,
+      "v": 3.51,
       "moves": true,
       "carried": false
      },
@@ -5784,13 +5790,13 @@
      },
      {
       "k": "Monetization",
-      "v": 9.95,
+      "v": 9.97,
       "moves": true,
       "carried": false
      },
      {
       "k": "Retention",
-      "v": 8.15,
+      "v": 8.19,
       "moves": true,
       "carried": false
      },
@@ -5801,34 +5807,34 @@
       "carried": false
      }
     ],
-    "d30": 0.214,
-    "d7": 0.6365,
-    "d90": 0.034,
-    "loopEver": 0.31,
-    "readShare": 0.9999,
-    "inferShare": 0.0289,
-    "stories": 4761.5,
-    "releases": 5865,
-    "minutes": 74418,
+    "d30": 0.21528,
+    "d7": 0.64183,
+    "d90": 0.02767,
+    "loopEver": 0.3069,
+    "readShare": 1,
+    "inferShare": 0.0258,
+    "stories": 4755.2,
+    "releases": 5760.9,
+    "minutes": 74546,
     "lostTop": [
      {
       "k": "DRIFT",
-      "n": 428,
+      "n": 438,
       "nm": "The absence became permanent"
      },
      {
       "k": "F4",
-      "n": 104,
+      "n": 103,
       "nm": "The reading does not move"
      },
      {
       "k": "F14",
-      "n": 56,
+      "n": 57,
       "nm": "Every story makes the number worse"
      },
      {
       "k": "F7",
-      "n": 28,
+      "n": 31,
       "nm": "The intake is sixty three questions"
      },
      {
@@ -5840,96 +5846,96 @@
     "icp": {
      "Diane": {
       "d30": 0.019,
-      "d7": 0.833,
-      "sessions": 1.545,
+      "d7": 0.846,
+      "sessions": 1.618,
       "stories": 0,
       "releases": 0,
       "loopEver": 0,
-      "cqDelta": -0.8,
-      "minutes": 2.45
+      "cqDelta": -1.163,
+      "minutes": 2.6
      },
      "Derek": {
-      "d30": 0.306,
-      "d7": 0.718,
-      "sessions": 11.435,
-      "stories": 4.78,
-      "releases": 9.595,
-      "loopEver": 0.565,
-      "cqDelta": -35.435,
-      "minutes": 102.65
+      "d30": 0.276,
+      "d7": 0.709,
+      "sessions": 10.447,
+      "stories": 4.316,
+      "releases": 8.574,
+      "loopEver": 0.54,
+      "cqDelta": -33.128,
+      "minutes": 94.178
      },
      "Marcus": {
-      "d30": 0.219,
-      "d7": 0.497,
-      "sessions": 5.795,
-      "stories": 1.83,
-      "releases": 3.86,
-      "loopEver": 0.147,
-      "cqDelta": -24.9,
-      "minutes": 31.9
+      "d30": 0.252,
+      "d7": 0.526,
+      "sessions": 6.084,
+      "stories": 1.857,
+      "releases": 3.904,
+      "loopEver": 0.134,
+      "cqDelta": -25.252,
+      "minutes": 33.456
      },
      "Angela": {
-      "d30": 0.25,
-      "d7": 0.74,
-      "sessions": 6.11,
-      "stories": 5.085,
-      "releases": 4.83,
-      "loopEver": 0.403,
-      "cqDelta": -9.69,
-      "minutes": 57.3
+      "d30": 0.22,
+      "d7": 0.697,
+      "sessions": 5.79,
+      "stories": 4.829,
+      "releases": 4.524,
+      "loopEver": 0.404,
+      "cqDelta": -3.153,
+      "minutes": 54.65
      },
      "Sofia": {
-      "d30": 0.407,
-      "d7": 0.746,
-      "sessions": 14.51,
-      "stories": 13.97,
-      "releases": 13.98,
-      "loopEver": 0.675,
-      "cqDelta": -13.34,
-      "minutes": 203.1
+      "d30": 0.471,
+      "d7": 0.769,
+      "sessions": 15.687,
+      "stories": 15.098,
+      "releases": 15.117,
+      "loopEver": 0.716,
+      "cqDelta": -12.894,
+      "minutes": 219.789
      },
      "James": {
-      "d30": 0.01,
-      "d7": 0.3,
-      "sessions": 0.39,
-      "stories": 0.02,
-      "releases": 0,
+      "d30": 0.007,
+      "d7": 0.357,
+      "sessions": 0.418,
+      "stories": 0.024,
+      "releases": 0.002,
       "loopEver": 0,
       "cqDelta": 0,
-      "minutes": 0.95
+      "minutes": 1.039
      },
      "Ana": {
-      "d30": 0.56,
-      "d7": 0.72,
-      "sessions": 19.19,
-      "stories": 18.7,
-      "releases": 18.69,
-      "loopEver": 0.71,
-      "cqDelta": -27.675,
-      "minutes": 285.5
+      "d30": 0.496,
+      "d7": 0.682,
+      "sessions": 18.166,
+      "stories": 17.673,
+      "releases": 17.672,
+      "loopEver": 0.657,
+      "cqDelta": -27.984,
+      "minutes": 272.572
      },
      "Gordon": {
       "d30": 0,
-      "d7": 0.057,
-      "sessions": 0.06,
+      "d7": 0.046,
+      "sessions": 0.051,
       "stories": 0,
       "releases": 0,
       "loopEver": 0,
       "cqDelta": 0,
-      "minutes": 0.1
+      "minutes": 0.061
      },
      "Rosa": {
-      "d30": 0,
-      "d7": 0.1,
-      "sessions": 0.265,
-      "stories": 0.035,
+      "d30": 0.004,
+      "d7": 0.085,
+      "sessions": 0.171,
+      "stories": 0.012,
       "releases": 0,
       "loopEver": 0,
       "cqDelta": 0,
-      "minutes": 0.65
+      "minutes": 0.5
      }
     },
-    "seconds": 11,
+    "seconds": 94,
     "knobs": {
      "storyCost": null,
      "relTake": 0.21,
@@ -5955,22 +5961,22 @@
     },
     "id": "C4",
     "nm": "What the holding costs, printed",
-    "step": 1.35,
-    "fromBase": 37.05
+    "step": 1.17,
+    "fromBase": 37.25
    },
    {
     "label": "cum:C8b",
-    "runs": 2,
-    "settledAt": 2,
-    "total": 78.25,
+    "runs": 18,
+    "settledAt": 18,
+    "total": 78.49,
     "letter": "B",
-    "sd": 0.071,
-    "lo": 78.2,
-    "hi": 78.3,
+    "sd": 0.357,
+    "lo": 77.9,
+    "hi": 79.5,
     "rows": [
      {
       "k": "ICP alignment",
-      "v": 5.05,
+      "v": 5.18,
       "moves": true,
       "carried": false
      },
@@ -5982,7 +5988,7 @@
      },
      {
       "k": "Core loop",
-      "v": 3.45,
+      "v": 3.54,
       "moves": true,
       "carried": false
      },
@@ -6012,13 +6018,13 @@
      },
      {
       "k": "Monetization",
-      "v": 10,
+      "v": 9.97,
       "moves": true,
       "carried": false
      },
      {
       "k": "Retention",
-      "v": 8.15,
+      "v": 8.2,
       "moves": true,
       "carried": false
      },
@@ -6029,135 +6035,135 @@
       "carried": false
      }
     ],
-    "d30": 0.212,
-    "d7": 0.6345,
-    "d90": 0.0325,
-    "loopEver": 0.301,
-    "readShare": 0.9999,
-    "inferShare": 0.029,
-    "stories": 4709,
-    "releases": 5771,
-    "minutes": 73780,
+    "d30": 0.21533,
+    "d7": 0.641,
+    "d90": 0.02883,
+    "loopEver": 0.3084,
+    "readShare": 1,
+    "inferShare": 0.0265,
+    "stories": 4829,
+    "releases": 5838.3,
+    "minutes": 75447,
     "lostTop": [
      {
       "k": "DRIFT",
-      "n": 427,
+      "n": 437,
       "nm": "The absence became permanent"
      },
      {
       "k": "F4",
-      "n": 111,
+      "n": 104,
       "nm": "The reading does not move"
      },
      {
       "k": "F14",
-      "n": 53,
+      "n": 56,
       "nm": "Every story makes the number worse"
      },
      {
       "k": "F7",
-      "n": 29,
+      "n": 30,
       "nm": "The intake is sixty three questions"
      },
      {
       "k": "F10",
-      "n": 9,
+      "n": 14,
       "nm": "Nothing asked them to come back"
      }
     ],
     "icp": {
      "Diane": {
-      "d30": 0.019,
-      "d7": 0.828,
-      "sessions": 1.575,
+      "d30": 0.018,
+      "d7": 0.845,
+      "sessions": 1.627,
       "stories": 0,
       "releases": 0,
       "loopEver": 0,
-      "cqDelta": -0.8,
-      "minutes": 2.5
+      "cqDelta": -1.156,
+      "minutes": 2.617
      },
      "Derek": {
-      "d30": 0.291,
-      "d7": 0.726,
-      "sessions": 11.19,
-      "stories": 4.635,
-      "releases": 9.26,
-      "loopEver": 0.55,
-      "cqDelta": -35.735,
-      "minutes": 99.85
+      "d30": 0.276,
+      "d7": 0.716,
+      "sessions": 10.654,
+      "stories": 4.432,
+      "releases": 8.743,
+      "loopEver": 0.545,
+      "cqDelta": -35.687,
+      "minutes": 95.767
      },
      "Marcus": {
-      "d30": 0.219,
-      "d7": 0.503,
-      "sessions": 5.81,
-      "stories": 1.81,
-      "releases": 3.795,
-      "loopEver": 0.128,
-      "cqDelta": -24.875,
-      "minutes": 32.1
+      "d30": 0.242,
+      "d7": 0.524,
+      "sessions": 6.007,
+      "stories": 1.843,
+      "releases": 3.867,
+      "loopEver": 0.127,
+      "cqDelta": -25.045,
+      "minutes": 33.144
      },
      "Angela": {
-      "d30": 0.253,
-      "d7": 0.73,
-      "sessions": 6,
-      "stories": 4.965,
-      "releases": 4.695,
-      "loopEver": 0.383,
-      "cqDelta": -9.69,
-      "minutes": 57
+      "d30": 0.231,
+      "d7": 0.694,
+      "sessions": 5.996,
+      "stories": 5.045,
+      "releases": 4.718,
+      "loopEver": 0.411,
+      "cqDelta": -2.133,
+      "minutes": 57.044
      },
      "Sofia": {
-      "d30": 0.407,
-      "d7": 0.743,
-      "sessions": 14.355,
-      "stories": 13.815,
-      "releases": 13.81,
-      "loopEver": 0.675,
-      "cqDelta": -13.18,
-      "minutes": 200.5
+      "d30": 0.476,
+      "d7": 0.771,
+      "sessions": 15.901,
+      "stories": 15.304,
+      "releases": 15.323,
+      "loopEver": 0.723,
+      "cqDelta": -13.009,
+      "minutes": 222.806
      },
      "James": {
-      "d30": 0.005,
-      "d7": 0.285,
-      "sessions": 0.355,
-      "stories": 0.01,
-      "releases": 0,
+      "d30": 0.007,
+      "d7": 0.341,
+      "sessions": 0.404,
+      "stories": 0.017,
+      "releases": 0.003,
       "loopEver": 0,
       "cqDelta": 0,
-      "minutes": 0.85
+      "minutes": 0.972
      },
      "Ana": {
-      "d30": 0.57,
-      "d7": 0.72,
-      "sessions": 19.49,
-      "stories": 19.01,
-      "releases": 19.03,
-      "loopEver": 0.7,
-      "cqDelta": -27.89,
-      "minutes": 290.3
+      "d30": 0.49,
+      "d7": 0.688,
+      "sessions": 18.086,
+      "stories": 17.592,
+      "releases": 17.6,
+      "loopEver": 0.652,
+      "cqDelta": -28.09,
+      "minutes": 270.767
      },
      "Gordon": {
       "d30": 0,
-      "d7": 0.043,
-      "sessions": 0.045,
+      "d7": 0.04,
+      "sessions": 0.043,
       "stories": 0,
       "releases": 0,
       "loopEver": 0,
       "cqDelta": 0,
-      "minutes": 0.05
+      "minutes": 0.039
      },
      "Rosa": {
-      "d30": 0,
-      "d7": 0.133,
-      "sessions": 0.2,
-      "stories": 0.035,
+      "d30": 0.004,
+      "d7": 0.096,
+      "sessions": 0.138,
+      "stories": 0.016,
       "releases": 0,
       "loopEver": 0,
       "cqDelta": 0,
-      "minutes": 0.45
+      "minutes": 0.372
      }
     },
-    "seconds": 11,
+    "seconds": 95,
     "knobs": {
      "storyCost": null,
      "relTake": 0.21,
@@ -6183,250 +6189,22 @@
     },
     "id": "C8b",
     "nm": "The top collapses to two",
-    "step": 2.25,
-    "fromBase": 39.3
-   },
-   {
-    "label": "cum:C5b",
-    "runs": 2,
-    "settledAt": 2,
-    "total": 78.35,
-    "letter": "B",
-    "sd": 0.071,
-    "lo": 78.3,
-    "hi": 78.4,
-    "rows": [
-     {
-      "k": "ICP alignment",
-      "v": 5.1,
-      "moves": true,
-      "carried": false
-     },
-     {
-      "k": "First touch",
-      "v": 8.6,
-      "moves": false,
-      "carried": false
-     },
-     {
-      "k": "Core loop",
-      "v": 3.45,
-      "moves": true,
-      "carried": false
-     },
-     {
-      "k": "Emotional",
-      "v": 9.9,
-      "moves": true,
-      "carried": false
-     },
-     {
-      "k": "Behavioral flow",
-      "v": 7.1,
-      "moves": false,
-      "carried": false
-     },
-     {
-      "k": "Visual and kinetic",
-      "v": 8,
-      "moves": false,
-      "carried": true
-     },
-     {
-      "k": "Technical",
-      "v": 10,
-      "moves": false,
-      "carried": false
-     },
-     {
-      "k": "Monetization",
-      "v": 10,
-      "moves": true,
-      "carried": false
-     },
-     {
-      "k": "Retention",
-      "v": 8.2,
-      "moves": true,
-      "carried": false
-     },
-     {
-      "k": "Referral",
-      "v": 8,
-      "moves": false,
-      "carried": false
-     }
-    ],
-    "d30": 0.214,
-    "d7": 0.641,
-    "d90": 0.032,
-    "loopEver": 0.301,
-    "readShare": 0.9999,
-    "inferShare": 0.0271,
-    "stories": 4701,
-    "releases": 5727,
-    "minutes": 73179,
-    "lostTop": [
-     {
-      "k": "DRIFT",
-      "n": 436,
-      "nm": "The absence became permanent"
-     },
-     {
-      "k": "F4",
-      "n": 106,
-      "nm": "The reading does not move"
-     },
-     {
-      "k": "F14",
-      "n": 51,
-      "nm": "Every story makes the number worse"
-     },
-     {
-      "k": "F7",
-      "n": 29,
-      "nm": "The intake is sixty three questions"
-     },
-     {
-      "k": "F10",
-      "n": 12,
-      "nm": "Nothing asked them to come back"
-     }
-    ],
-    "icp": {
-     "Diane": {
-      "d30": 0.019,
-      "d7": 0.828,
-      "sessions": 1.575,
-      "stories": 0,
-      "releases": 0,
-      "loopEver": 0,
-      "cqDelta": -0.8,
-      "minutes": 2.5
-     },
-     "Derek": {
-      "d30": 0.3,
-      "d7": 0.726,
-      "sessions": 10.635,
-      "stories": 4.445,
-      "releases": 8.72,
-      "loopEver": 0.541,
-      "cqDelta": -35.675,
-      "minutes": 95.8
-     },
-     "Marcus": {
-      "d30": 0.231,
-      "d7": 0.513,
-      "sessions": 6.06,
-      "stories": 1.905,
-      "releases": 4.04,
-      "loopEver": 0.138,
-      "cqDelta": -24.985,
-      "minutes": 33.7
-     },
-     "Angela": {
-      "d30": 0.26,
-      "d7": 0.733,
-      "sessions": 6.25,
-      "stories": 5.2,
-      "releases": 4.93,
-      "loopEver": 0.397,
-      "cqDelta": -9.69,
-      "minutes": 58.8
-     },
-     "Sofia": {
-      "d30": 0.407,
-      "d7": 0.736,
-      "sessions": 14.61,
-      "stories": 14.075,
-      "releases": 14.07,
-      "loopEver": 0.668,
-      "cqDelta": -13.205,
-      "minutes": 203.6
-     },
-     "James": {
-      "d30": 0.015,
-      "d7": 0.365,
-      "sessions": 0.455,
-      "stories": 0.025,
-      "releases": 0,
-      "loopEver": 0,
-      "cqDelta": 0,
-      "minutes": 1.1
-     },
-     "Ana": {
-      "d30": 0.5,
-      "d7": 0.7,
-      "sessions": 18.22,
-      "stories": 17.74,
-      "releases": 17.77,
-      "loopEver": 0.68,
-      "cqDelta": -27.99,
-      "minutes": 272.2
-     },
-     "Gordon": {
-      "d30": 0,
-      "d7": 0.043,
-      "sessions": 0.045,
-      "stories": 0,
-      "releases": 0,
-      "loopEver": 0,
-      "cqDelta": 0,
-      "minutes": 0.05
-     },
-     "Rosa": {
-      "d30": 0,
-      "d7": 0.033,
-      "sessions": 0.065,
-      "stories": 0.035,
-      "releases": 0,
-      "loopEver": 0,
-      "cqDelta": 0,
-      "minutes": 0.2
-     }
-    },
-    "seconds": 11,
-    "knobs": {
-     "storyCost": null,
-     "relTake": 0.21,
-     "relInstall": 0.62,
-     "relCompound": false,
-     "relStick": false,
-     "carrying": true,
-     "costLine": true,
-     "lex": true,
-     "inferAsk": true,
-     "push": false,
-     "nudge": 0,
-     "record": false,
-     "refer": true,
-     "money": true,
-     "enforce": true,
-     "doneFlag": true,
-     "bandFix": true,
-     "tapFloor": true,
-     "menu": true,
-     "foldRails": true,
-     "foldTop": true
-    },
-    "id": "C5b",
-    "nm": "An inferred address is a question",
-    "step": 0.1,
-    "fromBase": 39.4
+    "step": 2.33,
+    "fromBase": 39.58
    },
    {
     "label": "cum:C6",
-    "runs": 2,
-    "settledAt": 2,
-    "total": 79.2,
+    "runs": 16,
+    "settledAt": 16,
+    "total": 78.78,
     "letter": "B",
-    "sd": 0,
-    "lo": 79.2,
-    "hi": 79.2,
+    "sd": 0.324,
+    "lo": 78,
+    "hi": 79.3,
     "rows": [
      {
       "k": "ICP alignment",
-      "v": 5.3,
+      "v": 5.2,
       "moves": true,
       "carried": false
      },
@@ -6438,7 +6216,7 @@
      },
      {
       "k": "Core loop",
-      "v": 3.8,
+      "v": 3.63,
       "moves": true,
       "carried": false
      },
@@ -6468,13 +6246,13 @@
      },
      {
       "k": "Monetization",
-      "v": 10,
+      "v": 9.98,
       "moves": true,
       "carried": false
      },
      {
       "k": "Retention",
-      "v": 8.5,
+      "v": 8.36,
       "moves": true,
       "carried": false
      },
@@ -6485,135 +6263,135 @@
       "carried": false
      }
     ],
-    "d30": 0.2365,
-    "d7": 0.6485,
-    "d90": 0.033,
-    "loopEver": 0.3205,
-    "readShare": 1,
-    "inferShare": 0.0292,
-    "stories": 5248.5,
-    "releases": 6422.5,
-    "minutes": 82661,
+    "d30": 0.227,
+    "d7": 0.63425,
+    "d90": 0.03238,
+    "loopEver": 0.3123,
+    "readShare": 0.9998,
+    "inferShare": 0.0283,
+    "stories": 4981.8,
+    "releases": 6114.2,
+    "minutes": 78142,
     "lostTop": [
      {
       "k": "DRIFT",
-      "n": 458,
+      "n": 448,
       "nm": "The absence became permanent"
      },
      {
       "k": "F4",
-      "n": 98,
+      "n": 95,
       "nm": "The reading does not move"
      },
      {
       "k": "F14",
-      "n": 43,
+      "n": 54,
       "nm": "Every story makes the number worse"
      },
      {
       "k": "F7",
-      "n": 29,
+      "n": 26,
       "nm": "The intake is sixty three questions"
      },
      {
-      "k": "unattributed",
-      "n": 14,
-      "nm": "unattributed"
+      "k": "F6",
+      "n": 12,
+      "nm": "More simultaneous choices than a working memory holds"
      }
     ],
     "icp": {
      "Diane": {
-      "d30": 0.017,
-      "d7": 0.869,
-      "sessions": 1.77,
+      "d30": 0.021,
+      "d7": 0.836,
+      "sessions": 1.692,
       "stories": 0,
       "releases": 0,
       "loopEver": 0,
-      "cqDelta": -2.525,
-      "minutes": 2.85
+      "cqDelta": -2.079,
+      "minutes": 2.713
      },
      "Derek": {
-      "d30": 0.344,
-      "d7": 0.709,
-      "sessions": 12.355,
-      "stories": 5.055,
-      "releases": 10.27,
-      "loopEver": 0.565,
-      "cqDelta": -35.555,
-      "minutes": 110.8
+      "d30": 0.315,
+      "d7": 0.711,
+      "sessions": 12.013,
+      "stories": 4.984,
+      "releases": 10.015,
+      "loopEver": 0.562,
+      "cqDelta": -35.49,
+      "minutes": 108.025
      },
      "Marcus": {
-      "d30": 0.263,
-      "d7": 0.534,
-      "sessions": 6.02,
-      "stories": 1.855,
-      "releases": 3.925,
-      "loopEver": 0.106,
-      "cqDelta": -18.88,
-      "minutes": 33.4
+      "d30": 0.254,
+      "d7": 0.512,
+      "sessions": 6.043,
+      "stories": 1.835,
+      "releases": 3.861,
+      "loopEver": 0.126,
+      "cqDelta": -25.157,
+      "minutes": 33.156
      },
      "Angela": {
-      "d30": 0.233,
-      "d7": 0.713,
-      "sessions": 6.27,
-      "stories": 5.21,
-      "releases": 4.945,
-      "loopEver": 0.433,
-      "cqDelta": -10.05,
-      "minutes": 59.85
+      "d30": 0.239,
+      "d7": 0.696,
+      "sessions": 6.341,
+      "stories": 5.354,
+      "releases": 5.036,
+      "loopEver": 0.424,
+      "cqDelta": -5.805,
+      "minutes": 60.094
      },
      "Sofia": {
-      "d30": 0.496,
-      "d7": 0.779,
-      "sessions": 16.525,
-      "stories": 15.945,
-      "releases": 15.94,
-      "loopEver": 0.757,
-      "cqDelta": -14.05,
-      "minutes": 231.3
+      "d30": 0.483,
+      "d7": 0.77,
+      "sessions": 15.884,
+      "stories": 15.292,
+      "releases": 15.314,
+      "loopEver": 0.724,
+      "cqDelta": -13.467,
+      "minutes": 222.163
      },
      "James": {
-      "d30": 0.01,
-      "d7": 0.305,
-      "sessions": 0.37,
-      "stories": 0.05,
-      "releases": 0.01,
+      "d30": 0.011,
+      "d7": 0.324,
+      "sessions": 0.39,
+      "stories": 0.025,
+      "releases": 0.003,
       "loopEver": 0,
-      "cqDelta": 0,
-      "minutes": 0.95
+      "cqDelta": -0.326,
+      "minutes": 0.988
      },
      "Ana": {
-      "d30": 0.55,
-      "d7": 0.74,
-      "sessions": 22.05,
-      "stories": 21.46,
-      "releases": 21.48,
-      "loopEver": 0.73,
-      "cqDelta": -28.38,
-      "minutes": 330.15
+      "d30": 0.481,
+      "d7": 0.664,
+      "sessions": 18.367,
+      "stories": 17.87,
+      "releases": 17.886,
+      "loopEver": 0.634,
+      "cqDelta": -28.218,
+      "minutes": 275.225
      },
      "Gordon": {
       "d30": 0,
-      "d7": 0.014,
-      "sessions": 0.03,
+      "d7": 0.039,
+      "sessions": 0.042,
       "stories": 0,
       "releases": 0,
       "loopEver": 0,
       "cqDelta": 0,
-      "minutes": 0.05
+      "minutes": 0.044
      },
      "Rosa": {
-      "d30": 0,
-      "d7": 0.133,
-      "sessions": 0.37,
-      "stories": 0,
+      "d30": 0.013,
+      "d7": 0.112,
+      "sessions": 0.225,
+      "stories": 0.054,
       "releases": 0,
       "loopEver": 0,
       "cqDelta": 0,
-      "minutes": 1
+      "minutes": 0.7
      }
     },
-    "seconds": 12,
+    "seconds": 88,
     "knobs": {
      "storyCost": null,
      "relTake": 0.21,
@@ -6623,7 +6401,7 @@
      "carrying": true,
      "costLine": true,
      "lex": true,
-     "inferAsk": true,
+     "inferAsk": false,
      "push": true,
      "nudge": 0,
      "record": false,
@@ -6639,22 +6417,22 @@
     },
     "id": "C6",
     "nm": "Something asks them to come back",
-    "step": 0.85,
-    "fromBase": 40.25
+    "step": 0.29,
+    "fromBase": 39.87
    },
    {
     "label": "cum:C11",
-    "runs": 2,
-    "settledAt": 2,
-    "total": 79.7,
+    "runs": 15,
+    "settledAt": 15,
+    "total": 79.33,
     "letter": "B",
-    "sd": 0.141,
-    "lo": 79.6,
-    "hi": 79.8,
+    "sd": 0.395,
+    "lo": 78.3,
+    "hi": 79.7,
     "rows": [
      {
       "k": "ICP alignment",
-      "v": 5.3,
+      "v": 5.18,
       "moves": true,
       "carried": false
      },
@@ -6666,7 +6444,7 @@
      },
      {
       "k": "Core loop",
-      "v": 3.5,
+      "v": 3.41,
       "moves": true,
       "carried": false
      },
@@ -6696,13 +6474,13 @@
      },
      {
       "k": "Monetization",
-      "v": 9.9,
+      "v": 9.92,
       "moves": true,
       "carried": false
      },
      {
       "k": "Retention",
-      "v": 8.2,
+      "v": 8.01,
       "moves": true,
       "carried": false
      },
@@ -6713,135 +6491,363 @@
       "carried": false
      }
     ],
-    "d30": 0.2145,
-    "d7": 0.6365,
-    "d90": 0.028,
-    "loopEver": 0.315,
-    "readShare": 0.9998,
-    "inferShare": 0.0325,
-    "stories": 4554.5,
-    "releases": 5697,
-    "minutes": 67776,
+    "d30": 0.20253,
+    "d7": 0.63887,
+    "d90": 0.02967,
+    "loopEver": 0.3118,
+    "readShare": 0.9999,
+    "inferShare": 0.0264,
+    "stories": 4597.4,
+    "releases": 5622.7,
+    "minutes": 67193,
     "lostTop": [
      {
       "k": "DRIFT",
-      "n": 429,
+      "n": 435,
       "nm": "The absence became permanent"
      },
      {
       "k": "F4",
-      "n": 141,
+      "n": 139,
       "nm": "The reading does not move"
      },
      {
       "k": "F14",
-      "n": 60,
+      "n": 56,
       "nm": "Every story makes the number worse"
      },
      {
-      "k": "F6",
-      "n": 12,
-      "nm": "More simultaneous choices than a working memory holds"
+      "k": "unattributed",
+      "n": 13,
+      "nm": "unattributed"
      },
      {
-      "k": "unattributed",
-      "n": 12,
-      "nm": "unattributed"
+      "k": "F6",
+      "n": 11,
+      "nm": "More simultaneous choices than a working memory holds"
      }
     ],
     "icp": {
      "Diane": {
-      "d30": 0.003,
-      "d7": 0.836,
-      "sessions": 1.74,
+      "d30": 0.013,
+      "d7": 0.84,
+      "sessions": 1.759,
       "stories": 0,
       "releases": 0,
       "loopEver": 0,
       "cqDelta": 0,
-      "minutes": 2.75
+      "minutes": 2.813
      },
      "Derek": {
-      "d30": 0.297,
-      "d7": 0.721,
-      "sessions": 10.715,
-      "stories": 4.875,
-      "releases": 9.47,
-      "loopEver": 0.568,
-      "cqDelta": -0.345,
-      "minutes": 96.3
+      "d30": 0.261,
+      "d7": 0.711,
+      "sessions": 9.687,
+      "stories": 4.364,
+      "releases": 8.559,
+      "loopEver": 0.555,
+      "cqDelta": -0.306,
+      "minutes": 86.867
      },
      "Marcus": {
-      "d30": 0.291,
-      "d7": 0.534,
-      "sessions": 6.555,
-      "stories": 2.29,
-      "releases": 4.875,
-      "loopEver": 0.169,
-      "cqDelta": 0.1,
-      "minutes": 35.95
+      "d30": 0.245,
+      "d7": 0.523,
+      "sessions": 5.917,
+      "stories": 2.119,
+      "releases": 4.445,
+      "loopEver": 0.149,
+      "cqDelta": -0.198,
+      "minutes": 32.633
      },
      "Angela": {
-      "d30": 0.193,
-      "d7": 0.69,
-      "sessions": 4.975,
-      "stories": 4.82,
-      "releases": 4.505,
-      "loopEver": 0.413,
-      "cqDelta": 0,
-      "minutes": 47.8
+      "d30": 0.209,
+      "d7": 0.718,
+      "sessions": 5.409,
+      "stories": 5.246,
+      "releases": 4.878,
+      "loopEver": 0.42,
+      "cqDelta": -0.052,
+      "minutes": 51.293
      },
      "Sofia": {
-      "d30": 0.425,
-      "d7": 0.693,
-      "sessions": 12.56,
-      "stories": 12.56,
-      "releases": 12.56,
-      "loopEver": 0.675,
-      "cqDelta": -1.205,
-      "minutes": 175.75
+      "d30": 0.434,
+      "d7": 0.746,
+      "sessions": 13.475,
+      "stories": 13.475,
+      "releases": 13.475,
+      "loopEver": 0.703,
+      "cqDelta": -1.515,
+      "minutes": 188.473
      },
      "James": {
-      "d30": 0.015,
-      "d7": 0.4,
-      "sessions": 0.475,
-      "stories": 0.05,
+      "d30": 0.005,
+      "d7": 0.347,
+      "sessions": 0.399,
+      "stories": 0.048,
       "releases": 0.005,
-      "loopEver": 0,
+      "loopEver": 0.001,
       "cqDelta": 0,
-      "minutes": 1.15
+      "minutes": 1.02
      },
      "Ana": {
-      "d30": 0.54,
-      "d7": 0.69,
-      "sessions": 17.43,
-      "stories": 17.43,
-      "releases": 17.43,
-      "loopEver": 0.7,
-      "cqDelta": -2.345,
-      "minutes": 264.85
+      "d30": 0.479,
+      "d7": 0.665,
+      "sessions": 16.755,
+      "stories": 16.755,
+      "releases": 16.755,
+      "loopEver": 0.641,
+      "cqDelta": -2.109,
+      "minutes": 250.107
+     },
+     "Gordon": {
+      "d30": 0.002,
+      "d7": 0.051,
+      "sessions": 0.075,
+      "stories": 0,
+      "releases": 0,
+      "loopEver": 0,
+      "cqDelta": 0,
+      "minutes": 0.087
+     },
+     "Rosa": {
+      "d30": 0.013,
+      "d7": 0.093,
+      "sessions": 0.191,
+      "stories": 0.039,
+      "releases": 0,
+      "loopEver": 0,
+      "cqDelta": 0,
+      "minutes": 0.567
+     }
+    },
+    "seconds": 73,
+    "knobs": {
+     "storyCost": null,
+     "relTake": 0.21,
+     "relInstall": 0.62,
+     "relCompound": false,
+     "relStick": false,
+     "carrying": true,
+     "costLine": true,
+     "lex": true,
+     "inferAsk": false,
+     "push": true,
+     "nudge": 0,
+     "record": true,
+     "refer": true,
+     "money": true,
+     "enforce": true,
+     "doneFlag": true,
+     "bandFix": true,
+     "tapFloor": true,
+     "menu": true,
+     "foldRails": true,
+     "foldTop": true
+    },
+    "id": "C11",
+    "nm": "The record arrives at sign in",
+    "step": 0.55,
+    "fromBase": 40.42
+   },
+   {
+    "label": "cum:C5b",
+    "runs": 15,
+    "settledAt": 15,
+    "total": 79.61,
+    "letter": "B",
+    "sd": 0.397,
+    "lo": 78.8,
+    "hi": 80.4,
+    "rows": [
+     {
+      "k": "ICP alignment",
+      "v": 5.23,
+      "moves": true,
+      "carried": false
+     },
+     {
+      "k": "First touch",
+      "v": 9.8,
+      "moves": false,
+      "carried": false
+     },
+     {
+      "k": "Core loop",
+      "v": 3.53,
+      "moves": true,
+      "carried": false
+     },
+     {
+      "k": "Emotional",
+      "v": 9.9,
+      "moves": true,
+      "carried": false
+     },
+     {
+      "k": "Behavioral flow",
+      "v": 7.1,
+      "moves": false,
+      "carried": false
+     },
+     {
+      "k": "Visual and kinetic",
+      "v": 8,
+      "moves": false,
+      "carried": true
+     },
+     {
+      "k": "Technical",
+      "v": 10,
+      "moves": false,
+      "carried": false
+     },
+     {
+      "k": "Monetization",
+      "v": 9.95,
+      "moves": true,
+      "carried": false
+     },
+     {
+      "k": "Retention",
+      "v": 8.1,
+      "moves": true,
+      "carried": false
+     },
+     {
+      "k": "Referral",
+      "v": 8,
+      "moves": false,
+      "carried": false
+     }
+    ],
+    "d30": 0.20813,
+    "d7": 0.63987,
+    "d90": 0.03153,
+    "loopEver": 0.3159,
+    "readShare": 0.9999,
+    "inferShare": 0.0285,
+    "stories": 4718.7,
+    "releases": 5843.7,
+    "minutes": 69542,
+    "lostTop": [
+     {
+      "k": "DRIFT",
+      "n": 439,
+      "nm": "The absence became permanent"
+     },
+     {
+      "k": "F4",
+      "n": 140,
+      "nm": "The reading does not move"
+     },
+     {
+      "k": "F14",
+      "n": 54,
+      "nm": "Every story makes the number worse"
+     },
+     {
+      "k": "unattributed",
+      "n": 13,
+      "nm": "unattributed"
+     },
+     {
+      "k": "F6",
+      "n": 9,
+      "nm": "More simultaneous choices than a working memory holds"
+     }
+    ],
+    "icp": {
+     "Diane": {
+      "d30": 0.013,
+      "d7": 0.84,
+      "sessions": 1.759,
+      "stories": 0,
+      "releases": 0,
+      "loopEver": 0,
+      "cqDelta": 0,
+      "minutes": 2.813
+     },
+     "Derek": {
+      "d30": 0.285,
+      "d7": 0.731,
+      "sessions": 10.785,
+      "stories": 4.868,
+      "releases": 9.61,
+      "loopEver": 0.576,
+      "cqDelta": -0.351,
+      "minutes": 96.793
+     },
+     "Marcus": {
+      "d30": 0.246,
+      "d7": 0.522,
+      "sessions": 5.979,
+      "stories": 2.138,
+      "releases": 4.486,
+      "loopEver": 0.148,
+      "cqDelta": -0.171,
+      "minutes": 32.967
+     },
+     "Angela": {
+      "d30": 0.213,
+      "d7": 0.712,
+      "sessions": 5.349,
+      "stories": 5.178,
+      "releases": 4.825,
+      "loopEver": 0.419,
+      "cqDelta": -0.016,
+      "minutes": 50.493
+     },
+     "Sofia": {
+      "d30": 0.438,
+      "d7": 0.746,
+      "sessions": 13.673,
+      "stories": 13.673,
+      "releases": 13.673,
+      "loopEver": 0.706,
+      "cqDelta": -1.633,
+      "minutes": 191.44
+     },
+     "James": {
+      "d30": 0.006,
+      "d7": 0.339,
+      "sessions": 0.387,
+      "stories": 0.036,
+      "releases": 0.005,
+      "loopEver": 0.001,
+      "cqDelta": 0,
+      "minutes": 0.94
+     },
+     "Ana": {
+      "d30": 0.483,
+      "d7": 0.673,
+      "sessions": 17.079,
+      "stories": 17.079,
+      "releases": 17.079,
+      "loopEver": 0.652,
+      "cqDelta": -2.055,
+      "minutes": 256.533
      },
      "Gordon": {
       "d30": 0,
-      "d7": 0.043,
-      "sessions": 0.07,
+      "d7": 0.029,
+      "sessions": 0.047,
       "stories": 0,
       "releases": 0,
       "loopEver": 0,
       "cqDelta": 0,
-      "minutes": 0.1
+      "minutes": 0.053
      },
      "Rosa": {
       "d30": 0,
-      "d7": 0.1,
-      "sessions": 0.235,
-      "stories": 0.07,
+      "d7": 0.08,
+      "sessions": 0.143,
+      "stories": 0.031,
       "releases": 0,
       "loopEver": 0,
       "cqDelta": 0,
-      "minutes": 0.75
+      "minutes": 0.433
      }
     },
-    "seconds": 10,
+    "seconds": 76,
     "knobs": {
      "storyCost": null,
      "relTake": 0.21,
@@ -6865,24 +6871,24 @@
      "foldRails": true,
      "foldTop": true
     },
-    "id": "C11",
-    "nm": "The record arrives at sign in",
-    "step": 0.5,
-    "fromBase": 40.75
+    "id": "C5b",
+    "nm": "An inferred address is a question",
+    "step": 0.28,
+    "fromBase": 40.7
    },
    {
     "label": "cum:C1",
-    "runs": 2,
-    "settledAt": 2,
-    "total": 80.05,
+    "runs": 19,
+    "settledAt": 19,
+    "total": 80.06,
     "letter": "B+",
-    "sd": 0.495,
-    "lo": 79.7,
-    "hi": 80.4,
+    "sd": 0.483,
+    "lo": 79.4,
+    "hi": 81.2,
     "rows": [
      {
       "k": "ICP alignment",
-      "v": 5.3,
+      "v": 5.37,
       "moves": true,
       "carried": false
      },
@@ -6894,13 +6900,13 @@
      },
      {
       "k": "Core loop",
-      "v": 3.75,
+      "v": 3.71,
       "moves": true,
       "carried": false
      },
      {
       "k": "Emotional",
-      "v": 9.85,
+      "v": 9.88,
       "moves": true,
       "carried": false
      },
@@ -6924,13 +6930,13 @@
      },
      {
       "k": "Monetization",
-      "v": 10,
+      "v": 9.99,
       "moves": true,
       "carried": false
      },
      {
       "k": "Retention",
-      "v": 8.25,
+      "v": 8.21,
       "moves": true,
       "carried": false
      },
@@ -6941,15 +6947,15 @@
       "carried": false
      }
     ],
-    "d30": 0.22,
-    "d7": 0.639,
-    "d90": 0.0315,
-    "loopEver": 0.339,
-    "readShare": 1,
-    "inferShare": 0.0361,
-    "stories": 5013.5,
-    "releases": 6340.5,
-    "minutes": 69924,
+    "d30": 0.21689,
+    "d7": 0.64405,
+    "d90": 0.03274,
+    "loopEver": 0.3324,
+    "readShare": 0.9998,
+    "inferShare": 0.0343,
+    "stories": 5102.5,
+    "releases": 6349.4,
+    "minutes": 70953,
     "lostTop": [
      {
       "k": "DRIFT",
@@ -6958,12 +6964,12 @@
      },
      {
       "k": "F4",
-      "n": 116,
+      "n": 121,
       "nm": "The reading does not move"
      },
      {
       "k": "F14",
-      "n": 81,
+      "n": 77,
       "nm": "Every story makes the number worse"
      },
      {
@@ -6973,103 +6979,103 @@
      },
      {
       "k": "unattributed",
-      "n": 10,
+      "n": 11,
       "nm": "unattributed"
      }
     ],
     "icp": {
      "Diane": {
-      "d30": 0.05,
-      "d7": 0.869,
-      "sessions": 2.5,
-      "stories": 1.05,
-      "releases": 0.755,
+      "d30": 0.035,
+      "d7": 0.848,
+      "sessions": 2.303,
+      "stories": 0.985,
+      "releases": 0.679,
       "loopEver": 0,
-      "cqDelta": 0,
-      "minutes": 4
+      "cqDelta": -0.062,
+      "minutes": 3.674
      },
      "Derek": {
-      "d30": 0.315,
-      "d7": 0.759,
-      "sessions": 11.83,
-      "stories": 5.295,
-      "releases": 11,
-      "loopEver": 0.597,
-      "cqDelta": -0.185,
-      "minutes": 107.7
+      "d30": 0.287,
+      "d7": 0.719,
+      "sessions": 11.003,
+      "stories": 4.945,
+      "releases": 10.096,
+      "loopEver": 0.574,
+      "cqDelta": -0.326,
+      "minutes": 99.121
      },
      "Marcus": {
-      "d30": 0.241,
-      "d7": 0.503,
-      "sessions": 5.765,
-      "stories": 2.56,
-      "releases": 5.135,
-      "loopEver": 0.172,
-      "cqDelta": -0.455,
-      "minutes": 31.45
+      "d30": 0.25,
+      "d7": 0.523,
+      "sessions": 6.15,
+      "stories": 2.786,
+      "releases": 5.487,
+      "loopEver": 0.168,
+      "cqDelta": -0.344,
+      "minutes": 33.842
      },
      "Angela": {
-      "d30": 0.25,
-      "d7": 0.73,
-      "sessions": 5.78,
-      "stories": 5.78,
-      "releases": 5.78,
-      "loopEver": 0.53,
-      "cqDelta": 0.135,
-      "minutes": 54.9
+      "d30": 0.222,
+      "d7": 0.713,
+      "sessions": 5.425,
+      "stories": 5.425,
+      "releases": 5.425,
+      "loopEver": 0.495,
+      "cqDelta": -0.069,
+      "minutes": 51.642
      },
      "Sofia": {
-      "d30": 0.432,
-      "d7": 0.732,
-      "sessions": 14.07,
-      "stories": 14.07,
-      "releases": 14.07,
-      "loopEver": 0.707,
-      "cqDelta": -1.58,
-      "minutes": 197.25
+      "d30": 0.445,
+      "d7": 0.757,
+      "sessions": 13.51,
+      "stories": 13.51,
+      "releases": 13.51,
+      "loopEver": 0.71,
+      "cqDelta": -1.331,
+      "minutes": 188.953
      },
      "James": {
-      "d30": 0,
-      "d7": 0.3,
-      "sessions": 0.345,
-      "stories": 0.145,
-      "releases": 0.135,
-      "loopEver": 0,
+      "d30": 0.008,
+      "d7": 0.352,
+      "sessions": 0.421,
+      "stories": 0.195,
+      "releases": 0.153,
+      "loopEver": 0.002,
       "cqDelta": 0,
-      "minutes": 0.9
+      "minutes": 1.053
      },
      "Ana": {
-      "d30": 0.42,
-      "d7": 0.62,
-      "sessions": 13.26,
-      "stories": 13.26,
-      "releases": 13.26,
-      "loopEver": 0.63,
-      "cqDelta": -2.55,
-      "minutes": 198.5
+      "d30": 0.507,
+      "d7": 0.697,
+      "sessions": 18.251,
+      "stories": 18.251,
+      "releases": 18.251,
+      "loopEver": 0.68,
+      "cqDelta": -2.348,
+      "minutes": 274.3
      },
      "Gordon": {
-      "d30": 0,
-      "d7": 0,
-      "sessions": 0,
-      "stories": 0,
-      "releases": 0,
+      "d30": 0.002,
+      "d7": 0.035,
+      "sessions": 0.062,
+      "stories": 0.025,
+      "releases": 0.002,
       "loopEver": 0,
       "cqDelta": 0,
-      "minutes": 0
+      "minutes": 0.074
      },
      "Rosa": {
       "d30": 0,
-      "d7": 0,
-      "sessions": 0,
-      "stories": 0,
+      "d7": 0.088,
+      "sessions": 0.119,
+      "stories": 0.06,
       "releases": 0,
       "loopEver": 0,
       "cqDelta": 0,
-      "minutes": 0
+      "minutes": 0.379
      }
     },
-    "seconds": 11,
+    "seconds": 103,
     "knobs": {
      "storyCost": 0.8,
      "relTake": 0.21,
@@ -7095,22 +7101,22 @@
     },
     "id": "C1",
     "nm": "The narrow door",
-    "step": 0.35,
-    "fromBase": 41.1
+    "step": 0.45,
+    "fromBase": 41.15
    },
    {
     "label": "cum:C2c",
-    "runs": 2,
-    "settledAt": 2,
-    "total": 80,
+    "runs": 15,
+    "settledAt": 15,
+    "total": 80.01,
     "letter": "B+",
-    "sd": 0.141,
-    "lo": 79.9,
-    "hi": 80.1,
+    "sd": 0.37,
+    "lo": 79.3,
+    "hi": 80.7,
     "rows": [
      {
       "k": "ICP alignment",
-      "v": 5.4,
+      "v": 5.39,
       "moves": true,
       "carried": false
      },
@@ -7152,13 +7158,13 @@
      },
      {
       "k": "Monetization",
-      "v": 9.95,
+      "v": 9.94,
       "moves": true,
       "carried": false
      },
      {
       "k": "Retention",
-      "v": 8.2,
+      "v": 8.23,
       "moves": true,
       "carried": false
      },
@@ -7169,135 +7175,135 @@
       "carried": false
      }
     ],
-    "d30": 0.214,
-    "d7": 0.637,
-    "d90": 0.028,
-    "loopEver": 0.343,
+    "d30": 0.21773,
+    "d7": 0.6458,
+    "d90": 0.02687,
+    "loopEver": 0.3379,
     "readShare": 0.9999,
-    "inferShare": 0.0309,
-    "stories": 4867.5,
-    "releases": 5604,
-    "minutes": 67614,
+    "inferShare": 0.0299,
+    "stories": 5036.4,
+    "releases": 5732.5,
+    "minutes": 69384,
     "lostTop": [
      {
       "k": "DRIFT",
-      "n": 419,
+      "n": 427,
       "nm": "The absence became permanent"
      },
      {
       "k": "F4",
-      "n": 133,
+      "n": 134,
       "nm": "The reading does not move"
      },
      {
       "k": "F14",
-      "n": 67,
+      "n": 69,
       "nm": "Every story makes the number worse"
      },
      {
       "k": "F3",
-      "n": 18,
+      "n": 13,
       "nm": "Nothing is above the line, so there is nothing to release"
      },
      {
       "k": "F6",
-      "n": 12,
+      "n": 11,
       "nm": "More simultaneous choices than a working memory holds"
      }
     ],
     "icp": {
      "Diane": {
-      "d30": 0.05,
-      "d7": 0.869,
-      "sessions": 2.5,
-      "stories": 1.03,
-      "releases": 0.75,
+      "d30": 0.036,
+      "d7": 0.85,
+      "sessions": 2.328,
+      "stories": 0.989,
+      "releases": 0.694,
       "loopEver": 0,
-      "cqDelta": 0,
-      "minutes": 4
+      "cqDelta": -0.031,
+      "minutes": 3.707
      },
      "Derek": {
-      "d30": 0.309,
-      "d7": 0.753,
-      "sessions": 9.75,
-      "stories": 4.255,
-      "releases": 8.07,
-      "loopEver": 0.609,
-      "cqDelta": 0.285,
-      "minutes": 89.25
+      "d30": 0.285,
+      "d7": 0.729,
+      "sessions": 9.403,
+      "stories": 4.227,
+      "releases": 7.776,
+      "loopEver": 0.582,
+      "cqDelta": 0.139,
+      "minutes": 84.68
      },
      "Marcus": {
-      "d30": 0.253,
-      "d7": 0.491,
-      "sessions": 6.265,
-      "stories": 2.745,
-      "releases": 3.66,
-      "loopEver": 0.203,
-      "cqDelta": 0.295,
-      "minutes": 34.4
+      "d30": 0.247,
+      "d7": 0.514,
+      "sessions": 6.076,
+      "stories": 2.732,
+      "releases": 3.696,
+      "loopEver": 0.187,
+      "cqDelta": 0.283,
+      "minutes": 33.147
      },
      "Angela": {
-      "d30": 0.23,
-      "d7": 0.703,
-      "sessions": 5.71,
-      "stories": 5.71,
-      "releases": 5.71,
-      "loopEver": 0.517,
-      "cqDelta": 0.135,
-      "minutes": 54.45
+      "d30": 0.227,
+      "d7": 0.708,
+      "sessions": 5.458,
+      "stories": 5.458,
+      "releases": 5.458,
+      "loopEver": 0.493,
+      "cqDelta": -0.044,
+      "minutes": 51.953
      },
      "Sofia": {
-      "d30": 0.421,
-      "d7": 0.739,
-      "sessions": 13.885,
-      "stories": 13.885,
-      "releases": 13.85,
-      "loopEver": 0.714,
-      "cqDelta": -1.135,
-      "minutes": 195.85
+      "d30": 0.45,
+      "d7": 0.767,
+      "sessions": 13.746,
+      "stories": 13.746,
+      "releases": 13.713,
+      "loopEver": 0.72,
+      "cqDelta": -1.167,
+      "minutes": 192.713
      },
      "James": {
-      "d30": 0,
-      "d7": 0.325,
-      "sessions": 0.37,
-      "stories": 0.2,
-      "releases": 0.165,
-      "loopEver": 0,
+      "d30": 0.009,
+      "d7": 0.349,
+      "sessions": 0.415,
+      "stories": 0.178,
+      "releases": 0.15,
+      "loopEver": 0.001,
       "cqDelta": 0,
-      "minutes": 0.9
+      "minutes": 1.033
      },
      "Ana": {
-      "d30": 0.37,
-      "d7": 0.62,
-      "sessions": 13.99,
-      "stories": 13.99,
-      "releases": 13.99,
-      "loopEver": 0.59,
-      "cqDelta": -1.525,
-      "minutes": 210.8
+      "d30": 0.5,
+      "d7": 0.711,
+      "sessions": 18.809,
+      "stories": 18.809,
+      "releases": 18.809,
+      "loopEver": 0.683,
+      "cqDelta": -2.069,
+      "minutes": 282.58
      },
      "Gordon": {
-      "d30": 0,
-      "d7": 0.014,
-      "sessions": 0.015,
-      "stories": 0,
-      "releases": 0,
+      "d30": 0.002,
+      "d7": 0.038,
+      "sessions": 0.067,
+      "stories": 0.027,
+      "releases": 0.002,
       "loopEver": 0,
       "cqDelta": 0,
-      "minutes": 0
+      "minutes": 0.087
      },
      "Rosa": {
-      "d30": 0,
-      "d7": 0.067,
-      "sessions": 0.1,
-      "stories": 0.035,
+      "d30": 0.009,
+      "d7": 0.084,
+      "sessions": 0.147,
+      "stories": 0.05,
       "releases": 0,
       "loopEver": 0,
       "cqDelta": 0,
-      "minutes": 0.3
+      "minutes": 0.42
      }
     },
-    "seconds": 11,
+    "seconds": 77,
     "knobs": {
      "storyCost": 0.8,
      "relTake": 0.21,
@@ -7324,21 +7330,21 @@
     "id": "C2c",
     "nm": "A cleared address stays cleared",
     "step": -0.05,
-    "fromBase": 41.05
+    "fromBase": 41.1
    },
    {
-    "label": "cum:C2a",
-    "runs": 2,
-    "settledAt": 2,
-    "total": 79.75,
-    "letter": "B",
-    "sd": 0.212,
-    "lo": 79.6,
-    "hi": 79.9,
+    "label": "cum:C2b",
+    "runs": 18,
+    "settledAt": 18,
+    "total": 80.18,
+    "letter": "B+",
+    "sd": 0.451,
+    "lo": 79.5,
+    "hi": 81,
     "rows": [
      {
       "k": "ICP alignment",
-      "v": 5.8,
+      "v": 5.42,
       "moves": true,
       "carried": false
      },
@@ -7350,7 +7356,7 @@
      },
      {
       "k": "Core loop",
-      "v": 3.95,
+      "v": 3.72,
       "moves": true,
       "carried": false
      },
@@ -7380,13 +7386,13 @@
      },
      {
       "k": "Monetization",
-      "v": 8.75,
+      "v": 9.92,
       "moves": true,
       "carried": false
      },
      {
       "k": "Retention",
-      "v": 8.45,
+      "v": 8.33,
       "moves": true,
       "carried": false
      },
@@ -7397,140 +7403,140 @@
       "carried": false
      }
     ],
-    "d30": 0.233,
-    "d7": 0.6435,
-    "d90": 0.021,
-    "loopEver": 0.3585,
+    "d30": 0.22444,
+    "d7": 0.64428,
+    "d90": 0.02483,
+    "loopEver": 0.3407,
     "readShare": 0.9998,
-    "inferShare": 0.0236,
-    "stories": 5627.5,
-    "releases": 3633,
-    "minutes": 74594,
+    "inferShare": 0.0291,
+    "stories": 5210.4,
+    "releases": 5560.6,
+    "minutes": 71160,
     "lostTop": [
      {
       "k": "DRIFT",
-      "n": 370,
+      "n": 411,
       "nm": "The absence became permanent"
      },
      {
       "k": "F4",
-      "n": 144,
+      "n": 129,
       "nm": "The reading does not move"
      },
      {
-      "k": "F3",
-      "n": 78,
-      "nm": "Nothing is above the line, so there is nothing to release"
-     },
-     {
       "k": "F14",
-      "n": 37,
+      "n": 74,
       "nm": "Every story makes the number worse"
      },
      {
+      "k": "F3",
+      "n": 20,
+      "nm": "Nothing is above the line, so there is nothing to release"
+     },
+     {
       "k": "F6",
-      "n": 26,
+      "n": 16,
       "nm": "More simultaneous choices than a working memory holds"
      }
     ],
     "icp": {
      "Diane": {
-      "d30": 0.053,
-      "d7": 0.839,
-      "sessions": 2.795,
-      "stories": 1.155,
-      "releases": 0.805,
+      "d30": 0.041,
+      "d7": 0.85,
+      "sessions": 2.427,
+      "stories": 1.044,
+      "releases": 0.738,
       "loopEver": 0,
-      "cqDelta": 0.025,
-      "minutes": 4.55
+      "cqDelta": -0.041,
+      "minutes": 3.872
      },
      "Derek": {
-      "d30": 0.191,
-      "d7": 0.706,
-      "sessions": 7.165,
-      "stories": 3.285,
-      "releases": 3.89,
-      "loopEver": 0.571,
-      "cqDelta": 0,
-      "minutes": 64.1
+      "d30": 0.274,
+      "d7": 0.701,
+      "sessions": 8.864,
+      "stories": 4.017,
+      "releases": 6.812,
+      "loopEver": 0.574,
+      "cqDelta": -0.373,
+      "minutes": 79.783
      },
      "Marcus": {
-      "d30": 0.306,
-      "d7": 0.541,
-      "sessions": 7.795,
-      "stories": 3.575,
-      "releases": 1.905,
-      "loopEver": 0.263,
-      "cqDelta": 0.35,
-      "minutes": 42.7
+      "d30": 0.274,
+      "d7": 0.527,
+      "sessions": 6.816,
+      "stories": 3.104,
+      "releases": 3.414,
+      "loopEver": 0.21,
+      "cqDelta": 0.248,
+      "minutes": 37.4
      },
      "Angela": {
-      "d30": 0.287,
-      "d7": 0.727,
-      "sessions": 6.85,
-      "stories": 6.85,
-      "releases": 5.28,
-      "loopEver": 0.53,
-      "cqDelta": 0.485,
-      "minutes": 65.05
+      "d30": 0.217,
+      "d7": 0.715,
+      "sessions": 5.48,
+      "stories": 5.48,
+      "releases": 5.476,
+      "loopEver": 0.497,
+      "cqDelta": -0.043,
+      "minutes": 52.156
      },
      "Sofia": {
-      "d30": 0.521,
-      "d7": 0.764,
-      "sessions": 17.6,
-      "stories": 17.6,
-      "releases": 8.555,
-      "loopEver": 0.754,
-      "cqDelta": 1.49,
-      "minutes": 247.15
+      "d30": 0.482,
+      "d7": 0.769,
+      "sessions": 14.713,
+      "stories": 14.713,
+      "releases": 13.983,
+      "loopEver": 0.721,
+      "cqDelta": -3.295,
+      "minutes": 206.011
      },
      "James": {
-      "d30": 0.01,
-      "d7": 0.35,
-      "sessions": 0.61,
-      "stories": 0.24,
-      "releases": 0.275,
-      "loopEver": 0.01,
+      "d30": 0.012,
+      "d7": 0.356,
+      "sessions": 0.432,
+      "stories": 0.199,
+      "releases": 0.152,
+      "loopEver": 0.002,
       "cqDelta": 0,
-      "minutes": 1.55
+      "minutes": 1.083
      },
      "Ana": {
-      "d30": 0.5,
-      "d7": 0.67,
-      "sessions": 15.46,
-      "stories": 15.46,
-      "releases": 10.11,
-      "loopEver": 0.67,
-      "cqDelta": -0.06,
-      "minutes": 230.9
+      "d30": 0.507,
+      "d7": 0.7,
+      "sessions": 18.784,
+      "stories": 18.784,
+      "releases": 18.576,
+      "loopEver": 0.677,
+      "cqDelta": -3.234,
+      "minutes": 282.594
      },
      "Gordon": {
-      "d30": 0,
-      "d7": 0.014,
-      "sessions": 0.03,
-      "stories": 0.015,
-      "releases": 0,
+      "d30": 0.002,
+      "d7": 0.035,
+      "sessions": 0.062,
+      "stories": 0.028,
+      "releases": 0.007,
       "loopEver": 0,
       "cqDelta": 0,
-      "minutes": 0.05
+      "minutes": 0.067
      },
      "Rosa": {
-      "d30": 0,
-      "d7": 0.067,
-      "sessions": 0.07,
-      "stories": 0.07,
+      "d30": 0.007,
+      "d7": 0.081,
+      "sessions": 0.133,
+      "stories": 0.074,
       "releases": 0,
       "loopEver": 0,
       "cqDelta": 0,
-      "minutes": 0.3
+      "minutes": 0.4
      }
     },
-    "seconds": 10,
+    "seconds": 93,
     "knobs": {
      "storyCost": 0.8,
      "relTake": 0.21,
-     "relInstall": 0.62,
-     "relCompound": true,
+     "relInstall": 1,
+     "relCompound": false,
      "relStick": true,
      "carrying": true,
      "costLine": true,
@@ -7549,24 +7555,24 @@
      "foldRails": true,
      "foldTop": true
     },
-    "id": "C2a",
-    "nm": "The removal compounds inside the run",
-    "step": -0.25,
-    "fromBase": 40.8
+    "id": "C2b",
+    "nm": "The install reaches the far pole",
+    "step": 0.17,
+    "fromBase": 41.27
    },
    {
-    "label": "cum:C2b",
-    "runs": 2,
-    "settledAt": 2,
-    "total": 78.85,
+    "label": "cum:C2a",
+    "runs": 18,
+    "settledAt": 18,
+    "total": 78.66,
     "letter": "B",
-    "sd": 0.495,
-    "lo": 78.5,
-    "hi": 79.2,
+    "sd": 0.43,
+    "lo": 78,
+    "hi": 79.3,
     "rows": [
      {
       "k": "ICP alignment",
-      "v": 5.65,
+      "v": 5.6,
       "moves": true,
       "carried": false
      },
@@ -7578,7 +7584,7 @@
      },
      {
       "k": "Core loop",
-      "v": 3.9,
+      "v": 3.76,
       "moves": true,
       "carried": false
      },
@@ -7608,13 +7614,13 @@
      },
      {
       "k": "Monetization",
-      "v": 8.45,
+      "v": 8.47,
       "moves": true,
       "carried": false
      },
      {
       "k": "Retention",
-      "v": 8.05,
+      "v": 8.03,
       "moves": true,
       "carried": false
      },
@@ -7625,135 +7631,135 @@
       "carried": false
      }
     ],
-    "d30": 0.2055,
-    "d7": 0.652,
-    "d90": 0.022,
-    "loopEver": 0.3705,
-    "readShare": 0.9995,
+    "d30": 0.203,
+    "d7": 0.64389,
+    "d90": 0.01939,
+    "loopEver": 0.3606,
+    "readShare": 0.9997,
     "inferShare": 0.0235,
-    "stories": 5398,
-    "releases": 3116.5,
-    "minutes": 71844,
+    "stories": 5262.7,
+    "releases": 3077.1,
+    "minutes": 70009,
     "lostTop": [
      {
       "k": "DRIFT",
-      "n": 370,
+      "n": 362,
       "nm": "The absence became permanent"
      },
      {
       "k": "F4",
-      "n": 139,
+      "n": 150,
       "nm": "The reading does not move"
      },
      {
       "k": "F3",
-      "n": 81,
+      "n": 77,
       "nm": "Nothing is above the line, so there is nothing to release"
      },
      {
       "k": "F14",
-      "n": 48,
+      "n": 50,
       "nm": "Every story makes the number worse"
      },
      {
       "k": "F6",
-      "n": 30,
+      "n": 21,
       "nm": "More simultaneous choices than a working memory holds"
      }
     ],
     "icp": {
      "Diane": {
-      "d30": 0.033,
-      "d7": 0.822,
-      "sessions": 2.635,
-      "stories": 1.1,
-      "releases": 0.655,
+      "d30": 0.039,
+      "d7": 0.844,
+      "sessions": 2.662,
+      "stories": 1.137,
+      "releases": 0.641,
       "loopEver": 0,
-      "cqDelta": 0,
+      "cqDelta": -0.011,
       "minutes": 4.25
      },
      "Derek": {
-      "d30": 0.141,
-      "d7": 0.741,
-      "sessions": 6.575,
-      "stories": 2.94,
-      "releases": 2.875,
-      "loopEver": 0.618,
-      "cqDelta": 0,
-      "minutes": 58.85
+      "d30": 0.144,
+      "d7": 0.73,
+      "sessions": 6.407,
+      "stories": 2.866,
+      "releases": 2.743,
+      "loopEver": 0.599,
+      "cqDelta": 0.012,
+      "minutes": 57.361
      },
      "Marcus": {
-      "d30": 0.303,
-      "d7": 0.516,
-      "sessions": 8.205,
-      "stories": 3.82,
-      "releases": 2.03,
-      "loopEver": 0.263,
-      "cqDelta": 0.545,
-      "minutes": 45.75
+      "d30": 0.278,
+      "d7": 0.506,
+      "sessions": 7.378,
+      "stories": 3.348,
+      "releases": 1.969,
+      "loopEver": 0.232,
+      "cqDelta": 0.398,
+      "minutes": 40.483
      },
      "Angela": {
-      "d30": 0.207,
-      "d7": 0.737,
-      "sessions": 6.145,
-      "stories": 6.145,
-      "releases": 4.325,
-      "loopEver": 0.537,
-      "cqDelta": 0,
-      "minutes": 59
+      "d30": 0.199,
+      "d7": 0.713,
+      "sessions": 5.98,
+      "stories": 5.98,
+      "releases": 4.223,
+      "loopEver": 0.529,
+      "cqDelta": 0.096,
+      "minutes": 56.839
      },
      "Sofia": {
-      "d30": 0.518,
-      "d7": 0.757,
-      "sessions": 17.285,
-      "stories": 17.285,
-      "releases": 7.065,
+      "d30": 0.517,
+      "d7": 0.765,
+      "sessions": 16.933,
+      "stories": 16.933,
+      "releases": 7.164,
       "loopEver": 0.761,
-      "cqDelta": 1.94,
-      "minutes": 241.95
+      "cqDelta": 1.934,
+      "minutes": 237.467
      },
      "James": {
-      "d30": 0.01,
-      "d7": 0.4,
-      "sessions": 0.655,
-      "stories": 0.255,
-      "releases": 0.195,
-      "loopEver": 0.005,
+      "d30": 0.012,
+      "d7": 0.349,
+      "sessions": 0.58,
+      "stories": 0.256,
+      "releases": 0.191,
+      "loopEver": 0.004,
       "cqDelta": 0,
-      "minutes": 1.65
+      "minutes": 1.461
      },
      "Ana": {
-      "d30": 0.45,
-      "d7": 0.72,
-      "sessions": 14.35,
-      "stories": 14.35,
-      "releases": 10.55,
-      "loopEver": 0.72,
-      "cqDelta": -2.44,
-      "minutes": 217.25
+      "d30": 0.471,
+      "d7": 0.694,
+      "sessions": 14.784,
+      "stories": 14.784,
+      "releases": 10.492,
+      "loopEver": 0.706,
+      "cqDelta": -1.522,
+      "minutes": 221.778
      },
      "Gordon": {
-      "d30": 0,
-      "d7": 0.014,
-      "sessions": 0.015,
-      "stories": 0.015,
-      "releases": 0,
+      "d30": 0.002,
+      "d7": 0.044,
+      "sessions": 0.067,
+      "stories": 0.027,
+      "releases": 0.002,
       "loopEver": 0,
       "cqDelta": 0,
-      "minutes": 0
+      "minutes": 0.072
      },
      "Rosa": {
-      "d30": 0,
-      "d7": 0.167,
-      "sessions": 0.165,
-      "stories": 0.165,
+      "d30": 0.004,
+      "d7": 0.115,
+      "sessions": 0.171,
+      "stories": 0.101,
       "releases": 0,
       "loopEver": 0,
       "cqDelta": 0,
-      "minutes": 0.6
+      "minutes": 0.533
      }
     },
-    "seconds": 9,
+    "seconds": 80,
     "knobs": {
      "storyCost": 0.8,
      "relTake": 0.21,
@@ -7777,24 +7783,24 @@
      "foldRails": true,
      "foldTop": true
     },
-    "id": "C2b",
-    "nm": "The install reaches the far pole",
-    "step": -0.9,
-    "fromBase": 39.9
+    "id": "C2a",
+    "nm": "The removal compounds inside the run",
+    "step": -1.52,
+    "fromBase": 39.75
    },
    {
     "label": "cum:C6n",
-    "runs": 2,
-    "settledAt": 2,
-    "total": 78.85,
+    "runs": 16,
+    "settledAt": 16,
+    "total": 78.93,
     "letter": "B",
-    "sd": 0.071,
-    "lo": 78.8,
-    "hi": 78.9,
+    "sd": 0.445,
+    "lo": 77.9,
+    "hi": 79.5,
     "rows": [
      {
       "k": "ICP alignment",
-      "v": 5.7,
+      "v": 5.66,
       "moves": true,
       "carried": false
      },
@@ -7806,7 +7812,7 @@
      },
      {
       "k": "Core loop",
-      "v": 3.85,
+      "v": 3.92,
       "moves": true,
       "carried": false
      },
@@ -7836,13 +7842,13 @@
      },
      {
       "k": "Monetization",
-      "v": 8.45,
+      "v": 8.47,
       "moves": true,
       "carried": false
      },
      {
       "k": "Retention",
-      "v": 8.05,
+      "v": 8.08,
       "moves": true,
       "carried": false
      },
@@ -7853,135 +7859,135 @@
       "carried": false
      }
     ],
-    "d30": 0.2045,
-    "d7": 0.6375,
-    "d90": 0.02,
-    "loopEver": 0.359,
-    "readShare": 1,
-    "inferShare": 0.0246,
-    "stories": 5557.5,
-    "releases": 3141.5,
-    "minutes": 73548,
+    "d30": 0.2065,
+    "d7": 0.65188,
+    "d90": 0.02013,
+    "loopEver": 0.3651,
+    "readShare": 0.9998,
+    "inferShare": 0.0236,
+    "stories": 5661.1,
+    "releases": 3184.8,
+    "minutes": 74516,
     "lostTop": [
      {
       "k": "DRIFT",
-      "n": 333,
+      "n": 328,
       "nm": "The absence became permanent"
      },
      {
       "k": "F4",
-      "n": 171,
+      "n": 169,
       "nm": "The reading does not move"
      },
      {
       "k": "F3",
-      "n": 58,
+      "n": 77,
       "nm": "Nothing is above the line, so there is nothing to release"
      },
      {
       "k": "F14",
-      "n": 54,
+      "n": 59,
       "nm": "Every story makes the number worse"
      },
      {
       "k": "F6",
-      "n": 35,
+      "n": 29,
       "nm": "More simultaneous choices than a working memory holds"
      }
     ],
     "icp": {
      "Diane": {
-      "d30": 0.056,
-      "d7": 0.819,
-      "sessions": 2.95,
-      "stories": 1.22,
-      "releases": 0.705,
+      "d30": 0.047,
+      "d7": 0.852,
+      "sessions": 3.003,
+      "stories": 1.314,
+      "releases": 0.742,
       "loopEver": 0,
       "cqDelta": 0,
-      "minutes": 4.7
+      "minutes": 4.781
      },
      "Derek": {
-      "d30": 0.103,
-      "d7": 0.721,
-      "sessions": 6.18,
-      "stories": 2.685,
-      "releases": 2.705,
-      "loopEver": 0.6,
+      "d30": 0.108,
+      "d7": 0.71,
+      "sessions": 6.054,
+      "stories": 2.71,
+      "releases": 2.619,
+      "loopEver": 0.581,
       "cqDelta": 0,
-      "minutes": 55.65
+      "minutes": 54.281
      },
      "Marcus": {
-      "d30": 0.328,
-      "d7": 0.534,
-      "sessions": 8.9,
-      "stories": 4.15,
-      "releases": 2.39,
-      "loopEver": 0.278,
-      "cqDelta": 0.28,
-      "minutes": 49.35
+      "d30": 0.321,
+      "d7": 0.536,
+      "sessions": 8.929,
+      "stories": 4.076,
+      "releases": 2.294,
+      "loopEver": 0.274,
+      "cqDelta": 0.333,
+      "minutes": 49.269
      },
      "Angela": {
-      "d30": 0.183,
-      "d7": 0.67,
-      "sessions": 5.455,
-      "stories": 5.455,
-      "releases": 3.995,
-      "loopEver": 0.477,
-      "cqDelta": 0,
-      "minutes": 52.55
+      "d30": 0.197,
+      "d7": 0.715,
+      "sessions": 6.199,
+      "stories": 6.199,
+      "releases": 4.346,
+      "loopEver": 0.535,
+      "cqDelta": 0.059,
+      "minutes": 58.969
      },
      "Sofia": {
-      "d30": 0.525,
-      "d7": 0.786,
-      "sessions": 18.9,
-      "stories": 18.9,
-      "releases": 7.39,
-      "loopEver": 0.775,
-      "cqDelta": 1.985,
-      "minutes": 262.45
+      "d30": 0.519,
+      "d7": 0.777,
+      "sessions": 18.573,
+      "stories": 18.573,
+      "releases": 7.381,
+      "loopEver": 0.767,
+      "cqDelta": 1.921,
+      "minutes": 259.944
      },
      "James": {
-      "d30": 0.035,
-      "d7": 0.365,
-      "sessions": 0.985,
-      "stories": 0.49,
-      "releases": 0.39,
-      "loopEver": 0.01,
+      "d30": 0.03,
+      "d7": 0.383,
+      "sessions": 0.969,
+      "stories": 0.44,
+      "releases": 0.356,
+      "loopEver": 0.007,
       "cqDelta": 0,
-      "minutes": 2.55
+      "minutes": 2.419
      },
      "Ana": {
-      "d30": 0.4,
-      "d7": 0.65,
-      "sessions": 14.06,
-      "stories": 14.06,
-      "releases": 9.98,
-      "loopEver": 0.63,
-      "cqDelta": -1.425,
-      "minutes": 209
+      "d30": 0.455,
+      "d7": 0.695,
+      "sessions": 14.714,
+      "stories": 14.714,
+      "releases": 10.366,
+      "loopEver": 0.685,
+      "cqDelta": -1.135,
+      "minutes": 220.975
      },
      "Gordon": {
-      "d30": 0,
-      "d7": 0.057,
-      "sessions": 0.17,
-      "stories": 0.03,
-      "releases": 0,
+      "d30": 0.002,
+      "d7": 0.037,
+      "sessions": 0.078,
+      "stories": 0.017,
+      "releases": 0.002,
       "loopEver": 0,
       "cqDelta": 0,
-      "minutes": 0.25
+      "minutes": 0.094
      },
      "Rosa": {
-      "d30": 0,
-      "d7": 0.033,
-      "sessions": 0.065,
-      "stories": 0,
+      "d30": 0.025,
+      "d7": 0.108,
+      "sessions": 0.254,
+      "stories": 0.084,
       "releases": 0,
       "loopEver": 0,
       "cqDelta": 0,
-      "minutes": 0.25
+      "minutes": 0.825
      }
     },
-    "seconds": 10,
+    "seconds": 75,
     "knobs": {
      "storyCost": 0.8,
      "relTake": 0.21,
@@ -8007,8 +8013,8 @@
     },
     "id": "C6n",
     "nm": "And the return rate it buys",
-    "step": 0,
-    "fromBase": 39.9
+    "step": 0.27,
+    "fromBase": 40.02
    }
   ]
  },
