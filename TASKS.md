@@ -353,6 +353,76 @@ into something tidier than he said it.
       be seven bands of thicker colour making the kind of shell."** So the
       seven seats become the ring itself rather than labels hung off it, which
       is the same object the funnel quiz now fills band by band.
+- [x] **SH3 DELIVERED at `proto/field-b/index.html`,** four directions, one of
+      them killed on the page with the arithmetic that killed it.
+- [x] **SH4. A correction to the brief, and it is mine.** The app's boot mark
+      is not a seven band ring. It is a spine, seven seat dots, one hairline
+      ring and twenty four address ticks, and `funnel/ring.js` says so itself:
+      the boot ring is a hairline at 1.29 per cent of the diameter and has
+      nothing to colour. So there are two instances of the seven band ring to
+      agree with and not three, and both are one call. The shell takes its
+      geometry from that file by reference and refuses loudly if the ring's
+      seat order stops matching the engine's.
+- [x] **SH5. What the space is worth, off the shipped constants.** The address
+      ring ends at 0.74 of the unit radius and the seat names reserve out to
+      0.883, so seven words hold an annulus a seventh of the radius thick,
+      outside the drawing, where the room is scarcest. Hover carries the name
+      instead, and that annulus returns to the shell: 19 per cent more radius
+      and 42 per cent more disc.
+- [x] **SH6. Hover says three things in twelve words: which band, what it
+      carries, what it costs.** Every figure off `compute()`. Two of his own
+      rulings forced corrections on the way: the first cut printed a count
+      against a total, which he has objected to before, so the count keeps its
+      unit and loses its denominator, and the pole is called filled in
+      everywhere rather than installed, because that is the ruled label.
+- [x] **SH7. Zoom is where the four actually differ.** Kerf opens the pressed
+      seat's arc to 150 degrees and compresses the other six, so the ring
+      never breaks and the names print inward where the room is. Strata grows
+      the band inward and settles each address into carrying, filled in or
+      clear, which is exact rather than bucketed because the arithmetic makes
+      the two mutually exclusive at an address. Unroll drives the pressed
+      arc's curvature to zero over one beat with its arc length kept, so the
+      strip is visibly the band that was pressed.
+- [x] **SH8. Frame cost measured honestly, and the first measurement was
+      wrong.** Timing the draw calls alone measured the command buffer and
+      reported four hundredths of a millisecond, because canvas queues. Every
+      paint is followed by a one pixel read that forces the raster to finish.
+      Worst case is 4.8 milliseconds, 29 per cent of the sixty frame budget,
+      zero frames past budget at either width, and idle costs nothing.
+- [x] **SH9. The safest direction was killed, and the kill is checkable on the
+      page.** A band that opens inside its own thickness has nowhere to open:
+      at 390 Crown's twenty one addresses come out 5.3 pixels wide, which
+      carries a bar and never a name, so the ton of information stays behind
+      hover where it already was. Atomised, it is also the shipped Field with
+      a lid on it.
+- [x] **SH10. Three findings worth carrying out of it.** The seats are not
+      equal: Crown holds 21 addresses, Throat 12, Heart 15, the rest 16, so
+      anything that divides the ring by seven draws an address at Crown
+      smaller than an address at Throat. Kerf is the only direction whose rest
+      state shows Marcus at all, because he carries fourteen addresses with
+      nothing held and every drawing built on the seat mean renders him as a
+      hairline, and three of the six ICPs are in that state. And held and
+      filled in are mutually exclusive at an address by arithmetic rather than
+      by a threshold.
+- [?] **SH11. Does a band span its seventh, or its share of the addresses?**
+  > **What it is.** The seven bands of the shell, and the same seven bands in
+  > the funnel's mark and quiz ring.
+  > **At stake.** Whether one stave means the same thing at Crown as at
+  > Throat, against whether the mark and the reading stay one drawing.
+  > **Either way.** A seventh, and the mark holds, and an address at Crown
+  > draws smaller than one at Throat. Its share, and a stave means one thing
+  > everywhere, and the favicon and the shell stop being the same object.
+  > **Look at.** `proto/field-b/index.html`, Kerf takes the share and the
+  > other three take the seventh.
+- [?] **SH12. Do the four field anchors get a mark on the shell?**
+  > **What it is.** Four addresses sit above and below the body, in no seat at
+  > all. The seven seats hold all the others.
+  > **At stake.** Whether the surface whose whole job is to be the field says
+  > nothing about four of its addresses.
+  > **Either way.** Marked, and the shell carries something that is not a
+  > seat. Unmarked, and the shell owns the seated addresses and the anchors
+  > live outside it.
+  > **Look at.** `proto/field-b/index.html`, the shell at rest.
 - [ ] **SH2. "If you hover over it, you get information. If you zoom in on it,
       it atomises and gives you a ton of information."** Two depths, one
       object: the shell holds the shape, hover names a band, and zoom breaks

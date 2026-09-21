@@ -1,8 +1,8 @@
 # QUESTIONS FOR THE OWNER
 
 Every line in `TASKS.md` marked `[?]`, which is the mark for a question
-waiting on your ruling. 153 of them, across 43 sections.
-Read off commit 1c0a50e on 2026-09-21. Nothing here is typed by hand: answer a
+waiting on your ruling. 155 of them, across 43 sections.
+Read off commit dfaf24f on 2026-09-21. Nothing here is typed by hand: answer a
 question in TASKS.md and it leaves this file on the next run.
 
 Each one opens with the question, names the seat asking it, and carries a
@@ -65,6 +65,27 @@ The same list is in `QUESTIONS.html`, which opens in a browser.
   > them.
   > **Look at.** `copy-objections.html` and `field-nameplates.html`, the two
   > sent before he said it.
+
+- [ ] **SH11. Does a band span its seventh, or its share of the addresses?**
+  > **What it is.** The seven bands of the shell, and the same seven bands in
+  > the funnel's mark and quiz ring.
+  > **At stake.** Whether one stave means the same thing at Crown as at
+  > Throat, against whether the mark and the reading stay one drawing.
+  > **Either way.** A seventh, and the mark holds, and an address at Crown
+  > draws smaller than one at Throat. Its share, and a stave means one thing
+  > everywhere, and the favicon and the shell stop being the same object.
+  > **Look at.** `proto/field-b/index.html`, Kerf takes the share and the
+  > other three take the seventh.
+
+- [ ] **SH12. Do the four field anchors get a mark on the shell?**
+  > **What it is.** Four addresses sit above and below the body, in no seat at
+  > all. The seven seats hold all the others.
+  > **At stake.** Whether the surface whose whole job is to be the field says
+  > nothing about four of its addresses.
+  > **Either way.** Marked, and the shell carries something that is not a
+  > seat. Unmarked, and the shell owns the seated addresses and the anchors
+  > live outside it.
+  > **Look at.** `proto/field-b/index.html`, the shell at rest.
 
 ## 08f. RULED 20 SEPTEMBER, NINETEENTH PASS. THE RING HE ALREADY DREW, AND A LIST HE CANNOT ANSWER.
 
