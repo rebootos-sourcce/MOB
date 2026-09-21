@@ -183,7 +183,13 @@ function stepChart(pts,opt){
 /* horizontal bars, signed, for a solo ranking */
 function barsSigned(rows,opt){
  opt=opt||{};
- const W=880, rowH=26, L=210, Rr=60, T=16;
+ const W=880, rowH=26, Rr=60, T=16;
+ /* THE LABEL GUTTER IS SIZED FROM THE LONGEST LABEL. A fixed 210 with the text
+    right anchored against it pushed "C10 A price, and an allowance with
+    something behind it" off the left edge of the frame, where a phone shows it
+    first. Labels are left anchored now and the gutter is measured. */
+ const lab=Math.max.apply(null,rows.map(r=>String(r.k).length));
+ const L=Math.min(430,Math.max(150,lab*6.35+14));
  const Hh=T+rows.length*rowH+18;
  const mx=Math.max(0.5,Math.max.apply(null,rows.map(r=>Math.abs(r.v))));
  const zero=L+(W-L-Rr)*0.13;
@@ -192,7 +198,7 @@ function barsSigned(rows,opt){
  rows.forEach((r,i)=>{
   const yy=T+i*rowH, w=sc(r.v);
   const col=r.soft?'#DABF6A':(r.v>0?'#68CBA4':(r.v<0?'#D4736D':'#94908A'));
-  g+=`<text class="bl" x="${L-10}" y="${yy+13}" text-anchor="end">${e(r.k)}</text>`;
+  g+=`<text class="bl" x="4" y="${yy+13}">${e(r.k)}</text>`;
   g+=`<rect x="${(w<0?zero+w:zero).toFixed(1)}" y="${yy+3}" width="${Math.max(1.5,Math.abs(w)).toFixed(1)}" height="15" fill="${col}" opacity=".9" rx="2"/>`;
   g+=`<text class="bn" x="${(w<0?zero+w-6:zero+Math.abs(w)+6).toFixed(1)}" y="${yy+15}" text-anchor="${w<0?'end':'start'}">${sg(r.v)}</text>`;});
  return `<div class="chwrap"><svg class="ch" viewBox="0 0 ${W} ${Hh}" role="img" aria-label="${e(opt.alt||'')}">${g}</svg></div>`;}
