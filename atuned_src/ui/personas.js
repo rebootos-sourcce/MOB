@@ -405,10 +405,36 @@ function loadP(i){
   LAW_UNSET[l]=!!(p.you&&v==null);
   LAW_SEED[l]=S.law[l];});
  /* switch profiles, never overwrite one. */
+ /* A WORKED EXAMPLE IS NOT A RECORD ON THIS DEVICE, SO IT NEVER JOINS THE
+    RECORD LIST.
+
+    PROFILES is the person's own list: account.js prints its length as
+    "Profiles on this device", the Intake offers it as the profile switcher, and
+    pPersist writes the whole of it to the one storage key. So pushing a demo
+    persona's scratch profile onto it wrote that persona into the person's own
+    store the moment anything saved, which is any drag of a slider.
+
+    Reproduced on a clean page: visit Gordon, come back, move one charge. Two
+    records on disk under source.profiles, the second named Gordon carrying
+    78.0 units of held charge and 21 of 21 measured laws, surviving a reload,
+    and the account surface reporting two profiles. In a full functional run the
+    store reached 21 records, 15 of them personas and 6 of those duplicated,
+    because a reload empties PROF_BY and the next visit pushes a second copy.
+
+    Three further things came free with it, and each was a real hole. Deleting
+    your own record took CURP to PROFILES[0], which could be a reference case.
+    The Intake's switcher offered reference cases as though they were yours, and
+    picking one loads its field while S.who still says 0. And the person's own
+    record list could not be counted, because it was counting demos.
+
+    PROF_BY still holds one scratch profile per persona, which is what keeps a
+    reference case's diagnostic from overwriting another's. It is memory only,
+    and it is discarded with the page, which is what a demonstration is. */
  if(!PROF_BY[p.nm]){
   var pr=blankProfile(p.nm==='You'?'You':p.nm);
   if(p.intakeAnswers)pr.intake.answers=Object.assign({},p.intakeAnswers);
-  PROFILES.push(pr); PROF_BY[p.nm]=pr;}
+  if(p.you)PROFILES.push(pr);
+  PROF_BY[p.nm]=pr;}
  CURP=PROF_BY[p.nm];
  saveProfile(CURP); iqApply(CURP);
  $('psel').value=String(i);

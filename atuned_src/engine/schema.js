@@ -235,8 +235,24 @@ function pNew(name){ var p=blankProfile(name); PROFILES.push(p); CURP=p; pPersis
    `if(!pSave())` could never fire: a delete that failed to write said
    "Deleted from this browser" and left the record where it was. That is the
    one write in the product where a false claim is worst. */
-function pSave(){ if(!CURP)return false; saveProfile(CURP); return pPersist(); }
-function pSnap(){ if(!CURP)return false; CURP.history.push(snapshot(CURP)); return pPersist(); }
+/* AND A SAVE ONTO SOMETHING THAT IS NOT IN THE RECORD LIST CANNOT LAND, SO IT
+   SAYS SO RATHER THAN REPORTING THE WRITE IT DID NOT MAKE.
+
+   pPersist writes PROFILES. A profile outside that array is never written, and
+   this returned pPersist's answer regardless, so the caller was told the disk
+   had taken a record that was never offered to it. That was invisible while the
+   persona loader pushed its scratch profiles onto PROFILES, because then
+   everything was in the list: the price of that was a demo persona landing in
+   the person's own store, which is the leak ui/personas.js now refuses. Fixing
+   the leak is what makes this path reachable, so the report comes with it. The
+   host decides what to say; this only reports what happened. */
+function pSave(){ if(!CURP)return false; saveProfile(CURP);
+ if(PROFILES.indexOf(CURP)<0){ SAVE_OK=false; SAVE_ERR='NotARecord'; return false; }
+ return pPersist(); }
+/* checked before the push, so a history nobody can read does not grow */
+function pSnap(){ if(!CURP)return false;
+ if(PROFILES.indexOf(CURP)<0){ SAVE_OK=false; SAVE_ERR='NotARecord'; return false; }
+ CURP.history.push(snapshot(CURP)); return pPersist(); }
 function pExport(){ return JSON.stringify(CURP?saveProfile(CURP):null,null,1); }
 /* ============================================================
    THE BOUNDARY. Everything above this line trusts its input

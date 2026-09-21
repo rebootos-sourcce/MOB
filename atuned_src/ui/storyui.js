@@ -78,6 +78,23 @@ function stRender(){
  var ap=document.getElementById('stapply');
  if(ap)ap.onclick=function(){
   if(!ST_PARSED||!ST_PARSED.imprints.length)return;
+  /* AND A STORY CANNOT BE COMMITTED ONTO A WORKED EXAMPLE, for the same reason
+     the release cannot be run on one: the words are the person's and the field
+     is not. This wrote the charge onto the case's field, pushed the entry onto
+     the case's record, and then called toYou() on the last line, which moves
+     the pointer to the person's own record. So the entry landed in a record the
+     person does not own, the charge landed on a field they were about to leave,
+     and the undo for it stayed with the example. While the persona loader was
+     pushing its scratch profiles onto PROFILES that entry was then written into
+     the person's own store, which is the leak ui/personas.js now refuses; with
+     that closed the same press would keep nothing at all and say nothing about
+     it. Refusing is the version that is true, and it is the wording the release
+     already uses for the same crossing. */
+  if(typeof S!=='undefined'&&S.who!==0){
+   status('You are looking at '+(((typeof PEOPLE!=='undefined'&&PEOPLE[S.who])||{}).nm
+    ||'a reference case')+', which is a worked example rather than your record. '
+    +'Switch to your own profile to commit a story.','fail');
+   return;}
   /* the field is about to change and until now there was no way back */
   undoPush('committing the story');
   applyStory(ST_TEXT); verpApply(ST_TEXT); leanApply(ST_TEXT);

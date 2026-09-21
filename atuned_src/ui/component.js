@@ -248,6 +248,14 @@ function status(msg,kind){
 function statusSaved(){
  var st=(typeof saveState==='function')?saveState():{ok:true};
  if(st.ok)status('Saved.');
+ /* A REFUSAL NAMES ITS OWN REASON. One message for every failure said storage
+    was full or blocked, which is the wrong sentence for a save onto a worked
+    example: nothing is wrong with the browser and there is something the person
+    can do. The words follow the release's refusal, which is the same crossing
+    answered the same way. */
+ else if(st.err==='NotARecord')
+  status('Not saved. This is a worked example rather than your record. '
+   +'Switch to your own profile first.','fail');
  else status('Not saved. Storage is full or blocked, so this session will not survive a reload.','fail');
  return st.ok;}
 

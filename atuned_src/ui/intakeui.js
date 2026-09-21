@@ -224,7 +224,16 @@ function renderIntake(){
   +(scored<21?', '+(21-scored)+' still at the default':'')
   +(scored?' \u00b7 '+r.tier.toLowerCase():'')+'</div></div>'
   +'<div class="iq-act">'
-   +'<select id="iqprof" aria-label="Profile">'+PROFILES.map(function(x,i){
+   /* AND THE SWITCHER NAMES WHAT IS ACTUALLY LOADED. It listed PROFILES only,
+      and a reference case is not in that list any more, so with one loaded no
+      option matched and the control showed the person's own name above
+      somebody else's sixty three answers. It carries the loaded example as an
+      entry of its own, marked as what it is, and the handler refuses to switch
+      to it, because there is nothing to switch to: it is already up. */
+   +'<select id="iqprof" aria-label="Profile">'
+   +(PROFILES.indexOf(p)<0
+     ?'<option value="-1" selected>'+esc(p.name)+', a worked example</option>':'')
+   +PROFILES.map(function(x,i){
       return '<option value="'+i+'"'+(x===CURP?' selected':'')+'>'+esc(x.name)+'</option>';}).join('')+'</select>'
    +'<button class="btn" id="iqnew">New</button>'
    +'<button class="btn pri" id="iqsave">Save</button>'
@@ -339,7 +348,9 @@ function renderIntake(){
  if(tu)tu.onchange=function(){CURP.who.born.timeUnknown=tu.checked;
   if(tu.checked)CURP.who.born.time=''; pSave(); statusSaved(); renderIntake();};
  var ps=document.getElementById('iqprof');
- if(ps)ps.onchange=function(){CURP=PROFILES[+ps.value];loadProfile(CURP);IQ_OPEN=null;
+ if(ps)ps.onchange=function(){
+  var pi=+ps.value; if(pi<0||!PROFILES[pi]){renderIntake();return;}
+  CURP=PROFILES[pi];loadProfile(CURP);IQ_OPEN=null;
   syncCh();syncLw();syncSoul();renderIntake();render();};
  var nb=document.getElementById('iqnew');
  if(nb)nb.onclick=function(){var n=prompt('Profile name','Profile '+(PROFILES.length+1));

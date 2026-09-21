@@ -38,9 +38,22 @@ const browser=await chromium.launch({executablePath:'/opt/pw-browsers/chromium-1
    is the rule this repository already carries about the tab integers, and it
    holds for every table a thing is looked up in. Defined on the context so
    every page and every navigation has it. */
-const GORDON_FN=`window.GORDON=function(){
- for(var i=0;i<PEOPLE.length;i++)if(PEOPLE[i].nm==='Gordon')return i;
- throw new Error('Gordon is not in the roster any more');};`;
+/* AND IT IS EVERY PERSON IN THE ROSTER, NOT ONLY THE HEAVY ONE. GORDON() was
+   added after seven checks said loadP(8) and meant Gordon, and the same defect
+   was still sitting in this file seventeen times as loadP(6): six is James in
+   the browser, because ui/personas.js unshifts the custom persona, so every
+   index here is one past the engine's own table and one comment in this file
+   said Gordon over a call that loads James. Counted off the file: 34 calls
+   carried a literal index and 23 of them named somebody other than the person
+   themselves, and those 23 are by name now. PERSON throws rather than returning
+   a wrong row, so a roster change fails the gate instead of quietly measuring
+   the wrong person.
+   loadP(0) stays a literal: zero is the custom persona, which is the person's
+   own identity and is what saveYou and toYou both mean by it. */
+const GORDON_FN=`window.PERSON=function(nm){
+ for(var i=0;i<PEOPLE.length;i++)if(PEOPLE[i].nm===nm)return i;
+ throw new Error(nm+' is not in the roster any more');};
+window.GORDON=function(){return window.PERSON('Gordon');};`;
 browser.newPage=(orig=>async function(...a){
  const pg=await orig.apply(this,a);
  await pg.addInitScript(GORDON_FN);
@@ -105,7 +118,7 @@ for(const nm of people){
 --------------------------------------------------------------------------- */
 console.log('\n=== the pain map opens blank ===');
 {const pm=await page.evaluate(async()=>{
-  loadP(6); setTab(TAB.ENERGY); PMLAYER='pain'; PAINPICK=null; render();
+  loadP(PERSON('James')); setTab(TAB.ENERGY); PMLAYER='pain'; PAINPICK=null; render();
   await new Promise(r=>setTimeout(r,60));
   const marks=()=>document.querySelectorAll('#emap .pm-svg .pm-n').length
    +document.querySelectorAll('#emap .pm-svg g[filter] circle').length;
@@ -164,7 +177,7 @@ for(const nm of people){
  console.log(' ',nm.padEnd(8),line.join('  '));}
 
 console.log('\n=== drills open and close ===');
-await page.evaluate(()=>{loadP(6);setTab(TAB.FIELD);});   // Gordon, heavily loaded
+await page.evaluate(()=>{loadP(PERSON('James'));setTab(TAB.FIELD);});   // James, heavily loaded
 await page.waitForTimeout(120);
 const drills=await page.evaluate(()=>{
  const out={};
@@ -228,7 +241,7 @@ const kb=await page.evaluate(()=>{
  const chip=chipEl?(chipEl.querySelector('b')||{}).textContent:'';
  const dash=[...document.querySelectorAll('.kb-rv.off')].length;
  /* the deck deals only from what is held, and a card names a real address */
- loadP(6); const pool=deckSize(), held=compute().loaded.length;
+ loadP(PERSON('James')); const pool=deckSize(), held=compute().loaded.length;
  deckDeal(); const card=DECK_CARD; deckClose();
  const rail=[...document.querySelectorAll('.lsec-hd span')].map(e=>e.textContent.trim());
  const stack=[...document.querySelectorAll('#stack button')]
@@ -388,7 +401,7 @@ ok(back.bound===true,'store bound after reload');
 
 console.log('\n=== games ===');
 const gm=await page.evaluate(()=>{
- loadP(9); setTab(TAB.GAMES); GAME='lg'; gmRender(); lgStart();
+ loadP(PERSON('Tomas')); setTab(TAB.GAMES); GAME='lg'; gmRender(); lgStart();
  const dealt=LG.cards.length;
  /* the deal is shuffled, so the kind of card at a given index is not fixed.
     each assertion picks a card of the kind it is about. A printed card says
@@ -459,12 +472,12 @@ console.log('\n=== the record the person is actually editing ===');
 const orph=await page.evaluate(async ()=>{
  /* a reference case is loaded, then the person marks the state as their own.
     toYou has to move the record too or the edit lands in the case's file. */
- loadP(4); toYou();
+ loadP(PERSON('Angela')); toYou();
  const ownAfterToYou=(CURP===PROF_BY[PEOPLE[0].nm]);
  S.charge.Fear=7.7; syncCh(); saveYou();
  await new Promise(r=>setTimeout(r,600));
  const first=pStore()[0].axes.Fear.held;
- loadP(3); loadP(0);
+ loadP(PERSON('Marcus')); loadP(0);
  const inList=PROFILES.indexOf(CURP)>=0;
  toYou(); S.charge.Fear=2.2; syncCh(); saveYou();
  await new Promise(r=>setTimeout(r,600));
@@ -530,7 +543,7 @@ console.log('\n=== nothing in the rail is clipped without an affordance ===');
 /* Witness rendered as Witn at every desktop width, in a row that did not wrap
    and had no scrollbar. Rule 10: never hide a control with no affordance. */
 const clip=await page.evaluate(()=>{
- loadP(6); setTab(TAB.FIELD); render();
+ loadP(PERSON('James')); setTab(TAB.FIELD); render();
  const bad=[];
  document.querySelectorAll('#roots > *, .vt, .tab, .kb-t').forEach(e=>{
   const r=e.getBoundingClientRect();
@@ -544,8 +557,16 @@ ok(clip.names.join()==='Architect,Engine,Weaver,Witness',
  'all four root domains render in full, got '+clip.names.join(', '));
 
 console.log('\n=== undo, on the three irreversible writes ===');
+/* ON THE PERSON'S OWN RECORD, BECAUSE THAT IS THE ONLY PLACE A COMMIT LANDS.
+   This ran on James. The commit handler's last line calls toYou(), so the press
+   wrote the charge onto James's field, the entry onto James's record, and then
+   moved the pointer to the person's own, which left the undo for it belonging to
+   a record the person was no longer standing in. The two rows here caught that
+   the moment the history was keyed to its record: the arrow was correctly not
+   offered and the field correctly did not come back. The commit refuses on a
+   worked example now, and undo is checked where a person actually commits. */
 const un=await page.evaluate(()=>{
- loadP(6); setTab(TAB.STORY); render();
+ loadP(0); setTab(TAB.STORY); render();
  const o={hiddenAtRest:document.getElementById('undobtn').hidden};
  const before=JSON.stringify(S.charge);
  ST_TEXT='I could not stop going over it and it had me. I said nothing and I let it sit.';
@@ -594,7 +615,7 @@ ok(/Where it goes/i.test(lab.drill),'and where it goes next');
 const tapPg=await browser.newPage({viewport:{width:390,height:844}});
 await tapPg.goto(FILE,{waitUntil:'load'}); await booted(tapPg); await tapPg.waitForTimeout(700);
 const tapped=await tapPg.evaluate(()=>{
- loadP(9); setTab(TAB.FIELD); render();
+ loadP(PERSON('Tomas')); setTab(TAB.FIELD); render();
  const el=document.getElementById('tier');
  const h=Math.round(el.getBoundingClientRect().height);
  el.click();
@@ -615,7 +636,7 @@ console.log('\n=== zoom atomises the construct ===');
    nothing changed, which cost two probes before it was noticed. */
 const zsteps=[];
 for(const z of [1,2.3,3.3,4.3]){
- await page.evaluate(zz=>{loadP(6);setTab(TAB.FIELD);S.view=0;S.zoom=zz;reframe();render();},z);
+ await page.evaluate(zz=>{loadP(PERSON('James'));setTab(TAB.FIELD);S.view=0;S.zoom=zz;reframe();render();},z);
  /* wait for the frame the render was deferred to, rather than for a guess at
     how long it takes. A fixed timeout here failed roughly one run in ten. */
  await page.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));
@@ -688,7 +709,7 @@ await touchPg.goto(FILE,{waitUntil:'load'}); await booted(touchPg); await touchP
    HIT is empty. Switch, let one frame pass, then probe. Nothing about the
    product changed here: it is the harness that was relying on the old opening
    surface having already painted. */
-await touchPg.evaluate(()=>{loadP(6); setTab(TAB.FIELD); render();});
+await touchPg.evaluate(()=>{loadP(PERSON('James')); setTab(TAB.FIELD); render();});
 await touchPg.waitForTimeout(300);
 const drag=await touchPg.evaluate(()=>{
  const before=JSON.parse(JSON.stringify(S.charge));
@@ -724,7 +745,7 @@ console.log('\n=== the frame moves, and the core opens ===');
    CY, which only reframe() sets. So the numbers moved and the picture did not,
    at every zoom level. Measured before the fix: a 72 pixel drag took panx from
    0 to 72 and left CX at 332. */
-await page.evaluate(()=>{loadP(6);setTab(TAB.FIELD);});
+await page.evaluate(()=>{loadP(PERSON('James'));setTab(TAB.FIELD);});
 await page.waitForTimeout(300);
 const pan=await page.evaluate(()=>{
  const cv=document.getElementById('cv'), rc=cv.getBoundingClientRect();
@@ -769,7 +790,7 @@ console.log(' ',JSON.stringify(pan));
 /* a coherent field, so the feathers have length, and one frame per reading:
    the wheel draws on a requestAnimationFrame, so HIT belongs to the frame
    BEFORE the one this asked for. */
-await page.evaluate(()=>{loadP(7); setTab(TAB.FIELD);});
+await page.evaluate(()=>{loadP(PERSON('Rosa')); setTab(TAB.FIELD);});
 await page.waitForTimeout(260);
 const core={steps:await page.evaluate(()=>CORE_STEP.slice())};
 for(const [k,z] of [['z1',1],['z18',1.8],['z28',2.8],['z42',4.2]]){
@@ -803,7 +824,7 @@ console.log('\n=== the fetters grow, and one of them runs a protocol ===');
    from disp, so a reading taken before it settles is a reading of an animation
    in progress. Measured: the same address came back 13.3 on both zooms because
    both were read mid-ease. Let it land. */
-await page.evaluate(()=>{loadP(6);setTab(TAB.FIELD);});
+await page.evaluate(()=>{loadP(PERSON('James'));setTab(TAB.FIELD);});
 await page.waitForTimeout(900);
 const fet={steps:await page.evaluate(()=>FET_STEP.slice())};
 for(const [k,z] of [['z1',1],['z28',2.8],['z46',4.6]]){
@@ -869,7 +890,7 @@ console.log('\n=== the summary, the opening screen ===');
    owner comes back to. It carries four blocks that did not exist before this
    pass and none of them had a gate. */
 const sum=await page.evaluate(()=>{
- loadP(6); setTab(TAB.SUMMARY);
+ loadP(PERSON('James')); setTab(TAB.SUMMARY);
  const q=s=>document.querySelectorAll(s).length;
  const body=document.getElementById('sumbody');
  /* every ring on this surface is the same object: icon, arc, pill */
@@ -924,7 +945,7 @@ ok(sum.emptyPill===0,'an empty value paints no pill, got '+sum.emptyPill);
 --------------------------------------------------------------------------- */
 console.log('\n=== the ladder, and no score ===');
 {const ld=await page.evaluate(async()=>{
-  loadP(6);
+  loadP(PERSON('James'));
   const base=Date.now();
   CURP.rituals=[]; for(let i=0;i<9;i++)
    CURP.rituals.push({t:new Date(base-i*86400000).toISOString(),min:14,steps:['a']});
@@ -975,7 +996,7 @@ console.log(' ',JSON.stringify({glance:sum.glance,rows:sum.structRows,chips:sum.
 /* every control on the surface opens something. a button that does nothing is
    the defect this product keeps finding in itself. */
 const sumOpen=await page.evaluate(()=>{
- loadP(6); setTab(TAB.SUMMARY);
+ loadP(PERSON('James')); setTab(TAB.SUMMARY);
  const sel=['[data-sp]','[data-num]','[data-dom]','[data-seat]','[data-arch]','[data-gl]'];
  const out={};
  sel.forEach(s=>{
@@ -996,7 +1017,7 @@ console.log(' ',JSON.stringify(sumOpen));
 
 /* the six numbers are the six numbers, and they are the person's own */
 const numUI=await page.evaluate(()=>{
- loadP(6);
+ loadP(PERSON('James'));
  const N=numerologyOf('James',null);
  setTab(TAB.SUMMARY);
  const txt=(document.getElementById('sumbody').textContent||'');
@@ -1032,7 +1053,7 @@ await phone.goto(FILE,{waitUntil:'load'}); await booted(phone); await phone.wait
 for(const [t,sel] of [['STORY','#story'],['SUMMARY','#sum'],['ANALYTICS','#ana'],
                       ['INTAKE','#iq'],['KNOW','#know'],['GAMES','#games']]){
  const r=await phone.evaluate(([tt,ss])=>{
-  loadP(6); setTab(TAB[tt]);
+  loadP(PERSON('James')); setTab(TAB[tt]);
   if(tt==='KNOW')kbRender();
   if(tt==='GAMES'){GAME='lg'; gmRender(); lgStart();}
   const e=document.querySelector(ss);
@@ -1103,14 +1124,17 @@ const pole=await page.evaluate(()=>{
     never was, and the check only passed because the branch it was testing was
     dead for everybody. So the clean case is a person who is actually clean,
     by name, and the roster carries several. */
- undoPush('the compass gate');
+ /* AND IT IS PUT BACK BY LOADING THE CASE AGAIN, NOT BY UNDO. This pushed a
+    state here and popped it after switching person, which is the crossing the
+    leak block below measures: a history belongs to the record it was taken from
+    and the pop now refuses, correctly. loadP is the route a person has. */
  var ri=0; for(var q=0;q<PEOPLE.length;q++)if(PEOPLE[q].nm==='Rosa')ri=q;
  loadP(ri); render();
  const rc=compute();
  o.cleanCQ=Math.round(rc.CQ); o.cleanMal=Math.round(rc.malig);
  o.cleanDark=darkRead(rc.malig/100,rc.CQ).dark;
  runPoleDrill('dn'); o.clean=txt();
- undoPop();
+ loadP(GORDON()); render();
  return o;});
 ok(pole.ends===2,'the cone carries a door at each end, got '+pole.ends);
 ok(pole.rows===8,'and eight axes on the roster, got '+pole.rows);
@@ -1497,8 +1521,11 @@ const relrun=await page.evaluate(()=>{
  o.savedCharge=Object.keys(PEOPLE[0].c||{}).reduce(function(a,k){
    return a+(+PEOPLE[0].c[k]||0);},0);
  o.ownGained=(PROF_BY[PEOPLE[0].nm].meter.unique||[]).length-ownBefore;
- o.gordonGained=(PROF_BY[PEOPLE[8].nm]
-   ?((PROF_BY[PEOPLE[8].nm].meter.unique||[]).length):0);
+ /* THE REFERENCE CASE, BY NAME. This read PEOPLE[8], which is Ana, while the
+    run it is reporting on was started on Gordon, so the number it printed was
+    about a person the block never touched. */
+ o.gordonGained=(PROF_BY[PEOPLE[GORDON()].nm]
+   ?((PROF_BY[PEOPLE[GORDON()].nm].meter.unique||[]).length):0);
  /* a second run continues rather than repeating */
  relPick(held);
  o.plan2=RUN.plan.length;
@@ -1548,6 +1575,209 @@ ok(Math.abs(relrun.liveCharge-relrun.savedCharge)<1e-9,
  'and the live field and the person\'s record agree once saved, got '
  +relrun.liveCharge.toFixed(2)+' live against '+relrun.savedCharge.toFixed(2)+' saved');
 ok(relrun.overlap===0,'the next run continues rather than re-offering opened ground');
+
+console.log('\n=== a worked example never reaches the person\'s own record ===');
+/* TWO FIELD LEAKS, BOTH UPSTREAM OF THE RELEASE, BOTH MEASURED BEFORE THEY WERE
+   FIXED AND BOTH MEASURED AFTER.
+
+   The release path above is guarded and has been since 50.6 of a stranger's
+   charge landed in somebody's record. These are the two routes into the same
+   failure that the release guard cannot see, because neither of them goes
+   through the release.
+
+   One. Visiting a reference case pushed its scratch profile onto PROFILES,
+   which is the person's own record list and the thing pPersist writes to the one
+   storage key. Measured on a clean page before the fix: visit Gordon, come
+   back, move one charge, and the store held a second record named Gordon
+   carrying 78.0 units of held charge and 21 of 21 measured laws, surviving a
+   reload. In a full run of this file the store reached 21 records, 15 of them
+   personas and 6 of those duplicated.
+
+   Two. The undo stack held one history for the whole app. A change made on a
+   reference case sat on it, the person returned to their own record, and the
+   arrow restored the case's field into S with S.who back at 0, which is the
+   claim that S holds the person's own field. settle() then calls saveYou() and
+   pSave() and writes it through. Measured in the full run of this file before
+   the fix: 53.0 of James's charge in PEOPLE[0].c and in the person's own
+   record, at the top of the release block, on a person who had entered nothing.
+
+   Both rows count what they find rather than testing a number, so neither goes
+   stale when the roster grows. */
+{
+ const lk=await browser.newPage({viewport:{width:1600,height:1000}});
+ await lk.goto(FILE,{waitUntil:'load'});
+ await lk.evaluate(()=>{try{localStorage.clear();}catch(e){}});
+ await lk.reload({waitUntil:'load'}); await booted(lk);
+ const leak=await lk.evaluate(()=>{
+  const o={};
+  const sumAx=p=>Object.keys(p.axes||{}).reduce((a,k)=>a+(+p.axes[k].held||0),0);
+  const store=()=>{try{return JSON.parse(localStorage.getItem('source.profiles')||'[]');}
+   catch(e){return [];}};
+  const sumYou=()=>+CHARGES.reduce((a,c)=>a+(+PEOPLE[0].c[c]||0),0).toFixed(2);
+  const gi=GORDON(); o.example=PEOPLE[gi].nm;
+  /* ONE. a visit, then one edit of their own, which is every drag of a slider */
+  loadP(gi);
+  o.liveOnCase=+CHARGES.reduce((a,c)=>a+(+S.charge[c]||0),0).toFixed(2);
+  toYou(); S.charge.Fear=2.2; syncCh(); saveYou(); persistNow();
+  o.records=store().map(p=>({name:p.name, charge:+sumAx(p).toFixed(2),
+   laws:Object.keys(p.laws||{}).filter(k=>p.laws[k]!=null).length}));
+  const demos=PEOPLE.filter(p=>!p.you).map(p=>p.nm);
+  o.borrowed=o.records.filter(r=>demos.indexOf(r.name)>=0);
+  o.crossed=+o.borrowed.reduce((a,r)=>a+r.charge,0).toFixed(2);
+  /* TWO. a change made on the case, then the arrow pressed on their own record */
+  loadP(gi); setTab(TAB.FIELD); render();
+  undoPush('a change on the worked example');
+  S.charge.Fear=Math.min(10,(+S.charge.Fear||0)+1); syncCh(); render();
+  toYou(); render();
+  const btn=document.getElementById('undobtn');
+  o.offered=!!btn&&!btn.hidden;
+  o.youBefore=sumYou();
+  o.recBefore=CURP?+sumAx(CURP).toFixed(2):0;
+  if(btn)btn.click();
+  o.youAfter=sumYou();
+  o.recAfter=CURP?+sumAx(CURP).toFixed(2):0;
+  o.who=S.who;
+  /* AND IT IS KEYED, NOT CLEARED. Refusing by emptying the stack on every
+     switch would cost a person their whole history for one look at a worked
+     example, so the history has to still be there on the record it belongs to. */
+  loadP(gi); render();
+  const b2=document.getElementById('undobtn');
+  o.backOffered=!!b2&&!b2.hidden;
+  o.backDepth=undoDepth();
+  /* THREE. and a story cannot be committed onto it either. Same crossing, same
+     answer as the release: the words would be the person's and the field is not,
+     and the commit handler ends on toYou(), so the press used to write the entry
+     into a record the person does not own and then walk them away from it. */
+  setTab(TAB.STORY); render();
+  ST_TEXT='I could not stop going over it and it had me. I said nothing and I let it sit.';
+  ST_PARSED=parseStory(ST_TEXT); stRender();
+  /* THE EXAMPLE'S OWN RECORD IS HELD BEFORE THE PRESS, because the commit
+     handler's last line calls toYou() and repoints CURP. The first cut of this
+     row read CURP after the press, which is the person's own record by then, so
+     it reported no entry added while the entry had gone into the example's. */
+  const exRec=CURP;
+  const ent0=((exRec&&exRec.story&&exRec.story.entries)||[]).length;
+  const ap2=document.getElementById('stapply');
+  o.stArmed=!!ap2&&!ap2.disabled;
+  if(ap2)ap2.click();
+  o.stEntries=((exRec&&exRec.story&&exRec.story.entries)||[]).length-ent0;
+  o.stWho=S.who; o.stExample=gi;
+  o.stSaid=((document.getElementById('status')||{}).textContent||'');
+  return o;});
+ ok(leak.borrowed.length===0,
+  'the person\'s store holds only their own records, found '+leak.borrowed.length
+  +' borrowed carrying '+leak.crossed.toFixed(2)+' units: '
+  +(leak.borrowed.map(r=>r.name+' '+r.charge.toFixed(2)+' charge, '+r.laws+' laws')
+    .join(' | ')||'none')+'   store: '+JSON.stringify(leak.records));
+ ok(!leak.offered,
+  'the arrows never offer a step that belongs to another record, offered '+leak.offered);
+ ok(leak.youAfter===leak.youBefore,
+  'an undo taken on a worked example cannot land in the person\'s own field, was '
+  +leak.youBefore.toFixed(2)+', now '+leak.youAfter.toFixed(2)
+  +', the example holding '+leak.liveOnCase.toFixed(2));
+ ok(leak.recAfter===leak.recBefore,
+  'nor in the record on disk, was '+leak.recBefore.toFixed(2)+', now '
+  +leak.recAfter.toFixed(2));
+ ok(leak.who===0,'and the person is still on their own record, S.who '+leak.who);
+ ok(leak.backOffered&&leak.backDepth>0,
+  'and the example still carries its own history when you go back to it, offered '
+  +leak.backOffered+' depth '+leak.backDepth);
+ ok(leak.stArmed,'the commit control is armed on the example, so the refusal is the '
+  +'thing being measured and not a disabled button');
+ ok(leak.stEntries===0,
+  'a story cannot be committed onto a worked example, entries added to its record '
+  +leak.stEntries);
+ ok(leak.stWho===leak.stExample,
+  'and the press does not walk the person off the example either, S.who '+leak.stWho
+  +' against '+leak.stExample);
+ ok(/worked example rather than your record/.test(leak.stSaid),
+  'and it says why rather than clearing the box in silence, said '
+  +JSON.stringify(leak.stSaid.slice(0,90)));
+ console.log('  example '+leak.example+' holding '+leak.liveOnCase.toFixed(2)
+  +'   store '+leak.records.length+' record'+(leak.records.length===1?'':'s')
+  +'   borrowed '+leak.crossed.toFixed(2)
+  +'   own field '+leak.youBefore.toFixed(2)+' to '+leak.youAfter.toFixed(2));
+ await lk.close();
+}
+
+console.log('\n=== the record file has a door, and it opens on the record controls ===');
+/* THE BOUNDARY HAD NO CALLER. validateProfile and pImport were built, atomic and
+   reporting, and the only controls that reached them were written inside
+   profileSheet, which nothing in the app opens: measured in the built product,
+   the token profileSheet appears twice, the definition and one call inside itself
+   to redraw after a density change. So a person finished the web reading, saved a
+   real record, and had nowhere in the product to put it. The importer is drawn in
+   the account area now, beside Export and Delete, and this row walks it: a real
+   record out of pExport, pasted into the control a person can actually see, and
+   the reading has to come out the same on the other side. */
+{
+ const door=await browser.newPage({viewport:{width:1600,height:1000}});
+ await door.goto(FILE,{waitUntil:'load'}); await booted(door);
+ const dr=await door.evaluate(()=>{
+  const o={};
+  /* a real record, carried the way a person carries one: as a file */
+  loadP(GORDON());
+  const rec=pExport();
+  const want=compute();
+  o.wantCQ=+want.CQ.toFixed(2); o.wantHeld=want.loaded.length;
+  o.recBytes=(rec||'').length;
+  /* and now the person, on their own empty record, looking for where it goes */
+  loadP(0); setTab(TAB.SETTINGS); ACC_OPEN='privacy'; renderAccount();
+  const box=document.getElementById('acimp'),
+        go=document.getElementById('acimpgo'),
+        pick=document.getElementById('acimpf');
+  o.box=!!box; o.go=!!go; o.pick=!!pick;
+  o.goTap=go?Math.min(go.getBoundingClientRect().width,go.getBoundingClientRect().height):0;
+  o.before=+compute().CQ.toFixed(2); o.beforeUnread=compute().unread;
+  o.records0=PROFILES.length;
+  if(!box||!go)return o;
+  box.value=rec; go.click();
+  const got=compute();
+  o.gotCQ=+got.CQ.toFixed(2); o.gotHeld=got.loaded.length;
+  o.records1=PROFILES.length;
+  o.curp=CURP&&CURP.name;
+  o.said=(document.getElementById('acimpmsg')||{}).textContent||'';
+  /* AND A REFUSAL MOVES NOTHING. The boundary is atomic and says why, and a door
+     onto it is only safe while that stays true, so the door is measured on the
+     refusal too and not only on the good case. */
+  const keepName=CURP&&CURP.name, keepCQ=+compute().CQ.toFixed(2);
+  /* the controls are looked up again, because a load redraws the surface they
+     sit on and the old nodes are detached. A person types into the box that is
+     on the screen, so the gate has to as well. */
+  const box2=document.getElementById('acimp'), go2=document.getElementById('acimpgo');
+  o.rearmed=!!box2&&!!go2;
+  if(box2)box2.value='{"v":2,"name":"broken","avatar":"not an object"}';
+  if(go2)go2.click();
+  o.badSaid=(document.getElementById('acimpmsg')||{}).textContent||'';
+  o.badCurp=CURP&&CURP.name; o.badCQ=+compute().CQ.toFixed(2);
+  o.badKept=(keepName===o.badCurp&&Math.abs(keepCQ-o.badCQ)<1e-9);
+  o.records2=PROFILES.length;
+  return o;});
+ ok(dr.box&&dr.go&&dr.pick,
+  'the record controls are on the screen a person can reach, box '+dr.box
+  +' load '+dr.go+' file '+dr.pick);
+ ok(dr.goTap>=44,'and the load control clears the tap floor, smallest side '
+  +Math.round(dr.goTap));
+ ok(dr.beforeUnread===true&&dr.recBytes>500,
+  'the person starts unread and the record is a real file, '+dr.recBytes+' bytes');
+ ok(Math.abs(dr.gotCQ-dr.wantCQ)<0.01&&dr.gotHeld===dr.wantHeld,
+  'loading it puts the same reading back, wanted '+dr.wantCQ+' on '+dr.wantHeld
+  +' carrying, got '+dr.gotCQ+' on '+dr.gotHeld);
+ ok(dr.records1===dr.records0+1,'and it lands as one new record, '+dr.records0
+  +' before, '+dr.records1+' after');
+ ok(/^Loaded /.test(dr.said),'and the control says what happened, said '
+  +JSON.stringify(dr.said.slice(0,60)));
+ ok(dr.rearmed,'the controls are still on the screen after a load, box and button '
+  +dr.rearmed);
+ ok(/^Not loaded\. /.test(dr.badSaid),
+  'a record the boundary refuses says so by name, said '+JSON.stringify(dr.badSaid.slice(0,80)));
+ ok(dr.badKept&&dr.records2===dr.records1,
+  'and nothing moved on the refusal, record '+JSON.stringify(dr.badCurp)+' at '
+  +dr.badCQ+', list '+dr.records2);
+ console.log('  record '+dr.recBytes+' bytes   CQ '+dr.before+' to '+dr.gotCQ
+  +' against '+dr.wantCQ+'   records '+dr.records0+' to '+dr.records1);
+ await door.close();
+}
 
 console.log('\n=== the avatar, and what it aims the work at ===');
 /* The becoming half. The right hand sentence resolves to a seat and the seat
@@ -1911,16 +2141,16 @@ console.log('\n=== a stranger is a stranger, whoever was on screen before ===');
    repointed to the target until eight lines later, so the blank inherited the
    previous persona's twenty one law scores and kept them. saveProfile then
    persisted them. Measured on a fresh page before the fix: loadP(0) alone
-   gave unread true and measured 0; loadP(14) then loadP(0) gave unread false,
+   gave unread true and measured 0; a trip through Lance and back gave unread false,
    measured 21, law mean 9.72 and the word Mastery, off Lance's numbers, on a
    profile where nobody had entered anything. */
 const base=await page.evaluate(()=>{loadP(0);const r=compute();
  return {unread:r.unread,measured:r.measured,
   laws:SINAMES.map(l=>S.law[l]).join(','),
   unset:SINAMES.filter(l=>LAW_UNSET[l]).length};});
-for(const via of [14,6,1]){
- const s=await page.evaluate(v=>{loadP(v);loadP(0);const r=compute();
-  return {unread:r.unread,measured:r.measured,nm:PEOPLE[v].nm,
+for(const via of ['Lance','James','Sofia']){
+ const s=await page.evaluate(v=>{const vi=PERSON(v);loadP(vi);loadP(0);const r=compute();
+  return {unread:r.unread,measured:r.measured,nm:PEOPLE[vi].nm,
    laws:SINAMES.map(l=>S.law[l]).join(','),
    unset:SINAMES.filter(l=>LAW_UNSET[l]).length};},via);
  ok(s.measured===base.measured,'the blank measures the same after a trip through '+s.nm
@@ -1936,7 +2166,7 @@ const strg=await browser.newPage({viewport:{width:1600,height:1000}});
 await strg.goto(FILE,{waitUntil:'load'}); await booted(strg); await strg.waitForTimeout(400);
 await strg.evaluate(()=>{try{localStorage.clear();}catch(e){}});
 await strg.reload({waitUntil:'load'}); await booted(strg); await strg.waitForTimeout(700);
-const pris=await strg.evaluate(()=>{loadP(14);loadP(0);const r=compute();
+const pris=await strg.evaluate(()=>{loadP(PERSON('Lance'));loadP(0);const r=compute();
  return {unread:r.unread,measured:r.measured,tier:r.tier,
   unset:SINAMES.filter(l=>LAW_UNSET[l]).length};});
 ok(pris.unread===true,'a stranger who looked at a persona first is still unread');
@@ -1973,7 +2203,7 @@ for(let i=1;i<15;i++){
    then the control refused. Measured on James: +4.05, +1.80, refused, while 72
    addresses were still carrying. */
 const relOffer=await page.evaluate(async()=>{
- loadP(6);
+ loadP(PERSON('James'));
  const seen=[];
  for(let k=0;k<4;k++){
   const r=compute();
@@ -2005,7 +2235,7 @@ const ceil=await page.evaluate(()=>{
  return out;});
 ceil.forEach(c=>ok(c.d<0.05,'cqCeiling matches clearing every charge for '+c.nm
  +', off by '+c.d.toFixed(3)));
-ok(await page.evaluate(()=>{loadP(6);const r=compute();
+ok(await page.evaluate(()=>{loadP(PERSON('James'));const r=compute();
   return cqHeadroom(r.CQ)>0&&cqHeadroom(200)===0;}),
  'headroom is never negative and is positive where there is ground');
 
@@ -2178,7 +2408,7 @@ console.log('\n=== the ritual plan cap is one number, not two ===');
    character when got onto a record the surface then rendered. Read off the live
    inputs rather than off the source, because the source is not what ships. */
 const rp=await page.evaluate(async()=>{
- loadP(6); setTab(TAB.RITUAL);
+ loadP(PERSON('James')); setTab(TAB.RITUAL);
  await new Promise(r=>setTimeout(r,500));
  const w=document.getElementById('ritwhen'), e=document.getElementById('ritwhere');
  return {there:!!(w&&e), cap:(typeof RIT_PLAN_MAX==='number')?RIT_PLAN_MAX:null,

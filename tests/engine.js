@@ -1036,6 +1036,53 @@ g('18b \u00b7 undo');
  ok(n===500,'it unwinds every step, got '+n);
  ok(E.undoDepth()===0,'and empties');
  E.undoClear();
+ /* AND THE FORWARD HALF HAD NO ROW AT ALL. redoPop, redoDepth and redoPeek sat
+    unexecuted under this gate, which the coverage run names, and this change
+    rewrites the first two lines of each of them: they read the stack belonging
+    to the record in front of the engine rather than one global array. Changed
+    engine logic with no row on it is how a rewrite of two lines becomes a
+    regression nobody sees. */
+ reset(2,0,6);
+ const b4=CHARGES.map(c=>S.charge[c]).join();
+ E.undoPush('a change to walk back and forward');
+ S.charge.Fear=9.4;
+ const back=E.undoPop();
+ ok(!!back&&E.redoDepth()===1,'undo leaves a step on the forward stack, depth '
+  +E.redoDepth());
+ ok(E.redoPeek()==='a change to walk back and forward',
+  'and the forward control can name what it will put back, got '+E.redoPeek());
+ ok(CHARGES.map(c=>S.charge[c]).join()===b4,'and the field is back where it started');
+ const fwd=E.redoPop();
+ ok(!!fwd&&Math.abs(S.charge.Fear-9.4)<1e-9,'redo walks forward again, Fear '+S.charge.Fear);
+ ok(E.redoDepth()===0&&E.undoDepth()===1,'and the two ends swap, forward '
+  +E.redoDepth()+' back '+E.undoDepth());
+ E.undoPush('a new change');
+ ok(E.redoDepth()===0,'a new change abandons the branch that was walked away from');
+ E.undoClear();
+ /* A HISTORY BELONGS TO THE RECORD IT WAS TAKEN FROM.
+
+    One stack for the whole app was a field leak, and it is the unit half of the
+    row the functional gate carries. A change made while one record was loaded
+    could be taken back while another was, which restores the first record's
+    field into S and leaves the host saving it onto the second. Measured in a
+    full functional run before this: 53.0 units of a reference case's charge in
+    the person's own record, upstream of the release the guard watches. */
+ /* two records, moved between through the boundary, because that is the only
+    route a headless host has to the pointer the app moves with loadP. */
+ const recA=E.pImport(JSON.stringify(E.blankProfile('history A')));
+ ok(!!recA,'the harness can put a record in front of the engine');
+ E.undoPush('a change on A');
+ const dA=E.undoDepth();
+ const recB=E.pImport(JSON.stringify(E.blankProfile('history B')));
+ ok(!!recB&&recB!==recA,'and a second one');
+ const dB=E.undoDepth(), peekB=E.undoPeek(), popB=E.undoPop();
+ ok(dA===1&&dB===0,'a record sees its own history and no other, A '+dA+' B '+dB);
+ ok(popB===null,'an undo belonging to another record refuses rather than restoring');
+ ok(peekB===null,'and is not offered, so a control cannot print a step it will refuse');
+ /* that it is keyed rather than cleared, so going back to the record finds the
+    history where it was left, is checked in the functional gate, where moving
+    between records is a control a person presses rather than an assignment. */
+ E.undoClear();
 }
 
 g('19a \u00b7 the roster covers the scale');

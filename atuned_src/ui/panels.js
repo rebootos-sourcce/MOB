@@ -570,6 +570,80 @@ function sheetShut(){var s=$('sheet'); if(s)s.hidden=true;}
    standard one. planSection and planWire stay here and are called from there,
    ported rather than rebuilt. */
 
+/* ============================================================
+   THE RECORD IMPORT, AND THE DOOR IT DID NOT HAVE.
+
+   This markup and this wiring were written inside profileSheet, and nothing in
+   the app opens profileSheet. Measured in the built product: the token
+   profileSheet appears twice in source.html, the definition and one call inside
+   itself to re-render after a density change, and its host is not in the
+   document after boot. So the paste box and the file picker existed, were
+   correct, went through the atomic boundary, and could not be reached from any
+   tab. A person finished the web reading, saved a real record, and had nowhere
+   in the product to put it.
+
+   Lifted out unchanged rather than rebuilt, so there is one importer and one
+   set of failure messages, and it takes an id prefix because the two hosts that
+   draw it can both be in the document. The account area is the second caller,
+   because Export and Delete already live there and load is the third control of
+   that set: a person looking for what to do with a record file looks where the
+   other two record controls are.
+
+   The boundary is untouched. pImport is atomic, nothing is pushed and CURP does
+   not move until the profile has validated, loaded and saved, and a refusal
+   names the field and leaves what was there alone.
+   ============================================================ */
+function recordImportHtml(p){
+ p=p||'sh';
+ return '<div class="sh-imp">'
+  +'<p class="sh-p">Took the reading on the web? Load the record you saved and it '
+  +'continues from there. Nothing is fetched: the file is the handoff.</p>'
+  +'<textarea id="'+p+'imp" class="sh-ta" rows="3" spellcheck="false" '
+  +'placeholder="Paste the record, or choose the file"></textarea>'
+  +'<div class="sh-act">'
+   +'<button class="btn" id="'+p+'impf">Choose a file</button>'
+   +'<button class="btn pri" id="'+p+'impgo">Load it</button>'
+  +'</div>'
+  +'<p class="sh-p sh-impmsg" id="'+p+'impmsg"></p>'
+  +'<input type="file" id="'+p+'impfile" accept="application/json,.json" hidden>'
+  +'</div>';}
+/* THE IMPORT, WIRED. Every write that can fail reports rather than claiming
+   success, which is the standing rule in this product. `after` is called only on
+   a load that landed, so a host that draws the record's own name can redraw it
+   without having to guess whether anything happened. */
+function recordImportWire(p,after){
+ p=p||'sh';
+ var impSay=function(t,bad){var m=$(p+'impmsg'); if(!m)return;
+  m.textContent=t; m.className='sh-p sh-impmsg'+(bad?' bad':' ok');};
+ var impRun=function(txt){
+  if(!txt||!txt.trim()){impSay('Nothing to load yet.',1);return;}
+  var np=pImport(txt);
+  if(!np){ var e=(typeof importError==='function'&&importError())||['it was refused'];
+   impSay('Not loaded. '+e.join('. ')+'.',1); return; }
+  if(typeof syncCh==='function')syncCh();
+  if(typeof syncLw==='function')syncLw();
+  if(typeof syncSoul==='function')syncSoul();
+  if(typeof render==='function')render();
+  if(typeof status==='function')status('Record loaded.');
+  /* THE HOST REDRAWS FIRST AND THE MESSAGE IS WRITTEN AFTER IT.
+     The account area prints the record's own name, so it has to redraw on a
+     load, and redrawing replaces the paragraph this function had just written.
+     Measured: the gate read an empty message on a load that had landed, which
+     is the report vanishing at the moment it is true. So the redraw happens
+     first and the message goes onto whatever element is on the screen when it
+     is read, which is what impSay does by looking the id up at call time. */
+  if(typeof after==='function')after(np);
+  impSay('Loaded '+(np.name||'the record')+'. Nothing else was touched.');};
+ var ig;
+ if((ig=$(p+'impgo')))ig.onclick=function(){impRun(($(p+'imp')||{}).value||'');};
+ if((ig=$(p+'impf')))ig.onclick=function(){var f=$(p+'impfile'); if(f)f.click();};
+ if((ig=$(p+'impfile')))ig.onchange=function(){
+  var f=ig.files&&ig.files[0]; if(!f)return;
+  var rd=new FileReader();
+  rd.onload=function(){var t=$(p+'imp'); if(t)t.value=String(rd.result||'');
+   impRun(String(rd.result||''));};
+  rd.onerror=function(){impSay('That file could not be read.',1);};
+  rd.readAsText(f);};}
 function profileSheet(){
  var r=compute(), m=(typeof meterRead==='function')?meterRead(CURP):null;
  var who=(CURP&&CURP.name)||'You';
@@ -609,18 +683,7 @@ function profileSheet(){
      profile has validated, loaded and saved, and a failure restores what was
      there and says why. So this can be a paste box without being a way to
      destroy a profile by pasting the wrong thing. */
-  +'<div class="sh-imp">'
-  +'<p class="sh-p">Took the reading on the web? Load the record you saved and it '
-  +'continues from there. Nothing is fetched: the file is the handoff.</p>'
-  +'<textarea id="shimp" class="sh-ta" rows="3" spellcheck="false" '
-  +'placeholder="Paste the record, or choose the file"></textarea>'
-  +'<div class="sh-act">'
-   +'<button class="btn" id="shimpf">Choose a file</button>'
-   +'<button class="btn pri" id="shimpgo">Load it</button>'
-  +'</div>'
-  +'<p class="sh-p sh-impmsg" id="shimpmsg"></p>'
-  +'<input type="file" id="shimpfile" accept="application/json,.json" hidden>'
-  +'</div>'
+  +recordImportHtml('sh')
   +'</div>'
   +'<div class="sh-sec"><div class="pm-eye">Who you are becoming</div>'
   +'<p class="sh-p">The avatar, the purpose map and the boundary. What the release work is '
@@ -629,29 +692,9 @@ function profileSheet(){
   +'<div class="sh-sec"><button class="btn" id="shclose">Close</button></div>';
  sheetOpen(h);
  /* the same three steps, inside the sheet, sharing one setter */
- /* THE IMPORT, WIRED. Every write that can fail reports rather than claiming
-    success, which is the standing rule in this product. */
- var impSay=function(t,bad){var m=$('shimpmsg'); if(!m)return;
-  m.textContent=t; m.className='sh-p sh-impmsg'+(bad?' bad':' ok');};
- var impRun=function(txt){
-  if(!txt||!txt.trim()){impSay('Nothing to load yet.',1);return;}
-  var np=pImport(txt);
-  if(!np){ var e=(typeof importError==='function'&&importError())||['it was refused'];
-   impSay('Not loaded. '+e.join('. ')+'.',1); return; }
-  impSay('Loaded '+(np.name||'the record')+'. Nothing else was touched.');
-  if(typeof syncCh==='function')syncCh();
-  if(typeof render==='function')render();
-  if(typeof status==='function')status('Record loaded.');};
- var ig;
- if((ig=$('shimpgo')))ig.onclick=function(){impRun(($('shimp')||{}).value||'');};
- if((ig=$('shimpf')))ig.onclick=function(){var f=$('shimpfile'); if(f)f.click();};
- if((ig=$('shimpfile')))ig.onchange=function(){
-  var f=ig.files&&ig.files[0]; if(!f)return;
-  var rd=new FileReader();
-  rd.onload=function(){var t=$('shimp'); if(t)t.value=String(rd.result||'');
-   impRun(String(rd.result||''));};
-  rd.onerror=function(){impSay('That file could not be read.',1);};
-  rd.readAsText(f);};
+ /* the importer under this sheet's own ids. Its wiring and its failure wording
+    live with the function, which the account area draws as well. */
+ recordImportWire('sh');
  var d=$('densheet'), now=densGet();
  if(d){d.innerHTML=DENS.map(function(x){
    return '<button type="button" class="dens-opt'+(x[0]===now?' on':'')+'" data-dens2="'+x[0]+'" '

@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="3e00651 2026-09-20 22:54"><head><meta charset="utf-8">
+<html lang="en" data-build="241f470 2026-09-21 00:54"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -8099,7 +8099,38 @@ try{window.__at&&window.__at('engine/expression.js');}catch(e){}
    a grace period.
    ============================================================ */
 const UNDO_MAX=0;                 /* 0 means no ceiling */
-var UNDO=[];
+/* A HISTORY BELONGS TO THE RECORD IT WAS TAKEN FROM, AND ONLY THAT RECORD MAY
+   TAKE IT BACK.
+
+   One stack for the whole app was a field leak, and it is the second of this
+   shape in the product. Reproduced in the full functional run: a story is
+   committed with James loaded, which pushes his nine charges onto the stack,
+   the commit handler then calls toYou() so the pointer moves to the person's
+   own record, and the undo arrow restores James's field into S. S.who is 0 by
+   then, and S.who===0 is the claim that S holds the person's own field, so
+   settle() in ui/panels.js calls saveYou() and pSave() and writes it through.
+   Measured at the release block of that same run, before the release had been
+   touched: 53.0 of James's charge sitting in PEOPLE[0].c and in the person's
+   own record, on a person who had entered nothing.
+
+   ui/release.js already ruled how this crossing is answered: refuse it, do not
+   repoint, because two attempts at repointing were each worse than the bug.
+   So this does not repoint and undoApply still does not touch S.who. Switching
+   record hides the arrows, because there is nothing to take back HERE, and
+   switching back brings that record's history with it. That is why the stacks
+   are keyed rather than cleared on a switch: clearing would spend a person's
+   whole history on one glance at a worked example, and this module's own
+   argument is that a person who cannot get back to where they started has a
+   grace period and not an undo.
+
+   Keyed by the record's id, not by S.who. S.who names a persona, and every one
+   of the person's own records is S.who 0, so keying on it would leave two of
+   their own profiles sharing one history and leaking into each other in exactly
+   the same way. With no record bound at all, which is what a headless run has,
+   there is one history under a key of its own. */
+function undoRec(){ return (typeof CURP!=='undefined'&&CURP&&CURP.id)?CURP.id:'_'; }
+var UNDO={};
+function undoList(){ var k=undoRec(); return UNDO[k]||(UNDO[k]=[]); }
 /* REDO. Undo without it is half a control.
 
    Taking a step back and then finding there is no way forward makes undo
@@ -8109,7 +8140,8 @@ var UNDO=[];
    new change, at which point the branch they walked away from is gone. That
    is the standard contract and it is the one people already have in their
    hands. */
-var REDO=[];
+var REDO={};
+function redoList(){ var k=undoRec(); return REDO[k]||(REDO[k]=[]); }
 
 /* the inputs, and nothing derived. everything else recomputes from these. */
 function undoState(){
@@ -8124,17 +8156,22 @@ function undoState(){
    words, because an undo control that says "undo" and nothing else makes a
    person guess what they are about to get back. */
 function undoPush(label){
- UNDO.push({s:undoState(), nm:label||'the last change', t:new Date().toISOString()});
- if(UNDO_MAX>0){while(UNDO.length>UNDO_MAX)UNDO.shift();}
+ var U=undoList();
+ U.push({s:undoState(), nm:label||'the last change', t:new Date().toISOString()});
+ if(UNDO_MAX>0){while(U.length>UNDO_MAX)U.shift();}
  /* a new change abandons the branch that was walked away from */
- REDO=[];
- return UNDO.length;}
+ REDO[undoRec()]=[];
+ return U.length;}
 
-function undoDepth(){return UNDO.length;}
-function undoPeek(){return UNDO.length?UNDO[UNDO.length-1].nm:null;}
-function redoDepth(){return REDO.length;}
-function redoPeek(){return REDO.length?REDO[REDO.length-1].nm:null;}
-function undoClear(){UNDO=[];REDO=[];}
+/* the depth of THIS record's history, which is how many steps back a person
+   can actually take from where they are standing. The arrows read it and hide
+   themselves on zero, so a control never offers a step it would refuse. */
+function undoDepth(){return undoList().length;}
+function undoPeek(){var U=undoList();return U.length?U[U.length-1].nm:null;}
+function redoDepth(){return redoList().length;}
+function redoPeek(){var R=redoList();return R.length?R[R.length-1].nm:null;}
+/* every record's history, because this is the reset and not a switch */
+function undoClear(){UNDO={};REDO={};}
 /* the two ends share one restore, because a state is a state whichever
    direction it was reached from, and two copies of this would drift. */
 function undoApply(s){
@@ -8152,9 +8189,9 @@ function undoApply(s){
 /* walk forward again. Symmetrical with undoPop: it captures where it is
    standing before it moves, so undo can bring it back. */
 function redoPop(){
- if(!REDO.length)return null;
- var e=REDO.pop();
- UNDO.push({s:undoState(), nm:e.nm, t:e.t});
+ var R=redoList(); if(!R.length)return null;
+ var e=R.pop();
+ undoList().push({s:undoState(), nm:e.nm, t:e.t});
  undoApply(e.s);
  return {nm:e.nm, t:e.t};}
 
@@ -8162,12 +8199,12 @@ function redoPop(){
    returns null rather than half applying: the state is replaced wholesale or
    not at all. */
 function undoPop(){
- if(!UNDO.length)return null;
- var e=UNDO.pop();
+ var U=undoList(); if(!U.length)return null;
+ var e=U.pop();
  /* where it is standing goes onto the forward stack before it moves, under
     the name of the change being taken back, so the forward control can say
     what it will put back. */
- REDO.push({s:undoState(), nm:e.nm, t:e.t});
+ redoList().push({s:undoState(), nm:e.nm, t:e.t});
  undoApply(e.s);
  return {nm:e.nm, t:e.t};}
 
@@ -9210,8 +9247,24 @@ function pNew(name){ var p=blankProfile(name); PROFILES.push(p); CURP=p; pPersis
    `if(!pSave())` could never fire: a delete that failed to write said
    "Deleted from this browser" and left the record where it was. That is the
    one write in the product where a false claim is worst. */
-function pSave(){ if(!CURP)return false; saveProfile(CURP); return pPersist(); }
-function pSnap(){ if(!CURP)return false; CURP.history.push(snapshot(CURP)); return pPersist(); }
+/* AND A SAVE ONTO SOMETHING THAT IS NOT IN THE RECORD LIST CANNOT LAND, SO IT
+   SAYS SO RATHER THAN REPORTING THE WRITE IT DID NOT MAKE.
+
+   pPersist writes PROFILES. A profile outside that array is never written, and
+   this returned pPersist's answer regardless, so the caller was told the disk
+   had taken a record that was never offered to it. That was invisible while the
+   persona loader pushed its scratch profiles onto PROFILES, because then
+   everything was in the list: the price of that was a demo persona landing in
+   the person's own store, which is the leak ui/personas.js now refuses. Fixing
+   the leak is what makes this path reachable, so the report comes with it. The
+   host decides what to say; this only reports what happened. */
+function pSave(){ if(!CURP)return false; saveProfile(CURP);
+ if(PROFILES.indexOf(CURP)<0){ SAVE_OK=false; SAVE_ERR='NotARecord'; return false; }
+ return pPersist(); }
+/* checked before the push, so a history nobody can read does not grow */
+function pSnap(){ if(!CURP)return false;
+ if(PROFILES.indexOf(CURP)<0){ SAVE_OK=false; SAVE_ERR='NotARecord'; return false; }
+ CURP.history.push(snapshot(CURP)); return pPersist(); }
 function pExport(){ return JSON.stringify(CURP?saveProfile(CURP):null,null,1); }
 /* ============================================================
    THE BOUNDARY. Everything above this line trusts its input
@@ -12520,6 +12573,14 @@ function status(msg,kind){
 function statusSaved(){
  var st=(typeof saveState==='function')?saveState():{ok:true};
  if(st.ok)status('Saved.');
+ /* A REFUSAL NAMES ITS OWN REASON. One message for every failure said storage
+    was full or blocked, which is the wrong sentence for a save onto a worked
+    example: nothing is wrong with the browser and there is something the person
+    can do. The words follow the release's refusal, which is the same crossing
+    answered the same way. */
+ else if(st.err==='NotARecord')
+  status('Not saved. This is a worked example rather than your record. '
+   +'Switch to your own profile first.','fail');
  else status('Not saved. Storage is full or blocked, so this session will not survive a reload.','fail');
  return st.ok;}
 
@@ -15316,6 +15377,23 @@ function stRender(){
  var ap=document.getElementById('stapply');
  if(ap)ap.onclick=function(){
   if(!ST_PARSED||!ST_PARSED.imprints.length)return;
+  /* AND A STORY CANNOT BE COMMITTED ONTO A WORKED EXAMPLE, for the same reason
+     the release cannot be run on one: the words are the person's and the field
+     is not. This wrote the charge onto the case's field, pushed the entry onto
+     the case's record, and then called toYou() on the last line, which moves
+     the pointer to the person's own record. So the entry landed in a record the
+     person does not own, the charge landed on a field they were about to leave,
+     and the undo for it stayed with the example. While the persona loader was
+     pushing its scratch profiles onto PROFILES that entry was then written into
+     the person's own store, which is the leak ui/personas.js now refuses; with
+     that closed the same press would keep nothing at all and say nothing about
+     it. Refusing is the version that is true, and it is the wording the release
+     already uses for the same crossing. */
+  if(typeof S!=='undefined'&&S.who!==0){
+   status('You are looking at '+(((typeof PEOPLE!=='undefined'&&PEOPLE[S.who])||{}).nm
+    ||'a reference case')+', which is a worked example rather than your record. '
+    +'Switch to your own profile to commit a story.','fail');
+   return;}
   /* the field is about to change and until now there was no way back */
   undoPush('committing the story');
   applyStory(ST_TEXT); verpApply(ST_TEXT); leanApply(ST_TEXT);
@@ -16962,7 +17040,16 @@ function renderIntake(){
   +(scored<21?', '+(21-scored)+' still at the default':'')
   +(scored?' \u00b7 '+r.tier.toLowerCase():'')+'</div></div>'
   +'<div class="iq-act">'
-   +'<select id="iqprof" aria-label="Profile">'+PROFILES.map(function(x,i){
+   /* AND THE SWITCHER NAMES WHAT IS ACTUALLY LOADED. It listed PROFILES only,
+      and a reference case is not in that list any more, so with one loaded no
+      option matched and the control showed the person's own name above
+      somebody else's sixty three answers. It carries the loaded example as an
+      entry of its own, marked as what it is, and the handler refuses to switch
+      to it, because there is nothing to switch to: it is already up. */
+   +'<select id="iqprof" aria-label="Profile">'
+   +(PROFILES.indexOf(p)<0
+     ?'<option value="-1" selected>'+esc(p.name)+', a worked example</option>':'')
+   +PROFILES.map(function(x,i){
       return '<option value="'+i+'"'+(x===CURP?' selected':'')+'>'+esc(x.name)+'</option>';}).join('')+'</select>'
    +'<button class="btn" id="iqnew">New</button>'
    +'<button class="btn pri" id="iqsave">Save</button>'
@@ -17077,7 +17164,9 @@ function renderIntake(){
  if(tu)tu.onchange=function(){CURP.who.born.timeUnknown=tu.checked;
   if(tu.checked)CURP.who.born.time=''; pSave(); statusSaved(); renderIntake();};
  var ps=document.getElementById('iqprof');
- if(ps)ps.onchange=function(){CURP=PROFILES[+ps.value];loadProfile(CURP);IQ_OPEN=null;
+ if(ps)ps.onchange=function(){
+  var pi=+ps.value; if(pi<0||!PROFILES[pi]){renderIntake();return;}
+  CURP=PROFILES[pi];loadProfile(CURP);IQ_OPEN=null;
   syncCh();syncLw();syncSoul();renderIntake();render();};
  var nb=document.getElementById('iqnew');
  if(nb)nb.onclick=function(){var n=prompt('Profile name','Profile '+(PROFILES.length+1));
@@ -21214,6 +21303,80 @@ function sheetShut(){var s=$('sheet'); if(s)s.hidden=true;}
    standard one. planSection and planWire stay here and are called from there,
    ported rather than rebuilt. */
 
+/* ============================================================
+   THE RECORD IMPORT, AND THE DOOR IT DID NOT HAVE.
+
+   This markup and this wiring were written inside profileSheet, and nothing in
+   the app opens profileSheet. Measured in the built product: the token
+   profileSheet appears twice in source.html, the definition and one call inside
+   itself to re-render after a density change, and its host is not in the
+   document after boot. So the paste box and the file picker existed, were
+   correct, went through the atomic boundary, and could not be reached from any
+   tab. A person finished the web reading, saved a real record, and had nowhere
+   in the product to put it.
+
+   Lifted out unchanged rather than rebuilt, so there is one importer and one
+   set of failure messages, and it takes an id prefix because the two hosts that
+   draw it can both be in the document. The account area is the second caller,
+   because Export and Delete already live there and load is the third control of
+   that set: a person looking for what to do with a record file looks where the
+   other two record controls are.
+
+   The boundary is untouched. pImport is atomic, nothing is pushed and CURP does
+   not move until the profile has validated, loaded and saved, and a refusal
+   names the field and leaves what was there alone.
+   ============================================================ */
+function recordImportHtml(p){
+ p=p||'sh';
+ return '<div class="sh-imp">'
+  +'<p class="sh-p">Took the reading on the web? Load the record you saved and it '
+  +'continues from there. Nothing is fetched: the file is the handoff.</p>'
+  +'<textarea id="'+p+'imp" class="sh-ta" rows="3" spellcheck="false" '
+  +'placeholder="Paste the record, or choose the file"></textarea>'
+  +'<div class="sh-act">'
+   +'<button class="btn" id="'+p+'impf">Choose a file</button>'
+   +'<button class="btn pri" id="'+p+'impgo">Load it</button>'
+  +'</div>'
+  +'<p class="sh-p sh-impmsg" id="'+p+'impmsg"></p>'
+  +'<input type="file" id="'+p+'impfile" accept="application/json,.json" hidden>'
+  +'</div>';}
+/* THE IMPORT, WIRED. Every write that can fail reports rather than claiming
+   success, which is the standing rule in this product. `after` is called only on
+   a load that landed, so a host that draws the record's own name can redraw it
+   without having to guess whether anything happened. */
+function recordImportWire(p,after){
+ p=p||'sh';
+ var impSay=function(t,bad){var m=$(p+'impmsg'); if(!m)return;
+  m.textContent=t; m.className='sh-p sh-impmsg'+(bad?' bad':' ok');};
+ var impRun=function(txt){
+  if(!txt||!txt.trim()){impSay('Nothing to load yet.',1);return;}
+  var np=pImport(txt);
+  if(!np){ var e=(typeof importError==='function'&&importError())||['it was refused'];
+   impSay('Not loaded. '+e.join('. ')+'.',1); return; }
+  if(typeof syncCh==='function')syncCh();
+  if(typeof syncLw==='function')syncLw();
+  if(typeof syncSoul==='function')syncSoul();
+  if(typeof render==='function')render();
+  if(typeof status==='function')status('Record loaded.');
+  /* THE HOST REDRAWS FIRST AND THE MESSAGE IS WRITTEN AFTER IT.
+     The account area prints the record's own name, so it has to redraw on a
+     load, and redrawing replaces the paragraph this function had just written.
+     Measured: the gate read an empty message on a load that had landed, which
+     is the report vanishing at the moment it is true. So the redraw happens
+     first and the message goes onto whatever element is on the screen when it
+     is read, which is what impSay does by looking the id up at call time. */
+  if(typeof after==='function')after(np);
+  impSay('Loaded '+(np.name||'the record')+'. Nothing else was touched.');};
+ var ig;
+ if((ig=$(p+'impgo')))ig.onclick=function(){impRun(($(p+'imp')||{}).value||'');};
+ if((ig=$(p+'impf')))ig.onclick=function(){var f=$(p+'impfile'); if(f)f.click();};
+ if((ig=$(p+'impfile')))ig.onchange=function(){
+  var f=ig.files&&ig.files[0]; if(!f)return;
+  var rd=new FileReader();
+  rd.onload=function(){var t=$(p+'imp'); if(t)t.value=String(rd.result||'');
+   impRun(String(rd.result||''));};
+  rd.onerror=function(){impSay('That file could not be read.',1);};
+  rd.readAsText(f);};}
 function profileSheet(){
  var r=compute(), m=(typeof meterRead==='function')?meterRead(CURP):null;
  var who=(CURP&&CURP.name)||'You';
@@ -21253,18 +21416,7 @@ function profileSheet(){
      profile has validated, loaded and saved, and a failure restores what was
      there and says why. So this can be a paste box without being a way to
      destroy a profile by pasting the wrong thing. */
-  +'<div class="sh-imp">'
-  +'<p class="sh-p">Took the reading on the web? Load the record you saved and it '
-  +'continues from there. Nothing is fetched: the file is the handoff.</p>'
-  +'<textarea id="shimp" class="sh-ta" rows="3" spellcheck="false" '
-  +'placeholder="Paste the record, or choose the file"></textarea>'
-  +'<div class="sh-act">'
-   +'<button class="btn" id="shimpf">Choose a file</button>'
-   +'<button class="btn pri" id="shimpgo">Load it</button>'
-  +'</div>'
-  +'<p class="sh-p sh-impmsg" id="shimpmsg"></p>'
-  +'<input type="file" id="shimpfile" accept="application/json,.json" hidden>'
-  +'</div>'
+  +recordImportHtml('sh')
   +'</div>'
   +'<div class="sh-sec"><div class="pm-eye">Who you are becoming</div>'
   +'<p class="sh-p">The avatar, the purpose map and the boundary. What the release work is '
@@ -21273,29 +21425,9 @@ function profileSheet(){
   +'<div class="sh-sec"><button class="btn" id="shclose">Close</button></div>';
  sheetOpen(h);
  /* the same three steps, inside the sheet, sharing one setter */
- /* THE IMPORT, WIRED. Every write that can fail reports rather than claiming
-    success, which is the standing rule in this product. */
- var impSay=function(t,bad){var m=$('shimpmsg'); if(!m)return;
-  m.textContent=t; m.className='sh-p sh-impmsg'+(bad?' bad':' ok');};
- var impRun=function(txt){
-  if(!txt||!txt.trim()){impSay('Nothing to load yet.',1);return;}
-  var np=pImport(txt);
-  if(!np){ var e=(typeof importError==='function'&&importError())||['it was refused'];
-   impSay('Not loaded. '+e.join('. ')+'.',1); return; }
-  impSay('Loaded '+(np.name||'the record')+'. Nothing else was touched.');
-  if(typeof syncCh==='function')syncCh();
-  if(typeof render==='function')render();
-  if(typeof status==='function')status('Record loaded.');};
- var ig;
- if((ig=$('shimpgo')))ig.onclick=function(){impRun(($('shimp')||{}).value||'');};
- if((ig=$('shimpf')))ig.onclick=function(){var f=$('shimpfile'); if(f)f.click();};
- if((ig=$('shimpfile')))ig.onchange=function(){
-  var f=ig.files&&ig.files[0]; if(!f)return;
-  var rd=new FileReader();
-  rd.onload=function(){var t=$('shimp'); if(t)t.value=String(rd.result||'');
-   impRun(String(rd.result||''));};
-  rd.onerror=function(){impSay('That file could not be read.',1);};
-  rd.readAsText(f);};
+ /* the importer under this sheet's own ids. Its wiring and its failure wording
+    live with the function, which the account area draws as well. */
+ recordImportWire('sh');
  var d=$('densheet'), now=densGet();
  if(d){d.innerHTML=DENS.map(function(x){
    return '<button type="button" class="dens-opt'+(x[0]===now?' on':'')+'" data-dens2="'+x[0]+'" '
@@ -21732,6 +21864,20 @@ function accPrivacy(){
    'Off unless you turn it on. What would be used is the story with nothing '
    +'that identifies you attached, and the record and the story are never held '
    +'together. Saying no keeps the product whole.');
+ /* LOAD IS THE THIRD CONTROL OF THIS SET, AND IT HAD NO DOOR AT ALL.
+    The importer was written inside profileSheet in ui/panels.js and nothing in
+    the app opens profileSheet: measured in the built product, the token appears
+    twice, the definition and one call inside itself. So a person finished the
+    web reading, saved a real record, and had nowhere to put it.
+    It goes here rather than in a sheet of its own because Export and Delete are
+    already here and load is the inverse of export. A person holding a record
+    file looks where the other two record controls are, and this is the surface
+    that already says what is held and where. */
+ h+=accGroup('Load a Record',
+   recordImportHtml('ac'),
+   'A record saved from the web reading is a file, and the file is the whole '
+   +'handoff. Nothing is replaced until it has validated, loaded and saved. A '
+   +'refusal names the field that failed and leaves this record where it is.');
  h+=/* A HEADING IS A THING A PERSON WOULD SAY. This one read "Getting It Out,
    And Getting Rid Of It": seven words, a comma, and a conjunction capitalised
    in a file that is otherwise in title case. It names two controls, so it
@@ -21846,6 +21992,9 @@ function accWire(){
   catch(e){status('Could not reach the clipboard. Nothing was copied.','fail');}};
  var dl=$('acdel');
  if(dl)dl.onclick=function(){accDelete();};
+ /* the same importer the profile sheet draws, under its own ids, and the page
+    redraws on a load that landed because the record's own name is printed on it */
+ if(typeof recordImportWire==='function')recordImportWire('ac',function(){renderAccount();});
  var hw=$('achowto'); if(hw)hw.onclick=function(){sheetOpen(helpSheet());};
  var aq=$('achelpq'); if(aq)aq.onclick=function(){obCompose('question');};
  var ab=$('achelpb'); if(ab)ab.onclick=function(){obCompose('bug');};
@@ -22415,10 +22564,36 @@ function loadP(i){
   LAW_UNSET[l]=!!(p.you&&v==null);
   LAW_SEED[l]=S.law[l];});
  /* switch profiles, never overwrite one. */
+ /* A WORKED EXAMPLE IS NOT A RECORD ON THIS DEVICE, SO IT NEVER JOINS THE
+    RECORD LIST.
+
+    PROFILES is the person's own list: account.js prints its length as
+    "Profiles on this device", the Intake offers it as the profile switcher, and
+    pPersist writes the whole of it to the one storage key. So pushing a demo
+    persona's scratch profile onto it wrote that persona into the person's own
+    store the moment anything saved, which is any drag of a slider.
+
+    Reproduced on a clean page: visit Gordon, come back, move one charge. Two
+    records on disk under source.profiles, the second named Gordon carrying
+    78.0 units of held charge and 21 of 21 measured laws, surviving a reload,
+    and the account surface reporting two profiles. In a full functional run the
+    store reached 21 records, 15 of them personas and 6 of those duplicated,
+    because a reload empties PROF_BY and the next visit pushes a second copy.
+
+    Three further things came free with it, and each was a real hole. Deleting
+    your own record took CURP to PROFILES[0], which could be a reference case.
+    The Intake's switcher offered reference cases as though they were yours, and
+    picking one loads its field while S.who still says 0. And the person's own
+    record list could not be counted, because it was counting demos.
+
+    PROF_BY still holds one scratch profile per persona, which is what keeps a
+    reference case's diagnostic from overwriting another's. It is memory only,
+    and it is discarded with the page, which is what a demonstration is. */
  if(!PROF_BY[p.nm]){
   var pr=blankProfile(p.nm==='You'?'You':p.nm);
   if(p.intakeAnswers)pr.intake.answers=Object.assign({},p.intakeAnswers);
-  PROFILES.push(pr); PROF_BY[p.nm]=pr;}
+  if(p.you)PROFILES.push(pr);
+  PROF_BY[p.nm]=pr;}
  CURP=PROF_BY[p.nm];
  saveProfile(CURP); iqApply(CURP);
  $('psel').value=String(i);
@@ -23828,5 +24003,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="001544375"></div>
+<div id="eof" hidden data-len="001555541"></div>
 </body></html>

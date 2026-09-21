@@ -189,6 +189,20 @@ function accPrivacy(){
    'Off unless you turn it on. What would be used is the story with nothing '
    +'that identifies you attached, and the record and the story are never held '
    +'together. Saying no keeps the product whole.');
+ /* LOAD IS THE THIRD CONTROL OF THIS SET, AND IT HAD NO DOOR AT ALL.
+    The importer was written inside profileSheet in ui/panels.js and nothing in
+    the app opens profileSheet: measured in the built product, the token appears
+    twice, the definition and one call inside itself. So a person finished the
+    web reading, saved a real record, and had nowhere to put it.
+    It goes here rather than in a sheet of its own because Export and Delete are
+    already here and load is the inverse of export. A person holding a record
+    file looks where the other two record controls are, and this is the surface
+    that already says what is held and where. */
+ h+=accGroup('Load a Record',
+   recordImportHtml('ac'),
+   'A record saved from the web reading is a file, and the file is the whole '
+   +'handoff. Nothing is replaced until it has validated, loaded and saved. A '
+   +'refusal names the field that failed and leaves this record where it is.');
  h+=/* A HEADING IS A THING A PERSON WOULD SAY. This one read "Getting It Out,
    And Getting Rid Of It": seven words, a comma, and a conjunction capitalised
    in a file that is otherwise in title case. It names two controls, so it
@@ -303,6 +317,9 @@ function accWire(){
   catch(e){status('Could not reach the clipboard. Nothing was copied.','fail');}};
  var dl=$('acdel');
  if(dl)dl.onclick=function(){accDelete();};
+ /* the same importer the profile sheet draws, under its own ids, and the page
+    redraws on a load that landed because the record's own name is printed on it */
+ if(typeof recordImportWire==='function')recordImportWire('ac',function(){renderAccount();});
  var hw=$('achowto'); if(hw)hw.onclick=function(){sheetOpen(helpSheet());};
  var aq=$('achelpq'); if(aq)aq.onclick=function(){obCompose('question');};
  var ab=$('achelpb'); if(ab)ab.onclick=function(){obCompose('bug');};
