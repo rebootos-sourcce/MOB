@@ -111,6 +111,127 @@ and it is written down here so nobody reads the mark as complete.
 
 ---
 
+## 08i. RULED 21 SEPTEMBER, TWENTY SECOND PASS. THE JOURNAL IS A CONTAINER, AND THE FIVE QUOTIENTS.
+
+His words are kept verbatim wherever they are his. This pass carries a model
+of the product that did not exist before it, so nothing here is paraphrased
+into something tidier than he said it.
+
+### CN. THE JOURNAL IS A CONTAINER.
+
+- [ ] **CN1. His words, and they are the whole ruling.** "Our journal is a
+      container. It is a sacred space. In this space we speak freely. We speak
+      from the heart. We dig deep. And we communicate in simple terms, in
+      simple words, the truth of our experience. And in that story, our
+      essence is revealed."
+- [ ] **CN2. So there is a mechanic, not a mood.** "There is something in
+      there as a mechanic that needs to be treated as a container." A
+      container has an inside and an outside, something that closes it, and a
+      rule about what leaves it. A text box with a placeholder is none of
+      those. This is the missing half of the story page and it arrived after
+      the four designs, so it is read against them rather than instead of
+      them.
+- [ ] **CN3. The container is what gets shared.** "The cool part is that
+      container can be shared with a practitioner. So there is a connection
+      between the container, the cohort, and the practitioner. Your unique
+      number gets paired up with the friends." So the unit of sharing is the
+      container and not the account, which settles what a practitioner is
+      granted sight of: a container, named, with a boundary a person can see.
+      Every standing privacy ruling holds: explicit consent, a visible list of
+      who has sight, revocation, never a silent default, and the record is
+      never held joined to the story.
+- [ ] **CN4. And it makes the prompts specific.** "That makes the prompt
+      questions for the journal very specific. Almost like when have you been
+      type questions. When was the last time?" A prompt that asks a person to
+      describe themselves gets a description. A prompt that asks when
+      something last happened gets an event, and an event carries the charge.
+- [ ] **CN5. His own route in is the model for it.** "I had to use Dante's
+      Inferno, and then seven deadly sins, and then my age. Different
+      trajectories and angles at which to see myself. And even then I had to
+      acknowledge the answers." Three angles, and the acknowledging is a step
+      in itself. The product has all three and treats them as three reference
+      surfaces rather than as three ways in.
+
+### TS. THE TRUTH SNIFFER.
+
+- [ ] **TS1. He named it and asked for it to be protected.** "The sniffer is
+      your truth. It is your truth sniffer. That is cool, trademark that, put
+      a thing."
+- [ ] **TS2. And he said what it is for, which is the line that explains the
+      whole instrument to somebody arriving.** "You may not see yourself
+      within the story, especially when you start out, but this thing is
+      sniffing all the patterns that are driving your psyche."
+- [?] **TS3. Is Truth Sniffer a name in the product, a mark to register, or
+      both?**
+  > **What it is.** The parser that reads charge out of a story. It has no
+  > name a person sees today.
+  > **At stake.** A name a person can repeat, and whether it is claimed.
+  > **Either way.** In the product, and it appears on the story page and in
+  > the funnel and needs the voice to carry it. Registered, and that is a
+  > filing decision with a cost and a class, not a copy decision.
+  > **Look at.** `atuned_src/engine/sniff.js`, and the story page in
+  > `proto/story4/`.
+
+### QT. THE FIVE QUOTIENTS. THIS IS A MODEL OF THE PRODUCT, NOT A FEATURE.
+
+- [ ] **QT1. What is measured today is one of them.** CQ. His words name four
+      more and say what each is.
+- [ ] **QT2. PQ, the physical.** "Our nutrition, mindset, the patterns that we
+      hold on to, growth, everything in the physical that needs to be
+      navigated by the ego. Think about a boundary."
+- [ ] **QT3. IQ, awareness.** "It is the aperture of awareness, and your
+      ability to problem solve rapidly. How much of the patterns can you see,
+      recognise that it is a pattern."
+- [ ] **QT4. EQ, transmuting, and it is the product.** "EQ is transmuting.
+      That is Atuned. It is also WQ, wisdom, because we are providing the
+      opposite."
+- [ ] **QT5. AQ, adversity, and it is the release.** "AQ is adversity, and it
+      is the release mechanism."
+- [ ] **QT6. And the measurement he proposes for IQ is better than a self
+      report.** "Fetters narrow awareness. We probably have a more realistic
+      measure of awareness, of IQ, based off the fetters a person adds to
+      their system." The engine already holds what is held and where, so the
+      aperture is computable from the load rather than asked for.
+- [ ] **QT7. It belongs in the summary and in the marketing.** His words:
+      "that is good for the marketing team and the rest of the development
+      team, because that sounds like it needs to be in the summary and
+      measuring."
+
+### PT. EVERY CONDITION IS A PATTERN.
+
+- [ ] **PT1. His words, corrected by him mid sentence and the correction is
+      the point.** "Every condition is a pattern. It does not matter whether
+      you believe it or not. Sorry, it matters whether you believe it or not.
+      It can be true, but the belief still creates a condition."
+- [ ] **PT2. And the release follows from it.** "Release the condition, you
+      can still operate it as if you believe it, because it is true to you.
+      You do not need the belief once you know it is true." So a release does
+      not take anything away from a person. It takes the condition off the
+      thing, and the thing survives.
+
+### QL. THE TEAM MEASURES ITS OWN OUTPUT.
+
+- [ ] **QL1. His words: "have the team review the output and simulate this
+      amongst themselves a hundred times, improving the quality, making sure
+      that the quality of what they are producing, in its iteration, is tested
+      and measured to make sure it is heading in the right direction."**
+- [ ] **QL2. And the thing being measured is the team's work, not the
+      product.** That is a different instrument from the ninety day run, and
+      it needs a rubric that can be scored the same way twice.
+
+### CB. THE COMBINATION.
+
+- [ ] **CB1. His words: "find the right combination of UI, UX, user flow,
+      ninety day user experience, and positive customer satisfaction plus
+      transformation. Simulate that as many times as you want."** The chase to
+      ninety tested seventeen changes one at a time. This is the other search:
+      which combination, and what interacts.
+- [ ] **CB2. And transformation is named beside satisfaction on purpose.** A
+      person can be satisfied and unchanged. The ninety day run already
+      measures the second one and calls it the reading not moving.
+
+---
+
 ## 08h. RULED 21 SEPTEMBER, TWENTY FIRST PASS. THE FIELD'S REAL ESTATE, AND A NOTATION THAT HAS TO GO.
 
 ### SP. THE NAMEPLATES ARE SPIKES AND THEY COST THE WHOLE FIELD.

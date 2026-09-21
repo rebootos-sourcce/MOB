@@ -1,8 +1,8 @@
 # QUESTIONS FOR THE OWNER
 
 Every line in `TASKS.md` marked `[?]`, which is the mark for a question
-waiting on your ruling. 148 of them, across 41 sections.
-Read off commit 4092c12 on 2026-09-21. Nothing here is typed by hand: answer a
+waiting on your ruling. 149 of them, across 42 sections.
+Read off commit b09ca58 on 2026-09-21. Nothing here is typed by hand: answer a
 question in TASKS.md and it leaves this file on the next run.
 
 Each one opens with the question, names the seat asking it, and carries a
@@ -11,6 +11,18 @@ the file you can open to look at it. The generator refuses to write this
 file if a line marked `[?]` asks nothing or carries no snapshot.
 
 The same list is in `QUESTIONS.html`, which opens in a browser.
+
+## 08i. RULED 21 SEPTEMBER, TWENTY SECOND PASS. THE JOURNAL IS A CONTAINER, AND THE FIVE QUOTIENTS.
+
+- [ ] **TS3. Is Truth Sniffer a name in the product, a mark to register, or both?**
+  > **What it is.** The parser that reads charge out of a story. It has no
+  > name a person sees today.
+  > **At stake.** A name a person can repeat, and whether it is claimed.
+  > **Either way.** In the product, and it appears on the story page and in
+  > the funnel and needs the voice to carry it. Registered, and that is a
+  > filing decision with a cost and a class, not a copy decision.
+  > **Look at.** `atuned_src/engine/sniff.js`, and the story page in
+  > `proto/story4/`.
 
 ## 08f. RULED 20 SEPTEMBER, NINETEENTH PASS. THE RING HE ALREADY DREW, AND A LIST HE CANNOT ANSWER.
 
