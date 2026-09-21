@@ -23,6 +23,43 @@ Not written, not specced, not proposed.
 A defect found in passing is a line here, not a sentence in a report nobody
 reopens. Every seat adds its own.
 
+**`[x]` is also the mark on a line closed without being built.** Three ways a
+line closes that way: its work was delivered under another identifier, it was
+folded into a twin that carries the same content, or it was cut. There is no
+fifth mark, so the line says in its own text which of the three it is, names
+the twin or the code by identifier and never by line number, and carries the
+verification and the date. Nothing takes an `[x]` silently. The cost of having
+no fifth mark is that `BACKLOG.html` counts a closure as build work. Read off
+the run on 21 September, its built column carries eight lines with no build
+behind them at all, and fourteen more that count a second time work already
+marked built under the twin that delivered it. Adding a mark is the clean fix
+and it belongs to whoever owns `tools/backlog.js`.
+
+**A trailing lowercase letter on an identifier means it was disambiguated.**
+`RB1y` and `RB1v` are two unrelated items that both arrived as `RB1`, in
+sections `0y` and `0v`. The old identifier stays visible as the stem, because
+it is quoted from other documents and from `QUESTIONS.md`, which the owner
+reads. The letter is the section's own letter where that tells the two apart,
+and the next free letter where it does not, which is the convention `SW1b` and
+`SW1c` already set in this file. It goes on the end and not the front because
+`tools/questions.js` reads an identifier as letters then digits then one
+optional letter, so `RB1y` parses and `0y.RB1` does not. Applied 21 September
+to 24 identifiers across the ritual sections. 46 collisions are still live
+elsewhere in this file, none of them in the nine ritual sections, and they are
+listed at the foot of `RITUAL-RECONCILE.md` section 5b.
+
+**Not ritual work.** is a mark, added 21 September. It sits on a line that
+lives in one of the nine sections whose heading names the ritual and is not
+ritual work, so a count taken by section can exclude it. It moves nothing.
+This file reorders and removes nothing, and a line moved out of the pass it
+was ruled in loses the provenance that is the reason for keeping the wording
+at all. The mark is not a census. Nineteen lines carry it, and the four fields
+brief at `SW1` to `SW10`, `BT5`, `BT6` and the unidentified currency questions
+sit in those sections and are not ritual work either and do not carry it. The
+nineteen are the list `RITUAL-RECONCILE.md` section 9c names, and that list
+disagrees with the exclusions its own section 1 uses. The disagreement is mine
+and it is written down here so nobody reads the mark as complete.
+
 ---
 
 ## 088. DELIVERED 20 SEPTEMBER. THE LOGOTYPE, DRAWN.
@@ -749,18 +786,18 @@ the child patterns. Wording kept where it is his.
 
 ### CP. THE CHILD PATTERN, HIGHLIGHTED AND LOCATED.
 
-- [x] **CP1. "When we find a child pattern, that is very special."** Built, on
+- [x] **CP1e. "When we find a child pattern, that is very special."** Built, on
       the axis reading, behind one named constant. His words,
       and the product currently says nothing when one is found. A child pattern
       is the thing the instrument is for and it arrives with no more emphasis
       than any other node.
-- [x] **CP2. Built, and it is one channel. The treatment: "a more intense colour of the chakra colour, or
+- [x] **CP2e. Built, and it is one channel. The treatment: "a more intense colour of the chakra colour, or
       some treatment to it, to suggest it is a child pattern."** So the
       highlight is argued from the seat the pattern sits in rather than from a
       new colour, which keeps the palette and the body map saying the same
       thing. Intensity is the channel, and it has to survive all seven
       lightings, including the two paper ones where more intense means darker.
-- [x] **CP3. Built. And the imprints panel locates it.** "With these imprints we want
+- [x] **CP3e. Built. And the imprints panel locates it.** "With these imprints we want
       to locate when we are finding a child pattern." The panel counts held and
       filled in today and says nothing about which of them are children, so it
       gains the one distinction that matters and says where the child sits.
@@ -1335,13 +1372,13 @@ meant to be heard is being read.
 
 ### RL. THE PANEL BEFORE IT BEGINS.
 
-- [ ] **RL1. It names what was selected,** not a count of them. "Three
+- [ ] **RL1c. It names what was selected,** not a count of them. "Three
       addresses" is the exact defect he has now struck three times.
-- [ ] **RL2. Each one with its percent, where it sits in the body, and what it
+- [ ] **RL2c. Each one with its percent, where it sits in the body, and what it
       costs.**
-- [ ] **RL3. And what the batch returns,** in points, so the trade is visible
+- [ ] **RL3c. And what the batch returns,** in points, so the trade is visible
       before a person commits to it.
-- [ ] **RL4. Begin opens the full flow.**
+- [ ] **RL4c. Begin opens the full flow.**
 
 ### RV. THE FLOW, AND IT IS HEARD RATHER THAN READ.
 
@@ -1905,6 +1942,18 @@ mind, body, spirit and soul."
       > **At stake.** The ring cannot be drawn at all until it has a target.
       > **Either way.** A daily target, and the ring resets each night and a missed day shows. A session target, and the ring fills several times a day and the day has no shape.
       > **Look at.** `proto/ritual/ritual2.html`, and the rings shot `proto/ritual/r2-Gordon-rings-wide.png`.
+- [ ] **RT22. The loop has never been re measured with the four fixes on.**
+      `tools/ritualsim.js` sets `ifthen`, `monitor`, `halving` and `oneChoice`
+      to 0 in its `current` configuration and all four of them now ship, so
+      `PANEL-ritual-1000.md`'s 59 of 1000 at day 30 prices a product that no
+      longer exists and the 167 the four fixes were meant to buy has never been
+      read off a run. Its choice count is stale the same way: it counts every
+      candidate practice plus two controls, on a card that now shows one.
+      Flip the four, port `ritFor`, re run, and write the measured day 30
+      number onto `RL1f` to `RL4f`. Opened 21 September by the ritual
+      reconciliation as the first buildable piece on this page, because it is
+      the only honest number anybody has about it. `RT10` and `AP2d` both point
+      here, and both were closed against that measurement being owed.
 
 ---
 
@@ -2032,13 +2081,19 @@ We should need a rule never to write shit like that. I don't even know why you
 have it. Instead of 85 days kept, just one word. Recurring, missed, active,
 streak."
 
-- [ ] **NW1. A figure takes one word, not a sentence.** Recurring. Missed.
+- [x] **NW1. A figure takes one word, not a sentence.** Recurring. Missed.
       Active. Streak. The denominator rule said a number must say what it is
       out of, and the answer to that was a second line of prose under every
       figure, which is how five stat cards became five paragraphs. Both rules
       are his and they collide. The resolution is that the label is one word
       and anything a person needs beyond that is in the tooltip or is not
       needed.
+      **Closed 21 September, by the ritual reconciliation.** Delivered and
+      gated as `RT11`: five figures, five one word labels. Verified by reading
+      `proto/ritual/build-rit2.js`, which fails the run if a figure label is
+      more than one word. That gate is the prototype build and not a product
+      gate, so the rule does not yet reach `source.html`. Putting it in the
+      voice skill is `NW2` and stays open.
 - [ ] **NW2. It goes in the voice skill as a checkable rule,** with the
       failing line and the fix beside it, so the gate can catch it.
 
@@ -2048,35 +2103,69 @@ His words: "which day you keep it, I'm not sure what that word means. This goes
 again to our syntax. We need a sweep of the entire thing, of all the copy. Add
 that to the list. A copy sweep."
 
-- [ ] **CP1. Every user facing string in the product, read against the voice
+- [ ] **CP1j. Every user facing string in the product, read against the voice
       skill.** The skill and its gate exist now, so this is a pass with a tool
       rather than an opinion.
-- [ ] **CP2. "Which day you keep it" is the named example.** A heading has to
+- [ ] **CP2j. "Which day you keep it" is the named example.** A heading has to
       be a thing a person would say.
-- [ ] **CP3. The gate's reach is the limit.** 24 strings sit inside drills
+- [ ] **CP3j. The gate's reach is the limit.** 24 strings sit inside drills
       that no surface walk opens, and the sweep has to reach them.
 
 ### RT. THE RITUAL PAGE, SECOND REBUILD.
 
-- [ ] **RT1. The ring is a dotted line, and the dashes are the count.** His
+- [x] **RT1. The ring is a dotted line, and the dashes are the count.** His
       design, and it is the best idea in the message: if a ritual is four
       things, the ring carries four dashes. Ten things, ten dashes. The ring
       stops being decoration and becomes the parameter.
-- [ ] **RT2. The accountability tracker is a feature, so it gets the room.**
+      **Closed 21 September, by the ritual reconciliation.** Delivered as
+      `RT12` and `RT13`, both marked built and gated: the geometry is computed
+      off the radius and never typed, and the shot run reads every ring back
+      out of its own dash array and fails if the dashes drawn disagree with
+      the model. Verified by reading both lines. Delivered in
+      `proto/ritual/ritual2.html`, not in the build.
+- [x] **RT2. The accountability tracker is a feature, so it gets the room.**
       His words: it is not giving him data, he wants it bigger and data
       driven.
-- [ ] **RT3. The week's boxes fill their cell.** Text and pills move
+      **Folded into `RB7v` on 21 September, by the ritual reconciliation.
+      Closed as a duplicate, not as built work.** `RB7v` is his stronger form
+      of the same ask, that the accountability tracker is a surface of its own
+      rather than a line on a card, and the work is open there.
+- [x] **RT3. The week's boxes fill their cell.** Text and pills move
       underneath them.
-- [ ] **RT4. A practice icon takes the colour of what it supports.** Active
+      **Closed 21 September, by the ritual reconciliation.** Delivered as
+      `RT14`, which is marked built and repeats this sentence word for word.
+      Verified by reading both lines. Delivered in
+      `proto/ritual/ritual2.html`, not in the build.
+- [x] **RT4. A practice icon takes the colour of what it supports.** Active
       Listening, Build the avatar, Heart Point Focus.
-- [ ] **RT5. The journal goes to the upper right,** under the stats and above
+      **Closed 21 September, by the ritual reconciliation.** Delivered as
+      `RT15`, which is marked built: a practice ring takes its seat colour, so
+      always on is no longer all red. Verified by reading `RT15`. Delivered in
+      `proto/ritual/ritual2.html`, not in the build.
+- [x] **RT5. The journal goes to the upper right,** under the stats and above
       what is set.
-- [ ] **RT6. Where to improve becomes a summary: daily, weekly, monthly.**
-- [ ] **RT7. The three shapes card comes off the page.** His words: "I'm not
+      **Closed 21 September, by the ritual reconciliation.** Delivered as
+      `RT16`, which is marked built and puts the journal upper right. Verified
+      by reading `RT16`. Delivered in `proto/ritual/ritual2.html`, not in the
+      build.
+- [x] **RT6. Where to improve becomes a summary: daily, weekly, monthly.**
+      **Closed 21 September, by the ritual reconciliation.** Delivered as
+      `RT16`, which is marked built and carries the summary as day, week and
+      month. Verified by reading `RT16`. Delivered in
+      `proto/ritual/ritual2.html`, not in the build.
+- [x] **RT7. The three shapes card comes off the page.** His words: "I'm not
       sure what that is. Get rid of it." The three shapes stay in the model
       and stop being a legend on the surface.
-- [ ] **RT8. Add, remove, generate and history all need a visible home.** He
+      **Closed 21 September, by the ritual reconciliation.** Delivered as
+      `RT16`, which is marked built and takes the three shapes legend off the
+      surface. Verified by reading `RT16`. Delivered in
+      `proto/ritual/ritual2.html`, not in the build.
+- [x] **RT8. Add, remove, generate and history all need a visible home.** He
       found add and nothing else. Auto generation belongs with add.
+      **Closed 21 September, by the ritual reconciliation.** Delivered as
+      `RT16`, which is marked built and names add, remove, generate and
+      history as all given a visible home. Verified by reading `RT16`.
+      Delivered in `proto/ritual/ritual2.html`, not in the build.
 - [?] **RT9. Is what is set pulled from the avatar?** His own question, in
       his words, and it is the right one. If the avatar names the seat, the
       protocol for that seat is what is set, and the two surfaces are one
@@ -2085,9 +2174,14 @@ that to the list. A copy sweep."
       > **At stake.** Whether the ritual is proposed by the instrument or chosen by the person.
       > **Either way.** Pulled, and the ritual changes when the reading changes and a person has less to choose. Not pulled, and the ritual is theirs to set and can point away from what the reading says.
       > **Look at.** `proto/avatar/dash.html` for the seat. `proto/ritual/ritual2.html` for what is set.
-- [ ] **RT10. Simulate the whole page against the panel a thousand times.**
+- [x] **RT10. Simulate the whole page against the panel a thousand times.**
       His words: frictionless, the most effective flow, the highest success
       rate for organisation, user performance, data and aesthetics.
+      **Closed 21 September, by the ritual reconciliation.** Delivered as
+      `tools/ritualsim.js` and `PANEL-ritual-1000.md`, and twinned by `AP2d`.
+      Verified by running `node tools/ritualsim.js --validate` on 21
+      September: 18 checks passed, 0 failed. The harness is now stale against
+      the four fixes that have landed since, which is `RT22`.
 
 ### CF. THE FREQUENCIES, AND WHAT THE SEARCH ACTUALLY FOUND.
 
@@ -2368,7 +2462,7 @@ bands in his order, cards that open, the journal snippet, and where to improve.
       you hold or cross and is marked on held, or the minute it broke.
 - [x] **RS2. A stance is marked on two numbers the day supplies,** times
       tested and times met, with a third state for a day that never tested it.
-      That answers RB11: the parameters on a card are its shape's. A binary
+      That answers RB11q: the parameters on a card are its shape's. A binary
       lies both ways, and a nought to ten rating is the intake's job and would
       let a tracker write onto a law.
 - [x] **RS3. A stance seats on a real law, and a gate proves it.** Practise
@@ -2387,10 +2481,13 @@ bands in his order, cards that open, the journal snippet, and where to improve.
       the longest run, which the record can tell apart.
 - [x] **RD3. Ninety root red cells read as an alarm,** so the record grid
       takes the accent. A day is not a kind.
-- [ ] **RD4. The week still reads mostly empty at 1600.** Three rows tall with
+- [x] **RD4. The week still reads mostly empty at 1600.** Three rows tall with
       most cells as faint outlines, and a tall void under the block. It is
       honest, because those cells are proposals nobody has taken, but his
       brief was that space is not wasted and a waveform reads as a waveform.
+      **Folded into `CL10` on 21 September, by the ritual reconciliation.
+      Closed as a duplicate, not as built work.** The work is open under
+      `CL10`, with `CL9`, as one finding at three spans.
 
 ### RQ. FIVE QUESTIONS, ALL HIS.
 
@@ -2410,7 +2507,7 @@ bands in his order, cards that open, the journal snippet, and where to improve.
       > **At stake.** Whether a slot that empties after one day can sit in a row built for daily practice.
       > **Either way.** Allowed, and one of the three finishes and the row has to refill itself. Refused, and all three are daily and prerequisites need somewhere else to live.
       > **Look at.** `proto/ritual/ritual2.html`, the always on row, at `proto/ritual/r2-Gordon-page-wide.png`.
-- [?] **RQ3. Is always on root red, or does always on move to the heart and
+- [x] **RQ3. Is always on root red, or does always on move to the heart and
       behaviour to the root?** Art director asks. At week scale the waveform
       is mostly red as it stands. This is CL12 carried forward and now
       visible.
@@ -2418,6 +2515,9 @@ bands in his order, cards that open, the journal snippet, and where to improve.
       > **At stake.** A week that reads as an alarm rather than as ground.
       > **Either way.** Root stands, and the practice marks where it sits, which is this product's ground. It moves to Heart and behaviour takes Root, and the week has two colours instead of one.
       > **Look at.** `proto/ritual/cal-Gordon-week-wide.png` is where it is visible. Same ruling as CL12.
+      **Folded into `CL12` on 21 September, by the ritual reconciliation.
+      Closed as a duplicate, not as built work.** The ruling is open under
+      `CL12`, which both lines already named. One ruling covers both.
 - [?] **RQ4. Does a stance day with no test count as kept, or as neither?**
       Game director asks. Neither is what is built, which means a stance can
       never lower a rate.
@@ -2425,13 +2525,17 @@ bands in his order, cards that open, the journal snippet, and where to improve.
       > **At stake.** A stance can never lower a rate, which makes it the cheapest practice on the board.
       > **Either way.** Neither, and a stance is honest and free. Kept, and an untested day is a win and the rate means less.
       > **Look at.** `proto/ritual/rit-James-stance-wide.png`, a stance on a loaded profile.
-- [?] **RQ5. Can a release be scheduled onto a weekday, like the other
+- [x] **RQ5. Can a release be scheduled onto a weekday, like the other
       two?** Game director asks. Release runs when called, so it never takes
       a waveform pixel today.
       > **What it is.** Release runs when a person calls it, so it never occupies a day on the calendar. The other two kinds of ritual do.
       > **At stake.** Whether the calendar shows the whole practice or two thirds of it.
       > **Either way.** Schedulable, and the release takes a day and a missed release is visible. Not, and the release stays on demand and the calendar never shows it.
       > **Look at.** `proto/ritual/cal-Gordon-queue-wide.png`, the release queue beside the calendar.
+      **Folded into `CL14` on 21 September, by the ritual reconciliation.
+      Closed as a duplicate, not as built work.** The ruling is open under
+      `CL14`, which names the default taken and the shot to look at. Asking it
+      twice is the fastest way to have it ignored.
 
 ---
 
@@ -2672,16 +2776,16 @@ His words: "There's active ones and there's passive ones. The active ones are
 the ones that you need to do every day. The passive ones are the ones that are
 user set."
 
-- [ ] **AP1. Active and passive is not the same axis as the three kinds.** A
+- [ ] **AP1o. Active and passive is not the same axis as the three kinds.** A
       ritual has a kind, always on, behaviour or release, and separately it is
       active or passive. Two fields, not one renamed.
-- [ ] **AP2. Sort by band type,** which the person chooses.
-- [ ] **AP3. Or the avatar chooses what is most effective.** His words, and
+- [ ] **AP2o. Sort by band type,** which the person chooses.
+- [ ] **AP3o. Or the avatar chooses what is most effective.** His words, and
       his reason: it lets the software read across the whole profile and
       decide what actually needs doing. Two icons, two names, two different
       answers. This is the auto detect from the previous pass, given its
       second half.
-- [ ] **AP4. The release ritual is automated or user set,** his ruling, which
+- [ ] **AP4o. The release ritual is automated or user set,** his ruling, which
       answers CL14 from the calendar pass.
 
 ### TG2. TAGS COME BACK, AND THIS TIME THEY FIT.
@@ -2744,16 +2848,16 @@ the first thirty minutes of the day. No news for the first hour. Two glasses of
 water first thing. Eight glasses by night. Raw vegetables five days a week.
 Practise honesty. Practise compassion.
 
-- [ ] **RB9. Build the behaviour library from that list.** Two shapes are in
+- [ ] **RB9q. Build the behaviour library from that list.** Two shapes are in
       it and they are not the same object: a thing you do a set number of
       times, and a thing you abstain from for a set window. A tracker that
       only understands the first cannot record the second.
-- [ ] **RB10. Practise honesty and practise compassion are a third shape.**
+- [ ] **RB10q. Practise honesty and practise compassion are a third shape.**
       They have no count and no window, they are a stance held through a day,
       and they are the two that map straight onto the laws. They are also the
       hardest to mark succeeded or failed honestly, which is the interesting
       problem.
-- [?] **RB11. What are the parameters on a behaviour card?** His own open
+- [?] **RB11q. What are the parameters on a behaviour card?** His own open
       question, in his words: "I'm not sure what the parameters are yet."
       The three shapes above are the input to answering it.
       > **What it is.** A behaviour card is one practice on the ritual board. Its parameters are what the card holds: which days, what counts as kept, what it is tied to, and what it costs.
@@ -2783,9 +2887,12 @@ Practise honesty. Practise compassion.
       and his own note on it: "that's a good use of Source AI." The queue is
       already built and already ordered by the load each proposal is aimed at,
       so this is the same machine with the recommendation moved to the front.
-- [ ] **SA2. It proposes and the person disposes.** Already asked and still
+- [x] **SA2. It proposes and the person disposes.** Already asked and still
       unanswered: whether the sniffer adds to tomorrow's ritual by itself or
       proposes and waits.
+      **Folded into `QU2` on 21 September, by the ritual reconciliation.
+      Closed as a duplicate, not as built work.** `QU2` carries the same
+      sentence word for word and the work is open there.
 
 ### PO. THE POSITIONING LINE, AND ONE THING I WILL NOT PASS SILENTLY.
 
@@ -3009,14 +3116,22 @@ month to week to day, and the grid is its own navigation.
       every row says who proposed it and why, in a sentence built from real
       addresses. Refusing is Not now, it costs nothing, and it does not come
       back.
-- [ ] **CL9. The month grid is mostly empty.** A cell is a tall black box with
+- [x] **CL9. The month grid is mostly empty.** A cell is a tall black box with
       one short dash at the bottom, and the two rows past today are void. It is
       the wall of absence again at a third span. The dash has to earn the cell
       or the cell has to shrink to the dash.
+      **Folded into `CL10` on 21 September, by the ritual reconciliation.
+      Closed as a duplicate, not as built work.** The work is open under
+      `CL10`, with `RD4`, as one finding at three spans.
 - [ ] **CL10. At month span it reads as one colour.** Nearly every day is the
       always on kind, so the three kind palette shows almost nowhere and he
       asked for colour by name. Either the month cell shows the kinds it
       actually carried, or the month is the wrong span to carry colour at all.
+      **Absorbs `CL9` and `RD4` on 21 September, by the ritual
+      reconciliation.** One finding at three spans: the month grid mostly
+      empty at `CL9`, the week mostly empty at 1600 at `RD4`, and the month
+      reading as one colour here. It is the wall of absence and it is one
+      item.
 - [ ] **CL11. The panel's practice and minutes columns are stale on seven of
       nine rows,** proved rather than asserted: the gate re runs the old rule
       and reproduces the panel's column exactly. And `build-data.js` cites a
@@ -3031,6 +3146,9 @@ month to week to day, and the grid is its own navigation.
       > **At stake.** One ruling covers both. Root red across a whole month is a lot of red.
       > **Either way.** Root stands, and the calendar keeps one colour. Always on moves to Heart and behaviour takes Root, and the month carries two.
       > **Look at.** `proto/ritual/cal-Gordon-month-wide.png` for the month, `cal-Gordon-week-wide.png` for the week.
+      **Absorbs `RQ3` on 21 September, by the ritual reconciliation.** Both
+      lines already named each other. This one survives because it carries the
+      drawing and the month and week shots.
 - [?] **CL13. Which source owns the always on ritual, the darkest band or
       the seat carrying the most live imprints?** Systems director asks. The
       reading picks the first, the avatar picks the second, and for Marcus
@@ -3046,6 +3164,10 @@ month to week to day, and the grid is its own navigation.
       > **At stake.** Whether the release is a habit or a response.
       > **Either way.** On a schedule, and a person releases on Tuesday whether or not anything is charged. On the line, and the release appears when there is something to release and goes when there is not.
       > **Look at.** `proto/ritual/cal-Gordon-queue-wide.png`, the queue against the calendar.
+      **Absorbs `RQ5` on 21 September, by the ritual reconciliation.** `RQ5`
+      asked the same question at the week rather than at the calendar. This
+      line survives because it names the default taken and the shot to look
+      at.
 - [?] **CL15. May the release queue be empty?** Game director asks. It
       empties when a person refuses everything and stays empty until the
       field moves or they write something new. A queue that refills itself
@@ -3253,22 +3375,47 @@ a calendar."
 - [x] **RC1. Design B is the one.** The board. The other two are parked, not
       deleted, because the compass ring and the run height are still the best
       objects in their own shapes and B may take them.
-- [ ] **RC2. It sorts by day, week and month.** His words. Three spans on one
+- [x] **RC2. It sorts by day, week and month.** His words. Three spans on one
       surface, not three surfaces.
-- [ ] **RC3. It shows what is running and what is due today.** Two different
+      **Closed 21 September, by the ritual reconciliation.** Delivered as
+      `CL1`, which is marked built: month, week and day are three spans of one
+      object and the grid is its own navigation. Verified by reading `CL1`.
+      Delivered in `proto/ritual/calendar.html`, not in the build.
+- [x] **RC3. It shows what is running and what is due today.** Two different
       questions and the calendar has to answer both without being read twice.
-- [ ] **RC4. Rituals are organised by what they are for, and there are three
+      **Closed 21 September, by the ritual reconciliation.** Delivered as
+      `CL2` and `CL3`, both marked built: what is standing sits on the right
+      and never moves, what is due sits above the calendar as three chips, and
+      the word running went because this product reserves it for a saboteur.
+      Verified by reading both. Delivered in `proto/ritual/calendar.html`, not
+      in the build.
+- [x] **RC4. Rituals are organised by what they are for, and there are three
       kinds.** The ones a person always has to do for the avatar to be
       fulfilled or manifest. The ones designed to transform behaviour. The
       ones that belong to the release protocol. That is the sort order, and
       it is the first thing about the ritual builder that is his model rather
       than a comp's.
-- [ ] **RC5. The person chooses what they are optimising for.** Avatar,
+      **Closed 21 September, by the ritual reconciliation.** Delivered as
+      `CL6`, which is marked built: the kind is a closed field with three
+      values, each naming a different engine function as the source of its
+      proposals. Verified by reading `CL6`. Delivered in
+      `proto/ritual/calendar.html`, not in the build.
+- [x] **RC5. The person chooses what they are optimising for.** Avatar,
       personal development, growth, their call. The builder serves the choice
       rather than assuming one.
-- [ ] **RC6. Colour.** His words: "I need colours." Against the kind, or
+      **Closed 21 September, by the ritual reconciliation.** Delivered as
+      `CL7`, which is marked built and names this line by identifier: what a
+      person optimises for is which of the three the queue puts first, which
+      is the ordered for control. Verified by reading `CL7`. Delivered in
+      `proto/ritual/calendar.html`, not in the build.
+- [x] **RC6. Colour.** His words: "I need colours." Against the kind, or
       against the seat, or against the track. One of the three, and the seat
       is already spoken for everywhere else in the product.
+      **Closed 21 September, by the ritual reconciliation.** Delivered as
+      `CL4`, which is marked built: one colour axis only, the three kinds
+      taking Root, Heart and Throat from the seats they already sit at, with
+      the glyph carrying the track by its shape. Verified by reading `CL4`.
+      Delivered in `proto/ritual/calendar.html`, not in the build.
 - [?] **RC7. Where does a person add a ritual from?** His own question, in
       his words: "you need to be able to add but we need to figure out the
       system for adding. Like where are you adding from?" The queue below is
@@ -3312,6 +3459,9 @@ system, can also help generate a queue."
 - [ ] **QU2. The sniffer proposes into it,** off what the story actually said.
       Open, already asked and still unanswered: whether the sniffer adds to
       tomorrow's ritual by itself or proposes and waits for the person.
+      **Absorbs `SA2` on 21 September, by the ritual reconciliation.** `SA2`
+      carried the same sentence word for word: whether the sniffer adds to
+      tomorrow ritual by itself or proposes and waits. One line, not two.
 - [ ] **QU3. The avatar proposes into it,** off what is missing for the avatar
       to progress. This is the first thing that makes the avatar the
       centrepiece rather than a picture of one.
@@ -3320,8 +3470,12 @@ system, can also help generate a queue."
 
 ### AT. THE ACCOUNTABILITY TRACKER.
 
-- [ ] **AT1. He passed it: "number two is okay."** The weekday read stands.
+- [x] **AT1. He passed it: "number two is okay."** The weekday read stands.
       Everything else in this section is the calendar above.
+      **Closed 21 September, by the ritual reconciliation.** Not a task: it
+      records that he passed the weekday read. Verified by reading the line,
+      whose own second sentence hands everything else to the calendar above.
+      Closed as not work, not as built work. `RITUAL-RECONCILE.md` section 5a.
 
 ---
 
@@ -3466,31 +3620,31 @@ the deduction that lands on a miss. With the deduction in, his mechanic breaks
 even at a sting of 0.07 and costs retention above it. At a sting a person would
 feel it is minus 1.9 points, robust across five seeds.
 
-- [?] **RB1. How much comes off on a missed day?** Game director asks. The
+- [?] **RB1y. How much comes off on a missed day?** Game director asks. The
       sting is the one number the whole mechanic turns on, and it is his.
       > **What it is.** The sting. What a person loses when they skip a day of a ritual.
       > **At stake.** The whole mechanic turns on this one number. Too high and the product punishes. Too low and a streak means nothing.
       > **Either way.** A real loss, and the ritual has teeth and a bad week can wipe a month. Nothing, and the board is a record rather than a stake.
       > **Look at.** `proto/ritual/losssim.js` runs the ladder. `RESEARCH-ladder.md` has what the evidence says a missed day costs.
-- [x] **RB2. The seven day guard.** Nothing is taken until seven days are
+- [x] **RB2y. The seven day guard.** Nothing is taken until seven days are
       banked. Worth 2.6 points, more than the mechanic itself, because the
       whole first week is where the leaving happens. Modelled, not built.
-- [ ] **RB3. Who pays.** The deduction lands hardest on the people who cannot
+- [ ] **RB3y. Who pays.** The deduction lands hardest on the people who cannot
       run a release yet, who are 465 of the panel of 1000 and have four of the
       marks permanently shut to them. A ladder that takes from somebody who
       cannot earn is a fine, not a game.
-- [x] **RB4. The record grid fills its card.** Two weeks of history drew as a
+- [x] **RB4y. The record grid fills its card.** Two weeks of history drew as a
       sliver in a card sized for thirteen, which is the wall of absence in the
       opposite direction. The cell now grows with the span.
-- [x] **RB5. No scale phrasing on the weekday read.** It said 92 in 100. It
+- [x] **RB5y. No scale phrasing on the weekday read.** It said 92 in 100. It
       says 12 of 13 Mondays.
-- [ ] **RB6. `.pm-eye` carries `text-transform:capitalize`,** so the shipped
+- [ ] **RB6y. `.pm-eye` carries `text-transform:capitalize`,** so the shipped
       build reads Build A Ritual. A voice violation visible on screen and
       invisible in source.
-- [ ] **RB7. The record becomes the other half of this surface,** not its own
+- [ ] **RB7y. The record becomes the other half of this surface,** not its own
       tab and not the Compass.
-- [?] **RB8. One ritual a day, or a stack?** Game director asks. Four more
-      sit with it, and no more than five in total: the sting at RB1; whether
+- [?] **RB8y. One ritual a day, or a stack?** Game director asks. Four more
+      sit with it, and no more than five in total: the sting at RB1y; whether
       the dial is the seven seats or the twenty one laws; whether the record
       is half this surface or its own tab; and whether the sniffer adds to
       tomorrow's ritual or proposes and waits.
@@ -3567,7 +3721,7 @@ best. There is a soul between the two."
   saying she has integrity. Cause is two rooms away: 83 of her 112 addresses sit
   under the display line, so a mean over sixteen addresses is mostly averaging
   zeroes. The seat peak reverses the ranking and is the actionable statistic.
-- [ ] **SW1d. The recommendation, pending his ruling on SW6:** Atmosphere, as how
+- [ ] **SW1d. The recommendation, pending his ruling on SW6b:** Atmosphere, as how
   the Field draws inside Dark rather than as an eighth lighting. It closes three
   things at once: law 8 on the Field, because the nine canvas captions come off
   the hero into a rail; layer isolation, which `REVIEW-fields.md` lists as
@@ -3575,7 +3729,7 @@ best. There is a soul between the two."
   survives; and it gives the zoom ladder a partner, so zoom resolves detail and
   focus says which detail. Plumb ships as the mobile Field and the pre record
   state. Console is a practitioner view, not the person's.
-- [?] **SW6. Is Atmosphere an eighth lighting, or a change to how the Field
+- [?] **SW6b. Is Atmosphere an eighth lighting, or a change to how the Field
   draws inside Dark?** Art director asks. An eighth lighting brings its own
   ground and its own gate row. The recommendation assumes the second, and
   the standing ruling says a new interface is an added lighting, so the two
@@ -3584,7 +3738,7 @@ best. There is a soul between the two."
       > **At stake.** The standing ruling says a new interface is an added lighting, and the recommendation assumes it is not one. Both cannot hold.
       > **Either way.** An eighth lighting, and the seven become eight and every surface is drawn again in it. A change inside Dark, and only the Field moves and the ruling gains an exception.
       > **Look at.** `proto/field/one.html` through `four.html`.
-- [?] **SW7. Which holds, the gate pill that says the absence or law 8 that
+- [?] **SW7b. Which holds, the gate pill that says the absence or law 8 that
   forbids text on the hero?** Art director asks. `wheel.js` rules the gate
   ring always carries a pill holding a dash, "because the absence is said
   rather than hidden". Both are his rulings and they cannot both hold. Same
@@ -3644,14 +3798,31 @@ best. There is a soul between the two."
 
 ### AP. GAMIFICATION, AND THE RITUAL BUILDER.
 
-- [ ] **AP1. "Where is our gamification."** A fair question with a short answer:
+- [x] **AP1d. "Where is our gamification."** A fair question with a short answer:
   specced, not built. It has to be baked into the ritual rather than bolted
   beside it.
-- [ ] **AP2. Simulate the ritual builder a thousand times** with the ICPs, real
+  **Closed 21 September, by the ritual reconciliation.** The line says
+  specced, not built, and that is now false: `DESIGN-gamification.md` is 67
+  kilobytes and section `0k` records the pass delivered and clearing the
+  target. Closed as a duplicate pointer, not as built work. The build half
+  lives at `RB9v` to `RB11v` and stays open there.
+- [x] **AP2d. Simulate the ritual builder a thousand times** with the ICPs, real
   world. Design, UI UX, creative director and the project manager.
-- [ ] **AP3. Benchmark against the top two ritual builders and accountability
+  **Closed 21 September, by the ritual reconciliation.** Twin of `RT10`.
+  Delivered as `tools/ritualsim.js`, whose header names this line as its
+  brief, plus `PANEL-ritual-1000.md`. Verified by running `node
+  tools/ritualsim.js --validate` on 21 September: 18 checks passed, 0 failed.
+  The harness is stale against the four fixes that have landed since, which is
+  `RT22` and not this line.
+- [x] **AP3d. Benchmark against the top two ritual builders and accountability
   trackers on the planet,** named, measured, and beaten. Research on the
   internet, not from memory.
+  **Closed 21 September, by the ritual reconciliation.** Delivered as
+  `DESIGN-ritual.md` section 2, which comps Streaks, Habitica, Duolingo, Way
+  of Life and Apple Activity, so five rather than two. Verified by reading
+  that section. Its own network note stands: egress was blocked, so every
+  figure came through a search index against the URL cited, and the document
+  says so.
 
 ---
 
@@ -3773,30 +3944,61 @@ the ethics, and loses to both on a loop that closes.
 
 ### THE FOUR CHEAP ONES. All small, all in files that exist.
 
-- [ ] **RL1. The ritual plan is saved and never read back.** Worth **72 of
+- [x] **RL1f. The ritual plan is saved and never read back.** Worth **72 of
   1000** at day 30, the largest single item and nearly free. `CURP.rituals`
   carries track, seat, steps and minutes, and no surface asks when and where.
   Gollwitzer and Sheeran 2006, 94 studies, d 0.65, the largest effect in the
   research file. `ui/ritual.js:76`.
-- [ ] **RL2. The record is locked inside the Compass.** Worth **40 of 1000**.
+  **Closed 21 September, by the ritual reconciliation. Built in the shipped
+  app.** Verified by reading `atuned_src/ui/ritual.js`: `ritToday()` and
+  `ritSteps()` read the saved ritual back, the `rit-saved` block prints its
+  when and its where, and an "I did it" control puts the day on the record.
+  `rit-saved` appears in the committed `source.html`. Whether it belongs on
+  this surface is `RB13` and is his, which is a placement question rather
+  than this line.
+- [x] **RL2f. The record is locked inside the Compass.** Worth **40 of 1000**.
   `ladderHtml()` renders the streak, the ledger and the sixteen marks, takes no
   arguments, is correct, is ruled, and is called from exactly one place:
   `coneOpen` at `ui/cone.js:765`. The Compass measures 22 percent touched.
   Harkin 2016, 138 studies, 19,951 participants, d 0.40.
-- [ ] **RL3. A broken run resets instead of halving.** Worth **36 of 1000**.
+  **Closed 21 September, by the ritual reconciliation. Built in the shipped
+  app.** Verified by reading `atuned_src/ui/ritual.js`, which calls
+  `ladderHtml()` into a `rit-rec` block at the foot of the card, and by grep
+  on the committed `source.html`, where `rit-rec` appears. The record is no
+  longer reachable only through the Compass.
+- [x] **RL3f. A broken run resets instead of halving.** Worth **36 of 1000**.
   Bible 1133 rules `Math.max(1, Math.ceil(s/2))` with one grace day, which
   never resets and never runs out. Lally 2010 supports it: missing one
   opportunity did not materially affect habit formation. `engine/ladder.js`.
-- [ ] **RL4. Nineteen choices on the ritual card** against a working memory of
+  **Closed 21 September, by the ritual reconciliation. Built in the shipped
+  app.** Verified by reading `atuned_src/engine/ladder.js`: `streakRead` walks
+  the day list oldest to newest and runs `run=Math.max(1,Math.ceil(run/2))`,
+  with a gap of two days as the grace day, which is the Bible 1133 rule this
+  line asks for.
+- [x] **RL4f. Nineteen choices on the ritual card** against a working memory of
   about four. Worth **19 of 1000**. One practice on the card, the rest behind
   one control, and Box Breathing at 5 minutes as the entry rather than the 20
   minute scan. 835 of 1000 are currently asked for 15 minutes or more as a
   first practice, 585 of 1000 for 20. `ui/ritual.js:47` to `:60`.
+  **Closed 21 September, by the ritual reconciliation. Built in the shipped
+  app.** Verified by reading `atuned_src/ui/ritual.js`: the list renders with
+  class `rit-list one`, which filters to the practice called for, and
+  everything else sits behind one control reading "Choose something else".
+  `ritFor` also now takes the lightest practice in the track rather than the
+  first in the table, which is the 835 and 585 of 1000 half of this line.
 
 ### AND THE INVERSION NOBODY MEANT
 
-- [ ] **RL5.** `r.DQ>=8` gives tier 1, so the people carrying the most load get
+- [x] **RL5.** `r.DQ>=8` gives tier 1, so the people carrying the most load get
   6 choices and the calmest person in the panel gets 19. Backwards.
+  **Cut 21 September, by the ritual reconciliation.** Its stated consequence
+  is gone: the card shows one practice for everybody and the rest sit behind
+  one control, which is `RL4f`. Verified by reading `atuned_src/ui/ritual.js`.
+  The tier mapping itself is unchanged and is deliberate: `ui/ritual.js`
+  comments it as heavy load starting at entry. So if the tiering is still
+  wrong it is wrong about something this line no longer measures, and the rule
+  here is reproduce before fixing. Cut rather than re-measured, and a new line
+  is owed if somebody reproduces it.
 
 ### THE EXPENSIVE HALF, WORTH LESS THAN THE CHEAP HALF
 
@@ -3977,7 +4179,7 @@ story. It is one complete system."
   the coin, what vibrancy is, law 8 against the gate pill, and whether
   Atmosphere is an eighth lighting or a change to how the Field draws in
   Dark. Each of the four is asked on its own line, at the currency question
-  above, at AH5, at SW7 and at SW6. This line tracks them and asks nothing
+  above, at AH5, at SW7b and at SW6b. This line tracks them and asks nothing
   of its own.
 
 ---
@@ -5062,30 +5264,33 @@ touched yet. **This is a D minus.**"
 
 ### RB. WHAT THE RITUAL BUILDER HAS TO BE
 
-- [ ] **RB1. It looks like a compass**, to track daily progress. His word, and it
+- [ ] **RB1v. It looks like a compass**, to track daily progress. His word, and it
   is the same shape language as the Field and the Compass, so the product has one
   visual grammar rather than three.
-- [ ] **RB2. Iconography for the type of ritual.** Not a list of names.
-- [ ] **RB3. A daily tracker.** What is running, and what I need to do today.
-- [ ] **RB4. An edit control** to add or remove history.
-- [ ] **RB5. A heat map**, so the work is visible over time.
-- [ ] **RB6. Analytics.** Whatever the data honestly supports.
-- [ ] **RB7. The accountability tracker shows how I have done over time**, and it
+- [ ] **RB2v. Iconography for the type of ritual.** Not a list of names.
+- [ ] **RB3v. A daily tracker.** What is running, and what I need to do today.
+- [ ] **RB4v. An edit control** to add or remove history.
+- [ ] **RB5v. A heat map**, so the work is visible over time.
+- [ ] **RB6v. Analytics.** Whatever the data honestly supports.
+- [ ] **RB7v. The accountability tracker shows how I have done over time**, and it
   is a surface of its own rather than a line on a card.
-- [ ] **RB8. Clean and simple.** Said three times in one message.
+  **Absorbs `RT2` on 21 September, by the ritual reconciliation.** `RT2` asked
+  for the accountability tracker to be a feature that gets the room. This is
+  the stronger form of the same ask and carries it.
+- [ ] **RB8v. Clean and simple.** Said three times in one message.
 
 ### RB. THE GAMIFICATION, WIRED THE WAY HE DESCRIBES IT
 
-- [ ] **RB9. Points are tied to the ritual builder and the accountability
+- [ ] **RB9v. Points are tied to the ritual builder and the accountability
   tracker.** "If I fail an accountability I lose points. If I succeed I gain."
   **This reverses a refusal made earlier today.** The gamification pass declined
   loss framing on the evidence and priced it at 3.0 points of the 11.0. He is
   ruling the other way on this one mechanic, and the argument and its price are
   on the record so the decision is his with the number in front of him.
-- [ ] **RB10. The core loop, in his words.** "When I input stories I get points
+- [ ] **RB10v. The core loop, in his words.** "When I input stories I get points
   by the type of impression that I add, and that allows me to go through my core
   product loop of imprints and release."
-- [ ] **RB11. And the sniffer feeds it.** "The sniffer sniffs for things that
+- [ ] **RB11v. And the sniffer feeds it.** "The sniffer sniffs for things that
   could go into the ritual builder to improve behaviour." That is a new consumer
   of the sniffer and it is the first one that turns a reading into an action.
 

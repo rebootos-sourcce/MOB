@@ -1,8 +1,8 @@
 # QUESTIONS FOR THE OWNER
 
 Every line in `TASKS.md` marked `[?]`, which is the mark for a question
-waiting on your ruling. 150 of them, across 41 sections.
-Read off commit 71584e7 on 2026-09-21. Nothing here is typed by hand: answer a
+waiting on your ruling. 148 of them, across 41 sections.
+Read off commit 8b386ee on 2026-09-21. Nothing here is typed by hand: answer a
 question in TASKS.md and it leaves this file on the next run.
 
 Each one opens with the question, names the seat asking it, and carries a
@@ -425,23 +425,11 @@ The same list is in `QUESTIONS.html`, which opens in a browser.
   > **Either way.** Allowed, and one of the three finishes and the row has to refill itself. Refused, and all three are daily and prerequisites need somewhere else to live.
   > **Look at.** `proto/ritual/ritual2.html`, the always on row, at `proto/ritual/r2-Gordon-page-wide.png`.
 
-- [ ] **RQ3. Is always on root red, or does always on move to the heart and behaviour to the root?** Art director asks. At week scale the waveform is mostly red as it stands. This is CL12 carried forward and now visible.
-  > **What it is.** Always on is drawn in Root red. At week scale that makes most of the waveform red.
-  > **At stake.** A week that reads as an alarm rather than as ground.
-  > **Either way.** Root stands, and the practice marks where it sits, which is this product's ground. It moves to Heart and behaviour takes Root, and the week has two colours instead of one.
-  > **Look at.** `proto/ritual/cal-Gordon-week-wide.png` is where it is visible. Same ruling as CL12.
-
 - [ ] **RQ4. Does a stance day with no test count as kept, or as neither?** Game director asks. Neither is what is built, which means a stance can never lower a rate.
   > **What it is.** A stance is a practice that only counts when something tests it. On a day nothing tests it, the day is recorded as neither kept nor missed.
   > **At stake.** A stance can never lower a rate, which makes it the cheapest practice on the board.
   > **Either way.** Neither, and a stance is honest and free. Kept, and an untested day is a win and the rate means less.
   > **Look at.** `proto/ritual/rit-James-stance-wide.png`, a stance on a loaded profile.
-
-- [ ] **RQ5. Can a release be scheduled onto a weekday, like the other two?** Game director asks. Release runs when called, so it never takes a waveform pixel today.
-  > **What it is.** Release runs when a person calls it, so it never occupies a day on the calendar. The other two kinds of ritual do.
-  > **At stake.** Whether the calendar shows the whole practice or two thirds of it.
-  > **Either way.** Schedulable, and the release takes a day and a missed release is visible. Not, and the release stays on demand and the calendar never shows it.
-  > **Look at.** `proto/ritual/cal-Gordon-queue-wide.png`, the release queue beside the calendar.
 
 ## 0n. DELIVERED 20 SEPTEMBER. THE VOICE, THE CASE SCRUB, AND THE MARKETING SYSTEM.
 
@@ -461,7 +449,7 @@ The same list is in `QUESTIONS.html`, which opens in a browser.
 
 ## 0q. RULED 20 SEPTEMBER, SEVENTH PASS. THE RITUAL PAGE AS A SYSTEM.
 
-- [ ] **RB11. What are the parameters on a behaviour card?** His own open question, in his words: "I'm not sure what the parameters are yet." The three shapes above are the input to answering it.
+- [ ] **RB11q. What are the parameters on a behaviour card?** His own open question, in his words: "I'm not sure what the parameters are yet." The three shapes above are the input to answering it.
   > **What it is.** A behaviour card is one practice on the ritual board. Its parameters are what the card holds: which days, what counts as kept, what it is tied to, and what it costs.
   > **At stake.** The card cannot be built until its fields are named.
   > **Either way.** The three shapes above are taken as the answer, and the card is built to them. They are not, and what the card holds is yours to name.
@@ -483,7 +471,7 @@ The same list is in `QUESTIONS.html`, which opens in a browser.
 
 ## 0t. DELIVERED 20 SEPTEMBER. THE RITUAL CALENDAR.
 
-- [ ] **CL12. Does always on take Root red, or does always on move to Heart and behaviour to Root?** Art director asks. Root is what is built, because the practice marks seat there and Root is this product's ground rather than an alarm. Same ruling as RQ3, where it is visible at week scale.
+- [ ] **CL12. Does always on take Root red, or does always on move to Heart and behaviour to Root?** Art director asks. Root is what is built, because the practice marks seat there and Root is this product's ground rather than an alarm. Same ruling as RQ3, where it is visible at week scale. **Absorbs `RQ3` on 21 September, by the ritual reconciliation.** Both lines already named each other. This one survives because it carries the drawing and the month and week shots.
   > **What it is.** The same colour decision as RQ3, asked at the calendar rather than at the week. Root is what is built, because the practice marks sit there and Root is this product's ground rather than an alarm.
   > **At stake.** One ruling covers both. Root red across a whole month is a lot of red.
   > **Either way.** Root stands, and the calendar keeps one colour. Always on moves to Heart and behaviour takes Root, and the month carries two.
@@ -495,7 +483,7 @@ The same list is in `QUESTIONS.html`, which opens in a browser.
   > **Either way.** The darkest band, and the ritual follows the reading while the avatar disagrees with it. The most imprints, and the ritual follows the avatar while the reading disagrees.
   > **Look at.** `proto/avatar/dash-Marcus-1600.png` against `proto/ritual/rit-Marcus-page-wide.png`.
 
-- [ ] **CL14. Does a release ritual recur on a schedule, or only on days an address sits above the line?** Game director asks. The second is the default taken.
+- [ ] **CL14. Does a release ritual recur on a schedule, or only on days an address sits above the line?** Game director asks. The second is the default taken. **Absorbs `RQ5` on 21 September, by the ritual reconciliation.** `RQ5` asked the same question at the week rather than at the calendar. This line survives because it names the default taken and the shot to look at.
   > **What it is.** A release ritual either recurs on set days like the other two kinds, or appears only on days an address sits above the line. The second is what is built.
   > **At stake.** Whether the release is a habit or a response.
   > **Either way.** On a schedule, and a person releases on Tuesday whether or not anything is charged. On the line, and the release appears when there is something to release and goes when there is not.
@@ -583,13 +571,13 @@ The same list is in `QUESTIONS.html`, which opens in a browser.
 
 ## 0y. THE RITUAL BUILDER, MEASURED AND COMPED. 20 SEPTEMBER.
 
-- [ ] **RB1. How much comes off on a missed day?** Game director asks. The sting is the one number the whole mechanic turns on, and it is his.
+- [ ] **RB1y. How much comes off on a missed day?** Game director asks. The sting is the one number the whole mechanic turns on, and it is his.
   > **What it is.** The sting. What a person loses when they skip a day of a ritual.
   > **At stake.** The whole mechanic turns on this one number. Too high and the product punishes. Too low and a streak means nothing.
   > **Either way.** A real loss, and the ritual has teeth and a bad week can wipe a month. Nothing, and the board is a record rather than a stake.
   > **Look at.** `proto/ritual/losssim.js` runs the ladder. `RESEARCH-ladder.md` has what the evidence says a missed day costs.
 
-- [ ] **RB8. One ritual a day, or a stack?** Game director asks. Four more sit with it, and no more than five in total: the sting at RB1; whether the dial is the seven seats or the twenty one laws; whether the record is half this surface or its own tab; and whether the sniffer adds to tomorrow's ritual or proposes and waits.
+- [ ] **RB8y. One ritual a day, or a stack?** Game director asks. Four more sit with it, and no more than five in total: the sting at RB1y; whether the dial is the seven seats or the twenty one laws; whether the record is half this surface or its own tab; and whether the sniffer adds to tomorrow's ritual or proposes and waits.
   > **What it is.** How many practices a person holds at once. One, or a stack.
   > **At stake.** The shape of the whole board. Four more rulings ride on it: the sting, whether the dial is the seven seats or the twenty one laws, whether the record is half this surface or its own tab, and whether the sniffer adds to tomorrow or proposes and waits.
   > **Either way.** One a day, and the board is small and a person always knows what today is. A stack, and the board carries the real practice and a person can fail three things at once.
@@ -597,13 +585,13 @@ The same list is in `QUESTIONS.html`, which opens in a browser.
 
 ## 0d. RULED 20 SEPTEMBER, THIRD PASS. THE SKUNK WORKS AND THE RITUAL
 
-- [ ] **SW6. Is Atmosphere an eighth lighting, or a change to how the Field draws inside Dark?** Art director asks. An eighth lighting brings its own ground and its own gate row. The recommendation assumes the second, and the standing ruling says a new interface is an added lighting, so the two collide.
+- [ ] **SW6b. Is Atmosphere an eighth lighting, or a change to how the Field draws inside Dark?** Art director asks. An eighth lighting brings its own ground and its own gate row. The recommendation assumes the second, and the standing ruling says a new interface is an added lighting, so the two collide.
   > **What it is.** Atmosphere is a new look for the Field. It can arrive as an eighth lighting, which brings its own ground and its own gate row, or as a change to how the Field draws inside the existing Dark.
   > **At stake.** The standing ruling says a new interface is an added lighting, and the recommendation assumes it is not one. Both cannot hold.
   > **Either way.** An eighth lighting, and the seven become eight and every surface is drawn again in it. A change inside Dark, and only the Field moves and the ruling gains an exception.
   > **Look at.** `proto/field/one.html` through `four.html`.
 
-- [ ] **SW7. Which holds, the gate pill that says the absence or law 8 that forbids text on the hero?** Art director asks. `wheel.js` rules the gate ring always carries a pill holding a dash, "because the absence is said rather than hidden". Both are his rulings and they cannot both hold. Same question as the nine captions.
+- [ ] **SW7b. Which holds, the gate pill that says the absence or law 8 that forbids text on the hero?** Art director asks. `wheel.js` rules the gate ring always carries a pill holding a dash, "because the absence is said rather than hidden". Both are his rulings and they cannot both hold. Same question as the nine captions.
   > **What it is.** The gate ring always carries a pill holding a dash, because the absence is said rather than hidden. Law 8 forbids text on the hero.
   > **At stake.** Both are your rulings, and the hero is where they meet. The same collision sits under the nine captions.
   > **Either way.** The pill stands, and the hero carries text and law 8 gains an exception. Law 8 stands, and the absence goes unsaid on the one surface where it matters most.
