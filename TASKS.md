@@ -313,6 +313,86 @@ reopens. Every seat adds its own.
   > and is also a reward with a gap as its condition.
   > **Look at.** `DESIGN-ladder.md`, the awards table, Came back.
 
+### NN. THE NINETY DAY RUN. THE GRADE IS 38.91 AND THE LOOP CLOSES ON ITSELF.
+
+- [x] **NN1. 38.91 of 100, an F, and it settled.** Spread across runs 0.41,
+      range 38.0 to 39.6, 19 runs. The stopping rule was set before the first
+      run and nothing else was: a running mean moving by less than 0.05 of a
+      point when another run is added, held six runs in a row with at least
+      ten behind it. The honest error bar is not the seed: moving every
+      friction cost and every opening rate by a quarter in both directions
+      moves the total by 2.50 points, and the page says so.
+- [x] **NN2. It drove the shipped engine, not a model of it.** Every reading,
+      charge, release, streak and mark is a call into `engine.js`, and every
+      fact about the surface was read off `source.html` in Chromium into a
+      file the harness and the page both refuse to run without. The release
+      lives in `ui/release.js` and is outside the engine contract, so its
+      arithmetic was lifted character for character and the harness refuses to
+      start unless the lifted copy reproduces a release driven in Chromium to
+      within a thousandth.
+- [ ] **NN3. THE FINDING, AND IT IS NOT THE RETENTION CURVE. The loop returns
+      a person to where they started.** A ceiling case with no model in it: a
+      person answers the intake, then for ninety consecutive days tells it one
+      true thing, runs the largest release the field offers, and keeps one
+      practice. Every line is flat, at four different starting integrities.
+      The mid case goes 25.00 to 25.54 over the quarter. 1193 minutes of
+      practice, a ninety day streak, thirteen marks, 444 patterns of ground,
+      and the band does not change. Three measured mechanisms produce it: a
+      story only ever adds charge, so the reading only ever falls from one;
+      the release takes 21 per cent of the weight and installs 62 per cent of
+      what it took, so after ninety daily releases 4 addresses of 112 hold the
+      opposite; and the height of the line is the intake. The whole somatic
+      half of the product, run every day for a quarter, is worth less than a
+      point of the number it exists to move.
+- [ ] **NN4. And the fix is one of three, none of them cosmetic.** The removal
+      compounds over a session, or the install reaches the far pole, or a
+      cleared address stays cleared. Until one of them is true, the marks are
+      the only thing a person gets, and a notification calling somebody back
+      to this loop calls them back to nothing. That is why the notification
+      seam is last rather than first.
+- [ ] **NN5. `relCoolDown` never reads `relLeft()`.** Measured in the shipped
+      app: the release panel printed "4 patterns of the 0 you have left" and
+      the run went ahead. The gift is a label with nothing behind it, so there
+      is no limit to sell past, and the one panel in the product that quotes a
+      price quotes a false one. Live defect, and it sits directly under the
+      paid tiers.
+- [ ] **NN6. 19 of 41 ordinary sentences read nothing,** and 12 of the
+      roster's own 14 `says` lines read nothing, through the shipped
+      `parseStory`. Where it does fire it frequently offers an address
+      carrying `inferred` and the panel prints it as a finding. "I am ashamed
+      of how long this is taking" is answered with Pride, Arrogance,
+      Competition. "I felt nothing when we let forty people go and that is the
+      part that frightens me" is answered with Denial Of Light, Knowing Better
+      Than God, Denial Of Truth. A wrong finding printed with confidence is
+      worse than no finding.
+- [ ] **NN7. Diane tells zero stories in ninety days, and James is the same
+      shape.** Her session is a status check between meetings and the only
+      door to her own charge costs more minutes than she has, every time. That
+      is 280 of a thousand arrivals for whom the product has no door narrow
+      enough.
+- [ ] **NN8. A blank arrival reads 42.25 in the app and 36.00 out of the
+      engine on the same empty profile.** An unmeasured law is seeded at 6.5
+      by `LAWSET.You` in `ui/personas.js:269`, at 6 by the engine's own
+      boundary, and a third caller seeds 5.5. Three seeds for one quantity.
+- [x] **NN9. What moved since the earlier run, which scored 51.** Closed and
+      verified: the release refuses on a reference case and names the profile,
+      which was that run's worst item at 187 people. The intake does reach the
+      release, through the integrity relief term. The boot has a word on
+      screen in 296 milliseconds against four and a half seconds. Unchanged: 4
+      of 9 tabs fully in view at 390, "41%" printed beside the word
+      Incoherent, and cognitive load measured at 71 above the fold on the
+      landing screen and 127 on Knowledge.
+- [x] **NN10. The product got better and the grade went down, and both are
+      true.** The earlier run was a walk through the surface. It never ran the
+      loop for ninety days, so it could not see that the loop closes on
+      itself.
+- [x] **NN11. The five worst sticking points, by people lost of a
+      thousand.** 288, the absence became permanent and nothing asked them to
+      come back. 110, the reading does not move on the session they just
+      spent. 89, nothing is above the line so there is nothing to release. 68,
+      the box reads nothing out of what they wrote. 41, there is no way to
+      hand it to anybody. Sixth at 38 is the sixty three question intake.
+
 ### TN. TIGHT BY TONIGHT. THE FUNNEL AND THE PRODUCT BEHIND IT.
 
 - [ ] **TN1. His deadline and his standard.** "By tonight we need our funnel
@@ -329,17 +409,17 @@ reopens. Every seat adds its own.
 
 ### SIM. NINETY DAYS, RUN UNTIL THE NUMBER STOPS MOVING.
 
-- [ ] **SIM1. "Take our ICPs and our focus group. Run them through a ninety
+- [x] **SIM1 DELIVERED. "Take our ICPs and our focus group. Run them through a ninety
       day simulation of the product front to back."** Given different
       intervals, and reasons why they use it and why they do not.
-- [ ] **SIM2. Complete metrics on sticking points, challenges, what is good,
+- [x] **SIM2 DELIVERED. Complete metrics on sticking points, challenges, what is good,
       and what they experience out of it.** His words.
-- [ ] **SIM3. A grade at the end, and it has to be stable.** "Simulate it as
+- [x] **SIM3 DELIVERED. A grade at the end, and it has to be stable.** "Simulate it as
       many times as you need so you feel satisfied that the number is not
       moving too much." The deliverable is not one grade, it is a grade with
       its own variance stated, and the run count is read off the point where
       the number settles rather than chosen in advance.
-- [ ] **SIM4. There is already one of these and it is a product older.**
+- [x] **SIM4 DELIVERED. There is already one of these and it is a product older.**
       `reviews/sim-ninety-days.html`. Read it before building a second, and
       say what moved.
 
