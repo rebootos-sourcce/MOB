@@ -1,8 +1,8 @@
 # QUESTIONS FOR THE OWNER
 
 Every line in `TASKS.md` marked `[?]`, which is the mark for a question
-waiting on your ruling. 136 of them, across 40 sections.
-Read off commit 620a457 on 2026-09-21. Nothing here is typed by hand: answer a
+waiting on your ruling. 145 of them, across 41 sections.
+Read off commit 6103675 on 2026-09-21. Nothing here is typed by hand: answer a
 question in TASKS.md and it leaves this file on the next run.
 
 Each one opens with the question, names the seat asking it, and carries a
@@ -197,6 +197,96 @@ The same list is in `QUESTIONS.html`, which opens in a browser.
   > **At stake.** Whether the first run explains anything. A second collision sits under it: the four doors brief against an allocation that names one surface at two stations, which leaves a person able to name three.
   > **Either way.** Onboarding explains, and the purpose ban gains an exception for the first run only. The ban holds, and the first run shows tools without saying what they are for.
   > **Look at.** `proto/onboard/onboard.html`, and its four shots, one per station of the loop.
+
+## 0f2. RULED 20 SEPTEMBER, TWELFTH PASS. SATURATION, THE TWO DIALS, THE FEATHERS.
+
+- [ ] **TP10. Is the swing the eight compass axes at one moment, or the same reading over time on the record?**
+  > **What it is.** The swing is the range drawn above the dial's line,
+  > showing how far a person moves rather than where they sit.
+  > **At stake.** Whether the dial ships tonight or waits for a schema field.
+  > **Either way.** Across axes, and it exists today at no cost and says you
+  > are not the same person at the heart as at the root. Over time, and it
+  > needs the lean stored on every snapshot and says you move week to week.
+  > **Look at.** `proto/dials/index.html`, the two dials at the top, and
+  > Sofia against Wren, who both print 100 and swing 46 points against 6.
+
+- [ ] **TP11. Does the orientation figure stay the field's own lean, or move to the compass mean?**
+  > **What it is.** The number printed over the dial's origin on the
+  > benign against malignant reading.
+  > **At stake.** Whether the figure can peg at 100 and disagree with its own
+  > swing.
+  > **Either way.** The field's lean, and 5 of 14 people print 100 and the
+  > figure sits outside the range under it. The compass mean, and it cannot
+  > peg and always falls inside the range, but it is a different
+  > measurement.
+  > **Look at.** `proto/dials/index.html`, the section headed "and one thing
+  > that is yours to rule", where both are drawn in the same component.
+
+- [ ] **TP12. Does balance ship with a swing slot that stays empty until the lean is stored?**
+  > **What it is.** The balance dial's range, which has no source in the
+  > record today.
+  > **At stake.** A dial that says swing not measured on every person,
+  > including in a screenshot, against holding the dial back.
+  > **Either way.** Ship it empty, and it is honest and looks unfinished.
+  > Wait, and the schema field lands first, which is two lines and a
+  > migration read.
+  > **Look at.** `proto/dials/index.html`, the balance dial, second row.
+
+- [ ] **TP13. Do the benign and malignant marks want redrawing so the difference is a silhouette rather than a stroke direction?**
+  > **What it is.** The two ring marks at the ends of the orientation dial.
+  > **At stake.** Whether a person can tell the two ends apart at 18 pixels
+  > on a phone.
+  > **Either way.** Redrawn, and the pair reads at a glance and the symbols
+  > he ruled move. Left, and they differ across 68 per cent of the lit area
+  > where masculine and feminine differ across 134.
+  > **Look at.** `proto/dials/index.html`, the end marks on both dials.
+
+- [ ] **FW10. Do nought to three dashes read as a count at the size the core actually is?**
+  > **What it is.** The replacement for width: short marks across the
+  > feather's spine near the hub, nought to three of them, all the same size.
+  > **At stake.** Whether the feathers can carry how often a practice is done
+  > at all.
+  > **Either way.** They read, and the count ships on the mark he asked for.
+  > They do not, and the count goes somewhere that is not the feather.
+  > **Look at.** `proto/feathers/shot-width-1600.png` and `shot-1600.png`,
+  > the same person drawn on the two channels.
+
+- [ ] **FW11. Is a per law practice count a thing to build, or is a practice deliberately not attached to a law?**
+  > **What it is.** The number the dashes would draw.
+  > **At stake.** A new field on the record against drawing no count at all.
+  > **Either way.** Built, and every practice names the law it serves and the
+  > engine's own ruling that a practice is a window has to move. Not built,
+  > and the honest drawing has no count on it.
+  > **Look at.** `proto/feathers/index.html`, the panel headed modelled.
+
+- [ ] **FW12. If a count is built, is it sessions or days?**
+  > **What it is.** The unit under the dashes.
+  > **At stake.** How much has to be built. Days is nearly free and sessions
+  > is a new tally.
+  > **Either way.** Days, and `pracDays` already folds a day and `streakRead`
+  > already counts days a person lived. Sessions, and a new counter lands on
+  > every ritual row.
+  > **Look at.** `proto/feathers/index.html`, the dash row on any feather.
+
+- [ ] **FW13. Do the thirty one slots stay equal, or inherit the shell's seat arcs?**
+  > **What it is.** How the circle is divided between the marks.
+  > **At stake.** Whether every target is one size, which is the only way a
+  > tap floor can be one number.
+  > **Either way.** Equal, and angular width carries nothing and every target
+  > matches. The arcs, and a feather traces straight out to its own band and
+  > the narrowest target loses a third of its width at 390, 30 pixels against
+  > 44.
+  > **Look at.** `proto/feathers/shot-390.png` beside `shot-1600.png`.
+
+- [ ] **FW14. Do the three states stay inside the core now that they share its scale?**
+  > **What it is.** The triad, drawn on the same ring as the seats and the
+  > laws.
+  > **At stake.** Whether the core reads as one chart or as three charts
+  > stacked.
+  > **Either way.** They stay, and three states scored nought to one sit on a
+  > ring calibrated to ten, now on true gridlines for the first time. They
+  > leave, and they already have a door on the key strip.
+  > **Look at.** `proto/feathers/index.html`, the three fattest marks.
 
 ## 0h2. DELIVERED 20 SEPTEMBER. THE RITUAL PAGE, SECOND REBUILD, AND THE BOOT CARD.
 

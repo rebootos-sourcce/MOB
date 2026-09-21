@@ -1178,6 +1178,101 @@ what that is. The benign malignant is the oscillation of the compass."
       A single number for a quantity that oscillates is the same defect as a
       hard band edge on a reading that moves.
 
+### TP. THE DIAL PASS. ONE DESIGN DELIVERED, AND FIVE DEFECTS UNDER IT.
+
+- [x] **TP1. One design, delivered at `proto/dials/index.html`,** live off the
+      real engine and the real roster. His parts in his order: a thin line
+      broken at the centre, a ring at each end with the leaned one lit, the
+      figure over the origin with a one word pill under it, and a colour bar
+      out of the break toward the side a person leans to. Plus the swing,
+      drawn as an interval on the same axis four pixels above the line,
+      because a range drawn inside the bar is swallowed by a figure of 100.
+- [x] **TP2. And there were three drawings of that reading, not two.**
+      Orientation at `#polbar`, balance at `#bal`, and the same reading a
+      third time at `#pol`, which lives inside `#tl`, which carries `hidden`.
+      It is written on every render into a surface nobody has ever seen.
+- [x] **TP3. One arithmetic step made one shape possible.** Balance is a
+      signed lean and orientation is a share, so orientation is restated as a
+      lean, 100 minus twice the malignant share. Marcus reads 78 today and 56
+      on the shared axis, same measurement. It is also what he asked for: the
+      percent a person leans toward is a lean, not a share.
+- [ ] **TP4. `#polbar` prints a reading on a profile with nothing entered.**
+      `#pol` guards on `r.unread` and `#polbar` does not, so selecting Rosa
+      prints 100 benign with a full fill two inches under a rail saying not
+      read yet. It contradicts the ruling in `CLAUDE.md` that both surfaces
+      printing a reading silence themselves on `r.unread`. Live defect.
+- [ ] **TP5. `cr()` prints its value in its own hue over a 17 per cent ground
+      of that hue.** Root measures 3.46 at 11.5 pixels against a floor of 4.5.
+      Root is the hue used for the malignant end, for shadow weight and for
+      will, and both ship on the Field key strip now. The fix is one move: the
+      value takes `--ink` and the hue stays in the ring and the border, which
+      takes 3.46 to 14.39 and loses nothing, because the ring already says it.
+- [ ] **TP6. `.polbar .lb` fails only where the fill reaches under it.** Ink
+      at .86 over the heart fill measures 3.11 at 11 pixels, against 12.46
+      over the bare trough. So it is legible everywhere except where the
+      reading is strongest, and benign is the leaning side for 9 of 14.
+- [ ] **TP7. Orientation pegs, so half the scale does not exist.** `malig` is
+      0 for any CQ at or over 50, and 5 of the 14 roster records print 100
+      benign with 0 malignant. A dial with its top half collapsed onto one
+      value cannot show improvement to the people who have improved.
+- [ ] **TP8. The swing exists for orientation and needs no engine change.**
+      `mirrorAt` already returns a position for each of the eight mirror pairs
+      on that same axis, and `ui/cone.js` already draws all eight. What is
+      missing is a min and a max over eight numbers. For balance it does not
+      exist and cannot be recovered: nothing in `snapshot()` carries the lean,
+      so no record holds the reading twice. That is two lines, the field and
+      the whitelist entry at `engine/schema.js`, because `validateProfile`
+      rebuilds every history entry by name and drops a sixteenth field in
+      silence.
+- [ ] **TP9. `iqScore` already returns a figure and a range, at the law
+      layer, and neither dial reads it.** Score, spread, and a floor of 3
+      below which it refuses to name a direction. That is the object TD4 asks
+      for, built once. `accuracy()` returns a figure and how much the
+      instrument knows. A swing and an accuracy band are both an interval
+      around a number, they mean opposite things, and must not share a
+      drawing.
+- [?] **TP10. Is the swing the eight compass axes at one moment, or the same
+      reading over time on the record?**
+  > **What it is.** The swing is the range drawn above the dial's line,
+  > showing how far a person moves rather than where they sit.
+  > **At stake.** Whether the dial ships tonight or waits for a schema field.
+  > **Either way.** Across axes, and it exists today at no cost and says you
+  > are not the same person at the heart as at the root. Over time, and it
+  > needs the lean stored on every snapshot and says you move week to week.
+  > **Look at.** `proto/dials/index.html`, the two dials at the top, and
+  > Sofia against Wren, who both print 100 and swing 46 points against 6.
+- [?] **TP11. Does the orientation figure stay the field's own lean, or move
+      to the compass mean?**
+  > **What it is.** The number printed over the dial's origin on the
+  > benign against malignant reading.
+  > **At stake.** Whether the figure can peg at 100 and disagree with its own
+  > swing.
+  > **Either way.** The field's lean, and 5 of 14 people print 100 and the
+  > figure sits outside the range under it. The compass mean, and it cannot
+  > peg and always falls inside the range, but it is a different
+  > measurement.
+  > **Look at.** `proto/dials/index.html`, the section headed "and one thing
+  > that is yours to rule", where both are drawn in the same component.
+- [?] **TP12. Does balance ship with a swing slot that stays empty until the
+      lean is stored?**
+  > **What it is.** The balance dial's range, which has no source in the
+  > record today.
+  > **At stake.** A dial that says swing not measured on every person,
+  > including in a screenshot, against holding the dial back.
+  > **Either way.** Ship it empty, and it is honest and looks unfinished.
+  > Wait, and the schema field lands first, which is two lines and a
+  > migration read.
+  > **Look at.** `proto/dials/index.html`, the balance dial, second row.
+- [?] **TP13. Do the benign and malignant marks want redrawing so the
+      difference is a silhouette rather than a stroke direction?**
+  > **What it is.** The two ring marks at the ends of the orientation dial.
+  > **At stake.** Whether a person can tell the two ends apart at 18 pixels
+  > on a phone.
+  > **Either way.** Redrawn, and the pair reads at a glance and the symbols
+  > he ruled move. Left, and they differ across 68 per cent of the lit area
+  > where masculine and feminine differ across 134.
+  > **Look at.** `proto/dials/index.html`, the end marks on both dials.
+
 ### FE. THE FEATHERS. WHAT LENGTH AND WIDTH ACTUALLY MEAN.
 
 - [ ] **FE1. Hover gives a tooltip, click gives the full reading.** The one
@@ -1198,6 +1293,105 @@ what that is. The benign malignant is the oscillation of the compass."
       that is not a magnitude channel, which would free width to carry a real
       quantity, and how often a practice is done is a candidate he named
       himself.
+
+### FW. THE FEATHER PASS. A TARGET THAT DID NOT EXIST, AND A CHANNEL THAT LIES.
+
+- [x] **FW1. There was no feather target at all.** The core pushes one hit
+      entry, a disc at its centre, so 31 of 31 feather tips return `core`. The
+      tolerance was not small, it did not exist. Each feather now pushes the
+      wedge shape the wheel already uses for laws, archetypes, masks,
+      addresses, seats and domains, running the full depth of its slot,
+      because a law at one out of ten is the shortest mark and the one a
+      person most wants to press. Ported, not invented.
+- [x] **FW2. Tolerance measured by walking a real pointer,** a quarter pixel
+      at a time until the scan stops answering. At 1600 the tip runs 7.8 to
+      19.5 pixels and 13 uniform at mid depth. At 390 it is 4.0 to 10.3 and 7
+      uniform.
+- [x] **FW3. The 44 floor does not apply as written and saying it passes or
+      fails is a category error.** A wedge has no single width: one law target
+      is 6.4 pixels across at the hub and 44.9 at the rim. Restated as the
+      chord where a person aims, a mouse clears it and a finger does not,
+      which is the ruling the design file already reached and now has a number
+      on: a finger gets the seven seats, a mouse gets the 31 marks.
+- [x] **FW4. Width is freed by three cues that are not magnitudes.** Barb
+      rake, rachis dash, and an open terminal at one constant size. Colour was
+      not taken, because colour is the seat and that correspondence is what
+      makes the core an exploded view.
+- [x] **FW5. And giving radius back repaired an older defect.** All three
+      layers share one scale now, hub 0.15 to rim 0.93, with the triad's
+      nought to one drawn times ten. Before, a triad at its full value read
+      8.60 and a seat read 9.25 on a ring calibrated to ten.
+- [x] **FW6. Overdraw goes from 10,588 ink pixels, 34 per cent, to 35 of
+      3842.** Slots that tile a circle cannot paint over each other, and the
+      eleven coincident pairs `REDUCED` freezes on top of each other are gone
+      by construction.
+- [ ] **FW7. His candidate for the width channel does not survive
+      measurement, and the sweep is the finding.** At a ratio of 1.2 the whole
+      channel is 2.4 pixels of travel and nobody can see it. At 1.36 it starts
+      inverting pairs one to three points apart, and it gets worse from there.
+      The safe end is silent and the legible end lies, and the two do not
+      overlap. So the count goes where a count already goes in this product:
+      nought to three dashes at a fixed radius and a fixed length, the same
+      ink on a short mark and a long one, which is `RT13`'s own ruling and not
+      a second scheme.
+- [ ] **FW8. The count does not exist.** `PRACTICE` carries five fields and
+      none of them is a seat, a law or a tally, and the engine rules it out in
+      writing: a practice is a window and its parameter is a minimum. Nothing
+      anywhere joins a practice to a law. A count per practice and a count per
+      seat are both derivable off a saved ritual today. The page draws the
+      design with the missing field modelled and labelled modelled in every
+      tooltip, so nothing on screen pretends to be a reading.
+- [ ] **FW9. `DESIGN-feathers.md`'s own third state is wrong.** The blank
+      state was read off a fixture default, so an unanswered law at 2.7 drew
+      more ink than an answered one at 1.2, and a probe counted 32 inversions
+      that were the quill fighting length. A blank is all or nothing, not a
+      lighter version of a reading.
+- [?] **FW10. Do nought to three dashes read as a count at the size the core
+      actually is?**
+  > **What it is.** The replacement for width: short marks across the
+  > feather's spine near the hub, nought to three of them, all the same size.
+  > **At stake.** Whether the feathers can carry how often a practice is done
+  > at all.
+  > **Either way.** They read, and the count ships on the mark he asked for.
+  > They do not, and the count goes somewhere that is not the feather.
+  > **Look at.** `proto/feathers/shot-width-1600.png` and `shot-1600.png`,
+  > the same person drawn on the two channels.
+- [?] **FW11. Is a per law practice count a thing to build, or is a practice
+      deliberately not attached to a law?**
+  > **What it is.** The number the dashes would draw.
+  > **At stake.** A new field on the record against drawing no count at all.
+  > **Either way.** Built, and every practice names the law it serves and the
+  > engine's own ruling that a practice is a window has to move. Not built,
+  > and the honest drawing has no count on it.
+  > **Look at.** `proto/feathers/index.html`, the panel headed modelled.
+- [?] **FW12. If a count is built, is it sessions or days?**
+  > **What it is.** The unit under the dashes.
+  > **At stake.** How much has to be built. Days is nearly free and sessions
+  > is a new tally.
+  > **Either way.** Days, and `pracDays` already folds a day and `streakRead`
+  > already counts days a person lived. Sessions, and a new counter lands on
+  > every ritual row.
+  > **Look at.** `proto/feathers/index.html`, the dash row on any feather.
+- [?] **FW13. Do the thirty one slots stay equal, or inherit the shell's seat
+      arcs?**
+  > **What it is.** How the circle is divided between the marks.
+  > **At stake.** Whether every target is one size, which is the only way a
+  > tap floor can be one number.
+  > **Either way.** Equal, and angular width carries nothing and every target
+  > matches. The arcs, and a feather traces straight out to its own band and
+  > the narrowest target loses a third of its width at 390, 30 pixels against
+  > 44.
+  > **Look at.** `proto/feathers/shot-390.png` beside `shot-1600.png`.
+- [?] **FW14. Do the three states stay inside the core now that they share
+      its scale?**
+  > **What it is.** The triad, drawn on the same ring as the seats and the
+  > laws.
+  > **At stake.** Whether the core reads as one chart or as three charts
+  > stacked.
+  > **Either way.** They stay, and three states scored nought to one sit on a
+  > ring calibrated to ten, now on true gridlines for the first time. They
+  > leave, and they already have a door on the key strip.
+  > **Look at.** `proto/feathers/index.html`, the three fattest marks.
 
 ### PZ. PRIORITISE THE LIST.
 
