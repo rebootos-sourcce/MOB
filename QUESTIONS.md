@@ -2,7 +2,7 @@
 
 Every line in `TASKS.md` marked `[?]`, which is the mark for a question
 waiting on your ruling. 155 of them, across 43 sections.
-Read off commit ef3d1bf on 2026-09-21. Nothing here is typed by hand: answer a
+Read off commit c6ad316 on 2026-09-21. Nothing here is typed by hand: answer a
 question in TASKS.md and it leaves this file on the next run.
 
 Each one opens with the question, names the seat asking it, and carries a

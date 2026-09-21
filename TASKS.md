@@ -111,6 +111,71 @@ and it is written down here so nobody reads the mark as complete.
 
 ---
 
+## 08k. RULED 21 SEPTEMBER, TWENTY FOURTH PASS. KERF WINS, AND THE COPY GOES ON A SHEET.
+
+### KF. KERF, AND FOUR VERSIONS OF IT.
+
+- [x] **KF1. His words: "I am liking Kerf a lot. You are showing the weight of
+      the various bands directly. That is super powerful."** So the band is
+      made of its addresses from the first frame, and the load is never
+      smoothed into an average.
+- [ ] **KF2. "Let's have the art teams do four versions of Kerf."** Four, on
+      the direction he has chosen, rather than four more directions.
+- [ ] **KF3. The percent arrives on zoom, and it fades.** His words: "you
+      could probably even put the percent. If I atomise it, I can zoom in, you
+      can show the percent, like the percent fades in." So it is not on the
+      resting ring and it is not a permanent label. Note the standing rule it
+      has to pass: a figure with a tolerance stapled to it is a lab readout,
+      and a count against a total he never asked for is a defect he has
+      already objected to twice.
+- [ ] **KF4. And the length carries charge on a nought to ten scale.** His
+      words: "if you atomise it also in the length, from a scale nought to
+      ten, then you will also collect the charge. And if you split it, you
+      will collect the charge. The bell curve." So the stave's length is the
+      charge at that address against the same scale the rest of the product
+      uses, and splitting the stave shows the distribution rather than the
+      total. The engine already holds both halves at an address: what is
+      carried and what is filled in, and they are mutually exclusive by
+      arithmetic.
+- [ ] **KF5. Bring Shell's saturation across.** His words: "there is something
+      about the saturation on Shell I like, so bring that in, like the
+      background colours, actually, yeah, the colours overall." Shell paints
+      its bands at full weight against a dark ground; Kerf paints a fainter
+      track behind its staves. The saturation is the thing to carry, and the
+      contrast floors still hold.
+
+### AN. TWO THINGS HE ASKED ABOUT, ANSWERED OFF THE CODE.
+
+- [x] **AN1. The white boxes outside the ring are what is filled in.** In
+      Kerf each address draws twice: the charge grows inward from the band's
+      inner edge in the seat's own colour, and what is filled in hangs from
+      the outer edge, drawn at two thirds toward white so it reads as the
+      opposite rather than as more of the same. They sit outside because they
+      hang from the outer edge, and they are pale because a filled address is
+      the pole and not the load.
+- [x] **AN2. The outer ring on Strata is not the domains.** It is a hairline
+      at the band's fixed outer edge, the line the section grows inward from,
+      so a person can see that the outer edge is held still while the layers
+      separate. Nothing in it is read off the nineteen domains.
+
+### ED. THE EDITORIAL PASS. SHOW HIM THE WORDS.
+
+- [ ] **ED1. His words: "you have got copy objections, but I do not see your
+      editorial pass. Update that so I can see. I want a copy pass that shows
+      me what the tooltip text looks like, what the information text looks
+      like, what the summary text looks like, and any of their special text,
+      rituals or whatever else, so it is in front of me and I can react to
+      it."**
+- [ ] **ED2. So it is a specimen sheet and not a list.** Real strings, pulled
+      out of the product rather than retyped, shown the way they render, in
+      the surface they belong to, so he is reacting to the words as a person
+      meets them.
+- [ ] **ED3. And it is generated, because a specimen kept by hand goes stale
+      in a day.** The same lesson as the objections log, which is a build
+      product for exactly this reason.
+
+---
+
 ## 08j. RULED 21 SEPTEMBER, TWENTY THIRD PASS. THE FUNNEL AGAIN, AND HOW HE IS REPORTED TO.
 
 ### FS. THE FUNNEL, SHARPENED.
