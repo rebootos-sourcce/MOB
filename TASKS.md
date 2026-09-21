@@ -111,6 +111,74 @@ and it is written down here so nobody reads the mark as complete.
 
 ---
 
+## 08h. RULED 21 SEPTEMBER, TWENTY FIRST PASS. THE FIELD'S REAL ESTATE, AND A NOTATION THAT HAS TO GO.
+
+### SP. THE NAMEPLATES ARE SPIKES AND THEY COST THE WHOLE FIELD.
+
+- [ ] **SP1. His words: "third eye, crown, root there are doing a couple of
+      things. They are pointing out, and it is a word. So it is a single line
+      acting like a spike. But it is taking up a huge amount of real estate,
+      and it takes up a degree of space."** Two costs, and he named both: the
+      radius the leader line eats, and the arc it reserves so nothing else can
+      sit there.
+- [ ] **SP2. Four mockups, refining it, with the space maximised.** His ask.
+      Not four coats of paint on the same geometry.
+
+### SH. THE SHELL. SEVEN BANDS, HOVER, AND ZOOM THAT ATOMISES.
+
+- [ ] **SH1. "Another four directions. I want to maximise the space. It could
+      be seven bands of thicker colour making the kind of shell."** So the
+      seven seats become the ring itself rather than labels hung off it, which
+      is the same object the funnel quiz now fills band by band.
+- [ ] **SH2. "If you hover over it, you get information. If you zoom in on it,
+      it atomises and gives you a ton of information."** Two depths, one
+      object: the shell holds the shape, hover names a band, and zoom breaks
+      the band into its own parts.
+
+### KN. KILL THE NOTATION. IT IS NOT COPY, IT IS A LAB READOUT.
+
+- [ ] **KN1. "Where is this swing 11? Get rid of that."** Ruled. It is at
+      `ui/drills.js` and `ui/personas.js`, computed as a band around
+      coherence.
+- [ ] **KN2. "Get rid of where it says 50 in the lower right hand corner, is
+      accuracy of 100 plus or minus 12."** Ruled. It is at `ui/analytics.js`,
+      printed as an interval beside the reading.
+- [ ] **KN3. "Like I said, do a sweep of text like that. 100 plus minus 12,
+      swing 11. That shit has to all go."** So this is a class and not two
+      strings: any figure printed with an interval, a tolerance or a
+      statistical decoration attached to it. The sweep finds every one.
+- [ ] **KN4. And what replaces it is a pill, not a number.** His words: "give
+      a pill to the lower right side of the number of the coherence slider,
+      like it oscillates within the person's range." The range is drawn, not
+      stated. That is the same ruling as the dial's swing: a range is a shape,
+      and a figure with a tolerance stapled to it is a lab readout.
+
+### BM. THE BALANCE STRIP SAYS SOMETHING MEANINGLESS.
+
+- [ ] **BM1. His words: "the balance masculine feminine is broken. It says
+      masculine, not enough held to read feminine. I do not understand what
+      that bullshit means."** It is at `ui/ui.js:490` and `ui/drills.js:431`.
+      The string is the engine's own refusal wording leaking onto a surface
+      between two labels, so it reads as a sentence about the feminine pole.
+
+### LR. THE LEFT RAIL HAS A GAP.
+
+- [ ] **LR1. "The left hand menu with the icons, can you optimise that space a
+      bit? There is a gap."** Measured and closed, not adjusted by eye.
+
+### CO. THE COPY OBJECTIONS BECOME A GATE.
+
+- [ ] **CO1. His words: "create a log of all the times I said I do not like
+      this copy type. Create a database, sweep for it, and kill it. And add
+      that to the style guide."** Every objection he has made about copy, in
+      one place, as data rather than as prose somebody has to remember.
+- [ ] **CO2. And it has to be runnable, or it is another document that goes
+      stale.** The log is the source, the sweep reads the log, and the gate
+      fails on a string that matches an objection he already made. The voice
+      skill carries the rule and the gate enforces it.
+
+---
+
 ## 08g. RULED 21 SEPTEMBER, TWENTIETH PASS. ASK THE COHORT, THEN CHASE NINETY.
 
 ### AK. ASK THE THOUSAND WHAT WOULD FIX IT.
