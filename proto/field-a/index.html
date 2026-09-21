@@ -1,0 +1,1075 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Field real estate</title>
+<!-- ============================================================
+     THE FIELD'S REAL ESTATE. proto/field-a/index.html
+
+     His words, and the diagnosis is his: "third eye, crown, root there are
+     doing a couple of things. They are pointing out, and it is a word. So it
+     is a single line acting like a spike. But it is taking up a huge amount of
+     real estate. And it takes up a degree of space."
+
+     Two costs and both are measurable. This page measures them on the shipping
+     geometry first, then draws four answers against those numbers.
+
+     It stands alone and it makes no outbound request. The engine is referenced
+     at ../../engine.js and never copied, so the 108 addresses, the seven
+     seats, the palette, the roster and compute() are the product's own. A
+     table typed into a tool goes stale the first time the product moves.
+
+     Nothing in atuned_src is touched. The measured cost of the shipping
+     nameplates is in measure-field.json, read off source.html by
+     measure-field.js, and it is the brief this sheet is held to.
+     ============================================================ -->
+<style>
+:root{
+ --bg:#0C0D12; --panel:#14161D; --panel-2:#1A1D26; --sunk:#090A0E;
+ --edge:rgba(255,255,255,.09); --edge-2:rgba(255,255,255,.15);
+ --ink:#EFEDE8; --mid:#B4B0A8; --dim:#8E8A84;
+ --accent:#7EB8D4;
+ --alarm:#FF2E1F;
+ /* the seven seats, and every colour on this page is one of them or has a
+    reason not to be. read off the engine's PAL at run time for the canvas;
+    declared here for the chrome so a rule can reach them. */
+ --root:#D6524C; --sacral:#D8924E; --solar:#DABF6A; --heart:#5FD5A6;
+ --throat:#5EBBDB; --eye:#7D93E0; --crown:#A77EDB;
+ --sans:'Inter','Inter Tight',system-ui,-apple-system,'Segoe UI',sans-serif;
+ --num:ui-monospace,'SF Mono',Menlo,monospace;
+ --tap:44px;
+ --t:140ms; --ease:cubic-bezier(.22,1,.36,1);
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+ font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+body{padding-bottom:72px}
+h1,h2,h3{font-weight:500;letter-spacing:-.012em;margin:0}
+p{margin:0 0 10px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px}
+.hd{padding:30px 0 20px;border-bottom:1px solid var(--edge)}
+/* SENTENCE CASE, INCLUDING THE EYEBROW. The house rule is no all caps in copy
+   and it does not carry an exception for small text set in a tracked line.
+   Letterspacing and colour do the work uppercase was doing. */
+.eyebrow{font-size:12px;letter-spacing:.09em;color:var(--dim);margin-bottom:9px}
+h1{font-size:31px;line-height:1.14;max-width:22ch}
+.lede{color:var(--mid);max-width:68ch;font-size:15px;margin-top:12px}
+blockquote{margin:16px 0 0;padding:0 0 0 15px;border-left:2px solid var(--edge-2);
+ color:var(--mid);font-size:15px;max-width:66ch}
+section{margin-top:40px}
+.sechd{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:6px}
+.sechd h2{font-size:20px}
+.sechd .who{color:var(--dim);font-size:13px}
+.note{color:var(--dim);font-size:13.5px;max-width:70ch;margin:0 0 14px}
+
+/* ---------- the control strip ---------- */
+.bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:18px 0 0;
+ padding:9px 11px;background:var(--panel);border:1px solid var(--edge);border-radius:10px}
+.bar label{font-size:13px;color:var(--dim);margin-right:2px}
+.bar button{min-height:var(--tap);padding:0 13px;border-radius:8px;cursor:pointer;
+ background:none;border:1px solid var(--edge);color:var(--mid);
+ font:500 13.5px/1 var(--sans);transition:color var(--t) var(--ease),
+ border-color var(--t) var(--ease),background var(--t) var(--ease)}
+.bar button:hover{color:var(--ink);border-color:var(--edge-2)}
+.bar button[aria-pressed="true"]{color:#0B1418;background:var(--accent);
+ border-color:var(--accent)}
+
+/* ---------- a panel: the drawing, then the numbers ---------- */
+.panel{margin-top:16px;background:var(--panel);border:1px solid var(--edge);
+ border-radius:12px;overflow:hidden}
+.panel > .cap{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;
+ padding:13px 15px 11px;border-bottom:1px solid var(--edge)}
+.panel > .cap h3{font-size:16.5px}
+.panel > .cap .tag{font-size:12.5px;color:var(--dim)}
+.body{display:grid;grid-template-columns:1fr;gap:0}
+@media (min-width:1100px){.body{grid-template-columns:minmax(0,664px) minmax(0,1fr)}}
+.stage{background:var(--sunk);position:relative;display:flex;align-items:center;
+ justify-content:center;padding:0}
+/* THE CANVAS IS THE SIZE THE SHIPPING STAGE MEASURES, not the size of a
+   column of prose. Measured off source.html: 664 by 726 at 1600, and 374 by
+   335 at 390. A drawing boxed inside a reading measure understates the
+   reservation, and a sheet that understates the defect is as useless as one
+   that hides it. */
+canvas{display:block;width:100%;height:auto}
+.side{padding:15px;display:flex;flex-direction:column;gap:14px;
+ border-top:1px solid var(--edge)}
+@media (min-width:1100px){.side{border-top:0;border-left:1px solid var(--edge)}
+ .figs{grid-template-columns:repeat(3,1fr)}}
+
+/* ---------- the figures. one word, the unit on the number ---------- */
+.figs{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;
+ background:var(--edge);border:1px solid var(--edge);border-radius:9px;overflow:hidden}
+.fig{background:var(--panel-2);padding:9px 11px 10px}
+.fig .l{font-size:11.5px;color:var(--dim);margin-bottom:3px}
+.fig .v{font:500 17px/1.15 var(--num);color:var(--ink);letter-spacing:-.01em}
+.fig .v small{font:400 11.5px/1 var(--num);color:var(--mid);margin-left:3px;
+ white-space:nowrap}
+.fig .v{white-space:nowrap}
+.fig.win .v{color:var(--accent)}
+.fig.lose .v{color:var(--root)}
+
+.rows{font-size:13.5px;color:var(--mid)}
+.rows h4{font:500 13px/1.3 var(--sans);color:var(--ink);margin:0 0 4px}
+.rows p{margin:0 0 11px}
+.rows p:last-child{margin:0}
+.rows b{color:var(--ink);font-weight:500}
+.seatlist{display:flex;flex-wrap:wrap;gap:6px;margin:2px 0 11px}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:4px 9px 4px 7px;
+ border:1px solid var(--edge);border-radius:99px;font-size:12px;color:var(--mid)}
+.chip i{width:9px;height:9px;border-radius:99px;border:1.5px solid currentColor;
+ display:block}
+
+/* ---------- the gate ---------- */
+#tests{margin-top:34px;padding:15px;background:var(--panel);border:1px solid var(--edge);
+ border-radius:12px;font:13px/1.65 var(--num);color:var(--mid);white-space:pre-wrap}
+#tests b{color:var(--ink);font-weight:500}
+.pass{color:var(--heart)}
+.fail{color:var(--alarm)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hd">
+ <div class="eyebrow">Field, twenty first pass</div>
+ <h1>The nameplates are spikes, and the spike is the word</h1>
+ <blockquote>Third eye, crown, root there are doing a couple of things. They
+ are pointing out, and it is a word. So it is a single line acting like a
+ spike. But it is taking up a huge amount of real estate. And it takes up a
+ degree of space.</blockquote>
+ <p class="lede">Two costs in that sentence and both are measured below, on
+ the shipping Field, at 1600 and at 390. The leader eats radius. The plate
+ reserves arc. Four answers follow, and each one is held to those numbers.</p>
+</div>
+
+<div class="bar">
+ <label id="wholab">Profile</label>
+ <span id="whobtns"></span>
+ <label style="margin-left:14px">Lighting</label>
+ <span style="font-size:13px;color:var(--mid)">Dark, and every contrast below
+ is measured in it.</span>
+</div>
+
+<section id="s-today">
+ <div class="sechd"><h2>Today, off source.html</h2>
+  <span class="who">Measured by Bjorn and Sol</span></div>
+ <p class="note">The seven seat names are set radially outward, starting
+ 10 px past the ring at 1600 and 5 px past it at 390, at 12 px, weight 600. A radial run occupies a
+ radial interval, so the word is the leader: it starts at the ring and points
+ away from the reading for as long as the word is, and there is no separate
+ line doing it. Each one also registers as an occupied angular slot before any
+ saboteur plate is placed, so every other name on the surface routes around
+ it.</p>
+
+ <div class="panel"><div class="cap"><h3>What that costs on the build</h3>
+  <span class="tag">read off source.html, 21 September, by
+  proto/field-a/measure-field.js</span></div>
+  <div class="side" style="border-left:0">
+  <div class="rows">
+  <h4>At 1600, on a stage of 664 by 726</h4>
+  <p>The free radius is 332 px. The reading reaches 171 px of it, 51.5 per
+  cent. The names run out to 225 px, so 54 px of radius past the ring belongs
+  to seven words. The seven plates close 19 degrees of 360 at their own
+  bearings. The annulus they sit in is 66,884 px of canvas carrying 2,530 px of
+  ink. It is 3.8 per cent lit.</p>
+  <h4>At 390, on a stage of 374 by 335</h4>
+  <p>The free radius is 168 px. The reading reaches 78 px of it, 46.5 per
+  cent. The names run out to 126 px, so 48 px of radius past a 78 px ring
+  belongs to seven words: 62 per cent of the reading&rsquo;s own radius, added
+  outside it. The seven plates close 42 degrees of 360, one degree in every
+  nine. The annulus is 31,075 px of canvas carrying 1,608 px of ink. It is
+  5.2 per cent lit.</p>
+  <h4>Why the phone is worse</h4>
+  <p>The word is 12 px whatever the wheel is. The wheel halves and the word
+  does not, so the same seven names take 16 per cent of the free radius at 1600
+  and 29 per cent at 390, and the arc they close goes from 19 degrees to 42.
+  The reservation is a fixed cost charged against a shrinking budget.</p>
+  <h4>One caveat, and it is about type</h4>
+  <p>The panels below run on the host type stack, because this page has no
+  siblings and fetches nothing. The build carries Inter as an embedded variable
+  font, so a name measures a few pixels longer here than it does in the
+  product. The figures above are the product&rsquo;s, measured in it;
+  <b>Outside</b> in the panels below is this page&rsquo;s own, read at the same
+  setting for all five, and that is what holds the comparison together.</p>
+  </div></div></div>
+</section>
+
+<section id="s-sheet"></section>
+
+<div id="tests">running</div>
+
+</div>
+
+<script src="../../engine.js"></script>
+<script>
+/* ============================================================
+   THE ENGINE IS THE ENGINE. Nothing below invents a number.
+
+   loadP lives in atuned_src/ui/personas.js and is not in the DOM free half,
+   so the four lines it needs are done here against the engine's own state:
+   seat the soul, write the charges, write the laws, compute. Every reading on
+   this sheet is one of the fourteen roster profiles run through compute().
+
+   BY NAME, NEVER BY POSITION. The product's own PEOPLE carries You at the
+   front and the engine's does not, so a probe written against index 7 loaded
+   Rosa and printed Ana. The repository already pays for that lesson twice.
+   ============================================================ */
+var LAW_DEFAULT_LOCAL=(typeof LAW_DEFAULT!=='undefined')?LAW_DEFAULT:6;
+function seat(nm){
+ var i=PEOPLE.findIndex(function(x){return x.nm===nm;});
+ if(i<0)i=0;
+ var p=PEOPLE[i];
+ S.who=i; S.pin=null; S.hover=null;
+ S.dom=p.dom; S.a1=p.a1; S.a2=p.a2;
+ S.doms=p.doms?p.doms.slice():[p.dom];
+ S.arcs=p.arcs?p.arcs.slice():[p.a1,p.a2];
+ S.roots=p.roots?p.roots.slice():[];
+ buildSoul();
+ CHARGES.forEach(function(c){
+  S.charge[c]=(p.c&&p.c[c]!==undefined)?p.c[c]:0;
+  S.replace[c]=(p.rep&&p.rep[c])||0;});
+ var LS=LAWSET[p.nm]||LAWSET['You']||{};
+ SINAMES.forEach(function(l){
+  S.law[l]=(LS[l]!==undefined)?LS[l]:(LS._!==undefined?LS._:LAW_DEFAULT_LOCAL);});
+ return compute();}
+
+/* ---- the drawing helpers, ported and not rebuilt ---- */
+var TAU2=Math.PI*2;
+function hx2(h){var n=parseInt(String(h).slice(1),16);return [(n>>16)&255,(n>>8)&255,n&255];}
+function rgba2(c,a){return 'rgba('+c[0]+','+c[1]+','+c[2]+','+(+a).toFixed(3)+')';}
+function mix2(a,b,t){return a.map(function(v,i){return Math.round(v+(b[i]-v)*t);});}
+function cl(v,a,b){return Math.max(a,Math.min(b,v));}
+function bcol(b){return hx2(PAL[b]);}
+/* nodeCol, exactly as the shipping wheel computes it in Dark */
+function ncol(n,ld){var base=bcol(n.b);
+ return mix2(mix2(base,[150,160,180],.74),base,Math.pow(ld,.55));}
+/* cqRamp, ported. the floor is the alarm red and the crown is the accent. */
+function cqRamp2(cq){var t=cl(cq,0,100)/100;
+ var ST=[[0,[58,23,20]],[.28,[163,58,50]],[.50,[90,96,112]],
+         [.76,[126,184,212]],[1,[234,244,249]]];
+ for(var i=1;i<ST.length;i++){if(t<=ST[i][0]){var a=ST[i-1],b=ST[i],f=(t-a[0])/(b[0]-a[0]);
+  return [Math.round(a[1][0]+(b[1][0]-a[1][0])*f),Math.round(a[1][1]+(b[1][1]-a[1][1])*f),
+          Math.round(a[1][2]+(b[1][2]-a[1][2])*f)];}}
+ return ST[4][1];}
+/* CONTRAST IS MEASURED AGAINST THE ELEMENT'S OWN GROUND, NEVER AGAINST THE
+   PAGE. That rule is in this repository because it has already been broken
+   here. lum takes an 8 bit triple; ratio takes two. */
+function lum(c){var f=c.map(function(v){v/=255;
+ return v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4);});
+ return .2126*f[0]+.7152*f[1]+.0722*f[2];}
+function ratio(a,b){var l1=lum(a),l2=lum(b);
+ return ((Math.max(l1,l2)+.05)/(Math.min(l1,l2)+.05));}
+
+/* ============================================================
+   THE FIVE MODES.
+
+   Every one draws the same reading: the 108 addresses at their own sq, the 21
+   laws, the core at CQ, and the saboteurs the engine found. What changes is
+   how a person is told which seat they are looking at, and what that telling
+   costs in radius and in arc.
+
+     today  the name set radially outward from the ring. as it ships.
+     band   the name inside the band, on the band's own curve.
+     mark   a ring mark now, the name on hover or focus.
+     axis   one lane outside the ring, names set along it.
+     spine  the names leave the circle for a column at the edge.
+
+   reach is the outermost ink as a multiple of the shell radius, and it is
+   what sets how big the wheel is allowed to be. It is measured for today
+   rather than declared, because the name's length in pixels does not scale
+   with the wheel and that asymmetry is the whole finding.
+   ============================================================ */
+var MODES=['today','band','mark','axis','spine'];
+var MODEDEF={
+ today:{nm:'Today',tag:'the word points out',owner:'as it ships'},
+ band:{nm:'A. Inside the band',tag:'the name lies in the colour',owner:'Sol and Bjorn'},
+ mark:{nm:'B. Mark now, name on focus',tag:'a level gauge, then a word',owner:'Petra'},
+ axis:{nm:'C. The ring is an axis',tag:'one lane, seven labels',owner:'Bjorn'},
+ spine:{nm:'D. The names leave the circle',tag:'root low, crown high',owner:'Petra and Mika'}};
+
+/* the mark set for mode B. ONE SHAPE, SEVEN POSITIONS, AND IT IS A SENTENCE.
+   A ring with one chord across it, and the chord sits at the seat's own height
+   in the body. Root is the low chord and Crown is the high one, so the set
+   reads as a level gauge and the order is the order a body fills. Seven
+   invented glyphs would be seven inventions; this is one glyph declined seven
+   times, which is what a family is. Ring, never fill. */
+function seatMark(x,y,rad,c,i,a){
+ g.save();
+ g.strokeStyle=rgba2(c,a); g.lineWidth=Math.max(1.4,rad*.17);
+ g.lineJoin='round'; g.lineCap='round';
+ g.beginPath(); g.arc(x,y,rad,0,TAU2); g.stroke();
+ /* the chord. i runs 0 at the root to 6 at the crown, so the height runs from
+    low in the ring to high in it. The chord is shorter near the poles because
+    it is a chord of the circle and that is what makes the height legible. */
+ var t=-0.62+ (i/6)*1.24;                 /* the chord's height in the ring */
+ var yy=y - t*rad;                        /* canvas y runs down, so negate */
+ var half=Math.sqrt(Math.max(0,1-t*t))*rad*0.86;
+ g.beginPath(); g.moveTo(x-half,yy); g.lineTo(x+half,yy); g.stroke();
+ g.restore();}
+
+/* ---- text set along an arc, for the band and the axis modes ---- */
+function arcTxt(cx,cy,rad,ang,s,size,c,a,wt,ctx){
+ var x=ctx||g;
+ x.save();
+ x.font=wt+' '+size+'px Inter, system-ui, sans-serif';
+ x.textAlign='center'; x.textBaseline='middle'; x.fillStyle=rgba2(c,a);
+ /* the whole run's angular width, so the run can be centred on its bearing */
+ var tot=0,i;
+ for(i=0;i<s.length;i++)tot+=x.measureText(s[i]).width;
+ /* THE BOTTOM HALF IS SET THE OTHER WAY UP, because text on the underside of
+    a circle set outward reads upside down, which is not a legibility floor a
+    person negotiates. flip is what every good dial face does. */
+ var flip=Math.sin(ang)>0;
+ var dir=flip?-1:1;
+ var start=ang - dir*(tot/2)/rad;
+ var run=0;
+ for(i=0;i<s.length;i++){
+  var w=x.measureText(s[i]).width;
+  var aa=start + dir*(run + w/2)/rad;
+  x.save();
+  x.translate(cx+Math.cos(aa)*rad, cy+Math.sin(aa)*rad);
+  x.rotate(aa + (flip?-Math.PI/2:Math.PI/2));
+  x.fillText(s[i],0,0);
+  x.restore();
+  run+=w;}
+ x.restore();
+ return tot;}
+
+/* radialTxt, ported exactly, so the today panel is the shipping geometry and
+   not my description of it. */
+function radTxt(cx,cy,s,ang,rad,size,c,a,wt){
+ g.save(); g.translate(cx+Math.cos(ang)*rad, cy+Math.sin(ang)*rad);
+ var rot=ang; if(Math.cos(ang)<0){rot+=Math.PI; g.textAlign='right';} else g.textAlign='left';
+ g.rotate(rot); g.font=wt+' '+size+'px Inter, system-ui, sans-serif';
+ g.textBaseline='middle'; g.fillStyle=rgba2(c,a); g.fillText(s,0,0);
+ var tw=g.measureText(s).width;
+ g.restore(); return tw;}
+
+var g=null;                                /* the live context, set per draw */
+var SEATS=null;                            /* the seven seats and their arcs */
+
+/* the seven seats, their mean bearing, their own arc, from the engine's own
+   node angles. Nothing here is a bearing typed into this file. */
+function seatGeom(){
+ return BANDS.map(function(b,i){
+  var seg=W.filter(function(n){return n.b===b;});
+  if(!seg.length)return null;
+  var angs=seg.map(function(n){return n.ang;}).sort(function(x,y){return x-y;});
+  return {b:b,i:i,n:seg.length,am:meanAng(angs),
+   a0:angs[0]-TAU2/216, a1:angs[angs.length-1]+TAU2/216,
+   deg:(angs[angs.length-1]-angs[0])*180/Math.PI};}).filter(Boolean);}
+
+/* ============================================================
+   ONE PANEL. Draw it, then measure what was drawn.
+
+   The measurement is off the pixels, not off the source. Two seats found
+   defects tonight that were invisible in the source and obvious in the image,
+   and a probe that reads its own intentions is the same failure in a tool.
+   ============================================================ */
+function drawPanel(cv,mode,r,focusSeat){
+ var box=cv.getBoundingClientRect();
+ var dpr=Math.min(devicePixelRatio||1,2);
+ var CWp=box.width, CHp=box.height;
+ /* A DEGENERATE FRAME IS UNRECOVERABLE, and the shipping reframe() already
+    carries this guard for the same reason. A full page capture resizes the
+    viewport, which fires resize, which redraws every panel mid reflow, and one
+    of them measured a box narrow enough to put a radius below zero. Measured:
+    one page error at 390 and none at 1600, which is a defect that only ever
+    appears under a tool. Cheap to guard and it costs a comparison a frame. */
+ if(!(CWp>80)||!(CHp>80))return LAST[mode]||{mode:mode,shell:0,outside:0,
+  reserved:0,bandLit:null,litAll:0,px:0,named:0,plates:[],free:0,reach:1,
+  lane:0,slab:0,spineW:0};
+ cv.width=Math.round(CWp*dpr); cv.height=Math.round(CHp*dpr);
+ g=cv.getContext('2d');
+ g.setTransform(dpr,0,0,dpr,0,0);
+ g.clearRect(0,0,CWp,CHp);
+
+ SEATS=seatGeom();
+
+ /* --- how much room the naming takes, and therefore how big the wheel is --- */
+ /* today's shell is the shipped one: 0.68 of a unit radius that reframe sized
+    against a label budget of 1.20 of that unit. Everything else is framed to
+    its own reach, which is the argument. */
+ var spineW = mode==='spine' ? Math.round(CWp<480?56:74) : 0;
+ var wheelW = CWp - spineW;
+ var free = Math.min(wheelW,CHp)/2;
+ var shell, lane=0, reachK;
+ g.font='600 12px Inter, system-ui, sans-serif';
+ if(mode==='today'){
+  shell = Math.max(30,(free-30)*0.68/1.20);   /* reframe, exactly */
+  var longest=0;
+  SEATS.forEach(function(s){longest=Math.max(longest,g.measureText(s.b).width);});
+  reachK = 1.058 + longest/shell;
+ }else if(mode==='axis'){
+  lane = 17;                               /* one line at the type floor, and air */
+  shell = Math.max(30,free - 26 - lane);
+  reachK = 1 + lane/shell;
+ }else{
+  shell = Math.max(30,free - 26);
+  reachK = 1;
+ }
+ var CX=spineW + wheelW/2, CY=CHp/2;
+ var U2=shell/0.68;                         /* the unit radius this shell implies */
+
+ /* --- the wash. one source, low and off centre, and it is the only light --- */
+ var gc=hx2('#7EB8D4');
+ var warm=bcol(r.benign?'Heart':'Root'), lead=bcol(r.darkB);
+ var gr0=g.createRadialGradient(CX,CY,0,CX,CY,Math.max(CWp,CHp)*0.54);
+ gr0.addColorStop(0,rgba2(gc,.10*r.radiance));
+ gr0.addColorStop(.42,rgba2(gc,.03*r.radiance));
+ gr0.addColorStop(1,rgba2(gc,0));
+ g.fillStyle=gr0; g.fillRect(0,0,CWp,CHp);
+ [[.14,.20,lead],[.86,.26,warm],[.10,.84,warm],[.90,.80,lead]].forEach(function(q){
+  var gr=g.createRadialGradient(q[0]*CWp,q[1]*CHp,0,q[0]*CWp,q[1]*CHp,Math.max(CWp,CHp)*.34);
+  gr.addColorStop(0,rgba2(q[2],.07)); gr.addColorStop(1,rgba2(q[2],0));
+  g.fillStyle=gr; g.fillRect(0,0,CWp,CHp);});
+
+ function arcPath(r0,r1,a0,a1){g.beginPath();g.arc(CX,CY,r0,a0,a1);
+  g.arc(CX,CY,r1,a1,a0,true);g.closePath();}
+
+ /* --- the band slab, for the two modes that need a band to write in --- */
+ /* A slab is a real thing in mode band and mode mark: it is the seven bands of
+    thicker colour, which is the same object the shell already is, given a
+    constant inner edge so a word or a mark has somewhere to sit. */
+ /* THE SEVEN HAVE TO READ AS SEVEN. The first cut ran the bands edge to edge
+    and each one's gradient met its neighbour's, so at six feet it was one
+    rainbow and not seven seats. A gap of a degree and a half at each join is
+    what makes the count legible, and the count is the information. */
+ var GAP=TAU2/240;
+ var slab = (mode==='band') ? shell*0.30 : 0;
+ /* THE NAME CANNOT SIT WHERE THE READING IS. Measured on the first cut: 1.8 to
+    1 at the worst seat, because the name was set on the band's centre line and
+    the centre line is where a fully charged address puts its brightest pixel.
+    So the band is split. The outer part is the reading and the inner part is a
+    gutter held at a fixed dark value, which is where the word goes. The name is
+    still inside the band, which is the answer; it is no longer on top of the
+    reading, which was the defect. */
+ var gut = slab ? slab*0.40 : 0;
+ if(slab){
+  SEATS.forEach(function(s){
+   var c=bcol(s.b);
+   /* THE GUTTER SITS AT THE BAND'S OUTER LIP, NOT ITS INNER ONE.
+
+      Measured on the cut before this one: Crown 1.89 to 1, Throat 2.41, Root
+      3.59, against 7 to 9 at the four seats that came out clean. The four
+      clean ones were the seats Ana carries no saboteur on. The gutter had been
+      put on the band's inner edge, which at a slab of 0.30 of the shell lands
+      at 0.56 of a unit radius, and 0.56 of a unit radius is where the saboteur
+      ring draws its beads. The word was being written on the bead layer.
+
+      At the outer lip the name is still inside the band, which is the answer,
+      and the inner rings are clear of it. The addresses hang inward off the
+      rail, which is the direction the shipping shell already grows in. */
+   arcPath(shell-gut,shell,s.a0+GAP,s.a1-GAP);
+   g.fillStyle=rgba2(mix2(c,[0,0,0],.76),.98); g.fill();
+   /* the reading's ground */
+   arcPath(shell-slab,shell-gut,s.a0+GAP,s.a1-GAP);
+   g.fillStyle=rgba2(mix2(c,[0,0,0],.70),.90); g.fill();
+   /* the band's own outer edge, so it reads as an object with a boundary */
+   g.beginPath(); g.arc(CX,CY,shell,s.a0+GAP,s.a1-GAP);
+   g.strokeStyle=rgba2(mix2(c,[255,255,255],.30),.50); g.lineWidth=1.2; g.stroke();});}
+
+ /* --- the 108 addresses. sq is the engine's, and the length is the reading --- */
+ var maxSq=0; W.forEach(function(n){if(n.sq>maxSq)maxSq=n.sq;});
+ W.forEach(function(n){
+  var ld=cl(n.sq/10,0,1), carrying=n.sq>=4;
+  var hw=TAU2/108*0.43;
+  var c=ncol(n,ld);
+  var d, r0;
+  if(slab){
+   /* inside the band, the address is a spoke that fills the reading part of
+      the slab by its own charge. A band with nothing in it is a dark band,
+      which is the true reading. The gutter below it is never written into. */
+   var rd=slab-gut;
+   d=rd*(0.10+ld*0.90); r0=shell-gut-d;
+   arcPath(r0,shell-gut,n.ang-hw,n.ang+hw);
+   g.fillStyle=rgba2(mix2(c,[255,255,255],.12),carrying?.56+ld*.42:.18);
+   g.fill();
+  }else{
+   d=U2*.016+ld*U2*.088; r0=shell-d;
+   arcPath(r0,shell,n.ang-hw,n.ang+hw);
+   var gr=g.createRadialGradient(CX,CY,r0,CX,CY,shell);
+   gr.addColorStop(0,rgba2(mix2(c,[0,0,0],.36),carrying?.34+ld*.6:.08));
+   gr.addColorStop(1,rgba2(mix2(c,[255,255,255],.44),carrying?.7:.15));
+   g.fillStyle=gr; g.fill();
+   if(n.sq>=6.5){g.shadowColor=rgba2(bcol(n.b),.9);g.shadowBlur=14;g.fill();g.shadowBlur=0;}
+   if(n.sq>=9){g.strokeStyle=rgba2(hx2('#FF2E1F'),.85);g.lineWidth=1.3;g.stroke();}
+  }});
+
+ /* --- the 21 laws. the numerator of CQ, present at every depth --- */
+ SI.forEach(function(l,i){
+  var a=i/21*TAU2-Math.PI/2, v=S.law[l.nm]/10, c=bcol(l.b);
+  var r0=U2*.40, r1=r0+U2*.12*v;
+  g.beginPath(); g.moveTo(CX+Math.cos(a)*r0,CY+Math.sin(a)*r0);
+  g.lineTo(CX+Math.cos(a)*r1,CY+Math.sin(a)*r1);
+  g.strokeStyle=rgba2(c,.16+v*.82); g.lineWidth=U2*.017;
+  g.lineCap='round'; g.stroke(); g.lineCap='butt';});
+ g.beginPath(); g.arc(CX,CY,U2*.40,0,TAU2);
+ g.strokeStyle='rgba(239,237,232,.11)'; g.lineWidth=1; g.stroke();
+
+ /* --- the core. saturation and size are coherence, and nothing else --- */
+ var coh=r.CQ/100;
+ var sz=coh<0.5 ? (0.34+(0.72-0.34)*(coh/0.5)) : (0.72+(1.06-0.72)*((coh-0.5)/0.5));
+ var cr=U2*0.26*sz, cc=cqRamp2(r.CQ);
+ var cg=g.createRadialGradient(CX-cr*.3,CY-cr*.35,cr*.05,CX,CY,cr);
+ cg.addColorStop(0,rgba2(mix2(cc,[255,255,255],.55),.98));
+ cg.addColorStop(.55,rgba2(cc,.94));
+ cg.addColorStop(1,rgba2(mix2(cc,[0,0,0],.45),.92));
+ g.fillStyle=cg; g.beginPath(); g.arc(CX,CY,cr,0,TAU2); g.fill();
+
+ /* --- the saboteurs. beads on their own ring, the layer depth B is for --- */
+ /* THE INNER RINGS MOVE IN WHEN A BAND TAKES THE RADIUS. A band of 0.30 of
+    the shell puts its inner edge where the saboteur ring draws, so the ring is
+    held to a fraction of what is left rather than to a fraction of the unit
+    radius. This is a real cost of mode band and it is stated rather than
+    hidden: the chain layer gets less room. */
+ var sabR = slab ? (shell-slab)*0.84 : U2*0.56;
+ r.sabs.forEach(function(s){
+  var c=bcol(s.parts[0].b), x=CX+Math.cos(s.ang)*sabR, y=CY+Math.sin(s.ang)*sabR;
+  var sz2=Math.max(3,U2*0.021);
+  var b2=g.createRadialGradient(x-sz2*.35,y-sz2*.4,sz2*.06,x,y,sz2);
+  b2.addColorStop(0,rgba2(mix2(c,[255,255,255],.72),1));
+  b2.addColorStop(.5,rgba2(c,1));
+  b2.addColorStop(1,rgba2(mix2(c,[0,0,0],.45),1));
+  g.fillStyle=b2; g.beginPath(); g.arc(x,y,sz2,0,TAU2); g.fill();
+  s.parts.forEach(function(n){
+   g.beginPath();
+   g.moveTo(CX+Math.cos(n.ang)*shell*.9,CY+Math.sin(n.ang)*shell*.9);
+   g.lineTo(x,y);
+   g.strokeStyle=rgba2(bcol(n.b),.18); g.lineWidth=1; g.stroke();});});
+
+ /* ============================================================
+    AND NOW THE NAMING. This is the only thing that differs.
+    ============================================================ */
+ /* WHAT THE COLUMN CAN POINT AT. An address below the carrying floor draws at
+    an alpha of .08 to .18, so a seat with nothing carrying has no colour on
+    the ring for a key to link to. Counted rather than asserted, because it is
+    the whole cost of taking the names off the circle. */
+ var carryN=W.filter(function(n){return n.sq>=4;}).length;
+ var M={mode:mode,carrying:carryN,total:W.length,
+        shell:shell,free:free,CW:CWp,CH:CHp,reach:reachK,lane:lane,
+        slab:slab,spineW:spineW,outside:0,reserved:0,worstContrast:null,
+        plates:[],named:0};
+
+ if(mode==='today'){
+  /* ported exactly: 12 px, weight 600, set radially outward from 1.058 of the
+     shell, and registered as an occupied angular slot before anything else is
+     placed. The reservation is plateHit's own predicate and not my estimate. */
+  var out0=shell*1.058, far=0;
+  SEATS.forEach(function(s){
+   var tw=radTxt(CX,CY,s.b,s.am,out0,12,bcol(s.b),.9,600);
+   far=Math.max(far,out0+tw);
+   /* plateHit: the angular width is one line tall at the plate's own radius */
+   var angW=(12*0.72)/out0;
+   M.plates.push({seat:s.b,deg:angW*180/Math.PI,px:tw});
+   M.perSeat=M.perSeat||[];
+   M.perSeat.push({seat:s.b,deg:angW*180/Math.PI,px:tw});
+   M.named++;});
+  M.outside=far-shell;
+  M.reserved=M.plates.reduce(function(a,p){return a+p.deg;},0);
+  /* AND THERE IS NO LEADER LINE. The first cut drew a faint tick from the ring
+     to the first letter, which is a line the product does not draw, and a
+     sheet that overstates the defect is as useless as one that hides it. The
+     word IS the leader: set radially outward at a fixed bearing it reads as a
+     single line pointing away from the reading, which is exactly what he
+     described and is worse without an invented tick helping it along. */
+
+ }else if(mode==='band'){
+  /* THE NAME LIES IN THE COLOUR, IN THE BAND'S OWN GUTTER. Set on the gutter's
+     centre line, curved, at the type floor.
+
+     The contrast is measured against the pixels the letters actually land on,
+     per seat, and the worst of the seven is the number that decides whether
+     this ships. The first cut set the run on the slab's centre line and read
+     1.8 to 1, because the centre line is where a fully charged address puts
+     its brightest pixel: the word was competing with the reading for the same
+     twenty pixels of radius. Sol found it in the image and not in the source. */
+  var mid=shell-gut/2;
+  M.worstContrast=99;
+  M.perSeat=[];
+  /* THE RAIL IS RELAID BEFORE IT IS WRITTEN ON, AND THAT IS THE DESIGN AND NOT
+     A PATCH. Measured on the cut before this one: six seats at 9 to 13 to 1
+     and 3rd Eye at 2.43. The chain layer draws its chords out to 0.9 of the
+     shell, which with the gutter at the outer lip is inside the gutter, so at
+     the one bearing where Ana carries the most saboteurs the chord ends were
+     landing under the word. The chain belongs under the band, not over it, so
+     the band closes over it. One line, and it is the only thing that makes the
+     contrast number true. */
+  SEATS.forEach(function(s){
+   arcPath(shell-gut,shell,s.a0+GAP,s.a1-GAP);
+   g.fillStyle=rgba2(mix2(bcol(s.b),[0,0,0],.76),1); g.fill();
+   g.beginPath(); g.arc(CX,CY,shell,s.a0+GAP,s.a1-GAP);
+   g.strokeStyle=rgba2(mix2(bcol(s.b),[255,255,255],.30),.50);
+   g.lineWidth=1.2; g.stroke();});
+  SEATS.forEach(function(s){
+   /* SAMPLE WHERE THE LETTERS LAND, AND NOWHERE ELSE.
+
+      The first cut swept the seat's whole arc and reported 3rd Eye at 2.43 to
+      1 against a ground of 223,128,96, which is an orange that is nowhere on
+      that bearing. The offending pixel was the first sample, sitting in the
+      one and a half degree gap between two bands at an alpha of 8: an
+      unpainted pixel, whose colour channels mean nothing because they are not
+      premultiplied. The probe was reading a pixel that is not a ground and
+      failing a design on it.
+
+      So the sweep is the run's own angular extent, measured at the size and
+      weight the word is actually set at, and a sample that is not opaque is
+      not counted. The copy already claimed this is measured against the pixels
+      the letters land on; now it is. */
+   var samples=[], k;
+   g.save(); g.font='600 11.5px Inter, system-ui, sans-serif';
+   var runW=g.measureText(s.b).width; g.restore();
+   var half=(runW/2+3)/mid;
+   for(k=0;k<=30;k++){
+    var aa=s.am-half+(half*2)*(k/30);
+    var px=g.getImageData(Math.round((CX+Math.cos(aa)*mid)*dpr),
+                          Math.round((CY+Math.sin(aa)*mid)*dpr),1,1).data;
+    if(px[3]<250)continue;          /* not painted, so not a ground */
+    samples.push([px[0],px[1],px[2]]);}
+   if(!samples.length)samples.push([12,13,18]);
+   /* the ink. A word on a coloured ground is separated by value, not by hue,
+      so the search runs the whole way from the seat's colour to the product's
+      ink and takes whichever clears its own worst sample by the most. One
+      value per seat, chosen against the worst sample and never the mean,
+      because a word is only as legible as its darkest letter. */
+   /* THE LIGHTEST TOUCH THAT CLEARS THE FLOOR, NOT THE BRIGHTEST AVAILABLE.
+
+      Taking the best candidate returned pure ink at all seven, so the word
+      threw its seat's colour away to buy a contrast ratio of 11 where the
+      floor is 4.5. Colour is information here: the word and the band are
+      supposed to read as one object. So the search takes the first candidate
+      that clears 7 to 1, which is the floor with room for a theme to move, and
+      keeps everything below it. Sol's call, and the number is the reason. */
+   var base=bcol(s.b), ink=null, best=0, wsm=null;
+   for(var t=0;t<=16;t++){
+    var cand=mix2(base,[239,237,232],t/16);
+    var worst=99, w2=null;
+    samples.forEach(function(sm){var rr=ratio(cand,sm); if(rr<worst){worst=rr;w2=sm;}});
+    if(worst>best){best=worst; ink=cand; wsm=w2;}
+    if(worst>=7){best=worst; ink=cand; wsm=w2; break;}}
+   arcTxt(CX,CY,mid,s.am,s.b,11.5,ink,1,'600');
+   M.worstContrast=Math.min(M.worstContrast,best);
+   M.perSeat.push({seat:s.b,r:best,ink:ink,ground:wsm});
+   M.named++;});
+  M.outside=0;
+  M.reserved=0;
+
+ }else if(mode==='mark'){
+  /* THE MARK IS PERMANENT, THE WORD IS NOT.
+
+     This mode keeps the shipping ring exactly and takes the words off it, so
+     it is an answer to the nameplate rather than mode A with the word removed.
+     The first cut gave it a band too and the two panels were the same picture
+     with different text, which is four weights of the same one and is the
+     thing he ruled out.
+
+     Seven declensions of one glyph, on a gutter just inside the ring. The name
+     arrives for the seat under the pointer or the focus ring, set flat inside
+     the wheel where there is room for it, so one name at a time costs nothing
+     standing. */
+  /* A LEVEL GAUGE NEEDS ENOUGH PIXELS TO SHOW A LEVEL. At 0.048 of a 142 px
+     shell the mark came out 6.8 px across and the chord was a dot: at 390 the
+     grammar was there in the source and gone in the image. Nine pixels is the
+     floor at which seven chord heights are told apart, and it is stated as a
+     cost of this mode rather than tuned quietly. */
+  var mr=Math.max(9,Math.min(shell*0.055,14));
+  var mrad=shell-mr-Math.max(5,shell*0.035);
+  /* the gutter the marks sit in, so the ring reads as having a rail rather
+     than as having seven things stuck to it */
+  g.beginPath(); g.arc(CX,CY,mrad,0,TAU2);
+  g.strokeStyle='rgba(239,237,232,.07)'; g.lineWidth=1; g.stroke();
+  SEATS.forEach(function(s){
+   var on = focusSeat===s.b;
+   var x=CX+Math.cos(s.am)*mrad, y=CY+Math.sin(s.am)*mrad;
+   seatMark(x,y,mr,mix2(bcol(s.b),[255,255,255],on?.62:.38),s.i,on?1:.95);
+   M.named++;});
+  if(focusSeat){
+   var fs=SEATS.filter(function(s){return s.b===focusSeat;})[0];
+   if(fs){
+    /* flat, horizontal, inside the ring, at the seat's own bearing. It sits
+       over the wash and not over the reading, which is the one place on this
+       surface with nothing in it. */
+    /* clear of the mark it names. The first cut put the plate at the same
+       bearing a third of the way in and the mark's own ring ran through its
+       left edge, which is a label over the thing it labels. */
+    var lr=mrad-mr-Math.max(38,shell*0.22);
+    var lx=CX+Math.cos(fs.am)*lr, ly=CY+Math.sin(fs.am)*lr;
+    g.save();
+    g.font='600 13px Inter, system-ui, sans-serif';
+    var tw2=g.measureText(fs.b).width;
+    var pad=8, bh=24;
+    var bx=lx-tw2/2-pad, by=ly-bh/2;
+    g.fillStyle='rgba(12,13,18,.90)';
+    g.beginPath();
+    if(g.roundRect)g.roundRect(bx,by,tw2+pad*2,bh,7); else g.rect(bx,by,tw2+pad*2,bh);
+    g.fill();
+    g.strokeStyle=rgba2(bcol(fs.b),.55); g.lineWidth=1; g.stroke();
+    g.fillStyle=rgba2(mix2(bcol(fs.b),[255,255,255],.45),1);
+    g.textAlign='center'; g.textBaseline='middle';
+    g.fillText(fs.b,lx,ly);
+    g.restore();}}
+  M.outside=0;
+  M.reserved=0;
+  M.markR0=mrad-mr; M.markR1=mrad+mr;
+
+ }else if(mode==='axis'){
+  /* ONE LANE, AND IT IS AN AXIS. A rail of one line's thickness outside the
+     ring, and each name set along the rail inside the arc its own seat
+     already occupies. A seat owns 360 over 7 of the circle by construction,
+     so a name in that arc reserves no arc that was not already the seat's.
+     The radius cost is one line, whatever the longest word is. */
+  var rl=shell+lane/2;
+  var overflow=0;
+  /* THE LANE HAS TO READ AS A LANE. The first cut drew two hairlines at .10
+     and .07 and in the image there was no lane at all, only seven words
+     floating outside a ring. An axis is a surface with a top and a bottom and
+     a fill between them, which is what makes a label on it read as a reading
+     and not as a caption. Each seat's stretch of lane takes its own colour at
+     low saturation, so the seven are countable at six feet with the words
+     unreadable, which is the squint test. */
+  SEATS.forEach(function(s){
+   var c=bcol(s.b);
+   arcPath(shell+2,shell+lane,s.a0+GAP,s.a1-GAP);
+   g.fillStyle=rgba2(mix2(c,[0,0,0],.72),.92); g.fill();});
+  g.beginPath(); g.arc(CX,CY,shell+lane,0,TAU2);
+  g.strokeStyle='rgba(239,237,232,.13)'; g.lineWidth=1; g.stroke();
+  SEATS.forEach(function(s){
+   var c=mix2(bcol(s.b),[255,255,255],.50);
+   var w=arcTxt(CX,CY,rl+0.5,s.am,s.b,11.5,c,1,'600');
+   /* the tick that says where the seat starts, which is what an axis has
+      instead of a leader */
+   [s.a0,s.a1].forEach(function(aa){
+    g.beginPath();
+    g.moveTo(CX+Math.cos(aa)*(shell+2),CY+Math.sin(aa)*(shell+2));
+    g.lineTo(CX+Math.cos(aa)*(shell+lane),CY+Math.sin(aa)*(shell+lane));
+    g.strokeStyle=rgba2(mix2(bcol(s.b),[255,255,255],.3),.55);
+    g.lineWidth=1.2; g.stroke();});
+   /* the honest check: does the run fit the arc the seat owns */
+   var arcPx=(s.a1-s.a0-GAP*2)*rl;
+   if(w>arcPx)overflow++;
+   M.perSeat=M.perSeat||[];
+   M.perSeat.push({seat:s.b,run:w,arc:arcPx});
+   M.named++;});
+  M.outside=lane;
+  M.reserved=0;
+  M.overflow=overflow;
+
+ }else if(mode==='spine'){
+  /* THE NAMES LEAVE THE CIRCLE. A column at the left edge, root at the bottom
+     and crown at the top, which is the order the body fills and the order
+     every other reading in this product is given in. The link is colour and
+     height, and nothing is drawn on the wheel at all. */
+  var pad2=10, top=CHp*0.10, bot=CHp*0.90;
+  var n=SEATS.length;
+  SEATS.forEach(function(s){
+   /* i 0 is the root, and the root is low */
+   var y=bot-(s.i/(n-1))*(bot-top);
+   var c=bcol(s.b);
+   /* the swatch: a ring, never a fill */
+   g.save();
+   g.strokeStyle=rgba2(mix2(c,[255,255,255],.18),.95); g.lineWidth=1.6;
+   g.beginPath(); g.arc(pad2+7,y,5.5,0,TAU2); g.stroke();
+   g.restore();
+   g.save();
+   g.font='500 11.5px Inter, system-ui, sans-serif';
+   g.textAlign='left'; g.textBaseline='middle';
+   g.fillStyle=rgba2(mix2(c,[255,255,255],.44),.97);
+   g.fillText(s.b,pad2+18,y);
+   g.restore();
+   M.named++;});
+  /* the spine itself, so the column reads as one object running up a body */
+  g.beginPath(); g.moveTo(pad2+7,top-14); g.lineTo(pad2+7,bot+14);
+  g.strokeStyle='rgba(239,237,232,.10)'; g.lineWidth=1; g.stroke();
+  M.outside=0;
+  M.reserved=0;}
+
+ /* ---- INK AGAINST RESERVATION, OFF THE PIXELS ---- */
+ /* the annulus a mode's naming occupies, and how much of it carries ink. A
+    reservation that is mostly unlit is real estate paid for and not used,
+    which is the second half of what he named. */
+ var r0m = (mode==='band') ? shell-slab : shell;
+ var r1m = shell + M.outside;
+ var d=g.getImageData(0,0,cv.width,cv.height).data;
+ var litIn=0,areaIn=0,litAnn=0,areaAnn=0,litAll=0;
+ var R0=r0m*dpr,R1=r1m*dpr,cxp=CX*dpr,cyp=CY*dpr;
+ for(var y2=0;y2<cv.height;y2++){
+  var dy=y2-cyp, dy2=dy*dy;
+  for(var x2=0;x2<cv.width;x2++){
+   var dx=x2-cxp, rr=Math.sqrt(dx*dx+dy2);
+   var on=d[(y2*cv.width+x2)*4+3]>8;
+   if(on)litAll++;
+   if(rr<=R0){areaIn++; if(on)litIn++;}
+   else if(rr<=R1+0.0001){areaAnn++; if(on)litAnn++;}}}
+ M.litAnnShare = areaAnn ? litAnn/areaAnn*100 : null;
+ M.areaAnn=areaAnn;
+ M.litAll=litAll;
+ M.px=cv.width*cv.height;
+ /* the naming band, whichever it is for this mode: for today and axis it sits
+    outside the shell, for band and mark it is the slab. */
+ var nb0,nb1;
+ if(mode==='band'){nb0=shell-slab;nb1=shell-slab+gut;}
+ else if(mode==='mark'){nb0=M.markR0;nb1=M.markR1;}
+ else if(mode==='spine'){
+  /* the column is this mode's naming band, so it is measured as one. A figure
+     whose slot prints n/a on one panel of five is a slot that has lost its
+     meaning, and the rule is that the label stays and the value carries the
+     state. */
+  var lit4=0,area4=0;
+  for(var y5=0;y5<cv.height;y5++)for(var x5=0;x5<Math.round(M.spineW*dpr);x5++){
+   area4++; if(d[(y5*cv.width+x5)*4+3]>8)lit4++;}
+  M.bandLit=area4?lit4/area4*100:null; M.bandArea=area4; nb0=null;}
+ else if(mode==='today'||mode==='axis'){nb0=shell;nb1=shell+M.outside;}
+ else {nb0=null;}
+ if(nb0!==null){
+  var lit2=0,area2=0;
+  var A0=nb0*dpr,A1=nb1*dpr;
+  for(var y3=0;y3<cv.height;y3++){var dy3=y3-cyp;
+   for(var x3=0;x3<cv.width;x3++){var dx3=x3-cxp;
+    var r3=Math.sqrt(dx3*dx3+dy3*dy3);
+    if(r3>A0&&r3<=A1){area2++; if(d[(y3*cv.width+x3)*4+3]>8)lit2++;}}}
+  M.bandLit = area2? lit2/area2*100 : null;
+  M.bandArea = area2;
+ } else {M.bandLit=null; M.bandArea=0;}
+ return M;}
+
+/* ============================================================
+   THE SHEET.
+   ============================================================ */
+var WHO='Ana', FOCUS='3rd Eye', LAST={}, READ=null;
+/* the chrome's own reach into the palette. Read off the engine's PAL so the
+   chip and the canvas cannot drift apart, which is the whole reason the
+   stylesheet's seven custom properties are a convenience and not a source. */
+var SEATCSS={};
+BANDS.forEach(function(b){SEATCSS[b]=PAL[b];});
+/* the mark, again, as an inline ring for the key beside the drawing. Ring,
+   never fill, and it is the same declension the canvas draws. */
+function markSVG(i,col){
+ var t=-0.62+(i/6)*1.24, yy=9-t*7, half=Math.sqrt(Math.max(0,1-t*t))*7*0.86;
+ return '<svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true" '+
+  'style="display:block;flex:0 0 auto"><circle cx="9" cy="9" r="7" fill="none" '+
+  'stroke="'+col+'" stroke-width="1.5"/><line x1="'+(9-half).toFixed(1)+'" y1="'+
+  yy.toFixed(1)+'" x2="'+(9+half).toFixed(1)+'" y2="'+yy.toFixed(1)+
+  '" stroke="'+col+'" stroke-width="1.5" stroke-linecap="round"/></svg>';}
+function fig(label,value,unit,cls){
+ return '<div class="fig '+(cls||'')+'"><div class="l">'+label+'</div>'+
+  '<div class="v">'+value+(unit?'<small>'+unit+'</small>':'')+'</div></div>';}
+
+var COPY={
+ today:{learn:'The word sits at the seat’s mean bearing and points away from the ring, so a person reads it by following the spike outward.',
+  cost:'The word is the leader, so the longer the name the further the reading is pushed in. 3rd&nbsp;Eye and Sacral set the budget for all seven, and the budget does not shrink when the wheel does.'},
+ band:{learn:'The name lies inside its own band, on the band’s curve, in the band’s own colour lifted until it clears it. A person reads the colour and the word as one object.',
+  cost:'Type on a coloured ground, so the contrast has to be measured against the band and not against the page. The band has to be thick enough to hold 11.5 px, which takes radius back off the addresses inside it.'},
+ mark:{learn:'A ring with one chord across it, and the chord sits at the seat’s own height in the body. Root is the low chord and crown the high one, so the set reads as a level gauge and the order is the order. The word arrives for the seat under the pointer or the focus ring.',
+  cost:'A stranger on day one has a gauge and no words. The word needs a pointer or a key press, which on a phone means a tap that is also the tap that opens the seat, so the two gestures have to be told apart.'},
+ axis:{learn:'One lane outside the ring, ticked at each seat’s edges, with the name set along the lane inside the arc that seat already owns. It reads the way an axis reads.',
+  cost:'One line of radius, always, whatever the longest name is. A name longer than its own arc has nowhere to go, so the arc is the constraint rather than the radius, and the run has to be checked against it.'},
+ spine:{learn:'The names leave the circle for a column at the edge, root at the bottom and crown at the top. Colour and height carry the link, and the column is the body.',
+  cost:'The link is no longer touching. A person matches a colour across a gap, which is a step the spike did not ask for. The column takes width off the stage, which at 390 is the scarcer axis.'}};
+
+function render(){
+ READ=seat(WHO);
+ /* the profile buttons */
+ document.getElementById('whobtns').innerHTML=PEOPLE.map(function(p){
+  return '<button data-who="'+p.nm+'" aria-pressed="'+(p.nm===WHO)+'">'+p.nm+'</button>';}).join('');
+ /* the panels */
+ var h='';
+ MODES.forEach(function(m){
+  var d=MODEDEF[m];
+  h+='<div class="panel" id="p-'+m+'">'+
+   '<div class="cap"><h3>'+d.nm+'</h3><span class="tag">'+d.tag+'</span>'+
+   '<span class="tag" style="margin-left:auto">'+d.owner+'</span></div>'+
+   '<div class="body"><div class="stage"><canvas id="cv-'+m+'"></canvas></div>'+
+   '<div class="side" id="side-'+m+'"></div></div></div>';});
+ document.getElementById('s-sheet').innerHTML=
+  '<div class="sechd"><h2>Four answers, and what each one costs</h2>'+
+  '<span class="who">Mika holds the argument between them</span></div>'+
+  '<p class="note">Every panel draws the same reading off the same profile: the '+
+  'engine’s 108 addresses at their own charge, the 21 laws, the core at '+
+  'coherence, and the saboteurs it found. What differs is the naming. The wheel '+
+  'in each panel is as large as its own naming allows, which is the point. '+
+  'A bigger ring is also a bigger hole, and what goes in the middle of it is '+
+  'his other question rather than this one. '+
+  '<b>Shell</b> is the radius the reading gets, <b>Outside</b> is the radius '+
+  'handed to naming past the ring, <b>Reserved</b> is the arc closed to '+
+  'everything else, and <b>Lit</b> is the share of the naming band that carries '+
+  'ink. <b>Gain</b> is the shell radius against the shipping one on the same '+
+  'stage.</p>'+h;
+
+ /* size every canvas to the stage the product measures, then draw */
+ MODES.forEach(function(m){
+  var cv=document.getElementById('cv-'+m);
+  var narrow=innerWidth<1100;
+  var w=narrow?Math.min(374,cv.parentNode.clientWidth):664;
+  var hh=narrow?335:726;
+  cv.style.width=w+'px'; cv.style.height=hh+'px';
+  cv.parentNode.style.minHeight=hh+'px';});
+ MODES.forEach(function(m){
+  var cv=document.getElementById('cv-'+m);
+  LAST[m]=drawPanel(cv,m,READ,FOCUS);});
+
+ /* the numbers under each */
+ var base=LAST.today;
+ MODES.forEach(function(m){
+  var M=LAST[m], c=COPY[m];
+  var gain=Math.round(M.shell-base.shell);
+  var f='';
+  f+=fig('Shell',Math.round(M.shell),'px',m!=='today'&&M.shell>base.shell?'win':'');
+  f+=fig('Outside',Math.round(M.outside),'px',
+     m==='today'?'lose':(M.outside<base.outside?'win':''));
+  f+=fig('Reserved',M.reserved.toFixed(0),'degrees',
+     m==='today'?'lose':(M.reserved<base.reserved?'win':''));
+  f+=fig('Lit',M.bandLit==null?'n/a':M.bandLit.toFixed(0),M.bandLit==null?'':'per cent',
+     M.bandLit!=null&&base.bandLit!=null&&M.bandLit>base.bandLit?'win':'');
+  f+=fig('Gain',(gain>0?'+':'')+gain,'px',gain>0?'win':(m==='today'?'':'lose'));
+  /* AND THE RADIUS UNDERSTATES IT. The reading is a disc, so it grows as the
+     square of its radius: 1.8 times the radius is 3.3 times the surface a
+     person is actually reading. This is the figure he asked for when he said
+     maximise the space, and a radius in pixels is not it. */
+  var area=Math.pow(M.shell/base.shell,2);
+  f+=fig('Area',area.toFixed(1),'times',area>1.02?'win':'');
+  var extra='';
+  if(m==='band'&&M.worstContrast!=null)
+   extra+='<p><b>Contrast</b> holds '+M.worstContrast.toFixed(1)+' to 1 at the '+
+    'worst of the seven seats, measured against the pixels the letters land on '+
+    'rather than against the page. The floor is 4.5.</p>';
+  if(m==='axis')
+   extra+='<p><b>Fit</b> '+(M.overflow? M.overflow+' of seven names run past the '+
+    'arc their own seat owns, so the lane is not enough on its own at this width.'
+    : 'all seven names fit inside the arc their own seat owns.')+'</p>';
+  if(m==='mark')
+   extra+='<p>Drawn with 3rd&nbsp;Eye focused, which is the state a pointer or a '+
+    'focus ring puts one seat into. Six marks and one word.</p>'+
+    '<p><b>Floor</b> the mark is '+Math.round(LAST.mark.markR1-LAST.mark.markR0)+
+    ' px across here. Below about 18 the seven chord heights stop being told '+
+    'apart, which at 390 leaves almost no margin, so this mode is the one that '+
+    'gets tighter as the screen gets smaller rather than easier.</p>';
+  if(m==='spine')
+   extra+='<p>The column takes '+M.spineW+' px off the stage width, which is why '+
+    'Gain is smaller than the annulus it gave back.</p>'+
+    '<p><b>Reach</b> the column can only point at a seat the ring has coloured, '+
+    'and on this profile '+M.carrying+' of '+M.total+' addresses carry enough '+
+    'charge to show their seat. The other '+(M.total-M.carrying)+' draw grey, so '+
+    'for those seats the link the copy claims is not on the screen. Petra found '+
+    'it in the image at 1600 and it is the reason this one is fourth.</p>';
+  /* THE SEVEN, ONE LINE EACH. The right column was four fifths empty in the
+     first cut and a column of dead space next to a drawing about real estate
+     is an argument against itself. What goes in it is the per seat number,
+     because a summary hides the seat that fails and the seat that fails is
+     the finding. */
+  var seatRows='';
+  if(M.perSeat&&M.perSeat.length){
+   var head = m==='today' ? 'Arc each name closes, and the radius it takes'
+            : m==='band'  ? 'Contrast at each seat, against its own gutter'
+            : m==='axis'  ? 'Each run against the arc its own seat owns'
+            : '';
+   var body=M.perSeat.map(function(x){
+    var v = m==='today' ? x.deg.toFixed(1)+' degrees \u00b7 '+Math.round(x.px)+' px'
+          : m==='band'  ? x.r.toFixed(1)+' to 1'
+          : Math.round(x.run)+' px of '+Math.round(x.arc);
+    return '<span class="chip" style="color:'+SEATCSS[x.seat]+'"><i></i>'+
+     '<span style="color:var(--mid)">'+x.seat+'</span>'+
+     '<b style="color:var(--ink);font-weight:500">'+v+'</b></span>';}).join('');
+   if(head)seatRows='<h4>'+head+'</h4><div class="seatlist">'+body+'</div>';}
+  if(m==='mark'){
+   seatRows='<h4>The seven marks, and the chord is the height</h4>'+
+    '<div class="seatlist">'+SEATS.map(function(x){
+     return '<span class="chip" style="color:'+SEATCSS[x.b]+'">'+
+      markSVG(x.i,SEATCSS[x.b])+'<span style="color:var(--mid)">'+x.b+'</span></span>';
+    }).join('')+'</div>';}
+  if(m==='spine'){
+   seatRows='<h4>The column, bottom to top</h4><div class="seatlist">'+
+    SEATS.slice().reverse().map(function(x){
+     return '<span class="chip" style="color:'+SEATCSS[x.b]+'"><i></i>'+
+      '<span style="color:var(--mid)">'+x.b+'</span></span>';}).join('')+'</div>';}
+  document.getElementById('side-'+m).innerHTML=
+   '<div class="figs">'+f+'</div>'+
+   '<div class="rows"><h4>How a person learns which seat</h4><p>'+c.learn+'</p>'+
+   '<h4>What it costs</h4><p>'+c.cost+'</p>'+extra+seatRows+'</div>';});
+
+ gate();}
+
+/* ============================================================
+   THE GATE. A sheet that cannot fail is not a measurement.
+   ============================================================ */
+function gate(){
+ var P=0,F=0,out=[];
+ function ok(c,m){if(c){P++;out.push('<span class="pass">pass</span>  '+m);}
+  else{F++;out.push('<span class="fail">FAIL</span>  '+m);}}
+ var base=LAST.today;
+ /* 1. every panel drew something */
+ MODES.forEach(function(m){
+  ok(LAST[m].litAll>3000,m+' drew ink, '+LAST[m].litAll+' lit pixels of '+LAST[m].px);});
+ /* 2. every mode beats today on at least one axis */
+ MODES.filter(function(m){return m!=='today';}).forEach(function(m){
+  var M=LAST[m];
+  var beats=(M.shell>base.shell)||(M.outside<base.outside)||(M.reserved<base.reserved);
+  ok(beats,m+' beats today on at least one axis');});
+ /* 3. the band mode holds the contrast floor against its own ground */
+ ok(LAST.band.worstContrast>=4.5,'the band name holds 4.5 to 1 over the band, got '
+  +LAST.band.worstContrast.toFixed(2));
+ /* 4. the axis mode's names fit the arc they own */
+ ok(LAST.axis.overflow===0,'every axis label fits its own seat arc, '
+  +LAST.axis.overflow+' past it');
+ /* 5. nothing under the type floor in the chrome */
+ var small=[];
+ document.querySelectorAll('.wrap *').forEach(function(e){
+  if(!e.childNodes.length)return;
+  var t=(e.textContent||'').trim(); if(!t)return;
+  var f=parseFloat(getComputedStyle(e).fontSize);
+  if(f&&f<11)small.push(e.className||e.tagName);});
+ ok(small.length===0,'nothing in the chrome under 11 px, '+small.length+' found');
+ /* 6. no em dash anywhere in the rendered text */
+ var body=document.body.innerText;
+ ok(body.indexOf('—')<0,'no em dash in the rendered text');
+ /* 7. no all caps run in the copy */
+ var caps=(body.match(/\b[A-Z]{4,}\b/g)||[]).filter(function(w){
+  return ['FAIL','NOTE'].indexOf(w)<0;});
+ ok(caps.length===0,'no all caps run in the copy'+(caps.length?', '+caps.join(' '):''));
+ /* 8. a figure's label is one word and carries no comma */
+ var bad=[];
+ document.querySelectorAll('.fig .l').forEach(function(e){
+  var t=(e.textContent||'').trim();
+  if(/[ ,]/.test(t))bad.push(t);});
+ ok(bad.length===0,'every figure label is one word with no comma'
+  +(bad.length?', '+bad.join(' | '):''));
+ /* 9. no figure printed with an interval or a tolerance stapled to it */
+ ok(!/(plus or minus|±|swing\s+\d)/i.test(body),
+  'no figure printed with an interval or a tolerance');
+ /* 10. the reading is the engine's */
+ ok(READ&&typeof READ.CQ==='number'&&W.length===108,
+  'the reading is the engine’s, '+W.length+' addresses, coherence '
+  +READ.CQ.toFixed(1)+' on '+WHO);
+ /* 11. the page references nothing but the engine */
+ var ext=[];
+ document.querySelectorAll('script[src],link[href],img[src],iframe[src]').forEach(function(e){
+  var u=e.getAttribute('src')||e.getAttribute('href');
+  if(u&&!/^\.\.\/\.\.\/engine\.js$/.test(u))ext.push(u);});
+ ok(ext.length===0,'the page references the engine and nothing else'
+  +(ext.length?', '+ext.join(' '):''));
+ document.getElementById('tests').innerHTML=
+  '<b>gate, '+P+' pass '+F+' fail, at '+innerWidth+' by '+innerHeight+'</b>\n'
+  +out.join('\n');}
+
+document.addEventListener('click',function(e){
+ var b=e.target.closest('button[data-who]');
+ if(b){WHO=b.getAttribute('data-who'); render();}});
+/* the focus state for mode B is a real pointer, so it is driven by one */
+document.addEventListener('mousemove',function(e){
+ var cv=document.getElementById('cv-mark'); if(!cv)return;
+ var r=cv.getBoundingClientRect();
+ if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)return;
+ var M=LAST.mark; if(!M)return;
+ var x=e.clientX-r.left-(M.spineW+(M.CW-M.spineW)/2), y=e.clientY-r.top-M.CH/2;
+ var ang=Math.atan2(y,x);
+ var best=null,bd=9;
+ SEATS.forEach(function(s){
+  var da=Math.abs(Math.atan2(Math.sin(ang-s.am),Math.cos(ang-s.am)));
+  if(da<bd){bd=da;best=s.b;}});
+ if(best&&best!==FOCUS){FOCUS=best;
+  LAST.mark=drawPanel(document.getElementById('cv-mark'),'mark',READ,FOCUS);}});
+addEventListener('resize',function(){render();});
+render();
+</script>
+</body>
+</html>

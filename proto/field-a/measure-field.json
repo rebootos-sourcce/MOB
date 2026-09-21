@@ -1,0 +1,1412 @@
+{
+ "390": {
+  "people": [
+   "You",
+   "Sofia",
+   "Diane",
+   "Marcus",
+   "Angela",
+   "Derek",
+   "James",
+   "Rosa",
+   "Ana",
+   "Tomas",
+   "Nkem",
+   "Wren",
+   "Abraham",
+   "Gordon",
+   "Lance"
+  ],
+  "depths": [
+   {
+    "depth": "A",
+    "CW": 374,
+    "CH": 335.4,
+    "BASE_U": 114.7,
+    "U": 114.7,
+    "free": 167.7,
+    "shell": 71.1,
+    "plateOutermost": 119.1,
+    "seats": [
+     {
+      "seat": "Root",
+      "chars": 4,
+      "textPx": 26.5,
+      "start": 75.3,
+      "end": 101.8,
+      "degreesReserved": 6.58,
+      "degreesOfInk": 50
+     },
+     {
+      "seat": "Sacral",
+      "chars": 6,
+      "textPx": 36.4,
+      "start": 75.3,
+      "end": 111.6,
+      "degreesReserved": 6.58,
+      "degreesOfInk": 50
+     },
+     {
+      "seat": "Solar",
+      "chars": 5,
+      "textPx": 29.9,
+      "start": 75.3,
+      "end": 105.2,
+      "degreesReserved": 6.58,
+      "degreesOfInk": 50
+     },
+     {
+      "seat": "Heart",
+      "chars": 5,
+      "textPx": 32.3,
+      "start": 75.3,
+      "end": 107.5,
+      "degreesReserved": 6.58,
+      "degreesOfInk": 46.67
+     },
+     {
+      "seat": "Throat",
+      "chars": 6,
+      "textPx": 38.3,
+      "start": 75.3,
+      "end": 113.6,
+      "degreesReserved": 6.58,
+      "degreesOfInk": 36.67
+     },
+     {
+      "seat": "3rd Eye",
+      "chars": 7,
+      "textPx": 43.8,
+      "start": 75.3,
+      "end": 119.1,
+      "degreesReserved": 6.58,
+      "degreesOfInk": 36.67
+     },
+     {
+      "seat": "Crown",
+      "chars": 5,
+      "textPx": 37.9,
+      "start": 75.3,
+      "end": 113.2,
+      "degreesReserved": 6.58,
+      "degreesOfInk": 66.67
+     }
+    ],
+    "labels": 0,
+    "lblAreaShare": 0,
+    "litAll": 8098,
+    "litIn": 7663,
+    "litAnn": 435,
+    "areaIn": 15902,
+    "areaAnn": 28652,
+    "px": 125290,
+    "sc": 1,
+    "who": "Ana"
+   },
+   {
+    "depth": "B",
+    "CW": 374,
+    "CH": 335.4,
+    "BASE_U": 114.7,
+    "U": 114.7,
+    "free": 167.7,
+    "shell": 78,
+    "plateOutermost": 126.4,
+    "seats": [
+     {
+      "seat": "Root",
+      "chars": 4,
+      "textPx": 26.5,
+      "start": 82.6,
+      "end": 109.1,
+      "degreesReserved": 6,
+      "degreesOfInk": 50
+     },
+     {
+      "seat": "Sacral",
+      "chars": 6,
+      "textPx": 36.4,
+      "start": 82.6,
+      "end": 118.9,
+      "degreesReserved": 6,
+      "degreesOfInk": 50
+     },
+     {
+      "seat": "Solar",
+      "chars": 5,
+      "textPx": 29.9,
+      "start": 82.6,
+      "end": 112.5,
+      "degreesReserved": 6,
+      "degreesOfInk": 50
+     },
+     {
+      "seat": "Heart",
+      "chars": 5,
+      "textPx": 32.3,
+      "start": 82.6,
+      "end": 114.8,
+      "degreesReserved": 6,
+      "degreesOfInk": 46.67
+     },
+     {
+      "seat": "Throat",
+      "chars": 6,
+      "textPx": 38.3,
+      "start": 82.6,
+      "end": 120.9,
+      "degreesReserved": 6,
+      "degreesOfInk": 36.67
+     },
+     {
+      "seat": "3rd Eye",
+      "chars": 7,
+      "textPx": 43.8,
+      "start": 82.6,
+      "end": 126.4,
+      "degreesReserved": 6,
+      "degreesOfInk": 36.67
+     },
+     {
+      "seat": "Crown",
+      "chars": 5,
+      "textPx": 37.9,
+      "start": 82.6,
+      "end": 120.4,
+      "degreesReserved": 6,
+      "degreesOfInk": 66.67
+     }
+    ],
+    "labels": 7,
+    "lblAreaShare": 4.59,
+    "litAll": 12142,
+    "litIn": 10534,
+    "litAnn": 1608,
+    "areaIn": 19122,
+    "areaAnn": 31075,
+    "px": 125290,
+    "sc": 1,
+    "who": "Ana"
+   },
+   {
+    "depth": "C",
+    "CW": 374,
+    "CH": 335.4,
+    "BASE_U": 114.7,
+    "U": 114.7,
+    "free": 167.7,
+    "shell": 84.9,
+    "plateOutermost": 133.7,
+    "seats": [
+     {
+      "seat": "Root",
+      "chars": 4,
+      "textPx": 26.5,
+      "start": 89.8,
+      "end": 116.4,
+      "degreesReserved": 5.51,
+      "degreesOfInk": 50
+     },
+     {
+      "seat": "Sacral",
+      "chars": 6,
+      "textPx": 36.4,
+      "start": 89.8,
+      "end": 126.2,
+      "degreesReserved": 5.51,
+      "degreesOfInk": 50
+     },
+     {
+      "seat": "Solar",
+      "chars": 5,
+      "textPx": 29.9,
+      "start": 89.8,
+      "end": 119.7,
+      "degreesReserved": 5.51,
+      "degreesOfInk": 50
+     },
+     {
+      "seat": "Heart",
+      "chars": 5,
+      "textPx": 32.3,
+      "start": 89.8,
+      "end": 122.1,
+      "degreesReserved": 5.51,
+      "degreesOfInk": 46.67
+     },
+     {
+      "seat": "Throat",
+      "chars": 6,
+      "textPx": 38.3,
+      "start": 89.8,
+      "end": 128.2,
+      "degreesReserved": 5.51,
+      "degreesOfInk": 36.67
+     },
+     {
+      "seat": "3rd Eye",
+      "chars": 7,
+      "textPx": 43.8,
+      "start": 89.8,
+      "end": 133.7,
+      "degreesReserved": 5.51,
+      "degreesOfInk": 36.67
+     },
+     {
+      "seat": "Crown",
+      "chars": 5,
+      "textPx": 37.9,
+      "start": 89.8,
+      "end": 127.7,
+      "degreesReserved": 5.51,
+      "degreesOfInk": 66.67
+     }
+    ],
+    "labels": 19,
+    "lblAreaShare": 15.25,
+    "litAll": 20148,
+    "litIn": 15313,
+    "litAnn": 3853,
+    "areaIn": 22654,
+    "areaAnn": 33508,
+    "px": 125290,
+    "sc": 1,
+    "who": "Ana"
+   },
+   {
+    "depth": "D",
+    "CW": 374,
+    "CH": 335.4,
+    "BASE_U": 114.7,
+    "U": 114.7,
+    "free": 167.7,
+    "shell": 89.5,
+    "plateOutermost": 138.5,
+    "seats": [
+     {
+      "seat": "Root",
+      "chars": 4,
+      "textPx": 26.5,
+      "start": 94.7,
+      "end": 121.2,
+      "degreesReserved": 5.23,
+      "degreesOfInk": 50
+     },
+     {
+      "seat": "Sacral",
+      "chars": 6,
+      "textPx": 36.4,
+      "start": 94.7,
+      "end": 131.1,
+      "degreesReserved": 5.23,
+      "degreesOfInk": 50
+     },
+     {
+      "seat": "Solar",
+      "chars": 5,
+      "textPx": 29.9,
+      "start": 94.7,
+      "end": 124.6,
+      "degreesReserved": 5.23,
+      "degreesOfInk": 50
+     },
+     {
+      "seat": "Heart",
+      "chars": 5,
+      "textPx": 32.3,
+      "start": 94.7,
+      "end": 127,
+      "degreesReserved": 5.23,
+      "degreesOfInk": 46.67
+     },
+     {
+      "seat": "Throat",
+      "chars": 6,
+      "textPx": 38.3,
+      "start": 94.7,
+      "end": 133,
+      "degreesReserved": 5.23,
+      "degreesOfInk": 36.67
+     },
+     {
+      "seat": "3rd Eye",
+      "chars": 7,
+      "textPx": 43.8,
+      "start": 94.7,
+      "end": 138.5,
+      "degreesReserved": 5.23,
+      "degreesOfInk": 36.67
+     },
+     {
+      "seat": "Crown",
+      "chars": 5,
+      "textPx": 37.9,
+      "start": 94.7,
+      "end": 132.6,
+      "degreesReserved": 5.23,
+      "degreesOfInk": 66.67
+     }
+    ],
+    "labels": 44,
+    "lblAreaShare": 38.06,
+    "litAll": 26908,
+    "litIn": 17214,
+    "litAnn": 7870,
+    "areaIn": 25167,
+    "areaAnn": 35104,
+    "px": 125290,
+    "sc": 1,
+    "who": "Ana"
+   },
+   {
+    "depth": "A",
+    "CW": 374,
+    "CH": 335.4,
+    "BASE_U": 114.7,
+    "U": 114.7,
+    "free": 167.7,
+    "shell": 71.1,
+    "plateOutermost": 119.1,
+    "seats": [
+     {
+      "seat": "Root",
+      "chars": 4,
+      "textPx": 26.5,
+      "start": 75.3,
+      "end": 101.8,
+      "degreesReserved": 6.58,
+      "degreesOfInk": 50
+     },
+     {
+      "seat": "Sacral",
+      "chars": 6,
+      "textPx": 36.4,
+      "start": 75.3,
+      "end": 111.6,
+      "degreesReserved": 6.58,
+      "degreesOfInk": 50
+     },
+     {
+      "seat": "Solar",
+      "chars": 5,
+      "textPx": 29.9,
+      "start": 75.3,
+      "end": 105.2,
+      "degreesReserved": 6.58,
+      "degreesOfInk": 50
+     },
+     {
+      "seat": "Heart",
+      "chars": 5,
+      "textPx": 32.3,
+      "start": 75.3,
+      "end": 107.5,
+      "degreesReserved": 6.58,
+      "degreesOfInk": 46.67
+     },
+     {
+      "seat": "Throat",
+      "chars": 6,
+      "textPx": 38.3,
+      "start": 75.3,
+      "end": 113.6,
+      "degreesReserved": 6.58,
+      "degreesOfInk": 36.67
+     },
+     {
+      "seat": "3rd Eye",
+      "chars": 7,
+      "textPx": 43.8,
+      "start": 75.3,
+      "end": 119.1,
+      "degreesReserved": 6.58,
+      "degreesOfInk": 36.67
+     },
+     {
+      "seat": "Crown",
+      "chars": 5,
+      "textPx": 37.9,
+      "start": 75.3,
+      "end": 113.2,
+      "degreesReserved": 6.58,
+      "degreesOfInk": 66.67
+     }
+    ],
+    "labels": 0,
+    "lblAreaShare": 0,
+    "litAll": 10869,
+    "litIn": 8210,
+    "litAnn": 2659,
+    "areaIn": 15902,
+    "areaAnn": 28652,
+    "px": 125290,
+    "sc": 1,
+    "who": "Sofia"
+   },
+   {
+    "depth": "B",
+    "CW": 374,
+    "CH": 335.4,
+    "BASE_U": 114.7,
+    "U": 114.7,
+    "free": 167.7,
+    "shell": 78,
+    "plateOutermost": 126.4,
+    "seats": [
+     {
+      "seat": "Root",
+      "chars": 4,
+      "textPx": 26.5,
+      "start": 82.6,
+      "end": 109.1,
+      "degreesReserved": 6,
+      "degreesOfInk": 50
+     },
+     {
+      "seat": "Sacral",
+      "chars": 6,
+      "textPx": 36.4,
+      "start": 82.6,
+      "end": 118.9,
+      "degreesReserved": 6,
+      "degreesOfInk": 50
+     },
+     {
+      "seat": "Solar",
+      "chars": 5,
+      "textPx": 29.9,
+      "start": 82.6,
+      "end": 112.5,
+      "degreesReserved": 6,
+      "degreesOfInk": 50
+     },
+     {
+      "seat": "Heart",
+      "chars": 5,
+      "textPx": 32.3,
+      "start": 82.6,
+      "end": 114.8,
+      "degreesReserved": 6,
+      "degreesOfInk": 46.67
+     },
+     {
+      "seat": "Throat",
+      "chars": 6,
+      "textPx": 38.3,
+      "start": 82.6,
+      "end": 120.9,
+      "degreesReserved": 6,
+      "degreesOfInk": 36.67
+     },
+     {
+      "seat": "3rd Eye",
+      "chars": 7,
+      "textPx": 43.8,
+      "start": 82.6,
+      "end": 126.4,
+      "degreesReserved": 6,
+      "degreesOfInk": 36.67
+     },
+     {
+      "seat": "Crown",
+      "chars": 5,
+      "textPx": 37.9,
+      "start": 82.6,
+      "end": 120.4,
+      "degreesReserved": 6,
+      "degreesOfInk": 66.67
+     }
+    ],
+    "labels": 7,
+    "lblAreaShare": 4.59,
+    "litAll": 11761,
+    "litIn": 9757,
+    "litAnn": 2004,
+    "areaIn": 19122,
+    "areaAnn": 31075,
+    "px": 125290,
+    "sc": 1,
+    "who": "Sofia"
+   },
+   {
+    "depth": "C",
+    "CW": 374,
+    "CH": 335.4,
+    "BASE_U": 114.7,
+    "U": 114.7,
+    "free": 167.7,
+    "shell": 84.9,
+    "plateOutermost": 133.7,
+    "seats": [
+     {
+      "seat": "Root",
+      "chars": 4,
+      "textPx": 26.5,
+      "start": 89.8,
+      "end": 116.4,
+      "degreesReserved": 5.51,
+      "degreesOfInk": 50
+     },
+     {
+      "seat": "Sacral",
+      "chars": 6,
+      "textPx": 36.4,
+      "start": 89.8,
+      "end": 126.2,
+      "degreesReserved": 5.51,
+      "degreesOfInk": 50
+     },
+     {
+      "seat": "Solar",
+      "chars": 5,
+      "textPx": 29.9,
+      "start": 89.8,
+      "end": 119.7,
+      "degreesReserved": 5.51,
+      "degreesOfInk": 50
+     },
+     {
+      "seat": "Heart",
+      "chars": 5,
+      "textPx": 32.3,
+      "start": 89.8,
+      "end": 122.1,
+      "degreesReserved": 5.51,
+      "degreesOfInk": 46.67
+     },
+     {
+      "seat": "Throat",
+      "chars": 6,
+      "textPx": 38.3,
+      "start": 89.8,
+      "end": 128.2,
+      "degreesReserved": 5.51,
+      "degreesOfInk": 36.67
+     },
+     {
+      "seat": "3rd Eye",
+      "chars": 7,
+      "textPx": 43.8,
+      "start": 89.8,
+      "end": 133.7,
+      "degreesReserved": 5.51,
+      "degreesOfInk": 36.67
+     },
+     {
+      "seat": "Crown",
+      "chars": 5,
+      "textPx": 37.9,
+      "start": 89.8,
+      "end": 127.7,
+      "degreesReserved": 5.51,
+      "degreesOfInk": 66.67
+     }
+    ],
+    "labels": 19,
+    "lblAreaShare": 15.35,
+    "litAll": 15063,
+    "litIn": 12288,
+    "litAnn": 2775,
+    "areaIn": 22654,
+    "areaAnn": 33508,
+    "px": 125290,
+    "sc": 1,
+    "who": "Sofia"
+   },
+   {
+    "depth": "D",
+    "CW": 374,
+    "CH": 335.4,
+    "BASE_U": 114.7,
+    "U": 114.7,
+    "free": 167.7,
+    "shell": 89.5,
+    "plateOutermost": 138.5,
+    "seats": [
+     {
+      "seat": "Root",
+      "chars": 4,
+      "textPx": 26.5,
+      "start": 94.7,
+      "end": 121.2,
+      "degreesReserved": 5.23,
+      "degreesOfInk": 50
+     },
+     {
+      "seat": "Sacral",
+      "chars": 6,
+      "textPx": 36.4,
+      "start": 94.7,
+      "end": 131.1,
+      "degreesReserved": 5.23,
+      "degreesOfInk": 50
+     },
+     {
+      "seat": "Solar",
+      "chars": 5,
+      "textPx": 29.9,
+      "start": 94.7,
+      "end": 124.6,
+      "degreesReserved": 5.23,
+      "degreesOfInk": 50
+     },
+     {
+      "seat": "Heart",
+      "chars": 5,
+      "textPx": 32.3,
+      "start": 94.7,
+      "end": 127,
+      "degreesReserved": 5.23,
+      "degreesOfInk": 46.67
+     },
+     {
+      "seat": "Throat",
+      "chars": 6,
+      "textPx": 38.3,
+      "start": 94.7,
+      "end": 133,
+      "degreesReserved": 5.23,
+      "degreesOfInk": 36.67
+     },
+     {
+      "seat": "3rd Eye",
+      "chars": 7,
+      "textPx": 43.8,
+      "start": 94.7,
+      "end": 138.5,
+      "degreesReserved": 5.23,
+      "degreesOfInk": 36.67
+     },
+     {
+      "seat": "Crown",
+      "chars": 5,
+      "textPx": 37.9,
+      "start": 94.7,
+      "end": 132.6,
+      "degreesReserved": 5.23,
+      "degreesOfInk": 66.67
+     }
+    ],
+    "labels": 44,
+    "lblAreaShare": 38.54,
+    "litAll": 21393,
+    "litIn": 13423,
+    "litAnn": 6991,
+    "areaIn": 25167,
+    "areaAnn": 35104,
+    "px": 125290,
+    "sc": 1,
+    "who": "Sofia"
+   }
+  ],
+  "who": [
+   "Ana",
+   "Sofia"
+  ]
+ },
+ "1600": {
+  "people": [
+   "You",
+   "Sofia",
+   "Diane",
+   "Marcus",
+   "Angela",
+   "Derek",
+   "James",
+   "Rosa",
+   "Ana",
+   "Tomas",
+   "Nkem",
+   "Wren",
+   "Abraham",
+   "Gordon",
+   "Lance"
+  ],
+  "depths": [
+   {
+    "depth": "A",
+    "CW": 664,
+    "CH": 726.5,
+    "BASE_U": 251.7,
+    "U": 251.7,
+    "free": 332,
+    "shell": 156,
+    "plateOutermost": 208.9,
+    "seats": [
+     {
+      "seat": "Root",
+      "chars": 4,
+      "textPx": 26.5,
+      "start": 165.1,
+      "end": 191.6,
+      "degreesReserved": 3,
+      "degreesOfInk": 50
+     },
+     {
+      "seat": "Sacral",
+      "chars": 6,
+      "textPx": 36.4,
+      "start": 165.1,
+      "end": 201.5,
+      "degreesReserved": 3,
+      "degreesOfInk": 50
+     },
+     {
+      "seat": "Solar",
+      "chars": 5,
+      "textPx": 29.9,
+      "start": 165.1,
+      "end": 195,
+      "degreesReserved": 3,
+      "degreesOfInk": 50
+     },
+     {
+      "seat": "Heart",
+      "chars": 5,
+      "textPx": 32.3,
+      "start": 165.1,
+      "end": 197.4,
+      "degreesReserved": 3,
+      "degreesOfInk": 46.67
+     },
+     {
+      "seat": "Throat",
+      "chars": 6,
+      "textPx": 38.3,
+      "start": 165.1,
+      "end": 203.4,
+      "degreesReserved": 3,
+      "degreesOfInk": 36.67
+     },
+     {
+      "seat": "3rd Eye",
+      "chars": 7,
+      "textPx": 43.8,
+      "start": 165.1,
+      "end": 208.9,
+      "degreesReserved": 3,
+      "degreesOfInk": 36.67
+     },
+     {
+      "seat": "Crown",
+      "chars": 5,
+      "textPx": 37.9,
+      "start": 165.1,
+      "end": 203,
+      "degreesReserved": 3,
+      "degreesOfInk": 66.67
+     }
+    ],
+    "labels": 0,
+    "lblAreaShare": 0,
+    "litAll": 18222,
+    "litIn": 17907,
+    "litAnn": 315,
+    "areaIn": 76482,
+    "areaAnn": 60610,
+    "px": 482064,
+    "sc": 1,
+    "who": "Ana"
+   },
+   {
+    "depth": "B",
+    "CW": 664,
+    "CH": 726.5,
+    "BASE_U": 251.7,
+    "U": 251.7,
+    "free": 332,
+    "shell": 171.1,
+    "plateOutermost": 224.9,
+    "seats": [
+     {
+      "seat": "Root",
+      "chars": 4,
+      "textPx": 26.5,
+      "start": 181.1,
+      "end": 207.6,
+      "degreesReserved": 2.73,
+      "degreesOfInk": 50
+     },
+     {
+      "seat": "Sacral",
+      "chars": 6,
+      "textPx": 36.4,
+      "start": 181.1,
+      "end": 217.4,
+      "degreesReserved": 2.73,
+      "degreesOfInk": 50
+     },
+     {
+      "seat": "Solar",
+      "chars": 5,
+      "textPx": 29.9,
+      "start": 181.1,
+      "end": 211,
+      "degreesReserved": 2.73,
+      "degreesOfInk": 50
+     },
+     {
+      "seat": "Heart",
+      "chars": 5,
+      "textPx": 32.3,
+      "start": 181.1,
+      "end": 213.3,
+      "degreesReserved": 2.73,
+      "degreesOfInk": 46.67
+     },
+     {
+      "seat": "Throat",
+      "chars": 6,
+      "textPx": 38.3,
+      "start": 181.1,
+      "end": 219.4,
+      "degreesReserved": 2.73,
+      "degreesOfInk": 36.67
+     },
+     {
+      "seat": "3rd Eye",
+      "chars": 7,
+      "textPx": 43.8,
+      "start": 181.1,
+      "end": 224.9,
+      "degreesReserved": 2.73,
+      "degreesOfInk": 36.67
+     },
+     {
+      "seat": "Crown",
+      "chars": 5,
+      "textPx": 37.9,
+      "start": 181.1,
+      "end": 218.9,
+      "degreesReserved": 2.73,
+      "degreesOfInk": 66.67
+     }
+    ],
+    "labels": 10,
+    "lblAreaShare": 2.47,
+    "litAll": 29452,
+    "litIn": 26734,
+    "litAnn": 2530,
+    "areaIn": 92016,
+    "areaAnn": 66884,
+    "px": 482064,
+    "sc": 1,
+    "who": "Ana"
+   },
+   {
+    "depth": "C",
+    "CW": 664,
+    "CH": 726.5,
+    "BASE_U": 251.7,
+    "U": 251.7,
+    "free": 332,
+    "shell": 186.2,
+    "plateOutermost": 240.9,
+    "seats": [
+     {
+      "seat": "Root",
+      "chars": 4,
+      "textPx": 26.5,
+      "start": 197,
+      "end": 223.6,
+      "degreesReserved": 2.51,
+      "degreesOfInk": 50
+     },
+     {
+      "seat": "Sacral",
+      "chars": 6,
+      "textPx": 36.4,
+      "start": 197,
+      "end": 233.4,
+      "degreesReserved": 2.51,
+      "degreesOfInk": 50
+     },
+     {
+      "seat": "Solar",
+      "chars": 5,
+      "textPx": 29.9,
+      "start": 197,
+      "end": 226.9,
+      "degreesReserved": 2.51,
+      "degreesOfInk": 50
+     },
+     {
+      "seat": "Heart",
+      "chars": 5,
+      "textPx": 32.3,
+      "start": 197,
+      "end": 229.3,
+      "degreesReserved": 2.51,
+      "degreesOfInk": 46.67
+     },
+     {
+      "seat": "Throat",
+      "chars": 6,
+      "textPx": 38.3,
+      "start": 197,
+      "end": 235.4,
+      "degreesReserved": 2.51,
+      "degreesOfInk": 36.67
+     },
+     {
+      "seat": "3rd Eye",
+      "chars": 7,
+      "textPx": 43.8,
+      "start": 197,
+      "end": 240.9,
+      "degreesReserved": 2.51,
+      "degreesOfInk": 36.67
+     },
+     {
+      "seat": "Crown",
+      "chars": 5,
+      "textPx": 37.9,
+      "start": 197,
+      "end": 234.9,
+      "degreesReserved": 2.51,
+      "degreesOfInk": 66.67
+     }
+    ],
+    "labels": 19,
+    "lblAreaShare": 3.96,
+    "litAll": 53090,
+    "litIn": 49950,
+    "litAnn": 2684,
+    "areaIn": 108964,
+    "areaAnn": 73344,
+    "px": 482064,
+    "sc": 1,
+    "who": "Ana"
+   },
+   {
+    "depth": "D",
+    "CW": 664,
+    "CH": 726.5,
+    "BASE_U": 251.7,
+    "U": 251.7,
+    "free": 332,
+    "shell": 196.3,
+    "plateOutermost": 251.5,
+    "seats": [
+     {
+      "seat": "Root",
+      "chars": 4,
+      "textPx": 26.5,
+      "start": 207.7,
+      "end": 234.2,
+      "degreesReserved": 2.38,
+      "degreesOfInk": 50
+     },
+     {
+      "seat": "Sacral",
+      "chars": 6,
+      "textPx": 36.4,
+      "start": 207.7,
+      "end": 244.1,
+      "degreesReserved": 2.38,
+      "degreesOfInk": 50
+     },
+     {
+      "seat": "Solar",
+      "chars": 5,
+      "textPx": 29.9,
+      "start": 207.7,
+      "end": 237.6,
+      "degreesReserved": 2.38,
+      "degreesOfInk": 50
+     },
+     {
+      "seat": "Heart",
+      "chars": 5,
+      "textPx": 32.3,
+      "start": 207.7,
+      "end": 240,
+      "degreesReserved": 2.38,
+      "degreesOfInk": 46.67
+     },
+     {
+      "seat": "Throat",
+      "chars": 6,
+      "textPx": 38.3,
+      "start": 207.7,
+      "end": 246,
+      "degreesReserved": 2.38,
+      "degreesOfInk": 36.67
+     },
+     {
+      "seat": "3rd Eye",
+      "chars": 7,
+      "textPx": 43.8,
+      "start": 207.7,
+      "end": 251.5,
+      "degreesReserved": 2.38,
+      "degreesOfInk": 36.67
+     },
+     {
+      "seat": "Crown",
+      "chars": 5,
+      "textPx": 37.9,
+      "start": 207.7,
+      "end": 245.6,
+      "degreesReserved": 2.38,
+      "degreesOfInk": 66.67
+     }
+    ],
+    "labels": 44,
+    "lblAreaShare": 9.9,
+    "litAll": 68477,
+    "litIn": 56643,
+    "litAnn": 9872,
+    "areaIn": 121079,
+    "areaAnn": 77646,
+    "px": 482064,
+    "sc": 1,
+    "who": "Ana"
+   },
+   {
+    "depth": "A",
+    "CW": 664,
+    "CH": 726.5,
+    "BASE_U": 251.7,
+    "U": 251.7,
+    "free": 332,
+    "shell": 156,
+    "plateOutermost": 208.9,
+    "seats": [
+     {
+      "seat": "Root",
+      "chars": 4,
+      "textPx": 26.5,
+      "start": 165.1,
+      "end": 191.6,
+      "degreesReserved": 3,
+      "degreesOfInk": 50
+     },
+     {
+      "seat": "Sacral",
+      "chars": 6,
+      "textPx": 36.4,
+      "start": 165.1,
+      "end": 201.5,
+      "degreesReserved": 3,
+      "degreesOfInk": 50
+     },
+     {
+      "seat": "Solar",
+      "chars": 5,
+      "textPx": 29.9,
+      "start": 165.1,
+      "end": 195,
+      "degreesReserved": 3,
+      "degreesOfInk": 50
+     },
+     {
+      "seat": "Heart",
+      "chars": 5,
+      "textPx": 32.3,
+      "start": 165.1,
+      "end": 197.4,
+      "degreesReserved": 3,
+      "degreesOfInk": 46.67
+     },
+     {
+      "seat": "Throat",
+      "chars": 6,
+      "textPx": 38.3,
+      "start": 165.1,
+      "end": 203.4,
+      "degreesReserved": 3,
+      "degreesOfInk": 36.67
+     },
+     {
+      "seat": "3rd Eye",
+      "chars": 7,
+      "textPx": 43.8,
+      "start": 165.1,
+      "end": 208.9,
+      "degreesReserved": 3,
+      "degreesOfInk": 36.67
+     },
+     {
+      "seat": "Crown",
+      "chars": 5,
+      "textPx": 37.9,
+      "start": 165.1,
+      "end": 203,
+      "degreesReserved": 3,
+      "degreesOfInk": 66.67
+     }
+    ],
+    "labels": 0,
+    "lblAreaShare": 0,
+    "litAll": 28916,
+    "litIn": 28601,
+    "litAnn": 315,
+    "areaIn": 76482,
+    "areaAnn": 60610,
+    "px": 482064,
+    "sc": 1,
+    "who": "Sofia"
+   },
+   {
+    "depth": "B",
+    "CW": 664,
+    "CH": 726.5,
+    "BASE_U": 251.7,
+    "U": 251.7,
+    "free": 332,
+    "shell": 171.1,
+    "plateOutermost": 224.9,
+    "seats": [
+     {
+      "seat": "Root",
+      "chars": 4,
+      "textPx": 26.5,
+      "start": 181.1,
+      "end": 207.6,
+      "degreesReserved": 2.73,
+      "degreesOfInk": 50
+     },
+     {
+      "seat": "Sacral",
+      "chars": 6,
+      "textPx": 36.4,
+      "start": 181.1,
+      "end": 217.4,
+      "degreesReserved": 2.73,
+      "degreesOfInk": 50
+     },
+     {
+      "seat": "Solar",
+      "chars": 5,
+      "textPx": 29.9,
+      "start": 181.1,
+      "end": 211,
+      "degreesReserved": 2.73,
+      "degreesOfInk": 50
+     },
+     {
+      "seat": "Heart",
+      "chars": 5,
+      "textPx": 32.3,
+      "start": 181.1,
+      "end": 213.3,
+      "degreesReserved": 2.73,
+      "degreesOfInk": 46.67
+     },
+     {
+      "seat": "Throat",
+      "chars": 6,
+      "textPx": 38.3,
+      "start": 181.1,
+      "end": 219.4,
+      "degreesReserved": 2.73,
+      "degreesOfInk": 36.67
+     },
+     {
+      "seat": "3rd Eye",
+      "chars": 7,
+      "textPx": 43.8,
+      "start": 181.1,
+      "end": 224.9,
+      "degreesReserved": 2.73,
+      "degreesOfInk": 36.67
+     },
+     {
+      "seat": "Crown",
+      "chars": 5,
+      "textPx": 37.9,
+      "start": 181.1,
+      "end": 218.9,
+      "degreesReserved": 2.73,
+      "degreesOfInk": 66.67
+     }
+    ],
+    "labels": 7,
+    "lblAreaShare": 1.19,
+    "litAll": 28101,
+    "litIn": 26362,
+    "litAnn": 1737,
+    "areaIn": 92016,
+    "areaAnn": 66884,
+    "px": 482064,
+    "sc": 1,
+    "who": "Sofia"
+   },
+   {
+    "depth": "C",
+    "CW": 664,
+    "CH": 726.5,
+    "BASE_U": 251.7,
+    "U": 251.7,
+    "free": 332,
+    "shell": 186.2,
+    "plateOutermost": 240.9,
+    "seats": [
+     {
+      "seat": "Root",
+      "chars": 4,
+      "textPx": 26.5,
+      "start": 197,
+      "end": 223.6,
+      "degreesReserved": 2.51,
+      "degreesOfInk": 50
+     },
+     {
+      "seat": "Sacral",
+      "chars": 6,
+      "textPx": 36.4,
+      "start": 197,
+      "end": 233.4,
+      "degreesReserved": 2.51,
+      "degreesOfInk": 50
+     },
+     {
+      "seat": "Solar",
+      "chars": 5,
+      "textPx": 29.9,
+      "start": 197,
+      "end": 226.9,
+      "degreesReserved": 2.51,
+      "degreesOfInk": 50
+     },
+     {
+      "seat": "Heart",
+      "chars": 5,
+      "textPx": 32.3,
+      "start": 197,
+      "end": 229.3,
+      "degreesReserved": 2.51,
+      "degreesOfInk": 46.67
+     },
+     {
+      "seat": "Throat",
+      "chars": 6,
+      "textPx": 38.3,
+      "start": 197,
+      "end": 235.4,
+      "degreesReserved": 2.51,
+      "degreesOfInk": 36.67
+     },
+     {
+      "seat": "3rd Eye",
+      "chars": 7,
+      "textPx": 43.8,
+      "start": 197,
+      "end": 240.9,
+      "degreesReserved": 2.51,
+      "degreesOfInk": 36.67
+     },
+     {
+      "seat": "Crown",
+      "chars": 5,
+      "textPx": 37.9,
+      "start": 197,
+      "end": 234.9,
+      "degreesReserved": 2.51,
+      "degreesOfInk": 66.67
+     }
+    ],
+    "labels": 19,
+    "lblAreaShare": 3.99,
+    "litAll": 33016,
+    "litIn": 31129,
+    "litAnn": 1886,
+    "areaIn": 108964,
+    "areaAnn": 73344,
+    "px": 482064,
+    "sc": 1,
+    "who": "Sofia"
+   },
+   {
+    "depth": "D",
+    "CW": 664,
+    "CH": 726.5,
+    "BASE_U": 251.7,
+    "U": 251.7,
+    "free": 332,
+    "shell": 196.3,
+    "plateOutermost": 251.5,
+    "seats": [
+     {
+      "seat": "Root",
+      "chars": 4,
+      "textPx": 26.5,
+      "start": 207.7,
+      "end": 234.2,
+      "degreesReserved": 2.38,
+      "degreesOfInk": 50
+     },
+     {
+      "seat": "Sacral",
+      "chars": 6,
+      "textPx": 36.4,
+      "start": 207.7,
+      "end": 244.1,
+      "degreesReserved": 2.38,
+      "degreesOfInk": 50
+     },
+     {
+      "seat": "Solar",
+      "chars": 5,
+      "textPx": 29.9,
+      "start": 207.7,
+      "end": 237.6,
+      "degreesReserved": 2.38,
+      "degreesOfInk": 50
+     },
+     {
+      "seat": "Heart",
+      "chars": 5,
+      "textPx": 32.3,
+      "start": 207.7,
+      "end": 240,
+      "degreesReserved": 2.38,
+      "degreesOfInk": 46.67
+     },
+     {
+      "seat": "Throat",
+      "chars": 6,
+      "textPx": 38.3,
+      "start": 207.7,
+      "end": 246,
+      "degreesReserved": 2.38,
+      "degreesOfInk": 36.67
+     },
+     {
+      "seat": "3rd Eye",
+      "chars": 7,
+      "textPx": 43.8,
+      "start": 207.7,
+      "end": 251.5,
+      "degreesReserved": 2.38,
+      "degreesOfInk": 36.67
+     },
+     {
+      "seat": "Crown",
+      "chars": 5,
+      "textPx": 37.9,
+      "start": 207.7,
+      "end": 245.6,
+      "degreesReserved": 2.38,
+      "degreesOfInk": 66.67
+     }
+    ],
+    "labels": 44,
+    "lblAreaShare": 10.02,
+    "litAll": 44743,
+    "litIn": 33997,
+    "litAnn": 9048,
+    "areaIn": 121079,
+    "areaAnn": 77646,
+    "px": 482064,
+    "sc": 1,
+    "who": "Sofia"
+   }
+  ],
+  "who": [
+   "Ana",
+   "Sofia"
+  ]
+ }
+}
