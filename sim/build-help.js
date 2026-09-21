@@ -203,9 +203,10 @@ seat&rsquo;s own, and the refusals are printed beside the asks.</div>
 <h2>How an ask was derived</h2>
 <p class="lede">Three rules, applied to every figure.</p>
 <ol>
-<li><b>It has to trace to a departure, not to a complaint.</b> ${fnm('F6')} was met
-by ${met('F6')} of a thousand and attributed ${lost('F6')} departures.
-${fnm('F12')} was met by ${met('F12')} and attributed ${lost('F12')}. The second
+<li><b>It has to trace to a departure, not to a complaint.</b>
+&ldquo;${fnm('F6')}&rdquo; was met by ${met('F6')} of a thousand and attributed
+${lost('F6')} departures. &ldquo;${fnm('F12')}&rdquo; was met by ${met('F12')} and
+attributed ${lost('F12')}. The second
 is the smaller experience and the larger loss, so it ranks above the first.
 A friction everybody meets and nobody leaves on is a nuisance, not a sticking point.</li>
 <li><b>It has to fit the session that figure actually has.</b> Diane tells
@@ -269,12 +270,12 @@ door they are offered. Nothing about the Story page&rsquo;s quality is in that
 sentence.</li>
 <li><b>Something to release, and a release that accumulates.</b> Derek, Ana,
 Angela and Sofia are ${R.icp.Derek.weight+R.icp.Ana.weight+R.icp.Angela.weight+R.icp.Sofia.weight}
-of ${COH}. ${fnm('F3')} cost ${lost('F3')} and
-${fnm('F14')} cost ${lost('F14')}. Both are arithmetic. The engine already
+of ${COH}. &ldquo;${fnm('F3')}&rdquo; cost ${lost('F3')} and
+&ldquo;${fnm('F14')}&rdquo; cost ${lost('F14')}. Both are arithmetic. The engine already
 returns <code>carrying</code> for the first one and the action surfaces do not
 read it.</li>
-<li><b>An instrument that reads what was written.</b> ${fnm('F1')} cost
-${lost('F1')} and ${fnm('F2')} cost ${lost('F2')}. Measured through the shipped
+<li><b>An instrument that reads what was written.</b> &ldquo;${fnm('F1')}&rdquo;
+cost ${lost('F1')} and &ldquo;${fnm('F2')}&rdquo; cost ${lost('F2')}. Measured through the shipped
 <code>parseStory</code>: the bank read ${LEX.bank.before.read} of
 ${LEX.bank.before.n} ordinary sentences before the patch and
 ${LEX.bank.after.read} after, and the roster&rsquo;s own <code>says</code> lines
@@ -308,7 +309,7 @@ seat&rsquo;s own and it is refused on the same grounds.</p>
 <thead><tr><th>The proposal</th><th>Why it is refused</th></tr></thead>
 <tbody>
 <tr class="zero"><td><b>An onboarding tour</b></td><td class="q">Nobody left because they did not
-understand the screen. ${fnm('F6')} was met by ${met('F6')} of a thousand and
+understand the screen. &ldquo;${fnm('F6')}&rdquo; was met by ${met('F6')} of a thousand and
 attributed ${lost('F6')} departures. The count is the problem, not the
 explanation of the count, and a tour adds a screen to a product already measured
 at ${M.above.Field.desk} choices above the fold on the landing surface.</td></tr>
@@ -316,7 +317,7 @@ at ${M.above.Field.desk} choices above the fold on the landing surface.</td></tr
 aimed at. She lost ${lostBy('F1','Angela')} to the box reading nothing out of her
 sentence and ${lostBy('F2','Angela')} to it naming an address she had not
 described. Neither is a tone.</td></tr>
-<tr class="zero"><td><b>More content in Knowledge, Games or Ritual</b></td><td class="q">${fnm('F9')}
+<tr class="zero"><td><b>More content in Knowledge, Games or Ritual</b></td><td class="q">&ldquo;${fnm('F9')}&rdquo;
 was met by ${met('F9')} of a thousand. Nobody exhausts the content because
 nobody stays long enough to reach the end of it. Building more of it moves
 nothing on this page.</td></tr>
