@@ -1,0 +1,668 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The ladder</title>
+<!-- ============================================================
+     proto/ladder/index.html  ·  THE TURN, THE MARKS AND THE AWARDS.
+
+     Nothing on this page is typed in. It loads the real engine at
+     ../../engine.js, the proposed module at ./turn.js and the profile harness
+     at ./roster.js, then builds two profiles for every one of the roster
+     personas and renders what they score. Every figure carries the name of the
+     function that produced it.
+
+     Three script tags, no stylesheet, no font, no image, no request of any
+     kind. The typeface is whatever the machine has, because a prototype that
+     fetches a font is a prototype that fetches.
+
+     THE HOUSE RULES THIS PAGE IS HELD TO.
+       Never a count against a total. The earned marks are shown and the next
+       one is named. The ones past it are not enumerated.
+       Icons are ring, not fill.
+       Sentence case. No soft wellness language. No em dashes.
+       A seat colour means the same thing here as everywhere else, read live
+       out of PAL rather than copied.
+       The count stated to a person is 112.
+     ============================================================ -->
+<style>
+:root{
+ --bg:#0C0D12; --panel:#15171F; --panel2:#1D2029; --sunk:#090A0E;
+ --ink:#EFEDE8; --mid:#B4B0A8; --dim:#8E8A84; --faint:#5E5B57;
+ --accent:#7EB8D4; --au:#C2A063; --alarm:#D6584E;
+ --line:rgba(255,255,255,.085); --line2:rgba(255,255,255,.14);
+ --f:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
+ --m:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f);
+ font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1560px;margin:0 auto;padding:22px 16px 72px}
+h1{font-size:20px;font-weight:600;letter-spacing:.005em;margin:0}
+h2{font-size:13.5px;font-weight:600;margin:0 0 3px}
+.eye{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);
+ font-weight:600;margin:0 0 7px}
+.note{color:var(--dim);font-size:12.5px;margin:0 0 12px}
+.src{color:var(--faint);font-size:10.5px;font-family:var(--m);margin:10px 0 0;
+ padding-top:8px;border-top:1px solid var(--line)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:11px;
+ padding:15px;margin-bottom:14px}
+.hd{display:flex;align-items:flex-start;gap:20px;flex-wrap:wrap;
+ padding-bottom:15px;border-bottom:1px solid var(--line);margin-bottom:18px}
+.hd p{color:var(--mid);font-size:13px;max-width:62ch;margin:6px 0 0}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;align-items:start}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start}
+/* ---- the roster strip ---- */
+.rost{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:16px}
+.rost button{font-family:inherit;font-size:12px;color:var(--mid);cursor:pointer;
+ background:var(--panel2);border:1px solid var(--line);border-radius:99px;
+ padding:6px 12px;display:flex;align-items:center;gap:7px}
+.rost button:hover{border-color:var(--line2);color:var(--ink)}
+.rost button[aria-pressed=true]{background:var(--ink);color:var(--bg);
+ border-color:var(--ink);font-weight:600}
+.rost i{width:7px;height:7px;border-radius:99px;border:1.5px solid currentColor;
+ display:inline-block}
+.rost em{font-style:normal;font-family:var(--m);font-size:10.5px;opacity:.7}
+/* ---- figures ---- */
+/* A WIDE TABLE SCROLLS INSIDE ITS OWN BOX AND NEVER THE PAGE. At 390 the
+   cadence table is nine columns and it took the whole document sideways with
+   it, which the gate caught. min-width on the grid children is the other half:
+   a grid track defaults to auto and will not shrink below its content. */
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.grid2>*,.grid3>*,.cols>*{min-width:0}
+table{border-collapse:collapse;width:100%;font-size:12.5px}
+th,td{text-align:left;padding:4px 7px 4px 0;border-bottom:1px solid var(--line);
+ vertical-align:baseline}
+th{color:var(--dim);font-weight:600;font-size:10px;letter-spacing:.11em;
+ text-transform:uppercase;white-space:nowrap}
+td.n{font-family:var(--m);text-align:right;white-space:nowrap}
+/* A FIGURE CELL THAT CARRIES A SENTENCE HAS TO WRAP. Three rows of the
+   provenance table hold a phrase rather than a number, and nowrap turned one of
+   them into 781 pixels of table inside a 326 pixel column. */
+table.fig td.n{white-space:normal}
+td.f{color:var(--faint);font-family:var(--m);font-size:10.5px}
+tr.hi td{color:var(--ink)}
+.two{display:grid;grid-template-columns:1fr auto auto;gap:0 12px;font-size:12.5px}
+/* ---- the ring ---- */
+.ring{display:block;margin:0 auto}
+.qkey{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;
+ font-size:11px;color:var(--dim);margin-top:8px}
+.qkey span{display:flex;align-items:center;gap:5px}
+.qkey i{width:8px;height:8px;border-radius:99px;border:1.5px solid currentColor}
+/* ---- shelves ---- */
+.fam{margin:0 0 14px}
+.fam h3{font-size:10px;letter-spacing:.13em;text-transform:uppercase;
+ font-weight:600;margin:0 0 7px;display:flex;align-items:center;gap:7px;
+ color:var(--dim)}
+.fam h3 i{width:8px;height:8px;border-radius:99px;border:1.5px solid currentColor}
+.shelf{display:flex;flex-wrap:wrap;gap:7px}
+.mk{display:flex;align-items:center;gap:8px;background:var(--panel2);
+ border:1px solid var(--line);border-radius:9px;padding:7px 11px 7px 8px;
+ max-width:100%}
+.mk svg{flex:none}
+.mk b{font-size:12.5px;font-weight:600;display:block}
+.mk s{font-size:11px;color:var(--dim);text-decoration:none;display:block;
+ max-width:34ch}
+.next{background:var(--sunk);border:1px dashed var(--line2);border-radius:9px;
+ padding:10px 12px;margin-top:4px}
+.next b{font-size:12.5px}
+.next s{text-decoration:none;color:var(--dim);font-size:11.5px;display:block}
+.empty{color:var(--faint);font-size:12px;font-style:normal;padding:8px 0}
+.blocked{background:var(--sunk);border:1px solid var(--line);border-radius:9px;
+ padding:10px 12px;font-size:12px;color:var(--mid);margin-top:8px}
+.blocked b{color:var(--ink)}
+.blocked code{font-family:var(--m);font-size:11px;color:var(--au)}
+/* ---- the two columns ---- */
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.col{background:var(--sunk);border:1px solid var(--line);border-radius:9px;padding:12px}
+.col .eye{margin-bottom:9px}
+.big{font-family:var(--m);font-size:26px;line-height:1.1;font-weight:500}
+.big s{text-decoration:none;font-size:11px;color:var(--dim);font-family:var(--f);
+ display:block;margin-top:2px}
+/* ---- the anti design ---- */
+.anti{list-style:none;margin:0;padding:0}
+.anti li{border-left:2px solid var(--alarm);padding:0 0 0 12px;margin:0 0 12px;
+ font-size:12.5px;color:var(--mid)}
+.anti li b{color:var(--ink);display:block;font-size:12.5px}
+.anti li code{font-family:var(--m);font-size:11px;color:var(--au)}
+.warn{border-left:2px solid var(--au)}
+.fail{color:var(--alarm);font-weight:600}
+.ok{color:#65CFA5}
+@media (max-width:1100px){.grid3,.grid2{grid-template-columns:1fr}}
+@media (max-width:640px){
+ .wrap{padding:16px 16px 56px}
+ .cols{grid-template-columns:1fr}
+ h1{font-size:18px}
+ .mk s{max-width:100%}
+ table{font-size:12px}
+ th,td{padding:4px 5px 4px 0}
+ /* A THREE COLUMN FIGURE TABLE STACKS AT PHONE WIDTH.
+
+    The third column carries the name of the function behind the figure and it
+    is monospace, so it will not wrap and it took the document three hundred
+    pixels sideways. Dropping the column would drop the provenance, which is
+    the one thing on this page that must survive every width, so the row
+    becomes a block instead: the label and the figure on one line and the
+    function under them. Nothing is hidden at 390 that is visible at 1600. */
+ table.fig,table.fig tbody,table.fig tr,table.fig td{display:block;width:auto}
+ table.fig tr{border-bottom:1px solid var(--line);padding:5px 0;
+  display:grid;grid-template-columns:1fr auto;gap:0 10px}
+ table.fig td{border:0;padding:0}
+ table.fig td.n{text-align:right}
+ table.fig td.f{grid-column:1/-1;word-break:break-word;margin-top:1px}
+}
+</style></head>
+<body>
+<div class="wrap">
+ <div class="hd">
+  <div>
+   <p class="eye">Atüned · the scoring, the marks and the awards</p>
+   <h1>The ladder</h1>
+   <p>The loop is discover, play, flow, embody, and it is a circle. One closed
+   circle is one turn, and a turn is the only thing this design counts. The
+   roster below is the real one, loaded off the real engine, so every figure on
+   this page is what somebody actually scores today rather than what a document
+   hoped they would.</p>
+  </div>
+  <div id="loop"></div>
+ </div>
+
+ <div class="rost" id="rost"></div>
+ <div id="body"></div>
+
+ <div class="card">
+  <p class="eye">The curve</p>
+  <h2>What a turn costs, and it is the same for everybody</h2>
+  <p class="note">turns(d,c) = floor(d x c / 7), where c is circles closed in a
+  week. Nothing is withheld at a number somebody chose. The fourth line is the
+  one that matters: a person who only ever runs the short version closes no
+  circles, is paid nothing for a turn, and loses nothing either.</p>
+  <div class="grid2">
+   <div><div id="curve"></div></div>
+   <div><div id="curvetab"></div></div>
+  </div>
+  <p class="src">turnsAt() · curveOf() · proto/ladder/turn.js</p>
+ </div>
+
+ <div class="card">
+  <p class="eye">Measured, and it is the defect</p>
+  <h2>The run at each cadence, after ninety days</h2>
+  <div class="scroll" id="cad"></div>
+  <p class="src">streakRead() · engine/ladder.js · MARKS[].t against MARK2[].t</p>
+ </div>
+
+ <div class="card">
+  <p class="eye">The anti design</p>
+  <h2>What this must never do, with the mechanic named</h2>
+  <ul class="anti" id="anti"></ul>
+ </div>
+
+ <div class="card">
+  <p class="eye">Provenance</p>
+  <div id="prov"></div>
+ </div>
+</div>
+
+<script src="../../engine.js"></script>
+<script src="./turn.js"></script>
+<script src="./roster.js"></script>
+<script>
+/* ============================================================
+   Everything below reads. Nothing below authors a number.
+   ============================================================ */
+var E=window, T=window, RO=window.ROSTER;
+var SEATS=['Root','Sacral','Solar','Heart','Throat','3rd Eye','Crown'];
+var C={W:W, CHILD:CHILD, TIERDEF:TIERDEF, PRACTICE:PRACTICE, SEATS:SEATS,
+       purposeReady:purposeReady};
+var T0=Date.UTC(2026,5,22,9,0,0);          /* held still, so the page is stable */
+var NOW=T0+90*86400000;
+var ENG={S:S, CHARGES:CHARGES, SINAMES:SINAMES, SI:SI, LAWSET:LAWSET,
+ buildSoul:buildSoul, compute:compute, CHILD:CHILD, W:W, PRACTICE:PRACTICE,
+ blankProfile:blankProfile, loadProfile:loadProfile, meterPlan:meterPlan,
+ meterRun:meterRun, meterFirst:meterFirst, snapshot:snapshot,
+ cqCeiling:cqCeiling, RUN_MAX:(typeof RUN_MAX!=='undefined'?RUN_MAX:25)};
+function seatCol(b){ return (PAL&&PAL[b])||'var(--accent)'; }
+function esc(s){ return String(s==null?'':s)
+ .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function $(id){ return document.getElementById(id); }
+function ring(d,col,sz){
+ /* ICONS ARE RING, NOT FILL. Every one of these paths is stroke only and the
+    rule is enforced here rather than trusted: fill is none, always. */
+ return '<svg width="'+(sz||20)+'" height="'+(sz||20)+'" viewBox="0 0 24 24" '
+  +'fill="none" stroke="'+col+'" stroke-width="1.5" stroke-linecap="round" '
+  +'stroke-linejoin="round" aria-hidden="true"><path d="'+d+'"/></svg>'; }
+
+/* ---- the roster, both columns, computed once ---- */
+var BOOK=[];
+PEOPLE.forEach(function(per){
+ var r0=RO.loadPerson(ENG,per);
+ var row={nm:per.nm, age:per.age, role:per.role, says:per.says,
+  base:{CQ:r0.CQ, band:r0.tier, ceil:cqCeiling(),
+        loaded:r0.loaded.length, carrying:(r0.carrying||[]).length,
+        excess:(r0.excess||[]).length}};
+ ['light','heavy'].forEach(function(col){
+  var p=(col==='light')?RO.light(ENG,per,T0):RO.heavy(ENG,per,T0,90,2);
+  var r=RO.readingOf(ENG,p);
+  var l=ledgerRead(p), s=streakRead(p,NOW), tn=turnRead(p,NOW);
+  row[col]={p:p, r:r, l:l, s:s, tn:tn,
+   mk:markRead(p,l,s,tn,C), aw:awardRead(p,r,NOW,C),
+   mt:meterRead(p,NOW), addr:addrSet(p).length, seats:seatSet(p,W).length,
+   gap:gapMax(p), edays:entryDays(p), tracks:trackSet(p).length};});
+ BOOK.push(row);});
+BOOK.sort(function(a,b){return a.base.CQ-b.base.CQ;});
+var PICK=BOOK.map(function(x){return x.nm;}).indexOf('Gordon');
+if(PICK<0)PICK=0;
+
+/* ---- the loop, drawn as a closed circle, because it is one ---- */
+function drawLoop(lit){
+ var R=52, cx=64, cy=64, on=lit||{};
+ var s='<svg class="ring" width="128" height="128" viewBox="0 0 128 128" '
+  +'role="img" aria-label="the loop: discover, play, flow, embody, closing">';
+ /* THE ARCS CLOSE. Four arcs with a gap between them and no arrowhead at the
+    end of the fourth, because a numbered column of four says the fourth is the
+    end, which is the opposite of a loop. */
+ QUARTER.forEach(function(q,i){
+  var a0=-Math.PI/2+i*Math.PI/2+0.10, a1=a0+Math.PI/2-0.20;
+  var x0=cx+R*Math.cos(a0), y0=cy+R*Math.sin(a0);
+  var x1=cx+R*Math.cos(a1), y1=cy+R*Math.sin(a1);
+  var col=seatCol(q.seat), hasIt=!!on[q.k];
+  s+='<path d="M'+x0.toFixed(1)+' '+y0.toFixed(1)+' A'+R+' '+R+' 0 0 1 '
+   +x1.toFixed(1)+' '+y1.toFixed(1)+'" fill="none" stroke="'+col
+   +'" stroke-width="'+(hasIt?5:2)+'" stroke-linecap="round" opacity="'
+   +(hasIt?1:0.34)+'"/>';
+  var am=(a0+a1)/2, lx=cx+(R+13)*Math.cos(am), ly=cy+(R+13)*Math.sin(am);
+  s+='<text x="'+lx.toFixed(1)+'" y="'+ly.toFixed(1)+'" fill="'+col
+   +'" opacity="'+(hasIt?1:0.5)+'" font-size="8.5" font-family="'
+   +'-apple-system,Helvetica,Arial,sans-serif" text-anchor="middle" '
+   +'dominant-baseline="middle">'+esc(q.nm.toLowerCase())+'</text>';});
+ /* the turn sits at the centre at the solar, and it is a count of the whole
+    ring rather than of one quarter of it */
+ s+='<circle cx="64" cy="64" r="17" fill="none" stroke="'+seatCol(TURN_SEAT)
+  +'" stroke-width="1.5" opacity="0.8"/>';
+ s+='</svg>';
+ return s;}
+$('loop').innerHTML=drawLoop({discover:1,play:1,flow:1,embody:1})
+ +'<div class="qkey">'
+ +QUARTER.map(function(q){return '<span style="color:'+seatCol(q.seat)
+  +'"><i></i>'+esc(q.seat)+'</span>';}).join('')
+ +'<span style="color:'+seatCol(TURN_SEAT)+'"><i></i>turn, '+esc(TURN_SEAT)
+ +'</span></div>';
+
+/* ---- the roster strip ---- */
+$('rost').innerHTML=BOOK.map(function(x,i){
+ return '<button type="button" data-i="'+i+'" aria-pressed="'+(i===PICK)+'">'
+  /* THE DOT IS THE BAND, READ OUT OF TIERCOL. A first cut coloured it off the
+     coherence divided by fifteen and indexed into the seats, which is a colour
+     that means nothing in a product where every colour means something. */
+  +'<i style="color:'+((TIERCOL&&TIERCOL[x.base.band])||'var(--mid)')+'"></i>'
+  +esc(x.nm)+' <em>'+x.base.CQ.toFixed(0)+'</em></button>';}).join('');
+$('rost').addEventListener('click',function(e){
+ var b=e.target.closest('button'); if(!b)return;
+ PICK=+b.dataset.i; render();});
+
+/* ---- a shelf of marks, grouped by the quarter, seat coloured ---- */
+function shelf(list){
+ var byQ={}; list.forEach(function(m){ (byQ[m.q]=byQ[m.q]||[]).push(m); });
+ var order=QUARTER.map(function(q){return q.k;}).concat(['turn']);
+ return order.map(function(qk){
+  var got=byQ[qk]; if(!got||!got.length)return '';
+  var q=quarterOf(qk), col=seatCol(q.seat);
+  return '<div class="fam"><h3 style="color:'+col+'"><i></i>'+esc(q.nm)
+   +'<span style="color:var(--faint);letter-spacing:0;text-transform:none;'
+   +'font-weight:400">'+esc(q.job)+'</span></h3><div class="shelf">'
+   +got.map(function(m){
+     return '<div class="mk" title="'+esc(m.d)+'">'+ring(m.ic,col)
+      +'<span><b>'+esc(m.nm)+'</b><s>'+esc(m.d)+'</s></span></div>';}).join('')
+   +'</div></div>';}).join('');}
+
+/* ---- a shelf of awards. the colour is where it happened, not the family ---- */
+function awShelf(aw){
+ var byF={}; aw.earned.forEach(function(a){ (byF[a.fam]=byF[a.fam]||[]).push(a); });
+ var fams=['Cleared','Held','Moved','Closed'];
+ var geo={Cleared:'M12 4a8 8 0 100 16 8 8 0 100-16',
+  Held:'M12 4a8 8 0 100 16 8 8 0 100-16 M12 8a4 4 0 100 8 4 4 0 100-8',
+  Moved:'M12 4a8 8 0 100 16 8 8 0 100-16 M4 12h16',
+  Closed:'M12 4a8 8 0 100 16 8 8 0 100-16 M12 4v8h8'};
+ var out=fams.map(function(f){
+  var got=byF[f];
+  if(!got||!got.length)return '';
+  return '<div class="fam"><h3 style="color:var(--dim)"><i></i>'+esc(f)
+   +'</h3><div class="shelf">'
+   +got.map(function(a){
+     var col=a.seat?seatCol(a.seat):'var(--mid)';
+     return '<div class="mk" title="'+esc(a.d)+'">'+ring(geo[f],col)
+      +'<span><b>'+esc(a.nm)+'</b><s>'+esc(a.d)+'</s></span></div>';}).join('')
+   +'</div></div>';}).join('');
+ return out||'<p class="empty">Nothing on the shelf yet. Nothing is missing '
+  +'either: an award is a thing that happened and none has happened.</p>';}
+
+/* ---- one column of figures, every row carrying its own function ---- */
+function figures(d,base){
+ var rows=[
+  ['turns closed','turnRead().n',d.tn.n,1],
+  ['days of practice','streakRead().days',d.s.days,0],
+  ['the run, live '+(d.s.live?'yes':'no'),'streakRead().run',d.s.run,0],
+  ['addresses opened','addrSet()',d.addr,0],
+  ['seats opened','seatSet()',d.seats+' of 7',0],
+  ['lines spoken','meter.lines',d.l.lines,0],
+  ['minutes practised','ledgerRead().minutes',d.l.minutes,0],
+  ['days with an entry','entryDays()',d.edays,0],
+  ['tracks run','trackSet()',d.tracks+' of '+(function(){var t={};
+    PRACTICE.forEach(function(x){t[x.track]=1;});return Object.keys(t).length;})(),0],
+  ['readings on file','ledgerRead().snaps',d.l.snaps,0],
+  ['axes at the far pole','ledgerRead().clear',d.l.clear,0],
+  ['axes still carrying','ledgerRead().carry',d.l.carry,0],
+  ['coherence','compute().CQ',d.r.CQ.toFixed(1),1],
+  ['your own ceiling','cqCeiling()',(d.p.history[0]&&d.p.history[0].ceil||0).toFixed(1),0],
+  ['band','compute().tier',d.r.band||d.r.tier,0],
+  ['release candidates','compute().excess',(d.r.excess||[]).length,0],
+  ['the next distance','meterRead().next',
+   d.mt.next?(d.mt.next.nm+', '+d.mt.next.left+' away'):'all behind you',0],
+  ['marks earned','markRead().earned',d.mk.earned.length,1],
+  ['awards conferred','awardRead().earned',d.aw.earned.length,1]];
+ return '<table class="fig"><tbody>'+rows.map(function(r){
+  return '<tr'+(r[3]?' class="hi"':'')+'><td>'+esc(r[0])+'</td>'
+   +'<td class="n">'+esc(r[2])+'</td><td class="f">'+esc(r[1])+'</td></tr>';
+ }).join('')+'</tbody></table>';}
+
+/* ---- the nine axes, as the profile holds them ---- */
+function axes(p){
+ return '<table><thead><tr><th>axis</th><th>at the pole</th>'
+  +'<th>carrying</th><th>seat</th></tr></thead><tbody>'
+  +CHILD.map(function(c){
+   var a=(p.axes||{})[c.nm]||{};
+   return '<tr><td style="color:'+seatCol(c.seat)+'">'+esc(c.opp||c.nm)+'</td>'
+    +'<td class="n">'+(+a.opp||0).toFixed(1)+'</td>'
+    +'<td class="n">'+(+a.held||0).toFixed(1)+'</td>'
+    +'<td class="f">'+esc(c.seat)+'</td></tr>';}).join('')
+  +'</tbody></table>';}
+
+/* ---- the body of the page, for the picked person ---- */
+function render(){
+ var x=BOOK[PICK];
+ Array.prototype.forEach.call($('rost').children,function(b,i){
+  b.setAttribute('aria-pressed',String(i===PICK));});
+ var h='';
+ h+='<div class="card"><p class="eye">The person, off the roster</p>'
+  +'<h2>'+esc(x.nm)+', '+esc(x.role||'')+', '+x.age+'</h2>'
+  +'<p class="note">'+esc(x.says||'')+'</p>'
+  +'<table class="fig"><tbody>'
+  +[['coherence, before anything is entered','compute().CQ',x.base.CQ.toFixed(1)],
+    ['band','compute().tier',x.base.band],
+    ['their own ceiling','cqCeiling()',x.base.ceil.toFixed(1)],
+    ['addresses loaded','compute().loaded',x.base.loaded],
+    ['addresses carrying','compute().carrying',x.base.carrying],
+    ['release candidates','compute().excess',x.base.excess]]
+   .map(function(r){return '<tr><td>'+esc(r[0])+'</td><td class="n">'+esc(r[2])
+    +'</td><td class="f">'+esc(r[1])+'</td></tr>';}).join('')
+  +'</tbody></table>'
+  +'<p class="src">ROSTER.loadPerson() loads a persona exactly as '
+  +'ui/personas.js does · 112 addresses</p></div>';
+
+ /* the two columns */
+ h+='<div class="card"><p class="eye">Two profiles, one person</p>'
+  +'<h2>What a light and a heavy record score today</h2>'
+  +'<p class="note">Left is one session on day one. Right is the whole circle '
+  +'twice a week for ninety days, with a fortnight in the middle where nothing '
+  +'happened, because the hardest case this has to survive is a person who '
+  +'could not face it for two weeks and then opened it again. The cadence is '
+  +'the one thing on this page that is stated rather than measured: how often '
+  +'somebody opens the app is not in the engine.</p>'
+  +'<div class="cols">'
+  +['light','heavy'].map(function(col){
+    var d=x[col];
+    return '<div class="col"><p class="eye">'
+     +(col==='light'?'day one, one session':'day ninety, twice a week')+'</p>'
+     /* AND A CLOSED CIRCLE IS NOT AN EMPTY ONE. turnRead empties the set the
+        moment a turn closes, so a record that has just gone all the way round
+        reported every quarter as open, which reads as somebody who has done
+        nothing. Closed clean is its own state and it draws the whole ring. */
+     +'<div class="big">'+d.tn.n+'<s>turns closed. '
+     +(d.tn.lit.length
+       ?('part way round: '+d.tn.lit.join(', '))
+       :(d.tn.n?'closed clean, nothing part way round':'not started'))
+     +'</s></div>'
+     +drawLoop(d.tn.lit.length?d.tn.at
+       :(d.tn.n?{discover:1,play:1,flow:1,embody:1}:{}))
+     +figures(d,x.base)+'</div>';}).join('')
+  +'</div>'
+  +'<p class="src">ROSTER.light() · ROSTER.heavy() · every write is an engine '
+  +'writer: meterPlan, meterRun, meterFirst, snapshot, and the release '
+  +'arithmetic at ui/release.js:107</p></div>';
+
+ /* the shelves, on the heavy record */
+ var hv=x.heavy, lt=x.light;
+ h+='<div class="grid2">'
+  +'<div class="card"><p class="eye">The marks. What you did</p>'
+  +'<h2>Earned at ninety days</h2>'
+  +'<p class="note">Grouped by the quarter of the circle each one belongs to, '
+  +'coloured by that quarter\'s seat. The earned ones are shown and the next '
+  +'one is named. The ones past it are not listed, so nothing here invites '
+  +'anybody to finish their own nervous system.</p>'
+  +(hv.mk.earned.length?shelf(hv.mk.earned)
+    :'<p class="empty">Nothing yet.</p>')
+  +(hv.mk.next?('<div class="next"><b>Next: '+esc(hv.mk.next.nm)+'</b><s>'
+    +esc(hv.mk.next.d)+'</s></div>')
+   :'<div class="next"><b>Nothing named next.</b><s>Every mark on the list is '
+    +'already on the record.</s></div>')
+  +'<p class="src">markRead() · MARK2 · proto/ladder/turn.js</p></div>'
+
+  +'<div class="card"><p class="eye">The awards. What moved</p>'
+  +'<h2>Conferred at ninety days</h2>'
+  +'<p class="note">An award\'s colour is where it happened, not which family '
+  +'it is in, so the shelf reads as a body at a glance. Cleared and Closed sit '
+  +'on the reading. Moved sits on two readings and a date. Nothing is ever '
+  +'taken back.</p>'
+  +awShelf(hv.aw)
+  +(function(){
+    var need=[];
+    Object.keys(hv.aw.ready).forEach(function(f){
+     if(!hv.aw.ready[f])need.push(f);});
+    if(!need.length)return '';
+    return '<div class="blocked">'+need.map(function(f){
+     var shown=hv.aw.earned.some(function(a){return a.fam===f;});
+     return '<b>'+esc(f)+'</b> needs '+esc(hv.aw.need[f])+', and the shipped '
+      +'snapshot does not carry it. '
+      +(shown
+        ? 'The ones above are real: the harness writes that one field, so this '
+          +'is what the family is worth once the schema carries it.'
+        : 'Nothing is shown for it here.');}).join('<br><br>')
+     +'</div>';})()
+  +'<p class="src">awardRead() · awardList() · AWARD_NEED</p></div>'
+  +'</div>';
+
+ /* the axes, and the ledger the engine already holds */
+ h+='<div class="grid2">'
+  +'<div class="card"><p class="eye">The nine, at ninety days</p>'
+  +'<h2>What the profile holds</h2>'+axes(hv.p)
+  +'<p class="src">p.axes, written by saveProfile off S.charge and S.replace · '
+  +'CHILD carries the opposite and the seat</p></div>'
+  +'<div class="card"><p class="eye">The ruler</p>'
+  +'<h2>One distance, and it is theirs</h2>'
+  +'<p class="note">The seven markers already in the engine, scaled to this '
+  +'person\'s own load rather than to one man\'s numbers at one man\'s age. '
+  +'Never a gate, and only the next one is named.</p>'
+  +'<table class="fig"><tbody>'
+  +[['ground opened','meterRead().unique',hv.mt.unique],
+    ['their own load','meterRead().estimate',
+     hv.mt.estimate===null?'unscaled':hv.mt.estimate],
+    ['scaled to them','meterRead().scaled',hv.mt.scaled?'yes':'no, reference scale'],
+    ['the next distance','meterRead().next',
+     hv.mt.next?(hv.mt.next.nm+', '+hv.mt.next.left+' away'):'all behind you'],
+    ['of the gift left','meterRead().giftLeft',hv.mt.giftLeft]]
+   .map(function(r){return '<tr><td>'+esc(r[0])+'</td><td class="n">'+esc(r[2])
+    +'</td><td class="f">'+esc(r[1])+'</td></tr>';}).join('')
+  +'</tbody></table>'
+  +'<p class="src">meterRead() · MARKERS · markersFor() · engine/schema.js</p>'
+  +'</div></div>';
+ $('body').innerHTML=h;}
+
+/* ---- the curve, drawn ---- */
+(function(){
+ var CAD=[['the whole ring, daily',7],['twice a week',2],['weekly',1],
+  ['the short run only',0]];
+ var w=520,hh=250,pl=38,pb=28,pt=10,pr=10;
+ var maxT=90, maxD=90;
+ function X(d){return pl+(w-pl-pr)*d/maxD;}
+ function Y(t){return pt+(hh-pt-pb)*(1-t/maxT);}
+ var s='<svg width="100%" height="'+hh+'" viewBox="0 0 '+w+' '+hh+'" '
+  +'role="img" aria-label="turns closed against days, at four cadences">';
+ [0,30,60,90].forEach(function(t){
+  s+='<line x1="'+pl+'" y1="'+Y(t)+'" x2="'+(w-pr)+'" y2="'+Y(t)
+   +'" stroke="rgba(255,255,255,.07)"/>'
+   +'<text x="'+(pl-6)+'" y="'+(Y(t)+3.5)+'" fill="#5E5B57" font-size="9.5" '
+   +'text-anchor="end" font-family="monospace">'+t+'</text>';});
+ [1,7,30,90].forEach(function(d){
+  s+='<text x="'+X(d)+'" y="'+(hh-9)+'" fill="#5E5B57" font-size="9.5" '
+   +'text-anchor="middle" font-family="monospace">d'+d+'</text>';});
+ var cols=['#7EB8D4','#C2A063','#8296DB','#8E8A84'];
+ CAD.forEach(function(c,i){
+  var pts=curveOf(maxD,c[1]).map(function(p){
+   return X(p.d).toFixed(1)+','+Y(p.turns).toFixed(1);}).join(' ');
+  s+='<polyline points="'+pts+'" fill="none" stroke="'+cols[i]
+   +'" stroke-width="'+(c[1]===0?2.5:1.8)+'"'
+   +(c[1]===0?' stroke-dasharray="4 3"':'')+'/>';
+  /* THE LABEL SITS ON ITS OWN LINE, SHORT OF THE END.
+
+     At the end of the run the daily line is at the top of the box and its label
+     was clipped clean off the viewBox. Clamping it put the words on top of the
+     line instead. Each label now sits above its own line at day sixty two,
+     where the four lines are far enough apart to carry four labels: measured at
+     that x they land 76, 182, 203 and 222 pixels down. */
+  var dL=62, yL=Y(turnsAt(dL,c[1]))-7;
+  s+='<text x="'+(X(dL)-6).toFixed(1)+'" y="'+yL.toFixed(1)+'" fill="'+cols[i]
+   +'" font-size="10" text-anchor="end" font-family="'
+   +'-apple-system,Helvetica,Arial,sans-serif">'+esc(c[0])+'</text>';});
+ s+='<text x="'+pl+'" y="'+(pt+9)+'" fill="#5E5B57" font-size="9.5" '
+  +'font-family="monospace">turns</text></svg>';
+ $('curve').innerHTML=s;
+
+ /* and the table beside it, plus what each rung of readiness can say */
+ var t='<table><thead><tr><th>cadence</th><th>d1</th><th>d7</th><th>d30</th>'
+  +'<th>d90</th></tr></thead><tbody>'
+  +CAD.map(function(c){
+   return '<tr><td>'+esc(c[0])+'</td>'
+    +[1,7,30,90].map(function(d){
+      return '<td class="n">'+turnsAt(d,c[1])+'</td>';}).join('')+'</tr>';
+  }).join('')+'</tbody></table>'
+  +'<p class="note" style="margin-top:14px">And what opens is not set by a '
+  +'number anybody chose. A surface appears the moment the arithmetic behind '
+  +'it can be stated honestly, and never before and never later. '
+  +'seriesRead already works this way.</p>'
+  +'<table><thead><tr><th>readings</th><th>what can be said</th>'
+  +'<th>where</th></tr></thead><tbody>'
+  +READY.map(function(r){
+   return '<tr><td class="n">'+r.n+'</td><td>'+esc(r.says)+'</td>'
+    +'<td class="f">'+esc(r.where)+'</td></tr>';}).join('')
+  +'</tbody></table>';
+ $('curvetab').innerHTML=t;})();
+
+/* ---- the cadence defect, measured live ---- */
+(function(){
+ var per=PEOPLE.filter(function(p){return p.nm==='Diane';})[0];
+ var out=[['daily',7],['twice a week',2],['weekly',1]].map(function(c){
+  var p=RO.heavy(ENG,per,T0,90,c[1]); RO.readingOf(ENG,p);
+  var l=ledgerRead(p), s=streakRead(p,NOW), tn=turnRead(p,NOW);
+  var mk=markRead(p,l,s,tn,C);
+  function mine(k){return mk.earned.some(function(m){return m.k===k;});}
+  function built(k){
+   var m=MARKS.filter(function(z){return z.k===k;})[0]; if(!m)return false;
+   try{return !!m.t(l,s,p);}catch(e){return false;}}
+  return {nm:c[0], days:s.days, run:s.run, best:s.best, turns:tn.n,
+   w1:mine('week'), w0:built('week'), m1:mine('month'), m0:built('month')};});
+ var y=function(b){return b?'<span class="ok">earned</span>'
+  :'<span class="fail">no</span>';};
+ $('cad').innerHTML='<p class="note">Diane, ninety days, the same fortnight '
+  +'off in all three. The last two columns are the same two marks under this '
+  +'design and under engine/ladder.js as it ships. A person who practised '
+  +'religiously twice a week for three months earns neither of them today, '
+  +'because both read the longest strictly consecutive row and nothing '
+  +'softens that, six lines under a comment citing the study that says a '
+  +'missed day does not undo a habit.</p>'
+  +'<table><thead><tr><th>cadence</th><th>days</th><th>the run</th>'
+  +'<th>longest row</th><th>turns</th><th>seven days, this design</th>'
+  +'<th>seven days, as built</th><th>thirty days, this design</th>'
+  +'<th>thirty days, as built</th></tr></thead><tbody>'
+  +out.map(function(r){
+   return '<tr><td>'+esc(r.nm)+'</td><td class="n">'+r.days+'</td>'
+    +'<td class="n">'+r.run+'</td><td class="n">'+r.best+'</td>'
+    +'<td class="n">'+r.turns+'</td><td>'+y(r.w1)+'</td><td>'+y(r.w0)+'</td>'
+    +'<td>'+y(r.m1)+'</td><td>'+y(r.m0)+'</td></tr>';}).join('')
+  +'</tbody></table>';})();
+
+/* ---- the anti design ---- */
+(function(){
+ var A=[
+  ['A streak that resets, and a mark that demands a row.',
+   'streakRead().best, read by three of the sixteen marks',
+   'The run already halves with one grace day, on Lally 2010. Three marks read '
+   +'the strictly consecutive row instead, so the badge is stricter than the '
+   +'mechanic beside it. Measured above: the twice a week person earns neither.'],
+  ['A variable ratio reward.','never',
+   'Schull, Addiction by Design. Every threshold here is fixed, announced, and '
+   +'visible before it is reached, so a person can decide not to chase it.'],
+  ['A near miss.','markRead().next returns one mark, never a list',
+   'One next thing, named, with what it takes. The ones past it are not '
+   +'enumerated, because a list of somebody\'s unfinished self is a completion '
+   +'bar on a nervous system.'],
+  ['A count against a total.','never a denominator',
+   'markRead returns earned and one next. The length of the list exists in the '
+   +'code and is never handed to a surface as the bottom half of a fraction.'],
+  ['A notification, a welcome back, or any sentence naming an absence.','never',
+   'gapMax is read by exactly one mark and is never rendered on its own. The '
+   +'return is marked, the absence is not mentioned.'],
+  ['An award for getting worse.','Moved, upward crossings only',
+   'A downward crossing is a true fact and it belongs on the graph, which '
+   +'already draws it. A shelf is read as a list of what somebody achieved, '
+   +'so an entry saying the reading fell is a product congratulating '
+   +'somebody for suffering.'],
+  ['Volume in one quarter paying for anything.',
+   'turnRead walks all four streams',
+   'Ten entries close no turns. Ten rituals close no turns. To close one a '
+   +'person has to go round, which is the only reason to count the circle '
+   +'instead of the acts.'],
+  ['A scarcity timer, an expiry, or a season that can be lost.','never',
+   'Nothing in this product expires. The marks are dated facts and a date is '
+   +'either true or it is not.'],
+  ['A rank, a list of people, or a shared number.','never',
+   'It would rank people who handed a machine their distress.'],
+  ['An award family that is shut to the people who need it most.',
+   'measured, and it is why Closed exists',
+   'The release candidate list is empty for half the roster at both ends of '
+   +'the range. A family that needed a release run would be shut to them. '
+   +'Cleared reads the pole per address and Closed reads the person\'s own '
+   +'ceiling, so nobody scores nothing for ninety days of work.']];
+ $('anti').innerHTML=A.map(function(a){
+  return '<li><b>'+esc(a[0])+'</b><code>'+esc(a[1])+'</code><br>'
+   +esc(a[2])+'</li>';}).join('');})();
+
+/* ---- provenance, counted off the lists rather than typed ---- */
+(function(){
+ var AW=awardList(C), byF={}, byQ={};
+ AW.forEach(function(a){byF[a.fam]=(byF[a.fam]||0)+1;});
+ MARK2.forEach(function(m){byQ[m.q]=(byQ[m.q]||0)+1;});
+ var rows=[
+  ['marks in engine/ladder.js today','MARKS.length',MARKS.length],
+  ['marks in this design','MARK2.length',MARK2.length],
+  ['by quarter','byQuarter',Object.keys(byQ).map(function(k){
+    return k+' '+byQ[k];}).join(', ')],
+  ['keys kept from the built ladder','set intersection',
+   MARKS.filter(function(m){return MARK2.some(function(z){return z.k===m.k;});
+    }).length+' of '+MARKS.length],
+  ['awards in this design','awardList().length',AW.length],
+  ['by family','group',Object.keys(byF).map(function(k){
+    return k+' '+byF[k]+(AWARD_READY[k]?'':' (blocked)');}).join(', ')],
+  ['bands','TIERDEF.length',TIERDEF.length+', so '+(TIERDEF.length-1)
+   +' boundaries'],
+  ['tracks','PRACTICE',(function(){var t={};PRACTICE.forEach(function(x){
+    t[x.track]=1;});return Object.keys(t).length;})()],
+  ['addresses stated to a person','ruled','112'],
+  ['schema additions this design needs','named',
+   'one boolean on a ritual entry, one array of awards, eighteen characters '
+   +'and one number on a snapshot'],
+  ['requests this page makes','measured by the gate','none']];
+ $('prov').innerHTML='<table class="fig"><tbody>'+rows.map(function(r){
+  return '<tr><td>'+esc(r[0])+'</td><td class="n">'+esc(r[2])+'</td>'
+   +'<td class="f">'+esc(r[1])+'</td></tr>';}).join('')+'</tbody></table>';})();
+
+render();
+</script>
+</body></html>
