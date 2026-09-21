@@ -304,6 +304,49 @@ into something tidier than he said it.
   > everywhere else. Dropped, and the band is the only naming.
   > **Look at.** `proto/field-a/index.html`, panel B.
 
+### SB. RULED. A, INSIDE THE BAND.
+
+- [x] **SB1. His words: "I like A inside the band."** So the seven seats
+      become bands of thicker colour and the name lies on the band's own
+      curve. It is also his seven band shell, which means the two asks are one
+      object and the product gains one drawing rather than two.
+- [ ] **SB2. What the ruling buys, measured before it was chosen.** 3.3 times
+      the reading area at 390, zero degrees of arc closed, and the naming ring
+      goes from 5 per cent lit to 98.
+- [ ] **SB3. And three things under it are still his,** and the first decides
+      what the ring asserts about the body rather than how it looks: the true
+      arc against seven equal bands, whether a band may carry a value once
+      type sits on it, and whether the seat mark survives. `SP8` to `SP10`.
+- [ ] **SB4. The fallback is not discarded.** The axis is the answer for the
+      nineteen domain names at the deepest view, and shipping both takes the
+      constant that pre commits a fifth of the radius down to about 1.02.
+
+### PF. WHICH ONE DO THEY LIKE. ASKED OF THE COHORT.
+
+- [ ] **PF1. His words: "I also want to simulate with the ICPs and focus
+      group which one they like the most."** So the four nameplate answers,
+      and the four shell directions when they land, go to the same cohort the
+      ninety day run uses.
+- [ ] **PF2. And the boundary is the same one the interviews carry.** They are
+      simulated. A preference returned by a model is that model's own
+      assumptions wearing a vote, so a preference only counts where it can be
+      traced to something measured about that figure: the width they hold the
+      product at, what their eyes can resolve, whether they use a pointer, and
+      where they actually stopped in the ninety day run. A vote with no
+      measurement under it is reported as taste and labelled as such.
+- [?] **PF3. What looks like a ledger?**
+  > **What it is.** He said "yeah, it looks like a ledger" straight after
+  > ruling on the band, and two pages had just gone out: the four mockups and
+  > the copy objections log.
+  > **At stake.** Whether that is an observation about the log, which is a
+  > ledger and meant to be, or a complaint that a design sheet reads as a
+  > table of rows.
+  > **Either way.** The log, and nothing changes. The mockup sheet, and the
+  > sheets stop being tables and start being drawings with the numbers under
+  > them.
+  > **Look at.** `copy-objections.html` and `field-nameplates.html`, the two
+  > sent before he said it.
+
 ### SH. THE SHELL. SEVEN BANDS, HOVER, AND ZOOM THAT ATOMISES.
 
 - [ ] **SH1. "Another four directions. I want to maximise the space. It could

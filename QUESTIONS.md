@@ -1,8 +1,8 @@
 # QUESTIONS FOR THE OWNER
 
 Every line in `TASKS.md` marked `[?]`, which is the mark for a question
-waiting on your ruling. 152 of them, across 43 sections.
-Read off commit 7cd28f6 on 2026-09-21. Nothing here is typed by hand: answer a
+waiting on your ruling. 153 of them, across 43 sections.
+Read off commit 1c0a50e on 2026-09-21. Nothing here is typed by hand: answer a
 question in TASKS.md and it leaves this file on the next run.
 
 Each one opens with the question, names the seat asking it, and carries a
@@ -52,6 +52,19 @@ The same list is in `QUESTIONS.html`, which opens in a browser.
   > **Either way.** Kept, and it is the collapsed state and the icon family
   > everywhere else. Dropped, and the band is the only naming.
   > **Look at.** `proto/field-a/index.html`, panel B.
+
+- [ ] **PF3. What looks like a ledger?**
+  > **What it is.** He said "yeah, it looks like a ledger" straight after
+  > ruling on the band, and two pages had just gone out: the four mockups and
+  > the copy objections log.
+  > **At stake.** Whether that is an observation about the log, which is a
+  > ledger and meant to be, or a complaint that a design sheet reads as a
+  > table of rows.
+  > **Either way.** The log, and nothing changes. The mockup sheet, and the
+  > sheets stop being tables and start being drawings with the numbers under
+  > them.
+  > **Look at.** `copy-objections.html` and `field-nameplates.html`, the two
+  > sent before he said it.
 
 ## 08f. RULED 20 SEPTEMBER, NINETEENTH PASS. THE RING HE ALREADY DREW, AND A LIST HE CANNOT ANSWER.
 
