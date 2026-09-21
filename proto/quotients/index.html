@@ -1,0 +1,490 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The five quotients</title>
+<!-- ============================================================
+     proto/quotients/index.html  ·  FIVE QUOTIENTS ON REAL PEOPLE.
+
+     Nothing on this page is typed in. It loads the real engine at
+     ../../engine.js, the proposed arithmetic at ./quotients.js and the profile
+     harness at ./roster.js, then builds an actual profile record for every
+     roster persona, pushes it through the import boundary, and renders what the
+     five quotients read. Every figure carries the name of the function that
+     produced it.
+
+     Three script tags, no stylesheet, no font, no image, no request of any
+     kind. The typeface is whatever the machine has, because a prototype that
+     fetches a font is a prototype that fetches.
+
+     THE HOUSE RULES THIS PAGE IS HELD TO.
+       One drawing for the five, not five gauges. The Summary already carries a
+       glance row of six rings and two of the five would have been drawn twice.
+       No figure with a tolerance stapled to it.
+       A label is one word.
+       Stated is labelled stated wherever it appears.
+       Unread is not nought, and the page says which it is.
+       Icons are ring, not fill. Sentence case. No em dashes.
+       A seat colour means the same thing here as everywhere else, read live
+       out of PAL rather than copied.
+       The count stated to a person is 112.
+     ============================================================ -->
+<style>
+:root{
+ --bg:#0C0D12; --panel:#15171F; --panel2:#1D2029; --sunk:#090A0E;
+ --ink:#EFEDE8; --mid:#B4B0A8; --dim:#8E8A84; --faint:#5E5B57;
+ --accent:#7EB8D4; --au:#C2A063; --alarm:#D6584E;
+ --line:rgba(255,255,255,.085); --line2:rgba(255,255,255,.14);
+ --f:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
+ --m:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f);
+ font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1560px;margin:0 auto;padding:22px 16px 72px}
+h1{font-size:20px;font-weight:600;margin:0}
+h2{font-size:13.5px;font-weight:600;margin:0 0 3px}
+.eye{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);
+ font-weight:600;margin:0 0 7px}
+.note{color:var(--dim);font-size:12.5px;margin:0 0 12px}
+.note b{color:var(--mid);font-weight:600}
+.src{color:var(--faint);font-size:10.5px;font-family:var(--m);margin:10px 0 0;
+ padding-top:8px;border-top:1px solid var(--line)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:11px;
+ padding:15px;margin-bottom:14px}
+.hd{display:flex;align-items:flex-start;gap:20px;flex-wrap:wrap;
+ padding-bottom:15px;border-bottom:1px solid var(--line);margin-bottom:18px}
+.hd p{color:var(--mid);font-size:13px;max-width:70ch;margin:6px 0 0}
+.cols{display:grid;grid-template-columns:520px 1fr;gap:14px;align-items:start}
+.rost{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:14px}
+.rost button{font-family:inherit;font-size:12px;color:var(--mid);cursor:pointer;
+ background:var(--panel2);border:1px solid var(--line);border-radius:99px;
+ padding:6px 12px}
+.rost button:hover{border-color:var(--line2);color:var(--ink)}
+.rost button[aria-pressed=true]{background:var(--ink);color:var(--bg);
+ border-color:var(--ink);font-weight:600}
+.says{color:var(--mid);font-size:13px;font-style:italic;margin:0 0 10px;max-width:72ch}
+.role{color:var(--faint);font-size:11px;font-family:var(--m);margin:0 0 10px}
+svg{display:block;max-width:100%;height:auto}
+.leg{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:10px}
+.leg div{background:var(--sunk);border:1px solid var(--line);border-radius:8px;padding:8px;min-width:0;overflow:hidden}
+.leg .k{font-family:var(--m);font-size:10px;color:var(--dim);letter-spacing:.08em}
+.leg .w{font-size:11.5px;color:var(--mid)}
+.leg .v{font-size:19px;font-weight:600;font-variant-numeric:tabular-nums;margin-top:2px}
+.leg .u{font-size:10px;color:var(--faint);font-family:var(--m)}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th,td{text-align:right;padding:5px 7px;border-bottom:1px solid var(--line);
+ font-variant-numeric:tabular-nums}
+th{color:var(--dim);font-size:10px;letter-spacing:.09em;text-transform:uppercase;
+ font-weight:600;white-space:nowrap}
+td:first-child,th:first-child{text-align:left;font-variant-numeric:normal}
+tr.on td{background:rgba(126,184,212,.075)}
+.un{color:var(--faint);font-family:var(--m)}
+.why{margin:0;padding:0;list-style:none}
+.why li{color:var(--dim);font-size:11.5px;padding:4px 0 4px 13px;position:relative;
+ border-top:1px solid var(--line)}
+.why li:before{content:'';position:absolute;left:0;top:11px;width:5px;height:5px;
+ border:1px solid var(--faint);border-radius:99px}
+.why li:first-child{border-top:0}
+textarea{width:100%;min-height:86px;background:var(--sunk);color:var(--ink);
+ border:1px solid var(--line);border-radius:8px;padding:9px 10px;font-family:inherit;
+ font-size:13px;resize:vertical}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:9px;align-items:center}
+.btn{font-family:inherit;font-size:12px;color:var(--ink);cursor:pointer;
+ background:var(--panel2);border:1px solid var(--line2);border-radius:8px;padding:7px 13px}
+.btn:hover{border-color:var(--ink)}
+.tag{font-family:var(--m);font-size:10px;letter-spacing:.06em;color:var(--bg);
+ background:var(--au);border-radius:4px;padding:2px 6px;text-transform:uppercase}
+.tag.m{background:var(--accent)}
+.tag.n{background:transparent;color:var(--faint);border:1px solid var(--line2)}
+@media (max-width:1080px){.cols{grid-template-columns:1fr}
+ .leg{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:560px){.wrap{padding:16px 16px 56px}
+ .leg{grid-template-columns:1fr 1fr}
+ table{font-size:11.5px} th,td{padding:4px 4px}}
+</style></head><body>
+<div class="wrap">
+<div class="hd">
+ <div><h1>The five quotients</h1>
+  <p>One is measured today. Four are proposed here, off the arithmetic the engine already
+  runs. Every number on this page came out of a function, and the function is named beside
+  it. Pick a person and the whole page reads them.</p></div>
+</div>
+
+<div class="rost" id="rost"></div>
+<div id="stage"></div>
+
+<div class="card">
+ <p class="eye">The whole roster, read at once</p>
+ <h2>Fifteen fields, five quotients, one table</h2>
+ <p class="note">A reading that only works on one person is not a reading. Unread is printed
+ as unread and never as nought, because the two say opposite things.</p>
+ <div style="overflow-x:auto"><table id="all"></table></div>
+ <p class="src" id="allsrc"></p>
+</div>
+
+<div class="card">
+ <p class="eye">What a second reading unlocks</p>
+ <h2>Ana, across three readings</h2>
+ <p class="note">Release is the only one of the five that cannot exist on a first session, and
+ that is a definition rather than a gap. Here is what happens to Ana when charge comes off her
+ axes and snapshot() writes a second and a third reading. <b>Coherence moves nine points and she
+ stays at the bottom of the ladder. The aperture moves thirty two.</b> The release reading says
+ she has spent almost all the headroom she ever had. That is the credit the instrument was not
+ giving her. The release control's own arithmetic lives in ui/release.js and is not reproduced
+ here, because a second copy of it is a defect and this repository already carries one.</p>
+ <div style="overflow-x:auto"><table id="ana"></table></div>
+</div>
+
+<div class="card">
+ <p class="eye">What load alone cannot see</p>
+ <h2>Gordon and Tomas</h2>
+ <p class="note">Read from load alone these two are a fraction of a point apart. Gordon says
+ there is nothing wrong with him and four people left in a year. Tomas says he used to drive
+ nine hundred miles and feel nothing and now cannot get to the end of the street. One cannot
+ see it. The other sees it exactly and cannot move. A measure that cannot tell them apart is
+ measuring load and calling it awareness. Type into the box and watch the second term
+ separate them.</p>
+ <div id="pair"></div>
+</div>
+
+<script src="../../engine.js"></script>
+<script src="./quotients.js"></script>
+<script src="./roster.js"></script>
+<script>
+(function(){
+/* THE ENGINE HANDLE, AND WHY IT IS NOT window.
+
+   engine.js says in its own header that in a browser these are globals on the
+   concatenated script. Half of them are not. A top level `var` becomes a
+   property of window and a top level `const` or `let` does not: it lives in the
+   global lexical environment, reachable by bare name and invisible on the
+   window object. W, S, CHILD, BANDS, PAL and TIERCOL are all `const`, so
+   window.W is undefined and the first cut of this page died on it.
+
+   This resolves a name the way global code does, by evaluating the bare
+   identifier, which reaches both kinds. It reads only, which is correct: an
+   engine global is the engine's to write. */
+function G(k){try{return Function('return typeof '+k+'!=="undefined"?'+k+':undefined')();}
+ catch(e){return undefined;}}
+var E=new Proxy({},{get:function(_,k){return G(String(k));},
+ has:function(_,k){return G(String(k))!==undefined;}});
+var Q=window.QUOT, RS=window.QROSTER;
+var bound=Q.bind(E);
+/* a host binds its own store. the boundary refuses a write with none bound, so
+   a prototype that skipped this would have every persona refused at import. */
+RS.bindMemory(E);
+
+var AU='#C2A063', ACC='#7EB8D4', ALARM='#D6584E', BG='#0C0D12', SUNK='#090A0E';
+var FF='-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif';
+var PAL=E.PAL, TIERCOL=E.TIERCOL;
+var AXCOL={}; E.CHILD.forEach(function(c){AXCOL[c.nm]=PAL[c.seat];});
+
+/* ---------- the figure. one aperture, five properties of one object ----------
+   R_RIM   the boundary, PQ, six arcs
+   R_LOAD  the outer edge of the load annulus
+   opening IQ, and it is AREA true: the clear annulus area is the reading
+   blades  EQ, nine, one per axis, rotating from shut to open
+   sweep   AQ, a distance travelled around the annulus
+   centre  the CQ number. CQ is already drawn as the core of the Field wheel,
+           so it is not drawn a second time here. */
+var CX=200, CY=200, R_RIM=181, R_LOAD=158, R_CORE=47, VB=400;
+function pol(r,a){return [CX+r*Math.cos(a),CY+r*Math.sin(a)];}
+function arc(r,a0,a1,sw){
+ var p0=pol(r,a0),p1=pol(r,a1);
+ var large=Math.abs(a1-a0)>Math.PI?1:0;
+ return '<path d="M'+p0[0].toFixed(2)+' '+p0[1].toFixed(2)+
+  ' A'+r+' '+r+' 0 '+large+' '+(a1>a0?1:0)+' '+p1[0].toFixed(2)+' '+p1[1].toFixed(2)+
+  '" fill="none" '+sw+'/>';}
+function openRadius(pct){
+ var lo=R_CORE*R_CORE, hi=R_LOAD*R_LOAD;
+ return Math.sqrt(lo+(pct/100)*(hi-lo));}
+
+function iris(q,axes){
+ var s='<svg viewBox="0 0 '+VB+' '+VB+'" role="img" aria-label="The aperture">';
+ var unreadIQ=(q.iq.unread||q.iq.pct==null);
+ var rOpen=unreadIQ?null:openRadius(q.iq.pct);
+
+ /* THE RIM. PQ, six arcs, one per side of the boundary hexagon. The drawn part
+    is solid and the undrawn part is faint, so a boundary nobody typed reads as
+    an outline and not as a wall. Stated, so it is a thinner stroke than
+    anything measured on this figure. */
+ var six=q.pq.sides, step=Math.PI*2/six.length, gap=0.055;
+ six.forEach(function(sd,i){
+  var a0=-Math.PI/2+i*step+gap, a1=a0+step-gap*2;
+  var mid=a0+(a1-a0)*(sd.n/sd.of);
+  s+=arc(R_RIM,a0,a1,'stroke="rgba(255,255,255,.10)" stroke-width="2"');
+  if(sd.n)s+=arc(R_RIM,a0,mid,'stroke="'+AU+'" stroke-width="2.6" stroke-linecap="round"');
+  /* a crossing is a notch pointing in, on the side it came through */
+  if(q.pq.crossed[sd.s]){
+   var am=(a0+a1)/2, p0=pol(R_RIM-4,am), p1=pol(R_RIM-13,am);
+   s+='<path d="M'+p0[0].toFixed(1)+' '+p0[1].toFixed(1)+'L'+p1[0].toFixed(1)+' '+p1[1].toFixed(1)
+    +'" stroke="'+ALARM+'" stroke-width="2" stroke-linecap="round"/>';}});
+
+ /* THE LOAD. the annulus between the opening and the rim is what is held. */
+ if(!unreadIQ){
+  s+='<circle cx="'+CX+'" cy="'+CY+'" r="'+R_LOAD+'" fill="rgba(255,255,255,.035)"/>';
+  s+='<circle cx="'+CX+'" cy="'+CY+'" r="'+rOpen.toFixed(2)+'" fill="'+BG+'"/>';
+  s+='<circle cx="'+CX+'" cy="'+CY+'" r="'+rOpen.toFixed(2)+
+   '" fill="none" stroke="'+ACC+'" stroke-width="1.6"/>';
+ }else{
+  s+='<circle cx="'+CX+'" cy="'+CY+'" r="'+R_LOAD+'" fill="none" '+
+   'stroke="rgba(255,255,255,.10)" stroke-width="1.4" stroke-dasharray="3 7"/>';}
+
+ /* THE BLADES. EQ, one per axis, rotating from radial when nothing has turned
+    to tangential when the opposite is fully in. The colour is the axis's seat,
+    read out of PAL. A blade past the point where the opposite stops serving
+    carries a mark at its tip. */
+ /* THE BLADES SIT IN THE LOAD RING AND DO NOT REACH INTO THE OPENING. The first
+    cut gave them a fixed length and they crossed the opening on every heavily
+    loaded profile, which drew an iris whose blades were inside the hole they
+    are supposed to be closing. They span the annulus exactly. Their length is
+    the width of the closed part, which is the opening's own quantity and not a
+    second one. What they carry is their angle. */
+ var n=axes.length, bs=Math.PI*2/n;
+ var inner=(rOpen==null)?(R_LOAD-46):rOpen;
+ var L=Math.max(14,R_LOAD-2-inner);
+ axes.forEach(function(ax,i){
+  var a=-Math.PI/2+i*bs+bs/2;
+  var root=pol(R_LOAD-2,a);
+  var turn=ax.turn==null?0:ax.turn;
+  /* radial in at turn 0, swung to tangential at turn 1 */
+  var dir=a+Math.PI+turn*(Math.PI/2)*0.92;
+  var tip=[root[0]+L*Math.cos(dir), root[1]+L*Math.sin(dir)];
+  var col=AXCOL[ax.nm]||'#888';
+  var op=ax.live?0.92:0.20;
+  s+='<path d="M'+root[0].toFixed(1)+' '+root[1].toFixed(1)+'L'+tip[0].toFixed(1)+' '+tip[1].toFixed(1)
+   +'" stroke="'+col+'" stroke-width="'+(ax.live?3.1:1.6)+'" stroke-linecap="round" opacity="'+op+'"/>';
+  if(ax.over)s+='<circle cx="'+tip[0].toFixed(1)+'" cy="'+tip[1].toFixed(1)+'" r="3.4" fill="none" stroke="'+ALARM+'" stroke-width="1.6"/>';});
+
+ /* THE SWEEP. AQ, a distance travelled around the annulus, from the top,
+    clockwise. Nothing is drawn when there is no line to measure a distance on. */
+ if(!q.aq.unread&&q.aq.pct!=null){
+  /* the track between the load ring and the boundary, so the sweep never runs
+     through the blades and is never mistaken for one */
+  var rs=(R_LOAD+R_RIM)/2, a0=-Math.PI/2, a1=a0+Math.PI*2*(q.aq.pct/100)*0.9999;
+  s+=arc(rs,a0,a1,'stroke="'+ACC+'" stroke-width="5" stroke-linecap="round" opacity=".85"');
+  var st=pol(rs,a0);
+  s+='<circle cx="'+st[0].toFixed(1)+'" cy="'+st[1].toFixed(1)+'" r="3" fill="'+ACC+'"/>';}
+
+ /* THE CENTRE. the coherence number, and the tier word under it. Not a ring:
+    coherence is already drawn as the core of the Field wheel and drawing it
+    twice is the thing this product has a ruling against. */
+ var cq=q.cq.unread?null:q.cq.pct;
+ s+='<circle cx="'+CX+'" cy="'+CY+'" r="'+R_CORE+'" fill="'+SUNK+'" stroke="'+
+  (cq==null?'rgba(255,255,255,.12)':(TIERCOL[q.cq.tier]||ACC))+'" stroke-width="1.6"/>';
+ s+='<text x="'+CX+'" y="'+(CY+3)+'" text-anchor="middle" font-size="30" font-weight="600" '+
+  'fill="'+(cq==null?'#5E5B57':(TIERCOL[q.cq.tier]||'#EFEDE8'))+'" font-family="'+FF+'">'+
+  (cq==null?'–':Math.round(cq))+'</text>';
+ s+='<text x="'+CX+'" y="'+(CY+20)+'" text-anchor="middle" font-size="9.5" '+
+  'letter-spacing="1.3" fill="#8E8A84" font-family="'+FF+'">'+
+  esc((q.cq.unread?'unread':String(q.cq.tier)).toLowerCase())+'</text>';
+ return s+'</svg>';}
+
+function esc(t){return String(t==null?'':t).replace(/[&<>"]/g,function(c){
+ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function f1(v){return v==null?'–':Number(v).toFixed(1);}
+
+/* THE NINE BLADES, AND THEY ARE AGGREGATED THE WAY THE NUMBER IS.
+   turnRead means the per address ratio across every address where either side
+   is present. The first cut of this summed rep and summed held across an axis
+   and divided, which is a ratio of sums where the figure beside it is a mean of
+   ratios. They disagree on any uneven field, and a figure that disagrees with
+   the number printed under it is the defect this repository keeps paying for.
+   Same method, one axis at a time. */
+function axesRead(){
+ return E.CHILD.map(function(c){
+  var at=E.W.filter(function(n){return n.cf===c.nm;});
+  var live=[],jq=0;
+  at.forEach(function(n){jq+=n.jq; if(n.rep+n.held>0)live.push(n.rep/(n.rep+n.held));});
+  var t=0; live.forEach(function(v){t+=v;});
+  return {nm:c.nm, opp:c.opp, live:live.length>0,
+   turn:live.length?t/live.length:null,
+   over:at.length?(jq/at.length)>=4:false};});}
+
+/* ---------- the legend, one word per figure ---------- */
+function legend(q){
+ return '<div class="leg">'+Q.QUOTDEF.map(function(d){
+  var o=q[d.k], v=o.pct, un=o.unread||v==null;
+  var unit=d.k==='cq'?'of 100':(o.stated?'of 100, stated':'of 100');
+  return '<div><div class="k">'+d.nm+'</div><div class="w">'+d.word+'</div>'+
+   '<div class="v"'+(un?' style="color:var(--faint)"':'')+'>'+
+   (un?'unread':Math.round(v))+'</div>'+
+   '<div class="u">'+(un?'nothing to read yet':unit)+'</div></div>';}).join('')+'</div>';}
+
+function whyList(o){
+ return '<ul class="why">'+(o.because||[]).map(function(b){
+  return '<li>'+esc(b)+'</li>';}).join('')+'</ul>';}
+
+/* ---------- the page ---------- */
+var LIST=[{nm:'Nobody',blank:true,role:'a person who has entered nothing',says:''}]
+ .concat(E.PEOPLE);
+var pick=0, STORY='', BND=0;
+
+function build(per,bnd){
+ var out=RS.run(E,per.blank?null:per);
+ if(out.errs)return {errs:out.errs};
+ if(STORY)E.verpApply(STORY);
+ /* commitments typed into the record, so the rim has something to draw. every
+    surface that shows them says stated, and the count is the one boundaryCount
+    reads back rather than the one handed in. */
+ var n=bnd||0;
+ E.PUR_SIDES.forEach(function(sd){
+  var take=Math.max(0,Math.min(E.PUR_PER_SIDE,n));
+  n-=take;
+  out.p.purpose.sides[sd]=[];
+  for(var i=0;i<take;i++)out.p.purpose.sides[sd].push('a commitment');});
+ var r=E.compute();
+ return {p:out.p, r:r, q:Q.quotients(out.p,r)};}
+
+function render(){
+ var per=LIST[pick], got=build(per,BND);
+ var st=document.getElementById('stage');
+ if(got.errs){
+  st.innerHTML='<div class="card"><p class="eye">Refused at the boundary</p>'+
+   '<h2>'+esc(per.nm)+'</h2><ul class="why">'+got.errs.map(function(e){
+    return '<li>'+esc(e)+'</li>';}).join('')+'</ul></div>';
+  return;}
+ var q=got.q, axes=axesRead();
+ st.innerHTML=
+  '<div class="cols"><div class="card">'
+  +'<p class="eye">'+esc(per.nm)+'</p>'
+  +'<h2>One drawing, five quantities</h2>'
+  +'<p class="role">'+esc(per.role||'')+'</p>'
+  +iris(q,axes)
+  +legend(q)
+  +'<p class="src">iris drawn from QUOT.quotients(). rim boundaryCount, opening n.open, '
+  +'blades n.rep and n.held, sweep p.history dq, centre compute().CQ</p>'
+  +'</div><div>'
+  +(per.says?'<div class="card"><p class="eye">Their own words</p><p class="says">'+esc(per.says)+'</p>'
+    +'<p class="note">One sentence is not a journal entry. It is printed so the numbers have '
+    +'something to be checked against.</p></div>':'')
+  +'<div class="card"><p class="eye">Where each one comes from</p>'
+  +Q.QUOTDEF.map(function(d){var o=q[d.k];
+    return '<div style="margin:0 0 12px"><h2>'+d.nm+' <span style="color:var(--dim);font-weight:400">'
+     +d.word+'</span> '+(o.stated?'<span class="tag">stated</span>':
+       (o.unread?'<span class="tag n">unread</span>':'<span class="tag m">measured</span>'))
+     +' <span style="float:right;font-variant-numeric:tabular-nums">'
+     +(o.unread||o.pct==null?'<span class="un">unread</span>':f1(o.pct))+'</span></h2>'
+     +whyList(o)+'</div>';}).join('')
+  +'</div>'
+  +'<div class="card"><p class="eye">The rim</p>'
+  +'<h2>The boundary, and it is stated</h2>'
+  +'<p class="note">No persona in the roster has typed a boundary, so the rim reads nought for '
+  +'all of them and the figure draws an outline rather than a wall. These buttons write '
+  +'commitments into this profile so the rim can be seen. They are typed here. Nothing about '
+  +'them is read off anybody.</p>'
+  +'<div class="row">'+[0,6,17,30].map(function(n){
+    return '<button class="btn bnd" data-n="'+n+'"'+(BND===n?' style="border-color:var(--ink)"':'')
+     +'>'+n+' of 30</button>';}).join('')+'</div>'
+  +'</div>'
+  +'<div class="card"><p class="eye">The second term</p>'
+  +'<h2>What they wrote</h2>'
+  +'<p class="note">The aperture has two terms. The opening comes off load. Recognition comes '
+  +'off the aware against ignorant pair of the six gates, read out of a person\'s own words by '
+  +'verpScan and priced at the weights compute() already charges. With no cues it returns one '
+  +'and costs nothing, which is verpFactor\'s own convention.</p>'
+  +'<textarea id="story" placeholder="Write as this person would. Try: I did not see it coming and I chose not to look. Then try: I noticed it, I could feel it, and I kept going.">'+esc(STORY)+'</textarea>'
+  +'<div class="row"><button class="btn" id="apply">Read it</button>'
+  +'<button class="btn" id="clr">Clear</button>'
+  +'<span class="note" style="margin:0">'
+  +(q.iq.rec.read?'recognition factor '+q.iq.rec.f.toFixed(2)+' off '+q.iq.rec.n+' cues'
+   :'recognition unread, factor one, inert')+'</span></div>'
+  +'</div></div></div>';
+ document.getElementById('apply').onclick=function(){
+  STORY=document.getElementById('story').value; drawAll(); drawPair(); render();};
+ document.getElementById('clr').onclick=function(){STORY=''; drawAll(); drawPair(); render();};
+ Array.prototype.forEach.call(document.querySelectorAll('.bnd'),function(b){
+  b.onclick=function(){BND=+b.getAttribute('data-n'); render();};});
+}
+
+function drawRost(){
+ document.getElementById('rost').innerHTML=LIST.map(function(p,i){
+  return '<button type="button" aria-pressed="'+(i===pick)+'" data-i="'+i+'">'+esc(p.nm)+'</button>';}).join('');
+ Array.prototype.forEach.call(document.querySelectorAll('#rost button'),function(b){
+  b.onclick=function(){pick=+b.getAttribute('data-i'); /* ---------- Ana, across three readings. AQ is the only quotient that needs
+   two of them, so this is the one place on the page it can be shown. ---------- */
+function drawAna(){
+ var per=E.PEOPLE.filter(function(p){return p.nm==='Ana';})[0];
+ var o=RS.run(E,per), p=o.p;
+ var rows=[], r=E.compute();
+ p.history=[E.snapshot(p)];
+ function line(lbl){
+  var q=Q.quotients(p,r);
+  return '<tr><td>'+esc(lbl)+'</td><td>'+f1(q.cq.pct)+'</td><td>'+esc(q.cq.tier)+'</td>'
+   +'<td>'+f1(E.cqCeiling())+'</td><td>'+f1(E.cqHeadroom(r.CQ))+'</td>'
+   +'<td>'+f1(q.iq.pct)+'</td><td>'+f1(q.eq.pct)+'</td>'
+   +'<td>'+(q.aq.unread?'<span class="un">'+esc(q.aq.state)+'</span>':f1(q.aq.pct))+'</td>'
+   +'<td>'+f1(r.DQ)+'</td><td>'+r.carrying.length+'</td></tr>';}
+ rows.push(line('first reading'));
+ [2,3].forEach(function(d,i){
+  E.CHARGES.forEach(function(c){E.S.charge[c]=Math.max(0,E.S.charge[c]-d);});
+  r=E.compute(); p.history.push(E.snapshot(p));
+  rows.push(line('after run '+(i+1)));});
+ document.getElementById('ana').innerHTML=
+  '<thead><tr><th>reading</th><th>coherence</th><th>tier</th><th>ceiling</th><th>headroom</th>'
+  +'<th>aperture</th><th>turn</th><th>release</th><th>shadow weight</th><th>carrying</th>'
+  +'</tr></thead><tbody>'+rows.join('')+'</tbody>';}
+
+drawRost(); drawAll(); drawAna(); drawPair(); render();};});}
+
+function drawAll(){
+ var head=['person','coherence','aperture','turn','release','boundary','tier','narrowest','held','carrying'];
+ var body=LIST.map(function(per,i){
+  var g=build(per,0);
+  if(g.errs)return '<tr><td>'+esc(per.nm)+'</td><td colspan="9" class="un">refused at the boundary</td></tr>';
+  var q=g.q;
+  function cell(o){return o.unread||o.pct==null?'<td class="un">unread</td>':'<td>'+f1(o.pct)+'</td>';}
+  return '<tr class="'+(i===pick?'on':'')+'"><td>'+esc(per.nm)+'</td>'
+   +cell(q.cq)+cell(q.iq)+cell(q.eq)+cell(q.aq)+cell(q.pq)
+   +'<td>'+esc(q.cq.unread?'–':q.cq.tier)+'</td>'
+   +'<td>'+(q.iq.narrow?esc(q.iq.narrow.b):'<span class="un">flat</span>')+'</td>'
+   +'<td>'+g.r.loaded.length+'</td><td>'+g.r.carrying.length+'</td></tr>';}).join('');
+ document.getElementById('all').innerHTML='<thead><tr>'+head.map(function(h){
+  return '<th>'+h+'</th>';}).join('')+'</tr></thead><tbody>'+body+'</tbody>';
+ document.getElementById('allsrc').textContent=
+  'every row built by QROSTER.run() through pImport, then QUOT.quotients(). '+
+  'the aperture is read across the addresses that can hold charge, measured at '+
+  bound.reach+' of the ring, over an open ceiling of '+bound.openMax.toFixed(2)+
+  ' read off compute() rather than typed here.';}
+
+var GORDON="There is nothing wrong with me. I did not see any of it coming and I had no idea anybody was unhappy. I chose not to look.";
+var TOMAS="I noticed it first in my hands on the ramp. I could feel the dread before the engine turned over. I was aware of it every morning and I kept going.";
+function drawPair(){
+ var rows=[['Gordon',GORDON],['Tomas',TOMAS]].map(function(x){
+  var per=E.PEOPLE.filter(function(p){return p.nm===x[0];})[0];
+  var o=RS.run(E,per); var rA=E.compute(); var qA=Q.quotients(o.p,rA);
+  E.verpApply(x[1]); var rB=E.compute(); var qB=Q.quotients(o.p,rB);
+  return '<tr><td>'+esc(x[0])+'</td><td>'+f1(qA.iq.area*100)+'</td><td>'+f1(qA.iq.pct)+'</td>'
+   +'<td>'+qB.iq.rec.n+'</td><td>'+qB.iq.rec.f.toFixed(2)+'</td><td>'+f1(qB.iq.pct)+'</td></tr>';}).join('');
+ document.getElementById('pair').innerHTML=
+  '<div style="overflow-x:auto"><table><thead><tr><th>person</th><th>opening</th>'
+  +'<th>aperture, load only</th><th>cues</th><th>factor</th><th>aperture, with words</th>'
+  +'</tr></thead><tbody>'+rows+'</tbody></table></div>';}
+
+/* ---------- Ana, across three readings. AQ is the only quotient that needs
+   two of them, so this is the one place on the page it can be shown. ---------- */
+function drawAna(){
+ var per=E.PEOPLE.filter(function(p){return p.nm==='Ana';})[0];
+ var o=RS.run(E,per), p=o.p;
+ var rows=[], r=E.compute();
+ p.history=[E.snapshot(p)];
+ function line(lbl){
+  var q=Q.quotients(p,r);
+  return '<tr><td>'+esc(lbl)+'</td><td>'+f1(q.cq.pct)+'</td><td>'+esc(q.cq.tier)+'</td>'
+   +'<td>'+f1(E.cqCeiling())+'</td><td>'+f1(E.cqHeadroom(r.CQ))+'</td>'
+   +'<td>'+f1(q.iq.pct)+'</td><td>'+f1(q.eq.pct)+'</td>'
+   +'<td>'+(q.aq.unread?'<span class="un">'+esc(q.aq.state)+'</span>':f1(q.aq.pct))+'</td>'
+   +'<td>'+f1(r.DQ)+'</td><td>'+r.carrying.length+'</td></tr>';}
+ rows.push(line('first reading'));
+ [2,3].forEach(function(d,i){
+  E.CHARGES.forEach(function(c){E.S.charge[c]=Math.max(0,E.S.charge[c]-d);});
+  r=E.compute(); p.history.push(E.snapshot(p));
+  rows.push(line('after run '+(i+1)));});
+ document.getElementById('ana').innerHTML=
+  '<thead><tr><th>reading</th><th>coherence</th><th>tier</th><th>ceiling</th><th>headroom</th>'
+  +'<th>aperture</th><th>turn</th><th>release</th><th>shadow weight</th><th>carrying</th>'
+  +'</tr></thead><tbody>'+rows.join('')+'</tbody>';}
+
+drawRost(); drawAll(); drawAna(); drawPair(); render();
+})();
+</script>
+</body></html>

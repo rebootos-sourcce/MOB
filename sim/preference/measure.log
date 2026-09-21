@@ -1,0 +1,33 @@
+THE MEASUREMENT PASS. Written by sim/preference/measure.js.
+
+pass  field A today at 1600 reproduces panels-1600.json, shell 171.1 against 171.1
+pass  field A band at 1600 reproduces panels-1600.json, shell 306.0 against 306.0
+pass  field A mark at 1600 reproduces panels-1600.json, shell 306.0 against 306.0
+pass  field A axis at 1600 reproduces panels-1600.json, shell 289.0 against 289.0
+pass  field A spine at 1600 reproduces panels-1600.json, shell 269.0 against 269.0
+pass  field A today at 390 reproduces panels-390.json, shell 77.9 against 77.9
+pass  field A band at 390 reproduces panels-390.json, shell 141.5 against 141.5
+pass  field A mark at 390 reproduces panels-390.json, shell 141.5 against 141.5
+pass  field A axis at 390 reproduces panels-390.json, shell 124.5 against 124.5
+pass  field A spine at 390 reproduces panels-390.json, shell 124.0 against 124.0
+pass  field B carries four directions at 1600, read 4
+pass  field B cost.json carries four rows at 1600
+pass  field B carries four directions at 390, read 4
+pass  field B cost.json carries four rows at 390
+pass  both prototypes made 0 requests off the machine
+pass  neither prototype threw, 0 errors
+
+every request:
+
+1600  A  file:///home/user/MOB/proto/field-a/index.html
+1600  A  file:///home/user/MOB/engine.js
+390  A  file:///home/user/MOB/proto/field-a/index.html
+390  A  file:///home/user/MOB/engine.js
+1600  B  file:///home/user/MOB/proto/field-b/index.html
+1600  B  file:///home/user/MOB/funnel/tokens.css
+1600  B  file:///home/user/MOB/engine.js
+1600  B  file:///home/user/MOB/funnel/ring.js
+390  B  file:///home/user/MOB/proto/field-b/index.html
+390  B  file:///home/user/MOB/funnel/tokens.css
+390  B  file:///home/user/MOB/engine.js
+390  B  file:///home/user/MOB/funnel/ring.js

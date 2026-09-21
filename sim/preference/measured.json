@@ -1,0 +1,1032 @@
+{
+ "stamp": "2026-09-21T05:10:08.205Z",
+ "fieldA": {
+  "390": {
+   "who": "Ana",
+   "CQ": 7.602267570064988,
+   "carrying": 41,
+   "grey": 67,
+   "modes": {
+    "today": {
+     "shell": 77.91666666666667,
+     "outside": 55.71252604166666,
+     "reserved": 42.035709531064185,
+     "free": 167.5,
+     "slab": 0,
+     "lane": 0,
+     "spineW": 0,
+     "CW": 356,
+     "CH": 335,
+     "lit": 42.244126384012965,
+     "worstContrast": null,
+     "markR0": null,
+     "markR1": null,
+     "perSeat": [
+      {
+       "seat": "Root",
+       "deg": 6.005101361580597,
+       "px": 31.46484375
+      },
+      {
+       "seat": "Sacral",
+       "deg": 6.005101361580597,
+       "px": 41.982421875
+      },
+      {
+       "seat": "Solar",
+       "deg": 6.005101361580597,
+       "px": 35.015625
+      },
+      {
+       "seat": "Heart",
+       "deg": 6.005101361580597,
+       "px": 37.93359375
+      },
+      {
+       "seat": "Throat",
+       "deg": 6.005101361580597,
+       "px": 44.724609375
+      },
+      {
+       "seat": "3rd Eye",
+       "deg": 6.005101361580597,
+       "px": 51.193359375
+      },
+      {
+       "seat": "Crown",
+       "deg": 6.005101361580597,
+       "px": 42.59765625
+      }
+     ],
+     "plates": [
+      {
+       "seat": "Root",
+       "deg": 6.005101361580597,
+       "px": 31.46484375
+      },
+      {
+       "seat": "Sacral",
+       "deg": 6.005101361580597,
+       "px": 41.982421875
+      },
+      {
+       "seat": "Solar",
+       "deg": 6.005101361580597,
+       "px": 35.015625
+      },
+      {
+       "seat": "Heart",
+       "deg": 6.005101361580597,
+       "px": 37.93359375
+      },
+      {
+       "seat": "Throat",
+       "deg": 6.005101361580597,
+       "px": 44.724609375
+      },
+      {
+       "seat": "3rd Eye",
+       "deg": 6.005101361580597,
+       "px": 51.193359375
+      },
+      {
+       "seat": "Crown",
+       "deg": 6.005101361580597,
+       "px": 42.59765625
+      }
+     ]
+    },
+    "band": {
+     "shell": 141.5,
+     "outside": 0,
+     "reserved": 0,
+     "free": 167.5,
+     "slab": 42.449999999999996,
+     "lane": 0,
+     "spineW": 0,
+     "CW": 356,
+     "CH": 335,
+     "lit": 98.04771557773273,
+     "worstContrast": 7.046359176323601,
+     "markR0": null,
+     "markR1": null,
+     "perSeat": [
+      {
+       "seat": "Root",
+       "r": 7.175953254671965,
+       "ink": [
+        225,
+        150,
+        144
+       ],
+       "ground": [
+        51,
+        20,
+        18
+       ]
+      },
+      {
+       "seat": "Sacral",
+       "r": 7.191408555750204,
+       "ink": [
+        222,
+        169,
+        117
+       ],
+       "ground": [
+        52,
+        35,
+        19
+       ]
+      },
+      {
+       "seat": "Solar",
+       "r": 7.50655444996592,
+       "ink": [
+        218,
+        191,
+        106
+       ],
+       "ground": [
+        52,
+        46,
+        25
+       ]
+      },
+      {
+       "seat": "Heart",
+       "r": 7.5002564701751675,
+       "ink": [
+        95,
+        213,
+        166
+       ],
+       "ground": [
+        23,
+        51,
+        40
+       ]
+      },
+      {
+       "seat": "Throat",
+       "r": 7.081100191646338,
+       "ink": [
+        112,
+        193,
+        221
+       ],
+       "ground": [
+        23,
+        45,
+        53
+       ]
+      },
+      {
+       "seat": "3rd Eye",
+       "r": 7.233094809752671,
+       "ink": [
+        161,
+        175,
+        227
+       ],
+       "ground": [
+        30,
+        35,
+        54
+       ]
+      },
+      {
+       "seat": "Crown",
+       "r": 7.046359176323601,
+       "ink": [
+        190,
+        161,
+        223
+       ],
+       "ground": [
+        40,
+        30,
+        53
+       ]
+      }
+     ],
+     "plates": []
+    },
+    "mark": {
+     "shell": 141.5,
+     "outside": 0,
+     "reserved": 0,
+     "free": 167.5,
+     "slab": 0,
+     "lane": 0,
+     "spineW": 0,
+     "CW": 356,
+     "CH": 335,
+     "lit": null,
+     "worstContrast": null,
+     "markR0": 118.5,
+     "markR1": 136.5,
+     "perSeat": null,
+     "plates": []
+    },
+    "axis": {
+     "shell": 124.5,
+     "outside": 17,
+     "reserved": 0,
+     "free": 167.5,
+     "slab": 0,
+     "lane": 17,
+     "spineW": 0,
+     "CW": 356,
+     "CH": 335,
+     "lit": 95.42382427485215,
+     "worstContrast": null,
+     "markR0": null,
+     "markR1": null,
+     "perSeat": [
+      {
+       "seat": "Root",
+       "run": 30.15380859375,
+       "arc": 116.83815789267372
+      },
+      {
+       "seat": "Sacral",
+       "run": 40.233154296875,
+       "arc": 116.83815789267375
+      },
+      {
+       "seat": "Solar",
+       "run": 33.556640625,
+       "arc": 116.8381578926737
+      },
+      {
+       "seat": "Heart",
+       "run": 36.35302734375,
+       "arc": 109.10053154216556
+      },
+      {
+       "seat": "Throat",
+       "run": 42.861083984375,
+       "arc": 85.88765249064097
+      },
+      {
+       "seat": "3rd Eye",
+       "run": 49.060302734375,
+       "arc": 85.88765249064109
+      },
+      {
+       "seat": "Crown",
+       "run": 40.82275390625,
+       "arc": 155.52628964521458
+      }
+     ],
+     "plates": [],
+     "overflow": 0
+    },
+    "spine": {
+     "shell": 124,
+     "outside": 0,
+     "reserved": 0,
+     "free": 150,
+     "slab": 0,
+     "lane": 0,
+     "spineW": 56,
+     "CW": 356,
+     "CH": 335,
+     "lit": null,
+     "worstContrast": null,
+     "markR0": null,
+     "markR1": null,
+     "perSeat": null,
+     "plates": []
+    }
+   }
+  },
+  "1600": {
+   "who": "Ana",
+   "CQ": 7.602267570064988,
+   "carrying": 41,
+   "grey": 67,
+   "modes": {
+    "today": {
+     "shell": 171.13333333333335,
+     "outside": 61.11909270833334,
+     "reserved": 19.138775034838822,
+     "free": 332,
+     "slab": 0,
+     "lane": 0,
+     "spineW": 0,
+     "CW": 664,
+     "CH": 726,
+     "lit": 39.95454428058576,
+     "worstContrast": null,
+     "markR0": null,
+     "markR1": null,
+     "perSeat": [
+      {
+       "seat": "Root",
+       "deg": 2.7341107192626892,
+       "px": 31.46484375
+      },
+      {
+       "seat": "Sacral",
+       "deg": 2.7341107192626892,
+       "px": 41.982421875
+      },
+      {
+       "seat": "Solar",
+       "deg": 2.7341107192626892,
+       "px": 35.015625
+      },
+      {
+       "seat": "Heart",
+       "deg": 2.7341107192626892,
+       "px": 37.93359375
+      },
+      {
+       "seat": "Throat",
+       "deg": 2.7341107192626892,
+       "px": 44.724609375
+      },
+      {
+       "seat": "3rd Eye",
+       "deg": 2.7341107192626892,
+       "px": 51.193359375
+      },
+      {
+       "seat": "Crown",
+       "deg": 2.7341107192626892,
+       "px": 42.59765625
+      }
+     ],
+     "plates": [
+      {
+       "seat": "Root",
+       "deg": 2.7341107192626892,
+       "px": 31.46484375
+      },
+      {
+       "seat": "Sacral",
+       "deg": 2.7341107192626892,
+       "px": 41.982421875
+      },
+      {
+       "seat": "Solar",
+       "deg": 2.7341107192626892,
+       "px": 35.015625
+      },
+      {
+       "seat": "Heart",
+       "deg": 2.7341107192626892,
+       "px": 37.93359375
+      },
+      {
+       "seat": "Throat",
+       "deg": 2.7341107192626892,
+       "px": 44.724609375
+      },
+      {
+       "seat": "3rd Eye",
+       "deg": 2.7341107192626892,
+       "px": 51.193359375
+      },
+      {
+       "seat": "Crown",
+       "deg": 2.7341107192626892,
+       "px": 42.59765625
+      }
+     ]
+    },
+    "band": {
+     "shell": 306,
+     "outside": 0,
+     "reserved": 0,
+     "free": 332,
+     "slab": 91.8,
+     "lane": 0,
+     "spineW": 0,
+     "CW": 664,
+     "CH": 726,
+     "lit": 97.7835508511858,
+     "worstContrast": 7.046359176323601,
+     "markR0": null,
+     "markR1": null,
+     "perSeat": [
+      {
+       "seat": "Root",
+       "r": 7.175953254671965,
+       "ink": [
+        225,
+        150,
+        144
+       ],
+       "ground": [
+        51,
+        20,
+        18
+       ]
+      },
+      {
+       "seat": "Sacral",
+       "r": 7.191408555750204,
+       "ink": [
+        222,
+        169,
+        117
+       ],
+       "ground": [
+        52,
+        35,
+        19
+       ]
+      },
+      {
+       "seat": "Solar",
+       "r": 7.50655444996592,
+       "ink": [
+        218,
+        191,
+        106
+       ],
+       "ground": [
+        52,
+        46,
+        25
+       ]
+      },
+      {
+       "seat": "Heart",
+       "r": 7.5002564701751675,
+       "ink": [
+        95,
+        213,
+        166
+       ],
+       "ground": [
+        23,
+        51,
+        40
+       ]
+      },
+      {
+       "seat": "Throat",
+       "r": 7.081100191646338,
+       "ink": [
+        112,
+        193,
+        221
+       ],
+       "ground": [
+        23,
+        45,
+        53
+       ]
+      },
+      {
+       "seat": "3rd Eye",
+       "r": 7.233094809752671,
+       "ink": [
+        161,
+        175,
+        227
+       ],
+       "ground": [
+        30,
+        35,
+        54
+       ]
+      },
+      {
+       "seat": "Crown",
+       "r": 7.046359176323601,
+       "ink": [
+        190,
+        161,
+        223
+       ],
+       "ground": [
+        40,
+        30,
+        53
+       ]
+      }
+     ],
+     "plates": []
+    },
+    "mark": {
+     "shell": 306,
+     "outside": 0,
+     "reserved": 0,
+     "free": 332,
+     "slab": 0,
+     "lane": 0,
+     "spineW": 0,
+     "CW": 664,
+     "CH": 726,
+     "lit": null,
+     "worstContrast": null,
+     "markR0": 267.29,
+     "markR1": 295.29,
+     "perSeat": null,
+     "plates": []
+    },
+    "axis": {
+     "shell": 289,
+     "outside": 17,
+     "reserved": 0,
+     "free": 332,
+     "slab": 0,
+     "lane": 17,
+     "spineW": 0,
+     "CW": 664,
+     "CH": 726,
+     "lit": 95.44296231045114,
+     "worstContrast": null,
+     "markR0": null,
+     "markR1": null,
+     "perSeat": [
+      {
+       "seat": "Root",
+       "run": 30.15380859375,
+       "arc": 261.34851107571757
+      },
+      {
+       "seat": "Sacral",
+       "run": 40.233154296875,
+       "arc": 261.3485110757176
+      },
+      {
+       "seat": "Solar",
+       "run": 33.556640625,
+       "arc": 261.3485110757175
+      },
+      {
+       "seat": "Heart",
+       "run": 36.35302734375,
+       "arc": 244.04066266010716
+      },
+      {
+       "seat": "Throat",
+       "run": 42.861083984375,
+       "arc": 192.11711741327585
+      },
+      {
+       "seat": "3rd Eye",
+       "run": 49.060302734375,
+       "arc": 192.11711741327613
+      },
+      {
+       "seat": "Crown",
+       "run": 40.82275390625,
+       "arc": 347.88775315376944
+      }
+     ],
+     "plates": [],
+     "overflow": 0
+    },
+    "spine": {
+     "shell": 269,
+     "outside": 0,
+     "reserved": 0,
+     "free": 295,
+     "slab": 0,
+     "lane": 0,
+     "spineW": 74,
+     "CW": 664,
+     "CH": 726,
+     "lit": null,
+     "worstContrast": null,
+     "markR0": null,
+     "markR1": null,
+     "perSeat": null,
+     "plates": []
+    }
+   }
+  }
+ },
+ "fieldB": {
+  "390": {
+   "person": "James",
+   "dirs": {
+    "shell": {
+     "nm": "Shell",
+     "killed": true,
+     "fitted": null,
+     "ringR": 153,
+     "restR": null,
+     "openR": null,
+     "labelCol": null,
+     "stripW": null,
+     "stripH": null,
+     "bandThick": 57.375
+    },
+    "kerf": {
+     "nm": "Kerf",
+     "killed": false,
+     "fitted": 0,
+     "ringR": 153,
+     "restR": null,
+     "openR": null,
+     "labelCol": null,
+     "stripW": null,
+     "stripH": null,
+     "bandThick": 57.375
+    },
+    "strata": {
+     "nm": "Strata",
+     "killed": false,
+     "fitted": null,
+     "ringR": 153,
+     "restR": null,
+     "openR": null,
+     "labelCol": null,
+     "stripW": null,
+     "stripH": null,
+     "bandThick": 57.375
+    },
+    "unroll": {
+     "nm": "Unroll",
+     "killed": false,
+     "fitted": 7.088380760693647,
+     "ringR": 84.76,
+     "restR": 153,
+     "openR": 84.76,
+     "labelCol": 96,
+     "stripW": 298,
+     "stripH": 150,
+     "bandThick": 31.785000000000004
+    }
+   },
+   "ring": {
+    "r": 153,
+    "bandThick": 57.375,
+    "crownSeats": 21,
+    "throatSeats": 12,
+    "seated": 108,
+    "seventhCrownPx": 5.31345900339294,
+    "seventhThroatPx": 9.298553255937646,
+    "sharePx": 7.232208087951502
+   }
+  },
+  "1600": {
+   "person": "James",
+   "dirs": {
+    "shell": {
+     "nm": "Shell",
+     "killed": true,
+     "fitted": null,
+     "ringR": 294,
+     "restR": null,
+     "openR": null,
+     "labelCol": null,
+     "stripW": null,
+     "stripH": null,
+     "bandThick": 110.25
+    },
+    "kerf": {
+     "nm": "Kerf",
+     "killed": false,
+     "fitted": 9,
+     "ringR": 294,
+     "restR": null,
+     "openR": null,
+     "labelCol": null,
+     "stripW": null,
+     "stripH": null,
+     "bandThick": 110.25
+    },
+    "strata": {
+     "nm": "Strata",
+     "killed": false,
+     "fitted": null,
+     "ringR": 294,
+     "restR": null,
+     "openR": null,
+     "labelCol": null,
+     "stripW": null,
+     "stripH": null,
+     "bandThick": 110.25
+    },
+    "unroll": {
+     "nm": "Unroll",
+     "killed": false,
+     "fitted": 11,
+     "ringR": 177,
+     "restR": 279,
+     "openR": 177,
+     "labelCol": 124,
+     "stripW": 374,
+     "stripH": 340,
+     "bandThick": 66.375
+    }
+   },
+   "ring": {
+    "r": 294,
+    "bandThick": 110.25,
+    "crownSeats": 21,
+    "throatSeats": 12,
+    "seated": 108,
+    "seventhCrownPx": 10.210176124166829,
+    "seventhThroatPx": 17.867808217291948,
+    "sharePx": 13.897184169004849
+   }
+  }
+ },
+ "checks": [
+  "pass  field A today at 1600 reproduces panels-1600.json, shell 171.1 against 171.1",
+  "pass  field A band at 1600 reproduces panels-1600.json, shell 306.0 against 306.0",
+  "pass  field A mark at 1600 reproduces panels-1600.json, shell 306.0 against 306.0",
+  "pass  field A axis at 1600 reproduces panels-1600.json, shell 289.0 against 289.0",
+  "pass  field A spine at 1600 reproduces panels-1600.json, shell 269.0 against 269.0",
+  "pass  field A today at 390 reproduces panels-390.json, shell 77.9 against 77.9",
+  "pass  field A band at 390 reproduces panels-390.json, shell 141.5 against 141.5",
+  "pass  field A mark at 390 reproduces panels-390.json, shell 141.5 against 141.5",
+  "pass  field A axis at 390 reproduces panels-390.json, shell 124.5 against 124.5",
+  "pass  field A spine at 390 reproduces panels-390.json, shell 124.0 against 124.0",
+  "pass  field B carries four directions at 1600, read 4",
+  "pass  field B cost.json carries four rows at 1600",
+  "pass  field B carries four directions at 390, read 4",
+  "pass  field B cost.json carries four rows at 390",
+  "pass  both prototypes made 0 requests off the machine",
+  "pass  neither prototype threw, 0 errors"
+ ],
+ "gates": {},
+ "costB": {
+  "shut-1600": [
+   {
+    "nm": "Shell",
+    "count": 108,
+    "mean": 1.7999999999975491,
+    "worst": 2.8999999999068677,
+    "rest": 1.3999999999068677,
+    "killed": true,
+    "gapWorst": 16.800000000000182,
+    "over": 0,
+    "gaps": 23
+   },
+   {
+    "nm": "Kerf",
+    "count": 108,
+    "mean": 2.3026315789473686,
+    "worst": 2.7000000001862645,
+    "rest": 1.8999999999068677,
+    "killed": false,
+    "gapWorst": 16.700000000000273,
+    "over": 0,
+    "gaps": 23
+   },
+   {
+    "nm": "Strata",
+    "count": 108,
+    "mean": 1.9078947368666137,
+    "worst": 2.5,
+    "rest": 1.599999999627471,
+    "killed": false,
+    "gapWorst": 16.800000000000182,
+    "over": 0,
+    "gaps": 23
+   },
+   {
+    "nm": "Unroll",
+    "count": 108,
+    "mean": 2.539473684210526,
+    "worst": 3.5,
+    "rest": 1.2000000001862645,
+    "killed": false,
+    "gapWorst": 16.799999999999727,
+    "over": 0,
+    "gaps": 23
+   }
+  ],
+  "open-1600": [
+   {
+    "nm": "Shell",
+    "count": 108,
+    "mean": 1.650000000017156,
+    "worst": 3,
+    "rest": 1.3999999999068677,
+    "killed": true,
+    "gapWorst": 16.699999999999818,
+    "over": 0,
+    "gaps": 23
+   },
+   {
+    "nm": "Kerf",
+    "count": 108,
+    "mean": 2.347368421045279,
+    "worst": 3.8999999999068677,
+    "rest": 1.7999999998137355,
+    "killed": false,
+    "gapWorst": 16.800000000000182,
+    "over": 0,
+    "gaps": 23
+   },
+   {
+    "nm": "Strata",
+    "count": 108,
+    "mean": 1.8578947368445562,
+    "worst": 2.5,
+    "rest": 1.5,
+    "killed": false,
+    "gapWorst": 16.700000000000728,
+    "over": 0,
+    "gaps": 23
+   },
+   {
+    "nm": "Unroll",
+    "count": 108,
+    "mean": 2.455263157889835,
+    "worst": 3.5,
+    "rest": 1.2999999998137355,
+    "killed": false,
+    "gapWorst": 16.800000000000182,
+    "over": 0,
+    "gaps": 23
+   }
+  ],
+  "gordon-1600": [
+   {
+    "nm": "Shell",
+    "count": 108,
+    "mean": 1.7447368421126157,
+    "worst": 2.2999999998137355,
+    "rest": 1.3999999999068677,
+    "killed": true,
+    "gapWorst": 16.700000000000728,
+    "over": 0,
+    "gaps": 23
+   },
+   {
+    "nm": "Kerf",
+    "count": 108,
+    "mean": 3.6631578947294896,
+    "worst": 4.600000000093132,
+    "rest": 2,
+    "killed": false,
+    "gapWorst": 16.80000000000109,
+    "over": 0,
+    "gaps": 23
+   },
+   {
+    "nm": "Strata",
+    "count": 108,
+    "mean": 1.8236842105336684,
+    "worst": 2.1000000000931323,
+    "rest": 1.5,
+    "killed": false,
+    "gapWorst": 49.899999999999636,
+    "over": 1,
+    "gaps": 21
+   },
+   {
+    "nm": "Unroll",
+    "count": 108,
+    "mean": 2.6315789473684212,
+    "worst": 6,
+    "rest": 1.2999999998137355,
+    "killed": false,
+    "gapWorst": 16.700000000000728,
+    "over": 0,
+    "gaps": 23
+   }
+  ],
+  "shut-390": [
+   {
+    "nm": "Shell",
+    "count": 108,
+    "mean": 0.9605263157894737,
+    "worst": 4.5,
+    "rest": 0.6000000000931323,
+    "killed": true,
+    "gapWorst": 16.799999999999955,
+    "over": 0,
+    "gaps": 23
+   },
+   {
+    "nm": "Kerf",
+    "count": 108,
+    "mean": 1.2289473684137,
+    "worst": 1.8999999999068677,
+    "rest": 0.8999999999068677,
+    "killed": false,
+    "gapWorst": 16.800000000000182,
+    "over": 0,
+    "gaps": 23
+   },
+   {
+    "nm": "Strata",
+    "count": 108,
+    "mean": 0.8921052631554439,
+    "worst": 1.5,
+    "rest": 0.599999999627471,
+    "killed": false,
+    "gapWorst": 16.700000000000273,
+    "over": 0,
+    "gaps": 23
+   },
+   {
+    "nm": "Unroll",
+    "count": 108,
+    "mean": 1.6868421052656088,
+    "worst": 2.5,
+    "rest": 0.5,
+    "killed": false,
+    "gapWorst": 16.700000000000273,
+    "over": 0,
+    "gaps": 23
+   }
+  ],
+  "open-390": [
+   {
+    "nm": "Shell",
+    "count": 108,
+    "mean": 0.7342105263133386,
+    "worst": 1,
+    "rest": 0.599999999627471,
+    "killed": true,
+    "gapWorst": 16.700000000000728,
+    "over": 0,
+    "gaps": 23
+   },
+   {
+    "nm": "Kerf",
+    "count": 108,
+    "mean": 1.3157894736842106,
+    "worst": 4,
+    "rest": 1,
+    "killed": false,
+    "gapWorst": 16.799999999999272,
+    "over": 0,
+    "gaps": 23
+   },
+   {
+    "nm": "Strata",
+    "count": 108,
+    "mean": 0.9342105263157895,
+    "worst": 1.2000000001862645,
+    "rest": 0.6000000000931323,
+    "killed": false,
+    "gapWorst": 16.800000000000182,
+    "over": 0,
+    "gaps": 23
+   },
+   {
+    "nm": "Unroll",
+    "count": 108,
+    "mean": 1.8315789473586177,
+    "worst": 4.800000000279397,
+    "rest": 0.5,
+    "killed": false,
+    "gapWorst": 16.800000000000182,
+    "over": 0,
+    "gaps": 23
+   }
+  ],
+  "gordon-390": [
+   {
+    "nm": "Shell",
+    "count": 108,
+    "mean": 0.7447368421003615,
+    "worst": 1.1000000000931323,
+    "rest": 0.5,
+    "killed": true,
+    "gapWorst": 16.80000000000109,
+    "over": 0,
+    "gaps": 23
+   },
+   {
+    "nm": "Kerf",
+    "count": 108,
+    "mean": 1.263157894736842,
+    "worst": 1.5,
+    "rest": 1,
+    "killed": false,
+    "gapWorst": 16.700000000000728,
+    "over": 0,
+    "gaps": 23
+   },
+   {
+    "nm": "Strata",
+    "count": 108,
+    "mean": 0.8289473684210527,
+    "worst": 1.2999999998137355,
+    "rest": 0.5,
+    "killed": false,
+    "gapWorst": 16.799999999999272,
+    "over": 0,
+    "gaps": 23
+   },
+   {
+    "nm": "Unroll",
+    "count": 108,
+    "mean": 1.752631578937565,
+    "worst": 4.399999999906868,
+    "rest": 0.5,
+    "killed": false,
+    "gapWorst": 16.799999999999272,
+    "over": 0,
+    "gaps": 23
+   }
+  ]
+ }
+}
