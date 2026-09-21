@@ -1,0 +1,1094 @@
+{
+ "390": {
+  "tol": {
+   "fine": {
+    "n": 31,
+    "hits": 31,
+    "tip": {
+     "min": 4,
+     "med": 8,
+     "max": 10.25
+    },
+    "mid": {
+     "min": 7,
+     "med": 7,
+     "max": 7
+    },
+    "rim": {
+     "min": 11.75,
+     "med": 11.75,
+     "max": 11.75
+    },
+    "chord": 24.05228294456646,
+    "chordMax": 24.052282944566464,
+    "depth": 99.6996
+   },
+   "coarse": {
+    "n": 7,
+    "hits": 7,
+    "tip": {
+     "min": 19.5,
+     "med": 34.25,
+     "max": 65.5
+    },
+    "mid": {
+     "min": 21.5,
+     "med": 29.5,
+     "max": 48
+    },
+    "rim": {
+     "min": 15.25,
+     "med": 15.25,
+     "max": 15.25
+    },
+    "chord": 71.17214554392558,
+    "chordMax": 135.81627605135444,
+    "depth": 99.6996
+   },
+   "ships": {
+    "core": 31,
+    "other": 0
+   },
+   "side": 332,
+   "cr0": 127.82000000000001,
+   "vw": 390
+  },
+  "rows": [
+   {
+    "nm": "Tomas",
+    "pairs": 89,
+    "bad": 0,
+    "worst": null,
+    "bands": [
+     {
+      "lo": 0.15,
+      "hi": 1,
+      "pairs": 3,
+      "bad": 0
+     },
+     {
+      "lo": 1,
+      "hi": 3,
+      "pairs": 86,
+      "bad": 0
+     },
+     {
+      "lo": 3,
+      "hi": 99,
+      "pairs": 0,
+      "bad": 0
+     }
+    ],
+    "good": true,
+    "ten": 223,
+    "five": 124,
+    "total": 1960,
+    "sum": 2026,
+    "overlap": 66
+   },
+   {
+    "nm": "Gordon",
+    "pairs": 98,
+    "bad": 0,
+    "worst": null,
+    "bands": [
+     {
+      "lo": 0.15,
+      "hi": 1,
+      "pairs": 78,
+      "bad": 0
+     },
+     {
+      "lo": 1,
+      "hi": 3,
+      "pairs": 20,
+      "bad": 0
+     },
+     {
+      "lo": 3,
+      "hi": 99,
+      "pairs": 0,
+      "bad": 0
+     }
+    ],
+    "good": true,
+    "ten": 221,
+    "five": 123,
+    "total": 1587,
+    "sum": 1662,
+    "overlap": 75
+   },
+   {
+    "nm": "Diane",
+    "pairs": 105,
+    "bad": 1,
+    "worst": {
+     "hi": "Patience",
+     "lo": "Temperance",
+     "hiv": 2.6,
+     "lov": 2.2,
+     "hii": 59,
+     "loi": 63,
+     "gap": 4
+    },
+    "bands": [
+     {
+      "lo": 0.15,
+      "hi": 1,
+      "pairs": 5,
+      "bad": 1
+     },
+     {
+      "lo": 1,
+      "hi": 3,
+      "pairs": 61,
+      "bad": 0
+     },
+     {
+      "lo": 3,
+      "hi": 99,
+      "pairs": 39,
+      "bad": 0
+     }
+    ],
+    "good": true,
+    "ten": 228,
+    "five": 130,
+    "total": 3842,
+    "sum": 3877,
+    "overlap": 35
+   },
+   {
+    "nm": "Marcus",
+    "pairs": 105,
+    "bad": 0,
+    "worst": null,
+    "bands": [
+     {
+      "lo": 0.15,
+      "hi": 1,
+      "pairs": 5,
+      "bad": 0
+     },
+     {
+      "lo": 1,
+      "hi": 3,
+      "pairs": 46,
+      "bad": 0
+     },
+     {
+      "lo": 3,
+      "hi": 99,
+      "pairs": 54,
+      "bad": 0
+     }
+    ],
+    "good": true,
+    "ten": 221,
+    "five": 123,
+    "total": 4297,
+    "sum": 4352,
+    "overlap": 55
+   },
+   {
+    "nm": "Sofia",
+    "pairs": 90,
+    "bad": 8,
+    "worst": {
+     "hi": "Generosity",
+     "lo": "Responsibility",
+     "hiv": 8.2,
+     "lov": 7.6,
+     "hii": 150,
+     "loi": 159,
+     "gap": 9
+    },
+    "bands": [
+     {
+      "lo": 0.15,
+      "hi": 1,
+      "pairs": 36,
+      "bad": 8
+     },
+     {
+      "lo": 1,
+      "hi": 3,
+      "pairs": 16,
+      "bad": 0
+     },
+     {
+      "lo": 3,
+      "hi": 99,
+      "pairs": 38,
+      "bad": 0
+     }
+    ],
+    "good": true,
+    "ten": 221,
+    "five": 123,
+    "total": 4788,
+    "sum": 4837,
+    "overlap": 49
+   },
+   {
+    "nm": "Wren",
+    "pairs": 57,
+    "bad": 15,
+    "worst": {
+     "hi": "Patience",
+     "lo": "Courage",
+     "hiv": 9.4,
+     "lov": 9.221,
+     "hii": 173,
+     "loi": 185,
+     "gap": 12
+    },
+    "bands": [
+     {
+      "lo": 0.15,
+      "hi": 1,
+      "pairs": 37,
+      "bad": 15
+     },
+     {
+      "lo": 1,
+      "hi": 3,
+      "pairs": 20,
+      "bad": 0
+     },
+     {
+      "lo": 3,
+      "hi": 99,
+      "pairs": 0,
+      "bad": 0
+     }
+    ],
+    "good": true,
+    "ten": 223,
+    "five": 124,
+    "total": 5787,
+    "sum": 5823,
+    "overlap": 36
+   },
+   {
+    "nm": "Abraham",
+    "pairs": 86,
+    "bad": 3,
+    "worst": {
+     "hi": "Presence",
+     "lo": "Temperance",
+     "hiv": 9.6,
+     "lov": 9.4,
+     "hii": 176,
+     "loi": 184,
+     "gap": 8
+    },
+    "bands": [
+     {
+      "lo": 0.15,
+      "hi": 1,
+      "pairs": 70,
+      "bad": 3
+     },
+     {
+      "lo": 1,
+      "hi": 3,
+      "pairs": 16,
+      "bad": 0
+     },
+     {
+      "lo": 3,
+      "hi": 99,
+      "pairs": 0,
+      "bad": 0
+     }
+    ],
+    "good": true,
+    "ten": 228,
+    "five": 130,
+    "total": 5744,
+    "sum": 5779,
+    "overlap": 35
+   }
+  ],
+  "answered": 31,
+  "missed": [],
+  "sweep": [
+   {
+    "ch": "width",
+    "step": 0,
+    "ratio": 1,
+    "pairs": 105,
+    "bad": 0,
+    "wide": {
+     "lo": 3,
+     "hi": 99,
+     "pairs": 39,
+     "bad": 0
+    },
+    "mid": {
+     "lo": 1,
+     "hi": 3,
+     "pairs": 61,
+     "bad": 0
+    },
+    "near": {
+     "lo": 0.15,
+     "hi": 1,
+     "pairs": 5,
+     "bad": 0
+    }
+   },
+   {
+    "ch": "width",
+    "step": 0.06,
+    "ratio": 1.18,
+    "pairs": 105,
+    "bad": 0,
+    "wide": {
+     "lo": 3,
+     "hi": 99,
+     "pairs": 39,
+     "bad": 0
+    },
+    "mid": {
+     "lo": 1,
+     "hi": 3,
+     "pairs": 61,
+     "bad": 0
+    },
+    "near": {
+     "lo": 0.15,
+     "hi": 1,
+     "pairs": 5,
+     "bad": 0
+    }
+   },
+   {
+    "ch": "width",
+    "step": 0.12,
+    "ratio": 1.3599999999999999,
+    "pairs": 105,
+    "bad": 1,
+    "wide": {
+     "lo": 3,
+     "hi": 99,
+     "pairs": 39,
+     "bad": 0
+    },
+    "mid": {
+     "lo": 1,
+     "hi": 3,
+     "pairs": 61,
+     "bad": 0
+    },
+    "near": {
+     "lo": 0.15,
+     "hi": 1,
+     "pairs": 5,
+     "bad": 1
+    }
+   },
+   {
+    "ch": "width",
+    "step": 0.18,
+    "ratio": 1.54,
+    "pairs": 105,
+    "bad": 2,
+    "wide": {
+     "lo": 3,
+     "hi": 99,
+     "pairs": 39,
+     "bad": 0
+    },
+    "mid": {
+     "lo": 1,
+     "hi": 3,
+     "pairs": 61,
+     "bad": 0
+    },
+    "near": {
+     "lo": 0.15,
+     "hi": 1,
+     "pairs": 5,
+     "bad": 2
+    }
+   },
+   {
+    "ch": "width",
+    "step": 0.24,
+    "ratio": 1.72,
+    "pairs": 105,
+    "bad": 4,
+    "wide": {
+     "lo": 3,
+     "hi": 99,
+     "pairs": 39,
+     "bad": 0
+    },
+    "mid": {
+     "lo": 1,
+     "hi": 3,
+     "pairs": 61,
+     "bad": 2
+    },
+    "near": {
+     "lo": 0.15,
+     "hi": 1,
+     "pairs": 5,
+     "bad": 2
+    }
+   },
+   {
+    "ch": "width",
+    "step": 0.32,
+    "ratio": 1.96,
+    "pairs": 105,
+    "bad": 7,
+    "wide": {
+     "lo": 3,
+     "hi": 99,
+     "pairs": 39,
+     "bad": 0
+    },
+    "mid": {
+     "lo": 1,
+     "hi": 3,
+     "pairs": 61,
+     "bad": 5
+    },
+    "near": {
+     "lo": 0.15,
+     "hi": 1,
+     "pairs": 5,
+     "bad": 2
+    }
+   },
+   {
+    "ch": "width",
+    "step": 0.45,
+    "ratio": 2.35,
+    "pairs": 105,
+    "bad": 8,
+    "wide": {
+     "lo": 3,
+     "hi": 99,
+     "pairs": 39,
+     "bad": 0
+    },
+    "mid": {
+     "lo": 1,
+     "hi": 3,
+     "pairs": 61,
+     "bad": 6
+    },
+    "near": {
+     "lo": 0.15,
+     "hi": 1,
+     "pairs": 5,
+     "bad": 2
+    }
+   },
+   {
+    "ch": "width",
+    "step": 0.7,
+    "ratio": 3.0999999999999996,
+    "pairs": 105,
+    "bad": 15,
+    "wide": {
+     "lo": 3,
+     "hi": 99,
+     "pairs": 39,
+     "bad": 0
+    },
+    "mid": {
+     "lo": 1,
+     "hi": 3,
+     "pairs": 61,
+     "bad": 13
+    },
+    "near": {
+     "lo": 0.15,
+     "hi": 1,
+     "pairs": 5,
+     "bad": 2
+    }
+   },
+   {
+    "ch": "dash",
+    "step": null,
+    "ratio": 1,
+    "pairs": 105,
+    "bad": 1,
+    "wide": {
+     "lo": 3,
+     "hi": 99,
+     "pairs": 39,
+     "bad": 0
+    },
+    "mid": {
+     "lo": 1,
+     "hi": 3,
+     "pairs": 61,
+     "bad": 0
+    },
+    "near": {
+     "lo": 0.15,
+     "hi": 1,
+     "pairs": 5,
+     "bad": 1
+    }
+   }
+  ],
+  "slots": 31,
+  "probeSample": "law Non-Harmkept 6.1 of 10Root seat, carrying 1.4 of 10modelled: practised 1 time in 28 daysClick for the detail.",
+  "reqs": 2,
+  "outbound": 0
+ },
+ "1600": {
+  "tol": {
+   "fine": {
+    "n": 31,
+    "hits": 31,
+    "tip": {
+     "min": 7.75,
+     "med": 15,
+     "max": 19.5
+    },
+    "mid": {
+     "min": 13,
+     "med": 13,
+     "max": 13
+    },
+    "rim": {
+     "min": 21,
+     "med": 21,
+     "max": 21
+    },
+    "chord": 44.916913932624105,
+    "chordMax": 44.91691393262411,
+    "depth": 186.186
+   },
+   "coarse": {
+    "n": 7,
+    "hits": 7,
+    "tip": {
+     "min": 36.5,
+     "med": 64,
+     "max": 122.75
+    },
+    "mid": {
+     "min": 40.25,
+     "med": 55.25,
+     "max": 89.5
+    },
+    "rim": {
+     "min": 21,
+     "med": 21,
+     "max": 21
+    },
+    "chord": 132.9118380639574,
+    "chordMax": 253.6328046742161,
+    "depth": 186.186
+   },
+   "ships": {
+    "core": 31,
+    "other": 0
+   },
+   "side": 620,
+   "cr0": 238.70000000000002,
+   "vw": 1600
+  },
+  "rows": [
+   {
+    "nm": "Tomas",
+    "pairs": 89,
+    "bad": 0,
+    "worst": null,
+    "bands": [
+     {
+      "lo": 0.15,
+      "hi": 1,
+      "pairs": 3,
+      "bad": 0
+     },
+     {
+      "lo": 1,
+      "hi": 3,
+      "pairs": 86,
+      "bad": 0
+     },
+     {
+      "lo": 3,
+      "hi": 99,
+      "pairs": 0,
+      "bad": 0
+     }
+    ],
+    "good": true,
+    "ten": 223,
+    "five": 124,
+    "total": 1960,
+    "sum": 2026,
+    "overlap": 66
+   },
+   {
+    "nm": "Gordon",
+    "pairs": 98,
+    "bad": 0,
+    "worst": null,
+    "bands": [
+     {
+      "lo": 0.15,
+      "hi": 1,
+      "pairs": 78,
+      "bad": 0
+     },
+     {
+      "lo": 1,
+      "hi": 3,
+      "pairs": 20,
+      "bad": 0
+     },
+     {
+      "lo": 3,
+      "hi": 99,
+      "pairs": 0,
+      "bad": 0
+     }
+    ],
+    "good": true,
+    "ten": 221,
+    "five": 123,
+    "total": 1587,
+    "sum": 1662,
+    "overlap": 75
+   },
+   {
+    "nm": "Diane",
+    "pairs": 105,
+    "bad": 1,
+    "worst": {
+     "hi": "Patience",
+     "lo": "Temperance",
+     "hiv": 2.6,
+     "lov": 2.2,
+     "hii": 59,
+     "loi": 63,
+     "gap": 4
+    },
+    "bands": [
+     {
+      "lo": 0.15,
+      "hi": 1,
+      "pairs": 5,
+      "bad": 1
+     },
+     {
+      "lo": 1,
+      "hi": 3,
+      "pairs": 61,
+      "bad": 0
+     },
+     {
+      "lo": 3,
+      "hi": 99,
+      "pairs": 39,
+      "bad": 0
+     }
+    ],
+    "good": true,
+    "ten": 228,
+    "five": 130,
+    "total": 3842,
+    "sum": 3877,
+    "overlap": 35
+   },
+   {
+    "nm": "Marcus",
+    "pairs": 105,
+    "bad": 0,
+    "worst": null,
+    "bands": [
+     {
+      "lo": 0.15,
+      "hi": 1,
+      "pairs": 5,
+      "bad": 0
+     },
+     {
+      "lo": 1,
+      "hi": 3,
+      "pairs": 46,
+      "bad": 0
+     },
+     {
+      "lo": 3,
+      "hi": 99,
+      "pairs": 54,
+      "bad": 0
+     }
+    ],
+    "good": true,
+    "ten": 221,
+    "five": 123,
+    "total": 4297,
+    "sum": 4352,
+    "overlap": 55
+   },
+   {
+    "nm": "Sofia",
+    "pairs": 90,
+    "bad": 8,
+    "worst": {
+     "hi": "Generosity",
+     "lo": "Responsibility",
+     "hiv": 8.2,
+     "lov": 7.6,
+     "hii": 150,
+     "loi": 159,
+     "gap": 9
+    },
+    "bands": [
+     {
+      "lo": 0.15,
+      "hi": 1,
+      "pairs": 36,
+      "bad": 8
+     },
+     {
+      "lo": 1,
+      "hi": 3,
+      "pairs": 16,
+      "bad": 0
+     },
+     {
+      "lo": 3,
+      "hi": 99,
+      "pairs": 38,
+      "bad": 0
+     }
+    ],
+    "good": true,
+    "ten": 221,
+    "five": 123,
+    "total": 4788,
+    "sum": 4837,
+    "overlap": 49
+   },
+   {
+    "nm": "Wren",
+    "pairs": 57,
+    "bad": 15,
+    "worst": {
+     "hi": "Patience",
+     "lo": "Courage",
+     "hiv": 9.4,
+     "lov": 9.221,
+     "hii": 173,
+     "loi": 185,
+     "gap": 12
+    },
+    "bands": [
+     {
+      "lo": 0.15,
+      "hi": 1,
+      "pairs": 37,
+      "bad": 15
+     },
+     {
+      "lo": 1,
+      "hi": 3,
+      "pairs": 20,
+      "bad": 0
+     },
+     {
+      "lo": 3,
+      "hi": 99,
+      "pairs": 0,
+      "bad": 0
+     }
+    ],
+    "good": true,
+    "ten": 223,
+    "five": 124,
+    "total": 5787,
+    "sum": 5823,
+    "overlap": 36
+   },
+   {
+    "nm": "Abraham",
+    "pairs": 86,
+    "bad": 3,
+    "worst": {
+     "hi": "Presence",
+     "lo": "Temperance",
+     "hiv": 9.6,
+     "lov": 9.4,
+     "hii": 176,
+     "loi": 184,
+     "gap": 8
+    },
+    "bands": [
+     {
+      "lo": 0.15,
+      "hi": 1,
+      "pairs": 70,
+      "bad": 3
+     },
+     {
+      "lo": 1,
+      "hi": 3,
+      "pairs": 16,
+      "bad": 0
+     },
+     {
+      "lo": 3,
+      "hi": 99,
+      "pairs": 0,
+      "bad": 0
+     }
+    ],
+    "good": true,
+    "ten": 228,
+    "five": 130,
+    "total": 5744,
+    "sum": 5779,
+    "overlap": 35
+   }
+  ],
+  "answered": 31,
+  "missed": [],
+  "sweep": [
+   {
+    "ch": "width",
+    "step": 0,
+    "ratio": 1,
+    "pairs": 105,
+    "bad": 0,
+    "wide": {
+     "lo": 3,
+     "hi": 99,
+     "pairs": 39,
+     "bad": 0
+    },
+    "mid": {
+     "lo": 1,
+     "hi": 3,
+     "pairs": 61,
+     "bad": 0
+    },
+    "near": {
+     "lo": 0.15,
+     "hi": 1,
+     "pairs": 5,
+     "bad": 0
+    }
+   },
+   {
+    "ch": "width",
+    "step": 0.06,
+    "ratio": 1.18,
+    "pairs": 105,
+    "bad": 0,
+    "wide": {
+     "lo": 3,
+     "hi": 99,
+     "pairs": 39,
+     "bad": 0
+    },
+    "mid": {
+     "lo": 1,
+     "hi": 3,
+     "pairs": 61,
+     "bad": 0
+    },
+    "near": {
+     "lo": 0.15,
+     "hi": 1,
+     "pairs": 5,
+     "bad": 0
+    }
+   },
+   {
+    "ch": "width",
+    "step": 0.12,
+    "ratio": 1.3599999999999999,
+    "pairs": 105,
+    "bad": 1,
+    "wide": {
+     "lo": 3,
+     "hi": 99,
+     "pairs": 39,
+     "bad": 0
+    },
+    "mid": {
+     "lo": 1,
+     "hi": 3,
+     "pairs": 61,
+     "bad": 0
+    },
+    "near": {
+     "lo": 0.15,
+     "hi": 1,
+     "pairs": 5,
+     "bad": 1
+    }
+   },
+   {
+    "ch": "width",
+    "step": 0.18,
+    "ratio": 1.54,
+    "pairs": 105,
+    "bad": 2,
+    "wide": {
+     "lo": 3,
+     "hi": 99,
+     "pairs": 39,
+     "bad": 0
+    },
+    "mid": {
+     "lo": 1,
+     "hi": 3,
+     "pairs": 61,
+     "bad": 0
+    },
+    "near": {
+     "lo": 0.15,
+     "hi": 1,
+     "pairs": 5,
+     "bad": 2
+    }
+   },
+   {
+    "ch": "width",
+    "step": 0.24,
+    "ratio": 1.72,
+    "pairs": 105,
+    "bad": 4,
+    "wide": {
+     "lo": 3,
+     "hi": 99,
+     "pairs": 39,
+     "bad": 0
+    },
+    "mid": {
+     "lo": 1,
+     "hi": 3,
+     "pairs": 61,
+     "bad": 2
+    },
+    "near": {
+     "lo": 0.15,
+     "hi": 1,
+     "pairs": 5,
+     "bad": 2
+    }
+   },
+   {
+    "ch": "width",
+    "step": 0.32,
+    "ratio": 1.96,
+    "pairs": 105,
+    "bad": 7,
+    "wide": {
+     "lo": 3,
+     "hi": 99,
+     "pairs": 39,
+     "bad": 0
+    },
+    "mid": {
+     "lo": 1,
+     "hi": 3,
+     "pairs": 61,
+     "bad": 5
+    },
+    "near": {
+     "lo": 0.15,
+     "hi": 1,
+     "pairs": 5,
+     "bad": 2
+    }
+   },
+   {
+    "ch": "width",
+    "step": 0.45,
+    "ratio": 2.35,
+    "pairs": 105,
+    "bad": 8,
+    "wide": {
+     "lo": 3,
+     "hi": 99,
+     "pairs": 39,
+     "bad": 0
+    },
+    "mid": {
+     "lo": 1,
+     "hi": 3,
+     "pairs": 61,
+     "bad": 6
+    },
+    "near": {
+     "lo": 0.15,
+     "hi": 1,
+     "pairs": 5,
+     "bad": 2
+    }
+   },
+   {
+    "ch": "width",
+    "step": 0.7,
+    "ratio": 3.0999999999999996,
+    "pairs": 105,
+    "bad": 15,
+    "wide": {
+     "lo": 3,
+     "hi": 99,
+     "pairs": 39,
+     "bad": 0
+    },
+    "mid": {
+     "lo": 1,
+     "hi": 3,
+     "pairs": 61,
+     "bad": 13
+    },
+    "near": {
+     "lo": 0.15,
+     "hi": 1,
+     "pairs": 5,
+     "bad": 2
+    }
+   },
+   {
+    "ch": "dash",
+    "step": null,
+    "ratio": 1,
+    "pairs": 105,
+    "bad": 1,
+    "wide": {
+     "lo": 3,
+     "hi": 99,
+     "pairs": 39,
+     "bad": 0
+    },
+    "mid": {
+     "lo": 1,
+     "hi": 3,
+     "pairs": 61,
+     "bad": 0
+    },
+    "near": {
+     "lo": 0.15,
+     "hi": 1,
+     "pairs": 5,
+     "bad": 1
+    }
+   }
+  ],
+  "slots": 31,
+  "probeSample": "law Non-Harmkept 6.1 of 10Root seat, carrying 1.4 of 10modelled: practised 1 time in 28 daysClick for the detail.",
+  "reqs": 2,
+  "outbound": 0
+ }
+}
