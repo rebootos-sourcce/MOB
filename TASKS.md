@@ -126,6 +126,67 @@ and it is written down here so nobody reads the mark as complete.
       evidence about a human being. Every improvement it proposes has to be
       traceable to a measured sticking point or it does not go on the list.
 
+### DF. THE DEFECT TRAIN. SIX REPRODUCED, SIX CLOSED, AND FOUR RELAYED NUMBERS WERE WRONG.
+
+- [x] **DF1. Every one of the six reproduced, and the seat reported its own
+      measurement rather than the one it was handed.** Four of the relayed
+      figures were wrong and the corrections are worse, not better, in three
+      cases. The release panel offered **25** patterns against a relayed 16,
+      on an allowance of 0. The story page lit **5** of 8 hits, not 4. The
+      worst plain chip measures **2.77** at 11.5 pixels, not 3.46, against a
+      floor of 4.5. The orientation dial printed **84 benign against 16 at a
+      34 per cent fill** on an unread profile, not 100 and a full bar, which
+      is a smaller error and the same defect.
+- [x] **DF2. The release price is now kept.** With the allowance spent the
+      Begin button is gone and the panel routes to settings instead. Three
+      left buys three patterns where the panel used to hand over 25. That is
+      the price being charged rather than a reduction, and a walk already
+      under way is never stopped.
+- [x] **DF3. One quantity, one seed. A stranger reads 36.00 on arrival, not
+      42.25.** Five copies existed: 6.5 in the persona table, 6 at the
+      engine's boundary, 5.5 in a third caller, and two more inside the engine
+      gate. Lower, and the honest number.
+- [x] **DF4. The record switcher leak is closed, and the first fix for it was
+      worse than the bug.** The recovered attempt returned false before the
+      write through, and since that path is the only route a slider drag has
+      to storage, it traded destroying record A for silently losing every edit
+      to record B: measured at 63 units of held charge dragged and 0 in the
+      record 600 milliseconds later. The mirror and the write through are
+      different writes keyed on different things, so they are split now.
+- [x] **DF5. The orientation dial shows an empty trough on arrival,** at the
+      same height, so the Field's layout does not move.
+- [x] **DF6. Chip and dial figures are ink.** The hue stays in the ring, the
+      arc, the glyph and the border. The seat also measured a case nobody had
+      reported: a hot chip paints its alarm twice, on the chip and again on
+      the pill, and reads 3.28 through the full stack.
+- [x] **DF7. The story page reads the sentence once.** Six words light where
+      five did, one of them the word that was easing the person, and an idiom
+      lights as one thing across its own punctuation: on "I wanted to shut the
+      door, and not come out" the scanner reads one hit and the page's own
+      regular expression lit nothing, because the normalisation turned that
+      comma into a space.
+- [x] **DF8. And the new gate caught a defect in the fix on its way in.** The
+      normalisation added a closing boundary whether or not one was there, so
+      a sentence ending in a full stop gained a phantom space and an empty
+      text produced a map entry addressing nothing. The same off by one its
+      own comment records for the opening boundary, on the other end. All four
+      story prototypes carry it. Proved inert rather than argued: 1779 texts
+      and 400 lexicon words scanned at sentence end, mid sentence and alone,
+      identical before and after.
+- [ ] **DF9. The names are on the marks as data and reach nobody.** The layer
+      is hidden from assistive technology and sits behind the textarea with
+      pointer events off, so a tooltip there reaches no one. Where a person
+      reads that a sentence was scored as silenced or self attack is a design
+      decision about the story page, which is still the owner's to rule.
+- [x] **DF10. 98 new gate rows, and every one fails on the pre fix build by
+      name.** Engine 1403 to 1464, functional 792 to 852, design 141 to 150.
+      Two gate blocks used to throw rather than fail on an older build, so
+      both assert reachability first now: a gate that reports a stack trace
+      and no row is not a gate.
+- [x] **DF11. And `CLAUDE.md`'s own coverage figure was stale,** 96.1 against
+      a measured 95.3. Corrected in that file, and it is the twelfth time this
+      repository has been bitten by a number typed into a document.
+
 ### NX. THE CHASE TO NINETY. IT STOPS AT 80.18 AND THE REST IS ARITHMETIC.
 
 - [x] **NX1. Ninety was not reached. The curve peaks at 80.18 and settles at

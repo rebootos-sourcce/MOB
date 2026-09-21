@@ -83,10 +83,13 @@ Changed a data table, split a file, or moved code between modules:
 
     python3 tools/equiv.py old.html source.html
 
-Coverage, when you have added or changed engine logic. 96.1 percent of engine
-functions execute under `tests/engine.js` alone. An aggregate hides a hole:
-the whole birth module sat at zero while the average read 92 percent, so check
-the unexecuted list and not only the number.
+Coverage, when you have added or changed engine logic. Most engine functions
+execute under `tests/engine.js` alone, and the share is read off the run
+rather than out of this paragraph, which said 96.1 while the measurement read
+95.3. That is the twelfth time this file has been bitten by its own number and
+it is the reason the gate counts were cut out of the column above. An
+aggregate hides a hole: the whole birth module sat at zero while the average
+read 92 percent, so check the unexecuted list and not only the number.
 
     rm -rf /tmp/cov && NODE_V8_COVERAGE=/tmp/cov node tests/engine.js
 
