@@ -1,0 +1,377 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The container</title>
+<script>
+/* THE PAGE'S OWN REQUEST LOG. Nothing here is ever expected to fire. It is
+   installed before the engine loads so a request from any script on the page
+   is recorded, and the shot harness asserts this list and the browser's own
+   list separately. Copied from proto/story4, where it was built. */
+window.__REQ=[];
+(function(){var f=window.fetch;
+ window.fetch=function(u){window.__REQ.push('fetch '+u);
+  return f?f.apply(window,arguments):Promise.reject(new Error('no network'));};
+ var X=window.XMLHttpRequest;
+ if(X&&X.prototype&&X.prototype.open){var o=X.prototype.open;
+  X.prototype.open=function(m,u){window.__REQ.push('xhr '+u);
+   return o.apply(this,arguments);};}})();
+</script>
+<style>
+/* ============================================================
+   THE CONTAINER.
+
+   Ruled 21 September, TASKS.md CN1 to CN5. "Our journal is a container. There
+   is something in there as a mechanic that needs to be treated as a
+   container." A container has an inside and an outside, something that opens
+   it, something that closes it, and a rule about what leaves it. A text box
+   with a placeholder has none of those properties, which is what ships today.
+
+   This prototype is the mechanic, not a fifth story page design. It reads
+   against proto/story4 rather than instead of it: the inside of an open
+   container carries the mirror's treatment, because that is the design
+   DESIGN-story4.md recommends, and the container is the frame around whichever
+   belief he rules.
+
+   TOKENS are copied by value from atuned_src/shell/head.html. Every one is
+   the shipping value. The engine is referenced at ../../engine.js and never
+   copied.
+   ============================================================ */
+:root{
+ --bg:#0C0D12; --panel:#1A1D26; --panel-2:#252833; --sunk:#090A0E;
+ --edge:rgba(255,255,255,.09); --edge-2:rgba(255,255,255,.14);
+ --ink:#EFEDE8; --mid:#B4B0A8; --dim:#94908A;
+ --root:#D6524C; --sacral:#D8924E; --solar:#DABF6A;
+ --heart:#5FD5A6; --throat:#5EBBDB; --eye:#7D93E0; --crown:#A77EDB;
+ --alarm:#FF2E1F; --alarm-soft:rgba(255,46,31,.16);
+ --accent:#7EB8D4; --on-accent:#0B1418;
+ --sans:'Inter','Inter Tight',system-ui,-apple-system,'Segoe UI',sans-serif;
+ --num:'Inter','Inter Tight',system-ui,-apple-system,sans-serif;
+ --r:16px; --r-s:11px; --r-xs:8px; --tap:44px;
+ --t-micro:.12s; --t-element:.22s; --ease-out:cubic-bezier(.22,1,.36,1);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);
+ font-weight:300;-webkit-font-smoothing:antialiased}
+.pchrome{display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+ padding:12px 22px;border-bottom:1px solid var(--edge);background:var(--panel)}
+.pchrome b{font-weight:500;font-size:13px;color:var(--mid);letter-spacing:.06em;
+ text-transform:uppercase}
+.pchrome select,.pchrome button{min-height:var(--tap);background:var(--panel-2);
+ color:var(--ink);border:1px solid var(--edge);border-radius:var(--r-xs);
+ padding:8px 14px;font-family:var(--sans);font-size:13.5px;cursor:pointer}
+.pchrome .note{font-size:12.5px;color:var(--dim);flex:1 1 220px;min-width:0}
+
+.btn{min-height:var(--tap);display:inline-flex;align-items:center;
+ justify-content:center;gap:7px;background:var(--panel-2);
+ border:1px solid var(--edge);color:var(--mid);border-radius:var(--r-xs);
+ padding:9px 17px;font-family:var(--sans);font-size:13.5px;cursor:pointer;
+ transition:color var(--t-micro) var(--ease-out),
+  border-color var(--t-micro) var(--ease-out)}
+.btn:hover:not(:disabled){color:var(--ink);border-color:var(--edge-2)}
+.btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.btn.pri{background:var(--accent);border-color:var(--accent);
+ color:var(--on-accent);font-weight:500}
+.btn.warn{border-color:color-mix(in srgb,var(--alarm) 46%,transparent);
+ color:color-mix(in srgb,var(--alarm) 78%,var(--ink))}
+.btn:disabled{opacity:.42;cursor:default}
+.eye{font-family:var(--num);font-size:11.5px;letter-spacing:.13em;
+ text-transform:uppercase;color:var(--dim)}
+.eyeline{display:flex;align-items:center;justify-content:space-between;gap:12px;
+ margin-bottom:12px;flex-wrap:wrap}
+.wrap{max-width:1240px;margin:0 auto;padding:24px 22px 48px}
+.note{font-size:13px;line-height:1.6;color:var(--dim);max-width:62ch}
+.empty{font-size:14.5px;color:var(--dim);line-height:1.72;max-width:52ch}
+
+/* the status writer. One region, role=status, the way ui/component.js has it */
+#st{position:sticky;top:0;z-index:40;display:none;align-items:center;gap:10px;
+ padding:11px 22px;font-size:13.5px;background:var(--panel);
+ border-bottom:1px solid var(--edge);color:var(--ink)}
+#st.on{display:flex}
+#st.bad{border-bottom-color:color-mix(in srgb,var(--alarm) 52%,transparent);
+ color:color-mix(in srgb,var(--alarm) 74%,var(--ink))}
+
+/* ============================================================
+   THE LID. The one piece of furniture the mechanic adds, and it is the same
+   object on the shelf and inside the container. Outside it is a row you press
+   to open. Inside it is the strip along the top. Carrying the key, the seal
+   and the sight in one object is what makes the boundary visible: a person
+   cannot look at a container without seeing who else can.
+   ============================================================ */
+.lid{display:flex;align-items:center;gap:14px;flex-wrap:wrap;width:100%;
+ text-align:left;background:var(--panel);border:1px solid var(--edge);
+ border-radius:var(--r-s);padding:13px 16px;color:var(--ink);cursor:pointer;
+ font-family:var(--sans);min-height:var(--tap);
+ transition:border-color var(--t-micro) var(--ease-out)}
+.lid:hover{border-color:var(--edge-2)}
+.lid:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.lid.strip{position:sticky;top:0;z-index:20;cursor:default;border-radius:0;
+ border-left:0;border-right:0;border-top:0;margin:0 -22px 22px;
+ padding:11px 22px;background:var(--bg)}
+.lid.strip:hover{border-color:var(--edge)}
+.lid-seal{flex:0 0 auto;width:26px;height:26px;color:var(--c,var(--dim))}
+.lid-seal svg{width:26px;height:26px;fill:none;stroke:currentColor;
+ stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.lid-nm{flex:1 1 200px;min-width:0;display:flex;flex-direction:column}
+.lid-k{display:block;font-size:14.5px;color:var(--ink);font-weight:500;
+ line-height:1.3}
+.lid-sub{display:block;font-size:12.5px;color:var(--dim);margin-top:4px}
+.lid-sp{flex:1 1 8px}
+.tag{font-family:var(--num);font-size:11.5px;letter-spacing:.07em;
+ text-transform:uppercase;border:1px solid var(--edge-2);border-radius:999px;
+ padding:5px 11px;color:var(--mid);white-space:nowrap}
+.tag.shut{border-color:color-mix(in srgb,var(--accent) 46%,transparent);
+ color:var(--accent)}
+.tag.sight{border-color:color-mix(in srgb,var(--sacral) 52%,transparent);
+ color:var(--sacral)}
+.num{font-family:var(--num);font-variant-numeric:tabular-nums;color:var(--mid);
+ font-size:12.5px;letter-spacing:.04em}
+
+/* the shelf */
+/* the shelf is held to a column rather than run to the full width. A row
+   with a name at one end and a tag a thousand pixels away at the other is two
+   things on one line pretending to be one object. */
+.shelf{display:flex;flex-direction:column;gap:9px;margin-top:6px;max-width:760px}
+.col{max-width:760px}
+.keyring{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:8px}
+.kr{min-height:var(--tap);background:var(--panel-2);border:1px solid var(--edge);
+ border-radius:999px;color:var(--mid);padding:9px 18px;font-size:13.5px;
+ font-family:var(--sans);cursor:pointer}
+.kr:hover{color:var(--ink);border-color:var(--edge-2)}
+.kr:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.kr.on{border-color:var(--accent);color:var(--ink);
+ background:color-mix(in srgb,var(--accent) 15%,var(--panel-2))}
+.keys{display:flex;flex-direction:column;gap:7px;margin-bottom:22px}
+.key{display:flex;align-items:center;gap:13px;width:100%;text-align:left;
+ min-height:var(--tap);background:transparent;border:1px solid var(--edge);
+ border-radius:var(--r-s);padding:12px 15px;color:var(--mid);cursor:pointer;
+ font-family:var(--sans);font-size:14.5px;line-height:1.5;
+ transition:border-color var(--t-micro) var(--ease-out),
+  color var(--t-micro) var(--ease-out)}
+.key:hover{color:var(--ink);border-color:var(--accent)}
+.key:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.key .kb{flex:0 0 auto;font-family:var(--num);font-size:11.5px;
+ letter-spacing:.08em;text-transform:uppercase;color:var(--dim);width:82px}
+.shut-set{display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+ margin:0 0 24px;padding-top:14px;border-top:1px solid var(--edge)}
+/* THE TOGGLE. A native checkbox is 20 by 20 and cannot be made 44 by 44
+   without lying about where its target is, and the floor is 44 on every
+   interactive element. This is the product's own ring treatment: the mark is
+   a ring, the state fills it, and the whole control is the target. */
+.tgl{min-height:var(--tap);display:inline-flex;align-items:center;gap:10px;
+ background:var(--panel-2);border:1px solid var(--edge);color:var(--mid);
+ border-radius:999px;padding:9px 18px 9px 13px;font-family:var(--sans);
+ font-size:13.5px;cursor:pointer;flex:0 0 auto}
+.tgl:hover{color:var(--ink);border-color:var(--edge-2)}
+.tgl:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.tgl .tgl-b{width:16px;height:16px;border-radius:50%;box-sizing:border-box;
+ border:2px solid var(--dim)}
+.tgl.on{border-color:var(--accent);color:var(--ink)}
+.tgl.on .tgl-b{border-color:var(--accent);
+ box-shadow:inset 0 0 0 3px var(--accent)}
+
+/* the dealt key. One question, at the size of a question. */
+.dealt{border:1px solid var(--edge);border-left:2px solid var(--accent);
+ border-radius:var(--r-s);padding:20px 22px;background:var(--panel);
+ margin-bottom:6px}
+.dealt .pk{display:block;font-family:var(--num);font-size:11.5px;
+ letter-spacing:.13em;text-transform:uppercase;color:var(--dim);
+ margin-bottom:10px}
+.dealt .dq{font-size:20px;line-height:1.5;color:var(--ink);font-weight:300;
+ margin:0 0 18px;max-width:40ch}
+
+/* ============================================================
+   THE INSIDE. One container, and nothing else on the screen. The left column
+   is the writing, the right is the sniffer's own margin, which is the mirror
+   from proto/story4/mirror.html. The prompt sits above the field and stays
+   there, because a prompt that scrolls away is a placeholder with extra steps.
+   ============================================================ */
+.ins{position:relative;display:grid;grid-template-columns:minmax(0,1fr) 360px;
+ gap:96px;align-items:start}
+#lead{position:absolute;inset:0;pointer-events:none;z-index:5}
+.prompt{font-size:20px;line-height:1.5;color:var(--ink);font-weight:300;
+ max-width:34ch;margin:0 0 16px}
+.prompt .pk{display:block;font-family:var(--num);font-size:11.5px;
+ letter-spacing:.13em;text-transform:uppercase;color:var(--dim);
+ margin-bottom:9px}
+.jr{position:relative;background:var(--panel);border:1px solid var(--edge);
+ border-radius:var(--r);overflow:hidden;min-height:430px;
+ transition:border-color var(--t-element) var(--ease-out)}
+.jr:focus-within{border-color:var(--edge-2)}
+.jr-ed{position:relative;display:flex;font-family:var(--sans);font-size:19px;
+ line-height:1.85;font-weight:300}
+.jr-ta,.jr-hl{flex:1 1 auto;min-height:430px;border:0;margin:0;
+ padding:34px 40px 84px;
+ font-family:inherit;font-size:inherit;line-height:inherit;font-weight:inherit;
+ white-space:pre-wrap;word-break:break-word;overflow-wrap:break-word}
+.jr-hl{position:absolute;inset:0;overflow:hidden;pointer-events:none;
+ color:var(--ink);z-index:0}
+.jr-ta{position:relative;z-index:1;resize:none;background:transparent;
+ color:transparent;caret-color:var(--accent);outline:none;overflow:auto}
+.jr-ta::selection{background:color-mix(in srgb,var(--accent) 34%,transparent)}
+.jr-ta::placeholder{color:var(--dim)}
+mark.mk{background:transparent;color:inherit;font:inherit}
+.jr-rec{position:absolute;right:18px;bottom:18px;z-index:4;width:56px;height:56px;
+ border-radius:50%;display:inline-flex;align-items:center;justify-content:center;
+ cursor:pointer;background:var(--panel-2);border:1px solid var(--edge-2);
+ color:var(--mid)}
+.jr-rec:hover{color:var(--ink);border-color:var(--accent)}
+.jr-rec:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.jr-rec svg{fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;
+ stroke-linejoin:round;width:22px;height:22px}
+.jr-live{position:absolute;left:18px;top:14px;z-index:4;display:none;
+ align-items:center;gap:9px;font-family:var(--num);font-size:12.5px;
+ letter-spacing:.07em;text-transform:uppercase;color:var(--alarm)}
+.jr.live .jr-live{display:inline-flex}
+.jr-lamp{width:11px;height:11px;border-radius:50%;background:var(--alarm);
+ box-shadow:0 0 0 4px var(--alarm-soft);animation:lamp 1.5s ease-in-out infinite}
+@keyframes lamp{0%,100%{opacity:1}50%{opacity:.38}}
+@media (prefers-reduced-motion:reduce){.jr-lamp{animation:none}}
+.jr.live{border-color:color-mix(in srgb,var(--alarm) 42%,transparent)}
+.foot{display:flex;align-items:center;gap:11px;flex-wrap:wrap;margin-top:13px}
+.foot .sp{flex:1 1 8px}
+
+/* the margin, verbatim in behaviour from the mirror */
+.align{position:relative}
+.re{position:absolute;left:0;right:0;display:flex;gap:9px;align-items:flex-start;
+ padding:6px 0 6px 12px;border-left:2px solid var(--c);background:transparent}
+.re.flowed{position:static;margin-bottom:8px}
+.re .rg{flex:0 0 auto;width:14px;height:14px;color:var(--c);margin-top:2px}
+.re .rg svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.9;
+ stroke-linecap:round;stroke-linejoin:round}
+.re .rt{flex:1 1 auto;min-width:0;font-size:13.5px;line-height:1.55;color:var(--mid)}
+.re .rt b{color:var(--ink);font-weight:500}
+.re.coh{border-left-color:var(--dim)}
+.re.coh .rt{color:var(--dim)}
+.re-empty{font-size:14.5px;color:var(--dim);line-height:1.72;max-width:40ch}
+.re-empty b{color:var(--mid);font-weight:400}
+
+/* ============================================================
+   THE ACKNOWLEDGEMENT. His: "even then I had to acknowledge the answers."
+   Seal goes through here and cannot skip it. One card a line, two doors, and
+   a line nobody claims does not land.
+   ============================================================ */
+.ack{max-width:720px;margin:0 auto}
+.ak{border:1px solid var(--edge);border-left:2px solid var(--c);
+ border-radius:var(--r-s);padding:15px 17px;margin-bottom:9px;
+ background:var(--panel)}
+.ak.mine{border-color:color-mix(in srgb,var(--accent) 44%,transparent);
+ border-left-color:var(--c)}
+/* A REFUSED LINE IS NOT A DISABLED LINE. The first cut dimmed the whole card
+   to half, so the two doors on it read as greyed out and a person could not
+   tell a refusal from a control that had stopped working. The slot keeps its
+   label and the value carries the state: the card keeps its weight, the rule
+   down its left edge goes to the dim ink, and the door that was pressed is
+   the one wearing the accent. */
+.ak.no{border-left-color:var(--dim)}
+.ak.no .ak-q i{color:var(--dim)}
+.ak.no .ak-r{color:var(--dim)}
+.ak-q{font-size:16px;line-height:1.55;color:var(--ink);margin:0 0 4px}
+.ak-q i{font-style:normal;color:var(--c);font-weight:500}
+.ak-r{font-size:13.5px;line-height:1.6;color:var(--mid);margin:0 0 12px;max-width:58ch}
+.ak-r b{color:var(--ink);font-weight:500}
+.ak-btns{display:flex;gap:9px;flex-wrap:wrap}
+.ak-btns .btn{padding:9px 15px}
+.ak-state{font-family:var(--num);font-size:11.5px;letter-spacing:.09em;
+ text-transform:uppercase;color:var(--dim);align-self:center}
+.ak-sum{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:20px;
+ padding-top:16px;border-top:1px solid var(--edge)}
+
+/* ============================================================
+   THE SEAM. What leaves a sealed container, and what does not.
+   ============================================================ */
+.seam{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:18px;
+ align-items:start}
+.sm{border:1px solid var(--edge);border-radius:var(--r-s);padding:16px 18px;
+ background:var(--panel)}
+.sm h4{margin:0 0 4px;font-size:15px;font-weight:500;color:var(--ink)}
+.sm .sub{font-size:12.5px;color:var(--dim);margin-bottom:12px}
+.sm p{font-size:14px;line-height:1.66;color:var(--mid);margin:0 0 10px}
+.sm.locked{background:var(--sunk)}
+.rd{display:flex;align-items:center;gap:10px;padding:7px 0;
+ border-top:1px solid var(--edge);font-size:13.5px;color:var(--mid)}
+.rd:first-of-type{border-top:0}
+.rd .dot{flex:0 0 auto;width:9px;height:9px;border-radius:50%;
+ border:2px solid var(--c);box-sizing:border-box}
+.rd .sp{flex:1 1 4px}
+.rd .v{font-family:var(--num);font-variant-numeric:tabular-nums;color:var(--ink)}
+.quoted{font-size:15px;line-height:1.75;color:var(--mid);
+ border-left:2px solid var(--edge-2);padding-left:14px;max-width:52ch;
+ white-space:pre-wrap}
+
+/* ============================================================
+   SIGHT. The list of who can see in, on the lid, never in a settings page.
+   ============================================================ */
+/* THE PANEL IS NOT THE TAG. This block was .sight and so was the lid's tag,
+   so .tag.sight matched both and the tag took the panel's 16px of top padding
+   and came back eleven pixels taller than its neighbour on one row. One word
+   per concept is a rule about copy. In a stylesheet the same word on two
+   different objects is a collision, and it showed up as a lid that looked
+   broken next to two that did not. */
+.sbox{margin-top:22px;padding-top:16px;border-top:1px solid var(--edge)}
+.sg-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+ min-height:var(--tap);padding:8px 0;border-top:1px solid var(--edge)}
+.sg-row:first-of-type{border-top:0}
+.sg-nm{flex:1 1 180px;min-width:0;font-size:14.5px;color:var(--ink)}
+.sg-nm em{display:block;font-style:normal;font-size:12.5px;color:var(--dim);
+ margin-top:2px}
+.grant{border:1px solid var(--edge);border-radius:var(--r-s);padding:16px 18px;
+ margin-top:12px;background:var(--panel)}
+.grant .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;
+ margin-bottom:12px}
+.grant select,.grant input[type=number]{min-height:var(--tap);
+ background:var(--panel-2);border:1px solid var(--edge);color:var(--ink);
+ border-radius:var(--r-xs);padding:9px 12px;font-family:var(--sans);
+ font-size:13.5px}
+.grant input[type=number]{width:84px;font-family:var(--num);text-align:center;
+ font-variant-numeric:tabular-nums}
+.consent{display:flex;gap:13px;align-items:center;flex-wrap:wrap;
+ margin-bottom:14px;font-size:13.5px;line-height:1.6;color:var(--mid);
+ max-width:64ch}
+.consent span{flex:1 1 240px;min-width:0}
+.ledger{margin-top:16px;padding-top:12px;border-top:1px solid var(--edge)}
+.lg{display:flex;gap:12px;font-size:12.5px;color:var(--dim);padding:4px 0;
+ line-height:1.5}
+.lg .d{flex:0 0 auto;font-family:var(--num);font-variant-numeric:tabular-nums;
+ width:66px}
+
+@media (max-width:980px){
+ .wrap{padding:16px 16px 34px}
+ .ins{grid-template-columns:1fr;gap:18px}
+ #lead{display:none}
+ .lid.strip{margin:0 -16px 16px;padding:10px 16px}
+ .jr{min-height:0}
+ .jr-ta,.jr-hl{padding:26px 18px 82px;min-height:0;height:37vh;font-size:17px}
+ .jr-ed{font-size:17px}
+ .prompt{font-size:17.5px;max-width:none}
+ .seam{grid-template-columns:1fr;gap:14px}
+ .pchrome{padding:10px 16px}
+ .key .kb{width:68px}
+ .dealt{padding:16px 17px}
+ .dealt .dq{font-size:17.5px}
+}
+</style>
+</head>
+<body>
+
+<div class="pchrome">
+ <b>The container</b>
+ <label class="eye" for="who">Record</label>
+ <select id="who"></select>
+ <button id="fill" type="button">Put a story in the box</button>
+ <span class="note" id="pnote"></span>
+</div>
+
+<div id="st" role="status" aria-live="polite"></div>
+
+<div class="wrap" id="wrap"></div>
+
+<!-- The engine is referenced, never copied. A copy goes stale in silence and
+     the prototype then measures a build nobody ships. -->
+<script src="../../engine.js"></script>
+<script src="prompts.js"></script>
+<script src="container.js"></script>
+</body>
+</html>
