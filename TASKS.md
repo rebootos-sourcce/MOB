@@ -126,6 +126,66 @@ and it is written down here so nobody reads the mark as complete.
       evidence about a human being. Every improvement it proposes has to be
       traceable to a measured sticking point or it does not go on the list.
 
+### NX. THE CHASE TO NINETY. IT STOPS AT 80.18 AND THE REST IS ARITHMETIC.
+
+- [x] **NX1. Ninety was not reached. The curve peaks at 80.18 and settles at
+      78.66, a B, 11.3 points short.** 623 runs of a thousand ninety day
+      lives, seventeen changes modelled one at a time, each run to the
+      baseline's own stopping rule. The curve flattens at step nine, 78.49,
+      and every traced step after it adds under a point.
+- [x] **NX2. And ninety cannot be bought with interface.** The formula's
+      maximum is 96, so 17.3 points of headroom exist, and **12.4 of that
+      sits in three criteria that are one quantity wearing three names**: ICP
+      alignment, core loop, retention. Everything else on the table put
+      together is worth 4.8. Retention's ten needs 35 per cent of arrivals
+      active at day thirty against a category median of 3.3. Every change
+      together took it from 3.86 to 22.44 per cent.
+- [ ] **NX3. THE FIX THIS FILE NAMED DOES NOT FIX THE CEILING, and that
+      correction is the most important line in the pass.** `NN4` said the
+      answer was one of three: the removal compounds, the install reaches the
+      far pole, or a cleared address stays cleared. All three applied
+      together, on a person doing everything right for ninety consecutive days
+      with no model in the way, move the reading **+1.11 against the shipped
+      +0.54**. Addresses holding the opposite stay at 4. The band does not
+      change. Patterns of ground fall 444 to 80, so the fixes work and there
+      is genuinely less load, and **the reading barely notices, which means
+      the reading is not mostly built from load a release can reach.** The
+      ceiling is deeper than the backlog's fix and it is a ruling on the
+      charge model, not a commit.
+- [x] **NX4. The four changes that moved it most, alone, against the
+      baseline.** A way to hand it to somebody, plus 7.75. The lexicon reading
+      ordinary sentences, plus 7.65. A price with an enforced allowance, plus
+      6.01. The release reading what is carrying rather than what is loaded,
+      plus 5.07.
+- [x] **NX5. The lexicon patch is measured through the shipped parser, not
+      asserted.** The bank goes from 22 of 41 sentences read to 40 of 41,
+      entirely inferred lines from 12 to 4, and the roster's own says lines
+      from 2 of 14 to 9. Rosa's line still reads nothing, which is correct.
+- [ ] **NX6. Half the gain is the instrument, not the product, and the seat
+      said so rather than banking it.** Of the 39.75 points gained, 21.40 came
+      from criteria that ask whether a control exists and jump by a fixed
+      amount the moment it does. Two of those changes are worth 13.76 between
+      them for two buttons existing, and between them they moved day thirty
+      activity from 3.86 per cent to 4.68 and 3.86. The grade was left exactly
+      as written, because rewriting it to pay less would be the same offence
+      in the other direction, and every row is named instrument or product in
+      words.
+- [ ] **NX7. And after everything, the top losses got worse.** The absence
+      became permanent goes 288 to 362. The reading does not move goes 110 to
+      150. Every story makes the number worse goes 9 to 50. That is not a
+      regression: more people stay, so more of them reach the wall and leave
+      there. **Every interface change modelled here succeeds at delivering
+      more people to the same wall.**
+- [x] **NX8. The build moved twice under the run, so it was pinned.** Both
+      pages print the pinned md5, the working tree md5, and a block saying the
+      build moved during the run. Nothing was measured against a moving file.
+- [x] **NX9. Four defects in the harness it inherited, found and named.** A
+      builder that had never parsed, so it could not have produced a page. A
+      div closed with a paragraph tag, which bled an error wash through a
+      whole page and was found by looking rather than reading. A measurement
+      file with no stamp tying it to a build. And three counts typed into
+      prose, one of which disagreed with its own page.
+
 ### NT. NINETY, AND WHAT IT WOULD COST.
 
 - [ ] **NT1. "Simulate the experience until you get to 90 per cent."**
