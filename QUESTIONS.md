@@ -1,8 +1,8 @@
 # QUESTIONS FOR THE OWNER
 
 Every line in `TASKS.md` marked `[?]`, which is the mark for a question
-waiting on his ruling. 136 of them, across 39 sections.
-Read off commit dc85dc3 on 2026-09-20. Nothing here is typed by hand: answer a
+waiting on his ruling. 136 of them, across 40 sections.
+Read off commit eb18b49 on 2026-09-21. Nothing here is typed by hand: answer a
 question in TASKS.md and it leaves this file on the next run.
 
 Each one opens with the question and names the seat asking it. The generator
@@ -10,9 +10,12 @@ refuses to write this file if a line marked `[?]` asks nothing.
 
 The same list is in `QUESTIONS.html`, which opens in a browser.
 
+## 08f. RULED 20 SEPTEMBER, NINETEENTH PASS. THE RING HE ALREADY DREW, AND A LIST HE CANNOT ANSWER.
+
+- [ ] **CQR4. Where does the seven band ring go inside the app?** Art director asks, and he asked for the question rather than an answer now: "I don't know where yet, but let's add a note as part of the questions where it could go." The boot mark is already a seven band ring, so the app has the drawing and not the reading. Candidates are the intake, the Field's key strip and the avatar.
+
 ## 08e. RULED 20 SEPTEMBER, EIGHTEENTH PASS. THE TYPE STUDY, AND A LIST THAT ASKS NOTHING.
 
-- [ ] **TY4. Is a couple of rounds two, or three?** His own word, and two is the literal reading and what is planned.
 - [ ] **FV3. Which band rhythm, equal arcs or alternating weights?** Art director asks. His words: "either one, one, one, one, one, one, or one, two, one, two, one, two." Both get drawn. Six numbers were said for seven seats, so the answer also has to say whether the odd seat takes the wide slot or the narrow one.
 - [ ] **TR6. Should the top bar get its own cut of the mark, tracked and weighted for thirteen pixels, rather than the wordmark scaled down?** Type and grid asks. Six of the nine cuts change fewer than 8 pixels there and one changes zero, so at that size the bar is not showing a smaller version of the mark, it is showing a different object.
 - [ ] **TR7. Is A2 kept for what the spur does to the silhouette, now that the reason given for it has been measured out?** Composition asks. The spur was argued on the hole under the t's crossbar and closes 1.17 per cent of it, 2.24 per cent when doubled. Doubling the spur trebles nothing.

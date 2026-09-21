@@ -74,6 +74,87 @@ reopens. Every seat adds its own.
 
 ---
 
+## 08f. RULED 20 SEPTEMBER, NINETEENTH PASS. THE RING HE ALREADY DREW, AND A LIST HE CANNOT ANSWER.
+
+### CQR. THE SEVEN BAND RING IS HIS, AND IT IS ALREADY DRAWN.
+
+- [ ] **CQR1. "The band in Source OS that I dropped in a long time ago, the
+      first thing I dropped in. It has a ring with seven bands. That is the
+      original CQ design."** It is in commit `46952ef`, the alpha he brought
+      to this project, and it has never been carried into either the app or
+      the funnel. Find it, lift it, and say what it is made of.
+- [ ] **CQR2. And he said what it is for, which is the part that matters.**
+      "It is a truncated CQ. As you input information into it, it will show
+      you what is going on and what is running it." So it is not decoration
+      and it is not a mark: it is a reading that fills as a person answers,
+      and the seven bands are the seven seats.
+- [ ] **CQR3. It definitely goes in the funnel.** Ruled. The funnel's quiz is
+      exactly the input he describes, and the quiz shows a person nothing
+      while they answer.
+- [?] **CQR4. Where does the seven band ring go inside the app?** Art
+      director asks, and he asked for the question rather than an answer now:
+      "I don't know where yet, but let's add a note as part of the questions
+      where it could go." The boot mark is already a seven band ring, so the
+      app has the drawing and not the reading. Candidates are the intake, the
+      Field's key strip and the avatar.
+
+### QC. THE QUESTIONS HAVE NO CONTEXT, AND HE CANNOT ANSWER THEM.
+
+- [ ] **QC1. His words: "I don't know what A2 kept is. I don't know what does
+      the dot law move so U3 can exist. I don't know if the e loses rhythm.
+      All these have no context. Give me context so I can answer them."** The
+      last pass fixed that the lines were statements. It did not fix that a
+      question written by the seat that found it assumes everything that seat
+      knows. A question he cannot answer is not a question, it is a blocker
+      wearing one.
+- [ ] **QC2. Every question carries a snapshot.** His word. What the thing is,
+      in one line, for somebody who has not read the finding. What is at
+      stake. What happens if it goes either way. And where he can look at it,
+      by file, because half of these have a drawing sitting in `proto/` that
+      he has never been pointed at.
+- [ ] **QC3. And the generator gates that too,** the way it now gates the
+      question mark, so a question with no context cannot reach him.
+
+### GB. THE SCORING, BADGE AND ACHIEVEMENT SYSTEM.
+
+- [ ] **GB1. "It sounds like you need to send the team on the scoring, the
+      badge and achievement system. So I want to go ahead and do that."**
+      Ruled. `DESIGN-gamification.md` and `DESIGN-progression.md` exist and
+      the ladder has never been designed against the loop he ruled, which is
+      discover, play, flow, embody, and it is a circle.
+
+### TN. TIGHT BY TONIGHT. THE FUNNEL AND THE PRODUCT BEHIND IT.
+
+- [ ] **TN1. His deadline and his standard.** "By tonight we need our funnel
+      and we need it tuned tight. If we don't have onboarding, no sweat, but
+      the app itself needs to be, it can't break, it needs to be performant."
+      Then the list, in his order: the database, the architecture, the
+      frameworks, the schemas, the algorithms, the interactions, the
+      animations, the transitions, the UI, the UX, and the way the content is
+      displayed and provided.
+- [ ] **TN2. And the acceptance test, which is his sentence.** "When people
+      jump into this product, they need to see that it is thoughtful,
+      considerate, well crafted, even in this current state." Measurable:
+      nothing breaks, nothing stalls, nothing reads as placeholder.
+
+### SIM. NINETY DAYS, RUN UNTIL THE NUMBER STOPS MOVING.
+
+- [ ] **SIM1. "Take our ICPs and our focus group. Run them through a ninety
+      day simulation of the product front to back."** Given different
+      intervals, and reasons why they use it and why they do not.
+- [ ] **SIM2. Complete metrics on sticking points, challenges, what is good,
+      and what they experience out of it.** His words.
+- [ ] **SIM3. A grade at the end, and it has to be stable.** "Simulate it as
+      many times as you need so you feel satisfied that the number is not
+      moving too much." The deliverable is not one grade, it is a grade with
+      its own variance stated, and the run count is read off the point where
+      the number settles rather than chosen in advance.
+- [ ] **SIM4. There is already one of these and it is a product older.**
+      `reviews/sim-ninety-days.html`. Read it before building a second, and
+      say what moved.
+
+---
+
 ## 08e. RULED 20 SEPTEMBER, EIGHTEENTH PASS. THE TYPE STUDY, AND A LIST THAT ASKS NOTHING.
 
 His notes on the logo study, on the questions document, on the boot card and on
@@ -124,8 +205,11 @@ the child patterns. Wording kept where it is his.
       rounds, drawn at the sizes the mark is actually used at, with touching
       and not touching shown as two states of the same cut rather than as two
       cuts.
-- [?] **TY4. Is a couple of rounds two, or three?** His own word, and two is
-      the literal reading and what is planned.
+- [x] **TY4 ANSWERED. "A round is one, a couple is two. It could potentially
+      be three, but in this instance let's just refer to it as two."** Two
+      rounds, delivered. Three is his to ask for on a cut that earns it, and
+      the sheet already names the three that would carry a useful third: the
+      u's dot pair, the t's radius and the e.
 
 ### FV. THE FAVICON. RULED, AND IT IS NOT A LETTER.
 
