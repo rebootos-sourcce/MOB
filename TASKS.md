@@ -2106,10 +2106,19 @@ that to the list. A copy sweep."
 - [ ] **CP1j. Every user facing string in the product, read against the voice
       skill.** The skill and its gate exist now, so this is a pass with a tool
       rather than an opinion.
+      **Not ritual work.** The product copy sweep. Marked 21 September so a
+      count of the ritual taken by section can exclude it. Not moved, because
+      this file reorders nothing. See How a line moves.
 - [ ] **CP2j. "Which day you keep it" is the named example.** A heading has to
       be a thing a person would say.
+      **Not ritual work.** The product copy sweep. Marked 21 September so a
+      count of the ritual taken by section can exclude it. Not moved, because
+      this file reorders nothing. See How a line moves.
 - [ ] **CP3j. The gate's reach is the limit.** 24 strings sit inside drills
       that no surface walk opens, and the sweep has to reach them.
+      **Not ritual work.** The product copy sweep. Marked 21 September so a
+      count of the ritual taken by section can exclude it. Not moved, because
+      this file reorders nothing. See How a line moves.
 
 ### RT. THE RITUAL PAGE, SECOND REBUILD.
 
@@ -2192,29 +2201,50 @@ them should be deducible by length.
 - [x] **CF1. Searched. The table the study used is the table the web
       carries.** Root 396 through Crown 963, repeated across every result. So
       the input was already right.
+      **Not ritual work.** The frequency table. Marked 21 September so a
+      count of the ritual taken by section can exclude it. Not moved, because
+      this file reorders nothing. See How a line moves.
 - [x] **CF2. And every source is a healing music site repeating it.** None
       measures anything. That is the same finding the study reported from the
       other direction, now confirmed by looking rather than by argument.
+      **Not ritual work.** The frequency table. Marked 21 September so a
+      count of the ritual taken by section can exclude it. Not moved, because
+      this file reorders nothing. See How a line moves.
 - [ ] **CF3. His deduction is sound and is worth building.** Seven points on a
       channel give every address between them a frequency by its position,
       which is exactly the interpolation the band study already computes. What
       it changes is that an address gets its own number rather than its seat's.
+      **Not ritual work.** The frequency table. Marked 21 September so a
+      count of the ritual taken by section can exclude it. Not moved, because
+      this file reorders nothing. See How a line moves.
 - [x] **CF4. He ruled the saturation.** Derived is too vibrant, shipped is too
       dull, and he wants it between the two and closer to vibrant. That is a
       ruling on the one axis the study said was the cost of clipping.
+      **Not ritual work.** The frequency table. Marked 21 September so a
+      count of the ritual taken by section can exclude it. Not moved, because
+      this file reorders nothing. See How a line moves.
 - [ ] **CF5. Which still leaves the four measured failures.** Contrast, Root
       clipping to one colour for sixteen addresses, and the seat boundaries
       dissolving. The saturation ruling does not answer those, and the value
       ladder still looks like the version that survives them.
+      **Not ritual work.** The frequency table. Marked 21 September so a
+      count of the ritual taken by section can exclude it. Not moved, because
+      this file reorders nothing. See How a line moves.
 
 ### QJ. THE QUIZ AND THE ARCHETYPES.
 
 - [ ] **QJ1. Take the test into Jungian archetypes.** The engine already
       carries twelve.
+      **Not ritual work.** The quiz and the archetypes. Marked 21 September so a
+      count of the ritual taken by section can exclude it. Not moved, because
+      this file reorders nothing. See How a line moves.
 - [ ] **QJ2. Ask the panel what would be exciting rather than deciding,** and
       base it on what actually pulls people in. The hook matrix and the
       thousand person panel both exist, so this is a second use of built
       machinery.
+      **Not ritual work.** The quiz and the archetypes. Marked 21 September so a
+      count of the ritual taken by section can exclude it. Not moved, because
+      this file reorders nothing. See How a line moves.
 
 ---
 
@@ -2904,6 +2934,9 @@ causes across our human complex."
 - [ ] **PO1. Take the line into the brand seat** and keep what is his: the
       neurosomatic framing, moral integrity as the thing being tuned, vital
       energy as the result, and stress as the cause.
+      **Not ritual work.** The positioning line. Marked 21 September so a
+      count of the ritual taken by section can exclude it. Not moved, because
+      this file reorders nothing. See How a line moves.
 - [?] **PO2. What can the positioning line say without the word heals, or do
       you want the claim with the evidence a regulator asks for?** Guru
       asks, and it is an exposure rather than a style note. A product that
@@ -2914,21 +2947,33 @@ causes across our human complex."
       is running it, and the referral says a configuration needs a licensed
       clinician alongside and not instead. The outward copy would say what
       the product itself refuses to say.
+      **Not ritual work.** The positioning line. Marked 21 September so a
+      count of the ritual taken by section can exclude it. Not moved, because
+      this file reorders nothing. See How a line moves.
       > **What it is.** The outward positioning line, the sentence the funnel opens with. A draft of it says the product heals.
       > **At stake.** A therapeutic claim is the regulated kind in every market this would sell in, and the product already refuses to make it inside itself.
       > **Either way.** The word goes, and the line says outwardly what the compass says inwardly. The claim stays, and it has to carry the evidence a regulator asks for.
       > **Look at.** `funnel/index.html` is the page. `reviews/LEGAL-floor.md` is the exposure written up.
 - [ ] **PO3. World's first needs a defensible sentence behind it,** for the
       same reason. What exactly is first.
+      **Not ritual work.** The positioning line. Marked 21 September so a
+      count of the ritual taken by section can exclude it. Not moved, because
+      this file reorders nothing. See How a line moves.
 
 ### HW. THE HOW IT WORKS PAGE.
 
 - [ ] **HW1. An infographic, start to finish.** What the tool is, what it
       does, how it works, what the purpose is, what the results are. His list
       and his order.
+      **Not ritual work.** The how it works page. Marked 21 September so a
+      count of the ritual taken by section can exclude it. Not moved, because
+      this file reorders nothing. See How a line moves.
 - [ ] **HW2. It carries the loop as a circle,** discover, play, flow, embody,
       because that is the page whose whole job is showing the shape of the
       thing.
+      **Not ritual work.** The how it works page. Marked 21 September so a
+      count of the ritual taken by section can exclude it. Not moved, because
+      this file reorders nothing. See How a line moves.
 
 ---
 
@@ -3437,14 +3482,23 @@ review the software, see if the tag system is worth doing."
       evidence,** not with an opinion. The product already carries eleven
       families of named things, so the question is whether a tag adds a
       dimension none of them has or duplicates one that exists.
+      **Not ritual work.** The tag system. Marked 21 September so a
+      count of the ritual taken by section can exclude it. Not moved, because
+      this file reorders nothing. See How a line moves.
 - [ ] **TG2. If it is worth doing, name every place it is used** before any
       of it is built. He can see it in the ritual builder and "in a few
       places". A tag system built for one surface is a schema change that
       earns nothing.
+      **Not ritual work.** The tag system. Marked 21 September so a
+      count of the ritual taken by section can exclude it. Not moved, because
+      this file reorders nothing. See How a line moves.
 - [ ] **TG3. Tags touch the schema, so they touch the record,** and the record
       goes off device at sign in. Anything a person can type is a field a
       practitioner may later see. That has to be settled with the tag, not
       after it.
+      **Not ritual work.** The tag system. Marked 21 September so a
+      count of the ritual taken by section can exclude it. Not moved, because
+      this file reorders nothing. See How a line moves.
 
 ### QU. THE QUEUE. WHAT TO DO NEXT, AND WHO PROPOSES IT.
 
@@ -3795,6 +3849,9 @@ best. There is a soul between the two."
 
 - [ ] **AO1.** Three more pixels between Atuned and Source OS. He reconsidered
   the Source OS treatment itself and left it alone, so only the gap moves.
+  **Not ritual work.** The wordmark gap. Marked 21 September so a
+  count of the ritual taken by section can exclude it. Not moved, because
+  this file reorders nothing. See How a line moves.
 
 ### AP. GAMIFICATION, AND THE RITUAL BUILDER.
 

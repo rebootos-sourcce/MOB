@@ -2,7 +2,7 @@
 
 Every line in `TASKS.md` marked `[?]`, which is the mark for a question
 waiting on your ruling. 148 of them, across 41 sections.
-Read off commit 8b386ee on 2026-09-21. Nothing here is typed by hand: answer a
+Read off commit 5d9b64b on 2026-09-21. Nothing here is typed by hand: answer a
 question in TASKS.md and it leaves this file on the next run.
 
 Each one opens with the question, names the seat asking it, and carries a
@@ -455,7 +455,7 @@ The same list is in `QUESTIONS.html`, which opens in a browser.
   > **Either way.** The three shapes above are taken as the answer, and the card is built to them. They are not, and what the card holds is yours to name.
   > **Look at.** `proto/ritual/r2-Gordon-card-wide.png` is a card as drawn. `proto/ritual/_RIT2.html` is the source.
 
-- [ ] **PO2. What can the positioning line say without the word heals, or do you want the claim with the evidence a regulator asks for?** Guru asks, and it is an exposure rather than a style note. A product that says it heals disease is making a therapeutic claim, and the advertising regulators in every market this would sell in treat that as the regulated kind. The product already draws the line correctly inside itself: the compass says it reads what is running and not who is running it, and the referral says a configuration needs a licensed clinician alongside and not instead. The outward copy would say what the product itself refuses to say.
+- [ ] **PO2. What can the positioning line say without the word heals, or do you want the claim with the evidence a regulator asks for?** Guru asks, and it is an exposure rather than a style note. A product that says it heals disease is making a therapeutic claim, and the advertising regulators in every market this would sell in treat that as the regulated kind. The product already draws the line correctly inside itself: the compass says it reads what is running and not who is running it, and the referral says a configuration needs a licensed clinician alongside and not instead. The outward copy would say what the product itself refuses to say. **Not ritual work.** The positioning line. Marked 21 September so a count of the ritual taken by section can exclude it. Not moved, because this file reorders nothing. See How a line moves.
   > **What it is.** The outward positioning line, the sentence the funnel opens with. A draft of it says the product heals.
   > **At stake.** A therapeutic claim is the regulated kind in every market this would sell in, and the product already refuses to make it inside itself.
   > **Either way.** The word goes, and the line says outwardly what the compass says inwardly. The claim stays, and it has to carry the evidence a regulator asks for.
