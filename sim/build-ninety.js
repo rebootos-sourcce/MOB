@@ -171,6 +171,13 @@ modelled, each one alone and then cumulatively, to the same stopping rule the
 baseline used. It reached ${n2(hardLast.total)}${hardLast.total<90
 ?', and this page is mostly about why that is not ninety':''}.</p>
 
+${N.fast?`<div class="note bad"><b>THIS PAGE WAS BUILT FROM A SMOKE RUN AND IS NOT
+A RESULT.</b> The stopping rule was relaxed so the iteration could be checked for
+crashes before it was left to run properly. Every grade below is drawn from
+${N.settle.hold} held run${N.settle.hold===1?'':'s'} against a threshold of
+${N.settle.threshold} of a point, where the real rule is a threshold of 0.05 held
+six runs with ten behind it. Re-run <code>node sim/ninety.js</code> without
+SIM_FAST and rebuild before anybody reads a number on this page.</div>`:''}
 <div class="big">
  <div><span class="gr">${n2(hardLast.total)}</span><span class="gl2">of 100, ${e(hardLast.letter)}</span></div>
  <p class="lede" style="margin:12px 0 0">From ${n2(N.base.total)} with every traced

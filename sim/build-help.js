@@ -188,6 +188,13 @@ const HTML=head('What would have kept them',
 ${R.model.settle.runs} runs of ninety days each. The grade was ${n2(R.grade.mean)}.
 This page asks the other question: what would have kept the people it lost.</p>
 
+${N.fast?`<div class="note bad"><b>THIS PAGE WAS BUILT FROM A SMOKE RUN AND IS NOT
+A RESULT.</b> The stopping rule was relaxed so the iteration could be checked for
+crashes before it was left to run properly. Every grade below is drawn from
+${N.settle.hold} held run${N.settle.hold===1?'':'s'} against a threshold of
+${N.settle.threshold} of a point, where the real rule is a threshold of 0.05 held
+six runs with ten behind it. Re-run <code>node sim/ninety.js</code> without
+SIM_FAST and rebuild before anybody reads a number on this page.</div>`:''}
 <div class="note bad"><b>Read this first, because it decides what the rest is worth.</b>
 The thousand are simulated. Asking a simulated cohort what it wants returns this
 model&rsquo;s own assumptions wearing the costume of an answer, and none of it is
