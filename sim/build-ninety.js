@@ -261,10 +261,53 @@ to a person using the product, and ${(()=>{const t=[['C5',solo.C5.d],['C3',solo.
 applied alone are most of it. Both are small pieces of work in files that already
 exist: ${e(chg.C5.file)} and ${e(chg.C3.file)}.</p>
 
+
+<h2>What is still losing people after everything</h2>
+<p class="lede">The same loss column, read at the end of the curve instead of at
+the start. This is the answer to what the remaining distance is made of, and it
+is not a list of screens.</p>
+<table class="tb">
+<thead><tr><th>Sticking point</th><th class="num">Baseline</th>
+<th class="num">After every change</th><th class="num">Moved</th>
+<th>What it is</th></tr></thead>
+<tbody>
+${(()=>{
+ const b={}; N.base.lostTop.forEach(r=>b[r.k]=r);
+ const a={}; hardLast.lostTop.forEach(r=>a[r.k]=r);
+ const keys=Object.keys(a).concat(Object.keys(b).filter(k=>!a[k]));
+ const kind={
+  DRIFT:'A model term, not a product one. It is the hazard that ends a run of absent days, and no change on this page touches it. It rises because more people survive long enough to reach it.',
+  F4:'Arithmetic. The reading does not move on the session somebody just spent.',
+  F14:'Arithmetic. A story only ever adds charge, so a commit can make the number worse.',
+  F3:'Arithmetic, and C3 is the cheap half of it. What is left is people carrying nothing the release can reach.',
+  F1:'Language. The lexicon, and C5 is most of it.',
+  F12:'Interface. C9 closes it.',
+  F6:'Interface. The count of choices above the fold.',
+  F2:'Language. An address offered as a finding when it was a guess.',
+  F7:'The intake, and C11 moves it out of the app.',
+  F10:'Nothing asked them to come back.',
+  F8:'The gift ran out and nothing was for sale.'};
+ return keys.map(k=>{
+  const bn=(b[k]||{n:0}).n, an=(a[k]||{n:0}).n;
+  const nm=(a[k]||b[k]).nm;
+  return `<tr class="${an>bn?'zero':(an<bn?'win':'')}">
+<td><b>${e(nm)}</b></td><td class="num">${bn}</td><td class="num">${an}</td>
+<td class="num"><b>${an-bn>=0?'+':''}${an-bn}</b></td>
+<td class="q">${e(kind[k]||'')}</td></tr>`;}).join('\n');})()}
+</tbody></table>
+<p><b>Two of the top three went up, and that is not a regression.</b> More people
+stay, so more people reach the point where the reading does not move and leave
+there instead of leaving earlier for a cheaper reason. Every interface change on
+this page succeeds at delivering more people to the same wall. That is the whole
+argument for the build order below: the wall is the thing to fix, and it is
+arithmetic that is shared with the book, so it is a ruling before it is a
+commit.</p>
+
 <h2>Where it flattens, and what is left</h2>
-${flat?`<p>The curve flattens at <b>${e(flat.id)}</b>, ${e(chg[flat.id].nm)}, at
-${n2(flat.total)}. Every one of the ${word(flat.left)} traced steps after it adds
-less than a point, and all of them together add ${sg(flat.gain)}.</p>`
+${flat?`<p>The curve flattens at <b>${e(flat.id)}</b>, the step called
+&ldquo;${e(chg[flat.id].nm)}&rdquo;, which reaches ${n2(flat.total)}. Every one of
+the ${word(flat.left)} traced steps after it adds less than a point, and all of
+them together add ${sg(flat.gain)}.</p>`
 :'<p>No step after the first adds less than a point, so the curve has not flattened inside the change set modelled here.</p>'}
 <p>The ${n1(90-hardLast.total)} points between ${n2(hardLast.total)} and ninety are
 not hiding in the interface. Read down the criterion table: ${(()=>{
