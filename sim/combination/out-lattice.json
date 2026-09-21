@@ -1,0 +1,1624 @@
+{
+ "pin": {
+  "root": "/home/user/MOB/sim/pin",
+  "src": "5f2180b2b64fb30b6d484f364535d29e",
+  "engine": "315e3ced4119eef2770f64534b10a68f",
+  "worktreeSrc": "945ee233949433d56f60ea8e663346ba",
+  "stampSrc": "5f2180b2b64fb30b6d484f364535d29e",
+  "stampCommit": "41b07e4"
+ },
+ "shipped": {
+  "none": {
+   "cq0": 42.25,
+   "cq90": 42.52,
+   "move": 0.27,
+   "best": 42.7,
+   "worst": 37.46,
+   "clear": 3,
+   "ground": 307,
+   "band": "Oscillating",
+   "marks": 11,
+   "accuracy": 21.7,
+   "ceiling": 51
+  },
+  "low": {
+   "cq0": 9,
+   "cq90": 9.59,
+   "move": 0.59,
+   "best": 9.74,
+   "worst": 8.15,
+   "clear": 4,
+   "ground": 569,
+   "band": "Collapsed",
+   "marks": 13,
+   "accuracy": 15.4,
+   "ceiling": 15.4
+  },
+  "mid": {
+   "cq0": 25,
+   "cq90": 25.54,
+   "move": 0.54,
+   "best": 25.72,
+   "worst": 22.06,
+   "clear": 4,
+   "ground": 444,
+   "band": "Corrupt",
+   "marks": 13,
+   "accuracy": 19,
+   "ceiling": 33.4
+  },
+  "high": {
+   "cq0": 49,
+   "cq90": 49.33,
+   "move": 0.33,
+   "best": 49.52,
+   "worst": 44.39,
+   "clear": 3,
+   "ground": 363,
+   "band": "Oscillating",
+   "marks": 12,
+   "accuracy": 22.6,
+   "ceiling": 57.9
+  },
+  "move": 0.54
+ },
+ "moves": [
+  {
+   "id": "C2a",
+   "nm": "The removal compounds inside the run",
+   "ceiling": {
+    "none": {
+     "cq0": 42.25,
+     "cq90": 43.26,
+     "move": 1.01,
+     "best": 43.57,
+     "worst": 42.25,
+     "clear": 3,
+     "ground": 112,
+     "band": "Oscillating",
+     "marks": 11,
+     "accuracy": 21.7,
+     "ceiling": 52.7
+    },
+    "low": {
+     "cq0": 9,
+     "cq90": 9.41,
+     "move": 0.41,
+     "best": 10.3,
+     "worst": 9,
+     "clear": 5,
+     "ground": 245,
+     "band": "Collapsed",
+     "marks": 14,
+     "accuracy": 15.4,
+     "ceiling": 15.5
+    },
+    "mid": {
+     "cq0": 25,
+     "cq90": 26.19,
+     "move": 1.19,
+     "best": 26.72,
+     "worst": 25,
+     "clear": 4,
+     "ground": 192,
+     "band": "Corrupt",
+     "marks": 13,
+     "accuracy": 19,
+     "ceiling": 34.8
+    },
+    "high": {
+     "cq0": 49,
+     "cq90": 49.53,
+     "move": 0.53,
+     "best": 50.15,
+     "worst": 49,
+     "clear": 2,
+     "ground": 162,
+     "band": "Oscillating",
+     "marks": 12,
+     "accuracy": 22.6,
+     "ceiling": 58.5
+    },
+    "move": 1.19
+   },
+   "dmove": 0.65,
+   "dclear": 0
+  },
+  {
+   "id": "C2b",
+   "nm": "The install reaches the far pole",
+   "ceiling": {
+    "none": {
+     "cq0": 42.25,
+     "cq90": 42.63,
+     "move": 0.38,
+     "best": 42.79,
+     "worst": 41.41,
+     "clear": 3,
+     "ground": 193,
+     "band": "Oscillating",
+     "marks": 11,
+     "accuracy": 21.7,
+     "ceiling": 51.4
+    },
+    "low": {
+     "cq0": 9,
+     "cq90": 9.56,
+     "move": 0.56,
+     "best": 9.7,
+     "worst": 8.81,
+     "clear": 4,
+     "ground": 384,
+     "band": "Collapsed",
+     "marks": 13,
+     "accuracy": 15.4,
+     "ceiling": 15.7
+    },
+    "mid": {
+     "cq0": 25,
+     "cq90": 25.6,
+     "move": 0.6,
+     "best": 25.79,
+     "worst": 25,
+     "clear": 4,
+     "ground": 264,
+     "band": "Corrupt",
+     "marks": 13,
+     "accuracy": 19,
+     "ceiling": 34
+    },
+    "high": {
+     "cq0": 49,
+     "cq90": 49.54,
+     "move": 0.54,
+     "best": 49.68,
+     "worst": 46.38,
+     "clear": 3,
+     "ground": 244,
+     "band": "Oscillating",
+     "marks": 12,
+     "accuracy": 22.6,
+     "ceiling": 59.1
+    },
+    "move": 0.6
+   },
+   "dmove": 0.06,
+   "dclear": 0
+  },
+  {
+   "id": "C5",
+   "nm": "The lexicon reads ordinary sentences",
+   "ceiling": {
+    "none": {
+     "cq0": 42.25,
+     "cq90": 42.79,
+     "move": 0.54,
+     "best": 43.09,
+     "worst": 37.98,
+     "clear": 4,
+     "ground": 448,
+     "band": "Oscillating",
+     "marks": 12,
+     "accuracy": 21.7,
+     "ceiling": 53.9
+    },
+    "low": {
+     "cq0": 9,
+     "cq90": 9.78,
+     "move": 0.78,
+     "best": 9.96,
+     "worst": 8.17,
+     "clear": 5,
+     "ground": 648,
+     "band": "Collapsed",
+     "marks": 14,
+     "accuracy": 15.4,
+     "ceiling": 17.6
+    },
+    "mid": {
+     "cq0": 25,
+     "cq90": 25.76,
+     "move": 0.76,
+     "best": 25.84,
+     "worst": 22.74,
+     "clear": 5,
+     "ground": 559,
+     "band": "Corrupt",
+     "marks": 14,
+     "accuracy": 19,
+     "ceiling": 36
+    },
+    "high": {
+     "cq0": 49,
+     "cq90": 49.61,
+     "move": 0.61,
+     "best": 49.66,
+     "worst": 44.13,
+     "clear": 4,
+     "ground": 448,
+     "band": "Oscillating",
+     "marks": 13,
+     "accuracy": 22.6,
+     "ceiling": 60.7
+    },
+    "move": 0.76
+   },
+   "dmove": 0.22,
+   "dclear": 1
+  }
+ ],
+ "still": [
+  {
+   "id": "C1",
+   "nm": "The narrow door",
+   "ceiling": {
+    "none": {
+     "cq0": 42.25,
+     "cq90": 42.52,
+     "move": 0.27,
+     "best": 42.7,
+     "worst": 37.46,
+     "clear": 3,
+     "ground": 307,
+     "band": "Oscillating",
+     "marks": 11,
+     "accuracy": 21.7,
+     "ceiling": 51
+    },
+    "low": {
+     "cq0": 9,
+     "cq90": 9.59,
+     "move": 0.59,
+     "best": 9.74,
+     "worst": 8.15,
+     "clear": 4,
+     "ground": 569,
+     "band": "Collapsed",
+     "marks": 13,
+     "accuracy": 15.4,
+     "ceiling": 15.4
+    },
+    "mid": {
+     "cq0": 25,
+     "cq90": 25.54,
+     "move": 0.54,
+     "best": 25.72,
+     "worst": 22.06,
+     "clear": 4,
+     "ground": 444,
+     "band": "Corrupt",
+     "marks": 13,
+     "accuracy": 19,
+     "ceiling": 33.4
+    },
+    "high": {
+     "cq0": 49,
+     "cq90": 49.33,
+     "move": 0.33,
+     "best": 49.52,
+     "worst": 44.39,
+     "clear": 3,
+     "ground": 363,
+     "band": "Oscillating",
+     "marks": 12,
+     "accuracy": 22.6,
+     "ceiling": 57.9
+    },
+    "move": 0.54
+   },
+   "dmove": 0,
+   "dclear": 0
+  },
+  {
+   "id": "C2c",
+   "nm": "A cleared address stays cleared",
+   "ceiling": {
+    "none": {
+     "cq0": 42.25,
+     "cq90": 42.52,
+     "move": 0.27,
+     "best": 42.7,
+     "worst": 37.46,
+     "clear": 3,
+     "ground": 307,
+     "band": "Oscillating",
+     "marks": 11,
+     "accuracy": 21.7,
+     "ceiling": 51
+    },
+    "low": {
+     "cq0": 9,
+     "cq90": 9.59,
+     "move": 0.59,
+     "best": 9.74,
+     "worst": 8.15,
+     "clear": 4,
+     "ground": 569,
+     "band": "Collapsed",
+     "marks": 13,
+     "accuracy": 15.4,
+     "ceiling": 15.4
+    },
+    "mid": {
+     "cq0": 25,
+     "cq90": 25.54,
+     "move": 0.54,
+     "best": 25.72,
+     "worst": 22.06,
+     "clear": 4,
+     "ground": 444,
+     "band": "Corrupt",
+     "marks": 13,
+     "accuracy": 19,
+     "ceiling": 33.4
+    },
+    "high": {
+     "cq0": 49,
+     "cq90": 49.33,
+     "move": 0.33,
+     "best": 49.52,
+     "worst": 44.39,
+     "clear": 3,
+     "ground": 363,
+     "band": "Oscillating",
+     "marks": 12,
+     "accuracy": 22.6,
+     "ceiling": 57.9
+    },
+    "move": 0.54
+   },
+   "dmove": 0,
+   "dclear": 0
+  },
+  {
+   "id": "C3",
+   "nm": "The release reads carrying rather than loaded",
+   "ceiling": {
+    "none": {
+     "cq0": 42.25,
+     "cq90": 42.52,
+     "move": 0.27,
+     "best": 42.7,
+     "worst": 37.46,
+     "clear": 3,
+     "ground": 307,
+     "band": "Oscillating",
+     "marks": 11,
+     "accuracy": 21.7,
+     "ceiling": 51
+    },
+    "low": {
+     "cq0": 9,
+     "cq90": 9.59,
+     "move": 0.59,
+     "best": 9.74,
+     "worst": 8.15,
+     "clear": 4,
+     "ground": 569,
+     "band": "Collapsed",
+     "marks": 13,
+     "accuracy": 15.4,
+     "ceiling": 15.4
+    },
+    "mid": {
+     "cq0": 25,
+     "cq90": 25.54,
+     "move": 0.54,
+     "best": 25.72,
+     "worst": 22.06,
+     "clear": 4,
+     "ground": 444,
+     "band": "Corrupt",
+     "marks": 13,
+     "accuracy": 19,
+     "ceiling": 33.4
+    },
+    "high": {
+     "cq0": 49,
+     "cq90": 49.33,
+     "move": 0.33,
+     "best": 49.52,
+     "worst": 44.39,
+     "clear": 3,
+     "ground": 363,
+     "band": "Oscillating",
+     "marks": 12,
+     "accuracy": 22.6,
+     "ceiling": 57.9
+    },
+    "move": 0.54
+   },
+   "dmove": 0,
+   "dclear": 0
+  },
+  {
+   "id": "C4",
+   "nm": "What the holding costs, printed",
+   "ceiling": {
+    "none": {
+     "cq0": 42.25,
+     "cq90": 42.52,
+     "move": 0.27,
+     "best": 42.7,
+     "worst": 37.46,
+     "clear": 3,
+     "ground": 307,
+     "band": "Oscillating",
+     "marks": 11,
+     "accuracy": 21.7,
+     "ceiling": 51
+    },
+    "low": {
+     "cq0": 9,
+     "cq90": 9.59,
+     "move": 0.59,
+     "best": 9.74,
+     "worst": 8.15,
+     "clear": 4,
+     "ground": 569,
+     "band": "Collapsed",
+     "marks": 13,
+     "accuracy": 15.4,
+     "ceiling": 15.4
+    },
+    "mid": {
+     "cq0": 25,
+     "cq90": 25.54,
+     "move": 0.54,
+     "best": 25.72,
+     "worst": 22.06,
+     "clear": 4,
+     "ground": 444,
+     "band": "Corrupt",
+     "marks": 13,
+     "accuracy": 19,
+     "ceiling": 33.4
+    },
+    "high": {
+     "cq0": 49,
+     "cq90": 49.33,
+     "move": 0.33,
+     "best": 49.52,
+     "worst": 44.39,
+     "clear": 3,
+     "ground": 363,
+     "band": "Oscillating",
+     "marks": 12,
+     "accuracy": 22.6,
+     "ceiling": 57.9
+    },
+    "move": 0.54
+   },
+   "dmove": 0,
+   "dclear": 0
+  },
+  {
+   "id": "C5b",
+   "nm": "An inferred address is a question",
+   "ceiling": {
+    "none": {
+     "cq0": 42.25,
+     "cq90": 42.52,
+     "move": 0.27,
+     "best": 42.7,
+     "worst": 37.46,
+     "clear": 3,
+     "ground": 307,
+     "band": "Oscillating",
+     "marks": 11,
+     "accuracy": 21.7,
+     "ceiling": 51
+    },
+    "low": {
+     "cq0": 9,
+     "cq90": 9.59,
+     "move": 0.59,
+     "best": 9.74,
+     "worst": 8.15,
+     "clear": 4,
+     "ground": 569,
+     "band": "Collapsed",
+     "marks": 13,
+     "accuracy": 15.4,
+     "ceiling": 15.4
+    },
+    "mid": {
+     "cq0": 25,
+     "cq90": 25.54,
+     "move": 0.54,
+     "best": 25.72,
+     "worst": 22.06,
+     "clear": 4,
+     "ground": 444,
+     "band": "Corrupt",
+     "marks": 13,
+     "accuracy": 19,
+     "ceiling": 33.4
+    },
+    "high": {
+     "cq0": 49,
+     "cq90": 49.33,
+     "move": 0.33,
+     "best": 49.52,
+     "worst": 44.39,
+     "clear": 3,
+     "ground": 363,
+     "band": "Oscillating",
+     "marks": 12,
+     "accuracy": 22.6,
+     "ceiling": 57.9
+    },
+    "move": 0.54
+   },
+   "dmove": 0,
+   "dclear": 0
+  },
+  {
+   "id": "C6",
+   "nm": "Something asks them to come back",
+   "ceiling": {
+    "none": {
+     "cq0": 42.25,
+     "cq90": 42.52,
+     "move": 0.27,
+     "best": 42.7,
+     "worst": 37.46,
+     "clear": 3,
+     "ground": 307,
+     "band": "Oscillating",
+     "marks": 11,
+     "accuracy": 21.7,
+     "ceiling": 51
+    },
+    "low": {
+     "cq0": 9,
+     "cq90": 9.59,
+     "move": 0.59,
+     "best": 9.74,
+     "worst": 8.15,
+     "clear": 4,
+     "ground": 569,
+     "band": "Collapsed",
+     "marks": 13,
+     "accuracy": 15.4,
+     "ceiling": 15.4
+    },
+    "mid": {
+     "cq0": 25,
+     "cq90": 25.54,
+     "move": 0.54,
+     "best": 25.72,
+     "worst": 22.06,
+     "clear": 4,
+     "ground": 444,
+     "band": "Corrupt",
+     "marks": 13,
+     "accuracy": 19,
+     "ceiling": 33.4
+    },
+    "high": {
+     "cq0": 49,
+     "cq90": 49.33,
+     "move": 0.33,
+     "best": 49.52,
+     "worst": 44.39,
+     "clear": 3,
+     "ground": 363,
+     "band": "Oscillating",
+     "marks": 12,
+     "accuracy": 22.6,
+     "ceiling": 57.9
+    },
+    "move": 0.54
+   },
+   "dmove": 0,
+   "dclear": 0
+  },
+  {
+   "id": "C6n",
+   "nm": "And the return rate it buys",
+   "ceiling": {
+    "none": {
+     "cq0": 42.25,
+     "cq90": 42.52,
+     "move": 0.27,
+     "best": 42.7,
+     "worst": 37.46,
+     "clear": 3,
+     "ground": 307,
+     "band": "Oscillating",
+     "marks": 11,
+     "accuracy": 21.7,
+     "ceiling": 51
+    },
+    "low": {
+     "cq0": 9,
+     "cq90": 9.59,
+     "move": 0.59,
+     "best": 9.74,
+     "worst": 8.15,
+     "clear": 4,
+     "ground": 569,
+     "band": "Collapsed",
+     "marks": 13,
+     "accuracy": 15.4,
+     "ceiling": 15.4
+    },
+    "mid": {
+     "cq0": 25,
+     "cq90": 25.54,
+     "move": 0.54,
+     "best": 25.72,
+     "worst": 22.06,
+     "clear": 4,
+     "ground": 444,
+     "band": "Corrupt",
+     "marks": 13,
+     "accuracy": 19,
+     "ceiling": 33.4
+    },
+    "high": {
+     "cq0": 49,
+     "cq90": 49.33,
+     "move": 0.33,
+     "best": 49.52,
+     "worst": 44.39,
+     "clear": 3,
+     "ground": 363,
+     "band": "Oscillating",
+     "marks": 12,
+     "accuracy": 22.6,
+     "ceiling": 57.9
+    },
+    "move": 0.54
+   },
+   "dmove": 0,
+   "dclear": 0
+  },
+  {
+   "id": "C7",
+   "nm": "The two level menu",
+   "ceiling": {
+    "none": {
+     "cq0": 42.25,
+     "cq90": 42.52,
+     "move": 0.27,
+     "best": 42.7,
+     "worst": 37.46,
+     "clear": 3,
+     "ground": 307,
+     "band": "Oscillating",
+     "marks": 11,
+     "accuracy": 21.7,
+     "ceiling": 51
+    },
+    "low": {
+     "cq0": 9,
+     "cq90": 9.59,
+     "move": 0.59,
+     "best": 9.74,
+     "worst": 8.15,
+     "clear": 4,
+     "ground": 569,
+     "band": "Collapsed",
+     "marks": 13,
+     "accuracy": 15.4,
+     "ceiling": 15.4
+    },
+    "mid": {
+     "cq0": 25,
+     "cq90": 25.54,
+     "move": 0.54,
+     "best": 25.72,
+     "worst": 22.06,
+     "clear": 4,
+     "ground": 444,
+     "band": "Corrupt",
+     "marks": 13,
+     "accuracy": 19,
+     "ceiling": 33.4
+    },
+    "high": {
+     "cq0": 49,
+     "cq90": 49.33,
+     "move": 0.33,
+     "best": 49.52,
+     "worst": 44.39,
+     "clear": 3,
+     "ground": 363,
+     "band": "Oscillating",
+     "marks": 12,
+     "accuracy": 22.6,
+     "ceiling": 57.9
+    },
+    "move": 0.54
+   },
+   "dmove": 0,
+   "dclear": 0
+  },
+  {
+   "id": "C8",
+   "nm": "The rails ship folded",
+   "ceiling": {
+    "none": {
+     "cq0": 42.25,
+     "cq90": 42.52,
+     "move": 0.27,
+     "best": 42.7,
+     "worst": 37.46,
+     "clear": 3,
+     "ground": 307,
+     "band": "Oscillating",
+     "marks": 11,
+     "accuracy": 21.7,
+     "ceiling": 51
+    },
+    "low": {
+     "cq0": 9,
+     "cq90": 9.59,
+     "move": 0.59,
+     "best": 9.74,
+     "worst": 8.15,
+     "clear": 4,
+     "ground": 569,
+     "band": "Collapsed",
+     "marks": 13,
+     "accuracy": 15.4,
+     "ceiling": 15.4
+    },
+    "mid": {
+     "cq0": 25,
+     "cq90": 25.54,
+     "move": 0.54,
+     "best": 25.72,
+     "worst": 22.06,
+     "clear": 4,
+     "ground": 444,
+     "band": "Corrupt",
+     "marks": 13,
+     "accuracy": 19,
+     "ceiling": 33.4
+    },
+    "high": {
+     "cq0": 49,
+     "cq90": 49.33,
+     "move": 0.33,
+     "best": 49.52,
+     "worst": 44.39,
+     "clear": 3,
+     "ground": 363,
+     "band": "Oscillating",
+     "marks": 12,
+     "accuracy": 22.6,
+     "ceiling": 57.9
+    },
+    "move": 0.54
+   },
+   "dmove": 0,
+   "dclear": 0
+  },
+  {
+   "id": "C8b",
+   "nm": "The top collapses to two",
+   "ceiling": {
+    "none": {
+     "cq0": 42.25,
+     "cq90": 42.52,
+     "move": 0.27,
+     "best": 42.7,
+     "worst": 37.46,
+     "clear": 3,
+     "ground": 307,
+     "band": "Oscillating",
+     "marks": 11,
+     "accuracy": 21.7,
+     "ceiling": 51
+    },
+    "low": {
+     "cq0": 9,
+     "cq90": 9.59,
+     "move": 0.59,
+     "best": 9.74,
+     "worst": 8.15,
+     "clear": 4,
+     "ground": 569,
+     "band": "Collapsed",
+     "marks": 13,
+     "accuracy": 15.4,
+     "ceiling": 15.4
+    },
+    "mid": {
+     "cq0": 25,
+     "cq90": 25.54,
+     "move": 0.54,
+     "best": 25.72,
+     "worst": 22.06,
+     "clear": 4,
+     "ground": 444,
+     "band": "Corrupt",
+     "marks": 13,
+     "accuracy": 19,
+     "ceiling": 33.4
+    },
+    "high": {
+     "cq0": 49,
+     "cq90": 49.33,
+     "move": 0.33,
+     "best": 49.52,
+     "worst": 44.39,
+     "clear": 3,
+     "ground": 363,
+     "band": "Oscillating",
+     "marks": 12,
+     "accuracy": 22.6,
+     "ceiling": 57.9
+    },
+    "move": 0.54
+   },
+   "dmove": 0,
+   "dclear": 0
+  },
+  {
+   "id": "C9",
+   "nm": "A way to hand it to somebody",
+   "ceiling": {
+    "none": {
+     "cq0": 42.25,
+     "cq90": 42.52,
+     "move": 0.27,
+     "best": 42.7,
+     "worst": 37.46,
+     "clear": 3,
+     "ground": 307,
+     "band": "Oscillating",
+     "marks": 11,
+     "accuracy": 21.7,
+     "ceiling": 51
+    },
+    "low": {
+     "cq0": 9,
+     "cq90": 9.59,
+     "move": 0.59,
+     "best": 9.74,
+     "worst": 8.15,
+     "clear": 4,
+     "ground": 569,
+     "band": "Collapsed",
+     "marks": 13,
+     "accuracy": 15.4,
+     "ceiling": 15.4
+    },
+    "mid": {
+     "cq0": 25,
+     "cq90": 25.54,
+     "move": 0.54,
+     "best": 25.72,
+     "worst": 22.06,
+     "clear": 4,
+     "ground": 444,
+     "band": "Corrupt",
+     "marks": 13,
+     "accuracy": 19,
+     "ceiling": 33.4
+    },
+    "high": {
+     "cq0": 49,
+     "cq90": 49.33,
+     "move": 0.33,
+     "best": 49.52,
+     "worst": 44.39,
+     "clear": 3,
+     "ground": 363,
+     "band": "Oscillating",
+     "marks": 12,
+     "accuracy": 22.6,
+     "ceiling": 57.9
+    },
+    "move": 0.54
+   },
+   "dmove": 0,
+   "dclear": 0
+  },
+  {
+   "id": "C10",
+   "nm": "A price, and an allowance with something behind it",
+   "ceiling": {
+    "none": {
+     "cq0": 42.25,
+     "cq90": 42.52,
+     "move": 0.27,
+     "best": 42.7,
+     "worst": 37.46,
+     "clear": 3,
+     "ground": 307,
+     "band": "Oscillating",
+     "marks": 11,
+     "accuracy": 21.7,
+     "ceiling": 51
+    },
+    "low": {
+     "cq0": 9,
+     "cq90": 9.59,
+     "move": 0.59,
+     "best": 9.74,
+     "worst": 8.15,
+     "clear": 4,
+     "ground": 569,
+     "band": "Collapsed",
+     "marks": 13,
+     "accuracy": 15.4,
+     "ceiling": 15.4
+    },
+    "mid": {
+     "cq0": 25,
+     "cq90": 25.54,
+     "move": 0.54,
+     "best": 25.72,
+     "worst": 22.06,
+     "clear": 4,
+     "ground": 444,
+     "band": "Corrupt",
+     "marks": 13,
+     "accuracy": 19,
+     "ceiling": 33.4
+    },
+    "high": {
+     "cq0": 49,
+     "cq90": 49.33,
+     "move": 0.33,
+     "best": 49.52,
+     "worst": 44.39,
+     "clear": 3,
+     "ground": 363,
+     "band": "Oscillating",
+     "marks": 12,
+     "accuracy": 22.6,
+     "ceiling": 57.9
+    },
+    "move": 0.54
+   },
+   "dmove": 0,
+   "dclear": 0
+  },
+  {
+   "id": "C11",
+   "nm": "The record arrives at sign in",
+   "ceiling": {
+    "none": {
+     "cq0": 42.25,
+     "cq90": 42.52,
+     "move": 0.27,
+     "best": 42.7,
+     "worst": 37.46,
+     "clear": 3,
+     "ground": 307,
+     "band": "Oscillating",
+     "marks": 11,
+     "accuracy": 21.7,
+     "ceiling": 51
+    },
+    "low": {
+     "cq0": 9,
+     "cq90": 9.59,
+     "move": 0.59,
+     "best": 9.74,
+     "worst": 8.15,
+     "clear": 4,
+     "ground": 569,
+     "band": "Collapsed",
+     "marks": 13,
+     "accuracy": 15.4,
+     "ceiling": 15.4
+    },
+    "mid": {
+     "cq0": 25,
+     "cq90": 25.54,
+     "move": 0.54,
+     "best": 25.72,
+     "worst": 22.06,
+     "clear": 4,
+     "ground": 444,
+     "band": "Corrupt",
+     "marks": 13,
+     "accuracy": 19,
+     "ceiling": 33.4
+    },
+    "high": {
+     "cq0": 49,
+     "cq90": 49.33,
+     "move": 0.33,
+     "best": 49.52,
+     "worst": 44.39,
+     "clear": 3,
+     "ground": 363,
+     "band": "Oscillating",
+     "marks": 12,
+     "accuracy": 22.6,
+     "ceiling": 57.9
+    },
+    "move": 0.54
+   },
+   "dmove": 0,
+   "dclear": 0
+  },
+  {
+   "id": "C12",
+   "nm": "Three defects that are simply true",
+   "ceiling": {
+    "none": {
+     "cq0": 42.25,
+     "cq90": 42.52,
+     "move": 0.27,
+     "best": 42.7,
+     "worst": 37.46,
+     "clear": 3,
+     "ground": 307,
+     "band": "Oscillating",
+     "marks": 11,
+     "accuracy": 21.7,
+     "ceiling": 51
+    },
+    "low": {
+     "cq0": 9,
+     "cq90": 9.59,
+     "move": 0.59,
+     "best": 9.74,
+     "worst": 8.15,
+     "clear": 4,
+     "ground": 569,
+     "band": "Collapsed",
+     "marks": 13,
+     "accuracy": 15.4,
+     "ceiling": 15.4
+    },
+    "mid": {
+     "cq0": 25,
+     "cq90": 25.54,
+     "move": 0.54,
+     "best": 25.72,
+     "worst": 22.06,
+     "clear": 4,
+     "ground": 444,
+     "band": "Corrupt",
+     "marks": 13,
+     "accuracy": 19,
+     "ceiling": 33.4
+    },
+    "high": {
+     "cq0": 49,
+     "cq90": 49.33,
+     "move": 0.33,
+     "best": 49.52,
+     "worst": 44.39,
+     "clear": 3,
+     "ground": 363,
+     "band": "Oscillating",
+     "marks": 12,
+     "accuracy": 22.6,
+     "ceiling": 57.9
+    },
+    "move": 0.54
+   },
+   "dmove": 0,
+   "dclear": 0
+  }
+ ],
+ "rows": [
+  {
+   "ids": [],
+   "label": "shipped",
+   "ceiling": {
+    "none": {
+     "cq0": 42.25,
+     "cq90": 42.52,
+     "move": 0.27,
+     "best": 42.7,
+     "worst": 37.46,
+     "clear": 3,
+     "ground": 307,
+     "band": "Oscillating",
+     "marks": 11,
+     "accuracy": 21.7,
+     "ceiling": 51
+    },
+    "low": {
+     "cq0": 9,
+     "cq90": 9.59,
+     "move": 0.59,
+     "best": 9.74,
+     "worst": 8.15,
+     "clear": 4,
+     "ground": 569,
+     "band": "Collapsed",
+     "marks": 13,
+     "accuracy": 15.4,
+     "ceiling": 15.4
+    },
+    "mid": {
+     "cq0": 25,
+     "cq90": 25.54,
+     "move": 0.54,
+     "best": 25.72,
+     "worst": 22.06,
+     "clear": 4,
+     "ground": 444,
+     "band": "Corrupt",
+     "marks": 13,
+     "accuracy": 19,
+     "ceiling": 33.4
+    },
+    "high": {
+     "cq0": 49,
+     "cq90": 49.33,
+     "move": 0.33,
+     "best": 49.52,
+     "worst": 44.39,
+     "clear": 3,
+     "ground": 363,
+     "band": "Oscillating",
+     "marks": 12,
+     "accuracy": 22.6,
+     "ceiling": 57.9
+    },
+    "move": 0.54
+   },
+   "move": 0.54,
+   "clear": 4,
+   "cq90": 25.54
+  },
+  {
+   "ids": [
+    "C2a"
+   ],
+   "label": "C2a",
+   "ceiling": {
+    "none": {
+     "cq0": 42.25,
+     "cq90": 43.26,
+     "move": 1.01,
+     "best": 43.57,
+     "worst": 42.25,
+     "clear": 3,
+     "ground": 112,
+     "band": "Oscillating",
+     "marks": 11,
+     "accuracy": 21.7,
+     "ceiling": 52.7
+    },
+    "low": {
+     "cq0": 9,
+     "cq90": 9.41,
+     "move": 0.41,
+     "best": 10.3,
+     "worst": 9,
+     "clear": 5,
+     "ground": 245,
+     "band": "Collapsed",
+     "marks": 14,
+     "accuracy": 15.4,
+     "ceiling": 15.5
+    },
+    "mid": {
+     "cq0": 25,
+     "cq90": 26.19,
+     "move": 1.19,
+     "best": 26.72,
+     "worst": 25,
+     "clear": 4,
+     "ground": 192,
+     "band": "Corrupt",
+     "marks": 13,
+     "accuracy": 19,
+     "ceiling": 34.8
+    },
+    "high": {
+     "cq0": 49,
+     "cq90": 49.53,
+     "move": 0.53,
+     "best": 50.15,
+     "worst": 49,
+     "clear": 2,
+     "ground": 162,
+     "band": "Oscillating",
+     "marks": 12,
+     "accuracy": 22.6,
+     "ceiling": 58.5
+    },
+    "move": 1.19
+   },
+   "move": 1.19,
+   "clear": 4,
+   "cq90": 26.19
+  },
+  {
+   "ids": [
+    "C2b"
+   ],
+   "label": "C2b",
+   "ceiling": {
+    "none": {
+     "cq0": 42.25,
+     "cq90": 42.63,
+     "move": 0.38,
+     "best": 42.79,
+     "worst": 41.41,
+     "clear": 3,
+     "ground": 193,
+     "band": "Oscillating",
+     "marks": 11,
+     "accuracy": 21.7,
+     "ceiling": 51.4
+    },
+    "low": {
+     "cq0": 9,
+     "cq90": 9.56,
+     "move": 0.56,
+     "best": 9.7,
+     "worst": 8.81,
+     "clear": 4,
+     "ground": 384,
+     "band": "Collapsed",
+     "marks": 13,
+     "accuracy": 15.4,
+     "ceiling": 15.7
+    },
+    "mid": {
+     "cq0": 25,
+     "cq90": 25.6,
+     "move": 0.6,
+     "best": 25.79,
+     "worst": 25,
+     "clear": 4,
+     "ground": 264,
+     "band": "Corrupt",
+     "marks": 13,
+     "accuracy": 19,
+     "ceiling": 34
+    },
+    "high": {
+     "cq0": 49,
+     "cq90": 49.54,
+     "move": 0.54,
+     "best": 49.68,
+     "worst": 46.38,
+     "clear": 3,
+     "ground": 244,
+     "band": "Oscillating",
+     "marks": 12,
+     "accuracy": 22.6,
+     "ceiling": 59.1
+    },
+    "move": 0.6
+   },
+   "move": 0.6,
+   "clear": 4,
+   "cq90": 25.6
+  },
+  {
+   "ids": [
+    "C2a",
+    "C2b"
+   ],
+   "label": "C2a+C2b",
+   "ceiling": {
+    "none": {
+     "cq0": 42.25,
+     "cq90": 44.15,
+     "move": 1.9,
+     "best": 45.51,
+     "worst": 42.25,
+     "clear": 4,
+     "ground": 100,
+     "band": "Oscillating",
+     "marks": 12,
+     "accuracy": 21.7,
+     "ceiling": 54.8
+    },
+    "low": {
+     "cq0": 9,
+     "cq90": 8.31,
+     "move": -0.69,
+     "best": 10.07,
+     "worst": 7.91,
+     "clear": 5,
+     "ground": 180,
+     "band": "Collapsed",
+     "marks": 14,
+     "accuracy": 15.4,
+     "ceiling": 14.5
+    },
+    "mid": {
+     "cq0": 25,
+     "cq90": 26.11,
+     "move": 1.11,
+     "best": 27.2,
+     "worst": 25,
+     "clear": 4,
+     "ground": 80,
+     "band": "Corrupt",
+     "marks": 13,
+     "accuracy": 19,
+     "ceiling": 34.5
+    },
+    "high": {
+     "cq0": 49,
+     "cq90": 50.26,
+     "move": 1.26,
+     "best": 51.91,
+     "worst": 49,
+     "clear": 3,
+     "ground": 134,
+     "band": "Oscillating",
+     "marks": 12,
+     "accuracy": 22.6,
+     "ceiling": 60.5
+    },
+    "move": 1.11
+   },
+   "move": 1.11,
+   "clear": 4,
+   "cq90": 26.11
+  },
+  {
+   "ids": [
+    "C5"
+   ],
+   "label": "C5",
+   "ceiling": {
+    "none": {
+     "cq0": 42.25,
+     "cq90": 42.79,
+     "move": 0.54,
+     "best": 43.09,
+     "worst": 37.98,
+     "clear": 4,
+     "ground": 448,
+     "band": "Oscillating",
+     "marks": 12,
+     "accuracy": 21.7,
+     "ceiling": 53.9
+    },
+    "low": {
+     "cq0": 9,
+     "cq90": 9.78,
+     "move": 0.78,
+     "best": 9.96,
+     "worst": 8.17,
+     "clear": 5,
+     "ground": 648,
+     "band": "Collapsed",
+     "marks": 14,
+     "accuracy": 15.4,
+     "ceiling": 17.6
+    },
+    "mid": {
+     "cq0": 25,
+     "cq90": 25.76,
+     "move": 0.76,
+     "best": 25.84,
+     "worst": 22.74,
+     "clear": 5,
+     "ground": 559,
+     "band": "Corrupt",
+     "marks": 14,
+     "accuracy": 19,
+     "ceiling": 36
+    },
+    "high": {
+     "cq0": 49,
+     "cq90": 49.61,
+     "move": 0.61,
+     "best": 49.66,
+     "worst": 44.13,
+     "clear": 4,
+     "ground": 448,
+     "band": "Oscillating",
+     "marks": 13,
+     "accuracy": 22.6,
+     "ceiling": 60.7
+    },
+    "move": 0.76
+   },
+   "move": 0.76,
+   "clear": 5,
+   "cq90": 25.76
+  },
+  {
+   "ids": [
+    "C2a",
+    "C5"
+   ],
+   "label": "C2a+C5",
+   "ceiling": {
+    "none": {
+     "cq0": 42.25,
+     "cq90": 44.12,
+     "move": 1.87,
+     "best": 44.56,
+     "worst": 42.25,
+     "clear": 5,
+     "ground": 240,
+     "band": "Oscillating",
+     "marks": 13,
+     "accuracy": 21.7,
+     "ceiling": 57
+    },
+    "low": {
+     "cq0": 9,
+     "cq90": 9.45,
+     "move": 0.45,
+     "best": 10.34,
+     "worst": 9,
+     "clear": 7,
+     "ground": 286,
+     "band": "Collapsed",
+     "marks": 14,
+     "accuracy": 15.4,
+     "ceiling": 17.3
+    },
+    "mid": {
+     "cq0": 25,
+     "cq90": 26.75,
+     "move": 1.75,
+     "best": 27.74,
+     "worst": 25,
+     "clear": 7,
+     "ground": 229,
+     "band": "Corrupt",
+     "marks": 14,
+     "accuracy": 19,
+     "ceiling": 37.8
+    },
+    "high": {
+     "cq0": 49,
+     "cq90": 50.33,
+     "move": 1.33,
+     "best": 50.51,
+     "worst": 49,
+     "clear": 4,
+     "ground": 215,
+     "band": "Oscillating",
+     "marks": 13,
+     "accuracy": 22.6,
+     "ceiling": 62.2
+    },
+    "move": 1.75
+   },
+   "move": 1.75,
+   "clear": 7,
+   "cq90": 26.75
+  },
+  {
+   "ids": [
+    "C2b",
+    "C5"
+   ],
+   "label": "C2b+C5",
+   "ceiling": {
+    "none": {
+     "cq0": 42.25,
+     "cq90": 43.04,
+     "move": 0.79,
+     "best": 43.1,
+     "worst": 39.95,
+     "clear": 5,
+     "ground": 316,
+     "band": "Oscillating",
+     "marks": 13,
+     "accuracy": 21.7,
+     "ceiling": 54.6
+    },
+    "low": {
+     "cq0": 9,
+     "cq90": 9.77,
+     "move": 0.77,
+     "best": 9.89,
+     "worst": 8.41,
+     "clear": 7,
+     "ground": 440,
+     "band": "Collapsed",
+     "marks": 14,
+     "accuracy": 15.4,
+     "ceiling": 17.7
+    },
+    "mid": {
+     "cq0": 25,
+     "cq90": 26.06,
+     "move": 1.06,
+     "best": 26.35,
+     "worst": 23.93,
+     "clear": 7,
+     "ground": 338,
+     "band": "Corrupt",
+     "marks": 14,
+     "accuracy": 19,
+     "ceiling": 36.9
+    },
+    "high": {
+     "cq0": 49,
+     "cq90": 49.98,
+     "move": 0.98,
+     "best": 50.04,
+     "worst": 46.16,
+     "clear": 4,
+     "ground": 320,
+     "band": "Oscillating",
+     "marks": 13,
+     "accuracy": 22.6,
+     "ceiling": 62.2
+    },
+    "move": 1.06
+   },
+   "move": 1.06,
+   "clear": 7,
+   "cq90": 26.06
+  },
+  {
+   "ids": [
+    "C2a",
+    "C2b",
+    "C5"
+   ],
+   "label": "C2a+C2b+C5",
+   "ceiling": {
+    "none": {
+     "cq0": 42.25,
+     "cq90": 45.72,
+     "move": 3.47,
+     "best": 46.81,
+     "worst": 42.25,
+     "clear": 6,
+     "ground": 175,
+     "band": "Oscillating",
+     "marks": 13,
+     "accuracy": 21.7,
+     "ceiling": 59.6
+    },
+    "low": {
+     "cq0": 9,
+     "cq90": 8.63,
+     "move": -0.37,
+     "best": 9.94,
+     "worst": 8.39,
+     "clear": 8,
+     "ground": 192,
+     "band": "Collapsed",
+     "marks": 14,
+     "accuracy": 15.4,
+     "ceiling": 16.7
+    },
+    "mid": {
+     "cq0": 25,
+     "cq90": 26.91,
+     "move": 1.91,
+     "best": 27.98,
+     "worst": 25,
+     "clear": 6,
+     "ground": 137,
+     "band": "Corrupt",
+     "marks": 14,
+     "accuracy": 19,
+     "ceiling": 37.7
+    },
+    "high": {
+     "cq0": 49,
+     "cq90": 51.47,
+     "move": 2.47,
+     "best": 52.58,
+     "worst": 49,
+     "clear": 5,
+     "ground": 171,
+     "band": "Even",
+     "marks": 14,
+     "accuracy": 22.6,
+     "ceiling": 64.8
+    },
+    "move": 1.91
+   },
+   "move": 1.91,
+   "clear": 6,
+   "cq90": 26.91
+  }
+ ],
+ "when": "2026-09-21T04:56:14.311Z"
+}
