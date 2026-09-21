@@ -333,6 +333,27 @@ into something tidier than he said it.
       stated. That is the same ruling as the dial's swing: a range is a shape,
       and a figure with a tolerance stapled to it is a lab readout.
 
+### OB. THE OBJECTIONS GATE, AND WHAT IT FOUND ON ITS FIRST RUN.
+
+- [x] **OB1. The notation class reads zero, and that is the point of a rule
+      reading zero.** The sweep found 0 for tolerance, interval word and scale
+      prose, because the build seat had swept them out while the gate was
+      being written. The gate holds them closed now.
+- [ ] **OB2. Two findings remain at a severity that stops a build,** both of
+      the same class: a count printed against a total a person never asked
+      for. `ui/analytics.js` says 21 of the 76 laws where there are 21 laws,
+      and `ui/games.js` counts addresses against 112.
+- [x] **OB3. Three defects the gate found in itself before it was trusted.**
+      The swing pattern read only the template shape and called the exact
+      string named in the ruling clean. The count rule fired on a threshold
+      written on the depth scale, which is a scale and not a count. And the
+      reader collapsed style blocks, so it named line 176 for a string on line
+      428, which is the same lesson that file already carried for comments.
+- [x] **OB4. The corpus grew to three files it had never reached,** and the
+      literal walk now reaches the 24 strings inside drills that no surface
+      walk opens.
+- [ ] **OB5. `CLAUDE.md`'s gate column does not name the objections check.**
+
 ### BM. THE BALANCE STRIP SAYS SOMETHING MEANINGLESS.
 
 - [ ] **BM1. His words: "the balance masculine feminine is broken. It says
@@ -348,11 +369,18 @@ into something tidier than he said it.
 
 ### CO. THE COPY OBJECTIONS BECOME A GATE.
 
-- [ ] **CO1. His words: "create a log of all the times I said I do not like
+- [x] **CO1 DELIVERED. 24 objections logged, 19 of them carrying his own
+      words verified by string match against the file cited, and the five with
+      no utterance on record say so and name what the class was inferred
+      from.** His words: "create a log of all the times I said I do not like
       this copy type. Create a database, sweep for it, and kill it. And add
       that to the style guide."** Every objection he has made about copy, in
       one place, as data rather than as prose somebody has to remember.
-- [ ] **CO2. And it has to be runnable, or it is another document that goes
+- [x] **CO2 DELIVERED, and the log is a build product rather than a file kept
+      by hand.** 18 rules: 7 carry patterns, 11 cite a gate that already holds
+      them, and 10 more are guidance marked not gateable with the reason. No
+      rule is written twice, and the check runs inside the existing voice gate
+      rather than as a second scheme. And it has to be runnable, or it is another document that goes
       stale.** The log is the source, the sweep reads the log, and the gate
       fails on a string that matches an objection he already made. The voice
       skill carries the rule and the gate enforces it.

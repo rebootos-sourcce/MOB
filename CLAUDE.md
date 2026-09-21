@@ -30,6 +30,9 @@ else may.
     node tests/collide.js              no overlapping nameplates
     node tests/design.js               the look, held to its floors
     node tools/monitor.js             every surface renders, and it logs
+    node tests/funnel.js               the funnel, which nothing gated before
+    python3 .claude/skills/atuned-voice/check.py --objections
+                                       his own objections, as rules
 
 THE COUNTS ARE GONE FROM THIS COLUMN, AND THAT IS THE FIX. They read 279, 262,
 40 and 22, then 843, 740, 100 and 94, and every set was wrong within days. On
