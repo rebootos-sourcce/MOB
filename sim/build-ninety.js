@@ -18,6 +18,8 @@ need.forEach(f=>{const p=path.join(__dirname,f);
  J[f.replace('.json','')]=JSON.parse(fs.readFileSync(p,'utf8'));});
 const N=J.ninety, R=J.runs, MEAS=J.measured, FOLD=J.folded;
 const M=N.measured, COH=N.cohort, st=N.stamp;
+/* the friction's own name, read off the run rather than repeated here */
+const fnm=k=>((R.hitShare||{})[k]||{}).nm||((R.lost||{})[k]||{}).nm||k;
 const chg={}; N.changes.forEach(c=>chg[c.id]=c);
 const solo={}; N.solo.forEach(s=>solo[s.id]=s);
 const steps=N.cum?N.cum.steps:[];
@@ -51,6 +53,7 @@ const JUDGED={
   +' of otherwise skipped days. Nothing in this repository measures it. It is here to be subtracted.'};
 const judged=id=>JUDGED[id]?JUDGED[id](solo[id]):null;
 
+const floorNote=Math.min.apply(null,(((N.cum&&N.cum.steps.length)?N.cum.steps.filter(x=>!chg[x.id].soft).pop():N.base).lostTop||[{n:0}]).map(r=>r.n));
 const CEIL0=N.ceiling[0];
 const CEILALL=N.ceiling.filter(c=>/all three/.test(c.nm))[0]||CEIL0;
 const CEILWAS=+(CEIL0.cq90-CEIL0.cq0).toFixed(2);
@@ -296,9 +299,16 @@ is not a list of screens.</p>
 <th>What it is</th></tr></thead>
 <tbody>
 ${(()=>{
- const b={}; N.base.lostTop.forEach(r=>b[r.k]=r);
+ /* THE BASELINE COLUMN IS THE WHOLE LOSS COLUMN, which sim/runs.json carries in
+    full. The after column is the five the step recorded, so a sticking point
+    missing from it is not zero, it is below the fifth, and the table says the
+    second rather than printing the first. */
+ const b={}; Object.keys(R.lost).forEach(k=>b[k]={k:k,n:R.lost[k].people,nm:fnm(k)});
+ N.base.lostTop.forEach(r=>{ if(!b[r.k])b[r.k]=r; });
  const a={}; hardLast.lostTop.forEach(r=>a[r.k]=r);
- const keys=Object.keys(a).concat(Object.keys(b).filter(k=>!a[k]));
+ const floor=Math.min.apply(null,hardLast.lostTop.map(r=>r.n));
+ const keys=Object.keys(a).concat(Object.keys(b).filter(k=>!a[k]&&b[k].n>0)
+  .sort((x,y)=>b[y].n-b[x].n).slice(0,3));
  const kind={
   DRIFT:'A model term, not a product one. It is the hazard that ends a run of absent days, and no change on this page touches it. It rises because more people survive long enough to reach it.',
   F4:'Arithmetic. The reading does not move on the session somebody just spent.',
@@ -312,13 +322,20 @@ ${(()=>{
   F10:'Nothing asked them to come back.',
   F8:'The gift ran out and nothing was for sale.'};
  return keys.map(k=>{
-  const bn=(b[k]||{n:0}).n, an=(a[k]||{n:0}).n;
+  const bn=(b[k]||{n:0}).n;
+  const known=!!a[k];
+  const an=known?a[k].n:null;
   const nm=(a[k]||b[k]).nm;
-  return `<tr class="${an>bn?'zero':(an<bn?'win':'')}">
-<td><b>${e(nm)}</b></td><td class="num">${bn}</td><td class="num">${an}</td>
-<td class="num"><b>${an-bn>=0?'+':''}${an-bn}</b></td>
+  return `<tr class="${known&&an>bn?'zero':(known&&an<bn?'win':'')}">
+<td><b>${e(nm)}</b></td><td class="num">${bn}</td>
+<td class="num">${known?an:'under '+floor}</td>
+<td class="num"><b>${known?((an-bn>=0?'+':'')+(an-bn)):'fell out of the top five'}</b></td>
 <td class="q">${e(kind[k]||'')}</td></tr>`;}).join('\n');})()}
 </tbody></table>
+<p class="fine">The baseline column is the whole loss column out of
+<code>sim/runs.json</code>. The after column is the five the final step recorded,
+so a row that fell out of it is printed as under ${floorNote} rather than as
+zero.</p>
 <p><b>Two of the top three went up, and that is not a regression.</b> More people
 stay, so more people reach the point where the reading does not move and leave
 there instead of leaving earlier for a cheaper reason. Every interface change on
