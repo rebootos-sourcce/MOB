@@ -382,7 +382,11 @@ lexicon       ${Object.keys(LEX).length?LEX.patch.lexBefore+' entries to '+LEX.p
   node sim/lexcheck.js      the lexicon patch, writes sim/lexmeasured.json
   node sim/harness.js       the baseline cohort, writes sim/runs.json
   node sim/ninety.js        every change modelled, writes sim/ninety.json
-  node sim/build-help.js    this page</div>
+  node sim/build-help.js    this page
+  node sim/shot.js          renders both pages and asserts what they are
+
+  SIM_ROOT=sim/pin pins the build every step above reads, so a measurement
+  cannot have its subject change under it while other seats are working.</div>
 <p class="foot">Every number on this page came out of a run or a probe. Every
 sentence in quotation marks was written by this seat over those numbers and was
 said by nobody. The model in the run is one thing only, when somebody opens the

@@ -542,7 +542,11 @@ people        ${((N.base.runs+N.solo.reduce((a,s)=>a+s.runs,0)+steps.reduce((a,s
   node sim/lexcheck.js      the lexicon patch, writes sim/lexmeasured.json
   node sim/harness.js       the baseline cohort, writes sim/runs.json
   node sim/ninety.js        every change modelled, writes sim/ninety.json
-  node sim/build-ninety.js  this page</div>
+  node sim/build-ninety.js  this page
+  node sim/shot.js          renders both pages and asserts what they are
+
+  SIM_ROOT=sim/pin pins the build every step above reads, so a measurement
+  cannot have its subject change under it while other seats are working.</div>
 <p class="foot">Everything about a person&rsquo;s field on this page is the
 shipped engine&rsquo;s output on invented inputs. Everything about the surface is a
 fact about the build stamped above. Everything about when somebody opens the file
