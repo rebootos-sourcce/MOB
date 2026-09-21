@@ -53,6 +53,17 @@ const JUDGED={
   +' of otherwise skipped days. Nothing in this repository measures it. It is here to be subtracted.'};
 const judged=id=>JUDGED[id]?JUDGED[id](solo[id]):null;
 
+/* THE PEAK, WHICH IS NOT THE END. The cumulative pass applies the changes in
+   descending order of what they moved alone, so a change that costs grade sits
+   at the end of the run and the last step is not the highest one. Reporting only
+   the last step would hide that; reporting only the peak would hide the cost.
+   Both are read off the steps. */
+const PEAK=(()=>{
+ if(!hardSteps.length)return null;
+ let best=hardSteps[0];
+ hardSteps.forEach(x=>{ if(x.total>best.total)best=x; });
+ const after=hardSteps.slice(hardSteps.indexOf(best)+1);
+ return {step:best, after:after, drop:+(best.total-hardLast.total).toFixed(2)};})();
 const floorNote=Math.min.apply(null,(((N.cum&&N.cum.steps.length)?N.cum.steps.filter(x=>!chg[x.id].soft).pop():N.base).lostTop||[{n:0}]).map(r=>r.n));
 const CEIL0=N.ceiling[0];
 const CEILALL=N.ceiling.filter(c=>/all three/.test(c.nm))[0]||CEIL0;
@@ -350,6 +361,14 @@ ${flat?`<p>The curve flattens at <b>${e(flat.id)}</b>, the step called
 the ${word(flat.left)} traced steps after it adds less than a point, and all of
 them together add ${sg(flat.gain)}.</p>`
 :'<p>No step after the first adds less than a point, so the curve has not flattened inside the change set modelled here.</p>'}
+${PEAK&&PEAK.drop>0.05?`<p><b>And the curve peaks before it ends.</b> The highest
+traced step is <b>${e(PEAK.step.id)}</b> at ${n2(PEAK.step.total)}, and the
+${word(PEAK.after.length)} step${PEAK.after.length===1?'':'s'} after it take
+${sg(-PEAK.drop)} off again: ${PEAK.after.map(x=>e(x.id)+' '+sg(x.step)).join(', ')}.
+Those are the release changes. They cost points on the scoreboard and they are
+the changes the product most needs, which is the same sentence as the ceiling
+section below and is the reason the build order at the end of this page is not
+the ranking at the top of it.</p>`:''}
 <p>The ${n1(90-hardLast.total)} points between ${n2(hardLast.total)} and ninety are
 not hiding in the interface. Read down the criterion table: ${(()=>{
  const gaps=N.formulaCeiling.rows.map(r=>({k:r.k, gap:+(r.max-(lastRow[r.k]||0)).toFixed(2), why:r.why}))
