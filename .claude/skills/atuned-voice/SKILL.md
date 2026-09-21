@@ -1,6 +1,6 @@
 ---
 name: atuned-voice
-description: The house voice for Atüned / SOURCE, as a system a writer can be held to. The Encarta anchor, the warmth pass, sixteen checkable micro rules with a failing and a fixed line beside each, the reading history of every writing seat, the ten passes, and a runnable gate. Load before writing or editing any user facing string: UI copy, labels, tooltips, drills, readings, errors, empty states, onboarding, funnel and quiz copy, the names of things. Loads alongside atuned-ux, which owns the surface; this owns the words on it.
+description: The house voice for Atüned / SOURCE, as a system a writer can be held to. The Encarta anchor, the warmth pass, the checkable micro rules with a failing and a fixed line beside each, the owner's own objections as a runnable database, the reading history of every writing seat, the ten passes, and a runnable gate. Load before writing or editing any user facing string: UI copy, labels, tooltips, drills, readings, errors, empty states, onboarding, funnel and quiz copy, the names of things. Loads alongside atuned-ux, which owns the surface; this owns the words on it.
 ---
 
 # Atüned Voice
@@ -22,14 +22,18 @@ You are mid sentence. Read this card, then go back.
     4  Name the one thing to do, or say nothing.
     5  Cut to the fewest words that stay true. Then read it out loud.
 
-Nine things that fail on sight, before any judgement is needed:
+These fail on sight, before any judgement is needed. The count is not written
+here, because this card said nine while carrying eleven the moment two rules
+were added, which is the defect the repository has been bitten by twelve times:
 
     an em dash                          anywhere, including your own notes
     a line that says a thing is starting  "Welcome to", "Let us begin"
     an instruction to a nervous system  "relax", "sit back", "gently"
     a number with no unit               "25 of your allowance"
+    a figure with a tolerance on it     "plus or minus 12", "swing 11"
     an abstract noun as a heading       Insights, Journey, Wellness
     a band word standing alone          Severe with nothing attached
+    a second wording for the empty state  it is "not read yet", once
     a reassurance to a fear not raised  see V12, which is held and not banned
     two buckets in one string           an instruction that is also a reading
     all caps in copy                    sentence case in body, title in headers
@@ -39,6 +43,7 @@ Then run the gate:
     python3 .claude/skills/atuned-voice/check.py --line "your line here"
     python3 .claude/skills/atuned-voice/check.py atuned_src/ui/release.js
     python3 .claude/skills/atuned-voice/check.py --baseline
+    python3 .claude/skills/atuned-voice/check.py --objections
 
 ---
 
@@ -168,7 +173,7 @@ Sixteen. Each one has a line that failed and the line that replaced it, drawn
 from copy this product ships or shipped. A rule nobody can fail is not a rule,
 so every one of these has a real corpse.
 
-Cite them as V1 to V16 in review.
+Cite them as V1 to V20 in review.
 
 ### V1. No Line Whose Job Is To Say A Thing Is Starting
 
@@ -445,6 +450,114 @@ unit. It does not become "85" with "days" promoted into the label, which would
 buy the one word rule by breaking V7. Read the pair out loud: "kept, eighty
 five days". If that is not a thing a person would say, the label is wrong.
 
+### V18. A Figure Carries No Interval, No Tolerance And No Decoration
+
+    FAIL  ui/analytics.js    Identification  58%  plus or minus 12
+    FAIL  ui/personas.js     swing 11
+    FAIL  ui/summary.js      of 100, plus or minus 11
+    FAIL  ui/record.js       Your own horizon reads about 300, give or take 40.
+    FIX                      the figure alone, and the range drawn beside it
+
+His, and he ruled it as a class rather than as two strings: "do a sweep of text
+like that. 100 plus minus 12, swing 11. That shit has to all go." A figure with
+a tolerance stapled to it is a lab readout and not copy.
+
+He ruled the replacement in the same breath, and it is the load bearing half:
+"give a pill to the lower right side of the number of the coherence slider,
+like it oscillates within the person's range." **The range is drawn, never
+stated.** An interval is a shape, and a shape is the one thing prose is worst
+at. Where the shape cannot be drawn, the fact survives in words with no figure
+in it: "The needle has play in it, so a small move is not a reading."
+
+The whole class was swept out on 21 September and the gate holds it closed. Two
+sentences that named the interval came out with it, because a sentence pointing
+at a figure that is no longer on the screen is a sentence about nothing.
+
+### V19. The Empty State Has One Wording, And A Refusal Is Not A Value
+
+    FAIL  ui/ui.js:490       masculine   not enough held to read   feminine
+    FIX                      masculine   \u2013   feminine
+    FIX   ui/drills.js       Neither side reaches 1, so no direction is
+                             named. Write what happened and both sides move.
+
+His: "the balance masculine feminine is broken. It says masculine, not enough
+held to read feminine. I do not understand what that bullshit means."
+
+Two defects in one string and they are worth separating, because only one of
+them is gateable.
+
+**The bucket.** A Refusal was sitting in a Value slot, and that slot is centred
+between two labels, so the eye reads one sentence across three elements. A
+value's empty state is a dash. `COPY.md` has said so since it was written: a
+dash is the honest glyph for not read yet, and it is not zero. The refusal
+keeps its full form one door away, in the drill, where there is room to say
+what failed and what changes it.
+
+**The wording.** Five phrasings of one state were in the product: not read yet,
+nothing read yet, not enough held to read, nothing measured, too little held.
+One concept, five words, which is V14 broken on the most read string in the
+app. The wording is **not read yet** as a value, and **Nothing read yet, so
+<what is absent>** as a sentence. The gate holds it.
+
+### V20. If You Cannot Use Regular Words To Describe It, Do Not Describe It
+
+    FAIL  ui/cone.js:752     The waist is 40 to 60 out of 100, where most
+                             people oscillate.
+    FIX                      The narrow middle is where most people sit.
+
+His sentence, and it is the rule. It collides head on with V7, which says every
+number carries its denominator, and **his ruling wins**: the point of V7 was
+that a bare 13 means nothing, not that every figure should be dressed in a
+scale. Where a plain sentence can say it, the plain sentence goes. Where it
+cannot, the number goes, and not the scale.
+
+The distinction that makes this scrubbable rather than endless: a small scale
+label under a figure is V7 working, and prose that hides behind a scale instead
+of saying something is the defect. Read every one out loud as a sentence and
+keep the ones that survive it.
+
+---
+
+## 3b. His Objections, As A Database
+
+"create a log of all the times I said I do not like this copy type. Create a
+database, sweep for it, and kill it. And add that to the style guide."
+
+The last clause is this section. The other three are three files.
+
+    COPY-OBJECTIONS.md    the log, and COPY-OBJECTIONS.html is the same
+                          content for reading rather than for diffing
+    objections.json       the database, beside this file
+    check.py --objections the sweep, and it is the gate
+
+**The database is the source and the log is a build product.** Both are
+rendered by `tools/objections.py`, which imports the sweep rather than
+carrying one, so the log cannot disagree with the database and neither can
+disagree with the product. A log kept by hand beside a database read by a
+program is the defect this repository has been bitten by twelve times in
+another coat.
+
+**Every rule cites the objection it comes from**, by entry id, and every entry
+carries his wording verbatim with the file and line it is recorded at. Where a
+class was taken from a ruling with no quotation behind it, the entry says so
+and says what it was inferred from. Nothing in the log is remembered.
+
+**A rule nobody can express as a check is guidance, and it is named.** Nine of
+them, at the foot of the database: the bucket half of V19, whether a heading is
+a thing a person would say, text over a graphic, a legend nobody asked for, the
+AI six itself. They are written down rather than dropped, and they are not
+turned into a bad pattern, because a tool that lies is worse than no tool.
+
+**A rule enforced somewhere else is cited, not rewritten.** The figure label,
+the naked number, the em dash, the count, the caps, the soft lexicon and the
+preamble are all in the gate above. The verdict rule is in
+`marketing/refuse.js`. Terminology drift is `tools/terms.py`. One word per
+concept applies to tools as much as to copy.
+
+**Read the counts off the run.** No figure from that sweep is written into this
+file, and the rules that read zero are the ones doing the most work: a class
+swept out and then held closed is what a gate is for.
+
 ---
 
 ## 4. The Seats And What They Read
@@ -694,6 +807,9 @@ than no tool. If you extend the gate, break a known good line with it first.
 
 ### The Rest Of The Checking Is Already Built
 
+    python3 .claude/skills/atuned-voice/check.py --objections
+                                          his own objections, V18 to V20
+    python3 tools/objections.py           renders COPY-OBJECTIONS.md and .html
     python3 tools/terms.py                terminology drift, V14
     node tests/design.js                  all caps, type floor
     ./atuned_src/BUILD.sh                 em dashes, and it is a build gate

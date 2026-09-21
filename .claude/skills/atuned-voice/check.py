@@ -6,7 +6,13 @@ Run from the repo root.
     python3 .claude/skills/atuned-voice/check.py --baseline
     python3 .claude/skills/atuned-voice/check.py atuned_src/ui/release.js
     python3 .claude/skills/atuned-voice/check.py --line "Sit back and relax."
+    python3 .claude/skills/atuned-voice/check.py --objections
     python3 .claude/skills/atuned-voice/check.py --all
+
+--objections sweeps the owner's own objections, read out of objections.json,
+which is the database built off COPY-OBJECTIONS.md. Every other mode enforces
+the same rules at the severity that stops a build, so there is one set of rules
+and one place they live.
 
 NO HOUSE NUMBER IS TYPED INTO THIS FILE. The distribution a candidate is
 measured against is computed off the shipping copy at run time, every run.
@@ -19,6 +25,7 @@ the end of every run, because a score with the unmeasurable part left out is a
 lie about how much has been checked.
 """
 
+import json
 import os
 import re
 import sys
@@ -31,8 +38,14 @@ import statistics
 # printed cards are all read by a person, and the gate could not see one of
 # them until this line grew. A corpus that stops at the renderers is a gate
 # that checks where the copy is written and not where it is kept.
-CORPUS = ['atuned_src/ui', 'atuned_src/engine/data',
-          'funnel/index.html', 'funnel/quiz.html',
+# THE STATIC SHELL IS COPY TOO, and the corpus did not reach it. shell/body.html
+# carries 19 strings a person reads on the first screen, and buy.html and
+# about.html are the two funnel pages that ask for money and explain the
+# instrument. A corpus that stops at the renderers is a gate that checks where
+# the copy is written and not everywhere it is read.
+CORPUS = ['atuned_src/ui', 'atuned_src/engine/data', 'atuned_src/shell/body.html',
+          'funnel/index.html', 'funnel/quiz.html', 'funnel/about.html',
+          'funnel/buy.html',
           'funnel/questions.js', 'atuned_src/engine/plan.js']
 
 # A COUNTEREXAMPLE IS COPY ABOUT COPY, and it is written to fail. The release
@@ -94,9 +107,15 @@ def text_html(path):
         s = open(path, encoding='utf-8').read()
     except OSError:
         return []
+    # THE NEWLINES IN A STRIPPED BLOCK ARE KEPT, so a reported line number is
+    # the real one. Collapsing a style block to one space put a finding in
+    # funnel/about.html at line 176 when the string is at 428, and a gate that
+    # names the wrong line sends a writer to the wrong string. This file
+    # already records the same defect against the comment stripper, which is
+    # one probe disagreeing with another about the same file.
     for pat in [r'<style.*?</style>', r'<script.*?</script>',
                 r'<!--.*?-->', r'<head.*?</head>', r'<svg.*?</svg>']:
-        s = re.sub(pat, ' ', s, flags=re.S)
+        s = re.sub(pat, lambda m: '\n' * m.group(0).count('\n'), s, flags=re.S)
     s = re.sub(r'</(?:p|div|li|h1|h2|h3|h4|dd|dt|section)>', '\n', s)
     s = re.sub(r'<[^>]+>', ' ', s)
     out = []
@@ -292,6 +311,105 @@ def figure_label_fault(label):
         return 'a figure\'s label is one word, and this is %d.' % n
     return None
 
+# ------------------------------------------------- his objections, as a database
+#
+# "create a log of all the times I said I do not like this copy type. Create a
+# database, sweep for it, and kill it. And add that to the style guide."
+#
+# The log is COPY-OBJECTIONS.md and the database is objections.json beside this
+# file. NO RULE IS WRITTEN TWICE. A rule whose gate is not "objections" is
+# already enforced somewhere else and this file only carries the citation, so a
+# writer reads one scheme and a rule has one home. A rule nobody can express as
+# a check is in the guidance list at the foot of that file, marked not gateable
+# rather than quietly dropped or quietly turned into a bad pattern.
+
+OBJ_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                        'objections.json')
+_OBJ = {}
+
+
+def objections():
+    """The database, compiled once. Rules whose gate is this sweep's own."""
+    if _OBJ:
+        return _OBJ
+    try:
+        db = json.load(open(OBJ_FILE, encoding='utf-8'))
+    except (OSError, ValueError) as e:
+        sys.stderr.write('objections.json unreadable: %s\n' % e)
+        db = {'rules': [], 'guidance': []}
+    mine = []
+    for r in db.get('rules', []):
+        if r.get('gate') != 'objections' or not r.get('re'):
+            continue
+        mine.append((r, [re.compile(x, re.I | re.M) for x in r['re']]))
+    _OBJ['db'] = db
+    _OBJ['mine'] = mine
+    return _OBJ
+
+
+# THE NEGATOR GUARD, TAKEN FROM marketing/refuse.js, WHICH LEARNED IT THE HARD
+# WAY. Five of its first fourteen findings were lines that were the product
+# refusing the thing: the gate read the word and not the sentence. A match is
+# discarded when a negator sits in the forty characters before it, which is a
+# clause. The same failure mode is recorded against this file's own first cut of
+# the naked number check.
+NEGATORS = re.compile(
+    r"\b(?:no|not|never|nothing|none|without|neither|nor|cannot|refus\w*|"
+    r"declin\w*|free of|absent|does not|do not|is not|are not|has no|have no|"
+    r"makes no|will not|won't|prints no|says no)\b[^.?!]{0,40}$", re.I)
+
+
+def objection_hits(text):
+    """[(rule, severity, matched)] for one string. Tags stripped first."""
+    t = re.sub(r'<[^>]*>', ' ', text).replace('\\n', ' ')
+    out = []
+    for r, pats in objections()['mine']:
+        for pat in pats:
+            m = pat.search(t)
+            if not m:
+                continue
+            if NEGATORS.search(t[max(0, m.start() - 40):m.start()]):
+                continue
+            out.append((r, r.get('severity', 'stop'), m.group(0).strip()))
+            break
+    return out
+
+
+def objection_strings(target):
+    """(path, line, raw) for every string the objection sweep reads.
+
+    IT READS THE LITERAL AND NOT THE SENTENCE. The swing label ships inside an
+    SVG text element, so the sentence walk drops it on the attribute quote and
+    would have reported the product clean while the string was on the screen.
+    This also reaches the 24 strings inside drills that no surface walk opens.
+    """
+    out = []
+    if os.path.isdir(target):
+        for f in sorted(os.listdir(target)):
+            out += objection_strings(os.path.join(target, f))
+        return out
+    if target.endswith('.js'):
+        return [(p, l, t) for p, l, t, _ in literals_raw(target)]
+    if target.endswith('.html'):
+        return text_html(target)
+    return out
+
+
+def scan_objections(target, severities=('stop',)):
+    """His objections, over one file or directory."""
+    bad = []
+    for path, line, t in objection_strings(target):
+        for r, sev, hit in objection_hits(t):
+            if sev not in severities:
+                continue
+            bad.append((r['id'], path, line, t,
+                        '%s "%s" %s [%s]' % (
+                            'FAILS' if sev == 'stop' else 'flagged,',
+                            hit, r['why'].split('.')[0].lower() + '.',
+                            ', '.join(r['log']))))
+    return bad
+
+
 # built from its codepoint so this file does not itself contain one. The
 # ruling is no em dashes anywhere, and a gate that breaks the rule it enforces
 # is the tool lying about the thing it watches.
@@ -385,6 +503,7 @@ def scan_literals(target):
                         '"N of %s" has no unit, so it cannot be read out loud.'
                         % re.sub(r'<[^>]*>', '', m.group(1)).strip()))
     bad += scan_figures(target)
+    bad += scan_objections(target)
     return bad
 
 
@@ -509,6 +628,49 @@ def report(label, r, base, bad, verbose=True):
     return len(bad)
 
 
+def report_objections(rt):
+    """The sweep. His objections, read out of the database, over every user
+    facing string in the product.
+
+    Grouped by rule, because a finding without its rule is a finding nobody can
+    act on, and the rule is his rather than mine."""
+    db = objections()['db']
+    rules = db.get('rules', [])
+    found = {}
+    for c in CORPUS:
+        for f in scan_objections(os.path.join(rt, c), ('stop', 'flag')):
+            found.setdefault(f[0], []).append(f)
+    print('HIS OBJECTIONS, SWEPT. Database: %s'
+          % os.path.relpath(OBJ_FILE, rt))
+    print('Log: COPY-OBJECTIONS.md. Corpus: %s' % ', '.join(CORPUS))
+    stop = 0
+    for r in rules:
+        hits = found.get(r['id'], [])
+        if r.get('gate') != 'objections':
+            print('\n  %-20s %-6s %s' % (r['id'], r['severity'], r['gate']))
+            print('      enforced there, not here. From %s' % ', '.join(r['log']))
+            continue
+        print('\n  %-20s %-6s %d found   from %s'
+              % (r['id'], r['severity'], len(hits), ', '.join(r['log'])))
+        print('      %s' % r['why'])
+        print('      fails: %s' % r['fail'])
+        print('      fixed: %s' % r['fix'])
+        for _, path, line, t, note in hits:
+            print('      %s:%s' % (os.path.relpath(path, rt), line))
+            print('          %s' % re.sub(r'\s+', ' ', t)[:120])
+        if r['severity'] == 'stop':
+            stop += len(hits)
+    print('\nNOT GATEABLE, AND NAMED RATHER THAN DROPPED.')
+    for g in db.get('guidance', []):
+        print('  %-28s %s' % (g['id'], ', '.join(g['log'])))
+        print('      %s' % g['not_gateable'])
+    n = sum(len(v) for v in found.values())
+    print('\n%d finding%s, %d at a severity that stops a build.'
+          % (n, '' if n == 1 else 's', stop))
+    print(UNMEASURABLE)
+    return 1 if stop else 0
+
+
 def main():
     rt = root()
     os.chdir(rt)
@@ -525,10 +687,17 @@ def main():
         print(UNMEASURABLE)
         return 1 if bad else 0
 
+    if args[0] == '--objections':
+        return report_objections(rt)
+
     if args[0] == '--line':
         text = ' '.join(args[1:])
         sents = sentences([('<stdin>', 0, text)])
         bad = scan(sents)
+        for r, sev, hit in objection_hits(text):
+            if sev == 'stop':
+                bad.append((r['id'], '<stdin>', 0, text,
+                            'his objection. "%s". %s' % (hit, r['why'])))
         return report('the line', rates(sents), base, bad) and 1 or 0
 
     if args[0] == '--all':
