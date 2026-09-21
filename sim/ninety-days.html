@@ -1,0 +1,506 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ninety days</title>
+<style>
+:root{
+ --bg:#0C0D12; --panel:#1A1D26; --panel-2:#252833; --sunk:#090A0E;
+ --ink:#EFEDE8; --mid:#B4B0A8; --dim:#94908A; --line:rgba(239,237,232,.13);
+ --accent:#7EB8D4; --au:#C2A063; --good:#68CBA4; --bad:#D4736D;
+ --root:#D6524C; --sacral:#D8924E; --solar:#DABF6A;
+ --heart:#5FD5A6; --throat:#5EBBDB; --eye:#7D93E0; --crown:#A77EDB;
+ --w:1120px;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);
+ font:400 16px/1.62 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+ letter-spacing:.005em}
+.wrap{max-width:var(--w);margin:0 auto;padding:40px 16px 90px}
+h1{font-size:clamp(28px,4.6vw,44px);line-height:1.1;margin:0 0 10px;font-weight:600;letter-spacing:-.015em}
+h2{font-size:clamp(20px,2.6vw,26px);margin:54px 0 6px;font-weight:600;letter-spacing:-.01em}
+h3{font-size:17px;margin:0;font-weight:600}
+h2+.lede{margin-top:0;color:var(--mid)}
+p{margin:0 0 14px;max-width:74ch}
+.lede{color:var(--mid);font-size:17px}
+.eye{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin:0 0 8px}
+.rule{height:1px;background:var(--line);border:0;margin:36px 0}
+.note{border-left:2px solid var(--au);padding:2px 0 2px 16px;color:var(--mid);margin:0 0 20px;max-width:74ch}
+.stamp{font:400 12.5px/1.75 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+ color:var(--dim);background:var(--sunk);border:1px solid var(--line);
+ border-radius:8px;padding:14px 16px;margin:22px 0 0;overflow-x:auto;white-space:pre}
+.grid{display:grid;gap:14px}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g2{grid-template-columns:repeat(2,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+.tile{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px}
+.tile .n{font-size:clamp(26px,3.4vw,38px);line-height:1.05;font-weight:600;letter-spacing:-.02em;display:block}
+.tile .l{color:var(--dim);font-size:13px;display:block;margin-top:6px}
+.tile .s{color:var(--mid);font-size:13.5px;display:block;margin-top:8px}
+.big{background:linear-gradient(180deg,var(--panel-2),var(--panel));
+ border:1px solid var(--line);border-radius:16px;padding:26px 24px}
+.big .gr{font-size:clamp(52px,9vw,88px);line-height:.95;font-weight:600;letter-spacing:-.035em}
+.big .gl2{font-size:clamp(22px,3vw,30px);color:var(--au);font-weight:600;margin-left:10px}
+.ch{width:100%;height:auto;display:block;margin:10px 0 6px;overflow:visible}
+.gl{stroke:var(--line);stroke-width:1}
+.ln{fill:none;stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+.dot{fill:var(--dim)}
+text{font:400 12px ui-sans-serif,system-ui,sans-serif}
+.ax{fill:var(--dim)}
+.bl{fill:var(--mid);font-size:12.5px}
+.bn{fill:var(--ink);font-size:12.5px}
+.lg{font-size:12.5px;font-weight:600}
+.br{rx:2}
+table.tb{width:100%;border-collapse:collapse;margin:14px 0 6px;font-size:14px}
+table.tb th{text-align:left;font-weight:600;font-size:11.5px;letter-spacing:.09em;
+ text-transform:uppercase;color:var(--dim);border-bottom:1px solid var(--line);
+ padding:0 12px 8px 0;vertical-align:bottom}
+table.tb td{padding:11px 12px 11px 0;border-bottom:1px solid var(--line);vertical-align:top}
+table.tb td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+table.tb tr.tot td{border-bottom:0;border-top:1px solid var(--line)}
+table.tb tr.zero td{background:rgba(212,115,109,.07)}
+table.tb tr.infer td{background:rgba(218,191,106,.06)}
+td.q{color:var(--mid);max-width:44ch}
+.fine{color:var(--dim);font-size:12.5px;display:block;margin-top:3px;line-height:1.45}
+.good{color:var(--good)} .bad{color:var(--bad)} .warn{color:var(--solar)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px}
+.card header{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.card .role{color:var(--dim);font-size:13px;margin:0;width:100%}
+.dot2{width:9px;height:9px;border-radius:50%;display:inline-block}
+dl.kv{margin:0 0 12px;display:grid;gap:3px}
+dl.kv div{display:flex;justify-content:space-between;gap:12px;align-items:baseline;
+ border-bottom:1px dotted var(--line);padding-bottom:3px}
+dl.kv dt{color:var(--dim);font-size:13px;margin:0}
+dl.kv dd{margin:0;font-variant-numeric:tabular-nums;font-size:14px;white-space:nowrap}
+.why{font-size:13.5px;color:var(--mid);margin:0 0 8px}
+.why b{color:var(--ink)}
+.split{font-size:12.5px;color:var(--dim);margin:0;border-top:1px solid var(--line);padding-top:8px}
+ul,ol{margin:0 0 16px;padding-left:22px;max-width:74ch}
+li{margin-bottom:8px}
+li b{font-weight:600}
+code{font:400 13.5px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+ background:var(--sunk);border:1px solid var(--line);border-radius:4px;padding:1px 5px}
+.foot{color:var(--dim);font-size:13px;margin-top:40px}
+@media (max-width:820px){
+ .g3,.g2,.g4{grid-template-columns:1fr}
+ .wrap{padding:26px 16px 70px}
+ table.tb{display:block;overflow-x:auto;white-space:nowrap}
+ td.q{white-space:normal;min-width:30ch}
+ .fine{white-space:normal}
+}
+@media print{body{background:#fff;color:#111}}
+</style></head>
+<body><div class="wrap">
+
+<p class="eye">Atüned, the UI and UX seat</p>
+<h1>Ninety days, run until the number stopped moving</h1>
+<p class="lede">Nine figures from the roster, 1000 simulated arrivals a run,
+19 runs, driven through the shipped engine for ninety days each.</p>
+
+<div class="note"><b>Read this once and then read the numbers plainly.</b>
+Every person below is imagined. Nobody named exists and nothing in quotation
+marks was said by a human being. What is real is the product: every reading,
+every charge, every release, every streak and every mark was produced by
+calling the shipped engine, and every fact about the surface was read off
+source.html running in Chromium. The model in this report is one thing only,
+and it is when somebody opens the file and when they stop. That model is stated
+in full, it is argued from who each figure is, and it is judgement. This is not
+evidence about any human being.</div>
+
+<div class="big">
+ <div><span class="gr">38.91</span><span class="gl2">of 100, F</span></div>
+ <p class="lede" style="margin:12px 0 0">Spread across runs 0.41, range
+ 38.0 to 39.6. The stopping rule was a running mean that moves by
+ less than 0.05 of a point when another run is added, held for
+ 6 runs in a row, with at least 10 behind it. It took
+ 19. Moving every friction cost and every opening rate by a quarter
+ in both directions moves the total by 2.50 points, and
+ that is the spread that matters rather than the seed.</p>
+</div>
+
+<div class="grid g4" style="margin-top:14px">
+ <div class="tile"><span class="n">61%</span>
+  <span class="l">open the file on day one</span></div>
+ <div class="tile"><span class="n">3.86%</span>
+  <span class="l">active in the week ending day 30</span>
+  <span class="s">The category median for this kind of app is 3.3 percent.</span></div>
+ <div class="tile"><span class="n">4.0%</span>
+  <span class="l">ever close the loop once</span>
+  <span class="s">A story, then a release, then a practice kept.</span></div>
+ <div class="tile"><span class="n">+0.54</span>
+  <span class="l">coherence moved, in ninety days of doing everything</span>
+  <span class="s">1193 minutes of practice on the record.</span></div>
+</div>
+
+<h2>The finding</h2>
+<p class="lede">It is not the retention curve. It is what happens to the person
+who does everything right.</p>
+
+<p>One case, no model in it at all. A person answers the intake on day one, then
+for ninety consecutive days tells the instrument one true thing, runs the
+largest release the field offers, and keeps one practice. Driven through the
+shipped engine, with the release arithmetic checked line by line against the
+same run executed in Chromium.</p>
+
+<svg class="ch" viewBox="0 0 860 300" role="img" aria-label="Coherence over ninety days of daily use, four cases, every line flat"><line class="gl" x1="42" y1="272.0" x2="750" y2="272.0"/><text class="ax" x="36" y="275.5" text-anchor="end">0</text><line class="gl" x1="42" y1="229.3" x2="750" y2="229.3"/><text class="ax" x="36" y="232.8" text-anchor="end">10</text><line class="gl" x1="42" y1="186.7" x2="750" y2="186.7"/><text class="ax" x="36" y="190.2" text-anchor="end">20</text><line class="gl" x1="42" y1="144.0" x2="750" y2="144.0"/><text class="ax" x="36" y="147.5" text-anchor="end">30</text><line class="gl" x1="42" y1="101.3" x2="750" y2="101.3"/><text class="ax" x="36" y="104.8" text-anchor="end">40</text><line class="gl" x1="42" y1="58.7" x2="750" y2="58.7"/><text class="ax" x="36" y="62.2" text-anchor="end">50</text><line class="gl" x1="42" y1="16.0" x2="750" y2="16.0"/><text class="ax" x="36" y="19.5" text-anchor="end">60</text><text class="ax" x="42.0" y="292" text-anchor="middle">day 1</text><text class="ax" x="272.7" y="292" text-anchor="middle">day 30</text><text class="ax" x="511.3" y="292" text-anchor="middle">day 60</text><text class="ax" x="750.0" y="292" text-anchor="middle">day 90</text><path class="ln" stroke="var(--throat)" d="M42.0 62.9 L50.0 62.9 L57.9 62.9 L65.9 62.9 L73.8 62.9 L81.8 62.9 L89.7 62.9 L97.7 62.9 L105.6 62.9 L113.6 62.9 L121.6 62.9 L129.5 62.9 L137.5 62.9 L145.4 62.9 L153.4 67.2 L161.3 62.9 L169.3 62.9 L177.2 62.9 L185.2 67.1 L193.1 62.9 L201.1 62.9 L209.1 62.9 L217.0 62.9 L225.0 62.9 L232.9 62.9 L240.9 62.9 L248.8 62.9 L256.8 82.6 L264.7 62.9 L272.7 62.9 L280.7 62.9 L288.6 62.9 L296.6 62.9 L304.5 62.9 L312.5 62.9 L320.4 62.9 L328.4 62.9 L336.3 62.9 L344.3 62.9 L352.2 62.9 L360.2 62.9 L368.2 62.5 L376.1 62.5 L384.1 62.5 L392.0 62.5 L400.0 62.5 L407.9 62.1 L415.9 61.6 L423.8 61.6 L431.8 61.5 L439.8 61.5 L447.7 61.5 L455.7 61.5 L463.6 61.5 L471.6 61.5 L479.5 60.7 L487.5 61.1 L495.4 61.1 L503.4 61.1 L511.3 61.1 L519.3 61.4 L527.3 61.4 L535.2 61.4 L543.2 61.4 L551.1 61.4 L559.1 61.5 L567.0 61.5 L575.0 61.5 L582.9 61.5 L590.9 61.5 L598.9 61.5 L606.8 61.5 L614.8 61.5 L622.7 61.5 L630.7 61.5 L638.6 61.5 L646.6 61.5 L654.5 61.5 L662.5 61.5 L670.4 61.5 L678.4 61.5 L686.4 61.5 L694.3 61.5 L702.3 61.5 L710.2 61.5 L718.2 61.5 L726.1 61.5 L734.1 61.5 L742.0 61.5 L750.0 61.5"/><text class="lg" fill="var(--throat)" x="758" y="65.0">laws at 7 49.33</text><path class="ln" stroke="var(--solar)" d="M42.0 165.3 L50.0 165.3 L57.9 165.3 L65.9 165.3 L73.8 165.3 L81.8 165.3 L89.7 165.3 L97.7 165.3 L105.6 165.3 L113.6 165.3 L121.6 165.3 L129.5 165.3 L137.5 165.3 L145.4 165.3 L153.4 165.3 L161.3 165.3 L169.3 165.3 L177.2 165.3 L185.2 165.3 L193.1 165.3 L201.1 165.3 L209.1 165.3 L217.0 165.3 L225.0 165.3 L232.9 165.3 L240.9 165.3 L248.8 167.7 L256.8 165.3 L264.7 165.3 L272.7 165.3 L280.7 165.3 L288.6 167.5 L296.6 177.9 L304.5 165.1 L312.5 171.5 L320.4 165.0 L328.4 164.1 L336.3 163.9 L344.3 163.9 L352.2 163.9 L360.2 163.9 L368.2 163.8 L376.1 164.5 L384.1 164.5 L392.0 164.5 L400.0 164.5 L407.9 164.3 L415.9 163.8 L423.8 163.8 L431.8 163.8 L439.8 163.8 L447.7 163.8 L455.7 163.8 L463.6 163.8 L471.6 163.8 L479.5 163.3 L487.5 162.8 L495.4 162.8 L503.4 162.8 L511.3 162.8 L519.3 162.4 L527.3 162.4 L535.2 162.4 L543.2 162.4 L551.1 162.4 L559.1 162.3 L567.0 162.3 L575.0 162.3 L582.9 162.3 L590.9 162.6 L598.9 162.8 L606.8 162.8 L614.8 163.0 L622.7 163.0 L630.7 163.0 L638.6 163.0 L646.6 163.0 L654.5 163.0 L662.5 163.0 L670.4 163.0 L678.4 163.0 L686.4 163.0 L694.3 163.0 L702.3 163.0 L710.2 163.0 L718.2 163.0 L726.1 163.0 L734.1 163.0 L742.0 163.0 L750.0 163.0"/><text class="lg" fill="var(--solar)" x="758" y="166.5">laws at 5 25.54</text><path class="ln" stroke="var(--root)" d="M42.0 233.6 L50.0 233.6 L57.9 233.6 L65.9 233.6 L73.8 233.6 L81.8 233.6 L89.7 233.6 L97.7 233.6 L105.6 233.6 L113.6 233.6 L121.6 233.6 L129.5 233.6 L137.5 233.6 L145.4 233.6 L153.4 233.6 L161.3 233.6 L169.3 233.6 L177.2 233.6 L185.2 233.6 L193.1 233.6 L201.1 233.6 L209.1 233.6 L217.0 233.6 L225.0 233.6 L232.9 233.6 L240.9 233.6 L248.8 236.0 L256.8 237.2 L264.7 233.6 L272.7 233.6 L280.7 234.4 L288.6 233.9 L296.6 236.8 L304.5 233.0 L312.5 235.4 L320.4 233.7 L328.4 232.2 L336.3 232.2 L344.3 232.2 L352.2 232.2 L360.2 232.2 L368.2 234.5 L376.1 231.2 L384.1 231.2 L392.0 231.2 L400.0 231.2 L407.9 231.2 L415.9 231.2 L423.8 231.7 L431.8 231.7 L439.8 231.7 L447.7 231.7 L455.7 231.7 L463.6 231.7 L471.6 231.7 L479.5 231.5 L487.5 231.2 L495.4 231.2 L503.4 231.2 L511.3 231.2 L519.3 231.0 L527.3 231.0 L535.2 231.0 L543.2 231.0 L551.1 231.0 L559.1 230.9 L567.0 230.9 L575.0 230.9 L582.9 230.9 L590.9 230.6 L598.9 230.4 L606.8 230.4 L614.8 230.6 L622.7 230.9 L630.7 230.9 L638.6 231.0 L646.6 231.0 L654.5 231.0 L662.5 231.0 L670.4 231.0 L678.4 231.0 L686.4 231.1 L694.3 231.1 L702.3 231.1 L710.2 231.1 L718.2 231.1 L726.1 231.1 L734.1 231.1 L742.0 231.1 L750.0 231.1"/><text class="lg" fill="var(--root)" x="758" y="234.6">laws at 3 9.59</text><path class="ln" stroke="var(--heart)" d="M42.0 91.7 L50.0 91.7 L57.9 91.7 L65.9 91.7 L73.8 91.7 L81.8 91.7 L89.7 91.7 L97.7 91.7 L105.6 91.7 L113.6 91.7 L121.6 91.7 L129.5 91.7 L137.5 91.7 L145.4 91.7 L153.4 91.7 L161.3 91.7 L169.3 91.7 L177.2 91.7 L185.2 91.7 L193.1 91.7 L201.1 91.7 L209.1 91.7 L217.0 91.7 L225.0 91.7 L232.9 91.7 L240.9 91.7 L248.8 95.4 L256.8 112.2 L264.7 91.7 L272.7 91.7 L280.7 91.4 L288.6 91.4 L296.6 91.4 L304.5 91.4 L312.5 91.4 L320.4 95.2 L328.4 91.1 L336.3 91.1 L344.3 91.1 L352.2 91.1 L360.2 91.1 L368.2 90.7 L376.1 90.7 L384.1 90.7 L392.0 90.7 L400.0 90.7 L407.9 90.3 L415.9 89.8 L423.8 89.8 L431.8 89.9 L439.8 89.9 L447.7 89.9 L455.7 89.9 L463.6 89.9 L471.6 89.9 L479.5 90.3 L487.5 90.3 L495.4 90.3 L503.4 90.3 L511.3 90.3 L519.3 90.6 L527.3 90.6 L535.2 90.6 L543.2 90.6 L551.1 90.6 L559.1 90.6 L567.0 90.6 L575.0 90.6 L582.9 90.6 L590.9 90.6 L598.9 90.6 L606.8 90.6 L614.8 90.6 L622.7 90.6 L630.7 90.6 L638.6 90.6 L646.6 90.6 L654.5 90.6 L662.5 90.6 L670.4 90.6 L678.4 90.6 L686.4 90.6 L694.3 90.6 L702.3 90.6 L710.2 90.6 L718.2 90.6 L726.1 90.6 L734.1 90.6 L742.0 90.6 L750.0 90.6"/><text class="lg" fill="var(--heart)" x="758" y="94.1">no intake 42.52</text></svg>
+
+<p><b>Every line is flat.</b> Ninety days, 1193 minutes of
+recorded practice, a 90 day streak, 13
+marks earned and 444 patterns of ground opened, and the reading
+finishes 0.54 of a point from where it started. The
+band does not change. Four cases, four starting integrities, the same result.</p>
+
+<table class="tb"><thead><tr><th>Case</th><th>Day one</th><th>Day ninety</th>
+<th>Moved</th><th>Highest it reached</th><th>Lowest</th><th>Band at the end</th>
+<th>Ground opened</th><th>Addresses cleared</th></tr></thead><tbody>
+<tr><td><b>never took the intake</b></td><td class="num">42.25</td><td class="num">42.52</td><td class="num good">+0.27</td><td class="num">42.70</td><td class="num">37.46</td><td>Oscillating</td><td class="num">307</td><td class="num">3</td></tr><tr><td><b>intake answered at 3</b></td><td class="num">9.00</td><td class="num">9.59</td><td class="num good">+0.59</td><td class="num">9.74</td><td class="num">8.15</td><td>Collapsed</td><td class="num">569</td><td class="num">4</td></tr><tr><td><b>intake answered at 5</b></td><td class="num">25.00</td><td class="num">25.54</td><td class="num good">+0.54</td><td class="num">25.72</td><td class="num">22.06</td><td>Corrupt</td><td class="num">444</td><td class="num">4</td></tr><tr><td><b>intake answered at 7</b></td><td class="num">49.00</td><td class="num">49.33</td><td class="num good">+0.33</td><td class="num">49.52</td><td class="num">44.39</td><td>Oscillating</td><td class="num">363</td><td class="num">3</td></tr>
+</tbody></table>
+
+<p>Three mechanisms, each measured, together produce the flat line.</p>
+<ol>
+<li><b>A story only ever adds charge, so a reading only ever falls from one.</b>
+ Measured across the cohort: the whole of every story a person told moves them
+ -1.58 in Sofia's case and
+ -2.62 in Ana's, and every release they ran moves them
+ back by 1.57 and 2.58.
+ The two cancel to inside a tenth of a point.</li>
+<li><b>The release takes twenty one percent of the weight and installs sixty two
+ percent of what it took.</b> So the far pole is never reached: after ninety
+ days of daily releases the ceiling case holds 4 addresses at
+ the opposite, out of a hundred and twelve.</li>
+<li><b>The reading is the intake.</b> The same ninety days run at four different
+ intake answers produce four flat lines at four different heights, and the
+ height is the intake. The entire somatic half of the product, run every day for
+ a quarter, is worth less than a point of the number it is supposed to move.</li>
+</ol>
+
+<h2>The allowance is a label</h2>
+<p>Measured in the shipped app, not modelled.
+119 patterns of ground were opened until the
+allowance read zero, and then a release was run anyway. The panel printed
+<code>4 patterns of the 0 you have left</code> and the run went ahead:
+119 patterns before it and
+123 after, the reading moving
+41.33 to 42.25.
+<code>relCoolDown</code> never reads <code>relLeft()</code>. In the ceiling case
+the gift runs out on day 24
+and the person goes on to open 444 patterns against a gift of a
+hundred.</p>
+<p>That is one defect with two faces. There is nothing to sell, because there is
+no limit to sell past. And a person is told a number that is not true of them,
+on the one panel whose job is to say what a run costs.</p>
+
+<h2>What the box does with what it was told</h2>
+<p class="lede">Forty one lines of ordinary first person writing, written in each
+figure's own voice before the lexicon was consulted, put through the shipped
+<code>parseStory</code>.</p>
+<div class="grid g3">
+ <div class="tile"><span class="n">19 of 41</span>
+  <span class="l">read nothing at all</span>
+  <span class="s">46% of ordinary sentences produce no imprint, so the field does not move and the panel has nothing to show.</span></div>
+ <div class="tile"><span class="n">30 of 41</span>
+  <span class="l">name no charge</span>
+  <span class="s">The seat is read off a band and the address is chosen by a fallback.</span></div>
+ <div class="tile"><span class="n">12 of 41</span>
+  <span class="l">offer an address the person did not describe</span>
+  <span class="s">Every imprint carries <code>inferred</code>, and a renderer must not print those as findings.</span></div>
+</div>
+<p style="margin-top:16px"><b>The roster's own signature lines are in the same
+state.</b> The <code>says</code> field on every entry in
+<code>engine/data/people.js</code> is the repository's own voice for these
+people, written long before this exercise. Put through the shipped sniffer,
+12 of 14 read nothing at all.</p>
+<p><b>And where it does read something, it often names something else.</b>
+&ldquo;I am ashamed of how long this is taking. Everyone has moved on and I have not.&rdquo; is answered with <b>Pride, Arrogance, Competition</b>. &ldquo;I felt nothing when we let forty people go and that is the part that frightens me.&rdquo; is answered with <b>Denial Of Light, Knowing Better Than God, Denial Of Truth</b>. &ldquo;Payroll is Friday and I have not told anyone how close it is. My jaw is tight from the moment I wake up.&rdquo; is answered with <b>Spiritual Language To Manipulate, Excuse, Deceit</b>. Every one of
+those imprints carries <code>inferred</code>, which means a band was read and
+the address was picked by a fallback, and the panel prints them as findings
+anyway. Ana, who is the one figure in the roster for whom a wrong answer costs
+something, writes that she is ashamed of how long her grief is taking and the
+instrument answers pride.</p>
+<p>The shipped vocabulary is
+231 words, 22
+phrases and 83 adjectives. It
+reads <code>terrified</code>, <code>exhausted</code>, <code>ashamed</code>,
+<code>numb</code> and <code>have not slept</code>. It reads nothing at all out
+of "I work until the work is done and the work is never done", which is Diane's
+own line in the repository, or out of "I am in the middle of something and I
+cannot see the far side of it", which is Ana's.</p>
+<table class="tb"><thead><tr><th>Who</th><th>What they typed</th><th>Words read</th><th>Addresses offered</th><th>Named or inferred</th></tr></thead><tbody><tr class="zero"><td>Diane</td><td class="q">I worked until eleven again and I have nothing to show anyone for it.</td><td class="num">0</td><td><span class="fine">nothing</span></td><td><b class="bad">read nothing</b></td></tr><tr class="zero"><td>Diane</td><td class="q">Rest feels like a moral failure. I said that out loud in a board meeting and nobody blinked.</td><td class="num">0</td><td><span class="fine">nothing</span></td><td><b class="bad">read nothing</b></td></tr><tr class="infer"><td>Diane</td><td class="q">Payroll is Friday and I have not told anyone how close it is. My jaw is tight from the moment I wake up.</td><td class="num">1</td><td>Spiritual Language To Manipulate, Excuse, Deceit</td><td><b class="warn">inferred from the band</b></td></tr><tr class=""><td>Diane</td><td class="q">I am terrified the round does not close and I am the only one who knows.</td><td class="num">2</td><td>Fear, Control, Insecurity</td><td>named Fear</td></tr><tr class="infer"><td>Diane</td><td class="q">I snapped at my cofounder in front of the team and I have not apologised.</td><td class="num">1</td><td>Pride, Arrogance, Competition</td><td><b class="warn">inferred from the band</b></td></tr><tr class=""><td>Diane</td><td class="q">I am exhausted and I cannot stop. Those two things are the same sentence now.</td><td class="num">2</td><td>Pride, Addiction, Lust</td><td><b class="warn">inferred from the band</b></td></tr><tr class="zero"><td>Derek</td><td class="q">My last three sessions were slower and nothing in the data explains it.</td><td class="num">0</td><td><span class="fine">nothing</span></td><td><b class="bad">read nothing</b></td></tr><tr class="zero"><td>Derek</td><td class="q">Pain is information. I have raced on a stress fracture and I would do it again.</td><td class="num">0</td><td><span class="fine">nothing</span></td><td><b class="bad">read nothing</b></td></tr><tr class="infer"><td>Derek</td><td class="q">My shoulders are up by my ears before I even start. My chest is tight on the warm up.</td><td class="num">1</td><td>Separation, Martyrdom, Longing</td><td><b class="warn">inferred from the band</b></td></tr><tr class="infer"><td>Derek</td><td class="q">I have not slept properly in eleven days and I am still training twice a day.</td><td class="num">1</td><td>Fear, Control, Insecurity</td><td><b class="warn">inferred from the band</b></td></tr><tr class=""><td>Derek</td><td class="q">I am angry all the time and there is nothing to be angry at.</td><td class="num">4</td><td>Pride, Arrogance, Competition</td><td>named Anger</td></tr><tr class=""><td>Derek</td><td class="q">I am numb through the last ten percent and I used to feel everything there.</td><td class="num">2</td><td>Addiction, Lust, Shame Of Desire</td><td>named Apathy</td></tr><tr class="zero"><td>Marcus</td><td class="q">I can see what is wrong with anything in four seconds. It has cost me two studios.</td><td class="num">0</td><td><span class="fine">nothing</span></td><td><b class="bad">read nothing</b></td></tr><tr class="zero"><td>Marcus</td><td class="q">I killed a good idea today because it was not mine and I knew I was doing it.</td><td class="num">0</td><td><span class="fine">nothing</span></td><td><b class="bad">read nothing</b></td></tr><tr class="infer"><td>Marcus</td><td class="q">I am ashamed of how I spoke to the junior and I will not bring it up tomorrow.</td><td class="num">2</td><td>Pride, Arrogance, Competition</td><td>named Shame</td></tr><tr class="infer"><td>Marcus</td><td class="q">I lied about the timeline. Again. It is easier than the conversation.</td><td class="num">1</td><td>Spiritual Language To Manipulate, Excuse, Deceit</td><td><b class="warn">inferred from the band</b></td></tr><tr class="zero"><td>Marcus</td><td class="q">Nothing I made this year interests me. I am disgusted by all of it.</td><td class="num">0</td><td><span class="fine">nothing</span></td><td><b class="bad">read nothing</b></td></tr><tr class="infer"><td>Angela</td><td class="q">Everything happens for a reason. I have said that at three funerals and I believed it each time.</td><td class="num">1</td><td>Separation, Martyrdom, Longing</td><td><b class="warn">inferred from the band</b></td></tr><tr class=""><td>Angela</td><td class="q">I am sad in a way that does not attach to anything and it has been weeks.</td><td class="num">2</td><td>Separation, Martyrdom, Longing</td><td>named Sad</td></tr><tr class="zero"><td>Angela</td><td class="q">I have done six modalities and I am still looking for the one that lands.</td><td class="num">0</td><td><span class="fine">nothing</span></td><td><b class="bad">read nothing</b></td></tr><tr class="zero"><td>Angela</td><td class="q">I want to know why I keep choosing the same kind of person.</td><td class="num">0</td><td><span class="fine">nothing</span></td><td><b class="bad">read nothing</b></td></tr><tr class="zero"><td>Angela</td><td class="q">I am so tired of being the one who understands everybody else.</td><td class="num">0</td><td><span class="fine">nothing</span></td><td><b class="bad">read nothing</b></td></tr><tr class=""><td>Angela</td><td class="q">I am afraid that this is just who I am now.</td><td class="num">2</td><td>Fear, Control, Insecurity</td><td>named Fear</td></tr><tr class="zero"><td>Sofia</td><td class="q">I hold the room for everyone. I have not been held in four years and I would not know how to ask.</td><td class="num">0</td><td><span class="fine">nothing</span></td><td><b class="bad">read nothing</b></td></tr><tr class="zero"><td>Sofia</td><td class="q">The last client left at nine and I sat in the car for twenty minutes before I drove home.</td><td class="num">0</td><td><span class="fine">nothing</span></td><td><b class="bad">read nothing</b></td></tr><tr class="zero"><td>Sofia</td><td class="q">I can read my clients in a minute and I cannot read myself at all.</td><td class="num">0</td><td><span class="fine">nothing</span></td><td><b class="bad">read nothing</b></td></tr><tr class=""><td>Sofia</td><td class="q">I am angry with a client and that has never happened before. I am ashamed of it.</td><td class="num">4</td><td>Pride, Arrogance, Competition</td><td>named Anger, Shame</td></tr><tr class=""><td>Sofia</td><td class="q">I am exhausted in a way that sleep does not touch.</td><td class="num">1</td><td>Pride</td><td><b class="warn">inferred from the band</b></td></tr><tr class="zero"><td>James</td><td class="q">I make the call and I sleep fine. People find that cold. It is what they hired.</td><td class="num">0</td><td><span class="fine">nothing</span></td><td><b class="bad">read nothing</b></td></tr><tr class="zero"><td>James</td><td class="q">Third turnaround. I know exactly what it costs and I do it anyway.</td><td class="num">0</td><td><span class="fine">nothing</span></td><td><b class="bad">read nothing</b></td></tr><tr class="infer"><td>James</td><td class="q">I felt nothing when we let forty people go and that is the part that frightens me.</td><td class="num">1</td><td>Denial Of Light, Knowing Better Than God, Denial Of Truth</td><td><b class="warn">inferred from the band</b></td></tr><tr class="infer"><td>James</td><td class="q">My chest is tight in every meeting and I have told no one, including my doctor.</td><td class="num">1</td><td>Separation, Martyrdom, Longing</td><td><b class="warn">inferred from the band</b></td></tr><tr class=""><td>James</td><td class="q">I am numb. I have been numb since the second company and I called it discipline.</td><td class="num">4</td><td>Addiction, Lust, Shame Of Desire</td><td>named Apathy</td></tr><tr class="zero"><td>Ana</td><td class="q">I am in the middle of something and I cannot see the far side of it.</td><td class="num">0</td><td><span class="fine">nothing</span></td><td><b class="bad">read nothing</b></td></tr><tr class=""><td>Ana</td><td class="q">It is two in the morning and I am terrified and I do not know what of.</td><td class="num">2</td><td>Fear, Control, Insecurity</td><td>named Fear</td></tr><tr class="infer"><td>Ana</td><td class="q">He died a year ago and I am worse now than I was in the first month.</td><td class="num">1</td><td>Separation, Martyrdom, Longing</td><td><b class="warn">inferred from the band</b></td></tr><tr class="infer"><td>Ana</td><td class="q">I am ashamed of how long this is taking. Everyone has moved on and I have not.</td><td class="num">2</td><td>Pride, Arrogance, Competition</td><td>named Shame</td></tr><tr class="infer"><td>Ana</td><td class="q">I have not slept. I sat in the car outside work for half an hour.</td><td class="num">2</td><td>Fear, Control, Insecurity</td><td>named Apathy</td></tr><tr class="zero"><td>Gordon</td><td class="q">There is nothing wrong with me. Four people left in a year and each had their reasons.</td><td class="num">0</td><td><span class="fine">nothing</span></td><td><b class="bad">read nothing</b></td></tr><tr class="zero"><td>Gordon</td><td class="q">I do not have a problem. I have a business that needs running.</td><td class="num">0</td><td><span class="fine">nothing</span></td><td><b class="bad">read nothing</b></td></tr><tr class="zero"><td>Rosa</td><td class="q">Nothing in particular. Things do not sit on me the way they used to.</td><td class="num">0</td><td><span class="fine">nothing</span></td><td><b class="bad">read nothing</b></td></tr></tbody></table>
+
+<h2>The curves</h2>
+<p class="lede">Share of the cohort opening the file on each of the ninety days,
+log scale, because it spans 61% to 0.03%.</p>
+<svg class="ch" viewBox="0 0 860 280" role="img" aria-label="Daily open rate over ninety days, falling from sixty one percent to near zero"><line class="gl" x1="46" y1="14.0" x2="846" y2="14.0"/><text class="ax" x="40" y="17.5" text-anchor="end">100%</text><line class="gl" x1="46" y1="78.3" x2="846" y2="78.3"/><text class="ax" x="40" y="81.8" text-anchor="end">10%</text><line class="gl" x1="46" y1="142.7" x2="846" y2="142.7"/><text class="ax" x="40" y="146.2" text-anchor="end">1%</text><line class="gl" x1="46" y1="207.0" x2="846" y2="207.0"/><text class="ax" x="40" y="210.5" text-anchor="end">0.1%</text><text class="ax" x="46.0" y="272" text-anchor="middle">1</text><text class="ax" x="99.9" y="272" text-anchor="middle">7</text><text class="ax" x="162.9" y="272" text-anchor="middle">14</text><text class="ax" x="306.7" y="272" text-anchor="middle">30</text><text class="ax" x="576.3" y="272" text-anchor="middle">60</text><text class="ax" x="846.0" y="272" text-anchor="middle">90</text><path class="ln" stroke="var(--accent)" d="M46.0 27.6 L55.0 66.8 L64.0 74.5 L73.0 80.3 L82.0 86.0 L90.9 90.9 L99.9 96.1 L108.9 98.6 L117.9 102.9 L126.9 105.6 L135.9 108.4 L144.9 109.4 L153.9 115.4 L162.9 116.6 L171.8 119.3 L180.8 121.6 L189.8 124.5 L198.8 127.2 L207.8 131.0 L216.8 132.5 L225.8 132.8 L234.8 136.9 L243.8 137.0 L252.7 141.5 L261.7 138.0 L270.7 144.7 L279.7 145.5 L288.7 149.7 L297.7 147.8 L306.7 154.2 L315.7 153.5 L324.7 158.0 L333.6 156.0 L342.6 159.0 L351.6 161.4 L360.6 160.9 L369.6 171.4 L378.6 166.5 L387.6 170.2 L396.6 172.7 L405.6 171.8 L414.5 176.3 L423.5 181.8 L432.5 179.5 L441.5 184.2 L450.5 190.0 L459.5 184.9 L468.5 189.2 L477.5 191.5 L486.4 194.2 L495.4 188.4 L504.4 193.4 L513.4 189.2 L522.4 191.5 L531.4 191.5 L540.4 191.5 L549.4 202.9 L558.4 200.6 L567.3 195.1 L576.3 201.7 L585.3 197.2 L594.3 205.7 L603.3 205.7 L612.3 211.9 L621.3 217.8 L630.3 217.8 L639.3 219.9 L648.2 213.6 L657.2 205.7 L666.2 208.5 L675.2 208.5 L684.2 231.3 L693.2 215.4 L702.2 215.4 L711.2 217.8 L720.2 238.9 L729.1 231.3 L738.1 219.9 L747.1 228.1 L756.1 234.8 L765.1 244.7 L774.1 231.3 L783.1 234.8 L792.1 238.9 L801.1 252.0 L810.0 244.7 L819.0 231.3 L828.0 250.6 L837.0 244.7 L846.0 238.9"/></svg>
+<div class="grid g4">
+<div class="tile"><span class="n">61%</span><span class="l">opened it on day 1</span></div><div class="tile"><span class="n">5.29%</span><span class="l">opened it on day 7</span></div><div class="tile"><span class="n">0.66%</span><span class="l">opened it on day 30</span></div><div class="tile"><span class="n">0.03%</span><span class="l">opened it on day 90</span></div>
+</div>
+<p style="margin-top:20px">The same thing counted the way the published
+benchmarks count it: anybody who opened at least once inside the week.</p>
+<svg class="ch" viewBox="0 0 860 304" role="img" aria-label="Weekly active share across thirteen weeks"><text class="bl" x="86" y="23" text-anchor="end">week 1</text><rect class="br" x="96" y="13" width="680.0" height="13" fill="var(--accent)"/><text class="bn" x="784.0" y="23">64.6%</text><text class="bl" x="86" y="45" text-anchor="end">week 2</text><rect class="br" x="96" y="35" width="154.3" height="13" fill="var(--accent)"/><text class="bn" x="258.3" y="45">14.7%</text><text class="bl" x="86" y="67" text-anchor="end">week 3</text><rect class="br" x="96" y="57" width="79.8" height="13" fill="var(--accent)"/><text class="bn" x="183.8" y="67">7.58%</text><text class="bl" x="86" y="89" text-anchor="end">week 4</text><rect class="br" x="96" y="79" width="47.9" height="13" fill="var(--accent)"/><text class="bn" x="151.9" y="89">4.55%</text><text class="bl" x="86" y="111" text-anchor="end">week 5</text><rect class="br" x="96" y="101" width="28.0" height="13" fill="var(--accent)"/><text class="bn" x="132.0" y="111">2.66%</text><text class="bl" x="86" y="133" text-anchor="end">week 6</text><rect class="br" x="96" y="123" width="17.7" height="13" fill="var(--accent)"/><text class="bn" x="121.7" y="133">1.68%</text><text class="bl" x="86" y="155" text-anchor="end">week 7</text><rect class="br" x="96" y="145" width="11.2" height="13" fill="var(--accent)"/><text class="bn" x="115.2" y="155">1.07%</text><text class="bl" x="86" y="177" text-anchor="end">week 8</text><rect class="br" x="96" y="167" width="8.4" height="13" fill="var(--accent)"/><text class="bn" x="112.4" y="177">0.80%</text><text class="bl" x="86" y="199" text-anchor="end">week 9</text><rect class="br" x="96" y="189" width="5.6" height="13" fill="var(--accent)"/><text class="bn" x="109.6" y="199">0.53%</text><text class="bl" x="86" y="221" text-anchor="end">week 10</text><rect class="br" x="96" y="211" width="4.0" height="13" fill="var(--accent)"/><text class="bn" x="108.0" y="221">0.38%</text><text class="bl" x="86" y="243" text-anchor="end">week 11</text><rect class="br" x="96" y="233" width="2.9" height="13" fill="var(--accent)"/><text class="bn" x="106.9" y="243">0.28%</text><text class="bl" x="86" y="265" text-anchor="end">week 12</text><rect class="br" x="96" y="255" width="2.2" height="13" fill="var(--accent)"/><text class="bn" x="106.2" y="265">0.21%</text><text class="bl" x="86" y="287" text-anchor="end">week 13</text><rect class="br" x="96" y="277" width="1.2" height="13" fill="var(--accent)"/><text class="bn" x="105.2" y="287">0.11%</text></svg>
+<p class="note">The two are the same data and they are not interchangeable. The
+daily figure is what a notification would be competing for. The weekly figure is
+the one to hold against the cited category numbers: median daily active of 4.0
+percent and thirty day retention of 3.3 percent across ninety three mental
+health apps (Baumel, Muench, Edan and Kane, JMIR 2019), and day thirty of about
+3 percent for health and fitness. This run lands at
+3.86% for the week ending day thirty. That is the
+category median and the category median is a catastrophe.</p>
+
+<h2>The cohort</h2>
+<p class="lede">Nine figures, weighted as in <code>RESEARCH-icp.md</code> so this
+run compares line by line with the earlier one. Everything in the panels below
+is output. Why they open it and why they do not is the model, stated.</p>
+<p class="note"><b>Diane tells no stories, ever, and it is arithmetic rather
+than character.</b> She carries the heaviest weight in the roster at
+180 of a thousand and her session is a status check between
+meetings. The model gives her 0.7
+to 2.5 minutes of it. The
+cheapest route into this product's own loop is the story box at
+3.4 minutes, so the only door to her own charge costs more time
+than she has, every time. Over ninety days she opens it
+1.32 times, tells 0.00 stories, runs
+0.00 releases and stops on day
+6.2, with 100% of her
+having done nothing at all. James, at 100, is the same shape.
+Between them that is 280 of a thousand
+arrivals for whom the product has no door narrow enough.</p>
+<div class="grid g2"><article class="card"><header><span class="dot2" style="background:var(--root)"></span><h3>Diane, 46</h3><p class="role">founder, second company</p></header><dl class="kv"><div><dt>weight of a thousand</dt><dd>180</dd></div><div><dt>buyer grid</dt><dd>level 3</dd></div><div><dt>device</dt><dd>both</dd></div><div><dt>interval</dt><dd>daily, in forty second slices</dd></div><div><dt>opened it at all</dt><dd>87%</dd></div><div><dt>opened on day one</dt><dd>81%</dd></div><div><dt>active in the week to day 30</dt><dd>1.6%</dd></div><div><dt>sessions in ninety days</dt><dd>1.32</dd></div><div><dt>stories told</dt><dd>0.00</dd></div><div><dt>releases run</dt><dd>0.00</dd></div><div><dt>ever closed the loop</dt><dd>0.0%</dd></div><div><dt>last day they opened it</dt><dd>day 6.2</dd></div><div><dt>left with nothing done</dt><dd>100%</dd></div><div><dt>reading, first to last</dt><dd class="bad">-1.51</dd></div></dl><p class="why"><b>Why they open it.</b> A number she does not already have, checked between meetings. Rest reads as a moral failure, so a session that asks for fifteen minutes is a session she does not take.</p><p class="why"><b>Why they do not.</b> Nothing moved since yesterday. She will not pay twice for the same screen.</p><p class="split">Of that movement, the intake is -1.51, every story together is 0.00, and every release together is 0.00.</p></article><article class="card"><header><span class="dot2" style="background:var(--sacral)"></span><h3>Derek, 39</h3><p class="role">high performer, endurance</p></header><dl class="kv"><div><dt>weight of a thousand</dt><dd>170</dd></div><div><dt>buyer grid</dt><dd>level 2</dd></div><div><dt>device</dt><dd>both</dd></div><div><dt>interval</dt><dd>daily while a protocol is live</dd></div><div><dt>opened it at all</dt><dd>73%</dd></div><div><dt>opened on day one</dt><dd>67%</dd></div><div><dt>active in the week to day 30</dt><dd>2.7%</dd></div><div><dt>sessions in ninety days</dt><dd>2.15</dd></div><div><dt>stories told</dt><dd>0.76</dd></div><div><dt>releases run</dt><dd>0.03</dd></div><div><dt>ever closed the loop</dt><dd>1.7%</dd></div><div><dt>last day they opened it</dt><dd>day 7.3</dd></div><div><dt>left with nothing done</dt><dd>44%</dd></div><div><dt>reading, first to last</dt><dd class="bad">-14.46</dd></div></dl><p class="why"><b>Why they open it.</b> Output. He will run a protocol daily for a quarter if it is a protocol. The release is a protocol.</p><p class="why"><b>Why they do not.</b> Nothing tells him what the holding costs him. Pain is not the hook, the watts are, and there is no watts line.</p><p class="split">Of that movement, the intake is -14.46, every story together is -0.04, and every release together is +0.04.</p></article><article class="card"><header><span class="dot2" style="background:var(--solar)"></span><h3>Marcus, 44</h3><p class="role">creative director</p></header><dl class="kv"><div><dt>weight of a thousand</dt><dd>160</dd></div><div><dt>buyer grid</dt><dd>level 4</dd></div><div><dt>device</dt><dd>both</dd></div><div><dt>interval</dt><dd>every few days, as an inspection</dd></div><div><dt>opened it at all</dt><dd>58%</dd></div><div><dt>opened on day one</dt><dd>51%</dd></div><div><dt>active in the week to day 30</dt><dd>7.5%</dd></div><div><dt>sessions in ninety days</dt><dd>1.82</dd></div><div><dt>stories told</dt><dd>0.48</dd></div><div><dt>releases run</dt><dd>0.01</dd></div><div><dt>ever closed the loop</dt><dd>0.0%</dd></div><div><dt>last day they opened it</dt><dd>day 13.3</dd></div><div><dt>left with nothing done</dt><dd>89%</dd></div><div><dt>reading, first to last</dt><dd class="bad">-7.55</dd></div></dl><p class="why"><b>Why they open it.</b> The quality judgement. He opens it to see whether it is still good and whether anybody fixed the thing he found.</p><p class="why"><b>Why they do not.</b> He does not do the work. Level four on the grid buys it, reads half and avoids the practice because clearing the node hurts.</p><p class="split">Of that movement, the intake is -7.55, every story together is -0.01, and every release together is +0.00.</p></article><article class="card"><header><span class="dot2" style="background:var(--heart)"></span><h3>Angela, 36</h3><p class="role">seeker, six modalities</p></header><dl class="kv"><div><dt>weight of a thousand</dt><dd>150</dd></div><div><dt>buyer grid</dt><dd>level 5</dd></div><div><dt>device</dt><dd>phone only</dd></div><div><dt>interval</dt><dd>bursts, then nothing</dd></div><div><dt>opened it at all</dt><dd>79%</dd></div><div><dt>opened on day one</dt><dd>66%</dd></div><div><dt>active in the week to day 30</dt><dd>1.6%</dd></div><div><dt>sessions in ninety days</dt><dd>1.22</dd></div><div><dt>stories told</dt><dd>0.88</dd></div><div><dt>releases run</dt><dd>0.01</dd></div><div><dt>ever closed the loop</dt><dd>0.2%</dd></div><div><dt>last day they opened it</dt><dd>day 5.3</dd></div><div><dt>left with nothing done</dt><dd>84%</dd></div><div><dt>reading, first to last</dt><dd class="bad">-4.70</dd></div></dl><p class="why"><b>Why they open it.</b> Something named the thing she has no word for. She arrived from a group chat and she will tell that group chat.</p><p class="why"><b>Why they do not.</b> Mechanical language, and the word Incoherent. Level five wants magic, not mechanics, and leaves when it turns out to be objective physical work.</p><p class="split">Of that movement, the intake is -4.70, every story together is -0.02, and every release together is +0.02.</p></article><article class="card"><header><span class="dot2" style="background:var(--throat)"></span><h3>Sofia, 41</h3><p class="role">somatic practitioner</p></header><dl class="kv"><div><dt>weight of a thousand</dt><dd>140</dd></div><div><dt>buyer grid</dt><dd>level 6</dd></div><div><dt>device</dt><dd>both</dd></div><div><dt>interval</dt><dd>weekly, and at eleven at night</dd></div><div><dt>opened it at all</dt><dd>82%</dd></div><div><dt>opened on day one</dt><dd>75%</dd></div><div><dt>active in the week to day 30</dt><dd>8.9%</dd></div><div><dt>sessions in ninety days</dt><dd>3.26</dd></div><div><dt>stories told</dt><dd>2.90</dd></div><div><dt>releases run</dt><dd>0.47</dd></div><div><dt>ever closed the loop</dt><dd>18.2%</dd></div><div><dt>last day they opened it</dt><dd>day 11.7</dd></div><div><dt>left with nothing done</dt><dd>33%</dd></div><div><dt>reading, first to last</dt><dd class="bad">-6.02</dd></div></dl><p class="why"><b>Why they open it.</b> After the last client, for herself. And in session, on a client phone, which is the highest value use in the roster.</p><p class="why"><b>Why they do not.</b> She cannot hand it to anybody. Her value is referral and there is no mechanism, so her use does not compound.</p><p class="split">Of that movement, the intake is -6.01, every story together is -1.58, and every release together is +1.57.</p></article><article class="card"><header><span class="dot2" style="background:var(--eye)"></span><h3>James, 57</h3><p class="role">C-suite, third turnaround</p></header><dl class="kv"><div><dt>weight of a thousand</dt><dd>100</dd></div><div><dt>buyer grid</dt><dd>level 2</dd></div><div><dt>device</dt><dd>both</dd></div><div><dt>interval</dt><dd>once, possibly twice</dd></div><div><dt>opened it at all</dt><dd>43%</dd></div><div><dt>opened on day one</dt><dd>36%</dd></div><div><dt>active in the week to day 30</dt><dd>0.4%</dd></div><div><dt>sessions in ninety days</dt><dd>0.41</dd></div><div><dt>stories told</dt><dd>0.02</dd></div><div><dt>releases run</dt><dd>0.00</dd></div><div><dt>ever closed the loop</dt><dd>0.0%</dd></div><div><dt>last day they opened it</dt><dd>day 2.7</dd></div><div><dt>left with nothing done</dt><dd>99%</dd></div><div><dt>reading, first to last</dt><dd class="bad">-2.16</dd></div></dl><p class="why"><b>Why they open it.</b> A number a peer mentioned, and he wants his and he wants it higher.</p><p class="why"><b>Why they do not.</b> Anything that looks like a persona picker or a worksheet. He is not going to be seen doing self help.</p><p class="split">Of that movement, the intake is -2.16, every story together is 0.00, and every release together is 0.00.</p></article><article class="card"><header><span class="dot2" style="background:var(--crown)"></span><h3>Ana, 47</h3><p class="role">teacher, one year out</p></header><dl class="kv"><div><dt>weight of a thousand</dt><dd>50</dd></div><div><dt>buyer grid</dt><dd>level 4</dd></div><div><dt>device</dt><dd>phone only</dd></div><div><dt>interval</dt><dd>irregular, at night</dd></div><div><dt>opened it at all</dt><dd>73%</dd></div><div><dt>opened on day one</dt><dd>65%</dd></div><div><dt>active in the week to day 30</dt><dd>7.6%</dd></div><div><dt>sessions in ninety days</dt><dd>3.09</dd></div><div><dt>stories told</dt><dd>2.79</dd></div><div><dt>releases run</dt><dd>0.98</dd></div><div><dt>ever closed the loop</dt><dd>23.5%</dd></div><div><dt>last day they opened it</dt><dd>day 10.5</dd></div><div><dt>left with nothing done</dt><dd>35%</dd></div><div><dt>reading, first to last</dt><dd class="bad">-14.33</dd></div></dl><p class="why"><b>Why they open it.</b> She is inside something and cannot see the far side. She will click anything that offers the shape of it.</p><p class="why"><b>Why they do not.</b> Being told the shape and not the way out. She is the one person in the roster for whom a wrong answer costs something.</p><p class="split">Of that movement, the intake is -14.29, every story together is -2.62, and every release together is +2.58.</p></article><article class="card"><header><span class="dot2" style="background:var(--dim)"></span><h3>Gordon, 58</h3><p class="role">managing partner</p></header><dl class="kv"><div><dt>weight of a thousand</dt><dd>35</dd></div><div><dt>buyer grid</dt><dd>level 1</dd></div><div><dt>device</dt><dd>both</dd></div><div><dt>interval</dt><dd>refuses</dd></div><div><dt>opened it at all</dt><dd>8%</dd></div><div><dt>opened on day one</dt><dd>6%</dd></div><div><dt>active in the week to day 30</dt><dd>0.0%</dd></div><div><dt>sessions in ninety days</dt><dd>0.06</dd></div><div><dt>stories told</dt><dd>0.00</dd></div><div><dt>releases run</dt><dd>0.00</dd></div><div><dt>ever closed the loop</dt><dd>0.0%</dd></div><div><dt>last day they opened it</dt><dd>day 0.8</dd></div><div><dt>left with nothing done</dt><dd>95%</dd></div><div><dt>reading, first to last</dt><dd class="bad">-0.51</dd></div></dl><p class="why"><b>Why they open it.</b> Nothing. He has the most charge in the roster and refuses the frame. Do not chase him.</p><p class="why"><b>Why they do not.</b> Any screen that opens with his pain is a screen for people who have pain.</p><p class="split">Of that movement, the intake is -0.51, every story together is 0.00, and every release together is 0.00.</p></article><article class="card"><header><span class="dot2" style="background:var(--mid)"></span><h3>Rosa, 61</h3><p class="role">retired midwife</p></header><dl class="kv"><div><dt>weight of a thousand</dt><dd>15</dd></div><div><dt>buyer grid</dt><dd>level 10</dd></div><div><dt>device</dt><dd>both</dd></div><div><dt>interval</dt><dd>once, out of courtesy</dd></div><div><dt>opened it at all</dt><dd>10%</dd></div><div><dt>opened on day one</dt><dd>7%</dd></div><div><dt>active in the week to day 30</dt><dd>0.0%</dd></div><div><dt>sessions in ninety days</dt><dd>0.14</dd></div><div><dt>stories told</dt><dd>0.01</dd></div><div><dt>releases run</dt><dd>0.00</dd></div><div><dt>ever closed the loop</dt><dd>0.0%</dd></div><div><dt>last day they opened it</dt><dd>day 5.0</dd></div><div><dt>left with nothing done</dt><dd>72%</dd></div><div><dt>reading, first to last</dt><dd class="good">+1.64</dd></div></dl><p class="why"><b>Why they open it.</b> Nothing pulls. Things do not sit on her the way they used to.</p><p class="why"><b>Why they do not.</b> Correctly not the customer, and the product should not pretend otherwise.</p><p class="split">Of that movement, the intake is 1.64, every story together is 0.00, and every release together is 0.00.</p></article></div>
+
+<h2>Sticking points, ranked by people lost</h2>
+<p class="lede">Ranked by departures attributed to them, not by how many people
+met them. A departure is attributed to the heaviest single friction of the
+session somebody left on. That is an attribution and not a cause.</p>
+<svg class="ch" viewBox="0 0 860 356" role="img" aria-label="Sticking points ranked by people lost"><text class="bl" x="290" y="23" text-anchor="end">The absence became permanent</text><rect class="br" x="300" y="13" width="476.0" height="17" fill="var(--dim)"/><text class="bn" x="784.0" y="23">288 of 1000</text><text class="bl" x="290" y="49" text-anchor="end">The reading does not move</text><rect class="br" x="300" y="39" width="181.8" height="17" fill="var(--bad)"/><text class="bn" x="489.8" y="49">110 of 1000</text><text class="bl" x="290" y="75" text-anchor="end">Nothing is above the line, so there is no…</text><rect class="br" x="300" y="65" width="147.1" height="17" fill="var(--bad)"/><text class="bn" x="455.1" y="75">89 of 1000</text><text class="bl" x="290" y="101" text-anchor="end">The box reads nothing out of what they wr…</text><rect class="br" x="300" y="91" width="112.4" height="17" fill="var(--bad)"/><text class="bn" x="420.4" y="101">68 of 1000</text><text class="bl" x="290" y="127" text-anchor="end">There is no way to hand it to anybody</text><rect class="br" x="300" y="117" width="67.8" height="17" fill="var(--bad)"/><text class="bn" x="375.8" y="127">41 of 1000</text><text class="bl" x="290" y="153" text-anchor="end">The intake is sixty three questions</text><rect class="br" x="300" y="143" width="62.8" height="17" fill="var(--bad)"/><text class="bn" x="370.8" y="153">38 of 1000</text><text class="bl" x="290" y="179" text-anchor="end">The reading names an address the person d…</text><rect class="br" x="300" y="169" width="21.5" height="17" fill="var(--bad)"/><text class="bn" x="329.5" y="179">13 of 1000</text><text class="bl" x="290" y="205" text-anchor="end">More simultaneous choices than a working …</text><rect class="br" x="300" y="195" width="19.8" height="17" fill="var(--bad)"/><text class="bn" x="327.8" y="205">12 of 1000</text><text class="bl" x="290" y="231" text-anchor="end">Every story makes the number worse</text><rect class="br" x="300" y="221" width="14.9" height="17" fill="var(--bad)"/><text class="bn" x="322.9" y="231">9 of 1000</text><text class="bl" x="290" y="257" text-anchor="end">The surface they wanted is off the tab st…</text><rect class="br" x="300" y="247" width="9.9" height="17" fill="var(--bad)"/><text class="bn" x="317.9" y="257">6 of 1000</text><text class="bl" x="290" y="283" text-anchor="end">The record credits a plan as a day practi…</text><rect class="br" x="300" y="273" width="5.0" height="17" fill="var(--bad)"/><text class="bn" x="313.0" y="283">3 of 1000</text><text class="bl" x="290" y="309" text-anchor="end">The band word and the number on the same …</text><rect class="br" x="300" y="299" width="3.3" height="17" fill="var(--bad)"/><text class="bn" x="311.3" y="309">2 of 1000</text><text class="bl" x="290" y="335" text-anchor="end">Nothing asked them to come back</text><rect class="br" x="300" y="325" width="1.7" height="17" fill="var(--bad)"/><text class="bn" x="309.7" y="335">1 of 1000</text></svg>
+<table class="tb"><thead><tr><th>Rank</th><th>Sticking point</th><th>Surface</th><th>The step</th><th>Lost of 1000</th><th>Met it</th><th>Who</th></tr></thead><tbody><tr><td class="num">1</td><td><b>The absence became permanent</b><div class="fine">not a screen. this is the person who stopped opening the file and never decided to. it is the counterpart of F10 and it is reported separately so F10 is only what fired inside a session.</div></td><td>outside the product</td><td>a week goes by and nothing happens</td><td class="num">288 <span class="fine">sd 16.4</span></td><td class="num">not a screen</td><td>Diane&nbsp;71<br>Angela&nbsp;58<br>Marcus&nbsp;55</td></tr><tr><td class="num">2</td><td><b>The reading does not move</b><div class="fine">CQ is unchanged to two decimal places on the session they just spent.</div></td><td>Field, Summary</td><td>look at the number after a session</td><td class="num">110 <span class="fine">sd 8.7</span></td><td class="num">28%</td><td>Diane&nbsp;60<br>Derek&nbsp;38<br>James&nbsp;12</td></tr><tr><td class="num">3</td><td><b>Nothing is above the line, so there is nothing to release</b><div class="fine">compute().loaded is empty. An address has to reach four to enter the reading at all.</div></td><td>Story, Summary</td><td>look for the release after telling it something true</td><td class="num">89 <span class="fine">sd 6.3</span></td><td class="num">38%</td><td>Derek&nbsp;46<br>Ana&nbsp;21<br>Angela&nbsp;9</td></tr><tr><td class="num">4</td><td><b>The box reads nothing out of what they wrote</b><div class="fine">parseStory returns no imprint, so the panel has nothing to show and the field does not move.</div></td><td>Story</td><td>press the commit control on an ordinary paragraph</td><td class="num">68 <span class="fine">sd 8.3</span></td><td class="num">26%</td><td>Sofia&nbsp;31<br>Angela&nbsp;28<br>Marcus&nbsp;9</td></tr><tr><td class="num">5</td><td><b>There is no way to hand it to anybody</b><div class="fine">measured: no refer, invite or send control on any surface.</div></td><td>everywhere</td><td>try to give a client or a peer their own reading</td><td class="num">41 <span class="fine">sd 5.9</span></td><td class="num">20%</td><td>Sofia&nbsp;31<br>Marcus&nbsp;7<br>Angela&nbsp;2</td></tr><tr><td class="num">6</td><td><b>The intake is sixty three questions</b><div class="fine">the survey cliff sits at seven to eight minutes and the intake states fifteen.</div></td><td>Energetics</td><td>start the intake with less time than it states</td><td class="num">38 <span class="fine">sd 4.8</span></td><td class="num">15%</td><td>Diane&nbsp;20<br>Marcus&nbsp;7<br>Derek&nbsp;5</td></tr><tr><td class="num">7</td><td><b>The reading names an address the person did not describe</b><div class="fine">every imprint carries inferred, so the seat was read off a band and the address was chosen by a fallback.</div></td><td>Story</td><td>read the imprint panel after a commit</td><td class="num">13 <span class="fine">sd 3.1</span></td><td class="num">12%</td><td>Angela&nbsp;9<br>Ana&nbsp;4</td></tr><tr><td class="num">8</td><td><b>More simultaneous choices than a working memory holds</b><div class="fine">measured above the fold, against a target of under twelve and a working memory of about four.</div></td><td>every surface</td><td>arrive</td><td class="num">12 <span class="fine">sd 2.4</span></td><td class="num">67%</td><td>Derek&nbsp;6<br>Marcus&nbsp;4<br>Sofia&nbsp;1</td></tr><tr><td class="num">9</td><td><b>Every story makes the number worse</b><div class="fine">measured: charge only ever goes up from a story, so the reading only ever goes down from one.</div></td><td>Story then Field</td><td>tell it the truth six times</td><td class="num">9 <span class="fine">sd 3.0</span></td><td class="num">8%</td><td>Sofia&nbsp;3<br>Angela&nbsp;3<br>Ana&nbsp;2</td></tr><tr><td class="num">10</td><td><b>The surface they wanted is off the tab strip</b><div class="fine">measured: four of the nine are fully in view at 390 and the rest are past the right edge.</div></td><td>the bar, at 390</td><td>reach for Summary, Compass, Knowledge or Games on a phone</td><td class="num">6 <span class="fine">sd 2.3</span></td><td class="num">7%</td><td>Angela&nbsp;5<br>Ana&nbsp;1</td></tr><tr><td class="num">11</td><td><b>The record credits a plan as a day practised</b><div class="fine">pracDays counts every distinct day carrying a saved ritual and never reads the done flag.</div></td><td>Ritual, Compass</td><td>save a ritual, do not do it, look at the streak</td><td class="num">3 <span class="fine">sd 1.6</span></td><td class="num">19%</td><td>Marcus&nbsp;3<br>Derek&nbsp;0<br>Angela&nbsp;0</td></tr><tr><td class="num">12</td><td><b>The band word and the number on the same line disagree</b><div class="fine">the headline rounds and the band does not, so a 40.6 prints 41 beside Incoherent, which is 31 to 40.</div></td><td>Summary, Field</td><td>read the headline at a coherence between the band edges</td><td class="num">2 <span class="fine">sd 1.3</span></td><td class="num">3%</td><td>Derek&nbsp;1<br>Marcus&nbsp;1<br>Angela&nbsp;0</td></tr><tr><td class="num">13</td><td><b>Nothing asked them to come back</b><div class="fine">there is no notification and no accountability seam. Every return is unprompted.</div></td><td>outside the product</td><td>the day after</td><td class="num">1 <span class="fine">sd 1.4</span></td><td class="num">48%</td><td>Angela&nbsp;1<br>Ana&nbsp;0</td></tr></tbody></table>
+
+<h2>Challenges that are not sticking points</h2>
+<p class="lede">Measured, and they do not show up in a funnel because nobody
+leaves on them. They cap what the product can be.</p>
+<table class="tb"><thead><tr><th>Challenge</th><th>Measured</th><th>Why it caps the ceiling</th></tr></thead><tbody>
+<tr><td><b>Simultaneous choices</b></td>
+ <td class="num">71 above the fold on the landing surface at 1600, 19 at 390</td>
+ <td>A working screen targets under twelve against a working memory of about four. The landing surface is 5.9 times over at desk width.</td></tr>
+<tr><td><b>The bar at phone width</b></td>
+ <td class="num">4 of 9 fully in view</td>
+ <td>Compass, Knowledge, Games, Summary are past the right edge. Summary is the surface that prints the reading, and two of six ICPs plus one edge case have no second device.</td></tr>
+<tr><td><b>Two answers to where a blank arrival starts</b></td>
+ <td class="num">42.25 in the app, 36.00 out of the engine</td>
+ <td>An unmeasured law is seeded at 6.5 by <code>LAWSET.You</code> and at 6 by the engine's own boundary, so the same empty profile reads 6.25 apart depending on which half you ask. A third caller seeds 5.5.</td></tr>
+<tr><td><b>The record credits a plan</b></td>
+ <td class="num">54% of saved rituals were actually done</td>
+ <td><code>pracDays</code> counts every distinct day carrying a saved ritual and never reads the done flag, so a streak is a record of planning. The first mark is earned by saving.</td></tr>
+<tr><td><b>Nothing to hand on</b></td>
+ <td class="num">0 referral controls on any surface</td>
+ <td>Sofia is the highest value entry in the roster because she brings clients. Her use cannot compound, and her silence never shows in a funnel.</td></tr>
+<tr><td><b>Nothing asks for a return</b></td>
+ <td class="num">288 of 1000 lost to an absence that became permanent</td>
+ <td>No notification, no accountability seam. Every return in this run is unprompted, which is the single largest loss in the table above.</td></tr>
+</tbody></table>
+<table class="tb"><thead><tr><th>Surface</th><th>Choices above the fold, 1600</th><th>Choices above the fold, 390</th><th>Scroll depth at 390</th><th>Against a working screen of under 12</th></tr></thead><tbody><tr><td><b>Energetics</b></td><td class="num">85</td><td class="num">17</td><td class="num">8757 px, 10.4 screens</td><td class="num bad">7.1 times over</td></tr><tr><td><b>Ritual</b></td><td class="num">78</td><td class="num">16</td><td class="num">6236 px, 7.4 screens</td><td class="num bad">6.5 times over</td></tr><tr><td><b>Story</b></td><td class="num">91</td><td class="num">23</td><td class="num">5941 px, 7.0 screens</td><td class="num bad">7.6 times over</td></tr><tr><td><b>Field</b></td><td class="num">71</td><td class="num">19</td><td class="num">5849 px, 6.9 screens</td><td class="num bad">5.9 times over</td></tr><tr><td><b>Body</b></td><td class="num">66</td><td class="num">20</td><td class="num">6706 px, 7.9 screens</td><td class="num bad">5.5 times over</td></tr><tr><td><b>Compass</b></td><td class="num">82</td><td class="num">24</td><td class="num">6718 px, 8.0 screens</td><td class="num bad">6.8 times over</td></tr><tr><td><b>Knowledge</b></td><td class="num">127</td><td class="num">26</td><td class="num">12836 px, 15.2 screens</td><td class="num bad">10.6 times over</td></tr><tr><td><b>Games</b></td><td class="num">74</td><td class="num">16</td><td class="num">6802 px, 8.1 screens</td><td class="num bad">6.2 times over</td></tr><tr><td><b>Summary</b></td><td class="num">77</td><td class="num">15</td><td class="num">8524 px, 10.1 screens</td><td class="num bad">6.4 times over</td></tr></tbody></table>
+
+<h2>What is good, and it is not a consolation paragraph</h2>
+<div class="grid g3">
+ <div class="tile"><span class="n">0</span><span class="l">page errors across every surface, both widths</span></div>
+ <div class="tile"><span class="n">1</span><span class="l">outbound request, which is the file itself</span></div>
+ <div class="tile"><span class="n">299 ms</span><span class="l">to the first word on the screen</span></div>
+ <div class="tile"><span class="n">1</span><span class="l">controls under the 44 by 44 floor, across every surface at 390</span>
+  <span class="s">Energetics at 390: wtu 18x44</span></div>
+ <div class="tile"><span class="n">9 of 9</span><span class="l">surfaces render on a blank profile and on a loaded one</span></div>
+ <div class="tile"><span class="n">refuses</span>
+  <span class="l">a release started on somebody else's field</span>
+  <span class="s">It names the profile and declines. This was the largest defect in the earlier simulation and it is closed.</span></div>
+</div>
+<ul style="margin-top:18px">
+<li><b>The boot is fixed.</b> 299 milliseconds to the first word,
+ against four and a half seconds in the earlier run, and the card carries
+ "press anything to go straight in".</li>
+<li><b>The release is honest about whose field it is.</b> Driven on a reference
+ case: it refused, named Angela, and left the reading at
+ 40.86 where it found it. The earlier simulation
+ ranked the old behaviour as the single biggest reason people left.</li>
+<li><b>The intake reaches the release now.</b> The connection is real and it runs
+ through the integrity relief term: the same two stories load nothing above the
+ line at the default and load addresses once the intake is answered at five or
+ below. The earlier run recorded that connection as missing.</li>
+<li><b>The record is built and it works.</b> The streak halves on a gap rather
+ than resetting, the ladder names one next mark and never a count against a
+ total, and the ceiling case earned 13 marks over the
+ quarter. The gamification is the half of this product that does its job.</li>
+<li><b>Nothing breaks.</b> Zero errors, one request, every surface rendering,
+ 1 control under the 44 by 44 floor and every other one over it, and undo and redo in the top bar. On the
+ owner's own acceptance test, that it reads as thoughtful and well crafted and
+ does not break, the engineering half passes.</li>
+</ul>
+
+<h2>What a person has at the end of ninety days</h2>
+<p class="lede">Averaged over everybody who opened the file, at the moment they
+stopped, which for most of them is inside the first week.</p>
+<table class="tb"><thead><tr><th>Who</th><th>Last day</th><th>Sessions</th>
+<th>Minutes</th><th>Stories</th><th>Releases</th><th>Ground</th><th>Marks</th>
+<th>Reading moved</th><th>Left with nothing done</th></tr></thead><tbody>
+<tr><td><b>Diane</b></td><td class="num">day 6.2</td><td class="num">1.51</td><td class="num">2.4</td><td class="num">0.00</td><td class="num">0.00</td><td class="num">0.0</td><td class="num">0.0</td><td class="num bad">-1.51</td><td class="num">100%</td></tr><tr><td><b>Derek</b></td><td class="num">day 7.3</td><td class="num">2.97</td><td class="num">26.7</td><td class="num">1.05</td><td class="num">0.04</td><td class="num">0.3</td><td class="num">1.7</td><td class="num bad">-14.46</td><td class="num">44%</td></tr><tr><td><b>Marcus</b></td><td class="num">day 13.3</td><td class="num">3.15</td><td class="num">17.4</td><td class="num">0.84</td><td class="num">0.01</td><td class="num">0.0</td><td class="num">1.2</td><td class="num bad">-7.55</td><td class="num">89%</td></tr><tr><td><b>Angela</b></td><td class="num">day 5.3</td><td class="num">1.55</td><td class="num">14.8</td><td class="num">1.13</td><td class="num">0.01</td><td class="num">0.1</td><td class="num">1.4</td><td class="num bad">-4.70</td><td class="num">84%</td></tr><tr><td><b>Sofia</b></td><td class="num">day 11.7</td><td class="num">3.96</td><td class="num">54.9</td><td class="num">3.52</td><td class="num">0.58</td><td class="num">4.3</td><td class="num">2.7</td><td class="num bad">-6.02</td><td class="num">33%</td></tr><tr><td><b>James</b></td><td class="num">day 2.7</td><td class="num">0.95</td><td class="num">2.4</td><td class="num">0.05</td><td class="num">0.00</td><td class="num">0.0</td><td class="num">0.2</td><td class="num bad">-2.16</td><td class="num">99%</td></tr><tr><td><b>Ana</b></td><td class="num">day 10.5</td><td class="num">4.25</td><td class="num">64.0</td><td class="num">3.83</td><td class="num">1.35</td><td class="num">10.6</td><td class="num">3.0</td><td class="num bad">-14.33</td><td class="num">35%</td></tr><tr><td><b>Gordon</b></td><td class="num">day 0.8</td><td class="num">0.69</td><td class="num">0.8</td><td class="num">0.00</td><td class="num">0.00</td><td class="num">0.0</td><td class="num">0.0</td><td class="num bad">-0.51</td><td class="num">95%</td></tr><tr><td><b>Rosa</b></td><td class="num">day 5.0</td><td class="num">1.10</td><td class="num">3.2</td><td class="num">0.04</td><td class="num">0.00</td><td class="num">0.0</td><td class="num">0.2</td><td class="num good">+1.64</td><td class="num">72%</td></tr>
+</tbody></table>
+<p>And for the person who stayed the whole quarter and did everything, which is
+the ceiling and not the average: 13 marks, a
+90 day streak, 1193 minutes on the record,
+444 patterns of ground, 4 addresses holding the
+opposite, and a reading 0.54 of a point higher than
+the one they arrived with. The marks are real. The instrument did not move.</p>
+
+<h2>The grade</h2>
+<svg class="ch" viewBox="0 0 860 318" role="img" aria-label="The ten criteria and what each scored"><text class="bl" x="180" y="23" text-anchor="end">ICP alignment</text><rect class="br" x="190" y="13" width="176.5" height="21" fill="var(--bad)"/><text class="bn" x="374.5" y="23">2.4 of 10  plus or minus 0.14</text><text class="bl" x="180" y="53" text-anchor="end">First touch</text><rect class="br" x="190" y="43" width="454.2" height="21" fill="var(--solar)"/><text class="bn" x="652.2" y="53">6.2 of 10</text><text class="bl" x="180" y="83" text-anchor="end">Core loop</text><rect class="br" x="190" y="73" width="21.2" height="21" fill="var(--bad)"/><text class="bn" x="219.2" y="83">0.3 of 10  plus or minus 0.05</text><text class="bl" x="180" y="113" text-anchor="end">Emotional</text><rect class="br" x="190" y="103" width="400.7" height="21" fill="var(--solar)"/><text class="bn" x="598.7" y="113">5.5 of 10  plus or minus 0.10</text><text class="bl" x="180" y="143" text-anchor="end">Behavioral flow</text><rect class="br" x="190" y="133" width="168.5" height="21" fill="var(--bad)"/><text class="bn" x="366.5" y="143">2.3 of 10</text><text class="bl" x="180" y="173" text-anchor="end">Visual and kinetic</text><rect class="br" x="190" y="163" width="586.0" height="21" fill="var(--good)"/><text class="bn" x="784.0" y="173">8.0 of 10</text><text class="bl" x="180" y="203" text-anchor="end">Technical</text><rect class="br" x="190" y="193" width="586.0" height="21" fill="var(--good)"/><text class="bn" x="784.0" y="203">8.0 of 10</text><text class="bl" x="180" y="233" text-anchor="end">Monetization</text><rect class="br" x="190" y="223" width="1.0" height="21" fill="var(--bad)"/><text class="bn" x="198.0" y="233">0.0 of 10</text><text class="bl" x="180" y="263" text-anchor="end">Retention</text><rect class="br" x="190" y="253" width="237.3" height="21" fill="var(--bad)"/><text class="bn" x="435.3" y="263">3.2 of 10  plus or minus 0.29</text><text class="bl" x="180" y="293" text-anchor="end">Referral</text><rect class="br" x="190" y="283" width="219.8" height="21" fill="var(--bad)"/><text class="bn" x="417.8" y="293">3.0 of 10</text></svg>
+<table class="tb"><thead><tr><th>Criterion</th><th>Score</th><th>Spread</th><th>Source</th><th>How it is computed</th></tr></thead><tbody><tr><td><b>ICP alignment</b></td><td class="num">2.4 of 10</td><td class="num">0.14  (2.2 to 2.7)</td><td>the run</td><td class="fine">weighted share who got what they came for, per figure, read off the run</td></tr><tr><td><b>First touch</b></td><td class="num">6.2 of 10</td><td class="num">none</td><td>measured</td><td class="fine">boot to first word, choices above the fold on the landing surface, share of the bar reachable at 390, and whether the landing surface has a reading to show</td></tr><tr><td><b>Core loop</b></td><td class="num">0.3 of 10</td><td class="num">0.05  (0.2 to 0.4)</td><td>the run</td><td class="fine">share who ever closed story to release to a kept practice, and how many times</td></tr><tr><td><b>Emotional</b></td><td class="num">5.5 of 10</td><td class="num">0.10  (5.3 to 5.7)</td><td>the run</td><td class="fine">share of commits the sniffer read at all, and share of those that named an address rather than inferring one</td></tr><tr><td><b>Behavioral flow</b></td><td class="num">2.3 of 10</td><td class="num">none</td><td>measured</td><td class="fine">mean of twelve over the choices above the fold on every surface, at the cohort device mix, discounted by how much of the bar a phone can reach</td></tr><tr><td><b>Visual and kinetic</b></td><td class="num">8.0 of 10</td><td class="num">none</td><td>carried</td><td class="fine">carried unchanged from the earlier simulation. this pass built no instrument for it</td></tr><tr><td><b>Technical</b></td><td class="num">8.0 of 10</td><td class="num">none</td><td>measured</td><td class="fine">page errors, outbound requests, controls under the 44 floor, boot to first word, and every surface rendering</td></tr><tr><td><b>Monetization</b></td><td class="num">0.0 of 10</td><td class="num">none</td><td>the run</td><td class="fine">share who reach the end of the gift, whether any price exists on a surface a new arrival reaches, and whether the allowance is enforced at all</td></tr><tr><td><b>Retention</b></td><td class="num">3.2 of 10</td><td class="num">0.29  (2.5 to 3.7)</td><td>the run</td><td class="fine">modelled day thirty against a category median of 3.3 percent, interpolated</td></tr><tr><td><b>Referral</b></td><td class="num">3.0 of 10</td><td class="num">none</td><td>measured</td><td class="fine">export exists, a way to hand a reading to another person does not</td></tr><tr class="tot"><td><b>Total</b></td><td class="num"><b>38.91 of 100</b></td><td class="num">0.41  (38.0 to 39.6)</td><td>19 runs</td><td class="fine">the ten added</td></tr></tbody></table>
+<p>Six of the ten are measured off the surface and do not move between runs. One
+is carried unchanged from the earlier simulation and says so. Four move with the
+cohort, and their spread is in the table. A single grade with no variance beside
+it is not an answer, so the convergence is below.</p>
+<svg class="ch" viewBox="0 0 860 220" role="img" aria-label="The grade of each run as a dot and the running mean as a line, settling"><line class="gl" x1="46" y1="192.0" x2="846" y2="192.0"/><text class="ax" x="40" y="195.5" text-anchor="end">37.4</text><line class="gl" x1="46" y1="133.3" x2="846" y2="133.3"/><text class="ax" x="40" y="136.8" text-anchor="end">38.3</text><line class="gl" x1="46" y1="74.7" x2="846" y2="74.7"/><text class="ax" x="40" y="78.2" text-anchor="end">39.3</text><line class="gl" x1="46" y1="16.0" x2="846" y2="16.0"/><text class="ax" x="40" y="19.5" text-anchor="end">40.2</text><circle class="dot" cx="46.0" cy="97.7" r="3"/><circle class="dot" cx="90.4" cy="91.4" r="3"/><circle class="dot" cx="134.9" cy="116.6" r="3"/><circle class="dot" cx="179.3" cy="78.9" r="3"/><circle class="dot" cx="223.8" cy="53.7" r="3"/><circle class="dot" cx="268.2" cy="60.0" r="3"/><circle class="dot" cx="312.7" cy="110.3" r="3"/><circle class="dot" cx="357.1" cy="129.1" r="3"/><circle class="dot" cx="401.6" cy="97.7" r="3"/><circle class="dot" cx="446.0" cy="85.1" r="3"/><circle class="dot" cx="490.4" cy="110.3" r="3"/><circle class="dot" cx="534.9" cy="91.4" r="3"/><circle class="dot" cx="579.3" cy="154.3" r="3"/><circle class="dot" cx="623.8" cy="97.7" r="3"/><circle class="dot" cx="668.2" cy="72.6" r="3"/><circle class="dot" cx="712.7" cy="129.1" r="3"/><circle class="dot" cx="757.1" cy="116.6" r="3"/><circle class="dot" cx="801.6" cy="72.6" r="3"/><circle class="dot" cx="846.0" cy="78.9" r="3"/><path class="ln" stroke="var(--accent)" d="M46.0 97.7 L90.4 94.6 L134.9 101.9 L179.3 96.1 L223.8 87.7 L268.2 83.1 L312.7 87.0 L357.1 92.2 L401.6 92.8 L446.0 92.1 L490.4 93.7 L534.9 93.5 L579.3 98.2 L623.8 98.2 L668.2 96.5 L712.7 98.5 L757.1 99.5 L801.6 98.1 L846.0 97.0"/><text class="ax" x="46.0" y="212" text-anchor="middle">run 1</text><text class="ax" x="446.0" y="212" text-anchor="middle">run 10</text><text class="ax" x="846.0" y="212" text-anchor="middle">run 19</text></svg>
+<p>Each dot is one run of 1000 people. The line is the running mean. It
+settled at run 19 under a threshold of 0.05 of a point
+sustained for 6 runs. The seed is not where the uncertainty is: at
+a thousand people the run to run spread is 0.41 of a point. Moving the
+model's own constants is worth 2.50 points, which is the
+honest error bar.</p>
+<table class="tb"><thead><tr><th>Model constant moved</th><th>By</th><th>Grade</th><th>Change</th></tr></thead><tbody>
+<tr><td>friction cost</td><td class="num">-25%</td><td class="num">41.10</td><td class="num good">+2.19</td></tr><tr><td>friction cost</td><td class="num">25%</td><td class="num">38.60</td><td class="num bad">-0.31</td></tr><tr><td>opening rate</td><td class="num">-25%</td><td class="num">39.20</td><td class="num good">+0.29</td></tr><tr><td>opening rate</td><td class="num">25%</td><td class="num">38.60</td><td class="num bad">-0.31</td></tr>
+</tbody></table>
+
+<h2>What moved since the earlier simulation</h2>
+<p class="lede"><code>reviews/SIM-ninety-days.md</code> and
+<code>reviews/sim-ninety-days.html</code> ran the same exercise on an older
+build and graded it 51 of 100. This run grades 38.91.</p>
+<p><b>The product got better and the grade went down, and both are true.</b>
+The earlier run was a walk through the surface with arithmetic attached. It did
+not run the loop for ninety days, so it could not see the one thing that
+matters: the loop closes on itself and returns the person to where they started.
+Several of the defects it named are genuinely fixed and the fixes are good work.
+The one it could not reach costs more than all of them returned.</p>
+<table class="tb"><thead><tr><th>Then</th><th>Now, measured this run</th></tr></thead><tbody>
+<tr><td>The release repoints the profile, wipes the field and bills the person. Ranked first, 187 people</td>
+ <td class="good">Closed. Driven on a reference case it refuses, names Angela and writes nothing</td></tr>
+<tr><td>The intake cannot reach the release. 163 people</td>
+ <td class="good">Closed. The intake moves the integrity relief term, which is what lets an address reach the line</td></tr>
+<tr><td>The first four seconds contain no word. 21 people</td>
+ <td class="good">Closed. 299 milliseconds to the first word, at both widths</td></tr>
+<tr><td>The gift is spent invisibly. 41 people</td>
+ <td class="bad">Worse than it was described. It is not spent invisibly, it is not spent at all. Nothing reads the allowance, so the panel prints a number that is not true and the run proceeds</td></tr>
+<tr><td>The phone tab strip hides four of the nine doors. 121 people</td>
+ <td>Unchanged. 4 of 9 fully in view at 390, with Compass, Knowledge, Games, Summary past the edge</td></tr>
+<tr><td>"41%" beside the word "Incoherent". 29 people</td>
+ <td>Unchanged. The headline rounds and the band does not. Incoherent is 31 to 40</td></tr>
+<tr><td>The story leaves the instrument unread. 88 people</td>
+ <td class="bad">Measured rather than estimated, and it is bigger. 19 of 41 ordinary sentences read nothing, and the reading needs six commits before it moves at all</td></tr>
+<tr><td>Cognitive load, 57 to 71 per screen. Architectural</td>
+ <td>Unchanged and now measured on every surface. 71 above the fold on the landing surface, 127 on Knowledge</td></tr>
+<tr><td>Day thirty modelled at 5.6 percent against a category median of 3.3</td>
+ <td>3.86% on the same comparison, with the departure model argued from each figure rather than assigned</td></tr>
+</tbody></table>
+
+<h2>The move</h2>
+<p class="lede">What goes, what moves, what folds. In the order that changes the
+number, not the order that is easiest.</p>
+<ol>
+<li><b>Make the release clear an address.</b> This is the one. Twenty one percent
+ of the weight and a sixty two percent install is a rounding error against a
+ story that adds the same amount back. Either the removal compounds over a
+ session, or the install reaches the far pole, or a cleared address stays
+ cleared. Until one of the three is true, the product's core promise is a loop
+ that returns to its own start and the marks are the only thing a person gets.
+ Everything else on this list is smaller than this.</li>
+<li><b>Widen the box or change what it claims.</b> 46%
+ of ordinary writing reads nothing, and the reading needs six commits before it
+ moves. Two honest routes. Widen the lexicon until an ordinary paragraph lands,
+ which is a data job and not an architecture one. Or say what it is: a
+ vocabulary of 231 words, shown
+ to the person, with the words it found lit and a line saying what it did not
+ read. The second one is an afternoon and it converts the defect into the
+ product showing its work, which is this instrument's whole defence.</li>
+<li><b>Stop printing an inferred address as a finding.</b> 12 of
+ 41 lines produce imprints that are entirely inferred, and the
+ flag is already on every one of them. A person who wrote that they snapped at
+ their cofounder is currently offered Denial Of Light, Envy, Jealousy.
+ The panel has the flag. It needs to use it.</li>
+<li><b>Gate the allowance or take the number off the panel.</b> One of the two,
+ today. A stated limit with nothing behind it is a false statement on the one
+ surface that quotes a price.</li>
+<li><b>Give the reading somewhere to go on a phone.</b> Summary is off the strip
+ at 390 and Summary is where the number lives. Two of six ICPs and one edge case
+ have one device.</li>
+<li><b>Read the done flag in the streak.</b> A saved plan is not a day
+ practised. <code>ledgerRead</code> already separates planned from done;
+ <code>pracDays</code> does not.</li>
+<li><b>One seed for an unmeasured law.</b> Three callers, three numbers, and
+ 6.25 points of coherence between two of them on an empty
+ profile.</li>
+<li><b>Then the return.</b> The largest single loss in this run is an absence
+ that nothing interrupted. That is the notification seam, and it is already in
+ scope. It is last on this list and not first, because a prompt to come back
+ to a loop that returns you to your own starting point is a prompt to come back
+ to nothing.</li>
+</ol>
+
+<h2>What to instrument, so the next run is measurement</h2>
+<p class="lede">There is no instrumentation in the product, so every retention
+figure above is derived. Six counters would replace most of this document with
+data.</p>
+<ol>
+<li><b>Story commits, and whether the parse returned an imprint.</b> Two
+ integers. It answers the largest finding here directly and it needs no
+ identity: a count of commits and a count of commits that read nothing.</li>
+<li><b>Coherence at first reading and at every seventh day after it.</b> The
+ snapshot already exists and carries the stamp. Nothing reads it as a series
+ except the graph.</li>
+<li><b>Releases run, and addresses that crossed to the far pole.</b> The second
+ is the number that says whether the loop works. It is 4 in the
+ ceiling case and nothing on any surface reports it.</li>
+<li><b>Sessions, and the gap before each one.</b> The interval is the whole
+ question the owner asked and the product records no session boundary at all.</li>
+<li><b>Rituals saved against rituals marked done.</b> Both fields exist. Neither
+ is reported anywhere a person or a seat can see the ratio.</li>
+<li><b>The surface a session ended on.</b> One string per session. It is the
+ cheapest possible answer to where people stop.</li>
+</ol>
+
+<hr class="rule">
+<h2>Method, and how to run it again</h2>
+<p>The cohort is driven through <code>engine.js</code>: <code>parseStory</code>
+and <code>applyStory</code> for every story, <code>compute</code> for every
+reading, <code>iqApply</code> for the intake, <code>meterPlan</code> and
+<code>meterRun</code> for what a run costs, <code>planAllowance</code> for what
+is left, <code>streakRead</code>, <code>ledgerRead</code> and
+<code>ladderRead</code> for the record, and <code>snapshot</code> for the
+series.</p>
+<p>The release itself lives in <code>ui/release.js</code> and is not in the
+engine contract, so it cannot be called from node. Its arithmetic is lifted into
+the harness character for character, and the harness refuses to run unless the
+lifted copy reproduces a release driven in Chromium on the same inputs to within
+a thousandth. That check passed on this run:
+34.61 to 39.00 on
+Denial Of Light, Envy, Jealousy, 12 lines, 33 seconds,
+with every charge and every install agreeing.</p>
+<p>Facts about the surface are read off <code>source.html</code> in a real
+Chromium at 1600 by 1000 and 390 by 844, and written to
+<code>sim/measured.json</code>. Both the harness and this page refuse to build
+without that file, so no number on this page is typed by hand.</p>
+<div class="stamp">source.html   md5 9b53aff3c123f8b4c8bc9ac8bd086b5c
+engine.js     md5 315e3ced4119eef2770f64534b10a68f
+commit        241f470   working tree dirty
+chromium      1194, file://, 1600x1000 and 390x844
+measured      2026-09-21T00:55:09.237Z
+cohort        1000 a run, 19 runs, 19000 people
+page errors   0
+requests      1
+
+  node sim/measure.js      the browser facts, writes sim/measured.json
+  node sim/harness.js      the cohort, writes sim/runs.json
+  node sim/build.js        this page</div>
+<p class="foot">Everything about a person's field on this page is the shipped
+engine's output on invented inputs. Everything about the surface is a fact about
+the build stamped above. Everything about when somebody opens the file and when
+they stop is a model, stated in <code>sim/harness.js</code> under
+<code>SHOWUP</code> and <code>FRICTION</code>, and it is judgement. No figure
+here is evidence about any human being and none of it should be quoted as
+research. Five people with phones and two afternoons would replace half of it
+with measurements.</p>
+
+</div></body></html>

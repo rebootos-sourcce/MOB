@@ -1,0 +1,6620 @@
+{
+ "stamp": {
+  "src": "9b53aff3c123f8b4c8bc9ac8bd086b5c",
+  "engine": "315e3ced4119eef2770f64534b10a68f",
+  "commit": "241f470",
+  "dirty": true,
+  "when": "2026-09-21T00:55:09.237Z",
+  "chromium": "1194",
+  "srcAfter": "9b53aff3c123f8b4c8bc9ac8bd086b5c",
+  "engineAfter": "315e3ced4119eef2770f64534b10a68f",
+  "moved": false
+ },
+ "seedGap": {
+  "engine": 36,
+  "app": 42.25,
+  "engineSeed": 6,
+  "appSeed": 6.5,
+  "gap": 6.25
+ },
+ "measured": {
+  "bootMs": 299,
+  "errors": 0,
+  "requests": 1,
+  "tabs": 9,
+  "stripPhone": 4,
+  "offStrip": [
+   "Compass",
+   "Knowledge",
+   "Games",
+   "Summary"
+  ],
+  "landing": "Field",
+  "small": 1,
+  "money": 0,
+  "refer": 0,
+  "above": {
+   "Energetics": {
+    "desk": 85,
+    "phone": 17
+   },
+   "Ritual": {
+    "desk": 78,
+    "phone": 16
+   },
+   "Story": {
+    "desk": 91,
+    "phone": 23
+   },
+   "Field": {
+    "desk": 71,
+    "phone": 19
+   },
+   "Body": {
+    "desk": 66,
+    "phone": 20
+   },
+   "Compass": {
+    "desk": 82,
+    "phone": 24
+   },
+   "Knowledge": {
+    "desk": 127,
+    "phone": 26
+   },
+   "Games": {
+    "desk": 74,
+    "phone": 16
+   },
+   "Summary": {
+    "desk": 77,
+    "phone": 15
+   }
+  },
+  "deep": {
+   "Energetics": 8757,
+   "Ritual": 6236,
+   "Story": 5941,
+   "Field": 5849,
+   "Body": 6706,
+   "Compass": 6718,
+   "Knowledge": 12836,
+   "Games": 6802,
+   "Summary": 8524
+  }
+ },
+ "measuredRaw": {
+  "widths": {
+   "390": {
+    "firstWordMs": 216,
+    "errors": [],
+    "requests": [
+     "source.html"
+    ],
+    "land": {
+     "tab": 2,
+     "tabName": "Field",
+     "tabs": [
+      "Energetics",
+      "Ritual",
+      "Story",
+      "Field",
+      "Body",
+      "Compass",
+      "Knowledge",
+      "Games",
+      "Summary"
+     ],
+     "tabCount": 9,
+     "stripVisible": 4,
+     "stripOff": [
+      "Compass",
+      "Knowledge",
+      "Games",
+      "Summary"
+     ],
+     "stripScrolls": true,
+     "unread": true,
+     "cq": 36,
+     "loaded": 0,
+     "doors": [
+      "AtunedSource OS",
+      "Energetics",
+      "Ritual",
+      "Story",
+      "Field",
+      "Body",
+      "Compass",
+      "Knowledge",
+      "Games",
+      "Summary",
+      "Dark",
+      "Charge",
+      "Patterns",
+      "Chains"
+     ],
+     "money": [],
+     "refer": []
+    },
+    "surfaces": {
+     "Energetics": {
+      "choices": 122,
+      "above": 17,
+      "small": 1,
+      "tiny": [
+       "wtu 18x44"
+      ],
+      "deep": 8757,
+      "text": 5313
+     },
+     "Ritual": {
+      "choices": 94,
+      "above": 16,
+      "small": 0,
+      "tiny": [],
+      "deep": 6236,
+      "text": 3346
+     },
+     "Story": {
+      "choices": 107,
+      "above": 23,
+      "small": 0,
+      "tiny": [],
+      "deep": 5941,
+      "text": 2891
+     },
+     "Field": {
+      "choices": 101,
+      "above": 19,
+      "small": 0,
+      "tiny": [],
+      "deep": 5849,
+      "text": 2777
+     },
+     "Body": {
+      "choices": 107,
+      "above": 20,
+      "small": 0,
+      "tiny": [],
+      "deep": 6706,
+      "text": 3127
+     },
+     "Compass": {
+      "choices": 108,
+      "above": 24,
+      "small": 0,
+      "tiny": [],
+      "deep": 6718,
+      "text": 3438
+     },
+     "Knowledge": {
+      "choices": 224,
+      "above": 26,
+      "small": 0,
+      "tiny": [],
+      "deep": 12836,
+      "text": 6106
+     },
+     "Games": {
+      "choices": 100,
+      "above": 16,
+      "small": 0,
+      "tiny": [],
+      "deep": 6802,
+      "text": 3934
+     },
+     "Summary": {
+      "choices": 87,
+      "above": 15,
+      "small": 0,
+      "tiny": [],
+      "deep": 8524,
+      "text": 4219
+     }
+    }
+   },
+   "1600": {
+    "firstWordMs": 299,
+    "errors": [],
+    "requests": [
+     "source.html"
+    ],
+    "land": {
+     "tab": 2,
+     "tabName": "Field",
+     "tabs": [
+      "Energetics",
+      "Ritual",
+      "Story",
+      "Field",
+      "Body",
+      "Compass",
+      "Knowledge",
+      "Games",
+      "Summary"
+     ],
+     "tabCount": 9,
+     "stripVisible": 9,
+     "stripOff": [],
+     "stripScrolls": false,
+     "unread": true,
+     "cq": 36,
+     "loaded": 0,
+     "doors": [
+      "AtunedSource OS",
+      "Energetics",
+      "Ritual",
+      "Story",
+      "Field",
+      "Body",
+      "Compass",
+      "Knowledge",
+      "Games",
+      "Summary",
+      "Dark",
+      "Charge",
+      "Patterns",
+      "Chains"
+     ],
+     "money": [],
+     "refer": []
+    },
+    "surfaces": {
+     "Energetics": {
+      "choices": 122,
+      "above": 85,
+      "small": 3,
+      "tiny": [
+       "wtu 18x44",
+       "Responsibilityunansw 428x44",
+       "Accountabilityunansw 428x44"
+      ],
+      "deep": 3139,
+      "text": 5313
+     },
+     "Ritual": {
+      "choices": 94,
+      "above": 78,
+      "small": 0,
+      "tiny": [],
+      "deep": 3139,
+      "text": 3346
+     },
+     "Story": {
+      "choices": 107,
+      "above": 91,
+      "small": 1,
+      "tiny": [
+       "Record 115x44"
+      ],
+      "deep": 3139,
+      "text": 2891
+     },
+     "Field": {
+      "choices": 101,
+      "above": 71,
+      "small": 0,
+      "tiny": [],
+      "deep": 3153,
+      "text": 2777
+     },
+     "Body": {
+      "choices": 107,
+      "above": 66,
+      "small": 0,
+      "tiny": [],
+      "deep": 4339,
+      "text": 3127
+     },
+     "Compass": {
+      "choices": 108,
+      "above": 82,
+      "small": 0,
+      "tiny": [],
+      "deep": 4246,
+      "text": 3438
+     },
+     "Knowledge": {
+      "choices": 224,
+      "above": 127,
+      "small": 0,
+      "tiny": [],
+      "deep": 4246,
+      "text": 6106
+     },
+     "Games": {
+      "choices": 100,
+      "above": 74,
+      "small": 0,
+      "tiny": [],
+      "deep": 4246,
+      "text": 3934
+     },
+     "Summary": {
+      "choices": 87,
+      "above": 77,
+      "small": 0,
+      "tiny": [],
+      "deep": 2828,
+      "text": 4219
+     }
+    }
+   }
+  },
+  "loop": {
+   "reference": {
+    "who": "Angela",
+    "refused": true,
+    "cqBefore": 40.86,
+    "cqAfter": 40.86,
+    "phase": "pick"
+   },
+   "own": {
+    "stories": [
+     {
+      "cq": 42.25,
+      "loaded": 0
+     },
+     {
+      "cq": 42.25,
+      "loaded": 0
+     },
+     {
+      "cq": 42.25,
+      "loaded": 0
+     },
+     {
+      "cq": 39.761,
+      "loaded": 3
+     },
+     {
+      "cq": 39.019,
+      "loaded": 4
+     },
+     {
+      "cq": 34.61,
+      "loaded": 10
+     }
+    ],
+    "refused": false,
+    "cqBefore": 34.61,
+    "cqAfter": 39,
+    "picked": [
+     {
+      "i": 105,
+      "k": "Denial Of Light",
+      "sq": 5.5723,
+      "cf": "Anger"
+     },
+     {
+      "i": 19,
+      "k": "Envy",
+      "sq": 4.6854,
+      "cf": "Anger"
+     },
+     {
+      "i": 20,
+      "k": "Jealousy",
+      "sq": 4.6854,
+      "cf": "Anger"
+     }
+    ],
+    "freed": 38,
+    "planLines": 12,
+    "uniqueBefore": 0,
+    "uniqueAfter": 12,
+    "allowanceLeft": 88,
+    "chargeAfter": {
+     "Fear": 5.74,
+     "Anger": 7.4133,
+     "Shame": 0.28,
+     "Disgust": 0,
+     "Apathy": 5.145,
+     "Shock": 0,
+     "Sad": 0,
+     "Surprise": 0,
+     "Anticipation": 0
+    },
+    "replaceAfter": {
+     "Fear": 0,
+     "Anger": 0.7853,
+     "Shame": 0,
+     "Disgust": 0,
+     "Apathy": 0,
+     "Shock": 0,
+     "Sad": 0,
+     "Surprise": 0,
+     "Anticipation": 0
+    }
+   },
+   "exhausted": {
+    "allowanceZero": true,
+    "uniqueBefore": 119,
+    "uniqueAfter": 123,
+    "ranAnyway": true,
+    "quoted": "4 patterns of the 0 you have left",
+    "cqBefore": 41.33,
+    "cqAfter": 42.25,
+    "leftAfter": 0
+   },
+   "speeds": {
+    "Slow": 3.2,
+    "Steady": 2.2,
+    "Quick": 1.4
+   },
+   "openingLines": 3
+  }
+ },
+ "verify": {
+  "ok": true,
+  "bad": [],
+  "picked": "Denial Of Light, Envy, Jealousy",
+  "cqBefore": 34.61,
+  "cqAfter": 39,
+  "freed": 38,
+  "lines": 12,
+  "seconds": 33,
+  "steps": [
+   {
+    "cq": 42.25,
+    "loaded": 0
+   },
+   {
+    "cq": 42.25,
+    "loaded": 0
+   },
+   {
+    "cq": 42.25,
+    "loaded": 0
+   },
+   {
+    "cq": 39.761,
+    "loaded": 3
+   },
+   {
+    "cq": 39.019,
+    "loaded": 4
+   },
+   {
+    "cq": 34.61,
+    "loaded": 10
+   }
+  ]
+ },
+ "ceiling": {
+  "none": {
+   "lawCentre": null,
+   "curve": [
+    {
+     "day": 1,
+     "cq": 42.25,
+     "loaded": 0,
+     "ground": 0,
+     "left": 100,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 2,
+     "cq": 42.25,
+     "loaded": 0,
+     "ground": 0,
+     "left": 100,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 3,
+     "cq": 42.25,
+     "loaded": 0,
+     "ground": 0,
+     "left": 100,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 4,
+     "cq": 42.25,
+     "loaded": 0,
+     "ground": 0,
+     "left": 100,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 5,
+     "cq": 42.25,
+     "loaded": 0,
+     "ground": 0,
+     "left": 100,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 6,
+     "cq": 42.25,
+     "loaded": 0,
+     "ground": 0,
+     "left": 100,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 7,
+     "cq": 42.25,
+     "loaded": 0,
+     "ground": 0,
+     "left": 100,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 8,
+     "cq": 42.25,
+     "loaded": 0,
+     "ground": 0,
+     "left": 100,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 9,
+     "cq": 42.25,
+     "loaded": 0,
+     "ground": 0,
+     "left": 100,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 10,
+     "cq": 42.25,
+     "loaded": 0,
+     "ground": 12,
+     "left": 100,
+     "clear": 0,
+     "seconds": 33
+    },
+    {
+     "day": 11,
+     "cq": 42.25,
+     "loaded": 0,
+     "ground": 16,
+     "left": 88,
+     "clear": 0,
+     "seconds": 15
+    },
+    {
+     "day": 12,
+     "cq": 42.25,
+     "loaded": 0,
+     "ground": 36,
+     "left": 84,
+     "clear": 0,
+     "seconds": 51
+    },
+    {
+     "day": 13,
+     "cq": 42.25,
+     "loaded": 0,
+     "ground": 36,
+     "left": 64,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 14,
+     "cq": 42.25,
+     "loaded": 0,
+     "ground": 36,
+     "left": 64,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 15,
+     "cq": 42.25,
+     "loaded": 0,
+     "ground": 40,
+     "left": 64,
+     "clear": 0,
+     "seconds": 15
+    },
+    {
+     "day": 16,
+     "cq": 42.25,
+     "loaded": 0,
+     "ground": 40,
+     "left": 60,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 17,
+     "cq": 42.25,
+     "loaded": 0,
+     "ground": 40,
+     "left": 60,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 18,
+     "cq": 42.25,
+     "loaded": 0,
+     "ground": 44,
+     "left": 60,
+     "clear": 0,
+     "seconds": 15
+    },
+    {
+     "day": 19,
+     "cq": 42.25,
+     "loaded": 0,
+     "ground": 48,
+     "left": 56,
+     "clear": 0,
+     "seconds": 15
+    },
+    {
+     "day": 20,
+     "cq": 42.25,
+     "loaded": 0,
+     "ground": 48,
+     "left": 52,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 21,
+     "cq": 42.25,
+     "loaded": 0,
+     "ground": 48,
+     "left": 52,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 22,
+     "cq": 42.25,
+     "loaded": 0,
+     "ground": 48,
+     "left": 52,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 23,
+     "cq": 42.25,
+     "loaded": 0,
+     "ground": 60,
+     "left": 52,
+     "clear": 0,
+     "seconds": 33
+    },
+    {
+     "day": 24,
+     "cq": 42.25,
+     "loaded": 0,
+     "ground": 60,
+     "left": 40,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 25,
+     "cq": 42.25,
+     "loaded": 0,
+     "ground": 60,
+     "left": 40,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 26,
+     "cq": 42.25,
+     "loaded": 0,
+     "ground": 60,
+     "left": 40,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 27,
+     "cq": 41.4,
+     "loaded": 1,
+     "ground": 72,
+     "left": 40,
+     "clear": 0,
+     "seconds": 33
+    },
+    {
+     "day": 28,
+     "cq": 37.46,
+     "loaded": 6,
+     "ground": 97,
+     "left": 28,
+     "clear": 0,
+     "seconds": 62
+    },
+    {
+     "day": 29,
+     "cq": 42.25,
+     "loaded": 0,
+     "ground": 121,
+     "left": 3,
+     "clear": 0,
+     "seconds": 59
+    },
+    {
+     "day": 30,
+     "cq": 42.25,
+     "loaded": 0,
+     "ground": 121,
+     "left": 0,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 31,
+     "cq": 42.32,
+     "loaded": 0,
+     "ground": 125,
+     "left": 0,
+     "clear": 0,
+     "seconds": 15
+    },
+    {
+     "day": 32,
+     "cq": 42.32,
+     "loaded": 0,
+     "ground": 145,
+     "left": 0,
+     "clear": 0,
+     "seconds": 51
+    },
+    {
+     "day": 33,
+     "cq": 42.32,
+     "loaded": 0,
+     "ground": 165,
+     "left": 0,
+     "clear": 0,
+     "seconds": 51
+    },
+    {
+     "day": 34,
+     "cq": 42.32,
+     "loaded": 0,
+     "ground": 165,
+     "left": 0,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 35,
+     "cq": 42.32,
+     "loaded": 0,
+     "ground": 185,
+     "left": 0,
+     "clear": 0,
+     "seconds": 51
+    },
+    {
+     "day": 36,
+     "cq": 41.44,
+     "loaded": 1,
+     "ground": 210,
+     "left": 0,
+     "clear": 0,
+     "seconds": 62
+    },
+    {
+     "day": 37,
+     "cq": 42.4,
+     "loaded": 0,
+     "ground": 214,
+     "left": 0,
+     "clear": 0,
+     "seconds": 15
+    },
+    {
+     "day": 38,
+     "cq": 42.41,
+     "loaded": 0,
+     "ground": 239,
+     "left": 0,
+     "clear": 0,
+     "seconds": 62
+    },
+    {
+     "day": 39,
+     "cq": 42.41,
+     "loaded": 0,
+     "ground": 239,
+     "left": 0,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 40,
+     "cq": 42.41,
+     "loaded": 0,
+     "ground": 239,
+     "left": 0,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 41,
+     "cq": 42.41,
+     "loaded": 0,
+     "ground": 243,
+     "left": 0,
+     "clear": 0,
+     "seconds": 15
+    },
+    {
+     "day": 42,
+     "cq": 42.5,
+     "loaded": 0,
+     "ground": 263,
+     "left": 0,
+     "clear": 0,
+     "seconds": 51
+    },
+    {
+     "day": 43,
+     "cq": 42.5,
+     "loaded": 0,
+     "ground": 263,
+     "left": 0,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 44,
+     "cq": 42.5,
+     "loaded": 0,
+     "ground": 283,
+     "left": 0,
+     "clear": 1,
+     "seconds": 51
+    },
+    {
+     "day": 45,
+     "cq": 42.5,
+     "loaded": 0,
+     "ground": 283,
+     "left": 0,
+     "clear": 1,
+     "seconds": 0
+    },
+    {
+     "day": 46,
+     "cq": 42.5,
+     "loaded": 0,
+     "ground": 283,
+     "left": 0,
+     "clear": 1,
+     "seconds": 0
+    },
+    {
+     "day": 47,
+     "cq": 42.58,
+     "loaded": 0,
+     "ground": 287,
+     "left": 0,
+     "clear": 2,
+     "seconds": 15
+    },
+    {
+     "day": 48,
+     "cq": 42.7,
+     "loaded": 0,
+     "ground": 299,
+     "left": 0,
+     "clear": 3,
+     "seconds": 33
+    },
+    {
+     "day": 49,
+     "cq": 42.7,
+     "loaded": 0,
+     "ground": 299,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 50,
+     "cq": 42.68,
+     "loaded": 0,
+     "ground": 299,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 51,
+     "cq": 42.68,
+     "loaded": 0,
+     "ground": 299,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 52,
+     "cq": 42.68,
+     "loaded": 0,
+     "ground": 299,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 53,
+     "cq": 42.68,
+     "loaded": 0,
+     "ground": 299,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 54,
+     "cq": 42.68,
+     "loaded": 0,
+     "ground": 303,
+     "left": 0,
+     "clear": 3,
+     "seconds": 15
+    },
+    {
+     "day": 55,
+     "cq": 42.68,
+     "loaded": 0,
+     "ground": 303,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 56,
+     "cq": 42.59,
+     "loaded": 0,
+     "ground": 303,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 57,
+     "cq": 42.59,
+     "loaded": 0,
+     "ground": 303,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 58,
+     "cq": 42.59,
+     "loaded": 0,
+     "ground": 303,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 59,
+     "cq": 42.59,
+     "loaded": 0,
+     "ground": 303,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 60,
+     "cq": 42.59,
+     "loaded": 0,
+     "ground": 303,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 61,
+     "cq": 42.52,
+     "loaded": 0,
+     "ground": 303,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 62,
+     "cq": 42.52,
+     "loaded": 0,
+     "ground": 303,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 63,
+     "cq": 42.52,
+     "loaded": 0,
+     "ground": 303,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 64,
+     "cq": 42.52,
+     "loaded": 0,
+     "ground": 303,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 65,
+     "cq": 42.52,
+     "loaded": 0,
+     "ground": 303,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 66,
+     "cq": 42.52,
+     "loaded": 0,
+     "ground": 303,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 67,
+     "cq": 42.52,
+     "loaded": 0,
+     "ground": 303,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 68,
+     "cq": 42.52,
+     "loaded": 0,
+     "ground": 303,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 69,
+     "cq": 42.52,
+     "loaded": 0,
+     "ground": 303,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 70,
+     "cq": 42.52,
+     "loaded": 0,
+     "ground": 303,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 71,
+     "cq": 42.52,
+     "loaded": 0,
+     "ground": 303,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 72,
+     "cq": 42.52,
+     "loaded": 0,
+     "ground": 303,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 73,
+     "cq": 42.52,
+     "loaded": 0,
+     "ground": 303,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 74,
+     "cq": 42.52,
+     "loaded": 0,
+     "ground": 303,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 75,
+     "cq": 42.52,
+     "loaded": 0,
+     "ground": 303,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 76,
+     "cq": 42.52,
+     "loaded": 0,
+     "ground": 303,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 77,
+     "cq": 42.52,
+     "loaded": 0,
+     "ground": 303,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 78,
+     "cq": 42.52,
+     "loaded": 0,
+     "ground": 303,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 79,
+     "cq": 42.52,
+     "loaded": 0,
+     "ground": 307,
+     "left": 0,
+     "clear": 3,
+     "seconds": 15
+    },
+    {
+     "day": 80,
+     "cq": 42.52,
+     "loaded": 0,
+     "ground": 307,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 81,
+     "cq": 42.52,
+     "loaded": 0,
+     "ground": 307,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 82,
+     "cq": 42.52,
+     "loaded": 0,
+     "ground": 307,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 83,
+     "cq": 42.52,
+     "loaded": 0,
+     "ground": 307,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 84,
+     "cq": 42.52,
+     "loaded": 0,
+     "ground": 307,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 85,
+     "cq": 42.52,
+     "loaded": 0,
+     "ground": 307,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 86,
+     "cq": 42.52,
+     "loaded": 0,
+     "ground": 307,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 87,
+     "cq": 42.52,
+     "loaded": 0,
+     "ground": 307,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 88,
+     "cq": 42.52,
+     "loaded": 0,
+     "ground": 307,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 89,
+     "cq": 42.52,
+     "loaded": 0,
+     "ground": 307,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 90,
+     "cq": 42.52,
+     "loaded": 0,
+     "ground": 307,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    }
+   ],
+   "notes": {
+    "firstLoaded": 10,
+    "firstRelease": 10,
+    "giftGone": 30
+   },
+   "cq0": 42.25,
+   "cq90": 42.52,
+   "best": 42.7,
+   "worst": 37.46,
+   "ground": 307,
+   "clear": 3,
+   "minutes": 1193,
+   "marks": [
+    "First run",
+    "Seven days",
+    "Thirty days",
+    "Ninety days",
+    "Sixty minutes",
+    "Ten addresses",
+    "Fifty addresses",
+    "First story",
+    "Ten stories",
+    "First clearing",
+    "Ten snapshots"
+   ],
+   "next": "Nine axes",
+   "streak": 90,
+   "band": "Oscillating",
+   "accuracy": 21.7,
+   "ceiling": 51,
+   "secondsInRelease": 833
+  },
+  "low": {
+   "lawCentre": 3,
+   "curve": [
+    {
+     "day": 1,
+     "cq": 9,
+     "loaded": 0,
+     "ground": 0,
+     "left": 100,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 2,
+     "cq": 9,
+     "loaded": 0,
+     "ground": 0,
+     "left": 100,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 3,
+     "cq": 9,
+     "loaded": 0,
+     "ground": 0,
+     "left": 100,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 4,
+     "cq": 9,
+     "loaded": 0,
+     "ground": 0,
+     "left": 100,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 5,
+     "cq": 9,
+     "loaded": 0,
+     "ground": 0,
+     "left": 100,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 6,
+     "cq": 9,
+     "loaded": 0,
+     "ground": 20,
+     "left": 100,
+     "clear": 0,
+     "seconds": 51
+    },
+    {
+     "day": 7,
+     "cq": 9,
+     "loaded": 0,
+     "ground": 20,
+     "left": 80,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 8,
+     "cq": 9,
+     "loaded": 0,
+     "ground": 20,
+     "left": 80,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 9,
+     "cq": 9,
+     "loaded": 0,
+     "ground": 20,
+     "left": 80,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 10,
+     "cq": 9,
+     "loaded": 0,
+     "ground": 40,
+     "left": 80,
+     "clear": 0,
+     "seconds": 51
+    },
+    {
+     "day": 11,
+     "cq": 9,
+     "loaded": 0,
+     "ground": 52,
+     "left": 60,
+     "clear": 0,
+     "seconds": 33
+    },
+    {
+     "day": 12,
+     "cq": 9,
+     "loaded": 0,
+     "ground": 72,
+     "left": 48,
+     "clear": 0,
+     "seconds": 51
+    },
+    {
+     "day": 13,
+     "cq": 9,
+     "loaded": 0,
+     "ground": 72,
+     "left": 28,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 14,
+     "cq": 9,
+     "loaded": 0,
+     "ground": 72,
+     "left": 28,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 15,
+     "cq": 9,
+     "loaded": 0,
+     "ground": 84,
+     "left": 28,
+     "clear": 0,
+     "seconds": 33
+    },
+    {
+     "day": 16,
+     "cq": 9,
+     "loaded": 0,
+     "ground": 84,
+     "left": 16,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 17,
+     "cq": 9,
+     "loaded": 0,
+     "ground": 84,
+     "left": 16,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 18,
+     "cq": 9,
+     "loaded": 0,
+     "ground": 104,
+     "left": 16,
+     "clear": 0,
+     "seconds": 51
+    },
+    {
+     "day": 19,
+     "cq": 9,
+     "loaded": 0,
+     "ground": 124,
+     "left": 0,
+     "clear": 0,
+     "seconds": 51
+    },
+    {
+     "day": 20,
+     "cq": 9,
+     "loaded": 0,
+     "ground": 124,
+     "left": 0,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 21,
+     "cq": 9,
+     "loaded": 0,
+     "ground": 124,
+     "left": 0,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 22,
+     "cq": 9,
+     "loaded": 0,
+     "ground": 124,
+     "left": 0,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 23,
+     "cq": 9,
+     "loaded": 0,
+     "ground": 144,
+     "left": 0,
+     "clear": 0,
+     "seconds": 51
+    },
+    {
+     "day": 24,
+     "cq": 9,
+     "loaded": 0,
+     "ground": 144,
+     "left": 0,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 25,
+     "cq": 9,
+     "loaded": 0,
+     "ground": 144,
+     "left": 0,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 26,
+     "cq": 9,
+     "loaded": 0,
+     "ground": 144,
+     "left": 0,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 27,
+     "cq": 8.43,
+     "loaded": 3,
+     "ground": 169,
+     "left": 0,
+     "clear": 0,
+     "seconds": 62
+    },
+    {
+     "day": 28,
+     "cq": 8.15,
+     "loaded": 5,
+     "ground": 194,
+     "left": 0,
+     "clear": 0,
+     "seconds": 62
+    },
+    {
+     "day": 29,
+     "cq": 9,
+     "loaded": 0,
+     "ground": 214,
+     "left": 0,
+     "clear": 0,
+     "seconds": 51
+    },
+    {
+     "day": 30,
+     "cq": 9,
+     "loaded": 0,
+     "ground": 214,
+     "left": 0,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 31,
+     "cq": 8.82,
+     "loaded": 1,
+     "ground": 226,
+     "left": 0,
+     "clear": 0,
+     "seconds": 33
+    },
+    {
+     "day": 32,
+     "cq": 8.94,
+     "loaded": 1,
+     "ground": 251,
+     "left": 0,
+     "clear": 1,
+     "seconds": 62
+    },
+    {
+     "day": 33,
+     "cq": 8.26,
+     "loaded": 5,
+     "ground": 276,
+     "left": 0,
+     "clear": 1,
+     "seconds": 62
+    },
+    {
+     "day": 34,
+     "cq": 9.15,
+     "loaded": 0,
+     "ground": 296,
+     "left": 0,
+     "clear": 2,
+     "seconds": 51
+    },
+    {
+     "day": 35,
+     "cq": 8.57,
+     "loaded": 3,
+     "ground": 316,
+     "left": 0,
+     "clear": 2,
+     "seconds": 51
+    },
+    {
+     "day": 36,
+     "cq": 8.97,
+     "loaded": 1,
+     "ground": 341,
+     "left": 0,
+     "clear": 2,
+     "seconds": 62
+    },
+    {
+     "day": 37,
+     "cq": 9.32,
+     "loaded": 0,
+     "ground": 349,
+     "left": 0,
+     "clear": 3,
+     "seconds": 24
+    },
+    {
+     "day": 38,
+     "cq": 9.33,
+     "loaded": 0,
+     "ground": 369,
+     "left": 0,
+     "clear": 4,
+     "seconds": 51
+    },
+    {
+     "day": 39,
+     "cq": 9.33,
+     "loaded": 0,
+     "ground": 369,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    },
+    {
+     "day": 40,
+     "cq": 9.33,
+     "loaded": 0,
+     "ground": 369,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    },
+    {
+     "day": 41,
+     "cq": 9.33,
+     "loaded": 0,
+     "ground": 373,
+     "left": 0,
+     "clear": 4,
+     "seconds": 15
+    },
+    {
+     "day": 42,
+     "cq": 8.8,
+     "loaded": 3,
+     "ground": 393,
+     "left": 0,
+     "clear": 4,
+     "seconds": 51
+    },
+    {
+     "day": 43,
+     "cq": 9.57,
+     "loaded": 0,
+     "ground": 409,
+     "left": 0,
+     "clear": 4,
+     "seconds": 42
+    },
+    {
+     "day": 44,
+     "cq": 9.57,
+     "loaded": 0,
+     "ground": 429,
+     "left": 0,
+     "clear": 4,
+     "seconds": 51
+    },
+    {
+     "day": 45,
+     "cq": 9.57,
+     "loaded": 0,
+     "ground": 429,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    },
+    {
+     "day": 46,
+     "cq": 9.57,
+     "loaded": 0,
+     "ground": 429,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    },
+    {
+     "day": 47,
+     "cq": 9.56,
+     "loaded": 0,
+     "ground": 449,
+     "left": 0,
+     "clear": 4,
+     "seconds": 51
+    },
+    {
+     "day": 48,
+     "cq": 9.57,
+     "loaded": 0,
+     "ground": 469,
+     "left": 0,
+     "clear": 4,
+     "seconds": 51
+    },
+    {
+     "day": 49,
+     "cq": 9.44,
+     "loaded": 0,
+     "ground": 469,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    },
+    {
+     "day": 50,
+     "cq": 9.45,
+     "loaded": 0,
+     "ground": 489,
+     "left": 0,
+     "clear": 4,
+     "seconds": 51
+    },
+    {
+     "day": 51,
+     "cq": 9.45,
+     "loaded": 0,
+     "ground": 489,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    },
+    {
+     "day": 52,
+     "cq": 9.45,
+     "loaded": 0,
+     "ground": 489,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    },
+    {
+     "day": 53,
+     "cq": 9.45,
+     "loaded": 0,
+     "ground": 489,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    },
+    {
+     "day": 54,
+     "cq": 9.45,
+     "loaded": 0,
+     "ground": 493,
+     "left": 0,
+     "clear": 4,
+     "seconds": 15
+    },
+    {
+     "day": 55,
+     "cq": 9.45,
+     "loaded": 0,
+     "ground": 493,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    },
+    {
+     "day": 56,
+     "cq": 9.49,
+     "loaded": 0,
+     "ground": 513,
+     "left": 0,
+     "clear": 4,
+     "seconds": 51
+    },
+    {
+     "day": 57,
+     "cq": 9.57,
+     "loaded": 0,
+     "ground": 517,
+     "left": 0,
+     "clear": 4,
+     "seconds": 15
+    },
+    {
+     "day": 58,
+     "cq": 9.57,
+     "loaded": 0,
+     "ground": 517,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    },
+    {
+     "day": 59,
+     "cq": 9.57,
+     "loaded": 0,
+     "ground": 517,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    },
+    {
+     "day": 60,
+     "cq": 9.57,
+     "loaded": 0,
+     "ground": 517,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    },
+    {
+     "day": 61,
+     "cq": 9.61,
+     "loaded": 0,
+     "ground": 529,
+     "left": 0,
+     "clear": 4,
+     "seconds": 33
+    },
+    {
+     "day": 62,
+     "cq": 9.61,
+     "loaded": 0,
+     "ground": 529,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    },
+    {
+     "day": 63,
+     "cq": 9.61,
+     "loaded": 0,
+     "ground": 529,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    },
+    {
+     "day": 64,
+     "cq": 9.61,
+     "loaded": 0,
+     "ground": 529,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    },
+    {
+     "day": 65,
+     "cq": 9.61,
+     "loaded": 0,
+     "ground": 529,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    },
+    {
+     "day": 66,
+     "cq": 9.63,
+     "loaded": 0,
+     "ground": 549,
+     "left": 0,
+     "clear": 4,
+     "seconds": 51
+    },
+    {
+     "day": 67,
+     "cq": 9.63,
+     "loaded": 0,
+     "ground": 549,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    },
+    {
+     "day": 68,
+     "cq": 9.63,
+     "loaded": 0,
+     "ground": 549,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    },
+    {
+     "day": 69,
+     "cq": 9.63,
+     "loaded": 0,
+     "ground": 549,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    },
+    {
+     "day": 70,
+     "cq": 9.71,
+     "loaded": 0,
+     "ground": 553,
+     "left": 0,
+     "clear": 4,
+     "seconds": 15
+    },
+    {
+     "day": 71,
+     "cq": 9.74,
+     "loaded": 0,
+     "ground": 565,
+     "left": 0,
+     "clear": 4,
+     "seconds": 33
+    },
+    {
+     "day": 72,
+     "cq": 9.74,
+     "loaded": 0,
+     "ground": 565,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    },
+    {
+     "day": 73,
+     "cq": 9.7,
+     "loaded": 0,
+     "ground": 565,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    },
+    {
+     "day": 74,
+     "cq": 9.63,
+     "loaded": 0,
+     "ground": 565,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    },
+    {
+     "day": 75,
+     "cq": 9.63,
+     "loaded": 0,
+     "ground": 565,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    },
+    {
+     "day": 76,
+     "cq": 9.61,
+     "loaded": 0,
+     "ground": 565,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    },
+    {
+     "day": 77,
+     "cq": 9.61,
+     "loaded": 0,
+     "ground": 565,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    },
+    {
+     "day": 78,
+     "cq": 9.61,
+     "loaded": 0,
+     "ground": 565,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    },
+    {
+     "day": 79,
+     "cq": 9.61,
+     "loaded": 0,
+     "ground": 569,
+     "left": 0,
+     "clear": 4,
+     "seconds": 15
+    },
+    {
+     "day": 80,
+     "cq": 9.61,
+     "loaded": 0,
+     "ground": 569,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    },
+    {
+     "day": 81,
+     "cq": 9.61,
+     "loaded": 0,
+     "ground": 569,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    },
+    {
+     "day": 82,
+     "cq": 9.59,
+     "loaded": 0,
+     "ground": 569,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    },
+    {
+     "day": 83,
+     "cq": 9.59,
+     "loaded": 0,
+     "ground": 569,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    },
+    {
+     "day": 84,
+     "cq": 9.59,
+     "loaded": 0,
+     "ground": 569,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    },
+    {
+     "day": 85,
+     "cq": 9.59,
+     "loaded": 0,
+     "ground": 569,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    },
+    {
+     "day": 86,
+     "cq": 9.59,
+     "loaded": 0,
+     "ground": 569,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    },
+    {
+     "day": 87,
+     "cq": 9.59,
+     "loaded": 0,
+     "ground": 569,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    },
+    {
+     "day": 88,
+     "cq": 9.59,
+     "loaded": 0,
+     "ground": 569,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    },
+    {
+     "day": 89,
+     "cq": 9.59,
+     "loaded": 0,
+     "ground": 569,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    },
+    {
+     "day": 90,
+     "cq": 9.59,
+     "loaded": 0,
+     "ground": 569,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    }
+   ],
+   "notes": {
+    "firstLoaded": 6,
+    "firstRelease": 6,
+    "giftGone": 19
+   },
+   "cq0": 9,
+   "cq90": 9.59,
+   "best": 9.74,
+   "worst": 8.15,
+   "ground": 569,
+   "clear": 4,
+   "minutes": 1193,
+   "marks": [
+    "First run",
+    "Seven days",
+    "Thirty days",
+    "Ninety days",
+    "Sixty minutes",
+    "Ten addresses",
+    "Fifty addresses",
+    "First story",
+    "Ten stories",
+    "Nine axes",
+    "Laws measured",
+    "First clearing",
+    "Ten snapshots"
+   ],
+   "next": "Blueprint stated",
+   "streak": 90,
+   "band": "Collapsed",
+   "accuracy": 15.4,
+   "ceiling": 15.4,
+   "secondsInRelease": 1483
+  },
+  "mid": {
+   "lawCentre": 5,
+   "curve": [
+    {
+     "day": 1,
+     "cq": 25,
+     "loaded": 0,
+     "ground": 0,
+     "left": 100,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 2,
+     "cq": 25,
+     "loaded": 0,
+     "ground": 0,
+     "left": 100,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 3,
+     "cq": 25,
+     "loaded": 0,
+     "ground": 0,
+     "left": 100,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 4,
+     "cq": 25,
+     "loaded": 0,
+     "ground": 0,
+     "left": 100,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 5,
+     "cq": 25,
+     "loaded": 0,
+     "ground": 0,
+     "left": 100,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 6,
+     "cq": 25,
+     "loaded": 0,
+     "ground": 12,
+     "left": 100,
+     "clear": 0,
+     "seconds": 33
+    },
+    {
+     "day": 7,
+     "cq": 25,
+     "loaded": 0,
+     "ground": 12,
+     "left": 88,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 8,
+     "cq": 25,
+     "loaded": 0,
+     "ground": 12,
+     "left": 88,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 9,
+     "cq": 25,
+     "loaded": 0,
+     "ground": 12,
+     "left": 88,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 10,
+     "cq": 25,
+     "loaded": 0,
+     "ground": 32,
+     "left": 88,
+     "clear": 0,
+     "seconds": 51
+    },
+    {
+     "day": 11,
+     "cq": 25,
+     "loaded": 0,
+     "ground": 36,
+     "left": 68,
+     "clear": 0,
+     "seconds": 15
+    },
+    {
+     "day": 12,
+     "cq": 25,
+     "loaded": 0,
+     "ground": 56,
+     "left": 64,
+     "clear": 0,
+     "seconds": 51
+    },
+    {
+     "day": 13,
+     "cq": 25,
+     "loaded": 0,
+     "ground": 56,
+     "left": 44,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 14,
+     "cq": 25,
+     "loaded": 0,
+     "ground": 56,
+     "left": 44,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 15,
+     "cq": 25,
+     "loaded": 0,
+     "ground": 60,
+     "left": 44,
+     "clear": 0,
+     "seconds": 15
+    },
+    {
+     "day": 16,
+     "cq": 25,
+     "loaded": 0,
+     "ground": 60,
+     "left": 40,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 17,
+     "cq": 25,
+     "loaded": 0,
+     "ground": 60,
+     "left": 40,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 18,
+     "cq": 25,
+     "loaded": 0,
+     "ground": 68,
+     "left": 40,
+     "clear": 0,
+     "seconds": 24
+    },
+    {
+     "day": 19,
+     "cq": 25,
+     "loaded": 0,
+     "ground": 88,
+     "left": 32,
+     "clear": 0,
+     "seconds": 51
+    },
+    {
+     "day": 20,
+     "cq": 25,
+     "loaded": 0,
+     "ground": 88,
+     "left": 12,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 21,
+     "cq": 25,
+     "loaded": 0,
+     "ground": 88,
+     "left": 12,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 22,
+     "cq": 25,
+     "loaded": 0,
+     "ground": 88,
+     "left": 12,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 23,
+     "cq": 25,
+     "loaded": 0,
+     "ground": 108,
+     "left": 12,
+     "clear": 0,
+     "seconds": 51
+    },
+    {
+     "day": 24,
+     "cq": 25,
+     "loaded": 0,
+     "ground": 108,
+     "left": 0,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 25,
+     "cq": 25,
+     "loaded": 0,
+     "ground": 108,
+     "left": 0,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 26,
+     "cq": 25,
+     "loaded": 0,
+     "ground": 108,
+     "left": 0,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 27,
+     "cq": 24.44,
+     "loaded": 1,
+     "ground": 133,
+     "left": 0,
+     "clear": 0,
+     "seconds": 62
+    },
+    {
+     "day": 28,
+     "cq": 25,
+     "loaded": 0,
+     "ground": 157,
+     "left": 0,
+     "clear": 0,
+     "seconds": 59
+    },
+    {
+     "day": 29,
+     "cq": 25,
+     "loaded": 0,
+     "ground": 157,
+     "left": 0,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 30,
+     "cq": 25,
+     "loaded": 0,
+     "ground": 157,
+     "left": 0,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 31,
+     "cq": 25,
+     "loaded": 0,
+     "ground": 161,
+     "left": 0,
+     "clear": 0,
+     "seconds": 15
+    },
+    {
+     "day": 32,
+     "cq": 24.5,
+     "loaded": 1,
+     "ground": 186,
+     "left": 0,
+     "clear": 0,
+     "seconds": 62
+    },
+    {
+     "day": 33,
+     "cq": 22.06,
+     "loaded": 6,
+     "ground": 211,
+     "left": 0,
+     "clear": 0,
+     "seconds": 62
+    },
+    {
+     "day": 34,
+     "cq": 25.05,
+     "loaded": 0,
+     "ground": 235,
+     "left": 0,
+     "clear": 0,
+     "seconds": 59
+    },
+    {
+     "day": 35,
+     "cq": 23.55,
+     "loaded": 3,
+     "ground": 255,
+     "left": 0,
+     "clear": 0,
+     "seconds": 51
+    },
+    {
+     "day": 36,
+     "cq": 25.07,
+     "loaded": 0,
+     "ground": 280,
+     "left": 0,
+     "clear": 0,
+     "seconds": 62
+    },
+    {
+     "day": 37,
+     "cq": 25.3,
+     "loaded": 0,
+     "ground": 284,
+     "left": 0,
+     "clear": 1,
+     "seconds": 15
+    },
+    {
+     "day": 38,
+     "cq": 25.33,
+     "loaded": 0,
+     "ground": 304,
+     "left": 0,
+     "clear": 1,
+     "seconds": 51
+    },
+    {
+     "day": 39,
+     "cq": 25.33,
+     "loaded": 0,
+     "ground": 304,
+     "left": 0,
+     "clear": 1,
+     "seconds": 0
+    },
+    {
+     "day": 40,
+     "cq": 25.33,
+     "loaded": 0,
+     "ground": 304,
+     "left": 0,
+     "clear": 1,
+     "seconds": 0
+    },
+    {
+     "day": 41,
+     "cq": 25.33,
+     "loaded": 0,
+     "ground": 308,
+     "left": 0,
+     "clear": 1,
+     "seconds": 15
+    },
+    {
+     "day": 42,
+     "cq": 25.36,
+     "loaded": 0,
+     "ground": 328,
+     "left": 0,
+     "clear": 2,
+     "seconds": 51
+    },
+    {
+     "day": 43,
+     "cq": 25.19,
+     "loaded": 0,
+     "ground": 328,
+     "left": 0,
+     "clear": 2,
+     "seconds": 0
+    },
+    {
+     "day": 44,
+     "cq": 25.19,
+     "loaded": 0,
+     "ground": 348,
+     "left": 0,
+     "clear": 3,
+     "seconds": 51
+    },
+    {
+     "day": 45,
+     "cq": 25.19,
+     "loaded": 0,
+     "ground": 348,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 46,
+     "cq": 25.19,
+     "loaded": 0,
+     "ground": 348,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 47,
+     "cq": 25.25,
+     "loaded": 0,
+     "ground": 368,
+     "left": 0,
+     "clear": 4,
+     "seconds": 51
+    },
+    {
+     "day": 48,
+     "cq": 25.35,
+     "loaded": 0,
+     "ground": 380,
+     "left": 0,
+     "clear": 4,
+     "seconds": 33
+    },
+    {
+     "day": 49,
+     "cq": 25.35,
+     "loaded": 0,
+     "ground": 380,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    },
+    {
+     "day": 50,
+     "cq": 25.36,
+     "loaded": 0,
+     "ground": 400,
+     "left": 0,
+     "clear": 4,
+     "seconds": 51
+    },
+    {
+     "day": 51,
+     "cq": 25.36,
+     "loaded": 0,
+     "ground": 400,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    },
+    {
+     "day": 52,
+     "cq": 25.36,
+     "loaded": 0,
+     "ground": 400,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    },
+    {
+     "day": 53,
+     "cq": 25.36,
+     "loaded": 0,
+     "ground": 400,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    },
+    {
+     "day": 54,
+     "cq": 25.36,
+     "loaded": 0,
+     "ground": 404,
+     "left": 0,
+     "clear": 4,
+     "seconds": 15
+    },
+    {
+     "day": 55,
+     "cq": 25.36,
+     "loaded": 0,
+     "ground": 404,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    },
+    {
+     "day": 56,
+     "cq": 25.48,
+     "loaded": 0,
+     "ground": 412,
+     "left": 0,
+     "clear": 4,
+     "seconds": 24
+    },
+    {
+     "day": 57,
+     "cq": 25.6,
+     "loaded": 0,
+     "ground": 416,
+     "left": 0,
+     "clear": 4,
+     "seconds": 15
+    },
+    {
+     "day": 58,
+     "cq": 25.6,
+     "loaded": 0,
+     "ground": 416,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    },
+    {
+     "day": 59,
+     "cq": 25.6,
+     "loaded": 0,
+     "ground": 416,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    },
+    {
+     "day": 60,
+     "cq": 25.6,
+     "loaded": 0,
+     "ground": 416,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    },
+    {
+     "day": 61,
+     "cq": 25.68,
+     "loaded": 0,
+     "ground": 428,
+     "left": 0,
+     "clear": 4,
+     "seconds": 33
+    },
+    {
+     "day": 62,
+     "cq": 25.68,
+     "loaded": 0,
+     "ground": 428,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    },
+    {
+     "day": 63,
+     "cq": 25.68,
+     "loaded": 0,
+     "ground": 428,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    },
+    {
+     "day": 64,
+     "cq": 25.68,
+     "loaded": 0,
+     "ground": 428,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    },
+    {
+     "day": 65,
+     "cq": 25.68,
+     "loaded": 0,
+     "ground": 428,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    },
+    {
+     "day": 66,
+     "cq": 25.72,
+     "loaded": 0,
+     "ground": 440,
+     "left": 0,
+     "clear": 4,
+     "seconds": 33
+    },
+    {
+     "day": 67,
+     "cq": 25.72,
+     "loaded": 0,
+     "ground": 440,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    },
+    {
+     "day": 68,
+     "cq": 25.72,
+     "loaded": 0,
+     "ground": 440,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    },
+    {
+     "day": 69,
+     "cq": 25.72,
+     "loaded": 0,
+     "ground": 440,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    },
+    {
+     "day": 70,
+     "cq": 25.63,
+     "loaded": 0,
+     "ground": 440,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    },
+    {
+     "day": 71,
+     "cq": 25.6,
+     "loaded": 0,
+     "ground": 440,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    },
+    {
+     "day": 72,
+     "cq": 25.6,
+     "loaded": 0,
+     "ground": 440,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    },
+    {
+     "day": 73,
+     "cq": 25.54,
+     "loaded": 0,
+     "ground": 440,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    },
+    {
+     "day": 74,
+     "cq": 25.54,
+     "loaded": 0,
+     "ground": 440,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    },
+    {
+     "day": 75,
+     "cq": 25.54,
+     "loaded": 0,
+     "ground": 440,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    },
+    {
+     "day": 76,
+     "cq": 25.54,
+     "loaded": 0,
+     "ground": 440,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    },
+    {
+     "day": 77,
+     "cq": 25.54,
+     "loaded": 0,
+     "ground": 440,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    },
+    {
+     "day": 78,
+     "cq": 25.54,
+     "loaded": 0,
+     "ground": 440,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    },
+    {
+     "day": 79,
+     "cq": 25.54,
+     "loaded": 0,
+     "ground": 444,
+     "left": 0,
+     "clear": 4,
+     "seconds": 15
+    },
+    {
+     "day": 80,
+     "cq": 25.54,
+     "loaded": 0,
+     "ground": 444,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    },
+    {
+     "day": 81,
+     "cq": 25.54,
+     "loaded": 0,
+     "ground": 444,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    },
+    {
+     "day": 82,
+     "cq": 25.54,
+     "loaded": 0,
+     "ground": 444,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    },
+    {
+     "day": 83,
+     "cq": 25.54,
+     "loaded": 0,
+     "ground": 444,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    },
+    {
+     "day": 84,
+     "cq": 25.54,
+     "loaded": 0,
+     "ground": 444,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    },
+    {
+     "day": 85,
+     "cq": 25.54,
+     "loaded": 0,
+     "ground": 444,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    },
+    {
+     "day": 86,
+     "cq": 25.54,
+     "loaded": 0,
+     "ground": 444,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    },
+    {
+     "day": 87,
+     "cq": 25.54,
+     "loaded": 0,
+     "ground": 444,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    },
+    {
+     "day": 88,
+     "cq": 25.54,
+     "loaded": 0,
+     "ground": 444,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    },
+    {
+     "day": 89,
+     "cq": 25.54,
+     "loaded": 0,
+     "ground": 444,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    },
+    {
+     "day": 90,
+     "cq": 25.54,
+     "loaded": 0,
+     "ground": 444,
+     "left": 0,
+     "clear": 4,
+     "seconds": 0
+    }
+   ],
+   "notes": {
+    "firstLoaded": 6,
+    "firstRelease": 6,
+    "giftGone": 24
+   },
+   "cq0": 25,
+   "cq90": 25.54,
+   "best": 25.72,
+   "worst": 22.06,
+   "ground": 444,
+   "clear": 4,
+   "minutes": 1193,
+   "marks": [
+    "First run",
+    "Seven days",
+    "Thirty days",
+    "Ninety days",
+    "Sixty minutes",
+    "Ten addresses",
+    "Fifty addresses",
+    "First story",
+    "Ten stories",
+    "Nine axes",
+    "Laws measured",
+    "First clearing",
+    "Ten snapshots"
+   ],
+   "next": "Blueprint stated",
+   "streak": 90,
+   "band": "Corrupt",
+   "accuracy": 19,
+   "ceiling": 33.4,
+   "secondsInRelease": 1176
+  },
+  "high": {
+   "lawCentre": 7,
+   "curve": [
+    {
+     "day": 1,
+     "cq": 49,
+     "loaded": 0,
+     "ground": 0,
+     "left": 100,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 2,
+     "cq": 49,
+     "loaded": 0,
+     "ground": 0,
+     "left": 100,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 3,
+     "cq": 49,
+     "loaded": 0,
+     "ground": 0,
+     "left": 100,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 4,
+     "cq": 49,
+     "loaded": 0,
+     "ground": 0,
+     "left": 100,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 5,
+     "cq": 49,
+     "loaded": 0,
+     "ground": 0,
+     "left": 100,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 6,
+     "cq": 49,
+     "loaded": 0,
+     "ground": 0,
+     "left": 100,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 7,
+     "cq": 49,
+     "loaded": 0,
+     "ground": 0,
+     "left": 100,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 8,
+     "cq": 49,
+     "loaded": 0,
+     "ground": 0,
+     "left": 100,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 9,
+     "cq": 49,
+     "loaded": 0,
+     "ground": 0,
+     "left": 100,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 10,
+     "cq": 49,
+     "loaded": 0,
+     "ground": 12,
+     "left": 100,
+     "clear": 0,
+     "seconds": 33
+    },
+    {
+     "day": 11,
+     "cq": 49,
+     "loaded": 0,
+     "ground": 12,
+     "left": 88,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 12,
+     "cq": 49,
+     "loaded": 0,
+     "ground": 32,
+     "left": 88,
+     "clear": 0,
+     "seconds": 51
+    },
+    {
+     "day": 13,
+     "cq": 49,
+     "loaded": 0,
+     "ground": 32,
+     "left": 68,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 14,
+     "cq": 49,
+     "loaded": 0,
+     "ground": 32,
+     "left": 68,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 15,
+     "cq": 48.01,
+     "loaded": 1,
+     "ground": 57,
+     "left": 68,
+     "clear": 0,
+     "seconds": 62
+    },
+    {
+     "day": 16,
+     "cq": 49,
+     "loaded": 0,
+     "ground": 61,
+     "left": 43,
+     "clear": 0,
+     "seconds": 15
+    },
+    {
+     "day": 17,
+     "cq": 49,
+     "loaded": 0,
+     "ground": 61,
+     "left": 39,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 18,
+     "cq": 49,
+     "loaded": 0,
+     "ground": 61,
+     "left": 39,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 19,
+     "cq": 48.03,
+     "loaded": 1,
+     "ground": 86,
+     "left": 39,
+     "clear": 0,
+     "seconds": 62
+    },
+    {
+     "day": 20,
+     "cq": 49,
+     "loaded": 0,
+     "ground": 90,
+     "left": 14,
+     "clear": 0,
+     "seconds": 15
+    },
+    {
+     "day": 21,
+     "cq": 49,
+     "loaded": 0,
+     "ground": 90,
+     "left": 10,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 22,
+     "cq": 49,
+     "loaded": 0,
+     "ground": 90,
+     "left": 10,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 23,
+     "cq": 49,
+     "loaded": 0,
+     "ground": 102,
+     "left": 10,
+     "clear": 0,
+     "seconds": 33
+    },
+    {
+     "day": 24,
+     "cq": 49,
+     "loaded": 0,
+     "ground": 102,
+     "left": 0,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 25,
+     "cq": 49,
+     "loaded": 0,
+     "ground": 102,
+     "left": 0,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 26,
+     "cq": 49,
+     "loaded": 0,
+     "ground": 102,
+     "left": 0,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 27,
+     "cq": 49,
+     "loaded": 0,
+     "ground": 114,
+     "left": 0,
+     "clear": 0,
+     "seconds": 33
+    },
+    {
+     "day": 28,
+     "cq": 44.39,
+     "loaded": 5,
+     "ground": 139,
+     "left": 0,
+     "clear": 0,
+     "seconds": 62
+    },
+    {
+     "day": 29,
+     "cq": 49,
+     "loaded": 0,
+     "ground": 159,
+     "left": 0,
+     "clear": 0,
+     "seconds": 51
+    },
+    {
+     "day": 30,
+     "cq": 49,
+     "loaded": 0,
+     "ground": 159,
+     "left": 0,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 31,
+     "cq": 49,
+     "loaded": 0,
+     "ground": 163,
+     "left": 0,
+     "clear": 0,
+     "seconds": 15
+    },
+    {
+     "day": 32,
+     "cq": 49,
+     "loaded": 0,
+     "ground": 183,
+     "left": 0,
+     "clear": 0,
+     "seconds": 51
+    },
+    {
+     "day": 33,
+     "cq": 49,
+     "loaded": 0,
+     "ground": 203,
+     "left": 0,
+     "clear": 0,
+     "seconds": 51
+    },
+    {
+     "day": 34,
+     "cq": 49,
+     "loaded": 0,
+     "ground": 203,
+     "left": 0,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 35,
+     "cq": 49,
+     "loaded": 0,
+     "ground": 223,
+     "left": 0,
+     "clear": 0,
+     "seconds": 51
+    },
+    {
+     "day": 36,
+     "cq": 49,
+     "loaded": 0,
+     "ground": 243,
+     "left": 0,
+     "clear": 0,
+     "seconds": 51
+    },
+    {
+     "day": 37,
+     "cq": 49,
+     "loaded": 0,
+     "ground": 243,
+     "left": 0,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 38,
+     "cq": 49,
+     "loaded": 0,
+     "ground": 263,
+     "left": 0,
+     "clear": 0,
+     "seconds": 51
+    },
+    {
+     "day": 39,
+     "cq": 49,
+     "loaded": 0,
+     "ground": 263,
+     "left": 0,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 40,
+     "cq": 49,
+     "loaded": 0,
+     "ground": 263,
+     "left": 0,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 41,
+     "cq": 49,
+     "loaded": 0,
+     "ground": 267,
+     "left": 0,
+     "clear": 0,
+     "seconds": 15
+    },
+    {
+     "day": 42,
+     "cq": 49.11,
+     "loaded": 0,
+     "ground": 287,
+     "left": 0,
+     "clear": 0,
+     "seconds": 51
+    },
+    {
+     "day": 43,
+     "cq": 49.11,
+     "loaded": 0,
+     "ground": 287,
+     "left": 0,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 44,
+     "cq": 49.11,
+     "loaded": 0,
+     "ground": 307,
+     "left": 0,
+     "clear": 0,
+     "seconds": 51
+    },
+    {
+     "day": 45,
+     "cq": 49.11,
+     "loaded": 0,
+     "ground": 307,
+     "left": 0,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 46,
+     "cq": 49.11,
+     "loaded": 0,
+     "ground": 307,
+     "left": 0,
+     "clear": 0,
+     "seconds": 0
+    },
+    {
+     "day": 47,
+     "cq": 49.2,
+     "loaded": 0,
+     "ground": 327,
+     "left": 0,
+     "clear": 0,
+     "seconds": 51
+    },
+    {
+     "day": 48,
+     "cq": 49.32,
+     "loaded": 0,
+     "ground": 339,
+     "left": 0,
+     "clear": 1,
+     "seconds": 33
+    },
+    {
+     "day": 49,
+     "cq": 49.32,
+     "loaded": 0,
+     "ground": 339,
+     "left": 0,
+     "clear": 1,
+     "seconds": 0
+    },
+    {
+     "day": 50,
+     "cq": 49.34,
+     "loaded": 0,
+     "ground": 351,
+     "left": 0,
+     "clear": 2,
+     "seconds": 33
+    },
+    {
+     "day": 51,
+     "cq": 49.34,
+     "loaded": 0,
+     "ground": 351,
+     "left": 0,
+     "clear": 2,
+     "seconds": 0
+    },
+    {
+     "day": 52,
+     "cq": 49.34,
+     "loaded": 0,
+     "ground": 351,
+     "left": 0,
+     "clear": 2,
+     "seconds": 0
+    },
+    {
+     "day": 53,
+     "cq": 49.34,
+     "loaded": 0,
+     "ground": 351,
+     "left": 0,
+     "clear": 2,
+     "seconds": 0
+    },
+    {
+     "day": 54,
+     "cq": 49.34,
+     "loaded": 0,
+     "ground": 355,
+     "left": 0,
+     "clear": 2,
+     "seconds": 15
+    },
+    {
+     "day": 55,
+     "cq": 49.34,
+     "loaded": 0,
+     "ground": 355,
+     "left": 0,
+     "clear": 2,
+     "seconds": 0
+    },
+    {
+     "day": 56,
+     "cq": 49.52,
+     "loaded": 0,
+     "ground": 359,
+     "left": 0,
+     "clear": 3,
+     "seconds": 15
+    },
+    {
+     "day": 57,
+     "cq": 49.42,
+     "loaded": 0,
+     "ground": 359,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 58,
+     "cq": 49.42,
+     "loaded": 0,
+     "ground": 359,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 59,
+     "cq": 49.42,
+     "loaded": 0,
+     "ground": 359,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 60,
+     "cq": 49.42,
+     "loaded": 0,
+     "ground": 359,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 61,
+     "cq": 49.35,
+     "loaded": 0,
+     "ground": 359,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 62,
+     "cq": 49.35,
+     "loaded": 0,
+     "ground": 359,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 63,
+     "cq": 49.35,
+     "loaded": 0,
+     "ground": 359,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 64,
+     "cq": 49.35,
+     "loaded": 0,
+     "ground": 359,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 65,
+     "cq": 49.35,
+     "loaded": 0,
+     "ground": 359,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 66,
+     "cq": 49.33,
+     "loaded": 0,
+     "ground": 359,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 67,
+     "cq": 49.33,
+     "loaded": 0,
+     "ground": 359,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 68,
+     "cq": 49.33,
+     "loaded": 0,
+     "ground": 359,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 69,
+     "cq": 49.33,
+     "loaded": 0,
+     "ground": 359,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 70,
+     "cq": 49.33,
+     "loaded": 0,
+     "ground": 359,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 71,
+     "cq": 49.33,
+     "loaded": 0,
+     "ground": 359,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 72,
+     "cq": 49.33,
+     "loaded": 0,
+     "ground": 359,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 73,
+     "cq": 49.33,
+     "loaded": 0,
+     "ground": 359,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 74,
+     "cq": 49.33,
+     "loaded": 0,
+     "ground": 359,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 75,
+     "cq": 49.33,
+     "loaded": 0,
+     "ground": 359,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 76,
+     "cq": 49.33,
+     "loaded": 0,
+     "ground": 359,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 77,
+     "cq": 49.33,
+     "loaded": 0,
+     "ground": 359,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 78,
+     "cq": 49.33,
+     "loaded": 0,
+     "ground": 359,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 79,
+     "cq": 49.33,
+     "loaded": 0,
+     "ground": 363,
+     "left": 0,
+     "clear": 3,
+     "seconds": 15
+    },
+    {
+     "day": 80,
+     "cq": 49.33,
+     "loaded": 0,
+     "ground": 363,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 81,
+     "cq": 49.33,
+     "loaded": 0,
+     "ground": 363,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 82,
+     "cq": 49.33,
+     "loaded": 0,
+     "ground": 363,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 83,
+     "cq": 49.33,
+     "loaded": 0,
+     "ground": 363,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 84,
+     "cq": 49.33,
+     "loaded": 0,
+     "ground": 363,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 85,
+     "cq": 49.33,
+     "loaded": 0,
+     "ground": 363,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 86,
+     "cq": 49.33,
+     "loaded": 0,
+     "ground": 363,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 87,
+     "cq": 49.33,
+     "loaded": 0,
+     "ground": 363,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 88,
+     "cq": 49.33,
+     "loaded": 0,
+     "ground": 363,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 89,
+     "cq": 49.33,
+     "loaded": 0,
+     "ground": 363,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    },
+    {
+     "day": 90,
+     "cq": 49.33,
+     "loaded": 0,
+     "ground": 363,
+     "left": 0,
+     "clear": 3,
+     "seconds": 0
+    }
+   ],
+   "notes": {
+    "firstLoaded": 10,
+    "firstRelease": 10,
+    "giftGone": 24
+   },
+   "cq0": 49,
+   "cq90": 49.33,
+   "best": 49.52,
+   "worst": 44.39,
+   "ground": 363,
+   "clear": 3,
+   "minutes": 1193,
+   "marks": [
+    "First run",
+    "Seven days",
+    "Thirty days",
+    "Ninety days",
+    "Sixty minutes",
+    "Ten addresses",
+    "Fifty addresses",
+    "First story",
+    "Ten stories",
+    "Laws measured",
+    "First clearing",
+    "Ten snapshots"
+   ],
+   "next": "Nine axes",
+   "streak": 90,
+   "band": "Oscillating",
+   "accuracy": 22.6,
+   "ceiling": 57.9,
+   "secondsInRelease": 966
+  }
+ },
+ "model": {
+  "showup": [
+   {
+    "nm": "Diane",
+    "age": 46,
+    "role": "founder, second company",
+    "weight": 180,
+    "grid": 3,
+    "device": "both",
+    "arrive": 0.86,
+    "base": 0.42,
+    "shape": "daily, in forty second slices",
+    "minutes": [
+     0.7,
+     2.5
+    ],
+    "gap": [
+     0.05,
+     3
+    ],
+    "work": 0.18,
+    "patience": 1.4,
+    "refers": false,
+    "whys": {
+     "delta": 1,
+     "pressure": 0.7,
+     "status": 0.9
+    },
+    "wants": [
+     "delta"
+    ],
+    "why": "A number she does not already have, checked between meetings. Rest reads as a moral failure, so a session that asks for fifteen minutes is a session she does not take.",
+    "whyNot": "Nothing moved since yesterday. She will not pay twice for the same screen."
+   },
+   {
+    "nm": "Derek",
+    "age": 39,
+    "role": "high performer, endurance",
+    "weight": 170,
+    "grid": 2,
+    "device": "both",
+    "arrive": 0.74,
+    "base": 0.55,
+    "shape": "daily while a protocol is live",
+    "minutes": [
+     4,
+     14
+    ],
+    "gap": [
+     0.06,
+     5
+    ],
+    "work": 0.72,
+    "patience": 2.2,
+    "refers": false,
+    "whys": {
+     "cost": 1,
+     "streak": 0.9,
+     "body": 0.6
+    },
+    "wants": [
+     "cost",
+     "delta"
+    ],
+    "why": "Output. He will run a protocol daily for a quarter if it is a protocol. The release is a protocol.",
+    "whyNot": "Nothing tells him what the holding costs him. Pain is not the hook, the watts are, and there is no watts line."
+   },
+   {
+    "nm": "Marcus",
+    "age": 44,
+    "role": "creative director",
+    "weight": 160,
+    "grid": 4,
+    "device": "both",
+    "arrive": 0.58,
+    "base": 0.16,
+    "shape": "every few days, as an inspection",
+    "minutes": [
+     2,
+     9
+    ],
+    "gap": [
+     0.1,
+     6
+    ],
+    "work": 0.12,
+    "patience": 2.6,
+    "refers": true,
+    "whys": {
+     "judge": 1,
+     "craft": 0.8
+    },
+    "wants": [
+     "craft"
+    ],
+    "why": "The quality judgement. He opens it to see whether it is still good and whether anybody fixed the thing he found.",
+    "whyNot": "He does not do the work. Level four on the grid buys it, reads half and avoids the practice because clearing the node hurts."
+   },
+   {
+    "nm": "Angela",
+    "age": 36,
+    "role": "seeker, six modalities",
+    "weight": 150,
+    "grid": 5,
+    "device": "phone",
+    "arrive": 0.79,
+    "base": 0.34,
+    "shape": "bursts, then nothing",
+    "minutes": [
+     3,
+     16
+    ],
+    "gap": [
+     0.12,
+     9
+    ],
+    "work": 0.34,
+    "patience": 1.2,
+    "refers": true,
+    "whys": {
+     "feel": 1,
+     "seek": 0.9,
+     "meaning": 1
+    },
+    "wants": [
+     "meaning",
+     "named"
+    ],
+    "why": "Something named the thing she has no word for. She arrived from a group chat and she will tell that group chat.",
+    "whyNot": "Mechanical language, and the word Incoherent. Level five wants magic, not mechanics, and leaves when it turns out to be objective physical work."
+   },
+   {
+    "nm": "Sofia",
+    "age": 41,
+    "role": "somatic practitioner",
+    "weight": 140,
+    "grid": 6,
+    "device": "both",
+    "arrive": 0.81,
+    "base": 0.3,
+    "shape": "weekly, and at eleven at night",
+    "minutes": [
+     6,
+     22
+    ],
+    "gap": [
+     0.07,
+     7
+    ],
+    "work": 0.66,
+    "patience": 3,
+    "refers": true,
+    "whys": {
+     "night": 1,
+     "client": 1,
+     "craft": 0.6
+    },
+    "wants": [
+     "named",
+     "refer"
+    ],
+    "why": "After the last client, for herself. And in session, on a client phone, which is the highest value use in the roster.",
+    "whyNot": "She cannot hand it to anybody. Her value is referral and there is no mechanism, so her use does not compound."
+   },
+   {
+    "nm": "James",
+    "age": 57,
+    "role": "C-suite, third turnaround",
+    "weight": 100,
+    "grid": 2,
+    "device": "both",
+    "arrive": 0.42,
+    "base": 0.07,
+    "shape": "once, possibly twice",
+    "minutes": [
+     1,
+     4
+    ],
+    "gap": [
+     0.16,
+     12
+    ],
+    "work": 0.08,
+    "patience": 1,
+    "refers": false,
+    "whys": {
+     "number": 1,
+     "peer": 0.8
+    },
+    "wants": [
+     "delta",
+     "number"
+    ],
+    "why": "A number a peer mentioned, and he wants his and he wants it higher.",
+    "whyNot": "Anything that looks like a persona picker or a worksheet. He is not going to be seen doing self help."
+   },
+   {
+    "nm": "Ana",
+    "age": 47,
+    "role": "teacher, one year out",
+    "weight": 50,
+    "grid": 4,
+    "device": "phone",
+    "arrive": 0.72,
+    "base": 0.46,
+    "shape": "irregular, at night",
+    "minutes": [
+     5,
+     25
+    ],
+    "gap": [
+     0.09,
+     4
+    ],
+    "work": 0.61,
+    "patience": 2.4,
+    "refers": false,
+    "whys": {
+     "night": 1,
+     "grief": 1,
+     "direction": 1
+    },
+    "wants": [
+     "named",
+     "direction"
+    ],
+    "why": "She is inside something and cannot see the far side. She will click anything that offers the shape of it.",
+    "whyNot": "Being told the shape and not the way out. She is the one person in the roster for whom a wrong answer costs something."
+   },
+   {
+    "nm": "Gordon",
+    "age": 58,
+    "role": "managing partner",
+    "weight": 35,
+    "grid": 1,
+    "device": "both",
+    "arrive": 0.06,
+    "base": 0.02,
+    "shape": "refuses",
+    "minutes": [
+     0.5,
+     2
+    ],
+    "gap": [
+     0.3,
+     20
+    ],
+    "work": 0.02,
+    "patience": 0.4,
+    "refers": false,
+    "whys": {
+     "deny": 1
+    },
+    "wants": [
+     "proof"
+    ],
+    "why": "Nothing. He has the most charge in the roster and refuses the frame. Do not chase him.",
+    "whyNot": "Any screen that opens with his pain is a screen for people who have pain."
+   },
+   {
+    "nm": "Rosa",
+    "age": 61,
+    "role": "retired midwife",
+    "weight": 15,
+    "grid": 10,
+    "device": "both",
+    "arrive": 0.12,
+    "base": 0.03,
+    "shape": "once, out of courtesy",
+    "minutes": [
+     1,
+     5
+    ],
+    "gap": [
+     0.25,
+     14
+    ],
+    "work": 0.5,
+    "patience": 2,
+    "refers": false,
+    "whys": {
+     "none": 1
+    },
+    "wants": [],
+    "why": "Nothing pulls. Things do not sit on her the way they used to.",
+    "whyNot": "Correctly not the customer, and the product should not pretend otherwise."
+   }
+  ],
+  "friction": {
+   "DRIFT": {
+    "nm": "The absence became permanent",
+    "surf": "outside the product",
+    "step": "a week goes by and nothing happens",
+    "cost": 0,
+    "hard": {},
+    "say": "not a screen. this is the person who stopped opening the file and never decided to. it is the counterpart of F10 and it is reported separately so F10 is only what fired inside a session."
+   },
+   "F1": {
+    "nm": "The box reads nothing out of what they wrote",
+    "surf": "Story",
+    "step": "press the commit control on an ordinary paragraph",
+    "cost": 0.16,
+    "hard": {
+     "Marcus": 1.8,
+     "Angela": 1.7,
+     "Sofia": 1.5,
+     "Ana": 1.4
+    },
+    "say": "parseStory returns no imprint, so the panel has nothing to show and the field does not move."
+   },
+   "F2": {
+    "nm": "The reading names an address the person did not describe",
+    "surf": "Story",
+    "step": "read the imprint panel after a commit",
+    "cost": 0.13,
+    "hard": {
+     "Angela": 1.9,
+     "Ana": 1.8,
+     "Sofia": 1.6,
+     "Marcus": 1.3
+    },
+    "say": "every imprint carries inferred, so the seat was read off a band and the address was chosen by a fallback."
+   },
+   "F3": {
+    "nm": "Nothing is above the line, so there is nothing to release",
+    "surf": "Story, Summary",
+    "step": "look for the release after telling it something true",
+    "cost": 0.2,
+    "hard": {
+     "Derek": 1.8,
+     "Ana": 1.6,
+     "Diane": 1.4
+    },
+    "say": "compute().loaded is empty. An address has to reach four to enter the reading at all."
+   },
+   "F4": {
+    "nm": "The reading does not move",
+    "surf": "Field, Summary",
+    "step": "look at the number after a session",
+    "cost": 0.17,
+    "hard": {
+     "Diane": 2,
+     "James": 2,
+     "Derek": 1.6,
+     "Marcus": 1.2
+    },
+    "say": "CQ is unchanged to two decimal places on the session they just spent."
+   },
+   "F5": {
+    "nm": "The surface they wanted is off the tab strip",
+    "surf": "the bar, at 390",
+    "step": "reach for Summary, Compass, Knowledge or Games on a phone",
+    "cost": 0.11,
+    "hard": {
+     "Angela": 1.6,
+     "Ana": 1.5,
+     "Sofia": 1.3
+    },
+    "say": "measured: four of the nine are fully in view at 390 and the rest are past the right edge."
+   },
+   "F6": {
+    "nm": "More simultaneous choices than a working memory holds",
+    "surf": "every surface",
+    "step": "arrive",
+    "cost": 0.06,
+    "hard": {
+     "Angela": 1.5,
+     "Ana": 1.4,
+     "James": 1.3
+    },
+    "say": "measured above the fold, against a target of under twelve and a working memory of about four."
+   },
+   "F7": {
+    "nm": "The intake is sixty three questions",
+    "surf": "Energetics",
+    "step": "start the intake with less time than it states",
+    "cost": 0.14,
+    "hard": {
+     "Diane": 2,
+     "James": 1.8,
+     "Marcus": 1.5
+    },
+    "say": "the survey cliff sits at seven to eight minutes and the intake states fifteen."
+   },
+   "F8": {
+    "nm": "The panel says nothing is left and the run goes ahead",
+    "surf": "Story, the release panel",
+    "step": "run a release after a hundred patterns of new ground",
+    "cost": 0.14,
+    "hard": {
+     "Derek": 1.4,
+     "Marcus": 1.8,
+     "Sofia": 1.3
+    },
+    "say": "measured in the shipped app: the panel printed \"4 patterns of the 0 you have left\" and the run proceeded. The allowance is a label with nothing behind it, so there is no limit to sell past and no bill to present."
+   },
+   "F9": {
+    "nm": "The content is exhausted",
+    "surf": "Knowledge, Games, Ritual",
+    "step": "come back for something new",
+    "cost": 0.15,
+    "hard": {
+     "Marcus": 1.7,
+     "Angela": 1.5,
+     "Diane": 1.3
+    },
+    "say": "every practice in the library has been seen at least once."
+   },
+   "F10": {
+    "nm": "Nothing asked them to come back",
+    "surf": "outside the product",
+    "step": "the day after",
+    "cost": 0.07,
+    "hard": {
+     "Angela": 1.6,
+     "Derek": 1.4,
+     "Ana": 1.3
+    },
+    "say": "there is no notification and no accountability seam. Every return is unprompted."
+   },
+   "F11": {
+    "nm": "The record credits a plan as a day practised",
+    "surf": "Ritual, Compass",
+    "step": "save a ritual, do not do it, look at the streak",
+    "cost": 0.09,
+    "hard": {
+     "Sofia": 1.9,
+     "Derek": 1.6,
+     "Marcus": 1.4
+    },
+    "say": "pracDays counts every distinct day carrying a saved ritual and never reads the done flag."
+   },
+   "F12": {
+    "nm": "There is no way to hand it to anybody",
+    "surf": "everywhere",
+    "step": "try to give a client or a peer their own reading",
+    "cost": 0.12,
+    "hard": {
+     "Sofia": 2.2,
+     "Marcus": 1.5,
+     "Angela": 1.4
+    },
+    "say": "measured: no refer, invite or send control on any surface."
+   },
+   "F13": {
+    "nm": "The band word and the number on the same line disagree",
+    "surf": "Summary, Field",
+    "step": "read the headline at a coherence between the band edges",
+    "cost": 0.1,
+    "hard": {
+     "Angela": 2,
+     "Marcus": 1.6,
+     "James": 1.3
+    },
+    "say": "the headline rounds and the band does not, so a 40.6 prints 41 beside Incoherent, which is 31 to 40."
+   },
+   "F14": {
+    "nm": "Every story makes the number worse",
+    "surf": "Story then Field",
+    "step": "tell it the truth six times",
+    "cost": 0.19,
+    "hard": {
+     "Diane": 1.8,
+     "James": 1.7,
+     "Derek": 1.5,
+     "Angela": 1.5
+    },
+    "say": "measured: charge only ever goes up from a story, so the reading only ever goes down from one."
+   }
+  },
+  "cost": {
+   "look": 0.6,
+   "summary": 1.2,
+   "story": 3.4,
+   "ritualPlan": 2.6,
+   "knowledge": 4.5,
+   "games": 5.5,
+   "intakeBlock": 0.7,
+   "seed": 1.4,
+   "compass": 1.5
+  },
+  "cohort": 1000,
+  "settle": {
+   "threshold": 0.05,
+   "hold": 6,
+   "floor": 10,
+   "runs": 19,
+   "settledAt": 19,
+   "fixed": false
+  }
+ },
+ "says": [
+  {
+   "nm": "Sofia",
+   "says": "I hold the room for everyone. I have not been held in four years and I would not know how to ask.",
+   "hits": 0,
+   "imprints": 0,
+   "named": [],
+   "offers": [],
+   "inferred": false
+  },
+  {
+   "nm": "Diane",
+   "says": "I work until the work is done and the work is never done. Rest feels like a moral failure.",
+   "hits": 0,
+   "imprints": 0,
+   "named": [],
+   "offers": [],
+   "inferred": false
+  },
+  {
+   "nm": "Marcus",
+   "says": "I can see what is wrong with anything in four seconds. It has cost me two studios.",
+   "hits": 0,
+   "imprints": 0,
+   "named": [],
+   "offers": [],
+   "inferred": false
+  },
+  {
+   "nm": "Angela",
+   "says": "Everything happens for a reason. I have said that at three funerals and I believed it each time.",
+   "hits": 1,
+   "imprints": 4,
+   "named": [],
+   "offers": [
+    "Separation",
+    "Martyrdom",
+    "Longing"
+   ],
+   "inferred": true
+  },
+  {
+   "nm": "Derek",
+   "says": "Pain is information. I have raced on a stress fracture. I would do it again.",
+   "hits": 0,
+   "imprints": 0,
+   "named": [],
+   "offers": [],
+   "inferred": false
+  },
+  {
+   "nm": "James",
+   "says": "I make the call and I sleep fine. People find that cold. It is what they hired.",
+   "hits": 0,
+   "imprints": 0,
+   "named": [],
+   "offers": [],
+   "inferred": false
+  },
+  {
+   "nm": "Rosa",
+   "says": "Nothing in particular. Things do not sit on me the way they used to.",
+   "hits": 0,
+   "imprints": 0,
+   "named": [],
+   "offers": [],
+   "inferred": false
+  },
+  {
+   "nm": "Ana",
+   "says": "I am in the middle of something and I cannot see the far side of it.",
+   "hits": 0,
+   "imprints": 0,
+   "named": [],
+   "offers": [],
+   "inferred": false
+  },
+  {
+   "nm": "Tomas",
+   "says": "I used to drive nine hundred miles and feel nothing. Now I cannot get to the end of the street.",
+   "hits": 1,
+   "imprints": 4,
+   "named": [],
+   "offers": [
+    "Denial Of Light",
+    "Knowing Better Than God",
+    "Denial Of Truth"
+   ],
+   "inferred": true
+  },
+  {
+   "nm": "Nkem",
+   "says": "I am very good at the job. I have started crying in the car park before the shift, not after.",
+   "hits": 0,
+   "imprints": 0,
+   "named": [],
+   "offers": [],
+   "inferred": false
+  },
+  {
+   "nm": "Wren",
+   "says": "Most of it went quiet a long time ago. One thing did not, and I know exactly which.",
+   "hits": 0,
+   "imprints": 0,
+   "named": [],
+   "offers": [],
+   "inferred": false
+  },
+  {
+   "nm": "Abraham",
+   "says": "I spent a career deciding for other people. The last decade has been learning to sit still.",
+   "hits": 0,
+   "imprints": 0,
+   "named": [],
+   "offers": [],
+   "inferred": false
+  },
+  {
+   "nm": "Gordon",
+   "says": "There is nothing wrong with me. Four people left in a year and each had their reasons.",
+   "hits": 0,
+   "imprints": 0,
+   "named": [],
+   "offers": [],
+   "inferred": false
+  },
+  {
+   "nm": "Lance",
+   "says": "I built the instrument to read me. It does, and that is the part I did not plan for.",
+   "hits": 0,
+   "imprints": 0,
+   "named": [],
+   "offers": [],
+   "inferred": false
+  }
+ ],
+ "lexicon": {
+  "words": 231,
+  "phrases": 22,
+  "adjectives": 83
+ },
+ "storyBank": [
+  {
+   "who": "Diane",
+   "why": "status",
+   "text": "I worked until eleven again and I have nothing to show anyone for it.",
+   "hits": 0,
+   "imprints": 0,
+   "named": [],
+   "inferred": false,
+   "offers": []
+  },
+  {
+   "who": "Diane",
+   "why": "status",
+   "text": "Rest feels like a moral failure. I said that out loud in a board meeting and nobody blinked.",
+   "hits": 0,
+   "imprints": 0,
+   "named": [],
+   "inferred": false,
+   "offers": []
+  },
+  {
+   "who": "Diane",
+   "why": "pressure",
+   "text": "Payroll is Friday and I have not told anyone how close it is. My jaw is tight from the moment I wake up.",
+   "hits": 1,
+   "imprints": 4,
+   "named": [],
+   "inferred": true,
+   "offers": [
+    "Spiritual Language To Manipulate",
+    "Excuse",
+    "Deceit"
+   ]
+  },
+  {
+   "who": "Diane",
+   "why": "pressure",
+   "text": "I am terrified the round does not close and I am the only one who knows.",
+   "hits": 2,
+   "imprints": 4,
+   "named": [
+    "Fear"
+   ],
+   "inferred": false,
+   "offers": [
+    "Fear",
+    "Control",
+    "Insecurity"
+   ]
+  },
+  {
+   "who": "Diane",
+   "why": "crack",
+   "text": "I snapped at my cofounder in front of the team and I have not apologised.",
+   "hits": 1,
+   "imprints": 4,
+   "named": [],
+   "inferred": true,
+   "offers": [
+    "Pride",
+    "Arrogance",
+    "Competition"
+   ]
+  },
+  {
+   "who": "Diane",
+   "why": "crack",
+   "text": "I am exhausted and I cannot stop. Those two things are the same sentence now.",
+   "hits": 2,
+   "imprints": 5,
+   "named": [],
+   "inferred": false,
+   "offers": [
+    "Pride",
+    "Addiction",
+    "Lust"
+   ]
+  },
+  {
+   "who": "Derek",
+   "why": "output",
+   "text": "My last three sessions were slower and nothing in the data explains it.",
+   "hits": 0,
+   "imprints": 0,
+   "named": [],
+   "inferred": false,
+   "offers": []
+  },
+  {
+   "who": "Derek",
+   "why": "output",
+   "text": "Pain is information. I have raced on a stress fracture and I would do it again.",
+   "hits": 0,
+   "imprints": 0,
+   "named": [],
+   "inferred": false,
+   "offers": []
+  },
+  {
+   "who": "Derek",
+   "why": "body",
+   "text": "My shoulders are up by my ears before I even start. My chest is tight on the warm up.",
+   "hits": 1,
+   "imprints": 4,
+   "named": [],
+   "inferred": true,
+   "offers": [
+    "Separation",
+    "Martyrdom",
+    "Longing"
+   ]
+  },
+  {
+   "who": "Derek",
+   "why": "body",
+   "text": "I have not slept properly in eleven days and I am still training twice a day.",
+   "hits": 1,
+   "imprints": 4,
+   "named": [],
+   "inferred": true,
+   "offers": [
+    "Fear",
+    "Control",
+    "Insecurity"
+   ]
+  },
+  {
+   "who": "Derek",
+   "why": "crack",
+   "text": "I am angry all the time and there is nothing to be angry at.",
+   "hits": 4,
+   "imprints": 4,
+   "named": [
+    "Anger"
+   ],
+   "inferred": false,
+   "offers": [
+    "Pride",
+    "Arrogance",
+    "Competition"
+   ]
+  },
+  {
+   "who": "Derek",
+   "why": "crack",
+   "text": "I am numb through the last ten percent and I used to feel everything there.",
+   "hits": 2,
+   "imprints": 4,
+   "named": [
+    "Apathy"
+   ],
+   "inferred": false,
+   "offers": [
+    "Addiction",
+    "Lust",
+    "Shame Of Desire"
+   ]
+  },
+  {
+   "who": "Marcus",
+   "why": "judge",
+   "text": "I can see what is wrong with anything in four seconds. It has cost me two studios.",
+   "hits": 0,
+   "imprints": 0,
+   "named": [],
+   "inferred": false,
+   "offers": []
+  },
+  {
+   "who": "Marcus",
+   "why": "judge",
+   "text": "I killed a good idea today because it was not mine and I knew I was doing it.",
+   "hits": 0,
+   "imprints": 0,
+   "named": [],
+   "inferred": false,
+   "offers": []
+  },
+  {
+   "who": "Marcus",
+   "why": "crack",
+   "text": "I am ashamed of how I spoke to the junior and I will not bring it up tomorrow.",
+   "hits": 2,
+   "imprints": 4,
+   "named": [
+    "Shame"
+   ],
+   "inferred": true,
+   "offers": [
+    "Pride",
+    "Arrogance",
+    "Competition"
+   ]
+  },
+  {
+   "who": "Marcus",
+   "why": "crack",
+   "text": "I lied about the timeline. Again. It is easier than the conversation.",
+   "hits": 1,
+   "imprints": 4,
+   "named": [],
+   "inferred": true,
+   "offers": [
+    "Spiritual Language To Manipulate",
+    "Excuse",
+    "Deceit"
+   ]
+  },
+  {
+   "who": "Marcus",
+   "why": "flat",
+   "text": "Nothing I made this year interests me. I am disgusted by all of it.",
+   "hits": 0,
+   "imprints": 0,
+   "named": [],
+   "inferred": false,
+   "offers": []
+  },
+  {
+   "who": "Angela",
+   "why": "feel",
+   "text": "Everything happens for a reason. I have said that at three funerals and I believed it each time.",
+   "hits": 1,
+   "imprints": 4,
+   "named": [],
+   "inferred": true,
+   "offers": [
+    "Separation",
+    "Martyrdom",
+    "Longing"
+   ]
+  },
+  {
+   "who": "Angela",
+   "why": "feel",
+   "text": "I am sad in a way that does not attach to anything and it has been weeks.",
+   "hits": 2,
+   "imprints": 4,
+   "named": [
+    "Sad"
+   ],
+   "inferred": false,
+   "offers": [
+    "Separation",
+    "Martyrdom",
+    "Longing"
+   ]
+  },
+  {
+   "who": "Angela",
+   "why": "seek",
+   "text": "I have done six modalities and I am still looking for the one that lands.",
+   "hits": 0,
+   "imprints": 0,
+   "named": [],
+   "inferred": false,
+   "offers": []
+  },
+  {
+   "who": "Angela",
+   "why": "seek",
+   "text": "I want to know why I keep choosing the same kind of person.",
+   "hits": 0,
+   "imprints": 0,
+   "named": [],
+   "inferred": false,
+   "offers": []
+  },
+  {
+   "who": "Angela",
+   "why": "crack",
+   "text": "I am so tired of being the one who understands everybody else.",
+   "hits": 0,
+   "imprints": 0,
+   "named": [],
+   "inferred": false,
+   "offers": []
+  },
+  {
+   "who": "Angela",
+   "why": "crack",
+   "text": "I am afraid that this is just who I am now.",
+   "hits": 2,
+   "imprints": 4,
+   "named": [
+    "Fear"
+   ],
+   "inferred": false,
+   "offers": [
+    "Fear",
+    "Control",
+    "Insecurity"
+   ]
+  },
+  {
+   "who": "Sofia",
+   "why": "night",
+   "text": "I hold the room for everyone. I have not been held in four years and I would not know how to ask.",
+   "hits": 0,
+   "imprints": 0,
+   "named": [],
+   "inferred": false,
+   "offers": []
+  },
+  {
+   "who": "Sofia",
+   "why": "night",
+   "text": "The last client left at nine and I sat in the car for twenty minutes before I drove home.",
+   "hits": 0,
+   "imprints": 0,
+   "named": [],
+   "inferred": false,
+   "offers": []
+  },
+  {
+   "who": "Sofia",
+   "why": "client",
+   "text": "I can read my clients in a minute and I cannot read myself at all.",
+   "hits": 0,
+   "imprints": 0,
+   "named": [],
+   "inferred": false,
+   "offers": []
+  },
+  {
+   "who": "Sofia",
+   "why": "crack",
+   "text": "I am angry with a client and that has never happened before. I am ashamed of it.",
+   "hits": 4,
+   "imprints": 4,
+   "named": [
+    "Anger",
+    "Shame"
+   ],
+   "inferred": false,
+   "offers": [
+    "Pride",
+    "Arrogance",
+    "Competition"
+   ]
+  },
+  {
+   "who": "Sofia",
+   "why": "crack",
+   "text": "I am exhausted in a way that sleep does not touch.",
+   "hits": 1,
+   "imprints": 1,
+   "named": [],
+   "inferred": false,
+   "offers": [
+    "Pride"
+   ]
+  },
+  {
+   "who": "James",
+   "why": "number",
+   "text": "I make the call and I sleep fine. People find that cold. It is what they hired.",
+   "hits": 0,
+   "imprints": 0,
+   "named": [],
+   "inferred": false,
+   "offers": []
+  },
+  {
+   "who": "James",
+   "why": "number",
+   "text": "Third turnaround. I know exactly what it costs and I do it anyway.",
+   "hits": 0,
+   "imprints": 0,
+   "named": [],
+   "inferred": false,
+   "offers": []
+  },
+  {
+   "who": "James",
+   "why": "crack",
+   "text": "I felt nothing when we let forty people go and that is the part that frightens me.",
+   "hits": 1,
+   "imprints": 4,
+   "named": [],
+   "inferred": true,
+   "offers": [
+    "Denial Of Light",
+    "Knowing Better Than God",
+    "Denial Of Truth"
+   ]
+  },
+  {
+   "who": "James",
+   "why": "crack",
+   "text": "My chest is tight in every meeting and I have told no one, including my doctor.",
+   "hits": 1,
+   "imprints": 4,
+   "named": [],
+   "inferred": true,
+   "offers": [
+    "Separation",
+    "Martyrdom",
+    "Longing"
+   ]
+  },
+  {
+   "who": "James",
+   "why": "flat",
+   "text": "I am numb. I have been numb since the second company and I called it discipline.",
+   "hits": 4,
+   "imprints": 4,
+   "named": [
+    "Apathy"
+   ],
+   "inferred": false,
+   "offers": [
+    "Addiction",
+    "Lust",
+    "Shame Of Desire"
+   ]
+  },
+  {
+   "who": "Ana",
+   "why": "night",
+   "text": "I am in the middle of something and I cannot see the far side of it.",
+   "hits": 0,
+   "imprints": 0,
+   "named": [],
+   "inferred": false,
+   "offers": []
+  },
+  {
+   "who": "Ana",
+   "why": "night",
+   "text": "It is two in the morning and I am terrified and I do not know what of.",
+   "hits": 2,
+   "imprints": 4,
+   "named": [
+    "Fear"
+   ],
+   "inferred": false,
+   "offers": [
+    "Fear",
+    "Control",
+    "Insecurity"
+   ]
+  },
+  {
+   "who": "Ana",
+   "why": "grief",
+   "text": "He died a year ago and I am worse now than I was in the first month.",
+   "hits": 1,
+   "imprints": 4,
+   "named": [],
+   "inferred": true,
+   "offers": [
+    "Separation",
+    "Martyrdom",
+    "Longing"
+   ]
+  },
+  {
+   "who": "Ana",
+   "why": "grief",
+   "text": "I am ashamed of how long this is taking. Everyone has moved on and I have not.",
+   "hits": 2,
+   "imprints": 4,
+   "named": [
+    "Shame"
+   ],
+   "inferred": true,
+   "offers": [
+    "Pride",
+    "Arrogance",
+    "Competition"
+   ]
+  },
+  {
+   "who": "Ana",
+   "why": "crack",
+   "text": "I have not slept. I sat in the car outside work for half an hour.",
+   "hits": 2,
+   "imprints": 4,
+   "named": [
+    "Apathy"
+   ],
+   "inferred": true,
+   "offers": [
+    "Fear",
+    "Control",
+    "Insecurity"
+   ]
+  },
+  {
+   "who": "Gordon",
+   "why": "deny",
+   "text": "There is nothing wrong with me. Four people left in a year and each had their reasons.",
+   "hits": 0,
+   "imprints": 0,
+   "named": [],
+   "inferred": false,
+   "offers": []
+  },
+  {
+   "who": "Gordon",
+   "why": "deny",
+   "text": "I do not have a problem. I have a business that needs running.",
+   "hits": 0,
+   "imprints": 0,
+   "named": [],
+   "inferred": false,
+   "offers": []
+  },
+  {
+   "who": "Rosa",
+   "why": "none",
+   "text": "Nothing in particular. Things do not sit on me the way they used to.",
+   "hits": 0,
+   "imprints": 0,
+   "named": [],
+   "inferred": false,
+   "offers": []
+  }
+ ],
+ "grade": {
+  "mean": 38.91,
+  "sd": 0.407,
+  "lo": 38,
+  "hi": 39.6,
+  "letter": "F",
+  "totals": [
+   38.9,
+   39,
+   38.6,
+   39.2,
+   39.6,
+   39.5,
+   38.7,
+   38.4,
+   38.9,
+   39.1,
+   38.7,
+   39,
+   38,
+   38.9,
+   39.3,
+   38.4,
+   38.6,
+   39.3,
+   39.2
+  ],
+  "means": [
+   38.9,
+   38.95,
+   38.833,
+   38.925,
+   39.06,
+   39.133,
+   39.071,
+   38.987,
+   38.978,
+   38.99,
+   38.964,
+   38.967,
+   38.892,
+   38.893,
+   38.92,
+   38.887,
+   38.871,
+   38.894,
+   38.911
+  ],
+  "rows": [
+   {
+    "k": "ICP alignment",
+    "mean": 2.41,
+    "sd": 0.139,
+    "lo": 2.2,
+    "hi": 2.7,
+    "moves": true,
+    "carried": false,
+    "how": "weighted share who got what they came for, per figure, read off the run"
+   },
+   {
+    "k": "First touch",
+    "mean": 6.2,
+    "sd": 0,
+    "lo": 6.2,
+    "hi": 6.2,
+    "moves": false,
+    "carried": false,
+    "how": "boot to first word, choices above the fold on the landing surface, share of the bar reachable at 390, and whether the landing surface has a reading to show"
+   },
+   {
+    "k": "Core loop",
+    "mean": 0.29,
+    "sd": 0.052,
+    "lo": 0.2,
+    "hi": 0.4,
+    "moves": true,
+    "carried": false,
+    "how": "share who ever closed story to release to a kept practice, and how many times"
+   },
+   {
+    "k": "Emotional",
+    "mean": 5.47,
+    "sd": 0.105,
+    "lo": 5.3,
+    "hi": 5.7,
+    "moves": true,
+    "carried": false,
+    "how": "share of commits the sniffer read at all, and share of those that named an address rather than inferring one"
+   },
+   {
+    "k": "Behavioral flow",
+    "mean": 2.3,
+    "sd": 0,
+    "lo": 2.3,
+    "hi": 2.3,
+    "moves": false,
+    "carried": false,
+    "how": "mean of twelve over the choices above the fold on every surface, at the cohort device mix, discounted by how much of the bar a phone can reach"
+   },
+   {
+    "k": "Visual and kinetic",
+    "mean": 8,
+    "sd": 0,
+    "lo": 8,
+    "hi": 8,
+    "moves": false,
+    "carried": true,
+    "how": "carried unchanged from the earlier simulation. this pass built no instrument for it"
+   },
+   {
+    "k": "Technical",
+    "mean": 8,
+    "sd": 0,
+    "lo": 8,
+    "hi": 8,
+    "moves": false,
+    "carried": false,
+    "how": "page errors, outbound requests, controls under the 44 floor, boot to first word, and every surface rendering"
+   },
+   {
+    "k": "Monetization",
+    "mean": 0,
+    "sd": 0,
+    "lo": 0,
+    "hi": 0,
+    "moves": true,
+    "carried": false,
+    "how": "share who reach the end of the gift, whether any price exists on a surface a new arrival reaches, and whether the allowance is enforced at all"
+   },
+   {
+    "k": "Retention",
+    "mean": 3.24,
+    "sd": 0.291,
+    "lo": 2.5,
+    "hi": 3.7,
+    "moves": true,
+    "carried": false,
+    "how": "modelled day thirty against a category median of 3.3 percent, interpolated"
+   },
+   {
+    "k": "Referral",
+    "mean": 3,
+    "sd": 0,
+    "lo": 3,
+    "hi": 3,
+    "moves": false,
+    "carried": false,
+    "how": "export exists, a way to hand a reading to another person does not"
+   }
+  ]
+ },
+ "retention": {
+  "1": {
+   "mean": 0.61479,
+   "sd": 0.00882,
+   "alive": 0.68932
+  },
+  "3": {
+   "mean": 0.11489,
+   "sd": 0.00848,
+   "alive": 0.52153
+  },
+  "7": {
+   "mean": 0.64611,
+   "sd": 0.00869,
+   "alive": 0.39474
+  },
+  "14": {
+   "mean": 0.14663,
+   "sd": 0.00797,
+   "alive": 0.26963
+  },
+  "30": {
+   "mean": 0.03858,
+   "sd": 0.00554,
+   "alive": 0.13011
+  },
+  "60": {
+   "mean": 0.00684,
+   "sd": 0.00248,
+   "alive": 0.03547
+  },
+  "90": {
+   "mean": 0.00126,
+   "sd": 0.00093,
+   "alive": 0.00942
+  }
+ },
+ "window": 7,
+ "daily": [
+  0.61479,
+  0.15095,
+  0.11489,
+  0.09337,
+  0.07611,
+  0.06374,
+  0.05289,
+  0.04837,
+  0.04158,
+  0.03768,
+  0.03411,
+  0.03295,
+  0.02653,
+  0.02542,
+  0.02311,
+  0.02126,
+  0.01916,
+  0.01742,
+  0.01521,
+  0.01442,
+  0.01426,
+  0.01232,
+  0.01226,
+  0.01042,
+  0.01184,
+  0.00932,
+  0.00905,
+  0.00779,
+  0.00832,
+  0.00663,
+  0.00679,
+  0.00579,
+  0.00621,
+  0.00558,
+  0.00511,
+  0.00521,
+  0.00358,
+  0.00426,
+  0.00374,
+  0.00342,
+  0.00353,
+  0.003,
+  0.00247,
+  0.00268,
+  0.00226,
+  0.00184,
+  0.00221,
+  0.00189,
+  0.00174,
+  0.00158,
+  0.00195,
+  0.00163,
+  0.00189,
+  0.00174,
+  0.00174,
+  0.00174,
+  0.00116,
+  0.00126,
+  0.00153,
+  0.00121,
+  0.00142,
+  0.00105,
+  0.00105,
+  0.00084,
+  0.00068,
+  0.00068,
+  0.00063,
+  0.00079,
+  0.00105,
+  0.00095,
+  0.00095,
+  0.00042,
+  0.00074,
+  0.00074,
+  0.00068,
+  0.00032,
+  0.00042,
+  0.00063,
+  0.00047,
+  0.00037,
+  0.00026,
+  0.00042,
+  0.00037,
+  0.00032,
+  0.00005,
+  0.00026,
+  0.00042,
+  0.00021,
+  0.00026,
+  0.00032
+ ],
+ "weekly": [
+  0.64611,
+  0.14663,
+  0.07579,
+  0.04553,
+  0.02663,
+  0.01684,
+  0.01068,
+  0.00795,
+  0.00532,
+  0.00379,
+  0.00279,
+  0.00211,
+  0.00111
+ ],
+ "lost": {
+  "F4": {
+   "people": 110,
+   "sd": 8.74,
+   "by": [
+    {
+     "nm": "Diane",
+     "n": 60
+    },
+    {
+     "nm": "Derek",
+     "n": 38
+    },
+    {
+     "nm": "James",
+     "n": 12
+    }
+   ],
+   "nm": "The reading does not move",
+   "surf": "Field, Summary",
+   "step": "look at the number after a session",
+   "say": "CQ is unchanged to two decimal places on the session they just spent."
+  },
+  "DRIFT": {
+   "people": 288,
+   "sd": 16.41,
+   "by": [
+    {
+     "nm": "Diane",
+     "n": 71
+    },
+    {
+     "nm": "Angela",
+     "n": 58
+    },
+    {
+     "nm": "Marcus",
+     "n": 55
+    },
+    {
+     "nm": "Sofia",
+     "n": 41
+    },
+    {
+     "nm": "James",
+     "n": 26
+    },
+    {
+     "nm": "Derek",
+     "n": 25
+    },
+    {
+     "nm": "Ana",
+     "n": 8
+    },
+    {
+     "nm": "Gordon",
+     "n": 2
+    },
+    {
+     "nm": "Rosa",
+     "n": 1
+    }
+   ],
+   "nm": "The absence became permanent",
+   "surf": "outside the product",
+   "step": "a week goes by and nothing happens",
+   "say": "not a screen. this is the person who stopped opening the file and never decided to. it is the counterpart of F10 and it is reported separately so F10 is only what fired inside a session."
+  },
+  "F7": {
+   "people": 38,
+   "sd": 4.78,
+   "by": [
+    {
+     "nm": "Diane",
+     "n": 20
+    },
+    {
+     "nm": "Marcus",
+     "n": 7
+    },
+    {
+     "nm": "Derek",
+     "n": 5
+    },
+    {
+     "nm": "James",
+     "n": 4
+    },
+    {
+     "nm": "Angela",
+     "n": 1
+    },
+    {
+     "nm": "Gordon",
+     "n": 0
+    },
+    {
+     "nm": "Sofia",
+     "n": 0
+    },
+    {
+     "nm": "Ana",
+     "n": 0
+    }
+   ],
+   "nm": "The intake is sixty three questions",
+   "surf": "Energetics",
+   "step": "start the intake with less time than it states",
+   "say": "the survey cliff sits at seven to eight minutes and the intake states fifteen."
+  },
+  "F3": {
+   "people": 89,
+   "sd": 6.27,
+   "by": [
+    {
+     "nm": "Derek",
+     "n": 46
+    },
+    {
+     "nm": "Ana",
+     "n": 21
+    },
+    {
+     "nm": "Angela",
+     "n": 9
+    },
+    {
+     "nm": "Sofia",
+     "n": 7
+    },
+    {
+     "nm": "Marcus",
+     "n": 6
+    },
+    {
+     "nm": "Rosa",
+     "n": 0
+    }
+   ],
+   "nm": "Nothing is above the line, so there is nothing to release",
+   "surf": "Story, Summary",
+   "step": "look for the release after telling it something true",
+   "say": "compute().loaded is empty. An address has to reach four to enter the reading at all."
+  },
+  "F6": {
+   "people": 12,
+   "sd": 2.37,
+   "by": [
+    {
+     "nm": "Derek",
+     "n": 6
+    },
+    {
+     "nm": "Marcus",
+     "n": 4
+    },
+    {
+     "nm": "Sofia",
+     "n": 1
+    },
+    {
+     "nm": "Angela",
+     "n": 0
+    },
+    {
+     "nm": "Ana",
+     "n": 0
+    },
+    {
+     "nm": "Gordon",
+     "n": 0
+    }
+   ],
+   "nm": "More simultaneous choices than a working memory holds",
+   "surf": "every surface",
+   "step": "arrive",
+   "say": "measured above the fold, against a target of under twelve and a working memory of about four."
+  },
+  "F14": {
+   "people": 9,
+   "sd": 3,
+   "by": [
+    {
+     "nm": "Sofia",
+     "n": 3
+    },
+    {
+     "nm": "Angela",
+     "n": 3
+    },
+    {
+     "nm": "Ana",
+     "n": 2
+    },
+    {
+     "nm": "Derek",
+     "n": 1
+    },
+    {
+     "nm": "Marcus",
+     "n": 0
+    }
+   ],
+   "nm": "Every story makes the number worse",
+   "surf": "Story then Field",
+   "step": "tell it the truth six times",
+   "say": "measured: charge only ever goes up from a story, so the reading only ever goes down from one."
+  },
+  "F13": {
+   "people": 2,
+   "sd": 1.26,
+   "by": [
+    {
+     "nm": "Derek",
+     "n": 1
+    },
+    {
+     "nm": "Marcus",
+     "n": 1
+    },
+    {
+     "nm": "Angela",
+     "n": 0
+    },
+    {
+     "nm": "Sofia",
+     "n": 0
+    }
+   ],
+   "nm": "The band word and the number on the same line disagree",
+   "surf": "Summary, Field",
+   "step": "read the headline at a coherence between the band edges",
+   "say": "the headline rounds and the band does not, so a 40.6 prints 41 beside Incoherent, which is 31 to 40."
+  },
+  "F11": {
+   "people": 3,
+   "sd": 1.64,
+   "by": [
+    {
+     "nm": "Marcus",
+     "n": 3
+    },
+    {
+     "nm": "Derek",
+     "n": 0
+    },
+    {
+     "nm": "Angela",
+     "n": 0
+    }
+   ],
+   "nm": "The record credits a plan as a day practised",
+   "surf": "Ritual, Compass",
+   "step": "save a ritual, do not do it, look at the streak",
+   "say": "pracDays counts every distinct day carrying a saved ritual and never reads the done flag."
+  },
+  "F1": {
+   "people": 68,
+   "sd": 8.26,
+   "by": [
+    {
+     "nm": "Sofia",
+     "n": 31
+    },
+    {
+     "nm": "Angela",
+     "n": 28
+    },
+    {
+     "nm": "Marcus",
+     "n": 9
+    },
+    {
+     "nm": "Ana",
+     "n": 0
+    }
+   ],
+   "nm": "The box reads nothing out of what they wrote",
+   "surf": "Story",
+   "step": "press the commit control on an ordinary paragraph",
+   "say": "parseStory returns no imprint, so the panel has nothing to show and the field does not move."
+  },
+  "F12": {
+   "people": 41,
+   "sd": 5.91,
+   "by": [
+    {
+     "nm": "Sofia",
+     "n": 31
+    },
+    {
+     "nm": "Marcus",
+     "n": 7
+    },
+    {
+     "nm": "Angela",
+     "n": 2
+    }
+   ],
+   "nm": "There is no way to hand it to anybody",
+   "surf": "everywhere",
+   "step": "try to give a client or a peer their own reading",
+   "say": "measured: no refer, invite or send control on any surface."
+  },
+  "F2": {
+   "people": 13,
+   "sd": 3.15,
+   "by": [
+    {
+     "nm": "Angela",
+     "n": 9
+    },
+    {
+     "nm": "Ana",
+     "n": 4
+    }
+   ],
+   "nm": "The reading names an address the person did not describe",
+   "surf": "Story",
+   "step": "read the imprint panel after a commit",
+   "say": "every imprint carries inferred, so the seat was read off a band and the address was chosen by a fallback."
+  },
+  "F5": {
+   "people": 6,
+   "sd": 2.26,
+   "by": [
+    {
+     "nm": "Angela",
+     "n": 5
+    },
+    {
+     "nm": "Ana",
+     "n": 1
+    }
+   ],
+   "nm": "The surface they wanted is off the tab strip",
+   "surf": "the bar, at 390",
+   "step": "reach for Summary, Compass, Knowledge or Games on a phone",
+   "say": "measured: four of the nine are fully in view at 390 and the rest are past the right edge."
+  },
+  "F10": {
+   "people": 1,
+   "sd": 1.43,
+   "by": [
+    {
+     "nm": "Angela",
+     "n": 1
+    },
+    {
+     "nm": "Ana",
+     "n": 0
+    }
+   ],
+   "nm": "Nothing asked them to come back",
+   "surf": "outside the product",
+   "step": "the day after",
+   "say": "there is no notification and no accountability seam. Every return is unprompted."
+  }
+ },
+ "hitShare": {
+  "DRIFT": {
+   "share": 0,
+   "sd": 0,
+   "perThousand": 0,
+   "nm": "The absence became permanent",
+   "surf": "outside the product",
+   "step": "a week goes by and nothing happens",
+   "say": "not a screen. this is the person who stopped opening the file and never decided to. it is the counterpart of F10 and it is reported separately so F10 is only what fired inside a session.",
+   "cost": 0
+  },
+  "F1": {
+   "share": 0.2573,
+   "sd": 0.008,
+   "perThousand": 429,
+   "nm": "The box reads nothing out of what they wrote",
+   "surf": "Story",
+   "step": "press the commit control on an ordinary paragraph",
+   "say": "parseStory returns no imprint, so the panel has nothing to show and the field does not move.",
+   "cost": 0.16
+  },
+  "F2": {
+   "share": 0.1178,
+   "sd": 0.006,
+   "perThousand": 185,
+   "nm": "The reading names an address the person did not describe",
+   "surf": "Story",
+   "step": "read the imprint panel after a commit",
+   "say": "every imprint carries inferred, so the seat was read off a band and the address was chosen by a fallback.",
+   "cost": 0.13
+  },
+  "F3": {
+   "share": 0.3812,
+   "sd": 0.0078,
+   "perThousand": 764,
+   "nm": "Nothing is above the line, so there is nothing to release",
+   "surf": "Story, Summary",
+   "step": "look for the release after telling it something true",
+   "say": "compute().loaded is empty. An address has to reach four to enter the reading at all.",
+   "cost": 0.2
+  },
+  "F4": {
+   "share": 0.2788,
+   "sd": 0.0077,
+   "perThousand": 464,
+   "nm": "The reading does not move",
+   "surf": "Field, Summary",
+   "step": "look at the number after a session",
+   "say": "CQ is unchanged to two decimal places on the session they just spent.",
+   "cost": 0.17
+  },
+  "F5": {
+   "share": 0.0741,
+   "sd": 0.0052,
+   "perThousand": 102,
+   "nm": "The surface they wanted is off the tab strip",
+   "surf": "the bar, at 390",
+   "step": "reach for Summary, Compass, Knowledge or Games on a phone",
+   "say": "measured: four of the nine are fully in view at 390 and the rest are past the right edge.",
+   "cost": 0.11
+  },
+  "F6": {
+   "share": 0.6684,
+   "sd": 0.0094,
+   "perThousand": 1733,
+   "nm": "More simultaneous choices than a working memory holds",
+   "surf": "every surface",
+   "step": "arrive",
+   "say": "measured above the fold, against a target of under twelve and a working memory of about four.",
+   "cost": 0.06
+  },
+  "F7": {
+   "share": 0.1542,
+   "sd": 0.0109,
+   "perThousand": 193,
+   "nm": "The intake is sixty three questions",
+   "surf": "Energetics",
+   "step": "start the intake with less time than it states",
+   "say": "the survey cliff sits at seven to eight minutes and the intake states fifteen.",
+   "cost": 0.14
+  },
+  "F8": {
+   "share": 0.0026,
+   "sd": 0.0018,
+   "perThousand": 13,
+   "nm": "The panel says nothing is left and the run goes ahead",
+   "surf": "Story, the release panel",
+   "step": "run a release after a hundred patterns of new ground",
+   "say": "measured in the shipped app: the panel printed \"4 patterns of the 0 you have left\" and the run proceeded. The allowance is a label with nothing behind it, so there is no limit to sell past and no bill to present.",
+   "cost": 0.14
+  },
+  "F9": {
+   "share": 0.0001,
+   "sd": 0.0002,
+   "perThousand": 0,
+   "nm": "The content is exhausted",
+   "surf": "Knowledge, Games, Ritual",
+   "step": "come back for something new",
+   "say": "every practice in the library has been seen at least once.",
+   "cost": 0.15
+  },
+  "F10": {
+   "share": 0.4777,
+   "sd": 0.0114,
+   "perThousand": 865,
+   "nm": "Nothing asked them to come back",
+   "surf": "outside the product",
+   "step": "the day after",
+   "say": "there is no notification and no accountability seam. Every return is unprompted.",
+   "cost": 0.07
+  },
+  "F11": {
+   "share": 0.1949,
+   "sd": 0.0102,
+   "perThousand": 272,
+   "nm": "The record credits a plan as a day practised",
+   "surf": "Ritual, Compass",
+   "step": "save a ritual, do not do it, look at the streak",
+   "say": "pracDays counts every distinct day carrying a saved ritual and never reads the done flag.",
+   "cost": 0.09
+  },
+  "F12": {
+   "share": 0.1985,
+   "sd": 0.0078,
+   "perThousand": 328,
+   "nm": "There is no way to hand it to anybody",
+   "surf": "everywhere",
+   "step": "try to give a client or a peer their own reading",
+   "say": "measured: no refer, invite or send control on any surface.",
+   "cost": 0.12
+  },
+  "F13": {
+   "share": 0.0298,
+   "sd": 0.0049,
+   "perThousand": 69,
+   "nm": "The band word and the number on the same line disagree",
+   "surf": "Summary, Field",
+   "step": "read the headline at a coherence between the band edges",
+   "say": "the headline rounds and the band does not, so a 40.6 prints 41 beside Incoherent, which is 31 to 40.",
+   "cost": 0.1
+  },
+  "F14": {
+   "share": 0.0841,
+   "sd": 0.0102,
+   "perThousand": 162,
+   "nm": "Every story makes the number worse",
+   "surf": "Story then Field",
+   "step": "tell it the truth six times",
+   "say": "measured: charge only ever goes up from a story, so the reading only ever goes down from one.",
+   "cost": 0.19
+  }
+ },
+ "icp": {
+  "Diane": {
+   "weight": 180,
+   "grid": 3,
+   "device": "both",
+   "shape": "daily, in forty second slices",
+   "age": 46,
+   "role": "founder, second company",
+   "why": "A number she does not already have, checked between meetings. Rest reads as a moral failure, so a session that asks for fifteen minutes is a session she does not take.",
+   "whyNot": "Nothing moved since yesterday. She will not pay twice for the same screen.",
+   "n": 180,
+   "arrived": 0.871,
+   "ret": {
+    "1": 0.806,
+    "3": 0.076,
+    "7": 0.853,
+    "14": 0.059,
+    "30": 0.016,
+    "60": 0.008,
+    "90": 0.003
+   },
+   "alive": {
+    "1": 0.871,
+    "3": 0.583,
+    "7": 0.457,
+    "14": 0.361,
+    "30": 0.232,
+    "60": 0.09,
+    "90": 0.033
+   },
+   "quitBy3": 0.463,
+   "sessions": 1.318,
+   "minutes": 2.116,
+   "stories": 0,
+   "readShare": 0,
+   "releases": 0,
+   "loopEver": 0,
+   "loopClosed": 0,
+   "cq0": 36.815,
+   "cq90": 41.266,
+   "cqDelta": -0.984,
+   "ground": 0,
+   "clear": 0,
+   "marks": 0,
+   "streakBest": 0,
+   "ritualMinutes": 0,
+   "giftLeft": 100,
+   "accuracy": 21.6,
+   "exit": {
+    "cqDelta": -1.511,
+    "ground": 0,
+    "marks": 0,
+    "clear": 0,
+    "stories": 0,
+    "releases": 0,
+    "ritualsDone": 0,
+    "minutes": 2.425,
+    "dIntake": -1.511,
+    "dStory": 0,
+    "dRelease": 0,
+    "lastDay": 6.197,
+    "sessions": 1.513,
+    "nothing": 1
+   },
+   "topHits": [
+    {
+     "k": "F6",
+     "share": 0.839
+    },
+    {
+     "k": "F4",
+     "share": 0.75
+    },
+    {
+     "k": "F10",
+     "share": 0.522
+    },
+    {
+     "k": "F7",
+     "share": 0.272
+    }
+   ]
+  },
+  "Derek": {
+   "weight": 170,
+   "grid": 2,
+   "device": "both",
+   "shape": "daily while a protocol is live",
+   "age": 39,
+   "role": "high performer, endurance",
+   "why": "Output. He will run a protocol daily for a quarter if it is a protocol. The release is a protocol.",
+   "whyNot": "Nothing tells him what the holding costs him. Pain is not the hook, the watts are, and there is no watts line.",
+   "n": 170,
+   "arrived": 0.725,
+   "ret": {
+    "1": 0.666,
+    "3": 0.215,
+    "7": 0.706,
+    "14": 0.19,
+    "30": 0.027,
+    "60": 0.003,
+    "90": 0.001
+   },
+   "alive": {
+    "1": 0.725,
+    "3": 0.532,
+    "7": 0.314,
+    "14": 0.155,
+    "30": 0.054,
+    "60": 0.016,
+    "90": 0.003
+   },
+   "quitBy3": 0.537,
+   "sessions": 2.154,
+   "minutes": 19.384,
+   "stories": 0.759,
+   "readShare": 0.664,
+   "releases": 0.028,
+   "loopEver": 0.017,
+   "loopClosed": 0.044,
+   "cq0": 30.634,
+   "cq90": 12.991,
+   "cqDelta": -4.798,
+   "ground": 0,
+   "clear": 0,
+   "marks": 0.816,
+   "streakBest": 0.395,
+   "ritualMinutes": 7.579,
+   "giftLeft": 42.105,
+   "accuracy": 8.221,
+   "exit": {
+    "cqDelta": -14.464,
+    "ground": 0.251,
+    "marks": 1.685,
+    "clear": 0,
+    "stories": 1.047,
+    "releases": 0.038,
+    "ritualsDone": 0.815,
+    "minutes": 26.718,
+    "dIntake": -14.464,
+    "dStory": -0.044,
+    "dRelease": 0.044,
+    "lastDay": 7.307,
+    "sessions": 2.969,
+    "nothing": 0.438
+   },
+   "topHits": [
+    {
+     "k": "F6",
+     "share": 0.676
+    },
+    {
+     "k": "F4",
+     "share": 0.659
+    },
+    {
+     "k": "F10",
+     "share": 0.465
+    },
+    {
+     "k": "F3",
+     "share": 0.447
+    }
+   ]
+  },
+  "Marcus": {
+   "weight": 160,
+   "grid": 4,
+   "device": "both",
+   "shape": "every few days, as an inspection",
+   "age": 44,
+   "role": "creative director",
+   "why": "The quality judgement. He opens it to see whether it is still good and whether anybody fixed the thing he found.",
+   "whyNot": "He does not do the work. Level four on the grid buys it, reads half and avoids the practice because clearing the node hurts.",
+   "n": 160,
+   "arrived": 0.578,
+   "ret": {
+    "1": 0.511,
+    "3": 0.07,
+    "7": 0.53,
+    "14": 0.18,
+    "30": 0.075,
+    "60": 0.015,
+    "90": 0.002
+   },
+   "alive": {
+    "1": 0.578,
+    "3": 0.517,
+    "7": 0.444,
+    "14": 0.335,
+    "30": 0.168,
+    "60": 0.04,
+    "90": 0.009
+   },
+   "quitBy3": 0.501,
+   "sessions": 1.819,
+   "minutes": 10.042,
+   "stories": 0.485,
+   "readShare": 0.401,
+   "releases": 0.005,
+   "loopEver": 0,
+   "loopClosed": 0.001,
+   "cq0": 24.433,
+   "cq90": 27.542,
+   "cqDelta": -5.814,
+   "ground": 0,
+   "clear": 0,
+   "marks": 1.266,
+   "streakBest": 0.705,
+   "ritualMinutes": 6,
+   "giftLeft": 78.947,
+   "accuracy": 16.168,
+   "exit": {
+    "cqDelta": -7.551,
+    "ground": 0.029,
+    "marks": 1.212,
+    "clear": 0,
+    "stories": 0.842,
+    "releases": 0.005,
+    "ritualsDone": 0.117,
+    "minutes": 17.352,
+    "dIntake": -7.549,
+    "dStory": -0.005,
+    "dRelease": 0.004,
+    "lastDay": 13.26,
+    "sessions": 3.147,
+    "nothing": 0.894
+   },
+   "topHits": [
+    {
+     "k": "F6",
+     "share": 0.581
+    },
+    {
+     "k": "F10",
+     "share": 0.456
+    },
+    {
+     "k": "F12",
+     "share": 0.394
+    },
+    {
+     "k": "F3",
+     "share": 0.338
+    }
+   ]
+  },
+  "Angela": {
+   "weight": 150,
+   "grid": 5,
+   "device": "phone",
+   "shape": "bursts, then nothing",
+   "age": 36,
+   "role": "seeker, six modalities",
+   "why": "Something named the thing she has no word for. She arrived from a group chat and she will tell that group chat.",
+   "whyNot": "Mechanical language, and the word Incoherent. Level five wants magic, not mechanics, and leaves when it turns out to be objective physical work.",
+   "n": 150,
+   "arrived": 0.785,
+   "ret": {
+    "1": 0.66,
+    "3": 0.073,
+    "7": 0.699,
+    "14": 0.096,
+    "30": 0.016,
+    "60": 0.002,
+    "90": 0.001
+   },
+   "alive": {
+    "1": 0.785,
+    "3": 0.565,
+    "7": 0.437,
+    "14": 0.292,
+    "30": 0.14,
+    "60": 0.033,
+    "90": 0.005
+   },
+   "quitBy3": 0.478,
+   "sessions": 1.218,
+   "minutes": 11.653,
+   "stories": 0.884,
+   "readShare": 0.504,
+   "releases": 0.01,
+   "loopEver": 0.002,
+   "loopClosed": 0.004,
+   "cq0": 33.177,
+   "cq90": 22.667,
+   "cqDelta": -1.793,
+   "ground": 0,
+   "clear": 0,
+   "marks": 0.947,
+   "streakBest": 0.316,
+   "ritualMinutes": 4.842,
+   "giftLeft": 57.895,
+   "accuracy": 12.295,
+   "exit": {
+    "cqDelta": -4.695,
+    "ground": 0.067,
+    "marks": 1.358,
+    "clear": 0,
+    "stories": 1.125,
+    "releases": 0.013,
+    "ritualsDone": 0.167,
+    "minutes": 14.839,
+    "dIntake": -4.695,
+    "dStory": -0.024,
+    "dRelease": 0.024,
+    "lastDay": 5.278,
+    "sessions": 1.55,
+    "nothing": 0.837
+   },
+   "topHits": [
+    {
+     "k": "F6",
+     "share": 0.727
+    },
+    {
+     "k": "F3",
+     "share": 0.653
+    },
+    {
+     "k": "F1",
+     "share": 0.48
+    },
+    {
+     "k": "F10",
+     "share": 0.473
+    }
+   ]
+  },
+  "Sofia": {
+   "weight": 140,
+   "grid": 6,
+   "device": "both",
+   "shape": "weekly, and at eleven at night",
+   "age": 41,
+   "role": "somatic practitioner",
+   "why": "After the last client, for herself. And in session, on a client phone, which is the highest value use in the roster.",
+   "whyNot": "She cannot hand it to anybody. Her value is referral and there is no mechanism, so her use does not compound.",
+   "n": 140,
+   "arrived": 0.823,
+   "ret": {
+    "1": 0.745,
+    "3": 0.22,
+    "7": 0.776,
+    "14": 0.325,
+    "30": 0.089,
+    "60": 0.011,
+    "90": 0.001
+   },
+   "alive": {
+    "1": 0.823,
+    "3": 0.701,
+    "7": 0.541,
+    "14": 0.351,
+    "30": 0.132,
+    "60": 0.021,
+    "90": 0.004
+   },
+   "quitBy3": 0.347,
+   "sessions": 3.258,
+   "minutes": 45.158,
+   "stories": 2.895,
+   "readShare": 0.395,
+   "releases": 0.474,
+   "loopEver": 0.182,
+   "loopClosed": 0.827,
+   "cq0": 34.754,
+   "cq90": 12.666,
+   "cqDelta": -0.676,
+   "ground": 3.474,
+   "clear": 0.053,
+   "marks": 1.053,
+   "streakBest": 0.395,
+   "ritualMinutes": 24.368,
+   "giftLeft": 28.105,
+   "accuracy": 6.753,
+   "exit": {
+    "cqDelta": -6.023,
+    "ground": 4.277,
+    "marks": 2.691,
+    "clear": 0.011,
+    "stories": 3.521,
+    "releases": 0.577,
+    "ritualsDone": 1.249,
+    "minutes": 54.928,
+    "dIntake": -6.014,
+    "dStory": -1.579,
+    "dRelease": 1.572,
+    "lastDay": 11.662,
+    "sessions": 3.962,
+    "nothing": 0.326
+   },
+   "topHits": [
+    {
+     "k": "F6",
+     "share": 0.786
+    },
+    {
+     "k": "F3",
+     "share": 0.771
+    },
+    {
+     "k": "F1",
+     "share": 0.671
+    },
+    {
+     "k": "F10",
+     "share": 0.643
+    }
+   ]
+  },
+  "James": {
+   "weight": 100,
+   "grid": 2,
+   "device": "both",
+   "shape": "once, possibly twice",
+   "age": 57,
+   "role": "C-suite, third turnaround",
+   "why": "A number a peer mentioned, and he wants his and he wants it higher.",
+   "whyNot": "Anything that looks like a persona picker or a worksheet. He is not going to be seen doing self help.",
+   "n": 100,
+   "arrived": 0.431,
+   "ret": {
+    "1": 0.359,
+    "3": 0.003,
+    "7": 0.362,
+    "14": 0.012,
+    "30": 0.004,
+    "60": 0.001,
+    "90": 0
+   },
+   "alive": {
+    "1": 0.431,
+    "3": 0.281,
+    "7": 0.244,
+    "14": 0.181,
+    "30": 0.085,
+    "60": 0.014,
+    "90": 0.002
+   },
+   "quitBy3": 0.726,
+   "sessions": 0.408,
+   "minutes": 1.042,
+   "stories": 0.023,
+   "readShare": 0.466,
+   "releases": 0,
+   "loopEver": 0,
+   "loopClosed": 0,
+   "cq0": 18.212,
+   "cq90": 2.224,
+   "cqDelta": 0,
+   "ground": 0,
+   "clear": 0,
+   "marks": 0,
+   "streakBest": 0,
+   "ritualMinutes": 0,
+   "giftLeft": 5.263,
+   "accuracy": 1.142,
+   "exit": {
+    "cqDelta": -2.163,
+    "ground": 0,
+    "marks": 0.206,
+    "clear": 0,
+    "stories": 0.053,
+    "releases": 0,
+    "ritualsDone": 0.008,
+    "minutes": 2.384,
+    "dIntake": -2.163,
+    "dStory": 0,
+    "dRelease": 0,
+    "lastDay": 2.651,
+    "sessions": 0.946,
+    "nothing": 0.991
+   },
+   "topHits": [
+    {
+     "k": "F6",
+     "share": 0.46
+    },
+    {
+     "k": "F4",
+     "share": 0.33
+    },
+    {
+     "k": "F10",
+     "share": 0.26
+    },
+    {
+     "k": "F7",
+     "share": 0.14
+    }
+   ]
+  },
+  "Ana": {
+   "weight": 50,
+   "grid": 4,
+   "device": "phone",
+   "shape": "irregular, at night",
+   "age": 47,
+   "role": "teacher, one year out",
+   "why": "She is inside something and cannot see the far side. She will click anything that offers the shape of it.",
+   "whyNot": "Being told the shape and not the way out. She is the one person in the roster for whom a wrong answer costs something.",
+   "n": 50,
+   "arrived": 0.729,
+   "ret": {
+    "1": 0.649,
+    "3": 0.233,
+    "7": 0.703,
+    "14": 0.272,
+    "30": 0.076,
+    "60": 0.012,
+    "90": 0
+   },
+   "alive": {
+    "1": 0.729,
+    "3": 0.577,
+    "7": 0.384,
+    "14": 0.227,
+    "30": 0.078,
+    "60": 0.016,
+    "90": 0.002
+   },
+   "quitBy3": 0.474,
+   "sessions": 3.094,
+   "minutes": 46.616,
+   "stories": 2.792,
+   "readShare": 0.809,
+   "releases": 0.977,
+   "loopEver": 0.235,
+   "loopClosed": 1.194,
+   "cq0": 30.821,
+   "cq90": 3.175,
+   "cqDelta": -1.273,
+   "ground": 0,
+   "clear": 0,
+   "marks": 0.211,
+   "streakBest": 0.053,
+   "ritualMinutes": 2.895,
+   "giftLeft": 10.526,
+   "accuracy": 2.068,
+   "exit": {
+    "cqDelta": -14.328,
+    "ground": 10.59,
+    "marks": 3.047,
+    "clear": 0.087,
+    "stories": 3.835,
+    "releases": 1.349,
+    "ritualsDone": 1.175,
+    "minutes": 63.958,
+    "dIntake": -14.29,
+    "dStory": -2.615,
+    "dRelease": 2.577,
+    "lastDay": 10.459,
+    "sessions": 4.249,
+    "nothing": 0.346
+   },
+   "topHits": [
+    {
+     "k": "F6",
+     "share": 0.78
+    },
+    {
+     "k": "F3",
+     "share": 0.76
+    },
+    {
+     "k": "F2",
+     "share": 0.66
+    },
+    {
+     "k": "F10",
+     "share": 0.56
+    }
+   ]
+  },
+  "Gordon": {
+   "weight": 35,
+   "grid": 1,
+   "device": "both",
+   "shape": "refuses",
+   "age": 58,
+   "role": "managing partner",
+   "why": "Nothing. He has the most charge in the roster and refuses the frame. Do not chase him.",
+   "whyNot": "Any screen that opens with his pain is a screen for people who have pain.",
+   "n": 35,
+   "arrived": 0.077,
+   "ret": {
+    "1": 0.056,
+    "3": 0,
+    "7": 0.056,
+    "14": 0,
+    "30": 0,
+    "60": 0,
+    "90": 0
+   },
+   "alive": {
+    "1": 0.077,
+    "3": 0.06,
+    "7": 0.054,
+    "14": 0.039,
+    "30": 0.011,
+    "60": 0,
+    "90": 0
+   },
+   "quitBy3": 0.94,
+   "sessions": 0.058,
+   "minutes": 0.068,
+   "stories": 0,
+   "readShare": 0,
+   "releases": 0,
+   "loopEver": 0,
+   "loopClosed": 0,
+   "cq0": 3.241,
+   "cq90": 0,
+   "cqDelta": 0,
+   "ground": 0,
+   "clear": 0,
+   "marks": 0,
+   "streakBest": 0,
+   "ritualMinutes": 0,
+   "giftLeft": 0,
+   "accuracy": 0,
+   "exit": {
+    "cqDelta": -0.511,
+    "ground": 0,
+    "marks": 0,
+    "clear": 0,
+    "stories": 0,
+    "releases": 0,
+    "ritualsDone": 0,
+    "minutes": 0.816,
+    "dIntake": -0.51,
+    "dStory": 0,
+    "dRelease": 0,
+    "lastDay": 0.762,
+    "sessions": 0.692,
+    "nothing": 0.947
+   },
+   "topHits": [
+    {
+     "k": "F6",
+     "share": 0.057
+    },
+    {
+     "k": "F10",
+     "share": 0.029
+    }
+   ]
+  },
+  "Rosa": {
+   "weight": 15,
+   "grid": 10,
+   "device": "both",
+   "shape": "once, out of courtesy",
+   "age": 61,
+   "role": "retired midwife",
+   "why": "Nothing pulls. Things do not sit on her the way they used to.",
+   "whyNot": "Correctly not the customer, and the product should not pretend otherwise.",
+   "n": 15,
+   "arrived": 0.098,
+   "ret": {
+    "1": 0.067,
+    "3": 0.004,
+    "7": 0.067,
+    "14": 0.018,
+    "30": 0,
+    "60": 0,
+    "90": 0
+   },
+   "alive": {
+    "1": 0.098,
+    "3": 0.098,
+    "7": 0.091,
+    "14": 0.063,
+    "30": 0.014,
+    "60": 0,
+    "90": 0
+   },
+   "quitBy3": 0.902,
+   "sessions": 0.137,
+   "minutes": 0.4,
+   "stories": 0.007,
+   "readShare": 0,
+   "releases": 0,
+   "loopEver": 0,
+   "loopClosed": 0,
+   "cq0": 4.152,
+   "cq90": 0,
+   "cqDelta": 0,
+   "ground": 0,
+   "clear": 0,
+   "marks": 0,
+   "streakBest": 0,
+   "ritualMinutes": 0,
+   "giftLeft": 0,
+   "accuracy": 0,
+   "exit": {
+    "cqDelta": 1.638,
+    "ground": 0,
+    "marks": 0.196,
+    "clear": 0,
+    "stories": 0.037,
+    "releases": 0,
+    "ritualsDone": 0.07,
+    "minutes": 3.192,
+    "dIntake": 1.638,
+    "dStory": 0,
+    "dRelease": 0,
+    "lastDay": 5.012,
+    "sessions": 1.102,
+    "nothing": 0.719
+   },
+   "topHits": [
+    {
+     "k": "F6",
+     "share": 0.133
+    },
+    {
+     "k": "F1",
+     "share": 0.067
+    },
+    {
+     "k": "F3",
+     "share": 0.067
+    },
+    {
+     "k": "F7",
+     "share": 0.067
+    }
+   ]
+  }
+ },
+ "totals": {
+  "sessions": 1732.68,
+  "minutes": 15795.6,
+  "stories": 886.74,
+  "storiesRead": 458.05,
+  "storiesInferred": 185.05,
+  "releases": 121.89,
+  "ritualsPlanned": 589.95,
+  "ritualsDone": 318.05,
+  "loopClosed": 183.53,
+  "ground": 917.47,
+  "clear": 4.26,
+  "marks": 909.95,
+  "openers": 689.32,
+  "quit3": 517.53,
+  "giftFloor": 0.32,
+  "sawDelta": 419.26,
+  "readShare": 0.5164,
+  "inferShare": 0.4041,
+  "keptShare": 0.5392,
+  "loopEver": 0.0404
+ },
+ "sensitivity": {
+  "base": 38.91,
+  "rows": [
+   {
+    "what": "friction cost",
+    "factor": 0.75,
+    "total": 41.1,
+    "d": 2.19
+   },
+   {
+    "what": "friction cost",
+    "factor": 1.25,
+    "total": 38.6,
+    "d": -0.31
+   },
+   {
+    "what": "opening rate",
+    "factor": 0.75,
+    "total": 39.2,
+    "d": 0.29
+   },
+   {
+    "what": "opening rate",
+    "factor": 1.25,
+    "total": 38.6,
+    "d": -0.31
+   }
+  ],
+  "span": 2.5
+ }
+}

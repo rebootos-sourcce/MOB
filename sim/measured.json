@@ -1,0 +1,391 @@
+{
+ "stamp": {
+  "src": "9b53aff3c123f8b4c8bc9ac8bd086b5c",
+  "engine": "315e3ced4119eef2770f64534b10a68f",
+  "commit": "241f470",
+  "dirty": true,
+  "when": "2026-09-21T00:55:09.237Z",
+  "chromium": "1194",
+  "srcAfter": "9b53aff3c123f8b4c8bc9ac8bd086b5c",
+  "engineAfter": "315e3ced4119eef2770f64534b10a68f",
+  "moved": false
+ },
+ "widths": {
+  "390": {
+   "firstWordMs": 216,
+   "errors": [],
+   "requests": [
+    "source.html"
+   ],
+   "land": {
+    "tab": 2,
+    "tabName": "Field",
+    "tabs": [
+     "Energetics",
+     "Ritual",
+     "Story",
+     "Field",
+     "Body",
+     "Compass",
+     "Knowledge",
+     "Games",
+     "Summary"
+    ],
+    "tabCount": 9,
+    "stripVisible": 4,
+    "stripOff": [
+     "Compass",
+     "Knowledge",
+     "Games",
+     "Summary"
+    ],
+    "stripScrolls": true,
+    "unread": true,
+    "cq": 36,
+    "loaded": 0,
+    "doors": [
+     "AtunedSource OS",
+     "Energetics",
+     "Ritual",
+     "Story",
+     "Field",
+     "Body",
+     "Compass",
+     "Knowledge",
+     "Games",
+     "Summary",
+     "Dark",
+     "Charge",
+     "Patterns",
+     "Chains"
+    ],
+    "money": [],
+    "refer": []
+   },
+   "surfaces": {
+    "Energetics": {
+     "choices": 122,
+     "above": 17,
+     "small": 1,
+     "tiny": [
+      "wtu 18x44"
+     ],
+     "deep": 8757,
+     "text": 5313
+    },
+    "Ritual": {
+     "choices": 94,
+     "above": 16,
+     "small": 0,
+     "tiny": [],
+     "deep": 6236,
+     "text": 3346
+    },
+    "Story": {
+     "choices": 107,
+     "above": 23,
+     "small": 0,
+     "tiny": [],
+     "deep": 5941,
+     "text": 2891
+    },
+    "Field": {
+     "choices": 101,
+     "above": 19,
+     "small": 0,
+     "tiny": [],
+     "deep": 5849,
+     "text": 2777
+    },
+    "Body": {
+     "choices": 107,
+     "above": 20,
+     "small": 0,
+     "tiny": [],
+     "deep": 6706,
+     "text": 3127
+    },
+    "Compass": {
+     "choices": 108,
+     "above": 24,
+     "small": 0,
+     "tiny": [],
+     "deep": 6718,
+     "text": 3438
+    },
+    "Knowledge": {
+     "choices": 224,
+     "above": 26,
+     "small": 0,
+     "tiny": [],
+     "deep": 12836,
+     "text": 6106
+    },
+    "Games": {
+     "choices": 100,
+     "above": 16,
+     "small": 0,
+     "tiny": [],
+     "deep": 6802,
+     "text": 3934
+    },
+    "Summary": {
+     "choices": 87,
+     "above": 15,
+     "small": 0,
+     "tiny": [],
+     "deep": 8524,
+     "text": 4219
+    }
+   }
+  },
+  "1600": {
+   "firstWordMs": 299,
+   "errors": [],
+   "requests": [
+    "source.html"
+   ],
+   "land": {
+    "tab": 2,
+    "tabName": "Field",
+    "tabs": [
+     "Energetics",
+     "Ritual",
+     "Story",
+     "Field",
+     "Body",
+     "Compass",
+     "Knowledge",
+     "Games",
+     "Summary"
+    ],
+    "tabCount": 9,
+    "stripVisible": 9,
+    "stripOff": [],
+    "stripScrolls": false,
+    "unread": true,
+    "cq": 36,
+    "loaded": 0,
+    "doors": [
+     "AtunedSource OS",
+     "Energetics",
+     "Ritual",
+     "Story",
+     "Field",
+     "Body",
+     "Compass",
+     "Knowledge",
+     "Games",
+     "Summary",
+     "Dark",
+     "Charge",
+     "Patterns",
+     "Chains"
+    ],
+    "money": [],
+    "refer": []
+   },
+   "surfaces": {
+    "Energetics": {
+     "choices": 122,
+     "above": 85,
+     "small": 3,
+     "tiny": [
+      "wtu 18x44",
+      "Responsibilityunansw 428x44",
+      "Accountabilityunansw 428x44"
+     ],
+     "deep": 3139,
+     "text": 5313
+    },
+    "Ritual": {
+     "choices": 94,
+     "above": 78,
+     "small": 0,
+     "tiny": [],
+     "deep": 3139,
+     "text": 3346
+    },
+    "Story": {
+     "choices": 107,
+     "above": 91,
+     "small": 1,
+     "tiny": [
+      "Record 115x44"
+     ],
+     "deep": 3139,
+     "text": 2891
+    },
+    "Field": {
+     "choices": 101,
+     "above": 71,
+     "small": 0,
+     "tiny": [],
+     "deep": 3153,
+     "text": 2777
+    },
+    "Body": {
+     "choices": 107,
+     "above": 66,
+     "small": 0,
+     "tiny": [],
+     "deep": 4339,
+     "text": 3127
+    },
+    "Compass": {
+     "choices": 108,
+     "above": 82,
+     "small": 0,
+     "tiny": [],
+     "deep": 4246,
+     "text": 3438
+    },
+    "Knowledge": {
+     "choices": 224,
+     "above": 127,
+     "small": 0,
+     "tiny": [],
+     "deep": 4246,
+     "text": 6106
+    },
+    "Games": {
+     "choices": 100,
+     "above": 74,
+     "small": 0,
+     "tiny": [],
+     "deep": 4246,
+     "text": 3934
+    },
+    "Summary": {
+     "choices": 87,
+     "above": 77,
+     "small": 0,
+     "tiny": [],
+     "deep": 2828,
+     "text": 4219
+    }
+   }
+  }
+ },
+ "blank": {
+  "lawSeed": 6.5,
+  "lawValues": [
+   6.5
+  ],
+  "cq": 42.25,
+  "unread": true,
+  "loaded": 0,
+  "doms": [
+   0
+  ],
+  "arcs": [
+   0,
+   1
+  ],
+  "roots": [],
+  "engineDefault": null
+ },
+ "loop": {
+  "reference": {
+   "who": "Angela",
+   "refused": true,
+   "cqBefore": 40.86,
+   "cqAfter": 40.86,
+   "phase": "pick"
+  },
+  "own": {
+   "stories": [
+    {
+     "cq": 42.25,
+     "loaded": 0
+    },
+    {
+     "cq": 42.25,
+     "loaded": 0
+    },
+    {
+     "cq": 42.25,
+     "loaded": 0
+    },
+    {
+     "cq": 39.761,
+     "loaded": 3
+    },
+    {
+     "cq": 39.019,
+     "loaded": 4
+    },
+    {
+     "cq": 34.61,
+     "loaded": 10
+    }
+   ],
+   "refused": false,
+   "cqBefore": 34.61,
+   "cqAfter": 39,
+   "picked": [
+    {
+     "i": 105,
+     "k": "Denial Of Light",
+     "sq": 5.5723,
+     "cf": "Anger"
+    },
+    {
+     "i": 19,
+     "k": "Envy",
+     "sq": 4.6854,
+     "cf": "Anger"
+    },
+    {
+     "i": 20,
+     "k": "Jealousy",
+     "sq": 4.6854,
+     "cf": "Anger"
+    }
+   ],
+   "freed": 38,
+   "planLines": 12,
+   "uniqueBefore": 0,
+   "uniqueAfter": 12,
+   "allowanceLeft": 88,
+   "chargeAfter": {
+    "Fear": 5.74,
+    "Anger": 7.4133,
+    "Shame": 0.28,
+    "Disgust": 0,
+    "Apathy": 5.145,
+    "Shock": 0,
+    "Sad": 0,
+    "Surprise": 0,
+    "Anticipation": 0
+   },
+   "replaceAfter": {
+    "Fear": 0,
+    "Anger": 0.7853,
+    "Shame": 0,
+    "Disgust": 0,
+    "Apathy": 0,
+    "Shock": 0,
+    "Sad": 0,
+    "Surprise": 0,
+    "Anticipation": 0
+   }
+  },
+  "exhausted": {
+   "allowanceZero": true,
+   "uniqueBefore": 119,
+   "uniqueAfter": 123,
+   "ranAnyway": true,
+   "quoted": "4 patterns of the 0 you have left",
+   "cqBefore": 41.33,
+   "cqAfter": 42.25,
+   "leftAfter": 0
+  },
+  "speeds": {
+   "Slow": 3.2,
+   "Steady": 2.2,
+   "Quick": 1.4
+  },
+  "openingLines": 3
+ }
+}
