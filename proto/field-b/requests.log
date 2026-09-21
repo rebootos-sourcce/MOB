@@ -1,0 +1,16 @@
+THE REQUEST LOG. Written by proto/field-b/shoot.js.
+Every request the page made at both widths. A line that is not file:// is a
+request off the machine, and there must not be one.
+
+off machine requests: 0
+
+1600  request  GET  file:///home/user/MOB/proto/field-b/index.html
+1600  request  GET  file:///home/user/MOB/funnel/tokens.css
+1600  request  GET  file:///home/user/MOB/engine.js
+1600  request  GET  file:///home/user/MOB/funnel/ring.js
+1600  state  {"person":"James","CQ":12.035851318073096,"DQ":9.193269328699918,"counts":"Root:16 Sacral:16 Solar:16 Heart:15 Throat:12 3rd Eye:12 Crown:21"}
+390  request  GET  file:///home/user/MOB/proto/field-b/index.html
+390  request  GET  file:///home/user/MOB/funnel/tokens.css
+390  request  GET  file:///home/user/MOB/engine.js
+390  request  GET  file:///home/user/MOB/funnel/ring.js
+390  state  {"person":"James","CQ":12.035851318073096,"DQ":9.193269328699918,"counts":"Root:16 Sacral:16 Solar:16 Heart:15 Throat:12 3rd Eye:12 Crown:21"}
