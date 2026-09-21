@@ -74,6 +74,41 @@ reopens. Every seat adds its own.
 
 ---
 
+## 08g. RULED 21 SEPTEMBER, TWENTIETH PASS. ASK THE COHORT, THEN CHASE NINETY.
+
+### AK. ASK THE THOUSAND WHAT WOULD FIX IT.
+
+- [ ] **AK1. His words: "take the F data, take our team, have them quiz the
+      focus group and the thousand on what would improve the user
+      experience."** The ninety day run graded 38.91 and named where people
+      leave. It never asked what would have kept them.
+- [ ] **AK2. And the boundary has to be stated once, plainly.** The thousand
+      are simulated. Asking them what they want returns the model's own
+      assumptions in the shape of an answer, which is worth something as a
+      structured way to rank what we already measured and is worth nothing as
+      evidence about a human being. Every improvement it proposes has to be
+      traceable to a measured sticking point or it does not go on the list.
+
+### NT. NINETY, AND WHAT IT WOULD COST.
+
+- [ ] **NT1. "Simulate the experience until you get to 90 per cent."**
+      Ruled. The loop is: propose a change, model it against the harness,
+      re-run, keep what moves the number, and repeat.
+- [ ] **NT2. The number only moves if the product changes, and that is the
+      rule the whole exercise stands on.** Moving the grade by loosening an
+      assumption, lowering a friction cost, or grading a different thing is
+      not reaching ninety, it is writing ninety down. Every point gained has
+      to name the change that earned it and the file that change lands in. If
+      ninety cannot be reached, the honest deliverable is the curve, where it
+      flattens, and what the last twenty points would actually cost.
+- [ ] **NT3. The first candidate is already measured and it is not a
+      screen.** The loop returns a person to where they started: a story only
+      adds charge, the release takes 21 per cent and installs 62 per cent of
+      what it took, and the height of the line is the intake. No amount of
+      interface moves a grade whose ceiling is arithmetic.
+
+---
+
 ## 08f. RULED 20 SEPTEMBER, NINETEENTH PASS. THE RING HE ALREADY DREW, AND A LIST HE CANNOT ANSWER.
 
 ### CQR. THE SEVEN BAND RING IS HIS, AND IT IS ALREADY DRAWN.
