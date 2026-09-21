@@ -2,6 +2,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Atuned test</title>
 <meta name="description" content="A hundred questions, one at a time, scored against the 21 laws of integrity.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20fill%3D%22none%22%20stroke-linecap%3D%22butt%22%20viewBox%3D%22-3%20-3%20206%20206%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20aria-hidden%3D%22true%22%20focusable%3D%22false%22%3E%3Cpath%20d%3D%22M100.000%20181.250A81.25%2081.25%200%200%200%20163.524%20150.659%22%20style%3D%22stroke%3A%23D6524C%3Bstroke-width%3A37.50%22%2F%3E%3Cpath%20d%3D%22M163.524%20150.659A81.25%2081.25%200%200%200%20179.213%2081.920%22%20style%3D%22stroke%3A%23D8924E%3Bstroke-width%3A37.50%22%2F%3E%3Cpath%20d%3D%22M179.213%2081.920A81.25%2081.25%200%200%200%20135.253%2026.796%22%20style%3D%22stroke%3A%23DABF6A%3Bstroke-width%3A37.50%22%2F%3E%3Cpath%20d%3D%22M135.253%2026.796A81.25%2081.25%200%200%200%2064.747%2026.796%22%20style%3D%22stroke%3A%235FD5A6%3Bstroke-width%3A37.50%22%2F%3E%3Cpath%20d%3D%22M64.747%2026.796A81.25%2081.25%200%200%200%2020.787%2081.920%22%20style%3D%22stroke%3A%235EBBDB%3Bstroke-width%3A37.50%22%2F%3E%3Cpath%20d%3D%22M20.787%2081.920A81.25%2081.25%200%200%200%2036.476%20150.659%22%20style%3D%22stroke%3A%237D93E0%3Bstroke-width%3A37.50%22%2F%3E%3Cpath%20d%3D%22M36.476%20150.659A81.25%2081.25%200%200%200%20100.000%20181.250%22%20style%3D%22stroke%3A%23A77EDB%3Bstroke-width%3A37.50%22%2F%3E%3C%2Fsvg%3E">
 <style>
 /* tokens.css, inlined by BUILD-single.sh */
 /* GENERATED. Do not edit.
@@ -145,8 +146,19 @@ body{font-size:17px;line-height:1.6}
 
 /* ---- the bar. It fills. It never states a count, because a count is a
    number to dread and the ruling on the onboarding was one button forward. ---- */
-.top{position:sticky;top:0;background:var(--bg);padding:14px 0 12px;z-index:5}
-.wm{font-size:14px;letter-spacing:.02em;color:var(--dim);font-weight:600}
+.top{position:sticky;top:0;background:var(--bg);padding:14px 0 12px;z-index:5;
+ display:flex;align-items:center;gap:16px;border-bottom:1px solid var(--edge)}
+.tl{flex:1 1 auto;min-width:0}
+/* the wordmark is the route back to the landing, which makes it a control and
+   not a label, so it carries the floor like every other one. The negative
+   margin keeps the type where it was: the hit area grows, the drawing does
+   not move. */
+.wm{display:inline-flex;align-items:center;min-height:var(--tap);min-width:var(--tap);
+ margin:-11px 0 -11px -10px;padding:0 10px;
+ font-size:14px;letter-spacing:.02em;color:var(--dim);
+ font-weight:600;text-decoration:none}
+a.wm:hover,a.wm:focus-visible{color:var(--ink)}
+a.wm:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
 .wm .um{position:relative;display:inline-block}
 .wm .um::before,.wm .um::after{content:'';position:absolute;top:-.5em;
  width:.14em;height:.14em;border-radius:50%;background:var(--dim)}
@@ -157,7 +169,28 @@ body{font-size:17px;line-height:1.6}
    Measured on the shot, not read off the sheet. */
 .bar{height:4px;background:var(--panel-2);border-radius:2px;margin-top:10px;overflow:hidden}
 .bar i{display:block;height:100%;background:var(--accent);border-radius:2px;
- transition:width .22s ease}
+ transition:width var(--t-element) var(--ease-out)}
+.rlab{margin:7px 0 0;font-size:12px;letter-spacing:.04em;color:var(--dim);
+ white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rlab b{color:var(--ink);font-weight:600}
+
+/* ---- THE SEVEN BAND RING. The drawing is ring.js and the geometry is
+   argued there. This sheet sets its size, its frame and its motion, and
+   nothing else. A band thickens over one element beat, which is long enough
+   to be seen moving and short enough that the next question is not waiting
+   on it. ---- */
+.ringwrap{flex:0 0 auto;width:84px;height:84px;line-height:0}
+.ring{display:block;width:100%;height:100%;overflow:visible}
+.ring-fr{fill:none;stroke:var(--edge-2);stroke-width:1}
+.ring-t{fill:none;stroke-linecap:butt;opacity:.24}
+.ring-b{fill:none;stroke-linecap:butt;
+ transition:stroke-width var(--t-element) var(--ease-out)}
+.bigring{display:grid;justify-items:center;gap:12px;margin:22px 0 4px}
+.bigring .ringwrap{width:188px;height:188px}
+.bigring p{margin:0;text-align:center}
+@media(prefers-reduced-motion:reduce){
+ .ring-b{transition:none} .bar i{transition:none}
+}
 
 /* ---- one question per screen ---- */
 .card{min-height:58vh;display:flex;flex-direction:column;justify-content:center;
@@ -278,6 +311,8 @@ button.act:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
  .scope,.door,.close,.read>.foot{max-width:1120px}
 }
 @media(max-width:400px){
+ .ringwrap{width:56px;height:56px}
+ .bigring .ringwrap{width:150px;height:150px}
  .q{font-size:22px} .read h1{font-size:25px} .cq b{font-size:54px}
  .laws li b{flex-basis:104px} .close p{font-size:19px}
  .seats li b{flex-basis:64px}
@@ -285,8 +320,14 @@ button.act:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 </style></head><body>
 <div class="wrap">
  <div class="top">
-  <div class="wm">At<span class="um">u</span>ned</div>
-  <div class="bar"><i id="fill" style="width:0"></i></div>
+  <div class="tl">
+   <a class="wm" href="atuned-funnel.html">At<span class="um">u</span>ned</a>
+   <div class="bar"><i id="fill" style="width:0"></i></div>
+   <p class="rlab" id="rlab">The ring reads as you answer</p>
+  </div>
+  <!-- THE SEVEN BAND RING. It is filled by RING.set out of the engine's own
+       band loads, so it cannot disagree with the reading underneath it. -->
+  <div class="ringwrap" id="ringtop"></div>
  </div>
  <div id="app"></div>
 </div>
@@ -3661,7 +3702,10 @@ const TABDEF=[
  /* GAMES COMES BACK OUT. Ruled, and it reverses the fold that put it inside
     Knowledge to get the bar to seven. They are independent games, a place a
     person goes for brain release, and a game folded into a reference page is
-    neither. The bar is eight. */
+    neither.
+
+    The count that used to sit here said eight and the table beneath it holds
+    nine. It is gone: this array is the bar, and its length is the answer. */
  {k:TAB.GAMES,   id:'games', nm:'Games',     cls:'tab-games'},
  {k:TAB.SUMMARY, id:'sum',   nm:'Summary',   cls:'tab-summary'}];
 /* SETTINGS HAS NO TABDEF ENTRY, so TABOF would fall through to the first one
@@ -3819,7 +3863,38 @@ function exprRead(){return EXPR.map(function(e){var f=exprFill(e.nm);
    a grace period.
    ============================================================ */
 const UNDO_MAX=0;                 /* 0 means no ceiling */
-var UNDO=[];
+/* A HISTORY BELONGS TO THE RECORD IT WAS TAKEN FROM, AND ONLY THAT RECORD MAY
+   TAKE IT BACK.
+
+   One stack for the whole app was a field leak, and it is the second of this
+   shape in the product. Reproduced in the full functional run: a story is
+   committed with James loaded, which pushes his nine charges onto the stack,
+   the commit handler then calls toYou() so the pointer moves to the person's
+   own record, and the undo arrow restores James's field into S. S.who is 0 by
+   then, and S.who===0 is the claim that S holds the person's own field, so
+   settle() in ui/panels.js calls saveYou() and pSave() and writes it through.
+   Measured at the release block of that same run, before the release had been
+   touched: 53.0 of James's charge sitting in PEOPLE[0].c and in the person's
+   own record, on a person who had entered nothing.
+
+   ui/release.js already ruled how this crossing is answered: refuse it, do not
+   repoint, because two attempts at repointing were each worse than the bug.
+   So this does not repoint and undoApply still does not touch S.who. Switching
+   record hides the arrows, because there is nothing to take back HERE, and
+   switching back brings that record's history with it. That is why the stacks
+   are keyed rather than cleared on a switch: clearing would spend a person's
+   whole history on one glance at a worked example, and this module's own
+   argument is that a person who cannot get back to where they started has a
+   grace period and not an undo.
+
+   Keyed by the record's id, not by S.who. S.who names a persona, and every one
+   of the person's own records is S.who 0, so keying on it would leave two of
+   their own profiles sharing one history and leaking into each other in exactly
+   the same way. With no record bound at all, which is what a headless run has,
+   there is one history under a key of its own. */
+function undoRec(){ return (typeof CURP!=='undefined'&&CURP&&CURP.id)?CURP.id:'_'; }
+var UNDO={};
+function undoList(){ var k=undoRec(); return UNDO[k]||(UNDO[k]=[]); }
 /* REDO. Undo without it is half a control.
 
    Taking a step back and then finding there is no way forward makes undo
@@ -3829,7 +3904,8 @@ var UNDO=[];
    new change, at which point the branch they walked away from is gone. That
    is the standard contract and it is the one people already have in their
    hands. */
-var REDO=[];
+var REDO={};
+function redoList(){ var k=undoRec(); return REDO[k]||(REDO[k]=[]); }
 
 /* the inputs, and nothing derived. everything else recomputes from these. */
 function undoState(){
@@ -3844,17 +3920,22 @@ function undoState(){
    words, because an undo control that says "undo" and nothing else makes a
    person guess what they are about to get back. */
 function undoPush(label){
- UNDO.push({s:undoState(), nm:label||'the last change', t:new Date().toISOString()});
- if(UNDO_MAX>0){while(UNDO.length>UNDO_MAX)UNDO.shift();}
+ var U=undoList();
+ U.push({s:undoState(), nm:label||'the last change', t:new Date().toISOString()});
+ if(UNDO_MAX>0){while(U.length>UNDO_MAX)U.shift();}
  /* a new change abandons the branch that was walked away from */
- REDO=[];
- return UNDO.length;}
+ REDO[undoRec()]=[];
+ return U.length;}
 
-function undoDepth(){return UNDO.length;}
-function undoPeek(){return UNDO.length?UNDO[UNDO.length-1].nm:null;}
-function redoDepth(){return REDO.length;}
-function redoPeek(){return REDO.length?REDO[REDO.length-1].nm:null;}
-function undoClear(){UNDO=[];REDO=[];}
+/* the depth of THIS record's history, which is how many steps back a person
+   can actually take from where they are standing. The arrows read it and hide
+   themselves on zero, so a control never offers a step it would refuse. */
+function undoDepth(){return undoList().length;}
+function undoPeek(){var U=undoList();return U.length?U[U.length-1].nm:null;}
+function redoDepth(){return redoList().length;}
+function redoPeek(){var R=redoList();return R.length?R[R.length-1].nm:null;}
+/* every record's history, because this is the reset and not a switch */
+function undoClear(){UNDO={};REDO={};}
 /* the two ends share one restore, because a state is a state whichever
    direction it was reached from, and two copies of this would drift. */
 function undoApply(s){
@@ -3872,9 +3953,9 @@ function undoApply(s){
 /* walk forward again. Symmetrical with undoPop: it captures where it is
    standing before it moves, so undo can bring it back. */
 function redoPop(){
- if(!REDO.length)return null;
- var e=REDO.pop();
- UNDO.push({s:undoState(), nm:e.nm, t:e.t});
+ var R=redoList(); if(!R.length)return null;
+ var e=R.pop();
+ undoList().push({s:undoState(), nm:e.nm, t:e.t});
  undoApply(e.s);
  return {nm:e.nm, t:e.t};}
 
@@ -3882,12 +3963,12 @@ function redoPop(){
    returns null rather than half applying: the state is replaced wholesale or
    not at all. */
 function undoPop(){
- if(!UNDO.length)return null;
- var e=UNDO.pop();
+ var U=undoList(); if(!U.length)return null;
+ var e=U.pop();
  /* where it is standing goes onto the forward stack before it moves, under
     the name of the change being taken back, so the forward control can say
     what it will put back. */
- REDO.push({s:undoState(), nm:e.nm, t:e.t});
+ redoList().push({s:undoState(), nm:e.nm, t:e.t});
  undoApply(e.s);
  return {nm:e.nm, t:e.t};}
 
@@ -4210,6 +4291,72 @@ function accuracy(r,prof){
  var band=5.7*0.5 + (1-cov)*6 + (1-sig)*8 + deg*4 + (1-rel)*1.2 + (1-exq)*3;
  return {pct:pct, band:band, exq:exq, sig:sig, cov:meas, rel:Math.round(rel*100), relN:rel,
   held:held, inst:inst, deg:deg, signal:Math.round(sig*100)};}
+
+/* ============================================================
+   THE CHILD PATTERN. WHICH READING THIS IS, AND WHY IT IS AN ASSUMPTION.
+
+   Ruled by the owner that a child pattern is special and has to be
+   highlighted and located. What was never ruled is which of three things the
+   phrase means, and the engine carries all three, so the count is not a
+   detail of the wording. Measured on the roster the gates already load, at
+   the same line compute() loads an address at:
+
+     a) one of the nine in CHILD.      blank 0, James 4, Ana 8, Gordon 9
+     b) a pattern imprinted in childhood, which is what AGES is for.
+                                       blank 0, and 0 on every profile in
+                                       the roster, because the age ladder
+                                       stores nothing: AGE_ANS is a module
+                                       variable in the drill and no profile
+                                       field exists to hold a finding. The
+                                       ceiling is the sixteen year rows.
+     c) a child in the address ladder, meaning an address carrying while its
+        seat's primary is carrying too.
+                                       blank 0, James 9, Ana 20, Gordon 90
+
+   Nine against ninety is the whole feature, which is why it is his call and
+   not mine. CHILD_READ is the assumption, it is 'axis', and it is the
+   narrowest of the three that is defensible: the nine are named, computed
+   and drawn already, and (b) cannot be built at all until a profile has
+   somewhere to keep a finding, which is a schema change and his.
+
+   AND THERE IS NO SECOND LINE ANYWHERE IN HERE. The line an address carries
+   at is compute()'s own, so childFound takes the reading rather than
+   re-testing sq against a 4 typed a second time. The first cut tested
+   S.charge on the axis instead, which counted nine axes for James where four
+   of them have an address at or above the line: an axis can carry 5 and land
+   nothing, because susceptibility and band relief scale it down per address.
+   A figure of nine beside a panel showing four is the defect this repository
+   has been bitten by nine times, in a new place.
+   ============================================================ */
+const CHILD_READ='axis';
+/* the parent of an address in the ladder: the first address in its band,
+   which is the plexus the seat is named for. Root is the lumbar plexus,
+   Heart is the cardiac plexus. Derived, so a reordering of NODES moves it. */
+const SEATPRIM={};
+BANDS.forEach(function(b){SEATPRIM[b]=W.filter(function(n){return n.b===b;})[0];});
+function childFound(r){
+ var held=(r&&r.loaded)||[], out=[], at={};
+ if(CHILD_READ==='ladder'){
+  var on={}; held.forEach(function(n){on[n.i]=1;});
+  held.forEach(function(n){
+   var par=SEATPRIM[n.b];
+   if(!par||par.i===n.i||!on[par.i])return;
+   out.push({ax:n.cf||n.b, seat:n.b, at:n, under:par});});
+ } else {
+  /* one address per axis: where that child emotion sits heaviest. An axis
+     with nothing at or above the line has no location, so it is not found.
+     Sorted so the panel reads heaviest first, the way the pills do. */
+  var by={};
+  held.forEach(function(n){
+   if(!n.cf)return;
+   if(!by[n.cf]||n.sq>by[n.cf].sq)by[n.cf]=n;});
+  CHILD.forEach(function(c){
+   var n=by[c.nm]; if(!n)return;
+   out.push({ax:c.nm, opp:c.opp, seat:n.b, at:n,
+    n:held.filter(function(x){return x.cf===c.nm;}).length});});
+  out.sort(function(a,b){return b.at.sq-a.at.sq;});}
+ out.forEach(function(k){at[k.at.i]=k;});
+ return {read:CHILD_READ, found:out, at:at, n:out.length};}
 /* ============================================================
    THE PLAN. What a person is on, what it grants, and what it
    lets them see.
@@ -4856,8 +5003,24 @@ function pNew(name){ var p=blankProfile(name); PROFILES.push(p); CURP=p; pPersis
    `if(!pSave())` could never fire: a delete that failed to write said
    "Deleted from this browser" and left the record where it was. That is the
    one write in the product where a false claim is worst. */
-function pSave(){ if(!CURP)return false; saveProfile(CURP); return pPersist(); }
-function pSnap(){ if(!CURP)return false; CURP.history.push(snapshot(CURP)); return pPersist(); }
+/* AND A SAVE ONTO SOMETHING THAT IS NOT IN THE RECORD LIST CANNOT LAND, SO IT
+   SAYS SO RATHER THAN REPORTING THE WRITE IT DID NOT MAKE.
+
+   pPersist writes PROFILES. A profile outside that array is never written, and
+   this returned pPersist's answer regardless, so the caller was told the disk
+   had taken a record that was never offered to it. That was invisible while the
+   persona loader pushed its scratch profiles onto PROFILES, because then
+   everything was in the list: the price of that was a demo persona landing in
+   the person's own store, which is the leak ui/personas.js now refuses. Fixing
+   the leak is what makes this path reachable, so the report comes with it. The
+   host decides what to say; this only reports what happened. */
+function pSave(){ if(!CURP)return false; saveProfile(CURP);
+ if(PROFILES.indexOf(CURP)<0){ SAVE_OK=false; SAVE_ERR='NotARecord'; return false; }
+ return pPersist(); }
+/* checked before the push, so a history nobody can read does not grow */
+function pSnap(){ if(!CURP)return false;
+ if(PROFILES.indexOf(CURP)<0){ SAVE_OK=false; SAVE_ERR='NotARecord'; return false; }
+ CURP.history.push(snapshot(CURP)); return pPersist(); }
 function pExport(){ return JSON.stringify(CURP?saveProfile(CURP):null,null,1); }
 /* ============================================================
    THE BOUNDARY. Everything above this line trusts its input
@@ -5019,19 +5182,32 @@ function ritTarget(o){
    unit:null, period:null, src:'PRACTICE[].min',
    because:pr.nm+' is '+pr.min+' minutes and the library carries no count for '
     +'it, so it is one span held or crossed and not a number of things'};}
- if(q.axis&&CHARGES.indexOf(q.axis)>=0){
-  var m=cardDepth(q.axis,'m'), f=cardDepth(q.axis,'f');
+ if(q.axis){
+  /* THE NODE TABLE'S CHARGE COLUMN IS NOT THE NINE AXES, which a release row
+     hands straight in. Measured on NODES: 12 rows carry Sadness, 13 Resentment
+     and 12 Joy, and none of those three is one of the nine. CHG2FET is the
+     engine's own map from the charge vocabulary to the axis, keyed lowercase,
+     and it answers Sadness with Sad. It has no answer for Joy, which is not one
+     of the nine at all, or for Resentment, which the sniffer rules a composite
+     of Anger and Apathy: two axes means two cards and there is no single count,
+     so both are refused by name below rather than rounded to the nearer axis. */
+  var ax=CHARGES.indexOf(q.axis)>=0?q.axis
+   :(CHG2FET[String(q.axis).toLowerCase()]||null);
+  if(!ax)return {shape:null, target:null, src:null,
+   because:q.axis+' is in the node table\'s charge column and is not one of the '
+    +'nine axes, and nothing maps it to one, so there is no card and no count'};
+  var m=cardDepth(ax,'m'), f=cardDepth(ax,'f');
   var printed=Math.min(m,f);
   if(printed>0)return {shape:'count', target:printed, unit:'lines',
-   period:'a run', src:'cardDepth('+q.axis+')',
-   because:'the printed card for '+q.axis+' carries '+printed
+   period:'a run', axis:ax, src:'cardDepth('+ax+')',
+   because:'the printed card for '+ax+' carries '+printed
     +' paired lines on a side, and the session is every line on it'};
-  return {shape:'count', target:C3_BAND_N, unit:'lines', period:'a run',
+  return {shape:'count', target:C3_BAND_N, unit:'lines', period:'a run', axis:ax,
    src:C3_BAND_N===null?null:'C3_BAND[].lo and .hi',
    because:C3_BAND_N===null
     ?'the escalation bands are no longer one size, so which band a run opens '
      +'at decides the count and nothing here knows it'
-    :q.axis+' has no printed card, so the lines come off the generator, whose '
+    :ax+' has no printed card, so the lines come off the generator, whose '
      +'curve is five bands of '+C3_BAND_N+' and whose session is one band'};}
  if(q.law&&SINAMES.indexOf(q.law)>=0)
   return {shape:'stance', target:null, law:q.law, unit:null, period:null,
@@ -7741,6 +7917,10 @@ if(typeof module!=='undefined'&&module.exports){
   /* indexes */   W:W, BY:BY, ALL_SAB:ALL_SAB, S:S,
   /* soul */      buildSoul:buildSoul, affinity:affinity, bandIg:bandIg,
   /* engine */    compute:compute, suscAll:suscAll, balance:balance, OUTWARD:OUTWARD, INWARD:INWARD,
+  /* the child pattern, and the reading of it that is assumed. Both exported,
+     because a gate that cannot reach the constant cannot tell whether the
+     count it read belongs to the reading it thinks it is looking at. */
+                  childFound:childFound, CHILD_READ:CHILD_READ, SEATPRIM:SEATPRIM,
   /* THE CEILING. Absent from this contract for as long as it has existed, and
      two seats have now needed it and built their own copy instead: the
      integrity probe re-evals the whole engine source to reach it, and the
@@ -8053,6 +8233,188 @@ var QQ=[
 
 </script>
 <script>
+/* ring.js, inlined by BUILD-single.sh */
+/* ============================================================
+   THE SEVEN BAND RING. ONE DRAWING, AND THIS IS IT.
+
+   Provenance, stated plainly because the brief asked for it.
+
+   His words: "the band in Source OS that I dropped in a long time ago, the
+   first thing I dropped in. It has a ring with seven bands. That is the
+   original CQ design." The commit named for it is 46952ef, and what is in
+   that file is a band and not a ring: `.top-accent` and `.nav-accent`, a
+   three pixel strip of
+     linear-gradient(90deg,#B83030,#C07030,#A89020,#3A8870,#3870B8,#7858A8)
+   pinned to the top of the reading column and repeated in the left rail. Two
+   uses, one gradient, six stops. Six. The third eye is missing from it, and
+   it is still missing in the current index.html, four commits later. So what
+   the alpha actually carries is the order of the seats and the fact that they
+   travel as one band. It does not carry a ring and it does not carry seven.
+
+   The ring is the one this project already argued for and measured, in
+   proto/logo/r2measure.js and round3.html, on his own ruling: "for the
+   favicon, let's do like the old ring. Seven colours in a band." Every number
+   below is lifted from that study rather than chosen here.
+
+     seven equal arcs        360/7, because an alternating rhythm cannot close
+                             on an odd count. One, two, one, two round a ring
+                             of seven puts two arcs of the same weight at the
+                             seam. That is arithmetic, not taste.
+     touching                a three degree gap costs a seat a fifth of the
+                             solid pixels it has at sixteen.
+     band 18.75 per cent     three pixels on sixteen. Set by the small end,
+       of the diameter       held at every size. The boot mark's ring is a
+                             hairline, 1.29 per cent, which is a fifth of a
+                             pixel at sixteen and has nothing to colour.
+     root at the bottom      the band is the spine closed into a loop and the
+       climbing the right    loop closes at the body's base. The project's own
+                             ruling about the four part loop, applied to the
+                             seven: it is a circle, never a list.
+     colours off the live    the same seven the app draws. Nothing retyped.
+       tokens
+
+   WHAT IT DOES HERE, WHICH IS THE PART HE CARED ABOUT. "It is a truncated CQ.
+   As you input information into it, it will show you what is going on and
+   what is running it." So it is a reading and not a mark. Each band carries
+   the load at its own seat, and the load is the band's WEIGHT rather than its
+   length: the arc always spans its full seventh, so the object is whole and
+   recognisable from the first frame, and it thickens toward the frame as the
+   charge lands. Heaviest seat, fattest band. One glance answers what is
+   running it.
+
+   The scale is the reading's own scale, nought to ten, mean load per seat,
+   read off the same field the reading prints underneath. The ring and the
+   reading cannot disagree because they are the same number.
+
+   THE SAME DRAWING IS THE FAVICON, at every band full. The app's mark is the
+   ring closed and a person's reading is the ring uneven, which is one object
+   in two states rather than two drawings of one object.
+   ============================================================ */
+var RING = (function () {
+
+  /* the box. The band is 18.75 per cent of the diameter and the outer edge
+     of a full band lands exactly on the diameter, so the frame hairline would
+     be clipped by a viewBox of 0 0 200 200. Three units of air, and no other
+     number moves. */
+  var D = 200, BANDFRAC = 3 / 16;
+  var BAND = D * BANDFRAC;            /* 37.5 */
+  var RMID = (D - BAND) / 2;          /* 81.25 */
+  var PAD = 3;
+  var SWEEP = 360 / 7;                /* 51.428571… */
+  var START = 90;                     /* six o'clock, y down */
+  var HAIR = 2.2;                     /* a seat not yet read is still a seat */
+
+  /* the seats, in the order the band runs. The names are the engine's BANDS
+     and the token names are the palette's, so a rename in either breaks
+     loudly rather than drawing the wrong hue. */
+  var SEATS = [
+    ['Root', '--root'], ['Sacral', '--sacral'], ['Solar', '--solar'],
+    ['Heart', '--heart'], ['Throat', '--throat'], ['3rd Eye', '--eye'],
+    ['Crown', '--crown']
+  ];
+
+  function pt(a, r) {
+    var t = a * Math.PI / 180;
+    return [(D / 2 + r * Math.cos(t)).toFixed(3), (D / 2 + r * Math.sin(t)).toFixed(3)];
+  }
+
+  /* one seventh, drawn at the mid radius. The angle decreases, which is up
+     the right side once y points down, so the sweep flag is 0. */
+  function arc(i) {
+    var a0 = START - i * SWEEP, a1 = a0 - SWEEP;
+    var p = pt(a0, RMID), q = pt(a1, RMID);
+    return 'M' + p[0] + ' ' + p[1] + 'A' + RMID + ' ' + RMID + ' 0 0 0 ' + q[0] + ' ' + q[1];
+  }
+
+  /* load, nought to ten, to a stroke width. Ten is the full band. */
+  function weight(v) {
+    if (v == null || !(v > 0)) return HAIR;
+    return HAIR + (Math.min(10, v) / 10) * (BAND - HAIR);
+  }
+
+  /* -------- the markup. --------
+     opts.loads  seven numbers, nought to ten, or null for unread.
+     opts.frame  draw the two hairlines that show the full band. Default on.
+     opts.flat   hex colours instead of tokens, for the favicon, which is
+                 rendered by the browser outside the document and gets no
+                 custom properties. */
+  /* THE FIRST CUT DREW THE LOAD AND NOTHING ELSE, AND IT WAS ILLEGIBLE.
+
+     Measured, on the header at sixty pixels: a real load runs nought to about
+     five on a scale whose top is ten, so a band rendered at load alone is
+     between a half and two pixels of colour on a black ground, and the object
+     stopped reading as a ring of seven at all. Worse, it stopped answering
+     the question it is here to answer, because you cannot see which band is
+     the fat one when none of them is fat.
+
+     The scale is not the thing to move. The reading prints the same numbers
+     as bars underneath and the two may not disagree, so the drawing gains the
+     scale instead of losing it: every seat is drawn twice. The track is the
+     full band at low alpha, which is that seat at a load of ten, and it is
+     there from the first frame, so the mark is whole before anything is
+     answered and it is the same mark the tab carries. The load is drawn on
+     top of it, centred on the band's own spine, growing out toward the track
+     as the charge lands. Faint band is the scale. Solid band is the reading.
+     The gap between them is what is not being carried. */
+  function svg(opts) {
+    opts = opts || {};
+    var loads = opts.loads || [], flat = opts.flat || null, i, b = '';
+    var lo = -PAD, sz = D + PAD * 2, d;
+    b += '<svg class="ring" viewBox="' + lo + ' ' + lo + ' ' + sz + ' ' + sz + '"'
+      + ' xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">';
+    for (i = 0; i < 7; i++) {
+      var col = flat ? flat[i] : 'var(' + SEATS[i][1] + ')';
+      d = arc(i);
+      if (opts.track !== false) {
+        b += '<path class="ring-t" d="' + d + '"'
+          + ' style="stroke:' + col + ';stroke-width:' + BAND + '"/>';
+      }
+      b += '<path class="ring-b" data-seat="' + i + '" d="' + d + '"'
+        + ' style="stroke:' + col + ';stroke-width:' + weight(loads[i]).toFixed(2) + '"/>';
+    }
+    /* one hairline on the outer edge, so the band has an edge to fill toward.
+       It is drawn at device width rather than box width: at sixty pixels a
+       one unit stroke in a two hundred unit box is three tenths of a pixel
+       and there is nothing to see. */
+    if (opts.frame !== false) {
+      b += '<circle class="ring-fr" cx="100" cy="100" r="' + (RMID + BAND / 2) + '"'
+        + ' vector-effect="non-scaling-stroke"/>';
+    }
+    return b + '</svg>';
+  }
+
+  /* -------- the update. The transition is in the stylesheet, so a band
+     thickens rather than jumping, and the whole ring moves on one answer
+     because one answer moves more than one seat. -------- */
+  function set(root, loads) {
+    if (!root) return;
+    var n = root.querySelectorAll ? root.querySelectorAll('.ring-b') : [];
+    for (var i = 0; i < n.length; i++) {
+      n[i].style.strokeWidth = weight(loads && loads[i]).toFixed(2);
+    }
+  }
+
+  /* -------- the heaviest seat, which is the sentence beside the drawing.
+     Null until something is actually carrying, because nought is not a
+     winner. -------- */
+  function heaviest(loads) {
+    if (!loads) return null;
+    var bi = -1, bv = 0;
+    for (var i = 0; i < 7; i++) { if (loads[i] > bv) { bv = loads[i]; bi = i; } }
+    return bi < 0 ? null : { i: bi, nm: SEATS[bi][0], v: bv };
+  }
+
+  return {
+    D: D, BAND: BAND, RMID: RMID, SWEEP: SWEEP, START: START,
+    BANDFRAC: BANDFRAC, HAIR: HAIR, SEATS: SEATS,
+    arc: arc, weight: weight, svg: svg, set: set, heaviest: heaviest
+  };
+})();
+
+if (typeof module !== 'undefined' && module.exports) module.exports = RING;
+
+</script>
+<script>
 /* ============================================================
    THE TEST. Three states: the opening, one question, the reading.
    Nothing here computes a reading of its own. The hundred answers
@@ -8069,6 +8431,11 @@ var esc=function(s){return String(s==null?'':s)
 var MISSING=[];
 if(typeof SINAMES==='undefined'||typeof read!=='function')MISSING.push('engine.js');
 if(typeof QQ==='undefined')MISSING.push('questions.js');
+if(typeof RING==='undefined')MISSING.push('ring.js');
+/* the ring's seat order is the engine's band order or it is drawing the
+   wrong hue at the wrong address. Checked once, out loud. */
+var SEATMISMATCH=(typeof RING!=='undefined'&&typeof BANDS!=='undefined')
+ &&RING.SEATS.map(function(s){return s[0];}).join('|')!==BANDS.join('|');
 /* A law named in the questions that the engine does not carry would be scored
    on fewer points than this page claims. It is refused by name. */
 var UNKNOWN=[];
@@ -8092,6 +8459,21 @@ function serveOrder(){
  return out;}
 
 var ORDER=MISSING.length?[]:serveOrder();
+
+/* ============================================================
+   THE BAND LOADS. Mean charge per seat, read off the engine's own field
+   after read() has run, which is the same array the reading prints as bars
+   underneath the ring. One arithmetic, two drawings of it, so they cannot
+   disagree. Measured at 0.9 to 2.3 milliseconds a call on a hundred answers,
+   which is why it can run on every tap rather than once at the end.
+   ============================================================ */
+var LOADS=null;
+function refreshLoads(){
+ if(MISSING.length||UNKNOWN.length||SEATMISMATCH||!answered()){ LOADS=null; return; }
+ read(scored().p);
+ LOADS=BANDS.map(function(b){
+  var g=W.filter(function(n){return n.b===b;});
+  return g.reduce(function(a,n){return a+n.sq;},0)/g.length;});}
 var KEY='atuned.quiz.v2';
 var A={};              /* question index -> 0..4 */
 var AT=0;              /* position in ORDER */
@@ -8121,7 +8503,11 @@ function scored(){
   var a=A[i]; if(a==null)return; n++;
   lawSum[q.l]=(lawSum[q.l]||0)+(10-a*2.5); lawN[q.l]=(lawN[q.l]||0)+1;
   chgSum[q.c]=(chgSum[q.c]||0)+(a*2.5);    chgN[q.c]=(chgN[q.c]||0)+1;});
- var p=blankProfile('test');
+ /* THE RECORD WAS NAMED "test". blankProfile takes the profile's name and it
+    was given the word the file calls this page, so a person who loaded the
+    record into Atuned met a profile called test. It is the reading somebody
+    took on the web, so that is what it is called. */
+ var p=blankProfile('Web reading');
  var laws=[];
  SINAMES.forEach(function(l){
   if(!lawN[l])return;                    /* not yet touched stays null, not zero */
@@ -8159,7 +8545,8 @@ function topSabs(r,max){
    ============================================================ */
 function viewRefusal(){
  return '<div class="open"><h1>This page did not load completely.</h1>'
-  +'<p>Missing: '+esc((MISSING.concat(UNKNOWN)).join(', '))+'. '
+  +'<p>Missing: '+esc((MISSING.concat(UNKNOWN)
+    .concat(SEATMISMATCH?['the ring seats do not match the engine bands']:[])).join(', '))+'. '
   +'The test cannot be scored without it and will not guess. '
   +'Serve this page from the funnel directory beside the engine.</p></div>';}
 
@@ -8204,10 +8591,9 @@ function viewRead(){
 
  /* THE BAND STRIP. Mean load per seat, off the same field the engine read.
     This is the proof, not a decoration: it is the instrument's own arithmetic
-    printed before anybody has paid for anything. */
- var bandload=BANDS.map(function(b){
-  var g=W.filter(function(n){return n.b===b;});
-  return {b:b, v:g.reduce(function(a,n){return a+n.sq;},0)/g.length};});
+    printed before anybody has paid for anything. It is the array the ring in
+    the header has been drawing the whole way down, not a second one. */
+ var bandload=BANDS.map(function(b,i){return {b:b, v:(LOADS||[])[i]||0};});
 
  /* the family definition is printed the first time its family appears and not
     again. Three cards in a row carrying "the swing overshoots at both ends"
@@ -8245,6 +8631,11 @@ function viewRead(){
   +'<div><h3>The load at each seat</h3>'
   +'<p class="sm">The nine charges from your answers land on the 112 addresses, '
   +'each one seated at a named plexus or nerve. Average load per seat, out of ten.</p>'
+  /* the ring at full size, the same object that has been filling in the
+     header. It carries the shape. The bars under it carry the figures. */
+  +'<div class="bigring"><div class="ringwrap">'+RING.svg({loads:LOADS})+'</div>'
+  +'<p class="sm">Each band is a seat. Its weight is the load it is carrying. '
+  +'Root sits at the base and the band climbs the right to Crown.</p></div>'
   +'<ul class="seats">'+bandload.map(function(x){
     return '<li><b>'+esc(x.b)+'</b><span class="tr"><i style="width:'
      +(Math.min(100,x.v*10))+'%;background:'+cv(x.b)+'"></i></span><em>'
@@ -8286,9 +8677,9 @@ function viewRead(){
  +'<h2>Take the record with you.</h2>'
  +'<div class="doorbd">'
  +'<p>There is no account and no server, so nothing here can be fetched later by '
- +'anybody, including us. Save the record, open Atuned, and the reading carries on '
- +'from where this stopped: your story, the ritual, the body map, the avatar, and '
- +'every table this page just used.</p>'
+ +'anybody, including us. What you save is a profile in the instrument\'s own '
+ +'format, and Atuned\'s loader takes it as it stands: the coherence above, the '
+ +'21 law values, the nine charges, and every address they landed on.</p>'
  +'<div class="acts">'
   +'<button class="act go" id="dl">Save my record</button>'
   +'<button class="act" id="copy">Copy it instead</button>'
@@ -8392,11 +8783,27 @@ function recordJSON(){ return JSON.stringify(saveProfile(scored().p),null,1); }
 /* ============================================================
    RENDER
    ============================================================ */
+/* ---- THE RING IN THE HEADER. Drawn once and then only updated, because
+   replacing the markup replaces the paths and a replaced path has nothing to
+   transition from: the bands would jump instead of thickening. ---- */
+var ringtop=document.getElementById('ringtop'), rlab=document.getElementById('rlab');
+function paintRing(){
+ if(typeof RING==='undefined'||!ringtop)return;
+ if(!ringtop.firstChild)ringtop.innerHTML=RING.svg({loads:LOADS});
+ else RING.set(ringtop,LOADS);
+ if(!rlab)return;
+ var top=RING.heaviest(LOADS);
+ rlab.innerHTML = top
+  ? 'Carrying most: <b>'+esc(top.nm)+'</b>'
+  : 'The ring reads as you answer';}
+
 function render(){
- if(MISSING.length||UNKNOWN.length){ el.innerHTML=viewRefusal(); fill.style.width='0'; return; }
+ if(MISSING.length||UNKNOWN.length||SEATMISMATCH){ el.innerHTML=viewRefusal(); fill.style.width='0'; return; }
  document.body.setAttribute('data-state',STATE);
+ refreshLoads();
  el.innerHTML = STATE==='open'?viewOpen() : STATE==='q'?viewQ() : viewRead();
  fill.style.width = (STATE==='read'?100:(answered()/QQ.length*100))+'%';
+ paintRing();
  var b;
  if((b=document.getElementById('go')))b.onclick=function(){
   AT=firstOpen();
@@ -8417,11 +8824,15 @@ function render(){
    var u=URL.createObjectURL(blob), a=document.createElement('a');
    a.href=u; a.download='atuned-record.json'; document.body.appendChild(a); a.click();
    a.remove(); setTimeout(function(){URL.revokeObjectURL(u);},1000);
-   note.textContent='Saved as atuned-record.json. Open Atuned and load it from Settings.';
+   /* IT SAID "load it from Settings". There is no Settings in the product and the
+      sheet that does carry the loader is not reachable from anything, which is
+      measured and reported rather than papered over here. A control must never
+      claim more than it has, so the note says what happened and stops. */
+   note.textContent='Saved as atuned-record.json. Keep it: it is the handoff.';
   }catch(e){ note.textContent='This browser would not save the file. Use copy instead.'; }};
  if((b=document.getElementById('copy')))b.onclick=function(){
   var note=document.getElementById('dlnote'), txt=recordJSON();
-  var ok=function(){note.textContent='Copied. Paste it into Atuned under Settings.';};
+  var ok=function(){note.textContent='Copied. Keep it: it is the handoff.';};
   var no=function(){note.textContent='This browser would not copy it. Use save instead.';};
   try{ if(navigator.clipboard&&navigator.clipboard.writeText)
         navigator.clipboard.writeText(txt).then(ok,no);
