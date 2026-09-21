@@ -1,0 +1,446 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The ritual, reconciled</title><style>
+:root{--bg:#0E0E0F;--card:#16171A;--sunk:#1C1E22;--line:#26282E;--ink:#E6E7EA;
+ --dim:#8A8C94;--his:#C9A96A;--accent:#7EB8D4;--red:#C4746A;--green:#7FA07A}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);padding:0 0 90px;
+ font:15.5px/1.64 Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+ -webkit-font-smoothing:antialiased}
+.wrap{max-width:860px;margin:0 auto;padding:0 16px}
+header{padding:38px 0 8px}
+h1{font-size:26px;margin:0 0 8px;font-weight:600;letter-spacing:-.01em}
+.lede{color:var(--dim);font-size:14.5px;margin:0 0 4px;max-width:62ch}
+.sec{background:var(--card);border:1px solid var(--line);border-radius:14px;
+ padding:4px 20px 18px;margin:0 0 14px}
+h2{font-size:15px;font-weight:600;letter-spacing:.01em;margin:22px 0 4px;
+ padding-top:4px}
+h2 .k{color:var(--dim);font-weight:400;font-size:12.5px;display:block;
+ letter-spacing:.06em;margin-bottom:3px}
+h3{font-size:13.5px;font-weight:600;margin:20px 0 6px;color:var(--ink)}
+p{margin:9px 0;max-width:70ch}
+.dim{color:var(--dim)}
+code{background:var(--sunk);border-radius:5px;padding:1px 5px;color:var(--accent);
+ font:12px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace}
+b{font-weight:600}
+pre{background:var(--sunk);border:1px solid var(--line);border-radius:10px;
+ padding:13px 15px;overflow-x:auto;margin:11px 0;
+ font:12.5px/1.66 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--dim)}
+pre b{color:var(--ink);font-weight:600}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13.5px}
+th{text-align:left;font-weight:600;font-size:11.5px;letter-spacing:.06em;
+ color:var(--dim);padding:0 10px 7px 0;border-bottom:1px solid var(--line);
+ vertical-align:bottom}
+td{padding:9px 10px 9px 0;border-top:1px solid var(--sunk);vertical-align:top;
+ line-height:1.5}
+td:first-child,th:first-child{padding-left:0}
+tr td:first-child{white-space:nowrap}
+tr.wide td:first-child{white-space:normal}
+.num{font-variant-numeric:tabular-nums}
+.big{font-size:40px;font-weight:600;line-height:1;margin:10px 0 2px;
+ font-variant-numeric:tabular-nums}
+.gold{color:var(--his)}
+.grid{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0 4px}
+.tile{flex:1 1 150px;background:var(--sunk);border:1px solid var(--line);
+ border-radius:11px;padding:13px 14px}
+.tile .t{font-size:11.5px;letter-spacing:.06em;color:var(--dim);
+ text-transform:uppercase}
+.tile .v{font-size:27px;font-weight:600;line-height:1.15;margin-top:5px;
+ font-variant-numeric:tabular-nums}
+ul{margin:9px 0;padding:0;list-style:none}
+li{display:flex;gap:11px;padding:7px 0;border-top:1px solid var(--sunk)}
+li:first-child{border-top:0}
+li s{flex:0 0 auto;width:12px;height:12px;border-radius:50%;margin-top:6px;
+ border:1.6px solid var(--line);text-decoration:none;display:block}
+li.his s{border-style:dashed;border-color:var(--his)}
+li.done s{border-color:var(--green)}
+li div{flex:1 1 auto}
+.flag{display:inline-block;font-size:11px;letter-spacing:.05em;
+ border:1px solid var(--line);border-radius:20px;padding:1px 9px;
+ color:var(--dim);margin-right:7px;vertical-align:1px}
+.flag.h{border-color:var(--his);color:var(--his)}
+.flag.x{border-color:var(--green);color:var(--green)}
+.flag.c{border-color:var(--red);color:var(--red)}
+.note{border-left:2px solid var(--line);background:var(--sunk);
+ border-radius:0 9px 9px 0;padding:11px 14px;margin:12px 0}
+.note p{margin:0 0 6px;font-size:14px;color:var(--dim);max-width:66ch}
+.note p:last-child{margin:0}
+.note b{color:var(--ink)}
+.note.hot{border-left-color:var(--red)}
+.note.his{border-left-color:var(--his)}
+footer{color:var(--dim);font-size:12px;margin:28px 0 0}
+@media(max-width:620px){
+ table{font-size:12.5px}
+ th,td{padding-right:6px}
+ table.six{font-size:11.8px}
+ table.six th,table.six td{padding-right:4px}
+ tr td:first-child{white-space:normal}
+ .big{font-size:32px}}
+</style></head><body><div class="wrap">
+
+<header>
+<h1>The ritual, reconciled</h1>
+<p class="lede">Item ten of the order. Reading, not a build. This file changes
+no other file. It says what the ritual is in the product today, what you have
+ruled about it, what is genuinely open, what is already finished and never
+marked, and what should be cut.</p>
+</header>
+
+<div class="sec">
+<h2><span class="k">The stamp</span>What was measured, and when</h2>
+<pre>commit      41b07e4, working tree clean
+TASKS.md    7,771 lines, md5 ee42d5bd1b0567d62274c251fa3e6d54
+measured    <b>21 September 2026, 02:23 UTC</b></pre>
+<p>Every count here was read off the file or off a run. Every claim a document
+makes about the code was checked against <code>atuned_src/</code> before it was
+repeated, and the ones that did not survive are named below.</p>
+
+<div class="grid">
+<div class="tile"><div class="t">Ritual items</div><div class="v">123</div></div>
+<div class="tile"><div class="t">Open</div><div class="v">76</div></div>
+<div class="tile"><div class="t">Yours to rule</div><div class="v gold">16</div></div>
+<div class="tile"><div class="t">Marked built</div><div class="v">31</div></div>
+</div>
+<p class="dim">Method: the nine sections whose heading names the ritual, plus the
+fifth pass calendar block, minus the work inside them that is not the ritual.
+Counting the nine sections whole gives 85 open, 25 yours and 39 built across 149
+lines. Counting only lines whose own text says ritual gives 53.</p>
+</div>
+
+<div class="sec">
+<h2><span class="k">First</span>A correction to a number of mine</h2>
+<p><code>PRIORITY.md</code> states the ritual at <b>114 open, 26 yours, 40
+built</b>, and uses that to argue the pile is getting worse. Item ten exists on
+that argument. <b>The 114 does not reproduce.</b> I checked out the exact file
+that page stamped and counted it four ways.</p>
+<table>
+<tr><th>Method, at the commit PRIORITY stamped</th><th>Open</th><th>Yours</th><th>Built</th></tr>
+<tr><td>the nine sections whose heading names the ritual</td><td class="num"><b>85</b></td><td class="num"><b>25</b></td><td class="num"><b>39</b></td></tr>
+<tr><td>the nine sections that mention the ritual most</td><td class="num">108</td><td class="num">22</td><td class="num">27</td></tr>
+<tr><td>every line whose own text names the ritual</td><td class="num">33</td><td class="num">10</td><td class="num">9</td></tr>
+<tr><td>stated in <code>PRIORITY.md</code></td><td class="num">114</td><td class="num">26</td><td class="num">40</td></tr>
+</table>
+<div class="note hot">
+<p><b>And the pile has not moved.</b> The nine ritual sections read 85, 25 and 39
+at that commit and they read 85, 25 and 39 tonight, across two passes and 1,125
+added lines. The ritual did not get worse. It did not change at all.</p>
+<p>This is the eleventh time this repository has been bitten by a number typed
+into a document, and it happened inside the document whose own section is titled
+"Defects in the record itself". The count was mine.</p>
+</div>
+<p>The reason for doing this reading stands, and it is better than the one I
+gave. The ritual is not the largest pile in the project. <b>It is the pile with
+the most finished work sitting unmarked inside it.</b></p>
+</div>
+
+<div class="sec">
+<h2><span class="k">Today</span>What the ritual actually is in the product</h2>
+<p>Measured off <code>atuned_src/ui/ritual.js</code>, 205 lines, and the shipped
+<code>source.html</code>. <b>One card, on one tab.</b> It takes the seat carrying
+the most, maps it to one of four tracks, and calls the shortest practice in that
+track. Then it renders, in order:</p>
+<ul>
+<li><s></s><div>The track name, alone, at 30px. It is the largest object on the
+surface and it says Body, or Mind, and nothing else.</div></li>
+<li><s></s><div>One sentence saying which seat is carrying the most.</div></li>
+<li><s></s><div>Today's saved ritual, read back, with its when and its where and
+one control that marks it done.</div></li>
+<li><s></s><div>One practice, with every other candidate behind a single control
+reading "Choose something else".</div></li>
+<li><s></s><div>The steps, the minutes, two optional fields for when and where,
+close, and save.</div></li>
+<li><s></s><div>The record underneath: the run, the ledger and the marks.</div></li>
+</ul>
+<p><b>What is not on it.</b> No ring. No week. No heat map. No waveform. No
+analytics. No icon for the kind of practice. No edit of history. No queue. No
+sniffer feed. No journal snippet. The four words of the loop appear once in the
+whole of <code>source.html</code>.</p>
+<div class="note">
+<p><b>What exists and is not shipped.</b> Six runnable prototypes in
+<code>proto/ritual/</code>. <code>ritual2.html</code> is the current front and
+carries the five one word figures, the segmented ring whose dashes are the count,
+the week grid and the three shapes model.</p>
+<p>Measured: the word <b>Streak</b> appears 9 times and <b>Missed</b> 11 times in
+that prototype, and <b>0 times in <code>source.html</code></b>. None of the
+rebuild is in the product.</p>
+<p>So the sentence to hold on to is this. <b>The ritual page you graded a D minus
+is still the page that ships.</b> Everything built since is a prototype, and four
+loop fixes are the only ritual work a person can touch.</p>
+</div>
+</div>
+
+<div class="sec">
+<h2><span class="k">Yours</span>What you have ruled, in the order you ruled it</h2>
+<p><code>TASKS.md</code> is newest first, so the file order is the reverse of the
+ruling order. Reading it top down makes three incompatible shapes look
+simultaneous. They are not.</p>
+<table>
+<tr><th>Pass</th><th>The ruling</th><th>Where</th></tr>
+<tr class="wide"><td>the D minus</td><td>It looks like a compass. Iconography per kind, a daily tracker, an edit control, a heat map, analytics, clean and simple</td><td><code>0v.RB1-RB8</code></td></tr>
+<tr class="wide"><td>the D minus</td><td>Points tied to the ritual and the tracker. Fail and lose, succeed and gain</td><td><code>0v.RB9-RB11</code></td></tr>
+<tr class="wide"><td>the D minus</td><td>The where and when does not belong there. The record does not belong there</td><td><code>0v.RB13</code> and <code>RB14</code></td></tr>
+<tr class="wide"><td>fifth</td><td>Design B, the board, and it has to look like a calendar</td><td><code>RC1</code></td></tr>
+<tr class="wide"><td>sixth</td><td>The loop is discover, play, flow, embody, and it is a circle</td><td><code>FL1</code> and <code>FL2</code></td></tr>
+<tr class="wide"><td>seventh</td><td>Against the calendar on aesthetic. Stats on top, the week second from Monday, three bands in your order, cards that open, a journal snippet, where to improve, and Monday to Friday reads as a pixelated audio waveform</td><td><code>RU1-RU9</code></td></tr>
+<tr class="wide"><td>seventh</td><td>A practice is part of the content chain. A snippet goes from here to the journal</td><td><code>RJ2</code></td></tr>
+<tr class="wide"><td>ninth</td><td>A figure takes one word. Recurring, missed, active, streak</td><td><code>NW1</code></td></tr>
+<tr class="wide"><td>ninth</td><td>The ring is a dotted line and the dashes are the count</td><td><code>RT1</code></td></tr>
+</table>
+<div class="note his">
+<p><b>The shape is not open, and nothing should be sent to you asking which
+shape.</b> The compass is the oldest of the three and the fifth pass and the
+seventh each superseded it. The dotted ring is the newest thing you have said
+about this page, and it is built in the prototype.</p>
+<p><code>DESIGN-ritual.md</code> recommends the compass. That document is the
+oldest live opinion in the pile and it reads as current.</p>
+<p><b>What survives from the compass ruling is the object list</b>, not the
+shape. Iconography, a daily tracker, an edit control, a heat map and analytics
+are still owed, under the newest shape.</p>
+</div>
+</div>
+
+<div class="sec">
+<h2><span class="k">The ledger</span>Already built, and never marked. 21 items</h2>
+<p>Fourteen were delivered in a later pass of the same file under a different
+identifier. Four are in the shipped app. Two are tools. One is not a task.</p>
+<table>
+<tr><th>Item</th><th>The twin that delivered it, or the code</th></tr>
+<tr><td><code>RT1</code> the dotted ring</td><td><code>RT12</code>, built and gated</td></tr>
+<tr><td><code>RT3</code> the week's boxes fill their cell</td><td><code>RT14</code>, which repeats the sentence verbatim</td></tr>
+<tr><td><code>RT4</code> a practice icon takes its colour</td><td><code>RT15</code></td></tr>
+<tr><td><code>RT5</code> journal to the upper right</td><td><code>RT16</code></td></tr>
+<tr><td><code>RT6</code> day, week, month summary</td><td><code>RT16</code></td></tr>
+<tr><td><code>RT7</code> the three shapes card comes off</td><td><code>RT16</code></td></tr>
+<tr><td><code>RT8</code> add, remove, generate, history</td><td><code>RT16</code></td></tr>
+<tr><td><code>RT10</code> simulate a thousand times</td><td><code>tools/ritualsim.js</code>, 18 checks passed tonight</td></tr>
+<tr><td><code>NW1</code> a figure takes one word</td><td><code>RT11</code>. The build fails if a label is more than one word</td></tr>
+<tr><td><code>RC2</code> day, week and month</td><td><code>CL1</code></td></tr>
+<tr><td><code>RC3</code> what is running and what is due</td><td><code>CL2</code> and <code>CL3</code></td></tr>
+<tr><td><code>RC4</code> three kinds</td><td><code>CL6</code></td></tr>
+<tr><td><code>RC5</code> what you optimise for</td><td><code>CL7</code>, which names <code>RC5</code> by identifier</td></tr>
+<tr><td><code>RC6</code> colour</td><td><code>CL4</code></td></tr>
+<tr><td><code>RL1</code> the plan is never read back</td><td><span class="flag x">shipped</span><code>ui/ritual.js</code>, today's ritual is read back with its when and where</td></tr>
+<tr><td><code>RL2</code> the record is locked in the Compass</td><td><span class="flag x">shipped</span><code>ui/ritual.js</code> draws the record on Ritual</td></tr>
+<tr><td><code>RL3</code> a broken run resets</td><td><span class="flag x">shipped</span><code>engine/ladder.js:71</code> halves it, with a two day grace</td></tr>
+<tr><td><code>RL4</code> nineteen choices on the card</td><td><span class="flag x">shipped</span>one practice, and the rest behind one control</td></tr>
+<tr><td><code>AP2</code> simulate a thousand times</td><td>twin of <code>RT10</code>, both built</td></tr>
+<tr><td><code>AP3</code> benchmark the top two builders</td><td><code>DESIGN-ritual.md</code>. Five comps, not two</td></tr>
+<tr><td><code>AT1</code> "number two is okay"</td><td>not a task. It records a pass</td></tr>
+</table>
+<p><b>Marking these takes the ritual from 76 open to 55 and costs nothing.</b>
+Nobody can read a backlog where a spec sits three hundred lines below its own
+delivery.</p>
+</div>
+
+<div class="sec">
+<h2><span class="k">The ledger</span>Duplicates, and the worst is by identifier</h2>
+<p>Three identifier ranges each mean two unrelated things, live, in one file.
+<b>15 lines.</b></p>
+<table>
+<tr><th>Range</th><th>One meaning</th><th>The other</th></tr>
+<tr class="wide"><td><code>RB1-RB8</code></td><td>the loss simulation and the record grid</td><td>what the ritual builder has to be</td></tr>
+<tr class="wide"><td><code>RB9-RB11</code></td><td>what a behaviour ritual is, three shapes</td><td>the gamification wired your way</td></tr>
+<tr class="wide"><td><code>RL1-RL4</code></td><td>the four cheap loop fixes</td><td>the release panel before it begins</td></tr>
+</table>
+<p><code>RB1</code> is both "how much comes off on a missed day" and "it looks
+like a compass". <code>RL1</code> is both "the ritual plan is never read back"
+and "the release panel names what was selected". Any instruction saying build
+<code>RB1</code> is ambiguous. The fix is a section prefix and nothing already
+written has to change except the prefix.</p>
+
+<h3>And ten open items twin another open item</h3>
+<table>
+<tr><th>Item</th><th>Twin</th><th>Survives</th></tr>
+<tr><td><code>RQ3</code></td><td><code>CL12</code></td><td><code>CL12</code>, which says so in its own text</td></tr>
+<tr><td><code>RQ5</code></td><td><code>CL14</code></td><td><code>CL14</code></td></tr>
+<tr><td><code>RQ4</code></td><td><code>RS2</code>, built</td><td>neither. It asks you to rule on something already built</td></tr>
+<tr><td><code>SA2</code></td><td><code>QU2</code></td><td><code>QU2</code>. The same sentence twice, word for word</td></tr>
+<tr><td><code>AP2</code></td><td><code>RT10</code></td><td><code>RT10</code>, and both are built</td></tr>
+<tr><td><code>RT2</code></td><td><code>0v.RB7</code></td><td><code>0v.RB7</code>, the stronger form</td></tr>
+<tr><td><code>RD4</code> and <code>CL9</code></td><td><code>CL10</code></td><td><code>CL10</code>. One finding at three spans</td></tr>
+<tr><td><code>0y.RB8</code></td><td><code>RU3</code> and <code>RU4</code></td><td><code>0y.RB8</code>, which names its four dependent rulings</td></tr>
+<tr><td><code>QU1</code></td><td><code>RC7</code></td><td>both. The question and its proposed answer must travel together</td></tr>
+</table>
+</div>
+
+<div class="sec">
+<h2><span class="k">The catch</span>The backlog assumes daily practice</h2>
+<p>It does, and the assumption is in the shipped code and not only in the
+documents. Three marks test the longest strictly consecutive run.</p>
+<table class="six">
+<tr><th>Cadence, Diane, ninety days</th><th>Days practised</th><th>The run</th><th>Longest row</th><th>Seven days</th><th>Thirty days</th></tr>
+<tr><td>daily</td><td class="num">76</td><td class="num">53</td><td class="num">44</td><td>earned</td><td>earned</td></tr>
+<tr><td>twice a week</td><td class="num">22</td><td class="num">1</td><td class="num">1</td><td><b>no</b></td><td><b>no</b></td></tr>
+<tr><td>weekly</td><td class="num">11</td><td class="num">1</td><td class="num">1</td><td><b>no</b></td><td><b>no</b></td></tr>
+</table>
+<p>Ninety days needs ninety in a row, so a twice a week person earns none of the
+three. <b>And the badge is stricter than the mechanic beside it:</b> the run
+itself halves with a two day grace, on Lally 2010, and the three marks read a
+quantity that grace never touches.</p>
+<div class="note hot">
+<p><b>The contradiction underneath it.</b> Twice a week is the cadence the
+gamification document costs its whole retention case on. So the shipped ladder is
+hostile to the person the business case is written for. That is two parts of the
+product disagreeing about who it is for.</p>
+</div>
+<p class="dim">The assumption also sits in: always on is three practices every
+day; behaviour rituals default to Monday to Friday; four of the five figures are
+daily words; today's ritual is keyed to the calendar day; and the ninety day
+simulation runs ninety consecutive days.</p>
+</div>
+
+<div class="sec">
+<h2><span class="k">Measured tonight</span>Two numbers, verified rather than taken</h2>
+<table>
+<tr><th>The claim</th><th>What the run data says</th></tr>
+<tr class="wide"><td>The ninety day simulation graded 38.91</td><td>Confirmed. Mean 38.91, spread 0.407, range 38.0 to 39.6, over 19 runs, letter F</td></tr>
+<tr class="wide"><td>A person keeping one practice for ninety days moves their reading by half a point</td><td>Confirmed for the middle case: 25.00 to 25.54. The honest range across four starting integrities is 0.27 to 0.59</td></tr>
+<tr class="wide"><td>Five marks in the ladder are hostile to anybody who is not daily</td><td>Confirmed against the shipped code and the probe. Three of the five are the streak marks and a twice a week person earns none</td></tr>
+</table>
+<div class="note hot">
+<p><b>And a third thing nobody has measured.</b> The harness that priced the four
+loop fixes still models the product as though none of them landed. Its "current"
+configuration has the plan, the record, the halving and the one practice card all
+switched off, and all four ship today.</p>
+<p>So the published "59 of 1000 at day 30" is a measurement of a product that no
+longer exists, and <b>the 167 those four fixes were supposed to buy has never
+been measured.</b> That is the first buildable piece below.</p>
+</div>
+</div>
+
+<div class="sec">
+<h2><span class="k">The plan</span>The first five buildable pieces</h2>
+<table>
+<tr><th>#</th><th>What</th><th>Who</th><th>Size</th><th>Moves grade</th></tr>
+<tr class="wide"><td>1</td><td>Re-measure the loop with the four fixes switched on. Re-port the card rule, re-run, and write the measured day 30 number onto the four items</td><td>engineering</td><td>small</td><td>no, and it is the only honest number anybody has about this page</td></tr>
+<tr class="wide"><td>2</td><td>Close the 21 items that are already done, each pointing at the twin that delivered it, and put a section prefix on the 15 colliding lines</td><td>project manager</td><td>small</td><td>no, and it takes the pile from 76 open to 55</td></tr>
+<tr class="wide"><td>3</td><td>The three practice marks count days practised, not consecutive days, with test rows for daily, twice a week and weekly</td><td>engineering</td><td>small</td><td>yes. It is the whole non daily half of the roster</td></tr>
+<tr class="wide"><td>4</td><td>The bare track name comes off the card. Put the practice in the 30px slot and the track in the sentence under it, and stop the eyebrow rendering as Build A Ritual</td><td>UX, art direction, engineering</td><td>small</td><td>yes. Both are your own complaints and both are still true</td></tr>
+<tr class="wide"><td>5</td><td>Port the rebuilt prototype into the build. It carries ten delivered items and none of them is in <code>source.html</code></td><td>engineering, art direction</td><td><b>large</b></td><td>yes. It is the only thing that moves a D minus</td></tr>
+</table>
+<p><b>Why item 1 is first.</b> It costs an hour and it is the only item that tells
+anybody whether the work already done was worth what it was priced at.</p>
+<p><b>Why item 5 is large and not medium.</b> The prototype is standalone, with
+its own stylesheet, its own data builder and its own shell. The port is a load
+order entry, a renderer, the ring geometry, the week grid, the five figures and
+the three shapes model, plus rows in two gates and a render watch that has to
+come back non empty. It is not a copy.</p>
+<p class="dim"><b>Sixth, if a seat is free.</b> The loop drawn as a circle. All
+four quarters already carry a timestamp, so it costs no schema change, and the
+word embody appears once in the whole product.</p>
+</div>
+
+<div class="sec">
+<h2><span class="k">The cut</span>What should be deleted, and this is mine to decide</h2>
+<p>A backlog of 114 items nobody can act on is worse than 30 somebody can. These
+are recommendations by identifier. Nothing here needs a ruling from you. Every
+line's wording is preserved in the markdown beside this page, so nothing is
+lost.</p>
+<h3>Delete the line. 21 items, all of them finished</h3>
+<pre>RT1  RT3  RT4  RT5  RT6  RT7  RT8  RT10   delivered as RT11 to RT20, one
+                                          section above them in the same file
+NW1                                       delivered and gated as RT11
+RC2  RC3  RC4  RC5  RC6                   delivered as CL1 to CL8
+RL1  RL2  RL3  RL4                        <b>built in the shipped app</b>
+AP1                                       "specced, not built" is false
+AP2                                       twin of RT10, both built
+AP3                                       built, five comps not two
+AT1                                       not a task. It records a pass</pre>
+<h3>Fold into one, keep the named survivor. 6 items</h3>
+<pre>RQ3  -> CL12      CL12 says so in its own text
+RQ5  -> CL14      same question, CL14 carries the default taken
+SA2  -> QU2       the same sentence twice
+RT2  -> 0v.RB7    the tracker as a surface is the stronger form
+RD4  -> CL10      one finding at three spans
+CL9  -> CL10      same</pre>
+<h3>Move out of the ritual sections. 19 items</h3>
+<p>None of these is the ritual, and every count taken by section counts them as
+ritual. The copy sweep items also collide with three live items of the same name
+about the child pattern.</p>
+<pre>CP1 CP2 CP3   the whole product copy sweep
+CF1 to CF5    the frequencies
+QJ1 QJ2       the quiz and the archetypes
+PO1 PO2 PO3   the positioning line
+HW1 HW2       the how it works page
+AO1           the wordmark gap
+TG1 TG2 TG3   the tag system</pre>
+<h3>Re-measure before building, or cut. 1 item</h3>
+<pre>RL5   its stated consequence is gone. The card shows one practice for
+      everybody now. If the tier mapping is still backwards it is backwards
+      about something else, and the rule here is reproduce before fixing</pre>
+<h3>Fix the record, in files I do not own. 6 lines</h3>
+<pre>DECISIONS.md      says nothing reads the ritual log back. It does now
+DECISIONS.md      lists the accountability tracker as not in the app. It is
+MILESTONES.md     the same stale claim
+DESIGN-ritual.md  recommends the compass, which you superseded twice
+DESIGN-ritual.md  its choice count predates the one practice card
+PRIORITY.md       the ritual row reads 114 and the file reads 85</pre>
+<h3>Recover it from you, or delete the file</h3>
+<p>The ritual accountability source document is ten lines. It says "read Part
+Five first, five contradictions are named there as blocking." <b>There is no Part
+Five.</b> Your consolidated history was never pasted into it. It is either the
+most valuable document in this pile or an empty wrapper, and it cannot stay as it
+is.</p>
+<div class="note">
+<p><b>The net.</b> 92 items become 64. 76 open becomes 50, and your column goes
+from 16 to 14. And 15 lines stop carrying an identifier that means two
+things.</p>
+</div>
+</div>
+
+<div class="sec">
+<h2><span class="k">Yours to rule</span>Four questions, and the shape is not one of them</h2>
+
+<h3><span class="flag h">1</span>The three reversals, asked once</h3>
+<p>You said the where and when does not belong on this page, and the record does
+not. Both are now built in the shipped app, and both were measured: the plan at
+72 of 1000 at day 30 across 94 studies, and the record at 40 of 1000 across
+138.</p>
+<div class="note his">
+<p><b>At stake.</b> 112 of 1000 at day 30, and whether the reversal is of the
+mechanic or of where it sits.</p>
+<p><b>The team's recommendation, which you can take as it stands.</b> Keep both
+mechanics and move both off the builder. The plan becomes one line on the
+confirmation after a ritual is saved, read back on the daily tracker. The record
+stops being a card under the builder and becomes the other half of the surface,
+which is your own ruling already.</p>
+</div>
+
+<h3><span class="flag h">2</span>Is the ladder a daily ladder</h3>
+<div class="note his">
+<p><b>What it is.</b> Three marks test the longest strictly consecutive run. A
+person practising twice a week for ninety days earns none of them.</p>
+<p><b>Either way.</b> Count days practised, and the three marks reach every
+cadence and "seven days in a row" has to stop being the copy. Keep consecutive,
+and the product says out loud that it is for daily people.</p>
+</div>
+
+<h3><span class="flag h">3</span>One ritual a day, or a stack</h3>
+<p>The one question with four rulings hanging off it: the size of the deduction,
+whether the dial is the seven seats or the twenty one laws, whether the record is
+half this surface or its own tab, and whether the sniffer adds to tomorrow or
+proposes and waits. It should be sent once, with those four named under it.</p>
+
+<h3><span class="flag h">4</span>What sets the target the ring counts against</h3>
+<p>Your own question. The ring cannot be drawn at all without it, and the cost of
+not having it is measured: 50 of the 52 rows the generator produces carry a target
+of one, so the ring is a single dash for almost everybody.</p>
+
+<h3><span class="flag">Already in the five that go to you</span></h3>
+<p class="dim">The currency word, which blocks the karma half and the whole badge
+ladder. Which source owns the always on ritual. And the always on colour.</p>
+
+<div class="note">
+<p><b>One more that costs you nothing but is worth seeing.</b> A stance day that
+nothing tests is recorded as neither kept nor missed, which is built, and it means
+a stance can never lower a rate. If points come off a failure, then the cheapest
+practice on the board is the one that cannot be failed. Those two sentences
+should sit beside each other before either ships.</p>
+</div>
+</div>
+
+<footer>Measured 21 September 2026, 02:23 UTC, at commit 41b07e4. The markdown
+beside this page carries every line number, every twin and every code path. This
+file is one file, with no dependencies and no network request.</footer>
+
+</div></body></html>
