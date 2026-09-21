@@ -236,7 +236,8 @@ ${steps.map((s,i)=>`<tr class="${chg[s.id].soft?'soft':(s.step>=1?'win':'')}">
 
 
 <h2>Where the points came from</h2>
-<p class="lede">Twenty points is a large movement and the reader is owed a split.
+<p class="lede">${Word(Math.round(POINTS.gain))} points is a large movement and
+the reader is owed a split.
 Some criteria ask whether a control exists and jump by a fixed amount the moment
 it does, whatever anybody does with it. Others are built out of what the modelled
 cohort did and only move if somebody stays.</p>

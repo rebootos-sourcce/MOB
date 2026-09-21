@@ -68,6 +68,21 @@ function lexOn(on){ LEXKEYS.forEach(k=>{ if(on)E.LEX[k]=PATCH[k]; else delete E.
 const BASE=JSON.parse(fs.readFileSync(path.join(__dirname,'runs.json'),'utf8'));
 const lost=k=>(BASE.lost[k]||{people:0}).people;
 const met=k=>Math.round((BASE.hitShare[k]||{share:0}).share*1000);
+
+/* COUNTS IN THESE SENTENCES ARE READ, NOT TYPED. This repository has been bitten
+   by a typed count nine times and twice in the file that warns against it. The
+   two below were correct on the day they were written, which is exactly how the
+   others started. */
+const WORDS=['no','one','two','three','four','five','six','seven','eight','nine',
+ 'ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen',
+ 'eighteen','nineteen','twenty'];
+const TENS=['','','twenty','thirty','forty','fifty','sixty','seventy','eighty','ninety'];
+function word(n){ n=Math.round(n);
+ if(n<WORDS.length)return WORDS[n];
+ if(n<100)return (TENS[Math.floor(n/10)]+(n%10?' '+WORDS[n%10]:'')).trim();
+ return String(n);}
+function Word(n){const w=word(n); return w.charAt(0).toUpperCase()+w.slice(1);}
+
 const CHANGES=[
  {id:'C1', nm:'The narrow door',
   what:'A one line box on the surface a person already landed on, committing on enter, opening the same engine call the Story page opens. The wide door stays for the people who want it.',
@@ -135,7 +150,7 @@ const CHANGES=[
   cost:'Two days, and the harder half is deciding what the unit is. A number nobody can act on is worse than no line.',
   apply(){K.costLine=true;}},
  {id:'C5', nm:'The lexicon reads ordinary sentences',
-  what:'Thirty entries, each one a phrase, a seat, an amount and the address it states outright. LEX already carries the third element for this and thirty entries already use it.',
+  what:Word(LEX.patch.applied)+' entries, each one a phrase, a seat, an amount and the address it states outright. LEX already carries the third element for this and thirty entries already use it.',
   traces:['F1'],
   facts:['Measured through the shipped parseStory: the bank read '+LEX.bank.before.read
    +' of '+LEX.bank.before.n+' before the patch and '+LEX.bank.after.read+' of '
@@ -145,7 +160,7 @@ const CHANGES=[
    +' to '+LEX.bank.after.inferredOnly+'.'],
   keeps:['Sofia','Angela','Marcus','Ana'],
   file:'atuned_src/engine/data/lex.js',
-  cost:'Two days for these thirty and the gate that holds them. The general case is not two days: this patch was written against a bank of '
+  cost:'Two days for these '+word(LEX.patch.applied)+' and the gate that holds them. The general case is not two days: this patch was written against a bank of '
    +LEX.bank.after.n+' sentences and a bank is not a language.',
   apply(){K.lex=true;}},
  {id:'C5b', nm:'An inferred address is a question',
@@ -199,7 +214,7 @@ const CHANGES=[
   cost:'A day. A default and a remembered state.',
   apply(){K.foldRails=true;}},
  {id:'C8b', nm:'The top collapses to two',
-  what:'The top carries the same seven controls above the fold on every surface at both widths. Two stay, who is signed in and one menu, and the rest go behind it.',
+  what:'The top carries the same '+word(FOLD.widths[1600].Field.by.top)+' controls above the fold on every surface at both widths. Two stay, who is signed in and one menu, and the rest go behind it.',
   traces:['F6'],
   facts:['Measured: '+FOLD.widths[1600].Field.by.top+' controls in the top at 1600 and '
    +FOLD.widths[390].Field.by.top+' at 390, on every one of the '
