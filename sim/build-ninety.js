@@ -429,15 +429,27 @@ ${(()=>{const rows=N.formulaCeiling.rows.map(r=>({k:r.k, gap:+(r.max-(lastRow[r.
  'Technical':'Interface, and it is a day of work.'};
  return rows.map(r=>'<li><b>'+e(r.k)+', '+n1(r.gap)+' points.</b> '+(note[r.k]||'')+'</li>').join('\n');})()}
 </ul>
-<p><b>Adding it up.</b> Of the ${n1(90-hardLast.total)} points between here and
-ninety, ${(()=>{const arith=['ICP alignment','Core loop','Retention'];
- const s=arith.reduce((a,k)=>a+Math.max(0,(fmax[k].max-(lastRow[k]||0))),0);
- return n1(s);})()} sit in three criteria that are all the same quantity: whether
-anybody stays. ${n1(Math.max(0,fmax['Visual and kinetic'].max-(lastRow['Visual and kinetic']||0))
- +Math.max(0,fmax['Referral'].max-(lastRow['Referral']||0)))} are unreachable by
-construction, because Visual is carried and Referral&rsquo;s formula does not
-read ten. What is left is interface, and the interface work is already on the
-curve above.</p>
+<p><b>Adding it up, and the arithmetic is the argument.</b> ${(()=>{
+ const need=+(90-hardLast.total).toFixed(1);
+ const head=+(N.formulaCeiling.total-hardLast.total).toFixed(1);
+ const stay=['ICP alignment','Core loop','Retention'];
+ const stayGap=+stay.reduce((a,k)=>a+Math.max(0,fmax[k].max-(lastRow[k]||0)),0).toFixed(1);
+ const rest=+(head-stayGap).toFixed(1);
+ return 'Ninety is '+n1(need)+' points away. The formula has '+n1(head)
+  +' points of headroom left in total, so the distance exists. But '+n1(stayGap)
+  +' of that '+n1(head)+' sits in three criteria that are all one quantity, '
+  +'whether anybody stays: ICP alignment, Core loop and Retention. Everything '
+  +'else on the table put together is worth '+n1(rest)+'. So ninety cannot be '
+  +'reached without moving retention, and '+n1(need)+' of the '+n1(stayGap)
+  +' retention shaped points would have to be bought.';})()}</p>
+<p>Retention is the one that will not be bought. Ten of ten needs 35 per cent of
+arrivals active in the seven days ending at day thirty, against a category median
+of 3.3 per cent that the scale is anchored on. Every change on this page together
+took day thirty from ${pc(N.base.d30,2)} to ${pc(hardLast.d30,2)}. Reaching the
+top of that scale is not a product this grade would be measuring, and the two
+criteria with no headroom at all, Visual at
+${n1(fmax['Visual and kinetic'].max)} and Referral at ${n1(fmax.Referral.max)},
+are already at their formula maximum and cannot contribute another point.</p>
 
 <h2>The build order this implies, which is not the ranking</h2>
 <p class="lede">The ranking above is by what moved the grade. The order below is
