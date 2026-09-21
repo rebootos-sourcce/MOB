@@ -106,6 +106,28 @@ const SAY={
   refuse:true,
   not:'A gentler onboarding for people who are well. They are not the market and pretending otherwise costs the people who are not.'}};
 
+
+/* ============================================================
+   WHAT IS JUDGED, PER CHANGE, SAID ON THE PAGE.
+
+   A change earns its point by naming a product change and turning the parameter
+   that change would cause. For most of them the parameter is read off a
+   measurement: the fold counts, the sniffer's read rate, the release arithmetic.
+   For two of them it is not, and those two say so here rather than being left
+   for a reader to notice.
+
+   The value each one turns is read off the knobs the run recorded, so this text
+   cannot drift away from the number it describes.
+   ============================================================ */
+const JUDGED={
+ C1:st=>'The door costs '+R.model.cost.story+' minutes in the harness\u2019s own cost table and this step sets it to '
+  +(st&&st.knobs?st.knobs.storyCost:'?')
+  +'. Both numbers are judgement, not measurement. The product change is real and named above, the size of it is not measured, and the model sweep bounds what that whole cost table is worth at '
+  +n2(R.sensitivity.span)+' points.',
+ C6n:st=>'A return rate of '+pc(st&&st.knobs?st.knobs.nudge:0,0)
+  +' of otherwise skipped days. Nothing in this repository measures it. It is here to be subtracted.'};
+const judged=id=>JUDGED[id]?JUDGED[id](solo[id]):null;
+
 const ORDER=Object.keys(R.icp);
 function whoLostThem(nm){
  /* THE STICKING POINT THAT ACTUALLY LOST THEM, read off the loss column rather
@@ -228,7 +250,8 @@ ${ranked.map(c=>`<tr class="${c.soft?'soft':(c.d>=0.5?'win':'')}">
 <td class="num">${c.lost}<span class="fine">met ${c.met}</span></td>
 <td class="q">${c.keeps.length?c.keeps.map(k=>e(k)).join(', '):'nobody'}</td>
 <td class="q"><code>${e(c.file)}</code></td>
-<td class="q">${e(c.cost)}</td></tr>`).join('\n')}
+<td class="q">${e(c.cost)}
+${judged(c.id)?'<span class="fine"><b>Judged.</b> '+e(judged(c.id))+'</span>':''}</td></tr>`).join('\n')}
 </tbody></table>
 <p class="fine">Lost is people of a thousand arrivals whose departure the
 baseline attributed to one of the sticking points that change answers. It is an

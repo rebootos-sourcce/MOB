@@ -29,6 +29,28 @@ const hardLast=hardSteps.length?hardSteps[hardSteps.length-1]:N.base;
 const fmax={}; N.formulaCeiling.rows.forEach(r=>fmax[r.k]=r);
 /* the ceiling rows, by name rather than by index, so a reordering of the cases
    cannot silently point a sentence at the wrong row. */
+
+/* ============================================================
+   WHAT IS JUDGED, PER CHANGE, SAID ON THE PAGE.
+
+   A change earns its point by naming a product change and turning the parameter
+   that change would cause. For most of them the parameter is read off a
+   measurement: the fold counts, the sniffer's read rate, the release arithmetic.
+   For two of them it is not, and those two say so here rather than being left
+   for a reader to notice.
+
+   The value each one turns is read off the knobs the run recorded, so this text
+   cannot drift away from the number it describes.
+   ============================================================ */
+const JUDGED={
+ C1:st=>'The door costs '+R.model.cost.story+' minutes in the harness\u2019s own cost table and this step sets it to '
+  +(st&&st.knobs?st.knobs.storyCost:'?')
+  +'. Both numbers are judgement, not measurement. The product change is real and named above, the size of it is not measured, and the model sweep bounds what that whole cost table is worth at '
+  +n2(R.sensitivity.span)+' points.',
+ C6n:st=>'A return rate of '+pc(st&&st.knobs?st.knobs.nudge:0,0)
+  +' of otherwise skipped days. Nothing in this repository measures it. It is here to be subtracted.'};
+const judged=id=>JUDGED[id]?JUDGED[id](solo[id]):null;
+
 const CEIL0=N.ceiling[0];
 const CEILALL=N.ceiling.filter(c=>/all three/.test(c.nm))[0]||CEIL0;
 const CEILWAS=+(CEIL0.cq90-CEIL0.cq0).toFixed(2);
@@ -179,7 +201,8 @@ ${N.solo.slice().sort((a,b)=>b.d-a.d).map(s=>{const c=chg[s.id];
 <td class="num">${pc(s.d30,2)}</td>
 <td class="num">${pc(s.loopEver,1)}</td>
 <td class="num">${pc(s.readShare,0)}</td>
-<td class="q">${moved.length?e(moved.join(', ')):'nothing above the noise'}</td></tr>`;}).join('\n')}
+<td class="q">${moved.length?e(moved.join(', ')):'nothing above the noise'}
+${judged(s.id)?'<span class="fine"><b>Judged.</b> '+e(judged(s.id))+'</span>':''}</td></tr>`;}).join('\n')}
 </tbody></table>
 <p class="fine">Stopping rule, the same one for every row: a running mean of the
 total grade that moves by less than ${N.settle.threshold} of a point when one more

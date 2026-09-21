@@ -78,6 +78,14 @@ const CHANGES=[
   keeps:['Diane','James','Marcus'],
   file:'atuned_src/ui/storyui.js, atuned_src/shell/body.html',
   cost:'Two days. The box, the commit on enter, and the panel it opens into already exist on the Story page.',
+  /* WHAT IS JUDGED HERE, SAID OUT LOUD. The door's cost is a minute count in
+     the harness's own COST table, and that table is judgement rather than
+     measurement. This step replaces one judged number with another: 3.4 minutes
+     for the Story page, 0.8 for a one line box. The product change behind it is
+     real and named above, the size of it is not measured, and the sensitivity
+     sweep already moves every cost in that table by a quarter in both
+     directions to bound what the whole table is worth. */
+  judged:'The door costs '+H.COST.story+' minutes in the harness\u2019s own cost table and this step sets it to 0.8. Both numbers are judgement. The product change is real, its size is not measured, and the model sweep bounds what the whole cost table is worth.',
   apply(){K.storyCost=0.8;}},
  {id:'C2a', nm:'The removal compounds inside the run',
   what:'The release takes 21 per cent of the weight once, whatever the length of the run, so a twelve line run and a three line run remove the same amount. Each line of the run takes from what is left instead.',
@@ -384,6 +392,7 @@ function main(){
   lex:LEX, lexEntries:LEXKEYS.length,
   changes:CHANGES.map(c=>({id:c.id, nm:c.nm, what:c.what, traces:c.traces,
    facts:c.facts, keeps:c.keeps, file:c.file, cost:c.cost, soft:!!c.soft,
+   judged:c.judged||null,
    lost:c.traces.reduce((a,k)=>a+lost(k),0),
    met:c.traces.reduce((a,k)=>Math.max(a,met(k)),0)})),
   fold:FOLD.widths, measured:M};
