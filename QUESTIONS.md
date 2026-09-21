@@ -1,8 +1,8 @@
 # QUESTIONS FOR THE OWNER
 
 Every line in `TASKS.md` marked `[?]`, which is the mark for a question
-waiting on your ruling. 145 of them, across 41 sections.
-Read off commit 6103675 on 2026-09-21. Nothing here is typed by hand: answer a
+waiting on your ruling. 150 of them, across 41 sections.
+Read off commit 942aadc on 2026-09-21. Nothing here is typed by hand: answer a
 question in TASKS.md and it leaves this file on the next run.
 
 Each one opens with the question, names the seat asking it, and carries a
@@ -19,6 +19,53 @@ The same list is in `QUESTIONS.html`, which opens in a browser.
   > **At stake.** Whether the ring becomes an instrument a person watches fill, or stays a logo.
   > **Either way.** At the intake or the key strip it fills as a person answers, and they watch the seats move before any page does. On the avatar it becomes part of the figure, and the intake shows a person nothing while they type.
   > **Look at.** `proto/logo/round3.html`, section 4, draws the ring at 16, 32 and 180 pixels.
+
+- [ ] **LD9. Is a release allowed to lower coherence, or is that a defect?** Twenty two releases run with the product's own arithmetic move Sofia from 56.6 to 55.1 and Lance from 87.6 to 84.7.
+  > **What it is.** A release is the product's core act, and coherence is the
+  > number it is supposed to move.
+  > **At stake.** A person doing ninety days of work and watching the number
+  > go down is the worst outcome this product has.
+  > **Either way.** Intended, and the copy has to say that clearing can cost
+  > before it pays. A defect, and it is in the `replace` term at
+  > `ui/release.js:113` and the engine seat reproduces it first.
+  > **Look at.** `proto/ladder/index.html`, the ninety day column, Sofia and
+  > Lance.
+
+- [ ] **LD10. Is "turn" the word for one closed circle?**
+  > **What it is.** The name for going round discover, play, flow and embody
+  > once, which is the only thing the ladder counts.
+  > **At stake.** The word a person sees on the ring and in every award.
+  > **Either way.** Yours, and nothing is built twice. Another word, and every
+  > figure here is unchanged and only the label moves.
+  > **Look at.** `DESIGN-ladder.md`, section 1, and the ring on
+  > `proto/ladder/index.html`.
+
+- [ ] **LD11. Does a person see the turn count as a number, or only the ring drawn?**
+  > **What it is.** Whether the count of closed circles is printed or only
+  > shown as four quarters filling.
+  > **At stake.** Whether the product hands somebody a number to chase.
+  > **Either way.** Printed, and it is legible and countable and becomes a
+  > target. Drawn only, and a person reads their own state rather than a
+  > score. The same ruling settles the karma balance, which asks this twice.
+  > **Look at.** `proto/ladder/index.html`, the ring at the head.
+
+- [ ] **LD12. Does a snapshot get the two new fields?**
+  > **What it is.** Eighteen characters for the nine held and nine pole
+  > values, and one number for the ceiling.
+  > **At stake.** Two of the four award families cannot be computed at all
+  > without them, including the only one that works for a person in a bad
+  > month.
+  > **Either way.** Added, and it is 3.6 kilobytes at two hundred snapshots
+  > and it touches the cross compatibility contract with SOURCE. Refused, and
+  > the shelf is two families and the collapsed end scores nothing.
+  > **Look at.** `DESIGN-ladder.md`, the sizing table in section 1.
+
+- [ ] **LD13. Is "Came back" earnable once, or every time?**
+  > **What it is.** The mark for returning after a fortnight away.
+  > **At stake.** Whether the product pays repeatedly for absence.
+  > **Either way.** Once, which is what is built. Every time, which is warmer
+  > and is also a reward with a gap as its condition.
+  > **Look at.** `DESIGN-ladder.md`, the awards table, Came back.
 
 ## 08e. RULED 20 SEPTEMBER, EIGHTEENTH PASS. THE TYPE STUDY, AND A LIST THAT ASKS NOTHING.
 

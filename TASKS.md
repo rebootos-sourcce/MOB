@@ -78,17 +78,24 @@ reopens. Every seat adds its own.
 
 ### CQR. THE SEVEN BAND RING IS HIS, AND IT IS ALREADY DRAWN.
 
-- [ ] **CQR1. "The band in Source OS that I dropped in a long time ago, the
+- [x] **CQR1 CORRECTED BY MEASUREMENT, and the correction is worth reading.**
+      His words: "the band in Source OS that I dropped in a long time ago, the
       first thing I dropped in. It has a ring with seven bands. That is the
-      original CQ design."** It is in commit `46952ef`, the alpha he brought
-      to this project, and it has never been carried into either the app or
-      the funnel. Find it, lift it, and say what it is made of.
+      original CQ design." The whole of `46952ef` was read. What is there is a
+      band and not a ring, and it carries six seats and not seven: a three
+      pixel linear gradient with six stops, used twice, on the top edge and in
+      the left rail. **The third eye is missing from it, and it is still
+      missing in the current `index.html` four commits later.** No conic
+      gradient, no arc paths, no seven way arithmetic anywhere in the file,
+      and all 46 embedded rasters were extracted and looked at. So what the
+      alpha gives is the seat order and the fact that the seats travel as one
+      band. It does not give a ring and it does not give seven.
 - [ ] **CQR2. And he said what it is for, which is the part that matters.**
       "It is a truncated CQ. As you input information into it, it will show
       you what is going on and what is running it." So it is not decoration
       and it is not a mark: it is a reading that fills as a person answers,
       and the seven bands are the seven seats.
-- [ ] **CQR3. It definitely goes in the funnel.** Ruled. The funnel's quiz is
+- [x] **CQR3 BUILT. It definitely goes in the funnel.** Ruled. The funnel's quiz is
       exactly the input he describes, and the quiz shows a person nothing
       while they answer.
 - [?] **CQR4. Where does the seven band ring go inside the app?** Art
@@ -101,6 +108,79 @@ reopens. Every seat adds its own.
       > **At stake.** Whether the ring becomes an instrument a person watches fill, or stays a logo.
       > **Either way.** At the intake or the key strip it fills as a person answers, and they watch the seats move before any page does. On the avatar it becomes part of the figure, and the intake shows a person nothing while they type.
       > **Look at.** `proto/logo/round3.html`, section 4, draws the ring at 16, 32 and 180 pixels.
+
+### FN. THE FUNNEL PASS. WHAT IT FIXED, AND THE ONE D.
+
+- [x] **FN1. The ring is built and it is this project's own, argued and
+      measured.** Seven equal arcs at 51.43 degrees, touching, band 18.75 per
+      cent of the diameter, root at the base climbing right to crown, colours
+      read out of the token file by a tool rather than retyped. It draws in
+      three places off one geometry: the quiz header live, the reading at 188
+      pixels, and the favicon.
+- [x] **FN2. And the quiz header ring failed its own job on the first cut.** A
+      real load runs 0 to about 5 on a scale of ten, so each band was half a
+      pixel of colour and a person could not see which one was fat. The scale
+      was not moved, because that would have made the ring disagree with the
+      bars under it. The drawing was given the scale instead: the faint full
+      band is a load of ten, the solid band is the reading, the gap is what is
+      not carried.
+- [x] **FN3. There was no favicon anywhere in this product.** Not on one
+      funnel page, not in the built output. A blank sheet in the tab on every
+      screen. Written into all four heads now by a tool, from the same ring.
+- [x] **FN4. `BUILD-single.sh` built two of the four pages and the output
+      directory held four,** so about and buy were older builds nobody was
+      rebuilding. It empties the directory, reads the page list off the
+      directory itself, and asserts no built file reaches for a sibling.
+- [x] **FN5. The page that asks for money was unreachable from the page that
+      gets the traffic.** About and tiers both linked back to the landing and
+      the landing linked forward only to the quiz. The same nav row is at the
+      head and foot of all three static pages now.
+- [x] **FN6. Two ruled defects were sitting on the first page a stranger
+      sees.** The loop said body where he corrected it to embody, in the
+      heading, the step and the comment. And the four were drawn as a numbered
+      column, which says the fourth one is the end. Numerals out, seat
+      coloured rings in, and the fourth hands back to the first.
+- [x] **FN7. Twelve controls were under 44 by 44,** including the quiz
+      wordmark at both widths. The floor used to be exempt above 700 pixels on
+      the argument that a pointer is doing the aiming. The exemption is gone: a
+      1600 pixel window is a touchscreen as often as it is a desk and the
+      viewport does not say which.
+- [x] **FN8. `tests/funnel.js` exists, and nothing gated the funnel before
+      it.** It walks every page at both widths and asserts rendering, zero
+      outbound requests, no page error, a title and a favicon, no sideways
+      scroll, no control under the floor, and that every internal route lands
+      on a file that exists. Then the quiz end to end, then each built file
+      copied alone into an empty directory so a sibling left beside it cannot
+      make a broken file look whole. No count is typed into it. First run 167
+      passed and 5 failed. Current run 172 passed, 0 failed.
+- [x] **FN9. The record carries across the seam intact, measured end to
+      end.** The quiz's 2,150 byte file goes through the app's own `pImport`,
+      validates, loads, and `compute()` returns the same coherence figure the
+      quiz printed.
+- [ ] **FN10. And the control side does not exist, which is the one D.**
+      `profileSheet()` at `ui/panels.js:573` holds the paste box and the file
+      picker, and it is called from exactly one place: itself, to re-render
+      after a density change. Nothing in the app opens it. Confirmed in the
+      built product: the function appears twice in `source.html`, its host is
+      not in the document after boot, and no control on any tab reaches it.
+      The funnel was telling people to load the record from Settings, which
+      does not exist, through a sheet that cannot be reached. One line wires
+      it, and it turns the quiz from a leaflet into an onboarding.
+- [ ] **FN11. The record was named `test`.** `blankProfile('test')`, so a
+      person who did load it met a profile called test. Fixed on the funnel
+      side.
+- [ ] **FN12. The funnel has no address for the product at all.** No page
+      links to the app. That is a distribution decision, where `atuned.html`
+      lives, and it cannot be made inside a directory that ships as standalone
+      files.
+- [ ] **FN13. App boot measures 5,584 milliseconds to `booted`.** The skip
+      line exists. It is still 5.6 seconds between a person finishing the
+      funnel and seeing the product.
+- [x] **FN14. Measured on the funnel itself.** First contentful paint 36
+      milliseconds, DOM content loaded 45 to 51, full load 18 to 66 across all
+      four pages at both widths. One answer including the engine read and the
+      full redraw takes a median of 1.1 milliseconds, inside a single frame.
+      Zero outbound requests across twelve page loads.
 
 ### QC. THE QUESTIONS HAVE NO CONTEXT, AND HE CANNOT ANSWER THEM.
 
@@ -133,11 +213,105 @@ reopens. Every seat adds its own.
 
 ### GB. THE SCORING, BADGE AND ACHIEVEMENT SYSTEM.
 
-- [ ] **GB1. "It sounds like you need to send the team on the scoring, the
+- [x] **GB1 DELIVERED.** `DESIGN-ladder.md` and `proto/ladder/index.html`,
+      built on the loop and off numbers the engine already holds. "It sounds
+      like you need to send the team on the scoring, the
       badge and achievement system. So I want to go ahead and do that."**
       Ruled. `DESIGN-gamification.md` and `DESIGN-progression.md` exist and
       the ladder has never been designed against the loop he ruled, which is
       discover, play, flow, embody, and it is a circle.
+
+### LD. THE LADDER. WHAT IT COUNTS, AND THE FIVE MARKS THAT WERE HOSTILE.
+
+- [x] **LD1. One closed circle is one turn, and a turn is the only thing
+      counted.** His own words: the gamification exists to keep that turning.
+      The reading is not a score, the band is not, the avatar is not, and
+      patterns stay the one currency.
+- [x] **LD2. And the loop is already instrumented, which nobody had noticed.**
+      All four quarters carry a timestamp today: a story entry, a ritual when
+      saved and again when marked done, and a reading in `snapshot()`. So the
+      turn costs no schema change and no new write anywhere. It is a read
+      across four streams that already exist.
+- [ ] **LD3. Five marks in the shipping ladder are hostile to anybody who is
+      not daily, and it is measured.** `week`, `month` and `season` test the
+      longest strictly consecutive run. Diane at ninety days practises 22
+      days, has a run of 1, and earns none of the three. The weekly person
+      practises 11 days and earns none. The shipped ladder is a daily ladder
+      that never says so, and the session shape it punishes is the one the
+      retention case is costed on. Counted on days practised now.
+- [ ] **LD4. And two more marks pass on something other than what they say.**
+      `kept` wants ten entries, which is ten minutes of typing, and now wants
+      ten distinct days with an entry. `ten` and `fifty` say "ten distinct
+      addresses, not ten runs, ten places" and test a key of node, channel and
+      line, so they pass at two and a half places. Distinct node ids now.
+      `nine`'s test disagreed with its own description.
+- [ ] **LD5. No award family may be gated on a release run.** `excess` is
+      empty for 7 of the 14 roster records, at both ends of the range. Gordon
+      carries 107 addresses, has 97 loaded, and the release mechanic has
+      nothing to offer him. The gamification document found the calm end and
+      never named the collapsed end, which is the half in a bad month.
+- [x] **LD6. And the measurement that added a family rather than killing
+      one.** Before `Closed` existed, ninety days and twenty two closed
+      circles left the shelf empty for Gordon and Tomas. Not because they did
+      less: Gordon moved 0.8 to 3.0 against a ceiling of 3.1, which is 94 per
+      cent of the distance available to him, and every band boundary sits at
+      11 or above, so the movement family was blind to it. The measured range
+      at ninety days goes from 0 to 8 awards to 3 to 11. Nobody does ninety
+      days of work and scores nothing.
+- [x] **LD7. "Came back" is the mark the design exists to make possible.** A
+      gap of fourteen days or more, then a day of practice. It cannot shame an
+      absence because an absence is its condition.
+- [ ] **LD8. What has to be built, sized.** `turnRead`, Cleared and Moved are
+      pure and store nothing. Held needs the nine held and nine pole values on
+      a snapshot, which is 3.6 kilobytes at two hundred snapshots. Closed
+      needs the ceiling on a snapshot, one number. The short run mark needs
+      one boolean on a ritual entry. The shelf needs one array. That is the
+      whole build.
+- [?] **LD9. Is a release allowed to lower coherence, or is that a defect?**
+      Twenty two releases run with the product's own arithmetic move Sofia
+      from 56.6 to 55.1 and Lance from 87.6 to 84.7.
+  > **What it is.** A release is the product's core act, and coherence is the
+  > number it is supposed to move.
+  > **At stake.** A person doing ninety days of work and watching the number
+  > go down is the worst outcome this product has.
+  > **Either way.** Intended, and the copy has to say that clearing can cost
+  > before it pays. A defect, and it is in the `replace` term at
+  > `ui/release.js:113` and the engine seat reproduces it first.
+  > **Look at.** `proto/ladder/index.html`, the ninety day column, Sofia and
+  > Lance.
+- [?] **LD10. Is "turn" the word for one closed circle?**
+  > **What it is.** The name for going round discover, play, flow and embody
+  > once, which is the only thing the ladder counts.
+  > **At stake.** The word a person sees on the ring and in every award.
+  > **Either way.** Yours, and nothing is built twice. Another word, and every
+  > figure here is unchanged and only the label moves.
+  > **Look at.** `DESIGN-ladder.md`, section 1, and the ring on
+  > `proto/ladder/index.html`.
+- [?] **LD11. Does a person see the turn count as a number, or only the ring
+      drawn?**
+  > **What it is.** Whether the count of closed circles is printed or only
+  > shown as four quarters filling.
+  > **At stake.** Whether the product hands somebody a number to chase.
+  > **Either way.** Printed, and it is legible and countable and becomes a
+  > target. Drawn only, and a person reads their own state rather than a
+  > score. The same ruling settles the karma balance, which asks this twice.
+  > **Look at.** `proto/ladder/index.html`, the ring at the head.
+- [?] **LD12. Does a snapshot get the two new fields?**
+  > **What it is.** Eighteen characters for the nine held and nine pole
+  > values, and one number for the ceiling.
+  > **At stake.** Two of the four award families cannot be computed at all
+  > without them, including the only one that works for a person in a bad
+  > month.
+  > **Either way.** Added, and it is 3.6 kilobytes at two hundred snapshots
+  > and it touches the cross compatibility contract with SOURCE. Refused, and
+  > the shelf is two families and the collapsed end scores nothing.
+  > **Look at.** `DESIGN-ladder.md`, the sizing table in section 1.
+- [?] **LD13. Is "Came back" earnable once, or every time?**
+  > **What it is.** The mark for returning after a fortnight away.
+  > **At stake.** Whether the product pays repeatedly for absence.
+  > **Either way.** Once, which is what is built. Every time, which is warmer
+  > and is also a reward with a gap as its condition.
+  > **Look at.** `DESIGN-ladder.md`, the awards table, Came back.
 
 ### TN. TIGHT BY TONIGHT. THE FUNNEL AND THE PRODUCT BEHIND IT.
 
