@@ -189,14 +189,31 @@ communication, which the sentence counts already make visible.
 
 ## Tools not yet in the app
 
-Named by the owner as still to be integrated. None of these exist in
-`atuned_src/` today.
+Named by the owner as still to be integrated. Corrected 21 September: two of
+the four had stopped being true and are moved below with what ships.
 
-- The ritual builder as a real builder. The overlay logs a practice and
-  nothing reads the log back.
-- The accountability tracker.
 - Boundary and purpose.
 - Knowledge base search.
+
+**Two of these were false and were listed here as missing.** Both were checked
+against `atuned_src/` on 21 September by the ritual reconciliation.
+
+- **The ritual builder does read the log back.** The line here said "the
+  overlay logs a practice and nothing reads the log back." `ritToday()` and
+  `ritSteps()` in `ui/ritual.js` read the saved ritual back and render today's
+  with its when, its where and a control that marks it done, and the
+  `rit-saved` block is in the committed `source.html`. That is `RL1f`, closed.
+  What is still missing is the builder he described, which is a surface and not
+  a reader, and it is `RB1v` to `RB8v`.
+- **The accountability tracker has its arithmetic and not its surface.**
+  `ladderHtml()` at `ui/cone.js:902` draws the run, the ledger and the marks,
+  and since `RL2f` landed it renders on the Ritual surface through the
+  `rit-rec` block rather than only inside the Compass. What is missing is the
+  surface he asked for, which is `RB7v`, the tracker as a surface of its own.
+
+Both corrections are the same defect: a document asserting something about the
+code that the code stopped doing. The rule is to check the code, not another
+document.
 
 ## Still open, and named as open
 

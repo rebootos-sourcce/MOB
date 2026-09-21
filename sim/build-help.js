@@ -176,7 +176,7 @@ days and reading the surface off <code>source.html</code> in Chromium. So the
 method is not a survey. For each figure, the run says where they stopped and what
 their session could afford, and the ask is derived from those two facts. Nothing
 goes on the list that does not trace to one. Taste is refused, including this
-seat&rsquo;s own, and the refusals are printed beside the asks.</p>
+seat&rsquo;s own, and the refusals are printed beside the asks.</div>
 
 <h2>How an ask was derived</h2>
 <p class="lede">Three rules, applied to every figure.</p>
@@ -187,7 +187,8 @@ ${fnm('F12')} was met by ${met('F12')} and attributed ${lost('F12')}. The second
 is the smaller experience and the larger loss, so it ranks above the first.
 A friction everybody meets and nobody leaves on is a nuisance, not a sticking point.</li>
 <li><b>It has to fit the session that figure actually has.</b> Diane tells
-${n2(R.icp.Diane.stories)} stories in ninety days. That is not a preference and it
+${R.icp.Diane.stories<0.005?'no stories at all in ninety days'
+ :n2(R.icp.Diane.stories)+' stories in ninety days'}. That is not a preference and it
 is not reluctance: her session is worth ${n1(R.icp.Diane.minutes)} minutes across
 the whole quarter and the only door to her own charge is measured at
 ${R.model.cost.story} minutes. The improvement that implies is a narrower door,

@@ -64,7 +64,7 @@ stopped, or waiting behind a named ruling.
 | 7 | `SY1-SY4`, the journal box concretes | UX, art direction, engineering | medium | nothing | yes |
 | 8 | `CP7`, then `CP6` | engineering | small | a seat to clear `tests/functional.js` | no, it makes a gate honest |
 | 9 | The left rail, measured and proposed. Not a build | UX architect | small, and it is reading | nothing | no, it makes the next ten buildable |
-| 10 | The ritual reconciliation. Not a build | project manager | small, and it is reading | nothing | no, same reason |
+| 10 | The ritual reconciliation. Not a build. **Delivered 21 September** | project manager | small, and it is reading | nothing | no, same reason |
 
 ## The argument, one line each
 
@@ -157,10 +157,30 @@ memory of about four. The bar port moves 2 to 5 of a per surface 85 to 221,
 which is 1 to 6 per cent. Item 9 is the rail measured and a proposal written.
 It is not a build, and the bar port is in section 6.
 
-**10. The ritual reconciliation.** Still the highest leverage reading action on
-this page, and it got worse: **114 open across 9 sections tonight, against 101
-across 12 at the last stamp.** No later spec retires an earlier one. Nothing in
-items 1 to 9 touches the ritual, so this costs nothing to do now.
+**10. The ritual reconciliation.** Delivered 21 September as
+`RITUAL-RECONCILE.md` and applied to `TASKS.md` the same night.
+
+**The 114 in the line that used to stand here did not reproduce, and it was
+mine.** The corrected figure at the commit this page stamps is **85 open, 25
+his, 39 built across those 9 sections**, and the method is at the foot of
+section 9. No definition that yields nine sections produces 114, and the
+closest, 108, shares no column with 26 or 40.
+
+**And the pile had not got worse. It had not moved.** Those nine sections read
+85, 25 and 39 at `f87595d` and read 85, 25 and 39 again two passes and 1,125
+added lines later, so "it got worse, 114 against 101" was an argument built on
+a number that was never in the file. The reason for doing item 10 was still
+sound and it is a better reason than the one given: the ritual was not the
+largest pile in the project, it was the pile with the most finished work
+sitting unmarked inside it. The reconciliation found 21 such items and they are
+closed.
+
+Read off the run at the applying commit, the same nine sections are **65 open,
+23 his, 62 built** of 150 lines with a state, and **53 open, 22 his, 59 built**
+once the 16 lines marked Not ritual work are excluded. What remains open there
+is a port, not a spec: `RT22` prices the loop that four shipped fixes have
+never been measured against, and item 5 of `RITUAL-RECONCILE.md` section 8 is
+the port of `proto/ritual/ritual2.html` into the build.
 
 ## Where the order is arbitrary, said plainly
 
@@ -344,7 +364,8 @@ They are real and they are not urgent. The honest sort:
 - **Blocks one surface and nothing else.** `CP4` and `CP8` (three surfaces draw
   the nine child emotions and none says which are found, and widening before
   the ruling means three surfaces to move back instead of one), `CB4`, `CB9`,
-  `CB10`, `RQ1-RQ5`, `CL12`, `CL14`, `CL15`, `SW6-SW10`, `AH5-AH7`, `AM4`,
+  `CB10`, `RQ1-RQ5`, `CL12`, `CL14`, `CL15`, `SW6b`, `SW7b`, `SW8-SW10`,
+  `AH5-AH7`, `AM4`,
   `AM5`, `PC3`, `MN8`, `CQR4`, `D4`, `D5`, `D7`, `D8`, `D20`.
 - **Blocks a claim, and the claim is a real exposure.** `PO2`, the word "heals"
   is a regulated therapeutic claim and the funnel cannot ship carrying it.
@@ -459,8 +480,10 @@ That gap is the last cheap moment and it closes once.
 
 ## Costs a little more every round it is not done
 
-- **The ritual reconciliation.** 114 open across 9 sections, and it was 101
-  across 12 three hours ago. Every pass adds a section without retiring one.
+- **The ritual reconciliation.** Done, 21 September. The 114 was mine and did
+  not reproduce: 85 open across 9 sections at this page's own stamp, and the
+  pile had not moved between two stamps rather than growing. Every pass still
+  adds a section without retiring one, which is the finding that survives.
 - **`CP7`.** The line says nine call sites. There are 17. The line is a day
   old. Left alone, the fix grows while the defect sits still.
 - **`GT1` and `GT3`.** Gate 13 read green tonight, which does not retire the
@@ -589,8 +612,11 @@ Those are different products. `D11` is where that starts.
 
 **The currency has three words in three documents.** `Q4`.
 
-**The ritual page has been specced nine times.** 114 open, 9 sections, 40
-built. Stop adding ritual specs. Item 10 is the reconciliation.
+**The ritual page has been specced nine times.** 85 open, 9 sections, 39
+built, correcting a 114 of my own that did not reproduce. Stop adding ritual
+specs. Item 10 was the reconciliation and it is delivered: 21 items closed, 6
+folded, 1 cut, 24 identifiers disambiguated. The nine sections now read 65
+open, 23 his and 62 built.
 
 **And the questions document has now been fixed twice and is still broken.**
 The eighteenth pass made every line ask something. The nineteenth pass records
@@ -698,21 +724,37 @@ sections are invisible to anything that keys on the id, and the generated
 now mean both the child pattern build and the whole product copy sweep, in the
 same file, both live. `RL1` still means two unrelated things.
 
-**Recommended, and it is cheap:** new items take a section prefix, so tonight's
-ring is `08f.CQR1` and the ritual plan item stays `0f.RL1`. Nothing already
-written has to change.
+**Recommended, and it is cheap:** an identifier that means two things takes a
+letter, so `RB1` in section `0y` becomes `RB1y` and `RB1` in `0v` becomes
+`RB1v`. The old identifier stays visible as the stem because it is quoted from
+other documents and from `QUESTIONS.md`.
+
+**This corrects the recommendation that stood here, which was a section prefix
+like `0f.RL1`.** That form cannot be parsed: `tools/questions.js` reads an
+identifier as letters, then digits, then one optional letter, so `RL1f` is read
+and `0f.RL1` is not, and the owner's own questions document is generated by
+that reader. The letter also follows a convention this file already set at
+`SW1b` and `SW1c`. Applied 21 September to 24 identifiers in the ritual
+sections. 46 collisions are still live elsewhere in `TASKS.md`, none of them in
+those nine, and `CP1` and `RL1` are no longer among them.
 
 ---
 
 # 9. The shape of the list, measured
 
 Grouped by subject rather than by the pass that wrote it. Same 993 lines,
-counted a second way. **Method: by section, naming the sections, because
-counting by identifier undercounts and section 8 says why.**
+counted a second way. **Method: by section, and the sections are named,
+because counting by identifier undercounts and section 8 says why.** The
+ritual row is the nine sections that `grep '^## .*RITUAL' TASKS.md` returns,
+which on 21 September are `0h2`, `0j2`, `0m`, `0q`, `0t`, `0y`, `0d`, `0f` and
+`0v`, the last of them being the D minus pass and not the fifth pass calendar.
+Run the grep rather than trusting the list. Every other row names its subject
+and not its sections, so every other row is unchecked by anybody reading this
+page, which is the same defect one row down from where it was caught.
 
 | Subject | Open | His | Built | Per cent built | Sections |
 |---|---|---|---|---|---|
-| Ritual | 114 | 26 | 40 | 22 | 9 |
+| Ritual | 85 | 25 | 39 | 26 | 9 |
 | Avatar and character sheet | 82 | 13 | 33 | 26 | 6 |
 | Story and release | 39 | 12 | 26 | 34 | 6 |
 | Onboarding, stopped | 29 | 3 | 13 | 29 | 3 |
@@ -736,10 +778,15 @@ hours. **That finding is retired by measurement and should not be repeated.**
 The surface still grades a D, which is now a design question and not a neglect
 question, and `SQ1` is the whole of it.
 
-**The ritual and the avatar are 196 open items, 38 per cent of the open column,
-and neither can be built tonight.** One needs a reconciliation and the other
+**The ritual and the avatar are 167 open items, 32 per cent of the open column,
+and neither can be built tonight.** One needed a reconciliation and the other
 needs a ruling. That is where the weight sits and it is not where the work is.
-It was 167 at the last stamp. The gap is widening, which is what item 10 is for.
+
+**The gap is not widening, and the sentence that said so was arithmetic on my
+own bad number.** With the ritual corrected from 114 to 85, the pair is 167,
+which is exactly the 167 of the last stamp. The reconciliation is delivered
+and it takes the ritual's open column to 65, so the pair is now 147 and
+falling for the first time.
 
 **The sniffer is the worst ratio on the page and nobody has noticed.** 17 open,
 **21 of his**, 4 built, 10 per cent. It is the only subject where his column is
@@ -779,8 +826,10 @@ Named, so nothing disappears quietly.
   build, the feeling waits.
 - **The `RV` release flow, the heard half.** Blocked on `RV7` and on a
   recording only he can make.
-- **The ritual build.** 114 items. Item 10 reconciles it. Nothing is built from
-  it this round.
+- **The ritual build.** 85 items at this stamp, correcting a 114 of mine, and
+  65 after the reconciliation landed on 21 September. Item 10 reconciled it and
+  is delivered. Nothing is built from it this round, and `RT22` is the first
+  thing that should be: the four shipped loop fixes have never been measured.
 - **The badge and achievement ladder, `GB1`.** Newly ruled and it cannot be
   costed until the currency has a name. The design brief can be written; no
   number in it is real until `Q4`.

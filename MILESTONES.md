@@ -158,14 +158,24 @@ backlog reads them.** `p.updated` and `p.created` are stamped on every save and
 never read either. A visible delta between this session and the last one is
 buildable with zero new architecture.
 
-Worse, the loop the product claims to deliver does not close. `ritual.js`
-writes a completed ritual into `CURP.rituals`, and grep finds no other
-reference anywhere in the tree. **Nothing ever reads it.** There is no count,
-no history, no before and after. A person can release a pattern and the product
-will never mention it again.
+The loop the product claims to deliver used to be open at both ends, and this
+paragraph said so for longer than it was true. **Corrected 21 September.**
+`CURP.rituals` now has five readers, counted off `grep -rn '\.rituals'
+atuned_src/` rather than off another document: `ritLast()` at
+`ui/ritual.js:36`, which `ritToday()` reads back onto the surface, `pracDays()`
+at `engine/ladder.js:32`, which is how `streakRead` gets the run, `ledgerRead()`
+at `engine/ladder.js:84`, `ladderHtml()` at `ui/cone.js:955`, which prints the
+count, and `validateProfile` in `engine/schema.js`, which refuses the field by
+name if it is not a list. `RL1f` and `RL2f` in `TASKS.md` are the two items
+that closed it, both verified against the shipped build.
 
-That belongs in M2. It is the practice loop, and it is currently open at both
-ends.
+What is still open is not the reading. It is that the record is a card under a
+builder rather than a surface, which is `RB7v`, and that the three practice
+marks count strictly consecutive days, so a person practising twice a week
+earns none of them, which is `LD3` and is the one ruling this milestone waits
+on.
+
+That belongs in M2. It is the practice loop, and it now closes at one end.
 
 ---
 

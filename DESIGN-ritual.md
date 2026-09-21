@@ -126,8 +126,20 @@ words**: 172, 157 and 155.
 
 ### 1.4 The screen asks for 94 simultaneous choices
 
-Counted in the live build at 1600 by 1000 on the Ritual tab, every visible
-interactive element:
+**The centre stage figure is stale and the screen figure stands. Marked 21
+September.** This table was counted before `RL4f` landed. The card no longer
+offers every candidate practice: `ritFor()` calls one, the list renders with
+the `one` class, and everything else sits behind a single control reading
+"Choose something else". So the 11 for the centre stage is a count of an object
+that is gone, and no number replaces it here, because a number typed into a
+document is what this repository has been bitten by eleven times. The way to
+get it is the way this one was got: `node tools/shots.js OUT 1600 1000`, then
+count the visible interactive elements on the Ritual tab. The 94 and the 52
+control left rail were re-checked on 21 September and both stand, and the rail
+is `PRIORITY.md` item 9 rather than this page's to fix.
+
+Counted in the live build at 1600 by 1000 on the Ritual tab, before `RL4f`,
+every visible interactive element:
 
 | zone | choices |
 |---|---|
@@ -155,6 +167,12 @@ visible on the screen and invisible in the source.
 at display size above the words "days , last run", with a space before the
 comma. The first number this product ever shows a person is a zero the size of a
 headline.
+
+**Half fixed, checked 21 September.** The space before the comma is gone and
+`ui/cone.js:909` carries the comment saying why it was there. The headline zero
+stands, and it now has "Nothing on the record yet. Build one ritual and save
+it, and the first day is on." under it, so the zero is explained rather than
+removed.
 
 ---
 
@@ -665,6 +683,20 @@ at should go. The measurement it carries does not have to go with it.
 ---
 
 ## 7. THE RECOMMENDATION
+
+**Superseded twice, by him, and this section is kept for its reasoning and not
+for its verdict. Marked 21 September.** He ruled Design B at the fifth pass,
+"Design B is the one, the board, and it has to look like a calendar", which is
+`RC1` in `TASKS.md`. He then ruled the seventh pass layout over that: stats on
+top, the week second from Monday, three bands in his order, cards that open, a
+journal snippet, where to improve, and Monday to Friday reading as a pixelated
+audio waveform, which is `RU1` to `RU9`. The newest thing he has said about
+this page is that the ring is a dotted line whose dashes are the count, and
+`0h2` delivered it. **The shape is not open and nothing should be sent to him
+asking which one it is.** What survives from this section is the object list,
+because he asked for iconography, a daily tracker, an edit control, a heat map
+and analytics, and those are requirements under any shape. They are `RB2v` to
+`RB7v`, still open.
 
 **Design A, the compass.** Build that one.
 

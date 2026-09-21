@@ -234,16 +234,19 @@ ${pc(N.base.loopEver,1)} to ${pc(hardLast.loopEver,1)}.</span></div>
 <th>What the term actually reads</th></tr></thead>
 <tbody>
 ${POINTS.rows.map(r=>`<tr class="${r.kind==='exists'&&r.gain>=2?'soft':(r.bh>=2?'win':'')}">
-<td><b>${e(r.k)}</b></td><td class="num">${n1(r.b)}</td><td class="num">${n1(r.a)}</td>
+<td><b>${e(r.k)}</b><span class="fine">${r.kind==='exists'?'the instrument'
+ :(r.kind==='behaviour'?'the product':'both, split below')}</span></td>
+<td class="num">${n1(r.b)}</td><td class="num">${n1(r.a)}</td>
 <td class="num"><b>${sg(r.gain)}</b></td><td class="num">${r.ex?sg(r.ex):'none'}</td>
 <td class="num">${r.bh?sg(r.bh):'none'}</td>
 <td class="q">${r.why}</td></tr>`).join('\n')}
 <tr class="tot"><td><b>Total</b></td><td class="num"><b>${n2(N.base.total)}</b></td>
 <td class="num"><b>${n2(hardLast.total)}</b></td><td class="num"><b>${sg(POINTS.gain)}</b></td>
 <td class="num"><b>${sg(POINTS.ex)}</b></td><td class="num"><b>${sg(POINTS.bh)}</b></td>
-<td class="q">the amber rows are the instrument, the green rows are the product</td></tr>
+<td class="q">the split is named in the first column, not left to the tint</td></tr>
 </tbody></table>
-<p><b>Read the amber rows sceptically and the green rows as the actual result.</b>
+<p><b>Read the instrument rows sceptically and the product rows as the actual
+result.</b>
 C9 and C10 between them moved the grade ${sg(solo.C9.d+solo.C10.d)} applied alone
 and moved day thirty from ${pc(N.base.d30,2)} to ${pc(solo.C9.d30,2)} and
 ${pc(solo.C10.d30,2)}. That is almost fourteen points for two controls existing.

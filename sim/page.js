@@ -46,7 +46,13 @@ p{margin:0 0 14px;max-width:74ch}
  border:1px solid var(--line);border-radius:16px;padding:26px 24px}
 .big .gr{font-size:clamp(52px,9vw,88px);line-height:.95;font-weight:600;letter-spacing:-.035em}
 .big .gl2{font-size:clamp(22px,3vw,30px);color:var(--au);font-weight:600;margin-left:10px}
-.ch{width:100%;height:auto;display:block;margin:10px 0 6px;overflow:visible}
+.ch{width:100%;height:auto;display:block;overflow:visible}
+/* A CHART IS NOT A PICTURE, IT IS TYPE. Scaling an 880 wide frame into 358
+   scales its 12px labels to about 5 and the most important chart on the page
+   stops being readable exactly where it is read most. The frame keeps a minimum
+   width on a phone and scrolls inside its own box, which is what the tables
+   already do. */
+.chwrap{overflow-x:auto;margin:10px 0 6px;-webkit-overflow-scrolling:touch}
 .gl{stroke:var(--line);stroke-width:1}
 .ln{fill:none;stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
 .dot{fill:var(--dim)}
@@ -95,6 +101,7 @@ code{font:400 13.5px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
  background:var(--sunk);border:1px solid var(--line);border-radius:4px;padding:1px 5px}
 .foot{color:var(--dim);font-size:13px;margin-top:40px}
 @media (max-width:820px){
+ .ch{min-width:700px}
  .g3,.g2,.g4{grid-template-columns:1fr}
  .wrap{padding:26px 16px 70px}
  table.tb{display:block;overflow-x:auto;white-space:nowrap}
@@ -171,7 +178,7 @@ function stepChart(pts,opt){
   g+=`<text class="bn" x="${x(i).toFixed(1)}" y="${(y(p.v)-11).toFixed(1)}" text-anchor="middle">${n1(p.v)}</text>`;
   g+=`<text class="ax" x="${x(i).toFixed(1)}" y="${Hh-B+20}" text-anchor="middle">${e(p.k)}</text>`;
   if(p.k2)g+=`<text class="ax" x="${x(i).toFixed(1)}" y="${Hh-B+34}" text-anchor="middle" opacity=".7">${e(p.k2)}</text>`;});
- return `<svg class="ch" viewBox="0 0 ${W} ${Hh}" role="img" aria-label="${e(opt.alt||'')}">${g}</svg>`;}
+ return `<div class="chwrap"><svg class="ch" viewBox="0 0 ${W} ${Hh}" role="img" aria-label="${e(opt.alt||'')}">${g}</svg></div>`;}
 
 /* horizontal bars, signed, for a solo ranking */
 function barsSigned(rows,opt){
@@ -188,7 +195,7 @@ function barsSigned(rows,opt){
   g+=`<text class="bl" x="${L-10}" y="${yy+13}" text-anchor="end">${e(r.k)}</text>`;
   g+=`<rect x="${(w<0?zero+w:zero).toFixed(1)}" y="${yy+3}" width="${Math.max(1.5,Math.abs(w)).toFixed(1)}" height="15" fill="${col}" opacity=".9" rx="2"/>`;
   g+=`<text class="bn" x="${(w<0?zero+w-6:zero+Math.abs(w)+6).toFixed(1)}" y="${yy+15}" text-anchor="${w<0?'end':'start'}">${sg(r.v)}</text>`;});
- return `<svg class="ch" viewBox="0 0 ${W} ${Hh}" role="img" aria-label="${e(opt.alt||'')}">${g}</svg>`;}
+ return `<div class="chwrap"><svg class="ch" viewBox="0 0 ${W} ${Hh}" role="img" aria-label="${e(opt.alt||'')}">${g}</svg></div>`;}
 
 /* several ninety day lines on one frame, for the ceiling cases */
 function multiLine(series,opt){
@@ -212,6 +219,6 @@ function multiLine(series,opt){
   const yy=y(s.v[s.v.length-1]);
   g+=`<text class="lg" x="${W-Rr+8}" y="${(T+14+si*17).toFixed(1)}" fill="${s.col}">${e(s.nm)}</text>`
    +`<line x1="${(W-Rr).toFixed(1)}" y1="${yy.toFixed(1)}" x2="${(W-Rr+4).toFixed(1)}" y2="${(T+10+si*17).toFixed(1)}" stroke="${s.col}" stroke-width="1" opacity=".5"/>`;});
- return `<svg class="ch" viewBox="0 0 ${W} ${Hh}" role="img" aria-label="${e(opt.alt||'')}">${g}</svg>`;}
+ return `<div class="chwrap"><svg class="ch" viewBox="0 0 ${W} ${Hh}" role="img" aria-label="${e(opt.alt||'')}">${g}</svg></div>`;}
 
 module.exports={CSS,e,pc,n1,n2,sg,word,Word,head,buildBlock,stepChart,barsSigned,multiLine};
