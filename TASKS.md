@@ -313,6 +313,84 @@ reopens. Every seat adds its own.
   > and is also a reward with a gap as its condition.
   > **Look at.** `DESIGN-ladder.md`, the awards table, Came back.
 
+### LK. THE TWO FIELD LEAKS. BOTH REPRODUCED, BOTH CLOSED.
+
+- [x] **LK1. E7 was not built, and the claim that it was is worth recording.**
+      The group in `tests/functional.js` that asserts a stranger stays a
+      stranger measures the delta in laws across a persona round trip. It
+      never looks at the store, and E7 is about the store. The seat checked
+      the claim before acting on it, which is the rule this repository
+      carries, and the claim was wrong.
+- [x] **LK2. What E7 actually was, measured on a clean page.** `loadP` pushed
+      every persona's scratch profile onto `PROFILES`, which is the person's
+      own record list: the account area prints its length as profiles on this
+      device, the Intake offers it as the switcher, and the whole of it is
+      written to the one storage key. Visit Gordon, come back, move one
+      charge, and the store holds two records, the second carrying **78.00
+      units of borrowed charge and 21 measured laws under the name Gordon**.
+      In a full gate run it reached 21 records, 15 of them personas, 6 of them
+      duplicates, because a reload empties the cache and the next visit pushes
+      another copy. After: one record, 0.00 borrowed.
+- [x] **LK3. Three holes closed with it.** Deleting a record took the pointer
+      to `PROFILES[0]`, which could be a reference case. The Intake switcher
+      offered reference cases as though they were yours. And the record count
+      was counting demos.
+- [x] **LK4. E2 was the undo stack, and it reproduces only in sequence,**
+      which is why a clean page showed nothing and the order said not
+      reproduced. Measured at the top of the release block of an instrumented
+      run, before the release had been touched: the person's own field summed
+      to **53.00 while they had entered nothing**, and 53.00 is James's field
+      exactly. One history served the whole app, so a story committed on James
+      pushed his nine charges, the commit handler's last line moved the
+      pointer back to the person's own record, and the undo arrow restored
+      James's field into a state that claims to be theirs. The next settle
+      wrote it through.
+- [x] **LK5. Keyed, not repointed and not cleared.** The undo and redo stacks
+      are keyed by the record they were taken from, because every one of the
+      person's own records shares the same slot. Nothing repoints, on the
+      ruling already recorded that two repointing attempts were each worse
+      than the bug. Charge crossing on a clean page: own field 2.20 to 78.00
+      before, 2.20 to 2.20 after.
+- [x] **LK6. And what the fix costs, stated rather than hidden.** A save onto
+      a worked example now reports that it did not land, where before it
+      landed in the person's store, which was the leak. A story cannot be
+      committed onto a worked example at all, added deliberately so that the
+      first fix does not turn kept in the wrong record into kept nowhere,
+      silently. Edits to a reference case no longer survive a reload. The undo
+      arrows disappear while an example is loaded. And the Intake switcher
+      carries the loaded example as its own marked entry, because with demos
+      out of the record list no option matched and it showed the person's own
+      name over somebody else's 63 answers.
+- [ ] **LK7. Still open, named rather than fixed.** The Intake switcher
+      repoints the current record without moving the field pointer, so
+      switching between two of the person's **own** records leaves the state
+      claiming a field that came from the other one, and a later save writes
+      it across. Same class as E2, different route. The undo route is closed
+      and this one is not.
+- [x] **LK8. GT2 did not reproduce and nothing was changed.** Twenty eight
+      readings across four runs, alone and stacked, on the unchanged block:
+      lowest 54.3 against a floor of 30. The fps block was last modified on 19
+      September and the note recording 24.8 and 20.9 landed on 20 September
+      without touching a line of it, so the same code that read 24.8 reads 54
+      and up. That puts the instability in the machine, which is four cores
+      with no quota and another seat's ninety day harness starting and
+      finishing throughout the hour, load average 1.56 to 3.46. It is the
+      noisy neighbour GT1 already describes.
+- [x] **LK9. The record loader has a door, above Export and Delete.** The
+      markup and wiring were lifted out unchanged and drawn a second time in
+      the account area rather than in a sheet, because load is the inverse of
+      export and the other two record controls already live there. The
+      boundary is untouched: the import stays atomic, a refusal names the
+      field and moves nothing. Measured through the control: a 3322 byte
+      record, coherence 42.25 to 1.00 against the 1.00 it was exported at, one
+      record to two, and on a refused record the name and the reading both
+      stayed put. One defect found while gating it: the account area redrew on
+      a load and wiped the success message, so the redraw happens first now.
+- [ ] **LK10. Two notes for the copy seat.** The section holding the door is
+      called Privacy, which is not where everybody will look for load a
+      record, so either the funnel points at it by that name or the section is
+      renamed.
+
 ### NN. THE NINETY DAY RUN. THE GRADE IS 38.91 AND THE LOOP CLOSES ON ITSELF.
 
 - [x] **NN1. 38.91 of 100, an F, and it settled.** Spread across runs 0.41,
@@ -682,7 +760,15 @@ the child patterns. Wording kept where it is his.
       all. Celiac plexus is both Pride and Anger. So the child emotion's home
       address is not a thing the data can give, and the panel names the
       heaviest carrying address for that axis instead.
-- [ ] **CP7. Nine call sites in `tests/functional.js` say `loadP(6)` and one
+- [x] **CP7 FIXED, and the number in this line was wrong twice over.** It was
+      measured against the engine's table, where Gordon is 12 and Rosa is 6.
+      The browser unshifts the custom persona, so every index in a browser
+      gate is one past that: 6 is James, Gordon is 13, Rosa is 7. Counted off
+      the file, `tests/functional.js` carried 34 calls with a literal index,
+      23 of them naming somebody other than the person themselves, and one
+      comment claimed Gordon over a call that loads James. All 23 are
+      `loadP(PERSON('Name'))` now and `PERSON` throws on a name that has left
+      the roster. The old line read: nine call sites in `tests/functional.js` say `loadP(6)` and one
       comment beside them says Gordon, heavily loaded.** Index 6 has been Rosa
       since the roster grew. It is exactly the `loadP(8)` defect `CLAUDE.md`
       records, in the same file, and `GORDON()` already exists there to fix it
@@ -6063,7 +6149,7 @@ the privacy floor refuses it. No key is needed and none should be added.
 - [~] E5. Eight definitions lived only in `title` attributes, unreachable on
       a phone. The Summary's six are on the screen. The rest are still to do.
 - [ ] E6. The word Awareness carries two concepts 545px apart on one screen
-- [ ] E7. Visiting a reference case writes that persona into the person's store
+- [x] E7 REPRODUCED AND FIXED at 88181e6, 78.00 units of borrowed charge measured in the store. Visiting a reference case writes that persona into the person's store
 
 ---
 
