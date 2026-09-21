@@ -242,8 +242,67 @@ into something tidier than he said it.
       and it takes up a degree of space."** Two costs, and he named both: the
       radius the leader line eats, and the arc it reserves so nothing else can
       sit there.
-- [ ] **SP2. Four mockups, refining it, with the space maximised.** His ask.
-      Not four coats of paint on the same geometry.
+- [x] **SP2 DELIVERED at `proto/field-a/index.html`,** four answers, each held
+      to the measurement rather than to taste.
+- [x] **SP3. What the nameplates cost, measured off the build.** At 1600 the
+      reading reaches 171 pixels of a free radius of 332, so 54 pixels of
+      radius past the ring belong to seven words, and the seven plates close
+      19 degrees of 360. At 390 the reading reaches 78 and the names run out
+      to 126, so 48 pixels sit outside a 78 pixel ring, which is 62 per cent
+      of the reading's own radius added outside it, and the plates close 42
+      degrees, one in every nine. The ring of canvas those words sit in is
+      3.8 per cent lit at 1600 and 5.2 at 390.
+- [x] **SP4. And the phone is worse for a structural reason.** The word is 12
+      pixels whatever the wheel is. The wheel halves and the word does not, so
+      the same seven names take 16 per cent of the free radius at 1600 and 29
+      at 390. A fixed cost charged against a shrinking budget.
+- [ ] **SP5. The cause is one constant, and it is not only the seats.**
+      `ui/component.js:208` reads `LBL_R=1.20, LBL_M=30`, so a fifth of the
+      radius is pre committed to outward text before anything is drawn. The
+      seat says so against its own case: at depth D the nineteen domain names
+      also radiate outward, so freeing the seats alone does not recover the
+      constant.
+- [x] **SP6. The seat's recommendation, and it answers his other ask with the
+      same object.** The band: the seven seats become bands of thicker colour
+      and the name lies on the band's own curve. That is his seven band shell,
+      drawn. Measured: 3.3 times the reading at 390, zero degrees closed, and
+      the naming ring goes from 5 per cent lit to 98. The fallback is the
+      axis, which costs 17 pixels of radius and is the answer for the domain
+      ring at depth D, and shipping both takes the constant down to about
+      1.02.
+- [x] **SP7. Five defects found by looking at the image rather than the
+      source, three of them in the seat's own work.** A name reading 1.8 to 1
+      because it sat on the address spokes. The same name reading 2.4 once
+      moved, because the saboteur ring draws exactly where the gutter had
+      landed. A probe that failed a design on an unpainted pixel whose colour
+      channels mean nothing. Two panels that were the same picture with
+      different text. And an invented leader line on the panel showing today,
+      which the product does not draw: the word alone is the spike.
+- [?] **SP8. Does the shell draw the true arc, or seven equal bands with the
+      count said another way?**
+  > **What it is.** The seven seats hold different numbers of addresses. Crown
+  > holds 21, Throat and third eye hold 12 each.
+  > **At stake.** What the ring asserts about the body, not how it looks.
+  > **Either way.** True arc, and Crown is 70 degrees against 40, so the ring
+  > says where the addresses are. Equal sevenths, and the ring says the seats
+  > are equal and the count has to be said somewhere else.
+  > **Look at.** `proto/field-a/index.html`, panel A, and the funnel quiz
+  > ring, which draws equal sevenths today.
+- [?] **SP9. Is the band allowed to carry a value, or is it colour only?**
+  > **What it is.** If the name sits inside the band, the band's lightness is
+  > pinned by the contrast floor.
+  > **At stake.** One channel. A band that carries a value cannot also carry
+  > text safely.
+  > **Either way.** Colour only, and the value goes somewhere else on the
+  > ring. Value too, and the name comes back out of the band.
+  > **Look at.** `proto/field-a/index.html`, panel A, the contrast figures
+  > under it.
+- [?] **SP10. With the name inside the band, is the seat mark still wanted?**
+  > **What it is.** The ring glyph drawn for each seat.
+  > **At stake.** Whether the product keeps a second way of naming a seat.
+  > **Either way.** Kept, and it is the collapsed state and the icon family
+  > everywhere else. Dropped, and the band is the only naming.
+  > **Look at.** `proto/field-a/index.html`, panel B.
 
 ### SH. THE SHELL. SEVEN BANDS, HOVER, AND ZOOM THAT ATOMISES.
 

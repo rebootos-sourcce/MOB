@@ -1,8 +1,8 @@
 # QUESTIONS FOR THE OWNER
 
 Every line in `TASKS.md` marked `[?]`, which is the mark for a question
-waiting on your ruling. 149 of them, across 42 sections.
-Read off commit b09ca58 on 2026-09-21. Nothing here is typed by hand: answer a
+waiting on your ruling. 152 of them, across 43 sections.
+Read off commit e6056cb on 2026-09-21. Nothing here is typed by hand: answer a
 question in TASKS.md and it leaves this file on the next run.
 
 Each one opens with the question, names the seat asking it, and carries a
@@ -23,6 +23,35 @@ The same list is in `QUESTIONS.html`, which opens in a browser.
   > filing decision with a cost and a class, not a copy decision.
   > **Look at.** `atuned_src/engine/sniff.js`, and the story page in
   > `proto/story4/`.
+
+## 08h. RULED 21 SEPTEMBER, TWENTY FIRST PASS. THE FIELD'S REAL ESTATE, AND A NOTATION THAT HAS TO GO.
+
+- [ ] **SP8. Does the shell draw the true arc, or seven equal bands with the count said another way?**
+  > **What it is.** The seven seats hold different numbers of addresses. Crown
+  > holds 21, Throat and third eye hold 12 each.
+  > **At stake.** What the ring asserts about the body, not how it looks.
+  > **Either way.** True arc, and Crown is 70 degrees against 40, so the ring
+  > says where the addresses are. Equal sevenths, and the ring says the seats
+  > are equal and the count has to be said somewhere else.
+  > **Look at.** `proto/field-a/index.html`, panel A, and the funnel quiz
+  > ring, which draws equal sevenths today.
+
+- [ ] **SP9. Is the band allowed to carry a value, or is it colour only?**
+  > **What it is.** If the name sits inside the band, the band's lightness is
+  > pinned by the contrast floor.
+  > **At stake.** One channel. A band that carries a value cannot also carry
+  > text safely.
+  > **Either way.** Colour only, and the value goes somewhere else on the
+  > ring. Value too, and the name comes back out of the band.
+  > **Look at.** `proto/field-a/index.html`, panel A, the contrast figures
+  > under it.
+
+- [ ] **SP10. With the name inside the band, is the seat mark still wanted?**
+  > **What it is.** The ring glyph drawn for each seat.
+  > **At stake.** Whether the product keeps a second way of naming a seat.
+  > **Either way.** Kept, and it is the collapsed state and the icon family
+  > everywhere else. Dropped, and the band is the only naming.
+  > **Look at.** `proto/field-a/index.html`, panel B.
 
 ## 08f. RULED 20 SEPTEMBER, NINETEENTH PASS. THE RING HE ALREADY DREW, AND A LIST HE CANNOT ANSWER.
 
