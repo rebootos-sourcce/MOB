@@ -34,6 +34,17 @@ const bankRows=R.storyBank;
 const bankNone=bankRows.filter(r=>r.imprints===0).length;
 const bankInfer=bankRows.filter(r=>r.inferred).length;
 const bankNamed=bankRows.filter(r=>r.named.length).length;
+/* words rather than digits where the sentence wants a word, and the word is
+   derived from the count so it cannot go stale when the bank or the roster
+   grows. This repository has been bitten nine times by the other way. */
+const WORDS=['no','one','two','three','four','five','six','seven','eight','nine',
+ 'ten','eleven','twelve','thirteen','fourteen'];
+const word=n=>{
+ if(n<WORDS.length)return WORDS[n];
+ const tens=['','','twenty','thirty','forty','fifty','sixty','seventy','eighty','ninety'];
+ if(n<100)return (tens[Math.floor(n/10)]+(n%10?' '+WORDS[n%10]:'')).trim();
+ return String(n);};
+const Word=n=>{const w=word(n); return w.charAt(0).toUpperCase()+w.slice(1);};
 const saysRows=R.says, saysNone=saysRows.filter(r=>r.imprints===0).length;
 /* the sharpest inferred cases, picked by rule and not by hand: the longest
    line from a figure whose imprints are entirely inferred */
@@ -46,6 +57,13 @@ const smallest=(()=>{const out=[];
  Object.keys(MEAS.widths).forEach(w=>Object.keys(MEAS.widths[w].surfaces).forEach(k=>{
   (MEAS.widths[w].surfaces[k].tiny||[]).forEach(t=>out.push(k+' at '+w+': '+t));}));
  return out.length?out[0]:'';})();
+/* how many commits the reading sat still for, off the driven case rather than
+   counted by hand. The first step whose coherence differs from the first one. */
+const stillFor=(()=>{const st=MEAS.loop.own.stories;
+ for(let i=1;i<st.length;i++)if(Math.abs(st[i].cq-st[0].cq)>0.001)return i;
+ return st.length;})();
+const loadDays=['none','low','mid','high'].map(k=>R.ceiling[k].notes.firstLoaded||99);
+const firstLoadDay=Math.min.apply(null,loadDays), lastLoadDay=Math.max.apply(null,loadDays);
 const quoteLine=r=>r?('&ldquo;'+e(r.text)+'&rdquo; is answered with <b>'
  +e(r.offers.join(', '))+'</b>'):'';
 
@@ -300,7 +318,7 @@ code{font:400 13.5px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
 
 <p class="eye">Atüned, the UI and UX seat</p>
 <h1>Ninety days, run until the number stopped moving</h1>
-<p class="lede">Nine figures from the roster, ${COH} simulated arrivals a run,
+<p class="lede">${Word(ICPS.length)} figures from the roster, ${COH} simulated arrivals a run,
 ${settle.runs} runs, driven through the shipped engine for ninety days each.</p>
 
 <div class="note"><b>Read this once and then read the numbers plainly.</b>
@@ -368,6 +386,12 @@ ${['none','low','mid','high'].map(k=>{const c=ceil[k];
  +'<td class="num">'+c.clear+'</td></tr>';}).join('')}
 </tbody></table>
 
+<p>And the first one takes a while to arrive. In the ceiling case, which tells
+it something true every single day, the first address crosses into the reading
+on day ${firstLoadDay} with the intake answered and day ${lastLoadDay} without
+it. Before that day nothing the person wrote is in the reading at all. An
+address has to reach four to enter it, and one story moves one by a fraction of
+that.</p>
 <p>Three mechanisms, each measured, together produce the flat line.</p>
 <ol>
 <li><b>A story only ever adds charge, so a reading only ever falls from one.</b>
@@ -403,7 +427,7 @@ no limit to sell past. And a person is told a number that is not true of them,
 on the one panel whose job is to say what a run costs.</p>
 
 <h2>What the box does with what it was told</h2>
-<p class="lede">Forty one lines of ordinary first person writing, written in each
+<p class="lede">${Word(bankRows.length)} lines of ordinary first person writing, written in each
 figure's own voice before the lexicon was consulted, put through the shipped
 <code>parseStory</code>.</p>
 <div class="grid g3">
@@ -461,7 +485,7 @@ ${pc(R.retention[30].mean,2)} for the week ending day thirty. That is the
 category median and the category median is a catastrophe.</p>
 
 <h2>The cohort</h2>
-<p class="lede">Nine figures, weighted as in <code>RESEARCH-icp.md</code> so this
+<p class="lede">${Word(ICPS.length)} figures, weighted as in <code>RESEARCH-icp.md</code> so this
 run compares line by line with the earlier one. Everything in the panels below
 is output. Why they open it and why they do not is the model, stated.</p>
 <p class="note"><b>Diane tells no stories, ever, and it is arithmetic rather
@@ -614,7 +638,7 @@ The one it could not reach costs more than all of them returned.</p>
 <tr><td>"41%" beside the word "Incoherent". 29 people</td>
  <td>Unchanged. The headline rounds and the band does not. Incoherent is 31 to 40</td></tr>
 <tr><td>The story leaves the instrument unread. 88 people</td>
- <td class="bad">Measured rather than estimated, and it is bigger. ${bankNone} of ${bankRows.length} ordinary sentences read nothing, and the reading needs six commits before it moves at all</td></tr>
+ <td class="bad">Measured rather than estimated, and it is bigger. ${bankNone} of ${bankRows.length} ordinary sentences read nothing, the roster's own ${saysNone} of ${saysRows.length} says lines read nothing, and in the driven case the reading sat still through the first ${stillFor} commits</td></tr>
 <tr><td>Cognitive load, 57 to 71 per screen. Architectural</td>
  <td>Unchanged and now measured on every surface. ${M.above[M.landing].desk} above the fold on the landing surface, ${M.above.Knowledge.desk} on Knowledge</td></tr>
 <tr><td>Day thirty modelled at 5.6 percent against a category median of 3.3</td>
@@ -633,8 +657,8 @@ number, not the order that is easiest.</p>
  that returns to its own start and the marks are the only thing a person gets.
  Everything else on this list is smaller than this.</li>
 <li><b>Widen the box or change what it claims.</b> ${pc(bankNone/bankRows.length,0)}
- of ordinary writing reads nothing, and the reading needs six commits before it
- moves. Two honest routes. Widen the lexicon until an ordinary paragraph lands,
+ of ordinary writing reads nothing, and in the driven case the reading sat
+ still through the first ${stillFor} commits. Two honest routes. Widen the lexicon until an ordinary paragraph lands,
  which is a data job and not an architecture one. Or say what it is: a
  vocabulary of ${R.lexicon.words} words, shown
  to the person, with the words it found lit and a line saying what it did not
