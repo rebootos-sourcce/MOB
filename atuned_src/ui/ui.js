@@ -486,12 +486,47 @@ function renderBal(r){
   +balG(GLYPH_M,dir==='masculine','Masculine. Structure and direction, expressed outward. '
     +'Not men: the codex is explicit about that.')
   +'<span'+(dir==='masculine'?' class="on" style="color:'+c+'"':'')+'>masculine</span>'
-  +'<span class="bal-n">'+(!b.read
-    ? '<em>not enough held to read</em>'
-    : cr('Heart',lean,{size:'xs',hot:false,color:c,label:dir,
-        glyph:(b.lean>=0?GLYPH_M:GLYPH_F),
-        raw:(b.lean===0?'even':Math.round(lean)+'%'),
-        title:'Balance. '+(b.lean===0?'even':Math.round(lean)+' percent '+dir)}))
+  /* ============================================================
+     AN ENGINE REFUSAL IS NOT A READING, AND IT WAS BEING PRINTED AS ONE.
+
+     His words: "the balance masculine feminine is broken. It says masculine,
+     not enough held to read feminine. I do not understand what that bullshit
+     means." He is reading it correctly. The slot between the two pole labels
+     is the value slot, it carried a pill on every other field, and on this
+     one it carried a sentence, so the line parsed as three words in a row:
+     masculine, then a clause, then feminine.
+
+     The cause is structural and not verbal. balance() returns read:false when
+     both means sit under one, which is the engine declining to name a
+     direction. That refusal was handed straight to the renderer and dropped
+     into the place where the reading goes. Rewording it would have produced a
+     shorter sentence in the same wrong slot.
+
+     So: the slot keeps its shape. The pill is always drawn, and when there is
+     nothing to call it draws empty with a dash, which is what railTop, the
+     accuracy ring and the compass number already do for the same state.
+
+     AND THE STRIP GETS THE DASH AND NOTHING ELSE. The first cut of this fix
+     put a prose row under the track saying why, which is the defect moved one
+     element down: it is the same refusal in the same place wearing better
+     words. The copy seat's sweep rules on it and the rule is that a value's
+     empty state is a dash and the refusal keeps its full form one door away,
+     in the drill, where there is room to say what failed and what changes it.
+     runBalDrill says it there with both means printed beside it.
+
+     The wording is the one the sweep settles on, not read yet, which is what
+     the tier in the rail has always said for the same condition. Five
+     phrasings of this one state were in the product and this slot held the
+     worst of them.
+     ============================================================ */
+  +'<span class="bal-n">'+cr('Heart',b.read?lean:0,{size:'xs',hot:false,
+      color:b.read?c:'var(--dim)',label:b.read?dir:'not read yet',
+      glyph:(b.read?(b.lean>=0?GLYPH_M:GLYPH_F):undefined),
+      raw:(!b.read?'\u2013':(b.lean===0?'even':Math.round(lean)+'%')),
+      title:b.read
+        ?'Balance. '+(b.lean===0?'even':Math.round(lean)+' percent '+dir)
+        :'Balance. Not read yet. Neither side reaches 1, so no direction is '
+         +'named. Open this for the rest.'})
   +'</span>'
   +'<span'+(dir==='feminine'?' class="on" style="color:'+c+'"':'')+'>feminine</span>'
   +balG(GLYPH_F,dir==='feminine','Feminine. Energy and receptivity, held inward. '

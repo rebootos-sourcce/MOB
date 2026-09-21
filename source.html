@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="f45bbc2 2026-09-21 04:09"><head><meta charset="utf-8">
+<html lang="en" data-build="7b3768c 2026-09-21 18:14"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -1396,7 +1396,13 @@ body.punch .crb-v{border-color:transparent;background:var(--c);color:var(--on-ac
 .bal-t .on{font-weight:600}
 .bal-t b{color:var(--ink);font-family:var(--num);font-weight:500}
 .bal-n{flex:1 1 auto;text-align:center;display:flex;justify-content:center}
-.bal-n em{font-style:normal;color:var(--dim);font-size:11.5px}
+/* THE VALUE SLOT CARRIES A VALUE. The `em` rule dressed the one string this
+   slot ever held that was not a reading, "not enough held to read", set
+   between the words masculine and feminine so the line read as a sentence
+   about the feminine pole. The slot draws the pill in every state now and an
+   empty pill carries a dash, so the rule has no writer and goes with it. The
+   reason the direction could not be called keeps its full form one door away,
+   in the drill the strip opens. */
 /* the two poles, as glyphs. ring and not fill, like every other icon here.
    masculine on the left and feminine on the right, mirrored against the body
    on the owner's ruling, which is what facing a mirror does. */
@@ -1620,6 +1626,20 @@ body:not(.tab-field) .pol2{display:none}
    row of one colour. Under high hue quantity, scattered colour delays
    attentional orienting; contiguous blocks of one colour search fastest. */
 .gdom{display:grid;grid-template-columns:repeat(auto-fill,minmax(var(--tap),1fr));gap:6px}
+/* THE CELL IS A RECTANGLE ONCE THE GRID HAS BEEN FITTED, AND ONLY THEN.
+   .ib is a square, so in the rail's icon grids a column count is also a
+   height: dropping the twelve archetypes from five columns to four to close
+   the gap he named widened every cell from 48 to 61.5 and made it 61.5 tall
+   with it, which put eighty one pixels of new scroll into the rail. fitGrid
+   pins the row to the height the grid already had, and the aspect ratio has
+   to give way to that or the button overflows its own row and sits on top of
+   the next one, which is what the first cut measured: rows of 48 carrying
+   buttons of 61.5.
+
+   Gated on data-fit, which fitGrid writes, so a grid that has not been
+   measured yet keeps the square it has always drawn rather than collapsing
+   to its minimum for a frame. */
+.g6[data-fit]>.ib,.gdom[data-fit]>.ib{aspect-ratio:auto;height:100%}
 .ib{aspect-ratio:1;min-height:var(--tap);background:var(--sunk);border:1.5px solid transparent;border-radius:var(--r-xs);
  cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;
  transition:all var(--t-micro) var(--ease-out);position:relative}
@@ -2171,11 +2191,14 @@ body.punch .cn-gmore{border-top-color:var(--panel)}
 ::-webkit-scrollbar-thumb:hover{background:var(--dim);background-clip:content-box}
 ::-webkit-scrollbar-corner{background:transparent}
 
-/* the interval, on the tab that is about what the instrument knows */
+/* what the instrument knows, on the tab that is about what it knows. The
+   .ab-band rule went with the string it dressed: "plus or minus 11" set in
+   gold beside the figure, which is a lab readout given the accent colour. A
+   class left behind after its only writer is deleted is a rule nobody can
+   account for, so it goes in the same change rather than in a later sweep. */
 .ab-acc{display:flex;align-items:baseline;flex-wrap:wrap;gap:8px;margin-top:12px;
  padding-top:11px;border-top:1px solid var(--edge)}
 .ab-acc b{font-family:var(--num);font-size:22px;font-weight:400;color:var(--ink)}
-.ab-band{font-family:var(--num);font-size:13px;color:var(--gold)}
 .ab-note{flex:1 1 100%;font-size:11.5px;color:var(--dim);line-height:1.5}
 .kb-pair{margin:0 0 10px;padding-bottom:10px;border-bottom:1px solid var(--edge)}
 .kb-pair:last-child{border-bottom:0}
@@ -3677,7 +3700,10 @@ body:not(.tab-field) .cv-legend{display:none}
    geometry writes. will-change lives here rather than inline because a class
    that appears in the markup and in no stylesheet is a class nobody can find. */
 .pol2-mv{will-change:transform}
-.pol2-mk,.pol2-dot,.pol2-ring{pointer-events:none}
+/* the swing pill and the crossbar riding inside it join the same rule. The
+   pill sits over the button's own hit area, and a decoration that eats the
+   press is the same defect as a control with no affordance. */
+.pol2-mk,.pol2-dot,.pol2-ring,.pol2-sw,.pol2-sm{pointer-events:none}
 @keyframes bootOut{to{opacity:0;visibility:hidden}}
 /* the beat is motion, so somebody who asked the machine to stop moving does
    not get five of them. Same rule as everything else in this sheet: the end
@@ -15948,9 +15974,13 @@ function sumGlance(r){
    'Coherent opposites standing, 0 to 10.', 'of 10'],
   ['energy', 'Solar', e*100, e.toFixed(2),
    'Vitality, awareness and will, meaned, 0 to 1.', 'of 1']];
+ /* THE TOLERANCE CAME OFF THIS ROW TOO. It read "of 100, plus or minus 11"
+    on the third line of a glance tile, which is the smallest place in the
+    product and the last place a lab readout belongs. Ruled with the rest of
+    the class. The scale stays: every number says what it is out of, and that
+    rule is the reason the third line exists at all. */
  if(acc)row.push(['identification','3rd Eye',acc.pct,acc.pct.toFixed(0)+'%',
-  'How much of you the instrument has actually measured, plus or minus '+acc.band.toFixed(0)+'.',
-  'of 100, plus or minus '+acc.band.toFixed(0)]);
+  'How much of you the instrument has actually measured.','of 100']);
  /* THE SCALE IS ON THE SCREEN, NOT IN A TOOLTIP. Two rulings meet here and
     both were being broken by the same line.
 
@@ -16875,21 +16905,30 @@ function anaRender(){
       +String(r.heaviest.b).toLowerCase()+'.':'Nothing is carrying.'))
    +(prev?' CQ '+(r.CQ-prev.cq>=0?'up ':'down ')+Math.abs(r.CQ-prev.cq).toFixed(1)+' since last session.':''))
   +'</div>'
-  /* The accuracy interval is this product's stated substitute for explaining
-     a model, and it was rendered into the Field rail and nowhere else. It
-     belongs on the tab whose whole job is saying what the instrument knows.
-     A move smaller than the interval is not a reading, it is noise, and the
-     line says so rather than leaving a person to infer it. */
+  /* THE FIGURE STAYS ON THE TAB WHOSE JOB IS SAYING WHAT THE INSTRUMENT
+     KNOWS. The tolerance beside it does not. It printed "58% plus or minus
+     11" and then a line telling a person to compare their own movement
+     against that eleven, which is a lab readout and a conversion exercise.
+     Ruled: "100 plus minus 12, swing 11, that shit has to all go."
+
+     What the line owed was never the number, it was the warning. The
+     coverage facts underneath are what actually widen it, they are stated by
+     name, and they are the things a person can go and change. So the note
+     keeps the warning in plain words and drops the arithmetic.
+
+     AND THE EMPTY STATE IS SAID THE ONE WAY. This read "Nothing measured",
+     which is one of the five phrasings of one state the product was carrying,
+     and the copy seat's sweep names it. The wording is not read yet, as a
+     value, and "Nothing read yet, so what is absent" as a sentence. */
   +'<div class="ab-acc"><span class="pm-eye">Identification</span>'
   +'<b>'+(r.unread?'\u2013':acc.pct.toFixed(0)+'%')+'</b>'
-  +(r.unread?'':'<span class="ab-band">plus or minus '+acc.band.toFixed(0)+'</span>')
   +'<span class="ab-note">'+(r.unread
-    ?'Nothing measured. The interval opens once something is entered.'
+    ?'Nothing read yet. Write what happened and this fills in.'
     /* the coverage as a fact and a remainder, not as a fraction of the person */
     :acc.cov+' law'+(acc.cov===1?'':'s')+' measured'
      +(acc.cov<21?', '+(21-acc.cov)+' still at the default':'')
      +(acc.held?', '+acc.held+' addresses carrying':'')
-     +'. A move smaller than the interval is not a reading.')+'</span></div>'
+     +'. The needle has play in it, so a small move is not a reading.')+'</span></div>'
   +'</div></div><div class="ab-grid">';
  out+=anaField('Masks','the era you speak from. the bigger the mark, the more weight it carries',
   r.maskRing.map(function(m){return {k:'mask',nm:m.nm,v:m.w,
@@ -16926,7 +16965,7 @@ function anaRender(){
     that nothing is scored. The intake already counts what a person has
     answered, so answered is the word. */
  out+='<div class="pm-eye" style="margin-top:20px">Moral integrity</div>'
-  +'<p class="sum-p">21 of the 76 laws, each answered from never to every time.</p>'
+  +'<p class="sum-p">21 laws, each answered from never to every time.</p>'
   +'<div class="ana-laws">';
  laws.forEach(function(l){
   out+='<div class="ana-lw'+(l.v<4?' shut':'')+'" title="'+l.nm+' '+l.v.toFixed(1)+'">'
@@ -16940,9 +16979,10 @@ function anaRender(){
   +shutL.map(function(l){return l.nm;}).join(', ')+'</b>.':'None shut.')+'</p>';
  if(H.length>1){
   out+='<div class="pm-eye" style="margin-top:20px">'+H.length+' sessions</div>'
+   /* the third printing of the same tolerance on one surface. Same ruling,
+      same treatment: the warning survives, the arithmetic does not. */
    +'<p class="sum-p">One bar per session. Height is CQ on 0 to 100, colour is the darkest seat. '
-   +'The band on the reading above is plus or minus '+acc.band.toFixed(0)+', so a step smaller '
-   +'than that is not movement.</p>'
+   +'The needle has play in it, so read the shape of the run.</p>'
    +'<div class="ana-strip">';
   H.forEach(function(x){out+='<div class="ana-px" title="CQ '+x.cq+', '+x.dark
    +'"><u style="height:'+Math.max(6,Math.round(x.cq/100*50))+'px;background:'
@@ -19326,14 +19366,33 @@ function runBalDrill(){
  var SXN={m:'male',f:'female',o:'other'}[sx]||'';
  var row=function(c,v,col){return '<div class="ad-r static"><span class="ad-k">'
   +cr(col,v*10,{size:'xs',raw:v.toFixed(1)})+esc(c)+'</span></div>';};
+ /* THE SAME REFUSAL IN THE SAME KIND OF SLOT, one door further in. ad-nm is
+    the drill's value line and it read "not enough held to read", which is the
+    engine's own wording for declining to call a direction, printed where the
+    direction goes. It is less wrong here than on the strip, because there are
+    no pole labels either side of it to make a sentence out of, but it is the
+    same defect and it gets the same treatment: the slot says the state in the
+    product's one term for it, and the paragraph two lines down already
+    carries the reason with both means printed beside it.
+
+    The term is the copy seat's, not mine and not provisional: five phrasings
+    of this one state were in the product and its sweep rules them down to
+    "not read yet" as a value. It is the same string the strip now carries. */
  var h='<div class="pm-eye">Balance</div><div class="ad-nm">'
-  +(!b.read?'not enough held to read'
+  +(!b.read?'not read yet'
     :b.lean===0?'even':(Math.abs(b.lean)*100).toFixed(0)+'% '+(b.lean>0?'outward':'inward'))+'</div>'
   +'<div class="pm-eye">How to read it</div><p class="ad-p">The nine axes split by the direction the '
   +'body takes under them. Four discharge outward, five withdraw inward. Four against five is not a '
   +'fair sum, so the means are what compare. Outward mean <b>'+b.outMean.toFixed(1)
   +'</b> against inward mean <b>'+b.inMean.toFixed(1)+'</b>.'
-  +(b.read?'':' Both sides sit under 1, which is too little held to name a direction.')+'</p>'
+  /* THE REFUSAL, IN FULL, ONE DOOR IN. The strip's value slot carries a dash
+     and nothing else, which is the whole of the fix: a refusal is not a value.
+     This is where the refusal is allowed its own sentence, because there is
+     room here to say what failed and what changes it. Wording from the copy
+     seat's sweep, which also rules the five phrasings of the empty state down
+     to one. "Too little held" was one of the five. */
+  +(b.read?'':' Neither side reaches 1, so no direction is named. '
+    +'Write what happened and both sides move.')+'</p>'
   +(SXN?'<div class="pm-eye">Sex at birth</div><p class="ad-p">You gave <b>'+SXN+'</b>. It is stored '
     +'and marked on the strip, and it does not enter the arithmetic. The distance between the tick '
     +'and the marker is the reading, not a verdict.</p>':'')
@@ -19907,7 +19966,10 @@ function runMirrorDrill(k){
 /* the compass on the right of the stage. it was a picture with no door. */
 function runCompassDrill(){
  var r=compute(), cq=Math.max(0,Math.min(100,r.CQ));
- var swing=(1-cq/100), band=2.5+swing*swing*26;
+ /* the band formula stood here as a second copy of renderPol2's, kept only to
+    print "the swing, 11 points". With the figure gone it had no reader, and a
+    duplicated formula with no reader is the drift this file has been bitten
+    by before. renderPol2 owns it, and it is the only one. */
  /* the tier table was a second copy of the one in the engine and could drift
     from it silently. It reads TIERDEF now, which is the only one. */
  var me=r.unread?null:TIER_BY[r.tier];
@@ -19917,7 +19979,12 @@ function runCompassDrill(){
   +'Above '+MEDIAN+' the field builds more than it costs. Below '+MEDIAN+' it costs more than it builds. '
   +MEDIAN_LO+' to '+MEDIAN_HI+' is the median range, where the reading crosses the line in both directions'
   +(medianRange(cq)&&!r.unread?', and that is where this one sits':'')+'. '
-  +'The marker is where coherence sits now. The band around it is the swing, <b>'+band.toFixed(0)+'</b> points: how far a reading can wander before it settles. Tight alignment leaves little room. A decohering field ranges wide.</p>'
+  /* "THE SWING, 11 POINTS" IS GONE FROM HERE TOO. Ruled as a class rather
+     than as two strings: "do a sweep of text like that, 100 plus minus 12,
+     swing 11, that shit has to all go." The quantity survives, as the pill
+     renderPol2 now draws beside the marker, so this sentence points at a
+     shape on the screen instead of restating it as a figure. */
+  +'The marker is where coherence sits now, and the pill beside it is the range it moves in. Tight alignment leaves little room. A decohering field ranges wide.</p>'
   /* THE RULING. A label this product puts on a person carries a definition,
     the behaviour it produces, and the direction out of it. A word like Severe
     with nothing attached is a judgement. The same word with those three is a
@@ -20900,7 +20967,7 @@ function mtBlock(c){
   +'<div class="gm-on">'+esc(c.nm)+'</div>'
   +'<div class="gm-oo">toward '+esc(c.opp)+'</div>'
   +'<p class="gm-p">It sits at the '+esc(c.addr).toLowerCase()+', at '+esc(c.loc)+'.</p>'
-  +'<p class="gm-p">It runs <b>'+at.length+'</b> of the 112 addresses. '
+  +'<p class="gm-p">It runs <b>'+at.length+'</b> address'+(at.length===1?'':'es')+'. '
   +(live.length?'<b>'+live.length+'</b> of them are carrying in your field right now.'
     :'None of them are carrying in your field right now.')+'</p>'
   +'<p class="gm-p">Held <b>'+held.toFixed(1)+'</b>. '+esc(c.opp)+' installed <b>'+inst.toFixed(1)+'</b>. '
@@ -21176,6 +21243,12 @@ function setTab(i){
     it survived a pass. It sits after the class now, where the canvas is
     actually on screen. */
  if(i===TAB.FIELD&&typeof layout==='function')layout();
+ /* AND THE RAIL'S ICON GRIDS REFIT ON ARRIVAL, for the same reason the canvas
+    is measured here. Settings is the one surface that takes the columns to
+    display:none, so leaving it gives the grids a width again without a resize
+    event to say so. fitGrid skips a hidden grid and skips an unchanged fit,
+    so this costs one layout read on a surface change and nothing on a draw. */
+ if(typeof fitGrids==='function')fitGrids();
  /* THE FIELD ASSEMBLES ON ARRIVAL, once per arrival. Here rather than in the
     renderer, because the renderer runs sixty times a second and arriving is
     something that happens once. */
@@ -21496,6 +21569,86 @@ function capD(){
   $(pair[0]).appendChild(b);});});
 function capA(){$('capA').innerHTML=S.arcs.map(function(i){
  return '<b>'+ARCH[i].nm+'</b>';}).join(' + ');}
+/* ============================================================
+   THE RAGGED TAIL IN THE LEFT RAIL, AND WHAT IT WAS COSTING.
+
+   Ruled: "the left hand menu with the icons, can you optimise that space a
+   bit, there is a gap." Measured first, on the Field with a profile loaded.
+   The rail's panel is 302 wide at 1600 and 18 of padding either side, so the
+   grids get 266. They pack at repeat(auto-fill,minmax(44px,1fr)) and land on
+   five columns of 48. The twelve archetypes fill five, five and two, so the
+   last row leaves three cells empty, 162 wide by 48 tall, and it happens
+   twice: once under Primary and again under Secondary with sixteen pixels of
+   label between them. That is the gap, and it is two of them close enough
+   together to read as one. The nineteen blueprint domains fill five, five,
+   five and four and leave one, 54 by 48. At 390 the rail gets 346, the same
+   rule packs seven columns of 44.3, which is the tap floor exactly, and
+   every grid leaves two empty.
+
+   auto-fill takes as many columns as fit, which takes as few rows as
+   possible, and that is the right rule when the item count is unknown. These
+   counts are not unknown: DOMAINS and ARCH are data tables this file reads
+   two functions above.
+
+   THE RULE. Take the most columns that fit at the tap floor, take the rows
+   that implies, then take the FEWEST columns that still fit in that many
+   rows. n = ceil(count / ceil(count / nFit)). And the number of columns is
+   arithmetic on the real length of the real table rather than a count typed
+   into a stylesheet, which is the defect this repository has been bitten by
+   nine times.
+
+   AND THE ROW HEIGHT HAS TO BE PINNED OR THE FIX COSTS MORE THAN THE GAP.
+   Measured, and it is the reason this function writes two properties instead
+   of one. `.ib` is aspect-ratio 1, so a cell's height is its width. Dropping
+   the archetypes from five columns to four widened every cell from 48 to
+   61.5 and made every cell 61.5 TALL with it: each grid went 156 to 196.5
+   and the rail's scroll height went 2094 to 2175. That is eighty one pixels
+   of new scroll bought to close a hole, which is not optimising the space,
+   it is moving it.
+
+   So the row is set to the square cell the sheet's own auto-fill would have
+   produced at this width, which is the height the grid has today. With both
+   axes definite the aspect ratio has nothing left to decide and the cell
+   becomes a rectangle. Same height to the pixel, flush right edge, and a
+   wider tap target than before. Strict improvement or no-op, at every width.
+
+   The sheet keeps auto-fill as its declared value, because this runs after
+   layout and a grid has to be right before it does.
+   ============================================================ */
+function fitGrid(el){
+ if(!el)return;
+ var n=el.children.length; if(!n)return;
+ /* hidden on Settings, where the columns are display:none. A width of nought
+    would compute one column and write it, and coming back would find the
+    rail a single file. Leave the sheet's own fit standing instead. */
+ var w=el.clientWidth; if(w<1)return;
+ var cs=getComputedStyle(el);
+ var gap=parseFloat(cs.columnGap)||0;
+ /* the floor is read off the custom property, not restated here. It is one
+    value and the sheet owns it. */
+ var tap=parseFloat(getComputedStyle(document.documentElement)
+   .getPropertyValue('--tap'))||44;
+ var nFit=Math.max(1,Math.floor((w+gap)/(tap+gap)));
+ var cols=Math.min(n,Math.ceil(n/Math.ceil(n/nFit)));
+ var rowH=(w-(nFit-1)*gap)/nFit;
+ var sig=n+'/'+cols+'/'+rowH.toFixed(2);
+ if(el.dataset.fit===sig)return;
+ el.style.gridTemplateColumns='repeat('+cols+',minmax(0,1fr))';
+ el.style.gridAutoRows=rowH.toFixed(2)+'px';
+ el.dataset.fit=sig;}
+/* by class, never by a list of ids. A fourth icon grid added to the rail is
+   covered by the sheet it already wears, which is the rule this project
+   keeps everywhere else: look a thing up by what it is. */
+function fitGrids(){
+ document.querySelectorAll('.g6,.gdom').forEach(fitGrid);}
+(function(){
+ addEventListener('resize',fitGrids);
+ /* measured after layout and not during it, the same way paintTabEdge learned
+    to. Called straight after the buttons are appended it reads the grid at a
+    width the rail has not settled on yet. */
+ addEventListener('load',fitGrids);
+ if(typeof requestAnimationFrame==='function')
+  requestAnimationFrame(function(){requestAnimationFrame(fitGrids);});})();
 function syncSoul(){
  $('doms').querySelectorAll('.ib').forEach(function(x,j){
   x.setAttribute('aria-pressed',j===S.doms[0]);
@@ -21806,8 +21959,14 @@ function helpSheet(){
   +'DQ is the shadow weight it is carrying. SQ is how deep that charge sits. Pole is how much '
   +'of the coherent opposite is installed. Hover any of them for the rest.</p></div>'
   +'<div class="sh-sec"><div class="pm-eye">What it does not claim</div>'
-  +'<p class="sh-p">Every reading carries an interval. A move smaller than that interval is not '
-  +'a reading, it is noise, and the instrument says so rather than flattering you.</p></div>'
+  /* THE DANGLING REFERENCE THE SWEEP LEFT. This said "every reading carries
+     an interval" and then told a person to compare a move against it. Once
+     the figures came off the corner, the Analytics tab and the glance tile,
+     the word interval named nothing on any screen, so the sentence sent
+     somebody looking for a thing that is no longer drawn. The claim under
+     "what it does not claim" is the honest half and it survives in words. */
+  +'<p class="sh-p">Every reading has play in it. A small move is noise, and the '
+  +'instrument says so instead of flattering you.</p></div>'
   +'<div class="sh-sec"><button class="btn" id="shclose2">Close</button></div>';
  sheetOpen(h);
  var c=$('shclose2'); if(c)c.onclick=sheetShut;}
@@ -22610,12 +22769,46 @@ function renderPol2(r){
   +'<path d="M'+(x-6)+' '+(bot+11)+' L'+(x-6)+' '+(bot+4)+' M'+x+' '+(bot+11)+' L'+x+' '+(bot+2)
   +' M'+(x+6)+' '+(bot+11)+' L'+(x+6)+' '+(bot+4)+'" stroke="'+rc+'" stroke-width="1.5" fill="none"/>'
   +'<path d="M'+(x-7)+' '+(bot+11)+' L'+(x+7)+' '+(bot+11)+'" stroke="'+rc+'" stroke-width="1.5" fill="none"/></g>';
- s+='<rect x="'+(x-3.5)+'" y="'+yHi.toFixed(1)+'" width="7" height="'+(yLo-yHi).toFixed(1)
-  +'" rx="3.5" fill="'+mc+'" opacity=".16"/>';
- s+='<text x="'+(x+20)+'" y="'+(yHi-4).toFixed(1)+'" class="pol2-t">swing '+bandPts.toFixed(0)+'</text>';
+ /* THE RANGE IS A PILL NOW, AND "SWING 11" IS GONE.
+    Ruled: "where is this swing 11, get rid of that", and with it the whole
+    class, "100 plus minus 12, swing 11, that shit has to all go". A figure
+    with a tolerance stapled to it is a lab readout. And the replacement was
+    ruled in the same breath: "give a pill to the lower right side of the
+    number of the coherence slider, like it oscillates within the person's
+    range." So the range is drawn and never stated.
+
+    What was here drew the range twice and said it a third time: a seven wide
+    wash on the line at .16, which is the smudge proto/dials names (an
+    interval is defined by its ends, and a fill with no ends has none), plus
+    the words above it. One drawing, and it is the pill: a capsule on the
+    axis's own scale with a hairline giving it its two ends, sitting in the
+    column right of the number, with the marker's crossbar riding inside it.
+    The number keeps its place because it labels the marker, not the range.
+
+    AND IT DOES NOT DRAW OFF THE DEFAULTS. bandPts is widest at coherence
+    nought, so an empty field drew the widest range this instrument can
+    report, which is it reporting on itself as though it had read somebody.
+    Same rule the number two lines down already kept and this did not.
+
+    THE COLUMN IS FIXED AND IT IS FIXED WHERE IT IS FOR A REASON. The number
+    starts at x+20 and is set in the tabular face at 11px, so three digits
+    reach x+40, and coherence can round to 100. A pill that slid left when
+    the reading dropped under ten would be a frame that moves, and a frame
+    that moves cannot be read against. So it sits at the tightest column that
+    clears the widest number this axis can print, and it stays there. */
+ var pcx=x+46, pw=9;
+ if(!r.unread) s+='<rect class="pol2-sw" x="'+(pcx-pw/2)+'" y="'+yHi.toFixed(1)
+  +'" width="'+pw+'" height="'+Math.max(0,yLo-yHi).toFixed(1)+'" rx="'+(pw/2)+'" fill="'+mc
+  +'" fill-opacity=".16" stroke="'+mc+'" stroke-opacity=".7" stroke-width="1"/>';
  /* the marker and its number ride in one group so the frame to frame move is a
     single compositor transform rather than four geometry writes */
  s+='<g class="pol2-mv">';
+ /* the crossbar is what oscillates inside the pill. It is wider than the pill
+    on purpose: a mark contained by the capsule reads as part of the capsule,
+    and the reading has to read as the thing moving through it. It rides in
+    the marker group, so the drift costs no extra geometry write. */
+ if(!r.unread) s+='<path class="pol2-sm" d="M'+(pcx-6.5)+' '+yB.toFixed(1)
+  +' L'+(pcx+6.5)+' '+yB.toFixed(1)+'" stroke="'+mc+'" stroke-width="1.8" stroke-linecap="round"/>';
  s+='<path class="pol2-mk" d="M'+(x+9)+' '+yB.toFixed(1)+' L'+(x+17)+' '+(yB-4.5).toFixed(1)+' L'+(x+17)+' '+(yB+4.5).toFixed(1)+' Z" fill="'+mc+'"/>';
  s+='<circle class="pol2-dot" cx="'+x+'" cy="'+yB.toFixed(1)+'" r="3.6" fill="'+mc+'"/>';
  s+='<circle class="pol2-ring" cx="'+x+'" cy="'+yB.toFixed(1)+'" r="7" fill="none" stroke="'+mc+'" stroke-width="1" opacity=".45"/>';
@@ -22662,15 +22855,26 @@ function renderAcc(r){
     what it is now, and it says what the number is out of, which is the
     standing rule: a number without its scale does not print.
 
-    The interval is the honest half and it was already computed and never
-    shown here. An estimate presented without its spread is a precision claim
-    the instrument cannot support. */
+    AND THE INTERVAL CAME OFF IT. Ruled: "get rid of where it says 50 in the
+    lower right hand corner, is accuracy of 100 plus or minus 12." This line
+    read "of 100, plus or minus 12" under the word Accuracy, which is a lab
+    readout printed on a stage. The scale stays, because the rule above still
+    holds and a number without its scale does not print. What went is the
+    tolerance stapled to it.
+
+    The spread is not lost and it is not hidden. runAccDrill names every
+    thing widening it, by name, as facts a person can act on: laws still at
+    the default, signal, expression, degenerate pairs. A list of causes is
+    the honest half. A number nobody can act on was the decoration. */
  el.innerHTML='<button type="button" class="acc-b" id="accbtn" '
   +'aria-label="Family identification. How much of you the instrument has '
   +'measured. Opens the detail.">'
   +'<span class="acc-l"><b>Accuracy</b>'
-  +(un?'<em>nothing read yet</em>'
-     :'<em>of 100, plus or minus '+a.band.toFixed(0)+'</em>')+'</span>'
+  /* and the empty state is said the one way. This read "nothing read yet",
+     which is one of the five phrasings of one state the copy seat's sweep
+     names. As a value it is "not read yet", which is what the tier in the
+     rail two surfaces away has always said. */
+  +(un?'<em>not read yet</em>':'<em>of 100</em>')+'</span>'
   /* AND IT NEVER PRINTS RED. Ruled: "ninety six percent flow accuracy and
      yet it is red, red is a colour of danger, that is bad colouring." A
      well measured person is the good case and the ring says so. */
@@ -22688,11 +22892,17 @@ function runAccDrill(){
  if(a.deg) w.push(a.deg+' degenerate pair'+(a.deg>1?'s':''));
  rdShell('<div class="pm-eye">Family identification</div>'
   +'<div class="ad-nm">'+a.pct.toFixed(1)+'%</div>'
+  /* THE SPREAD IS SAID BY ITS CAUSES, NOT BY A TOLERANCE. This printed
+     "Plus or minus 11.4 at this reading" and then explained what a narrow
+     one and a wide one mean, which is a person being handed a figure and
+     then taught to convert it. The list underneath already names every
+     thing widening it, and a cause is actionable where a tolerance is not.
+     Same ruling as the corner: "100 plus minus 12, swing 11, that shit has
+     to all go." */
   +'<div class="pm-eye">What it is</div>'
-  +'<p class="ad-p">How closely this field matches a named family, and how wide the '
-  +'match is. Plus or minus <b>'+a.band.toFixed(1)+'</b> at this reading. A narrow band '
-  +'means one family fits and the others do not. A wide one means several fit about as '
-  +'well, and the name is a guess.</p>'
+  +'<p class="ad-p">How closely this field matches a named family. When one family '
+  +'fits and the others do not, the name is a reading. When several fit about as '
+  +'well, the name is a guess, and everything below is what is keeping it one.</p>'
   +'<div class="pm-eye">What is limiting it</div>'
   +'<p class="ad-p">'+esc(w.length?w.join('. '):'Moral integrity, signal and expression are all full.')+'</p>'
   +'<div class="pm-eye">How reliable</div>'
@@ -23762,12 +23972,47 @@ function renderBal(r){
   +balG(GLYPH_M,dir==='masculine','Masculine. Structure and direction, expressed outward. '
     +'Not men: the codex is explicit about that.')
   +'<span'+(dir==='masculine'?' class="on" style="color:'+c+'"':'')+'>masculine</span>'
-  +'<span class="bal-n">'+(!b.read
-    ? '<em>not enough held to read</em>'
-    : cr('Heart',lean,{size:'xs',hot:false,color:c,label:dir,
-        glyph:(b.lean>=0?GLYPH_M:GLYPH_F),
-        raw:(b.lean===0?'even':Math.round(lean)+'%'),
-        title:'Balance. '+(b.lean===0?'even':Math.round(lean)+' percent '+dir)}))
+  /* ============================================================
+     AN ENGINE REFUSAL IS NOT A READING, AND IT WAS BEING PRINTED AS ONE.
+
+     His words: "the balance masculine feminine is broken. It says masculine,
+     not enough held to read feminine. I do not understand what that bullshit
+     means." He is reading it correctly. The slot between the two pole labels
+     is the value slot, it carried a pill on every other field, and on this
+     one it carried a sentence, so the line parsed as three words in a row:
+     masculine, then a clause, then feminine.
+
+     The cause is structural and not verbal. balance() returns read:false when
+     both means sit under one, which is the engine declining to name a
+     direction. That refusal was handed straight to the renderer and dropped
+     into the place where the reading goes. Rewording it would have produced a
+     shorter sentence in the same wrong slot.
+
+     So: the slot keeps its shape. The pill is always drawn, and when there is
+     nothing to call it draws empty with a dash, which is what railTop, the
+     accuracy ring and the compass number already do for the same state.
+
+     AND THE STRIP GETS THE DASH AND NOTHING ELSE. The first cut of this fix
+     put a prose row under the track saying why, which is the defect moved one
+     element down: it is the same refusal in the same place wearing better
+     words. The copy seat's sweep rules on it and the rule is that a value's
+     empty state is a dash and the refusal keeps its full form one door away,
+     in the drill, where there is room to say what failed and what changes it.
+     runBalDrill says it there with both means printed beside it.
+
+     The wording is the one the sweep settles on, not read yet, which is what
+     the tier in the rail has always said for the same condition. Five
+     phrasings of this one state were in the product and this slot held the
+     worst of them.
+     ============================================================ */
+  +'<span class="bal-n">'+cr('Heart',b.read?lean:0,{size:'xs',hot:false,
+      color:b.read?c:'var(--dim)',label:b.read?dir:'not read yet',
+      glyph:(b.read?(b.lean>=0?GLYPH_M:GLYPH_F):undefined),
+      raw:(!b.read?'\u2013':(b.lean===0?'even':Math.round(lean)+'%')),
+      title:b.read
+        ?'Balance. '+(b.lean===0?'even':Math.round(lean)+' percent '+dir)
+        :'Balance. Not read yet. Neither side reaches 1, so no direction is '
+         +'named. Open this for the rest.'})
   +'</span>'
   +'<span'+(dir==='feminine'?' class="on" style="color:'+c+'"':'')+'>feminine</span>'
   +balG(GLYPH_F,dir==='feminine','Feminine. Energy and receptivity, held inward. '
@@ -24364,5 +24609,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="001577772"></div>
+<div id="eof" hidden data-len="001593163"></div>
 </body></html>

@@ -1396,7 +1396,13 @@ body.punch .crb-v{border-color:transparent;background:var(--c);color:var(--on-ac
 .bal-t .on{font-weight:600}
 .bal-t b{color:var(--ink);font-family:var(--num);font-weight:500}
 .bal-n{flex:1 1 auto;text-align:center;display:flex;justify-content:center}
-.bal-n em{font-style:normal;color:var(--dim);font-size:11.5px}
+/* THE VALUE SLOT CARRIES A VALUE. The `em` rule dressed the one string this
+   slot ever held that was not a reading, "not enough held to read", set
+   between the words masculine and feminine so the line read as a sentence
+   about the feminine pole. The slot draws the pill in every state now and an
+   empty pill carries a dash, so the rule has no writer and goes with it. The
+   reason the direction could not be called keeps its full form one door away,
+   in the drill the strip opens. */
 /* the two poles, as glyphs. ring and not fill, like every other icon here.
    masculine on the left and feminine on the right, mirrored against the body
    on the owner's ruling, which is what facing a mirror does. */
@@ -1620,6 +1626,20 @@ body:not(.tab-field) .pol2{display:none}
    row of one colour. Under high hue quantity, scattered colour delays
    attentional orienting; contiguous blocks of one colour search fastest. */
 .gdom{display:grid;grid-template-columns:repeat(auto-fill,minmax(var(--tap),1fr));gap:6px}
+/* THE CELL IS A RECTANGLE ONCE THE GRID HAS BEEN FITTED, AND ONLY THEN.
+   .ib is a square, so in the rail's icon grids a column count is also a
+   height: dropping the twelve archetypes from five columns to four to close
+   the gap he named widened every cell from 48 to 61.5 and made it 61.5 tall
+   with it, which put eighty one pixels of new scroll into the rail. fitGrid
+   pins the row to the height the grid already had, and the aspect ratio has
+   to give way to that or the button overflows its own row and sits on top of
+   the next one, which is what the first cut measured: rows of 48 carrying
+   buttons of 61.5.
+
+   Gated on data-fit, which fitGrid writes, so a grid that has not been
+   measured yet keeps the square it has always drawn rather than collapsing
+   to its minimum for a frame. */
+.g6[data-fit]>.ib,.gdom[data-fit]>.ib{aspect-ratio:auto;height:100%}
 .ib{aspect-ratio:1;min-height:var(--tap);background:var(--sunk);border:1.5px solid transparent;border-radius:var(--r-xs);
  cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;
  transition:all var(--t-micro) var(--ease-out);position:relative}
@@ -2171,11 +2191,14 @@ body.punch .cn-gmore{border-top-color:var(--panel)}
 ::-webkit-scrollbar-thumb:hover{background:var(--dim);background-clip:content-box}
 ::-webkit-scrollbar-corner{background:transparent}
 
-/* the interval, on the tab that is about what the instrument knows */
+/* what the instrument knows, on the tab that is about what it knows. The
+   .ab-band rule went with the string it dressed: "plus or minus 11" set in
+   gold beside the figure, which is a lab readout given the accent colour. A
+   class left behind after its only writer is deleted is a rule nobody can
+   account for, so it goes in the same change rather than in a later sweep. */
 .ab-acc{display:flex;align-items:baseline;flex-wrap:wrap;gap:8px;margin-top:12px;
  padding-top:11px;border-top:1px solid var(--edge)}
 .ab-acc b{font-family:var(--num);font-size:22px;font-weight:400;color:var(--ink)}
-.ab-band{font-family:var(--num);font-size:13px;color:var(--gold)}
 .ab-note{flex:1 1 100%;font-size:11.5px;color:var(--dim);line-height:1.5}
 .kb-pair{margin:0 0 10px;padding-bottom:10px;border-bottom:1px solid var(--edge)}
 .kb-pair:last-child{border-bottom:0}
@@ -3677,7 +3700,10 @@ body:not(.tab-field) .cv-legend{display:none}
    geometry writes. will-change lives here rather than inline because a class
    that appears in the markup and in no stylesheet is a class nobody can find. */
 .pol2-mv{will-change:transform}
-.pol2-mk,.pol2-dot,.pol2-ring{pointer-events:none}
+/* the swing pill and the crossbar riding inside it join the same rule. The
+   pill sits over the button's own hit area, and a decoration that eats the
+   press is the same defect as a control with no affordance. */
+.pol2-mk,.pol2-dot,.pol2-ring,.pol2-sw,.pol2-sm{pointer-events:none}
 @keyframes bootOut{to{opacity:0;visibility:hidden}}
 /* the beat is motion, so somebody who asked the machine to stop moving does
    not get five of them. Same rule as everything else in this sheet: the end

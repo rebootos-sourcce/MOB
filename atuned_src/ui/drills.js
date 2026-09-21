@@ -427,14 +427,33 @@ function runBalDrill(){
  var SXN={m:'male',f:'female',o:'other'}[sx]||'';
  var row=function(c,v,col){return '<div class="ad-r static"><span class="ad-k">'
   +cr(col,v*10,{size:'xs',raw:v.toFixed(1)})+esc(c)+'</span></div>';};
+ /* THE SAME REFUSAL IN THE SAME KIND OF SLOT, one door further in. ad-nm is
+    the drill's value line and it read "not enough held to read", which is the
+    engine's own wording for declining to call a direction, printed where the
+    direction goes. It is less wrong here than on the strip, because there are
+    no pole labels either side of it to make a sentence out of, but it is the
+    same defect and it gets the same treatment: the slot says the state in the
+    product's one term for it, and the paragraph two lines down already
+    carries the reason with both means printed beside it.
+
+    The term is the copy seat's, not mine and not provisional: five phrasings
+    of this one state were in the product and its sweep rules them down to
+    "not read yet" as a value. It is the same string the strip now carries. */
  var h='<div class="pm-eye">Balance</div><div class="ad-nm">'
-  +(!b.read?'not enough held to read'
+  +(!b.read?'not read yet'
     :b.lean===0?'even':(Math.abs(b.lean)*100).toFixed(0)+'% '+(b.lean>0?'outward':'inward'))+'</div>'
   +'<div class="pm-eye">How to read it</div><p class="ad-p">The nine axes split by the direction the '
   +'body takes under them. Four discharge outward, five withdraw inward. Four against five is not a '
   +'fair sum, so the means are what compare. Outward mean <b>'+b.outMean.toFixed(1)
   +'</b> against inward mean <b>'+b.inMean.toFixed(1)+'</b>.'
-  +(b.read?'':' Both sides sit under 1, which is too little held to name a direction.')+'</p>'
+  /* THE REFUSAL, IN FULL, ONE DOOR IN. The strip's value slot carries a dash
+     and nothing else, which is the whole of the fix: a refusal is not a value.
+     This is where the refusal is allowed its own sentence, because there is
+     room here to say what failed and what changes it. Wording from the copy
+     seat's sweep, which also rules the five phrasings of the empty state down
+     to one. "Too little held" was one of the five. */
+  +(b.read?'':' Neither side reaches 1, so no direction is named. '
+    +'Write what happened and both sides move.')+'</p>'
   +(SXN?'<div class="pm-eye">Sex at birth</div><p class="ad-p">You gave <b>'+SXN+'</b>. It is stored '
     +'and marked on the strip, and it does not enter the arithmetic. The distance between the tick '
     +'and the marker is the reading, not a verdict.</p>':'')
@@ -1008,7 +1027,10 @@ function runMirrorDrill(k){
 /* the compass on the right of the stage. it was a picture with no door. */
 function runCompassDrill(){
  var r=compute(), cq=Math.max(0,Math.min(100,r.CQ));
- var swing=(1-cq/100), band=2.5+swing*swing*26;
+ /* the band formula stood here as a second copy of renderPol2's, kept only to
+    print "the swing, 11 points". With the figure gone it had no reader, and a
+    duplicated formula with no reader is the drift this file has been bitten
+    by before. renderPol2 owns it, and it is the only one. */
  /* the tier table was a second copy of the one in the engine and could drift
     from it silently. It reads TIERDEF now, which is the only one. */
  var me=r.unread?null:TIER_BY[r.tier];
@@ -1018,7 +1040,12 @@ function runCompassDrill(){
   +'Above '+MEDIAN+' the field builds more than it costs. Below '+MEDIAN+' it costs more than it builds. '
   +MEDIAN_LO+' to '+MEDIAN_HI+' is the median range, where the reading crosses the line in both directions'
   +(medianRange(cq)&&!r.unread?', and that is where this one sits':'')+'. '
-  +'The marker is where coherence sits now. The band around it is the swing, <b>'+band.toFixed(0)+'</b> points: how far a reading can wander before it settles. Tight alignment leaves little room. A decohering field ranges wide.</p>'
+  /* "THE SWING, 11 POINTS" IS GONE FROM HERE TOO. Ruled as a class rather
+     than as two strings: "do a sweep of text like that, 100 plus minus 12,
+     swing 11, that shit has to all go." The quantity survives, as the pill
+     renderPol2 now draws beside the marker, so this sentence points at a
+     shape on the screen instead of restating it as a figure. */
+  +'The marker is where coherence sits now, and the pill beside it is the range it moves in. Tight alignment leaves little room. A decohering field ranges wide.</p>'
   /* THE RULING. A label this product puts on a person carries a definition,
     the behaviour it produces, and the direction out of it. A word like Severe
     with nothing attached is a judgement. The same word with those three is a

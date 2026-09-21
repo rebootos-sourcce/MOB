@@ -138,21 +138,30 @@ function anaRender(){
       +String(r.heaviest.b).toLowerCase()+'.':'Nothing is carrying.'))
    +(prev?' CQ '+(r.CQ-prev.cq>=0?'up ':'down ')+Math.abs(r.CQ-prev.cq).toFixed(1)+' since last session.':''))
   +'</div>'
-  /* The accuracy interval is this product's stated substitute for explaining
-     a model, and it was rendered into the Field rail and nowhere else. It
-     belongs on the tab whose whole job is saying what the instrument knows.
-     A move smaller than the interval is not a reading, it is noise, and the
-     line says so rather than leaving a person to infer it. */
+  /* THE FIGURE STAYS ON THE TAB WHOSE JOB IS SAYING WHAT THE INSTRUMENT
+     KNOWS. The tolerance beside it does not. It printed "58% plus or minus
+     11" and then a line telling a person to compare their own movement
+     against that eleven, which is a lab readout and a conversion exercise.
+     Ruled: "100 plus minus 12, swing 11, that shit has to all go."
+
+     What the line owed was never the number, it was the warning. The
+     coverage facts underneath are what actually widen it, they are stated by
+     name, and they are the things a person can go and change. So the note
+     keeps the warning in plain words and drops the arithmetic.
+
+     AND THE EMPTY STATE IS SAID THE ONE WAY. This read "Nothing measured",
+     which is one of the five phrasings of one state the product was carrying,
+     and the copy seat's sweep names it. The wording is not read yet, as a
+     value, and "Nothing read yet, so what is absent" as a sentence. */
   +'<div class="ab-acc"><span class="pm-eye">Identification</span>'
   +'<b>'+(r.unread?'\u2013':acc.pct.toFixed(0)+'%')+'</b>'
-  +(r.unread?'':'<span class="ab-band">plus or minus '+acc.band.toFixed(0)+'</span>')
   +'<span class="ab-note">'+(r.unread
-    ?'Nothing measured. The interval opens once something is entered.'
+    ?'Nothing read yet. Write what happened and this fills in.'
     /* the coverage as a fact and a remainder, not as a fraction of the person */
     :acc.cov+' law'+(acc.cov===1?'':'s')+' measured'
      +(acc.cov<21?', '+(21-acc.cov)+' still at the default':'')
      +(acc.held?', '+acc.held+' addresses carrying':'')
-     +'. A move smaller than the interval is not a reading.')+'</span></div>'
+     +'. The needle has play in it, so a small move is not a reading.')+'</span></div>'
   +'</div></div><div class="ab-grid">';
  out+=anaField('Masks','the era you speak from. the bigger the mark, the more weight it carries',
   r.maskRing.map(function(m){return {k:'mask',nm:m.nm,v:m.w,
@@ -189,7 +198,7 @@ function anaRender(){
     that nothing is scored. The intake already counts what a person has
     answered, so answered is the word. */
  out+='<div class="pm-eye" style="margin-top:20px">Moral integrity</div>'
-  +'<p class="sum-p">21 of the 76 laws, each answered from never to every time.</p>'
+  +'<p class="sum-p">21 laws, each answered from never to every time.</p>'
   +'<div class="ana-laws">';
  laws.forEach(function(l){
   out+='<div class="ana-lw'+(l.v<4?' shut':'')+'" title="'+l.nm+' '+l.v.toFixed(1)+'">'
@@ -203,9 +212,10 @@ function anaRender(){
   +shutL.map(function(l){return l.nm;}).join(', ')+'</b>.':'None shut.')+'</p>';
  if(H.length>1){
   out+='<div class="pm-eye" style="margin-top:20px">'+H.length+' sessions</div>'
+   /* the third printing of the same tolerance on one surface. Same ruling,
+      same treatment: the warning survives, the arithmetic does not. */
    +'<p class="sum-p">One bar per session. Height is CQ on 0 to 100, colour is the darkest seat. '
-   +'The band on the reading above is plus or minus '+acc.band.toFixed(0)+', so a step smaller '
-   +'than that is not movement.</p>'
+   +'The needle has play in it, so read the shape of the run.</p>'
    +'<div class="ana-strip">';
   H.forEach(function(x){out+='<div class="ana-px" title="CQ '+x.cq+', '+x.dark
    +'"><u style="height:'+Math.max(6,Math.round(x.cq/100*50))+'px;background:'

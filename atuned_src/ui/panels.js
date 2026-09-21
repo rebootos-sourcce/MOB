@@ -158,6 +158,12 @@ function setTab(i){
     it survived a pass. It sits after the class now, where the canvas is
     actually on screen. */
  if(i===TAB.FIELD&&typeof layout==='function')layout();
+ /* AND THE RAIL'S ICON GRIDS REFIT ON ARRIVAL, for the same reason the canvas
+    is measured here. Settings is the one surface that takes the columns to
+    display:none, so leaving it gives the grids a width again without a resize
+    event to say so. fitGrid skips a hidden grid and skips an unchanged fit,
+    so this costs one layout read on a surface change and nothing on a draw. */
+ if(typeof fitGrids==='function')fitGrids();
  /* THE FIELD ASSEMBLES ON ARRIVAL, once per arrival. Here rather than in the
     renderer, because the renderer runs sixty times a second and arriving is
     something that happens once. */
@@ -478,6 +484,86 @@ function capD(){
   $(pair[0]).appendChild(b);});});
 function capA(){$('capA').innerHTML=S.arcs.map(function(i){
  return '<b>'+ARCH[i].nm+'</b>';}).join(' + ');}
+/* ============================================================
+   THE RAGGED TAIL IN THE LEFT RAIL, AND WHAT IT WAS COSTING.
+
+   Ruled: "the left hand menu with the icons, can you optimise that space a
+   bit, there is a gap." Measured first, on the Field with a profile loaded.
+   The rail's panel is 302 wide at 1600 and 18 of padding either side, so the
+   grids get 266. They pack at repeat(auto-fill,minmax(44px,1fr)) and land on
+   five columns of 48. The twelve archetypes fill five, five and two, so the
+   last row leaves three cells empty, 162 wide by 48 tall, and it happens
+   twice: once under Primary and again under Secondary with sixteen pixels of
+   label between them. That is the gap, and it is two of them close enough
+   together to read as one. The nineteen blueprint domains fill five, five,
+   five and four and leave one, 54 by 48. At 390 the rail gets 346, the same
+   rule packs seven columns of 44.3, which is the tap floor exactly, and
+   every grid leaves two empty.
+
+   auto-fill takes as many columns as fit, which takes as few rows as
+   possible, and that is the right rule when the item count is unknown. These
+   counts are not unknown: DOMAINS and ARCH are data tables this file reads
+   two functions above.
+
+   THE RULE. Take the most columns that fit at the tap floor, take the rows
+   that implies, then take the FEWEST columns that still fit in that many
+   rows. n = ceil(count / ceil(count / nFit)). And the number of columns is
+   arithmetic on the real length of the real table rather than a count typed
+   into a stylesheet, which is the defect this repository has been bitten by
+   nine times.
+
+   AND THE ROW HEIGHT HAS TO BE PINNED OR THE FIX COSTS MORE THAN THE GAP.
+   Measured, and it is the reason this function writes two properties instead
+   of one. `.ib` is aspect-ratio 1, so a cell's height is its width. Dropping
+   the archetypes from five columns to four widened every cell from 48 to
+   61.5 and made every cell 61.5 TALL with it: each grid went 156 to 196.5
+   and the rail's scroll height went 2094 to 2175. That is eighty one pixels
+   of new scroll bought to close a hole, which is not optimising the space,
+   it is moving it.
+
+   So the row is set to the square cell the sheet's own auto-fill would have
+   produced at this width, which is the height the grid has today. With both
+   axes definite the aspect ratio has nothing left to decide and the cell
+   becomes a rectangle. Same height to the pixel, flush right edge, and a
+   wider tap target than before. Strict improvement or no-op, at every width.
+
+   The sheet keeps auto-fill as its declared value, because this runs after
+   layout and a grid has to be right before it does.
+   ============================================================ */
+function fitGrid(el){
+ if(!el)return;
+ var n=el.children.length; if(!n)return;
+ /* hidden on Settings, where the columns are display:none. A width of nought
+    would compute one column and write it, and coming back would find the
+    rail a single file. Leave the sheet's own fit standing instead. */
+ var w=el.clientWidth; if(w<1)return;
+ var cs=getComputedStyle(el);
+ var gap=parseFloat(cs.columnGap)||0;
+ /* the floor is read off the custom property, not restated here. It is one
+    value and the sheet owns it. */
+ var tap=parseFloat(getComputedStyle(document.documentElement)
+   .getPropertyValue('--tap'))||44;
+ var nFit=Math.max(1,Math.floor((w+gap)/(tap+gap)));
+ var cols=Math.min(n,Math.ceil(n/Math.ceil(n/nFit)));
+ var rowH=(w-(nFit-1)*gap)/nFit;
+ var sig=n+'/'+cols+'/'+rowH.toFixed(2);
+ if(el.dataset.fit===sig)return;
+ el.style.gridTemplateColumns='repeat('+cols+',minmax(0,1fr))';
+ el.style.gridAutoRows=rowH.toFixed(2)+'px';
+ el.dataset.fit=sig;}
+/* by class, never by a list of ids. A fourth icon grid added to the rail is
+   covered by the sheet it already wears, which is the rule this project
+   keeps everywhere else: look a thing up by what it is. */
+function fitGrids(){
+ document.querySelectorAll('.g6,.gdom').forEach(fitGrid);}
+(function(){
+ addEventListener('resize',fitGrids);
+ /* measured after layout and not during it, the same way paintTabEdge learned
+    to. Called straight after the buttons are appended it reads the grid at a
+    width the rail has not settled on yet. */
+ addEventListener('load',fitGrids);
+ if(typeof requestAnimationFrame==='function')
+  requestAnimationFrame(function(){requestAnimationFrame(fitGrids);});})();
 function syncSoul(){
  $('doms').querySelectorAll('.ib').forEach(function(x,j){
   x.setAttribute('aria-pressed',j===S.doms[0]);
@@ -788,8 +874,14 @@ function helpSheet(){
   +'DQ is the shadow weight it is carrying. SQ is how deep that charge sits. Pole is how much '
   +'of the coherent opposite is installed. Hover any of them for the rest.</p></div>'
   +'<div class="sh-sec"><div class="pm-eye">What it does not claim</div>'
-  +'<p class="sh-p">Every reading carries an interval. A move smaller than that interval is not '
-  +'a reading, it is noise, and the instrument says so rather than flattering you.</p></div>'
+  /* THE DANGLING REFERENCE THE SWEEP LEFT. This said "every reading carries
+     an interval" and then told a person to compare a move against it. Once
+     the figures came off the corner, the Analytics tab and the glance tile,
+     the word interval named nothing on any screen, so the sentence sent
+     somebody looking for a thing that is no longer drawn. The claim under
+     "what it does not claim" is the honest half and it survives in words. */
+  +'<p class="sh-p">Every reading has play in it. A small move is noise, and the '
+  +'instrument says so instead of flattering you.</p></div>'
   +'<div class="sh-sec"><button class="btn" id="shclose2">Close</button></div>';
  sheetOpen(h);
  var c=$('shclose2'); if(c)c.onclick=sheetShut;}

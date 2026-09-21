@@ -103,9 +103,13 @@ function sumGlance(r){
    'Coherent opposites standing, 0 to 10.', 'of 10'],
   ['energy', 'Solar', e*100, e.toFixed(2),
    'Vitality, awareness and will, meaned, 0 to 1.', 'of 1']];
+ /* THE TOLERANCE CAME OFF THIS ROW TOO. It read "of 100, plus or minus 11"
+    on the third line of a glance tile, which is the smallest place in the
+    product and the last place a lab readout belongs. Ruled with the rest of
+    the class. The scale stays: every number says what it is out of, and that
+    rule is the reason the third line exists at all. */
  if(acc)row.push(['identification','3rd Eye',acc.pct,acc.pct.toFixed(0)+'%',
-  'How much of you the instrument has actually measured, plus or minus '+acc.band.toFixed(0)+'.',
-  'of 100, plus or minus '+acc.band.toFixed(0)]);
+  'How much of you the instrument has actually measured.','of 100']);
  /* THE SCALE IS ON THE SCREEN, NOT IN A TOOLTIP. Two rulings meet here and
     both were being broken by the same line.
 

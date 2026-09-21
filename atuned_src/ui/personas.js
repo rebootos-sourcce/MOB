@@ -157,12 +157,46 @@ function renderPol2(r){
   +'<path d="M'+(x-6)+' '+(bot+11)+' L'+(x-6)+' '+(bot+4)+' M'+x+' '+(bot+11)+' L'+x+' '+(bot+2)
   +' M'+(x+6)+' '+(bot+11)+' L'+(x+6)+' '+(bot+4)+'" stroke="'+rc+'" stroke-width="1.5" fill="none"/>'
   +'<path d="M'+(x-7)+' '+(bot+11)+' L'+(x+7)+' '+(bot+11)+'" stroke="'+rc+'" stroke-width="1.5" fill="none"/></g>';
- s+='<rect x="'+(x-3.5)+'" y="'+yHi.toFixed(1)+'" width="7" height="'+(yLo-yHi).toFixed(1)
-  +'" rx="3.5" fill="'+mc+'" opacity=".16"/>';
- s+='<text x="'+(x+20)+'" y="'+(yHi-4).toFixed(1)+'" class="pol2-t">swing '+bandPts.toFixed(0)+'</text>';
+ /* THE RANGE IS A PILL NOW, AND "SWING 11" IS GONE.
+    Ruled: "where is this swing 11, get rid of that", and with it the whole
+    class, "100 plus minus 12, swing 11, that shit has to all go". A figure
+    with a tolerance stapled to it is a lab readout. And the replacement was
+    ruled in the same breath: "give a pill to the lower right side of the
+    number of the coherence slider, like it oscillates within the person's
+    range." So the range is drawn and never stated.
+
+    What was here drew the range twice and said it a third time: a seven wide
+    wash on the line at .16, which is the smudge proto/dials names (an
+    interval is defined by its ends, and a fill with no ends has none), plus
+    the words above it. One drawing, and it is the pill: a capsule on the
+    axis's own scale with a hairline giving it its two ends, sitting in the
+    column right of the number, with the marker's crossbar riding inside it.
+    The number keeps its place because it labels the marker, not the range.
+
+    AND IT DOES NOT DRAW OFF THE DEFAULTS. bandPts is widest at coherence
+    nought, so an empty field drew the widest range this instrument can
+    report, which is it reporting on itself as though it had read somebody.
+    Same rule the number two lines down already kept and this did not.
+
+    THE COLUMN IS FIXED AND IT IS FIXED WHERE IT IS FOR A REASON. The number
+    starts at x+20 and is set in the tabular face at 11px, so three digits
+    reach x+40, and coherence can round to 100. A pill that slid left when
+    the reading dropped under ten would be a frame that moves, and a frame
+    that moves cannot be read against. So it sits at the tightest column that
+    clears the widest number this axis can print, and it stays there. */
+ var pcx=x+46, pw=9;
+ if(!r.unread) s+='<rect class="pol2-sw" x="'+(pcx-pw/2)+'" y="'+yHi.toFixed(1)
+  +'" width="'+pw+'" height="'+Math.max(0,yLo-yHi).toFixed(1)+'" rx="'+(pw/2)+'" fill="'+mc
+  +'" fill-opacity=".16" stroke="'+mc+'" stroke-opacity=".7" stroke-width="1"/>';
  /* the marker and its number ride in one group so the frame to frame move is a
     single compositor transform rather than four geometry writes */
  s+='<g class="pol2-mv">';
+ /* the crossbar is what oscillates inside the pill. It is wider than the pill
+    on purpose: a mark contained by the capsule reads as part of the capsule,
+    and the reading has to read as the thing moving through it. It rides in
+    the marker group, so the drift costs no extra geometry write. */
+ if(!r.unread) s+='<path class="pol2-sm" d="M'+(pcx-6.5)+' '+yB.toFixed(1)
+  +' L'+(pcx+6.5)+' '+yB.toFixed(1)+'" stroke="'+mc+'" stroke-width="1.8" stroke-linecap="round"/>';
  s+='<path class="pol2-mk" d="M'+(x+9)+' '+yB.toFixed(1)+' L'+(x+17)+' '+(yB-4.5).toFixed(1)+' L'+(x+17)+' '+(yB+4.5).toFixed(1)+' Z" fill="'+mc+'"/>';
  s+='<circle class="pol2-dot" cx="'+x+'" cy="'+yB.toFixed(1)+'" r="3.6" fill="'+mc+'"/>';
  s+='<circle class="pol2-ring" cx="'+x+'" cy="'+yB.toFixed(1)+'" r="7" fill="none" stroke="'+mc+'" stroke-width="1" opacity=".45"/>';
@@ -209,15 +243,26 @@ function renderAcc(r){
     what it is now, and it says what the number is out of, which is the
     standing rule: a number without its scale does not print.
 
-    The interval is the honest half and it was already computed and never
-    shown here. An estimate presented without its spread is a precision claim
-    the instrument cannot support. */
+    AND THE INTERVAL CAME OFF IT. Ruled: "get rid of where it says 50 in the
+    lower right hand corner, is accuracy of 100 plus or minus 12." This line
+    read "of 100, plus or minus 12" under the word Accuracy, which is a lab
+    readout printed on a stage. The scale stays, because the rule above still
+    holds and a number without its scale does not print. What went is the
+    tolerance stapled to it.
+
+    The spread is not lost and it is not hidden. runAccDrill names every
+    thing widening it, by name, as facts a person can act on: laws still at
+    the default, signal, expression, degenerate pairs. A list of causes is
+    the honest half. A number nobody can act on was the decoration. */
  el.innerHTML='<button type="button" class="acc-b" id="accbtn" '
   +'aria-label="Family identification. How much of you the instrument has '
   +'measured. Opens the detail.">'
   +'<span class="acc-l"><b>Accuracy</b>'
-  +(un?'<em>nothing read yet</em>'
-     :'<em>of 100, plus or minus '+a.band.toFixed(0)+'</em>')+'</span>'
+  /* and the empty state is said the one way. This read "nothing read yet",
+     which is one of the five phrasings of one state the copy seat's sweep
+     names. As a value it is "not read yet", which is what the tier in the
+     rail two surfaces away has always said. */
+  +(un?'<em>not read yet</em>':'<em>of 100</em>')+'</span>'
   /* AND IT NEVER PRINTS RED. Ruled: "ninety six percent flow accuracy and
      yet it is red, red is a colour of danger, that is bad colouring." A
      well measured person is the good case and the ring says so. */
@@ -235,11 +280,17 @@ function runAccDrill(){
  if(a.deg) w.push(a.deg+' degenerate pair'+(a.deg>1?'s':''));
  rdShell('<div class="pm-eye">Family identification</div>'
   +'<div class="ad-nm">'+a.pct.toFixed(1)+'%</div>'
+  /* THE SPREAD IS SAID BY ITS CAUSES, NOT BY A TOLERANCE. This printed
+     "Plus or minus 11.4 at this reading" and then explained what a narrow
+     one and a wide one mean, which is a person being handed a figure and
+     then taught to convert it. The list underneath already names every
+     thing widening it, and a cause is actionable where a tolerance is not.
+     Same ruling as the corner: "100 plus minus 12, swing 11, that shit has
+     to all go." */
   +'<div class="pm-eye">What it is</div>'
-  +'<p class="ad-p">How closely this field matches a named family, and how wide the '
-  +'match is. Plus or minus <b>'+a.band.toFixed(1)+'</b> at this reading. A narrow band '
-  +'means one family fits and the others do not. A wide one means several fit about as '
-  +'well, and the name is a guess.</p>'
+  +'<p class="ad-p">How closely this field matches a named family. When one family '
+  +'fits and the others do not, the name is a reading. When several fit about as '
+  +'well, the name is a guess, and everything below is what is keeping it one.</p>'
   +'<div class="pm-eye">What is limiting it</div>'
   +'<p class="ad-p">'+esc(w.length?w.join('. '):'Moral integrity, signal and expression are all full.')+'</p>'
   +'<div class="pm-eye">How reliable</div>'

@@ -139,7 +139,7 @@ function mtBlock(c){
   +'<div class="gm-on">'+esc(c.nm)+'</div>'
   +'<div class="gm-oo">toward '+esc(c.opp)+'</div>'
   +'<p class="gm-p">It sits at the '+esc(c.addr).toLowerCase()+', at '+esc(c.loc)+'.</p>'
-  +'<p class="gm-p">It runs <b>'+at.length+'</b> of the 112 addresses. '
+  +'<p class="gm-p">It runs <b>'+at.length+'</b> address'+(at.length===1?'':'es')+'. '
   +(live.length?'<b>'+live.length+'</b> of them are carrying in your field right now.'
     :'None of them are carrying in your field right now.')+'</p>'
   +'<p class="gm-p">Held <b>'+held.toFixed(1)+'</b>. '+esc(c.opp)+' installed <b>'+inst.toFixed(1)+'</b>. '
