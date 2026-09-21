@@ -20,7 +20,11 @@
    engine is read out of that file and none of them is typed here.
    ============================================================ */
 const fs=require('fs'), path=require('path');
-const ROOT=path.resolve(__dirname,'..');
+const ROOT=process.env.SIM_ROOT?path.resolve(process.env.SIM_ROOT):path.resolve(__dirname,'..');/* SIM_ROOT pins the build. Two seats are live in atuned_src and the working
+   copy of source.html and engine.js moves under this directory while it runs. A
+   measurement whose subject changed halfway is not a measurement, so every
+   script here reads the build out of one place and the md5 of that place is
+   stamped into every file it writes. */
 const E=require(path.join(ROOT,'engine.js'));
 const {STORYBANK}=require(path.join(__dirname,'stories.js'));
 const MPATH=path.join(__dirname,'measured.json');
@@ -28,6 +32,11 @@ if(!fs.existsSync(MPATH)){
  console.error('sim/measured.json is missing. Run sim/measure.js first.');
  process.exit(2);}
 const MEAS=JSON.parse(fs.readFileSync(MPATH,'utf8'));
+/* WHERE THE LOAD SITS, by region, measured. Only the change harness reads it,
+   and it refuses to run without it for the same reason this file refuses to run
+   without measured.json: a proposal to reduce a count needs the count's parts. */
+const FPATH=path.join(__dirname,'folded.json');
+const FOLD=fs.existsSync(FPATH)?JSON.parse(fs.readFileSync(FPATH,'utf8')):null;
 
 const {S,W,BY,CHILD,compute,accuracy,applyStory,parseStory,verpApply,leanApply,
  blankProfile,loadProfile,saveProfile,snapshot,iqApply,iqList,
@@ -77,15 +86,32 @@ function releaseRun(prof,nodeIds){
  if(!queue.length)return {ran:false,freed:0,lines:0,added:0,cleared:0};
  const plan=meterPlan(prof,queue.map(n=>n.i),CHANS,RUN_MAX);
  let freed=0, cleared=0;
+ /* HOW MANY TIMES THE REMOVAL LANDS IN ONE RUN. The shipped arithmetic takes
+    21 per cent of the weight once, whatever the length of the run, so a twelve
+    line run and a three line run remove the same amount. Compounding means the
+    run's own lines each take from what is left, which is the first of the three
+    fixes NN4 names. The repeat count is the plan's own length over the queue,
+    read off meterPlan rather than chosen. */
+ const reps=K.relCompound?Math.max(1,Math.round(plan.length/queue.length)):1;
+ const take=1-Math.pow(1-K.relTake,reps);
  queue.forEach(n=>{
   const w0=n.sq*10;
-  const d=-Math.round(w0*0.21+2);
+  const d=-Math.round(w0*take+2);
   const w1=Math.max(0,w0+d);
   freed+=Math.abs(d);
   const share=Math.abs(d)/10/Math.max(1,queue.filter(q=>q.cf===n.cf).length);
   S.charge[n.cf]=clamp((S.charge[n.cf]||0)-share,0,10);
-  S.replace[n.cf]=clamp((S.replace[n.cf]||0)+share*0.62,0,10);
-  if(w1<=6)cleared++;});
+  S.replace[n.cf]=clamp((S.replace[n.cf]||0)+share*K.relInstall,0,10);
+  if(w1<=6){cleared++;
+   /* C2c. A CLEARED ADDRESS STAYS CLEARED. The level it was left at is
+      recorded on the profile, and a later story may not push that address back
+      above it. The product half of this is a floor on the charge model, not a
+      screen. */
+   if(K.relStick){prof.held=prof.held||{};
+    prof.held[n.cf]=Math.min(prof.held[n.cf]===undefined?99:prof.held[n.cf],
+     +S.charge[n.cf]);}}});
+ if(K.relStick&&prof.held)Object.keys(prof.held).forEach(cf=>{
+  S.charge[cf]=clamp(Math.min(S.charge[cf]||0,prof.held[cf]),0,10);});
  const mr=meterRun(prof,plan);
  saveProfile(prof);
  return {ran:true,freed:freed,lines:plan.length,added:mr.added,cleared:cleared,
@@ -328,27 +354,107 @@ const FRICTION={
 const COST={look:0.6, summary:1.2, story:3.4, ritualPlan:2.6, knowledge:4.5,
  games:5.5, intakeBlock:0.7, seed:1.4, compass:1.5};
 
+/* ============================================================
+   THE KNOBS, AND WHAT A KNOB IS ALLOWED TO BE.
+
+   Every field below is off by default and the defaults reproduce the baseline
+   run exactly. Each one is a switch for ONE named product change, and the rule
+   it is held to is stated here rather than left to the caller's judgement:
+
+     a knob may remove a friction only by removing what causes it,
+     a knob may change the arithmetic only where the product's own arithmetic
+       would change,
+     a knob may not lower a friction cost, raise an opening rate, reweight the
+       grade, or grade a different thing.
+
+   The one field that breaks that rule is `nudge`, which is a return rate and
+   nothing else. It is the most abusable number in this file, it is reported on
+   its own line, and the change harness runs the step twice, with it and
+   without, so the reader can discount it.
+   ============================================================ */
+const K={
+ storyCost:null,   /* C1. the narrow door. minutes a commit costs. */
+ relTake:0.21, relInstall:0.62, relCompound:false, relStick:false,
+                   /* C2. the release arithmetic. defaults are the shipped ones. */
+ carrying:false,   /* C3. the release reads carrying rather than loaded. */
+ costLine:false,   /* C4. what the holding costs, printed. */
+ lex:false,        /* C5. the lexicon patch, applied to the shipped LEX. */
+ inferAsk:false,   /* C5b. an inferred address is a question, not a finding. */
+ push:false, nudge:0, /* C6. the accountability seam. */
+ record:false,     /* C11. the quiz record arrives at sign in. */
+ refer:false,      /* C9. a way to hand it to somebody. */
+ money:false, enforce:false, /* C10. a price, and an allowance with something behind it. */
+ doneFlag:false, bandFix:false, tapFloor:false, /* C12. three true defects. */
+ menu:false, foldRails:false, foldTop:false};    /* C7, C8. the chrome. */
+function resetKnobs(){
+ K.storyCost=null; K.relTake=0.21; K.relInstall=0.62;
+ K.relCompound=false; K.relStick=false; K.carrying=false; K.costLine=false;
+ K.lex=false; K.inferAsk=false; K.push=false; K.nudge=0; K.record=false;
+ K.refer=false; K.money=false; K.enforce=false; K.doneFlag=false;
+ K.bandFix=false; K.tapFloor=false; K.menu=false; K.foldRails=false;
+ K.foldTop=false;}
+
 function mulberry(a){return function(){a|=0;a=a+0x6D2B79F5|0;
  let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;
  return ((t^t>>>14)>>>0)/4294967296;};}
 
-/* the measured facts this model consumes, pulled once */
-const M={
- bootMs:Math.max(MEAS.widths[1600].firstWordMs,MEAS.widths[390].firstWordMs),
- errors:MEAS.widths[1600].errors.length+MEAS.widths[390].errors.length,
- requests:MEAS.widths[1600].requests.length,
- tabs:MEAS.widths[390].land.tabCount,
- stripPhone:MEAS.widths[390].land.stripVisible,
- offStrip:MEAS.widths[390].land.stripOff,
- landing:MEAS.widths[1600].land.tabName,
- small:Object.keys(MEAS.widths[390].surfaces).reduce((a,k)=>a+MEAS.widths[390].surfaces[k].small,0),
- money:MEAS.widths[1600].land.money.length,
- refer:MEAS.widths[1600].land.refer.length,
- above:{}, deep:{}};
-Object.keys(MEAS.widths[1600].surfaces).forEach(k=>{
- M.above[k]={desk:MEAS.widths[1600].surfaces[k].above, phone:MEAS.widths[390].surfaces[k].above};
- M.deep[k]=MEAS.widths[390].surfaces[k].deep;});
-const OFFSTRIP={}; M.offStrip.forEach(n=>OFFSTRIP[n]=1);
+/* THE MEASURED FACTS THIS MODEL CONSUMES, and what a knob is allowed to do to
+   one. Rebuilt rather than assigned once, because a modelled product change has
+   to be able to move a measured number, and when it does it must move it by an
+   amount that is itself read off a measurement. Every branch below names the
+   region of the shell whose count it is removing, out of sim/folded.json.
+   Nothing here is a target. */
+const M={above:{}, deep:{}};
+const OFFSTRIP={};
+function remeasure(){
+ M.bootMs=Math.max(MEAS.widths[1600].firstWordMs,MEAS.widths[390].firstWordMs);
+ M.errors=MEAS.widths[1600].errors.length+MEAS.widths[390].errors.length;
+ M.requests=MEAS.widths[1600].requests.length;
+ M.landing=MEAS.widths[1600].land.tabName;
+ M.unread=!!MEAS.widths[1600].land.unread;
+ M.small=Object.keys(MEAS.widths[390].surfaces)
+  .reduce((a,k)=>a+MEAS.widths[390].surfaces[k].small,0);
+ M.money=MEAS.widths[1600].land.money.length;
+ M.refer=MEAS.widths[1600].land.refer.length;
+ M.tabs=MEAS.widths[390].land.tabCount;
+ M.stripPhone=MEAS.widths[390].land.stripVisible;
+ M.offStrip=MEAS.widths[390].land.stripOff.slice();
+ /* C11. the record arrives at sign in, so the landing surface has a reading to
+    show on a first arrival instead of four doors. */
+ if(K.record)M.unread=false;
+ /* C12. the one control measured under the 44 floor. */
+ if(K.tapFloor)M.small=0;
+ /* C9 and C10. a control that exists or does not, counted the same way the
+    probe counted it: by how many controls on a surface a new arrival reaches
+    match the pattern. One is one. */
+ if(K.refer)M.refer=Math.max(1,M.refer);
+ if(K.money)M.money=Math.max(1,M.money);
+ /* C7. the two level menu. nine entries become four parents, so the whole bar
+    is reachable at 390 and the bar's own contribution to the load falls by the
+    difference. */
+ if(K.menu){M.tabs=4; M.stripPhone=4; M.offStrip=[];}
+ Object.keys(MEAS.widths[1600].surfaces).forEach(k=>{
+  let desk=MEAS.widths[1600].surfaces[k].above;
+  let phone=MEAS.widths[390].surfaces[k].above;
+  const F=FOLD?FOLD.widths[1600][k]:null, P=FOLD?FOLD.widths[390][k]:null;
+  if(K.menu&&F)desk-=Math.max(0,F.by.tabbar-4);
+  if(K.menu&&P)phone-=Math.max(0,P.by.tabbar-4);
+  /* C8. the rails ship with their sections folded. every control inside a
+     section body goes, every section header stays. Measured per surface, and at
+     390 the rails are already off screen so the change is worth nothing there,
+     which is the finding rather than a disappointment. */
+  if(K.foldRails&&F)desk-=(F.rail.leftrail.body+F.rail.rightrail.body);
+  if(K.foldRails&&P)phone-=(P.rail.leftrail.body+P.rail.rightrail.body);
+  /* C8b. the top carries the same controls on every surface at both widths.
+     Two stay: who is signed in, and one menu. */
+  if(K.foldTop&&F)desk-=Math.max(0,F.by.top-2);
+  if(K.foldTop&&P)phone-=Math.max(0,P.by.top-2);
+  M.above[k]={desk:Math.max(1,desk), phone:Math.max(1,phone)};
+  M.deep[k]=MEAS.widths[390].surfaces[k].deep;});
+ Object.keys(OFFSTRIP).forEach(k=>delete OFFSTRIP[k]);
+ M.offStrip.forEach(n=>OFFSTRIP[n]=1);
+ return M;}
+remeasure();
 
 /* ============================================================
    ONE PERSON, NINETY DAYS.
@@ -378,6 +484,21 @@ function runPerson(spec,rng,seedIdx){
   return 0;};
  /* arrival */
  if(rng()>spec.arrive){rec.quitDay=0; return rec;}
+ /* C11. THE RECORD ARRIVES AT SIGN IN, which means before the first session and
+    not inside it. The quiz is taken in the funnel, so nobody meets a sixty three
+    question intake inside the app because there is not one, and the landing
+    surface has a reading to show on a first arrival. The answers are the same
+    answers, drawn the same way from the figure's level on the grid, so the
+    reading a person starts on is the reading they would have earned. */
+ if(K.record){
+  const A=prof.intake.answers;
+  for(let q=0;q<63;q++){
+   const centre=1.2+spec.grid*0.72;
+   A[q]=clamp(Math.round(centre+(rng()*2.6-1.3)),0,10);}
+  iqApply(prof); rec.intakeBlocks=21; rec.intakeDone=true; rec.seeded=true;
+  loadProfile(prof);
+  if(LAWSEED!=null)E.SINAMES.forEach(l=>{ if(prof.laws[l]==null)S.law[l]=LAWSEED; });
+  saveProfile(prof);}
  let alive=true, gapLeft=0, hazard=0;
  const startCQ=compute().CQ;
  rec.cq0=+startCQ.toFixed(2);
@@ -399,9 +520,15 @@ function runPerson(spec,rng,seedIdx){
   let p=spec.base*(0.30+0.70*curiosity)+pull-hazard;
   if(day===1)p=1;
   if(rng()>clamp(p,0.01,0.97)){
-   rec.gapDays++;
-   if(rng()<0.02)  {alive=false; rec.quitDay=day; rec.quitOn='DRIFT';}
-   continue;}
+   /* C6. THE ONE KNOB THAT IS A RETURN RATE, and it is reported on its own
+      line. A day that would have been skipped is opened because something asked.
+      Nothing measures this. It is judgement, it is the most abusable number in
+      the file, and the change harness runs every step with it and without. */
+   if(K.nudge>0&&rng()<K.nudge){rec.nudged=(rec.nudged||0)+1;}
+   else {
+    rec.gapDays++;
+    if(rng()<0.02)  {alive=false; rec.quitDay=day; rec.quitOn='DRIFT';}
+    continue;}}
   rec.gapDays=0;
   /* ---------------- a session ---------------- */
   rec.sessions++; rec.lastDay=day; rec.lastOpen=day; rec.openDays.push(day);
@@ -436,8 +563,14 @@ function runPerson(spec,rng,seedIdx){
    loadProfile(prof);
    if(LAWSEED!=null)E.SINAMES.forEach(l=>{ if(prof.laws[l]==null)S.law[l]=LAWSEED; });
    rec.dIntake+=compute().CQ-cqI;}
-  /* a story, which is the only door to the person's own charge */
-  if(budget>COST.story&&rng()<(spec.whys.feel||spec.whys.night||spec.whys.grief||0.45)){
+  /* a story, which is the only door to the person's own charge.
+     C1. THE NARROW DOOR. The cost of a commit is the whole of why Diane tells
+     nothing in ninety days: her session is worth between 0.7 and 2.5 minutes and
+     the door costs 3.4, every time. A one line box on the surface she already
+     landed on, committing on enter, is a cheaper door onto the same engine call.
+     The text is the same text, so the sniffer gets the same sentence. */
+  const storyCost=K.storyCost==null?COST.story:K.storyCost;
+  if(budget>storyCost&&rng()<(spec.whys.feel||spec.whys.night||spec.whys.grief||0.45)){
    const pick=bank[Math.floor(rng()*bank.length)];
    const cqS=compute().CQ;
    const parsed=parseStory(pick[1]);
@@ -446,23 +579,41 @@ function runPerson(spec,rng,seedIdx){
    prof.story.entries.push({t:new Date().toISOString(),text:pick[1],
     imprints:parsed.imprints.length,bands:parsed.bands});
    saveProfile(prof); prof.history.push(snapshot(prof));
-   rec.stories++; budget-=COST.story;
+   /* C2c. a cleared address may not be pushed back over the level it was left
+      at, and the story is where it would be pushed. */
+   if(K.relStick&&prof.held)Object.keys(prof.held).forEach(cf=>{
+    S.charge[cf]=clamp(Math.min(S.charge[cf]||0,prof.held[cf]),0,10);});
+   rec.stories++; budget-=storyCost;
    if(!parsed.imprints.length){hit('F1');}
    else {rec.storiesRead++;
-    if(parsed.imprints.every(i=>i.inferred)){rec.storiesInferred++; hit('F2');}
+    /* C5b. an inferred address is printed as a question with its candidates and
+       a way to say no, rather than as a finding. It still is not knowledge, so it
+       is still counted as inferred and the emotional criterion does not move on
+       it. What changes is that a person is no longer told a wrong thing with
+       confidence. */
+    if(parsed.imprints.every(i=>i.inferred)){rec.storiesInferred++;
+     if(!K.inferAsk)hit('F2');}
     if(parsed.named.length){rec.sawNamed++; delivered.named=1;}}
    const after=compute();
    rec.dStory+=after.CQ-cqS;
-   if(!after.loaded.length)hit('F3');
+   if(!(K.carrying?after.carrying.length:after.loaded.length))hit('F3');
    if(after.CQ<cqIn-0.005)hit('F14');}
-  /* the release, if there is anything above the line and time for it */
-  const live=compute().loaded.slice().sort((a,b)=>b.sq-a.sq);
+  /* the release, if there is anything above the line and time for it.
+     C3. THE RELEASE READS CARRYING RATHER THAN LOADED. `carrying` is already in
+     the engine's own return and compute.js records why it was added: an absolute
+     cut at four on a quantity spread thin tells a person carrying load at a
+     hundred addresses that nothing is carrying. The action surfaces still read
+     `loaded`. This is the one word difference. */
+  const pool=K.carrying?compute().carrying:compute().loaded;
+  const live=pool.slice().sort((a,b)=>b.sq-a.sq);
   if(live.length&&budget>1.2){
    /* NOTHING GATES THE RUN, measured. The panel prints what is left and the
       run proceeds whatever it says, so the harness runs it too and the
       friction is the sentence rather than a refusal. */
    const allow=planAllowance(prof.plan,(prof.meter.unique||[]).length);
-   if(allow.left<=0)hit('F8');
+   /* C10. the allowance is enforced, so the panel's own sentence is true and
+      there is a limit to sell past. The run refuses instead of going ahead. */
+   if(allow.left<=0){ if(K.enforce){budget=0;} else hit('F8'); }
    const take=live.slice(0,Math.max(1,Math.min(3,Math.floor(1+rng()*3))));
    const cqR=compute().CQ;
    const res=releaseRun(prof,take.map(n=>n.i));
@@ -481,26 +632,38 @@ function runPerson(spec,rng,seedIdx){
    rec.ritualsPlanned++;
    const last=prof.rituals[prof.rituals.length-1];
    if(last.done)rec.ritualsDone++;
-   else hit('F11',0.6);
+   /* C12a. pracDays reads the done flag, so the record stops crediting a plan
+      as a day practised and the streak means what it says. */
+   else if(!K.doneFlag)hit('F11',0.6);
    saveProfile(prof); budget-=COST.ritualPlan;
    if(Object.keys(seen.practices).length>=PRACTICE.length)hit('F9');}
   /* did they see the number, and did it move */
   const cqOut=compute().CQ;
   const canSee=!(spec.device==='phone'&&OFFSTRIP.Summary&&rng()<0.5);
+  /* C4. WHAT THE HOLDING COSTS, PRINTED. Derek's whyNot line is that nothing
+     tells him what the charge costs him in output. A cost line is a read of a
+     field the engine already computes, so a session that shows the number
+     delivers a cost whether or not a release ran. */
+  if(K.costLine&&canSee)delivered.cost=1;
   if(canSee){
    if(Math.abs(cqOut-cqIn)>0.005){rec.sawDelta++;}
    else if(spec.wants.indexOf('delta')>=0)hit('F4');
    /* the band edge, read off the same rounding the headline uses */
    const band=tierOf(cqOut);
-   if(Math.round(cqOut)>band.at+9)hit('F13');}
+   /* C12b. the headline and the band round the same way. */
+   if(!K.bandFix&&Math.round(cqOut)>band.at+9)hit('F13');}
   /* the loop closes when a story, a release and a kept practice all happened */
   if(rec.stories>0&&rec.releases>0&&rec.ritualsDone>0)rec.loopClosed++;
   /* what they came for, and whether they got it */
   spec.wants.forEach(w=>{ if(!delivered[w]&&w!=='refer'&&w!=='named'&&w!=='meaning'
    &&w!=='craft'&&w!=='direction'&&w!=='number'&&w!=='proof')fsurv*=0.96;});
-  if(spec.refers&&rng()<0.35)hit('F12');
+  /* C9. a way to hand a reading to another person, and the practitioner grant
+     behind it. Sofia's whole value is referral and it is the one thing she
+     cannot do. */
+  if(!K.refer&&spec.refers&&rng()<0.35)hit('F12');
   if(!M.money&&(prof.meter.unique||[]).length>60)hit('F8',0.4);
-  if(rng()<0.5)hit('F10',0.5);
+  /* C6. something asked them to come back. */
+  if(!K.push&&rng()<0.5)hit('F10',0.5);
   /* the ladder, and whether anything was earned */
   const L=ladderRead(prof,Date.now());
   if(L.earned.length>rec.marks){rec.marks=L.earned.length; fsurv=clamp(fsurv*1.08,0,1);}
@@ -697,7 +860,7 @@ function gradeOf(s){
  const ft=2.5*clamp(lerp(M.bootMs,[300,1000,3000,5000],[1,1,0.5,0]),0,1)
   +2.5*clamp(12/M.above[M.landing].desk*deviceShare+12/M.above[M.landing].phone*(1-deviceShare),0,1)
   +2.5*clamp(M.stripPhone/M.tabs,0,1)
-  +2.5*(MEAS.widths[1600].land.unread?0.5:1);
+  +2.5*(M.unread?0.5:1);
  g.push({k:'First touch', v:+ft.toFixed(1), moves:false,
   how:'boot to first word, choices above the fold on the landing surface, share of the bar reachable at 390, and whether the landing surface has a reading to show'});
  /* 3. Core loop. does it close, and how often. moves. */
@@ -725,7 +888,7 @@ function gradeOf(s){
     in the share that reach it. */
  const reach=s.totals.giftFloor/Math.max(1,s.n);
  g.push({k:'Monetization', v:+(2*clamp(reach*6,0,1)+(M.money?4:0)+(M.refer?2:0)
-  +(MEAS.loop.exhausted.ranAnyway?0:2)).toFixed(1),
+  +((MEAS.loop.exhausted.ranAnyway&&!K.enforce)?0:2)).toFixed(1),
   moves:true, how:'share who reach the end of the gift, whether any price exists on a surface a new arrival reaches, and whether the allowance is enforced at all'});
  /* 9. Retention. modelled day thirty against the cited category median. moves. */
  g.push({k:'Retention', v:+lerp(s.retention[30]*100,[0,3.3,10,20,35],[0,3,6,8,10]).toFixed(1),
@@ -906,6 +1069,7 @@ function main(){
    SHOWUP.forEach(s=>s.base=savedBase[s.nm]);});
   return {base:base, rows:rows,
    span:+(Math.max.apply(null,rows.map(r=>r.total))-Math.min.apply(null,rows.map(r=>r.total))).toFixed(2)};})();
+  out.knobs=JSON.parse(JSON.stringify(K));
  fs.writeFileSync(path.join(__dirname,'runs.json'),JSON.stringify(out,null,1));
  console.log('\nsettled at run '+(settledAt||runs.length)
   +'. grade '+out.grade.mean.toFixed(2)+' ('+out.grade.letter+'), sd '
@@ -913,4 +1077,15 @@ function main(){
   +'. day 30 '+(out.retention[30].mean*100).toFixed(2)+'%.'
   +' model span '+out.sensitivity.span.toFixed(2)+' points.');
  console.log('sim/runs.json written.');}
-main();
+/* ============================================================
+   THE FILE IS A SCRIPT AND A MODULE. `node sim/harness.js` behaves exactly as
+   it did. sim/ninety.js requires it, turns one knob, and re-runs the same
+   cohort through the same code, which is the only way a change can be modelled
+   against the baseline rather than beside it.
+   ============================================================ */
+if(require.main===module)main();
+module.exports={K:K, resetKnobs:resetKnobs, remeasure:remeasure,
+ runCohort:runCohort, gradeOf:gradeOf, letterOf:letterOf, ceilingCase:ceilingCase,
+ verifyRelease:verifyRelease, sd:sd, DAYS:DAYS, SHOWUP:SHOWUP, FRICTION:FRICTION,
+ COST:COST, M:M, MEAS:MEAS, FOLD:FOLD, SETTLE:SETTLE, HOLD:HOLD, FLOOR:FLOOR,
+ CEIL:CEIL, COHORT:COHORT, E:E, STORYBANK:STORYBANK, mulberry:mulberry};

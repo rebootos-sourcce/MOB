@@ -10,8 +10,13 @@
    ============================================================ */
 const {chromium}=require('playwright');
 const path=require('path'), fs=require('fs'), cp=require('child_process');
-const ROOT=path.resolve(__dirname,'..');
+const ROOT=process.env.SIM_ROOT?path.resolve(process.env.SIM_ROOT):path.resolve(__dirname,'..');/* SIM_ROOT pins the build. Two seats are live in atuned_src and the working
+   copy of source.html and engine.js moves under this directory while it runs. A
+   measurement whose subject changed halfway is not a measurement, so every
+   script here reads the build out of one place and the md5 of that place is
+   stamped into every file it writes. */
 const SRC='file://'+path.join(ROOT,'source.html');
+const REPO=path.resolve(__dirname,'..');/* the repository, for git. ROOT is the build under measurement and may be a pin. */
 const CHROME='/opt/pw-browsers/chromium-1194/chrome-linux/chrome';
 const md5=f=>cp.execSync('md5sum '+JSON.stringify(path.join(ROOT,f))).toString().split(' ')[0];
 
@@ -37,8 +42,8 @@ const PROBE=()=>{
 
 (async()=>{
  const out={stamp:{src:md5('source.html'), engine:md5('engine.js'),
-  commit:cp.execSync('git -C '+JSON.stringify(ROOT)+' rev-parse --short HEAD').toString().trim(),
-  dirty:cp.execSync('git -C '+JSON.stringify(ROOT)+' status --porcelain').toString().trim().length>0,
+  commit:cp.execSync('git -C '+JSON.stringify(REPO)+' rev-parse --short HEAD').toString().trim(),
+  dirty:cp.execSync('git -C '+JSON.stringify(REPO)+' status --porcelain').toString().trim().length>0,
   when:new Date().toISOString(), chromium:'1194'}, widths:{}};
  const b=await chromium.launch({executablePath:CHROME});
  for(const [w,h] of [[1600,1000],[390,844]]){

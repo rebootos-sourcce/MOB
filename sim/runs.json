@@ -1,12 +1,12 @@
 {
  "stamp": {
-  "src": "9b53aff3c123f8b4c8bc9ac8bd086b5c",
+  "src": "5f2180b2b64fb30b6d484f364535d29e",
   "engine": "315e3ced4119eef2770f64534b10a68f",
-  "commit": "241f470",
-  "dirty": true,
-  "when": "2026-09-21T00:55:09.237Z",
+  "commit": "41b07e4",
+  "dirty": false,
+  "when": "2026-09-21T02:25:22.699Z",
   "chromium": "1194",
-  "srcAfter": "9b53aff3c123f8b4c8bc9ac8bd086b5c",
+  "srcAfter": "5f2180b2b64fb30b6d484f364535d29e",
   "engineAfter": "315e3ced4119eef2770f64534b10a68f",
   "moved": false
  },
@@ -18,21 +18,6 @@
   "gap": 6.25
  },
  "measured": {
-  "bootMs": 299,
-  "errors": 0,
-  "requests": 1,
-  "tabs": 9,
-  "stripPhone": 4,
-  "offStrip": [
-   "Compass",
-   "Knowledge",
-   "Games",
-   "Summary"
-  ],
-  "landing": "Field",
-  "small": 1,
-  "money": 0,
-  "refer": 0,
   "above": {
    "Energetics": {
     "desk": 85,
@@ -81,12 +66,28 @@
    "Knowledge": 12836,
    "Games": 6802,
    "Summary": 8524
-  }
+  },
+  "bootMs": 248,
+  "errors": 0,
+  "requests": 1,
+  "landing": "Field",
+  "unread": true,
+  "small": 1,
+  "money": 0,
+  "refer": 0,
+  "tabs": 9,
+  "stripPhone": 4,
+  "offStrip": [
+   "Compass",
+   "Knowledge",
+   "Games",
+   "Summary"
+  ]
  },
  "measuredRaw": {
   "widths": {
    "390": {
-    "firstWordMs": 216,
+    "firstWordMs": 214,
     "errors": [],
     "requests": [
      "source.html"
@@ -214,7 +215,7 @@
     }
    },
    "1600": {
-    "firstWordMs": 299,
+    "firstWordMs": 248,
     "errors": [],
     "requests": [
      "source.html"
@@ -6616,5 +6617,28 @@
    }
   ],
   "span": 2.5
+ },
+ "knobs": {
+  "storyCost": null,
+  "relTake": 0.21,
+  "relInstall": 0.62,
+  "relCompound": false,
+  "relStick": false,
+  "carrying": false,
+  "costLine": false,
+  "lex": false,
+  "inferAsk": false,
+  "push": false,
+  "nudge": 0,
+  "record": false,
+  "refer": false,
+  "money": false,
+  "enforce": false,
+  "doneFlag": false,
+  "bandFix": false,
+  "tapFloor": false,
+  "menu": false,
+  "foldRails": false,
+  "foldTop": false
  }
 }

@@ -1,0 +1,402 @@
+{
+ "stamp": {
+  "src": "5f2180b2b64fb30b6d484f364535d29e",
+  "engine": "315e3ced4119eef2770f64534b10a68f",
+  "commit": "6be7c65",
+  "pinned": true,
+  "when": "2026-09-21T02:57:54.579Z"
+ },
+ "patch": {
+  "entries": 32,
+  "collisions": [
+   "chest is tight",
+   "jaw is tight"
+  ],
+  "applied": 30,
+  "lexBefore": 231,
+  "lexAfter": 261
+ },
+ "bank": {
+  "before": {
+   "n": 41,
+   "none": 19,
+   "read": 22,
+   "inferredOnly": 12,
+   "stated": 2,
+   "readShare": 0.5366,
+   "inferShare": 0.5454545454545454
+  },
+  "after": {
+   "n": 41,
+   "none": 1,
+   "read": 40,
+   "inferredOnly": 4,
+   "stated": 8,
+   "readShare": 0.9756,
+   "inferShare": 0.1
+  }
+ },
+ "says": {
+  "before": {
+   "n": 14,
+   "none": 12,
+   "read": 2,
+   "inferredOnly": 2,
+   "stated": 0,
+   "readShare": 0.1429,
+   "inferShare": 1
+  },
+  "after": {
+   "n": 14,
+   "none": 5,
+   "read": 9,
+   "inferredOnly": 1,
+   "stated": 4,
+   "readShare": 0.6429,
+   "inferShare": 0.1111111111111111
+  }
+ },
+ "moved": [
+  {
+   "text": "I worked until eleven again and I have nothing to show anyone for it.",
+   "who": "Diane",
+   "was": "nothing",
+   "now": "read",
+   "wasOffers": [],
+   "nowOffers": [
+    "Need For Approval"
+   ]
+  },
+  {
+   "text": "Rest feels like a moral failure. I said that out loud in a board meeting and nobody blinked.",
+   "who": "Diane",
+   "was": "nothing",
+   "now": "read",
+   "wasOffers": [],
+   "nowOffers": [
+    "Need For Approval"
+   ]
+  },
+  {
+   "text": "I snapped at my cofounder in front of the team and I have not apologised.",
+   "who": "Diane",
+   "was": "inferred",
+   "now": "read",
+   "wasOffers": [
+    "Pride",
+    "Arrogance",
+    "Competition"
+   ],
+   "nowOffers": [
+    "Self-Judgment (Solar)",
+    "Need For Approval"
+   ]
+  },
+  {
+   "text": "My last three sessions were slower and nothing in the data explains it.",
+   "who": "Derek",
+   "was": "nothing",
+   "now": "read",
+   "wasOffers": [],
+   "nowOffers": [
+    "Anxiety"
+   ]
+  },
+  {
+   "text": "Pain is information. I have raced on a stress fracture and I would do it again.",
+   "who": "Derek",
+   "was": "nothing",
+   "now": "read",
+   "wasOffers": [],
+   "nowOffers": [
+    "Deceit",
+    "Fear",
+    "Control"
+   ]
+  },
+  {
+   "text": "My shoulders are up by my ears before I even start. My chest is tight on the warm up.",
+   "who": "Derek",
+   "was": "inferred",
+   "now": "read",
+   "wasOffers": [
+    "Separation",
+    "Martyrdom",
+    "Longing"
+   ],
+   "nowOffers": [
+    "Pride",
+    "Arrogance",
+    "Competition"
+   ]
+  },
+  {
+   "text": "I can see what is wrong with anything in four seconds. It has cost me two studios.",
+   "who": "Marcus",
+   "was": "nothing",
+   "now": "read",
+   "wasOffers": [],
+   "nowOffers": [
+    "False Humility",
+    "Seeking Validation",
+    "Self-Exclusion"
+   ]
+  },
+  {
+   "text": "I killed a good idea today because it was not mine and I knew I was doing it.",
+   "who": "Marcus",
+   "was": "nothing",
+   "now": "read",
+   "wasOffers": [],
+   "nowOffers": [
+    "False Humility",
+    "Seeking Validation",
+    "Self-Exclusion"
+   ]
+  },
+  {
+   "text": "I am ashamed of how I spoke to the junior and I will not bring it up tomorrow.",
+   "who": "Marcus",
+   "was": "inferred",
+   "now": "read",
+   "wasOffers": [
+    "Pride",
+    "Arrogance",
+    "Competition"
+   ],
+   "nowOffers": [
+    "Need For Approval"
+   ]
+  },
+  {
+   "text": "I lied about the timeline. Again. It is easier than the conversation.",
+   "who": "Marcus",
+   "was": "inferred",
+   "now": "read",
+   "wasOffers": [
+    "Deceit",
+    "Lying",
+    "Excuse"
+   ],
+   "nowOffers": [
+    "Need For Approval"
+   ]
+  },
+  {
+   "text": "Nothing I made this year interests me. I am disgusted by all of it.",
+   "who": "Marcus",
+   "was": "nothing",
+   "now": "read",
+   "wasOffers": [],
+   "nowOffers": [
+    "Co-Dependency"
+   ]
+  },
+  {
+   "text": "Everything happens for a reason. I have said that at three funerals and I believed it each time.",
+   "who": "Angela",
+   "was": "inferred",
+   "now": "read",
+   "wasOffers": [
+    "Separation",
+    "Martyrdom",
+    "Longing"
+   ],
+   "nowOffers": [
+    "Spiritual Escapism",
+    "Hatred"
+   ]
+  },
+  {
+   "text": "I have done six modalities and I am still looking for the one that lands.",
+   "who": "Angela",
+   "was": "nothing",
+   "now": "read",
+   "wasOffers": [],
+   "nowOffers": [
+    "Anxiety"
+   ]
+  },
+  {
+   "text": "I want to know why I keep choosing the same kind of person.",
+   "who": "Angela",
+   "was": "nothing",
+   "now": "read",
+   "wasOffers": [],
+   "nowOffers": [
+    "Co-Dependency"
+   ]
+  },
+  {
+   "text": "I am so tired of being the one who understands everybody else.",
+   "who": "Angela",
+   "was": "nothing",
+   "now": "read",
+   "wasOffers": [],
+   "nowOffers": [
+    "Deceit"
+   ]
+  },
+  {
+   "text": "I hold the room for everyone. I have not been held in four years and I would not know how to ask.",
+   "who": "Sofia",
+   "was": "nothing",
+   "now": "read",
+   "wasOffers": [],
+   "nowOffers": [
+    "Deceit",
+    "Separation",
+    "Martyrdom"
+   ]
+  },
+  {
+   "text": "The last client left at nine and I sat in the car for twenty minutes before I drove home.",
+   "who": "Sofia",
+   "was": "nothing",
+   "now": "read",
+   "wasOffers": [],
+   "nowOffers": [
+    "Separation",
+    "Martyrdom",
+    "Longing"
+   ]
+  },
+  {
+   "text": "I can read my clients in a minute and I cannot read myself at all.",
+   "who": "Sofia",
+   "was": "nothing",
+   "now": "read",
+   "wasOffers": [],
+   "nowOffers": [
+    "Overanalysis"
+   ]
+  },
+  {
+   "text": "I make the call and I sleep fine. People find that cold. It is what they hired.",
+   "who": "James",
+   "was": "nothing",
+   "now": "read",
+   "wasOffers": [],
+   "nowOffers": [
+    "Deceit"
+   ]
+  },
+  {
+   "text": "Third turnaround. I know exactly what it costs and I do it anyway.",
+   "who": "James",
+   "was": "nothing",
+   "now": "read",
+   "wasOffers": [],
+   "nowOffers": [
+    "Deceit"
+   ]
+  },
+  {
+   "text": "I am in the middle of something and I cannot see the far side of it.",
+   "who": "Ana",
+   "was": "nothing",
+   "now": "read",
+   "wasOffers": [],
+   "nowOffers": [
+    "Overanalysis"
+   ]
+  },
+  {
+   "text": "He died a year ago and I am worse now than I was in the first month.",
+   "who": "Ana",
+   "was": "inferred",
+   "now": "read",
+   "wasOffers": [
+    "Separation",
+    "Martyrdom",
+    "Longing"
+   ],
+   "nowOffers": [
+    "Separation",
+    "Martyrdom",
+    "Longing"
+   ]
+  },
+  {
+   "text": "I am ashamed of how long this is taking. Everyone has moved on and I have not.",
+   "who": "Ana",
+   "was": "inferred",
+   "now": "read",
+   "wasOffers": [
+    "Pride",
+    "Arrogance",
+    "Competition"
+   ],
+   "nowOffers": [
+    "Need For Approval"
+   ]
+  },
+  {
+   "text": "I have not slept. I sat in the car outside work for half an hour.",
+   "who": "Ana",
+   "was": "inferred",
+   "now": "read",
+   "wasOffers": [
+    "Fear",
+    "Control",
+    "Insecurity"
+   ],
+   "nowOffers": [
+    "Victimhood",
+    "Lethargy",
+    "Disconnection"
+   ]
+  },
+  {
+   "text": "There is nothing wrong with me. Four people left in a year and each had their reasons.",
+   "who": "Gordon",
+   "was": "nothing",
+   "now": "read",
+   "wasOffers": [],
+   "nowOffers": [
+    "False Humility",
+    "Seeking Validation",
+    "Self-Exclusion"
+   ]
+  },
+  {
+   "text": "I do not have a problem. I have a business that needs running.",
+   "who": "Gordon",
+   "was": "nothing",
+   "now": "read",
+   "wasOffers": [],
+   "nowOffers": [
+    "False Humility",
+    "Seeking Validation",
+    "Self-Exclusion"
+   ]
+  }
+ ],
+ "stuck": [
+  {
+   "text": "Payroll is Friday and I have not told anyone how close it is. My jaw is tight from the moment I wake up.",
+   "who": "Diane",
+   "verdict": "inferred"
+  },
+  {
+   "text": "I have not slept properly in eleven days and I am still training twice a day.",
+   "who": "Derek",
+   "verdict": "inferred"
+  },
+  {
+   "text": "I felt nothing when we let forty people go and that is the part that frightens me.",
+   "who": "James",
+   "verdict": "inferred"
+  },
+  {
+   "text": "My chest is tight in every meeting and I have told no one, including my doctor.",
+   "who": "James",
+   "verdict": "inferred"
+  },
+  {
+   "text": "Nothing in particular. Things do not sit on me the way they used to.",
+   "who": "Rosa",
+   "verdict": "nothing"
+  }
+ ]
+}
