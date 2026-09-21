@@ -1,269 +1,367 @@
-# PRIORITY
+# Priority
 
 The order. Owned by the project manager, scrubbed with the technical director
 and the art director. `TASKS.md` stays the record and nothing here replaces it.
 This file says what gets built, in what order, and what does not.
 
+His instruction this round, verbatim: "Okay, review. Block it. Figure out where
+it goes in our list." Read as: review what landed, block the new work out, and
+place it in the order. That is what sections 1 to 3 are. If he meant block as
+in hold something back, he has to say what, because nothing on this page is
+held except the items already named as blocked.
+
 ## The stamp on this measurement
 
 Every count below was read off the file and off the run, not out of a document.
+Where a document disagrees with the run, section 7 names the document.
 
-    commit                  64529da, tree dirty, 9 paths
-    TASKS.md                5,769 lines, md5 cd980e93f724
-    measured                20 September, 21:11 UTC
+    commit                  f87595d, two untracked paths in proto/
+    TASKS.md                6,646 lines, md5 b22ddf038227
+    QUESTIONS.md            264 lines, md5 84ea919d574c
+    measured                21 September, 00:15 UTC
 
-    open        [ ]         465
-    his ruling  [?]         113
-    specced     [~]          18
-    built       [x]         266
-                            862 lines carrying a state
+    open        [ ]         520
+    his ruling  [?]         136
+    specced     [~]          20
+    built       [x]         317
+                            993 lines carrying a state, 32 per cent built
 
-    node tests/engine.js      1287 passed, 0 failed
-    node tests/functional.js   758 passed, 0 failed
+    node tests/engine.js      1392 passed, 0 failed
+    node tests/functional.js   773 passed, 0 failed
     node tests/collide.js      100 passed, 0 failed
-    node tests/design.js       112 passed, 0 failed, run on its own, twice
-    ./atuned_src/BUILD.sh        source.html 1,531,011 bytes, div balance 0
-    ./atuned_src/BUILD-engine.sh engine is host free, 399 exports
+    node tests/design.js       141 passed, 0 failed, in a stacked run
+    node tools/monitor.js      all surfaces render
+    ./atuned_src/BUILD.sh        div balance 0, no em dashes, 44 funnel tokens
+    ./atuned_src/BUILD-engine.sh engine is host free, 402 exports
 
-**The list moved while it was being read.** At 20:52 it carried 428 open, 109
-his, 260 built. At 21:06 it carried 465, 113, 266. Twenty five minutes, plus 37
-open against plus 6 built, and a commit landed under the read. Five seats are
-live in this tree. That is roughly one and a half new open items a minute
-against one built every four minutes.
+All four gates green, stacked, in one run, tonight. The build reproduces: a
+fresh `BUILD.sh` against the committed `source.html` differs by one line, and
+that line is the build stamp. The working tree was put back the way it was
+found.
 
-**So an ordering of 465 items is obsolete before it is read, and this file does
+**What moved since the last stamp at 64529da.** Plus 55 open, plus 23 his, plus
+51 built, in about three hours. The built column grew faster than the open
+column for the first time on this page. Two commits landed under the read and
+`TASKS.md` changed md5 twice while it was being counted, so the numbers above
+are one atomic reading at one stated minute and not an average of several.
+
+**So an ordering of 520 items is obsolete before it is read, and this file does
 not attempt one.** It orders ten. Everything else is sorted into blocked,
 stopped, or waiting behind a named ruling.
 
 ---
 
-# 1. THE ORDER
+# 1. The order
 
 | # | What | Who | Size | Depends on | Moves grade |
 |---|---|---|---|---|---|
-| 1 | `SY1-SY5` the journal box | UX, art direction, engineering | medium | nothing | yes, the surface he graded worst |
-| 2 | `E7` then `E2`, the two field leaks | engineering | unsized, see below | nothing | protects it |
-| 3 | `GT2` the frame rate measurement | engineering | small | nothing | no, it makes the grade readable |
-| 4 | `RL1-RL4`, `RC10-RC13`, `SR1-SR5` the release panel and controls | UX, engineering | medium | 1 | yes, his second high priority |
-| 5 | `SI1-SI3` the imprints panel | engineering | small to medium | 1 | yes |
-| 6 | `SX2`, `SX3` the counting subtext and the pill treatment | copy, art direction | small | 1 | yes |
-| 7 | `TD1-TD4` the two dials, one design | art direction, engineering | medium | nothing | yes |
-| 8 | `FE1`, `FE3` the feathers, and the width channel | art direction | medium | nothing | yes |
-| 9 | The ritual reconciliation. Not a build | project manager | small, and it is reading | nothing | no, it makes the next ten buildable |
-| 10 | `LG1-LG7` the logo | art direction | medium | nothing | yes |
+| 1 | The five rulings go to him with a snapshot each. `QC1-QC3`, applied to the five in section 2 | project manager, plus the seat that found each | small for five, large for all 136 | nothing | no, and it releases 136 items |
+| 2 | A gate on the funnel's four pages | engineering | medium | nothing | yes, it is the only measurable half of `TN1` |
+| 3 | `E2` / `AC1`, the second field leak | engineering | unsized, see section 4 | nothing | protects it |
+| 4 | `ST1`, the page that reads the sentence twice | engineering | medium | nothing | yes, his worst graded surface |
+| 5 | `CQR1-CQR3`, the seven band ring into the funnel | art direction, engineering | medium | nothing | yes, and it is his own drawing |
+| 6 | The favicon, plus `TR1` and `TR2` | art direction | small | nothing | yes |
+| 7 | `SY1-SY4`, the journal box concretes | UX, art direction, engineering | medium | nothing | yes |
+| 8 | `CP7`, then `CP6` | engineering | small | a seat to clear `tests/functional.js` | no, it makes a gate honest |
+| 9 | The left rail, measured and proposed. Not a build | UX architect | small, and it is reading | nothing | no, it makes the next ten buildable |
+| 10 | The ritual reconciliation. Not a build | project manager | small, and it is reading | nothing | no, same reason |
 
 ## The argument, one line each
 
-**1. The journal box.** His words today: "This is high priority. The most
-important portion of the product has gotten the least amount of attention." The
-file agrees with him and the number is brutal: of the 31 items on the story and
-release surfaces, **1 is built**, and it is `SY6`, which he caught himself.
-Every other subject on the list is between 40 and 68 percent built.
+**1. The five rulings go with a snapshot each.** He has now said the same thing
+twice about the questions document. The eighteenth pass fixed that the lines
+were statements. He came back with "I don't know what A2 kept is. All these
+have no context. Give me context so I can answer them," and `QC1` records it.
+136 questions across 40 sections are the single largest blocker in this
+project, and they are blocked on us, not on him. **The scope decision is mine
+and it is this: five snapshots now, not 136.** All 136 is large and it competes
+with the deadline. The five in section 2 plus the generator gate at `QC3` is
+small, and it is the only item on this page that moves a three figure number.
 
-**2. The two field leaks.** `E7` writes a reference persona into the person's
-own store on a visit and `E2` is a second leak upstream of the release. `B1` in
-the built column records this exact class shipping once already, with 50.6 of
-borrowed charge, and records that two fixes were worse than the bug. A defect
-that writes a stranger's reading into somebody's record outranks every
-aesthetic item on this list.
+**2. A gate on the funnel.** `TN1` is his deadline and his words: "By tonight
+we need our funnel and we need it tuned tight." Measured: this project has four
+gates and **not one of them opens a funnel page.** `tests/design.js` mentions
+the word funnel once, in a comment. `funnel/` carries `index.html`,
+`about.html`, `buy.html` and `quiz.html`, and the only thing watching them is a
+person looking at a screenshot. His standard at `TN2` is "nothing breaks,
+nothing stalls, nothing reads as placeholder," and that is a gate's sentence,
+not a judgement call. The app half of `TN1` is already green: four gates and
+the monitor, measured tonight.
 
-**3. The frame rate measurement.** `design.js` gate 13 measured 24.8, 20.9 and
-21.3 frames against a floor of 30 in a stacked run this afternoon, and 112 of
-112 green when run on its own, twice. `GT1` already says it: a gate that cries
-wolf gets ignored on the day it is right. Until the measurement is fixed, every
-round ends in a judgement call about whether a red is real.
+**3. The second field leak.** `E7` is done and gated. `tests/functional.js`
+carries a group called "a stranger is a stranger, whoever was on screen
+before", it asserts the delta across a round trip rather than a number, and it
+is green in the 773. `E2` and `AC1` are the same defect and it is still not
+found: in a full page sequence the person's own record carries a reference
+case's charge before the release test starts. `saveYou()` is guarded on
+`S.who===0`, so the fault is a path that claims the person's identity while a
+reference field is still in `S`. Its own line says it goes before any new
+surface and I am keeping that.
 
-**4. The release panel and controls.** His other high priority, ruled today.
-This is deliberately only the half that is not blocked: the panel before it
-begins, the end button, the countdown in real minutes, selection by density,
-the icon per pattern. The `RV` block is not here and cannot be, see section 3.
+**4. The page that reads the sentence twice.** Measured in `DESIGN-story4.md`
+on the 87 word story the four prototypes carry: the engine reads **8 hits and
+the shipping page lights 4.** The scanner records `hit.at` on every hit and the
+page throws it away, then re-matches with its own regular expression. So a
+coherent word cannot be lit, an idiom cannot be lit as one thing, and the name
+the engine already holds for "stayed quiet", which is `silenced`, is printed
+nowhere. **This is not held by `SQ1`.** All four prototypes already wrote
+`normMap` and `marksOf` to route around it, and the delivery says port that and
+do not rebuild it. Whichever belief he picks, this lands underneath it.
 
-**5. The imprints panel.** `SI3`, "press several and it tells you how they work
-through you together", is the only genuinely new thing in it, and the engine
-already builds complexes out of pairs. So it renders a computation that exists
-rather than inventing one.
+**5. The seven band ring into the funnel.** `CQR3` is ruled: it definitely goes
+in the funnel. It is his own drawing, from `46952ef`, the alpha he brought to
+this project, and measured in that file it is 287 matches for ring and 64 for
+arc, so it is a lift and not an invention. `CQR2` is why it matters: "It is a
+truncated CQ. As you input information into it, it will show you what is going
+on." The funnel's quiz shows a person nothing while they answer. `CQR4`, where
+it goes inside the app, is his and he asked for it as a note rather than an
+answer, so it does not block the funnel half.
 
-**6. The counting subtext and the pill treatment.** `SX3` is one call site:
-`ui/storyui.js` already calls `crPat`. `SX2` removes the counting subtext he
-has now struck three times. Both land in the files item 1 is already open in.
-**`SX1` is deliberately not here.** See section 5.
+**6. The favicon.** Measured: **zero matches for `favicon` or `rel="icon"` in
+`source.html`, and none in any of the funnel's four pages.** Every tab this
+product opens, in the app and in the funnel, shows a blank page icon. Against
+`TN2`, a blank icon is the definition of reading as placeholder. `FV1` is ruled
+and the ring is drawn and measured. `TR13` asks muted or vivid and is his, so
+**it ships muted under the standing muted palette ruling and his answer later
+is seven hex values, not a rebuild.** `TR1` rides along: `geometry.js:116`
+draws u2 with no right stem above the bowl, which is a drawing defect and not a
+preference. `TR2` rides along too and is a record fix, not a build: `PAL` in
+`engine/data/canon.js` is the palette and three documents in `reviews/` carry a
+different seven, Root 20 units apart in red alone.
 
-**7. The two dials.** His twelfth pass, one design used twice. The technical
-director's finding makes this cheaper than it reads: `leanSeries()` in
-`engine/verp.js:538` builds the oscillation series `TD3` asks for, it is
-exported, it is covered by the engine gate, and **it has zero callers in the
-whole UI.** The range is a render job, not an engine job. Both dials live in
-`ui/ui.js`.
+**7. The journal box concretes.** `SY1` to `SY4` are the copy coming out, a
+circular record button, a red light while the microphone is open, and click in
+and type with no mode to choose. **All four prototypes keep a box, so these
+four survive whichever belief wins.** `SY5`, the box carrying the weight of
+what it is, is the one item that is a feeling rather than a rule, and it is
+exactly what `SQ1` answers. So the box splits: four items build now, one waits.
+That split is the reason item 1 on the last order is not simply blocked.
 
-**8. The feathers.** `FE2` is already settled and establishes the facts: length
-is the value, width is a constant per layer. `FE3` is therefore a real chart
-defect, width reads as magnitude to every eye and here it carries a category.
-His instinct found it. Art direction owns the fix.
+**8. `CP7`, then `CP6`.** Measured tonight off the running engine: the roster
+is 14 long, index 6 is **Rosa**, and Gordon is **index 12**. `tests/functional.js`
+at HEAD carries **17 call sites saying `loadP(6)`** with a comment beside them
+saying Gordon, heavily loaded. The backlog line says nine, which means the
+count in the line has already grown past itself inside one day. It is the
+`loadP(8)` defect `CLAUDE.md` records, in the same file, and `GORDON()` already
+exists there to fix it with. Another seat is live in that file tonight, so this
+waits for that seat to land rather than fighting it. `CP6` is data: `CHILD.addr`
+does not resolve to an address, four of the nine match a node's nerve name, one
+ambiguously, and five match nothing.
 
-**9. The ritual reconciliation.** Not a build, and it is the highest leverage
-action on this list. The ritual carries **101 open items across 12 sections**,
-specced by different seats on different days, and no later spec retires an
-earlier one. Nothing in items 1 to 8 touches the ritual, so this costs nothing
-to do now and saves weeks the moment anybody starts there.
+**9. The left rail.** The navigation prototype was asked for a two level bar
+and it delivered one, and then it said plainly that the bar is not where the
+problem is. Measured on `source.html` by its own counter: **52 controls in the
+left rail, on every surface but Settings, open on arrival, at both widths.**
+First viewport at 1600 is 64 to 125 controls, median 76, against a working
+memory of about four. The bar port moves 2 to 5 of a per surface 85 to 221,
+which is 1 to 6 per cent. Item 9 is the rail measured and a proposal written.
+It is not a build, and the bar port is in section 6.
 
-**10. The logo.** Ruled today. It is last of the ten because it is the only one
-that is genuinely new surface rather than a fix to something a person already
-meets, and because it is a design language item, not a surface item. See
-section 5.
+**10. The ritual reconciliation.** Still the highest leverage reading action on
+this page, and it got worse: **114 open across 9 sections tonight, against 101
+across 12 at the last stamp.** No later spec retires an earlier one. Nothing in
+items 1 to 9 touches the ritual, so this costs nothing to do now.
 
 ## Where the order is arbitrary, said plainly
 
-- **1, 2 and 3 are parallel, and the order between them is arbitrary.** They
-  are three different seats in three different files with no shared path:
-  `ui/storyui.js`, the leak in the store and release path, and
-  `tests/design.js`. Ranking them against each other would be theatre.
-- **4, 5 and 6 are one item in three parts,** not three items. They are all the
-  story page, they touch the same files, and splitting them across blocks would
-  mean opening `storyui.js` three times. Build them together or build them in
-  this order, it does not matter which.
-- **7 and 8 could swap with nothing changing.** Both are art direction on the
-  Field and the strips, neither blocks the other, and neither is blocked.
-- **9 can move anywhere in the ten** without cost, because nothing above it
-  touches the ritual. It is placed at 9 so it happens this round rather than
-  never.
+- **1, 2, 3 and 4 are parallel and the order between them is arbitrary.** Four
+  seats, four files with no shared path: this file, `tests/`, the store and
+  release path, and `ui/storyui.js`. Ranking them against each other would be
+  theatre.
+- **5 and 6 are one item in two parts.** Both are the mark, both are art
+  direction, both land in the funnel and in `shell/head.html`.
+- **7 can swap with 4** and nothing changes. They are the same surface and the
+  same file, and if one seat takes both it should take them in this order
+  because `ST1` changes what the box has to render.
+- **9 and 10 can move anywhere in the ten** without cost, because neither is a
+  build and nothing above them touches the rail or the ritual. They are placed
+  at 9 and 10 so they happen this round rather than never.
+
+## What came off the order, and why
+
+- **`GT2`, the frame rate measurement.** It was item 3 last stamp because gate
+  13 read 24.8, 20.9 and 21.3 frames against a floor of 30 in a stacked run.
+  **It did not reproduce tonight.** Measured in a stacked run, after three
+  other gates, all seven lightings: 54, 51.4, 60.9, 52.8, 61.1, 61.1 and 61,
+  against a floor of 30. The rule in this repository is reproduce before
+  fixing, so it comes off the order and stays on the list. `GT1` and `GT3`
+  stand as written, because a gate that has cried wolf once will be doubted
+  again.
+- **`E7`.** Built and gated, see item 3.
+- **`TD1-TD4`, the two dials, and `FE1`, `FE3`, the feathers.** They were items
+  7 and 8. Two untracked prototypes appeared in `proto/dials/` and
+  `proto/feathers/` while this was being measured, which means seats are in
+  them now. They are not re-ranked here because a plan written across a live
+  seat is a plan that arrives late.
+- **`SI1-SI3`, `SX2`, `SX3`.** Real, unblocked, and displaced by three things
+  that arrived since: a deadline, a defect under the surface they sit on, and a
+  ruling that the story page is a D. They are the first things back on when
+  items 1 to 7 land.
+- **`LG1-LG7`, the logo.** Two rounds delivered and nine questions under them.
+  The mark cannot be finished until he picks the cuts. The favicon is
+  separable, so it is item 6 and the wordmark waits. See section 5.
 
 ---
 
-# 2. THE 113 THAT ARE HIS, RANKED BY WHAT THEY UNBLOCK
+# 2. The 136 that are his, ranked by what they unblock
 
-Most of these block nothing and can wait for ever. Six block a great deal. The
-first five are worth a month between them.
+**Read this first: as they stand he cannot answer any of them.** That is
+measured, not inferred, and it is his own sentence at `QC1`. So this section
+does two jobs. It names the five. And it says what has to be true about how
+they are sent, which is item 1 of the order.
+
+    measured    136 questions, across 40 sections
+    measured    35 distinct section ids carry one, and 40 sections do, because
+                13 section ids in this file are used twice
 
 ## The five, in order of what they release
 
-### Q1. The twenty one laws, and what coherence is. `SN5`, `SN6`, `SN7`, and they are one ruling
+### Q1. `D11`. The opening surface, and whether the avatar is a tab
+
+Still the largest blocked pile on the list, and it grew.
+
+    measured    82 open, 13 his, 33 built across the 6 avatar sections
+    measured    25 per cent built, the lowest of any large subject
+    measured    TABDEF carries 9 entries and none of them is the avatar
+
+It also decides `RT9`, whether what the ritual sets is pulled from the avatar,
+and `CL13`, where the reading picks the always on ritual by the darkest band
+and the avatar picks it by the most live imprints, and for Marcus those are two
+different seats.
+
+**Snapshot he needs, and this is the shape every one of the five needs.** What
+it is: the avatar is the thing he called the centrepiece, and today it is a
+drill inside another surface. What is at stake: 82 items. Either way: a tab
+means a tenth entry and a renderer; a drill means the character sheet folds
+into Summary. Where to look: `proto/` has no avatar page, which is itself the
+answer to why nothing has been built.
+
+**Options:** the avatar is a tenth tab and the app opens on it; a tenth tab and
+the app still opens on the Field; or it stays a drill folded into Summary.
+
+**He should see this before he answers:** the opening surface has flipped twice
+and `CLAUDE.md` records both flips. A third flip is affordable. A third flip
+that is not written down is not.
+
+### Q2. `SQ1`. Which of the four beliefs is the story page
+
+New this round and it is the cheapest large answer on the page, because the
+work is done and sitting in a folder he has never been pointed at.
+
+    measured    25 open, 6 his, 14 built across the story page sections
+    measured    four prototypes, twenty screenshots, all looked at
+    measured    choices on the surface: mirror 28, page shipping today 39,
+                instrument 40, body 47
+
+He said the story page is a D and asked for four designs from art and creative.
+They exist: `proto/story4/instrument.html`, `mirror.html`, `body.html`,
+`bench.html`, and `index.html` carries all four with the belief written on
+each. **The ask is not which layout. It is which sentence is true about the
+surface,** because the drawing follows the sentence. The seat's own
+recommendation is the mirror, with the body second on a case it says it cannot
+measure.
+
+Released by one answer: `SY5`, and with it `SQ2`, `SQ3`, `SQ4` and `SQ5`, which
+are four sub decisions of the same belief and should not be asked separately.
+
+**Options:** the instrument, which gives the journal an axis; the mirror, which
+refuses to touch the sentence and answers beside it; the body, which draws the
+route on the anatomy; the bench, which treats the story as stock. Or the
+sentence that is right, if none of the four is it.
+
+### Q3. The twenty one laws, and what coherence is. `SN5`, `SN6`, `SN7`, asked once
 
 **Ask him once, not three times.** The sniffer spec and the engine disagree
 about which twenty one laws: 19 are shared, the spec has Ownership and Wisdom,
 the engine has Responsibility and Accountability. That is the divisor. The spec
 then defines coherence as the mean of the laws times ten; the engine computes
-`CQ=(It*Ig)/Rz` at `engine/compute.js:140`. And malignancy is computed off
-coherence, so either definition takes a blank profile from 28 malignant to
-nought and flips it benign.
+`CQ=(It*Ig)/Rz`. Malignancy is computed off coherence, so either definition
+takes a blank profile from malignant to benign.
 
-    measured    CQ is referenced in 21 files, 13 of them UI
-    measured    a blank profile reads 28 of 100 malignant today  (BM5)
-    measured    answering every funnel question in the middle lands at 24  (FD10)
+**This moved up because of the deadline.** `CQR2` puts a truncated CQ in the
+funnel, filling as a person answers, which means the funnel now prints a number
+whose definition is in dispute. It was a correctness question. It is a shipping
+question tonight.
 
-Downstream and released by one answer: `BM5`, `FD10`, `SP12` (his own spec
-lists E43 as retired in section 7 and live as Wisdom in section 6, and Wisdom
-is one of the two disputed laws), `SP13` (his spec names the benign and
-malignant polarity conflict as OPEN, and the lean work already scores on it),
-`D16`, the whole lean surface, the funnel's result number, and the tier ladder
-in `DECISIONS.md`, which is priced on CQ.
+Downstream and released by one answer: `BM5`, `FD10`, `SP12`, `SP13`, `D16`,
+the whole lean surface, the funnel's result number, the seven band ring, and
+the tier ladder in `DECISIONS.md`, which is priced on CQ.
 
 **Options:** adopt the spec's definition and accept that releasing every charge
 moves coherence by nothing; keep the engine's and correct the spec; or keep
-both with the spec's as a second reading under its own name.
-
-### Q2. `D11`. The opening surface, and whether the avatar is a tab
-
-    measured    TABDEF carries 9 entries in the built engine.js
-    measured    none of them is the avatar
-    measured    there is no ui/avatar.js; runAvatarDrill lives in ui/drills.js
-
-This is the largest blocked pile on the list. **66 open items across 7
-sections** wait on it: `BL`, `CS2`, `MK2`, `AV`, `KU`, `CH`, `AP`, `AVS`,
-`BLOCK D`, plus `N2`, `AO3` and `N3`. It also decides `RT9` (is what the ritual
-sets pulled from the avatar) and `CL13` (the reading picks the always on ritual
-by the darkest band, the avatar picks it by the most live imprints, and for
-Marcus those are two different seats).
-
-**He should see this before he answers:** the opening surface has already
-flipped twice and `CLAUDE.md` records both flips. A third flip is affordable.
-A third flip that is not written down is not.
-
-**Options:** the avatar is a tenth tab and the app opens on it; it is a tenth
-tab and the app still opens on the Field; or it stays a drill and the character
-sheet is folded into Summary.
-
-### Q3. `RV7` and `RV8`. The audio
-
-He ruled the release flow high priority today. Its entire `RV` block is blocked
-on this and nothing in it can start.
-
-    measured    source.html is 1,531,011 bytes
-    measured    atuned-slim.html is 1,037,834, and the build already had to be
-                compressed to arrive at all
-    standing    one file, no dependencies, no network
-
-**Options:** embed the recording as base64 and accept the size; fetch it at the
-one network seam the accounts fork opens; or synthesise everything and keep no
-recording, which loses `RV1`, his own voice opening the protocol.
-
-Two things ride with it. `RV1` needs a recording only he can make. `RM1` names
-a mobile app with a release flow he wants reviewed five times, and **it is not
-in this repository**; it has to be handed over or that instruction cannot be
-followed.
+both, with the spec's as a second reading under its own name.
 
 ### Q4. The currency. Karma, points, or patterns
 
-Its own line already says it blocks work. Three words are live for one thing in
-three current documents: `DESIGN-progression.md` rules exactly one currency and
-asks for a build gate against a second, `PRODUCT.md` and `AE1` say points,
-`AK2` says karma.
+**Cost to him: one word.** Three words are live for one thing in three current
+documents. `DESIGN-progression.md` rules exactly one currency, patterns, and
+asks for a build gate against a second. `PRODUCT.md` says points. `AK2` says
+karma.
 
-Releases the gamification ladder, **24 open items**, plus what a mark is worth,
-whether a balance is a number a person sees, and the gate that document is
-waiting to have written. **Cost to him: one word.** This is the cheapest large
-unblock on the list.
+It got more urgent this round without changing a letter. `GB1` is newly ruled:
+"It sounds like you need to send the team on the scoring, the badge and
+achievement system. So I want to go ahead and do that." **That team cannot cost
+a single badge until the unit has a name.** It also settles what a mark is
+worth, whether a balance is a number a person sees, and the gate that
+`DESIGN-progression.md` is waiting to have written.
 
-### Q5. `AS2`. Is there a server, and when
+### Q5. `RV7`. The audio, asked once with `RV13`
 
-He has never been asked this cleanly. It is scattered across `D15` (paywall),
-`D17` (the two API keys, which have nowhere safe to live until it exists),
-`FN3` and `FD11` (running comments), `AS1` (login), the practitioner view and
-push notifications. `CLAUDE.md` already says the fork is called to accounts.
-What is not ruled is whether the service is built now or the app stays one file
-for another round.
+He ruled the release flow high priority. Its whole `RV` block is blocked on
+this and nothing in it can start.
 
-**This answer releases very little and cancels a great deal**, which is why it
-is worth asking. About twenty items currently read as open that are in fact
-impossible, and they should say impossible rather than open.
+    measured    source.html 1,544,375 bytes
+    measured    atuned-slim.html 1,041,262, and the build already had to be
+                compressed to arrive at all
+    measured    embedding the frame at 16 kbps is 160 kilobytes, 29 per cent
+                on the wire
+    measured    synthesis is zero bytes, because the whole sound system is
+                3,210 characters of code
+    standing    one file, no dependencies, no network, and gate 7 watches it
 
-### And the sixth, because it is the cheapest thing on this page
+The team's own recommendation, which he can simply take: synthesise now, embed
+the frame when the recording exists.
 
-**`SX1`. What replaces the word "addresses".** He ruled the word out today: "a
-meaningless term to a person." He has not given the word in.
+**Two things ride with it and no answer unblocks them.** `RV1` needs a
+recording only he can make. `RM1` names a mobile app whose release flow he
+wants reviewed five times, and it is not in this repository.
 
-    measured    212 occurrences inside string literals, across 33 files
-    measured    including engine/data/canon.js and cards.js, which are the codex
+## The next two, and both are cheap for him
 
-One word from him starts the largest language sweep on the list. Until he gives
-it, every surface built prints the word again and the sweep gets bigger. See
-the technical director's column.
+- **`SX1`. The word that replaces "addresses".** He ruled the word out: "a
+  meaningless term to a person." He has not given the word in. It is the
+  largest language sweep on the list and every surface built before he answers
+  prints the word again. It is not in the five only because nothing is blocked
+  from starting by it, and it gets more expensive every round.
+- **`TR13`. Muted or vivid, for the favicon.** Item 6 of the order ships muted
+  under the standing ruling. His answer after that is seven hex values. He
+  should be told that, so he does not think he is holding the favicon up.
 
-## The other 107
+## The other 129
 
 They are real and they are not urgent. The honest sort:
 
-- **Blocks one surface and nothing else.** `CB4`, `CB9`, `CB10` (the chakra
-  band cannot be drawn until something says what high and low inside a band
-  mean), `RQ1-RQ5` and `CL12`, `CL14`, `CL15` (ritual defaults), `SW6-SW10`,
-  `AH5-AH7`, `AM4`, `AM5`, `PC3`, `D20`, `D4`, `D5`, `D7`, `D8`.
+- **Blocks one surface and nothing else.** `CP4` and `CP8` (three surfaces draw
+  the nine child emotions and none says which are found, and widening before
+  the ruling means three surfaces to move back instead of one), `CB4`, `CB9`,
+  `CB10`, `RQ1-RQ5`, `CL12`, `CL14`, `CL15`, `SW6-SW10`, `AH5-AH7`, `AM4`,
+  `AM5`, `PC3`, `MN8`, `CQR4`, `D4`, `D5`, `D7`, `D8`, `D20`.
 - **Blocks a claim, and the claim is a real exposure.** `PO2`, the word "heals"
   is a regulated therapeutic claim and the funnel cannot ship carrying it.
   `D10`, the therapy equivalence claim, same. `SF6`, six people in the roster
   reach a surface naming Psychopathy and Machiavellianism with a clinician on
-  screen, and it has never fired. These three are small for him and they are
-  the ones a lawyer would pick out first.
+  screen, and it has never fired. **`PO2` is now on the deadline path,** because
+  the funnel is what ships tonight and the funnel carries the positioning line.
 - **Blocks an asset only he can supply, so no answer unblocks it.** `VID1` and
-  `D3`, the universal law videos live on his own drive and nothing in this
-  container can reach it. `NS3`, he says we have the five nerve state icons and
-  no table of nerve states exists in the source.
-- **Blocks nothing and can wait for ever.** The bulk of the sniffer's thirteen
-  questions, `Q3` to `Q13`, the six places the book and his spoken description
-  disagree, `AH6`, the wording questions, and the two collisions named in
-  `OB25`. They are worth having answered one day. Nothing stops today.
+  `D3`, the universal law videos. `NS3`, the five nerve state icons. `SP14`,
+  `SP15` and `SP16`, three files named in his own spec as ours to load.
+- **Blocks nothing and can wait for ever.** `Q3` to `Q13`, the nine cut
+  questions `TR6` to `TR12` and `TR14`, `FV3`, the wording questions, and the
+  two collisions in `OB25`. Worth having answered one day. Nothing stops today.
 
 ---
 
-# 3. BLOCKED VERSUS MERELY UNSTARTED
+# 3. Blocked versus merely unstarted
 
 These look identical on the list. They are completely different to plan with.
 
@@ -271,29 +369,39 @@ These look identical on the list. They are completely different to plan with.
 
 | What | Open items | Blocked by | Can it be unblocked |
 |---|---|---|---|
-| The avatar and the character sheet | 66 across 7 sections | `D11` | yes, one ruling |
+| The avatar and the character sheet | 82 across 6 sections | `D11` | yes, one ruling |
+| The story page's look | `SY5` and 4 sub questions | `SQ1` | yes, one sentence, four prototypes to look at |
 | The `RV` release flow | 6 | `RV7`, and `RV1` needs his voice | ruling, then an asset |
+| The badge and achievement ladder | 24 | the currency word | yes, one word |
+| The child pattern's three surfaces | `CP8`, plus `CP5` | `CP4`, and `CP5` is a schema change | yes, one ruling |
 | The chakra band | 5 | `CB9`, nothing says what high and low in a band mean | yes, one ruling |
-| The universal law films, `C9` | 4 | the files are on his drive, unreachable | only by handing them over |
-| The nerve state icons, `NS` | 4 | the artwork is not in the repository | only by handing them over |
+| The universal law films | 4 | the files are on his drive, unreachable | only by handing them over |
+| The nerve state icons | 4 | the artwork is not in the repository | only by handing them over |
+| The sniffer's own lexicon | `SP14`, `SP15`, `SP16` | three files his spec says to load, not in the repo | only by handing them over |
 | Everything needing a server | about 20 | `AS2` does not exist | yes, by deciding to build it |
 | The mobile release flow review | 1 | `RM1`, the app is not in this repository | only by handing it over |
+| **All 136 questions** | **136** | **`QC1`. They have no context and he has said so** | **yes, and it is ours to fix, not his** |
+
+That last row is the change in the shape of this section since the last stamp.
+The largest blocked pile in the project is blocked on us.
 
 ## Merely unstarted. A seat could open the file tomorrow
 
-**Every one of the top ten is in this column. None of them is blocked.** The
-journal box, the field leaks, the frame rate measurement, the release panel and
-controls, the imprints panel, the counting subtext, the two dials, the
-feathers, the ritual reconciliation and the logo.
+**Every one of the ten is in this column.** The five snapshots, the funnel
+gate, the second field leak, the double read of the sentence, the seven band
+ring, the favicon, the four journal box concretes, the roster index, the left
+rail measurement and the ritual reconciliation. None is blocked and none of
+them needs him first.
 
-**That is the shape of the problem in one sentence.** The two largest piles on
-the list, the ritual at 101 and the avatar at 66, are the two you cannot act
-on: one is over specced and one is blocked. The work you can act on is a thin
-layer at the top that arrived in the last twelve hours.
+**The shape of the problem, in one sentence, and it has changed.** Last stamp
+it was that the work you can act on is a thin layer at the top. Tonight the top
+layer is thicker, the built column grew faster than the open column for the
+first time, and the binding constraint is no longer a shortage of unblocked
+work. It is that 136 answers are sitting behind a document defect we own.
 
 ---
 
-# 4. THE TECHNICAL DIRECTOR'S COLUMN
+# 4. The technical director's column
 
 What it costs, and what it costs if it is done later rather than now.
 
@@ -304,52 +412,59 @@ are no records off device today, so all of this is free. The moment `AS2`
 exists, every one of them is a migration against live data.
 
 - **The history whitelist.** `validateProfile` rebuilds every snapshot from a
-  16 key whitelist. Measured in the record: 16 keys written, 15 returned,
-  `lean` silently dropped, and it returns `ok: true` while doing it. Adding the
-  line is free today. After the record store it is a migration plus a
-  backfill plus a version check.
-- **Schema v2.** Named as his in `CLAUDE.md`. The gates bump is additive and v1
-  still loads, which is exactly the property that expires the day a second
-  party holds a v1 record.
+  16 key whitelist. Measured: 16 keys written, 15 returned, `lean` silently
+  dropped, and it returns `ok: true` while doing it.
+- **Schema v2.** Named as his. The gates bump is additive and v1 still loads,
+  which is exactly the property that expires the day a second party holds a v1
+  record.
 - **`Root_08_Unnamed`.** It carries no fetter, so the root can never fully
-  conduct and the kundalini rise can never read 100 for anybody. Two fully
-  installed reference people read 99. Naming it is a data table edit now and a
-  reading change for every stored record later.
+  conduct and the kundalini rise can never read 100 for anybody.
+- **`CP5`, a field to keep a childhood imprint in.** New this round and it is
+  the same class. `AGE_ANS` is a variable inside the drill, the blank profile
+  has no age shaped key, and `ageFinding()` returns a finding that dies with
+  the tab. The age ladder measures 0 on every profile in the roster and not
+  because nobody has a childhood imprint. **That reading cannot be built at all
+  until the finding is stored.**
 
-**The ruling this implies:** answer `Q5` before building the service, and land
-the schema items in the gap between the answer and the build. That gap is the
-last cheap moment and it closes once.
+**The ruling this implies:** answer the server question before building the
+service, and land the schema items in the gap between the answer and the build.
+That gap is the last cheap moment and it closes once.
 
 ## Gets more expensive with every surface built
 
-- **`SX1`, the addresses rename.** 212 string literals across 33 files today.
-  Items 1, 4 and 5 of the order all print the word, and so does every ritual
-  and avatar surface behind them. Six new surfaces built before the rename cost
-  more than the rename plus six surfaces. The sequence that is actually honest:
-  get the word this round, sweep next round, before the ritual and avatar work
-  starts.
-- **The logo.** It is drawn once and referenced at four sizes, and the boot
+- **`SX1`, the addresses rename.** 212 string literals across 33 files,
+  including `engine/data/canon.js` and `cards.js`, which are the codex. Items
+  4, 5 and 7 of the order all print the word.
+- **The wordmark.** Drawn once and referenced at four sizes, and the boot
   animation builds the mark from its own paths, so the animation is rewritten
-  with it. Every new surface that draws the wordmark adds a site.
+  with it. The favicon at item 6 does not carry this cost, which is why the two
+  are separated.
 
 ## Gets cheaper, or already did, and the list has not noticed
 
-- **`TD3` and `TD4`, the oscillation range.** `leanSeries()` is written,
-  exported through `engine/export.js`, covered by the engine gate, and has zero
-  UI callers. The data is built. This is a render.
+- **`ST1`.** All four prototypes wrote `normMap` and `marksOf`, which rebuild
+  the engine's own normalisation and keep the original index of every
+  character. The work is written four times. It is a port.
+- **`ST4`.** `parseStory().path` has returned order, distance, direction, dwell
+  and both ends on every parse since it was written and **no surface draws one
+  step of it.** The invention the story page was asked for is already computed.
+- **`CQR1`.** The ring is in `46952ef`, in the repository's own history. Nobody
+  has to draw it.
+- **`TD3` and `TD4`.** `leanSeries()` in `engine/verp.js` is written, exported,
+  covered by the engine gate, and has zero UI callers. Still true, and two
+  untracked prototypes appeared in `proto/dials/` tonight, so a seat is on it.
 - **`BL2` is stale and must be re-measured before it is built.** It says the
   release ceiling "already exists as a number and nothing surfaces it."
-  Measured: `ui/release.js:100` reads `cqCeiling()` and `ui/summary.js:591`
-  reads `cqHeadroom()`. Part of it landed. Building it as written would build
-  something twice.
+  `ui/release.js` and `ui/summary.js` both read it. Part of it landed.
 
 ## Costs a little more every round it is not done
 
-- **`GT2`.** Every round currently spends judgement on whether a red frames line
-  is real, and `GT3` makes that a manual re-run. Small to fix, and it compounds.
-- **The ritual reconciliation.** 101 open across 12 sections, and the last two
-  passes each added a ritual section without retiring one. The cost of
-  reconciling grows with every pass.
+- **The ritual reconciliation.** 114 open across 9 sections, and it was 101
+  across 12 three hours ago. Every pass adds a section without retiring one.
+- **`CP7`.** The line says nine call sites. There are 17. The line is a day
+  old. Left alone, the fix grows while the defect sits still.
+- **`GT1` and `GT3`.** Gate 13 read green tonight, which does not retire the
+  finding that a red frames line costs a manual re-run and a judgement call.
 
 ## Unsized, and what would size it
 
@@ -357,243 +472,293 @@ I will not invent a number for these.
 
 | What | Why it is unsized | What would size it |
 |---|---|---|
-| `E2`, `E7` the field leaks | not reproduced | a failing test that demonstrates each, which is this project's own rule |
-| `SY5` the box carrying its weight | it is a feeling, not a rule, and the list says so | three comps to grade |
+| `E2`, `AC1` the second field leak | not reproduced, and a clean page shows nothing | a failing test that demonstrates it in the full sequence, which is this project's own rule |
+| `SY5` the box carrying its weight | it is a feeling, not a rule, and the list says so | `SQ1` |
 | `SR5` the release buttons | named by him, not specified | a proposal, not a guess |
 | `RV5` the counts | depends on whether it is heard or read | `RV7` |
 | The avatar page | depends on whether it is a tab | `D11` |
+| `SIM1-SIM4` the ninety day run | `SIM4` says one already exists at `reviews/sim-ninety-days.html`, 83 kilobytes, unread | reading that first and saying what moved |
 | `R1` the knowledge base restructure | specified against a surface that has since been rebuilt | a re-scope against the deck of cards that now exists |
 
 ---
 
-# 5. THE ART DIRECTOR'S COLUMN
+# 5. The art director's column
 
-The calibration for "everywhere" is already in the record. `SA5`, the
-saturation bump, moved **17 colours in 4 tables**, plus the boot sheet's own
-copy of the palette which carries a gate that fails if the two part company,
-plus `funnel/tokens.css`, which `BUILD.sh` generates and which the run reports
-as 44 tokens. Five files and a gate. That is the floor for a design language
-item, not the ceiling.
-
-    measured    7 lightings: dark, snow, punch, glass, glasswhite, flat, lumen
-    measured    9 surfaces in TABDEF, plus Settings and Analytics folded
-    so          a design language change is 63 render states before the funnel
+The calibration for "everywhere" is in the record. A design language change is
+seven lightings by nine surfaces before the funnel, and the saturation bump
+moved 17 colours in 4 tables plus the boot sheet's own copy of the palette,
+which carries a gate that fails if the two part company, plus
+`funnel/tokens.css`, which `BUILD.sh` generates and the run reports as 44
+tokens. Five files and a gate. That is the floor, not the ceiling.
 
 ## One surface. Schedule these as surface items
 
-- `SY1-SY4`, the journal box. `ui/storyui.js`, 281 lines.
+- `SY1-SY4`, the journal box concretes. `ui/storyui.js`.
+- `ST1`, the highlighter. Same file.
+- The favicon. `shell/head.html`, plus the funnel's four pages.
+- `TR1`, the u2 stem. `geometry.js:116`.
+- `CQR1-CQR3`, the ring, in the funnel only.
 - `SI1-SI3`, the imprints panel.
-- `RL1-RL4`, the release panel.
-- `RC10-RC13`, the release controls.
-- `TD1-TD4`, both dials. Both live in `ui/ui.js`.
-- `FE1`, `FE3`, the feathers. The Field canvas.
-- `SX3`, the story cloud pills. `ui/storyui.js` already calls `crPat`, so it is
-  one call site.
+- `RL1-RL4` and `RC10-RC13`, the release panel and controls.
+- `TD1-TD4`, both dials, and `FE1`, `FE3`, the feathers.
 
 ## Design language. Do not schedule these as surface items
 
-- **`SX1`, the addresses rename.** 212 string literals, 33 files. It reaches
-  `engine/data/canon.js` and `engine/data/cards.js`, which are the codex, so
-  the knowledge base text changes and `BOOK-ERRATA.md` needs a pass in the same
-  breath. **This is the largest language item on the list and it is currently
-  filed beside `SX2` and `SX3`, which are both one surface.** Splitting them is
+- **`SX1`, the addresses rename.** 212 string literals, 33 files, reaching the
+  codex, so `BOOK-ERRATA.md` needs a pass in the same breath. Still filed
+  beside `SX2` and `SX3`, which are both one surface. Splitting them is still
   the single most useful edit anybody could make to that section.
-- **The logo, `LG1-LG7`.** `LG3` says the blue moves per lighting and `LG4`
-  says the white dot does not, so the mark is specified **7 times, not once**,
-  then at 4 sizes, then in the boot animation which builds it from paths. The
-  funnel inherits it only if it is tokenised, because `tokens.css` is generated
-  from the stylesheet.
-- **`N4` and `AR1`, the copy editor pass on every number.** Standing. This is
-  the rule that changed every stat card in the product. It is not a task, it is
-  a property, and it gets re-broken by every new surface.
-- **The figure treatment.** Measured adoption: `cr()` in 9 files, `crBadge()`
-  in 3, the `crNode` family in 4. Changing the component lands on every one.
-- **`SX2`, all the counting subtext goes.** Reads as one surface and is not.
-  The counting subtext pattern is on the story page, the release, the ritual
-  and the Summary. It is on the order at 6 because the story page half is the
-  half that is in flight; the rest is a sweep.
-- **`CP`, the copy sweep of the whole product, and `TX`, the scale phrasings.**
-  Both are whole product by name and both are filed as ordinary items.
+- **The wordmark, `LG1-LG7` with `TR6` to `TR14`.** `LG3` says the blue moves
+  per lighting and `LG4` says the white dot does not, so the mark is specified
+  seven times, then at four sizes, then in the boot animation which builds it
+  from paths. Nine of the cut questions are his and the mark cannot be
+  finished under them. **The favicon is separable and the wordmark is not,**
+  which is the whole reason item 6 exists and the logo is not on the order.
+- **`TR2`, the palette's provenance.** Three documents in `reviews/` carry a
+  seven that is not the code's. The code is the palette and the documents move.
+  This is the stale count defect one layer out, in a file that is not a gate,
+  which is the hardest place to catch it.
+- **`N4` and `AR1`, the copy editor pass on every number.** Standing. A
+  property, not a task, and it gets re-broken by every new surface.
+- **`CP` the copy sweep and `TX` the scale phrasings.** Both whole product by
+  name, both filed as ordinary items.
+- **`SX2`, all the counting subtext goes.** Reads as one surface and is not:
+  the story page, the release, the ritual and the Summary.
 
 ---
 
-# 6. WHAT TO STOP
+# 6. What to stop
 
 Nothing here is deleted. Every line stays in `TASKS.md` with its wording. These
 are marked, with the reason, so they stop competing for attention.
 
 ## Stopped by his own ruling
 
-**The onboarding block. 25 open items.** `0p` `OB` carries 15, `SIG` 6, `OBS`
-4. He ruled onboarding off today, `PZ2` records it, and the seat stood down and
-wrote what it measured to `DESIGN-onboard.md`. `AN3` and `AN7` in `2f` are the
-same item in the old section and go with them. **This is the single largest
-stoppable pile on the list and it proves the category exists.**
+**The onboarding block. 29 open and 3 of his.** Measured by identifier across
+`OB`, `SIG` and `OBS`. He ruled onboarding off, `PZ2` records it, the seat
+stood down and wrote what it measured to `DESIGN-onboard.md`. `TN1` restates it
+in his own words this round: "If we don't have onboarding, no sweat." **It is
+the single largest stoppable pile on the list and he has now stopped it twice.**
 
-**One exception, keep it.** `OB22` is a real defect: `proto/signal/signal.html`
-prints 62 out of 100 and 74 degrees out of 180 on a reading. It is cheap, it is
-in a prototype, and it survives the stop.
+**Two exceptions, keep them.** `OB22` is a real defect:
+`proto/signal/signal.html` prints 62 out of 100 and 74 degrees out of 180 on a
+reading. And `OB24`, the one progress object where the ring is the indicator
+and progress is angular rather than ordinal, is worth keeping whether or not
+onboarding is ever built, because it is the loop drawn correctly.
+
+## Not this round, and it is ruled work
+
+**`MN1-MN7`, the two level navigation bar.** This is a no and it is mine to
+say. It is ruled and the port is specified to the line in `DESIGN-nav.md`, with
+a prototype, a request log and ten checks written for the functional gate. It
+is still not this round, for three measured reasons. It touches the bar markup,
+`setTab`, the stylesheet, the gutter and every one of nine surfaces, on the
+night his standard is "it can't break." It buys 2 to 5 fewer choices against a
+per surface 85 to 221, which is 1 to 6 per cent. And its own delivery says the
+next move on cognitive load is the left rail, not the bar. **The right response
+to that delivery is item 9, not the port.** The port goes first thing after the
+deadline, and `MN8` should be answered on the seat's recommendation, which is A
+with one condition, rather than held open.
 
 ## The product has moved past it, and the line now says something false
 
-**`AO0`. "The funnel. Zero pages exist. He thought it was built."** Measured:
-`funnel/` holds `index.html`, `about.html`, `buy.html` and `quiz.html`, plus
-`tokens.css` generated by the build, plus ten screenshots. **The line is false
-and it is the exact defect this repository has written down nine times.** It
-should read as built or be rewritten. It must not stay as it is, telling the
-owner the funnel does not exist.
+**`AO0`. "The funnel. Zero pages exist."** `funnel/` holds four pages plus
+`tokens.css` and the screenshots. The line is false and it is the exact defect
+this repository has written down. It must not stay as it is, telling the owner
+the funnel does not exist on the night he is shipping it.
 
-**`R1`, the knowledge base restructure, as written.** The KB was rebuilt:
-`KB1-KB5` record rows above the fold going from 12 to 39 at 1600, the glossary
-leaving the decks, and 258 of 332 rows carrying a figure. `R1` specifies
-headers with icons and narrative framing against a wiki list that is now a deck
-of cards. Building it as written would regress the rebuild. Re-scope, do not
-build.
+**`R1`, the knowledge base restructure, as written.** The KB was rebuilt.
+Building `R1` as written would regress the rebuild. Re-scope, do not build.
 
-**`2g`, the closing review. `AP1-AP5`.** The architecture run six times, the
-persona simulation, the focus group at scale, then the release. Real work, and
-it will never again be the most important work in its current form, because the
-product it was written against has been rebuilt underneath it. Re-scope or
-retire. Note also that `AP1`, `AP2` and `AP3` are three of the colliding
-identifiers below.
+**`2g`, the closing review, `AP1-AP5`.** Real work, and it will never again be
+the most important work in its current form, because the product it was written
+against has been rebuilt underneath it. **And it now collides with `SIM1-SIM4`,
+newly ruled,** which asks for the same thing with a stability requirement on the
+grade. The two should be one item. `SIM4` already says a ninety day simulation
+exists at `reviews/sim-ninety-days.html`, a product older and unread. Read it
+before building a second and say what moved.
 
 ## Two seats solving the same thing from different ends
 
-**The avatar has two incompatible designs and nothing reconciles them.** `0o`
-`AV`/`KU`/`CH` says the product opens on the avatar and the kundalini is the
-progress bar. `0i2` `BL`/`CS2` says the avatar is a character sheet whose stats
-are ceilings being held down, and that "one inversion decides every gauge on
-the page." Those are different products. One of them has to lose before a line
-of it is built, and `D11` is where that starts.
+**The avatar has two incompatible designs and nothing reconciles them.** One
+says the product opens on the avatar and the kundalini is the progress bar. The
+other says it is a character sheet whose stats are ceilings being held down.
+Those are different products. `D11` is where that starts.
 
-**The always on ritual has two sources that disagree.** `CL13`: the reading
-picks by the darkest band, the avatar picks by the seat carrying the most live
-imprints, and for Marcus those are two different seats.
+**The always on ritual has two sources that disagree.** `CL13`.
 
-**The currency has three words in three documents.** Covered at Q4.
+**The currency has three words in three documents.** `Q4`.
 
-**The ritual page has been specced seven times.** `0q` as a system, `0v` as
-design B as a calendar, `0v` again as a D minus, `0j2` as a C minus with a
-second rebuild, `0t` as a calendar, `0y` as a comp, `0h2` and `0m` as two
-deliveries. **101 open items, 12 sections, 45 built.** Stop adding ritual
-specs. Item 9 of the order is the reconciliation.
+**The ritual page has been specced nine times.** 114 open, 9 sections, 40
+built. Stop adding ritual specs. Item 10 is the reconciliation.
+
+**And the questions document has now been fixed twice and is still broken.**
+The eighteenth pass made every line ask something. The nineteenth pass records
+that he still cannot answer them. That is two passes spent on the container. The
+third one has to ship five answered questions, not a better container, which is
+why item 1 is scoped to five and not to 136.
 
 ## Real, and will never be the most important work again
 
-- **`MK2`, the masks as pixel art.** It is his original idea, so it is not mine
-  to kill. But `MK12` already states the problem against itself: this product's
-  look is argued from autonomic response, and pixel art is a different
-  argument. Mark it as needing its argument before it is scheduled, rather than
-  scheduling it on enthusiasm.
+- **`MK2`, the masks as pixel art.** His original idea, so not mine to kill.
+  `MK12` states the problem against itself: this product's look is argued from
+  autonomic response and pixel art is a different argument. Mark it as needing
+  its argument before it is scheduled.
 - **`AI3`. "He does not like the design. Run it again."** Not actionable as
-  written. It needs the specific objection or it will be run again and
-  disliked again.
-- **`R6`. Every piece of art gathered for his ruling.** Standing obligation,
-  "sent twice, never complete." It is a process, not a task, and it belongs in
-  section 6 with the other standing rules rather than in the open column where
-  it can never be closed.
+  written. It needs the specific objection or it will be run again and disliked
+  again. `QC1` is the same failure in the questions document, so this one now
+  has a precedent to be fixed by.
+- **`R6`. Every piece of art gathered for his ruling.** A process, not a task.
 
 ## One item filed in three places, which is three items' worth of attention
 
-- The avatar as a page: `N2`, `AO3`, and the whole `BL`/`CS2` block.
-- The release rebuild: `C3` in `2f`, `C3` in section 5, and the whole `0c2`
-  block.
+- The avatar as a page: `N2`, `AO3`, and the whole character sheet block.
+- The release rebuild: `C3` in two sections and the whole `0c2` block.
 - The Summary rebuild: `N3`, `AH1`, and `GL`.
+- **The favicon: `FV4` and `TR5`,** which are the same open item in two
+  sections of the same pass. See section 7.
 
 ---
 
-# 7. DEFECTS IN THE RECORD ITSELF
+# 7. The duplicates, folded. This is a decision, not a copy edit
+
+Nine folds. Eight of them are among the 136 questions and one is in the open
+column. Every line number is off the md5 in the stamp.
+
+| Topic | Lines | Survives | Why that twin |
+|---|---|---|---|
+| The audio bytes | `RV13` at 601, `RV7` at 795 | **`RV7`** | It states the ruling as a ruling and names the one file constraint. `RV13` carries the better arithmetic, so its numbers move up into `RV7` and `RV13` closes pointing at it |
+| The always on colour | `RQ3` at 1584, `CL12` at 2164 | **`CL12`** | It names what is built and why, Root because the practice marks seat there. `RQ3` adds only that it is visible at week scale, which becomes a line inside `CL12` |
+| The currency word | 2884 and 3216 | **the line at 2884** | It is the one that says it blocks work and names all three documents. The later one adds the costing argument, which moves up |
+| A karma balance as a number | 2904 and 3222 | **the line at 3222** | It is the one with the evidence: the prototype prints it, so there is something to look at. The earlier one is the rule with no exhibit |
+| The lexicon's provenance | 3285 and `Q2` at 3866 | **`Q2`** | It carries the word counts, 87 of 192 authored words in the book, 105 not, 8 of 124 idioms. The earlier one carries no measurement |
+| The Universal Law videos | `VID1` at 3562, 4469 | **`VID1`** | It names the path on his machine and why this container cannot reach it, which is the whole answer he needs to act on |
+| The opening surface | 3398 and `D11` at 4900 | **`D11`** | It carries the history, and the history is the argument: this has flipped twice already |
+| The favicon's absence | `FV4` and `TR5`, same pass | **`TR5`** | It states the measurement, zero matches for `favicon` or `rel="icon"`, so it can be checked. `FV4` asserts the same fact with nothing behind it |
+
+**And the ninth candidate, which I am ruling is not one.** `D3` asks where the
+videos live at 15.4 megabytes against a one file build with no network. That
+reads like a third copy of the videos question and it is not: `VID1` is how we
+get them and `D3` is where they go once we have them. Both have to be answered
+and only one of them is answerable today. So `D3` stays, and it is marked as
+downstream of `VID1` rather than folded into it.
+
+**What the fold is worth.** 136 questions become 128, and more importantly the
+five in section 2 are five and not eight. Three of the eight folds sit inside
+the five: the audio, the currency and the opening surface were each asked
+twice, and sending him a list where three of five questions appear twice is the
+fastest way to have the list ignored again.
+
+**Where the folding happens.** I do not own `TASKS.md` and have edited nothing
+in it. The fold is recorded here with line numbers, and the seat that owns that
+file applies it, or the generator at `tools/questions.js` applies it on the next
+run by collapsing lines that name each other. A generator that emits two copies
+of one question is the same class of defect as `QD1` and `QC1`, and it should be
+gated the same way.
+
+---
+
+# 8. Defects in the record itself
 
 This repository's own rule is that a number typed into a document the product
-then grows past is the same defect as a number typed into a gate. `CLAUDE.md`
-counts nine occasions. Here are the ones measurable today. I do not own these
-files and have not edited them.
+then grows past is the same defect as a number typed into a gate. Here are the
+ones measurable tonight. I do not own these files and have not edited them.
 
-**The gate counts are wrong in two places and in this list.**
+**The gate counts.** `CLAUDE.md` cut its own column, which was the right fix,
+and the dated sentence that replaced it reads 1083, 741, 100 and 105. Tonight
+the runs read **1392, 773, 100 and 141.** The sentence is dated on purpose so
+it is not wrong, and it is worth noting that the design gate has grown from 105
+to 141 in a day, which is why nobody should type it anywhere again.
 
-    stated in CLAUDE.md     843   740   100   105
-    measured today         1287   758   100   112
+    TASKS.md line 3895 says the design gate is 105 of 105, three times over.
+    It is 141. It sits in a dated block, so the honest fix is to date the
+    line, not to correct the number.
 
-    TASKS.md section 0t says the design gate is "105 of 105". It is 112.
+**`CP7`'s own count is already stale.** The line says nine call sites say
+`loadP(6)`. Measured at HEAD: **17.** The line is one day old. That is the
+tenth time this repository has been bitten by this, and this one was bitten
+inside twenty four hours.
 
-**"The bar is eight" is wrong by one, in the paragraph that scolds the file for
-having said otherwise.** `CLAUDE.md:117` and `atuned_src/engine/core.js:102`
-both say it. `TABDEF` carries **9** entries, counted in the built `engine.js`:
-Energetics, Ritual, Story, Field, Body, Compass, Knowledge, Games, Summary.
+**`AO0` claims the funnel has zero pages.** It has four, and he is shipping
+them tonight.
 
-**`BL2` claims the release ceiling is surfaced nowhere.** `ui/release.js:100`
-and `ui/summary.js:591` both read it.
+**`BL2` claims the release ceiling is surfaced nowhere.** Two files read it.
 
-**`AO0` claims the funnel has zero pages.** It has four.
+**The list's identifiers still do not identify, and it is measurably worse.**
 
-**The list's identifiers do not identify.**
+    measured    929 lines carry an identifier, 864 distinct
+    measured    59 identifiers used more than once, across 124 lines
+    measured    67 sections, 54 distinct ids, so 13 section ids are ambiguous
+    measured    64 lines carrying a state carry no identifier at all
 
-    measured    725 distinct item ids
-    measured    57 of them used more than once, across 121 lines
-    measured    13 section ids used twice, so 26 of 100 sections are ambiguous
+This cost a real measurement tonight. Counting the sections that carry a
+question **by identifier gives 35. Counting them by occurrence gives 40.** Five
+sections are invisible to anything that keys on the id, and the generated
+`QUESTIONS.md` is right because it counts occurrences. `CP1`, `CP2` and `CP3`
+now mean both the child pattern build and the whole product copy sweep, in the
+same file, both live. `RL1` still means two unrelated things.
 
-The sharpest case is live right now. **`RL1` means two unrelated things.** At
-line 85 it is "it names what was selected", from today's high priority release
-ruling. At line 2109 it is "the ritual plan is saved and never read back, worth
-72 of 1000 at day 30, the largest single item and nearly free." A seat told to
-build `RL1` can build the wrong one. `VB1` means three different things and two
-of its three homes are marked built while the third is open, so "VB1 is done"
-is both true and false.
-
-**Recommended, and it is cheap:** new items take a section prefix, so today's
-release panel is `0c2.RL1` and the ritual plan item stays `0f.RL1`. Nothing
-already written has to change.
+**Recommended, and it is cheap:** new items take a section prefix, so tonight's
+ring is `08f.CQR1` and the ritual plan item stays `0f.RL1`. Nothing already
+written has to change.
 
 ---
 
-# 8. THE SHAPE OF THE LIST, MEASURED
+# 9. The shape of the list, measured
 
-Grouped by subject rather than by the pass that wrote it. This is the same 862
-lines, counted a second way.
+Grouped by subject rather than by the pass that wrote it. Same 993 lines,
+counted a second way. **Method: by section, naming the sections, because
+counting by identifier undercounts and section 8 says why.**
 
-| Subject | Open | His | Built | Sections it is specced across |
-|---|---|---|---|---|
-| Ritual | 101 | 26 | 45 | 12 |
-| Avatar | 66 | 14 | 19 | 7 |
-| Funnel and quiz | 39 | 9 | 14 | 5 |
-| Onboarding | 31 | 9 | 14 | 3 |
-| **Story and release** | **30** | **3** | **1** | **2** |
-| Marketing and copy | 24 | 1 | 10 | 3 |
-| Gamification | 24 | 11 | 13 | 2 |
-| Sniffer | 21 | 17 | 11 | 4 |
-| Feathers and Field | 13 | 1 | 14 | 4 |
-| Knowledge | 11 | 0 | 14 | 2 |
-| Compass | 7 | 0 | 15 | 3 |
-| Summary | 6 | 0 | 4 | 2 |
-| Everything else | 92 | 22 | 92 | 20 |
+| Subject | Open | His | Built | Per cent built | Sections |
+|---|---|---|---|---|---|
+| Ritual | 114 | 26 | 40 | 22 | 9 |
+| Avatar and character sheet | 82 | 13 | 33 | 26 | 6 |
+| Story and release | 39 | 12 | 26 | 34 | 6 |
+| Onboarding, stopped | 29 | 3 | 13 | 29 | 3 |
+| Logotype and favicon | 18 | 12 | 24 | 43 | 3 |
+| Funnel and quiz | 20 | 5 | 6 | 19 | 7 |
+| Sniffer and lexicon | 17 | 21 | 4 | 10 | 3 |
+| The nineteenth pass | 13 | 1 | 0 | 0 | 1 |
+| Navigation | 10 | 1 | 1 | 8 | 1 |
+| Whole file | 520 | 136 | 317 | 32 | 67 |
 
-**The list is not 465 tasks. It is about twelve subjects, each specced between
-two and twelve times, with no later spec retiring an earlier one.**
+**The list is not 520 tasks. It is about a dozen subjects, each specced between
+one and nine times, with no later spec retiring an earlier one.**
 
-Two readings fall out of the table and both matter.
+Three readings fall out and all three change a plan.
 
-**His instinct was right and the arithmetic proves it.** Story and release
-carry 31 items and **1 built**. Every other substantial subject sits between 40
-and 68 percent built. He said the most important portion of the product has had
-the least attention. That is not a feeling. It is the lowest ratio on the page
-by a factor of thirteen.
+**His instinct was right and the team has answered it.** Last stamp, story and
+release carried 30 open and **1 built**, the lowest ratio on the page by a
+factor of thirteen. Tonight it is 39 open and **26 built**, at 34 per cent,
+which is above the file's own average of 32. Two passes went at it in three
+hours. **That finding is retired by measurement and should not be repeated.**
+The surface still grades a D, which is now a design question and not a neglect
+question, and `SQ1` is the whole of it.
 
-**The ritual and the avatar are 167 open items, 36 percent of the open column,
-and neither can be built today.** One needs a reconciliation and the other
-needs a ruling. That is where the list's weight sits and it is not where the
-work is.
+**The ritual and the avatar are 196 open items, 38 per cent of the open column,
+and neither can be built tonight.** One needs a reconciliation and the other
+needs a ruling. That is where the weight sits and it is not where the work is.
+It was 167 at the last stamp. The gap is widening, which is what item 10 is for.
+
+**The sniffer is the worst ratio on the page and nobody has noticed.** 17 open,
+**21 of his**, 4 built, 10 per cent. It is the only subject where his column is
+larger than the open column, which means it is not under specced or under
+built. It is waiting, and three of the things it waits for are files his own
+spec says are ours to load.
 
 ## The part of the file nothing counts
 
-    measured    lines 1 to 3997 carry all 862 checkboxes
-    measured    lines 3998 to 5769 carry 0 checkboxes
-    measured    and 61 bullets and 5 numbered items that are work
+    measured    the last line carrying a checkbox is 5079
+    measured    lines 5080 to 6646 carry none
+    so          1,567 lines, 24 per cent of the file, is the record half
 
-**1,772 lines, 31 percent of the file, is the record half, and it holds work in
-prose that no count reaches.** "The numbers, everywhere", "Tooltips on every
-number and every button", "Screen zones", "Badges, achievements and score" are
-requests of his sitting in paragraphs, some of them since built under other
-names and some never started, and nothing distinguishes the two.
+Work lives in there, in prose, that no count reaches. "The numbers,
+everywhere", "Tooltips on every number and every button", "Screen zones",
+"Badges, achievements and score" are requests of his sitting in paragraphs,
+some since built under other names and some never started, and nothing
+distinguishes the two. `AC1`, item 3 of the order, lives in there: a corruption
+defect that no count on this page would reach.
 
 The record must not be compressed. That is what has kept this project honest.
 But the items inside it should be mirrored into the ledger as checkboxes so
@@ -601,48 +766,71 @@ they are counted, and the prose left exactly as he said it.
 
 ---
 
-# 9. NOT DOING THIS ROUND
+# 10. Not doing this round
 
 Named, so nothing disappears quietly.
 
-- **The whole avatar and character sheet.** 66 items. Blocked on `D11`.
+- **The two level navigation bar, `MN1-MN7`.** Ruled work, fully specified,
+  and it is a no this round. Section 6 has the three reasons.
+- **The wordmark, `LG1-LG7`.** Blocked on nine cut questions that are his. The
+  favicon is item 6 and the wordmark waits for them.
+- **The whole avatar and character sheet.** 82 items. Blocked on `D11`.
+- **`SY5` and the story page's look.** Blocked on `SQ1`. The four concretes
+  build, the feeling waits.
 - **The `RV` release flow, the heard half.** Blocked on `RV7` and on a
   recording only he can make.
-- **The ritual build.** 101 items. Item 9 reconciles it; nothing is built from
+- **The ritual build.** 114 items. Item 10 reconciles it. Nothing is built from
   it this round.
-- **`SX1`, the addresses rename.** Blocked on one word from him, and it should
-  land before the ritual and avatar surfaces, not after.
-- **Anything needing a server.** About 20 items. Blocked on `Q5`.
-- **The chakra band.** Blocked on `CB9`.
-- **The universal law films and the nerve state icons.** Blocked on assets that
-  are not in this repository.
-- **Onboarding.** Stopped by his ruling, not deferred.
-- **The schema items.** Deliberately held until `Q5` is answered, then done
-  immediately, in the gap before the service is built. That gap is the last
-  cheap moment.
+- **The badge and achievement ladder, `GB1`.** Newly ruled and it cannot be
+  costed until the currency has a name. The design brief can be written; no
+  number in it is real until `Q4`.
+- **The ninety day simulation, `SIM1-SIM4`.** Newly ruled and large. `SIM4`
+  says one already exists, unread. Reading that and saying what moved is the
+  first deliverable, not a second simulation.
+- **All 136 snapshots.** Five this round, by decision. The generator gate at
+  `QC3` lands with them so the rest gain a snapshot as they are touched.
+- **`SX1`, the addresses rename.** Blocked on one word, and it should land
+  before the ritual and avatar surfaces, not after.
+- **Anything needing a server.** About 20 items.
+- **The chakra band, the universal law films, the nerve state icons, the three
+  sniffer files.** Blocked on rulings or on assets that are not in this
+  repository.
+- **Onboarding.** Stopped by his ruling, twice, not deferred.
+- **The schema items, including `CP5`.** Deliberately held until the server
+  question is answered, then done immediately, in the gap before the service is
+  built. That gap is the last cheap moment.
 
 ---
 
-# 10. NEEDS A RULING
+# 11. Needs a ruling
 
 Only the ones where the answer changes what gets built. The full argument for
-each is in section 2.
+each is in section 2, and **none of these goes to him as it stands.** Item 1 of
+the order is the snapshot each one needs: what it is, what is at stake, what
+happens either way, and the file to look at.
 
-1. **The twenty one laws and the coherence definition.** `SN5`, `SN6`, `SN7`,
-   asked once. Options: adopt the spec, keep the engine and correct the spec,
-   or carry both under separate names.
-2. **The opening surface, and whether the avatar is a tab.** `D11`. Options:
-   tenth tab and it opens there; tenth tab and the Field still opens; or it
-   stays a drill folded into Summary.
-3. **The audio.** `RV7`. Options: embed as base64, fetch at the sign in seam,
-   or synthesise only and lose his voice from the opening.
-4. **The currency.** Karma, points, or patterns. One word.
-5. **The server.** `AS2`. Options: build it this round, or the app stays one
-   file and about twenty items are marked impossible rather than open.
-6. **The word that replaces "addresses".** `SX1`. Cheapest answer on the page,
-   212 string literals waiting on it.
+1. **The opening surface, and whether the avatar is a tab.** `D11`. Releases
+   82 items. Options: a tenth tab and the app opens on it; a tenth tab and the
+   Field still opens; or it stays a drill folded into Summary.
+2. **Which of the four beliefs is the story page.** `SQ1`. Releases the surface
+   he graded a D, and four prototypes are built and waiting in
+   `proto/story4/`. Options: the instrument, the mirror, the body, the bench,
+   or the sentence that is right if none of them is.
+3. **The twenty one laws and the coherence definition.** `SN5`, `SN6`, `SN7`,
+   asked once. On the deadline path now, because the funnel is about to print a
+   CQ. Options: adopt the spec, keep the engine and correct the spec, or carry
+   both under separate names.
+4. **The currency.** Karma, points, or patterns. One word, and the badge team
+   cannot start without it.
+5. **The audio.** `RV7`, with `RV13` folded in. Options: embed as base64 at 160
+   kilobytes, fetch at the sign in seam and fail the network gate, or
+   synthesise and embed his frame when the recording exists.
 
-Three more that are small for him and are the ones a lawyer would find first:
-**`PO2`** the word heals, **`D10`** the therapy equivalence claim, and
-**`SF6`** the safety referral that names Psychopathy on screen and has never
-fired.
+Two more that cost him one word each and that he should be told are not holding
+anything up: **`SX1`**, the word that replaces "addresses", and **`TR13`**,
+muted or vivid for the favicon, which ships muted tonight either way.
+
+Three that are small for him and are the ones a lawyer would find first:
+**`PO2`** the word heals, which is on the funnel and therefore on tonight,
+**`D10`** the therapy equivalence claim, and **`SF6`** the safety referral that
+names Psychopathy on screen and has never fired.
