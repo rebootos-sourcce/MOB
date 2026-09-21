@@ -45,6 +45,11 @@ for(const raw of lines){
   if(!sub){ sub={t:'',items:[]}; }
   item={k:m[1],body:m[2]};
   continue; }
+ /* An indented line starting with > is the question's snapshot, which belongs
+    to QUESTIONS.md and is read out of TASKS.md by tools/questions.js. The
+    backlog is the ledger and takes the finding only, so the snapshot is
+    skipped here rather than run into the body of the item. */
+ if(item&&/^ {2,}>/.test(l)){ continue; }
  if(item&&/^ {2,}\S/.test(l)){ item.body+=' '+l.trim(); continue; }
  if(l.trim()===''){ closeItem(); continue; }
  closeItem();
