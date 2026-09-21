@@ -111,6 +111,54 @@ and it is written down here so nobody reads the mark as complete.
 
 ---
 
+## 08j. RULED 21 SEPTEMBER, TWENTY THIRD PASS. THE FUNNEL AGAIN, AND HOW HE IS REPORTED TO.
+
+### FS. THE FUNNEL, SHARPENED.
+
+- [ ] **FS1. His words: "it needs to be sharpened by about, lose about a
+      hundred words."** A number he can check afterwards, so it is measured
+      before and after rather than felt.
+- [ ] **FS2. "Use more iconography. More symbolic."** The product already
+      rules that icons are ring and not fill, and it carries a seven band ring
+      and a set of seat marks. Symbolic here means those, used, rather than a
+      new library bought in.
+- [ ] **FS3. "Visual language. Speak more directly to people's pain points,
+      and directly from the heart. Meet people where they are at and provide
+      solutions, and pull them in. We want them to be excited."** That is the
+      brief and it sits against the house voice, which is mechanical and
+      precise and bans soft wellness language. Both hold: the pain is named in
+      physical terms a person recognises, and nothing is promised that the
+      product cannot do.
+
+### EX. SHOW HIM, DO NOT DESCRIBE IT.
+
+- [ ] **EX1. His words: "either spans a seventh. You have to show me
+      examples. I do not know what you are talking about."** The question was
+      asked in prose about geometry, which is the wrong medium for it, and
+      that is our defect and not his.
+- [ ] **EX2. The rule this sets.** A question about a drawing is asked with
+      the drawing. Both answers, side by side, on the same profile, at both
+      widths, with the difference visible rather than stated.
+
+### RP. HOW HE IS REPORTED TO.
+
+- [ ] **RP1. His words, and they are a ruling on every reply from here.** "The
+      output is so dense constantly that I cannot read this all the time. I
+      have got decision fatigue. So if there is a way to sharpen the summary
+      so it is what I actually have to do next. In fact, the output, if it is
+      just like: this is what I did, this is how it impacts you, this is what
+      I am doing next, and this is what I need from you, in bullets. That
+      helps. With questions already listed."
+- [x] **RP2. Four headings, in his order, and the questions are listed rather
+      than referred to.** Written into `CLAUDE.md` so it survives this
+      session. What I did. How it impacts you. What I am doing next. What I
+      need from you.
+- [ ] **RP3. And the density rule applies to the pages too.** A page he cannot
+      read is a page that did not ship, which is the same lesson as a build he
+      could not save.
+
+---
+
 ## 08i. RULED 21 SEPTEMBER, TWENTY SECOND PASS. THE JOURNAL IS A CONTAINER, AND THE FIVE QUOTIENTS.
 
 His words are kept verbatim wherever they are his. This pass carries a model

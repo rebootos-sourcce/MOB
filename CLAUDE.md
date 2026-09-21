@@ -306,6 +306,28 @@ working app he could not keep. Send it with the card set to attach. State the
 second route beside it: the branch is pushed, so every file also has a raw
 address he can save from a browser. A build he cannot save has not shipped.
 
+## Reporting to the owner. Ruled 21 September.
+
+**Four headings, in his order, and nothing else.** His words: "the output is
+so dense constantly that I cannot read this all the time, I have got decision
+fatigue. If the output is just like, this is what I did, this is how it
+impacts you, this is what I am doing next, and this is what I need from you,
+in bullets. That helps. With questions already listed."
+
+    What I did
+    How it impacts you
+    What I am doing next
+    What I need from you
+
+Bullets, not paragraphs. The questions are listed in full under the last
+heading, never referred to as a list he has to go and find. A finding that
+does not change what he decides goes in the backlog, not in the reply.
+
+**And a question about a drawing is asked with the drawing.** Ruled the same
+day, after a geometry question was put to him in prose and he said, correctly,
+that he could not tell what it meant. Both answers, side by side, same
+profile, both widths.
+
 ## Records
 
 `MILESTONES.md` is the sequenced plan, scrubbed by five disciplines, and it
