@@ -278,13 +278,14 @@ function main(){
   const spec=JSON.parse(fs.readFileSync(file,'utf8'));
   const nm='sets'+(process.argv[4]||'');
   const have=done(nm);
+  /* a set is either a list of ids, or {ids, soft} where soft asks for the second
+     run with the return rate turned on. The soft run is never the reported
+     answer and it is labelled so on the page. */
   Object.keys(spec).forEach(label=>{
-   if(have[label])return;
-   const r=measure(spec[label],false,label);
-   pushShard(nm,r); console.log(line(r));
-   if(spec[label].soft!==false){
-    const l2=label+'+soft';
-    if(!have[l2]){const r2=measure(spec[label],true,l2); pushShard(nm,r2); console.log(line(r2));}}});
+   const v=spec[label], ids=Array.isArray(v)?v:v.ids, wantSoft=Array.isArray(v)?false:!!v.soft;
+   if(!have[label]){const r=measure(ids,false,label); pushShard(nm,r); console.log(line(r));}
+   if(wantSoft){const l2=label+' with the return rate';
+    if(!have[l2]){const r2=measure(ids,true,l2); pushShard(nm,r2); console.log(line(r2));}}});
   return;}
  if(cmd==='lattice'){
   /* ============================================================

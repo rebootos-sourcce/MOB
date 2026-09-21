@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>One band, two ways to divide it</title>
+<link rel="stylesheet" href="../../funnel/tokens.css">
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);
+ font-family:var(--sans);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+body{padding:0 0 70px}
+.wrap{max-width:1240px;margin:0 auto;padding:0 16px}
+h1{font-size:30px;line-height:1.16;letter-spacing:-.02em;margin:22px 0 6px;font-weight:600}
+h2{font-size:22px;letter-spacing:-.01em;margin:0 0 2px;font-weight:600}
+h3{font-size:13px;letter-spacing:.06em;color:var(--dim);margin:30px 0 10px;font-weight:600}
+p{margin:0 0 8px;max-width:62ch}
+.lead{font-size:16px;color:var(--mid);margin-bottom:18px}
+.cap{font-size:14px;color:var(--mid);margin:8px 0 0}
+.cap b{color:var(--ink);font-weight:600}
+.dim{color:var(--dim)}
+hr{border:0;border-top:1px solid var(--edge);margin:30px 0}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+@media(max-width:900px){.two{grid-template-columns:1fr;gap:26px}}
+.col{background:var(--panel);border:1px solid var(--edge);border-radius:var(--r);padding:18px}
+.col.a{border-color:rgba(126,184,212,.34)}
+.fig{background:#08090D;border:1px solid var(--edge);border-radius:var(--r-s);
+ overflow:hidden;line-height:0;margin-top:12px}
+canvas{display:block;width:100%}
+.row{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:baseline;
+ font-size:14px;padding:5px 0;border-bottom:1px solid var(--edge)}
+.row b{font-variant-numeric:tabular-nums;font-weight:600}
+.lbl{font-size:12px;letter-spacing:.08em;color:var(--dim);margin:14px 0 2px}
+.bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;background:var(--panel);
+ border:1px solid var(--edge);border-radius:var(--r-s);padding:10px 12px;margin:14px 0}
+select{min-height:var(--tap);background:var(--panel-2);color:var(--ink);
+ border:1px solid var(--edge-2);border-radius:var(--r-xs);padding:0 12px;font:inherit;
+ font-size:14px;cursor:pointer;max-width:calc(100vw - 56px)}
+.stat{font-size:13px;color:var(--mid);font-variant-numeric:tabular-nums}
+.stat b{color:var(--ink);font-weight:600}
+.fail{background:rgba(255,46,31,.14);border:1px solid var(--bad);border-radius:var(--r-s);
+ padding:12px 14px;margin:16px 0}
+ul{margin:0 0 8px;padding-left:18px;max-width:62ch}
+li{margin:0 0 5px;color:var(--mid)}
+li b{color:var(--ink);font-weight:600}
+@media(max-width:640px){h1{font-size:23px}.col{padding:14px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>One band, two ways to divide it</h1>
+<p class="lead">Crown holds twenty one addresses. Throat holds twelve. The same
+seven seats, divided two ways, on the same profile.</p>
+
+<div class="bar">
+ <select id="who" aria-label="Profile"></select>
+ <span class="stat" id="head"></span>
+</div>
+<div id="boot"></div>
+
+<div class="two">
+ <section class="col a">
+  <h2>Equal sevenths</h2>
+  <p class="cap">Every seat takes the same arc.</p>
+  <div class="fig"><canvas id="ringA" role="img" aria-label="the shell divided into seven equal arcs"></canvas></div>
+  <p class="lbl">One address, magnified</p>
+  <div class="fig"><canvas id="detA" role="img" aria-label="one Crown address beside one Throat address, at equal sevenths"></canvas></div>
+  <div id="numA"></div>
+  <p class="lbl">Mark outside, meter, shell inside</p>
+  <div class="fig"><canvas id="stackA" role="img" aria-label="the mark, the quiz ring and the shell as three rings, seams aligned"></canvas></div>
+  <p class="cap" id="capA"></p>
+ </section>
+
+ <section class="col">
+  <h2>Share of the addresses</h2>
+  <p class="cap">Every address takes the same arc.</p>
+  <div class="fig"><canvas id="ringB" role="img" aria-label="the shell divided by address count"></canvas></div>
+  <p class="lbl">One address, magnified</p>
+  <div class="fig"><canvas id="detB" role="img" aria-label="one Crown address beside one Throat address, at share of the addresses"></canvas></div>
+  <div id="numB"></div>
+  <p class="lbl">Mark outside, meter, shell inside</p>
+  <div class="fig"><canvas id="stackB" role="img" aria-label="the mark, the quiz ring and the shell as three rings, shell seams off the others"></canvas></div>
+  <p class="cap" id="capB"></p>
+ </section>
+</div>
+
+<hr>
+<h3>The four anchors</h3>
+<p class="lead">The seven seats hold all but four of the addresses. Those four
+sit above the body and below it, in no seat.</p>
+<div class="two">
+ <section class="col">
+  <h2>Seated only</h2>
+  <div class="fig"><canvas id="anchN" role="img" aria-label="the shell with the seated addresses only"></canvas></div>
+  <p class="cap">Seven bands, and the four are nowhere.</p>
+ </section>
+ <section class="col">
+  <h2>Marked</h2>
+  <div class="fig"><canvas id="anchY" role="img" aria-label="the shell with four anchor marks at the seam"></canvas></div>
+  <p class="cap">Four rings at the seam. Two above crown, two below root.</p>
+ </section>
+</div>
+<p class="cap" style="margin-top:12px">The band is the spine closed into a
+loop, so it shuts at the base. Above the crown and below the root land next to
+each other, at six o'clock.</p>
+
+<hr>
+<h3>What each answer costs</h3>
+<ul>
+ <li><b>Equal sevenths.</b> The shell, the funnel mark and the quiz ring stay
+  one drawing. An address at Crown is drawn narrower than an address at Throat.</li>
+ <li><b>Share of the addresses.</b> A stave means the same thing everywhere.
+  The shell stops being the mark.</li>
+</ul>
+<p class="cap">Live off <span class="dim">../../engine.js</span>. Seat counts
+read at run time. Nothing is fetched.</p>
+</div>
+
+<script src="../../engine.js"></script>
+<script src="../../funnel/ring.js"></script>
+<script>
+var esc=function(s){return String(s==null?'':s)
+ .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');};
+var MISS=[];
+if(typeof BANDS==='undefined'||typeof compute!=='function')MISS.push('engine.js');
+if(typeof RING==='undefined')MISS.push('funnel/ring.js');
+if(MISS.length){
+ document.getElementById('boot').innerHTML='<div class="fail"><b>This page did not load.</b> missing '
+  +esc(MISS.join(' and '))+'. Open it from the repository so the sibling files resolve.</div>';
+}else{
+
+var clampv=function(v,a,b){return Math.max(a,Math.min(b,v));};
+var hx=function(h){h=h.replace('#','');return [parseInt(h.slice(0,2),16),
+ parseInt(h.slice(2,4),16),parseInt(h.slice(4,6),16)];};
+var rgba=function(c,a){return 'rgba('+c[0]+','+c[1]+','+c[2]+','+a+')';};
+var mix=function(a,b,t){return [Math.round(a[0]+(b[0]-a[0])*t),
+ Math.round(a[1]+(b[1]-a[1])*t),Math.round(a[2]+(b[2]-a[2])*t)];};
+var WHITE=[255,255,255];
+var COL={};BANDS.forEach(function(b){COL[b]=hx(PAL[b]);});
+var INK=hx('#EFEDE8'),DIM=hx('#94908A');
+var SW=RING.SWEEP*Math.PI/180, A0=RING.START*Math.PI/180;
+
+/* the roster, loaded the way the sims load it */
+function loadPerson(p){
+ S.dom=p.dom;S.doms=[p.dom];S.arcs=[p.a1,p.a2];S.roots=[];buildSoul();
+ CHARGES.forEach(function(c){S.charge[c]=(p.c&&p.c[c]!==undefined)?p.c[c]:0;
+  S.replace[c]=(p.rep&&p.rep[c])||0;});
+ var LS=LAWSET[p.nm]||{_:LAW_DEFAULT};
+ SINAMES.forEach(function(l){S.law[l]=(LS[l]!==undefined)?LS[l]
+  :(LS._!==undefined?LS._:LAW_DEFAULT);});
+ return compute();}
+
+var R=null,ADDR={},LOAD={},PERSON=null,N={};
+function setPerson(nm){
+ PERSON=PEOPLE.filter(function(p){return p.nm===nm;})[0]||PEOPLE[0];
+ R=loadPerson(PERSON);
+ BANDS.forEach(function(b){
+  ADDR[b]=W.filter(function(n){return n.b===b;});
+  N[b]=ADDR[b].length;
+  LOAD[b]=ADDR[b].reduce(function(a,n){return a+n.sq;},0)/N[b];});
+ document.getElementById('head').innerHTML='<b>'+esc(PERSON.nm)+'</b> '
+  +esc(PERSON.role)+' &middot; crown <b>'+N['Crown']+'</b> addresses &middot; throat <b>'
+  +N['Throat']+'</b>';
+ drawAll();}
+
+/* ---- canvas helpers ---- */
+var DPR=Math.min(2,window.devicePixelRatio||1);
+function fit(id,ratio){
+ var cv=document.getElementById(id),box=cv.parentNode.clientWidth||300;
+ var h=Math.round(box*ratio);
+ cv.style.height=h+'px';cv.width=Math.round(box*DPR);cv.height=Math.round(h*DPR);
+ var g=cv.getContext('2d');g.setTransform(DPR,0,0,DPR,0,0);g.clearRect(0,0,box,h);
+ return {g:g,w:box,h:h};}
+function segP(g,cx,cy,r0,r1,a0,a1){
+ var lo=Math.min(a0,a1),hi=Math.max(a0,a1);if(r0<0)r0=0;
+ g.beginPath();g.arc(cx,cy,r1,lo,hi,false);g.arc(cx,cy,r0,hi,lo,true);g.closePath();}
+function seg(g,cx,cy,r0,r1,a0,a1){segP(g,cx,cy,r0,r1,a0,a1);g.fill();}
+
+/* the seat sweeps, both answers. EQUAL is RING's own. SHARE is the address
+   count, read off W rather than typed. */
+function sweeps(mode){
+ return BANDS.map(function(b){return mode==='share'?(N[b]/108*TAU):SW;});}
+
+/* ---- FIGURE ONE. the shell, with every address drawn as a stave. ---- */
+function shell(id,mode){
+ var f=fit(id,1),g=f.g,cx=f.w/2,cy=f.h/2;
+ var r=Math.min(f.w,f.h)/2-10, BT=RING.BANDFRAC*2*r, RM=r-BT/2;
+ var hair=RING.HAIR/RING.D*2*r, sw=sweeps(mode), a=A0;
+ BANDS.forEach(function(b,i){
+  var c=COL[b],gs=ADDR[b],k=sw[i]/gs.length,seam=sw[i]*0.022;
+  /* THE TRACK CARRIES THE COMPARISON. At a tenth of an alpha the seats were
+     nearly black and the two answers looked like the same drawing, which is
+     the one thing this page cannot afford. */
+  g.fillStyle=rgba(c,0.30);
+  seg(g,cx,cy,RM-BT/2,RM+BT/2,a,a-sw[i]+seam);
+  gs.forEach(function(n,j){
+   var b0=a-j*k,b1=b0-k*0.74;
+   var len=hair+(clampv(n.sq,0,10)/10)*(BT-hair);
+   g.fillStyle=rgba(mix(c,WHITE,n.sq>=4?0.3:0.12),n.sq>=4?0.96:0.62);
+   seg(g,cx,cy,RM-BT/2,RM-BT/2+len,b0,b1);});
+  a-=sw[i];});
+ g.strokeStyle=rgba(DIM,0.26);g.lineWidth=1;
+ g.beginPath();g.arc(cx,cy,RM+BT/2,0,TAU);g.stroke();
+ /* the two seats under discussion carry their name, and nothing else does */
+ ['Crown','Throat'].forEach(function(b){
+  var i=BANDS.indexOf(b),a0=A0,j;
+  for(j=0;j<i;j++)a0-=sw[j];
+  var am=a0-sw[i]/2, rr=(RM-BT/2)*0.60;
+  g.save();g.translate(cx+Math.cos(am)*rr,cy+Math.sin(am)*rr);
+  g.font='600 '+Math.max(11,r*0.055)+'px var(--sans),system-ui,sans-serif';
+  g.fillStyle=rgba(INK,0.9);g.textAlign='center';g.textBaseline='middle';
+  g.fillText(b.toLowerCase(),0,0);
+  g.font='500 '+Math.max(10,r*0.045)+'px var(--sans),system-ui,sans-serif';
+  g.fillStyle=rgba(DIM,0.95);
+  g.fillText(N[b]+' addresses',0,Math.max(14,r*0.07));
+  g.restore();});}
+
+/* ---- FIGURE TWO. THE TWO SEATS, STRAIGHTENED AND MAGNIFIED.
+
+   The first cut drew one address as a bar inside a box of fixed width, and
+   it read as how full the box was rather than how wide the address was. This
+   draws the seat itself, cut into the addresses it actually holds, at one
+   scale shared by both columns. Equal sevenths puts two strips of the same
+   length side by side, one cut into twenty one and one into twelve. Share
+   puts two strips of different lengths side by side, cut at the same pitch.
+   The answer is which picture looks right, and no number is needed to see
+   it. ---- */
+function detail(id,mode,outId){
+ var f=fit(id,0.40),g=f.g,w=f.w,h=f.h;
+ var sw=sweeps(mode);
+ var iC=BANDS.indexOf('Crown'), iT=BANDS.indexOf('Throat');
+ var segC=sw[iC]*180/Math.PI, segT=sw[iT]*180/Math.PI;
+ var degC=segC/N['Crown'], degT=segT/N['Throat'];
+ /* one scale, fixed to the widest a seat can be under either answer, so the
+    two columns are comparable with each other and not only inside themselves */
+ var gut=58, px=(w-gut-16)/((21/108)*360);
+ var bh=Math.min(34,h*0.26), y0=h*0.16;
+ [['Crown',segC,degC,N['Crown']],['Throat',segT,degT,N['Throat']]].forEach(function(row,ri){
+  var b=row[0],seat=row[1],each=row[2],n=row[3],c=COL[b];
+  var y=y0+ri*(bh+34), x0=gut;
+  g.fillStyle=rgba(c,0.22);
+  g.fillRect(x0,y,seat*px,bh);
+  var j,k=(seat*px)/n;
+  for(j=0;j<n;j++){
+   g.fillStyle=rgba(mix(c,WHITE,0.16),0.95);
+   g.fillRect(x0+j*k,y,Math.max(0.8,k-1.3),bh);}
+  g.font='600 12px var(--sans),system-ui,sans-serif';
+  g.fillStyle=rgba(INK,0.92);g.textAlign='left';g.textBaseline='middle';
+  g.fillText(b.toLowerCase(),4,y+bh/2);
+  g.font='500 12px var(--sans),system-ui,sans-serif';
+  g.textBaseline='alphabetic';g.fillStyle=rgba(DIM,1);
+  g.fillText(each.toFixed(1)+' degrees each',x0,y+bh+16);});
+ document.getElementById(outId).innerHTML=
+  '<div class="row"><span>Crown</span><b>'+degC.toFixed(1)+' degrees</b></div>'
+ +'<div class="row"><span>Throat</span><b>'+degT.toFixed(1)+' degrees</b></div>';}
+
+/* ---- FIGURE THREE. THE CONSEQUENCE, AND IT IS ONE PICTURE.
+   Three rings on one centre. Outside is the funnel mark, every band full.
+   Middle is the quiz ring, thickening with the load. Inside is the shell.
+   The mark's seven boundaries are drawn as guides across all three, so a seam
+   that agrees runs straight from the outside in and a seam that does not
+   breaks off the guide. ---- */
+function stack(id,mode,capId){
+ var f=fit(id,0.80),g=f.g,cx=f.w/2,cy=f.h/2;
+ var R0=Math.min(f.w,f.h)/2-14;
+ var band=R0*0.20, gap=R0*0.055;
+ var rings=[
+  {r:R0,          mode:'equal', full:true},                 /* the mark */
+  {r:R0-band-gap, mode:'equal', full:false},                /* the meter */
+  {r:R0-2*(band+gap), mode:mode, full:false}];              /* the shell */
+ rings.forEach(function(ring){
+  var sw=sweeps(ring.mode),a=A0;
+  BANDS.forEach(function(b,i){
+   var c=COL[b],seam=sw[i]*0.02;
+   var t=ring.full?band:Math.max(band*0.16,(clampv(LOAD[b],0,10)/10)*band);
+   var rm=ring.r-band/2;
+   g.fillStyle=rgba(c,0.16);
+   seg(g,cx,cy,rm-band/2,rm+band/2,a,a-sw[i]+seam);
+   g.fillStyle=rgba(mix(c,WHITE,0.12),0.95);
+   seg(g,cx,cy,rm-t/2,rm+t/2,a,a-sw[i]+seam);
+   a-=sw[i];});});
+ /* THE GUIDES GO ON TOP, and they are the mark's own seven seams. A seam
+    that agrees runs under the guide from the outside in. A seam that does not
+    breaks off it, and that break is the answer to the question. */
+ g.strokeStyle=rgba(INK,0.62);g.lineWidth=1.4;
+ for(var q=0;q<7;q++){
+  var ang=A0-q*SW, r1=R0+10, r0=R0-3*band-2*gap-6;
+  g.beginPath();
+  g.moveTo(cx+Math.cos(ang)*r0,cy+Math.sin(ang)*r0);
+  g.lineTo(cx+Math.cos(ang)*r1,cy+Math.sin(ang)*r1);
+  g.stroke();}
+ /* the three words are in the label above this figure and not written over
+    the drawing, which is the house's own objection to text on a graphic. */
+ document.getElementById(capId).innerHTML=(mode==='equal'
+  ? 'The seams run straight through. <b>One drawing.</b>'
+  : 'The inner seams leave the guides. <b>Two drawings.</b>');}
+
+/* ---- FIGURE FOUR. THE ANCHORS, AND WHERE THEY LAND.
+
+   The seats run from six o'clock up the right and back down the left, so
+   Root opens the loop just right of the base and Crown closes it just left.
+   Above the crown and below the root are therefore neighbours at the seam,
+   which is a fact about the drawing rather than a choice made here.
+
+   Both figures take the same radius, marked or not, so the pair can be
+   compared. The first cut sized them differently and put the four marks off
+   the bottom of the canvas. ---- */
+function anchors(id,marked){
+ var f=fit(id,0.94),g=f.g,cx=f.w/2,cy=f.h/2;
+ var m=Math.min(f.w,f.h), rr=Math.max(5,m*0.021);
+ var r=m/2-(rr*2+30);
+ var BT=RING.BANDFRAC*2*r, RM=r-BT/2, a=A0;
+ BANDS.forEach(function(b,i){
+  var c=COL[b],t=Math.max(BT*0.16,(clampv(LOAD[b],0,10)/10)*BT);
+  g.fillStyle=rgba(c,0.28);
+  seg(g,cx,cy,RM-BT/2,RM+BT/2,a,a-SW+SW*0.022);
+  g.fillStyle=rgba(mix(c,WHITE,0.12),0.95);
+  seg(g,cx,cy,RM-t/2,RM+t/2,a,a-SW+SW*0.022);
+  a-=SW;});
+ g.strokeStyle=rgba(DIM,0.26);g.lineWidth=1;
+ g.beginPath();g.arc(cx,cy,RM+BT/2,0,TAU);g.stroke();
+ if(!marked)return;
+ /* a mark is a ring and never a fill. Above sits on the crown side of the
+    seam, which is left of six o'clock, and below on the root side. */
+ var out=RM+BT/2+rr+9;
+ var above=FIELDN.filter(function(n){return n.b==='Field-Above';});
+ var below=FIELDN.filter(function(n){return n.b==='Field-Below';});
+ function put(list,dir,col){
+  list.forEach(function(n,k){
+   var ang=A0+dir*(0.10+k*0.125);
+   var x=cx+Math.cos(ang)*out, y=cy+Math.sin(ang)*out;
+   g.strokeStyle=rgba(col,0.95);g.lineWidth=1.7;
+   g.beginPath();g.arc(x,y,rr,0,TAU);g.stroke();});
+  var la=A0+dir*(0.10+(list.length-1)*0.125/2);
+  var lx=cx+Math.cos(la)*(out+rr+16), ly=cy+Math.sin(la)*(out+rr+16);
+  g.font='600 12px var(--sans),system-ui,sans-serif';
+  g.fillStyle=rgba(col,1);g.textAlign='center';g.textBaseline='middle';
+  g.fillText(dir>0?'above':'below',lx,ly);}
+ put(above,1,COL['Crown']);
+ put(below,-1,COL['Root']);}
+
+/* the four that sit in no seat, read off the engine rather than named here */
+var FIELDN=NODES.filter(function(n){return String(n.b).indexOf('Field')===0;});
+
+function drawAll(){
+ shell('ringA','equal');   shell('ringB','share');
+ detail('detA','equal','numA'); detail('detB','share','numB');
+ stack('stackA','equal','capA'); stack('stackB','share','capB');
+ anchors('anchN',false);   anchors('anchY',true);}
+
+var sel=document.getElementById('who');
+sel.innerHTML=PEOPLE.map(function(p){
+ return '<option value="'+esc(p.nm)+'">'+esc(p.nm)+', '+esc(p.role)+'</option>';}).join('');
+sel.value='James';
+sel.addEventListener('change',function(){setPerson(sel.value);});
+window.addEventListener('resize',drawAll);
+window.__state=function(){return {person:PERSON.nm,
+ counts:BANDS.map(function(b){return b+':'+N[b];}).join(' '),anchors:FIELDN.length};};
+setPerson('James');
+}
+</script>
+</body>
+</html>
