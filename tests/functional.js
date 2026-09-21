@@ -2741,6 +2741,121 @@ console.log('\n=== the orientation dial says nothing about an unread field ===')
  await pd.close();
 }
 
+console.log('\n=== the story lights what the engine read, once ===');
+/* THE HIGHLIGHTER READ THE SENTENCE TWICE AND LIT THE WRONG WORDS.
+
+   The scanner records hit.at on every hit, an offset into the normalised copy it
+   scanned. The page threw those away and ran its own global regular expression
+   over the raw text. Measured on the shipped build with an 87 word story: the
+   engine read 8 hits and the page lit 5. It dropped the coherent hit, because it
+   filtered coherent hits out of the table it built the expression from, so the
+   words that take charge OFF a person were the only ones invisible on the
+   surface whose whole job is to show the reading. And neither of the two names
+   the engine holds, "silenced" and "self-attack", appeared anywhere on the page.
+
+   engine/sniff.js carries normMap and marksOf now and the page walks them, so
+   there is one reading of the sentence. The counts are read off the run: 8 hits
+   become 6 marks because an adjective sitting on the same word as a placed term
+   merges into it rather than drawing twice, which is the scanner's own
+   precedence, so what is asserted is that the page and marksOf agree and that
+   nothing the engine read is left dark. A number typed in here would be wrong
+   the first time the lexicon grows.
+
+   THE REGISTER IS ASSERTED TOO, because it is what the whole layer depends on.
+   The highlight is a second copy of the text behind a transparent textarea, and
+   if the two hold different characters every mark after the difference lands on
+   the wrong letters. A mark that spans punctuation makes that easy to get wrong,
+   so the layer's own text is compared against the textarea's, character for
+   character. */
+{
+ const st=await browser.newPage({viewport:{width:1600,height:1000}});
+ await st.goto(FILE,{waitUntil:'load'}); await booted(st);
+ /* GUARDED, BECAUSE AN UNREACHABLE FUNCTION MUST FAIL BY NAME. Run against the
+    build before this landed, the probe threw "marksOf is not defined" out of
+    page.evaluate and took the whole gate with it, so a real regression here
+    would report a stack trace from node and nothing from the gate. The two
+    reachability rows below are the gate's own answer. */
+ const reach=await st.evaluate(()=>({
+  marks:typeof marksOf==='function', norm:typeof normMap==='function'}));
+ ok(reach.marks,'marksOf reaches the page from the engine half');
+ ok(reach.norm,'and so does normMap');
+ const lit=reach.marks?await st.evaluate(async()=>{
+  setTab(TAB.STORY);
+  await new Promise(r=>setTimeout(r,320));
+  const read=(tag,text)=>{
+   ST_TEXT=text; ST_PARSED=parseStory(text); stRender();
+   const hl=document.getElementById('sthl'), ta=document.getElementById('sttext');
+   const ms=[...hl.querySelectorAll('mark')];
+   return {tag, words:text.trim().split(/\s+/).length,
+    hits:ST_PARSED.hits.length,
+    engineMarks:marksOf(text,ST_PARSED).length,
+    lit:ms.length,
+    text:ms.map(e=>e.textContent),
+    names:ms.map(e=>e.getAttribute('data-nm')).filter(Boolean),
+    coh:ms.filter(e=>e.getAttribute('data-coh')).map(e=>e.textContent),
+    seated:ms.filter(e=>/--c:\s*#/.test(e.getAttribute('style')||'')).length,
+    /* the layer holds the person's own text and nothing else. The painter adds
+       one newline so the last line keeps its height, so that is allowed for. */
+    register:hl.textContent.replace(/\n$/,'')===ta.value,
+    taText:ta.value===text,
+    /* the engine's own answer for the same story, to compare against */
+    engineCoh:ST_PARSED.hits.filter(h=>h.band==='coherent').length,
+    engineNames:ST_PARSED.hits.filter(h=>h.label).map(h=>h.label)};};
+  return {
+   story:read('story',
+    "When my manager cut me off in the meeting I stayed quiet and just let it go, "
+    +"because speaking up has never once worked out for me. Later I told myself it was fine, "
+    +"that I was being reasonable, but my chest was tight all afternoon and I could not eat. "
+    +"I keep replaying it. I am furious with him and ashamed of myself, and I have no idea "
+    +"which of those two is actually mine to carry, or whether I am simply too tired to tell."),
+   idiom:read('idiom',
+    'I wanted to shut the door, and not come out at all. I felt so tired.'),
+   empty:read('empty','')};}):null;
+ if(!lit){
+  ok(false,'so nothing this surface draws can be measured against it');
+ } else {
+ [lit.story,lit.idiom].forEach(r=>{
+  ok(r.lit===r.engineMarks,r.tag+': the page lights exactly what marksOf placed, '
+   +r.lit+' against '+r.engineMarks);
+  ok(r.lit>0,r.tag+': and that is more than nothing, '+r.lit);
+  ok(r.register,r.tag+': the highlight layer holds the same characters as the box '
+   +'it sits behind, which is what keeps every mark in register');
+  ok(r.taText,r.tag+': and the box holds what was written into it');
+  ok(r.seated>0,r.tag+': a seated mark carries its seat colour, '+r.seated+' do');});
+ /* THE COHERENT HIT, which the expression filtered out by construction. */
+ ok(lit.story.engineCoh>0,'the story carries a coherent hit for the page to lose, '
+  +lit.story.engineCoh);
+ ok(lit.story.coh.length===lit.story.engineCoh,
+  'and every one of them is lit and says it is coherent, '+lit.story.coh.length
+  +' against '+lit.story.engineCoh+': '+JSON.stringify(lit.story.coh));
+ /* THE NAME THE ENGINE HOLDS, which never reached this surface at all. It is
+    carried on the mark and not drawn: the layer is aria-hidden and behind the
+    textarea, so where a person reads these is a decision about this page rather
+    than a defect in how it reads the sentence. */
+ ok(lit.story.engineNames.length>0,'the story carries named hits, '
+  +lit.story.engineNames.join(', '));
+ lit.story.engineNames.forEach(n=>ok(lit.story.names.indexOf(n)>=0,
+  'and the page carries the name the engine holds, '+JSON.stringify(n)
+  +', got '+JSON.stringify(lit.story.names)));
+ /* THE IDIOM ACROSS PUNCTUATION, which a search over the raw text cannot find. */
+ ok(lit.idiom.lit===1,'the idiom is one mark and not none, got '+lit.idiom.lit);
+ ok(/,/.test(lit.idiom.text[0]),
+  'lit as one stretch including the punctuation inside it, got '
+  +JSON.stringify(lit.idiom.text[0]));
+ ok(lit.idiom.names.length===1,'and it prints the engine\'s name for it, '
+  +JSON.stringify(lit.idiom.names));
+ /* and an empty box is an empty layer, because this runs on every keystroke */
+ ok(lit.empty.lit===0,'an empty story lights nothing, got '+lit.empty.lit);
+ ok(lit.empty.register,'and the two layers still agree about it');
+ console.log('  story      '+lit.story.hits+' hits, '+lit.story.lit+' lit, '
+  +lit.story.coh.length+' coherent, '+lit.story.names.length+' named');
+ console.log('             '+JSON.stringify(lit.story.text));
+ console.log('  idiom      '+JSON.stringify(lit.idiom.text)+' as '
+  +JSON.stringify(lit.idiom.names));
+ }
+ await st.close();
+}
+
 await browser.close();
 
 console.log('\n===== '+PASS+' passed, '+FAIL+' failed =====');

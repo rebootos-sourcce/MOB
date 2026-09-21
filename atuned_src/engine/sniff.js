@@ -157,7 +157,21 @@ function normMap(t){
   var sp=body.charAt(i)===' ';
   if(sp&&prev)continue;
   s+=body.charAt(i); map.push(bm[i]); prev=sp;}
- s+=' '; map.push(t.length);
+ /* AND THE CLOSING BOUNDARY IS ONLY ADDED IF THERE IS NOT ONE THERE ALREADY,
+    which the opening one has always done and this end had not. A story ending
+    on punctuation turned that punctuation into a space and then had another
+    appended, so the normalised copy closed on two: "hello." came back as
+    " hello  " and empty text came back as two spaces with a map entry
+    addressing nothing. It is the same off by one the note above records for the
+    opening boundary, on the other end, and the prototypes carry it too.
+
+    It changes no match, and that was measured rather than argued: 1779 texts
+    built from every phrase and four hundred words of the lexicon, each placed
+    at the end of a sentence, mid sentence and alone, scanned before and after.
+    Same hits, same kinds, same bands, same offsets, identical to the md5. A
+    phrase at the very end still closes on a space, because the first of the two
+    was always the real one. */
+ if(!prev){s+=' '; map.push(t.length);}
  return {s:s,map:map};}
 function scanStory(text){
  var src=normMap(text).s;

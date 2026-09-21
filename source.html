@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="628c170 2026-09-21 03:28"><head><meta charset="utf-8">
+<html lang="en" data-build="7c566ce 2026-09-21 03:59"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -10337,7 +10337,21 @@ function normMap(t){
   var sp=body.charAt(i)===' ';
   if(sp&&prev)continue;
   s+=body.charAt(i); map.push(bm[i]); prev=sp;}
- s+=' '; map.push(t.length);
+ /* AND THE CLOSING BOUNDARY IS ONLY ADDED IF THERE IS NOT ONE THERE ALREADY,
+    which the opening one has always done and this end had not. A story ending
+    on punctuation turned that punctuation into a space and then had another
+    appended, so the normalised copy closed on two: "hello." came back as
+    " hello  " and empty text came back as two spaces with a map entry
+    addressing nothing. It is the same off by one the note above records for the
+    opening boundary, on the other end, and the prototypes carry it too.
+
+    It changes no match, and that was measured rather than argued: 1779 texts
+    built from every phrase and four hundred words of the lexicon, each placed
+    at the end of a sentence, mid sentence and alone, scanned before and after.
+    Same hits, same kinds, same bands, same offsets, identical to the md5. A
+    phrase at the very end still closes on a space, because the first of the two
+    was always the real one. */
+ if(!prev){s+=' '; map.push(t.length);}
  return {s:s,map:map};}
 function scanStory(text){
  var src=normMap(text).s;
@@ -15705,40 +15719,68 @@ function stRefresh(){
    there was no way to see which fourteen, so the one place the instrument
    explains itself was a number.
 
-   The hits carry an offset into a normalised string, lowercased and stripped
-   of punctuation, so those offsets do not address the text a person actually
-   typed. Rather than make the engine carry two coordinate systems, the words
-   themselves are matched back against the original, longest first so a
-   phrase wins over the words inside it, which is the same precedence the
-   sniffer uses. */
+   AND THEN IT READ THE SENTENCE TWICE, which is this pass.
+
+   The scanner records hit.at on every hit, an offset into the normalised copy
+   it scanned. This threw those offsets away and ran its own global regular
+   expression over the raw text, which is a second reading of the same sentence
+   by a different rule, and the two rules do not agree. Measured on an 87 word
+   story: the engine read 8 hits and this lit 5. It dropped the coherent hit
+   because it filtered coherent hits out of the table it built the expression
+   from, so the words that take charge OFF a person were the only ones invisible
+   on the surface whose whole job is to show the reading. And a phrase the
+   scanner matched across punctuation could not be found at all: on "I wanted to
+   shut the door, and not come out", the scanner reads one hit, marksOf lights
+   the twenty two characters "shut the door, and not" and names them wanting to
+   disappear, and the expression over the raw text matches nothing, because the
+   normalisation the scanner read through had turned the comma into a space.
+
+   engine/sniff.js carries normMap and marksOf now, ported from proto/story4
+   where four prototypes each had a copy. One string, one set of offsets, and a
+   mark lands on exactly the characters that were scored.
+
+   NONE OF THE PROTOTYPES' LOOK COMES WITH IT. Each of the four drew its own
+   treatment, a coherent class, a hover link and a spotlight, and the belief for
+   this page is still the owner's to rule. The mark is the same st-f in the same
+   seat colour it has been since it landed. What changed is which stretches of
+   text get one.
+
+   AND THE NAME IS CARRIED BUT NOT DRAWN, which is the half of this that is not
+   mine. The engine holds a label on a named hit, "silenced" on stayed quiet and
+   "self-attack" on ashamed of myself, and measured on the shipped build neither
+   word appeared anywhere on this surface. marksOf carries them, so each mark
+   now states its name, its fetter, its amount and whether it is coherent. It is
+   stated and not shown: this layer is aria-hidden and sits behind the textarea
+   with pointer-events none, so a title on it reaches nobody, and putting the
+   names anywhere a person can read them is a design decision about this page
+   rather than a defect in how it reads the sentence. The gate asserts the
+   attributes, so they are not decoration waiting to rot. */
 function stHLHtml(txt){
  var p=ST_PARSED;
  if(!p||!p.hits.length)return esc(txt);
- var band={};
- p.hits.forEach(function(h){ if(h.t&&h.band&&h.band!=='coherent')band[h.t]=h.band; });
- var words=Object.keys(band).sort(function(a,b){return b.length-a.length;});
- if(!words.length)return esc(txt);
- var rx;
- try{ rx=new RegExp('\\b('+words.map(function(w){
-   return w.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');}).join('|')+')\\b','gi'); }
- catch(e){ return esc(txt); }
- var out='', last=0, m;
- while((m=rx.exec(txt))!==null){
-  out+=esc(txt.slice(last,m.index));
-  /* A HIT CARRIES A SEAT KEY, NOT A BAND NAME.
-
-     LEX stores 'throat' and seatCol wants 'Throat', so every word resolved
-     to the same fallback and six fetters across four different seats came
-     out in one colour, which is the opposite of the point. K2BAND is the
-     map the sniffer already uses for exactly this. */
-  var k=band[m[0].toLowerCase()]||band[m[0]];
-  var bn=K2BAND[k]||k;
-  out+='<mark class="st-f" style="--c:'+(bn?seatCol(bn):'var(--accent)')+'">'
-   +esc(m[0])+'</mark>';
-  last=m.index+m[0].length;
-  if(rx.lastIndex===m.index)rx.lastIndex++;}
- out+=esc(txt.slice(last));
- return out;}
+ var marks=(typeof marksOf==='function')?marksOf(txt,p):[];
+ if(!marks.length)return esc(txt);
+ var out='',last=0;
+ marks.forEach(function(m){
+  /* marksOf returns one mark per stretch of text, already sorted and already
+     merged where a phrase covers the words inside it, so this walks forward
+     and never has to decide precedence. That decision is the scanner's. */
+  out+=esc(txt.slice(last,m.s))
+   /* A HIT CARRIES A SEAT KEY, NOT A BAND NAME. LEX stores 'throat' and
+      seatCol wants 'Throat', so every word used to resolve to the same
+      fallback and six fetters across four seats came out in one colour, which
+      is the opposite of the point. marksOf has already run the key through
+      K2BAND and put the answer in m.bn. A coherent hit has no seat, because
+      it is not charge at an address, so it takes the accent the way an
+      unseated hit always has here. */
+   +'<mark class="st-f" style="--c:'+(m.bn?seatCol(m.bn):'var(--accent)')+'"'
+   +(m.label?' data-nm="'+esc(m.label)+'"':'')
+   +(m.fet?' data-fet="'+esc(m.fet)+'"':'')
+   +(m.amt!=null?' data-amt="'+esc(m.amt)+'"':'')
+   +(m.coh?' data-coh="1"':'')
+   +'>'+esc(txt.slice(m.s,m.e))+'</mark>';
+  last=m.e;});
+ return out+esc(txt.slice(last));}
 function stPaintHL(){
  var hl=document.getElementById('sthl'); if(!hl)return;
  /* the trailing newline keeps the last line's height when the text ends on
@@ -24322,5 +24364,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="001574645"></div>
+<div id="eof" hidden data-len="001577772"></div>
 </body></html>

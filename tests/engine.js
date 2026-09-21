@@ -3554,5 +3554,156 @@ g('38 · one seed for one unmeasured law, and the allowance is a ceiling');
  }
 }
 
+g('39 · the sentence is read once, and the marks land on the letters');
+/* ============================================================
+   THE HIGHLIGHTER READ THE SENTENCE TWICE.
+
+   scanStory records hit.at on every hit, an offset into the normalised copy it
+   scanned: lowercased, everything but a letter, an apostrophe or a space turned
+   into a space, runs of space collapsed, and a space added at each end so every
+   word has a boundary on both sides. The engine has carried those offsets since
+   the path was built and ui/storyui.js threw them away, running its own global
+   regular expression over the raw text instead. Two readings of one sentence by
+   two rules, and the two do not agree.
+
+   Measured on the shipped build with an 87 word story: the engine read 8 hits
+   and the page lit 5. It dropped the coherent hit, because it filtered coherent
+   hits out of the table it built the expression from, so the words that take
+   charge OFF a person were the only ones invisible. And on "I wanted to shut the
+   door, and not come out" the scanner reads one hit where the expression over
+   the raw text matches nothing at all, because the normalisation the scanner
+   read through had turned that comma into a space.
+
+   normMap is the normalisation as a function that also returns the raw index of
+   every character it kept, and scanStory builds its own src from it, so there is
+   no second copy to drift. The earlier inline version and a hand rebuilt one
+   differed by one whenever the text opened on punctuation, because ' '+body put
+   two spaces at the front when body already began with one, and that is exactly
+   the kind of difference that puts a mark one letter out.
+
+   Both ported from proto/story4, where four prototypes each carried a copy.
+   ============================================================ */
+{
+ const {normMap,marksOf,parseStory,scanStory,PHRASES,K2BAND}=E;
+ ok(typeof normMap==='function','normMap is reachable from the contract');
+ ok(typeof marksOf==='function','and so is marksOf');
+ if(typeof normMap!=='function'||typeof marksOf!=='function'){
+  ok(false,'so nothing below can be measured');
+ } else {
+ /* 39a. the normalisation, and the index back out of it */
+ const raw="When my manager cut me off, I STAYED QUIET — and just let it go.\n"
+  +"I couldn't eat.  Later: my chest was tight.";
+ const nm=normMap(raw);
+ ok(nm.s.length===nm.map.length,
+  'every character of the normalised copy has a raw index, '+nm.s.length
+  +' against '+nm.map.length);
+ ok(nm.s.charAt(0)===' '&&nm.s.charAt(nm.s.length-1)===' ',
+  'it opens and closes on a space, so every word has a boundary both sides');
+ ok(!/ {2}/.test(nm.s),'and no run of space survives, which is what a boundary '
+  +'search depends on');
+ ok(nm.s===nm.s.toLowerCase(),'it is one case');
+ ok(!/[^a-z' ]/.test(nm.s),'and holds only letters, apostrophes and spaces');
+ let mono=true; for(let i=1;i<nm.map.length;i++)if(nm.map[i]<nm.map[i-1])mono=false;
+ ok(mono,'the raw indices never go backwards, which is what lets a mark walk forward');
+ ok(nm.map.every(i=>i>=0&&i<=raw.length),'and every one addresses the raw text');
+ /* the characters it kept are the characters that are there, lowercased. The
+    two ends are the added spaces and address nothing, so they are skipped. */
+ const wrong=[];
+ for(let i=1;i<nm.s.length-1;i++){
+  const c=nm.s.charAt(i), r=raw.charAt(nm.map[i]).toLowerCase();
+  if(c!==' '&&c!==r)wrong.push(i+': '+JSON.stringify(c)+' points at '+JSON.stringify(r));}
+ ok(wrong.length===0,'and each one points at the character it came from, '
+  +wrong.length+' do not'+(wrong[0]?': '+wrong[0]:''));
+ /* THE ONE STRING. scanStory reads normMap's output and nothing else, so a hit
+    offset slices that hit's own text straight back out of it. This is the row
+    that would catch the two copies parting by one. */
+ const hits=scanStory(raw);
+ ok(hits.length>0,'the scanner finds something in the sample, '+hits.length+' hits');
+ const off=hits.filter(h=>h.at!=null
+  &&nm.s.slice(h.at+1,h.at+1+String(h.t).length)!==String(h.t));
+ ok(off.length===0,'and every offset slices its own text out of the normalised '
+  +'copy, '+off.length+' do not'+(off[0]?': '+JSON.stringify(off[0].t):''));
+ /* 39b. THE MARKS, placed back on the letters a person typed. */
+ const story="When my manager cut me off in the meeting I stayed quiet and just let it go, "
+  +"because speaking up has never once worked out for me. Later I told myself it was fine, "
+  +"that I was being reasonable, but my chest was tight all afternoon and I could not eat. "
+  +"I keep replaying it. I am furious with him and ashamed of myself, and I have no idea "
+  +"which of those two is actually mine to carry, or whether I am simply too tired to tell.";
+ const p=parseStory(story), marks=marksOf(story,p);
+ ok(marks.length>0,'the marks are placed, '+marks.length+' of '+p.hits.length+' hits');
+ /* one mark per stretch, in order, never overlapping, which is what lets a
+    renderer walk forward and slice as it goes. */
+ let ordered=true, overlap=0;
+ marks.forEach((m,i)=>{ if(i&&m.s<marks[i-1].e)overlap++;
+  if(i&&m.s<marks[i-1].s)ordered=false;
+  if(m.e<=m.s)ordered=false;});
+ ok(ordered,'they are in order and each one covers at least one character');
+ ok(overlap===0,'and none overlaps another, '+overlap+' do');
+ ok(marks.every(m=>m.s>=0&&m.e<=story.length),'and all of them are inside the text');
+ /* EVERY MARK IS ITS OWN HIT'S TEXT, read through the same normalisation. A
+    mark may span punctuation the hit does not, which is the whole point, so
+    they are compared normalised rather than literally. */
+ const byText={}; p.hits.forEach(h=>{byText[String(h.t)]=1;});
+ const stray=marks.filter(m=>!byText[normMap(story.slice(m.s,m.e)).s.trim()]);
+ ok(stray.length===0,'each mark carries a stretch the scanner actually scored, '
+  +stray.length+' do not'+(stray[0]?': '+JSON.stringify(story.slice(stray[0].s,stray[0].e)):''));
+ /* AND NOTHING THE ENGINE READ IS LEFT DARK. A hit is either a mark of its own
+    or merged into the mark that covers it, which is the scanner's precedence:
+    a phrase outranks the words inside it and an adjective on the same word as a
+    placed term joins it rather than drawing twice. */
+ const uncovered=p.hits.filter(h=>{
+  if(h.at==null)return false;
+  const a=nm0=>nm0, want=String(h.t);
+  return !marks.some(m=>normMap(story.slice(m.s,m.e)).s.indexOf(want)>=0);});
+ ok(uncovered.length===0,'every hit the engine read is inside some mark, '
+  +uncovered.length+' are not'
+  +(uncovered[0]?': '+JSON.stringify(uncovered[0].t):''));
+ /* THE COHERENT HIT, which the page's own expression filtered out and which is
+    the half of the reading that takes charge off a person. */
+ const coh=p.hits.filter(h=>h.band==='coherent');
+ ok(coh.length>0,'the sample carries a coherent hit to lose, '+coh.length);
+ const cohMarks=marks.filter(m=>m.coh);
+ ok(cohMarks.length>0,'and it is marked rather than filtered out, '+cohMarks.length);
+ ok(cohMarks.every(m=>m.seat===null&&m.bn===null),
+  'a coherent mark names no seat, because it is not charge at an address');
+ /* THE NAME THE ENGINE ALREADY HOLDS, which never reached the page at all. */
+ const named=p.hits.filter(h=>h.label);
+ ok(named.length>0,'the sample carries named hits, '+named.length+': '
+  +named.map(h=>h.label).join(', '));
+ const carried=marks.filter(m=>m.label).map(m=>m.label);
+ ok(carried.length>=named.length,'and every one of them is on a mark, '
+  +carried.length+' carried: '+carried.join(', '));
+ ok(marks.filter(m=>m.seat).every(m=>m.bn===K2BAND[m.seat]),
+  'a seated mark carries the band name the renderer needs, not the lexicon key');
+ console.log('  '+p.hits.length+' hits, '+marks.length+' marks, '
+  +cohMarks.length+' coherent, '+carried.length+' named');
+ marks.forEach(m=>console.log('    '+JSON.stringify(story.slice(m.s,m.e)).padEnd(22)
+  +(m.bn||'coherent').padEnd(10)+(m.label||'')));
+ /* 39c. THE CASE THE RAW EXPRESSION CANNOT REACH. The scanner matches a phrase
+    across punctuation because it reads the normalised copy; a search over the
+    original finds nothing. This is the row that says why the offsets exist. */
+ const idiom='I wanted to shut the door, and not come out at all. I felt so tired.';
+ const ip=parseStory(idiom), im=marksOf(idiom,ip);
+ const across=ip.hits.filter(h=>String(h.t).indexOf(' ')>=0);
+ ok(across.length>0,'the scanner reads a phrase in it, '
+  +across.map(h=>JSON.stringify(h.t)).join(' '));
+ ok(im.length>0,'and it is marked, '+im.length);
+ const lit=idiom.slice(im[0].s,im[0].e);
+ ok(lit.indexOf(',')>=0,'as one stretch that includes the punctuation inside it, got '
+  +JSON.stringify(lit));
+ ok(idiom.indexOf(String(across[0].t))<0,
+  'where the hit text itself is nowhere in the raw sentence, which is why a '
+  +'search over the raw text lit nothing here');
+ console.log('  idiom '+JSON.stringify(lit)+'  named '+(im[0].label||'-'));
+ /* 39d. the guards, because a renderer calls this on every keystroke */
+ ok(marksOf(story,null).length===0,'no parse means no marks');
+ ok(marksOf(story,{hits:[]}).length===0,'and an empty parse means no marks');
+ ok(marksOf('',p).length===0||marksOf('',p).every(m=>m.e<=0),
+  'and a parse against text that is gone places nothing on it');
+ ok(normMap(null).s===' '&&normMap(undefined).s===' ',
+  'normMap of nothing is the two boundaries and no content');
+ }
+}
+
 console.log('\n===== '+P+' passed, '+F+' failed =====');
 process.exit(F?1:0);
