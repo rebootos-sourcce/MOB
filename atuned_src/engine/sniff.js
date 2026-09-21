@@ -120,8 +120,47 @@ function lexCanon(){
    introduced. Both run before scanStory can be called. */
 var LEXCANONRUN=lexCanon();
 var LEXFOLDRUN=lexFold();
+/* ============================================================
+   THE NORMALISATION, AND THE INDEX BACK OUT OF IT.
+
+   scanStory reads a normalised copy of the story: lowercased, everything that
+   is not a letter, an apostrophe or a space turned into a space, runs of space
+   collapsed to one, and a space added at each end so every word has a boundary
+   on both sides. hit.at is an offset into THAT string and the engine has been
+   carrying it since the path was built.
+
+   The story page threw those offsets away and ran its own global regular
+   expression over the raw text, which is a second reading of the same sentence
+   by a different rule. Measured on an 87 word story in the shipped build: the
+   scanner recorded 8 hits and the page lit 4. It dropped both coherent hits,
+   because it filtered them out to pick a seat colour, and it never printed the
+   name the engine already holds, where "stayed quiet" is silenced.
+
+   So the normalisation is a function that also returns the raw index of every
+   character it kept, and scanStory builds its own src from it. One string, one
+   set of offsets, and no way for the two to drift: the earlier inline version
+   and a hand rebuilt copy differed by one whenever the text opened or closed on
+   punctuation, because ' '+body put two spaces at the front when body already
+   began with one.
+
+   Ported from proto/story4, where four prototypes each carried a copy.
+   ============================================================ */
+function normMap(t){
+ t=String(t||'');
+ var body='',bm=[],i,c;
+ for(i=0;i<t.length;i++){
+  c=t.charAt(i).toLowerCase();
+  if(!/[a-z' ]/.test(c))c=' ';
+  body+=c; bm.push(i);}
+ var s=' ', map=[0], prev=true;
+ for(i=0;i<body.length;i++){
+  var sp=body.charAt(i)===' ';
+  if(sp&&prev)continue;
+  s+=body.charAt(i); map.push(bm[i]); prev=sp;}
+ s+=' '; map.push(t.length);
+ return {s:s,map:map};}
 function scanStory(text){
- var src=' '+String(text||'').toLowerCase().replace(/[^a-z' ]+/g,' ').replace(/\s+/g,' ')+' ';
+ var src=normMap(text).s;
  var hits=[];
  /* phrases first: an idiom outranks its own words */
  PHRASES.forEach(function(row){
@@ -341,6 +380,51 @@ function parseStory(text){
  return {hits:hits, bands:byBand, charges:byChg, named:named, weights:nm, imprints:imprints,
   path:pathOf(hits),
   words:hits.filter(function(h){return h.kind!=='adj';}).length};}
+/* ============================================================
+   THE MARKS. Every hit, placed back on the letters a person typed.
+
+   One reading of the sentence. The scanner's own offsets, mapped through the
+   same normalisation it scanned, so a mark lands on exactly the characters that
+   were scored and nothing re-matches anything.
+
+   It carries what the engine knows and the page had no way to see: the seat, the
+   band the seat belongs to, the amount, the fetter the word names, the charge an
+   adjective names, the phrase's label, and whether the hit is coherent. The
+   shipping highlighter filtered coherent hits out because it only wanted a seat
+   colour, so the words that take charge OFF a person were invisible on the one
+   surface whose whole job is to show the reading.
+
+   One mark per stretch of text, which is the scanner's own precedence: a phrase
+   outranks the words inside it and an adjective sitting on the same word as a
+   placed term merges into it rather than drawing twice.
+
+   Ported from proto/story4 unchanged in behaviour. None of the four designs'
+   look comes with it: this returns data and the page decides what to draw.
+   ============================================================ */
+function marksOf(t,p){
+ if(!p||!p.hits||!p.hits.length)return [];
+ var nm=normMap(t), raw=[];
+ p.hits.forEach(function(h){
+  if(h.at==null)return;
+  var a=h.at+1, b=h.at+String(h.t).length;
+  if(a>=nm.map.length||b>=nm.map.length)return;
+  raw.push({s:nm.map[a], e:nm.map[b]+1, kind:h.kind, band:h.band||null,
+   amt:(h.amt==null?null:h.amt), label:h.label||null, charge:h.charge||null,
+   fet:h.fet||null, coh:h.band==='coherent'});});
+ raw.sort(function(a,b){return a.s-b.s||(b.e-b.s)-(a.e-a.s);});
+ var keep=[], last=-1;
+ raw.forEach(function(m){
+  if(m.s<last){var pv=keep[keep.length-1];
+   if(pv&&m.charge&&!pv.charge)pv.charge=m.charge;
+   if(pv&&m.fet&&!pv.fet)pv.fet=m.fet;
+   if(pv&&m.band&&!pv.band){pv.band=m.band;pv.coh=m.coh;}
+   if(pv&&m.amt!=null&&pv.amt==null)pv.amt=m.amt;
+   return;}
+  m.seat=(m.band&&m.band!=='coherent')?m.band:null;
+  m.bn=m.seat?K2BAND[m.seat]:null;
+  keep.push(m); last=m.e;});
+ keep.forEach(function(m,i){m.i=i;});
+ return keep;}
 function applyStory(text){
  var p=parseStory(text), touched={};
  p.imprints.forEach(function(im){ var f=im.fetter; if(!f) return;

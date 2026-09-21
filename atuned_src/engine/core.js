@@ -151,7 +151,12 @@ const S={dom:0,doms:[0],arcs:[0,1],roots:[],a1:0,a2:1,charge:{},law:{},
  /* atom: the one story weight being held on the wheel, past the fetter
     layer. {i:node id, ei:entry index}, or null for none held. View state,
     like pin and hover, so it is not persisted and not validated. */
- zoom:1,panx:0,pany:0,atom:null};
+ zoom:1,panx:0,pany:0,atom:null,
+ /* rec: the id of the record this working state was filled from. Not a view
+    field and not persisted, but it is the only thing that can tell two of the
+    person's own records apart, because both of them are who 0. loadProfile
+    writes it and saveYou reads it. See the note at the end of loadProfile. */
+ rec:null};
 /* A stranger's first load used to seed every axis at 3, which produced CQ 36
    and the word Incoherent in the largest type on screen, beside a panel that
    correctly said nothing was held. The interval was never the problem. The
@@ -164,7 +169,27 @@ const S={dom:0,doms:[0],arcs:[0,1],roots:[],a1:0,a2:1,charge:{},law:{},
    place it matters, that an unmeasured law is a default and flatters the
    score. */
 CHARGES.forEach(c=>{S.charge[c]=0;S.replace[c]=0;});
-SINAMES.forEach(l=>S.law[l]=6);
+/* ONE SEED FOR ONE QUANTITY, AND IT LIVES HERE BECAUSE THIS IS THE FIRST USE.
+
+   The value an unmeasured law is given in working state had three answers.
+   This line said 6 as a literal, schema.js named the same number LAW_DEFAULT
+   for the same purpose, and ui/personas.js seeded the custom persona at 6.5
+   and fell back to 5.5 for anybody with no table. Measured on one empty
+   profile: the engine boundary read CQ 36.00 and the app read 42.25 the moment
+   loadP(0) ran, which is every route a person takes to their own record, so
+   the same person had two readings depending on which door they came through.
+
+   6 is the value that was already named, already commented eight lines above
+   as what the interface tells a person an unmeasured law is, and already the
+   one saveProfile compares against before it agrees to persist a law. The
+   other two were literals in a renderer, and a renderer does not get to seed
+   the arithmetic.
+
+   Declared in core.js rather than in schema.js because a var is hoisted but
+   its assignment is not, so this line runs before schema.js exists and read
+   undefined if it referenced it there. */
+const LAW_DEFAULT=6;
+SINAMES.forEach(l=>S.law[l]=LAW_DEFAULT);
 
 /* ============================================================
    THE SOUL. Multi-select: any number of blueprint domains, root

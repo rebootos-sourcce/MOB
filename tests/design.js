@@ -1161,6 +1161,130 @@ console.log('\n=== the child treatment holds on all seven lightings ===');
  await kd.close();
 }
 
+console.log('\n=== a figure is legible against the ground it is printed on ===');
+/* WHAT THIS SCORES, AND HOW IT DIFFERS FROM THE TWO PROBES THAT FAILED.
+
+   Gate 9 refuses to score contrast per lighting, and it is right to: a ground
+   built out of color-mix defeated a probe that knew only rgb() and a canvas
+   readback that met oklab. The block above scores a treatment against its own
+   control so the palette cancels. This one scores something narrower and
+   absolute: a figure against the ground the browser actually paints it over,
+   which needs no token and no screenshot, only every see through layer between
+   the figure and the first opaque ancestor, composited in order.
+
+   THE LAYER THAT WAS SKIPPED IS THE WHOLE LESSON. A first probe of mine
+   composited the nearest background and read 3.93 on a hot chip where the
+   screen shows 3.28. A hot chip paints alarm soft on the chip and again on the
+   pill inside it, so one of the two layers was missing, and a number a probe
+   cannot stand behind is worse than no number. It walks the whole stack now and
+   it was checked against a known case first: the plain chip's worst seat, read
+   by hand off the same build, agrees.
+
+   TWO FIGURES, MEASURED BECAUSE BOTH FAILED.
+
+   The ring chip's value took var(--c) over a ground of that same colour at 17
+   per cent, which is one hue two steps apart in lightness. Worst of the thirty
+   plain chips on the Field with Gordon loaded: 2.77 to 1 at 11.5 pixels on the
+   root seat, against a text floor of 4.5, and root carries the malignant end,
+   the shadow weight and will. The six hot chips were worse at 3.28, so the
+   number that means something is wrong was the least readable on the surface.
+
+   The orientation dial's two end figures printed ink at .86 with the fill
+   reaching under them. The fill grows from the centre, so a benign lean travels
+   right into the right hand figure and a malignant lean travels left into the
+   left hand one: 12.48 over the bare trough, 5.48 over the malignant fill and
+   3.12 over the benign one, which is the lightest colour in the palette. It
+   failed on exactly the leans that matter.
+
+   The floor is the text floor, 4.5 to 1, because all three are text. */
+{
+ const fg=await browser.newPage({viewport:{width:1600,height:1000}});
+ await fg.goto(FILE,{waitUntil:'load'}); await booted(fg); await fg.waitForTimeout(900);
+ const seen=await fg.evaluate(async()=>{
+  const rgb=s=>{const v=(String(s).match(/[\d.]+/g)||[0,0,0]).map(Number);
+   const a=/^color\(/.test(String(s).trim())?v.slice(0,3).map(x=>x*255):v.slice(0,3);
+   return {c:a, a:(v.length>3?v[3]:1)};};
+  const lum=c=>{const f=v=>{v/=255;return v<=0.03928?v/12.92:Math.pow((v+0.055)/1.055,2.4);};
+   return 0.2126*f(c[0])+0.7152*f(c[1])+0.0722*f(c[2]);};
+  const comp=(fgc,a,bg)=>fgc.map((v,i)=>v*a+bg[i]*(1-a));
+  const ratio=(a,b)=>(Math.max(a,b)+0.05)/(Math.min(a,b)+0.05);
+  /* EVERY see through layer, in order, not the nearest one. */
+  const painted=e=>{const stack=[]; let n=e;
+   while(n){const p=rgb(getComputedStyle(n).backgroundColor);
+    if(p.a>=0.999){stack.push(p.c);break;}
+    if(p.a>0.001)stack.push(p);
+    n=n.parentElement;}
+   let out=stack.pop(); if(!Array.isArray(out))out=[0,0,0];
+   while(stack.length){const l=stack.pop(); out=comp(l.c,l.a,out);}
+   return out;};
+  const inkOn=(e,g)=>comp(rgb(getComputedStyle(e).color).c,
+   parseFloat(getComputedStyle(e).opacity||'1'),g);
+  setTab(TAB.FIELD);
+  let gi=0; for(let i=0;i<PEOPLE.length;i++)if(PEOPLE[i].nm==='Gordon')gi=i;
+  loadP(gi); render();
+  await new Promise(r=>setTimeout(r,300));
+  const chip={plain:{r:99,n:0},hot:{r:99,n:0}};
+  [...document.querySelectorAll('.cr')].forEach(c=>{
+   const v=c.querySelector('.v'); if(!v)return;
+   const g=painted(v), r=+ratio(lum(inkOn(v,g)),lum(g)).toFixed(2);
+   const k=c.classList.contains('hot')?'hot':'plain';
+   chip[k].n++;
+   if(r<chip[k].r){chip[k].r=r;
+    chip[k].seat=((c.getAttribute('style')||'').match(/--c:\s*([^;]+)/)||[,'?'])[1].trim();
+    chip[k].px=+parseFloat(getComputedStyle(v).fontSize).toFixed(1);
+    chip[k].txt=v.textContent.trim();}});
+  /* THE DIAL AT A FULL LEAN EACH WAY, so each figure is measured with the fill
+     that can actually reach it under it, and the coverage is checked by
+     geometry rather than assumed. */
+  const pb=document.getElementById('polbar');
+  const dial=[];
+  if(pb&&pb.querySelector('.fill')){
+   const trough=rgb(getComputedStyle(pb).backgroundColor);
+   const base=trough.a>=0.999?trough.c:painted(pb);
+   [['benign','r',PAL.Heart,''],['malignant','l',PAL.Root,' mal']].forEach(cs=>{
+    const f=pb.querySelector('.fill');
+    f.className='fill'+cs[3]; f.style.width='50%'; f.style.background=cs[2];
+    const lb=pb.querySelector('.lb.'+cs[1]); if(!lb)return;
+    const b=lb.querySelector('b')||lb;
+    const fr=f.getBoundingClientRect(), br=b.getBoundingClientRect();
+    const covered=(br.left>=fr.left-0.5&&br.right<=fr.right+0.5);
+    const fc=rgb(getComputedStyle(f).backgroundColor);
+    const fop=parseFloat(getComputedStyle(f).opacity||'1');
+    const fill=comp(fc.c,fc.a*fop,base);
+    const own=rgb(getComputedStyle(b).backgroundColor);
+    const pill=own.a>0.999?own.c:(own.a>0.001?comp(own.c,own.a,covered?fill:base):null);
+    const under=pill||(covered?fill:base);
+    const eff=parseFloat(getComputedStyle(b).opacity||'1')
+     *parseFloat(getComputedStyle(lb).opacity||'1');
+    const ink=comp(rgb(getComputedStyle(b).color).c,eff,under);
+    dial.push({lean:cs[0], covered, pilled:!!pill,
+     px:+parseFloat(getComputedStyle(b).fontSize).toFixed(1),
+     r:+ratio(lum(ink),lum(under)).toFixed(2)});});}
+  return {chip, dial};});
+ const FLOOR=4.5;
+ ok(seen.chip.plain.n>0,'the Field draws ring chips to measure, got '+seen.chip.plain.n);
+ ok(seen.chip.hot.n>0,'and some of them are hot, got '+seen.chip.hot.n);
+ ok(seen.chip.plain.r>=FLOOR,'the worst plain chip figure holds '+FLOOR+' to 1, got '
+  +seen.chip.plain.r+' on '+seen.chip.plain.seat+' at '+seen.chip.plain.px+'px');
+ ok(seen.chip.hot.r>=FLOOR,'and so does the worst hot one, which used to be the '
+  +'worst of all, got '+seen.chip.hot.r+' on '+seen.chip.hot.seat
+  +' at '+seen.chip.hot.px+'px');
+ console.log('  chip plain '+seen.chip.plain.r.toFixed(2)+'  worst of '
+  +seen.chip.plain.n+' on '+seen.chip.plain.seat);
+ console.log('  chip hot   '+seen.chip.hot.r.toFixed(2)+'  worst of '
+  +seen.chip.hot.n+' on '+seen.chip.hot.seat);
+ ok(seen.dial.length===2,'the dial has two end figures to measure, got '+seen.dial.length);
+ seen.dial.forEach(d=>{
+  /* if the fill does not reach the figure this row proves nothing, so the
+     geometry is asserted rather than trusted. */
+  ok(d.covered,'a full '+d.lean+' lean reaches the figure it travels toward');
+  ok(d.r>=FLOOR,'and the '+d.lean+' figure holds '+FLOOR+' to 1 over it, got '
+   +d.r+' at '+d.px+'px');
+  console.log('  dial '+d.lean.padEnd(10)+d.r.toFixed(2)
+   +(d.pilled?'  on its own ground':'  on the fill'));});
+ await fg.close();
+}
+
 await browser.close();
 console.log('\n===== '+PASS+' passed, '+FAIL+' failed =====');
 process.exit(FAIL?1:0);

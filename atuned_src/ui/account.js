@@ -350,7 +350,16 @@ function accDelete(){
  if(i<0){status('Nothing was deleted.','fail');return false;}
  PROFILES.splice(i,1);
  if(!PROFILES.length)pNew('You');
- CURP=PROFILES[0]; loadProfile(CURP);
+ CURP=PROFILES[0];
+ /* AND THE PERSON'S OWN CACHE FOLLOWS THE RECORD. Boot already does this line
+    for the same reason: PROF_BY['You'] is what saveYou mirrors into PEOPLE[0]
+    for, and deleting the record it pointed at left it pointing at an object
+    that is no longer in the list, so every later write reported success onto
+    an array nobody reads. saveYou now keys on the record id, so a stale cache
+    stops the mirror rather than mirroring into the wrong record, which is the
+    safe failure and still the wrong one. */
+ PROF_BY[PEOPLE[0].nm]=CURP;
+ loadProfile(CURP);
  if(!pSave()){status('Could not write to storage. Nothing was deleted.','fail');return false;}
  ACC_OPEN='privacy';
  syncCh(); if(typeof syncLw==='function')syncLw(); if(typeof syncSoul==='function')syncSoul();

@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="55b51ed 2026-09-21 01:03"><head><meta charset="utf-8">
+<html lang="en" data-build="628c170 2026-09-21 03:28"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -1033,8 +1033,25 @@ body:not(.hassub) .subbar{display:none}
    number as bare text, so the third was missing and the grammar did not read as
    a grammar. One rule, and every ring in the product gains it at once, which is
    the whole point of there being one component. */
+/* AND THE FIGURE TAKES INK, NOT THE HUE IT IS SITTING ON. The pill's ground is
+   the seat colour at 17 per cent and the number was that same colour, so the
+   figure and its own ground were the same hue two steps apart in lightness.
+   Measured on the Field with Gordon loaded, worst of the thirty plain chips:
+   the root seat read 2.77 to 1 at 11.5 pixels against a text floor of 4.5, and
+   root is the malignant end, so the worst contrast in the set was on the
+   reading that matters most. It reads 7.22 now, worst case on solar.
+
+   The number is 2.77 and not the 3.03 an earlier note here claimed, because a
+   chip paints two see through layers and the first probe composited one of
+   them. The gate composites every layer between the figure and the first
+   opaque ancestor, which is what the screen actually paints, and that is the
+   only reading either of us can stand behind.
+
+   The hue has not left: it is the ring, the arc, the glyph and the border,
+   which is four statements of the seat against one, and nothing about the chip
+   reads differently for having a legible number in it. */
 .cr .v{font-family:var(--num);font-weight:500;font-variant-numeric:tabular-nums;
- color:var(--c);margin-left:8px;line-height:1;border-radius:999px;
+ color:var(--ink);margin-left:8px;line-height:1;border-radius:999px;
  background:color-mix(in srgb,var(--c) 17%,transparent);
  padding:4px 9px 4px 9px;white-space:nowrap}
 .cr.hot .v{background:var(--alarm-soft)}
@@ -1060,7 +1077,16 @@ body.punch .tp{font-weight:600}
    surface, which it started doing because Games folded into it. */
 .kb-rc{display:inline-flex;align-items:center;flex:0 0 auto}
 .cr.hot{background:var(--alarm-soft);border-color:rgba(255,46,31,.45)}
-.cr.hot .v{color:var(--alarm)}
+/* AND THE HOT FIGURE TAKES INK FOR THE SAME REASON THE PLAIN ONE DOES, which
+   is the worse half of the same defect and was not reported with it. Alarm over
+   alarm soft twice, once on the chip and again on the pill inside it, measured
+   3.28 to 1 at 11.5 pixels on six chips of the Field's own stack. It reads
+   10.41 now. This is the case that proved the single layer probe wrong: that
+   probe read 3.93 here, which passes nothing but is not what the screen shows,
+   and the two numbers differ by exactly the layer it skipped.
+
+   The alarm still says it four times over: the arc, the glyph, the border and
+   the pill's ground. */
 .cr.hot .ring .gl svg{stroke:var(--alarm)}
 .cr.act{cursor:pointer}
 .cr.act:hover{border-color:color-mix(in srgb,var(--c) 62%,transparent);
@@ -1557,8 +1583,22 @@ body:not(.tab-field) .pol2{display:none}
 .pol-g svg{fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;
  stroke-linejoin:round}
 .pol-g.on{color:var(--c)}
+/* THE FIGURE CARRIES ITS OWN GROUND, because the fill reaches under it exactly
+   when the reading is strongest. The fill grows from the centre, so a benign
+   lean travels right into the right hand figure and a malignant lean travels
+   left into the left hand one, and each figure is only ever covered by one of
+   the two colours. Measured at a full lean each way, ink at .86 and 11 pixels:
+   12.48 to 1 over the bare trough, 5.48 over the malignant fill and 3.12 over
+   the benign one, which is the lightest colour in the palette. So the label
+   failed the 4.5 floor on exactly the leans that matter and passed everywhere
+   it did not. Both ends read 14.39 now.
+
+   The opacity is gone and the number sits on the panel colour, which is the
+   same pill grammar every other figure in this product already uses, so the
+   fill can run under it without deciding what the number is worth. */
 .polbar .lb{position:absolute;top:0;bottom:0;display:flex;align-items:center;
- font-family:var(--num);font-size:11px;font-weight:500;color:var(--ink);opacity:.86;padding:0 10px}
+ font-family:var(--num);font-size:11px;font-weight:500;color:var(--ink);padding:0 10px}
+.polbar .lb b{background:var(--panel);border-radius:999px;padding:2px 7px;line-height:1}
 .polbar .l{left:0}.polbar .r{right:0}
 .polnote{font-size:12.5px;color:var(--dim);margin:6px 0 0;line-height:1.55}
 
@@ -7986,7 +8026,12 @@ const S={dom:0,doms:[0],arcs:[0,1],roots:[],a1:0,a2:1,charge:{},law:{},
  /* atom: the one story weight being held on the wheel, past the fetter
     layer. {i:node id, ei:entry index}, or null for none held. View state,
     like pin and hover, so it is not persisted and not validated. */
- zoom:1,panx:0,pany:0,atom:null};
+ zoom:1,panx:0,pany:0,atom:null,
+ /* rec: the id of the record this working state was filled from. Not a view
+    field and not persisted, but it is the only thing that can tell two of the
+    person's own records apart, because both of them are who 0. loadProfile
+    writes it and saveYou reads it. See the note at the end of loadProfile. */
+ rec:null};
 /* A stranger's first load used to seed every axis at 3, which produced CQ 36
    and the word Incoherent in the largest type on screen, beside a panel that
    correctly said nothing was held. The interval was never the problem. The
@@ -7999,7 +8044,27 @@ const S={dom:0,doms:[0],arcs:[0,1],roots:[],a1:0,a2:1,charge:{},law:{},
    place it matters, that an unmeasured law is a default and flatters the
    score. */
 CHARGES.forEach(c=>{S.charge[c]=0;S.replace[c]=0;});
-SINAMES.forEach(l=>S.law[l]=6);
+/* ONE SEED FOR ONE QUANTITY, AND IT LIVES HERE BECAUSE THIS IS THE FIRST USE.
+
+   The value an unmeasured law is given in working state had three answers.
+   This line said 6 as a literal, schema.js named the same number LAW_DEFAULT
+   for the same purpose, and ui/personas.js seeded the custom persona at 6.5
+   and fell back to 5.5 for anybody with no table. Measured on one empty
+   profile: the engine boundary read CQ 36.00 and the app read 42.25 the moment
+   loadP(0) ran, which is every route a person takes to their own record, so
+   the same person had two readings depending on which door they came through.
+
+   6 is the value that was already named, already commented eight lines above
+   as what the interface tells a person an unmeasured law is, and already the
+   one saveProfile compares against before it agrees to persist a law. The
+   other two were literals in a renderer, and a renderer does not get to seed
+   the arithmetic.
+
+   Declared in core.js rather than in schema.js because a var is hoisted but
+   its assignment is not, so this line runs before schema.js exists and read
+   undefined if it referenced it there. */
+const LAW_DEFAULT=6;
+SINAMES.forEach(l=>S.law[l]=LAW_DEFAULT);
 
 /* ============================================================
    THE SOUL. Multi-select: any number of blueprint domains, root
@@ -9082,10 +9147,12 @@ function blankProfile(name){
  CHILD.forEach(function(c){p.axes[c.nm]={held:0,opp:0};});
  SI.forEach(function(l){p.laws[l.nm]=null;});        /* null = not yet measured */
  return p;}
-/* The value an unmeasured law is given in working state, and which of them
-   are sitting on it. Named rather than repeated as a literal, because the two
-   places that used the number 6 had to agree and did not. */
-var LAW_DEFAULT=6, LAW_UNSET={}, LAW_SEED={};
+/* WHICH LAWS ARE SITTING ON THE SEED, AND WHAT THEY WERE SEEDED WITH.
+   LAW_DEFAULT is the seed itself and it moved to engine/core.js, which is the
+   module that first uses it: this one named the number and core.js printed a
+   literal 6 beside a comment about it, and ui/personas.js then named two more
+   numbers for the same quantity. One declaration, at the first use. */
+var LAW_UNSET={}, LAW_SEED={};
 function loadProfile(p){
  if(!p.who)p.who={first:'',middle:'',last:'',sex:'',born:{date:'',time:'',place:'',timeUnknown:false}};
  if(!p.who.born)p.who.born={date:'',time:'',place:'',timeUnknown:false};
@@ -9121,6 +9188,22 @@ function loadProfile(p){
   LAW_SEED[l.nm]=S.law[l.nm];});
  gatesLoad(p);   /* absent on a v1 profile, which reads as no story evidence */
  suscAll();      /* so a story applied before compute() lands on this profile */
+ /* WHICH RECORD THE WORKING STATE CAME FROM, keyed by the record's id.
+
+    S.who names a PERSONA, and every one of the person's own records is S.who
+    0, so S.who cannot tell two of their own records apart. The Intake's
+    switcher repoints CURP and loads the other record's field into S, S.who
+    stays 0, and saveYou then writes whatever S holds into PEOPLE[0], which is
+    the table the person's own record is read back from. Measured on a clean
+    page: 2.20 units of held charge in PEOPLE[0] before, 63.00 after one
+    saveYou taken while a second own record was loaded, and 63.00 still there
+    after loadP(0), so the first record's field was gone for good.
+
+    Same class as the undo leak closed at 88181e6 and the same answer, which
+    engine/undo.js argues at length: key the thing to the record it came from
+    rather than repointing anything, because two attempts at repointing are
+    already recorded as worse than the bug. */
+ S.rec=p.id||null;
  return p;}
 function saveProfile(p){
  p.soul={doms:S.doms.slice(),arcs:S.arcs.slice(),roots:S.roots.slice()};
@@ -9151,11 +9234,15 @@ function saveProfile(p){
  SI.forEach(function(l){
   if(S.law[l.nm]==null)return;
   /* Compared against the value this law was SEEDED with, not against a single
-     literal. Two callers seed an unmeasured law and they do not agree: this
-     module uses 6 and the persona loader uses 5.5. Testing one literal wrote
-     the other one straight through, which is the bug wearing a different
-     number. What is being asked is "has anybody moved this since it was given
-     a placeholder", and only the seed can answer that. */
+     literal. Three callers seeded an unmeasured law and none of them agreed:
+     this module said 6, the persona loader said 6.5 and its own fallback said
+     5.5. Testing one literal wrote the other two straight through, which is
+     the bug wearing a different number. They all read LAW_DEFAULT now, and
+     this still compares against the seed rather than against that constant,
+     because what is being asked is "has anybody moved this since it was given
+     a placeholder" and only the seed the law actually got can answer it. A
+     stated type writes real values onto these through seedApply, so the seed
+     is not always the default even now. */
   if(LAW_UNSET[l.nm]&&S.law[l.nm]===LAW_SEED[l.nm])return;
   p.laws[l.nm]=S.law[l.nm]; LAW_UNSET[l.nm]=false;});
  gatesSave(p);
@@ -9830,6 +9917,32 @@ function meterPlan(p,nodeIds,chans,cap){
     if(n<0||n>=LINES_PER_CH)continue;
     var k=meterKey(id,ch,n); seen[k]=1; out.push(k);}}}
  return out;}
+/* WHAT A RUN IS ALLOWED TO COST, WHICH IS NOT THE SAME AS WHAT IT CAPS AT.
+
+   The release panel printed "16 patterns of the 0 you have left" and then ran
+   all sixteen. Measured on the shipped build against a free record with the
+   gift spent and base at 100: relLeft() 0, plan 16, unique 110 before the run
+   and 126 after, and relLeft() still 0 afterwards because the subtraction
+   clamps at nought. So the overspend was invisible before, during and after,
+   and the one panel in this product that quotes a price was quoting a false
+   one directly under the paid tiers.
+
+   The allowance is a second ceiling and belongs where the first one is.
+   meterPlan already truncates a wide selection at the cap, one pattern per
+   line, and every line it returns is new ground, so a cap of what is left
+   spends exactly what is left and the printed number is the price. That is a
+   shorter run rather than a refused one, which matters: a person who picked
+   eight addresses with three patterns left gets three, not nothing.
+
+   Refusing is left to the door, and only when the cap is nought. A run already
+   under way is never interrupted, because relCoolDown commits the plan it was
+   shown, and that plan is now already inside the allowance. */
+function meterBudget(p){
+ var m=(p&&p.meter)||null;
+ var a=(typeof planAllowance==='function')
+   ? planAllowance((p&&p.plan)||null,((m&&m.unique)||[]).length) : null;
+ var left=(a&&a.left!=null)?Math.max(0,Math.floor(a.left)):0;
+ return {left:left, cap:Math.min(RUN_MAX,left), allow:a};}
 function meterRun(p,keys){
  if(!p)return null;
  if(!p.meter)p.meter={lines:0,unique:[],first:null,last:null};
@@ -10187,8 +10300,47 @@ function lexCanon(){
    introduced. Both run before scanStory can be called. */
 var LEXCANONRUN=lexCanon();
 var LEXFOLDRUN=lexFold();
+/* ============================================================
+   THE NORMALISATION, AND THE INDEX BACK OUT OF IT.
+
+   scanStory reads a normalised copy of the story: lowercased, everything that
+   is not a letter, an apostrophe or a space turned into a space, runs of space
+   collapsed to one, and a space added at each end so every word has a boundary
+   on both sides. hit.at is an offset into THAT string and the engine has been
+   carrying it since the path was built.
+
+   The story page threw those offsets away and ran its own global regular
+   expression over the raw text, which is a second reading of the same sentence
+   by a different rule. Measured on an 87 word story in the shipped build: the
+   scanner recorded 8 hits and the page lit 4. It dropped both coherent hits,
+   because it filtered them out to pick a seat colour, and it never printed the
+   name the engine already holds, where "stayed quiet" is silenced.
+
+   So the normalisation is a function that also returns the raw index of every
+   character it kept, and scanStory builds its own src from it. One string, one
+   set of offsets, and no way for the two to drift: the earlier inline version
+   and a hand rebuilt copy differed by one whenever the text opened or closed on
+   punctuation, because ' '+body put two spaces at the front when body already
+   began with one.
+
+   Ported from proto/story4, where four prototypes each carried a copy.
+   ============================================================ */
+function normMap(t){
+ t=String(t||'');
+ var body='',bm=[],i,c;
+ for(i=0;i<t.length;i++){
+  c=t.charAt(i).toLowerCase();
+  if(!/[a-z' ]/.test(c))c=' ';
+  body+=c; bm.push(i);}
+ var s=' ', map=[0], prev=true;
+ for(i=0;i<body.length;i++){
+  var sp=body.charAt(i)===' ';
+  if(sp&&prev)continue;
+  s+=body.charAt(i); map.push(bm[i]); prev=sp;}
+ s+=' '; map.push(t.length);
+ return {s:s,map:map};}
 function scanStory(text){
- var src=' '+String(text||'').toLowerCase().replace(/[^a-z' ]+/g,' ').replace(/\s+/g,' ')+' ';
+ var src=normMap(text).s;
  var hits=[];
  /* phrases first: an idiom outranks its own words */
  PHRASES.forEach(function(row){
@@ -10408,6 +10560,51 @@ function parseStory(text){
  return {hits:hits, bands:byBand, charges:byChg, named:named, weights:nm, imprints:imprints,
   path:pathOf(hits),
   words:hits.filter(function(h){return h.kind!=='adj';}).length};}
+/* ============================================================
+   THE MARKS. Every hit, placed back on the letters a person typed.
+
+   One reading of the sentence. The scanner's own offsets, mapped through the
+   same normalisation it scanned, so a mark lands on exactly the characters that
+   were scored and nothing re-matches anything.
+
+   It carries what the engine knows and the page had no way to see: the seat, the
+   band the seat belongs to, the amount, the fetter the word names, the charge an
+   adjective names, the phrase's label, and whether the hit is coherent. The
+   shipping highlighter filtered coherent hits out because it only wanted a seat
+   colour, so the words that take charge OFF a person were invisible on the one
+   surface whose whole job is to show the reading.
+
+   One mark per stretch of text, which is the scanner's own precedence: a phrase
+   outranks the words inside it and an adjective sitting on the same word as a
+   placed term merges into it rather than drawing twice.
+
+   Ported from proto/story4 unchanged in behaviour. None of the four designs'
+   look comes with it: this returns data and the page decides what to draw.
+   ============================================================ */
+function marksOf(t,p){
+ if(!p||!p.hits||!p.hits.length)return [];
+ var nm=normMap(t), raw=[];
+ p.hits.forEach(function(h){
+  if(h.at==null)return;
+  var a=h.at+1, b=h.at+String(h.t).length;
+  if(a>=nm.map.length||b>=nm.map.length)return;
+  raw.push({s:nm.map[a], e:nm.map[b]+1, kind:h.kind, band:h.band||null,
+   amt:(h.amt==null?null:h.amt), label:h.label||null, charge:h.charge||null,
+   fet:h.fet||null, coh:h.band==='coherent'});});
+ raw.sort(function(a,b){return a.s-b.s||(b.e-b.s)-(a.e-a.s);});
+ var keep=[], last=-1;
+ raw.forEach(function(m){
+  if(m.s<last){var pv=keep[keep.length-1];
+   if(pv&&m.charge&&!pv.charge)pv.charge=m.charge;
+   if(pv&&m.fet&&!pv.fet)pv.fet=m.fet;
+   if(pv&&m.band&&!pv.band){pv.band=m.band;pv.coh=m.coh;}
+   if(pv&&m.amt!=null&&pv.amt==null)pv.amt=m.amt;
+   return;}
+  m.seat=(m.band&&m.band!=='coherent')?m.band:null;
+  m.bn=m.seat?K2BAND[m.seat]:null;
+  keep.push(m); last=m.e;});
+ keep.forEach(function(m,i){m.i=i;});
+ return keep;}
 function applyStory(text){
  var p=parseStory(text), touched={};
  p.imprints.forEach(function(im){ var f=im.fetter; if(!f) return;
@@ -12222,9 +12419,9 @@ if(typeof module!=='undefined'&&module.exports){
   /* the door */  read:read, input:input, throughput:throughput, output:output,
                   gatesClear:gatesClear, gatesLoad:gatesLoad, gatesSave:gatesSave,
   /* schema */    blankProfile:blankProfile, loadProfile:loadProfile,
-                  saveProfile:saveProfile, snapshot:snapshot,
+                  saveProfile:saveProfile, snapshot:snapshot, LAW_DEFAULT:LAW_DEFAULT,
                   pExport:pExport, pImport:pImport, validateProfile:validateProfile, importError:importError,
-                  meterRun:meterRun, meterRead:meterRead, meterKey:meterKey,
+                  meterRun:meterRun, meterRead:meterRead, meterKey:meterKey, meterBudget:meterBudget,
                   meterNext:meterNext, meterPlan:meterPlan, LINES_PER_CH:LINES_PER_CH, MARKERS:MARKERS, markersFor:markersFor, PAT_PER_YEAR:PAT_PER_YEAR,
                   PAT_GEN:PAT_GEN, PAT_REF_AGE:PAT_REF_AGE,
                   profiles:function(){return PROFILES;}, current:function(){return CURP;}, SCHEMA_V:SCHEMA_V,
@@ -12235,7 +12432,7 @@ if(typeof module!=='undefined'&&module.exports){
      rename that missed this table shipped six broken questions, and a table
      no test can reach is a table with no owner. */
                   IQ_STEM:IQ_STEM,
-  /* sniffer */   scanStory:scanStory, parseStory:parseStory, applyStory:applyStory,
+  /* sniffer */   scanStory:scanStory, normMap:normMap, marksOf:marksOf, parseStory:parseStory, applyStory:applyStory,
   /* THE OUTPUT CONTRACT, SNIFFER_SPEC.md section 10. sniffStory is the one
      entry point a caller needs; the seven part builders are exported beside it
      because the gate asserts each part on its own and a part no test can reach
@@ -15438,8 +15635,15 @@ function stRelPanel(){
     loads after this module, and that is fine because this runs at render. */
  var relIds=take.map(function(n){return n.i;});
  var relCh=(typeof CHAN!=='undefined')?CHAN.map(function(c){return c[0]+c[2];}):[];
- var cost=(CURP&&relIds.length&&relCh.length)
-   ? meterPlan(CURP,relIds,relCh,RUN_MAX).length : 0;
+ /* AND IT IS CAPPED THE WAY THE RUN IS CAPPED. This passed RUN_MAX while the
+    run itself is now capped at the allowance too, so a person with three
+    patterns left was quoted sixteen here and would have been given three.
+    relBudget lives in release.js, which loads after this module, and that is
+    fine because this runs at render, the same reason CHAN is read that way
+    four lines up. */
+ var relCap=(typeof relBudget==='function')?relBudget():RUN_MAX;
+ var cost=(CURP&&relIds.length&&relCh.length&&relCap>0)
+   ? meterPlan(CURP,relIds,relCh,relCap).length : 0;
  var secs=Math.round(cost*RUN_SPEED_S[ST_RELSPD]);
  e.innerHTML='<div class="pm-eye">Release</div>'
   +'<p class="st-relp">'+(pool.length
@@ -17207,13 +17411,19 @@ var CHAN=[['R','Right','limit'],['L','Left','limit'],['R','Right','truth'],['L',
 var OPENING=['Sit down. Put both feet on the floor.',
  'Each line names one pattern. Follow it in thought as it lands.',
  'Keep some attention on your body, and notice which place answers.'];
-/* what the allowance says is left, read the same way Settings reads it. */
+/* what the allowance says is left, read the same way Settings reads it.
+   The arithmetic moved into the engine as meterBudget, because this function
+   quoted the number and nothing enforced it: the panel said "16 patterns of
+   the 0 you have left" and ran all sixteen. One read, one cap, one place. */
 function relLeft(){
- if(typeof planAllowance!=='function')return 0;
- var m=(typeof CURP!=='undefined'&&CURP&&CURP.meter)||null;
- var a=planAllowance((typeof CURP!=='undefined'&&CURP&&CURP.plan)||null,
-                     ((m&&m.unique)||[]).length);
- return (a&&a.left!=null)?a.left:0;}
+ if(typeof meterBudget!=='function')return 0;
+ return meterBudget((typeof CURP!=='undefined'&&CURP)||null).left;}
+/* what a run may cost from here: the smaller of the run ceiling and what the
+   person actually has. relPlan builds to this, so the number the panel prints
+   is the number the run spends. */
+function relBudget(){
+ if(typeof meterBudget!=='function')return 0;
+ return meterBudget((typeof CURP!=='undefined'&&CURP)||null).cap;}
 var RUN={open:false,queue:[],plan:[],sec:0,idx:0,phase:'idle',speed:2.2,timer:null,
          paused:false,done:false,line:0,log:[],freed:0};
 /* THE RUN IS A PLAN OF THOUGHT LINES, ruled. One pattern is one thought line
@@ -17224,7 +17434,12 @@ var RUN={open:false,queue:[],plan:[],sec:0,idx:0,phase:'idle',speed:2.2,timer:nu
 function relPlan(){
  var ids=RUN.queue.map(function(n){return n.i;});
  var chans=CHAN.map(function(c){return c[0]+c[2];});
- return CURP?meterPlan(CURP,ids,chans,RUN_MAX):[];}
+ /* capped at what is left and not only at RUN_MAX, so the plan a person is
+    shown is a plan they can pay for. Nought is returned here rather than
+    passed down, because meterPlan reads a cap of nought as "no cap given" and
+    falls back to twenty five, which is the ceiling it was asked to remove. */
+ var cap=relBudget();
+ return (CURP&&cap>0)?meterPlan(CURP,ids,chans,cap):[];}
 /* one entry of the plan, read back into the address and channel it names */
 function relAt(i){
  var k=(RUN.plan||[])[i]; if(!k)return null;
@@ -17400,30 +17615,58 @@ function relRender(){
    +'<button class="btn pri" id="relrit">Build a ritual</button></div>';
  } else {
   var q=RUN.queue;
+  /* THE PRICE IS ENFORCED AT THE DOOR AND NOWHERE ELSE.
+
+     Nought left means the run does not start, and this is the only place that
+     may say so. Stopping a run that is already walking is a worse failure than
+     a wrong label: the person has sat down, the addresses are open in front of
+     them, and half a release is neither a release nor a refund. relPlan is
+     capped at the allowance now, so anything that gets past this branch costs
+     what it printed and is charged in full. */
+  var left=relLeft(), spent=(left<=0), pl=(RUN.plan||[]).length;
   out+='<div class="pm-eye">Run a release</div>'
-   +'<div class="rel-node">'+q.length+(q.length===1?' address':' addresses')+'</div>'
+   +'<div class="rel-node">'+(spent?'Nothing left to open'
+     :q.length+(q.length===1?' address':' addresses'))+'</div>'
    /* A NUMBER CARRIES WHAT IT IS OF. This read "25 of your allowance", which
       says twenty five of what, and reads as a bill on a grant of ten a week
       against a run that caps at twenty five. planAllowance already returns
       both halves, so the honest sentence needs no new field. */
-   +'<div class="rel-sub">'+((RUN.plan||[]).length)+' patterns of the '
-   +relLeft()+' you have left</div>'
+   +'<div class="rel-sub">'+(spent
+     ?q.length+(q.length===1?' address':' addresses')+' picked, 0 patterns available'
+     :pl+' patterns of the '+left+' you have left')+'</div>'
    +'<div class="rel-log">';
   q.forEach(function(n){
    out+='<div class="rel-row">'+crNode(n,'xs')
     +'<span>'+esc(n.k)+'</span><em>'+n.b+'</em></div>';});
-  var pl=(RUN.plan||[]).length;
-  out+='</div><div class="rel-note">'+pl+' thought line'+(pl===1?'':'s')+' of new ground, which is '+pl+' pattern'+(pl===1?'':'s')+'. Right then left, limit before truth. About '
-   +(Math.round(pl*RUN.speed/60*10)/10)+' minutes.'
-   +(pl<RUN_MAX?' That is everything still unopened in this queue.':'')+'</div>'
-   +'<div class="rel-act"><button class="btn" id="relcancel">Cancel</button>'
-   +'<button class="btn pri" id="relgo">Begin</button></div>';}
+  /* WHICH CEILING TRUNCATED THE RUN, because the two mean different things to
+     a person. Short of the run ceiling used to print "that is everything still
+     unopened in this queue", which is false the moment the allowance is what
+     cut it: there is more unopened ground and they cannot reach it yet. */
+  var byAllow=(pl>0&&pl>=left&&left<RUN_MAX);
+  out+='</div><div class="rel-note">'+(spent
+    ?'New ground is what an allowance buys, and this period\'s is spent. '
+     +'Rerunning an address you have already opened costs nothing and is in '
+     +'the ritual. A wider allowance is on the plan in settings.'
+    :pl+' thought line'+(pl===1?'':'s')+' of new ground, which is '+pl+' pattern'+(pl===1?'':'s')+'. Right then left, limit before truth. About '
+     +(Math.round(pl*RUN.speed/60*10)/10)+' minutes.'
+     +(byAllow?' That is all the allowance has left, and the rest of this queue stays unopened.'
+       :(pl<RUN_MAX?' That is everything still unopened in this queue.':'')))+'</div>'
+   +'<div class="rel-act"><button class="btn" id="relcancel">'+(spent?'Close':'Cancel')+'</button>'
+   /* THE BUTTON IS NOT THERE WHEN THERE IS NOTHING TO SPEND. A disabled Begin
+      would be a control the panel is still offering, and the honest reading of
+      a spent allowance is that this run does not exist yet. The route out goes
+      where the allowance is, which is the only thing that changes the answer. */
+   +(spent?'<button class="btn pri" id="relplan">Open settings</button>'
+         :'<button class="btn pri" id="relgo">Begin</button>')+'</div>';}
  out+='</div>';
  h.innerHTML=out;
  var b;
  if((b=document.getElementById('relgo')))b.onclick=function(){RUN.phase='opening';RUN.line=0;relTick();relRender();};
  if((b=document.getElementById('relskip')))b.onclick=function(){RUN.phase='run';RUN.line=0;relRender();};
  if((b=document.getElementById('relcancel')))b.onclick=relClose;
+ /* the same call the profile button makes, which is the one route to that
+    surface and goes through setTab so the folded surface ruling holds. */
+ if((b=document.getElementById('relplan')))b.onclick=function(){relClose();setTab(TAB.SETTINGS);};
  if((b=document.getElementById('relclose')))b.onclick=relClose;
  if((b=document.getElementById('relrit')))b.onclick=function(){var lg=RUN.log.slice();relClose();ritOpen(lg);};
  if((b=document.getElementById('relstop')))b.onclick=function(){clearInterval(RUN.timer);relCoolDown();};
@@ -22025,7 +22268,16 @@ function accDelete(){
  if(i<0){status('Nothing was deleted.','fail');return false;}
  PROFILES.splice(i,1);
  if(!PROFILES.length)pNew('You');
- CURP=PROFILES[0]; loadProfile(CURP);
+ CURP=PROFILES[0];
+ /* AND THE PERSON'S OWN CACHE FOLLOWS THE RECORD. Boot already does this line
+    for the same reason: PROF_BY['You'] is what saveYou mirrors into PEOPLE[0]
+    for, and deleting the record it pointed at left it pointing at an object
+    that is no longer in the list, so every later write reported success onto
+    an array nobody reads. saveYou now keys on the record id, so a stale cache
+    stops the mirror rather than mirroring into the wrong record, which is the
+    safe failure and still the wrong one. */
+ PROF_BY[PEOPLE[0].nm]=CURP;
+ loadProfile(CURP);
  if(!pSave()){status('Could not write to storage. Nothing was deleted.','fail');return false;}
  ACC_OPEN='privacy';
  syncCh(); if(typeof syncLw==='function')syncLw(); if(typeof syncSoul==='function')syncSoul();
@@ -22425,11 +22677,20 @@ PEOPLE.unshift({nm:'You',age:'',role:'custom',dom:0,a1:0,a2:1,
     those numbers. An empty field is empty. */
  c:{Fear:0,Anger:0,Shame:0,Disgust:0,Apathy:0,Shock:0,Sad:0,Surprise:0,Anticipation:0},
  rep:{Fear:0,Anger:0,Shame:0,Disgust:0,Apathy:0,Shock:0,Sad:0,Surprise:0,Anticipation:0},you:true});
-BIRTH.You=null; LAWSET.You={_:6.5};
+/* THE CUSTOM PERSONA'S UNMEASURED LAWS TAKE THE ENGINE'S SEED, NOT A SECOND
+   ONE. This said 6.5 and the engine's boundary says LAW_DEFAULT, which is 6,
+   so one empty profile read CQ 42.25 through loadP(0) and 36.00 through
+   blankProfile plus loadProfile. Both numbers were printed by the same build
+   on the same day off a person who had entered nothing. */
+BIRTH.You=null; LAWSET.You={_:LAW_DEFAULT};
 /* a profile per persona, so switching one never overwrites another's diagnostic.
    the original assigned every persona's seeded answers straight onto CURP. */
 var PROF_BY={};
-function lawsFor(p){ return p.law || LAWSET[p.nm] || {_:5.5}; }
+/* and the guard for a persona with no table at all takes the same seed. It
+   said 5.5, which was a third answer to the one question. Every persona in
+   the roster carries a LAWSET entry, so this arm is a guard and not a path,
+   which is exactly why it was free to disagree for as long as it did. */
+function lawsFor(p){ return p.law || LAWSET[p.nm] || {_:LAW_DEFAULT}; }
 (function(){var sel=$('psel');
  var mk=function(lab){var g=document.createElement('optgroup');g.label=lab;sel.appendChild(g);return g;};
  var gYou=null,gICP=null,gRef=null;
@@ -22462,18 +22723,58 @@ function toYou(){if(S.who===0)return;
  if(own&&PROFILES.indexOf(own)>=0)CURP=own;
  var sel=$('psel'); if(sel)sel.value='0';
  renderSpirit();}
-function saveYou(){if(S.who!==0)return;var Y=PEOPLE[0];
+/* THE MIRROR ONLY WRITES FOR THE RECORD IT MIRRORS.
+
+   PEOPLE[0] is the table loadP(0) reads the person's own field back out of, and
+   it mirrors exactly one record: PROF_BY['You']. This guarded on S.who===0,
+   and S.who is a persona index, so all of the person's own records answer 0.
+   Switching between two of them through the Intake left S holding record B's
+   field with who still 0, and the next slider drag wrote B's field into the
+   table A is read from. Measured: 2.20 before, 63.00 after, and 63.00 still
+   there on the way back through loadP(0).
+
+   So the guard is the record's id and not the persona's index, which is the
+   ruling engine/undo.js already carries for the same failure on a different
+   route. Nothing repoints and S.who is not touched, because two attempts at
+   repointing are recorded in ui/release.js as each worse than the bug.
+
+   It returns false rather than reporting through status(), because this fires
+   on every pointer move of a slider and it is not a failed write: the record
+   the person is actually editing is still written by persistYou below, which
+   does land and does report. There is nothing here to tell them about.
+
+   AND THE WRITE THROUGH IS NOT INSIDE THE GUARD, which is the half of this
+   the first cut got wrong. persistYou has exactly one caller and it is this
+   function, so it is the only route by which a slider drag reaches storage.
+   Returning early took it with it: measured on a second own record, one drag
+   to 63 units of held charge and 0 in the record 600 milliseconds later,
+   against 63 before the guard landed. That trades destroying record A for
+   losing every edit to record B without saying so, which is the silent
+   failure this codebase forbids by name and is not an improvement.
+
+   The two writes are different writes and they key on different things. The
+   mirror is PEOPLE[0] and keys on the record it mirrors. The write through is
+   CURP and keys on nothing, because CURP is by definition the record being
+   edited. So the mirror is guarded and the write through is not. */
+function saveYou(){if(S.who!==0)return false;
+ var own=PROF_BY[PEOPLE[0].nm];
+ var mine=!!(own&&own.id&&S.rec===own.id);
+ if(mine)mirrorYou();
+ persistYou();
+ return mine;}
+function mirrorYou(){
+ var Y=PEOPLE[0];
  Y.dom=S.dom;Y.a1=S.a1;Y.a2=S.a2;Y.doms=S.doms.slice();Y.arcs=S.arcs.slice();Y.roots=S.roots.slice();
  CHARGES.forEach(function(c){Y.c[c]=S.charge[c];});
  Y.rep={};CHARGES.forEach(function(c){Y.rep[c]=S.replace[c]||0;});
  /* the original wrote Y.law here and lawsFor could never read it back. */
  Y.law={};SINAMES.forEach(function(l){Y.law[l]=S.law[l];});
- /* And it only ever wrote to the in memory persona, so every charge, law,
-    domain and archetype a person set in the tools panel was gone on reload
-    unless they happened to open Intake and press Save. It writes through to
-    the record too. Debounced, because this fires on every pointer move of a
-    slider and a write per frame is a write per frame. */
- persistYou();}
+ return true;}
+/* The write through to the record, which the mirror used to own and does not.
+   Every charge, law, domain and archetype a person set in the tools panel was
+   gone on reload unless they happened to open Intake and press Save, because
+   only the in memory persona was written. Debounced, because this fires on
+   every pointer move of a slider and a write per frame is a write per frame. */
 var YOU_T=null;
 function persistYou(){
  if(!CURP)return;
@@ -22497,7 +22798,7 @@ if(typeof addEventListener==='function')['pagehide','visibilitychange'].forEach(
    so their spread and lean are theirs and not a default. */
 function seedIntake(p){
  if(p._seeded)return; p._seeded=1;
- var LS=lawsFor(p), base=(LS._!==undefined)?LS._:5.5, bias=(p.nm||'').length%3;
+ var LS=lawsFor(p), base=(LS._!==undefined)?LS._:LAW_DEFAULT, bias=(p.nm||'').length%3;
  p.intakeAnswers={};
  SI.forEach(function(l,li){
   var v=(LS[l.nm]!==undefined)?LS[l.nm]:base;
@@ -22522,10 +22823,11 @@ function loadP(i){
   S.replace[c]=(p.rep&&p.rep[c])||0;});
  /* THE CUSTOM PERSONA IS NOT A DEMO AND MUST NOT BE GIVEN LAW SCORES.
 
-    lawsFor falls back to {_:5.5} for anybody with no table, and "You" is the
+    lawsFor falls back to the seed for anybody with no table, and "You" is the
     profile a stranger arrives on, so every one of the twenty one laws was set
-    to 5.5: a score nobody entered, on the one profile that is supposed to hold
-    nothing. saveProfile then wrote all of them, so measured went to 21 and
+    to it: a score nobody entered, on the one profile that is supposed to hold
+    nothing. The number was 5.5 when this was written and is LAW_DEFAULT now,
+    which changes the reading and not the defect. saveProfile then wrote all of them, so measured went to 21 and
     unread went false, which is the flag every surface checks before it agrees
     to print a band, a tier or a reading. Measured on a fresh page: 21 of 21
     laws non null on a profile with zero charge.
@@ -22560,7 +22862,7 @@ function loadP(i){
      custom persona an unmeasured law is seeded and marked, and saveProfile
      leaves a seeded law alone until somebody moves it. A demo persona's table
      IS its measurement, so it is written as before. */
-  S.law[l]=(v!=null)?v:((LS[l]!==undefined)?LS[l]:(LS._!==undefined?LS._:5.5));
+  S.law[l]=(v!=null)?v:((LS[l]!==undefined)?LS[l]:(LS._!==undefined?LS._:LAW_DEFAULT));
   LAW_UNSET[l]=!!(p.you&&v==null);
   LAW_SEED[l]=S.law[l];});
  /* switch profiles, never overwrite one. */
@@ -22595,6 +22897,9 @@ function loadP(i){
   if(p.you)PROFILES.push(pr);
   PROF_BY[p.nm]=pr;}
  CURP=PROF_BY[p.nm];
+ /* loadP fills S from the persona table rather than through loadProfile, so it
+    is the one route that has to say for itself which record S now holds. */
+ S.rec=CURP.id||null;
  saveProfile(CURP); iqApply(CURP);
  $('psel').value=String(i);
  syncSoul();syncCh();syncLw();renderSpirit();renderIntake();render();}
@@ -23554,6 +23859,20 @@ function render(){
     bar and the rest is in the tooltip. */
  (function(){
   var pb=$('polbar'); if(!pb)return;
+  /* AND IT SILENCES ITSELF ON AN UNREAD FIELD, like every other surface that
+     prints a reading. #pol two inches above this one has done it since the
+     ruling and this one had not caught up, so selecting somebody who has
+     entered nothing printed "84" benign against "16" malignant with the bar
+     reaching 34 per cent of the way out, directly under a rail correctly
+     saying nothing had been read. Measured on loadP(0) in the shipped build.
+
+     The bar is left in the document with nothing in it rather than hidden,
+     because an empty trough is the honest picture of an empty field and the
+     Field's own layout is measured against its height. */
+  if(r.unread){
+   pb.innerHTML='<div class="mid"></div>';
+   pb.title='Balance. Nothing read yet, so there is no lean to show.';
+   return;}
   var L=leanRead(r);
   var off=Math.abs(L.ben-50)*2;              /* 0 at even, 100 at either end */
   var mal=L.mal>L.ben;
@@ -24003,5 +24322,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="001555541"></div>
+<div id="eof" hidden data-len="001574645"></div>
 </body></html>

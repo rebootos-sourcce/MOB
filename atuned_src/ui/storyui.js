@@ -139,8 +139,15 @@ function stRelPanel(){
     loads after this module, and that is fine because this runs at render. */
  var relIds=take.map(function(n){return n.i;});
  var relCh=(typeof CHAN!=='undefined')?CHAN.map(function(c){return c[0]+c[2];}):[];
- var cost=(CURP&&relIds.length&&relCh.length)
-   ? meterPlan(CURP,relIds,relCh,RUN_MAX).length : 0;
+ /* AND IT IS CAPPED THE WAY THE RUN IS CAPPED. This passed RUN_MAX while the
+    run itself is now capped at the allowance too, so a person with three
+    patterns left was quoted sixteen here and would have been given three.
+    relBudget lives in release.js, which loads after this module, and that is
+    fine because this runs at render, the same reason CHAN is read that way
+    four lines up. */
+ var relCap=(typeof relBudget==='function')?relBudget():RUN_MAX;
+ var cost=(CURP&&relIds.length&&relCh.length&&relCap>0)
+   ? meterPlan(CURP,relIds,relCh,relCap).length : 0;
  var secs=Math.round(cost*RUN_SPEED_S[ST_RELSPD]);
  e.innerHTML='<div class="pm-eye">Release</div>'
   +'<p class="st-relp">'+(pool.length

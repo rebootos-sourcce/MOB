@@ -271,7 +271,7 @@ g('15 · every persona computes');
 PEOPLE.forEach(p=>{
  S.doms=[p.dom];S.arcs=[p.a1,p.a2];S.roots=[];buildSoul();
  CHARGES.forEach(c=>{S.charge[c]=p.c[c]||0;S.replace[c]=(p.rep&&p.rep[c])||0;});
- const LS=LAWSET[p.nm]||{_:5.5};
+ const LS=LAWSET[p.nm]||{_:E.LAW_DEFAULT};
  SINAMES.forEach(l=>S.law[l]=LS[l]!==undefined?LS[l]:LS._);
  const x=compute();
  ok(x.CQ>=0&&x.CQ<=100,p.nm+': CQ in range');
@@ -1096,8 +1096,8 @@ g('19a \u00b7 the roster covers the scale');
   S.doms=p.doms?p.doms.slice():[p.dom]; S.arcs=p.arcs?p.arcs.slice():[p.a1,p.a2];
   S.roots=p.roots?p.roots.slice():[]; buildSoul();
   CHARGES.forEach(c=>{S.charge[c]=(p.c&&p.c[c])||0; S.replace[c]=(p.rep&&p.rep[c])||0;});
-  const LS=LAWSET[p.nm]||{_:5.5};
-  SINAMES.forEach(l=>S.law[l]=(LS[l]!==undefined)?LS[l]:(LS._!==undefined?LS._:5.5));
+  const LS=LAWSET[p.nm]||{_:E.LAW_DEFAULT};
+  SINAMES.forEach(l=>S.law[l]=(LS[l]!==undefined)?LS[l]:(LS._!==undefined?LS._:E.LAW_DEFAULT));
   return compute();};
  const by={}; PEOPLE.forEach(p=>{by[p.nm]=rd(p);});
  const near=(n,t)=>ok(Math.abs(by[n].CQ-t)<0.6,n+' reads about '+t+', got '+by[n].CQ.toFixed(1));
@@ -3416,7 +3416,7 @@ g('37 \u00b7 the child pattern, and the reading it is under');
  PEOPLE.forEach(p=>{
   S.doms=[p.dom];S.arcs=[p.a1,p.a2];S.roots=[];buildSoul();
   CHARGES.forEach(c=>{S.charge[c]=p.c[c]||0;S.replace[c]=(p.rep&&p.rep[c])||0;});
-  const LS=LAWSET[p.nm]||{_:5.5};
+  const LS=LAWSET[p.nm]||{_:E.LAW_DEFAULT};
   SINAMES.forEach(l=>S.law[l]=LS[l]!==undefined?LS[l]:LS._);
   const r=compute(), k=childFound(r);
   anyFound+=k.n;
@@ -3435,6 +3435,123 @@ g('37 \u00b7 the child pattern, and the reading it is under');
   console.log('  '+p.nm.padEnd(9)+String(r.loaded.length).padStart(4)+' held, '
    +String(k.n).padStart(3)+' child');});
  ok(anyFound>0,'the roster finds some, '+anyFound+' across it');
+}
+
+g('38 · one seed for one unmeasured law, and the allowance is a ceiling');
+/* ============================================================
+   38a. THE SEED.
+
+   An unmeasured law had three answers. engine/core.js wrote a literal 6,
+   engine/schema.js named the same number LAW_DEFAULT for the same purpose, and
+   ui/personas.js seeded the custom persona at 6.5 with a fallback of 5.5 for a
+   persona with no table. Measured on one empty profile on one build: the engine
+   boundary read CQ 36.00 and the app read 42.25, so the same person had two
+   readings depending on which door they came through.
+
+   This gate could not have caught it on its own, because the second and third
+   numbers live in a renderer. What it can hold is the half that is testable
+   from here: the seed is exported, it is one number, and a blank profile taken
+   through the boundary lands on exactly that number and nothing else. The app
+   half is held in tests/functional.js, which compares the two doors on the same
+   empty profile in the same page.
+
+   AND THIS FILE CARRIED A FOURTH COPY. Three checks above read
+   LAWSET[p.nm]||{_:5.5}, which is a number typed into a gate, the defect this
+   repository has been bitten by often enough to have a paragraph about it in
+   CLAUDE.md. They read LAW_DEFAULT off the run now. The arms are dead guards
+   rather than paths, which is asserted below, so changing them moved nothing
+   and that is exactly why they were free to disagree for as long as they did. */
+{
+ const {LAW_DEFAULT,blankProfile,loadProfile}=E;
+ ok(typeof LAW_DEFAULT==='number'&&isFinite(LAW_DEFAULT),
+  'the seed is exported as a number, got '+JSON.stringify(LAW_DEFAULT));
+ ok(LAW_DEFAULT>=0&&LAW_DEFAULT<=10,'and it is inside the scale, '+LAW_DEFAULT);
+ const p=blankProfile('gate'); loadProfile(p);
+ const seeded=[...new Set(SINAMES.map(l=>S.law[l]))];
+ ok(seeded.length===1,'a blank profile seeds one value across every law, got '
+  +seeded.length+': '+seeded.join(', '));
+ ok(seeded[0]===LAW_DEFAULT,'and it is the exported seed, '+seeded[0]
+  +' against '+LAW_DEFAULT);
+ ok(SINAMES.every(l=>p.laws[l]===null),
+  'and the record still says none of them was measured');
+ const r=compute();
+ ok(r.unread===true,'an empty profile reads as unread');
+ console.log('  seed '+LAW_DEFAULT+'  CQ on the empty profile '+r.CQ.toFixed(2));
+ /* The fallback arms in this file are guards and not paths, which is the
+    reason they were able to hold a different number for as long as they did.
+    If a persona ever loses its table this fails and the arm becomes real. */
+ const noTable=PEOPLE.filter(p2=>!LAWSET[p2.nm]);
+ ok(noTable.length===0,'every persona in the engine roster carries a law table, '
+  +noTable.length+' do not'+(noTable[0]?': '+noTable[0].nm:''));
+ const thin=PEOPLE.filter(p2=>{const L=LAWSET[p2.nm];
+  return L&&L._===undefined&&SINAMES.some(l=>L[l]===undefined);});
+ ok(thin.length===0,'and each table answers for every law or names a default, '
+  +thin.length+' do neither');
+}
+/* ============================================================
+   38b. THE ALLOWANCE IS A SECOND CEILING.
+
+   The release panel printed "25 patterns of the 0 you have left" and then ran
+   all twenty five. Measured on the shipped build against a free record with the
+   gift spent and base at 100: relLeft() 0, plan 25, 110 unique patterns before
+   the run and 135 after, and relLeft() still 0 afterwards because the
+   subtraction clamps at nought. The overspend was invisible before, during and
+   after, on the one panel in this product that quotes a price.
+
+   meterBudget is the arithmetic, in the engine, where meterPlan's other ceiling
+   already lives. What this asserts is the property the panel depends on and not
+   a number: a plan built at the budget's cap never spends more than the budget
+   says is left. That holds at any grant, at any tier, and at any RUN_MAX. */
+{
+ const {meterBudget,meterPlan,meterRun,meterKey,RUN_MAX,RUN_MIN,LINES_PER_CH}=E;
+ ok(typeof meterBudget==='function','meterBudget is reachable from the contract');
+ /* GUARDED, BECAUSE AN UNREACHABLE FUNCTION MUST FAIL BY NAME AND NOT BY STACK
+    TRACE. Run against the build before this landed the block threw on the first
+    call and took every row after it with it, which reports "meterBudget is not
+    a function" from node and nothing from the gate. The row above is the gate's
+    answer and the rest is skipped. */
+ if(typeof meterBudget!=='function'){
+  ok(false,'so nothing below it can be measured');
+ } else {
+ const rec=(unique,base,tier)=>({id:'gate',
+  meter:{lines:unique,unique:Array.from({length:unique},(_,i)=>'seed'+i+':Rlimit:0'),
+   first:null,last:null},
+  plan:{tier:tier||'free',status:'',granted:0,carried:0,base:base,since:null,until:null}});
+ /* the gift is the first hundred, so base 100 is the record's first real period */
+ const spent=meterBudget(rec(110,100));
+ ok(spent.left===0,'a spent allowance has nothing left, got '+spent.left);
+ ok(spent.cap===0,'and the cap is nought, not RUN_MAX, got '+spent.cap);
+ const three=meterBudget(rec(107,100));
+ ok(three.left===3,'seven of ten spent leaves three, got '+three.left);
+ ok(three.cap===3,'and the cap follows what is left rather than the ceiling, got '+three.cap);
+ const wide=meterBudget(rec(50,100));
+ ok(wide.left>RUN_MAX,'inside the gift there is more left than one run can take, '+wide.left);
+ ok(wide.cap===RUN_MAX,'and the cap falls back to the run ceiling, got '+wide.cap);
+ ok(meterBudget(null)&&meterBudget(null).cap<=RUN_MAX,
+  'a call with no record answers rather than throwing, cap '
+  +(meterBudget(null)||{}).cap);
+ /* THE ROW THE DEFECT NEEDED. Eight addresses and four channels is thirty two
+    lines of ground, well past any of these caps, so the cap is what truncates
+    and the spend is what the cap allowed. */
+ const ids=[1,2,3,4,5,6,7,8], chans=['Rlimit','Llimit','Rtruth','Ltruth'];
+ [[110,100],[107,100],[100,100],[50,100]].forEach(([u,b])=>{
+  const p=rec(u,b), B=meterBudget(p);
+  const plan=B.cap>0?meterPlan(p,ids,chans,B.cap):[];
+  ok(plan.length<=B.left,'with '+B.left+' left the plan is at most that, got '+plan.length);
+  const before=p.meter.unique.length;
+  if(plan.length)meterRun(p,plan);
+  const added=p.meter.unique.length-before;
+  ok(added<=B.left,'and the run spends no more than was left, '+added+' of '+B.left);
+  ok(added===plan.length,'and it spends exactly what the plan quoted, '
+   +added+' against '+plan.length);
+  console.log('  left '+String(B.left).padStart(3)+'  cap '+String(B.cap).padStart(3)
+   +'  plan '+String(plan.length).padStart(3)+'  spent '+String(added).padStart(3));});
+ /* and the cap of nought is passed as a refusal by the caller rather than to
+    meterPlan, which reads nought as "no cap given" and falls back to 25. */
+ ok(meterPlan(rec(110,100),ids,chans,0).length===25,
+  'meterPlan reads a cap of nought as no cap, which is why release.js refuses '
+  +'above it rather than passing it down, got '+meterPlan(rec(110,100),ids,chans,0).length);
+ }
 }
 
 console.log('\n===== '+P+' passed, '+F+' failed =====');

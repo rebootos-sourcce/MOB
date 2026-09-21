@@ -1033,8 +1033,25 @@ body:not(.hassub) .subbar{display:none}
    number as bare text, so the third was missing and the grammar did not read as
    a grammar. One rule, and every ring in the product gains it at once, which is
    the whole point of there being one component. */
+/* AND THE FIGURE TAKES INK, NOT THE HUE IT IS SITTING ON. The pill's ground is
+   the seat colour at 17 per cent and the number was that same colour, so the
+   figure and its own ground were the same hue two steps apart in lightness.
+   Measured on the Field with Gordon loaded, worst of the thirty plain chips:
+   the root seat read 2.77 to 1 at 11.5 pixels against a text floor of 4.5, and
+   root is the malignant end, so the worst contrast in the set was on the
+   reading that matters most. It reads 7.22 now, worst case on solar.
+
+   The number is 2.77 and not the 3.03 an earlier note here claimed, because a
+   chip paints two see through layers and the first probe composited one of
+   them. The gate composites every layer between the figure and the first
+   opaque ancestor, which is what the screen actually paints, and that is the
+   only reading either of us can stand behind.
+
+   The hue has not left: it is the ring, the arc, the glyph and the border,
+   which is four statements of the seat against one, and nothing about the chip
+   reads differently for having a legible number in it. */
 .cr .v{font-family:var(--num);font-weight:500;font-variant-numeric:tabular-nums;
- color:var(--c);margin-left:8px;line-height:1;border-radius:999px;
+ color:var(--ink);margin-left:8px;line-height:1;border-radius:999px;
  background:color-mix(in srgb,var(--c) 17%,transparent);
  padding:4px 9px 4px 9px;white-space:nowrap}
 .cr.hot .v{background:var(--alarm-soft)}
@@ -1060,7 +1077,16 @@ body.punch .tp{font-weight:600}
    surface, which it started doing because Games folded into it. */
 .kb-rc{display:inline-flex;align-items:center;flex:0 0 auto}
 .cr.hot{background:var(--alarm-soft);border-color:rgba(255,46,31,.45)}
-.cr.hot .v{color:var(--alarm)}
+/* AND THE HOT FIGURE TAKES INK FOR THE SAME REASON THE PLAIN ONE DOES, which
+   is the worse half of the same defect and was not reported with it. Alarm over
+   alarm soft twice, once on the chip and again on the pill inside it, measured
+   3.28 to 1 at 11.5 pixels on six chips of the Field's own stack. It reads
+   10.41 now. This is the case that proved the single layer probe wrong: that
+   probe read 3.93 here, which passes nothing but is not what the screen shows,
+   and the two numbers differ by exactly the layer it skipped.
+
+   The alarm still says it four times over: the arc, the glyph, the border and
+   the pill's ground. */
 .cr.hot .ring .gl svg{stroke:var(--alarm)}
 .cr.act{cursor:pointer}
 .cr.act:hover{border-color:color-mix(in srgb,var(--c) 62%,transparent);
@@ -1557,8 +1583,22 @@ body:not(.tab-field) .pol2{display:none}
 .pol-g svg{fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;
  stroke-linejoin:round}
 .pol-g.on{color:var(--c)}
+/* THE FIGURE CARRIES ITS OWN GROUND, because the fill reaches under it exactly
+   when the reading is strongest. The fill grows from the centre, so a benign
+   lean travels right into the right hand figure and a malignant lean travels
+   left into the left hand one, and each figure is only ever covered by one of
+   the two colours. Measured at a full lean each way, ink at .86 and 11 pixels:
+   12.48 to 1 over the bare trough, 5.48 over the malignant fill and 3.12 over
+   the benign one, which is the lightest colour in the palette. So the label
+   failed the 4.5 floor on exactly the leans that matter and passed everywhere
+   it did not. Both ends read 14.39 now.
+
+   The opacity is gone and the number sits on the panel colour, which is the
+   same pill grammar every other figure in this product already uses, so the
+   fill can run under it without deciding what the number is worth. */
 .polbar .lb{position:absolute;top:0;bottom:0;display:flex;align-items:center;
- font-family:var(--num);font-size:11px;font-weight:500;color:var(--ink);opacity:.86;padding:0 10px}
+ font-family:var(--num);font-size:11px;font-weight:500;color:var(--ink);padding:0 10px}
+.polbar .lb b{background:var(--panel);border-radius:999px;padding:2px 7px;line-height:1}
 .polbar .l{left:0}.polbar .r{right:0}
 .polnote{font-size:12.5px;color:var(--dim);margin:6px 0 0;line-height:1.55}
 

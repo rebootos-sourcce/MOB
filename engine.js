@@ -3412,7 +3412,12 @@ const S={dom:0,doms:[0],arcs:[0,1],roots:[],a1:0,a2:1,charge:{},law:{},
  /* atom: the one story weight being held on the wheel, past the fetter
     layer. {i:node id, ei:entry index}, or null for none held. View state,
     like pin and hover, so it is not persisted and not validated. */
- zoom:1,panx:0,pany:0,atom:null};
+ zoom:1,panx:0,pany:0,atom:null,
+ /* rec: the id of the record this working state was filled from. Not a view
+    field and not persisted, but it is the only thing that can tell two of the
+    person's own records apart, because both of them are who 0. loadProfile
+    writes it and saveYou reads it. See the note at the end of loadProfile. */
+ rec:null};
 /* A stranger's first load used to seed every axis at 3, which produced CQ 36
    and the word Incoherent in the largest type on screen, beside a panel that
    correctly said nothing was held. The interval was never the problem. The
@@ -3425,7 +3430,27 @@ const S={dom:0,doms:[0],arcs:[0,1],roots:[],a1:0,a2:1,charge:{},law:{},
    place it matters, that an unmeasured law is a default and flatters the
    score. */
 CHARGES.forEach(c=>{S.charge[c]=0;S.replace[c]=0;});
-SINAMES.forEach(l=>S.law[l]=6);
+/* ONE SEED FOR ONE QUANTITY, AND IT LIVES HERE BECAUSE THIS IS THE FIRST USE.
+
+   The value an unmeasured law is given in working state had three answers.
+   This line said 6 as a literal, schema.js named the same number LAW_DEFAULT
+   for the same purpose, and ui/personas.js seeded the custom persona at 6.5
+   and fell back to 5.5 for anybody with no table. Measured on one empty
+   profile: the engine boundary read CQ 36.00 and the app read 42.25 the moment
+   loadP(0) ran, which is every route a person takes to their own record, so
+   the same person had two readings depending on which door they came through.
+
+   6 is the value that was already named, already commented eight lines above
+   as what the interface tells a person an unmeasured law is, and already the
+   one saveProfile compares against before it agrees to persist a law. The
+   other two were literals in a renderer, and a renderer does not get to seed
+   the arithmetic.
+
+   Declared in core.js rather than in schema.js because a var is hoisted but
+   its assignment is not, so this line runs before schema.js exists and read
+   undefined if it referenced it there. */
+const LAW_DEFAULT=6;
+SINAMES.forEach(l=>S.law[l]=LAW_DEFAULT);
 
 /* ============================================================
    THE SOUL. Multi-select: any number of blueprint domains, root
@@ -4496,10 +4521,12 @@ function blankProfile(name){
  CHILD.forEach(function(c){p.axes[c.nm]={held:0,opp:0};});
  SI.forEach(function(l){p.laws[l.nm]=null;});        /* null = not yet measured */
  return p;}
-/* The value an unmeasured law is given in working state, and which of them
-   are sitting on it. Named rather than repeated as a literal, because the two
-   places that used the number 6 had to agree and did not. */
-var LAW_DEFAULT=6, LAW_UNSET={}, LAW_SEED={};
+/* WHICH LAWS ARE SITTING ON THE SEED, AND WHAT THEY WERE SEEDED WITH.
+   LAW_DEFAULT is the seed itself and it moved to engine/core.js, which is the
+   module that first uses it: this one named the number and core.js printed a
+   literal 6 beside a comment about it, and ui/personas.js then named two more
+   numbers for the same quantity. One declaration, at the first use. */
+var LAW_UNSET={}, LAW_SEED={};
 function loadProfile(p){
  if(!p.who)p.who={first:'',middle:'',last:'',sex:'',born:{date:'',time:'',place:'',timeUnknown:false}};
  if(!p.who.born)p.who.born={date:'',time:'',place:'',timeUnknown:false};
@@ -4535,6 +4562,22 @@ function loadProfile(p){
   LAW_SEED[l.nm]=S.law[l.nm];});
  gatesLoad(p);   /* absent on a v1 profile, which reads as no story evidence */
  suscAll();      /* so a story applied before compute() lands on this profile */
+ /* WHICH RECORD THE WORKING STATE CAME FROM, keyed by the record's id.
+
+    S.who names a PERSONA, and every one of the person's own records is S.who
+    0, so S.who cannot tell two of their own records apart. The Intake's
+    switcher repoints CURP and loads the other record's field into S, S.who
+    stays 0, and saveYou then writes whatever S holds into PEOPLE[0], which is
+    the table the person's own record is read back from. Measured on a clean
+    page: 2.20 units of held charge in PEOPLE[0] before, 63.00 after one
+    saveYou taken while a second own record was loaded, and 63.00 still there
+    after loadP(0), so the first record's field was gone for good.
+
+    Same class as the undo leak closed at 88181e6 and the same answer, which
+    engine/undo.js argues at length: key the thing to the record it came from
+    rather than repointing anything, because two attempts at repointing are
+    already recorded as worse than the bug. */
+ S.rec=p.id||null;
  return p;}
 function saveProfile(p){
  p.soul={doms:S.doms.slice(),arcs:S.arcs.slice(),roots:S.roots.slice()};
@@ -4565,11 +4608,15 @@ function saveProfile(p){
  SI.forEach(function(l){
   if(S.law[l.nm]==null)return;
   /* Compared against the value this law was SEEDED with, not against a single
-     literal. Two callers seed an unmeasured law and they do not agree: this
-     module uses 6 and the persona loader uses 5.5. Testing one literal wrote
-     the other one straight through, which is the bug wearing a different
-     number. What is being asked is "has anybody moved this since it was given
-     a placeholder", and only the seed can answer that. */
+     literal. Three callers seeded an unmeasured law and none of them agreed:
+     this module said 6, the persona loader said 6.5 and its own fallback said
+     5.5. Testing one literal wrote the other two straight through, which is
+     the bug wearing a different number. They all read LAW_DEFAULT now, and
+     this still compares against the seed rather than against that constant,
+     because what is being asked is "has anybody moved this since it was given
+     a placeholder" and only the seed the law actually got can answer it. A
+     stated type writes real values onto these through seedApply, so the seed
+     is not always the default even now. */
   if(LAW_UNSET[l.nm]&&S.law[l.nm]===LAW_SEED[l.nm])return;
   p.laws[l.nm]=S.law[l.nm]; LAW_UNSET[l.nm]=false;});
  gatesSave(p);
@@ -5244,6 +5291,32 @@ function meterPlan(p,nodeIds,chans,cap){
     if(n<0||n>=LINES_PER_CH)continue;
     var k=meterKey(id,ch,n); seen[k]=1; out.push(k);}}}
  return out;}
+/* WHAT A RUN IS ALLOWED TO COST, WHICH IS NOT THE SAME AS WHAT IT CAPS AT.
+
+   The release panel printed "16 patterns of the 0 you have left" and then ran
+   all sixteen. Measured on the shipped build against a free record with the
+   gift spent and base at 100: relLeft() 0, plan 16, unique 110 before the run
+   and 126 after, and relLeft() still 0 afterwards because the subtraction
+   clamps at nought. So the overspend was invisible before, during and after,
+   and the one panel in this product that quotes a price was quoting a false
+   one directly under the paid tiers.
+
+   The allowance is a second ceiling and belongs where the first one is.
+   meterPlan already truncates a wide selection at the cap, one pattern per
+   line, and every line it returns is new ground, so a cap of what is left
+   spends exactly what is left and the printed number is the price. That is a
+   shorter run rather than a refused one, which matters: a person who picked
+   eight addresses with three patterns left gets three, not nothing.
+
+   Refusing is left to the door, and only when the cap is nought. A run already
+   under way is never interrupted, because relCoolDown commits the plan it was
+   shown, and that plan is now already inside the allowance. */
+function meterBudget(p){
+ var m=(p&&p.meter)||null;
+ var a=(typeof planAllowance==='function')
+   ? planAllowance((p&&p.plan)||null,((m&&m.unique)||[]).length) : null;
+ var left=(a&&a.left!=null)?Math.max(0,Math.floor(a.left)):0;
+ return {left:left, cap:Math.min(RUN_MAX,left), allow:a};}
 function meterRun(p,keys){
  if(!p)return null;
  if(!p.meter)p.meter={lines:0,unique:[],first:null,last:null};
@@ -5597,8 +5670,47 @@ function lexCanon(){
    introduced. Both run before scanStory can be called. */
 var LEXCANONRUN=lexCanon();
 var LEXFOLDRUN=lexFold();
+/* ============================================================
+   THE NORMALISATION, AND THE INDEX BACK OUT OF IT.
+
+   scanStory reads a normalised copy of the story: lowercased, everything that
+   is not a letter, an apostrophe or a space turned into a space, runs of space
+   collapsed to one, and a space added at each end so every word has a boundary
+   on both sides. hit.at is an offset into THAT string and the engine has been
+   carrying it since the path was built.
+
+   The story page threw those offsets away and ran its own global regular
+   expression over the raw text, which is a second reading of the same sentence
+   by a different rule. Measured on an 87 word story in the shipped build: the
+   scanner recorded 8 hits and the page lit 4. It dropped both coherent hits,
+   because it filtered them out to pick a seat colour, and it never printed the
+   name the engine already holds, where "stayed quiet" is silenced.
+
+   So the normalisation is a function that also returns the raw index of every
+   character it kept, and scanStory builds its own src from it. One string, one
+   set of offsets, and no way for the two to drift: the earlier inline version
+   and a hand rebuilt copy differed by one whenever the text opened or closed on
+   punctuation, because ' '+body put two spaces at the front when body already
+   began with one.
+
+   Ported from proto/story4, where four prototypes each carried a copy.
+   ============================================================ */
+function normMap(t){
+ t=String(t||'');
+ var body='',bm=[],i,c;
+ for(i=0;i<t.length;i++){
+  c=t.charAt(i).toLowerCase();
+  if(!/[a-z' ]/.test(c))c=' ';
+  body+=c; bm.push(i);}
+ var s=' ', map=[0], prev=true;
+ for(i=0;i<body.length;i++){
+  var sp=body.charAt(i)===' ';
+  if(sp&&prev)continue;
+  s+=body.charAt(i); map.push(bm[i]); prev=sp;}
+ s+=' '; map.push(t.length);
+ return {s:s,map:map};}
 function scanStory(text){
- var src=' '+String(text||'').toLowerCase().replace(/[^a-z' ]+/g,' ').replace(/\s+/g,' ')+' ';
+ var src=normMap(text).s;
  var hits=[];
  /* phrases first: an idiom outranks its own words */
  PHRASES.forEach(function(row){
@@ -5818,6 +5930,51 @@ function parseStory(text){
  return {hits:hits, bands:byBand, charges:byChg, named:named, weights:nm, imprints:imprints,
   path:pathOf(hits),
   words:hits.filter(function(h){return h.kind!=='adj';}).length};}
+/* ============================================================
+   THE MARKS. Every hit, placed back on the letters a person typed.
+
+   One reading of the sentence. The scanner's own offsets, mapped through the
+   same normalisation it scanned, so a mark lands on exactly the characters that
+   were scored and nothing re-matches anything.
+
+   It carries what the engine knows and the page had no way to see: the seat, the
+   band the seat belongs to, the amount, the fetter the word names, the charge an
+   adjective names, the phrase's label, and whether the hit is coherent. The
+   shipping highlighter filtered coherent hits out because it only wanted a seat
+   colour, so the words that take charge OFF a person were invisible on the one
+   surface whose whole job is to show the reading.
+
+   One mark per stretch of text, which is the scanner's own precedence: a phrase
+   outranks the words inside it and an adjective sitting on the same word as a
+   placed term merges into it rather than drawing twice.
+
+   Ported from proto/story4 unchanged in behaviour. None of the four designs'
+   look comes with it: this returns data and the page decides what to draw.
+   ============================================================ */
+function marksOf(t,p){
+ if(!p||!p.hits||!p.hits.length)return [];
+ var nm=normMap(t), raw=[];
+ p.hits.forEach(function(h){
+  if(h.at==null)return;
+  var a=h.at+1, b=h.at+String(h.t).length;
+  if(a>=nm.map.length||b>=nm.map.length)return;
+  raw.push({s:nm.map[a], e:nm.map[b]+1, kind:h.kind, band:h.band||null,
+   amt:(h.amt==null?null:h.amt), label:h.label||null, charge:h.charge||null,
+   fet:h.fet||null, coh:h.band==='coherent'});});
+ raw.sort(function(a,b){return a.s-b.s||(b.e-b.s)-(a.e-a.s);});
+ var keep=[], last=-1;
+ raw.forEach(function(m){
+  if(m.s<last){var pv=keep[keep.length-1];
+   if(pv&&m.charge&&!pv.charge)pv.charge=m.charge;
+   if(pv&&m.fet&&!pv.fet)pv.fet=m.fet;
+   if(pv&&m.band&&!pv.band){pv.band=m.band;pv.coh=m.coh;}
+   if(pv&&m.amt!=null&&pv.amt==null)pv.amt=m.amt;
+   return;}
+  m.seat=(m.band&&m.band!=='coherent')?m.band:null;
+  m.bn=m.seat?K2BAND[m.seat]:null;
+  keep.push(m); last=m.e;});
+ keep.forEach(function(m,i){m.i=i;});
+ return keep;}
 function applyStory(text){
  var p=parseStory(text), touched={};
  p.imprints.forEach(function(im){ var f=im.fetter; if(!f) return;
@@ -7616,9 +7773,9 @@ if(typeof module!=='undefined'&&module.exports){
   /* the door */  read:read, input:input, throughput:throughput, output:output,
                   gatesClear:gatesClear, gatesLoad:gatesLoad, gatesSave:gatesSave,
   /* schema */    blankProfile:blankProfile, loadProfile:loadProfile,
-                  saveProfile:saveProfile, snapshot:snapshot,
+                  saveProfile:saveProfile, snapshot:snapshot, LAW_DEFAULT:LAW_DEFAULT,
                   pExport:pExport, pImport:pImport, validateProfile:validateProfile, importError:importError,
-                  meterRun:meterRun, meterRead:meterRead, meterKey:meterKey,
+                  meterRun:meterRun, meterRead:meterRead, meterKey:meterKey, meterBudget:meterBudget,
                   meterNext:meterNext, meterPlan:meterPlan, LINES_PER_CH:LINES_PER_CH, MARKERS:MARKERS, markersFor:markersFor, PAT_PER_YEAR:PAT_PER_YEAR,
                   PAT_GEN:PAT_GEN, PAT_REF_AGE:PAT_REF_AGE,
                   profiles:function(){return PROFILES;}, current:function(){return CURP;}, SCHEMA_V:SCHEMA_V,
@@ -7629,7 +7786,7 @@ if(typeof module!=='undefined'&&module.exports){
      rename that missed this table shipped six broken questions, and a table
      no test can reach is a table with no owner. */
                   IQ_STEM:IQ_STEM,
-  /* sniffer */   scanStory:scanStory, parseStory:parseStory, applyStory:applyStory,
+  /* sniffer */   scanStory:scanStory, normMap:normMap, marksOf:marksOf, parseStory:parseStory, applyStory:applyStory,
   /* THE OUTPUT CONTRACT, SNIFFER_SPEC.md section 10. sniffStory is the one
      entry point a caller needs; the seven part builders are exported beside it
      because the gate asserts each part on its own and a part no test can reach

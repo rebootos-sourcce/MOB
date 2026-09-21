@@ -2480,6 +2480,267 @@ console.log('\n=== the child pattern is found, marked and located ===');
  await kp.close();
 }
 
+console.log('\n=== one seed, so both doors read the same empty profile ===');
+/* TWO DOORS ONTO ONE RECORD READ TWO DIFFERENT NUMBERS.
+
+   An unmeasured law was seeded three times: a literal in engine/core.js,
+   LAW_DEFAULT in engine/schema.js for the same purpose, and 6.5 in
+   ui/personas.js with a fallback of 5.5 beneath it. Measured on the shipped
+   build, same page, same empty profile: loadP(0) read CQ 42.25 and
+   blankProfile plus loadProfile read 36.00. loadP(0) is every route a person
+   takes to their own record, so the reading a stranger was shown on arrival
+   was the one nobody could reproduce from the engine.
+
+   Both doors are opened here in one page rather than comparing a browser
+   number against a node number, because a cross process comparison would fail
+   for a dozen reasons that are not this defect. */
+{
+ const sd=await browser.newPage({viewport:{width:1600,height:1000}});
+ await sd.goto(FILE,{waitUntil:'load'}); await booted(sd);
+ const seed=await sd.evaluate(()=>{
+  loadP(0);
+  const app={cq:+compute().CQ.toFixed(2), unread:!!compute().unread,
+   seeds:[...new Set(SINAMES.map(l=>S.law[l]))]};
+  const p=blankProfile('gate'); loadProfile(p);
+  const eng={cq:+compute().CQ.toFixed(2), unread:!!compute().unread,
+   seeds:[...new Set(SINAMES.map(l=>S.law[l]))]};
+  return {app, eng, dflt:(typeof LAW_DEFAULT==='number'?LAW_DEFAULT:null),
+   lawset:LAWSET.You, fallback:lawsFor({nm:'nobody in any table'})};});
+ ok(seed.app.cq===seed.eng.cq,
+  'the two doors read one empty profile the same, the app '+seed.app.cq
+  +' and the boundary '+seed.eng.cq);
+ ok(seed.app.seeds.length===1&&seed.eng.seeds.length===1,
+  'each door seeds one value, '+seed.app.seeds.length+' and '+seed.eng.seeds.length);
+ ok(seed.app.seeds[0]===seed.dflt,'and the app door uses the exported seed, '
+  +seed.app.seeds[0]+' against '+seed.dflt);
+ ok(seed.eng.seeds[0]===seed.dflt,'and so does the boundary, '
+  +seed.eng.seeds[0]+' against '+seed.dflt);
+ /* the two renderer literals, by the tables that held them */
+ ok(seed.lawset&&seed.lawset._===seed.dflt,
+  'the custom persona table carries the seed rather than one of its own, '
+  +JSON.stringify(seed.lawset));
+ ok(seed.fallback&&seed.fallback._===seed.dflt,
+  'and so does the guard for a persona with no table, '+JSON.stringify(seed.fallback));
+ ok(seed.app.unread&&seed.eng.unread,'and neither door claims the field was read');
+ console.log('  seed '+seed.dflt+'  app '+seed.app.cq+'  boundary '+seed.eng.cq);
+ await sd.close();
+}
+
+console.log('\n=== the release panel quotes a price it then charges ===');
+/* THE PANEL QUOTED A PRICE AND NOTHING ENFORCED IT.
+
+   Measured on the shipped build, the person's own record carrying charge, a
+   free plan with the gift spent and base at 100: relLeft() read 0, the panel
+   printed "25 patterns of the 0 you have left", Begin was offered, and the run
+   went ahead. 110 unique patterns before it and 135 after, with relLeft() still
+   reading 0 because the subtraction clamps at nought, so the overspend was
+   invisible before, during and after. This is the one panel in the product that
+   quotes a price, and it sits directly under the paid tiers.
+
+   Two things are asserted and the second is the one that matters. Nought left
+   means there is no run to begin, refused at the door, which is the only place
+   a refusal is allowed: stopping a walk already under way is a worse failure
+   than a wrong label, because the person has sat down and half a release is
+   neither a release nor a refund. And a partial allowance is a SHORTER run and
+   never a refused one, quoted at what it spends, because somebody with three
+   patterns left should get three rather than nothing.
+
+   The run is walked by setting the index to the end of the plan and committing,
+   which is what the ticker does when it runs out of lines. Waiting out twenty
+   five real ticks at 2.2 seconds each is fifty five seconds of gate. */
+{
+ const rl=await browser.newPage({viewport:{width:1600,height:1000}});
+ await rl.goto(FILE,{waitUntil:'load'}); await booted(rl);
+ const run=await rl.evaluate(async unique=>{
+  loadP(0);
+  CHARGES.forEach(c=>{S.charge[c]=7;});
+  CURP.meter={lines:unique,unique:[],first:null,last:null};
+  for(let i=0;i<unique;i++)CURP.meter.unique.push('seed'+i+':Rlimit:0');
+  CURP.plan={tier:'free',status:'',granted:0,carried:0,base:100,since:null,until:null};
+  const ids=compute().carrying.slice(0,8).map(n=>n.i);
+  const left=relLeft();
+  relPick(ids);
+  await new Promise(r=>setTimeout(r,120));
+  const host=document.getElementById('rel');
+  const txt=e=>{const n=host.querySelector(e);return n?n.textContent.trim():'';};
+  const out={left, addresses:RUN.queue.length, plan:(RUN.plan||[]).length,
+   sub:txt('.rel-sub'), note:txt('.rel-note'),
+   begin:!!document.getElementById('relgo'),
+   route:!!document.getElementById('relplan'),
+   before:CURP.meter.unique.length};
+  if(out.begin){RUN.phase='run'; RUN.idx=RUN.plan.length; relCoolDown();}
+  out.after=CURP.meter.unique.length;
+  out.spent=out.after-out.before;
+  return out;},110);
+ ok(run.left===0,'the gift spent and the week spent leaves nothing, got '+run.left);
+ ok(run.addresses>0,'eight addresses are still picked, got '+run.addresses);
+ ok(run.plan===0,'and there is no plan to sell, got '+run.plan);
+ ok(run.begin===false,'so Begin is not offered at all, rather than offered and disabled');
+ ok(run.route===true,'and the panel routes to the one thing that changes the answer');
+ ok(run.spent===0,'and nothing is spent, '+run.spent+' patterns went out the door');
+ ok(!/\b0 patterns of the 0\b/.test(run.sub),
+  'the panel does not quote a price of nought against an allowance of nought, got '
+  +JSON.stringify(run.sub));
+ console.log('  spent      '+JSON.stringify(run.sub));
+ /* AND THE PARTIAL CASE, which is the half a refusal would have broken. */
+ const part=await rl.evaluate(async unique=>{
+  loadP(0);
+  CHARGES.forEach(c=>{S.charge[c]=7;});
+  CURP.meter={lines:unique,unique:[],first:null,last:null};
+  for(let i=0;i<unique;i++)CURP.meter.unique.push('seed'+i+':Rlimit:0');
+  CURP.plan={tier:'free',status:'',granted:0,carried:0,base:100,since:null,until:null};
+  const ids=compute().carrying.slice(0,8).map(n=>n.i);
+  const left=relLeft();
+  relPick(ids);
+  await new Promise(r=>setTimeout(r,120));
+  const host=document.getElementById('rel');
+  const txt=e=>{const n=host.querySelector(e);return n?n.textContent.trim():'';};
+  const out={left, plan:(RUN.plan||[]).length, sub:txt('.rel-sub'), note:txt('.rel-note'),
+   begin:!!document.getElementById('relgo'), before:CURP.meter.unique.length};
+  if(out.begin){RUN.phase='run'; RUN.idx=RUN.plan.length; relCoolDown();}
+  out.spent=CURP.meter.unique.length-out.before;
+  return out;},107);
+ ok(part.left>0,'seven of the week spent leaves some, got '+part.left);
+ ok(part.begin===true,'a short allowance is a shorter run and not a refused one');
+ ok(part.plan===part.left,'the plan is exactly what is left, '+part.plan
+  +' against '+part.left);
+ ok(part.spent===part.plan,'and the run spends exactly what the panel quoted, '
+  +part.spent+' against '+part.plan);
+ ok(new RegExp('^'+part.plan+' patterns of the '+part.left+' ').test(part.sub),
+  'and the printed sentence is that same number twice, got '+JSON.stringify(part.sub));
+ /* WHICH CEILING CUT IT, because the two mean different things to a person.
+    Short of the run ceiling used to print "that is everything still unopened in
+    this queue", which is false the moment the allowance is what cut it: there is
+    more unopened ground and they cannot reach it yet. */
+ ok(/allowance has left/.test(part.note)&&!/everything still unopened/.test(part.note),
+  'and the note names the allowance rather than claiming the queue is empty, got '
+  +JSON.stringify(part.note));
+ console.log('  partial    '+JSON.stringify(part.sub));
+ console.log('             '+JSON.stringify(part.note));
+ await rl.close();
+}
+
+console.log('\n=== switching between two of your own records keeps both fields ===');
+/* THE SECOND HALF OF THE FIELD LEAK, and the same class as the undo leak
+   closed at 88181e6.
+
+   PEOPLE[0] is the table loadP(0) reads the person's own field back out of, and
+   it mirrors exactly one record. saveYou guarded on S.who===0, and S.who names
+   a PERSONA, so every one of the person's own records answers 0. The Intake's
+   switcher repoints CURP and loads another record's field into S while S.who
+   stays 0, and the next slider drag then wrote record B's field into the table
+   record A is read from. Measured on the shipped build: 2.20 units of held
+   charge in PEOPLE[0] before, 63.00 after one saveYou taken while a second own
+   record was loaded, and 63.00 still there after loadP(0), so record A's field
+   was gone for good.
+
+   The guard is the record's id, which S.rec carries, and nothing repoints,
+   because two attempts at repointing are recorded in ui/release.js as each
+   worse than the bug.
+
+   AND THE COST OF THE GUARD IS ASSERTED BESIDE IT. persistYou has exactly one
+   caller and it is saveYou, so it is the only route by which a slider drag
+   reaches storage. The first cut returned before it, which traded destroying
+   record A for silently losing every edit to record B: measured at 63 units in
+   the record before the guard and 0 after. The mirror is guarded and the write
+   through is not, and both halves are held here, because a gate that only
+   checks the leak would pass the fix that causes the loss. */
+{
+ const sw=await browser.newPage({viewport:{width:1600,height:1000}});
+ await sw.goto(FILE,{waitUntil:'load'}); await booted(sw);
+ const leak=await sw.evaluate(async()=>{
+  const sum=o=>+CHARGES.reduce((t,c)=>t+(o[c]||0),0).toFixed(2);
+  const held=p=>+CHILD.reduce((t,c)=>t+((p.axes&&p.axes[c.nm]&&p.axes[c.nm].held)||0),0).toFixed(2);
+  loadP(0);
+  const A=CURP;
+  S.charge.Fear=2.2; saveYou();
+  const aBefore=sum(PEOPLE[0].c);
+  pNew('a second record of my own');
+  const B=PROFILES[PROFILES.length-1];
+  /* the Intake switcher, exactly as ui/intakeui.js writes it */
+  CURP=B; loadProfile(CURP);
+  CHARGES.forEach(c=>{S.charge[c]=7;});
+  const who=S.who, mirrored=saveYou();
+  const aAfter=sum(PEOPLE[0].c);
+  /* the debounce is 400ms, and the point of the second half is that it fires */
+  await new Promise(r=>setTimeout(r,700));
+  const bHeld=held(B);
+  loadP(0);
+  return {aBefore, who, mirrored, aAfter, aOnReturn:sum(PEOPLE[0].c),
+   sOnReturn:sum(S.charge), bHeld, aId:A.id, bId:B.id, differ:A.id!==B.id};});
+ ok(leak.differ,'two records of the same person have two ids');
+ ok(leak.who===0,'and both of them answer to persona nought, which is why the '
+  +'index could not tell them apart');
+ ok(leak.aBefore===2.2,'record A carries what was put in it, '+leak.aBefore);
+ ok(leak.mirrored===false,'the mirror declines to write for a record it does not mirror');
+ ok(leak.aAfter===leak.aBefore,'so record A is untouched by a drag on record B, '
+  +leak.aAfter+' against '+leak.aBefore);
+ ok(leak.aOnReturn===leak.aBefore,'and it is still there on the way back through '
+  +'loadP(0), '+leak.aOnReturn);
+ ok(leak.sOnReturn===leak.aBefore,'and the working field is record A\'s again, '
+  +leak.sOnReturn);
+ /* THE COST ROW. Record B is the record being edited, so its own write must land. */
+ ok(leak.bHeld>0,'and the drag on record B is written to record B, '+leak.bHeld
+  +' units of held charge in it after the debounce');
+ console.log('  record A   '+leak.aBefore+' before, '+leak.aAfter+' after a drag on B, '
+  +leak.aOnReturn+' on return');
+ console.log('  record B   '+leak.bHeld+' held, written by its own record\'s save');
+ await sw.close();
+}
+
+console.log('\n=== the orientation dial says nothing about an unread field ===');
+/* #pol HAS SILENCED ITSELF ON r.unread SINCE THE RULING AND #polbar HAD NOT.
+
+   Selecting somebody who has entered nothing printed 84 benign against 16
+   malignant with the bar reaching 34 per cent of the way out, measured on
+   loadP(0) in the shipped build, directly under a rail correctly saying nothing
+   had been read. Two readings of one field, one of them invented.
+
+   The bar is left in the document with nothing in it rather than hidden,
+   because an empty trough is the honest picture of an empty field and the
+   Field's own layout is measured against its height, so both are asserted. */
+{
+ const pd=await browser.newPage({viewport:{width:1600,height:1000}});
+ await pd.goto(FILE,{waitUntil:'load'}); await booted(pd);
+ const dial=await pd.evaluate(async()=>{
+  setTab(TAB.FIELD); loadP(0);
+  await new Promise(r=>setTimeout(r,260));
+  const pb=document.getElementById('polbar'), pol=document.getElementById('pol');
+  const blank={unread:!!compute().unread,
+   text:pb?pb.textContent.replace(/\s+/g,''):null,
+   fill:!!(pb&&pb.querySelector('.fill')),
+   mid:!!(pb&&pb.querySelector('.mid')),
+   h:pb?Math.round(pb.getBoundingClientRect().height):0,
+   title:pb?pb.title:'', pol:pol?pol.textContent.trim().slice(0,60):''};
+  loadP(PERSON('Gordon'));
+  await new Promise(r=>setTimeout(r,260));
+  const read={unread:!!compute().unread,
+   text:pb?pb.textContent.replace(/\s+/g,''):null,
+   fill:!!(pb&&pb.querySelector('.fill')),
+   h:pb?Math.round(pb.getBoundingClientRect().height):0};
+  return {blank, read};});
+ ok(dial.blank.unread,'an arrival who has entered nothing reads as unread');
+ ok(dial.blank.text==='','and the dial prints no figure at all, got '
+  +JSON.stringify(dial.blank.text));
+ ok(dial.blank.fill===false,'and draws no fill');
+ ok(dial.blank.mid===true,'and keeps its centre line, so the trough is still a trough');
+ ok(dial.blank.h>0,'and keeps its height, which the Field\'s layout is measured '
+  +'against, got '+dial.blank.h);
+ ok(/[Nn]othing read yet/.test(dial.blank.title),
+  'and says so where a person can ask, got '+JSON.stringify(dial.blank.title));
+ ok(/[Nn]othing read yet/.test(dial.blank.pol),
+  'which is what the strip above it has always said, got '+JSON.stringify(dial.blank.pol));
+ ok(dial.read.unread===false&&/\d/.test(dial.read.text||''),
+  'and a field that HAS been read still prints its figures, got '
+  +JSON.stringify(dial.read.text));
+ ok(dial.read.fill===true,'and still draws its fill');
+ ok(dial.read.h===dial.blank.h,'and the two states are the same height, '
+  +dial.read.h+' against '+dial.blank.h);
+ console.log('  blank      '+JSON.stringify(dial.blank.text)+'  height '+dial.blank.h);
+ console.log('  read       '+JSON.stringify(dial.read.text)+'  height '+dial.read.h);
+ await pd.close();
+}
+
 await browser.close();
 
 console.log('\n===== '+PASS+' passed, '+FAIL+' failed =====');

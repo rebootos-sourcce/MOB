@@ -108,9 +108,9 @@ if(typeof module!=='undefined'&&module.exports){
   /* the door */  read:read, input:input, throughput:throughput, output:output,
                   gatesClear:gatesClear, gatesLoad:gatesLoad, gatesSave:gatesSave,
   /* schema */    blankProfile:blankProfile, loadProfile:loadProfile,
-                  saveProfile:saveProfile, snapshot:snapshot,
+                  saveProfile:saveProfile, snapshot:snapshot, LAW_DEFAULT:LAW_DEFAULT,
                   pExport:pExport, pImport:pImport, validateProfile:validateProfile, importError:importError,
-                  meterRun:meterRun, meterRead:meterRead, meterKey:meterKey,
+                  meterRun:meterRun, meterRead:meterRead, meterKey:meterKey, meterBudget:meterBudget,
                   meterNext:meterNext, meterPlan:meterPlan, LINES_PER_CH:LINES_PER_CH, MARKERS:MARKERS, markersFor:markersFor, PAT_PER_YEAR:PAT_PER_YEAR,
                   PAT_GEN:PAT_GEN, PAT_REF_AGE:PAT_REF_AGE,
                   profiles:function(){return PROFILES;}, current:function(){return CURP;}, SCHEMA_V:SCHEMA_V,
@@ -121,7 +121,7 @@ if(typeof module!=='undefined'&&module.exports){
      rename that missed this table shipped six broken questions, and a table
      no test can reach is a table with no owner. */
                   IQ_STEM:IQ_STEM,
-  /* sniffer */   scanStory:scanStory, parseStory:parseStory, applyStory:applyStory,
+  /* sniffer */   scanStory:scanStory, normMap:normMap, marksOf:marksOf, parseStory:parseStory, applyStory:applyStory,
   /* THE OUTPUT CONTRACT, SNIFFER_SPEC.md section 10. sniffStory is the one
      entry point a caller needs; the seven part builders are exported beside it
      because the gate asserts each part on its own and a part no test can reach

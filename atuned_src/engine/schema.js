@@ -70,10 +70,12 @@ function blankProfile(name){
  CHILD.forEach(function(c){p.axes[c.nm]={held:0,opp:0};});
  SI.forEach(function(l){p.laws[l.nm]=null;});        /* null = not yet measured */
  return p;}
-/* The value an unmeasured law is given in working state, and which of them
-   are sitting on it. Named rather than repeated as a literal, because the two
-   places that used the number 6 had to agree and did not. */
-var LAW_DEFAULT=6, LAW_UNSET={}, LAW_SEED={};
+/* WHICH LAWS ARE SITTING ON THE SEED, AND WHAT THEY WERE SEEDED WITH.
+   LAW_DEFAULT is the seed itself and it moved to engine/core.js, which is the
+   module that first uses it: this one named the number and core.js printed a
+   literal 6 beside a comment about it, and ui/personas.js then named two more
+   numbers for the same quantity. One declaration, at the first use. */
+var LAW_UNSET={}, LAW_SEED={};
 function loadProfile(p){
  if(!p.who)p.who={first:'',middle:'',last:'',sex:'',born:{date:'',time:'',place:'',timeUnknown:false}};
  if(!p.who.born)p.who.born={date:'',time:'',place:'',timeUnknown:false};
@@ -109,6 +111,22 @@ function loadProfile(p){
   LAW_SEED[l.nm]=S.law[l.nm];});
  gatesLoad(p);   /* absent on a v1 profile, which reads as no story evidence */
  suscAll();      /* so a story applied before compute() lands on this profile */
+ /* WHICH RECORD THE WORKING STATE CAME FROM, keyed by the record's id.
+
+    S.who names a PERSONA, and every one of the person's own records is S.who
+    0, so S.who cannot tell two of their own records apart. The Intake's
+    switcher repoints CURP and loads the other record's field into S, S.who
+    stays 0, and saveYou then writes whatever S holds into PEOPLE[0], which is
+    the table the person's own record is read back from. Measured on a clean
+    page: 2.20 units of held charge in PEOPLE[0] before, 63.00 after one
+    saveYou taken while a second own record was loaded, and 63.00 still there
+    after loadP(0), so the first record's field was gone for good.
+
+    Same class as the undo leak closed at 88181e6 and the same answer, which
+    engine/undo.js argues at length: key the thing to the record it came from
+    rather than repointing anything, because two attempts at repointing are
+    already recorded as worse than the bug. */
+ S.rec=p.id||null;
  return p;}
 function saveProfile(p){
  p.soul={doms:S.doms.slice(),arcs:S.arcs.slice(),roots:S.roots.slice()};
@@ -139,11 +157,15 @@ function saveProfile(p){
  SI.forEach(function(l){
   if(S.law[l.nm]==null)return;
   /* Compared against the value this law was SEEDED with, not against a single
-     literal. Two callers seed an unmeasured law and they do not agree: this
-     module uses 6 and the persona loader uses 5.5. Testing one literal wrote
-     the other one straight through, which is the bug wearing a different
-     number. What is being asked is "has anybody moved this since it was given
-     a placeholder", and only the seed can answer that. */
+     literal. Three callers seeded an unmeasured law and none of them agreed:
+     this module said 6, the persona loader said 6.5 and its own fallback said
+     5.5. Testing one literal wrote the other two straight through, which is
+     the bug wearing a different number. They all read LAW_DEFAULT now, and
+     this still compares against the seed rather than against that constant,
+     because what is being asked is "has anybody moved this since it was given
+     a placeholder" and only the seed the law actually got can answer it. A
+     stated type writes real values onto these through seedApply, so the seed
+     is not always the default even now. */
   if(LAW_UNSET[l.nm]&&S.law[l.nm]===LAW_SEED[l.nm])return;
   p.laws[l.nm]=S.law[l.nm]; LAW_UNSET[l.nm]=false;});
  gatesSave(p);
@@ -818,6 +840,32 @@ function meterPlan(p,nodeIds,chans,cap){
     if(n<0||n>=LINES_PER_CH)continue;
     var k=meterKey(id,ch,n); seen[k]=1; out.push(k);}}}
  return out;}
+/* WHAT A RUN IS ALLOWED TO COST, WHICH IS NOT THE SAME AS WHAT IT CAPS AT.
+
+   The release panel printed "16 patterns of the 0 you have left" and then ran
+   all sixteen. Measured on the shipped build against a free record with the
+   gift spent and base at 100: relLeft() 0, plan 16, unique 110 before the run
+   and 126 after, and relLeft() still 0 afterwards because the subtraction
+   clamps at nought. So the overspend was invisible before, during and after,
+   and the one panel in this product that quotes a price was quoting a false
+   one directly under the paid tiers.
+
+   The allowance is a second ceiling and belongs where the first one is.
+   meterPlan already truncates a wide selection at the cap, one pattern per
+   line, and every line it returns is new ground, so a cap of what is left
+   spends exactly what is left and the printed number is the price. That is a
+   shorter run rather than a refused one, which matters: a person who picked
+   eight addresses with three patterns left gets three, not nothing.
+
+   Refusing is left to the door, and only when the cap is nought. A run already
+   under way is never interrupted, because relCoolDown commits the plan it was
+   shown, and that plan is now already inside the allowance. */
+function meterBudget(p){
+ var m=(p&&p.meter)||null;
+ var a=(typeof planAllowance==='function')
+   ? planAllowance((p&&p.plan)||null,((m&&m.unique)||[]).length) : null;
+ var left=(a&&a.left!=null)?Math.max(0,Math.floor(a.left)):0;
+ return {left:left, cap:Math.min(RUN_MAX,left), allow:a};}
 function meterRun(p,keys){
  if(!p)return null;
  if(!p.meter)p.meter={lines:0,unique:[],first:null,last:null};

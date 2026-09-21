@@ -266,11 +266,20 @@ PEOPLE.unshift({nm:'You',age:'',role:'custom',dom:0,a1:0,a2:1,
     those numbers. An empty field is empty. */
  c:{Fear:0,Anger:0,Shame:0,Disgust:0,Apathy:0,Shock:0,Sad:0,Surprise:0,Anticipation:0},
  rep:{Fear:0,Anger:0,Shame:0,Disgust:0,Apathy:0,Shock:0,Sad:0,Surprise:0,Anticipation:0},you:true});
-BIRTH.You=null; LAWSET.You={_:6.5};
+/* THE CUSTOM PERSONA'S UNMEASURED LAWS TAKE THE ENGINE'S SEED, NOT A SECOND
+   ONE. This said 6.5 and the engine's boundary says LAW_DEFAULT, which is 6,
+   so one empty profile read CQ 42.25 through loadP(0) and 36.00 through
+   blankProfile plus loadProfile. Both numbers were printed by the same build
+   on the same day off a person who had entered nothing. */
+BIRTH.You=null; LAWSET.You={_:LAW_DEFAULT};
 /* a profile per persona, so switching one never overwrites another's diagnostic.
    the original assigned every persona's seeded answers straight onto CURP. */
 var PROF_BY={};
-function lawsFor(p){ return p.law || LAWSET[p.nm] || {_:5.5}; }
+/* and the guard for a persona with no table at all takes the same seed. It
+   said 5.5, which was a third answer to the one question. Every persona in
+   the roster carries a LAWSET entry, so this arm is a guard and not a path,
+   which is exactly why it was free to disagree for as long as it did. */
+function lawsFor(p){ return p.law || LAWSET[p.nm] || {_:LAW_DEFAULT}; }
 (function(){var sel=$('psel');
  var mk=function(lab){var g=document.createElement('optgroup');g.label=lab;sel.appendChild(g);return g;};
  var gYou=null,gICP=null,gRef=null;
@@ -303,18 +312,58 @@ function toYou(){if(S.who===0)return;
  if(own&&PROFILES.indexOf(own)>=0)CURP=own;
  var sel=$('psel'); if(sel)sel.value='0';
  renderSpirit();}
-function saveYou(){if(S.who!==0)return;var Y=PEOPLE[0];
+/* THE MIRROR ONLY WRITES FOR THE RECORD IT MIRRORS.
+
+   PEOPLE[0] is the table loadP(0) reads the person's own field back out of, and
+   it mirrors exactly one record: PROF_BY['You']. This guarded on S.who===0,
+   and S.who is a persona index, so all of the person's own records answer 0.
+   Switching between two of them through the Intake left S holding record B's
+   field with who still 0, and the next slider drag wrote B's field into the
+   table A is read from. Measured: 2.20 before, 63.00 after, and 63.00 still
+   there on the way back through loadP(0).
+
+   So the guard is the record's id and not the persona's index, which is the
+   ruling engine/undo.js already carries for the same failure on a different
+   route. Nothing repoints and S.who is not touched, because two attempts at
+   repointing are recorded in ui/release.js as each worse than the bug.
+
+   It returns false rather than reporting through status(), because this fires
+   on every pointer move of a slider and it is not a failed write: the record
+   the person is actually editing is still written by persistYou below, which
+   does land and does report. There is nothing here to tell them about.
+
+   AND THE WRITE THROUGH IS NOT INSIDE THE GUARD, which is the half of this
+   the first cut got wrong. persistYou has exactly one caller and it is this
+   function, so it is the only route by which a slider drag reaches storage.
+   Returning early took it with it: measured on a second own record, one drag
+   to 63 units of held charge and 0 in the record 600 milliseconds later,
+   against 63 before the guard landed. That trades destroying record A for
+   losing every edit to record B without saying so, which is the silent
+   failure this codebase forbids by name and is not an improvement.
+
+   The two writes are different writes and they key on different things. The
+   mirror is PEOPLE[0] and keys on the record it mirrors. The write through is
+   CURP and keys on nothing, because CURP is by definition the record being
+   edited. So the mirror is guarded and the write through is not. */
+function saveYou(){if(S.who!==0)return false;
+ var own=PROF_BY[PEOPLE[0].nm];
+ var mine=!!(own&&own.id&&S.rec===own.id);
+ if(mine)mirrorYou();
+ persistYou();
+ return mine;}
+function mirrorYou(){
+ var Y=PEOPLE[0];
  Y.dom=S.dom;Y.a1=S.a1;Y.a2=S.a2;Y.doms=S.doms.slice();Y.arcs=S.arcs.slice();Y.roots=S.roots.slice();
  CHARGES.forEach(function(c){Y.c[c]=S.charge[c];});
  Y.rep={};CHARGES.forEach(function(c){Y.rep[c]=S.replace[c]||0;});
  /* the original wrote Y.law here and lawsFor could never read it back. */
  Y.law={};SINAMES.forEach(function(l){Y.law[l]=S.law[l];});
- /* And it only ever wrote to the in memory persona, so every charge, law,
-    domain and archetype a person set in the tools panel was gone on reload
-    unless they happened to open Intake and press Save. It writes through to
-    the record too. Debounced, because this fires on every pointer move of a
-    slider and a write per frame is a write per frame. */
- persistYou();}
+ return true;}
+/* The write through to the record, which the mirror used to own and does not.
+   Every charge, law, domain and archetype a person set in the tools panel was
+   gone on reload unless they happened to open Intake and press Save, because
+   only the in memory persona was written. Debounced, because this fires on
+   every pointer move of a slider and a write per frame is a write per frame. */
 var YOU_T=null;
 function persistYou(){
  if(!CURP)return;
@@ -338,7 +387,7 @@ if(typeof addEventListener==='function')['pagehide','visibilitychange'].forEach(
    so their spread and lean are theirs and not a default. */
 function seedIntake(p){
  if(p._seeded)return; p._seeded=1;
- var LS=lawsFor(p), base=(LS._!==undefined)?LS._:5.5, bias=(p.nm||'').length%3;
+ var LS=lawsFor(p), base=(LS._!==undefined)?LS._:LAW_DEFAULT, bias=(p.nm||'').length%3;
  p.intakeAnswers={};
  SI.forEach(function(l,li){
   var v=(LS[l.nm]!==undefined)?LS[l.nm]:base;
@@ -363,10 +412,11 @@ function loadP(i){
   S.replace[c]=(p.rep&&p.rep[c])||0;});
  /* THE CUSTOM PERSONA IS NOT A DEMO AND MUST NOT BE GIVEN LAW SCORES.
 
-    lawsFor falls back to {_:5.5} for anybody with no table, and "You" is the
+    lawsFor falls back to the seed for anybody with no table, and "You" is the
     profile a stranger arrives on, so every one of the twenty one laws was set
-    to 5.5: a score nobody entered, on the one profile that is supposed to hold
-    nothing. saveProfile then wrote all of them, so measured went to 21 and
+    to it: a score nobody entered, on the one profile that is supposed to hold
+    nothing. The number was 5.5 when this was written and is LAW_DEFAULT now,
+    which changes the reading and not the defect. saveProfile then wrote all of them, so measured went to 21 and
     unread went false, which is the flag every surface checks before it agrees
     to print a band, a tier or a reading. Measured on a fresh page: 21 of 21
     laws non null on a profile with zero charge.
@@ -401,7 +451,7 @@ function loadP(i){
      custom persona an unmeasured law is seeded and marked, and saveProfile
      leaves a seeded law alone until somebody moves it. A demo persona's table
      IS its measurement, so it is written as before. */
-  S.law[l]=(v!=null)?v:((LS[l]!==undefined)?LS[l]:(LS._!==undefined?LS._:5.5));
+  S.law[l]=(v!=null)?v:((LS[l]!==undefined)?LS[l]:(LS._!==undefined?LS._:LAW_DEFAULT));
   LAW_UNSET[l]=!!(p.you&&v==null);
   LAW_SEED[l]=S.law[l];});
  /* switch profiles, never overwrite one. */
@@ -436,6 +486,9 @@ function loadP(i){
   if(p.you)PROFILES.push(pr);
   PROF_BY[p.nm]=pr;}
  CURP=PROF_BY[p.nm];
+ /* loadP fills S from the persona table rather than through loadProfile, so it
+    is the one route that has to say for itself which record S now holds. */
+ S.rec=CURP.id||null;
  saveProfile(CURP); iqApply(CURP);
  $('psel').value=String(i);
  syncSoul();syncCh();syncLw();renderSpirit();renderIntake();render();}

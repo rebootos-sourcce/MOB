@@ -625,6 +625,20 @@ function render(){
     bar and the rest is in the tooltip. */
  (function(){
   var pb=$('polbar'); if(!pb)return;
+  /* AND IT SILENCES ITSELF ON AN UNREAD FIELD, like every other surface that
+     prints a reading. #pol two inches above this one has done it since the
+     ruling and this one had not caught up, so selecting somebody who has
+     entered nothing printed "84" benign against "16" malignant with the bar
+     reaching 34 per cent of the way out, directly under a rail correctly
+     saying nothing had been read. Measured on loadP(0) in the shipped build.
+
+     The bar is left in the document with nothing in it rather than hidden,
+     because an empty trough is the honest picture of an empty field and the
+     Field's own layout is measured against its height. */
+  if(r.unread){
+   pb.innerHTML='<div class="mid"></div>';
+   pb.title='Balance. Nothing read yet, so there is no lean to show.';
+   return;}
   var L=leanRead(r);
   var off=Math.abs(L.ben-50)*2;              /* 0 at even, 100 at either end */
   var mal=L.mal>L.ben;

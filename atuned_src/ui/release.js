@@ -19,13 +19,19 @@ var CHAN=[['R','Right','limit'],['L','Left','limit'],['R','Right','truth'],['L',
 var OPENING=['Sit down. Put both feet on the floor.',
  'Each line names one pattern. Follow it in thought as it lands.',
  'Keep some attention on your body, and notice which place answers.'];
-/* what the allowance says is left, read the same way Settings reads it. */
+/* what the allowance says is left, read the same way Settings reads it.
+   The arithmetic moved into the engine as meterBudget, because this function
+   quoted the number and nothing enforced it: the panel said "16 patterns of
+   the 0 you have left" and ran all sixteen. One read, one cap, one place. */
 function relLeft(){
- if(typeof planAllowance!=='function')return 0;
- var m=(typeof CURP!=='undefined'&&CURP&&CURP.meter)||null;
- var a=planAllowance((typeof CURP!=='undefined'&&CURP&&CURP.plan)||null,
-                     ((m&&m.unique)||[]).length);
- return (a&&a.left!=null)?a.left:0;}
+ if(typeof meterBudget!=='function')return 0;
+ return meterBudget((typeof CURP!=='undefined'&&CURP)||null).left;}
+/* what a run may cost from here: the smaller of the run ceiling and what the
+   person actually has. relPlan builds to this, so the number the panel prints
+   is the number the run spends. */
+function relBudget(){
+ if(typeof meterBudget!=='function')return 0;
+ return meterBudget((typeof CURP!=='undefined'&&CURP)||null).cap;}
 var RUN={open:false,queue:[],plan:[],sec:0,idx:0,phase:'idle',speed:2.2,timer:null,
          paused:false,done:false,line:0,log:[],freed:0};
 /* THE RUN IS A PLAN OF THOUGHT LINES, ruled. One pattern is one thought line
@@ -36,7 +42,12 @@ var RUN={open:false,queue:[],plan:[],sec:0,idx:0,phase:'idle',speed:2.2,timer:nu
 function relPlan(){
  var ids=RUN.queue.map(function(n){return n.i;});
  var chans=CHAN.map(function(c){return c[0]+c[2];});
- return CURP?meterPlan(CURP,ids,chans,RUN_MAX):[];}
+ /* capped at what is left and not only at RUN_MAX, so the plan a person is
+    shown is a plan they can pay for. Nought is returned here rather than
+    passed down, because meterPlan reads a cap of nought as "no cap given" and
+    falls back to twenty five, which is the ceiling it was asked to remove. */
+ var cap=relBudget();
+ return (CURP&&cap>0)?meterPlan(CURP,ids,chans,cap):[];}
 /* one entry of the plan, read back into the address and channel it names */
 function relAt(i){
  var k=(RUN.plan||[])[i]; if(!k)return null;
@@ -212,30 +223,58 @@ function relRender(){
    +'<button class="btn pri" id="relrit">Build a ritual</button></div>';
  } else {
   var q=RUN.queue;
+  /* THE PRICE IS ENFORCED AT THE DOOR AND NOWHERE ELSE.
+
+     Nought left means the run does not start, and this is the only place that
+     may say so. Stopping a run that is already walking is a worse failure than
+     a wrong label: the person has sat down, the addresses are open in front of
+     them, and half a release is neither a release nor a refund. relPlan is
+     capped at the allowance now, so anything that gets past this branch costs
+     what it printed and is charged in full. */
+  var left=relLeft(), spent=(left<=0), pl=(RUN.plan||[]).length;
   out+='<div class="pm-eye">Run a release</div>'
-   +'<div class="rel-node">'+q.length+(q.length===1?' address':' addresses')+'</div>'
+   +'<div class="rel-node">'+(spent?'Nothing left to open'
+     :q.length+(q.length===1?' address':' addresses'))+'</div>'
    /* A NUMBER CARRIES WHAT IT IS OF. This read "25 of your allowance", which
       says twenty five of what, and reads as a bill on a grant of ten a week
       against a run that caps at twenty five. planAllowance already returns
       both halves, so the honest sentence needs no new field. */
-   +'<div class="rel-sub">'+((RUN.plan||[]).length)+' patterns of the '
-   +relLeft()+' you have left</div>'
+   +'<div class="rel-sub">'+(spent
+     ?q.length+(q.length===1?' address':' addresses')+' picked, 0 patterns available'
+     :pl+' patterns of the '+left+' you have left')+'</div>'
    +'<div class="rel-log">';
   q.forEach(function(n){
    out+='<div class="rel-row">'+crNode(n,'xs')
     +'<span>'+esc(n.k)+'</span><em>'+n.b+'</em></div>';});
-  var pl=(RUN.plan||[]).length;
-  out+='</div><div class="rel-note">'+pl+' thought line'+(pl===1?'':'s')+' of new ground, which is '+pl+' pattern'+(pl===1?'':'s')+'. Right then left, limit before truth. About '
-   +(Math.round(pl*RUN.speed/60*10)/10)+' minutes.'
-   +(pl<RUN_MAX?' That is everything still unopened in this queue.':'')+'</div>'
-   +'<div class="rel-act"><button class="btn" id="relcancel">Cancel</button>'
-   +'<button class="btn pri" id="relgo">Begin</button></div>';}
+  /* WHICH CEILING TRUNCATED THE RUN, because the two mean different things to
+     a person. Short of the run ceiling used to print "that is everything still
+     unopened in this queue", which is false the moment the allowance is what
+     cut it: there is more unopened ground and they cannot reach it yet. */
+  var byAllow=(pl>0&&pl>=left&&left<RUN_MAX);
+  out+='</div><div class="rel-note">'+(spent
+    ?'New ground is what an allowance buys, and this period\'s is spent. '
+     +'Rerunning an address you have already opened costs nothing and is in '
+     +'the ritual. A wider allowance is on the plan in settings.'
+    :pl+' thought line'+(pl===1?'':'s')+' of new ground, which is '+pl+' pattern'+(pl===1?'':'s')+'. Right then left, limit before truth. About '
+     +(Math.round(pl*RUN.speed/60*10)/10)+' minutes.'
+     +(byAllow?' That is all the allowance has left, and the rest of this queue stays unopened.'
+       :(pl<RUN_MAX?' That is everything still unopened in this queue.':'')))+'</div>'
+   +'<div class="rel-act"><button class="btn" id="relcancel">'+(spent?'Close':'Cancel')+'</button>'
+   /* THE BUTTON IS NOT THERE WHEN THERE IS NOTHING TO SPEND. A disabled Begin
+      would be a control the panel is still offering, and the honest reading of
+      a spent allowance is that this run does not exist yet. The route out goes
+      where the allowance is, which is the only thing that changes the answer. */
+   +(spent?'<button class="btn pri" id="relplan">Open settings</button>'
+         :'<button class="btn pri" id="relgo">Begin</button>')+'</div>';}
  out+='</div>';
  h.innerHTML=out;
  var b;
  if((b=document.getElementById('relgo')))b.onclick=function(){RUN.phase='opening';RUN.line=0;relTick();relRender();};
  if((b=document.getElementById('relskip')))b.onclick=function(){RUN.phase='run';RUN.line=0;relRender();};
  if((b=document.getElementById('relcancel')))b.onclick=relClose;
+ /* the same call the profile button makes, which is the one route to that
+    surface and goes through setTab so the folded surface ruling holds. */
+ if((b=document.getElementById('relplan')))b.onclick=function(){relClose();setTab(TAB.SETTINGS);};
  if((b=document.getElementById('relclose')))b.onclick=relClose;
  if((b=document.getElementById('relrit')))b.onclick=function(){var lg=RUN.log.slice();relClose();ritOpen(lg);};
  if((b=document.getElementById('relstop')))b.onclick=function(){clearInterval(RUN.timer);relCoolDown();};
