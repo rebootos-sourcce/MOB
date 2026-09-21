@@ -200,14 +200,24 @@ function barsSigned(rows,opt){
 /* several ninety day lines on one frame, for the ceiling cases */
 function multiLine(series,opt){
  opt=opt||{};
- const W=880,Hh=300,L=42,Rr=150,T=16,B=34;
+ const W=880,Hh=300,L=42,T=16,B=34;
+ /* THE RIGHT GUTTER IS SIZED FROM THE LONGEST LABEL, not chosen. A fixed 150
+    clipped "C2b install to the pole" off the edge of the frame, which is a
+    legend that hides the series it names. */
+ const Rr=Math.min(320,Math.max(120,
+  8+Math.max.apply(null,series.map(s=>String(s.nm).length))*7.1));
  const all=[].concat.apply([],series.map(s=>s.v));
  const hi=opt.hi===undefined?Math.ceil(Math.max.apply(null,all)/5)*5+2:opt.hi;
  const lo=opt.lo===undefined?Math.floor(Math.min.apply(null,all)/5)*5-2:opt.lo;
  const y=v=>T+(hi-v)/(hi-lo)*(Hh-T-B);
  const x=i=>L+i/(series[0].v.length-1)*(W-L-Rr);
  let g='';
- for(let v=Math.ceil(lo/10)*10;v<=hi;v+=10)
+ /* AND THE GRID STEP COMES OFF THE RANGE. A fixed step of ten drew two lines
+    across a span of eight and the reader could not tell a flat line from a
+    moving one, which is the whole question this chart is asked. */
+ const span=hi-lo;
+ const step=span<=6?1:(span<=15?2:(span<=40?5:10));
+ for(let v=Math.ceil(lo/step)*step;v<=hi;v+=step)
   g+=`<line class="gl" x1="${L}" y1="${y(v).toFixed(1)}" x2="${W-Rr}" y2="${y(v).toFixed(1)}"/>`
    +`<text class="ax" x="${L-8}" y="${(y(v)+4).toFixed(1)}" text-anchor="end">${v}</text>`;
  [1,30,60,90].forEach(d=>{
