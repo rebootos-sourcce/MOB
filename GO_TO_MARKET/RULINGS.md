@@ -33,21 +33,20 @@ the ladder. It is a price point, not a pivot.
 ---
 
 ## R2 · SHARING HUMAN IS THE HOUSE
-**Ruled by Lance, 2026-09-15.**
+**Ruled by Lance, 2026-09-15. SUPERSEDED BY R7, 2026-09-24.**
+Kept for the record. The imprint and author title below still stand.
 
 | Asset | Role |
 |---|---|
-| **sharinghuman.com** | The house. Single destination, single brand, one door. |
 | **Tula Unified LLC** | Legal imprint. Copyright pages only. Not a public brand. |
-| **thelittlebookof.com** | Retires. 301 redirect into Sharing Human. |
-| **journal.lancepowell.art** | Beehiiv journal. Keep, point at the house. |
+| **journal.lancepowell.art** | Beehiiv journal. Keep. |
 
 **Author title.** Somatic Engineer leads everywhere. Soul Architect is
 permitted on warm and referral surfaces only.
 
 **Consequence for the originals.** The five little books carry
 `thelittlebookof.com` and a different bio on their back pages. Any reissue
-gets the Sharing Human imprint and the current bio.
+gets the current imprint and the current bio.
 
 ---
 
@@ -67,3 +66,44 @@ open. It is not. Closed.
 **Struck.** The modelled revenue bands in `EVIDENCE_AUDIT.md` do not ship.
 The author's own agent package disowns them. The ranked action list
 underneath survives.
+
+---
+
+## R7 · THELITTLEBOOKSOF.COM IS THE HOUSE
+**Ruled by Lance, 2026-09-24. Supersedes R2 on destination.**
+
+| Asset | Role |
+|---|---|
+| **thelittlebooksof.com** | The house. Primary destination. Stripe checkout, direct download, print on demand. |
+| **sharinghuman.com** | Secondary. Not on the pipeline. No work scheduled against it. |
+| **thelittlebookof.com** | The original singular domain. 301 into thelittlebooksof.com. |
+| **Tula Unified LLC** | Unchanged. Legal imprint, copyright pages only. |
+
+**Positioning, ruled.** Results as a service. The purpose of the books is to
+rapidly release a stress response.
+
+**The transaction, ruled.** Summary of the book on the page, pay through
+Stripe, download directly. Print on demand available for a physical copy.
+
+**Consequence.** Every Sharing Human mention in `GO_TO_MARKET/` is now a
+secondary channel reference, not the destination. The pipeline, the messaging
+sequences and the revenue model all point at thelittlebooksof.com.
+
+---
+
+## R8 · THE PRICE LADDER, CONFIRMED
+**Scrubbed from the project 2026-09-24 and locked into `site/pricing.json`.**
+
+| Rung | Price | Source |
+|---|---|---|
+| The Address Diagnostic | free | canon, rung 0 |
+| One volume | $19 | PUBLISHING_BRIEF, 04_MESSAGING |
+| Three volume cluster | $69 | PUBLISHING_BRIEF, 04_MESSAGING |
+| Full library, eleven | $149 | PUBLISHING_BRIEF, 04_MESSAGING |
+| Practitioner pack | $497 | 04_MESSAGING |
+| COURAGE, printed | $11 | HANDSHAKE line 159. The $9 in the brief loses. |
+| SOURCE, the complete map, printed | $33 | PUBLISHING_BRIEF line 86 |
+| New series paperback | $29 | **PROPOSED. No canon number exists. L to rule.** |
+
+`site/pricing.json` is the only place an amount lives. The site and the
+checkout read from it, so they cannot disagree.

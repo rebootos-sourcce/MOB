@@ -49,7 +49,13 @@ is next and who owns it. Keep it short.
 | Generator | `generator/`, runs, builds a 32-page volume |
 | Corpus | `corpus/`, 390 entries, 199 addressed |
 | Books | structurally valid, prose being filled from the corpus |
+| Site | `site/`, builds, Stripe wired, needs keys and a print vendor |
 
-**Ruled:** publishing direct, not licensing. Sharing Human is the house.
+**Ruled:** publishing direct, not licensing. **thelittlebooksof.com is the
+house** (R7). Sharing Human is secondary and not on the pipeline.
 
-**Open:** nothing is waiting on Lance. Work the corpus.
+**Open, on Lance:** print vendor (Lulu or Bookvault), paperback price
+($29 proposed, no canon number).
+
+**Open, on me:** charge names are dictation fragments, see
+`site/SITE_NOTES.md`. Fix before the site goes live.

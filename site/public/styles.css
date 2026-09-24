@@ -1,0 +1,150 @@
+:root{
+  --cream:#F4EEE2; --ink:#1A1714; --gold:#C9A227; --rule:#D8CFBD;
+  --muted:#6C6253; --white:#FFFFFF;
+  --serif: "Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+  --sans: ui-sans-serif,-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--cream);color:var(--ink);
+  font-family:var(--serif);font-size:18px;line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:940px;margin:0 auto;padding:0 24px}
+a{color:inherit}
+h1,h2,h3{font-weight:600;letter-spacing:.01em;line-height:1.2;margin:0}
+.caps{text-transform:uppercase;letter-spacing:.22em;font-size:12px;
+  font-family:var(--sans);color:var(--muted)}
+
+/* nav */
+nav{position:sticky;top:0;z-index:50;background:rgba(244,238,226,.94);
+  backdrop-filter:blur(8px);border-bottom:1px solid var(--rule)}
+nav .wrap{display:flex;align-items:center;gap:22px;height:60px}
+nav .brand{font-size:15px;letter-spacing:.14em;text-transform:uppercase;
+  text-decoration:none;white-space:nowrap}
+nav .links{margin-left:auto;display:flex;gap:20px;font-family:var(--sans);
+  font-size:13px}
+nav .links a{text-decoration:none;color:var(--muted);white-space:nowrap}
+nav .links a:hover{color:var(--ink)}
+
+/* hero */
+header.hero{padding:86px 0 56px;border-bottom:1px solid var(--rule)}
+header.hero h1{font-size:clamp(34px,6vw,62px);max-width:16ch}
+header.hero .promise{margin-top:22px;font-size:clamp(19px,2.4vw,24px);
+  max-width:34ch;color:var(--ink)}
+header.hero .strap{margin-top:14px;font-style:italic;color:var(--muted);
+  max-width:44ch}
+.cta{display:inline-flex;align-items:center;gap:10px;margin-top:30px;
+  background:var(--ink);color:var(--cream);text-decoration:none;
+  padding:14px 26px;font-family:var(--sans);font-size:14px;
+  letter-spacing:.08em;text-transform:uppercase;border:0;cursor:pointer}
+.cta:hover{background:#000}
+.cta.ghost{background:transparent;color:var(--ink);
+  border:1px solid var(--ink)}
+.cta.ghost:hover{background:var(--ink);color:var(--cream)}
+
+section{padding:64px 0;border-bottom:1px solid var(--rule)}
+section h2{font-size:clamp(24px,3.4vw,34px);margin-bottom:8px}
+section p{max-width:62ch}
+.lede{font-size:20px}
+
+/* steps */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;
+  margin-top:30px}
+.step{border-top:2px solid var(--gold);padding-top:14px}
+.step .n{font-family:var(--sans);font-size:12px;letter-spacing:.2em;
+  color:var(--gold)}
+.step p{margin:8px 0 0;font-size:17px}
+
+/* shelf */
+.shelf{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));
+  gap:26px;margin-top:34px}
+.bookcard{text-decoration:none;display:block}
+.cover{aspect-ratio:306/492;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;
+  padding:18px;color:#F4EEE2;position:relative}
+.cover .series{font-size:9px;letter-spacing:.2em;text-transform:uppercase;
+  opacity:.85}
+.cover .title{color:#fff;font-size:clamp(20px,3vw,30px);margin-top:26%;
+  letter-spacing:.04em}
+.cover .mark{position:absolute;bottom:16px;color:var(--gold);font-size:20px}
+.bookcard .meta{margin-top:12px;font-family:var(--sans);font-size:13px;
+  color:var(--muted);display:flex;justify-content:space-between}
+.bookcard .hook{margin-top:6px;font-size:16px}
+
+/* price table */
+.ladder{width:100%;border-collapse:collapse;margin-top:26px;
+  font-size:17px}
+.ladder th,.ladder td{text-align:left;padding:14px 10px;
+  border-bottom:1px solid var(--rule);vertical-align:top}
+.ladder th{font-family:var(--sans);font-size:12px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--muted)}
+.ladder td.price{font-size:20px;white-space:nowrap}
+.ladder td.act{text-align:right;white-space:nowrap}
+.buy{background:var(--ink);color:var(--cream);border:0;cursor:pointer;
+  font-family:var(--sans);font-size:12px;letter-spacing:.08em;
+  text-transform:uppercase;padding:10px 16px}
+.buy:hover{background:#000}
+.buy[disabled]{opacity:.45;cursor:progress}
+
+/* two col */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:44px;margin-top:24px}
+.two p{max-width:none}
+
+/* faq */
+details{border-bottom:1px solid var(--rule);padding:16px 0}
+details summary{cursor:pointer;font-size:19px;list-style:none}
+details summary::-webkit-details-marker{display:none}
+details summary::before{content:"+";color:var(--gold);margin-right:12px}
+details[open] summary::before{content:"\2212"}
+details p{margin:10px 0 0 26px;color:var(--muted)}
+
+footer{padding:48px 0 70px;font-family:var(--sans);font-size:13px;
+  color:var(--muted)}
+footer a{color:var(--muted)}
+
+.note{font-family:var(--sans);font-size:13px;color:var(--muted);
+  margin-top:14px}
+
+/* picker sheet */
+.sheet{position:fixed;inset:0;background:rgba(26,23,20,.72);z-index:99;
+  display:flex;align-items:center;justify-content:center;padding:24px}
+.sheet-inner{background:var(--cream);max-width:560px;width:100%;padding:32px;
+  max-height:88vh;overflow:auto}
+.picks{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 22px}
+.pick{font-family:var(--sans);font-size:12px;letter-spacing:.1em;
+  background:transparent;border:1px solid var(--rule);padding:10px 14px;
+  cursor:pointer;color:var(--ink)}
+.pick:hover{border-color:var(--ink)}
+.pick.on{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+
+/* book page */
+.bookhead{display:grid;grid-template-columns:300px 1fr;gap:48px;
+  padding:56px 0;align-items:start}
+.bookhead .cover{max-width:300px}
+.bookhead h1{font-size:clamp(32px,5vw,50px)}
+.spread{background:var(--white);border:1px solid var(--rule);padding:28px;
+  margin-top:24px}
+.spread .side{font-family:var(--sans);font-size:11px;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--muted)}
+.spread .nm{font-size:22px;margin:6px 0 10px}
+.spread .txt{font-size:16px}
+.spread .imp{font-family:var(--sans);font-size:13px;color:var(--muted);
+  margin-top:10px}
+.spread hr{border:0;border-top:1px solid var(--rule);margin:22px 0}
+.contents{columns:2;column-gap:36px;margin-top:20px;font-size:17px}
+@media (max-width:760px){
+  .ladder,.ladder tr,.ladder td{display:block;width:100%}
+  .ladder tr:first-child{display:none}
+  .ladder tr{border-bottom:1px solid var(--rule);padding:16px 0}
+  .ladder td{border:0;padding:2px 0}
+  .ladder td.act{text-align:left;margin-top:12px}
+  header.hero{padding:56px 0 40px}
+  section{padding:44px 0}
+  .steps,.two,.bookhead{grid-template-columns:1fr}
+  .contents{columns:1}
+  nav .links{gap:16px}
+  nav .links a:nth-child(n+3){display:none}
+  nav .brand{font-size:13px;letter-spacing:.1em}
+}

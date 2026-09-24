@@ -1,0 +1,19 @@
+{
+  "_note": "Scrubbed from the project, 2026-09-24. Canon where a canon number exists. PROPOSED where none did.",
+  "currency": "usd",
+  "digital": {
+    "single":       {"amount": 1900,  "label": "One volume",            "source": "canon, PUBLISHING_BRIEF + 04_MESSAGING"},
+    "cluster":      {"amount": 6900,  "label": "Three volume cluster",  "source": "canon, PUBLISHING_BRIEF + 04_MESSAGING"},
+    "library":      {"amount": 14900, "label": "Full library, eleven",  "source": "canon, PUBLISHING_BRIEF + 04_MESSAGING"},
+    "practitioner": {"amount": 49700, "label": "Practitioner pack",     "source": "canon, 04_MESSAGING"}
+  },
+  "print": {
+    "single":  {"amount": 2900, "label": "One volume, paperback", "source": "PROPOSED. No canon number for the new series."},
+    "courage": {"amount": 1100, "label": "COURAGE, paperback",    "source": "canon, HANDSHAKE line 159, ANSWER_SHEET B2 closed"},
+    "source":  {"amount": 3300, "label": "SOURCE, the complete map", "source": "canon, PUBLISHING_BRIEF line 86"},
+    "shipping_note": "Print is fulfilled by the print on demand vendor. Shipping is quoted at checkout by the vendor, not stored here."
+  },
+  "free": {
+    "diagnostic": {"amount": 0, "label": "The Address Diagnostic", "source": "canon, rung 0"}
+  }
+}

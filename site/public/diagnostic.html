@@ -1,0 +1,456 @@
+<title>The Address Diagnostic</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Spectral:ital,wght@0,400;0,500;1,400&display=swap">
+<style>
+:root{
+  --paper:#F2F4F5; --card:#FFFFFF; --ink:#15191C; --muted:#646E74; --faint:#8E979C;
+  --rule:#D8DEE1; --rule-soft:#E7ECEE; --gold:#C9A84C;
+  --root:#6B1F1F; --sacral:#C25A0C; --solar:#9A7409; --heart:#1B6353;
+  --throat:#12708F; --brow:#3B3A78; --crown:#4A4C5E;
+  --shadow:0 1px 2px rgba(21,25,28,.06),0 8px 24px -12px rgba(21,25,28,.16);
+}
+:root:not([data-theme="light"]){ }
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#101416; --card:#171C1F; --ink:#E8EDEF; --muted:#9AA4A9; --faint:#79848A;
+    --rule:#2A3237; --rule-soft:#222A2E; --gold:#D9BC69;
+    --root:#C25757; --sacral:#E8873C; --solar:#D0A62B; --heart:#3F9C86;
+    --throat:#3FA3C4; --brow:#7B79C4; --crown:#8A8DA3;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px -12px rgba(0,0,0,.6);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#101416; --card:#171C1F; --ink:#E8EDEF; --muted:#9AA4A9; --faint:#79848A;
+  --rule:#2A3237; --rule-soft:#222A2E; --gold:#D9BC69;
+  --root:#C25757; --sacral:#E8873C; --solar:#D0A62B; --heart:#3F9C86;
+  --throat:#3FA3C4; --brow:#7B79C4; --crown:#8A8DA3;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px -12px rgba(0,0,0,.6);
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);
+  font-family:Spectral,Georgia,serif;font-size:16px;line-height:1.6;
+  -webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding-inline:20px;padding-block:32px 72px}
+.lab{font-family:Archivo,system-ui,sans-serif;text-transform:uppercase;
+  letter-spacing:.16em;font-size:10.5px;font-weight:600;color:var(--faint)}
+.mono{font-family:"IBM Plex Mono",ui-monospace,monospace;font-variant-numeric:tabular-nums}
+h1{font-family:Archivo,system-ui,sans-serif;font-weight:700;font-size:clamp(30px,6vw,44px);
+  line-height:1.04;letter-spacing:-.02em;margin:0;text-wrap:balance}
+h2{font-family:Archivo,system-ui,sans-serif;font-weight:600;font-size:19px;
+  letter-spacing:-.01em;margin:0;text-wrap:balance}
+p{margin:0}
+.masthead{display:flex;align-items:center;gap:10px;padding-bottom:14px;
+  border-bottom:1px solid var(--rule);margin-bottom:28px}
+.seal{width:24px;height:24px;flex:none}
+.stack{display:flex;flex-direction:column}
+.lede{font-size:18px;color:var(--muted);margin-top:14px;max-width:60ch}
+.claim{font-size:17px;margin-top:20px;border-left:2px solid var(--gold);padding-left:16px}
+.btn{font-family:Archivo,system-ui,sans-serif;font-weight:600;font-size:14px;
+  letter-spacing:.03em;background:var(--ink);color:var(--paper);border:0;
+  padding:13px 22px;border-radius:2px;cursor:pointer;transition:opacity .15s}
+.btn:hover{opacity:.86}
+.btn:disabled{opacity:.3;cursor:not-allowed}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--rule)}
+.btn:focus-visible,.opt:focus-visible,.chip:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.step{margin-top:30px}
+.progress{height:2px;background:var(--rule-soft);margin-bottom:26px}
+.progress i{display:block;height:100%;background:var(--gold);transition:width .3s}
+.q{padding-block:18px;border-bottom:1px solid var(--rule-soft)}
+.q p{font-size:17px;margin-bottom:11px}
+.opts{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.opt{font-family:Archivo,system-ui,sans-serif;font-size:11px;font-weight:500;
+  letter-spacing:.04em;padding:9px 4px;border:1px solid var(--rule);background:var(--card);
+  color:var(--muted);border-radius:2px;cursor:pointer;transition:all .12s}
+.opt:hover{border-color:var(--faint)}
+.opt[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px}
+.chip{font-family:Archivo,system-ui,sans-serif;font-size:13px;font-weight:500;
+  padding:8px 13px;border:1px solid var(--rule);background:var(--card);color:var(--ink);
+  border-radius:2px;cursor:pointer;transition:all .12s}
+.chip:hover{border-color:var(--faint)}
+.chip[aria-pressed="true"]{background:var(--bc,var(--ink));color:#fff;border-color:var(--bc,var(--ink))}
+.bandhead{display:flex;align-items:baseline;gap:10px;margin-top:26px;margin-bottom:2px}
+.dot{width:9px;height:9px;border-radius:50%;flex:none;transform:translateY(-1px)}
+.nav{display:flex;gap:10px;margin-top:30px;flex-wrap:wrap}
+/* readout */
+.addr{background:var(--card);border:1px solid var(--rule);border-radius:2px;
+  box-shadow:var(--shadow);margin-top:14px;overflow:hidden}
+.addr .top{display:flex;gap:14px;padding:18px 18px 14px}
+.num{font-family:"IBM Plex Mono",monospace;font-size:26px;font-weight:500;
+  line-height:1;color:var(--bc);flex:none;font-variant-numeric:tabular-nums}
+.addr h3{font-family:Archivo,sans-serif;font-size:21px;font-weight:600;margin:0;
+  letter-spacing:-.01em;line-height:1.15}
+.dom{font-size:14px;color:var(--muted);margin-top:3px}
+.foot{border-top:1px solid var(--rule-soft);padding:11px 18px;
+  font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--faint);
+  line-height:1.5;word-break:break-word}
+.test{padding:14px 18px;background:var(--rule-soft);font-size:15px;line-height:1.55}
+.sab{padding:12px 18px;border-top:1px solid var(--rule-soft);font-size:14.5px}
+.sab b{font-family:Archivo,sans-serif;font-weight:600;font-size:12px;
+  text-transform:uppercase;letter-spacing:.1em;color:var(--faint);
+  display:block;margin-bottom:3px}
+.panel{background:var(--card);border:1px solid var(--rule);border-radius:2px;
+  padding:22px;margin-top:16px;box-shadow:var(--shadow)}
+.cq{display:flex;align-items:flex-end;gap:14px;margin:4px 0 18px}
+.cqn{font-family:"IBM Plex Mono",monospace;font-size:54px;font-weight:500;line-height:.9;
+  letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.cqf{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--faint);padding-bottom:6px}
+.meter{margin-top:13px}
+.meter .mr{display:flex;justify-content:space-between;font-size:12px;
+  font-family:Archivo,sans-serif;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:5px}
+.bar{height:5px;background:var(--rule-soft);border-radius:3px;overflow:hidden}
+.bar i{display:block;height:100%;border-radius:3px}
+.bandbars{margin-top:8px}
+.bb{display:grid;grid-template-columns:96px 1fr 34px;gap:10px;align-items:center;
+  padding-block:5px}
+.bb span:first-child{font-family:Archivo,sans-serif;font-size:11.5px;
+  letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.bb span:last-child{font-family:"IBM Plex Mono",monospace;font-size:12px;
+  color:var(--faint);text-align:right;font-variant-numeric:tabular-nums}
+.sabrow{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;
+  padding-block:9px;border-top:1px solid var(--rule-soft)}
+.sr-n{font-size:12px;color:var(--faint);flex:none}
+.sr-a{font-family:Archivo,system-ui,sans-serif;font-weight:600;font-size:15px}
+.sr-f{color:var(--muted);font-size:15px}
+.cta{margin-top:34px;padding:24px;border:1px solid var(--gold);border-radius:2px;
+  background:var(--card)}
+.cta a{color:var(--ink);font-weight:500}
+.note{font-size:13.5px;color:var(--faint);margin-top:26px;line-height:1.6}
+@media (max-width:460px){
+  .opts{grid-template-columns:repeat(2,1fr)}
+  .bb{grid-template-columns:76px 1fr 30px}
+  .cqn{font-size:44px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+<div class="wrap">
+
+<div class="masthead">
+  <svg class="seal" viewBox="0 0 64 64" aria-hidden="true">
+    <g fill="none" stroke="#C9A84C" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M40 14 A19 19 0 1 0 44 44 C36 40 27 38 24 30"/>
+    </g>
+  </svg>
+  <div class="stack">
+    <span class="lab">Sharing Human</span>
+    <span class="lab" style="color:var(--muted)">The Address Diagnostic</span>
+  </div>
+</div>
+
+<!-- ============ INTRO ============ -->
+<section id="s-intro">
+  <h1>Every pattern has an address in the body.</h1>
+  <p class="lede">This finds yours. Twenty-one statements, then a short recognition pass.
+  It returns the three nodes carrying the most charge, the nerve each one sits on, and
+  where to put your hand.</p>
+  <p class="claim">The claim is testable in ninety seconds, which is the point.
+  You will not be asked to believe anything. You will be asked to check.</p>
+  <div class="nav">
+    <button class="btn" id="go">Begin</button>
+  </div>
+  <p class="note">Nothing is sent anywhere. Everything is computed in your browser.
+  This is a self-assessment instrument, not a medical diagnosis, and it does not
+  replace care from a clinician.</p>
+</section>
+
+<!-- ============ STAGE 1 ============ -->
+<section id="s-one" hidden>
+  <div class="progress"><i id="p1" style="width:0%"></i></div>
+  <span class="lab">Stage one of two</span>
+  <h2 style="margin-top:8px">Read each one and answer from the body, not the story.</h2>
+  <p style="color:var(--muted);margin-top:8px;font-size:15px">If you have to think about
+  it, the answer is probably the lower one.</p>
+  <div id="q1"></div>
+  <div class="nav">
+    <button class="btn" id="to2" disabled>Continue</button>
+    <button class="btn ghost" id="back1">Back</button>
+  </div>
+</section>
+
+<!-- ============ STAGE 2 ============ -->
+<section id="s-two" hidden>
+  <div class="progress"><i style="width:60%"></i></div>
+  <span class="lab">Stage two of two</span>
+  <h2 style="margin-top:8px">Which of these do you recognise in yourself?</h2>
+  <p style="color:var(--muted);margin-top:8px;font-size:15px">These are the charges held
+  in the two bands you scored highest. Choose the ones that land. Three to six is usual.</p>
+  <div id="q2"></div>
+  <div class="nav">
+    <button class="btn" id="finish" disabled>Read my addresses</button>
+    <button class="btn ghost" id="back2">Back</button>
+  </div>
+</section>
+
+<!-- ============ RESULT ============ -->
+<section id="s-out" hidden>
+  <div class="progress"><i style="width:100%"></i></div>
+  <span class="lab">Your readout</span>
+  <h1 style="font-size:clamp(26px,5vw,36px);margin-top:8px">Three addresses</h1>
+  <p class="lede" style="font-size:16px" id="out-lede"></p>
+  <div id="out-addr"></div>
+
+  <h2 style="margin-top:38px">The band underneath them</h2>
+  <div class="panel" id="out-band"></div>
+
+  <h2 style="margin-top:34px">Coherence Quotient</h2>
+  <div class="panel" id="out-cq"></div>
+
+  <h2 style="margin-top:34px">What these addresses govern</h2>
+  <div class="panel" id="out-sab"></div>
+
+  <div class="cta" id="out-cta"></div>
+
+  <div class="nav">
+    <button class="btn ghost" id="again">Run it again</button>
+  </div>
+  <p class="note">Node numbers, nerves and wrong actions are drawn from the 112-node map
+  in <i>The Mechanics of Being</i> v214. Addresses are never interpolated. Nodes 99 and 108 are excluded, their addresses were struck pending a ruling. Where the map is
+  silent, this instrument stays silent too.</p>
+</section>
+
+</div>
+<script>
+const NODES=[[1,"Fear","Lumbar Plexus","Instinct, threat"],[2,"Shame","Pudendal Nerve","Worth, embodiment"],[3,"Guilt","Inferior Hypogastric Plexus","Responsibility"],[4,"Control","Sacral Nerves","Safety through force"],[5,"Insecurity","Pelvic Nerve","Belonging"],[6,"Victimhood","Coccygeal Plexus","Agency"],[7,"Scarcity","Iliohypogastric Nerve (L1)","Resources"],[8,"Entitlement","Cauda Equina","Privilege"],[9,"Possession","Gluteal Nerve","Attachment"],[10,"Lethargy","Obturator Nerve","Momentum"],[11,"Resistance","Perineal Branch","Change"],[12,"Compulsion","Pelvic Floor Nerves","Safety rituals"],[13,"Disconnection","Sacral Root Ganglia","Presence"],[14,"Escapism","Sciatic Nerve","Facing pain"],[15,"Panic","Lumbar Sympathetic Chain","Reaction"],[16,"Collapse","Conus Medullaris","Structure"],[17,"Addiction","Sacral Plexus","Craving"],[18,"Lust","Genitofemoral Nerve","Desire"],[19,"Envy","Perineal Branch, Pudendal Nerve","Lack"],[20,"Jealousy","Obturator Nerve","Possessiveness"],[21,"Co-Dependency","Pelvic Splanchnic Nerves","Neediness"],[22,"Shame of Desire","Hypogastric Plexus","Repression"],[23,"Hypersexuality","Pudendal Plexus","Validation"],[24,"Avoidance of Pleasure","Pelvic Nerve","Sensuality"],[25,"Manipulation through Emotion","Inferior Hypogastric Plexus","Control"],[26,"Oversensitivity","Inferior Hypogastric Plexus","Pain threshold"],[27,"Fantasy","Splanchnic Root","Escapism"],[28,"Infatuation","Lumbosacral Trunk (L4-L5)","Projection"],[29,"Obsession","Pelvic Ganglia","Focus"],[30,"Guilt of Pleasure","Sacral Outflow","Joy"],[31,"Need for Approval","Iliac Branches","Identity in others"],[32,"Excess Emotion","Perineal Nerve","Drama"],[33,"Pride","Celiac Plexus","Self-importance"],[34,"Arrogance","Greater Splanchnic Nerve","Ego"],[35,"Competition","Aortic Plexus","Comparison"],[36,"Anger","Celiac Plexus","Power misused"],[37,"Judgment","Splanchnic Plexus","Othering"],[38,"Entitlement (Will-based)","Renal Plexus","Control of outcomes"],[39,"Rebellion","Renal Ganglia","Defiance"],[40,"Perfectionism","Mesenteric Plexus","Idealism"],[41,"Force","Splenic Plexus","Control over flow"],[42,"Rigidity","Pancreatic Plexus","Will"],[43,"Resentment","Suprarenal Plexus","Grudge"],[44,"Unworthiness","Inferior Mesenteric Plexus","Confidence"],[45,"Anxiety","Adrenal Medulla","Control of outcomes"],[46,"Self-Judgment","Anterior Cutaneous Branches T7-T11","Inner war"],[47,"Need to Win","Hepatic Plexus","Ego"],[48,"Superiority","Splenic Plexus","Hierarchy"],[49,"Hatred","Cardiac Plexus","Forgiveness"],[50,"Grudge","Thoracic Nerves","Holding pain"],[51,"Self-Punishment / Shame","Vagus Nerve","Grace"],[52,"Betrayal","Thoracic Plexus","Trust"],[53,"Separation","Pericardial Nerve","Unity"],[54,"Martyrdom","Intercostal Nerves","Self-sacrifice"],[55,"Longing","Cardiac Nerve Plexus","Presence"],[56,"Closed Heart","Costal Branches","Vulnerability"],[57,"Manipulative Kindness","Phrenic Nerve","Motive"],[58,"Expectation","Pulmonary Nerve Plexus","Outcome"],[59,"Blame","Thoracic Ganglia","Responsibility"],[60,"False Love","Anterior Thoracic Roots","Image"],[61,"Rejection","Vagal Branches","Inclusion"],[62,"Avoidance of Grief","Inferior Cervical Cardiac Nerve","Loss"],[63,"Need to be Needed","Coronary Plexus","Identity"],[64,"Deceit","Cervical Plexus","Honesty"],[65,"Self-Silencing","Vagus Nerve","Voice"],[66,"People Pleasing","Superior Laryngeal Nerve","Approval"],[67,"Lying","Recurrent Laryngeal Nerve","Integrity"],[68,"Interrupting","Pharyngeal Nerve","Listening"],[69,"Comparison","Accessory Nerve","Voice Identity"],[70,"Excuse","Glossopharyngeal Nerve","Ownership"],[71,"Stage Performing","Laryngeal Plexus","Image"],[72,"Speaking to be Right","Cervical Ganglia","Ego"],[73,"Manic Expression","Spinal Accessory Nerve","Over-talking"],[74,"Talking to Avoid Feeling","Subclavian Nerve","Presence"],[75,"Using Spiritual Language to Manipulate","Brachial Plexus","Belonging"],[76,"Delusion","Optic Nerve","Truth"],[77,"Cynicism","Oculomotor Nerve","Clarity"],[78,"Distrust","Abducens Nerve","Faith"],[79,"Hypervigilance","Optic Chiasm","Control"],[80,"Dogma","Nervus Conarii · pineal gland as organ presentation","Belief"],[81,"Overanalysis","Trigeminal Nerve","Clarity"],[82,"Projection","Visual Cortex","Othering"],[83,"Paranoia","Lateral Geniculate","Fear"],[84,"Distortion","Greater Occipital Nerve","Reality"],[85,"Doubt","Optic Radiation","Intuition"],[86,"Idealism","Supraoptic Nucleus","Fantasy"],[87,"Lack of Discernment","Thalamus","Perception"],[88,"Doubt of God","Corpus Callosum","Faith"],[89,"Hubris","Prefrontal Cortex","Alignment"],[90,"Spiritual Pride","Pineal-Hypothalamic Axis","Insight"],[91,"Nihilism","Parietal Cortex","Meaning"],[92,"Spiritual Escapism","Dorsal Raphe Nucleus","Presence"],[93,"False Humility","Frontal Lobe","Disguise"],[94,"Seeking Validation","Cerebral Cortex","Ego"],[95,"Savior Complex","Posterior Cingulate","Responsibility"],[96,"Condemnation","Reticular Formation","Mercy"],[97,"Need to be Special","Anterior Cingulate","Identity"],[98,"Unworthy of God","Pineal-Amygdala Axis","Divinity"],[100,"Denial of Truth","Medial Forebrain Bundle","Insight"],[101,"Rejection of Spirit","Posterior Commissure","Divinity"],[102,"Fear of God","Temporal Lobe","Love"],[103,"Anger at God","Hypothalamus","Trust"],[104,"Forgetfulness","Memory Center (Hippocampus)","Identity"],[105,"Denial of Light","Epithalamus","Revelation"],[106,"Rejection of Unity","Neocortex","Connection"]];</script>
+<script>
+const BANDS=[
+ {k:"Root",         lo:1,  hi:16, c:"--root",  plain:"low back and pelvis",
+  when:"Closed, the body braces and lifts out of itself to stay ready. Open, weight drops and the ground holds you."},
+ {k:"Sacral",       lo:17, hi:32, c:"--sacral",plain:"below the navel, front and back",
+  when:"Closed, wanting something arrives with a bill attached. Open, appetite and feeling move without apology."},
+ {k:"Solar Plexus", lo:33, hi:48, c:"--solar", plain:"just under the ribs, centre",
+  when:"Closed, the body folds inward and second-guesses before it moves. Open, posture rises from inside and action feels available."},
+ {k:"Heart",        lo:49, hi:63, c:"--heart", plain:"centre chest and upper back",
+  when:"Closed, connection becomes something to manage rather than feel. Open, you can stay open and stay intact."},
+ {k:"Throat",       lo:64, hi:75, c:"--throat",plain:"throat and back of the neck",
+  when:"Closed, you say the smaller version of what you mean. Open, the true sentence arrives at the speed of thought."},
+ {k:"Third Eye",    lo:76, hi:87, c:"--brow",  plain:"brow and behind the eyes",
+  when:"Closed, perception becomes prediction and defence. Open, you see what is there instead of scanning for threat."},
+ {k:"Crown",        lo:88, hi:106,c:"--crown", plain:"top and back of the head",
+  when:"Closed, the work is correct and none of it means anything. Open, meaning returns without needing to be argued for."}
+];
+const STATEMENTS=[
+ ["Root","My body braces before I know why."],
+ ["Root","I sleep badly the night before anything uncertain."],
+ ["Root","I tighten when someone comes up behind me."],
+ ["Sacral","I want something and immediately talk myself out of deserving it."],
+ ["Sacral","Pleasure arrives with a bill attached."],
+ ["Sacral","I read other people's moods faster than my own."],
+ ["Solar Plexus","I rehearse arguments I am never going to have."],
+ ["Solar Plexus","My gut goes hard when someone questions whether I am good at this."],
+ ["Solar Plexus","I push through exhaustion and call it discipline."],
+ ["Heart","I keep people at a distance I could close."],
+ ["Heart","Something in my chest shuts when I am about to be seen."],
+ ["Heart","I give more than I take and then resent it."],
+ ["Throat","I say the smaller version of what I mean."],
+ ["Throat","My throat tightens before I disagree with someone."],
+ ["Throat","I replay conversations looking for what I should have said."],
+ ["Third Eye","I scan a room for what could go wrong."],
+ ["Third Eye","My brow is tight most of the day."],
+ ["Third Eye","I turn a decision over until the window closes."],
+ ["Crown","I am doing the right things and none of it means anything."],
+ ["Crown","Something is watching and finding me short."],
+ ["Crown","I feel separate from people in a way I cannot explain."]
+];
+const FORMULA=[
+ ["I","I know what I am moving toward this year."],
+ ["I","My days point in the same direction as that."],
+ ["G","What I say and what I do match."],
+ ["G","I keep the promises I make to myself."]
+];
+const SCALE=["Not me","Sometimes","Often","That's me"];
+const $=id=>document.getElementById(id);
+const bandOf=n=>BANDS.find(b=>n>=b.lo&&n<=b.hi);
+const a1=new Array(STATEMENTS.length).fill(null);
+const af=new Array(FORMULA.length).fill(null);
+let picked=new Set(), topTwo=[];
+
+function show(id){["s-intro","s-one","s-two","s-out"].forEach(s=>$(s).hidden=(s!==id));
+  window.scrollTo({top:0,behavior:"instant"});}
+
+function radio(name,idx,store,onSet){
+  const d=document.createElement("div");d.className="opts";
+  SCALE.forEach((lbl,v)=>{
+    const b=document.createElement("button");
+    b.type="button";b.className="opt";b.textContent=lbl;
+    b.setAttribute("aria-pressed","false");b.id=name+"-"+idx+"-"+v;
+    b.onclick=()=>{store[idx]=v;
+      [...d.children].forEach(c=>c.setAttribute("aria-pressed","false"));
+      b.setAttribute("aria-pressed","true");onSet();};
+    d.appendChild(b);
+  });
+  return d;
+}
+function buildOne(){
+  const w=$("q1");w.textContent="";
+  STATEMENTS.forEach(([band,txt],i)=>{
+    const q=document.createElement("div");q.className="q";
+    const p=document.createElement("p");p.textContent=txt;q.appendChild(p);
+    q.appendChild(radio("s",i,a1,tick1));w.appendChild(q);
+  });
+  const h=document.createElement("h2");h.style.marginTop="34px";
+  h.textContent="Two more, about direction rather than charge.";
+  w.appendChild(h);
+  FORMULA.forEach(([,txt],i)=>{
+    const q=document.createElement("div");q.className="q";
+    const p=document.createElement("p");p.textContent=txt;q.appendChild(p);
+    q.appendChild(radio("f",i,af,tick1));w.appendChild(q);
+  });
+}
+function tick1(){
+  const done=a1.filter(v=>v!==null).length+af.filter(v=>v!==null).length;
+  const total=a1.length+af.length;
+  $("p1").style.width=Math.round(done/total*60)+"%";
+  $("to2").disabled=done<total;
+}
+function bandScores(){
+  const m={};BANDS.forEach(b=>m[b.k]={sum:0,n:0});
+  STATEMENTS.forEach(([b],i)=>{m[b].sum+=(a1[i]||0);m[b].n++;});
+  return BANDS.map(b=>({band:b,pct:Math.round(m[b.k].sum/(m[b.k].n*3)*100)}))
+              .sort((x,y)=>y.pct-x.pct);
+}
+function buildTwo(){
+  topTwo=bandScores().slice(0,2).map(x=>x.band);
+  picked=new Set();
+  const w=$("q2");w.textContent="";
+  topTwo.forEach(b=>{
+    const h=document.createElement("div");h.className="bandhead";
+    const d=document.createElement("span");d.className="dot";
+    d.style.background=`var(${b.c})`;h.appendChild(d);
+    const t=document.createElement("h2");t.textContent=b.k;t.style.fontSize="17px";
+    h.appendChild(t);
+    const s=document.createElement("span");s.className="lab";
+    s.textContent="nodes "+b.lo+" to "+b.hi;h.appendChild(s);
+    w.appendChild(h);
+    const cw=document.createElement("div");cw.className="chips";
+    NODES.filter(n=>n[0]>=b.lo&&n[0]<=b.hi).forEach(n=>{
+      const c=document.createElement("button");
+      c.type="button";c.className="chip";c.textContent=n[1];
+      c.style.setProperty("--bc",`var(${b.c})`);
+      c.setAttribute("aria-pressed","false");
+      c.onclick=()=>{const on=picked.has(n[0]);
+        if(on)picked.delete(n[0]);else picked.add(n[0]);
+        c.setAttribute("aria-pressed",String(!on));
+        $("finish").disabled=picked.size<1;};
+      cw.appendChild(c);
+    });
+    w.appendChild(cw);
+  });
+  $("finish").disabled=true;
+}
+function cq(){
+  const I=af[0]!==null?((af[0]+af[1])/6*10):0;
+  const G=af[2]!==null?((af[2]+af[3])/6*10):0;
+  const load=a1.reduce((s,v)=>s+(v||0),0)/(a1.length*3); // 0..1
+  const R=1+load*9;                                      // 1..10
+  const score=Math.round((I*G)/R);
+  return {I:+I.toFixed(1),G:+G.toFixed(1),R:+R.toFixed(1),score:Math.max(0,Math.min(100,score))};
+}
+function meter(label,val,max,cvar){
+  const pct=Math.max(2,Math.round(val/max*100));
+  return '<div class="meter"><div class="mr"><span>'+label+'</span>'+
+    '<span class="mono">'+val+' / '+max+'</span></div>'+
+    '<div class="bar"><i style="width:'+pct+'%;background:var('+cvar+')"></i></div></div>';
+}
+function render(){
+  const scores=bandScores(), top=scores[0];
+  const chosen=[...picked].map(id=>NODES.find(n=>n[0]===id))
+    .sort((a,b)=>{
+      const ra=scores.findIndex(s=>s.band.k===bandOf(a[0]).k);
+      const rb=scores.findIndex(s=>s.band.k===bandOf(b[0]).k);
+      return ra-rb||a[0]-b[0];
+    }).slice(0,3);
+
+  $("out-lede").textContent="You marked "+picked.size+" charge"+(picked.size===1?"":"s")+
+    ". These three sit highest, ranked by the band carrying the most load.";
+
+  const wrap=$("out-addr");wrap.textContent="";
+  chosen.forEach(n=>{
+    const b=bandOf(n[0]);
+    const el=document.createElement("div");el.className="addr";
+    el.style.setProperty("--bc",`var(${b.c})`);
+    el.innerHTML=
+      '<div class="top"><div class="num">'+String(n[0]).padStart(2,"0")+'</div>'+
+      '<div><h3></h3><div class="dom"></div></div></div>'+
+      '<div class="test"></div>'+
+      '<div class="sab"><b>Governs</b><span></span></div>'+
+      '<div class="foot"></div>';
+    el.querySelector("h3").textContent=n[1];
+    el.querySelector(".dom").textContent=n[3];
+    el.querySelector(".test").textContent=
+      "Put a hand on the "+b.plain+". Bring "+n[1].toLowerCase()+
+      " to mind and hold it there for ninety seconds. If the area warms, tightens, "+
+      "goes cold or starts to hum, that is the node answering.";
+    el.querySelector(".sab span").textContent=n[3]+".";
+    el.querySelector(".foot").textContent=
+      "node "+n[0]+" · "+n[2]+" · "+b.plain;
+    wrap.appendChild(el);
+  });
+
+  const bp=$("out-band");
+  bp.innerHTML='<div class="bandhead" style="margin-top:0"><span class="dot"></span>'+
+    '<h2></h2></div><p style="margin-top:10px"></p>'+
+    '<div class="bandbars"></div>';
+  bp.querySelector(".dot").style.background=`var(${top.band.c})`;
+  bp.querySelector("h2").textContent=top.band.k;
+  bp.querySelector("p").textContent=top.band.when;
+  const bb=bp.querySelector(".bandbars");
+  scores.forEach(s=>{
+    const r=document.createElement("div");r.className="bb";
+    r.innerHTML='<span></span><div class="bar"><i></i></div><span></span>';
+    r.children[0].textContent=s.band.k;
+    const fill=r.querySelector("i");
+    fill.style.width=Math.max(2,s.pct)+"%";
+    fill.style.background=`var(${s.band.c})`;
+    r.children[2].textContent=s.pct;
+    bb.appendChild(r);
+  });
+
+  const c=cq();
+  $("out-cq").innerHTML=
+    '<div class="cq"><div class="cqn">'+c.score+'</div>'+
+    '<div class="cqf">CQ = (Intention &times; Integrity) / Resistance<br>'+
+    '('+c.I+' &times; '+c.G+') / '+c.R+'</div></div>'+
+    meter("Intention",c.I,10,"--heart")+
+    meter("Integrity",c.G,10,"--throat")+
+    meter("Resistance",c.R,10,"--root")+
+    '<p style="margin-top:16px;font-size:15px;color:var(--muted)">'+
+    'Resistance is computed from the total charge you marked across all seven bands. '+
+    'It is the only term the three addresses above move directly. Clear them and the '+
+    'denominator drops, which raises the whole quotient without you having to become '+
+    'a different person.</p>';
+
+  const sab=$("out-sab");
+  sab.innerHTML='<p style="font-size:15px;color:var(--muted);margin-bottom:14px">'+
+    'Each address produces one characteristic wrong action. Not a personality. '+
+    'A behaviour the charge makes cheap.</p>';
+  chosen.forEach(n=>{
+    const b=bandOf(n[0]);
+    const r=document.createElement("div");
+    r.className="sabrow";
+    r.innerHTML='<span class="sr-n mono"></span><span class="sr-a"></span>'+
+                '<span class="sr-f"></span>';
+    r.querySelector(".sr-n").textContent=String(n[0]).padStart(2,"0");
+    const a=r.querySelector(".sr-a");
+    a.textContent=n[3]; a.style.color=`var(${b.c})`;
+    r.querySelector(".sr-f").textContent="from "+n[1].toLowerCase();
+    sab.appendChild(r);
+  });
+
+  $("out-cta").innerHTML=
+    '<span class="lab">Next</span>'+
+    '<h2 style="margin-top:8px">The '+top.band.k+' volume goes address by address.</h2>'+
+    '<p style="margin-top:10px;color:var(--muted)">Nine charges from this band, each with '+
+    'its cascade, its install, and the same foot rule you see above. '+
+    '<i>The Somatic Books of Reprogramming</i>, extracted from '+
+    '<i>The Mechanics of Being</i>.</p>'+
+    '<p style="margin-top:14px"><a href="https://sharinghuman.com">sharinghuman.com</a></p>';
+  show("s-out");
+}
+$("go").onclick=()=>{buildOne();show("s-one");};
+$("to2").onclick=()=>{buildTwo();show("s-two");};
+$("back1").onclick=()=>show("s-intro");
+$("back2").onclick=()=>show("s-one");
+$("finish").onclick=render;
+$("again").onclick=()=>{a1.fill(null);af.fill(null);picked=new Set();
+  buildOne();tick1();show("s-intro");};
+</script>

@@ -1,0 +1,52 @@
+{
+  "domain": "thelittlebooksof.com",
+  "series": "The Somatic Books of Reprogramming",
+  "strap": "A key to unlocking tension stored in the body and restoring natural presence",
+  "hero_line": "Every pattern has an address in the body. This is the map.",
+  "promise": "Results as a service. The purpose of these books is to rapidly release a stress response.",
+  "what_they_do": [
+    "You read a page. The charge is named in the body's own language, in the order the body escalates it, from uneasy to collapsing.",
+    "You turn the page. The same circuit is named in its coherent form. Not a promise. A replacement.",
+    "The tension drops. That is the whole product. Ninety seconds, one spread, one circuit."
+  ],
+  "the_why": [
+    "The category names a feeling and stops. It tells you the body keeps the score and hands you no coordinates.",
+    "Every charge in these books has a node, a nerve, and a plain location. You can put a hand on the site and check the claim on yourself.",
+    "If the site does nothing when you put a hand on it, the claim failed. Test it before you spend anything."
+  ],
+  "mission": "Put the instrument in the hands of the person who needs it, with no gatekeeper between them and it.",
+  "vision": "Every stored pattern addressed. Every address releasable by the person carrying it, without permission, without a practitioner, without a decade.",
+  "author_short": "Lance Powell is a somatic engineer.",
+  "author_long": [
+    "For thirty years Lance Powell built worlds for a living. Creative director in film and games, on Oscar, Emmy and Game of the Year winning teams.",
+    "Today he builds the instruments people use to rebuild themselves. Neurolinguistic and somatic tools that release stored patterns at the nerve.",
+    "Fifteen thousand releases, run on himself, mapped and tested until the pieces connected. He co-authored peer-reviewed work in Endoscopy, Thieme, DOI 10.1055/a-2013-1820.",
+    "His purpose is to hand people the tools to return to their highest sense of self."
+  ],
+  "evidence": [
+    "Powell L, Guzik P. Endoscopy, Thieme. DOI 10.1055/a-2013-1820.",
+    "A co-authored peer-reviewed publication with a named physician.",
+    "Three credentialed physicians have reviewed this work and recommended clinical trials."
+  ],
+  "faq": [
+    ["What do I actually get?", "A PDF, print ready, thirty two pages. It downloads the moment Stripe clears. You also get a link you can use again on any device."],
+    ["How long does it take to work?", "One spread is ninety seconds. Most people feel the drop on the first charge that matches. If nothing moves on the first read, the volume is the wrong band. Run the free diagnostic and buy the one it names."],
+    ["Do I need a practitioner?", "No. That is the point. There is no certification, no gatekeeper, and nothing to book."],
+    ["Is this therapy?", "No. It is an instrument for releasing a stored stress response. It does not diagnose, treat, or replace medical or psychological care."],
+    ["Can I get a physical copy?", "Yes. Every volume is available as a paperback, printed on demand and shipped from the printer."],
+    ["What if it does nothing?", "Say so and get your money back. The claim is falsifiable on purpose."]
+  ],
+  "volume_lines": {
+    "ANXIETY": ["The body braced for a threat that already passed.", "Fear held at the root. Nine charges, from the low hum to the full alarm, each addressed, each with a replacement on the facing page."],
+    "SHAME":   ["The pattern that makes you small before anyone asks you to.", "Shame held at the root. Nine charges of collapse, exposure and self-erasure, each addressed, each replaced with worth."],
+    "MONEY":   ["Scarcity is not a number. It is a grip in the gut.", "The money charge held in the sacral band. Nine charges of lack, shame and refusal, each addressed, each replaced with flow."],
+    "ANGER":   ["Power with nowhere to go turns into pressure.", "Anger held in the solar band. Nine charges of heat, resentment and force, each addressed, each replaced with calm."],
+    "BURNOUT": ["The tank is empty and the demands did not stop.", "Depletion held in the solar band. Nine charges of exhaustion, over-carry and collapse, each addressed, each replaced with restoration."],
+    "DRIVE":   ["Wanting it is not the problem. Starting is.", "Stall held in the solar band. Nine charges of avoidance, delay and self-doubt, each addressed, each replaced with momentum."],
+    "WORTH":   ["Proving it is the tell that you do not believe it.", "Worth held in the solar band. Nine charges of proving, shrinking and second-guessing, each addressed, each replaced with value."],
+    "GRIEF":   ["The chest that will not open all the way.", "Loss held in the heart band. Nine charges of grief, abandonment and closure, each addressed, each replaced with renewal."],
+    "VOICE":   ["The sentence that stops at the throat.", "Silence held in the throat band. Nine charges of withholding, shrinking and self-censoring, each addressed, each replaced with expression."],
+    "CONTROL": ["The grip is not strength. It is fear with a schedule.", "Control held in the solar band. Nine charges of vigilance, rigidity and force, each addressed, each replaced with trust."],
+    "DUTY":    ["Carrying what was never yours to carry.", "Obligation held at the crown. Nine charges of duty, debt and self-forgetting, each addressed, each replaced with devotion."]
+  }
+}
