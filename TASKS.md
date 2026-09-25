@@ -11482,3 +11482,41 @@ rather than deciding alone?
 step control the listening page had, on a screen already measured as
 carrying too many choices?
 
+## BY. The off by one on the Avatar comp was real, and it is fixed.
+## 25 September.
+
+**His bug report held.** "It's like they're all off by one" was
+correct: every one of the seven seat names in question 6 sat one column
+to the right of its own three marks, at any width under 1440. That
+covers every laptop and the preview pane he was looking at, never the
+1600 the comp was tested at, which is why the team missed it. The
+clock and the smile he named both sit above "Third eye" only in this
+one shifted grid. The shipped product was never involved, the figure on
+the body was already correct, and nothing under `atuned_src/` looks a
+mark up by position anywhere.
+
+**The cause.** An empty spacer meant to hold a 120 pixel label column on
+wide screens does not get removed when that column drops out under
+1440, so it eats the first of the seven cells and pushes every name one
+seat to the right. Fixed in the comp only, `proto/avatar/iam/`, not
+committed yet since that folder was untracked when the fix landed; it
+will go in with the rest of this round. The comp's own screenshot check
+now identifies each mark by its own drawing and pairs it with the
+nearest name, catching the exact defect he found (it failed 0 of 21 on
+the broken build, 21 of 21 after the fix, at ten widths from 320 to
+1920).
+
+**Two things in the same picture that are not bugs.** The throat mark is
+still the shipped clock and the solar mark is still the shipped
+lightning bolt, both sitting correctly under their own names now. Those
+are the legibility problems already on record, not a new one.
+
+**Q1.** Does the throat mark read as speaking now that it sits under
+the right name? Keep the redrawn mouth as it is, redraw it as an open
+mouth mid word, or go back to his own lips exactly as drawn, which read
+as a second eye at small size, the reason they were reshaped.
+**Q2.** "These seven marks are not sacrosanct" opened his note. Question
+6 offers "Yours, all seven," "Yours, reshaped where they misread," or
+"The seven that ship." Does his line pick one of those, or does it mean
+a new set of marks altogether?
+
