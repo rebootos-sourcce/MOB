@@ -9285,6 +9285,37 @@ check against the simulation that set them (`AZ5`). Confirmed a second, real
 axis of the tier system alongside the patterns-per-month ladder ("we're also
 gating velocity"), not a conflict between the two.
 *Medium, once the rungs are set.*
+**Proposal ready, run against the real engine, not estimated. The ladder is
+five rungs, not four: fetter, saboteur, complex, hypercomplex, and a fifth
+on top, character.** Measured on Gordon, the heaviest ICP: 97 addresses,
+40 saboteurs, 19 complexes, 6 hypercomplexes and 2 character pairings when
+he arrives; 13, 27, 12, 4 and 2 once his gift is spent. A staircase wall
+(free sees fetters only, each tier adds one rung) locks 45 things for
+Gordon. One wall at the top (free sees fetter, saboteur and complex; every
+paid tier sees everything) locks 6. The moment of value in every reference
+case is a named saboteur in the first reading, which the one-wall shape
+protects and the staircase does not. Recommended: one wall at the top.
+Full proposal, three questions with Gordon's view beside every option, in
+the bundle sent this round.
+**A real ruling conflict surfaced, not a new one created.** He has ruled
+this three times: 18 September, a staircase; 19 September, "sight is not
+for sale"; 25 September, sight by tier. The 19 September ruling is still
+built into `engine/plan.js`, two test files, `BIBLE.md`, `PRODUCT.md`, and
+the buy page, which currently prints "sight is not for sale, every tier
+sees the whole reading." All of it needs updating together once he
+answers, not before.
+**Found in passing, not this item's question:** a release can queue up to 8
+addresses while the plan bills for at most 25 patterns split across
+whatever is left, and every queued address still releases regardless of
+what was billed; on free with 10 patterns left, one press is billed for 2.5
+addresses and releases 8, undercutting the velocity axis that is already
+settled. Also: his own profile reads 39 overshoot saboteurs, 19 complexes,
+6 hypercomplexes and 3 character pairings at CQ 97.2 with nothing carrying,
+which the release button cannot reach at all, a reading question for
+whoever owns the overshoot model. And the desktop's `tierCanSee` already
+locks archetypes and domains, which no ruling licenses, and prints a locked
+tier name in capitals, against the no capitals rule.
+*Nothing built yet; the actual locking waits on his answer below.*
 
 **AZ4. The story is stored for recovery, ruled, and needs three things built
 under it.** Encryption at rest (already `AW6`), explicit consent for the
