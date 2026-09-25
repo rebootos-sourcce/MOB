@@ -551,6 +551,8 @@ function loadP(i){
  /* loadP fills S from the persona table rather than through loadProfile, so it
     is the one route that has to say for itself which record S now holds. */
  S.rec=CURP.id||null;
+ /* and the record the laws came from, which the release lift reads (LAW_REC) */
+ LAW_REC=CURP;
  saveProfile(CURP); iqApply(CURP);
  $('psel').value=String(i);
  syncSoul();syncCh();syncLw();renderSpirit();renderIntake();render();}

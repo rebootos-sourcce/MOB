@@ -13,14 +13,17 @@
    cq and dq and sq, which is what the record compares. You
    cannot restore a field from it because the inputs are gone.
    Undo has to capture the inputs: the nine charges, the nine
-   installed opposites, the twenty one laws and the soul.
+   installed opposites, the twenty one laws, the soul, and since
+   25 September the releases each law has counted since it was
+   answered, which is what a release lifts the laws by.
 
    UNLIMITED, on the owner's ruling. It was capped at twenty on
    a memory argument and the argument does not survive the
    arithmetic: one entry is nine charges, nine opposites, twenty
-   one laws and a short soul, which is under a kilobyte. Ten
-   thousand of them is under ten megabytes and nobody performs
-   ten thousand irreversible acts in a session. A person who
+   one laws, their release counts and a short soul, which is
+   about a kilobyte and a half written out. Ten thousand of them
+   is about fifteen megabytes and nobody performs ten thousand
+   irreversible acts in a session. A person who
    cannot get back to where they started has no undo, they have
    a grace period.
    ============================================================ */
@@ -69,12 +72,19 @@ function undoList(){ var k=undoRec(); return UNDO[k]||(UNDO[k]=[]); }
 var REDO={};
 function redoList(){ var k=undoRec(); return REDO[k]||(REDO[k]=[]); }
 
-/* the inputs, and nothing derived. everything else recomputes from these. */
+/* the inputs, and nothing derived. everything else recomputes from these.
+   THE RELEASE LIFT IS AN INPUT NOW. Since 25 September a release lifts the
+   laws at its seat, and the count that does it lives on the record beside the
+   answers (p.work, engine/compute.js LIFT_R). Undoing a release that restored
+   the charge and left the count would leave CQ lifted by a release that, as far
+   as the field is concerned, never ran. The history is keyed by the record, so
+   the record's own work is the one taken and the one put back. */
 function undoState(){
  var c={},o={},l={};
  CHARGES.forEach(function(k){c[k]=S.charge[k];o[k]=S.replace[k]||0;});
  SINAMES.forEach(function(k){l[k]=S.law[k];});
- return {charge:c, replace:o, law:l,
+ var wk=(typeof CURP!=='undefined'&&CURP&&CURP.work)?JSON.parse(JSON.stringify(CURP.work)):null;
+ return {charge:c, replace:o, law:l, work:wk,
   doms:S.doms.slice(), arcs:S.arcs.slice(), roots:S.roots.slice(),
   dom:S.dom, a1:S.a1, a2:S.a2};}
 
@@ -105,6 +115,8 @@ function undoApply(s){
   S.charge[k]=(s.charge[k]!==undefined)?s.charge[k]:0;
   S.replace[k]=(s.replace[k]!==undefined)?s.replace[k]:0;});
  SINAMES.forEach(function(k){if(s.law[k]!==undefined)S.law[k]=s.law[k];});
+ /* an entry taken before the lift existed carries no work and leaves it alone */
+ if(s.work!=null&&typeof CURP!=='undefined'&&CURP)CURP.work=JSON.parse(JSON.stringify(s.work));
  S.doms=s.doms.slice(); S.arcs=s.arcs.slice(); S.roots=s.roots.slice();
  S.dom=s.dom; S.a1=s.a1; S.a2=s.a2;
  buildSoul();

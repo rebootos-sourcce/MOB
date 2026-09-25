@@ -1540,6 +1540,20 @@ how much his own CQ can move or a precision floor on his data. It landed as
 confusing jargon in a report meant for him and should not have been sent
 that way.
 
+**Fitted and built the same day. Not a ruling; his to confirm.** Each
+release closes a small share of the distance between each law at its seat
+and 10, fitted to his fifteen thousand on an assumed start of 50, and built
+the same in both engines. The shape was chosen because it lands his fifteen
+thousand inside 88 to 92 from any start between 30 and 70; a flat step only
+does from exactly 50. Against the lock bar (the next section, "The formula
+is locked once it passes this bar"): every reference person
+starting between 25 and 75 lands inside 85 to 95, and the lift leaves every
+one's saboteurs, complexes and weights exactly as they were. Detail in
+`BIBLE.md` 2.1. Four things only he can answer are in `TASKS.md` BE2 to BE4
+and BE8: where his CQ was when he started, which unit his fifteen thousand
+is in, whether "0.1 or 0.05" meant one pattern or one session, and whether
+the Lance reference case, which reads 97.2, is his current law scores.
+
 ## The formula is locked once it passes this bar. Ruled 25 September.
 
 His words: "On our formula, CQ DQ SQ, it keeps moving around. I want you to

@@ -3571,14 +3571,17 @@ function exprRead(){return EXPR.map(function(e){var f=exprFill(e.nm);
    cq and dq and sq, which is what the record compares. You
    cannot restore a field from it because the inputs are gone.
    Undo has to capture the inputs: the nine charges, the nine
-   installed opposites, the twenty one laws and the soul.
+   installed opposites, the twenty one laws, the soul, and since
+   25 September the releases each law has counted since it was
+   answered, which is what a release lifts the laws by.
 
    UNLIMITED, on the owner's ruling. It was capped at twenty on
    a memory argument and the argument does not survive the
    arithmetic: one entry is nine charges, nine opposites, twenty
-   one laws and a short soul, which is under a kilobyte. Ten
-   thousand of them is under ten megabytes and nobody performs
-   ten thousand irreversible acts in a session. A person who
+   one laws, their release counts and a short soul, which is
+   about a kilobyte and a half written out. Ten thousand of them
+   is about fifteen megabytes and nobody performs ten thousand
+   irreversible acts in a session. A person who
    cannot get back to where they started has no undo, they have
    a grace period.
    ============================================================ */
@@ -3627,12 +3630,19 @@ function undoList(){ var k=undoRec(); return UNDO[k]||(UNDO[k]=[]); }
 var REDO={};
 function redoList(){ var k=undoRec(); return REDO[k]||(REDO[k]=[]); }
 
-/* the inputs, and nothing derived. everything else recomputes from these. */
+/* the inputs, and nothing derived. everything else recomputes from these.
+   THE RELEASE LIFT IS AN INPUT NOW. Since 25 September a release lifts the
+   laws at its seat, and the count that does it lives on the record beside the
+   answers (p.work, engine/compute.js LIFT_R). Undoing a release that restored
+   the charge and left the count would leave CQ lifted by a release that, as far
+   as the field is concerned, never ran. The history is keyed by the record, so
+   the record's own work is the one taken and the one put back. */
 function undoState(){
  var c={},o={},l={};
  CHARGES.forEach(function(k){c[k]=S.charge[k];o[k]=S.replace[k]||0;});
  SINAMES.forEach(function(k){l[k]=S.law[k];});
- return {charge:c, replace:o, law:l,
+ var wk=(typeof CURP!=='undefined'&&CURP&&CURP.work)?JSON.parse(JSON.stringify(CURP.work)):null;
+ return {charge:c, replace:o, law:l, work:wk,
   doms:S.doms.slice(), arcs:S.arcs.slice(), roots:S.roots.slice(),
   dom:S.dom, a1:S.a1, a2:S.a2};}
 
@@ -3663,6 +3673,8 @@ function undoApply(s){
   S.charge[k]=(s.charge[k]!==undefined)?s.charge[k]:0;
   S.replace[k]=(s.replace[k]!==undefined)?s.replace[k]:0;});
  SINAMES.forEach(function(k){if(s.law[k]!==undefined)S.law[k]=s.law[k];});
+ /* an entry taken before the lift existed carries no work and leaves it alone */
+ if(s.work!=null&&typeof CURP!=='undefined'&&CURP)CURP.work=JSON.parse(JSON.stringify(s.work));
  S.doms=s.doms.slice(); S.arcs=s.arcs.slice(); S.roots=s.roots.slice();
  S.dom=s.dom; S.a1=s.a1; S.a2=s.a2;
  buildSoul();
@@ -3750,10 +3762,127 @@ function lawIn(nm){
  return !(LAW_UNSET[nm]&&S.law[nm]===LAW_SEED[nm]);}
 /* Which arithmetic a stored reading came from. This is the second; the first
    never stamped its rows, so they read back as 0. snapshot() stamps it so two
-   rows from two formulas are never compared as a move. */
+   rows from two formulas are never compared as a move.
+
+   The release lift below did not bump it, and that is deliberate. A row is
+   stamped so a change of formula is never read as a move in the person. The
+   lift starts at nothing on every record the day it ships and only grows from
+   releases run after that, so a row before it and a row after it differ by
+   work the person actually did, which is a move and is meant to read as one. */
 const CQ_MODEL=2;
+
+/* ============================================================
+   A RELEASE MOVES THE LAWS AT ITS SEAT, A LITTLE. Ruled 25 September, after
+   ship, correcting the team, who had read "CQ is the 21 laws" as "so a release
+   can never touch it" and proved that as a hard rule:
+
+     "I didn't say CQ doesn't move on a release. That wouldn't make sense. If
+     a fetter is released, you may not see CQ move, but it may move 0.1 or
+     0.05. I had about 15,000 patterns for my CQ. My CQ is about between 88
+     and 92, plus or minus 3 points of accuracy. Those 15k releases raised my
+     CQ."
+
+   CQ is still the 21 laws over 210, and nothing else enters it. SQ and DQ are
+   not folded in. What changed is what a law reads: a release closes a small
+   share of the distance between each law at its seat and 10.
+
+     law as CQ reads it = 10 - (10 - answer) x (1 - LIFT_R)^n
+
+   n is the releases at that law's seat since the law was answered, and one
+   release is one pattern of new ground: the meter's own unit, and the unit
+   MARKERS already reads his fifteen thousand in. A rerun of ground already
+   open is free and moves nothing, so the lift cannot be farmed, and it cannot
+   outrun the ground there is: 200 patterns an address, 21,400 in the body.
+
+   THE SEAT IS SI's OWN. Every law in SI is seated at a band, and compute()
+   already reads that seating one way: a closed law relieves the charge at its
+   own band. This is the same coupling read the other way, and every law at the
+   seat takes the same step. No table maps a fetter to a law, so none is
+   invented here.
+
+   WHY THIS SHAPE, AND WHERE THE NUMBER COMES FROM. Fitted against his one
+   data point, which is one anchor and not a curve (scratchpad lift/fit.js,
+   reproduced by tests/engine.js 36e). His starting CQ is not known. The
+   assumption is 50, his own "five is the average", with the 15,000 spread
+   over the body the way the body is built. Two shapes were run at his scale:
+
+     flat, a fixed step a release, capped at 10:
+       from 30 lands 70.9, from 50 lands 90.0, from 70 lands 100.0
+     this one, the step a share of the distance still left:
+       from 30 lands 86.0, from 50 lands 90.0, from 70 lands 94.0
+
+   A flat step lands where the person started plus a constant, so it fits him
+   only if he happened to start at exactly 50, and anyone starting at 70 reads
+   100 at about 14,000 releases, perfect integrity from releasing alone. This
+   shape pulls every start toward the same place, so the unknown start barely
+   matters: a start anywhere from 30 to 70 lands inside his 88 to 92, plus or
+   minus 3. That is why it is this one.
+
+   His other sentence is a check on it and was not fitted: a full run of 25
+   patterns moves CQ 0.14 at 50, 0.11 at 60 and 0.055 at 80. A single pattern
+   moves it 0.001 to 0.007, which no screen shows, which is his "you may not
+   see CQ move". At 50 it takes about 180 releases to move a whole point.
+
+   HOW WRONG THE NUMBER CAN BE. The rate each start would need to land 90:
+   9.4e-4 from 30, 7.7e-4 from 50, 5.2e-4 from 70. Two significant figures is
+   what one data point and an assumed start support, so two are written.
+   Release alone can never reach 100: opening every pattern there is, from 50,
+   reads 94.8. The last of it is the laws themselves moving, which is the
+   person answering differently.
+
+   A NEW ANSWER STARTS THE COUNT AGAIN. The count is kept with the answer it
+   was earned against, and it counts only while the law still holds that
+   answer. His own 88 to 92 is exactly this case: a reading taken after the
+   work, which already contains it. Carrying the lift through a new answer
+   would count his fifteen thousand twice. */
+const LIFT_R=0.00077;
+function lawLift(v,n){return n>0?10-(10-v)*Math.pow(1-LIFT_R,n):v;}
+/* The releases a law has at its seat since it was answered, read off the
+   record the laws in S were loaded from and nowhere else (LAW_REC, set with
+   S.rec by loadProfile and loadP). Not CURP: the front door loads a profile
+   into S without making it CURP, and a profile read there is its own only
+   input. And checked against S.rec, the rule undo and the mirror already
+   carry, so a field repointed without a load never wears another record's
+   work. */
+function lawWork(nm){
+ var p=(typeof LAW_REC==='undefined')?null:LAW_REC;
+ if(!p||!p.work)return 0;
+ if(p.id&&S.rec!=null&&S.rec!==p.id)return 0;
+ var w=p.work[nm];
+ return (w&&w.on===S.law[nm]&&w.n>0)?w.n:0;}
+/* a law as CQ reads it: the answer, and what the releases since have added */
+function lawNow(nm){return lawLift(S.law[nm],lawWork(nm));}
 /* CQ on its own, for the callers that need it without the whole reading */
-function cqSum(){return SINAMES.reduce((a,l)=>a+(lawIn(l)?S.law[l]:0),0)/210*100;}
+function cqSum(){return SINAMES.reduce((a,l)=>a+(lawIn(l)?lawNow(l):0),0)/210*100;}
+/* WHAT A RELEASE WRITES INTO THE LAWS. keys are the patterns of new ground the
+   meter has just recorded, so a rerun passes none and moves nothing. Each key's
+   address names a seat, and every answered law at that seat counts them. A law
+   whose answer has changed since its count began starts again from the answer
+   it holds now. A law not yet answered gets nothing: there is no reading to
+   nudge, and CQ does not count it. p is the record the release was charged to,
+   which relCoolDown guarantees is the one the laws in S came from. Returns
+   what moved, by law, and CQ before and after as that record reads. */
+function releaseWork(p,keys){
+ var out={laws:{}, cq0:cqSum(), cq1:null, n:0};
+ if(!p||!keys||!keys.length){out.cq1=out.cq0;return out;}
+ if(!p.work||typeof p.work!=='object'||Array.isArray(p.work))p.work={};
+ var bySeat={};
+ keys.forEach(function(k){
+  var n=BY[+String(k).split(':')[0]];
+  if(n&&n.b){bySeat[n.b]=(bySeat[n.b]||0)+1; out.n++;}});
+ SI.forEach(function(l){
+  var u=bySeat[l.b]; if(!u||!lawIn(l.nm))return;
+  var v=S.law[l.nm], w=p.work[l.nm];
+  if(!w||w.on!==v)w=p.work[l.nm]={n:0,on:v};
+  var before=lawLift(v,w.n); w.n+=u;
+  out.laws[l.nm]={seat:l.b, u:u, n:w.n, from:before, to:lawLift(v,w.n)};});
+ out.cq1=cqSum();
+ return out;}
+/* A LAW ANSWERED AGAIN IS A NEW READING, even when it lands on the same
+   number. The count above would survive a same number answer, because it is
+   keyed to the value; this is what the intake calls when a person changes an
+   answer, so a new measurement always wins over the model's estimate. */
+function lawAnswered(p,nm){if(p&&p.work&&p.work[nm])delete p.work[nm];}
 
 /* ============================================================
    THE LEVER'S BELL, FITTED. The owner: "I'm a little tense is different than
@@ -3931,6 +4060,8 @@ function compute(){
     CQ: lawIn() is what says whether a law was answered. */
  const answered=SINAMES.filter(lawIn).length;
  const complete=(answered===SINAMES.length);
+ /* each law as answered, plus what releases at its seat have added since. See
+    LIFT_R above. It is still a law score and nothing else. */
  const CQ=cqSum();
  /* THE LEVER. Expression is CQ times what the shadow leaves: "CQ 100 SQ 0
     ... one pulls down the other, it's a lever", and the pull is his bell,
@@ -4052,17 +4183,19 @@ function compute(){
    THE CEILING ON RELEASE. What expression reads once every charge is gone,
    which is the most a release can ever achieve, and the gap to it.
 
-   Why this exists. A release empties addresses. It cannot manufacture
-   integrity, because integrity is the twenty one laws and those move only
-   when a person answers them or changes what they do. The product never said
-   so, and offered release as its core loop, so a person pulled a lever that
-   was already spent.
+   Why this exists. A release empties addresses. What it does to integrity is
+   small: it lifts the laws at its seat by a share of what is left (LIFT_R,
+   about 0.005 of CQ a pattern at 50), and the laws otherwise move only when a
+   person answers them. The product never said so, and offered release as its
+   core loop, so a person pulled a lever that was nearly spent.
 
-   THIS WAS cqCeiling, AND A RELEASE CANNOT MOVE CQ AT ALL NOW. CQ is the laws
-   and nothing else, so its ceiling under release is itself and the headroom
-   was 0 for everybody: the release panel would have said "did not move" after
-   every run. What a release moves is the shadow, and through the lever,
-   expression. So the ceiling is expression with the shadow gone.
+   THIS WAS cqCeiling. CQ is the laws and nothing else, and the part of it a
+   release moves is too slow for one run to show, so the ceiling is read on
+   expression, which is what a release moves visibly: the shadow, and through
+   the lever, expression. So the ceiling is expression with the shadow gone, at
+   the laws as they stand now. The lift the next releases add to the laws is
+   not in it, which makes the headroom a slight understatement and never an
+   overstatement.
 
    It is computed rather than simulated. With charge at zero, held is zero at
    every address, sq is zero whatever is installed, the four outside take a
@@ -4649,6 +4782,13 @@ function blankProfile(name){
      drift. */
   avatar:avatarBlank(), purpose:purposeBlank(),
   laws:{}, intake:{answers:{}, done:[], startedAt:null, completedAt:null},
+  /* THE RELEASES SINCE EACH LAW WAS ANSWERED, by law: n patterns of new ground
+     at the law's seat, counted against the answer on. CQ reads a law as its
+     answer lifted by these (engine/compute.js, LIFT_R). Kept beside the answer
+     and never written into it, because iqApply rewrites every answered law
+     from the raw answers on every read, and a lift stored in p.laws would be
+     wiped by opening the Intake. Empty on every record until a release runs. */
+  work:{},
   gates:{verp:{aware:0,detach:0,intent:0,ignore:0,attach:0,averse:0},
          lean:{benign:0,malignant:0}},   /* the cost multiplier, v2 */
   story:{entries:[]}, rituals:[], history:[]};
@@ -4665,6 +4805,12 @@ function blankProfile(name){
    literal 6 beside a comment about it, and ui/personas.js then named two more
    numbers for the same quantity. One declaration, at the first use. */
 var LAW_UNSET={}, LAW_SEED={};
+/* AND THE RECORD THEY CAME FROM, as the object. The release lift reads the work
+   of the record the laws in S were loaded from and of no other (lawWork,
+   engine/compute.js). It was CURP, and the front door loads a profile into S
+   without making it CURP, so read() of a profile carrying work dropped its lift.
+   Set wherever S.rec is set, which is here and loadP. */
+var LAW_REC=null;
 function loadProfile(p){
  if(!p.who)p.who={first:'',middle:'',last:'',sex:'',born:{date:'',time:'',place:'',timeUnknown:false}};
  if(!p.who.born)p.who.born={date:'',time:'',place:'',timeUnknown:false};
@@ -4676,6 +4822,9 @@ function loadProfile(p){
  if(!p.avatar)p.avatar=avatarBlank();
  if(!Array.isArray(p.avatar.pairs))p.avatar.pairs=[];
  if(!p.purpose)p.purpose=purposeBlank();
+ /* a record from before the release lift has done no work since its answers,
+    which is exactly what an empty map says */
+ if(!p.work||typeof p.work!=='object'||Array.isArray(p.work))p.work={};
  /* soul was the one field this did not fill, and it is the one the next line
     reads without a guard. Six fields were defended and the seventh took the
     boot down. */
@@ -4716,6 +4865,7 @@ function loadProfile(p){
     rather than repointing anything, because two attempts at repointing are
     already recorded as worse than the bug. */
  S.rec=p.id||null;
+ LAW_REC=p;
  return p;}
 function saveProfile(p){
  p.soul={doms:S.doms.slice(),arcs:S.arcs.slice(),roots:S.roots.slice()};
@@ -5269,6 +5419,29 @@ function validateProfile(o){
     errs.push('meter.firsts held '+(o.meter.firsts.length-p.meter.firsts.length)
      +' entries that are not a dated first');}
   else if(o.meter.firsts!==undefined)errs.push('meter.firsts is not a list');}
+ /* THE RELEASES SINCE EACH LAW WAS ANSWERED. Read after the meter, because the
+    meter is what bounds them: a count is patterns of new ground at the law's
+    seat, every one of them is a key in meter.unique, and a new answer only ever
+    lowers it. So a count above the keys the record holds at that seat is not
+    an older record and not a rounding, it is a law lifted by work nobody did,
+    and it is refused by name rather than clamped to what the meter allows. */
+ if(o.work&&typeof o.work==='object'&&!Array.isArray(o.work)){
+  var seatKeys={};
+  p.meter.unique.forEach(function(k){var n=BY[+String(k).split(':')[0]];
+   if(n&&n.b)seatKeys[n.b]=(seatKeys[n.b]||0)+1;});
+  SI.forEach(function(l){
+   var w=o.work[l.nm]; if(w===undefined||w===null)return;
+   if(typeof w!=='object'||Array.isArray(w)){errs.push('work.'+l.nm+' is not an object');return;}
+   var n=vRange(errs,'work.'+l.nm+'.n',w.n,0,1e6);
+   var on=vRange(errs,'work.'+l.nm+'.on',w.on,0,10);
+   if(n===null||on===null){
+    if(w.n===undefined||w.on===undefined)errs.push('work.'+l.nm+' is not a count and the answer it was counted on');
+    return;}
+   if(n%1!==0){errs.push('work.'+l.nm+'.n is '+n+', not a whole number of patterns');return;}
+   if(n>(seatKeys[l.b]||0)){errs.push('work.'+l.nm+'.n is '+n+', more than the '
+    +(seatKeys[l.b]||0)+' patterns this record has opened at the '+l.b);return;}
+   p.work[l.nm]={n:n,on:on};});}
+ else if(o.work!==undefined&&o.work!==null)errs.push('work is not an object');
  /* THE PLAN, refused by name and never clamped. A tier this build does not
     know is refused rather than rounded down to free, because silently
     downgrading somebody who paid is the same class of error as silently
@@ -5476,14 +5649,16 @@ function meterRun(p,keys){
  if(!Array.isArray(p.avatar.pairs))p.avatar.pairs=[];
  if(!p.purpose)p.purpose=purposeBlank();
  var list=(keys||[]).filter(function(k){return typeof k==='string'&&k;});
- if(!list.length)return {added:0,repeated:0};
- var have={},added=0,repeated=0;
+ if(!list.length)return {added:0,repeated:0,fresh:[]};
+ var have={},added=0,repeated=0,fresh=[];
  p.meter.unique.forEach(function(k){have[k]=1;});
- list.forEach(function(k){ if(have[k]){repeated++;} else {have[k]=1;p.meter.unique.push(k);added++;} });
+ list.forEach(function(k){ if(have[k]){repeated++;} else {have[k]=1;p.meter.unique.push(k);fresh.push(k);added++;} });
  var now=new Date().toISOString();
  if(!p.meter.first)p.meter.first=now;
  p.meter.lines+=list.length; p.meter.last=now;
- return {added:added, repeated:repeated};}
+ /* fresh is the new ground by key, which is what the release lift counts:
+    the address in each key names the seat whose laws it lifts. */
+ return {added:added, repeated:repeated, fresh:fresh};}
 
 /* ============================================================
    THE HORIZON, AND WHY THE LADDER IS NOT A FIXED COUNT.
@@ -7971,13 +8146,21 @@ if(typeof module!=='undefined'&&module.exports){
      are what hold them down, so the ceiling is the person and the reading is
      the drag against it.
 
-     Renamed from cqCeiling and cqHeadroom when CQ became the 21 laws alone: a
-     release cannot move CQ, so its ceiling is expression's. The lever and the
-     law test are exported beside them so a gate can pin the fitted curve and
-     reproduce the simulation's worked people without re-deriving either. */
+     Renamed from cqCeiling and cqHeadroom when CQ became the 21 laws alone:
+     what a release moves visibly is the shadow, so its ceiling is read on
+     expression. The lever and the law test are exported beside them so a gate
+     can pin the fitted curve and reproduce the simulation's worked people
+     without re-deriving either.
+
+     AND WHAT A RELEASE DOES TO THE LAWS, corrected 25 September after ship: a
+     release lifts the laws at its seat by LIFT_R of the distance left, fitted
+     to his fifteen thousand. Exported so the gate can drive a release through
+     the same function the release panel calls, and hold the rate to the fit. */
                   exCeiling:exCeiling, exHeadroom:exHeadroom,
                   lawIn:lawIn, cqSum:cqSum, leverPull:leverPull,
                   LEVER_MU:LEVER_MU, LEVER_SD:LEVER_SD, CQ_MODEL:CQ_MODEL,
+                  LIFT_R:LIFT_R, lawLift:lawLift, lawWork:lawWork, lawNow:lawNow,
+                  releaseWork:releaseWork, lawAnswered:lawAnswered,
   /* seed */      TYPE16:TYPE16, SEED16:SEED16, seedAxes:seedAxes, seedApply:seedApply,
                   seedClear:seedClear, seedShare:seedShare, seedValid:seedValid, accuracy:accuracy, sab33Detect:sab33Detect,
                   sabLevels:sabLevels, exprFill:exprFill, exprRead:exprRead,

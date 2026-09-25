@@ -2638,6 +2638,63 @@ console.log('\n=== the release panel quotes a price it then charges ===');
  await rl.close();
 }
 
+console.log('\n=== a release lifts the laws at its seat, and the undo arrow takes it back ===');
+/* CORRECTED 25 SEPTEMBER, AFTER SHIP. "Those 15k releases raised my CQ." The
+   engine gate drives the lift headlessly (tests/engine.js 36b and 36e). This is
+   the same thing through the panel a person presses, on their own record with
+   every law answered through the intake, so what is under test is the wiring:
+   relCoolDown hands the meter's new ground to releaseWork, only the laws at the
+   seats that ground sits at move, CQ rises by exactly those laws over 210 and
+   by a fraction of a point, a rerun of the same ground adds nothing, and the
+   undo arrow takes the lift back with the release. */
+{
+ const lf=await browser.newPage({viewport:{width:1600,height:1000}});
+ await lf.goto(FILE,{waitUntil:'load'}); await booted(lf);
+ const o=await lf.evaluate(async()=>{
+  loadP(0);
+  for(let i=0;i<63;i++)CURP.intake.answers[i]=5;
+  iqApply(CURP); syncLw();
+  CHARGES.forEach(c=>{S.charge[c]=7;});
+  const r0=compute(), law0={}; SINAMES.forEach(l=>{law0[l]=lawNow(l);});
+  relPick(r0.carrying.slice(0,6).map(n=>n.i));
+  const plan=(RUN.plan||[]).slice();
+  RUN.phase='run'; RUN.idx=RUN.plan.length; relCoolDown();
+  const fresh=(RUN.meter&&RUN.meter.fresh)||[], seat={};
+  fresh.forEach(k=>{const b=BY[+k.split(':')[0]].b; seat[b]=(seat[b]||0)+1;});
+  const r1=compute();
+  const moved=SINAMES.filter(l=>lawNow(l)!==law0[l]).sort();
+  const want=SI.filter(l=>seat[l.b]).map(l=>l.nm).sort();
+  const sum=SINAMES.reduce((a,l)=>a+lawNow(l)-law0[l],0)/210*100;
+  const out={plan:plan.length, fresh:fresh.length, seats:Object.keys(seat), moved, want,
+   cq0:r0.CQ, cq1:r1.CQ, sum, answered:r0.answered};
+  relClose();
+  /* the same ground again: a rerun is free and lifts nothing */
+  const wk=JSON.stringify(CURP.work), c2=compute().CQ;
+  CHARGES.forEach(c=>{S.charge[c]=7;});
+  RUN.queue=[]; RUN.plan=plan; RUN.done=false; RUN.open=true; RUN.log=[];
+  RUN.phase='run'; RUN.idx=plan.length; relCoolDown(); relClose();
+  out.rerunFresh=((RUN.meter&&RUN.meter.fresh)||[]).length;
+  out.rerunSame=(JSON.stringify(CURP.work)===wk&&compute().CQ===c2);
+  /* and back, through the arrow a person presses, twice: the rerun, then the release */
+  const ub=document.getElementById('undobtn');
+  ub.onclick(); ub.onclick();
+  out.undoCq=compute().CQ; out.undoWork=JSON.stringify(CURP.work||{});
+  return out;});
+ ok(o.answered===21,'every law answered through the intake, '+o.answered);
+ ok(o.fresh>0&&o.fresh===o.plan,'the run opened new ground, '+o.fresh+' of a plan of '+o.plan);
+ ok(o.moved.length>0&&o.moved.join()===o.want.join(),
+  'the laws that moved are exactly the laws at the seats it opened, '+o.seats.join(', ')+': '+o.moved.join(', '));
+ ok(o.cq1>o.cq0,'and CQ rose, '+o.cq0.toFixed(3)+' to '+o.cq1.toFixed(3));
+ ok(Math.abs((o.cq1-o.cq0)-o.sum)<1e-9,'by exactly those laws over 210 and nothing else');
+ ok(o.cq1-o.cq0<0.5,'by a fraction of a point, '+(o.cq1-o.cq0).toFixed(3)+', which is his "you may not see CQ move"');
+ ok(o.rerunFresh===0&&o.rerunSame,'the same ground again opens nothing and lifts nothing');
+ ok(Math.abs(o.undoCq-o.cq0)<1e-9&&o.undoWork==='{}',
+  'and the undo arrow takes the lift back with the release, CQ '+o.undoCq.toFixed(3)+', work '+o.undoWork);
+ console.log('  lift       CQ '+o.cq0.toFixed(3)+' to '+o.cq1.toFixed(3)+' on '+o.fresh
+  +' patterns at '+o.seats.join(', '));
+ await lf.close();
+}
+
 console.log('\n=== switching between two of your own records keeps both fields ===');
 /* THE SECOND HALF OF THE FIELD LEAK, and the same class as the undo leak
    closed at 88181e6.

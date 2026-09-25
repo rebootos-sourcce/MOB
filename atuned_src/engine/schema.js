@@ -60,6 +60,13 @@ function blankProfile(name){
      drift. */
   avatar:avatarBlank(), purpose:purposeBlank(),
   laws:{}, intake:{answers:{}, done:[], startedAt:null, completedAt:null},
+  /* THE RELEASES SINCE EACH LAW WAS ANSWERED, by law: n patterns of new ground
+     at the law's seat, counted against the answer on. CQ reads a law as its
+     answer lifted by these (engine/compute.js, LIFT_R). Kept beside the answer
+     and never written into it, because iqApply rewrites every answered law
+     from the raw answers on every read, and a lift stored in p.laws would be
+     wiped by opening the Intake. Empty on every record until a release runs. */
+  work:{},
   gates:{verp:{aware:0,detach:0,intent:0,ignore:0,attach:0,averse:0},
          lean:{benign:0,malignant:0}},   /* the cost multiplier, v2 */
   story:{entries:[]}, rituals:[], history:[]};
@@ -76,6 +83,12 @@ function blankProfile(name){
    literal 6 beside a comment about it, and ui/personas.js then named two more
    numbers for the same quantity. One declaration, at the first use. */
 var LAW_UNSET={}, LAW_SEED={};
+/* AND THE RECORD THEY CAME FROM, as the object. The release lift reads the work
+   of the record the laws in S were loaded from and of no other (lawWork,
+   engine/compute.js). It was CURP, and the front door loads a profile into S
+   without making it CURP, so read() of a profile carrying work dropped its lift.
+   Set wherever S.rec is set, which is here and loadP. */
+var LAW_REC=null;
 function loadProfile(p){
  if(!p.who)p.who={first:'',middle:'',last:'',sex:'',born:{date:'',time:'',place:'',timeUnknown:false}};
  if(!p.who.born)p.who.born={date:'',time:'',place:'',timeUnknown:false};
@@ -87,6 +100,9 @@ function loadProfile(p){
  if(!p.avatar)p.avatar=avatarBlank();
  if(!Array.isArray(p.avatar.pairs))p.avatar.pairs=[];
  if(!p.purpose)p.purpose=purposeBlank();
+ /* a record from before the release lift has done no work since its answers,
+    which is exactly what an empty map says */
+ if(!p.work||typeof p.work!=='object'||Array.isArray(p.work))p.work={};
  /* soul was the one field this did not fill, and it is the one the next line
     reads without a guard. Six fields were defended and the seventh took the
     boot down. */
@@ -127,6 +143,7 @@ function loadProfile(p){
     rather than repointing anything, because two attempts at repointing are
     already recorded as worse than the bug. */
  S.rec=p.id||null;
+ LAW_REC=p;
  return p;}
 function saveProfile(p){
  p.soul={doms:S.doms.slice(),arcs:S.arcs.slice(),roots:S.roots.slice()};
@@ -680,6 +697,29 @@ function validateProfile(o){
     errs.push('meter.firsts held '+(o.meter.firsts.length-p.meter.firsts.length)
      +' entries that are not a dated first');}
   else if(o.meter.firsts!==undefined)errs.push('meter.firsts is not a list');}
+ /* THE RELEASES SINCE EACH LAW WAS ANSWERED. Read after the meter, because the
+    meter is what bounds them: a count is patterns of new ground at the law's
+    seat, every one of them is a key in meter.unique, and a new answer only ever
+    lowers it. So a count above the keys the record holds at that seat is not
+    an older record and not a rounding, it is a law lifted by work nobody did,
+    and it is refused by name rather than clamped to what the meter allows. */
+ if(o.work&&typeof o.work==='object'&&!Array.isArray(o.work)){
+  var seatKeys={};
+  p.meter.unique.forEach(function(k){var n=BY[+String(k).split(':')[0]];
+   if(n&&n.b)seatKeys[n.b]=(seatKeys[n.b]||0)+1;});
+  SI.forEach(function(l){
+   var w=o.work[l.nm]; if(w===undefined||w===null)return;
+   if(typeof w!=='object'||Array.isArray(w)){errs.push('work.'+l.nm+' is not an object');return;}
+   var n=vRange(errs,'work.'+l.nm+'.n',w.n,0,1e6);
+   var on=vRange(errs,'work.'+l.nm+'.on',w.on,0,10);
+   if(n===null||on===null){
+    if(w.n===undefined||w.on===undefined)errs.push('work.'+l.nm+' is not a count and the answer it was counted on');
+    return;}
+   if(n%1!==0){errs.push('work.'+l.nm+'.n is '+n+', not a whole number of patterns');return;}
+   if(n>(seatKeys[l.b]||0)){errs.push('work.'+l.nm+'.n is '+n+', more than the '
+    +(seatKeys[l.b]||0)+' patterns this record has opened at the '+l.b);return;}
+   p.work[l.nm]={n:n,on:on};});}
+ else if(o.work!==undefined&&o.work!==null)errs.push('work is not an object');
  /* THE PLAN, refused by name and never clamped. A tier this build does not
     know is refused rather than rounded down to free, because silently
     downgrading somebody who paid is the same class of error as silently
@@ -887,14 +927,16 @@ function meterRun(p,keys){
  if(!Array.isArray(p.avatar.pairs))p.avatar.pairs=[];
  if(!p.purpose)p.purpose=purposeBlank();
  var list=(keys||[]).filter(function(k){return typeof k==='string'&&k;});
- if(!list.length)return {added:0,repeated:0};
- var have={},added=0,repeated=0;
+ if(!list.length)return {added:0,repeated:0,fresh:[]};
+ var have={},added=0,repeated=0,fresh=[];
  p.meter.unique.forEach(function(k){have[k]=1;});
- list.forEach(function(k){ if(have[k]){repeated++;} else {have[k]=1;p.meter.unique.push(k);added++;} });
+ list.forEach(function(k){ if(have[k]){repeated++;} else {have[k]=1;p.meter.unique.push(k);fresh.push(k);added++;} });
  var now=new Date().toISOString();
  if(!p.meter.first)p.meter.first=now;
  p.meter.lines+=list.length; p.meter.last=now;
- return {added:added, repeated:repeated};}
+ /* fresh is the new ground by key, which is what the release lift counts:
+    the address in each key names the seat whose laws it lifts. */
+ return {added:added, repeated:repeated, fresh:fresh};}
 
 /* ============================================================
    THE HORIZON, AND WHY THE LADDER IS NOT A FIXED COUNT.

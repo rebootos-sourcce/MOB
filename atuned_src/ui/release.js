@@ -108,10 +108,12 @@ function relCoolDown(){
     +', which is a worked example rather than your record. Switch to your own '
     +'profile to run a release.','fail');
   return false; }
- /* expression, not CQ, before and after. CQ is the 21 laws alone since 25
-    September and no release moves it, so a CQ before and after said "did not
-    move" to everybody on every run. What a release moves is the shadow, and
-    through the lever, expression. */
+ /* expression before and after, because it is what a release moves visibly.
+    CQ is the 21 laws, and since the correction of 25 September a release lifts
+    the laws at its seat a little (releaseWork below), 0.14 of CQ for a full
+    run at 50 and 0.055 at 80. That is his "you may not see CQ move", so
+    the panel reads the move a person can see, and expression carries the lift
+    inside it, since expression is CQ times what the pull leaves. */
  var _pre=compute(); RUN.ex0=_pre.EX; RUN.ceil0=exCeiling();
  /* the release empties addresses and installs their opposites. it is the
     largest single write this product makes and it had no way back. */
@@ -145,6 +147,13 @@ function relCoolDown(){
      that changes between being shown and being charged is a bill a person did
      not agree to. */
   RUN.meter=meterRun(CURP,RUN.plan||[]);
+  /* AND THE WORK REACHES THE LAWS. Ruled 25 September, after ship: "Those 15k
+     releases raised my CQ." Every pattern of new ground this run opened lifts
+     the answered laws at its address's seat by LIFT_R of what is left. Only
+     new ground: the meter has just said which keys those are, so a rerun of
+     ground already open is free and moves nothing, exactly as it spends
+     nothing. After undoPush above, so taking the release back takes this too. */
+  RUN.lift=releaseWork(CURP,(RUN.meter&&RUN.meter.fresh)||[]);
   /* A first is a dated fact about the work. Recorded here because this is
      the one place that knows an address was opened for the first time, and
      it is recorded as the address and the seat, never as a claim about the
@@ -202,13 +211,15 @@ function relRender(){
     +cr(x.band, (x.w0||0)*10, {size:'xs', raw:x.w0+' '+x.d,
        title:x.name+' · '+x.band+' · '+x.w0})
     +'<span>'+esc(x.name)+'</span><em>toward '+esc(x.opp||'no pole')+'</em></div>';});
-  /* WHAT MOVED, AND WHAT RELEASE CANNOT MOVE. The panel used to report weight
+  /* WHAT MOVED, AND WHAT RELEASE BARELY MOVES. The panel used to report weight
      freed and nothing else, so a person ran the loop again and again watching
-     a number that was never going to answer. Release works on the shadow. It
-     cannot touch integrity, which is the twenty one laws and the whole of CQ. So the panel states the move
-     it actually made, and when the ground under release is spent it says so
-     and names the lever that is not spent. Measured: three of the six ICPs
-     have under two points of total release headroom. */
+     a number that was never going to answer. Release works on the shadow, and
+     on integrity only slowly: it lifts the laws at its seat by a small share
+     of what is left, which is thousands of releases to a visible change in CQ.
+     So the panel states the move it actually made, and when the ground under
+     release is spent it says so and names the lever that is not spent, the
+     laws themselves. Measured: three of the six ICPs have under two points of
+     total release headroom. */
   var _now=compute(), _mv=_now.EX-(RUN.ex0||0), _left=exHeadroom(_now.EX);
   out+='</div><div class="rel-note">Expression '
    +(Math.abs(_mv)<0.05?'did not move.'

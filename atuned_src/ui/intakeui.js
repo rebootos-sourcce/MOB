@@ -317,6 +317,12 @@ function renderIntake(){
  host.querySelectorAll('[data-law]').forEach(function(el){el.onclick=function(){
   IQ_OPEN=(IQ_OPEN===+el.dataset.law)?null:+el.dataset.law; renderIntake();};});
  host.querySelectorAll('[data-a]').forEach(function(el){el.onclick=function(){
+  /* a changed answer is a new reading of that law, so the releases counted
+     against the old one stop counting (engine/compute.js, lawAnswered). Even
+     when the mean of the three lands on the same number: the person has just
+     told us where the law is, and that wins over the model's estimate. */
+  if(CURP.intake.answers[+el.dataset.a]!==+el.dataset.v)
+   lawAnswered(CURP,SI[Math.floor(+el.dataset.a/3)].nm);
   CURP.intake.answers[+el.dataset.a]=+el.dataset.v;
   if(!CURP.intake.startedAt)CURP.intake.startedAt=new Date().toISOString();
   iqApply(CURP); pSave(); syncLw(); renderIntake(); render();};});

@@ -377,6 +377,11 @@ CQ built up from zero across 630,000 simulated answers with zero false drops;
 a release changed CQ, DQ or any address zero times across about 17,800 runs.
 Three other curve shapes were tried and rejected on the evidence, not on
 preference (`DECISIONS.md`, "The CQ model, fitted"; `cq-unified.md`).
+**Corrected the same day, after ship:** the release half of that run wrote
+charge only and never let a release reach the laws, so "zero changes to CQ"
+was built in, not found. He corrected the invariant itself; a release now
+lifts the laws at its seat a little (2.1, "A release lifts the laws at its
+seat"). DQ and the 112 still never rise on a release.
 
 ### 2.1 The three quantities, as ruled
 
@@ -416,6 +421,47 @@ running-mean rule, which fell by up to 28 points and started above the
 person's final score more than half the time, the exact drop he ruled
 against.
 
+**A release lifts the laws at its seat.** Ruled 25 September, after ship,
+correcting the team: "I didn't say CQ doesn't move on a release. That
+wouldn't make sense. If a fetter is released, you may not see CQ move, but it
+may move 0.1 or 0.05. I had about 15,000 patterns for my CQ. My CQ is about
+between 88 and 92, plus or minus 3 points of accuracy. Those 15k releases
+raised my CQ." Built in both engines the same day, the same constant, the same
+seats, the same arithmetic:
+
+    law as CQ reads it = 10 - (10 - answer) x (1 - LIFT_R)^n,   LIFT_R = 0.00077
+    CQ = (sum of the 21 laws as CQ reads them) / 210 x 100
+
+- CQ is still the 21 laws over 210. SQ and DQ are not folded in, and the
+  lever still acts on expression only.
+- n is the releases at the law's seat since that law was answered. The seat
+  is `SI`'s own (the table above), so a release at the heart lifts the four
+  heart laws and nothing else. MOB counts a release as one pattern of new
+  ground, the meter's unit; the desktop as one of the person's own cleared
+  stories. A rerun of open ground, a cascade and an unanswered law get
+  nothing.
+- **A new answer starts the count again.** His own 88 to 92 is a reading
+  taken after the work, which already contains it. Carrying the lift through a
+  new answer would count his fifteen thousand twice.
+- **Fitted, not chosen, to one data point.** His start is not known; 50 is
+  assumed, his "five is the average". This shape (each release closes a share
+  of the distance left) lands fifteen thousand at 86, 90 and 94 from starts of
+  30, 50 and 70, all inside his range with his plus or minus 3. A flat step
+  fitted the same way lands 71, 90 and 100. A full run of 25 patterns moves CQ
+  0.14 at 50, 0.11 at 60 and 0.055 at 80, which is his other sentence, and it
+  was not fitted to it; one pattern moves it by thousandths. In MOB, release
+  alone tops out near 95 from 50; the last points are the laws themselves
+  moving.
+- **Against the lock bar** (`DECISIONS.md`, "The formula is locked once it
+  passes this bar"): every reference person whose CQ starts between 25 and
+  75, nine of fourteen, lands inside 85 to 95 after his fifteen thousand, and
+  for all fourteen the lift leaves the saboteurs, complexes and all 112
+  weights exactly as they were. The roster's Lance reads 97.2 under the ruled
+  formula, above his own 88 to 92 (`TASKS.md` BE8).
+- Proven in `tests/engine.js` 36b and 36e, `tests/functional.js`, and the
+  desktop gate, which replays MOB's own lift vectors (`data/cq_worked.json`).
+  Open questions in `TASKS.md` BE.
+
 **SQ, the shadow quotient.** The weight at each of the 112 addresses. "SQ is
 an individual fetter, there are 112 that we track, period." That is 112
 values, each 0 to 10, and never one aggregate. 54 on each side of the body and
@@ -447,8 +493,10 @@ As the team reads it (`DECISIONS.md`): SQ and CQ act on each other as a
 lever, not as terms summed into one number. CQ stays the pure measure of the
 laws, exactly as ruled: it does not move when the lever pulls. **The lever
 produces a second, separate figure, expression, and does not change the CQ a
-person sees.** This is now settled, not open: proven across 10,000 runs, a
-release moves neither CQ nor the person's law scores.
+person sees.** This is settled. The sentence that stood after it, that a
+release moves neither CQ nor the person's law scores, was the team's and was
+wrong: a release lifts the laws at its seat a little, and CQ with them (above).
+What a release still never does is move CQ through the shadow.
 
     expression = CQ x (1 - PULL)
     PULL = a bell curve over each address's own weight (0-10), averaged
@@ -543,11 +591,13 @@ before that work lands, kept so the before-and-after is on record.
   was the team's own inference and not his ruling; he corrected it
   directly, with a real data point (`DECISIONS.md`, "Correction. A release
   does move CQ"): about fifteen thousand of his own releases moved his CQ
-  into the high eighties to low nineties. The exact shape of that nudge is
-  not yet fit. What still holds: CQ reads only the laws, a release does not
-  fold SQ or DQ into it directly, and the loop and the avatar still show a
-  release working through the addresses, DQ and expression as the visible
-  movement, with CQ itself moving too slowly for one release to show.
+  into the high eighties to low nineties. **Fitted and built the same day**
+  (2.1, "A release lifts the laws at its seat"): a share of the distance
+  left, per release, per law at the seat, fitted to his one data point on an
+  assumed start of 50. What still holds: CQ reads only the laws, a release
+  does not fold SQ or DQ into it directly, and the loop and the avatar still
+  show a release working through the addresses, DQ and expression as the
+  visible movement, with CQ itself moving too slowly for one release to show.
 - **The fixed divisors are load bearing.** A mean over whatever is carrying
   rises when the lightest item clears. That is how the desktop's first
   simulation produced dips. Every divisor in the unified model is fixed.
@@ -1349,9 +1399,12 @@ layout and where a tablet or a narrow window lands.
 
 Unlimited, with a redo stack, keyed by record id (`engine/undo.js`). The UI
 snapshots before a commit or a release lands. What it does not take back:
-gate evidence, the story entry, the snapshot and the meter. After undoing a
-story, the headline CQ does not move. The unit of undo, and whether a release
-refunds when undone, are his.
+gate evidence, the story entry, the snapshot and the meter. It does take back
+a release's lift on the laws (`p.work`, 2.1), which is an input. Because the
+meter is not refunded, undoing a release forfeits the lift on that ground for
+good: a rerun of it is free and lifts nothing. After undoing a story, the
+headline CQ does not move. The unit of undo, and whether a release refunds
+when undone, are his.
 
 ### 7.9 The network, for the accounts fork
 
@@ -2141,6 +2194,12 @@ stale. Where neither is, it is his call.
     atomizes" in `DECISIONS.md`. Superseded by section 2.
 21. **The desktop's own bibles** give a gold accent and the pre-ruling palette
     (11.4).
+22. **The unit of his fifteen thousand.** MOB's ladder (`MARKERS`) reads it as
+    unique thought lines, one channel at one address; the desktop's
+    (`RELLADDER`) as cleared releases, one journal story cleared. Both engines'
+    release lift (2.1) is fitted to his fifteen thousand in its own ladder's
+    unit, so the same constant describes different amounts of work in each.
+    His to settle (`TASKS.md` BE3).
 
 ---
 
@@ -2207,3 +2266,4 @@ corrections:
 |---|---|---|---|
 | 1 | 25 September 2026 | `f885d8f` | First assembly. The settled rulings page merged with the 25 September briefs, the CQ rulings of the same day, the standing documents and the skills. The CQ simulation was still running and nothing fitted is printed. |
 | 2 | 25 September 2026 | `21e78ca` | Section 2 updated with the fitted CQ model: the bell curve (centre 5, width 1.25), the expression formula, and the build-up, lever and outside-address rules the simulation settled. Five questions remain of the bundle's fifteen. |
+| 3 | 25 September 2026 | `26827d6` | The correction, after ship: a release does move CQ. Section 2.1 gains the release lift as built in both engines, fitted to his fifteen thousand, and the two sentences that said a release cannot move CQ are recorded as the team's error, not erased. 7.8 says undo takes the lift back. Section 13 gains item 22, the unit of his fifteen thousand. |

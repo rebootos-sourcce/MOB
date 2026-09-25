@@ -598,8 +598,9 @@ function sumOutput(r){
  var m=(typeof meterRead==='function')?meterRead(CURP):null;
  var hot=r.loaded.slice().sort(function(a,b){return b.sq-a.sq;})[0];
  /* how much of the reading a release can still reach, from the engine. It
-    is expression's headroom since 25 September: a release cannot move CQ,
-    which is the laws alone, so cqHeadroom was 0 for everybody. */
+    is expression's headroom since 25 September. CQ is the laws alone and a
+    release lifts them only slowly (LIFT_R), so a CQ headroom read almost 0 for
+    everybody; what a release moves visibly is the shadow, through expression. */
  var rhead=(typeof exHeadroom==='function')?exHeadroom(r.EX):99;
  var card=function(eye,nm,sub,act){
   return '<div class="s-out">'

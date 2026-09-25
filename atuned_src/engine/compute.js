@@ -57,10 +57,127 @@ function lawIn(nm){
  return !(LAW_UNSET[nm]&&S.law[nm]===LAW_SEED[nm]);}
 /* Which arithmetic a stored reading came from. This is the second; the first
    never stamped its rows, so they read back as 0. snapshot() stamps it so two
-   rows from two formulas are never compared as a move. */
+   rows from two formulas are never compared as a move.
+
+   The release lift below did not bump it, and that is deliberate. A row is
+   stamped so a change of formula is never read as a move in the person. The
+   lift starts at nothing on every record the day it ships and only grows from
+   releases run after that, so a row before it and a row after it differ by
+   work the person actually did, which is a move and is meant to read as one. */
 const CQ_MODEL=2;
+
+/* ============================================================
+   A RELEASE MOVES THE LAWS AT ITS SEAT, A LITTLE. Ruled 25 September, after
+   ship, correcting the team, who had read "CQ is the 21 laws" as "so a release
+   can never touch it" and proved that as a hard rule:
+
+     "I didn't say CQ doesn't move on a release. That wouldn't make sense. If
+     a fetter is released, you may not see CQ move, but it may move 0.1 or
+     0.05. I had about 15,000 patterns for my CQ. My CQ is about between 88
+     and 92, plus or minus 3 points of accuracy. Those 15k releases raised my
+     CQ."
+
+   CQ is still the 21 laws over 210, and nothing else enters it. SQ and DQ are
+   not folded in. What changed is what a law reads: a release closes a small
+   share of the distance between each law at its seat and 10.
+
+     law as CQ reads it = 10 - (10 - answer) x (1 - LIFT_R)^n
+
+   n is the releases at that law's seat since the law was answered, and one
+   release is one pattern of new ground: the meter's own unit, and the unit
+   MARKERS already reads his fifteen thousand in. A rerun of ground already
+   open is free and moves nothing, so the lift cannot be farmed, and it cannot
+   outrun the ground there is: 200 patterns an address, 21,400 in the body.
+
+   THE SEAT IS SI's OWN. Every law in SI is seated at a band, and compute()
+   already reads that seating one way: a closed law relieves the charge at its
+   own band. This is the same coupling read the other way, and every law at the
+   seat takes the same step. No table maps a fetter to a law, so none is
+   invented here.
+
+   WHY THIS SHAPE, AND WHERE THE NUMBER COMES FROM. Fitted against his one
+   data point, which is one anchor and not a curve (scratchpad lift/fit.js,
+   reproduced by tests/engine.js 36e). His starting CQ is not known. The
+   assumption is 50, his own "five is the average", with the 15,000 spread
+   over the body the way the body is built. Two shapes were run at his scale:
+
+     flat, a fixed step a release, capped at 10:
+       from 30 lands 70.9, from 50 lands 90.0, from 70 lands 100.0
+     this one, the step a share of the distance still left:
+       from 30 lands 86.0, from 50 lands 90.0, from 70 lands 94.0
+
+   A flat step lands where the person started plus a constant, so it fits him
+   only if he happened to start at exactly 50, and anyone starting at 70 reads
+   100 at about 14,000 releases, perfect integrity from releasing alone. This
+   shape pulls every start toward the same place, so the unknown start barely
+   matters: a start anywhere from 30 to 70 lands inside his 88 to 92, plus or
+   minus 3. That is why it is this one.
+
+   His other sentence is a check on it and was not fitted: a full run of 25
+   patterns moves CQ 0.14 at 50, 0.11 at 60 and 0.055 at 80. A single pattern
+   moves it 0.001 to 0.007, which no screen shows, which is his "you may not
+   see CQ move". At 50 it takes about 180 releases to move a whole point.
+
+   HOW WRONG THE NUMBER CAN BE. The rate each start would need to land 90:
+   9.4e-4 from 30, 7.7e-4 from 50, 5.2e-4 from 70. Two significant figures is
+   what one data point and an assumed start support, so two are written.
+   Release alone can never reach 100: opening every pattern there is, from 50,
+   reads 94.8. The last of it is the laws themselves moving, which is the
+   person answering differently.
+
+   A NEW ANSWER STARTS THE COUNT AGAIN. The count is kept with the answer it
+   was earned against, and it counts only while the law still holds that
+   answer. His own 88 to 92 is exactly this case: a reading taken after the
+   work, which already contains it. Carrying the lift through a new answer
+   would count his fifteen thousand twice. */
+const LIFT_R=0.00077;
+function lawLift(v,n){return n>0?10-(10-v)*Math.pow(1-LIFT_R,n):v;}
+/* The releases a law has at its seat since it was answered, read off the
+   record the laws in S were loaded from and nowhere else (LAW_REC, set with
+   S.rec by loadProfile and loadP). Not CURP: the front door loads a profile
+   into S without making it CURP, and a profile read there is its own only
+   input. And checked against S.rec, the rule undo and the mirror already
+   carry, so a field repointed without a load never wears another record's
+   work. */
+function lawWork(nm){
+ var p=(typeof LAW_REC==='undefined')?null:LAW_REC;
+ if(!p||!p.work)return 0;
+ if(p.id&&S.rec!=null&&S.rec!==p.id)return 0;
+ var w=p.work[nm];
+ return (w&&w.on===S.law[nm]&&w.n>0)?w.n:0;}
+/* a law as CQ reads it: the answer, and what the releases since have added */
+function lawNow(nm){return lawLift(S.law[nm],lawWork(nm));}
 /* CQ on its own, for the callers that need it without the whole reading */
-function cqSum(){return SINAMES.reduce((a,l)=>a+(lawIn(l)?S.law[l]:0),0)/210*100;}
+function cqSum(){return SINAMES.reduce((a,l)=>a+(lawIn(l)?lawNow(l):0),0)/210*100;}
+/* WHAT A RELEASE WRITES INTO THE LAWS. keys are the patterns of new ground the
+   meter has just recorded, so a rerun passes none and moves nothing. Each key's
+   address names a seat, and every answered law at that seat counts them. A law
+   whose answer has changed since its count began starts again from the answer
+   it holds now. A law not yet answered gets nothing: there is no reading to
+   nudge, and CQ does not count it. p is the record the release was charged to,
+   which relCoolDown guarantees is the one the laws in S came from. Returns
+   what moved, by law, and CQ before and after as that record reads. */
+function releaseWork(p,keys){
+ var out={laws:{}, cq0:cqSum(), cq1:null, n:0};
+ if(!p||!keys||!keys.length){out.cq1=out.cq0;return out;}
+ if(!p.work||typeof p.work!=='object'||Array.isArray(p.work))p.work={};
+ var bySeat={};
+ keys.forEach(function(k){
+  var n=BY[+String(k).split(':')[0]];
+  if(n&&n.b){bySeat[n.b]=(bySeat[n.b]||0)+1; out.n++;}});
+ SI.forEach(function(l){
+  var u=bySeat[l.b]; if(!u||!lawIn(l.nm))return;
+  var v=S.law[l.nm], w=p.work[l.nm];
+  if(!w||w.on!==v)w=p.work[l.nm]={n:0,on:v};
+  var before=lawLift(v,w.n); w.n+=u;
+  out.laws[l.nm]={seat:l.b, u:u, n:w.n, from:before, to:lawLift(v,w.n)};});
+ out.cq1=cqSum();
+ return out;}
+/* A LAW ANSWERED AGAIN IS A NEW READING, even when it lands on the same
+   number. The count above would survive a same number answer, because it is
+   keyed to the value; this is what the intake calls when a person changes an
+   answer, so a new measurement always wins over the model's estimate. */
+function lawAnswered(p,nm){if(p&&p.work&&p.work[nm])delete p.work[nm];}
 
 /* ============================================================
    THE LEVER'S BELL, FITTED. The owner: "I'm a little tense is different than
@@ -238,6 +355,8 @@ function compute(){
     CQ: lawIn() is what says whether a law was answered. */
  const answered=SINAMES.filter(lawIn).length;
  const complete=(answered===SINAMES.length);
+ /* each law as answered, plus what releases at its seat have added since. See
+    LIFT_R above. It is still a law score and nothing else. */
  const CQ=cqSum();
  /* THE LEVER. Expression is CQ times what the shadow leaves: "CQ 100 SQ 0
     ... one pulls down the other, it's a lever", and the pull is his bell,
@@ -359,17 +478,19 @@ function compute(){
    THE CEILING ON RELEASE. What expression reads once every charge is gone,
    which is the most a release can ever achieve, and the gap to it.
 
-   Why this exists. A release empties addresses. It cannot manufacture
-   integrity, because integrity is the twenty one laws and those move only
-   when a person answers them or changes what they do. The product never said
-   so, and offered release as its core loop, so a person pulled a lever that
-   was already spent.
+   Why this exists. A release empties addresses. What it does to integrity is
+   small: it lifts the laws at its seat by a share of what is left (LIFT_R,
+   about 0.005 of CQ a pattern at 50), and the laws otherwise move only when a
+   person answers them. The product never said so, and offered release as its
+   core loop, so a person pulled a lever that was nearly spent.
 
-   THIS WAS cqCeiling, AND A RELEASE CANNOT MOVE CQ AT ALL NOW. CQ is the laws
-   and nothing else, so its ceiling under release is itself and the headroom
-   was 0 for everybody: the release panel would have said "did not move" after
-   every run. What a release moves is the shadow, and through the lever,
-   expression. So the ceiling is expression with the shadow gone.
+   THIS WAS cqCeiling. CQ is the laws and nothing else, and the part of it a
+   release moves is too slow for one run to show, so the ceiling is read on
+   expression, which is what a release moves visibly: the shadow, and through
+   the lever, expression. So the ceiling is expression with the shadow gone, at
+   the laws as they stand now. The lift the next releases add to the laws is
+   not in it, which makes the headroom a slight understatement and never an
+   overstatement.
 
    It is computed rather than simulated. With charge at zero, held is zero at
    every address, sq is zero whatever is installed, the four outside take a

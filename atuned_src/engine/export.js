@@ -84,13 +84,21 @@ if(typeof module!=='undefined'&&module.exports){
      are what hold them down, so the ceiling is the person and the reading is
      the drag against it.
 
-     Renamed from cqCeiling and cqHeadroom when CQ became the 21 laws alone: a
-     release cannot move CQ, so its ceiling is expression's. The lever and the
-     law test are exported beside them so a gate can pin the fitted curve and
-     reproduce the simulation's worked people without re-deriving either. */
+     Renamed from cqCeiling and cqHeadroom when CQ became the 21 laws alone:
+     what a release moves visibly is the shadow, so its ceiling is read on
+     expression. The lever and the law test are exported beside them so a gate
+     can pin the fitted curve and reproduce the simulation's worked people
+     without re-deriving either.
+
+     AND WHAT A RELEASE DOES TO THE LAWS, corrected 25 September after ship: a
+     release lifts the laws at its seat by LIFT_R of the distance left, fitted
+     to his fifteen thousand. Exported so the gate can drive a release through
+     the same function the release panel calls, and hold the rate to the fit. */
                   exCeiling:exCeiling, exHeadroom:exHeadroom,
                   lawIn:lawIn, cqSum:cqSum, leverPull:leverPull,
                   LEVER_MU:LEVER_MU, LEVER_SD:LEVER_SD, CQ_MODEL:CQ_MODEL,
+                  LIFT_R:LIFT_R, lawLift:lawLift, lawWork:lawWork, lawNow:lawNow,
+                  releaseWork:releaseWork, lawAnswered:lawAnswered,
   /* seed */      TYPE16:TYPE16, SEED16:SEED16, seedAxes:seedAxes, seedApply:seedApply,
                   seedClear:seedClear, seedShare:seedShare, seedValid:seedValid, accuracy:accuracy, sab33Detect:sab33Detect,
                   sabLevels:sabLevels, exprFill:exprFill, exprRead:exprRead,

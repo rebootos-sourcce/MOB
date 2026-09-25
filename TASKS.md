@@ -9697,61 +9697,87 @@ had about 15,000 patterns for my CQ. My CQ is about between 88 and 92, plus or
 minus 3 points of accuracy. Those 15k releases raised my CQ."
 
 **BE1. A release moves CQ, through the laws at its seat. Built in both
-engines.** DONE. CQ is still the 21 laws over 210. A release lifts each
-answered law at the seat it was run at by `LIFT_R` of the distance left to 10:
-the law reads `10 - (10 - answer) x (1 - LIFT_R)^n`, n the releases at that
-seat since the law was answered, `LIFT_R` 0.00077. MOB: `engine/compute.js`
-(`lawLift`, `lawNow`, `releaseWork`, `cqSum`), called from `relCoolDown` with
-the meter's new ground only; the count is `p.work` beside the answers, never
-in them, because `iqApply` rewrites every answered law on each read; undo
-takes it back; the boundary refuses a count above the ground the record has
-opened at that seat. Desktop: the same constant, seats and arithmetic in
-`45_` (`DIAG.work`, `DIAG.on`), one count per cleared release. A new answer
-starts a law's count again, even at the same number, because his own 88 to
-92 is a reading taken after the work. Shapes, at his scale (scratchpad
-`lift/fit.js`, reproduced in `tests/engine.js` 36e): this one lands fifteen
-thousand at 86.0, 90.0 and 94.0 from starts of 30, 50 and 70; a flat step
-fitted the same way lands 70.9, 90.0 and 100.0. Monte Carlo with uneven laws
-and uneven work over the body, from 50: median 89.1, 84 percent inside 88 to
-92, all inside 85 to 95. Proven in `tests/engine.js` 36b and 36e,
-`tests/functional.js`, and the desktop gate, which replays MOB's own lift
-vectors.
+engines, and measured against the lock bar.** DONE. CQ is still the 21 laws
+over 210. A release lifts each answered law at the seat it was run at by a
+small share of the distance left to 10: the law reads
+`10 - (10 - answer) x (1 - LIFT_R)^n`, where n is the releases at that seat
+since the law was answered and `LIFT_R`, the share one release closes, is
+0.00077, a little under a thousandth. MOB: `engine/compute.js` (`lawLift`,
+`lawNow`, `releaseWork`, `cqSum`), called from `relCoolDown` with the meter's
+new ground only, so a rerun of open ground lifts nothing. The count is
+`p.work` beside the answers, never inside them, because `iqApply` rewrites
+every answered law from the raw answers on every read. Undo takes it back, the
+boundary refuses a count above the ground the record has actually opened at
+that seat, and the front door reads a profile's own count. Desktop: the same
+constant, seats and arithmetic in `45_`, the count in `DIAG.work` and
+`DIAG.on`, one count per cleared release. A new answer starts a law's count
+again, even at the same number, because his own 88 to 92 is a reading taken
+after the work; carrying the lift through it would count his fifteen thousand
+twice.
+
+Measured against the lock bar (`DECISIONS.md`, "The formula is locked once it
+passes this bar"):
+- His anchor. From an assumed start of 50, fifteen thousand land at 90.0.
+  From 30 they land 86.0, and from 70, 94.0: all inside his 88 to 92 with his
+  plus or minus 3. A flat step, the other shape tried, fitted the same way
+  lands 70.9, 90.0 and 100.0, so it would only fit if he started at exactly 50.
+- Across the roster. Every reference person whose CQ starts between 25 and 75,
+  nine of fourteen, lands inside 85 to 95 after his fifteen thousand: Tomas
+  85.1, Ana 88.2, James 88.5, Nkem 89.1, Derek 89.5, Diane 91.8, Angela 92.4,
+  Marcus 92.7, Sofia 94.7. Gordon starts at 17.5 and lands 83.4. The four who
+  already start above 89 (Abraham, Wren, Rosa, Lance) end near 98 to 99,
+  which his anchor says nothing about.
+- As a diagnostic. For all fourteen the lift moves CQ and nothing the
+  diagnostic reads: the saboteurs, complexes, hypercomplexes and all 112
+  address weights are identical with and without it.
+- With made-up people, 2,000 per start, whose laws are uneven and whose work
+  lands unevenly over the body: from 50, half land above 89.1, 84 percent
+  land inside 88 to 92, and all of them inside 85 to 95.
+
+Proven in `tests/engine.js` 36b and 36e, which also holds the roster check,
+`tests/functional.js` through the real release panel, and the desktop gate,
+which replays MOB's own lift vectors from `data/cq_worked.json`. The fit
+itself is scratchpad `lift/fit.js` and `lift/icp.js`.
 
 **BE2. His starting CQ is assumed, and the rate rests on it.** His. The fit
-assumes 50, his "five is the average". The rate each start would need to land
-him at 90: 9.4e-4 from 30, 7.7e-4 from 50, 5.2e-4 from 70. If he started
-lower, the true rate is up to a fifth higher and today's build is slightly
-slow; if higher, it is up to a third lower and the build is slightly fast.
-What does not change much is where fifteen thousand land, which is why this
-shape was chosen: 86 to 94 across the whole range. The question: roughly
-where was your CQ when you started releasing, or the year you started and
-how you would have scored the laws then?
+assumes 50, his "five is the average". The share one release would need to
+close to land him at 90 is 0.00094 if he started at 30, 0.00077 at 50 (what
+is built), and 0.00052 at 70. So if he started lower, the true rate is about a
+fifth higher and today's build is slightly slow; if higher, about a third
+lower and it is slightly fast. What barely moves is where fifteen thousand
+land, 86 to 94 across that whole range, which is why this shape was chosen.
+The question: roughly where was your CQ when you started releasing? The year
+you started, and how you would have scored the laws then, would do.
 
-**BE3. Which unit his fifteen thousand is in.** His. MOB counts it as unique
-thought lines, one channel at one address, which is what `MARKERS` already
-read it as; the desktop as cleared releases, one journal story cleared, which
-is what `RELLADDER` already read it as. The lift is fitted to fifteen thousand
-of each engine's own unit, so the same constant describes different amounts
-of work in each. `BIBLE.md` section 13, item 22. The question: when you say
-fifteen thousand patterns, do you mean fifteen thousand lines read, or fifteen
-thousand patterns cleared?
+**BE3. Which unit his fifteen thousand is in.** His. MOB counts it as
+fifteen thousand unique thought lines, one line on one channel at one
+address, which is what its ladder (`MARKERS`) already reads it as. The
+desktop counts it as fifteen thousand cleared releases, one journal story
+cleared, which is what its ladder (`RELLADDER`) already reads it as. The
+lift is fitted to fifteen thousand of each engine's own unit, so the same
+constant stands for different amounts of work in each. `BIBLE.md` section
+13, item 22. The question: when you say fifteen thousand patterns, do you
+mean fifteen thousand lines read in a release, or fifteen thousand patterns
+cleared?
 
 **BE4. "0.1 or 0.05" reads as a session, not a single release.** His, only if
-he meant one pattern. Under the fit, a full run of 25 patterns moves CQ 0.14
-at 50, 0.11 at 60 and 0.055 at 80, and one pattern moves it by thousandths. That was
-not fitted; it fell out of the anchor. If he meant a single pattern moves
-0.05, the only shapes that also land fifteen thousand at 90 are front loaded:
-about 17 points in the first thousand releases, against 5 under this one, and
-they land 70 and 100 from starts of 30 and 70, so they only fit if he started
-at exactly 50. The question: when you said one release may move CQ 0.1 or
-0.05, did you mean one pattern, or one session?
+he meant one pattern. His words: "If a fetter is released, you may not see CQ
+move, but it may move 0.1 or 0.05." Under the fit, a full run of 25 patterns
+moves CQ 0.14 at 50, 0.11 at 60 and 0.055 at 80, and a single pattern moves it
+by a few thousandths. That was not fitted; it fell out of the fifteen thousand.
+If he meant a single pattern moves 0.05, the only shapes that also land his
+fifteen thousand at 90 put most of the change up front, about 17 points in
+the first thousand releases against 5 under this one, and they land 70 and
+100 from starts of 30 and 70, so they would only fit if he started at exactly
+50. The question: when you said one release may move CQ 0.1 or 0.05, did you
+mean one pattern, or one whole session?
 
 **BE5. A paid tier now raises CQ faster.** Flagged, not decided. The lift
 counts new ground, and new ground a month is what a tier sells, so a higher
 tier moves CQ faster. It follows from two of his rulings (releases raise CQ;
-tiers gate velocity), and it is the thing "a marker is a distance, never a
-trophy and never a gate" was written to keep markers from. Counting reruns
-instead would make CQ free to farm, which is worse.
+tiers gate velocity), and it is what "a marker is a distance, never a trophy
+and never a gate" was written to keep markers from. Counting reruns instead
+would make CQ free to farm, which is worse.
 
 **BE6. Undo does not refund the meter, so an undone release loses its lift on
 that ground for good.** Found in passing. Undo takes the lift back with the
@@ -9766,31 +9792,13 @@ reads "holds" on nearly every run. His "you may not see CQ move" says that is
 right as it stands. The decision is whether CQ's own move prints to a decimal
 anywhere, which is copy, and his.
 
-**AZ3, answered, a shape of his own rather than any of the three offered.**
-His words: "free sees fetters, tier one sees saboteurs, tier three sees
-complexes, tier four sees everything." Tier two is not named as adding a
-new rung, so as dictated it stays at the same sight as tier one, saboteurs.
-That may be what he means or may be a gap in the dictation; it is logged
-exactly as said rather than smoothed into shape A, B or C from the
-proposal, none of which matches this.
-*BLOCKED on him, narrowly: confirm tier two stays at saboteurs alongside
-tier one, or should unlock its own rung before tier three reaches
-complexes.*
-
-**The free tier rotation, confirmed and given its mechanic.** His words:
-"tier zero is ten free unique patterns a week. The ones they've already
-done they can keep. If they mark the ones heaviest, they can continue doing
-that. The ones they mark didn't do anything, they can take out of rotation
-to optimize their story." This is the existing "density decides what is
-kept" rule in this file's Tiers section, given its trigger: marking a
-pattern heaviest keeps it, marking it as having done nothing makes it
-eligible to rotate out. Still not built, per that section.
-
-**Tier pattern counts, confirmed exactly as already built and already
-ruled.** "Tier one is four hundred unique patterns a month, tier two eight
-hundred a month, tier three twelve hundred a month, tier four also twelve
-hundred a month." Matches this file's Tiers section precisely. No change.
-Prices remain the open half of `AZ5`'s tier check.
+**BE8. The roster's Lance reads CQ 97.2, above the 88 to 92 he gives for
+himself.** Found in passing, and his. Under the ruled formula, the laws over
+210, his reference case's law table reads 97.2, outside his own range even
+with his plus or minus 3. Either the table overstates his laws or his 88 to 92
+was read another way. It matters to the lock bar, because his own history is
+the anchor. The question: is the Lance reference case your current law
+scores, and if not, what would you answer today?
 
 ## BG. Ego rebound. A new mechanic for Summary, from his own and Keeley's
 ## experience, 25 September.

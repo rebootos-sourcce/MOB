@@ -3539,36 +3539,84 @@ g('36b · the fitted CQ model, reproduced from the simulation that fitted it');
    'and CQ is exactly the record\'s laws over 210');
  }
 
- /* AY1. A RELEASE NEVER MOVES CQ AND NEVER MAKES ANYTHING WORSE. The live
+ /* AY1. A RELEASE NEVER LOWERS CQ AND NEVER MAKES ANYTHING WORSE. The live
     formula lowered CQ on a release in 22 of 10,000 random fields (9f4c7e5),
     because an installed opposite past 6 raised JQ and JQ sat inside both
-    factors of CQ. The release arithmetic here is ui/release.js's, lifted as
-    sim/harness.js lifts it; the field is drawn the way that probe drew it. */
+    factors of CQ. The field is drawn the way that probe drew it.
+
+    CORRECTED 25 SEPTEMBER, AFTER SHIP. This block asserted "a release never
+    moves CQ, moved 0 of 2000", and it could not have failed: it wrote the
+    charge half of a release and never let a release reach the laws. The owner
+    corrected the invariant itself (DECISIONS.md, "Correction. A release does
+    move CQ"): "Those 15k releases raised my CQ." What holds is narrower, and it
+    is what is asserted now, on the path the release panel takes, meterPlan to
+    meterRun to releaseWork:
+      the charge half moves CQ not at all, so the shadow is never folded in;
+      the law half moves CQ only through the answered laws at the seats the run
+      opened new ground at, each by exactly the step LIFT_R sets, and CQ by
+      exactly those laws over 210, so nothing else reaches it;
+      CQ never falls and never passes 100, a run with no new ground moves it
+      not at all, and one run moves it by less than half a point;
+      and DQ, the 112 and expression hold as they did. */
  {
+  const {meterPlan,meterRun,releaseWork,lawNow,LIFT_R,BY,bindStore,pImport}=E;
+  const mem={}; bindStore(k=>mem[k]===undefined?null:mem[k],(k,v)=>{mem[k]=String(v);});
+  const CH=['Rlimit','Llimit','Rtruth','Ltruth'];
+  let rec=null;
   let x=7>>>0; const rnd=()=>{x^=x<<13;x>>>=0;x^=x>>>17;x^=x<<5;x>>>=0;return x/4294967296;};
-  let runs=0,cqMoved=0,dqRose=0,addrRose=0,exFell=0;
+  let runs=0,halfMoved=0,offSeat=0,stepOff=0,sumOff=0,fell=0,over=0,rose=0,
+      idle=0,idleMoved=0,maxMove=0,dqRose=0,addrRose=0,exFell=0;
   for(let i=0;i<2000;i++){
+   /* a new record every hundred draws, so the meter stays small and the ground
+      is new: exhausted ground is its own case, asserted in 36e */
+   if(i%100===0)rec=pImport(JSON.stringify(E.blankProfile('release probe '+i)));
    S.doms=[Math.floor(rnd()*19)];S.arcs=[Math.floor(rnd()*12)];S.roots=[];buildSoul();
    CHARGES.forEach(c=>{S.charge[c]=+(rnd()*10).toFixed(2);S.replace[c]=+(rnd()<.5?0:rnd()*10).toFixed(2);});
    SINAMES.forEach(l=>S.law[l]=Math.round(rnd()*10)); lawsIn();
-   const r0=compute(), sq0=r0.SQ.slice();
-   const q=W.filter(n=>n.sq>0).sort((a,b)=>b.sq-a.sq).slice(0,1+Math.floor(rnd()*4))
-    .map(n=>({sq:n.sq,cf:n.cf}));
+   const r0=compute(), sq0=r0.SQ.slice(), law0={};
+   SINAMES.forEach(l=>{law0[l]=lawNow(l);});
+   const q=W.filter(n=>n.sq>0).sort((a,b)=>b.sq-a.sq).slice(0,1+Math.floor(rnd()*4));
    if(!q.length)continue; runs++;
+   /* the charge half, exactly as ui/release.js writes it */
    q.forEach(n=>{const d=-Math.round(n.sq*10*0.21+2);
     const share=Math.abs(d)/10/Math.max(1,q.filter(o=>o.cf===n.cf).length);
     S.charge[n.cf]=E.clamp((S.charge[n.cf]||0)-share,0,10);
     S.replace[n.cf]=E.clamp((S.replace[n.cf]||0)+share*0.62,0,10);});
-   const r1=compute();
-   if(r1.CQ!==r0.CQ)cqMoved++;
+   if(Math.abs(compute().CQ-r0.CQ)>1e-12)halfMoved++;
+   /* the law half: the plan the panel builds, the meter, and the lift */
+   const m=meterRun(rec,meterPlan(rec,q.map(n=>n.i),CH,25));
+   releaseWork(rec,m.fresh);
+   const r1=compute(), seat={};
+   m.fresh.forEach(k=>{const b=BY[+k.split(':')[0]].b; seat[b]=(seat[b]||0)+1;});
+   let sum=0;
+   SI.forEach(l=>{const a=law0[l.nm], b=lawNow(l.nm); sum+=b-a;
+    if(!seat[l.b]){if(b!==a)offSeat++;}
+    else if(Math.abs(b-(10-(10-a)*Math.pow(1-LIFT_R,seat[l.b])))>1e-9)stepOff++;});
+   if(Math.abs((r1.CQ-r0.CQ)-sum/210*100)>1e-9)sumOff++;
+   if(r1.CQ<r0.CQ-1e-12)fell++;
+   if(r1.CQ>100+1e-9)over++;
+   if(r1.CQ>r0.CQ+1e-12)rose++;
+   if(!m.fresh.length){idle++; if(r1.CQ!==r0.CQ)idleMoved++;}
+   maxMove=Math.max(maxMove,r1.CQ-r0.CQ);
    if(r1.DQ>r0.DQ+1e-9)dqRose++;
    if(r1.EX<r0.EX-1e-9)exFell++;
    if(r1.SQ.some((v,k)=>v>sq0[k]+1e-9))addrRose++;}
   ok(runs>1900,'the release probe ran, '+runs+' releases');
-  ok(cqMoved===0,'a release never moves CQ, moved '+cqMoved+' of '+runs);
+  ok(halfMoved===0,'the charge half of a release never moves CQ, so the shadow is not folded in, moved '+halfMoved);
+  ok(offSeat===0,'the law half moves no law away from the seats it opened ground at, moved '+offSeat);
+  ok(stepOff===0,'and every law at those seats by exactly LIFT_R of the distance left a pattern, off '+stepOff);
+  ok(sumOff===0,'so CQ moves by exactly those laws over 210 and by nothing else, off '+sumOff);
+  ok(rose>runs*0.9,'a release is real change: CQ rose in '+rose+' of '+runs);
+  ok(fell===0&&over===0,'and it never falls and never passes 100, fell '+fell+', over '+over);
+  ok(idleMoved===0,'a run with no new ground moves it not at all, '+idleMoved+' of '+idle+' did');
+  ok(maxMove<0.5,'and one run moves it by less than half a point, at most '+maxMove.toFixed(3));
   ok(dqRose===0,'never raises DQ, rose '+dqRose);
   ok(addrRose===0,'never raises any of the 112, rose '+addrRose);
   ok(exFell===0,'and never lowers expression, fell '+exFell);
+  console.log('  release probe: CQ rose in '+rose+' of '+runs+' runs, by at most '+maxMove.toFixed(3));
+  /* nothing from the probe reaches a later group */
+  E.current().work={};
+  bindStore(()=>null,()=>{});
  }
 }
 
@@ -3621,6 +3669,212 @@ g('36d · the sniffer hears how much, AZ6');
   +[a,b,c].map(r=>r.DQ.toFixed(2)).join(', '));
  ok(E.leverPull(Math.max(...c.SQ))>E.leverPull(Math.max(...a.SQ))*10,
   'so the bell pulls the paralyzed address more than ten times as hard as the little tense one');
+}
+
+g('36e \u00b7 a release lifts the laws at its seat, fitted to his fifteen thousand');
+/* DECISIONS.md "Correction. A release does move CQ", 25 September after ship.
+   "If a fetter is released, you may not see CQ move, but it may move 0.1 or
+   0.05. I had about 15,000 patterns for my CQ. My CQ is about between 88 and
+   92, plus or minus 3 points of accuracy. Those 15k releases raised my CQ."
+
+   That is one real data point, and it is the only one. Every number below is
+   his, or the engine's own geometry, or the fit re-derived from that geometry
+   here rather than typed. His starting CQ is not known; 50 is assumed, his own
+   "five is the average", and the assertions that matter hold from 30 to 70. */
+{
+ const {LIFT_R,lawNow,lawWork,lawIn,cqSum,releaseWork,lawAnswered,meterRun,meterKey,
+        bindStore,pImport,blankProfile,validateProfile,undoPush,undoPop,LINES_PER_CH}=E;
+ const mem={}; bindStore(k=>mem[k]===undefined?null:mem[k],(k,v)=>{mem[k]=String(v);});
+ const CH=['Rlimit','Llimit','Rtruth','Ltruth'];
+ const ADDR=W.filter(n=>n.cf), seatN=b=>ADDR.filter(n=>n.b===b).length;
+ const answer=(p,v)=>{SINAMES.forEach(l=>{S.law[l]=v;p.laws[l]=v;});lawsIn();};
+
+ /* THE RATE IS THE FIT. Every law at 5, fifteen thousand patterns spread over
+    the body the way the body is built, one share per releasable address, and
+    the rate that lands the middle of his 88 to 92. */
+ const geo=(r,law,N)=>SI.reduce((a,l)=>a+10-(10-law)*Math.pow(1-r,N*seatN(l.b)/ADDR.length),0)/210*100;
+ const flat=(s,law,N)=>SI.reduce((a,l)=>a+Math.min(10,law+s*N*seatN(l.b)/ADDR.length),0)/210*100;
+ const fit=(f,want)=>{let lo=0,hi=0.01;for(let i=0;i<200;i++){const m=(lo+hi)/2;(f(m)<want)?lo=m:hi=m;}return (lo+hi)/2;};
+ const rFit=fit(r=>geo(r,5,15000),90);
+ ok(Math.abs(LIFT_R-rFit)<=rFit*0.01,'LIFT_R is the fit to two figures, '+LIFT_R+' against '+rFit.toExponential(4));
+ const at50=geo(LIFT_R,5,15000);
+ ok(Math.abs(at50-90)<0.1,'fifteen thousand from 50 lands '+at50.toFixed(2)+', the middle of his 88 to 92');
+ /* HIS START IS NOT KNOWN, AND THIS IS WHY THE SHAPE IS THIS ONE. A step that
+    is a share of the distance left pulls every start toward the same place;
+    a flat step lands at the start plus a constant. Fitted the same way, the
+    flat step misses his range from both ends. */
+ const aFit=fit(s=>flat(s,5,15000),90);
+ [30,70].forEach(s=>{const g2=geo(LIFT_R,s/10,15000), f2=flat(aFit,s/10,15000);
+  ok(g2>=85&&g2<=95,'from '+s+' this shape lands '+g2.toFixed(1)+', inside his range with his plus or minus 3');
+  ok(f2<85||f2>95,'where a flat step would land '+f2.toFixed(1)+', outside it');});
+ /* and the ceiling: release alone never reaches 100, even with every pattern
+    this instrument can open, opened */
+ const all=geo(LIFT_R,5,ADDR.length*CH.length*LINES_PER_CH);
+ ok(all<100&&all>90,'every pattern there is, from 50, reads '+all.toFixed(1)+': never 100 by release alone');
+
+ /* AND THROUGH THE REAL PATH, AT HIS SCALE. One record, every law answered at
+    5, and fifteen thousand patterns of new ground opened in runs of 24, six
+    addresses on four channels, walked over the whole body line by line, each
+    run through meterRun and releaseWork. */
+ const rec=pImport(JSON.stringify(blankProfile('fifteen thousand')));
+ ok(rec&&E.current()===rec,'a record of the person\'s own to release on');
+ answer(rec,5);
+ const order=[];
+ for(let line=0;line<LINES_PER_CH;line++)ADDR.forEach(n=>CH.forEach(c=>order.push(meterKey(n.i,c,line))));
+ let prev=cqSum(), fell=0, over=0, opened=0, firstRun=null, lastRun=null, one=null;
+ const pts=[];
+ for(let i=0;i<15000;i+=24){
+  const c0=cqSum();
+  const m=meterRun(rec,order.slice(i,Math.min(15000,i+24)));
+  releaseWork(rec,m.fresh); opened+=m.fresh.length;
+  const now=cqSum();
+  if(firstRun===null)firstRun=now-c0;
+  lastRun=now-c0;
+  if(now<prev-1e-12)fell++; if(now>100)over++; prev=now;
+  if([984,4992,9984,14976].indexOf(i)>=0)pts.push((i+24)+' '+now.toFixed(1));}
+ const end=compute().CQ;
+ ok(opened===15000,'fifteen thousand patterns of new ground, '+opened);
+ ok(fell===0&&over===0,'CQ never fell and never passed 100 on the way, fell '+fell+', over '+over);
+ ok(end>=88&&end<=92,'and lands '+end.toFixed(2)+', inside his 88 to 92');
+ near(end,SINAMES.reduce((a,l)=>a+lawNow(l),0)/210*100,1e-9,'and it is still exactly the 21 laws over 210');
+ console.log('  the walk from 50: '+pts.join(', '));
+ /* HIS OTHER SENTENCE, as a check and not a fit: "you may not see CQ move, but
+    it may move 0.1 or 0.05". A whole run of 24 moves it about a tenth at the
+    start and a few hundredths near the end; a single pattern, which is a line
+    and not a run, moves it by less than any screen shows. */
+ ok(firstRun>0.05&&firstRun<0.2,'the first run moves CQ '+firstRun.toFixed(3)+', his "0.1"');
+ ok(lastRun>0&&lastRun<firstRun/2,'the last moves it '+lastRun.toFixed(3)+': the same work moves it less as the laws near 10');
+ {const c0=cqSum(); releaseWork(rec,meterRun(rec,[order[15000]]).fresh); one=cqSum()-c0;}
+ ok(one>0&&one<0.01,'one pattern moves it '+one.toFixed(4)+', which no screen shows');
+ /* A RERUN IS FREE AND MOVES NOTHING. Ground already open spends nothing, so
+    it lifts nothing either, which is what keeps the lift from being farmed. */
+ {const w=JSON.stringify(rec.work), c0=cqSum(), m=meterRun(rec,order.slice(0,24));
+  releaseWork(rec,m.fresh);
+  ok(m.fresh.length===0&&m.repeated===24,'a rerun of open ground is not new ground');
+  ok(cqSum()===c0&&JSON.stringify(rec.work)===w,'so it lifts nothing and counts nothing');}
+ /* THE FRONT DOOR READS A PROFILE'S OWN WORK, whoever is current. read() loads
+    a profile into S without making it the current record, and the profile is
+    its only input, so its lift is read off it and not off the current one. */
+ {const want=cqSum(), other=pImport(JSON.stringify(blankProfile('someone current')));
+  const got=E.read(rec).reading.CQ;
+  ok(E.current()===other&&Math.abs(got-want)<1e-9,
+   'read() of a profile carrying work reads its own lift with another record current, '
+   +got.toFixed(3)+' against '+want.toFixed(3));
+  const bare=E.read(blankProfile('no work')).reading.CQ;
+  ok(bare===0,'and a profile with nothing answered reads 0 through the same door, got '+bare);}
+
+ /* THE LOCK BAR, ACROSS THE ROSTER. DECISIONS.md, "The formula is locked once
+    it passes this bar": simulated across the ICPs, within plus or minus three
+    of a real anchor, and still revealing the saboteurs, the combinations and
+    the weights. His start is unknown, so every reference person's own laws,
+    uneven as their table has them, stand in for one possible start, and each
+    takes his fifteen thousand in the same order as the walk above. Every one
+    whose CQ starts between 25 and 75 must land inside his range with his
+    plus or minus 3. And for every one, a heavy lift may move CQ and nothing
+    in the diagnostic: the saboteurs, the complexes, the hypercomplexes and all
+    112 weights read exactly as they did without it. */
+ {const sig=r=>JSON.stringify([r.sabs.map(x=>x.nm+':'+x.w),r.cxs.map(x=>x.nm),r.hys.map(x=>x.nm),r.SQ,r.DQ,r.PULL]);
+  const rows=[];
+  PEOPLE.forEach(p=>{
+   const LS=LAWSET[p.nm]; if(!LS)return;               /* the custom persona is unmeasured */
+   const r=pImport(JSON.stringify(blankProfile('roster '+p.nm)));
+   S.doms=[p.dom];S.arcs=[p.a1,p.a2];S.roots=[];buildSoul();
+   CHARGES.forEach(c=>{S.charge[c]=p.c[c]||0;S.replace[c]=(p.rep&&p.rep[c])||0;});
+   SINAMES.forEach(l=>{const v=LS[l]!==undefined?LS[l]:LS._; S.law[l]=v; r.laws[l]=v;}); lawsIn();
+   const d0=compute(), s0=sig(d0);
+   r.work={}; SI.forEach(l=>{r.work[l.nm]={n:3000,on:S.law[l.nm]};});
+   const d1=compute(), same=(sig(d1)===s0);
+   r.work={}; releaseWork(r,order.slice(0,15000));
+   rows.push({nm:p.nm, from:d0.CQ, to:cqSum(), same});});
+  const mid=rows.filter(x=>x.from>=25&&x.from<=75);
+  ok(rows.length>=10,'the roster ran, '+rows.length+' reference people');
+  ok(mid.length>=5&&mid.every(x=>x.to>=85&&x.to<=95),
+   'every one starting between 25 and 75 lands inside 85 to 95: '
+   +mid.map(x=>x.nm+' '+x.from.toFixed(0)+' to '+x.to.toFixed(1)).join(', '));
+  ok(rows.every(x=>x.same),'and the lift leaves every one\'s saboteurs, complexes and weights exactly as they were, '
+   +rows.filter(x=>!x.same).map(x=>x.nm).join(', '));
+  console.log('  the roster at fifteen thousand: '+rows.map(x=>x.nm+' '+x.from.toFixed(0)+'>'+x.to.toFixed(0)).join(', '));}
+ /* ONLY THE SEAT, AND ONLY BY THE STEP. One address at the heart, one line on
+    each of the four channels, on a fresh record at 5. */
+ const heart=ADDR.filter(n=>n.b==='Heart')[0];
+ const hk=line=>CH.map(c=>meterKey(heart.i,c,line));
+ const HL=SI.filter(l=>l.b==='Heart').map(l=>l.nm);
+ const r2=pImport(JSON.stringify(blankProfile('one seat'))); answer(r2,5);
+ {const b0={}; SINAMES.forEach(l=>{b0[l]=lawNow(l);}); const c0=cqSum();
+  releaseWork(r2,meterRun(r2,hk(0)).fresh);
+  const moved=SINAMES.filter(l=>lawNow(l)!==b0[l]);
+  ok(moved.slice().sort().join()===HL.slice().sort().join(),
+   'one heart address moves the four heart laws and no other, moved '+moved.join(', '));
+  HL.forEach(l=>near(lawNow(l),10-5*Math.pow(1-LIFT_R,4),1e-12,l+' took four steps of the distance left'));
+  near(cqSum()-c0,HL.reduce((a,l)=>a+lawNow(l)-5,0)/210*100,1e-12,'and CQ moved by those four over 210');}
+ /* THE SHADOW IS NOT IN IT. The same record, the field loaded and then
+    emptied: CQ reads the same both times. */
+ {CHARGES.forEach(c=>{S.charge[c]=9;}); const a=compute().CQ;
+  CHARGES.forEach(c=>{S.charge[c]=0;}); const b=compute().CQ;
+  ok(a===b,'a loaded field and an empty one read the same CQ, '+a.toFixed(4)+' and '+b.toFixed(4));}
+ /* A NEW ANSWER STARTS THE COUNT AGAIN. His 88 to 92 is a reading taken after
+    the work, which already contains it; carrying the lift through a new answer
+    would count his fifteen thousand twice. */
+ {S.law.Compassion=7; r2.laws.Compassion=7;
+  ok(lawWork('Compassion')===0&&lawNow('Compassion')===7,'answered again at 7, Compassion reads 7: the count was against 5');
+  releaseWork(r2,meterRun(r2,hk(1)).fresh);
+  ok(r2.work.Compassion.n===4&&r2.work.Compassion.on===7,
+   'the next release counts from the new answer, n '+r2.work.Compassion.n+' on '+r2.work.Compassion.on);
+  ok(r2.work.Forgiveness.n===8,'while a law not answered again keeps counting, Forgiveness n '+r2.work.Forgiveness.n);
+  lawAnswered(r2,'Forgiveness');
+  ok(!r2.work.Forgiveness&&lawNow('Forgiveness')===5,'and a law answered again at the same number starts again too');}
+ /* UNDO TAKES THE LIFT BACK WITH THE RELEASE */
+ {const w=JSON.stringify(r2.work), c0=cqSum();
+  undoPush('a release at the heart');
+  releaseWork(r2,meterRun(r2,hk(2)).fresh);
+  ok(cqSum()>c0,'a release lifts it');
+  undoPop();
+  ok(JSON.stringify(r2.work)===w&&Math.abs(cqSum()-c0)<1e-12,'and undo puts the count and CQ back exactly');}
+ /* A LAW NOT ANSWERED GETS NOTHING. There is no reading to nudge, and CQ does
+    not count it. Only Compassion is answered on this record. */
+ {const r3=pImport(JSON.stringify(blankProfile('one law in')));
+  r3.laws.Compassion=5; S.law.Compassion=5;
+  releaseWork(r3,meterRun(r3,hk(0)).fresh);
+  ok(Object.keys(r3.work).join()==='Compassion','only the answered heart law counts, counted '+Object.keys(r3.work).join());
+  ok(!lawIn('Forgiveness'),'and the unanswered ones stay unanswered');
+  near(cqSum(),lawNow('Compassion')/210*100,1e-12,'so CQ is that one law, lifted, over 210');}
+ /* A FIELD THAT IS NOT THIS RECORD'S WEARS NONE OF ITS WORK, the rule undo and
+    the mirror already carry for a reference case in S. */
+ {const k=S.rec; S.rec='someone else'; const w=lawWork('Compassion'); S.rec=k;
+  ok(w===0,'with S holding another record, the lift reads 0, got '+w);}
+ /* THE BOUNDARY. The count is bounded by the ground the record itself has
+    opened at that seat, so an inflated one is refused by name. */
+ {const good=JSON.parse(JSON.stringify(r2)), v=validateProfile(good);
+  ok(v.ok&&JSON.stringify(v.profile.work)===JSON.stringify(r2.work),'the work round trips through the boundary');
+  const bad=(f,re,m)=>{const o=JSON.parse(JSON.stringify(r2)); f(o); const r=validateProfile(o);
+   ok(!r.ok&&re.test((r.errs||[]).join(' | ')),m+', '+JSON.stringify(r.errs));};
+  bad(o=>{o.work.Compassion.n=100000;},/work\.Compassion\.n is 100000, more than the \d+ patterns/,
+   'a count above the ground the record has opened at that seat is refused by name');
+  bad(o=>{o.work.Compassion.n=-1;},/work\.Compassion\.n is -1/,'a negative count is refused');
+  bad(o=>{o.work.Compassion.n=2.5;},/not a whole number/,'a fractional count is refused');
+  bad(o=>{o.work.Compassion.on=11;},/work\.Compassion\.on is 11/,'an answer above 10 is refused');
+  bad(o=>{o.work='lots';},/work is not an object/,'a work that is not a map is refused');
+  bad(o=>{o.work.Compassion=12;},/work\.Compassion is not an object/,'an entry that is a bare number is refused');
+  bad(o=>{delete o.work.Compassion.on;},/work\.Compassion is not a count and the answer it was counted on/,
+   'an entry with a count and no answer is refused');
+  const old=JSON.parse(JSON.stringify(r2)); delete old.work;
+  const vo=validateProfile(old);
+  ok(vo.ok&&JSON.stringify(vo.profile.work)==='{}','a record from before the lift loads with no work');
+  /* and the two paths that meet an older record without the boundary */
+  const raw=JSON.parse(JSON.stringify(r2)); delete raw.work; E.loadProfile(raw);
+  ok(JSON.stringify(raw.work)==='{}','loadProfile gives an older record an empty work map');
+  const bare=JSON.parse(JSON.stringify(r2)); delete bare.work;
+  const k=CH.map(c=>meterKey(heart.i,c,9));
+  releaseWork(bare,k);
+  ok(bare.work&&bare.work.Compassion&&bare.work.Compassion.n===4,
+   'and releaseWork makes the map on a record that has none rather than throwing');
+  E.loadProfile(r2);}
+ /* NOTHING FROM HERE REACHES A LATER GROUP. The last record here has a measured
+    law, and a later group reads CURP to decide whether a field is unread, so a
+    blank record is left current, which is what the groups before this left. */
+ E.current().work={};
+ pImport(JSON.stringify(blankProfile('after the release lift')));
+ bindStore(()=>null,()=>{});
 }
 
 g('37 \u00b7 the child pattern, and the reading it is under');
