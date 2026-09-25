@@ -9149,5 +9149,15 @@ use corrected."
 configuration**, ordered rather than guessed. His words: "the team needs to
 simulate this a hundred times... simulate it ten thousand times in our ICPs
 and find the configuration for CQ, DQ and SQ that makes sense within our
-system." Running.
-*Large.*
+system." Complete. See `DECISIONS.md`, "The CQ model, fitted."
+*Large. Done.*
+
+**AZ6. Neither sniffer can tell intensity words apart.** Found by the
+simulation while fitting the shadow curve. MOB reads "a little tense",
+"tense" and "extremely tense" identically and does not read "paralyzed" at
+all. The desktop reads weight 6 and weight 30 but then squashes both onto
+the same two or three levels. The ruling that a little tense and paralyzed
+must differ by two orders of magnitude currently has to come entirely from
+the curve, not from the words, because the words are not heard.
+*Medium, and it is the one thing that would let the model reflect what a
+person actually wrote instead of only what the curve assumes.*

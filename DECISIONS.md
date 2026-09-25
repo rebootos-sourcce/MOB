@@ -1449,3 +1449,55 @@ lexicon so its matching gets better at how people actually talk. It is not
 training a general model on a person's story. `AZ4`'s consent line should
 say this precisely rather than the broader phrase, since the narrower,
 true purpose is also the easier one to get honest consent for.
+
+## The CQ model, fitted. The ten thousand run simulation, `AZ5`, complete.
+
+Run twice, on two seeds, against the real engine and its nine ICPs, not a
+toy. Every reading below is labelled real or judgement in the source file.
+
+**The arithmetic, final unless the last five questions below move it.**
+- CQ: the 21 laws in `SI`, summed over 210, times 100. Fills from zero.
+- SQ: 112 values, one per address. The four outside take the mean of the
+  seat they extend, measured 0.06 of a point from the alternative on
+  retest, so the simpler rule stands.
+- DQ: the 112 over 1120, times 100. The total shadow, nothing else.
+- The lever: expression equals CQ times one minus a pull. The pull is a
+  bell curve over each address's weight, averaged over the 112: centre 5,
+  width 1.25. Paralyzed pulls 122 times as hard as a little tense, inside
+  the bound his own words set.
+- Intention: what a person said against what they did, no charge in the
+  number. Each commitment carries its address, so a broken one shows the
+  story behind it. Awareness sits on top as a modifier, still open below.
+
+**What the run proved, not assumed.** CQ built from zero never once read a
+false drop across 630,000 answers. The desktop's old rule, a running mean,
+fell by up to 28 points and started above a person's final score more than
+half the time, which is the exact demoralizing drop he ruled against. A
+release changed CQ, raised DQ, or raised any address zero times across
+about 17,800 releases. Three other curve shapes were tried and rejected on
+the evidence, not on preference; the reasoning is in the file.
+
+**A defect the run surfaced, not ruled on, logged to `TASKS.md`:** neither
+engine's sniffer can currently tell "a little tense" from "paralyzed."
+MOB reads three different intensity words identically and does not read
+"paralyzed" at all. The orders of magnitude his ruling requires have to
+come entirely from the curve until that is fixed.
+
+**Five questions left, none of them arithmetic, all cosmetic or a label:**
+1. Does a tier word (Severe, Mastery) describe CQ or expression? Recommended:
+   expression, since the ladder's own copy is about load against build.
+2. Does "Oscillating" print for the 41 to 50 band, or does nothing print?
+   Recommended: nothing, matching the standing rule that the word never
+   prints.
+3. Do the eight expression laws sit beside expression as their own figure,
+   or cap it? Recommended: beside it, since nobody has scores for them yet
+   to simulate a cap against.
+4. Does awareness sit beside intention in words, or scale the number?
+   Recommended: beside it, in words. Not run either way.
+5. Do the four outside addresses take the colour of the seat they extend
+   (crown above, root below), or one shared colour? Recommended: crown and
+   root.
+
+Full arithmetic, the rejected curves, and worked people are in the CQ
+bundle. `AZ5` closes once this is logged; the rebuild in both engines is
+now real work, not waiting on anything further from him.
