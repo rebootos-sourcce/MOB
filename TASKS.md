@@ -9078,3 +9078,29 @@ not the whole table. See `DECISIONS.md`, "The CQ ruling, corrected."
 *Medium, once sourcing is done. Research still owed: measured bowl tunings
 for the remaining 105 addresses, or a stated method for deriving them from
 the seven that have one.*
+
+## AY. Found while unifying CQ under his ruling, 25 September.
+
+**AY1. MOB's live formula lowers CQ on release, in 22 of 10,000 seeded
+runs**, worst case -0.82. `compute()` puts the shadow into CQ twice, once
+through resistance and once through the pole and overshoot terms; the
+overshoot term is subtracted from both law factors once a charge passes 6,
+and an installed opposite can push past that line on release. Under his
+ruling this cannot happen: a release may never move CQ, since CQ is the 21
+laws and nothing else. Proven for the unified model across the same 10,000
+runs, zero dips. Not proven for the formula as it ships today, which is why
+this is logged as a defect and not closed by the ruling alone.
+*Medium, and it is priced work: everything in both engines that reads CQ off
+a release today has to repoint to intention or the address weights, since
+under the ruling CQ only moves when the laws are answered again.*
+
+**AY2. MOB puts the laws into CQ twice.** `Ig` and `It` are the same 21
+scores read into two different terms, which is why the shipped formula is
+the square of the law mean rather than the mean itself.
+
+**AY3. The desktop's shadow term is a placeholder that cannot tell weight
+360 from weight 2000.** Its comment says so. `A_SQ=1.0` regardless of how
+much is actually held.
+
+*Full arithmetic, the unified model, and fifteen questions with the worked
+people beside each are in the CQ bundle sent with this round.*
