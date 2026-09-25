@@ -10133,3 +10133,38 @@ they can be looked at as pictures, nothing wired, nothing shipped, no
 product file touched. Renditions and rationale to follow with images, the
 same rule as any drawing question on this project.
 
+## BK. The TULA deck, mined for the intensity curve and anything else
+## useful, 25 September.
+
+**BK1. The intensity curve is real, found directly in the deck's own
+images, not just described in its text.** His words: "Review this
+document look for the intensity curve we can use that as our it's part
+of the natural release protocol anyway and it solves our chakra weight
+multiplier based off the way words people use. Review. And mine for
+anything else you may need," attaching a 332 slide deck of his own, TULA,
+Your Authentic Self. Confirmed by opening the actual images inside it: a
+bell curve titled "Emotional Intensity of Fear Across Time," climbing
+through nine words (Apprehensive, Worried, Nervous, Afraid, Fearful,
+Terrified, Petrified, Horrified, Panic-stricken) to a peak marked
+"Choice," then falling through nine more (Embarrassed, Ashamed, Guilty,
+Humiliated, Anxious, Alarmed, Dreadful, Frightened, Scared). A second one
+for Sadness, same shape, its own nine and nine. Reads as one curve per
+emotion, matching this product's own eight charge categories in
+`nodes.js`. If real, this is a ready made number for the word based
+weight multiplier he asked for: which word a person uses gives an
+emotion family and a position on its ladder, both usable as a weight.
+*The chart's own title carries "(4K Resolution)" baked into the pixels,
+almost certainly leftover from an AI image prompt, so the specific words
+and their order are not measured, the same caution this file already
+gives the word Chakra. The shape is still a usable design pattern either
+way.*
+
+**Dispatched to find the rest and report honestly.** Every emotion curve
+the deck actually has against the eight it would need, the "Levels of
+Detachment" sequence the owner says this curve already lives inside
+(checked against this product's own release, `engine/undo.js` and the
+storyui trigger), a concrete mechanism proposal for the weight
+multiplier, and a broader pass over the saboteur and hyper complex
+material against `SABDEF` and `HCX_LIB` for real overlap versus genuinely
+new. Confidence tagged, nothing merged until reviewed.
+
