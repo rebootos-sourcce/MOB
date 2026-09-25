@@ -249,7 +249,7 @@ function runCoreDrill(){
  var r=compute();
  var h='<div class="pm-eye">The core</div>'
   +'<div class="ad-nm">'+(r.unread?'not read yet'
-    :'CQ '+Math.round(r.CQ)+', '+r.tier.toLowerCase())+'</div>'
+    :'CQ '+Math.round(r.CQ)+', '+tierSay(r).toLowerCase())+'</div>'
   +'<div class="pm-eye">What coherence is</div><p class="ad-p">'
   +'Coherence is the alignment between the world around you, what arrives from '
   +'it, the way you read what arrives, the intention behind it, and the action '
@@ -261,13 +261,21 @@ function runCoreDrill(){
   +'the ego is holding. The reading does not tell you that you are incoherent. '
   +'It tells you which register bent, and the body page shows you where.</p>'
   +'<div class="pm-eye">How the number is reached</div><p class="ad-p">'
-  +'Intention <b>'+r.It.toFixed(1)+'</b>, integrity <b>'+r.Ig.toFixed(1)
-  +'</b>, resistance <b>'+r.Rz.toFixed(2)+'</b>. Intention times integrity, '
-  +'divided by resistance. Resistance is a floor of 1 plus DQ, so shadow '
-  +'weight is the only thing dividing you down.'
-  +(r.vf!==1?' Your gate mix multiplies that cost by <b>'+r.vf.toFixed(2)+'</b>.':'')+'</p>'
-  +'<div class="pm-eye">The read</div><p class="ad-p">The field is <b>'
-  +(r.benign?'expanding':'contracting '+r.malig+'%')+'</b>. Radiance <b>'
+  /* THIS PARAGRAPH DESCRIBED A FORMULA THAT IS GONE. It said intention times
+     integrity over resistance, with shadow weight the only thing dividing
+     you down. Ruled 25 September: CQ is the 21 laws and nothing else, and
+     the shadow pulls on expression instead. It says that now, with the
+     person's own figures in it. */
+  +'The '+SI.length+' laws, each out of 10, summed out of 210. '
+  +(r.complete?'All '+SI.length+' are in. '
+    :'<b>'+(SI.length-r.answered)+'</b> are still to answer, and each counts 0 until it is. ')
+  +'The shadow does not touch this number. It pulls on expression, which is '
+  +'coherence times what the shadow leaves: expression <b>'+Math.round(r.EX)
+  +'</b>, with the shadow taking <b>'+Math.round(r.PULL*100)+' per cent</b>.</p>'
+  +'<div class="pm-eye">The read</div><p class="ad-p">'
+  /* benign is null while CQ is still filling, and the clause waits with it */
+  +(r.benign===null?'':'The field is <b>'
+    +(r.benign?'expanding':'contracting '+r.malig+'%')+'</b>. ')+'Radiance <b>'
   +(r.radiance*100).toFixed(0)+'%</b>. The field is the geometry of that '
   +'radiance. It is harmonic, so patterns sit at registers rather than '
   +'anywhere, and what radiates outward tends to carry the colour of the '
@@ -313,9 +321,12 @@ function runQDrill(q){
  var r=compute(), h='';
  if(q==='dq'){
   var top=r.loaded.slice().sort(function(a,b){return b.sq-a.sq;}).slice(0,5);
-  h='<div class="pm-eye">Shadow weight</div><div class="ad-nm">DQ '+r.DQ.toFixed(1)+'</div>'
-   +'<div class="pm-eye">How it is built</div><p class="ad-p">Every address holding charge above its floor, summed. '
-   +'It is the wash pressing in from the edge of the wheel, and it is the whole of resistance: CQ divides by 1 plus DQ, so this is the only number that divides you down.</p>'
+  /* REWRITTEN 25 SEPTEMBER. It said DQ was every address above its floor
+     and the whole of resistance, with CQ divided by it. DQ is the total
+     shadow on all 112 now, out of 100, and it pulls on expression. */
+  h='<div class="pm-eye">Shadow weight</div><div class="ad-nm">DQ '+Math.round(r.DQ)+'%</div>'
+   +'<div class="pm-eye">How it is built</div><p class="ad-p">The weight at all 112 addresses, summed, out of the most they can hold. '
+   +'It is the wash pressing in from the edge of the wheel. It leaves coherence alone and pulls on expression, and an address near 10 pulls far harder than one near 2.</p>'
    +'<div class="pm-eye">Where it sits</div><p class="ad-p"><b>'+r.loaded.length+'</b> addresses carry it. The heaviest:</p>'
    +'<div class="ad-rows">'+top.map(addrRow).join('')+'</div>';}
  else if(q==='sq'){
@@ -339,7 +350,7 @@ function runQDrill(q){
 function runXYZDrill(){
  var r=compute();
  var A=[['Vitality',r.X,'Solar','what is left after apathy and the shadow weight. Apathy <b>'
-   +(S.charge.Apathy||0).toFixed(1)+'</b>, shadow weight <b>'+r.DQ.toFixed(1)+'</b>.'],
+   +(S.charge.Apathy||0).toFixed(1)+'</b>, shadow weight <b>'+Math.round(r.DQ)+' per cent</b>.'],
   ['Awareness',r.Y,'3rd Eye','intention against distortion. Intention <b>'+r.It.toFixed(1)
    +'</b>, distortion <b>'+r.dist.toFixed(1)+'</b>.'],
   ['Will',r.Z,'Root','integrity carried through a clear segment. Integrity <b>'+r.Ig.toFixed(1)
@@ -631,7 +642,20 @@ function runPoleDrill(end){
   /* malignancy, not the outward share. See the note on darkRead: the two are
      different measurements and passing the second one meant this read false
      for every person in the roster, the heaviest case included. */
-  var dk=darkRead(r.malig/100,r.CQ), circ=circleAt(r.CQ);
+  /* NEITHER IS READ WHILE CQ IS STILL FILLING. CQ 0 with no law answered
+     lit the deepest of the nine circles for somebody who had only not done
+     the intake, and a null malignancy divided to 0 rather than to unread.
+
+     AND THE DEPTH IS READ OFF EXPRESSION, NOT CQ, because this is where the
+     clinician referral lives. The descent is decoherence, which is load, and
+     since 25 September CQ is the laws alone and cannot see load at all:
+     Gordon, the heaviest case in the roster with 22 addresses near
+     paralysis, went from CQ 0.8 to 17.5 and the referral at under 11 went
+     dark for him. Expression is CQ with the shadow's pull taken off, 7.9 for
+     him, so the referral reaches the person it was written for. Whether the
+     tier word names CQ or expression is the owner's open question 1; a
+     safety referral is not a label, so it does not wait on that. */
+  var dk=darkRead(r.malig===null?null:r.malig/100,r.EX), circ=r.complete?circleAt(r.EX):null;
   h+='<div class="pm-eye">The blueprint, where the downward cone ends</div><div class="ad-rows">';
   BLUEPRINT.forEach(function(x){
    h+='<div class="ad-r static" title="'+esc(x.d)+'"><span class="ad-k">'
@@ -1035,11 +1059,11 @@ function runCompassDrill(){
     from it silently. It reads TIERDEF now, which is the only one. */
  var me=r.unread?null:TIER_BY[r.tier];
  var h='<div class="pm-eye">The compass</div><div class="ad-nm">'
-  +(r.unread?'not read yet':'CQ '+Math.round(cq)+', '+r.tier.toLowerCase())+'</div>'
+  +(r.unread?'not read yet':'CQ '+Math.round(cq)+', '+tierSay(r).toLowerCase())+'</div>'
   +'<div class="pm-eye">How to read it</div><p class="ad-p">The line runs 0 at the base to 100 at the crown, and the word changes every ten points. '
   +'Above '+MEDIAN+' the field builds more than it costs. Below '+MEDIAN+' it costs more than it builds. '
   +MEDIAN_LO+' to '+MEDIAN_HI+' is the median range, where the reading crosses the line in both directions'
-  +(medianRange(cq)&&!r.unread?', and that is where this one sits':'')+'. '
+  +(medianRange(cq)&&!r.unread&&r.complete?', and that is where this one sits':'')+'. '
   /* "THE SWING, 11 POINTS" IS GONE FROM HERE TOO. Ruled as a class rather
      than as two strings: "do a sweep of text like that, 100 plus minus 12,
      swing 11, that shit has to all go." The quantity survives, as the pill
@@ -1113,7 +1137,10 @@ function runSpDrill(kind,val){
    +archNow+'</b>. '+(LP2ARCH[+val]===archNow?'They agree.':'They do not.');
  } else if(kind==='hd'){
   t='Design type'; runs=HD_RUNS[val]||''; sub='type';
-  extra='A '+val+' at CQ <b>'+Math.round(r.CQ)+'</b>. '
+  /* the comparison reads CQ against the median, which a CQ still filling
+     cannot answer: it would call every Generator's field contracting */
+  extra=!r.complete?'A '+val+'. Coherence is still filling, so the field has no direction to compare yet.'
+   :'A '+val+' at CQ <b>'+Math.round(r.CQ)+'</b>. '
    +((val==='Generator'||val==='Manifesting Generator')===(r.CQ>=50)
      ?'Type and field point the same way.':'Type and field point differently.');
  } else if(kind==='auth'){

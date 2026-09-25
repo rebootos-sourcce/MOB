@@ -63,6 +63,7 @@ if(typeof module!=='undefined'&&module.exports){
                   LEX:LEX, ADJ2CHG:ADJ2CHG, PHRASES:PHRASES, VERP:VERP,
                   NERVEBR:NERVEBR, BODYPATH:BODYPATH, TAB:TAB,
   /* the ladder */MARKS:MARKS, ladderRead:ladderRead, ledgerRead:ledgerRead,
+                  intentionRead:intentionRead, INTENT_DAYS:INTENT_DAYS,
                   streakRead:streakRead, pracDays:pracDays, pracDay:pracDay,
   /* indexes */   W:W, BY:BY, ALL_SAB:ALL_SAB, S:S,
   /* soul */      buildSoul:buildSoul, affinity:affinity, bandIg:bandIg,
@@ -80,11 +81,16 @@ if(typeof module!=='undefined'&&module.exports){
 
      It is the one the owner has ruled most important. His words are that a
      person is already the most powerful version of themselves and the limiters
-     are what hold them down, so cqCeiling is the person and the reading is the
-     drag against it. Nothing on the ceiling's own path was missing beside
-     these two: bandIg, verpFactor, mirrorAt, clamp, W, S, BANDS and SINAMES
-     are all already here, which is why this is two lines and not a group. */
-                  cqCeiling:cqCeiling, cqHeadroom:cqHeadroom,
+     are what hold them down, so the ceiling is the person and the reading is
+     the drag against it.
+
+     Renamed from cqCeiling and cqHeadroom when CQ became the 21 laws alone: a
+     release cannot move CQ, so its ceiling is expression's. The lever and the
+     law test are exported beside them so a gate can pin the fitted curve and
+     reproduce the simulation's worked people without re-deriving either. */
+                  exCeiling:exCeiling, exHeadroom:exHeadroom,
+                  lawIn:lawIn, cqSum:cqSum, leverPull:leverPull,
+                  LEVER_MU:LEVER_MU, LEVER_SD:LEVER_SD, CQ_MODEL:CQ_MODEL,
   /* seed */      TYPE16:TYPE16, SEED16:SEED16, seedAxes:seedAxes, seedApply:seedApply,
                   seedClear:seedClear, seedShare:seedShare, seedValid:seedValid, accuracy:accuracy, sab33Detect:sab33Detect,
                   sabLevels:sabLevels, exprFill:exprFill, exprRead:exprRead,
@@ -109,6 +115,13 @@ if(typeof module!=='undefined'&&module.exports){
                   gatesClear:gatesClear, gatesLoad:gatesLoad, gatesSave:gatesSave,
   /* schema */    blankProfile:blankProfile, loadProfile:loadProfile,
                   saveProfile:saveProfile, snapshot:snapshot, LAW_DEFAULT:LAW_DEFAULT,
+  /* the unanswered marks, which CQ now reads through lawIn. The object is
+     never reassigned, only its keys, so the reference exported here stays the
+     live one. A headless caller that sets S.law directly after a blank profile
+     has been loaded clears these to say the values it set were answered;
+     otherwise a law set to exactly the seed reads as unanswered, which is
+     saveProfile's documented blind spot and correct for a person. */
+                  LAW_UNSET:LAW_UNSET,
                   pExport:pExport, pImport:pImport, validateProfile:validateProfile, importError:importError,
                   meterRun:meterRun, meterRead:meterRead, meterKey:meterKey, meterBudget:meterBudget,
                   meterNext:meterNext, meterPlan:meterPlan, LINES_PER_CH:LINES_PER_CH, MARKERS:MARKERS, markersFor:markersFor, PAT_PER_YEAR:PAT_PER_YEAR,

@@ -120,8 +120,11 @@ function recRender(){
 
  h+='<div class="rec-hd"><span class="rec-k">Reading</span><span class="rec-a">A</span>'
   +'<span class="rec-b">B</span><span class="rec-d">move</span></div>'
-  +recRow('Coherence',a.cq,b.cq,1,false)
-  +recRow('Shadow weight',a.dq,b.dq,1,true)
+  /* ONLY BETWEEN ROWS ONE ARITHMETIC WROTE. cq and dq changed meaning on 25
+     September and a row from before carries no m. Across that line the move
+     is the formula changing, not the person, so the two rows are left out
+     and the note under the table says why. */
+  +(a.m===b.m?recRow('Coherence',a.cq,b.cq,1,false)+recRow('Shadow weight',a.dq,b.dq,1,true):'')
   +recRow('Segment depth',a.sq,b.sq,2,true)
   +recRow('Opposite installed',a.pole,b.pole,2,false)
   +recRow('Jouissance',a.jq,b.jq,2,true)
@@ -132,13 +135,17 @@ function recRender(){
   +recRow('Character',a.ch,b.ch,0,true);
 
  var moved=[];
- if(a.tier!==b.tier)moved.push('the tier read '+a.tier.toLowerCase()+' and now reads '+b.tier.toLowerCase());
+ /* a null tier is a row written while CQ was still filling, which has no word to compare */
+ if(a.m===b.m&&a.tier&&b.tier&&a.tier!==b.tier)
+  moved.push('the tier read '+a.tier.toLowerCase()+' and now reads '+b.tier.toLowerCase());
  if(a.dark!==b.dark)moved.push('the heaviest seat moved from the '+a.dark.toLowerCase()+' to the '+b.dark.toLowerCase());
  if(a.arch!==b.arch)moved.push('the primary archetype moved from '+a.arch+' to '+b.arch);
  h+='<p class="sum-p" style="margin-top:14px">'+(moved.length
    ? 'Between these two, '+moved.join(', and ')+'.'
    : 'Between these two, the tier, the heaviest seat and the primary archetype all held.')
-  +' What moved them is not in this record.</p>';
+  +' What moved them is not in this record.'
+  +(a.m!==b.m?' Coherence and shadow weight are left out because one of these was taken '
+    +'before they were measured the way they are now.':'')+'</p>';
 
  host.innerHTML=h;
  host.querySelectorAll('[data-rec]').forEach(function(el){el.onclick=function(){

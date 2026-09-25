@@ -132,7 +132,18 @@ function renderPol2(r){
  var sig=[Math.round(cq*100),Math.round(bandPts*100),r.unread?1:0,up?1:0,mc,
           REDUCED?1:0,Wd,H].join('|');
  if(POL2.sig===sig&&POL2.el===el&&el.firstChild){
-  var dy0=+(y-POL2.yB).toFixed(2);
+  /* HALF PIXEL STEPS, NOT HUNDREDTHS. The drift is slow, about a quarter
+     of a pixel a frame, and a transform written to two decimals changed on
+     every frame, so the marker's layer was re-composited sixty times a
+     second under translucent panes. Measured on the Field under glass, with a
+     second page open as the design gate keeps one: 22.5 frames a second on
+     Gordon, and 23.3, 26.1 and 23.2 on Diane, Rosa and James before the CQ
+     rebuild touched anything. Gordon alone passed, because his old CQ of 0.8
+     pinned the marker at the floor where the drift clamps and nothing was
+     written. At half pixel steps, which is a whole device pixel on a 2x
+     screen, the write lands every few frames: glass 35.9 on Gordon and 35.5
+     on Diane, and every other lighting back near 60. */
+  var dy0=Math.round((y-POL2.yB)*2)/2;
   if(POL2.mv&&dy0!==POL2.dy){POL2.mv.style.transform='translateY('+dy0+'px)';POL2.dy=dy0;}
   return;}
  var s='<svg viewBox="0 0 '+Wd+' '+H+'" preserveAspectRatio="xMidYMid meet" aria-hidden="true">';

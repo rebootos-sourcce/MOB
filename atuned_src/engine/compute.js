@@ -40,6 +40,57 @@ function balance(){
  return {out:o, in:i, outMean:om, inMean:im,
   read: (om>=1||im>=1),
   lean: t?(om-im)/t : 0};}
+/* ============================================================
+   WHETHER A LAW HAS BEEN ANSWERED. CQ sums the answered laws and counts the
+   rest as 0, so it needs to know which is which, and S.law cannot say: an
+   unanswered law holds the default 6 there, which is a plausible score.
+
+   This is saveProfile's own test, so CQ counts exactly the laws a save would
+   write as measured, and never one it would not. A law is in when the record
+   holds it, or when it arrived measured, or when somebody has moved it off
+   the seed it was given. A headless run that sets S.law with no profile
+   loaded has nothing marked unset, so every law it set is in, which is what
+   the simulation and the gates mean by setting it.
+   ============================================================ */
+function lawIn(nm){
+ if(CURP&&CURP.laws&&CURP.laws[nm]!=null)return true;
+ return !(LAW_UNSET[nm]&&S.law[nm]===LAW_SEED[nm]);}
+/* Which arithmetic a stored reading came from. This is the second; the first
+   never stamped its rows, so they read back as 0. snapshot() stamps it so two
+   rows from two formulas are never compared as a move. */
+const CQ_MODEL=2;
+/* CQ on its own, for the callers that need it without the whole reading */
+function cqSum(){return SINAMES.reduce((a,l)=>a+(lawIn(l)?S.law[l]:0),0)/210*100;}
+
+/* ============================================================
+   THE LEVER'S BELL, FITTED. The owner: "I'm a little tense is different than
+   I'm paralyzed, it's orders of magnitude different ... so our bell curve
+   becomes our multiplier." The pull at one address is the normal cumulative
+   at its weight, centre LEVER_MU and width LEVER_SD, scaled so an address at
+   10 pulls exactly 1.
+
+   Fitted by the ten thousand run simulation (AZ5, scratchpad cq/cqsim.js),
+   identical on two seeds. His words set the region: paralyzed (9) pulls at
+   least 100 times a little tense (2), and the graded middle is at least as
+   wide as the 4 to 6 he calls the range we travel. Inside it the data put
+   the centre at 5 to 5.5; his "five is the average" decides 5, and 1.25 is
+   the widest width at 5 that still clears 100 times (1.29 exact). Pull is
+   0.008 at 2, 0.21 at 4, 0.50 at 5, 0.79 at 6, 0.95 at 7, 0.999 at 9: 122
+   times from a little tense to paralyzed.
+
+   The erf is Abramowitz and Stegun 7.1.26, error under 1.5e-7, and it is the
+   same polynomial the simulation ran, so the worked people reproduce to the
+   digit rather than to a tolerance. An address at 0 pulls 3.2e-5, not 0,
+   because that is what the fitted curve says; it rounds away on every
+   surface and it is not subtracted, because the simulation did not. ============ */
+const LEVER_MU=5, LEVER_SD=1.25;
+function leverPhi(z){
+ const t=1/(1+0.3275911*Math.abs(z/Math.SQRT2)), x=z/Math.SQRT2;
+ const y=1-(((((1.061405429*t-1.453152027)*t)+1.421413741)*t-0.284496736)*t+0.254829592)*t*Math.exp(-x*x);
+ return 0.5*(1+(x>=0?y:-y));}
+const LEVER_TOP=leverPhi((10-LEVER_MU)/LEVER_SD);
+function leverPull(w){return leverPhi((w-LEVER_MU)/LEVER_SD)/LEVER_TOP;}
+
 function compute(){
  const root=DOMAINS[S.dom].r;
  const rootsIn=[...new Set(S.doms.map(d=>DOMAINS[d].r).concat(S.roots))];
@@ -61,7 +112,21 @@ function compute(){
   n.jq   = clamp(n.rep - 6,0,4)/4*10;
   n.open = clamp(1-n.sq/10 + n.pole/26,0,1.18);
   if(n.sq>=4){loaded.push(n);sum+=n.sq;}});
- FIELD.forEach(n=>{n.sq=0;n.open=1;n.held=0;n.rep=0;n.pole=0;n.jq=0;});
+ /* THE FOUR OUTSIDE THE BODY ARE SQ TOO. Ruled 25 September: "the four
+    addresses outside the body do count as SQ because they're related to
+    nerves within the body". They were forced to 0 here, so 4 of the 112 the
+    product states could never carry anything and DQ summed over 108 while
+    dividing by the 112. Each takes the mean of the seat it extends, the two
+    above from the Crown and the two below from the Root, which is his torus.
+    The simulation measured the heaviest of the seat as the alternative and
+    could not tell the two apart (retest 0.06 of a point), so the simpler rule
+    stands. They hold no charge of their own, so held, rep, pole and jq stay 0
+    and nothing in the saboteur chain reads them. */
+ const seatMean={Crown:0,Root:0};
+ ['Crown','Root'].forEach(b=>{const g=W.filter(n=>n.b===b);
+  seatMean[b]=g.reduce((a,n)=>a+n.sq,0)/g.length;});
+ FIELD.forEach(n=>{n.sq=n.b==='Field-Above'?seatMean.Crown:seatMean.Root;
+  n.open=clamp(1-n.sq/10,0,1);n.held=0;n.rep=0;n.pole=0;n.jq=0;});
  const SQm=loaded.length?sum/loaded.length:0;
 
  const sabs=[];
@@ -121,36 +186,84 @@ function compute(){
  const poleMean=W.reduce((a,n)=>a+n.pole,0)/108;
  const JQ=W.reduce((a,n)=>a+n.jq,0)/108;
  const excess=W.filter(n=>n.jq>=4);
+ /* Ig and It no longer enter CQ. They are kept because the Awareness and
+    Will readouts and the will against drag steer below still read them. */
  const Ig=clamp(SINAMES.reduce((a,l)=>a+S.law[l],0)/21 + poleMean*0.30 - JQ*0.42,0,10);
  const It=clamp(BANDS.reduce((a,b)=>a+bandIg(b),0)/7 + poleMean*0.22 - JQ*0.30,0,10);
- /* DQ: the fractional sum of shadow weight across collapsed addresses. */
- const DQraw=loaded.reduce((a,n)=>a+n.sq/10,0);
+ /* DQ, THE TOTAL SHADOW. "DQ is a total shadow. I don't know why you keep
+    asking me that." The 112 addresses summed over 1120, so it sits on the
+    same 0 to 100 as CQ. It was sq over ten summed over the addresses at 4 or
+    more, which dropped everything under the line and the four outside the
+    body and had no ceiling at all. Not 100 minus CQ: that was one of his two
+    statements and he has settled it as this one.
+
+    ONE SHADOW TOTAL, NOT TWO. Resistance, vitality and drag read the old sum
+    and it would have been easy to keep it for them under another name. Then
+    the vitality drill would print one shadow weight while computing off a
+    different one. They read DQ, with their constants unchanged. Where the
+    weight sits above the line the two totals are close, Gordon 55.2 then
+    54.3. Where it is spread under the line DQ reads higher, Diane 3.5 then
+    19.7, because it now counts what the old sum dropped, and vitality and
+    drag feel that weight too, which is the reason for counting it. */
+ const SQ=NODES.map(n=>n.sq);
+ const DQ=SQ.reduce((a,v)=>a+v,0)/1120*100;
  /* THE SIX AXES multiply what every held pattern costs. Detachment is the
     cheapest gate at 0.60, attachment the most expensive at 1.35. No story
-    means no gate evidence, so the factor is 1 and nothing changes. */
+    means no gate evidence, so the factor is 1 and nothing changes.
+    Resistance is still computed and reported, because the gates drill names
+    it, but it divides nothing any more: the owner ruled CQ is the 21 laws and
+    nothing else, and verpFactor stops multiplying anything in CQ with it. */
  const _vf=verpFactor();
- /* Resistance = floor + DQ. compounding raises the floor, it is not a term. */
- /* Distortion is struck as a formula variable, the author's ruling of 13 May,
-    because Distortion and SQ are the same reading under two names and
-    multiplying one by the other counted the same charge twice. It is still
-    computed and still reported, because Analytics reads it. It no longer
-    divides CQ. */
- const Rz=Math.max(1,(1+DQraw*0.05)*_vf);
- /* CQ = (Intention x Integrity) / Resistance. 100 when all 21 laws read 10. */
- const CQ=clamp((It*Ig)/Rz,0,100);
+ const Rz=Math.max(1,(1+DQ*0.05)*_vf);
+ /* ============================================================
+    CQ, THE 21 LAWS SUMMED OVER 210. Ruled 25 September, fitted by the ten
+    thousand run simulation (AZ5, DECISIONS.md "The CQ model, fitted").
+
+    This was clamp(It*Ig/Rz). Ig was the law mean and It was the band mean of
+    the same 21 laws, so the laws were counted twice and CQ went as their
+    square: every law at 5 read 25 where his ruling reads 50 (AY2). And both
+    factors carried poleMean and JQ, so installing an opposite past 6 pushed
+    JQ up and CQ down: a release lowered CQ in 22 of 10,000 random fields
+    (AY1, measured at 9f4c7e5). Neither can happen now, because nothing but
+    a law score is read.
+
+    AN UNANSWERED LAW COUNTS 0 AGAINST A FIXED 210, so CQ fills from zero as
+    the laws land and can only rise while a person is answering. "I don't
+    want it to go from 100 down, because that's demoralizing." The mean of
+    the laws answered so far, which the desktop runs, fell in every one of
+    10,000 simulated intakes; this rule fell in none of 630,000 answers.
+
+    The default 6 still sits in S.law for an unanswered law, because the
+    band relief inside sq and the Ig readout need a number. It never enters
+    CQ: lawIn() is what says whether a law was answered. */
+ const answered=SINAMES.filter(lawIn).length;
+ const complete=(answered===SINAMES.length);
+ const CQ=cqSum();
+ /* THE LEVER. Expression is CQ times what the shadow leaves: "CQ 100 SQ 0
+    ... one pulls down the other, it's a lever", and the pull is his bell,
+    applied per address because "a little tense" and "paralyzed" are
+    intensity at a place. PULL is the mean of leverPull over the 112. */
+ const PULL=SQ.reduce((a,v)=>a+leverPull(v),0)/SQ.length;
+ const EX=CQ*(1-PULL);
  /* One table. This was a literal copy of the thresholds and the names, and a
     previous commit claimed to have removed the duplicate after removing only
     the one in the renderer. A rename would have drifted silently between the
     engine and the definitions. canon.js loads before this file, which is what
-    makes tierOf reachable here. */
- const tier=tierOf(CQ).nm;
- /* UNREAD. With nothing held and no law measured, CQ is a pure function of
-    the default 6 on all 21 laws: it comes out 36 and the tier comes out
-    Incoherent. That is not a reading of a person, it is a reading of the
-    defaults, and the product was printing it in the largest type on screen to
-    someone who had not yet typed a word. The number is still computed, because
-    everything downstream needs it, but the field says plainly that nothing has
-    been read yet and every surface that names a tier checks this first. */
+    makes tierOf reachable here.
+
+    AND THE WORD WAITS FOR ALL 21. A partial CQ is a person coming into view,
+    not a reading: after seven laws it can be at most 33, so a tier word on it
+    would call everybody on day one Incoherent or worse. Null until complete,
+    and every surface that names a tier says what is still to answer
+    instead. Whether the word should name CQ or expression is the owner's
+    question 1 and is not decided here; it stays on CQ until he rules. */
+ const tier=complete?tierOf(CQ).nm:null;
+ /* UNREAD. With nothing held and no law measured the product used to print
+    CQ 36 and the word Incoherent off the default 6 on all 21 laws, in the
+    largest type on screen, to someone who had not typed a word. CQ reads 0
+    there now, because no law is in, but a stranger is still unread rather
+    than a person at zero, and every surface that names a reading checks
+    this first. */
  const measured=SI.filter(function(l){return CURP&&CURP.laws&&CURP.laws[l.nm]!=null;}).length;
  /* BELOW THE LINE. An address counts as carrying at SQ 4. Under that the
     charge is real, a person entered it, and every surface reported nothing
@@ -184,9 +297,14 @@ function compute(){
 
     benign and malig keep their old meaning and their old callers, because
     they are the coherence read and several surfaces already print them. They
-    are just no longer pretending to be a second axis. */
- const benign=CQ>=50,malig=benign?0:Math.round((50-CQ)/50*100);
- const X=clamp((1-S.charge.Apathy/10)*.3+(1-clamp(DQraw/14,0,1))*.7,0,1);
+    are just no longer pretending to be a second axis.
+
+    NULL WHILE CQ IS STILL FILLING. A person with a story in and no law
+    answered reads CQ 0, and malig off that is 100: the most malignant field
+    the scale can name, for somebody who has only not done the intake yet. */
+ const benign=complete?CQ>=50:null;
+ const malig=complete?(benign?0:Math.round((50-CQ)/50*100)):null;
+ const X=clamp((1-S.charge.Apathy/10)*.3+(1-clamp(DQ/14,0,1))*.7,0,1);
  const Y=clamp((It/10)*.6+(1-dist/10)*.4,0,1);
  const Z=clamp((Ig/10)*(1-SQm/10),0,1);
  const radiance=Math.sqrt(X*X+Y*Y+Z*Z)/Math.sqrt(3);
@@ -194,7 +312,7 @@ function compute(){
  let pi=0;af.forEach((v,i)=>{if(v>af[pi])pi=i;});
  let si=(pi+1)%12;af.forEach((v,i)=>{if(i!==pi&&v>af[si])si=i;});
  let dch=CHARGES[0];CHARGES.forEach(c=>{if(S.charge[c]>S.charge[dch])dch=c;});
- const will=(Ig/10)*(It/10),drag=clamp(DQraw/14,0,1)*1.6+dist/10;
+ const will=(Ig/10)*(It/10),drag=clamp(DQ/14,0,1)*1.6+dist/10;
  const steer=will>=drag?'forced':'withheld';
  const mask=sups[0]||hys[0]||cxs[0]||sabs[0]||null;
  let darkB=BANDS[0],darkV=-1;
@@ -209,7 +327,8 @@ function compute(){
  const chain=sabs.concat(cxs).concat(hys).concat(sups);
  const outward=outwardShare(chain);
  const organized=organisedShare(chain);
- const gov=quadrant(outward,organized,CQ);
+ /* Angel needs CQ at 71 or more, which a partial CQ must not be read for */
+ const gov=quadrant(outward,organized,complete?CQ:null);
  /* CARRYING IS NOT THE SAME AS HELD, and the product had only the second word.
     `loaded` is every address at or above the line at sq 4, and it drives the
     arithmetic: DQ, resistance, the saboteur scan. That stays exactly as it is.
@@ -230,53 +349,35 @@ function compute(){
     something true to point at. */
  const carrying=W.filter(n=>n.sq>0).sort((a,b)=>b.sq-a.sq);
  return {loaded,carrying,heaviest:carrying[0]||null,
-  sabs,cxs,hys,sups,maskRing,DQ:DQraw,Rz,vf:_vf,SQm,poleMean,JQ,excess,
-  FAM_POLE,dist,Ig,It,CQ,tier,unread,measured,under,benign,malig,X,Y,Z,radiance,aff:af,pi,si,dch,steer,
+  sabs,cxs,hys,sups,maskRing,DQ,SQ,PULL,EX,Rz,vf:_vf,SQm,poleMean,JQ,excess,
+  FAM_POLE,dist,Ig,It,CQ,answered,complete,tier,unread,measured,under,benign,malig,X,Y,Z,radiance,aff:af,pi,si,dch,steer,
   outward,organized,gov,
   will,drag,mask,darkB,darkV,root,rootsIn,weakL,balance:balance()};
 }
 
 /* ============================================================
-   THE CEILING ON RELEASE. What coherence reads once every charge is gone,
+   THE CEILING ON RELEASE. What expression reads once every charge is gone,
    which is the most a release can ever achieve, and the gap to it.
 
-   Why this exists. CQ is (Intention x Integrity) / Resistance. A release
-   empties addresses, so it works on Resistance and on the installed pole. It
-   cannot manufacture Integrity, because Integrity is the twenty one laws and
-   those move only when a person answers them or changes what they do. The
-   product never said so, and offered release as its core loop, so a person
-   pulled the one lever the arithmetic had already spent.
+   Why this exists. A release empties addresses. It cannot manufacture
+   integrity, because integrity is the twenty one laws and those move only
+   when a person answers them or changes what they do. The product never said
+   so, and offered release as its core loop, so a person pulled a lever that
+   was already spent.
 
-   Measured across the roster by zeroing every charge and reading CQ back.
-   Marcus has 0.3 points of headroom and stays Incoherent. Sofia has 1.5 and
-   stays Even. Angela 1.0. Three of the six ICPs can run every release the
-   product will ever offer them and not move the number they were shown. James
-   has 7.2 and stays Severe at the end of it. The ceiling tracks the square of
-   the law mean: James law mean 4.37, ceiling 20.0; Marcus 6.21, ceiling 39.4;
-   Tomas 3.08, ceiling 9.5.
+   THIS WAS cqCeiling, AND A RELEASE CANNOT MOVE CQ AT ALL NOW. CQ is the laws
+   and nothing else, so its ceiling under release is itself and the headroom
+   was 0 for everybody: the release panel would have said "did not move" after
+   every run. What a release moves is the shadow, and through the lever,
+   expression. So the ceiling is expression with the shadow gone.
 
-   It is computed rather than simulated. With charge at zero, held is zero, sq
-   is zero and the pole is the whole of the installed side. jq reads off rep
-   alone so it does not move, bandIg reads off S.law alone so it does not move,
-   and DQ is zero by construction, which puts resistance on its floor. Nothing
-   is mutated and nothing is guessed. */
-function cqCeiling(){
- const lawMean=SINAMES.reduce((a,l)=>a+S.law[l],0)/21;
- const bandMean=BANDS.reduce((a,b)=>a+bandIg(b),0)/7;
- let poleSum=0,jqSum=0;
- W.forEach(n=>{
-  const relief=bandIg(n.b)/10;
-  const rep=n.cf?clamp((S.replace[n.cf]||0)*(0.72+0.28*relief),0,10):0;
-  poleSum+=rep;                                  /* held is 0, so pole is rep */
-  jqSum+=clamp(rep-6,0,4)/4*10;});
- const poleMean=poleSum/108, JQ=jqSum/108;
- const Ig=clamp(lawMean+poleMean*0.30-JQ*0.42,0,10);
- const It=clamp(bandMean+poleMean*0.22-JQ*0.30,0,10);
- const Rz=Math.max(1,verpFactor());             /* DQ is 0, so only the gate */
- return clamp((It*Ig)/Rz,0,100);
-}
+   It is computed rather than simulated. With charge at zero, held is zero at
+   every address, sq is zero whatever is installed, the four outside take a
+   seat mean of zero, and the pull is leverPull(0) at all 112. Nothing is
+   mutated and nothing is guessed. */
+function exCeiling(){return cqSum()*(1-leverPull(0));}
 /* the gap a release still has in it, for the person about to run one */
-function cqHeadroom(cqNow){return Math.max(0,cqCeiling()-cqNow);}
+function exHeadroom(exNow){return Math.max(0,exCeiling()-exNow);}
 
 /* ============================================================
    ACCURACY. Rebuilt from a layer ablation across visible axes x law

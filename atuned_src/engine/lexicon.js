@@ -108,6 +108,13 @@ var LEX={
  nervous:['root',14],anxious:['root',16],scared:['root',18],afraid:['root',16],
  frightened:['root',18],terrified:['root',26],panicked:['root',24],froze:['root',18],
  frozen:['root',18],shaking:['root',20],unsafe:['root',20],
+ /* PARALYZED WAS NOT A WORD THE SCANNER KNEW, and it is one of the owner's two
+    anchors: "I'm a little tense is different than I'm paralyzed, it's orders
+    of magnitude different." Measured before this: "I am paralyzed" read
+    nothing at all (AZ6). Seated where frozen is, at the root, because it is
+    the freeze taken to its end, and at the top of the authored curve, 28,
+    where the desktop puts it at the top of its own (paralysis 30 of 30). */
+ paralyzed:['root',28],paralysed:['root',28],paralysis:['root',28],
  /* sacral */
  restless:['sacral',12],craving:['sacral',14],numb:['sacral',16],empty:['sacral',18],
  hungry:['sacral',12],addicted:['sacral',22],distracted:['sacral',12],obsessed:['sacral',20],
@@ -132,7 +139,7 @@ var ADJ2CHG={
  unmoved:'apathy',detached:'apathy',uncaring:'apathy',
  apart:'separation',disconnected:'separation',outside:'separation',adrift:'separation',
  scared:'fear',afraid:'fear',frightened:'fear',terrified:'fear',panicked:'fear',
- froze:'fear',frozen:'fear',shaking:'fear',unsafe:'fear',dread:'fear',bracing:'fear',
+ froze:'fear',frozen:'fear',paralyzed:'fear',paralysed:'fear',shaking:'fear',unsafe:'fear',dread:'fear',bracing:'fear',
  angry:'anger',furious:'anger',defensive:'anger',blamed:'anger',
  ashamed:'shame',humiliated:'shame',embarrassed:'shame',guilty:'shame',
  stupid:'shame',worthless:'shame',inadequate:'shame',
@@ -145,6 +152,28 @@ var ADJ2CHG={
 
 /* the idioms. an idiom outranks its own words, because a statement can carry
    no feeling word at all and still be a report. */
+/* ============================================================
+   HOW MUCH, SAID IN THE WORD BEFORE IT. AZ6: the scanner read "a little
+   tense", "tense" and "extremely tense" as the same 16, because a degree word
+   is not in LEX and scanStory skipped it. The owner's ruling is that these
+   differ by orders of magnitude, and the fitted bell can only pull harder on
+   weight the words actually put there.
+
+   Ported from the desktop's MOD table (atuned/src/30_lexicon, line 244), the
+   degree adverbs only, with its factors unchanged. Seven it carries from its
+   burnout entry are left out, barely, persistent, dull, constant,
+   catastrophic, total and crushing: they are words with a meaning of their
+   own rather than a degree, and "barely" at 1.5 would scale "barely anxious"
+   up. Entirely, from the same entry, is a degree and is kept.
+
+   Applied only when the degree word stands immediately before the hit, which
+   is narrower than the desktop's anywhere earlier in the segment: "so" is a
+   degree in "so tense" and a conjunction in "so I froze", and adjacency is
+   the one rule that tells them apart without a parser. A factor under 1 is
+   still a hit; the word was written. */
+var LEXMOD={slightly:0.6,'a little':0.6,'kind of':0.7,somewhat:0.7,fairly:0.9,
+ quite:1.2,so:1.35,really:1.4,very:1.4,deeply:1.6,totally:1.7,absolutely:1.7,
+ entirely:1.7,extremely:1.8,completely:1.8,utterly:1.8};
 var PHRASES=[
  [['wrap myself in a blanket','pretend the world hit pause','pretend the world would stop',
    'want to disappear','wish i could disappear','not be here','not exist',

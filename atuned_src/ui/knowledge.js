@@ -77,9 +77,9 @@ function kbRows(sec){
     nowhere in the codex: the deck that exists to list every address was
     showing 108 of the 112 the product states. A deck chip counting its own
     rows would have printed 108 to a person, which is a standing ruling
-    against. The four come in. The engine computes no sq for them, so they
-    print an en dash rather than a figure, which is the state the row already
-    has for anything the intake does not score.
+    against. The four come in. They printed an en dash while the engine forced
+    their sq to 0; since 25 September each takes the mean of the seat it
+    extends and counts in DQ, so it prints its figure like the other 108.
 
     AND THE MARK IS COMPOSED. 108 named nodes wore seven marks between them,
     15.4 rows to a mark, which is the icon rule inverted: if it has a name it
@@ -94,7 +94,7 @@ function kbRows(sec){
   var seat=field?(n.b==='Field-Above'?'Crown':'Root'):n.b;
   var ax=n.cf?kbFind(CHILD,n.cf):null;
   out.push(kbRow('node', n.k, field?'field anchor':n.b, seat,
-   field?null:kbPct(n.sq), (ax&&ax.ic)||SEATGLYPH[seat]||SEATGLYPH._, n));});
+   kbPct(n.sq), (ax&&ax.ic)||SEATGLYPH[seat]||SEATGLYPH._, n));});
  /* THE NINE ARE CHILD EMOTIONS, NOT FETTERS. His ruling, and the product's
     own glossary already agreed with him: a fetter is "a named conditional
     response pattern resident at a specific node address, one per physical

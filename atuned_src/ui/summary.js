@@ -17,7 +17,8 @@ function lensEastern(r){
 function lensDesign(r){
  var a=ARCH[r.pi]||{nm:''};
  return {t:'Design',a:a.nm,b:'defined at the '+(r.darkB||'Root').toLowerCase()+', '
-  +(r.benign?'initiates':'responds')+', authority at the '
+  /* benign is null while CQ is still filling, and the clause waits with it */
+  +(r.benign===null?'':(r.benign?'initiates':'responds')+', ')+'authority at the '
   +(r.darkB==='Heart'?'heart':'solar plexus'),c:'archetype and polarity'};}
 function lensGene(r){
  var top=W.filter(function(n){return n.sq>=4;}).sort(function(a,b){return b.sq-a.sq;})[0];
@@ -79,14 +80,15 @@ function sumGlance(r){
      carrying, so it has no ceiling of ten or of anything else, and a stated
      range the data walks straight through is a lie on the surface.
 
-     The ring is a second half of the same lie and is not fixed here: r.DQ*10
-     clamps at 100, so every profile past ten draws an identical full ring.
-     Replacing this figure with the two facts it sums is the right answer and
-     it is a design change, so it is the owner's. The label tells the truth in
-     the meantime. */
-  ['shadow weight', 'Root', r.DQ*10, r.DQ.toFixed(1),
-   'Everything held, summed across the addresses carrying it. No ceiling.',
-   'summed, no ceiling'],
+     The ring was a second half of the same lie: r.DQ*10 clamped at 100, so
+     every profile past ten drew an identical full ring.
+
+     BOTH ARE FIXED BY THE RULING OF 25 SEPTEMBER rather than here. DQ is the
+     total shadow on all 112 over the most they can hold, so it has a ceiling
+     of 100 and the ring is the figure, on the same scale as coherence. */
+  ['shadow weight', 'Root', r.DQ, Math.round(r.DQ)+'%',
+   'The weight on all 112 addresses, out of the most they can hold.',
+   'of 100'],
   /* THIS PRINTED THE OPPOSITE OF WHAT IT MEASURES. It was labelled "installed"
      and glossed "what has been filled in". SQm is built in compute.js from
      sum+=n.sq over the loaded addresses, and n.sq is HELD charge: an address
@@ -258,7 +260,7 @@ function sumStory(r){
    +(stop?' Flow stops at the '+seatB(String(stop.p.n).toLowerCase(),stop.p.b)
      +', which is where the charge is dense enough to close the seat.'
     :' No seat is closed, so what is held is not yet stopping flow.')
-   +' Shadow weight is '+r.DQ.toFixed(1)+' and the law furthest shut is '
+   +' Shadow weight is '+Math.round(r.DQ)+' per cent and the law furthest shut is '
    +seatB(r.weakL.nm,r.weakL.b)+', at the '+seatB(String(r.weakL.b).toLowerCase(),r.weakL.b)+'.');
  }else{
   p.push('Nothing is held above the line, so nothing is reaching the body as load. '
@@ -292,14 +294,17 @@ function sumStory(r){
     sentence also opened on its denominator, "of the two leans the field is",
     which defers its subject by five words. Both ends are still named and they
     still add to a hundred, which is what that clause was there for. */
- p.push('The field leans <b>'
+ /* no lean sentence at all while CQ is still filling and no story cue has
+    come in: leanRead reports read false, and 100 per cent benign off a field
+    with no laws answered is a reading nobody took */
+ p.push(((lean.read===false?'':'The field leans <b>'
   +Math.round(Math.max(lean.ben,lean.mal))+' per cent '
   +(lean.ben>=lean.mal?'benign':'malignant')+'</b> against '
   +(100-Math.round(Math.max(lean.ben,lean.mal)))+' per cent '
-  +(lean.ben>=lean.mal?'malignant':'benign')+', '
-  +(r.benign?'which means it is expanding':'which means it is contracting')+'.'
+  +(lean.ben>=lean.mal?'malignant':'benign')
+  +(r.benign===null?'':', '+(r.benign?'which means it is expanding':'which means it is contracting'))+'.')
   +(r.excess?' Installed pole is past the point where it pays, so some of the work is now costing.':'')
-  +gapLine);
+  +gapLine).trim());
 
  return '<div class="s-story"><div class="pm-eye">Reading</div>'
   +p.map(function(t){return '<p class="s-p">'+t+'</p>';}).join('')
@@ -575,7 +580,8 @@ function sumPlate(r){
    /* and the word wears it too. A ring in one colour beside the same band
       printed in the body colour reads as two facts, not one. */
    +'<div class="s-pband"><b style="color:'+(TIERCOL[r.tier]||'var(--ink)')+'">'
-   +esc(r.tier)+'</b>'
+   /* no band yet while CQ is still filling, so the slot says what is left */
+   +esc(tierSay(r))+'</b>'
    +(t&&t.state?'<em>'+esc(t.state)+'</em>':'')+'</div>'
   +'</div>'
   /* the direction out, which has never been on a surface a touch screen can
@@ -591,8 +597,10 @@ function sumOutput(r){
  var rit=(typeof ritFor==='function')?ritFor(r):null;
  var m=(typeof meterRead==='function')?meterRead(CURP):null;
  var hot=r.loaded.slice().sort(function(a,b){return b.sq-a.sq;})[0];
- /* how much of the reading a release can still reach, from the engine */
- var rhead=(typeof cqHeadroom==='function')?cqHeadroom(r.CQ):99;
+ /* how much of the reading a release can still reach, from the engine. It
+    is expression's headroom since 25 September: a release cannot move CQ,
+    which is the laws alone, so cqHeadroom was 0 for everybody. */
+ var rhead=(typeof exHeadroom==='function')?exHeadroom(r.EX):99;
  var card=function(eye,nm,sub,act){
   return '<div class="s-out">'
    +'<span class="pm-eye">'+eye+'</span>'
@@ -612,14 +620,14 @@ function sumOutput(r){
   /* WHAT RELEASE HAS LEFT IN IT, said before the person spends the time, and
      only when there is something to spend it on.
 
-     CQ is intention times integrity over resistance. A release works on
-     resistance and on the installed pole; it cannot manufacture integrity,
-     because integrity is the twenty one laws and those move when a person
-     answers them or when what they do changes. Measured by clearing every
-     charge and reading CQ back: Marcus can run every release this product will
-     ever offer him and move 0.3, Sofia 1.5, Angela 1.0, and all three stay in
-     the same band. They were being pointed at the one lever already spent with
-     nothing on the screen saying so.
+     A release works on the shadow; it cannot manufacture integrity, because
+     integrity is the twenty one laws and those move when a person answers
+     them or when what they do changes. Measured under the old formula by
+     clearing every charge and reading CQ back: Marcus could run every release
+     this product would ever offer him and move 0.3, Sofia 1.5, Angela 1.0.
+     Since 25 September CQ is the laws alone and a release moves it by
+     nothing, so what is measured here is expression, which is CQ times what
+     the shadow leaves: the most a release can still give back.
 
      Four cases, and each says only what is true of it. Something above the
      line, release it. Carrying below the line with room left, release that.
@@ -627,7 +635,7 @@ function sumOutput(r){
      nothing, say so, which is the right answer for the people it is true of
      and was previously said to everybody.
 
-     THIN is 1.5 points of CQ. Not a tuned constant: the reading is published
+     THIN is 1.5 points of expression. Not a tuned constant: the reading is published
      to plus or minus about thirteen, so a lever with under one and a half in
      it cannot produce a move this instrument would call a reading, and the
      product should not spend a person's fifteen minutes pretending otherwise. */
@@ -635,7 +643,7 @@ function sumOutput(r){
     var THIN=1.5;
     if(hot)return card('Release this first',hot.k,
      hot.b+' seat, holding '+hot.sq.toFixed(1)
-      +(r.unread?'':'. Release has about '+rhead.toFixed(1)+' in it'),
+      +(r.unread||!r.complete?'':'. Release has about '+rhead.toFixed(1)+' points of expression in it'),
      '<button class="btn s-oact" data-sout="rel" data-n="'+hot.i+'">Run a release</button>');
     if(r.heaviest&&(r.unread||rhead>=THIN))return card('Release this first',r.heaviest.k,
      r.heaviest.b+' seat, below the line at '+r.heaviest.sq.toFixed(1)
@@ -643,9 +651,14 @@ function sumOutput(r){
      '<button class="btn s-oact" data-sout="rel" data-n="'+r.heaviest.i+'">Run a release</button>');
     /* four words, so it is a label. "now" was the fifth and it was carrying
        nothing: the whole surface is the reading now. */
+    /* while CQ is still filling, expression cannot rise above it, so the
+       headroom is near 0 whatever is held and the figure says nothing */
+    if(!r.complete)return card('What moves the reading','The twenty one laws',
+     'Coherence fills as you answer them, and expression cannot rise above it',
+     '<button class="btn s-oact" data-sout="iq">Answer the laws</button>');
     if(r.heaviest)return card('What moves the reading','The twenty one laws',
-     'Release has about '+rhead.toFixed(1)+' left in it for you. The rest of the reading '
-     +'is integrity, and that moves when you answer the laws or when what you do changes',
+     'Release has about '+rhead.toFixed(1)+' points of expression left in it for you. The rest '
+     +'is the laws, and they move when you answer them or when what you do changes',
      '<button class="btn s-oact" data-sout="iq">Answer the laws</button>');
     return card('Release this first','Nothing is carrying',
      'No address is holding anything','');}())

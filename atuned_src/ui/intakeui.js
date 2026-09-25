@@ -221,8 +221,11 @@ function renderIntake(){
      the proportion, because a bar is a length and not a number. */
   +'<div class="iq-pl">'+answered+' answered, <b>'+(63-answered)+' left</b>'
   +' \u00b7 '+scored+' law'+(scored===1?'':'s')+' measured'
-  +(scored<21?', '+(21-scored)+' still at the default':'')
-  +(scored?' \u00b7 '+r.tier.toLowerCase():'')+'</div></div>'
+  /* NOT "STILL AT THE DEFAULT" ANY MORE. An unanswered law counts 0 in CQ
+     since 25 September, so CQ fills as they land, and the word waits for the
+     last one: r.tier is null until all 21 are in. */
+  +(scored<21?', '+(21-scored)+' still to answer':'')
+  +(r.tier?' \u00b7 '+r.tier.toLowerCase():'')+'</div></div>'
   +'<div class="iq-act">'
    /* AND THE SWITCHER NAMES WHAT IS ACTUALLY LOADED. It listed PROFILES only,
       and a reference case is not in that list any more, so with one loaded no

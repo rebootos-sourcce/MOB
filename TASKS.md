@@ -9231,10 +9231,20 @@ this is logged as a defect and not closed by the ruling alone.
 *Medium, and it is priced work: everything in both engines that reads CQ off
 a release today has to repoint to intention or the address weights, since
 under the ruling CQ only moves when the laws are answered again.*
+**Fixed in MOB, 25 September.** `compute()` reads CQ off the 21 laws alone,
+summed over 210. The same probe that found 22 of 10,000, same seed, same
+release arithmetic, now reads 0 falls and 0 changes of any kind to CQ, with
+DQ never rising, no one of the 112 rising and expression never falling.
+Held in `tests/engine.js` group 36b on 2,000 draws. The release panel and
+the Summary release card read expression before and after, through
+`exCeiling` and `exHeadroom`, which replace `cqCeiling` and `cqHeadroom`.
 
 **AY2. MOB puts the laws into CQ twice.** `Ig` and `It` are the same 21
 scores read into two different terms, which is why the shipped formula is
 the square of the law mean rather than the mean itself.
+**Fixed in MOB, 25 September.** Neither enters CQ. Both are still computed,
+because the awareness and will readouts and the will against drag steer read
+them. Every law at 5 reads CQ 50 where it read 25.
 
 **AY3. The desktop's shadow term is a placeholder that cannot tell weight
 360 from weight 2000.** Its comment says so. `A_SQ=1.0` regardless of how
@@ -9299,6 +9309,16 @@ must differ by two orders of magnitude currently has to come entirely from
 the curve, not from the words, because the words are not heard.
 *Medium, and it is the one thing that would let the model reflect what a
 person actually wrote instead of only what the curve assumes.*
+**Partly fixed in MOB, 25 September.** Paralyzed, paralysed and paralysis
+are words at the root, at 28, the top of the authored curve. A degree word
+standing immediately before a hit scales it by the desktop's own `MOD`
+factors, the sixteen degree adverbs only: a little tense, tense and
+extremely tense read 9.6, 16 and 28.8, and on a blank field the heaviest
+address they land reads 0.62, 1.01 and 1.87 against 2.62 for paralyzed, so
+the bell pulls the paralyzed address about 120 times as hard as the little
+tense one. Not done: a degree word further back in the sentence than the
+word before the hit, which the desktop reads and MOB does not, on purpose,
+because "so I froze" is not a degree.
 
 ## BA. Art cleanup queue, marked with a screenshot, 25 September.
 His words: "Menu is broken. Remove the text under Charge. Move all the icons
@@ -9448,3 +9468,44 @@ explaining it.
 a person they are looking at a worked example and not their own record;
 whoever cuts it should carry that distinction somewhere else rather than
 lose it silently.*
+
+## BB. Found while porting the fitted CQ into MOB, 25 September.
+
+**BB1. The six gates now cost nothing, and the copy still says they do.**
+new. The gate multiplier used to raise resistance, and resistance divided
+CQ. The owner ruled CQ is the 21 laws alone, so resistance divides nothing
+and the gate multiplier changes no number in the product. The drill and the
+gate tooltip still print it as "the cost on everything held". Whether the
+gates should enter the lever (scale the pull, say) is a model question, and
+until it is answered the copy is claiming an effect that does not exist.
+*Small to change the words, and his call whether the gates get a job back.*
+
+**BB2. Two things are called intention.** new. The ruled intention, what was
+said against what was done, is ported as `intentionRead()` over the ritual
+record's done marks and is on no surface yet. The Instruments rail and the
+Awareness drill already print "intention" for `It`, the band mean of the
+laws, which is a different quantity. One word per concept means one of them
+has to be renamed before the ruled one is shown. The reason half of the
+ruled model also needs a commitment to carry its address, which is a schema
+change and his.
+*Small, once he names them.*
+
+**BB3. The tier word is on CQ and its copy describes load.** new. This is
+his open question 1 in `DECISIONS.md`, recorded here because it is now
+visible: Gordon reads CQ 19, Severe, "Most of the field is carrying", which
+is true of his field and not of his laws, while his expression reads 8.9.
+The four end cases solved against the old formula (Tomas 2, Nkem 10, Wren
+92, Abraham 98) now read 25.9, 45.6, 91.3 and 89.2 on CQ. Their tables were
+not re-solved, because re-solving would answer question 1 for him. The
+clinician referral in the descent was moved to expression on its own,
+because a safety referral is not a label: under CQ alone it went dark for
+Gordon.
+*Waiting on question 1.*
+
+**BB4. The funnel's single file build carries the old glossary.** new.
+`funnel/dist/atuned-quiz.html` embeds `GLOSS`, and its CQ entry still reads
+"(Intention x Integrity) / Resistance" and DQ "100 minus CQ". The app's own
+glossary was corrected. The funnel build was not rerun here because it is
+its own product with its own build.
+*Small: rerun `funnel/BUILD-single.sh` and look at it.*
+

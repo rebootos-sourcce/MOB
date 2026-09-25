@@ -307,11 +307,15 @@ const kb=await page.evaluate(()=>{
    out of W and appeared in no deck: the surface that exists to list every
    address was showing 108 of the 112 the product states. A deck chip counting
    its own rows would have printed 108 to a person, and the count stated to
-   users is 112. The four are in. The engine computes no sq for them, so they
-   print an en dash rather than a figure. */
+   users is 112. The four are in.
+
+   CHANGED 25 SEPTEMBER. This asserted four en dashes, because the engine
+   forced the four to 0 and computed nothing for them. The owner ruled they
+   are SQ like the rest, each taking the mean of the seat it extends, so they
+   carry a figure now and no row on the deck is a dash. */
 ok(kb.all===112,'the fetters deck carries all 112 addresses, got '+kb.all);
 ok(kb.chip==='112','and the deck chip says 112, got '+kb.chip);
-ok(kb.dash===4,'four of them carry no figure because the engine reads none, got '+kb.dash);
+ok(kb.dash===0,'and every one carries a figure, the four outside included, dashes '+kb.dash);
 ok(kb.hit>0&&kb.hit<kb.all,'search narrows, '+kb.all+' to '+kb.hit);
 ok(kb.none===0&&kb.foundAll===0,'a term in no table finds nothing in any section');
 ok(kb.empty.length===0,'every section has rows, empty: '+kb.empty.join(','));
@@ -532,8 +536,12 @@ ok(!/Incoherent|Corrupt|Severe|Collapsed/.test(virgin.tier),
  'the tier does not name a band, it reads: '+JSON.stringify(virgin.tier));
 ok(!/Incoherent/.test(virgin.profile),'nor does the profile sheet');
 ok(!/incoherent/.test(virgin.ana),'nor the analytics hero, which reads: '+JSON.stringify(virgin.ana));
-ok(virgin.unreadAfter===false&&/Incoherent|Corrupt|Severe|Oscillating|Even|Gaining|Compounding|Embodied|Mastery/.test(virgin.after),
- 'and one held address makes it a real reading again: '+JSON.stringify(virgin.after));
+/* CHANGED 25 SEPTEMBER. This asserted a band word here. One held address
+   still makes it a reading, but CQ is the laws alone and this person has
+   answered none, so the word waits for all 21 and the slot says what is left
+   to answer. A band word here would be one read off laws nobody answered. */
+ok(virgin.unreadAfter===false&&/^\d+ laws? to answer$/.test(virgin.after),
+ 'and one held address makes it a reading, with the band waiting on the laws: '+JSON.stringify(virgin.after));
 const bands=['Incoherent','Corrupt','Severe','Collapsed'].filter(w=>virgin.sweep.includes(w));
 ok(bands.length===0,'no band word appears anywhere on an unread first screen, found: '
  +(bands.join(', ')||'none'));
@@ -1117,7 +1125,10 @@ const pole=await page.evaluate(()=>{
  const row=document.querySelector('#rdrill [data-mirror]');
  o.rows=document.querySelectorAll('#rdrill [data-mirror]').length;
  if(row){row.click(); o.axis=txt();}
- const r=compute(); o.cq=Math.round(r.CQ); o.dark=darkRead(r.malig/100,r.CQ).dark;
+ /* EX and not CQ since 25 September, as the drill reads it: the descent and
+    its referral read expression, because CQ is the laws alone and cannot see
+    the load that makes a field decoherent. */
+ const r=compute(); o.cq=Math.round(r.EX); o.dark=darkRead(r.malig/100,r.EX).dark;
  /* AND A COHERENT FIELD IS NEVER SHOWN IT. This used to build the clean case
     by hand, zeroing the nine and setting the laws to ten. Measured, that
     construction reads CQ 9 with malignancy 81: it is not a clean field and
@@ -1131,8 +1142,8 @@ const pole=await page.evaluate(()=>{
  var ri=0; for(var q=0;q<PEOPLE.length;q++)if(PEOPLE[q].nm==='Rosa')ri=q;
  loadP(ri); render();
  const rc=compute();
- o.cleanCQ=Math.round(rc.CQ); o.cleanMal=Math.round(rc.malig);
- o.cleanDark=darkRead(rc.malig/100,rc.CQ).dark;
+ o.cleanCQ=Math.round(rc.EX); o.cleanMal=Math.round(rc.malig);
+ o.cleanDark=darkRead(rc.malig/100,rc.EX).dark;
  runPoleDrill('dn'); o.clean=txt();
  loadP(GORDON()); render();
  return o;});
@@ -1310,12 +1321,15 @@ const virginSweep=await page.evaluate(()=>{
  if(CURP&&keptLaws)CURP.laws=keptLaws;
  return o;});
 ok(virginSweep.unread,'the field reads as unread');
-ok(virginSweep.cq>0,'and the arithmetic still produces a number underneath, '
- +virginSweep.cq);
-{const re=new RegExp('.{0,60}\\b'+virginSweep.cq+'\\b.{0,30}','g');
- const hits=[]; let m; while((m=re.exec(virginSweep.page)))hits.push(m[0].trim());
- ok(hits.length===0,'and '+virginSweep.cq+' appears nowhere on an unread page'
-  +(hits.length?'  '+hits.slice(0,3).join(' | '):''));}
+/* CHANGED 25 SEPTEMBER. These asserted the arithmetic still produced a
+   number above 0 here, 36 off the default six, and then that the number
+   appeared nowhere on the page. There is no default reading to leak any
+   more: an unanswered law counts 0 by the owner's ruling, so CQ is 0 and
+   filling. The regression this guards is the default six coming back into
+   CQ, which would read 60 here, and that is asserted directly. The search
+   for the figure on the page is gone with it, because 0 is on every page. */
+ok(virginSweep.cq===0,'and with no law answered CQ is 0, filling, never a figure off the '
+ +'default six, got '+virginSweep.cq);
 ok(/Nothing read yet/.test(virginSweep.pol),
  'the benign split says there is none rather than printing one');
 ok(!/72%|28%/.test(virginSweep.pol),'and prints no percentage off the defaults');
@@ -2218,25 +2232,29 @@ relOffer.forEach(s=>{
   'release run '+s.run+' is offered while '+s.carrying+' addresses carry');});
 
 console.log('\n=== the ceiling on release is computed, not guessed ===');
-/* cqCeiling is analytic. It must agree with actually clearing every charge and
-   reading CQ back, on every persona, or it is a number the product should not
-   print. Checked against the brute force because a tool that lies is worse
-   than no tool and this one goes on a screen. */
+/* The ceiling is analytic. It must agree with actually clearing every charge
+   and reading the number back, on every persona, or it is a number the
+   product should not print. Checked against the brute force because a tool
+   that lies is worse than no tool and this one goes on a screen.
+
+   CHANGED 25 SEPTEMBER from cqCeiling and CQ to exCeiling and expression. CQ
+   is the laws alone and a release cannot move it, so the ceiling a release
+   works toward is expression's, and the brute force reads expression. */
 const ceil=await page.evaluate(()=>{
  const out=[];
  for(let i=1;i<PEOPLE.length;i++){
   loadP(i);
-  const analytic=cqCeiling();
+  const analytic=exCeiling();
   const save=JSON.parse(JSON.stringify(S.charge));
   CHARGES.forEach(c=>{S.charge[c]=0;});
-  const brute=compute().CQ;
+  const brute=compute().EX;
   CHARGES.forEach(c=>{S.charge[c]=save[c];});
   out.push({nm:PEOPLE[i].nm,d:Math.abs(analytic-brute)});}
  return out;});
-ceil.forEach(c=>ok(c.d<0.05,'cqCeiling matches clearing every charge for '+c.nm
+ceil.forEach(c=>ok(c.d<0.05,'exCeiling matches clearing every charge for '+c.nm
  +', off by '+c.d.toFixed(3)));
 ok(await page.evaluate(()=>{loadP(PERSON('James'));const r=compute();
-  return cqHeadroom(r.CQ)>0&&cqHeadroom(200)===0;}),
+  return exHeadroom(r.EX)>0&&exHeadroom(200)===0;}),
  'headroom is never negative and is positive where there is ground');
 
 

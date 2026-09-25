@@ -21,7 +21,9 @@ function drawAura(r){
  AURA_SIG=sig;
  bgx.clearRect(0,0,w,h);
  bg.style.opacity=op;
- const warm=hx(r.benign?PAL.Heart:PAL.Root), lead=hx(PAL[r.darkB]);
+ /* the Root wash only on a read that says contracting. benign is null while
+    CQ is still filling, and a partial CQ is not a reason to redden a field. */
+ const warm=hx(r.benign===false?PAL.Root:PAL.Heart), lead=hx(PAL[r.darkB]);
  const gc=GOLDC();
  const gr0=bgx.createRadialGradient(w/2,h/2,0,w/2,h/2,Math.max(w,h)*reach);
  gr0.addColorStop(0,rgba(gc,.42*r.radiance));

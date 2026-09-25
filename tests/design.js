@@ -1242,6 +1242,13 @@ console.log('\n=== a figure is legible against the ground it is printed on ===')
    const base=trough.a>=0.999?trough.c:painted(pb);
    [['benign','r',PAL.Heart,''],['malignant','l',PAL.Root,' mal']].forEach(cs=>{
     const f=pb.querySelector('.fill');
+    /* THE TRANSITION IS OFF FOR THE MEASUREMENT. .fill animates its width,
+       so setting 50% and reading the rect in the same tick reads wherever
+       the animation starts. That was invisible while Gordon leaned 98 to 2
+       and his fill already sat at 48 per cent. Since 25 September his CQ is
+       his laws, 17.5, so he leans 61 to 39 and the fill starts at 11 per
+       cent, and the rect read 29 pixels of a 132 pixel target. */
+    f.style.transition='none';
     f.className='fill'+cs[3]; f.style.width='50%'; f.style.background=cs[2];
     const lb=pb.querySelector('.lb.'+cs[1]); if(!lb)return;
     const b=lb.querySelector('b')||lb;

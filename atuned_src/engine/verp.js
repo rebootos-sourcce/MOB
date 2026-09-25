@@ -506,13 +506,21 @@ function leanRead(r){
   frame:{self:LEANMIX.self, other:LEANMIX.other, rawLack:LEANMIX.rawLack,
    admit:leanAdmit(LEANMIX.self+LEANMIX.acc,LEANMIX.other),
    read:known&&(LEANMIX.self+LEANMIX.acc)>0}};
+ /* THE FIELD HAS NO LEAN WHILE CQ IS STILL FILLING. malig is null until all
+    21 laws are in, and read as 0 it made the field alone lean 100 per cent
+    benign for somebody who had answered no law, printed as a reading on
+    Summary. So read says whether there is anything under ben and mal at all,
+    and with story cues and no field the story speaks alone rather than being
+    blended toward a benign prior nobody measured. */
+ var fieldKnown=!!r&&r.malig!==null&&r.malig!==undefined;
+ out.read=fieldKnown;
  if(!tot) return out;
  var storyMal=mal/tot*100;
  var trust=LEAN_TRUST_CAP*tot/(tot+LEAN_TRUST_HALF);
- var m=fieldMal*(1-trust)+storyMal*trust;
+ var m=fieldKnown?fieldMal*(1-trust)+storyMal*trust:storyMal;
  var n=Math.round(tot);
- out.ben=100-m; out.mal=m; out.cues=tot; out.trust=trust;
- out.src='field and '+n+' story cue'+(n===1?'':'s');
+ out.ben=100-m; out.mal=m; out.cues=tot; out.trust=trust; out.read=true;
+ out.src=(fieldKnown?'field and ':'')+n+' story cue'+(n===1?'':'s');
  return out;}
 
 /* ---------- direction over time ----------

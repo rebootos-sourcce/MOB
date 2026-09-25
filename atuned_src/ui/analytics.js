@@ -123,12 +123,15 @@ function anaRender(){
       and not a reading. The subject is the field, which is the right distance:
       a person at level 3 who is defended reads a verdict in a bare label and
       a measurement in a sentence about their field. */
-   :'The field reads <b>'+esc(r.tier.toLowerCase())+'</b>. '
+   /* and while CQ is still filling there is no word yet, so the sentence says
+      what is left rather than naming a band off laws nobody answered */
+   :(r.tier?'The field reads <b>'+esc(r.tier.toLowerCase())+'</b>. '
+     :'Coherence is still filling, with <b>'+esc(tierSay(r))+'</b>. ')
    +(loud?'<b>'+esc(loud.nm)+'</b> is the biggest thing running. ':'Nothing is compounding. ')
    /* a count against a total is a score, and this is not a score */
    +(stop?'Flow stops at the <b>'+stop.p.n.toLowerCase()+'</b>. ':'Every seat is passing. ')
    +(held.length?'<b>'+held.length+'</b> address'+(held.length===1?' is':'es are')
-     +' carrying, at a shadow weight of <b>'+r.DQ.toFixed(1)+'</b>.'
+     +' carrying, at a shadow weight of <b>'+Math.round(r.DQ)+' per cent</b>.'
    /* Held above the line and carrying anything at all are two different facts
       and this said the second when it only knew the first. A field with load
       spread under the line reported "Nothing is carrying" beside a tier word
@@ -136,7 +139,10 @@ function anaRender(){
     :(r.heaviest?'Nothing is above the line. The heaviest is <b>'+esc(r.heaviest.k)
       +'</b> at <b>'+r.heaviest.sq.toFixed(1)+'</b>, at the '
       +String(r.heaviest.b).toLowerCase()+'.':'Nothing is carrying.'))
-   +(prev?' CQ '+(r.CQ-prev.cq>=0?'up ':'down ')+Math.abs(r.CQ-prev.cq).toFixed(1)+' since last session.':''))
+   /* only against a row the same arithmetic wrote. A row from before 25
+      September holds It*Ig/Rz, and the gap to the laws over 210 is the
+      formula changing, not the person moving. */
+   +(prev&&prev.m===CQ_MODEL?' CQ '+(r.CQ-prev.cq>=0?'up ':'down ')+Math.abs(r.CQ-prev.cq).toFixed(1)+' since last session.':''))
   +'</div>'
   /* THE FIGURE STAYS ON THE TAB WHOSE JOB IS SAYING WHAT THE INSTRUMENT
      KNOWS. The tolerance beside it does not. It printed "58% plus or minus

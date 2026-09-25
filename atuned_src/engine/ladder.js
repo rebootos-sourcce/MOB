@@ -106,6 +106,44 @@ function ledgerRead(p){
   lines:+m.lines||0, ground:((m.unique||[]).length),
   clear:clear, carry:carry, snaps:((p&&p.history)||[]).length};}
 
+/* ============================================================
+   INTENTION, THE GAP BETWEEN WHAT WAS SAID AND WHAT WAS DONE. Ruled 25
+   September: "You either did the thing you said you were gonna do or you
+   didn't, and the reason why is going to be, there's a story in there from
+   the SQ somewhere in the body." And: "you can have an emotion without an
+   intention." So no charge is read into this number at all. It is the
+   rituals a person committed to in the window, against the ones marked done.
+
+   WHAT IS PORTED AND WHAT IS NOT. The number is the fitted model's own
+   (cq-unified.md B.1): 100 times did over said, null when nothing was said,
+   over the last seven days, which is the desktop's window. The reason half
+   is not: the ruling ties each broken commitment to the address it was made
+   for so the story stored there is the why, and a saved ritual carries a
+   seat (band) and no address. Adding one is a schema change and SOURCE
+   compatibility makes that the owner's call, so broken commitments are
+   returned with their seat only and nothing here claims an address. Whether
+   awareness scales this or sits beside it in words is his open question 4,
+   so nothing scales it. It is not yet on any surface: the product's
+   existing "intention" readout is It, the band mean of the laws, and putting
+   a second number under the same word before he names one is the defect
+   one word per concept exists to stop.
+
+   An entry with no done key was saved before done existed. ledgerRead reads
+   it as practised, which is right for minutes on a record, but here it would
+   claim a commitment kept that nobody recorded either way, so it is left out
+   of both counts. The caller passes the moment, as everywhere in this file. */
+var INTENT_DAYS=7;
+function intentionRead(p,now){
+ var today=pracDay(now||Date.now()), said=0, did=0, broken=[];
+ ((p&&p.rituals)||[]).forEach(function(x){
+  if(!x||x.done===undefined)return;
+  var d=pracDay(x.t); if(d===null||today===null)return;
+  if(today-d<0||today-d>=INTENT_DAYS)return;
+  said++;
+  if(x.done)did++; else broken.push({t:x.t, band:x.band||''});});
+ return {said:said, did:did, days:INTENT_DAYS,
+  pct:said?100*did/said:null, broken:broken};}
+
 /* THE MARKS.
 
    Each is a named thing, so each has an icon and a family, and the family has

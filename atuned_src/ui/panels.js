@@ -744,7 +744,7 @@ function profileSheet(){
    +(r.unread?'not read yet':String(Math.round(r.CQ)))+'</b></div>'
   +'<div class="sh-row"><span>Tier</span><b'
   +(r.unread?'':' style="color:'+(TIERCOL[r.tier]||'var(--ink)')+'"')+'>'
-  +esc(r.unread?'not read yet':r.tier)+'</b></div>'
+  +esc(r.unread?'not read yet':tierSay(r))+'</b></div>'
   /* "of 112" was a count against a total, which is the one thing a reading
      may never be. The number of addresses carrying is the fact. */
   +'<div class="sh-row"><span>Addresses carrying</span><b>'+r.loaded.length+'</b></div>'

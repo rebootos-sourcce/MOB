@@ -47,6 +47,9 @@ function obCount(){ return obStore().length; }
    The raw reading never travels. */
 function obBand(r){
  if(!r||r.unread) return 'unread';
+ /* a CQ still filling is where somebody is in the intake, not on the curve,
+    and bucketing it would file everybody mid intake as low */
+ if(r.complete===false) return 'filling';
  var c=r.CQ;
  return c<50?'low':(c<70?'median':'high');}
 

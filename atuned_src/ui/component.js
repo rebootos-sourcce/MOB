@@ -32,6 +32,19 @@ const svgI=function(p){return '<svg viewBox="0 0 24 24">'+p+'</svg>';};
 function glyphPath(ic){
  if(!ic)return SEATGLYPH._;
  return String(ic).charAt(0)==='<' ? ic : '<path d="'+ic+'"/>';}
+/* THE TIER WORD, OR WHAT IS STILL TO ANSWER BEFORE THERE IS ONE. compute()
+   sets r.tier null until all 21 laws are in, because a word on a CQ that is
+   still filling would name everybody on day one by the laws they have not
+   answered yet. Every surface that had a slot for the word puts this in it,
+   so the building state is said one way across the app. */
+function tierSay(r){
+ if(r.tier)return r.tier;
+ var left=SI.length-(r.answered||0);
+ return left+(left===1?' law':' laws')+' to answer';}
+/* and the same state as a sentence, for a slot that carries the definition */
+function tierBuilding(){
+ return 'Coherence fills as each law is answered. The band is named once all '
+  +SI.length+' are in.';}
 function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 /* THE COLOUR A SEAT WEARS DEPENDS ON WHAT IT IS SITTING ON, and this knew
    about one light ground out of two. Lumen arrived with paper rails and the

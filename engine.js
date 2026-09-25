@@ -1691,7 +1691,7 @@ var KB_KEY=function(s){return String(s||'').replace(/^[Tt]he\s+/,'').toLowerCase
 var SABDEF={"negotiator":{"c":"S01","d":"Argues against your own intentions. Always sounds reasonable. Never says stop forever, says stop today. The fear of discomfort is mild enough to be rationalized away. The happiness available from the easier option is just high enough to make the rationalization feel earned. Together they produce the internal diplomat who can talk you out of anything, not through force, but through the perfectly reasonable argument that now is not the right moment. The most dangerous saboteur in the system because it sounds exactly like you.","t":"The moment between intending to do the necessary thing and beginning to do it. The pause.","i":"Begin the action before the internal dialogue completes. Remove the pause. The Negotiator only has power in the gap between intention and motion. Close the gap.","q":"I can start tomorrow. / Just this once. / I've earned a break."},"controller":{"c":"S02","d":"Hypervigilance at the level of outcomes. The foundation of the Type A pattern. Not a personality trait, a fear response that has been running so long it looks like a management style. The fear underneath: something will go wrong, someone will get hurt, or the situation will fall apart if I release my grip. Self-control registers as 10. Anything less registers as loss. The delta between perceived control and actual control is the zone of active saboteur behavior. Anger layers in as a do-as-I-say mechanism, authority used to close the control gap quickly. Entitlement provides the justification: it is not just that I need to control this. It is that I am right to. Competition drives the adversarial edge, not just winning but not-losing, which is a different frequency entirely.","t":"The moment control begins to slip. Uncertainty in outcomes. Others not performing to expectation. Delegation without confirmation. Silence where confirmation should be.","i":"Control is not a state. It is a belief held under pressure. The person fails control the same way a person fails a landing, only if they quit. Recognize that the need to be in control and the experience of being out of control are both charges, not conditions. Neither is real. Locate the fear underneath. Release the fear. The control behavior loses its substrate.","q":"If I don't control this, something will go wrong."},"victim":{"c":"S03","d":"Focuses on internal feelings and victim mentality for attention. Martyrdom.","t":"When accountability is required.","i":"Identify one thing within your control. Take one action on it.","q":"This keeps happening to me."},"perfectionist":{"c":"S04","d":"Continuous pressure to do better. Anxiety about imperfections in self and others.","t":"Before completion or release of work.","i":"Set a fixed completion time. Release at that time regardless of state.","q":"It is not good enough yet."},"pleaser":{"c":"S05","d":"Indirectly tries to gain acceptance by helping, pleasing, rescuing, or flattering.","t":"When there is potential for disapproval or when a boundary is needed.","i":"State a preference or limit once. Do not explain or apologize.","q":"My worth depends on making others happy."},"hyper achiever":{"c":"S06","d":"Dependent on constant performance for self-respect. Workaholic.","t":"When performance is not being measured or when rest is available.","i":"Rest without producing for one hour. No metrics.","q":"My worth is in my output."},"hyper rational":{"c":"S07","d":"Processes everything through logic. Impatient with emotional concerns.","t":"When emotional input is offered.","i":"Name the emotion present in the room before analyzing the problem.","q":"If I can't explain it, it isn't real."},"hyper vigilant":{"c":"S08","d":"Continuous anxiety about potential dangers. Constant risk management.","t":"When the environment changes or trust is required.","i":"Identify one thing that is safe. Hold that for 60 seconds.","q":"The threat is always just ahead."},"restless":{"c":"S09","d":"Constant search for new activities. Rarely at peace with the current moment.","t":"When the current situation becomes familiar or stable.","i":"Stay with the current thing for twice as long as the impulse to move suggests.","q":"The next thing will be better."},"stickler":{"c":"S10","d":"Perfectionism and need for order. Anxiety when standards are not met.","t":"When the environment or person deviates from the correct way.","i":"Identify one situation where your standard is serving your fear, not your values.","q":"There is a right way and a wrong way."},"judge":{"c":"S11","d":"Judges self and others. Replays past failures. The master saboteur, activates all others.","t":"When someone, including self, falls short of standard.","i":"Find one thing that is right about the situation being judged.","q":"Someone is responsible for this."},"deflector":{"c":"S12","d":"Does not own. Justification to avoid accountability.","t":"When direct accountability or personal disclosure is required.","i":"Stay with the direct question for 10 seconds before redirecting.","q":"If they knew the real me they would leave."},"dramatizer":{"c":"S13","d":"Amplifies the emotional intensity of situations to generate attention or movement.","t":"When intensity of feeling is present and an audience is available.","i":"Reduce the intensity of the next statement by half.","q":"My pain must be visible to matter."},"worrywart":{"c":"S14","d":"Runs continuous worst-case scenarios. Mistakes anxiety for planning.","t":"When the future is uncertain.","i":"Name the specific worst case. Name one action if it occurs.","q":"Worrying is preparation."},"loner":{"c":"S15","d":"Withdraws from contact as protection. Independence as defense, not a value. Fear of rejection co-mingling with shame of belonging at sufficient magnitude. The person does not experience themselves as afraid, they experience themselves as preferring solitude. Release the fear and sad nodes and the solitude remains if chosen, not if driven.","t":"When connection is available and would be beneficial.","i":"Make one direct request for connection.","q":"Needing others is weakness."},"people pleaser":{"c":"S16","d":"Approval-seeking at the expense of authenticity.","t":"When approval is uncertain or a boundary is needed.","i":"Identify the response that serves the relationship rather than the approval.","q":"If they don't like me I have failed."},"skeptic":{"c":"S17","d":"Defaults to distrust and doubt. Skepticism as protection against disappointment.","t":"When new information challenges the current model.","i":"Sit with the new information for 24 hours before dismissing it.","q":"Trust gets you hurt."},"dreamer":{"c":"S18","d":"Lives in possibility without building the bridge toward it. Avoids the friction of execution.","t":"When the gap between vision and current reality is visible.","i":"Identify one concrete step. Execute it today.","q":"Someday the conditions will be right."},"procrastinator":{"c":"S19","d":"Delays action on important tasks. Mistakes motion for progress.","t":"When the important task is clear and available.","i":"Begin. Not finish. Not plan. Begin. Three minutes.","q":"I work better under pressure."},"imposter":{"c":"S20","d":"Believes their competence is unearned and discoverable as fraud.","t":"When competence is being evaluated or recognition is offered.","i":"Identify one thing you know that the room does not. State it.","q":"They will find out I do not belong here."},"aggressor":{"c":"S21","d":"Uses anger and force to override resistance. Mistakes compliance for agreement.","t":"When authority is challenged or outcome is not proceeding as required.","i":"Pause 5 seconds. Name the fear underneath the anger before responding.","q":"Aggression gets results."},"martyr":{"c":"S22","d":"Sacrifices for others to generate obligation or moral authority.","t":"When sacrifice has been made and goes unrecognized.","i":"Identify whether the sacrifice was chosen or performed. If performed, stop.","q":"I give everything and receive nothing."},"cynic":{"c":"S23","d":"Undermines possibility through pre-emptive dismissal.","t":"When hope or enthusiasm is present in self or others.","i":"Identify one thing good about the situation being dismissed.","q":"Optimism is naive."},"manipulator":{"c":"S24","d":"Achieves outcomes indirectly through influence, withholding, or positioning.","t":"When the direct approach feels risky.","i":"State the actual need directly. Once. Without positioning.","q":"Direct requests make me vulnerable."},"overthinker":{"c":"S25","d":"Loops on decisions past the point of useful analysis.","t":"When a decision is required and the outcome is uncertain.","i":"Set a decision time limit. Decide at that limit. Do not extend it.","q":"More analysis will produce the right answer."},"escapist":{"c":"S26","d":"Uses pleasure, distraction, or movement to exit discomfort before it resolves.","t":"When the present moment is uncomfortable and an exit is available.","i":"Stay in the discomfort for two minutes. Name what is present.","q":"I just need to not feel this right now."},"avoider":{"c":"S33","d":"Declines the engagement before it can cost anything. Not fleeing discomfort the way the Escapist does, and not arguing the way the Negotiator does. Simply not present for it.","t":"When something asks to be dealt with and not dealing with it carries no immediate penalty.","i":"Name the thing being avoided out loud, then do the smallest piece of it.","q":"If I stay unaware, nothing can land on me."},"nihilist":{"c":"S27","d":"Removes the foundation of meaning as a pre-emptive strike against disappointment.","t":"When meaning is required to justify effort.","i":"Identify one action worth doing regardless of meaning. Do it.","q":"Nothing matters enough to sustain effort."},"innocent":{"c":"S28","d":"Maintains deliberate unawareness to avoid responsibility or conflict.","t":"When complexity, conflict, or moral weight is present.","i":"Name one thing you know that you are pretending not to know.","q":"I don't want to be involved."},"pessimist":{"c":"S29","d":"Pre-empts positive outcomes by building a case against them before they materialize.","t":"When a positive outcome is possible.","i":"Identify the best plausible case. Operate from that.","q":"It will not work out."},"catastrophizer":{"c":"S30","d":"Projects the worst possible outcome onto every uncertainty. Distinguishable from Worrywart by magnitude, Catastrophizer reaches existential threat from ordinary uncertainty.","t":"Any unresolved uncertainty.","i":"Describe the actual current situation without projection. Stay in the present tense.","q":"This will destroy everything."},"enabler":{"c":"S31","d":"Supports others' destructive patterns to maintain relationship or avoid conflict. Distinct from Pleaser: the Enabler supports behavior they recognize as harmful.","t":"When someone they care about is repeating a destructive pattern.","i":"Name what you see. Once. Without attachment to the response.","q":"If I say something they will leave."},"control freak":{"c":"S32","d":"The colloquial name for the Controller and Hyper-Vigilant composite at Type A intensity. Hypervigilance running on outcomes and on threat at the same time. The body is scanning forward (what could go wrong) and downward (am I in command of this) in continuous loop. Reads to other people as competence under pressure. Reads in the body as never landing. The same fear that drives Controller (something will go wrong if I release grip) and the same fear that drives Hyper-Vigilant (the threat is just ahead) co-mingle here at sufficient magnitude that they cannot be felt as separate. Distinct from Controller alone: Control Freak does not wait for the control gap to open before acting. Distinct from Hyper-Vigilant alone: Control Freak organizes the scan around its own agency, not around external monitoring. Type A is the social presentation. The somatic state is sustained sympathetic activation that the body has normalized as baseline.","t":"Any environment the person did not configure. Any outcome the person did not design. Any silence where confirmation should be.","i":"Lock the jaw, the shoulders, and the diaphragm for a count of five. Notice they were already locked. Release on the exhale. The release is not a relaxation technique, it is a demonstration that the body can hold a state without scanning it. Repeat until the scan stops without being asked to.","q":"If I am not running this, no one is."}};
 var DOMDEF={"knowledge":{"n":"I","c":"pattern recognition, codification, teaching, symbolic thinking. The person who reads before being asked to. Somatic knowledge is true knowledge, once it's in the body, deception doesn't work on you. You can feel the lie before it forms a word.","x":"over-intellectualization, false certainty, knowledge as a barrier rather than a bridge."},"communication":{"n":"II","c":"bridging, translation, precision of language, fast cognition. The connector, the person who translates between people, between ideas, between worlds.","x":"manipulation, inconsistency, information as leverage."},"power":{"n":"III","c":"physical courage, boundary enforcement, protection of what matters. Directed aggression at obstacles, not people.","x":"domination, violence without purpose, war as identity."},"imperium":{"n":"IV","c":"governance, structural authority, organizing chaos into function. sees how systems should be organized.","x":"domination, entitlement, autocracy."},"creation":{"n":"V","c":"building, executing, bringing vision into form. Always needed to make things. When you can't create it feels like disconnection, like the system is broken. Financial stress kills creativity not motivationally but anatomically: the survival charge consumes the current before it reaches the generative center. When the root clears, the sacral opens, the creative current flows again. Not as discipline. As a natural consequence of the channel being clear.","x":"perfectionism as paralysis, identity tied to output."},"dissolution":{"n":"VI","c":"deliberate dissolution, clearing what's false or finished, making space for what comes next. Sees what needs to end.","x":"destruction as identity, nihilism, chaos without rebuilding."},"love":{"n":"VII","c":"union, intimacy, the force that draws beings into genuine contact. Love as a state the person generates, not receives. Always knew what brings people together.","x":"codependency, possession, love as completion rather than addition."},"healing":{"n":"VIII","c":"directed intervention, active clearing, creating conditions in which restoration happens. Finds the broken thing in any room.","x":"rescuer complex, martyrdom, healing as identity."},"sacrifice":{"n":"IX","c":"voluntary descent, the chosen ordeal, sacrifice as the mechanism that produces insight unavailable any other way. The knowledge that comes from what was given up, not accumulated. The true utilization of experience: consume as much as possible, then don't hang onto the definitions. Words illuminate, they don't contain.","x":"suffering as identity, the descent without return."},"justice":{"n":"X","c":"discernment of what's real and what's false. Accountability without cruelty. Moral disorder doesn't just feel wrong, it triggers the nervous system. When truth is a 10, anything less is somatic. You can feel the lie before it forms a word. If you lie, you dysregulate your own nervous system.","x":"rigid judgment, self-righteousness, justice as control."},"trickster":{"n":"XI","c":"disruption of rigid patterns, revealing what's hidden through inversion, innovation through disorder. Sees the absurdity in what everyone else treats as fixed.","x":"deception as lifestyle, instability mistaken for freedom."},"nature":{"n":"XII","c":"alignment with biological truth, growth through patience rather than force. Thinks in cycles rather than straight lines.","x":"rejection of structure, naturalism as escape from complexity."},"mystery":{"n":"XIII","c":"navigation of the unseen, death and rebirth as structural realities. Can hold darkness without being consumed. Always drawn to what's hidden.","x":"obsession with shadow, nihilism, identity built on the margin."},"duty":{"n":"XIV","c":"right action regardless of personal cost. Loyalty to what's true, not what's comfortable. Does the right thing even when no one is watching.","x":"rigidity, losing self in obligation, duty performed for an audience."},"play":{"n":"XV","c":"the generative state of pure engagement. Awe. Creativity for its own sake. Not the absence of seriousness, the intelligence serious people miss. Always able to find what's alive in something.","x":"avoidance through play, irresponsibility, lightness that refuses depth."},"death":{"n":"XVI","c":"completion. Endings held cleanly. The threshold kept, the thread cut when the thread is finished, presence with what's dying without flinching. Releases what's done so renewal has room.","x":"morbidity, clinging that refuses every ending, or dealing endings as power."},"fate":{"n":"XVII","c":"reads the pattern and its timing. Knows what must unfold and when to move. Acts at the right moment without forcing the thread.","x":"fatalism, abdication of choice, reading the pattern as an excuse to never act."},"guardian":{"n":"XVIII","c":"the watch kept. A perimeter held so what's inside can live. Protection without possession, sanctuary without walls that strangle.","x":"overprotection that smothers, vigilance that never rests, walls against life itself."},"provision":{"n":"XIX","c":"the one who makes sure there's enough, and not only for today. Supply held against a season nobody can see yet. The granary, the harvest, the wage. Provides for, rather than trades with.","x":"worth measured only in what's furnished, hoarding dressed as prudence, the provider who can't be provided for."}};
 var KB_RENAME={"descent":"Sacrifice","connection":"Love","exchange":"Communication","restoration":"Healing"};
-var GLOSS=[{"t":"Address","d":"The specific location in the body’s energetic architecture where a pattern is resident. Every fetter, every tag, every limiting belief has an address. The release work operates at the address--not at the level of thought or behavior."},{"t":"Allostatic load","d":"The accumulated physiological cost of chronic stress responses. The body’s equivalent of compound interest on unresolved charge. The release work reduces allostatic load by addressing it at the address layer."},{"t":"Archetype","d":"One of 12 universal character templates, and the third rung on the native side of the stack. Domains express as the blueprint; the blueprint branches into archetypes. A separate rung from the blueprint rather than another name for it. Native and present before conditioning, which is why it isn't held in tissue and not released: the work changes where it's pointed, not what it is."},{"t":"Ascension","d":"No longer affected, triggered, or stimulated by the external environment, or by your own emotions. You've ascended emotions controlling you. The environment loses its grip because survival patterns are no longer running as commands. A state definition, not a threshold: it carries no release count. It's not a destination--an operating state."},{"t":"Attention","d":"The ability to focus awareness. Two types: nonfocused attention and focused attention. Attention is the steering; will is the force."},{"t":"Aura","d":"The field this model holds is generated by the state of the nervous system. Not measured by this instrument, and not measured by any instrument this product knows of. Ultraweak photon emission from living tissue is real and comes from reactive oxygen species; it has never been shown to carry nervous system state. Held here as a model of how presence is received, not as a reading."},{"t":"Awareness","d":"The aperture of perception of the soul."},{"t":"Biophoton field","d":"Ultraweak photon emission from living tissue. Real, measured in laboratories since the 1950s, and understood to come from reactive oxygen species rather than from nervous system state. This product names it as the physical thing it is and does not claim it carries the aura. Nothing in the engine reads it."},{"t":"Chakra","d":"A seat. In this model, the nonphysical field generated by a nerve plexus. Seven of them, root to crown. The seven count and the plexus correspondence are a modern Western reading: the source traditions give five, six, eight and more, and the welding of seats to nerve plexuses dates to 1927. Held because it is the vocabulary the work is done in, not because it has been measured."},{"t":"Charge","d":"Stored survival energy held at a node. Installed by a stress response that never finished. Felt as heat, pressure, tingling, or weight when accessed."},{"t":"Clair","d":"A perceptual channel beyond the five physical senses. Clairvoyance (seeing), clairaudience (hearing), clairsentience (feeling), claircognizance (knowing), and others. Soma fields fragment them; clearing soma allows them to operate in unison."},{"t":"Coherence","d":"Reduction of internal contradiction, computed rather than measured. The state in which intention, behavior, and nervous system response are aligned. CQ measures it."},{"t":"Replacement state","d":"The specific behavioral, emotional, and somatic expression of the quality a pattern suppresses--installed at the same address as the released charge. Not a generic positive. The exact quality the pattern is blocking."},{"t":"Consciousness","d":"Energy as information, perceived through two experiences. The macro is unbound and unfocused: infinite consciousness. The opposite pole is localized conscious awareness. Same thing, different aperture."},{"t":"CQ","d":"Coherence Quotient. (Intention × Integrity) ÷ Resistance. Baseline: 100. Measures the degree to which the system operates without internal contradiction."},{"t":"Distortion","d":"Intention read through loaded nodes. The signal is intact, the instrument is bent. Not a formula variable: distortion and SQ were the same reading under two names. It survives as a description of what happens to intention, not as a term that gets multiplied by anything."},{"t":"DQ","d":"Decoherence. DQ = 100 − CQ. Derived, not measured. There's no separate instrument for it, and any build that reports one is reporting arithmetic as though it were a reading. A high DQ means the system is consuming energy maintaining internal contradictions."},{"t":"Drag","d":"The combined load that reduces available willpower. Fetters, clenched muscles, inflammation, loaded nodes--all produce drag on the mind-body-spirit connection. Drag is why willpower feels like a limited resource."},{"t":"Earth Star","d":"Field node at the center point between the feet. Anchors the system to the planet."},{"t":"Ego","d":"Body consciousness. The mind attached to the physical, never present, toggling between thinking and feeling to navigate the world out of fear. The ego is the mask of our character. It's the total sum of DQ, all the SQ running, and all the patterns and awareness that come with body consciousness."},{"t":"Fetter","d":"A named conditional response pattern resident at a specific node address. One per physical node, and 112 addresses in all: the nodes in the body, plus four field nodes just outside it, two above the crown and two below the feet. Fires when matching input arrives, regardless of how long ago it was installed."},{"t":"Five paths","d":"Five primary orientations toward the work: Krishna (flow), Buddha (awareness), Christ (somatics), Rama (alignment), Lao Tzu (horizontal). All paths lead to the same Source. The Anchor Principle operates underneath all five."},{"t":"Hardened mask","d":"The layer of conditioning that doesn't clear with time, life change, or most therapeutic modalities. Requires active address-level release work. Distinguished from practice-maintained conditioning, which life change alone can clear."},{"t":"Hyper-complex","d":"One of 8 named clusters of saboteurs operating as a unified behavioral system. More severe than a single saboteur--a self-reinforcing architecture of patterns that maintain each other."},{"t":"Integrity","d":"The total sum of your coherence, which upregulates the nervous system. It does that by moving you through and maintaining moral structure. Integrity is a ship’s hull. A hole in the hull means the ship takes on water. Integrity has to be at a hundred percent for the hull, and for CQ, to hold. Measured as compliance with the 21 Laws of Moral Integrity."},{"t":"Intention","d":"The intended outcome. Part willpower, part desire, part motivation. Moving toward something registers as pleasure. If no outcome has been formed, avoidance takes the slot by default."},{"t":"Justification mechanic","d":"The body’s defense of its own installed patterns. Blame, deflection, rationalization--all are the tag’s immune response. The body defends the signal because the truth is too difficult to face. Narcissism is the justification mechanic at high intensity."},{"t":"Karma","d":"The results of your thoughts and physical actions put out into the world, and the cause-and-effect energy that comes back to you from those actions. It's cyclical, an echo. Its purpose is to come back so you can learn the lesson, overcome, and transmit the karma so it never comes back. Karma is cause and effect in interaction."},{"t":"Kosha","d":"A perceptual layer through which experience is filtered. Six layers: physical, energetic, mental, wisdom, bliss, and linguistic. Each transforms the signal passing through it."},{"t":"Kundalini","d":"The stored vital energy at the base of the spine. Rises root to crown when enough nodes are cleared for the channel to conduct."},{"t":"Letting go","d":"The release protocol. Runs two mechanics in sequence: (1) reducing charge at the address, (2) installing the replacement state while the address is open. Different from affirmation, which skips the first mechanic."},{"t":"Limiting belief","d":"A tag that compresses the full range of experience into a limited label. Every identification is a limiting belief by definition--not as a judgment but as a mechanism. The label is always smaller than the experience."},{"t":"Mask","d":"The accumulated distortion functioning as an identity construct. What most people call ‘their personality’--the conditioned firing of patterns stored at specific addresses. The mask isn't who you are."},{"t":"Memory","d":"The result of the vritti and identification. Sensory input and emotional input, once identified, stored in the body."},{"t":"Merkaba","d":"A geometric field structure used in the release protocol. Top spinning left, bottom spinning right. Opposing rotations distort the node’s current flow, creating conditions for release."},{"t":"Node","d":"An address in the body’s energetic architecture. The nodes in the body, and four field nodes just outside it: the Earth Star at the center point between the feet, the Sol Star just above the crown, and the Gaia Gateway below the Earth Star, and the Stellar Gateway above the Sol Star. 112 total."},{"t":"OJAS","d":"Sanskrit, meaning vigour. It isn't an acronym and there are no letters to expand; every instance spelled OJOS in earlier drafts was a transcription error that propagated. Vital energy in meditation, held as a cocoon of energy around you. It spins without you having to drive it, and it naturally stimulates the nervous system and releases stress from the body. The protocol developed for Stage 4 and Stage 5 nodes, the ones too dense or too numb to feel. Restores enough signal for release work to begin."},{"t":"Perception","d":"The ability to intuit and perceive, and to translate energy into a symbolic form that can be perceived and understood. Perceiving the sensory input to make sense of things."},{"t":"Plexus","d":"A physical nerve cluster. The plexus is the hardware; the chakra is the field it generates. Disruption at the plexus level produces disruption at the chakra level."},{"t":"Presence","d":"The ability to project one’s energy to be perceived and felt by others."},{"t":"Primary node","d":"The primary loaded node in a field of surrounding nodes. Clear the primary node and the surrounding field releases on its own. Working secondary nodes without finding the primary node produces partial release."},{"t":"Pure perception","d":"All the clairs operating in unison without distortion. Not an absence of thought--a state of full multi-sensory field coherence. Available as soma load reduces and the barriers between the clairs dissolve."},{"t":"Reading-as-release","d":"The protocol in which reading a properly constructed Letting Go sequence produces somatic release at the anatomical address the sequence specifies. No additional visualization required. Both mechanics run through the act of reading."},{"t":"Release","d":"The discharge of stored charge through the nervous system. Physical and observable: heat, shaking, tears, breath shifts. The pattern loses its power source."},{"t":"Resistance","d":"The denominator in the CQ formula. All drag combined--every fetter, loaded node, and inflammatory process that opposes the flow of signal through the system. Resistance is what the release work reduces."},{"t":"Saboteur","d":"One of 33 named behavioral patterns that contract a fetter into characteristic repeating behavior. Each has a specific belief structure, body location, and emotional signature."},{"t":"Self-unraveling state","d":"The body’s autonomous release state when enough gates have cleared. The soma fields begin releasing without active protocol work. The operational success criterion of a release session: not the node is cleared, the body is releasing on its own."},{"t":"Signal chain","d":"The full processing loop: field of awareness → senses → nervous system → brain → intelligence layer → relation layer → three axes → emotional layer → superego → koshas → archetypes → main field. The loop completes moment to moment."},{"t":"Soma","d":"The energetic field generated by the nervous system’s state. Accumulated soma creates load. Overlapping soma fields fragment the perceptive layer, forming barriers the awareness can't see through."},{"t":"Sol Star","d":"Field node just above the crown. The point through which the system extends beyond the body and opens to the field."},{"t":"Source","d":"The ground state of the field before any pattern is installed. The operating system underneath the operating system. What remains when all patterns are cleared."},{"t":"Superego","d":"The protective structure of the superficial mind. The story impressions handed down from an adult. The ego is more sophisticated because the ego is somatic in nature. The superego is superficial structure protecting beliefs."},{"t":"Tag","d":"The moment a charged experience is named and coded at a node address. The name locks the experience in. The tag is what the body scans for in all future input, firing the resident pattern when it finds a match."},{"t":"Two mechanics","d":"The two operations required for a complete release: (1) Release--the charge at the address reduces; (2) Embodied Truth--the replacement state is installed while the address is open. Both are required in sequence. The first without the second leaves no alternative at the address."},{"t":"Vritti","d":"A sensory input waveform and emotional input waveform. It channels across the nervous system, from the external field through the nervous system into the brain, where it's composited and perceived, and where awareness uses the sensory input to perceive. Once identified, the vritti is what collapses the nerve, the chakra, and the field of awareness."},{"t":"Willpower","d":"Available directed force. A measurement, not a character trait. It runs as a battery with a daily charge; sleep sets the starting level and moving through resistance spends it. High drag means low willpower. Release the charges, drag reduces, willpower rises. Not a separate instrument: will is directed intention, and any drag on it reads as resistance, which is already measured."}];
+var GLOSS=[{"t":"Address","d":"The specific location in the body’s energetic architecture where a pattern is resident. Every fetter, every tag, every limiting belief has an address. The release work operates at the address--not at the level of thought or behavior."},{"t":"Allostatic load","d":"The accumulated physiological cost of chronic stress responses. The body’s equivalent of compound interest on unresolved charge. The release work reduces allostatic load by addressing it at the address layer."},{"t":"Archetype","d":"One of 12 universal character templates, and the third rung on the native side of the stack. Domains express as the blueprint; the blueprint branches into archetypes. A separate rung from the blueprint rather than another name for it. Native and present before conditioning, which is why it isn't held in tissue and not released: the work changes where it's pointed, not what it is."},{"t":"Ascension","d":"No longer affected, triggered, or stimulated by the external environment, or by your own emotions. You've ascended emotions controlling you. The environment loses its grip because survival patterns are no longer running as commands. A state definition, not a threshold: it carries no release count. It's not a destination--an operating state."},{"t":"Attention","d":"The ability to focus awareness. Two types: nonfocused attention and focused attention. Attention is the steering; will is the force."},{"t":"Aura","d":"The field this model holds is generated by the state of the nervous system. Not measured by this instrument, and not measured by any instrument this product knows of. Ultraweak photon emission from living tissue is real and comes from reactive oxygen species; it has never been shown to carry nervous system state. Held here as a model of how presence is received, not as a reading."},{"t":"Awareness","d":"The aperture of perception of the soul."},{"t":"Biophoton field","d":"Ultraweak photon emission from living tissue. Real, measured in laboratories since the 1950s, and understood to come from reactive oxygen species rather than from nervous system state. This product names it as the physical thing it is and does not claim it carries the aura. Nothing in the engine reads it."},{"t":"Chakra","d":"A seat. In this model, the nonphysical field generated by a nerve plexus. Seven of them, root to crown. The seven count and the plexus correspondence are a modern Western reading: the source traditions give five, six, eight and more, and the welding of seats to nerve plexuses dates to 1927. Held because it is the vocabulary the work is done in, not because it has been measured."},{"t":"Charge","d":"Stored survival energy held at a node. Installed by a stress response that never finished. Felt as heat, pressure, tingling, or weight when accessed."},{"t":"Clair","d":"A perceptual channel beyond the five physical senses. Clairvoyance (seeing), clairaudience (hearing), clairsentience (feeling), claircognizance (knowing), and others. Soma fields fragment them; clearing soma allows them to operate in unison."},{"t":"Coherence","d":"Reduction of internal contradiction, computed rather than measured. The state in which intention, behavior, and nervous system response are aligned. CQ measures it."},{"t":"Replacement state","d":"The specific behavioral, emotional, and somatic expression of the quality a pattern suppresses--installed at the same address as the released charge. Not a generic positive. The exact quality the pattern is blocking."},{"t":"Consciousness","d":"Energy as information, perceived through two experiences. The macro is unbound and unfocused: infinite consciousness. The opposite pole is localized conscious awareness. Same thing, different aperture."},{"t":"CQ","d":"Coherence Quotient. The 21 Laws of Moral Integrity, each scored 0 to 10, summed out of 210. Nothing else enters it. It fills from 0 as the laws are answered, and the shadow never lowers it: the shadow pulls on expression instead."},{"t":"Distortion","d":"Intention read through loaded nodes. The signal is intact, the instrument is bent. Not a formula variable: distortion and SQ were the same reading under two names. It survives as a description of what happens to intention, not as a term that gets multiplied by anything."},{"t":"DQ","d":"Decoherence. The total shadow: the weight held at all 112 addresses, summed, out of the most they can hold. A high DQ means the system is consuming energy maintaining internal contradictions."},{"t":"Drag","d":"The combined load that reduces available willpower. Fetters, clenched muscles, inflammation, loaded nodes--all produce drag on the mind-body-spirit connection. Drag is why willpower feels like a limited resource."},{"t":"Earth Star","d":"Field node at the center point between the feet. Anchors the system to the planet."},{"t":"Ego","d":"Body consciousness. The mind attached to the physical, never present, toggling between thinking and feeling to navigate the world out of fear. The ego is the mask of our character. It's the total sum of DQ, all the SQ running, and all the patterns and awareness that come with body consciousness."},{"t":"Fetter","d":"A named conditional response pattern resident at a specific node address. One per physical node, and 112 addresses in all: the nodes in the body, plus four field nodes just outside it, two above the crown and two below the feet. Fires when matching input arrives, regardless of how long ago it was installed."},{"t":"Five paths","d":"Five primary orientations toward the work: Krishna (flow), Buddha (awareness), Christ (somatics), Rama (alignment), Lao Tzu (horizontal). All paths lead to the same Source. The Anchor Principle operates underneath all five."},{"t":"Hardened mask","d":"The layer of conditioning that doesn't clear with time, life change, or most therapeutic modalities. Requires active address-level release work. Distinguished from practice-maintained conditioning, which life change alone can clear."},{"t":"Hyper-complex","d":"One of 8 named clusters of saboteurs operating as a unified behavioral system. More severe than a single saboteur--a self-reinforcing architecture of patterns that maintain each other."},{"t":"Integrity","d":"The total sum of your coherence, which upregulates the nervous system. It does that by moving you through and maintaining moral structure. Integrity is a ship’s hull. A hole in the hull means the ship takes on water. Integrity has to be at a hundred percent for the hull, and for CQ, to hold. Measured as compliance with the 21 Laws of Moral Integrity."},{"t":"Intention","d":"The intended outcome. Part willpower, part desire, part motivation. Moving toward something registers as pleasure. If no outcome has been formed, avoidance takes the slot by default."},{"t":"Justification mechanic","d":"The body’s defense of its own installed patterns. Blame, deflection, rationalization--all are the tag’s immune response. The body defends the signal because the truth is too difficult to face. Narcissism is the justification mechanic at high intensity."},{"t":"Karma","d":"The results of your thoughts and physical actions put out into the world, and the cause-and-effect energy that comes back to you from those actions. It's cyclical, an echo. Its purpose is to come back so you can learn the lesson, overcome, and transmit the karma so it never comes back. Karma is cause and effect in interaction."},{"t":"Kosha","d":"A perceptual layer through which experience is filtered. Six layers: physical, energetic, mental, wisdom, bliss, and linguistic. Each transforms the signal passing through it."},{"t":"Kundalini","d":"The stored vital energy at the base of the spine. Rises root to crown when enough nodes are cleared for the channel to conduct."},{"t":"Letting go","d":"The release protocol. Runs two mechanics in sequence: (1) reducing charge at the address, (2) installing the replacement state while the address is open. Different from affirmation, which skips the first mechanic."},{"t":"Limiting belief","d":"A tag that compresses the full range of experience into a limited label. Every identification is a limiting belief by definition--not as a judgment but as a mechanism. The label is always smaller than the experience."},{"t":"Mask","d":"The accumulated distortion functioning as an identity construct. What most people call ‘their personality’--the conditioned firing of patterns stored at specific addresses. The mask isn't who you are."},{"t":"Memory","d":"The result of the vritti and identification. Sensory input and emotional input, once identified, stored in the body."},{"t":"Merkaba","d":"A geometric field structure used in the release protocol. Top spinning left, bottom spinning right. Opposing rotations distort the node’s current flow, creating conditions for release."},{"t":"Node","d":"An address in the body’s energetic architecture. The nodes in the body, and four field nodes just outside it: the Earth Star at the center point between the feet, the Sol Star just above the crown, and the Gaia Gateway below the Earth Star, and the Stellar Gateway above the Sol Star. 112 total."},{"t":"OJAS","d":"Sanskrit, meaning vigour. It isn't an acronym and there are no letters to expand; every instance spelled OJOS in earlier drafts was a transcription error that propagated. Vital energy in meditation, held as a cocoon of energy around you. It spins without you having to drive it, and it naturally stimulates the nervous system and releases stress from the body. The protocol developed for Stage 4 and Stage 5 nodes, the ones too dense or too numb to feel. Restores enough signal for release work to begin."},{"t":"Perception","d":"The ability to intuit and perceive, and to translate energy into a symbolic form that can be perceived and understood. Perceiving the sensory input to make sense of things."},{"t":"Plexus","d":"A physical nerve cluster. The plexus is the hardware; the chakra is the field it generates. Disruption at the plexus level produces disruption at the chakra level."},{"t":"Presence","d":"The ability to project one’s energy to be perceived and felt by others."},{"t":"Primary node","d":"The primary loaded node in a field of surrounding nodes. Clear the primary node and the surrounding field releases on its own. Working secondary nodes without finding the primary node produces partial release."},{"t":"Pure perception","d":"All the clairs operating in unison without distortion. Not an absence of thought--a state of full multi-sensory field coherence. Available as soma load reduces and the barriers between the clairs dissolve."},{"t":"Reading-as-release","d":"The protocol in which reading a properly constructed Letting Go sequence produces somatic release at the anatomical address the sequence specifies. No additional visualization required. Both mechanics run through the act of reading."},{"t":"Release","d":"The discharge of stored charge through the nervous system. Physical and observable: heat, shaking, tears, breath shifts. The pattern loses its power source."},{"t":"Resistance","d":"All drag combined--every fetter, loaded node, and inflammatory process that opposes the flow of signal through the system. Resistance is what the release work reduces. It no longer divides CQ, which is the laws alone."},{"t":"Saboteur","d":"One of 33 named behavioral patterns that contract a fetter into characteristic repeating behavior. Each has a specific belief structure, body location, and emotional signature."},{"t":"Self-unraveling state","d":"The body’s autonomous release state when enough gates have cleared. The soma fields begin releasing without active protocol work. The operational success criterion of a release session: not the node is cleared, the body is releasing on its own."},{"t":"Signal chain","d":"The full processing loop: field of awareness → senses → nervous system → brain → intelligence layer → relation layer → three axes → emotional layer → superego → koshas → archetypes → main field. The loop completes moment to moment."},{"t":"Soma","d":"The energetic field generated by the nervous system’s state. Accumulated soma creates load. Overlapping soma fields fragment the perceptive layer, forming barriers the awareness can't see through."},{"t":"Sol Star","d":"Field node just above the crown. The point through which the system extends beyond the body and opens to the field."},{"t":"Source","d":"The ground state of the field before any pattern is installed. The operating system underneath the operating system. What remains when all patterns are cleared."},{"t":"Superego","d":"The protective structure of the superficial mind. The story impressions handed down from an adult. The ego is more sophisticated because the ego is somatic in nature. The superego is superficial structure protecting beliefs."},{"t":"Tag","d":"The moment a charged experience is named and coded at a node address. The name locks the experience in. The tag is what the body scans for in all future input, firing the resident pattern when it finds a match."},{"t":"Two mechanics","d":"The two operations required for a complete release: (1) Release--the charge at the address reduces; (2) Embodied Truth--the replacement state is installed while the address is open. Both are required in sequence. The first without the second leaves no alternative at the address."},{"t":"Vritti","d":"A sensory input waveform and emotional input waveform. It channels across the nervous system, from the external field through the nervous system into the brain, where it's composited and perceived, and where awareness uses the sensory input to perceive. Once identified, the vritti is what collapses the nerve, the chakra, and the field of awareness."},{"t":"Willpower","d":"Available directed force. A measurement, not a character trait. It runs as a battery with a daily charge; sleep sets the starting level and moving through resistance spends it. High drag means low willpower. Release the charges, drag reduces, willpower rises. Not a separate instrument: will is directed intention, and any drag on it reads as resistance, which is already measured."}];
 var HARM=[{"c":"E01","t":"All Is One","a":"nature","ch":"Chapter 19"},{"c":"E02","t":"All Is Motion","a":"nature","ch":"Chapter 19"},{"c":"E03","t":"Polarity","a":"nature","ch":"Chapter 19"},{"c":"E04","t":"All Fields Correspond","a":"nature","ch":"Chapter 19"},{"c":"E05","t":"Like Fields Attract","a":"nature","ch":"Chapter 19"},{"c":"E06","t":"Inspired Action","a":"nature","ch":"Chapter 19"},{"c":"E07","t":"Transmutation","a":"nature","ch":"Chapter 19"},{"c":"E08","t":"Cause & Effect","a":"nature","ch":"Chapter 19"},{"c":"E09","t":"Compensation","a":"nature","ch":"Chapter 19"},{"c":"E10","t":"Potential","a":"nature","ch":"Chapter 19"},{"c":"E11","t":"Relativity","a":"nature","ch":"Chapter 19"},{"c":"E12","t":"Rhythm","a":"nature","ch":"Chapter 19"},{"c":"E13","t":"Gender","a":"nature","ch":"Chapter 19"},{"c":"E14","t":"Form","a":"human","ch":"Chapter 19"},{"c":"E15","t":"Archetype","a":"human","ch":"Chapter 19"},{"c":"E16","t":"Biofield","a":"human","ch":"Chapter 19"},{"c":"E17","t":"Attunement","a":"human","ch":"Chapter 19"},{"c":"E18","t":"Perception","a":"human","ch":"Chapter 19"},{"c":"E19","t":"Intelligence","a":"human","ch":"Chapter 19"},{"c":"E20","t":"Pleasure & Pain","a":"human","ch":"Chapter 19"},{"c":"E21","t":"The Three Axes","a":"human","ch":"Chapter 19"},{"c":"E22","t":"Symbol","a":"human","ch":"Chapter 19"},{"c":"E23","t":"Identity","a":"human","ch":"Chapter 19"},{"c":"E24","t":"Choice","a":"human","ch":"Chapter 19"},{"c":"E25","t":"Ego","a":"human","ch":"Chapter 19"},{"c":"E26","t":"Intention","a":"human","ch":"Chapter 19"},{"c":"E27","t":"Action","a":"human","ch":"Chapter 19"},{"c":"E28","t":"Memory","a":"human","ch":"Chapter 19"},{"c":"E29","t":"Truth","a":"spirit","ch":"Chapter 19"},{"c":"E30","t":"Transparency","a":"spirit","ch":"Chapter 19"},{"c":"E31","t":"Unity","a":"spirit","ch":"Chapter 19"},{"c":"E32","t":"Awareness","a":"spirit","ch":"Chapter 19"},{"c":"E33","t":"Presence","a":"spirit","ch":"Chapter 19"},{"c":"E34","t":"Equanimity","a":"spirit","ch":"Chapter 19"},{"c":"E35","t":"Compassion","a":"spirit","ch":"Chapter 19"},{"c":"E36","t":"Forgiveness","a":"spirit","ch":"Chapter 19"},{"c":"E37","t":"Courage","a":"spirit","ch":"Chapter 19"},{"c":"E38","t":"Temperance","a":"spirit","ch":"Chapter 19"},{"c":"E39","t":"Duty","a":"spirit","ch":"Chapter 19"},{"c":"E40","t":"Accountability","a":"spirit","ch":"Chapter 19"},{"c":"E41","t":"Justice","a":"spirit","ch":"Chapter 19"},{"c":"E42","t":"Non-Harm","a":"spirit","ch":"Chapter 19"},{"c":"E43","t":"Responsibility","a":"spirit","ch":"Chapter 19"},{"c":"E44","t":"Humility","a":"spirit","ch":"Chapter 19"},{"c":"E45","t":"Generosity","a":"spirit","ch":"Chapter 19"},{"c":"E46","t":"Detachment","a":"spirit","ch":"Chapter 19"},{"c":"E47","t":"Patience","a":"spirit","ch":"Chapter 19"},{"c":"E48","t":"Aesthetic Beauty","a":"spirit","ch":"Chapter 19"},{"c":"E49","t":"Nature","a":"spirit","ch":"Chapter 19"},{"c":"E50","t":"Peace","a":"express","ch":"Chapter 19"},{"c":"E51","t":"Play","a":"express","ch":"Chapter 19"},{"c":"E52","t":"Curiosity","a":"express","ch":"Chapter 19"},{"c":"E53","t":"Creativity","a":"express","ch":"Chapter 19"},{"c":"E54","t":"Flow","a":"express","ch":"Chapter 19"},{"c":"E55","t":"Wonder","a":"express","ch":"Chapter 19"},{"c":"E56","t":"Order","a":"express","ch":"Chapter 19"},{"c":"E57","t":"Love","a":"express","ch":"Chapter 19"},{"c":"E58","t":"Purpose","a":"express","ch":"Chapter 19"},{"c":"E59","t":"Will","a":"express","ch":"Chapter 19"},{"c":"E60","t":"Fear · Safety","a":"emotion","ch":"Chapter 19"},{"c":"E61","t":"Anger · Calm","a":"emotion","ch":"Chapter 19"},{"c":"E62","t":"Shame · Worth","a":"emotion","ch":"Chapter 19"},{"c":"E63","t":"Disgust · Acceptance","a":"emotion","ch":"Chapter 19"},{"c":"E64","t":"Apathy · Joy","a":"emotion","ch":"Chapter 19"},{"c":"E65","t":"Shock","a":"emotion","ch":"Chapter 19"},{"c":"E66","t":"Sad · Happy","a":"emotion","ch":"Chapter 19"},{"c":"E67","t":"Surprise","a":"emotion","ch":"Chapter 19"},{"c":"E68","t":"Anticipation","a":"emotion","ch":"Chapter 19"},{"c":"E69","t":"Physical","a":"measure","ch":"Chapter 19"},{"c":"E70","t":"Intellectual","a":"measure","ch":"Chapter 19"},{"c":"E71","t":"Emotional","a":"measure","ch":"Chapter 19"},{"c":"E72","t":"Wisdom","a":"measure","ch":"Chapter 19"},{"c":"E73","t":"Adversity","a":"measure","ch":"Chapter 19"},{"c":"E74","t":"Coherence","a":"measure","ch":"Chapter 19"},{"c":"E75","t":"Meta- Awareness","a":"meta","ch":"Chapter 19"},{"c":"E76","t":"Coherence","a":"meta","ch":"Chapter 19"}];
 var HARM_AX={nature:'Laws of Nature',human:'Laws of Human Nature',spirit:'Laws of Moral Integrity',
  express:'Laws of Expression',emotion:'The nine architectures',measure:'The instruments',meta:'The frame'};
@@ -2519,13 +2519,21 @@ function leanRead(r){
   frame:{self:LEANMIX.self, other:LEANMIX.other, rawLack:LEANMIX.rawLack,
    admit:leanAdmit(LEANMIX.self+LEANMIX.acc,LEANMIX.other),
    read:known&&(LEANMIX.self+LEANMIX.acc)>0}};
+ /* THE FIELD HAS NO LEAN WHILE CQ IS STILL FILLING. malig is null until all
+    21 laws are in, and read as 0 it made the field alone lean 100 per cent
+    benign for somebody who had answered no law, printed as a reading on
+    Summary. So read says whether there is anything under ben and mal at all,
+    and with story cues and no field the story speaks alone rather than being
+    blended toward a benign prior nobody measured. */
+ var fieldKnown=!!r&&r.malig!==null&&r.malig!==undefined;
+ out.read=fieldKnown;
  if(!tot) return out;
  var storyMal=mal/tot*100;
  var trust=LEAN_TRUST_CAP*tot/(tot+LEAN_TRUST_HALF);
- var m=fieldMal*(1-trust)+storyMal*trust;
+ var m=fieldKnown?fieldMal*(1-trust)+storyMal*trust:storyMal;
  var n=Math.round(tot);
- out.ben=100-m; out.mal=m; out.cues=tot; out.trust=trust;
- out.src='field and '+n+' story cue'+(n===1?'':'s');
+ out.ben=100-m; out.mal=m; out.cues=tot; out.trust=trust; out.read=true;
+ out.src=(fieldKnown?'field and ':'')+n+' story cue'+(n===1?'':'s');
  return out;}
 
 /* ---------- direction over time ----------
@@ -2705,6 +2713,13 @@ var LEX={
  nervous:['root',14],anxious:['root',16],scared:['root',18],afraid:['root',16],
  frightened:['root',18],terrified:['root',26],panicked:['root',24],froze:['root',18],
  frozen:['root',18],shaking:['root',20],unsafe:['root',20],
+ /* PARALYZED WAS NOT A WORD THE SCANNER KNEW, and it is one of the owner's two
+    anchors: "I'm a little tense is different than I'm paralyzed, it's orders
+    of magnitude different." Measured before this: "I am paralyzed" read
+    nothing at all (AZ6). Seated where frozen is, at the root, because it is
+    the freeze taken to its end, and at the top of the authored curve, 28,
+    where the desktop puts it at the top of its own (paralysis 30 of 30). */
+ paralyzed:['root',28],paralysed:['root',28],paralysis:['root',28],
  /* sacral */
  restless:['sacral',12],craving:['sacral',14],numb:['sacral',16],empty:['sacral',18],
  hungry:['sacral',12],addicted:['sacral',22],distracted:['sacral',12],obsessed:['sacral',20],
@@ -2729,7 +2744,7 @@ var ADJ2CHG={
  unmoved:'apathy',detached:'apathy',uncaring:'apathy',
  apart:'separation',disconnected:'separation',outside:'separation',adrift:'separation',
  scared:'fear',afraid:'fear',frightened:'fear',terrified:'fear',panicked:'fear',
- froze:'fear',frozen:'fear',shaking:'fear',unsafe:'fear',dread:'fear',bracing:'fear',
+ froze:'fear',frozen:'fear',paralyzed:'fear',paralysed:'fear',shaking:'fear',unsafe:'fear',dread:'fear',bracing:'fear',
  angry:'anger',furious:'anger',defensive:'anger',blamed:'anger',
  ashamed:'shame',humiliated:'shame',embarrassed:'shame',guilty:'shame',
  stupid:'shame',worthless:'shame',inadequate:'shame',
@@ -2742,6 +2757,28 @@ var ADJ2CHG={
 
 /* the idioms. an idiom outranks its own words, because a statement can carry
    no feeling word at all and still be a report. */
+/* ============================================================
+   HOW MUCH, SAID IN THE WORD BEFORE IT. AZ6: the scanner read "a little
+   tense", "tense" and "extremely tense" as the same 16, because a degree word
+   is not in LEX and scanStory skipped it. The owner's ruling is that these
+   differ by orders of magnitude, and the fitted bell can only pull harder on
+   weight the words actually put there.
+
+   Ported from the desktop's MOD table (atuned/src/30_lexicon, line 244), the
+   degree adverbs only, with its factors unchanged. Seven it carries from its
+   burnout entry are left out, barely, persistent, dull, constant,
+   catastrophic, total and crushing: they are words with a meaning of their
+   own rather than a degree, and "barely" at 1.5 would scale "barely anxious"
+   up. Entirely, from the same entry, is a degree and is kept.
+
+   Applied only when the degree word stands immediately before the hit, which
+   is narrower than the desktop's anywhere earlier in the segment: "so" is a
+   degree in "so tense" and a conjunction in "so I froze", and adjacency is
+   the one rule that tells them apart without a parser. A factor under 1 is
+   still a hit; the word was written. */
+var LEXMOD={slightly:0.6,'a little':0.6,'kind of':0.7,somewhat:0.7,fairly:0.9,
+ quite:1.2,so:1.35,really:1.4,very:1.4,deeply:1.6,totally:1.7,absolutely:1.7,
+ entirely:1.7,extremely:1.8,completely:1.8,utterly:1.8};
 var PHRASES=[
  [['wrap myself in a blanket','pretend the world hit pause','pretend the world would stop',
    'want to disappear','wish i could disappear','not be here','not exist',
@@ -3696,6 +3733,57 @@ function balance(){
  return {out:o, in:i, outMean:om, inMean:im,
   read: (om>=1||im>=1),
   lean: t?(om-im)/t : 0};}
+/* ============================================================
+   WHETHER A LAW HAS BEEN ANSWERED. CQ sums the answered laws and counts the
+   rest as 0, so it needs to know which is which, and S.law cannot say: an
+   unanswered law holds the default 6 there, which is a plausible score.
+
+   This is saveProfile's own test, so CQ counts exactly the laws a save would
+   write as measured, and never one it would not. A law is in when the record
+   holds it, or when it arrived measured, or when somebody has moved it off
+   the seed it was given. A headless run that sets S.law with no profile
+   loaded has nothing marked unset, so every law it set is in, which is what
+   the simulation and the gates mean by setting it.
+   ============================================================ */
+function lawIn(nm){
+ if(CURP&&CURP.laws&&CURP.laws[nm]!=null)return true;
+ return !(LAW_UNSET[nm]&&S.law[nm]===LAW_SEED[nm]);}
+/* Which arithmetic a stored reading came from. This is the second; the first
+   never stamped its rows, so they read back as 0. snapshot() stamps it so two
+   rows from two formulas are never compared as a move. */
+const CQ_MODEL=2;
+/* CQ on its own, for the callers that need it without the whole reading */
+function cqSum(){return SINAMES.reduce((a,l)=>a+(lawIn(l)?S.law[l]:0),0)/210*100;}
+
+/* ============================================================
+   THE LEVER'S BELL, FITTED. The owner: "I'm a little tense is different than
+   I'm paralyzed, it's orders of magnitude different ... so our bell curve
+   becomes our multiplier." The pull at one address is the normal cumulative
+   at its weight, centre LEVER_MU and width LEVER_SD, scaled so an address at
+   10 pulls exactly 1.
+
+   Fitted by the ten thousand run simulation (AZ5, scratchpad cq/cqsim.js),
+   identical on two seeds. His words set the region: paralyzed (9) pulls at
+   least 100 times a little tense (2), and the graded middle is at least as
+   wide as the 4 to 6 he calls the range we travel. Inside it the data put
+   the centre at 5 to 5.5; his "five is the average" decides 5, and 1.25 is
+   the widest width at 5 that still clears 100 times (1.29 exact). Pull is
+   0.008 at 2, 0.21 at 4, 0.50 at 5, 0.79 at 6, 0.95 at 7, 0.999 at 9: 122
+   times from a little tense to paralyzed.
+
+   The erf is Abramowitz and Stegun 7.1.26, error under 1.5e-7, and it is the
+   same polynomial the simulation ran, so the worked people reproduce to the
+   digit rather than to a tolerance. An address at 0 pulls 3.2e-5, not 0,
+   because that is what the fitted curve says; it rounds away on every
+   surface and it is not subtracted, because the simulation did not. ============ */
+const LEVER_MU=5, LEVER_SD=1.25;
+function leverPhi(z){
+ const t=1/(1+0.3275911*Math.abs(z/Math.SQRT2)), x=z/Math.SQRT2;
+ const y=1-(((((1.061405429*t-1.453152027)*t)+1.421413741)*t-0.284496736)*t+0.254829592)*t*Math.exp(-x*x);
+ return 0.5*(1+(x>=0?y:-y));}
+const LEVER_TOP=leverPhi((10-LEVER_MU)/LEVER_SD);
+function leverPull(w){return leverPhi((w-LEVER_MU)/LEVER_SD)/LEVER_TOP;}
+
 function compute(){
  const root=DOMAINS[S.dom].r;
  const rootsIn=[...new Set(S.doms.map(d=>DOMAINS[d].r).concat(S.roots))];
@@ -3717,7 +3805,21 @@ function compute(){
   n.jq   = clamp(n.rep - 6,0,4)/4*10;
   n.open = clamp(1-n.sq/10 + n.pole/26,0,1.18);
   if(n.sq>=4){loaded.push(n);sum+=n.sq;}});
- FIELD.forEach(n=>{n.sq=0;n.open=1;n.held=0;n.rep=0;n.pole=0;n.jq=0;});
+ /* THE FOUR OUTSIDE THE BODY ARE SQ TOO. Ruled 25 September: "the four
+    addresses outside the body do count as SQ because they're related to
+    nerves within the body". They were forced to 0 here, so 4 of the 112 the
+    product states could never carry anything and DQ summed over 108 while
+    dividing by the 112. Each takes the mean of the seat it extends, the two
+    above from the Crown and the two below from the Root, which is his torus.
+    The simulation measured the heaviest of the seat as the alternative and
+    could not tell the two apart (retest 0.06 of a point), so the simpler rule
+    stands. They hold no charge of their own, so held, rep, pole and jq stay 0
+    and nothing in the saboteur chain reads them. */
+ const seatMean={Crown:0,Root:0};
+ ['Crown','Root'].forEach(b=>{const g=W.filter(n=>n.b===b);
+  seatMean[b]=g.reduce((a,n)=>a+n.sq,0)/g.length;});
+ FIELD.forEach(n=>{n.sq=n.b==='Field-Above'?seatMean.Crown:seatMean.Root;
+  n.open=clamp(1-n.sq/10,0,1);n.held=0;n.rep=0;n.pole=0;n.jq=0;});
  const SQm=loaded.length?sum/loaded.length:0;
 
  const sabs=[];
@@ -3777,36 +3879,84 @@ function compute(){
  const poleMean=W.reduce((a,n)=>a+n.pole,0)/108;
  const JQ=W.reduce((a,n)=>a+n.jq,0)/108;
  const excess=W.filter(n=>n.jq>=4);
+ /* Ig and It no longer enter CQ. They are kept because the Awareness and
+    Will readouts and the will against drag steer below still read them. */
  const Ig=clamp(SINAMES.reduce((a,l)=>a+S.law[l],0)/21 + poleMean*0.30 - JQ*0.42,0,10);
  const It=clamp(BANDS.reduce((a,b)=>a+bandIg(b),0)/7 + poleMean*0.22 - JQ*0.30,0,10);
- /* DQ: the fractional sum of shadow weight across collapsed addresses. */
- const DQraw=loaded.reduce((a,n)=>a+n.sq/10,0);
+ /* DQ, THE TOTAL SHADOW. "DQ is a total shadow. I don't know why you keep
+    asking me that." The 112 addresses summed over 1120, so it sits on the
+    same 0 to 100 as CQ. It was sq over ten summed over the addresses at 4 or
+    more, which dropped everything under the line and the four outside the
+    body and had no ceiling at all. Not 100 minus CQ: that was one of his two
+    statements and he has settled it as this one.
+
+    ONE SHADOW TOTAL, NOT TWO. Resistance, vitality and drag read the old sum
+    and it would have been easy to keep it for them under another name. Then
+    the vitality drill would print one shadow weight while computing off a
+    different one. They read DQ, with their constants unchanged. Where the
+    weight sits above the line the two totals are close, Gordon 55.2 then
+    54.3. Where it is spread under the line DQ reads higher, Diane 3.5 then
+    19.7, because it now counts what the old sum dropped, and vitality and
+    drag feel that weight too, which is the reason for counting it. */
+ const SQ=NODES.map(n=>n.sq);
+ const DQ=SQ.reduce((a,v)=>a+v,0)/1120*100;
  /* THE SIX AXES multiply what every held pattern costs. Detachment is the
     cheapest gate at 0.60, attachment the most expensive at 1.35. No story
-    means no gate evidence, so the factor is 1 and nothing changes. */
+    means no gate evidence, so the factor is 1 and nothing changes.
+    Resistance is still computed and reported, because the gates drill names
+    it, but it divides nothing any more: the owner ruled CQ is the 21 laws and
+    nothing else, and verpFactor stops multiplying anything in CQ with it. */
  const _vf=verpFactor();
- /* Resistance = floor + DQ. compounding raises the floor, it is not a term. */
- /* Distortion is struck as a formula variable, the author's ruling of 13 May,
-    because Distortion and SQ are the same reading under two names and
-    multiplying one by the other counted the same charge twice. It is still
-    computed and still reported, because Analytics reads it. It no longer
-    divides CQ. */
- const Rz=Math.max(1,(1+DQraw*0.05)*_vf);
- /* CQ = (Intention x Integrity) / Resistance. 100 when all 21 laws read 10. */
- const CQ=clamp((It*Ig)/Rz,0,100);
+ const Rz=Math.max(1,(1+DQ*0.05)*_vf);
+ /* ============================================================
+    CQ, THE 21 LAWS SUMMED OVER 210. Ruled 25 September, fitted by the ten
+    thousand run simulation (AZ5, DECISIONS.md "The CQ model, fitted").
+
+    This was clamp(It*Ig/Rz). Ig was the law mean and It was the band mean of
+    the same 21 laws, so the laws were counted twice and CQ went as their
+    square: every law at 5 read 25 where his ruling reads 50 (AY2). And both
+    factors carried poleMean and JQ, so installing an opposite past 6 pushed
+    JQ up and CQ down: a release lowered CQ in 22 of 10,000 random fields
+    (AY1, measured at 9f4c7e5). Neither can happen now, because nothing but
+    a law score is read.
+
+    AN UNANSWERED LAW COUNTS 0 AGAINST A FIXED 210, so CQ fills from zero as
+    the laws land and can only rise while a person is answering. "I don't
+    want it to go from 100 down, because that's demoralizing." The mean of
+    the laws answered so far, which the desktop runs, fell in every one of
+    10,000 simulated intakes; this rule fell in none of 630,000 answers.
+
+    The default 6 still sits in S.law for an unanswered law, because the
+    band relief inside sq and the Ig readout need a number. It never enters
+    CQ: lawIn() is what says whether a law was answered. */
+ const answered=SINAMES.filter(lawIn).length;
+ const complete=(answered===SINAMES.length);
+ const CQ=cqSum();
+ /* THE LEVER. Expression is CQ times what the shadow leaves: "CQ 100 SQ 0
+    ... one pulls down the other, it's a lever", and the pull is his bell,
+    applied per address because "a little tense" and "paralyzed" are
+    intensity at a place. PULL is the mean of leverPull over the 112. */
+ const PULL=SQ.reduce((a,v)=>a+leverPull(v),0)/SQ.length;
+ const EX=CQ*(1-PULL);
  /* One table. This was a literal copy of the thresholds and the names, and a
     previous commit claimed to have removed the duplicate after removing only
     the one in the renderer. A rename would have drifted silently between the
     engine and the definitions. canon.js loads before this file, which is what
-    makes tierOf reachable here. */
- const tier=tierOf(CQ).nm;
- /* UNREAD. With nothing held and no law measured, CQ is a pure function of
-    the default 6 on all 21 laws: it comes out 36 and the tier comes out
-    Incoherent. That is not a reading of a person, it is a reading of the
-    defaults, and the product was printing it in the largest type on screen to
-    someone who had not yet typed a word. The number is still computed, because
-    everything downstream needs it, but the field says plainly that nothing has
-    been read yet and every surface that names a tier checks this first. */
+    makes tierOf reachable here.
+
+    AND THE WORD WAITS FOR ALL 21. A partial CQ is a person coming into view,
+    not a reading: after seven laws it can be at most 33, so a tier word on it
+    would call everybody on day one Incoherent or worse. Null until complete,
+    and every surface that names a tier says what is still to answer
+    instead. Whether the word should name CQ or expression is the owner's
+    question 1 and is not decided here; it stays on CQ until he rules. */
+ const tier=complete?tierOf(CQ).nm:null;
+ /* UNREAD. With nothing held and no law measured the product used to print
+    CQ 36 and the word Incoherent off the default 6 on all 21 laws, in the
+    largest type on screen, to someone who had not typed a word. CQ reads 0
+    there now, because no law is in, but a stranger is still unread rather
+    than a person at zero, and every surface that names a reading checks
+    this first. */
  const measured=SI.filter(function(l){return CURP&&CURP.laws&&CURP.laws[l.nm]!=null;}).length;
  /* BELOW THE LINE. An address counts as carrying at SQ 4. Under that the
     charge is real, a person entered it, and every surface reported nothing
@@ -3840,9 +3990,14 @@ function compute(){
 
     benign and malig keep their old meaning and their old callers, because
     they are the coherence read and several surfaces already print them. They
-    are just no longer pretending to be a second axis. */
- const benign=CQ>=50,malig=benign?0:Math.round((50-CQ)/50*100);
- const X=clamp((1-S.charge.Apathy/10)*.3+(1-clamp(DQraw/14,0,1))*.7,0,1);
+    are just no longer pretending to be a second axis.
+
+    NULL WHILE CQ IS STILL FILLING. A person with a story in and no law
+    answered reads CQ 0, and malig off that is 100: the most malignant field
+    the scale can name, for somebody who has only not done the intake yet. */
+ const benign=complete?CQ>=50:null;
+ const malig=complete?(benign?0:Math.round((50-CQ)/50*100)):null;
+ const X=clamp((1-S.charge.Apathy/10)*.3+(1-clamp(DQ/14,0,1))*.7,0,1);
  const Y=clamp((It/10)*.6+(1-dist/10)*.4,0,1);
  const Z=clamp((Ig/10)*(1-SQm/10),0,1);
  const radiance=Math.sqrt(X*X+Y*Y+Z*Z)/Math.sqrt(3);
@@ -3850,7 +4005,7 @@ function compute(){
  let pi=0;af.forEach((v,i)=>{if(v>af[pi])pi=i;});
  let si=(pi+1)%12;af.forEach((v,i)=>{if(i!==pi&&v>af[si])si=i;});
  let dch=CHARGES[0];CHARGES.forEach(c=>{if(S.charge[c]>S.charge[dch])dch=c;});
- const will=(Ig/10)*(It/10),drag=clamp(DQraw/14,0,1)*1.6+dist/10;
+ const will=(Ig/10)*(It/10),drag=clamp(DQ/14,0,1)*1.6+dist/10;
  const steer=will>=drag?'forced':'withheld';
  const mask=sups[0]||hys[0]||cxs[0]||sabs[0]||null;
  let darkB=BANDS[0],darkV=-1;
@@ -3865,7 +4020,8 @@ function compute(){
  const chain=sabs.concat(cxs).concat(hys).concat(sups);
  const outward=outwardShare(chain);
  const organized=organisedShare(chain);
- const gov=quadrant(outward,organized,CQ);
+ /* Angel needs CQ at 71 or more, which a partial CQ must not be read for */
+ const gov=quadrant(outward,organized,complete?CQ:null);
  /* CARRYING IS NOT THE SAME AS HELD, and the product had only the second word.
     `loaded` is every address at or above the line at sq 4, and it drives the
     arithmetic: DQ, resistance, the saboteur scan. That stays exactly as it is.
@@ -3886,53 +4042,35 @@ function compute(){
     something true to point at. */
  const carrying=W.filter(n=>n.sq>0).sort((a,b)=>b.sq-a.sq);
  return {loaded,carrying,heaviest:carrying[0]||null,
-  sabs,cxs,hys,sups,maskRing,DQ:DQraw,Rz,vf:_vf,SQm,poleMean,JQ,excess,
-  FAM_POLE,dist,Ig,It,CQ,tier,unread,measured,under,benign,malig,X,Y,Z,radiance,aff:af,pi,si,dch,steer,
+  sabs,cxs,hys,sups,maskRing,DQ,SQ,PULL,EX,Rz,vf:_vf,SQm,poleMean,JQ,excess,
+  FAM_POLE,dist,Ig,It,CQ,answered,complete,tier,unread,measured,under,benign,malig,X,Y,Z,radiance,aff:af,pi,si,dch,steer,
   outward,organized,gov,
   will,drag,mask,darkB,darkV,root,rootsIn,weakL,balance:balance()};
 }
 
 /* ============================================================
-   THE CEILING ON RELEASE. What coherence reads once every charge is gone,
+   THE CEILING ON RELEASE. What expression reads once every charge is gone,
    which is the most a release can ever achieve, and the gap to it.
 
-   Why this exists. CQ is (Intention x Integrity) / Resistance. A release
-   empties addresses, so it works on Resistance and on the installed pole. It
-   cannot manufacture Integrity, because Integrity is the twenty one laws and
-   those move only when a person answers them or changes what they do. The
-   product never said so, and offered release as its core loop, so a person
-   pulled the one lever the arithmetic had already spent.
+   Why this exists. A release empties addresses. It cannot manufacture
+   integrity, because integrity is the twenty one laws and those move only
+   when a person answers them or changes what they do. The product never said
+   so, and offered release as its core loop, so a person pulled a lever that
+   was already spent.
 
-   Measured across the roster by zeroing every charge and reading CQ back.
-   Marcus has 0.3 points of headroom and stays Incoherent. Sofia has 1.5 and
-   stays Even. Angela 1.0. Three of the six ICPs can run every release the
-   product will ever offer them and not move the number they were shown. James
-   has 7.2 and stays Severe at the end of it. The ceiling tracks the square of
-   the law mean: James law mean 4.37, ceiling 20.0; Marcus 6.21, ceiling 39.4;
-   Tomas 3.08, ceiling 9.5.
+   THIS WAS cqCeiling, AND A RELEASE CANNOT MOVE CQ AT ALL NOW. CQ is the laws
+   and nothing else, so its ceiling under release is itself and the headroom
+   was 0 for everybody: the release panel would have said "did not move" after
+   every run. What a release moves is the shadow, and through the lever,
+   expression. So the ceiling is expression with the shadow gone.
 
-   It is computed rather than simulated. With charge at zero, held is zero, sq
-   is zero and the pole is the whole of the installed side. jq reads off rep
-   alone so it does not move, bandIg reads off S.law alone so it does not move,
-   and DQ is zero by construction, which puts resistance on its floor. Nothing
-   is mutated and nothing is guessed. */
-function cqCeiling(){
- const lawMean=SINAMES.reduce((a,l)=>a+S.law[l],0)/21;
- const bandMean=BANDS.reduce((a,b)=>a+bandIg(b),0)/7;
- let poleSum=0,jqSum=0;
- W.forEach(n=>{
-  const relief=bandIg(n.b)/10;
-  const rep=n.cf?clamp((S.replace[n.cf]||0)*(0.72+0.28*relief),0,10):0;
-  poleSum+=rep;                                  /* held is 0, so pole is rep */
-  jqSum+=clamp(rep-6,0,4)/4*10;});
- const poleMean=poleSum/108, JQ=jqSum/108;
- const Ig=clamp(lawMean+poleMean*0.30-JQ*0.42,0,10);
- const It=clamp(bandMean+poleMean*0.22-JQ*0.30,0,10);
- const Rz=Math.max(1,verpFactor());             /* DQ is 0, so only the gate */
- return clamp((It*Ig)/Rz,0,100);
-}
+   It is computed rather than simulated. With charge at zero, held is zero at
+   every address, sq is zero whatever is installed, the four outside take a
+   seat mean of zero, and the pull is leverPull(0) at all 112. Nothing is
+   mutated and nothing is guessed. */
+function exCeiling(){return cqSum()*(1-leverPull(0));}
 /* the gap a release still has in it, for the person about to run one */
-function cqHeadroom(cqNow){return Math.max(0,cqCeiling()-cqNow);}
+function exHeadroom(exNow){return Math.max(0,exCeiling()-exNow);}
 
 /* ============================================================
    ACCURACY. Rebuilt from a layer ablation across visible axes x law
@@ -4622,10 +4760,17 @@ function saveProfile(p){
  gatesSave(p);
  p.updated=new Date().toISOString(); p.v=SCHEMA_V;
  return p;}
-/* a snapshot is what Analytics plots. derived only, never inputs. */
+/* a snapshot is what Analytics plots. derived only, never inputs.
+
+   m IS WHICH ARITHMETIC WROTE THE ROW. cq and dq changed meaning on 25
+   September: cq was It*Ig/Rz and is now the laws over 210, dq was an
+   uncapped sum over the addresses at 4 or more and is now the 112 over 1120.
+   A row written before that carries no m, reads back as 0, and a surface
+   comparing two rows must not report the change of formula as a move in the
+   person. tier is null while CQ is still filling. */
 function snapshot(p){
  var r=compute();
- return {t:new Date().toISOString(), cq:Math.round(r.CQ*10)/10, dq:Math.round(r.DQ*100)/100,
+ return {t:new Date().toISOString(), m:CQ_MODEL, cq:Math.round(r.CQ*10)/10, dq:Math.round(r.DQ*100)/100,
   sq:Math.round(r.SQm*100)/100, pole:Math.round(r.poleMean*100)/100,
   jq:Math.round(r.JQ*100)/100, rad:Math.round(r.radiance*1000)/1000,
   loaded:r.loaded.length, sab:r.sabs.length, cx:r.cxs.length, hy:r.hys.length, ch:r.sups.length,
@@ -5216,9 +5361,12 @@ function validateProfile(o){
   if(!x||typeof x!=='object'){errs.push('history entry '+i+' is not an object');return null;}
   var q={t:typeof x.t==='string'?x.t:new Date().toISOString(),
    dark:typeof x.dark==='string'?x.dark:'Heart',
-   tier:typeof x.tier==='string'?x.tier:'Collapsed',
+   /* null is a row written while CQ was still filling, and it stays null:
+      defaulting it to Collapsed would put the lowest word on the scale on
+      somebody who had only not finished the intake. */
+   tier:(typeof x.tier==='string'||x.tier===null)?x.tier:'Collapsed',
    arch:typeof x.arch==='string'?x.arch:''};
-  [['cq',0,100],['dq',0,1e4],['sq',0,10],['pole',0,10],['jq',0,10],['rad',0,10],
+  [['m',0,CQ_MODEL],['cq',0,100],['dq',0,1e4],['sq',0,10],['pole',0,10],['jq',0,10],['rad',0,10],
    ['loaded',0,1e4],['sab',0,1e4],['cx',0,1e4],['hy',0,1e4],['ch',0,1e4]].forEach(function(f){
    var v=vRange(errs,'history['+i+'].'+f[0],x[f[0]],f[1],f[2]);
    q[f[0]]=v===null?0:v;});
@@ -5765,6 +5913,19 @@ function scanStory(text){
   var at=src.indexOf(' '+w+' ');
   while(at>=0){ hits.push({t:w,kind:'adj',charge:ADJ2CHG[w],at:at});
    at=src.indexOf(' '+w+' ',at+1);}});
+ /* THE DEGREE WORD, AZ6. A LEXMOD entry standing immediately before a word or
+    phrase hit scales its amount, and the hit keeps both so the path and any
+    reader can see what was scaled and by what. Only the nearest degree word
+    counts, longest first, so "a little" wins over a stray "little". The
+    amount stays unrounded: parseStory divides by 3 before anything is
+    rounded, and rounding here would fold "fairly" back into the plain word. */
+ var mods=Object.keys(LEXMOD).sort(function(a,b){return b.length-a.length;});
+ hits.forEach(function(h){
+  if(h.amt==null||(h.kind!=='word'&&h.kind!=='phrase'))return;
+  var before=src.slice(0,h.at+1);
+  for(var i=0;i<mods.length;i++){
+   if(before.slice(-(mods[i].length+2))===' '+mods[i]+' '){
+    h.mod=LEXMOD[mods[i]]; h.modw=mods[i]; h.amt=h.amt*h.mod; break;}}});
  hits.sort(function(a,b){return a.at-b.at;});
  return hits;}
 /* ============================================================
@@ -6927,9 +7088,14 @@ function converge(name,r){
  if(LP2ARCH[e.lp]===archNow) agree.push('life path '+e.lp+' and your first archetype both read '+archNow);
  else differ.push('life path '+e.lp+' reads '+(LP2ARCH[e.lp]||'unmapped')+', you run '+archNow);
  var initiating=(e.sunMode==='cardinal');
- if(initiating===!!r.benign) agree.push('birth mode '+e.sunMode+' matches a field that is '
-   +(r.benign?'expanding':'contracting'));
- else differ.push('birth mode '+e.sunMode+' against a field that is '+(r.benign?'expanding':'contracting'));
+ /* benign is null while CQ is still filling. A missing direction is a gap,
+    for the reason given below for the design type, and scoring it as the
+    field contracting made an unanswered intake read as disagreement. */
+ var fieldOpen=(r.benign===null||r.benign===undefined);
+ if(!fieldOpen){
+  if(initiating===!!r.benign) agree.push('birth mode '+e.sunMode+' matches a field that is '
+    +(r.benign?'expanding':'contracting'));
+  else differ.push('birth mode '+e.sunMode+' against a field that is '+(r.benign?'expanding':'contracting'));}
  /* The fourth comparison used to read a Human Design type that was the
     birth hour modulo five. Now that the type is honestly unresolved
     there is nothing to compare, so it goes in a third bucket. A gap is
@@ -6940,7 +7106,8 @@ function converge(name,r){
  if(!e.rising)open.push('the ascendant, which needs '+(e.needsTime?'a birth time':'a birthplace'));
  /* the design gate is real and independent of the field, so it can be
     compared: a design line of 1 or 4 is an inward profile. */
- if(e.hd.design){
+ if(fieldOpen)open.push('the direction of the field, which needs all '+SI.length+' laws answered');
+ else if(e.hd.design){
   var inward=(e.hd.design.line===1||e.hd.design.line===4);
   if(inward===!r.benign)agree.push('design line '+e.hd.design.line+' and a field that is '
     +(r.benign?'expanding':'contracting')+' point the same way');
@@ -7413,6 +7580,44 @@ function ledgerRead(p){
   lines:+m.lines||0, ground:((m.unique||[]).length),
   clear:clear, carry:carry, snaps:((p&&p.history)||[]).length};}
 
+/* ============================================================
+   INTENTION, THE GAP BETWEEN WHAT WAS SAID AND WHAT WAS DONE. Ruled 25
+   September: "You either did the thing you said you were gonna do or you
+   didn't, and the reason why is going to be, there's a story in there from
+   the SQ somewhere in the body." And: "you can have an emotion without an
+   intention." So no charge is read into this number at all. It is the
+   rituals a person committed to in the window, against the ones marked done.
+
+   WHAT IS PORTED AND WHAT IS NOT. The number is the fitted model's own
+   (cq-unified.md B.1): 100 times did over said, null when nothing was said,
+   over the last seven days, which is the desktop's window. The reason half
+   is not: the ruling ties each broken commitment to the address it was made
+   for so the story stored there is the why, and a saved ritual carries a
+   seat (band) and no address. Adding one is a schema change and SOURCE
+   compatibility makes that the owner's call, so broken commitments are
+   returned with their seat only and nothing here claims an address. Whether
+   awareness scales this or sits beside it in words is his open question 4,
+   so nothing scales it. It is not yet on any surface: the product's
+   existing "intention" readout is It, the band mean of the laws, and putting
+   a second number under the same word before he names one is the defect
+   one word per concept exists to stop.
+
+   An entry with no done key was saved before done existed. ledgerRead reads
+   it as practised, which is right for minutes on a record, but here it would
+   claim a commitment kept that nobody recorded either way, so it is left out
+   of both counts. The caller passes the moment, as everywhere in this file. */
+var INTENT_DAYS=7;
+function intentionRead(p,now){
+ var today=pracDay(now||Date.now()), said=0, did=0, broken=[];
+ ((p&&p.rituals)||[]).forEach(function(x){
+  if(!x||x.done===undefined)return;
+  var d=pracDay(x.t); if(d===null||today===null)return;
+  if(today-d<0||today-d>=INTENT_DAYS)return;
+  said++;
+  if(x.done)did++; else broken.push({t:x.t, band:x.band||''});});
+ return {said:said, did:did, days:INTENT_DAYS,
+  pct:said?100*did/said:null, broken:broken};}
+
 /* THE MARKS.
 
    Each is a named thing, so each has an icon and a family, and the family has
@@ -7604,6 +7809,9 @@ function obCount(){ return obStore().length; }
    The raw reading never travels. */
 function obBand(r){
  if(!r||r.unread) return 'unread';
+ /* a CQ still filling is where somebody is in the intake, not on the curve,
+    and bucketing it would file everybody mid intake as low */
+ if(r.complete===false) return 'filling';
  var c=r.CQ;
  return c<50?'low':(c<70?'median':'high');}
 
@@ -7742,6 +7950,7 @@ if(typeof module!=='undefined'&&module.exports){
                   LEX:LEX, ADJ2CHG:ADJ2CHG, PHRASES:PHRASES, VERP:VERP,
                   NERVEBR:NERVEBR, BODYPATH:BODYPATH, TAB:TAB,
   /* the ladder */MARKS:MARKS, ladderRead:ladderRead, ledgerRead:ledgerRead,
+                  intentionRead:intentionRead, INTENT_DAYS:INTENT_DAYS,
                   streakRead:streakRead, pracDays:pracDays, pracDay:pracDay,
   /* indexes */   W:W, BY:BY, ALL_SAB:ALL_SAB, S:S,
   /* soul */      buildSoul:buildSoul, affinity:affinity, bandIg:bandIg,
@@ -7759,11 +7968,16 @@ if(typeof module!=='undefined'&&module.exports){
 
      It is the one the owner has ruled most important. His words are that a
      person is already the most powerful version of themselves and the limiters
-     are what hold them down, so cqCeiling is the person and the reading is the
-     drag against it. Nothing on the ceiling's own path was missing beside
-     these two: bandIg, verpFactor, mirrorAt, clamp, W, S, BANDS and SINAMES
-     are all already here, which is why this is two lines and not a group. */
-                  cqCeiling:cqCeiling, cqHeadroom:cqHeadroom,
+     are what hold them down, so the ceiling is the person and the reading is
+     the drag against it.
+
+     Renamed from cqCeiling and cqHeadroom when CQ became the 21 laws alone: a
+     release cannot move CQ, so its ceiling is expression's. The lever and the
+     law test are exported beside them so a gate can pin the fitted curve and
+     reproduce the simulation's worked people without re-deriving either. */
+                  exCeiling:exCeiling, exHeadroom:exHeadroom,
+                  lawIn:lawIn, cqSum:cqSum, leverPull:leverPull,
+                  LEVER_MU:LEVER_MU, LEVER_SD:LEVER_SD, CQ_MODEL:CQ_MODEL,
   /* seed */      TYPE16:TYPE16, SEED16:SEED16, seedAxes:seedAxes, seedApply:seedApply,
                   seedClear:seedClear, seedShare:seedShare, seedValid:seedValid, accuracy:accuracy, sab33Detect:sab33Detect,
                   sabLevels:sabLevels, exprFill:exprFill, exprRead:exprRead,
@@ -7788,6 +8002,13 @@ if(typeof module!=='undefined'&&module.exports){
                   gatesClear:gatesClear, gatesLoad:gatesLoad, gatesSave:gatesSave,
   /* schema */    blankProfile:blankProfile, loadProfile:loadProfile,
                   saveProfile:saveProfile, snapshot:snapshot, LAW_DEFAULT:LAW_DEFAULT,
+  /* the unanswered marks, which CQ now reads through lawIn. The object is
+     never reassigned, only its keys, so the reference exported here stays the
+     live one. A headless caller that sets S.law directly after a blank profile
+     has been loaded clears these to say the values it set were answered;
+     otherwise a law set to exactly the seed reads as unanswered, which is
+     saveProfile's documented blind spot and correct for a person. */
+                  LAW_UNSET:LAW_UNSET,
                   pExport:pExport, pImport:pImport, validateProfile:validateProfile, importError:importError,
                   meterRun:meterRun, meterRead:meterRead, meterKey:meterKey, meterBudget:meterBudget,
                   meterNext:meterNext, meterPlan:meterPlan, LINES_PER_CH:LINES_PER_CH, MARKERS:MARKERS, markersFor:markersFor, PAT_PER_YEAR:PAT_PER_YEAR,

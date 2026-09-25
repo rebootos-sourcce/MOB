@@ -215,6 +215,19 @@ function scanStory(text){
   var at=src.indexOf(' '+w+' ');
   while(at>=0){ hits.push({t:w,kind:'adj',charge:ADJ2CHG[w],at:at});
    at=src.indexOf(' '+w+' ',at+1);}});
+ /* THE DEGREE WORD, AZ6. A LEXMOD entry standing immediately before a word or
+    phrase hit scales its amount, and the hit keeps both so the path and any
+    reader can see what was scaled and by what. Only the nearest degree word
+    counts, longest first, so "a little" wins over a stray "little". The
+    amount stays unrounded: parseStory divides by 3 before anything is
+    rounded, and rounding here would fold "fairly" back into the plain word. */
+ var mods=Object.keys(LEXMOD).sort(function(a,b){return b.length-a.length;});
+ hits.forEach(function(h){
+  if(h.amt==null||(h.kind!=='word'&&h.kind!=='phrase'))return;
+  var before=src.slice(0,h.at+1);
+  for(var i=0;i<mods.length;i++){
+   if(before.slice(-(mods[i].length+2))===' '+mods[i]+' '){
+    h.mod=LEXMOD[mods[i]]; h.modw=mods[i]; h.amt=h.amt*h.mod; break;}}});
  hits.sort(function(a,b){return a.at-b.at;});
  return hits;}
 /* ============================================================

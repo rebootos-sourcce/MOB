@@ -41,7 +41,9 @@ const FOLD=fs.existsSync(FPATH)?JSON.parse(fs.readFileSync(FPATH,'utf8')):null;
 const {S,W,BY,CHILD,compute,accuracy,applyStory,parseStory,verpApply,leanApply,
  blankProfile,loadProfile,saveProfile,snapshot,iqApply,iqList,
  meterPlan,meterRun,planAllowance,RUN_MAX,ladderRead,ledgerRead,streakRead,
- tierOf,seedApply,TYPE16,clamp,PRACTICE,cqCeiling}=E;
+ tierOf,seedApply,TYPE16,clamp,PRACTICE,exCeiling}=E;
+/* exCeiling since 25 September: CQ is the laws alone and a release cannot
+   move it, so the ceiling a release works toward is expression's. */
 
 /* the engine wants a host store. this one is a bag that goes away. */
 let MEM={}; E.bindStore(k=>MEM[k],(k,v)=>{MEM[k]=v;});
@@ -200,7 +202,7 @@ function ceilingCase(lawCentre){
   marks:L.earned.map(m=>m.nm), next:L.next?L.next.nm:null,
   streak:st.best, band:tierOf(compute().CQ).nm,
   accuracy:+accuracy(compute()).pct.toFixed(1),
-  ceiling:+cqCeiling().toFixed(1),
+  ceiling:+exCeiling().toFixed(1),
   secondsInRelease:curve.reduce((a,c)=>a+c.seconds,0)};}
 
 /* ============================================================
@@ -681,7 +683,7 @@ function runPerson(spec,rng,seedIdx){
  /* ---------------- the ninety day reading ---------------- */
  const r=compute();
  const L=ladderRead(prof,Date.now()), led=ledgerRead(prof), st=streakRead(prof,Date.now());
- rec.cq1=+r.CQ.toFixed(2); rec.ceiling=+cqCeiling().toFixed(1);
+ rec.cq1=+r.CQ.toFixed(2); rec.ceiling=+exCeiling().toFixed(1);
  rec.ground=led.ground; rec.clear=led.clear; rec.marks=L.earned.length;
  rec.streakBest=st.best; rec.ritualMinutes=Math.round(led.minutes);
  rec.gift=planAllowance(prof.plan,(prof.meter.unique||[]).length).left;

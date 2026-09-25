@@ -108,7 +108,11 @@ function relCoolDown(){
     +', which is a worked example rather than your record. Switch to your own '
     +'profile to run a release.','fail');
   return false; }
- var _pre=compute(); RUN.cq0=_pre.CQ; RUN.ceil0=cqCeiling();
+ /* expression, not CQ, before and after. CQ is the 21 laws alone since 25
+    September and no release moves it, so a CQ before and after said "did not
+    move" to everybody on every run. What a release moves is the shadow, and
+    through the lever, expression. */
+ var _pre=compute(); RUN.ex0=_pre.EX; RUN.ceil0=exCeiling();
  /* the release empties addresses and installs their opposites. it is the
     largest single write this product makes and it had no way back. */
  undoPush('the release at '+(RUN.queue.length?RUN.queue.length+' addresses':'no addresses'));
@@ -200,25 +204,24 @@ function relRender(){
     +'<span>'+esc(x.name)+'</span><em>toward '+esc(x.opp||'no pole')+'</em></div>';});
   /* WHAT MOVED, AND WHAT RELEASE CANNOT MOVE. The panel used to report weight
      freed and nothing else, so a person ran the loop again and again watching
-     a number that was never going to answer. Release works on resistance and
-     on the installed pole. It cannot touch integrity, which is the twenty one
-     laws, and integrity is most of the reading. So the panel states the move
+     a number that was never going to answer. Release works on the shadow. It
+     cannot touch integrity, which is the twenty one laws and the whole of CQ. So the panel states the move
      it actually made, and when the ground under release is spent it says so
      and names the lever that is not spent. Measured: three of the six ICPs
      have under two points of total release headroom. */
-  var _now=compute(), _mv=_now.CQ-(RUN.cq0||0), _left=cqHeadroom(_now.CQ);
-  out+='</div><div class="rel-note">Coherence '
+  var _now=compute(), _mv=_now.EX-(RUN.ex0||0), _left=exHeadroom(_now.EX);
+  out+='</div><div class="rel-note">Expression '
    +(Math.abs(_mv)<0.05?'did not move.'
-     :(_mv>0?'up ':'down ')+Math.abs(_mv).toFixed(1)+', now '+_now.CQ.toFixed(1)+'.')
+     :(_mv>0?'up ':'down ')+Math.abs(_mv).toFixed(1)+', now '+_now.EX.toFixed(1)+'.')
    +' '+(_left<1.5
      /* THE NUMBER SAYS WHAT IT IS, AND THE SENTENCE STOPS. "about 1.2 left to
         give you" is one point two of what, and the sentence after it ran to
         thirty words with its subject deferred and a gloss in the middle. */
-     ?'Release has about '+_left.toFixed(1)+' points left to give you. Integrity '
-      +'holds the reading down from here, and integrity is the twenty one laws. '
+     ?'Release has about '+_left.toFixed(1)+' points left to give you. The laws '
+      +'hold expression down from here, and there are twenty one of them. '
       +'They move when you answer them, and when what you do changes.'
-     :'Release has about '+_left.toFixed(1)+' points more in it before integrity '
-      +'is the only thing holding the reading down.')
+     :'Release has about '+_left.toFixed(1)+' points more in it before the laws '
+      +'are the only thing holding expression down.')
    +'</div>'
    +'<div class="rel-note">Release empties the address. The coherent opposite is '
    +'installing on the same pass. The rebound is day four and a half. Completion is day '

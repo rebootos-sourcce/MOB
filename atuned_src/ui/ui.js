@@ -22,8 +22,10 @@ function describe(h,r){
   +'Coherence is the alignment between what arrives, how you read it,<br>'
   +'what you intend, and what you then do.<br>'
   +'This reads every register in that circuit.<hr>'
-  +'<span class="tt-q">intention '+r.It.toFixed(1)+', integrity '+r.Ig.toFixed(1)
-  +', resistance '+r.Rz.toFixed(2)+'</span><hr><b>Click for the breakdown.</b>';
+  /* the inputs line named intention, integrity and resistance, which were
+     CQ's three terms until 25 September. CQ is the 21 laws summed now. */
+  +'<span class="tt-q">'+(r.complete?'every law answered':tierSay(r))+'</span>'
+  +'<hr><b>Click for the breakdown.</b>';
  if(h.k==='gate'){var v=h.v;
   return '<u>'+(v.side==='higher'?'higher gate':'lower gate')+'</u> <b>'+esc(v.nm)+'</b><hr>'
    +esc(v.d||'')+'<hr>'+(v.n?'<b>'+v.pct+'%</b> of the story, '+v.n+' sentence'+(v.n===1?'':'s'):'no story yet')
@@ -594,9 +596,12 @@ function railTop(r){
      audience arrives on phones. So the word in the rail is the button now. */
   +'<button type="button" class="rt-t tierbtn" id="tier" title="'
   +esc(td?(td.def+'  '+td.energy+'  Toward: '+td.toward)
-       :'Nothing has been read yet. Write a story or set a charge.')+'"'
+       :r.unread?'Nothing has been read yet. Write a story or set a charge.'
+       :tierBuilding())+'"'
   +(tcol?' style="color:'+tcol+'"':'')
-  +'>'+esc(r.unread?'not read yet':r.tier)+'</button>'
+  /* while CQ is still filling there is no word, so the slot says what is
+     left to answer rather than naming a band off laws nobody answered */
+  +'>'+esc(r.unread?'not read yet':tierSay(r))+'</button>'
   /* ONE STATE, ONE SENTENCE. The button's own title two lines above says
      "Nothing has been read yet. Write a story or set a charge." for the same
      unread field, and this said the same thing a second way, three words
@@ -604,7 +609,7 @@ function railTop(r){
      empty state is said one way across the app. */
   +'<span class="rt-d">'+esc(r.unread
     ? 'Nothing has been read yet. Write a story or set a charge.'
-    : (td?td.def:''))+'</span>';
+    : (td?td.def:tierBuilding()))+'</span>';
  /* and a tap gets the whole thing, because hover is not a route on the device
     most of this audience arrives on. */
  var tb=e.querySelector('#tier');
@@ -612,7 +617,7 @@ function railTop(r){
  /* the label never stands alone: hovering it gives the definition and the
     direction, and clicking the strip opens the whole thing. */
  e.title=td?(td.nm+'. '+td.def+' '+td.energy+' Toward: '+td.toward)
-  :'Nothing has been read yet. Write a story or set a charge.';}
+  :r.unread?'Nothing has been read yet. Write a story or set a charge.':tierBuilding();}
 function render(){
  if(typeof paintUndo==='function')paintUndo();
  if(typeof paintLegend==='function')paintLegend();
@@ -635,6 +640,10 @@ function render(){
      the same lie in a different shape. */
   if(r.unread){$('pol').innerHTML='<div class="bmnote">Nothing read yet, so there is '
    +'no split to show.</div>'; return;}
+  /* malig is null while CQ is still filling. Read as 0 it drew a field 100
+     per cent benign for somebody who had answered no law at all. */
+  if(r.malig===null){$('pol').innerHTML='<div class="bmnote">Coherence is still filling, '
+   +'so there is no split to show.</div>'; return;}
   $('pol').innerHTML='<div class="bmrow"><span class="bmk">Benign</span>'
    +'<span class="bmbar"><i style="width:'+ben.toFixed(0)+'%;background:'+PAL.Heart+'"></i></span>'
    +'<span class="bmv" style="color:'+PAL.Heart+'">'+ben.toFixed(0)+'%</span></div>'
@@ -675,6 +684,12 @@ function render(){
    pb.title='Balance. Nothing read yet, so there is no lean to show.';
    return;}
   var L=leanRead(r);
+  /* and on a field whose CQ is still filling with no story cue yet, which has
+     no lean to show either: leanRead says so rather than printing 100 to 0 */
+  if(L.read===false){
+   pb.innerHTML='<div class="mid"></div>';
+   pb.title='Balance. Coherence is still filling, so there is no lean to show.';
+   return;}
   var off=Math.abs(L.ben-50)*2;              /* 0 at even, 100 at either end */
   var mal=L.mal>L.ben;
   /* BENIGN AND MALIGNANT GET SYMBOLS, like balance. Ruled.
@@ -734,12 +749,18 @@ function render(){
       /* THE PILL ALREADY PRINTS A PERCENT, so the tooltip saying "29 out of
          100" beside it is the number twice and the scale once too often. The
          sentence says what the reading means and the pill says the figure. */
+      /* CQ is the 21 laws summed since 25 September, not a ledger of build
+         against cost, so the sentence says what it now reads */
       title:'Coherence. '+(r.unread?'Not read yet.'
-        :'What the field builds against what it costs.')})+'</button>'
+        :r.complete?'The '+SI.length+' laws, summed.':tierSay(r)+'.')})+'</button>'
   +'<button class="kb" data-q="dq">'
-    +cr('Root',clamp(r.DQ/14,0,1)*100,{size:'sm',text:'DQ',raw:r.DQ.toFixed(1),
-      title:'Shadow weight. '+r.DQ.toFixed(1)+', summed across every address that '
-       +'is carrying, with no ceiling.'})+'</button>'
+    /* DQ IS OUT OF 100 NOW. It was an uncapped sum, so the ring was scaled by
+       a guessed 14 and the tooltip had to say "no ceiling". It is the total
+       shadow on all 112 addresses over the most they can hold, the same
+       scale as CQ, so the ring is the figure and the tail is a percent. */
+    +cr('Root',r.DQ,{size:'sm',text:'DQ',raw:Math.round(r.DQ)+'%',
+      title:'Shadow weight. The weight on all 112 addresses, out of the most '
+       +'they can hold.'})+'</button>'
   +'<button class="kb" data-q="sq">'
     +cr(r.darkB,r.SQm*10,{size:'sm',text:'SQ',raw:r.SQm.toFixed(1),
       title:'Segment depth. '+r.SQm.toFixed(1)+' of 10. How deep the held charge '

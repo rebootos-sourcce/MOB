@@ -13,10 +13,17 @@ const ok=(c,m)=>{if(c){P++}else{F++;console.log('  FAIL  '+m)}};
 const near=(a,b,t,m)=>ok(Math.abs(a-b)<=t,m+'  ('+a+' vs '+b+' +/-'+t+')');
 
 /* every test starts from the same field */
+/* THE LAWS A GATE SETS ARE LAWS THAT WERE ANSWERED. CQ sums only answered
+   laws since the 25 September ruling, and it asks lawIn, which honours the
+   unanswered marks the last loadProfile left behind. Several groups load a
+   blank profile, so without this every later reset(..,6) read as a person
+   who had answered nothing, because 6 is the seed. Clearing the marks says
+   what reset means: a field whose every law was measured at the value given. */
+function lawsIn(){SINAMES.forEach(l=>{E.LAW_UNSET[l]=false;});}
 function reset(held,opp,law){
  S.doms=[0];S.arcs=[0,1];S.roots=[];buildSoul();
  CHARGES.forEach(c=>{S.charge[c]=held!==undefined?held:0;S.replace[c]=opp||0;});
- SINAMES.forEach(l=>S.law[l]=law!==undefined?law:6);
+ SINAMES.forEach(l=>S.law[l]=law!==undefined?law:6); lawsIn();
  E.VERPMIX.aware=E.VERPMIX.detach=E.VERPMIX.intent=0;
  E.VERPMIX.ignore=E.VERPMIX.attach=E.VERPMIX.averse=0;
  E.LEANMIX.benign=E.LEANMIX.malignant=0;
@@ -146,11 +153,15 @@ near(r.vf,1,1e-9,'no story means no gate evidence, factor is 1');
 reset(6,0,6); E.verpApply('i could not stop going over it and it had me');
 const att=compute();
 ok(att.vf>1,'an attachment story costs more than 1');
-ok(att.Rz>baseRz&&att.CQ<baseCQ,'and it raises resistance, lowering CQ');
+/* CHANGED 25 SEPTEMBER, and on purpose. These read "and it raises
+   resistance, lowering CQ" and "and it raises CQ". The owner ruled CQ is the
+   21 laws and nothing else, so resistance still moves and CQ must not. */
+ok(att.Rz>baseRz,'and it raises resistance');
+ok(att.CQ===baseCQ,'which no longer moves CQ, '+baseCQ+' then '+att.CQ);
 reset(6,0,6); E.verpApply('i let it pass and i stayed out of the story and i let it go');
 const det=compute();
 ok(det.vf<1,'a detachment story costs less than 1');
-ok(det.CQ>baseCQ,'and it raises CQ');
+ok(det.Rz<baseRz&&det.CQ===baseCQ,'and it lowers resistance, which does not move CQ either');
 reset(0,0,6);
 const sh=E.verpRead();
 ok(sh.length===6&&sh.every(v=>v.mult>0),'six gates, each with a multiplier');
@@ -158,13 +169,21 @@ ok(sh.filter(v=>v.side==='higher').length===3&&sh.filter(v=>v.side==='lower').le
    'three higher, three lower');
 
 g('8 · the lean');
-reset(0,0,6);
+/* THE FIELD HERE HAS TO LEAN SOMEWHERE, and it is laws at 3 rather than 6
+   for that reason alone. The lean blends the field's malignancy with the
+   story's, and this group asserts which way a story moves it. Laws at 6 read
+   CQ 36 under the old arithmetic, malignancy 28, so both stories had a prior
+   to move. Under the 25 September CQ, laws at 6 read 60, benign, malignancy
+   0, and a story that admits no malignant cue cannot read below 0: both came
+   back 0 and the ordering vanished. Laws at 3 read CQ 30, malignancy 40,
+   which puts the prior back without changing what is asserted. */
+reset(0,0,3);
 let L=E.leanRead(compute());
 ok(L.cues===0&&L.src==='field only','no story, the field speaks alone');
 E.leanApply('i was wrong and i said sorry and i told the truth and i let it go and i owned it');
 const good=E.leanRead(compute());
 ok(good.cues>0,'benign cues register');
-reset(0,0,6); E.leanApply('their fault they always do this not my problem they owe me i had no choice');
+reset(0,0,3); E.leanApply('their fault they always do this not my problem they owe me i had no choice');
 const bad=E.leanRead(compute());
 ok(bad.mal>good.mal,'malignant language leans further malignant than benign language');
 near(good.ben+good.mal,100,0.001,'benign and malignant are one field, summing to 100');
@@ -185,7 +204,10 @@ ok(prof.v===E.SCHEMA_V,'schema version stamped');
 ok(Object.keys(prof.axes).length===9&&Object.keys(prof.laws).length===21,
    '9 axes and 21 laws in the object');
 const snap=E.snapshot(prof);
-ok(Object.keys(snap).length===15,'snapshot is 15 derived fields, got '+Object.keys(snap).length);
+/* 16 since 25 September: m, which arithmetic wrote the row, because cq and
+   dq changed meaning and a row from each must never be compared as a move. */
+ok(Object.keys(snap).length===16,'snapshot is 16 derived fields, got '+Object.keys(snap).length);
+ok(snap.m===E.CQ_MODEL,'and it is stamped with the arithmetic that wrote it, got '+snap.m);
 ok(!('charge' in snap)&&!('law' in snap),'snapshot holds no inputs');
 
 g('10 · intake, partial scoring');
@@ -272,7 +294,7 @@ PEOPLE.forEach(p=>{
  S.doms=[p.dom];S.arcs=[p.a1,p.a2];S.roots=[];buildSoul();
  CHARGES.forEach(c=>{S.charge[c]=p.c[c]||0;S.replace[c]=(p.rep&&p.rep[c])||0;});
  const LS=LAWSET[p.nm]||{_:E.LAW_DEFAULT};
- SINAMES.forEach(l=>S.law[l]=LS[l]!==undefined?LS[l]:LS._);
+ SINAMES.forEach(l=>S.law[l]=LS[l]!==undefined?LS[l]:LS._); lawsIn();
  const x=compute();
  ok(x.CQ>=0&&x.CQ<=100,p.nm+': CQ in range');
  ok(!isNaN(x.DQ)&&!isNaN(x.SQm)&&!isNaN(x.radiance),p.nm+': no NaN in the instruments');
@@ -283,7 +305,7 @@ PEOPLE.forEach(p=>{
 const ref=n=>{const p=PEOPLE.find(x=>x.nm===n);
  S.doms=[p.dom];S.arcs=[p.a1,p.a2];S.roots=[];buildSoul();
  CHARGES.forEach(c=>{S.charge[c]=p.c[c]||0;S.replace[c]=(p.rep&&p.rep[c])||0;});
- const LS=LAWSET[n];SINAMES.forEach(l=>S.law[l]=LS[l]!==undefined?LS[l]:LS._);
+ const LS=LAWSET[n];SINAMES.forEach(l=>S.law[l]=LS[l]!==undefined?LS[l]:LS._); lawsIn();
  return compute();};
 ok(ref('Rosa').CQ>ref('Ana').CQ,'the cleared reference case reads higher than the one mid-crisis');
 ok(ref('Ana').CQ>ref('Gordon').CQ,'and mid-crisis reads higher than the collapsed one');
@@ -708,9 +730,13 @@ g('16 \u00b7 the front door');
  const st='i could not stop going over it and it was their fault';
  const s1=read(blankProfile('s'),{story:st});
  const s2=read(blankProfile('s'),{story:st});
- ok(Math.abs(s1.reading.CQ-s2.reading.CQ)<1e-9,'a story applied twice reads once');
+ /* DQ and not CQ, since 25 September: a story writes charge, and CQ is the
+    laws alone, so on a blank profile it reads 0 before and after and these
+    two would pass without testing anything. The shadow is what a story moves. */
+ ok(Math.abs(s1.reading.DQ-s2.reading.DQ)<1e-9,'a story applied twice reads once');
  ok(s1.reading.vf!==1,'story cues move the gate factor off neutral');
- ok(s1.reading.CQ!==a.reading.CQ,'and the story changes the reading');
+ ok(s1.reading.DQ!==a.reading.DQ,'and the story changes the reading');
+ ok(s1.reading.CQ===a.reading.CQ,'and never CQ, which is the laws alone');
 
  /* gate evidence survives the round trip. this was the v1 defect: the
     multiplier moved every CQ and was never written to the schema. */
@@ -970,19 +996,30 @@ g('19b \u00b7 the empty field says it is empty');
  /* The seeded 3 is gone from the state itself, which is the half that does not
     depend on who is loaded. The unread flag reads CURP, so it is asserted in
     the browser gate where a genuinely fresh profile exists. */
+ /* a blank profile through the boundary, so the laws are unanswered by the
+    record's own marks and not by whatever the group before happened to load */
+ E.loadProfile(E.blankProfile('empty'));
  E.S.doms=[0];E.S.arcs=[0,1];E.S.roots=[];buildSoul();
  CHARGES.forEach(c=>{S.charge[c]=0;S.replace[c]=0;});
- SINAMES.forEach(l=>S.law[l]=6);
  const r0=compute();
  ok(r0.loaded.length===0,'an empty field carries nothing');
  ok(typeof r0.unread==='boolean','the reading reports whether it has been read');
  ok(typeof r0.measured==='number','and how many laws were measured');
- /* the number is still computed, because everything downstream needs it */
- ok(typeof r0.CQ==='number'&&r0.CQ>0,'CQ is still computed for the machinery, got '+r0.CQ.toFixed(1));
+ /* CHANGED 25 SEPTEMBER. This asserted CQ above 0 here, "still computed for
+    the machinery", because CQ was read off the default 6 on all 21 laws. The
+    owner ruled the opposite: CQ builds from nothing as the laws are answered,
+    so with none answered it is 0, and it says it is still filling. */
+ ok(r0.CQ===0&&r0.answered===0&&r0.complete===false,
+  'CQ is 0 with no law answered and says it is still filling, got '+r0.CQ+', '
+  +r0.answered+' answered');
  /* one real input and it is a reading whatever the profile */
  S.charge.Fear=7; const r1=compute();
  ok(r1.unread===false,'one held address makes it a reading');
- ok(r1.tier&&r1.tier.length>0,'and the tier means something');
+ /* CHANGED 25 SEPTEMBER, from "and the tier means something". A tier word on
+    a CQ that is still filling would call this person Collapsed for not having
+    done the intake. The word waits for all 21. */
+ ok(r1.tier===null,'but no tier word is put on it until all 21 laws are in, got '+r1.tier);
+ ok(r1.DQ>0&&r1.CQ===0,'and the shadow reads while CQ waits, DQ '+r1.DQ.toFixed(1));
  S.charge.Fear=0; compute();
  /* AND CHARGE UNDER THE DISPLAY LINE IS STILL CHARGE SOMEBODY ENTERED.
     unread is a claim about whether anything was entered, not about whether it
@@ -990,7 +1027,9 @@ g('19b \u00b7 the empty field says it is empty');
     carrying, loaded 0, DQ 0.0, unread true, so Summary showed the four doors
     and said nothing had been entered while the release control offered those
     same 107 addresses and spent eight patterns a press on them. The display
-    line is unchanged and DQ still reads 0, which is true. */
+    line is unchanged. DQ read 0 here until 25 September, because it summed
+    only the addresses at 4 or more; it is the total shadow now and counts
+    these too. */
  CHARGES.forEach(c=>{S.charge[c]=3.9;});
  const r2=compute();
  ok(r2.loaded.length===0,'charge at 3.9 is still below the line, nothing is held');
@@ -1097,14 +1136,33 @@ g('19a \u00b7 the roster covers the scale');
   S.roots=p.roots?p.roots.slice():[]; buildSoul();
   CHARGES.forEach(c=>{S.charge[c]=(p.c&&p.c[c])||0; S.replace[c]=(p.rep&&p.rep[c])||0;});
   const LS=LAWSET[p.nm]||{_:E.LAW_DEFAULT};
-  SINAMES.forEach(l=>S.law[l]=(LS[l]!==undefined)?LS[l]:(LS._!==undefined?LS._:E.LAW_DEFAULT));
+  SINAMES.forEach(l=>S.law[l]=(LS[l]!==undefined)?LS[l]:(LS._!==undefined?LS._:E.LAW_DEFAULT)); lawsIn();
   return compute();};
+ /* a persona's table is its measurement, as loadP treats it */
  const by={}; PEOPLE.forEach(p=>{by[p.nm]=rd(p);});
- const near=(n,t)=>ok(Math.abs(by[n].CQ-t)<0.6,n+' reads about '+t+', got '+by[n].CQ.toFixed(1));
- near('Tomas',2); near('Nkem',10); near('Wren',92); near('Abraham',98);
- /* the pairs sit inside one band each, which is the test of the vocabulary */
- ok(by.Tomas.tier===by.Nkem.tier,'2 and 10 are the same word: '+by.Tomas.tier);
- ok(by.Wren.tier===by.Abraham.tier,'92 and 98 are the same word: '+by.Wren.tier);
+ /* CHANGED 25 SEPTEMBER. This asserted Tomas about 2, Nkem 10, Wren 92 and
+    Abraham 98, and each pair shared a word. Those four were solved by
+    bisection against It*Ig/Rz, where a heavy field could pull CQ to the
+    floor. CQ is the laws alone now, so load no longer reaches it: the four
+    read 25.9, 45.6, 91.3 and 89.2, and the floor pair is reached on
+    expression instead (11.4 and 35.8). Their law tables are persona data and
+    were not re-solved: whether the tier word names CQ or expression is the
+    owner's question 1, and re-solving before he rules would pick for him.
+    What is still true, and asserted: the floor cases sit below the median on
+    CQ and further down on expression, the ceiling cases sit in the top two
+    bands, and CQ is exactly each table summed over 210. */
+ ['Tomas','Nkem'].forEach(n=>{
+  ok(by[n].CQ<E.MEDIAN,n+' is a floor case, below the median, got '+by[n].CQ.toFixed(1));
+  ok(by[n].EX<by[n].CQ,n+' and its load pulls expression lower, '+by[n].EX.toFixed(1));});
+ ['Wren','Abraham'].forEach(n=>ok(by[n].CQ>=81,
+  n+' is a ceiling case, in the top two bands, got '+by[n].CQ.toFixed(1)));
+ ['Tomas','Nkem','Wren','Abraham'].forEach(n=>{
+  const LS=LAWSET[n];
+  const sum=SINAMES.reduce((a,l)=>a+((LS[l]!==undefined)?LS[l]:LS._),0);
+  ok(Math.abs(by[n].CQ-sum/210*100)<1e-9,n+' reads its laws over 210, '+by[n].CQ.toFixed(1));});
+ /* the vocabulary claim itself does not need a persona: a band is ten wide */
+ ok(E.tierOf(2).nm===E.tierOf(10).nm,'2 and 10 are the same word: '+E.tierOf(2).nm);
+ ok(E.tierOf(92).nm===E.tierOf(98).nm,'92 and 98 are the same word: '+E.tierOf(92).nm);
  /* the ends must be real fields, not empty ones */
  ok(by.Tomas.loaded.length>60,'the floor case is genuinely loaded, got '+by.Tomas.loaded.length);
  ok(by.Wren.loaded.length>0,'and the ceiling case still carries something, got '+by.Wren.loaded.length);
@@ -2318,6 +2376,8 @@ console.log('\n30 · the outbox, and what may never leave the device');
  ok(E.obBand({CQ:41})==='low'&&E.obBand({CQ:62})==='median'&&E.obBand({CQ:88})==='high',
   'the band is one of three buckets');
  ok(typeof E.obBand({CQ:88})==='string','and never the reading itself');
+ ok(E.obBand({CQ:12,complete:false})==='filling',
+  'a CQ still filling is bucketed as filling, never as low');
 
  /* OVER THE CAP IS REFUSED, NOT EVICTED. A queue that quietly discards a
     person's words has lost them, which is what this file exists to prevent. */
@@ -2515,7 +2575,10 @@ g('31 · the lean, two channels and the frame that gates one of them');
    I would not have had to raise my voice. I shouted at her, yes, but anyone would have.
    What was I supposed to do. She is pathetic when she gets like that and she had it coming.
    I kept it to myself because she did not need to know. She owes me an apology.`;
-  const readOf=t=>{reset(0,0,6);gatesClear();if(t)leanApply(t);return leanRead(compute());};
+  /* laws at 3, not 6, for the reason group 8 gives: the ordering below is
+     against the field's own malignancy, and laws at 6 now read benign with
+     none, which leaves "less malignant than the field" with nowhere to go. */
+  const readOf=t=>{reset(0,0,3);gatesClear();if(t)leanApply(t);return leanRead(compute());};
   const base=readOf(null).mal;
   const hm=harm.map(readOf), ow=readOf(owning), df=readOf(deflect);
   hm.forEach((L,i)=>{
@@ -3353,41 +3416,211 @@ g('35 · a generated ritual takes its target from a field, not from a literal');
   'and there are exactly three shapes, named');
 }
 
-g('36 · the ceiling is reachable, and it is what coherence reads with nothing held');
-/* cqCeiling and cqHeadroom decide a sentence a person reads and were absent
-   from the contract, so no gate could see them and two seats built their own
-   copy instead. The invariant is the one the design names: with every charge and
-   every replacement at zero, cqCeiling's inputs ARE compute's, so the two must
-   agree exactly. That is what catches a change made to one copy of the formula
-   and not the other. */
+g('36 · the ceiling is reachable, and it is what expression reads with nothing held');
+/* The ceiling and the headroom decide a sentence a person reads and were
+   absent from the contract, so no gate could see them and two seats built
+   their own copy instead. The invariant is the one the design names: with
+   every charge at zero, the ceiling's inputs ARE compute's, so the two must
+   agree exactly. That is what catches a change made to one copy of the
+   formula and not the other.
+
+   CHANGED 25 SEPTEMBER from cqCeiling and cqHeadroom, which had CQ as the
+   thing a release moves. CQ is the 21 laws alone now and no release can move
+   it, so the ceiling is expression's: what the lever leaves once the shadow
+   is gone. The assertions are the same ones, on that number. */
 {
- const {cqCeiling,cqHeadroom}=E;
- ok(typeof cqCeiling==='function','cqCeiling is reachable from outside the engine');
- ok(typeof cqHeadroom==='function','and so is cqHeadroom');
+ const {exCeiling,exHeadroom}=E;
+ ok(typeof exCeiling==='function','exCeiling is reachable from outside the engine');
+ ok(typeof exHeadroom==='function','and so is exHeadroom');
+ ok(E.cqCeiling===undefined&&E.cqHeadroom===undefined,
+  'and the CQ ceiling is gone rather than left answering a question that no longer has one');
  const r=reset(0,0,6);
- near(r.CQ,cqCeiling(),1e-9,
+ near(r.EX,exCeiling(),1e-9,
   'with nothing held the reading IS the ceiling, so the two copies of the formula agree');
- near(cqHeadroom(r.CQ),0,1e-9,'and the headroom is nothing, because there is nothing to release');
+ near(exHeadroom(r.EX),0,1e-9,'and the headroom is nothing, because there is nothing to release');
  /* and it does not move the field it reads */
  const before=JSON.stringify(S.charge)+JSON.stringify(S.replace)+JSON.stringify(S.law);
- cqCeiling(); cqHeadroom(r.CQ);
+ exCeiling(); exHeadroom(r.EX);
  ok(JSON.stringify(S.charge)+JSON.stringify(S.replace)+JSON.stringify(S.law)===before,
   'and reading the ceiling mutates nothing');
  /* THE CEILING IS THE PERSON AND THE READING IS THE DRAG. Load the field and
-    the reading has to fall while the ceiling holds, because release works on
-    resistance and cannot manufacture integrity. */
+    expression has to fall while the ceiling holds, because release works on
+    the shadow and cannot manufacture integrity. */
  const loaded=reset(6,0,6);
- const ceil=cqCeiling();
- ok(loaded.CQ<ceil,'a loaded field reads below its own ceiling, '
-  +loaded.CQ.toFixed(2)+' against '+ceil.toFixed(2));
- ok(cqHeadroom(loaded.CQ)>0,'so there is headroom in it, '+cqHeadroom(loaded.CQ).toFixed(2));
- near(cqHeadroom(loaded.CQ),ceil-loaded.CQ,1e-9,'and the headroom is exactly the gap');
- ok(cqHeadroom(ceil+10)===0,'a reading above the ceiling reports no headroom rather than a negative one');
+ const ceil=exCeiling();
+ ok(loaded.EX<ceil,'a loaded field reads below its own ceiling, '
+  +loaded.EX.toFixed(2)+' against '+ceil.toFixed(2));
+ ok(exHeadroom(loaded.EX)>0,'so there is headroom in it, '+exHeadroom(loaded.EX).toFixed(2));
+ near(exHeadroom(loaded.EX),ceil-loaded.EX,1e-9,'and the headroom is exactly the gap');
+ ok(exHeadroom(ceil+10)===0,'a reading above the ceiling reports no headroom rather than a negative one');
+ /* and it is the same with an opposite installed, since sq is 0 at zero charge whatever is in */
+ reset(6,8,6); const ceilOpp=exCeiling();
+ near(ceilOpp,ceil,1e-9,'an installed opposite does not move the ceiling');
  /* the laws are the only lever on it, which is the ruling the number carries */
- const low=reset(0,0,3), lowCeil=cqCeiling();
- const high=reset(0,0,9), highCeil=cqCeiling();
+ reset(0,0,3); const lowCeil=exCeiling();
+ reset(0,0,9); const highCeil=exCeiling();
  ok(highCeil>lowCeil,'the ceiling rises with the laws and nothing else, '
   +lowCeil.toFixed(2)+' at law 3 against '+highCeil.toFixed(2)+' at law 9');
+}
+
+g('36b · the fitted CQ model, reproduced from the simulation that fitted it');
+/* DECISIONS.md "The CQ model, fitted", and the ten thousand run simulation
+   behind it (AZ5). Every number pinned here is the simulation's own output,
+   read off its worked people and its curve table, not re-derived to fit
+   whatever this build happens to say. If this group moves, either the port
+   is wrong or the ruling moved, and both are things somebody must say out
+   loud. */
+{
+ const {leverPull,LEVER_MU,LEVER_SD}=E;
+ const FIELD=NODES.filter(n=>n.b.startsWith('Field'));
+ ok(LEVER_MU===5&&LEVER_SD===1.25,'the bell is centre 5, width 1.25, got '+LEVER_MU+', '+LEVER_SD);
+ /* the curve table in the fit, to four places */
+ [[2,0.0082],[4,0.2119],[5,0.5],[6,0.7882],[7,0.9452],[9,0.9993],[10,1]].forEach(([w,p])=>
+  near(+leverPull(w).toFixed(4),p,1e-12,'the pull at '+w+' is '+p));
+ near(+(leverPull(9)/leverPull(2)).toFixed(1),121.9,1e-9,
+  'paralyzed pulls about 122 times a little tense, inside "orders of magnitude"');
+ let mono=true; for(let w=0;w<10;w+=0.05)if(leverPull(w+0.05)<leverPull(w))mono=false;
+ ok(mono,'and the pull never falls as weight rises, so no release can raise it');
+
+ /* THE WORKED PEOPLE, cq-unified.md B.2. Default soul, every charge at the
+    stated level, every law at the stated score. */
+ const w5=reset(0,0,5), w5h=reset(10,0,5), w10h=reset(10,0,10);
+ const r1=(v,d)=>+v.toFixed(d);
+ ok(r1(w5.CQ,1)===50&&r1(w5.DQ,1)===0&&r1(w5.PULL,3)===0&&r1(w5.EX,1)===50,
+  'every law 5, nothing held: CQ 50, DQ 0, pull 0, expression 50, got '
+  +[w5.CQ,w5.DQ,w5.PULL,w5.EX].map(v=>v.toFixed(3)).join(', '));
+ ok(r1(w5h.CQ,1)===50&&r1(w5h.DQ,1)===47.9&&r1(w5h.PULL,3)===0.413&&r1(w5h.EX,1)===29.4,
+  'every law 5, heavily loaded: CQ 50, DQ 47.9, pull 0.413, expression 29.4, got '
+  +[w5h.CQ,w5h.DQ,w5h.PULL,w5h.EX].map(v=>v.toFixed(3)).join(', '));
+ ok(r1(w10h.CQ,1)===100&&r1(w10h.DQ,1)===35.2&&r1(w10h.PULL,3)===0.199&&r1(w10h.EX,1)===80.1,
+  'every law 10, heavily loaded: CQ 100, DQ 35.2, pull 0.199, expression 80.1, got '
+  +[w10h.CQ,w10h.DQ,w10h.PULL,w10h.EX].map(v=>v.toFixed(3)).join(', '));
+ ok(w5h.SQ.filter(v=>v>=7).length===16&&w10h.SQ.filter(v=>v>=7).length===0,
+  'and the heavy one at law 5 has 16 addresses at 7 or more where the one at law 10 has none');
+
+ /* THE 112, AND THE FOUR OUTSIDE. SQ is one value per address in NODES order,
+    and the four field anchors take the mean of the seat they extend. */
+ const h=reset(7,0,5);
+ ok(h.SQ.length===112&&h.SQ.length===NODES.length,'SQ is 112 values, one per address');
+ const seat=b=>{const g=W.filter(n=>n.b===b);return g.reduce((a,n)=>a+n.sq,0)/g.length;};
+ ok(FIELD.length===4&&FIELD.every(n=>Math.abs(n.sq-(n.b==='Field-Above'?seat('Crown'):seat('Root')))<1e-12),
+  'the two above take the Crown mean and the two below the Root mean');
+ ok(FIELD.every(n=>n.sq>0),'so on a loaded field none of the four is forced to 0');
+ near(h.DQ,h.SQ.reduce((a,v)=>a+v,0)/1120*100,1e-9,'DQ is the 112 over 1120');
+ near(h.EX,h.CQ*(1-h.PULL),1e-12,'and expression is CQ times what the pull leaves');
+
+ /* NOTHING ENTERED. A blank profile through the boundary: CQ 0 and filling,
+    no tier word, and the reading is unread. */
+ E.loadProfile(E.blankProfile('nothing entered'));
+ const b0=compute();
+ ok(b0.CQ===0&&b0.answered===0&&!b0.complete&&b0.tier===null&&b0.unread===true,
+  'nothing entered: CQ 0, none answered, no tier word, unread');
+
+ /* CQ BUILDS FROM ZERO AND NEVER FALLS WHILE A PERSON ANSWERS. The intake in
+    the order it is asked, CQ read after every single answer. The simulation's
+    630,000 answers found no fall under this rule; this is the engine's own
+    compute() holding it on a real intake of noisy, low and high answers. */
+ {
+  const p=E.blankProfile('filling'); E.loadProfile(p);
+  let prev=compute().CQ, fell=0, steps=0, tierEarly=0;
+  const ans=[9,2,6, 0,0,0, 10,10,10, 3,8,1, 5,5,5, 7,7,7, 1,9,4];
+  for(let i=0;i<63;i++){
+   p.intake.answers[i]=ans[i%ans.length];
+   E.iqApply(p); const r=compute(); steps++;
+   if(r.CQ<prev-1e-9)fell++;
+   if(!r.complete&&r.tier!==null)tierEarly++;
+   prev=r.CQ;}
+  ok(fell===0,'CQ never fell across '+steps+' answers, fell '+fell+' times');
+  ok(tierEarly===0,'and no tier word printed before the 21st law, '+tierEarly+' did');
+  const fin=compute();
+  ok(fin.complete&&fin.answered===21&&typeof fin.tier==='string',
+   'all 63 in: complete, 21 answered, and a tier word, '+fin.tier);
+  near(fin.CQ,SINAMES.reduce((a,l)=>a+p.laws[l],0)/210*100,1e-9,
+   'and CQ is exactly the record\'s laws over 210');
+ }
+
+ /* AY1. A RELEASE NEVER MOVES CQ AND NEVER MAKES ANYTHING WORSE. The live
+    formula lowered CQ on a release in 22 of 10,000 random fields (9f4c7e5),
+    because an installed opposite past 6 raised JQ and JQ sat inside both
+    factors of CQ. The release arithmetic here is ui/release.js's, lifted as
+    sim/harness.js lifts it; the field is drawn the way that probe drew it. */
+ {
+  let x=7>>>0; const rnd=()=>{x^=x<<13;x>>>=0;x^=x>>>17;x^=x<<5;x>>>=0;return x/4294967296;};
+  let runs=0,cqMoved=0,dqRose=0,addrRose=0,exFell=0;
+  for(let i=0;i<2000;i++){
+   S.doms=[Math.floor(rnd()*19)];S.arcs=[Math.floor(rnd()*12)];S.roots=[];buildSoul();
+   CHARGES.forEach(c=>{S.charge[c]=+(rnd()*10).toFixed(2);S.replace[c]=+(rnd()<.5?0:rnd()*10).toFixed(2);});
+   SINAMES.forEach(l=>S.law[l]=Math.round(rnd()*10)); lawsIn();
+   const r0=compute(), sq0=r0.SQ.slice();
+   const q=W.filter(n=>n.sq>0).sort((a,b)=>b.sq-a.sq).slice(0,1+Math.floor(rnd()*4))
+    .map(n=>({sq:n.sq,cf:n.cf}));
+   if(!q.length)continue; runs++;
+   q.forEach(n=>{const d=-Math.round(n.sq*10*0.21+2);
+    const share=Math.abs(d)/10/Math.max(1,q.filter(o=>o.cf===n.cf).length);
+    S.charge[n.cf]=E.clamp((S.charge[n.cf]||0)-share,0,10);
+    S.replace[n.cf]=E.clamp((S.replace[n.cf]||0)+share*0.62,0,10);});
+   const r1=compute();
+   if(r1.CQ!==r0.CQ)cqMoved++;
+   if(r1.DQ>r0.DQ+1e-9)dqRose++;
+   if(r1.EX<r0.EX-1e-9)exFell++;
+   if(r1.SQ.some((v,k)=>v>sq0[k]+1e-9))addrRose++;}
+  ok(runs>1900,'the release probe ran, '+runs+' releases');
+  ok(cqMoved===0,'a release never moves CQ, moved '+cqMoved+' of '+runs);
+  ok(dqRose===0,'never raises DQ, rose '+dqRose);
+  ok(addrRose===0,'never raises any of the 112, rose '+addrRose);
+  ok(exFell===0,'and never lowers expression, fell '+exFell);
+ }
+}
+
+g('36c · intention is what was said against what was done, and no charge');
+/* The ruled model's intention (cq-unified.md B.1): 100 times did over said
+   in the last seven days, null when nothing was said. A saved ritual is the
+   saying and its done mark is the doing. Time is held still by passing now. */
+{
+ const {intentionRead,INTENT_DAYS}=E;
+ const now=Date.UTC(2026,8,25,12);
+ const ago=d=>new Date(now-d*86400000).toISOString();
+ ok(INTENT_DAYS===7,'the window is seven days, got '+INTENT_DAYS);
+ const none=intentionRead({rituals:[]},now);
+ ok(none.said===0&&none.pct===null,'nothing said reads null, never 0 or 100');
+ const p={rituals:[
+  {t:ago(0),band:'Heart',done:ago(0)},
+  {t:ago(1),band:'Root',done:true},
+  {t:ago(2),band:'Throat',done:ago(1)},
+  {t:ago(3),band:'Solar',done:false},
+  {t:ago(9),band:'Crown',done:false},     /* outside the window */
+  {t:ago(1),band:'Sacral'}]};              /* saved before done existed */
+ const r=intentionRead(p,now);
+ ok(r.said===4&&r.did===3,'four said and three done in the window, got '+r.said+' and '+r.did);
+ near(r.pct,75,1e-9,'so intention reads 75');
+ ok(r.broken.length===1&&r.broken[0].band==='Solar','and the one not done is returned with its seat');
+ /* and it reads no charge at all: the same record over a loaded field */
+ reset(9,0,6); const loadedI=intentionRead(p,now).pct;
+ reset(0,0,6); const clearI=intentionRead(p,now).pct;
+ ok(loadedI===clearI,'the field does not move it, '+loadedI+' against '+clearI);
+}
+
+g('36d · the sniffer hears how much, AZ6');
+/* His two anchors, "a little tense" and "paralyzed", read identically or not
+   at all before this: all three degrees of tense came back 16, and paralyzed
+   matched nothing. The degree word before a hit now scales it by the desktop's
+   own factors, and paralyzed is a word at the top of the curve. */
+{
+ const amt=t=>{const h=E.parseStory(t).hits.filter(x=>x.kind==='word');return h.length?h[0].amt:0;};
+ const little=amt('I am a little tense'), plain=amt('I am tense'),
+       very=amt('I am extremely tense'), par=amt('I am paralyzed');
+ ok(little<plain&&plain<very,'a little tense, tense and extremely tense read three weights, '
+  +[little,plain,very].map(v=>v.toFixed(1)).join(', '));
+ ok(par>0,'paralyzed is heard, '+par);
+ ok(par>=plain*1.5,'and it reads well above plain tense, '+par+' against '+plain);
+ ok(amt('so I froze')===amt('I froze'),'a degree word counts only right before the hit, so "so I froze" is not scaled');
+ /* and it reaches the field, not only the hit */
+ const land=t=>{reset(0,0,6);E.applyStory(t);return compute();};
+ const a=land('I am a little tense'), b=land('I am tense'), c=land('I am paralyzed');
+ ok(a.DQ<b.DQ&&b.DQ<c.DQ,'and the shadow it lands follows, DQ '
+  +[a,b,c].map(r=>r.DQ.toFixed(2)).join(', '));
+ ok(E.leverPull(Math.max(...c.SQ))>E.leverPull(Math.max(...a.SQ))*10,
+  'so the bell pulls the paralyzed address more than ten times as hard as the little tense one');
 }
 
 g('37 \u00b7 the child pattern, and the reading it is under');
@@ -3417,7 +3650,7 @@ g('37 \u00b7 the child pattern, and the reading it is under');
   S.doms=[p.dom];S.arcs=[p.a1,p.a2];S.roots=[];buildSoul();
   CHARGES.forEach(c=>{S.charge[c]=p.c[c]||0;S.replace[c]=(p.rep&&p.rep[c])||0;});
   const LS=LAWSET[p.nm]||{_:E.LAW_DEFAULT};
-  SINAMES.forEach(l=>S.law[l]=LS[l]!==undefined?LS[l]:LS._);
+  SINAMES.forEach(l=>S.law[l]=LS[l]!==undefined?LS[l]:LS._); lawsIn();
   const r=compute(), k=childFound(r);
   anyFound+=k.n;
   ok(k.n<=r.loaded.length,p.nm+': the child count cannot exceed the held count, '
