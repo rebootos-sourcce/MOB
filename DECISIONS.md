@@ -1501,3 +1501,41 @@ come entirely from the curve until that is fixed.
 Full arithmetic, the rejected curves, and worked people are in the CQ
 bundle. `AZ5` closes once this is logged; the rebuild in both engines is
 now real work, not waiting on anything further from him.
+
+## Correction. A release does move CQ. Ruled 25 September, after ship.
+
+**The team built and shipped the wrong invariant.** The reading above,
+carried into `BIBLE.md` as "a release cannot move CQ" and proven as a hard
+rule in both engines' tests, was the team's own inference from "DQ is the
+total shadow" and "CQ is the 21 laws," not his words. He corrected it
+directly:
+
+"I didn't say CQ doesn't move on a release. That wouldn't make sense. If a
+fetter is released, you may not see CQ move, but it may move 0.1 or 0.05. I
+had about 15,000 patterns for my CQ. My CQ is about between 88 and 92, plus
+or minus 3 points of accuracy. Those 15k releases raised my CQ."
+
+**As the team now reads it.** A single release moves CQ by a small amount,
+not by folding SQ into the number, but because doing the work is itself
+part of what the 21 laws measure: releasing a pattern is real change, and
+it registers as a small, real nudge, not a visible jump. Over enough
+releases the small nudges compound into the kind of movement he describes,
+roughly fifteen thousand releases to a CQ in the high eighties to low
+nineties. **The shape of that nudge, per release, per law, with or without
+decay as CQ rises, is not yet known and has to be fit against this one real
+data point rather than guessed.** The three sessions his own history spans
+count as a real dataset of one, not a suggestion.
+
+**What this does not undo.** SQ is still 112 individual values, DQ is still
+their total, and a release still does not fold SQ or DQ into CQ directly.
+What was wrong was narrower: the team read "CQ is only the laws" as "so a
+release can never touch it," when a release can touch the laws themselves,
+slowly. The expression lever stands as designed; it now sits beside a CQ
+that can also move, not a CQ that is frozen.
+
+**On "matches to within 1e-9."** That sentence was reporting that the two
+engines' arithmetic agree with each other to a tiny rounding tolerance, a
+statement about the two codebases matching each other, not a claim about
+how much his own CQ can move or a precision floor on his data. It landed as
+confusing jargon in a report meant for him and should not have been sent
+that way.

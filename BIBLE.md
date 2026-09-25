@@ -538,11 +538,16 @@ before that work lands, kept so the before-and-after is on record.
 
 ### 2.3 What follows for the product
 
-- **A release cannot move CQ.** CQ reads only the laws, and a release writes
-  only the shadow and expression. Proven across 10,000 runs. CQ moves only
-  when the laws are answered again, so the loop and the avatar must show a
-  release working through the addresses, DQ and expression instead, never
-  through CQ. This now holds without qualification.
+- **Corrected 25 September, after ship: a release does move CQ, by a
+  small amount.** The line that stood here, that a release cannot move CQ,
+  was the team's own inference and not his ruling; he corrected it
+  directly, with a real data point (`DECISIONS.md`, "Correction. A release
+  does move CQ"): about fifteen thousand of his own releases moved his CQ
+  into the high eighties to low nineties. The exact shape of that nudge is
+  not yet fit. What still holds: CQ reads only the laws, a release does not
+  fold SQ or DQ into it directly, and the loop and the avatar still show a
+  release working through the addresses, DQ and expression as the visible
+  movement, with CQ itself moving too slowly for one release to show.
 - **The fixed divisors are load bearing.** A mean over whatever is carrying
   rises when the lightest item clears. That is how the desktop's first
   simulation produced dips. Every divisor in the unified model is fixed.
