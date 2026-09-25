@@ -183,21 +183,14 @@ function paintDepth(){
  bar.querySelectorAll('.vt').forEach(function(b,i){
   b.setAttribute('aria-pressed',i===set);
   b.classList.toggle('zoomed',i>set&&i<=eff);});
- var note=$('zoomnote');
- if(note){
-  /* what zoom has resolved, on both counts. The ladder outside the core and
-     the core itself atomize on the same gesture and at different thresholds,
-     so a person moving in sees two different things arrive and the line says
-     which. Silent when zoom has added nothing, as before. */
-  var add=zoomAdded();
-  var inside=(typeof coreResolved==='function')?coreResolved():'';
-  var shell=(typeof fetResolved==='function')?fetResolved():'';
-  var parts=[];
-  if(add)parts.push('zoom resolved '+VIEWS[eff].nm.toLowerCase());
-  if(inside)parts.push('the core is showing '+inside);
-  if(shell)parts.push('the shell is showing '+shell);
-  note.textContent=parts.join(' \u00b7 ');
-  note.style.display=parts.length?'':'none';}}
+ /* THE LINE UNDER THE BAR IS GONE. Ruled 25 September (BA2): he marked "the
+    core is showing the triad, the shell is showing the fetters" NO on a
+    screenshot and underlined it. It printed what zoom had resolved, on both
+    counts, as a sentence under Charge. What zoom reached is still said, by the
+    ring the loop above puts on the depth button zoom reached, which is the job
+    .zoomed was built for. coreResolved and fetResolved stay in wheel.js: they
+    are the names of the layers, and the functional gate reads them to hold the
+    order the layers arrive in. */}
 function setZoom(z,ax,ay){
  /* THE CEILING HAS TO CLEAR THE DEEPEST LAYER, or the deepest layer does not
     exist. The ceiling was five and the atoms open at 5.20, so the one thing
@@ -209,17 +202,9 @@ function setZoom(z,ax,ay){
  var wx=(ax-CX)/U, wy=(ay-CY)/U;
  S.zoom=nz; reframe();
  S.panx += ax-(CX+wx*U); S.pany += ay-(CY+wy*U);
- reframe(); render(); paintDepth(); paintLegend();}
-/* the legend names whatever is still under the current depth, so it changes
-   as a person scrolls in and goes quiet at the bottom. */
-function paintLegend(){
- var e=document.getElementById('cvlegend');
- if(!e||typeof wheelLegend!=='function')return;
- /* WRITTEN ONLY WHEN IT CHANGES. render runs on every interaction and the
-    frame loop runs sixty times a second, and a textContent assignment that
-    sets the same string is still a DOM write and still invalidates. */
- var t=wheelLegend();
- if(e.textContent!==t)e.textContent=t;}
+ reframe(); render(); paintDepth();}
+/* paintLegend is gone with the legend it wrote. Ruled 25 September (BA9), and
+   the reason is at wheelLegend's old place in wheel.js. */
 cv.addEventListener('wheel',function(e){
  if(S.tab!==TAB.FIELD)return;
  e.preventDefault();
@@ -272,8 +257,37 @@ cv.addEventListener('pointermove',function(e){
  if(!t){pr.classList.remove('on');return;}
  cv.style.cursor=(h.k==='node')?'ns-resize':'pointer';
  pr.innerHTML=t;
- pr.style.left=Math.min(CW-312,x+18)+'px';
- pr.style.top=Math.min(CH-200,y+18)+'px';
+ /* THE READOUT SAT ON THE POINTER, AND IT WAS THE COORDINATES. BA6.
+
+    x and y are measured from the canvas and the readout is positioned against
+    .stage, and the two stopped being the same box when the stage grew its 128
+    pixel lanes and the rows above the wheel. Nothing translated them, so every
+    readout landed 110 pixels left of and 87 above where it was aimed, which is
+    on top of the pointer: measured at 1600 on Abraham, the core's readout at
+    673,539 by 300,229 with the pointer at 783,626. It is pointer-events none
+    and the press did reach the core, but the readout covered what the pointer
+    was on and printed "Click for the breakdown" beside it, so a person aimed at
+    the words, left the core for a law, and the click opened the law. His report
+    was exact: the tooltip covers the mouse point.
+
+    So the pointer is moved into the stage's box first, and on each axis the
+    readout goes to whichever side of it has room. The clamp that was here
+    could not do that: Math.min(CW-312) and Math.min(CH-200) pulled the box
+    back over the pointer near the right and bottom of the wheel, and 200 is
+    shorter than the core's own readout. Either side starts eighteen pixels
+    clear of the pointer.
+
+    An axis with room on neither side holds the readout inside the stage
+    instead, because clear on one axis is already clear of the pointer. The
+    first cut of this let it overflow, and at 390 the stage cut 81 of 136
+    readouts off at its edge. The pointer can only be covered on a stage too
+    small for the readout on both axes at once. */
+ var box=pr.offsetParent||cv.parentNode;
+ var sx=cv.offsetLeft+x, sy=cv.offsetTop+y, pw=pr.offsetWidth, ph=pr.offsetHeight;
+ var side=function(at,size,room){
+  return at+18+size<=room?at+18:at-18-size>=0?at-18-size:Math.max(0,Math.min(room-size,at+18));};
+ pr.style.left=side(sx,pw,box.clientWidth)+'px';
+ pr.style.top=side(sy,ph,box.clientHeight)+'px';
  pr.classList.add('on');});
 cv.addEventListener('pointerleave',function(){S.hover=null;DRAG=null;$('probe').classList.remove('on');});
 
@@ -625,7 +639,6 @@ function railTop(r){
   :r.unread?'Nothing has been read yet. Write a story or set a charge.':tierBuilding();}
 function render(){
  if(typeof paintUndo==='function')paintUndo();
- if(typeof paintLegend==='function')paintLegend();
  const r=compute(), p=PEOPLE[S.who];
  /* the tier is a name for a person. it is not printed off the defaults, and it
     never appears without what it owes: the definition, the behaviour and the

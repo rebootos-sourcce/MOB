@@ -342,11 +342,31 @@ var PROF_BY={};
    the roster carries a LAWSET entry, so this arm is a guard and not a path,
    which is exactly why it was free to disagree for as long as it did. */
 function lawsFor(p){ return p.law || LAWSET[p.nm] || {_:LAW_DEFAULT}; }
+/* THE PICKER SAYS WHEN THE FIELD IS NOT THE PERSON'S OWN. Ruled 25 September
+   (BA9), with the sentence that used to say it.
+
+   A worked example was marked by one line, the release's refusal, and he
+   struck it as unnecessary text. The job it did was real and nothing else did
+   it. Closed, the picker read "Abraham, 74, retired ju", cut at its 190 pixel
+   cap, and the heading that says Reference cases shows only with the list
+   open. So a closed screen never said the field was a demonstration.
+
+   The slot keeps its label and the value carries the state: the loaded
+   example reads "Abraham, example", name first, the shape the Intake's own
+   switcher already uses. Not "a worked example", which is the product's word
+   for it and which the refusal still uses. Measured in the bar's own 14 pixel
+   type, the closed picker shows 150 pixels of text and "Abraham, a worked
+   example" is 188, so the words that carry the state would have been the
+   part cut off. Every entry not loaded keeps its age and role, because that
+   is what a person chooses by. */
+function pselName(p,up){
+ if(p.you)return 'Custom';
+ return up?p.nm+', example':p.nm+', '+p.age+', '+p.role.replace(' · ICP','');}
 (function(){var sel=$('psel');
  var mk=function(lab){var g=document.createElement('optgroup');g.label=lab;sel.appendChild(g);return g;};
  var gYou=null,gICP=null,gRef=null;
  PEOPLE.forEach(function(p,i){var o=document.createElement('option');o.value=i;
-  o.textContent=p.you?'Custom':(p.nm+', '+p.age+', '+p.role.replace(' · ICP',''));
+  o.textContent=pselName(p,false);
   if(p.you){gYou=gYou||mk('Your own');gYou.appendChild(o);}
   else if(/ICP/.test(p.role)){gICP=gICP||mk('ICPs');gICP.appendChild(o);}
   else {gRef=gRef||mk('Reference cases');gRef.appendChild(o);}});})();
@@ -404,12 +424,19 @@ function toYou(){if(S.who===0)return;
    example these refuse, in the words the release, the story and the save
    already use for the same crossing, and nothing moves. On the person's own
    profile S.who is 0 and this returns false without a word, so a press sets
-   exactly what it set before. */
+   exactly what it set before.
+
+   AND THOSE WORDS ARE ONE LINE NOW. Ruled 25 September (BA9): the sentence
+   that ended "Switch to your own profile to" plus what was the one he struck
+   above the Field as unnecessary text, and this printed it from six more
+   controls. The state it carried is on the picker ("Gordon, example"), so the
+   refusal says what did not happen and why, and nothing else. what still
+   names the refused press where it is called; it filled the clause that went,
+   and nothing prints it now. */
 function notYours(what){
  if(S.who===0)return false;
- status('You are looking at '+((PEOPLE[S.who]||{}).nm||'a reference case')
-  +', which is a worked example rather than your record. Switch to your own '
-  +'profile to '+what+'.','fail');
+ void what;
+ status('Nothing changed on a worked example.','fail');
  return true;}
 /* THE MIRROR ONLY WRITES FOR THE RECORD IT MIRRORS.
 
@@ -592,6 +619,11 @@ function loadP(i){
  LAW_REC=CURP;
  saveProfile(CURP); iqApply(CURP);
  $('psel').value=String(i);
+ /* the loaded entry says what it is, and the one it replaced goes back to its
+    age and role. Here because loadP is the only writer of S.who, so boot, the
+    picker and toYou all pass through it. */
+ $('psel').querySelectorAll('option').forEach(function(o){
+  var k=+o.value; if(PEOPLE[k])o.textContent=pselName(PEOPLE[k],k===i);});
  syncSoul();syncCh();syncLw();renderSpirit();renderIntake();render();}
 
 /* ---- release button ---- */

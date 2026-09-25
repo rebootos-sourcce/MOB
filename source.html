@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="d5288b5 2026-09-25 20:28"><head><meta charset="utf-8">
+<html lang="en" data-build="6c515fa 2026-09-25 20:54"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -1304,7 +1304,11 @@ body.tab-field .stage,body.tab-energy .stage,body.tab-compass .stage,
 
    A row of its own costs the wheel about twenty pixels of height, which the
    wheel already handles because it is sized from its box, and it buys a line
-   that cannot collide with anything by construction. */
+   that cannot collide with anything by construction.
+
+   The legend was cut on 25 September (BA9) and its row is empty now, so it
+   is zero high and the wheel has the height back. It stays in the template
+   because the canvas and .pol2 address row 3 by number. */
 .stage{--lane:128px;position:relative;display:grid;
  grid-template-columns:var(--lane) minmax(0,1fr) var(--lane);
  grid-template-rows:auto auto minmax(0,1fr);
@@ -1316,9 +1320,13 @@ canvas#cv{display:block;grid-column:2;grid-row:3;width:100%;height:100%;
    scroll attempt became a charge write. Vertical panning goes to the page
    and a tap still reaches the canvas. */
 @media (pointer:coarse){ canvas#cv{touch-action:pan-y;cursor:default} }
+/* width:max-content because the readout is measured before it is placed
+   (ui.js, the pointer move). Sized to fit it shrank to whatever room its last
+   position left, so the width read was where it had been and not what it
+   needs, and the side chosen from it could be wrong. */
 .probe{position:absolute;pointer-events:none;padding:13px 15px;border-radius:var(--r-s);
  font-size:13px;line-height:1.65;color:var(--mid);opacity:0;transition: opacity var(--t-micro) var(--ease-out);
- max-width:300px;z-index:9;background:var(--panel);border:1px solid var(--edge);box-shadow:var(--shadow)}
+ width:max-content;max-width:300px;z-index:9;background:var(--panel);border:1px solid var(--edge);box-shadow:var(--shadow)}
 .probe.on{opacity:1}
 .probe b{color:var(--ink);font-weight:600}
 .probe u{text-decoration:none;color:var(--gold);font-family:var(--num);font-size:11px;font-weight:500}
@@ -2074,8 +2082,6 @@ body.punch .gm-gate{background:var(--panel-2)}
 .vt.zoomed::after{content:'';position:absolute;right:5px;top:5px;width:4px;height:4px;
  border-radius:50%;background:var(--gold)}
 .vt{position:relative}
-.zoomnote{align-self:center;margin-left:10px;font-size:11.5px;color:var(--gold);
- letter-spacing:.02em}
 
 /* DENSITY. One variable scales the whole interface, so a person who wants
    more on screen gets it without the browser zoom that breaks fixed layouts.
@@ -3538,30 +3544,8 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
 /* the same icon on a drill row, where the type is a shade larger */
 /* THE FOUR LENSES. One reading each, and each says what it was read off,
    which is what stops a lens being a horoscope. */
-/* the legend under the wheel. tool information, so it may sit under the tool.
-   it never carries a reading. */
-/* IT LIVES AT THE TOP, WITH THE OTHER KEY, AND THE COLLIDE GATE IS WHY.
-
-   Two attempts at the bottom of the stage and the gate refused both. At
-   bottom 8 it ran straight through the lower key strip. At bottom 64 it
-   cleared the strip and ran under the wheel's own nameplates at depth 3,
-   where the plates reach furthest down: four of them at 1680 wide and one at
-   2560. The gate exists for exactly that and it caught it both times.
-
-   The bottom of a wheel that grows is not free space, and treating it as free
-   space is the same mistake as the strip that covered the atoms. The top strip
-   is: it is a fixed band above the drawing, the plates never reach it, and the
-   three pills there leave most of its width empty. So the legend goes there,
-   on one line, right of the pills.
-
-   One line, ellipsised. It is orientation, not a paragraph, and a sentence
-   that wraps at the top of the stage pushes the wheel down. */
-.cv-legend{grid-column:1/-1;grid-row:2;position:relative;z-index:4;
- align-self:start;margin:0;padding:6px 14px 8px;
- text-align:left;font-size:11.5px;line-height:1.5;color:var(--dim);
- pointer-events:none}
-body:not(.tab-field) .cv-legend{display:none}
-@media(max-width:1180px){.cv-legend{grid-row:auto;order:2}}
+/* .cv-legend went with the legend, ruled 25 September (BA9). Why it was
+   written and why it went are at its old place in shell/body.html. */
 /* ============================================================
    ONBOARDING. Humble and warm, which is a typographic decision
    as much as a verbal one: wider measure, softer ground, and
@@ -4233,7 +4217,12 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
  <div class="glass subbar" id="subbar"><div id="vbar" style="display:flex;gap:5px"></div>
   <div id="lbar" style="display:none;gap:5px;flex-wrap:wrap"></div>
   <div id="rbar" style="display:none;gap:5px;flex-wrap:wrap"></div>
-  <span class="zoomnote" id="zoomnote" style="display:none"></span></div>
+  <!-- THE LINE UNDER CHARGE IS GONE. Ruled 25 September (BA2), marked NO and
+       underlined on a screenshot: "the core is showing the triad, the shell is
+       showing the fetters". It was #zoomnote, inline in a block bar, so it
+       wrapped onto a line of its own under the depth buttons. What zoom
+       reached is still marked, by the ring on the button it reached. -->
+ </div>
  <div class="mid">
 
   <!-- ============ LEFT RAIL ============ -->
@@ -4334,16 +4323,14 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
   <div class="glass stage" id="stage">
    <!-- the key comes first in flow so it sits above the canvas -->
    <div class="key" id="key" aria-label="What the instrument reads"></div>
-   <!-- SAY WHAT THE BANDS ARE, and what is still under the depth you are at.
-        Ruled with the other half of the same instruction, that the bands be
-        made pressable. Seven seat names were drawn around the shell and
-        nothing said what the ring of colour was, that anything on it could be
-        opened, or that there was another layer below.
-
-        It is about the tool, which is what may sit on the tool. The reading
-        may not and does not. It is written by paintLegend rather than held
-        here, because what it says depends on the depth. -->
-   <p class="cv-legend" id="cvlegend"></p>
+   <!-- THE LEGEND IS GONE. Ruled 25 September (BA9), struck through on a
+        screenshot with the worked example notice: "You have unnecessary text,
+        I want those removed." It said what the ring is, that a band or a mark
+        opens, and which layer was still under the depth. It had been put here
+        because seven seat names were drawn around the shell and nothing said a
+        band could be opened; the bands still open, and only the sentence went.
+        Its row in the stage grid is left in the template, empty and zero high,
+        because the canvas and the compass button address row 3 by number. -->
    <!-- the second strip, lower left, carrying what moves through the person -->
    <div class="keylo" id="keylo" aria-label="What is moving through you"></div>
    <canvas id="cv" role="img" aria-label="The field wheel. Every element is also listed in the panels either side."></canvas>
@@ -13269,9 +13256,10 @@ function statusSaved(){
     example: nothing is wrong with the browser and there is something the person
     can do. The words follow the release's refusal, which is the same crossing
     answered the same way. */
+ /* and they still follow it: one line since BA9, 25 September, when he struck
+    the long form above the Field. The profile picker carries the state. */
  else if(st.err==='NotARecord')
-  status('Not saved. This is a worked example rather than your record. '
-   +'Switch to your own profile first.','fail');
+  status('Nothing saved on a worked example.','fail');
  else status('Not saved. Storage is full or blocked, so this session will not survive a reload.','fail');
  return st.ok;}
 
@@ -14044,41 +14032,32 @@ function atomGrow(n,a,hw,base,c,al){
   HIT.push({k:'atom',n:n,x:CX+Math.cos(aa)*r1,y:CY+Math.sin(aa)*r1,rad:9,
    v:x});});}
 /* ============================================================
-   WHAT IS STILL UNDER THE CURRENT DEPTH, IN ONE SENTENCE.
+   THE LEGEND IS GONE. Ruled 25 September (BA9).
 
-   Ruled: "the atomization is nine scroll notches deep and effectively not in
-   the product." It is reachable, and it has been since the threshold came
-   down from 5.20 to 2.60, but nothing anywhere says it exists. A layer a
-   person can only find by scrolling past the point where they expected
-   anything to happen is a layer nobody finds.
+   "You have unnecessary text, I want those removed." He struck it through on
+   a screenshot of the Field. It sat in the stage's second row and said what
+   the ring is, that a band or a single mark opens, and which layer was still
+   under the current depth. It had been put there on an earlier ruling, "the
+   atomization is nine scroll notches deep and effectively not in the
+   product", because a layer found only by scrolling past where anything was
+   expected to happen is a layer nobody finds.
 
-   So the legend under the wheel names the next thing down and how to reach
-   it. It is about the tool, which is what may sit under the tool. It never
-   carries a reading, and it says nothing about a layer the person's own
-   record cannot fill: offering to show what put a pattern somewhere, to
-   somebody who has written no story, would be an empty room with a sign on
-   it.
+   The mechanic is untouched: bands and marks still open and every layer is
+   still reached by scrolling. What went is the sentence saying so, which
+   makes the deep layers findable by scrolling alone again. That is the trade
+   the ruling made. The layer toggle row queued as BA8 is the one item on file
+   that would put the layers on a control instead.
    ============================================================ */
-const LEGEND_BASE='The ring is the seven seats, from the root at the top round '
- +'to the crown. Press a band to open it, or any single mark on it to open '
- +'that address.';
-function wheelLegend(){
- var z=S.zoom||1;
- var next=null;
- if(z<FET_STEP[0])next='the patterns each address is running';
- else if(z<FET_STEP[1])next='what each pattern has compounded into';
- else if(z<ATOM_STEP){
-  /* only offered when the record can actually fill it */
-  var by=atomIndex()||{};
-  if(Object.keys(by).length)next='the moments that put each pattern there';}
- return LEGEND_BASE+(next?' Scroll in on the wheel for '+next+'.':'');}
 
 /* how far in each layer is, 0 to 1, over a ramp of its own threshold. */
 function coreLayerA(i){
  var z=S.zoom||1, t=CORE_STEP[i];
  return Math.max(0,Math.min(1,(z-t)/(t*0.42)));}
-/* what the core has resolved, for the readout under the tab bar */
+/* how far the core has opened, which the drawing reads */
 function coreOpen(){return Math.max(coreLayerA(0),coreLayerA(1),coreLayerA(2));}
+/* and what it has resolved, by name. The names fed the line under the depth
+   bar until BA2 cut that line. They stay, because the functional gate holds
+   the order the layers arrive in by them. */
 const CORE_LAYER_NM=['the triad','the seven seats','the twenty one laws'];
 function coreResolved(){
  var n='';
@@ -14403,8 +14382,6 @@ function effView(){
  var extra=0, z=S.zoom||1;
  for(var i=1;i<ZOOM_STEP.length;i++) if(z>=ZOOM_STEP[i])extra=i;
  return Math.min(VIEWS.length-1,(S.view|0)+extra);}
-/* what zoom added on top of the button, for the readout */
-function zoomAdded(){return effView()-(S.view|0);}
 function nzAng(a){while(a<-Math.PI)a+=TAU;while(a>Math.PI)a-=TAU;return a;}
 /* ONE GROWN ADDRESS. The glyph of the axis it sits on, then at the deeper
    threshold its name and its two ends. Held reads outward from the ring and
@@ -16129,11 +16106,11 @@ function stRender(){
      the person's own store, which is the leak ui/personas.js now refuses; with
      that closed the same press would keep nothing at all and say nothing about
      it. Refusing is the version that is true, and it is the wording the release
-     already uses for the same crossing. */
+     already uses for the same crossing. That wording is one line since BA9, 25
+     September: he struck the long form above the Field, and the state it
+     carried is on the profile picker now. */
   if(typeof S!=='undefined'&&S.who!==0){
-   status('You are looking at '+(((typeof PEOPLE!=='undefined'&&PEOPLE[S.who])||{}).nm
-    ||'a reference case')+', which is a worked example rather than your record. '
-    +'Switch to your own profile to commit a story.','fail');
+   status('Nothing committed on a worked example.','fail');
    return;}
   /* the field is about to change and until now there was no way back */
   undoPush('committing the story');
@@ -18110,10 +18087,19 @@ function relCoolDown(){
     are the person charged, which is what it always meant. */
  if(typeof S!=='undefined'&&S.who!==0){
   RUN.done=false; RUN.phase='pick';
-  if(typeof status==='function')
-   status('You are looking at '+((PEOPLE[S.who]||{}).nm||'a reference case')
-    +', which is a worked example rather than your record. Switch to your own '
-    +'profile to run a release.','fail');
+  /* ONE LINE, AND THE STATE MOVED TO THE PICKER. Ruled 25 September (BA9): he
+     struck the sentence that stood here, "You are looking at Abraham, which is
+     a worked example rather than your record. Switch to your own profile to
+     run a release.", as unnecessary text. A failure holds on screen, so it sat
+     above the Field long after the run that raised it.
+
+     It was doing two jobs and they go to two places. Which profile is up is a
+     state, and a state belongs on the control that sets it: the picker reads
+     "Abraham, example" for as long as one is loaded (loadP, ui/personas.js).
+     That nothing was released is a refusal, and a refusal still reports and
+     names its own reason, because a write that fails without a word is the
+     silent failure this codebase forbids by name. */
+  if(typeof status==='function')status('Nothing released on a worked example.','fail');
   return false; }
  /* expression before and after, because it is what a release moves visibly.
     CQ is the 21 laws, and since the correction of 25 September a release lifts
@@ -23593,11 +23579,31 @@ var PROF_BY={};
    the roster carries a LAWSET entry, so this arm is a guard and not a path,
    which is exactly why it was free to disagree for as long as it did. */
 function lawsFor(p){ return p.law || LAWSET[p.nm] || {_:LAW_DEFAULT}; }
+/* THE PICKER SAYS WHEN THE FIELD IS NOT THE PERSON'S OWN. Ruled 25 September
+   (BA9), with the sentence that used to say it.
+
+   A worked example was marked by one line, the release's refusal, and he
+   struck it as unnecessary text. The job it did was real and nothing else did
+   it. Closed, the picker read "Abraham, 74, retired ju", cut at its 190 pixel
+   cap, and the heading that says Reference cases shows only with the list
+   open. So a closed screen never said the field was a demonstration.
+
+   The slot keeps its label and the value carries the state: the loaded
+   example reads "Abraham, example", name first, the shape the Intake's own
+   switcher already uses. Not "a worked example", which is the product's word
+   for it and which the refusal still uses. Measured in the bar's own 14 pixel
+   type, the closed picker shows 150 pixels of text and "Abraham, a worked
+   example" is 188, so the words that carry the state would have been the
+   part cut off. Every entry not loaded keeps its age and role, because that
+   is what a person chooses by. */
+function pselName(p,up){
+ if(p.you)return 'Custom';
+ return up?p.nm+', example':p.nm+', '+p.age+', '+p.role.replace(' · ICP','');}
 (function(){var sel=$('psel');
  var mk=function(lab){var g=document.createElement('optgroup');g.label=lab;sel.appendChild(g);return g;};
  var gYou=null,gICP=null,gRef=null;
  PEOPLE.forEach(function(p,i){var o=document.createElement('option');o.value=i;
-  o.textContent=p.you?'Custom':(p.nm+', '+p.age+', '+p.role.replace(' · ICP',''));
+  o.textContent=pselName(p,false);
   if(p.you){gYou=gYou||mk('Your own');gYou.appendChild(o);}
   else if(/ICP/.test(p.role)){gICP=gICP||mk('ICPs');gICP.appendChild(o);}
   else {gRef=gRef||mk('Reference cases');gRef.appendChild(o);}});})();
@@ -23655,12 +23661,19 @@ function toYou(){if(S.who===0)return;
    example these refuse, in the words the release, the story and the save
    already use for the same crossing, and nothing moves. On the person's own
    profile S.who is 0 and this returns false without a word, so a press sets
-   exactly what it set before. */
+   exactly what it set before.
+
+   AND THOSE WORDS ARE ONE LINE NOW. Ruled 25 September (BA9): the sentence
+   that ended "Switch to your own profile to" plus what was the one he struck
+   above the Field as unnecessary text, and this printed it from six more
+   controls. The state it carried is on the picker ("Gordon, example"), so the
+   refusal says what did not happen and why, and nothing else. what still
+   names the refused press where it is called; it filled the clause that went,
+   and nothing prints it now. */
 function notYours(what){
  if(S.who===0)return false;
- status('You are looking at '+((PEOPLE[S.who]||{}).nm||'a reference case')
-  +', which is a worked example rather than your record. Switch to your own '
-  +'profile to '+what+'.','fail');
+ void what;
+ status('Nothing changed on a worked example.','fail');
  return true;}
 /* THE MIRROR ONLY WRITES FOR THE RECORD IT MIRRORS.
 
@@ -23843,6 +23856,11 @@ function loadP(i){
  LAW_REC=CURP;
  saveProfile(CURP); iqApply(CURP);
  $('psel').value=String(i);
+ /* the loaded entry says what it is, and the one it replaced goes back to its
+    age and role. Here because loadP is the only writer of S.who, so boot, the
+    picker and toYou all pass through it. */
+ $('psel').querySelectorAll('option').forEach(function(o){
+  var k=+o.value; if(PEOPLE[k])o.textContent=pselName(PEOPLE[k],k===i);});
  syncSoul();syncCh();syncLw();renderSpirit();renderIntake();render();}
 
 /* ---- release button ---- */
@@ -24358,21 +24376,14 @@ function paintDepth(){
  bar.querySelectorAll('.vt').forEach(function(b,i){
   b.setAttribute('aria-pressed',i===set);
   b.classList.toggle('zoomed',i>set&&i<=eff);});
- var note=$('zoomnote');
- if(note){
-  /* what zoom has resolved, on both counts. The ladder outside the core and
-     the core itself atomize on the same gesture and at different thresholds,
-     so a person moving in sees two different things arrive and the line says
-     which. Silent when zoom has added nothing, as before. */
-  var add=zoomAdded();
-  var inside=(typeof coreResolved==='function')?coreResolved():'';
-  var shell=(typeof fetResolved==='function')?fetResolved():'';
-  var parts=[];
-  if(add)parts.push('zoom resolved '+VIEWS[eff].nm.toLowerCase());
-  if(inside)parts.push('the core is showing '+inside);
-  if(shell)parts.push('the shell is showing '+shell);
-  note.textContent=parts.join(' \u00b7 ');
-  note.style.display=parts.length?'':'none';}}
+ /* THE LINE UNDER THE BAR IS GONE. Ruled 25 September (BA2): he marked "the
+    core is showing the triad, the shell is showing the fetters" NO on a
+    screenshot and underlined it. It printed what zoom had resolved, on both
+    counts, as a sentence under Charge. What zoom reached is still said, by the
+    ring the loop above puts on the depth button zoom reached, which is the job
+    .zoomed was built for. coreResolved and fetResolved stay in wheel.js: they
+    are the names of the layers, and the functional gate reads them to hold the
+    order the layers arrive in. */}
 function setZoom(z,ax,ay){
  /* THE CEILING HAS TO CLEAR THE DEEPEST LAYER, or the deepest layer does not
     exist. The ceiling was five and the atoms open at 5.20, so the one thing
@@ -24384,17 +24395,9 @@ function setZoom(z,ax,ay){
  var wx=(ax-CX)/U, wy=(ay-CY)/U;
  S.zoom=nz; reframe();
  S.panx += ax-(CX+wx*U); S.pany += ay-(CY+wy*U);
- reframe(); render(); paintDepth(); paintLegend();}
-/* the legend names whatever is still under the current depth, so it changes
-   as a person scrolls in and goes quiet at the bottom. */
-function paintLegend(){
- var e=document.getElementById('cvlegend');
- if(!e||typeof wheelLegend!=='function')return;
- /* WRITTEN ONLY WHEN IT CHANGES. render runs on every interaction and the
-    frame loop runs sixty times a second, and a textContent assignment that
-    sets the same string is still a DOM write and still invalidates. */
- var t=wheelLegend();
- if(e.textContent!==t)e.textContent=t;}
+ reframe(); render(); paintDepth();}
+/* paintLegend is gone with the legend it wrote. Ruled 25 September (BA9), and
+   the reason is at wheelLegend's old place in wheel.js. */
 cv.addEventListener('wheel',function(e){
  if(S.tab!==TAB.FIELD)return;
  e.preventDefault();
@@ -24447,8 +24450,37 @@ cv.addEventListener('pointermove',function(e){
  if(!t){pr.classList.remove('on');return;}
  cv.style.cursor=(h.k==='node')?'ns-resize':'pointer';
  pr.innerHTML=t;
- pr.style.left=Math.min(CW-312,x+18)+'px';
- pr.style.top=Math.min(CH-200,y+18)+'px';
+ /* THE READOUT SAT ON THE POINTER, AND IT WAS THE COORDINATES. BA6.
+
+    x and y are measured from the canvas and the readout is positioned against
+    .stage, and the two stopped being the same box when the stage grew its 128
+    pixel lanes and the rows above the wheel. Nothing translated them, so every
+    readout landed 110 pixels left of and 87 above where it was aimed, which is
+    on top of the pointer: measured at 1600 on Abraham, the core's readout at
+    673,539 by 300,229 with the pointer at 783,626. It is pointer-events none
+    and the press did reach the core, but the readout covered what the pointer
+    was on and printed "Click for the breakdown" beside it, so a person aimed at
+    the words, left the core for a law, and the click opened the law. His report
+    was exact: the tooltip covers the mouse point.
+
+    So the pointer is moved into the stage's box first, and on each axis the
+    readout goes to whichever side of it has room. The clamp that was here
+    could not do that: Math.min(CW-312) and Math.min(CH-200) pulled the box
+    back over the pointer near the right and bottom of the wheel, and 200 is
+    shorter than the core's own readout. Either side starts eighteen pixels
+    clear of the pointer.
+
+    An axis with room on neither side holds the readout inside the stage
+    instead, because clear on one axis is already clear of the pointer. The
+    first cut of this let it overflow, and at 390 the stage cut 81 of 136
+    readouts off at its edge. The pointer can only be covered on a stage too
+    small for the readout on both axes at once. */
+ var box=pr.offsetParent||cv.parentNode;
+ var sx=cv.offsetLeft+x, sy=cv.offsetTop+y, pw=pr.offsetWidth, ph=pr.offsetHeight;
+ var side=function(at,size,room){
+  return at+18+size<=room?at+18:at-18-size>=0?at-18-size:Math.max(0,Math.min(room-size,at+18));};
+ pr.style.left=side(sx,pw,box.clientWidth)+'px';
+ pr.style.top=side(sy,ph,box.clientHeight)+'px';
  pr.classList.add('on');});
 cv.addEventListener('pointerleave',function(){S.hover=null;DRAG=null;$('probe').classList.remove('on');});
 
@@ -24800,7 +24832,6 @@ function railTop(r){
   :r.unread?'Nothing has been read yet. Write a story or set a charge.':tierBuilding();}
 function render(){
  if(typeof paintUndo==='function')paintUndo();
- if(typeof paintLegend==='function')paintLegend();
  const r=compute(), p=PEOPLE[S.who];
  /* the tier is a name for a person. it is not printed off the defaults, and it
     never appears without what it owes: the definition, the behaviour and the
@@ -25324,5 +25355,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="001638570"></div>
+<div id="eof" hidden data-len="001641487"></div>
 </body></html>

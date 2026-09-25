@@ -222,41 +222,32 @@ function atomGrow(n,a,hw,base,c,al){
   HIT.push({k:'atom',n:n,x:CX+Math.cos(aa)*r1,y:CY+Math.sin(aa)*r1,rad:9,
    v:x});});}
 /* ============================================================
-   WHAT IS STILL UNDER THE CURRENT DEPTH, IN ONE SENTENCE.
+   THE LEGEND IS GONE. Ruled 25 September (BA9).
 
-   Ruled: "the atomization is nine scroll notches deep and effectively not in
-   the product." It is reachable, and it has been since the threshold came
-   down from 5.20 to 2.60, but nothing anywhere says it exists. A layer a
-   person can only find by scrolling past the point where they expected
-   anything to happen is a layer nobody finds.
+   "You have unnecessary text, I want those removed." He struck it through on
+   a screenshot of the Field. It sat in the stage's second row and said what
+   the ring is, that a band or a single mark opens, and which layer was still
+   under the current depth. It had been put there on an earlier ruling, "the
+   atomization is nine scroll notches deep and effectively not in the
+   product", because a layer found only by scrolling past where anything was
+   expected to happen is a layer nobody finds.
 
-   So the legend under the wheel names the next thing down and how to reach
-   it. It is about the tool, which is what may sit under the tool. It never
-   carries a reading, and it says nothing about a layer the person's own
-   record cannot fill: offering to show what put a pattern somewhere, to
-   somebody who has written no story, would be an empty room with a sign on
-   it.
+   The mechanic is untouched: bands and marks still open and every layer is
+   still reached by scrolling. What went is the sentence saying so, which
+   makes the deep layers findable by scrolling alone again. That is the trade
+   the ruling made. The layer toggle row queued as BA8 is the one item on file
+   that would put the layers on a control instead.
    ============================================================ */
-const LEGEND_BASE='The ring is the seven seats, from the root at the top round '
- +'to the crown. Press a band to open it, or any single mark on it to open '
- +'that address.';
-function wheelLegend(){
- var z=S.zoom||1;
- var next=null;
- if(z<FET_STEP[0])next='the patterns each address is running';
- else if(z<FET_STEP[1])next='what each pattern has compounded into';
- else if(z<ATOM_STEP){
-  /* only offered when the record can actually fill it */
-  var by=atomIndex()||{};
-  if(Object.keys(by).length)next='the moments that put each pattern there';}
- return LEGEND_BASE+(next?' Scroll in on the wheel for '+next+'.':'');}
 
 /* how far in each layer is, 0 to 1, over a ramp of its own threshold. */
 function coreLayerA(i){
  var z=S.zoom||1, t=CORE_STEP[i];
  return Math.max(0,Math.min(1,(z-t)/(t*0.42)));}
-/* what the core has resolved, for the readout under the tab bar */
+/* how far the core has opened, which the drawing reads */
 function coreOpen(){return Math.max(coreLayerA(0),coreLayerA(1),coreLayerA(2));}
+/* and what it has resolved, by name. The names fed the line under the depth
+   bar until BA2 cut that line. They stay, because the functional gate holds
+   the order the layers arrive in by them. */
 const CORE_LAYER_NM=['the triad','the seven seats','the twenty one laws'];
 function coreResolved(){
  var n='';
@@ -581,8 +572,6 @@ function effView(){
  var extra=0, z=S.zoom||1;
  for(var i=1;i<ZOOM_STEP.length;i++) if(z>=ZOOM_STEP[i])extra=i;
  return Math.min(VIEWS.length-1,(S.view|0)+extra);}
-/* what zoom added on top of the button, for the readout */
-function zoomAdded(){return effView()-(S.view|0);}
 function nzAng(a){while(a<-Math.PI)a+=TAU;while(a>Math.PI)a-=TAU;return a;}
 /* ONE GROWN ADDRESS. The glyph of the axis it sits on, then at the deeper
    threshold its name and its two ends. Held reads outward from the ring and

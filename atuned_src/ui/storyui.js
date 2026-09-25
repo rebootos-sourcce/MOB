@@ -89,11 +89,11 @@ function stRender(){
      the person's own store, which is the leak ui/personas.js now refuses; with
      that closed the same press would keep nothing at all and say nothing about
      it. Refusing is the version that is true, and it is the wording the release
-     already uses for the same crossing. */
+     already uses for the same crossing. That wording is one line since BA9, 25
+     September: he struck the long form above the Field, and the state it
+     carried is on the profile picker now. */
   if(typeof S!=='undefined'&&S.who!==0){
-   status('You are looking at '+(((typeof PEOPLE!=='undefined'&&PEOPLE[S.who])||{}).nm
-    ||'a reference case')+', which is a worked example rather than your record. '
-    +'Switch to your own profile to commit a story.','fail');
+   status('Nothing committed on a worked example.','fail');
    return;}
   /* the field is about to change and until now there was no way back */
   undoPush('committing the story');

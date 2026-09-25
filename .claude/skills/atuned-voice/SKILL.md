@@ -373,6 +373,18 @@ State, reason, route. And the shorter one, at `ui/drills.js:150`: "Nothing is
 held here, so there is nothing to release. The protocol opens once this address
 is carrying."
 
+**That model no longer ships, and his ruling is why.** On 25 September (BA9 in
+`TASKS.md`) he struck it above the Field as unnecessary text: a failure holds
+on screen, so it sat there long after the run that raised it. The collision is
+with this rule, and the ruling wins. The state moved onto the control that
+sets it, the profile picker, which reads "Sofia, example" while she is loaded,
+and the refusal kept what failed and why in one line:
+
+    SHIPS ui/release.js      Nothing released on a worked example.
+
+The route is the picker beside it. The story, save and setter refusals follow
+the same line, because they were written to follow this one.
+
 ### V16. The Count Stated To Users Is 112
 
 The lower figure the codex counts is never printed in front of a person. It is

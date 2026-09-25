@@ -1304,7 +1304,11 @@ body.tab-field .stage,body.tab-energy .stage,body.tab-compass .stage,
 
    A row of its own costs the wheel about twenty pixels of height, which the
    wheel already handles because it is sized from its box, and it buys a line
-   that cannot collide with anything by construction. */
+   that cannot collide with anything by construction.
+
+   The legend was cut on 25 September (BA9) and its row is empty now, so it
+   is zero high and the wheel has the height back. It stays in the template
+   because the canvas and .pol2 address row 3 by number. */
 .stage{--lane:128px;position:relative;display:grid;
  grid-template-columns:var(--lane) minmax(0,1fr) var(--lane);
  grid-template-rows:auto auto minmax(0,1fr);
@@ -1316,9 +1320,13 @@ canvas#cv{display:block;grid-column:2;grid-row:3;width:100%;height:100%;
    scroll attempt became a charge write. Vertical panning goes to the page
    and a tap still reaches the canvas. */
 @media (pointer:coarse){ canvas#cv{touch-action:pan-y;cursor:default} }
+/* width:max-content because the readout is measured before it is placed
+   (ui.js, the pointer move). Sized to fit it shrank to whatever room its last
+   position left, so the width read was where it had been and not what it
+   needs, and the side chosen from it could be wrong. */
 .probe{position:absolute;pointer-events:none;padding:13px 15px;border-radius:var(--r-s);
  font-size:13px;line-height:1.65;color:var(--mid);opacity:0;transition: opacity var(--t-micro) var(--ease-out);
- max-width:300px;z-index:9;background:var(--panel);border:1px solid var(--edge);box-shadow:var(--shadow)}
+ width:max-content;max-width:300px;z-index:9;background:var(--panel);border:1px solid var(--edge);box-shadow:var(--shadow)}
 .probe.on{opacity:1}
 .probe b{color:var(--ink);font-weight:600}
 .probe u{text-decoration:none;color:var(--gold);font-family:var(--num);font-size:11px;font-weight:500}
@@ -2074,8 +2082,6 @@ body.punch .gm-gate{background:var(--panel-2)}
 .vt.zoomed::after{content:'';position:absolute;right:5px;top:5px;width:4px;height:4px;
  border-radius:50%;background:var(--gold)}
 .vt{position:relative}
-.zoomnote{align-self:center;margin-left:10px;font-size:11.5px;color:var(--gold);
- letter-spacing:.02em}
 
 /* DENSITY. One variable scales the whole interface, so a person who wants
    more on screen gets it without the browser zoom that breaks fixed layouts.
@@ -3538,30 +3544,8 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
 /* the same icon on a drill row, where the type is a shade larger */
 /* THE FOUR LENSES. One reading each, and each says what it was read off,
    which is what stops a lens being a horoscope. */
-/* the legend under the wheel. tool information, so it may sit under the tool.
-   it never carries a reading. */
-/* IT LIVES AT THE TOP, WITH THE OTHER KEY, AND THE COLLIDE GATE IS WHY.
-
-   Two attempts at the bottom of the stage and the gate refused both. At
-   bottom 8 it ran straight through the lower key strip. At bottom 64 it
-   cleared the strip and ran under the wheel's own nameplates at depth 3,
-   where the plates reach furthest down: four of them at 1680 wide and one at
-   2560. The gate exists for exactly that and it caught it both times.
-
-   The bottom of a wheel that grows is not free space, and treating it as free
-   space is the same mistake as the strip that covered the atoms. The top strip
-   is: it is a fixed band above the drawing, the plates never reach it, and the
-   three pills there leave most of its width empty. So the legend goes there,
-   on one line, right of the pills.
-
-   One line, ellipsised. It is orientation, not a paragraph, and a sentence
-   that wraps at the top of the stage pushes the wheel down. */
-.cv-legend{grid-column:1/-1;grid-row:2;position:relative;z-index:4;
- align-self:start;margin:0;padding:6px 14px 8px;
- text-align:left;font-size:11.5px;line-height:1.5;color:var(--dim);
- pointer-events:none}
-body:not(.tab-field) .cv-legend{display:none}
-@media(max-width:1180px){.cv-legend{grid-row:auto;order:2}}
+/* .cv-legend went with the legend, ruled 25 September (BA9). Why it was
+   written and why it went are at its old place in shell/body.html. */
 /* ============================================================
    ONBOARDING. Humble and warm, which is a typographic decision
    as much as a verbal one: wider measure, softer ground, and

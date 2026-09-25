@@ -266,9 +266,10 @@ function statusSaved(){
     example: nothing is wrong with the browser and there is something the person
     can do. The words follow the release's refusal, which is the same crossing
     answered the same way. */
+ /* and they still follow it: one line since BA9, 25 September, when he struck
+    the long form above the Field. The profile picker carries the state. */
  else if(st.err==='NotARecord')
-  status('Not saved. This is a worked example rather than your record. '
-   +'Switch to your own profile first.','fail');
+  status('Nothing saved on a worked example.','fail');
  else status('Not saved. Storage is full or blocked, so this session will not survive a reload.','fail');
  return st.ok;}
 

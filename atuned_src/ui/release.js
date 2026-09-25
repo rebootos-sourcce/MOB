@@ -103,10 +103,19 @@ function relCoolDown(){
     are the person charged, which is what it always meant. */
  if(typeof S!=='undefined'&&S.who!==0){
   RUN.done=false; RUN.phase='pick';
-  if(typeof status==='function')
-   status('You are looking at '+((PEOPLE[S.who]||{}).nm||'a reference case')
-    +', which is a worked example rather than your record. Switch to your own '
-    +'profile to run a release.','fail');
+  /* ONE LINE, AND THE STATE MOVED TO THE PICKER. Ruled 25 September (BA9): he
+     struck the sentence that stood here, "You are looking at Abraham, which is
+     a worked example rather than your record. Switch to your own profile to
+     run a release.", as unnecessary text. A failure holds on screen, so it sat
+     above the Field long after the run that raised it.
+
+     It was doing two jobs and they go to two places. Which profile is up is a
+     state, and a state belongs on the control that sets it: the picker reads
+     "Abraham, example" for as long as one is loaded (loadP, ui/personas.js).
+     That nothing was released is a refusal, and a refusal still reports and
+     names its own reason, because a write that fails without a word is the
+     silent failure this codebase forbids by name. */
+  if(typeof status==='function')status('Nothing released on a worked example.','fail');
   return false; }
  /* expression before and after, because it is what a release moves visibly.
     CQ is the 21 laws, and since the correction of 25 September a release lifts

@@ -822,8 +822,116 @@ ok(core.z18.a[0]>0&&core.z18.a[0]<1,'a layer fades in rather than snapping, got 
 /* an exploded view needs somewhere to explode into */
 ok(core.z42.rad>core.z1.rad*1.5,
  'the core grows as it opens, '+core.z1.rad+' to '+core.z42.rad);
-ok(core.z28.res==='the seven seats','and it says what it is showing, got '+core.z28.res);
+/* this said "and it says what it is showing", which was the line under the
+   depth bar. BA2 cut that line, so nothing says it now; the name is still how
+   this block holds which layer resolved at 2.8. */
+ok(core.z28.res==='the seven seats','and the layer resolved there is the seven seats, got '+core.z28.res);
 console.log(' ',JSON.stringify(core));
+
+console.log('\n=== the readout stays off the pointer, and a real press reaches the core ===');
+/* BA6. "The tooltip covers up the mouse point." The readout was placed in the
+   canvas's coordinates and drawn in the stage's, so it landed 110 pixels left
+   of and 87 above where it was aimed and sat on the pointer across the wheel.
+   Measured on the build before the fix: 527 of 964 readouts over the pointer,
+   at three widths and three zooms, the core first at every one.
+
+   The press in the frame block above could not have seen it. It dispatches
+   its events straight at the canvas, and an event handed to an element has
+   already been delivered: nothing on top can intercept it and no box can cover
+   it. These go through the mouse, which is the only route a person has. */
+await page.evaluate(()=>{loadP(PERSON('Abraham'));setTab(TAB.FIELD);
+ S.zoom=1;S.panx=0;S.pany=0;reframe();render();S.pin=null;rdClose();});
+await page.waitForTimeout(300);
+const offPtr=await (async()=>{
+ /* one point per target, found from HIT rather than assumed, and only the
+    ones a pointer can actually reach on this viewport */
+ const pts=await page.evaluate(()=>{
+  const rc=document.getElementById('cv').getBoundingClientRect(), out=[];
+  HIT.forEach(h=>{let x,y;
+   if(h.x!==undefined){x=h.x;y=h.y;}
+   else{const a=(h.a0+h.a1)/2,r=(h.r0+h.r1)/2;x=h.cx+Math.cos(a)*r;y=h.cy+Math.sin(a)*r;}
+   const X=rc.left+x,Y=rc.top+y;
+   if(x>2&&y>2&&x<rc.width-2&&y<rc.height-2&&X<innerWidth-2&&Y<innerHeight-2)
+    out.push([X,Y]);});
+  return out;});
+ let on=0,over=0,first=null;
+ for(const [X,Y] of pts){
+  await page.mouse.move(X,Y);
+  const r=await page.evaluate(([X,Y])=>{const pr=document.getElementById('probe');
+   if(!pr.classList.contains('on'))return null;
+   const b=pr.getBoundingClientRect();
+   return X>=b.left&&X<=b.right&&Y>=b.top&&Y<=b.bottom;},[X,Y]);
+  if(r===null)continue; on++;
+  if(r){over++; if(!first)first=[Math.round(X),Math.round(Y)];}}
+ /* and the core, pressed the way a person presses it: arrive, read the
+    readout that says to click, click */
+ const c=await page.evaluate(()=>{S.pin=null;rdClose();
+  const rc=document.getElementById('cv').getBoundingClientRect();
+  const h=HIT.filter(h=>h.k==='core')[0]; return {x:rc.left+h.x,y:rc.top+h.y};});
+ await page.mouse.move(c.x-60,c.y-60); await page.mouse.move(c.x,c.y,{steps:6});
+ const said=await page.evaluate(()=>{const pr=document.getElementById('probe');
+  return pr.classList.contains('on')?pr.textContent:'';});
+ await page.mouse.down(); await page.mouse.up();
+ await page.waitForTimeout(250);
+ const opened=await page.evaluate(()=>
+  (document.getElementById('rdrill').textContent||'').replace(/\s+/g,' ').trim());
+ /* off the wheel and onto bare ground, so no later block inherits a hover */
+ await page.mouse.move(4,996);
+ await page.evaluate(()=>{S.pin=null;rdClose();render();});
+ return {targets:pts.length,on,over,first,said,opened};})();
+ok(offPtr.on>100,'the readout comes up on the wheel\'s targets under a real pointer, '
+ +offPtr.on+' of '+offPtr.targets);
+ok(offPtr.over===0,'and it is never over the pointer, '+offPtr.over+' of '+offPtr.on
+ +(offPtr.first?', first at '+offPtr.first:''));
+ok(/the core/.test(offPtr.said)&&/Click for the breakdown/.test(offPtr.said),
+ 'the core\'s readout is up and says to click, said '+JSON.stringify(offPtr.said.slice(0,40)));
+/* runCoreDrill's own first two lines, which no other drill prints */
+ok(/The core\s*(CQ \d|not read yet)/.test(offPtr.opened),
+ 'and a real press on the core opens the core, got '+JSON.stringify(offPtr.opened.slice(0,40)));
+console.log('  '+offPtr.on+' readouts under a real pointer, '+offPtr.over+' over it, and the press opened '
+ +JSON.stringify(offPtr.opened.slice(0,36)));
+
+console.log('\n=== the lines he struck on the Field are gone ===');
+/* BA2 and BA9. The line under Charge, "the core is showing the triad, the
+   shell is showing the fetters", and the legend over the wheel, "The ring is
+   the seven seats". Two elements and two writers, not one line counted twice.
+   Read at zoom 2, because that is where the line under Charge used to appear:
+   at zoom 1 it was hidden anyway and an absence there proves nothing. The
+   third, the worked example notice, is held at the release below and at the
+   rail's setters here. */
+const struck=await page.evaluate(()=>{
+ loadP(PERSON('Abraham')); setTab(TAB.FIELD);
+ setZoom(2,CW/2,CH/2);
+ /* innerText and not textContent: the stage also hosts the hidden surfaces of
+    other tabs, the knowledge base among them, and a phrase in there is not a
+    line on the Field */
+ const txt=(document.getElementById('subbar').innerText||'')
+  +' '+(document.getElementById('stage').innerText||'');
+ const o={note:!!document.getElementById('zoomnote'),
+  legend:!!document.getElementById('cvlegend'),
+  resolved:coreResolved()+' / '+fetResolved(),
+  showing:/is showing the/.test(txt), ring:/The ring is the seven seats/.test(txt)};
+ S.zoom=1;S.panx=0;S.pany=0;reframe();render();
+ return o;});
+ok(!struck.note&&!struck.legend,'neither element is in the document, zoomnote '
+ +struck.note+', legend '+struck.legend);
+ok(/triad/.test(struck.resolved),'zoom 2 still resolves the layers the line used to name, '
+ +struck.resolved);
+ok(!struck.showing&&!struck.ring,'and neither sentence is anywhere on the Field there');
+console.log('  '+JSON.stringify(struck));
+/* THE NOTICE HAD SIX MORE DOORS. BC1 routed the rail's blueprint domains, root
+   domains and archetypes, and the wheel's two rings, through notYours, which
+   printed the struck sentence word for word from every one of them. A press
+   on one of them on a worked example, through the control itself. */
+const setter=await page.evaluate(()=>{
+ loadP(PERSON('Abraham')); setTab(TAB.FIELD);
+ const who=S.who, st=document.getElementById('status');
+ document.querySelector('#doms button').click();
+ return {stayed:S.who===who, said:st.textContent||'', kind:st.getAttribute('data-kind')};});
+ok(setter.stayed&&setter.kind==='fail'&&/worked example/.test(setter.said)
+ &&!/You are looking at/.test(setter.said)&&(setter.said.match(/[.!?](\s|$)/g)||[]).length===1,
+ 'a rail setter on a worked example refuses in one line and stays put, said '
+ +JSON.stringify(setter.said));
 
 console.log('\n=== the fetters grow, and one of them runs a protocol ===');
 /* The shell resolved nothing on zoom: an address was a tick at every
@@ -1505,9 +1613,18 @@ const relrun=await page.evaluate(()=>{
   o.refCq=Math.abs(g2.CQ-g.CQ)<1e-9;
   o.refCarry=g2.loaded.length===g.loaded.length;
   o.refReturn=(refused===false);
+  /* BA9. What the refusal said, and what the picker says while the case is
+     up: the sentence he struck carried both, and they went to two places. */
+  var st=document.getElementById('status'), ps=document.getElementById('psel');
+  o.refSaid=st.textContent||''; o.refKind=st.getAttribute('data-kind');
+  o.refPicker=ps.options[ps.selectedIndex].textContent;
   RUN.done=false; RUN.phase='pick'; RUN.queue=[]; RUN.plan=[]; RUN.log=[];}
  /* and now the person's own, which is the path that actually runs */
  loadP(0); setTab(TAB.FIELD); render();
+ {const ps=document.getElementById('psel');
+  o.ownPicker=ps.options[ps.selectedIndex].textContent;
+  o.caseBack=ps.querySelector('option[value="'+GORDON()+'"]').textContent;
+  o.caseAge=PEOPLE[GORDON()].age;}
  const held=W.filter(n=>n.sq>=4).slice(0,3).map(n=>n.i);
  relPick(held);
  o.plan=RUN.plan.length;
@@ -1574,6 +1691,23 @@ ok(relrun.refReturn,'a release on a reference case refuses');
 ok(relrun.refOnRef,'and leaves the person looking at the case they were on');
 ok(relrun.refCq,'and does not move its coherence');
 ok(relrun.refCarry,'and does not empty its carrying addresses');
+/* BA9, the rule and not the words. The refusal still reports, because a write
+   that fails in silence is the defect this codebase forbids by name, and it
+   names its own reason. It is one sentence, because he struck the two sentence
+   version that stood above the Field as unnecessary text. The state it also
+   carried is on the picker for as long as the case is up, and goes when the
+   case does. */
+ok(relrun.refKind==='fail'&&/worked example/.test(relrun.refSaid),
+ 'the refusal reports as a failure and names its reason, said '+JSON.stringify(relrun.refSaid));
+ok(!/You are looking at/.test(relrun.refSaid)&&(relrun.refSaid.match(/[.!?](\s|$)/g)||[]).length===1,
+ 'in one sentence, not the struck one');
+ok(/^Gordon\b/.test(relrun.refPicker)&&/example/.test(relrun.refPicker),
+ 'the picker names the case and marks it as an example while it is up, reads '
+ +JSON.stringify(relrun.refPicker));
+ok(relrun.ownPicker==='Custom'&&!/example/.test(relrun.caseBack)
+ &&relrun.caseBack.indexOf('Gordon, '+relrun.caseAge+', ')===0,
+ 'and on the person\'s own record it reads Custom and the case goes back to its age and role, '
+ +JSON.stringify([relrun.ownPicker,relrun.caseBack]));
 /* THE FIELD MOVES WITH THE IDENTITY, OR A STRANGER'S FIELD BECOMES YOURS.
    Measured before the fix: a person whose nine axes were all zero came out of a
    release run started on James carrying 50.6 of his charge, saved and
@@ -1704,7 +1838,10 @@ console.log('\n=== a worked example never reaches the person\'s own record ===')
  ok(leak.stWho===leak.stExample,
   'and the press does not walk the person off the example either, S.who '+leak.stWho
   +' against '+leak.stExample);
- ok(/worked example rather than your record/.test(leak.stSaid),
+ /* the reason and not the words. This quoted "worked example rather than
+    your record", which was the long form he struck in BA9; the refusal is one
+    line now and still names why. */
+ ok(/worked example/.test(leak.stSaid)&&!/You are looking at/.test(leak.stSaid),
   'and it says why rather than clearing the box in silence, said '
   +JSON.stringify(leak.stSaid.slice(0,90)));
  console.log('  example '+leak.example+' holding '+leak.liveOnCase.toFixed(2)
@@ -2093,7 +2230,7 @@ ok(leak.length===0,'no key, customer id or card field is anywhere in the build: 
    hits:HIT.filter(h=>h.k==='atom').length,res:fetResolved()}));
  ok(st.a>0,'the ceiling clears the threshold, zoom '+st.z.toFixed(2)+' alpha '+st.a.toFixed(2));
  ok(st.hits>0,'and the atoms are targets, '+st.hits+' of them');
- ok(/stories/.test(st.res),'the readout names the layer, got "'+st.res+'"');
+ ok(/stories/.test(st.res),'the layer resolved is the stories, got "'+st.res+'"');
  /* HOVERING ONE NAMES THE STORY IN THE PERSON'S OWN WORDS.
 
     Taking the first atom in HIT is not enough: at this magnification the ring
