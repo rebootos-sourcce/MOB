@@ -8969,9 +8969,38 @@ their `test/smoke.py`. Their `MVP_STATUS.md` says 62, which is stale.
 once a server is connected, and the server accepts two record kinds the
 client never sends. The 48 field client schema does match
 `data/user_schema.json` exactly.
+*Fixed and pushed, reboot-os `6cc0027`. All four were the missing half of a
+kind the schema already named, not dead code, so they are wired in rather
+than removed. Round trip proven: a smoke check fills all four, pushes,
+clears locally, signs in as a second device against the real local server,
+and asserts every list comes back identical. Fails with the fix reverted.
+Also caught and fixed on the way: the match deck appended wins past the
+200 cap instead of respecting it.*
 
 **AW6. The journal is not encrypted,** against his ruling. The lock checks a
 PIN and stops there. With no server, PIN recovery is "delete everything".
+*Fixed and pushed, reboot-os `fa7a0f8`, both device and server. AES-GCM 256
+per device, the key wrapped under the PIN with PBKDF2-SHA-256 at 600,000
+rounds, replacing a single unsalted SHA-256 that made a four digit PIN
+guessable in under a second. A wrong PIN fails the integrity check outright
+rather than returning garbage. Server rows are encrypted too, tied to their
+table, owner, kind and id so a copied ciphertext will not decrypt elsewhere,
+and sync refuses with a 503 rather than storing in the clear if the server
+key is missing. Proven: direct checks that the stored record holds no
+plaintext and the sentence text appears nowhere in it, and that a wrong key,
+wrong PIN or one flipped byte each fail. Caught two real bugs on the way:
+the password route reused the PIN box's 8 character limit, silently cutting
+off and failing on any longer real password, and a save under the lock
+could fail silently.*
+*BLOCKED on him: `RECORDS_KEY`, the server's encryption secret, is not set.
+`wrangler secret put` has to be run before the first real sync, and if that
+key is ever lost every encrypted record is lost with it. The real D1
+database still does not exist, so server side encryption has only run
+against the local test stand in. Also found, not fixed: the lock settings
+sheet opens off screen; a wrong password at sign in is read as an expired
+session and signs the person out; and a fresh device sends its own default
+consent setting, off, to the server on sign in, which can silently switch
+off a person's research sharing choice.*
 
 **AW7. The two engines are not the same engine.** 29 contradictions on
 shared concepts, of which these change a number or a promise a person sees:
