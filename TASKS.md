@@ -9404,3 +9404,31 @@ his instinct that they differ was right:
   into a fixed position, upper right of the main area, present on every
   screen regardless of tab.
 *Queued, art and interaction direction. None of it blocks foundation.*
+
+**BA8. A layer toggle row, CQ/DQ/SQ moved, and a global search. Three
+notes, one reference image.** His words: "For Field and Energetics, and
+basically all of our tools, I want something in our main area that allows
+me to turn things on and off, so I can overlap them and see them all at the
+same time or turn them off. That would remove the need for the secondary
+menu and save up a lot of space. We also want to move CQ, DQ, SQ down to
+the lower left, with a divider between that and the awareness flow and
+everything else currently on the bottom. And we're going to need a search
+field, maybe on the upper right, that searches everything in the product,
+the knowledge base, tools, techniques, basically the info of anything you
+want, so you can quick jump to where you want to go."
+
+- **A layer toggle row**, referenced against a weather app's map layer
+  icons (temperature, precipitation, radar, wind, and a second cluster for
+  alerts, hazards and more, each a togglable icon button in one row over
+  the map). The equivalent here: one row of icon toggles per tool (Field,
+  Energetics, and the rest) that switches a layer on or off in the main
+  visualisation, so several can be shown together or hidden, replacing the
+  current secondary menu and returning that vertical space.
+- **Move CQ, DQ, SQ from the top left to the bottom left**, with a divider
+  separating them from the awareness/flow row and whatever else already
+  sits at the bottom.
+- **A global search**, upper right, across the knowledge base, tools,
+  techniques and general product content, for a quick jump to anything.
+*Queued, art and interaction direction. The layer toggle is the largest of
+the three: it is a navigation model change on every tool screen, not a
+single control, so it wants its own pass before anything is built.*
