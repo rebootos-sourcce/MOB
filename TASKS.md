@@ -8931,6 +8931,26 @@ positions, 7 chakra orbs and 6 left arm nodes (`fetter_positions.json`,
 The build scatters imprints pseudo randomly around each band's height
 instead. `canon.json`, which their handshake names as governing, is also
 read by nothing.
+*Fixed and pushed, reboot-os `d6fd75c`. The idea was ported from the
+unwired prototype, not its drawing code, which was measured to miss most of
+its own points; the fix places imprints in the live figure's own coordinate
+frame, proven with 22 of 22 imprints on their node against 0 of 22 before.
+The chakra orbs were checked against the file rather than moved to it: six
+of seven already agree within a pixel, and the seventh (Crown) differs only
+because the unwired prototype's own orb is cut off by its box. Real data
+problems surfaced while fixing it, logged below, his call.*
+
+**AW3a. The calibrated data itself has holes.** Found while wiring AW3 in.
+One of 113 named positions is lost: the file is keyed by name and two rows
+both called Resentment collapsed into one, so Resentment (Solar), canon id
+43, has no position. Four nodes are filed at the wrong end of the body for
+their own canon band: Self-Exclusion and Endless Seeking are Crown in canon
+but placed at the feet; Soul Star is Crown but placed below the feet; Earth
+Star is Root but placed above the head, the two looking swapped with each
+other. Two canon nodes, Stellar Gateway and Gaia Gateway, have no position
+at all. The 264 point arm stroke in the arm file is still read by nothing,
+only its 6 named nodes.
+*His call, and it needs the source data corrected, not the code.*
 
 **AW4. 33 functions declared and unreached,** matching `KNOWN_UNWIRED` in
 their `test/smoke.py`. Their `MVP_STATUS.md` says 62, which is stale.
