@@ -8991,6 +8991,21 @@ Lumen agrees with itself.
 **AW12. Two older defects visible on desktop.** Knowledge and Practices text
 at 1.08:1, a `prd` against `.tprd` class mismatch. Fonts load from Google,
 against their own checklist and against the one file, zero request rule.
+*Fixed and pushed, reboot-os `814d6b7`. Fonts embedded (Instrument Sans,
+Geist Mono, Comfortaa, base64, zero requests confirmed at both widths and
+all seven lightings). The class mismatch traced to a duplicated CSS block
+and fixed at the root, not patched over; the gate's duplicate-selector
+baseline updated to match. Contrast now passes in six of seven lightings.
+One new defect found while fixing it, below.*
+
+**AW12a. Glass white's `--ink3` fails its own floor.** Found while fixing
+AW12. `rgb(110,107,101)` on `rgb(232,231,226)` measures 4.29:1, below 4.5
+for 14px body text. It is the lighting's token, so every line set in
+`--ink3` under Glass white is affected, not only the Knowledge and
+Practices lists. The token was ported from the art brief's measured values
+last commit, so the fixing seat did not change it unilaterally. Proposed:
+darken to about `#63605A`, roughly 4.8:1 on the same ground.
+*Small, and it is a one line token fix, art direction's call to confirm.*
 
 **AW13. Their documents are stale where it matters.** README, root
 `CLAUDE.md`, `MVP_STATUS`, `APP_MAP`, both `GAME_PLAN` status notes and three
