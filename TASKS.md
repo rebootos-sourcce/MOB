@@ -9214,3 +9214,28 @@ must differ by two orders of magnitude currently has to come entirely from
 the curve, not from the words, because the words are not heard.
 *Medium, and it is the one thing that would let the model reflect what a
 person actually wrote instead of only what the curve assumes.*
+
+## BA. Art cleanup queue, marked with a screenshot, 25 September.
+His words: "Menu is broken. Remove the text under Charge. Move all the icons
+to the left. Shrink the height of the secondary nav under the main menu, its
+eating up too much real estate for the central image. Add to the queue for
+art cleanup. Continue building." Marked directly on a screenshot of the
+Field tab at desktop width. Queued, not urgent: foundation work continues
+uninterrupted per his own ruling that skinning waits until it is done.
+
+**BA1. The secondary nav's right edge is broken.** His circle and arrow land
+on the clipped icon at the far right of the Charge bar, already measured
+once as `AU14`, "the Field's depth bar is clipped at 1600." Same defect,
+now marked directly rather than only measured.
+
+**BA2. Remove the subtitle under Charge.** "The core is showing the triad,
+the shell is showing the fetters" is marked NO and underlined. Cut the line.
+
+**BA3. Move all the icons to the left.** The top bar's right side cluster
+(profile, undo and redo, lighting, help, account) moves left. Exact target
+position not specified; his call once art cleanup starts.
+
+**BA4. Shrink the secondary nav's height.** The Charge bar row is taller
+than it needs to be and costs vertical room from the Field's central image
+below it.
+*All four small to medium, all art direction's queue, none blocking.*
