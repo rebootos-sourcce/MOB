@@ -10940,3 +10940,43 @@ regional entries above and in `docs/research/marma-validation.md` for
 where marma genuinely overlaps; nothing here replaces reading those, this
 is the summary that sits on top of them.
 
+## BS. The Avatar page, first real comp, reconciled with 20 September
+## rather than built past it. 25 September.
+
+**BM1 back.** His seven circles hold, all seven, against the product's
+own real seats and real addresses, confirmed rather than assumed: Survive
+is Root, Connect is Sacral, Empowerment is Solar, Compassion is Heart,
+Speak is Throat, Perception is 3rd Eye, Belief is Crown. Built as a real
+comp at `proto/avatar/iam/`, on the product's own body figure, the
+kundalini rise from the 20 September ruling drawn as light climbing the
+channel through it, his boxes as real addresses read live off the
+engine, his badges as the split disc he actually drew, on real reference
+profiles (Marcus, Gordon, a first open), not fabricated numbers. Five
+corrections to how his sketch was described in the brief, read off the
+full resolution photo: only the top five circles carry boxes and the
+counts taper, the one badge drawn is a single yin-yang split by polarity
+rather than ten separate tags, the week 2 mark is a broken ring not a
+hexagon, the Speak circle carries no written name, and there is no
+"Link" game, only the two that already ship. Self graded honestly: "D
+today, the product has no avatar page. This comp is a B minus."
+
+**Found in passing, measured, not asserted:** the word "held" is defined
+two different ways in two different files (a weight of 4 or more on the
+Body page, anything above 0 on the dashboard); the same state is called
+"below the line" in some files and "under the line" in others; the
+reference figures written into the 20 September design doc have drifted
+from what the engine reads today. Contrast and target size fixes applied
+and measured in the comp. None of this is fixed at the source yet, flagged
+for whoever picks it up.
+
+**Nine questions, ordered by how much each answer changes the build,
+each drawn on the page rather than described in words alone, sent to him
+with the page.** Headline ones: whether the avatar is a person with the
+channel inside it (his "it'll still be a person" now drawn against the 20
+September open question); what fills the boxes (real addresses, his own
+words, or the seated laws); what a badge actually is, given it measured
+badly worn as a role label on the product's own reference roster, eight
+of fourteen wearing none and the heaviest wearing all eight halves at
+once; and what "shape" meant in his own words. Full list, with the
+options and what each costs, on the page itself and not repeated here.
+
