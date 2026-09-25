@@ -10083,3 +10083,53 @@ for language or ideas worth borrowing (the emotional descriptions, the
 touch sequence, the naming style), the way the team did with the 2027 UI
 UX trends article, or whether this one gets set down for good.
 
+**Clarified, same day.** His words, quoted in full for context: "No,
+Marma, shocker points. Or federal locations. They're basically the same
+thing. It's talking about the assemblage points within the body. Ignore
+we didn't want ignore weed and wonder. That came from another AI thread.
+But now that you're asking, validate those Marma points. Do research. Let
+me know if this answers things." Read as: marma points, chakra points
+and our own fetters are, to him, the same broad category, a place the
+body holds a pattern, not a claim that the 112 must match by name.
+Answers Q2: "weed and wonder," the 16 week program named inside the
+pasted document, came from an unrelated AI conversation of his and is
+dropped. Narrows Q3 to a live ask rather than an open one: validate the
+marma claims for real, against real sources, rather than matching them to
+our fetters.
+
+**BI2. Validation pass dispatched.** Researching against real sources
+rather than recall: the true classical marma count and regional
+breakdown, whether the pasted document's named points are authentic
+classical marma names, a spot check of whether its specific nerve and
+organ claims hold up, and whether the four points it adds outside the
+body correspond to anything real. Confidence tagged when it lands. Q1,
+whether anything from this ever reaches the glossary, stays open and
+waits on what the research finds.
+
+## BJ. Four renditions of a ring based Field, mocked up against a fixed
+## rectangle, 25 September.
+
+**BJ1. A fixed, non zoom Field with the CQ score at centre, rings nested
+outside in, layered overlays the person can toggle.** His words, quoted
+in full: "I would like to see the art team mock up one version of the
+field. That fits perfectly to the center rectangle. You cannot zoom in
+or out, and it shows you everything running as if you with all of the
+overlay options for you to toggle things on and off. What I'm looking to
+see is if the design aesthetic is more makes more sense if it's fixed but
+layered in a way uh, rectangular that fits that shape then you could see
+all the rings kind of go from the outside in with the center point being
+the CQ score. I want to see four renditions of that mocked up." Prompted
+by a screenshot of the Compass wheel he had open, used as reference for
+the ring language (seats arranged around a ring, a filled centre disc
+carrying one number), not as a request to touch Compass itself. Today's
+Field is a canvas, read as freeform rather than fixed, per this file's
+own note that it is "counted in lit pixels against its own floor." This
+asks whether a fixed, rectangle fitted, ring based alternative reads
+better than that freeform canvas.
+
+**Dispatched as a design exploration, not a build.** Four real HTML/CSS
+mockups under `proto/field-rings/`, screenshotted at desktop width so
+they can be looked at as pictures, nothing wired, nothing shipped, no
+product file touched. Renditions and rationale to follow with images, the
+same rule as any drawing question on this project.
+
