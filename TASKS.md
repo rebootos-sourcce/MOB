@@ -8761,3 +8761,129 @@ written for an in-app motion toggle that does not exist.
 *Everything above is a defect in the shipped product, not a request from him.
 Whether each is worth fixing before or after the desktop port is his call; the
 line exists so none of it is lost between now and when he makes it.*
+
+## AV. Defects found while writing the design brief and the deep UX brief.
+Four more seats, reading the mechanism, the architecture, the gamification and
+the interaction layer to document them, and finding what the code actually
+does rather than what it was meant to. Measured 25 September against
+`eb788a2`. Grouped by who found it, not renumbered by weight.
+
+**From the mechanism (ai-director).**
+
+**AV1. A negative sentence scores the same as its opposite.** The core charge
+path has no negation. "I am not angry" scores like "I am angry". Only the law
+and lean readers handle negation at all.
+
+**AV2. A stated fetter can relabel another seat's words.** "terrified and
+exhausted" files the exhaustion as Fear. "exhausted and heartbroken" puts all
+of the exhaustion on Unworthiness. "I am exhausted. I am not angry." turns the
+exhaustion into Anger. Whichever fetter is named last claims the whole
+sentence.
+
+**AV3. The resentment composite adds instead of splitting.** "i feel
+resentment" gives Anger 10 and Apathy 4, not the split the name implies.
+
+**AV4. Choosing a personality type overwrites all nine axes, uncovered by
+undo,** and clearing the type again leaves the seeded charge sitting there.
+`seedShare` still measures against a baseline of 3 even though a blank
+profile is now 0.
+
+**AV5. Seven adjective rows map to an axis called joy, which does not
+exist.** Those rows do nothing. Small, and it is a dead table entry.
+
+**AV6. `sniffStory`'s law cues never move a law score,** so nothing the
+person sees actually runs through it. And the dead-row gate in
+`tests/engine.js` only checks that a phrase hits, not which kind of match, so
+it is currently blind to one of the three dead rows it should be catching.
+
+**From the architecture (systems-director).**
+
+**AV7. Undo restores the charge, not what caused it.** The story's cue counts,
+which feed the cost term in the coherence score, stay behind after an undo.
+Measured: 36.00 blank, 27.07 after a story, still 27.07 after taking it back.
+
+**AV8. Demo persona data leaks into the person's own reading.** `loadP` never
+resets prior story evidence, so a clean persona read 57.18 and then 43.00
+once a person's own story carried over into it.
+
+**AV9. `compute()` reads unread status off `CURP`, not off the profile
+actually loaded.** A fully answered profile loaded while `CURP` is null
+reports nothing measured.
+
+**AV10. The boundary clamps in several places it is ruled never to.**
+`who` is cut to 200 characters silently. Bad entries in `meter.unique` and
+`soul.roots` are dropped without saying so. Missing seed axes are invented at
+3. Importing the same record twice makes two records sharing one id.
+
+**AV11. Stored display density is read before storage is bound**, so it
+never applies at boot. The theme is not saved at all.
+
+**AV12. Seven writes report success without checking the save**, or ignore
+it outright: story commit, release commit, intake answer, both ritual writes,
+undo and redo, both clipboard exports.
+
+**AV13. `tools/equiv.py` is weaker than the record here says.** It exits
+clean when a whole declaration is deleted, and cannot see any top level code
+that follows a column zero comment, which is most of the wiring.
+
+**From the gamification (game-director).**
+
+**AV14. Games deals from the wrong pool, twice over.** A blank profile, or
+anyone carrying nothing, is dealt 24 zero-charge cards, Root and Sacral only,
+including `Root_08_Unnamed`, so a card literally reads the raw identifier.
+A heavily loaded profile is not dealt its own heaviest 24 either: the match
+deck is fixed to the first eight axes and is never actually drawn from the
+person's own field, against what the copy claims. Games also saves nothing
+to the profile, so a game played never reaches the ladder.
+
+**AV15. The streak copy contradicts the streak rule.** After a two day gap
+the surface says the run ended and a new one starts today; practising today
+actually continues the same run under the code's own halving rule. The same
+line also names the absence, against the design rule that it should not.
+
+**AV16. The Seven, Thirty and Ninety day marks require a perfect row**, so a
+person practising every other day, which the streak rule explicitly forgives,
+never earns "Seven days". Marks are not stored or dated, so the state based
+ones can quietly disappear. "Ten addresses" counts pattern keys, not
+addresses, and passes at about a quarter of what it claims.
+
+**AV17. The word ban and the later ruling disagree.** `DESIGN-progression.md`
+bans "badge", "streak" and "score"; `terms.py` never enforces it; the header
+comment in `ladder.js` rules all three back in. Nobody has reconciled the two.
+*His call which one stands.*
+
+**From the deep UX pass (uiux-architect).**
+
+**AV18. Undo covers some controls and not others**, with no documented line
+between them. It reaches story commit, release, the wheel drag, and domain or
+archetype picks on the wheel. It does not reach the rail sliders, the bulk
+sliders, the rail's own domain and archetype buttons, the personality seed,
+or any intake answer.
+
+**AV19. Taking back a story commit does not fully take back the story.** It
+restores the nine axes, but not the journal entry, and not the gate or lean
+mixes the story fed, so coherence can stay changed after an undo that looks
+complete.
+
+**AV20. The drill has no history.** A second drill opened from inside one
+replaces it rather than stacking, the top control closes everything at once,
+and only some drills carry their own one level back link.
+
+**AV21. A drill stays open across a tab change**, with a label that still
+reads "Back to the field" on a tab that is not the Field.
+
+**AV22. Release's Stop control does not cancel the release.** It ends it
+early and applies the whole thing anyway. The release overlay also has no
+Escape key and survives a tab change while open.
+
+**AV23. Two tooltip mechanisms still exist side by side**, a canvas panel
+over the wheel and two rail caption slots, where the design record already
+treats the tooltip as one unified system.
+
+**AV24. The empty state guard does not fully guard.** The right rail still
+prints archetype and domain percentages on a blank profile, and cannot tell
+"never entered anything" from "opened and fully released," which stays open.
+
+*As with AU, none of this is a request. Twenty four more measured defects, on
+top of the eighteen already logged, all found by seats asked to document the
+product as it is for a port, not to audit it. His call on sequence.*
