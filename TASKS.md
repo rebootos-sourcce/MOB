@@ -10808,3 +10808,135 @@ marker), and that choice alone could flip Crown from 21 addresses down
 to about 11 and 3rd Eye from 12 up to about 22. Held for the third
 region and one combined report, same as the first.
 
+## BR. Third and last anatomy region back, and the combined picture
+## across all 108. 25 September.
+
+**BI3c. Root, Sacral, Solar back (addresses 1 to 48).** This pass found
+its own way around the network block: standard anatomy ontologies
+(UBERON, FMA, SNOMED CT, an NIH reference atlas) are published as plain
+data files on GitHub, reachable even when every anatomy website was not,
+so names were checked against real reference identifiers rather than
+search snippets alone, and the tool was proven first by feeding it two
+invented fake names (one being the Crown's own "Ascension Column") and
+confirming it correctly rejected both. Of 48: 25 standard names, 6 older
+names, 8 ambiguous, 8 not a structure, 1 (45, Anxiety, Adrenal Medulla)
+real but a gland, not a nerve. Seats: 24 sound, 15 defensible, 5
+misplaced under every reading (Fear, Panic, Collapse, Envy,
+Unworthiness), 4 can't be placed. Only 9 of 48 are clean on every test
+at once. **16 addresses sit on only 7 real structures**, 12 of those
+splitting the same structure across Root and Sacral. One address (25,
+Manipulation Through Emotion, Uterovaginal Plexus) names a structure
+that only exists in female anatomy, scored on every profile regardless.
+**Solar is the strong region: anatomically coherent, 12 of 16 names real
+parts of the same real network anatomy itself calls the solar plexus.**
+
+**The Root seat's own definition does not hold up, the same shape of
+problem the other two regions each found in their own weak seat.** The
+product's own text (`practice.js:120`) anchors Root at "the lumbar
+plexus... into the pelvic floor... the base of the spine." Measured: the
+lumbar plexus sits above the Sacral seat's own anchor point, does not
+reach the pelvic floor at all (that is sacral-nerve territory), and is
+nowhere near the base of the spine. This is very likely why 5 of the 7
+duplicate structure groups split exactly across the Root/Sacral line:
+nothing in the product draws a real boundary there. *Traced further than
+before: the glossary's own "1927" note names Vasant Rele's book as the
+source of the chakra-to-plexus convention. No pairing found by any
+author, including Rele's own, puts the root chakra at the lumbar plexus;
+every one uses the sacral or coccygeal plexus instead. So this may be an
+error original to this product, not even a faithful copy of the
+tradition it is drawing on.*
+
+**Real, already-happened evidence that this is not academic.** Two
+files already on record show it landing on a person: `PANEL-usability.md`
+recorded a test participant reading out "Top seats: Splanchnic Root 7.8,
+Lumbar-Sacral Overlap 7.8, Iliac Branches 7.5" as if it meant something.
+`reviews/copy.md` finding F19 recorded another participant's reaction to
+address 45: "You did not measure my adrenal medulla."
+
+## The combined picture, all three regions, 108 addresses.
+
+**Three of the product's seven seats have their own descriptive text
+anatomically self-contradicted, not just individual addresses inside
+them: Root, Throat and Crown.** Solar, Heart, Sacral and 3rd Eye hold up
+better, Solar especially well. This is the headline finding across all
+three passes: the deeper problem sits above the row level, in a handful
+of seat definitions, and fixing every row's name would still leave the
+frame underneath unfixed.
+
+**Fourteen addresses across the whole 112 name no real structure at
+all**, one more (108, Ascension Column) is not anatomy in any sense,
+found only on New Age meditation pages. A further roughly twenty are
+real but ambiguous between two or more structures. None of this needs
+inventing anything to fix: every region has real, standard, unused
+structures sitting in its own territory, enough for every address to
+reach a real name of its own, confirmed by the third region's own count
+of the unused pool.
+
+**Duplication runs through all three regions, in different shapes.**
+Root and Sacral share exact duplicate structures on 16 addresses. Heart
+and Throat have three exact duplicate pairs and nine nested
+relationships. 3rd Eye and Crown have no exact duplicates but heavy
+nesting, a prefrontal cortex sitting inside a frontal lobe sitting
+inside a whole cortex sitting inside a fourth address naming the same
+cortex again.
+
+**Every pass ran the same honest ceiling.** Search engines returned
+summaries, not full pages, for every anatomy site tried, disclosed the
+same way in all three. Reruns add nothing; each pass varied its own
+assumptions instead, which is the real content behind "run it until it
+is one to one."
+
+**What can never be settled by anatomy, stated once for the whole
+table:** that a feeling lives in a nerve. No source anywhere makes that
+claim for any structure, in any of the 112. A handful of addresses have
+real, if partial, evidence for their functional theme regardless
+(hippocampus and memory loss, hypothalamus and rage, vagus and voice
+among them); the rest of the `a` and `d` columns are this product's own
+writing and should be treated that way, the same honesty the glossary
+already gives the word Chakra.
+
+**Seven real decisions, collapsed from the near thirty questions the
+three reports raised on their own, since most of them turn out to be the
+same decision asked three times.**
+
+**Q1.** How should a seat's own boundary be defined at all: by a rule
+about the body (a vertebral range, a named landmark), by which of
+several possible readings of its existing text, or by where the body
+figure itself already draws the marker? This one decision is what
+Root's, Throat's and Crown's own contradictions are each waiting on, and
+resolving it settles most of the individual "misplaced" and "depends on
+reading" verdicts across all three reports at once.
+**Q2.** The addresses that turn out to share one real structure (16 in
+Root/Sacral, 3 exact pairs in Heart/Throat): split each into its own
+real, distinct structure from the unused pool, merge them (which
+changes the ruled count of 112), or keep them and stop calling the
+table one to one?
+**Q3.** The names that are not real structures (14 across the whole
+table) and the ones that are real but ambiguous (about 20 more): rename
+each to its nearest real structure, or keep this product's own coined
+names and say so plainly where a person reads them, the same honesty
+already standing for the word Chakra?
+**Q4.** Is nesting acceptable: can a nerve and its own branch, or a
+brain region and the larger region it sits inside, both be addresses?
+Or does one to one mean no containment at all, which would retire
+several addresses (a whole cortex, a whole lobe, a plexus already named
+by a more specific address elsewhere)?
+**Q5.** Add a real, sourced organ field, separate from the psychological
+`a` field that exists today? Every regional pass independently drafted
+what it would hold as a first pass; none of it is wired.
+**Q6.** Should the body map draw addresses at their real anatomical
+position, rather than the current hash based scatter around a seat's
+centre? Correct names alone will not make the picture one to one while
+this stays true.
+**Q7.** Two addresses need their own rulings, not a general rule:
+address 25 (Manipulation Through Emotion), whose named structure exists
+only in female anatomy, scored on every profile regardless of the
+person's own; and address 45 (Anxiety), whose named structure is a
+gland, not a nerve, which is the promise `nodes.js`'s own header makes
+for every row.
+
+Full per-address detail for every one of the 108 stays in the three
+regional entries above and in `docs/research/marma-validation.md` for
+where marma genuinely overlaps; nothing here replaces reading those, this
+is the summary that sits on top of them.
+
