@@ -9286,3 +9286,27 @@ that rule applied to the core disc specifically, not a new band.
 *Queued, art direction. Which number drives it, CQ or expression, is now a
 live question rather than an abstract one now that the two differ; his own
 words say "coherent decoherent," which is CQ.*
+
+**BA6. The core's tooltip, marked on a screenshot. Three notes, one a real
+bug.** His words: "the tooltip background opacity, it acts like glass, it
+blurs everything behind it, and you can see a little bit of transparency
+through it... I don't want the background to cover everything up. And the
+numbers here need to actually be meaningful, and right now they aren't. I
+want to be able to click on it and get more information, but the tooltip is
+dominating my ability to click on anything, I literally can't click on
+anything because the tooltip covers up the mouse point. That's a bug, it
+needs to be fixed."
+
+- **The bug: the tooltip sits under the pointer and blocks the click it is
+  supposed to lead to.** "Click for the breakdown" is printed on a surface
+  that eats the click. Not cosmetic, an interaction defect: a control that
+  cannot be reached is the same failure as a control that does nothing.
+- Background: glass, blurred, a little transparency through it, not a solid
+  panel.
+- The numbers inside it are not meaningful as shown. His own example is a
+  different tooltip's fields, susceptibility, held, opposite, which is the
+  per-address hover, not the core one pictured. Both need real content
+  behind every number, not just the core's.
+*The click-through bug is small and functional, next in line whenever a
+seat is free. The glass background and the content pass are queued for art
+and copy.*
