@@ -9377,6 +9377,13 @@ now marked directly rather than only measured.
 
 **BA2. Remove the subtitle under Charge.** "The core is showing the triad,
 the shell is showing the fetters" is marked NO and underlined. Cut the line.
+*Done 25 September. It was `#zoomnote`, written by `paintDepth` in
+`ui/ui.js` and shown only once zoom resolved a layer (at zoom 2.0 it read
+exactly the marked line). Element, rule and writer are gone, and
+`zoomAdded`, which only it read. What zoom reached is still marked by the
+ring on the depth button it reached. Not the same line as BA9's ring
+caption: that one was `#cvlegend`, a different element with its own
+writer.*
 
 **BA3. Move all the icons to the left.** The top bar's right side cluster
 (profile, undo and redo, lighting, help, account) moves left. Exact target
@@ -9428,6 +9435,19 @@ needs to be fixed."
 *The click-through bug is small and functional, next in line whenever a
 seat is free. The glass background and the content pass are queued for art
 and copy.*
+*The bug is done, 25 September, and it was not the click being eaten.
+`.probe` was already `pointer-events:none` and a press reached the core.
+The readout was placed in the canvas's coordinates and drawn in the
+stage's, so after the stage gained its 128 pixel lanes and the rows above
+the wheel it landed 110 pixels left of and 87 above where it was aimed: on
+top of the pointer, hiding what it was on, with "Click for the breakdown"
+printed beside it. Aiming at those words took the pointer off the core
+onto a law, and the click opened the law. Measured with a real mouse over
+every wheel target at 1600, 1280 and 1024, zooms 1 to 3: 527 of 964
+readouts over the pointer before, 0 of 977 after. It now goes to whichever
+side of the pointer has room and stays inside the stage at 390. The glass
+background and the content pass are untouched and still queued, and
+`AM2c`, retiring `#probe` for the one tooltip, is still open.*
 
 **BA7. The core, marked on three screenshots, thinking through what it
 already shows.** He circled the shell's scattered marks against the core's
@@ -9510,6 +9530,22 @@ explaining it.
 a person they are looking at a worked example and not their own record;
 whoever cuts it should carry that distinction somewhere else rather than
 lose it silently.*
+*Done 25 September. The caption was `#cvlegend`, in the stage's second row
+under the key pills; element, rule, `paintLegend` and `wheelLegend` are
+gone, and the wheel has the row's height back. Bands and marks still open;
+the deeper zoom layers are now found by scrolling alone, which is the trade
+the cut made. The notice was the release's refusal, held in the status line
+because a failure holds. It carried a state and a refusal, and they went to
+two places. The state is on the profile picker: the loaded example reads
+"Abraham, example" for as long as it is up. The full "a worked example"
+does not fit the picker's 190 pixel cap at any name in the roster (150
+pixels of text show, "Abraham, a worked example" is 188). The refusal still
+reports, in one line: "Nothing released on a worked example." BC1, landing
+the same day, had routed six rail and wheel setters through `notYours`,
+which printed the struck sentence word for word, and the story and save
+refusals are written to follow the release's words. All four take the one
+line now: nothing released, changed, committed or saved, "on a worked
+example."*
 
 ## BB. Found while porting the fitted CQ into MOB, 25 September.
 
@@ -10200,4 +10236,60 @@ Rebound (`BG`), his and Keeley's own account of post release nervous
 system rebound, sounds adjacent to a build down phase and is worth
 checking against this once both are further along, not assumed the same
 thing. Strategy, not a build.
+
+## BL. Nineteen pages of the owner's own original field notes, the
+## Avatar page, and binaural release audio, 25 September.
+
+**Root source material, now on file rather than only in chat.** His
+words, sharing the first ten: "Adding in some of my original field notes
+so you can see the root origin." Then nine more, ending "everything else
+is detail" both times. Committed at `docs/field-notes/01` through `19`,
+each a photo of a handwritten page, so every seat working from this has
+the actual pages rather than a description of them. Dated where legible
+back to 4/16/22, meaning this is the real origin of ideas the product
+already carries, not new material. Standouts, named so nothing gets lost
+in nineteen files: `02` is his own hand drawn version of the intensity
+curve logged at `BK`, and carries a third step the typed deck did not,
+identify, deflate, then "inject the truth," folded into the running
+research at `BK`. `09`, dated 4/16/22, is an early chakra to meaning
+sketch that reads as the root of the product's own seven seat system.
+`11` is the Discovery character sheet behind `BL1` below. `15` is the
+binaural note behind `BL2` below. `16` describes a "somatic UI," a
+personal macro system linking an envisioned image, words, and linked
+actions, close in shape to this product's own ritual and affirmation
+chain, not dispatched, flagged for whoever next touches the ritual
+system to read. `18` and `19` are early sketches of charge accumulating
+and clearing inside a fixed boundary, sent directly to the Field mockup
+work already running under `BJ` since they may be the real root of what
+that tab is supposed to show.
+
+**BL1. The Discovery character sheet, sketched toward the Avatar page.**
+His words: "Does a character sheet here that could act as our Avatar
+page, at least give us a sketch to start, so feed that to the creative
+team for the UI UX for the Avatar page. It'll still be a person but we
+can have elements that a person can add, tags, and you know, shape. I
+don't know, I can see it, but let's have a team ask questions." Dispatched
+to sketch a first direction and, just as important, come back with real
+questions rather than a guessed finished build, since he was explicit he
+does not have this fully worked out either. His sheet lines up, on a
+first read still to be confirmed against the real data, with the
+product's own seven seats already in `nodes.js`.
+
+**BL2. Binaural audio on release, matched to the seat being cleared, on
+a toggle.** His words: "having a binaural audio match the frequency of
+the chakra session being released as an option to turn that on or off,
+which means you would have to generate looping audio at the Hertz
+accordance to the chakras." His own root note, `15`, names the five real
+EEG bands, Delta through Gamma, correctly. Dispatched with one flag
+carried along: a specific Hz number per chakra is a wellness convention,
+not a measured fact, the same caution this file already gives the word
+Chakra itself, so the report comes back honest about which part is solid
+ground and which part is a style choice being made on purpose. Also
+asked whether this should be generated live in the browser rather than
+shipped as audio files, since the product is one file with no network.
+
+**Unparsed, asked rather than guessed at.** One phrase in his message did
+not transcribe cleanly: "very mild chronic fetus to the design team."
+Not confident enough to act on a guess, asked him directly below rather
+than silently picking a reading.
 
