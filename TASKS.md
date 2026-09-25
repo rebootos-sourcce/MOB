@@ -8924,6 +8924,16 @@ including all 13 desktop commits. Three test tools hard code
 `/home/user/Reboot-OS`. Smoke reads 790 pass, 1 fail, and the one failure is
 the gate. With the path fixed it is 791 of 791.
 *Small, and it is first, because nothing after it is provable until it lands.*
+*The path is fixed and pushed, reboot-os `af0bf48`. Smoke reads 798 pass, 0
+fail, tested from a worktree at a different path to rule out a hidden
+assumption. **CI is still red, and the path was not the only cause.** Every
+run since 21:05 UTC 24 September fails in three to four seconds with no
+runner assigned and no log to download, which reads as an account level
+limit, most likely spent Actions minutes or a billing lock, not something
+visible or fixable from inside this session.*
+*BLOCKED on him: someone with access to the repo owner's GitHub account
+needs to check Actions billing and usage. No push goes green until then,
+whatever the code does.*
 
 **AW3. The calibrated geometry never moved in.** 113 measured nerve
 positions, 7 chakra orbs and 6 left arm nodes (`fetter_positions.json`,
@@ -9036,6 +9046,14 @@ today. Their four open owner questions: TQ was answered as CQ in their 1190
 and never carried back; dictation loading has a proposed default only;
 backend region, provider and PIN recovery never ruled; body typeface never
 ruled.
+*`THE_SIX_MODES.md` restored byte for byte, reboot-os `af0bf48`, from the
+commit before it was emptied; the emptying looks accidental (the same
+commit's message rules something unrelated, and two other documents still
+point readers at this file). `MANIFEST.source.json` deliberately left alone:
+it is the migration bundle's own arrival record, not a live tree listing,
+and rewriting it to match today's tree would destroy that record. If a live
+file listing is wanted, that is a new, separate, generated document with a
+gate check behind it, not a fix to this one.*
 
 **AW14. A third source of rulings nobody wired.** Their book branch
 `claude/keen-brahmagupta-qt32zr` carries `ATUNED_HANDOFF.md`,
