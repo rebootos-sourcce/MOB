@@ -9149,14 +9149,27 @@ tabs, profile, undo, lighting, help and account out of view. A confirmation
 takes them away for 2.4 seconds; a failure holds them away until the next
 message. Not at 390, where the bar wraps.
 *Small, and first.*
+*Fixed and pushed, MOB `34f777c`. Above 820 the bar wraps only while a
+message is showing, on its own line, rather than always wrapping (which
+would reopen an old 1280 bug) or overlaying the message (which would cover
+the rails on a failure that stays on screen). Swept every width from 1600
+to 821 with a message showing; no control sits off screen at any of them.*
 
 **AX2. After a commit the imprint column says the person has written
 nothing.** MOB, `ui/imprints.js:143`. The empty test ignores history, so the
 first 60 word story that lands nothing releasable is answered with "You have
 not written anything yet", a false empty state in the one minute that
 matters most.
+*Fixed and pushed, MOB `34f777c`. The test now also counts story entries, so
+a person who committed something is told what they should expect next
+rather than told they wrote nothing. Verified with a real 58 word story
+typed into the actual textarea and committed.*
 
 **AX3. "1 addresses" on the done card.** MOB. A plural with no singular.
+*Fixed and pushed, MOB `34f777c`, using the same singular check the picker
+in that file already carries. About a dozen other unguarded counts elsewhere
+in the shell (the release undo label, ui.js's Carrying and Filled rows) are
+queued separately rather than folded into this fix.*
 
 **AX4. Home opens with Field lit in the bar.** Desktop. The lit tab shows the
 last click, not the current screen. Also recorded under AW10.
