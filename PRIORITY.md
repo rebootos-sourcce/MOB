@@ -883,3 +883,288 @@ Three that are small for him and are the ones a lawyer would find first:
 **`PO2`** the word heals, which is on the funnel and therefore on tonight,
 **`D10`** the therapy equivalence claim, and **`SF6`** the safety referral that
 names Psychopathy on screen and has never fired.
+
+---
+
+# 12. 25 September. The forty two, blocked out and placed
+
+His instruction this round, verbatim: "Create a plan, add to the tasks. Block
+this plans and then show me the list." Read the way the preamble reads the last
+one: block means group and sequence into the order, not hold back. He named
+nothing to hold, so nothing below is held except what waits on a named ruling.
+
+What landed is `AU1` to `AU18` and `AV1` to `AV24` in `TASKS.md`, 42 defects
+found by seven seats asked to document the product for the desktop port, not
+to audit it. This section places them. It does not reorder sections 1 to 11,
+and where one of the 42 is already an item there, it says so and does not list
+it twice.
+
+## The stamp on this measurement
+
+    commit                  d90bf98, tree clean at the start of the read
+    TASKS.md                8,889 lines, md5 ebd1693db0cd, read before this
+                            pass added its two pointer notes
+    AU                      lines 8658 to 8763, 18 items
+    AV                      lines 8765 to 8889, 24 items
+    measured                25 September, 13:41 to 13:46 UTC
+
+    open        [ ]         567
+    his ruling  [?]         155
+    specced     [~]          20
+    built       [x]         433
+                           1175 lines carrying a state, 37 per cent built
+
+    method      grep -cE "^\s*[-*]?\s*\[\X\]" TASKS.md, once per state
+
+**The 42 are in none of those four counts.** Not one AU or AV line carries a
+checkbox, measured: zero matches for a state in lines 8658 to 8889. They sit
+in the record half that section 9 says nothing counts. Mirroring them into the
+ledger as checkboxes is recommended and not done here, because it moves every
+count above and that is a change to make on purpose rather than as a side
+effect of a plan.
+
+**The difference from the 21 September stamp is not a measurement of
+movement.** That stamp did not write its method down and this one does, so the
+two are not known to count the same thing. From here on the method is above.
+
+    node tests/engine.js       1464 passed, 0 failed
+    node tests/functional.js    852 passed, 0 failed
+    node tests/collide.js       100 passed, 0 failed
+    node tests/design.js        149 passed, 0 failed
+
+Run stacked, in that order, in one pass, against the committed `source.html`.
+`BUILD.sh` and `BUILD-engine.sh` were not run this pass: both rewrite committed
+build products, and this pass changes no source, so a rebuild would dirty the
+tree to prove nothing about the 42.
+
+## How the 42 sort
+
+    27  whole lines placed in the order below. 26 in the table, and AU7 rides
+        section 1 item 6
+     7  lines split: a part placed in the order, a part waiting
+     7  whole lines waiting on a ruling of his
+     1  whole line waiting on a team decision that is not his
+
+    of the 7 split lines, 4 wait on him for their other part and 3 on us
+
+**Before the port or after it.** The AU footer says that is his call. It
+changes when, not what gets built, and when is what this file owns. So: the
+table goes before the port. A defect ported is a defect fixed twice, in two
+codebases, by two seats. If he wants the port first he says so, and the table
+moves behind it unchanged.
+
+## The order
+
+| # | What | Who | Size | Depends on | Moves grade |
+|---|---|---|---|---|---|
+| 1 | `AV13`, `tools/equiv.py` made honest. It exits clean when a whole declaration is deleted and cannot see top level code after a column zero comment. `CLAUDE.md` describes it as stronger than it is, and that sentence moves with the fix | engineering, systems director | medium | nothing | no, it makes the refactor check honest, and rows 2, 3, 4 and 11 lean on it |
+| 2 | `AV8`, a person's own story evidence carried into a persona's reading, because `loadP` never resets it. And `AV9`, `compute()` reading unread status off `CURP` instead of the profile it was handed | engineering | medium | nothing | protects it. `AV8` is corruption |
+| 3 | `AV7` and `AV19`, undo takes back the cause and not only the charge: the story's cue counts, the journal entry, the gate and lean mixes. Measured 27.07 still standing after a story was taken back | engineering | medium | row 2, same state, same seat | yes, coherence stops lying after an undo that looks complete |
+| 4 | `AV10`, the boundary. `who` refused by name rather than cut at 200. Bad `meter.unique` and `soul.roots` entries refused by name rather than dropped. Missing seed axes filled from the blank, which is 0, rather than invented at 3. A second import of one record refused rather than stored under a shared id | engineering | medium | row 1 | protects it, and it gets dearer the day `AS2` exists, section 4 |
+| 5 | `AV12` and `AV11`. Seven writes that claim success without checking the save report through `status()`: story commit, release commit, intake answer, both ritual writes, undo and redo, both clipboard exports. Density read after storage binds, and the theme saved | engineering | medium | nothing | yes, it is the standing ruling that a control never claims a success it does not have |
+| 6 | `AU10`, with the blank halves of `AV24` and `AV14`, found twice in one night. The unread guard reaches the five surfaces that print a blank profile's defaults: Knowledge at 60 per cent, Body at Flow 100, Ritual naming the root, Games dealing 24 cards at zero charge, the Field's law spokes at 6. And the right rail's archetype and domain percentages | engineering, UX architect | medium | nothing | yes, it is the first minute a stranger has |
+| 7 | `AU1`, `AU5`, and the contrast half of `AU6`. Snow's dark text on three black stages at 1.06:1. Lumen's accent at 3.37:1, moved to `#0078C2` in the text role only, which is the precedent `DECISIONS.md` line 972 already set for the accent on paper, so `AD2`'s vibrancy is kept where the colour carries no text. White on the alarm red at 3.71:1 | art direction | small | nothing | yes, three surfaces cannot be read today |
+| 8 | `AU2` and `AU3`. The aura painter honours the per lighting strength its own token sets, measured 0.34 in all seven. Eleven literal gold values go to the accent token | art direction | small | nothing | yes, Glass runs at about a third of what it asks for |
+| 9 | `AU14` and `AU15`. The blur comes off the release overlay and gate 13 measures it open, not only closed: 60.9 frames closed, 17.7 open on the heaviest profile. Compass presses stop stacking loops, measured five times the spin after four presses, and the Flat toggle stops snapping the tilt | engineering, animation | small | nothing | yes |
+| 10 | `AV21`, the Escape and tab change half of `AV22`, and `AV20`. A drill closes on a tab change and stops saying "Back to the field" where there is no Field. The release overlay takes Escape and closes on a tab change. The drill gains a history, so a second drill stacks and back goes one level | engineering, UX architect | medium. The first two are small, the history is the medium | nothing | yes |
+| 11 | The engine halves: the clause half of `AV2`, a named fetter claiming only its own clause and not the whole sentence. `AV5`, seven adjective rows pointing at an axis called joy that does not exist, seated through the fold `canon.js` already applies or removed. The gate half of `AV6`, the dead row gate checking which kind of match hit. The baseline half of `AV4`, `seedShare` measured against 0 | AI director, engineering | medium | row 1. Readings move, so the roster diff is named in the commit | yes, readings stop being wrong in ways a person can see |
+| 12 | The game halves. The deal half of `AV14`: Games deals off the person's own field and never deals `Root_08_Unnamed` as a card. `AV15`: the copy says what the ruled halving does after a two day gap and stops naming the absence. The count half of `AV16`: the Seven, Thirty and Ninety marks read the run the ruling forgives rather than a perfect row, and "Ten addresses" counts addresses, not pattern keys | game director, engineering | medium | row 6 for the blank deal | yes, the copy stops contradicting the code |
+| 13 | `AU16` and `AU18`. Six bars animate by moving a width rather than rebuilding their markup. The reduced motion gaps close: the tooltip's own fade, the Compass hover. The `body.rm` rules written for an in app motion toggle that does not exist come out | engineering, animation | medium | nothing | yes |
+| 14 | `AU9` and `AU12`. Summary's avatar line reads fields a pair actually carries, so it can print something other than the all clear. On a phone the four doors come up from 3,066 pixels down | engineering, UX architect | small for `AU9`, medium for `AU12` | nothing. `D11` can move where the doors live, and item 9 of section 1, the left rail, is what pushes them down, so that proposal carries this | yes |
+| 15 | `AU17`, a press state. There is no `:active` rule in the stylesheet | art direction | medium. It is design language, seven lightings by every control, section 5 | nothing | yes |
+| 16 | `AV23`, one tooltip. A canvas panel over the wheel and two rail caption slots become the one system the design record already describes | UX architect, engineering | large | nothing | yes |
+
+## Already in the order, so not listed twice
+
+- **`AU7` rides `TR2`, section 1 item 6.** Same defect, one layer in: the code
+  is the palette and the documents move. And `AU7`'s own line names the wrong
+  file. `CLAUDE.md` carries no seat colours. The stale seven and "four
+  lightings" are in `BIBLE.md` lines 52 to 59, the same seven are in
+  `.claude/agents/art-director.md` line 99, and the Lexend and IBM Plex Mono
+  comment is `shell/head.html` line 48. Small, record only.
+- **The microphone half of `AU6` rides `SY2` and `SY3`, section 1 item 7.** The
+  solid alarm fill on the record button comes off when the button is rebuilt.
+  `SY3` is his: a red light while it listens. `BIBLE.md` line 56 reserves the
+  alarm colour for something being wrong. Both hold if the light is a red that
+  is not `--alarm`, and which red is the art director's to pick, not his.
+- **`AV8` goes to the seat on `E2` and `AC1`, section 1 item 3.** It is not
+  claimed to be the same defect. `E2` carries a persona's charge into the
+  person's record; `AV8` carries the person's evidence into a persona's
+  reading. Same function family, opposite direction, and it may be the
+  reproduction `E2` has never had.
+
+## Where the order is arbitrary, said plainly
+
+- **1, 2, 6, 7 and 8 are parallel.** Tools, engine state, surfaces, and two art
+  direction rows, with no shared file. Ranking them against each other would
+  be theatre.
+- **3 follows 2 and 4 follows 1,** and those two dependencies are real.
+- **9 to 16 can take any order** once a seat is free. They are placed by grade
+  per unit of work, and 15 and 16 are last because they are the two that are
+  design language rather than a surface.
+
+---
+
+# 13. 25 September. Waiting on a named ruling, grouped by the ruling
+
+Grouped so one answer releases every line behind it. Seven groups. Four are
+questions already in his queue, where the 42 add evidence and not a question.
+Three are new. None of the three new ones goes to him without a snapshot:
+item 1 of section 1 and `QC1` still stand, and his ruling of 21 September says
+a question about a drawing is asked with the drawing.
+
+## A. The charge path. Two questions, asked together
+
+**Releases:** `AV1` and `AV3` whole, the "I am not angry" case of `AV2`.
+
+1. **Does the sniffer read negation?** Already his, the sniffer's `Q3` at
+   `TASKS.md` line 5820. `AV1` is a second seat finding it from the core charge
+   path: "I am not angry" scores like "I am angry", and only the law and lean
+   readers handle a negative. Section 2 lists `Q3` to `Q13` under blocks nothing and can wait for ever.
+   That is not re-ranked here. It is his to weigh with the new evidence beside
+   it.
+2. **Does the field move with the sniffer's composite contract?** New.
+   `engine/sniff.js` from line 577 says resentment is ruled a composite, split
+   half to Anger and half to Apathy, and that the legacy path keeps Anger alone
+   on the standing ruling, with the one line change left "for whoever rules".
+   `AV3` measures "i feel resentment" as Anger 10 and Apathy 4, which is
+   neither of those. **So the code is wrong whichever way he rules,** and the
+   ruling says which way it gets fixed.
+
+**Why together:** either answer moves every reading in the roster. One roster
+diff, acknowledged once, is cheaper than two.
+
+## B. The currency and the three words
+
+**Releases:** `AV17` whole, the ladder half of `AV14`, the stored half of `AV16`,
+and a `terms.py` rule either way.
+
+Already his as `Q4` in section 2: karma, points or patterns. `AV17` is the same
+document one question over. `DESIGN-progression.md` line 340 bans badge,
+streak and score, `terms.py` does not enforce it, and `engine/ladder.js` line 4
+reads "Ruled: badges, achievements and a score," which is `GB1` in his words.
+`BIBLE.md` line 62 uses badge for a third thing, how a named reading renders.
+**Ask them as one question,** because the badge team cannot cost a mark until
+both the unit and the words have names.
+
+**Options:** the ban stands, and `ladder.js`, `GB1`'s design and the Bible
+sentence move. The ruling in `ladder.js` stands, the ban shrinks to the words
+it did not rule back in, and `terms.py` enforces what is left. Or a list he
+writes.
+
+**And one thing no answer releases.** A game played reaching the ladder, and
+marks being stored and dated, both need a field on the profile. That is the
+schema class section 10 holds until the server question is answered. It stays
+held by that decision, not by this one.
+
+## C. `D11`, the opening surface and the avatar
+
+**Releases:** `AU8` whole.
+
+Already his, and already first in section 2. `AU8` adds no question. It adds
+the record that `0o` rules the app opens on the avatar while the code opens on
+the Field, and that nothing in the UI writes an avatar pair. Large either way,
+as the line says. It also decides where `AU12`'s doors finally live, which is
+why row 14 builds the phone fix without waiting and says it may move.
+
+## D. Which surface is each station of the loop
+
+**Releases:** `AU11` whole, and `FL2` and `HW2`, which are already open.
+
+New as a question, not new as a problem: `DESIGN-onboard.md` section 4 records
+it as unresolved. `DESIGN-gamification.md` lines 440 and 441 put play at the ritual and
+flow at the record, and the record lives on the Ritual surface, so one surface
+holds two stations and a person can name three doors, not four. `proto/onboard`
+and `proto/ladder` draw the loop and map it differently. The loop itself is
+ruled, discover, play, flow, embody, a circle. What is open is only the
+mapping.
+
+**Look at:** `proto/onboard/shot-discover-1600.png`, `shot-play-1600.png`,
+`shot-flow-1600.png`, `shot-embody-1600.png`, and `proto/ladder/shot-wide.png`,
+side by side, both widths.
+
+Whether it is built this round is sequence, and sequence is mine: the round
+after he answers.
+
+## E. Which rule wins on the top tabs
+
+**Releases:** `AU4` whole.
+
+New. Two of his rulings meet on the tab strip. `BIBLE.md` line 65, "Top level
+navigation is tabs, not buttons. No boxes," built at `shell/head.html` line
+818. And Punch, decided this round in `CLAUDE.md`: nothing outlined,
+everything solid. Punch, Flat, Lumen and Glass give the tabs a fill or an
+outline today, and the Flat and Lumen tab rules target a class the markup
+never emits, so they do nothing. **Both halves wait,** because the dead rules
+are either fixed or deleted depending on the answer.
+
+**Options:** no boxes in every lighting, and Punch's solid stops at the tab
+strip. Or the lightings keep their own tab, and the Bible line gains its
+exception.
+
+**Look at:** the tab strip in all seven lightings, at 1600 and at 390, which is
+a shot the art director takes before this goes.
+
+## F. How long the boot runs
+
+**Releases:** `AU13` whole, and it sets `FN13`.
+
+Already his, twice: `D8` at `TASKS.md` line 6949 and `AL5` at 8344. **`D8` is
+stale and cannot go as it stands.** It asks three seconds or five and says the
+boot plays 3,340 milliseconds today. Measured this pass: the stylesheet ends
+the boot at 7.02 seconds, `shell/head.html` line 3359, with the comment "two
+seconds longer than it was. Ruled." The remover still fires at 5,450
+milliseconds, `ui/panels.js` line 929, so the sheet holds full opacity and
+vanishes in one frame, and the eased fade is dead. Three numbers, so the
+question he gets is three, five or seven, sent with captures of the ending at
+each. The fix is one line once he answers.
+
+## G. The twenty one laws
+
+**Releases:** the wiring half of `AV6`, law cues in `sniffStory` moving a law
+score.
+
+Already his, `SN5` to `SN7`, third in section 2. Wiring a cue into a law before
+he says which twenty one laws is building against a divisor in dispute. The
+gate half of `AV6` does not wait and is in row 11.
+
+---
+
+# 14. 25 September. Waiting on us, not on him
+
+These change what gets built and they are not his. The owner does not want to
+be asked what the team is paid to decide, so none of them goes to him.
+
+- **Where undo reaches.** `AV18` whole, and the overwrite and undo half of
+  `AV4`. Undo reaches story commit, release, the wheel drag and the wheel's
+  picks, and not the rail sliders, the bulk sliders, the rail's own picks, the
+  personality seed or any intake answer. The UX architect draws the line and
+  writes it into `DECISIONS.md`, then row 3's seat builds to it.
+- **The seed decay policy.** The clear half of `AV4`: clearing a stated type
+  leaves its charge standing. `CLAUDE.md` lists the policy as open and as
+  engineering's own, under "Mine to build when asked". Systems director and AI
+  director decide it together.
+- **Never entered against fully released.** The second half of `AV24`. The
+  guard cannot tell a person who has entered nothing from one who has released
+  everything, and those two should not see the same screen. UX architect. If
+  the answer turns on the avatar, it waits for `D11` and says so.
+- **What Stop does.** The first half of `AV22`. Stop ends the release early and
+  applies all of it. Whether it applies what ran or nothing goes into the `SR5`
+  proposal, which section 4 already lists as needing a proposal rather than a
+  guess.
+
+---
+
+# 15. Not doing this round, from the 42
+
+- **The avatar build, `AU8`.** Waits on `D11`, group C.
+- **The loop in the app, `AU11`.** Waits on the station mapping, group D.
+- **An in app motion toggle.** `AU18` found rules written for one. Nobody asked
+  for the toggle and the operating system setting already carries reduced
+  motion, so the rules come out in row 13 and the toggle is not built.
+- **A name for `Root_08_Unnamed`.** Row 12 stops Games dealing it as a card.
+  The name stays his, as `CLAUDE.md` already records.
+- **The ladder reaching the profile, and stored marks.** Held with the schema
+  items in section 10, see group B.
+- **Mirroring the 42 into the ledger as checkboxes.** Recommended in the stamp
+  above, not done by a plan.

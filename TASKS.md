@@ -8762,6 +8762,10 @@ written for an in-app motion toggle that does not exist.
 Whether each is worth fixing before or after the desktop port is his call; the
 line exists so none of it is lost between now and when he makes it.*
 
+*Sequenced 25 September in `PRIORITY.md` sections 12 to 15. The line for
+`AU7` names `CLAUDE.md`, which carries no seat colours: the stale seven are in
+`BIBLE.md` and `.claude/agents/art-director.md`. Wording above left as found.*
+
 ## AV. Defects found while writing the design brief and the deep UX brief.
 Four more seats, reading the mechanism, the architecture, the gamification and
 the interaction layer to document them, and finding what the code actually
@@ -8887,3 +8891,6 @@ prints archetype and domain percentages on a blank profile, and cannot tell
 *As with AU, none of this is a request. Twenty four more measured defects, on
 top of the eighteen already logged, all found by seats asked to document the
 product as it is for a port, not to audit it. His call on sequence.*
+
+*Sequenced 25 September in `PRIORITY.md` sections 12 to 15: the order, what
+waits on which ruling of his, and what waits on us.*
