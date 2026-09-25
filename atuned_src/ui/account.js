@@ -75,10 +75,12 @@ function accAct(label,id,o){
   +'<button class="btn'+(o.danger?' dgr':'')+'" id="'+id+'" type="button">'
   +esc(o.btn||'Open')+'</button></div>';}
 /* A toggle row. The switch is the control and the row label is its name, so
-   the switch carries no label of its own. */
-function accTog(label,id,on,note){
+   the switch carries no label of its own. col paints the note, for the one
+   switch whose note is a seat's hertz: ruled, a hertz number is the seat's own
+   colour. */
+function accTog(label,id,on,note,col){
  return '<div class="ac-row ac-tog"><span class="ac-rl">'+esc(label)
-  +(note?'<em>'+esc(note)+'</em>':'')+'</span>'
+  +(note?'<em'+(col?' style="color:'+col+'"':'')+'>'+esc(note)+'</em>':'')+'</span>'
   +'<button class="ac-sw'+(on?' on':'')+'" id="'+id+'" type="button" role="switch" '
   +'aria-checked="'+(!!on)+'" aria-label="'+esc(label)+'"><i></i></button></div>';}
 function accGroup(title,rows,foot){

@@ -1385,6 +1385,24 @@ var FLOWSEAT=[
  {k:'solar', n:'Solar', sk:'Manipura',    nv:'Celiac plexus',    vt:'T12 to L1',                         seat:'below the ribs, above the navel',src:372,hz:528},
  {k:'sacral',n:'Sacral',sk:'Svadhisthana',nv:'Hypogastric plexus',vt:'L5, the aortic bifurcation',       seat:'below the navel',                src:438,hz:417},
  {k:'root',  n:'Root',  sk:'Muladhara',   nv:'Lumbar plexus',    vt:'L1 to L4, into the pelvic floor',   seat:'the base of the spine',          src:502,hz:396}];
+/* THE SEAT'S TONE, BY THE NAME EVERY ADDRESS CARRIES.
+
+   The release sounds the seat of the address it is on, and an address knows
+   its seat as n.b: 'Root' through 'Crown', with '3rd Eye' between. FLOWSEAT
+   prints that seat as 'Brow', so a lookup by its display name finds six seats
+   and returns nothing for the seventh. Measured: 12 of the 107 addresses a
+   release can reach sit at the 3rd Eye, and every one of them would have
+   played the previous seat's tone, or none, with nothing anywhere saying so.
+   So the name goes through the key PMBANDS already shares with this table.
+
+   A seat with no tone is null and never a guess. The four addresses outside
+   the body carry no fetter, so relPick drops them before a run is built, and
+   this is the second reason they cannot sound. */
+function seatHz(b){
+ for(var i=0;i<PMBANDS.length;i++){ if(PMBANDS[i].b!==b)continue;
+  for(var j=0;j<FLOWSEAT.length;j++)
+   if(FLOWSEAT[j].k===PMBANDS[i].k)return FLOWSEAT[j].hz;}
+ return null;}
 var PML=[['bands','Fetters'],['sab','Saboteurs'],['cx','Complexes'],['hyper','Hyper'],
          ['masks','Masks'],['pain','Pain'],['nerves','Flow']];
 
@@ -4751,8 +4769,10 @@ function blankProfile(name){
   /* PER PROFILE INTERFACE PREFERENCES. quiet is the reduced motion switch the
      phone spec asked for and nothing had built; model is the consent to let a
      story with nothing identifying attached refine the reading, and it is off
-     until a person turns it on, because it is a use of their own words. */
-  ui:{quiet:false, model:false},
+     until a person turns it on, because it is a use of their own words. tone
+     is the seat tone under a release, and it is off until a person turns it on
+     for the same reason in a different organ: it is a sound in their ears. */
+  ui:{quiet:false, model:false, tone:false},
   /* what the person said their type is, and what it wrote. null until stated. */
   seed:null,
   /* THE METER. One pattern is one release line delivered: one channel over
@@ -5377,7 +5397,7 @@ function validateProfile(o){
  /* ui preferences. booleans only, and an older profile without them is filled
     from the blank rather than refused. */
  if(o.ui&&typeof o.ui==='object'){
-  ['quiet','model'].forEach(function(k){
+  ['quiet','model','tone'].forEach(function(k){
    if(o.ui[k]!==undefined)p.ui[k]=!!o.ui[k];});}
  /* the seed is a stated type, so it is one of sixteen or it is nothing. */
  if(o.seed&&typeof o.seed==='object'){
@@ -8120,7 +8140,7 @@ if(typeof module!=='undefined'&&module.exports){
                   SABAUTH:SABAUTH, ARCH18:ARCH18, CHILD:CHILD, CHARGES:CHARGES,
                   DOMAINS:DOMAINS, ARCH:ARCH, SI:SI, SINAMES:SINAMES, MASKS:MASKS,
                   BANDS:BANDS, PAL:PAL, ROOTD:ROOTD, ROOTCOL:ROOTCOL, AFFIN:AFFIN,
-                  PRACTICE:PRACTICE, EXPR:EXPR, PMBANDS:PMBANDS, FLOWSEAT:FLOWSEAT,
+                  PRACTICE:PRACTICE, EXPR:EXPR, PMBANDS:PMBANDS, FLOWSEAT:FLOWSEAT, seatHz:seatHz,
                   PAINREG:PAINREG, PEOPLE:PEOPLE, LAWSET:LAWSET, BIRTH:BIRTH,
                   LEX:LEX, ADJ2CHG:ADJ2CHG, PHRASES:PHRASES, VERP:VERP,
                   NERVEBR:NERVEBR, BODYPATH:BODYPATH, TAB:TAB,

@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="9a1c72b 2026-09-25 22:10"><head><meta charset="utf-8">
+<html lang="en" data-build="d034324 2026-09-25 22:28"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -2911,6 +2911,15 @@ body.snow .rel{background:rgba(238,237,233,.82)}
 .rel-row b{font-weight:500;color:var(--gold);font-family:var(--num);font-variant-numeric:tabular-nums}
 .rel-note{font-size:13.5px;color:var(--dim);line-height:1.7;margin:13px 0 19px;text-align:left;font-weight:300}
 .rel-act{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+/* THE SEAT TONE'S SWITCH, IN THE RELEASE. The account page's own row, taken
+   out to the card's edges so its label starts on the line the text above it
+   starts on, where the row's own inset left it floating fifteen pixels in.
+   A hairline parts it from Pause and Stop, because it is a setting and they
+   are the run. Lumen already clears every border on this row; Punch outlines
+   nothing, so the hairline goes there too and the gap does the parting. */
+.rel-card .ac-tog{margin-top:18px;padding:12px 0 0;border-bottom:0;
+ border-top:1px solid var(--edge);text-align:left}
+body.punch .rel-card .ac-tog{border-top-color:transparent}
 .rit-card{width:min(640px,94vw);text-align:left}
 .rit-card .rel-node,.rit-card .rel-sub{text-align:left}
 .rit-from{font-family:var(--num);font-size:12.5px;color:var(--gold);margin:10px 0 3px}
@@ -6035,6 +6044,24 @@ var FLOWSEAT=[
  {k:'solar', n:'Solar', sk:'Manipura',    nv:'Celiac plexus',    vt:'T12 to L1',                         seat:'below the ribs, above the navel',src:372,hz:528},
  {k:'sacral',n:'Sacral',sk:'Svadhisthana',nv:'Hypogastric plexus',vt:'L5, the aortic bifurcation',       seat:'below the navel',                src:438,hz:417},
  {k:'root',  n:'Root',  sk:'Muladhara',   nv:'Lumbar plexus',    vt:'L1 to L4, into the pelvic floor',   seat:'the base of the spine',          src:502,hz:396}];
+/* THE SEAT'S TONE, BY THE NAME EVERY ADDRESS CARRIES.
+
+   The release sounds the seat of the address it is on, and an address knows
+   its seat as n.b: 'Root' through 'Crown', with '3rd Eye' between. FLOWSEAT
+   prints that seat as 'Brow', so a lookup by its display name finds six seats
+   and returns nothing for the seventh. Measured: 12 of the 107 addresses a
+   release can reach sit at the 3rd Eye, and every one of them would have
+   played the previous seat's tone, or none, with nothing anywhere saying so.
+   So the name goes through the key PMBANDS already shares with this table.
+
+   A seat with no tone is null and never a guess. The four addresses outside
+   the body carry no fetter, so relPick drops them before a run is built, and
+   this is the second reason they cannot sound. */
+function seatHz(b){
+ for(var i=0;i<PMBANDS.length;i++){ if(PMBANDS[i].b!==b)continue;
+  for(var j=0;j<FLOWSEAT.length;j++)
+   if(FLOWSEAT[j].k===PMBANDS[i].k)return FLOWSEAT[j].hz;}
+ return null;}
 var PML=[['bands','Fetters'],['sab','Saboteurs'],['cx','Complexes'],['hyper','Hyper'],
          ['masks','Masks'],['pain','Pain'],['nerves','Flow']];
 
@@ -9427,8 +9454,10 @@ function blankProfile(name){
   /* PER PROFILE INTERFACE PREFERENCES. quiet is the reduced motion switch the
      phone spec asked for and nothing had built; model is the consent to let a
      story with nothing identifying attached refine the reading, and it is off
-     until a person turns it on, because it is a use of their own words. */
-  ui:{quiet:false, model:false},
+     until a person turns it on, because it is a use of their own words. tone
+     is the seat tone under a release, and it is off until a person turns it on
+     for the same reason in a different organ: it is a sound in their ears. */
+  ui:{quiet:false, model:false, tone:false},
   /* what the person said their type is, and what it wrote. null until stated. */
   seed:null,
   /* THE METER. One pattern is one release line delivered: one channel over
@@ -10053,7 +10082,7 @@ function validateProfile(o){
  /* ui preferences. booleans only, and an older profile without them is filled
     from the blank rather than refused. */
  if(o.ui&&typeof o.ui==='object'){
-  ['quiet','model'].forEach(function(k){
+  ['quiet','model','tone'].forEach(function(k){
    if(o.ui[k]!==undefined)p.ui[k]=!!o.ui[k];});}
  /* the seed is a stated type, so it is one of sixteen or it is nothing. */
  if(o.seed&&typeof o.seed==='object'){
@@ -12816,7 +12845,7 @@ if(typeof module!=='undefined'&&module.exports){
                   SABAUTH:SABAUTH, ARCH18:ARCH18, CHILD:CHILD, CHARGES:CHARGES,
                   DOMAINS:DOMAINS, ARCH:ARCH, SI:SI, SINAMES:SINAMES, MASKS:MASKS,
                   BANDS:BANDS, PAL:PAL, ROOTD:ROOTD, ROOTCOL:ROOTCOL, AFFIN:AFFIN,
-                  PRACTICE:PRACTICE, EXPR:EXPR, PMBANDS:PMBANDS, FLOWSEAT:FLOWSEAT,
+                  PRACTICE:PRACTICE, EXPR:EXPR, PMBANDS:PMBANDS, FLOWSEAT:FLOWSEAT, seatHz:seatHz,
                   PAINREG:PAINREG, PEOPLE:PEOPLE, LAWSET:LAWSET, BIRTH:BIRTH,
                   LEX:LEX, ADJ2CHG:ADJ2CHG, PHRASES:PHRASES, VERP:VERP,
                   NERVEBR:NERVEBR, BODYPATH:BODYPATH, TAB:TAB,
@@ -13449,6 +13478,167 @@ addEventListener('click',function(e){
  if(k==='avatar'){runAvatarDrill();return;}});
 
 try{window.__at&&window.__at('ui/component.js');}catch(e){}
+/* ============================================================
+   THE SEAT TONE. One sine per ear, nothing else, and the only
+   file in the product that touches AudioContext.
+
+   hostfree.py names AudioContext and fails the build if engine/
+   reaches for it, which is correct and must stay: a sound card is
+   the host. The seat's number is data and lives in the engine, in
+   FLOWSEAT, read through seatHz. This file only makes it audible.
+
+   Ruled 25 September, on hearing it in two tunings: "The
+   Solfeggio, excellent... we can wire this into the release... I
+   think these all choose dynamically, based off the color of the
+   chakra, that way it's just automatic. And then in the release,
+   the person can toggle it on and off." ui/release.js decides
+   what should be sounding. This file decides nothing.
+   ============================================================ */
+
+/* THE BED, ported from the sound research without a change to its bodies,
+   because those bodies are what was measured. Rendered offline in headless
+   Chromium against a harness that first read a known 393 and 399 pair back as
+   393, 399 and a 5.99 beat, and caught its own first cut reading 16.6: every
+   Solfeggio seat at both beats landed each ear on its own frequency to the
+   hertz, steady to within 1 per cent, with the beat reading 5.99 and 9.98.
+   tests/functional.js renders this bed offline on every run, with the same
+   harness and its self test ahead of it, so those figures are held and not
+   remembered.
+
+   The carrier is the seat's tone, what a person hears as the pitch. The beat
+   is the half's band, what a person hears as a slow pulse. They live on two
+   different axes, pitch and pulse, so the seat's number and the brainwave band
+   never compete for the same job.
+
+   Centred: left is carrier minus half the beat, right is carrier plus half,
+   so the fused tone sits on the seat's own number and a beat glide never drags
+   the pitch with it.
+
+   A ChannelMergerNode and not a StereoPannerNode: input 0 is the left ear and
+   input 1 is the right ear, by definition, on every engine. The prototype used
+   a panner and fell back to connecting the oscillator straight to the gain
+   where there was none, which is a mix, and a mix is a monaural beat rather
+   than a binaural one. That is the silent failure this file must not have.
+
+   Two gain stages. One fades in, one fades out, so turning the bed off in the
+   middle of its fade in never cancels a ramp and never clicks. Measured: off
+   at 3 seconds into an 8 second fade in, the largest sample step was the one
+   the still rising sine was already taking, 0.00085 against 0.00082 just
+   before it, and the output was exactly zero from 7.2 seconds.
+
+   Nothing loops. An oscillator runs until it is stopped, so there is no loop
+   point and no seam to click. */
+var BED=null;
+function bedOn(ac,out,carrier,beat,gain,fadeS){
+ if(BED)return BED;
+ var t=ac.currentTime, m=ac.createChannelMerger(2),
+     gi=ac.createGain(), go=ac.createGain();
+ gi.gain.setValueAtTime(0,t);
+ gi.gain.linearRampToValueAtTime(gain,t+(fadeS||8));
+ m.connect(gi); gi.connect(go); go.connect(out);
+ function ear(f,ch){var o=ac.createOscillator(); o.type='sine';
+  o.frequency.setValueAtTime(f,t); o.connect(m,0,ch); o.start(t); return o;}
+ BED={ac:ac,go:go,l:ear(carrier-beat/2,0),r:ear(carrier+beat/2,1),c:carrier,b:beat};
+ return BED;}
+/* glide the beat, the carrier, or both, over s seconds. linear on the beat,
+   because the beat is a rate; exponential on the carrier, because the ear
+   hears pitch in ratios.
+
+   It restarts each ear from the last target rather than from wherever a glide
+   in flight had reached, so a new target that arrives before the old one lands
+   steps the pitch by what was left of it. The release never sends one early:
+   its glides take nine tenths of a line and only a new line sends a target,
+   so it keeps a tenth of a line in hand, which is REL_GLIDE. Anything that
+   retargets faster has to hold the value in flight first. */
+function bedTo(carrier,beat,s,at){
+ if(!BED)return;
+ var ac=BED.ac, t=(at==null?ac.currentTime:at), e=t+s;
+ [[BED.l,-0.5],[BED.r,0.5]].forEach(function(p){
+  var f=p[0].frequency; f.cancelScheduledValues(t);
+  f.setValueAtTime(BED.c+p[1]*BED.b,t);
+  if(carrier===BED.c) f.linearRampToValueAtTime(carrier+p[1]*beat,e);
+  else f.exponentialRampToValueAtTime(carrier+p[1]*beat,e);});
+ BED.c=carrier; BED.b=beat;}
+/* off. an exponential approach to silence with a time constant of a fifth of
+   the fade, from whatever level the bed is at, then the oscillators stop. */
+function bedOff(s,at){
+ if(!BED)return;
+ var b=BED, ac=b.ac, t=(at==null?ac.currentTime:at), d=s||4; BED=null;
+ b.go.gain.setTargetAtTime(0,t,d/5);
+ b.l.stop(t+d+0.1); b.r.stop(t+d+0.1);}
+
+/* THE LEVEL AND THE TWO BEATS, and none of the three is a new number.
+
+   0.025 in each ear is 32 dB under full scale, measured at -32.04 on every
+   seat. It is the prototype's level and the one the owner heard: a floor under
+   the protocol, set where a person notices it stop and not start.
+
+   The bands are the book's, at index.html 6434. "Theta, relaxed state. Most
+   somatic release work happens here." "Alpha... The mind is programmable
+   because it is not yet moving too fast. Most susceptible to installation
+   work." The book names the bands and prints no hertz, so each beat sits mid
+   band: 6 inside theta's 4 to 8, and 10 inside alpha's 8 to 12. The owner's
+   own note on this, field note 15, names the five bands and no number either,
+   and he left the number to the sound seat. BOOK-ERRATA.md items 29 to 31
+   correct how alpha, waking and delta are described, and none of them moves
+   the band under a release or under a reframe. */
+var BED_GAIN=0.025, BED_THETA=6, BED_ALPHA=10;
+/* four seconds out, on an end, a stop, a pause or the switch. The approach has
+   a time constant of 0.8 seconds, so most of it is gone inside two. */
+var BED_OUT=4;
+
+/* ONE CONTEXT, OPENED ON A PRESS AND KEPT.
+
+   A browser will not start audio before a person has pressed something, and
+   it caps how many contexts a page may hold, so there is one, opened the first
+   time the tone has to sound. That is always inside a press: Begin, Resume, or
+   the switch itself. It is put to sleep once a fade out has finished, because
+   a running context with nothing in it still holds the audio device awake on a
+   phone, and it is woken the next time.
+
+   A browser with no Web Audio at all is told apart from one that refused: the
+   first gets no switch, because a control that cannot act is not offered, the
+   rule the Begin button already keeps. The second is said once and not again,
+   because a refusal repeated on every line of a run is noise. */
+var BED_AC=null, BED_NAP=null, BED_DEAF=false;
+function bedCan(){
+ try{ return !!(window.AudioContext||window.webkitAudioContext); }catch(e){ return false; }}
+function bedCtx(){
+ if(BED_DEAF)return null;
+ if(!BED_AC){
+  try{ BED_AC=new (window.AudioContext||window.webkitAudioContext)(); }
+  catch(e){ BED_DEAF=true;
+   if(typeof status==='function')status('No seat tone. This browser would not open an audio channel.','fail');
+   return null;}}
+ if(BED_AC.state!=='running'){
+  try{ var r=BED_AC.resume(); if(r&&r.catch)r.catch(function(){}); }catch(e){}}
+ return BED_AC;}
+/* ON AT A TONE, OR MOVED TO IT. The caller says what should be sounding and
+   this makes it so, which is why every route through the release can call it
+   without knowing what was sounding before. A target that is already sounding
+   is left alone, so a render that changes nothing moves nothing. */
+function bedFollow(carrier,beat,fadeS,glideS){
+ if(BED){ if(BED.c!==carrier||BED.b!==beat)bedTo(carrier,beat,glideS); return true;}
+ var ac=bedCtx(); if(!ac)return false;
+ clearTimeout(BED_NAP);
+ bedOn(ac,ac.destination,carrier,beat,BED_GAIN,fadeS);
+ return true;}
+function bedStop(s){
+ if(!BED)return;
+ var d=s||BED_OUT; bedOff(d);
+ clearTimeout(BED_NAP);
+ BED_NAP=setTimeout(function(){
+  if(BED||!BED_AC||BED_AC.state!=='running')return;
+  try{ var r=BED_AC.suspend(); if(r&&r.catch)r.catch(function(){}); }catch(e){}},(d+0.3)*1000);}
+/* what is sounding, for the gate. The two ears are read off the oscillators
+   rather than off what they were told, so the split can be held to what is
+   actually playing and not to what this file intended. */
+function bedState(){
+ return {on:!!BED, carrier:BED?BED.c:null, beat:BED?BED.b:null,
+  left:BED?BED.l.frequency.value:null, right:BED?BED.r.frequency.value:null,
+  ctx:BED_AC?BED_AC.state:'none'};}
+
+try{window.__at&&window.__at('ui/sound.js');}catch(e){}
 /* ============================================================
    THE ONE TOOLTIP.
 
@@ -18065,6 +18255,12 @@ function relAt(i){
  var n=BY[+bits[0]];
  var ch=CHAN.filter(function(c){return (c[0]+c[2])===bits[1];})[0]||CHAN[0];
  return {n:n, ch:ch, line:+bits[2]||0, key:k};}
+/* WHERE THE RUN IS, for the card and for anything that has to agree with it.
+   One answer, because the seat tone reads it too, and two copies of the
+   fallback would be two places for the sound and the card to disagree. The
+   opening is spoken ahead of the first address, so it answers with that one. */
+function relNow(){
+ return relAt(RUN.phase==='run'?RUN.idx:0)||{n:RUN.queue[0],ch:CHAN[0],line:0};}
 function relPick(nodeIds){
  RUN.queue=nodeIds.map(function(i){return BY[i];}).filter(function(n){return n&&n.cf;});
  RUN.sec=0;RUN.idx=0;RUN.line=0;RUN.phase='idle';RUN.done=false;RUN.log=[];RUN.freed=0;
@@ -18084,6 +18280,12 @@ function relTick(){
   relRender();}, RUN.speed*1000);}
 function relCoolDown(){
  if(RUN.done)return; RUN.done=true; RUN.phase='done';
+ /* THE RUN IS OVER HOWEVER THIS ENDS, AND SO IS THE TONE. relRender is what
+    moves the tone, and the refusal below returns without one, so a run walked
+    to its end on a worked example left the card on its last line and the tone
+    sounding that line's seat until something redrew the card. Measured with
+    this line taken out: refused, and still sounding. */
+ relTone();
  /* READ THE NUMBER BEFORE THE WRITE, so the panel can report what this run
     actually did rather than asserting that it did something. A control must
     never claim success before it has it, and "released" is not the same claim
@@ -18190,7 +18392,72 @@ function relCoolDown(){
  if(CURP){pSave();pSnap();}
  syncCh();relRender();render();}
 function relClose(){clearInterval(RUN.timer);RUN.open=false;RUN.phase='idle';relRender();render();}
+/* ============================================================
+   THE SEAT TONE FOLLOWS THE CARD.
+
+   The pitch is the seat of the address the card is on, its own
+   Solfeggio number, chosen by the address and never by a picker.
+   The slow pulse under it is the half: theta while the address is
+   released, alpha while its opposite installs, which are the two
+   bands the book gives those two moments. ui/sound.js makes the
+   sound. This decides what it should be.
+
+   It is moved from relRender, because the card and the tone are
+   two readings of one state and every change to that state already
+   comes through there. A tone kept in step by hand at each place
+   the run moves is one more place to forget.
+   ============================================================ */
+function relToneOn(){
+ return !!(typeof CURP!=='undefined'&&CURP&&CURP.ui&&CURP.ui.tone);}
+/* THE TIMING IS THE RUN'S, AND NOT THE PROTOTYPE'S.
+
+   The research sized its ramps for the prototype, where an address is fifty
+   lines a channel and a half runs for minutes: eight seconds to fade in,
+   twelve to rise from theta to alpha, twelve to glide between seats. Here
+   meterPlan gives an address one line a channel, so a half is two lines, 4.4
+   seconds at RUN.speed. A twelve second rise started at the cross would still
+   be climbing when the next address took the card. It tops out near 7.5,
+   which is theta, so no reframe half would ever be heard in alpha, and a
+   twelve second glide never reaches the seat whose name is on the screen.
+   That is the sound stating what the card does not, which DESIGN-release.md
+   rules out: every fact the sound states is on the screen at the same moment.
+
+   So every move lands inside the line that caused it. A glide or a rise takes
+   nine tenths of a line and has arrived before the next line appears. Not the
+   whole line: the bed restarts a glide from its last target, so a target that
+   came while one was still in flight would step the pitch by what was left,
+   and a timer that fires a few milliseconds early is ordinary. The tenth is
+   the margin. The fade in takes what is left of the opening, all of it from
+   Begin, and arrives with the first address; started once the run is under
+   way, by Resume or by the switch, it takes one line. The fade out keeps the
+   research's four seconds, because nothing after it can disagree with it. */
+var REL_GLIDE=0.9;
+function relTone(){
+ if(typeof bedFollow!=='function')return;
+ var live=RUN.open&&!RUN.paused&&(RUN.phase==='opening'||RUN.phase==='run');
+ var at=(live&&relToneOn())?relNow():null;
+ var hz=(at&&at.n)?seatHz(at.n.b):null;
+ /* no tone at this seat is silence, never the last seat's tone held over */
+ if(!hz){bedStop();return;}
+ bedFollow(hz, at.ch[2]==='truth'?BED_ALPHA:BED_THETA,
+  RUN.phase==='opening'?(OPENING.length-RUN.line)*RUN.speed:RUN.speed, RUN.speed*REL_GLIDE);}
+/* THE SWITCH, and it is the account page's own switch, so one control has one
+   look wherever it appears. It is on the opening and on the run as well as on
+   the panel before them, because a person finds out mid run, in a quiet room,
+   that they left it on, and the answer to that must not be to abandon the run.
+
+   The hertz under it is read off the bed and not off the address, so it
+   cannot claim a sound that is not playing. It is in the seat's own colour,
+   as ruled, and it is printed still. The beat is never drawn: a pulse at six
+   to ten a second is past the three flashes a second WCAG 2.3.1 allows, and
+   the heading already says which half it is in words. */
+function relToneRow(n){
+ if(typeof bedCan!=='function'||!bedCan()||typeof accTog!=='function')return '';
+ var st=bedState(), hz=(st.on&&n)?st.carrier:0;
+ return accTog('Seat tone','reltone',relToneOn(),hz?hz+' Hz':'',hz?seatCol(n.b):'');}
 function relRender(){
+ /* the tone first, so the switch below prints what is sounding now */
+ relTone();
  var h=document.getElementById('rel'); if(!h)return;
  if(!RUN.open){h.style.display='none';h.innerHTML='';return;}
  h.style.display='flex';
@@ -18200,9 +18467,10 @@ function relRender(){
    +'<div class="rel-speak">'+esc(OPENING[Math.min(RUN.line,OPENING.length-1)])+'</div>'
    +'<div class="rel-dots">'+OPENING.map(function(_,i){
      return '<i class="'+(i<=RUN.line?'on':'')+'"></i>';}).join('')+'</div>'
-   +'<div class="rel-act"><button class="btn" id="relskip">Skip the opening</button></div>';
+   +'<div class="rel-act"><button class="btn" id="relskip">Skip the opening</button></div>'
+   +relToneRow(relNow().n);
  } else if(RUN.phase==='run'){
-  var at=relAt(RUN.idx)||{n:RUN.queue[0],ch:CHAN[0],line:0};
+  var at=relNow();
   var ch=at.ch, n=at.n, c=seatCol(n.b);
   var tot=(RUN.plan||[]).length||1;
   out+='<div class="pm-eye">'+ch[1]+' '+ch[2]+', line '+(at.line+1)+'</div>'
@@ -18214,7 +18482,8 @@ function relRender(){
      +'%;background:'+c+'"></i></div>'
    +'<div class="rel-ct">'+(RUN.idx+1)+' of '+tot+' patterns</div>'
    +'<div class="rel-act"><button class="btn" id="relpause">'+(RUN.paused?'Resume':'Pause')+'</button>'
-   +'<button class="btn" id="relstop">Stop</button></div>';
+   +'<button class="btn" id="relstop">Stop</button></div>'
+   +relToneRow(n);
  } else if(RUN.phase==='done'){
   var cl=RUN.log.filter(function(x){return x.cleared;}).length;
   /* A ONE ADDRESS RUN PRINTED "1 addresses". The plural was typed onto the
@@ -18302,7 +18571,9 @@ function relRender(){
       a spent allowance is that this run does not exist yet. The route out goes
       where the allowance is, which is the only thing that changes the answer. */
    +(spent?'<button class="btn pri" id="relplan">Open settings</button>'
-         :'<button class="btn pri" id="relgo">Begin</button>')+'</div>';}
+         :'<button class="btn pri" id="relgo">Begin</button>')+'</div>'
+   /* and no switch for a run that cannot begin */
+   +(spent?'':relToneRow(null));}
  out+='</div>';
  h.innerHTML=out;
  var b;
@@ -18315,7 +18586,12 @@ function relRender(){
  if((b=document.getElementById('relclose')))b.onclick=relClose;
  if((b=document.getElementById('relrit')))b.onclick=function(){var lg=RUN.log.slice();relClose();ritOpen(lg);};
  if((b=document.getElementById('relstop')))b.onclick=function(){clearInterval(RUN.timer);relCoolDown();};
- if((b=document.getElementById('relpause')))b.onclick=function(){RUN.paused=!RUN.paused;relRender();};}
+ if((b=document.getElementById('relpause')))b.onclick=function(){RUN.paused=!RUN.paused;relRender();};
+ /* uiSet is the one writer for the profile's preferences, so this reports
+    through statusSaved like the other switches do. A save that fails leaves
+    the tone on for this visit and says it will not survive a reload, and both
+    halves of that are true. */
+ if((b=document.getElementById('reltone')))b.onclick=function(){uiSet('tone',!relToneOn());relRender();};}
 
 
 try{window.__at&&window.__at('ui/release.js');}catch(e){}
@@ -22856,10 +23132,12 @@ function accAct(label,id,o){
   +'<button class="btn'+(o.danger?' dgr':'')+'" id="'+id+'" type="button">'
   +esc(o.btn||'Open')+'</button></div>';}
 /* A toggle row. The switch is the control and the row label is its name, so
-   the switch carries no label of its own. */
-function accTog(label,id,on,note){
+   the switch carries no label of its own. col paints the note, for the one
+   switch whose note is a seat's hertz: ruled, a hertz number is the seat's own
+   colour. */
+function accTog(label,id,on,note,col){
  return '<div class="ac-row ac-tog"><span class="ac-rl">'+esc(label)
-  +(note?'<em>'+esc(note)+'</em>':'')+'</span>'
+  +(note?'<em'+(col?' style="color:'+col+'"':'')+'>'+esc(note)+'</em>':'')+'</span>'
   +'<button class="ac-sw'+(on?' on':'')+'" id="'+id+'" type="button" role="switch" '
   +'aria-checked="'+(!!on)+'" aria-label="'+esc(label)+'"><i></i></button></div>';}
 function accGroup(title,rows,foot){
@@ -25392,5 +25670,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="001644154"></div>
+<div id="eof" hidden data-len="001659903"></div>
 </body></html>

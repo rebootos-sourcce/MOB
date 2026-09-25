@@ -2911,6 +2911,15 @@ body.snow .rel{background:rgba(238,237,233,.82)}
 .rel-row b{font-weight:500;color:var(--gold);font-family:var(--num);font-variant-numeric:tabular-nums}
 .rel-note{font-size:13.5px;color:var(--dim);line-height:1.7;margin:13px 0 19px;text-align:left;font-weight:300}
 .rel-act{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+/* THE SEAT TONE'S SWITCH, IN THE RELEASE. The account page's own row, taken
+   out to the card's edges so its label starts on the line the text above it
+   starts on, where the row's own inset left it floating fifteen pixels in.
+   A hairline parts it from Pause and Stop, because it is a setting and they
+   are the run. Lumen already clears every border on this row; Punch outlines
+   nothing, so the hairline goes there too and the gap does the parting. */
+.rel-card .ac-tog{margin-top:18px;padding:12px 0 0;border-bottom:0;
+ border-top:1px solid var(--edge);text-align:left}
+body.punch .rel-card .ac-tog{border-top-color:transparent}
 .rit-card{width:min(640px,94vw);text-align:left}
 .rit-card .rel-node,.rit-card .rel-sub{text-align:left}
 .rit-from{font-family:var(--num);font-size:12.5px;color:var(--gold);margin:10px 0 3px}

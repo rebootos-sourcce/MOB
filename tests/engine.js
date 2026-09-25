@@ -4192,5 +4192,60 @@ g('39 · the sentence is read once, and the marks land on the letters');
  }
 }
 
+g('40 · the seat tone is the seat\'s own, and it is off until turned on');
+/* RULED 25 SEPTEMBER, ON HEARING IT. "The Solfeggio, excellent... I think these
+   all choose dynamically, based off the color of the chakra, that way it's just
+   automatic." So a release sounds the Solfeggio number of the seat its address
+   sits at. The lookup is held to the tables and not to numbers typed here, with
+   one exception, and the exception is the ruling: the tuning itself. A change
+   of tuning is his to make, so it fails here by name rather than passing.
+
+   The trap this group exists for. FLOWSEAT prints the brow seat as 'Brow' and
+   every address carries '3rd Eye', so a lookup by the printed name reaches six
+   seats and returns nothing for the twelve addresses at the seventh. */
+{
+ const {seatHz,FLOWSEAT,PMBANDS,BANDS,blankProfile,validateProfile}=E;
+ ok(typeof seatHz==='function','seatHz is in the contract');
+ if(typeof seatHz==='function'){
+ const wrong=BANDS.filter(b=>{
+  const k=(PMBANDS.find(x=>x.b===b)||{}).k, f=FLOWSEAT.find(x=>x.k===k);
+  return !f||seatHz(b)!==f.hz;});
+ ok(wrong.length===0,'every seat answers with the tone FLOWSEAT keys to it, wrong at '
+  +JSON.stringify(wrong));
+ const brow=FLOWSEAT.find(x=>x.k==='eye');
+ ok(seatHz('3rd Eye')===brow.hz,'the 3rd Eye answers with the tone printed as '
+  +brow.n+', got '+seatHz('3rd Eye'));
+ ok(brow.n!=='3rd Eye'&&seatHz(brow.n)===null,
+  'and the printed name is not a seat, which is why the lookup goes through the key');
+ const reach=NODES.filter(n=>n.cf);
+ const deaf=reach.filter(n=>typeof seatHz(n.b)!=='number');
+ ok(deaf.length===0,'every address a release can reach has a tone, '+deaf.length+' of '
+  +reach.length+' do not'+(deaf[0]?': '+deaf[0].k+' at '+deaf[0].b:''));
+ const up=BANDS.map(seatHz);
+ ok(new Set(up).size===BANDS.length,'each seat has a tone of its own, '+up.join(' '));
+ ok(up.every((v,i)=>!i||v>up[i-1]),'and they rise from the root to the crown, '+up.join(' '));
+ ok(up.join(' ')==='396 417 528 639 741 852 963',
+  'and they are the Solfeggio set he chose, root to crown, got '+up.join(' '));
+ const outside=NODES.filter(n=>!n.cf&&/^Field/.test(n.b));
+ ok(outside.length>0&&outside.every(n=>seatHz(n.b)===null),
+  'an address outside the body has no tone, '+outside.length+' checked');
+ ok(seatHz(undefined)===null&&seatHz('')===null,'and nothing is not a seat, never a guess');
+ }
+ /* OFF UNTIL A PERSON TURNS IT ON, the rule the model consent beside it
+    already keeps, and remembered through the boundary once they do. */
+ const bp=blankProfile('tone');
+ ok(bp.ui&&bp.ui.tone===false,'a new profile has the seat tone off');
+ bp.ui.tone=true;
+ const on=validateProfile(JSON.parse(JSON.stringify(bp)));
+ ok(on.ok&&on.profile.ui.tone===true,'turned on, it survives the boundary');
+ const old=JSON.parse(JSON.stringify(blankProfile('older'))); delete old.ui.tone;
+ const back=validateProfile(old);
+ ok(back.ok&&back.profile.ui.tone===false,
+  'a profile saved before the switch existed loads with it off, filled from the blank');
+ ok(back.ok&&back.profile.ui.quiet===false&&back.profile.ui.model===false,
+  'and the two preferences beside it are untouched');
+ console.log('  '+BANDS.map(b=>b+' '+seatHz(b)).join(', '));
+}
+
 console.log('\n===== '+P+' passed, '+F+' failed =====');
 process.exit(F?1:0);

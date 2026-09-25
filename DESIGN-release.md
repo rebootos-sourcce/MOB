@@ -395,6 +395,19 @@ does not restate it as a finding. It is a floor under a voice, set at a level
 where a person notices it stop and not that it started. It is a separate
 toggle from the voice and is off even when the voice is on.
 
+**Built 25 September, and two things above moved when it was.** The bed is in
+`atuned_src/ui/sound.js` and is driven from `relRender` in `ui/release.js`.
+The carrier is no longer 200 Hz. It is the seat's own Solfeggio number, read
+through `seatHz` from `FLOWSEAT`, as the owner ruled on hearing it, and the
+beats are the 6 and 10 above, centred on it, one ear per input of a
+ChannelMergerNode. The timing is the real run's and not this prototype's: an
+address in the product is one line a channel, so a half lasts 4.4 seconds, a
+twelve second ramp would never reach alpha inside one, and every move now lands
+inside the line that caused it. The reasoning is written at `relTone`. The
+switch is "Seat tone", saved in the profile's `ui` bag through `uiSet`, and off
+until a person turns it on. The sound is gated in `tests/functional.js`, where
+the product's own `bedOn` is rendered offline and measured every run.
+
 ### Haptics
 
 `navigator.vibrate` exists on Android Chrome and does not exist on iOS Safari,

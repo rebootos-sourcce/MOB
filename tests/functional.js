@@ -3068,6 +3068,278 @@ console.log('\n=== the story lights what the engine read, once ===');
  await st.close();
 }
 
+/* ---------------------------------------------------------------------------
+   THE SEAT TONE. Ruled 25 September, on hearing it: the Solfeggio number of
+   the seat being released, chosen by the address and never by a picker, on a
+   switch in the release that is off until a person turns it on.
+
+   Two blocks on one page of their own, so the record they write is a new
+   person's. The first measures the sound and the second drives the release,
+   because a tone can be wired perfectly to the wrong waveform, and a correct
+   waveform can be wired to the wrong seat.
+--------------------------------------------------------------------------- */
+console.log('\n=== the seat tone is binaural, and it is the seat\'s own ===');
+{const tp=await browser.newPage({viewport:{width:1600,height:1000}});
+ const terr=[]; tp.on('pageerror',e=>terr.push('PAGEERROR: '+e.message));
+ await tp.goto(FILE,{waitUntil:'load'}); await booted(tp);
+ /* the two beats, read off the page, so no number here can drift from them */
+ const [THETA,ALPHA]=await tp.evaluate(()=>[BED_THETA,BED_ALPHA]);
+ /* THE SOUND, RENDERED OFFLINE THROUGH THE PRODUCT'S OWN bedOn, and read with
+    the sound seat's own instrument. It tested itself on a known pair before it
+    read anything else, and that is what caught its first cut: a 2 ms envelope
+    is shorter than one cycle at 393 Hz, and it read a 6.0 beat as 16.6. So the
+    self test runs here first too, with a monaural control that must NOT read
+    as steady, because a mix of the two tones in one ear is exactly what a
+    missing panner used to produce and exactly what this block exists to stop. */
+ const snd=await tp.evaluate(async()=>{
+  var SR=44100;
+  function render(dur,setup){
+   var ac=new OfflineAudioContext(2,Math.round(dur*SR),SR);
+   BED=null; setup(ac);
+   return ac.startRendering().then(function(buf){ BED=null;
+    return {L:buf.getChannelData(0),R:buf.getChannelData(1)};});}
+  /* frequency by positive going zero crossings, linearly interpolated */
+  function freqZC(x,i0,i1){
+   var first=-1,last=-1,n=0;
+   for(var i=i0+1;i<i1;i++){ if(x[i-1]<0&&x[i]>=0){
+    var t=(i-1)+(-x[i-1])/(x[i]-x[i-1]);
+    if(first<0)first=t; last=t; n++; }}
+   return (n-1)/((last-first)/SR);}
+  function rmsWin(x,i0,i1,w){
+   var k=Math.round(w*SR),out=[];
+   for(var i=i0;i+k<=i1;i+=k){var s=0; for(var j=i;j<i+k;j++)s+=x[j]*x[j]; out.push(Math.sqrt(s/k));}
+   return out;}
+  /* how steady one ear is: max over min of rms in 50 ms windows. a beat
+     inside one ear swings this far above 1, a binaural pair leaves it at 1 */
+  function flat(x,i0,i1){var r=rmsWin(x,i0,i1,0.05);
+   return Math.max.apply(null,r)/Math.min.apply(null,r);}
+  /* the beat of the two ears summed, which is what a speaker produces: square,
+     average into 1 ms blocks, remove the mean, Hann window, then find the
+     strongest component from 0.5 to 30 Hz and refine around it */
+  function beatOfSum(L,R,i0,i1){
+   i0=Math.round(i0); i1=Math.round(i1);
+   var B=Math.round(SR/1000), n=Math.floor((i1-i0)/B), e=new Float64Array(n), m=0;
+   for(var k=0;k<n;k++){var a=0; for(var j=0;j<B;j++){var v=L[i0+k*B+j]+R[i0+k*B+j]; a+=v*v;}
+    e[k]=a/B; m+=e[k];}
+   m/=n; for(var k=0;k<n;k++)e[k]=(e[k]-m)*(0.5-0.5*Math.cos(2*Math.PI*k/(n-1)));
+   function mag(f){var re=0,im=0,w=2*Math.PI*f/1000;
+    for(var k=0;k<n;k++){re+=e[k]*Math.cos(w*k); im-=e[k]*Math.sin(w*k);} return re*re+im*im;}
+   var best=0.5,bm=-1; for(var f=0.5;f<=30;f+=0.05){var q=mag(f); if(q>bm){bm=q;best=f;}}
+   var lo=best-0.06,hi=best+0.06;
+   for(var f=lo;f<=hi;f+=0.001){var q=mag(f); if(q>bm){bm=q;best=f;}}
+   return best;}
+  function peak(x,i0,i1){var p=0; for(var i=Math.round(i0);i<Math.round(i1);i++){var a=Math.abs(x[i]); if(a>p)p=a;} return p;}
+  function maxStep(x,i0,i1){var p=0; for(var i=Math.max(1,Math.round(i0));i<Math.round(i1);i++){var a=Math.abs(x[i]-x[i-1]); if(a>p)p=a;} return p;}
+  var o={};
+  {var n=4*SR, L=new Float32Array(n), R=new Float32Array(n), M=new Float32Array(n);
+   for(var i=0;i<n;i++){var t=i/SR;
+    L[i]=0.025*Math.sin(2*Math.PI*393*t); R[i]=0.025*Math.sin(2*Math.PI*399*t);
+    M[i]=0.0125*(Math.sin(2*Math.PI*393*t)+Math.sin(2*Math.PI*399*t));}
+   o.self={left:freqZC(L,0,n),right:freqZC(R,0,n),lf:flat(L,0,n),rf:flat(R,0,n),
+    sum:beatOfSum(L,R,0,n),control:flat(M,0,n)};}
+  /* every seat a release can sound, at both of its beats */
+  o.seats=[];
+  for(var s=0;s<BANDS.length;s++){ for(var bi=0;bi<2;bi++){
+   var hz=seatHz(BANDS[s]), bt=[BED_THETA,BED_ALPHA][bi];
+   var r=await render(5,function(ac){bedOn(ac,ac.destination,hz,bt,BED_GAIN,0.5);});
+   o.seats.push({seat:BANDS[s],hz:hz,beat:bt,left:freqZC(r.L,SR,5*SR),right:freqZC(r.R,SR,5*SR),
+    lf:flat(r.L,SR,5*SR),rf:flat(r.R,SR,5*SR),sum:beatOfSum(r.L,r.R,SR,5*SR),
+    peak:20*Math.log10(peak(r.L,SR,5*SR))});}}
+  /* the cross, theta to alpha over one line, and the next seat over one line */
+  var L1=RUN.speed*REL_GLIDE, root=seatHz('Root'), heart=seatHz('Heart'), a0=(2.5+L1+0.2)*SR, a1=(2.5+L1+4.4)*SR;
+  var g=await render(2.5+L1+4.5,function(ac){bedOn(ac,ac.destination,root,BED_THETA,BED_GAIN,0.5);
+   bedTo(root,BED_ALPHA,L1,2.5);});
+  o.rise={before:beatOfSum(g.L,g.R,0.6*SR,2.4*SR),after:beatOfSum(g.L,g.R,a0,a1),
+   left:freqZC(g.L,a0,a1),right:freqZC(g.R,a0,a1),root:root};
+  var c=await render(2.5+L1+4.5,function(ac){bedOn(ac,ac.destination,root,BED_ALPHA,BED_GAIN,0.5);
+   bedTo(heart,BED_THETA,L1,2.5);});
+  o.glide={left:freqZC(c.L,a0,a1),right:freqZC(c.R,a0,a1),beat:beatOfSum(c.L,c.R,a0,a1),
+   stepIn:maxStep(c.L,2.5*SR,(2.5+L1)*SR),stepAfter:maxStep(c.L,a0,a1),heart:heart};
+  /* the fade in under the opening, and the switch pressed in the middle of it */
+  var fin=OPENING.length*RUN.speed;
+  var f=await render(fin+2,function(ac){bedOn(ac,ac.destination,seatHz('Crown'),BED_THETA,BED_GAIN,fin);});
+  o.fade={secs:fin,first:maxStep(f.L,0,0.1*SR),steady:maxStep(f.L,(fin+0.5)*SR,(fin+1.5)*SR)};
+  var off=await render(2+BED_OUT+2,function(ac){bedOn(ac,ac.destination,heart,BED_THETA,BED_GAIN,fin);
+   bedOff(BED_OUT,2);});
+  o.off={before:maxStep(off.L,1.6*SR,1.98*SR),around:maxStep(off.L,1.98*SR,2.3*SR),
+   after:peak(off.L,(2+BED_OUT+0.2)*SR,(2+BED_OUT+2)*SR)};
+  return o;});
+ const r3=v=>Math.round(v*1000)/1000;
+ ok(Math.abs(snd.self.left-393)<0.01&&Math.abs(snd.self.right-399)<0.01&&snd.self.lf<1.01
+  &&snd.self.rf<1.01&&Math.abs(snd.self.sum-6)<0.05,
+  'the instrument reads a known 393 and 399 pair as itself first, got '
+  +[snd.self.left,snd.self.right,snd.self.lf,snd.self.rf,snd.self.sum].map(r3).join(' '));
+ ok(snd.self.control>1.5,'and a monaural mix of the same pair reads as unsteady, '+r3(snd.self.control));
+ snd.seats.forEach(x=>{
+  ok(Math.abs(x.left-(x.hz-x.beat/2))<0.02&&Math.abs(x.right-(x.hz+x.beat/2))<0.02,
+   x.seat+' at '+x.beat+': each ear on its own side of '+x.hz+', got '+r3(x.left)+' and '+r3(x.right));
+  ok(x.lf<1.02&&x.rf<1.02,x.seat+' at '+x.beat+': and each ear steady, so the beat is between '
+   +'the ears and never inside one, '+r3(x.lf)+' and '+r3(x.rf));
+  ok(Math.abs(x.sum-x.beat)<0.05,x.seat+' at '+x.beat+': and the beat they make is '+x.beat
+   +', got '+r3(x.sum));});
+ ok(Math.abs(snd.rise.before-THETA)<0.05&&Math.abs(snd.rise.after-ALPHA)<0.05,
+  'the cross rises from theta to alpha inside one line, '+r3(snd.rise.before)+' to '+r3(snd.rise.after));
+ ok(Math.abs(snd.rise.left-(snd.rise.root-ALPHA/2))<0.02
+  &&Math.abs(snd.rise.right-(snd.rise.root+ALPHA/2))<0.02,
+  'and the pitch stays on the seat while the beat moves, '+r3(snd.rise.left)+' and '+r3(snd.rise.right));
+ ok(Math.abs(snd.glide.left-(snd.glide.heart-THETA/2))<0.02
+  &&Math.abs(snd.glide.right-(snd.glide.heart+THETA/2))<0.02&&Math.abs(snd.glide.beat-THETA)<0.05,
+  'the next seat is reached inside one line, '+r3(snd.glide.left)+' and '+r3(snd.glide.right)
+  +', beat '+r3(snd.glide.beat));
+ ok(snd.glide.stepIn<=snd.glide.stepAfter*1.02,
+  'and nothing inside the glide steps harder than the sine it arrives at, which is what a click is, '
+  +snd.glide.stepIn.toExponential(2)+' against '+snd.glide.stepAfter.toExponential(2));
+ ok(snd.fade.first<snd.fade.steady/10,'the fade in under the opening starts from silence, '
+  +snd.fade.first.toExponential(2)+' against '+snd.fade.steady.toExponential(2)+' at level');
+ ok(snd.off.around<=snd.off.before*1.5,'off in the middle of the fade in does not click, '
+  +snd.off.around.toExponential(2)+' against '+snd.off.before.toExponential(2)+' before it');
+ ok(snd.off.after===0,'and it is silence, not quiet, once the tone has stopped, '+snd.off.after);
+ console.log('  '+snd.seats.filter(x=>x.beat===THETA).map(x=>x.seat+' '+r3(x.left)+'/'+r3(x.right)
+  +' beat '+r3(x.sum)).join(', '));
+ console.log('  level '+r3(snd.seats[0].peak)+' dB, rise '+r3(snd.rise.before)+' to '+r3(snd.rise.after)
+  +', fade in over '+r3(snd.fade.secs)+' s, least steady ear '
+  +r3(Math.max.apply(null,snd.seats.map(x=>Math.max(x.lf,x.rf)))));
+
+ console.log('\n=== the seat tone follows the release, and it is off until turned on ===');
+ const pick=()=>tp.evaluate(()=>{
+  var q=['Root','3rd Eye','Heart'].map(function(s){
+   return NODES.filter(function(n){return n.cf&&n.b===s;})[0].i;});
+  relPick(q); return RUN.queue.map(function(n){return n.b;});});
+ const sw=()=>tp.evaluate(()=>{var b=document.getElementById('reltone');
+  if(!b)return null; var em=b.parentElement.querySelector('.ac-rl em');
+  return {checked:b.getAttribute('aria-checked'),role:b.getAttribute('role'),
+   hz:em?em.textContent:'',style:em?(em.getAttribute('style')||''):''};});
+ const bed=()=>tp.evaluate(()=>bedState());
+ const kept=()=>tp.evaluate(()=>{try{var me=JSON.parse(localStorage.getItem(PKEY)||'[]')
+  .filter(function(r){return r.id===CURP.id;})[0]; return me&&me.ui?me.ui.tone:null;}
+  catch(e){return 'unreadable';}});
+ /* waits for the oscillators themselves to land, rather than for a number of
+    milliseconds, because the audio clock and the page clock are two clocks */
+ const lands=async(l,r)=>{try{await tp.waitForFunction(a=>{var s=bedState();
+   return s.on&&Math.abs(s.left-a[0])<0.05&&Math.abs(s.right-a[1])<0.05;},[l,r],{timeout:9000});}
+  catch(e){} return bed();};
+ await pick();
+ const s0=await sw(), b0=await bed();
+ ok(s0&&s0.role==='switch'&&s0.checked==='false',
+  'the release offers the seat tone as a switch, and it is off until a person turns it on: '
+  +JSON.stringify(s0));
+ /* SILENCE IS THE DEFAULT, SO SILENCE IS THE CASE THAT MUST NEVER BREAK. Asked
+    for by name in DESIGN-release.md: the run renders and completes with the
+    tone off, and nothing audio is touched on the way. */
+ await tp.click('#relgo'); await tp.waitForTimeout(150);
+ await tp.click('#relskip'); await tp.waitForTimeout(150);
+ const quietRun=await tp.evaluate(()=>({phase:RUN.phase,
+  node:(document.querySelector('#rel .rel-node')||{}).textContent||''}));
+ await tp.click('#relstop'); await tp.waitForTimeout(200);
+ const quietEnd=await tp.evaluate(()=>({phase:RUN.phase,
+  eye:(document.querySelector('#rel .pm-eye')||{}).textContent||'',
+  sw:!!document.getElementById('reltone'), bed:bedState()}));
+ ok(quietRun.phase==='run'&&quietRun.node.length>0&&quietEnd.phase==='done'&&/Released/.test(quietEnd.eye),
+  'with the tone off a release runs and completes, '+JSON.stringify([quietRun,quietEnd.phase,quietEnd.eye]));
+ ok(quietEnd.bed.ctx==='none'&&!quietEnd.bed.on,
+  'and no audio channel was ever opened for it, '+JSON.stringify(quietEnd.bed));
+ ok(!quietEnd.sw,'and the finished card offers no switch, because nothing is left to sound');
+ await tp.evaluate(()=>relClose());
+ /* ON, BY A PRESS, SAVED THROUGH THE ONE WRITER, AND NOTHING SOUNDS YET */
+ await pick();
+ await tp.click('#reltone'); await tp.waitForTimeout(150);
+ const s1=await sw(), b1=await bed(), k1=await kept();
+ const said1=await tp.evaluate(()=>document.getElementById('status').textContent);
+ ok(s1&&s1.checked==='true'&&k1===true,'a press turns it on and it is saved to the record, '
+  +JSON.stringify([s1&&s1.checked,k1]));
+ ok(/Saved/.test(said1),'and the save reports like every other preference, said '+JSON.stringify(said1));
+ ok(!b1.on&&b1.ctx==='none','and nothing sounds before Begin, '+JSON.stringify(b1));
+ /* REMEMBERED. The page is reloaded and the switch reads the record. */
+ await tp.reload({waitUntil:'load'}); await booted(tp);
+ await pick();
+ const s2=await sw();
+ ok(s2&&s2.checked==='true','remembered across a reload, '+JSON.stringify(s2));
+ /* BEGIN IS THE PRESS THAT OPENS THE CHANNEL, and the tone is the first seat's */
+ await tp.click('#relgo'); await tp.waitForTimeout(150);
+ await tp.evaluate(()=>clearInterval(RUN.timer));
+ const want=await tp.evaluate(()=>RUN.queue.map(function(n){return {b:n.b,hz:seatHz(n.b),col:seatCol(n.b)};}));
+ const b2=await bed(), s3=await sw();
+ ok(b2.on&&b2.ctx==='running'&&b2.carrier===want[0].hz&&b2.beat===THETA,
+  'Begin opens the channel inside the press and sounds the first seat, '+want[0].b+' at '
+  +want[0].hz+', under theta: '+JSON.stringify(b2));
+ ok(s3&&s3.hz===want[0].hz+' Hz'&&s3.style.indexOf(want[0].col)>=0,
+  'and the switch prints that tone in the seat\'s own colour, '+JSON.stringify(s3));
+ const b3=await lands(want[0].hz-THETA/2,want[0].hz+THETA/2);
+ ok(Math.abs(b3.left-(want[0].hz-THETA/2))<0.05&&Math.abs(b3.right-(want[0].hz+THETA/2))<0.05,
+  'the ears themselves sit either side of it, '+[b3.left,b3.right].map(r3).join(' and '));
+ /* THE CROSS, AT THE SAME ADDRESS: the beat moves and the pitch does not */
+ await tp.click('#relskip'); await tp.waitForTimeout(100);
+ await tp.evaluate(()=>{ RUN.idx=RUN.plan.findIndex(function(k){var p=k.split(':');
+  return +p[0]===RUN.queue[0].i&&/truth$/.test(p[1]);}); relRender(); });
+ const b4=await lands(want[0].hz-ALPHA/2,want[0].hz+ALPHA/2);
+ ok(b4.carrier===want[0].hz&&b4.beat===ALPHA
+  &&Math.abs(b4.left-(want[0].hz-ALPHA/2))<0.05&&Math.abs(b4.right-(want[0].hz+ALPHA/2))<0.05,
+  'at the switch to reframe the beat is alpha and the seat holds, '+JSON.stringify(b4));
+ /* THE NEXT ADDRESS, and it is the 3rd Eye on purpose: the one seat a lookup
+    by FLOWSEAT's printed name could not find */
+ await tp.evaluate(()=>{ RUN.idx=RUN.plan.findIndex(function(k){
+  return +k.split(':')[0]===RUN.queue[1].i;}); relRender(); });
+ const b5=await lands(want[1].hz-THETA/2,want[1].hz+THETA/2), s5=await sw();
+ ok(want[1].b==='3rd Eye'&&b5.carrier===want[1].hz&&b5.beat===THETA
+  &&Math.abs(b5.left-(want[1].hz-THETA/2))<0.05&&Math.abs(b5.right-(want[1].hz+THETA/2))<0.05,
+  'the next address moves the tone to its own seat, '+want[1].b+' at '+want[1].hz+': '+JSON.stringify(b5));
+ ok(s5&&s5.hz===want[1].hz+' Hz'&&s5.style.indexOf(want[1].col)>=0,
+  'and the switch follows it, '+JSON.stringify(s5));
+ /* NOTHING ON THE CARD PULSES AT THE BEAT. Six to ten a second is past the
+    three flashes a second WCAG 2.3.1 allows, so the beat is never drawn. */
+ const flash=await tp.evaluate(()=>document.getAnimations().filter(function(a){
+  var t=a.effect&&a.effect.target; if(!t||!t.closest||!t.closest('#rel'))return false;
+  var tm=a.effect.getComputedTiming(); return tm.iterations>1&&tm.duration<334;}).length);
+ ok(flash===0,'and nothing on the card repeats faster than three times a second, '+flash+' do');
+ /* PAUSE SILENCES IT, RESUME BRINGS IT BACK, AND THE SWITCH NEVER MOVES */
+ await tp.click('#relpause'); await tp.waitForTimeout(120);
+ const b6=await bed(), s6=await sw();
+ ok(!b6.on&&s6.checked==='true'&&s6.hz==='','Pause silences the tone and leaves the switch on, '
+  +JSON.stringify([b6.on,s6]));
+ await tp.click('#relpause'); await tp.waitForTimeout(120);
+ const b7=await bed();
+ ok(b7.on&&b7.carrier===want[1].hz,'and Resume brings back the seat the card is on, '+JSON.stringify(b7));
+ /* OFF MID RUN, WITHOUT LEAVING THE RUN. The case the switch is on the card
+    for: somebody finds it on, in a quiet room, halfway through. */
+ await tp.click('#reltone'); await tp.waitForTimeout(150);
+ const b8=await bed(), k8=await kept(), r8=await tp.evaluate(()=>({open:RUN.open,phase:RUN.phase}));
+ ok(!b8.on&&k8===false&&r8.open&&r8.phase==='run',
+  'turned off mid run the tone stops, the record says off, and the run goes on, '
+  +JSON.stringify([b8.on,k8,r8]));
+ await tp.click('#reltone'); await tp.waitForTimeout(150);
+ const b9=await bed();
+ ok(b9.on&&b9.carrier===want[1].hz,'and turned back on it returns at the seat the card is on, '
+  +JSON.stringify(b9));
+ /* STOP ENDS IT, AND THE CHANNEL IS PUT TO SLEEP ONCE THE FADE IS OVER */
+ await tp.click('#relstop'); await tp.waitForTimeout(150);
+ const b10=await bed(), end=await tp.evaluate(()=>({phase:RUN.phase,sw:!!document.getElementById('reltone')}));
+ ok(!b10.on&&end.phase==='done'&&!end.sw,'Stop ends the tone with the run, '+JSON.stringify([b10,end]));
+ let nap='running';
+ try{ await tp.waitForFunction(()=>bedState().ctx==='suspended',null,{timeout:(4+3)*1000});
+  nap='suspended'; }catch(e){ nap=(await bed()).ctx; }
+ ok(nap==='suspended','and the channel sleeps once the fade out is done, rather than holding the '
+  +'device awake, '+nap);
+ await tp.evaluate(()=>relClose());
+ /* A REFUSED RUN IS STILL AN ENDED RUN. relCoolDown refuses on a worked
+    example and returns without a render, and a render is what moves the tone,
+    so this is the path that would have left it sounding with the card frozen. */
+ const refused=await tp.evaluate(()=>{ loadP(GORDON()); render();
+  if(!CURP.ui)CURP.ui={}; CURP.ui.tone=true;
+  relPick(W.filter(function(n){return n.cf&&n.sq>=4;}).slice(0,2).map(function(n){return n.i;}));
+  return !!document.getElementById('relgo');});
+ let rf={began:false};
+ if(refused){
+  await tp.click('#relgo'); await tp.waitForTimeout(150);
+  rf=await tp.evaluate(()=>{ clearInterval(RUN.timer); var on=bedState().on;
+   RUN.phase='run'; RUN.idx=RUN.plan.length; var r=relCoolDown();
+   return {began:on, returned:r, phase:RUN.phase, bed:bedState().on};});
+  await tp.evaluate(()=>relClose());}
+ ok(rf.began&&rf.returned===false&&rf.phase==='pick'&&rf.bed===false,
+  'a run refused on a worked example ends its tone although nothing re-renders, '+JSON.stringify(rf));
+ ok(terr.length===0,'and the seat tone raised no page error, '+terr.join(' | '));
+ await tp.close();
+}
+
 await browser.close();
 
 console.log('\n===== '+PASS+' passed, '+FAIL+' failed =====');

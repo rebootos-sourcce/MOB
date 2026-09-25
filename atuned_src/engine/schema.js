@@ -29,8 +29,10 @@ function blankProfile(name){
   /* PER PROFILE INTERFACE PREFERENCES. quiet is the reduced motion switch the
      phone spec asked for and nothing had built; model is the consent to let a
      story with nothing identifying attached refine the reading, and it is off
-     until a person turns it on, because it is a use of their own words. */
-  ui:{quiet:false, model:false},
+     until a person turns it on, because it is a use of their own words. tone
+     is the seat tone under a release, and it is off until a person turns it on
+     for the same reason in a different organ: it is a sound in their ears. */
+  ui:{quiet:false, model:false, tone:false},
   /* what the person said their type is, and what it wrote. null until stated. */
   seed:null,
   /* THE METER. One pattern is one release line delivered: one channel over
@@ -655,7 +657,7 @@ function validateProfile(o){
  /* ui preferences. booleans only, and an older profile without them is filled
     from the blank rather than refused. */
  if(o.ui&&typeof o.ui==='object'){
-  ['quiet','model'].forEach(function(k){
+  ['quiet','model','tone'].forEach(function(k){
    if(o.ui[k]!==undefined)p.ui[k]=!!o.ui[k];});}
  /* the seed is a stated type, so it is one of sixteen or it is nothing. */
  if(o.seed&&typeof o.seed==='object'){

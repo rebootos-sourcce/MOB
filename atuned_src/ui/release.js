@@ -55,6 +55,12 @@ function relAt(i){
  var n=BY[+bits[0]];
  var ch=CHAN.filter(function(c){return (c[0]+c[2])===bits[1];})[0]||CHAN[0];
  return {n:n, ch:ch, line:+bits[2]||0, key:k};}
+/* WHERE THE RUN IS, for the card and for anything that has to agree with it.
+   One answer, because the seat tone reads it too, and two copies of the
+   fallback would be two places for the sound and the card to disagree. The
+   opening is spoken ahead of the first address, so it answers with that one. */
+function relNow(){
+ return relAt(RUN.phase==='run'?RUN.idx:0)||{n:RUN.queue[0],ch:CHAN[0],line:0};}
 function relPick(nodeIds){
  RUN.queue=nodeIds.map(function(i){return BY[i];}).filter(function(n){return n&&n.cf;});
  RUN.sec=0;RUN.idx=0;RUN.line=0;RUN.phase='idle';RUN.done=false;RUN.log=[];RUN.freed=0;
@@ -74,6 +80,12 @@ function relTick(){
   relRender();}, RUN.speed*1000);}
 function relCoolDown(){
  if(RUN.done)return; RUN.done=true; RUN.phase='done';
+ /* THE RUN IS OVER HOWEVER THIS ENDS, AND SO IS THE TONE. relRender is what
+    moves the tone, and the refusal below returns without one, so a run walked
+    to its end on a worked example left the card on its last line and the tone
+    sounding that line's seat until something redrew the card. Measured with
+    this line taken out: refused, and still sounding. */
+ relTone();
  /* READ THE NUMBER BEFORE THE WRITE, so the panel can report what this run
     actually did rather than asserting that it did something. A control must
     never claim success before it has it, and "released" is not the same claim
@@ -180,7 +192,72 @@ function relCoolDown(){
  if(CURP){pSave();pSnap();}
  syncCh();relRender();render();}
 function relClose(){clearInterval(RUN.timer);RUN.open=false;RUN.phase='idle';relRender();render();}
+/* ============================================================
+   THE SEAT TONE FOLLOWS THE CARD.
+
+   The pitch is the seat of the address the card is on, its own
+   Solfeggio number, chosen by the address and never by a picker.
+   The slow pulse under it is the half: theta while the address is
+   released, alpha while its opposite installs, which are the two
+   bands the book gives those two moments. ui/sound.js makes the
+   sound. This decides what it should be.
+
+   It is moved from relRender, because the card and the tone are
+   two readings of one state and every change to that state already
+   comes through there. A tone kept in step by hand at each place
+   the run moves is one more place to forget.
+   ============================================================ */
+function relToneOn(){
+ return !!(typeof CURP!=='undefined'&&CURP&&CURP.ui&&CURP.ui.tone);}
+/* THE TIMING IS THE RUN'S, AND NOT THE PROTOTYPE'S.
+
+   The research sized its ramps for the prototype, where an address is fifty
+   lines a channel and a half runs for minutes: eight seconds to fade in,
+   twelve to rise from theta to alpha, twelve to glide between seats. Here
+   meterPlan gives an address one line a channel, so a half is two lines, 4.4
+   seconds at RUN.speed. A twelve second rise started at the cross would still
+   be climbing when the next address took the card. It tops out near 7.5,
+   which is theta, so no reframe half would ever be heard in alpha, and a
+   twelve second glide never reaches the seat whose name is on the screen.
+   That is the sound stating what the card does not, which DESIGN-release.md
+   rules out: every fact the sound states is on the screen at the same moment.
+
+   So every move lands inside the line that caused it. A glide or a rise takes
+   nine tenths of a line and has arrived before the next line appears. Not the
+   whole line: the bed restarts a glide from its last target, so a target that
+   came while one was still in flight would step the pitch by what was left,
+   and a timer that fires a few milliseconds early is ordinary. The tenth is
+   the margin. The fade in takes what is left of the opening, all of it from
+   Begin, and arrives with the first address; started once the run is under
+   way, by Resume or by the switch, it takes one line. The fade out keeps the
+   research's four seconds, because nothing after it can disagree with it. */
+var REL_GLIDE=0.9;
+function relTone(){
+ if(typeof bedFollow!=='function')return;
+ var live=RUN.open&&!RUN.paused&&(RUN.phase==='opening'||RUN.phase==='run');
+ var at=(live&&relToneOn())?relNow():null;
+ var hz=(at&&at.n)?seatHz(at.n.b):null;
+ /* no tone at this seat is silence, never the last seat's tone held over */
+ if(!hz){bedStop();return;}
+ bedFollow(hz, at.ch[2]==='truth'?BED_ALPHA:BED_THETA,
+  RUN.phase==='opening'?(OPENING.length-RUN.line)*RUN.speed:RUN.speed, RUN.speed*REL_GLIDE);}
+/* THE SWITCH, and it is the account page's own switch, so one control has one
+   look wherever it appears. It is on the opening and on the run as well as on
+   the panel before them, because a person finds out mid run, in a quiet room,
+   that they left it on, and the answer to that must not be to abandon the run.
+
+   The hertz under it is read off the bed and not off the address, so it
+   cannot claim a sound that is not playing. It is in the seat's own colour,
+   as ruled, and it is printed still. The beat is never drawn: a pulse at six
+   to ten a second is past the three flashes a second WCAG 2.3.1 allows, and
+   the heading already says which half it is in words. */
+function relToneRow(n){
+ if(typeof bedCan!=='function'||!bedCan()||typeof accTog!=='function')return '';
+ var st=bedState(), hz=(st.on&&n)?st.carrier:0;
+ return accTog('Seat tone','reltone',relToneOn(),hz?hz+' Hz':'',hz?seatCol(n.b):'');}
 function relRender(){
+ /* the tone first, so the switch below prints what is sounding now */
+ relTone();
  var h=document.getElementById('rel'); if(!h)return;
  if(!RUN.open){h.style.display='none';h.innerHTML='';return;}
  h.style.display='flex';
@@ -190,9 +267,10 @@ function relRender(){
    +'<div class="rel-speak">'+esc(OPENING[Math.min(RUN.line,OPENING.length-1)])+'</div>'
    +'<div class="rel-dots">'+OPENING.map(function(_,i){
      return '<i class="'+(i<=RUN.line?'on':'')+'"></i>';}).join('')+'</div>'
-   +'<div class="rel-act"><button class="btn" id="relskip">Skip the opening</button></div>';
+   +'<div class="rel-act"><button class="btn" id="relskip">Skip the opening</button></div>'
+   +relToneRow(relNow().n);
  } else if(RUN.phase==='run'){
-  var at=relAt(RUN.idx)||{n:RUN.queue[0],ch:CHAN[0],line:0};
+  var at=relNow();
   var ch=at.ch, n=at.n, c=seatCol(n.b);
   var tot=(RUN.plan||[]).length||1;
   out+='<div class="pm-eye">'+ch[1]+' '+ch[2]+', line '+(at.line+1)+'</div>'
@@ -204,7 +282,8 @@ function relRender(){
      +'%;background:'+c+'"></i></div>'
    +'<div class="rel-ct">'+(RUN.idx+1)+' of '+tot+' patterns</div>'
    +'<div class="rel-act"><button class="btn" id="relpause">'+(RUN.paused?'Resume':'Pause')+'</button>'
-   +'<button class="btn" id="relstop">Stop</button></div>';
+   +'<button class="btn" id="relstop">Stop</button></div>'
+   +relToneRow(n);
  } else if(RUN.phase==='done'){
   var cl=RUN.log.filter(function(x){return x.cleared;}).length;
   /* A ONE ADDRESS RUN PRINTED "1 addresses". The plural was typed onto the
@@ -292,7 +371,9 @@ function relRender(){
       a spent allowance is that this run does not exist yet. The route out goes
       where the allowance is, which is the only thing that changes the answer. */
    +(spent?'<button class="btn pri" id="relplan">Open settings</button>'
-         :'<button class="btn pri" id="relgo">Begin</button>')+'</div>';}
+         :'<button class="btn pri" id="relgo">Begin</button>')+'</div>'
+   /* and no switch for a run that cannot begin */
+   +(spent?'':relToneRow(null));}
  out+='</div>';
  h.innerHTML=out;
  var b;
@@ -305,5 +386,10 @@ function relRender(){
  if((b=document.getElementById('relclose')))b.onclick=relClose;
  if((b=document.getElementById('relrit')))b.onclick=function(){var lg=RUN.log.slice();relClose();ritOpen(lg);};
  if((b=document.getElementById('relstop')))b.onclick=function(){clearInterval(RUN.timer);relCoolDown();};
- if((b=document.getElementById('relpause')))b.onclick=function(){RUN.paused=!RUN.paused;relRender();};}
+ if((b=document.getElementById('relpause')))b.onclick=function(){RUN.paused=!RUN.paused;relRender();};
+ /* uiSet is the one writer for the profile's preferences, so this reports
+    through statusSaved like the other switches do. A save that fails leaves
+    the tone on for this visit and says it will not survive a reload, and both
+    halves of that are true. */
+ if((b=document.getElementById('reltone')))b.onclick=function(){uiSet('tone',!relToneOn());relRender();};}
 

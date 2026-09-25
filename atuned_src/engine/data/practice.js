@@ -118,6 +118,24 @@ var FLOWSEAT=[
  {k:'solar', n:'Solar', sk:'Manipura',    nv:'Celiac plexus',    vt:'T12 to L1',                         seat:'below the ribs, above the navel',src:372,hz:528},
  {k:'sacral',n:'Sacral',sk:'Svadhisthana',nv:'Hypogastric plexus',vt:'L5, the aortic bifurcation',       seat:'below the navel',                src:438,hz:417},
  {k:'root',  n:'Root',  sk:'Muladhara',   nv:'Lumbar plexus',    vt:'L1 to L4, into the pelvic floor',   seat:'the base of the spine',          src:502,hz:396}];
+/* THE SEAT'S TONE, BY THE NAME EVERY ADDRESS CARRIES.
+
+   The release sounds the seat of the address it is on, and an address knows
+   its seat as n.b: 'Root' through 'Crown', with '3rd Eye' between. FLOWSEAT
+   prints that seat as 'Brow', so a lookup by its display name finds six seats
+   and returns nothing for the seventh. Measured: 12 of the 107 addresses a
+   release can reach sit at the 3rd Eye, and every one of them would have
+   played the previous seat's tone, or none, with nothing anywhere saying so.
+   So the name goes through the key PMBANDS already shares with this table.
+
+   A seat with no tone is null and never a guess. The four addresses outside
+   the body carry no fetter, so relPick drops them before a run is built, and
+   this is the second reason they cannot sound. */
+function seatHz(b){
+ for(var i=0;i<PMBANDS.length;i++){ if(PMBANDS[i].b!==b)continue;
+  for(var j=0;j<FLOWSEAT.length;j++)
+   if(FLOWSEAT[j].k===PMBANDS[i].k)return FLOWSEAT[j].hz;}
+ return null;}
 var PML=[['bands','Fetters'],['sab','Saboteurs'],['cx','Complexes'],['hyper','Hyper'],
          ['masks','Masks'],['pain','Pain'],['nerves','Flow']];
 
