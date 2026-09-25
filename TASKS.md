@@ -9324,3 +9324,41 @@ needs to be fixed."
 *The click-through bug is small and functional, next in line whenever a
 seat is free. The glass background and the content pass are queued for art
 and copy.*
+
+**BA7. The core, marked on three screenshots, thinking through what it
+already shows.** He circled the shell's scattered marks against the core's
+radial spikes and asked, in his own words, "how is that a different
+mechanic," then reasoned through what each might mean, landed on real
+requests, and closed with "continue building, just add this to the queue."
+
+**What is actually built, read from `wheel.js`, so the guess and the code
+can be checked against each other.** They are two different mechanics, and
+his instinct that they differ was right:
+- **The scattered marks outside the disc are the shell**, one per address,
+  up to 112, each a person's own charge at that address. This is the ring
+  the tooltip he screenshotted names: "press a band to open it, or any
+  single mark on it to open that address."
+- **The core's radial spikes are called feathers in the code**, and they are
+  three separate layers, not one: the 21 laws, finest and furthest back,
+  each feather's length its law score over ten; the seven seats, each
+  feather's length that seat's integrity over ten; and a triad of vitality,
+  awareness and will, coarsest and drawn on top. Not aversion, attachment
+  and ignorance, which are not drawn here.
+- **The spin is decorative, not data.** All three layers rotate continuously
+  on elapsed time alone, at three different speeds, so the core reads as
+  alive. Length is the only channel carrying a value; rotation carries
+  nothing. His read that the feathers might represent "how often," and his
+  instinct not to want them rotating if they represent a fixed orientation,
+  both point at the same true thing: today rotation is empty motion, and if
+  it is ever asked to carry a value, it should stop being decorative first.
+
+**What he is asking for, kept as asked:**
+- The shell's marks need a percent, so a person can read "how much" and not
+  only see a mark.
+- A visual encoding by saturation or line thickness for opposed states
+  (attachment against detachment, and the like), so which way a person
+  leans is visible without a number.
+- The panel currently reading "13% Severe" moves out of its own drill and
+  into a fixed position, upper right of the main area, present on every
+  screen regardless of tab.
+*Queued, art and interaction direction. None of it blocks foundation.*
