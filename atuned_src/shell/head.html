@@ -1320,6 +1320,68 @@ canvas#cv{display:block;grid-column:2;grid-row:3;width:100%;height:100%;
    scroll attempt became a charge write. Vertical panning goes to the page
    and a tap still reaches the canvas. */
 @media (pointer:coarse){ canvas#cv{touch-action:pan-y;cursor:default} }
+/* ============================================================
+   THE FIELD DRAWN THREE WAYS. BP8, 25 September.
+
+   The switch sits at the head of the stage's left lane, which is 128 wide and
+   carried nothing on any profile measured, so the ring does not move a pixel
+   for it. A rendition draws into the canvas's own cell. Its layer row takes
+   the depth row's place in the sub bar, and only one of the two is ever up,
+   which ui/rings.js decides in fviewPaint.
+   ============================================================ */
+.fview{grid-column:1;grid-row:3;align-self:start;z-index:4;min-width:0;
+ display:flex;flex-direction:column;gap:4px;padding:10px 0 0 12px}
+/* the Field's alone, like the compass lane and the accuracy beside it. The
+   stage hosts every other surface too, and a switch left up at z-index 4
+   would have sat in the left lane of all of them */
+body:not(.tab-field) .fview{display:none}
+.fview .vt{padding:8px 12px}
+/* the navigation rule the depth row keeps: the position you are on loses its
+   box and carries the accent hairline under it. Without the hairline the
+   pressed one differed only by a missing border and a blue icon, and its word
+   stays in ink because .n sets ink, which is the depth row's own markup. */
+.fview .vt[aria-pressed=true]::after{content:'';position:absolute;left:12px;right:12px;bottom:5px;
+ height:1.5px;border-radius:2px;background:var(--accent)}
+#frend{grid-column:2;grid-row:3;width:100%;height:100%;min-width:0;min-height:0;
+ position:relative;overflow:hidden}
+body:not(.tab-field) #frend{display:none!important}
+/* the picture takes the pointer only where there is something to open. A
+   thread, a hairline or the wash is not a target, and drawn over an address
+   it would have taken the press the address was owed */
+.frsvg{display:block;pointer-events:none}
+.frsvg [data-h]{pointer-events:auto;cursor:pointer}
+.frsvg text{font-family:var(--sans);font-variant-numeric:tabular-nums}
+/* a hidden layer takes its marks and its words with it */
+#frend.off-domains .L-domains,#frend.off-addresses .L-addresses,#frend.off-stories .L-stories,
+#frend.off-masks .L-masks,#frend.off-archetypes .L-archetypes,#frend.off-patterns .L-patterns,
+#frend.off-chains .L-chains,#frend.off-laws .L-laws,#frend.off-gates .L-gates,
+#frend.off-shadow .L-shadow{display:none}
+/* THE LAYER ROW, from proto/field-rings/kit.css. An icon over one word, in
+   ring order, outside first. On is a ring round the icon in the accent, which
+   is the product's own selection rule, and off is the icon in dim ink with no
+   ring. Forty four tall exactly, where the mockup's was fifty three, because
+   it trades places with the depth row and a taller row would have moved the
+   whole app nine pixels every time the switch was pressed. */
+.lays{flex-wrap:wrap;align-items:flex-start;gap:2px}
+.lay{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+ min-width:62px;min-height:var(--tap);padding:1px 2px 2px;background:transparent;border:0;
+ border-radius:var(--r-xs);cursor:pointer;color:var(--dim);font:inherit;
+ transition:background var(--t-micro) var(--ease-out)}
+.lay:hover{background:var(--sunk)}
+.lay:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.lay-ic{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+ box-sizing:border-box;border:1.5px solid transparent}
+.lay-ic svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.7;
+ stroke-linecap:round;stroke-linejoin:round}
+.lay-nm{font-size:11px;line-height:12px;font-weight:500;letter-spacing:.01em;white-space:nowrap}
+.lay[aria-pressed=true]{color:var(--ink)}
+.lay[aria-pressed=true] .lay-ic{border-color:var(--accent)}
+/* Punch and Lumen rule that anything selected is a solid fill, and the icon
+   grid already obeys it, so a pressed layer does too */
+body.punch .lay[aria-pressed=true] .lay-ic,body.lumen .lay[aria-pressed=true] .lay-ic{
+ background:var(--accent);border-color:transparent}
+body.punch .lay[aria-pressed=true] .lay-ic svg,body.lumen .lay[aria-pressed=true] .lay-ic svg{stroke:var(--on-accent)}
+.lay-sep{width:1px;align-self:stretch;margin:6px 8px 8px;background:var(--edge-2)}
 /* width:max-content because the readout is measured before it is placed
    (ui.js, the pointer move). Sized to fit it shrank to whatever room its last
    position left, so the width read was where it had been and not what it
@@ -3301,6 +3363,11 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
     rendered 10 pixels tall on every phone with 106 pixels of content in it. */
  .emap{position:static;inset:auto;overflow:visible;width:100%;min-height:0;order:0}
  canvas#cv{flex:0 0 auto;height:min(86vw,390px);order:1}
+ /* no lanes on a phone, so the switch is a row above the picture it changes,
+    and a rendition takes exactly the wheel's square so the three are
+    compared at one size */
+ .fview{flex-direction:row;flex-wrap:wrap;padding:10px 14px 0;order:1}
+ #frend{flex:0 0 auto;height:min(86vw,390px);order:1}
  /* THE COMPASS RENDERED ENTIRELY OFF SCREEN. Measured at 390x844: #conecv at
     y -612, 338 by 591, onScreen false, with its host #cone 10 pixels tall and
     still position:absolute. The tab named Compass showed a person nothing at

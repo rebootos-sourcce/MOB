@@ -106,16 +106,21 @@ function renderSpirit(){
    REDUCED gets the end state rather than a slower one: drift is already zero
    under it, so the signature never changes and nothing is rewritten at all. */
 var POL2={sig:null,el:null,mv:null,yB:0,dy:0};
+/* WHERE COHERENCE SWINGS, on its own scale. The band narrows as coherence
+   rises: tight alignment leaves little room to wander, a decohering field
+   ranges wide. Lifted out of renderPol2 unchanged, because the Field's two
+   renditions draw the same range round their core, and two copies of one
+   formula are two places for one range to be drawn two sizes. */
+function cqRange(cq){
+ cq=Math.max(0,Math.min(100,cq));
+ var swing=(1-cq/100), band=2.5+swing*swing*26;
+ return {cq:cq, band:band, lo:Math.max(0,cq-band/2), hi:Math.min(100,cq+band/2)};}
 function renderPol2(r){
  var el=$('pol2'); if(!el)return;
  /* the labels sit at x+20 and run right, so a 58 wide box cut them off.
     the box is wide enough to hold what it draws. */
  var H=360,Wd=104,top=30,bot=H-30,x=34;
- var cq=Math.max(0,Math.min(100,r.CQ));
- /* the band narrows as coherence rises. tight alignment leaves little room to
-    wander, a decohering field ranges wide. */
- var swing=(1-cq/100), bandPts=2.5+swing*swing*26;
- var lo=Math.max(0,cq-bandPts/2), hi=Math.min(100,cq+bandPts/2);
+ var rg=cqRange(r.CQ), cq=rg.cq, bandPts=rg.band, lo=rg.lo, hi=rg.hi;
  var yLo=bot-(lo/100)*(bot-top), yHi=bot-(hi/100)*(bot-top);
  var t=REDUCED?0:S.t;
  var drift=REDUCED?0:(Math.sin(t*0.55)*0.62+Math.sin(t*0.23+1.1)*0.38);

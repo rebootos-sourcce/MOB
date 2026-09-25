@@ -3340,6 +3340,242 @@ console.log('\n=== the seat tone is binaural, and it is the seat\'s own ===');
  await tp.close();
 }
 
+console.log('\n=== the Field drawn three ways, and the switch between them (BP8) ===');
+/* RULED 25 SEPTEMBER. "I really like nested frames. You don't need to zoom,
+   you can see everything... Let me see that dial with callouts too... do that
+   in the app itself", with the switch "on the far left, because there's
+   nothing there" and not upper right, which is the rail's tier line.
+
+   Its own context, so the choice the switch stores cannot leak into another
+   section of this file: a stored view outlives a reload on purpose, and a
+   later section measuring the wheel would have found a rendition instead.
+
+   Most of this is invisible to the design gate. It skips svg text for the
+   type floor, it measures the default state, which is the wheel, and it knows
+   the Field by #cv alone. So the floors it holds for the rest of the product
+   are held here for the renditions, one by one. */
+{
+ const fx=await browser.newContext({viewport:{width:1600,height:1000}});
+ const fp=await fx.newPage();
+ const ferr=[];
+ fp.on('pageerror',e=>ferr.push('PAGEERROR: '+e.message));
+ fp.on('console',m=>{if(m.type()==='error'){const t=m.text();
+  if(!/ERR_CERT_AUTHORITY_INVALID|ERR_FILE_NOT_FOUND|fonts\.googleapis/.test(t))ferr.push(t);}});
+ await fp.goto(FILE,{waitUntil:'load'}); await booted(fp);
+ const frame=pg=>pg.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));
+ const LAYERS=['domains','addresses','stories','masks','archetypes','patterns','chains','laws','gates','shadow'];
+
+ /* WHERE IT SITS, on the default. Measured against the canvas and the rail's
+    tier line, which are the two things the ruling placed it by. */
+ const place=await fp.evaluate(()=>{loadP(PERSON('James'));setTab(TAB.FIELD);render();
+  const sw=document.getElementById('fview'),cv=document.getElementById('cv'),st=document.getElementById('stage');
+  const b=sw.getBoundingClientRect(),c=cv.getBoundingClientRect(),s=st.getBoundingClientRect();
+  const rt=document.getElementById('railtop').getBoundingClientRect();
+  const btns=[...sw.querySelectorAll('[data-fview]')];
+  const d=id=>getComputedStyle(document.getElementById(id)).display;
+  return {keys:btns.map(x=>x.getAttribute('data-fview')).join(','),
+   pressed:btns.filter(x=>x.getAttribute('aria-pressed')==='true').map(x=>x.getAttribute('data-fview')).join(','),
+   right:b.right,top:b.top,cvLeft:c.left,cvTop:c.top,mid:s.left+s.width/2,rail:rt.left,
+   sizes:btns.map(x=>{const r=x.getBoundingClientRect();return [Math.round(r.width),Math.round(r.height)];}),
+   cv:d('cv'),vbar:d('vbar'),frend:d('frend'),flay:d('flay')};});
+ ok(place.keys==='wheel,frames,dial','three positions, wheel, frames and dial, got '+place.keys);
+ ok(place.pressed==='wheel','the wheel is the default, so nobody who has not pressed it sees a change, got '+place.pressed);
+ ok(place.right<=place.cvLeft+1,'the switch sits in the left lane and clear of the ring, right edge '
+  +Math.round(place.right)+' against the canvas at '+Math.round(place.cvLeft));
+ ok(place.right<place.mid&&place.right<place.rail,'and nowhere near the upper right, where the tier line is');
+ ok(Math.abs(place.top-place.cvTop)<24,'at the head of the lane, above the ring, '+Math.round(place.top)
+  +' against the canvas top at '+Math.round(place.cvTop));
+ ok(place.sizes.every(s=>s[0]>=44&&s[1]>=44),'every position clears the 44 pixel tap floor, '+JSON.stringify(place.sizes));
+ ok(place.cv==='block'&&place.vbar==='flex'&&place.frend==='none'&&place.flay==='none',
+  'on the wheel the canvas and the depth row are up, and no rendition and no layer row');
+ /* THE SWITCH IS THE FIELD'S ALONE. The stage hosts every other surface as
+    well, and nothing else in this file or the design gate would notice three
+    buttons left in the left lane of the Summary: they clear the tap floor and
+    they are not a tab host. With a rendition up, so its host and layer row
+    are held to the same rule on the way out. */
+ const away=await fp.evaluate(()=>{fviewSet('frames');const out=[];
+  TABDEF.forEach(T=>{if(T.k===TAB.FIELD)return;setTab(T.k);
+   ['fview','frend','flay'].forEach(id=>{const e=document.getElementById(id),r=e.getBoundingClientRect();
+    if(getComputedStyle(e).display!=='none'&&r.width>0&&r.height>0)out.push(T.nm+': '+id);});});
+  setTab(TAB.FIELD);fviewSet('wheel');return out;});
+ ok(away.length===0,'on every other surface the switch, the rendition and its layer row are down, up: '+(away.join(', ')||'none'));
+
+ /* EACH RENDITION, on a loaded profile. Every layer draws, the loop has the 112
+    places the product says it has, the core prints the reading, and nothing is
+    set under the eleven pixel floor. */
+ const drawn=async v=>{
+  await fp.evaluate(v=>{loadP(PERSON('James'));setTab(TAB.FIELD);fviewSet(v);},v);
+  await frame(fp);
+  return fp.evaluate(L=>{const fr=document.getElementById('frend'),d=id=>getComputedStyle(document.getElementById(id)).display;
+   const texts=[...fr.querySelectorAll('text')];
+   const lays=[...document.querySelectorAll('#flay .lay')];
+   return {svg:!!fr.querySelector('svg.frsvg'),cv:d('cv'),vbar:d('vbar'),frend:d('frend'),flay:d('flay'),
+    w:fr.clientWidth,h:fr.clientHeight,
+    lays:lays.map(b=>b.getAttribute('data-lay')).join(','),layOn:lays.every(b=>b.getAttribute('aria-pressed')==='true'),
+    laySizes:lays.map(b=>{const r=b.getBoundingClientRect();return [Math.round(r.width),Math.round(r.height)];}),
+    counts:L.map(k=>[k,fr.querySelectorAll('.L-'+k+' [data-h], .L-'+k+' rect, .L-'+k+' path, .L-'+k+' circle').length]),
+    places:FR_HIT.filter(h=>h.k==='node').length+FR_HIT.filter(h=>h.k==='anchor').length,
+    figures:texts.map(t=>t.textContent).filter(s=>/^\d+$/.test(s)),cq:Math.round(compute().CQ),
+    small:texts.filter(t=>parseFloat(getComputedStyle(t).fontSize)<11).map(t=>t.textContent),
+    calls:[...fr.querySelectorAll('[data-call]')].length};},LAYERS);};
+ for(const v of ['frames','dial']){
+  const o=await drawn(v);
+  ok(o.svg&&o.frend==='block'&&o.cv==='none','"'+v+'" draws into the wheel\'s own cell and the canvas steps aside, '+o.w+' by '+o.h);
+  ok(o.vbar==='none'&&o.flay==='flex','"'+v+'" puts its layer row up in the depth row\'s place');
+  ok(o.lays==='domains,addresses,stories,masks,archetypes,patterns,chains,laws,gates,shadow'&&o.layOn,
+   '"'+v+'" carries ten layers in ring order, all on, got '+o.lays);
+  ok(o.laySizes.every(s=>s[0]>=44&&s[1]>=44),'"'+v+'": every layer clears the tap floor, '+JSON.stringify(o.laySizes.slice(0,3)));
+  /* a worked example carries no story, so its stories layer is empty by right;
+     the stories layer is held on a committed story further down */
+  const empty=o.counts.filter(c=>c[0]!=='stories'&&c[1]===0).map(c=>c[0]);
+  ok(empty.length===0,'"'+v+'": every layer draws on James, empty: '+(empty.join(',')||'none'));
+  ok(o.places===112,'"'+v+'": the loop has the 112 places the product counts, got '+o.places);
+  ok(o.figures.length===1&&+o.figures[0]===o.cq,'"'+v+'": the core prints the reading, '+o.figures.join(',')+' against CQ '+o.cq);
+  ok(o.small.length===0,'"'+v+'": nothing set under eleven pixels, '+JSON.stringify(o.small));
+  console.log('  '+v.padEnd(7)+o.w+'x'+o.h+'  '+o.counts.map(c=>c[0].slice(0,4)+' '+c[1]).join('  ')
+   +(v==='dial'?'  callouts '+o.calls:''));}
+
+ /* A LAYER TOGGLE HIDES THE LAYER AND ITS WORDS, and brings them back. */
+ const tog=await fp.evaluate(async()=>{
+  const b=document.querySelector('#flay .lay[data-lay="patterns"]');
+  const vis=()=>[...document.querySelectorAll('#frend .L-patterns')].filter(e=>getComputedStyle(e).display!=='none').length;
+  const before=vis(); b.click(); const off=vis(), pressed=b.getAttribute('aria-pressed');
+  b.click(); return {before:before,off:off,pressed:pressed,back:vis(),again:b.getAttribute('aria-pressed')};});
+ ok(tog.before>0&&tog.off===0&&tog.pressed==='false','a toggle takes its layer off, marks and words, '+tog.before+' groups to '+tog.off);
+ ok(tog.back===tog.before&&tog.again==='true','and a second press puts it back');
+
+ /* THE CALLOUTS ARE OFF THE DIAL AND OFF EACH OTHER. The dial's reach is the
+    outside of its domain band, measured off the drawing rather than derived,
+    and every name box must clear it: no word over the hero graphic. */
+ const clear=await fp.evaluate(()=>{
+  const fr=document.getElementById('frend'),hb=fr.getBoundingClientRect();
+  const doms=[...fr.querySelectorAll('.L-domains > [data-h]')].map(e=>e.getBoundingClientRect());
+  const x0=Math.min(...doms.map(b=>b.left)),x1=Math.max(...doms.map(b=>b.right));
+  const y0=Math.min(...doms.map(b=>b.top)),y1=Math.max(...doms.map(b=>b.bottom));
+  const cx=(x0+x1)/2,cy=(y0+y1)/2,R=Math.max(x1-x0,y1-y0)/2;
+  const boxes=[...fr.querySelectorAll('[data-call] text')].map(t=>t.getBoundingClientRect());
+  const inside=boxes.filter(b=>{const nx=Math.max(b.left,Math.min(cx,b.right)),ny=Math.max(b.top,Math.min(cy,b.bottom));
+   return Math.hypot(nx-cx,ny-cy)<R;}).length;
+  let over=0;for(let i=0;i<boxes.length;i++)for(let j=i+1;j<boxes.length;j++){const a=boxes[i],b=boxes[j];
+   if(a.left<b.right&&b.left<a.right&&a.top<b.bottom&&b.top<a.bottom)over++;}
+  const out=boxes.filter(b=>b.left<hb.left||b.right>hb.right||b.top<hb.top||b.bottom>hb.bottom).length;
+  return {n:boxes.length,inside:inside,over:over,out:out,R:Math.round(R)};});
+ ok(clear.n>=2,'the dial names something on James, '+clear.n+' lines');
+ ok(clear.inside===0,'no callout word lands on the dial, '+clear.inside+' of '+clear.n+' inside a reach of '+clear.R);
+ ok(clear.over===0&&clear.out===0,'and none overlaps another or leaves the cell, '+clear.over+' overlapping, '+clear.out+' outside');
+
+ /* THE READOUT AND THE DRILL ARE THE WHEEL'S OWN. A real pointer, so the
+    check also proves a thread drawn over an address does not take its press. */
+ await fp.evaluate(()=>fviewSet('frames'));
+ await frame(fp);
+ const target=await fp.evaluate(()=>{
+  let best=null;document.querySelectorAll('#frend .L-addresses [data-h]').forEach(e=>{const h=FR_HIT[+e.getAttribute('data-h')];
+   if(h&&h.k==='node'&&h.n.cf&&(!best||h.n.sq>best.h.n.sq))best={e:e,h:h};});
+  if(!best)return null;
+  const b=best.e.getBoundingClientRect();rdClose();
+  return {x:b.left+b.width/2,y:b.top+b.height/2,nm:best.h.n.k};});
+ ok(!!target,'a held address is on the frames to point at');
+ if(target){
+  await fp.mouse.move(target.x,target.y); await fp.waitForTimeout(80);
+  const pr=await fp.evaluate(()=>{const p=document.getElementById('probe');return {on:p.classList.contains('on'),t:p.textContent};});
+  ok(pr.on&&pr.t.indexOf(target.nm)>=0,'hovering it puts the wheel\'s readout up, naming '+target.nm);
+  ok(/Click for detail/.test(pr.t)&&!/Drag to change/.test(pr.t),'and it offers the click and not a drag nothing here can do');
+  await fp.mouse.click(target.x,target.y); await fp.waitForTimeout(150);
+  const dr=await fp.evaluate(()=>(document.getElementById('rdrill').textContent||''));
+  ok(dr.indexOf(target.nm)>=0,'pressing it opens the address\'s own drill, '+dr.length+' chars');
+  await fp.mouse.move(5,5);}
+
+ /* NOTHING IS READ OFF THE DEFAULTS. The person's own blank profile: no
+    figure anywhere in the picture, and the dial names nothing. */
+ const blank=await fp.evaluate(async()=>{loadP(0);setTab(TAB.FIELD);fviewSet('dial');
+  await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+  const fr=document.getElementById('frend');
+  return {unread:compute().unread,texts:[...fr.querySelectorAll('text')].map(t=>t.textContent),
+   calls:fr.querySelectorAll('[data-call]').length};});
+ ok(blank.unread,'the own profile is blank at a fresh start');
+ ok(blank.texts.every(s=>!/\d/.test(s)),'no figure is printed off the defaults, got '+JSON.stringify(blank.texts));
+ ok(blank.calls===0,'and the dial names nothing, '+blank.calls+' callouts');
+
+ /* A STORY MARK SITS AT ITS OWN ADDRESS. The mockup read the atom key as a
+    position, and the key is the address id, so every mark was drawn one
+    address clockwise of its own. Two lines committed the way a person commits
+    them, through the Story tab, on the person's own profile. */
+ for(const t of ['My chest is tight in every meeting and I have told no one.',
+                 'I felt nothing when we let forty people go and that frightens me.']){
+  await fp.evaluate(t=>{loadP(0);setTab(TAB.STORY);stRender();
+   const ta=document.getElementById('sttext');ta.value=t;ta.dispatchEvent(new Event('input',{bubbles:true}));},t);
+  await fp.waitForTimeout(60);
+  await fp.evaluate(()=>{const b=document.getElementById('stapply');if(b&&!b.disabled)b.click();});
+  await fp.waitForTimeout(60);}
+ const atoms=await fp.evaluate(async()=>{setTab(TAB.FIELD);fviewSet('frames');
+  await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+  const A=atomIndex(),total=Object.keys(A).reduce((a,k)=>a+A[k].length,0);
+  const marks=[...document.querySelectorAll('#frend .L-stories [data-h]')].map(e=>FR_HIT[+e.getAttribute('data-h')]);
+  return {total:total,marks:marks.length,wrong:marks.filter(h=>!A[h.n.i]||A[h.n.i].indexOf(h.v)<0).length};});
+ ok(atoms.total>0,'the committed story put atoms on the field, '+atoms.total);
+ ok(atoms.marks===atoms.total&&atoms.wrong===0,'every one is drawn, at its own address, '+atoms.marks+' drawn, '
+  +atoms.wrong+' at the wrong address');
+
+ /* THE CHOICE IS KEPT, and a reload opens the Field the way it was left. */
+ await fp.evaluate(()=>fviewSet('dial'));
+ await fp.reload({waitUntil:'load'}); await booted(fp); await frame(fp);
+ const kept=await fp.evaluate(()=>{const on=document.querySelector('#fview [aria-pressed="true"]');
+  return {stored:STORE.get('fview'),view:FVIEW,pressed:on?on.getAttribute('data-fview'):null,
+   frend:getComputedStyle(document.getElementById('frend')).display,svg:!!document.querySelector('#frend svg.frsvg')};});
+ ok(kept.stored==='dial'&&kept.view==='dial'&&kept.pressed==='dial','the switch is kept in the store and read back, '+JSON.stringify(kept));
+ ok(kept.frend==='block'&&kept.svg,'and the Field opens drawn as the dial');
+ /* and back to the wheel, which has to be measured again: hidden behind a
+    rendition it had a box of nothing */
+ const back=await fp.evaluate(async()=>{loadP(PERSON('James'));fviewSet('wheel');
+  await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+  return {cv:getComputedStyle(document.getElementById('cv')).display,vbar:getComputedStyle(document.getElementById('vbar')).display,
+   CW:CW,CH:CH,hits:HIT.length,stored:STORE.get('fview')};});
+ ok(back.cv==='block'&&back.vbar==='flex'&&back.CW>0&&back.CH>0&&back.hits>0,
+  'back on the wheel it is measured and drawn, '+Math.round(back.CW)+' by '+Math.round(back.CH)+', '+back.hits+' targets');
+ ok(back.stored==='wheel','and the store says wheel again');
+ ok(ferr.length===0,'no errors through any of it: '+ferr.join(' | '));
+ await fx.close();
+
+ /* ON A PHONE the stage is one column. The switch reads before the picture
+    it changes, a rendition takes exactly the wheel's square, and nothing runs
+    past the side of the screen. */
+ const px=await browser.newContext({viewport:{width:390,height:844}});
+ const pp=await px.newPage();
+ const perr=[];pp.on('pageerror',e=>perr.push(e.message));
+ await pp.goto(FILE,{waitUntil:'load'}); await booted(pp);
+ for(const v of ['frames','dial']){
+  await pp.evaluate(v=>{loadP(PERSON('James'));setTab(TAB.FIELD);fviewSet(v);},v);
+  await frame(pp);
+  const m=await pp.evaluate(()=>{const sw=document.getElementById('fview').getBoundingClientRect(),
+   fr=document.getElementById('frend').getBoundingClientRect();
+   const lays=[...document.querySelectorAll('#flay .lay')].map(b=>b.getBoundingClientRect());
+   return {swBottom:sw.bottom,frTop:fr.top,frH:fr.height,want:Math.min(innerWidth*.86,390),
+    body:document.body.scrollWidth,doc:document.documentElement.scrollWidth,
+    layOut:lays.filter(b=>b.right>innerWidth+.5||b.left<-.5).length,svg:!!document.querySelector('#frend svg.frsvg'),
+    small:[...document.querySelectorAll('#frend text')].filter(t=>parseFloat(getComputedStyle(t).fontSize)<11).length};});
+  ok(m.svg&&m.swBottom<=m.frTop+1,'390, "'+v+'": the switch sits above the picture, '+Math.round(m.swBottom)+' against '+Math.round(m.frTop));
+  ok(Math.abs(m.frH-m.want)<1,'390, "'+v+'": the picture takes the wheel\'s own square, '+m.frH.toFixed(1)+' against '+m.want.toFixed(1));
+  ok(m.body<=390&&m.doc<=390,'390, "'+v+'": nothing runs past the screen, body '+m.body+', document '+m.doc);
+  ok(m.layOut===0,'390, "'+v+'": the layer row wraps rather than hiding a layer off the edge, '+m.layOut+' off screen');
+  ok(m.small===0,'390, "'+v+'": nothing under eleven pixels, '+m.small);
+  /* BO2 IN THE RENDITIONS. The wheel keeps its gate pills at 8.5 because at
+     11 they sat under the next gate's disc. These are at 11 and are spaced
+     by their pills, and 390 is where the spacing is tightest: measured
+     before the fix, a pill sat under a neighbour sixty times over the
+     fifteen reference cases on the frames and thirty on the dial. */
+  const under=await pp.evaluate(()=>{let n=0;
+   const gs=[...document.querySelectorAll('#frend .L-gates > g')].map(g=>{const c=g.querySelector('circle'),q=g.querySelector('rect');
+    return {x:+c.getAttribute('cx'),y:+c.getAttribute('cy'),r:+c.getAttribute('r'),px:+q.getAttribute('x'),
+     py:+q.getAttribute('y'),pw:+q.getAttribute('width'),ph:+q.getAttribute('height')};});
+   gs.forEach((a,i)=>gs.forEach((o,j)=>{if(i===j)return;
+    const nx=Math.max(a.px,Math.min(o.x,a.px+a.pw)),ny=Math.max(a.py,Math.min(o.y,a.py+a.ph));
+    if(Math.hypot(nx-o.x,ny-o.y)<o.r-0.5)n++;}));
+   return {gates:gs.length,n:n};});
+  ok(under.gates===6&&under.n===0,'390, "'+v+'": no gate pill sits under another gate, '+under.n+' of '+under.gates);}
+ ok(perr.length===0,'390: no errors, '+perr.join(' | '));
+ await px.close();
+}
+
 await browser.close();
 
 console.log('\n===== '+PASS+' passed, '+FAIL+' failed =====');

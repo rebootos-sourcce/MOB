@@ -7,7 +7,11 @@ const HOWTO=[
  'Cluster. Charge, plus the seats and the saboteurs.\nEach bead is a saboteur. The threads show which\naddresses built it. Hover a bead to name it.',
  'Chain. Cluster, plus the rest of the compounding.\nSaboteur to complex to hyper to character, inward.\nThe named ring is your twelve archetypes.\nClick one to change how the soul expresses.',
  'Blueprint. Chain, plus domains, masks and laws.\nThe outer ring is nineteen domains, five per root cluster.\nThe faint ring inside is the six masks.\nThe short spokes at the centre are the twenty-one laws.'];
-function describe(h,r){
+/* still: the picture asking has no drag. The two renditions in ui/rings.js
+   draw every address and none of them can be dragged to set a charge, so an
+   address there says click and not drag. Omitted, which is how the wheel
+   calls this, nothing changes. */
+function describe(h,r,still){
  /* THE CORE SAID ITS ARITHMETIC AND NOT ITS MEANING.
 
     It read "intention 6.5 times integrity over resistance" and that is three
@@ -35,7 +39,7 @@ function describe(h,r){
    +'<hr>axis <b>'+(n.cf||'unrouted')+'</b><br>susceptibility <b>'+n.susc.toFixed(2)+'</b>'
    +((AFFIN[r.root]||[]).indexOf(n.cf)>=0?'<br><b>1.3×</b> '+r.root+' affinity':'')
    +'<br>held <b>'+n.held.toFixed(1)+'</b>, opposite <b>'+n.rep.toFixed(1)+'</b>'
-   +'<br><b>SQ '+n.sq.toFixed(1)+'</b><hr><b>Drag to change, click for detail.</b>';}
+   +'<br><b>SQ '+n.sq.toFixed(1)+'</b><hr><b>'+(still?'Click for detail.':'Drag to change, click for detail.')+'</b>';}
  /* AN ATOM. One story, one address, one weight, which is the smallest true
     unit this instrument holds. The snippet is the person's own sentence, so
     it goes in their words and not in a summary of them. */
@@ -132,7 +136,22 @@ cv.addEventListener('pointerdown',function(e){
   DRAG={mode:'cf',cf:h.n.cf,y:y,s:S.charge[h.n.cf],node:h.n,moved:false};
   try{cv.setPointerCapture(e.pointerId);}catch(err){}
   return;}
- if(h.k==='node'&&h.n.cf&&touch){ /* a tap reads the address, it never writes it */
+ hitPress(h,e);});
+/* WHAT A PRESS ON A MARK DOES, ONE COPY FOR EVERY PICTURE OF THE FIELD.
+
+   This was the tail of the handler above, inline. The two renditions in
+   ui/rings.js draw the same things and a press on one of them has to do what
+   the same press does on the wheel, so the tail is lifted out unchanged
+   rather than copied, and both call it. A copy would have been the second
+   list of what a mark opens, and the first time one of them learned a new
+   kind the other would have gone on opening nothing.
+
+   Moved and not changed. The address line read "&&touch", which on the
+   wheel was always true by the time it was reached, because a mouse press
+   on an address has already armed the drag above and returned. A rendition
+   has no drag, so every press it makes on an address is the tap case. */
+function hitPress(h,e){
+ if(h.k==='node'&&h.n.cf){ /* a tap reads the address, it never writes it */
   S.pin=null; runNodeDrill(h.n); render(); return;}
  /* the same setters as the left rail's icons, so the same guard, notYours in
     personas.js: on a worked example a press refuses rather than loading the
@@ -169,7 +188,7 @@ cv.addEventListener('pointerdown',function(e){
  if(h.k==='mk'){S.pin=null;render();return;}
  var o=h.o||null;
  var same=o&&S.pin&&S.pin.nm===o.nm&&S.pin.kind===o.kind;
- S.pin=same?null:o; runDrill(S.pin); render();});
+ S.pin=same?null:o; runDrill(S.pin); render();}
 /* THE FRAME. The wheel is the instrument and a person reads it by moving in.
    The pointer keeps the address under it fixed while the scale changes, so
    zooming toward a segment lands on that segment. F reframes. */
@@ -257,6 +276,12 @@ cv.addEventListener('pointermove',function(e){
  if(!t){pr.classList.remove('on');return;}
  cv.style.cursor=(h.k==='node')?'ns-resize':'pointer';
  pr.innerHTML=t;
+ probeAt(pr,cv,x,y);});
+/* WHERE THE READOUT GOES, for a pointer at x and y inside el. Lifted out of
+   the canvas's own handler unchanged, because a rendition of the Field puts
+   the same readout up over the same stage and has to place it by the same
+   rule, and the rule below was learned the hard way. */
+function probeAt(pr,el,x,y){
  /* THE READOUT SAT ON THE POINTER, AND IT WAS THE COORDINATES. BA6.
 
     x and y are measured from the canvas and the readout is positioned against
@@ -282,14 +307,56 @@ cv.addEventListener('pointermove',function(e){
     first cut of this let it overflow, and at 390 the stage cut 81 of 136
     readouts off at its edge. The pointer can only be covered on a stage too
     small for the readout on both axes at once. */
- var box=pr.offsetParent||cv.parentNode;
- var sx=cv.offsetLeft+x, sy=cv.offsetTop+y, pw=pr.offsetWidth, ph=pr.offsetHeight;
+ var box=pr.offsetParent||el.parentNode;
+ var sx=el.offsetLeft+x, sy=el.offsetTop+y, pw=pr.offsetWidth, ph=pr.offsetHeight;
  var side=function(at,size,room){
   return at+18+size<=room?at+18:at-18-size>=0?at-18-size:Math.max(0,Math.min(room-size,at+18));};
  pr.style.left=side(sx,pw,box.clientWidth)+'px';
  pr.style.top=side(sy,ph,box.clientHeight)+'px';
- pr.classList.add('on');});
+ pr.classList.add('on');}
 cv.addEventListener('pointerleave',function(){S.hover=null;DRAG=null;$('probe').classList.remove('on');});
+/* ============================================================
+   THE RENDITIONS ANSWER THE WAY THE WHEEL DOES. BP8.
+
+   Each mark ui/rings.js draws carries the index of a hit record shaped like
+   the wheel's own, so hovering one puts up this readout in describe()'s words
+   and pressing one runs hitPress, the wheel's own dispatch. The mockups gave
+   every mark a native tooltip instead. Kept, that would have been a second
+   wording of every element on the surface beside the first, and no press on
+   a rendition would have opened anything at all.
+
+   Three differences, each for a reason. Nothing can be dragged, so an
+   address says click and not drag. The core opens on the press, because on
+   the wheel a press on the core also takes hold of the frame to move it, and
+   a rendition has no frame to move. And the two things the wheel never drew
+   get lines of their own: a seat's mark, which carries no word on the
+   drawing, and the four addresses outside the body.
+   ============================================================ */
+function frDescribe(h,r){
+ if(h.k==='seat'){var n=W.filter(function(x){return x.b===h.b;}).length;
+  return '<u>seat</u> <b>'+esc(h.b)+'</b><hr>'+n+' addresses<hr><b>Click for detail.</b>';}
+ if(h.k==='anchor')return '<u>outside the body</u> <b>'+esc(h.n.k)+'</b><hr>'+esc(h.n.a||'');
+ return describe(h,r,true);}
+(function(){
+ var fr=$('frend'); if(!fr)return;
+ var hitOf=function(e){var t=e.target&&e.target.closest?e.target.closest('[data-h]'):null;
+  return t?(FR_HIT[+t.getAttribute('data-h')]||null):null;};
+ fr.addEventListener('pointermove',function(e){
+  var h=hitOf(e),pr=$('probe'); if(!pr)return;
+  var t=h?frDescribe(h,compute()):'';
+  if(!t){pr.classList.remove('on');return;}
+  pr.innerHTML=t;
+  var b=fr.getBoundingClientRect();
+  probeAt(pr,fr,e.clientX-b.left,e.clientY-b.top);});
+ fr.addEventListener('pointerleave',function(){$('probe').classList.remove('on');});
+ fr.addEventListener('click',function(e){
+  var h=hitOf(e); if(!h)return;
+  $('probe').classList.remove('on');
+  /* an address outside the body holds no charge of its own and has no drill
+     yet, so its readout promises nothing and the press does nothing */
+  if(h.k==='anchor')return;
+  if(h.k==='core'){S.pin=null;runCoreDrill();render();return;}
+  hitPress(h,e);});})();
 
 /* ---- collapsible sections ---- */
 /* One open section per rail. It was a single value, so opening anything on
@@ -1013,7 +1080,9 @@ function loop(ts){
  if(!REDUCED)S.t+=(last?Math.min(.05,(ts-last)/1e3):0);
  last=ts;
  var r=compute();
- if(S.tab===TAB.FIELD){draw(r);drawAura(r);renderPol2(r);}
+ /* the wheel breathes, so it is drawn every frame. A rendition does not move,
+    and ringsDraw builds it only when its signature does */
+ if(S.tab===TAB.FIELD){if(fviewOn())ringsDraw(r);else draw(r);drawAura(r);renderPol2(r);}
  else if(S.tab===TAB.ENERGY){drawAura(r);}
  requestAnimationFrame(loop);}
 
@@ -1117,6 +1186,12 @@ step('the stored record',function(){
    nothing on screen. Both say Field now, as they did before the Summary
    ruling, and the comment says why rather than leaving the next reader to
    wonder which of the two is the live one. */
+/* THE FIELD OPENS DRAWN THE WAY THIS PERSON LEFT IT. Read here and not when
+   ui/rings.js loads, because the browser's store is bound above and a read
+   before that meets the engine's empty one, which would put everybody back
+   on the wheel. Its own step, so a store that throws costs the switch and
+   not the start up. */
+step('field view',function(){FVIEW=fviewGet(); fviewPaint(S.tab);});
 step('opening surface',function(){setTab(TAB.FIELD);});
 /* ONBOARDING, ON THE FIRST VISIT ONLY, and after the boot sheet has gone so
    the two do not stack. "Same onboarding for both arrivals", so there is no

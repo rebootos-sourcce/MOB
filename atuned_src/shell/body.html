@@ -283,6 +283,10 @@
       and the throat. A control that hides the thing it controls is not a
       control. Same bar, same pattern, and the figure gets its whole box. -->
  <div class="glass subbar" id="subbar"><div id="vbar" style="display:flex;gap:5px"></div>
+  <!-- the renditions' ten layers, in ring order. It takes the depth row's
+       place while a rendition is up, because the depth row sets how much of
+       the wheel is drawn and a rendition draws every layer at once. -->
+  <div id="flay" class="lays" role="toolbar" aria-label="Layers" style="display:none"></div>
   <div id="lbar" style="display:none;gap:5px;flex-wrap:wrap"></div>
   <div id="rbar" style="display:none;gap:5px;flex-wrap:wrap"></div>
   <!-- THE LINE UNDER CHARGE IS GONE. Ruled 25 September (BA2), marked NO and
@@ -401,7 +405,21 @@
         because the canvas and the compass button address row 3 by number. -->
    <!-- the second strip, lower left, carrying what moves through the person -->
    <div class="keylo" id="keylo" aria-label="What is moving through you"></div>
+   <!-- THE FIELD DRAWN THREE WAYS, AND THE SWITCH. BP8, 25 September. He
+        placed it himself: "Or not, not on the upper right, because that's
+        where your like sixty five percent gaining, whatever it is, that's
+        where that goes. ... Or, put it on the far left, because there's
+        nothing there." The upper right is the rail's tier line, which reads
+        64% Gaining on a profile in that band, and the stage's left lane is
+        empty on every profile measured. So the switch sits at the head of
+        that lane, above the ring, and moves nothing. It comes before the
+        canvas so a phone, which reads the stage as one column, meets it
+        above the picture it changes. -->
+   <div class="fview" id="fview" role="group" aria-label="How the Field is drawn"></div>
    <canvas id="cv" role="img" aria-label="The field wheel. Every element is also listed in the panels either side."></canvas>
+   <!-- the two renditions draw into the wheel's own cell, so all three are
+        compared on the same ground. ui/rings.js writes it. -->
+   <div id="frend" role="img" aria-label="The Field, drawn as nested frames. Every element is also listed in the panels either side." style="display:none"></div>
    <div id="emap" class="emap"></div>
    <div id="iq" class="iq"></div>
    <!-- Knowledge carries Games, and Summary carries Analytics. The owner ruled

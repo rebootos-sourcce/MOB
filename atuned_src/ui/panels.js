@@ -84,7 +84,6 @@ function setTab(i){
   var sb=$('sumbody'), ab=$('ana');
   if(sb)sb.innerHTML=''; if(ab)ab.innerHTML='';}
  S.tab=i; S.pin=null;
- var cvE=$('cv'), vb=$('vbar');
  TABDEF.forEach(function(T){
   var e=$(T.id); if(!e||T.id==='cv')return;
   e.classList.toggle('on',T.k===i);
@@ -106,8 +105,12 @@ function setTab(i){
      anything is a blank screen with a name on it. */
   if(i===TAB.RITUAL&&typeof ritOpen==='function'){
    if(!RIT.open)ritOpen(null); else ritRender(); }})();
- if(cvE) cvE.style.display=(i===TAB.FIELD)?'block':'none';
- if(vb) vb.style.display=(i===TAB.FIELD)?'flex':'none';
+ /* THE FIELD IS DRAWN ONE OF THREE WAYS NOW, BP8, and which of the canvas,
+    the depth row, a rendition and its layer row are up is decided in one
+    place, fviewPaint in ui/rings.js. This showed the canvas and the depth
+    row itself, and a second writer for one display is how a surface ends up
+    showing two pictures at once. */
+ fviewPaint(i);
  /* Body's layer row lives in the sub bar now, not over the figure */
  var lb=$('lbar'), rb=$('rbar');
  if(lb) lb.style.display=(i===TAB.ENERGY)?'flex':'none';
@@ -141,6 +144,10 @@ function setTab(i){
     This is the one deliberate forced reflow in the product, on a host that was
     about to be laid out anyway. */
  (function(){var h=$(i===TAB.SETTINGS?'settings':TABOF(i).id);
+  /* the Field's entry names the canvas, and that is identity and stays. When
+     a rendition is up it is the picture on screen, so it is the one that
+     arrives; the canvas under it is hidden and would rise unseen. */
+  if(i===TAB.FIELD&&fviewOn())h=$('frend');
   if(!h)return; h.classList.remove('tabin'); void h.offsetWidth;
   h.classList.add('tabin');})();
  /* MEASURE THE CANVAS THE MOMENT IT IS VISIBLE, AND NOT ONE LINE EARLIER.
