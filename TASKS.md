@@ -9052,3 +9052,18 @@ the first station scores as harm. Neither shows a person that the turn they
 just took happened. The proposal is F1 in the gap bundle: an append only,
 dated event store kept apart from the reading.
 *Large, and it waits on the station mapping, AU11.*
+
+**AX8. The build already prints an unlabelled Hz number beside anatomy.**
+Found by sound-director's harmonic research pass, and already open once in
+`reviews/sound.md` under a different name. `FLOWSEAT` in
+`atuned_src/engine/data/practice.js:114-120` carries the solfeggio set, 396
+to 963 Hz, one per seat. `ui/mapshelf.js:138` prints "Muladhara · 396 Hz ·
+source 502" and `ui/analytics.js:302` prints "Cranial plexus · 963 Hz",
+beside a nerve plexus name and nothing saying where the number comes from.
+Printed there it reads as measured. The traditions themselves disagree by
+more than an octave on the same seat (solfeggio root 396 Hz, the C to B set's
+256 Hz, Cousto's 194.18 Hz), and root and sacral sit 0.89 of a semitone apart
+in the shipped set, close enough to sound like the same note out of tune.
+*Small, and it is an honesty fix, not a feature: label the source or remove
+the line. Already the cost that moved this seat's grade from C minus to C
+plus once before.*
