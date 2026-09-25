@@ -11058,3 +11058,84 @@ does not; and whether the release a person actually runs should start
 showing the sentence at all, which is also the ground-per-address
 pricing question above.
 
+## BU. A dense round of rulings, closing several open questions at once.
+## 25 September.
+
+**Clinicians, closed for now.** His words: "I've got a few clinicians
+who will look at this later down the line, don't worry about it now...
+I don't have a clinician, don't worry about it, they'll have, they'll
+happen at the end, once we get through the design and I post everything
+up and people can play with it, then the clinicians will look at it. So
+don't ask me until fucking then." He has people for this. It happens
+after design, not now. Not asked again until then; the underlying gap at
+`BN1` stays logged and open, just not raised to him again before its
+time.
+
+**His own dictated style is the real practice, not a rough draft of
+it.** "Anything that's written is natural, my voice dictation is also
+natural, and it's also the same style which I have people go through
+the practice." Confirms the choice already made to log his words
+verbatim rather than tidy them.
+
+**A real release, as he actually runs it live.** "What I have them read
+is a prompt, and then they'll release his left channel, right channel,
+and then install or reframe left channel, right channel. I'm letting go
+of believing that I'm a terrible person and people hate me... I'm
+letting go of listening to the opinions of others. It's a very fluid,
+simple release, because you're not releasing anything other than the
+impression that you've already recorded." Matches the shipped release's
+own four pass structure (release then install, left then right) already
+in `ui/release.js`'s `CHAN`, not a redesign. The target of every line is
+always the person's own recorded impression, never the other person or
+the event itself.
+
+**Do not try to detect which channel a belief truly came from; always
+run both.** "We don't know which channel a person's belief is coming
+from... I don't worry about which one, I focus on both sides, because if
+the impression's on the left, I want to see if it's on the right. The
+right side is always a little bit softer, because it's the interior
+world. Not that you need to do anything about that." *This is the
+release's own existing left/right polarity channel, a different thing
+from the nine verb words at `BT`, kept separate here on purpose so the
+two "channel" meanings are never read as the same question.*
+
+**Apathy, Surprise and Anticipation, answered for `BN2` Q7: not their
+own simple curves, blends of other words.** "Apathy, surprise and
+anticipation are amalgamations of other words that move in different
+directions. Anticipation is anxiety and excitement. Surprise is
+startle. Apathy is not caring, or no empathy, or blasé, or uncommitted.
+I'm not saying use all those, I'm just saying there's a right word to
+describe it." Read as: model these three as blends of more primary
+words rather than independent ladders; no specific word list mandated.
+
+**Keep the product's own names. Real anatomy becomes an honest
+information layer, not a rename.** Answers the anatomy report's Q3 and
+recalibrates Q1: "let's keep the product's own names plainly, but on the
+information page we can add chakra name and whatever else, nerves it's
+connected to, etc, and how the patterns run and what the correct
+pattern is." And on what "one to one" actually means: "if we're talking
+about the third eye, I want that node location to be at the third eye,
+not to the left or right of it. Pretty close, but not off to where a
+clinician will look at it and laugh at me." Read plainly: not scientific
+perfection, defensible closeness. This lowers the bar from what `BQ`'s
+and `BR`'s own framing assumed, in a good way.
+
+**Q6 from the anatomy summary didn't land in words. Sent back with a
+drawing instead**, per his own rule that a geometry question is asked
+with the geometry.
+
+**The suggested task cards are confusing him, and this needs a plain
+answer, not a backlog entry.** His words, in full because they matter:
+"You keep showing these suggested tasks, and when I click on Start Work
+Tree, it opens up a file, so I don't know what the fuck I'm actually
+supposed to do. So I've been closing these. If you bring them all back,
+I guess I'm going to, I don't know what I'm supposed to do, honestly. Do
+I do fix the session, send to cloud? I've never seen this before. Don't
+surprise me with this shit I've never seen before. Tell me what I'm
+supposed to do." These cards come from background agents flagging small,
+out of scope findings as they work, a separate mechanism from this
+backlog file. Answered directly in the reply rather than logged as
+something for him to resolve: closing them is always safe, nothing is
+lost by doing so, because anything worth keeping gets written here
+regardless of what happens to the card.
+
