@@ -425,7 +425,9 @@ DOMAINS.forEach(function(d,i){
  b.addEventListener('mouseenter',function(){
   $('capD').innerHTML='<b style="color:'+ROOTCOL[d.r]+'">'+d.r+'</b>, '+d.nm+'. '+d.d;});
  b.addEventListener('mouseleave',capD);
- b.addEventListener('click',function(e){toYou();
+ /* notYours, not toYou. On a worked example this press loaded the blank own
+    profile under the person with nothing said. See personas.js. */
+ b.addEventListener('click',function(e){if(notYours('change the blueprint domain'))return;
   if(e.shiftKey||!S.doms.length){var k=S.doms.indexOf(i);
    if(k>=0){if(S.doms.length>1)S.doms.splice(k,1);}else S.doms.push(i);}
   else S.doms=[i];
@@ -453,7 +455,8 @@ ROOTD.forEach(function(rn){
   $('capD').innerHTML='<b style="color:'+ROOTCOL[rn]+'">'+rn+'</b> root domain. Holds '
    +holds+'.';});
  b.addEventListener('mouseleave',capD);
- b.addEventListener('click',function(){toYou();var k=S.roots.indexOf(rn);
+ b.addEventListener('click',function(){if(notYours('change the root domain'))return;
+  var k=S.roots.indexOf(rn);
   if(k>=0)S.roots.splice(k,1);else S.roots.push(rn);
   buildSoul();S.pin=null;syncSoul();saveYou();render();});
  $('roots').appendChild(b);});
@@ -475,7 +478,7 @@ function capD(){
   b.innerHTML=svgI('<path d="'+a.ic+'"/>');
   b.addEventListener('mouseenter',function(){$('capA').innerHTML='<b>'+a.nm+'</b>, '+a.v;});
   b.addEventListener('mouseleave',capA);
-  b.addEventListener('click',function(e){toYou();
+  b.addEventListener('click',function(e){if(notYours('change the archetype'))return;
    var k=S.arcs.indexOf(i);
    if(e.shiftKey){if(k>=0){if(S.arcs.length>1)S.arcs.splice(k,1);}else S.arcs.push(i);}
    else if(pair[1]==='a1'){S.arcs=[i].concat(S.arcs.filter(function(x){return x!==i;}).slice(0,3));}

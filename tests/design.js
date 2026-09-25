@@ -978,6 +978,12 @@ console.log('\n=== a sentence in a label class carries plain ===');
       CHILD.forEach((c,j)=>fire('runCellDrill',[0,j]));}
      [].concat(r.sups||[],r.hys||[],r.cxs||[],r.sabs||[])
       .forEach(o=>fire('runDrill',[o]));
+     /* BODY'S TWO READINGS, which were printed in its shelf until Body
+        started answering in the drill and so were never swept at all. Every
+        seat by its key and every pain region by its key, off the two tables
+        they are keyed by, so a seat or a region added later is opened too. */
+     if(typeof FLOWSEAT!=='undefined')FLOWSEAT.forEach(x=>fire('runSeatFlowDrill',[x.k]));
+     if(typeof PAINREG!=='undefined')PAINREG.forEach(x=>fire('runPainDrill',[x.k]));
      /* one atom: a node and the entry that put charge on it */
      if(typeof atomIndex==='function'&&typeof BY!=='undefined'){
       const ai=atomIndex()||{};

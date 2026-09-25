@@ -697,20 +697,27 @@ function renderMap(r){
     figure answers for the pointer, and painting the region already selected
     clears it, so a person can put the map back to blank without hunting for an
     All button they were not looking at. */
+ /* EVERY PRESS ON THE FIGURE ANSWERS IN SELECTION, through pmAnswer in
+    mapshelf.js. These only set the pick and rendered, and the answer was
+    printed at the foot of the shelf: a ring pressed on Gordon's figure put
+    its reading 4,626 pixels down the rail and a seat core 3,328, with
+    Selection, in view, saying nothing was selected. The layer switch is
+    left as it was: it clears the pick and leaves an open answer open, which
+    is what the Field's depth ladder does. */
  document.querySelectorAll('#rbar [data-reg]').forEach(function(el){el.onclick=function(){
-  PAINPICK=el.dataset.reg||null;render();};});
+  PAINPICK=el.dataset.reg||null; pmAnswer(PAINPICK,true);};});
  host.querySelectorAll('.pm-pr[data-reg]').forEach(function(el){el.onclick=function(e){
   e.stopPropagation();
   var k=el.getAttribute('data-reg');
-  PAINPICK=(PAINPICK===k)?null:k; render();};});
+  PAINPICK=(PAINPICK===k)?null:k; pmAnswer(PAINPICK,true);};});
  document.querySelectorAll('#lbar [data-pml]').forEach(function(el){el.onclick=function(){
   PMLAYER=el.dataset.pml;PMPICK=null;render();};});
  host.querySelectorAll('[data-seat]').forEach(function(el){el.onclick=function(){
-  PMPICK=(PMPICK===el.dataset.seat)?null:el.dataset.seat;render();};});
+  PMPICK=(PMPICK===el.dataset.seat)?null:el.dataset.seat; pmAnswer(PMPICK);};});
  host.querySelectorAll('[data-it]').forEach(function(el){el.onclick=function(){
   var hit=marks.filter(function(m){return m.kind==='bead'&&m.rank===+el.dataset.it;})[0];
   var o=hit&&hit.o; PMPICK=(PMPICK===o)?null:o;
-  S.pin=(PMPICK&&typeof PMPICK==='object')?PMPICK:null; render();};});
+  S.pin=(PMPICK&&typeof PMPICK==='object')?PMPICK:null; pmAnswer(PMPICK);};});
  host.querySelectorAll('[data-node]').forEach(function(el){el.onclick=function(){
-  var n=BY[+el.dataset.node];if(n)PMPICK=B2K[n.b];render();};});
+  var n=BY[+el.dataset.node];if(n)PMPICK=B2K[n.b]; pmAnswer(PMPICK);};});
 }

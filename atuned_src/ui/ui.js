@@ -134,12 +134,17 @@ cv.addEventListener('pointerdown',function(e){
   return;}
  if(h.k==='node'&&h.n.cf&&touch){ /* a tap reads the address, it never writes it */
   S.pin=null; runNodeDrill(h.n); render(); return;}
- if(h.k==='dom'){toYou(); undoPush('changing the blueprint domain');
+ /* the same setters as the left rail's icons, so the same guard, notYours in
+    personas.js: on a worked example a press refuses rather than loading the
+    blank own profile under the person. */
+ if(h.k==='dom'){if(notYours('change the blueprint domain'))return;
+  undoPush('changing the blueprint domain');
   if(e.shiftKey){var k=S.doms.indexOf(h.j);
    if(k>=0){if(S.doms.length>1)S.doms.splice(k,1);}else S.doms.push(h.j);}
   else S.doms=[h.j];
   buildSoul();S.pin=null;syncSoul();saveYou();render();return;}
- if(h.k==='arch'){toYou(); undoPush('changing the archetype');
+ if(h.k==='arch'){if(notYours('change the archetype'))return;
+  undoPush('changing the archetype');
   if(e.shiftKey){var k2=S.arcs.indexOf(h.j);
    if(k2>=0){if(S.arcs.length>1)S.arcs.splice(k2,1);}else S.arcs.push(h.j);}
   else S.arcs=[h.j].concat(S.arcs.filter(function(z){return z!==h.j;}).slice(0,3));

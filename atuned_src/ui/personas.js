@@ -368,12 +368,49 @@ $('psel').addEventListener('change',function(e){loadP(+e.target.value);});
 
    loadP(0) is what makes the claim true, and it is the same call every other
    route to the person's own record already goes through. */
+/* AND IT SAYS SO, because it was silent. A slider moved on a worked example
+   is an edit, and the edit going to the person's own record is the ruling
+   above, so the move stands. But it loads a different profile under the
+   person's hand: every reading on the screen changes at once, and measured
+   on Gordon one move of the Fear slider took his coherence from 19.3 to 0,
+   the own profile's laws being unanswered, with only the profile menu, at
+   the other end of the screen, saying why. A write that reports nothing is
+   the thing this codebase forbids by name. The line names the example it
+   left, so the person knows what they were looking at a moment ago. */
 function toYou(){if(S.who===0)return;
+ var was=(PEOPLE[S.who]||{}).nm||'The reference case';
  loadP(0);
  var own=PROF_BY[PEOPLE[0].nm];
  if(own&&PROFILES.indexOf(own)>=0)CURP=own;
  var sel=$('psel'); if(sel)sel.value='0';
- renderSpirit();}
+ renderSpirit();
+ status(was+' is a worked example, so the change went to your own profile.');}
+/* A PRESS THAT LOOKS LIKE READING NEVER WALKS A PERSON OFF A WORKED EXAMPLE.
+   BC1a in TASKS.md, and it is the guard for it.
+
+   The blueprint domains, the root domains and the archetypes are icons in the
+   left rail and rings on the wheel, and a press on one called toYou() before
+   it set anything. On a reference profile that is a different profile loaded
+   under the person, silently. Measured on Gordon at 1600: one press on a
+   blueprint domain, a root domain, either archetype, or the domain or
+   archetype ring on the wheel, and the profile became the blank own one,
+   coherence 19.3 became "not read yet", and the status line was empty. Six
+   entrances, one defect, and all six do the same at 390, the rail icons on
+   the second tap, which is the one a phone acts on.
+
+   A slider is plainly an edit and toYou above is right for it. An icon that
+   names a thing is pressed to find out what it is, and turning that into a
+   change of profile is the large change of the wrong kind. So on a worked
+   example these refuse, in the words the release, the story and the save
+   already use for the same crossing, and nothing moves. On the person's own
+   profile S.who is 0 and this returns false without a word, so a press sets
+   exactly what it set before. */
+function notYours(what){
+ if(S.who===0)return false;
+ status('You are looking at '+((PEOPLE[S.who]||{}).nm||'a reference case')
+  +', which is a worked example rather than your record. Switch to your own '
+  +'profile to '+what+'.','fail');
+ return true;}
 /* THE MIRROR ONLY WRITES FOR THE RECORD IT MIRRORS.
 
    PEOPLE[0] is the table loadP(0) reads the person's own field back out of, and

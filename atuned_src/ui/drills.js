@@ -5,6 +5,9 @@
    ============================================================ */
 /* Opening a drill only set display:block on a div far down a long rail, so
    the answer to a click arrived below the fold with nothing saying it had. */
+/* true for the length of one drill, set by a caller whose press was made
+   inside the rail itself. Read by the phone half of the test in rdOpen. */
+var RD_INRAIL=false;
 function rdOpen(){var b=document.getElementById('rdrill');if(!b)return null;
  b.style.display='block';
  var none=document.getElementById('rdrill-none'); if(none)none.style.display='none';
@@ -33,18 +36,60 @@ function rdOpen(){var b=document.getElementById('rdrill');if(!b)return null;
     The test is where the rail actually is, read at run time, not a width
     somebody typed. A rail that starts below the surface it belongs to is
     stacked, and a stacked drill does not move the page. */
+ /* AND THE TEST MEASURED THE SECTION, NOT THE RAIL, SO IT NEVER FIRED ON A
+    DESKTOP. This is BC1, and it was the main cause of "I click and nothing
+    changes".
+
+    It read the top of the Selection section, and that section lives inside
+    the rail's own scroll, under the Reading. The Reading is 1,440 to 1,888
+    pixels tall on every profile measured, so on a desktop the section's top
+    sat at 1,648 to 2,091 against a stage whose bottom is at 990: the test
+    answered "stacked" on every screen wide enough to put the rail beside the
+    stage, and nothing was ever scrolled. Measured with a Knowledge row
+    pressed on seven profiles at 1600 and at 1280: none of the fourteen
+    answers reached the screen, and the blank profile a stranger arrives on
+    was the furthest, at 2,147. The Field's key strip landed at 1,790 and a
+    Compass axis name at 1,704.
+
+    Beside or under is a fact about the rail column, which is the thing the
+    grid places next to the stage or below it. So the column is measured,
+    and the section is still what is scrolled to. On a phone the column
+    starts below the stage and this still does nothing, which is the rule
+    above holding. */
  var sec=b.closest?b.closest('.lsec'):null;
+ var col=b.closest?b.closest('.col'):null;
  var stage=document.querySelector('.stage');
  var beside=true;
  try{
-  var rr=(sec||b).getBoundingClientRect(), sr=stage?stage.getBoundingClientRect():null;
+  var rr=(col||sec||b).getBoundingClientRect(), sr=stage?stage.getBoundingClientRect():null;
   if(sr)beside=(rr.top<sr.bottom-8);
  }catch(e){}
- if(beside&&sec&&sec.scrollIntoView){
+ /* AND ON A PHONE, A PRESS MADE IN THE RAIL IS STILL BROUGHT TO ITS ANSWER.
+    The rule above protects the stage: somebody who pressed the compass must
+    not be carried four thousand pixels away from it. A press made inside the
+    rail is the other case, because the answer is in the column the person
+    is already reading. Body's shelf is where it showed. Its seat rows
+    printed their reading just under themselves, seen at y 707 on a 390
+    wide screen, and once Body answered in Selection that reading opened 742
+    pixels above the top of the screen: a press that had answered in view
+    stopped answering, which is worse than before and not allowed to ship.
+
+    Only the caller knows where its press was made, so it says so for the
+    length of one drill (RD_INRAIL, set by pmAnswer for the shelf's rows).
+    A press on the stage never sets it, so the rule above holds for every
+    one of those exactly as it did. */
+ if((beside||RD_INRAIL)&&sec&&sec.scrollIntoView){
   try{sec.scrollIntoView({block:'start',behavior:REDUCED?'auto':'smooth'});}
   catch(e){sec.scrollIntoView();}}
  return b;}
 function rdClose(){ANA_PICK=null;S.pin=null;
+ /* AND BODY'S PICK GOES DOWN WITH THE ANSWER, now that Body answers here. The
+    way back is where every surface puts its pick down, the Field's S.pin and
+    Analytics' ANA_PICK above, and Body's was missing because Body never
+    answered in this panel. Left up, the figure went on drawing the one
+    pattern it had pinned, with its name beside it and the other rings
+    hidden, under a Selection section that said nothing was selected. */
+ PMPICK=null;
  var b=document.getElementById('rdrill');if(b){b.innerHTML='';b.style.display='none';}
  var none=document.getElementById('rdrill-none'); if(none)none.style.display='';
  render();}

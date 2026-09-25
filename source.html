@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="86b7b82 2026-09-25 19:35"><head><meta charset="utf-8">
+<html lang="en" data-build="d5288b5 2026-09-25 20:28"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -15563,22 +15563,29 @@ function renderMap(r){
     figure answers for the pointer, and painting the region already selected
     clears it, so a person can put the map back to blank without hunting for an
     All button they were not looking at. */
+ /* EVERY PRESS ON THE FIGURE ANSWERS IN SELECTION, through pmAnswer in
+    mapshelf.js. These only set the pick and rendered, and the answer was
+    printed at the foot of the shelf: a ring pressed on Gordon's figure put
+    its reading 4,626 pixels down the rail and a seat core 3,328, with
+    Selection, in view, saying nothing was selected. The layer switch is
+    left as it was: it clears the pick and leaves an open answer open, which
+    is what the Field's depth ladder does. */
  document.querySelectorAll('#rbar [data-reg]').forEach(function(el){el.onclick=function(){
-  PAINPICK=el.dataset.reg||null;render();};});
+  PAINPICK=el.dataset.reg||null; pmAnswer(PAINPICK,true);};});
  host.querySelectorAll('.pm-pr[data-reg]').forEach(function(el){el.onclick=function(e){
   e.stopPropagation();
   var k=el.getAttribute('data-reg');
-  PAINPICK=(PAINPICK===k)?null:k; render();};});
+  PAINPICK=(PAINPICK===k)?null:k; pmAnswer(PAINPICK,true);};});
  document.querySelectorAll('#lbar [data-pml]').forEach(function(el){el.onclick=function(){
   PMLAYER=el.dataset.pml;PMPICK=null;render();};});
  host.querySelectorAll('[data-seat]').forEach(function(el){el.onclick=function(){
-  PMPICK=(PMPICK===el.dataset.seat)?null:el.dataset.seat;render();};});
+  PMPICK=(PMPICK===el.dataset.seat)?null:el.dataset.seat; pmAnswer(PMPICK);};});
  host.querySelectorAll('[data-it]').forEach(function(el){el.onclick=function(){
   var hit=marks.filter(function(m){return m.kind==='bead'&&m.rank===+el.dataset.it;})[0];
   var o=hit&&hit.o; PMPICK=(PMPICK===o)?null:o;
-  S.pin=(PMPICK&&typeof PMPICK==='object')?PMPICK:null; render();};});
+  S.pin=(PMPICK&&typeof PMPICK==='object')?PMPICK:null; pmAnswer(PMPICK);};});
  host.querySelectorAll('[data-node]').forEach(function(el){el.onclick=function(){
-  var n=BY[+el.dataset.node];if(n)PMPICK=B2K[n.b];render();};});
+  var n=BY[+el.dataset.node];if(n)PMPICK=B2K[n.b]; pmAnswer(PMPICK);};});
 }
 
 try{window.__at&&window.__at('ui/map.js');}catch(e){}
@@ -15634,23 +15641,21 @@ function renderShelf(r,seats,speed,stop,dom,loadedTot,marks){
     +'<span class="pm-lk">'+m.band+'</span></button>';});
   sh+='</div>';}
 
- if(PMLAYER==='pain'&&PAINPICK){
-  var rg=PAINREG.filter(function(p){return p.k===PAINPICK;})[0];
-  var rn=W.filter(function(n){return rg.bands.indexOf(n.b)>=0&&n.sq>=LOADED+1;})
-   .sort(function(a,b){return b.sq-a.sq;});
-  sh+='<div class="pm-det"><div class="pm-eye">Pain region</div><div class="pm-dn">'+rg.nm+'</div>'
-   +'<div class="pm-dm">'+rg.bands.join(' + ')+' · '+rn.length+' addresses above the line</div>'
-   +'<div class="pm-eye" style="margin-top:12px">Commonly presents as</div>'
-   +'<div class="pm-dm" style="color:var(--mid)">'+rg.common+'</div>'
-   +'<div class="pm-eye" style="margin-top:12px">The pattern under it</div>'
-   +'<div class="pm-pat">'+rg.pattern+'</div>';
-  if(rn.length){sh+='<div class="pm-eye" style="margin-top:12px">Heaviest here</div><div class="pm-rows">';
-   rn.slice(0,6).forEach(function(n){
-    var opp=(CHILD.filter(function(c){return c.nm===n.cf;})[0]||{}).opp||'';
-    sh+='<div class="pm-r"><span>'+esc(n.k)+'</span><em>toward '+esc(opp||'no pole')
-     +'</em><b>'+n.sq.toFixed(1)+'</b></div>';});
-   sh+='</div>';}
-  sh+='</div>';}
+ /* THE ANSWER TO A PRESS IS NOT PRINTED HERE ANY MORE. It was, three times
+    over: a pain region under the rows, a pattern under the legend, a seat
+    under the seats. This shelf sits in the Flow section, below Reading and
+    Selection, so every one of them landed at the bottom of a long rail.
+    Measured on Gordon at 1600: a person scrolls to the first saboteur row,
+    presses it at y 545, and its answer printed at y 3,124, 2,579 pixels
+    under the row, while the Selection section above still read "Nothing
+    selected". A ring on the figure put it at 4,626. And a mask threw: a mask
+    has no parts, so leaves() handed back the mask itself as its own address,
+    n.sq was undefined, and every render of the Body page failed until the
+    pick changed.
+
+    Every press now opens its answer through pmAnswer below, in Selection,
+    which is where every other surface answers and which rdOpen brings into
+    view. The rows and the seats stay here and still show what is picked. */
 
  /* the legend. what a row means on THIS layer. */
  var LEG={
@@ -15671,39 +15676,6 @@ function renderShelf(r,seats,speed,stop,dom,loadedTot,marks){
   LEG.forEach(function(L){sh+='<span class="pm-lgk">'+L[0]+'</span><span class="pm-lgv">'+L[1]+'</span>';});
   sh+='</div>';}
 
- /* detail for whatever is picked */
- if(PMPICK&&typeof PMPICK==='object'){
-  var o=PMPICK;
-  if(o.i!==undefined){                                      /* an address */
-   var opp2=(CHILD.filter(function(c){return c.nm===o.cf;})[0]||{}).opp||'';
-   var owners=[].concat(r.sups,r.hys,r.cxs,r.sabs).filter(function(z){return leaves(z).indexOf(o)>=0;});
-   sh+='<div class="pm-det"><div class="pm-eye">'+esc(o.b||'')+'</div>'
-    +'<div class="pm-dn">'+esc(o.k)+'</div>'
-    +'<div class="pm-dm">'+o.b+' · '+(o.n||'field anchor')+'<br>axis '+esc(o.a||'')+'</div>'
-    +'<div class="pm-grid"><span>held</span><b>'+o.held.toFixed(1)+'</b>'
-    +'<span>opposite in</span><b>'+o.rep.toFixed(1)+'</b>'
-    +'<span>SQ</span><b>'+o.sq.toFixed(1)+'</b>'
-    +'<span>moving toward</span><b>'+esc(opp2||'no pole')+'</b></div>'
-    +'<div class="pm-eye" style="margin-top:12px">Feeds '+owners.length+'</div><div class="pm-chips">'
-    +(owners.length?owners.slice(0,8).map(function(z){
-      return '<span class="pm-chip'+(z.over?' over':'')+'">'+esc(z.nm)+' '+z.w.toFixed(1)+'</span>';}).join('')
-      :'<span class="pm-chip">nothing compounds from here</span>')+'</div></div>';
-  } else {                                                  /* a pattern */
-   var lv=leaves(o), bs=[];lv.forEach(function(n){if(bs.indexOf(n.b)<0)bs.push(n.b);});
-   sh+='<div class="pm-det"><div class="pm-eye">'
-    +({sab:'Saboteur',cx:'Complex',hy:'Hyper-complex',sup:'Character layer'}[o.kind]||'Mask')
-    +(o.over?', overshot':'')+'</div><div class="pm-dn">'+esc(o.nm)+'</div>'
-    +'<div class="pm-dm">'+(o.auth?esc(o.auth)+'<br>':'')+(o.sub?esc(o.sub)+'<br>':'')
-    +(o.score?o.score+'% match'+(o.exact?', every charge inside its range':'')+'<br>':'')
-    +'built from '+lv.length+' addresses across '+bs.length+' seats<br>'+bs.join(', ')+'</div>'
-    +'<div class="pm-eye" style="margin-top:12px">Made of</div><div class="pm-rows">';
-   lv.slice(0,8).forEach(function(n){
-    var op=(CHILD.filter(function(c){return c.nm===n.cf;})[0]||{}).opp||'';
-    sh+='<div class="pm-r"><span>'+String(n.i).padStart(3,'0')+' '+esc(n.k)+'</span><em>toward '
-     +esc(op||'no pole')+'</em><b>'+n.sq.toFixed(1)+'</b></div>';});
-   if(lv.length>8)sh+='<div class="pm-more">and '+(lv.length-8)+' more</div>';
-   sh+='</div></div>';}}
-
  /* the seven seats. bare numbers, per B19. */
  sh+='<div class="pm-eye" style="margin-top:14px">Seats</div><div class="pm-seats">';
  seats.forEach(function(s){var b=PMBANDS.filter(function(x){return x.k===s.p.k;})[0];
@@ -15714,35 +15686,96 @@ function renderShelf(r,seats,speed,stop,dom,loadedTot,marks){
    +'<span class="pm-sp">'+Math.round(s.pass*100)+'%</span>'
    +'<span class="pm-sk">'+s.p.nv+'</span></button>';});
  sh+='</div>';
- if(PMPICK&&typeof PMPICK==='string'){
-  var sd=FLOWSEAT.filter(function(p){return p.k===PMPICK;})[0];
-  var ss=seats.filter(function(x){return x.p.k===PMPICK;})[0],bnd=K2B[PMPICK];
-  var seg=W.filter(function(n){return n.b===bnd;}).sort(function(a,b){return b.sq-a.sq;});
-  var lws=SI.filter(function(l){return l.b===bnd;});
-  sh+='<div class="pm-det"><div class="pm-eye">'+sd.sk+' · '+sd.hz+' Hz · source '+sd.src+'</div>'
-   +'<div class="pm-dn">'+sd.n+'</div><div class="pm-dm"><b>'+sd.nv+'</b><br>vritti '+sd.vt
-   +'<br>seated at '+sd.seat+'</div>'
-   +'<div class="pm-grid"><span>passes</span><b>'+Math.round(ss.pass*100)+'%</b>'
-   +'<span>held</span><b>'+ss.hot+'</b>'
-   +'<span>mean SQ</span><b>'+ss.mean.toFixed(1)+'</b>'
-   +'<span>integrity</span><b>'+bandIg(bnd).toFixed(1)+'</b></div>'
-   +'<div class="pm-eye" style="margin-top:12px">Moral integrity seated here</div><div class="pm-chips">'
-   +lws.map(function(l){return '<span class="pm-chip" style="opacity:'
-     +(0.4+S.law[l.nm]/10*0.6).toFixed(2)+'">'+l.nm+' '+S.law[l.nm].toFixed(1)+'</span>';}).join('')+'</div>'
-   +'<div class="pm-eye" style="margin-top:12px">Addresses</div><div class="pm-rows">';
-  seg.slice(0,8).forEach(function(n){
-   var opp3=(CHILD.filter(function(c){return c.nm===n.cf;})[0]||{}).opp||'';
-   sh+='<div class="pm-r"><span>'+String(n.i).padStart(3,'0')+' '+esc(n.k)+'</span><em>toward '
-    +esc(opp3||'no pole')+(n.pole>=4?', installed':'')+'</em><b>'+n.sq.toFixed(1)+'</b></div>';});
-  sh+='</div></div>';}
  el.innerHTML=sh;
  el.querySelectorAll('[data-it]').forEach(function(b){b.onclick=function(){
   var hit=marks.filter(function(m){return m.kind==='bead'&&m.rank===+b.dataset.it;})[0];
   var o=hit&&hit.o; PMPICK=(PMPICK===o)?null:o;
-  S.pin=(PMPICK&&typeof PMPICK==='object')?PMPICK:null; render();};});
+  S.pin=(PMPICK&&typeof PMPICK==='object')?PMPICK:null; pmAnswer(PMPICK,false,true);};});
  el.querySelectorAll('[data-seat]').forEach(function(b){b.onclick=function(){
-  PMPICK=(PMPICK===b.dataset.seat)?null:b.dataset.seat; render();};});
+  PMPICK=(PMPICK===b.dataset.seat)?null:b.dataset.seat; pmAnswer(PMPICK,false,true);};});
 }
+
+/* ============================================================
+   BODY ANSWERS WHERE EVERYTHING ELSE ANSWERS.
+
+   One press, one door, and every kind goes to the drill that already exists
+   for it, which is the rule the codex already keeps in kbOpen. A saboteur,
+   a complex, a hyper-complex and a character layer are the same objects the
+   Field and the codex open with runDrill, so they open with runDrill here:
+   the shelf had a second, shorter renderer for them, which is two places for
+   one reading to disagree, and it printed the clinical correspondence that
+   ui.js keeps off this person's screen by name. The Hyper rows above still
+   print it on their sub-line, "bipolar · ADHD" on Gordon, which is a
+   separate defect and is not widened into this one. A mask opens the
+   codex's own mask entry, the only door a mask has, because it is a shape
+   over seats and not a set of addresses.
+
+   A seat read for flow and a pain region have no door anywhere else. Their
+   readings are the two the shelf printed, moved rather than rewritten, so
+   the numbers are the ones a person was already shown.
+
+   A press that puts the pick down puts the answer down with it. The
+   render comes after the drill, the order the Field's presses use.
+
+   inRail is true for the shelf's own rows, which sit in the same rail as
+   the answer, so on a phone the answer is still brought into view for
+   them. See the phone half of the test in rdOpen. The flag is dropped in a
+   finally, because a drill that threw would otherwise leave it set for the
+   next press, which might be one made on the stage. */
+function pmAnswer(pick,pain,inRail){
+ if(!pick){rdClose();return;}
+ RD_INRAIL=!!inRail;
+ try{
+  if(pain)runPainDrill(pick);
+  else if(typeof pick==='string')runSeatFlowDrill(pick);
+  else if(pick.kind)runDrill(pick);
+  else {var mk=MASKS.filter(function(m){return m.nm===pick.nm;})[0];
+   if(mk)kbOpen({k:'mask',o:mk});}
+ }finally{RD_INRAIL=false;}
+ render();}
+/* one seat, read for flow: what passes, what is held, which laws sit here */
+function runSeatFlowDrill(k){
+ var seats=flSeats();
+ var sd=FLOWSEAT.filter(function(p){return p.k===k;})[0];
+ var ss=seats.filter(function(x){return x.p.k===k;})[0],bnd=K2B[k];
+ if(!sd||!ss)return;
+ var seg=W.filter(function(n){return n.b===bnd;}).sort(function(a,b){return b.sq-a.sq;});
+ var lws=SI.filter(function(l){return l.b===bnd;});
+ var h='<div class="pm-eye">'+sd.sk+' · '+sd.hz+' Hz · source '+sd.src+'</div>'
+  +'<div class="pm-dn">'+sd.n+'</div><div class="pm-dm"><b>'+sd.nv+'</b><br>vritti '+sd.vt
+  +'<br>seated at '+sd.seat+'</div>'
+  +'<div class="pm-grid"><span>passes</span><b>'+Math.round(ss.pass*100)+'%</b>'
+  +'<span>held</span><b>'+ss.hot+'</b>'
+  +'<span>mean SQ</span><b>'+ss.mean.toFixed(1)+'</b>'
+  +'<span>integrity</span><b>'+bandIg(bnd).toFixed(1)+'</b></div>'
+  +'<div class="pm-eye" style="margin-top:12px">Moral integrity seated here</div><div class="pm-chips">'
+  +lws.map(function(l){return '<span class="pm-chip" style="opacity:'
+    +(0.4+S.law[l.nm]/10*0.6).toFixed(2)+'">'+l.nm+' '+S.law[l.nm].toFixed(1)+'</span>';}).join('')+'</div>'
+  +'<div class="pm-eye" style="margin-top:12px">Addresses</div><div class="pm-rows">';
+ seg.slice(0,8).forEach(function(n){
+  var opp3=(CHILD.filter(function(c){return c.nm===n.cf;})[0]||{}).opp||'';
+  h+='<div class="pm-r"><span>'+String(n.i).padStart(3,'0')+' '+esc(n.k)+'</span><em>toward '
+   +esc(opp3||'no pole')+(n.pole>=4?', installed':'')+'</em><b>'+n.sq.toFixed(1)+'</b></div>';});
+ h+='</div>';
+ rdShell(h);}
+/* one painted region: what it presents as, and what is heaviest under it */
+function runPainDrill(k){
+ var rg=PAINREG.filter(function(p){return p.k===k;})[0]; if(!rg)return;
+ var rn=W.filter(function(n){return rg.bands.indexOf(n.b)>=0&&n.sq>=LOADED+1;})
+  .sort(function(a,b){return b.sq-a.sq;});
+ var h='<div class="pm-eye">Pain region</div><div class="pm-dn">'+rg.nm+'</div>'
+  +'<div class="pm-dm">'+rg.bands.join(' + ')+' · '+rn.length+' addresses above the line</div>'
+  +'<div class="pm-eye" style="margin-top:12px">Commonly presents as</div>'
+  +'<div class="pm-dm" style="color:var(--mid)">'+rg.common+'</div>'
+  +'<div class="pm-eye" style="margin-top:12px">The pattern under it</div>'
+  +'<div class="pm-pat">'+rg.pattern+'</div>';
+ if(rn.length){h+='<div class="pm-eye" style="margin-top:12px">Heaviest here</div><div class="pm-rows">';
+  rn.slice(0,6).forEach(function(n){
+   var opp=(CHILD.filter(function(c){return c.nm===n.cf;})[0]||{}).opp||'';
+   h+='<div class="pm-r"><span>'+esc(n.k)+'</span><em>toward '+esc(opp||'no pole')
+    +'</em><b>'+n.sq.toFixed(1)+'</b></div>';});
+  h+='</div>';}
+ rdShell(h);}
 
 try{window.__at&&window.__at('ui/mapshelf.js');}catch(e){}
 
@@ -19468,6 +19501,9 @@ try{window.__at&&window.__at('ui/cone.js');}catch(e){}
    ============================================================ */
 /* Opening a drill only set display:block on a div far down a long rail, so
    the answer to a click arrived below the fold with nothing saying it had. */
+/* true for the length of one drill, set by a caller whose press was made
+   inside the rail itself. Read by the phone half of the test in rdOpen. */
+var RD_INRAIL=false;
 function rdOpen(){var b=document.getElementById('rdrill');if(!b)return null;
  b.style.display='block';
  var none=document.getElementById('rdrill-none'); if(none)none.style.display='none';
@@ -19496,18 +19532,60 @@ function rdOpen(){var b=document.getElementById('rdrill');if(!b)return null;
     The test is where the rail actually is, read at run time, not a width
     somebody typed. A rail that starts below the surface it belongs to is
     stacked, and a stacked drill does not move the page. */
+ /* AND THE TEST MEASURED THE SECTION, NOT THE RAIL, SO IT NEVER FIRED ON A
+    DESKTOP. This is BC1, and it was the main cause of "I click and nothing
+    changes".
+
+    It read the top of the Selection section, and that section lives inside
+    the rail's own scroll, under the Reading. The Reading is 1,440 to 1,888
+    pixels tall on every profile measured, so on a desktop the section's top
+    sat at 1,648 to 2,091 against a stage whose bottom is at 990: the test
+    answered "stacked" on every screen wide enough to put the rail beside the
+    stage, and nothing was ever scrolled. Measured with a Knowledge row
+    pressed on seven profiles at 1600 and at 1280: none of the fourteen
+    answers reached the screen, and the blank profile a stranger arrives on
+    was the furthest, at 2,147. The Field's key strip landed at 1,790 and a
+    Compass axis name at 1,704.
+
+    Beside or under is a fact about the rail column, which is the thing the
+    grid places next to the stage or below it. So the column is measured,
+    and the section is still what is scrolled to. On a phone the column
+    starts below the stage and this still does nothing, which is the rule
+    above holding. */
  var sec=b.closest?b.closest('.lsec'):null;
+ var col=b.closest?b.closest('.col'):null;
  var stage=document.querySelector('.stage');
  var beside=true;
  try{
-  var rr=(sec||b).getBoundingClientRect(), sr=stage?stage.getBoundingClientRect():null;
+  var rr=(col||sec||b).getBoundingClientRect(), sr=stage?stage.getBoundingClientRect():null;
   if(sr)beside=(rr.top<sr.bottom-8);
  }catch(e){}
- if(beside&&sec&&sec.scrollIntoView){
+ /* AND ON A PHONE, A PRESS MADE IN THE RAIL IS STILL BROUGHT TO ITS ANSWER.
+    The rule above protects the stage: somebody who pressed the compass must
+    not be carried four thousand pixels away from it. A press made inside the
+    rail is the other case, because the answer is in the column the person
+    is already reading. Body's shelf is where it showed. Its seat rows
+    printed their reading just under themselves, seen at y 707 on a 390
+    wide screen, and once Body answered in Selection that reading opened 742
+    pixels above the top of the screen: a press that had answered in view
+    stopped answering, which is worse than before and not allowed to ship.
+
+    Only the caller knows where its press was made, so it says so for the
+    length of one drill (RD_INRAIL, set by pmAnswer for the shelf's rows).
+    A press on the stage never sets it, so the rule above holds for every
+    one of those exactly as it did. */
+ if((beside||RD_INRAIL)&&sec&&sec.scrollIntoView){
   try{sec.scrollIntoView({block:'start',behavior:REDUCED?'auto':'smooth'});}
   catch(e){sec.scrollIntoView();}}
  return b;}
 function rdClose(){ANA_PICK=null;S.pin=null;
+ /* AND BODY'S PICK GOES DOWN WITH THE ANSWER, now that Body answers here. The
+    way back is where every surface puts its pick down, the Field's S.pin and
+    Analytics' ANA_PICK above, and Body's was missing because Body never
+    answered in this panel. Left up, the figure went on drawing the one
+    pattern it had pinned, with its name beside it and the other rings
+    hidden, under a Selection section that said nothing was selected. */
+ PMPICK=null;
  var b=document.getElementById('rdrill');if(b){b.innerHTML='';b.style.display='none';}
  var none=document.getElementById('rdrill-none'); if(none)none.style.display='';
  render();}
@@ -22068,7 +22146,9 @@ DOMAINS.forEach(function(d,i){
  b.addEventListener('mouseenter',function(){
   $('capD').innerHTML='<b style="color:'+ROOTCOL[d.r]+'">'+d.r+'</b>, '+d.nm+'. '+d.d;});
  b.addEventListener('mouseleave',capD);
- b.addEventListener('click',function(e){toYou();
+ /* notYours, not toYou. On a worked example this press loaded the blank own
+    profile under the person with nothing said. See personas.js. */
+ b.addEventListener('click',function(e){if(notYours('change the blueprint domain'))return;
   if(e.shiftKey||!S.doms.length){var k=S.doms.indexOf(i);
    if(k>=0){if(S.doms.length>1)S.doms.splice(k,1);}else S.doms.push(i);}
   else S.doms=[i];
@@ -22096,7 +22176,8 @@ ROOTD.forEach(function(rn){
   $('capD').innerHTML='<b style="color:'+ROOTCOL[rn]+'">'+rn+'</b> root domain. Holds '
    +holds+'.';});
  b.addEventListener('mouseleave',capD);
- b.addEventListener('click',function(){toYou();var k=S.roots.indexOf(rn);
+ b.addEventListener('click',function(){if(notYours('change the root domain'))return;
+  var k=S.roots.indexOf(rn);
   if(k>=0)S.roots.splice(k,1);else S.roots.push(rn);
   buildSoul();S.pin=null;syncSoul();saveYou();render();});
  $('roots').appendChild(b);});
@@ -22118,7 +22199,7 @@ function capD(){
   b.innerHTML=svgI('<path d="'+a.ic+'"/>');
   b.addEventListener('mouseenter',function(){$('capA').innerHTML='<b>'+a.nm+'</b>, '+a.v;});
   b.addEventListener('mouseleave',capA);
-  b.addEventListener('click',function(e){toYou();
+  b.addEventListener('click',function(e){if(notYours('change the archetype'))return;
    var k=S.arcs.indexOf(i);
    if(e.shiftKey){if(k>=0){if(S.arcs.length>1)S.arcs.splice(k,1);}else S.arcs.push(i);}
    else if(pair[1]==='a1'){S.arcs=[i].concat(S.arcs.filter(function(x){return x!==i;}).slice(0,3));}
@@ -23538,12 +23619,49 @@ $('psel').addEventListener('change',function(e){loadP(+e.target.value);});
 
    loadP(0) is what makes the claim true, and it is the same call every other
    route to the person's own record already goes through. */
+/* AND IT SAYS SO, because it was silent. A slider moved on a worked example
+   is an edit, and the edit going to the person's own record is the ruling
+   above, so the move stands. But it loads a different profile under the
+   person's hand: every reading on the screen changes at once, and measured
+   on Gordon one move of the Fear slider took his coherence from 19.3 to 0,
+   the own profile's laws being unanswered, with only the profile menu, at
+   the other end of the screen, saying why. A write that reports nothing is
+   the thing this codebase forbids by name. The line names the example it
+   left, so the person knows what they were looking at a moment ago. */
 function toYou(){if(S.who===0)return;
+ var was=(PEOPLE[S.who]||{}).nm||'The reference case';
  loadP(0);
  var own=PROF_BY[PEOPLE[0].nm];
  if(own&&PROFILES.indexOf(own)>=0)CURP=own;
  var sel=$('psel'); if(sel)sel.value='0';
- renderSpirit();}
+ renderSpirit();
+ status(was+' is a worked example, so the change went to your own profile.');}
+/* A PRESS THAT LOOKS LIKE READING NEVER WALKS A PERSON OFF A WORKED EXAMPLE.
+   BC1a in TASKS.md, and it is the guard for it.
+
+   The blueprint domains, the root domains and the archetypes are icons in the
+   left rail and rings on the wheel, and a press on one called toYou() before
+   it set anything. On a reference profile that is a different profile loaded
+   under the person, silently. Measured on Gordon at 1600: one press on a
+   blueprint domain, a root domain, either archetype, or the domain or
+   archetype ring on the wheel, and the profile became the blank own one,
+   coherence 19.3 became "not read yet", and the status line was empty. Six
+   entrances, one defect, and all six do the same at 390, the rail icons on
+   the second tap, which is the one a phone acts on.
+
+   A slider is plainly an edit and toYou above is right for it. An icon that
+   names a thing is pressed to find out what it is, and turning that into a
+   change of profile is the large change of the wrong kind. So on a worked
+   example these refuse, in the words the release, the story and the save
+   already use for the same crossing, and nothing moves. On the person's own
+   profile S.who is 0 and this returns false without a word, so a press sets
+   exactly what it set before. */
+function notYours(what){
+ if(S.who===0)return false;
+ status('You are looking at '+((PEOPLE[S.who]||{}).nm||'a reference case')
+  +', which is a worked example rather than your record. Switch to your own '
+  +'profile to '+what+'.','fail');
+ return true;}
 /* THE MIRROR ONLY WRITES FOR THE RECORD IT MIRRORS.
 
    PEOPLE[0] is the table loadP(0) reads the person's own field back out of, and
@@ -24191,12 +24309,17 @@ cv.addEventListener('pointerdown',function(e){
   return;}
  if(h.k==='node'&&h.n.cf&&touch){ /* a tap reads the address, it never writes it */
   S.pin=null; runNodeDrill(h.n); render(); return;}
- if(h.k==='dom'){toYou(); undoPush('changing the blueprint domain');
+ /* the same setters as the left rail's icons, so the same guard, notYours in
+    personas.js: on a worked example a press refuses rather than loading the
+    blank own profile under the person. */
+ if(h.k==='dom'){if(notYours('change the blueprint domain'))return;
+  undoPush('changing the blueprint domain');
   if(e.shiftKey){var k=S.doms.indexOf(h.j);
    if(k>=0){if(S.doms.length>1)S.doms.splice(k,1);}else S.doms.push(h.j);}
   else S.doms=[h.j];
   buildSoul();S.pin=null;syncSoul();saveYou();render();return;}
- if(h.k==='arch'){toYou(); undoPush('changing the archetype');
+ if(h.k==='arch'){if(notYours('change the archetype'))return;
+  undoPush('changing the archetype');
   if(e.shiftKey){var k2=S.arcs.indexOf(h.j);
    if(k2>=0){if(S.arcs.length>1)S.arcs.splice(k2,1);}else S.arcs.push(h.j);}
   else S.arcs=[h.j].concat(S.arcs.filter(function(z){return z!==h.j;}).slice(0,3));
@@ -25201,5 +25324,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="001631504"></div>
+<div id="eof" hidden data-len="001638570"></div>
 </body></html>
