@@ -10301,6 +10301,116 @@ Field's secondary bar clips off screen at 1600 wide; and CQ prints four
 times on one screen (strip, core, slider, rail), which may be
 intentional or may be drift, flagged rather than assumed either way.
 
+**BO1. The Shadow wash could not tell loaded profiles apart.** MOB,
+`ui/wheel.js` `drawAura`. Its density was `DQ/7`, a ceiling from when DQ
+was an uncapped sum. DQ has been 0 to 100 since `dd0bf23` this afternoon,
+and the DQ ring in the strip moved with it while this line did not.
+Measured across the reference cases: 8 of the 14 that carry a reading are
+over 7, and all 8 drew at full density. Read back off the wash canvas,
+Marcus at DQ 10.7, Derek at 26.1 and Gordon at 53.9 all measured 114 of
+255 at the corners. Because the canvas opacity falls with radiance, the
+heaviest shadow drew the faintest wash on screen.
+*Fixed and pushed, MOB `c63c5cc`. `DQ/100`, the figure the DQ ring already
+draws. The corners now read 5.8, 9.9, 22.6 and 53.8 across DQ 3.2, 10.7,
+26.1 and 53.9. The wash is also much fainter for everyone: at DQ 3 it is
+barely there, which is what the figure says. If he wants a light shadow
+still to tint the ground, that is a curve for the art director to choose,
+not a constant to guess.*
+
+**BO2. The gate pill type is 8.5px, under the 11px floor, and it cannot
+rise on its own.** MOB, `ui/wheel.js` `verpArrows`. The design gate reads
+the DOM and cannot see canvas text, which is why it never failed. Tried
+at 11px and reverted after looking. The pill has to grow to hold the
+type (15 tall, 34 wide for "88%", 39 for "100%"), and the gate fan has no
+room for it. Measured over all 15 reference cases at all four depths: in
+the shipped build a pill already sits under the next gate's disc in 12
+of 60 frames at 1600 and 49 of 60 at 390, so on a phone it is the normal
+state today. At 11px a two digit share does it in 32 of 60 at 1600 and in
+all 60 at 390, and at CQ 0 with a story in, the lower left pill covers
+the bottom gate's glyph.
+*Not changed. A comment at the line records why, so the next seat does
+not retry the one line change blind. The size can rise only when the fan
+makes room, whether by a radius floor at small cores, a wider step or a
+smaller fan, and every one of those moves the gates into the law ticks at
+the deeper depths. That is a layout decision for the art director, and it
+belongs with `reviews/AD-field.md` section 2.6, whose larger disc would
+crowd the fan further.*
+
+**BO3. The six gate rings have never been seen populated.** MOB,
+`engine/verp.js` `VERPCUE` against the reference data. All 15 reference
+cases carry zero gate counts: `loadP` builds them from charge tables and
+applies no text. Scanned with `verpScan` itself, the 37 cue phrases (36
+if `spiralled` and `spiraled` count once) hit none of the 41 lines in
+`sim/stories.js` and none of the 14 `says` lines on the roster, while a
+control line hits 3. `tests/functional.js` commits a cue story twice,
+once undone at once and once refused on a worked example, and neither
+looks at the Field. `tests/engine.js` does exercise the arithmetic.
+*Documented, not changed. Lines added to the story bank to hit the cues
+would break the bank's own rule, written at its head: "WRITTEN BEFORE THE
+LEXICON WAS CONSULTED, deliberately... not to hand it sentences built
+from its own vocabulary." They would turn a measure of real language into
+a measure of the lexicon. Two findings instead. The zero is itself a
+finding about the cue list: the near misses in the bank are tense and
+form, "I do it anyway" against `did it anyway`, "I cannot stop" against
+`could not stop`, "I felt nothing" against `i felt it`. That is lexicon
+coverage, and his to rule on. And the coverage belongs in the gates: a
+functional check and a `tools/shots.js` capture that commit a story built
+from existing cue phrases on the person's own record, then look at the
+Field. Queued, not built. The first screenshots of the populated rings
+were taken this round, for BO2.*
+
+**BO4. The depth bar put three of the four depths off the screen at
+desktop width, for six days.** MOB, `ui/panels.js`. Since `909f053` on 19
+September the depth buttons wore `.kbjump`, the rail's full width row
+class, added so they could reach the rail tooltip of that day. `.vt` does
+not shrink, so each depth was 1552 wide at 1600. Patterns, the depth the
+Field opens on, began at x 1563, and Chains and Blueprint could not be
+reached. Bisected on the committed builds either side of `909f053`.
+*Fixed and pushed, MOB `c63c5cc`. The class is off the depth buttons. The
+tooltip that needed it was retired on 20 September (`73a94ac`), and the
+one tooltip finds them by `data-tip`. At 1600 the four sit at x 24 to
+475, as they did before 19 September, back in the `.vt` look they were
+designed in. `tests/design.js` now measures that every depth button is on
+the screen. Against the shipped build it fails, naming Patterns, Chains
+and Blueprint. At 390 three sit whole and Blueprint shows its first 14px
+at the edge of a scroller whose scrollbar is hidden, which `atuned-ux`
+rule 10 says should wrap. That phone scroller makes the same trade the
+tab bar makes, and was left alone.*
+
+**BO5. CQ is printed four times on the Field, and that is drift, not a
+choice.** The strip chip, the core, beside the compass marker, and the
+head of the rail. At 1600 all four are on one screen with nothing to
+scroll. At 390 the strip and the core share the first screen, the compass
+number sits just under the fold, and the rail is three screens down. Each
+arrived on its own day for its own reason: the compass number with the
+first engine build (`8f4fcb8`, 16 September), the rail ring and the
+strip chip on 17 September (`8d72e49`, `68ff1b3`), and the core's number
+back on his ruling on 20 September (`a54a16b`).
+The comment written with that ruling said coherence would be "said twice
+and not four times". Measured on that very build, it was already four.
+Nobody has ruled that four is right. The one recorded intent was two, and
+it was believed done when it was not.
+*Not changed. Each of the four carries a ruling or his own words: the
+core ("What happened to my CQ number at the centre of my circle?"), the
+compass ("give a pill to the lower right side of the number of the
+coherence slider"), the strip (CQ, DQ and SQ grouped as one kind of
+reading, each chip a door to its own reading), and the rail (the tier
+word is the one tappable tier control, and the ring carries its figure).
+Removing any one of them overturns something he said, so it is asked,
+and it bears on BO Q4. The comment in `ui/wheel.js` now records that the
+count was wrong on the day it was written.*
+
+**BO6. A story's gate counts follow the person onto every worked example,
+and undo leaves them in place.** new. Found while checking BO3. `loadP`
+never calls `loadProfile`, so `gatesLoad`, the only thing that zeroes the
+gate and lean mixes, never runs on a switch. Reproduced: a story with
+attachment cues committed on the person's own record, then Marcus
+opened, and his Field reads Attachment 100% while his scratch record
+saves `attach: 2`. And `undoState` snapshots no gate counts, so after an
+undo the charge comes back exactly and the Field still reads Attachment
+100%.
+*Queued as its own task, not folded into this fix.*
+
 **Q1.** Which direction, or which pairing: frame to circle's outer band
 could carry the dial's corner names, for one example not chosen for you.
 **Q2.** Should a toggle hide a layer outright, as built and as you asked
