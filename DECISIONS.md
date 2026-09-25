@@ -1291,3 +1291,129 @@ of what he meant.
 powered by "the laws of emotion" and suppressed by SQ through emotional
 control; no formula was given for this. A candidate is being proposed for
 him to react to rather than left as narrative.
+
+## The CQ ruling, third pass. Same day, shown the unified model.
+
+His words, on being shown that MOB and the desktop each implement one of his
+two DQ statements and asked to pick. "DQ is a total shadow. I don't know why
+you keep asking me that, I keep saying it, it's like the eighth time I've
+said it." **Settled, and it is not to be asked again: DQ is the total
+shadow.** Not the gap. Not both.
+
+His words on how SQ relates to CQ, unprompted: "Here's a deal, putting SQ
+within CQ: you can always put SQ within CQ and say CQ 100 SQ 0, DQ 0, SQ 100,
+any deviation, one pulls down and the other, it's a lever. And then the
+expression and emotion, the other laws or variables, like the intensity
+curve is a multiplier. I'm a little tense is different than I'm paralyzed,
+it's orders of magnitude different, so there's your multiplier right there.
+So our bell curve becomes our multiplier."
+
+As the team reads it: SQ and CQ act on each other as a lever, not as terms
+summed into one number. CQ stays the pure measure of the 21 laws. SQ, the
+total shadow, pulls against it, and how hard it pulls is not linear: the gap
+between "a little tense" and "paralyzed" is orders of magnitude, not a
+straight line, so the shadow's pull is shaped like a bell curve rather than
+a flat multiplier. This is a curve to be fitted, not assumed, which is why
+he has asked for a simulation rather than a guess (below).
+
+On intention: "I don't think intention ultimately is will, and awareness,
+it's a modifier. You either did the thing you said you were gonna do or you
+didn't, and the reason why is going to be, there's a story in there from the
+SQ somewhere in the body. So there's a story driving why you didn't do what
+you did, or why you did what you did and you shouldn't have." And, on
+whether intention counts once per emotion: "Yes. Well, no, because you can
+have an emotion without an intention. Intention is the output of what you're
+trying to get done. You can be traumatized by your childhood memories and
+there's no action behind that. No intention." **So intention is not read off
+charge directly.** It is the gap between what a person said they would do
+and what they did, and only charge that is tied to an actual output counts
+toward it. Felt charge with no action attached is not intention.
+
+On how CQ should read before all 21 laws are answered, correcting the
+recommendation that nothing print: "You're basically saying I have an input,
+my integrity yet, and once I do, this is where it is now. I don't want to do
+it the opposite, where it goes from 100 down, because that's demoralizing."
+**CQ builds up from nothing as laws are answered.** It never starts full and
+falls; that reads as loss rather than as a person coming into view.
+
+**The simulation, ordered rather than guessed.** "I think the team needs to
+simulate this a hundred times to figure out what's the most effective and
+efficient way, come up with a formula that works, given the system that
+we've created, but it also needs to be accurate. So they need to simulate it
+ten thousand times in our ICPs and find the configuration for CQ, DQ and SQ
+that makes sense within our system." Running now.
+
+## Sight, tiers and the private record. Same day.
+
+He was confused by "sight by tier", correctly: two different things share
+the word tier and had not been told apart. **The tier ladder already in this
+file, section "Tiers and the meter", prices how many patterns a person may
+run a month.** That is decided and he confirmed its shape from memory (tier
+zero free, one, two, three, four, the top tier carrying the practitioner and
+coaching suite, at prices he recalls roughly as 12, 24, unnamed, 99, to be
+checked against the simulation that set them). **The desktop's `tierCanSee`
+is a second, separate mechanism that gates how much of a person's own
+reading they can see at all**, independent of how many patterns they have
+run. That is the one this file's tier and meter section never licensed and
+the one he has not ruled on, because until this round he did not know it
+existed on the desktop side.
+
+On the private record, reasoning to a policy live: "Your private journal and
+your limiting beliefs, your private journal should stay on your phone,
+that's yours. Although, now that I'm thinking about it, since we're
+capturing it, what if you want to recover it, then you'd have to start all
+over again, so we should actually get that information. We should just say
+we have a policy to never share your data, we use the data for modelling
+purposes only. That way if they need to recover it, they can, and we don't
+have to do any finagling with the text. It seems like that's the right
+solution. What does the team think?"
+
+**Ruled: the story is stored, for recovery, never shared, and used only for
+modelling.** This replaces the earlier line in this file that the record and
+the story are never held joined; that line is superseded, not this one. What
+the team adds, since he asked: storing it for recovery is ordinary and
+right. "Used for modelling" on a person's own disclosed psychological
+material needs to be said to the person plainly, as consent asked rather
+than a policy assumed, because a person telling this instrument what
+happened to them is not the same as a person agreeing their words train a
+model. It should be encrypted at rest regardless, which the desktop today is
+not (`TASKS.md` `AW6`), de-identified before anything touches a model, and
+never leave the one path he has already ruled, sign in, so the one seam
+stays one seam.
+
+## The stack. Same day.
+
+**Cloudflare, for now, kept.** "I don't mind things being on Cloudflare for
+now since it's the easiest to work with, unless you think GitHub works." Git
+hosting and a live per person database are different jobs; GitHub holds the
+code, Cloudflare holds the record. Kept as already built.
+
+**A domain exists** ("attuned, I think it's .app or something") **and he has
+asked whether a direct path from this session to that site is possible, and
+whether it is the right approach, and has granted the access it takes.**
+Confirmed technically possible and already the natural next step once the
+D1 database is real: Cloudflare Pages, same platform as the database, same
+account, deploys straight from the branch on a push, and a domain points at
+it with one DNS record. His exact domain string is still needed to do it.
+
+**Push access, granted and confirmed working.** Verified with a real
+push test against `reboot-os` this same round. Every row in `PRIORITY.md`
+section 16 that was waiting on this no longer is.
+
+## New, logged the same round
+
+**A ritual reminder, outside the push channel.** "We also need to design a
+system for pop ups related to the ritual, as a reminder. The ritual, I think,
+is the only thing I want so far talking directly to the customer outside of
+the push notification." Logged to `TASKS.md`.
+
+**One Bible.** "I want to lock the CQ formula into the brief, and make sure
+all the stuff is combined in our brief, so that we have one Bible that has
+our entire product in it, engineering, design, art, everything we've done,
+schemas, architecture, all of our technical and creative design docs being
+updated constantly. That's the job of the project manager, to make sure
+things are just updated." On what CQ itself is, asked directly: it is a
+function, a formula that reads the schema, not a schema itself; the schema
+is the shape of the profile and the 21 laws and the 112 addresses it reads.
+The consolidation is assigned to the project manager as a standing job, not
+a one time document.

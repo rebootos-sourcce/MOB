@@ -9104,3 +9104,44 @@ much is actually held.
 
 *Full arithmetic, the unified model, and fifteen questions with the worked
 people beside each are in the CQ bundle sent with this round.*
+
+## AZ. New, from the round that ruled DQ, sight and the record.
+
+**AZ1. A ritual reminder, as a pop up, outside the push channel.** new
+His words: "we also need to design a system for pop ups related to the
+ritual, as a reminder. The ritual, I think, is the only thing I want so far
+talking directly to the customer outside of the push notification." Design
+and placement open; the mechanism is a pop up, not a push notification.
+*Medium.*
+
+**AZ2. One Bible.** new. His words: "I want to lock the CQ formula into the
+brief, and make sure all the stuff is combined in our brief, so that we have
+one Bible that has our entire product in it, engineering, design, art,
+everything we've done, schemas, architecture, all of our technical and
+creative design docs being updated constantly. That's the job of the project
+manager, to make sure things are just updated." Standing, not a one time
+document: every bundle sent this session (the art brief, the design brief,
+the UX brief, the desktop gap and plan, the CQ unification) folds into one
+document the project manager keeps current.
+*Large, and it is now a standing role, not a task that closes.*
+
+**AZ3. The desktop's `tierCanSee`, sight gated by tier, needs his ruling,**
+not a rewording of the question. The patterns-per-month ladder is decided in
+`DECISIONS.md`. Whether a person's own reading may be partly hidden by tier
+is a second, separate mechanism the desktop ships and this file never
+licensed.
+*BLOCKED on him.*
+
+**AZ4. The story is stored for recovery, ruled, and needs three things built
+under it.** Encryption at rest (already `AW6`), explicit consent for any
+modelling use stated to the person rather than assumed, and de-identification
+before anything touches a model. See `DECISIONS.md`, "Sight, tiers and the
+private record."
+*Large, and it gates whether AW1's sync work may carry story text at all.*
+
+**AZ5. A ten thousand run simulation across the ICPs, to fit the CQ, DQ, SQ
+configuration**, ordered rather than guessed. His words: "the team needs to
+simulate this a hundred times... simulate it ten thousand times in our ICPs
+and find the configuration for CQ, DQ and SQ that makes sense within our
+system." Running.
+*Large.*
