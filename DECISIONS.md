@@ -1417,3 +1417,35 @@ function, a formula that reads the schema, not a schema itself; the schema
 is the shape of the profile and the 21 laws and the 112 addresses it reads.
 The consolidation is assigned to the project manager as a standing job, not
 a one time document.
+
+## Sight by tier, ruled, and the journal use corrected. Same day, next round.
+
+**Sight by tier is real, and it gates depth of composition, not laws or
+addresses themselves.** His words: "the tier controls how much you can see.
+While you can't see the hypercomplexes, you can see the fetters that create
+the hypercomplexes. As an example, it's an answer to your question." So the
+gate sits on the ladder from a raw fetter up through saboteur, complex and
+hypercomplex: the base layer is always visible, and how far up that ladder a
+person can see rises with tier. `AZ3` is no longer blocked; it is now a build
+task, and the exact rung each tier stops at is still to be set (proposed
+alongside the tier prices, which the team is checking against the
+simulation that set them).
+
+**Tier gates two different things, confirmed as intentional.** "We're also
+gating velocity." Velocity is the existing patterns-per-month ladder,
+already decided; sight depth is the new one above. Two axes of the same tier
+system, not a conflict between them.
+
+**The journal's modelling use, corrected and narrowed.** "With the journal,
+what we're doing is we're aggregating people's limiting beliefs, not trauma,
+ignore the word trauma, limiting beliefs. We're aggregating it to find the
+word combinations to refine our model, so that the sniffer itself is more
+effective at identifying how people communicate, and then adjusting it so
+it's more dynamic to clue into the things that we should be looking for."
+This replaces the earlier, broader "used for modelling purposes" line: the
+actual use is narrow and specific, aggregated word and phrase combinations
+across people's own stated limiting beliefs, used to refine the sniffer's
+lexicon so its matching gets better at how people actually talk. It is not
+training a general model on a person's story. `AZ4`'s consent line should
+say this precisely rather than the broader phrase, since the narrower,
+true purpose is also the easier one to get honest consent for.

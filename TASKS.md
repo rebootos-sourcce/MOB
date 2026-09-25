@@ -9125,18 +9125,24 @@ the UX brief, the desktop gap and plan, the CQ unification) folds into one
 document the project manager keeps current.
 *Large, and it is now a standing role, not a task that closes.*
 
-**AZ3. The desktop's `tierCanSee`, sight gated by tier, needs his ruling,**
-not a rewording of the question. The patterns-per-month ladder is decided in
-`DECISIONS.md`. Whether a person's own reading may be partly hidden by tier
-is a second, separate mechanism the desktop ships and this file never
-licensed.
-*BLOCKED on him.*
+**AZ3. Ruled: sight by tier gates depth of composition, fetter through
+saboteur, complex and hypercomplex, not the laws or the addresses.** No
+longer blocked. The base fetters stay visible at every tier; how far up the
+composition ladder a person can see rises with tier. Still open: which tier
+stops at which rung, to be set alongside the tier prices already pending a
+check against the simulation that set them (`AZ5`). Confirmed a second, real
+axis of the tier system alongside the patterns-per-month ladder ("we're also
+gating velocity"), not a conflict between the two.
+*Medium, once the rungs are set.*
 
 **AZ4. The story is stored for recovery, ruled, and needs three things built
-under it.** Encryption at rest (already `AW6`), explicit consent for any
-modelling use stated to the person rather than assumed, and de-identification
-before anything touches a model. See `DECISIONS.md`, "Sight, tiers and the
-private record."
+under it.** Encryption at rest (already `AW6`), explicit consent for the
+modelling use, and de-identification before anything touches a model. The
+modelling use is narrower than first stated and now corrected: aggregated
+word and phrase combinations across people's own stated limiting beliefs,
+used to refine the sniffer's lexicon, not general model training on a
+person's story. See `DECISIONS.md`, "Sight by tier, ruled, and the journal
+use corrected."
 *Large, and it gates whether AW1's sync work may carry story text at all.*
 
 **AZ5. A ten thousand run simulation across the ICPs, to fit the CQ, DQ, SQ
