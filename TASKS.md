@@ -10137,6 +10137,31 @@ dropped. Narrows Q3 to a live ask rather than an open one: validate the
 marma claims for real, against real sources, rather than matching them to
 our fetters.
 
+**BI3a. Heart and Throat back (addresses 49 to 75, 27 of the 108).**
+First of three regional passes for `BM3`. 19 of 27 are standard
+anatomical names, 2 are real under an older name, 3 fit more than one
+real structure, and 3 (Thoracic Plexus at 52, Costal Branches at 56,
+Laryngeal Plexus at 71) name no standard structure at all, nearest real
+candidates given, none of them settled. Seat fit: 13 sit soundly in
+their claimed seat, 8 partly (the nerve runs through it rather than
+sitting in it), 3 depend on which real structure is meant, 3 cannot be
+ruled either way. **Three pairs name the exact same real structure under
+any reading: 49 and 55 (cardiac plexus), 51 and 65 (vagus nerve), 69 and
+73 (accessory nerve).** Two findings past the row level: the Throat
+seat's own definition contradicts itself (`practice.js:116-117` gives it
+both C1 to C4 and the suprasternal notch, five vertebrae apart), and the
+Body map places every address by a hash of its number on a small ellipse
+around its seat, not at a real anatomical coordinate, so correct names
+alone would not make the drawing one to one. Same network limit as the
+marma pass, disclosed the same way, tightened this time by pinning each
+search to one named source's domain so every verified claim names which
+source it rests on. Full report, sourced address by address, held for
+when the other two regions land so this goes to him once, not three
+times. Owner decisions queued: what to do with the three duplicate
+pairs, the three unnamed structures, the three ambiguous ones, a rule
+for seating a nerve that crosses seats, whether a branch and its parent
+nerve both deserve an address, and the Throat seat's own contradiction.
+
 **BI2. Validation pass dispatched.** Researching against real sources
 rather than recall: the true classical marma count and regional
 breakdown, whether the pasted document's named points are authentic
