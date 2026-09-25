@@ -9432,3 +9432,19 @@ want, so you can quick jump to where you want to go."
 *Queued, art and interaction direction. The layer toggle is the largest of
 the three: it is a navigation model change on every tool screen, not a
 single control, so it wants its own pass before anything is built.*
+
+**BA9. Remove two lines, marked directly on a screenshot.** "You have
+unnecessary text, I want those removed." Both are struck through in the
+mark: the demo persona notice above the Field ("You are looking at
+Abraham, which is a worked example rather than your record. Switch to your
+own profile to run a release.") and the caption under the wheel explaining
+the ring ("The ring is the seven seats, from the root at the top round to
+the crown. Press a band to open it, or any single mark on it to open that
+address. Scroll in on the wheel for the patterns each address is
+running."). The second is the same caption `BA7` already documents the
+purpose of; removing it does not remove the mechanic, only the sentence
+explaining it.
+*Queued, art and copy. The demo notice currently carries a real job, telling
+a person they are looking at a worked example and not their own record;
+whoever cuts it should carry that distinction somewhere else rather than
+lose it silently.*
