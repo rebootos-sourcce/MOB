@@ -336,6 +336,17 @@ ask has not looked hard enough. He may not have the answer; then the question
 is written down open, with the ways it could go and what each costs, and it
 is never answered for him by default. The full ruling is in `DECISIONS.md`.
 
+**No shorthand. Provide context, every time. Ruled 25 September**, after a
+report used "1e-9" with nothing beside it and he had no way to know it meant
+the two codebases agreed with each other, not a claim about his own body.
+His words: "We don't use shorthand, we provide context." A term of art, a
+metric, an internal label, a code identifier: it gets a plain explanation of
+what it means in the same sentence, not after he asks. And any question
+about something from earlier, his own or the team's, carries a quoted
+snippet of that earlier thing with it, the way a question about a drawing
+carries the drawing. He should never have to go find what a question is
+about.
+
 ## Records
 
 `MILESTONES.md` is the sequenced plan, scrubbed by five disciplines, and it
