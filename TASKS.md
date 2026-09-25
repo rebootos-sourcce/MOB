@@ -9680,3 +9680,82 @@ ride together but are different seats' work. Both queued behind the design
 work already running this round; BD1 shares ground with `BC1` and `BC3` and
 should sequence alongside them rather than separately.*
 
+**AZ3, answered, a shape of his own rather than any of the three offered.**
+His words: "free sees fetters, tier one sees saboteurs, tier three sees
+complexes, tier four sees everything." Tier two is not named as adding a
+new rung, so as dictated it stays at the same sight as tier one, saboteurs.
+That may be what he means or may be a gap in the dictation; it is logged
+exactly as said rather than smoothed into shape A, B or C from the
+proposal, none of which matches this.
+*BLOCKED on him, narrowly: confirm tier two stays at saboteurs alongside
+tier one, or should unlock its own rung before tier three reaches
+complexes.*
+
+**The free tier rotation, confirmed and given its mechanic.** His words:
+"tier zero is ten free unique patterns a week. The ones they've already
+done they can keep. If they mark the ones heaviest, they can continue doing
+that. The ones they mark didn't do anything, they can take out of rotation
+to optimize their story." This is the existing "density decides what is
+kept" rule in this file's Tiers section, given its trigger: marking a
+pattern heaviest keeps it, marking it as having done nothing makes it
+eligible to rotate out. Still not built, per that section.
+
+**Tier pattern counts, confirmed exactly as already built and already
+ruled.** "Tier one is four hundred unique patterns a month, tier two eight
+hundred a month, tier three twelve hundred a month, tier four also twelve
+hundred a month." Matches this file's Tiers section precisely. No change.
+Prices remain the open half of `AZ5`'s tier check.
+
+## BE. Ego rebound. A new mechanic for Summary, from his own and Keeley's
+## experience, 25 September.
+
+**BE1. The mechanic, in his words, in full, because the data behind it is
+personal and specific and should not be paraphrased away.** "For summary we
+need a graphic for ego rebound, showing that the more you release, the
+quicker you release, the rebound of the ego gets stronger, temporarily.
+This is typically a cool down period of several weeks. I don't know how we
+want to calculate this yet, I just know we want the mechanic, and the
+mechanic needs a formula and a framework.
+
+I'll describe this from my experience and Keeley's. The more I began
+rapidly releasing, when I got to about five hundred to a thousand patterns,
+I was calm and clear and focused. But when I'd engage people, I'd hear the
+pain of their stories, and my ego would rise to tell them about the work
+that needs to be done first. The ego rebound, from releasing that many
+patterns, lasted about two months the first time. The second time, a
+month. The third time, two weeks.
+
+Keeley didn't release nearly as many patterns as I did, plus she's nineteen
+years younger, so she's accumulated less unprocessed emotion. When I got
+her into a rapid release, it took about two weeks for her to notice she was
+constantly agitated by her conversations with people. I asked what she was
+experiencing, and she said agitation and frustration when talking to
+people, because she could hear everything they were saying very clearly,
+and hear the work they needed to do, and what they were stuck by.
+
+So there's an adverse reaction to old programming in other people, that
+activates or stimulates the ego rebound. It is a bounce. A circular shape
+would be good. The more patterns you release we can show the energy... it's
+not expanding out, it heats up, it becomes more, the more you release the
+redder the marker becomes, the danger of it, of ego rebound.
+
+And it's not a bad thing, it's actually kind of a good thing. It forces you
+to become more aware of your communication and your engagements. And then
+what is gone is gone, it's like a band aid, the burn is gone, and you're
+clear minded, and you're no longer stimulated by people's stories, you can
+be present with them."
+
+**Read as a design brief, not a formula handed down.** A temporary,
+self-decaying state that follows rapid release, distinct from CQ, DQ, SQ
+and expression: intensity rises with release volume and velocity, a
+cooldown of weeks brings it back down, and repetition shortens the
+cooldown each time it is triggered (his own data: about two months, then
+about one month, then about two weeks, over three rounds). The visual is
+circular, heat rather than expansion, redder as it rises. Framed as a real
+and valuable phase, not a defect: heightened perception of others' own
+unprocessed patterns that a person has to learn to sit with rather than
+act on.
+*Large. He explicitly withheld the formula: "I don't know how we want to
+calculate this yet." The mechanic, the formula and the framework are the
+open work, not decided by him and not to be decided silently.*
+
