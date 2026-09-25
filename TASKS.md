@@ -9913,3 +9913,46 @@ asked directly.
 ordering for the Knowledge base menu. The two need reconciling against each
 other once both land, not built twice from two different orderings.*
 
+## BH. Energetics as a rail, and a Tools group in the main menu, both asked
+## to be simulated before anything is built, 25 September.
+
+**BH1. Intake moves to a left rail under tabs, locked once answered, and
+the centre becomes the summary rather than the questions.** His words,
+worked through live: "if we took the intake information from the centre
+and moved it to the left side under tabs, so you can open and close them,
+you're not inundated by a ton of stuff, you can answer there. Then the
+centre pane would be the summary page. Intake would be the wrong term, it
+would go back to Energetics. Once you select your answers, that panel is
+locked, but you can unlock it and edit it. I don't want it freely open, so
+a person can fine tune it to their own discretion. The summary is in the
+centre." Read as: the 63 questions move from the centre into a collapsible
+left rail, organised into sections that open and close so all of them are
+never on screen together; a section locks once answered, unlockable
+on purpose rather than always editable, so it costs something to revise an
+answer instead of costing nothing; and the centre, freed up, shows the
+summary building as the person answers rather than showing more questions.
+The tab keeps its existing name, Energetics, "intake" was only ever the
+internal word for it.
+*Connects directly to `BC1` and `BC3`'s rail and detail pattern, already
+being worked this round; this is the same pattern applied to a fourth
+surface and should be simulated together with that work's outcome, not
+against today's build in isolation, so the two proposals do not contradict
+each other.*
+
+**BH2. A Tools group in the main menu, folding Field, Body and Compass
+into one entry.** His words: "it seems like we should have a tools button
+in the main menu with Field, Body, Compass in it... to clean up some of the
+navigation." Explicitly not presented as decided: "simulate that with the
+ICPs and the focus group as well, just to clean up some of the navigation.
+They may not like it, but let's see." A real alternative to weigh against
+`BA8`'s layer toggle idea for the same three screens, not a second thing to
+build alongside it.
+
+**Both asked to be simulated a hundred times, against the ICPs and the
+focus group, before either is built**, the same discipline as the ninety
+day and the ten thousand run passes earlier this session. Queued to run
+once `BC`'s flow round proposal lands, since `BH1` and `BH2` both touch the
+same navigation surfaces that proposal is already redesigning, and
+simulating three overlapping, unreconciled navigation ideas against each
+other would waste the run rather than answer anything.
+
