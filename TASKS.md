@@ -10750,3 +10750,61 @@ only the foundation slice, sectioned by built, running, and blocked, and
 cross checked against real evidence rather than trusting each section's
 own prose. Link to follow once it lands.
 
+## BQ. 3rd Eye and Crown back, second of three regional anatomy passes.
+## 25 September.
+
+**BI3b. Second region back (addresses 76 to 108, the head and brain,
+33 of the 108).** This one measured rather than only searched: the
+network blocked every anatomy page the same way it blocked the marma
+pass, so this seat installed real neuroanatomical atlas data (the
+Harvard-Oxford and Neuromorphometrics brain atlases, and standard EEG
+head measurements) and checked its own tool against known structure
+positions before trusting it, this project's own rule applied properly.
+Of 33 names: 28 are real structures, 3 name something real but not a
+single place (a phrase, a fibre pathway, a brain-wide network), 1 names
+a relationship no source supports, and 1, address 108, Ascension Column,
+**is not anatomy at all**, found only on New Age meditation pages as a
+visualised pillar of light. Only 5 of the 33 are actually nerves, though
+the table's own header claims every address sits at "a named plexus or
+nerve"; the rest are brain tissue, one is a vein, one is nothing.
+
+**Crown is the weaker of the two seats checked so far, materially.**
+Only 8 of 33 addresses sit soundly in their claimed seat under every
+test run. **9 of Crown's 21 are anatomically wrong under every reading,
+not borderline:** the hypothalamus, the temporal lobe, the reticular
+formation and six more all measure well below the top of the head, most
+at brow height or lower. Two structural problems sit above the row
+level: the Crown seat's own descriptive text (`catalog.js:11`) claims a
+"cranial plexus" and "the convergence point of all cranial nerve
+inputs," and neither is real; ten of twelve cranial nerves attach at the
+brainstem, none at the crown. And the product's own drawing does not
+match its own seat definitions: the 3rd Eye marker on the body figure is
+placed at nose height by the figure's own proportions, not between the
+eyebrows the way the seat's text says, a self-consistency bug
+independent of anatomy, worth its own picture when it goes to him, per
+his own rule about geometry questions. The pineal gland is filed at 3rd
+Eye by its own address (80) and claimed for Crown in the same file's own
+seat text, a direct internal contradiction already in the shipped data.
+*Traced, not asserted: "pineal equals third eye" comes from Theosophy,
+1888, not from anywhere older or measured.*
+
+**The one thing anatomy plainly cannot confirm, stated for the record
+so it never gets treated as pending research: that a psychological
+quality (cynicism, hubris, ego) lives in a brain structure.** No source
+anywhere claims this for any structure; it is not a gap in what has been
+searched, it is not the kind of claim anatomy makes. Two real, solid
+exceptions found: the hippocampus and memory loss (address 104, the one
+clean match in the whole range), and the hypothalamus and rage (address
+103, real experimental support). Everything else in the `a` column, "what
+it governs," is this product's own writing, not anatomy, which is fine,
+as long as it is never presented as if it were sourced.
+
+**Six owner questions, one already flagged for a drawing.** Full detail
+held with the first region's report for one combined pass. Headline: the
+whole verdict set for ten addresses turns on a single choice, which
+definition decides a structure's seat (height on a front-view figure,
+straight-line distance, or where the body figure itself draws the
+marker), and that choice alone could flip Crown from 21 addresses down
+to about 11 and 3rd Eye from 12 up to about 22. Held for the third
+region and one combined report, same as the first.
+
