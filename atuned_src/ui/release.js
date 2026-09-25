@@ -185,8 +185,12 @@ function relRender(){
    +'<button class="btn" id="relstop">Stop</button></div>';
  } else if(RUN.phase==='done'){
   var cl=RUN.log.filter(function(x){return x.cleared;}).length;
+  /* A ONE ADDRESS RUN PRINTED "1 addresses". The plural was typed onto the
+     count with no singular beside it, on the card a person reads at the end
+     of the run. The picker below already asks q.length===1; this asks the
+     same of the log. */
   out+='<div class="pm-eye">Released</div>'
-   +'<div class="rel-node">'+RUN.log.length+' addresses</div>'
+   +'<div class="rel-node">'+RUN.log.length+(RUN.log.length===1?' address':' addresses')+'</div>'
    +'<div class="rel-sub">'+cl+' cleared entirely, '+RUN.freed+' weight freed</div>'
    +'<div class="rel-log">';
   RUN.log.forEach(function(x){

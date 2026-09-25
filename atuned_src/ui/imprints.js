@@ -140,8 +140,23 @@ function impRender(){
  if(!live.length&&!ghosts.length){
   /* "Nothing held. Write in the box and it gathers here." is the product
      talking to itself. A person says: I have not written anything yet. */
-  h+='<div class="ip-none">You have not written anything yet. '
-   +'Whatever you write gets pulled apart and collected here.</div>';
+  /* AND IT SAID SO TO A PERSON WHO HAD JUST WRITTEN. This branch asked what is
+     live, which is an address at 4 or over on either side, and never asked
+     whether anything had been written. applyStory lands 0.35 of what it reads,
+     so a first sixty word story on a blank record usually leaves every address
+     under 4, and the panel answered the commit with "You have not written
+     anything yet". A false empty state, in the minute after the first commit.
+
+     The record is the witness: every commit pushes onto CURP.story.entries.
+     The line says what is true whatever happened since. Undo takes the charge
+     back and leaves the entry, so "your story sits below the line" would be
+     false after an undo, and "nothing reaches the line" is true either way. */
+  var wrote=((CURP&&CURP.story&&CURP.story.entries)||[]).length;
+  h+=wrote
+   ? '<div class="ip-none">You have committed '+wrote+(wrote===1?' story':' stories')
+     +' and nothing reaches the line yet. An address shows here once it does.</div>'
+   : '<div class="ip-none">You have not written anything yet. '
+     +'Whatever you write gets pulled apart and collected here.</div>';
   host.innerHTML=h; impWire(); return;}
  /* AND IT SAYS WHERE THE CHILD SITS, in the seat's own terms and not in a
     second vocabulary: the axis, the seat it is held at, the address inside

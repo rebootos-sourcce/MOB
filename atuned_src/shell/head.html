@@ -673,6 +673,41 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
  line-height:1.4;color:var(--mid);transition:all var(--t-element) var(--ease-out)}
 #status:empty{display:none}
 #status[data-kind="fail"]{color:var(--hot,#c0392b);font-weight:500}
+/* THE STATUS LINE TOOK THE WHOLE NAVIGATION WITH IT ON A DESKTOP WINDOW.
+
+   The 100% basis above was written for a bar that wrapped, where it meant a
+   line of its own. The bar stopped wrapping above 820 and nobody moved the
+   basis, so one "Saved." became a 100% item that cannot shrink in a line that
+   cannot break. The tab strip, the only thing allowed to give, gave all of it:
+   measured 0px wide at 1600, 1280, 1000 and 821, with the profile, lighting,
+   help and account past the right edge. For 2.4 seconds on a confirmation and
+   until the next message on a failure. At 820 and under the bar already wraps
+   and the message already has its own line, so none of this applies there.
+
+   So above 820 the bar wraps only while there is something to say, and the
+   message goes last. It stays in flow, not laid over the stage, because a
+   failure holds on screen and a long one runs to two lines at 821.
+
+   Wrapping alone repeats the defect recorded where .top is declared: lines
+   break on each item's base size, the strip's is its full content, and the
+   profile and everything after it dropped to a second row at 1280. Its base
+   goes to 0, which keeps the first line whole, and it grows back to no more
+   than its content. The spacer stops competing for that growth and takes only
+   what is left, through its auto margin.
+
+   Swept at every width from 1600 down to 821 with a message up: nothing in
+   the bar off screen at any of them. From 1036 up no control moves by half a
+   pixel. Under 1036 the one line bar already overflows and shrinks the profile
+   picker alongside the strip in proportion to their content, which a grow
+   cannot reproduce without knowing the strip's width. So there the picker
+   keeps its full 190 while the message shows, the strip gives up the
+   difference and still scrolls, and the controls right of it sit up to 79px
+   further left (at 821) until the message clears. */
+@media not all and (max-width:820px){
+ .top:has(#status:not(:empty)){flex-wrap:wrap}
+ .top:has(#status:not(:empty)) #tabbar{flex:1 1 0;max-width:max-content}
+ .top:has(#status:not(:empty)) .spacer{flex-grow:0;margin-right:auto}
+ .top #status{order:1}}
 /* THE WORDMARK. Sky blue, letters given room, and the weight down from 600.
    600 at negative tracking read as a product logo shouting; this is a name.
    It is a button and it carries no button chrome, because chrome on a wordmark
