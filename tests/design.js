@@ -67,6 +67,17 @@ ok(shell.axes===18,'18 axis fields (9 held + 9 opposite), got '+shell.axes);
 ok(shell.mx===171,'171 matrix cells, got '+shell.mx);
 ok(shell.eshelf,'#eshelf element exists');
 console.log('  shell:',JSON.stringify(shell));
+/* EVERY DEPTH IS ON THE SCREEN, NOT ONLY IN THE DOCUMENT. The count above read
+   four for six days while three of the four sat past the right edge: the depth
+   buttons wore the rail's full width row class, so each was as wide as the
+   whole bar and Patterns, the depth the Field opens on, began at x 1563 of
+   1600. A count cannot see where a thing is, so this measures it. */
+const depthsOn=await page.evaluate(()=>{setTab(TAB.FIELD);
+ return [...document.querySelectorAll('#vbar .vt')].map(b=>{const r=b.getBoundingClientRect();
+  return {nm:b.textContent.trim(),on:r.width>0&&r.left>=0&&r.right<=innerWidth+0.5};});});
+ok(depthsOn.length===4&&depthsOn.every(d=>d.on),
+ 'every depth button is on the screen at 1600, off it: '
+ +(depthsOn.filter(d=>!d.on).map(d=>d.nm).join(', ')||'none'));
 
 console.log('\n=== 2 · one tab surface visible, plus whatever it carries ===');
 /* THE INVARIANT MOVED, because the information architecture did. It used to be

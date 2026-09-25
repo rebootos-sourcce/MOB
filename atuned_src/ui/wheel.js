@@ -12,7 +12,16 @@
 var AURA_SIG=null;
 function drawAura(r){
  const w=bg.width,h=bg.height;
- const reach=lerp(.20,.58,r.CQ/100), dens=clamp(r.DQ/7,0,1);
+ /* DQ IS OUT OF 100, SO THE WASH IS TOO. This read DQ/7, a ceiling set when DQ
+    was an uncapped sum that seldom passed seven. On 25 September DQ went onto
+    the same 0 to 100 as CQ ("DQ, THE TOTAL SHADOW" in engine/compute.js) and
+    the DQ ring in the strip moved with it. This line did not. Measured across
+    the reference cases: 8 of the 14 that carry a reading are over 7 and every
+    one of them drew at full density, so Marcus at DQ 10.7 and Gordon at 53.9
+    had the same wash. It was worse than flat, because the canvas opacity falls
+    with radiance, so on screen the heaviest shadow drew the faintest wash.
+    Divided by 100, the density is the same figure the DQ ring draws. */
+ const reach=lerp(.20,.58,r.CQ/100), dens=clamp(r.DQ/100,0,1);
  const t=REDUCED?0:Math.round(S.t*.09*12)/12;
  const op=((LIGHT()?.16:.15)+r.radiance*.24).toFixed(2);
  const sig=[w,h,op,reach.toFixed(3),dens.toFixed(3),r.benign?1:0,r.darkB,
@@ -394,6 +403,13 @@ function solCore(r,base){
     in a word. The core takes the number back and the tier word stays where it
     went, so it is said twice and not four times.
 
+    THAT COUNT WAS WRONG ON THE DAY IT WAS WRITTEN. Measured 25 September on
+    the build that wrote it, a54a16b: the figure was also in the strip, beside
+    the compass marker and at the head of the rail, so four numbers and the
+    word, all on one screen at 1600. It is four today. Each of the other three
+    was put there by a ruling of its own, so none of them goes on the strength
+    of this paragraph. Which stay is his call, and it is on the backlog (BO5).
+
     It goes back the way the rest of this product states a figure. Large, in
     the tier's own colour, with its scale under it in small type, because
     every number says what it is out of. And it is suppressed on an unread
@@ -495,6 +511,16 @@ function verpArrows(cr0){
      disappeared. It appears always and holds a dash when nothing has been
      read, which is the pattern this product already uses everywhere else: the
      figure is never invented, and the absence is said rather than hidden. */
+  /* 8.5 IS UNDER THE 11 FLOOR, KNOWINGLY, AND IT CANNOT RISE HERE ALONE.
+     Tried on 25 September: 11px needs a pill 15 tall and as wide as its label
+     plus eight, 34 for "88%" and 39 for "100%", and the fan has no room for
+     it. Measured over every reference case at every depth, a pill already
+     sits under the next gate's disc in 12 of 60 frames at 1600 and 49 of 60
+     at 390 at this size. At 11 a two digit share does it in 32 of 60 at 1600
+     and every frame at 390, and at CQ 0 the lower left pill covers the lower
+     middle gate's glyph. The size goes up when the fan makes room for it (rr
+     above, and reviews/AD-field.md section 2.6), which is a layout decision
+     and not a constant. */
   {var px=x+R-3, py=y+R-5, pw=(evid&&v.pct>=100)?26:22, ph=12;
    roundRect(px,py,pw,ph,6);
    g.fillStyle=evid?rgba(c,1):rgba(ink,.22);g.fill();

@@ -310,7 +310,18 @@ VIEWS.forEach(function(v,i){
     horizontal rule with nothing above it on every one of them. The name is an
     attribute now, so nothing has to find it in the markup. */
  b.setAttribute('data-tip-t',v.nm);
- b.classList.add('kbjump');
+ /* NOT .kbjump, WHICH PUT THREE OF THE FOUR DEPTHS OFF THE SCREEN.
+
+    The class went on here on 19 September to reach the rail tooltip of the
+    day, which found its carriers by .kbjump. It brought that class's rule
+    with it, and .kbjump is a full width row in the rail: width 100 percent.
+    .vt does not shrink, so every depth took the whole bar, 1552 wide at 1600,
+    and Patterns began at x 1563. The depth the Field opens on was an icon and
+    a P at the edge of the screen, and Chains and Blueprint could not be
+    reached at all. The phone band's scroller was fitted to the same symptom,
+    one depth per screen width at 390. That tooltip was retired on 20
+    September and the one tooltip finds these by data-tip, so the class gave
+    the depths nothing but the wrong width. */
  b.innerHTML=svgI(VICON[i])+'<span class="n">'+v.nm+'</span>';
  b.addEventListener('click',function(){S.view=i;S.pin=null;
   $('vbar').querySelectorAll('.vt').forEach(function(x,j){x.setAttribute('aria-pressed',j===i);});
