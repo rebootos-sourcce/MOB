@@ -1156,3 +1156,66 @@ What that changes, concretely:
   him by default.
 - The four headings ruling stands, and the fourth heading is where the
   questions live, listed in full.
+
+## One CQ. Ruled 25 September, on being shown two formulas.
+
+Recorded in his words first, then as the team read it, so the reading can be
+corrected.
+
+His words: "Review both coherence formulas. They both should be pretty solid
+if they're variations. There should only be one CQ number. CQ equals 100. The
+laws of integrity are measured on the zero through ten. Four to six is
+oscillating, five is average. The total 21 laws should equal up one hundred
+percent CQ. Any deviation of that CQ is DQ, it's the decoherence quotient.
+If CQ is a volume, DQ is the corrupted aspect of that volume. What corrupts
+that aspect of the volume: SQ. SQ is the shadow quotient, it's the weights on
+the nerves and assemblage points, the chakras. So there's 54 on both sides,
+there's four outside the body. Not only is that geometric, but it's also
+harmonic. From the feet to the crown, there are hertz, at least with sound
+bowls, that correspond to the length of the nervous system at different
+addresses. So how do we measure this? First off, let's start there. Because
+we have intention, and expression. Expression is the output. Intention is the
+desire. The six axis determine the output. The SQ determines which output
+you're going to do. When there's no stress in the body, intention is 100
+percent. Energy flows from the external environment through your sensory
+input, through the body, perceived in the mind, back out to action without
+any distortion. That's what we want. Any signal that causes distortion
+anywhere within that unified field, from nature to human nature. Nature is
+like our koshas, it's the field. Human nature is the architecture and the
+psyche. So we have a structure from subtle to material where action
+distortion can be detected and the story that's powering that can also be
+detected."
+
+As the team read it:
+
+- **CQ is the 21 laws of integrity and nothing else.** Each law 0 to 10, and
+  the 21 together sum to 100 percent. Five is average; four to six is the
+  oscillating band. Neither engine's current formula is this: MOB squares the
+  law mean and divides by resistance, the desktop takes the law mean and
+  divides by a story count. Both fold the shadow into CQ. He has ruled the
+  shadow out of it.
+- **DQ is the deviation from 100.** `DQ = 100 - CQ`. The corrupted part of
+  the volume.
+- **SQ is the shadow quotient: the weight sitting on the 112 addresses.** 54
+  on each side of the body and four outside it. It is a magnitude of charge,
+  not a count. It is what corrupts the volume: SQ is the cause, DQ is the
+  measure of the damage, CQ is what is left.
+- **Intention and expression.** Intention is the desire; expression is the
+  output. Intention reads 100 when there is no stress in the body, so
+  intention falls with SQ. The six axes determine the output; SQ determines
+  which output a person will take. Distortion anywhere between the field
+  (nature, the koshas) and the architecture (human nature, the psyche) is
+  detectable, and so is the story powering it.
+- **The addresses are harmonic as well as geometric.** He asks for research:
+  frequencies, from the feet to the crown, that correspond to the length of
+  the nervous system at each address, as at least the sound bowl tradition
+  holds. "How do we measure this, first off, let's start there."
+
+Open under this ruling, to be asked and not assumed:
+- Whether the 21 laws are summed or averaged to reach 100 (they agree only if
+  every law carries equal weight, which is the simplest reading).
+- The exact function from address weights to SQ, and from SQ to intention.
+- Whether expression is a number or a category (the six outputs).
+- What "oscillating" does to the reading: a band label, or a dampening.
+- Whether the harmonic mapping is a reading or a metaphor, which decides
+  whether it may print a number.
