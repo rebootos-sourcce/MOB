@@ -9532,3 +9532,79 @@ prints for every profile regardless of whether it is true. Queued as its
 own task card.
 *Small.*
 
+## BC. A flow and friction round on Field, Body, Compass and Knowledge,
+## dictated whole, 25 September.
+
+His words open it: "This is a friction question and a user flow question."
+He asked for it pitched to the team, their feedback taken, and the proposal
+simulated against the ICPs and the focus group a thousand times before it
+is trusted, the same discipline as the earlier ninety day and ten thousand
+run passes this session. Broken into blocks per his own closing
+instruction: "figure out the order this needs to go in, make sure the team
+asks questions if they have any, then turn this into blocks and add it to
+the backlog."
+
+**BC1. Right now, clicking Field, Body or Compass changes nothing.** His
+words: "When I click on the field, body or compass, nothing changes."
+Measured as real, not a design opinion: the three tabs share a rail and
+clicking within them does not update the right side information panel.
+*Small to medium, and it is a bug the redesign below has to fix regardless
+of which layout is chosen, so it is listed on its own.*
+
+**BC2. Field stays close to what it is,** with room for fine tuning how the
+menu divides by section. His words: "the menus already established, there's
+always some fine tuning, how we can divide it by sections. The field is all
+the everything running you." Not a redesign, a pass.
+
+**BC3. Body: the left side becomes the whole psyche stack.** His words:
+"the body could be the entire psyche stack, from fetters to [cut off]. The
+body would show you all the patterns running you. Anywhere you click, I
+like that, anywhere you click updates the main image, and then you can use
+our overlay items to overlay them to get more data. And then the summary on
+the right side starts stacking all that information up, to provide a clear
+picture of how they all operate through you." A left rail of the full stack
+(fetters up through whatever sits above them), click any item to update the
+central body image, overlays let several stack at once, and the right side
+accumulates the picture rather than replacing it on each click.
+
+**BC4. Compass: about integrity, intention and expression, and he is
+asking the team for the visual, not handing one down.** His words: "the
+compass is about the integrity and intention and expression, I don't know
+how to visually show those yet, maybe you have ideas." Open by his own
+invitation, not a gap to fill in silently.
+
+**BC5. Knowledge base: the click bug, and the menu order, largest to
+smallest.** His words, corrected live: "same thing, all the information is
+on the left hand side. Scratch that, that's too much information for the
+left side... when I click on something within the knowledge base, nothing
+happens, I get no information." Then the fix: "on the left side for the
+knowledge base, the menu items go left, fetters, child emotion, saboteurs,
+moral integrity, etc, those are all rolled up, except for the one at the
+very top, and I want to make sure the unified field, the universal laws, is
+at the very top. Then domains, archetypes, think of this in a logical step
+from the largest to the smallest. Fetters will obviously be the smallest."
+Two distinct items:
+- The click bug: selecting an entry in the knowledge base currently shows
+  no information at all, a dead control, not a design question.
+- The menu: a rolled up list, unified field and universal laws pinned at
+  the top, fetters at the bottom as the smallest, everything named in
+  between (domains, archetypes, child emotion, saboteurs, moral integrity)
+  ordered largest to smallest, exact order his own "let's start there"
+  hands to the team to work out and bring back.
+
+**BC6. Three notes logged as said, too short to act on without more from
+him.** "Change energetics to Energetics" (as dictated; the intended change
+is unclear and needs a plain follow up rather than a guess). "Games needs
+work." "Summary needs work." None named further.
+
+**BC7. The avatar cannot be found, and Summary may belong inside it rather
+than beside it.** His words: "what does the avatar page, I don't see it.
+Summary may be a subset of avatar actually." The first half is already
+logged as `AU8`, the avatar has no figure or page anywhere in the build.
+The second half is new: a structural question, whether Summary should be a
+tab of its own or should live inside Avatar once Avatar exists.
+
+*Sequencing, the open questions this round asks the team to bring back, and
+the thousand run simulation are all his explicit instructions for this
+round and are being worked now, not deferred.*
+
