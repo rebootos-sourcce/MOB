@@ -9877,6 +9877,31 @@ he explicitly asked for is the actionable piece today.
 *Large, and it is architecture: the desktop, the database and the
 administrator as three separate things talking to each other, which is
 bigger than anything scoped so far in the accounts fork.*
+**Research complete.** Recommends a bespoke second Cloudflare Worker rather
+than a low code builder, since any tool that reaches D1 directly gets whole
+database access and adds a company to the path of psychological self
+report; Cloudflare Access in front of it for named, audited humans instead
+of one shared key; the admin Worker never holding the encryption key, so it
+cannot open a story by construction; and a distinctive answer to "watching
+the brain being constructed": the product's own Field and Body renderers,
+fed a thresholded aggregate that only shows an address once enough people
+share it, plus a live lattice of which charge pairs are actually
+co-occurring. Measured, not guessed: one engine read costs 0.12ms median; a
+full recompute over 10,000 people is 1.2 to 2.9 seconds of CPU. Nine open
+questions, each with a recommendation, in the research bundle sent with
+this round.
+
+**BF3. Five real gaps in the desktop server, found while researching BF1,
+independent of whether BF1 is ever built.** Support lookups write no audit
+row today, though the compliance doc claims every action is audited. No
+audit row can name who acted, since there is one shared admin key. The
+research id sits in the same database row as the email, separated only by
+convention. One encryption key opens both private records and the
+consented shared copies. Cloudflare does not audit log D1 queries at all,
+so any account member has unaudited read access to every column that is
+not itself encrypted.
+*BLOCKED on him: whether these are worked now or held for whenever the
+admin interface is actually built. They are real today regardless.*
 
 **BF2. The Field's tools reorganised into four buckets, largest to
 smallest inside each, same ordering principle as `BC5`.** His words:
