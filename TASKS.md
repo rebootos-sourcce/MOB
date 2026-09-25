@@ -9855,6 +9855,28 @@ act on.
 *Large. He explicitly withheld the formula: "I don't know how we want to
 calculate this yet." The mechanic, the formula and the framework are the
 open work, not decided by him and not to be decided silently.*
+**Design complete up to a schema question that blocks the build.** Heat
+sums every opened pattern's decay since it landed, using the 9 day constant
+his own book already states; a round starts when heat crosses a spill
+point scaled to age; cooling halves each round, which fits his three
+remembered rounds (60, 30, 14 days) to within a day. The visual is the
+existing ring component, one intensity number driving its colour toward
+the same red the alarm already uses, capped so it is never louder than a
+9-out-of-10 address. Proposed a lock bar the same shape as CQ's. The
+evidence is far thinner than CQ's, three remembered numbers and one
+partial second case, and the design doc says so plainly rather than
+borrowing CQ's confidence.
+**Blocked on him, and it is the real blocker: the meter keeps no date on
+when a pattern was opened, only that it was opened.** Adding one, so heat
+can be computed at all, is a schema change, his call under the standing
+contract. Older records still load either way. Eight questions in the
+bundle sent with this round, most refinements; this one is load bearing.
+**Found in passing, logged for whoever owns it:** his own book states a
+peak in the decay formula at days four to six that the formula itself
+cannot produce; the boundary fills a missing count with 0 rather than
+leaving it absent, which would fabricate a burst that never happened for
+every older record; and an undone release currently still contributes its
+heat, since undo does not remove the saved reading it came from.
 
 ## BF. A developer administration interface, and the Field tool taxonomy.
 ## Future development and a content round, 25 September.
