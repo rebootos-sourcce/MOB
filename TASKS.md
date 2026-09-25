@@ -10211,9 +10211,16 @@ see is if the design aesthetic is more makes more sense if it's fixed but
 layered in a way uh, rectangular that fits that shape then you could see
 all the rings kind of go from the outside in with the center point being
 the CQ score. I want to see four renditions of that mocked up." Prompted
-by a screenshot of the Compass wheel he had open, used as reference for
-the ring language (seats arranged around a ring, a filled centre disc
-carrying one number), not as a request to touch Compass itself. Today's
+by a screenshot he had open, read at the time as the Compass wheel and
+logged that way here; *corrected once the mockup team actually checked
+`atuned_src/ui/wheel.js`: that file draws the Field, not Compass, which
+is `cone.js` and draws an hourglass with no seven seat ring at all. The
+screenshot was the Field's own current renderer, seven seats round a
+ring, ticks per address, a filled centre disc, already real, just small,
+about 340 by 833 pixels of a stage with 85 percent of it carrying
+nothing. So the ask was never to borrow another tab's look. It was to
+take the Field's own picture and let it fill the space it already owns.
+Said wrong here first, fixed at the next place it mattered.* Today's
 Field is a canvas, read as freeform rather than fixed, per this file's
 own note that it is "counted in lit pixels against its own floor." This
 asks whether a fixed, rectangle fitted, ring based alternative reads
@@ -10224,6 +10231,67 @@ mockups under `proto/field-rings/`, screenshotted at desktop width so
 they can be looked at as pictures, nothing wired, nothing shipped, no
 product file touched. Renditions and rationale to follow with images, the
 same rule as any drawing question on this project.
+
+## BO. Four Field renditions back, real data, real bugs found in
+## passing. 25 September.
+
+**BJ2. Four renditions built at `proto/field-rings/`, real reading, real
+chrome, nothing shipped.** All four fill the stage rectangle James
+(a reference profile) actually gets, drawn from his real live numbers
+(CQ 44, DQ 35%, 37 of 112 addresses held), through the product's own
+`PAL`/`TIERCOL` tokens and glyphs, with ten real toggle buttons in ring
+order. Comparison image sent with this round, per the drawing rule.
+- **Nested frames.** Every ring a rectangle inside the last, charge drawn
+  as bars. Reads like a schematic; the chains run long across a
+  rectangular interior.
+- **Frame to circle.** Rectangle outside, circle inside, a band between
+  where one turns into the other. Calmest of the four, says the least at
+  a glance.
+- **Dial with callouts.** A full size circle with the heaviest few things
+  named on leader lines in the corners the circle leaves free. Closest to
+  the Field already known, just larger, and the only one of the four that
+  can name anything on the drawing at all.
+- **Fragment field.** Built directly from his own sketches (`docs/field-
+  notes/18` and `19`, sent to this team mid task): one boundary that
+  never moves, addresses as dots in seat colour, wavering lines running
+  in to the patterns they build. Reads as density and tangle, no numbers
+  needed, hardest of the four to read one address off.
+A lightweight, unrun tissue test against the six ICPs (not a real panel):
+the dial led on weighted preference, nested frames and fragment field
+each led with one ICP on their own stated words, frame to circle led
+with none. One real constraint surfaced doing this: the product's own
+rule that no text renders over the hero graphic leaves three of the four
+renditions unable to name a seat by word at all, symbols only, which
+sharpens question 3 below.
+
+**Five real bugs, found in passing on the shipped Field, not on the
+mockups.** Queued for a quick fix: the Shadow wash cannot tell loaded
+profiles apart because `wheel.js:15` still divides by 7 after DQ moved
+to a 100 point scale, so most loaded profiles render identically maxed
+out; gate pill text is drawn at 8.5px against this product's own 11px
+floor, invisible to the design gate because it cannot see canvas text;
+the six gate rings show a dash for every profile because no story bank
+line exercises any of the 36 cue phrases that would light one; the
+Field's secondary bar clips off screen at 1600 wide; and CQ prints four
+times on one screen (strip, core, slider, rail), which may be
+intentional or may be drift, flagged rather than assumed either way.
+
+**Q1.** Which direction, or which pairing: frame to circle's outer band
+could carry the dial's corner names, for one example not chosen for you.
+**Q2.** Should a toggle hide a layer outright, as built and as you asked
+("turn things on and off"), or fade it to a ghost, since an earlier
+design pass argued the layers are one chain (a charge builds a pattern,
+a pattern builds a complex) and hiding breaks that chain from view?
+**Q3.** Can the seven seats be named on the drawing by their glyphs
+only, per "no text over the hero graphic, ever," or does that rule get a
+named exception for the seven seats, or does naming only happen the way
+the dial does it, off the circle itself?
+**Q4.** CQ at the centre only, as built, or also repeated lower left
+with DQ and SQ the way BA8 asked for, which would reverse the standing
+rule against printing one reading twice?
+**Q5.** Does the new toggle row replace the depth bar currently sitting
+above the Field (Charge, Patterns, Chains, Blueprint)? That bar is what
+is currently costing the Field 72 vertical pixels every other tab keeps.
 
 ## BK. The TULA deck, mined for the intensity curve and anything else
 ## useful, 25 September.
