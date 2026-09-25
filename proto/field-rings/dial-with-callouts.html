@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>Field, dial with callouts</title>
+<meta name="viewport" content="width=1600">
+<link rel="stylesheet" href="inter.css"><link rel="stylesheet" href="kit.css">
+<script src="data-james.js"></script><script src="kit.js"></script>
+</head><body>
+<script>
+/* DIAL WITH CALLOUTS. The circle, as large as the stage allows, and the
+   rectangle's corners put to work.
+
+   A circle in a rectangle leaves four corners, and the Field has always
+   left them empty. Here they are where the words go. Every layer sits at a
+   fixed radius like the registers on a watch dial, and the few things worth
+   naming are called out to the nearest corner on a leader line, set level
+   and read without turning the head. The circle carries the data and the
+   corners carry the language, so no word is ever set over a mark.
+
+   It is the option closest to the Field as it ships: the same ring, at its
+   full size, with every depth showing at once and no zoom to find them. */
+(function(){
+const M=K.mount({name:'Dial with callouts'}), F=K.F, w=M.win, cx=w.cx, cy=w.cy, TAU=K.TAU;
+const R0=w.b-2;
+const C=r=>K.Ring(cx,cy,r,r,2);
+const Rr={dom0:R0,dom1:R0-18,story:R0-24,base:R0-30,barMax:46,seatNm:R0-92,
+ mask0:R0-102,mask1:R0-109,arch0:R0-115,arch1:R0-128,pat:R0-145,cx:R0-168,hy:R0-190,sup:R0-212,
+ lawIc:R0-229,lawBar:R0-237,lawMax:22,gate:R0-280,core:64};
+const base=C(Rr.base); K.useLoop(base);
+/* the wash sits on the dial's own rim, not in the corners, because the
+   corners are where the words go. In the corners a Root name measured 4.29
+   to 1 on the Root pool, and passed only on the width of its halo. */
+K.shadow(M,{reach:.62,at:[-135,-45,135,45].map(a=>{const t=a*Math.PI/180;
+ return [(cx+Math.cos(t)*R0*.78)/M.W,(cy+Math.sin(t)*R0*.78)/M.H];})});
+/* the registers: a hairline at every ring, the dial's own engraving */
+[Rr.dom1,Rr.base,Rr.mask0,Rr.arch1,Rr.pat,Rr.cx,Rr.hy,Rr.sup,Rr.lawBar].forEach(r=>{
+ K.el('circle',{cx:cx,cy:cy,r:r,fill:'none',stroke:K.rgba(K.INK,.06),'stroke-width':1},M.L.ground);});
+
+/* ---- domains, the outer register ---- */
+{const o=C(Rr.dom0),i=C(Rr.dom1),mid=C((Rr.dom0+Rr.dom1)/2),g=M.L.domains,tg=M.T.domains;
+ F.domains.forEach((dm,k)=>{const c=K.hx(F.rootCol[dm.r]),t0=k/19+.0018,t1=(k+1)/19-.0018;
+  K.title(K.el('path',{d:K.bandD(o,i,K.th(t0),K.th(t1)),fill:K.rgba(c,dm.sel?.34:.05+dm.v*.22),
+   stroke:dm.sel?K.rgba(c,.95):null,'stroke-width':dm.sel?1.4:null},g),dm.nm+'. '+dm.r+' root.'+(dm.sel?' Your selection.':''));
+  const q=mid.at(K.th(dm.t));K.glyph(tg,dm.ic,q.x,q.y,11,K.rgba(c,dm.sel?1:.4+dm.v*.5),1.7);});}
+
+/* ---- addresses, radial bars on the chapter ring ---- */
+const tip={},anchorOf={};
+{const g=M.L.addresses,slot=base.len/K.N,hw=slot*.24;
+ K.slots.forEach(s=>{const th=K.th(s.t),p=base.at(th),tx=p.ny,ty=-p.nx;
+  if(s.field){const q={x:p.x+p.nx*7,y:p.y+p.ny*7};tip[s.s]=q;
+   K.title(K.el('circle',{cx:q.x,cy:q.y,r:3.6,fill:'none',stroke:K.rgba(K.INK,.6),'stroke-width':1.2},g),s.k+'. '+s.a+', outside the body.');return;}
+  const sq=s.sq,len=3+K.clamp(sq/10,0,1)*Rr.barMax,held=sq>=4,c=K.nodeCol(s.b,sq);
+  const quad=l=>[[p.x+tx*hw,p.y+ty*hw],[p.x-tx*hw,p.y-ty*hw],[p.x-tx*hw*.8+p.nx*l,p.y-ty*hw*.8+p.ny*l],[p.x+tx*hw*.8+p.nx*l,p.y+ty*hw*.8+p.ny*l]];
+  K.el('path',{d:K.polyD(quad(Rr.barMax+3),true),fill:K.rgba(K.INK,.03)},g);
+  const bar=K.el('path',{d:K.polyD(quad(len),true),fill:K.rgba(c,held?.92:.44)},g);
+  if(sq>=9)K.el('path',{d:K.polyD(quad(len),true),fill:'none',stroke:K.rgb(K.ALARM),'stroke-width':1.3},g);
+  K.title(bar,s.k+'. '+s.b+', '+s.cf+'. Held at '+sq.toFixed(1)+'.');
+  tip[s.s]={x:p.x+p.nx*len,y:p.y+p.ny*len};anchorOf['n'+s.s]={x:p.x,y:p.y,th:th};});
+ /* the seats, in a hairline of their colour on the ring and their glyph just
+    inside it, where a dial sets its numerals. The glyph and not the word:
+    Law 8 keeps every word off the drawing, and on this rendition the words
+    have somewhere better to go, which is the corners */
+ K.SEATS.forEach((b,k)=>{const S=K.sector[b],c=K.seat(b),t0=K.th(S.t0+.002),t1=K.th(S.t1-.002);
+  K.el('path',{d:K.arcD(cx,cy,Rr.base,t0,t1),fill:'none',stroke:K.rgba(c,.9),'stroke-width':2},g);
+  const tm=K.th(S.tm),x=cx+Math.cos(tm)*(Rr.seatNm+2),y=cy+Math.sin(tm)*(Rr.seatNm+2);
+  K.seatGlyph(M.T.seats,b,x,y,17);});}
+
+/* ---- stories ---- */
+{const g=M.L.stories,st=C(Rr.story);
+ Object.keys(F.atoms).forEach(j=>{const s=K.slots[+j+2];if(!s)return;
+  F.atoms[j].forEach(a=>{const p=st.at(K.th(s.t)),c=K.mix(K.seat(s.b),K.INK,.4),l=1+a.amt*1.2;
+   K.el('line',{x1:p.x+p.nx*4,y1:p.y+p.ny*4,x2:p.x-p.nx*l,y2:p.y-p.ny*l,stroke:K.rgba(c,.8),'stroke-width':1.2,'stroke-linecap':'round'},g);
+   K.title(K.el('circle',{cx:p.x-p.nx*l,cy:p.y-p.ny*l,r:1.9,fill:K.rgb(c)},g),'"'+F.entries[a.ei]+'" Put '+a.amt.toFixed(1)+' on '+s.k+'.');});});}
+
+/* ---- masks and archetypes, two narrow registers ---- */
+{const o=C(Rr.mask0),i=C(Rr.mask1),g=M.L.masks,warm=[224,214,186];
+ F.masks.forEach((m,k)=>{const v=K.clamp(m.w/10,0,1),t0=k/6+.004,t1=(k+1)/6-.004;
+  K.title(K.el('path',{d:K.bandD(o,i,K.th(t0),K.th(t1)),fill:K.rgba(warm,.04+v*.32)},g),m.nm+' mask. Weight '+m.w.toFixed(1)+'.');});}
+const archAt={};
+{const o=C(Rr.arch0),i=C(Rr.arch1),mid=C((Rr.arch0+Rr.arch1)/2),g=M.L.archetypes,tg=M.T.archetypes,gc=K.ACCENT;
+ K.SEATS.forEach(b=>{const mine=F.arch.filter(a=>a.b===b),S=K.sector[b],span=(S.t1-S.t0)/mine.length;
+  mine.forEach((a,k)=>{const j=F.arch.indexOf(a),lead=j===F.pi,sec=j===F.si;
+   const t0=S.t0+k*span+.002,t1=S.t0+(k+1)*span-.002;
+   K.title(K.el('path',{d:K.bandD(o,i,K.th(t0),K.th(t1)),fill:K.rgba(gc,.04+a.aff*.16),
+    stroke:lead?K.rgba(gc,.6):sec?K.rgba(gc,.36):null,'stroke-width':lead?1.4:sec?1.1:null},g),a.nm+'. Runs through '+b+'.'+(lead?' Your first.':sec?' Your second.':''));
+   const q=mid.at(K.th(a.t));archAt[j]=q;
+   K.glyph(tg,a.ic,q.x,q.y,10.5,K.rgba(gc,lead?1:sec?.8:.3+a.aff*.4),1.8);});});}
+
+/* ---- patterns and chains ---- */
+const at={sab:[],cx:[],hy:[],sup:[]};
+{const r=C(Rr.pat),g=M.L.patterns,w01=s=>K.clamp((s.w-3.5)/3,0,1);
+ F.sabs.forEach((s,k)=>{at.sab[k]=r.at(K.th(s.t));});
+ F.sabs.forEach((s,k)=>{const p=at.sab[k],kk=w01(s);
+  s.parts.forEach(j=>{const q=tip[j+2];if(!q)return;
+   K.el('path',{d:K.bowD(q,p,cx,cy,K.sag(j,.10)),fill:'none',stroke:K.rgba(K.seat(F.nodes[j].b),.15+kk*.2),'stroke-width':(.6+kk*.9).toFixed(2),
+    'stroke-dasharray':s.unnamed?'2 3':null},g);});});
+ F.sabs.forEach((s,k)=>{const p=at.sab[k],c=K.seat(s.b||'Root'),rr=2.4+w01(s)*3.2;
+  K.title(s.unnamed?K.el('circle',{cx:p.x,cy:p.y,r:rr,fill:K.rgb(K.GROUND),stroke:K.rgb(c),'stroke-width':1.4},g)
+                   :K.el('circle',{cx:p.x,cy:p.y,r:rr,fill:K.rgb(c)},g),s.nm+(s.unnamed?', inferred':'')+'. Weight '+s.w.toFixed(1)+'.');});}
+{const g=M.L.chains,tiers=[['cx',F.cxs,Rr.cx,'Solar',3.2,1.4,at.sab,.24],['hy',F.hys,Rr.hy,'Sacral',4.6,2,at.cx,.30],['sup',F.sups,Rr.sup,'Root',6.4,2.6,at.hy,.36]];
+ tiers.forEach(T=>{const [key,list,rad,seat,rb,wd,from,pull]=T,r=C(rad),c=K.seat(seat);
+  list.forEach((o,k)=>{at[key][k]=r.at(K.th(o.t));});
+  list.forEach((o,k)=>{const p=at[key][k],kk=K.clamp((o.w-3.5)/3,0,1);
+   o.parts.forEach(pi=>{const q=from[pi];if(!q)return;
+    K.el('path',{d:K.bowD(q,p,cx,cy,pull),fill:'none',stroke:K.rgba(c,.16+kk*.26),'stroke-width':(wd*(.45+kk*.7)).toFixed(2)},g);});});
+  list.forEach((o,k)=>{const p=at[key][k],kk=K.clamp((o.w-3.5)/3,0,1);
+   K.title(K.el('circle',{cx:p.x,cy:p.y,r:rb+kk*2.2,fill:K.rgb(c),stroke:K.rgb(K.GROUND),'stroke-width':1.5},g),o.nm+'. Weight '+o.w.toFixed(1)+'.');});});}
+
+/* ---- laws ---- */
+const lawAt={};
+{const g=M.L.laws,tg=M.T.laws,ic=C(Rr.lawIc),bs=C(Rr.lawBar);
+ F.laws.forEach((l,li)=>{const th=K.th(l.t),p=bs.at(th),c=K.seat(l.b),v=K.clamp(l.v/10,0,1),len=3+v*Rr.lawMax;
+  K.el('line',{x1:p.x,y1:p.y,x2:p.x+p.nx*(Rr.lawMax+3),y2:p.y+p.ny*(Rr.lawMax+3),stroke:K.rgba(K.INK,.06),'stroke-width':4,'stroke-linecap':'round'},g);
+  K.title(K.el('line',{x1:p.x,y1:p.y,x2:p.x+p.nx*len,y2:p.y+p.ny*len,stroke:K.rgba(c,.40+v*.58),'stroke-width':4,'stroke-linecap':'round'},g),
+   l.nm+'. '+l.b+'. '+l.v.toFixed(1)+' of 10.');
+  const q=ic.at(th);lawAt[li]=q;K.glyph(tg,l.ic,q.x,q.y,10.5,K.rgba(c,.85),1.7);});}
+
+/* ---- the core and its gates ---- */
+K.core(M.L.core,cx,cy,Rr.core,{w:5,fs:56});
+{const hi=F.gates.filter(v=>v.side==='higher'),lo=F.gates.filter(v=>v.side==='lower'),g=M.L.gates;
+ const put=(list,up)=>list.forEach((v,i)=>{const a=(up?-Math.PI/2:Math.PI/2)+(i-(list.length-1)/2)*.66;
+  K.gate(g,cx+Math.cos(a)*Rr.gate,cy+Math.sin(a)*Rr.gate,v,11.5,{bg:K.GROUND});});
+ put(hi,true);put(lo,false);}
+
+/* ---- the callouts. what is worth a name goes to the nearest corner ----
+   A leader runs from the mark out past the dial and then level to its label.
+   Each corner stacks its names in the order their marks sit round the dial,
+   so no two leaders cross. Each belongs to its layer and goes with it. */
+{const items=[];
+ const heavy=K.slots.filter(s=>!s.field).sort((a,b)=>b.sq-a.sq).slice(0,3);
+ heavy.forEach(s=>{const a=anchorOf['n'+s.s];items.push({k:'addresses',x:a.x,y:a.y,th:a.th,nm:s.k,sub:s.b+'. Held at '+s.sq.toFixed(1),col:K.seat(s.b)});});
+ const lead=F.arch[F.pi],la=archAt[F.pi];
+ items.push({k:'archetypes',x:la.x,y:la.y,th:Math.atan2(la.y-cy,la.x-cx),nm:lead.nm,sub:'First archetype',col:K.ACCENT});
+ /* the selected domain is not called out: the left rail already names it, and
+    a fifth name in one corner reached the dial's own outer ring */
+ F.sups.forEach((o,k)=>{const p=at.sup[k];items.push({k:'chains',x:p.x,y:p.y,th:Math.atan2(p.y-cy,p.x-cx),nm:o.nm,sub:'Character layer',col:K.seat('Root')});});
+ const shut=F.laws.map((l,i)=>({l:l,i:i})).sort((a,b)=>a.l.v-b.l.v)[0];
+ {const q=lawAt[shut.i];items.push({k:'laws',x:q.x,y:q.y,th:Math.atan2(q.y-cy,q.x-cx),nm:shut.l.nm,sub:'Most shut law. '+shut.l.v.toFixed(1)+' of 10',col:K.seat(shut.l.b)});}
+ const heavyPat=F.sabs.slice().sort((a,b)=>b.w-a.w)[0],hp=at.sab[F.sabs.indexOf(heavyPat)];
+ items.push({k:'patterns',x:hp.x,y:hp.y,th:Math.atan2(hp.y-cy,hp.x-cx),nm:heavyPat.nm,sub:'Heaviest pattern. Weight '+heavyPat.w.toFixed(1),col:K.seat(heavyPat.b)});
+ const corner=it=>{const right=it.x>=cx,below=it.y>=cy;return (below?'b':'t')+(right?'r':'l');};
+ const groups={tl:[],tr:[],bl:[],br:[]};items.forEach(it=>groups[corner(it)].push(it));
+ Object.keys(groups).forEach(c=>{const list=groups[c],right=c[1]==='r',below=c[0]==='b';
+  /* stacked outward from the corner in the order the marks are met going
+     away from the horizontal, so the leaders nest instead of crossing */
+  list.sort((a,b)=>Math.abs(Math.sin(b.th))-Math.abs(Math.sin(a.th)));
+  list.forEach((it,i)=>{const lx=right?w.x1-6:w.x0+6, ly=below?w.y1-10-i*38:w.y0+22+i*38;
+   const e=C(R0+10).at(it.th), ex=e.x, ey=ly-4;
+   const g=M.T[it.k]||M.T.seats;
+   K.el('circle',{cx:it.x,cy:it.y,r:2.4,fill:K.rgb(it.col)},g);
+   K.el('path',{d:'M'+it.x.toFixed(1)+' '+it.y.toFixed(1)+'L'+ex.toFixed(1)+' '+ey.toFixed(1)+'L'+(right?lx-Math.max(0,0):lx).toFixed(1)+' '+ey.toFixed(1),
+    fill:'none',stroke:K.rgba(it.col,.45),'stroke-width':1},g);
+   /* the name in its colour lifted a fifth toward ink, so it clears 4.5 to 1
+      on the ground itself and not only on the width of its halo: the Root
+      red measured 4.36 beside the rim, the lifted one 5.40 */
+   K.label(g,it.nm,lx,ly-9,{'text-anchor':right?'end':'start','font-size':12.5,'font-weight':600,fill:K.rgb(K.mix(it.col,K.INK,.18))});
+   K.label(g,it.sub,lx,ly+6,{'text-anchor':right?'end':'start','font-size':11,'font-weight':500,fill:'var(--dim)'});});});}
+})();
+</script>
+</body></html>

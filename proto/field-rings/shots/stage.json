@@ -1,0 +1,13 @@
+{
+ "x": 322,
+ "y": 85,
+ "w": 922,
+ "h": 905,
+ "radius": "16px",
+ "bg": "rgb(16, 16, 16)",
+ "border": "rgba(255, 255, 255, 0.09) 1px",
+ "bodyBg": "rgb(12, 13, 18)",
+ "commit": "ebe8516 (tree dirty)",
+ "md5": "dd5fb441e4f7a48fb8f9b0f09099f50a",
+ "at": "1600x1000"
+}

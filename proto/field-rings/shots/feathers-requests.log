@@ -1,0 +1,27 @@
+THE REQUEST LOG for the feathers. Written by shoot-feathers.js.
+Any line marked OFF MACHINE is a request that left the computer, and there must be none.
+
+feathers  clearances {"gateMin":6.55,"gateWho":"Non-Harm","wedgeOverGate":0,"coreToSeed":1.1,"rangeToSeed":4.6,"ringToSeed":11.1,"blockTop":-173,"beadToGate":34.06,"limit":168,"hub":92}
+feathers  identity {"sum":118.29999999999995,"want":118.293,"diff":0.006999999999948159} agree true
+feathers  clearance: nearest gate to any feather at full length 6.55 px (Non-Harm), targets over a gate 0, nearest seed to the ring 11.1 px, to the range arc 4.6 px, to the core's unseen backing disc 1.1 px, gate block top -173 px from centre, nearest chain bead to a gate 34.06 px
+feathers  identity: lengths 118.300 points against 2.1 x (100 - CQ) = 118.293, off by 0.0070; the two captures agree: true
+feathers  hover, known bad point (the centre of the number): probe names nothing, correct
+feathers  hover: 21 of 21 targets named their own law
+feathers  James, lengths in pixels: Truth 23.6, Transparency 54.0, Justice 42.6, Unity 54.7, Awareness 42.6, Nature 42.6, Presence 42.6, Humility 42.6, Equanimity 42.6, Compassion 56.2, Forgiveness 55.5, Generosity 42.6, Aesthetic Beauty 42.6, Courage 42.6, Duty 42.6, Responsibility 42.6, Accountability 16.7, Temperance 42.6, Detachment 42.6, Non-Harm 42.6, Patience 42.6
+ladder 1600  identity Gordon: 169.400 against 169.401, off by 0.0007
+ladder 1600  identity James: 118.300 against 118.293, off by 0.0070
+ladder 1600  identity Sofia: 56.300 against 56.301, off by 0.0010
+ladder 1600  identity Lance: 5.800 against 5.800, off by 0.0002
+ladder 1600  identity Seven laws in: 177.400 against 177.400, off by 0.0004
+ladder 1600  page width 1600 in a viewport of 1600
+ladder 1600  marks inside their figure: 589 of 589
+ladder 1600  projection at 0 releases: coherence 43.67, Oscillating, identity off by 0.0000
+ladder 1600  projection at 5000 releases: coherence 67.37, Gaining, identity off by 0.0000
+ladder 1600  projection at 15000 releases: coherence 88.74, Embodied, identity off by 0.0000
+ladder 390  identity Gordon: 169.400 against 169.401, off by 0.0007
+ladder 390  identity James: 118.300 against 118.293, off by 0.0070
+ladder 390  identity Sofia: 56.300 against 56.301, off by 0.0010
+ladder 390  identity Lance: 5.800 against 5.800, off by 0.0002
+ladder 390  identity Seven laws in: 177.400 against 177.400, off by 0.0004
+ladder 390  page width 390 in a viewport of 390
+ladder 390  marks inside their figure: 488 of 488

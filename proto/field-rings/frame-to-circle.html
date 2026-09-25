@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>Field, frame to circle</title>
+<meta name="viewport" content="width=1600">
+<link rel="stylesheet" href="inter.css"><link rel="stylesheet" href="kit.css">
+<script src="data-james.js"></script><script src="kit.js"></script>
+</head><body>
+<script>
+/* FRAME TO CIRCLE. The rectangle at the edge, a circle at the heart.
+
+   The outer ring is the stage itself, a rectangle with its corners eased,
+   and it carries the 112 addresses, because the addresses are the body
+   meeting the world and the world is the frame. In a band 130 pixels deep
+   the rings turn: each is a little rounder and a little narrower than the
+   one outside it, and by the end of the band they are a circle. Everything
+   inside that is round: the patterns, the chains, the laws, the core. So the
+   figure fills the rectangle and its centre is still the round thing a
+   person already reads as the self.
+
+   The first cut spread the rounding across the whole depth, and squinted it
+   read as nested frames with softer corners, which is the first rendition.
+   The turn is kept to the outer band so the two cannot be mistaken.
+
+   Drawn in hairlines. The lines turning from frame to circle are the
+   picture; the readings sit on them as strokes and dots, never as bands. */
+(function(){
+const M=K.mount({name:'Frame to circle'}), F=K.F, w=M.win, cx=w.cx, cy=w.cy, TAU=K.TAU;
+const A0=w.a, B0=w.b, D1=130, Rm=B0-D1;
+/* the ring at d pixels in from the frame, measured on the top edge. Inside
+   the band the sides close faster than the top, which is the turn; past it,
+   a circle. Measured in pixels and not as a share of the depth, because the
+   band is only 76 pixels deep at the top if it is a share, and the address
+   bars alone need 47 of them. */
+const ring=d=>{if(d<D1){const f=d/D1,e=f*f*(3-2*f);
+  return K.Ring(cx,cy,K.lerp(A0,Rm,f),B0-d,2+8*Math.pow(1-e,1.5));}
+ const r=B0-d;return K.Ring(cx,cy,r,r,2);};
+const D={dom:2, story:9, base:16, barMax:40, seatNm:72, mask:88, arch:104,
+ pat:150, cx:175, hy:197, sup:219, lawIc:236, law:246, lawMax:18, gate:100, core:62};
+const base=ring(D.base); K.useLoop(base);
+
+/* the light. one source, the core, and the frame is the room around it. It is
+   the composition's lighting and carries no figure. */
+{const id='ap';const gr=K.el('radialGradient',{id:id,cx:cx,cy:cy,r:A0*1.15,gradientUnits:'userSpaceOnUse'},M.defs);
+ K.el('stop',{offset:0,'stop-color':'#1b1c20'},gr);K.el('stop',{offset:.5,'stop-color':'#131315'},gr);
+ K.el('stop',{offset:1,'stop-color':'#09090a'},gr);
+ K.el('rect',{x:0,y:0,width:M.W,height:M.H,fill:'url(#'+id+')'},M.L.ground);}
+K.shadow(M);
+/* the turn: a hairline every ten pixels across the band, drawn whether or
+   not a layer is on, so the frame is seen becoming the circle. Then the
+   circle's own registers inside it, fainter. */
+for(let d=0;d<=D1;d+=10)
+ K.el('path',{d:ring(d).d(),fill:'none',stroke:K.rgba(K.INK,.085-.04*(d/D1)),'stroke-width':1},M.L.ground);
+[D.pat,D.cx,D.hy,D.sup,D.law].forEach(d=>{
+ K.el('path',{d:ring(d).d(),fill:'none',stroke:K.rgba(K.INK,.045),'stroke-width':1},M.L.ground);});
+
+/* ---- domains. nineteen marks on the frame itself ---- */
+{const o=ring(D.dom),ic=ring(D.dom+14),g=M.L.domains,tg=M.T.domains;
+ F.domains.forEach((dm,k)=>{const c=K.hx(F.rootCol[dm.r]),t0=k/19+.004,t1=(k+1)/19-.004;
+  const p=K.el('path',{d:K.polyD(o.seg(K.th(t0),K.th(t1))),fill:'none',stroke:K.rgba(c,dm.sel?.95:.18+dm.v*.5),
+   'stroke-width':dm.sel?3:2,'stroke-linecap':'round'},g);
+  K.title(p,dm.nm+'. '+dm.r+' root.'+(dm.sel?' Your selection.':''));
+  if(dm.sel){const q=ic.at(K.th(dm.t));K.el('circle',{cx:q.x,cy:q.y,r:9,fill:K.rgb(K.GROUND)},tg);K.glyph(tg,dm.ic,q.x,q.y,12,K.rgba(c,1),1.7);}});}
+
+/* ---- addresses. a stroke for each of the 112, standing in from the frame ---- */
+const tip={};
+{const g=M.L.addresses;
+ K.el('path',{d:base.d(),fill:'none',stroke:K.rgba(K.INK,.14),'stroke-width':1},g);
+ K.slots.forEach(s=>{const p=base.at(K.th(s.t));
+  if(s.field){const q={x:p.x+p.nx*6,y:p.y+p.ny*6};tip[s.s]=q;
+   K.title(K.el('circle',{cx:q.x,cy:q.y,r:3.4,fill:'none',stroke:K.rgba(K.INK,.6),'stroke-width':1.2},g),s.k+'. '+s.a+', outside the body.');return;}
+  const sq=s.sq,len=3+K.clamp(sq/10,0,1)*D.barMax,held=sq>=4,c=K.nodeCol(s.b,sq);
+  const q={x:p.x+p.nx*len,y:p.y+p.ny*len};tip[s.s]=q;
+  const l=K.el('line',{x1:p.x,y1:p.y,x2:q.x,y2:q.y,stroke:K.rgba(c,held?.95:.42),'stroke-width':held?4.2:3,'stroke-linecap':'round'},g);
+  K.title(l,s.k+'. '+s.b+', '+s.cf+'. Held at '+sq.toFixed(1)+'.');
+  if(sq>=9)K.el('circle',{cx:q.x+p.nx*5.5,cy:q.y+p.ny*5.5,r:2.6,fill:'none',stroke:K.rgb(K.ALARM),'stroke-width':1.4},g);});
+ const nm=ring(D.seatNm);
+ K.SEATS.forEach(b=>{const S=K.sector[b],c=K.seat(b);
+  K.el('path',{d:K.polyD(base.seg(K.th(S.t0+.003),K.th(S.t1-.003))),fill:'none',stroke:K.rgba(c,.85),'stroke-width':1.6},g);
+  /* the seat by its glyph, not its word. Law 8 */
+  const q=nm.at(K.th(S.tm));K.seatGlyph(M.T.seats,b,q.x,q.y,16);});}
+
+/* ---- stories ---- */
+{const g=M.L.stories,st=ring(D.story);
+ Object.keys(F.atoms).forEach(j=>{const s=K.slots[+j+2];if(!s)return;
+  F.atoms[j].forEach(a=>{const p=st.at(K.th(s.t)),c=K.mix(K.seat(s.b),K.INK,.4),l=1+a.amt*1.3;
+   K.el('line',{x1:p.x+p.nx*4,y1:p.y+p.ny*4,x2:p.x-p.nx*l,y2:p.y-p.ny*l,stroke:K.rgba(c,.8),'stroke-width':1.2,'stroke-linecap':'round'},g);
+   K.title(K.el('circle',{cx:p.x-p.nx*l,cy:p.y-p.ny*l,r:1.9,fill:K.rgb(c)},g),'"'+F.entries[a.ei]+'" Put '+a.amt.toFixed(1)+' on '+s.k+'.');});});}
+
+/* ---- masks and archetypes, weighted stretches of two turning lines ---- */
+{const r=ring(D.mask),g=M.L.masks,warm=[224,214,186];
+ F.masks.forEach((m,k)=>{const v=K.clamp(m.w/10,0,1),t0=k/6+.006,t1=(k+1)/6-.006;
+  K.title(K.el('path',{d:K.polyD(r.seg(K.th(t0),K.th(t1))),fill:'none',stroke:K.rgba(warm,.10+v*.55),'stroke-width':1+v*4.5,'stroke-linecap':'round'},g),
+   m.nm+' mask. Weight '+m.w.toFixed(1)+'.');});}
+{const r=ring(D.arch),g=M.L.archetypes,tg=M.T.archetypes,gc=K.ACCENT,lab=ring(D.arch+13);
+ K.SEATS.forEach(b=>{const mine=F.arch.filter(a=>a.b===b),S=K.sector[b],span=(S.t1-S.t0)/mine.length;
+  mine.forEach((a,k)=>{const j=F.arch.indexOf(a),lead=j===F.pi,sec=j===F.si;
+   const t0=S.t0+k*span+.004,t1=S.t0+(k+1)*span-.004;
+   K.title(K.el('path',{d:K.polyD(r.seg(K.th(t0),K.th(t1))),fill:'none',stroke:K.rgba(gc,lead?.68:sec?.44:.10+a.aff*.28),
+    'stroke-width':lead?2.6:sec?2:1.2+a.aff*1.2,'stroke-linecap':'round'},g),a.nm+'. Runs through '+b+'.'+(lead?' Your first.':sec?' Your second.':''));
+   if(lead||sec){const q=lab.at(K.th(a.t));
+    K.glyph(tg,a.ic,q.x,q.y,11,K.rgba(gc,lead?1:.75),1.8);}});});}
+
+/* ---- patterns and chains: beads on the circle's registers, threads bowing in ---- */
+const at={sab:[],cx:[],hy:[],sup:[]};
+{const r=ring(D.pat),g=M.L.patterns,w01=s=>K.clamp((s.w-3.5)/3,0,1);
+ F.sabs.forEach((s,k)=>{at.sab[k]=r.at(K.th(s.t));});
+ F.sabs.forEach((s,k)=>{const p=at.sab[k],kk=w01(s);
+  s.parts.forEach(j=>{const q=tip[j+2];if(!q)return;
+   K.el('path',{d:K.bowD(q,p,cx,cy,K.sag(j,.12)),fill:'none',stroke:K.rgba(K.seat(F.nodes[j].b),.14+kk*.2),'stroke-width':(.6+kk*.9).toFixed(2),
+    'stroke-dasharray':s.unnamed?'2 3':null},g);});});
+ F.sabs.forEach((s,k)=>{const p=at.sab[k],c=K.seat(s.b||'Root'),rr=2.4+w01(s)*3.2;
+  K.title(s.unnamed?K.el('circle',{cx:p.x,cy:p.y,r:rr,fill:K.rgb(K.GROUND),stroke:K.rgb(c),'stroke-width':1.4},g)
+                   :K.el('circle',{cx:p.x,cy:p.y,r:rr,fill:K.rgb(c)},g),
+   s.nm+(s.unnamed?', inferred':'')+'. Weight '+s.w.toFixed(1)+'.');});}
+{const g=M.L.chains,tiers=[['cx',F.cxs,D.cx,'Solar',3.2,1.4,at.sab,.28],['hy',F.hys,D.hy,'Sacral',4.6,2,at.cx,.36],['sup',F.sups,D.sup,'Root',6.6,2.6,at.hy,.44]];
+ tiers.forEach(T=>{const [key,list,d,seat,rb,wd,from,pull]=T,r=ring(d),c=K.seat(seat);
+  list.forEach((o,k)=>{at[key][k]=r.at(K.th(o.t));});
+  list.forEach((o,k)=>{const p=at[key][k],kk=K.clamp((o.w-3.5)/3,0,1);
+   o.parts.forEach(pi=>{const q=from[pi];if(!q)return;
+    K.el('path',{d:K.bowD(q,p,cx,cy,pull),fill:'none',stroke:K.rgba(c,.16+kk*.26),'stroke-width':(wd*(.45+kk*.7)).toFixed(2)},g);});});
+  list.forEach((o,k)=>{const p=at[key][k],kk=K.clamp((o.w-3.5)/3,0,1);
+   K.title(K.el('circle',{cx:p.x,cy:p.y,r:rb+kk*2.2,fill:K.rgb(c),stroke:K.rgb(K.GROUND),'stroke-width':1.5},g),o.nm+'. Weight '+o.w.toFixed(1)+'.');});});
+ /* the character layer carries no name on the drawing: Law 8. Its tooltip
+    names it, and the rail already lists it. */}
+
+/* ---- laws, the last circle before the gates. a stroke each, and its mark ---- */
+{const r=ring(D.law),ic=ring(D.lawIc),g=M.L.laws,tg=M.T.laws;
+ F.laws.forEach(l=>{const th=K.th(l.t),p=r.at(th),c=K.seat(l.b),v=K.clamp(l.v/10,0,1),len=3+v*D.lawMax;
+  K.el('line',{x1:p.x,y1:p.y,x2:p.x+p.nx*(D.lawMax+3),y2:p.y+p.ny*(D.lawMax+3),stroke:K.rgba(K.INK,.06),'stroke-width':3.4,'stroke-linecap':'round'},g);
+  K.title(K.el('line',{x1:p.x,y1:p.y,x2:p.x+p.nx*len,y2:p.y+p.ny*len,stroke:K.rgba(c,.40+v*.58),'stroke-width':3.4,'stroke-linecap':'round'},g),
+   l.nm+'. '+l.b+'. '+l.v.toFixed(1)+' of 10.');
+  const q=ic.at(th);K.glyph(tg,l.ic,q.x,q.y,10.5,K.rgba(c,.85),1.7);});}
+
+/* ---- the core, and the six gates fanned above and below it, as the Field sets them ---- */
+K.core(M.L.core,cx,cy,D.core,{w:5,fs:58});
+{const hi=F.gates.filter(v=>v.side==='higher'),lo=F.gates.filter(v=>v.side==='lower'),g=M.L.gates;
+ const put=(list,up)=>list.forEach((v,i)=>{const a=(up?-Math.PI/2:Math.PI/2)+(i-(list.length-1)/2)*.66;
+  K.gate(g,cx+Math.cos(a)*D.gate,cy+Math.sin(a)*D.gate,v,11.5,{bg:[20,21,23]});});
+ put(hi,true);put(lo,false);}
+})();
+</script>
+</body></html>

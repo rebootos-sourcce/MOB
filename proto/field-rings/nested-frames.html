@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>Field, nested frames</title>
+<meta name="viewport" content="width=1600">
+<link rel="stylesheet" href="inter.css"><link rel="stylesheet" href="kit.css">
+<script src="data-james.js"></script><script src="kit.js"></script>
+</head><body>
+<script>
+/* NESTED FRAMES. Every ring takes the stage's own shape.
+
+   The literal reading of the ask: rectangular, fitted to the rectangle, the
+   rings running from the outside in. Each layer is a frame inside the last,
+   the way the chapter ring of a rectangular watch runs round its dial, or
+   the way Albers nests a square in a square. Every frame is inset by the same
+   distance on all four sides, so a band is the same depth wherever it is read
+   and a bar on the side means what a bar on the top means.
+
+   The one curve is the core. Everything else is a rectangle; coherence is a
+   circle. The grid is broken once, at the centre, on purpose. */
+(function(){
+const M=K.mount({name:'Nested frames'}), F=K.F, w=M.win, cx=w.cx, cy=w.cy, TAU=K.TAU;
+const NS=12;                                   /* the corner ease. higher is squarer */
+const ring=d=>K.Ring(cx,cy,w.a-d,w.b-d,NS);
+const lineRing=(g,d,al)=>K.el('path',{d:ring(d).d(),fill:'none',stroke:K.rgba(K.INK,al),'stroke-width':1},g);
+
+/* the depths, from the outer edge in. one table, so the plan can be read */
+const D={dom0:0,dom1:20, story:25, base:31, barMax:48, seatNm:94,
+ mask0:106,mask1:114, arch0:119,arch1:133, pat:147, cx:165, hy:181, sup:197,
+ law0:207, lawIc:214, lawBar:223, lawMax:19, inner:248};
+const base=ring(D.base); K.useLoop(base);
+K.shadow(M);
+
+/* ---- domains. nineteen cells in the outer frame, each with its own mark ---- */
+{const o=ring(D.dom0),i=ring(D.dom1),mid=ring((D.dom0+D.dom1)/2),g=M.L.domains,tg=M.T.domains;
+ F.domains.forEach((dm,k)=>{const t0=k/19+.0016,t1=(k+1)/19-.0016;
+  const c=K.hx(F.rootCol[dm.r]), a=dm.sel?.34:.05+dm.v*.22;
+  const p=K.el('path',{d:K.bandD(o,i,K.th(t0),K.th(t1)),fill:K.rgba(c,a),
+   stroke:dm.sel?K.rgba(c,.95):null,'stroke-width':dm.sel?1.5:null},g);
+  K.title(p,dm.nm+'. '+dm.r+' root.'+(dm.sel?' Your selection.':''));
+  const q=mid.at(K.th(dm.t));
+  K.glyph(tg,dm.ic,q.x,q.y,12,K.rgba(c,dm.sel?1:.42+dm.v*.5),1.7);});}
+
+/* ---- addresses. 112 places on the second frame, charge as depth ---- */
+const tip={};
+{const g=M.L.addresses,slot=base.len/K.N,hw=slot*.25;
+ lineRing(g,D.base,.10);
+ K.slots.forEach(s=>{const p=base.at(K.th(s.t)),tx=p.ny,ty=-p.nx;
+  if(s.field){                                 /* outside the body: an anchor, not a charge */
+   const q={x:p.x+p.nx*8,y:p.y+p.ny*8};
+   K.title(K.el('circle',{cx:q.x,cy:q.y,r:4,fill:'none',stroke:K.rgba(K.INK,.55),'stroke-width':1.3},g),
+    s.k+'. '+s.a+', outside the body.');
+   tip[s.s]=q; return;}
+  const sq=s.sq, len=4+K.clamp(sq/10,0,1)*D.barMax, held=sq>=4, c=K.nodeCol(s.b,sq);
+  const quad=l=>[[p.x+tx*hw,p.y+ty*hw],[p.x-tx*hw,p.y-ty*hw],[p.x-tx*hw+p.nx*l,p.y-ty*hw+p.ny*l],[p.x+tx*hw+p.nx*l,p.y+ty*hw+p.ny*l]];
+  K.el('path',{d:K.polyD(quad(D.barMax+4),true),fill:K.rgba(K.INK,.03)},g);   /* the empty place */
+  const bar=K.el('path',{d:K.polyD(quad(len),true),fill:K.rgba(c,held?.92:.44)},g);
+  if(sq>=9)K.el('path',{d:K.polyD(quad(len),true),fill:'none',stroke:K.rgb(K.ALARM),'stroke-width':1.4},g);
+  K.title(bar,s.k+'. '+s.b+', '+s.cf+'. Held at '+sq.toFixed(1)+'.');
+  tip[s.s]={x:p.x+p.nx*len,y:p.y+p.ny*len};});
+ /* the seven seats: a hairline of the seat's colour along its run, and its
+    glyph on the inside of the frame. No word: Law 8 */
+ const nm=ring(D.seatNm);
+ K.SEATS.forEach(b=>{const S=K.sector[b],c=K.seat(b);
+  K.el('path',{d:K.polyD(base.seg(K.th(S.t0+.002),K.th(S.t1-.002))),fill:'none',stroke:K.rgba(c,.9),'stroke-width':2},g);
+  const q=nm.at(K.th(S.tm));K.seatGlyph(M.T.seats,b,q.x,q.y,17);});}
+
+/* ---- stories. one mark outside the frame for each story that landed ---- */
+{const g=M.L.stories,st=ring(D.story);
+ Object.keys(F.atoms).forEach(j=>{const s=K.slots[+j+2];if(!s)return;
+  F.atoms[j].forEach(a=>{const p=st.at(K.th(s.t)),c=K.mix(K.seat(s.b),K.INK,.4),l=2+a.amt;
+   K.el('line',{x1:p.x+p.nx*5,y1:p.y+p.ny*5,x2:p.x-p.nx*l,y2:p.y-p.ny*l,stroke:K.rgba(c,.85),'stroke-width':1.3,'stroke-linecap':'round'},g);
+   K.title(K.el('circle',{cx:p.x-p.nx*l,cy:p.y-p.ny*l,r:2.1,fill:K.rgb(c)},g),
+    '"'+F.entries[a.ei]+'" Put '+a.amt.toFixed(1)+' on '+s.k+'.');});});}
+
+/* ---- masks, then archetypes, two narrow frames ----
+   A highlight is a line, not a flood: every cell is filled by its own weight
+   and the first and second archetypes are drawn round, not poured in. */
+{const o=ring(D.mask0),i=ring(D.mask1),g=M.L.masks,warm=[224,214,186];
+ F.masks.forEach((m,k)=>{const t0=k/6+.003,t1=(k+1)/6-.003,v=K.clamp(m.w/10,0,1);
+  K.title(K.el('path',{d:K.bandD(o,i,K.th(t0),K.th(t1)),fill:K.rgba(warm,.04+v*.30)},g),m.nm+' mask. Weight '+m.w.toFixed(1)+'.');});}
+{const o=ring(D.arch0),i=ring(D.arch1),mid=ring((D.arch0+D.arch1)/2),g=M.L.archetypes,tg=M.T.archetypes,gc=K.ACCENT;
+ K.SEATS.forEach(b=>{const mine=F.arch.filter(a=>a.b===b),S=K.sector[b],span=(S.t1-S.t0)/mine.length;
+  mine.forEach((a,k)=>{const j=F.arch.indexOf(a),lead=j===F.pi,sec=j===F.si;
+   const t0=S.t0+k*span+.002,t1=S.t0+(k+1)*span-.002;
+   K.title(K.el('path',{d:K.bandD(o,i,K.th(t0),K.th(t1)),fill:K.rgba(gc,.04+a.aff*.16),
+    stroke:lead?K.rgba(gc,.55):sec?K.rgba(gc,.32):null,'stroke-width':lead?1.4:sec?1.1:null},g),
+    a.nm+'. Runs through '+b+'.'+(lead?' Your first.':sec?' Your second.':''));
+   const q=mid.at(K.th(a.t));
+   K.glyph(tg,a.ic,q.x,q.y,11,K.rgba(gc,lead?1:sec?.85:.35+a.aff*.4),1.8);});});}
+
+/* ---- patterns. beads on their own frame, threaded to what built them ---- */
+const at={sab:[],cx:[],hy:[],sup:[]};
+{const tr=ring(D.pat),g=M.L.patterns;
+ K.el('path',{d:tr.d(),fill:'none',stroke:K.rgba(K.INK,.07),'stroke-width':1},g);
+ const w01=s=>K.clamp((s.w-3.5)/3,0,1);
+ F.sabs.forEach((s,k)=>{const p=tr.at(K.th(s.t)),kk=w01(s);at.sab[k]=p;
+  s.parts.forEach(j=>{const q=tip[j+2];if(!q)return;const nc=K.seat(F.nodes[j].b);
+   K.el('path',{d:K.bowD(q,p,cx,cy,K.sag(j,.16)),fill:'none',stroke:K.rgba(nc,.16+kk*.22),'stroke-width':(.7+kk*1).toFixed(2),
+    'stroke-dasharray':s.unnamed?'3 3':null},g);});});
+ F.sabs.forEach((s,k)=>{const p=at.sab[k],c=K.seat(s.b||'Root'),r=2.6+w01(s)*3.4;
+  const b=s.unnamed?K.el('circle',{cx:p.x,cy:p.y,r:r,fill:K.rgb(K.GROUND),stroke:K.rgb(c),'stroke-width':1.5},g)
+                   :K.el('circle',{cx:p.x,cy:p.y,r:r,fill:K.rgb(c)},g);
+  K.title(b,s.nm+(s.unnamed?', inferred':'')+'. Weight '+s.w.toFixed(1)+', built from '+s.parts.length+' address'+(s.parts.length===1?'':'es')+'.');});}
+
+/* ---- chains. complexes, hyper complexes, character, each a frame further in.
+   The threads bow toward the core, because a chain is a pattern compounding
+   inward, and drawn straight they ran across the frame as loose string. ---- */
+{const g=M.L.chains,tiers=[['cx',F.cxs,D.cx,'Solar',3.4,1.5,at.sab,.30],['hy',F.hys,D.hy,'Sacral',4.8,2.1,at.cx,.40],['sup',F.sups,D.sup,'Root',6.8,2.7,at.hy,.50]];
+ tiers.forEach(T=>{const [key,list,d,seat,rb,wd,from,pull]=T,tr=ring(d),c=K.seat(seat);
+  K.el('path',{d:tr.d(),fill:'none',stroke:K.rgba(c,.09),'stroke-width':1},g);
+  list.forEach((o,k)=>{const p=tr.at(K.th(o.t));at[key][k]=p;
+   const kk=K.clamp((o.w-3.5)/3,0,1);
+   o.parts.forEach(pi=>{const q=from[pi];if(!q)return;
+    K.el('path',{d:K.bowD(q,p,cx,cy,pull),fill:'none',stroke:K.rgba(c,.18+kk*.26),'stroke-width':(wd*(.45+kk*.7)).toFixed(2)},g);});});
+  list.forEach((o,k)=>{const p=at[key][k],kk=K.clamp((o.w-3.5)/3,0,1);
+   K.title(K.el('circle',{cx:p.x,cy:p.y,r:rb+kk*2.4,fill:K.rgb(c),stroke:K.rgb(K.GROUND),'stroke-width':1.5},g),o.nm+'. Weight '+o.w.toFixed(1)+'.');});});
+ /* the character layer is not named on the drawing. Law 8, and when the
+    rings fill the rectangle there is no free ground left to name it on. The
+    tooltip carries the name, and the rail already lists it. */}
+
+/* ---- laws. twenty one, each inside its own seat, each at its score ---- */
+{const g=M.L.laws,tg=M.T.laws,ic=ring(D.lawIc),bs=ring(D.lawBar);
+ lineRing(g,D.law0,.07);
+ F.laws.forEach(l=>{const th=K.th(l.t),p=bs.at(th),c=K.seat(l.b),v=K.clamp(l.v/10,0,1),len=3+v*D.lawMax;
+  const tx=p.ny,ty=-p.nx,hw=3;
+  const quad=L=>[[p.x+tx*hw,p.y+ty*hw],[p.x-tx*hw,p.y-ty*hw],[p.x-tx*hw+p.nx*L,p.y-ty*hw+p.ny*L],[p.x+tx*hw+p.nx*L,p.y+ty*hw+p.ny*L]];
+  K.el('path',{d:K.polyD(quad(D.lawMax+3),true),fill:K.rgba(K.INK,.04)},g);
+  K.title(K.el('path',{d:K.polyD(quad(len),true),fill:K.rgba(c,.40+v*.58)},g),l.nm+'. '+l.b+'. '+l.v.toFixed(1)+' of 10.');
+  const q=ic.at(th); K.glyph(tg,l.ic,q.x,q.y,11,K.rgba(c,.9),1.7);});
+ lineRing(g,D.inner,.08);}
+
+/* ---- the core and its six gates ---- */
+const R=76;
+K.core(M.L.core,cx,cy,R,{w:6,fs:64});
+{const hi=F.gates.filter(v=>v.side==='higher'),lo=F.gates.filter(v=>v.side==='lower'),g=M.L.gates,dy=R+33;
+ hi.forEach((v,k)=>K.gate(g,cx+(k-1)*50,cy-dy,v,12,{bg:K.GROUND}));
+ lo.forEach((v,k)=>K.gate(g,cx+(k-1)*50,cy+dy,v,12,{bg:K.GROUND}));}
+})();
+</script>
+</body></html>
