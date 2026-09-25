@@ -8654,3 +8654,110 @@ product.
 He calls it a squiggly cue and says he may never have shown it. If it is not in
 the repository it cannot be drawn from, and inventing one and calling it his
 would be worse than asking.
+
+## AU. Defects found while writing the desktop port art direction brief.
+Four seats read every surface to document it and found real bugs on the way.
+Measured 25 September against commit `1c021f4`. Each carries its finder.
+
+**AU1. Snow is unreadable on three tabs.** art-director
+Field, Energetics and Compass render on a black stage but still use Snow's
+dark text colour. Measured contrast 1.06:1. The Compass card also floats on
+black rather than paper.
+*Small to fix, large to have shipped.*
+
+**AU2. The background aura ignores its per-lighting strength.** art-director
+The stylesheet sets a different opacity per lighting; the canvas painter
+overrides it with its own fixed value. Measured 0.34 in all seven lightings.
+Glass runs at about a third of what its own token asks for.
+
+**AU3. The old gold survives as eleven literal colour values**, art-director
+`rgba(223,204,126,…)`, under the shipped blue accent. It puts a warm yellow
+wash where none is meant to be.
+
+**AU4. Top tabs wear a box in four lightings.** art-director
+Punch, Flat, Lumen and Glass give the top tabs a fill or outline, against the
+"a tab does not wear a box" rule. The Flat and Lumen tab CSS rules also target
+a class the markup never emits, so they do nothing at all.
+*His call which rule should win.*
+
+**AU5. Lumen's own accent fails its own contrast floor.** art-director
+`#0091EA` measures 3.37:1 both as text on white and as a fill under white
+text. `#0078C2` measures 4.70:1 on the same paper and was proposed as the fix.
+
+**AU6. The alarm colour breaks its own rule.** art-director
+White text on the alarm red measures 3.71:1. Separately, the microphone
+button fills solid with the alarm colour while recording, which is exactly
+the state the alarm colour is reserved to mean.
+
+**AU7. `CLAUDE.md` names the wrong seat colours, and the wrong font count.**
+art-director. Shipped: Root #D6524C, Sacral #D8924E, Solar #DABF6A, Heart
+#5FD5A6, Throat #5EBBDB, 3rd Eye #7D93E0, Crown #A77EDB, across seven
+lightings, not four. The stylesheet's own header comment still names Lexend
+and IBM Plex Mono; only Inter ships. This file, again, said something for
+longer than it was true.
+*Small, and it is a documentation fix, not a code fix.*
+
+**AU8. The avatar centrepiece is not in the build.** uiux-architect
+It is a text drill in the right rail, reached only from the fourth door.
+Nothing writes an avatar pair anywhere in the UI. `0o` above rules that the
+app opens on the avatar; the code opens on Field. This paragraph is now the
+record that the two disagree, not a decision between them.
+*BLOCKED on him. Large either way.*
+
+**AU9. Summary's avatar line can only ever print the all clear.** uiux-architect
+`ui/summary.js` reads `pair.becoming` and `pair.seat`, fields a valid pair
+never carries. Flagged not to be ported as is.
+
+**AU10. Five surfaces print off a blank profile's default, not off nothing.**
+uiux-architect, measured on a blank profile. Knowledge prints 60% on every
+Moral integrity row. Body opens on the Masks layer showing Flow at 100%.
+Ritual says the root is carrying the most. Games deals 24 cards off addresses
+at zero charge. Field draws the law spokes at 6 and shows DQ and SQ as 0.0.
+This is the same failure the Summary and Field unread guard already exists to
+prevent, on surfaces the guard does not reach.
+
+**AU11. The discover, play, flow, embody loop is not drawn anywhere in the
+built app.** uiux-architect. It exists only in `proto/onboard` and
+`proto/ladder`, and the two prototypes disagree on which station maps to
+which surface. `DESIGN-onboard.md` already records the collision.
+*BLOCKED on him.*
+
+**AU12. On a phone the four doors sit 3,066 pixels down the page,** measured.
+uiux-architect. The Field opens the app and its doors live in the right
+rail, which stacks under the left rail on a narrow screen.
+
+**AU13. The boot's own ending never plays.** animation-vfx-director
+`bootOut` was moved from 5.02s to 7.02s on 20 September, but the line that
+removes the boot sheet, `ui/panels.js:929`, still fires at 5450ms. The sheet
+holds full opacity until then and disappears in one frame. The eased fade and
+the fade to black are dead code, visually.
+*Small, and it is a one line fix once the true length is his call.*
+
+**AU14. The release overlay blurs the live Field underneath it.** animation-vfx-director
+`backdrop-filter: blur(10px)` on the release overlay, against the rule that
+nothing blurred sits over the Field. Gate 13 only checks this while the
+overlay is closed. Measured 60.9fps with it closed, 17.7fps open on the
+heaviest profile.
+
+**AU15. Each Compass control press starts another animation loop**, stacking.
+animation-vfx-director. Measured spin speed at 5 times faster after four
+presses, 0.130 to 0.660 rad/s. The Flat toggle also snaps the tilt, against
+the standing "never snaps" ruling.
+
+**AU16. Six progress and level bars never animate**, because they are rebuilt
+through `innerHTML` on every render, which throws their own transition away.
+animation-vfx-director. The release progress bar, the polarity bar, the
+benign/malignant meters, the masculine/feminine lean bar, the intake progress
+bar, the Body glow.
+
+**AU17. No control anywhere has a press state.** animation-vfx-director
+There is no `:active` rule in the stylesheet.
+
+**AU18. Reduced motion has gaps.** animation-vfx-director
+A global rule stops the tooltip's own fade against its own CSS. The Compass
+still animates on hover under reduced motion. The `body.rm` rules were
+written for an in-app motion toggle that does not exist.
+
+*Everything above is a defect in the shipped product, not a request from him.
+Whether each is worth fixing before or after the desktop port is his call; the
+line exists so none of it is lost between now and when he makes it.*
