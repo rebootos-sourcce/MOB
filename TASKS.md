@@ -10345,6 +10345,13 @@ a real count: what is live today against that stated nine, where each
 maps by seat, and whether the six in use are only spoken or actually
 read by anything downstream.
 
+*Corrected at `BT`: the real is worse than six of nine. The release a
+person actually runs and that spends real allowance shows no channel
+word at all. The nine (in two different, disagreeing versions) only
+appear on pages that save nothing. Nothing anywhere reads which channel
+word was used. Said "six" here first because that was his own word;
+fixed at the next place it was actually checked.*
+
 **BP3. His own release practice, dictated in full, kept verbatim
 because it is the actual reference an eventual build should be tested
 against.** "I say, I'm letting go of believing, perceiving, thinking,
@@ -10979,4 +10986,75 @@ badly worn as a role label on the product's own reference roster, eight
 of fourteen wearing none and the heaviest wearing all eight halves at
 once; and what "shape" meant in his own words. Full list, with the
 options and what each costs, on the page itself and not repeated here.
+
+## BT. The real gate channel count, checked against what actually runs.
+## 25 September.
+
+**BP2 corrected, not just answered.** No surface that actually moves
+charge and spends real allowance shows a channel word at all: the
+release a person runs prints only the address name, its seat, and a
+label like "Right limit, line 3". The nine channel words (in two
+different versions that disagree with each other, `C3_VERB` and
+`C3_GATE9` in `cards.js`) only appear on the Games and Knowledge pages,
+neither of which saves anything to a person's record. Nothing anywhere
+reads which channel word was used, checked directly against the built
+sniffer: "I believe it," "I feel it," "I say it," and the rest each read
+nothing. So the honest state is not six of nine wired, it is zero of
+either nine wired to anything that counts, and the two nines shown on
+the non-saving pages do not even agree on their own last word.
+
+**He already ruled this once, and it was never built.** `DECISIONS.md:63`
+already states his six: "Believing, perceiving, thinking, behaving,
+acting, feeling. A sweep over one address is six patterns, one per
+channel." The release was built with four passes instead (right and
+left side, release and truth), and a later note in the same file
+(`DECISIONS.md:238-240`) called his six "short" and moved to the
+catalog's nine, without a further ruling from him on record.
+
+**"Voicing" is not "doing" misheard, they are different words in his own
+book, named together as gates nine and ten in one sentence** (his book,
+raw line 6297). His dictation today runs to nine and stops at voicing,
+dropping doing. The shipped code's nine stops at doing and has never
+carried voicing at all. This is not just a word count: under the
+best-supported seat mapping, his nine (with voicing, without doing) can
+reach at most six of the product's seven seats, while the book's ten and
+the code's nine can each reach all seven, because the missing word is the
+one that would have reached the seventh.
+
+**A seat mapping proposed for all nine, none built, confidence stated
+per word, not asserted evenly.** High confidence: believing at Crown,
+perceiving at 3rd Eye, speaking and saying and voicing at Throat, all
+matching what he said today and the product's own existing seated
+tables. Contested: feeling, which he placed at Heart today but his own
+book's anatomy passage places at the solar plexus. Low confidence,
+genuinely open: behaving and acting, since no seat in the product is
+currently defined as being about action at all; the product's own data
+spreads "what a person does" across four different seats depending on
+whether it reads as will, habit, reflex, or autopilot. *One real
+shortcut surfaced: the printed axis cards already claim a seat mapping
+for their own nine words, "crown to root," but it was never ported into
+this repository, only into a folder on his own Drive. Pulling that in
+first would replace guesswork with his own already-made ruling for five
+of the nine words.*
+
+**What changing this would cost, measured rather than guessed.** No
+profile field stores a channel word today; the meter key is address,
+pass and line, 200 keys per address. Folding channels into that key was
+already an open item (`DECISIONS.md:220`) and changes what a tier sells:
+12 keys per address on the option already on file, up to 2,000 if every
+existing line gets its own channel. Two specific gate tests would fail
+by design the moment the word list changes (`tests/engine.js:1266-1274`,
+`tests/functional.js:453`), which is expected, not a defect to chase.
+
+**Six questions.** Is the true set nine or ten, and does it end in doing
+or voicing; which six he actually meant by "we're only using six," given
+nothing in the app runs six of anything today; where feeling really
+sits, Heart (what he said today) or Solar (what his own book's anatomy
+passage says); where behaving and acting go, given no seat currently
+owns the idea of action at all, offered with both readings drawn on the
+figure per the drawing rule; whether the sniffer should ever read a
+channel verb itself, given today "worthless" scores and "I believe"
+does not; and whether the release a person actually runs should start
+showing the sentence at all, which is also the ground-per-address
+pricing question above.
 
