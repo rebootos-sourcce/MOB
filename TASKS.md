@@ -10318,6 +10318,126 @@ rule against printing one reading twice?
 above the Field (Charge, Patterns, Chains, Blueprint)? That bar is what
 is currently costing the Field 72 vertical pixels every other tab keeps.
 
+## BP. His own practice, dictated in full, answering most of BN's open
+## questions, plus the Field's next build. 25 September.
+
+**BP1. Safety, clarified.** He asked back: "can a clinician write a
+safety review, where would they write this?" Answered directly rather
+than left open: practically, a short document, the same shape as this
+project's other named reviews (`reviews/sound.md` and its kind), written
+with or reviewed by a real clinician he brings onto the project, naming
+the phrase list, the routing copy and the resources; engineering then
+builds to it. Still open: whether he has someone in mind or needs one
+found. **He did rule the practitioner-alert half of `BI1`'s Q1**, his
+words: "a person flags something for their cohort, whoever they added as
+their clinician, like an alert. I think that's very powerful. Both sides
+have to opt in." Double consent, not a silent default, matching the
+practitioner-sight rule already standing in `DECISIONS.md`.
+
+**BP2. The release's own gate chain is short three to four words of its
+own stated design, and he named the shape it should take.** His words:
+"the language the sniffer is looking for are the channels the words are
+coming through. Believing, perceiving, thinking, behaving, acting,
+feeling, speaking, saying, voicing. That's the full set. We're only
+using six. These all speak to different channels within the body...
+there's the crown, the perception, the voice, the heart, etc." Sent for
+a real count: what is live today against that stated nine, where each
+maps by seat, and whether the six in use are only spoken or actually
+read by anything downstream.
+
+**BP3. His own release practice, dictated in full, kept verbatim
+because it is the actual reference an eventual build should be tested
+against.** "I say, I'm letting go of believing, perceiving, thinking,
+behaving, acting, feeling, speaking, saying, voicing, that I'm tense
+with anxiety, bothered with anxiety, irritated with anxiety, annoyed
+with anxiety, frustrated with anxiety, anxious, worried with anxiety,
+concerned with anxiety, nervous with anxiety, terrified with anxiety,
+paralyzed with anxiety. And then on the downside, it's the same thing,
+letting go of the same channels, that I'm embarrassed, embarrassed with
+anxiety, humiliated with anxiety, ashamed with anxiety, guilty with
+anxiety, defeated, deflated, depressed, sorrowful." Read as: every
+channel is spoken together, once, over a named emotion (here, anxiety);
+the ladder word (tense, bothered, irritated...) is the modifier riding
+that emotion up to its peak and back down. This answers `BN2` Q4
+directly: a modifier is the ladder word itself, not a separate degree
+word, closing the question he otherwise said he did not understand.
+*This ladder does not match the TULA deck's typed Fear chart. It is much
+closer to his own hand drawn note, `docs/field-notes/02`, read bottom to
+top. His hand, not the deck, is the source to build against.*
+
+**BP4. The sniffer's real job, in his own words: separate the story from
+the address.** "Those we want to isolate because that's the story, it's
+telling you the word, and the intensity is telling you the address of
+the node and the intensity of the cluster." Concrete worked examples he
+gave: "I felt like these people were against me... these things are
+always happening to me" sniffs the Victim saboteur by phrasing alone,
+no emotion word needed. "I don't care about people, I don't care what
+they think" sniffs lack of empathy, one of five features of a
+narcissism complex (he corrected himself from four to five while
+speaking; five is his final count, logged as such). Real material for
+whoever eventually builds `BN2` seam 2, not dispatched yet, the
+remaining channel and axis questions below still gate it.
+
+**BP5. The peak, answered.** Directly resolves `BN2` Q3: "peak is always
+something where you freeze, immobile, can't move. Paralyzed, petrified,
+terrified, horrified, couldn't move, couldn't breathe. Or something
+snaps, I snapped in a fit of rage. The charge snaps and you lose
+complete control, or you completely freeze. It's describing the states
+of the charge itself." Two poles, named in passing as Collapse and
+Express; collapse read as "always bad" when it turns against the self.
+Neither the deck's "Choice" nor the book's bare "act", a specific
+physical control-loss threshold in either direction.
+
+**BP6. Shame and anger, answered.** Directly resolves `BN2` Q5, option
+b: "shame and anger are two different events. Shame is a demotivator,
+anger is a motivator." A third state floated, not fully specified: not
+angry, not snapping, just exhausted, which he named as a toggle without
+finishing the thought.
+
+**BP7. Forgiveness needs its own design, not the fetter ladder's
+straight line.** His words: "forgiveness, resentment and grudges need to
+be part of the release, but they need to be a special kind of feature
+within the release... forgive people for trespassing against us, and
+forgive ourselves for holding those patterns, as a two-way switch. The
+system needs to be designed out and thought about a little bit more,
+because the letting go one is very structured. The forgiveness one,
+while it does land in the body, is kind of all over the place, not a
+straight line like the fetters." Illustrated at length from his own
+life (forgiving his father for a chronic lateness that taught him time
+as malleable, and taught him in turn to disrespect others' time;
+forgiving and being forgiven across past relationships), closing on:
+"it's not about giving the person a pass, it's about releasing the
+poison pill you took in your own body, in the form of stress, as a
+grudge or resentment. It's insidious, it makes you feel justified,
+which is why it feels accurate, but you're slowly injuring yourself over
+time." Flagged as his own open design problem, not queued to a seat yet,
+since he named it unfinished himself.
+
+**BP8. The Field's next build: two of the four, wired for real, with a
+switch, plus one more thing not yet solved.** His words: "I really like
+nested frames, you don't need to zoom, you can see everything... let me
+see that dial with callouts too, I want both of those mocked up in HTML
+so I can play with them... do that in the app itself, center column,
+toggle... put it on the far left, because there's nothing there."
+Dispatched as a real build: nested frames and dial with callouts, both
+wired to live data, switch persisted, placed far left above the ring,
+not upper right (reserved for an existing readout). **Not included:**
+his own next ask, in the same breath: "I don't see the feathers, all 21
+feathers should be pointing in one of the six directions... fanned out,
+or dead centre meaning you're centred, and they need to shrink over
+time and get closer to the centre... I don't know how we want to do that
+because I don't want it over the 44." Sent separately as a design
+problem to actually solve, not a spec to guess at, since he named it
+unsolved himself.
+
+**Remaining from `BN2`, not answered in this round.** Q2 (which release
+channel, left or right, carries the buildup and which the come-down;
+note his "channels" in `BP2` name the nine verb gates, a different thing
+from the release's own left/right polarity channels, flagged so the two
+are never conflated in a spec). Q6 (whether resentment gets a curve of
+its own; forgiveness itself is now answered at `BP7`, but not this).
+Q7 (Apathy, Surprise, Anticipation curves).
+
 ## BK. The TULA deck, mined for the intensity curve and anything else
 ## useful, 25 September.
 
