@@ -9238,6 +9238,14 @@ DQ never rising, no one of the 112 rising and expression never falling.
 Held in `tests/engine.js` group 36b on 2,000 draws. The release panel and
 the Summary release card read expression before and after, through
 `exCeiling` and `exHeadroom`, which replace `cqCeiling` and `cqHeadroom`.
+**Corrected 25 September, after ship.** "Under his ruling this cannot happen:
+a release may never move CQ" was the team's inference, not his ruling
+(`DECISIONS.md`, "Correction. A release does move CQ"). What AY1 fixed still
+stands: the shadow no longer reaches CQ, so no release lowers it. What
+changed is that a release now raises it a little, through the laws at its
+seat (`BE1`), and 36b's probe was writing charge only, so its "0 changes to
+CQ" was built in rather than found. 36b now drives the release panel's own
+path and asserts the narrower rule.
 
 **AY2. MOB puts the laws into CQ twice.** `Ig` and `It` are the same 21
 scores read into two different terms, which is why the shipped formula is
@@ -9680,6 +9688,84 @@ ride together but are different seats' work. Both queued behind the design
 work already running this round; BD1 shares ground with `BC1` and `BC3` and
 should sequence alongside them rather than separately.*
 
+## BE. The release lift, fitted to his one data point. 25 September, after ship.
+
+His words, in full in `DECISIONS.md`, "Correction. A release does move CQ":
+"I didn't say CQ doesn't move on a release. That wouldn't make sense. If a
+fetter is released, you may not see CQ move, but it may move 0.1 or 0.05. I
+had about 15,000 patterns for my CQ. My CQ is about between 88 and 92, plus or
+minus 3 points of accuracy. Those 15k releases raised my CQ."
+
+**BE1. A release moves CQ, through the laws at its seat. Built in both
+engines.** DONE. CQ is still the 21 laws over 210. A release lifts each
+answered law at the seat it was run at by `LIFT_R` of the distance left to 10:
+the law reads `10 - (10 - answer) x (1 - LIFT_R)^n`, n the releases at that
+seat since the law was answered, `LIFT_R` 0.00077. MOB: `engine/compute.js`
+(`lawLift`, `lawNow`, `releaseWork`, `cqSum`), called from `relCoolDown` with
+the meter's new ground only; the count is `p.work` beside the answers, never
+in them, because `iqApply` rewrites every answered law on each read; undo
+takes it back; the boundary refuses a count above the ground the record has
+opened at that seat. Desktop: the same constant, seats and arithmetic in
+`45_` (`DIAG.work`, `DIAG.on`), one count per cleared release. A new answer
+starts a law's count again, even at the same number, because his own 88 to
+92 is a reading taken after the work. Shapes, at his scale (scratchpad
+`lift/fit.js`, reproduced in `tests/engine.js` 36e): this one lands fifteen
+thousand at 86.0, 90.0 and 94.0 from starts of 30, 50 and 70; a flat step
+fitted the same way lands 70.9, 90.0 and 100.0. Monte Carlo with uneven laws
+and uneven work over the body, from 50: median 89.1, 84 percent inside 88 to
+92, all inside 85 to 95. Proven in `tests/engine.js` 36b and 36e,
+`tests/functional.js`, and the desktop gate, which replays MOB's own lift
+vectors.
+
+**BE2. His starting CQ is assumed, and the rate rests on it.** His. The fit
+assumes 50, his "five is the average". The rate each start would need to land
+him at 90: 9.4e-4 from 30, 7.7e-4 from 50, 5.2e-4 from 70. If he started
+lower, the true rate is up to a fifth higher and today's build is slightly
+slow; if higher, it is up to a third lower and the build is slightly fast.
+What does not change much is where fifteen thousand land, which is why this
+shape was chosen: 86 to 94 across the whole range. The question: roughly
+where was your CQ when you started releasing, or the year you started and
+how you would have scored the laws then?
+
+**BE3. Which unit his fifteen thousand is in.** His. MOB counts it as unique
+thought lines, one channel at one address, which is what `MARKERS` already
+read it as; the desktop as cleared releases, one journal story cleared, which
+is what `RELLADDER` already read it as. The lift is fitted to fifteen thousand
+of each engine's own unit, so the same constant describes different amounts
+of work in each. `BIBLE.md` section 13, item 22. The question: when you say
+fifteen thousand patterns, do you mean fifteen thousand lines read, or fifteen
+thousand patterns cleared?
+
+**BE4. "0.1 or 0.05" reads as a session, not a single release.** His, only if
+he meant one pattern. Under the fit, a full run of 25 patterns moves CQ 0.14
+at 50, 0.11 at 60 and 0.055 at 80, and one pattern moves it by thousandths. That was
+not fitted; it fell out of the anchor. If he meant a single pattern moves
+0.05, the only shapes that also land fifteen thousand at 90 are front loaded:
+about 17 points in the first thousand releases, against 5 under this one, and
+they land 70 and 100 from starts of 30 and 70, so they only fit if he started
+at exactly 50. The question: when you said one release may move CQ 0.1 or
+0.05, did you mean one pattern, or one session?
+
+**BE5. A paid tier now raises CQ faster.** Flagged, not decided. The lift
+counts new ground, and new ground a month is what a tier sells, so a higher
+tier moves CQ faster. It follows from two of his rulings (releases raise CQ;
+tiers gate velocity), and it is the thing "a marker is a distance, never a
+trophy and never a gate" was written to keep markers from. Counting reruns
+instead would make CQ free to farm, which is worse.
+
+**BE6. Undo does not refund the meter, so an undone release loses its lift on
+that ground for good.** Found in passing. Undo takes the lift back with the
+release, but the ground stays opened, so a rerun of it is free and lifts
+nothing. Whether a release refunds when undone is already his (`BIBLE.md`
+7.8); the lift follows whatever he rules for the meter.
+
+**BE7. The release panel prints expression's move, not CQ's.** His. MOB's
+panel reads expression before and after, which carries the lift inside it.
+The desktop's cool-down prints CQ before and after in whole points, which
+reads "holds" on nearly every run. His "you may not see CQ move" says that is
+right as it stands. The decision is whether CQ's own move prints to a decimal
+anywhere, which is copy, and his.
+
 **AZ3, answered, a shape of his own rather than any of the three offered.**
 His words: "free sees fetters, tier one sees saboteurs, tier three sees
 complexes, tier four sees everything." Tier two is not named as adding a
@@ -9706,10 +9792,13 @@ hundred a month, tier three twelve hundred a month, tier four also twelve
 hundred a month." Matches this file's Tiers section precisely. No change.
 Prices remain the open half of `AZ5`'s tier check.
 
-## BE. Ego rebound. A new mechanic for Summary, from his own and Keeley's
+## BG. Ego rebound. A new mechanic for Summary, from his own and Keeley's
 ## experience, 25 September.
+*Relabelled from BE to BG: the CQ release fix seat independently claimed
+BE for its own findings while writing directly to this file at the same
+time this section was added. Content unchanged, letter only.*
 
-**BE1. The mechanic, in his words, in full, because the data behind it is
+**BG1. The mechanic, in his words, in full, because the data behind it is
 personal and specific and should not be paraphrased away.** "For summary we
 need a graphic for ego rebound, showing that the more you release, the
 quicker you release, the rebound of the ego gets stronger, temporarily.
@@ -9758,4 +9847,61 @@ act on.
 *Large. He explicitly withheld the formula: "I don't know how we want to
 calculate this yet." The mechanic, the formula and the framework are the
 open work, not decided by him and not to be decided silently.*
+
+## BF. A developer administration interface, and the Field tool taxonomy.
+## Future development and a content round, 25 September.
+
+**BF1. A separate administrator interface, database facing, analytics
+facing, not the user side.** His words: "I'm going to need a developer
+interface that plugs directly into the database and gives me all the
+analytics on our entire system. I don't quite know what I need. I need you
+to go out to the internet, do a really deep dive, and find all the tools
+you think this will need to be highly effective for the administration
+side, not the user side. These are two separate tools. The desktop and
+mobile version talks to the database, the database talks to the
+administrator. The administrator is what allows me to manage a user, check
+out analytics, actually look at the brain being constructed as people send
+in data, and see the model being revised in real time, the aggregate
+refining the visual. This will also help us refine our model of the
+psycho spiritual, psycho physiological, psychological." A note for future
+development, by his own framing, not an immediate build. The research pass
+he explicitly asked for is the actionable piece today.
+*Large, and it is architecture: the desktop, the database and the
+administrator as three separate things talking to each other, which is
+bigger than anything scoped so far in the accounts fork.*
+
+**BF2. The Field's tools reorganised into four buckets, largest to
+smallest inside each, same ordering principle as `BC5`.** His words:
+"For the field side tools, I want them divided by spiritual, cosmological,
+psycho spiritual, psychological, and then physical. Effectively everything
+we have now, plus more.
+
+On the left side, the very top, the spiritual, cosmological: sun, moon,
+rising, Chinese, I don't know if we're keeping this, but for now. Life
+path, master number, all their numerology, any human design information.
+That goes in the spirit, the cosmology.
+
+Then psycho spiritual: the domains, blueprints, archetypes. First order,
+benign or malignant. Second order, masculine, feminine. Is it going through
+our internal world or externally, is it something that's going to be
+externally physical, how is it going to manifest.
+
+With intake we should ask questions to orient ourselves to the archetypes,
+because the archetypes, we'll be able to reverse engineer all the way up to
+domains. The domains are the families of the blueprints, the blueprints are
+the families of the archetypes. Each one is a child of the next: domain,
+then blueprint, then archetype, each a child of the one above it."
+
+Four buckets top to bottom: spiritual and cosmological (astrology, Chinese
+zodiac tentative, numerology, human design), psycho spiritual (domain,
+blueprint, archetype in that parent to child order, plus first order
+benign/malignant, second order masculine/feminine, and the
+internal/external/manifestation orientation), psychological (everything
+currently built there, plus more, unnamed), physical (the body). Intake
+should be able to place a person's archetype from what they answer, and the
+archetype's parent blueprint and domain follow from it rather than being
+asked directly.
+*This is the same content this round's flow work (`BC5`) is already
+ordering for the Knowledge base menu. The two need reconciling against each
+other once both land, not built twice from two different orderings.*
 
