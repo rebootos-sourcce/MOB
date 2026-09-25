@@ -9249,6 +9249,9 @@ them. Every law at 5 reads CQ 50 where it read 25.
 **AY3. The desktop's shadow term is a placeholder that cannot tell weight
 360 from weight 2000.** Its comment says so. `A_SQ=1.0` regardless of how
 much is actually held.
+**Fixed on the desktop, 25 September**, alongside the desktop's own CQ
+rebuild, reboot-os `df7f24c`. Real per address weight replaces the
+placeholder.
 
 *Full arithmetic, the unified model, and fifteen questions with the worked
 people beside each are in the CQ bundle sent with this round.*
@@ -9508,4 +9511,24 @@ Gordon.
 glossary was corrected. The funnel build was not rerun here because it is
 its own product with its own build.
 *Small: rerun `funnel/BUILD-single.sh` and look at it.*
+
+**BB5. A clinical threshold was repointed as a judgement call, not a
+ruling, and needs his eyes.** Descent and the clinician referral read CQ
+before this round; under the old formula Gordon read 0.8 and the referral,
+which fires under 11, showed for him. Both now read expression instead,
+since CQ alone can no longer fall from a release the way the referral logic
+assumed. Gordon's expression is 7.9. Repointing keeps the referral firing
+for him: on CQ alone he would now read 17.5 and it would have stopped
+showing. The seat made this call for safety rather than leave a referral
+silently broken, and says plainly it is reversible and his to confirm.
+*BLOCKED on him, and it is the one item in this round that touches when a
+person is told to see a clinician. Everything else in the CQ work waits on
+nothing further; this one waits on him specifically.*
+
+**BB6. A truthiness bug prints a false sentence to everyone.** Found in
+passing. Summary's "installed pole is past the point where it pays"
+sentence tests an array for truthiness rather than what it holds, so it
+prints for every profile regardless of whether it is true. Queued as its
+own task card.
+*Small.*
 
