@@ -10028,3 +10028,58 @@ real (not just at runtime), the reference profile guard, Body's answer
 binding into the right rail instead of a shelf 2,579 pixels down, and a
 phone bottom sheet for the same rail pattern. Dispatched.
 
+## BI. A pasted "112 node energetic architecture" document, checked
+## against our own canon, 25 September.
+
+**BI1. No match exists to build, and the document does not agree with
+itself.** His words: "match against cannon. this is magic. a full
+breakdown. of the original node name plus our fetter name, plus the
+nerves and organs associated. we can make a detailed version of our
+tools now," pasting a document describing a Sanskrit marma point system
+(old Ayurvedic touch therapy points, one per named location on the body)
+claiming 108 physical points plus 4 points outside the body, 112 total.
+Checked against `atuned_src/engine/data/nodes.js`, our own real 112
+addresses (address 1 is Fear, seated at the Root, at the Lumbar Plexus;
+address 8 is still unnamed, seated at the Cauda Equina, no charge
+assigned yet; the four field addresses are Sol Star, Stellar Gateway,
+Earth Star, Gaia Gateway). The two systems do not name match. Ours
+assigns an emotion to the nearest real nerve plexus that carries it. The
+pasted one names old touch points (Manas, Adhipati, Simanta, Kshipra,
+Talahridaya and so on) that were never built to correspond to ours and do
+not. There is no original name to fetter name table to build without
+inventing 108 correspondences that are not really there, which is the
+same thing the product's own glossary already refuses to do for the word
+Chakra.
+*The document also does not agree with its own numbers. Its opening
+paragraph claims 107 classical points plus the mind, 108 total. Its own
+head and neck section header claims 37 points plus the mind, 38 total.
+Summing the count written next to each named point in that same section
+(Simanta 5, Matrika 8, and so on, run through a script rather than by
+eye) gives 40, not 38, which makes its true physical total 112 by its own
+row counts, not the 108 it states twice. Three totals, one document, none
+agreeing. The four points it adds outside the body are not the classical
+marma system and do not appear findable in it, and are shaped differently
+from ours besides: ours sits as two pairs at the two poles, two above the
+crown and two below the feet; theirs sits as one above, one below and one
+out each side, a cross around the torso rather than a line through it. It
+reads as new material built to reach 112 and to echo systems like ours,
+not as something inherited whole from a checkable source.*
+
+**Not building a match table.** Nothing dispatched pending his direction,
+since the ask as given (name for name plus nerve and organ) cannot be
+built honestly. Open questions below.
+
+**Q1.** Drop the document and leave our 112 exactly as they are, or add a
+short honest line somewhere like the glossary saying our map sits
+alongside older body point traditions like marma points without claiming
+they are the same map, the way the glossary already handles the word
+chakra, or a third option not listed here.
+**Q2.** Where the document came from. It names a "16 week somatic
+container" and a technique called "weed and wonder," which reads like it
+belongs to other work of his. If so, that changes whether it belongs here
+at all.
+**Q3.** Independent of the naming question, whether a seat should comb it
+for language or ideas worth borrowing (the emotional descriptions, the
+touch sequence, the naming style), the way the team did with the 2027 UI
+UX trends article, or whether this one gets set down for good.
+
