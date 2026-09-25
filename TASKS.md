@@ -9012,3 +9012,43 @@ hyper complex labels, the channel count, and carries no crisis resource.
 *Not verifiable from here: why their CI dies in seconds (no job log access),
 whether the Cloudflare secrets exist, and behaviour on real D1 (wrangler is
 not installed in this container).*
+
+## AX. Found in passing by the missed opportunities walk, 25 September.
+Both builds walked in Chromium at 1600 and 390 by uiux-architect, a real first
+run on MOB and the Sofia demo on the desktop. Not in AU, AV or AW.
+
+**AX1. The status line evicts the whole navigation at desktop width.** MOB.
+`#status` is `flex:0 0 100%` inside a no wrap bar
+(`atuned_src/shell/head.html:672`). At 1600 and 1280 any message pushes the
+tabs, profile, undo, lighting, help and account out of view. A confirmation
+takes them away for 2.4 seconds; a failure holds them away until the next
+message. Not at 390, where the bar wraps.
+*Small, and first.*
+
+**AX2. After a commit the imprint column says the person has written
+nothing.** MOB, `ui/imprints.js:143`. The empty test ignores history, so the
+first 60 word story that lands nothing releasable is answered with "You have
+not written anything yet", a false empty state in the one minute that
+matters most.
+
+**AX3. "1 addresses" on the done card.** MOB. A plural with no singular.
+
+**AX4. Home opens with Field lit in the bar.** Desktop. The lit tab shows the
+last click, not the current screen. Also recorded under AW10.
+
+**AX5. The desktop's Ritual invents history on a blank record.** "3 of 7",
+"12 of 28", and "Integrity 0%" in alarm red, for a person who has done
+nothing yet. The same class of failure as AU10, on the other build.
+
+**AX6. The desktop's release cool down draws below the fold** (top at 1113px
+on a 1000px screen) and offers two start controls with two durations, 5:00
+and 3:12. The released item also changes name four times on the way through.
+
+**AX7. The loop leaves no mark, on both builds.** After a whole turn (write,
+release, ritual, did it) MOB's Field reads exactly what it read before, 36
+and Incoherent. The desktop's Home reads worse after the turn, coherence 29
+to 25, energy minus 17 in red, released 0, because journaling adds charge and
+the first station scores as harm. Neither shows a person that the turn they
+just took happened. The proposal is F1 in the gap bundle: an append only,
+dated event store kept apart from the reading.
+*Large, and it waits on the station mapping, AU11.*
