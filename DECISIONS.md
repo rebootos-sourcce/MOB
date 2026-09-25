@@ -1539,3 +1539,31 @@ statement about the two codebases matching each other, not a claim about
 how much his own CQ can move or a precision floor on his data. It landed as
 confusing jargon in a report meant for him and should not have been sent
 that way.
+
+## The formula is locked once it passes this bar. Ruled 25 September.
+
+His words: "On our formula, CQ DQ SQ, it keeps moving around. I want you to
+lock this in as sacrosanct. Once you're within plus or minus three, we
+don't need another formula. So as long as your simulations are working,
+revealing the saboteurs, revealing the combinations, revealing the weights,
+and you're simulating across our ICPs and you're within three, then we got
+it."
+
+**The acceptance bar, plainly, so it can be checked rather than argued
+about:**
+1. Simulated across the ICPs (Angela, Derek, James, Gordon, Rosa, and the
+   rest the harness already carries), the formula reads within plus or
+   minus three of a real anchor. His own history is the first anchor: about
+   15,000 releases, CQ in the high eighties to low nineties.
+2. The same simulation has to actually work as a diagnostic, not only land
+   on a number: it reveals the saboteurs, the combinations, and the weights
+   correctly, meaning the pattern a heavily loaded profile is shown matches
+   what is actually loaded in it, not just a CQ figure that happens to be
+   in range.
+
+**Once both hold, the formula is locked.** Not reopened, not re-derived,
+not swapped for a new shape because a later conversation makes a different
+one sound cleaner. This is the standing bar for closing `AZ5` and everything
+under it for good; the fix now running against his real data point is
+measured against exactly this, and if it clears both, the formula stops
+moving here.
