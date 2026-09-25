@@ -11520,3 +11520,66 @@ as a second eye at small size, the reason they were reshaped.
 "The seven that ship." Does his line pick one of those, or does it mean
 a new set of marks altogether?
 
+## BZ. The anatomy findings, drawn on the body, the way he asked to see
+## them. 25 September.
+
+**Built:** `proto/anatomy-check/anatomy-check.html`, one file, no network
+requests, drawn on the same body outline the Body page itself uses.
+Three views. Names with nothing real behind them, each marked where the
+Body page puts it today, with a table saying why each one failed and
+the nearest real structure. One real structure carrying more than one
+name, drawn as one outline around two or more rings, set beside true
+containment (prefrontal cortex inside frontal lobe inside the whole
+cortex) so the two do not read as the same claim. Where the formula
+puts an address today against where the real structure sits, at the
+same scale, for every head and torso address that could be measured
+either way.
+
+**A correction to this file's own count.** Fourteen was wrong. Read
+address by address it is fifteen, eight in the lower body, three in the
+chest and neck, four in the head. That number was typed into an earlier
+round of this same file rather than read off the page that actually
+draws them, which is the exact mistake this file spends its own opening
+paragraphs warning against. Corrected here, not silently.
+
+**A new finding, checked three ways before it was trusted.** Fifteen
+addresses, all in Crown and 3rd Eye, sit far enough off the body that
+the Body page cuts them off no matter how heavy they are. Crown shows
+6 of its 21 addresses on the body at all; 3rd Eye shows 1 of its 12.
+Checked against the figure's own geometry, checked by hiding each mark
+one at a time on two loaded profiles and watching nothing change on
+screen, and checked against addresses that do sit on the body as a
+control, which did change the screen when hidden the same way.
+
+**The zoom and readability complaint, checked myself and not just
+taken on the team's word.** Every word on the page is real text, HTML or
+drawn line art, zero canvas elements and zero images carrying text. The
+page declares itself to allow pinch zoom, with no cap. Both were true
+independent of what the team reported. Screenshots sent below, and the
+page itself, so he can zoom it himself rather than trust a screenshot
+of it.
+
+**Graded B plus by the team that built it, and it runs long, about nine
+screens.** All three questions from the anatomy summary are answered
+with checked numbers rather than description.
+
+**Q1.** Should the Body page place each address where its structure
+really sits? Full move: the head can be done from measurements already
+in hand, the torso needs a new ruler added to the figure first, a
+separate and larger job, and some Crown addresses would land at ear
+height, which runs back into the still open question of how a seat's
+own boundary is defined. Stopgap: keep today's formula but keep every
+address inside the body outline so the head stops hiding fifteen of
+them, a small change that leaves the positions arbitrary. Or leave it
+as it is.
+**Q2.** The 3rd Eye marker sits at nose height today, about four
+centimetres below where a real brow line falls. Move it up now, or wait
+for the seat boundary ruling, since moving it moves every 3rd Eye
+address with it?
+**Q3.** Names stay exactly as ruled. Given that, can two addresses share
+one real structure once the information page says so plainly, for
+example 10 Lethargy and 20 Jealousy both landing on the obturator nerve?
+Keep both and disclose it, give each its own structure in the
+information layer only, drawn from real structures no address uses yet,
+or merge the two, which would change the count of 112?
+
