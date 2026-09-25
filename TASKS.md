@@ -11583,3 +11583,61 @@ Keep both and disclose it, give each its own structure in the
 information layer only, drawn from real structures no address uses yet,
 or merge the two, which would change the count of 112?
 
+## CA. Nested frames and the dial are in the real Field, not a mockup,
+## drawn from a person's own reading. 25 September.
+
+**Built.** A three way switch sits at the far left of the Field, where he
+said to put it because nothing else was there: Wheel, Frames, Dial.
+Wheel stays the default, so nobody who never touches the switch sees
+anything different. His pick is remembered on the profile the same way
+density already is. All nine gates checked myself, independently, not
+taken on the report alone: engine 1589, functional 1001, collide 100,
+design 150, funnel 172, the build, the engine build, the render watch
+and the voice check all clean. Every number matched what was reported
+before I trusted it.
+
+**Five real bugs in the mockups themselves, caught and fixed on the way
+into the product.** The mockups he saw and liked still carry these;
+only the shipped port does not. Every story mark was drawn one address
+off from the one it names. A perfect reading, a coherence of 100, drew
+no ring at all. On the dial, the centre disc covered part of the upper
+left gate. Gate labels overlapped each other on a phone screen. The
+shadow wash cut off in a hard visible edge instead of fading.
+
+**Two more bugs found, in the wheel that already ships, not in the new
+work, held for the backlog rather than fixed here since they sit
+outside this change.** Under the Snow lighting the background stays
+black but the numbers switch to a dark colour, so they go unreadable
+against it. Under Glass white the background turns white but the ring
+of addresses stays a light colour, so it nearly disappears.
+
+**What still only the wheel can do.** Dragging to set a charge, zoom,
+and the depth bar (Charge, Patterns, Chains, Blueprint) all still live
+only on the wheel. The two new views are for reading a field that is
+already told, not for telling one.
+
+**Screenshots sent below:** the wheel, frames and dial, side by side,
+on a real profile with five stories in it, at both a wide screen and a
+phone.
+
+**Q1.** Once he has a favourite of the three, does it replace the wheel,
+or stay a choice next to it? Replacing loses drag to set a charge, zoom
+and the depth bar, since those exist only there today. Keeping all
+three costs one more control in the left corner.
+**Q2.** The two new views draw inside the wheel's own box, narrower than
+the mockups he approved, because the mockups had removed the compass
+dial on the right to gain the width. As built, the dial only fits 6 of
+James's 8 names, dropping two. Keep the box as it is, matching every
+other reading on screen, or hide the compass dial while a new view is
+open to give the picture more room, at the cost of that dial
+disappearing while he is looking at frames or the dial?
+**Q3.** The ten layer switches inside frames and dial (Domains,
+Addresses, Stories, Masks, Archetypes, Patterns, Chains, Laws, Gates,
+Shadow), should they remember his last choice the way the three way
+switch does, or reset each time the way the depth bar already does?
+**Q4.** The four addresses outside the body (Gaia Gateway, Earth Star,
+Sol Star, Stellar Gateway) now show on these two views for the first
+time anywhere in the product. Naming them on hover works. Pressing one
+does nothing, since none of them has a reading page today. Build one
+for them, or leave them name only for now?
+
