@@ -1567,3 +1567,24 @@ one sound cleaner. This is the standing bar for closing `AZ5` and everything
 under it for good; the fix now running against his real data point is
 measured against exactly this, and if it clears both, the formula stops
 moving here.
+
+## Don't wait on him. Sequence what needs him to the end. Ruled 25 September.
+
+His words: "I don't want you to wait for shit. Whoever's managing that
+should be asking me questions. Cloudflare is going to come at the end.
+Anything that requires me, like searching and dropping shit in, that's at
+the end."
+
+Two standing rules from this, not a one-off:
+- **A blocked item gets worked as far as it can go without him, and the
+  seat owning it puts concrete questions to him rather than sitting idle.**
+  "Blocked on him" is not a stopping point, it is the point where design and
+  proposal work starts, so the only thing actually waiting is a decision, not
+  a whole item.
+- **Anything that needs him to go outside this conversation** (an API
+  token, an account setting, a search, dropping a credential in) **moves to
+  the end of the sequence.** It does not block anything that does not
+  itself depend on it. The Cloudflare database is the standing example:
+  everything downstream of a live database keeps being designed and built
+  up to the point that database is the only missing piece, and the token
+  itself is the last thing asked for, not the first thing waited on.
