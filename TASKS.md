@@ -9034,6 +9034,20 @@ does follow it.
 fields as they arrive with no validation. Every engine file but two references
 `document`, so none of it runs headless and none of it can be gated the way
 MOB's engine is. Their "Source AI" builds a prompt and never sends it.
+*The boundary and undo are fixed and pushed, reboot-os `403ee3a`. Ported as
+a pattern, not verbatim: a bad field is refused by name with the record
+state unchanged, a missing field fills from the build's own blank, undo is
+unlimited with a redo stack cleared on a new change. 19 new gate checks, all
+proven red on revert. Two real bugs caught in passing and fixed: `THEME`'s
+schema only allowed two lightings against the seven the build actually
+persists, which would have locked five sixths of people out at the
+boundary; and a falsy `false`/`0` could not survive a restore, the same bug
+class as an earlier PLAN 0 fix. The host free split was correctly not
+attempted, it is a rewrite of every file, not an addition, and is logged
+separately as its own item. Left undone, logged as their own BACKLOG items:
+undo does not reach the server, so an undone entry a person already pushed
+stays there; there is no visible undo control, only the keyboard, and a
+phone has no way to reach it at all, which is his call to place.*
 
 **AW10. Desktop coverage is partial.** One build, desktop layout from 1201px;
 901 to 1200px gets the phone card. Fifteen screens were never reflowed:
