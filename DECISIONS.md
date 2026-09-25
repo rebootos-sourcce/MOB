@@ -1111,3 +1111,25 @@ highly operational before making any of it complete. Fix the stoppers, wire in
 what is missing even where it is rough, get the whole loop closed so other
 people can be put in front of it, then refine. A full loop that is crude beats
 a polished half.
+
+## The bar. Ruled 25 September.
+
+**This is not a demo and not a prototype. The plan is an MVP, and the bar for
+an MVP here is production quality, enterprise grade, with Apple as the floor,
+not the ceiling.** His words: "our plan is not for a demo, our plan is not for
+a prototype, our plan is for an MVP... our checklist needs to be production
+quality, enterprise grade, Apple is our bar, minimum."
+
+His reason, stated plainly and not to be softened in restating it: "this is a
+purpose based product, it's an impact based product, our ethical and moral
+standards are exceptional, which is why we are being as thorough as we are."
+The thoroughness this session has been running on, the defect logs, the
+measured numbers instead of typed ones, the seats reading actual source rather
+than describing an intention, is not process for its own sake. It is what the
+bar above requires.
+
+**This sits beside the ruling directly above it, not against it.** Operational
+before complete is sequence: close the loop first, crude where it must be,
+polish after. Apple as the floor is the destination that sequence is walking
+toward, not a licence to stop at crude. A stopper gets wired in rough today
+and brought up to this bar before it ships to a real person outside the team.
