@@ -10313,9 +10313,13 @@ heaviest shadow drew the faintest wash on screen.
 *Fixed and pushed, MOB `c63c5cc`. `DQ/100`, the figure the DQ ring already
 draws. The corners now read 5.8, 9.9, 22.6 and 53.8 across DQ 3.2, 10.7,
 26.1 and 53.9. The wash is also much fainter for everyone: at DQ 3 it is
-barely there, which is what the figure says. If he wants a light shadow
-still to tint the ground, that is a curve for the art director to choose,
-not a constant to guess.*
+barely there, which is what the figure says. Where it shows is the
+phone, whose chrome is translucent. There the shipped build tinted
+Marcus's bars teal at DQ 11 and left Gordon's near neutral at DQ 54, the
+wrong way round; now only the heaviest field tints at all. At 1600 the
+panels are opaque and nothing changes on screen. If he wants a light
+shadow still to tint the ground, that is a curve for the art director to
+choose, not a constant to guess.*
 
 **BO2. The gate pill type is 8.5px, under the 11px floor, and it cannot
 rise on its own.** MOB, `ui/wheel.js` `verpArrows`. The design gate reads
@@ -10410,6 +10414,20 @@ saves `attach: 2`. And `undoState` snapshots no gate counts, so after an
 undo the charge comes back exactly and the Field still reads Attachment
 100%.
 *Queued as its own task, not folded into this fix.*
+
+**BO7. The ritual still reads load on the old DQ scale.** new. Found
+while checking BO1. MOB, `ui/ritual.js` `ritFor`: the load tier is `DQ>=8`
+for heavy and `DQ>=4` for middle, thresholds written for the uncapped sum.
+Measured with `ritFor` itself on the builds either side of `dd0bf23`:
+heavy load went from 6 of the 15 cases to 8, middle from 0 to 1. Marcus
+at DQ 10.7 (CQ 62, Gaining) and Diane at 19.6 are now called heavy load,
+and a field called heavy load is offered only the 4 tier one practices of
+17. On a 0 to 100 scale any field past 8 percent is heavy.
+`engine/compute.js` keeps `DQ/14` in vitality and drag, but that one is
+deliberate and says so ("with their constants unchanged"). It saturates
+at DQ 14, which 7 of the 14 cases carrying a reading now pass.
+*Not changed. What counts as heavy load in shadow weight out of 100 is a
+model question and his. Once he says, it is one line.*
 
 **Q1.** Which direction, or which pairing: frame to circle's outer band
 could carry the dial's corner names, for one example not chosen for you.
