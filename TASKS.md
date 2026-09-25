@@ -10349,3 +10349,85 @@ not transcribe cleanly: "very mild chronic fetus to the design team."
 Not confident enough to act on a guess, asked him directly below rather
 than silently picking a reading.
 
+**Closed.** His words: "I don't know what that is... whatever it is, I
+asked you to feed something to the design team recently, that's what
+that's related to." He does not know either. Read as noise from the same
+transcription pass, referring to one of that round's own dispatches. No
+further action.
+
+## BM. The character sheet endorsed, the purpose and boundary tool found
+## already built, and a ruling on marma versus real anatomy, 25 September.
+
+**BM1. The character sheet direction is liked, and it runs into standing
+work it was not designed against.** His words: "once the character sheet
+is the avatar... this is good because this will help feed the ritual
+too, I like this." Found while following his next request: 81 kilobytes
+of prior, dated ruling on this exact page already exist at
+`DESIGN-avatar.md`, its Part Two (added 20 September) is the standing
+ruling, not a draft: the avatar opens the app, a computed "kundalini
+rise" is its progress bar, derived from real per address conductivity
+already in the engine, run seat by seat in series so a blocked lower
+seat throttles what is above it, his own words there too: "we should
+have progress bars of the kundalini snaking around the chakras... where
+their starting point is and how it's rising, whether it's blocked or
+open, and where it's blocked." Three prototypes already exist and are
+screenshotted against real profiles (`proto/avatar/one-armature.html`,
+`two-lantern.html`, `three-seam.html`, `dash.html`). That ruling's own
+open question, whether the figure is a body or a channel and seven
+seats, is not settled, and today's "it'll still be a person" sits
+against it without resolving it either way. Sent back to the agent
+already sketching the character sheet so it reconciles rather than
+designs past 81 kilobytes of his own prior word.
+
+**BM2. The purpose and boundary tool is not missing. It is already
+built, ported, and simply never given a screen.** His words: "we also
+need to add the purpose and boundary tool, so research the original
+Atuned app and see if you can find [it]." Found in `atuned_src/engine/data
+/../engine/avatar.js`, already in `MANIFEST`, already compiled into the
+build, its own comment reading "Ported from the original Atuned build,
+not rebuilt." It carries a Purpose Map (two overlapping triangles, three
+soul values and three ego values, their overlap read as how a person
+makes money and finds fulfilment doing it) and a Boundary (a hexagon,
+six life areas, partner, family, friends, community, coworkers, alone,
+five commitments each, thirty total, plus a working function that
+already reads a journal entry's own words and says which of the six it
+touches). `schema.js` already validates and stores both. The gap is
+real, just not where he pointed: no `ui/` file renders either one yet.
+Nothing dispatched to build the screen until BM1's reconciliation comes
+back, since the natural place for it is likely inside whatever the
+avatar dashboard becomes, not a build made blind of that.
+
+**BM3. Marma answered, and the bar raised past it.** His words: "use a
+marma as a reference if it's not accurate, I'm sure it'll have some
+accuracy, especially if you follow the nerve plexus organ, and that can
+be matched against anatomy... let's go ahead and put those four outside
+of the body into the backlog, we won't worry about it for now... what I
+really want beyond the marma, anatomy will capture the plexus, the
+nerves and the organs, it's the same thing as a marma but it's accurate,
+so go do research on that, match the anatomy, anatomical structures
+against what we have, and make sure everything is dead accurate, run
+the simulations as many times as you need until you're ensured that
+it's one to one, your product is one to one, it cannot be anything less
+than one to one. Although, keep the extra four because those are
+non-physical assemblage points." Answers `BI7`: our own four field
+anchors stay untouched, being explicitly non-physical; the pasted
+document's differently shaped four are shelved, not adopted. Answers the
+spirit of `BI4` through `BI6`: marma is reference material, not the
+target, the target is real anatomy, checked address by address against
+`nodes.js` itself. Dispatched as three parallel passes across the 108
+physical addresses (Root, Sacral, Solar; Heart, Throat; 3rd Eye, Crown),
+each confidence tagged the same way `BK3`'s marma research was, each
+told plainly that "dead accurate, one to one" is a very high bar for a
+research pass to certify absolutely and to say so rather than claim more
+certainty than the sourcing supports. Verification only, nothing written
+to `nodes.js` yet.
+
+**BM4. The whole backlog, as one view.** His words: "I want to see just
+the plan overall... all the tasks listed... everything that's been built
+and everything that needs to be built... give me a copy of the plan."
+Dispatched to update the live Foundation build plan artifact from earlier
+in the session in place, this time covering the full backlog rather than
+only the foundation slice, sectioned by built, running, and blocked, and
+cross checked against real evidence rather than trusting each section's
+own prose. Link to follow once it lands.
+
