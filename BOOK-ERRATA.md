@@ -219,7 +219,25 @@ no rebound.
 **28. Four kinds have no coherent opposite.** Laws, domains, masks and seats.
 Every child fetter has one. Writing them is forty-six new assertions.
 
----
+**29. Alpha printed backwards.** Line 6434 reads "Alpha, wake state as eyes
+open in the morning." The standard finding runs the other way: alpha is
+strongest with the eyes closed and drops when they open, the effect Hans
+Berger himself first described. Found while researching binaural release
+audio, cross checked against EEG literature rather than taken on the book's
+word.
+
+**30. The book disagrees with itself about waking.** Line 6684: "The brain is
+still in theta on waking." Lines 1717, 5835 and 7028: "The mind is in alpha
+state on waking." Both cannot be the book's position. Found in the same
+pass as item 29.
+
+**31. His own hand note reverses the book's own bands, and the book is the
+one that is right.** `docs/field-notes/15-binaural-audio.jpg` places
+"daydream state" and "very relaxed" at delta. The book, at the same line 6434
+item 29 cites, has it the other way and matches the standard: delta is
+"sleep state" and theta is "the dreaming while awake bandwidth", the drowsy,
+near sleep band. Nothing to fix in the book here, the book already carries
+the correct pairing; noted so the note is never read as a correction to it.
 
 ## Where the engine and the book disagree, and the engine moved
 

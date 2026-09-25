@@ -10422,6 +10422,112 @@ research pass to certify absolutely and to say so rather than claim more
 certainty than the sourcing supports. Verification only, nothing written
 to `nodes.js` yet.
 
+## BN. A real safety gap, measured live, and the TULA deck's release
+## findings. 25 September.
+
+**BN1. A real safety gap, measured against the live build. Flagged
+first, ahead of everything else in this section.** Testing the sniffer
+against risk language: "I feel suicidal" and "I want to kill myself"
+produce an empty reading and the Commit button stays disabled, so
+nothing said is kept or answered. "I feel hopeless and trapped and
+everyone would be better off without me" reads as Sad 8.8 and is offered
+a release, the same as any other entry. Of 27 risk words and phrases
+checked, only hopeless, worthless, empty and numb are in any table; the
+word suicidal was already kept off the ladder the product speaks, logged
+at `BOOK-ERRATA.md` item 15, but nothing screens what a person writes on
+the way in. A direct statement meets silence. An indirect one is scored
+and offered a release. Neither is acceptable, and this is not new
+behaviour surfacing, it is a known, named gap that has been sitting
+unacted on. The product's own book already draws the line: "The
+intensity table ends at 9... It is not a higher number. It is a
+different kind." Proposed, not built: a short, clinician written or
+reviewed phrase list runs before the sniffer, routes to a safety surface
+with resources, and never produces a score, a weight, or a release
+offer. Explicitly not this team's to finish alone. Asked below.
+
+**BN2. The intensity curve is confirmed as his, stated in his own book,
+and the release already does most of it.** Full research at the TULA
+mining pass, all 332 slides and 79 images read directly. The book's own
+words: "Every emotional charge has a rise and a fall... They are the
+same event at two phases... Work the ascending nodes first." Seven
+curves exist in the deck (Fear, Sadness, Anger, Shock, Disgust, Shame,
+Happiness), none for Resentment, and the chart words themselves disagree
+with each other and with the book on rank, confirming what he already
+said: the words are not the point. The release already carries his Step
+1 (belief, think, feel) and Step 3 (inject the truth) and already runs
+two channels. What it does not yet do: walk the come-down side of the
+ladder, know which of a person's own words are aftermath rather than
+buildup, or speak forgiveness. Run on his own example sentence, today's
+build seats the come-down words (embarrassed, humiliated, ashamed) at
+the solar plexus, landing on Pride, Arrogance and Competition rather
+than anywhere resembling shame. Proposed mechanism: read phase (before
+the act or after it) from a person's own grammar, record it first where
+no number moves, then use it to choose which words a release speaks.
+Explicitly not a CQ change and not decided. Seven real questions below,
+his to rule, two of them (the channel question and the peak question)
+needing a drawing beside them per his own rule.
+
+**BN3. Binaural release audio: Solfeggio chosen, wired for real.** He
+listened to the comparison and ruled: "The Solfeggio, excellent... we
+can wire this into the release... I think these all choose dynamically,
+based off the color of the chakra, that way it's just automatic. And
+then in the release, the person can toggle it on and off. That's good
+because it'll stimulate the nerves that are being released... the five
+bands, but the hertz are different, anyway, you know what you're doing
+in this area." Dispatched as a real build: Solfeggio tone selected
+automatically by the seat being released, never a manual picker, a
+remembered on/off toggle, the band held at the research's own measured
+6 Hz theta rising to 10 Hz alpha unless the product's own docs say
+otherwise. Live Web Audio synthesis, about a kilobyte of code, no
+shipped file. One phrase not yet understood, "the mini release, part of
+the imprints," kept out of this build until it is.
+
+**BN4.** Saboteurs and hyper complexes cross checked: 21 of the deck's
+33 saboteurs share a name with `SABDEF`, all 8 of its hyper complexes
+fold into the product's 6 families (already hidden from the person, as
+ruled). A few genuinely new names (Rebel, Nonconformist, Codependent)
+and real material for prompts and reframes, not yet written in house
+voice. The deck's own point system ("+5 points", "700 points a week")
+conflicts with the product's own ruling that patterns are the only unit
+and there is no points field; noted so nobody imports it by habit. Full
+detail, including what must never be reused (branded images, gendered
+copy, a scoring template dressed as a measurement), stays in the
+research pass itself rather than repeated here.
+
+**Q1 (BN1, safety).** Have a clinician write or review a short risk
+phrase list that routes to a safety page with resources and never to a
+score. Have a clinician review the top release band's own language
+("completely alone," "beyond support," "trapped forever"), which a
+person at risk could be asked to repeat. Rule whether a practitioner is
+ever told a safety flag existed, only with consent, or never. Do you
+already have a clinician on this, or does that need finding first?
+**Q2 (BN2).** Which side of the curve is which release channel, asked
+with the drawing: keep the two channels as they are with left now
+meaning the buildup and right the come-down (one label pair flips), add
+a second split inside each channel so every address runs a buildup and
+a come-down (doubles the lines), or let the curve replace what the
+channels currently mean (a rewrite)?
+**Q3 (BN2).** What sits at the peak, asked with the drawing: the named
+act (yelled, snapped, froze, already read by the app today), or the
+choice point itself (truer to "present" but rarely written down, so most
+entries would show no peak)?
+**Q4 (BN2).** In "deflate intensity by letting go of modifiers," is a
+modifier a degree word (so, very, completely, already recorded on every
+hit), the intensity word itself walked down its own ladder, or an
+absolute (always, never, everyone)?
+**Q5 (BN2).** Is shame after anger the same event as the anger, named
+differently, or its own event at its own address? Your own book states
+both. This one moves readings if answered either way, so it waits on the
+simulation and the plus or minus three lock bar regardless of which way
+you rule.
+**Q6 (BN2).** Does resentment get a curve of its own, whose come-down is
+forgiveness (adding two forgiveness lines to the release), or does it
+stay folded into Anger and Apathy with no curve?
+**Q7 (BN2).** Do Apathy, Surprise and Anticipation get curves the deck
+never drew, or does Anticipation fold into Fear's buildup and Surprise
+into Shock's, with Apathy given none, which would retire Anticipation as
+its own axis?
+
 **BM4. The whole backlog, as one view.** His words: "I want to see just
 the plan overall... all the tasks listed... everything that's been built
 and everything that needs to be built... give me a copy of the plan."
