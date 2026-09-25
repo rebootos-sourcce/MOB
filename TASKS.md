@@ -11374,7 +11374,10 @@ relationship, said just now, against alone and partner, already shipped.
 ## BW. The feathers, solved, and a real disambiguation: seven
 ## directions, not six. 25 September.
 
-**BM2 back.** The overlap problem he named unsolved is solved cleanly:
+**BP8 back.** *(Logged wrong the first time as "BM2 back," which is the
+Avatar reconciliation, a different item; caught by the plan review, fixed
+here rather than left standing.)* The overlap problem he named unsolved
+is solved cleanly:
 each of the 21 laws is a feather, its length how far it sits off centre,
 and the zero point of every feather sits on a circle just outside the
 coherence ring itself, so a fully resolved law shrinks to a seed on that
@@ -11434,4 +11437,48 @@ or should they move elsewhere, such as the strip of readings at the
 bottom of the Field? Keeping them split three above and three below, as
 originally pictured, isn't possible, they sit inside the feathers' own
 reach.
+
+## BX. The binaural seat tone is shipped, for real, not a prototype.
+## 25 September.
+
+**BN3 built.** Every release now plays the Solfeggio tone of whichever
+seat the address on screen belongs to, picked automatically, no picker,
+one tone per ear so the difference between them is heard as a pulse: 6
+per second during the letting go lines, matching the book's own theta,
+rising to 10 during the reframe lines, matching the book's alpha. A
+switch, off until turned on, remembered on the profile, shows its own
+frequency in the seat's colour while it plays. Built as live sound in
+the page itself, no audio file, no network request. Two real traps
+found and closed before shipping: the seat lookup table spells the third
+eye "Brow" while every address says "3rd Eye," which would have silently
+lost the tone on 12 of 107 releasable addresses; and a run refused on a
+worked example was not stopping the tone, now it does either way. Nine
+gates green, including two the pass added itself: engine coverage moved
+from 1575 to 1589 passing checks, functional from 871 to 945.
+
+**One real timing correction, caught before it shipped wrong.** The
+listening page's own 12 second rise and glide were sized for that page's
+own long sitting, not for a real release, where each address gets four
+lines at about 2.2 seconds each. At 12 seconds the reframe lines would
+have ended before the tone ever reached alpha, and the tone would never
+reach the next address's note before the run moved past it. Rebuilt to
+finish inside the line that triggers it, about 2 seconds, so the sound
+actually tracks what is on screen instead of lagging behind it.
+
+**Three questions, the first answered only by listening, not by
+reading.**
+**Q1.** The pulse now changes roughly every 4.4 seconds, following
+release and reframe exactly, more movement than the single slow rise on
+the page approved earlier. Keep it as built, hold it at a steady 6 for
+the whole run instead (calmer, but the reframe would not be in alpha),
+or lengthen the run itself to give each half more room, which is a much
+larger, separately open product question?
+**Q2.** The approved listening page carried a headphones note and a
+seizure caution; the shipped switch has neither. Add nothing, add one
+short line while it plays, or add the line plus the caution, which given
+today's safety gap may be worth routing past the clinician question
+rather than deciding alone?
+**Q3.** One fixed volume today. Leave it device only, or add the three
+step control the listening page had, on a screen already measured as
+carrying too many choices?
 
