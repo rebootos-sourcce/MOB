@@ -11353,3 +11353,67 @@ immediate unscoped item.
 **Q: which six boundary side names, his or the code's?** Myself and
 relationship, said just now, against alone and partner, already shipped.
 
+## BW. The feathers, solved, and a real disambiguation: seven
+## directions, not six. 25 September.
+
+**BM2 back.** The overlap problem he named unsolved is solved cleanly:
+each of the 21 laws is a feather, its length how far it sits off centre,
+and the zero point of every feather sits on a circle just outside the
+coherence ring itself, so a fully resolved law shrinks to a seed on that
+circle and no reading, at any coherence level, can put a feather over
+the number. Checked on all fourteen reference profiles: Gordon at 19
+reads fanned out, the owner's own profile at 97.2 reads as a ring of
+seeds with two feathers still out (Humility and Patience). Three other
+ways to solve the overlap were tried and rejected with real reasons,
+not just this one asserted: a backing disc gets worse as a person
+improves, fading loses the ring's existing meaning for "not yet read,"
+a hard minimum radius hides the last real steps toward centred.
+
+**A real correction to his own count, evidenced rather than argued.**
+His words: "all 21 feathers should be pointing in one of the six
+directions." The data holds seven: the 21 laws group by seat, three
+seats with three laws, two with four, two with two. The six he may have
+been picturing are a different thing already in the product, the six
+VERP gates (awareness, detachment, intention, ignorance, attachment,
+aversion), and no law is tied to a gate anywhere in the engine or the
+book today. Asked back rather than silently built either way, since he
+has said "six" in more than one sense before.
+
+**A real mathematical confirmation the whole concept is sound, not just
+attractive.** Coherence is already defined as the 21 laws summed over
+210; laid end to end, the 21 feathers equal 2.1 times the distance from
+the coherence number to 100, holding on all fourteen profiles to within
+0.007. Feathers shrinking and the number rising are provably the same
+event, not two things that merely look related.
+
+**A real schema question surfaced, his to rule.** Animating the shrink
+needs the product to remember where each law sat before, which nothing
+stores today, only the summary number. Three options: keep all 21 law
+values in the saved history (the only one that allows replaying past
+weeks, a change to the saved record under the SOURCE compatibility
+contract), keep the last seen values in the browser only (cheap, lost on
+a new device), or keep nothing (free, the shrink is only visible if the
+person remembers the old picture themselves).
+
+**Graded honestly: B+, not A.** The six gate positions sit empty for
+every real profile checked, since no test story has ever triggered one,
+and the fan reads weakly at both extreme ends of the scale, where
+everything is either fully out or fully folded in. Screenshots sent
+directly, per the drawing rule.
+
+**Three questions, listed in full below rather than folded into the
+"six or seven" one alone.**
+**Q1.** Six directions (the gates, needing 21 of his own answers against
+his book, and currently unreadable since no story data has ever lit
+one) or seven (the seats, true to the data as it exists today, already
+built)?
+**Q2.** Should the product start keeping the 21 individual law values in
+its saved history so the shrink can be replayed over weeks, keep only
+the last seen values on the device with nothing to replay, or keep
+nothing at all?
+**Q3.** Is stacking all six gates above the core acceptable, as built,
+or should they move elsewhere, such as the strip of readings at the
+bottom of the Field? Keeping them split three above and three below, as
+originally pictured, isn't possible, they sit inside the feathers' own
+reach.
+
