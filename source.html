@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="0b8e319 2026-09-21 18:21"><head><meta charset="utf-8">
+<html lang="en" data-build="fa8d5f2 2026-09-25 02:12"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -3687,14 +3687,10 @@ body:not(.tab-field) .cv-legend{display:none}
    dim because it is an instruction and not an invitation, and it is not a
    button: the gesture is anything at all, and drawing a button would be
    narrower than the truth as well as another tap target on a first screen. */
-.boot-skip{position:absolute;left:0;right:0;bottom:6.5vh;text-align:center;
- font-family:var(--sans);font-size:11.5px;font-weight:400;letter-spacing:.055em;
- color:var(--dim);opacity:0;pointer-events:none;
- animation:bootSkip .7s cubic-bezier(.22,1,.36,1) 1.5s both}
-@keyframes bootSkip{0%{opacity:0}100%{opacity:.62}}
-@media (prefers-reduced-motion:reduce){
- /* the end state, not a faster arrival */
- .boot-skip{animation:none;opacity:.62}}
+/* THE RULE ITSELF IS GONE, 21 September. The line is not drawn any more, so
+   the class, its keyframe and its reduced motion case came out with it rather
+   than being left behind as dead style that the next reader has to prove is
+   dead. */
 /* THE OSCILLATING BAND'S MOVING PARTS. The marker, its ring and its number ride
    in one group so a frame to frame move is a single transform rather than four
    geometry writes. will-change lives here rather than inline because a class
@@ -4065,7 +4061,13 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
       had time to be worth watching, which is the ruling, and it tells the
       truth about the gesture rather than inventing a button that would take a
       tap target and an outline it does not need. -->
- <div class="boot-skip">Press anything to go straight in</div>
+ <!-- AND THE LINE IS GONE. Ruled 21 September: "the loading screen, at the
+      very bottom there is some text that says press any so and so, get rid of
+      that." The gesture it described stays: anything at all still goes
+      straight in, and the boot sheet still clears on a press. What is removed
+      is the sentence telling a person so. The reasoning above is kept because
+      it is the argument the ruling overturned, and because the gate below it
+      now asserts the line is absent rather than present. -->
 </div>
 <canvas id="bgaura" aria-hidden="true"></canvas>
 <div class="app">
@@ -24609,5 +24611,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="001593163"></div>
+<div id="eof" hidden data-len="001593427"></div>
 </body></html>

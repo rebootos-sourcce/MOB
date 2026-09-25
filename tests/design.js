@@ -641,20 +641,19 @@ console.log('\n=== 14 -  the boot says how to get past it ===');
  const pb=await browser.newPage({viewport:{width:1600,height:1000}});
  const t0=Date.now();
  await pb.goto(FILE,{waitUntil:'load'});
- let at=-1, txt='';
- for(let i=0;i<40;i++){
-  const v=await pb.evaluate(()=>{const e=document.querySelector('.boot-skip');
-   if(!e)return null; return {o:+getComputedStyle(e).opacity,t:e.textContent.trim()};});
-  if(v&&v.o>0.2){at=Date.now()-t0;txt=v.t;break;}
-  await pb.waitForTimeout(100);
- }
- ok(at>0&&at<2600,'the way out is legible before the sequence ends, at '+at+'ms');
- ok(/press/i.test(txt),'and it says what to do, got '+JSON.stringify(txt));
+ /* RE-RULED 21 September: "the loading screen, at the very bottom there is
+    some text that says press any so and so, get rid of that." The line is
+    gone and the gesture stays, so this block asserts the gesture and the
+    absence rather than the sentence. A row that asserted the copy would fail
+    the day the copy was ruled out, which is exactly what happened here. */
+ await pb.waitForTimeout(400);
+ const line=await pb.evaluate(()=>document.querySelectorAll('.boot-skip').length);
+ ok(line===0,'the boot sheet carries no instruction line, found '+line);
  await pb.mouse.click(800,500);
  let cleared=false;
  try{await pb.waitForFunction(()=>document.body.classList.contains('booted'),null,{timeout:4000});
   cleared=true;}catch(e){}
- ok(cleared,'and taking it goes straight in');
+ ok(cleared,'and a press still goes straight in, in '+(Date.now()-t0)+'ms');
  await pb.close();
 }
 

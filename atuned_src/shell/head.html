@@ -3687,14 +3687,10 @@ body:not(.tab-field) .cv-legend{display:none}
    dim because it is an instruction and not an invitation, and it is not a
    button: the gesture is anything at all, and drawing a button would be
    narrower than the truth as well as another tap target on a first screen. */
-.boot-skip{position:absolute;left:0;right:0;bottom:6.5vh;text-align:center;
- font-family:var(--sans);font-size:11.5px;font-weight:400;letter-spacing:.055em;
- color:var(--dim);opacity:0;pointer-events:none;
- animation:bootSkip .7s cubic-bezier(.22,1,.36,1) 1.5s both}
-@keyframes bootSkip{0%{opacity:0}100%{opacity:.62}}
-@media (prefers-reduced-motion:reduce){
- /* the end state, not a faster arrival */
- .boot-skip{animation:none;opacity:.62}}
+/* THE RULE ITSELF IS GONE, 21 September. The line is not drawn any more, so
+   the class, its keyframe and its reduced motion case came out with it rather
+   than being left behind as dead style that the next reader has to prove is
+   dead. */
 /* THE OSCILLATING BAND'S MOVING PARTS. The marker, its ring and its number ride
    in one group so a frame to frame move is a single transform rather than four
    geometry writes. will-change lives here rather than inline because a class
