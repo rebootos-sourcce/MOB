@@ -10091,9 +10091,13 @@ paragraph claims 107 classical points plus the mind, 108 total. Its own
 head and neck section header claims 37 points plus the mind, 38 total.
 Summing the count written next to each named point in that same section
 (Simanta 5, Matrika 8, and so on, run through a script rather than by
-eye) gives 40, not 38, which makes its true physical total 112 by its own
-row counts, not the 108 it states twice. Three totals, one document, none
-agreeing. The four points it adds outside the body are not the classical
+eye) gives 40, not 38, which makes its row total 112, not the 108 it
+states twice. *Corrected below, at BI3: those 112 rows include Manas,
+which the document itself calls the mind rather than a body point, so
+the true physical figure the document is working from is 111, not 112.
+Said wrong here first and it is fixed at the first place it is checked
+again, not hidden.* Three totals, one document, none agreeing. The four
+points it adds outside the body are not the classical
 marma system and do not appear findable in it, and are shaped differently
 from ours besides: ours sits as two pairs at the two poles, two above the
 crown and two below the feet; theirs sits as one above, one below and one
@@ -10141,6 +10145,58 @@ organ claims hold up, and whether the four points it adds outside the
 body correspond to anything real. Confidence tagged when it lands. Q1,
 whether anything from this ever reaches the glossary, stays open and
 waits on what the research finds.
+
+**BI3. Research back. The pasted document is about half real, and the
+real count is 107, not 108 and not 112.** Full findings, sourced and
+confidence tagged, at `docs/research/marma-validation.md`. The classical
+system (the Sushruta Samhita, a Sanskrit surgical text) names 107 points.
+All 43 names the pasted document uses are real. Around them it adds 4
+names that are not classical, moves one point to the wrong region, and
+its per point emotions appear in no source found anywhere, the text
+being a surgeon's injury list rather than an emotional map. Of 20 nerve
+and organ claims spot checked, 12 held up, 3 were close with a wrong
+detail, 2 were plausible but unconfirmed, and 3 were wrong outright,
+including an organ placed at the wrong location three separate times.
+*Corrects BI1: those rows sum to 112, but one of the 112 is Manas, which
+the document itself calls the mind rather than a body point, so the
+physical figure it is actually working from is 111.* The four points it
+places outside the body were very likely invented to reach 112: no
+source names them, their borrowed parts come from a 1990s workshop
+teaching and modern New Age chakra lists, and the closest real 112 found,
+a seventh century meditation text, counts techniques, not points on a
+body. *One honest note the other way: this product's own four field
+anchors, Sol Star, Stellar Gateway, Earth Star and Gaia Gateway, come
+from those same modern lists, not from anything older. The Chakra
+glossary entry's own standard would apply to them as well, which is a
+finding about us, not only about the pasted document.* Method limit
+carried into every tag: this session's network refused every full page
+load, so every check rests on search result snippets from named sources,
+not full text read start to finish. Five real questions follow, listed
+in full below, nothing decided.
+
+**BI4.** Should marma have any place in the product: vocabulary only, on
+addresses where a classical point sits at the same location, labelled
+the way the Chakra entry already is; a full 107 point layer, which would
+mean writing the emotional meaning ourselves and saying so; or leave it
+out.
+**BI5.** What happens to the document's own emotional language, such as
+Guda's "poverty consciousness, insecurity, primal terror," none of it
+sourced: used as draft copy run through the voice rules and labelled as
+this product's own writing, or discarded.
+**BI6.** Which organ claims, if any: only the ones the classical text
+itself supports (heart, hearing, voice, breath, bladder, reproduction,
+smell, sight), those plus the modern massage book ones labelled as
+modern, or none.
+**BI7.** What happens to the four points outside the body, given the
+product's own shape (two above, two below) and the document's (one
+above, one below, one each side) differ, and both sets of names come
+from the same unsourced modern lists: keep ours and add a glossary line
+saying where they come from, switch to the document's differently shaped
+four despite them being equally unsourced, or drop the outside layer.
+**BI8.** Whether the product should ever say where 112 comes from at
+all: call it this product's own count, cite the nearest real match and
+say how it differs, or say nothing, since any claim of tradition invites
+exactly this check.
 
 ## BJ. Four renditions of a ring based Field, mocked up against a fixed
 ## rectangle, 25 September.
