@@ -10168,3 +10168,36 @@ multiplier, and a broader pass over the saboteur and hyper complex
 material against `SABDEF` and `HCX_LIB` for real overlap versus genuinely
 new. Confidence tagged, nothing merged until reviewed.
 
+**BK2. Corrected. The words are not the point, the two phase shape is.**
+His words in full: "Yeah, they're not perfect words because people use
+their own words to describe. I just want you to understand that there is
+an intensity in the purpose of the curve is that there is a buildup and
+then there's a build down of energy. The buildup is like what happens
+when you get angry and pissed off and there's this build of pressure.
+and then the downside is all of the effects that come along afterwards.
+I'm so embarrassed I acted that way. I'm so humiliated, so ashamed, I'm,
+I'm so sad, I'm so depressed, right? So it's come down. So the reason why
+the release uses that curve is because we're just trying to clear out
+both channels. Left, right, leading into the charge, and then the
+release of the charge. You don't need to make any CQ decisions right
+now. We can flag this, see where it fits, strategize around it, and then
+plug it into the backlog." Read as: drop the deck's specific words as a
+matching dictionary. The real shape is two phases, a buildup of rising
+pressure leading into a charge (his example, anger escalating), and a
+build down, the reflective aftermath after it (shame, embarrassment,
+sadness). A release under this model clears both channels, not only the
+peak. Sent to the running research pass so it does not chase a literal
+word list. No CQ formula work opened by this, by his own ruling.
+
+**Where it might fit, flagged rather than decided.** Three candidate
+seams, none chosen: the release mechanic itself (`engine/undo.js`,
+`ui/storyui.js`) could model a release as clearing two linked components,
+the buildup and the aftermath, instead of one scalar. Source AI, the
+panel already planned for the Story page (`BD`), would be the natural
+place to classify a person's own free words into which phase they are in
+rather than matching a fixed list, which is a sniffer job. And Ego
+Rebound (`BG`), his and Keeley's own account of post release nervous
+system rebound, sounds adjacent to a build down phase and is worth
+checking against this once both are further along, not assumed the same
+thing. Strategy, not a build.
+
