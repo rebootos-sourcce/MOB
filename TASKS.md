@@ -9608,3 +9608,44 @@ tab of its own or should live inside Avatar once Avatar exists.
 the thousand run simulation are all his explicit instructions for this
 round and are being worked now, not deferred.*
 
+## BD. The Story page: collapsible rails, and a Source AI panel. 25 September.
+
+**BD1. Both rails become closable, tools starts collapsed, and Source AI
+takes the right side.** His words: "When I land on the story page, I don't
+need the tools, the tools menu starts collapsed, which means the left and
+right menus are closable and openable, that opens up the centre space and
+gives more room to the imprints. And I want a panel for Source AI to sniff
+out a person's story, pose questions, ask meaningful follow ups." He talked
+the layout through live and landed on one: "maybe Source AI is on the left
+hand side and info is on the right... remember, Source AI is the info side
+and is just on the right side, and we keep the left panel closed. I think
+that's pretty smart, that's probably the way to go." Read as: tools (left)
+starts collapsed on arrival, both rails are user togglable, and Source AI
+lives on the right where the info panel already is, not as a third panel.
+Ties directly to `BC1`'s rail and detail work, since both are about the
+same left/right pattern, and to the existing toolSource inline mount this
+session's parity matrix found already exists at the foot of the desktop's
+journal, which is a real reference implementation to check before building
+a new one here.
+
+**BD2. A prompt database for Source AI, from his own practice.** His words:
+"What I use for myself to start is to identify any stories I can remember
+from childhood, three to eighteen. I use the seven deadly sins, and I use
+Dante's Inferno's descent, every layer of hell, which is basically the
+seven deadly sins extended, as a: when have I been in disbelief, when has
+my lust been twisted, when have I been corrupt, when have I been greedy,
+when have I been lazy and slothful. It's a way of acknowledging the
+patterns, and once you're prompted with the question on any of those words,
+usually the mind surfaces a story. What Source does is help pull stuff out
+of you. Maybe it's conversational, maybe it has a conversational component
+and a summarising component." A real content methodology, not a placeholder:
+childhood recall bounded to ages three through eighteen, prompted by the
+seven deadly sins extended through the structure of Dante's descent through
+hell, one prompt set per sin/layer. Whether Source AI's role is a fixed
+question set, a conversational back and forth, or both with a summary step
+is left open in his own words, "maybe," not settled.
+*BD1 is layout and interaction, BD2 is content and the AI behaviour; they
+ride together but are different seats' work. Both queued behind the design
+work already running this round; BD1 shares ground with `BC1` and `BC3` and
+should sequence alongside them rather than separately.*
+
