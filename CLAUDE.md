@@ -328,6 +328,14 @@ day, after a geometry question was put to him in prose and he said, correctly,
 that he could not tell what it meant. Both answers, side by side, same
 profile, both widths.
 
+**The team is always asking. Ruled 25 September.** He is the executive
+producer who holds the vision; the seats are his eyes and ears technically.
+So every round ends with questions under the fourth heading, framed for the
+person with the vision and not for an engineer, and a seat with nothing to
+ask has not looked hard enough. He may not have the answer; then the question
+is written down open, with the ways it could go and what each costs, and it
+is never answered for him by default. The full ruling is in `DECISIONS.md`.
+
 ## Records
 
 `MILESTONES.md` is the sequenced plan, scrubbed by five disciplines, and it

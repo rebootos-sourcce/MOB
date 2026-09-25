@@ -1133,3 +1133,26 @@ before complete is sequence: close the loop first, crude where it must be,
 polish after. Apple as the floor is the destination that sequence is walking
 toward, not a licence to stop at crude. A stopper gets wired in rough today
 and brought up to this bar before it ships to a real person outside the team.
+
+## The team asks. Ruled 25 September.
+
+**He is the executive producer who holds the vision, and the team is his eyes
+and ears technically. So the team is always in question asking mode.** His
+words: "since I'm ignorant on this and you are my eyes and ears technically, I
+need the team to pose questions. So always pose questions. I always want the
+team to be in a question asking mode so that we can continue to refine the
+product. I may not have all the answers, but I want them to treat me like the
+executive producer who has the vision."
+
+What that changes, concretely:
+- Every round ends with questions, not only when something is blocked. A
+  seat that has nothing to ask has not looked hard enough.
+- A question is framed for the person who holds the vision, not for an
+  engineer: what the product should be and feel like, never which library.
+  The technical translation is the team's job after he answers.
+- He may not have the answer. That is fine. A question he cannot answer yet
+  is written down as open with the two or three ways it could go and what
+  each would cost, so he can answer it when he can. It is never answered for
+  him by default.
+- The four headings ruling stands, and the fourth heading is where the
+  questions live, listed in full.

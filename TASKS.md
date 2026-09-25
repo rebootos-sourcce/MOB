@@ -8894,3 +8894,121 @@ product as it is for a port, not to audit it. His call on sequence.*
 
 *Sequenced 25 September in `PRIORITY.md` sections 12 to 15: the order, what
 waits on which ruling of his, and what waits on us.*
+
+## AW. The desktop version, verified. What did not migrate, and where the two
+## engines disagree.
+
+Ruled 25 September: before he touches visuals, confirm that everything built
+in the Atüned session (`rebootos-sourcce/reboot-os`, branch
+`claude/app-migration-decision-yx56cj`) is current and wired into the desktop
+build, and name the gap if not. Measured at its commit `8ba42de` by
+systems-director (wiring) and ai-director (engine parity), reading source and
+rebuilding, not reading its documents. Full reports ride with the plan bundle.
+
+**The build is current.** `atuned.html` rebuilds byte for byte from `src/`,
+md5 `2d333c9672355db6f04d4cdb865b03af`. Nothing newer exists on the branch.
+
+**It is not wired in. Foundation first:**
+
+**AW1. The database exists and nothing talks to it.** `wrangler.toml` still
+carries `REPLACE_AFTER_wrangler_d1_create`. Server tests pass 28 of 28 against
+a local SQLite stand-in. The client never calls the server: `ATUNED_API` is
+empty at runtime, sync is off. Both deploy workflows run only from `main`,
+which has no `atuned/` folder, so neither has ever run.
+*BLOCKED on him: backend region, provider and PIN recovery were never ruled.
+Cloudflare D1 was built anyway (their 1216) after Supabase was proposed
+(their 1201).*
+
+**AW2. Its CI has been red for 81 pushes,** since `cc0b043` on 19 September,
+including all 13 desktop commits. Three test tools hard code
+`/home/user/Reboot-OS`. Smoke reads 790 pass, 1 fail, and the one failure is
+the gate. With the path fixed it is 791 of 791.
+*Small, and it is first, because nothing after it is provable until it lands.*
+
+**AW3. The calibrated geometry never moved in.** 113 measured nerve
+positions, 7 chakra orbs and 6 left arm nodes (`fetter_positions.json`,
+`chakra_orbs_calibrated.json`, `left_arm_nodes.json`) are read by nothing.
+The build scatters imprints pseudo randomly around each band's height
+instead. `canon.json`, which their handshake names as governing, is also
+read by nothing.
+
+**AW4. 33 functions declared and unreached,** matching `KNOWN_UNWIRED` in
+their `test/smoke.py`. Their `MVP_STATUS.md` says 62, which is stale.
+
+**AW5. Sync drops four lists** (`week`, `cascade`, `applied`, `WINS`) even
+once a server is connected, and the server accepts two record kinds the
+client never sends. The 48 field client schema does match
+`data/user_schema.json` exactly.
+
+**AW6. The journal is not encrypted,** against his ruling. The lock checks a
+PIN and stops there. With no server, PIN recovery is "delete everything".
+
+**AW7. The two engines are not the same engine.** 29 contradictions on
+shared concepts, of which these change a number or a promise a person sees:
+- Coherence. MOB is roughly the law mean squared over resistance (blank 36,
+  ceiling 100). The desktop's code is
+  `CQ = max(1, min(100, round(diagBase * sqrt(intentionOne) / (1 + sqTen/10))))`,
+  linear in the law mean, and differs from four other forms its own docs
+  state. Laws all at 6 with nothing held reads 36 in MOB and 60 there.
+- Laws. MOB carries 21. The desktop's `LAWS1` carries 20 since their ruling
+  of 24 September. Only 11 names are shared. Their `PATHLAW` and `MASTERLAW`
+  tables cite six laws that are not in their own `LAWS1`.
+- Routing. Three words (doubt, silence, separation) and two charges (shame,
+  apathy) land on different axes. Five opposites differ. Surprise has no
+  charge row there. Their "nine laws of emotion" are MOB's nine axes by
+  another name.
+- Names. Node 8 ships as `Entitlement (Root)` while their own R1 is open.
+  `Sol Star` here, `Soul Star` there. Node 112 is `Gaia Gateway` in two
+  tables and `PARAM SHIVA / ASCENSION` in the third.
+*BLOCKED on him: which engine's coherence and which laws roster is canon.
+They cannot both be.*
+
+**AW8. Two rulings broken on the desktop side.** Depth of sight is sold by
+tier through `tierCanSee` at 9.99, 29.99, 49.99 and 99.99; `DECISIONS.md`
+here says sight is not for sale. Every story's verbatim sentence syncs into
+`records` beside the email; the ruling here is that the record and the story
+are never held joined. Their consented research copy, under a research id,
+does follow it.
+*BLOCKED on him. Both are money and privacy, neither is ours to pick.*
+
+**AW9. No undo, no boundary, no host free split there.** `restore()` assigns
+fields as they arrive with no validation. Every engine file but two references
+`document`, so none of it runs headless and none of it can be gated the way
+MOB's engine is. Their "Source AI" builds a prompt and never sends it.
+
+**AW10. Desktop coverage is partial.** One build, desktop layout from 1201px;
+901 to 1200px gets the phone card. Fifteen screens were never reflowed:
+Energetics, Body, Knowledge, Games, and eleven more (pattern map, lexicon,
+archetypes, overlay, diagnostics, practices, observer, avatar, source,
+Balance, Load). Balance and Load have no way in on either width. The lit tab
+shows the last click, not the current screen: it opens on Home with Field lit.
+
+**AW11. The palette migrated into CSS and not into script.** 59 of 59 CSS
+values match the brief. The 88 script drawn colour reads, including the
+figures and the wordmark, still use the old table in 6 of 7 schemes. Only
+Lumen agrees with itself.
+
+**AW12. Two older defects visible on desktop.** Knowledge and Practices text
+at 1.08:1, a `prd` against `.tprd` class mismatch. Fonts load from Google,
+against their own checklist and against the one file, zero request rule.
+
+**AW13. Their documents are stale where it matters.** README, root
+`CLAUDE.md`, `MVP_STATUS`, `APP_MAP`, both `GAME_PLAN` status notes and three
+`DEV_CHECKLIST` rows disagree with the code. `THE_SIX_MODES.md` was emptied
+to 0 bytes in `20b683f` and is recoverable from the commit before.
+`MANIFEST.source.json` describes the tree as it arrived on 10 September, not
+today. Their four open owner questions: TQ was answered as CQ in their 1190
+and never carried back; dictation loading has a proposed default only;
+backend region, provider and PIN recovery never ruled; body typeface never
+ruled.
+
+**AW14. A third source of rulings nobody wired.** Their book branch
+`claude/keen-brahmagupta-qt32zr` carries `ATUNED_HANDOFF.md`,
+`ATUNED_SPEC.json` and `SNIFFER_SPEC.md`, referenced nowhere under
+`atuned/`. The build differs from them on spelling, the landing screen, the
+hyper complex labels, the channel count, and carries no crisis resource.
+*His call whether those bind.*
+
+*Not verifiable from here: why their CI dies in seconds (no job log access),
+whether the Cloudflare secrets exist, and behaviour on real D1 (wrangler is
+not installed in this container).*

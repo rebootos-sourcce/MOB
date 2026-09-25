@@ -1168,3 +1168,46 @@ be asked what the team is paid to decide, so none of them goes to him.
   items in section 10, see group B.
 - **Mirroring the 42 into the ledger as checkboxes.** Recommended in the stamp
   above, not done by a plan.
+
+---
+
+# 16. 25 September. The desktop version. What is buildable today on the
+# tech side, and what waits on him
+
+His instruction: "I need to see what it needs to be built today, from the tech
+side, that's remaining. Before I touch any visuals." And the standing order for
+everything: foundation first, which includes all of the logic, then UI UX, then
+how it looks, then content, then animation, then possibly sound.
+
+Source: `TASKS.md` section AW, measured at reboot-os `8ba42de`. This repo has
+read access to that one and no push access, so every row below that lands in
+that codebase is either relayed to the session that owns it or waits for him
+to grant push. Nothing here is built yet.
+
+## The order, foundation first
+
+| # | What | Where | Size | Depends on |
+|---|---|---|---|---|
+| 1 | `AW2`. Fix the three hard coded paths so their gate runs. 81 red pushes end | reboot-os `test/tools/` | small | nothing. First because nothing after it is provable until it is green |
+| 2 | `AW7` and `AW8` go to him as one question set with the numbers beside each: which coherence, which laws, sight by tier or not, story beside email or not | both repos | small to ask, large to land | nothing |
+| 3 | `AW1`. Create the D1 database, set `ATUNED_API`, prove one record round trips from the client, and point the deploy workflows at the branch that has `atuned/` | reboot-os `server/`, `.github/` | medium | his region and provider ruling, never given. If he rules Cloudflare, it is one afternoon |
+| 4 | `AW5` and `AW6`. Sync carries all four dropped lists; the journal is encrypted at rest as ruled, not PIN gated | reboot-os `42b_cloud.js`, journal | medium | row 3 for the sync half; nothing for encryption |
+| 5 | `AW3`. Wire the calibrated geometry in: 113 nerves, 7 orbs, 6 arm nodes replace the pseudo random scatter | reboot-os pattern map | medium | nothing. It is the difference between a map and a drawing |
+| 6 | `AW4`. Reach or delete the 33 unreached functions, and shrink `KNOWN_UNWIRED` to zero | reboot-os | medium | row 1 |
+| 7 | `AW9`. A boundary on `restore()` that refuses a bad field by name, and an undo. Port MOB's `validateProfile` shape and `undo.js` rather than writing new ones | reboot-os | large | row 2, because the record shape depends on which engine is canon |
+| 8 | `AW12`. Embed the typeface (MOB already carries Inter as base64; copy it) and fix `prd` against `.tprd` | reboot-os | small | nothing |
+| 9 | `AW11`. The 88 script drawn colour reads move to the brief's table so the figures and wordmark agree with the CSS in all seven schemes | reboot-os | medium | nothing |
+| 10 | `AW10`. The fifteen unreflowed screens, the 901 to 1200 band, the lit tab, and a way into Balance and Load | reboot-os | large | rows 1 to 9. This is the first row that is visuals |
+| 11 | `AW13`. Their stale documents corrected, `THE_SIX_MODES.md` restored from the commit before `20b683f`, `MANIFEST.source.json` regenerated | reboot-os `docs/` | small | nothing, and it should ride whichever row lands first |
+
+Rows 1, 2, 5, 8, 9 and 11 can start now without a ruling. Rows 3, 4 and 7 wait
+on him. Row 10 is visuals and waits on everything above it by his own order.
+
+## What waits on him, from this section
+
+- Which engine's coherence formula is canon, and which laws roster (`AW7`).
+- Sight by tier, and story beside email (`AW8`).
+- Backend region, provider, PIN recovery (`AW1`).
+- Whether the book branch handoffs bind Atüned (`AW14`).
+- Body typeface, still open from their GAME_PLAN.
+- Push access to reboot-os for this session, or the work is relayed.
