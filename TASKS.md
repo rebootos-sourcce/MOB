@@ -11139,3 +11139,107 @@ something for him to resolve: closing them is always safe, nothing is
 lost by doing so, because anything worth keeping gets written here
 regardless of what happens to the card.
 
+## BV. His nine Avatar questions, answered nearly in full, plus a real
+## bug report and a real readability complaint. 25 September.
+
+**The whole vision, in his own words, kept together rather than split
+across nine answers.** "There's a person in the center. There are seven
+iconic symbols at the chakra locations with the symbol of the chakra and
+the percent at which that one's open... to the left side and to the
+right side, it's almost like there's an option for you to record your
+story, on the left side are the things that you currently are that you
+want to change, and the right side are the things that you want to
+become. As you release the things you don't want to be, that percent
+begins to change, then you start to become the person you want to. The
+rituals are there to help release and then point you to that direction,
+to make sure those behaviors are becoming normalized, maybe through
+affirmations. And then the software just automatically populates the
+tags within the field." Flags his own worry mid sentence: this sounds
+like it wants a character limit on an auto populated field, worth
+carrying into the build.
+
+**Q1, confirmed directly.** "The avatar is a person with channels inside
+of it." Adds a new element, not previously asked for: **a torus field
+around the character**, his reason: "that would make the assemblage
+points outside of the body really make sense, because the flow of the
+channels determines the flow of your torus field." Reads as: the field
+anchor addresses sit ON the torus, and the torus itself is a visible
+consequence of the seven seats' own state, not an independent thing.
+Not dispatched yet, logged so it is not lost.
+
+**Q2, answered, with a wrinkle to watch.** Left is who you currently are
+and want to change, right is who you want to become, matching his own
+words option from the report. Also described the boxes as checkmarks,
+"yeah you're doing it, yeah you're doing it," possibly counting
+consecutive days of a ritual or affirmation, and noticed himself that
+this may duplicate the percent-complete ring: "the percent complete
+going around the circle does the same thing." Not resolved by him, flagged
+as his own open question, not silently picked either way.
+
+**Q3, all three options rejected outright.** "These are not badges. We
+need to design a whole badge system." Nothing from the report's three
+options is being built; this is a real, separate, unscoped design
+project, not queued to a seat yet since there is nothing to scope
+against.
+
+**Q4, the purpose map and boundary described in full, and it matches
+what `avatar.js` already carries almost word for word, with one real
+mismatch worth his confirmation.** His words: "the up triangle is the
+self's three primary values, the down triangle is the ego's three
+primary values, the centre point of each is the trait they create when
+they combine... the self's needs are typically universal, freedom, free
+will, unity, compassion, love, while the ego is looking for finances,
+wealth, stability, health." Matches `PUR_SOUL`/`PUR_EGO` in `avatar.js`
+closely. The boundary: "the points where the triangles meet, the six
+sides, that whole shape makes the boundary... the first one is myself,
+what are the five things I must do for myself before anybody else all
+the time, these are the things that sharpen my edge, then relationship,
+friends, family, work, community." **The six side names he just gave
+(myself, relationship, friends, family, work, community) are not
+identical to the six already coded** (`PUR_SIDES` in `avatar.js`:
+partner, family, friends, community, coworkers, alone). Four match by
+plain sense, two do not: his "myself," said first and with real weight
+("before anybody else, all the time"), against the code's "alone," and
+his "relationship" against the code's "partner." Not changed without
+his say, asked below.
+
+**Q5, still not answered, because the page itself would not let him.**
+"I can't read those questions and I can't zoom in. For number five I'm
+not sure what A, B and C mean because I can't click and read what's
+going on." *A real defect in how the page was delivered, not in the
+content: flagged back to whoever is still building visual pages today,
+separate from any single answer.*
+
+**Q6, a real bug reported, being checked before it is trusted.** "These
+seven marks are not sacrosanct. Your symbols are out of place. Your
+third eye looks like a clock or a smile, the throat looks like a heart,
+the heart looks like a spark, it's like they're all off by one." Later
+in the same message, after presumably scrolling further: "Oh I see,
+okay, these icons are fine, your seven circles, I see the icons now,
+that works." Both reactions logged rather than only the second; sent to
+be reproduced and fixed if real before being called resolved.
+
+**Q7, answered.** Not a manual job list: "don't worry about that, what
+that should pull is a person's archetype and some of their
+psycho-spiritual behavior." Auto derived, not entered.
+
+**Q8, answered.** "It's the avatar page, it's the character sheet."
+Both names used interchangeably by him; no single strict title forced.
+
+**Q9, deferred on purpose.** "I don't know if Link is a game, put that
+on the back burner and have the design team review that... I think the
+prompting of the AI does that job," meaning Source AI may already cover
+it without a dedicated feature. Not decided, not built.
+
+**Masks, a new design requirement, his words in full:** "I want each
+mask to have a unique look, not just this, I want them to actually have
+a little style to them. And as it fills in, you see the character
+clearly, and then eventually the character will disappear, and that's
+what you want, you want to be clear, you want light to shine through.
+The mask is blocking the light." Real material for whoever designs the
+mask system next, not dispatched, the badge system above is the more
+immediate unscoped item.
+
+**Q: which six boundary side names, his or the code's?** Myself and
+relationship, said just now, against alone and partner, already shipped.
+
