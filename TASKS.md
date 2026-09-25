@@ -9067,3 +9067,14 @@ in the shipped set, close enough to sound like the same note out of tune.
 *Small, and it is an honesty fix, not a feature: label the source or remove
 the line. Already the cost that moved this seat's grade from C minus to C
 plus once before.*
+
+**Ruled the same day, 25 September, and this changes the fix.** The harmonic
+layer stays and grows: all 112 addresses get a tone, sourced from real
+singing bowl measurements where they can be found rather than the solfeggio
+set alone, presented as an optional sound healing tool, information rather
+than a reading, and each Hz number is printed in its own chakra's colour.
+`FLOWSEAT`'s seven entries become the first seven of 112 under this ruling,
+not the whole table. See `DECISIONS.md`, "The CQ ruling, corrected."
+*Medium, once sourcing is done. Research still owed: measured bowl tunings
+for the remaining 105 addresses, or a stated method for deriving them from
+the seven that have one.*

@@ -1219,3 +1219,75 @@ Open under this ruling, to be asked and not assumed:
 - What "oscillating" does to the reading: a band label, or a dampening.
 - Whether the harmonic mapping is a reading or a metaphor, which decides
   whether it may print a number.
+
+## The CQ ruling, corrected. 25 September, same day.
+
+Shown the reading above, he corrected it. His words first.
+
+"To keep it really simple, we can have the sum equal to 10, and that 210
+equals one hundred percent, and then you'd have to do the formula around
+that to make sure that it works. DQ is the total weight, that's a total sum
+of decoheres. SQ is an individual fetter, there are 112 that we track,
+period. The four addresses outside the body do count as SQ because they're
+related to nerves within the body, but the assemblage point field at which
+they create is outside of the body. Think of it like a torus field: there's
+the point at the top of your head, and then there's the kind of range at
+which the torus field extends beyond your head before it circles back.
+Those are the two assemblage points outside of the body. Intention is
+powered by the laws of emotion. When emotional control is being spurred on
+by SQ, then we get lower awareness, lower intention, lower integrity, lower
+expression. Duty is do what you say, that maintains your upregulation, and
+the more aware you are of it, the more of the laws of expression you want
+to flow through. The laws of expression are the high points, because at the
+end of the laws of expression is meaning and potential. Oscillating does not
+print as a word, but four to six should always show a slightly different
+band, same thing with five, so people can see there's a range at which we
+travel, and five is the average. I think the harmonic layer is information.
+All hundred and twelve should have a tone, and we can measure the tones
+based off the tones the sound bowls are measured to, in hertz. We may not
+keep that, who knows, maybe we'll use it later on. If people want to do
+sound healing, say your blocked in this area, use this tone to help unblock.
+I don't want to bombard people with options, we have to simplify and clean
+up the data, but we want to make sure there's something there for people to
+work with. For the length of the nervous system: no, it's not a claim about
+physical length. It's just from foot to crown, regardless of whether you're
+five feet or ten feet tall, the way the body registers hertz is exactly the
+same. If they work on the heart chakra at a sound bath it works for everyone
+universally. That means there's consistency along the nerve system and it
+acts like a current, regardless of whether the technology is big or small.
+Go search all the laws of integrity, they'll be in the mechanics folder, but
+you should also have them here. Hertz numbers should be the same colour as
+the chakra itself."
+
+**What this corrects in the reading above.** SQ is not one aggregate number.
+It is 112 individual values, one per address, already the shape of the
+charge the engine tracks per address today. DQ is the aggregate: the total
+sum of decoherence across those 112 values. This is being reconciled against
+his separate statement that "any deviation of CQ is DQ" (DQ = 100 minus CQ),
+since both were said and a seat is working out whether they are two readings
+of the same number or two numbers sharing a name, with a worked example
+rather than another open question.
+
+**What is now found, not open.** The canonical 21 laws are `SI` in
+`atuned_src/engine/data/canon.js:400`, live in the engine, not a document:
+Truth, Transparency, Justice, Unity, Awareness, Nature, Presence, Humility,
+Equanimity, Compassion, Forgiveness, Generosity, Aesthetic Beauty, Courage,
+Duty, Responsibility, Accountability, Temperance, Detachment, Non-Harm,
+Patience. This is the roster the sum of 21 sums over.
+
+**What is now a design instruction, not a question.** Four to six gets a
+visibly different band from the rest of the ten point scale; five is marked
+as the average. The harmonic layer is built as an optional sound healing
+tool, information rather than a reading, sourced from real bowl
+measurements where they can be found, one tone per address, each printed in
+its chakra's own colour. The length claim is not an acoustic resonance
+claim; it is a claim that the nervous system's response is independent of
+body size, closer to a current than a wave, and the research already done
+is corrected against this rather than discarded, since the finding that a
+standing wave model does not hold is still true, it tested the wrong model
+of what he meant.
+
+**Still open, and it is the causal chain, not the arithmetic.** Intention is
+powered by "the laws of emotion" and suppressed by SQ through emotional
+control; no formula was given for this. A candidate is being proposed for
+him to react to rather than left as narrative.
