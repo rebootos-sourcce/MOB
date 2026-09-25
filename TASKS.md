@@ -9956,3 +9956,28 @@ same navigation surfaces that proposal is already redesigning, and
 simulating three overlapping, unreconciled navigation ideas against each
 other would waste the run rather than answer anything.
 
+**The flow round (`BC1` through `BC7`) is back, reconciled with `BA8`, `BD1`,
+`BF2`, `BG1`, `BH1` and `BH2` into one frame.** Full proposal and prototypes
+sent to him with this round. One rule underlies four separate requests made
+across the day for Body, Knowledge, Energetics and Story: left is what you
+can pick, centre is the picture, right is always the answer to what was
+pressed.
+
+**BC1, diagnosed, not a design question.** Five real causes, the main one a
+single wrong test in `ui/drills.js`'s `rdOpen`, which checks the wrong
+section for whether the rail sits beside the stage, so answers on desktop
+never scroll into view and land 1,700 to 2,150 pixels down the rail.
+Runtime-patched and proven: desktop went from 0 of 14 answers visible to
+14 of 14.
+
+**BC1a. Pressing a domain or archetype in the left rail on a reference
+profile silently switches to the blank profile.** Found while diagnosing
+BC1. Gordon's coherence reads 19, then reads as not measured, with no
+warning that the profile changed underneath the person looking at it.
+*Small, and it is a correctness bug independent of any redesign.*
+
+**Buildable now, needs nothing from him:** the one line fix landed for
+real (not just at runtime), the reference profile guard, Body's answer
+binding into the right rail instead of a shelf 2,579 pixels down, and a
+phone bottom sheet for the same rail pattern. Dispatched.
+
