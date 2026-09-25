@@ -8992,6 +8992,35 @@ shared concepts, of which these change a number or a promise a person sees:
   tables and `PARAM SHIVA / ASCENSION` in the third.
 *BLOCKED on him: which engine's coherence and which laws roster is canon.
 They cannot both be.*
+*Both engines now run the ruled model. MOB and the desktop reproduce the
+same worked vectors to within 1e-9, reboot-os `df7f24c`. The desktop's
+`LAWS1` now matches `SI` name for name and order: 10 laws added (Justice,
+Humility, Equanimity, Forgiveness, Generosity, Aesthetic Beauty, Temperance,
+Detachment, Non-Harm, Patience), Reverence removed (it was in no canon
+table), the eight expression laws moved out to their own table, unasked and
+unsummed. Ownership stays out of the 21, matching the ruling.*
+
+**AW7a. The desktop's sniffer can only ever reach 12 of 112 addresses.**
+Found while rebuilding CQ. Its sniffer resolves a line of story to one of 14
+charges, and each charge sits at exactly one fetter, so no matter how a
+person writes, at most 12 of the 112 addresses can ever carry weight there.
+The arithmetic now matches MOB exactly; the input reaching it does not.
+Measured: a heavily loaded desktop journal reads DQ 10 and expression 45,
+against MOB's own vector at DQ 47.9 and expression 29.4 for the same laws.
+*Large, and it is a second sniffer defect alongside AZ6, on the other
+engine.*
+
+**AW7b. No charge can ever land on a Crown fetter on the desktop.** Soul
+Star and Stellar Gateway read 0 for everyone, always, a structural gap in
+the same routing table as AW7a.
+
+**AW7c. Band level SQ is still live on the desktop and feeds screens the
+rebuild did not touch:** the aperture, radiance, will's drag and the SQ
+gauges, which still print one SQ number, against his ruling that SQ is 112
+individual values. Nothing in CQ, DQ or expression reads it any more, but a
+person can still see it elsewhere. `test/tools/emotion.py` also still
+generates a document describing the old formula.
+*Medium, and it is the next thing to retire on the desktop.*
 
 **AW8. Two rulings broken on the desktop side.** Depth of sight is sold by
 tier through `tierCanSee` at 9.99, 29.99, 49.99 and 99.99; `DECISIONS.md`
@@ -9239,3 +9268,21 @@ position not specified; his call once art cleanup starts.
 than it needs to be and costs vertical room from the Field's central image
 below it.
 *All four small to medium, all art direction's queue, none blocking.*
+
+**BA5. The coherent/decoherent slider should drive the core's colour.**
+Marked on a screenshot of the wheel's centre disc and the right rail slider.
+His words: "I want these two systems to drive one another. The coherent
+decoherent slider on the right drives the colour of the circle. It goes from
+dark red near black on the decoherent end to bright red at the top of
+decoherent, that gradates up to light blue, not light blue, just blue. The
+transition between coherent and decoherent, with a gradient, is between
+forty and sixty. It shows that most people are oscillating between the two.
+The expression of their soul is kind of representative of that." Ramp:
+near black red at the low end, rising to bright red, a gradient through the
+forty to sixty band, to blue at the high end. The forty to sixty band is the
+same band already ruled to draw differently everywhere a 0 to 10 or a 0 to
+100 scale appears (`DECISIONS.md`, "The CQ ruling, corrected"), so this is
+that rule applied to the core disc specifically, not a new band.
+*Queued, art direction. Which number drives it, CQ or expression, is now a
+live question rather than an abstract one now that the two differ; his own
+words say "coherent decoherent," which is CQ.*
