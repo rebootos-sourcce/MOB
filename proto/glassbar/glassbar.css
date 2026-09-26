@@ -1,84 +1,111 @@
 /* ============================================================
-   THE GLASS BAR, prototype. DK in TASKS.md.
+   THE GLASS BAR, prototype. DK, revised on DR, in TASKS.md.
 
    Glass means: the picture shows through it, blurred, so it reads as a
-   thing lying on the Field rather than a band cut out of it. The ground is
-   the theme's own panel at a little over half strength, so it follows all
-   the themes without a rule per theme. Ring, not fill: a layer that is on
-   wears a ring of the accent, never a solid tile. Punch is the one theme
-   where solid is the ruling, and it gets the solid.
+   thing lying on the Field rather than a band cut out of it. Each layer is
+   one glass circle now, not a button inside a capsule: "the pills take up a
+   lot of real estate." Ring, not fill: the ring round each circle is a
+   reading, and the only solid thing is the small value pill, which is the
+   product's own pill.
    ============================================================ */
 
-/* the secondary navigation is gone on the Field, and the switch in the
-   lane has moved into the bar */
+/* the secondary navigation is gone on the Field, and the renditions switch
+   has left the centre pane */
 body.gb.tab-field #subbar{display:none!important}
 body.gb #fview{display:none!important}
 /* the strip the bar floats in is kept clear, so the bar lies over the
-   stage's ground and never over a mark. Without it the Frames picture ran
-   up under the bar and its top row of addresses went under the glass. */
-body.gb.tab-field .stage{padding-top:66px}
+   stage's ground and never over a mark */
+body.gb.tab-field .stage{padding-top:64px}
 @media (max-width:720px){body.gb.tab-field .stage{padding-top:0}}
-body:not(.tab-field) #gb,body:not(.tab-field) #gb-panel,body:not(.tab-field) #gb-menu{display:none!important}
+body:not(.tab-field) #gb,body:not(.tab-field) #gb-panel,body:not(.tab-field) #gb-menu,
+body:not(.tab-field) #gb-rend{display:none!important}
 
-#gb{position:absolute;top:12px;left:12px;z-index:6;display:flex;align-items:center;gap:8px;
+#gb{position:absolute;top:10px;left:12px;z-index:6;display:flex;align-items:center;gap:12px;
  flex-wrap:nowrap;pointer-events:none}
 #gb>*,#gb .gb-full>*{pointer-events:auto}
-#gb .gb-full{display:flex;gap:8px}
+#gb .gb-full{display:flex;gap:12px}
+.gb-grp{display:flex;align-items:center;gap:6px}
+.gb-rend{gap:6px}
 #gb .gb-foldp{display:none}
 #gb.folded .gb-full{display:none}
 #gb.folded .gb-foldp{display:flex}
-
-.gb-pill,.gb-float{
- background:color-mix(in srgb,var(--panel,#1A1D26) 58%,transparent);
- -webkit-backdrop-filter:blur(18px) saturate(1.4);backdrop-filter:blur(18px) saturate(1.4);
- border:1px solid var(--edge-2,rgba(255,255,255,.14));
- box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 10px 28px rgba(0,0,0,.28)}
-.gb-pill{display:flex;align-items:center;gap:2px;padding:4px;border-radius:16px}
+#gb .gb-end:empty{display:none}
+#gb.folded .gb-end [data-gb=shadow]{display:none}
 
 /* the two glasses. Tokens are redefined on the bar, so every rule below
    reads the right ink whichever ground it lies on. */
-.gb-dk{--ink:#EFEDE8;--mid:#B4B0A8;--dim:#94908A;--edge-2:rgba(255,255,255,.14);--edge:rgba(255,255,255,.09)}
-.gb-dk .gb-pill,.gb-float.gb-dk{background:rgba(22,24,32,.58)}
-.gb-lt{--ink:#14161C;--mid:#4A4843;--dim:#6E6B65;--edge-2:rgba(20,22,28,.16);--edge:rgba(20,22,28,.10)}
-.gb-lt .gb-pill,.gb-float.gb-lt{background:rgba(252,252,250,.62);box-shadow:inset 0 1px 0 rgba(255,255,255,.6),0 10px 28px rgba(20,22,28,.14)}
-#gb-panel .gb-pill{background:transparent!important;box-shadow:none!important}
+.gb-dk{--ink:#EFEDE8;--mid:#B4B0A8;--dim:#94908A;--edge-2:rgba(255,255,255,.14);--edge:rgba(255,255,255,.09);
+ --gb-glass:rgba(22,24,32,.56);--gb-glass-on:rgba(40,44,58,.72);--gb-shade:rgba(0,0,0,.30);--gb-pillbg:#161820}
+.gb-lt{--ink:#14161C;--mid:#4A4843;--dim:#6E6B65;--edge-2:rgba(20,22,28,.16);--edge:rgba(20,22,28,.10);
+ --gb-glass:rgba(252,252,250,.58);--gb-glass-on:rgba(255,255,255,.9);--gb-shade:rgba(20,22,28,.14);--gb-pillbg:#FAFAF7}
 
-/* one target, 44 by 44, the floor */
-.gb-b{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
- min-width:44px;min-height:44px;padding:0;margin:0;border:0;border-radius:12px;background:transparent;
- color:var(--dim,#94908A);cursor:pointer;font:inherit;
- transition:color .12s cubic-bezier(.22,1,.36,1),background-color .12s cubic-bezier(.22,1,.36,1)}
-.gb-b:hover{color:var(--ink,#EFEDE8);background:color-mix(in srgb,var(--ink,#EFEDE8) 6%,transparent)}
-.gb-b:focus-visible{outline:2px solid var(--accent,#7EB8D4);outline-offset:1px}
-.gb-ic{position:relative;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;
- border:1.5px solid transparent;transition:border-color .12s cubic-bezier(.22,1,.36,1),box-shadow .12s}
-.gb-ic svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.6;
- stroke-linecap:round;stroke-linejoin:round}
+.gb-float{
+ background:var(--gb-glass,rgba(22,24,32,.58));
+ -webkit-backdrop-filter:blur(18px) saturate(1.4);backdrop-filter:blur(18px) saturate(1.4);
+ border:1px solid var(--edge-2,rgba(255,255,255,.14));
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 10px 28px rgba(0,0,0,.28)}
 
-/* ON. The icon comes up to ink and wears the accent's ring. */
+/* ---- one layer, one object. 44 by 44 is the target, the floor ---- */
+.gb-b{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
+ min-width:44px;min-height:44px;padding:0;margin:0;border:0;border-radius:50%;background:transparent;
+ color:var(--dim,#94908A);cursor:pointer;font:inherit}
+.gb-b:focus-visible{outline:2px solid var(--accent,#7EB8D4);outline-offset:2px}
+.gb-orb{--c:var(--accent,#7EB8D4);position:relative;width:40px;height:40px;border-radius:50%;flex:0 0 auto;
+ display:flex;align-items:center;justify-content:center;
+ background:var(--gb-glass,rgba(22,24,32,.56));
+ -webkit-backdrop-filter:blur(14px) saturate(1.4);backdrop-filter:blur(14px) saturate(1.4);
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 6px 18px var(--gb-shade,rgba(0,0,0,.3));
+ transition:background-color .12s cubic-bezier(.22,1,.36,1)}
+.gb-arc{position:absolute;inset:0;width:40px;height:40px;transform:rotate(-90deg);overflow:visible}
+.gb-arc circle{fill:none;stroke-width:2.6}
+.gb-arc .trk{stroke:color-mix(in srgb,var(--ink,#EFEDE8) 16%,transparent)}
+.gb-arc .val{stroke:var(--c);stroke-linecap:round;opacity:.3;transition:stroke-dasharray .35s cubic-bezier(.22,1,.36,1),opacity .12s}
+.gb-gl{display:flex}
+.gb-gl svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+/* the value rides the lower right, over the ring, the product's own pill */
+.gb-v{position:absolute;left:25px;top:27px;min-width:18px;height:16px;padding:0 4px;border-radius:999px;
+ font:600 10px/16px var(--num,Inter),Inter,system-ui,sans-serif;font-variant-numeric:tabular-nums;
+ text-align:center;white-space:nowrap;letter-spacing:.01em;color:var(--ink,#EFEDE8);
+ background:color-mix(in srgb,var(--c) 30%,var(--gb-pillbg,#161820));
+ border:1px solid color-mix(in srgb,var(--c) 55%,transparent);transition:opacity .12s,background-color .12s}
+/* OFF: the pill keeps its number and loses its fill, the ring keeps its
+   length and loses its colour, the mark drops to dim. Three signals, none
+   of them a hidden value. */
+.gb-b:not(.on) .gb-v{background:var(--gb-pillbg,#161820);color:var(--dim,#94908A);
+ border-color:color-mix(in srgb,var(--ink,#EFEDE8) 22%,transparent)}
+.gb-b:not(.on) .gb-orb{box-shadow:0 4px 12px var(--gb-shade,rgba(0,0,0,.3))}
+.gb-b:hover .gb-orb{background:var(--gb-glass-on)}
+.gb-b:hover{color:var(--ink,#EFEDE8)}
+
+/* ON. The disc lifts, the mark comes up to ink, the ring takes its colour
+   at full strength and the value pill with it. Off keeps every number,
+   dimmed, because an off layer is hidden from the picture, not unread. */
 .gb-b.on{color:var(--ink,#EFEDE8)}
-.gb-b.on .gb-ic{border-color:var(--accent,#7EB8D4);
- box-shadow:0 0 0 3px color-mix(in srgb,var(--accent,#7EB8D4) 16%,transparent)}
+.gb-b.on .gb-orb{background:var(--gb-glass-on,rgba(40,44,58,.72))}
+.gb-b.on .gb-arc .val{opacity:1}
 /* BROUGHT IN BY ZOOM, under that option only: drawn, but not by the person */
 .gb-b.zoomed{color:color-mix(in srgb,var(--ink,#EFEDE8) 80%,transparent)}
-.gb-b.zoomed .gb-ic{border-color:var(--accent,#7EB8D4);border-style:dashed}
+.gb-b.zoomed .gb-arc .trk{stroke:var(--accent,#7EB8D4);stroke-dasharray:3 3}
 /* ON, AND WAITING FOR ZOOM: stories on the wheel at arm's length */
-.gb-b.wait .gb-ic{border-color:color-mix(in srgb,var(--accent,#7EB8D4) 45%,transparent);box-shadow:none}
-.gb-b.wait .gb-ic::after{content:'';position:absolute;right:-2px;top:-2px;width:6px;height:6px;border-radius:50%;
- background:var(--accent,#7EB8D4)}
-/* the switch between renditions is one of three, so the lit one is marked
-   the same way and the other two stay dim */
-.gb-rend .gb-b.on .gb-ic{box-shadow:none}
+.gb-b.wait .gb-orb::after{content:'';position:absolute;right:1px;top:1px;width:7px;height:7px;border-radius:50%;
+ background:var(--accent,#7EB8D4);box-shadow:0 0 0 2px var(--gb-pillbg,#161820)}
 
-body.punch .gb-b.on .gb-ic{background:var(--accent);border-color:var(--accent);box-shadow:none}
-body.punch .gb-b.on .gb-ic svg{stroke:var(--on-accent,#101010)}
+body.punch .gb-b.on .gb-orb{background:var(--c)}
+body.punch .gb-b.on .gb-gl svg{stroke:var(--on-flat,#101010)}
+body.punch .gb-v{background:var(--c);color:var(--on-flat,#101010);border-color:var(--c)}
+
+/* ---- Wheel, Frames, Dial in the right rail, icon only, under the top line ---- */
+.gb-rend{display:flex;gap:8px;align-items:center}
+.col .gb-rend{margin:10px 0 4px}
+.gb-rend .gb-orb{box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none;background:transparent}
+.gb-rend .gb-b.on .gb-orb{background:color-mix(in srgb,var(--accent,#7EB8D4) 12%,transparent)}
+.gb-rend .gb-orb{--c:var(--accent,#7EB8D4)}
 
 /* ---- the folded panel and the depth menu float under their button ---- */
 .gb-float{position:fixed;z-index:40;border-radius:16px;padding:10px;display:none}
 .gb-float.open{display:block}
-#gb-panel .gb-pill{background:transparent;border:0;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none;
- padding:0;flex-wrap:wrap;gap:4px;margin-bottom:6px}
-#gb-panel .gb-b{min-width:64px;min-height:64px;padding:4px 2px}
+#gb-panel .gb-grp{flex-wrap:wrap;gap:4px;margin-bottom:6px}
+#gb-panel .gb-b{min-width:66px;min-height:70px;padding:4px 2px;border-radius:12px}
 .gb-nm{font-size:12px;line-height:14px;font-weight:500;white-space:nowrap}
 .gb-say{margin:6px 6px 2px;max-width:340px;font-size:13px;line-height:1.45;color:var(--mid,#B4B0A8)}
 .gb-say b{color:var(--ink,#EFEDE8);font-weight:600}
@@ -88,7 +115,9 @@ body.punch .gb-b.on .gb-ic svg{stroke:var(--on-accent,#101010)}
 .gb-mi{display:flex;align-items:flex-start;gap:10px;width:100%;min-height:44px;padding:8px 10px 8px 6px;
  border:0;border-radius:12px;background:transparent;color:var(--mid,#B4B0A8);text-align:left;cursor:pointer;font:inherit}
 .gb-mi:hover{background:color-mix(in srgb,var(--ink,#EFEDE8) 6%,transparent);color:var(--ink,#EFEDE8)}
-.gb-mi .gb-ic{flex:0 0 auto}
+.gb-ic{position:relative;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+ border:1.5px solid transparent;flex:0 0 auto}
+.gb-ic svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 .gb-mt{display:flex;flex-direction:column;gap:2px;font-size:13px;line-height:1.4}
 .gb-mt b{font-size:14px;font-weight:600;color:var(--ink,#EFEDE8)}
 .gb-mi[aria-checked=true] .gb-ic{border-color:var(--accent,#7EB8D4)}
@@ -105,18 +134,17 @@ body.gb.tab-field.gb-off-shadow #bgaura{visibility:hidden}
 #gb-panel.sheet{left:8px!important;right:8px;bottom:8px;top:auto!important;max-width:none!important;
  padding:8px 8px 10px;border-radius:18px}
 #gb-panel.sheet .gb-ph{display:none}
-#gb-panel.sheet .gb-pill{flex-wrap:nowrap;justify-content:flex-start;gap:0;margin-bottom:4px;
- padding-bottom:4px;border-bottom:1px solid var(--edge,rgba(255,255,255,.09))!important;border-radius:0}
-/* six columns on every row, so a name sits under its own icon and the
-   rows line up. Five across left Character and Archetypes running into
-   each other at 390. */
-#gb-panel.sheet .gb-b{min-width:0;flex:0 0 16.66%;min-height:60px}
+#gb-panel.sheet .gb-grp{flex-wrap:nowrap;justify-content:flex-start;gap:0;margin-bottom:4px;
+ padding-bottom:4px;border-bottom:1px solid var(--edge,rgba(255,255,255,.09))}
+/* six columns on every row, so a name sits under its own circle and the
+   rows line up */
+#gb-panel.sheet .gb-b{min-width:0;flex:0 0 16.66%;min-height:70px}
 #gb-panel.sheet .gb-nm{font-size:11px;line-height:13px;white-space:normal;text-align:center;max-width:58px}
 #gb-panel.sheet .gb-done{display:block}
 #gb-panel.sheet .gb-say{min-height:38px}
 
-/* ---- a phone. The stage is one column there, so the bar takes the row
-   the switch had, above the picture, and does not lie over the ring ---- */
+/* ---- a phone. The stage is one column there, so the bar takes a row
+   above the picture and does not lie over the ring ---- */
 @media (max-width:720px){
  #gb{position:relative;top:auto;left:auto;order:0;align-self:flex-start;margin:10px 12px 4px;flex-wrap:wrap}
 }
@@ -125,8 +153,9 @@ body.gb.tab-field.gb-off-shadow #bgaura{visibility:hidden}
 #gb-opts{position:fixed;left:12px;bottom:12px;z-index:50;font:14px/1.45 Inter,system-ui,sans-serif;color:#EFEDE8}
 #gb-opts .gb-ob{min-height:44px;padding:0 14px;border-radius:12px;border:1px dashed rgba(126,184,212,.7);
  background:rgba(12,13,18,.86);color:#7EB8D4;font:inherit;cursor:pointer}
-#gb-opts .gb-oc{position:absolute;left:0;bottom:52px;width:min(360px,calc(100vw - 24px));padding:12px 14px;
- border-radius:14px;background:rgba(12,13,18,.94);border:1px dashed rgba(126,184,212,.55)}
+#gb-opts .gb-oc{position:absolute;left:0;bottom:52px;width:min(380px,calc(100vw - 24px));padding:12px 14px;
+ border-radius:14px;background:rgba(12,13,18,.94);border:1px dashed rgba(126,184,212,.55);
+ max-height:calc(100vh - 90px);overflow-y:auto}
 #gb-opts .gb-oq{margin:4px 0 6px;color:#EFEDE8}
 #gb-opts .gb-on{margin:10px 0 0;color:#94908A;font-size:13px}
 #gb-opts .gb-seg{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}

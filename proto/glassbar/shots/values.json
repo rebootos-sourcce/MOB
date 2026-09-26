@@ -1,0 +1,38 @@
+{
+ "390": {
+  "errs": []
+ },
+ "1600": {
+  "errs": []
+ },
+ "vals-1600": {
+  "addresses": "5.7 ring 57",
+  "seats": "5.5 ring 55",
+  "laws": "44% ring 43.7",
+  "gates": "– ring 0",
+  "shadow": "35% ring 34.5",
+  "stories": "24% ring 24.3",
+  "saboteurs": "29 ring 100",
+  "complexes": "13 ring 89.2",
+  "hyper": "5 ring 89.2",
+  "character": "2 ring 83.8",
+  "archetypes": "20% ring 20.2",
+  "domains": "38% ring 38.3",
+  "masks": "4.5 ring 44.8"
+ },
+ "vals-390": {
+  "addresses": "5.7 ring 57",
+  "seats": "5.5 ring 55",
+  "laws": "44% ring 43.7",
+  "gates": "– ring 0",
+  "shadow": "35% ring 34.5",
+  "stories": "24% ring 24.3",
+  "saboteurs": "29 ring 100",
+  "complexes": "13 ring 89.2",
+  "hyper": "5 ring 89.2",
+  "character": "2 ring 83.8",
+  "archetypes": "20% ring 20.2",
+  "domains": "38% ring 38.3",
+  "masks": "4.5 ring 44.8"
+ }
+}

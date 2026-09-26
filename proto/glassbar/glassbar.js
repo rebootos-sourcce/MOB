@@ -95,7 +95,7 @@ function preset(i){var s={};for(var j=0;j<=i;j++)ADDS[j].forEach(function(k){s[k
 function needs(set){for(var i=3;i>0;i--)if(ADDS[i].some(function(k){return set[k];}))return i;return 0;}
 
 var ON=preset(S.view|0);
-var OPT={room:true,zoomAdds:false,fold:null};   /* fold null means fitted to the width */
+var OPT={room:true,zoomAdds:false,fold:null,rend:'rail'};   /* fold null means fitted to the width */
 
 /* what zoom has reached. Only under the "zoom adds" option: the next depth's
    layers draw while zoomed in, and the icon says they came from the
@@ -167,7 +167,22 @@ function patchRings(){
   ['(k in FR_CLS)?\'<g>\'','(k in FR_CLS)?\'<g class="P-\'+k+\'">\'']],'frSvg'));}
 
 /* ============================================================
-   THE BAR
+   THE BAR. Revised 26 September on his ruling, DR in TASKS.md.
+
+   "I'm not a fan of the pills as much as I used to be, they take up a lot
+   of real estate. I want ... a circle and the icon inside of it, and the
+   percent complete ring around it are the primary features, and then
+   there's a pill to the lower right hand side with the percent or whatever
+   the value is."
+
+   So every layer is one object: a glass circle, the layer's mark inside,
+   a ring round the rim carrying a real number off this person's reading,
+   and that number in a small pill riding the lower right. The group
+   capsules are gone; the clusters are kept apart by space alone.
+
+   A LAYER THAT IS OFF IS STILL READ. Its ring and its number stay, dimmed,
+   because switching a layer off hides it from the picture, not from the
+   person. What changes is the disc, the mark and the ring's colour.
    ============================================================ */
 /* ON A PHONE THE FIRST TAP WOULD EXPLAIN AND THE SECOND WOULD ACT. That is the
    product's tooltip rule for every data-tip carrier on a coarse pointer, and
@@ -179,23 +194,86 @@ function patchRings(){
 var COARSE=false;try{COARSE=matchMedia('(pointer: coarse)').matches;}catch(e){}
 function setTip(b,t){if(COARSE)b.removeAttribute('data-tip');else b.setAttribute('data-tip',t);}
 function svg(ic){return '<svg viewBox="0 0 24 24" aria-hidden="true">'+glyphPath(ic)+'</svg>';}
-var BAR=null, PANEL=null, MENU=null, FOLDBTN=null;
-function btn(o){
+var BAR=null, PANEL=null, MENU=null, FOLDBTN=null, RREND=null, END=null;
+
+/* ---- what each ring carries. Real numbers, read off compute() ----
+   Where the product already prints a number for the thing, the ring prints
+   the same number, so one concept keeps one figure across the Field: SQ,
+   CQ and DQ are the strip's own, Heaviest and the first archetype are the
+   rail's, and the four chain tiers carry the rail's own running counts.
+   Where the product had no number, the one chosen is said in the tooltip,
+   and every one of them is an open question in the report. */
+var VALS={}, LASTR=null;
+function reach(list,carry){
+ if(!carry.length)return 0;
+ var s={}; list.forEach(function(o){leaves(o).forEach(function(x){s[x.i]=1;});});
+ return carry.filter(function(n){return s[n.i];}).length/carry.length*100;}
+function readVals(r){
+ var V={}, dash='\u2013', carry=W.filter(function(n){return n.sq>=4;});
+ var f1=function(x){return (+x||0).toFixed(1);}, pc=function(x){return Math.round(+x||0)+'%';};
+ V.addresses={p:r.SQm*10,v:f1(r.SQm),c:seatCol(r.darkB),
+  m:'Ring and number: segment depth, SQ, '+f1(r.SQm)+' of 10. How deep the held charge sits.'};
+ V.seats={p:(r.darkV||0)*10,v:f1(r.darkV),c:seatCol(r.darkB),
+  m:'Ring and number: the heaviest seat, '+r.darkB+', at '+f1(r.darkV)+' of 10.'};
+ V.laws={p:r.CQ,v:pc(r.CQ),c:seatCol('Crown'),
+  m:'Ring and number: coherence, CQ, which is the laws summed.'};
+ var G=verpRead(), hi=G.filter(function(g){return g.side==='higher';}).reduce(function(a,g){return a+g.pct;},0),
+  anyG=G.some(function(g){return g.pct>0;});
+ V.gates={p:anyG?hi:0,v:anyG?pc(hi):dash,c:seatCol('Heart'),
+  m:anyG?'Ring and number: how much of what you wrote ran through the three higher gates.'
+   :'No story has run through a gate yet.'};
+ V.shadow={p:r.DQ,v:pc(r.DQ),c:seatCol('Root'),
+  m:'Ring and number: shadow weight, DQ, the weight on all 112 addresses.'};
+ var ai=atomIndex()||{}, traced=carry.length?carry.filter(function(n){return (ai[n.i]||[]).length;}).length/carry.length*100:0;
+ V.stories={p:traced,v:carry.length?pc(traced):dash,c:'var(--accent)',
+  m:carry.length?'Ring and number: the share of your carrying addresses a story you wrote reached.'
+   :'Nothing is carrying charge yet.'};
+ [['saboteurs',r.sabs,r.sabs[0]&&r.sabs[0].parts[0]?r.sabs[0].parts[0].b:r.darkB],
+  ['complexes',r.cxs,'Solar'],['hyper',r.hys,'Sacral'],['character',r.sups,'Root']].forEach(function(t){
+  var p=reach(t[1],carry);
+  V[t[0]]={p:p,v:String(t[1].length),c:seatCol(t[2]),
+   m:'Number: how many are running, as the rail counts them. Ring: the share of your carrying addresses they are built on, '+pc(p)+'.'};});
+ var aff=(r.aff||[]).map(function(v,i){return {i:i,v:v};}).sort(function(a,b){return b.v-a.v;});
+ var tot=aff.reduce(function(a,x){return a+x.v;},0)||1, top=aff[0]||{i:0,v:0}, A=ARCH[top.i]||{};
+ V.archetypes={p:top.v/tot*100,v:pc(top.v/tot*100),c:seatCol(A.b||'Heart'),
+  m:'Ring and number: '+(A.nm||'the first archetype')+', the first archetype, as its share of how the blueprint expresses.'};
+ var dm=DOMAIN.reduce(function(a,v){return a+v;},0)/DOMAIN.length*100, d0=DOMAINS[S.doms[0]];
+ V.domains={p:dm,v:pc(dm),c:d0?ROOTCOL[d0.r]:'var(--gold)',
+  m:'Ring and number: how far across the nineteen domains your blueprint reaches.'};
+ var mk=(r.maskRing||[]).slice().sort(function(a,b){return b.w-a.w;})[0];
+ V.masks={p:mk?mk.w*10:0,v:mk?f1(mk.w):dash,c:'var(--gold)',
+  m:mk?'Ring and number: the heaviest mask, '+mk.nm+', at '+f1(mk.w)+' of 10.':'No mask carries weight yet.'};
+ /* nothing read, nothing printed. The rail's own rule: the ring draws empty
+    and the tail carries a dash, because a figure beside "not read yet" is
+    the contradiction the words exist to prevent. */
+ if(r.unread)Object.keys(V).forEach(function(k){V[k]={p:0,v:dash,c:V[k].c,m:'Nothing read yet.'};});
+ Object.keys(V).forEach(function(k){V[k].p=Math.max(0,Math.min(100,+V[k].p||0));});
+ return V;}
+var VQ=false;
+function queueVals(){if(VQ)return;VQ=true;setTimeout(function(){VQ=false;
+ if(!LASTR)return; try{VALS=readVals(LASTR);}catch(e){VALS={};} paint();},0);}
+
+/* one object: glass disc, mark, ring, corner pill */
+function orb(o){
  var b=document.createElement('button'); b.type='button'; b.className='gb-b';
  if(o.k)b.setAttribute('data-gb',o.k);
  b.setAttribute('aria-label',o.nm);
- /* the product's own tooltip, which reaches a touch screen as well */
  if(!COARSE)b.setAttribute('data-tip-t',o.nm); setTip(b,o.tip||'');
- b.innerHTML='<span class="gb-ic">'+svg(o.ic)+'</span>'+(o.label?'<span class="gb-nm">'+o.nm+'</span>':'');
+ b.innerHTML='<span class="gb-orb"><svg class="gb-arc" viewBox="0 0 40 40" aria-hidden="true">'
+  +'<circle class="trk" cx="20" cy="20" r="18"/>'
+  +'<circle class="val" cx="20" cy="20" r="18" pathLength="100" stroke-dasharray="0 100"/></svg>'
+  +'<span class="gb-gl">'+svg(o.ic)+'</span>'
+  +(o.val?'<span class="gb-v"></span>':'')+'</span>'
+  +(o.label?'<span class="gb-nm">'+o.nm+'</span>':'');
  return b;}
 function toggle(k){
  if(ON[k])delete ON[k]; else ON[k]=1;
  unpinHidden(); apply(); say(k);}
 var SAY=null;
-function say(k){if(!SAY)return;var l=BYK[k];
+function say(k){if(!SAY)return;var l=BYK[k],v=VALS[k];
  var wait=ON[k]&&k==='stories'&&FVIEW==='wheel'&&atomA()<=0;
  SAY.innerHTML='<b>'+l.nm+(ON[k]?' on.':' off.')+'</b> '+esc(l.tip)
-  +(wait?' They draw once you pinch in on the ring.':'');}
+  +(wait?' They draw once you pinch in on the ring.':'')+(v?' '+esc(v.m):'');}
 /* a pinned thing whose layer has gone off is let go, or the rest of the web
    would stay dimmed around something no longer drawn */
 var PINK={node:'addresses',seat:'seats',law:'laws',gate:'gates',atom:'stories',sab:'saboteurs',
@@ -205,43 +283,73 @@ function unpinHidden(){var p=S.pin;if(!p)return;
  if(k&&!PV(k))S.pin=null;}
 
 function cluster(g,label){
- var c=document.createElement('div'); c.className='gb-pill';
+ var c=document.createElement('div'); c.className='gb-grp';
  c.setAttribute('role','group'); c.setAttribute('aria-label',g.nm);
  LAYERS.filter(function(l){return l.g===g.k;}).forEach(function(l){
-  var b=btn({k:l.k,nm:l.nm,ic:l.ic,tip:l.tip,label:label});
+  var b=orb({k:l.k,nm:l.nm,ic:l.ic,tip:l.tip,label:label,val:true});
   b.addEventListener('click',function(){toggle(l.k);});
   c.appendChild(b);});
  return c;}
+
+/* ---- Wheel, Frames, Dial. Ruled off the centre pane ----
+   His words: "it's taking up too much real estate being on the centre
+   pane. On our overlay, add it as options on the right-hand side, so after
+   shadow, and I don't need the text, just make it the icon."
+
+   TWO READINGS OF ONE SENTENCE, BOTH BUILT. The right rail has no Shadow
+   reading in it: measured on James, the one visible thing on the whole
+   Field page named Shadow is this bar's own Shadow button. So "on our
+   overlay ... after shadow" can mean the right rail, which is how it was
+   dispatched and is the default here, directly under the rail's top line;
+   or the right hand end of this bar, straight after Shadow, which is where
+   the shipped Frames layer row already puts Shadow, last and set apart.
+   Prototype questions switches between them. Icon only either way. */
+function buildRend(){
+ RREND=document.createElement('div'); RREND.id='gb-rend'; RREND.className='gb-rend';
+ RREND.setAttribute('role','radiogroup'); RREND.setAttribute('aria-label','How the Field is drawn');
+ FVIEWS.forEach(function(f){
+  var b=orb({k:'fv-'+f.k,nm:f.nm,ic:f.ic,
+   tip:f.tip.replace('The bar above adds a layer at a time and scrolling on the ring adds more.','Scrolling on the ring brings it closer.')});
+  b.setAttribute('role','radio');
+  b.addEventListener('click',function(){fviewSet(f.k);});
+  RREND.appendChild(b);});}
+function placeRend(){
+ var sh=BAR.querySelector('.gb-full [data-gb=shadow], .gb-end [data-gb=shadow]');
+ var carry=BAR.querySelector('.gb-full [data-grp=carry]');
+ if(OPT.rend==='bar'){
+  END.appendChild(sh); END.appendChild(RREND);
+  document.body.classList.remove('gb-rend-rail');}
+ else{
+  /* back to its own place in the carry cluster, before Stories */
+  var st=carry.querySelector('[data-gb=stories]'); carry.insertBefore(sh,st);
+  var top=document.getElementById('railtop');
+  if(top&&top.parentNode)top.parentNode.insertBefore(RREND,top.nextSibling);
+  document.body.classList.add('gb-rend-rail');}}
+
 function build(){
  var stage=document.querySelector('.stage');
  BAR=document.createElement('div'); BAR.id='gb'; BAR.setAttribute('role','toolbar');
  BAR.setAttribute('aria-label','Field layers');
- /* 1. how it is drawn. One lit at a time, like the reference's base maps. */
- var rend=document.createElement('div'); rend.className='gb-pill gb-rend';
- rend.setAttribute('role','radiogroup'); rend.setAttribute('aria-label','How the Field is drawn');
- FVIEWS.forEach(function(f){
-  var b=btn({k:'fv-'+f.k,nm:f.nm,ic:f.ic,tip:f.tip.replace('The bar above adds a layer at a time and scrolling on the ring adds more.','Scrolling on the ring brings it closer.')});
-  b.setAttribute('role','radio');
-  b.addEventListener('click',function(){fviewSet(f.k);});
-  rend.appendChild(b);});
- BAR.appendChild(rend);
- /* 2 to 4. the layers, three pills, the full row */
+ /* the layers, three clusters, the full row */
  var full=document.createElement('div'); full.className='gb-full';
- GROUPS.forEach(function(g){full.appendChild(cluster(g,false));});
+ GROUPS.forEach(function(g){var c=cluster(g,false);c.setAttribute('data-grp',g.k);full.appendChild(c);});
  BAR.appendChild(full);
- /* the folded form: one button that opens the same three pills as a panel */
- var fold=document.createElement('div'); fold.className='gb-pill gb-foldp';
- FOLDBTN=btn({k:'fold',nm:'Layers',ic:IC_LAYERS,tip:'Every layer on the Field, each one on or off.'});
+ /* the folded form: one button that opens the same three clusters as a panel */
+ var fold=document.createElement('div'); fold.className='gb-grp gb-foldp';
+ FOLDBTN=orb({k:'fold',nm:'Layers',ic:IC_LAYERS,tip:'Every layer on the Field, each one on or off.'});
  FOLDBTN.setAttribute('aria-expanded','false'); FOLDBTN.setAttribute('aria-controls','gb-panel');
  FOLDBTN.addEventListener('click',function(e){e.stopPropagation();openPanel(!PANEL.classList.contains('open'));});
  fold.appendChild(FOLDBTN); BAR.appendChild(fold);
- /* 5. the ladder, as four presets behind one button */
- var dp=document.createElement('div'); dp.className='gb-pill';
- var db=btn({k:'depth',nm:'Depth',ic:IC_DEPTH,tip:'Four starting sets, each one the last plus a layer: Charge, Patterns, Chains, Blueprint.'});
+ /* the ladder, as four presets behind one button */
+ var dp=document.createElement('div'); dp.className='gb-grp';
+ var db=orb({k:'depth',nm:'Depth',ic:IC_DEPTH,tip:'Four starting sets, each one the last plus a layer: Charge, Patterns, Chains, Blueprint.'});
  db.setAttribute('aria-haspopup','menu'); db.setAttribute('aria-expanded','false');
  db.addEventListener('click',function(e){e.stopPropagation();openMenu(!MENU.classList.contains('open'));});
  dp.appendChild(db); BAR.appendChild(dp);
+ /* the right hand end, used only when the renditions ride the bar */
+ END=document.createElement('div'); END.className='gb-grp gb-end'; BAR.appendChild(END);
  stage.appendChild(BAR);
+ buildRend();
 
  PANEL=document.createElement('div'); PANEL.id='gb-panel'; PANEL.className='gb-float';
  GROUPS.forEach(function(g){
@@ -282,7 +390,7 @@ function build(){
 function phone(){return innerWidth<=720;}
 function place(el,anchor){
  var st=document.querySelector('.stage').getBoundingClientRect(), a=anchor.getBoundingClientRect();
- el.style.top=(a.bottom+8)+'px'; el.style.left='0px'; el.style.maxWidth=(st.width-24)+'px';
+ el.style.top=(a.bottom+10)+'px'; el.style.left='0px'; el.style.maxWidth=(st.width-24)+'px';
  var w=el.offsetWidth, left=Math.max(st.left+12,Math.min(a.left,st.right-w-12));
  el.style.left=left+'px';}
 /* ON A PHONE THE PANEL IS A SHEET ALONG THE FOOT, AND THE RING IS BROUGHT UP
@@ -308,11 +416,9 @@ function openMenu(on){if(!MENU)return;
  if(on)place(MENU,db);}
 
 /* ---- the full row or the folded one ----
-   The full row is seventeen targets at 44 pixels. It fits over a 922 pixel
-   stage and not over a phone's 376, so it folds when it does not fit
-   rather than scrolling sideways with its end cut off, which is the depth
-   row's defect at 390 today: Blueprint sits past the edge with nothing
-   saying it is there. */
+   The full row folds when it does not fit rather than scrolling sideways
+   with its end cut off, which is the shipped depth row's defect at 390:
+   Blueprint sits past the edge with nothing saying it is there. */
 function fitFold(){
  if(!BAR)return;
  var st=document.querySelector('.stage'); var avail=st.clientWidth-28;
@@ -321,30 +427,37 @@ function fitFold(){
  BAR.classList.toggle('folded',fold);
  if(!fold)openPanel(false);}
 
-/* ---- paint every button from the state, one writer ---- */
+/* ---- paint every object from the state, one writer ---- */
 function paint(){
  if(!BAR)return;
  var rc=reached(), wheel=FVIEW==='wheel', atomsOut=atomA()<=0;
- document.querySelectorAll('#gb [data-gb], #gb-panel [data-gb]').forEach(function(b){
+ [BAR,PANEL,RREND].forEach(function(host){if(!host)return;
+  host.querySelectorAll('[data-gb]').forEach(function(b){
   var k=b.getAttribute('data-gb');
-  if(k.indexOf('fv-')===0){var on=k.slice(3)===FVIEW;b.setAttribute('aria-checked',String(on));b.classList.toggle('on',on);return;}
+  if(k.indexOf('fv-')===0){var on=k.slice(3)===FVIEW;b.setAttribute('aria-checked',String(on));b.classList.toggle('on',on);
+   /* a rendition has no reading, so its ring is whole when it is the one up */
+   var a=b.querySelector('.val'); if(a)a.setAttribute('stroke-dasharray',(on?100:0)+' 100');return;}
   var l=BYK[k]; if(!l)return;
-  var on=!!ON[k], z=!on&&!!rc[k];
+  var on=!!ON[k], z=!on&&!!rc[k], V=VALS[k];
   b.setAttribute('aria-pressed',String(on));
   b.classList.toggle('on',on); b.classList.toggle('zoomed',z);
+  if(V){var o=b.querySelector('.gb-orb'); o.style.setProperty('--c',V.c);
+   b.querySelector('.val').setAttribute('stroke-dasharray',V.p.toFixed(1)+' 100');
+   var pv=b.querySelector('.gb-v'); if(pv)pv.textContent=V.v;}
   /* Stories on the wheel are drawn out along each address, past the ring,
      and the ring's edge rule only lets them out once it has been brought
      close. On, and waiting for that, is said on the button, not hidden. */
   var wait=on&&k==='stories'&&wheel&&atomsOut;
   b.classList.toggle('wait',wait);
-  setTip(b,l.tip+(wait?' On. They draw once you scroll in on the ring.':'')
-   +(z?' Brought in by zoom. Zoom out and it goes again.':''));});
+  setTip(b,l.tip+(V?' '+V.m:'')+(wait?' On. They draw once you scroll in on the ring.':'')
+   +(z?' Brought in by zoom. Zoom out and it goes again.':''));});});
  var cur=-1;for(var i=0;i<4;i++){var p=preset(i);
   if(LAYERS.every(function(l){return !!p[l.k]===!!ON[l.k];}))cur=i;}
  if(MENU)MENU.querySelectorAll('[data-preset]').forEach(function(m){
   m.setAttribute('aria-checked',String(+m.getAttribute('data-preset')===cur));});
  var db=BAR.querySelector('[data-gb=depth]');
  db.classList.toggle('on',cur>=0);
+ db.querySelector('.val').setAttribute('stroke-dasharray',(cur>=0?100:0)+' 100');
  setTip(db,'Four starting sets, each one the last plus a layer. '
   +(cur>=0?'This is '+VIEWS[cur].nm+'.':'What is on now is your own set.'));}
 
@@ -373,17 +486,20 @@ function opts(){
   +'<div class="gb-seg" data-o="zoomAdds"><button data-v="0">Only closer</button><button data-v="1">Also adds the next layer</button></div>'
   +'<p class="gb-oq">On a wide screen, every icon in a row, or folded behind one button?</p>'
   +'<div class="gb-seg" data-o="fold"><button data-v="auto">Row when it fits</button><button data-v="1">Always folded</button></div>'
+  +'<p class="gb-oq">Wheel, Frames and Dial. "On our overlay, on the right hand side, after shadow." Which did he mean?</p>'
+  +'<div class="gb-seg" data-o="rend"><button data-v="rail">Right rail</button><button data-v="bar">End of the bar, after Shadow</button></div>'
   +'<p class="gb-on">Not part of the product. Each is an open question in the report.</p></div>';
  document.body.appendChild(box);
  var ob=box.querySelector('.gb-ob'), oc=box.querySelector('.gb-oc');
  ob.addEventListener('click',function(e){e.stopPropagation();var o=oc.hidden;oc.hidden=!o;ob.setAttribute('aria-expanded',String(o));});
  oc.addEventListener('click',function(e){e.stopPropagation();});
  function sync(){box.querySelectorAll('.gb-seg').forEach(function(sg){var o=sg.getAttribute('data-o');
-  var v=o==='fold'?(OPT.fold?'1':'auto'):(OPT[o]?'1':'0');
+  var v=o==='fold'?(OPT.fold?'1':'auto'):o==='rend'?OPT.rend:(OPT[o]?'1':'0');
   sg.querySelectorAll('button').forEach(function(b){b.setAttribute('aria-pressed',String(b.getAttribute('data-v')===v));});});}
  box.querySelectorAll('.gb-seg button').forEach(function(b){b.type='button';
   b.addEventListener('click',function(){var o=b.parentNode.getAttribute('data-o'),v=b.getAttribute('data-v');
-   if(o==='fold')OPT.fold=v==='1'?true:null; else OPT[o]=v==='1';
+   if(o==='fold')OPT.fold=v==='1'?true:null; else if(o==='rend')OPT.rend=v; else OPT[o]=v==='1';
+   if(o==='rend'){placeRend();tone();}
    sync(); fitFold(); unpinHidden(); apply();});});
  sync();}
 
@@ -393,14 +509,18 @@ function opts(){
    grey slab on a black field. The ground is read off the stage itself, the
    way rings.js reads it, and the bar and its floats take a dark or a light
    glass to match. */
-function tone(){
- var e=document.querySelector('.stage'),rgb=null;
+function darkUnder(e){var rgb=null;
  while(e&&e.nodeType===1){var m=getComputedStyle(e).backgroundColor.match(/[\d.]+/g);
   if(m&&(m.length<4||+m[3]>=0.4)){rgb=m.slice(0,3).map(Number);break;}
   e=e.parentNode;}
  if(!rgb)rgb=[16,16,16];
- var L=(0.2126*rgb[0]+0.7152*rgb[1]+0.0722*rgb[2])/255, dark=L<0.5;
- [BAR,PANEL,MENU].forEach(function(x){if(!x)return;x.classList.toggle('gb-dk',dark);x.classList.toggle('gb-lt',!dark);});}
+ return (0.2126*rgb[0]+0.7152*rgb[1]+0.0722*rgb[2])/255<0.5;}
+function tone(){
+ var dark=darkUnder(document.querySelector('.stage'));
+ [BAR,PANEL,MENU].forEach(function(x){if(!x)return;x.classList.toggle('gb-dk',dark);x.classList.toggle('gb-lt',!dark);});
+ /* the renditions row takes the tone of wherever it is sitting, the rail's
+    panel or the bar, which under Snow are opposite grounds */
+ if(RREND){var d2=darkUnder(RREND.parentNode);RREND.classList.toggle('gb-dk',d2);RREND.classList.toggle('gb-lt',!d2);}}
 function mount(){
  if(BAR)return;
  patchWheel(); patchRings();
@@ -412,15 +532,18 @@ function mount(){
  var sz=setZoom; window.setZoom=function(z,ax,ay){sz(z,ax,ay);applyRend();paint();};
  var fs=fviewSet; window.fviewSet=function(k){fs(k);FR_SIG=null;applyRend();paint();render();};
  FR_SIG=null;
+ /* the rings read the same reading the render just took, not a second one */
+ var cp=compute; window.compute=function(){var r=cp.apply(this,arguments);LASTR=r;return r;};
+ var rn=render; window.render=function(){var x=rn.apply(this,arguments);queueVals();return x;};
  document.body.classList.add('gb');
- build(); opts();
+ build(); placeRend(); opts();
  if(typeof layout==='function')layout();
  var sl=setLighting; window.setLighting=function(k){sl(k);tone();};
  fitFold(); tone(); apply();
  window.addEventListener('resize',function(){fitFold();openPanel(false);openMenu(false);});}
 
 return {mount:mount,PV:PV,ON:function(){return ON;},set:function(k,v){if(v)ON[k]=1;else delete ON[k];unpinHidden();apply();},
- preset:function(i){ON=preset(i);S.view=i;S.pin=null;apply();},opt:function(o,v){OPT[o]=v;fitFold();apply();},
+ preset:function(i){ON=preset(i);S.view=i;S.pin=null;apply();},opt:function(o,v){OPT[o]=v;if(o==='rend'){placeRend();tone();}fitFold();apply();},vals:function(){return VALS;},
  LAYERS:LAYERS,geomDepth:geomDepth,visible:visible};
 })();
 window.PV=function(k){return GB.PV(k);};

@@ -50,7 +50,11 @@ const shown=p=>p.evaluate(()=>{const f=document.getElementById('frend'),o={};
   await p.goto(PAGE);
   await p.waitForFunction(()=>document.documentElement.getAttribute('data-gb-ready')==='1',null,{timeout:30000});
   await wait(p,1200);
-  const tapSel=async sel=>{const e=await p.$(sel);const bx=await e.boundingBox();
+  const tapSel=async sel=>{const e=await p.$(sel);if(!e)throw new Error('no such element: '+sel);
+   /* the renditions live in the right rail now, which on a phone is a long
+      way down the page, so a press goes where a thumb would have to go */
+   const fixed=await e.evaluate(n=>!!n.closest('.gb-float'));
+   if(!fixed)await e.scrollIntoViewIfNeeded(); const bx=await e.boundingBox();
    if(!bx)throw new Error('not on screen: '+sel);
    const x=bx.x+bx.width/2,y=bx.y+bx.height/2;
    if(phone)await p.touchscreen.tap(x,y);else await p.mouse.click(x,y);await wait(p,250);};
@@ -63,15 +67,43 @@ const shown=p=>p.evaluate(()=>{const f=document.getElementById('frend'),o={};
     await tapSel('#gb-panel [data-gb='+k+']');}
    else await tapSel('#gb .gb-full [data-gb='+k+']');};
   const closeFloats=async()=>{await p.keyboard.press('Escape');await wait(p,150);};
-  const shot=async nm=>{if(!phone)await p.mouse.move(W-6,H-6);await wait(p,450);
+  const shot=async nm=>{if(!phone)await p.mouse.move(W-6,H-6);
+   /* on a phone, a press in the rail leaves the page scrolled to the rail;
+      the picture is what is being shown, so it is brought back first */
+   else await p.evaluate(()=>{if(document.querySelector('.gb-float.open'))return;
+    const e=document.getElementById(FVIEW==='wheel'?'cv':'frend');if(e)e.scrollIntoView({block:'center'});});
+   await wait(p,450);
    await p.screenshot({path:`${OUT}/${nm}-${W}.png`});};
 
-  /* 0. every target on the floor */
-  const small=await p.evaluate(()=>[...document.querySelectorAll('#gb .gb-b')].filter(e=>e.offsetParent)
+  /* 0. every target on the floor, the bar's and the rail's */
+  const small=await p.evaluate(()=>[...document.querySelectorAll('#gb .gb-b, #gb-rend .gb-b')].filter(e=>e.offsetParent)
    .map(e=>{const r=e.getBoundingClientRect();return [e.getAttribute('data-gb'),r.width,r.height];})
    .filter(x=>x[1]<44||x[2]<44));
   ok(small.length===0,'targets under 44: '+JSON.stringify(small));
   ok(await p.evaluate(()=>getComputedStyle(document.getElementById('subbar')).display==='none'),'the depth row is still showing');
+  /* Wheel, Frames, Dial: off the centre pane, in the right rail under its
+     top line, icon only */
+  const rp=await p.evaluate(()=>{const r=document.getElementById('gb-rend');
+   return {inBar:!!document.querySelector('#gb [data-gb^="fv-"]'),inStage:!!document.querySelector('.stage [data-gb^="fv-"]'),
+    afterTop:!!r&&r.previousElementSibling&&r.previousElementSibling.id==='railtop',
+    words:r?r.innerText.trim():'x',n:r?r.querySelectorAll('.gb-b').length:0};});
+  ok(!rp.inBar&&!rp.inStage&&rp.afterTop&&rp.n===3,'renditions in the rail under the top line '+JSON.stringify(rp));
+  ok(rp.words==='','renditions carry words: '+rp.words);
+  /* the circle, the ring and the value, off this person's own reading. The
+     numbers the product already prints elsewhere must be the same numbers. */
+  const vc=await p.evaluate(()=>{const r=compute(),o={};
+   const pill=k=>{const e=document.querySelector('#gb .gb-full [data-gb='+k+'] .gb-v');return e?e.textContent:null;};
+   const ring=k=>{const e=document.querySelector('#gb .gb-full [data-gb='+k+'] .val');return e?parseFloat(e.getAttribute('stroke-dasharray')):null;};
+   o.missing=GB.LAYERS.filter(l=>!pill(l.k)).map(l=>l.k);
+   o.sq=[pill('addresses'),r.SQm.toFixed(1)]; o.cq=[pill('laws'),Math.round(r.CQ)+'%']; o.dq=[pill('shadow'),Math.round(r.DQ)+'%'];
+   o.heavy=[pill('seats'),r.darkV.toFixed(1)];
+   o.tiers=[[pill('saboteurs'),pill('complexes'),pill('hyper'),pill('character')].join(','),[r.sabs.length,r.cxs.length,r.hys.length,r.sups.length].join(',')];
+   o.ringSQ=[ring('addresses'),+(r.SQm*10).toFixed(1)];
+   o.all=Object.fromEntries(GB.LAYERS.map(l=>[l.k,pill(l.k)+' ring '+ring(l.k)]));
+   return o;});
+  ok(vc.missing.length===0,'orbs with no value: '+vc.missing);
+  ['sq','cq','dq','heavy','tiers','ringSQ'].forEach(k=>ok(String(vc[k][0])===String(vc[k][1]),'value '+k+' reads '+vc[k][0]+', the product says '+vc[k][1]));
+  facts['vals-'+W]=vc.all;
 
   /* 1. opens on the Patterns set, the depth the Field has always opened on */
   let d=await drawn(p);
@@ -123,7 +155,7 @@ const shown=p=>p.evaluate(()=>{const f=document.getElementById('frend'),o={};
   await p.evaluate(()=>GB.preset(1));
   await press('complexes');
   if(phone)await closeFloats();
-  await tapSel('#gb [data-gb="fv-frames"]'); await wait(p,500);
+  await tapSel('#gb-rend [data-gb="fv-frames"]'); await wait(p,500);
   let s=await shown(p);
   ok(s['L-patterns']&&s['L-addresses']&&s['T-cx']&&!s['T-hy']&&!s['T-sup']&&!s['L-domains'],'Frames honours the set '+JSON.stringify(s));
   await shot('8-frames');
@@ -133,11 +165,11 @@ const shown=p=>p.evaluate(()=>{const f=document.getElementById('frend'),o={};
   await press('seats'); s=await shown(p);
   ok(!s['P-seats'],'Frames: seats off');
   if(phone)await closeFloats();
-  await tapSel('#gb [data-gb="fv-dial"]'); await wait(p,500);
+  await tapSel('#gb-rend [data-gb="fv-dial"]'); await wait(p,500);
   s=await shown(p);
   ok(!s['L-patterns']&&s['T-cx']&&!s['P-seats'],'Dial keeps the same set '+JSON.stringify(s));
   await shot('9-dial');
-  await tapSel('#gb [data-gb="fv-wheel"]'); await wait(p,300);
+  await tapSel('#gb-rend [data-gb="fv-wheel"]'); await wait(p,300);
 
   /* 8. the folded form, opened */
   if(phone){await tapSel('#gb [data-gb=fold]'); await shot('10-folded-open'); await closeFloats();}
@@ -163,6 +195,20 @@ const shown=p=>p.evaluate(()=>{const f=document.getElementById('frend'),o={};
   ok(d.sab>0,'zoom out took off something the person had on');
   await p.evaluate(()=>GB.opt('zoomAdds',false));
 
+  /* 11. the other reading of his sentence: the end of the bar, after Shadow */
+  await p.evaluate(()=>GB.opt('rend','bar')); await wait(p,200);
+  const bp=await p.evaluate(()=>{const e=document.querySelector('#gb .gb-end');if(!e)return null;
+   const kids=[...e.children].map(c=>c.id||c.getAttribute('data-gb'));
+   return {kids:kids,rail:!!document.querySelector('.col #gb-rend'),last:e===document.querySelector('#gb').lastElementChild};});
+  ok(bp&&bp.kids.join()==='shadow,gb-rend'&&!bp.rail&&bp.last,'end of the bar reads Shadow then the renditions '+JSON.stringify(bp));
+  if(!phone){await p.evaluate(()=>scrollTo(0,0)); await shot('15-rend-in-bar');}
+  await tapSel('#gb-rend [data-gb="fv-frames"]'); s=await shown(p);
+  ok(await p.evaluate(()=>FVIEW==='frames'),'renditions pressed at the end of the bar did not switch');
+  await tapSel('#gb-rend [data-gb="fv-wheel"]');
+  await p.evaluate(()=>GB.opt('rend','rail')); await wait(p,200);
+  ok(await p.evaluate(()=>{const r=document.getElementById('gb-rend');return r.previousElementSibling&&r.previousElementSibling.id==='railtop'
+   &&!!document.querySelector('#gb .gb-full [data-grp=carry] [data-gb=shadow]');}),'back to the rail, Shadow back in its cluster');
+
   /* 11. every lighting, so the glass is seen on each ground it has to sit on */
   if(!phone){await p.evaluate(()=>{GB.preset(2);setZoom(1,CX,CY);});
    for(const k of ['dark','snow','punch','glass','glasswhite','flat','lumen']){
@@ -170,9 +216,18 @@ const shown=p=>p.evaluate(()=>{const f=document.getElementById('frend'),o={};
     await p.mouse.move(W-6,H-6); await wait(p,300);
     await p.screenshot({path:`${OUT}/theme-${k}-${W}.png`,clip:{x:320,y:80,width:940,height:520}});}
    await p.evaluate(()=>setLighting('dark'));}
+  /* 12. a stranger: nothing read, so every ring is empty and every pill a dash */
+  await p.goto('about:blank'); await p.goto(PAGE+'#blank');
+  await p.waitForFunction(()=>document.documentElement.getAttribute('data-gb-ready')==='1',null,{timeout:30000});
+  await wait(p,900);
+  const bl=await p.evaluate(()=>GB.LAYERS.map(l=>{const b=document.querySelector('#gb [data-gb='+l.k+'], #gb-panel [data-gb='+l.k+']');
+   return [l.k,b.querySelector('.gb-v').textContent,parseFloat(b.querySelector('.val').getAttribute('stroke-dasharray'))];}));
+  ok(bl.every(x=>x[1]==='\u2013'&&x[2]===0),'blank profile prints a figure: '+JSON.stringify(bl.filter(x=>x[1]!=='\u2013'||x[2]!==0)));
+  await shot('16-blank');
   ok(errs.length===0,'page errors: '+errs.join(' | '));
   facts[W]={errs};
   await ctx.close();}
  await b.close();
+ fs.writeFileSync(path.join(OUT,'values.json'),JSON.stringify(facts,null,1));
  console.log(passes+' checks passed, '+fails+' failed');
  process.exit(fails?1:0);})();
