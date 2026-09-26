@@ -14633,3 +14633,98 @@ numbers, rather than described:**
 - What to do about Lumen, since it is his own palette and still fails
   the floor even after everything else is fixed.
 
+## DY. A long round: BO7 finally ruled, two design picks made outright,
+## real bugs found by hand in the shipped Field, and a fresh batch of
+## glass bar and rail feedback. 26 September.
+
+**BO7 closed. His own words, a real scale stated in full:** "if
+everything can be measured zero to ten, and we go from flowing,
+impaired, moderately impaired, heavily impaired, collapsed, then heavy
+would be seven eight nine, four five six would be median, one two
+three would be impaired, zero is flowing, ten is blocked or
+collapsed." Read against `ritual.js:11`'s own stale `DQ>=8`/`DQ>=4`
+threshold, written when the shadow score ran zero to ten and never
+moved when it was rescaled to zero to a hundred: his zero to ten
+bands map directly onto the current scale by a factor of ten, so heavy
+load starts at DQ 70, median at 40, matching his own five named
+states exactly. Dispatched as the one line fix this has been ready
+for since DG first found it.
+
+**Root icons and saturation ruled outright, not left on the board.**
+"Those icons for Architect, Engine, Weaver, I like, option recommended,
+it's cool... the big question is C wearing their seat, let's go with
+your recommended, let's go with B." The recommended four marks, option
+B's saturation, and archetypes wearing their own seat colour, all
+three from DX's board, ruled together. Dispatched to actually build,
+not stay a prototype: "backlog needs to be backlogged, build it if
+you've got it, in flow."
+
+**More exploration asked on the same board, not yet ruled.** "Lumen B
+and C is really talking to me, I want to see another version of those
+mocked up... that flat that popped out is really nice, I want to see
+that same thing on the black background versions." Two more rounds of
+the same comparison, not a final answer on Lumen's own question four.
+
+**Avatar: still not ruled, and he said so himself mid sentence.** "The
+avatar needs to be a, let's do it with the body, actually, well, the
+body's symbolic, give me two mockups with the body and then two with
+the seven seats." Four mockups asked for rather than a decision made
+blind, which directly feeds ruling five in DW's plan.
+
+**"Release" or "protocol": a real test asked for, not a guess.**
+"Simulate the word release or protocol with the ICPs a thousand
+times, like see what gets them to feel one's more realistic, and then
+tell me why." Dispatched, reusing the panel methodology already
+proven at DD.
+
+**Source AI's open question did not land.** "I don't know what you
+mean by scripted panel or real model call." Held for a clearer re-ask
+with a real example rather than repeated the same way, per this
+file's own standing rule.
+
+**A real, confirmed batch of bugs, found by his own hand in the
+shipped Field, not the prototypes.** His words: "I've got domains
+active, and I'm clicking on it, and I'm getting nothing in the
+information panel. I click on Ideological, I get nothing. I click on
+Magician, I get nothing. So it looks like there's layers of stuff
+that's not, you can't select the lines, so I can't see the saboteurs
+that are running. There's no animations on these, so it looks like the
+animations have not made it in either." Checked directly: Ideological
+is a mask and Magician is an archetype (`engine/data/canon.js`), not
+what he called them, a small naming slip that does not change the
+finding. Several real click targets answer with nothing, connection
+lines cannot be selected to see what they carry, and animation that
+should be present is not. Dispatched as a real reproduce and fix
+pass, not assumed from his description alone.
+
+**A further, more specific pass on the glass bar, refining rather
+than reopening DV.**
+- Wheel, Frames and Dial: his ambiguous "after shadow" from DR is now
+  resolved. "Move that to the secondary nav on the right hand side,
+  and let's just keep those three options there and let people play
+  around with it." The right rail wins over the bar's own tail.
+- Frames: "I don't like the beveled edges, I want the entire thing
+  flush to the rectangle of the area." A real visual fix, not a
+  preference to weigh.
+- Frames gets real interaction asked for the first time: "I want to
+  be able to zoom in and out, and then hit the F key and have it
+  reframe."
+- The bottom reading strip moves once the centre clears: "now that
+  we've got the circular one up here, all the buttons on the bottom
+  don't make sense, you should go on the left hand side... once wheel
+  frame and dial are moved to the secondary nav, then we can move
+  those pills to the left hand side, the redesigned pills." Answers
+  DV's open question: yes, the chips take the circle and ring shape
+  too, and move left.
+- "The little element mimicking the halo pitchfork on the right hand
+  side, that's unnecessary," ruled cut.
+- CQ and DQ: "line those up so they don't look like a design element
+  that's not quite designed right... and I do want the CQ number
+  bigger, so it's in your face." A real alignment and hierarchy fix.
+
+**Dispatched: the BO7 fix and the root icon/saturation port go to
+engineering as real build work; the shipped Field's bug batch goes to
+a real reproduce and fix pass; the glass bar's further refinements go
+back to the seat already building it; the avatar's four mockups and
+the release/protocol simulation are dispatched fresh.**
+
