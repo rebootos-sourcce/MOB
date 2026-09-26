@@ -16254,3 +16254,129 @@ change, nobody's actual charge moved. `MARKETING-social.md`'s own
 "H02 at 90" and "first four cover 556" are corrected from served
 counts to key counts, which is what they always were.
 
+## FH. Terminator trimmed, the boot's next seam, and a real funnel and
+## onboarding and pricing backlog, all in one long round. 26
+## September.
+
+**His words in full, kept together because they were said together:
+"yeah, you're right. Go ahead and trim it. Yeah, I'm not stating
+Terminator as the end all be all. I'm just saying, sure, you can go
+back to millennia. Sure, even the golems from Jason and the
+Argonauts are a form of Terminator, I get it. That can even be
+added. That's a pretty good animation. If we can get that lined up
+with the start, the starting square, that'd be cool. It also needs
+to have a loading screen in between, right? And that's where our
+first name, last name, kind of one time check in. Do you want to
+check this box so you don't have to see this again? Onboarding and
+tutorial. Our one time screen tutorial is a check on and off within
+the profile. Tutorial screens need to all be mapped out. That means
+they need to be storyboarded. Highest purpose of the product
+results. When I land on the field page, I want to see me load it up.
+Where are my tension animations? Like, what's going on? And now I'm
+going through the profiles. Why do they have information over the? I
+don't want that. And have the start everything look turned on.
+Yeah, it's going to start with everything loaded. And I haven't seen
+the avatar screen in a while, so give me a latest build. And what
+have I not invented on that needs feedback? For the funnel, not the
+person that put in their first last name and email, and they're
+ready to take the test, it slides to the next page and says actually
+we need a storyboard all this out. So I'm just going to put out some
+information, we can figure out where it needs to go. Welcome, name.
+Welcome to Attuned, comma name. You are here because you want to see
+what's running you. Where you keep repeating the same patterns and
+don't know what to do. Or you feel disconnected or you're afraid of
+heights, or you're terrified of clowns, or you're paralyzed with
+fear. All of these stories condition our mindset, and over time run
+us. They become us, operating in plain sight as something normal,
+while internally we don't feel as shiny as we used to. Attuned finds
+your story. Attuned listens to your story. It finds where that story
+lives. It finds its neighbors, its network, and what they create. It
+shows you the damage it causes over time, and gives you the
+techniques and tools to repair it, and see yourself until you step
+into that peak version of yourself your inner child demands, your
+inner child wants believed in or wants new to be true. This is a new
+kind of neurosomatic software, to bring measurable rapid healing to
+the mind body connection. The founder first created this and
+realized a simple truth: the nervous system is geometric and
+operates at a harmonic register. Stress impairs that flow and
+disconnects the mind body over time, lowering your frequency,
+lowering your brightness, disconnecting you from whatever you call
+your higher power. What I realized is that all nervous systems are
+the same, but the stories that power them are not. The addresses and
+the descriptions are powered by intention, meaning that all language
+is universal with intention. The words are mapped to the addresses.
+The nerves were mapped as the roads. The waveform of memory that
+collapses the field of awareness is what is being healed. It
+identifies the pain of your story and the pleasure of your story,
+the things that bring you down, the things that lift you up. It
+understands who you are. This is not done through AI. This is done
+through an algorithm built off the founder's framework. These tools
+are directly from the mechanics of being and the codex of soul
+mechanics. Then we need a description of the tools. We need a
+description of the full product loop. We need the purpose, benefits,
+results. This is a results based product. We have to note that this
+is in an alpha state. And the first 100 people to sign up for their
+tier get that tier for a year, get that tier for life. These are my
+committed guinea pigs, my angels. And then the first 100 people, who
+they send that to, get the first year at half off. And then the
+first year, that group sends out to, they get 25 percent off, but
+not for the full lifetime, just for that year. They don't need to
+know all that, we can do all that in the background. Wherever these
+people land in those numbers, that offer would pop up. So we need a
+way to offer them offers. That needs a system."**
+
+**Answers a real open question from FD.** "Go ahead and trim it"
+rules on the Terminator sentence: narrow it rather than keep it or
+cut it outright, and his own reasoning is that Terminator is only
+the most recent instance of a much older pattern, the same trope the
+golems in Jason and the Argonauts already carry. Dispatched to
+`BRAND.md` as a small, scoped edit: narrow the claim to what a film
+can do to public imagination, and add the golem example as evidence
+the pattern is millennia old, not one movie's invention.
+
+**Confirms, rather than reopens, already shipped work.** "Have the
+start everything look turned on" and "it's going to start with
+everything loaded" is FE item 1, already built and verified this
+session. Not re-dispatched.
+
+**Real new work, itemised rather than guessed at as one block:**
+- The boot animation should lead into "the starting square," and a
+  loading screen sits between the boot and the app, which is where a
+  one time first name, last name capture happens, with a "don't show
+  this again" checkbox. This is the onboarding flow's own first
+  screen, not a separate feature.
+- Onboarding and tutorial is a one time screen, toggleable back on
+  from inside the profile, and every tutorial screen has to be
+  mapped out and storyboarded before anything is built. Dispatched as
+  a storyboard, not code.
+- "When I land on the field page, I want to see me load it up, where
+  are my tension animations." Read as: the personalised load in on
+  the Field beyond the generic boot, showing his own charge as it
+  settles in, not yet built. Logged, not dispatched this round,
+  since the boot and rail passes already in flight tonight should
+  land first.
+- "Now I'm going through the profiles, why do they have information
+  over the, I don't want that" is not clear enough to act on. Left
+  open rather than guessed at.
+- The funnel's post signup, pre test screen needs a real storyboard,
+  and he handed over raw welcome page copy as material for it, not
+  as final text: quoted above in full, to be shaped through the
+  house voice and the marketing refusal gate rather than shipped
+  verbatim, the same discipline BRAND.md's mission capture already
+  used. Dispatched.
+- A tiered founding offer system: the first 100 signups keep their
+  tier's price for life, the people they refer get half off their
+  first year only, and the next tier of referrals gets 25 percent
+  off their first year only. The person never sees the mechanics,
+  only the offer that applies to where they land. His own words,
+  "that needs a system," name it as a real build item, but this
+  project's own fork notes already say tiers and paywalls need
+  designing before building; dispatched as a design spec, not code.
+- He asked to see the avatar screen again and for a list of what
+  still needs his feedback. The Seven Seats comparison file
+  (`proto/avatar/seats4/seven-seats-layouts.html`) was already sent
+  this session; resent rather than rebuilt. The feedback list is
+  compiled directly in this round's reply rather than dispatched,
+  since it is a status roundup of work already done tonight, not new
+  work.
+
