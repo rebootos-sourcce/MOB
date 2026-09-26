@@ -16106,3 +16106,61 @@ own panel being re-synced to it. Not diagnosed further or fixed here;
 logged so it is not lost, since `marketing/` is explicitly another
 seat's ground per its own README.
 
+## FE. The Field rail rebuilt on EZ's list, all eight items, verified
+## against the shipped build. 26 September.
+
+All eight concrete items from EZ are in `atuned_src` now: layers start
+on by default, SQ dropped from the reading dock, DQ/CQ/Accuracy in
+exactly two rows, a collapse control on the left column, "Spirit"
+renamed "Energy", motion on the reading circles, Wheel/Frames/Dial
+rebuilt as a mirrored upper right overlay instead of a mark inside the
+rail, a new "Root energetics" section (real numerology off
+`numerologyOf`) above the dock, closed by default, and the archetype
+icon grid shrunk from 4x3 to 6x2. Commit `248e5d2`.
+
+**Independently re-verified, not taken on report.** `source.html`'s
+md5 and build stamp match to the letter,
+`fecb2bdd371218a2731531923efd8992`, `a7922af 2026-09-26 22:09`.
+Rebuilt from a clean worktree and re-ran every one of the nine gates
+myself: build size 1,949,881 bytes matched. `tests/engine.js`
+1687/0. `tests/collide.js` 298/0. `tools/monitor.js` all surfaces
+render. `tests/funnel.js` 172/0. The voice objections check exits
+clean. `tests/functional.js` 1088/0, matching exactly, including the
+new checks against real mouse and keyboard input. `tests/design.js`
+read 157 passed 1 failed on the first run, the same load sensitive
+"Field still animates" flake logged four times now (EE, EF, ES,
+EW); re-run alone, 158/0. Took fresh screenshots at both widths,
+unprompted by the report's own claims, and they show precisely what
+was described: Root energetics collapsed at the top of the rail,
+two clean reading rows with no SQ, the renamed Energy heading, the
+denser 6x2 archetype grid, and Wheel/Frames/Dial as a genuine
+floating pair of circles in the stage's own upper right corner
+rather than folded into the rail.
+
+**Nothing was lost from the old overlay,** confirmed by the builder
+reading the removed code directly rather than assuming: the four
+depth presets live in the Depth circle's own menu now, and the ten
+layer switches are the bar's thirteen. FA's own words, arriving mid
+task, independently settle which buttons he meant.
+
+**A real visibility regression, flagged honestly and confirmed by
+me, not new but now the first thing everyone sees.** Under Snow,
+domain and archetype names draw in dark ink on the Field's own
+black stage and are close to unreadable. This is not caused by this
+port; `component.js` already carries a comment naming it "Snow's own
+question" and the builder reproduced it unchanged on the parent
+build. What changed is that Blueprint is now the default depth, so
+every Snow user meets this on first open instead of only after
+choosing that layer. Confirmed directly: my own Snow screenshot shows
+the outer domain ring names present in Dark and essentially invisible
+in Snow. His call whether to reopen it now that it is load bearing on
+first impression rather than a corner case.
+
+**Also flagged, not fixed:** "Personality" now appears twice in Root
+energetics, once under Number and once under Design, a duplication
+that already existed between Summary and States and is just newly
+adjacent. And the same commit attribution deviation as FC: both
+commits on this branch from this agent read `Claude Opus 5.5` rather
+than `Claude Sonnet 5`. Left as is for the same reason, not force
+rewriting shared history.
+
