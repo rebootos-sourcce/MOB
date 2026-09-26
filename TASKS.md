@@ -12811,3 +12811,24 @@ before I answer any of the," asked to see this before working through
 Q1 to Q5 above, so those stayed open rather than repeated at him
 again.
 
+**His follow up, a real diagnostic question, checked rather than
+guessed at.** His words: "remember, it's going to be symmetrical on
+both sides, and the chakras are going to be head to toe... is the
+image lacking so much detail you can't identify where the eyes, nose
+and mouth is, so it's kind of generic to you? Would a form where you
+can identify the muscles make more sense?" Checked directly against
+both reference images rather than answered from impression: correct,
+neither chart draws a real face, the head on both is an outline with a
+faint centre line at most, no rendered eyes, nose or mouth to register
+against. Also checked and already true: the matching tool already
+scores every paired structure against the nearer of a chart point and
+its own mirror across the midline, so left/right symmetry is already
+built in, and the seven chakra seats are already fixed to the body's
+own vertical midline, head to toe, unrelated to either chart. Answered
+plainly: yes, a reference with real muscle and structure detail, not a
+schematic dot chart, would give the tool real landmarks to register
+against instead of an outline, and would very likely improve on this
+pass's own limit, which is the two source images themselves rather
+than the method. Asked back rather than assumed: does he want one
+sourced and brought in as a third reference.
+
