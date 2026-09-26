@@ -13288,3 +13288,34 @@ what you're talking about." Held rather than repeated; will come back
 with a drawing once there is one worth showing rather than asked cold
 a second time.
 
+## DC. A real misunderstanding, caused by how a file was sent rather
+## than by anything about the product itself. 26 September.
+
+**His words: "mobile doesn't do shit. By the way, I don't know why you
+have a mobile version. We only have a desktop version, that reacts
+down to a mobile version. I'm not certain what the fuck you're
+doing."** Checked rather than just reassured: he is right about the
+product, and the file he was sent is the actual cause of the
+confusion, not a sign anything has drifted.
+
+**The product itself.** Still exactly one responsive build, as
+CLAUDE.md has always required. `source.html` is one file; every gate
+tonight ran the same file at 1600 and at 390; nothing under
+`atuned_src/` has a separate mobile path. Nothing changed here.
+
+**The file that was sent, checked directly.** `proto/field-cb/
+3-mobile.html`, read line by line: most of what's on it, the top bar,
+the view switch, the accuracy control, is a screenshot image cropped
+and pasted in, not live code, built that way on purpose for a design
+review comparing two layout options quickly. Only the centre figure
+draws for real. Sending it as "the file" without saying that plainly
+was the actual mistake, not the design or the product.
+
+**A standing note for every round after this one.** A proto/ mockup
+and a real interactive prototype are not the same thing and have not
+always been labelled as which is which when sent. From here, anything
+sent as a file rather than a picture says plainly, in the message
+itself, whether it moves and responds or is a still comp built to
+show a layout, so a silent click never has to be the way this gets
+discovered again.
+
