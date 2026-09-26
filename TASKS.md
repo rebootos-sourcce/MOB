@@ -16564,3 +16564,75 @@ and dispatched rather than asked about:**
 - Dispatched to design and build now, per the standing instruction
   above, not asked about first.
 
+## FK. The loop is discover, play, flow, embody and not a renamed
+## guess, real onboarding research ordered, and a second scare traced
+## to a prototype wearing the real app's own clothes. 26 September.
+
+**His words in full: "It's discover play flow embody. I like the
+ring with the tune. We want that center ball, Hello Sofia's good.
+Are these storyboards, aren't, I want you to go do research on the
+net and find the most efficient onboarding and tutorial that pulls
+people in, gives them something to do. We have our yes no signal
+test, maybe we can ask them a few more questions that kind of turn
+on, like not turn on, but activates the expression, activates
+certain aspects of the diagnostic. I don't know, maybe we don't do
+that. And then the tutorial, navigating them around the software, so
+I want you to see what the software is, run it at a high level,
+simulate it a few times with the ICPs, get their picture. You've
+already heard all my input so you have a clear picture of what I see
+it as. Go out to the internet, find out what makes for the most
+engaging type of thing that's going to pull people in, because
+obviously this is a unique product, it's innovative, it's new, it's
+fresh, and for people who are on a journey, seekers, this accelerates
+the journey. I don't understand what this page is, dude. This is
+'you are becoming a great public speaker, a stand up in the room
+hears me.' What, it says field. When I click on field, it's clearly
+broken. My actual field. I don't want all this bullshit here. But
+what were you attempting to do? Yeah, you better fix this shit."**
+
+**A real correction to the storyboard just delivered.** The loop's
+four stations are discover, play, flow, embody, his own named terms
+from 20 September, not the guessed mapping onto journal, imprints,
+release and ritual the onboarding storyboard proposed as one of its
+open questions. Settled: use his own words directly. He likes the
+ring visual and the F1 check in screen ("that center ball, hello
+Sofia") as drawn.
+
+**A real, explicit research order, not guessed at.** Actually run the
+current software, at a high level, simulated a few times against the
+project's own ICPs, to see it the way a new person would rather than
+only read about it. Separately, real web research on what makes
+onboarding and tutorial flows genuinely engaging and pull people in,
+grounded in this product's own positioning as new, innovative, and
+aimed at people already on a seeking journey rather than a generic
+audience. He states plainly he has already given all the input
+needed for the team to know his own view; this is asking for outside
+research and direct testing, not another round of his own opinion.
+
+**One idea floated and explicitly not decided.** Extending the yes
+or no signal test with a few more questions that prime or activate
+parts of the diagnostic, immediately hedged: "I don't know, maybe we
+don't do that." Logged as open, not dispatched, not built.
+
+**A second scare, traced to the same root cause as FJ, and owned as
+a real delivery problem rather than a one off.** "You are becoming a
+great public speaker, a stand up in the room hears me" is
+`seven-seats-layouts.html`'s own Told layout, verified directly
+against my own earlier screenshot of that exact file: it carries
+real app chrome, a top tab bar reading Energetics, Ritual, Story,
+Field, Body, the same labels the real product uses, and its own
+Field tab shows the avatar becoming screen rather than anything real.
+A prototype wearing the real app's own navigation is why this
+happened twice in one night: it does not read as a prototype, it
+reads as the product with something broken inside it. The real
+Field is confirmed intact again, unrelated to this. The fix is not
+another explanation after the fact: from here, no prototype gets the
+real product's own tab labels unless the tab genuinely works, and
+every prototype states plainly, on the page itself, that it is a
+prototype and not the shipped app, not only in the message that
+carries it.
+
+**Dispatched:** the real onboarding research, run against the
+software directly and against outside sources, corrected to use
+discover, play, flow, embody by name.
+
