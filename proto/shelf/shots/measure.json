@@ -1,0 +1,82 @@
+[
+ {
+  "build": "before",
+  "width": 1600,
+  "page": "Field",
+  "stage": 922,
+  "controlsIdle": 91,
+  "controlsPressed": 84,
+  "answerOnScreen": true,
+  "answerY": 314
+ },
+ {
+  "build": "before",
+  "width": 1600,
+  "page": "Body",
+  "stage": 922,
+  "controlsIdle": 81,
+  "controlsPressed": 75,
+  "answerOnScreen": true,
+  "answerY": 314
+ },
+ {
+  "build": "before",
+  "width": 390,
+  "page": "Field",
+  "stage": 376,
+  "controlsIdle": 28,
+  "controlsPressed": 28,
+  "answerOnScreen": false,
+  "answerY": 4661
+ },
+ {
+  "build": "before",
+  "width": 390,
+  "page": "Body",
+  "stage": 376,
+  "controlsIdle": 20,
+  "controlsPressed": 20,
+  "answerOnScreen": false,
+  "answerY": 4414
+ },
+ {
+  "build": "after",
+  "width": 1600,
+  "page": "Field",
+  "stage": 1268,
+  "controlsIdle": 82,
+  "controlsPressed": 87,
+  "answerOnScreen": true,
+  "answerY": 197
+ },
+ {
+  "build": "after",
+  "width": 1600,
+  "page": "Body",
+  "stage": 1268,
+  "controlsIdle": 73,
+  "controlsPressed": 79,
+  "answerOnScreen": true,
+  "answerY": 197
+ },
+ {
+  "build": "after",
+  "width": 390,
+  "page": "Field",
+  "stage": 376,
+  "controlsIdle": 25,
+  "controlsPressed": 12,
+  "answerOnScreen": true,
+  "answerY": 395
+ },
+ {
+  "build": "after",
+  "width": 390,
+  "page": "Body",
+  "stage": 376,
+  "controlsIdle": 21,
+  "controlsPressed": 5,
+  "answerOnScreen": true,
+  "answerY": 395
+ }
+]

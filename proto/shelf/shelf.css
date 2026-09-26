@@ -1,0 +1,191 @@
+/* ============================================================
+   THE SHELF. Round CY, 26 September. A prototype laid over the shipped
+   build by proto/shelf/build.js, never a change to atuned_src/.
+
+   The shelf is the right rail, generalised. It keeps the rail's column and
+   its content and changes three things: it is closed by default so the
+   picture gets the width, a press opens it straight to the answer at its
+   top, and on a phone it rises over the picture as a sheet instead of
+   sitting four thousand pixels under it.
+
+   Every value here is one of the product's own tokens: colour, radius, the
+   44 pixel tap floor, and the motion durations and curves in head.html.
+   ============================================================ */
+
+
+/* ---------- desktop: a card over the stage's right lane ----------
+   First cut pushed the grid, the rail column opening to its width. It was
+   wrong in a way only the pictures showed: the wheel recentred and shrank
+   the instant an address was pressed, so the thing pressed moved out from
+   under the pointer, and the dock wrapped onto two lines. Now the stage
+   keeps the whole width at all times and the shelf lies over its right
+   lane, stopping above the dock. The picture does not move unless the
+   pressed mark would sit under the shelf, and then it pans by exactly that. */
+@media (min-width:1181px){
+ body.shelf-proto .mid{grid-template-columns:302px minmax(0,1fr);position:relative;
+  transition:grid-template-columns var(--t-surface) var(--ease-out)}
+ body.shelf-proto.stage-full .mid{grid-template-columns:0px minmax(0,1fr);column-gap:0}
+ body.shelf-proto.stage-full .mid>.col:first-child{visibility:hidden;overflow:hidden}
+ body.shelf-proto #shelf{position:absolute;right:10px;top:10px;bottom:var(--sh-foot,10px);
+  width:var(--shw);z-index:20;display:flex;flex-direction:row;min-height:0;
+  opacity:1;transform:none;
+  transition:opacity var(--t-surface) var(--ease-out),transform var(--t-surface) var(--ease-out),
+   visibility 0s linear 0s}
+ body.shelf-proto #shelf>.sh-panel{width:100%;box-shadow:0 18px 60px rgba(0,0,0,.55);
+  border:1px solid var(--edge-2)}
+ body.shelf-proto[data-shelf="closed"] #shelf{opacity:0;transform:translateX(24px);visibility:hidden;
+  pointer-events:none;
+  transition:opacity var(--t-element) var(--ease-in),transform var(--t-element) var(--ease-in),
+   visibility 0s linear var(--t-element)}
+ .sh-grip{display:none}
+}
+:root{ --shw:380px; }
+@media (prefers-reduced-motion:reduce){
+ body.shelf-proto .mid,body.shelf-proto #shelf{transition:none!important}
+}
+
+/* ---------- the panel itself, one layout at every width ---------- */
+body.shelf-proto #shelf>.sh-panel{display:flex;flex-direction:column;min-height:0;
+ height:100%;max-height:none;overflow:hidden;padding:0}
+/* the rail carried an 88vh spacer after its last section, so a drill near
+   the foot could still scroll to the top of the rail. The shelf opens every
+   answer at its own top and has no use for it. */
+body.shelf-proto #shelf>.sh-panel::after{display:none}
+.sh-body::after{content:"";display:block;height:8px}
+.sh-hd{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;
+ gap:8px;padding:12px 12px 10px 12px;border-bottom:1px solid var(--edge)}
+.sh-hd button{min-width:var(--tap);min-height:var(--tap);display:inline-flex;align-items:center;
+ justify-content:center;gap:4px;background:transparent;border:1px solid transparent;
+ border-radius:var(--r-s);color:var(--mid);font:inherit;font-size:14px;cursor:pointer;padding:0 8px}
+.sh-hd button:hover{border-color:var(--edge-2);color:var(--ink)}
+.sh-hd button:focus-visible,.sh-acts button:focus-visible,.sh-tab:focus-visible,.sh-full:focus-visible,
+.sh-li:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.sh-hd svg,.sh-acts svg,.sh-tab svg,.sh-full svg{width:18px;height:18px;fill:none;stroke:currentColor;
+ stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}
+.sh-back[hidden]{display:none!important}
+.sh-back span{max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sh-ttl{display:flex;align-items:center;gap:10px;min-width:0}
+.sh-dot{width:12px;height:12px;border-radius:50%;border:2px solid var(--sh-c,var(--accent));
+ flex:0 0 auto;background:transparent}
+.sh-ttl>div{min-width:0}
+.sh-eye{font-size:12px;color:var(--dim);line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sh-nm{font-size:20px;font-weight:600;color:var(--ink);line-height:1.25;
+ white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* the three abilities. Each is a word and a ring icon, never an icon alone:
+   recognition over recall, and the product's icons are ring, not fill. */
+.sh-acts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;
+ padding:10px 12px;border-bottom:1px solid var(--edge)}
+body[data-shelf="page"] .sh-acts{display:none}
+.sh-acts button{min-height:var(--tap);display:inline-flex;align-items:center;justify-content:center;
+ gap:7px;border-radius:var(--r-s);border:1px solid var(--edge-2);background:var(--panel-2);
+ color:var(--ink);font:inherit;font-size:14px;cursor:pointer}
+.sh-acts button:hover{border-color:var(--accent)}
+.sh-acts button[aria-pressed="true"],.sh-acts button[aria-expanded="true"]{
+ border-color:var(--accent);color:var(--accent)}
+.sh-acts button[aria-pressed="true"] svg{stroke-width:2.4}
+.sh-acts button:disabled{opacity:.45;cursor:not-allowed}
+
+.sh-body{flex:1 1 auto;min-height:0;overflow:auto;padding:14px 16px 24px 16px;
+ overscroll-behavior:contain}
+body[data-shelf="item"] .sh-page{display:none}
+body[data-shelf="page"] .sh-item,body[data-shelf="page"] .sh-share,
+body[data-shelf="page"] .sh-then{display:none}
+body[data-shelf="closed"] .sh-body{visibility:hidden}
+
+/* the drill arrives with its own back row, its own close at the foot and its
+   own title. The shelf's head carries all three once, so they fold here. */
+#shelf .rd-top,#shelf #rdx,#shelf .sh-lifted{display:none}
+#shelf #rdrill .rd-card{border:0;background:transparent;padding:0;box-shadow:none;margin:0}
+#shelf .sh-item{animation:sh-in var(--t-element) var(--ease-out)}
+@keyframes sh-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){#shelf .sh-item{animation:none}}
+/* the Selection section is empty now: its drill lives in the shelf's item */
+#shelf .lsec[data-sec="sel"]{display:none}
+
+/* a saved reading shows what it said then, and says so first */
+.sh-then{border:1px solid var(--edge-2);border-radius:var(--r-s);padding:12px 14px;margin:0 0 14px 0;
+ font-size:15px;color:var(--mid);line-height:1.45}
+.sh-then b{color:var(--ink);font-weight:600}
+.sh-then button{margin-top:10px}
+
+/* ---------- share ---------- */
+.sh-share{border:1px solid var(--edge-2);border-radius:var(--r-s);padding:14px;margin:0 0 16px 0}
+.sh-share[hidden]{display:none}
+.sh-row{display:grid;grid-template-columns:118px minmax(0,1fr);gap:10px;padding:8px 0;
+ border-top:1px solid var(--edge);font-size:15px;line-height:1.45}
+.sh-row:first-of-type{border-top:0}
+.sh-row>span{color:var(--dim);font-size:13px;padding-top:2px}
+.sh-row>b{font-weight:500;color:var(--ink)}
+.sh-row.no>b{color:var(--mid)}
+.sh-send{width:100%;min-height:var(--tap);margin-top:12px}
+.sh-send:disabled{opacity:.5;cursor:not-allowed}
+.sh-fine{font-size:14px;color:var(--mid);line-height:1.5;margin:10px 0 0 0}
+
+/* ---------- the page view: its own table first ---------- */
+#shelf .sh-page{display:flex;flex-direction:column}
+#shelf .sh-page>#railtop{order:-3}
+#shelf .sh-page>.sh-own{order:-2}
+body.tab-energy #shelf .sh-page>.lsec[data-sec="flow"]{order:-1}
+
+/* ---------- the shelf's own two lists, on the page ---------- */
+.sh-own{margin:0 0 6px 0}
+.sh-own[hidden]{display:none}
+.sh-own .pm-eye{margin:10px 0 6px 0}
+.sh-li{display:grid;grid-template-columns:12px minmax(0,1fr) auto;align-items:center;gap:10px;
+ width:100%;min-height:var(--tap);padding:6px 10px;margin:0 0 4px 0;text-align:left;cursor:pointer;
+ background:var(--panel-2);border:1px solid var(--edge);border-radius:var(--r-s);color:var(--ink);font:inherit}
+.sh-li:hover{border-color:var(--edge-2)}
+.sh-li i{width:10px;height:10px;border-radius:50%;border:2px solid var(--sh-c,var(--accent))}
+.sh-li .t{font-size:15px;line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sh-li .s{display:block;font-size:13px;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sh-li .v{font-variant-numeric:tabular-nums;font-size:15px;color:var(--mid);text-align:right}
+.sh-li .v small{display:block;font-size:12px;color:var(--dim)}
+
+/* ---------- the tab: the shelf, closed ---------- */
+.sh-tab{position:absolute;top:12px;right:12px;z-index:7;display:inline-flex;align-items:center;gap:10px;
+ min-height:var(--tap);padding:0 10px 0 8px;border-radius:var(--r-s);cursor:pointer;
+ background:var(--panel);border:1px solid var(--edge-2);color:var(--ink);font:inherit;font-size:15px;
+ box-shadow:var(--shadow)}
+.sh-tab:hover{border-color:var(--accent)}
+.sh-tab .sh-tw{color:var(--mid)}
+.sh-tab .sh-tl{display:inline-flex;align-items:center;gap:6px;padding-left:10px;border-left:1px solid var(--edge-2);color:var(--ink)}
+body:not([data-shelf="closed"]) .sh-tab{display:none}
+
+/* the expand control: the picture takes the whole screen */
+.sh-full{position:absolute;top:12px;left:12px;z-index:7;width:var(--tap);height:var(--tap);
+ display:inline-flex;align-items:center;justify-content:center;border-radius:var(--r-s);cursor:pointer;
+ background:transparent;border:1px solid var(--edge-2);color:var(--mid)}
+.sh-full:hover,.sh-full[aria-pressed="true"]{color:var(--accent);border-color:var(--accent)}
+
+/* the mark on the picture: which thing the open shelf is about */
+.sh-src{position:absolute;z-index:6;pointer-events:none;border-radius:50%;
+ border:2px solid var(--sh-c,var(--accent));box-shadow:0 0 0 3px rgba(0,0,0,.45),0 0 18px var(--sh-c,var(--accent));
+ transform:translate(-50%,-50%);display:none}
+body[data-shelf="item"] .sh-src.on{display:block}
+.sh-src.land{animation:sh-land var(--t-context) var(--ease-land)}
+@keyframes sh-land{from{transform:translate(-50%,-50%) scale(1.8);opacity:0}to{transform:translate(-50%,-50%) scale(1);opacity:1}}
+@media (prefers-reduced-motion:reduce){.sh-src.land{animation:none}}
+
+/* ---------- phone and tablet: the same panel, as a sheet ---------- */
+@media (max-width:1180px){
+ body.shelf-proto{padding-bottom:76px}
+ .sh-full{display:none}
+ body.shelf-proto #shelf{position:fixed;left:0;right:0;bottom:0;z-index:60;margin:0;
+  height:var(--shh,56dvh);transform:translateY(0);
+  transition:transform var(--t-surface) var(--ease-out),height var(--t-surface) var(--ease-out)}
+ body.shelf-proto[data-shelf="closed"] #shelf{transform:translateY(105%)}
+ body.shelf-proto[data-sheet="half"] #shelf{--shh:56dvh}
+ body.shelf-proto[data-sheet="full"] #shelf{--shh:90dvh}
+ body.shelf-proto #shelf>.sh-panel{border-radius:var(--r) var(--r) 0 0;box-shadow:0 -18px 48px rgba(0,0,0,.55);
+  background:var(--panel)}
+ .sh-grip{display:flex;justify-content:center;align-items:center;height:22px;cursor:grab;touch-action:none}
+ .sh-grip::before{content:"";width:44px;height:5px;border-radius:3px;background:var(--edge-2)}
+ .sh-hd{padding-top:0;touch-action:none}
+ .sh-nm{font-size:18px}
+ .sh-tab{position:fixed;top:auto;right:10px;left:10px;bottom:10px;z-index:59;justify-content:space-between;
+  min-height:56px;padding:0 14px 0 10px;box-shadow:0 -6px 30px rgba(0,0,0,.5)}
+ .sh-tab .sh-tl{border-left:0}
+ .sh-row{grid-template-columns:96px minmax(0,1fr)}
+}
+@media (prefers-reduced-motion:reduce){ body.shelf-proto #shelf{transition:none} }
