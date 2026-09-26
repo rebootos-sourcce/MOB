@@ -12951,3 +12951,48 @@ are drawn larger than the rest on the original, its own way of marking
 them as major points. Built at one consistent size per his own brief.
 Should those four keep a larger mark to carry that distinction over?
 
+## CW. The Dial's corner callouts come inside the ring, closing CR Q5,
+## and the mobile archetype grids read as two groups. 26 September.
+
+**Verified myself.** `node tests/engine.js` matched the claimed 1649,
+`BUILD-engine.sh` matched 428 exports and host free, `node
+tests/collide.js` matched the claimed 282 passed with the new Dial
+check included. `functional.js` was still finishing under tonight's
+load when this was written. Screenshots confirm both fixes by eye,
+sent below.
+
+**The Dial's six names now sit beside their own mark, inside the ring,
+not in the four corners on long leaders.** A different technique than
+the rest of CR's inward fix, since the Dial is drawn in SVG and every
+other inward label lives on the Wheel's canvas: reused the level
+label's own placement rule instead (try outward, then inward, step
+toward centre if blocked, refuse to draw rather than overlap), plus two
+things found only by looking, gate pills counted as obstacles after a
+label first landed across one, and a plate behind each label after a
+glyph showed through the text at small size. A new check in
+`tests/collide.js` covers the Dial for the first time, run first
+against the old build where it failed on 14 of 15 profiles at the wide
+width, real leaders running 99 to 162 pixels past the ring, confirming
+it catches the defect before trusting it clean on the new build.
+
+**A real trade off, not hidden.** At phone width only two of James's
+six names find a free slot inside the ring; the other four stay
+reachable in the reading and the rail rather than drawn nowhere.
+
+**The mobile archetype grids, closing his "primary top, secondary
+bottom" ask, mostly already true.** The order was already right at
+every width. What was missing was that the two groups read as one,
+since only Primary had a heading in colour. Secondary now gets its own
+rule and heading treatment on a phone, unchanged at desktop width.
+"Our ascending, descending" was not built from, still unclear.
+
+**Two real questions.**
+**Q1.** Only 2 of 6 Dial names fit inside the ring on a phone. Acceptable
+as is, should the phone Dial name only the single heaviest thing
+instead, or should the second line of each callout drop to hover only
+on a phone so more full callouts fit?
+**Q2.** Names now sit over the drawing itself, on a dark plate, which
+reverses the Dial's own original "no word over a mark" rule. Sent with
+its own picture below since this is exactly the kind of change that
+needs confirming by eye, not by description.
+
