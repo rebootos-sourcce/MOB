@@ -14424,3 +14424,77 @@ product's own roster of who reads it.**
 small grey labels render in Title Case against this project's own
 sentence case rule,** queued for a fix, not a question.
 
+## DU. A long round, backlog only by his own explicit order: knowledge
+## base character sheets, three real bugs confirmed, a rail folding
+## ask, the Story page's own shape questioned, and the ritual and
+## release protocol both flagged for overhaul. 26 September.
+
+**Knowledge base pages for archetypes, domains, masks and saboteurs
+should read as character sheets.** His words: "for their knowledge
+base pages, we want to do these really well, we want these to be like
+very detailed character sheets so people can understand very clearly
+how the patterns run through them, but I want some visual iconography,
+like you've unlocked something special and deep understanding about
+yourself." A real content and design ask, not a small fix.
+
+**Three real gaps confirmed directly, not assumed from his
+description.**
+- Clicking a Blueprint domain tile has no path to its knowledge base
+  page. Checked in `panels.js`: a click only changes the selection,
+  the same gap DP already found for information generally, now named
+  specifically against the knowledge base.
+- The tooltip has no transparency or blur at all. Checked in
+  `head.html`: its background is a solid colour with a fallback,
+  `backdrop-filter` does not appear anywhere in the block. His words,
+  "the transparency, I guess, hasn't been done yet because I can't
+  see through it and it's not blurred, that's a fail," are correct.
+- "I click on fear and nothing happens." Not yet pinned to one exact
+  element; Fear is one of the nine child emotions this product tracks,
+  and whichever surface he pressed, the click did nothing where he
+  expected it to do something. Left for whoever builds this to locate
+  precisely rather than guessed here.
+
+**A real information architecture ask for every tooltip.** Two
+sentences to set the thing up, then a button reading something like
+"click for more" that goes to its knowledge base page; and separately,
+pressing the thing itself on the right should open a summary, how it
+runs through the person, with its own link out to the fuller knowledge
+base page, what it is. Two tiers, named plainly: a summary and a full
+page, not one long tooltip trying to be both.
+
+**States with real birth data, answered directly rather than only
+logged.** He asked what the celestial rail looks like with a real
+birth date on file, having only seen the empty state. Sent directly: a
+screenshot of James's real reading, Sun Libra, Moon Taurus, Rising
+Pisces, Year Earth rooster, with the real synthesized text already
+built in DO's prototype.
+
+**The ritual builder and the release protocol are both named for a
+coming overhaul.** His words: "the ritual builder needs a complete
+overhaul, and then the release protocol, that needs an overhaul, we
+need to start focusing on those, we need to have the team start
+gearing up questions about what we need to do and how it needs to be
+enhanced." Not scoped yet; the team is to start forming the questions,
+not the build.
+
+**Rail folding, for more centre real estate.** "I want to be able to
+close the list, left and right tabs, I want to be able to minimize
+them, so they fold in left and fold in right." A real, generally
+useful control across every tab carrying the two rails, not only the
+Field.
+
+**The Story page's own shape questioned, tentatively.** "Maybe the
+left hand panel actually just comes out entirely for the Story page,
+because the Field has all that, so maybe the journal and the imprints
+and this mini release protocol are part of just one system. And the
+right panel is the analytics that's picking up and linking, so it's
+still information, but it's root level information, since the story
+really is root level information, like what's about to be stored." A
+real architectural question, said as "maybe" throughout, not a
+ruling.
+
+**His own order, followed exactly: backlog only.** "Backlog all this,
+have the team ask me questions when we get to these pages, and then
+continue what you're building." Nothing above is dispatched tonight.
+The agents already running continue uninterrupted.
+
