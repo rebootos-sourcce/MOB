@@ -14362,3 +14362,65 @@ new function left with an untested branch. Commit `2f60b02`, pushed.
   or show the gate without its line on the days it is knowable, which
   needs a new state on the rail?
 
+## DT. The Reading card's own intention, stated before any option was
+## drawn, per his explicit order. A real defect found underneath it.
+## 26 September.
+
+**The card he means, confirmed by reading the code.** The blue
+trimmed grey card is `#person`, the "You" card, one of four blocks in
+the right rail's "Reading" section alongside the four doors, the nine
+child emotion stack and five instrument numbers. One section carrying
+four jobs is why none of them reads as valuable.
+
+**A real defect underneath his complaint, not just a design opinion.**
+On a profile with nothing entered, the card prints Archetypes at 26,
+19 and 19 percent, a domain at 100 percent, "Heaviest: Root 0.0" and
+"Most shut: Truth, at the throat", none of it from the person, all of
+it the hard coded starting state drawn as if it were measured. Checked
+directly against a screenshot taken earlier this same session for an
+unrelated reason (the corrupt store message) and it shows exactly
+this. Confirmed against this file's own standing rule, `DECISIONS.md`:
+"a blueprint domain is drawn as a selection and never given a ring, a
+ring is a measurement and a domain is a choice"; the card draws one
+anyway. And on a loaded profile it can contradict itself outright,
+"carrying nothing yet" beside a stack four inches below it holding a
+real, nonzero value.
+
+**His question answered plainly, in his own order, before any
+mockup.** This card's job: the person's portrait in the instrument, showing what
+is truly known and nothing invented, with its one control being the
+next real act. Not navigation, since the same four doors already sit
+on Summary and a fourth copy is furniture; not a borrowed sample
+reading either, since that is what fails today. Argued from this
+file's own rulings already on record: the avatar is the centrepiece,
+the app opens on the Field, and the product's own stated purpose is
+reading someone's essence and then handing them the tool to change it.
+Renaming it "You" is proposed as the fix that forces the rest: a name
+that means one thing leaves no room for a fourth job to hide in.
+
+**Two directions, not yet built, each costed.** One draws the avatar
+figure itself at rail size, dark until a story lights it, recommended
+but waiting on his own still-open ruling on what the figure even is,
+a body or a channel with seven seats. The other is the same idea in
+two plain text columns, known against not yet, buildable now without
+waiting on that ruling, proposed as the version to build first and
+grow into the figure once that question is settled. Both cut the
+card's invented values from nine to zero and its height by more than
+three quarters.
+
+**Four real questions, his call, each already checked against the
+product's own roster of who reads it.**
+- Is the card's job "what is known, plus the next act," against the
+  two costed alternatives, pure navigation or a borrowed sample?
+- Which door is primary: a story first, the richest reading and the
+  fewest people who can start cold, or the year by year door, which
+  the product's own copy already says is for most people?
+- Is the avatar a body or a channel with seven seats, the open
+  question the figure direction cannot ship without?
+- Do the child emotion stack and the instrument numbers move to their
+  own folded section, or to Summary, once they leave this card?
+
+**One more, small, found in passing and not put to him: the rail's
+small grey labels render in Title Case against this project's own
+sentence case rule,** queued for a fix, not a question.
+
