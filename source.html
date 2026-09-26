@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="e3991f9 2026-09-26 05:38"><head><meta charset="utf-8">
+<html lang="en" data-build="f9dc007 2026-09-26 07:03"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -1042,6 +1042,9 @@ body:not(.hassub) .subbar{display:none}
 .ip-bh em.plain{text-transform:none}
 .tier1{font-size:11px;font-weight:600;color:var(--gold);margin-bottom:9px;line-height:1.45}
 .tier1 span{display:block;color:var(--dim);font-weight:400;font-size:13px;margin-top:3px}
+/* the second archetype grid's heading. It was an inline margin, lifted into a
+   class so the phone rule below can set the two archetype groups apart */
+.ar-sec{margin-top:16px}
 /* reading text. 16px floor, 50 to 75 character measure. */
 .body,.ad-p,.sum-p,.iq-note{font-size:16px;line-height:1.7;color:var(--mid);
  max-width:68ch;margin:0 0 14px;font-weight:400}
@@ -3401,6 +3404,17 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
 @media (max-width:820px){.top{flex-wrap:wrap}.top #psel{max-width:none}}
 @media (max-width:720px){
  body{font-size:14.5px}
+ /* THE TWO ARCHETYPE GRIDS READ AS TWO GROUPS ON A PHONE. Ruled 26
+    September, CT in TASKS.md: "for the mobile layout, organize the buttons
+    by group, put the primary group on top, secondary group on bottom." The
+    order was already right at every width, Primary above Secondary in the
+    markup and on the screen. What was missing was the group: measured on
+    James at 390, two identical grids of twelve sat 16 pixels apart, Primary
+    under a heading in the accent and Secondary under a dim label the size of
+    a caption, so the second grid read as more of the first. A rule and the
+    heading's own rank between them now, the way .s-spirit sets a block
+    apart. Desktop keeps what it had, since the ruling named the phone. */
+ .ar-sec{margin-top:22px;padding-top:18px;border-top:1px solid var(--edge);color:var(--gold)}
  .app{padding:7px;gap:6px}
  .panel{padding:13px 14px}
  /* nothing to override: auto-fill already answers to the width */
@@ -4430,7 +4444,7 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
      <div class="gdom" id="doms"></div><div class="cap" id="capD"></div>
      <div class="tier1" style="margin-top:18px">2 &middot; Primary</div>
      <div class="g6" id="ar1"></div>
-     <div class="sub" style="margin-top:16px">Secondary</div>
+     <div class="sub ar-sec">Secondary</div>
      <div class="g6" id="ar2"></div><div class="cap" id="capA"></div>
     </div>
    </div>
@@ -15762,7 +15776,7 @@ const FVIEWS=[
   tip:'Every ring drawn as a frame inside the last, with all of them showing at once.'},
  {k:'dial',nm:'Dial',
   ic:'<circle cx="10.4" cy="13.6" r="7.4"/><circle cx="10.4" cy="13.6" r="2.2"/><path d="M15.6 8.4L18.2 5.8H22"/>',
-  tip:'The ring at full size with every layer showing, and the heaviest few named in the corners.'}];
+  tip:'The ring at full size with every layer showing, and the heaviest few named beside their marks.'}];
 var FVIEW='wheel';
 /* KEPT THE WAY DENSITY IS KEPT: one key in the store and nothing on the
    profile, because it is how this person likes to look and not a reading
@@ -16093,6 +16107,11 @@ function frSvg(M){
  /* the words ride on top of every mark, in their layer's class, so a hidden
     layer takes its words with it */
  FR_T.forEach(function(k){s+=grp(k,M.T[k]);});
+ /* and the dial's callouts ride on top of the words, still in their layer's
+    class. Inside the ring a callout sits over other layers' glyphs, and in
+    its own layer's word group the archetype glyphs, drawn after the address
+    words, went straight through "Heart. SQ 6.2" on James at 390 */
+ FR_T.forEach(function(k){if(M.C&&M.C[k])s+=grp(k,M.C[k]);});
  return s+'</svg>';}
 
 /* ---- the shared parts, the same in both ---- */
@@ -16261,6 +16280,10 @@ function frCollar(M,cx,cy,edge,sm){
    +'<circle cx="'+gx.toFixed(1)+'" cy="'+gy.toFixed(1)+'" r="'+Rg.toFixed(1)+'" fill="'+frRgb(M.ground)+'"/>'
    +'<path d="'+frArcD(cx,cy,rc,t-span/2,t+span/2)+'" fill="none" stroke="'+rgba(c,ev?.18:.30)+'" stroke-width="'+wc+'"/>';
   if(f>0)s+='<path d="'+frArcD(cx,cy,rc,t-span/2*f,t+span/2*f)+'" fill="none" stroke="'+rgba(c,.92)+'" stroke-width="'+wc+'"/>';
+  /* the gate's own box, disc and pill, kept so the dial's callouts can
+     stand clear of it: the first cut of bringing them inside set "Sacral.
+     SQ 5.8" across the right hand pill on James at 390 */
+  (M.gateBox=M.gateBox||[]).push({x0:Math.min(gx-Rg,px),y0:Math.min(gy-Rg,py),x1:Math.max(gx+Rg,px+pw),y1:Math.max(gy+Rg,py+ph)});
   s+=frGlyph(GATEGLYPH[v.k],gx,gy,gz,frRgb(mixc(c,M.ink,.25)),1.5)
    +'<rect x="'+px.toFixed(1)+'" y="'+py.toFixed(1)+'" width="'+pw+'" height="'+ph+'" rx="'+(ph/2)+'" fill="'
    +(ev?frRgb(c):rgba(M.ink,.22))+'"/>'
@@ -16429,12 +16452,13 @@ function frChains(M,r,at,tiers,th,sc,frames){
    DIAL WITH CALLOUTS. The circle, as large as the box allows, and the
    rectangle's corners put to work.
 
-   A circle in a rectangle leaves four corners, and the Field has always
-   left them empty. Here they are where the words go. Every layer sits at a
-   fixed radius like the registers on a watch dial, and the few things worth
-   naming are called out to the nearest corner on a leader line, set level
-   and read without turning the head. The circle carries the data and the
-   corners carry the language, so no word is ever set over a mark.
+   Every layer sits at a fixed radius like the registers on a watch dial,
+   and the few things worth naming are called out on a leader line, set
+   level and read without turning the head. The mockup set them in the four
+   corners the circle leaves, so no word sat over a mark, until the owner
+   ruled that nothing on the Field sticks out past the ring: they sit beside
+   their marks now, inside it, on a plate of the ground. frCallouts carries
+   the ruling.
    ============================================================ */
 function frDial(M,r){
  var w=M.win,cx=w.cx,cy=w.cy,R0=Math.min(w.a,w.b)-2;
@@ -16478,8 +16502,8 @@ function frDial(M,r){
    tip[s.s]={x:p.x+p.nx*len,y:p.y+p.ny*len};anchorOf[s.s]={x:p.x,y:p.y,th:t};hitOf['n'+s.s]=h;});
   /* the seats, in a hairline of their colour on the ring and their glyph just
      inside it, where a dial sets its numerals. The glyph and not the word:
-     Law 8 keeps every word off the drawing, and on this rendition the words
-     have somewhere better to go, which is the corners */
+     Law 8 keeps every word off the drawing, and on this rendition the few
+     words it sets are the callouts beside their own marks */
   BANDS.forEach(function(b){var Sx=M.sector[b];if(!Sx)return;
    A.push('<path d="'+frArcD(cx,cy,Rr.base,th(Sx.t0+.002),th(Sx.t1-.002))+'" fill="none" stroke="'+rgba(M.seat(b),.9)+'" stroke-width="2"/>');
    var tm=th(Sx.tm);frSeatGlyph(M,b,cx+Math.cos(tm)*(Rr.seatNm+2*sc),cy+Math.sin(tm)*(Rr.seatNm+2*sc),gs(17));});})();
@@ -16544,12 +16568,33 @@ function frDial(M,r){
  frCore(M,r,cx,cy,Rr.core,{w:cw,fs:Math.max(20,56*sc),halo:ch});
  frCollar(M,cx,cy,Rr.core+cw/2+ch,sc<.6);
 
- frCallouts(M,r,{cx:cx,cy:cy,R0:R0,C:C,tip:tip,anchorOf:anchorOf,archAt:archAt,lawAt:lawAt,at:at,hitOf:hitOf});}
+ /* edge is the domain band's inner edge, so a callout never sits on the
+    outermost register either, and floor is the collar's outer edge, so none
+    reaches the number at the centre. The gates past the collar are stood
+    clear of one by one, off the boxes frCollar keeps */
+ frCallouts(M,r,{cx:cx,cy:cy,tip:tip,anchorOf:anchorOf,archAt:archAt,lawAt:lawAt,at:at,hitOf:hitOf,
+  edge:Rr.dom1,floor:Rr.core+cw/2+ch+8});}
 
-/* ---- the callouts. what is worth a name goes to the nearest corner ----
-   A leader runs from the mark out past the dial and then level to its label.
-   Each corner stacks its names in the order their marks sit round the dial,
-   so no two leaders cross, and each belongs to its layer and goes with it.
+/* ---- the callouts. what is worth a name is named beside its mark ----
+   THEY CAME IN OFF THE CORNERS, ruled 26 September, CT in TASKS.md. His
+   words: "for the field, I do not like the way that the words stick out."
+   CR brought every seat, domain, archetype and pattern name on the wheel
+   inside the ring and left these six on the dial's corners, asked about them
+   as its Q5, and this is the answer. Measured on James at 1600 before the
+   move, every one of Sage, Controller, Envy, Jealousy, Blame and Compassion
+   sat in a corner on a leader running out past the domain band, and at 390
+   Blame hung below the ring.
+
+   PLACED BY THE WHEEL'S OWN RULE FOR A LEVEL NAME, flatplate in ui/wheel.js,
+   and not by arcTxt. arcTxt and radialTxt draw on the wheel's canvas and
+   this picture is SVG, so neither can be called here; and a callout is two
+   lines, a name and what it is, which a word bent round an arc cannot carry.
+   flatplate is CR's answer for exactly this shape: level, beside its mark on
+   a short leader, the outward side first and then the inward side, stepped
+   toward the centre on a collision, every corner of the box inside the ring
+   and none of it on the core, and a name with no legible slot is not drawn.
+   Stepped toward the centre rather than always down, because the lower half
+   of the dial stepped down walks straight out of the ring.
 
    NOTHING IS NAMED OFF THE DEFAULTS. On an unread field there are no
    callouts. An address is named only when it is held, which is the mockup's
@@ -16558,11 +16603,9 @@ function frDial(M,r){
    three heaviest whatever they held and its lowest law whatever it was, and
    on a light field that is three addresses at nothing and a default six.
 
-   A NAME THAT DOES NOT FIT IS NOT DRAWN. The mockup's corners were set on a
-   stage 892 across. The wheel's cell is narrower, and a dial that fills it
-   leaves less corner, so each label is measured and tested against the rim
-   before it is placed, and a corner that runs out of room stops. What is not
-   named here is still in the readout and in the rail. */
+   A NAME THAT DOES NOT FIT IS NOT DRAWN. Each label is measured before it is
+   placed and tested against the ring, the core and every name already set.
+   What is not named here is still in the readout and in the rail. */
 function frCallouts(M,r,P){
  if(r.unread)return;
  var w=M.win,cx=P.cx,cy=P.cy,items=[];
@@ -16586,29 +16629,44 @@ function frCallouts(M,r,P){
  var hp=r.sabs.slice().sort(function(a,b){return b.w-a.w;})[0];
  if(hp){var hk=M.ixSab.get(hp);
   push('patterns',P.at.sab[hk],hp.nm,'Heaviest pattern. Weight '+hp.w.toFixed(1),M.seat((hp.parts[0]&&hp.parts[0].b)||'Root'),P.hitOf['s'+hk]);}
- var groups={tl:[],tr:[],bl:[],br:[]};
- items.forEach(function(it){groups[(it.y>=cy?'b':'t')+(it.x>=cx?'r':'l')].push(it);});
- var rim=P.C(P.R0+10),clear=P.R0+6;
- Object.keys(groups).forEach(function(c){var list=groups[c],right=c[1]==='r',below=c[0]==='b';
-  /* stacked outward from the corner in the order the marks are met going
-     away from the horizontal, so the leaders nest instead of crossing */
-  list.sort(function(a,b){return Math.abs(Math.sin(b.th))-Math.abs(Math.sin(a.th));});
-  for(var i=0;i<list.length;i++){var it=list[i];
-   var lx=right?w.x1-6:w.x0+6,ly=below?w.y1-10-i*38:w.y0+22+i*38;
-   var tw=Math.max(frTextW(it.nm,'600 12.5px Inter, system-ui, sans-serif'),frTextW(it.sub,'500 11px Inter, system-ui, sans-serif'));
-   var bx0=right?lx-tw:lx,bx1=right?lx:lx+tw,by0=ly-21,by1=ly+9;
-   var nx=Math.max(bx0,Math.min(cx,bx1)),ny=Math.max(by0,Math.min(cy,by1));
-   if(Math.hypot(nx-cx,ny-cy)<=clear||bx0<w.x0||bx1>w.x1||(below?by0<cy:by1>cy))break;
-   var e=rim.at(it.th),ey=ly-4,g2=M.T[it.k]||M.T.seats;
+ /* the box a label takes is the name's line over the line saying what it is,
+    30 tall, with the leader meeting it at the name. inRing is flatplate's
+    test with the dial's own edge and floor in place of the wheel's. */
+ var FLATS=(M.gateBox||[]).slice(),gap=10,H=30;
+ var inRing=function(b){return [[b.x0,b.y0],[b.x1,b.y0],[b.x0,b.y1],[b.x1,b.y1]]
+   .every(function(q){return Math.hypot(q[0]-cx,q[1]-cy)<=P.edge-2;})
+  &&Math.hypot(Math.max(b.x0-cx,0,cx-b.x1),Math.max(b.y0-cy,0,cy-b.y1))>P.floor
+  &&b.x0>=w.x0&&b.x1<=w.x1&&b.y0>=w.y0&&b.y1<=w.y1;};
+ var free=function(b){return !FLATS.some(function(q){
+  return b.x0<q.x1+4&&q.x0<b.x1+4&&b.y0<q.y1+4&&q.y0<b.y1+4;});};
+ items.forEach(function(it){
+  var tw=Math.max(frTextW(it.nm,'600 12.5px Inter, system-ui, sans-serif'),frTextW(it.sub,'500 11px Inter, system-ui, sans-serif'));
+  var out=it.x>=cx,dy=it.y<cy?1:-1,box=null,right;
+  for(var s=0;s<2&&!box;s++){right=s?!out:out;
+   for(var step=0;step<6;step++){
+    var ax=it.x+(right?gap:-gap),top=it.y-H/2+dy*step*(H*.6);
+    var b={x0:right?ax:ax-tw,x1:right?ax+tw:ax,y0:top,y1:top+H};
+    if(inRing(b)&&free(b)){box=b;box.lx=ax;break;}}}
+  if(!box)return;
+  FLATS.push(box);
+  M.C=M.C||{};
+  var lx=box.lx,ly=box.y0+21,ey=box.y0+8,g2=M.C[it.k]||(M.C[it.k]=[]),anc=right?'start':'end';
+  /* A PLATE OF THE GROUND UNDER THE TWO LINES. In a corner the halo was
+     enough, because a corner is empty. Inside the ring the label sits over
+     bars and glyphs, and the four pixel halo let an archetype glyph through
+     "Heart. SQ 6.2" on James at 390. The plate lets a quarter of the marks
+     through, so the ring still reads as one ring under the word. */
+  g2.push('<g data-h="'+it.h+'" data-call="'+it.k+'"><rect x="'+(box.x0-4).toFixed(1)+'" y="'+(box.y0+1).toFixed(1)
+   +'" width="'+(box.x1-box.x0+8).toFixed(1)+'" height="'+(H-1)+'" rx="5" fill="'+rgba(M.ground,.76)+'"/>'
    /* the name in its colour lifted a fifth toward ink, so it clears 4.5 to 1
       on the ground itself and not only on the width of its halo: the Root
       red measured 4.36 beside the rim, the lifted one 5.40 */
-   g2.push('<g data-h="'+it.h+'" data-call="'+it.k+'"><circle cx="'+it.x.toFixed(1)+'" cy="'+it.y.toFixed(1)+'" r="2.4" fill="'+frRgb(it.col)+'"/>'
-    +'<path d="M'+it.x.toFixed(1)+' '+it.y.toFixed(1)+'L'+e.x.toFixed(1)+' '+ey.toFixed(1)+'L'+lx.toFixed(1)+' '+ey.toFixed(1)
-    +'" fill="none" stroke="'+rgba(it.col,.45)+'" stroke-width="1"/>'
-    +frLabel(M,it.nm,lx,ly-9,'text-anchor="'+(right?'end':'start')+'" font-size="12.5" font-weight="600" fill="'+frRgb(mixc(it.col,M.ink,.18))+'"')
-    +frLabel(M,it.sub,lx,ly+6,'text-anchor="'+(right?'end':'start')+'" font-size="11" font-weight="500" fill="'+frRgb(M.dim)+'"')
-    +'</g>');}});}
+   +'<circle cx="'+it.x.toFixed(1)+'" cy="'+it.y.toFixed(1)+'" r="2.4" fill="'+frRgb(it.col)+'"/>'
+   +'<path d="M'+it.x.toFixed(1)+' '+it.y.toFixed(1)+'L'+(lx-(right?3:-3)).toFixed(1)+' '+ey.toFixed(1)
+   +'" fill="none" stroke="'+rgba(it.col,.6)+'" stroke-width="1"/>'
+   +frLabel(M,it.nm,lx,ly-9,'text-anchor="'+anc+'" font-size="12.5" font-weight="600" fill="'+frRgb(mixc(it.col,M.ink,.18))+'"')
+   +frLabel(M,it.sub,lx,ly+6,'text-anchor="'+anc+'" font-size="11" font-weight="500" fill="'+frRgb(M.dim)+'"')
+   +'</g>');});}
 
 /* ---- per frame ----
    THE PICTURE IS BUILT WHEN ITS SIGNATURE CHANGES AND NOT OTHERWISE. Nothing
@@ -27588,5 +27646,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="001786367"></div>
+<div id="eof" hidden data-len="001790096"></div>
 </body></html>

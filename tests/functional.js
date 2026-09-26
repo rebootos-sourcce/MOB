@@ -3521,9 +3521,14 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
  ok(tog.before>0&&tog.off===0&&tog.pressed==='false','a toggle takes its layer off, marks and words, '+tog.before+' groups to '+tog.off);
  ok(tog.back===tog.before&&tog.again==='true','and a second press puts it back');
 
- /* THE CALLOUTS ARE OFF THE DIAL AND OFF EACH OTHER. The dial's reach is the
-    outside of its domain band, measured off the drawing rather than derived,
-    and every name box must clear it: no word over the hero graphic. */
+ /* THE CALLOUTS ARE INSIDE THE DIAL AND OFF EACH OTHER. The dial's reach is
+    the outside of its domain band, measured off the drawing rather than
+    derived. REVERSED 26 September, CT in TASKS.md: this held every name box
+    clear of that reach, in the corners, and the owner then ruled "for the
+    field, I do not like the way that the words stick out", which answered
+    CR's Q5 on these six. Every box now has to sit inside it, read at its
+    farthest corner, which only overstates. tests/collide.js holds the same
+    on every profile at both widths. */
  const clear=await fp.evaluate(()=>{
   const fr=document.getElementById('frend'),hb=fr.getBoundingClientRect();
   const doms=[...fr.querySelectorAll('.L-domains > [data-h]')].map(e=>e.getBoundingClientRect());
@@ -3531,14 +3536,14 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
   const y0=Math.min(...doms.map(b=>b.top)),y1=Math.max(...doms.map(b=>b.bottom));
   const cx=(x0+x1)/2,cy=(y0+y1)/2,R=Math.max(x1-x0,y1-y0)/2;
   const boxes=[...fr.querySelectorAll('[data-call] text')].map(t=>t.getBoundingClientRect());
-  const inside=boxes.filter(b=>{const nx=Math.max(b.left,Math.min(cx,b.right)),ny=Math.max(b.top,Math.min(cy,b.bottom));
-   return Math.hypot(nx-cx,ny-cy)<R;}).length;
+  const inside=boxes.filter(b=>[[b.left,b.top],[b.right,b.top],[b.left,b.bottom],[b.right,b.bottom]]
+   .every(q=>Math.hypot(q[0]-cx,q[1]-cy)<=R)).length;
   let over=0;for(let i=0;i<boxes.length;i++)for(let j=i+1;j<boxes.length;j++){const a=boxes[i],b=boxes[j];
    if(a.left<b.right&&b.left<a.right&&a.top<b.bottom&&b.top<a.bottom)over++;}
   const out=boxes.filter(b=>b.left<hb.left||b.right>hb.right||b.top<hb.top||b.bottom>hb.bottom).length;
   return {n:boxes.length,inside:inside,over:over,out:out,R:Math.round(R)};});
  ok(clear.n>=2,'the dial names something on James, '+clear.n+' lines');
- ok(clear.inside===0,'no callout word lands on the dial, '+clear.inside+' of '+clear.n+' inside a reach of '+clear.R);
+ ok(clear.inside===clear.n,'every callout word sits inside the dial, '+clear.inside+' of '+clear.n+' inside a reach of '+clear.R);
  ok(clear.over===0&&clear.out===0,'and none overlaps another or leaves the cell, '+clear.over+' overlapping, '+clear.out+' outside');
 
  /* THE READOUT AND THE DRILL ARE THE WHEEL'S OWN. A real pointer, so the
