@@ -1,0 +1,106 @@
+/* ============================================================
+   THE SHEET FOR THE FOUR ARRIVALS. Prototype, round EV.
+
+   The sheet is still .boot, so the product's opening beat (.boot::before,
+   black until .80s) and its pointer-events:none both hold. The fade is the
+   product's bootOut, moved to 5.00s as ET moved it, so the whole sequence
+   is gone at 5.24s, under panels.js's 5450ms floor.
+
+   Everything here is transform and opacity on an HTML layer, which the
+   compositor does without a repaint. The canvas is the only thing painted.
+   ============================================================ */
+.boot.vx{--S:min(86vw,58vh,600px);overflow:hidden;gap:22px;
+ animation:bootOut .24s cubic-bezier(.4,0,.2,1) 5.00s forwards}
+.vx-stage{position:relative;width:var(--S);height:var(--S);flex:0 0 auto}
+.vx-cv{position:absolute;left:50%;top:50%;width:calc(var(--S)*1.7);height:calc(var(--S)*1.7);
+ translate:-50% -50%;pointer-events:none;will-change:transform,opacity}
+.vx-wash{position:absolute;left:50%;top:50%;width:calc(var(--S)*2.6);height:calc(var(--S)*2.6);
+ translate:-50% -50%;opacity:0;pointer-events:none;
+ /* rasterised once and scaled by the compositor. Without this, measured, the
+    scaled gradient was re-rasterised every frame and cost Breath 38 frames a
+    second against 60 with the light hidden; with it, 53 to 55 */
+ will-change:transform,opacity}
+/* the wordmark: the shipped landing at 3.20s, verbatim, and ET's leaving */
+.vx .boot-wm{position:relative;z-index:1;
+ animation:bootWm .92s cubic-bezier(.22,1,.36,1) 3.20s both,
+  vxWmOut .24s cubic-bezier(.4,0,1,1) 4.50s forwards}
+@keyframes vxWmOut{from{opacity:1}to{opacity:0;transform:translateY(-6px)}}
+@keyframes vxWashGo{from{opacity:1;scale:1}to{opacity:0;scale:1.12}}
+
+/* ---- 1. BREATH. The seven pools of light are breathed in and out. ----
+   Dispersed and faint at the edges while the ember lies collapsed; drawn in
+   to half their spread on the breath in, which accelerates; let out on the
+   breath out, which bursts and settles. */
+.vx[data-v=breath] .vx-wash{background:WASH;
+ animation:vxBrIn 1.0s cubic-bezier(.4,0,1,1) .90s both,
+  vxBrOut 1.1s cubic-bezier(.22,1,.36,1) 1.90s forwards,
+  vxWashGo .36s cubic-bezier(.4,0,1,1) 4.50s forwards}
+@keyframes vxBrIn{from{opacity:.38;scale:1.6}to{opacity:.8;scale:.55}}
+@keyframes vxBrOut{from{opacity:.8;scale:.55}to{opacity:1;scale:1}}
+/* a last small breath in, then out through the ring */
+.vx[data-v=breath] .vx-cv{animation:vxBrGo .48s 4.38s forwards}
+@keyframes vxBrGo{
+ 0%{scale:1;opacity:1;animation-timing-function:cubic-bezier(.4,0,.2,1)}
+ 25%{scale:.985;opacity:1;animation-timing-function:cubic-bezier(.4,0,1,1)}
+ 100%{scale:1.45;opacity:0}}
+
+/* ---- 2. ORRERY. No coloured light: an engraving on black, with a faint
+   warmth of the halo's gold behind it. The exit is drawn on the canvas, the
+   plane lying down away from you, and this carries you through it. */
+.vx[data-v=orrery] .vx-wash{background:radial-gradient(circle at 50% 50%,rgba(194,160,99,.10) 0,rgba(194,160,99,.03) 16%,rgba(194,160,99,0) 30%);
+ animation:vxOrW 1.2s cubic-bezier(.22,1,.36,1) .8s both,vxWashGo .4s cubic-bezier(.4,0,1,1) 4.50s forwards}
+@keyframes vxOrW{from{opacity:0}to{opacity:1}}
+.vx[data-v=orrery] .vx-cv{animation:vxOrGo .40s cubic-bezier(.4,0,1,1) 4.50s forwards}
+@keyframes vxOrGo{from{scale:1;opacity:1}to{scale:1.7;opacity:0}}
+
+/* ---- 3. BLOOM. Solid planes on black and nothing else. No light behind:
+   a flat style that glowed would not be flat. */
+.vx[data-v=bloom] .vx-wash{display:none}
+.vx[data-v=bloom] .vx-cv{animation:vxBlGo .36s cubic-bezier(.4,0,1,1) 4.50s forwards}
+@keyframes vxBlGo{from{scale:1;opacity:1}to{scale:1.25;opacity:0}}
+
+/* ---- 4. EMBER. The seats' light is thrown out by the burst: nothing
+   behind until 1.62s, then the pools arrive from the centre with it. */
+.vx[data-v=ember] .vx-wash{background:WASH;
+ animation:vxEmW .8s cubic-bezier(.22,1,.36,1) 1.62s both,vxWashGo .38s cubic-bezier(.4,0,1,1) 4.50s forwards}
+@keyframes vxEmW{from{opacity:0;scale:.35}to{opacity:.85;scale:1}}
+.vx[data-v=ember] .vx-cv{animation:vxEmGo .38s cubic-bezier(.4,0,1,1) 4.50s forwards}
+@keyframes vxEmGo{from{scale:1;opacity:1}to{scale:1.3;opacity:0}}
+
+/* REDUCED MOTION GETS THE END STATE. The product hides .boot entirely, and
+   so does this on the first load. From the prototype's panel a version can
+   still be looked at: its expressed pose, standing still, until a press. */
+.boot.vx-still{animation:none!important;opacity:1!important;visibility:visible!important}
+.boot.vx-still::before{display:none}
+.boot.vx-still *{animation:none!important}
+.boot.vx-still .vx-wash{opacity:1}
+.vx[data-v=bloom].vx-still .vx-wash{display:none}
+.boot.vx-still .boot-wm{opacity:1}
+
+/* ---- the prototype's own controls. Dashed, because nothing in them is
+   product. Built on ET's panel so the two read as one set of tools. ---- */
+#vx-opts{position:fixed;left:12px;bottom:12px;z-index:10050;font:14px/1.45 Inter,system-ui,sans-serif;color:#EFEDE8}
+#vx-opts .vx-ob{min-height:44px;padding:0 14px;border-radius:12px;border:1px dashed rgba(126,184,212,.7);
+ background:rgba(12,13,18,.92);color:#7EB8D4;font:inherit;cursor:pointer}
+#vx-opts .vx-oc{position:absolute;left:0;bottom:52px;width:min(400px,calc(100vw - 24px));padding:10px 12px 12px;
+ border-radius:14px;background:rgba(12,13,18,.95);border:1px dashed rgba(126,184,212,.55);
+ max-height:calc(100vh - 80px);overflow-y:auto;box-sizing:border-box}
+#vx-opts .vx-h{margin:8px 0 6px;font-size:12.5px;font-weight:600;color:#94908A}
+#vx-opts .vx-seg{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px}
+#vx-opts .vx-seg button{min-height:44px;padding:4px 11px;border-radius:10px;border:1px solid rgba(255,255,255,.14);
+ background:transparent;color:#B4B0A8;font:inherit;font-size:13.5px;cursor:pointer;text-align:left;line-height:1.25}
+#vx-opts .vx-seg button small{display:block;font-size:11px;color:#94908A}
+#vx-opts .vx-seg button[aria-pressed=true]{border-color:#7EB8D4;color:#EFEDE8;background:rgba(126,184,212,.12)}
+#vx-opts button:focus-visible{outline:2px solid #7EB8D4;outline-offset:2px}
+#vx-opts .vx-scrub{display:flex;flex-direction:column;gap:4px;margin:6px 0 8px;font-size:12.5px;color:#94908A}
+#vx-opts .vx-scrub input{width:100%;min-height:32px;accent-color:#7EB8D4}
+#vx-opts .vx-scrub output{font-variant-numeric:tabular-nums;color:#EFEDE8}
+#vx-opts .vx-about{margin:4px 0 8px;padding:8px 10px;border-radius:10px;background:rgba(255,255,255,.03);font-size:13px;color:#B4B0A8}
+#vx-opts .vx-about summary{min-height:32px;display:flex;align-items:center;cursor:pointer;color:#EFEDE8;font-weight:600;font-size:12.5px}
+#vx-opts .vx-ab{padding-top:4px}
+@media (max-width:599px){#vx-opts .vx-seg button small{display:none}}
+#vx-opts .vx-about p{margin:0 0 6px}
+#vx-opts .vx-about b{color:#EFEDE8;font-weight:600}
+#vx-opts .vx-about ul{margin:0;padding-left:18px}
+#vx-opts .vx-about li{margin:0 0 3px}
+#vx-opts .vx-note{margin:6px 0 0;font-size:12.5px;color:#94908A}
