@@ -15145,3 +15145,60 @@ past.
 before and after against a real known value rather than assumed
 fixed.**
 
+## EI. The avatar ruled: seven seats, named that. A real new core
+## mechanic proposed, and most of it already exists, checked directly
+## rather than assumed new. Mockups dispatched, nothing built yet.
+## 26 September.
+
+**Ruled, plainly, closing EG's own open question.** "Let's do the
+seven seats, I like that, we can even call it that." The avatar is
+the seven seats, and "Seven Seats" is on the table as its own name,
+his call to finalise.
+
+**A real mechanic proposed, in his own words, at length.** A person
+states a highest ideal, "I want to be a great public speaker," and
+inputs stories on both sides, who they are not and who they are
+becoming. The software tracks the patterns preventing that person
+from becoming it and delivers the release protocol against them,
+with a visual success rate as the rituals run. "The rituals is
+ultimately the tool that delivers that, and the accountability
+tracker is the progression." His own framing, not incidental:
+"I don't think the avatar's CQ matters here, this is about becoming,
+the stories we tell ourselves about what we're not and what we want
+to become, using the software to sniff that out and elevate the
+patterns keeping them from doing that." A persistent "top three"
+surfaced whenever the avatar is on. The avatar page holds masks, the
+summary, and the loop, ritual builder, accountability, journal input,
+protocol, which he calls the core loop. New tools named alongside it:
+binaural tone during a release, and a mix of AI and human voice
+reading the release script.
+
+**Checked before logging as new, and most of it is not.** `engine/avatar.js`,
+"ported from the original Atuned build, not rebuilt," already holds
+exactly this shape: a pair is written as a value and a sentence about
+a bad day, "be" and "notbe", each "notbe" resolves to a seat, the
+seat's real charge is read against it, and whether it has cleared is
+read from work done, not declared. `avatarProgress` already computes
+a done, total and percent across every pair, a real success rate
+already computable today. It is already wired into a drill panel
+(`ui/drills.js`) and into a Summary paragraph that names what stands
+between a person and who they said they are becoming, under the
+existing door "Say who you are becoming" (`ui/component.js`). What is
+real and new in his ask: elevating this onto its own centrepiece
+page rather than a drill found by pressing in; a persistent top three
+rather than a full list; a direct line from a pair's gap to the
+ritual and release protocol rather than the two sitting unconnected;
+and the binaural and voice tools, which are genuinely new production
+work, not a wiring gap.
+
+**His own closing instruction, followed exactly.** "Append this to
+your last set of goals, sort out where it needs to go, in a block,
+and if the team has any questions otherwise just go ahead and build
+this, let's create mockups so I can react to first." No question
+found worth holding this on: the existing mechanic answers most of
+what would otherwise need asking. Dispatched as real mockups, not a
+full build, laid over the real avatar mechanic rather than invented
+placeholder data. The binaural and voice tools are named as their own
+separate, later question, a production and licensing question, not
+folded into this pass.
+
