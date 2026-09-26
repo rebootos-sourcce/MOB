@@ -15486,3 +15486,59 @@ already sitting as its own step in DW's sequenced plan, "port the
 glass bar into the build," confirmed rather than duplicated by a
 fresh dispatch.
 
+## ES. The Compass overlap closed, verified in a clean worktree away
+## from every other seat's in-flight work. 26 September.
+
+**Cause found precisely, not patched around.** The Flat, Regulation
+and Layers switch was pinned a fixed distance from the top of the
+figure box, which is only clear of the axis names once the names are
+also pinned, a rule that only holds at 900 pixels wide and above.
+Below that the names return to normal flow and push the drawing down;
+the switch stayed pinned where the names used to be. Fixed by letting
+the switch join normal flow in that same narrow band instead of
+reserving a fixed gap, since the three buttons wrap onto more lines
+on the narrowest phones and would outgrow a fixed reservation.
+
+**A second, real collision found on the same surface and closed in
+the same pass, present at both widths, not only the one reported.**
+The help line under the drawing was pinned to sit exactly where the
+drawing prints "Decoherent"; fixed by moving it into normal flow and
+giving it the drawing's own background so the two read as one panel,
+checked directly for a text contrast regression before committing:
+2.94 to 1 on the drawing's black ground would have failed Snow's own
+floor, so the line stays on the drawing's own background instead,
+5.09 to 1.
+
+**A real check added, not left to be found again by hand.**
+`tests/collide.js` now checks this specific header for exactly this
+overlap, at both widths, on every lighting the product itself lists
+at run time rather than a number typed into the test; it fails
+fourteen times against the build before the fix, with his own words
+back as the failure message, and asserts it is actually finding
+switches and names rather than passing by finding nothing.
+
+**Verified myself in a fresh, isolated worktree,** away from three
+other agents' in-flight edits sitting in the shared tree at the time,
+the same discipline the fixing agent itself used to build and gate
+its own change cleanly. Rebuilt from the exact committed commit,
+298 collide checks passed including the new one, and looked directly
+at a phone width screenshot: the switch and the axis names sit
+cleanly apart with real space between them.
+
+**One more flaky "Field still animates" result, the third time
+tonight, independently traced to machine load rather than the fix.**
+The agent's own before/after comparison under identical load settled
+it directly: the unshipped build failed the same check under load,
+its own change did not cause it. The same finding as EE and EF,
+now from a third independent angle; the gate itself is the thing
+that needs steadying, not any of the three pieces of work it flagged.
+
+**Two real gaps named and correctly left rather than folded in.**
+Snow's own Compass heading and switches already sit under the
+contrast floor before this fix, by the surface's own design, since
+only the axis facing the viewer is meant to be lit; that belongs
+with the standing lighting work, not this layout fix. And the
+drawing's own ring mark still clips at its top edge on a phone,
+present before this change too; drawing code, not layout, left named
+rather than touched under a different task's mandate.
+
