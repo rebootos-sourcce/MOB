@@ -12733,3 +12733,65 @@ earlier approved mockup, and one hangs below the ring at phone width.
 They are not seat names. Under "nothing sticks out," should they move
 inside, move to hover only, or stay as approved.
 
+## CS. A real accuracy score for the Body page against his two charts,
+## not a grade in prose, and 41 addresses moved from it. 26 September.
+
+**Verified myself, the strongest tool check of the night.** `equiv.py`
+against the commit before this one names only two things changed, the
+anatomy data table and the one function that reads it, nothing else,
+matching the claim exactly. `node tests/engine.js` matched 1649,
+`BUILD-engine.sh` matched 428 exports and host free. Looked at
+`proto/anatomy-ref/out/proof-marma.png` and `proof-112.png` myself, the
+tool's own read of each chart drawn back onto that chart, and it holds
+up, every circle sits on the point its label names. `functional.js`
+was still finishing under tonight's load when this was written.
+
+**A real number, not a description.** Median distance from where the
+Body page draws an address to where a chart places it, as a share of
+body height on a real person: 4.06% before this pass, 1.18% after, on
+the 48 addresses either chart can speak to. On the narrower set
+matched by direct anatomical identity rather than nearby structure,
+every one landed "on" (within about 5cm) after the pass. Honestly
+caveated rather than oversold: this number is partly circular, an
+address placed from a chart will score well against that chart. The
+clean test is the 7 addresses placed earlier from the brain atlas and
+spine research, which never saw either chart and still land at 1.04%
+median, and the 7 chakra seat markers, measured but not moved, landing
+at 1.25% median. A real finding: the two reference charts disagree
+with each other by 3.33% median on the points both of them draw, which
+is the honest floor under any claim of matching "the chart," since
+there are two of them and they do not fully agree.
+
+**41 addresses moved from a scatter to a named chart point, 39 already
+real from the anatomy pass before this, 28 still on the old formula
+because neither chart speaks to that structure.** Full table of which
+address moved to which chart point is in the report, kept in
+`proto/anatomy-ref/` along with the tool itself so this claim can be
+rerun and checked later rather than only asserted.
+
+**Real disagreements between the two charts, not smoothed over.**
+Katikataruna (the sciatic and gluteal nerves) sits 21cm apart between
+the two charts, beside the sacrum on one and mid buttock on the other;
+built from the classical marma chart. The heart point itself differs
+by 5.6%. Four labels on the modern chart sit on the wrong limb
+entirely against their own printed name and could not be used. Seven
+leader lines on the marma chart's own face end without a readable dot.
+
+**Five real questions.**
+**Q1.** Crowding at Sacral and Root, 8 and 4 addresses respectively now
+sitting inside those rings since that is genuinely where the chart
+points land. Keep it as the honest, busier picture, spread them just
+outside the ring at a real accuracy cost of about 2.5% each, or
+something else?
+**Q2.** Confirmed for Katikataruna: is the classical marma chart the
+rule whenever the two disagree, or was that one address's own call?
+**Q3.** The pulmonary plexus now sits inside the Throat ring's own
+space, since the classical point for it sits just under the collarbone,
+level with the throat marker on this figure. Acceptable?
+**Q4.** Nine Solar addresses (liver, spleen, pancreas, the splanchnic
+nerves) have no point on either chart at all. Source them from a
+standard anatomy reference next, or leave them gathered at Solar?
+**Q5.** Still open from CG: for a structure that comes in a left and
+right copy, should a single mark show on both sides, this pass always
+compared against whichever side is nearer.
+
