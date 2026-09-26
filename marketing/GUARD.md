@@ -45,20 +45,27 @@ sacrifice and **they priced the wrong arm**: the simulator modelled the uplift
 half of the mechanic and never the deduction that lands on a miss. With the
 deduction in, it breaks even at a sting of 0.07 and costs above it. At a sting
 a person would actually feel it is **minus 1.9 points of the thousand person
-panel, robust across five seeds.** `TASKS.md` 0y, RB1 to RB3.
+panel, robust across five seeds.** `TASKS.md` 0y, RB1 to RB3. Re-measured 26
+September on the fitted CQ engine with `losssim.js --loss` at seed 20260920:
+still 0.07 and still minus 1.9, the five seeds reading minus 1.3 to minus 2.3.
 
 **2. Where it does buy something, it buys less as the honest design gets
 better.** `PANEL-ritual-1000.md` estimated the loss framing refusal at about
 half again on day thirty. Run against a denser, better design,
-`DESIGN-gamification.md` section 6 measures it at **3.0 points on a base of
-19.9**. A sixth, not a half. **The refusal got cheaper as the product got
+`DESIGN-gamification.md` section 6 measured it at 3.0 points on a base of
+19.9. Re-measured 26 September on the fitted CQ engine it is **2.9 points on a
+base of 20.7**, and `tools/loopsim.js` and `proto/ritual/losssim.js` agree to
+the person. A seventh, not a half. **The refusal got cheaper as the product got
 better**, which is the only commercial argument for a hard line that has ever
 worked in a room.
 
 **3. And who pays.** The deduction lands hardest on the **465 of 1000 who
-cannot run a release yet**, a figure from `PANEL-ritual-1000.md` on the 20
-September arithmetic and not re-measured here, who have four of the marks permanently shut to
-them. A ladder that takes from somebody who cannot earn is a fine, not a game.
+cannot run a release yet**, who have four of the marks permanently shut to
+them. The figure is from `PANEL-ritual-1000.md` and was re-measured 26
+September on the fitted CQ engine, by `tools/ritualsim.js` and by
+`losssim.js`: still 465. It counts addresses at release strength, which the
+CQ refit does not touch. A ladder that takes from somebody who cannot earn is
+a fine, not a game.
 
 **Nothing in point 1 or 2 is a claim about one shot attitude change, and the
 distinction is the whole of it.** Tannenbaum's outcome is a person's attitude
@@ -160,9 +167,46 @@ preference and these already have numbers.
 
 | Refused | What it would buy | Measured cost of refusing |
 |---|---|---|
-| Loss framing | Patel 2016, 0.45 of days against 0.30 control | **3.0 points of 1000 at day 30** on the honest design, and **minus 1.9** once the deduction is modelled |
-| Streak reset to zero | the sharpest version of the lever | **4.4 points**, which is what the halving is worth instead |
-| The asserted affirmation | the standard wellness pattern | **minus 0.2 points.** It costs nothing to refuse, and Wood 2009 has it harming the 800 of 1000 who most need it. That figure is `losssim.js`'s grid level 4 or below on the 20 September arithmetic, and is not re-measured here |
+| Loss framing | Patel 2016, 0.45 of days against 0.30 control | **2.9 points of 1000 at day 30** on the honest design, and **minus 1.9** once the deduction is modelled |
+| Streak reset to zero | the sharpest version of the lever | **4.3 points**, which is what the halving is worth instead |
+| The asserted affirmation | the standard wellness pattern | **minus 0.1 points** at seed 20260920, minus 0.2 averaged over nine seeds. It costs nothing to refuse. Wood 2009 has it harming the people who most need it, and on the fitted engine that is **185 of 1000** (James, Ana and Gordon) with the level read on expression, or **35 of 1000** (Gordon) with it read on CQ. Which one is open, see below |
+
+All three rows re-measured 26 September on the fitted CQ engine, `losssim.js`
+at seed 20260920. On 20 September they read 3.0, 4.4 and minus 0.2, and the
+asserted affirmation row said it harmed "the 800 of 1000". That figure came
+from `PANEL-flow-1000.md`'s prose and was never the tool's own: on its own
+typed levels the tool reached 845, everybody but Sofia and Rosa. The levels
+were typed by hand and went stale when CQ was refitted on 25 September. They
+are now read off the engine on every run, with a check that fails by name if
+the engine moves under this table again.
+
+### Open, and his: which number does the harm read?
+
+The asserted affirmation harms people at level 4 or below on the ten level
+grid. The fitted engine gives two numbers a level can be read on, and they
+disagree about who is down there. This is the same question as his open
+question 1 in `DECISIONS.md`, *"Does a tier word (Severe, Mastery) describe CQ
+or expression?"*, `TASKS.md` BB3 and BB5, and it is not answered here.
+
+- **Expression** (CQ with the shadow's pull taken off). Reaches 185 of 1000.
+  Refusal priced at minus 0.1 points at the declared seed, minus 0.2 over
+  nine seeds. The tool runs on this by default and the team recommends it:
+  Wood's harm comes from a statement clashing with what the person already
+  holds against themselves, and only expression carries that load. It
+  counts more people, which is the safe side when pricing something refused
+  on harm. And the clinician referral and the marketing door out already
+  read it.
+- **CQ** (the 21 laws alone). Reaches 35 of 1000, Gordon only, and no Gordon
+  reaches day 30 in any arm on any of nine seeds, so the refusal prices at
+  exactly 0.0 on all nine and at every harm strength tried. On this reading
+  the model's harm term cannot move its own output. The case for it is that the
+  laws are a person's own ratings of their own qualities, which is closer to
+  the self esteem scale Wood used than a load read out of a story.
+- **Either way the refusal stands.** The asserted arm is never better than
+  the tested one on either reading. What moves is only how much of the harm
+  argument this model can put a number on, and the model measures who is
+  still here at day 30, not what Wood measured, which is how a person feels
+  right after saying it.
 | Variable ratio reward | the schedule the gambling literature is about | not modelled, deliberately. Schull, *Addiction by Design* |
 | A scarcity timer | real and measurable | not modelled. Nothing in this product expires |
 | A leaderboard | real, and James says so in his own persona line | not modelled. It ranks people who handed a machine their distress |

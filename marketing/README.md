@@ -154,10 +154,12 @@ change at `dd0bf23`, 25 September, the fitted CQ model the owner ruled, which
 made CQ the 21 laws summed over 210 instead of `It*Ig/Rz`. `TIERDEF` has not
 moved since before this directory existed. So `field.js` was reading the engine
 correctly and the recorded levels were the old arithmetic. They are re-pinned
-from the current engine with that commit named, `losssim.js` keeps its own
-copy for its own model, and the check now also recomputes CQ from the law
-table without calling the engine, so the next time it fails it says which side
-moved.
+from the current engine with that commit named, and the check now also
+recomputes CQ from the law table without calling the engine, so the next time
+it fails it says which side moved. `losssim.js` kept its own typed copy for a
+day longer, and it was the stale side: it now reads both levels off the engine
+every run and asserts they agree with the nine pinned here, so the two files
+cannot drift apart silently.
 
 **And a second defect the same day.** The first jitter applied one draw to all
 nine charges, which moves a vector up and down and never changes which charge is
@@ -215,7 +217,8 @@ KNOWN ANSWERS, for what moved and how it was found.
 not.** Fear appeals measure d 0.27 across 248 samples with no identified
 backfire. It rests on two measurements in this repository: with the deduction
 modelled rather than only the uplift, the loss mechanic costs 1.9 points of the
-thousand person panel, and where it does buy something it buys less as the
+thousand person panel (re-measured 26 September on the fitted CQ engine, and
+unchanged), and where it does buy something it buys less as the
 honest design gets better. The refusal got cheaper as the product got better.
 
 `GUARD.md` also states what would change my mind, so the position is

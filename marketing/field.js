@@ -12,7 +12,7 @@
    WHY THIS FILE EXISTS RATHER THAN A COPY OF THE LOSS PANEL.
 
    proto/ritual/losssim.js already runs a thousand person panel and its
-   PANEL table carries a grid level per archetype. Those levels were the
+   PANEL table carried a typed grid level per archetype. Those levels were the
    first known answer this file was checked against, and they did their job:
    on 26 September they caught the engine moving underneath this file. They
    are the 20 September arithmetic and are no longer the engine's reading,
@@ -71,8 +71,10 @@ const { S, CHARGES, SINAMES, PEOPLE, LAWSET, buildSoul, compute } = E;
    identical through fbe941c and change at dd0bf23 and nowhere else.
 
    The 20 September levels, for the record, were Diane 3, Derek 2, Marcus 4,
-   Angela 4, Sofia 6, James 2, Ana 1, Gordon 1, Rosa 10. losssim.js still
-   carries them and still reads them for its own harm model.
+   Angela 4, Sofia 6, James 2, Ana 1, Gordon 1, Rosa 10. losssim.js carried
+   them a day longer for its own harm model and was the stale side. It now
+   reads both levels off the engine every run and checks them against the
+   nine pinned below, so re-pinning here without it fails there.
 
    What checks the pin without trusting it. validate() recomputes CQ from
    LAWSET alone, as the ruling defines it, without calling compute(), and
@@ -193,7 +195,7 @@ function keyOf(r) {
    puts her at level 5. The engine's own band table puts her at Incoherent,
    because TIERDEF's Oscillating entry opens at 41 and 40.9 is below it, and
    Incoherent is BUYERS.md level 4, which is what proto/ritual/losssim.js
-   records for her.
+   recorded for her on that arithmetic.
 
    The two rules disagree on every fractional CQ in the top of a band, which
    is nine tenths of a point in ten across the whole scale. One archetype of

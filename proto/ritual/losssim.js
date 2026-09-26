@@ -71,7 +71,7 @@ const SRC={
  overjust:{v:d2or(-0.40), s:'Deci Koestner Ryan 1999, 128 studies, engagement contingent reward undermines free choice intrinsic motivation at d -0.40. https://home.ubalt.edu/tmitch/642/articles%20syllabus/Deci%20Koestner%20Ryan%20meta%20IM%20psy%20bull%2099.pdf'},
  selfref:{v:0.45, s:'Symons and Johnson 1997 Psychological Bulletin 121(3):371-94, 129 studies, self reference effect mean d 0.45. https://pubmed.ncbi.nlm.nih.gov/9136641/ . USED AT HALF, see chainD.'},
  chainD:{v:0.225, s:'MINE, and it is a DISCOUNT not an addition: half of Symons and Johnson\'s 0.45, because their outcome is recall and this is applied to a daily probability of practising. Swept 0 to 0.45, which is nothing to the full published effect.'},
- assertHarm:{v:0.80, s:'MINE as a magnitude. Direction is Wood, Perunovic and Lee 2009 Psychological Science: repeating a positive self statement left LOW self esteem participants feeling worse, and the arm that did no harm held the statement as both true and not true. https://pubmed.ncbi.nlm.nih.gov/19493324/ . Applied as an odds ratio below 1 for the 800 of 1000 at grid level 4 or below, and it prices a REFUSED option.'},
+ assertHarm:{v:0.80, s:'MINE as a magnitude. Direction is Wood, Perunovic and Lee 2009 Psychological Science: repeating a positive self statement left LOW self esteem participants feeling worse, and the arm that did no harm held the statement as both true and not true. https://pubmed.ncbi.nlm.nih.gov/19493324/ . Applied as an odds ratio below 1 to everybody the engine reads at level 4 or below, on expression unless HARM_ON says cq, and it prices a REFUSED option. The count is read off the run and printed in A1, not typed here.'},
  wm:{v:4, s:'CLAUDE.md, 57 to 71 simultaneous choices per screen against a working memory of about four.'},
  gradient:{v:1.35, s:'MINE. Direction from Kivetz Urminsky Zheng 2006 goal gradient. The 1.35 at the end of a seven day season is mine and is swept.'},
  shock:{v:0.25, s:'MINE. Extra one day churn probability when a run breaks. Direction from the abstinence violation effect, and from Duolingo shipping freezes and Finch shipping two repairs plus a pause. Swept 0.10 to 0.40.'},
@@ -86,21 +86,86 @@ const SRC={
    THE PANEL. Weights from RESEARCH-icp.md, summing to exactly 1,000.
    D is the published CURRENT curve at days 1, 7, 30 and 90 from
    reviews/simulation-quarter.md section 6.3 and is the calibration target.
-   grid is the BUYERS.md level the engine's own reading puts them at, per
-   PANEL-flow-1000.md, and it is what decides who the asserted affirmation
-   would have harmed.
+
+   THE LEVEL IS READ OFF THE ENGINE, NOT TYPED HERE. This table used to carry
+   a grid level per person, copied by hand from PANEL-flow-1000.md: Diane 3,
+   Derek 2, Marcus 4, Angela 4, Sofia 6, James 2, Ana 1, Gordon 1, Rosa 10.
+   Those were the engine's reading under the 20 September arithmetic. Commit
+   dd0bf23, 25 September, rebuilt CQ to the fitted model the owner ruled (the
+   21 laws summed over 210), TIERDEF did not move, and every person rose two
+   to five levels on the same band table while this file went on printing
+   the old ones beside the new CQ. marketing/field.js caught the same move
+   from the other side (e5a9596). A level typed beside a number the engine
+   owns is the defect this repository keeps paying for, so measure() now
+   reads both levels, on CQ and on expression, every run.
+
+   And the figure the old levels were quoted with was not their own. "800 of
+   1000 at grid level 4 or below" came from PANEL-flow-1000.md's prose; on
+   these nine rows and those levels it was 845, which is everybody but Sofia
+   and Rosa. The count is printed off the run now, in A1.
    ------------------------------------------------------------ */
 const PANEL=[
- {nm:'Diane', w:180, grid:3,  D:[1.00,0.08,0.02,0.00]},
- {nm:'Derek', w:170, grid:2,  D:[0.62,0.06,0.01,0.00]},
- {nm:'Marcus',w:160, grid:4,  D:[0.45,0.18,0.09,0.05]},
- {nm:'Angela',w:150, grid:4,  D:[0.34,0.05,0.01,0.00]},
- {nm:'Sofia', w:140, grid:6,  D:[0.78,0.41,0.22,0.14]},
- {nm:'James', w:100, grid:2,  D:[0.22,0.04,0.01,0.00]},
- {nm:'Ana',   w:50,  grid:1,  D:[0.70,0.26,0.11,0.06]},
- {nm:'Gordon',w:35,  grid:1,  D:[0.06,0.00,0.00,0.00]},
- {nm:'Rosa',  w:15,  grid:10, D:[0.12,0.02,0.00,0.00]}];
+ {nm:'Diane', w:180, D:[1.00,0.08,0.02,0.00]},
+ {nm:'Derek', w:170, D:[0.62,0.06,0.01,0.00]},
+ {nm:'Marcus',w:160, D:[0.45,0.18,0.09,0.05]},
+ {nm:'Angela',w:150, D:[0.34,0.05,0.01,0.00]},
+ {nm:'Sofia', w:140, D:[0.78,0.41,0.22,0.14]},
+ {nm:'James', w:100, D:[0.22,0.04,0.01,0.00]},
+ {nm:'Ana',   w:50,  D:[0.70,0.26,0.11,0.06]},
+ {nm:'Gordon',w:35,  D:[0.06,0.00,0.00,0.00]},
+ {nm:'Rosa',  w:15,  D:[0.12,0.02,0.00,0.00]}];
 const ANCHOR=[1,7,30,90];
+
+/* ------------------------------------------------------------
+   THE LEVEL, AND WHICH NUMBER IT IS READ ON.
+
+   A level is the position of the engine's band in TIERDEF, which is written
+   descending from Mastery, so the last entry is level 1 and the first is
+   level 10. Derived from the table, the same way marketing/field.js derives
+   it, so no boundary the engine owns is restated here.
+
+   HARM_ON IS AN OPEN QUESTION AND IT IS THE OWNER'S. The asserted
+   affirmation harms people at level 4 or below. Whether that level is read on
+   CQ or on expression (CQ with the shadow's pull taken off) is the same
+   question as his open question 1 in DECISIONS.md, whether the tier word
+   names CQ or expression, TASKS.md BB3 and BB5. It changes who the refused
+   arm reaches by a factor of five, so it is not decided silently here:
+
+     'ex'  the default, and the one this seat recommends. Wood, Perunovic and
+           Lee's harm runs through a statement contradicting what the person
+           currently holds against themselves, and the fitted CQ is the laws
+           alone and cannot see that load; expression can. Expression never
+           reads above CQ, so its harm set contains CQ's, which is the
+           conservative side for pricing a mechanic that was refused on
+           harm. And it is what the engine's clinician referral and the
+           marketing door out already read (ui/drills.js, BB5, e5a9596).
+     'cq'  the tier word as it stands until he rules. The case for it is real:
+           the 21 laws are a person's own ratings of their own qualities,
+           which is closer in kind to the self esteem scale Wood used than
+           a charge read out of a story is.
+
+   Select with --harm-on=cq or HARM_ON=cq. A1 and the priced refusals print
+   both, whichever one drives the run.
+
+   HARM_LEVEL stays at 4 and is not refitted. It is a band, Incoherent and
+   below, "the field costs more than it builds". Moving it until the count
+   came back to its old size would be fitting the answer to a number the
+   arithmetic already retired.
+   ------------------------------------------------------------ */
+const BANDLEVEL={}; E.TIERDEF.forEach((t,i)=>{BANDLEVEL[t.nm]=E.TIERDEF.length-i;});
+function levelOf(x){
+ if(typeof x!=='number'||!isFinite(x))throw new Error('no number to read a level off: '+x);
+ const g=BANDLEVEL[E.tierOf(x).nm];
+ if(!g)throw new Error('band not in TIERDEF: '+E.tierOf(x).nm);
+ return g;}
+const HARM_LEVEL=4;
+const HARM_READS=['ex','cq'];
+const HARM_ON=(function(){
+ const f=process.argv.find(a=>a.indexOf('--harm-on=')===0);
+ const v=f?f.slice(10):(process.env.HARM_ON||'ex');
+ if(HARM_READS.indexOf(v)<0)throw new Error('HARM_ON must be ex or cq, got '+v);
+ return v;})();
+const harmLevel=(m,on)=>on==='cq'?m.grid:m.exGrid;
 
 /* ============================================================
    A. WHAT THE BUILD DEALS. Measured, not modelled.
@@ -122,7 +187,12 @@ const TRACK4BAND={Root:'Body',Sacral:'Somatic',Solar:'Somatic',Heart:'Body',
                   Throat:'Mind','3rd Eye':'Mind',Crown:'Energy'};
 function ritFor(r){
  const band=r.darkB||'Root', track=TRACK4BAND[band]||'Body';
- const tier=r.DQ>=8?1:(r.DQ>=4?2:3);
+ /* the owner's bands, ruled 26 September, read off ui/ritual.js. Commit
+    3824c63 moved the product and tools/loopsim.js from 8 and 4, the zero to
+    ten scale DQ left behind, and missed this copy, so from that commit until
+    this line moved every figure this file printed dealt a practice the build
+    no longer deals. Validation 4 now asserts this line against the source. */
+ const tier=r.DQ>=70?1:(r.DQ>=40?2:3);
  const fit=PRACTICE.filter(p=>p.tier<=tier);
  const first=fit.filter(p=>p.track===track);
  const lightest=set=>set.slice().sort((a,b)=>(a.min-b.min)||(a.tier-b.tier))[0];
@@ -198,13 +268,18 @@ function measure(){
  for(const row of PANEL){
   const p=PEOPLE.find(x=>x.nm===row.nm);
   const r=loadPerson(p);
+  /* the tier word waits for all 21 laws. A reading with no word has no
+     level, and a harm model must not guess one. */
+  if(r.tier===null||r.tier===undefined)
+   throw new Error(row.nm+' reads incomplete, so the engine gives no level to read');
   const c=ritFor(r);
   /* choices on the card as the build now renders it: ONE practice plus the
      control that reveals the rest plus the two in .rel-act. */
   const choicesNow=1+1+2;
   const choicesWas=c.all.length+2;
   const hot=W.filter(n=>n.sq>=4).length;
-  out.push({nm:row.nm, w:row.w, grid:row.grid, CQ:+r.CQ.toFixed(1), DQ:+r.DQ.toFixed(2),
+  out.push({nm:row.nm, w:row.w, word:r.tier, grid:levelOf(r.CQ), exGrid:levelOf(r.EX),
+   CQ:+r.CQ.toFixed(1), EX:+r.EX.toFixed(1), DQ:+r.DQ.toFixed(2),
    band:c.band, track:c.substituted?c.actualTrack:c.track, tier:c.tier,
    called:c.called?c.called.nm:'none', min:c.called?c.called.min:0,
    choices:choicesNow, wasChoices:choicesWas, releasable:hot,
@@ -356,6 +431,8 @@ function runSim(cfgName,opt){
  const stakeOR=opt.stake!==undefined?opt.stake:SRC.stake.v;
  const sting=opt.sting!==undefined?opt.sting:0.15;
  const harm=opt.harm!==undefined?opt.harm:SRC.assertHarm.v;
+ const harmOn=opt.harmOn||HARM_ON;
+ if(HARM_READS.indexOf(harmOn)<0)throw new Error('harmOn must be ex or cq, got '+harmOn);
  /* THREE STREAMS, NOT ONE, AND THIS IS A CORRECTION TO A TOOL THAT WAS LYING.
 
     The first cut drew the practice, the floor and the churn from one stream.
@@ -363,8 +440,9 @@ function runSim(cfgName,opt){
     configurations that differ anywhere consume a different number of random
     numbers and every draw after the first divergence is a different draw. The
     symptom was unmistakable once it was looked for: the asserted affirmation
-    arm, which applies an odds ratio BELOW one to eight hundred of the
-    thousand and can only make things worse, reported nine people BETTER than
+    arm, which applies an odds ratio BELOW one to everybody it reaches (845
+    of the thousand on the levels this file typed then) and can only make
+    things worse, reported nine people BETTER than
     the tested arm. That was the stream, not the mechanic.
 
     Each purpose now has its own stream, seeded from the run seed and the
@@ -408,9 +486,9 @@ function runSim(cfgName,opt){
   /* the floor version of the ritual is the affirmation, held for sixty
      seconds against the body. Gated on an affirmation existing. */
   const canFloor=!!cfg.floor&&tp.affirm;
-  /* the refused arm. An asserted positive self statement, on the 800 of 1000
-     at grid level four or below. */
-  const assertOR=(cfg.assert&&tp.affirm&&m.grid<=4)?harm:1;
+  /* the refused arm. An asserted positive self statement, on everybody the
+     engine reads at level four or below, on the reading HARM_ON names. */
+  const assertOR=(cfg.assert&&tp.affirm&&harmLevel(m,harmOn)<=HARM_LEVEL)?harm:1;
   /* THE AWARD, AND WHO CAN REACH ONE.
 
      Measured off engine/ladder.js MARKS and the sq>=4 release threshold: four
@@ -605,6 +683,16 @@ function validate(){
   'fix 4, one practice on the card: the list is filtered to what is called for');
  ok(BUILT.ifthen&&BUILT.monitor&&BUILT.halving&&BUILT.oneChoice,
   'and the BUILT config turns all four on, so the baseline is the build');
+ /* THE PORT OF ritFor AGAINST THE LINE IT WAS PORTED FROM. The product moved
+    its load bands from 8 and 4 to 70 and 40 in 3824c63 and this copy did not
+    follow, which nothing here could see. Now the thresholds are read out of
+    the source and must equal the port's. */
+ const tierLine=/var tier=r\.DQ>=(\d+)\?1:\(r\.DQ>=(\d+)\?2:3\)/.exec(RIT);
+ const portLine=/const tier=r\.DQ>=(\d+)\?1:\(r\.DQ>=(\d+)\?2:3\)/.exec(
+  fs.readFileSync(__filename,'utf8'));
+ ok(!!tierLine&&!!portLine&&tierLine[1]===portLine[1]&&tierLine[2]===portLine[2],
+  'the ported ritFor load bands, '+(portLine?portLine[1]+' and '+portLine[2]:'not found')
+  +', are the ones ui/ritual.js deals, '+(tierLine?tierLine[1]+' and '+tierLine[2]:'not found'));
  const b=runSim('built'), c=runSim('current');
  ok(b.total[30]>=c.total[30],'BUILT retains at least as many at day 30 as the pre fix build, '
   +b.total[30]+' against '+c.total[30]);
@@ -643,11 +731,13 @@ function validate(){
   'and a flag the walk does not branch on changes nothing, '+runSim('__inert').total[30]);
  delete CFG['__inert'];
  /* and the refused arm has to come out WORSE, because its odds ratio is below
-    one for 800 of 1000 and it can do nothing else. Under one shared stream
-    this check failed by nine people and that is why the streams were split. */
- const asrt=runSim('REFUSED affirmation asserted').total[30];
- ok(asrt<=a1,'the asserted affirmation arm is not better than the tested one, '
-  +asrt+' against '+a1);
+    one for everybody it reaches and it can do nothing else. Under one shared
+    stream this check failed by nine people and that is why the streams were
+    split. Checked on both readings of the level, since either may be ruled. */
+ HARM_READS.forEach(on=>{
+  const asrt=runSim('REFUSED affirmation asserted',{harmOn:on}).total[30];
+  ok(asrt<=a1,'the asserted affirmation arm, level read on '+on
+   +', is not better than the tested one, '+asrt+' against '+a1);});
  const lossArm=runSim('REFUSED loss framing').total[30];
  ok(lossArm>=a1,'and the loss framed arm is not worse than the control one, '
   +lossArm+' against '+a1+', which is the whole reason it is refused rather than missed');
@@ -660,6 +750,39 @@ function validate(){
  const got=rungs.map(r=>runSim(r).total[30]);
  for(let i=1;i<rungs.length;i++)
   ok(got[i]>=got[i-1]-2, '  '+rungs[i]+' '+got[i]+' is not below '+rungs[i-1]+' '+got[i-1]+' by more than 2');
+
+ console.log('\nVALIDATION 8. The levels are the engine\'s, and the documents know which engine.');
+ /* The level is read, so it cannot go stale on its own. What can go stale is
+    every figure a document quotes off it, and those are what this pins. A
+    pin that fails is the point: it is how marketing/field.js caught the CQ
+    refit, and it is what this file lacked when the same refit moved it.
+
+    KNOWN is [level on CQ, level on expression] per person, read on engine.js
+    as built at dd0bf23 (the fitted CQ, 25 September) and unchanged since,
+    measured 26 September. If this group fails, the engine moved: re-run,
+    re-date the figures in marketing/GUARD.md, marketing/README.md and
+    DESIGN-ritual.md section 5, then re-pin here and in marketing/field.js,
+    which pins the same nine and is checked for agreement below. */
+ const KNOWN={Diane:[6,6],Derek:[5,5],Marcus:[7,7],Angela:[7,7],Sofia:[8,8],
+  James:[5,4],Ana:[5,3],Gordon:[2,1],Rosa:[10,10]};
+ const MV=measure();
+ ok(E.TIERDEF.length===10&&BANDLEVEL[E.TIERDEF[0].nm]===10
+  &&BANDLEVEL[E.TIERDEF[E.TIERDEF.length-1].nm]===1,
+  'the level table is TIERDEF itself, ten bands, '+E.TIERDEF[0].nm+' 10 to '
+  +E.TIERDEF[E.TIERDEF.length-1].nm+' 1');
+ ok(MV.every(m=>BANDLEVEL[m.word]===m.grid),
+  'the level on CQ is the engine\'s own tier word for all nine, not a second reading of it');
+ ok(MV.every(m=>m.EX<=m.CQ&&m.exGrid<=m.grid),
+  'expression never reads above CQ, so the harm set on expression contains the one on CQ');
+ const drift=MV.filter(m=>!KNOWN[m.nm]||KNOWN[m.nm][0]!==m.grid||KNOWN[m.nm][1]!==m.exGrid);
+ drift.forEach(m=>console.log('       '+m.nm+' reads '+m.grid+' on CQ and '+m.exGrid
+  +' on expression, pinned '+(KNOWN[m.nm]||['none','none']).join(' and ')));
+ ok(drift.length===0,'all nine levels are the ones the quoted figures were taken at');
+ let FP=null;
+ try{FP=require(path.resolve(__dirname,'../../marketing/field.js')).PANEL;}catch(e){FP=null;}
+ ok(!!FP&&PANEL.every(r=>{const f=FP.find(x=>x.nm===r.nm);
+   return f&&f.w===r.w&&KNOWN[r.nm][0]===f.grid&&KNOWN[r.nm][1]===f.exGrid;}),
+  'and marketing/field.js pins the same nine at the same weights and levels');
 
  console.log('\n  '+pass+' checks passed, '+fail+' failed.');
  return fail===0;}
@@ -745,10 +868,17 @@ function report(){
  console.log('\n============================================================');
  console.log('A1. WHAT THE BUILD DEALS. Measured off engine.js and ui/ritual.js.');
  console.log('============================================================');
- console.log(['who','wt','grid','CQ','DQ','seat','track','tier','practice called for','min','choices now','choices before the fix','releasable'].join('\t'));
- measure().forEach(m=>console.log([m.nm,m.w,m.grid,m.CQ,m.DQ,m.band,m.track,m.tier,
+ console.log(['who','wt','level on CQ','level on expression','CQ','expression','DQ','seat','track','tier','practice called for','min','choices now','choices before the fix','releasable'].join('\t'));
+ measure().forEach(m=>console.log([m.nm,m.w,m.grid,m.exGrid,m.CQ,m.EX,m.DQ,m.band,m.track,m.tier,
   m.called,m.min,m.choices,m.wasChoices,m.releasable].join('\t')));
  const M=measure();
+ console.log('\nwho the asserted affirmation reaches: level '+HARM_LEVEL+' or below, with an affirmation to assert');
+ HARM_READS.forEach(on=>{
+  const who=M.filter(m=>m.tp.frames.affirm&&harmLevel(m,on)<=HARM_LEVEL);
+  console.log('  level read on '+(on==='ex'?'expression':'CQ')+': '
+   +who.reduce((a,m)=>a+m.w,0)+' of 1000 ('+(who.map(m=>m.nm).join(', ')||'nobody')+')'
+   +(on===HARM_ON?', which is the reading this run prices':''));});
+ console.log('  Which reading is right is the owner\'s open question 1, DECISIONS.md. See HARM_ON.');
  const noRel=M.filter(m=>m.releasable===0).reduce((a,m)=>a+m.w,0);
  const long=M.filter(m=>m.min>=15).reduce((a,m)=>a+m.w,0);
  console.log('\nweight that cannot run a release at all: '+pct(noRel,1000));
@@ -804,7 +934,12 @@ function report(){
  ['REFUSED loss framing','REFUSED affirmation asserted'].forEach(k=>{
   console.log('  '+k+': d30 '+runs[k].total[30]+' of 1000, '
    +((runs[k].total[30]/10-fin)>=0?'+':'')+(runs[k].total[30]/10-fin).toFixed(1)
-   +' points on the final design');});
+   +' points on the final design'
+   +(k==='REFUSED affirmation asserted'?', level read on '+HARM_ON:''));});
+ const other=HARM_READS.find(on=>on!==HARM_ON);
+ const alt=runSim('REFUSED affirmation asserted',{harmOn:other}).total[30];
+ console.log('  REFUSED affirmation asserted, level read on '+other+' instead: d30 '+alt
+  +' of 1000, '+((alt/10-fin)>=0?'+':'')+(alt/10-fin).toFixed(1)+' points on the final design');
 
  console.log('\n============================================================');
  console.log('C. BY ICP. Baseline and final, each cell people out of that ICP row.');
@@ -936,11 +1071,14 @@ function sweep(){
   console.log('  load '+l.toFixed(2)+'\td30 '+r.total[30]+'\tdelta '
    +((r.total[30]/10-base)>=0?'+':'')+(r.total[30]/10-base).toFixed(1));});
 
- console.log('\nassertHarm. MINE, and it prices a REFUSED option rather than a built one:');
+ console.log('\nassertHarm. MINE, and it prices a REFUSED option rather than a built one.');
+ console.log('Both readings of the level, because which one is right is not ruled:');
+ const tested=runSim('final').total[30];
  [1.0,0.9,0.8,0.7].forEach(h=>{
-  const r=runSim('REFUSED affirmation asserted',{harm:h});
-  console.log('  OR '+h.toFixed(2)+'\td30 '+r.total[30]+'\tagainst the tested affirmation at '
-   +runSim('final').total[30]);});
+  const x=runSim('REFUSED affirmation asserted',{harm:h,harmOn:'ex'});
+  const c=runSim('REFUSED affirmation asserted',{harm:h,harmOn:'cq'});
+  console.log('  OR '+h.toFixed(2)+'\ton expression d30 '+x.total[30]+'\ton CQ d30 '+c.total[30]
+   +'\tagainst the tested affirmation at '+tested);});
 
  console.log('\nTWO FLOORS, BECAUSE ONE OF THEM CONFLATES TWO THINGS.');
  /* (a) isolates the credits. Every coefficient that lifts a probability or

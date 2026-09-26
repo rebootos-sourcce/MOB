@@ -231,6 +231,17 @@ Releasable is the number of addresses at `sq >= 4`, which is the threshold
 | Gordon | 35 | 0.8 | 55.19 | Throat | Somatic | 1 | The Emotional Scan | 20 | 6 | 97 |
 | Rosa | 15 | 100 | 0 | Root | Body | 3 | Box Breathing | 5 | 19 | **0** |
 
+**Re-measured 26 September, on the fitted CQ engine of 25 September.** The
+Releasable column is unchanged, row for row, and so is **465 of 1000**: it
+counts addresses at `sq >= 4`, which the CQ refit does not touch, and
+`tools/ritualsim.js` and `proto/ritual/losssim.js` both print it today. The CQ
+and DQ columns are not current. They are the 20 September arithmetic
+(intention times integrity over resistance), and the fitted engine reads Diane
+59.0, Derek 48.5, Marcus 62.1, Angela 64.4, Sofia 72.9, James 42.3, Ana 41.1,
+Gordon 17.5 and Rosa 97.0 on CQ. The table is left as the snapshot it was taken
+as, because `proto/ritual/caldata.js` and `ritdata.js` transcribe it and are
+already failing on exactly these two columns. That is its own task.
+
 Three measured facts fall out of that table and they are the whole of section 4:
 
 - **465 of 1000 cannot run a release at all.** Marcus, Angela, Sofia and Rosa.

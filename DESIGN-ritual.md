@@ -268,7 +268,8 @@ the calendar you edit by tapping. **Refuse the reset to zero.** This repository
 already measured that: `engine/ladder.js:49` halves instead of resetting on Bible
 1133, and `DESIGN-gamification.md` prices the reset at **4.4 points of 1000 at
 day thirty**, which is to say the halving is worth 4.4 points against the thing
-Streaks does.
+Streaks does. Re-measured 26 September on the fitted CQ engine it is 4.3, in
+`tools/loopsim.js` and `proto/ritual/losssim.js` alike.
 
 ### 2.2 Habitica, because it is the loss framing comp
 
@@ -532,34 +533,47 @@ and somebody on day two feels all of it. The fork reproduces the published 199
 and 229 exactly and passes all forty two checks, which is how I know the tool is
 not lying.
 
-**The design as costed, with no loss framing anywhere: 199 of 1000 at day thirty,
-19.9 points.** Against that:
+**Every figure in 5.2 and 5.3 was re-measured 26 September**, with
+`node proto/ritual/losssim.js --loss` at seed 20260920, on the fitted CQ engine
+of 25 September. Two things had gone stale underneath the tool. The engine's CQ
+and DQ were refitted, and the tool's copy of `ritFor` still read the old 8 and
+4 load bands after the product moved to 70 and 40, so for a day it dealt
+practices the build no longer deals. Both are fixed and checked by the tool's
+own validation now. The conclusions below did not move: minus 1.9 at a sting of
+0.15, the same five seed range, break even at 0.07, and Marcus's loss halving
+under the guard. The cells moved by a person or two, and the base moved from
+199 to 207.
+
+**The design as costed, with no loss framing anywhere: 207 of 1000 at day thirty,
+20.7 points.** Against that:
 
 | the mechanic | day 30 of 1000 | points | against the design as costed |
 |---|---|---|---|
-| uplift only, the arm the two documents priced | 229 | 22.9 | **plus 3.0** |
-| his mechanic, deduction stings 0.05 | 206 | 20.6 | plus 0.7 |
-| **his mechanic, break even** | **199** | **19.9** | **0.0, at a sting of 0.07** |
-| his mechanic, deduction stings 0.10 | 192 | 19.2 | minus 0.7 |
-| his mechanic, deduction stings 0.15 | 180 | 18.0 | **minus 1.9** |
-| his mechanic, deduction stings 0.25 | 160 | 16.0 | minus 3.9 |
-| his mechanic, deduction stings 0.40 | 131 | 13.1 | minus 6.8 |
+| uplift only, the arm the two documents priced | 236 | 23.6 | **plus 2.9** |
+| his mechanic, deduction stings 0.05 | 212 | 21.2 | plus 0.5 |
+| his mechanic, deduction stings 0.06 | 209 | 20.9 | plus 0.2 |
+| **his mechanic, break even** | **206** | **20.6** | **minus 0.1, at a sting of 0.07** |
+| his mechanic, deduction stings 0.10 | 199 | 19.9 | minus 0.8 |
+| his mechanic, deduction stings 0.15 | 188 | 18.8 | **minus 1.9** |
+| his mechanic, deduction stings 0.25 | 167 | 16.7 | minus 4.0 |
+| his mechanic, deduction stings 0.40 | 135 | 13.5 | minus 7.2 |
 
 And the case where the sting lands but Patel's behaviour change does not
 transfer, which is the downside scenario and has to be on the record:
 
 | deduction with no uplift | day 30 | points | delta |
 |---|---|---|---|
-| stings 0.10 | 150 | 15.0 | minus 4.9 |
-| stings 0.15 | 134 | 13.4 | minus 6.5 |
-| stings 0.40 | 84 | 8.4 | minus 11.5 |
+| stings 0.10 | 157 | 15.7 | minus 5.0 |
+| stings 0.15 | 142 | 14.2 | minus 6.5 |
+| stings 0.40 | 88 | 8.8 | minus 11.9 |
 
 **So here is the honest answer, and it is not the one either earlier document
 predicted.**
 
 1. **The refusal was priced against a ceiling.** Read as uplift only, loss
-   framing is worth plus 3.0 points, so the earlier claim that refusing it costs
-   3.0 points is correct as far as it goes.
+   framing is worth plus 2.9 points (3.0 when this was first written), so the
+   earlier claim that refusing it costs about 3 points is correct as far as it
+   goes.
 2. **His mechanic, as he stated it, is not that arm.** With the deduction he
    described actually in the model, it breaks even at a sting of 0.07 and goes
    negative above it. At a sting of 0.15 it is **minus 1.9 points**, robust
@@ -575,11 +589,12 @@ survivors per ICP at a sting of 0.15:
 | who | weight | no loss framing | his, unguarded | delta | his, guarded | delta |
 |---|---|---|---|---|---|---|
 | Diane | 180 | 26 | 28 | plus 2 | 29 | plus 3 |
-| Derek | 170 | 19 | 19 | 0 | 20 | plus 1 |
+| Derek | 170 | 22 | 22 | 0 | 22 | 0 |
 | **Marcus** | **160** | **52** | **36** | **minus 16** | 44 | minus 8 |
 | Angela | 150 | 20 | 19 | minus 1 | 20 | 0 |
 | Sofia | 140 | 56 | 51 | minus 5 | 54 | minus 2 |
-| James | 100 | 13 | 15 | plus 2 | 16 | plus 3 |
+| James | 100 | 16 | 19 | plus 3 | 19 | plus 3 |
+| Ana | 50 | 15 | 13 | minus 2 | 14 | minus 1 |
 | Gordon | 35 | 0 | 0 | 0 | 0 | 0 |
 
 **Marcus loses 16 of 160 and he is the largest single loss in the panel.** The
@@ -596,12 +611,12 @@ Modelled as seven recorded days before any deduction can fire:
 
 | | day 1 | day 7 | day 30 | points | delta |
 |---|---|---|---|---|---|
-| unguarded, sting 0.15 | 819 | 394 | 180 | 18.0 | minus 1.9 |
-| **guarded, sting 0.10** | **829** | **415** | **206** | **20.6** | **plus 0.7** |
-| guarded, sting 0.15 | 829 | 415 | 195 | 19.5 | minus 0.4 |
-| guarded, sting 0.25 | 829 | 415 | 177 | 17.7 | minus 2.2 |
+| unguarded, sting 0.15 | 841 | 406 | 188 | 18.8 | minus 1.9 |
+| **guarded, sting 0.10** | **851** | **426** | **213** | **21.3** | **plus 0.6** |
+| guarded, sting 0.15 | 851 | 426 | 202 | 20.2 | minus 0.5 |
+| guarded, sting 0.25 | 851 | 426 | 184 | 18.4 | minus 2.3 |
 
-Day 1 and day 7 are **untouched** by the guard, at 829 and 415, because the
+Day 1 and day 7 are **untouched** by the guard, at 851 and 426, because the
 entire first week is protected and that is where the churn is. Marcus's loss
 halves, from 16 of 160 to 8.
 
@@ -618,8 +633,8 @@ the loss framing. Make the deduction small and make it wait. Specifically:
   a missed day takes less than one, then a person who keeps four days in seven is
   still moving up, which is true and is the thing that keeps Marcus.
 
-That is his mechanic, built the way he asked, at **plus 0.7 points** instead of
-minus 1.9. The swing from the guard alone is **2.6 points**, which is larger than
+That is his mechanic, built the way he asked, at **plus 0.6 points** instead of
+minus 1.9. The swing from the guard alone is **2.5 points**, which is larger than
 the mechanic itself.
 
 **One more thing he should have, from the Duolingo number.** The grace day
@@ -781,7 +796,7 @@ in a sentence.
 | `compass.html` | design A. Standalone, 46.8 kB, no network |
 | `board.html` | design B. Standalone, 46.3 kB, no network |
 | `tape.html` | design C. Standalone, 45.7 kB, no network |
-| `losssim.js` | `tools/loopsim.js` plus the owner's loss framing arm. 42 checks, all passing. `node proto/ritual/losssim.js --loss` prints section 5 |
+| `losssim.js` | `tools/loopsim.js` plus the owner's loss framing arm. Validates before it reports and exits non zero on any failure; read the count off the run. `node proto/ritual/losssim.js --loss` prints section 5 |
 | `build-data.js` | pulls the real reading out of `engine.js` and the real walks out of `losssim.js`. Refuses to write on any mismatch against `PANEL-ritual-1000.md` A1 |
 | `data.json` | the extracted numbers, inlined into all three pages |
 | `build.js`, `shots.js`, `perf.js` | assemble, screenshot and measure |
