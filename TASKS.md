@@ -15065,3 +15065,56 @@ rail; queued as its own task rather than folded in, since the Field's
 canvas colour switch treats only Snow as light today and needs its
 own pass to also read Glass white correctly.
 
+## EG. The avatar, four ways, back and sent directly per the EA
+## correction rather than through a linking board. 26 September.
+
+**Four real avatars, all drawn from James's actual data at three real
+points, arrival, four releases and twelve, not from an invented
+progression.** Two built on the body (the figure itself, and the
+Body page's own nerve branches lit by conduction), two on the seven
+seats (the Body page's channel stood on its own, and seven arcs
+closing round a centre CQ). All four laid over the real committed
+build.
+
+**Sent as the one interactive file rather than the board it came
+with,** since the board itself links out to that same file, exactly
+the pattern that trapped him in EA; caught before it repeated rather
+than after.
+
+**The team's own read, argued from his own rulings rather than a
+blank preference: the seven seats, and among those the ring.** His
+own chain, avatar to ritual to psyche to body locations to body to
+story, puts the body one rung under the avatar, so a body avatar
+merges two rungs into one. He called the body symbolic himself, mid
+sentence, while asking for these. His own "the more you release, the
+brighter you are" holds for the ring and the nerves, both of which
+gain light on release, and fails for the figure, which loses it. And
+the loop is a circle by his own ruling; the ring is the only one of
+the four that closes.
+
+**Five real shipped defects found in passing, not decided by him,
+queued as backlog.** The Body page's own channel reads a seat as
+fully clear once its addresses average four out of ten, so Angela
+reads a hundred percent at every seat while carrying seventy four
+addresses, and James reads the same after four releases while still
+carrying eighty nine; a blank, untouched profile reads brighter than
+James after twelve real releases, since nothing entered defaults to
+bright rather than dark; the Field's own reading strip fails contrast
+outright under Snow, measured at 1.07 to 1 against a 4.5 floor; a
+fully cleared profile still names an overshot feeling and still calls
+a breathing practice, which may be intended rather than a bug; and
+the design brief's own seat palette does not match what the build
+actually ships.
+
+**Three real open questions, his call.**
+- Body or seven seats, and among the four pictures which one, each
+  with its own cost.
+- Which number the avatar leads with: CQ, expression, or both
+  together with CQ as the outer ceiling and expression filling toward
+  it, since over twelve real releases his CQ barely moves while
+  expression climbs eleven points.
+- If the ring wins, what happens to the Field's own wheel, since two
+  seven-seat rings in one view say the same thing twice; three ways
+  named, the ring becomes the wheel's own centre, the avatar opens
+  first with the wheel a press away, or the two sit side by side.
+
