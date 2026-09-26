@@ -12298,8 +12298,8 @@ one names exactly the claimed difference, seven new declarations, one
 retired (`HW`, left unused by the change), three bodies changed
 (`pmAnat`, `pmNode`, `renderMap`). `node tests/engine.js` matched the
 claimed 1649, `BUILD-engine.sh` matched 428 exports and host free.
-`functional.js` was still finishing under tonight's load when this was
-written.
+`functional.js` finished after this was first written, slow under
+tonight's load, and matched the claimed 1013 passed, 0 failed.
 
 **What was actually wrong, found rather than assumed.** Not a
 placement error, checked against standard body proportions and the
