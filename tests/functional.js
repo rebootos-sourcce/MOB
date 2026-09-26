@@ -758,7 +758,7 @@ const unloc=await page.evaluate(()=>{
  const saved=CURP.who.born.zone;
  const after={all:txt(), moon:rowOf('Moon'), gk:rowOf('Gene key'), rising:rowOf('Rising'), where:rowOf('Where')};
  const want=(function(){const sp=spiritualOf({d:'1990-01-01',t:'08:00',p:'Auckland',z:'Pacific/Auckland'});
-  return {moon:sp.moon, gk:sp.gk.gate+'.'+sp.gk.line};})();
+  return {moon:sp.moon, gk:sp.gk.gate+'.'+sp.gk.line, rising:sp.rising};})();
  z.value='Middle/Earth'; z.dispatchEvent(new Event('change'));
  const bad={status:(document.getElementById('status')||{}).textContent||'', moon:rowOf('Moon')};
  CURP.who.born={}; pSave(); renderSpirit();
@@ -774,10 +774,39 @@ ok(unloc.saved==='Pacific/Auckland','typing the zone saves it to the profile, go
 ok(unloc.after.moon.indexOf(unloc.want.moon)>=0&&!/unresolved/.test(unloc.after.moon),
  'and the moon resolves to the sky at the real offset, got '+unloc.after.moon+' want '+unloc.want.moon);
 ok(unloc.after.gk.indexOf(unloc.want.gk)>=0,'and the gene key, got '+unloc.after.gk+' want '+unloc.want.gk);
-ok(/birthplace/.test(unloc.after.rising),'rising still needs a place the table can locate, got '+unloc.after.rising);
+/* This asserted Rising still asked for a birthplace after the zone was typed.
+   The zone now lends its published representative point as the horizon, so
+   Auckland outside the nine city table has an ascendant, and it is the one the
+   engine computes from that point. */
+ok(unloc.want.rising&&unloc.after.rising.indexOf(unloc.want.rising)>=0&&!/unresolved/.test(unloc.after.rising),
+ 'and Rising resolves from the zone\'s own point, got '+unloc.after.rising+' want '+unloc.want.rising);
 ok(/Pacific\/Auckland/.test(unloc.after.where),'and the zone read is shown beside the place, got '+unloc.after.where);
 ok(/not a time zone this browser can read/.test(unloc.bad.status)&&/unresolved/.test(unloc.bad.moon),
  'a zone the browser cannot read is said out loud and the rail goes back to unresolved, got '+unloc.bad.status);
+
+console.log('\n=== an untimed birth does not print the noon moon ===');
+/* With no clock time the record was read at local noon and the moon printed
+   as settled. James's date in Boston without his 17:30 read Aries at noon, and
+   the moon crosses into Taurus later that same day, so the row printed a sign
+   the record could not settle. It now asks for the time, and so do the gates,
+   since a day always moves the sun across a line. */
+const untimed=await page.evaluate(()=>{
+ loadP(0); toYou();
+ CURP.who=CURP.who||{}; CURP.who.sealed='';
+ CURP.who.born={date:'1969-09-27',time:'',place:'Boston, MA',zone:'',timeUnknown:true};
+ renderSpirit();
+ const rowOf=k=>{const r=[...document.querySelectorAll('#spirit .sp-row')]
+  .find(x=>(x.querySelector('.sp-k')||{}).textContent===k);
+  return r?r.textContent.replace(/\s+/g,' ').trim():'';};
+ const out={moon:rowOf('Moon'), sun:rowOf('Sun'), gk:rowOf('Gene key'), rising:rowOf('Rising'),
+  all:(document.getElementById('spirit').textContent||'').replace(/\s+/g,' ')};
+ CURP.who.born={}; pSave(); renderSpirit();
+ return out;});
+ok(/unresolved/.test(untimed.moon)&&/needs a birth time/.test(untimed.moon)&&!/Aries/.test(untimed.moon),
+ 'an untimed birth on a day the moon changes sign asks for the time, got '+untimed.moon);
+ok(/Libra/.test(untimed.sun),'and the sun, settled all day, still prints, got '+untimed.sun);
+ok(/needs a birth time/.test(untimed.gk)&&!/gate \d/.test(untimed.all),
+ 'and no gate is printed, the gene key asks for the time too, got '+untimed.gk);
 
 console.log('\n=== the main button never destroys a field it was not asked to ===');
 /* With nothing held, Run a release used to start a 2.8 second animation that

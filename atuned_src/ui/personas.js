@@ -88,7 +88,11 @@ function renderSpirit(){
  var noPlace='needs a birthplace the instrument can locate';
  /* short when nothing was given, because it sits beside five rows in a rail
     264 wide and the long form wrapped to four lines on every one of them */
- var noZone=!sp.needsZone?'the clocks changed at that hour'
+ /* An untimed birth is refused for its day and not its offset. Chosen on
+    needsZone alone its moon and gates would read 'the clocks changed at
+    that hour', because an untimed record never needs a zone. */
+ var noZone=sp.needsTime?'needs a birth time'
+  :!sp.needsZone?'the clocks changed at that hour'
   :sp.birth.z?'needs a time zone the instrument can read':'needs a birth time zone';
  el.innerHTML='<div class="sp-hd">Western</div>'
   +(sp.sun?row('Sun',ZGLYPH[sp.sun],sp.sun,sp.sunEl,'sign'):unres('Sun',noZone))
@@ -98,7 +102,9 @@ function renderSpirit(){
      A blank row says nothing, so the row says what is missing and why. */
   +(sp.rising
     ? row('Rising',ZGLYPH[sp.rising],sp.rising,sp.risingEl,'sign')
-    : unres('Rising',sp.needsTime?'needs a birth time':noPlace))
+    /* a zone gives a horizon now, so a timed Rising with one that is still
+       refused is the clock change and not a missing place */
+    : unres('Rising',sp.needsTime?'needs a birth time':sp.needsPlace?noPlace:noZone))
   +'<div class="sp-hd">Eastern</div>'
   +row('Year','',sp.celem+' '+sp.chinese,'','chinese',sp.chinese)
   +row('Element','',sp.celem,'','celem',sp.celem)

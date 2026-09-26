@@ -9,6 +9,7 @@ engine/data/compass.js
 engine/data/ages.js
 engine/data/practice.js
 engine/data/people.js
+engine/data/zones.js
 engine/data/catalog.js
 engine/data/kb.js
 engine/data/cards.js

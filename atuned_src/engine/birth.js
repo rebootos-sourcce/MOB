@@ -21,15 +21,18 @@
    ZI maps a longitude index onto this table rather than reordering a
    table other code indexes by position. */
 const ZI=[2,3,4,5,6,7,8,9,10,11,0,1];
-function zFromLon(lon){return ZSIGN[ZI[signOf(lon)]];}
 
 /* A reading at every instant the record allows, or null when they do not
    all agree. Without a span there is one instant and it is read as before.
    Two ends are the whole check and not a sample: the sun and the moon only
-   ever move forward, the design sun follows the birth sun, and a day moves
-   neither of them a full sign or gate, so two ends in the same bin means
-   every instant between them is in it too. f must return something ===
-   comparable, a sign index or a gate and line, never a fresh object. */
+   ever move forward, the design sun follows the birth sun, and the ascendant
+   climbs outside the polar circles. Something moving forward that ends in
+   the bin it started in either never left it or went nearly all the way
+   round, and the widest span, an untimed day at an unknown offset, is fifty
+   hours, which carries the moon about thirty degrees and not three hundred.
+   The ascendant turns a full circle a day, so risingSign keeps its span
+   short itself. f must return something === comparable, a sign index or a
+   gate and line, never a fresh object. */
 function atSpan(b,f){
  if(!b.span)return f(b.jd);
  var a=f(b.span[0]);
@@ -41,7 +44,8 @@ function atSpan(b,f){
    timed birth with no time zone and no located place has no sun sign on a
    cusp day: the day is known, the side of the cusp is not. That is null,
    and measured over four years of unlocated births at four clock times it
-   was 217 of 5840, one in 27. */
+   was 217 of 5840, one in 27. An untimed birth is the same on the 3 days in
+   100 the sun changes sign inside its day, so a bare date reads null there. */
 function sunSign(d,bt){
  var b=birthJD(bt||{d:d});
  if(b){var i=atSpan(b,function(jd){return signOf(sunLon(jd));});
@@ -55,8 +59,9 @@ function sunSign(d,bt){
  return {nm:ZSIGN[11][2], el:ZSIGN[11][3], mode:ZSIGN[11][4]};}
 
 /* The moon moves about thirteen degrees a day, so the birth time is not
-   a refinement here, it is most of the answer. Without one the record
-   gets local noon and the reading says the time is missing.
+   a refinement here, it is most of the answer. Without one the record is
+   its whole day, and the moon is null on the 44 days in 100 it changes
+   sign inside it, where it used to be read at noon and printed as settled.
    A time with no located place is a day wide window, and the moon crosses
    half a sign in it, so it is null when the window straddles a cusp rather
    than whichever side Greenwich happened to put it on. On the same 5840
@@ -69,10 +74,22 @@ function moonSign(bt){
 /* The ascendant needs a place. Without one this returns null and the
    product says so, because a rising sign invented from a sunrise that
    was never checked is the kind of claim this instrument does not make. */
+/* The place is the table's exact city or, for a named zone, the zone's
+   representative point, which zonePoint marks approx. A timed record only
+   carries a span here when the clocks changed at that hour, and it was
+   read at the first offset and printed: an hour is half a sign of
+   ascendant. It goes through atSpan like every other reading now. Two hours
+   is the ceiling because that keeps the check complete: measured at 66.5
+   degrees, the steepest a zone point reaches, two hours move the ascendant
+   at most 193 degrees, and it has to be under 330 for two ends to decide.
+   The widest real case past that is Samoa skipping 30 December 2011, a
+   whole day that never happened, and a day turns the ascendant right round. */
 function risingSign(bt){
  var b=birthJD(bt);
  if(!b||!b.place||!b.timed)return null;
- return zFromLon(ascendant(b.jd,b.place.lat,b.place.lon));}
+ if(b.span&&(b.span[1]-b.span[0])*24>2)return null;
+ var P=b.place, i=atSpan(b,function(jd){return signOf(ascendant(jd,P.lat,P.lon));});
+ return i===null?null:ZSIGN[ZI[i]];}
 function lifePath(d){
  var v=d.replace(/-/g,'').split('').reduce(function(a,c){return a+ +c;},0);
  while(v>9&&v!==11&&v!==22&&v!==33)
@@ -114,8 +131,10 @@ function hdOf(b){
     just over one, so the two ends of the window never share a line and an
     unlocated birth gets no gate here at all. That is measured, not
     assumed, and it is why these come back null rather than a gate with a
-    line quietly dropped. Located or untimed, span is null and this is
-    the old reading exactly. */
+    line quietly dropped. An untimed birth is the same case for the same
+    reason: its day moves the sun at least 0.95 degrees, so the line is
+    never settled, and a gate with the line printed was a line nobody read.
+    Located and timed, span is null and this is the old reading exactly. */
  if(atSpan(j,function(jd){return _gl(sunLon(jd));})===null
   ||atSpan(j,function(jd){return _gl(sunLon(designJD(jd)));})===null)
   return {type:null, authority:null, unresolved:typeWhy,
@@ -133,7 +152,8 @@ function geneKey(b){
  var j=birthJD(b);
  if(!j)return {gate:null, line:null, unresolved:'no birth date'};
  if(atSpan(j,function(jd){return _gl(sunLon(jd));})===null)
-  return {gate:null, line:null, unresolved:'needs a time zone the instrument can read'};
+  return {gate:null, line:null,
+   unresolved:j.timed?'needs a time zone the instrument can read':'needs a birth time'};
  var g=gateOf(sunLon(j.jd));
  return {gate:g.gate, line:g.line, lon:g.lon};}
 function spiritual(name){
@@ -151,10 +171,17 @@ function spiritualOf(bt){
  return {sun:sun.nm, sunEl:sun.el, sunMode:sun.mode, moon:mn[2]||null, moonEl:mn[3]||null,
   /* null rather than a guess. the reading prints what is missing. */
   rising:rs?rs[2]:null, risingEl:rs?rs[3]:null,
-  needsPlace:!rs&&!!bt.t, needsTime:!(b&&b.timed),
-  /* a span on a record means its offset was not known, and what settles it
-     is a time zone, so that is what the reading asks for */
-  needsZone:!!(b&&b.span&&!b.zone),
+  /* where the horizon came from: 'place' is a city the table names, 'zone'
+     is the time zone's representative point and is nearer than nothing but
+     not the birthplace. Carried so a surface can tell the two apart. */
+  risingFrom:rs?(b.place.approx?'zone':'place'):null,
+  /* this was !rs and a time string, which said a birthplace was missing for
+     a zone that had given a horizon and was refused on a clock change */
+  needsPlace:!rs&&!!(b&&b.timed&&!b.place), needsTime:!(b&&b.timed),
+  /* a span on a timed record means its offset was not known, and what
+     settles it is a time zone, so that is what the reading asks for. An
+     untimed record's span is its day, and a zone does not settle that. */
+  needsZone:!!(b&&b.timed&&b.span&&!b.zone),
   chinese:CHINESE[((cy%12)+12)%12], celem:chineseElement(((cy%10)+10)%10), cyear:cy,
   lp:lifePath(bt.d), master:masterNumber(bt), hd:hdOf(bt), gk:geneKey(bt), birth:bt,
   root:sun.el?ELEM2ROOT[sun.el]:null, mode:sun.mode?MODE2NOTE[sun.mode]:null,

@@ -216,6 +216,56 @@ function zoneOffsets(z,y,m,d,hrs){
  var real=cand.filter(function(o){return _zoff(f,L-o)===o;});
  return (real.length?real:cand).map(function(o){return o/3600000;});}
 
+/* ---- the horizon a time zone can supply ----
+   A named zone settles the offset and not the horizon, so Rising stayed
+   unresolved for anyone outside the nine PLACE cities even after the zone
+   read. ZONEPT is the time zone database's own representative point for
+   every zone, and this reads one: {lat, lon, zone, approx:true}, or null.
+   approx is carried because the point is the zone's principal city and not
+   the person's birthplace, and a caller that shows a Rising from it should
+   be able to say so.
+   The name is tried as typed, then as Intl canonicalises it, then by
+   canonicalising every row, because the two lists spell the renamed zones
+   differently. Node and Chromium offer Asia/Calcutta and Europe/Kiev where
+   the table says Asia/Kolkata and Europe/Kyiv, and a person who picked a
+   name the browser itself suggested got no horizon: 19 of the 418 names
+   Intl offers missed the table as typed, and none miss after the third
+   try. That index costs about 50 ms once, and only on a miss.
+   Inside the polar circles part of the ecliptic never rises, the formula
+   in ascendant() hands back the setting point for some hours of the day,
+   and the monotone climb atSpan relies on stops being true. Sixteen of the
+   418 rows sit there, Longyearbyen, Thule, Resolute and most of Antarctica
+   among them, and they read null here
+   rather than lend a horizon that has no ascendant to give. */
+const POLAR=90-23.4392911;
+var _ZPT=null, _ZCANON=null;
+/* +DDMM[SS] or +DDDMM[SS] to degrees. A latitude is always an odd length
+   and a longitude an even one, which is how the two degree widths are told
+   apart; w is where the minutes start. */
+function _dms(s){
+ var w=(s.length%2)?3:4;
+ return (s[0]==='-'?-1:1)*(+s.slice(1,w)+(+s.slice(w,w+2))/60+(+s.slice(w+2)||0)/3600);}
+function _zcanon(z){
+ try{ return new Intl.DateTimeFormat('en-US',{timeZone:z}).resolvedOptions().timeZone; }
+ catch(e){ return null; }}
+function zonePoint(z){
+ if(!z||typeof z!=='string')return null;
+ if(!_ZPT){ _ZPT={};
+  Object.keys(ZONEPT).forEach(function(r){
+   ZONEPT[r].split(' ').forEach(function(t){
+    var m=/^(.+?)([+-]\d{4}(?:\d{2})?)([+-]\d{5}(?:\d{2})?)$/.exec(t);
+    if(m)_ZPT[r+'/'+m[1]]={lat:_dms(m[2]), lon:_dms(m[3])};});});}
+ var key=_ZPT[z]?z:null, c=null;
+ if(!key){ c=_zcanon(z); if(c&&_ZPT[c])key=c; }
+ if(!key&&c){
+  if(!_ZCANON){ _ZCANON={};
+   Object.keys(_ZPT).forEach(function(k){var kc=_zcanon(k); if(kc&&!_ZCANON[kc])_ZCANON[kc]=k;});}
+  key=_ZCANON[c]||null;}
+ if(!key)return null;
+ var p=_ZPT[key];
+ if(Math.abs(p.lat)>=POLAR)return null;
+ return {lat:p.lat, lon:p.lon, zone:key, approx:true};}
+
 /* a birth record to a Julian Day in UT, and the offset that was applied.
    returns null when the record cannot support it, rather than guessing.
    d is the date, t the local clock time, p the place, z the time zone. */
@@ -233,16 +283,39 @@ function birthJD(bt){
  if(dst)off+=1;
  /* A zone the person named outranks the table: it is their own statement
     about their own birth, and it carries the real rules for that year where
-    the table carries two hand written ones. The place still supplies the
-    horizon, which a zone cannot, so rising keeps needing a place. dst is
-    null on this path because Intl answers the offset and not the reason. */
+    the table carries two hand written ones. The horizon is a separate
+    question, answered by the place when the table names it and by the
+    zone's representative point when it does not. dst is null on this path
+    because Intl answers the offset and not the reason. */
+ /* AN UNTIMED BIRTH IS A DAY, NOT NOON. It was given local noon and read as
+    if that were the instant, so the moon, which changes sign every two and a
+    half days, was printed as settled on days it changed sign. Three of the
+    thirteen reference cases, with their times taken away, read wrong against
+    an independent ephemeris: James Aries where the day's later hours are
+    Taurus, Ana Gemini against Cancer, Tomas Leo against Cancer. Measured
+    over twenty years of located days, the moon changes sign inside the local
+    day on 44 in 100, the sun on 3, a gate on 17, and a gate and line on every
+    one, because the sun moves at least 0.95 degrees a day and a line is 0.94.
+    So an untimed record carries the first and last minute of its day as a
+    span, and every reading goes through the same both ends check the
+    unknown offset already uses. jd stays noon, so nothing that does not
+    check the span moves in this change. */
+ var last=23+59/60;
  var zo=bt.z?zoneOffsets(bt.z,y,m,d,hrs):null;
  if(zo){
   off=zo[0]; dst=null;
   var zspan=zo.length>1?[julianDay(y,m,d,hrs-Math.max(zo[0],zo[1])),
                           julianDay(y,m,d,hrs-Math.min(zo[0],zo[1]))]:null;
-  return {jd:julianDay(y,m,d,hrs-off), place:pl, timed:timed, offset:off, dst:dst,
-   span:(timed?zspan:null), zone:bt.z};}
+  /* the day's ends each at their own offset, since the clocks can change
+     inside it, and at the offset that makes the day widest if they did at
+     either end */
+  if(!timed){ var z0=zoneOffsets(bt.z,y,m,d,0), z1=zoneOffsets(bt.z,y,m,d,last);
+   zspan=[julianDay(y,m,d,0-Math.max.apply(null,z0)), julianDay(y,m,d,last-Math.min.apply(null,z1))];}
+  /* A place the table names is the exact horizon and keeps it. Otherwise
+     the zone's own representative point stands in, which is what lets a
+     person outside the nine cities have a Rising at all. */
+  return {jd:julianDay(y,m,d,hrs-off), place:pl||zonePoint(bt.z), timed:timed, offset:off, dst:dst,
+   span:zspan, zone:bt.z};}
  /* A PLACE THIS TABLE DOES NOT NAME IS AN UNKNOWN OFFSET, NOT OFFSET ZERO.
     The line above reads a missing place as Greenwich, so a clock time typed
     in Auckland was treated as the same clock time in London, thirteen hours
@@ -255,7 +328,10 @@ function birthJD(bt){
     are the widest clock offsets in use. A reading that comes out the same at
     both ends is true whatever the place was. One that differs is refused by
     the caller. jd keeps the old guess so nothing that does not check the
-    span moves in this change. An untimed record is not given one: its noon
-    is already a guess of its own, and that is a separate question. */
- var span=(timed&&!pl)?[julianDay(y,m,d,hrs-14), julianDay(y,m,d,hrs+12)]:null;
+    span moves in this change. An untimed record's span is its whole local
+    day, for the reason given above the zone branch, and an untimed record
+    with no place is that day at every offset, fifty hours of sky. */
+ var span=timed?(pl?null:[julianDay(y,m,d,hrs-14), julianDay(y,m,d,hrs+12)])
+  :(pl?[julianDay(y,m,d,0-off), julianDay(y,m,d,last-off)]
+      :[julianDay(y,m,d,0-14), julianDay(y,m,d,last+12)]);
  return {jd:julianDay(y,m,d,hrs-off), place:pl, timed:timed, offset:off, dst:dst, span:span};}

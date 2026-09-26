@@ -860,11 +860,14 @@ g('19 \u00b7 energetics, the birth module');
   'Scorpio','Sagittarius','Capricorn','Aquarius','Pisces']);
 
  /* every day of a leap year must name exactly one real sign */
+ /* At noon in Lisbon and not off the bare date. A bare date is now its whole
+    day at every offset, and refuses the sun on a cusp day, which is right
+    and is asserted below; this check is about the calendar, not that. */
  let bad=[],seen={};
  for(let m=1;m<=12;m++){
   const dim=[31,29,31,30,31,30,31,31,30,31,30,31][m-1];
   for(let d=1;d<=dim;d++){
-   const s=sunSign('2024-'+pad(m)+'-'+pad(d));
+   const s=sunSign('2024-'+pad(m)+'-'+pad(d),{d:'2024-'+pad(m)+'-'+pad(d),t:'12:00',p:'Lisbon, PT'});
    if(!s||!NAMES.has(s.nm))bad.push(m+'/'+d+' -> '+(s&&s.nm));
    else seen[s.nm]=(seen[s.nm]||0)+1;}}
  ok(bad.length===0,'every day of the year names a real sun sign'+(bad.length?'  '+bad.slice(0,4).join(', '):''));
@@ -933,9 +936,11 @@ g('19 \u00b7 energetics, the birth module');
  /* the whole wheel is reachable. the old gene key could only ever
     produce 31 of the 64 gates, so 33 existed for nobody. */
  ok(new Set(GATE_WHEEL).size===64,'all 64 gates are on the wheel, got '+new Set(GATE_WHEEL).size);
+ /* timed and located, because an untimed day always moves the sun across a
+    line and so never prints a gate, which is asserted further down */
  let gates=new Set();
  for(let m=1;m<=12;m++)for(let d=1;d<=28;d+=1)
-  gates.add(geneKey({d:'1990-'+pad(m)+'-'+pad(d)}).gate);
+  gates.add(geneKey({d:'1990-'+pad(m)+'-'+pad(d),t:'12:00',p:'Lisbon, PT'}).gate);
  ok(gates.size>=60,'a year of births reaches most of the wheel, got '+gates.size+' gates');
 
  /* Li Chun, not the first of January. A birth in the first weeks of a
@@ -1030,17 +1035,126 @@ g('19 \u00b7 energetics, the birth module');
  ok(nz.moon===ARIES[signOf(moonLon(nzJD))]&&nz.sun===ARIES[signOf(sunLon(nzJD))]
   &&nz.gk.gate===E.gateOf(sunLon(nzJD)).gate&&nz.hd.profile&&!nz.needsZone,
   'a named zone resolves the moon, the sun and the gates at the real instant');
- ok(nz.rising===null&&nz.needsPlace,'and still no ascendant, which needs a horizon and not an offset');
+ /* Auckland is not in PLACE, so the horizon is the zone's published point,
+    +3652+17446 in zone.tab, typed here from the table and not read back out
+    of the engine, so a parse that drifted cannot agree with itself. */
+ const nzAsc=ARIES[signOf(E.ascendant(nzJD,-(36+52/60),174+46/60))];
+ ok(nz.rising===nzAsc&&nz.risingFrom==='zone'&&!nz.needsPlace,
+  'and the zone gives the ascendant from its published point, marked as the zone, got '+nz.rising+' want '+nzAsc);
  /* a clock reading that happened twice is a window across both, not a pick */
  const twice=E.birthJD({d:'2010-11-07',t:'01:30',z:'America/New_York'});
  ok(twice.span&&Math.abs((twice.span[1]-twice.span[0])*24-1)<1e-6,
   'the hour that happened twice is a one hour window');
  ok(spiritualOf({d:'1990-01-15',t:'08:00',p:'Auckland',z:'Not/AZone'}).needsZone===true,
   'and an unreadable zone reads as no zone at all');
- /* an untimed birth with a zone takes local noon at the real offset and is
-    never a window, because its noon is already the stated guess */
+ /* An untimed birth with a zone keeps noon at the real offset as its jd, and
+    now carries its whole local day as the window. This asserted no window,
+    on the reasoning that noon was the stated guess, and that guess printed
+    a moon sign the day did not settle. */
  const noon=E.birthJD({d:'1990-01-15',z:'Pacific/Auckland'});
- ok(noon.offset===13&&noon.span===null&&!noon.timed,'an untimed birth with a zone reads noon at +13, no window');
+ ok(noon.offset===13&&!noon.timed&&noon.span
+  &&Math.abs(noon.span[0]-julianDay(1990,1,15,-13))<1e-9
+  &&Math.abs(noon.span[1]-julianDay(1990,1,15,23+59/60-13))<1e-9,
+  'an untimed birth with a zone is its local day at +13, midnight to 23:59');
+
+ /* AN UNTIMED BIRTH IS ITS DAY, NOT NOON. It was read at local noon and the
+    moon printed as settled on days it changes sign. Reproduced on the roster
+    with the times taken away, against PyEphem and not this engine: James read
+    Aries where his day ends in Taurus, Ana Gemini against Cancer, Tomas Leo
+    against Cancer. The contract, checked hour by hour against the raw sky at
+    every offset the record allows: any sign printed for an untimed birth is
+    the sign at every minute of its day, and no gate, line, profile or rising
+    is printed, since a day always moves the sun across a line. */
+ const DAYEND=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,23+59/60];
+ let ut=0,utKept=0,utShut=0,utSunShut=0,utBad=[];
+ [['Lisbon, PT',null],['Chicago, IL',null],[null,'Pacific/Auckland'],[null,null]].forEach((w,wi)=>{
+  for(let k=0;k<120;k++){
+   const dt=new Date(Date.UTC(1961,0,1)+Math.round(k*11.3+wi)*864e5), s=dt.toISOString().slice(0,10);
+   const y=dt.getUTCFullYear(),m=dt.getUTCMonth()+1,d=dt.getUTCDate();
+   const bt={d:s}; if(w[0])bt.p=w[0]; if(w[1])bt.z=w[1];
+   const sp=spiritualOf(bt); ut++;
+   DAYEND.forEach(h=>{
+    const offs=w[1]?zoneOffsets(w[1],y,m,d,h):w[0]?[E.birthJD(bt).offset]
+     :[-12,-11,-10,-9,-8,-7,-6,-5,-4,-3,-2,-1,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14];
+    offs.forEach(off=>{const jd=julianDay(y,m,d,h-off);
+     if(sp.moon&&ARIES[signOf(moonLon(jd))]!==sp.moon)utBad.push(s+' '+(w[0]||w[1]||'no place')+' moon at '+h+'h');
+     if(sp.sun&&ARIES[signOf(sunLon(jd))]!==sp.sun)utBad.push(s+' '+(w[0]||w[1]||'no place')+' sun at '+h+'h');});});
+   if(sp.moon)utKept++; else utShut++;
+   if(!sp.sun)utSunShut++;
+   if(sp.gk.gate!==null||sp.hd.personality||sp.hd.design||sp.hd.profile||sp.rising)
+    utBad.push(s+' printed a gate or a rising');
+   if(!sp.needsTime||sp.needsZone||sp.gk.unresolved!=='needs a birth time')
+    utBad.push(s+' asked for the wrong thing');}});
+ ok(utBad.length===0,'an untimed birth never prints a sign its day could change, '+ut+' births'
+  +(utBad.length?'  '+utBad.slice(0,3).join(', '):''));
+ ok(utKept>0&&utShut>0&&utSunShut<ut/5,
+  'and it is not a blanket refusal: moon kept '+utKept+' refused '+utShut+', sun refused '+utSunShut);
+ const bare=n=>spiritualOf({d:BIRTH[n].d,p:BIRTH[n].p});
+ ok(bare('James').moon===null&&bare('Ana').moon===null&&bare('Tomas').moon===null,
+  'James, Ana and Tomas without their times no longer print the noon moon, which was wrong for all three');
+ ok(spiritual('James').moon==='Taurus'&&spiritual('Ana').moon==='Cancer'&&spiritual('Tomas').moon==='Cancer',
+  'and with their times they read what the independent ephemeris reads');
+
+ /* THE ZONE'S HORIZON, ruled 26 September as one point per zone and not a
+    gazetteer. The carried table is compared row by row with the machine's
+    own copy of zone.tab, so a coordinate typed by hand cannot pass. A machine
+    with no tzdata skips this and says so rather than counting it green. */
+ const {zonePoint,ZONEPT}=E, fs=require('fs');
+ const carried={};
+ Object.keys(ZONEPT).forEach(r=>ZONEPT[r].split(' ').forEach(t=>{
+  const m=/^(.+?)([+-]\d{4}(?:\d{2})?)([+-]\d{5}(?:\d{2})?)$/.exec(t); if(m)carried[r+'/'+m[1]]=m[2]+m[3];}));
+ if(fs.existsSync('/usr/share/zoneinfo/zone.tab')){
+  const pub=fs.readFileSync('/usr/share/zoneinfo/zone.tab','utf8').split('\n')
+   .filter(l=>l&&l[0]!=='#').map(l=>l.split('\t'));
+  const diff=pub.filter(c=>carried[c[2]]!==c[1]).map(c=>c[2]);
+  ok(diff.length===0&&pub.length===Object.keys(carried).length,
+   'the carried zone points are zone.tab exactly, '+pub.length+' rows'+(diff.length?'  '+diff.slice(0,3).join(', '):''));
+ } else console.log('  skip  no /usr/share/zoneinfo/zone.tab on this machine to compare against');
+ /* published rows typed from the table, one per hemisphere quarter */
+ const near1=(p,la,lo)=>p&&Math.abs(p.lat-la)<1e-6&&Math.abs(p.lon-lo)<1e-6;
+ ok(near1(zonePoint('Pacific/Auckland'),-(36+52/60),174+46/60)
+  &&near1(zonePoint('America/Los_Angeles'),34+3/60+8/3600,-(118+14/60+34/3600))
+  &&near1(zonePoint('Europe/London'),51+30/60+30/3600,-(0+7/60+31/3600))
+  &&near1(zonePoint('America/Sao_Paulo'),-(23+32/60),-(46+37/60)),
+  'ISO 6709 reads to the published degrees in all four quarters, seconds included');
+ /* every name the time zone field offers must find its row, including the
+    renamed ones the two lists spell differently */
+ const offered=(()=>{try{return Intl.supportedValuesOf('timeZone');}catch(e){return [];}})();
+ /* a name with no horizon must be a row whose own latitude is polar, read
+    straight off the carried string, degrees and minutes */
+ const polarRow=n=>{const c=carried[n]; if(!c)return false;
+  return +c.slice(1,3)+(+c.slice(3,5))/60>=90-23.4392911;};
+ const noPoint=offered.filter(n=>!zonePoint(n)), lost=noPoint.filter(n=>!polarRow(n));
+ ok(offered.length>300&&lost.length===0,'every zone the field offers has a horizon or is polar, '
+  +offered.length+' offered, '+noPoint.length+' polar'+(lost.length?'  lost '+lost.slice(0,4).join(', '):''));
+ ok(zonePoint('Asia/Calcutta').zone==='Asia/Kolkata'&&zonePoint('US/Pacific').zone==='America/Los_Angeles'
+  &&zonePoint('Europe/Kiev').zone==='Europe/Kyiv','a renamed or linked zone finds the row it was renamed to');
+ ok(zonePoint('Arctic/Longyearbyen')===null&&zonePoint('Antarctica/McMurdo')===null,
+  'inside the polar circles there is no ascendant to give, so no horizon');
+ ok(zonePoint('Not/AZone')===null&&zonePoint('')===null,'and an unreadable name has none');
+ /* a zone Intl reads that is no place on earth: an offset without a horizon */
+ ok(zonePoint('UTC')===null&&zonePoint('Etc/GMT+5')===null
+  &&spiritualOf({d:'1990-01-15',t:'08:00',z:'Etc/GMT+5'}).needsPlace===true,
+  'UTC and the fixed offset zones read the clock and give no horizon, so Rising still asks for a place');
+ /* the nine cities keep their exact horizon, zone or no zone */
+ ok(Object.keys(BIRTH).filter(k=>BIRTH[k]).every(n=>spiritual(n).risingFrom==='place'),
+  'every reference case reads its rising from its own city');
+ const both=spiritualOf({d:'1988-04-12',t:'07:30',p:'Chicago, IL',z:'America/Chicago'});
+ ok(both.rising===risingSign({d:'1988-04-12',t:'07:30',p:'Chicago, IL'})[2]&&both.risingFrom==='place',
+  'a place the table names outranks the zone point for the horizon');
+ /* a clock change: the ascendant is printed only when both offsets agree */
+ let foldBad=[];
+ for(let mn=0;mn<60;mn+=5){
+  const t='01:'+pad(mn), r=risingSign({d:'2010-11-07',t:t,z:'America/New_York'});
+  const P=zonePoint('America/New_York'), hrs=1+mn/60;
+  const a=signOf(E.ascendant(julianDay(2010,11,7,hrs+4),P.lat,P.lon)),
+        b=signOf(E.ascendant(julianDay(2010,11,7,hrs+5),P.lat,P.lon));
+  if(r&&!(a===b&&ARIES[a]===r[2]))foldBad.push(t);
+  if(!r&&a===b)foldBad.push(t+' refused though both agree');}
+ ok(foldBad.length===0,'the hour that happened twice prints a rising only where both offsets agree'
+  +(foldBad.length?'  '+foldBad.join(', '):''));
+ ok(risingSign({d:'2011-12-30',t:'12:00',z:'Pacific/Apia'})===null,
+  'and the day Samoa skipped, a whole turn of the sky, gives none');
  /* spiritual() is keyed on the BIRTH table. "You" is deliberately null,
     because the live profile has no birth data until someone enters it, and
     an unknown name is null for the same reason. Both are the contract, not
