@@ -12591,3 +12591,17 @@ copy pass to soften it.
 above, plus when it starts counting against a checkout that is not
 open yet.
 
+## CP. `tools/shots.js` was photographing the boot sheet, not the page,
+## on the first several tabs. 26 September.
+
+**A real tool bug, precisely reported.** The three second boot sheet
+(CLAUDE.md, `tests/collide.js`) means `shots.js`'s fixed 1200ms wait
+after `p.goto` was not long enough, so `1600-energy.png`, the Body page
+at the fourth tab, and every shot taken before the boot cleared,
+captured the boot logo instead of the page. Later shots such as
+`390-snow.png` were fine by coincidence of timing, not by the tool
+actually waiting for anything. A seat reviewing these images was
+reviewing the boot sheet. Fixed directly: `shots.js` now waits for the
+`booted` class the same way every gate already does, copied from
+`tests/collide.js`, before its first shot per tab.
+

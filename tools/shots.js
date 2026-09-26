@@ -5,6 +5,13 @@ const {chromium}=require('playwright');
 const path=require('path'), fs=require('fs');
 const OUT=process.argv[2]||'shots';
 const W=+(process.argv[3]||1600), H=+(process.argv[4]||1000);
+/* THE BOOT IS A THREE SECOND SHEET. A fixed 1200ms wait after goto shot the
+   boot logo instead of the page on every tab reached before the sheet
+   cleared, measured 26 September on 1600-energy.png, the Body page. Wait for
+   the booted class the same way every gate already does. */
+const booted=async p=>{try{await p.waitForFunction(
+  ()=>document.body.classList.contains('booted'),null,{timeout:12000});}
+ catch(e){/* reduced motion clears it synchronously; a miss is not a failure */}};
 /* THE LIST WAS FIVE AND THE PRODUCT HAS TEN SURFACES. Settings is integer 9
    and is not in TABDEF, so it was never shot, which made the account area the
    one surface whose first reviewer was the owner. Intake, knowledge, compass
@@ -19,7 +26,8 @@ const TABS=[['story',0],['summary',1],['field',2],['energy',3],['analytics',4],
  const errs=[];
  p.on('pageerror',e=>errs.push(String(e.message)));
  await p.goto('file://'+path.resolve('source.html'));
- await p.waitForTimeout(1200);
+ await booted(p);
+ await p.waitForTimeout(300);
  for(const [nm,i] of TABS){
   await p.evaluate(t=>{setTab(t);render&&render();},i);
   await p.waitForTimeout(700);
