@@ -15599,3 +15599,26 @@ addresses once it has arrived, off by default; and what replaces the
 old boot's gold halo now that the ending has no standing figure to
 crown.
 
+## EU. The build arrived cut a third time, and this one really was my
+## own process failure, owned plainly. 26 September.
+
+**His words: "fix this so we don't see it again,"** with the same
+watchdog message, build `8699e52`, the arrival prototype's own build
+stamp. Not a repeat of EJ's cause, and not a new infrastructure gap
+either: the Seven Seats file sent earlier the same night was packed
+first, exactly per the rule EB and EJ already established; the
+arrival prototype was not, sent raw at 1.9 megabytes. My own
+inconsistency in applying a rule I had already set, nothing else.
+Packed the same file to 931 kilobytes and resent it.
+
+**His follow up, answered directly rather than left implied.** "Or is
+it needed for some reason?" No: the file runs identically either way,
+packing only changes the odds it arrives whole. Said so plainly
+rather than let the fix look more mysterious than it is.
+
+**The durable fix is process, not another patch.** Every prototype
+file handed to him from here goes through `tools/pack.js` before it
+is sent, without exception, and any agent asked to build one is told
+to pack its own output as a last step rather than leaving that to be
+remembered by hand afterward each time.
+
