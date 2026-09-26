@@ -16682,3 +16682,29 @@ unrelated stale copies (`tools/loopsim.js`, `DESIGN-gamification.md`,
 `proto/avatar/risesim.js`) are named rather than silently fixed, and
 queued as `task_e084f9e1`. Zero em dashes across every changed file.
 
+## FM. The queued cleanup from FL comes back, four more places
+## carrying the same stale CQ. 26 September.
+
+`task_e084f9e1` (queued at the end of FL) started and returns a
+precise, itemised list of every remaining place the 20 September CQ
+arithmetic is still typed by hand: `tools/loopsim.js`'s own `PANEL`
+and its "800 of 1000" line (845 on its own rows, the same fact FL
+already found about `losssim.js`'s identical claim); two design docs,
+`DESIGN-gamification.md` and `docs/briefs/design-gamification.md`,
+quoting stale `loopsim` figures; `proto/avatar/risesim.js`'s own copy
+of the old grid; and three already red build scripts
+(`proto/ritual/build-data.js`, `ritdata.js`, `caldata.js`) that
+transcribe `PANEL-ritual-1000.md`'s own stale CQ and DQ values and
+fail identically before and after FL's fix, so not a regression from
+tonight, a separate, older break.
+
+**Dispatched with the same standard as FF, FG and FL:** port
+`3004f4d`'s own pattern (read levels off the engine at run time,
+default the harm model to expression, print both readings, leave
+question 1 to him), re-run `loopsim.js` and re-date every document
+that quotes it, check whether `risesim.js`'s stale grid actually
+matters to anything it computes before fixing it, and decide with
+evidence, for the three red build scripts, whether to re-pin to the
+current engine or read live, verifying in a copy of the directory
+first since a successful run overwrites real json output.
+
