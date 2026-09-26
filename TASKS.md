@@ -13840,3 +13840,57 @@ contradict; four facts about his own history that the locked
 coherence formula is anchored to; and the one number for what counts
 as heavy shadow load, engineering ready the moment he states it.
 
+## DK. Two real design asks, marked with a reference screenshot: a
+## floating glass control overlay to replace the secondary nav, and
+## real iconography and synthesis for the celestial section. 26
+## September.
+
+**The reference image.** A weather app's map screen, with a dark
+floating pill of icon buttons across the top, one of them lit, and a
+yellow hand drawn arrow pointing at it. His words: "the example I gave
+you of what I want for the overlay, something like the attached, it's
+glass, like Apple glass, it floats over the design and it has all of
+the iconography for the field and it can turn everything on and off,
+and this would be consistent across all the tools, saboteurs,
+complexes, hyper complexes, turn them all on and off."
+
+**Ask one: replace the Field's secondary nav with this floating glass
+toggle bar, not just shrink it.** His words: "I don't have my little
+overlay over the field so I could turn all the tools on and off, and I
+don't want that secondary navigation, I already fucking told you
+that." The secondary nav is `VIEWS` in `wheel.js`, Charge, Patterns,
+Chains, Blueprint, the same row BA1 and BA4 already marked for a
+shrink. No earlier round on file asked for it gone outright rather
+than shrunk, so this is logged as said now rather than claimed as a
+repeat. A real architecture note going into the dispatch: `VIEWS` is
+not just a label row, it is cumulative, each depth is the one before
+it plus more, and zoom rides the same ladder, "zoom only ever adds."
+His own ask, "turn everything on and off," is independent multi select
+toggles, not a ladder. The two can both be true if the ladder still
+governs what is ever computed and available, and the toggle bar only
+governs what is currently drawn, which is a rendering question, not a
+reopening of the depth math.
+
+**Ask two: real iconography and real synthesis for the celestial
+section, not a wall of text.** His own model, in his words: "your sun
+is how you express yourself physically, your moon is your internal
+monologue, your rising is the driving energy, the driving kind of
+motivators, and your Eastern symbol is how you navigate the world." His
+own worked examples: "as a water rat, I'm constantly on the hunt to
+find solutions, to look for the cheese, the water symbol means I
+conform to a shape or I can change the shape of mountains" against
+"the fire horse, trample and change, setting everything ablaze, a
+personality of dynamic change." He wants simple symbolic icons in
+place of the rows the DG round just shipped, a click on one to open
+its own detail on the right, and critically the combination read as
+one behavioral synthesis rather than four separate facts: "we want to
+take the behavioral energy behind that and the symbolic energy and
+translate that into behavioral energy, because that plays across the
+entire structure." That last clause is his own note that this pattern,
+symbol translated into behavioural language rather than left as a
+label, is worth carrying past this one section.
+
+**Both dispatched as design work, not build work yet**, per this
+project's own rule against sending him another static comp: whatever
+comes back has to be something he can open and press, not read about.
+
