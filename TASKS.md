@@ -16082,3 +16082,27 @@ rather than needing to be invented fresh.
   Instagram, Facebook, X and his Beehiiv newsletter, a written plan
   rather than anything posted live anywhere.
 
+**The mission capture is done, verified directly.** `BRAND.md` section
+4, commit `3c445de`. Read the actual section myself rather than
+taking the report on trust: the quote, the edit table and the four
+hedge phrases are all there as described, every edit against his
+words is marked in brackets, and the file carries zero em dashes.
+Ran `node marketing/refuse.js` on the added text myself, clean. Two
+real ambiguities are correctly left for him rather than guessed
+past: whether "is by far the end of the road" should read "far from"
+instead, since it is the one line that contradicts the modesty of
+everything around it, and whether the Terminator sentence, a
+factual claim rather than a hubris problem, stays as dictated.
+
+**A real defect found in passing, not part of this round's work.**
+Running `node marketing/tests.js` myself turned up 17 failures, not
+caused by anything committed today: `field.js`'s computed grid level
+for several reference people (Marcus, Angela, Sofia, James, Ana,
+Gordon, Diane, Derek) now disagrees with `losssim.js`'s own recorded
+level for the same people, the exact defect shape `marketing/README.md`
+already describes being fixed once before. Something in the engine's
+own band boundaries has moved since that fix without `marketing/`'s
+own panel being re-synced to it. Not diagnosed further or fixed here;
+logged so it is not lost, since `marketing/` is explicitly another
+seat's ground per its own README.
+
