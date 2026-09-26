@@ -15253,3 +15253,51 @@ evidence favours for each. Not decided here, since deciding it wrongly
 costs real rework either way; put to him plainly next round rather
 than guessed at silently.
 
+## EL. Seven Seats, built on the real avatar mechanic, verified myself
+## before sending. 26 September.
+
+**Real, not staged, and checked rather than trusted.** Re-ran the
+prototype's own 114-check suite myself, 114 passed, 0 failed,
+matching exactly, and looked at a screenshot directly: the ring, the
+top three gaps ranked by real seat load, a releasing panel carrying
+his own public speaker example word for word, and a real release
+card one press away. Everything switches inside the one file, no
+board, nothing links out, the EA correction already carried forward
+without needing to be told twice.
+
+**Every path is the real mechanic, not a reenactment of it.** Pressing
+"Release these" calls the shipped release picker itself and opens the
+real release card; the writes are replayed rather than saved only
+because a worked example correctly refuses to persist, the same
+refusal every other worked-example release already carries. The
+ritual for each gap comes from the real `ritFor`, keyed to that gap's
+own seat rather than the darkest seat overall. Measured on James: his
+first gap, at the sacral, opens a real card naming eight addresses
+and twenty five patterns, and one real run moves it from 5.5 to 3.9.
+
+**A real, load-bearing gap found underneath the mockup, not new:**
+no reference persona has any becoming pairs on file, and nothing
+shipped can write one yet; the drill's own text already promises two
+journal questions that do not exist, and Summary's own paragraph
+about what stands in the way is a guaranteed false all clear today,
+since it reads fields nothing ever writes. Already on record in
+`DESIGN-avatar.md`, not rediscovered here, carried forward rather than
+re-reported as new.
+
+**One real, load-bearing question, not padded with others for
+appearance.** What counts as a pair being cleared. Measured on James
+running one release a day: the shipped rule, no charge at all left at
+the seat, still reads zero percent after eight straight days and only
+twenty after two weeks, the exact stretch where a person decides
+whether to keep going. Three ways shown with real numbers behind
+each: keep the strict rule as is; light a peg the moment its seat
+drops under the same line Summary already calls held, which reads
+sixty to seventy five percent done on day one having done nothing;
+or keep the strict rule for each peg and draw the centre as how much
+of the gap has closed since it was written, which needs one new
+stored value per pair and reads ninety one percent at day nine on the
+same data. The house rule against printing a count over a total holds
+under all three; the number is drawn, never printed as a fraction.
+
+**Sent to him directly, the packed file, not a link to describe it.**
+
