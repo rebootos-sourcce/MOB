@@ -16194,3 +16194,63 @@ level 1 people again so the band gate is actually exercised. Not
 touching `atuned_src` or `source.html`. Done when `tests.js` exits
 zero and `hooksim.js` reports.
 
+## FG. The marketing gate is green again, with a root cause and a
+## real policy question it surfaces. 26 September.
+
+Root cause found by bisecting every committed `engine.js` against
+`field.js`'s own reader: the nine reference readings hold exactly
+through `fbe941c` (21 September) and move only at `dd0bf23` (25
+September), the CQ refit named in `DECISIONS.md`, laws summed over
+210 replacing intention times integrity over resistance. `TIERDEF`
+itself has not moved since before `field.js` existed. `losssim.js`'s
+recorded levels were the thing actually stale, typed in from
+`PANEL-flow-1000.md` by hand and never computed from either CQ
+formula. Commit `e5a95968e40`.
+
+**Independently re-verified.** `node marketing/tests.js` exits clean
+myself, 242 assertions 0 failures, matching exactly. `node
+marketing/hooksim.js --validate` reports 5 groups pass. Ran the full
+sweep myself too: field leads state 15 of 15 runs by 272 to 494 of
+1000, state leads role 15 of 15 by 26 to 74, matching the reported
+table digit for digit. Confirmed `dd0bf23` is a real commit and is in
+fact the CQ refit it is credited as.
+
+**The fix re-pins the panel to today's engine rather than loosening
+the check**, per the standing rule this was dispatched under: the
+nine reference people's CQ, expression and both grid levels are
+recomputed from the current engine and named to the commit, group 1
+also now checks the engine's own CQ against the law sum directly so
+the next drift says which side moved, and two deliberate breakages
+are asserted caught.
+
+**A real policy question this surfaces, his to rule on, not decided
+here.** Level 1, the band the marketing guard exists to protect from
+any hook at all, cannot be read on the new CQ scale; nobody in the
+panel scores that low on it anymore. The fix moved the door out onto
+"expression" instead (CQ with the load's pull removed), matching a
+change the engine's own clinician referral already made, per BB5,
+which TASKS.md already records as waiting on his confirmation. One
+real consequence, named directly: Ana, the crisis persona, was
+refused every hook on the 20 September panel and is not refused
+under this fix; her 49 people are now served H07, one of four lines
+deliberately written for readers nearest collapse. This is not a bug
+report, it is the guard's own protected floor moving under a change
+already pending his sign off elsewhere, and it should not be decided
+by default.
+
+**Also found and fixed, not left as a shrug:** the "voice gate
+errored" failure was `marketing/`'s own bug, not the voice checker's.
+Sixteen of ninety nine hook lines genuinely fail the owner's own 21
+September objection rules (naming a count against a total, reading
+out a serial number), and joining ninety nine lines into one call
+had been silently hiding all but two of them. Copy rewritten to lead
+on the nerve rather than the number; `check.py` itself untouched.
+
+**Counts refreshed in `hooks.js`, `README.md`, `GUARD.md` and
+`MARKETING-social.md`, dated to this run**, with two he should read
+directly: refused at level 1 dropped from 106 to 35 of 1000, and
+level 6 and up rose from 155 to 647, purely from the same CQ scale
+change, nobody's actual charge moved. `MARKETING-social.md`'s own
+"H02 at 90" and "first four cover 556" are corrected from served
+counts to key counts, which is what they always were.
+
