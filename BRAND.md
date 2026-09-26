@@ -162,7 +162,9 @@ dictated fragment to its sentence.
 > and each other. New identities emerge and enter the zeitgeist. Idealized
 > form and combinations became sacrosanct to our imaginations, forever wired
 > into the zeitgeist. It's a trope that we've unlocked that we will forever
-> follow. The Terminator movie gave rise to AI robots today.
+> follow. The Terminator movie [shaped how we picture] AI robots today[, and
+> it is not the first. The trope goes back] millennia. Even the golems from
+> Jason and the Argonauts are a form of Terminator.
 >
 > We identified with the roles and the experience conditioning us over time
 > to become the roles that we identify with. This is the lie. It's the
@@ -190,6 +192,7 @@ dictated fragment to its sentence.
 | Idealized form and combinations. Became sacrosanct | joined, words unchanged | punctuation only |
 | whether we're stepped on our path or off | whether [we've] stepped | we're stepped does not parse |
 | and is by far the end of the road | and is [far from] the end of the road | **not a grammar fix. It reverses his literal words**, and is held open as the first flag below |
+| The Terminator movie gave rise to AI robots today. | The Terminator movie [shaped how we picture] AI robots today[, and it is not the first. The trope goes back] millennia. Even the golems from Jason and the Argonauts are a form of Terminator. | **ruled 26 September, `TASKS.md` FH: "Go ahead and trim it."** The claim is narrowed in our words. *millennia* and the golem sentence are his, from the same ruling, not from the dictation. Closed as the second flag below |
 | a contiguous loop | unchanged | possibly continuous, dictated. His word is kept until he says otherwise |
 
 ### Read back for hubris, as he asked
@@ -216,14 +219,28 @@ and kept.
      modesty in one sentence, and a reader believes the stronger half.
 
    Until he rules, this clause does not go on any page.
-2. **"The Terminator movie gave rise to AI robots today." Open, his call.** Not
-   hubris, an overclaim of fact, and the one sentence in the paragraph a
-   hostile reader disproves in an afternoon, which is the test section 6
-   applies to world's first. His point, read off the sentence before it, is
-   that a story becomes a trope we then follow. Kept as dictated. The ways it
-   goes: keep it; narrow it to what a film can do, which is shape how people
-   picture AI, in words that would be ours rather than his; or drop it and let
-   the trope sentence before it carry the point alone.
+2. **"The Terminator movie gave rise to AI robots today." Ruled 26 September,
+   narrowed.** Not hubris, an overclaim of fact, and the one sentence in the
+   paragraph a hostile reader disproves in an afternoon, which is the test
+   section 6 applies to world's first. Three ways were put to him: keep it,
+   narrow it to what a film can do, or drop it. His ruling, `TASKS.md` FH:
+   "yeah, you're right. Go ahead and trim it. Yeah, I'm not stating
+   Terminator as the end all be all. I'm just saying, sure, you can go back
+   to millennia. Sure, even the golems from Jason and the Argonauts are a
+   form of Terminator, I get it. That can even be added."
+   - **Narrowed, in our words.** A film cannot cause a technology. It can
+     shape how people picture one, and that is the whole of what the
+     bracketed words now claim.
+   - **His reason, added in his words.** Terminator is the latest instance of
+     the trope, not its origin, and the golem sentence is his evidence that
+     the pattern is millennia old. That is the point the sentence before it
+     was already making, a story becomes a trope we then follow, now carried
+     by two stories instead of resting on one film.
+   - **One precision note, not a new question.** The bronze giant in Jason
+     and the Argonauts is named Talos; golem is the later Hebrew word for a
+     made figure. His word is kept, because it is his and the point holds
+     either way. On a public page, Talos is the name a hostile reader will
+     check.
 3. **"The only way to experience truth is to touch it yourself." Checked,
    kept.** A universal claim, but it points away from him: it says the book is
    not the truth, the touching is. That is the opposite of hubris, and it is
