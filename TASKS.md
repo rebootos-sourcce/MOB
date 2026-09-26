@@ -12832,3 +12832,49 @@ pass's own limit, which is the two source images themselves rather
 than the method. Asked back rather than assumed: does he want one
 sourced and brought in as a third reference.
 
+**He will generate the muscle reference himself.** His words: "I'll
+generate one for you... I'll drop in the image when it's ready." Held,
+nothing dispatched on this until it arrives.
+
+## CT. A dense follow up: animation approval, words still sticking
+## out, a mobile grouping ask, and two notes that need the picture he
+## hasn't sent yet. 26 September.
+
+**Backlog, read fresh off the file rather than repeated from an
+earlier count.** 433 items done, 567 still open, 155 open questions in
+the older checklist style; that trio is unchanged in count since the
+last time he asked, which is itself worth saying plainly rather than
+re-presented as new. What has grown since then is the newer form the
+night's own work takes: 66 lettered rounds now, up from 54, each
+carrying its own real questions in prose rather than a checkbox, which
+this count does not capture. The honest answer to "what's left" is not
+one number: it is every open Qn sitting inside every round from BW
+onward, none of them resolved by simply re-running this grep.
+
+**"I like this animation."** No specific one named. CL built three
+real looks, Hum, Pulse and Relay, on a live page he was sent a link to.
+Which one this refers to is not assumed, asked back below.
+
+**Words still sticking out, raised again.** His words: "for the field,
+I do not like the way that the words stick out." CR already fixed this
+for seat names, domain names, archetype and pattern names on every
+view. The one thing CR itself flagged as still sticking out and asked
+about, unanswered, is the Dial's own corner callouts (Sage, Controller,
+Envy, Jealousy, Blame, Compassion), CR Q5. Read as answering that
+question rather than repeating old, already fixed feedback: those
+callouts should come inside too.
+
+**Mobile layout, a real grouping ask.** His words: "for the mobile
+layout, organize the buttons by group, put the primary group on top,
+secondary group on bottom." Matches the left rail's own existing
+"Primary" and "Secondary" button grids directly, real and buildable.
+"Our ascending, descending" following it is not clear enough to act on,
+logged as heard rather than guessed at.
+
+**Two notes that need the picture he has not sent yet.** "And I
+haven't seen aha" and "to the right, that ring is better, but the word
+dropped on it" are both logged verbatim rather than interpreted, since
+neither names what is on screen clearly enough to act on, and per his
+own closing line, "I'll drop in the image when it's ready," a picture
+is coming.
+
