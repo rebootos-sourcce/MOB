@@ -312,7 +312,10 @@ function coreInside(r,cr0){
  /* 3. the laws, finest and furthest back, so the coarser layers read over
     them rather than under. */
  if(a2>0)SI.forEach(function(l,i){
-  var v=(S.law[l.nm]||0)/10;
+  /* the law as CQ reads it, answer and release lift together. This drew the
+     bare answer, so a released law's feather stayed where the answer put it
+     while CQ moved, and the gap grew with every release. */
+  var v=(+lawNow(l.nm)||0)/10;
   coreFeather(i/SI.length*TAU-Math.PI/2+spin, cr0*0.93*v, cr0*0.035, bc(l.b), a2*0.75);});
  /* 2. the seven seats */
  if(a1>0)BANDS.forEach(function(b,i){

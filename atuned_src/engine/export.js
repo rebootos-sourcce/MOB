@@ -207,7 +207,7 @@ if(typeof module!=='undefined'&&module.exports){
                   NUM_LET:NUM_LET, NUM_MASTER:NUM_MASTER, NUM_DEBT:NUM_DEBT,
                   NUM_CORE:NUM_CORE, NUM_DEBT_SAYS:NUM_DEBT_SAYS,
                   FULLNAME:FULLNAME, BIRTH:BIRTH,
-  /* store */     storeRefused:storeRefused, pStore:pStore, pPersist:pPersist,
+  /* store */     storeRefused:storeRefused, storeUnread:storeUnread, pStore:pStore, pPersist:pPersist,
   /* the save and the snapshot write every surface calls, and the only route a
      history row reaches the disk by. They were browser globals and nothing
      headless could drive them, so the one write that grows the record had no

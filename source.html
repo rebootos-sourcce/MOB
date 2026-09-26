@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="2c1dcdd 2026-09-26 13:07"><head><meta charset="utf-8">
+<html lang="en" data-build="e00b217 2026-09-26 13:25"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -10168,11 +10168,37 @@ function bindStore(get,set){ STORE={get:get,set:set}; STORE_BOUND=true; return S
    A profile store is the one place a refusal must not be fatal: one bad record
    must not take the other nine with it. */
 var STORE_REFUSED=[], STORE_KEPT=[];
+/* AN UNREADABLE STORE IS NOT AN EMPTY ONE, AND IT WAS TOLD APART FROM ONE BY
+   NOTHING.
+
+   A parse failure and a value that is not a list both returned [], which is
+   exactly what a first visit returns, so the boot read a truncated store as
+   "no profile yet", called pNew, and pNew's own write replaced the key.
+   Measured on a real record cut to 60 percent of its bytes: 954 bytes on disk
+   before the boot, a blank "You" of 1562 bytes after it, nothing on the status
+   line and no copy of the old bytes anywhere. The same for a store holding
+   {"v":2}. That is the whole record, gone during the boot and before a single
+   save, on a failure a person cannot see and did not cause.
+
+   So the bytes are set aside under a key of their own before anything can
+   write, verbatim, and read back to prove they landed. The key carries the
+   time, so a second failure on another day never lands on the first one's
+   copy. If the set aside does not land, which is likely exactly when the cut
+   was a full store, pPersist refuses every write over the key for the session:
+   the only copy of a person's record is not ours to overwrite, and a refused
+   save reports itself where a silent one did not. The engine reports, and the
+   host decides the words (storeUnread, below). */
+var STORE_UNREAD=null;
+function storeSetAside(txt,why){
+ var key=PKEY+'.unreadable.'+Date.now().toString(36), kept=false;
+ try{ STORE.set(key,txt); kept=(STORE.get(key)===txt); }catch(e){}
+ STORE_UNREAD={why:why, bytes:txt.length, key:kept?key:null};
+ return [];}
 function pStore(){
- var raw;
- try{ raw=JSON.parse(STORE.get(PKEY)||'[]'); }catch(e){ return []; }
- if(!Array.isArray(raw)) return [];
- STORE_REFUSED=[]; STORE_KEPT=[];
+ var raw, txt=STORE.get(PKEY);
+ STORE_UNREAD=null; STORE_REFUSED=[]; STORE_KEPT=[];
+ try{ raw=JSON.parse(txt||'[]'); }catch(e){ return storeSetAside(String(txt),'it does not parse'); }
+ if(!Array.isArray(raw)) return storeSetAside(String(txt),'it is not a list of profiles');
  var out=[];
  for(var i=0;i<raw.length;i++){
   var v=validateProfile(raw[i]);
@@ -10195,12 +10221,17 @@ function pStore(){
  return out;}
 /* what the boundary would not take, for a host that wants to say so */
 function storeRefused(){ return STORE_REFUSED.slice(); }
+/* and the store it could not read at all: null when it read, otherwise why,
+   how many bytes, and the key the copy is under, null if the copy failed. */
+function storeUnread(){ return STORE_UNREAD?Object.assign({},STORE_UNREAD):null; }
 /* The empty catch here meant a save that failed on quota or blocked storage
    told nobody, and the intake button said "Saved" regardless. The engine still
    does not render anything: it reports, and the UI decides what to show. */
 var SAVE_OK=true, SAVE_ERR=null;
 function pPersist(){
  if(!STORE_BOUND){ SAVE_OK=false; SAVE_ERR='NoStore'; return false; }
+ /* the one copy of a store nobody could read is still under the key */
+ if(STORE_UNREAD&&!STORE_UNREAD.key){ SAVE_OK=false; SAVE_ERR='UnreadableStore'; return false; }
  /* the records the boundary would not read go back untouched, at the end, so
     a save never costs a person data this version happens not to understand. */
  var all=PROFILES.concat(STORE_KEPT);
@@ -13528,7 +13559,7 @@ if(typeof module!=='undefined'&&module.exports){
                   NUM_LET:NUM_LET, NUM_MASTER:NUM_MASTER, NUM_DEBT:NUM_DEBT,
                   NUM_CORE:NUM_CORE, NUM_DEBT_SAYS:NUM_DEBT_SAYS,
                   FULLNAME:FULLNAME, BIRTH:BIRTH,
-  /* store */     storeRefused:storeRefused, pStore:pStore, pPersist:pPersist,
+  /* store */     storeRefused:storeRefused, storeUnread:storeUnread, pStore:pStore, pPersist:pPersist,
   /* the save and the snapshot write every surface calls, and the only route a
      history row reaches the disk by. They were browser globals and nothing
      headless could drive them, so the one write that grows the record had no
@@ -14910,7 +14941,10 @@ function coreInside(r,cr0){
  /* 3. the laws, finest and furthest back, so the coarser layers read over
     them rather than under. */
  if(a2>0)SI.forEach(function(l,i){
-  var v=(S.law[l.nm]||0)/10;
+  /* the law as CQ reads it, answer and release lift together. This drew the
+     bare answer, so a released law's feather stayed where the answer put it
+     while CQ moved, and the gap grew with every release. */
+  var v=(+lawNow(l.nm)||0)/10;
   coreFeather(i/SI.length*TAU-Math.PI/2+spin, cr0*0.93*v, cr0*0.035, bc(l.b), a2*0.75);});
  /* 2. the seven seats */
  if(a1>0)BANDS.forEach(function(b,i){
@@ -16415,7 +16449,10 @@ function frFrames(M,r){
  /* laws. twenty one, each inside its own seat, each at its score */
  (function(){var ic=ring(D.lawIc),bs=ring(D.lawBar),Lw=M.L.laws;
   lineRing(Lw,D.law0,.07);
-  SI.forEach(function(l,j){var t=th(M.tLaw[j]),p=bs.at(t),c=M.seat(l.b),v=clamp((+S.law[l.nm]||0)/10,0,1),len=(3+v*19)*sc;
+  /* lawNow and not S.law: the answer with its release lift, which is what CQ
+     reads. The bare answer left a released law's feather short of the number
+     it stands for, by more with every release. */
+  SI.forEach(function(l,j){var t=th(M.tLaw[j]),p=bs.at(t),c=M.seat(l.b),v=clamp((+lawNow(l.nm)||0)/10,0,1),len=(3+v*19)*sc;
    var tx=p.ny,ty=-p.nx,hw=3*Math.max(sc,.7),h=M.hid({k:'law',j:j});
    var quad=function(L){return [[p.x+tx*hw,p.y+ty*hw],[p.x-tx*hw,p.y-ty*hw],[p.x-tx*hw+p.nx*L,p.y-ty*hw+p.ny*L],[p.x+tx*hw+p.nx*L,p.y+ty*hw+p.ny*L]];};
    Lw.push('<g data-h="'+h+'"><path d="'+frPolyD(quad(D.lawMax+3*sc),true)+'" fill="'+rgba(M.ink,.04)+'"/>'
@@ -16555,7 +16592,8 @@ function frDial(M,r){
  /* laws */
  var lawAt={};
  (function(){var ic=C(Rr.lawIc),bs=C(Rr.lawBar),Lw=M.L.laws;
-  SI.forEach(function(l,j){var t=th(M.tLaw[j]),p=bs.at(t),c=M.seat(l.b),v=clamp((+S.law[l.nm]||0)/10,0,1),len=3*sc+v*Rr.lawMax;
+  /* lawNow, for the reason given on the Frames feathers above */
+  SI.forEach(function(l,j){var t=th(M.tLaw[j]),p=bs.at(t),c=M.seat(l.b),v=clamp((+lawNow(l.nm)||0)/10,0,1),len=3*sc+v*Rr.lawMax;
    var h=M.hid({k:'law',j:j});hitOf['l'+j]=h;
    Lw.push('<g data-h="'+h+'"><line x1="'+p.x.toFixed(1)+'" y1="'+p.y.toFixed(1)+'" x2="'+(p.x+p.nx*(Rr.lawMax+3*sc)).toFixed(1)
     +'" y2="'+(p.y+p.ny*(Rr.lawMax+3*sc)).toFixed(1)+'" stroke="'+rgba(M.ink,.06)+'" stroke-width="4" stroke-linecap="round"/>'
@@ -16680,7 +16718,11 @@ function frSig(r,W_,H_){
  var a=[FVIEW,W_,H_,S.theme,r.unread?1:0,(+r.CQ).toFixed(2),(+r.DQ).toFixed(2),r.tier,r.benign,r.darkB,
   r.pi,r.si,S.doms.join('.')];
  for(var i=0;i<W.length;i++)a.push((W[i].sq||0).toFixed(2));
- SI.forEach(function(l){a.push((+S.law[l.nm]||0).toFixed(2),typeof lawIn==='function'&&lawIn(l.nm)?1:0);});
+ /* the same value the feathers are drawn from. They read lawNow now, and a
+    release moves the lift without moving S.law; CQ above would not catch it
+    either, since one pattern moves CQ by less than the two places it is
+    printed to. Keyed on S.law, the picture kept the pre release feathers. */
+ SI.forEach(function(l){a.push((+lawNow(l.nm)||0).toFixed(2),typeof lawIn==='function'&&lawIn(l.nm)?1:0);});
  for(var d=0;d<DOMAINS.length;d++)a.push((+DOMAIN[d]||0).toFixed(3));
  (r.aff||[]).forEach(function(v){a.push((+v||0).toFixed(3));});
  (r.maskRing||[]).forEach(function(m){a.push((+m.w||0).toFixed(2));});
@@ -18213,6 +18255,17 @@ function stRender(){
   /* the field is about to change and until now there was no way back */
   undoPush('committing the story');
   applyStory(ST_TEXT); verpApply(ST_TEXT); leanApply(ST_TEXT);
+  /* THE CHARGE HAS TO REACH THE MIRROR, OR THE NEXT VISIT TAKES IT BACK OUT.
+     applyStory writes S and pSave writes the record, and neither writes
+     PEOPLE[0], which is the table loadP(0) reads the person's field back out
+     of. This was the one write of charge in the product that skipped saveYou.
+     Measured: 7.24 units committed and on disk, a visit to James and back
+     through the picker read 0.00 out of the stale mirror, saveProfile put 0.00
+     on the record, and the next ordinary save wrote 0.00 over the disk. The
+     entry text survived and the charge it wrote did not. S.who is 0 here, the
+     guard above sees to it, so this mirrors and writes the way every slider
+     does. */
+  saveYou();
   if(CURP){CURP.story=CURP.story||{entries:[]};
    CURP.story.entries.push({t:new Date().toISOString(),text:ST_TEXT,
     imprints:ST_PARSED.imprints.length,bands:ST_PARSED.bands});
@@ -18753,7 +18806,10 @@ function sumStory(r){
   +(100-Math.round(Math.max(lean.ben,lean.mal)))+' per cent '
   +(lean.ben>=lean.mal?'malignant':'benign')
   +(r.benign===null?'':', '+(r.benign?'which means it is expanding':'which means it is contracting'))+'.')
-  +(r.excess?' Installed pole is past the point where it pays, so some of the work is now costing.':'')
+  /* .length, because r.excess is a list and an empty list is truthy: this
+     told every one of the fourteen reference cases the pole was past paying,
+     including the ones with nothing past it. ui.js reads it the same way. */
+  +(r.excess.length?' Installed pole is past the point where it pays, so some of the work is now costing.':'')
   +gapLine).trim());
 
  return '<div class="s-story"><div class="pm-eye">Reading</div>'
@@ -27610,6 +27666,19 @@ step('first profile',function(){loadP(0);});
 step('the stored record',function(){
  try{ PROFILES=pStore(); }catch(e){ PROFILES=[]; }
  if(!PROFILES.length){ pNew('You'); }
+ /* AN EMPTY LIST IS TWO DIFFERENT THINGS, AND ONLY ONE OF THEM IS SILENT.
+    A first visit gets a blank "You" and nothing to say. A store pStore could
+    not read also arrives here as an empty list, and it used to get the same
+    blank and the same silence while pNew wrote over the only copy of the
+    person's record. pStore sets the bytes aside now (engine/schema.js,
+    storeSetAside), so the blank is safe to make and the person is told why
+    they are looking at one. A fail stays on the status line until replaced. */
+ var unread=storeUnread();
+ if(unread)status(unread.key
+  ?'Your saved profiles could not be read, so this is a new blank profile. '
+   +'The unreadable copy is kept in this browser, untouched.'
+  :'Your saved profiles could not be read or copied. Nothing saves in this '
+   +'session, so they stay as they are.','fail');
  CURP=PROFILES[0];
  /* loadP(0) cached a blank profile under the persona name a moment ago, and
     replacing PROFILES left that cache pointing at an object no longer in the
@@ -27619,6 +27688,16 @@ step('the stored record',function(){
     gone after a reload with no error shown. The cache points at the record. */
  PROF_BY[PEOPLE[0].nm]=CURP;
  loadProfile(CURP);
+ /* AND THE MIRROR IS FILLED FROM IT, because loadProfile writes S and nothing
+    else. PEOPLE[0] is what loadP(0) reads the person's field back out of, and
+    at boot it still held the persona table's zeros, so the first visit to a
+    worked example and back put zero charge in S, saveProfile copied it onto
+    the record, and the next save wrote it over the disk. Measured: 7.24 on
+    disk across a reload, 0.00 in S on return from James, 0.00 on disk after
+    one save. The story commit's missing saveYou was the same loss inside a
+    session; this is it across one. mirrorYou and not saveYou, because nothing
+    has changed yet and a boot has no business writing the store. */
+ mirrorYou();
  syncCh(); syncLw(); syncSoul();
 });
 /* THE APP OPENS ON THE FIELD, on the owner's ruling of 19 September, which
@@ -27681,5 +27760,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="001792437"></div>
+<div id="eof" hidden data-len="001797861"></div>
 </body></html>

@@ -98,6 +98,17 @@ function stRender(){
   /* the field is about to change and until now there was no way back */
   undoPush('committing the story');
   applyStory(ST_TEXT); verpApply(ST_TEXT); leanApply(ST_TEXT);
+  /* THE CHARGE HAS TO REACH THE MIRROR, OR THE NEXT VISIT TAKES IT BACK OUT.
+     applyStory writes S and pSave writes the record, and neither writes
+     PEOPLE[0], which is the table loadP(0) reads the person's field back out
+     of. This was the one write of charge in the product that skipped saveYou.
+     Measured: 7.24 units committed and on disk, a visit to James and back
+     through the picker read 0.00 out of the stale mirror, saveProfile put 0.00
+     on the record, and the next ordinary save wrote 0.00 over the disk. The
+     entry text survived and the charge it wrote did not. S.who is 0 here, the
+     guard above sees to it, so this mirrors and writes the way every slider
+     does. */
+  saveYou();
   if(CURP){CURP.story=CURP.story||{entries:[]};
    CURP.story.entries.push({t:new Date().toISOString(),text:ST_TEXT,
     imprints:ST_PARSED.imprints.length,bands:ST_PARSED.bands});

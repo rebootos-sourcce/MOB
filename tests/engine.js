@@ -2289,6 +2289,50 @@ console.log('\n27c · a save never costs a person data, and a drain never leaks'
  E.bindStore(()=>null,()=>{});
 }
 
+console.log('\n27d · a store that cannot be read is not an empty one');
+{
+ /* THE BOOT READ AN UNREADABLE STORE AS A FIRST VISIT. pStore returned [] on a
+    parse failure, the boot made a blank "You", and that write replaced the
+    only copy. Measured in the browser before the fix: 954 bytes of a real
+    record, cut at 60 percent, became a blank of 1562 with nothing said. */
+ let mem={};
+ E.bindStore(k=>mem[k]===undefined?null:mem[k],(k,v)=>{mem[k]=String(v);});
+ ok(E.pStore().length===0&&E.storeUnread()===null,
+  'a first visit is empty and is not reported as unreadable');
+
+ const cut='[{"v":2,"id":"preal","name":"Lance","axes":{"Gu';
+ mem['source.profiles']=cut;
+ ok(E.pStore().length===0,'a truncated store yields no profiles');
+ const u=E.storeUnread();
+ ok(u&&u.why==='it does not parse'&&u.bytes===cut.length,
+  'and says it could not be read, and how much was there: '+JSON.stringify(u));
+ ok(u&&u.key&&mem[u.key]===cut,'and the bytes are set aside verbatim under '+(u&&u.key));
+ ok(E.pPersist()===true,'with the copy kept, a save may proceed');
+ ok(mem[u.key]===cut,'and the set aside copy is still there after it');
+
+ mem={'source.profiles':'{"v":2}'};
+ E.pStore();
+ ok((E.storeUnread()||{}).why==='it is not a list of profiles',
+  'a value that is not a list is unreadable too, and says which');
+
+ /* AND WHEN THE COPY CANNOT BE MADE, NOTHING WRITES OVER THE ONLY ONE. */
+ mem={'source.profiles':cut};
+ E.bindStore(k=>mem[k]===undefined?null:mem[k],
+  (k,v)=>{ if(/\.unreadable\./.test(k))throw new Error('QuotaExceededError'); mem[k]=String(v);});
+ E.pStore();
+ ok(E.storeUnread().key===null,'a set aside that fails is reported as no copy');
+ ok(E.pPersist()===false&&E.saveState().err==='UnreadableStore',
+  'and every save refuses, by name: '+JSON.stringify(E.saveState()));
+ ok(mem['source.profiles']===cut,'so the original bytes are untouched');
+
+ /* a good store afterwards clears it, so one bad boot does not hold the
+    session's saves hostage once a readable store is back */
+ mem={'source.profiles':'[]'};
+ E.pStore();
+ ok(E.storeUnread()===null&&E.pPersist()===true,'a readable store clears the refusal');
+ E.bindStore(()=>null,()=>{});
+}
+
 console.log('\n27b · a profile from an older build still loads');
 {
  /* THIS IS THE ONE THE OWNER HIT. A profile written by an earlier build has no

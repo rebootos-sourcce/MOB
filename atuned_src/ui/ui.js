@@ -1191,6 +1191,19 @@ step('first profile',function(){loadP(0);});
 step('the stored record',function(){
  try{ PROFILES=pStore(); }catch(e){ PROFILES=[]; }
  if(!PROFILES.length){ pNew('You'); }
+ /* AN EMPTY LIST IS TWO DIFFERENT THINGS, AND ONLY ONE OF THEM IS SILENT.
+    A first visit gets a blank "You" and nothing to say. A store pStore could
+    not read also arrives here as an empty list, and it used to get the same
+    blank and the same silence while pNew wrote over the only copy of the
+    person's record. pStore sets the bytes aside now (engine/schema.js,
+    storeSetAside), so the blank is safe to make and the person is told why
+    they are looking at one. A fail stays on the status line until replaced. */
+ var unread=storeUnread();
+ if(unread)status(unread.key
+  ?'Your saved profiles could not be read, so this is a new blank profile. '
+   +'The unreadable copy is kept in this browser, untouched.'
+  :'Your saved profiles could not be read or copied. Nothing saves in this '
+   +'session, so they stay as they are.','fail');
  CURP=PROFILES[0];
  /* loadP(0) cached a blank profile under the persona name a moment ago, and
     replacing PROFILES left that cache pointing at an object no longer in the
@@ -1200,6 +1213,16 @@ step('the stored record',function(){
     gone after a reload with no error shown. The cache points at the record. */
  PROF_BY[PEOPLE[0].nm]=CURP;
  loadProfile(CURP);
+ /* AND THE MIRROR IS FILLED FROM IT, because loadProfile writes S and nothing
+    else. PEOPLE[0] is what loadP(0) reads the person's field back out of, and
+    at boot it still held the persona table's zeros, so the first visit to a
+    worked example and back put zero charge in S, saveProfile copied it onto
+    the record, and the next save wrote it over the disk. Measured: 7.24 on
+    disk across a reload, 0.00 in S on return from James, 0.00 on disk after
+    one save. The story commit's missing saveYou was the same loss inside a
+    session; this is it across one. mirrorYou and not saveYou, because nothing
+    has changed yet and a boot has no business writing the store. */
+ mirrorYou();
  syncCh(); syncLw(); syncSoul();
 });
 /* THE APP OPENS ON THE FIELD, on the owner's ruling of 19 September, which

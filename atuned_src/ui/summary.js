@@ -303,7 +303,10 @@ function sumStory(r){
   +(100-Math.round(Math.max(lean.ben,lean.mal)))+' per cent '
   +(lean.ben>=lean.mal?'malignant':'benign')
   +(r.benign===null?'':', '+(r.benign?'which means it is expanding':'which means it is contracting'))+'.')
-  +(r.excess?' Installed pole is past the point where it pays, so some of the work is now costing.':'')
+  /* .length, because r.excess is a list and an empty list is truthy: this
+     told every one of the fourteen reference cases the pole was past paying,
+     including the ones with nothing past it. ui.js reads it the same way. */
+  +(r.excess.length?' Installed pole is past the point where it pays, so some of the work is now costing.':'')
   +gapLine).trim());
 
  return '<div class="s-story"><div class="pm-eye">Reading</div>'

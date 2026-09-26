@@ -310,11 +310,37 @@ function bindStore(get,set){ STORE={get:get,set:set}; STORE_BOUND=true; return S
    A profile store is the one place a refusal must not be fatal: one bad record
    must not take the other nine with it. */
 var STORE_REFUSED=[], STORE_KEPT=[];
+/* AN UNREADABLE STORE IS NOT AN EMPTY ONE, AND IT WAS TOLD APART FROM ONE BY
+   NOTHING.
+
+   A parse failure and a value that is not a list both returned [], which is
+   exactly what a first visit returns, so the boot read a truncated store as
+   "no profile yet", called pNew, and pNew's own write replaced the key.
+   Measured on a real record cut to 60 percent of its bytes: 954 bytes on disk
+   before the boot, a blank "You" of 1562 bytes after it, nothing on the status
+   line and no copy of the old bytes anywhere. The same for a store holding
+   {"v":2}. That is the whole record, gone during the boot and before a single
+   save, on a failure a person cannot see and did not cause.
+
+   So the bytes are set aside under a key of their own before anything can
+   write, verbatim, and read back to prove they landed. The key carries the
+   time, so a second failure on another day never lands on the first one's
+   copy. If the set aside does not land, which is likely exactly when the cut
+   was a full store, pPersist refuses every write over the key for the session:
+   the only copy of a person's record is not ours to overwrite, and a refused
+   save reports itself where a silent one did not. The engine reports, and the
+   host decides the words (storeUnread, below). */
+var STORE_UNREAD=null;
+function storeSetAside(txt,why){
+ var key=PKEY+'.unreadable.'+Date.now().toString(36), kept=false;
+ try{ STORE.set(key,txt); kept=(STORE.get(key)===txt); }catch(e){}
+ STORE_UNREAD={why:why, bytes:txt.length, key:kept?key:null};
+ return [];}
 function pStore(){
- var raw;
- try{ raw=JSON.parse(STORE.get(PKEY)||'[]'); }catch(e){ return []; }
- if(!Array.isArray(raw)) return [];
- STORE_REFUSED=[]; STORE_KEPT=[];
+ var raw, txt=STORE.get(PKEY);
+ STORE_UNREAD=null; STORE_REFUSED=[]; STORE_KEPT=[];
+ try{ raw=JSON.parse(txt||'[]'); }catch(e){ return storeSetAside(String(txt),'it does not parse'); }
+ if(!Array.isArray(raw)) return storeSetAside(String(txt),'it is not a list of profiles');
  var out=[];
  for(var i=0;i<raw.length;i++){
   var v=validateProfile(raw[i]);
@@ -337,12 +363,17 @@ function pStore(){
  return out;}
 /* what the boundary would not take, for a host that wants to say so */
 function storeRefused(){ return STORE_REFUSED.slice(); }
+/* and the store it could not read at all: null when it read, otherwise why,
+   how many bytes, and the key the copy is under, null if the copy failed. */
+function storeUnread(){ return STORE_UNREAD?Object.assign({},STORE_UNREAD):null; }
 /* The empty catch here meant a save that failed on quota or blocked storage
    told nobody, and the intake button said "Saved" regardless. The engine still
    does not render anything: it reports, and the UI decides what to show. */
 var SAVE_OK=true, SAVE_ERR=null;
 function pPersist(){
  if(!STORE_BOUND){ SAVE_OK=false; SAVE_ERR='NoStore'; return false; }
+ /* the one copy of a store nobody could read is still under the key */
+ if(STORE_UNREAD&&!STORE_UNREAD.key){ SAVE_OK=false; SAVE_ERR='UnreadableStore'; return false; }
  /* the records the boundary would not read go back untouched, at the end, so
     a save never costs a person data this version happens not to understand. */
  var all=PROFILES.concat(STORE_KEPT);

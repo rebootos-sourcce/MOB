@@ -704,7 +704,10 @@ function frFrames(M,r){
  /* laws. twenty one, each inside its own seat, each at its score */
  (function(){var ic=ring(D.lawIc),bs=ring(D.lawBar),Lw=M.L.laws;
   lineRing(Lw,D.law0,.07);
-  SI.forEach(function(l,j){var t=th(M.tLaw[j]),p=bs.at(t),c=M.seat(l.b),v=clamp((+S.law[l.nm]||0)/10,0,1),len=(3+v*19)*sc;
+  /* lawNow and not S.law: the answer with its release lift, which is what CQ
+     reads. The bare answer left a released law's feather short of the number
+     it stands for, by more with every release. */
+  SI.forEach(function(l,j){var t=th(M.tLaw[j]),p=bs.at(t),c=M.seat(l.b),v=clamp((+lawNow(l.nm)||0)/10,0,1),len=(3+v*19)*sc;
    var tx=p.ny,ty=-p.nx,hw=3*Math.max(sc,.7),h=M.hid({k:'law',j:j});
    var quad=function(L){return [[p.x+tx*hw,p.y+ty*hw],[p.x-tx*hw,p.y-ty*hw],[p.x-tx*hw+p.nx*L,p.y-ty*hw+p.ny*L],[p.x+tx*hw+p.nx*L,p.y+ty*hw+p.ny*L]];};
    Lw.push('<g data-h="'+h+'"><path d="'+frPolyD(quad(D.lawMax+3*sc),true)+'" fill="'+rgba(M.ink,.04)+'"/>'
@@ -844,7 +847,8 @@ function frDial(M,r){
  /* laws */
  var lawAt={};
  (function(){var ic=C(Rr.lawIc),bs=C(Rr.lawBar),Lw=M.L.laws;
-  SI.forEach(function(l,j){var t=th(M.tLaw[j]),p=bs.at(t),c=M.seat(l.b),v=clamp((+S.law[l.nm]||0)/10,0,1),len=3*sc+v*Rr.lawMax;
+  /* lawNow, for the reason given on the Frames feathers above */
+  SI.forEach(function(l,j){var t=th(M.tLaw[j]),p=bs.at(t),c=M.seat(l.b),v=clamp((+lawNow(l.nm)||0)/10,0,1),len=3*sc+v*Rr.lawMax;
    var h=M.hid({k:'law',j:j});hitOf['l'+j]=h;
    Lw.push('<g data-h="'+h+'"><line x1="'+p.x.toFixed(1)+'" y1="'+p.y.toFixed(1)+'" x2="'+(p.x+p.nx*(Rr.lawMax+3*sc)).toFixed(1)
     +'" y2="'+(p.y+p.ny*(Rr.lawMax+3*sc)).toFixed(1)+'" stroke="'+rgba(M.ink,.06)+'" stroke-width="4" stroke-linecap="round"/>'
@@ -969,7 +973,11 @@ function frSig(r,W_,H_){
  var a=[FVIEW,W_,H_,S.theme,r.unread?1:0,(+r.CQ).toFixed(2),(+r.DQ).toFixed(2),r.tier,r.benign,r.darkB,
   r.pi,r.si,S.doms.join('.')];
  for(var i=0;i<W.length;i++)a.push((W[i].sq||0).toFixed(2));
- SI.forEach(function(l){a.push((+S.law[l.nm]||0).toFixed(2),typeof lawIn==='function'&&lawIn(l.nm)?1:0);});
+ /* the same value the feathers are drawn from. They read lawNow now, and a
+    release moves the lift without moving S.law; CQ above would not catch it
+    either, since one pattern moves CQ by less than the two places it is
+    printed to. Keyed on S.law, the picture kept the pre release feathers. */
+ SI.forEach(function(l){a.push((+lawNow(l.nm)||0).toFixed(2),typeof lawIn==='function'&&lawIn(l.nm)?1:0);});
  for(var d=0;d<DOMAINS.length;d++)a.push((+DOMAIN[d]||0).toFixed(3));
  (r.aff||[]).forEach(function(v){a.push((+v||0).toFixed(3));});
  (r.maskRing||[]).forEach(function(m){a.push((+m.w||0).toFixed(2));});
