@@ -12203,3 +12203,45 @@ pictures already sent in CE, not to anything new:
   not obvious from the transcript alone and needs the picture in front
   of him to fix correctly rather than guessed at.
 
+## CI. His six channel words drive the release for real, closing BT.
+## 26 September.
+
+**Verified myself.** `tools/equiv.py` against the commit before this
+one names exactly the claimed difference, two dead lists removed
+(`AX_STEM`, `C3_GATE9`), three new (`addrLine`, `relLine`, `relLineRow`),
+and the expected bodies changed to wire them through. `node
+tests/engine.js` matched the claimed 1649, `BUILD-engine.sh` matched
+428 exports and host free. `functional.js` was still finishing under
+tonight's load when this was written.
+
+**What it actually does.** Every letting go line in a real release now
+reads "I am letting go of believing, perceiving, thinking, behaving,
+acting, and feeling that I am ..." with his six words in his order,
+carried inside the four passes the release already runs rather than
+as new lines of their own, so nothing about pricing or the meter
+moved. The reframe lines keep his own "I now embody the truth that I
+am ..." wording. Retired rather than added to: the old nine words
+ending "doing," the separate `C3_GATE9` roster ending "being," and two
+hand typed lines on the Knowledge deck that repeated the old wording,
+none of which anything downstream ever read.
+
+**Five real questions.**
+**Q1.** One line carrying all six words, as built, costs nothing against
+the meter. Six separate lines, one per word, would triple the patterns
+per address and change what each tier buys. Which was meant?
+**Q2.** The measured line length runs long against the pace a release
+already holds each line for, about ten seconds to read at a line held
+for about two. Keep it since the stem repeats and is learned, slow the
+run itself, or show the six word stem once and only the changing
+ending per line after that?
+**Q3.** Should the release card show this sentence at all. Nothing else
+in a running release could carry the six words if not, so it was
+built, but it was never separately ruled on.
+**Q4.** He uses "channel" for left and right sides and now also for
+these six words. The card's own labelling only ever named the sides.
+Which of the two keeps the word "channel" on screen?
+**Q5.** Three of 107 addresses have no card behind them and fall back to
+a sentence built straight from the address name, which can read
+ungrammatically, "that I am panic" for one. Write real wording for
+those three by hand, build a generated form instead, or leave them?
+
