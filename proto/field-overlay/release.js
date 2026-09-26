@@ -75,6 +75,20 @@ function queueOf(p){var G=P.G(),sab=p.path[0].lv===0?p.path[0].to:null;if(!sab)r
   .sort(function(a,b){return b.load-a.load;}).slice(0,QMAX);}
 function nodeName(id){return P.G().nodes[id].nm;}
 
+/* RUNNING A LINE INSIDE THE BUILD. The build's own state lives in top level
+   const bindings, S, PEOPLE, TAB, which are not properties of its window, so
+   the only way to reach them from here is to run source inside it. W.eval
+   does that. A published page can sit under a policy that refuses eval, so
+   when eval is refused, and only then, the same source runs as an inline
+   script in the build's own document, which lands in the same global scope
+   and sees the same bindings. An error thrown by the source itself is not a
+   refusal and still comes back as an error. */
+function evalIn(W,src){
+ try{return W.eval(src);}
+ catch(e){if(!e||e.name!=='EvalError')throw e;}
+ var d=W.document,s=d.createElement('script');W.__ev=undefined;
+ s.textContent='window.__ev=('+src+');';(d.head||d.documentElement).appendChild(s);s.remove();
+ var v=W.__ev;W.__ev=undefined;return v;}
 /* ============================================================
    THE REAL BUILD, in a frame, same origin, loaded once per profile and
    width, ahead of need, since it takes three seconds to boot
@@ -97,7 +111,7 @@ function makeFrame(){
 /* the state capture.js put the plates in, step for step, so the build in
    the frame is the build the chords were taken from */
 function prep(W,who){
- var r=W.eval('(function(nm,lines){'
+ var r=evalIn(W,'(function(nm,lines){'
   +'var i=PEOPLE.findIndex(function(x){return x.nm===nm;});loadP(i);'
   +'lines.forEach(function(t,k){applyStory(t);verpApply(t);if(typeof leanApply==="function")leanApply(t);'
   +' if(CURP){CURP.story=CURP.story||{entries:[]};var ps=parseStory(t);'
@@ -108,11 +122,11 @@ function prep(W,who){
   (who,(STORYBANK[who]||[]).map(function(x){return x[1];}));
  /* the one refusal, wrapped so a switch can lift it. relTick and the Stop
     button both call relCoolDown by its global name, so both come through */
- W.eval('(function(){var f=relCoolDown;window.__who0=S.who;relCoolDown=function(){'
+ evalIn(W,'(function(){var f=relCoolDown;window.__who0=S.who;relCoolDown=function(){'
   +'if(window.__lift)S.who=0;try{return f.apply(this,arguments);}finally{S.who=window.__who0;}};})()');
  W.__lift=R.lift;
- R.W=W;R.get=W.eval('(function(){return {open:RUN.open,phase:RUN.phase};})');
- R.read=W.eval('(function(){var R=compute(),o={a:{},s:{},c:{},h:{},u:{}};'
+ R.W=W;R.get=evalIn(W,'(function(){return {open:RUN.open,phase:RUN.phase};})');
+ R.read=evalIn(W,'(function(){var R=compute(),o={a:{},s:{},c:{},h:{},u:{}};'
   +'W.forEach(function(n){o.a[n.i]=n.sq||0;});'
   +'function put(m,L){var seen={};L.forEach(function(x){seen[x.nm]=(seen[x.nm]||0)+1;m[x.nm+"#"+seen[x.nm]]=x.w||0;});}'
   +'put(o.s,R.sabs);put(o.c,R.cxs);put(o.h,R.hys);put(o.u,R.sups);'
@@ -162,7 +176,7 @@ function openStage(t){
  var g=R.g;if(!g||g.open)return;g.open=true;
  var ids=g.queue.map(function(l){return +l.from.slice(1);});
  R.W.__lift=R.lift;
- R.W.eval('(function(ids,sp){relPick(ids);if(sp)RUN.speed=sp;})')(ids,SPEED);
+ evalIn(R.W,'(function(ids,sp){relPick(ids);if(sp)RUN.speed=sp;})')(ids,SPEED);
  R.before=R.read();R.seen=true;
  var p=g.p,r=P.route(p.line);
  $('from').innerHTML='<i style="color:'+P.colOf(p)+'">'+p.num+'</i><span>From your pin'
@@ -172,7 +186,7 @@ function openStage(t){
  try{R.fr.focus();}catch(e){}}
 function closeStage(){
  var t=now();if(!R.stage.want)return;
- try{if(R.get().open)R.W.eval('relClose()');}catch(e){}
+ try{if(R.get().open)evalIn(R.W,'relClose()');}catch(e){}
  R.stage.want=false;R.stage.at=t;$('stage').setAttribute('aria-hidden','true');
  var p=R.g&&R.g.p;R.g=null;if(!p)return;
  /* read the whole field back, and move every chord to what the build now

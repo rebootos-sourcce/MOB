@@ -22,7 +22,12 @@ window.PINPAGE=function(cfg){
 var X=window.OVL_LIB,E=X.E,clamp=X.clamp;
 var WHO=['Sofia','James','Gordon'],WS=[1600,390];
 var q=new URLSearchParams(location.search);
-var st={who:q.get('who')||'James',w:+(q.get('w')||1600),rm:q.get('rm')==='1'||(!q.get('rm')&&matchMedia('(prefers-reduced-motion:reduce)').matches),
+/* THE WIDTH IT OPENS AT. A query string does not reach a published page,
+   and he opens these on a phone, so with no ?w the page picks the plate for
+   the screen it is on: 390 under 700 wide, 1600 over. A recorder still
+   passes ?w and gets exactly what it asked for. */
+var W0=q.get('w')||(window.innerWidth<700?390:1600);
+var st={who:q.get('who')||'James',w:+W0,rm:q.get('rm')==='1'||(!q.get('rm')&&matchMedia('(prefers-reduced-motion:reduce)').matches),
  close:q.get('close')!=null?q.get('close')==='1':!!cfg.close};
 var REC=q.get('rec')==='1';
 var clock=REC?{t:0,now:function(){return this.t;}}:{now:function(){return performance.now();}};
