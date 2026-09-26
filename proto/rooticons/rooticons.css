@@ -1,0 +1,44 @@
+/* ============================================================
+   ROOT ICONS AND ICON COLOUR, prototype layer. Round DR. Not product code.
+   ============================================================ */
+
+/* THE ROOT CHIP CARRIES ITS MARK ABOVE ITS NAME. Four across in a 266 rail
+   leaves each chip about 62 wide, and "Architect" at 11.5 is about 50 of
+   that, so an icon beside the name does not fit and an icon instead of the
+   name loses the only place the four roots are named on this surface.
+   Stacked, it costs 12 pixels of height across one row: 44 becomes 56.
+
+   The mark takes currentColor, so the three states the sheet already
+   draws (off, washed, added) carry it without a rule of their own, and on
+   the added fill it goes to the fixed dark ink with the name. Ring, not
+   fill: the glyph is an open stroke on every state. The chip's flat fill on
+   added is the owner's own ruling for this control and is left alone. */
+.rootb.ri{flex-direction:column;gap:4px;padding:8px 2px 6px}
+.rootb.ri svg{width:19px;height:19px;flex:0 0 auto;stroke:currentColor;fill:none;
+ stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.rootb.ri[aria-pressed=true] svg{stroke-width:1.9}
+.rootb.ri span{display:block;line-height:1.1}
+
+/* THE RESTING DIM COMES OFF. .ib svg rests at opacity .78 and goes to 1 on
+   hover, so every icon in the rail is drawn 22 percent into its own tile
+   until a pointer is over it. Hover keeps its tile and border change, which
+   is the affordance; the icon stops being the thing that changes. Punch
+   rests at .92 for the same reason and is lifted with it. Lumen already
+   rests at 1. */
+html body.ri-lift .ib svg{opacity:1}
+
+/* ---- the compare panel ---- */
+#ri-panel{position:fixed;right:16px;bottom:16px;z-index:9999;width:340px;max-width:calc(100vw - 32px);
+ background:#12141B;color:#C9D0DB;border:1px solid #2A2F3B;border-radius:10px;padding:10px 12px 8px;
+ font:12px/1.4 var(--sans,system-ui,sans-serif);box-shadow:0 10px 30px rgba(0,0,0,.45)}
+#ri-panel .ri-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+#ri-panel .ri-hd b{font-weight:600;font-size:12.5px}
+#ri-panel .ri-row{margin:6px 0}
+#ri-panel .ri-lb{color:#8E97A6;font-size:11px;margin-bottom:3px}
+#ri-panel .ri-seg{display:flex;flex-wrap:wrap;gap:4px}
+#ri-panel button{font:inherit;font-size:11.5px;color:#C9D0DB;background:#1A1E28;border:1px solid #2A2F3B;
+ border-radius:6px;padding:5px 8px;min-height:30px;cursor:pointer}
+#ri-panel button[aria-pressed=true]{background:#7EB8D4;color:#0B1418;border-color:#7EB8D4}
+#ri-panel .ri-note{margin:8px 0 2px;color:#8E97A6;font-size:11px}
+#ri-panel.min .ri-row,#ri-panel.min .ri-note{display:none}
+@media (max-width:600px){#ri-panel{bottom:8px;right:8px;padding:8px}#ri-panel button{padding:4px 6px}}
