@@ -11785,3 +11785,57 @@ overlay around the avatar instead of on the Field wheel, not as a
 decision. Left open rather than guessed at; the torus field itself is
 already on record from his Avatar dictation and not yet built.
 
+## CC. The avatar page, a questions round rather than a build, exactly
+## as he asked for. 26 September.
+
+**Disclosed rather than hidden.** The seat run this could not open
+separate directors from inside itself, so one seat ran the structure,
+visual and copy passes in sequence rather than as three people. Said
+here in case it matters to him. It still worked from fresh screenshots
+of the real rendered page, not from memory.
+
+**The finding underneath every question.** His words on file, "What is
+Atuned? Your avatar," and the page does not act on it yet. Gordon at 6
+percent risen and Marcus after six releases at 56 percent differ in
+1.35 percent of the figure's own pixels, checked across all fourteen
+reference people, six to ninety nine percent risen, all standing in the
+same grey body. The sheet is a readout arranged around a mannequin, not
+a person shown changing. Graded a B minus as a data sheet, a C against
+his own "the avatar is the centrepiece" ruling. Moves to a B plus once
+the two questions below are answered and built.
+
+**Three real defects, ours to fix and not his to rule on.** Left and
+right are swapped against his 25 September ruling, "Installed"
+(becoming) sits on the left and "Held" (current) sits on the right,
+backwards. The four stage loop is drawn as a row of four weeks, which
+breaks his 20 September ruling that it always closes into a circle.
+The four addresses outside the body still show as small circles though
+he ruled them hidden from every view on 26 September, logged above in
+this file. Queued to fix directly, not asked back to him.
+
+**Eleven questions, in the order the review gave them, its own
+recommendation kept: only the first two need an answer before anything
+else moves.** Full list and the picture built for it sent to him
+directly. In short: (1) what changes on the avatar's own body as a
+person improves, not just in the text beside it; (2) the six masks,
+their arc and where they sit, since the engine already holds six and
+none render; (3) whose left is left, his own words on the release
+mechanic's own left/right pulled in as the tie breaker; (4) what each
+of the 216 small boxes beside a seat should hold; (5) what a phone
+should show first, given the page opens with 363 words and 216 boxes
+today; (6) the torus field's shape, and whether the four hidden
+addresses live there instead; (7) whether the loop counts a calendar
+month, a lap per story, or a lap per seat; (8) what a badge is earned
+for, under a system he has ruled must be designed fresh; (9) where the
+purpose map and boundary sit, and which six relationship words are
+right, since the file and the code do not agree; (10) which parts of a
+real character sheet he wants named outright, and what a discipline
+and speciality should be pulled from; (11) two small word choices, the
+seven row verbs against his six channels, and "Conducts" against his
+own word "open."
+
+**Recommended by the round that wrote them, not just relayed.** Pair
+questions 1 and 2 into one drawn board, the same person at three
+moments under each real option, and hold the other nine until that
+comes back, since 1 and 2 decide the shape everything else sits in.
+
