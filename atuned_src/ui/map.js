@@ -44,6 +44,8 @@ function pmAnat(){
   /* the person's right is on the viewer's left, as it is on every front view */
   var pts=row.h?row.h.map(function(p){return {x:50-p[0]/mm,y:H.ytop+(H.topZ-p[1])/mm};})
    :row.v?row.v.map(function(p){return {x:50+p[1],y:spine(p[0])};})
+   /* a chart place is already in figure units; its source is its c */
+   :row.f?row.f.map(function(p){return {x:p[0],y:p[1]};})
    :[{x:50,y:PMYP[row.at]}];
   var at=pts.map(function(){return [];});
   row.ids.forEach(function(id,j){at[j%pts.length].push(id);});
@@ -52,7 +54,7 @@ function pmAnat(){
       by side in a ring it drew a face on Heart and on Solar, so a torso pair
       stands on the diagonal. The head keeps its level pairs: nothing rings
       them there. */
-   var c=pts[pi], n=ids.length, a0=(n%2)?-Math.PI/2:(row.v?-Math.PI/4:Math.PI);
+   var c=pts[pi], n=ids.length, a0=(n%2)?-Math.PI/2:((row.v||row.f)?-Math.PI/4:Math.PI);
    ids.forEach(function(id,j){
     var t=a0+j*2*Math.PI/n, r=(n>1)?PMSPREAD:0;
     out[id]={x:c.x+Math.cos(t)*r, y:c.y+Math.sin(t)*r, hx:c.x, hy:c.y};});});});

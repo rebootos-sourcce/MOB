@@ -59,6 +59,12 @@ var BODYPATH='M282 16C283.5 15.8 287.5 15.2 290 16C292.5 16.8 295.5 18.5 297 21C
        C1 counted 1 through the tailbone at 30, as the first and third passes
        sourced them (BI3a, BI3c).
    at  a seat's own centre, for an address with no anatomy to place.
+   f   a place on one of the two reference charts the owner sent on 26
+       September, carried onto this figure. [x, y] in figure units, the
+       person's right side first, and c names the chart points it stands on.
+       These are the one kind that is figure units, because a chart pixel means
+       nothing without the chart, so proto/anatomy-ref/measure.js re-derives
+       every f from its c on each run and fails if a row has drifted from it.
 
    A row with no measurement of its own says what it stands on, from the
    research's own nesting table: a nerve at the structure it leaves from, a
@@ -124,4 +130,50 @@ var ANAT=[
  {s:'Cardiac plexus', ids:[49,55], v:[[11.5,0]]},
  {s:'Celiac plexus', ids:[33,36], v:[[19.5,0]]},
  {s:'Lumbar plexus, L1 to L4, beside the spine', ids:[1], v:[[21.5,2.2],[21.5,-2.2]]},
- {s:'Coccygeal plexus, the tailbone', ids:[6], v:[[30,0]]}];
+ {s:'Coccygeal plexus, the tailbone', ids:[6], v:[[30,0]]},
+ /* FROM THE TWO CHARTS. Graded a fail again on 26 September against a
+    classical marma chart and a 112 node chart, with "as close as 1:1 as
+    possible". Measured before this (proto/anatomy-ref, 26 September): of 48
+    addresses the charts can speak for, 12 sat further than 6 percent of the
+    person's height from the chart's place for them, the worst 11.5 percent,
+    20 cm on a 175 cm person, because each was gathered round its seat with no
+    place of its own.
+    Every row here is an address a chart point stands for through anatomy, the
+    reason for each in proto/anatomy-ref/match.js, and nothing already placed
+    by the atlas or the spine moved: those measured on or near the charts. */
+ {s:'Hridaya: the heart\'s own nerves, pericardial, great cardiac, coronary',
+  ids:[53,62,63], c:['m.hridaya','112.sternal'], f:[[50,27.9]]},
+ {s:'Kakshadhara, the front of the armpit: the brachial plexus',
+  ids:[75], c:['m.kaksha','112.axilla'], f:[[41.39,26.54],[58.61,26.54]]},
+ {s:'Manya, the vocal cords: the vagus in the neck and the larynx\'s own nerves',
+  ids:[65,66,67,71], c:['112.manya'], f:[[48.6,19.41],[51.4,19.41]]},
+ {s:'Stanamula, the space between the ribs under the breast: the intercostal nerves',
+  ids:[54], c:['m.stanamula','112.breast'], f:[[44.98,31.03],[55.02,31.03]]},
+ {s:'Apastambha, the bronchi: the pulmonary plexus',
+  ids:[58], c:['m.apastambha'], f:[[47.73,21.28],[52.27,21.28]]},
+ {s:'Vitapa, the groin: the genitofemoral nerve',
+  ids:[18], c:['m.vitapa'], f:[[49,52.68],[51,52.68]]},
+ {s:'Apalapa, the side of the chest: the side branches of the intercostal nerves',
+  ids:[56], c:['m.apalapa'], f:[[42.06,29.69],[57.94,29.69]]},
+ {s:'Under the sternocleidomastoid: the cervical plexus',
+  ids:[64], c:['112.matrika'], f:[[48.94,20.87],[51.06,20.87]]},
+ /* the charts put the top of the shoulder about a unit outside this
+    figure's own, which slopes more; walked in to where a mark is on the body */
+ {s:'Amsa, the top of the shoulder on the trapezius: the accessory nerve',
+  ids:[69,73], c:['m.amsa','112.trapezius'], f:[[42.85,21.98],[57.15,21.98]]},
+ {s:'Brihati, beside the spine between the shoulder blades: thoracic nerves and ganglia',
+  ids:[50,59], c:['m.brihati','112.T4'], f:[[49.37,28.26],[50.63,28.26]]},
+ {s:'Parshvasandhi, the flank over the kidneys: renal and suprarenal plexuses, the adrenal',
+  ids:[38,39,43,45], c:['m.parshva','112.kidney'], f:[[45,42.5],[55,42.5]]},
+ {s:'Nabhi, the navel: the inferior mesenteric plexus', ids:[44], c:['m.nabhi','112.navel'], f:[[50,43.07]]},
+ {s:'Basti, above the pubic bone: the hypogastric plexuses, the pelvic splanchnic nerves that drive the bladder, the ganglia inside the plexus',
+  ids:[3,26,22,5,24,21,30,29], c:['m.basti','112.belly'], f:[[50,47.7]]},
+ {s:'Guda: the pudendal nerve and its perineal branch',
+  ids:[2,19,11,32], c:['m.guda'], f:[[50,53.93]]},
+ {s:'The pelvic floor: the nerve to it', ids:[12], c:['112.floor','m.guda'], f:[[50,52.28]]},
+ {s:'Kukundara, the dimples over the sacroiliac joints: the sacral plexus and its roots',
+  ids:[17,28,4,13], c:['m.kukundara','112.sacral'], f:[[47.49,49.33],[52.51,49.33]]},
+ /* the two charts put Katikataruna 12 percent of a height apart, one beside
+    the sacrum and one mid buttock; the classical chart is kept */
+ {s:'Katikataruna, the middle of the buttock: the sciatic and gluteal nerves',
+  ids:[14,9], c:['m.katika'], f:[[43.68,55.56],[56.32,55.56]]}];

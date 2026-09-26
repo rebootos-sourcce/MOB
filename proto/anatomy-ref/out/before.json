@@ -1,0 +1,2830 @@
+{
+ "stamp": {
+  "src": "../refwork/before-source.html",
+  "commit": "e991b93",
+  "md5": "9b6701af0db3bcd8fa70992d85b66134",
+  "dirty": true,
+  "read": "2026-09-26T05:20:29.819Z"
+ },
+ "figure": {
+  "V": 4.2,
+  "E": 12,
+  "N": 16.6,
+  "S": 19.07,
+  "C": 56.76,
+  "F": 97.87404000000001,
+  "skull": 9.097,
+  "neck": 6.593,
+  "waist": 14.934,
+  "wy": 40.1,
+  "stature": 93.674
+ },
+ "check": {
+  "landmarkRoundTrip": 0,
+  "painted": [
+   {
+    "profile": "Gordon",
+    "drawn": 97,
+    "worst": 0.005
+   },
+   {
+    "profile": "Ana",
+    "drawn": 41,
+    "worst": 0.005
+   },
+   {
+    "profile": "James",
+    "drawn": 24,
+    "worst": 0.005
+   }
+  ],
+  "hand": {
+   "point": "m.hridaya",
+   "chart": [
+    180,
+    170.4
+   ],
+   "y_working": "19.07 + (170.4 - 119.1) / (288 - 119.1) x (56.76 - 19.07)",
+   "x_working": "50 + (180 - 179.25) / ((42 / 9.097 + 67.5 / 14.934) / 2)",
+   "byHand": [
+    50.164,
+    30.518
+   ],
+   "tool": [
+    50.164,
+    30.518
+   ],
+   "agrees": true
+  },
+  "pageErrors": [],
+  "offBody": [],
+  "chartRows": 0,
+  "drift": []
+ },
+ "targets": [
+  {
+   "pts": [
+    "m.hridaya",
+    "112.sternal"
+   ],
+   "asked": [
+    "m.hridaya",
+    "112.sternal"
+   ],
+   "split": null,
+   "ids": [
+    49,
+    55,
+    53,
+    62,
+    63
+   ],
+   "gathered": [
+    53,
+    62,
+    63
+   ],
+   "f": [
+    [
+     50,
+     27.9
+    ]
+   ],
+   "walked": 0
+  },
+  {
+   "pts": [
+    "m.kaksha",
+    "112.axilla"
+   ],
+   "asked": [
+    "m.kaksha",
+    "112.axilla"
+   ],
+   "split": null,
+   "ids": [
+    75
+   ],
+   "gathered": [
+    75
+   ],
+   "f": [
+    [
+     41.39,
+     26.54
+    ],
+    [
+     58.61,
+     26.54
+    ]
+   ],
+   "walked": 0
+  },
+  {
+   "pts": [
+    "112.manya"
+   ],
+   "asked": [
+    "112.manya"
+   ],
+   "split": null,
+   "ids": [
+    65,
+    66,
+    67,
+    71
+   ],
+   "gathered": [
+    65,
+    66,
+    67,
+    71
+   ],
+   "f": [
+    [
+     48.6,
+     19.41
+    ],
+    [
+     51.4,
+     19.41
+    ]
+   ],
+   "walked": 0
+  },
+  {
+   "pts": [
+    "m.stanamula",
+    "112.breast"
+   ],
+   "asked": [
+    "m.stanamula",
+    "112.breast"
+   ],
+   "split": null,
+   "ids": [
+    54
+   ],
+   "gathered": [
+    54
+   ],
+   "f": [
+    [
+     44.98,
+     31.03
+    ],
+    [
+     55.02,
+     31.03
+    ]
+   ],
+   "walked": 0
+  },
+  {
+   "pts": [
+    "m.apastambha"
+   ],
+   "asked": [
+    "m.apastambha"
+   ],
+   "split": null,
+   "ids": [
+    58
+   ],
+   "gathered": [
+    58
+   ],
+   "f": [
+    [
+     47.73,
+     21.28
+    ],
+    [
+     52.27,
+     21.28
+    ]
+   ],
+   "walked": 0
+  },
+  {
+   "pts": [
+    "m.vitapa"
+   ],
+   "asked": [
+    "m.vitapa"
+   ],
+   "split": null,
+   "ids": [
+    18
+   ],
+   "gathered": [
+    18
+   ],
+   "f": [
+    [
+     49,
+     52.68
+    ],
+    [
+     51,
+     52.68
+    ]
+   ],
+   "walked": 0
+  },
+  {
+   "pts": [
+    "m.apalapa"
+   ],
+   "asked": [
+    "m.apalapa"
+   ],
+   "split": null,
+   "ids": [
+    56
+   ],
+   "gathered": [
+    56
+   ],
+   "f": [
+    [
+     42.06,
+     29.69
+    ],
+    [
+     57.94,
+     29.69
+    ]
+   ],
+   "walked": 0
+  },
+  {
+   "pts": [
+    "112.matrika"
+   ],
+   "asked": [
+    "112.matrika"
+   ],
+   "split": null,
+   "ids": [
+    64
+   ],
+   "gathered": [
+    64
+   ],
+   "f": [
+    [
+     48.94,
+     20.87
+    ],
+    [
+     51.06,
+     20.87
+    ]
+   ],
+   "walked": 0
+  },
+  {
+   "pts": [
+    "m.amsa",
+    "112.trapezius"
+   ],
+   "asked": [
+    "m.amsa",
+    "112.trapezius"
+   ],
+   "split": null,
+   "ids": [
+    69,
+    73
+   ],
+   "gathered": [
+    69,
+    73
+   ],
+   "f": [
+    [
+     42.85,
+     21.98
+    ],
+    [
+     57.15,
+     21.98
+    ]
+   ],
+   "walked": 1.05
+  },
+  {
+   "pts": [
+    "m.krikatika",
+    "112.occiput"
+   ],
+   "asked": [
+    "m.krikatika",
+    "112.occiput"
+   ],
+   "split": null,
+   "ids": [
+    84
+   ],
+   "gathered": [],
+   "f": [
+    [
+     49.33,
+     14.37
+    ],
+    [
+     50.67,
+     14.37
+    ]
+   ],
+   "walked": 0
+  },
+  {
+   "pts": [
+    "m.brihati",
+    "112.T4"
+   ],
+   "asked": [
+    "m.brihati",
+    "112.T4"
+   ],
+   "split": null,
+   "ids": [
+    50,
+    59
+   ],
+   "gathered": [
+    50,
+    59
+   ],
+   "f": [
+    [
+     49.37,
+     28.26
+    ],
+    [
+     50.63,
+     28.26
+    ]
+   ],
+   "walked": 0
+  },
+  {
+   "pts": [
+    "m.parshva",
+    "112.kidney"
+   ],
+   "asked": [
+    "m.parshva",
+    "112.kidney"
+   ],
+   "split": null,
+   "ids": [
+    38,
+    39,
+    43,
+    45
+   ],
+   "gathered": [
+    38,
+    39,
+    43,
+    45
+   ],
+   "f": [
+    [
+     45,
+     42.5
+    ],
+    [
+     55,
+     42.5
+    ]
+   ],
+   "walked": 0
+  },
+  {
+   "pts": [
+    "m.nabhi",
+    "112.navel"
+   ],
+   "asked": [
+    "m.nabhi",
+    "112.navel"
+   ],
+   "split": null,
+   "ids": [
+    44
+   ],
+   "gathered": [
+    44
+   ],
+   "f": [
+    [
+     50,
+     43.07
+    ]
+   ],
+   "walked": 0
+  },
+  {
+   "pts": [
+    "m.basti",
+    "112.belly"
+   ],
+   "asked": [
+    "m.basti",
+    "112.belly"
+   ],
+   "split": null,
+   "ids": [
+    3,
+    26,
+    22,
+    5,
+    24,
+    21,
+    30,
+    29
+   ],
+   "gathered": [
+    3,
+    26,
+    22,
+    5,
+    24,
+    21,
+    30,
+    29
+   ],
+   "f": [
+    [
+     50,
+     47.7
+    ]
+   ],
+   "walked": 0
+  },
+  {
+   "pts": [
+    "m.guda"
+   ],
+   "asked": [
+    "m.guda"
+   ],
+   "split": null,
+   "ids": [
+    2,
+    19,
+    11,
+    32
+   ],
+   "gathered": [
+    2,
+    19,
+    11,
+    32
+   ],
+   "f": [
+    [
+     50,
+     53.93
+    ]
+   ],
+   "walked": 0
+  },
+  {
+   "pts": [
+    "112.floor",
+    "m.guda"
+   ],
+   "asked": [
+    "112.floor",
+    "m.guda"
+   ],
+   "split": null,
+   "ids": [
+    12,
+    6
+   ],
+   "gathered": [
+    12
+   ],
+   "f": [
+    [
+     50,
+     52.28
+    ]
+   ],
+   "walked": 0
+  },
+  {
+   "pts": [
+    "m.kukundara",
+    "112.sacral"
+   ],
+   "asked": [
+    "m.kukundara",
+    "112.sacral"
+   ],
+   "split": null,
+   "ids": [
+    17,
+    28,
+    4,
+    13
+   ],
+   "gathered": [
+    17,
+    28,
+    4,
+    13
+   ],
+   "f": [
+    [
+     47.49,
+     49.33
+    ],
+    [
+     52.51,
+     49.33
+    ]
+   ],
+   "walked": 0
+  },
+  {
+   "pts": [
+    "m.katika"
+   ],
+   "asked": [
+    "m.katika",
+    "112.katika"
+   ],
+   "split": 12.22,
+   "ids": [
+    14,
+    9
+   ],
+   "gathered": [
+    14,
+    9
+   ],
+   "f": [
+    [
+     43.68,
+     55.56
+    ],
+    [
+     56.32,
+     55.56
+    ]
+   ],
+   "walked": 0
+  },
+  {
+   "pts": [
+    "112.vertex"
+   ],
+   "asked": [
+    "112.vertex"
+   ],
+   "split": null,
+   "ids": [
+    107
+   ],
+   "gathered": [],
+   "f": [
+    [
+     50,
+     6.15
+    ]
+   ],
+   "walked": 0
+  },
+  {
+   "pts": [
+    "112.glabella"
+   ],
+   "asked": [
+    "112.glabella"
+   ],
+   "split": null,
+   "ids": [
+    79,
+    76
+   ],
+   "gathered": [],
+   "f": [
+    [
+     50,
+     8.84
+    ]
+   ],
+   "walked": 0
+  }
+ ],
+ "bands": {
+  "on": 3,
+  "near": 6,
+  "statureCm": 175
+ },
+ "agree": [
+  {
+   "a": "m.hridaya",
+   "b": "112.sternal",
+   "d": 5.235,
+   "pct": 5.59,
+   "cm": 9.8
+  },
+  {
+   "a": "m.nabhi",
+   "b": "112.navel",
+   "d": 0.766,
+   "pct": 0.82,
+   "cm": 1.4
+  },
+  {
+   "a": "m.basti",
+   "b": "112.belly",
+   "d": 2.204,
+   "pct": 2.35,
+   "cm": 4.1
+  },
+  {
+   "a": "m.kaksha",
+   "b": "112.axilla",
+   "d": 3.848,
+   "pct": 4.11,
+   "cm": 7.2
+  },
+  {
+   "a": "m.stanamula",
+   "b": "112.breast",
+   "d": 2.218,
+   "pct": 2.37,
+   "cm": 4.1
+  },
+  {
+   "a": "m.amsa",
+   "b": "112.trapezius",
+   "d": 2.166,
+   "pct": 2.31,
+   "cm": 4
+  },
+  {
+   "a": "m.krikatika",
+   "b": "112.occiput",
+   "d": 3.118,
+   "pct": 3.33,
+   "cm": 5.8
+  },
+  {
+   "a": "m.brihati",
+   "b": "112.T4",
+   "d": 2.419,
+   "pct": 2.58,
+   "cm": 4.5
+  },
+  {
+   "a": "m.parshva",
+   "b": "112.kidney",
+   "d": 3.354,
+   "pct": 3.58,
+   "cm": 6.3
+  },
+  {
+   "a": "m.katika",
+   "b": "112.katika",
+   "d": 11.403,
+   "pct": 12.17,
+   "cm": 21.3
+  },
+  {
+   "a": "m.kukundara",
+   "b": "112.sacral",
+   "d": 4.664,
+   "pct": 4.98,
+   "cm": 8.7
+  }
+ ],
+ "summary": {
+  "tier1": {
+   "n": 10,
+   "median": 2.71,
+   "mean": 3.3,
+   "p90": 4.83,
+   "max": 11.47,
+   "on": 6,
+   "near": 3,
+   "off": 1
+  },
+  "all": {
+   "n": 48,
+   "median": 4.06,
+   "mean": 4.25,
+   "p90": 7.45,
+   "max": 11.47,
+   "on": 16,
+   "near": 20,
+   "off": 12
+  },
+  "anatomyOnly": {
+   "n": 7,
+   "median": 1.16,
+   "mean": 1.66,
+   "p90": 3.48,
+   "max": 3.74,
+   "on": 5,
+   "near": 2,
+   "off": 0
+  },
+  "marmaAlone": {
+   "n": 40,
+   "median": 5.45,
+   "mean": 5.2,
+   "p90": 8.26,
+   "max": 11.47,
+   "on": 8,
+   "near": 18,
+   "off": 14
+  },
+  "chart112Alone": {
+   "n": 41,
+   "median": 4.75,
+   "mean": 4.92,
+   "p90": 8.07,
+   "max": 13.51,
+   "on": 10,
+   "near": 19,
+   "off": 12
+  },
+  "seats": {
+   "n": 6,
+   "median": 1.25,
+   "mean": 1.18,
+   "p90": 2.67,
+   "max": 2.67,
+   "on": 6,
+   "near": 0,
+   "off": 0
+  }
+ },
+ "rows": [
+  {
+   "i": 49,
+   "k": "Hatred",
+   "b": "Heart",
+   "n": "Cardiac Plexus",
+   "tier": 1,
+   "measured": true,
+   "source": "anatomy",
+   "x": 50.849,
+   "y": 29.661,
+   "d": 1.096,
+   "pct": 1.17,
+   "cm": 2,
+   "band": "on",
+   "nearest": "m.hridaya",
+   "at": [
+    50.164,
+    30.518
+   ],
+   "per": [
+    {
+     "pt": "m.hridaya",
+     "d": 1.096,
+     "pct": 1.17
+    },
+    {
+     "pt": "112.sternal",
+     "d": 4.451,
+     "pct": 4.75
+    }
+   ],
+   "why": "Hridaya is the cardiac plexus, checked against dissection (marma-validation item 8), and the 112 chart labels its point T4 to T5, the plexus's own level"
+  },
+  {
+   "i": 55,
+   "k": "Longing",
+   "b": "Heart",
+   "n": "Cardiac Nerve Plexus",
+   "tier": 1,
+   "measured": true,
+   "source": "anatomy",
+   "x": 49.151,
+   "y": 31.359,
+   "d": 1.084,
+   "pct": 1.16,
+   "cm": 2,
+   "band": "on",
+   "nearest": "m.hridaya",
+   "at": [
+    49.836,
+    30.518
+   ],
+   "per": [
+    {
+     "pt": "m.hridaya",
+     "d": 1.084,
+     "pct": 1.16
+    },
+    {
+     "pt": "112.sternal",
+     "d": 6.128,
+     "pct": 6.54
+    }
+   ],
+   "why": "Hridaya is the cardiac plexus, checked against dissection (marma-validation item 8), and the 112 chart labels its point T4 to T5, the plexus's own level"
+  },
+  {
+   "i": 75,
+   "k": "Spiritual Language To Manipulate",
+   "b": "Throat",
+   "n": "Brachial Plexus",
+   "tier": 1,
+   "measured": false,
+   "source": "gathered",
+   "x": 57.016,
+   "y": 22.876,
+   "d": 2.536,
+   "pct": 2.71,
+   "cm": 4.7,
+   "band": "on",
+   "nearest": "m.kaksha",
+   "at": [
+    57.169,
+    25.407
+   ],
+   "per": [
+    {
+     "pt": "m.kaksha",
+     "d": 2.536,
+     "pct": 2.71
+    },
+    {
+     "pt": "112.axilla",
+     "d": 5.773,
+     "pct": 6.16
+    }
+   ],
+   "why": "Kakshadhara, the front of the armpit, is the brachial plexus cords round the axillary artery (item 16). The 112 chart calls the same place the axillary gateway"
+  },
+  {
+   "i": 65,
+   "k": "Self-Silencing",
+   "b": "Throat",
+   "n": "Vagus Nerve",
+   "tier": 1,
+   "measured": false,
+   "source": "gathered",
+   "x": 46.733,
+   "y": 22.506,
+   "d": 3.592,
+   "pct": 3.83,
+   "cm": 6.7,
+   "band": "near",
+   "nearest": "112.manya",
+   "at": [
+    48.56,
+    19.413
+   ],
+   "per": [
+    {
+     "pt": "112.manya",
+     "d": 3.592,
+     "pct": 3.83
+    }
+   ],
+   "why": "Manya is the carotid and the vagus nerve, and its injury takes the voice (item 6). The 112 chart's \"vocal cords pillars\" is the pasted document's Manya. The marma chart's own Nila and Manya line is illegible"
+  },
+  {
+   "i": 66,
+   "k": "People Pleasing",
+   "b": "Throat",
+   "n": "Superior Laryngeal Nerve",
+   "tier": 1,
+   "measured": false,
+   "source": "gathered",
+   "x": 50.402,
+   "y": 18.466,
+   "d": 1.378,
+   "pct": 1.47,
+   "cm": 2.6,
+   "band": "on",
+   "nearest": "112.manya",
+   "at": [
+    51.402,
+    19.413
+   ],
+   "per": [
+    {
+     "pt": "112.manya",
+     "d": 1.378,
+     "pct": 1.47
+    }
+   ],
+   "why": "The same point read by its organ, the vocal cords. The superior and recurrent laryngeal nerves and the plexus inside the larynx are the vocal cords' own nerves"
+  },
+  {
+   "i": 67,
+   "k": "Lying",
+   "b": "Throat",
+   "n": "Recurrent Laryngeal Nerve",
+   "tier": 1,
+   "measured": false,
+   "source": "gathered",
+   "x": 52.9,
+   "y": 22.927,
+   "d": 3.805,
+   "pct": 4.06,
+   "cm": 7.1,
+   "band": "near",
+   "nearest": "112.manya",
+   "at": [
+    51.44,
+    19.413
+   ],
+   "per": [
+    {
+     "pt": "112.manya",
+     "d": 3.805,
+     "pct": 4.06
+    }
+   ],
+   "why": "The same point read by its organ, the vocal cords. The superior and recurrent laryngeal nerves and the plexus inside the larynx are the vocal cords' own nerves"
+  },
+  {
+   "i": 71,
+   "k": "Stage Performing",
+   "b": "Throat",
+   "n": "Laryngeal Plexus",
+   "tier": 1,
+   "measured": false,
+   "source": "gathered",
+   "x": 52.453,
+   "y": 18.114,
+   "d": 1.648,
+   "pct": 1.76,
+   "cm": 3.1,
+   "band": "on",
+   "nearest": "112.manya",
+   "at": [
+    51.44,
+    19.413
+   ],
+   "per": [
+    {
+     "pt": "112.manya",
+     "d": 1.648,
+     "pct": 1.76
+    }
+   ],
+   "why": "The same point read by its organ, the vocal cords. The superior and recurrent laryngeal nerves and the plexus inside the larynx are the vocal cords' own nerves"
+  },
+  {
+   "i": 54,
+   "k": "Martyrdom",
+   "b": "Heart",
+   "n": "Intercostal Nerves",
+   "tier": 1,
+   "measured": false,
+   "source": "gathered",
+   "x": 45.15,
+   "y": 30.053,
+   "d": 0.465,
+   "pct": 0.5,
+   "cm": 0.9,
+   "band": "on",
+   "nearest": "m.stanamula",
+   "at": [
+    45.611,
+    30.116
+   ],
+   "per": [
+    {
+     "pt": "m.stanamula",
+     "d": 0.465,
+     "pct": 0.5
+    },
+    {
+     "pt": "112.breast",
+     "d": 2.052,
+     "pct": 2.19
+    }
+   ],
+   "why": "Stanamula sits in the space between the ribs under the breast, and the 112 chart names that space outright. The intercostal nerve runs in it"
+  },
+  {
+   "i": 58,
+   "k": "Expectation",
+   "b": "Heart",
+   "n": "Pulmonary Nerve Plexus",
+   "tier": 1,
+   "measured": false,
+   "source": "gathered",
+   "x": 44.774,
+   "y": 31.661,
+   "d": 10.744,
+   "pct": 11.47,
+   "cm": 20.1,
+   "band": "off",
+   "nearest": "m.apastambha",
+   "at": [
+    47.275,
+    21.212
+   ],
+   "per": [
+    {
+     "pt": "m.apastambha",
+     "d": 10.744,
+     "pct": 11.47
+    }
+   ],
+   "why": "Apastambha is the air carrying channels, read as the bronchi, and the document's \"lung nerve plexus\" checks out in substance (item 9). The pulmonary plexus rides the bronchi into the lung. The 112 chart's bronchi point is drawn on the arm and is not used"
+  },
+  {
+   "i": 18,
+   "k": "Lust",
+   "b": "Sacral",
+   "n": "Genitofemoral Nerve",
+   "tier": 1,
+   "measured": false,
+   "source": "gathered",
+   "x": 46.733,
+   "y": 48.616,
+   "d": 4.521,
+   "pct": 4.83,
+   "cm": 8.4,
+   "band": "near",
+   "nearest": "m.vitapa",
+   "at": [
+    48.676,
+    52.699
+   ],
+   "per": [
+    {
+     "pt": "m.vitapa",
+     "d": 4.521,
+     "pct": 4.83
+    }
+   ],
+   "why": "Vitapa is the spermatic cord with the ilioinguinal nerve and the genital branch of the genitofemoral nerve, checked (item 20)"
+  },
+  {
+   "i": 53,
+   "k": "Separation",
+   "b": "Heart",
+   "n": "Pericardial Nerve",
+   "tier": 2,
+   "measured": false,
+   "source": "gathered",
+   "x": 52.9,
+   "y": 32.527,
+   "d": 3.394,
+   "pct": 3.62,
+   "cm": 6.3,
+   "band": "near",
+   "nearest": "m.hridaya",
+   "at": [
+    50.164,
+    30.518
+   ],
+   "per": [
+    {
+     "pt": "m.hridaya",
+     "d": 3.394,
+     "pct": 3.62
+    },
+    {
+     "pt": "112.sternal",
+     "d": 7.788,
+     "pct": 8.31
+    }
+   ],
+   "why": "Pericardial, great cardiac and coronary: the heart's own nerves, under Hridaya, but not the plexus the point names"
+  },
+  {
+   "i": 62,
+   "k": "Avoidance Of Grief",
+   "b": "Heart",
+   "n": "Great Cardiac Nerve",
+   "tier": 2,
+   "measured": false,
+   "source": "gathered",
+   "x": 43.349,
+   "y": 30.657,
+   "d": 6.488,
+   "pct": 6.93,
+   "cm": 12.1,
+   "band": "off",
+   "nearest": "m.hridaya",
+   "at": [
+    49.836,
+    30.518
+   ],
+   "per": [
+    {
+     "pt": "m.hridaya",
+     "d": 6.488,
+     "pct": 6.93
+    },
+    {
+     "pt": "112.sternal",
+     "d": 8.52,
+     "pct": 9.1
+    }
+   ],
+   "why": "Pericardial, great cardiac and coronary: the heart's own nerves, under Hridaya, but not the plexus the point names"
+  },
+  {
+   "i": 63,
+   "k": "Need To Be Needed",
+   "b": "Heart",
+   "n": "Coronary Plexus",
+   "tier": 2,
+   "measured": false,
+   "source": "gathered",
+   "x": 54.799,
+   "y": 27.962,
+   "d": 5.293,
+   "pct": 5.65,
+   "cm": 9.9,
+   "band": "near",
+   "nearest": "m.hridaya",
+   "at": [
+    50.164,
+    30.518
+   ],
+   "per": [
+    {
+     "pt": "m.hridaya",
+     "d": 5.293,
+     "pct": 5.65
+    },
+    {
+     "pt": "112.sternal",
+     "d": 5.463,
+     "pct": 5.83
+    }
+   ],
+   "why": "Pericardial, great cardiac and coronary: the heart's own nerves, under Hridaya, but not the plexus the point names"
+  },
+  {
+   "i": 56,
+   "k": "Closed Heart",
+   "b": "Heart",
+   "n": "Costal Branches",
+   "tier": 2,
+   "measured": false,
+   "source": "gathered",
+   "x": 48.643,
+   "y": 33.203,
+   "d": 7.266,
+   "pct": 7.76,
+   "cm": 13.6,
+   "band": "off",
+   "nearest": "m.apalapa",
+   "at": [
+    42.437,
+    29.424
+   ],
+   "per": [
+    {
+     "pt": "m.apalapa",
+     "d": 7.266,
+     "pct": 7.76
+    }
+   ],
+   "why": "Apalapa, the side of the chest under the armpit (item 10). Address 56 names no real nerve; its nearest real one, the side branches of the intercostal nerves (BI3a), surface along exactly this line"
+  },
+  {
+   "i": 64,
+   "k": "Deceit",
+   "b": "Throat",
+   "n": "Cervical Plexus",
+   "tier": 2,
+   "measured": false,
+   "source": "gathered",
+   "x": 54.252,
+   "y": 20.91,
+   "d": 3.116,
+   "pct": 3.33,
+   "cm": 5.8,
+   "band": "near",
+   "nearest": "112.matrika",
+   "at": [
+    51.137,
+    20.846
+   ],
+   "per": [
+    {
+     "pt": "112.matrika",
+     "d": 3.116,
+     "pct": 3.33
+    }
+   ],
+   "why": "The cervical plexus comes out from under the sternocleidomastoid, which the 112 chart names at this point. The marma chart points at Matrika only as a group"
+  },
+  {
+   "i": 69,
+   "k": "Comparison",
+   "b": "Throat",
+   "n": "Accessory Nerve",
+   "tier": 2,
+   "measured": false,
+   "source": "gathered",
+   "x": 47.523,
+   "y": 18.366,
+   "d": 6.085,
+   "pct": 6.5,
+   "cm": 11.4,
+   "band": "off",
+   "nearest": "m.amsa",
+   "at": [
+    41.974,
+    20.864
+   ],
+   "per": [
+    {
+     "pt": "m.amsa",
+     "d": 6.085,
+     "pct": 6.5
+    },
+    {
+     "pt": "112.trapezius",
+     "d": 7.56,
+     "pct": 8.07
+    }
+   ],
+   "why": "Amsa is the top of the shoulder on the trapezius, and the 112 chart names the trapezius. The accessory nerve is that muscle's nerve, but runs across the neck to reach it"
+  },
+  {
+   "i": 73,
+   "k": "Manic Expression",
+   "b": "Throat",
+   "n": "Spinal Accessory Nerve",
+   "tier": 2,
+   "measured": false,
+   "source": "gathered",
+   "x": 53.691,
+   "y": 24.345,
+   "d": 4.853,
+   "pct": 5.18,
+   "cm": 9.1,
+   "band": "near",
+   "nearest": "112.trapezius",
+   "at": [
+    58.379,
+    23.091
+   ],
+   "per": [
+    {
+     "pt": "m.amsa",
+     "d": 5.484,
+     "pct": 5.85
+    },
+    {
+     "pt": "112.trapezius",
+     "d": 4.853,
+     "pct": 5.18
+    }
+   ],
+   "why": "Amsa is the top of the shoulder on the trapezius, and the 112 chart names the trapezius. The accessory nerve is that muscle's nerve, but runs across the neck to reach it"
+  },
+  {
+   "i": 84,
+   "k": "Distortion",
+   "b": "3rd Eye",
+   "n": "Occipital Nerve",
+   "tier": 2,
+   "measured": true,
+   "source": "anatomy",
+   "x": 50.493,
+   "y": 12.493,
+   "d": 0.616,
+   "pct": 0.66,
+   "cm": 1.2,
+   "band": "on",
+   "nearest": "112.occiput",
+   "at": [
+    50,
+    12.863
+   ],
+   "per": [
+    {
+     "pt": "m.krikatika",
+     "d": 3.349,
+     "pct": 3.57
+    },
+    {
+     "pt": "112.occiput",
+     "d": 0.616,
+     "pct": 0.66
+    }
+   ],
+   "why": "Krikatika is where the skull meets the spine (item 5). The greater occipital nerve surfaces beside it, rising toward the inion"
+  },
+  {
+   "i": 50,
+   "k": "Resentment (Heart)",
+   "b": "Heart",
+   "n": "Thoracic Nerves",
+   "tier": 2,
+   "measured": false,
+   "source": "gathered",
+   "x": 54.252,
+   "y": 30.51,
+   "d": 3.201,
+   "pct": 3.42,
+   "cm": 6,
+   "band": "near",
+   "nearest": "m.brihati",
+   "at": [
+    51.265,
+    29.36
+   ],
+   "per": [
+    {
+     "pt": "m.brihati",
+     "d": 3.201,
+     "pct": 3.42
+    },
+    {
+     "pt": "112.T4",
+     "d": 5.418,
+     "pct": 5.78
+    }
+   ],
+   "why": "Brihati sits beside the spine between the shoulder blades; the 112 chart labels it T4. The thoracic nerves and the sympathetic ganglia leave the spine there"
+  },
+  {
+   "i": 59,
+   "k": "Blame",
+   "b": "Heart",
+   "n": "Thoracic Ganglia",
+   "tier": 2,
+   "measured": false,
+   "source": "gathered",
+   "x": 52.453,
+   "y": 27.714,
+   "d": 2.03,
+   "pct": 2.17,
+   "cm": 3.8,
+   "band": "on",
+   "nearest": "m.brihati",
+   "at": [
+    51.265,
+    29.36
+   ],
+   "per": [
+    {
+     "pt": "m.brihati",
+     "d": 2.03,
+     "pct": 2.17
+    },
+    {
+     "pt": "112.T4",
+     "d": 2.517,
+     "pct": 2.69
+    }
+   ],
+   "why": "Brihati sits beside the spine between the shoulder blades; the 112 chart labels it T4. The thoracic nerves and the sympathetic ganglia leave the spine there"
+  },
+  {
+   "i": 38,
+   "k": "Entitlement",
+   "b": "Solar",
+   "n": "Renal Plexus",
+   "tier": 2,
+   "measured": false,
+   "source": "gathered",
+   "x": 45.15,
+   "y": 39.753,
+   "d": 2.602,
+   "pct": 2.78,
+   "cm": 4.9,
+   "band": "on",
+   "nearest": "112.kidney",
+   "at": [
+    46.761,
+    41.796
+   ],
+   "per": [
+    {
+     "pt": "m.parshva",
+     "d": 3.839,
+     "pct": 4.1
+    },
+    {
+     "pt": "112.kidney",
+     "d": 2.602,
+     "pct": 2.78
+    }
+   ],
+   "why": "Parshvasandhi is the flank at the waist beside the spine (item 14), which the 112 chart calls the kidney gates. The renal and suprarenal plexuses and the adrenal sit on the kidney under it"
+  },
+  {
+   "i": 39,
+   "k": "Rebellion",
+   "b": "Solar",
+   "n": "Renal Ganglia",
+   "tier": 2,
+   "measured": false,
+   "source": "gathered",
+   "x": 48.643,
+   "y": 42.903,
+   "d": 2.183,
+   "pct": 2.33,
+   "cm": 4.1,
+   "band": "on",
+   "nearest": "112.kidney",
+   "at": [
+    46.761,
+    41.796
+   ],
+   "per": [
+    {
+     "pt": "m.parshva",
+     "d": 5.006,
+     "pct": 5.34
+    },
+    {
+     "pt": "112.kidney",
+     "d": 2.183,
+     "pct": 2.33
+    }
+   ],
+   "why": "Parshvasandhi is the flank at the waist beside the spine (item 14), which the 112 chart calls the kidney gates. The renal and suprarenal plexuses and the adrenal sit on the kidney under it"
+  },
+  {
+   "i": 43,
+   "k": "Resentment (Solar)",
+   "b": "Solar",
+   "n": "Suprarenal Plexus",
+   "tier": 2,
+   "measured": false,
+   "source": "gathered",
+   "x": 56.031,
+   "y": 39.503,
+   "d": 3.608,
+   "pct": 3.85,
+   "cm": 6.7,
+   "band": "near",
+   "nearest": "112.kidney",
+   "at": [
+    53.314,
+    41.876
+   ],
+   "per": [
+    {
+     "pt": "m.parshva",
+     "d": 3.677,
+     "pct": 3.93
+    },
+    {
+     "pt": "112.kidney",
+     "d": 3.608,
+     "pct": 3.85
+    }
+   ],
+   "why": "Parshvasandhi is the flank at the waist beside the spine (item 14), which the 112 chart calls the kidney gates. The renal and suprarenal plexuses and the adrenal sit on the kidney under it"
+  },
+  {
+   "i": 45,
+   "k": "Anxiety",
+   "b": "Solar",
+   "n": "Adrenal Medulla",
+   "tier": 2,
+   "measured": false,
+   "source": "gathered",
+   "x": 54.799,
+   "y": 37.662,
+   "d": 4.418,
+   "pct": 4.72,
+   "cm": 8.3,
+   "band": "near",
+   "nearest": "112.kidney",
+   "at": [
+    53.239,
+    41.796
+   ],
+   "per": [
+    {
+     "pt": "m.parshva",
+     "d": 5.777,
+     "pct": 6.17
+    },
+    {
+     "pt": "112.kidney",
+     "d": 4.418,
+     "pct": 4.72
+    }
+   ],
+   "why": "Parshvasandhi is the flank at the waist beside the spine (item 14), which the 112 chart calls the kidney gates. The renal and suprarenal plexuses and the adrenal sit on the kidney under it"
+  },
+  {
+   "i": 44,
+   "k": "Unworthiness",
+   "b": "Solar",
+   "n": "Inferior Mesenteric Plexus",
+   "tier": 2,
+   "measured": false,
+   "source": "gathered",
+   "x": 55.001,
+   "y": 42.458,
+   "d": 4.777,
+   "pct": 5.1,
+   "cm": 8.9,
+   "band": "near",
+   "nearest": "m.nabhi",
+   "at": [
+    50.23,
+    42.702
+   ],
+   "per": [
+    {
+     "pt": "m.nabhi",
+     "d": 4.777,
+     "pct": 5.1
+    },
+    {
+     "pt": "112.navel",
+     "d": 5.06,
+     "pct": 5.4
+    }
+   ],
+   "why": "The navel sits at L3 to L4 (item 11), and the inferior mesenteric plexus sits on the aorta at L3, under it. The document's own claim, that Nabhi is the celiac plexus, is at the wrong level and is not used"
+  },
+  {
+   "i": 3,
+   "k": "Guilt",
+   "b": "Root",
+   "n": "Inferior Hypogastric Plexus",
+   "tier": 2,
+   "measured": false,
+   "source": "gathered",
+   "x": 46.733,
+   "y": 55.146,
+   "d": 7.129,
+   "pct": 7.61,
+   "cm": 13.3,
+   "band": "off",
+   "nearest": "112.belly",
+   "at": [
+    49.962,
+    48.79
+   ],
+   "per": [
+    {
+     "pt": "m.basti",
+     "d": 9.027,
+     "pct": 9.64
+    },
+    {
+     "pt": "112.belly",
+     "d": 7.129,
+     "pct": 7.61
+    }
+   ],
+   "why": "Basti is the bladder, above the pubic bone. The inferior hypogastric plexus serves it from beside it; the superior hypogastric plexus sits above it at the front of the sacrum"
+  },
+  {
+   "i": 26,
+   "k": "Oversensitivity",
+   "b": "Sacral",
+   "n": "Inferior Hypogastric Plexus",
+   "tier": 2,
+   "measured": false,
+   "source": "gathered",
+   "x": 55.001,
+   "y": 49.268,
+   "d": 4.986,
+   "pct": 5.32,
+   "cm": 9.3,
+   "band": "near",
+   "nearest": "112.belly",
+   "at": [
+    50.038,
+    48.79
+   ],
+   "per": [
+    {
+     "pt": "m.basti",
+     "d": 5.367,
+     "pct": 5.73
+    },
+    {
+     "pt": "112.belly",
+     "d": 4.986,
+     "pct": 5.32
+    }
+   ],
+   "why": "Basti is the bladder, above the pubic bone. The inferior hypogastric plexus serves it from beside it; the superior hypogastric plexus sits above it at the front of the sacrum"
+  },
+  {
+   "i": 22,
+   "k": "Shame Of Desire",
+   "b": "Sacral",
+   "n": "Hypogastric Plexus",
+   "tier": 2,
+   "measured": false,
+   "source": "gathered",
+   "x": 48.643,
+   "y": 49.713,
+   "d": 1.61,
+   "pct": 1.72,
+   "cm": 3,
+   "band": "on",
+   "nearest": "112.belly",
+   "at": [
+    49.962,
+    48.79
+   ],
+   "per": [
+    {
+     "pt": "m.basti",
+     "d": 3.269,
+     "pct": 3.49
+    },
+    {
+     "pt": "112.belly",
+     "d": 1.61,
+     "pct": 1.72
+    }
+   ],
+   "why": "Basti is the bladder, above the pubic bone. The inferior hypogastric plexus serves it from beside it; the superior hypogastric plexus sits above it at the front of the sacrum"
+  },
+  {
+   "i": 5,
+   "k": "Insecurity",
+   "b": "Root",
+   "n": "Pelvic Nerve",
+   "tier": 2,
+   "measured": false,
+   "source": "gathered",
+   "x": 52.9,
+   "y": 55.567,
+   "d": 7.356,
+   "pct": 7.85,
+   "cm": 13.7,
+   "band": "off",
+   "nearest": "112.belly",
+   "at": [
+    50.038,
+    48.79
+   ],
+   "per": [
+    {
+     "pt": "m.basti",
+     "d": 9.319,
+     "pct": 9.95
+    },
+    {
+     "pt": "112.belly",
+     "d": 7.356,
+     "pct": 7.85
+    }
+   ],
+   "why": "The pelvic splanchnic nerves (5, 24, 21 and 30 name them, BI3c) are the bladder's own motor nerves, and the pelvic ganglia sit inside the inferior hypogastric plexus beside it"
+  },
+  {
+   "i": 24,
+   "k": "Avoidance Of Pleasure",
+   "b": "Sacral",
+   "n": "Pelvic Nerve",
+   "tier": 2,
+   "measured": false,
+   "source": "gathered",
+   "x": 44.774,
+   "y": 48.171,
+   "d": 5.131,
+   "pct": 5.48,
+   "cm": 9.6,
+   "band": "near",
+   "nearest": "m.basti",
+   "at": [
+    49.661,
+    46.607
+   ],
+   "per": [
+    {
+     "pt": "m.basti",
+     "d": 5.131,
+     "pct": 5.48
+    },
+    {
+     "pt": "112.belly",
+     "d": 5.225,
+     "pct": 5.58
+    }
+   ],
+   "why": "The pelvic splanchnic nerves (5, 24, 21 and 30 name them, BI3c) are the bladder's own motor nerves, and the pelvic ganglia sit inside the inferior hypogastric plexus beside it"
+  },
+  {
+   "i": 21,
+   "k": "Co-Dependency",
+   "b": "Sacral",
+   "n": "Pelvic Splanchnic Nerves",
+   "tier": 2,
+   "measured": false,
+   "source": "gathered",
+   "x": 45.15,
+   "y": 46.563,
+   "d": 4.51,
+   "pct": 4.82,
+   "cm": 8.4,
+   "band": "near",
+   "nearest": "m.basti",
+   "at": [
+    49.661,
+    46.607
+   ],
+   "per": [
+    {
+     "pt": "m.basti",
+     "d": 4.51,
+     "pct": 4.82
+    },
+    {
+     "pt": "112.belly",
+     "d": 5.302,
+     "pct": 5.66
+    }
+   ],
+   "why": "The pelvic splanchnic nerves (5, 24, 21 and 30 name them, BI3c) are the bladder's own motor nerves, and the pelvic ganglia sit inside the inferior hypogastric plexus beside it"
+  },
+  {
+   "i": 30,
+   "k": "Guilt Of Pleasure",
+   "b": "Sacral",
+   "n": "Sacral Outflow",
+   "tier": 2,
+   "measured": false,
+   "source": "gathered",
+   "x": 57.016,
+   "y": 48.986,
+   "d": 6.981,
+   "pct": 7.45,
+   "cm": 13,
+   "band": "off",
+   "nearest": "112.belly",
+   "at": [
+    50.038,
+    48.79
+   ],
+   "per": [
+    {
+     "pt": "m.basti",
+     "d": 7.088,
+     "pct": 7.57
+    },
+    {
+     "pt": "112.belly",
+     "d": 6.981,
+     "pct": 7.45
+    }
+   ],
+   "why": "The pelvic splanchnic nerves (5, 24, 21 and 30 name them, BI3c) are the bladder's own motor nerves, and the pelvic ganglia sit inside the inferior hypogastric plexus beside it"
+  },
+  {
+   "i": 29,
+   "k": "Obsession",
+   "b": "Sacral",
+   "n": "Pelvic Ganglia",
+   "tier": 2,
+   "measured": false,
+   "source": "gathered",
+   "x": 53.691,
+   "y": 50.455,
+   "d": 4.015,
+   "pct": 4.29,
+   "cm": 7.5,
+   "band": "near",
+   "nearest": "112.belly",
+   "at": [
+    50.038,
+    48.79
+   ],
+   "per": [
+    {
+     "pt": "m.basti",
+     "d": 5.103,
+     "pct": 5.45
+    },
+    {
+     "pt": "112.belly",
+     "d": 4.015,
+     "pct": 4.29
+    }
+   ],
+   "why": "The pelvic splanchnic nerves (5, 24, 21 and 30 name them, BI3c) are the bladder's own motor nerves, and the pelvic ganglia sit inside the inferior hypogastric plexus beside it"
+  },
+  {
+   "i": 2,
+   "k": "Shame",
+   "b": "Root",
+   "n": "Pudendal Nerve",
+   "tier": 2,
+   "measured": false,
+   "source": "gathered",
+   "x": 54.252,
+   "y": 53.55,
+   "d": 3.931,
+   "pct": 4.2,
+   "cm": 7.3,
+   "band": "near",
+   "nearest": "m.guda",
+   "at": [
+    50.339,
+    53.926
+   ],
+   "per": [
+    {
+     "pt": "m.guda",
+     "d": 3.931,
+     "pct": 4.2
+    }
+   ],
+   "why": "Guda is the anus. The pudendal nerve and its perineal branch serve its sphincter and the perineum round it; 32's nearest real nerve is that perineal branch (BI3c)"
+  },
+  {
+   "i": 19,
+   "k": "Envy",
+   "b": "Sacral",
+   "n": "Internal Pudendal Nerve",
+   "tier": 2,
+   "measured": false,
+   "source": "gathered",
+   "x": 50.402,
+   "y": 44.576,
+   "d": 9.351,
+   "pct": 9.98,
+   "cm": 17.5,
+   "band": "off",
+   "nearest": "m.guda",
+   "at": [
+    50.339,
+    53.926
+   ],
+   "per": [
+    {
+     "pt": "m.guda",
+     "d": 9.351,
+     "pct": 9.98
+    }
+   ],
+   "why": "Guda is the anus. The pudendal nerve and its perineal branch serve its sphincter and the perineum round it; 32's nearest real nerve is that perineal branch (BI3c)"
+  },
+  {
+   "i": 11,
+   "k": "Resistance",
+   "b": "Root",
+   "n": "Perineal Branch",
+   "tier": 2,
+   "measured": false,
+   "source": "gathered",
+   "x": 55.001,
+   "y": 55.798,
+   "d": 5.023,
+   "pct": 5.36,
+   "cm": 9.4,
+   "band": "near",
+   "nearest": "m.guda",
+   "at": [
+    50.339,
+    53.926
+   ],
+   "per": [
+    {
+     "pt": "m.guda",
+     "d": 5.023,
+     "pct": 5.36
+    }
+   ],
+   "why": "Guda is the anus. The pudendal nerve and its perineal branch serve its sphincter and the perineum round it; 32's nearest real nerve is that perineal branch (BI3c)"
+  },
+  {
+   "i": 32,
+   "k": "Excess Emotion",
+   "b": "Sacral",
+   "n": "Urogenital Nerve",
+   "tier": 2,
+   "measured": false,
+   "source": "gathered",
+   "x": 55.883,
+   "y": 51.575,
+   "d": 6.022,
+   "pct": 6.43,
+   "cm": 11.2,
+   "band": "off",
+   "nearest": "m.guda",
+   "at": [
+    50.339,
+    53.926
+   ],
+   "per": [
+    {
+     "pt": "m.guda",
+     "d": 6.022,
+     "pct": 6.43
+    }
+   ],
+   "why": "Guda is the anus. The pudendal nerve and its perineal branch serve its sphincter and the perineum round it; 32's nearest real nerve is that perineal branch (BI3c)"
+  },
+  {
+   "i": 12,
+   "k": "Compulsion",
+   "b": "Root",
+   "n": "Pelvic Floor Nerves",
+   "tier": 2,
+   "measured": false,
+   "source": "gathered",
+   "x": 43.349,
+   "y": 53.697,
+   "d": 6.316,
+   "pct": 6.74,
+   "cm": 11.8,
+   "band": "off",
+   "nearest": "m.guda",
+   "at": [
+    49.661,
+    53.926
+   ],
+   "per": [
+    {
+     "pt": "112.floor",
+     "d": 7.286,
+     "pct": 7.78
+    },
+    {
+     "pt": "m.guda",
+     "d": 6.316,
+     "pct": 6.74
+    }
+   ],
+   "why": "The 112 chart names its lowest spine point the pelvic floor. The nerve to the pelvic floor (12's nearest real nerve, BI3c) and the coccygeal plexus sit at the bottom of the sacrum and the tailbone"
+  },
+  {
+   "i": 6,
+   "k": "Victimhood",
+   "b": "Root",
+   "n": "Coccygeal Plexus",
+   "tier": 2,
+   "measured": true,
+   "source": "anatomy",
+   "x": 50,
+   "y": 53.55,
+   "d": 0.506,
+   "pct": 0.54,
+   "cm": 0.9,
+   "band": "on",
+   "nearest": "m.guda",
+   "at": [
+    50.339,
+    53.926
+   ],
+   "per": [
+    {
+     "pt": "112.floor",
+     "d": 2.912,
+     "pct": 3.11
+    },
+    {
+     "pt": "m.guda",
+     "d": 0.506,
+     "pct": 0.54
+    }
+   ],
+   "why": "The 112 chart names its lowest spine point the pelvic floor. The nerve to the pelvic floor (12's nearest real nerve, BI3c) and the coccygeal plexus sit at the bottom of the sacrum and the tailbone"
+  },
+  {
+   "i": 17,
+   "k": "Addiction",
+   "b": "Sacral",
+   "n": "Sacral Plexus",
+   "tier": 2,
+   "measured": false,
+   "source": "gathered",
+   "x": 54.252,
+   "y": 47.02,
+   "d": 0.96,
+   "pct": 1.03,
+   "cm": 1.8,
+   "band": "on",
+   "nearest": "112.sacral",
+   "at": [
+    53.295,
+    47.097
+   ],
+   "per": [
+    {
+     "pt": "m.kukundara",
+     "d": 5.204,
+     "pct": 5.56
+    },
+    {
+     "pt": "112.sacral",
+     "d": 0.96,
+     "pct": 1.03
+    }
+   ],
+   "why": "Kukundara, the dimples over the sacroiliac joints, is tied to the nerve trunk feeding the sciatic nerve (item 13): the lumbosacral trunk (28's nearest real name, BI3c) and the sacral plexus, whose roots leave the sacrum just inside the dimples"
+  },
+  {
+   "i": 28,
+   "k": "Infatuation",
+   "b": "Sacral",
+   "n": "Lumbar-Sacral Overlap",
+   "tier": 2,
+   "measured": false,
+   "source": "gathered",
+   "x": 54.799,
+   "y": 44.472,
+   "d": 3.025,
+   "pct": 3.23,
+   "cm": 5.7,
+   "band": "near",
+   "nearest": "112.sacral",
+   "at": [
+    53.295,
+    47.097
+   ],
+   "per": [
+    {
+     "pt": "m.kukundara",
+     "d": 7.734,
+     "pct": 8.26
+    },
+    {
+     "pt": "112.sacral",
+     "d": 3.025,
+     "pct": 3.23
+    }
+   ],
+   "why": "Kukundara, the dimples over the sacroiliac joints, is tied to the nerve trunk feeding the sciatic nerve (item 13): the lumbosacral trunk (28's nearest real name, BI3c) and the sacral plexus, whose roots leave the sacrum just inside the dimples"
+  },
+  {
+   "i": 4,
+   "k": "Control",
+   "b": "Root",
+   "n": "Sacral Nerves",
+   "tier": 2,
+   "measured": false,
+   "source": "gathered",
+   "x": 50.402,
+   "y": 51.106,
+   "d": 1.176,
+   "pct": 1.25,
+   "cm": 2.2,
+   "band": "on",
+   "nearest": "m.kukundara",
+   "at": [
+    51.483,
+    51.568
+   ],
+   "per": [
+    {
+     "pt": "m.kukundara",
+     "d": 1.176,
+     "pct": 1.25
+    },
+    {
+     "pt": "112.sacral",
+     "d": 4.861,
+     "pct": 5.19
+    }
+   ],
+   "why": "Kukundara, the dimples over the sacroiliac joints, is tied to the nerve trunk feeding the sciatic nerve (item 13): the lumbosacral trunk (28's nearest real name, BI3c) and the sacral plexus, whose roots leave the sacrum just inside the dimples"
+  },
+  {
+   "i": 13,
+   "k": "Disconnection",
+   "b": "Root",
+   "n": "Sacral Root Ganglia",
+   "tier": 2,
+   "measured": false,
+   "source": "gathered",
+   "x": 57.041,
+   "y": 54.055,
+   "d": 5.871,
+   "pct": 6.27,
+   "cm": 11,
+   "band": "off",
+   "nearest": "m.kukundara",
+   "at": [
+    51.723,
+    51.568
+   ],
+   "per": [
+    {
+     "pt": "m.kukundara",
+     "d": 5.871,
+     "pct": 6.27
+    },
+    {
+     "pt": "112.sacral",
+     "d": 7.876,
+     "pct": 8.41
+    }
+   ],
+   "why": "Kukundara, the dimples over the sacroiliac joints, is tied to the nerve trunk feeding the sciatic nerve (item 13): the lumbosacral trunk (28's nearest real name, BI3c) and the sacral plexus, whose roots leave the sacrum just inside the dimples"
+  },
+  {
+   "i": 14,
+   "k": "Escapism",
+   "b": "Root",
+   "n": "Sciatic Nerve",
+   "tier": 2,
+   "measured": false,
+   "source": "gathered",
+   "x": 53.691,
+   "y": 56.985,
+   "d": 2.788,
+   "pct": 2.98,
+   "cm": 5.2,
+   "band": "on",
+   "nearest": "m.katika",
+   "at": [
+    56.085,
+    55.556
+   ],
+   "per": [
+    {
+     "pt": "m.katika",
+     "d": 2.788,
+     "pct": 2.98
+    },
+    {
+     "pt": "112.katika",
+     "d": 12.653,
+     "pct": 13.51
+    }
+   ],
+   "why": "Katikataruna, the middle of the buttock. The sciatic and gluteal nerves leave the pelvis under it. A reading from the location; the research did not check this point"
+  },
+  {
+   "i": 9,
+   "k": "Possession",
+   "b": "Root",
+   "n": "Gluteal Nerve",
+   "tier": 2,
+   "measured": false,
+   "source": "gathered",
+   "x": 47.523,
+   "y": 51.006,
+   "d": 5.807,
+   "pct": 6.2,
+   "cm": 10.8,
+   "band": "off",
+   "nearest": "m.katika",
+   "at": [
+    43.915,
+    55.556
+   ],
+   "per": [
+    {
+     "pt": "m.katika",
+     "d": 5.807,
+     "pct": 6.2
+    },
+    {
+     "pt": "112.katika",
+     "d": 6.852,
+     "pct": 7.32
+    }
+   ],
+   "why": "Katikataruna, the middle of the buttock. The sciatic and gluteal nerves leave the pelvis under it. A reading from the location; the research did not check this point"
+  },
+  {
+   "i": 107,
+   "k": "Self-Exclusion",
+   "b": "Crown",
+   "n": "Superior Sagittal Sinus",
+   "tier": 2,
+   "measured": true,
+   "source": "anatomy",
+   "x": 49.688,
+   "y": 5.394,
+   "d": 0.798,
+   "pct": 0.85,
+   "cm": 1.5,
+   "band": "on",
+   "nearest": "112.vertex",
+   "at": [
+    49.943,
+    6.15
+   ],
+   "per": [
+    {
+     "pt": "112.vertex",
+     "d": 0.798,
+     "pct": 0.85
+    }
+   ],
+   "why": "The top of the brain on the midline, under the vertex. The 112 chart draws its vertex on the forehead, which this measures honestly as far"
+  },
+  {
+   "i": 79,
+   "k": "Hypervigilance",
+   "b": "3rd Eye",
+   "n": "Optic Chiasm",
+   "tier": 2,
+   "measured": true,
+   "source": "anatomy",
+   "x": 47.975,
+   "y": 11.413,
+   "d": 3.262,
+   "pct": 3.48,
+   "cm": 6.1,
+   "band": "near",
+   "nearest": "112.glabella",
+   "at": [
+    49.981,
+    8.841
+   ],
+   "per": [
+    {
+     "pt": "112.glabella",
+     "d": 3.262,
+     "pct": 3.48
+    }
+   ],
+   "why": "The optic chiasm lies straight behind the brow on a front view"
+  },
+  {
+   "i": 76,
+   "k": "Delusion",
+   "b": "3rd Eye",
+   "n": "Optic Nerve",
+   "tier": 2,
+   "measured": true,
+   "source": "anatomy",
+   "x": 51.621,
+   "y": 11.952,
+   "d": 3.5,
+   "pct": 3.74,
+   "cm": 6.5,
+   "band": "near",
+   "nearest": "112.glabella",
+   "at": [
+    50.019,
+    8.841
+   ],
+   "per": [
+    {
+     "pt": "112.glabella",
+     "d": 3.5,
+     "pct": 3.74
+    }
+   ],
+   "why": "The optic chiasm lies straight behind the brow on a front view"
+  }
+ ],
+ "seats": [
+  {
+   "k": "crown",
+   "nm": "Crown",
+   "y": 4.98,
+   "d": 1.171,
+   "pct": 1.25,
+   "cm": 2.2,
+   "dy": 1.17,
+   "nearest": "112.vertex",
+   "at": [
+    49.943,
+    6.15
+   ],
+   "why": "Adhipati, the crown. The marma chart's own Adhipati line is illegible"
+  },
+  {
+   "k": "eye",
+   "nm": "Third Eye",
+   "y": 10.57,
+   "d": 1.729,
+   "pct": 1.85,
+   "cm": 3.2,
+   "dy": -1.729,
+   "nearest": "112.glabella",
+   "at": [
+    49.981,
+    8.841
+   ],
+   "why": "Sthapani, between the brows. Illegible on the marma chart"
+  },
+  {
+   "k": "heart",
+   "nm": "Heart",
+   "y": 30.51,
+   "d": 0.164,
+   "pct": 0.18,
+   "cm": 0.3,
+   "dy": 0.008,
+   "nearest": "m.hridaya",
+   "at": [
+    50.164,
+    30.518
+   ],
+   "why": "Hridaya, the heart"
+  },
+  {
+   "k": "solar",
+   "nm": "Solar",
+   "y": 40.21,
+   "d": 2.502,
+   "pct": 2.67,
+   "cm": 4.7,
+   "dy": 2.492,
+   "nearest": "m.nabhi",
+   "at": [
+    50.23,
+    42.702
+   ],
+   "why": "The navel. The seat's own text puts Solar below the ribs and above the navel, so this reads how far above it sits, not a miss"
+  },
+  {
+   "k": "sacral",
+   "nm": "Sacral",
+   "y": 47.02,
+   "d": 0.535,
+   "pct": 0.57,
+   "cm": 1,
+   "dy": -0.413,
+   "nearest": "m.basti",
+   "at": [
+    50.339,
+    46.607
+   ],
+   "why": "Basti, above the pubic bone. The seat's own text says below the navel"
+  },
+  {
+   "k": "root",
+   "nm": "Root",
+   "y": 53.55,
+   "d": 0.506,
+   "pct": 0.54,
+   "cm": 0.9,
+   "dy": 0.376,
+   "nearest": "m.guda",
+   "at": [
+    50.339,
+    53.926
+   ],
+   "why": "Guda and the pelvic floor"
+  }
+ ],
+ "chartOnUs": {
+  "112.vertex": [
+   [
+    49.943,
+    6.15
+   ]
+  ],
+  "112.glabella": [
+   [
+    49.981,
+    8.841
+   ]
+  ],
+  "112.sinus": [
+   [
+    46.892,
+    9.953
+   ]
+  ],
+  "112.eye": [
+   [
+    47.934,
+    10.947
+   ],
+   [
+    51.99,
+    11.064
+   ]
+  ],
+  "112.palate": [
+   [
+    48.484,
+    12.845
+   ]
+  ],
+  "112.nostril": [
+   [
+    50.853,
+    13.277
+   ]
+  ],
+  "112.jaw": [
+   [
+    47.461,
+    15.211
+   ],
+   [
+    52.179,
+    15.417
+   ]
+  ],
+  "112.nila": [
+   [
+    48.162,
+    18.1
+   ],
+   [
+    51.876,
+    18.1
+   ]
+  ],
+  "112.manya": [
+   [
+    48.598,
+    19.413
+   ],
+   [
+    51.44,
+    19.413
+   ]
+  ],
+  "112.matrika": [
+   [
+    48.939,
+    20.866
+   ],
+   [
+    51.137,
+    20.846
+   ]
+  ],
+  "112.sternal": [
+   [
+    50.038,
+    25.284
+   ]
+  ],
+  "112.axilla": [
+   [
+    39.672,
+    27.605
+   ]
+  ],
+  "112.breast": [
+   [
+    44.353,
+    31.943
+   ],
+   [
+    55.647,
+    31.943
+   ]
+  ],
+  "112.bronchi": [
+   [
+    59.949,
+    35.01
+   ]
+  ],
+  "112.costal": [
+   [
+    61.521,
+    39.025
+   ]
+  ],
+  "112.navel": [
+   [
+    50.038,
+    43.443
+   ]
+  ],
+  "112.belly": [
+   [
+    50.038,
+    48.79
+   ]
+  ],
+  "112.lunar": [
+   [
+    57.75,
+    51.393
+   ]
+  ],
+  "112.inguinal": [
+   [
+    46.93,
+    52.321
+   ]
+  ],
+  "112.thigh": [
+   [
+    48.2,
+    54.581
+   ],
+   [
+    51.838,
+    54.541
+   ]
+  ],
+  "112.groin": [
+   [
+    66.486,
+    54.198
+   ]
+  ],
+  "112.pelvic": [
+   [
+    59.285,
+    63.502
+   ]
+  ],
+  "112.earthstar": [
+   [
+    50.133,
+    99.64
+   ]
+  ],
+  "112.stellar": [
+   [
+    50.038,
+    1.789
+   ]
+  ],
+  "112.occiput": [
+   [
+    50,
+    12.863
+   ]
+  ],
+  "112.earlobe": [
+   [
+    47.59,
+    13.648
+   ]
+  ],
+  "112.trapezius": [
+   [
+    58.379,
+    23.091
+   ],
+   [
+    41.621,
+    23.091
+   ]
+  ],
+  "112.T4": [
+   [
+    50,
+    27.152
+   ]
+  ],
+  "112.T5": [
+   [
+    50,
+    32.554
+   ]
+  ],
+  "112.kidney": [
+   [
+    53.239,
+    41.796
+   ],
+   [
+    46.686,
+    41.876
+   ]
+  ],
+  "112.katika": [
+   [
+    54.03,
+    44.317
+   ],
+   [
+    45.951,
+    44.337
+   ]
+  ],
+  "112.sacral": [
+   [
+    53.239,
+    47.157
+   ],
+   [
+    46.705,
+    47.097
+   ]
+  ],
+  "112.solarflank": [
+   [
+    55.8,
+    46.917
+   ]
+  ],
+  "112.floor": [
+   [
+    49.962,
+    50.638
+   ]
+  ],
+  "112.calf": [
+   [
+    43.842,
+    51.459
+   ]
+  ],
+  "m.avarta": [
+   [
+    45.545,
+    7.213
+   ]
+  ],
+  "m.apanga": [
+   [
+    45.567,
+    10.29
+   ]
+  ],
+  "m.vidhura": [
+   [
+    46.005,
+    13.028
+   ]
+  ],
+  "m.matrika": [
+   [
+    49.683,
+    16.185
+   ]
+  ],
+  "m.apastambha": [
+   [
+    47.734,
+    21.279
+   ],
+   [
+    52.725,
+    21.212
+   ]
+  ],
+  "m.kaksha": [
+   [
+    43.116,
+    25.474
+   ],
+   [
+    57.169,
+    25.407
+   ]
+  ],
+  "m.stanarohita": [
+   [
+    45.524,
+    26.791
+   ],
+   [
+    56.25,
+    26.322
+   ]
+  ],
+  "m.stanamula": [
+   [
+    45.611,
+    30.116
+   ],
+   [
+    54.104,
+    29.982
+   ]
+  ],
+  "m.hridaya": [
+   [
+    50.164,
+    30.518
+   ]
+  ],
+  "m.apalapa": [
+   [
+    42.065,
+    29.692
+   ],
+   [
+    57.563,
+    29.424
+   ]
+  ],
+  "m.nabhi": [
+   [
+    50.23,
+    42.702
+   ]
+  ],
+  "m.basti": [
+   [
+    50.339,
+    46.607
+   ]
+  ],
+  "m.lohitaksha": [
+   [
+    47.559,
+    50.445
+   ],
+   [
+    52.725,
+    50.445
+   ]
+  ],
+  "m.vitapa": [
+   [
+    49.004,
+    52.676
+   ],
+   [
+    51.324,
+    52.699
+   ]
+  ],
+  "m.guda": [
+   [
+    50.339,
+    53.926
+   ]
+  ],
+  "m.krikatika": [
+   [
+    51.069,
+    15.792
+   ],
+   [
+    48.67,
+    15.875
+   ]
+  ],
+  "m.amsa": [
+   [
+    58.004,
+    20.958
+   ],
+   [
+    41.974,
+    20.864
+   ]
+  ],
+  "m.amsaphalaka": [
+   [
+    56.063,
+    25.773
+   ],
+   [
+    44.024,
+    25.749
+   ]
+  ],
+  "m.brihati": [
+   [
+    51.134,
+    29.289
+   ],
+   [
+    48.735,
+    29.36
+   ]
+  ],
+  "m.parshva": [
+   [
+    56.347,
+    43.308
+   ],
+   [
+    43.304,
+    43.119
+   ]
+  ],
+  "m.nitamba": [
+   [
+    55.583,
+    45.904
+   ],
+   [
+    43.893,
+    45.739
+   ]
+  ],
+  "m.kukundara": [
+   [
+    51.483,
+    51.568
+   ],
+   [
+    48.277,
+    51.568
+   ]
+  ],
+  "m.katika": [
+   [
+    56.085,
+    55.556
+   ],
+   [
+    43.675,
+    55.556
+   ]
+  ]
+ }
+}
