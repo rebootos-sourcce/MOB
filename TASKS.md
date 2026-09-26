@@ -12359,3 +12359,66 @@ default view could not otherwise show real detail?
 the number there, or the name alone with the count only inside
 Selection where it already lived?
 
+## CL. Three looks for the CJ animation overlay, live and moving, on
+## real connections. 26 September.
+
+**Verified myself.** Pulled clean, only new files under `proto/field-
+overlay/`, nothing in `atuned_src/`, `source.html` or another seat's own
+folder touched, confirmed by the commit's own file list. This is a
+looks round, no product gate applies, since nothing shipped moved.
+A live page was published for him directly, checked myself before
+sending it on: real data drawn from the actual shipped build (the same
+commit CJ was answered against), not invented connections. Sent to him
+directly below, since motion cannot be judged from a description or a
+still.
+
+**Three real, moving treatments, each captured on Sofia, James and
+Gordon (30, 141 and 193 connections), timed to the product's own
+existing motion language.**
+- **Hum.** The lit lines vibrate like a plucked string, faster and
+  wider the more charge they carry. Reads as alive from the first
+  moment, and by this pass's own honest account, the most tiring the
+  fortieth time, since nothing on it ever holds still.
+- **Pulse.** Bright points travel along each lit line and dimmer ones
+  return, his own words made literal, "active thoughts running back and
+  forth." Reads as traffic once more than a handful of lines are lit,
+  33 points moving at once on the heaviest reference profile.
+- **Relay**, not asked for, offered anyway. One whole chain lights at a
+  time, address inward, and holds still between firings rather than
+  moving continuously. Cheapest to run and the one this pass recommends,
+  on the reasoning that the order it fires in already means something,
+  since charge compounds inward through the chain.
+- A fourth, **still**, is what all three collapse to under reduced
+  motion, the busiest lines drawn brighter with nothing moving.
+
+**A real cost found, before he picks rather than after.** Hum and Pulse
+both get more expensive the more lines are lit, so both need a hard
+cap, about twelve lines, or Hum alone costs more than the whole Field
+already does to draw. Relay stays flat no matter how many lines are
+asked for, since only one chain moves at a time. Also on record,
+found in passing and true regardless of any overlay: the Field is
+already slow on a phone class processor today, about 30 frames a
+second, before anything new is added to it.
+
+**Five real questions.**
+**Q1.** What should "most active" mean. The live page's own switch
+answers this with a picture: the busiest few lines at each ring of the
+chain, which spreads the overlay from addresses to character and is
+the default shown; the busiest lines anywhere, true to the numbers but
+on James it clusters all twelve into one Sacral corner; or the lines a
+story most recently fed, which the data exists for but nothing builds
+yet.
+**Q2.** Which look, Hum, Pulse or Relay, or a mix such as Relay's
+staged chains with Hum's quiet string sound kept on each landing.
+**Q3.** What should the button do at the Charge depth, where no
+connections draw at all today: move the Field to Chains for him, which
+costs him the view he picked; draw the overlay's own lines on top of
+Charge regardless; or grey the button out at that depth, honest but
+dead half the time.
+**Q4.** Is "Active" the right word for the button, and should turning
+it on be remembered between visits the way Wheel, Frames and Dial
+already are, or reset off every time?
+**Q5.** Should this work on Frames and Dial too, not only the Wheel.
+Both draw differently, so each look would need its own carry over, real
+extra work per view rather than automatic.
+
