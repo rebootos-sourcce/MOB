@@ -12082,3 +12082,124 @@ Gordon's profile. Source their real spine levels next, the full move,
 or as a stopgap keep today's formula but pull its spots back inside
 the silhouette so nothing hides while the positions stay arbitrary?
 
+## CH. The body map fails, his picks on the CB Field mockups, and the
+## avatar page held for him to build with the team directly. 26
+## September.
+
+**The body map, graded, and it is bad news, not softened.** His words in
+full: "the body map is awful. You get a fail. The chakras need to be
+precise to the body and right now they're not. I don't even know
+what's going on." Read plainly against what shipped in CG: real
+anatomy did land, and it is provably more accurate than the formula it
+replaced, but the result he is looking at reads as broken to him, not
+as an improvement. The dense head mesh flagged as an honest open cost
+in CG's own report is very likely what he is reacting to, since it is
+the one picture sent that a person could reasonably call confusing at
+a glance rather than precise. Not assumed, though: this needs a direct
+follow up on what he is actually looking at before anything more is
+built on top of it, since a fail graded on the wrong picture would send
+the team fixing the wrong thing.
+
+**The avatar page, held back on purpose, not stalled.** His words: "for
+the avatar page, this is something we need to build with the user. I'm
+not certain how I want to approach this just yet." No further avatar
+build dispatched this round for that reason. Three things he did rule
+outright while saying this, kept separate from the "not certain" part:
+
+- **The left and right side panels go.** His words: "I don't want the
+  details on the left and right panels, right, where it says Marcus,
+  age, design, leadership, and on the other side where it says badge,
+  Hero Victim, Good Guy Bad Guy blah blah blah. I don't know why those
+  are there." Closes part of CC's Q8 and Q10 by removing rather than
+  designing: the who-card and the badge column both come off the sheet
+  as built.
+- **The becoming side needs its own measure, not yet designed.** His
+  words, in full since they are the clearest statement yet of what the
+  page is actually for: "this is about building up your avatar and
+  becoming. It's recognizing that I want to be a person people can
+  depend on, I want to be a person that can see things clearly, I want
+  to be a person who's mindful of money, I want to be a person who
+  works out ten times a week, I don't want to eat bad foods, I do need
+  to drink three glasses of water. And all of those are kind of linked
+  to a bunch of other stuff within this avatar. So you're shedding the
+  things you don't want to be and becoming mindful of and acting and
+  operating out of the things you do. We need a system for measuring
+  this. I don't have an idea just yet, maybe the team does." Not
+  designed here since he asked for it to be built with him, but this
+  is now the clearest brief the "becoming" side of CC Q3 has had.
+- **Masks confirmed as an overlay on the figure itself, not a menu.**
+  His words: "this is a great location for the masks, because the masks
+  are what block the character, and all our light is behind the masks.
+  It may be as a person's telling their story, little pixelated dots
+  start to fill in of which one is associated with child, preteen,
+  teen, etc. I don't want that overlay on a sub menu, I want it on an
+  overlay in that panel." Closes CC Q2's placement half: on the figure,
+  filling in live as stories are told, pixel dots as first asked. The
+  arc question (does a mask also fade on release) is not answered by
+  this and stays open.
+
+**His picks on the CE Field mockups, several closing questions from
+that round outright.** All of the following are reactions to the
+pictures already sent in CE, not to anything new:
+
+- **The left rail splits into two blocks.** His words: "I want to
+  subdivide by spiritual stuff, by spirit, then the next block down
+  would be the psyche, because that gives us a full read of the entire
+  field." A real reorganisation of the rail's existing groups (today
+  Awareness, Balance, Root Domains, Blueprint Domains, Primary and so
+  on run together as one list), not yet mapped to which of those go
+  under which of the two new headings.
+- **"Oscillating" moves off the Field.** His words, thinking out loud
+  through three versions and landing on the third: "that oscillating
+  would go with that bar, I like the bar a lot, that would get moved to
+  the summary page. Or maybe that oscillating would go on the halo
+  pitchfork. Or actually, take oscillating out, move it to the summary,
+  and then if I hover over the halo pitchfork it shows me the stats and
+  adds oscillating." Read as: the word leaves the Field screen for the
+  Summary page. What exactly "the halo pitchfork" names on screen is
+  not something to guess at blindly, flagged rather than built, since a
+  wrong guess here is a real UI change.
+- **Accuracy, cut to one word.** His words: "the modelled accuracy, we
+  just want the word accuracy, we don't need anything else after that."
+  The "of 100" and any qualifier before it come off.
+- **CQ and DQ centre: he picked A, not the round's own recommendation.**
+  His words: "for coherence, for CQ and DQ, A looks great." CE's own
+  team had recommended B (two rings) over A (one ring, two arcs) on
+  the grounds that A's leftover gap between the two arcs, 22 points on
+  his own profile, means nothing since the two numbers are not shares
+  of one whole. He picked A anyway. Built as asked, his pick over the
+  team's recommendation, and said so rather than quietly swapped.
+- **Keep the shadow number, drop its word, and use CQ, not "coherence."**
+  His words: "we don't need thirty five shadow, sorry, we do need
+  thirty five, we don't need the word shadow, just put SQ, and for
+  coherence just put CQ." Labels shorten to CQ and SQ on this screen;
+  the value stays. Flagged rather than silently reconciled: CE's own
+  report found "SQ" and "shadow" are not settled as the same reading
+  in the product's own glossary, so this pick is logged in his exact
+  words for whichever seat wires it to check against that glossary
+  before shipping the label.
+- **Drop a highlight.** His words: "let's take that highlight off the
+  circle, because it's adding noise."
+- **Six gates: his pick, plus a new house rule.** His words: "for the
+  six gates I like three, but instead of the percent being above the
+  number, I want it in the pill, to the lower right of the icon. That
+  should be a standard language for everything that we do." Read as
+  picking the third option shown, the collar, which was also the
+  round's own recommendation. The percent-in-a-pill placement is not
+  scoped to the gates alone. He named it a standard, so it should be
+  looked at as a pattern to apply anywhere a percent sits next to an
+  icon, not only here.
+- **The four-hidden-addresses work, confirmed at one specific view.**
+  His words: "for dial 1600, I like after, dial 1600, hidden." Direct
+  confirmation of CF's own change, at that width and rendition.
+- **A real legibility complaint about toggle state.** His words: "the
+  circles are very clear, those say off. The ones with the bars, they
+  don't look off. So as long as things look off, or maybe those are
+  bright and there's a dim colour where they're off." Read as: whatever
+  the layer toggles (Domains, Addresses, Stories and so on) render as
+  today, some read clearly disabled when off and some do not, and he
+  wants every one of them to look off the same legible way. Which
+  controls are "the circles" and which are "the ones with the bars" is
+  not obvious from the transcript alone and needs the picture in front
+  of him to fix correctly rather than guessed at.
+
