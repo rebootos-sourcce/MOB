@@ -15374,3 +15374,35 @@ going" meaning the rest of tonight's work continues uninterrupted.
 Belongs with the funnel and About page copy already standing in this
 file's backlog, when that work is picked up.
 
+## EO. The Body page's Glass white palette, a precise spec following
+## directly on EM's own queued suggestion. 26 September.
+
+**The exact gap EM found and queued, now given as a ready-to-build
+spec.** The Body page draws its seven seat rings and its domain ring
+from `PMC`, `PMBANDS` and `ROOTCOL`, the Dark palette, unchanged on
+every lighting, so Glass white's light ground shows dark-ground
+colours. Measured 26 September on Gordon: seat rings 1.60 to 1 at
+worst against a 3 to 1 floor, the domain ring 2.22. Snow already
+reads correctly, 4.68 and 4.95, and must not change; Lumen stays
+exactly as shipped, still an open owner question. The likely fix
+named directly: pick the palette off the ground a mark actually sits
+on, the same route `rings.js`'s `frMount` already uses, rather than
+off the lighting's name, and route roots through the same `ROOTSEAT`
+map EM already built.
+
+## EP. A real layout collision on the Compass tab at phone width,
+## also flagged in passing by EM's own report. 26 September.
+
+**A real, precise, already-reproduced defect, predating tonight's
+lighting work.** At 390 wide, the Compass tab's Flat, Regulation and
+Layers switch overprints the first row of axis names underneath it,
+Illumination and Desire and will, on both Snow and Glass white,
+present at the build before and after the lighting fix, so it is not
+caused by that work. Fine at 1600. Reproduce first, then find which
+of the two blocks assumes desk width; `tests/collide.js` already
+checks the Wheel's own nameplates and is asked whether this header
+belongs beside them.
+
+**Both dispatched as real engineering, precise specs given directly,
+not interpreted from informal feedback.**
+
