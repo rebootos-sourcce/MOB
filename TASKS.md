@@ -12010,3 +12010,75 @@ it. Left in on purpose, since it is what the four need if the switch
 ever flips back, and it may matter again if the open torus field idea
 from this same round moves them there instead. Confirm keeping it.
 
+## CG. The Body page places addresses at real anatomy, closing BZ Q1
+## and Q2. 26 September.
+
+**Verified myself, not taken whole.** `tools/equiv.py` against the
+commit before this one names exactly the claimed difference, five new
+declarations (`ANAT`, `ANATHEAD`, `ANATSPINE`, `PMSPREAD`, `pmAnat`) and
+three changed bodies (`PMBANDS`, `pmNode`, and `BODYPATH`, which I
+checked by hand and is the same 8149 character outline string in both
+builds, only the build's own module boundary comment moved past it).
+`node tests/engine.js` matched the claimed 1625, `BUILD-engine.sh`
+matched the claimed 428 exports and host free. `functional.js` was
+still running under tonight's load when this was written; will correct
+here if it comes back other than clean.
+
+**3rd Eye moved off the nose, the one thing he named outright.** Its
+height dropped from 12.56 to 10.57 in the figure's own units, checked
+two ways that agreed: the top of the drawn ear on the figure's own
+outline, and the measured brow height from the atlas pass. All twelve
+3rd Eye addresses now sit at that line.
+
+**Real position for 39 addresses, head and torso.** All 33 head
+addresses now sit at their measured place; a cranial nerve too small to
+localise on its own sits where it leaves the brain, the two axis
+addresses sit at the midpoint between the two structures each names,
+and 108, not anatomy, stays on the Crown marker. Six torso addresses
+(cardiac, celiac, lumbar and coccygeal plexus, on the Heart, Solar and
+Root markers and the space between Solar and Sacral) moved the same
+way. Confirmed by his own words on file, "at a plexus there's three
+branches, so you could have more than two things sitting at one
+address": any number now stands evenly spaced round one point rather
+than stacked.
+
+**What moving them off the edge actually fixed, measured.** Before, the
+clip that hides anything drawn outside the body hid 23 addresses on
+Gordon's profile alone, 2 each on two other reference profiles. After,
+zero, on all three, at both widths.
+
+**A real defect surfaced by the fix itself, shown with the picture.**
+Packing 33 head addresses into their true, tight space turns the head
+into a dense mesh of overlapping rings, sent below. Every one is still
+findable, but not by eye at a glance. Ring size was left alone since
+every mark was already at the smallest size the UX floor allows, so
+this is a real open cost of doing the head for real, not a bug in the
+work.
+
+**69 torso addresses still on the old formula, and some still hidden by
+it.** No pass has measured their spine level yet, so nothing was
+guessed. The same hiding the head had is still there for these: 16
+addresses on Gordon, 6 on two other profiles, drawn outside the
+silhouette by the old formula and clipped away.
+
+**Four real questions.**
+**Q1.** Real measurement puts several Crown addresses at brow or ear
+height, mixed in with 3rd Eye rather than staying in a clean top band.
+Keep it, honest but the two seats blur in the head; cap Crown
+addresses at the Crown marker's own height, tidy but false to the
+measurement; or wait on the still open seat boundary ruling (BR Q1),
+which could move roughly ten Crown addresses to 3rd Eye outright and
+make this moot.
+**Q2.** The dense head mesh above. Accept it as the honest cost of real
+anatomy in a small space, allow smaller rings there and accept they
+fall further under the touch floor the UX skill sets, or build a tap
+to zoom the head, which is a real, separate piece of work.
+**Q3.** For a structure with a left and right copy (the thalamus, the
+hippocampus, others), only one side was drawn, chosen to spread the
+head evenly rather than for any anatomical reason. Is one side per
+address the right call, or should a paired structure show on both?
+**Q4.** The 69 unsourced torso addresses, 16 of them still hidden on
+Gordon's profile. Source their real spine levels next, the full move,
+or as a stopgap keep today's formula but pull its spots back inside
+the silhouette so nothing hides while the positions stay arbitrary?
+
