@@ -13522,3 +13522,159 @@ turning the pin, trace and release work, plus the mobile square
 mockup, into things he can actually open and click rather than only
 watch.
 
+## DG. The foundation review he asked for, not signed off, and my own
+## error in DF corrected. 26 September.
+
+**Verdict: not signed off.** He asked directly: "is all foundation
+done, all database done, all schemas done, have you gone through it
+and reviewed it a couple times, let's make sure everything's cool."
+The honest answer is no. A dedicated review (devops-qa) found two
+real, reproduced ways a person's own data is silently lost, three
+already logged defects still open, and one drift still growing. None
+of it needs a design decision from him; all of it is a fix.
+
+**My own error in DF, corrected.** DF said the States section's
+container "renders nothing, confirmed by searching the whole
+codebase." That was wrong. `renderSpirit()` in
+`atuned_src/ui/personas.js:36` already fills it, called from `loadP`
+and from the render loop; my search matched the literal string
+`getElementById('spirit')` and missed the `$('spirit')` shorthand the
+function actually uses. The review agent caught it by measuring a real
+profile in a browser: a person with birth data on file gets real
+Western, Eastern, Number and Design rows in that section. The real gap
+was narrower than what I told him: "You" and his own profile showed
+only a one line empty state, because the section defaults to closed
+and because `BIRTH` in `engine/data/people.js`, the fixture table, has
+no entry for him, which is correct, not a bug, since that table ships
+in the file to every user and his birth data does not belong in it.
+
+**The gap, fixed, in commit 2c1dcdd.** Two real causes, both closed.
+The rail's own open or closed table, `OPENSEC.left` in `ui/ui.js`,
+never listed `spirit`, so the section always arrived shut with nothing
+visible above the fold; it is now open by default like its neighbours.
+And the empty state's own line promised something the engine does not
+compute, "unlocks... design type"; nothing calculates a design type,
+the Type row says so for every birth there is. The line now names the
+gene key, which a date does produce, and adds a button straight to the
+date field on Energetics, the actual door, reusing the same wording
+the account page already uses for it. A real focus bug found and fixed
+along the way: the field held focus but sat off screen at 390 wide,
+because the tab switch scrolls the page back to the top on the next
+frame, after the focus lands; the button now waits a frame before
+focusing. Screenshots before and after, both widths, both a blank and
+a born profile, sent with this report. All nine gates green, measured
+fresh, not carried over from an earlier run.
+
+**Two open questions from that fix, his call.**
+- Should the heading say what it holds, "Signs" or "Birth", since he
+  looked for "your Eastern Western sign" and did not recognise
+  "States" as it, or does the heading stay?
+- Open, the section is about 900 pixels tall with birth data on file
+  and pushes the root domains and archetypes below the first screen if
+  moved above them. Leave it low, where it needs a scroll to reach, or
+  move it high and lose the first screen to it? Pictures of both sent
+  with this report.
+
+**Two real, reproduced ways a person's own data is silently lost, not
+yet fixed.**
+
+Priority one: a story's charge, just recorded, is lost the moment the
+person visits a worked example and comes back. `ui/storyui.js`'s
+commit path never calls `saveYou()`, the function every other save
+path in the product calls, confirmed directly: zero matches for
+`saveYou` in that file, against many call sites in `ui.js` and
+`panels.js`. The "You" row goes stale in memory, and the very next
+ordinary save anywhere in the app overwrites the real stored record
+with that stale, zeroed value. Nothing tells the person this happened.
+
+Priority two: a corrupted or truncated profile store is silently wiped
+at boot rather than reported. If `pStore` fails to parse what is on
+disk it returns an empty list, and `ui.js:1177` reads that as "no
+profile yet" and creates a fresh blank "You", overwriting the key that
+held the real one. A person whose browser storage gets corrupted,
+which does happen, loses their whole record with no error and no
+chance to recover it.
+
+**Three already known, reconfirmed still open, unrelated to tonight's
+work.** BO6, a gate reading leak: viewing another profile shows your
+own gate readings on it, and undo does not clear it. BO7, a stale
+threshold: `ui/ritual.js:11` still reads a person as under "heavy
+load" at `DQ>=8` and `DQ>=4`, numbers from before the shadow score was
+rescaled; needs him to state the real number, everything else about it
+is ready to fix the moment he does. And a growing drift: the feathers
+that mark a released law read the bare answer (`S.law`) instead of the
+answer with its release lift folded in (`lawNow`), in `wheel.js:315`
+and `rings.js:707,847`; the gap between the two grows every time
+somebody releases something, so it is worth more the longer it sits
+unfixed.
+
+**One more, found and reconfirmed, deliberately not fixed tonight.**
+`ui/summary.js:306` prints a sentence meant to be conditional for every
+one of the fourteen personas it was tested against, because an empty
+list, `[]`, is true in JavaScript the way any object is. A different
+seat was mid-edit in that exact file when this was found, so the one
+line fix waited rather than risk colliding with live work.
+
+**Two things walked back, not defects.** The Dial's own wording, "SQ
+X.X" at `rings.js:909`, is a deliberate, commented choice, not an
+inconsistency left over from a mockup, confirmed by reading the
+comment above it; it is a terminology question for him, not a fix.
+And an earlier claim of three Title Case headings on Field is
+corrected to one, "Four Lenses"; the other two read sentence case on
+inspection.
+
+**The coverage picture, read off the run rather than typed here, per
+this file's own rule against typing a number a build then outgrows.**
+No engine module sits at zero. The lowest, `engine/birth.js`, executes
+under three quarters of its own lines with only the headless engine
+test running; `engine/ladder.js`'s `seriesRead` function, behind the
+Summary and Compass graphs, never executes at all under it; several
+refusal and failure paths in `engine/outbox.js` and `engine/schema.js`
+never fire. And the boundary itself, `validateProfile`, is
+inconsistent with this file's own rule that a wrong typed field is
+refused by name, never silently accepted: `story`, `work`, `plan`,
+`avatar`, `purpose` and `rituals` correctly refuse; `axes`, `laws`,
+`soul`, `gates`, `intake`, `who`, `ui`, `seed` and `history` do not,
+and a malformed `laws` list was shown silently becoming zero laws
+measured rather than being refused. Not urgent tonight, real, and due
+to matter the moment the accounts seam opens and a record can arrive
+from somewhere other than the person's own browser.
+
+**A real tool bug, found in this same pass, fixed and committed
+alongside this entry.** `tools/equiv.py`, the tool this file's own
+build rule calls for on every module split or data table move, used to
+report a clean pass whenever nothing was added or changed, which meant
+deleting a declaration outright, such as `relPick`, still read as
+clean. One line now makes a deletion a difference like any other,
+verified directly against the diff before committing it.
+
+**Pin, trace and release, and phone Frames, published as one link he
+can open and click himself, not watched as a recording.**
+`https://claude.ai/artifact/Byb9M4AZ5XBjU6kc8EYV33`, three tabs, and
+`#pin`, `#release` or `#frames` on the link opens each directly. Pin
+is the same file already built in DE, unchanged, clicked through on a
+real phone and a real desktop. Trace and release now runs against the
+actual current build published alongside it, not a copy, and checks
+all 141 of James's connection strengths match before it will run; the
+real release protocol runs at its own real speed, about a minute, with
+no speed up in this published copy, an open question below. Frames is
+a new file, the shipped build itself at a phone's width with James
+loaded, not the pasted screenshot comp that caused the "mobile doesn't
+do shit" reaction in DC; two proposed changes to it, option a and
+option b, sit over the same live picture and can be switched or turned
+off.
+
+**Two open questions from that link, his call.**
+- Frames, option a or option b, on his own phone, or neither?
+- A published trace and release runs at the real protocol speed, about
+  a minute. The recording he already watched ran faster, about
+  thirteen seconds, sped up for that recording only. Should the
+  published page carry an actual speed toggle, real versus faster, or
+  stay at the one real speed?
+
+**What is dispatched next, not held for a design answer.** The two
+data loss bugs above, plus the two already unblocked one line fixes
+above that need no owner input (`ui/summary.js:306`, and the feathers
+reading `S.law` instead of `lawNow`), all go out as one fix pass. BO7
+still waits on him stating the real threshold number.
+

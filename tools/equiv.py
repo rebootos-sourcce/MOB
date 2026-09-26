@@ -25,4 +25,6 @@ print('declarations in rebuilt :',len(B))
 print('only in shipped         :',onlyA or 'none')
 print('only in rebuilt         :',onlyB or 'none')
 print('bodies changed          :',changed or 'none')
-sys.exit(0 if (not onlyB and not changed and set(onlyA)<= {'__probe__'}) else (0 if not changed and not onlyB else 1))
+# a deleted declaration is a difference too. The old fallback exited 0 whenever
+# nothing was added or changed, so deleting relPick outright read as clean.
+sys.exit(0 if (not onlyB and not changed and set(onlyA)<= {'__probe__'}) else 1)
