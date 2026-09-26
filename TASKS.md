@@ -15470,3 +15470,19 @@ borrow the Field's own visual language; and the Frames and Dial
 motion question put back to design rather than left standing on its
 own convention.**
 
+## ER. Mouse wheel zoom on Dial and Frames, already built in the glass
+## bar prototype, confirmed rather than queued as new. 26 September.
+
+**His words.** "With Dial and Frame, I want to be able to use mouse
+wheel zoom in, and then when I frame it, it just snaps back. Add
+that to the queue."
+
+**Already real, in the prototype he has not yet had ported to him.**
+The glass bar's own third revision (ED) already built exactly this:
+scroll to zoom around the pointer, drag to pan, the F key to reframe
+back to the default view, extended to all three renditions, Wheel,
+Frames and Dial, not only Frames. Not a new build; the same item
+already sitting as its own step in DW's sequenced plan, "port the
+glass bar into the build," confirmed rather than duplicated by a
+fresh dispatch.
+
