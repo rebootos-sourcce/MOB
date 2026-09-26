@@ -2426,6 +2426,13 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
 .pm-lbl{font-family:var(--num);font-size:2.1px;fill:var(--ink);opacity:.92;
  paint-order:stroke;stroke:var(--bg);stroke-width:.55px;stroke-linejoin:round}
 .pm-gl{font-family:var(--num);font-size:1.5px;opacity:.9}
+/* the seat names beside the figure. Not .pm-sn: that is the seat name in the
+   rail's own rows, and the first cut shared it, so the rail's seven names
+   dropped to 1.6px and gate 4 caught them. Sized from the well in map.js. */
+.pm-seatn{font-family:var(--sans);font-size:1.6px;font-weight:500;pointer-events:none}
+/* the count takes its seat's colour, not --dim: the well stays dark under Snow
+   and --dim goes dark with the theme, which left the numbers unreadable there */
+.pm-seatc{font-weight:400;opacity:.72}
 .pm-gv{opacity:.55}
 .pm-gs{font-family:var(--num);font-size:1.15px;fill:var(--ink);opacity:.6}
 

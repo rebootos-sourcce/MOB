@@ -19,7 +19,6 @@
 })();
 var PMLAYER='bands', PMPICK=null, PAINPICK=null, _pmpos={}, LOADED=4;
 var PMYP={};PMBANDS.forEach(function(b){PMYP[b.k]=b.yp;});
-var HW=24.2;
 /* THE REAL PLACES, in figure units, once. ANAT (figure.js) holds each place
    in the units it was sourced in, and this is the only code that turns them
    into the figure: millimetres through the head ruler, vertebral levels
@@ -49,7 +48,11 @@ function pmAnat(){
   var at=pts.map(function(){return [];});
   row.ids.forEach(function(id,j){at[j%pts.length].push(id);});
   at.forEach(function(ids,pi){
-   var c=pts[pi], n=ids.length, a0=(n%2)?-Math.PI/2:Math.PI;
+   /* a torso pair shares the seat's own point, inside the seat's ring. Side
+      by side in a ring it drew a face on Heart and on Solar, so a torso pair
+      stands on the diagonal. The head keeps its level pairs: nothing rings
+      them there. */
+   var c=pts[pi], n=ids.length, a0=(n%2)?-Math.PI/2:(row.v?-Math.PI/4:Math.PI);
    ids.forEach(function(id,j){
     var t=a0+j*2*Math.PI/n, r=(n>1)?PMSPREAD:0;
     out[id]={x:c.x+Math.cos(t)*r, y:c.y+Math.sin(t)*r, hx:c.x, hy:c.y};});});});
@@ -81,17 +84,74 @@ function pmAnat(){
   ids.forEach(function(id){var m=out[id],ox=m.x-m.hx,oy=m.y-m.hy,o=Math.sqrt(ox*ox+oy*oy);
    if(o>PMROAM){m.x=m.hx+ox*PMROAM/o;m.y=m.hy+oy*PMROAM/o;}});}
  return (_pmanat=out);}
+/* IS THIS POINT ON THE BODY. The outline as a polygon in figure units: each C
+   segment of BODYPATH carries two handles and an end point, and the end points
+   alone trace the outline to well inside a mark's width. Asked by placement,
+   so nothing is put where the clip will hide it. */
+var _pmpoly=null;
+function pmInBody(x,y){
+ if(!_pmpoly){
+  var v=BODYPATH.match(/-?\d+(\.\d+)?/g).map(Number), pt=[[v[0],v[1]]];
+  for(var i=2;i+5<v.length;i+=6)pt.push([v[i+4],v[i+5]]);
+  _pmpoly=pt.map(function(p){return [PMTX+p[0]*PMS,PMTY+p[1]*PMS];});}
+ var P=_pmpoly, c=false;
+ for(var a=0,b=P.length-1;a<P.length;b=a++)
+  if(((P[a][1]>y)!==(P[b][1]>y))
+   &&(x<(P[b][0]-P[a][0])*(y-P[a][1])/(P[b][1]-P[a][1])+P[a][0]))c=!c;
+ return c;}
+/* AN UNMEASURED ADDRESS STANDS AT ITS SEAT, NOT AT A RANDOM SPOT NEAR IT.
+
+   It was a hash of the address number thrown onto an oval up to twelve units
+   either side of the spine, which on this figure is out past the nipples and
+   onto the shoulder, and five units up or down, which is into the next seat.
+   Heart rings sat on the collarbone, Root rings on the thigh, Sacral and Solar
+   rings in one mixed band across the hips. Each mark was drawn with the
+   confidence of a measured place and none of them was one, so the figure said
+   precisely where every address sat and was wrong about all 69. The owner's
+   grade, 26 September: "the chakras need to be precise to the body and right
+   now they're not. I don't even know what's going on."
+
+   The honest claim for an address nobody has measured is the one thing that
+   is known: which seat holds it. So they gather round that seat, just outside
+   its ring, on a sunflower spiral in address order, which packs any count
+   evenly with no gaps and puts the same address on the same spot on every
+   profile. A spot is taken only if a mark there is wholly on the body and
+   clear of every mark already placed and of every other seat's ring, which is
+   what ended the hiding CG Q4 left open (16 on Gordon, 6 on Ana and James):
+   the clip is never asked to hide anything, because nothing is placed where
+   it would have to. A measured address is placed first and keeps its place,
+   so an ANAT row still wins the moment one is sourced. */
+var PMSEATR=2.4, PMGATHER={r0:3.15, step:0.92, sx:1.35, sy:0.72, gap:1.6, edge:1.0};
+var _pmgat=null;
+function pmGather(){
+ if(_pmgat)return _pmgat;
+ var A=pmAnat(), G=PMGATHER, by={}, out={};
+ var taken=Object.keys(A).map(function(id){return A[id];});
+ var free=function(x,y,k){
+  if(!pmInBody(x,y)||!pmInBody(x-G.edge,y)||!pmInBody(x+G.edge,y)
+   ||!pmInBody(x,y-G.edge)||!pmInBody(x,y+G.edge))return false;
+  for(var s=0;s<PMBANDS.length;s++){var b=PMBANDS[s];
+   if(b.k!==k&&Math.abs(y-b.yp)<PMSEATR+1.1&&Math.abs(x-50)<PMSEATR+1.1)return false;}
+  for(var i=0;i<taken.length;i++){var q=taken[i];
+   if((q.x-x)*(q.x-x)+(q.y-y)*(q.y-y)<G.gap*G.gap)return false;}
+  return true;};
+ W.forEach(function(n){if(A[n.i])return; var k=B2K[n.b];
+  if(k&&PMYP[k]!=null)(by[k]=by[k]||[]).push(n.i);});
+ PMBANDS.forEach(function(b){
+  var ids=(by[b.k]||[]).sort(function(p,q){return p-q;}), j=0;
+  ids.forEach(function(id){
+   for(;j<600;j++){
+    var r=Math.sqrt(G.r0*G.r0+G.step*G.step*j), t=j*2.39996;
+    var x=50+Math.cos(t)*r*G.sx, y=b.yp+Math.sin(t)*r*G.sy;
+    if(free(x,y,b.k)){out[id]={x:x,y:y};taken.push(out[id]);j++;return;}}
+   /* never reached on this figure; the seat itself beats an invented spot */
+   out[id]={x:50,y:b.yp};});});
+ return (_pmgat=out);}
 function pmNode(id,k){
  if(_pmpos[id])return _pmpos[id];
- /* measured first. The hash below is what an unmeasured address still gets,
-    kept as it was rather than replaced by a guess. */
- var an=pmAnat()[id];
+ var an=pmAnat()[id]||pmGather()[id];
  if(an)return (_pmpos[id]={x:an.x,y:an.y});
- var baseY=(PMYP[k]!=null?PMYP[k]:30),n=0,s=String(id);
- for(var i=0;i<s.length;i++)n=(n*31+s.charCodeAt(i))>>>0;
- var q=(n*2654435761)%1000,ang=(q/1000)*Math.PI*2,rx=6.4+(q%7),ry=2.4+((q>>3)%4);
- return (_pmpos[id]={x:Math.max(50-HW*0.9,Math.min(50+HW*0.9,50+Math.cos(ang)*rx)),
-                     y:Math.max(2,Math.min(97,baseY+Math.sin(ang)*ry))});}
+ return (_pmpos[id]={x:50,y:(PMYP[k]!=null?PMYP[k]:30)});}
 /* THE HEAT HAS TO BE THE HEAT OF WHAT IS SELECTED.
 
    flSeats reads the load of every carrying address, which is the right answer
@@ -225,6 +285,23 @@ function pmCount(r,L){
  if(L==='masks') return r.maskRing.length;
  return 0;}
 var PMFIRST=1;
+/* THE HEAD OPENS WHEN ITS SEAT IS PICKED.
+
+   Thirty three addresses have a measured place inside a head ten units wide.
+   At 1600 that is a readable spread of points; at 390 the head is about
+   thirty seven pixels across and the points run together, which is the
+   "dense mesh" CG shipped and flagged. Shrinking the head's points further
+   takes them below anything a person can see, and spreading them out moves
+   them off the places they were measured at. So the head is drilled into:
+   picking Crown or Third Eye on Fetters, by its ring, its name in the rail or
+   any point in the head, fits the viewBox to the head, and every point in it
+   comes up to four times the size at the same measured place.
+
+   Only the head. The torso seats hold twelve to sixteen points each round one
+   ring and read at both widths, so zooming them would take away the column a
+   person reads them against and give nothing back. */
+var PMHEADBOX='38 -1 24 24';
+function pmHead(){return PMLAYER==='bands'&&(PMPICK==='crown'||PMPICK==='eye');}
 function renderMap(r){
  if(PMFIRST){ PMFIRST=0;
   if(!pmCount(r,PMLAYER)){ for(var pf=0;pf<PML.length;pf++){
@@ -260,7 +337,13 @@ function renderMap(r){
     +'" data-pml="'+L[0]+'">'+L[1]
     +(L[0]==='nerves'?'':'<b>'+cn+'</b>')+'</button>';}).join('');
   var rb=document.getElementById('rbar'); if(!rb)return;
-  if(PMLAYER==='pain'){
+  /* the way back out of the head is a real button where the layer controls
+     are, because on a phone Selection and its close sit below the figure,
+     out of sight of a head that has just filled the well. */
+  if(pmHead()){
+   rb.style.display='flex';
+   rb.innerHTML='<button class="pm-lb" data-whole="1">Whole body</button>';
+  }else if(PMLAYER==='pain'){
    rb.style.display='flex';
    rb.innerHTML='<span class="pm-eye" style="align-self:center;margin-right:4px">Region</span>'
     +'<button class="pm-rb'+(PAINPICK?'':' on')+'" data-reg="">All</button>'
@@ -271,7 +354,7 @@ function renderMap(r){
  var h='<div class="pm-well">'
   +'<div class="pm-aura" style="background:radial-gradient(ellipse 62% 48% at 50% 40%,'+domc
   +' 0%,transparent 70%);opacity:'+(0.08+r.radiance*0.30).toFixed(3)+'"></div>'
-  +'<svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" class="pm-svg">';
+  +'<svg viewBox="'+(pmHead()?PMHEADBOX:'0 0 100 100')+'" preserveAspectRatio="xMidYMid meet" class="pm-svg">';
  /* THE CLIP WAS SWALLOWING EVERY ADDRESS ON THE BODY.
 
     This wrapped the body path in a <g> to carry the transform. A clipPath may
@@ -460,22 +543,82 @@ function renderMap(r){
   h+='<circle cx="'+q.x.toFixed(2)+'" cy="'+q.y.toFixed(2)+'" r="'+(3.0+g*4.2).toFixed(2)
    +'" fill="'+c+'" opacity="'+(0.03+g*0.085).toFixed(3)+'"/>';});
  h+='</g>';
- /* the target, and the only hard mark a seat gets: a small core so there is
-    something to aim at and something to say a seat is there at all. */
+ /* THE SEVEN SEATS ARE WHAT A PERSON LOOKS FOR, SO THEY ARE WHAT THE EYE FINDS.
+
+    Each seat was a filled core under a centimetre wide, at thirty to seventy
+    five percent, and on a loaded body ninety seven address rings up to five
+    units across were drawn over it at full strength. On Gordon the seven
+    chakras, which are the whole premise of the page, could not be picked out
+    at all: the eye found a rainbow of confetti and nothing it could name. That
+    is "I don't even know what's going on", and it is a hierarchy failure
+    before it is a placement one.
+
+    So a seat is the loudest mark on the figure: a ring on the midline at its
+    own height, the same size on every seat so seven of them read as one
+    column, its stroke carrying the load, and a small core to aim at. The
+    addresses below it drop to points. Ring, not fill, per the icon rule, and
+    open so the field shows through it.
+
+    The tap target is its own circle, drawn under the address points so every
+    point keeps its own hover, and wider than the ring so a finger lands on
+    the seat rather than beside it. */
+ /* ZS is the mark scale inside the opened head. The viewBox shrinks about four
+    times and every mark drawn in its units grows with it, so the first cut
+    opened on a Crown ring a third of the skull across. Marks come up a little
+    under twice their size instead, and the places stay exactly where they are. */
+ var seatHit='', AN=pmAnat(), ZS=pmHead()?0.45:1, SR=PMSEATR*ZS;
  PMBANDS.forEach(function(b){
-  var st=seats.filter(function(s){return s.p.k===b.k;})[0];
-  h+='<circle class="pm-seat" data-seat="'+b.k+'" cx="50" cy="'+b.yp+'" r="'
-   +(0.85+st.load*1.1).toFixed(2)+'" fill="'+b.c+'" opacity="'+(0.30+st.load*0.45).toFixed(2)
-   +'"><title>'+b.nm+', '+st.hot+' carrying, '+Math.round(st.pass*100)
-   +' percent through</title></circle>';});
- /* the domains you run, ringing the seats they own */
+  var st=seats.filter(function(s){return s.p.k===b.k;})[0], ld=clamp(st.load,0,1);
+  var on=(PMPICK===b.k);
+  /* the core is left off where a measured address stands on the seat's own
+     point, the cardiac plexus at Heart and the celiac at Solar: the pair
+     either side of it and the core between read as an ellipsis, and the
+     measured points already mark the centre. */
+  var held=Object.keys(AN).some(function(id){
+   return Math.abs(AN[id].hx-50)<0.01&&Math.abs(AN[id].hy-b.yp)<0.01;});
+  h+='<circle cx="50" cy="'+b.yp+'" r="'+SR.toFixed(2)+'" fill="none" stroke="'+b.c
+   +'" stroke-width="'+((0.24+ld*0.5+(on?0.18:0))*ZS).toFixed(3)+'" opacity="'
+   +(on?1:(0.62+ld*0.38)).toFixed(2)+'"/>'
+   +(held?'':'<circle cx="50" cy="'+b.yp+'" r="'+(0.42*ZS).toFixed(3)+'" fill="'+b.c+'" opacity=".92"/>');
+  seatHit+='<circle class="pm-seat" data-seat="'+b.k+'" cx="50" cy="'+b.yp+'" r="'
+   +(SR+0.5*ZS).toFixed(2)+'" fill="transparent"><title>'+b.nm+', '+st.hot+' carrying, '
+   +Math.round(st.pass*100)+' percent through</title></circle>';});
+ /* the domains you run, ringing the seats they own. The ring used to grow by
+    half a unit per address the domain held there, which on Gordon made one
+    dashed circle thirteen units across that ran through Sacral and Root at
+    once and read as an eighth thing on the body. It hugs the seat it names. */
  if(PMLAYER==='bands'&&S.doms.length){
   var own={};S.doms.forEach(function(di){W.forEach(function(n){
    if(Math.min(18,Math.floor(n.slot/(108/19)))===di)(own[n.b]=own[n.b]||[]).push(n);});});
   var dc=ROOTCOL[DOMAINS[S.doms[0]].r]||'#DFCC7E';
   Object.keys(own).forEach(function(bn){var k=B2K[bn];if(!k)return;
-   h+='<circle cx="50" cy="'+PMYP[k]+'" r="'+(4.4+own[bn].length*0.55).toFixed(2)
-    +'" fill="none" stroke="'+dc+'" stroke-width=".42" stroke-dasharray="1.4 1.2" opacity=".85"/>';});}
+   h+='<circle cx="50" cy="'+PMYP[k]+'" r="'+(SR+0.95*ZS).toFixed(2)
+    +'" fill="none" stroke="'+dc+'" stroke-width="'+(0.3*ZS).toFixed(3)+'" stroke-dasharray="'
+    +(0.9*ZS).toFixed(2)+' '+(0.7*ZS).toFixed(2)+'" opacity=".85"/>';});}
+ /* THE SEATS ARE NAMED, BESIDE THE BODY. The gutter ruling took twenty four
+    pattern names off the figure and it was right to, but it left the seven
+    seats unnamed as well, and a person reading a chakra map with no chakra
+    named has to know the colour code before the page tells them anything.
+    Seven words in one column off the left of the figure, level with their
+    seats, never on the body. Flow names them only. The pattern layers keep
+    both sides clear for their own marks. Sized in CSS pixels after the page
+    lays out, because a viewBox unit is 8 pixels at 1600 and under 4 at 390.
+
+    Fetters adds the count HELD at each seat, which is the solid points drawn
+    there and the "held" Selection prints when the seat is tapped. The first
+    cut printed every address carrying anything, the button's own number, and
+    on Ana that put 21 beside a Crown with three points on it: a number beside
+    a seat that disagrees with the seat is the confusion this pass is for. */
+ if(PMLAYER==='bands'||PMLAYER==='nerves'){
+  /* opened on the head, the column moves in beside the skull and names only
+     the two seats the head holds; the rest are out of the window */
+  var inHead=pmHead(), snx=inHead?43.6:25.5;
+  PMBANDS.forEach(function(b){
+   if(inHead&&b.k!=='crown'&&b.k!=='eye')return;
+   var st=seats.filter(function(s){return s.p.k===b.k;})[0];
+   h+='<text class="pm-seatn" x="'+snx+'" y="'+b.yp+'" dy=".35em" text-anchor="end" style="fill:'+b.c+'">'
+    +esc(b.nm)+(PMLAYER==='bands'?'<tspan class="pm-seatc" dx=".45em">'+st.hot+'</tspan>':'')
+    +'</text>';});}
  /* links, before the marks so beads sit on top */
  marks.forEach(function(m){
   if(!m.links.length||m.gside===undefined)return;
@@ -637,12 +780,20 @@ function renderMap(r){
      +'" width="'+(q[2]-q[0]).toFixed(2)+'" height="'+(q[3]-q[1]).toFixed(2)
      +'" rx="2" fill="'+c+'" stroke="'+c+'"><title>'+esc(rg.nm)+'</title></rect>';});});
   h+='</g>';}
- /* the marks */
+ h+=seatHit;
+ /* the marks. On Fetters, a picked seat keeps its own points at strength and
+    lets the other six fall back, so the answer in Selection and the points on
+    the figure are visibly the same set. */
+ var pickSeat=(PMLAYER==='bands'&&typeof PMPICK==='string')?PMPICK:null;
  h+='<g clip-path="url(#pmClip)">';
  marks.filter(function(m){return m.kind==='node'||m.kind==='heat';}).forEach(function(m){
   var c=PMC[m.band]||'#888';
+  var fade=(pickSeat&&B2K[m.band]!==pickSeat)?0.28:1;
   if(m.kind==='heat'){
-   h+='<circle cx="'+m.x.toFixed(2)+'" cy="'+m.y.toFixed(2)+'" r="'+(0.7+m.v*1.1).toFixed(2)
+   /* the same point scale as Fetters. At 0.7 to 1.8 these were sized for the
+      old scatter, and gathered round their seat at 1.6 apart they ran into
+      one blob on a painted torso. */
+   h+='<circle cx="'+m.x.toFixed(2)+'" cy="'+m.y.toFixed(2)+'" r="'+(0.34+m.v*0.46).toFixed(2)
     +'" fill="'+c+'" opacity="'+(0.55+m.v*0.45).toFixed(2)+'"/>';
   }else{
    /* AN ADDRESS THAT IS HELD CLEAR IS NOT NOTHING.
@@ -658,34 +809,35 @@ function renderMap(r){
       one is a ring, open in the middle, which is what holding the far pole
       looks like and what the icon rule has said since the icon pass. */
    var clr=(m.o.pole>=4&&m.o.sq<LOADED);
+   /* AN ADDRESS IS A POINT NOW, AND THE SEAT IS THE RING.
+
+      Both kinds below were rings with a core, a carrying one up to 2.6 units
+      across, which was right when an address was the largest thing a seat
+      had. Thirty three of them measured into a head ten units wide made one
+      knot of rings (CG, the picture he graded), and ninety seven across a
+      torso made the confetti. A ring is the seat's mark now, so an address
+      reads as what it is, one point inside a seat: carrying is a solid point
+      that grows and brightens with weight, clear is a hollow one, still
+      opposite at a glance. The largest point is under a unit and a half
+      across. Gathered points are never nearer than 1.6, so none of them can
+      touch. Measured ones are pushed toward 1.45 but the roam limit wins,
+      and it holds two nearer: 81 at the brainstem and 84 at the inion sit
+      0.86 apart and can touch when both are heavy. Opening the head halves
+      the points and separates them. */
    if(clr){
-    h+='<g class="pm-n" data-node="'+m.o.i+'">'
-     +'<circle cx="'+m.x.toFixed(2)+'" cy="'+m.y.toFixed(2)+'" r="1.15" fill="none" stroke="'+c
-     +'" stroke-width=".3" opacity=".72"/>'
-     +'<circle cx="'+m.x.toFixed(2)+'" cy="'+m.y.toFixed(2)+'" r=".3" fill="'+c+'" opacity=".85"/>'
+    h+='<g class="pm-n" data-node="'+m.o.i+'" opacity="'+fade+'">'
+     +'<circle cx="'+m.x.toFixed(2)+'" cy="'+m.y.toFixed(2)+'" r="'+(0.5*ZS).toFixed(3)
+     +'" fill="none" stroke="'+c+'" stroke-width="'+(0.2*ZS).toFixed(3)+'" opacity=".8"/>'
      +'<title>'+esc(m.nm)+', clear. holds the far pole</title></g>';
    }else{
-    /* A CARRYING ADDRESS IS A RING TOO, and this was the last flat disc on the
-       figure. At radius 2.7 and ninety eight percent it is a solid coin of
-       band colour, and with eighteen of them on a loaded body they are what
-       the page is: the continuous field underneath them was drawn, clipped and
-       blurred correctly and could not be seen through them.
-
-       Icons are ring, not fill, which has been the rule since the icon pass
-       and was already how a clear address is drawn. So both poles are rings
-       now and they still read as opposites, which was the point of the pass
-       that made them differ: a carrying address is a heavy ring with a solid
-       core, weight setting the radius, the stroke and the core together. A
-       clear one is a thin ring around a pinpoint. Open in the middle means the
-       field shows through the mark that sits on it, which is the whole reason
-       the field is there. */
-    var rr=(0.9+m.v*1.7), sw=(0.26+m.v*0.34);
-    h+='<g class="pm-n" data-node="'+m.o.i+'">'
-     +'<circle cx="'+m.x.toFixed(2)+'" cy="'+m.y.toFixed(2)+'" r="'+rr.toFixed(2)
-     +'" fill="none" stroke="'+c+'" stroke-width="'+sw.toFixed(2)
-     +'" opacity="'+(0.52+m.v*0.46).toFixed(2)+'"/>'
-     +'<circle cx="'+m.x.toFixed(2)+'" cy="'+m.y.toFixed(2)+'" r="'+(0.3+m.v*0.5).toFixed(2)
-     +'" fill="'+c+'" opacity="'+(0.55+m.v*0.43).toFixed(2)+'"/>'
+    /* A POINT, NOT A COIN. The pass before the rings found solid discs of
+       radius 2.7 at ninety eight percent covering the field they sat on, and
+       that is why the rule became ring, not fill. The ring is the seat's mark
+       now. A point at most three quarters of a unit across covers nothing, so
+       the field reads through it, and the one icon on each seat stays a ring. */
+    h+='<g class="pm-n" data-node="'+m.o.i+'" opacity="'+fade+'">'
+     +'<circle cx="'+m.x.toFixed(2)+'" cy="'+m.y.toFixed(2)+'" r="'+((0.28+m.v*0.46)*ZS).toFixed(3)
+     +'" fill="'+c+'" opacity="'+(0.6+m.v*0.4).toFixed(2)+'"/>'
      +'<title>'+esc(m.nm)+' · '+m.o.sq.toFixed(1)+'</title></g>';}}});
  h+='</g>';
  /* THE COLUMN OF THROUGHPUT, AND ONE LABEL ON THE WHOLE FIGURE.
@@ -756,6 +908,14 @@ function renderMap(r){
     +esc(m.nm)+'</text>';}});
  h+='</svg></div>';
  host.innerHTML=h;
+ /* the seat names in CSS pixels. The svg is 100 units fitted into the well, so
+    a unit is whatever the well makes it; 13 pixels at every width is read off
+    the laid out box, and a hidden well (no box yet) keeps the class's own size. */
+ (function(){
+  var sv=host.querySelector('svg.pm-svg'); if(!sv)return;
+  var bx=sv.getBoundingClientRect(), u=Math.min(bx.width,bx.height)/sv.viewBox.baseVal.width;
+  if(u>0)host.querySelectorAll('.pm-seatn').forEach(function(t){
+   t.style.fontSize=(13/u).toFixed(3)+'px';});})();
  renderShelf(r,seats,speed,stop,dom,loadedTot,marks);
  /* the gutter rows are gone, and so is the handler that answered for them */
  /* both controls write the same value. The row answers for the keyboard, the
@@ -775,6 +935,8 @@ function renderMap(r){
   e.stopPropagation();
   var k=el.getAttribute('data-reg');
   PAINPICK=(PAINPICK===k)?null:k; pmAnswer(PAINPICK,true);};});
+ document.querySelectorAll('#rbar [data-whole]').forEach(function(el){el.onclick=function(){
+  pmAnswer(null);};});
  document.querySelectorAll('#lbar [data-pml]').forEach(function(el){el.onclick=function(){
   PMLAYER=el.dataset.pml;PMPICK=null;render();};});
  host.querySelectorAll('[data-seat]').forEach(function(el){el.onclick=function(){
