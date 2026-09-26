@@ -16023,3 +16023,62 @@ plainly instead.
   and "I want to be able to see the animations on these," which was
   about the reading circles, not the boot.
 
+## FD. The mission, in his own words, and the funnel asked to reach
+## out to social. 26 September.
+
+**His words in full, the mission first: "Just a note maybe for the
+marketing funnel about or our mission. Should capture some high
+level thoughts. Our ancestors didn't have words like psychology or
+neuroscience. They used observation over millennia and passed it
+down in the form of story. As language became more complex and
+diverse, the story became more complex and diverse. What became
+observation of self became observation of nature and each other. New
+identities emerge. And enter the zeitgeist. Idealized form and
+combinations. Became sacrosanct to our imaginations, forever wired
+into the zeitgeist. It's a trope that we've unlocked that we will
+forever follow. The Terminator movie gave rise to AI robots today. We
+identified with the roles and the experience conditioning us over
+time to become the roles that we identify with. This is the lie. It's
+the character that's not real. It's the real you underneath the
+conditioning, the bracing, the fear, the anxiety, the worry, the
+sadness, the grief, the depression, the inability to find the moral
+center or recognize whether we're stepped on our path or off. The
+only way to experience truth is to touch it yourself. That's what
+this book is. It's a map, it's a practice. It's simple stories at
+different resolutions and different ways of looking at it. This
+material reflects as deep as I have currently gone so far, and is by
+far the end of the road. This book is not mystical or magic. It's
+not unorthodox. It's how I see the nature of God, reality, and myself
+as a contiguous loop. Just like you. And I hope that within these
+pages, the lenses that I provide open your awareness."**
+
+**Then the directive: "Speaking of which let's have our creative team
+scrub the directory or thread, I think we came some really good
+marketing slogans. We have all that material in our brief, our
+marketing creative brief and our brand strategy, and then really the
+funnel and then what we need for the full final product to feedback
+loop and what that spider web looks like out to social media, like
+using my beehive, how we plug that into Instagram, how we plug that
+into Facebook, maybe I don't know, and X."**
+
+**Not new material to invent. Real, existing files, checked directly
+before dispatching anything.** `BRAND.md` (376 lines) already holds
+the brand strategy. `marketing/` is a built, gated, measured system:
+`hooks.js` (seventeen field hooks, copy and art on the same row),
+`MAP.md`, `AESTHETIC.md`, `GUARD.md`, all passing `node
+marketing/tests.js` at 240 assertions per its own README. `COPY.md`,
+`COPY-OBJECTIONS.md`, `BUYERS.md` and `RESEARCH-icp.md` also exist.
+This is the directory he means to have scrubbed, and the slogans he
+remembers are very likely already sitting in `hooks.js` and `COPY.md`
+rather than needing to be invented fresh.
+
+**Dispatched, both halves, kept separate:**
+- The mission statement, captured into `BRAND.md` in his own words,
+  not expanded past what he said, and read for the hubris he asked
+  to have removed once already in EN.
+- The funnel-to-social plan: what the existing marketing system and
+  copy already have, distilled to the slogans worth using, and a
+  real, concrete answer for how the product's funnel connects out to
+  Instagram, Facebook, X and his Beehiiv newsletter, a written plan
+  rather than anything posted live anywhere.
+
