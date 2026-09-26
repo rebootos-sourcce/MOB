@@ -14728,3 +14728,71 @@ a real reproduce and fix pass; the glass bar's further refinements go
 back to the seat already building it; the avatar's four mockups and
 the release/protocol simulation are dispatched fresh.**
 
+## DZ. Two comparisons back, DM's Energetics redesign and DR's Flow
+## element, both real research and a real simulated verdict, not
+## opinion. 26 September.
+
+**Energetics, four real layouts, simulated with real keystrokes, not
+described.** `https://claude.ai/artifact/WjxN2FRogwDRfYdyVRXDFn`.
+Competitive research named plainly by source: Co-Star's one question
+per screen, The Pattern's card then line then deep read, Human
+Design apps' picture appearing the moment data lands, Noom's staged
+feedback, Oura's named locks, Duolingo's one tap per step, each
+credited to what it gave rather than copied wholesale. Six ICPs typed
+their own real name, birth and zone at both widths for all four:
+Staged wins on every stranger measure, the fewest controls on a first
+screen, something read at every step, the fewest words, nothing under
+the tap floor; Tiles is the rail he actually described and wins for
+the two personas already fluent in this kind of instrument, but fails
+a stranger outright, 51 controls on the first screen and the first
+field 1,682 pixels down a phone. The two are not a choice between
+opposites: Staged's own end state is Tiles with the locks lifted.
+
+**Two real numbers already computed, confirmed and surfaced rather
+than invented: all six numerology numbers and Myers-Briggs read
+letter by letter through the engine's own seed logic**, both already
+real and neither yet reaching Energetics, exactly the gap DM named.
+
+**Name roots checked against real references, not guessed,** and the
+gap between his own examples and the record confirmed directly: Lance
+roots to "land", not "to pierce", which comes from a later, separate
+link to a word for spear; O'Neill's Niall has no settled meaning at
+all, "champion" one proposal among several; Powell's Hywel means
+"eminent". Only nine names are on file, his three plus the six ICPs'
+first names, checked one at a time against real reference sources.
+
+**Five real defects found in passing, not patched, since this was
+research not a build.** A shipped numerology bug: the cleaning
+function turns an apostrophe into a space, so "O'Neill" reads as two
+separate names and a master number sitting inside one name can be
+lost, though the total still happens to agree. A checkbox overlapping
+its own label's first letter, confirmed directly in the CSS. A blank
+profile read through `loadProfile` filling a missing axis with 3
+rather than 0, so an empty person's channels read "even" rather than
+unread. And the Reading section still saying "nothing has been read
+yet" beside a full name and a real sky reading, the same contradiction
+DT already found elsewhere on the same page.
+
+**Eleven real open questions, each with what it costs, on the board**,
+foremost among them: which layout meets a stranger, where a name's
+root comes from at all given the product has none on file today, and
+what the product says on the roughly two of three names any real
+person will hit with nothing on record.
+
+**The Flow element, four options, measured against a real question:
+does his own read, "these are patterns impairing flow," actually hold
+for a real person, checked and found only partly true.** True for
+half the six reference personas; the other half hold no seat at all,
+so flow already passes clean, yet the shipped section still prints a
+list of patterns as if it mattered.
+`https://claude.ai/artifact/1e16KLVZg8PMc9AcYVp7Pg`. Recommended:
+Pinch as the section's face, answering where flow actually stops in
+one line for all six people at a quarter of today's height, with
+River, the fuller picture, one press behind it. Clinical labels
+("bipolar", "narcissism") print today for four of six people and all
+four options drop them, consistent with a rule already written into
+this codebase against showing them.
+
+**Both prototypes are real, working files, sent as pages rather than
+described, per this project's own standing rule.**
+
