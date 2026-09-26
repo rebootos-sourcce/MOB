@@ -538,8 +538,9 @@ function deckRender(){
   +'<div class="card-mid"><div class="card-nm">'+esc(n.k)+'</div>'
    +'<div class="card-ad">'+esc(n.n||'field')+'</div></div>'
   +'<div class="card-say"><div class="pm-eye">Say it</div>'
-   +'<p>Letting go of believing that I am '+esc(String(n.k).toLowerCase())+'.</p>'
-   +'<p>Letting go of feeling that I am '+esc(String(n.k).toLowerCase())+'.</p></div>'
+   /* the sweep, off the one stem. This typed two of the channels out by
+      hand, believing and feeling, which was a third list of them. */
+   +'<p>'+esc(C3_STEM+String(n.k).toLowerCase()+'.')+'</p></div>'
   +'<div class="card-ft"><span>axis '+esc(n.cf||'unrouted')+(opp?', toward '+esc(opp):'')+'</span>'
    +'<span class="card-sq">'+n.sq.toFixed(1)+'</span></div>'
   +'<div class="card-act"><button class="btn" id="cardnext">Deal another</button>'

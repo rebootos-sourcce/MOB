@@ -76,33 +76,11 @@ function lgTurn(i){
  if(LG.open!==null){LG.cards[LG.open].face=false;}
  c.face=true; LG.open=i; gmRender();}
 
-/* the line for a dealt address. a printed card first, then the axis card, then
-   the strict syntax at the address itself. the source is always named, so a
-   person can tell a catalogued sentence from a constructed one. */
-function lgLine(n){
- var ax=n.cf, i;
- var d=cardDepth(ax,LG.pole);
- if(d){ /* the printed card, cycled by address so one axis does not repeat */
-  i=Math.abs(n.i|0)%d;
-  var l=cardLine(ax,LG.pole,i);
-  /* split: the printed cards say different things on the two sides, so both
-     sides have to be run. */
-  if(l)return {rel:l.rel, tru:l.tru, src:'Release protocol card, '+ax,
-    track:null, split:true};}
- var a=AXC_BY[ax];
- /* the axes card is one statement run bilaterally, and its install is written
-    out on the card. Synthesising a truth from the coherent pole produced
-    "that I am worth", which is not a sentence the owner wrote or would.
-    not split: one pass clears both sides, which is what the card says. */
- if(a)return {rel:axLine(ax), tru:a.inst, track:a.track,
-   src:'Letting go card, axis '+a.num, split:false};
- /* no card at this address. the strict syntax, and the coherent pole of the
-    axis if the engine knows one, never a guess. */
- var opp=(CHILD.filter(function(x){return x.nm===ax;})[0]||{}).opp;
- return {rel:C3_STEM+String(n.k).toLowerCase()+'.',
-   tru:opp?C3_TRUTH+'moving toward '+String(opp).toLowerCase()+' at this address.'
-     :C3_TRUTH+'not '+String(n.k).toLowerCase()+'.',
-   track:null, src:'Strict syntax at the address', split:false};}
+/* the line for a dealt address. The builder is the engine's addrLine now,
+   shared with the release, so the games and the release cannot drift onto two
+   different channel lists again. The position is the address itself, cycled
+   so one axis does not repeat across a deal. */
+function lgLine(n){ return addrLine(n,LG.pole,n.i); }
 
 /* ---- the match ---- */
 var MT={cards:[], open:[], found:0, lock:false, pick:null};
@@ -173,7 +151,7 @@ function gmRender(){
     +'while you do it.</p>'
     +'<p class="gm-p">The practice is two or three minutes. Time it once and you will believe it.</p>'
     +'<p class="gm-p">'+esc(CARD_OPEN)+'</p>'
-    +'<div class="gm-gates"><span class="pm-eye plain">The statement runs nine gates at once</span>'
+    +'<div class="gm-gates"><span class="pm-eye plain">One statement runs every channel at once</span>'
     +'<div class="gm-glist">'+C3_VERB.map(function(v){
       return '<span class="gm-gate">'+esc(v)+'</span>';}).join('')+'</div></div>'
     +'<button class="btn pri" id="lggo">Deal twenty four</button></div>';}

@@ -447,17 +447,57 @@ const gm=await page.evaluate(()=>{
   srcs:[...srcs],uniq,cards,pairs,found,opened,locked};});
 ok(gm.dealt===24,'the run deals twenty four, got '+gm.dealt);
 ok(gm.uniq===24,'and never the same address twice, got '+gm.uniq+' distinct');
-/* the strict syntax, and the spec calls it non negotiable: nine gates in one
-   sentence, not one channel at a time. */
-ok(/^I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am /
-  .test(gm.said)||/^I am letting go of believing, perceiving, thinking, feeling, speaking, acting from, relating through, creating from, and being /
-  .test(gm.said),'a turned card speaks one of the two catalogued nine gate rosters: '+gm.said);
+/* THE SIX CHANNELS, RULED 26 SEPTEMBER, all six in one sentence. This
+   accepted either of two nine word rosters, which is how two lists for one
+   slot went unnoticed: the gate was written to pass on both. One stem now. */
+const SIXSTEM='I am letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am ';
+ok(gm.said.indexOf(SIXSTEM)===0,'a turned card speaks the six channels: '+gm.said);
 ok(/^I now embody the truth that I am /.test(gm.truth),
   'and the embodied truth paired to it: '+gm.truth);
 ok(gm.half&&gm.counted===0&&!gm.face,
   'one pole of a printed card does not clear it, both channels must run');
 ok(gm.other&&gm.other!==gm.said,'the other pole is a different sentence at the same address');
 ok(gm.both&&gm.after===1,'both poles clear the printed card, got '+gm.after);
+
+/* THE RELEASE A PERSON RUNS PRINTS THE LINE IT IS RUNNING, AND THE LINE CARRIES
+   THE SIX. Before this the release card printed the address and a label like
+   "Right limit, line 1" and no sentence at all, so none of the channel lists
+   in the catalog reached the one surface that spends allowance. Driven through
+   the real buttons, Begin then Skip the opening, then walked across every line
+   of the plan it was shown. Closed rather than finished, so nothing is spent. */
+const relsix=await page.evaluate(()=>{
+ loadP(0); setTab(TAB.FIELD); render();
+ const ids=W.filter(n=>n.cf).sort((a,b)=>b.sq-a.sq).slice(0,3).map(n=>n.i);
+ relPick(ids);
+ const o={plan:RUN.plan.length, begin:!!document.getElementById('relgo'), lines:[]};
+ if(!o.begin){relClose(); return o;}
+ document.getElementById('relgo').click();
+ document.getElementById('relskip').click();
+ clearInterval(RUN.timer);
+ const rd=()=>{const el=document.querySelector('#rel .rel-line');
+  return {key:RUN.plan[RUN.idx], text:el?el.textContent:null,
+   eye:(document.querySelector('#rel .pm-eye')||{}).textContent||''};};
+ o.first=rd();
+ for(let i=0;i<RUN.plan.length;i++){RUN.idx=i; relRender(); o.lines.push(rd());}
+ o.unique=(CURP.meter.unique||[]).length;
+ relClose();
+ o.after=(CURP.meter.unique||[]).length;
+ return o;});
+ok(relsix.begin&&relsix.plan>0,'the release offers a run on the person\'s own record, '+relsix.plan+' lines');
+ok(relsix.first.text&&relsix.first.text.indexOf(SIXSTEM)===0,
+ 'the first line of a live release runs the six channels: '+relsix.first.text);
+{const lim=relsix.lines.filter(l=>/limit$/.test(String(l.key).split(':')[1]));
+ const tru=relsix.lines.filter(l=>/truth$/.test(String(l.key).split(':')[1]));
+ const bad=lim.filter(l=>!l.text||l.text.indexOf(SIXSTEM)!==0);
+ ok(lim.length>0&&bad.length===0,'every release line of the run carries the six, '
+  +lim.length+' checked'+(bad.length?'  '+bad.map(l=>l.key+' '+l.text).join(' | '):''));
+ ok(tru.length>0&&tru.every(l=>l.text&&l.text.indexOf('letting go')<0),
+  'and every reframe line installs rather than releasing again, '+tru.length+' checked');
+ /* the side and the phase are still named above the line. The six sit inside
+    the four passes, they do not replace them. */
+ ok(relsix.lines.every(l=>/^(Right|Left) (limit|truth), line \d+$/.test(l.eye)),
+  'every line still names its side and phase: '+relsix.lines.map(l=>l.eye).slice(0,4).join(' | '));}
+ok(relsix.after===relsix.unique,'reading the lines spends nothing, the meter charges at the end of a run');
 /* an axes card is one statement run bilaterally, so demanding two passes would
    be busywork the card does not ask for. */
 ok(gm.biOne&&gm.biClear,'a bilateral axes card clears in one pass');

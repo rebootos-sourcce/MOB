@@ -2957,6 +2957,15 @@ body.snow .rel{background:rgba(238,237,233,.82)}
 .rel-node{font-size:30px;font-weight:600;margin:14px 0 5px;letter-spacing:0}
 .rel-sub{font-size:13.5px;color:var(--dim);margin-bottom:17px}
 .rel-side{display:flex;justify-content:center;margin:17px 0}
+/* the thought line. Read in thought at the speed of the run, so it is set at
+   body size in the ink and not at display size: the address above it is what
+   the eye returns to, and the sentence is what it follows once. The height
+   is held at five lines, the median line at 390 wide when this was measured
+   on 26 September, because the longest line is more than twice the shortest
+   and without it Pause and Stop moved under a finger on every line. */
+.rel-line{font-size:16px;line-height:1.6;color:var(--ink);font-weight:300;margin:6px 0 4px;
+ min-height:8em}
+.rel-line.tru{color:var(--mid)}
 .rel-side span{font-family:var(--num);font-size:12.5px;padding:7px 22px;
  border-radius:22px;border:1px solid var(--edge);color:var(--mid)}
 .rel-R span{margin-left:34%;border-color:rgba(223,204,126,.5);color:var(--gold)}

@@ -1875,25 +1875,34 @@ var HARM_FAM={
    generated and nothing is paraphrased.
    ============================================================ */
 
-/* ---- the strict syntax. the spec calls it non negotiable ----
-   nine gates, one statement. it fires the cognitive, emotional,
-   behavioural, identity and somatic layers at once, which is the
-   whole reason the line is this long. */
-const C3_VERB=['believing','perceiving','thinking','behaving','acting','feeling',
- 'speaking','saying','doing'];
+/* ---- THE CHANNELS. Ruled 26 September, and this is the only list. ----
+   His words, in full: "believe, I'm letting go of believing, perceiving,
+   thinking, behaving, acting, feeling. Those are the channels we're using."
+   It is the ruling already on file in DECISIONS.md ("the six channels"),
+   restated after the catalog port had moved the engine off it.
+
+   Six, and one statement carries all six. That is the sweep: "The sweep
+   exists so all six are hit in one shot." A release line is therefore one
+   thought over one address down every channel at once, and the meter's
+   channel slot stays the side and the phase (right or left, limit or
+   truth), which is the other meaning of the word and a different axis.
+
+   WHAT THIS REPLACED, so it is never rebuilt beside it. The 3C generator's
+   nine (these six plus speaking, saying, doing) stood here, and a second
+   roster from the nine axes cards (believing, perceiving, thinking,
+   feeling, speaking, acting from, relating through, creating from, being)
+   stood beside it with its own stem. Neither was read by anything that
+   saves or scores. Both printed rosters are the owner's and both are
+   superseded by the ruling above; they are kept as words in this comment
+   and not as arrays, because an array is something the next build reads.
+   The book's own ten (with voicing) was never in the code.
+
+   Every line in the release, the games and the knowledge cards is built on
+   this list through C3_STEM. Nothing else may spell the channels out. */
+const C3_VERB=['believing','perceiving','thinking','behaving','acting','feeling'];
 const C3_STEM='I am letting go of '+C3_VERB.join(', ').replace(/, ([^,]*)$/,', and $1')
  +' that I am ';
 const C3_TRUTH='I now embody the truth that I am ';
-
-/* A second nine gate roster exists, on the nine axes cards, and it is not
-   this one: believing, perceiving, thinking, feeling, speaking, acting from,
-   relating through, creating from, being, each mapped to a chakra region
-   crown to root. The 3C spec calls its own roster non negotiable and the
-   axes card calls its own simultaneous. Both are the owner's. The engine
-   speaks the 3C roster because that is the one the statements are built on,
-   and the other is recorded here so the disagreement is visible. */
-const C3_GATE9=['believing','perceiving','thinking','feeling','speaking',
- 'acting from','relating through','creating from','being'];
 
 /* ---- the escalation curve ----
    fifty statements per channel, five bands of ten. the band is not
@@ -2123,13 +2132,54 @@ function cardLine(ax,pole,i){
 /* how many paired lines a card carries on a side */
 function cardDepth(ax,pole){var c=CARD_BY[ax];
  return c?c[pole==='f'?'f':'m'].rel.length:0;}
-/* the axis release, at the address. This one is written for the axes card's
-   own gate roster, which ends in being, so it is built from that roster and
-   not from the 3C stem. The two rosters are not interchangeable and splicing
-   one into the other produces a line neither card says. */
-const AX_STEM='I am letting go of '+C3_GATE9.join(', ').replace(/, ([^,]*)$/,', and $1')+' ';
+/* the axis release, at the address. It had its own stem, built on the axes
+   card's roster and ending "and being ", so the one release read two channel
+   lists depending on which card an address happened to have. It is on the
+   one stem now. Every axes card release opens on a complement ("afraid.",
+   "in grief.", "closed to receiving.") and each reads after "that I am ",
+   so the card bodies are untouched and still verbatim. */
 function axLine(ax){var c=AXC_BY[ax]||AXC_UN.filter(function(x){return x.un===ax;})[0];
- return c?AX_STEM+c.rel:null;}
+ return c?C3_STEM+c.rel:null;}
+/* THE LINE AT AN ADDRESS, for one pole, at one position. A printed card
+   first, then the axes card, then the strict syntax at the address itself,
+   and the source is always named so a catalogued sentence can be told from
+   a constructed one. It was written inside the games, which made the
+   release, the one surface that spends allowance, the only surface that
+   could not say what it was running. Pure: an address in, sentences out. */
+function addrLine(n,pole,i){
+ if(!n)return null;
+ var ax=n.cf, p=(pole==='f')?'f':'m';
+ var d=cardDepth(ax,p);
+ if(d){ /* the printed card, cycled so one position never runs off it */
+  var l=cardLine(ax,p,Math.abs(i|0)%d);
+  /* split: the printed cards say different things on the two sides, so both
+     sides have to be run. */
+  if(l)return {rel:l.rel, tru:l.tru, src:'Release protocol card, '+ax,
+    track:null, split:true};}
+ var a=AXC_BY[ax];
+ /* the axes card is one statement run bilaterally, and its install is written
+    out on the card. Synthesising a truth from the coherent pole produced
+    "that I am worth", which is not a sentence the owner wrote or would. */
+ if(a)return {rel:axLine(ax), tru:a.inst, track:a.track,
+   src:'Letting go card, axis '+a.num, split:false};
+ /* no card at this address. the strict syntax, and the coherent pole of the
+    axis if the engine knows one, never a guess. */
+ var opp=(CHILD.filter(function(x){return x.nm===ax;})[0]||{}).opp;
+ var nm=String(n.k).toLowerCase();
+ return {rel:C3_STEM+nm+'.',
+   tru:opp?C3_TRUTH+'moving toward '+String(opp).toLowerCase()+' at this address.'
+     :C3_TRUTH+'not '+nm+'.',
+   track:null, src:'Strict syntax at the address', split:false};}
+/* ONE THOUGHT LINE OF A RELEASE, read off its meter key. The key is address,
+   pass and line; the pass is the side then the phase (Rlimit, Ltruth). The
+   right side is the masculine pole and the left the feminine, which is how
+   the printed cards label the same split. The line index is the position on
+   the card, so a rerun of the same key is the same sentence. */
+function relLine(n,chan,line){
+ var c=String(chan||''), L=addrLine(n,c.charAt(0)==='L'?'f':'m',line);
+ if(!L)return null;
+ var truth=/truth$/.test(c);
+ return {text:truth?L.tru:L.rel, truth:truth, src:L.src};}
 /* which band a position on the fifty falls in */
 function c3Band(n){for(var i=0;i<C3_BAND.length;i++)
  if(n>=C3_BAND[i].lo&&n<=C3_BAND[i].hi)return C3_BAND[i];
@@ -8335,13 +8385,13 @@ if(typeof module!=='undefined'&&module.exports){
                   gateOf:gateOf, designJD:designJD, birthJD:birthJD, PLACE:PLACE,
                   usDST:usDST, euDST:euDST, GATE_WHEEL:GATE_WHEEL, GATE_ARC:GATE_ARC,
                   chineseYear:chineseYear, spiritualOf:spiritualOf,
-  /* catalog */   C3_VERB:C3_VERB, C3_STEM:C3_STEM, C3_TRUTH:C3_TRUTH, C3_GATE9:C3_GATE9,
+  /* catalog */   C3_VERB:C3_VERB, C3_STEM:C3_STEM, C3_TRUTH:C3_TRUTH,
                   C3_BAND:C3_BAND, C3_LADDER:C3_LADDER, C3_POLE:C3_POLE, C3_BILATERAL:C3_BILATERAL,
                   C3_CHAIN:C3_CHAIN, C3_DIR:C3_DIR, C3_PART:C3_PART, C3_HEAD:C3_HEAD,
                   C3_THEME:C3_THEME, C3_KIND:C3_KIND, C3_TRUTHRULE:C3_TRUTHRULE, C3_FAIL:C3_FAIL,
                   CARDSET:CARDSET, CARD_OPEN:CARD_OPEN, CARD_SHUT:CARD_SHUT, CARD_STEP:CARD_STEP,
-                  AXCARD:AXCARD, AXC_UN:AXC_UN, CARD_BY:CARD_BY, AXC_BY:AXC_BY, AX_STEM:AX_STEM,
-                  cardLine:cardLine, cardDepth:cardDepth, axLine:axLine, c3Band:c3Band,
+                  AXCARD:AXCARD, AXC_UN:AXC_UN, CARD_BY:CARD_BY, AXC_BY:AXC_BY,
+                  cardLine:cardLine, cardDepth:cardDepth, axLine:axLine, addrLine:addrLine, relLine:relLine, c3Band:c3Band,
                   HARM_AX:HARM_AX, KB_RENAME:KB_RENAME, KB_KEY:KB_KEY, INFER_NOUN:INFER_NOUN,
                   SABAUTH:SABAUTH, ARCH18:ARCH18, CHILD:CHILD, CHARGES:CHARGES,
                   DOMAINS:DOMAINS, ARCH:ARCH, SI:SI, SINAMES:SINAMES, MASKS:MASKS,

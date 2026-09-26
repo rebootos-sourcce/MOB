@@ -1271,18 +1271,24 @@ g('20 \u00b7 the pattern catalog');
    PORT, which is the only thing that can silently rot: a sentence edited
    here is a sentence the owner never wrote. */
 {
- const {C3_VERB,C3_STEM,C3_TRUTH,C3_GATE9,C3_BAND,C3_LADDER,C3_POLE,CARDSET,
-        AXCARD,AXC_UN,CARD_BY,AXC_BY,cardLine,cardDepth,axLine,c3Band}=E;
- /* the syntax the spec calls non negotiable */
- ok(C3_VERB.length===9,'nine gates in the 3C statement, got '+C3_VERB.length);
+ const {C3_VERB,C3_STEM,C3_TRUTH,C3_BAND,C3_LADDER,C3_POLE,CARDSET,
+        AXCARD,AXC_UN,CARD_BY,AXC_BY,cardLine,cardDepth,axLine,addrLine,relLine,c3Band}=E;
+ /* THE CHANNELS, RULED 26 SEPTEMBER. His words: "believing, perceiving,
+    thinking, behaving, acting, feeling. Those are the channels we're using."
+    The list is spelled out here on purpose and not read back off the engine,
+    because a test that reads the list it checks passes on any list. */
+ const SIX=['believing','perceiving','thinking','behaving','acting','feeling'];
+ ok(C3_VERB.join()===SIX.join(),'the channels are his six, in his order, got '+C3_VERB.join(', '));
  ok(C3_STEM==='I am letting go of believing, perceiving, thinking, behaving, acting, '
-   +'feeling, speaking, saying, and doing that I am ','the 3C stem is verbatim');
+   +'and feeling that I am ','the release stem carries the six and nothing else');
  ok(C3_TRUTH==='I now embody the truth that I am ','the truth stem is verbatim');
- /* the second roster exists and is NOT the first. recording the disagreement
-    is the point: a future edit that quietly merges them fails here. */
- ok(C3_GATE9.length===9,'the axes card roster is also nine, got '+C3_GATE9.length);
- ok(C3_GATE9.join()!==C3_VERB.join(),'and the two rosters are not the same roster');
- ok(C3_GATE9[8]==='being','the axes roster ends in being, which is why its line differs');
+ /* one list and one stem. The second roster and its stem were retired rather
+    than left beside the first, and a build that brings either back fails
+    here, because two lists for one slot is the defect BT was logged against. */
+ ok(E.C3_GATE9===undefined&&E.AX_STEM===undefined,
+  'the axes card roster and its stem are retired, not kept beside the six');
+ ['speaking','saying','doing','voicing','being','relating through','creating from']
+  .forEach(w=>ok(C3_STEM.indexOf(w)<0,'the stem does not carry '+w));
 
  /* the escalation curve covers one to fifty with no gap and no overlap */
  ok(C3_BAND.length===5,'five intensity bands, got '+C3_BAND.length);
@@ -1340,9 +1346,42 @@ g('20 \u00b7 the pattern catalog');
  ok(AXC_UN.map(c=>c.un).sort().join()==='Grief,Receiving blocked',
   'the two unmatched keep their own names');
  ok(AXCARD.every(c=>c.track&&c.rel&&c.inst),'every axes card carries a track, a release and an install');
- ok(axLine('Fear').indexOf('and being afraid')>0,
-  'the axes line is built on the axes roster, not spliced from the 3C stem');
+ ok(axLine('Fear')===C3_STEM+AXC_BY.Fear.rel,
+  'the axes line is on the one stem, and the card body after it is untouched');
  ok(axLine('Surprise')===null,'and an axis with no card returns null');
+
+ /* THE RELEASE READS THE SIX. relLine is what the release card prints for the
+    plan key it is on, so these are the sentences a person actually runs. All
+    three sources are hit: a printed card, an axes card, and the strict syntax
+    at an address with no card. */
+ const ADDR=Object.values(E.BY).filter(n=>n&&n.cf);
+ const byAx=ax=>ADDR.find(n=>n.cf===ax);
+ const onCard=byAx('Anger'), onAx=byAx('Fear');
+ const bare=ADDR.find(n=>!CARD_BY[n.cf]&&!AXC_BY[n.cf]);
+ [['a printed card',onCard],['an axes card',onAx],['no card',bare]].forEach(([what,n])=>{
+  ok(!!n,'a reference address exists for '+what);
+  if(!n)return;
+  ['Rlimit','Llimit'].forEach(ch=>{
+   const L=relLine(n,ch,0);
+   ok(L&&!L.truth&&L.text.indexOf('I am letting go of believing, perceiving, thinking, '
+     +'behaving, acting, and feeling that I am ')===0,
+    'a '+ch+' line at '+what+' runs all six channels: '+(L&&L.text));});
+  ['Rtruth','Ltruth'].forEach(ch=>{
+   const L=relLine(n,ch,0);
+   ok(L&&L.truth&&L.text.indexOf('I am letting go')<0&&L.text.length>0,
+    'a '+ch+' line at '+what+' installs, it does not release again');});});
+ /* the side picks the pole on a printed card: right is masculine, left is
+    feminine, which is how the printed cards label the same split */
+ ok(relLine(onCard,'Rlimit',0).text===cardLine('Anger','m',0).rel
+   &&relLine(onCard,'Llimit',0).text===cardLine('Anger','f',0).rel,
+  'right reads the masculine column of the card and left the feminine');
+ /* the line index is the position on the card, so the same key is the same
+    sentence and the next key is the next statement */
+ ok(relLine(onCard,'Rlimit',1).text===cardLine('Anger','m',1).rel,
+  'line one of a pass is statement one of the card');
+ ok(relLine(onCard,'Rlimit',cardDepth('Anger','m')).text===relLine(onCard,'Rlimit',0).text,
+  'a position past the card cycles rather than running off it');
+ ok(relLine(null,'Rlimit',0)===null,'no address, no line, never an invented one');
 
  /* the house voice applies to ported text too */
  const all=JSON.stringify([CARDSET,AXCARD,C3_LADDER,C3_BAND]);

@@ -255,6 +255,11 @@ function relToneRow(n){
  if(typeof bedCan!=='function'||!bedCan()||typeof accTog!=='function')return '';
  var st=bedState(), hz=(st.on&&n)?st.carrier:0;
  return accTog('Seat tone','reltone',relToneOn(),hz?hz+' Hz':'',hz?seatCol(n.b):'');}
+/* the sentence under the address, or nothing when the engine has none to give */
+function relLineRow(at){
+ if(typeof relLine!=='function'||!at||!at.n)return '';
+ var L=relLine(at.n,at.ch[0]+at.ch[2],at.line);
+ return L?'<div class="rel-line'+(L.truth?' tru':'')+'">'+esc(L.text)+'</div>':'';}
 function relRender(){
  /* the tone first, so the switch below prints what is sounding now */
  relTone();
@@ -276,6 +281,13 @@ function relRender(){
   out+='<div class="pm-eye">'+ch[1]+' '+ch[2]+', line '+(at.line+1)+'</div>'
    +'<div class="rel-node" style="color:'+c+'">'+esc(n.k)+'</div>'
    +'<div class="rel-sub">'+n.b+' · '+(n.n||'')+'</div>'
+   /* THE THOUGHT LINE ITSELF. The opening tells a person each line names one
+      pattern, and until this the card printed the address and never the line,
+      so the one surface that spends allowance could not say what it was
+      running. relLine reads the plan key this card is on, so the sentence is
+      the pattern the meter charges for, and a limit line carries the six
+      channels he ruled through C3_STEM, all six in one sweep. */
+   +relLineRow(at)
    +'<div class="rel-side rel-'+ch[0]+'"><span>'+ch[1]+'</span></div>'
    +'<div class="rel-prog"><i style="width:'+
      (((RUN.idx+1)/tot)*100).toFixed(0)
