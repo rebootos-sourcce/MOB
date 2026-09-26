@@ -14865,3 +14865,38 @@ raw,** since the plain file has now failed to arrive whole at least
 once this window and this repository's own tooling exists specifically
 because it failed the same way before.
 
+## EC. Release or protocol, simulated for real rather than guessed,
+## verdict release. 26 September.
+
+**Recommendation: release, not a coin flip.** `https://claude.ai/artifact/T2xSE3moTyv4a7oikSoaAm`.
+Every real string in the shipped product using either word was
+counted first, not estimated: 92 uses of release against 15 of
+protocol, checked directly against the actual UI files, half of
+release's uses a verb form protocol cannot take without rewriting the
+sentence. Twelve real shipped strings, not invented ones, were then
+tested both ways across all six ICPs, run a thousand times each with
+the scoring shaken at random rather than asked once: 42 of 72
+persona-and-string pairs hold for release, 14 for protocol, mostly
+Derek alone, 16 too close to call.
+
+**The product's own glossary already draws the line the panel found on
+its own.** Release is defined as what the body does, physical and
+observable; the codex's own "release protocol" already names the
+steps as a separate thing from the discharge itself. Ruling release
+changes five lines. Ruling protocol changes ninety two, a third of
+them needing new grammar, and the glossary's own Release entry would
+have to change what it defines.
+
+**One real exception, not folded into the same answer.** Every run's
+own finished card says "Released" over a line that describes what
+actually cleared, and on the real screenshots that claim outruns what
+that run actually did. A third option, "Run complete," already ships
+elsewhere in the product (Games) and split the panel differently again
+rather than settling it, so it goes to him as its own question rather
+than answered by the main verdict.
+
+**A real bug found in passing, not fixed here, queued separately.**
+Summary prints five readings as a score out of ten, "Anger, at 10.0 of
+10," against this project's own standing rule that a reading is never
+a score.
+
