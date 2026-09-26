@@ -13042,3 +13042,33 @@ them as dots, which is what he originally asked for and what shipped.
 Every other open question across tonight's rounds stays logged and
 open, not repeated at him in this reply.
 
+## CY. The shelf, a standing pattern for the whole product, not one
+## page. 26 September.
+
+**His words in full, since this is a real architectural ruling, not a
+tweak.** "I have a button to expand the overlay, so we can clean up
+that real estate, and put as much information as you can in a shelf.
+I think we should use a shelf as our kind of table of information for
+the different pages, that way we can use the entire screen as the
+visual, the interactive visual. And if a person presses on something,
+it pops up the shelf, and takes them to that information, so you can
+zoom in and tap and bam, you got your information. You can close it,
+you can save it, you can bookmark it, you can share it with your
+profile person, your coach."
+
+**Read plainly.** Every page's full screen stays the interactive
+picture, nothing else. A tap on anything opens one standard surface,
+the shelf, that carries the detail for whatever was tapped. The shelf
+itself needs to close, save, bookmark and share, sharing named
+specifically to a coach or another profile, which reaches into the
+still-open practitioner sharing model on file (`DECISIONS.md`). Extends
+directly from his own icon-zoom-hover idea in CX: the shelf is very
+likely the surface that opens on that hover or tap.
+
+**Not dispatched as a build yet.** This is a pattern for the whole
+product, not one screen, and four of its five listed abilities, save,
+bookmark, share to a coach, and what "that page" even means across
+every surface that would use it, touch account and practitioner
+sharing work that has not been designed yet. Queued as a real design
+pass, not guessed into a page tonight.
+
