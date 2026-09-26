@@ -13777,3 +13777,12 @@ every reading that depends on the exact instant says so, the way
 Rising already does, when a place cannot be located, instead of
 printing a value computed at a guessed offset.
 
+**Ruled. Option three, a time zone name with daylight saving computed
+from it.** His words, after being shown the real trade-off between
+what feels exact and what is actually accurate for an ordinary person:
+"Option three, that gives us the most robust answer. That's good, do
+that." Not a bigger city list, and not asking the person to type their
+own historical UTC offset, which almost nobody actually knows; a time
+zone accepted by name, with the daylight saving rule for that zone on
+that date worked out by the code rather than by the person.
+
