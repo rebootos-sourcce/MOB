@@ -14945,3 +14945,67 @@ own harness, not a claim taken on faith and not hidden either.
 - Accuracy keeps its word beside its circle, per an earlier ruling;
   or match every other circle exactly and move the word to a tooltip.
 
+## EE. The real Field bugs he found by hand, reproduced and closed for
+## the click gap, the other two named rather than assumed. Verified
+## myself in an isolated worktree so another seat's in-flight work
+## could not leak into the numbers. 26 September.
+
+**A domain, a mask and an archetype opening nothing, reproduced first
+and fixed.** The probe that found it lied to itself twice before it
+was trusted, clicking empty space inside a curved band's own bounding
+box and then the container behind it, fixed to scan for the mark
+itself and checked against a saboteur click as a known good control
+before any number from it was believed. The real cause: a mask click
+only ever redrew the picture, and a domain or archetype click went
+only to its own selection setter, which refuses outright on a worked
+example, so the drill that already existed for domains, and the two
+that existed only inline inside Knowledge for archetypes and masks,
+were never reachable from the Field at all. Fixed by moving the
+archetype and mask drills into the shared file every other drill
+already lives in, so Knowledge and the Field now read one wording
+each rather than two. Verified myself: pulled the commit into an
+isolated worktree, away from the other seats' in-flight edits sitting
+in the main tree, and re-ran BUILD.sh, BUILD-engine.sh, engine.js,
+functional.js, collide.js, monitor.js, funnel.js and the voice check,
+every one matching the report's own numbers exactly, 1687 engine
+tests and 1052 functional among them.
+
+**One number did not match on first read, chased down rather than
+waved through.** `tests/design.js` reported 145 of 150 in my own
+first run against my working tree, not the reported clean 150. Traced
+to my own tree carrying another seat's still in-flight, uncommitted
+edits, mixed in by my own BUILD.sh run, not this fix. Re-checked
+against the clean commit alone, in the same isolated worktree: still
+not a clean 150, one to two failures on repeat runs, always the same
+line, "the Field still animates under" one lighting or another,
+varying which one and by how much each time. A real, pre-existing
+flaky check in this gate, confirmed present even with nothing from
+tonight's fix or from any other seat's work anywhere near it. Not this
+agent's fault and not invented; queued as its own small finding, the
+gate itself needs a steadier measurement, not the product.
+
+**The other two complaints, checked and correctly not built as
+guesses.** "You can't select the lines" is real and is not a
+regression: connection lines have never had a click or hover handler
+in the shipped code, only in `proto/field-overlay/`'s own prototype
+work across four earlier rounds that never ported. A real, measured
+defect sits underneath it and was not obvious from his words alone:
+saboteurs built from the same addresses are drawn on the exact same
+point, so on James's own Wheel three of his heaviest saboteurs,
+Controller, Judge and Imposter, cannot be clicked at all, not because
+selection is missing but because they are physically stacked on top
+of each other. "No animations" is also real and also not a
+regression: the Wheel does move, confirmed by four screenshots 400
+milliseconds apart; Frames and Dial have never animated in this
+product's own history, by design, and reduced motion was ruled out
+first as a false-positive cause before trusting anything else.
+
+**Four real open questions, correctly not decided by guessing.**
+Whether the prototype's line tracing and pinning ports into the real
+Field, on which of the three renditions, and what a phone tap does
+where there is no hover; whether its three-pin limit carries over as
+is; whether stacked saboteurs should fan out or open a short list on
+a click, which is the same open question already standing at DD;
+whether Frames and Dial should gain the Wheel's own motion or stay
+still and only move on a hover.
+
