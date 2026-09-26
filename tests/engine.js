@@ -206,9 +206,20 @@ ok(Object.keys(prof.axes).length===9&&Object.keys(prof.laws).length===21,
 const snap=E.snapshot(prof);
 /* 16 since 25 September: m, which arithmetic wrote the row, because cq and
    dq changed meaning and a row from each must never be compared as a move. */
-ok(Object.keys(snap).length===16,'snapshot is 16 derived fields, got '+Object.keys(snap).length);
+/* NO COUNT IS TYPED HERE. It read 16 and the law history made it 17, which is
+   the hand count this repository keeps being bitten by. What the count was
+   standing in for is that the boundary keeps every field a snapshot writes:
+   validateProfile rebuilds each row from a whitelist, so a field snapshot()
+   adds and the whitelist does not name survives until the next read off the
+   disk and is then silently gone (engine/verp.js measured it for the lean).
+   So that is what is asserted, both ways, whatever the count becomes. */
+{const vs=E.validateProfile(Object.assign(JSON.parse(JSON.stringify(prof)),{history:[JSON.parse(JSON.stringify(snap))]}));
+ const kept=vs.ok?Object.keys(vs.profile.history[0]):[];
+ const lost=Object.keys(snap).filter(k=>kept.indexOf(k)<0), extra=kept.filter(k=>!(k in snap));
+ ok(vs.ok&&!lost.length&&!extra.length,'every field a snapshot writes survives the boundary, and nothing is added, '
+  +Object.keys(snap).length+' written'+(lost.length?', lost '+lost.join(' '):'')+(extra.length?', added '+extra.join(' '):''));}
 ok(snap.m===E.CQ_MODEL,'and it is stamped with the arithmetic that wrote it, got '+snap.m);
-ok(!('charge' in snap)&&!('law' in snap),'snapshot holds no inputs');
+ok(!('charge' in snap)&&!('law' in snap)&&!('laws' in snap),'snapshot holds no inputs');
 
 g('10 · intake, partial scoring');
 const p2=E.blankProfile('intake');
@@ -4245,6 +4256,134 @@ g('40 · the seat tone is the seat\'s own, and it is off until turned on');
  ok(back.ok&&back.profile.ui.quiet===false&&back.profile.ui.model===false,
   'and the two preferences beside it are untouched');
  console.log('  '+BANDS.map(b=>b+' '+seatHz(b)).join(', '));
+}
+
+g('41 · the twenty one on every history row, and a record from before still loads');
+/* Ruled 26 September, answering BW Q2: keep the twenty one law values on the
+   saved history so a graph can replay one law over time. What is asserted:
+   a row written now carries every law as the row's own cq read it, and the
+   row reconciles with that cq; the rows survive the disk and the boundary,
+   which rebuilds every row from a whitelist and silently dropped anything it
+   did not name; a record written by the build before this one loads exactly
+   as it did and is never back filled with laws it did not record; the
+   boundary refuses a bad law row by name; and a release pushes a law up the
+   series while a lower answer pulls it down. */
+{
+ const {bindStore,pImport,pSave,pSnap,pStore,storeRefused,loadProfile,lawSeries,
+        validateProfile,saveProfile,blankProfile,snapLaws,meterRun,meterKey,
+        releaseWork,lawNow,LAW_WAS,current}=E;
+ const mem={}; bindStore(k=>mem[k]===undefined?null:mem[k],(k,v)=>{mem[k]=String(v);});
+ const fromDisk=id=>pStore().filter(x=>x.id===id)[0]||null;
+ const lawSum=row=>SINAMES.reduce((a,l)=>a+(typeof row.lawNow[l]==='number'?row.lawNow[l]:0),0)/210*100;
+
+ /* A RECORD THE PREVIOUS BUILD WROTE. Not a shape typed from memory: this is
+    the JSON the engine at b5ded15 put on the disk, a blank profile with four
+    laws answered and two snapshots taken the way pSnap takes them, with the
+    id and the four dates fixed so the test does not depend on the clock. Its
+    rows carry the sixteen keys a row had before the laws were added. */
+ const OLD='{"v":2,"id":"pold0001","name":"Older build","created":"2026-09-20T10:00:00.000Z","updated":"2026-09-20T10:05:00.000Z","soul":{"doms":[0],"arcs":[0,1],"roots":[]},"axes":{"Fear":{"held":0,"opp":0},"Anger":{"held":0,"opp":0},"Shame":{"held":0,"opp":0},"Disgust":{"held":0,"opp":0},"Apathy":{"held":0,"opp":0},"Shock":{"held":0,"opp":0},"Sad":{"held":0,"opp":0},"Surprise":{"held":0,"opp":0},"Anticipation":{"held":0,"opp":0}},"who":{"first":"","middle":"","last":"","sex":"","sealed":"","born":{"date":"","time":"","place":"","timeUnknown":false}},"ui":{"quiet":false,"model":false,"tone":false},"seed":null,"meter":{"lines":0,"unique":[],"firsts":[],"first":null,"last":null},"plan":{"tier":"free","status":"","granted":0,"carried":0,"base":0,"since":null,"until":null},"avatar":{"built":false,"at":null,"reviewedAt":null,"pairs":[]},"purpose":{"soul":["","",""],"ego":["","",""],"sides":{"partner":[],"family":[],"friends":[],"community":[],"coworkers":[],"alone":[]}},"laws":{"Truth":7,"Transparency":null,"Justice":4,"Unity":null,"Awareness":null,"Nature":null,"Presence":null,"Humility":5,"Equanimity":null,"Compassion":null,"Forgiveness":null,"Generosity":null,"Aesthetic Beauty":null,"Courage":null,"Duty":null,"Responsibility":null,"Accountability":null,"Temperance":null,"Detachment":null,"Non-Harm":null,"Patience":7},"intake":{"answers":{},"done":[],"startedAt":null,"completedAt":null},"work":{},"gates":{"verp":{"aware":0,"detach":0,"intent":0,"ignore":0,"attach":0,"averse":0},"lean":{"benign":0,"malignant":0}},"story":{"entries":[]},"rituals":[],"history":[{"t":"2026-09-20T10:00:00.000Z","m":2,"cq":10.5,"dq":0,"sq":0,"pole":0,"jq":0,"rad":0.8,"loaded":0,"sab":0,"cx":0,"hy":0,"ch":0,"dark":"Root","tier":null,"arch":"Warrior"},{"t":"2026-09-20T10:05:00.000Z","m":2,"cq":11,"dq":0,"sq":0,"pole":0,"jq":0,"rad":0.802,"loaded":0,"sab":0,"cx":0,"hy":0,"ch":0,"dark":"Root","tier":null,"arch":"Warrior"}]}';
+ mem['source.profiles']='['+OLD+']';
+ const old=fromDisk('pold0001');
+ ok(!!old&&storeRefused().length===0,
+  'a record written by the previous build loads through the boundary, refused '+storeRefused().length);
+ ok(old&&old.history.length===2&&old.history.every(h=>!('lawNow' in h)),
+  'its two rows come back, and neither is given laws it never recorded');
+ ok(old&&old.history[1].cq===11&&old.laws.Patience===7&&old.laws.Justice===4&&old.laws.Unity===null,
+  'with its reading and its answers exactly as they were written');
+  /* value for value and not byte for byte: the boundary rebuilds a row in its
+    own key order, which it always has, and JSON does not order keys */
+ const OH=JSON.parse(OLD).history;
+ ok(old&&old.history.every((h,i)=>Object.keys(OH[i]).length===Object.keys(h).length
+  &&Object.keys(OH[i]).every(k=>h[k]===OH[i][k])),
+  'every row value for value as the previous build wrote it');
+ const os=lawSeries(old,'Patience');
+ ok(os.n===0&&os.before===2&&os.of===2&&os.first===null&&os.dir===null,
+  'and a series over it says both rows predate the record of each law, not that the law read nothing, before '+os.before);
+
+ /* LOADED AND SNAPSHOT AS THE APP DOES IT, through pImport, pSave and pSnap,
+    which are the calls every surface makes. */
+ const rec=pImport(OLD);
+ ok(rec&&current()===rec,'the older record opens as the current one');
+ ok(pSave()&&pSnap(),'and it saves and takes a snapshot');
+ let back=fromDisk('pold0001');
+ ok(back&&back.history.length===3,'three rows on the disk after one snapshot, '+(back&&back.history.length));
+ ok(back&&!('lawNow' in back.history[0])&&!('lawNow' in back.history[1]),
+  'the two older rows are still without laws after a save wrote them back');
+ const row=back&&back.history[2];
+ ok(row&&row.lawNow&&Object.keys(row.lawNow).length===SINAMES.length
+  &&SINAMES.every(l=>l in row.lawNow),
+  'the new row carries every one of the '+SINAMES.length+' laws by name, through the disk and the boundary');
+ ok(row&&row.lawNow.Patience===7&&row.lawNow.Justice===4&&row.lawNow.Humility===5&&row.lawNow.Truth===7,
+  'the answered laws read as they were answered, nothing released yet');
+ ok(row&&row.lawNow.Unity===null&&row.lawNow.Courage===null,
+  'and a law nobody answered is null, not the six it is seeded with');
+ near(row?lawSum(row):-1,row?row.cq:0,0.06,'the row reconciles: its laws over 210 are its own cq');
+ const one=lawSeries(back,'Patience');
+ ok(one.n===1&&one.before===2&&one.last===7&&one.dir===null,
+  'the series has one point and says so, before '+one.before+', points '+one.n);
+
+ /* THE PUSH. A release at Patience's seat lifts it, through the real meter and
+    the real lift, and the next row is higher. */
+ const PAT=SI.filter(l=>l.nm==='Patience')[0];
+ const ADDR=W.filter(n=>n.cf&&n.b===PAT.b);
+ const CH=['Rlimit','Llimit','Rtruth','Ltruth'];
+ const keys=[]; for(let line=0;line<5;line++)ADDR.forEach(n=>CH.forEach(c=>keys.push(meterKey(n.i,c,line))));
+ const m=meterRun(rec,keys.slice(0,200));
+ releaseWork(rec,m.fresh);
+ ok(m.fresh.length>0,'a release opens new ground at the '+PAT.b+', '+m.fresh.length+' patterns');
+ ok(pSave()&&pSnap(),'and is saved and snapshot');
+ /* THE PULL. What moves a law down in this arithmetic is a lower answer. A
+    story moves the charge and never a law (engine/seed.js carries the rule
+    for the seed, and nothing in applyStory writes S.law), so a story row
+    carries the same laws as the row before it. */
+ S.law.Patience=3; rec.laws.Patience=3;
+ ok(pSave()&&pSnap(),'a lower answer is saved and snapshot');
+ back=fromDisk('pold0001');
+ const ps=lawSeries(back,'Patience');
+ ok(ps.n===3&&ps.of===5&&ps.before===2,'three points of Patience on the disk, of five rows, '+ps.n+' of '+ps.of);
+ ok(ps.pts[1].v>ps.pts[0].v,'the release pushed it up, '+ps.pts[0].v+' to '+ps.pts[1].v);
+ ok(ps.pts[2].v<ps.pts[1].v&&ps.pts[2].v===3,'and the lower answer pulled it down, to '+ps.pts[2].v);
+ ok(ps.pts.every(p=>p.m===E.CQ_MODEL),'every point carries the arithmetic it was read under');
+ const off=SI.filter(l=>l.b!==PAT.b&&back.history[3].lawNow[l.nm]!==back.history[2].lawNow[l.nm]).length;
+ ok(off===0,'no law away from the '+PAT.b+' moved on the release row, moved '+off);
+ ok(back.history.slice(2).every(h=>Math.abs(lawSum(h)-h.cq)<=0.06),
+  'and every row written reconciles with its own cq');
+ ok(lawSeries(back,'Charisma')===null,'a series for a law that does not exist is refused, not empty');
+
+ /* WHAT IT COSTS. Read off the run, not typed here. */
+ const rowB=JSON.stringify(back.history[4]).length, oldB=JSON.stringify(back.history[1]).length;
+ console.log('  a row was '+oldB+' bytes and is '+rowB+' with the laws, '+(rowB-oldB)+' more a snapshot');
+
+
+ /* THE BOUNDARY, refused by name and never clamped. */
+ const base=JSON.parse(JSON.stringify(back));
+ const tryRow=laws=>{const o=JSON.parse(JSON.stringify(base)); o.history[4].lawNow=laws; return validateProfile(o);};
+ const want=(r,re,m)=>ok(!r.ok&&re.test(String(r.errs)),m+': '+String(r.errs).slice(0,90));
+ want(tryRow('high'),/history\[4\]\.lawNow is not an object/,'a law row that is not an object is refused');
+ want(tryRow([5,5]),/history\[4\]\.lawNow is not an object/,'and one that is a list');
+ want(tryRow({Charisma:5}),/may not carry Charisma/,'a key that is not one of the twenty one is refused by name');
+ want(tryRow({Patience:12}),/Patience is 12, outside 0 to 10/,'a law of 12 is refused and named, not clamped to 10');
+ want(tryRow({Patience:'7'}),/Patience is not a number/,'and a law written as text');
+ const nul=tryRow(null);
+ ok(nul.ok&&!('lawNow' in nul.profile.history[4]),'a null law row is an older row and loads without laws');
+ const was=tryRow({Expression:6, Discernment:4, Patience:null});
+ ok(was.ok&&was.profile.history[4].lawNow.Justice===6&&was.profile.history[4].lawNow.Humility===4
+  &&!('Expression' in was.profile.history[4].lawNow),
+  'an old name is read as the law it became, '+JSON.stringify(LAW_WAS));
+ ok(was.ok&&was.profile.history[4].lawNow.Patience===null,'and a null law stays null');
+ const both=tryRow({Justice:8, Expression:2});
+ ok(both.ok&&both.profile.history[4].lawNow.Justice===8,'and the current name wins where both are carried');
+
+ /* A BLANK RECORD READS ALL TWENTY ONE AS NOT YET ANSWERED, and on the disk.
+    Through pImport, because lawIn asks the current record. */
+ const blank=pImport(JSON.stringify(blankProfile('nothing yet')));
+ ok(blank&&pSnap(),'a record with nothing answered takes a snapshot');
+ const bh=fromDisk(blank.id).history[0];
+ ok(SINAMES.every(l=>bh.lawNow[l]===null)&&bh.cq===0,
+  'and writes every law as null, not the seed, with a cq of '+bh.cq);
+ ok(lawSeries(fromDisk(blank.id),'Patience').unread===1,
+  'which a series counts as read and unanswered, apart from a row from before');
+ bindStore(()=>null,()=>{});
 }
 
 console.log('\n===== '+P+' passed, '+F+' failed =====');

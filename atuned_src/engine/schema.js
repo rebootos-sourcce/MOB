@@ -85,6 +85,16 @@ function blankProfile(name){
    literal 6 beside a comment about it, and ui/personas.js then named two more
    numbers for the same quantity. One declaration, at the first use. */
 var LAW_UNSET={}, LAW_SEED={};
+/* WHAT A LAW WAS CALLED BEFORE, current name to old. Expression and
+   Discernment were the twenty one until the owner ruled that Justice and
+   Humility are. A law is keyed by name in every saved profile, so an old name
+   is carried across rather than dropped. It lived inside loadProfile and is
+   out here because the history rows now carry laws by name too, and a table
+   of renames kept in two places is two answers that drift: the next rename
+   written into one and not the other would refuse every older row at the
+   boundary. Expression is a whole separate law axis in the codex and keeps its
+   own name there. */
+var LAW_WAS={Justice:'Expression', Humility:'Discernment'};
 /* AND THE RECORD THEY CAME FROM, as the object. The release lift reads the work
    of the record the laws in S were loaded from and of no other (lawWork,
    engine/compute.js). It was CURP, and the front door loads a profile into S
@@ -113,12 +123,9 @@ function loadProfile(p){
  S.roots=(p.soul.roots||[]).slice(); buildSoul();
  CHILD.forEach(function(c){var a=p.axes[c.nm]||{};
   S.charge[c.nm]=a.held!=null?a.held:3; S.replace[c.nm]=a.opp||0;});
- /* Expression and Discernment were the twenty one until the owner ruled that
-    Justice and Humility are. A law is keyed by name in every saved profile, so
-    the old score is carried across rather than dropped back to the default a
-    person never entered. Expression is a whole separate law axis in the codex
-    and keeps its own name there. */
- var LAWWAS={Justice:'Expression', Humility:'Discernment'};
+ /* an old name's score is carried across rather than dropped back to the
+    default a person never entered (LAW_WAS, above) */
+ var LAWWAS=LAW_WAS;
  SI.forEach(function(l){
   var v=p.laws[l.nm];
   if(v==null&&LAWWAS[l.nm]!=null&&p.laws[LAWWAS[l.nm]]!=null){
@@ -204,7 +211,73 @@ function snapshot(p){
   sq:Math.round(r.SQm*100)/100, pole:Math.round(r.poleMean*100)/100,
   jq:Math.round(r.JQ*100)/100, rad:Math.round(r.radiance*1000)/1000,
   loaded:r.loaded.length, sab:r.sabs.length, cx:r.cxs.length, hy:r.hys.length, ch:r.sups.length,
-  dark:r.darkB, tier:r.tier, arch:ARCH[r.pi].nm};}
+  dark:r.darkB, tier:r.tier, arch:ARCH[r.pi].nm, lawNow:snapLaws()};}
+/* ============================================================
+   THE TWENTY ONE, ON EVERY ROW. Ruled 26 September, answering BW Q2:
+   "keeping track of the laws over time is excellent, and being able to show
+   a graph to show how far you've come." A row carried cq, which is the laws
+   summed over 210, and not the laws themselves, so no row could say which law
+   moved. This is the twenty one as that same cq read them.
+
+   WHAT IS WRITTEN IS lawNow, NOT THE ANSWER, AND THE KEY IS NAMED FOR IT.
+   p.laws is the answers, an input, and a second meaning under that same name
+   is a bug that has not happened yet. A law as CQ reads it is the answer
+   lifted by the releases at its seat since (engine/compute.js, LIFT_R),
+   and the lift is the whole of what a release does to a law. Writing the bare
+   answer would draw every release as a flat line, which is the opposite of
+   what the graph is for. So the row reconciles with itself: the laws that are
+   not null, summed, over 210, times 100, is the row's own cq to within the
+   rounding of both. The gate asserts it on every row it writes.
+
+   A LAW NOT YET ANSWERED IS null, the meaning p.laws already gives it, and CQ
+   counts it as nothing (lawIn). Writing the six it is seeded with would put a
+   reading on the graph that nobody gave.
+
+   THREE PLACES. At a law of 9 one pattern lifts it by under a thousandth and
+   four patterns at its seat, which is what a run spread over the body tends
+   to leave at each one, by about three thousandths. At two places most runs
+   would draw as no move at all. Three costs at most twenty one bytes a row
+   over two.
+
+   A ROW WITH NO lawNow KEY WAS WRITTEN BEFORE THIS EXISTED. That is not the same
+   as a row whose laws are all null, which is a record read before anything was
+   answered, and a reader must keep the two apart (lawSeries, below). Nothing
+   back fills an older row: its laws were never recorded and cannot be
+   recovered from its cq, which is twenty one numbers folded into one.
+
+   No version bump. The row gains a key, an older row still loads exactly as it
+   did, and the record's v stays where it is. An older build reading a newer
+   record drops this key on its way in, because the boundary rebuilds each row
+   from a whitelist, and loses it at its next save. That is a loss, not a
+   break, and it is the same for every field ever added to a row. */
+function snapLaws(){
+ var o={};
+ SINAMES.forEach(function(nm){
+  o[nm]=lawIn(nm)?Math.round(lawNow(nm)*1000)/1000:null;});
+ return o;}
+/* ONE LAW OVER TIME, off the record and nothing else. Rows written before the
+   laws were recorded are counted and skipped rather than drawn as a gap or a
+   zero, and the count is on the result so a graph can say where its record of
+   each law begins. A name that is not one of the twenty one returns null: a
+   series for a law that does not exist is not an empty series. An old name is
+   read as the law it became. m is carried on every point, because a row
+   written under one arithmetic compared with one written under another is a
+   change of formula and not a move in the person (CQ_MODEL). */
+function lawSeries(p,nm){
+ if(SINAMES.indexOf(nm)<0)return null;
+ var H=(p&&p.history)||[], pts=[], before=0, unread=0;
+ for(var i=0;i<H.length;i++){
+  var s=H[i];
+  if(!s||!s.lawNow||typeof s.lawNow!=='object'){before++; continue;}
+  var v=s.lawNow[nm];
+  if(v===undefined&&LAW_WAS[nm]!==undefined)v=s.lawNow[LAW_WAS[nm]];
+  if(typeof v!=='number'){unread++; continue;}
+  pts.push({t:s.t, v:v, m:s.m});}
+ return {law:nm, pts:pts, n:pts.length, of:H.length, before:before, unread:unread,
+  first:pts.length?pts[0].v:null, last:pts.length?pts[pts.length-1].v:null,
+  /* a direction is only a claim when there are two ends to compare */
+  dir:pts.length>1?(pts[pts.length-1].v>pts[0].v?'up'
+   :(pts[pts.length-1].v<pts[0].v?'down':'level')):null};}
 var PROFILES=[], CURP=null;
 /* The engine does not know what a browser is. The host binds a store. With none
    bound the profiles last as long as the process, which is what a headless run
@@ -823,6 +896,34 @@ function validateProfile(o){
    ['loaded',0,1e4],['sab',0,1e4],['cx',0,1e4],['hy',0,1e4],['ch',0,1e4]].forEach(function(f){
    var v=vRange(errs,'history['+i+'].'+f[0],x[f[0]],f[1],f[2]);
    q[f[0]]=v===null?0:v;});
+  /* THE TWENTY ONE ON THE ROW (snapLaws). This whitelist is why the field
+     needed a line here and not only in snapshot(): every row is rebuilt from
+     it, so a key snapshot() writes and this does not name survives until the
+     next read off the disk and is then gone, which verp.js measured for the
+     lean and declined to ship for exactly that reason.
+
+     Absent or null is a row from before the laws were recorded and stays
+     absent, never filled: twenty one nulls would say "read, and nothing
+     answered", which is a different claim about that day. Present, it is a
+     closed key set, the posture the two nested bags above take. A key that is
+     not one of the twenty one is refused by name, an old name is read as the
+     law it became, and a value is 0 to 10 or null and is refused by name
+     otherwise, never clamped. */
+  if(x.lawNow!==undefined&&x.lawNow!==null){
+   var lp='history['+i+'].lawNow';
+   if(typeof x.lawNow!=='object'||Array.isArray(x.lawNow))errs.push(lp+' is not an object');
+   else{
+    var WAS={}; Object.keys(LAW_WAS).forEach(function(k){WAS[LAW_WAS[k]]=k;});
+    var lw={};
+    Object.keys(x.lawNow).forEach(function(k){
+     var nm=SINAMES.indexOf(k)>=0?k:(WAS[k]||null);
+     if(!nm){errs.push(lp+' may not carry '+k); return;}
+     /* the current name wins over an old one naming the same law */
+     if(nm!==k&&x.lawNow[nm]!==undefined)return;
+     if(x.lawNow[k]===null){lw[nm]=null; return;}
+     var v=vRange(errs,lp+'.'+k,x.lawNow[k],0,10);
+     if(v!==null)lw[nm]=v;});
+    q.lawNow=lw;}}
   return q;}).filter(Boolean);
  return errs.length?{ok:false, errs:errs}:{ok:true, profile:p};}
 

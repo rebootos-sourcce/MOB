@@ -123,6 +123,9 @@ if(typeof module!=='undefined'&&module.exports){
                   gatesClear:gatesClear, gatesLoad:gatesLoad, gatesSave:gatesSave,
   /* schema */    blankProfile:blankProfile, loadProfile:loadProfile,
                   saveProfile:saveProfile, snapshot:snapshot, LAW_DEFAULT:LAW_DEFAULT,
+  /* the twenty one on every history row, the one law over time a graph reads,
+     and the renames both the loader and the boundary read */
+                  snapLaws:snapLaws, lawSeries:lawSeries, LAW_WAS:LAW_WAS,
   /* the unanswered marks, which CQ now reads through lawIn. The object is
      never reassigned, only its keys, so the reference exported here stays the
      live one. A headless caller that sets S.law directly after a blank profile
@@ -205,6 +208,11 @@ if(typeof module!=='undefined'&&module.exports){
                   NUM_CORE:NUM_CORE, NUM_DEBT_SAYS:NUM_DEBT_SAYS,
                   FULLNAME:FULLNAME, BIRTH:BIRTH,
   /* store */     storeRefused:storeRefused, pStore:pStore, pPersist:pPersist,
+  /* the save and the snapshot write every surface calls, and the only route a
+     history row reaches the disk by. They were browser globals and nothing
+     headless could drive them, so the one write that grows the record had no
+     gate of its own. */
+                  pSave:pSave, pSnap:pSnap, pNew:pNew,
                   saveState:saveState,
                   validateProfile:validateProfile, loadProfile:loadProfile,
                   blankProfile:blankProfile,
