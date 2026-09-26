@@ -16392,3 +16392,21 @@ point holds either way and a hostile reader checking the reference
 would find the note already there. Zero em dashes, diff touches only
 `BRAND.md`.
 
+**The founding offer design is done, real, not code, verified
+directly.** `DESIGN-founding-offers.md`, commit `71d90c4`, 591 lines,
+no build touched. Read the actual document rather than the report
+alone: it correctly reads "get that tier for a year, get that tier
+for life" as a self correction, then catches a real discrepancy
+between his words and this file's own FH summary, which had written
+"keep their tier's price for life," a price lock; his words say
+"get that tier," and the document argues free is the more consistent
+reading since a price lock on an unpublished, unmoved price costs
+nothing and would leave his own founders paying full price while
+the people they refer pay half, the reverse of "my angels." Eight
+real, distinct open questions logged in the document's own section
+11 rather than resolved by guess, with a shared-versus-per-founder
+pool distinction flagged as a factor of a hundred in cost exposure.
+Confirmed its citations (`DESIGN-economics.md`'s tier four
+reasoning, `TASKS.md` AK6, `reviews/LEGAL-floor.md`) are real. Zero
+em dashes.
+
