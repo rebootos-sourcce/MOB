@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=1600">
+<title>The Field, one reading</title>
+<link rel="stylesheet" href="inter.css"><link rel="stylesheet" href="cb.css">
+<script src="cap/cap.js"></script><script src="cb.js"></script>
+<style>
+/* the shipped screen as the ground, and only what the ruling changes drawn live
+   over it, each patch on the box the product itself reports for that element */
+body{width:1600px;height:1000px;overflow:hidden;position:relative;background:#0C0D12 url(cap/page-dial-1600.png) no-repeat 0 0}
+.patch{position:absolute;box-sizing:border-box}
+.rail-head{display:flex;align-items:center;gap:12px;background:var(--panel)}
+.rail-head .word{font-size:16px;font-weight:500;color:var(--tier);letter-spacing:.005em;
+ border-bottom:1px dotted color-mix(in srgb,var(--tier) 45%,transparent);padding-bottom:1px}
+.tag{position:absolute;right:16px;bottom:10px;font-size:11px;color:var(--dim)}
+</style>
+</head><body>
+<script>
+(function(){
+const G=CAP.geo[1600].dial, P=(r,css)=>{const d=document.createElement('div');d.className='patch';
+ d.style.cssText='left:'+r[0]+'px;top:'+r[1]+'px;width:'+r[2]+'px;height:'+r[3]+'px;'+(css||'');document.body.appendChild(d);return d;};
+
+/* 1. THE STRIP. CQ, DQ and SQ leave it. CQ and DQ go to the centre and SQ
+   leaves the Field, his words: "SQ does not belong there". The row is empty,
+   so it is painted out whole, rounded where the stage is rounded. */
+P(G.key,'background:var(--stage);border-radius:15px 15px 0 0');
+
+/* 2. THE CENTRE. The shipped Dial, captured, with its core redrawn as B */
+const host=P(G.frend,'');
+const M=CB.mount(host,'dial-1600');CB.centre(M,'B');
+/* SQ LEAVES THE CALLOUTS TOO. The Dial names its heaviest addresses "Root. SQ
+   9.3". That is the charge held at one address, not the strip's SQ, but it is
+   the same two letters he ruled off this screen, so the comp sets the words the
+   field-rings mockup used before the port: "Held at". */
+let sq=0;M.svg.querySelectorAll('text').forEach(t=>{if(/\. SQ /.test(t.textContent)){t.textContent=t.textContent.replace('. SQ ','. Held at ');sq++;}});
+window.__measure={sqCallouts:sq};
+
+/* 3. THE COMPASS keeps its marker and loses its number: "you just need your
+   marker showing where you are". The number's box is read off the build at
+   capture and covered, one pixel of margin and no more */
+{const c=G.pol2c;P([c[0]-1,c[1]-1,c[2]+2,c[3]+2],'background:var(--stage)');}
+
+/* 4. THE RAIL HEAD. The ring and its 44% go. What stays is where you are: the
+   ten bands of the scale as one line, the median range bracketed under it,
+   a mark at your place, and the band's own word. No figure. */
+{const r=G.railtop,h=P([r[0],r[1],r[2],44],''),W=150;
+ h.className+=' rail-head';
+ const TC=['#A48986','#B58379','#CF8958','#CFAB64','#7D93E0','#5EBBDB','#6FC5C9','#5FD5A6','#8BD4A7','#E8DBA4'];
+ let s='<svg width="'+W+'" height="30" viewBox="0 0 '+W+' 30" aria-hidden="true">';
+ const seg=W/10;
+ TC.forEach((c,i)=>{const on=i===4;s+='<rect x="'+(i*seg+.5).toFixed(1)+'" y="12" width="'+(seg-1.5).toFixed(1)+'" height="5" rx="1.5" fill="'+c+'" opacity="'+(on?1:.32)+'"/>';});
+ s+='<path d="M'+(4*seg)+' 22V25H'+(6*seg-1.5)+'V22" fill="none" stroke="rgba(255,255,255,.28)" stroke-width="1"/>';
+ const x=CB.R.CQ/100*W;
+ s+='<path d="M'+(x-4.5).toFixed(1)+' 3L'+(x+4.5).toFixed(1)+' 3L'+x.toFixed(1)+' 9Z" fill="var(--tier)"/>';
+ s+='</svg>';
+ h.innerHTML=s+'<span class="word">'+CB.R.tier+'</span>';}
+const t=document.createElement('div');t.className='tag';t.textContent='Mockup. James, example. Centre B.';document.body.appendChild(t);
+window.__ready=true;})();
+</script>
+</body></html>
