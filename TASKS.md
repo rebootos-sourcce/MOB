@@ -16164,3 +16164,33 @@ commits on this branch from this agent read `Claude Opus 5.5` rather
 than `Claude Sonnet 5`. Left as is for the same reason, not force
 rewriting shared history.
 
+## FF. The marketing gate regression logged in FD comes back with a
+## measured root cause and a fix ordered. 26 September.
+
+The re-baseline task queued after FD (`task_ae037a63`) was started
+independently and reports back the actual cause rather than only the
+symptom: the engine's own coherence arithmetic has moved since the
+marketing panel was built on 20 September, seed 20260920, and every
+one of the nine reference archetypes now reads two to four grid
+levels higher than `losssim.js` still records for them. Ana reads
+grid 5 where 1 is recorded, Gordon 2 against 1, Sofia 8 against 6.
+With no level 1 person left in the panel, the one check that proves
+the lowest band is never shown a hook tests nothing. Every panel
+count anywhere in `marketing/` or the new `MARKETING-social.md`,
+including the 307 of 1000 figure behind the strongest hook, is the
+20 September run and cannot be reproduced today.
+
+**Ordered, with the standard this project holds to stated
+explicitly:** decide with evidence which side moved, `losssim.js`'s
+recorded levels or `field.js`'s reading, per `CLAUDE.md`'s own rule
+to reproduce a failure before fixing it, rather than loosening the
+assertion to make it pass. Also open: `tests.js` errors on the
+combined hook text through the voice check though every line passes
+alone, worth a real answer rather than a shrug. Re-run `hooksim.js`
+once the panel is sound, update every `n` field in `hooks.js` and
+every quoted count in `README.md`, `GUARD.md` and
+`MARKETING-social.md` off that run, and confirm the panel holds
+level 1 people again so the band gate is actually exercised. Not
+touching `atuned_src` or `source.html`. Done when `tests.js` exits
+zero and `hooksim.js` reports.
+
