@@ -11641,3 +11641,147 @@ time anywhere in the product. Naming them on hover works. Pressing one
 does nothing, since none of them has a reading page today. Build one
 for them, or leave them name only for now?
 
+## CB. A single dense round, answering questions across BW, BT, BZ and
+## CA at once, plus new rulings. 26 September.
+
+**Law history over time, ruled.** His words: "keeping track of the laws
+over time is excellent, and being able to show a graph to show how
+far you've come... as the story gets put in, it's going to weigh
+things down, but as you continue to release the patterns you'll
+continue to go back up, so there's a push-pull over time." Answers
+BW Q2. Keep the full 21 law values in the saved history, not only the
+summary, so the graph can be replayed. Dispatched to build.
+
+**Feathers tied to seven, closing BW Q1, and a new placement rule for
+the six.** His words: "don't tie the feather to the six, tie it to the
+seven... the six with their percent is enough, like how often you do
+one of the six behaviors, because the goal is to move towards
+awareness, intention and detachment." Confirms what the data already
+showed: seven, by seat, already built. New requirement: the six VERP
+gates get their own percent reading somewhere, not tied to the
+feathers. He rejected stacking them above the centre outright: "do not
+stack the six above the centre, they're in opposition... I don't want
+them that far out from the centre... we don't need to see it reading
+three or four times on the screen." Placement itself is still open,
+sent to design.
+
+**The CQ and DQ readings, ruled to consolidate.** He picked through the
+CQ shown in four places (BO's open question) live: move the breakdown
+of what "gaining" means to the Summary page. On the Field itself, his
+words: "maybe you can move all three to the centre... SQ does not
+belong there, since it's showing a single number, which is effectively
+DQ... CQ, DQ can just go on the centre of the soul itself, because
+obviously you're drawing one down in order to gain one up. And on the
+right hand side you don't need your DQ, CQ, you just need your marker
+showing where you are." He asked for mockups before this is built:
+"let's have the UX team create mockups with the CQ and the
+suggestions."
+
+**"What do you mean by the wash, keep it honest? I don't understand
+what that means in any context."** Answered here rather than assumed:
+this is BO1, the shadow wash bug, logged above in this same file.
+`ui/wheel.js` drew the background wash at a fixed density no matter how
+heavy someone's reading was, because it was still dividing by an old 7
+point scale after the reading itself moved to 100 points. The heaviest
+readings drew the faintest wash, backwards. "Honest" meant the fix:
+the wash's darkness now actually rises and falls with the real number
+behind it, rather than sitting maxed out for almost everyone regardless
+of what is true.
+
+**The avatar comp icon choice, closing BY's Q1 and Q2 together.** His
+words: "for the drawn above, let's choose, let's pick drawn above for
+the icons." The comp's own grid showed three sources for each seat's
+mark side by side, his own drawing, the shipped icon, and a reshaped
+version labelled "drawn above." He picked the reshaped set, which is
+what the throat mark already is in the fixed comp. Nothing further to
+build here, the current shipped shapes stand as the answer.
+
+**The iam page gets a fresh round, by his own request, not a build.**
+His words: "this iam page is going to need a lot of work. I need the
+UX team and designers and creative director. I need the teams
+themselves to ask me questions on that one so we can refine it. It
+needs to be very visual to start." Dispatched as a questions first
+round, not code.
+
+**The clinician ruling, restated with his reasoning, not just deferred
+this time.** His words in full, since this is the first time he has
+explained why rather than only when: "the reason why I don't worry
+about the clinician is because we're looking at the behavior of
+energy, not the definition. The definition helps to identify the
+thing. The behavior gives us its fuzziness, which is the variety in
+which the fetters play through a particular behavior. So the
+clinician is the observation. The behavior is the motion of the
+observation, which is why I don't worry too much about the clinician.
+It's important, yes, but it's not the only one." Logged as his
+reasoning, not reopened, and nothing here asks about clinicians.
+
+**The channels, named directly and finally, closing BT.** His words in
+full: "believe, I'm letting go of believing, perceiving, thinking,
+behaving, acting, feeling. Those are the channels we're using." Six
+words: believing, perceiving, thinking, behaving, acting, feeling.
+None of the word lists already in the product (`C3_VERB`/`C3_STEM`,
+`C3_GATE9`/`AX_STEM`, or the book's own ten) match this set exactly.
+Dispatched to wire these six, for real, into the release, which today
+wires none of its several existing word lists to anything.
+
+**The body page, closing BZ Q1 through Q3 at once.** His words: "always
+move the third eye to its correct position, not the nose... the body
+page should place everything as close as it can. It's a 2D image, it's
+not accurate, so do the best that you can. We're looking for precision
+but feel, you can't be wrong, it just needs to be roughly in the right
+spot. Like I said yesterday, at a plexus there's three branches, so
+you could have more than two things sitting at one address." Real
+anatomical placement, best effort rather than exact, 3rd Eye moved off
+the nose first since that one is named outright, and an address slot
+may now legally carry more than two names where a real plexus branches
+that many ways. Dispatched to build.
+
+**The Field's label design, real feedback on the renditions sent
+yesterday.** His words: "with the circle design, I don't want the names
+like Third Eye, Root, etc, sticking out like a handle for a wheel. I
+don't like that at all, it eats up too much real estate, it's bad
+design. It has to be centred, like the one on the lower right after
+the dial. That's good." The dial rendition already centres its labels;
+nested frames does not yet and should be brought in line.
+
+**Frames, a real layout correction, not yet built.** His words: "the
+square one is kind of good, except the UI elements are taking up all
+the real estate. Let's move the UI elements to the right hand
+information side, on the very top, and just divide it. This is always
+persistent, and anything else you click on information wise on this
+screen shows up underneath. You can also fold it and close it." And
+on mobile: "for the mobile frames and dial, are good, we just want to
+get those stats out of that center area now, so let's see mockups for
+that, both the square one and the circular one." Sent to design as
+mockups, per his own ask.
+
+**Persistence, ruled broadly, closing CA Q3 wider than asked.** His
+words: "yes, they should remember your last choices. Everything here
+should remember your last choices." Not only the three way switch,
+everything on this screen. One line of his was hard to make out in the
+dictation and is quoted rather than guessed at: "just give me a little
+toggle maybe duck next to the lighting profiles, maybe can we remove
+it later." Read most plainly as asking whether the three way switch
+could sit beside the Dark, Snow, Glass control instead of the far left,
+with room to remove it later if it does not earn its place. Logged as
+heard, not acted on, since a wrong guess here costs a real UI change.
+
+**The four addresses outside the body, closing CA Q4, decided live and
+correction kept in.** He first said to rename Gaia Gateway, then to
+remove the four outright, then caught himself: "let's just hide it
+from the system, and if we need to come back to it at some point in
+time because of calculations aren't working, we will. But I think
+what you're saying is the calculations actually work better without
+them, because they are two abstract, but they actually are
+meaningful." Ruling: hide the four from every view that shows them
+today, keep them fully wired in the maths underneath, nothing deleted.
+
+**An open thread, not a ruling, cut off mid sentence.** His words: "what
+about that torus field around the body as an overlay? I think that
+does make a difference, and that determines whether we're going to
+keep Gaia, Earth, Soul, Stellar" and the message ends there. Read as
+floating whether the four assemblage points belong on the torus field
+overlay around the avatar instead of on the Field wheel, not as a
+decision. Left open rather than guessed at; the torus field itself is
+already on record from his Avatar dictation and not yet built.
+
