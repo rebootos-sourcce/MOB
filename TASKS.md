@@ -12020,9 +12020,9 @@ three changed bodies (`PMBANDS`, `pmNode`, and `BODYPATH`, which I
 checked by hand and is the same 8149 character outline string in both
 builds, only the build's own module boundary comment moved past it).
 `node tests/engine.js` matched the claimed 1625, `BUILD-engine.sh`
-matched the claimed 428 exports and host free. `functional.js` was
-still running under tonight's load when this was written; will correct
-here if it comes back other than clean.
+matched the claimed 428 exports and host free. `functional.js` finished
+after this was first written, slow under tonight's load, and came back
+matching the claimed 1007 passed, 0 failed.
 
 **3rd Eye moved off the nose, the one thing he named outright.** Its
 height dropped from 12.56 to 10.57 in the figure's own units, checked
