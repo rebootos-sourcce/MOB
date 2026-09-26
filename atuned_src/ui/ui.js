@@ -676,7 +676,13 @@ function railTop(r){
     plate disagreed about what colour a person's band is. High coherence is
     the good end, so it never reddens. */
  var tcol=(!r.unread&&TIERCOL[r.tier])||null;
- e.innerHTML=cr(r.darkB, r.unread?0:r.CQ, {size:'sm', label:'coherence',
+ /* ONE CELL, THE SAME CELL AS THE DOCK'S. Ruled 26 September, CQ in
+    TASKS.md: this corner should sit flush and uniform with the other
+    readouts around the frame, not on its own alignment. It was a bare 30
+    high chip centred against a 44 high word, so its top sat seven pixels
+    below the word's and neither matched the boxed 44 high cells every other
+    readout on the Field sits in. The ring and the word share one box now. */
+ e.innerHTML='<span class="rt-cell">'+cr(r.darkB, r.unread?0:r.CQ, {size:'sm', label:'coherence',
    raw:r.unread?'\u2013':undefined, hot:false, color:tcol||undefined})
   /* THE TIER IS A CONTROL WHEREVER IT LIVES. Taking the word off the Field
      centre was ruled, and it took the only tappable route to the definition
@@ -691,7 +697,7 @@ function railTop(r){
   +(tcol?' style="color:'+tcol+'"':'')
   /* while CQ is still filling there is no word, so the slot says what is
      left to answer rather than naming a band off laws nobody answered */
-  +'>'+esc(r.unread?'not read yet':tierSay(r))+'</button>'
+  +'>'+esc(r.unread?'not read yet':tierSay(r))+'</button></span>'
   /* ONE STATE, ONE SENTENCE. The button's own title two lines above says
      "Nothing has been read yet. Write a story or set a charge." for the same
      unread field, and this said the same thing a second way, three words

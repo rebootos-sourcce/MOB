@@ -286,7 +286,9 @@ function renderAcc(r){
   /* AND IT NEVER PRINTS RED. Ruled: "ninety six percent flow accuracy and
      yet it is red, red is a colour of danger, that is bad colouring." A
      well measured person is the good case and the ring says so. */
-  +cr('Crown',un?0:a.pct,{size:'lg',raw:un?'\u2013':a.pct.toFixed(0),
+  /* SMALL, like every readout beside it in the dock. It was the one large
+     ring on the Field, and one size across the row is ruled, 26 September. */
+  +cr('Crown',un?0:a.pct,{size:'sm',raw:un?'\u2013':a.pct.toFixed(0),
     label:'accuracy',hot:false})
   +'</button>';
  var bt=document.getElementById('accbtn');

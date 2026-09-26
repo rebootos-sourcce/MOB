@@ -1309,9 +1309,12 @@ body.tab-field .stage,body.tab-energy .stage,body.tab-compass .stage,
    The legend was cut on 25 September (BA9) and its row is empty now, so it
    is zero high and the wheel has the height back. It stays in the template
    because the canvas and .pol2 address row 3 by number. */
+/* AND A FOURTH, THE DOCK, 26 September. The key strip left row 1 for it, so
+   row 1 is empty and zero high like row 2, and the picture keeps the height
+   it had: what the strip took at the head, the dock takes at the foot. */
 .stage{--lane:128px;position:relative;display:grid;
  grid-template-columns:var(--lane) minmax(0,1fr) var(--lane);
- grid-template-rows:auto auto minmax(0,1fr);
+ grid-template-rows:auto auto minmax(0,1fr) auto;
  align-items:center;min-height:0;border-radius:var(--r);overflow:hidden}
 canvas#cv{display:block;grid-column:2;grid-row:3;width:100%;height:100%;
  min-width:0;min-height:0;touch-action:none;cursor:crosshair}
@@ -1329,8 +1332,11 @@ canvas#cv{display:block;grid-column:2;grid-row:3;width:100%;height:100%;
    the depth row's place in the sub bar, and only one of the two is ever up,
    which ui/rings.js decides in fviewPaint.
    ============================================================ */
-.fview{grid-column:1;grid-row:3;align-self:start;z-index:4;min-width:0;
- display:flex;flex-direction:column;gap:4px;padding:10px 0 0 12px}
+/* CENTRE LEFT, ruled 26 September, CQ in TASKS.md, moving it off the head of
+   the lane where BP8 first put it. Same lane and same cell, so the ring still
+   does not move a pixel for it; only its height in the lane changes. */
+.fview{grid-column:1;grid-row:3;align-self:center;z-index:4;min-width:0;
+ display:flex;flex-direction:column;gap:4px;padding:0 0 0 12px}
 /* the Field's alone, like the compass lane and the accuracy beside it. The
    stage hosts every other surface too, and a switch left up at z-index 4
    would have sat in the left lane of all of them */
@@ -1420,11 +1426,28 @@ body.punch .lay[aria-pressed=true] .lay-ic svg,body.lumen .lay[aria-pressed=true
  transition: background var(--t-micro) var(--ease-out)}
 .kbjump:hover{background:var(--panel-2)}
 .kbjump:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
-/* The key is a strip in flow above the canvas, never over it. Each element
-   is a button that opens its reading on the right. The tier block sits
-   absolute at top right, so the strip leaves it room. */
-.key{grid-column:1/-1;grid-row:1;position:relative;z-index:4;width:100%;box-sizing:border-box;
- align-self:start;display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:12px 300px 0 14px}
+/* THE DOCK. The readouts in one row along the stage's foot, in its own grid
+   row so nothing in it can sit over the picture. Three groups and each one is
+   a unit that wraps whole: the instrument's own reading (CQ, DQ, SQ), a
+   rule, what is moving through the person (vitality, awareness, will, flow),
+   and accuracy pushed to the far end on its own, which is what "accuracy kept
+   on its own" means when the row is wide enough for it to be anywhere. Each
+   is a button that opens its reading on the right. */
+.fdock{grid-column:1/-1;grid-row:4;position:relative;z-index:4;min-width:0;box-sizing:border-box;
+ display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:10px 14px 14px}
+body:not(.tab-field) .fdock{display:none}
+/* the gap inside a group is 4 and between groups it is 6 plus this rule, so
+   the break reads as a break. At 1600 the dock needs 894 of the 894 the
+   stage gives it with both rules in, measured on James, and at 8 and 6 accuracy wrapped to a
+   second line and took 64 pixels of height off the picture. Narrower than
+   that it wraps a whole group at a time, never one chip. */
+.fdock-br{width:1px;align-self:stretch;margin:6px 1px;background:var(--edge-2)}
+.key{display:flex;flex-wrap:nowrap;gap:4px;align-items:center}
+/* ONE SIZE. Every readout in the dock is the same cell: the small ring, the
+   value pill, a box 44 high and 96 wide. They were 98, 98 and 90 across the
+   head and 97 along the foot, which is uniform to nobody, because each box
+   was as wide as its own figure. */
+.fdock .kb{min-width:96px;justify-content:flex-start}
 .kb{display:inline-flex;align-items:center;gap:6px;min-height:var(--tap);padding:2px 4px;
  background:transparent;border:1px solid var(--edge);border-radius:var(--r-xs);
  color:var(--mid);font:inherit;font-size:12px;cursor:pointer;text-align:left;white-space:nowrap}
@@ -1589,8 +1612,13 @@ body.punch .crb-v{border-color:transparent;background:var(--c);color:var(--on-ac
 .tl b{display:block;font-size:17px;font-weight:600}
 /* lower right, ruled, and it was already there. What moved is the label,
    which now sits to the left of the figure and carries the scale. */
-.acc{position:absolute;right:20px;bottom:14px;z-index:4;text-align:right}
-.acc-b{display:flex;align-items:center;gap:9px;background:transparent;border:0;padding:6px 8px;
+/* THE FAR END OF THE DOCK, ruled 26 September, and in the dock's own cell. It
+   was absolute in the stage's lower right with a large ring, 66 high against
+   44 for every other readout, which is the size difference he named. It keeps
+   its word, which is ruled, and takes the same box and ring as the rest. */
+.acc{margin-left:auto;text-align:right}
+.acc-b{display:flex;align-items:center;gap:6px;background:transparent;
+ border:1px solid var(--edge);padding:2px 4px 2px 8px;
  border-radius:var(--r-xs);color:inherit;font:inherit;cursor:pointer;min-height:var(--tap)}
 .acc-b:hover{background:var(--sunk)}
 body:not(.tab-field) .acc{display:none}
@@ -1650,6 +1678,16 @@ body:not(.tab-field) .pol2{display:none}
  border-bottom:1px dotted var(--edge-2)}
 .railtop .rt-t:hover,.railtop .rt-t:focus-visible{color:var(--gold);
  border-bottom-color:var(--gold)}
+/* the ring and the band word in one box, the dock's .kb box exactly: one
+   edge, one radius, 44 high, the same inset padding. The word inside keeps
+   its dotted underline, which is what says it opens. The edge is an inset
+   shadow and not a border because the word is a button that owes the 44
+   pixel tap floor, and a real border round it made the box 46, two taller
+   than the cells it is meant to match. */
+.rt-cell{display:inline-flex;align-items:center;gap:6px;
+ padding:0 10px 0 4px;box-shadow:inset 0 0 0 1px var(--edge);
+ border-radius:var(--r-xs)}
+body.punch .rt-cell{box-shadow:none;background:var(--panel-2)}
 /* the band word carries its own meaning, on the screen, not in a tooltip */
 .railtop{flex-wrap:wrap}
 .railtop .rt-d{flex:0 0 100%;font-size:12.5px;line-height:1.55;color:var(--mid);
@@ -2235,11 +2273,9 @@ body.dens-wide{--ui:1.1}
    because it is visible on every tab. It was a layout defect then and nobody
    read it as one. One line, on the surface that owns the strip. */
 body:not(.tab-field) .keylo{display:none}
-.keylo{position:absolute;left:14px;bottom:14px;z-index:3;display:flex;gap:8px;
- flex-wrap:nowrap;pointer-events:none}
-.keylo .kb{pointer-events:auto}
-@media (max-width:1180px){
- .keylo{position:static;margin:0 14px 10px;order:9;flex-wrap:wrap}}
+/* in the dock now, in flow, so it no longer passes the pointer through to a
+   canvas it used to sit on */
+.keylo{display:flex;gap:4px;flex-wrap:nowrap;align-items:center}
 /* ONE COLUMN. The information that filled the second one has gone to the rail,
    which is what "the information pane" meant, so the figure takes the whole
    card. It was 528 pixels of a 920 pixel card and it is the hero art. */
@@ -3370,12 +3406,22 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
  /* nothing to override: auto-fill already answers to the width */
  .mx{grid-template-columns:repeat(19,1fr);gap:1px}
  .sum-cq b,.ab-cq b{font-size:38px}
- /* the key strip wrapped to three rows and pushed the wheel 154px down.
-    one row that scrolls, with the tier block's reserved gutter released. */
- .key{padding:10px 14px 0;flex-wrap:nowrap;overflow-x:auto;overscroll-behavior-x:contain;
-  scrollbar-width:none}
- .key::-webkit-scrollbar{display:none}
+ /* the key strip wrapped to three rows and pushed the wheel 154px down. It
+    is under the picture now, in the dock, and the dock wraps by group rather
+    than by chip, so a group never splits across two lines on a phone. */
  .kb{flex:0 0 auto}
+ .fdock{order:2;padding:12px 14px 0;gap:8px 6px}
+ /* four to a line, which is the flow group whole. A cell's content was 97
+    wide, four came to 400 against 362 of phone, and 0.39 sat on a line of
+    its own. The box and the pill give up their padding, not their size. */
+ .fdock .kb{min-width:0;padding:2px}
+ .fdock .cr.sm{padding-right:4px}
+ .fdock .cr .v{margin-left:5px;padding:4px 6px}
+ .keylo{flex-wrap:wrap}
+ .fdock-br{display:none}
+ /* the phone rule below that releases .acc from absolute also pads it and
+    sets its order, which in the dock would inset it from the other cells */
+ .fdock .acc{padding:0;margin:0 0 0 auto}
  /* Five blocks were absolutely positioned against a stage that is 900 wide
     on a desktop. At 390 they all landed on each other at the bottom of the
     wheel. On a phone the stage is a column: the canvas, then each block in

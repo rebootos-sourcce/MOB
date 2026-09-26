@@ -217,8 +217,14 @@ let CW=1e3,CH=1e3,CX=500,CY=500,DPR=1,HIT=[],U=400;
    long time and nothing could see it, because a canvas label is pixels and
    a probe that reads pixels lies. This gives the collide gate the boxes. */
 let LBL=[];
-/* where the outermost label sits, and how much room its text needs */
-const LBL_R=1.20, LBL_M=30;
+/* where the outermost thing drawn sits, and the margin kept past it. It was
+   1.20 and 30: the outermost LABEL, nineteen domain names radiating past the
+   Blueprint ring to 1.2 of the unit. Nothing runs past its ring now, ruled 26
+   September, so the outermost thing is that ring itself at 0.93, and the
+   room the names were reserved goes back to the picture: the wheel draws
+   about a third larger in the same box at 1600, and its silhouette at the
+   Patterns depth lands within a few pixels of where the names used to end. */
+const LBL_R=0.95, LBL_M=10;
 /* what sits over the canvas and therefore bounds the wheel */
 const OVERLAY=['tl','acc','bal','howto'];
 const hx=h=>{const n=parseInt(String(h).slice(1),16);return[(n>>16)&255,(n>>8)&255,n&255];};
@@ -283,10 +289,11 @@ const AURA_DIV=8;
 function reframe(){
  /* HOW BIG THE WHEEL IS ALLOWED TO BE.
 
-    Two things bounded it and neither was being asked. The labels run outward
+    Two things bounded it and neither was being asked. The labels ran outward
     past the rings, furthest at the blueprint depth where nineteen domain names
-    radiate to 1.2 of the unit radius, so a rule that stopped at the canvas
-    edge put 3rd Eye and Knowledge half off it. And the readouts parked in the
+    radiated to 1.2 of the unit radius, so a rule that stopped at the canvas
+    edge put 3rd Eye and Knowledge half off it. They are inside their rings
+    now, so the bound is the outermost ring, LBL_R above. And the readouts parked in the
     corners are only safe while the circle does not reach them, which is true
     on a wide stage and false on a square one.
 
@@ -377,9 +384,16 @@ if(typeof ResizeObserver!=='undefined'){
   layout();render();}).observe(cv);}   /* the canvas, not the stage: the stage
     is a grid and the wheel's cell resizes without the stage doing so. */
 function arcP(r0,r1,a0,a1){g.beginPath();g.arc(CX,CY,r0,a0,a1);g.arc(CX,CY,r1,a1,a0,true);g.closePath();}
-function radialTxt(s,ang,rad,size,c,a,w){
+/* INWARD, ruled 26 September, CQ in TASKS.md: nothing on the Field sticks
+   out past the ring. A radial run always read outward from its anchor, so
+   every ring that named its members drew those names past itself: the
+   archetypes through the shell, the masks through it at Blueprint, the
+   pattern plates out to the canvas edge. Inward, the run ends at the anchor
+   and reads toward the centre, and a ring's names stay on its own side. */
+function radialTxt(s,ang,rad,size,c,a,w,inward){
  g.save();g.translate(CX+Math.cos(ang)*rad,CY+Math.sin(ang)*rad);
- let rot=ang;if(Math.cos(ang)<0){rot+=Math.PI;g.textAlign='right';}else g.textAlign='left';
+ let rot=ang,left=Math.cos(ang)<0;if(left)rot+=Math.PI;
+ g.textAlign=(left!==!!inward)?'right':'left';
  g.rotate(rot);g.font=(w||400)+' '+size+"px Inter, system-ui, sans-serif";
  g.textBaseline='middle';g.fillStyle=rgba(c,a);g.fillText(s,0,0);
  /* the axis aligned box the rotated run actually occupies */
@@ -390,6 +404,48 @@ function radialTxt(s,ang,rad,size,c,a,w){
  px+=Math.cos(rot)*off; py+=Math.sin(rot)*off;
  LBL.push({t:s,x:px-bw/2,y:py-bh/2,w:bw,h:bh});
  g.restore();}
+/* A WORD WRAPPED ROUND ITS OWN ARC. Ruled 26 September, CQ in TASKS.md, on
+   the seat names: "wrapped around their own domain so the Field keeps one
+   unbroken circular silhouette". It is option B from CE's label sheet, the
+   word set along the seat's own arc inside the ring, which he was shown
+   beside the radial names he objected to as sticking out "like a handle for
+   a wheel".
+
+   Centred on am at radius rad, one glyph at a time, each turned to the
+   tangent. Upright either way: clockwise on the upper half, anticlockwise on
+   the lower, so no word is ever set upside down. Each glyph is centred on
+   rad rather than sat on it, so both halves hold the same band of radius.
+
+   It refuses to draw rather than overflow: a word wider than span radians is
+   not drawn and false comes back, because a word that runs past its own arc
+   has left its domain, which is the thing being fixed. The arc under it is
+   still coloured and still a target, and the rail still lists it.
+
+   halo is a ground colour stroked under the glyphs, because a word inside
+   the ring sits over marks in its own seat's hue and without it the word
+   and the mark under it are the same colour. */
+function arcTxt(s,am,rad,size,c,a,w,span,halo){
+ g.save();g.font=(w||400)+' '+size+"px Inter, system-ui, sans-serif";
+ const tw=g.measureText(s).width, need=tw/Math.max(1,rad);
+ if(span&&need>span){g.restore();return false;}
+ const low=Math.sin(am)>0.25, dir=low?-1:1, rr=rad;
+ g.textAlign='center';g.textBaseline='middle';
+ let t=am-dir*need/2, x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;
+ for(const ch of s){
+  const cw=g.measureText(ch).width, th=t+dir*(cw/2)/rr;
+  const x=CX+Math.cos(th)*rr, y=CY+Math.sin(th)*rr;
+  g.save();g.translate(x,y);g.rotate(th+dir*Math.PI/2);
+  if(halo){g.lineJoin='round';g.lineWidth=3;g.strokeStyle=halo;g.strokeText(ch,0,0);}
+  g.fillStyle=rgba(c,a);g.fillText(ch,0,0);g.restore();
+  x0=Math.min(x0,x-size/2);y0=Math.min(y0,y-size/2);
+  x1=Math.max(x1,x+size/2);y1=Math.max(y1,y+size/2);
+  t+=dir*cw/rr;}
+ /* ro is the run's true outer radius. The box is axis aligned round a curve,
+    so its corners sit off the arc and past the ring even when every glyph is
+    inside it; a gate asking how far a word reaches reads ro, not the box. */
+ LBL.push({t:s,x:x0,y:y0,w:x1-x0,h:y1-y0,ro:rr+size*0.5});
+ g.restore();return {a0:Math.min(am-need/2,am+need/2),a1:Math.max(am-need/2,am+need/2),
+  r0:rr-size*0.6,r1:rr+size*0.6};}
 function txt(s,x,y,size,c,a,w,fam){g.save();
  g.font=(w||400)+' '+size+'px '+(fam||'Inter, system-ui, sans-serif');
  g.textAlign='center';g.textBaseline='middle';g.fillStyle=rgba(c,a);g.fillText(s,x,y);g.restore();}

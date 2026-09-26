@@ -3415,7 +3415,7 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
   const d=id=>getComputedStyle(document.getElementById(id)).display;
   return {keys:btns.map(x=>x.getAttribute('data-fview')).join(','),
    pressed:btns.filter(x=>x.getAttribute('aria-pressed')==='true').map(x=>x.getAttribute('data-fview')).join(','),
-   right:b.right,top:b.top,cvLeft:c.left,cvTop:c.top,mid:s.left+s.width/2,rail:rt.left,
+   right:b.right,top:b.top,h:b.height,cvLeft:c.left,cvTop:c.top,cvH:c.height,mid:s.left+s.width/2,rail:rt.left,
    sizes:btns.map(x=>{const r=x.getBoundingClientRect();return [Math.round(r.width),Math.round(r.height)];}),
    cv:d('cv'),vbar:d('vbar'),frend:d('frend'),flay:d('flay')};});
  ok(place.keys==='wheel,frames,dial','three positions, wheel, frames and dial, got '+place.keys);
@@ -3423,8 +3423,10 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
  ok(place.right<=place.cvLeft+1,'the switch sits in the left lane and clear of the ring, right edge '
   +Math.round(place.right)+' against the canvas at '+Math.round(place.cvLeft));
  ok(place.right<place.mid&&place.right<place.rail,'and nowhere near the upper right, where the tier line is');
- ok(Math.abs(place.top-place.cvTop)<24,'at the head of the lane, above the ring, '+Math.round(place.top)
-  +' against the canvas top at '+Math.round(place.cvTop));
+ /* CENTRE LEFT, ruled 26 September, CQ in TASKS.md, reversing BP8's head of
+    the lane. Its middle sits on the canvas's middle. */
+ ok(Math.abs(place.top+place.h/2-(place.cvTop+place.cvH/2))<12,'centre left, level with the middle of the ring, '
+  +Math.round(place.top+place.h/2)+' against the canvas middle at '+Math.round(place.cvTop+place.cvH/2));
  ok(place.sizes.every(s=>s[0]>=44&&s[1]>=44),'every position clears the 44 pixel tap floor, '+JSON.stringify(place.sizes));
  ok(place.cv==='block'&&place.vbar==='flex'&&place.frend==='none'&&place.flay==='none',
   'on the wheel the canvas and the depth row are up, and no rendition and no layer row');

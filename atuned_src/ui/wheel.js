@@ -636,7 +636,7 @@ function fetGrown(n,a,hw,r0,c,ld,fg,fn){
     of a hundred labels is a ring of no labels. */
  if(n.disp>=6&&fn>0.45)
   radialTxt(n.k,a,R_SHELL+9+hl,11.5,mixc(c,[255,255,255],.3),.6+fn*.4,600);}
-var R_SHELL=0;
+var R_SHELL=0, R_EDGE=0;
 /* ============================================================
    THE FIELD ASSEMBLES WHEN YOU LAND ON IT.
 
@@ -712,6 +712,12 @@ function drawWheel(r,L){
  const R={shell:shellR,arch:U*.60,sab:[0,U*.56,U*.545,U*.50][L],cx:U*.425,hy:U*.335,
   sup:U*.255,dom:U*.93,mask:U*.685};
  const coreBase=[U*.30,U*.26,U*.20,U*.155][L];
+ /* THE RING'S OWN EDGE, the one line nothing may cross, ruled 26 September.
+    The shell, or at Blueprint the domain ring outside it. Published for the
+    collide gate, which holds every label inside it at every depth. */
+ R_EDGE=(L===3)?R.dom:shellR;
+ /* the halo a word inside the ring is stroked on, the stage's own ground */
+ const halo=LIGHT()?'rgba(250,250,247,.88)':'rgba(16,16,16,.82)';
 
  /* --- chain chords, C and D --- */
  if(L>=2){
@@ -822,7 +828,10 @@ function drawWheel(r,L){
   const lead=j===r.pi,sec=j===r.si;
   arcP(R.arch-U*.016,R.arch,a0+.012,a1-.012);
   g.fillStyle=rgba(gc,lead?.55+v*.4:sec?.28+v*.28:.05+v*.1);g.fill();
-  radialTxt(ARCH[j].nm,am,R.arch-U*.048,lead?13:11.5,lead?gc:ink,lead?1:sec?.78:.32,lead?600:400);
+  /* inward from the ring's own inner edge. Outward from 0.048 inside it, the
+     names crossed the whole shell: measured on James at 390, all twelve ran
+     past the ring's edge at Chains, and five did at 1600. */
+  radialTxt(ARCH[j].nm,am,R.arch-U*.024,lead?13:11.5,lead?gc:ink,lead?1:sec?.78:.32,lead?600:400,true);
   HIT.push({k:'arch',j,cx:CX,cy:CY,a0,a1,r0:R.arch-U*.07,r1:R.arch+4});}
 }
 
@@ -831,7 +840,9 @@ function drawWheel(r,L){
   const a0=i/6*TAU-Math.PI/2,a1=a0+TAU/6,v=clamp(m.w/10,0,1),am=(a0+a1)/2;
   arcP(R.mask-U*.019,R.mask,a0+.01,a1-.01);
   g.fillStyle=rgba(LIGHT()?[110,96,64]:[224,214,186],.06+v*.5);g.fill();
-  radialTxt(m.nm,am,R.mask-U*.05,11.5,ink,.24+v*.56,400);
+  /* inward, for the archetypes' reason: outward, Professional and
+     Ideological crossed the shell and the domain ring past it */
+  radialTxt(m.nm,am,R.mask-U*.026,11.5,ink,.24+v*.56,400,true);
   HIT.push({k:'mk',o:m,cx:CX,cy:CY,a0,a1,r0:R.mask-U*.056,r1:R.mask+3});});
 }
 
@@ -903,21 +914,46 @@ function drawWheel(r,L){
     the last, plus the radius the name runs out to, so pressing the colour and
     pressing the word both land. It opens the seat's own reading, which the
     Summary has been able to open all along. */
+ /* AND THE NAME GOES ROUND ITS ARC, INSIDE THE RING. Ruled 26 September, CQ
+    in TASKS.md: seat names never stick out past the ring, on any view,
+    wrapped around their own domain so the Field keeps one unbroken circular
+    silhouette. They ran radially outward from 1.058 of the shell, which is
+    the "handle for a wheel" he objected to in CE and the reason the whole
+    wheel was drawn a fifth smaller than its box. Each is set along its own
+    seat's run now, on the outer band of the shell where that seat's own
+    addresses are, stroked on the ground so it reads over them.
+
+    The target is the colour and the word. The rim band it always had, over
+    the whole run, and the word's own box over the addresses under it. An
+    address under a word is still reachable further in, because an address
+    target runs down to 0.85 of the shell and the word sits in the outer
+    sixteen pixels of it. */
+ const seatFs=12, seatR=R.shell-seatFs*0.6-2;
  if(L>=1)BANDS.forEach(b=>{const seg=W.filter(n=>n.b===b);
   if(!seg.length)return;
   var am=meanAng(seg.map(n=>n.ang));
-  radialTxt(b,am,R.shell*1.058,12,bc(b),.9,600);
   var angs=seg.map(n=>n.ang).sort(function(x,y){return x-y;});
+  var wd=arcTxt(b,am,seatR,seatFs,mixc(bc(b),ink,.18),.95,600,
+   angs[angs.length-1]-angs[0]+TAU/108,halo);
   HIT.push({k:'seat',b:b,cx:CX,cy:CY,
    a0:angs[0]-TAU/216, a1:angs[angs.length-1]+TAU/216,
-   r0:R.shell-U*.02, r1:R.shell*1.058+U*.10});});
+   r0:R.shell-U*.02, r1:R.shell+U*.02});
+  if(wd)HIT.push({k:'seat',b:b,cx:CX,cy:CY,a0:wd.a0,a1:wd.a1,r0:wd.r0,r1:wd.r1});});
 
  /* --- domains, D only --- */
  if(L===3){for(let d=0;d<19;d++){
   const a0=d*(TAU/19)-Math.PI/2,a1=a0+TAU/19,am=a0+TAU/38;
   const c=hx(ROOTCOL[DOMAINS[d].r]),sel=S.doms.indexOf(d)>=0,v=DOMAIN[d];
   arcP(R.dom-U*.012,R.dom,a0+.008,a1-.008);g.fillStyle=rgba(c,sel?.95:.08+v*.45);g.fill();
-  radialTxt(DOMAINS[d].nm,am,R.dom-U*.032,sel?12.5:11,sel?c:ink,sel?1:.3+v*.45,sel?600:400);
+  /* round its own nineteenth of the ring, just inside it, for the seat
+     names' reason. Radially outward from the ring these were the furthest
+     thing on the Field, to 1.2 of the unit, and the whole wheel was sized
+     to leave them room. A name longer than its own arc is not drawn: on a
+     phone that is most of them, the arc is still coloured and pressable,
+     and the rail lists all nineteen. */
+  const dfs=sel?12.5:11;
+  arcTxt(DOMAINS[d].nm,am,R.dom-U*.012-dfs*0.6-2,dfs,sel?c:ink,sel?1:.3+v*.45,sel?600:400,
+   TAU/19-.02,sel?halo:null);
   HIT.push({k:'dom',j:d,cx:CX,cy:CY,a0,a1,r0:R.dom-U*.055,r1:R.dom+4});}
 }
 
@@ -932,27 +968,31 @@ function drawWheel(r,L){
   b2.addColorStop(1,rgba(mixc(c,[0,0,0],.45),1));
   g.fillStyle=b2;g.beginPath();g.arc(x,y,s,0,TAU);g.fill();
   g.beginPath();g.arc(x-s*.32,y-s*.36,s*.24,0,TAU);g.fillStyle='rgba(255,255,255,.7)';g.fill();
-  if(on)radialTxt(o.nm,o.ang,rad+s+16,12.5,ink,.95,600);
+  /* inward, so a hovered name stays inside the ring like the rest */
+  if(on)radialTxt(o.nm,o.ang,rad-s-10,12.5,ink,.95,600,true);
   HIT.push({k:o.kind,o,x,y,rad:s+10});}
  /* NAMEPLATES. Two patterns at nearly the same angle wrote over each other.
     A plate reserves an angular slot at its own radius. A newcomer gets two
-    chances to clear by moving outward, and if it still collides it goes
-    unlabelled: the bead still draws, and the name is in the right-hand list
-    either way. plateHit is the single predicate the collision gate also uses. */
+    chances to clear by moving along its bearing, and if it still collides it
+    goes unlabelled: the bead still draws, and the name is in the right-hand
+    list either way. plateHit is the single predicate the collision gate also
+    uses. */
  const PLATES=[];
- /* The seven seat names sit on the shell at a fixed bearing and were drawn
-    before any nameplate, but they were never registered as occupied, so a
-    saboteur's plate could run straight through one. "AggreSolar" was the
-    shipped result. They go in first, so every plate routes around them. */
- if(L>=1)BANDS.forEach(b=>{const seg=W.filter(n=>n.b===b);
-  if(seg.length)PLATES.push({ang:meanAng(seg.map(n=>n.ang)), out:R.shell*1.058,
-   len:b.length, fs:12});});
- /* the free radius: inside the archetype ring once it exists, else the stage. */
- const CEIL=(L>=2)?R.arch-U*0.05:U*1.02;
- /* A radial label runs OUTWARD from its anchor, so it occupies a radial
-    interval [out, out + textLength], not a point. Comparing radii against a
-    font-size was the error: two labels 20px apart on the same bearing still
-    overlap when each is 100px long. Angular width is half a font-height at the
+ /* THE SEAT NAMES ARE NO LONGER PLATES. They were registered here because
+    they ran radially outward through the same space the plates ran into, and
+    "AggreSolar" was the shipped result. They sit round their arcs in the
+    shell's outer band now, and every plate reads inward from inside the
+    pattern ring, so the two can no longer meet. */
+ /* THE PLATES READ INWARD, ruled 26 September: nothing runs past the ring.
+    They ran outward from the bead to 1.02 of the unit, past the shell and
+    the seat names, measured on James at 1600 as Controller, Judge, Imposter
+    and Aggressor all past the ring's edge. The free radius is inward now,
+    from the bead down to just outside the core. */
+ const FLOOR=coreBase*1.15;
+ /* A radial label occupies a radial interval [out, out + textLength], not a
+    point, where out is its inner end. Comparing radii against a font-size
+    was the error: two labels 20px apart on the same bearing still overlap
+    when each is 100px long. Angular width is half a font-height at the
     label's own radius, and the radial extent is the measured text length. */
  window.plateLen=function(p){return p.fs*0.58*p.len;};
  window.plateHit=function(p,q){
@@ -964,43 +1004,57 @@ function drawWheel(r,L){
   return p0<q1+4 && q0<p1+4;};
  /* horizontal plate for the inner rings. keeps its own occupied boxes so two
     inner names cannot sit on top of each other either. */
- const FLATS=[];
+ /* AND IT STAYS INSIDE THE RING. It set on the outward side of its bead and
+    stepped down on a collision, and never asked where the run ended:
+    "Predatory / Dysregulation" ran from the hyper ring out past the shell on
+    James at 1600. The outward side first, then the inward side, each stepped
+    down as before; a run that leaves the ring on both is not drawn. It never
+    recorded its box either, so the collide gate could not see it; it does.
+    And the inward side keeps off the core: the first cut of this let that
+    same plate flip inward at Blueprint and run straight through the centre
+    number, which is the one thing on the wheel nothing may cover. */
+ const coreR=coreBase*1.12;
+ const FLATS=[], inRing=(bx)=>[[bx.x0,bx.y0],[bx.x1,bx.y0],[bx.x0,bx.y1],[bx.x1,bx.y1]]
+  .every(q=>Math.hypot(q[0]-CX,q[1]-CY)<=R_EDGE-2)
+  &&Math.hypot(Math.max(bx.x0-CX,0,CX-bx.x1),Math.max(bx.y0-CY,0,CY-bx.y1))>coreR;
  const flatplate=(o,rad,c,size)=>{
   const fs=Math.max(12.5,size*1.25);
   const x=CX+Math.cos(o.ang)*rad, y=CY+Math.sin(o.ang)*rad;
-  const right=Math.cos(o.ang)>=0;
   g.save();g.font='600 '+fs+'px Inter, system-ui, sans-serif';
   const w=g.measureText(o.nm).width;g.restore();
-  let lx=x+(right?1:-1)*(size+10), ly=y;
-  for(let step=0;step<6;step++){
-   const box={x0:right?lx:lx-w,x1:right?lx+w:lx,y0:ly-fs*0.7,y1:ly+fs*0.7};
-   if(!FLATS.some(q=>box.x0<q.x1&&q.x0<box.x1&&box.y0<q.y1&&q.y0<box.y1)){
-    FLATS.push(box);
-    g.beginPath();g.moveTo(x+(right?1:-1)*size,y);g.lineTo(lx,ly);
-    g.strokeStyle=rgba(c,.6);g.lineWidth=1;g.stroke();
-    g.save();g.font='600 '+fs+'px Inter, system-ui, sans-serif';
-    g.textAlign=right?'left':'right';g.textBaseline='middle';
-    g.fillStyle=rgba(c,.99);g.fillText(o.nm,lx,ly);g.restore();
-    return;}
-   ly += fs*1.45;}};
+  const out=Math.cos(o.ang)>=0;
+  for(const right of [out,!out]){
+   let lx=x+(right?1:-1)*(size+10), ly=y;
+   for(let step=0;step<6;step++){
+    const box={x0:right?lx:lx-w,x1:right?lx+w:lx,y0:ly-fs*0.7,y1:ly+fs*0.7};
+    if(inRing(box)&&!FLATS.some(q=>box.x0<q.x1&&q.x0<box.x1&&box.y0<q.y1&&q.y0<box.y1)){
+     FLATS.push(box);
+     LBL.push({t:o.nm,x:box.x0,y:box.y0,w:box.x1-box.x0,h:box.y1-box.y0});
+     g.beginPath();g.moveTo(x+(right?1:-1)*size,y);g.lineTo(lx,ly);
+     g.strokeStyle=rgba(c,.6);g.lineWidth=1;g.stroke();
+     g.save();g.font='600 '+fs+'px Inter, system-ui, sans-serif';
+     g.textAlign=right?'left':'right';g.textBaseline='middle';
+     g.fillStyle=rgba(c,.99);g.fillText(o.nm,lx,ly);g.restore();
+     return;}
+    ly += fs*1.45;}}};
  const nameplate=(o,rad,c,size)=>{
-  const fs=Math.max(12,size*1.5);
-  let plate=null, out0=rad+size+9;
+  const fs=Math.max(12,size*1.5), len=o.nm.length, ln=fs*0.58*len;
+  let plate=null, end=rad-size-9;
   for(let step=0;step<4;step++){
-   const cand={ang:o.ang,out:out0,len:o.nm.length,fs:fs};
+   const cand={ang:o.ang,out:end-ln,len:len,fs:fs};
    if(!PLATES.some(q=>window.plateHit(cand,q))){plate=cand;break;}
-   /* step past the far end of whatever is in the way */
-   let far=out0;
-   PLATES.forEach(q=>{if(window.plateHit(cand,q))far=Math.max(far,q.out+window.plateLen(q)+6);});
-   out0=far;}
+   /* step past the near end of whatever is in the way */
+   let near=end;
+   PLATES.forEach(q=>{if(window.plateHit(cand,q))near=Math.min(near,q.out-6);});
+   end=near;}
   if(!plate)return;                       /* no legible slot. the list carries it. */
-  if(plate.out+window.plateLen(plate) > CEIL) return;   /* would run into the ring above */
+  if(plate.out<FLOOR)return;              /* would run into the core */
   PLATES.push(plate);
-  const x=CX+Math.cos(o.ang)*rad, y=CY+Math.sin(o.ang)*rad;
-  const lx=CX+Math.cos(o.ang)*plate.out, ly=CY+Math.sin(o.ang)*plate.out;
-  g.beginPath();g.moveTo(x+Math.cos(o.ang)*size,y+Math.sin(o.ang)*size);
+  const x=CX+Math.cos(o.ang)*rad, y=CY+Math.sin(o.ang)*rad, e=plate.out+ln;
+  const lx=CX+Math.cos(o.ang)*e, ly=CY+Math.sin(o.ang)*e;
+  g.beginPath();g.moveTo(x-Math.cos(o.ang)*size,y-Math.sin(o.ang)*size);
   g.lineTo(lx,ly);g.strokeStyle=rgba(c,.55);g.lineWidth=1;g.stroke();
-  radialTxt(o.nm,o.ang,plate.out+4,fs,c,.98,600);};
+  radialTxt(o.nm,o.ang,e-4,fs,c,.98,600,true);};
  window.__PLATES=PLATES;
  if(L>=1){r.sabs.forEach(s=>bead(s,R.sab,5.4,bc(s.parts[0].b)));
   /* B names the saboteurs, because they are the layer. C and D name only the

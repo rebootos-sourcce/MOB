@@ -422,8 +422,25 @@
 
   <!-- ============ STAGE ============ -->
   <div class="glass stage" id="stage">
-   <!-- the key comes first in flow so it sits above the canvas -->
-   <div class="key" id="key" aria-label="What the instrument reads"></div>
+   <!-- THE READOUTS ARE ONE DOCK AT THE FOOT, grouped by kind. Ruled 26
+        September, CQ in TASKS.md: every dial style readout, "the purple, red,
+        yellow", and accuracy move to the bottom, one uniform size, grouped by
+        type with a break between groups, accuracy on its own. The three were a
+        strip across the head and the four sat absolute over the canvas's lower
+        left corner, so the four could only ever be clear of the wheel's labels
+        by the wheel staying small. The dock is its own grid row, under the
+        picture and never over it. -->
+   <div class="fdock" id="fdock">
+    <div class="key" id="key" aria-label="What the instrument reads"></div>
+    <span class="fdock-br" aria-hidden="true"></span>
+    <!-- the second strip, carrying what moves through the person -->
+    <div class="keylo" id="keylo" aria-label="What is moving through you"></div>
+    <!-- and a break before accuracy, which is its own kind: at 1600 the row
+         is full, so the push to the far end is only the gap, and a gap the
+         size of the gaps inside a group does not say "on its own" -->
+    <span class="fdock-br" aria-hidden="true"></span>
+    <div class="acc" id="acc"></div>
+   </div>
    <!-- THE LEGEND IS GONE. Ruled 25 September (BA9), struck through on a
         screenshot with the worked example notice: "You have unnecessary text,
         I want those removed." It said what the ring is, that a band or a mark
@@ -432,8 +449,6 @@
         band could be opened; the bands still open, and only the sentence went.
         Its row in the stage grid is left in the template, empty and zero high,
         because the canvas and the compass button address row 3 by number. -->
-   <!-- the second strip, lower left, carrying what moves through the person -->
-   <div class="keylo" id="keylo" aria-label="What is moving through you"></div>
    <!-- THE FIELD DRAWN THREE WAYS, AND THE SWITCH. BP8, 25 September. He
         placed it himself: "Or not, not on the upper right, because that's
         where your like sixty five percent gaining, whatever it is, that's
@@ -507,7 +522,6 @@
    <div class="probe" id="probe"></div>
    <div class="howto" id="howto"></div>
 
-   <div class="acc" id="acc"></div>
    <button class="pol2" id="pol2" aria-label="The compass. Where coherence sits and how far it swings. Opens the reading."></button>
   </div>
 

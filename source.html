@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="1956875 2026-09-26 01:56"><head><meta charset="utf-8">
+<html lang="en" data-build="e991b93 2026-09-26 05:17"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -1309,9 +1309,12 @@ body.tab-field .stage,body.tab-energy .stage,body.tab-compass .stage,
    The legend was cut on 25 September (BA9) and its row is empty now, so it
    is zero high and the wheel has the height back. It stays in the template
    because the canvas and .pol2 address row 3 by number. */
+/* AND A FOURTH, THE DOCK, 26 September. The key strip left row 1 for it, so
+   row 1 is empty and zero high like row 2, and the picture keeps the height
+   it had: what the strip took at the head, the dock takes at the foot. */
 .stage{--lane:128px;position:relative;display:grid;
  grid-template-columns:var(--lane) minmax(0,1fr) var(--lane);
- grid-template-rows:auto auto minmax(0,1fr);
+ grid-template-rows:auto auto minmax(0,1fr) auto;
  align-items:center;min-height:0;border-radius:var(--r);overflow:hidden}
 canvas#cv{display:block;grid-column:2;grid-row:3;width:100%;height:100%;
  min-width:0;min-height:0;touch-action:none;cursor:crosshair}
@@ -1329,8 +1332,11 @@ canvas#cv{display:block;grid-column:2;grid-row:3;width:100%;height:100%;
    the depth row's place in the sub bar, and only one of the two is ever up,
    which ui/rings.js decides in fviewPaint.
    ============================================================ */
-.fview{grid-column:1;grid-row:3;align-self:start;z-index:4;min-width:0;
- display:flex;flex-direction:column;gap:4px;padding:10px 0 0 12px}
+/* CENTRE LEFT, ruled 26 September, CQ in TASKS.md, moving it off the head of
+   the lane where BP8 first put it. Same lane and same cell, so the ring still
+   does not move a pixel for it; only its height in the lane changes. */
+.fview{grid-column:1;grid-row:3;align-self:center;z-index:4;min-width:0;
+ display:flex;flex-direction:column;gap:4px;padding:0 0 0 12px}
 /* the Field's alone, like the compass lane and the accuracy beside it. The
    stage hosts every other surface too, and a switch left up at z-index 4
    would have sat in the left lane of all of them */
@@ -1420,11 +1426,28 @@ body.punch .lay[aria-pressed=true] .lay-ic svg,body.lumen .lay[aria-pressed=true
  transition: background var(--t-micro) var(--ease-out)}
 .kbjump:hover{background:var(--panel-2)}
 .kbjump:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
-/* The key is a strip in flow above the canvas, never over it. Each element
-   is a button that opens its reading on the right. The tier block sits
-   absolute at top right, so the strip leaves it room. */
-.key{grid-column:1/-1;grid-row:1;position:relative;z-index:4;width:100%;box-sizing:border-box;
- align-self:start;display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:12px 300px 0 14px}
+/* THE DOCK. The readouts in one row along the stage's foot, in its own grid
+   row so nothing in it can sit over the picture. Three groups and each one is
+   a unit that wraps whole: the instrument's own reading (CQ, DQ, SQ), a
+   rule, what is moving through the person (vitality, awareness, will, flow),
+   and accuracy pushed to the far end on its own, which is what "accuracy kept
+   on its own" means when the row is wide enough for it to be anywhere. Each
+   is a button that opens its reading on the right. */
+.fdock{grid-column:1/-1;grid-row:4;position:relative;z-index:4;min-width:0;box-sizing:border-box;
+ display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:10px 14px 14px}
+body:not(.tab-field) .fdock{display:none}
+/* the gap inside a group is 4 and between groups it is 6 plus this rule, so
+   the break reads as a break. At 1600 the dock needs 894 of the 894 the
+   stage gives it with both rules in, measured on James, and at 8 and 6 accuracy wrapped to a
+   second line and took 64 pixels of height off the picture. Narrower than
+   that it wraps a whole group at a time, never one chip. */
+.fdock-br{width:1px;align-self:stretch;margin:6px 1px;background:var(--edge-2)}
+.key{display:flex;flex-wrap:nowrap;gap:4px;align-items:center}
+/* ONE SIZE. Every readout in the dock is the same cell: the small ring, the
+   value pill, a box 44 high and 96 wide. They were 98, 98 and 90 across the
+   head and 97 along the foot, which is uniform to nobody, because each box
+   was as wide as its own figure. */
+.fdock .kb{min-width:96px;justify-content:flex-start}
 .kb{display:inline-flex;align-items:center;gap:6px;min-height:var(--tap);padding:2px 4px;
  background:transparent;border:1px solid var(--edge);border-radius:var(--r-xs);
  color:var(--mid);font:inherit;font-size:12px;cursor:pointer;text-align:left;white-space:nowrap}
@@ -1589,8 +1612,13 @@ body.punch .crb-v{border-color:transparent;background:var(--c);color:var(--on-ac
 .tl b{display:block;font-size:17px;font-weight:600}
 /* lower right, ruled, and it was already there. What moved is the label,
    which now sits to the left of the figure and carries the scale. */
-.acc{position:absolute;right:20px;bottom:14px;z-index:4;text-align:right}
-.acc-b{display:flex;align-items:center;gap:9px;background:transparent;border:0;padding:6px 8px;
+/* THE FAR END OF THE DOCK, ruled 26 September, and in the dock's own cell. It
+   was absolute in the stage's lower right with a large ring, 66 high against
+   44 for every other readout, which is the size difference he named. It keeps
+   its word, which is ruled, and takes the same box and ring as the rest. */
+.acc{margin-left:auto;text-align:right}
+.acc-b{display:flex;align-items:center;gap:6px;background:transparent;
+ border:1px solid var(--edge);padding:2px 4px 2px 8px;
  border-radius:var(--r-xs);color:inherit;font:inherit;cursor:pointer;min-height:var(--tap)}
 .acc-b:hover{background:var(--sunk)}
 body:not(.tab-field) .acc{display:none}
@@ -1650,6 +1678,16 @@ body:not(.tab-field) .pol2{display:none}
  border-bottom:1px dotted var(--edge-2)}
 .railtop .rt-t:hover,.railtop .rt-t:focus-visible{color:var(--gold);
  border-bottom-color:var(--gold)}
+/* the ring and the band word in one box, the dock's .kb box exactly: one
+   edge, one radius, 44 high, the same inset padding. The word inside keeps
+   its dotted underline, which is what says it opens. The edge is an inset
+   shadow and not a border because the word is a button that owes the 44
+   pixel tap floor, and a real border round it made the box 46, two taller
+   than the cells it is meant to match. */
+.rt-cell{display:inline-flex;align-items:center;gap:6px;
+ padding:0 10px 0 4px;box-shadow:inset 0 0 0 1px var(--edge);
+ border-radius:var(--r-xs)}
+body.punch .rt-cell{box-shadow:none;background:var(--panel-2)}
 /* the band word carries its own meaning, on the screen, not in a tooltip */
 .railtop{flex-wrap:wrap}
 .railtop .rt-d{flex:0 0 100%;font-size:12.5px;line-height:1.55;color:var(--mid);
@@ -2235,11 +2273,9 @@ body.dens-wide{--ui:1.1}
    because it is visible on every tab. It was a layout defect then and nobody
    read it as one. One line, on the surface that owns the strip. */
 body:not(.tab-field) .keylo{display:none}
-.keylo{position:absolute;left:14px;bottom:14px;z-index:3;display:flex;gap:8px;
- flex-wrap:nowrap;pointer-events:none}
-.keylo .kb{pointer-events:auto}
-@media (max-width:1180px){
- .keylo{position:static;margin:0 14px 10px;order:9;flex-wrap:wrap}}
+/* in the dock now, in flow, so it no longer passes the pointer through to a
+   canvas it used to sit on */
+.keylo{display:flex;gap:4px;flex-wrap:nowrap;align-items:center}
 /* ONE COLUMN. The information that filled the second one has gone to the rail,
    which is what "the information pane" meant, so the figure takes the whole
    card. It was 528 pixels of a 920 pixel card and it is the hero art. */
@@ -3370,12 +3406,22 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
  /* nothing to override: auto-fill already answers to the width */
  .mx{grid-template-columns:repeat(19,1fr);gap:1px}
  .sum-cq b,.ab-cq b{font-size:38px}
- /* the key strip wrapped to three rows and pushed the wheel 154px down.
-    one row that scrolls, with the tier block's reserved gutter released. */
- .key{padding:10px 14px 0;flex-wrap:nowrap;overflow-x:auto;overscroll-behavior-x:contain;
-  scrollbar-width:none}
- .key::-webkit-scrollbar{display:none}
+ /* the key strip wrapped to three rows and pushed the wheel 154px down. It
+    is under the picture now, in the dock, and the dock wraps by group rather
+    than by chip, so a group never splits across two lines on a phone. */
  .kb{flex:0 0 auto}
+ .fdock{order:2;padding:12px 14px 0;gap:8px 6px}
+ /* four to a line, which is the flow group whole. A cell's content was 97
+    wide, four came to 400 against 362 of phone, and 0.39 sat on a line of
+    its own. The box and the pill give up their padding, not their size. */
+ .fdock .kb{min-width:0;padding:2px}
+ .fdock .cr.sm{padding-right:4px}
+ .fdock .cr .v{margin-left:5px;padding:4px 6px}
+ .keylo{flex-wrap:wrap}
+ .fdock-br{display:none}
+ /* the phone rule below that releases .acc from absolute also pads it and
+    sets its order, which in the dock would inset it from the other cells */
+ .fdock .acc{padding:0;margin:0 0 0 auto}
  /* Five blocks were absolutely positioned against a stage that is 900 wide
     on a desktop. At 390 they all landed on each other at the bottom of the
     wheel. On a phone the stage is a column: the canvas, then each block in
@@ -4468,8 +4514,25 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
 
   <!-- ============ STAGE ============ -->
   <div class="glass stage" id="stage">
-   <!-- the key comes first in flow so it sits above the canvas -->
-   <div class="key" id="key" aria-label="What the instrument reads"></div>
+   <!-- THE READOUTS ARE ONE DOCK AT THE FOOT, grouped by kind. Ruled 26
+        September, CQ in TASKS.md: every dial style readout, "the purple, red,
+        yellow", and accuracy move to the bottom, one uniform size, grouped by
+        type with a break between groups, accuracy on its own. The three were a
+        strip across the head and the four sat absolute over the canvas's lower
+        left corner, so the four could only ever be clear of the wheel's labels
+        by the wheel staying small. The dock is its own grid row, under the
+        picture and never over it. -->
+   <div class="fdock" id="fdock">
+    <div class="key" id="key" aria-label="What the instrument reads"></div>
+    <span class="fdock-br" aria-hidden="true"></span>
+    <!-- the second strip, carrying what moves through the person -->
+    <div class="keylo" id="keylo" aria-label="What is moving through you"></div>
+    <!-- and a break before accuracy, which is its own kind: at 1600 the row
+         is full, so the push to the far end is only the gap, and a gap the
+         size of the gaps inside a group does not say "on its own" -->
+    <span class="fdock-br" aria-hidden="true"></span>
+    <div class="acc" id="acc"></div>
+   </div>
    <!-- THE LEGEND IS GONE. Ruled 25 September (BA9), struck through on a
         screenshot with the worked example notice: "You have unnecessary text,
         I want those removed." It said what the ring is, that a band or a mark
@@ -4478,8 +4541,6 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
         band could be opened; the bands still open, and only the sentence went.
         Its row in the stage grid is left in the template, empty and zero high,
         because the canvas and the compass button address row 3 by number. -->
-   <!-- the second strip, lower left, carrying what moves through the person -->
-   <div class="keylo" id="keylo" aria-label="What is moving through you"></div>
    <!-- THE FIELD DRAWN THREE WAYS, AND THE SWITCH. BP8, 25 September. He
         placed it himself: "Or not, not on the upper right, because that's
         where your like sixty five percent gaining, whatever it is, that's
@@ -4553,7 +4614,6 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
    <div class="probe" id="probe"></div>
    <div class="howto" id="howto"></div>
 
-   <div class="acc" id="acc"></div>
    <button class="pol2" id="pol2" aria-label="The compass. Where coherence sits and how far it swings. Opens the reading."></button>
   </div>
 
@@ -13652,8 +13712,14 @@ let CW=1e3,CH=1e3,CX=500,CY=500,DPR=1,HIT=[],U=400;
    long time and nothing could see it, because a canvas label is pixels and
    a probe that reads pixels lies. This gives the collide gate the boxes. */
 let LBL=[];
-/* where the outermost label sits, and how much room its text needs */
-const LBL_R=1.20, LBL_M=30;
+/* where the outermost thing drawn sits, and the margin kept past it. It was
+   1.20 and 30: the outermost LABEL, nineteen domain names radiating past the
+   Blueprint ring to 1.2 of the unit. Nothing runs past its ring now, ruled 26
+   September, so the outermost thing is that ring itself at 0.93, and the
+   room the names were reserved goes back to the picture: the wheel draws
+   about a third larger in the same box at 1600, and its silhouette at the
+   Patterns depth lands within a few pixels of where the names used to end. */
+const LBL_R=0.95, LBL_M=10;
 /* what sits over the canvas and therefore bounds the wheel */
 const OVERLAY=['tl','acc','bal','howto'];
 const hx=h=>{const n=parseInt(String(h).slice(1),16);return[(n>>16)&255,(n>>8)&255,n&255];};
@@ -13718,10 +13784,11 @@ const AURA_DIV=8;
 function reframe(){
  /* HOW BIG THE WHEEL IS ALLOWED TO BE.
 
-    Two things bounded it and neither was being asked. The labels run outward
+    Two things bounded it and neither was being asked. The labels ran outward
     past the rings, furthest at the blueprint depth where nineteen domain names
-    radiate to 1.2 of the unit radius, so a rule that stopped at the canvas
-    edge put 3rd Eye and Knowledge half off it. And the readouts parked in the
+    radiated to 1.2 of the unit radius, so a rule that stopped at the canvas
+    edge put 3rd Eye and Knowledge half off it. They are inside their rings
+    now, so the bound is the outermost ring, LBL_R above. And the readouts parked in the
     corners are only safe while the circle does not reach them, which is true
     on a wide stage and false on a square one.
 
@@ -13812,9 +13879,16 @@ if(typeof ResizeObserver!=='undefined'){
   layout();render();}).observe(cv);}   /* the canvas, not the stage: the stage
     is a grid and the wheel's cell resizes without the stage doing so. */
 function arcP(r0,r1,a0,a1){g.beginPath();g.arc(CX,CY,r0,a0,a1);g.arc(CX,CY,r1,a1,a0,true);g.closePath();}
-function radialTxt(s,ang,rad,size,c,a,w){
+/* INWARD, ruled 26 September, CQ in TASKS.md: nothing on the Field sticks
+   out past the ring. A radial run always read outward from its anchor, so
+   every ring that named its members drew those names past itself: the
+   archetypes through the shell, the masks through it at Blueprint, the
+   pattern plates out to the canvas edge. Inward, the run ends at the anchor
+   and reads toward the centre, and a ring's names stay on its own side. */
+function radialTxt(s,ang,rad,size,c,a,w,inward){
  g.save();g.translate(CX+Math.cos(ang)*rad,CY+Math.sin(ang)*rad);
- let rot=ang;if(Math.cos(ang)<0){rot+=Math.PI;g.textAlign='right';}else g.textAlign='left';
+ let rot=ang,left=Math.cos(ang)<0;if(left)rot+=Math.PI;
+ g.textAlign=(left!==!!inward)?'right':'left';
  g.rotate(rot);g.font=(w||400)+' '+size+"px Inter, system-ui, sans-serif";
  g.textBaseline='middle';g.fillStyle=rgba(c,a);g.fillText(s,0,0);
  /* the axis aligned box the rotated run actually occupies */
@@ -13825,6 +13899,48 @@ function radialTxt(s,ang,rad,size,c,a,w){
  px+=Math.cos(rot)*off; py+=Math.sin(rot)*off;
  LBL.push({t:s,x:px-bw/2,y:py-bh/2,w:bw,h:bh});
  g.restore();}
+/* A WORD WRAPPED ROUND ITS OWN ARC. Ruled 26 September, CQ in TASKS.md, on
+   the seat names: "wrapped around their own domain so the Field keeps one
+   unbroken circular silhouette". It is option B from CE's label sheet, the
+   word set along the seat's own arc inside the ring, which he was shown
+   beside the radial names he objected to as sticking out "like a handle for
+   a wheel".
+
+   Centred on am at radius rad, one glyph at a time, each turned to the
+   tangent. Upright either way: clockwise on the upper half, anticlockwise on
+   the lower, so no word is ever set upside down. Each glyph is centred on
+   rad rather than sat on it, so both halves hold the same band of radius.
+
+   It refuses to draw rather than overflow: a word wider than span radians is
+   not drawn and false comes back, because a word that runs past its own arc
+   has left its domain, which is the thing being fixed. The arc under it is
+   still coloured and still a target, and the rail still lists it.
+
+   halo is a ground colour stroked under the glyphs, because a word inside
+   the ring sits over marks in its own seat's hue and without it the word
+   and the mark under it are the same colour. */
+function arcTxt(s,am,rad,size,c,a,w,span,halo){
+ g.save();g.font=(w||400)+' '+size+"px Inter, system-ui, sans-serif";
+ const tw=g.measureText(s).width, need=tw/Math.max(1,rad);
+ if(span&&need>span){g.restore();return false;}
+ const low=Math.sin(am)>0.25, dir=low?-1:1, rr=rad;
+ g.textAlign='center';g.textBaseline='middle';
+ let t=am-dir*need/2, x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;
+ for(const ch of s){
+  const cw=g.measureText(ch).width, th=t+dir*(cw/2)/rr;
+  const x=CX+Math.cos(th)*rr, y=CY+Math.sin(th)*rr;
+  g.save();g.translate(x,y);g.rotate(th+dir*Math.PI/2);
+  if(halo){g.lineJoin='round';g.lineWidth=3;g.strokeStyle=halo;g.strokeText(ch,0,0);}
+  g.fillStyle=rgba(c,a);g.fillText(ch,0,0);g.restore();
+  x0=Math.min(x0,x-size/2);y0=Math.min(y0,y-size/2);
+  x1=Math.max(x1,x+size/2);y1=Math.max(y1,y+size/2);
+  t+=dir*cw/rr;}
+ /* ro is the run's true outer radius. The box is axis aligned round a curve,
+    so its corners sit off the arc and past the ring even when every glyph is
+    inside it; a gate asking how far a word reaches reads ro, not the box. */
+ LBL.push({t:s,x:x0,y:y0,w:x1-x0,h:y1-y0,ro:rr+size*0.5});
+ g.restore();return {a0:Math.min(am-need/2,am+need/2),a1:Math.max(am-need/2,am+need/2),
+  r0:rr-size*0.6,r1:rr+size*0.6};}
 function txt(s,x,y,size,c,a,w,fam){g.save();
  g.font=(w||400)+' '+size+'px '+(fam||'Inter, system-ui, sans-serif');
  g.textAlign='center';g.textBaseline='middle';g.fillStyle=rgba(c,a);g.fillText(s,x,y);g.restore();}
@@ -15052,7 +15168,7 @@ function fetGrown(n,a,hw,r0,c,ld,fg,fn){
     of a hundred labels is a ring of no labels. */
  if(n.disp>=6&&fn>0.45)
   radialTxt(n.k,a,R_SHELL+9+hl,11.5,mixc(c,[255,255,255],.3),.6+fn*.4,600);}
-var R_SHELL=0;
+var R_SHELL=0, R_EDGE=0;
 /* ============================================================
    THE FIELD ASSEMBLES WHEN YOU LAND ON IT.
 
@@ -15128,6 +15244,12 @@ function drawWheel(r,L){
  const R={shell:shellR,arch:U*.60,sab:[0,U*.56,U*.545,U*.50][L],cx:U*.425,hy:U*.335,
   sup:U*.255,dom:U*.93,mask:U*.685};
  const coreBase=[U*.30,U*.26,U*.20,U*.155][L];
+ /* THE RING'S OWN EDGE, the one line nothing may cross, ruled 26 September.
+    The shell, or at Blueprint the domain ring outside it. Published for the
+    collide gate, which holds every label inside it at every depth. */
+ R_EDGE=(L===3)?R.dom:shellR;
+ /* the halo a word inside the ring is stroked on, the stage's own ground */
+ const halo=LIGHT()?'rgba(250,250,247,.88)':'rgba(16,16,16,.82)';
 
  /* --- chain chords, C and D --- */
  if(L>=2){
@@ -15238,7 +15360,10 @@ function drawWheel(r,L){
   const lead=j===r.pi,sec=j===r.si;
   arcP(R.arch-U*.016,R.arch,a0+.012,a1-.012);
   g.fillStyle=rgba(gc,lead?.55+v*.4:sec?.28+v*.28:.05+v*.1);g.fill();
-  radialTxt(ARCH[j].nm,am,R.arch-U*.048,lead?13:11.5,lead?gc:ink,lead?1:sec?.78:.32,lead?600:400);
+  /* inward from the ring's own inner edge. Outward from 0.048 inside it, the
+     names crossed the whole shell: measured on James at 390, all twelve ran
+     past the ring's edge at Chains, and five did at 1600. */
+  radialTxt(ARCH[j].nm,am,R.arch-U*.024,lead?13:11.5,lead?gc:ink,lead?1:sec?.78:.32,lead?600:400,true);
   HIT.push({k:'arch',j,cx:CX,cy:CY,a0,a1,r0:R.arch-U*.07,r1:R.arch+4});}
 }
 
@@ -15247,7 +15372,9 @@ function drawWheel(r,L){
   const a0=i/6*TAU-Math.PI/2,a1=a0+TAU/6,v=clamp(m.w/10,0,1),am=(a0+a1)/2;
   arcP(R.mask-U*.019,R.mask,a0+.01,a1-.01);
   g.fillStyle=rgba(LIGHT()?[110,96,64]:[224,214,186],.06+v*.5);g.fill();
-  radialTxt(m.nm,am,R.mask-U*.05,11.5,ink,.24+v*.56,400);
+  /* inward, for the archetypes' reason: outward, Professional and
+     Ideological crossed the shell and the domain ring past it */
+  radialTxt(m.nm,am,R.mask-U*.026,11.5,ink,.24+v*.56,400,true);
   HIT.push({k:'mk',o:m,cx:CX,cy:CY,a0,a1,r0:R.mask-U*.056,r1:R.mask+3});});
 }
 
@@ -15319,21 +15446,46 @@ function drawWheel(r,L){
     the last, plus the radius the name runs out to, so pressing the colour and
     pressing the word both land. It opens the seat's own reading, which the
     Summary has been able to open all along. */
+ /* AND THE NAME GOES ROUND ITS ARC, INSIDE THE RING. Ruled 26 September, CQ
+    in TASKS.md: seat names never stick out past the ring, on any view,
+    wrapped around their own domain so the Field keeps one unbroken circular
+    silhouette. They ran radially outward from 1.058 of the shell, which is
+    the "handle for a wheel" he objected to in CE and the reason the whole
+    wheel was drawn a fifth smaller than its box. Each is set along its own
+    seat's run now, on the outer band of the shell where that seat's own
+    addresses are, stroked on the ground so it reads over them.
+
+    The target is the colour and the word. The rim band it always had, over
+    the whole run, and the word's own box over the addresses under it. An
+    address under a word is still reachable further in, because an address
+    target runs down to 0.85 of the shell and the word sits in the outer
+    sixteen pixels of it. */
+ const seatFs=12, seatR=R.shell-seatFs*0.6-2;
  if(L>=1)BANDS.forEach(b=>{const seg=W.filter(n=>n.b===b);
   if(!seg.length)return;
   var am=meanAng(seg.map(n=>n.ang));
-  radialTxt(b,am,R.shell*1.058,12,bc(b),.9,600);
   var angs=seg.map(n=>n.ang).sort(function(x,y){return x-y;});
+  var wd=arcTxt(b,am,seatR,seatFs,mixc(bc(b),ink,.18),.95,600,
+   angs[angs.length-1]-angs[0]+TAU/108,halo);
   HIT.push({k:'seat',b:b,cx:CX,cy:CY,
    a0:angs[0]-TAU/216, a1:angs[angs.length-1]+TAU/216,
-   r0:R.shell-U*.02, r1:R.shell*1.058+U*.10});});
+   r0:R.shell-U*.02, r1:R.shell+U*.02});
+  if(wd)HIT.push({k:'seat',b:b,cx:CX,cy:CY,a0:wd.a0,a1:wd.a1,r0:wd.r0,r1:wd.r1});});
 
  /* --- domains, D only --- */
  if(L===3){for(let d=0;d<19;d++){
   const a0=d*(TAU/19)-Math.PI/2,a1=a0+TAU/19,am=a0+TAU/38;
   const c=hx(ROOTCOL[DOMAINS[d].r]),sel=S.doms.indexOf(d)>=0,v=DOMAIN[d];
   arcP(R.dom-U*.012,R.dom,a0+.008,a1-.008);g.fillStyle=rgba(c,sel?.95:.08+v*.45);g.fill();
-  radialTxt(DOMAINS[d].nm,am,R.dom-U*.032,sel?12.5:11,sel?c:ink,sel?1:.3+v*.45,sel?600:400);
+  /* round its own nineteenth of the ring, just inside it, for the seat
+     names' reason. Radially outward from the ring these were the furthest
+     thing on the Field, to 1.2 of the unit, and the whole wheel was sized
+     to leave them room. A name longer than its own arc is not drawn: on a
+     phone that is most of them, the arc is still coloured and pressable,
+     and the rail lists all nineteen. */
+  const dfs=sel?12.5:11;
+  arcTxt(DOMAINS[d].nm,am,R.dom-U*.012-dfs*0.6-2,dfs,sel?c:ink,sel?1:.3+v*.45,sel?600:400,
+   TAU/19-.02,sel?halo:null);
   HIT.push({k:'dom',j:d,cx:CX,cy:CY,a0,a1,r0:R.dom-U*.055,r1:R.dom+4});}
 }
 
@@ -15348,27 +15500,31 @@ function drawWheel(r,L){
   b2.addColorStop(1,rgba(mixc(c,[0,0,0],.45),1));
   g.fillStyle=b2;g.beginPath();g.arc(x,y,s,0,TAU);g.fill();
   g.beginPath();g.arc(x-s*.32,y-s*.36,s*.24,0,TAU);g.fillStyle='rgba(255,255,255,.7)';g.fill();
-  if(on)radialTxt(o.nm,o.ang,rad+s+16,12.5,ink,.95,600);
+  /* inward, so a hovered name stays inside the ring like the rest */
+  if(on)radialTxt(o.nm,o.ang,rad-s-10,12.5,ink,.95,600,true);
   HIT.push({k:o.kind,o,x,y,rad:s+10});}
  /* NAMEPLATES. Two patterns at nearly the same angle wrote over each other.
     A plate reserves an angular slot at its own radius. A newcomer gets two
-    chances to clear by moving outward, and if it still collides it goes
-    unlabelled: the bead still draws, and the name is in the right-hand list
-    either way. plateHit is the single predicate the collision gate also uses. */
+    chances to clear by moving along its bearing, and if it still collides it
+    goes unlabelled: the bead still draws, and the name is in the right-hand
+    list either way. plateHit is the single predicate the collision gate also
+    uses. */
  const PLATES=[];
- /* The seven seat names sit on the shell at a fixed bearing and were drawn
-    before any nameplate, but they were never registered as occupied, so a
-    saboteur's plate could run straight through one. "AggreSolar" was the
-    shipped result. They go in first, so every plate routes around them. */
- if(L>=1)BANDS.forEach(b=>{const seg=W.filter(n=>n.b===b);
-  if(seg.length)PLATES.push({ang:meanAng(seg.map(n=>n.ang)), out:R.shell*1.058,
-   len:b.length, fs:12});});
- /* the free radius: inside the archetype ring once it exists, else the stage. */
- const CEIL=(L>=2)?R.arch-U*0.05:U*1.02;
- /* A radial label runs OUTWARD from its anchor, so it occupies a radial
-    interval [out, out + textLength], not a point. Comparing radii against a
-    font-size was the error: two labels 20px apart on the same bearing still
-    overlap when each is 100px long. Angular width is half a font-height at the
+ /* THE SEAT NAMES ARE NO LONGER PLATES. They were registered here because
+    they ran radially outward through the same space the plates ran into, and
+    "AggreSolar" was the shipped result. They sit round their arcs in the
+    shell's outer band now, and every plate reads inward from inside the
+    pattern ring, so the two can no longer meet. */
+ /* THE PLATES READ INWARD, ruled 26 September: nothing runs past the ring.
+    They ran outward from the bead to 1.02 of the unit, past the shell and
+    the seat names, measured on James at 1600 as Controller, Judge, Imposter
+    and Aggressor all past the ring's edge. The free radius is inward now,
+    from the bead down to just outside the core. */
+ const FLOOR=coreBase*1.15;
+ /* A radial label occupies a radial interval [out, out + textLength], not a
+    point, where out is its inner end. Comparing radii against a font-size
+    was the error: two labels 20px apart on the same bearing still overlap
+    when each is 100px long. Angular width is half a font-height at the
     label's own radius, and the radial extent is the measured text length. */
  window.plateLen=function(p){return p.fs*0.58*p.len;};
  window.plateHit=function(p,q){
@@ -15380,43 +15536,57 @@ function drawWheel(r,L){
   return p0<q1+4 && q0<p1+4;};
  /* horizontal plate for the inner rings. keeps its own occupied boxes so two
     inner names cannot sit on top of each other either. */
- const FLATS=[];
+ /* AND IT STAYS INSIDE THE RING. It set on the outward side of its bead and
+    stepped down on a collision, and never asked where the run ended:
+    "Predatory / Dysregulation" ran from the hyper ring out past the shell on
+    James at 1600. The outward side first, then the inward side, each stepped
+    down as before; a run that leaves the ring on both is not drawn. It never
+    recorded its box either, so the collide gate could not see it; it does.
+    And the inward side keeps off the core: the first cut of this let that
+    same plate flip inward at Blueprint and run straight through the centre
+    number, which is the one thing on the wheel nothing may cover. */
+ const coreR=coreBase*1.12;
+ const FLATS=[], inRing=(bx)=>[[bx.x0,bx.y0],[bx.x1,bx.y0],[bx.x0,bx.y1],[bx.x1,bx.y1]]
+  .every(q=>Math.hypot(q[0]-CX,q[1]-CY)<=R_EDGE-2)
+  &&Math.hypot(Math.max(bx.x0-CX,0,CX-bx.x1),Math.max(bx.y0-CY,0,CY-bx.y1))>coreR;
  const flatplate=(o,rad,c,size)=>{
   const fs=Math.max(12.5,size*1.25);
   const x=CX+Math.cos(o.ang)*rad, y=CY+Math.sin(o.ang)*rad;
-  const right=Math.cos(o.ang)>=0;
   g.save();g.font='600 '+fs+'px Inter, system-ui, sans-serif';
   const w=g.measureText(o.nm).width;g.restore();
-  let lx=x+(right?1:-1)*(size+10), ly=y;
-  for(let step=0;step<6;step++){
-   const box={x0:right?lx:lx-w,x1:right?lx+w:lx,y0:ly-fs*0.7,y1:ly+fs*0.7};
-   if(!FLATS.some(q=>box.x0<q.x1&&q.x0<box.x1&&box.y0<q.y1&&q.y0<box.y1)){
-    FLATS.push(box);
-    g.beginPath();g.moveTo(x+(right?1:-1)*size,y);g.lineTo(lx,ly);
-    g.strokeStyle=rgba(c,.6);g.lineWidth=1;g.stroke();
-    g.save();g.font='600 '+fs+'px Inter, system-ui, sans-serif';
-    g.textAlign=right?'left':'right';g.textBaseline='middle';
-    g.fillStyle=rgba(c,.99);g.fillText(o.nm,lx,ly);g.restore();
-    return;}
-   ly += fs*1.45;}};
+  const out=Math.cos(o.ang)>=0;
+  for(const right of [out,!out]){
+   let lx=x+(right?1:-1)*(size+10), ly=y;
+   for(let step=0;step<6;step++){
+    const box={x0:right?lx:lx-w,x1:right?lx+w:lx,y0:ly-fs*0.7,y1:ly+fs*0.7};
+    if(inRing(box)&&!FLATS.some(q=>box.x0<q.x1&&q.x0<box.x1&&box.y0<q.y1&&q.y0<box.y1)){
+     FLATS.push(box);
+     LBL.push({t:o.nm,x:box.x0,y:box.y0,w:box.x1-box.x0,h:box.y1-box.y0});
+     g.beginPath();g.moveTo(x+(right?1:-1)*size,y);g.lineTo(lx,ly);
+     g.strokeStyle=rgba(c,.6);g.lineWidth=1;g.stroke();
+     g.save();g.font='600 '+fs+'px Inter, system-ui, sans-serif';
+     g.textAlign=right?'left':'right';g.textBaseline='middle';
+     g.fillStyle=rgba(c,.99);g.fillText(o.nm,lx,ly);g.restore();
+     return;}
+    ly += fs*1.45;}}};
  const nameplate=(o,rad,c,size)=>{
-  const fs=Math.max(12,size*1.5);
-  let plate=null, out0=rad+size+9;
+  const fs=Math.max(12,size*1.5), len=o.nm.length, ln=fs*0.58*len;
+  let plate=null, end=rad-size-9;
   for(let step=0;step<4;step++){
-   const cand={ang:o.ang,out:out0,len:o.nm.length,fs:fs};
+   const cand={ang:o.ang,out:end-ln,len:len,fs:fs};
    if(!PLATES.some(q=>window.plateHit(cand,q))){plate=cand;break;}
-   /* step past the far end of whatever is in the way */
-   let far=out0;
-   PLATES.forEach(q=>{if(window.plateHit(cand,q))far=Math.max(far,q.out+window.plateLen(q)+6);});
-   out0=far;}
+   /* step past the near end of whatever is in the way */
+   let near=end;
+   PLATES.forEach(q=>{if(window.plateHit(cand,q))near=Math.min(near,q.out-6);});
+   end=near;}
   if(!plate)return;                       /* no legible slot. the list carries it. */
-  if(plate.out+window.plateLen(plate) > CEIL) return;   /* would run into the ring above */
+  if(plate.out<FLOOR)return;              /* would run into the core */
   PLATES.push(plate);
-  const x=CX+Math.cos(o.ang)*rad, y=CY+Math.sin(o.ang)*rad;
-  const lx=CX+Math.cos(o.ang)*plate.out, ly=CY+Math.sin(o.ang)*plate.out;
-  g.beginPath();g.moveTo(x+Math.cos(o.ang)*size,y+Math.sin(o.ang)*size);
+  const x=CX+Math.cos(o.ang)*rad, y=CY+Math.sin(o.ang)*rad, e=plate.out+ln;
+  const lx=CX+Math.cos(o.ang)*e, ly=CY+Math.sin(o.ang)*e;
+  g.beginPath();g.moveTo(x-Math.cos(o.ang)*size,y-Math.sin(o.ang)*size);
   g.lineTo(lx,ly);g.strokeStyle=rgba(c,.55);g.lineWidth=1;g.stroke();
-  radialTxt(o.nm,o.ang,plate.out+4,fs,c,.98,600);};
+  radialTxt(o.nm,o.ang,e-4,fs,c,.98,600,true);};
  window.__PLATES=PLATES;
  if(L>=1){r.sabs.forEach(s=>bead(s,R.sab,5.4,bc(s.parts[0].b)));
   /* B names the saboteurs, because they are the layer. C and D name only the
@@ -25436,7 +25606,9 @@ function renderAcc(r){
   /* AND IT NEVER PRINTS RED. Ruled: "ninety six percent flow accuracy and
      yet it is red, red is a colour of danger, that is bad colouring." A
      well measured person is the good case and the ring says so. */
-  +cr('Crown',un?0:a.pct,{size:'lg',raw:un?'\u2013':a.pct.toFixed(0),
+  /* SMALL, like every readout beside it in the dock. It was the one large
+     ring on the Field, and one size across the row is ruled, 26 September. */
+  +cr('Crown',un?0:a.pct,{size:'sm',raw:un?'\u2013':a.pct.toFixed(0),
     label:'accuracy',hot:false})
   +'</button>';
  var bt=document.getElementById('accbtn');
@@ -26791,7 +26963,13 @@ function railTop(r){
     plate disagreed about what colour a person's band is. High coherence is
     the good end, so it never reddens. */
  var tcol=(!r.unread&&TIERCOL[r.tier])||null;
- e.innerHTML=cr(r.darkB, r.unread?0:r.CQ, {size:'sm', label:'coherence',
+ /* ONE CELL, THE SAME CELL AS THE DOCK'S. Ruled 26 September, CQ in
+    TASKS.md: this corner should sit flush and uniform with the other
+    readouts around the frame, not on its own alignment. It was a bare 30
+    high chip centred against a 44 high word, so its top sat seven pixels
+    below the word's and neither matched the boxed 44 high cells every other
+    readout on the Field sits in. The ring and the word share one box now. */
+ e.innerHTML='<span class="rt-cell">'+cr(r.darkB, r.unread?0:r.CQ, {size:'sm', label:'coherence',
    raw:r.unread?'\u2013':undefined, hot:false, color:tcol||undefined})
   /* THE TIER IS A CONTROL WHEREVER IT LIVES. Taking the word off the Field
      centre was ruled, and it took the only tappable route to the definition
@@ -26806,7 +26984,7 @@ function railTop(r){
   +(tcol?' style="color:'+tcol+'"':'')
   /* while CQ is still filling there is no word, so the slot says what is
      left to answer rather than naming a band off laws nobody answered */
-  +'>'+esc(r.unread?'not read yet':tierSay(r))+'</button>'
+  +'>'+esc(r.unread?'not read yet':tierSay(r))+'</button></span>'
   /* ONE STATE, ONE SENTENCE. The button's own title two lines above says
      "Nothing has been read yet. Write a story or set a charge." for the same
      unread field, and this said the same thing a second way, three words
@@ -27356,5 +27534,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="001770719"></div>
+<div id="eof" hidden data-len="001782338"></div>
 </body></html>
