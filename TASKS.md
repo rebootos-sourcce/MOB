@@ -12430,9 +12430,10 @@ one names exactly the claimed difference, one declaration retired
 (`frGate`), three new (`FR_GATE_AT`, `FR_GATE_VS`, `frCollar`), eight
 bodies changed, nothing else. `node tests/engine.js` matched the
 claimed 1649, `BUILD-engine.sh` matched 428 exports and host free.
-`functional.js` was still finishing under tonight's load when this was
-written. Screenshots confirm the centre, the rail split and the toggle
-fix by eye, sent below.
+`functional.js` finished after this was first written, slow under
+tonight's load, and matched the claimed 1013 passed, 0 failed.
+Screenshots confirm the centre, the rail split and the toggle fix by
+eye, sent below.
 
 **A real terminology check done before building, not after, closing a
 flag CE itself raised.** He said "just put SQ." Checked against the
