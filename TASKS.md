@@ -12501,8 +12501,20 @@ system, restoring nerve tone to the tissue, cells, organs. Mental
 clarity, peace of mind, body and spirit. It's a mirror that exposes
 your inner world so you can see you running everywhere and know it by
 name, and know how to integrate it. This is a purpose based product.
-It's a results driven product. If you don't get the results, you don't
+It's a results driven product. If you don't get the results you don't
 want, get your fucking money back. You have one week to do it."
+
+**A correction to this file's own quote, caught by the copy pass and
+not by me.** The sentence above originally ran here with a comma placed
+after "results" that he did not say, reading "the results, you don't
+want," rather than his own "the results you don't want,". Fixed above.
+His actual sentence is still genuinely hard to parse either way, a
+double negative that could mean the reading itself (which everyone
+gets, making the promise close to empty) or a real change in a
+person's life (which the funnel's own existing "throughput, never
+outcome" line would then contradict), or could be a dictation stumble
+for "the results you want." Not resolved here, sent back as a real
+question.
 
 **Read as three separate things, not one.** A positioning line for the
 funnel's own hook: mechanical, not soft, against a spiritual journey
@@ -12522,4 +12534,60 @@ under it once records move off device, all still open. Not answered
 here, since he framed this as a note for the funnel and not a
 build order; sent to the seats who write the funnel and the seats who
 own the business terms, not decided by inference.
+
+## CO. His funnel note, turned into real copy options, none of it
+## shipped yet. 26 September.
+
+**Verified myself.** Only four new files under `proto/funnel-copy/`,
+nothing in the shipped funnel, `atuned_src/`, `source.html` or this
+file touched. Ran the page's own check script myself rather than
+trusting the report: every one of the nineteen candidate lines passes
+both the voice gate and the marketing refusal gate, exit 0. Checked the
+contrast claim too: his own raw word "journey," said exactly as he said
+it, does trip the voice gate, one hard failure, and the marketing gate
+refuses it outright. Screenshots at both widths, no sideways scroll,
+sent below.
+
+**Four options each for the hook, the description and the guarantee,
+every one marked against his own words: what it keeps, what it drops,
+why.** Nothing invented beyond his note. Where his sentence contained a
+claim nothing in the product measures, "restoring nerve tone to the
+tissue, cells, organs," no option carries it, flagged back as its own
+question rather than quietly written around.
+
+**A real find: the guarantee collides with three lines already
+shipped.** "Throughput, never outcome" on the tiers and about pages,
+which promises a count of patterns released and never a change in a
+life; "checkout is not open yet," so there is nothing to refund against
+today; and "nothing here expires, nothing counts down," while a one
+week guarantee is exactly a countdown. Also found, unrelated, and not
+touched: `funnel/about.html` already ships a line, "it brings inner
+peace mentally and physically," that contradicts the site's own
+"throughput, never outcome" a paragraph later, there before tonight.
+
+**A correction to this file's own quote, caught by the copy pass and
+not by me,** recorded above where the quote itself sits corrected.
+
+**Five real questions.**
+**Q1.** Which hook, A follows his own self correction in the note
+("well, ... deeply personal"), B and C keep "not for the weak," which
+six methods into a reading could land on the reader herself rather
+than the work.
+**Q2.** Does "results" in the guarantee mean the reading itself, which
+everyone gets and makes the promise close to empty, or a real change in
+a person's life, which the funnel's own "throughput, never outcome"
+line already promises against? One option sidesteps the question
+entirely by guaranteeing that they wanted it, not a result.
+**Q3.** Keep his own word in the guarantee line. Nothing on file rules
+on swearing either way; it passes both gates; it sits against the
+tiers page's own restraint and this file's "an instrument that shouts
+is a toy," and some ad networks restrict it outright.
+**Q4.** "Restoring nerve tone to the tissue, cells, organs": is there
+something the instrument actually reads that this describes, or is it
+a claim about the body he wants made regardless. If the second, it
+needs him and whoever owns the word "measurable" to sign it, not a
+copy pass to soften it.
+**Q5.** The guarantee's real mechanics, listed in CO's parent section
+above, plus when it starts counting against a checkout that is not
+open yet.
 
