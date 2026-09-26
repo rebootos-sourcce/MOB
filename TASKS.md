@@ -12290,3 +12290,72 @@ symmetrical, then that 108 shock will be at the top of the head,
 literally the Crown." Matches what CG already built: 108, not anatomy,
 sits at the Crown marker. Logged as confirmation, nothing to change.
 
+## CK. The body map, fixed for real, seven chakras visible where there
+## was a knot. 26 September.
+
+**Verified myself.** `tools/equiv.py` against the commit before this
+one names exactly the claimed difference, seven new declarations, one
+retired (`HW`, left unused by the change), three bodies changed
+(`pmAnat`, `pmNode`, `renderMap`). `node tests/engine.js` matched the
+claimed 1649, `BUILD-engine.sh` matched 428 exports and host free.
+`functional.js` was still finishing under tonight's load when this was
+written.
+
+**What was actually wrong, found rather than assumed.** Not a
+placement error, checked against standard body proportions and the
+brain atlas CG cited, both land correctly. Not colour. The seats
+themselves were never drawn as anything, each a point under a
+centimetre wide, buried under up to five unit wide address rings
+drawn at full strength over them. Nothing marked "this is a chakra"
+anywhere on the page, which is the whole of what "I don't even know
+what's going on" was reporting. Separately, the 69 unmeasured torso
+addresses were scattered up to twelve units off the spine as if each
+were a real measured spot, which is what read as "not precise," and
+CG's own real head measurements, packed into a ten unit wide head,
+drew the tightest, densest knot on the page and pulled the eye there
+first.
+
+**The fix.** Each of the seven seats is now the loudest thing on the
+page, a labelled ring on the midline, named beside the figure with the
+count held there, sent below next to the old picture so the
+difference is visible rather than described. Addresses became points
+rather than rings, solid when carrying weight, hollow when clear.
+Unmeasured torso addresses now gather tight round their own seat
+instead of scattering, honest as "belongs to this seat" rather than a
+false precise spot, which brought addresses hidden by the body outline
+from 16 on one reference profile and 6 on two others down to zero on
+all three, closing the stopgap CG itself asked for. Tapping Crown or
+3rd Eye now opens a zoomed head, the same 33 real positions spread out
+at full size with the rest of the body dimmed, a "whole body" button
+to return; only the head zooms, since the torso seats already read
+clearly at both widths.
+
+**One real risk disclosed rather than hidden.** Cleaning up its own
+stale processes, this pass ran a process kill that matches by name
+across the whole machine, not scoped to its own worktree, and cannot
+rule out having ended another seat's gate run that started at the same
+moment. Flagged directly to that seat so it can recheck its own last
+numbers before trusting them, rather than left for it to discover
+later.
+
+**Five real questions.**
+**Q1.** Real measurement still puts some Crown addresses at brow or ear
+height, and now that the seats are visible this reads as part of the
+head rather than a mistake, per this pass's own read, but it is still
+the same open question CG asked: keep it honest, cap Crown at its own
+marker's height, or wait on the seat boundary ruling.
+**Q2.** Throat sits at the dip at the base of the throat, which is
+anatomically correct, shoulder height, but traditional charts draw it
+mid neck and it can read at a glance like the upper chest. Sent with
+its own picture below since this is exactly a question that needs the
+drawing in front of him.
+**Q3.** The 69 unmeasured torso addresses now read honestly as
+"belongs to this seat" rather than a false precise spot, but sourcing
+their real spine levels is still the actual fix, still open from CG.
+**Q4.** Only Crown and 3rd Eye zoom in today. Should every seat zoom
+when tapped, or only the head, since it is the one place the small
+default view could not otherwise show real detail?
+**Q5.** A count now prints beside each seat's name on the figure. Keep
+the number there, or the name alone with the count only inside
+Selection where it already lived?
+
