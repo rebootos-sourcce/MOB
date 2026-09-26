@@ -15118,3 +15118,30 @@ actually ships.
   named, the ring becomes the wheel's own centre, the avatar opens
   first with the wheel a press away, or the two sit side by side.
 
+## EH. A precise, direct engineering spec: finish routing the root
+## family's colour through every lighting, named surface by surface.
+## 26 September.
+
+**A real, specific follow-on to EF's own queued gap, given as a
+ready-to-build spec rather than informal feedback.** EF shipped the
+rail's own root icons and archetype seat colours routed per lighting
+and named, but did not fix, that every other surface still draws
+`ROOTCOL`, the Dark palette, unchanged on Snow and Glass white:
+`wheel.js`, `rings.js`, `analytics.js`, `map.js`, `personas.js`,
+`knowledge.js`, `summary.js` and `ui.js`, each with its own line
+numbers named directly. The canvas's own twin of `seatCol`, `bc()` in
+`component.js`, is called out as a harder case: it reads `LIGHT()`,
+which only recognises Snow as a light ground, so the Glass white
+stage, itself light, still paints as if dark, and `LIGHT()` also
+drives ink and the node wash, so it needs its own look rather than a
+one line copy of the rail's fix. `ROOTCOL` itself stays untouched, it
+is the engine's own export contract; Lumen stays exactly as shipped,
+its colours still an open owner question from DX. `DESIGN.md`'s own
+Families table is named as stale too, still describing roots as
+having no glyph and listing hex values EF's own work already moved
+past.
+
+**Dispatched as real engineering, per surface, each one measured
+before and after against a real known value rather than assumed
+fixed.**
+
