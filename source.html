@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="9347cbf 2026-09-26 01:52"><head><meta charset="utf-8">
+<html lang="en" data-build="1956875 2026-09-26 01:56"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -1336,6 +1336,21 @@ canvas#cv{display:block;grid-column:2;grid-row:3;width:100%;height:100%;
    would have sat in the left lane of all of them */
 body:not(.tab-field) .fview{display:none}
 .fview .vt{padding:8px 12px}
+/* OFF READS OFF. Ruled 26 September, CH in TASKS.md: "the circles are very
+   clear, those say off. The ones with the bars, they don't look off ... or
+   maybe those are bright and there's a dim colour where they're off." The
+   circles are the layer row, where off is dim ink with no ring. The bars are
+   this switch and the wheel's depth row, where the one you are on carries a
+   hairline, and the ones you are not on kept the box and the mid ink every
+   .vt wears: measured on James at 1600, Wheel and Frames sat boxed and bright
+   beside a pressed Dial with no box at all, so the two that were off read as
+   the two that were on. They take the layer row's off state now, dim ink and
+   no box, and come up to ink under the pointer so they still read as
+   pressable. Scoped to the two Field switches, which are the screen he was
+   reading: the Body page's layer row is its own pill, .pm-lb, and other .vt
+   rows elsewhere are flagged rather than moved in this pass. */
+.fview .vt[aria-pressed=false],#vbar .vt[aria-pressed=false]{border-color:transparent;color:var(--dim)}
+.fview .vt[aria-pressed=false]:hover,#vbar .vt[aria-pressed=false]:hover{color:var(--ink)}
 /* the navigation rule the depth row keeps: the position you are on loses its
    box and carries the accent hairline under it. Without the hairline the
    pressed one differed only by a missing border and a blue icon, and its word
@@ -1674,6 +1689,13 @@ body:not(.tab-field) .pol2{display:none}
 .lsec.open .lsec-hd i{transform:rotate(-135deg)}
 .lsec-bd{display:none;padding-bottom:16px}
 .lsec.open .lsec-bd{display:block}
+/* SPIRIT AND PSYCHE, the rail's two blocks, ruled 26 September. A block is
+   one level above a section, so it is set in ink and a size up from the
+   section headers under it, and it is not a control: nothing here opens or
+   closes, which is why it carries no chevron and takes no pointer. */
+.rblk{margin:2px 2px 0;padding:6px 0 2px;font-family:var(--sans);font-size:13px;font-weight:600;
+ color:var(--ink);letter-spacing:.01em;line-height:1.4}
+.lsec + .rblk{margin-top:14px;padding-top:16px}
 
 /* ---------- polarity bar ---------- */
 .polbar{height:32px;border-radius:var(--r-xs);position:relative;overflow:hidden;
@@ -4323,6 +4345,29 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
 
   <!-- ============ LEFT RAIL ============ -->
   <div class="col"><div class="glass panel sc">
+   <!-- SPIRIT, THEN PSYCHE. Ruled 26 September, CH in TASKS.md: "I want to
+        subdivide by spiritual stuff, by spirit, then the next block down would
+        be the psyche, because that gives us a full read of the entire field."
+        He named the two blocks and not what goes in each, so the split is read
+        off what each reading measures, and it is the seat's call, flagged back.
+
+        Spirit is what was there before any of it. The four root domains, the
+        nineteen blueprint domains and the archetypes are the native side of
+        the stack in the product's own glossary, "present before conditioning,
+        which is why it isn't held in tissue", and States is the birth data,
+        already keyed spirit. Psyche is what was installed and is carried.
+        Orientation reads the laws and the empathy and accountability in a
+        person's stories, Balance reads the nine child emotions' charge by the
+        way the body moves under it, and the Matrix is that same charge laid
+        across the domains.
+
+        ORIENTATION AND BALANCE LEFT THE AWARENESS SECTION FOR A SECTION OF
+        THEIR OWN, open by default as they were, rather than inside Child
+        emotions, which opens closed: moving them there would have taken the
+        two readings off the rail a person first sees. The numbers run through
+        the rail in its new order, which also ends the two sections both
+        numbered 4. -->
+   <h2 class="rblk">Spirit</h2>
    <div class="lsec open" data-sec="soul">
     <button class="lsec-hd" type="button"><span>Awareness</span><i></i></button>
     <div class="lsec-bd">
@@ -4330,6 +4375,27 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
           a definition sitting permanently under a heading a person reads once,
           and the definition belongs in the tooltip and the drill, where it is
           asked for. What is left is the name and the thing itself. -->
+     <div class="tier1">0 &middot; Root domains</div>
+     <!-- Four root domains would not fit one row, so Witness rendered as Witn
+          with no affordance saying there was more. It wraps. Rule 10: never
+          hide a control with no affordance. -->
+     <div class="rootrow" id="roots"></div>
+     <div class="tier1">1 &middot; Blueprint domains</div>
+     <div class="gdom" id="doms"></div><div class="cap" id="capD"></div>
+     <div class="tier1" style="margin-top:18px">2 &middot; Primary</div>
+     <div class="g6" id="ar1"></div>
+     <div class="sub" style="margin-top:16px">Secondary</div>
+     <div class="g6" id="ar2"></div><div class="cap" id="capA"></div>
+    </div>
+   </div>
+   <div class="lsec" data-sec="spirit">
+    <button class="lsec-hd" type="button"><span>States</span><i></i></button>
+    <div class="lsec-bd"><div id="spirit"></div></div>
+   </div>
+   <h2 class="rblk">Psyche</h2>
+   <div class="lsec open" data-sec="lean">
+    <button class="lsec-hd" type="button"><span>Orientation and balance</span><i></i></button>
+    <div class="lsec-bd">
      <!-- LEAN WAS A WORD NOBODY COULD CASH.
 
           The heading said Lean and the sublabel said benign against
@@ -4349,7 +4415,7 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
           one of them capitalised and the other not, which made them look like
           two readings rather than the two ends of one. Orientation is what is
           being read. The ends keep their names inside it. -->
-     <div class="tier1">0 &middot; Orientation</div>
+     <div class="tier1">3 &middot; Orientation</div>
      <div class="polbar" id="polbar"></div>
      <!-- AND BALANCE COMES BACK INTO THE RAIL.
 
@@ -4361,20 +4427,9 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
 
           Every other reading in this product lives in the rail. This one
           does now too, and it is the only place it is drawn. -->
-     <div class="tier1" style="margin-top:18px">1 &middot; Balance</div>
+     <div class="tier1" style="margin-top:18px">4 &middot; Balance</div>
      <button type="button" class="bal" id="bal"
       aria-label="Balance. Masculine against feminine. Opens the reading."></button>
-     <div class="tier1" style="margin-top:18px">2 &middot; Root domains</div>
-     <!-- Four root domains would not fit one row, so Witness rendered as Witn
-          with no affordance saying there was more. It wraps. Rule 10: never
-          hide a control with no affordance. -->
-     <div class="rootrow" id="roots"></div>
-     <div class="tier1">3 &middot; Blueprint domains</div>
-     <div class="gdom" id="doms"></div><div class="cap" id="capD"></div>
-     <div class="tier1" style="margin-top:18px">4 &middot; Primary</div>
-     <div class="g6" id="ar1"></div>
-     <div class="sub" style="margin-top:16px">Secondary</div>
-     <div class="g6" id="ar2"></div><div class="cap" id="capA"></div>
     </div>
    </div>
    <div class="lsec" data-sec="fetters">
@@ -4394,16 +4449,12 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
      It was also wrong about the controls. "the left slider is how much you
      carry it" describes one axis and these two sliders set all nine at once,
      which is the only thing about them a person cannot work out by looking. -->
-     <div class="tier1">4 &middot; Child emotions</div>
+     <div class="tier1">5 &middot; Child emotions</div>
      <p class="stk-def">Both sliders set all nine axes at once.</p>
      <div class="bulk"><label for="allCh">held</label><input type="range" id="allCh" min="0" max="10" step="0.5" value="3"></div>
      <div class="bulk"><label for="allRep">opposite</label><input type="range" id="allRep" min="0" max="10" step="0.5" value="0"></div>
      <div id="chg"></div>
     </div>
-   </div>
-   <div class="lsec" data-sec="spirit">
-    <button class="lsec-hd" type="button"><span>States</span><i></i></button>
-    <div class="lsec-bd"><div id="spirit"></div></div>
    </div>
    <div class="lsec" data-sec="matrix">
     <button class="lsec-hd" type="button"><span>Matrix</span><i></i></button>
@@ -15565,7 +15616,7 @@ const FLAYS=[
  {k:'laws',nm:'Laws',d:frCirc(12,12,2.4)+frTicks(7,5.2,10,[1,.6,.9,.45,.8,.55,.95]),
   tip:'The twenty one laws, set by seat. Their sum is the number at the centre.'},
  {k:'gates',nm:'Gates',d:frCirc(12,12,3.1)+'M12 8.9V3.6M9.6 6L12 3.6 14.4 6M12 15.1v5.3',
-  tip:'Three higher gates above the core and three lower below it.'},
+  tip:'The six gates round the core. Each higher gate sits across from the lower one it stands against.'},
  {sep:true},
  {k:'shadow',nm:'Shadow',d:frCirc(12,12,8.5)+'M7.2 16.6l3.4-3.4M10.2 19.2l6-6M14.6 19.9l4.6-4.6',
   tip:'The weight on all 112 addresses, as a wash behind everything.'}];
@@ -15764,6 +15815,14 @@ function frMount(host,W_,H_,r){
  M.accent=hx(M.light?'#2F6E92':'#7EB8D4');
  var P=S.theme==='lumen'?PAL_VIVID:(M.light?PAL_LIGHT:PAL);
  M.seat=function(b){return hx(P[b]||PAL[b]||'#7EB8D4');};
+ /* THE SHADOW'S OWN COLOUR, for DQ where it shares the core with coherence.
+    The Root washed 45 percent toward slate, which is nodeCol's grammar for a
+    light charge and on Dark lands exactly on CE's #B9757B: weight, and not the
+    full Root red the compass paints its lower half in, so it does not read as
+    an alarm beside the tier's colour. On a light ground the slate it washes
+    toward is darkened, because washing toward the pale one took it toward the
+    paper it sits on. */
+ M.dq=mixc(M.seat('Root'),M.light?[90,96,110]:[150,160,180],.45);
  /* nodeCol from ui/component.js, keyed on the same ground: a light address
     is its seat washed toward slate and takes its full hue as charge comes up */
  M.nodeCol=function(b,sq){var base=M.seat(b),ld=clamp(sq/10,0,1);
@@ -15843,51 +15902,149 @@ function frShadow(M,r,o){o=o||{};
    +'<rect x="0" y="0" width="'+M.W+'" height="'+M.H+'" fill="url(#'+id+'g)"/></mask>';};
  M.defs.push(fade('frfx',M.W,M.W,0),fade('frfy',M.H,0,M.H));
  M.L.shadow.push('<g mask="url(#frfx)"><g mask="url(#frfy)">'+pools+'</g></g>');}
-/* THE CORE. The product's own ring grammar at hero size: an arc for the
-   share, the number inside it in the tier's colour, and its scale under it,
-   because every number says what it is out of. The range the coherence scale
-   draws as its pill rides outside the arc, drawn and never stated, and it is
-   the compass's own arithmetic, cqRange, so the two cannot disagree.
+/* THE CORE. The product's own ring grammar at hero size, carrying both
+   quotients on the one ring. Ruled 26 September, CH in TASKS.md, picking A
+   off the CE sheet: "for coherence, for CQ and DQ, A looks great."
+   Coherence runs clockwise from twelve in the tier's colour and the shadow
+   runs anticlockwise from twelve in its own, so one coming down as the other
+   goes up is drawn and not only printed.
 
-   NOTHING IS PRINTED OFF THE DEFAULTS. On an unread field the ring is empty,
-   the range is not drawn and the figure is a dash, which is what the key pill
-   directly above says in the same state. */
+   HIS PICK OVER THE ROUND'S OWN RECOMMENDATION, SAID RATHER THAN SWAPPED. CE
+   recommended two rings, because the two are not shares of one whole: CQ is
+   the 21 laws alone and DQ is the weight on the 112 addresses, so the stretch
+   of ring between the two ends stands for nothing, 22 points of it on James.
+   He saw that caption and picked A. Past 100 together the two arcs meet and
+   run over each other, and coherence is drawn second so it is the one on top.
+
+   THE LABELS ARE THE LETTERS. His words: "we don't need the word shadow ...
+   and for coherence just put CQ." He asked for SQ beside the shadow figure,
+   and SQ is a different reading in this product: the charge at one address,
+   out of 10, which the strip directly above prints as SQ beside this figure
+   printed as DQ. Two letters on two readings is what one word per concept
+   forbids, so it says DQ, which is the strip's label for this same number and
+   the one he used for it in the same sentence. Flagged back to him.
+
+   THE SWING CAME OFF. "Let's take that highlight off the circle, because it's
+   adding noise." A thinner, paler arc rode the ring's outside edge over the
+   median range, cqRange, and on A it lay across the two arcs as a third mark
+   on one ring. The range is not lost: the compass draws it as the pill beside
+   its own needle, off the same arithmetic.
+
+   NOTHING IS PRINTED OFF THE DEFAULTS. On an unread field the ring is empty
+   and the figure is a dash, which is what the key pill directly above says in
+   the same state. */
 function frCore(M,r,cx,cy,R,o){
- var w=o.w,un=!!r.unread,f=clamp(r.CQ/100,0,1);
+ var w=o.w,un=!!r.unread,f=clamp(r.CQ/100,0,1),fd=clamp((+r.DQ||0)/100,0,1);
  var col=un?M.dim:hx((typeof TIERCOL!=='undefined'&&TIERCOL[r.tier])||(M.light?'#2F6E92':'#7EB8D4'));
  var s='<g data-h="'+M.hid({k:'core'})+'">'
   +'<circle cx="'+cx.toFixed(1)+'" cy="'+cy.toFixed(1)+'" r="'+(R+w/2+o.halo).toFixed(1)+'" fill="'+frRgb(M.ground)+'"/>'
   +'<circle cx="'+cx.toFixed(1)+'" cy="'+cy.toFixed(1)+'" r="'+R.toFixed(1)+'" fill="none" stroke="rgba(128,128,128,.22)" stroke-width="'+w+'"/>';
+ if(!un&&fd>0)s+='<path d="'+frArcD(cx,cy,R,-Math.PI/2-TAU*fd,-Math.PI/2)+'" fill="none" stroke="'+frRgb(M.dq)
+  +'" stroke-width="'+w+'" stroke-linecap="round"/>';
  if(!un&&f>0)s+='<path d="'+frArcD(cx,cy,R,-Math.PI/2,-Math.PI/2+TAU*f)+'" fill="none" stroke="'+frRgb(col)
   +'" stroke-width="'+w+'" stroke-linecap="round"/>';
- if(!un){var rg=cqRange(r.CQ),rr=R+w/2+o.halo/2;
-  s+='<path d="'+frArcD(cx,cy,rr,-Math.PI/2+TAU*rg.lo/100,-Math.PI/2+TAU*rg.hi/100)+'" fill="none" stroke="'
-   +rgba(col,.55)+'" stroke-width="3" stroke-linecap="round"/>';}
- var fs=o.fs,cap=fs*.727,sub=12,gap=Math.max(8,fs*.16),top=cy-(cap+(un?0:gap+sub*.72))/2;
- s+='<text x="'+cx.toFixed(1)+'" y="'+(top+cap).toFixed(1)+'" text-anchor="middle" fill="'+frRgb(col)
-  +'" font-size="'+fs.toFixed(1)+'" font-weight="300" letter-spacing="-0.02em">'+(un?'\u2013':Math.round(r.CQ))+'</text>';
- if(!un)s+='<text x="'+cx.toFixed(1)+'" y="'+(top+cap+gap+sub*.72).toFixed(1)+'" text-anchor="middle" fill="'
-  +frRgb(M.dim)+'" font-size="'+sub+'" font-weight="500">of 100</text>';
+ var t=function(y,fill,size,wt,str,at){return '<text x="'+cx.toFixed(1)+'" y="'+y.toFixed(1)+'" text-anchor="middle" fill="'
+  +fill+'" font-size="'+size.toFixed(1)+'" font-weight="'+wt+'"'+(at||'')+'>'+str+'</text>';};
+ if(un){var cu=o.fs*.727;
+  M.L.core.push(s+t(cy+cu/2,frRgb(col),o.fs,300,'\u2013',' letter-spacing="-0.02em"')+'</g>');return;}
+ var cq=String(Math.round(r.CQ)),dq=String(Math.round(+r.DQ||0)),lab=11;
+ var FC=cq.length>2?cq:'88',FD=dq.length>2?dq:'88';
+ var W_=function(str,size,wt){return frTextW(str,wt+' '+size.toFixed(1)+'px Inter, system-ui, sans-serif');};
+ /* THE TYPE IS FITTED TO THE HOLE, NOT TO A TABLE. The ring's inside runs
+    from 22 pixels of radius on a phone to 57 on a wide screen, and two figures
+    and two labels set for the wide one ran onto the ring on the phone. Each
+    layout is tried at falling sizes and the first whose every line clears the
+    ring's inside edge is drawn: the stack from CE's sheet where there is room,
+    each figure on one line with its letters where there is not. The letters
+    hold at eleven, which is the product's floor, and only the figures give.
+
+    AND IT IS FITTED TO THE WIDEST TWO DIGIT FIGURE, 88, never to the two on
+    screen. Fitted to its own, a person whose DQ was one digit got a coherence
+    figure set larger than a person whose DQ was two: measured at 390 on
+    Frames, Sofia's 73 at 22.8 pixels beside James's 44 at 19.4, so the size of
+    one reading moved with the other. Fitted to 100, the one figure the core
+    almost never prints, it set everybody's coherence at 13.7 on a phone,
+    under three pixels above its own letters. So a figure of 100 is fitted as
+    itself and is the only one that sets smaller.
+
+    THE STACK IS KEPT ONLY WHILE IT HOLDS FOUR FIFTHS OF ITS SIZE. Past that
+    the figures are one line each from full size, because a stack shrunk to
+    fit is a coherence figure that no longer reads as the largest thing on
+    the Field. */
+ var inner=R-w/2-3,fits=function(rows){var H=0;rows.forEach(function(q){H+=q.h+(q.g||0);});
+  var y=-H/2,ok=true;rows.forEach(function(q){var y0=y,y1=y+q.h,ym=Math.max(Math.abs(y0),Math.abs(y1));
+   if(ym>=inner||q.w/2>Math.sqrt(inner*inner-ym*ym))ok=false;y=y1+(q.g||0);});return ok?H:0;};
+ var F1=Math.max(22,38*inner/45),F2=Math.max(13,17*inner/45),lc=lab*.727,k,f1,f2,H;
+ for(k=1;k>=.79;k-=.05){f1=F1*k;f2=Math.max(lab,F2*k);
+  var g1=Math.max(4,6*inner/45),g2=Math.max(7,11*inner/45);
+  H=fits([{h:f1*.727,w:W_(FC,f1,300),g:g1},{h:lc,w:W_('CQ',lab,500),g:g2},{h:f2*.727,w:W_(FD,f2,500)+4+W_('DQ',lab,500)}]);
+  if(H){var y0=cy-H/2,ry=y0+f1*.727+g1+lc+g2/2+.5;
+   s+=t(y0+f1*.727,frRgb(col),f1,300,cq,' letter-spacing="-0.02em"')
+    +t(y0+f1*.727+g1+lc,frRgb(M.dim),lab,500,'CQ')
+    +'<line x1="'+(cx-12).toFixed(1)+'" y1="'+ry.toFixed(1)+'" x2="'+(cx+12).toFixed(1)+'" y2="'+ry.toFixed(1)+'" stroke="'+rgba(M.ink,.16)+'" stroke-width="1"/>'
+    +'<text x="'+cx.toFixed(1)+'" y="'+(y0+H).toFixed(1)+'" text-anchor="middle">'
+    +'<tspan fill="'+frRgb(M.dq)+'" font-size="'+f2.toFixed(1)+'" font-weight="500">'+dq+'</tspan>'
+    +'<tspan fill="'+frRgb(M.dim)+'" font-size="'+lab+'" font-weight="500" dx="4">DQ</tspan></text>';
+   M.L.core.push(s+'</g>');return;}}
+ for(k=1;k>=.4;k-=.05){f1=Math.max(lab+2,F1*k);f2=Math.max(lab,F2*k);
+  H=fits([{h:f1*.727,w:W_(FC,f1,300)+4+W_('CQ',lab,500),g:6},{h:f2*.727,w:W_(FD,f2,500)+4+W_('DQ',lab,500)}]);
+  if(H)break;}
+ if(!H)H=f1*.727+6+f2*.727;
+ var y1=cy-H/2+f1*.727,y2=cy+H/2,row=function(y,n,c,size,wt){return '<text x="'+cx.toFixed(1)+'" y="'+y.toFixed(1)+'" text-anchor="middle">'
+  +'<tspan fill="'+c+'" font-size="'+size.toFixed(1)+'" font-weight="'+wt+'">'+n.v+'</tspan>'
+  +'<tspan fill="'+frRgb(M.dim)+'" font-size="'+lab+'" font-weight="500" dx="4">'+n.l+'</tspan></text>';};
+ s+=row(y1,{v:cq,l:'CQ'},frRgb(col),f1,300)+row(y2,{v:dq,l:'DQ'},frRgb(M.dq),f2,500);
  M.L.core.push(s+'</g>');}
-/* ONE GATE, verpArrows in ui/wheel.js: the ring, the glyph, and the pill that
-   holds a dash until a story has run through the gate. The pill's figure is
-   set at 11 pixels here. The wheel draws it at 8.5, under the product's own
-   floor, where the design gate cannot see it because it is canvas, and BO2
-   records why the wheel has not moved: at 11 its pills sit under the next
-   gate's disc. Here the gates are spaced by their own pills instead. */
-function frGate(M,x,y,v,R,G){
- var ev=G.ev,up=v.side==='higher',c=M.seat(up?'Heart':'Root'),f=(ev?v.pct:0)/100;
- var s='<g data-h="'+M.hid({k:'gate',v:v})+'">'
-  +'<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="'+R.toFixed(1)+'" fill="'+frRgb(M.ground)+'"/>'
-  +'<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="'+R.toFixed(1)+'" fill="none" stroke="'+rgba(c,ev?.22:.46)+'" stroke-width="2.2"/>';
- if(f>0)s+='<path d="'+frArcD(x,y,R,-Math.PI/2,-Math.PI/2+TAU*f)+'" fill="none" stroke="'+rgba(c,.95)+'" stroke-width="2.2" stroke-linecap="round"/>';
- s+=frGlyph(GATEGLYPH[v.k],x,y,R*1.15,rgba(M.ink,ev?.95:.86),1.6);
- var lab=G.lab(v),pw=G.pw(v),ph=15,px=x+R-4,py=y+R-7;
- s+='<rect x="'+px.toFixed(1)+'" y="'+py.toFixed(1)+'" width="'+pw+'" height="'+ph+'" rx="'+(ph/2)+'" fill="'
-  +(ev?frRgb(c):rgba(M.ink,.22))+'"/>'
-  +'<text x="'+(px+pw/2).toFixed(1)+'" y="'+(py+ph/2+4).toFixed(1)+'" text-anchor="middle" font-size="11" font-weight="600" fill="'
-  +(ev?'rgb(16,16,16)':rgba(M.ink,.8))+'">'+lab+'</text></g>';
- M.L.gates.push(s);}
+/* THE SIX GATES AS A COLLAR. Ruled 26 September, CH in TASKS.md: "for the
+   six gates I like three", the third on the CE sheet and the round's own
+   recommendation. They stood as two rows of three, one above the core and one
+   below, which he had already refused: "do not stack the six above the
+   centre, they're in opposition." Here each gate has a sector of the core's
+   own rim, on the bearing directly across from the gate it stands against,
+   awareness against ignorance, detachment against attachment, intention
+   against aversion. Each fill is that gate's share of its pair and grows from
+   the middle of its sector, so the two ends of one diameter read as a balance
+   and not as two clocks.
+
+   THE PERCENT GOES IN A PILL TO THE LOWER RIGHT OF THE ICON. His words, with
+   the reach he gave it: "instead of the percent being above the number, I
+   want it in the pill, to the lower right of the icon. That should be a
+   standard language for everything that we do." CE's sheet set each figure
+   bare beyond its glyph. The pill here is the one the gates already carried:
+   11 pixels, as wide as its figure, the gate's colour once a story has run
+   through it and a dash on a grey pill until one has.
+
+   THE PILL IS WHAT SETS HOW FAR OUT A GATE SITS. A pill hanging to the lower
+   right points back at the core from the two gates on the left, and at the
+   collar's base radius it lay across its own sector and onto the ring:
+   worked by hand on the dial at 390, the lower left pill came within 33
+   pixels of the centre against a collar edge at 42. So each gate is carried
+   out along its own bearing until its pill clears the collar, which moves the
+   two left hand gates further than the four others and leaves every sector on
+   the rim where it is. */
+const FR_GATE_AT={intent:-150,aware:-90,detach:-30,averse:30,ignore:90,attach:150};
+const FR_GATE_VS={aware:'ignore',ignore:'aware',detach:'attach',attach:'detach',intent:'averse',averse:'intent'};
+function frCollar(M,cx,cy,edge,sm){
+ var G=frGates(),V=G.hi.concat(G.lo),by={};V.forEach(function(v){by[v.k]=v;});
+ var rc=edge+(sm?3:4),wc=sm?3:4,span=46*Math.PI/180,gz=sm?11:13,Rg=gz/2+3,ph=15,clear=rc+wc/2+2;
+ V.forEach(function(v){var t=(FR_GATE_AT[v.k]||0)*Math.PI/180,ev=G.ev,c=M.seat(v.side==='higher'?'Heart':'Root');
+  var o=by[FR_GATE_VS[v.k]],sum=v.pct+(o?o.pct:0),f=ev&&sum>0?v.pct/sum:0;
+  var pw=G.pw(v),ct=Math.cos(t),st=Math.sin(t),gr=rc+wc/2+Rg+3,gx,gy,px,py;
+  for(var n=0;n<200;n++){gx=cx+ct*gr;gy=cy+st*gr;px=gx+Rg-4;py=gy+Rg-7;
+   var nx=Math.max(px,Math.min(cx,px+pw)),ny=Math.max(py,Math.min(cy,py+ph));
+   if(Math.hypot(nx-cx,ny-cy)>=clear)break;gr+=.5;}
+  /* the ground disc goes first, because it is the gate's own place and the
+     threads crossing under the glyph would otherwise take its strokes */
+  var s='<g data-h="'+M.hid({k:'gate',v:v})+'">'
+   +'<circle cx="'+gx.toFixed(1)+'" cy="'+gy.toFixed(1)+'" r="'+Rg.toFixed(1)+'" fill="'+frRgb(M.ground)+'"/>'
+   +'<path d="'+frArcD(cx,cy,rc,t-span/2,t+span/2)+'" fill="none" stroke="'+rgba(c,ev?.18:.30)+'" stroke-width="'+wc+'"/>';
+  if(f>0)s+='<path d="'+frArcD(cx,cy,rc,t-span/2*f,t+span/2*f)+'" fill="none" stroke="'+rgba(c,.92)+'" stroke-width="'+wc+'"/>';
+  s+=frGlyph(GATEGLYPH[v.k],gx,gy,gz,frRgb(mixc(c,M.ink,.25)),1.5)
+   +'<rect x="'+px.toFixed(1)+'" y="'+py.toFixed(1)+'" width="'+pw+'" height="'+ph+'" rx="'+(ph/2)+'" fill="'
+   +(ev?frRgb(c):rgba(M.ink,.22))+'"/>'
+   +'<text x="'+(px+pw/2).toFixed(1)+'" y="'+(py+ph/2+4).toFixed(1)+'" text-anchor="middle" font-size="11" font-weight="600" fill="'
+   +(ev?frRgb(M.ground):rgba(M.ink,.8))+'">'+G.lab(v)+'</text></g>';
+  M.L.gates.push(s);});}
 /* the gates, with the wheel's own rule for a field no story has run through:
    every share reads nothing and every pill a dash, rather than six zeros.
    Each pill is as wide as its figure set at 11 pixels, measured, and the
@@ -16022,16 +16179,9 @@ function frFrames(M,r){
   lineRing(Lw,D.inner,.08);})();
 
  /* the core and its six gates */
- var R=76*sc;
- frCore(M,r,cx,cy,R,{w:6*Math.max(sc,.6),fs:Math.max(20,64*sc),halo:10*Math.max(sc,.6)});
- /* SPACED BY THEIR PILLS. The mockup's fifty pixels hold a 24 wide pill at
-    full size. Scaled down they did not: measured over all fifteen reference
-    cases at 390, a pill sat under the next gate's disc sixty times. A pill
-    hangs from its gate's lower right, so the next gate stands at least two
-    radii and a pill away, which changes nothing where fifty already cleared. */
- (function(){var G=frGates(),Rg=12*Math.max(sc,.75),dy=R+33*sc,dx=Math.max(50*sc,2*Rg+G.pwMax-2);
-  G.hi.forEach(function(v,k){frGate(M,cx+(k-(G.hi.length-1)/2)*dx,cy-dy,v,Rg,G);});
-  G.lo.forEach(function(v,k){frGate(M,cx+(k-(G.lo.length-1)/2)*dx,cy+dy,v,Rg,G);});})();}
+ var R=76*sc,cw=6*Math.max(sc,.6),ch=10*Math.max(sc,.6);
+ frCore(M,r,cx,cy,R,{w:cw,fs:Math.max(20,64*sc),halo:ch});
+ frCollar(M,cx,cy,R+cw/2+ch,sc<.6);}
 
 /* the three tiers of a chain, which both renditions draw the same way and
    only place differently. T: key, list, bearings, ring, seat, bead radius,
@@ -16168,16 +16318,9 @@ function frDial(M,r){
    var q=ic.at(t);lawAt[j]=q;M.T.laws.push(frGlyph(l.ic,q.x,q.y,gs(10.5),rgba(c,.85),1.7,h));});})();
 
  /* the core and its gates */
- frCore(M,r,cx,cy,Rr.core,{w:5*Math.max(sc,.6),fs:Math.max(20,56*sc),halo:10*Math.max(sc,.6)});
- /* SPACED BY THEIR PILLS, the frames' rule on an arc. A pill hangs to its
-    gate's right, so the next gate round has to stand two radii and a pill
-    along: the step opens past the mockup's 0.66 only when the arc is too
-    small to hold that, which at 1600 it never is and at 390 it always is. */
- (function(){var G=frGates(),Rg=11.5*Math.max(sc,.75);
-  var step=Math.max(.66,Math.asin(Math.min(1,(2*Rg+G.pwMax-2)/Rr.gate)));
-  var put=function(list,up){list.forEach(function(v,i){var a=(up?-Math.PI/2:Math.PI/2)+(i-(list.length-1)/2)*step;
-   frGate(M,cx+Math.cos(a)*Rr.gate,cy+Math.sin(a)*Rr.gate,v,Rg,G);});};
-  put(G.hi,true);put(G.lo,false);})();
+ var cw=5*Math.max(sc,.6),ch=10*Math.max(sc,.6);
+ frCore(M,r,cx,cy,Rr.core,{w:cw,fs:Math.max(20,56*sc),halo:ch});
+ frCollar(M,cx,cy,Rr.core+cw/2+ch,sc<.6);
 
  frCallouts(M,r,{cx:cx,cy:cy,R0:R0,C:C,tip:tip,anchorOf:anchorOf,archAt:archAt,lawAt:lawAt,at:at,hitOf:hitOf});}
 
@@ -23654,7 +23797,7 @@ function setTab(i){
  (function(){
   var WANT={};
   WANT[TAB.ENERGY]={right:['flow','running']};
-  WANT[TAB.FIELD]={left:['soul'],right:['you']};
+  WANT[TAB.FIELD]={left:['soul','lean'],right:['you']};
   WANT[TAB.COMPASS]={right:['you']};
   var w=WANT[i]; if(!w)return;
   SEC_SEEDED=SEC_SEEDED||{};
@@ -25277,15 +25420,19 @@ function renderAcc(r){
     thing widening it, by name, as facts a person can act on: laws still at
     the default, signal, expression, degenerate pairs. A list of causes is
     the honest half. A number nobody can act on was the decoration. */
+ /* AND THEN THE SCALE CAME OFF TOO. Ruled 26 September, CH in TASKS.md:
+    "the modelled accuracy, we just want the word accuracy, we don't need
+    anything else after that." That reverses the paragraph above on the scale,
+    and it is his rule to reverse: the figure sits in a ring, and the ring's
+    fill is the share, so the scale is drawn rather than printed, which is V18's
+    own settlement for a range. The empty state went with it for the same
+    reason. The ring already holds a dash on an unread field, which is the
+    value's one wording for not read yet, so a second line saying so under the
+    word was the same state printed twice. */
  el.innerHTML='<button type="button" class="acc-b" id="accbtn" '
   +'aria-label="Family identification. How much of you the instrument has '
   +'measured. Opens the detail.">'
-  +'<span class="acc-l"><b>Accuracy</b>'
-  /* and the empty state is said the one way. This read "nothing read yet",
-     which is one of the five phrasings of one state the copy seat's sweep
-     names. As a value it is "not read yet", which is what the tier in the
-     rail two surfaces away has always said. */
-  +(un?'<em>not read yet</em>':'<em>of 100</em>')+'</span>'
+  +'<span class="acc-l"><b>Accuracy</b></span>'
   /* AND IT NEVER PRINTS RED. Ruled: "ninety six percent flow accuracy and
      yet it is red, red is a colour of danger, that is bad colouring." A
      well measured person is the good case and the ring says so. */
@@ -26341,7 +26488,11 @@ function frDescribe(h,r){
    rather than what is the one thing open. The drill still opens Selection when
    a reading arrives, and now it opens it beside what was already there instead
    of closing it. */
-var OPENSEC={left:{soul:1}, right:{you:1}};
+/* lean opens with soul because it holds Orientation and Balance, which sat in
+   soul and were open on arrival until the rail split into Spirit and Psyche.
+   A split that closed them would have taken two readings off the first rail a
+   person sees, and nobody ruled that. */
+var OPENSEC={left:{soul:1,lean:1}, right:{you:1}};
 /* which surfaces have already had their sections seeded, so a tab opens what
    it is about the first time and never argues with a person who closed it. */
 var SEC_SEEDED={};
@@ -27205,5 +27356,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="001760467"></div>
+<div id="eof" hidden data-len="001770719"></div>
 </body></html>

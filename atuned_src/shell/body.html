@@ -299,6 +299,29 @@
 
   <!-- ============ LEFT RAIL ============ -->
   <div class="col"><div class="glass panel sc">
+   <!-- SPIRIT, THEN PSYCHE. Ruled 26 September, CH in TASKS.md: "I want to
+        subdivide by spiritual stuff, by spirit, then the next block down would
+        be the psyche, because that gives us a full read of the entire field."
+        He named the two blocks and not what goes in each, so the split is read
+        off what each reading measures, and it is the seat's call, flagged back.
+
+        Spirit is what was there before any of it. The four root domains, the
+        nineteen blueprint domains and the archetypes are the native side of
+        the stack in the product's own glossary, "present before conditioning,
+        which is why it isn't held in tissue", and States is the birth data,
+        already keyed spirit. Psyche is what was installed and is carried.
+        Orientation reads the laws and the empathy and accountability in a
+        person's stories, Balance reads the nine child emotions' charge by the
+        way the body moves under it, and the Matrix is that same charge laid
+        across the domains.
+
+        ORIENTATION AND BALANCE LEFT THE AWARENESS SECTION FOR A SECTION OF
+        THEIR OWN, open by default as they were, rather than inside Child
+        emotions, which opens closed: moving them there would have taken the
+        two readings off the rail a person first sees. The numbers run through
+        the rail in its new order, which also ends the two sections both
+        numbered 4. -->
+   <h2 class="rblk">Spirit</h2>
    <div class="lsec open" data-sec="soul">
     <button class="lsec-hd" type="button"><span>Awareness</span><i></i></button>
     <div class="lsec-bd">
@@ -306,6 +329,27 @@
           a definition sitting permanently under a heading a person reads once,
           and the definition belongs in the tooltip and the drill, where it is
           asked for. What is left is the name and the thing itself. -->
+     <div class="tier1">0 &middot; Root domains</div>
+     <!-- Four root domains would not fit one row, so Witness rendered as Witn
+          with no affordance saying there was more. It wraps. Rule 10: never
+          hide a control with no affordance. -->
+     <div class="rootrow" id="roots"></div>
+     <div class="tier1">1 &middot; Blueprint domains</div>
+     <div class="gdom" id="doms"></div><div class="cap" id="capD"></div>
+     <div class="tier1" style="margin-top:18px">2 &middot; Primary</div>
+     <div class="g6" id="ar1"></div>
+     <div class="sub" style="margin-top:16px">Secondary</div>
+     <div class="g6" id="ar2"></div><div class="cap" id="capA"></div>
+    </div>
+   </div>
+   <div class="lsec" data-sec="spirit">
+    <button class="lsec-hd" type="button"><span>States</span><i></i></button>
+    <div class="lsec-bd"><div id="spirit"></div></div>
+   </div>
+   <h2 class="rblk">Psyche</h2>
+   <div class="lsec open" data-sec="lean">
+    <button class="lsec-hd" type="button"><span>Orientation and balance</span><i></i></button>
+    <div class="lsec-bd">
      <!-- LEAN WAS A WORD NOBODY COULD CASH.
 
           The heading said Lean and the sublabel said benign against
@@ -325,7 +369,7 @@
           one of them capitalised and the other not, which made them look like
           two readings rather than the two ends of one. Orientation is what is
           being read. The ends keep their names inside it. -->
-     <div class="tier1">0 &middot; Orientation</div>
+     <div class="tier1">3 &middot; Orientation</div>
      <div class="polbar" id="polbar"></div>
      <!-- AND BALANCE COMES BACK INTO THE RAIL.
 
@@ -337,20 +381,9 @@
 
           Every other reading in this product lives in the rail. This one
           does now too, and it is the only place it is drawn. -->
-     <div class="tier1" style="margin-top:18px">1 &middot; Balance</div>
+     <div class="tier1" style="margin-top:18px">4 &middot; Balance</div>
      <button type="button" class="bal" id="bal"
       aria-label="Balance. Masculine against feminine. Opens the reading."></button>
-     <div class="tier1" style="margin-top:18px">2 &middot; Root domains</div>
-     <!-- Four root domains would not fit one row, so Witness rendered as Witn
-          with no affordance saying there was more. It wraps. Rule 10: never
-          hide a control with no affordance. -->
-     <div class="rootrow" id="roots"></div>
-     <div class="tier1">3 &middot; Blueprint domains</div>
-     <div class="gdom" id="doms"></div><div class="cap" id="capD"></div>
-     <div class="tier1" style="margin-top:18px">4 &middot; Primary</div>
-     <div class="g6" id="ar1"></div>
-     <div class="sub" style="margin-top:16px">Secondary</div>
-     <div class="g6" id="ar2"></div><div class="cap" id="capA"></div>
     </div>
    </div>
    <div class="lsec" data-sec="fetters">
@@ -370,16 +403,12 @@
      It was also wrong about the controls. "the left slider is how much you
      carry it" describes one axis and these two sliders set all nine at once,
      which is the only thing about them a person cannot work out by looking. -->
-     <div class="tier1">4 &middot; Child emotions</div>
+     <div class="tier1">5 &middot; Child emotions</div>
      <p class="stk-def">Both sliders set all nine axes at once.</p>
      <div class="bulk"><label for="allCh">held</label><input type="range" id="allCh" min="0" max="10" step="0.5" value="3"></div>
      <div class="bulk"><label for="allRep">opposite</label><input type="range" id="allRep" min="0" max="10" step="0.5" value="0"></div>
      <div id="chg"></div>
     </div>
-   </div>
-   <div class="lsec" data-sec="spirit">
-    <button class="lsec-hd" type="button"><span>States</span><i></i></button>
-    <div class="lsec-bd"><div id="spirit"></div></div>
    </div>
    <div class="lsec" data-sec="matrix">
     <button class="lsec-hd" type="button"><span>Matrix</span><i></i></button>

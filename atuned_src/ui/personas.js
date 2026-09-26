@@ -270,15 +270,19 @@ function renderAcc(r){
     thing widening it, by name, as facts a person can act on: laws still at
     the default, signal, expression, degenerate pairs. A list of causes is
     the honest half. A number nobody can act on was the decoration. */
+ /* AND THEN THE SCALE CAME OFF TOO. Ruled 26 September, CH in TASKS.md:
+    "the modelled accuracy, we just want the word accuracy, we don't need
+    anything else after that." That reverses the paragraph above on the scale,
+    and it is his rule to reverse: the figure sits in a ring, and the ring's
+    fill is the share, so the scale is drawn rather than printed, which is V18's
+    own settlement for a range. The empty state went with it for the same
+    reason. The ring already holds a dash on an unread field, which is the
+    value's one wording for not read yet, so a second line saying so under the
+    word was the same state printed twice. */
  el.innerHTML='<button type="button" class="acc-b" id="accbtn" '
   +'aria-label="Family identification. How much of you the instrument has '
   +'measured. Opens the detail.">'
-  +'<span class="acc-l"><b>Accuracy</b>'
-  /* and the empty state is said the one way. This read "nothing read yet",
-     which is one of the five phrasings of one state the copy seat's sweep
-     names. As a value it is "not read yet", which is what the tier in the
-     rail two surfaces away has always said. */
-  +(un?'<em>not read yet</em>':'<em>of 100</em>')+'</span>'
+  +'<span class="acc-l"><b>Accuracy</b></span>'
   /* AND IT NEVER PRINTS RED. Ruled: "ninety six percent flow accuracy and
      yet it is red, red is a colour of danger, that is bad colouring." A
      well measured person is the good case and the ring says so. */

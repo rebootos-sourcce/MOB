@@ -1336,6 +1336,21 @@ canvas#cv{display:block;grid-column:2;grid-row:3;width:100%;height:100%;
    would have sat in the left lane of all of them */
 body:not(.tab-field) .fview{display:none}
 .fview .vt{padding:8px 12px}
+/* OFF READS OFF. Ruled 26 September, CH in TASKS.md: "the circles are very
+   clear, those say off. The ones with the bars, they don't look off ... or
+   maybe those are bright and there's a dim colour where they're off." The
+   circles are the layer row, where off is dim ink with no ring. The bars are
+   this switch and the wheel's depth row, where the one you are on carries a
+   hairline, and the ones you are not on kept the box and the mid ink every
+   .vt wears: measured on James at 1600, Wheel and Frames sat boxed and bright
+   beside a pressed Dial with no box at all, so the two that were off read as
+   the two that were on. They take the layer row's off state now, dim ink and
+   no box, and come up to ink under the pointer so they still read as
+   pressable. Scoped to the two Field switches, which are the screen he was
+   reading: the Body page's layer row is its own pill, .pm-lb, and other .vt
+   rows elsewhere are flagged rather than moved in this pass. */
+.fview .vt[aria-pressed=false],#vbar .vt[aria-pressed=false]{border-color:transparent;color:var(--dim)}
+.fview .vt[aria-pressed=false]:hover,#vbar .vt[aria-pressed=false]:hover{color:var(--ink)}
 /* the navigation rule the depth row keeps: the position you are on loses its
    box and carries the accent hairline under it. Without the hairline the
    pressed one differed only by a missing border and a blue icon, and its word
@@ -1674,6 +1689,13 @@ body:not(.tab-field) .pol2{display:none}
 .lsec.open .lsec-hd i{transform:rotate(-135deg)}
 .lsec-bd{display:none;padding-bottom:16px}
 .lsec.open .lsec-bd{display:block}
+/* SPIRIT AND PSYCHE, the rail's two blocks, ruled 26 September. A block is
+   one level above a section, so it is set in ink and a size up from the
+   section headers under it, and it is not a control: nothing here opens or
+   closes, which is why it carries no chevron and takes no pointer. */
+.rblk{margin:2px 2px 0;padding:6px 0 2px;font-family:var(--sans);font-size:13px;font-weight:600;
+ color:var(--ink);letter-spacing:.01em;line-height:1.4}
+.lsec + .rblk{margin-top:14px;padding-top:16px}
 
 /* ---------- polarity bar ---------- */
 .polbar{height:32px;border-radius:var(--r-xs);position:relative;overflow:hidden;

@@ -373,7 +373,11 @@ function frDescribe(h,r){
    rather than what is the one thing open. The drill still opens Selection when
    a reading arrives, and now it opens it beside what was already there instead
    of closing it. */
-var OPENSEC={left:{soul:1}, right:{you:1}};
+/* lean opens with soul because it holds Orientation and Balance, which sat in
+   soul and were open on arrival until the rail split into Spirit and Psyche.
+   A split that closed them would have taken two readings off the first rail a
+   person sees, and nobody ruled that. */
+var OPENSEC={left:{soul:1,lean:1}, right:{you:1}};
 /* which surfaces have already had their sections seeded, so a tab opens what
    it is about the first time and never argues with a person who closed it. */
 var SEC_SEEDED={};

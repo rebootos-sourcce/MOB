@@ -197,7 +197,7 @@ function setTab(i){
  (function(){
   var WANT={};
   WANT[TAB.ENERGY]={right:['flow','running']};
-  WANT[TAB.FIELD]={left:['soul'],right:['you']};
+  WANT[TAB.FIELD]={left:['soul','lean'],right:['you']};
   WANT[TAB.COMPASS]={right:['you']};
   var w=WANT[i]; if(!w)return;
   SEC_SEEDED=SEC_SEEDED||{};
