@@ -1,0 +1,769 @@
+{
+ "summary": {
+  "occurrences": 107,
+  "release": 92,
+  "protocol": 15,
+  "tally": {
+   "release | noun, the event": 47,
+   "release | verb": 29,
+   "protocol | noun, the procedure": 15,
+   "release | past participle or state": 5,
+   "release | verb, ongoing": 5,
+   "release | adjective": 1,
+   "release | modifier of protocol": 5
+  },
+  "release_in_a_noun_slot": 47,
+  "release_needing_a_rewrite": 45
+ },
+ "rows": [
+  {
+   "file": "ui/component.js",
+   "line": 559,
+   "word": "Release",
+   "role": "noun, the event",
+   "text": "The avatar. Release empties an address and replace fills it. This is what you a"
+  },
+  {
+   "file": "ui/imprints.js",
+   "line": 239,
+   "word": "Release",
+   "role": "verb",
+   "text": ">Release "
+  },
+  {
+   "file": "ui/storyui.js",
+   "line": 163,
+   "word": "Release",
+   "role": "noun, the event",
+   "text": "<div class=\"pm-eye\">Release</div>"
+  },
+  {
+   "file": "ui/storyui.js",
+   "line": 166,
+   "word": "release",
+   "role": "verb",
+   "text": "Nothing is held above the line yet, so there is nothing to release."
+  },
+  {
+   "file": "ui/storyui.js",
+   "line": 189,
+   "word": "release",
+   "role": "noun, the event",
+   "text": ">Run a release</button></div>"
+  },
+  {
+   "file": "ui/summary.js",
+   "line": 620,
+   "word": "protocol",
+   "role": "noun, the procedure",
+   "text": "The protocol"
+  },
+  {
+   "file": "ui/summary.js",
+   "line": 622,
+   "word": "protocol",
+   "role": "noun, the procedure",
+   "text": "The protocol"
+  },
+  {
+   "file": "ui/summary.js",
+   "line": 648,
+   "word": "Release",
+   "role": "verb",
+   "text": "Release this first"
+  },
+  {
+   "file": "ui/summary.js",
+   "line": 650,
+   "word": "Release",
+   "role": "noun, the event",
+   "text": ". Release has about "
+  },
+  {
+   "file": "ui/summary.js",
+   "line": 651,
+   "word": "release",
+   "role": "noun, the event",
+   "text": "\">Run a release</button>"
+  },
+  {
+   "file": "ui/summary.js",
+   "line": 652,
+   "word": "Release",
+   "role": "verb",
+   "text": "Release this first"
+  },
+  {
+   "file": "ui/summary.js",
+   "line": 655,
+   "word": "release",
+   "role": "noun, the event",
+   "text": "\">Run a release</button>"
+  },
+  {
+   "file": "ui/summary.js",
+   "line": 664,
+   "word": "Release",
+   "role": "noun, the event",
+   "text": "Release has about "
+  },
+  {
+   "file": "ui/summary.js",
+   "line": 667,
+   "word": "Release",
+   "role": "verb",
+   "text": "Release this first"
+  },
+  {
+   "file": "ui/analytics.js",
+   "line": 325,
+   "word": "Release",
+   "role": "noun, the event",
+   "text": " The archetype is invariant. Release does not change it, it only clears what bends its "
+  },
+  {
+   "file": "ui/release.js",
+   "line": 130,
+   "word": "released",
+   "role": "past participle or state",
+   "text": "Nothing released on a worked example."
+  },
+  {
+   "file": "ui/release.js",
+   "line": 141,
+   "word": "release",
+   "role": "noun, the event",
+   "text": "the release at "
+  },
+  {
+   "file": "ui/release.js",
+   "line": 188,
+   "word": "release",
+   "role": "noun, the event",
+   "text": "first release at the "
+  },
+  {
+   "file": "ui/release.js",
+   "line": 271,
+   "word": "Release",
+   "role": "noun, the event",
+   "text": "<div class=\"pm-eye\">Release and reframe</div>"
+  },
+  {
+   "file": "ui/release.js",
+   "line": 305,
+   "word": "Released",
+   "role": "past participle or state",
+   "text": "<div class=\"pm-eye\">Released</div>"
+  },
+  {
+   "file": "ui/release.js",
+   "line": 331,
+   "word": "Release",
+   "role": "noun, the event",
+   "text": "Release has about "
+  },
+  {
+   "file": "ui/release.js",
+   "line": 334,
+   "word": "Release",
+   "role": "noun, the event",
+   "text": "Release has about "
+  },
+  {
+   "file": "ui/release.js",
+   "line": 337,
+   "word": "Release",
+   "role": "noun, the event",
+   "text": "<div class=\"rel-note\">Release empties the address. The coherent opposite is "
+  },
+  {
+   "file": "ui/release.js",
+   "line": 353,
+   "word": "release",
+   "role": "noun, the event",
+   "text": "<div class=\"pm-eye\">Run a release</div>"
+  },
+  {
+   "file": "ui/ritual.js",
+   "line": 102,
+   "word": "releasing",
+   "role": "verb, ongoing",
+   "text": "<div class=\"rit-from\">After releasing "
+  },
+  {
+   "file": "ui/drills.js",
+   "line": 200,
+   "word": "Release",
+   "role": "noun, the event",
+   "text": "None of it is installed yet. Release empties the address, the opposite is what fills it."
+  },
+  {
+   "file": "ui/drills.js",
+   "line": 268,
+   "word": "protocol",
+   "role": "noun, the procedure",
+   "text": "Run the protocol here</button>"
+  },
+  {
+   "file": "ui/drills.js",
+   "line": 272,
+   "word": "release",
+   "role": "verb",
+   "text": "p class=\"ad-p\">Nothing is held here, so there is nothing to release. "
+  },
+  {
+   "file": "ui/drills.js",
+   "line": 273,
+   "word": "protocol",
+   "role": "noun, the procedure",
+   "text": "The protocol opens once this address is carrying.</p>"
+  },
+  {
+   "file": "ui/drills.js",
+   "line": 386,
+   "word": "Release",
+   "role": "noun, the event",
+   "text": "Release empties the address, replace fills it with the opposite, an"
+  },
+  {
+   "file": "ui/drills.js",
+   "line": 445,
+   "word": "protocol",
+   "role": "noun, the procedure",
+   "text": "\">Run the protocol here</button></div>"
+  },
+  {
+   "file": "ui/drills.js",
+   "line": 546,
+   "word": "Release",
+   "role": "noun, the event",
+   "text": "</b>. Release empties the address, the opposite is what fills it.</p>"
+  },
+  {
+   "file": "ui/drills.js",
+   "line": 946,
+   "word": "release",
+   "role": "noun, the event",
+   "text": "<p class=\"ad-p\">The right hand sentence steers the release, because that is what is "
+  },
+  {
+   "file": "ui/drills.js",
+   "line": 1035,
+   "word": "releasable",
+   "role": "adjective",
+   "text": "for it, and a groove is releasable at the address it sits on.</p>"
+  },
+  {
+   "file": "ui/knowledge.js",
+   "line": 169,
+   "word": "release",
+   "role": "modifier of protocol",
+   "text": "release protocol"
+  },
+  {
+   "file": "ui/knowledge.js",
+   "line": 169,
+   "word": "protocol",
+   "role": "noun, the procedure",
+   "text": "release protocol"
+  },
+  {
+   "file": "ui/knowledge.js",
+   "line": 283,
+   "word": "releases",
+   "role": "verb",
+   "text": "of the axis the card releases, where the card names one"
+  },
+  {
+   "file": "ui/knowledge.js",
+   "line": 476,
+   "word": "Release",
+   "role": "modifier of protocol",
+   "text": "<div class=\"pm-eye\">Release protocol No."
+  },
+  {
+   "file": "ui/knowledge.js",
+   "line": 476,
+   "word": "protocol",
+   "role": "noun, the procedure",
+   "text": "<div class=\"pm-eye\">Release protocol No."
+  },
+  {
+   "file": "ui/knowledge.js",
+   "line": 504,
+   "word": "Release",
+   "role": "noun, the event",
+   "text": "<div class=\"pm-eye\">Release</div>"
+  },
+  {
+   "file": "ui/record.js",
+   "line": 53,
+   "word": "release",
+   "role": "noun, the event",
+   "text": "is written every time a story is committed and every time a release finishes. "
+  },
+  {
+   "file": "ui/games.js",
+   "line": 124,
+   "word": "Release",
+   "role": "noun, the event",
+   "text": "Release empties the address, the opposite is what fills it.</p>"
+  },
+  {
+   "file": "ui/games.js",
+   "line": 186,
+   "word": "release",
+   "role": "noun, the event",
+   "text": "</b>. Deal again, or open the release to commit it.</p></div>"
+  },
+  {
+   "file": "ui/panels.js",
+   "line": 796,
+   "word": "release",
+   "role": "noun, the event",
+   "text": "h-p\">The avatar, the purpose map and the boundary. What the release work is "
+  },
+  {
+   "file": "ui/account.js",
+   "line": 423,
+   "word": "protocol",
+   "role": "noun, the procedure",
+   "text": "Does the protocol make sense?"
+  },
+  {
+   "file": "ui/personas.js",
+   "line": 722,
+   "word": "release",
+   "role": "verb",
+   "text": "Nothing is carrying, so there is nothing to release. The intake measured "
+  },
+  {
+   "file": "ui/personas.js",
+   "line": 725,
+   "word": "release",
+   "role": "verb",
+   "text": "Nothing is carrying, so there is nothing to release. Write a story or set "
+  },
+  {
+   "file": "ui/ui.js",
+   "line": 504,
+   "word": "Release",
+   "role": "verb",
+   "text": "Opposite</b> is the coherent quality on the far side of it. Release "
+  },
+  {
+   "file": "ui/ui.js",
+   "line": 986,
+   "word": "released",
+   "role": "past participle or state",
+   "text": "anything was conditioned, so it is not released. The work changes where "
+  },
+  {
+   "file": "engine/data/kb.js",
+   "line": 16,
+   "word": "release",
+   "role": "verb",
+   "text": "omeone will get hurt, or the situation will fall apart if I release my grip. Self-control registers as 10. Anything less regist"
+  },
+  {
+   "file": "engine/data/kb.js",
+   "line": 16,
+   "word": "Release",
+   "role": "verb",
+   "text": "ot conditions. Neither is real. Locate the fear underneath. Release the fear. The control behavior loses its substrate."
+  },
+  {
+   "file": "engine/data/kb.js",
+   "line": 16,
+   "word": "release",
+   "role": "noun, the event",
+   "text": "Before completion or release of work."
+  },
+  {
+   "file": "engine/data/kb.js",
+   "line": 16,
+   "word": "Release",
+   "role": "verb",
+   "text": "Set a fixed completion time. Release at that time regardless of state."
+  },
+  {
+   "file": "engine/data/kb.js",
+   "line": 16,
+   "word": "Release",
+   "role": "verb",
+   "text": " afraid, they experience themselves as preferring solitude. Release the fear and sad nodes and the solitude remains if chosen, "
+  },
+  {
+   "file": "engine/data/kb.js",
+   "line": 16,
+   "word": "release",
+   "role": "verb",
+   "text": "e fear that drives Controller (something will go wrong if I release grip) and the same fear that drives Hyper-Vigilant (the thr"
+  },
+  {
+   "file": "engine/data/kb.js",
+   "line": 16,
+   "word": "Release",
+   "role": "verb",
+   "text": "hragm for a count of five. Notice they were already locked. Release on the exhale. The release is not a relaxation technique, i"
+  },
+  {
+   "file": "engine/data/kb.js",
+   "line": 16,
+   "word": "release",
+   "role": "noun, the event",
+   "text": "Notice they were already locked. Release on the exhale. The release is not a relaxation technique, it is a demonstration that t"
+  },
+  {
+   "file": "engine/data/kb.js",
+   "line": 17,
+   "word": "Releases",
+   "role": "verb",
+   "text": " is finished, presence with what's dying without flinching. Releases what's done so renewal has room."
+  },
+  {
+   "file": "engine/data/kb.js",
+   "line": 19,
+   "word": "release",
+   "role": "noun, the event",
+   "text": "etter, every tag, every limiting belief has an address. The release work operates at the address--not at the level of thought o"
+  },
+  {
+   "file": "engine/data/kb.js",
+   "line": 19,
+   "word": "release",
+   "role": "noun, the event",
+   "text": "s equivalent of compound interest on unresolved charge. The release work reduces allostatic load by addressing it at the addres"
+  },
+  {
+   "file": "engine/data/kb.js",
+   "line": 19,
+   "word": "released",
+   "role": "past participle or state",
+   "text": " conditioning, which is why it isn't held in tissue and not released: the work changes where it's pointed, not what it is."
+  },
+  {
+   "file": "engine/data/kb.js",
+   "line": 19,
+   "word": "release",
+   "role": "noun, the event",
+   "text": "ommands. A state definition, not a threshold: it carries no release count. It's not a destination--an operating state."
+  },
+  {
+   "file": "engine/data/kb.js",
+   "line": 19,
+   "word": "released",
+   "role": "past participle or state",
+   "text": " a pattern suppresses--installed at the same address as the released charge. Not a generic positive. The exact quality the patte"
+  },
+  {
+   "file": "engine/data/kb.js",
+   "line": 19,
+   "word": "release",
+   "role": "noun, the event",
+   "text": " most therapeutic modalities. Requires active address-level release work. Distinguished from practice-maintained conditioning, "
+  },
+  {
+   "file": "engine/data/kb.js",
+   "line": 19,
+   "word": "release",
+   "role": "modifier of protocol",
+   "text": "The release protocol. Runs two mechanics in sequence: (1) reducing char"
+  },
+  {
+   "file": "engine/data/kb.js",
+   "line": 19,
+   "word": "protocol",
+   "role": "noun, the procedure",
+   "text": "The release protocol. Runs two mechanics in sequence: (1) reducing charge at the"
+  },
+  {
+   "file": "engine/data/kb.js",
+   "line": 19,
+   "word": "release",
+   "role": "modifier of protocol",
+   "text": "A geometric field structure used in the release protocol. Top spinning left, bottom spinning right. Opposin"
+  },
+  {
+   "file": "engine/data/kb.js",
+   "line": 19,
+   "word": "protocol",
+   "role": "noun, the procedure",
+   "text": "A geometric field structure used in the release protocol. Top spinning left, bottom spinning right. Opposing rotatio"
+  },
+  {
+   "file": "engine/data/kb.js",
+   "line": 19,
+   "word": "release",
+   "role": "noun, the event",
+   "text": "ns distort the node’s current flow, creating conditions for release."
+  },
+  {
+   "file": "engine/data/kb.js",
+   "line": 19,
+   "word": "releases",
+   "role": "verb",
+   "text": "rive it, and it naturally stimulates the nervous system and releases stress from the body. The protocol developed for Stage 4 an"
+  },
+  {
+   "file": "engine/data/kb.js",
+   "line": 19,
+   "word": "protocol",
+   "role": "noun, the procedure",
+   "text": "s the nervous system and releases stress from the body. The protocol developed for Stage 4 and Stage 5 nodes, the ones too dense"
+  },
+  {
+   "file": "engine/data/kb.js",
+   "line": 19,
+   "word": "release",
+   "role": "noun, the event",
+   "text": "s too dense or too numb to feel. Restores enough signal for release work to begin."
+  },
+  {
+   "file": "engine/data/kb.js",
+   "line": 19,
+   "word": "releases",
+   "role": "verb",
+   "text": "ing nodes. Clear the primary node and the surrounding field releases on its own. Working secondary nodes without finding the pri"
+  },
+  {
+   "file": "engine/data/kb.js",
+   "line": 19,
+   "word": "release",
+   "role": "noun, the event",
+   "text": "ary nodes without finding the primary node produces partial release."
+  },
+  {
+   "file": "engine/data/kb.js",
+   "line": 19,
+   "word": "protocol",
+   "role": "noun, the procedure",
+   "text": "The protocol in which reading a properly constructed Letting Go sequence"
+  },
+  {
+   "file": "engine/data/kb.js",
+   "line": 19,
+   "word": "release",
+   "role": "noun, the event",
+   "text": "a properly constructed Letting Go sequence produces somatic release at the anatomical address the sequence specifies. No additi"
+  },
+  {
+   "file": "engine/data/kb.js",
+   "line": 19,
+   "word": "release",
+   "role": "noun, the event",
+   "text": "e flow of signal through the system. Resistance is what the release work reduces. It no longer divides CQ, which is the laws al"
+  },
+  {
+   "file": "engine/data/kb.js",
+   "line": 19,
+   "word": "release",
+   "role": "noun, the event",
+   "text": "The body’s autonomous release state when enough gates have cleared. The soma fields begin"
+  },
+  {
+   "file": "engine/data/kb.js",
+   "line": 19,
+   "word": "releasing",
+   "role": "verb, ongoing",
+   "text": "state when enough gates have cleared. The soma fields begin releasing without active protocol work. The operational success crite"
+  },
+  {
+   "file": "engine/data/kb.js",
+   "line": 19,
+   "word": "protocol",
+   "role": "noun, the procedure",
+   "text": "ave cleared. The soma fields begin releasing without active protocol work. The operational success criterion of a release sessio"
+  },
+  {
+   "file": "engine/data/kb.js",
+   "line": 19,
+   "word": "release",
+   "role": "noun, the event",
+   "text": "ctive protocol work. The operational success criterion of a release session: not the node is cleared, the body is releasing on "
+  },
+  {
+   "file": "engine/data/kb.js",
+   "line": 19,
+   "word": "releasing",
+   "role": "verb, ongoing",
+   "text": " of a release session: not the node is cleared, the body is releasing on its own."
+  },
+  {
+   "file": "engine/data/kb.js",
+   "line": 19,
+   "word": "release",
+   "role": "noun, the event",
+   "text": "The two operations required for a complete release: (1) Release--the charge at the address reduces; (2) Embodi"
+  },
+  {
+   "file": "engine/data/kb.js",
+   "line": 19,
+   "word": "Release",
+   "role": "noun, the event",
+   "text": "The two operations required for a complete release: (1) Release--the charge at the address reduces; (2) Embodied Truth--the"
+  },
+  {
+   "file": "engine/data/kb.js",
+   "line": 19,
+   "word": "Release",
+   "role": "verb",
+   "text": "hrough resistance spends it. High drag means low willpower. Release the charges, drag reduces, willpower rises. Not a separate "
+  },
+  {
+   "file": "engine/data/cards.js",
+   "line": 97,
+   "word": "releases",
+   "role": "noun, the event",
+   "text": "All releases run bilaterally, fifty left and fifty right at "
+  },
+  {
+   "file": "engine/data/cards.js",
+   "line": 196,
+   "word": "release",
+   "role": "verb",
+   "text": "not safe to release pressure"
+  },
+  {
+   "file": "engine/data/cards.js",
+   "line": 264,
+   "word": "release",
+   "role": "noun, the event",
+   "text": "After the release, state the installation. Not as an affirmation, as a somati"
+  },
+  {
+   "file": "engine/data/cards.js",
+   "line": 265,
+   "word": "Release",
+   "role": "verb",
+   "text": "ry, every person, every situation that carries this charge. Release each in sequence. The chain builds momentum."
+  },
+  {
+   "file": "engine/data/cards.js",
+   "line": 266,
+   "word": "release",
+   "role": "noun, the event",
+   "text": "The release is complete when the body settles. Breath deepens. Vision m"
+  },
+  {
+   "file": "engine/data/cards.js",
+   "line": 305,
+   "word": "Release",
+   "role": "modifier of protocol",
+   "text": "Release protocol card, "
+  },
+  {
+   "file": "engine/data/cards.js",
+   "line": 305,
+   "word": "protocol",
+   "role": "noun, the procedure",
+   "text": "Release protocol card, "
+  },
+  {
+   "file": "engine/plan.js",
+   "line": 51,
+   "word": "releases",
+   "role": "noun, the event",
+   "text": "undred patterns, free, with everything visible. Twenty five releases at one address, or fewer and wider. It is spent by opening "
+  },
+  {
+   "file": "engine/plan.js",
+   "line": 53,
+   "word": "releases",
+   "role": "noun, the event",
+   "text": "Ten patterns a week, for life. Two releases at one address, and unlimited rerunning of anything already"
+  },
+  {
+   "file": "engine/plan.js",
+   "line": 55,
+   "word": "release",
+   "role": "verb",
+   "text": "ut what a month of half an hour of practice every day would release."
+  },
+  {
+   "file": "engine/plan.js",
+   "line": 274,
+   "word": "release",
+   "role": "verb",
+   "text": " would release"
+  },
+  {
+   "file": "engine/plan.js",
+   "line": 291,
+   "word": "release",
+   "role": "verb",
+   "text": "ut what a month of half an hour of practice every day would release."
+  },
+  {
+   "file": "engine/plan.js",
+   "line": 292,
+   "word": "release",
+   "role": "verb",
+   "text": " months of half an hour a day would release."
+  },
+  {
+   "file": "engine/plan.js",
+   "line": 293,
+   "word": "release",
+   "role": "verb",
+   "text": " therapy sessions would release."
+  },
+  {
+   "file": "engine/data/practice.js",
+   "line": 36,
+   "word": "release",
+   "role": "verb",
+   "text": "charge is easier to release, because it vibrates faster than the pranic breath."
+  },
+  {
+   "file": "engine/data/practice.js",
+   "line": 39,
+   "word": "protocol",
+   "role": "noun, the procedure",
+   "text": "Built into the app. Run it from your protocol any time the felt reference drifts."
+  },
+  {
+   "file": "engine/data/practice.js",
+   "line": 92,
+   "word": "release",
+   "role": "verb",
+   "text": "every pattern, decide: keep, transform, or release. Then run the release on the ones "
+  },
+  {
+   "file": "engine/data/practice.js",
+   "line": 92,
+   "word": "release",
+   "role": "noun, the event",
+   "text": " pattern, decide: keep, transform, or release. Then run the release on the ones "
+  },
+  {
+   "file": "engine/data/practice.js",
+   "line": 101,
+   "word": "release",
+   "role": "noun, the event",
+   "text": "This is training, not release."
+  },
+  {
+   "file": "engine/data/canon.js",
+   "line": 376,
+   "word": "releasing",
+   "role": "verb, ongoing",
+   "text": "releasing form back to potential"
+  },
+  {
+   "file": "engine/numerology.js",
+   "line": 144,
+   "word": "releasing",
+   "role": "verb, ongoing",
+   "text": "releasing it"
+  },
+  {
+   "file": "engine/verp.js",
+   "line": 307,
+   "word": "release",
+   "role": "noun, the event",
+   "text": "release, which the six gates already read"
+  }
+ ]
+}

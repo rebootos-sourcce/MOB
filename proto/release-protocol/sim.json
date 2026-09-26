@@ -1,0 +1,959 @@
+{
+ "n": 1000,
+ "seed": 20260926,
+ "features": {
+  "physical": "names a physical event with mass and direction (the house rule: physical metaphors only)",
+  "sequence": "signals a fixed, specified series of steps",
+  "obligation": "reads as an assignment: you need to do this",
+  "shelf": "echoes the wellness shelf, where this word is sold as a feeling",
+  "clinical": "reads as medical or institutional, done to a patient",
+  "costume": "claims a formality or precision the sentence does not carry",
+  "discreet": "gives nothing away to somebody glancing at the screen",
+  "fit": "reads as the sentence it replaces, without a rewrite",
+  "truth": "still says exactly what the engine does (pass one, which beats every other)"
+ },
+ "strings": [
+  {
+   "id": "button",
+   "bucket": "Menu",
+   "where": "ui/summary.js:651, ui/storyui.js:189, eyebrow at ui/release.js:353",
+   "shipped": "R",
+   "R": "Run a release",
+   "P": "Run the protocol",
+   "why": "The primary action on Summary and on Story. Nothing beside the button says what the sequence is.",
+   "xR": {
+    "physical": 2,
+    "sequence": 0.5,
+    "obligation": 0.5,
+    "shelf": 1.5,
+    "clinical": 0,
+    "costume": 0,
+    "discreet": 0.5,
+    "fit": 2,
+    "truth": 2
+   },
+   "xP": {
+    "physical": 0,
+    "sequence": 2,
+    "obligation": 1.5,
+    "shelf": 0,
+    "clinical": 1.5,
+    "costume": 0.5,
+    "discreet": 1.5,
+    "fit": 2,
+    "truth": 2
+   },
+   "by": {
+    "Sofia": {
+     "base": 1.25,
+     "release": 616
+    },
+    "Diane": {
+     "base": -0.25,
+     "release": 445
+    },
+    "Marcus": {
+     "base": 2.5,
+     "release": 789
+    },
+    "Angela": {
+     "base": 9.25,
+     "release": 1000
+    },
+    "Derek": {
+     "base": -5.5,
+     "release": 16
+    },
+    "James": {
+     "base": -0.75,
+     "release": 387
+    }
+   }
+  },
+  {
+   "id": "first",
+   "bucket": "Label",
+   "where": "ui/summary.js:648",
+   "shipped": "R",
+   "R": "Release this first",
+   "P": "First protocol",
+   "why": "Eyebrow over the heaviest address on Summary. The P form has no verb to carry the imperative, so it reads as if the address were the protocol's name.",
+   "xR": {
+    "physical": 2,
+    "sequence": 0.5,
+    "obligation": 1,
+    "shelf": 1.5,
+    "clinical": 0,
+    "costume": 0,
+    "discreet": 0.5,
+    "fit": 2,
+    "truth": 2
+   },
+   "xP": {
+    "physical": 0,
+    "sequence": 2,
+    "obligation": 1.5,
+    "shelf": 0,
+    "clinical": 1.5,
+    "costume": 1,
+    "discreet": 1.5,
+    "fit": 1,
+    "truth": 1
+   },
+   "by": {
+    "Sofia": {
+     "base": 4.5,
+     "release": 905
+    },
+    "Diane": {
+     "base": 2,
+     "release": 764
+    },
+    "Marcus": {
+     "base": 7.5,
+     "release": 975
+    },
+    "Angela": {
+     "base": 10.5,
+     "release": 1000
+    },
+    "Derek": {
+     "base": -2.25,
+     "release": 224
+    },
+    "James": {
+     "base": 2.5,
+     "release": 763
+    }
+   }
+  },
+  {
+   "id": "here",
+   "bucket": "Instruction",
+   "where": "ui/drills.js:268 and :445",
+   "shipped": "P",
+   "R": "Run a release here. Four channels, twenty five lines.",
+   "P": "Run the protocol here. Four channels, twenty five lines.",
+   "why": "The address card button. The line beside it states the sequence, so \"protocol\" is earned here: it names a thing that is exactly specified.",
+   "xR": {
+    "physical": 2,
+    "sequence": 1,
+    "obligation": 0.5,
+    "shelf": 1.5,
+    "clinical": 0,
+    "costume": 0,
+    "discreet": 0.5,
+    "fit": 2,
+    "truth": 2
+   },
+   "xP": {
+    "physical": 0,
+    "sequence": 2,
+    "obligation": 1.5,
+    "shelf": 0,
+    "clinical": 1.5,
+    "costume": 0,
+    "discreet": 1.5,
+    "fit": 2,
+    "truth": 2
+   },
+   "by": {
+    "Sofia": {
+     "base": 1.5,
+     "release": 690
+    },
+    "Diane": {
+     "base": 0,
+     "release": 513
+    },
+    "Marcus": {
+     "base": 1.5,
+     "release": 729
+    },
+    "Angela": {
+     "base": 9,
+     "release": 1000
+    },
+    "Derek": {
+     "base": -4.75,
+     "release": 29
+    },
+    "James": {
+     "base": -0.75,
+     "release": 378
+    }
+   }
+  },
+  {
+   "id": "nothing",
+   "bucket": "Refusal",
+   "where": "ui/drills.js:272 to :273",
+   "shipped": "mixed",
+   "R": "Nothing is held here, so there is nothing to release. A release opens once this address is carrying.",
+   "P": "Nothing is held here, so there is nothing for the protocol to run on. The protocol opens once this address is carrying.",
+   "why": "Ships today with both words in one refusal. Protocol has no verb, so \"nothing to release\" has to be rebuilt.",
+   "xR": {
+    "physical": 2,
+    "sequence": 0.5,
+    "obligation": 0.5,
+    "shelf": 1.5,
+    "clinical": 0,
+    "costume": 0,
+    "discreet": 0.5,
+    "fit": 2,
+    "truth": 2
+   },
+   "xP": {
+    "physical": 0,
+    "sequence": 2,
+    "obligation": 1.5,
+    "shelf": 0,
+    "clinical": 1.5,
+    "costume": 1,
+    "discreet": 1.5,
+    "fit": 1,
+    "truth": 2
+   },
+   "by": {
+    "Sofia": {
+     "base": 2.75,
+     "release": 801
+    },
+    "Diane": {
+     "base": 1,
+     "release": 643
+    },
+    "Marcus": {
+     "base": 5.25,
+     "release": 928
+    },
+    "Angela": {
+     "base": 10.25,
+     "release": 1000
+    },
+    "Derek": {
+     "base": -4.25,
+     "release": 64
+    },
+    "James": {
+     "base": 1.25,
+     "release": 639
+    }
+   }
+  },
+  {
+   "id": "imprints",
+   "bucket": "Menu",
+   "where": "ui/imprints.js:239",
+   "shipped": "R",
+   "R": "Release 3",
+   "P": "Run protocol 3",
+   "why": "Menus are one word, and the word says what the control does. A noun cannot be that word.",
+   "xR": {
+    "physical": 2,
+    "sequence": 0.5,
+    "obligation": 1,
+    "shelf": 1.5,
+    "clinical": 0,
+    "costume": 0,
+    "discreet": 0.5,
+    "fit": 2,
+    "truth": 2
+   },
+   "xP": {
+    "physical": 0,
+    "sequence": 2,
+    "obligation": 1.5,
+    "shelf": 0,
+    "clinical": 1.5,
+    "costume": 1,
+    "discreet": 1.5,
+    "fit": 0.5,
+    "truth": 2
+   },
+   "by": {
+    "Sofia": {
+     "base": 3,
+     "release": 823
+    },
+    "Diane": {
+     "base": 0.5,
+     "release": 579
+    },
+    "Marcus": {
+     "base": 5.75,
+     "release": 959
+    },
+    "Angela": {
+     "base": 10,
+     "release": 1000
+    },
+    "Derek": {
+     "base": -3.25,
+     "release": 104
+    },
+    "James": {
+     "base": 1.25,
+     "release": 665
+    }
+   }
+  },
+  {
+   "id": "done",
+   "bucket": "Label",
+   "where": "ui/release.js:305",
+   "shipped": "R",
+   "R": "Released",
+   "P": "Protocol complete",
+   "why": "The eyebrow on the card a run ends on, above \"0 cleared entirely, 66 weight freed\" for James. \"Released\" states a body event the instrument did not observe. \"Protocol complete\" states only what the software knows.",
+   "xR": {
+    "physical": 2,
+    "sequence": 0.5,
+    "obligation": 0.5,
+    "shelf": 1.5,
+    "clinical": 0,
+    "costume": 0,
+    "discreet": 0.5,
+    "fit": 2,
+    "truth": 1
+   },
+   "xP": {
+    "physical": 0,
+    "sequence": 2,
+    "obligation": 0.5,
+    "shelf": 0,
+    "clinical": 1.5,
+    "costume": 0,
+    "discreet": 1.5,
+    "fit": 1.5,
+    "truth": 2
+   },
+   "by": {
+    "Sofia": {
+     "base": -1.25,
+     "release": 323
+    },
+    "Diane": {
+     "base": -4,
+     "release": 39
+    },
+    "Marcus": {
+     "base": -1,
+     "release": 353
+    },
+    "Angela": {
+     "base": 7.25,
+     "release": 999
+    },
+    "Derek": {
+     "base": -5.75,
+     "release": 27
+    },
+    "James": {
+     "base": -4,
+     "release": 53
+    }
+   }
+  },
+  {
+   "id": "empties",
+   "bucket": "Definition",
+   "where": "ui/release.js:337, ui/drills.js:200, ui/games.js:124",
+   "shipped": "R",
+   "R": "Release empties the address. The coherent opposite is installing on the same pass.",
+   "P": "The protocol empties the address. The coherent opposite is installing on the same pass.",
+   "why": "The mechanism in one line. Release is mechanic one of two; the protocol is both. Swapping the word makes the protocol do half of itself.",
+   "xR": {
+    "physical": 2,
+    "sequence": 0.5,
+    "obligation": 0.5,
+    "shelf": 1.5,
+    "clinical": 0,
+    "costume": 0,
+    "discreet": 0.5,
+    "fit": 2,
+    "truth": 2
+   },
+   "xP": {
+    "physical": 0,
+    "sequence": 2,
+    "obligation": 1.5,
+    "shelf": 0,
+    "clinical": 1.5,
+    "costume": 1.5,
+    "discreet": 1.5,
+    "fit": 2,
+    "truth": 1.5
+   },
+   "by": {
+    "Sofia": {
+     "base": 3.25,
+     "release": 813
+    },
+    "Diane": {
+     "base": 1.25,
+     "release": 649
+    },
+    "Marcus": {
+     "base": 6.25,
+     "release": 966
+    },
+    "Angela": {
+     "base": 9.75,
+     "release": 1000
+    },
+    "Derek": {
+     "base": -4.25,
+     "release": 62
+    },
+    "James": {
+     "base": 1.25,
+     "release": 628
+    }
+   }
+  },
+  {
+   "id": "left",
+   "bucket": "Reading",
+   "where": "ui/release.js:331",
+   "shipped": "R",
+   "R": "Release has about 1.2 points left to give you. The laws hold expression down from here.",
+   "P": "The protocol has about 1.2 points left to give you. The laws hold expression down from here.",
+   "why": "The headroom is a property of discharge on the shadow. A protocol does not run out; what it can still discharge does.",
+   "xR": {
+    "physical": 2,
+    "sequence": 0.5,
+    "obligation": 0.5,
+    "shelf": 1.5,
+    "clinical": 0,
+    "costume": 0,
+    "discreet": 0.5,
+    "fit": 2,
+    "truth": 2
+   },
+   "xP": {
+    "physical": 0,
+    "sequence": 2,
+    "obligation": 1.5,
+    "shelf": 0,
+    "clinical": 1.5,
+    "costume": 1.5,
+    "discreet": 1.5,
+    "fit": 1.5,
+    "truth": 1.5
+   },
+   "by": {
+    "Sofia": {
+     "base": 3.75,
+     "release": 850
+    },
+    "Diane": {
+     "base": 1.75,
+     "release": 729
+    },
+    "Marcus": {
+     "base": 7,
+     "release": 965
+    },
+    "Angela": {
+     "base": 10.25,
+     "release": 1000
+    },
+    "Derek": {
+     "base": -3.75,
+     "release": 89
+    },
+    "James": {
+     "base": 2,
+     "release": 700
+    }
+   }
+  },
+  {
+   "id": "worked",
+   "bucket": "Refusal",
+   "where": "ui/release.js:130",
+   "shipped": "R",
+   "R": "Nothing released on a worked example.",
+   "P": "No protocol runs on a worked example.",
+   "why": "The run on a worked example does walk every line to the end, and then refuses to write. \"No protocol runs\" is false. \"Nothing released\" is exact.",
+   "xR": {
+    "physical": 2,
+    "sequence": 0.5,
+    "obligation": 0.5,
+    "shelf": 1.5,
+    "clinical": 0,
+    "costume": 0,
+    "discreet": 0.5,
+    "fit": 2,
+    "truth": 2
+   },
+   "xP": {
+    "physical": 0,
+    "sequence": 2,
+    "obligation": 1.5,
+    "shelf": 0,
+    "clinical": 1.5,
+    "costume": 1,
+    "discreet": 1.5,
+    "fit": 2,
+    "truth": 1
+   },
+   "by": {
+    "Sofia": {
+     "base": 3.75,
+     "release": 824
+    },
+    "Diane": {
+     "base": 2,
+     "release": 761
+    },
+    "Marcus": {
+     "base": 6.25,
+     "release": 963
+    },
+    "Angela": {
+     "base": 10.25,
+     "release": 1000
+    },
+    "Derek": {
+     "base": -3.75,
+     "release": 116
+    },
+    "James": {
+     "base": 1.75,
+     "release": 681
+    }
+   }
+  },
+  {
+   "id": "gloss",
+   "bucket": "Definition",
+   "where": "engine/data/kb.js:19, the glossary entry",
+   "shipped": "R",
+   "R": "Release. The discharge of stored charge through the nervous system. Physical and observable: heat, shaking, tears, breath shifts. The pattern loses its power source.",
+   "P": "Protocol. The sequence that discharges stored charge through the nervous system. Physical and observable: heat, shaking, tears, breath shifts. The pattern loses its power source.",
+   "why": "A protocol cannot be a discharge, so the definition has to change its subject, and \"physical and observable\" then describes a list of steps.",
+   "xR": {
+    "physical": 2,
+    "sequence": 0.5,
+    "obligation": 0.5,
+    "shelf": 1.5,
+    "clinical": 0,
+    "costume": 0,
+    "discreet": 0.5,
+    "fit": 2,
+    "truth": 2
+   },
+   "xP": {
+    "physical": 0,
+    "sequence": 2,
+    "obligation": 1.5,
+    "shelf": 0,
+    "clinical": 1.5,
+    "costume": 2,
+    "discreet": 1.5,
+    "fit": 1,
+    "truth": 1
+   },
+   "by": {
+    "Sofia": {
+     "base": 5.75,
+     "release": 953
+    },
+    "Diane": {
+     "base": 3.5,
+     "release": 891
+    },
+    "Marcus": {
+     "base": 10.25,
+     "release": 993
+    },
+    "Angela": {
+     "base": 11.25,
+     "release": 1000
+    },
+    "Derek": {
+     "base": -2.25,
+     "release": 211
+    },
+    "James": {
+     "base": 4.25,
+     "release": 865
+    }
+   }
+  },
+  {
+   "id": "settles",
+   "bucket": "Instruction",
+   "where": "engine/data/cards.js:266",
+   "shipped": "R",
+   "R": "The release is complete when the body settles. Breath deepens. Vision may clear. That is the signal.",
+   "P": "The protocol is complete when the body settles. Breath deepens. Vision may clear. That is the signal.",
+   "why": "The end condition is bodily. The shipped protocol ends after its lines whatever the body does, so the P form promises a stop rule the product does not have.",
+   "xR": {
+    "physical": 2,
+    "sequence": 0.5,
+    "obligation": 0.5,
+    "shelf": 1.5,
+    "clinical": 0,
+    "costume": 0,
+    "discreet": 0.5,
+    "fit": 2,
+    "truth": 2
+   },
+   "xP": {
+    "physical": 0,
+    "sequence": 2,
+    "obligation": 1.5,
+    "shelf": 0,
+    "clinical": 1.5,
+    "costume": 2,
+    "discreet": 1.5,
+    "fit": 2,
+    "truth": 1
+   },
+   "by": {
+    "Sofia": {
+     "base": 4.75,
+     "release": 907
+    },
+    "Diane": {
+     "base": 2.5,
+     "release": 803
+    },
+    "Marcus": {
+     "base": 8.75,
+     "release": 985
+    },
+    "Angela": {
+     "base": 10.25,
+     "release": 1000
+    },
+    "Derek": {
+     "base": -3.25,
+     "release": 127
+    },
+    "James": {
+     "base": 2.75,
+     "release": 772
+    }
+   }
+  },
+  {
+   "id": "plan",
+   "bucket": "Definition",
+   "where": "engine/plan.js:53, the free tier",
+   "shipped": "R",
+   "R": "Ten patterns a week, for life. Two releases at one address, and unlimited rerunning of anything already open.",
+   "P": "Ten patterns a week, for life. Two protocols at one address, and unlimited rerunning of anything already open.",
+   "why": "Paywall copy. \"Two protocols at one address\" reads as two different regimens, and a regimen sold by the week reads as a prescription.",
+   "xR": {
+    "physical": 2,
+    "sequence": 0.5,
+    "obligation": 0.5,
+    "shelf": 1.5,
+    "clinical": 0,
+    "costume": 0,
+    "discreet": 0.5,
+    "fit": 2,
+    "truth": 2
+   },
+   "xP": {
+    "physical": 0,
+    "sequence": 2,
+    "obligation": 2,
+    "shelf": 0,
+    "clinical": 1.5,
+    "costume": 1,
+    "discreet": 1.5,
+    "fit": 2,
+    "truth": 1.5
+   },
+   "by": {
+    "Sofia": {
+     "base": 3,
+     "release": 791
+    },
+    "Diane": {
+     "base": 2,
+     "release": 730
+    },
+    "Marcus": {
+     "base": 5.25,
+     "release": 919
+    },
+    "Angela": {
+     "base": 10.5,
+     "release": 1000
+    },
+    "Derek": {
+     "base": -5,
+     "release": 41
+    },
+    "James": {
+     "base": 1.5,
+     "release": 663
+    }
+   }
+  }
+ ],
+ "people": [
+  {
+   "nm": "Sofia",
+   "age": 41,
+   "role": "somatic practitioner",
+   "weight": 140,
+   "says": "I hold the room for everyone. I have not been held in four years and I would not know how to ask.",
+   "w": {
+    "physical": 2,
+    "sequence": 1.5,
+    "obligation": -0.5,
+    "shelf": -0.5,
+    "clinical": 0.5,
+    "costume": -1,
+    "discreet": 0,
+    "fit": 1,
+    "truth": 2
+   },
+   "src": {
+    "physical": "Her trade is the body; release is a word she uses with clients in its physical sense.",
+    "sequence": "\"Tell me what to run and how long it takes.\" (RESEARCH-icp.md, section 4)",
+    "obligation": "\"I hold the room for everyone.\" She is already carrying every obligation in the room.",
+    "shelf": "Knows the shelf, uses the word professionally anyway, so the echo costs little.",
+    "clinical": "\"A map I could put in front of a client.\" Client facing wording has to hold up.",
+    "costume": "\"Said back to me by something with no stake in being kind to me.\" Dressing up is a stake.",
+    "fit": "Reads at eleven at night, on a phone, in bed.",
+    "truth": "She will repeat it to a client. It has to be true."
+   }
+  },
+  {
+   "nm": "Diane",
+   "age": 46,
+   "role": "founder, second company",
+   "weight": 180,
+   "says": "I work until the work is done and the work is never done. Rest feels like a moral failure.",
+   "w": {
+    "physical": 0.5,
+    "sequence": 1,
+    "obligation": -2,
+    "shelf": -1,
+    "clinical": 0,
+    "costume": -0.5,
+    "discreet": 0.5,
+    "fit": 1,
+    "truth": 2
+   },
+   "src": {
+    "physical": "Wants a cost, not a sensation.",
+    "sequence": "\"What does it actually do at nine on a Tuesday.\" A thing with steps can be scheduled.",
+    "obligation": "\"Does it give me back an hour or does it give me another practice to fail at.\" Rest already reads to her as a moral failure; an assignment lands on that.",
+    "shelf": "\"I have a shelf of those.\"",
+    "clinical": "Neutral.",
+    "costume": "Wants the P and L, not the packaging.",
+    "discreet": "Opens it at work.",
+    "fit": "Scans.",
+    "truth": "\"A number and a cost.\""
+   }
+  },
+  {
+   "nm": "Marcus",
+   "age": 44,
+   "role": "creative director",
+   "weight": 160,
+   "says": "I can see what is wrong with anything in four seconds. It has cost me two studios.",
+   "w": {
+    "physical": 1.5,
+    "sequence": 0.5,
+    "obligation": -0.5,
+    "shelf": -1.5,
+    "clinical": -0.5,
+    "costume": -2.5,
+    "discreet": 0,
+    "fit": 1.5,
+    "truth": 2.5
+   },
+   "src": {
+    "physical": "\"Does it show me the mechanism. I need the schematic.\" A mechanism is a physical verb.",
+    "sequence": "Accepts a sequence where it is stated.",
+    "obligation": "\"Help is the wrong verb and the fact that you used it tells me who you think I am.\"",
+    "shelf": "Reads wellness in four seconds and closes the tab.",
+    "clinical": "Borrowed clinical authority is the same move as borrowed nerve names.",
+    "costume": "\"That is precision as costume.\" (RESEARCH-icp.md, section 5, the sharpest break in the study)",
+    "fit": "Sees a rebuilt sentence in four seconds.",
+    "truth": "\"Give me a claim specific enough to be wrong.\""
+   }
+  },
+  {
+   "nm": "Angela",
+   "age": 36,
+   "role": "seeker, six modalities",
+   "weight": 150,
+   "says": "Everything happens for a reason. I have said that at three funerals and I believed it each time.",
+   "w": {
+    "physical": 1,
+    "sequence": -0.5,
+    "obligation": -1.5,
+    "shelf": 1,
+    "clinical": -2,
+    "costume": 0,
+    "discreet": -0.5,
+    "fit": 1,
+    "truth": 1
+   },
+   "src": {
+    "physical": "\"None of them told me where it lives.\" She wants it in the body.",
+    "sequence": "The voice skill's pass 7: \"Does she stay on the screen or decide this is homework.\"",
+    "obligation": "Walked at a single word once: \"It told me I am incoherent. I closed it.\" A word that assigns her something is the same shape as a word that grades her.",
+    "shelf": "The only one of the six for whom the familiar word is trust rather than a smell. Six modalities all said release.",
+    "clinical": "\"A moral adjective delivered by software to a person in crisis is a verdict.\" Clinical distance reads to her as being processed.",
+    "costume": "Does not audit it.",
+    "discreet": "\"This is the one I would screenshot for the group chat.\" She wants to be seen.",
+    "fit": "Level 5, reads for feeling.",
+    "truth": "Weighs truth, less than the others: \"I expect it to see me.\""
+   }
+  },
+  {
+   "nm": "Derek",
+   "age": 39,
+   "role": "high performer, endurance",
+   "weight": 170,
+   "says": "Pain is information. I have raced on a stress fracture. I would do it again.",
+   "w": {
+    "physical": 1,
+    "sequence": 2,
+    "obligation": 1,
+    "shelf": -1.5,
+    "clinical": 1,
+    "costume": -0.5,
+    "discreet": 0,
+    "fit": 1,
+    "truth": 1.5
+   },
+   "src": {
+    "physical": "\"Pain is information.\" Heat and shaking are data to him.",
+    "sequence": "\"Name the one thing capping my output and where it sits. I will train it like anything else.\" A training protocol is his native unit.",
+    "obligation": "Wants to be handed the set. An assignment is the product.",
+    "shelf": "\"If my resting rate does not move and my last kilometre does not move, this is a mood.\"",
+    "clinical": "Sports medicine language reads as seriousness.",
+    "costume": "Does the arithmetic; catches a claim with nothing under it.",
+    "fit": "\"Put it in text and I will read it in nine seconds.\"",
+    "truth": "Checks the numbers, not the nouns."
+   }
+  },
+  {
+   "nm": "James",
+   "age": 57,
+   "role": "C-suite, third turnaround",
+   "weight": 100,
+   "says": "I make the call and I sleep fine. People find that cold. It is what they hired.",
+   "w": {
+    "physical": 0.5,
+    "sequence": 1,
+    "obligation": -1.5,
+    "shelf": -1.5,
+    "clinical": -1,
+    "costume": -1,
+    "discreet": 1.5,
+    "fit": 1.5,
+    "truth": 2
+   },
+   "src": {
+    "physical": "Indifferent to sensation.",
+    "sequence": "\"Front load the finding.\" Operational language is his.",
+    "obligation": "\"Help implies a deficit. Ask me instead what it improves.\" Being put on a protocol is being a patient.",
+    "shelf": "Level 3, defended. A wellness word ends it.",
+    "clinical": "Protocol is what he writes for other people, not what he is put on.",
+    "costume": "\"You moved between them without telling me.\" He audits the join.",
+    "discreet": "\"I will not open that on a plane, or in my office with the door open.\" (DD panel)",
+    "fit": "Reads board papers.",
+    "truth": "\"I make calls for a living.\""
+   }
+  }
+ ],
+ "totals": {
+  "Sofia": {
+   "release": 9296,
+   "of": 12000,
+   "strings_release": 9,
+   "strings_protocol": 0,
+   "strings_coin": 3
+  },
+  "Diane": {
+   "release": 7546,
+   "of": 12000,
+   "strings_release": 6,
+   "strings_protocol": 1,
+   "strings_coin": 5
+  },
+  "Marcus": {
+   "release": 10524,
+   "of": 12000,
+   "strings_release": 11,
+   "strings_protocol": 0,
+   "strings_coin": 1
+  },
+  "Angela": {
+   "release": 11999,
+   "of": 12000,
+   "strings_release": 12,
+   "strings_protocol": 0,
+   "strings_coin": 0
+  },
+  "Derek": {
+   "release": 1110,
+   "of": 12000,
+   "strings_release": 0,
+   "strings_protocol": 12,
+   "strings_coin": 0
+  },
+  "James": {
+   "release": 7194,
+   "of": 12000,
+   "strings_release": 4,
+   "strings_protocol": 1,
+   "strings_coin": 7
+  }
+ },
+ "third": {
+  "string": "Run complete",
+  "where": "ships at ui/games.js:184",
+  "x": {
+   "physical": 0.5,
+   "sequence": 1,
+   "obligation": 0.5,
+   "shelf": 0,
+   "clinical": 0.5,
+   "costume": 0,
+   "discreet": 2,
+   "fit": 2,
+   "truth": 2
+  },
+  "by": {
+   "Sofia": {
+    "beats_released": 622,
+    "beats_protocol_complete": 332
+   },
+   "Diane": {
+    "beats_released": 976,
+    "beats_protocol_complete": 477
+   },
+   "Marcus": {
+    "beats_released": 808,
+    "beats_protocol_complete": 790
+   },
+   "Angela": {
+    "beats_released": 24,
+    "beats_protocol_complete": 976
+   },
+   "Derek": {
+    "beats_released": 947,
+    "beats_protocol_complete": 111
+   },
+   "James": {
+    "beats_released": 986,
+    "beats_protocol_complete": 803
+   }
+  }
+ }
+}
