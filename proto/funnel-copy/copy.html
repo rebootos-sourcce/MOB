@@ -1,0 +1,275 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Funnel copy options</title>
+<!-- ============================================================
+     FUNNEL COPY, DRAFTED FOR HIS REVIEW. NOTHING HERE SHIPS.
+
+     Brief: TASKS.md CN, his dictated note of 26 September, read as three
+     pieces: a hook, a description of what the product does, and a money
+     back guarantee. Every candidate below is a real string, and every one
+     carries class="cand" so check.sh can pull exactly what is on this page
+     and run both voice gates over it. His raw note is on the page too and
+     is deliberately not a candidate: it fails one gate as said.
+
+     Written by the narrative seat. The shipped funnel lives in funnel/ and
+     is untouched. The guarantee's mechanics are not written here at all,
+     because he has not ruled them and they are not copy.
+     ============================================================ -->
+<style>
+:root{
+ --bg:#0C0D12; --panel:#1A1D26; --panel-2:#252833; --edge:rgba(255,255,255,.09);
+ --ink:#EFEDE8; --mid:#B4B0A8; --dim:#94908A; --accent:#7eb8d4;
+ --keep:#5FD5A6; --drop:#D8924E; --stop:#D6524C;
+ --p1:#7eb8d4; --p2:#A77EDB; --p3:#DABF6A;
+}
+@media (prefers-color-scheme: light){
+ :root:not([data-theme="dark"]){
+  --bg:#F4F2EE; --panel:#FFFFFF; --panel-2:#ECE9E3; --edge:rgba(0,0,0,.10);
+  --ink:#1A1C22; --mid:#4A4D55; --dim:#62656C; --accent:#2F6F8F;
+  --keep:#1F7A56; --drop:#9A5A1A; --stop:#A8302B;
+  --p1:#2F6F8F; --p2:#6A3FA0; --p3:#7A6210;
+ }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);
+ font:16px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:920px;margin:0 auto;padding:40px 16px 80px}
+h1{font-size:28px;line-height:1.2;margin:0 0 8px;font-weight:600}
+h2{font-size:21px;margin:56px 0 6px;font-weight:600}
+h3{font-size:15px;margin:0 0 10px;font-weight:600;color:var(--mid)}
+p{margin:0 0 12px}
+.lede{color:var(--mid);max-width:680px}
+.note{font-size:14px;color:var(--dim)}
+.his{background:var(--panel);border:1px solid var(--edge);border-radius:10px;padding:20px;margin:20px 0}
+.his p{font-size:17px;line-height:1.7;margin:0}
+.his .k{font-size:13px;color:var(--dim);margin-top:14px}
+.u1{box-shadow:inset 0 -2px 0 var(--p1)}
+.u2{box-shadow:inset 0 -2px 0 var(--p2)}
+.u3{box-shadow:inset 0 -2px 0 var(--p3)}
+.sw{display:inline-block;width:10px;height:10px;border-radius:2px;margin:0 4px 0 10px;vertical-align:0}
+.opt{background:var(--panel);border:1px solid var(--edge);border-radius:10px;padding:20px;margin:16px 0}
+.opt.pick{border-color:var(--accent)}
+.tag{display:inline-block;font-size:12px;color:var(--dim);border:1px solid var(--edge);border-radius:99px;padding:1px 9px;margin-bottom:12px}
+.opt.pick .tag{color:var(--accent);border-color:var(--accent)}
+.cand{font-size:22px;line-height:1.35;margin:0 0 6px;font-weight:500}
+.cand.sub{font-size:17px;color:var(--mid);font-weight:400}
+.cand.small{font-size:18px}
+.where{font-size:13px;color:var(--dim);margin:8px 0 14px}
+.rows{display:grid;grid-template-columns:78px 1fr;gap:6px 12px;font-size:14px;border-top:1px solid var(--edge);padding-top:12px}
+.rows dt{color:var(--dim)}
+.rows dd{margin:0}
+q{quotes:"\201C" "\201D" "\2018" "\2019"}
+.kp{color:var(--keep)} .dp{color:var(--drop)}
+.kp q,.dp q{color:var(--ink)}
+.held{border-left:3px solid var(--stop);padding:4px 0 4px 14px;margin:18px 0}
+.held b{display:block;margin-bottom:4px}
+.flag{background:var(--panel-2);border-radius:10px;padding:18px 20px;margin:16px 0}
+.flag ol{margin:8px 0 0;padding-left:20px}
+.flag li{margin:0 0 10px}
+code{font:13px ui-monospace,Menlo,monospace;background:var(--panel-2);padding:1px 5px;border-radius:4px}
+@media (max-width:520px){
+ h1{font-size:24px}
+ .cand{font-size:19px}
+ .rows{grid-template-columns:1fr;gap:2px}
+ .rows dd{margin-bottom:8px}
+}
+</style>
+</head><body><div class="wrap">
+
+<h1>Funnel copy, from your note</h1>
+<p class="lede">Your dictated note of 26 September, turned into real options for the funnel. Three pieces, a few options each. Under every option: which of your exact words it keeps, which it drops, and why. Nothing here is in the shipped funnel yet.</p>
+<p class="note">Every option passes the voice gate (<code>check.py</code>) and the marketing gate (<code>refuse.js</code>). Run <code>proto/funnel-copy/check.sh</code> to see it. Neither gate can tell whether a line is true, so the truth calls are written out by hand below.</p>
+
+<div class="his">
+<p><span class="u1">The spiritual journey is not for the weak. So we made it easy. Well, the spiritual journey is deeply personal. It's also mechanical. That's this.</span> <span class="u2">We help you process unprocessed emotions from the nervous system, restoring nerve tone to the tissue, cells, organs. Mental clarity, peace of mind, body and spirit. It's a mirror that exposes your inner world so you can see you running everywhere and know it by name, and know how to integrate it.</span> <span class="u3">This is a purpose based product. It's a results driven product. If you don't get the results you don't want, get your fucking money back. You have one week to do it.</span></p>
+<p class="k">Your words, verbatim. Underlined by piece:<span class="sw" style="background:var(--p1)"></span>hook<span class="sw" style="background:var(--p2)"></span>what it does<span class="sw" style="background:var(--p3)"></span>guarantee</p>
+</div>
+
+<!-- ============================================================ HOOK -->
+<h2>1. The hook</h2>
+<p class="lede">Your strongest line is the one you corrected yourself into: <q>deeply personal. It's also mechanical. That's this.</q> The <q>Well,</q> in your note is you changing your mind out loud, and option A follows that change.</p>
+
+<div class="opt pick">
+<span class="tag">A. Recommended</span>
+<p class="cand">Spiritual work is deeply personal. It is also mechanical.</p>
+<p class="cand sub">This is the mechanical part.</p>
+<p class="where">Where: the landing page hero, above <q>You are tired in a way that sleep does not fix</q>.</p>
+<dl class="rows">
+<dt>Keeps</dt><dd class="kp"><q>deeply personal</q>, <q>It's also mechanical</q>, and <q>That's this</q> as <q>This is the mechanical part</q>.</dd>
+<dt>Drops</dt><dd class="dp"><q>journey</q>, which fails both gates (see below). <q>not for the weak</q> and <q>So we made it easy</q>, both of which you walked back yourself.</dd>
+<dt>Reads as</dt><dd>Angela gets <q>personal</q>. Derek gets <q>mechanical</q>. James is not accused of anything. It works for all three.</dd>
+</dl>
+</div>
+
+<div class="opt">
+<span class="tag">B. Keeps the challenge, and keeps easy where it is true</span>
+<p class="cand">Spiritual work is not for the weak. So we made it easy to start.</p>
+<p class="where">Where: the landing page hero, or above the <q>Take the test</q> button.</p>
+<dl class="rows">
+<dt>Keeps</dt><dd class="kp"><q>not for the weak</q>, <q>So we made it easy</q>.</dd>
+<dt>Drops</dt><dd class="dp"><q>journey</q>. And <q>easy</q> is narrowed to <q>easy to start</q>, because only the start is easy: no card, no account, one question per screen. The work is not easy, and the test page says so: <q>some of them will be uncomfortable to answer honestly</q>.</dd>
+<dt>Reads as</dt><dd>Derek likes the dare. James may take it as a dare too. Angela, six methods in and still looking, may hear <q>weak</q> as being about her. That is the cost.</dd>
+</dl>
+</div>
+
+<div class="opt">
+<span class="tag">C. The challenge, answered with mechanical</span>
+<p class="cand">Spiritual work is not for the weak. So we made it mechanical.</p>
+<p class="where">Where: the landing page hero.</p>
+<dl class="rows">
+<dt>Keeps</dt><dd class="kp"><q>not for the weak</q>, <q>So we made it</q>, <q>mechanical</q>.</dd>
+<dt>Drops</dt><dd class="dp"><q>journey</q>, <q>easy</q>, <q>deeply personal</q>. The joke in your line was hard, so we made it easy. This version says hard, so we made it something you can operate. More true, and less of a joke.</dd>
+<dt>Reads as</dt><dd>Strongest for Derek. Same risk with Angela as B.</dd>
+</dl>
+</div>
+
+<div class="opt">
+<span class="tag">D. Two fragments, with a picture under them</span>
+<p class="cand">Deeply personal. Also mechanical.</p>
+<p class="cand sub">What is running you, taken apart in the order it was built.</p>
+<p class="where">Where: the landing page hero. The second line also works as a subhead on the about page.</p>
+<dl class="rows">
+<dt>Keeps</dt><dd class="kp"><q>deeply personal</q>, <q>mechanical</q>.</dd>
+<dt>Drops</dt><dd class="dp">Everything else in the hook. The second line comes from the about page, which says the instrument works <q>starting where the sequence started</q>.</dd>
+<dt>Reads as</dt><dd>The most compressed option. It lands for Derek and James. Angela may need the second line to know what it means.</dd>
+</dl>
+</div>
+
+<!-- ============================================================ WHAT IT DOES -->
+<h2>2. What it does</h2>
+<p class="lede">Your mirror sentence is the best writing in the note, and every option keeps most of it. The body claims in the middle of your paragraph are where the options stop following you, and the section after these options says why.</p>
+
+<div class="opt pick">
+<span class="tag">A. Recommended. Your order, with the body claims cut</span>
+<p class="cand small">We help you process the emotion your nervous system is still holding.</p>
+<p class="cand small">A mirror for what is running you. You see it running everywhere, you know it by name, and you know how to integrate it.</p>
+<p class="cand small">Mind, body and spirit, in one reading.</p>
+<p class="where">Where: the landing page, under the hook. Or the about page, as the opening of the About section.</p>
+<dl class="rows">
+<dt>Keeps</dt><dd class="kp"><q>We help you process</q>, <q>nervous system</q>, <q>mirror</q>, <q>running everywhere</q>, <q>know it by name</q>, <q>know how to integrate it</q>, <q>body and spirit</q>.</dd>
+<dt>Drops</dt><dd class="dp"><q>unprocessed</q>, now <q>still holding</q>, a physical verb for the same thing. <q>restoring nerve tone to the tissue, cells, organs</q>, <q>Mental clarity, peace of mind</q>, <q>inner world</q>. The reasons are in the next section.</dd>
+<dt>Reads as</dt><dd>Angela gets the mirror. Derek gets <q>by name</q> and <q>integrate</q>, both things the product does. James is shown, never told.</dd>
+</dl>
+</div>
+
+<div class="opt">
+<span class="tag">B. Closest to your words</span>
+<p class="cand small">We help you process unprocessed emotion held in the nervous system. It is a mirror that exposes your inner world, so you can see you running everywhere, know it by name, and know how to integrate it.</p>
+<p class="where">Where: the about page.</p>
+<dl class="rows">
+<dt>Keeps</dt><dd class="kp">Your whole mirror sentence, nearly word for word: <q>a mirror that exposes your inner world so you can see you running everywhere and know it by name, and know how to integrate it</q>. Also <q>process unprocessed emotions</q>.</dd>
+<dt>Drops</dt><dd class="dp">The nerve tone line and the outcome list. <q>see you running everywhere</q> stays exactly as you said it, strange grammar included, because the strangeness is doing the work: you, seen running through everything.</dd>
+<dt>Cost</dt><dd><q>inner world</q> is the one abstract phrase left in, and the voice rules ask for nothing abstract. It stays here because this option exists to show your words with only the untrue parts removed.</dd>
+</dl>
+</div>
+
+<div class="opt">
+<span class="tag">C. The mechanism, for the reader who wants the diagnostic</span>
+<p class="cand small">Unprocessed emotion sits at a named place in the body: a plexus, or a nerve.</p>
+<p class="cand small">The instrument reads it out of what you write and takes it off one address at a time.</p>
+<p class="cand small">The capacity it was spending is available again.</p>
+<p class="where">Where: the about page, beside A rather than instead of it. A is for Angela. C is the explanation Derek wants, and the voice rules say to write both.</p>
+<dl class="rows">
+<dt>Keeps</dt><dd class="kp"><q>unprocessed emotion</q>. The last line stands where your <q>restoring nerve tone</q> stood, and says only what the instrument can stand behind. The landing page already says it: <q>the capacity it was spending is available again</q>.</dd>
+<dt>Drops</dt><dd class="dp">The mirror. It belongs in A.</dd>
+</dl>
+</div>
+
+<div class="opt">
+<span class="tag">D. One line</span>
+<p class="cand small">We help you process what your nervous system is still holding, and show you what is running you, by name.</p>
+<p class="where">Where: the page description a search result shows, or a line under the hook.</p>
+<dl class="rows">
+<dt>Keeps</dt><dd class="kp"><q>We help you process</q>, <q>nervous system</q>, <q>running</q>, <q>by name</q>.</dd>
+<dt>Drops</dt><dd class="dp">The mirror, and <q>integrate</q>.</dd>
+</dl>
+</div>
+
+<h3>Your words that no option keeps, and why</h3>
+
+<div class="held">
+<b>&ldquo;journey&rdquo;</b>
+Both gates refuse it. <code>check.py</code>: <q>"journey" is category language. Name the physical fact.</q> The marketing gate bans it too, next to <q>manifest</q> and <q>abundance</q>. Replaced with <q>work</q>, the word the about page already uses: <q>So the work is subtraction.</q>
+</div>
+
+<div class="held">
+<b>&ldquo;restoring nerve tone to the tissue, cells, organs&rdquo;</b>
+Nothing in the engine measures nerve tone, tissue, cells or organs. The nearest thing it has is a column heading, <q>somatic tone</q>. The line promises something about the body, and the funnel says twice that it does not make that kind of promise: <q>Throughput, never outcome</q> (tiers page) and <q>What a life does afterwards is not [checkable], and nothing here will claim it</q> (about page). The marketing gate refuses medical claims because <q>the instrument reads self report and is not qualified to diagnose or treat</q>. Option C above carries the true sentence nearest to it. If this is a result you have seen and want stated, that is a ruling for you and the seat who owns the word <q>measurable</q>, and it is not something copy can do quietly.
+</div>
+
+<div class="held">
+<b>&ldquo;Mental clarity, peace of mind&rdquo;</b>
+Both are outcomes, and both are abstract nouns. The same promise problem as the line above, in softer words. <q>body and spirit</q> is kept as what the reading covers, because the product does read mental, physical and spiritual layers. One thing you should know: the about page already ships <q>it brings inner peace mentally and physically</q>, which contradicts <q>Throughput, and not outcome</q> further down the same page. That line was there before this note. Logged as a finding, and not changed here.
+</div>
+
+<div class="held">
+<b>&ldquo;purpose based product&rdquo;, &ldquo;results driven product&rdquo;</b>
+Two compound labels that sound like every product page. What they mean is carried into the guarantee below as <q>It has one purpose, and it answers to results.</q>
+</div>
+
+<!-- ============================================================ GUARANTEE -->
+<h2>3. The money back guarantee</h2>
+<p class="lede">Your wording is blunt, and it should stay blunt. Every option keeps your last sentence exactly: <q>You have one week to do it.</q> None of them adds a condition, a claim process or small print, because you did not state any, and those are not copy.</p>
+
+<div class="opt">
+<span class="tag">Optional bridge, goes in front of A, B or C</span>
+<p class="cand small">It has one purpose, and it answers to results.</p>
+<dl class="rows">
+<dt>Keeps</dt><dd class="kp"><q>purpose</q>, <q>results</q>.</dd>
+<dt>Drops</dt><dd class="dp"><q>based</q>, <q>driven</q>, <q>product</q> twice.</dd>
+</dl>
+</div>
+
+<div class="opt pick">
+<span class="tag">A. Recommended</span>
+<p class="cand">No results, get your money back. You have one week to do it.</p>
+<p class="where">Where: the tiers page, directly under the price ladder.</p>
+<dl class="rows">
+<dt>Keeps</dt><dd class="kp"><q>results</q>, <q>get your money back</q>, <q>You have one week to do it</q>.</dd>
+<dt>Drops</dt><dd class="dp"><q>fucking</q>. The conviction stays in the short sentence and the flat order: no <q>if</q>, no <q>we promise</q>, no hedging word.</dd>
+<dt>Reads as</dt><dd>Derek reads a term. James reads somebody who is not selling to him. Angela reads confidence.</dd>
+</dl>
+</div>
+
+<div class="opt">
+<span class="tag">B. Your word kept</span>
+<p class="cand">No results, get your fucking money back. You have one week to do it.</p>
+<dl class="rows">
+<dt>Keeps</dt><dd class="kp">All of it.</dd>
+<dt>Cost</dt><dd>It passes both gates, since neither has a rule on swearing, and nothing on file rules on it either way. Two things to weigh. Everything else on the tiers page is restrained, and the marketing gate's reasoning for refusing urgency is <q>An instrument that shouts is a toy.</q> And ad networks commonly restrict profanity in ad text, so check before this line goes anywhere that is not our own page. Your call.</dd>
+</dl>
+</div>
+
+<div class="opt">
+<span class="tag">C. Written out in full</span>
+<p class="cand">It is built for results. If you do not get them, get your money back. You have one week to do it.</p>
+<dl class="rows">
+<dt>Keeps</dt><dd class="kp"><q>results</q>, <q>If you don't get the results</q>, <q>get your money back</q>, <q>You have one week to do it</q>.</dd>
+<dt>Drops</dt><dd class="dp"><q>fucking</q>. Longer than A, and softer for it.</dd>
+</dl>
+</div>
+
+<div class="opt">
+<span class="tag">D. The other way your sentence reads</span>
+<p class="cand">If you do not want it, get your money back. You have one week to do it.</p>
+<dl class="rows">
+<dt>Keeps</dt><dd class="kp"><q>you don't want</q>, <q>get your money back</q>, <q>You have one week to do it</q>.</dd>
+<dt>Why it exists</dt><dd>Your sentence was taken down two ways. The brief has <q>If you don't get the results you don't want</q>. The backlog has <q>If you don't get the results, you don't want, get your fucking money back</q>, which reads as two conditions: no results, or you do not want it. D is the second reading. It guarantees your satisfaction, not a result, which gets it out of the problem in point 1 below.</dd>
+</dl>
+</div>
+
+<div class="flag">
+<b>The mechanics are not written here, and they need your ruling before any of this ships.</b>
+<ol>
+<li><b>What <q>results</q> means.</b> The funnel says in two places that it promises throughput, the number of patterns released, and not outcomes in a person's life. A guarantee on results means one of two things. It could mean the reading itself: the about page already has a section called Results listing ceiling, drag, addresses, seat and order. Everyone gets that, so the guarantee is true but almost empty. Or it could mean a change in their life, and then the page contradicts itself. Option D avoids the question.</li>
+<li><b>Nothing can be refunded yet.</b> The tiers page says <q>Checkout is not open yet, so nothing on this table can be charged today.</q> The guarantee cannot go live before checkout does.</li>
+<li><b>The guarantee is the one thing on the page that expires.</b> The tiers page also says <q>Nothing here expires, nothing counts down.</q> So the recommended placement is under the price ladder, away from the Stopping section where that sentence sits.</li>
+<li><b>How it works, none of which is copy.</b> How someone claims it. When the week starts: first charge, or every renewal. Whether it is the same on every tier, including tier four with its cohort. Whether the hundred free patterns count as part of the week. What a refund does to the person's record, given the tiers page promises <q>A cancellation destroys nothing</q>. All of it is logged as open in <code>TASKS.md</code> CN, and nothing here decides them.</li>
+</ol>
+</div>
+
+<p class="note" style="margin-top:40px">Draft for review, 26 September. The shipped funnel pages in <code>funnel/</code> were not edited.</p>
+
+</div></body></html>
