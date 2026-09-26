@@ -12605,3 +12605,69 @@ reviewing the boot sheet. Fixed directly: `shots.js` now waits for the
 `booted` class the same way every gate already does, copied from
 `tests/collide.js`, before its first shot per tab.
 
+## CQ. His picks on the animation overlay, a real batch of Field
+## layout fixes, and the energy map failed again against two reference
+## charts. 26 September.
+
+**The 112-node document he pasted again, "in case I didn't give this to
+you," was already given, and already fully researched.** It is the
+same document behind `docs/research/marma-validation.md`, logged
+originally in BI: the real classical count is 107 marma points, not
+108 or 112, one of the 112 rows is Manas, the mind, not a body point,
+and that research stands. Said here so he does not wonder whether it
+was lost.
+
+**His picks on the animation overlay, read from his words.** "Let's do
+44 of 100. Instead of adding the SQ, the tension animation, excellent.
+The lines running through it, excellent." Read as: keep the centre
+labelled DQ rather than renamed to SQ, closing CM Q1 in favour of
+what was already built; approval of the moving overlay's tension based
+motion and its traveling lines, which matches Hum and Pulse from CL.
+Whether "44 of 100" asks for that exact format on the centre number,
+rather than "44" alone, is not certain from the words alone and is
+flagged rather than built blind.
+
+**A real batch of Field layout fixes, from watching the build.**
+- The information in the Field's upper right corner should sit flush
+  and uniform with the other elements around the frame, not off on its
+  own alignment.
+- The Wheel, Frames, Dial switch should sit centre left, not far left
+  where CA put it.
+- A symbol he calls "the angel devil symbol" should sit centre right, a
+  little further out than it does today. Which control this names is
+  not certain and is flagged rather than guessed at.
+- Wherever an arrow sits next to a number, the small animated pill
+  behind that pairing should come off. Which control this is is also
+  not fully certain, sent back as a question with the picture it needs.
+- Confirmed, not a defect: the left side rail and the overlay's own
+  position in the centre frame were not touched by the CL or CM
+  rounds, correctly, since neither round was scoped to them.
+- All the dial style readouts, "the purple, red, yellow," plus
+  Accuracy, move to the bottom of the screen, all built to one uniform
+  size. Grouped by type rather than all in one row: CQ and DQ as one
+  group, a visible break, then the readouts he calls "awareness,
+  energy flow" as a second group, Accuracy kept on its own rather than
+  folded into either group.
+- Seat names (3rd Eye, Crown, Root and the rest) must never stick out
+  past the ring, on any view, wrapped around their own domain so the
+  Field keeps one unbroken circular silhouette. Extends CM's fix,
+  which only brought the pattern names inside the Wheel, to a general
+  rule for every view.
+
+**The energy map (the Body page) fails again, against two images he
+sent rather than a description.** His words: "the energy map is a
+fail... I'm going to drop in another image that may be beneficial,
+review images, energy map needs to be as close as 1:1 as possible, and
+I want you to give me an accuracy rating after and verify it against
+the images, and continue to sim it until it matches." Sent alongside a
+112-node organ and emotion chart and a separate classical Marma points
+chart. This lands after CK's density fix, which made the seven seats
+legible but did not change how many of the 112 addresses sit at a
+real measured position, 39 of 112 today per CG and CK, the other 73
+still on the old scatter formula. Read plainly, this is not a repeat of
+the same density complaint, it is asking whether the addresses that do
+have a position are placed at the right one, checked against real
+reference charts rather than by eye, with a number attached and a real
+loop, measure, adjust, remeasure, rather than a one time pass.
+Dispatched.
+
