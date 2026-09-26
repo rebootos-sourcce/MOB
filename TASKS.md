@@ -15742,3 +15742,59 @@ built from as a firm spec; and the boot length, still open since ET,
 where a return to the earlier 7.2 seconds moves both the held pose
 and the 5.45 second removal timer.
 
+## EY. The glass bar is real now, not only a prototype, verified in a
+## clean worktree against the actual build he opens. 26 September.
+
+The glass bar, the right rail Wheel/Frames/Dial, Frames flush to its
+own edges and real scroll/drag/F-key zoom are ported out of
+`proto/glassbar/` and into `atuned_src` for real. `atuned_src/ui/fieldbar.js`
+is new; `wheel.js`, `rings.js`, `ui.js`, `panels.js`, `component.js`,
+`personas.js`, `shell/body.html`, `shell/head.html` and `MANIFEST`
+carry the wiring. Commit `8b2c3c0`.
+
+**Independently re-verified, not taken on report.** `source.html`'s
+md5 matches the reported hash to the digit, `8a5746a17479e11ea87decd01fef6e27`,
+and its build stamp reads `5a5cab9 2026-09-26 20:23`, the exact parent
+commit. Rebuilt from scratch in a clean worktree at `8b2c3c0` and
+re-ran every one of the nine gates myself: `BUILD.sh` and
+`BUILD-engine.sh` clean, 432 exports host free. `tests/engine.js`
+1687 passed 0 failed. `tests/collide.js` 298 passed 0 failed.
+`tests/design.js` 150 passed 0 failed. `tools/monitor.js` all
+surfaces render. `tests/funnel.js` 172 passed 0 failed. The voice
+objections check exits clean. `tests/functional.js` read 1074 passed
+0 failed, the reported baseline of 1052 plus the 22 new checks this
+port added for the ported controls themselves, real mouse wheel,
+real drag, real F key, against the shipped file.
+
+Screenshots taken fresh at both widths, not reused from the report:
+on the Field at 1600 the left rail now carries CQ as a visibly larger
+circle than DQ and SQ beside it, and directly under the right rail's
+top line sit three small circles that switch Wheel, Frames and Dial.
+At 390 the bar folds to one circle as claimed.
+
+**What this closes.** This is the real answer to the frustration in
+EV: Wheel, Frames and Dial's right rail placement, the flush Frames
+edges and real zoom are now true of the build itself, confirmed by
+me on the actual `source.html`, not only reported true of a
+prototype file.
+
+**His to decide, named plainly rather than guessed past:**
+- Zooming Wheel currently still pulls in layers beyond what is
+  chosen. The prototype's own default was zoom only brings the
+  picture closer, without changing what is shown. Kept as the
+  product's existing behaviour since he has not ruled either way.
+- One set of layer switches now drives all three pictures. Frames
+  and Dial used to always draw every layer; now they open matching
+  whatever Wheel is showing, which on the Field's own default open
+  means Domains, Masks, Archetypes and the chain tiers start off.
+- The glass has no blur. `design.js`'s frame rate floor forbids it,
+  measured at 12fps under Glass with blur on. Real blur would mean
+  moving that floor.
+- Carried over from ED, still unresolved: on a phone the Wheel and
+  Frames and Dial switch sits at the bottom of the right rail, well
+  below the picture, and at desktop width Frames fills an empty lane
+  on its left.
+- Not ported, because neither was on this list: the prototype's
+  larger CQ inside the Frames core itself, and removing the small
+  capsule beside the compass marker. Says if either should follow.
+
