@@ -16410,3 +16410,38 @@ Confirmed its citations (`DESIGN-economics.md`'s tier four
 reasoning, `TASKS.md` AK6, `reviews/LEGAL-floor.md`) are real. Zero
 em dashes.
 
+## FI. The re-baseline task queued after FG comes back, and it is
+## `losssim.js`'s own grid levels that are stale. 26 September.
+
+The task queued after FG (re-baseline `losssim.js` to the fitted CQ)
+reports back with the mirror image of FG's own finding. `losssim.js`'s
+`PANEL` table carries hand typed grid levels for the nine reference
+archetypes, read off the engine under the old CQ arithmetic on 20
+September. On the current, fitted engine (`dd0bf23`) the same nine
+read two to five bands higher by CQ, and differently again by
+expression (CQ with the shadow's pull removed): Diane 6/6, Derek 5/5,
+Marcus 7/7, Angela 7/7, Sofia 8/8, James 5/4, Ana 5/3, Gordon 2/1,
+Rosa 10/10. `losssim.js` uses this level to decide who an asserted
+affirmation harms, at grid 4 or below, commented in its own source as
+"the 800 of 1000 at grid level 4 or below," a figure `GUARD.md`
+quotes directly, alongside a 465 of 1000 from `PANEL-ritual-1000.md`;
+both are now dated 20 September numbers.
+
+**Dispatched with the same standard as FF and FG:** reproduce first,
+decide with evidence which of CQ or expression the harm model should
+actually read, but not answer his own open question 1 (whether the
+tier word names CQ or expression, `TASKS.md` BB3 and BB5) for him:
+if it is not decidable here, write it up with both readings and their
+resulting counts rather than pick one silently. A real academic
+citation is in play, Wood, Perunovic and Lee 2009 on low self esteem
+as load, which argues toward expression the way the engine's own
+clinician referral already reads it, but that is evidence toward a
+recommendation, not a ruling made on his behalf. Also asked to
+consider computing levels at run time off the live engine, the way
+`marketing/field.js` now does, rather than typing them by hand a
+second time, since a typed number is exactly the failure mode this
+whole regression already came from twice. Not touching `atuned_src`
+or `source.html`. Done when `losssim.js` runs clean and every figure
+it feeds `PANEL-ritual-1000.md` and `GUARD.md` matches a fresh, dated
+run.
+
