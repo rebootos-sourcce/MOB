@@ -16445,3 +16445,22 @@ or `source.html`. Done when `losssim.js` runs clean and every figure
 it feeds `PANEL-ritual-1000.md` and `GUARD.md` matches a fresh, dated
 run.
 
+**The funnel welcome storyboard is done, verified directly.**
+`DESIGN-funnel-welcome.md`, commit `2b7f4dc`, 478 lines, no em
+dashes, nothing under `funnel/` or `atuned_src/` touched. Ran two of
+its flagged lines through the actual voice gate myself rather than
+trusting the report: "Welcome to Attuned, comma name" fails on the
+preamble rule exactly as claimed, and "your inner child demands your
+inner child wants believed in" fails on the soft language rule
+exactly as claimed. A real, honest finding underneath the copy work:
+his dictation quietly assumes a name and email capture screen that
+does not exist anywhere in `funnel/` today, so this storyboard sits
+after a screen nobody has built yet, named plainly rather than
+built around silently. A second real finding: the founding offer
+referral mechanic (`DESIGN-founding-offers.md`, verified above) needs
+to know who referred whom, which the funnel's own already shipped
+privacy promise, "not an asset, not a list, not a segment"
+(`DECISIONS.md`), does not obviously allow; flagged as a real
+conflict between two pieces of work landing the same night, his to
+resolve, not mine.
+
