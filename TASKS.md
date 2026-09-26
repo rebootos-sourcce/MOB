@@ -15202,3 +15202,27 @@ placeholder data. The binaural and voice tools are named as their own
 separate, later question, a production and licensing question, not
 folded into this pass.
 
+## EJ. The build arrived cut a second time, and the cause was the
+## fallback route I gave him myself, not a repeat of EB's own failure.
+## 26 September.
+
+**His words: "why is this still happening?"**, with the same
+watchdog message, a different build hash, `3a1cde5`. Checked before
+assuming a repeat: I never sent that build to him directly after EB.
+The real cause was the second route EB itself handed him, the raw
+GitHub address for `source.html`, the plain uncompressed file that
+was the actual problem all along and grows every round; a link he
+could reasonably keep reopening as builds moved past it, hitting the
+identical failure every time.
+
+**Fixed properly rather than patched once.** `atuned-packed.html`,
+the tracked delivery file this repo already carries for exactly this
+purpose, had itself gone stale, a full day behind at `da6cca6` while
+`source.html` had moved to `ecb64d4`. Rebuilt fresh from the current
+committed build and recommitted. The corrected second route now
+points at that file, not at `source.html`, so reopening it later
+serves the compressed build rather than the raw one. Also said
+plainly, since the watchdog's own message already named it: whichever
+link he uses, save it to disk first, never let a build open directly
+in a browser tab.
+
