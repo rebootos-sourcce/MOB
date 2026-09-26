@@ -13388,3 +13388,71 @@ profile, or be renamed to a structure everyone has? Touches
 **Q4.** For the law callout on the Dial, name the law and drop its
 score, or keep the score and drop "most shut"?
 
+## DE. Pin, trace and release, and zoom, all built and all real,
+## including a release that runs the actual product. 26 September.
+
+**Verified myself.** Only `proto/field-overlay/` touched. Looked at the
+release strip directly: a chain traced and pinned with his own label,
+"this is my saboteur," a press on "Run a release from here," then the
+real product's own Release card rising over the page, the real four
+pass opening, and a real Released card, not a mockup of one. Matches
+the report exactly.
+
+**Pin, built as he asked, and answering a complaint from the last
+round in the same stroke.** Click a line to pin its whole chain, click
+again to let it go; a tap and a "Pin this chain" button on a phone.
+Up to three at once, a fourth refused by name rather than silently
+dropping one, since a pin can carry a label he wrote and losing it
+silently would be worse. The rest of the field now only steps back to
+six tenths rather than disappearing, which is exactly what he said he
+did not like about the last round.
+
+**Trace and release, run against the real build, not a simulation of
+one.** The prototype loads the actual `source.html` in a frame with
+the same profile, checks all 141 of James's connection strengths
+against it first (141 of 141 matched before anything ran), then calls
+the product's own release entry point on the pinned chain's heaviest
+addresses. What comes back is the real card: 8 addresses, 25 of his
+100 patterns, the real opening, the real four passes, a real Released
+card. Read back into the Field after: Addiction fell from 93 to 67
+percent, the chain's own weight from 75 to 43, Expression rose 33.1 to
+34.5, and the pattern that chain ran through stopped forming and let
+go of its lines on the picture, stated in words on the card itself.
+The build's own refusal to release a worked example is still there,
+lifted only by an explicit, visible tickbox for this demo.
+
+**Zoom, built on the Field for the first time, following the Body
+page's own precedent.** Pinch, scroll, drag with glide, double tap to
+open a region or leave it, a "whole field" reset, plus keys on
+desktop. Checked for real sharpness, not only claimed: the zoomed
+capture differs from the original by 0.5 to 2.7 out of 255 per colour
+channel, close enough to call the same image at a different scale.
+
+**A real product bug found in passing, not part of the brief.** 28 of
+James's 141 connection lines are drawn exactly on top of another line,
+for example three different "Blame into ___" lines tracing the exact
+same path. No amount of zoom separates them, so a tap or a pin on that
+line silently picks one of the three without saying so.
+
+**Six real questions.**
+**Q1.** He said "protocol," the product's own card says "release." The
+house rule is one word for one concept. Keep "release" everywhere, or
+rename the product's own word to "protocol" everywhere?
+**Q2.** What should a pinned chain actually release: every charged
+address feeding its saboteur up to eight, as built; only the one
+address the chain starts from, a short run; or everything down to the
+chain's own character, a long run that spends the pattern limit fast?
+**Q3.** When a release breaks the pattern a pinned chain ran through,
+should the pin just keep what is left, as built; follow the new route
+that address now feeds; or should the break itself be treated as its
+own small milestone, since it is the strongest reward the loop
+produced?
+**Q4.** Should a pin be saved to the record, so it can be shared later
+the way he described, or stay for one visit only until sharing itself
+is designed?
+**Q5.** Should a phone pinch also change depth the way the desktop
+scroll already does, or only magnify the picture as built?
+**Q6.** The 28 stacked lines: fan them slightly apart in the wheel
+itself, a real change everywhere it draws; let a tap on a stacked line
+ask which one, through the shelf; or leave it.
+
