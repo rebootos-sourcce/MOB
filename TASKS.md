@@ -14796,3 +14796,44 @@ this codebase against showing them.
 **Both prototypes are real, working files, sent as pages rather than
 described, per this project's own standing rule.**
 
+## EA. A real delivery method broken, corrected on the spot; a real
+## sizing ask; a fragment held rather than guessed. 26 September.
+
+**The comparison boards trapped him, and that is on the delivery
+method, not on him.** His words: "when I click on it, it takes me to
+a page with a bunch of graphics, cool. When I click on one of the
+graphics it takes me to a nested graphic, and I have no way of getting
+back to where I came from. If I close the tabs that they belong to, it
+opens back up to where I last was. There's no close, there's no back,
+I can't get back to where I was. So make the mockups interactive HTML
+pages." The pattern that trapped him: a screenshot gallery page
+linking out to a second, separate live prototype file, which this
+window's own earlier work (`proto/glassbar/glassbar.html`,
+`proto/states/states.html`) never did, since both are one file with
+the comparison built into the page itself, switched by a hash rather
+than a link to somewhere else. The two boards built this round
+(`proto/energetics/`, `proto/flowredesign/`) added that second layer
+for the first time and it is what broke. Corrected immediately: the
+real interactive files, `energetics.html` and `flow.html`, sent to him
+directly rather than through their boards. Going forward, a
+comparison of several options is one file with an in-page switch,
+never a gallery that links out to a separate document.
+
+**A real, concrete sizing ask, folded into the icon work already in
+flight.** His words: "with our glyphs, like the Blueprint domains, the
+Primary, I'm wondering if we can make them a little bit smaller so
+they don't eat up so much real estate. Since they're hover over
+anyway to get information, I don't know if they need to eat up that
+much real estate. That way we get more of the icons above the fold."
+Sent to the seat already porting the root icons and saturation
+ruling into the real build, since it is the same tiles.
+
+**A fragment that did not fully land, held rather than guessed at.**
+"All these Energetics, the for the field, there's ascending to
+descending, yeah, okay, all right, always Crown to Root, top to main
+to fetter." Read as possibly touching seat ordering in the Field
+(Crown at the top, Root at the bottom, some layer order from outer to
+inner), but too fragmentary to act on with confidence. Held for a
+clearer re-ask rather than acted on from a guess, per this file's own
+standing rule.
+
