@@ -16708,3 +16708,69 @@ evidence, for the three red build scripts, whether to re-pin to the
 current engine or read live, verifying in a copy of the directory
 first since a successful run overwrites real json output.
 
+## FN. The onboarding research is done, verified directly, and eight
+## real defects it found in passing are logged here since it could
+## not reach this file itself. 26 September.
+
+`RESEARCH-firstrun.md` and a new section 0 in `DESIGN-firstrun.md`,
+commit `a2efb80`. The current app was actually walked, not just read
+about, as six of this project's own reference people, at both
+widths, against commit `acc8181` in a scratch build that never
+touched `atuned_src` or `source.html`.
+
+**Independently re-run myself.** `proto/firstrun/walk.js` reproduces
+its own claimed numbers exactly: 102 controls on the desktop landing
+screen, 22 on a phone, the phone's four doors sitting 3,216 pixels
+down, and the same first-story dead end verbatim, "You have committed
+1 story and nothing reaches the line yet." Zero em dashes across
+every file this round touched.
+
+**The real finding underneath the numbers.** A first story never
+lifts anything to where the Field shows it, so the first visible
+change costs two stories, not one, and nothing tells a person that.
+The loop is corrected to his own four words, discover, play, flow,
+embody, used directly rather than mapped onto feature names, and
+turned into one real pass through the actual product rather than
+four cards to read, which doubles as the navigating-the-software
+tutorial he asked for.
+
+**The republished storyboard fixes the exact problem that caused FK's
+scare**, on its own initiative: it no longer draws the real app's tab
+names on any mockup, carries a permanent "Prototype" band, and its
+only real product content is screenshots labelled as the shipped
+build. This session's watch on that artifact was never confirmed
+registered (this project hit its own ten webhook limit earlier
+tonight), so any further change to it needs to be said plainly rather
+than assumed seen.
+
+**Eight real defects found in passing, logged here since the agent
+could not reach this file while others were committing to it:**
+1. Archetype and domain percentages, and lit Warrior and Sage seats,
+   still print on a blank profile (AV24, already known, still true),
+   and Summary now contradicts this on the very same screen.
+2. Ritual states "the root is carrying the most" on a blank record.
+3. CQ prints "0%" as its largest numeral after a first story, reading
+   as a score of zero, which the product's own standing rule says a
+   reading is never supposed to be.
+4. The empty panel line after a first commit is technically true and
+   still lands as a flat refusal; the revision proposes a calibrating
+   state instead.
+5. On a phone, "Read nine sentences" opens about 1,200 pixels below
+   the viewport with no indication, and the sentences are cut off at
+   both widths once found.
+6. "angry at myself" produced Pride, Arrogance and Competition as
+   pending imprints, for the engine and voice seats, not this one.
+7. The profile picker reads "Custom" above fourteen worked example
+   people listed by name, with nothing marking them as examples.
+8. Energetics opens on a five line paragraph and a birth form before
+   any question, with no statement of how long the 63 questions take.
+
+**Also open, in the file's own words, not answered here:** four new
+questions (whether a dimmed real screen counts as a banned pop up,
+whether a first-story practice release should be labelled as such,
+which of three options answers his own hedged "maybe a few more
+questions" idea, whether the profile picker should name its examples
+as examples), and one copy bug read in the code but not yet run: the
+Ritual's plan sentence would print "When after I put the kettle on,
+..." for anyone who types "after" at the start of their own example.
+
