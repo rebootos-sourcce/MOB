@@ -13678,3 +13678,72 @@ above that need no owner input (`ui/summary.js:306`, and the feathers
 reading `S.law` instead of `lawNow`), all go out as one fix pass. BO7
 still waits on him stating the real threshold number.
 
+## DH. The fix pass from DG closed, all four, each reproduced before
+## and after. 26 September.
+
+**Priority one closed, and it took more than the one call.** Adding
+`saveYou()` to the story commit in `storyui.js` stopped the loss inside
+one session, but a reload between the commit and the visit still lost
+it: `loadProfile` at boot fills the working state but never
+`PEOPLE[0]`, the copy `loadP(0)` reads back out of, so that copy held
+the persona table's zeros across any reload regardless of the commit
+fix. `ui.js` now calls `mirrorYou()`, not `saveYou()`, right after
+`loadProfile(CURP)` at boot, because a boot has changed nothing and
+should not write to storage on its own. Measured before: 7.24 units
+committed, 0.00 on disk after a visit to James and one save, on both
+the same-session route and the reload route. Measured after: 7.24
+holds through every step, both routes, including a reload at the end.
+
+**Priority two closed.** A store that fails to parse, or parses to
+something that is not a list, no longer reads as "no profile yet."
+The bytes are copied verbatim to a key of their own first, read back
+to prove the copy landed, and the boot reports the failure on the
+status line rather than saying nothing:
+"Your saved profiles could not be read, so this is a new blank
+profile. The unreadable copy is kept in this browser, untouched." If
+even the copy cannot be made, every write to the real key refuses by
+name rather than risk losing the last good bytes. Measured before: a
+truncated 954 byte record became a blank 1562 byte one at boot with
+nothing said. Measured after: the message shows, at both widths,
+screenshot sent with this report, and the original bytes survive boot,
+an edit and two saves under the copy-succeeds case, and survive
+untouched with every save refused under the copy-fails case.
+
+**Both one line fixes closed.** `summary.js:306` tested `r.excess`, a
+list, which is true even empty; it now tests `r.excess.length`, the
+same way `ui.js:1048` already reads the same field. Measured against
+all fourteen personas: seven have nothing past the pole's paying
+point, and the sentence now prints for exactly the other seven,
+against all fourteen before. The feathers on Field, Frames and the
+Dial now draw `lawNow`, the answer with its release lift folded in,
+in place of the bare answer, in `wheel.js:315` and `rings.js:707,847`.
+A second bug came with it: Frames only redraws when its own rebuild
+key changes, and that key was built from the bare answer, so a release
+that only moved the lifted value left the picture stale; the key now
+tracks the same value the feathers draw. Measured against a law
+answered 5 with a lift to 9.504: before, all three drew 5 regardless of
+the lift, and 8 of 8 tested release steps left the rebuild key
+unchanged; after, the Field core draws 9.504, Frames and Dial draw 9.5,
+and 0 of 8 steps leave the key stale.
+
+**Two more of the same kind, found in passing, flagged rather than
+fixed.** `wheel.js:813`, the classic wheel's own 21 law strokes, reads
+the same bare `S.law` this round just fixed everywhere else; it was
+not named in the review, so it was left rather than folded in without
+being asked. And `rings.js:914`, the Dial's "most shut law" callout,
+also prints the bare answer; whether that callout should show the
+answer or the lifted value is a wording question, not a defect, so it
+stays as a question rather than a fix.
+
+**All nine gates run fresh, twice, once by the fixing agent and once
+independently by me against the same commit.** Both runs agree on
+every number: 429 exports, one more than before it is `storeUnread`;
+1660 engine tests passed; 1013 functional; 282 collide; 150 design;
+monitor exits clean; 172 funnel; the voice check finds nothing at a
+severity that stops a build. Commit `9a5fe14`, pushed.
+
+**Not signed off in DG is now signed off**, on the four items that
+review found and this pass closed. BO6, BO7 and the Dial's "SQ"
+wording question remain open, unchanged, and are not part of this
+verdict.
+
