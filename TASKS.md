@@ -14498,3 +14498,49 @@ have the team ask me questions when we get to these pages, and then
 continue what you're building." Nothing above is dispatched tonight.
 The agents already running continue uninterrupted.
 
+## DV. The glass bar revised on both his rulings, verified myself, 76
+## checks against the earlier 50. 26 September.
+
+**Both rulings built.** Every toggle is now a glass circle, the icon
+inside, a real number's own ring round the rim, and that same number
+in a small pill at the lower right, replacing the flat pill shape he
+said cost too much room. Wheel, Frames and Dial are off the centre
+pane entirely. Re-ran the prototype's own check script myself rather
+than trust the number alone: 76 passed, 0 failed, both widths,
+against 50 before. Looked at the screenshots directly and the shape
+reads exactly as described.
+
+**One honest gap found rather than guessed past.** His instruction
+placed Wheel, Frames and Dial "after shadow," and there is no reading
+named Shadow anywhere in the right rail, only the bar's own Shadow
+button. Rather than pick a reading of an ambiguous instruction, both
+were built: the right rail, and the tail end of the bar itself, after
+its own Shadow circle, switchable inside the prototype to compare.
+
+**What each ring now shows, measured against James rather than
+invented:** the addresses, seats, laws, shadow and stories circles
+carry the exact numbers the rail already shows elsewhere, checked to
+match at both widths. Three circles, Domains, Stories and Gates,
+carry a real number that had no equivalent anywhere in the shipped
+product before now, a new definition rather than a wiring job, and
+he is asked below whether to keep them and what to call them.
+
+**Five real open questions, on top of the thirteen already
+standing.**
+- Right rail or the tail of the bar, for Wheel, Frames and Dial. The
+  right rail clears the centre pane but sits far down the page on a
+  phone; the bar's tail stays beside the picture at every width but
+  grows the bar and moves Shadow out of its own cluster.
+- The four chain tier rings currently read how much of a person's
+  charge that tier is built on, which for him reads 100, 89, 89 and
+  84, barely different from each other; switching the ring to the
+  heaviest single pattern's own weight would vary more, at the cost of
+  the ring and the pill no longer meaning the same thing.
+- Domains, Stories and Gates are new readings with no existing
+  equivalent: keep them, and what should each be called.
+- Punch's own ruling fills every icon solid, which on this control
+  hides the ring entirely; keep that rule here too, or let this one
+  object keep its ring under Punch.
+- Whether the reading strip's own CQ, DQ and SQ chips take this same
+  shape, still open, untouched in this pass.
+
