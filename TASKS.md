@@ -12796,3 +12796,18 @@ standard anatomy reference next, or leave them gathered at Solar?
 right copy, should a single mark show on both sides, this pass always
 compared against whichever side is nearer.
 
+**A gap between what was reported and what he understood.** His words:
+"why can't you turn that image into a grid, plot where the points are
+supposed to be, and then put them there... get you to evaluate the two
+images to compare them, to see the similarities, and morph it and fit
+one to the other and plot the grid." That is exactly what CS did,
+reported instead in percentages and tiers, which did not land. Answered
+back with the picture CS already built for this and had not yet been
+sent, `after-overlay.png`, showing our own position as a white circle
+and each chart's own point as a coloured square, joined by a line where
+they are tied together, so the fit can be seen rather than trusted on
+a number. Held rather than pushed: his own words, "let's try that
+before I answer any of the," asked to see this before working through
+Q1 to Q5 above, so those stayed open rather than repeated at him
+again.
+
