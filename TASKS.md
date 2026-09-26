@@ -12743,8 +12743,9 @@ matching the claim exactly. `node tests/engine.js` matched 1649,
 `BUILD-engine.sh` matched 428 exports and host free. Looked at
 `proto/anatomy-ref/out/proof-marma.png` and `proof-112.png` myself, the
 tool's own read of each chart drawn back onto that chart, and it holds
-up, every circle sits on the point its label names. `functional.js`
-was still finishing under tonight's load when this was written.
+up, every circle sits on the point its label names. `node
+tests/functional.js` finished moments later and matched 1013 passed,
+0 failed.
 
 **A real number, not a description.** Median distance from where the
 Body page draws an address to where a chart places it, as a share of
