@@ -15671,3 +15671,37 @@ zoom, out of `proto/glassbar/` and into `atuned_src` for real, behind
 all nine gates, not reported to him again until it is true of
 `source.html` itself.
 
+## EW. The Body page Glass white fix (EO) closed, verified in a clean
+## worktree. 26 September.
+
+`atuned_src/ui/map.js` now reads a light or dark palette off the
+ground it actually sits on, the same test `frMount` uses in
+`rings.js`, before drawing the figure's seat rings, seat names and
+domain ring. Dark, Snow, Punch, Flat and Lumen are unchanged; Lumen
+stays on the dark palette on purpose, which is still open. Commit
+`a21e7c2`.
+
+**Re-run myself, in a worktree at that commit, not taken on report:**
+`BUILD.sh` and `BUILD-engine.sh` both clean, engine 432 exports host
+free. `tests/engine.js` 1687 passed 0 failed. `tests/functional.js`
+1052 passed 0 failed. `tests/collide.js` 298 passed 0 failed.
+`tools/monitor.js` all surfaces render. `tests/funnel.js` 172 passed
+0 failed. The voice objections check exits clean. Every one of these
+matches the reporting agent's own numbers to the digit.
+
+`tests/design.js` read 147 passed 3 failed on the first run, under
+the same multi-agent machine load that has produced this exact
+flake three separate times this session (logged EE, EF, ES): the
+"Field still animates" 30fps floor. Re-run alone, immediately after,
+150 passed 0 failed. Not a regression from this change.
+
+Screenshots taken fresh (not reused from the agent's own report):
+Body page on Dark at 1600 matches what shipped before this fix,
+confirming the claim that only light-ground lightings moved.
+
+**Left open, not this round's job:** `ui/mapshelf.js`'s right hand
+column still reads the dark palette on paper, and the heat wash's
+`mix-blend-mode:screen` reads muddier on a light ground now that the
+figure around it changed. Both visible in the agent's own
+screenshots, neither measured or ruled on.
+
