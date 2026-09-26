@@ -4972,7 +4972,7 @@ function blankProfile(name){
      what reopens it, because a birth moment does not change and a form left
      open invites somebody to fiddle with the one input that cannot be wrong. */
   who:{first:'', middle:'', last:'', sex:'', sealed:'',
-   born:{date:'', time:'', place:'', timeUnknown:false}},
+   born:{date:'', time:'', place:'', zone:'', timeUnknown:false}},
   /* PER PROFILE INTERFACE PREFERENCES. quiet is the reduced motion switch the
      phone spec asked for and nothing had built; model is the consent to let a
      story with nothing identifying attached refine the reading, and it is off
@@ -5049,8 +5049,8 @@ var LAW_WAS={Justice:'Expression', Humility:'Discernment'};
    Set wherever S.rec is set, which is here and loadP. */
 var LAW_REC=null;
 function loadProfile(p){
- if(!p.who)p.who={first:'',middle:'',last:'',sex:'',born:{date:'',time:'',place:'',timeUnknown:false}};
- if(!p.who.born)p.who.born={date:'',time:'',place:'',timeUnknown:false};
+ if(!p.who)p.who={first:'',middle:'',last:'',sex:'',born:{date:'',time:'',place:'',zone:'',timeUnknown:false}};
+ if(!p.who.born)p.who.born={date:'',time:'',place:'',zone:'',timeUnknown:false};
  if(!p.meter)p.meter={lines:0,unique:[],first:null,last:null};
  if(!Array.isArray(p.meter.unique))p.meter.unique=[];
  /* an older record has no plan, which is a free record and not a broken one */
@@ -5702,7 +5702,11 @@ function validateProfile(o){
   ['first','middle','last','sex','sealed'].forEach(function(k){
    if(typeof o.who[k]==='string')p.who[k]=o.who[k].slice(0,200);});
   if(o.who.born&&typeof o.who.born==='object'){
-   ['date','time','place'].forEach(function(k){
+   /* zone is the IANA time zone name, ruled 26 September. A string like the
+      others and not checked against the zone list here: whether a name can
+      be read is a property of the runtime reading it, and an unreadable one
+      reads unresolved rather than being refused on the way in. */
+   ['date','time','place','zone'].forEach(function(k){
     if(typeof o.who.born[k]==='string')p.who.born[k]=o.who.born[k].slice(0,200);});
    p.who.born.timeUnknown=!!o.who.born.timeUnknown;}}
  /* ui preferences. booleans only, and an older profile without them is filled
@@ -7480,8 +7484,51 @@ function euDST(y,m,d){                 /* last Sunday March to last Sunday Octob
  var s=_lastSunday(y,3), e=_lastSunday(y,10);
  return (m>3&&m<10)||(m===3&&d>=s)||(m===10&&d<e);}
 
+/* ---- a time zone the person names ----
+   Ruled 26 September: a person gives the time zone they were born in, by
+   its IANA name such as Pacific/Auckland, and the offset for that date is
+   computed here. The two functions above are the rules for two regions
+   written by hand, and they are already wrong before 2007 in places: the
+   US branch applies the 1987 rule to every earlier year. Writing them out
+   for every zone is a table nobody here can keep current.
+   Intl already carries that table. It is ECMAScript and not the host: it
+   is in every browser this file runs in and in node, it makes no request,
+   and it holds the historical rules, Nepal moving from +5:30 to +5:45 in
+   1986 and Britain on +1 all year from 1968 to 1971. One formatter per
+   zone is cached, because building one is slow and a render asks for the
+   same zone several times. An unknown name, or a runtime with no Intl,
+   is null and never a guess. */
+var _ZFMT={};
+function _zfmt(z){
+ if(!z||typeof z!=='string')return null;
+ if(_ZFMT[z]!==undefined)return _ZFMT[z];
+ var f=null;
+ try{ f=new Intl.DateTimeFormat('en-US-u-ca-gregory-nu-latn',{timeZone:z, hourCycle:'h23',
+   year:'numeric', month:'numeric', day:'numeric', hour:'numeric', minute:'numeric', second:'numeric'});
+ }catch(e){ f=null; }
+ return (_ZFMT[z]=f);}
+/* the zone's offset from Greenwich at one instant, in milliseconds */
+function _zoff(f,t){
+ var q={}; f.formatToParts(new Date(t)).forEach(function(x){q[x.type]=+x.value;});
+ return Date.UTC(q.year,q.month-1,q.day,q.hour,q.minute,q.second)-Math.floor(t/1000)*1000;}
+/* Every offset at which this local clock reading really happened in zone z,
+   in hours, or null for a zone this runtime cannot read. Usually one. Two
+   when the clocks went back and the reading happened twice, and none when
+   they went forward and it never happened at all, which is where a person
+   who remembers 2:30 on that one night in spring actually lands. In both of
+   those the caller gets the offsets either side and treats the birth as a
+   window between them, the same as an unlocated one, rather than choosing. */
+function zoneOffsets(z,y,m,d,hrs){
+ var f=_zfmt(z); if(!f)return null;
+ var L=Date.UTC(y,m-1,d)+Math.round(hrs*3600000);
+ var a=_zoff(f,L-86400000), b=_zoff(f,L+86400000);
+ var cand=(a===b)?[a]:[a,b];
+ var real=cand.filter(function(o){return _zoff(f,L-o)===o;});
+ return (real.length?real:cand).map(function(o){return o/3600000;});}
+
 /* a birth record to a Julian Day in UT, and the offset that was applied.
-   returns null when the record cannot support it, rather than guessing. */
+   returns null when the record cannot support it, rather than guessing.
+   d is the date, t the local clock time, p the place, z the time zone. */
 function birthJD(bt){
  if(!bt||!bt.d)return null;
  var p=bt.d.split('-'), y=+p[0], m=+p[1], d=+p[2];
@@ -7494,7 +7541,34 @@ function birthJD(bt){
  if(pl&&pl.dst==='us')dst=usDST(y,m,d);
  if(pl&&pl.dst==='eu')dst=euDST(y,m,d);
  if(dst)off+=1;
- return {jd:julianDay(y,m,d,hrs-off), place:pl, timed:timed, offset:off, dst:dst};}
+ /* A zone the person named outranks the table: it is their own statement
+    about their own birth, and it carries the real rules for that year where
+    the table carries two hand written ones. The place still supplies the
+    horizon, which a zone cannot, so rising keeps needing a place. dst is
+    null on this path because Intl answers the offset and not the reason. */
+ var zo=bt.z?zoneOffsets(bt.z,y,m,d,hrs):null;
+ if(zo){
+  off=zo[0]; dst=null;
+  var zspan=zo.length>1?[julianDay(y,m,d,hrs-Math.max(zo[0],zo[1])),
+                          julianDay(y,m,d,hrs-Math.min(zo[0],zo[1]))]:null;
+  return {jd:julianDay(y,m,d,hrs-off), place:pl, timed:timed, offset:off, dst:dst,
+   span:(timed?zspan:null), zone:bt.z};}
+ /* A PLACE THIS TABLE DOES NOT NAME IS AN UNKNOWN OFFSET, NOT OFFSET ZERO.
+    The line above reads a missing place as Greenwich, so a clock time typed
+    in Auckland was treated as the same clock time in London, thirteen hours
+    out. Rising refused it, and the moon, both gates and the gene key were
+    printed off the guessed instant as settled. Measured over four years of
+    Auckland births at 08:00: the moon sign wrong on 349 of 1460 days, the
+    gene key on 830, the sun sign on 26.
+    So a timed record with no located place and no zone it can read, which
+    is what reaches this line, also carries the two instants it could be, fourteen hours east of Greenwich and twelve west, which
+    are the widest clock offsets in use. A reading that comes out the same at
+    both ends is true whatever the place was. One that differs is refused by
+    the caller. jd keeps the old guess so nothing that does not check the
+    span moves in this change. An untimed record is not given one: its noon
+    is already a guess of its own, and that is a separate question. */
+ var span=(timed&&!pl)?[julianDay(y,m,d,hrs-14), julianDay(y,m,d,hrs+12)]:null;
+ return {jd:julianDay(y,m,d,hrs-off), place:pl, timed:timed, offset:off, dst:dst, span:span};}
 
 /* ============================================================
    ENERGETICS. Pure functions of date, time and place, and as of
@@ -7520,12 +7594,30 @@ function birthJD(bt){
 const ZI=[2,3,4,5,6,7,8,9,10,11,0,1];
 function zFromLon(lon){return ZSIGN[ZI[signOf(lon)]];}
 
+/* A reading at every instant the record allows, or null when they do not
+   all agree. Without a span there is one instant and it is read as before.
+   Two ends are the whole check and not a sample: the sun and the moon only
+   ever move forward, the design sun follows the birth sun, and a day moves
+   neither of them a full sign or gate, so two ends in the same bin means
+   every instant between them is in it too. f must return something ===
+   comparable, a sign index or a gate and line, never a fresh object. */
+function atSpan(b,f){
+ if(!b.span)return f(b.jd);
+ var a=f(b.span[0]);
+ return a===f(b.span[1])?a:null;}
+
 /* The sun by longitude, so a birth on a cusp lands on the right side of
    it. The old calendar cutoffs drift about a day across the leap cycle,
-   which is exactly where a cusp birth sits. */
+   which is exactly where a cusp birth sits. And for the same reason a
+   timed birth with no time zone and no located place has no sun sign on a
+   cusp day: the day is known, the side of the cusp is not. That is null,
+   and measured over four years of unlocated births at four clock times it
+   was 217 of 5840, one in 27. */
 function sunSign(d,bt){
  var b=birthJD(bt||{d:d});
- if(b){var z=zFromLon(sunLon(b.jd)); return {nm:z[2], el:z[3], mode:z[4]};}
+ if(b){var i=atSpan(b,function(jd){return signOf(sunLon(jd));});
+  if(i===null)return null;
+  var z=ZSIGN[ZI[i]]; return {nm:z[2], el:z[3], mode:z[4]};}
  var p=d.split('-'), m=+p[1], day=+p[2];
  for(var j=0;j<ZSIGN.length;j++){
   var a=ZSIGN[j], c=ZSIGN[(j+1)%12];
@@ -7535,10 +7627,15 @@ function sunSign(d,bt){
 
 /* The moon moves about thirteen degrees a day, so the birth time is not
    a refinement here, it is most of the answer. Without one the record
-   gets local noon and the reading says the time is missing. */
+   gets local noon and the reading says the time is missing.
+   A time with no located place is a day wide window, and the moon crosses
+   half a sign in it, so it is null when the window straddles a cusp rather
+   than whichever side Greenwich happened to put it on. On the same 5840
+   births as the sun above that was 2777, close to half. */
 function moonSign(bt){
  var b=birthJD(bt); if(!b)return ZSIGN[0];
- return zFromLon(moonLon(b.jd));}
+ var i=atSpan(b,function(jd){return signOf(moonLon(jd));});
+ return i===null?null:ZSIGN[ZI[i]];}
 
 /* The ascendant needs a place. Without one this returns null and the
    product says so, because a rising sign invented from a sunrise that
@@ -7577,21 +7674,37 @@ function chineseYear(bt){
    rather than printing one of five that happens to sound right. The old
    code returned a type for everybody and four of its thirty combinations
    cannot occur in the real system. */
+/* A gate and line as one number, so atSpan can compare the two ends of a
+   window with ===. Gate numbers are unique on the wheel, so this is too. */
+function _gl(lon){var g=gateOf(lon); return g.gate*10+g.line;}
 function hdOf(b){
  var j=birthJD(b);
  if(!j)return {type:null, authority:null, unresolved:'no birth date'};
+ var typeWhy='type and authority need the full bodygraph, which is not built';
+ /* A line is under one degree of sun and an unlocated day moves the sun
+    just over one, so the two ends of the window never share a line and an
+    unlocated birth gets no gate here at all. That is measured, not
+    assumed, and it is why these come back null rather than a gate with a
+    line quietly dropped. Located or untimed, span is null and this is
+    the old reading exactly. */
+ if(atSpan(j,function(jd){return _gl(sunLon(jd));})===null
+  ||atSpan(j,function(jd){return _gl(sunLon(designJD(jd)));})===null)
+  return {type:null, authority:null, unresolved:typeWhy,
+   personality:null, design:null, profile:null};
  var pers=gateOf(sunLon(j.jd)), des=gateOf(sunLon(designJD(j.jd)));
- return {type:null, authority:null,
-  unresolved:'type and authority need the full bodygraph, which is not built',
+ return {type:null, authority:null, unresolved:typeWhy,
   personality:pers, design:des,
   profile:pers.line+'/'+des.line};}
 
 /* A gene key is the gate the sun occupied, on the I Ching wheel, which
    is a real position and not the day of the month. Line is the sixth of
-   the gate it fell in. */
+   the gate it fell in. It is the personality sun, so an unlocated birth
+   loses it for the reason given inside hdOf. */
 function geneKey(b){
  var j=birthJD(b);
  if(!j)return {gate:null, line:null, unresolved:'no birth date'};
+ if(atSpan(j,function(jd){return _gl(sunLon(jd));})===null)
+  return {gate:null, line:null, unresolved:'needs a time zone the instrument can read'};
  var g=gateOf(sunLon(j.jd));
  return {gate:g.gate, line:g.line, lon:g.lon};}
 function spiritual(name){
@@ -7601,15 +7714,22 @@ function spiritual(name){
    reference case is, rather than only through the BIRTH table. */
 function spiritualOf(bt){
  if(!bt||!bt.d)return null;
- var sun=sunSign(bt.d,bt), mn=moonSign(bt), rs=risingSign(bt);
- var cy=chineseYear(bt), b=birthJD(bt);
- return {sun:sun.nm, sunEl:sun.el, sunMode:sun.mode, moon:mn[2], moonEl:mn[3],
+ /* the sun and the moon are null for an unlocated birth whose window
+    crosses a cusp, and every field hung off them is null with them, so a
+    root or a mode is never derived from a sign that was not read. */
+ var sun=sunSign(bt.d,bt)||{nm:null,el:null,mode:null}, mn=moonSign(bt)||[];
+ var rs=risingSign(bt), cy=chineseYear(bt), b=birthJD(bt);
+ return {sun:sun.nm, sunEl:sun.el, sunMode:sun.mode, moon:mn[2]||null, moonEl:mn[3]||null,
   /* null rather than a guess. the reading prints what is missing. */
   rising:rs?rs[2]:null, risingEl:rs?rs[3]:null,
   needsPlace:!rs&&!!bt.t, needsTime:!(b&&b.timed),
+  /* a span on a record means its offset was not known, and what settles it
+     is a time zone, so that is what the reading asks for */
+  needsZone:!!(b&&b.span&&!b.zone),
   chinese:CHINESE[((cy%12)+12)%12], celem:chineseElement(((cy%10)+10)%10), cyear:cy,
   lp:lifePath(bt.d), master:masterNumber(bt), hd:hdOf(bt), gk:geneKey(bt), birth:bt,
-  root:ELEM2ROOT[sun.el], mode:MODE2NOTE[sun.mode], lpMean:LPMEAN[lifePath(bt.d)]||''};}
+  root:sun.el?ELEM2ROOT[sun.el]:null, mode:sun.mode?MODE2NOTE[sun.mode]:null,
+  lpMean:LPMEAN[lifePath(bt.d)]||''};}
 /* CONVERGENCE. where independent systems agree, that is the signal.
    where they disagree the instrument says so rather than picking a winner. */
 function converge(name,r){
@@ -8466,7 +8586,7 @@ if(typeof module!=='undefined'&&module.exports){
   /* astro */     julianDay:julianDay, sunLon:sunLon, moonLon:moonLon, gmst:gmst,
                   ascendant:ascendant, signOf:signOf, degInSign:degInSign,
                   gateOf:gateOf, designJD:designJD, birthJD:birthJD, PLACE:PLACE,
-                  usDST:usDST, euDST:euDST, GATE_WHEEL:GATE_WHEEL, GATE_ARC:GATE_ARC,
+                  usDST:usDST, euDST:euDST, zoneOffsets:zoneOffsets, GATE_WHEEL:GATE_WHEEL, GATE_ARC:GATE_ARC,
                   chineseYear:chineseYear, spiritualOf:spiritualOf,
   /* catalog */   C3_VERB:C3_VERB, C3_STEM:C3_STEM, C3_TRUTH:C3_TRUTH,
                   C3_BAND:C3_BAND, C3_LADDER:C3_LADDER, C3_POLE:C3_POLE, C3_BILATERAL:C3_BILATERAL,

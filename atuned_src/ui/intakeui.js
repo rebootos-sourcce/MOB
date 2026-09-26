@@ -129,6 +129,7 @@ function iqSealedCard(p){
  if(bn.timeUnknown) bits.push('time not known');
  else if(bn.time) bits.push(bn.time);
  if(bn.place) bits.push(bn.place);
+ if(bn.zone) bits.push(bn.zone);
  if(w.sex) bits.push({f:'female',m:'male',o:'other'}[w.sex]||w.sex);
  /* WHAT IS MISSING IS SAID OUT LOUD. A rolled up card that hides a blank date
     reads as complete, and the birth chart is then quietly running on nothing.
@@ -138,6 +139,9 @@ function iqSealedCard(p){
  if(!bn.date) gaps.push('no date of birth');
  if(!bn.place) gaps.push('no place of birth');
  if(bn.date&&!bn.time&&!bn.timeUnknown) gaps.push('no time of birth');
+ /* only when it changes the reading: a place the table locates carries its
+    own offset, and an untimed birth has no instant for an offset to move */
+ if(bn.time&&!bn.timeUnknown&&!bn.zone&&!PLACE[bn.place]) gaps.push('no time zone of birth');
  var sd=p.seed;
  return '<div class="iq-sealed">'
   +'<div class="iq-sl-l">'
@@ -154,6 +158,17 @@ function iqField(label,key,v){
  var id='w'+key;
  return '<div class="iq-f"><label for="'+id+'">'+label+'</label>'
   +'<input type="text" id="'+id+'" data-who="'+key+'" value="'+esc(v||'')+'"></div>';}
+/* The suggestion list for the time zone field, made once for the page. It
+   lives outside the form because renderIntake rewrites the form on every
+   change and four hundred options rebuilt each time is work for nothing. A
+   browser with no zone list gets no suggestions and a field that still
+   takes a typed name. */
+function iqZones(){
+ if(document.getElementById('wzones'))return;
+ var z=[]; try{ z=Intl.supportedValuesOf('timeZone'); }catch(e){ z=[]; }
+ var dl=document.createElement('datalist'); dl.id='wzones';
+ dl.innerHTML=z.map(function(n){return '<option value="'+esc(n)+'">';}).join('');
+ document.body.appendChild(dl);}
 function iqEnsure(){
  if(!PROFILES.length) PROFILES=pStore();
  if(!PROFILES.length){ pNew('You'); loadProfile(CURP); }
@@ -199,6 +214,16 @@ function renderIntake(){
    +(bn.timeUnknown?' checked':'')+'> I do not know it</label></div>'
   +'<div class="iq-f"><label for="wplace">Place of birth</label>'
    +'<input type="text" id="wplace" data-born="place" placeholder="City, region" value="'+esc(bn.place||'')+'"></div>'
+  /* THE TIME ZONE, RULED 26 SEPTEMBER. A place was matched against nine cities
+     by exact string and anything else was read as Greenwich, so a person born
+     in Auckland had their moon and gene key read thirteen hours out. The
+     owner chose a named zone over a bigger city list or an asked offset: it is
+     something a person already knows, and the rules for its year are computed
+     rather than looked up by them. The list is the browser's own, offered as
+     suggestions, so typing Auckland finds Pacific/Auckland. */
+  +'<div class="iq-f"><label for="wzone">Time zone of birth</label>'
+   +'<input type="text" id="wzone" data-born="zone" list="wzones" placeholder="Region/City" '
+   +'autocomplete="off" spellcheck="false" value="'+esc(bn.zone||'')+'"></div>'
   +'</div>'
   +iqSeedBlock(p)
   /* SEAL IS A SAVE THAT ALSO PUTS THE FORM AWAY. It is only offered once there
@@ -335,8 +360,17 @@ function renderIntake(){
      the master number standing on a name that is no longer there. */
   CURP.who[el.dataset.who]=el.value; pSave(); statusSaved();
   renderSpirit&&renderSpirit(); render();};});
+ iqZones();
  host.querySelectorAll('[data-born]').forEach(function(el){el.onchange=function(){
-  CURP.who.born[el.dataset.born]=el.value; pSave(); statusSaved(); renderSpirit&&renderSpirit();};});
+  var k=el.dataset.born, v=(k==='zone')?el.value.trim():el.value;
+  CURP.who.born[k]=v; pSave();
+  /* A zone this browser cannot read is kept, because it is what the person
+     typed, and said out loud, because otherwise Saved is the only word they
+     see while the rail beside it goes on reading unresolved. Only after a
+     save that worked: a failed save already has its own sentence. */
+  if(statusSaved()&&k==='zone'&&v&&!zoneOffsets(v,2000,1,1,12))
+   status('Saved. '+v+' is not a time zone this browser can read.');
+  renderSpirit&&renderSpirit();};});
  /* SEAL AND EDIT. Both write, so both report through the status region, and
     neither claims anything it did not get. */
  var sl=document.getElementById('iqseal');

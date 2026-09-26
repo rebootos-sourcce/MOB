@@ -91,7 +91,7 @@ function accGroup(title,rows,foot){
 function accAccount(){
  var w=(CURP&&CURP.who)||{}, bn=w.born||{};
  var nm=[w.first,w.middle,w.last].filter(function(x){return x&&x.trim();}).join(' ');
- var born=[bn.date,(bn.timeUnknown?'time not known':bn.time),bn.place]
+ var born=[bn.date,(bn.timeUnknown?'time not known':bn.time),bn.place,bn.zone]
   .filter(function(x){return x;}).join(' · ');
  var h=accGroup('This Account',
    '<div class="ac-row ac-edit"><span class="ac-rl">Profile name</span>'

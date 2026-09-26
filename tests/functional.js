@@ -729,6 +729,56 @@ ok(/unresolved/.test(birth.nocity)&&/birthplace/.test(birth.nocity),
  'a place the gazetteer cannot locate says so rather than rendering blank');
 ok(/No birth data/.test(birth.none),'and no birth data at all says that');
 
+console.log('\n=== a birthplace the instrument cannot locate is not read as Greenwich ===');
+/* A clock time typed with a place outside the nine city table was read at
+   offset zero, so Auckland was thirteen hours out and the moon, both gates
+   and the gene key printed as settled beside a Rising row that correctly
+   said unresolved. 1990-01-01 at 08:00 is a day whose moon changes sign
+   inside the window an unknown offset allows, so the moon row is exercised
+   too and not only the gates, which a day always moves. Then the time zone
+   is typed into the real Energetics field, the way the owner ruled a person
+   supplies it, and the same rows must resolve to the sky at +13. */
+const unloc=await page.evaluate(()=>{
+ loadP(0); toYou();
+ CURP.who=CURP.who||{}; CURP.who.sealed='';
+ CURP.who.born={date:'1990-01-01',time:'08:00',place:'Auckland',zone:'',timeUnknown:false};
+ renderSpirit();
+ const txt=()=>(document.getElementById('spirit').textContent||'').replace(/\s+/g,' ');
+ const rowOf=k=>{const r=[...document.querySelectorAll('#spirit .sp-row')]
+  .find(x=>(x.querySelector('.sp-k')||{}).textContent===k);
+  return r?r.textContent.replace(/\s+/g,' ').trim():'';};
+ const before={all:txt(), moon:rowOf('Moon'), gk:rowOf('Gene key'), pers:rowOf('Personality'),
+  design:rowOf('Design'), profile:rowOf('Profile'), rising:rowOf('Rising'),
+  /* static, because a drill button into a value nobody read is the same claim */
+  moonStatic:[...document.querySelectorAll('#spirit .sp-row.static .sp-k')].some(x=>x.textContent==='Moon')};
+ setTab(TAB.INTAKE); renderIntake();
+ const z=document.getElementById('wzone');
+ const hasField=!!z, listed=!!(z&&z.list&&z.list.options.length>100);
+ z.value='Pacific/Auckland'; z.dispatchEvent(new Event('change'));
+ const saved=CURP.who.born.zone;
+ const after={all:txt(), moon:rowOf('Moon'), gk:rowOf('Gene key'), rising:rowOf('Rising'), where:rowOf('Where')};
+ const want=(function(){const sp=spiritualOf({d:'1990-01-01',t:'08:00',p:'Auckland',z:'Pacific/Auckland'});
+  return {moon:sp.moon, gk:sp.gk.gate+'.'+sp.gk.line};})();
+ z.value='Middle/Earth'; z.dispatchEvent(new Event('change'));
+ const bad={status:(document.getElementById('status')||{}).textContent||'', moon:rowOf('Moon')};
+ CURP.who.born={}; pSave(); renderSpirit();
+ return {before, hasField, listed, saved, after, want, bad};});
+ok(/unresolved/.test(unloc.before.moon)&&/time zone/.test(unloc.before.moon)&&unloc.before.moonStatic,
+ 'no time zone: the moon says unresolved and asks for a time zone, got '+unloc.before.moon);
+ok(['gk','pers','design','profile'].every(k=>/unresolved/.test(unloc.before[k])&&/time zone/.test(unloc.before[k])),
+ 'and so do the gene key, both gates and the profile, got '+unloc.before.gk);
+ok(!/gate \d/.test(unloc.before.all),'and no gate number is printed anywhere on the rail');
+ok(/birthplace/.test(unloc.before.rising),'rising still asks for a birthplace, got '+unloc.before.rising);
+ok(unloc.hasField&&unloc.listed,'Energetics carries a time zone field with the zone list offered');
+ok(unloc.saved==='Pacific/Auckland','typing the zone saves it to the profile, got '+unloc.saved);
+ok(unloc.after.moon.indexOf(unloc.want.moon)>=0&&!/unresolved/.test(unloc.after.moon),
+ 'and the moon resolves to the sky at the real offset, got '+unloc.after.moon+' want '+unloc.want.moon);
+ok(unloc.after.gk.indexOf(unloc.want.gk)>=0,'and the gene key, got '+unloc.after.gk+' want '+unloc.want.gk);
+ok(/birthplace/.test(unloc.after.rising),'rising still needs a place the table can locate, got '+unloc.after.rising);
+ok(/Pacific\/Auckland/.test(unloc.after.where),'and the zone read is shown beside the place, got '+unloc.after.where);
+ok(/not a time zone this browser can read/.test(unloc.bad.status)&&/unresolved/.test(unloc.bad.moon),
+ 'a zone the browser cannot read is said out loud and the rail goes back to unresolved, got '+unloc.bad.status);
+
 console.log('\n=== the main button never destroys a field it was not asked to ===');
 /* With nothing held, Run a release used to start a 2.8 second animation that
    zeroed every charge and raised every law toward ten. One click, no

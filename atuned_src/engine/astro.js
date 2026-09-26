@@ -174,8 +174,51 @@ function euDST(y,m,d){                 /* last Sunday March to last Sunday Octob
  var s=_lastSunday(y,3), e=_lastSunday(y,10);
  return (m>3&&m<10)||(m===3&&d>=s)||(m===10&&d<e);}
 
+/* ---- a time zone the person names ----
+   Ruled 26 September: a person gives the time zone they were born in, by
+   its IANA name such as Pacific/Auckland, and the offset for that date is
+   computed here. The two functions above are the rules for two regions
+   written by hand, and they are already wrong before 2007 in places: the
+   US branch applies the 1987 rule to every earlier year. Writing them out
+   for every zone is a table nobody here can keep current.
+   Intl already carries that table. It is ECMAScript and not the host: it
+   is in every browser this file runs in and in node, it makes no request,
+   and it holds the historical rules, Nepal moving from +5:30 to +5:45 in
+   1986 and Britain on +1 all year from 1968 to 1971. One formatter per
+   zone is cached, because building one is slow and a render asks for the
+   same zone several times. An unknown name, or a runtime with no Intl,
+   is null and never a guess. */
+var _ZFMT={};
+function _zfmt(z){
+ if(!z||typeof z!=='string')return null;
+ if(_ZFMT[z]!==undefined)return _ZFMT[z];
+ var f=null;
+ try{ f=new Intl.DateTimeFormat('en-US-u-ca-gregory-nu-latn',{timeZone:z, hourCycle:'h23',
+   year:'numeric', month:'numeric', day:'numeric', hour:'numeric', minute:'numeric', second:'numeric'});
+ }catch(e){ f=null; }
+ return (_ZFMT[z]=f);}
+/* the zone's offset from Greenwich at one instant, in milliseconds */
+function _zoff(f,t){
+ var q={}; f.formatToParts(new Date(t)).forEach(function(x){q[x.type]=+x.value;});
+ return Date.UTC(q.year,q.month-1,q.day,q.hour,q.minute,q.second)-Math.floor(t/1000)*1000;}
+/* Every offset at which this local clock reading really happened in zone z,
+   in hours, or null for a zone this runtime cannot read. Usually one. Two
+   when the clocks went back and the reading happened twice, and none when
+   they went forward and it never happened at all, which is where a person
+   who remembers 2:30 on that one night in spring actually lands. In both of
+   those the caller gets the offsets either side and treats the birth as a
+   window between them, the same as an unlocated one, rather than choosing. */
+function zoneOffsets(z,y,m,d,hrs){
+ var f=_zfmt(z); if(!f)return null;
+ var L=Date.UTC(y,m-1,d)+Math.round(hrs*3600000);
+ var a=_zoff(f,L-86400000), b=_zoff(f,L+86400000);
+ var cand=(a===b)?[a]:[a,b];
+ var real=cand.filter(function(o){return _zoff(f,L-o)===o;});
+ return (real.length?real:cand).map(function(o){return o/3600000;});}
+
 /* a birth record to a Julian Day in UT, and the offset that was applied.
-   returns null when the record cannot support it, rather than guessing. */
+   returns null when the record cannot support it, rather than guessing.
+   d is the date, t the local clock time, p the place, z the time zone. */
 function birthJD(bt){
  if(!bt||!bt.d)return null;
  var p=bt.d.split('-'), y=+p[0], m=+p[1], d=+p[2];
@@ -188,4 +231,31 @@ function birthJD(bt){
  if(pl&&pl.dst==='us')dst=usDST(y,m,d);
  if(pl&&pl.dst==='eu')dst=euDST(y,m,d);
  if(dst)off+=1;
- return {jd:julianDay(y,m,d,hrs-off), place:pl, timed:timed, offset:off, dst:dst};}
+ /* A zone the person named outranks the table: it is their own statement
+    about their own birth, and it carries the real rules for that year where
+    the table carries two hand written ones. The place still supplies the
+    horizon, which a zone cannot, so rising keeps needing a place. dst is
+    null on this path because Intl answers the offset and not the reason. */
+ var zo=bt.z?zoneOffsets(bt.z,y,m,d,hrs):null;
+ if(zo){
+  off=zo[0]; dst=null;
+  var zspan=zo.length>1?[julianDay(y,m,d,hrs-Math.max(zo[0],zo[1])),
+                          julianDay(y,m,d,hrs-Math.min(zo[0],zo[1]))]:null;
+  return {jd:julianDay(y,m,d,hrs-off), place:pl, timed:timed, offset:off, dst:dst,
+   span:(timed?zspan:null), zone:bt.z};}
+ /* A PLACE THIS TABLE DOES NOT NAME IS AN UNKNOWN OFFSET, NOT OFFSET ZERO.
+    The line above reads a missing place as Greenwich, so a clock time typed
+    in Auckland was treated as the same clock time in London, thirteen hours
+    out. Rising refused it, and the moon, both gates and the gene key were
+    printed off the guessed instant as settled. Measured over four years of
+    Auckland births at 08:00: the moon sign wrong on 349 of 1460 days, the
+    gene key on 830, the sun sign on 26.
+    So a timed record with no located place and no zone it can read, which
+    is what reaches this line, also carries the two instants it could be, fourteen hours east of Greenwich and twelve west, which
+    are the widest clock offsets in use. A reading that comes out the same at
+    both ends is true whatever the place was. One that differs is refused by
+    the caller. jd keeps the old guess so nothing that does not check the
+    span moves in this change. An untimed record is not given one: its noon
+    is already a guess of its own, and that is a separate question. */
+ var span=(timed&&!pl)?[julianDay(y,m,d,hrs-14), julianDay(y,m,d,hrs+12)]:null;
+ return {jd:julianDay(y,m,d,hrs-off), place:pl, timed:timed, offset:off, dst:dst, span:span};}

@@ -42,7 +42,7 @@ function renderSpirit(){
     written to close exactly this and was never called. It is called here. */
  if(!sp&&CURP&&CURP.who&&CURP.who.born&&CURP.who.born.date){
   var bn=CURP.who.born;
-  sp=spiritualOf({d:bn.date, t:(bn.timeUnknown?'':(bn.time||'')), p:bn.place||''});}
+  sp=spiritualOf({d:bn.date, t:(bn.timeUnknown?'':(bn.time||'')), p:bn.place||'', z:bn.zone||''});}
  if(!sp){
   /* THIS LINE PROMISED A DESIGN TYPE, AND NOTHING COMPUTES ONE. The Type row
      below says unresolved for every birth there is, because the type needs the
@@ -72,18 +72,33 @@ function renderSpirit(){
    +'<span class="sp-k">'+k+'</span>'
    +'<span class="sp-v">'+(glyph?'<em class="sp-g">'+glyph+'</em>':'')+esc(v)+'</span>'
    +'<span class="sp-x">'+esc(x||'')+'</span></button>';}
+ /* ONE SHAPE FOR EVERY READING THE RECORD CANNOT SETTLE. Rising was the only
+    row that said so, and the moon, both gates and the gene key beside it were
+    printed off an instant the engine had guessed by reading an unlocated
+    birthplace as Greenwich. The engine now returns null for any of them that
+    the missing offset could change, and a null is only ever this row: static,
+    because a drill into a value nobody read would be the same claim again.
+    What settles all of them is the offset and not the horizon, so the row asks
+    for a time zone, which the owner ruled is how a person supplies it. With a
+    zone given the only thing left open is a clock reading that the clocks
+    going back or forward made happen twice or not at all. */
+ function unres(k,x){
+  return '<div class="sp-row static"><span class="sp-k">'+k+'</span>'
+   +'<span class="sp-v">unresolved</span><span class="sp-x">'+x+'</span></div>';}
+ var noPlace='needs a birthplace the instrument can locate';
+ /* short when nothing was given, because it sits beside five rows in a rail
+    264 wide and the long form wrapped to four lines on every one of them */
+ var noZone=!sp.needsZone?'the clocks changed at that hour'
+  :sp.birth.z?'needs a time zone the instrument can read':'needs a birth time zone';
  el.innerHTML='<div class="sp-hd">Western</div>'
-  +row('Sun',ZGLYPH[sp.sun],sp.sun,sp.sunEl,'sign')
-  +row('Moon',ZGLYPH[sp.moon],sp.moon,sp.moonEl,'sign')
+  +(sp.sun?row('Sun',ZGLYPH[sp.sun],sp.sun,sp.sunEl,'sign'):unres('Sun',noZone))
+  +(sp.moon?row('Moon',ZGLYPH[sp.moon],sp.moon,sp.moonEl,'sign'):unres('Moon',noZone))
   /* The ascendant is the one reading that needs a place, because it is the
      degree rising on the horizon and that depends on where the horizon was.
      A blank row says nothing, so the row says what is missing and why. */
   +(sp.rising
     ? row('Rising',ZGLYPH[sp.rising],sp.rising,sp.risingEl,'sign')
-    : '<div class="sp-row static"><span class="sp-k">Rising</span>'
-      +'<span class="sp-v">unresolved</span><span class="sp-x">'
-      +(sp.needsTime?'needs a birth time':'needs a birthplace the instrument can locate')
-      +'</span></div>')
+    : unres('Rising',sp.needsTime?'needs a birth time':noPlace))
   +'<div class="sp-hd">Eastern</div>'
   +row('Year','',sp.celem+' '+sp.chinese,'','chinese',sp.chinese)
   +row('Element','',sp.celem,'','celem',sp.celem)
@@ -93,19 +108,24 @@ function renderSpirit(){
   +'<div class="sp-hd">Design</div>'
   /* the personality and design gates are real and computed. the type is
      not, and says so, rather than printing one that sounds right. */
-  +row('Profile','',sp.hd.profile||'unresolved','personality line over design line','hd',sp.hd.profile||'')
-  +row('Personality','',sp.hd.personality?('gate '+sp.hd.personality.gate+'.'+sp.hd.personality.line):'unresolved',
-    'the sun at birth','gk',sp.hd.personality?String(sp.hd.personality.gate):'')
-  +row('Design','',sp.hd.design?('gate '+sp.hd.design.gate+'.'+sp.hd.design.line):'unresolved',
-    'the sun 88 degrees earlier','gk',sp.hd.design?String(sp.hd.design.gate):'')
-  +'<div class="sp-row static"><span class="sp-k">Type</span><span class="sp-v">unresolved</span>'
-  +'<span class="sp-x">needs the full bodygraph</span></div>'
-  +row('Gene key','',sp.gk.gate+'.'+sp.gk.line,'the gate the sun occupied','gk',sp.gk.gate+'.'+sp.gk.line)
+  /* These three fell back to the word unresolved inside a drill button, with
+     the explanation of a value that was not there beside it. The fallback
+     could not fire until the engine learned to refuse, and now it can. */
+  +(sp.hd.profile?row('Profile','',sp.hd.profile,'personality line over design line','hd',sp.hd.profile)
+    :unres('Profile',noZone))
+  +(sp.hd.personality?row('Personality','','gate '+sp.hd.personality.gate+'.'+sp.hd.personality.line,
+    'the sun at birth','gk',String(sp.hd.personality.gate)):unres('Personality',noZone))
+  +(sp.hd.design?row('Design','','gate '+sp.hd.design.gate+'.'+sp.hd.design.line,
+    'the sun 88 degrees earlier','gk',String(sp.hd.design.gate)):unres('Design',noZone))
+  +unres('Type','needs the full bodygraph')
+  /* this printed null.null the moment the engine could return no gate */
+  +(sp.gk.gate!=null?row('Gene key','',sp.gk.gate+'.'+sp.gk.line,'the gate the sun occupied','gk',
+    sp.gk.gate+'.'+sp.gk.line):unres('Gene key',noZone))
   +'<div class="sp-hd">Born</div>'
   +'<div class="sp-row static"><span class="sp-k">When</span><span class="sp-v">'
   +sp.birth.d+'</span><span class="sp-x">'+sp.birth.t+'</span></div>'
   +'<div class="sp-row static"><span class="sp-k">Where</span><span class="sp-v">'
-  +esc(sp.birth.p)+'</span><span class="sp-x"></span></div>';
+  +esc(sp.birth.p)+'</span><span class="sp-x">'+esc(sp.birth.z||'')+'</span></div>';
  el.querySelectorAll('[data-sp]').forEach(function(btn){
   btn.onclick=function(){runSpDrill(btn.getAttribute('data-sp'),btn.getAttribute('data-spv'));};});}
 

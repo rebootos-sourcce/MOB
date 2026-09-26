@@ -45,7 +45,7 @@ if(typeof module!=='undefined'&&module.exports){
   /* astro */     julianDay:julianDay, sunLon:sunLon, moonLon:moonLon, gmst:gmst,
                   ascendant:ascendant, signOf:signOf, degInSign:degInSign,
                   gateOf:gateOf, designJD:designJD, birthJD:birthJD, PLACE:PLACE,
-                  usDST:usDST, euDST:euDST, GATE_WHEEL:GATE_WHEEL, GATE_ARC:GATE_ARC,
+                  usDST:usDST, euDST:euDST, zoneOffsets:zoneOffsets, GATE_WHEEL:GATE_WHEEL, GATE_ARC:GATE_ARC,
                   chineseYear:chineseYear, spiritualOf:spiritualOf,
   /* catalog */   C3_VERB:C3_VERB, C3_STEM:C3_STEM, C3_TRUTH:C3_TRUTH,
                   C3_BAND:C3_BAND, C3_LADDER:C3_LADDER, C3_POLE:C3_POLE, C3_BILATERAL:C3_BILATERAL,

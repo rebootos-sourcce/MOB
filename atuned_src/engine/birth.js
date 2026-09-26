@@ -23,12 +23,30 @@
 const ZI=[2,3,4,5,6,7,8,9,10,11,0,1];
 function zFromLon(lon){return ZSIGN[ZI[signOf(lon)]];}
 
+/* A reading at every instant the record allows, or null when they do not
+   all agree. Without a span there is one instant and it is read as before.
+   Two ends are the whole check and not a sample: the sun and the moon only
+   ever move forward, the design sun follows the birth sun, and a day moves
+   neither of them a full sign or gate, so two ends in the same bin means
+   every instant between them is in it too. f must return something ===
+   comparable, a sign index or a gate and line, never a fresh object. */
+function atSpan(b,f){
+ if(!b.span)return f(b.jd);
+ var a=f(b.span[0]);
+ return a===f(b.span[1])?a:null;}
+
 /* The sun by longitude, so a birth on a cusp lands on the right side of
    it. The old calendar cutoffs drift about a day across the leap cycle,
-   which is exactly where a cusp birth sits. */
+   which is exactly where a cusp birth sits. And for the same reason a
+   timed birth with no time zone and no located place has no sun sign on a
+   cusp day: the day is known, the side of the cusp is not. That is null,
+   and measured over four years of unlocated births at four clock times it
+   was 217 of 5840, one in 27. */
 function sunSign(d,bt){
  var b=birthJD(bt||{d:d});
- if(b){var z=zFromLon(sunLon(b.jd)); return {nm:z[2], el:z[3], mode:z[4]};}
+ if(b){var i=atSpan(b,function(jd){return signOf(sunLon(jd));});
+  if(i===null)return null;
+  var z=ZSIGN[ZI[i]]; return {nm:z[2], el:z[3], mode:z[4]};}
  var p=d.split('-'), m=+p[1], day=+p[2];
  for(var j=0;j<ZSIGN.length;j++){
   var a=ZSIGN[j], c=ZSIGN[(j+1)%12];
@@ -38,10 +56,15 @@ function sunSign(d,bt){
 
 /* The moon moves about thirteen degrees a day, so the birth time is not
    a refinement here, it is most of the answer. Without one the record
-   gets local noon and the reading says the time is missing. */
+   gets local noon and the reading says the time is missing.
+   A time with no located place is a day wide window, and the moon crosses
+   half a sign in it, so it is null when the window straddles a cusp rather
+   than whichever side Greenwich happened to put it on. On the same 5840
+   births as the sun above that was 2777, close to half. */
 function moonSign(bt){
  var b=birthJD(bt); if(!b)return ZSIGN[0];
- return zFromLon(moonLon(b.jd));}
+ var i=atSpan(b,function(jd){return signOf(moonLon(jd));});
+ return i===null?null:ZSIGN[ZI[i]];}
 
 /* The ascendant needs a place. Without one this returns null and the
    product says so, because a rising sign invented from a sunrise that
@@ -80,21 +103,37 @@ function chineseYear(bt){
    rather than printing one of five that happens to sound right. The old
    code returned a type for everybody and four of its thirty combinations
    cannot occur in the real system. */
+/* A gate and line as one number, so atSpan can compare the two ends of a
+   window with ===. Gate numbers are unique on the wheel, so this is too. */
+function _gl(lon){var g=gateOf(lon); return g.gate*10+g.line;}
 function hdOf(b){
  var j=birthJD(b);
  if(!j)return {type:null, authority:null, unresolved:'no birth date'};
+ var typeWhy='type and authority need the full bodygraph, which is not built';
+ /* A line is under one degree of sun and an unlocated day moves the sun
+    just over one, so the two ends of the window never share a line and an
+    unlocated birth gets no gate here at all. That is measured, not
+    assumed, and it is why these come back null rather than a gate with a
+    line quietly dropped. Located or untimed, span is null and this is
+    the old reading exactly. */
+ if(atSpan(j,function(jd){return _gl(sunLon(jd));})===null
+  ||atSpan(j,function(jd){return _gl(sunLon(designJD(jd)));})===null)
+  return {type:null, authority:null, unresolved:typeWhy,
+   personality:null, design:null, profile:null};
  var pers=gateOf(sunLon(j.jd)), des=gateOf(sunLon(designJD(j.jd)));
- return {type:null, authority:null,
-  unresolved:'type and authority need the full bodygraph, which is not built',
+ return {type:null, authority:null, unresolved:typeWhy,
   personality:pers, design:des,
   profile:pers.line+'/'+des.line};}
 
 /* A gene key is the gate the sun occupied, on the I Ching wheel, which
    is a real position and not the day of the month. Line is the sixth of
-   the gate it fell in. */
+   the gate it fell in. It is the personality sun, so an unlocated birth
+   loses it for the reason given inside hdOf. */
 function geneKey(b){
  var j=birthJD(b);
  if(!j)return {gate:null, line:null, unresolved:'no birth date'};
+ if(atSpan(j,function(jd){return _gl(sunLon(jd));})===null)
+  return {gate:null, line:null, unresolved:'needs a time zone the instrument can read'};
  var g=gateOf(sunLon(j.jd));
  return {gate:g.gate, line:g.line, lon:g.lon};}
 function spiritual(name){
@@ -104,15 +143,22 @@ function spiritual(name){
    reference case is, rather than only through the BIRTH table. */
 function spiritualOf(bt){
  if(!bt||!bt.d)return null;
- var sun=sunSign(bt.d,bt), mn=moonSign(bt), rs=risingSign(bt);
- var cy=chineseYear(bt), b=birthJD(bt);
- return {sun:sun.nm, sunEl:sun.el, sunMode:sun.mode, moon:mn[2], moonEl:mn[3],
+ /* the sun and the moon are null for an unlocated birth whose window
+    crosses a cusp, and every field hung off them is null with them, so a
+    root or a mode is never derived from a sign that was not read. */
+ var sun=sunSign(bt.d,bt)||{nm:null,el:null,mode:null}, mn=moonSign(bt)||[];
+ var rs=risingSign(bt), cy=chineseYear(bt), b=birthJD(bt);
+ return {sun:sun.nm, sunEl:sun.el, sunMode:sun.mode, moon:mn[2]||null, moonEl:mn[3]||null,
   /* null rather than a guess. the reading prints what is missing. */
   rising:rs?rs[2]:null, risingEl:rs?rs[3]:null,
   needsPlace:!rs&&!!bt.t, needsTime:!(b&&b.timed),
+  /* a span on a record means its offset was not known, and what settles it
+     is a time zone, so that is what the reading asks for */
+  needsZone:!!(b&&b.span&&!b.zone),
   chinese:CHINESE[((cy%12)+12)%12], celem:chineseElement(((cy%10)+10)%10), cyear:cy,
   lp:lifePath(bt.d), master:masterNumber(bt), hd:hdOf(bt), gk:geneKey(bt), birth:bt,
-  root:ELEM2ROOT[sun.el], mode:MODE2NOTE[sun.mode], lpMean:LPMEAN[lifePath(bt.d)]||''};}
+  root:sun.el?ELEM2ROOT[sun.el]:null, mode:sun.mode?MODE2NOTE[sun.mode]:null,
+  lpMean:LPMEAN[lifePath(bt.d)]||''};}
 /* CONVERGENCE. where independent systems agree, that is the signal.
    where they disagree the instrument says so rather than picking a winner. */
 function converge(name,r){

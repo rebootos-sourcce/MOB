@@ -25,7 +25,7 @@ function blankProfile(name){
      what reopens it, because a birth moment does not change and a form left
      open invites somebody to fiddle with the one input that cannot be wrong. */
   who:{first:'', middle:'', last:'', sex:'', sealed:'',
-   born:{date:'', time:'', place:'', timeUnknown:false}},
+   born:{date:'', time:'', place:'', zone:'', timeUnknown:false}},
   /* PER PROFILE INTERFACE PREFERENCES. quiet is the reduced motion switch the
      phone spec asked for and nothing had built; model is the consent to let a
      story with nothing identifying attached refine the reading, and it is off
@@ -102,8 +102,8 @@ var LAW_WAS={Justice:'Expression', Humility:'Discernment'};
    Set wherever S.rec is set, which is here and loadP. */
 var LAW_REC=null;
 function loadProfile(p){
- if(!p.who)p.who={first:'',middle:'',last:'',sex:'',born:{date:'',time:'',place:'',timeUnknown:false}};
- if(!p.who.born)p.who.born={date:'',time:'',place:'',timeUnknown:false};
+ if(!p.who)p.who={first:'',middle:'',last:'',sex:'',born:{date:'',time:'',place:'',zone:'',timeUnknown:false}};
+ if(!p.who.born)p.who.born={date:'',time:'',place:'',zone:'',timeUnknown:false};
  if(!p.meter)p.meter={lines:0,unique:[],first:null,last:null};
  if(!Array.isArray(p.meter.unique))p.meter.unique=[];
  /* an older record has no plan, which is a free record and not a broken one */
@@ -755,7 +755,11 @@ function validateProfile(o){
   ['first','middle','last','sex','sealed'].forEach(function(k){
    if(typeof o.who[k]==='string')p.who[k]=o.who[k].slice(0,200);});
   if(o.who.born&&typeof o.who.born==='object'){
-   ['date','time','place'].forEach(function(k){
+   /* zone is the IANA time zone name, ruled 26 September. A string like the
+      others and not checked against the zone list here: whether a name can
+      be read is a property of the runtime reading it, and an unreadable one
+      reads unresolved rather than being refused on the way in. */
+   ['date','time','place','zone'].forEach(function(k){
     if(typeof o.who.born[k]==='string')p.who.born[k]=o.who.born[k].slice(0,200);});
    p.who.born.timeUnknown=!!o.who.born.timeUnknown;}}
  /* ui preferences. booleans only, and an older profile without them is filled

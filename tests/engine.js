@@ -882,9 +882,12 @@ g('19 \u00b7 energetics, the birth module');
   +(lpBad.length?'  '+lpBad.slice(0,3).join(', '):''));
 
  /* the comment in this module claims pre 1970 births are handled. check it. */
+ /* With a place. This fed a clock time and no place, which the engine read
+    as Greenwich until an unlocated birth learned to refuse a moon it could
+    not settle; the check is about the date arithmetic and not about that. */
  let moonBad=[];
  ['1935-03-02','1958-11-21','1969-12-31','1970-01-01','2001-06-15'].forEach(d=>{
-  const z=moonSign({d:d,t:'12:00'});
+  const z=moonSign({d:d,t:'12:00',p:'Lisbon, PT'});
   if(!z||!NAMES.has(z[2]))moonBad.push(d+' -> '+(z&&z[2]));});
  ok(moonBad.length===0,'moon sign survives dates before 1970'
   +(moonBad.length?'  '+moonBad.join(', '):''));
@@ -945,7 +948,9 @@ g('19 \u00b7 energetics, the birth module');
  ok(usDST(1985,4,8)&&!usDST(1985,3,20),'and on the old rule before 2007');
 
  /* the remaining readings must not throw or hand back nothing */
- const b={d:'1988-04-12',t:'07:45',p:'London'};
+ /* Lisbon and not London. London is not in PLACE, so this record was being
+    read at a guessed offset and asserted real, which is the defect below. */
+ const b={d:'1988-04-12',t:'07:45',p:'Lisbon, PT'};
  ok(chineseElement(1988)!=null,'chinese element resolves');
  ok(masterNumber({d:'1979-11-29'})===null||[11,22,33].includes(masterNumber({d:'1979-11-29'})),
   'master number is a master number or nothing');
@@ -961,6 +966,81 @@ g('19 \u00b7 energetics, the birth module');
  const gk=geneKey(b);
  ok(gk.gate>=1&&gk.gate<=64,'gene key gate sits in 1..64, got '+gk.gate);
  ok(gk.line>=1&&gk.line<=6,'and the line in 1..6, got '+gk.line);
+
+ /* A PLACE THE TABLE CANNOT LOCATE, WITH NO TIME ZONE GIVEN, IS AN UNKNOWN
+    OFFSET, NOT GREENWICH. birthJD read a missing place as offset zero, so a clock time typed in
+    Auckland was read as the same clock time in London and the moon, both
+    gates and the gene key were printed off that guess as settled. The
+    contract now: any sign the engine still prints for an unlocated birth is
+    the sign at every real offset, checked here hour by hour from fourteen
+    east to twelve west against the raw sky and not against the engine's
+    own window, and the gates, which a day always moves, are refused. */
+ const ARIES=['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpio',
+  'Sagittarius','Capricorn','Aquarius','Pisces'];
+ const {spiritualOf,signOf}=E;
+ let unl=0,moonKept=0,moonShut=0,sunShut=0,unlBad=[];
+ for(let k=0;k<240;k++){
+  const dt=new Date(Date.UTC(1972,0,1)+k*6.1*864e5), s=dt.toISOString().slice(0,10);
+  const y=dt.getUTCFullYear(),m=dt.getUTCMonth()+1,d=dt.getUTCDate();
+  ['02:10','13:40'].forEach(t=>{
+   const hrs=+t.slice(0,2)+(+t.slice(3))/60, sp=spiritualOf({d:s,t:t,p:'Auckland'});
+   unl++;
+   for(let off=-12;off<=14;off++){
+    const jd=julianDay(y,m,d,hrs-off);
+    if(sp.moon&&ARIES[signOf(moonLon(jd))]!==sp.moon)unlBad.push(s+' '+t+' moon at '+off);
+    if(sp.sun&&ARIES[signOf(sunLon(jd))]!==sp.sun)unlBad.push(s+' '+t+' sun at '+off);}
+   if(sp.moon)moonKept++; else moonShut++;
+   if(!sp.sun)sunShut++;
+   if(sp.gk.gate!==null||sp.hd.personality||sp.hd.design||sp.hd.profile)
+    unlBad.push(s+' '+t+' printed a gate');});}
+ ok(unlBad.length===0,'an unlocated birth never prints a sign or gate an offset could change, '
+  +unl+' births'+(unlBad.length?'  '+unlBad.slice(0,3).join(', '):''));
+ /* and it is not a blanket refusal, which would be honest and useless: a
+    moon in the middle of a sign stays in it all day, wherever the day was. */
+ ok(moonShut>0&&moonKept>0,'the moon is refused only near a cusp, kept '+moonKept+' refused '+moonShut);
+ ok(sunShut<unl/10,'and the sun only on a cusp day, refused '+sunShut+' of '+unl);
+ const loc=spiritualOf({d:'1988-04-12',t:'07:45',p:'Lisbon, PT'});
+ ok(loc.moon&&loc.hd.personality&&loc.gk.gate,'a located birth still reads every one of them');
+ ok(spiritualOf({d:'1990-01-15',t:'08:00',p:'Auckland'}).needsZone===true,
+  'and the unlocated reading says it is a time zone that would settle it');
+
+ /* THE TIME ZONE, ruled 26 September. A person names the zone they were born
+    in and the offset for that date comes from Intl. Every expected value below
+    is a published historical rule and not something this code produced, so a
+    wrong table cannot pass by agreeing with itself. */
+ const {zoneOffsets}=E;
+ const ZC=[['Pacific/Auckland',1990,1,15,8,'13','New Zealand summer'],
+  ['Pacific/Auckland',1990,7,15,8,'12','and its winter'],
+  ['Europe/London',1970,1,1,12,'1','Britain on +1 all year, 1968 to 1971'],
+  ['Asia/Kathmandu',1980,6,1,12,'5.5','Nepal before 1986'],
+  ['Asia/Kathmandu',1990,6,1,12,'5.75','and after'],
+  ['Australia/Lord_Howe',2000,1,1,12,'11','a half hour of daylight saving'],
+  ['America/New_York',2010,11,7,1.5,'-4,-5','the hour that happened twice'],
+  ['America/New_York',2010,3,14,2.5,'-5,-4','the hour that never happened']];
+ const zBad=ZC.filter(c=>String(zoneOffsets(c[0],c[1],c[2],c[3],c[4]))!==c[5])
+  .map(c=>c[6]+' got '+zoneOffsets(c[0],c[1],c[2],c[3],c[4]));
+ ok(zBad.length===0,'a named zone gives the historical offset for its date, '+ZC.length+' cases'
+  +(zBad.length?'  '+zBad.join(', '):''));
+ ok(zoneOffsets('Not/AZone',1990,1,1,12)===null&&zoneOffsets('',1990,1,1,12)===null,
+  'and a name the runtime cannot read is null, not Greenwich');
+ /* and the zone settles what the window refused: the reading is the sky at
+    the real instant, with the place still not in the table */
+ const nz=spiritualOf({d:'1990-01-15',t:'08:00',p:'Auckland',z:'Pacific/Auckland'});
+ const nzJD=julianDay(1990,1,15,8-13);
+ ok(nz.moon===ARIES[signOf(moonLon(nzJD))]&&nz.sun===ARIES[signOf(sunLon(nzJD))]
+  &&nz.gk.gate===E.gateOf(sunLon(nzJD)).gate&&nz.hd.profile&&!nz.needsZone,
+  'a named zone resolves the moon, the sun and the gates at the real instant');
+ ok(nz.rising===null&&nz.needsPlace,'and still no ascendant, which needs a horizon and not an offset');
+ /* a clock reading that happened twice is a window across both, not a pick */
+ const twice=E.birthJD({d:'2010-11-07',t:'01:30',z:'America/New_York'});
+ ok(twice.span&&Math.abs((twice.span[1]-twice.span[0])*24-1)<1e-6,
+  'the hour that happened twice is a one hour window');
+ ok(spiritualOf({d:'1990-01-15',t:'08:00',p:'Auckland',z:'Not/AZone'}).needsZone===true,
+  'and an unreadable zone reads as no zone at all');
+ /* an untimed birth with a zone takes local noon at the real offset and is
+    never a window, because its noon is already the stated guess */
+ const noon=E.birthJD({d:'1990-01-15',z:'Pacific/Auckland'});
+ ok(noon.offset===13&&noon.span===null&&!noon.timed,'an untimed birth with a zone reads noon at +13, no window');
  /* spiritual() is keyed on the BIRTH table. "You" is deliberately null,
     because the live profile has no birth data until someone enters it, and
     an unknown name is null for the same reason. Both are the contract, not
