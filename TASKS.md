@@ -13747,3 +13747,33 @@ review found and this pass closed. BO6, BO7 and the Dial's "SQ"
 wording question remain open, unchanged, and are not part of this
 verdict.
 
+## DI. An unlocated birthplace is silently read as Greenwich time, a
+## real defect precisely reported and confirmed by reading the code.
+## 26 September.
+
+**A real defect, reported directly, in engine scope.** `PLACE` in
+`engine/astro.js` names exactly nine cities, the reference personas'
+own birthplaces. A real person types their own birthplace freely on
+Energetics; anything not matching one of the nine exactly, such as
+"Auckland", gets `PLACE[bt.p]` undefined, and `birthJD`'s `off=pl?pl.tz:0`
+reads that as UTC offset zero rather than as unknown. Confirmed by
+reading `astro.js:179-191` directly: the ascendant correctly comes back
+null and the rail says so, but `moonSign`, `hdOf` (the personality and
+design gates) and `geneKey` all still run off the same wrongly offset
+instant, and `ui/personas.js`'s `renderSpirit` prints Moon, Profile,
+Personality, Design and Gene key as settled values with no mark that
+the location was assumed, confirmed by reading the row logic directly:
+only the Rising row carries the honest "unresolved, needs a
+birthplace" pattern; nothing else does. This is queued as a suggested
+task already, flagged in passing during the DF fix; it now arrives as
+a direct, fully specced report rather than a suggestion, and is
+dispatched as such.
+
+**Dispatched to close the visibility gap and put the policy question
+to him, not to decide the policy.** A larger gazetteer, an asked UTC
+offset, or an accepted time zone name are his call on cost and
+friction, not an engineering call. What is being fixed without asking:
+every reading that depends on the exact instant says so, the way
+Rising already does, when a place cannot be located, instead of
+printing a value computed at a guessed offset.
+
