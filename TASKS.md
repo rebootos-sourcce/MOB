@@ -15406,3 +15406,67 @@ belongs beside them.
 **Both dispatched as real engineering, precise specs given directly,
 not interpreted from informal feedback.**
 
+## EQ. Seven Seats graded D minus, a real motion complaint on two
+## renditions, and two rulings reconfirmed already shipped rather than
+## still owed. 26 September.
+
+**Seven Seats graded hard, and a real method asked for rather than a
+second guess.** "It's not quite what I want, the layout design is
+awful, D minus." His own words on what a layout has to do: how
+information displays, what sits above the fold, how it looks, whether
+it tells a story, whether a glance tells a person what to do. "Right
+now it's not clear." He wants several distinct layouts, not one
+redraw, simulated against the ICP panel until one actually performs,
+the same method already proven at DM and DR, not invented fresh.
+
+**The intro animation graded the same way, with a real source named
+for what it is missing.** "That intro animation, as cool as it is, it
+feels blocked in, not visually interesting. We have all these cool
+elements in our Field now, is there anything we can pull in from that
+to give it more wow appeal." A real, specific ask: borrow the visual
+language already built for the Field (the glass bar's rings, the
+motion already proven there) rather than invent a new look for the
+boot sequence.
+
+**A real motion complaint that reopens a standing convention rather
+than asking for something new.** "When I land on this page the first
+thing I want to see is movement, Dial looks dead." EE already found,
+correctly, that Frames and Dial have never animated in this product's
+own history, by design. He is now asking for exactly that design to
+change; not a bug report, a real reopening.
+
+**A real, unresolved question about the avatar page's own contents,
+checked rather than assumed a bug.** "The spirit thing on the left
+hand side, where's my balance and my good bad alignment." Checked
+directly: the Seven Seats prototype only replaces the Field wheel's
+own cell, and the left rail's Orientation and Balance section is
+untouched underneath it, still present exactly as shipped. Read as a
+real information architecture question instead, since the underlying
+worry survives that check: should a person's balance and orientation
+sit inside the avatar page itself, not only in a rail they may not
+scroll to.
+
+**Two things he worried might still be owed are already shipped,
+confirmed rather than repeated.** "I told you to get Wheel Frame and
+Dial into the secondary navigation on the right hand side, and I
+thought I also told you with the Frames to square off the edges, you
+may have that in your backlog." Both are already built and verified,
+ED, not backlog: Wheel, Frames and Dial sit in the right rail only,
+and Frames draws flush to its own edges.
+
+**Where this sits in the actual milestone sequence, his own closing
+ask, answered rather than left as "logged."** `MILESTONES.md`'s own
+M4, "the product looks like one thing," already names the product's
+visual identity and motion consistency as work entirely missing from
+the backlog before the art direction scrub; the avatar page and the
+intro animation both sit there. The avatar page also touches M2, "a
+first session ends in a change, not a tour," since it is meant to be
+what a new person meets first. Not a new milestone, a real piece of
+the two that already exist.
+
+**Dispatched: several real Seven Seats layouts, simulated against the
+ICP panel rather than picked once; the intro animation redrawn to
+borrow the Field's own visual language; and the Frames and Dial
+motion question put back to design rather than left standing on its
+own convention.**
+
