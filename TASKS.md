@@ -11970,3 +11970,44 @@ coherence chip names a seat inside a coherence reading ("Sacral,
 coherence, 44%"), which reads as if the seat were the reading. Small,
 queued as a fix, not a question.
 
+## CF. The four outside addresses are hidden from both new Field views,
+## closing CA Q4. 26 September.
+
+**One switch, checked myself where the machine let me.** `FR_SHOW_OUTSIDE`
+in `atuned_src/ui/rings.js`, off. Independently confirmed: `tools/equiv.py`
+against the commit before this one names exactly one new declaration
+and one changed body, nothing else, so the maths underneath is provably
+untouched, and `node tests/engine.js` matched the claimed 1625 passing
+with nothing failed. The machine is under heavy load from several
+seats' browser gates running at once tonight, so the browser gates
+(`functional.js`, `collide.js`, `design.js`, `funnel.js`) were not all
+re-confirmed by me this pass the way the last two rounds were; taken on
+the report for those four, with the two non-browser gates and the code
+diff itself independently checked. Screenshots confirm it by eye too,
+before and after, at both widths, the seam where the four used to sit
+now closes with the Crown's violet meeting the Root's red directly, no
+gap left in their place.
+
+**A real correction to CA's own claim.** CA said these two new views
+were "the first time anywhere in the product" the four addresses ever
+drew. Checked and not quite right: the Knowledge section's address deck
+already lists all 112, the four included, guarded by its own gate. Left
+alone since the brief only named the two Field views.
+
+**Three real questions, none guessed at.**
+**Q1.** The Knowledge deck still lists all 112 addresses, the four
+among them. Hide them there too, which then reads 108 against the
+standing rule "never say 108, the count stated to users is 112," or
+keep them there as the one place that still lists everything the
+system counts?
+**Q2.** Two hover texts on the Field, Addresses and Shadow, still say
+"your 112 addresses" and "all 112 addresses" while the picture itself
+now draws 108 marks. 112 is still true of the system underneath. Keep
+the number as it stands, or drop it from just those two lines so a
+hover can never disagree with the picture it sits over?
+**Q3.** One hover line in `ui/ui.js` still names one of the four
+"outside the body," unreachable now that nothing on screen can trigger
+it. Left in on purpose, since it is what the four need if the switch
+ever flips back, and it may matter again if the open torus field idea
+from this same round moves them there instead. Confirm keeping it.
+
