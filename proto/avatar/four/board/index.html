@@ -1,0 +1,214 @@
+<title>The avatar, four ways</title>
+<meta name="description" content="Two body avatars and two seven seat avatars, drawn on James's real reading at arrival and after twelve releases, with the questions that decide between them.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap">
+<style>
+/* The product's own Dark lighting, committed to on purpose: every picture on
+   this page is the Field's ruled #101010 render ground. */
+:root{color-scheme:dark;
+ --bg:#0C0D12;--panel:#1A1D26;--panel-2:#252833;--sunk:#101010;
+ --edge:rgba(255,255,255,.09);--edge-2:rgba(255,255,255,.16);
+ --ink:#EFEDE8;--mid:#B4B0A8;--dim:#94908A;--accent:#7EB8D4;
+ --root:#D6524C;--sacral:#D8924E;--solar:#DABF6A;--heart:#5FD5A6;--throat:#5EBBDB;--eye:#7D93E0;--crown:#A77EDB;
+ --sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif}
+*{box-sizing:border-box}
+html{background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--ink);font:15.5px/1.6 var(--sans);-webkit-font-smoothing:antialiased;
+ padding-inline:max(16px,4vw);padding-block:40px 72px}
+.w{max-width:1180px;margin:0 auto;display:flex;flex-direction:column;gap:56px}
+h1,h2,h3{text-wrap:balance;margin:0;font-weight:600;letter-spacing:-.01em}
+h1{font-size:clamp(28px,4vw,40px);font-weight:500}
+h2{font-size:22px;font-weight:500}
+h3{font-size:17px}
+p{margin:0;max-width:68ch;color:var(--mid)}
+.eye{font-size:12px;color:var(--dim)}
+.stack{display:flex;flex-direction:column;gap:14px}
+blockquote{margin:0;padding:2px 0 2px 16px;border-left:1px solid var(--accent);color:var(--ink);max-width:68ch}
+blockquote cite{display:block;font-style:normal;font-size:12.5px;color:var(--dim);margin-top:4px}
+code,.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;color:var(--mid)}
+img{display:block;max-width:100%;height:auto;border-radius:10px;background:var(--sunk)}
+a{color:var(--accent)}
+a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* the four */
+.four{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:36px 28px}
+.v{display:flex;flex-direction:column;gap:12px;min-width:0}
+.v-hd{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.tag{font-size:12px;color:var(--dim);border:1px solid var(--edge-2);border-radius:6px;padding:0 7px}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.pair figure{margin:0;display:flex;flex-direction:column;gap:6px}
+figcaption{font-size:12.5px;color:var(--dim)}
+.v ul{margin:0;padding-left:18px;color:var(--mid);font-size:14.5px;display:flex;flex-direction:column;gap:4px}
+.v ul b{color:var(--ink);font-weight:500}
+
+/* the phone row */
+.phones{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.phones figure{margin:0;display:flex;flex-direction:column;gap:6px}
+.phones .pp{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+
+/* numbers */
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;font-variant-numeric:tabular-nums;font-size:14.5px;min-width:560px;width:100%}
+th,td{text-align:right;padding:8px 12px;border-bottom:1px solid var(--edge)}
+th:first-child,td:first-child{text-align:left}
+thead th{font-weight:500;color:var(--dim);font-size:12.5px}
+td.moves{color:var(--ink)}
+td{color:var(--mid)}
+
+/* the read, and the questions */
+.read{background:var(--panel);border:1px solid var(--edge);border-radius:14px;padding:22px 24px;display:flex;flex-direction:column;gap:12px}
+.read ol{margin:0;padding-left:20px;color:var(--mid);display:flex;flex-direction:column;gap:8px;max-width:76ch}
+.read ol b{color:var(--ink);font-weight:500}
+.qs{display:flex;flex-direction:column;gap:28px}
+.q{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:22px;align-items:start;
+ border-top:1px solid var(--edge);padding-top:22px}
+.q .opts{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.q .opts li{font-size:14.5px;color:var(--mid);padding-left:14px;border-left:1px solid var(--edge-2)}
+.q .opts b{color:var(--ink);font-weight:500}
+.q .pics{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.live{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center}
+.btn{display:inline-block;padding:9px 14px;border:1px solid var(--accent);border-radius:10px;color:var(--ink);
+ text-decoration:none;background:color-mix(in srgb,var(--accent) 12%,transparent)}
+.found{margin:0;padding-left:18px;color:var(--mid);display:flex;flex-direction:column;gap:8px;max-width:78ch}
+.found b{color:var(--ink);font-weight:500}
+.foot{font-size:12.5px;color:var(--dim);max-width:none}
+@media (max-width:860px){
+ .four{grid-template-columns:1fr}
+ .phones{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .q{grid-template-columns:1fr}}
+@media (max-width:460px){.phones{grid-template-columns:1fr}}
+</style>
+
+<div class="w">
+
+<header class="stack">
+ <div class="eye">Art direction, round DY, 26 September</div>
+ <h1>The avatar, four ways</h1>
+ <blockquote>"The avatar needs to be a, let's do it with the body, actually, well, the body's symbolic, give me two mockups with the body and then two with the seven seats."<cite>Your words, 26 September. And earlier: "What is Atuned? Your avatar."</cite></blockquote>
+ <p>All four are drawn on one reading: James, with his five story bank entries written in, at arrival and after twelve releases. Every number is the product's own. The releases use the release button's own arithmetic, the one the app runs when you press Release. Each avatar sits where the Field wheel sits today, in the real build, so you are judging it where the centrepiece would stand.</p>
+ <div class="live"><a class="btn" href="four.html">Open the live prototype</a>
+  <span class="eye">Switch between the four, move the releases slider, try Angela or a blank profile. It is the full app with the avatar laid over the Field.</span></div>
+</header>
+
+<section class="stack">
+ <h2>The four, at arrival and after twelve releases</h2>
+ <p>What stays the same in all four, so you are comparing the drawings and nothing else. Each seat is a ring in its own colour and closes as it conducts. Anything a release has reached is marked and never unmarked. The blue brackets mark the seat the ritual is working on. The big number is CQ.</p>
+ <div class="four">
+  <article class="v">
+   <div class="v-hd"><span class="tag">Body</span><h3>One. The figure</h3></div>
+   <div class="pair"><figure><img src="img/figure-0.jpg" alt="The figure at arrival: a body outline with coloured charge rings at the places James's story put charge" loading="lazy" width="800" height="730"><figcaption>Arrival</figcaption></figure>
+    <figure><img src="img/figure-12.jpg" alt="The figure after twelve releases: a clean outline, the spine lit, white points where releases reached" loading="lazy" width="800" height="730"><figcaption>After twelve releases</figcaption></figure></div>
+   <ul><li><b>Reads:</b> a body carrying its story. Each charge is a small ring at the real place the Body page puts that address. A white point marks everywhere a release has reached.</li>
+    <li><b>For it:</b> the most literal link to the story. You can see where the charge sits.</li>
+    <li><b>Against it:</b> as you release, the colour leaves, so improvement looks like going grey. At arrival the head is a knot of rings.</li></ul>
+  </article>
+  <article class="v">
+   <div class="v-hd"><span class="tag">Body</span><h3>Two. The nerves</h3></div>
+   <div class="pair"><figure><img src="img/nerves-0.jpg" alt="The nerves at arrival: a mostly dark nerve tree with only the legs lit red" loading="lazy" width="800" height="730"><figcaption>Arrival</figcaption></figure>
+    <figure><img src="img/nerves-12.jpg" alt="The nerves after twelve releases: the whole nerve tree lit in the seat colours" loading="lazy" width="800" height="730"><figcaption>After twelve releases</figcaption></figure></div>
+   <ul><li><b>Reads:</b> a body that conducts. These are the Body page's own 72 traced nerve branches. Each branch is as bright as its seat, and every seat below it, lets through.</li>
+    <li><b>For it:</b> the biggest before and after of the four. Improvement arrives as light, which is your own rule: "the more you release, the brighter you are".</li>
+    <li><b>Against it:</b> it is the Body page's flow layer promoted to the centre. The product would draw the same body twice.</li></ul>
+  </article>
+  <article class="v">
+   <div class="v-hd"><span class="tag">Seats</span><h3>Three. The channel</h3></div>
+   <div class="pair"><figure><img src="img/channel-0.jpg" alt="The channel at arrival: two walls pinched at the sacral, coloured charge ticks on the left, a dim halo above" loading="lazy" width="800" height="730"><figcaption>Arrival</figcaption></figure>
+    <figure><img src="img/channel-12.jpg" alt="The channel after twelve releases: the walls open wide, the halo bright, record ticks lit on the right" loading="lazy" width="800" height="730"><figcaption>After twelve releases</figcaption></figure></div>
+   <ul><li><b>Reads:</b> seven seats in series, evenly spaced because it is a symbol, not anatomy. The walls pinch where a seat holds. Left ticks are charge now; right ticks are the record. The halo lights by how much reaches the crown.</li>
+    <li><b>For it:</b> it is the Body page's channel standing on its own, and the halo is the app's own boot mark.</li>
+    <li><b>Against it:</b> the tick combs read more like a gauge than a being. It is also a column of seven, a list shape.</li></ul>
+  </article>
+  <article class="v">
+   <div class="v-hd"><span class="tag">Seats</span><h3>Four. The ring</h3></div>
+   <div class="pair"><figure><img src="img/ring-0.jpg" alt="The ring at arrival: seven short arcs with gaps between them, charge ticks outside, CQ 44 in the centre" loading="lazy" width="800" height="730"><figcaption>Arrival</figcaption></figure>
+    <figure><img src="img/ring-12.jpg" alt="The ring after twelve releases: the seven arcs grown into one closed ring" loading="lazy" width="800" height="730"><figcaption>After twelve releases</figcaption></figure></div>
+   <ul><li><b>Reads:</b> the seven seats closed into one ring, in the same order the Field wheel uses. Each arc grows from its own middle as its seat conducts, so when every seat clears, the ring closes. CQ sits in the centre.</li>
+    <li><b>For it:</b> the ring closing is the loop drawn as one gesture. It is also your first drawing: "a ring with seven bands ... a truncated CQ".</li>
+    <li><b>Against it:</b> it is nearly the Field wheel's own shape, in the Field wheel's own cell. See question three.</li></ul>
+  </article>
+ </div>
+</section>
+
+<section class="stack">
+ <h2>On a phone</h2>
+ <p>At 390 wide, arrival on the left of each pair and twelve releases on the right. The avatar sits above the reading.</p>
+ <div class="phones">
+  <figure><div class="pp"><img src="img/figure-phone-0.jpg" alt="The figure on a phone, arrival" loading="lazy"><img src="img/figure-phone-12.jpg" alt="The figure on a phone, twelve releases" loading="lazy"></div><figcaption>The figure</figcaption></figure>
+  <figure><div class="pp"><img src="img/nerves-phone-0.jpg" alt="The nerves on a phone, arrival" loading="lazy"><img src="img/nerves-phone-12.jpg" alt="The nerves on a phone, twelve releases" loading="lazy"></div><figcaption>The nerves</figcaption></figure>
+  <figure><div class="pp"><img src="img/channel-phone-0.jpg" alt="The channel on a phone, arrival" loading="lazy"><img src="img/channel-phone-12.jpg" alt="The channel on a phone, twelve releases" loading="lazy"></div><figcaption>The channel</figcaption></figure>
+  <figure><div class="pp"><img src="img/ring-phone-0.jpg" alt="The ring on a phone, arrival" loading="lazy"><img src="img/ring-phone-12.jpg" alt="The ring on a phone, twelve releases" loading="lazy"></div><figcaption>The ring</figcaption></figure>
+ </div>
+</section>
+
+<section class="stack">
+ <h2>What moves when James releases</h2>
+ <p>Read straight from the engine at each step. The drawings change a great deal. CQ, the big number, hardly moves.</p>
+ <div class="tbl"><table>
+  <thead><tr><th>James</th><th>Arrival</th><th>After 4 releases</th><th>After 12 releases</th></tr></thead>
+  <tbody>
+   <tr><td>CQ, the 21 laws</td><td>43.7</td><td>43.8</td><td>44.2</td></tr>
+   <tr><td>Expression, what the held charge lets CQ show</td><td>33</td><td>44</td><td class="moves">44</td></tr>
+   <tr><td>Reaches the crown, the seven seats multiplied</td><td>5%</td><td>44%</td><td class="moves">100%</td></tr>
+   <tr><td>Radiance, your vibrancy</td><td>0.19</td><td>0.42</td><td class="moves">0.70</td></tr>
+   <tr><td>Addresses still carrying charge</td><td>90</td><td>89</td><td class="moves">0</td></tr>
+   <tr><td>Addresses a release has reached</td><td>0</td><td>15</td><td class="moves">19</td></tr>
+  </tbody></table></div>
+ <p class="foot">Nineteen releases emptied ninety addresses because a release lowers a feeling, and every address carrying that feeling empties with it. That is the app's own arithmetic, not a drawing choice.</p>
+</section>
+
+<section class="read">
+ <h2>The team's read</h2>
+ <p>Your rulings, taken together, point to the seven seats, and among those, the ring. The reasons, each one yours:</p>
+ <ol>
+  <li><b>The chain puts the body underneath the avatar.</b> "The avatar to the ritual, the ritual to the psyche, the psyche to the body locations, the body to the story." If the avatar is a body, the top layer and the body layer become the same drawing and one link in the chain disappears. The Body page already carries the body, and the nerves drawing is its own flow layer.</li>
+  <li><b>You called the body symbolic,</b> mid sentence, while asking for these.</li>
+  <li><b>Improvement should arrive as light.</b> "The more you release, the brighter you are." The nerves and the ring gain light as a person releases. The figure loses its colour.</li>
+  <li><b>The loop is a circle, never a list.</b> The ring is the only one of the four that closes. The channel is a column of seven.</li>
+  <li><b>The app's own mark is already this avatar.</b> The boot mark is a spine of seven seats inside a ring of address ticks, under a halo. Choosing the seats makes the avatar and the brand one drawing.</li>
+ </ol>
+ <p>If you choose the body anyway, the team would take the nerves over the figure, for reason three.</p>
+</section>
+
+<section class="stack">
+ <h2>What we need from you</h2>
+ <div class="qs">
+  <div class="q"><div class="stack">
+    <h3>1. Is the avatar a body, or the seven seats?</h3>
+    <p>This is the ruling everything else waits on, including the "You" card on the Field's right side, which cannot draw a figure until this is decided.</p>
+    <ul class="opts"><li><b>Seats, as the ring.</b> Matches the chain, the loop and the boot mark. It then has to share the centre with the Field wheel (question three).</li>
+     <li><b>Seats, as the channel.</b> Easier to read at a glance and no clash with the wheel, but it is a column of seven, a list shape.</li>
+     <li><b>Body, as the nerves.</b> The most dramatic change as a person releases. The Body page and the avatar would then draw the same body.</li>
+     <li><b>Body, as the figure.</b> The most literal link to the story. Releasing turns it grey.</li></ul></div>
+   <div class="pics"><img src="img/ring-12.jpg" alt="The ring, twelve releases" loading="lazy"><img src="img/nerves-12.jpg" alt="The nerves, twelve releases" loading="lazy"></div></div>
+
+  <div class="q"><div class="stack">
+    <h3>2. Which number should the avatar lead with?</h3>
+    <p>You ruled the CQ number should be bigger, "so it's in your face." Over twelve releases, James's CQ moves from 43.7 to 44.2 while his avatar goes from dark to fully lit. CQ is the 21 laws, and in your words a release may move it "0.1 or 0.05". Expression is CQ held down by whatever charge is still carrying, so releasing lifts it until it reaches CQ.</p>
+    <ul class="opts"><li><b>CQ.</b> True to the laws, but the headline stays still while the picture changes, so a release looks like it did nothing.</li>
+     <li><b>Expression.</b> Moves with every release and stops at CQ. It means a second number becomes the headline.</li>
+     <li><b>Both on one ring.</b> CQ drawn as the ceiling and expression filling up to it. It shows the lever, and it costs one more thing to learn.</li></ul></div>
+   <div class="pics"><img src="img/ring-0.jpg" alt="The ring at arrival, CQ 44, expression 33" loading="lazy"><img src="img/ring-12.jpg" alt="The ring after twelve releases, CQ 44, expression 44" loading="lazy"></div></div>
+
+  <div class="q"><div class="stack">
+    <h3>3. If the ring wins, what happens to the Field wheel?</h3>
+    <p>The wheel is already a ring of seven seat bands with a number in the middle, and the app opens on it. Two rings like that in the same place would say one thing twice. It is the question already open as D11: "Does the avatar replace the Field as the surface the app opens on, or sit beside it?"</p>
+    <ul class="opts"><li><b>The avatar becomes the wheel's centre.</b> The ring replaces the CQ disc in the middle of the wheel and the patterns stay around it. One drawing, and the busiest surface in the app gets busier.</li>
+     <li><b>The avatar opens and the wheel sits one press away.</b> The centrepiece is what people see first, and the Field becomes a place a person goes.</li>
+     <li><b>Side by side.</b> Both stay whole, and each gets about half the width.</li></ul></div>
+   <div class="pics"><img src="img/ring-4.jpg" alt="The ring after four releases" loading="lazy"><img src="img/ring-blank.jpg" alt="The ring on a blank profile, dark with one door: write what happened" loading="lazy"></div></div>
+ </div>
+</section>
+
+<section class="stack">
+ <h2>Found while building, for the backlog</h2>
+ <ul class="found">
+  <li><b>The Body page's channel reads clear when it is not.</b> Its seat reading only counts addresses at 4 or above. Angela carries 74 addresses and reads 100 percent at all seven seats. The avatars above use each address's own conduction, which the engine already computes.</li>
+  <li><b>A blank profile is brighter than James after twelve releases.</b> Radiance reads 0.80 with nothing entered, against 0.70 for him. Anything that glows by radiance has to treat "not read yet" as dark, as these do.</li>
+  <li><b>Under Snow, the Field's reading strip is unreadable.</b> The stage stays on the ruled black ground while the strip uses Snow's dark ink. "44%" measures 1.07 to 1 against the 4.5 to 1 floor.
+   <img src="img/snow-strip.jpg" alt="The Field's reading strip under Snow: dark numbers on a black ground" loading="lazy" style="margin-top:8px"></li>
+  <li><b>After a full clear the psyche names an overshoot.</b> At zero charge, James reads "Diffuse Freezer overshot", because replacing a feeling can go past 6 and overshoot counts as a pattern of its own. That may be intended. It is the first thing a person sees at the top of the loop.</li>
+ </ul>
+</section>
+
+<p class="foot">Built over the committed build <span class="mono">3a1cde5</span>, source md5 <span class="mono">8603477093ad65b320d68727e8c40c02</span>, in <span class="mono">proto/avatar/four/</span>. 299 checks pass across 50 pictures at 1600 and 390, in Dark, Snow, Punch and Glass. Nothing under <span class="mono">atuned_src/</span> was touched.</p>
+</div>
