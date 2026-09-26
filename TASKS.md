@@ -15895,3 +15895,37 @@ Dispatched this round: the real boot animation port plus his
 refinement notes, and the Field rail rebuild above, both against
 `atuned_src` and gated, not left in a prototype a second time.
 
+## FA. The secondary nav confirmed as Wheel/Frames/Dial, and per style
+## feedback on the four new arrival animations. 26 September.
+
+**His words in full: "The buttons that allow me to switch between the
+square, the field, and the wheel. Those should have been in the
+right-hand side. Opposite like secondary navigation opposite the
+overlay. The one hold on. There's a file literally called this is
+for comparison. The one you liked. so breadth, the outside rings I
+like. Ori, not so much. Bloom, not so much. Ember, the secondary
+lines. Those are pretty cool. Uh, like the second ring with all the
+little hashes. The one I like, needs the kind of like thicker bands.
+To come in with better timing and animation. I think overall,
+overall, this is pretty close. It just needs better like tighter
+direction."**
+
+**Confirms EZ's open question.** "The square" is Frames, so the
+missing secondary nav he meant in EZ is Wheel, Frames and Dial, the
+same three way switch already being rebuilt as an upper right
+overlay per that section. Nothing new dispatched for this half, it
+folds into the work already running.
+
+**Refines EZ's other half, per style, using `proto/arrival2/`'s own
+comparison panel.** Breath: likes its outside rings. Orrery and
+Bloom: not much. Ember: likes its secondary lines, "the second ring
+with all the little hashes," which is its address ticks. "The one I
+like" (the original, ET) stays the base, and needs thicker bands on
+entry with better timing, with his summary judgment that the whole
+set is close but needs tighter direction. This is a real change from
+reading EZ as picking the original outright: he is now asking for a
+composite, the original as the base carrying Breath's outside ring
+treatment and Ember's tick styling, not a single style in isolation.
+Sent to the agent already building this, mid task, rather than
+waiting for it to finish on the older brief and redoing the work.
+
