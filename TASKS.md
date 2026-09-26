@@ -13196,3 +13196,95 @@ tools, or leave them where people already find them?
 **Q7.** On the Body page, pressing an address now answers as that
 address rather than its seat, a real behaviour change. Keep it?
 
+## DB. His picks on the hover overlay, a real new mechanic he found
+## live, and the Share model widened to any practitioner. 26 September.
+
+**His picks on the five looks, plain and final.** "Trace and hum is my
+favourite... pressure's cool... pass on coil, pass on current, and
+definitely pass on stitch." Closes CZ Q4. He does not like every other
+line dimming away while one is held ("I don't like that they all
+disappear when I hover"), but he does like the lines themselves and
+needs some way to read how the larger network connects, which the
+chain scope answered live: "oh, there's the chain, that's cool, oh, and
+if I go to one of the networks it shows me all the connection."
+Answers CZ Q2 in favour of the whole chain, not one line alone.
+
+**A real new mechanic, found by him while trying it, not asked for in
+the brief.** His words: "how do I lock one, now that I've drawn a
+chain, can I click on it to pin it, and then hover over it and trace it
+and unpin it if I want to." Pin a traced chain so it stays lit without
+holding the pointer on it, unpin to let it go. He wants this built as
+one real example on Trace and Hum specifically, his stated favourite.
+
+**The pin idea grew, live, into a possible redesign of the release
+mechanic itself.** His words in full, since this is a real, excited
+direction and not a passing comment: "being able to pin it's good, and
+being able to share that pin with someone and say, this is where my
+pain hurts, this is my saboteur, I want to run a protocol from here...
+that's the power of this, dude, that whole could be the whole mechanic
+of the release mechanic, trace and release, give me a simulation of
+that as well, that gamifies the fuck out of it, makes it super sticky."
+Read as: pin a chain, name what it's for ("this is my saboteur"), run
+the release protocol starting from that pinned chain. Asked for as its
+own simulation, separate from the overlay looks.
+
+**Zoom, a recurring ask now made about the Field too, not only the
+Body page.** His words: "I'm really not certain what's happening at
+390 wide... can I zoom in, like I can't zoom in, I think that's the
+problem, I feel like I want to be able to zoom in." The Body page
+already gained a real zoomed head view this round (CG, CK); the Field
+itself has never had one.
+
+**A real confusion about Wheel, Frames, Dial, worth a plain answer
+rather than a build.** His words: "wheel, frames, dial, tell me what
+the hell that's supposed to be for, is that the zoom levels, and could
+those just be icons, and as you zoom in at different levels it just
+lights up the one you happen to be in?" Not zoom levels: three
+different drawings of the exact same reading, a person's own pick of
+which one they like looking at, nothing to do with how far in they've
+zoomed. Answered plainly in the reply to him rather than guessed into
+a rebuild, since the confusion itself is the thing to fix first.
+
+**Share widened, and it now makes real sense of "profile person."**
+His words: "I'm not certain what I mean by share, I think that needs to
+be part of the practitioner, if I go to the practitioner I can share my
+profile with them, they can request certain bits of information, I
+could share a whole chain and say this is what I'm going through, or
+share it with your acupuncturist, your physical therapist, your
+doctor, I think that's what's cool about it, it makes it universal."
+Closes CY Q2: not one fixed "coach," any practitioner type, and not
+only a push of a whole record, a specific piece (a chain, a pinned
+item) sent with its own context, and the practitioner able to request
+rather than only receive. Sent back to the same design work rather
+than built blind.
+
+**His own confirmation on the expand button, closing CY Q4 plainly.**
+His words, once re-asked: "what do you mean by overlay, like you can
+collapse, it expands all the tools, then it collapses all the tools,
+right, so we're not cluttering up the entire area." Confirms the
+shelf's own reading of this was correct: one control that clears every
+tool at once, not something on the animation work.
+
+**A real check on process, answered honestly rather than assumed
+past.** His words: "our UX designer should be looking for those areas
+of opportunity because they've studied all those documents, and
+they're looking for all the areas of opportunity deeply, aren't they?"
+Answered plainly in the reply: yes, and it is checkable, since every
+dispatch tonight has named the specific files, past rounds and
+standing rules each seat is told to read before starting.
+
+**A real request to run the concept past the simulated panel.** His
+words: "simulate this interface with the ICPs and the focus group, see
+what they say about the shelf and the circular design." Dispatched.
+
+**He wants the mobile Frames file itself, not just the picture, to give
+real feedback on it.** His words: "I need to give you feedback on the
+mobile square one too, I just need the file." Sent directly rather
+than rebuilt, since it already exists (CE).
+
+**Q7 from the last round did not land, and needs the picture, not the
+same words again.** His words: "number seven, I have no fucking clue
+what you're talking about." Held rather than repeated; will come back
+with a drawing once there is one worth showing rather than asked cold
+a second time.
+
