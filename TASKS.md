@@ -15009,3 +15009,59 @@ a click, which is the same open question already standing at DD;
 whether Frames and Dial should gain the Wheel's own motion or stay
 still and only move on a hover.
 
+## EF. BO7, the root icons and the icon shrink, all three real and
+## shipped, not prototypes any more. Verified myself against the real
+## build. 26 September.
+
+**BO7 closed, and it was not a small number.** `ritual.js:11` verified
+directly: `DQ>=70?1:(DQ>=40?2:3)`, his exact scale. Under the old line
+nine of the fourteen reference profiles were locked to entry
+practices at shadow scores between 10.7 and 54.3, nowhere near
+heavy; under the new line none are, and the heaviest example, Gordon
+at 54.3, sits at median on his own scale. The same stale threshold
+was found duplicated in `tools/loopsim.js` and fixed there too; a
+second tool, `ritualsim.js`, was left alone on purpose, since it is a
+snapshot from an earlier round reproducing numbers measured under the
+old threshold, not a live mirror of the product.
+
+**Root icons and the seat colouring, shipped for real, looked at
+directly rather than only read about.** Took a fresh screenshot of
+the real build myself: the four root buttons carry their new marks
+above their names, and the Primary and Secondary archetype tiles now
+carry their own seat's colour instead of one flat blue, exactly as
+the board recommended. Root itself is deliberately not raised in
+saturation, still closest to the alarm red without being pushed
+closer. Two real accessibility floors closed on the paper lightings,
+Snow and Glass white, both measured before and after rather than
+assumed fixed. Lumen was deliberately left untouched, since routing
+it the same way would have dropped its own archetype contrast below
+floor; it stays on his own palette until he rules on it.
+
+**The icon shrink folded in, not deferred to a second pass.** Tiles
+now sit at the 44 pixel tap floor instead of a taller 48.4 pixel
+square, recovering 54 pixels of rail height at desk width, enough
+that the Secondary archetype grid's last row, previously below the
+fold on a 1000 tall screen, is now fully visible.
+
+**A second confirmation of the same flaky gate EE already found,
+independently.** This build's own first run of `tests/design.js`
+also failed only the "Field still animates" timing check, traced by
+the agent itself to machine load from a concurrent screenshot script
+and confirmed clean on a rerun once that load cleared, the same
+finding EE reached from a different angle. Not the product; the
+measurement.
+
+**All nine gates re-run myself against the real committed build,
+matching exactly:** 432 exports, 1687 engine tests, 282 collide, 172
+funnel, monitor clean, voice check clean. `equiv.py` against the
+prior build shows only the intended additions and changes. Commit
+`3824c63`, pushed.
+
+**A real, separate gap named rather than fixed here:** every other
+screen in the product, Summary, the Field's own canvas, Analytics,
+Knowledge, still draws these same colours unrouted by lighting, so
+they still fail contrast on Snow and Glass white outside this one
+rail; queued as its own task rather than folded in, since the Field's
+canvas colour switch treats only Snow as light today and needs its
+own pass to also read Glass white correctly.
+
