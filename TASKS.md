@@ -13980,3 +13980,162 @@ tenths of one percent of births; correct the moment a zone is given.
   without moving the schema version number, which this file names as
   the owner's own contract with SOURCE?
 
+## DM. Energetics reimagined: name roots, a numerology question
+## answered directly, a live Source AI summary, and four simulated
+## flow mockups asked for. 26 September.
+
+**His words, the shape of the ask.** On landing on Energetics he does
+not need the left rail as it stands. As a first, middle and last name
+and a birth time are entered, he wants the root meaning behind the
+name shown, "Lance means to pierce, O'Neill means champion, Powell
+means exalted," a starting point a person naturally embodies. Myers
+Briggs, "not necessarily important" on its own, read as data on
+"determined patterns" of how a person moves through the world. The
+masculine and feminine boundary slider already on the page, read in
+his own words as two channels of one vehicle, external force and
+internal force. The left rail should activate as the questions are
+answered, Jungian archetype and child emotion questions among them,
+rather than sit static and washed out the way the screenshot shows it
+today. An information page should sum up everything the Energetics
+page holds, and Source AI should sit on the right, updating live as
+the fields fill in. His own framing of the whole product, worth
+carrying into the voice of this work: "attuned is about reading
+someone's essence, and giving the tools to radiate that essence and
+become the person they've always wanted to become."
+
+**His direct question, answered now rather than left for a dispatch to
+find.** "What are my numerology stuff on these pages?" A real,
+already-built system, checked directly: six numbers, computed off the
+full name and the birth date (`engine/numerology.js`, `numerologyOf`),
+life path, expression, soul urge, personality, birthday and maturity,
+each with a drill that explains what it is and what it says
+(`ui/drills.js`, `runNumDrill`), including master numbers and karmic
+debt. Two of the six print today, life path and a master number if one
+applies, in the Field's States section just built this window
+(`ui/personas.js`). All six print on Summary as drill rows. None of it
+reaches Energetics, which is exactly the gap his ask closes.
+
+**One piece is new content, not a wiring gap, checked directly.** No
+root-meaning-of-a-name data exists anywhere in this codebase; grepped
+for it and found nothing. Sourcing and coverage are real open
+questions, not solved by wiring: what reference gives a name's root
+meaning, what happens for a name that reference does not carry, and
+what the product says when it has nothing rather than guessing one
+into existence, the same standing rule as everywhere else in this
+file. Going into the dispatch as a question, not a silent build.
+
+**Dispatched as design and research, not a single build.** Competitive
+research on what similar products already do; four distinct flow and
+layout treatments for Energetics, from minimal and collapsed to icon
+heavy to a staged, gated unlock; a simulated ICP and focus group pass
+on the same panel already proven in this file's own DD round; and a
+mocked, clearly labelled Source AI summary panel rather than a real
+model call, since the real one is its own build. Comes back as
+something to open and press, per this project's own rule against
+sending him another static comp.
+
+## DN. His refinement on the Rising question from DL: not a city
+## list, one point per time zone. 26 September.
+
+**His words.** "We should be asking them for location and time, they
+don't know the time zone, then our data will be off, and that should
+just be known. So it sounds like time zones would be better, just for
+size. Or maybe we can optimize the city list where it's not every
+city, but they're grouped by time zone, because really what's
+important is the time zone. I need Los Angeles, I don't need San Diego
+and San Francisco. I need Portland, I don't need Newport. I don't want
+to build something that weighs more than the software we're building."
+
+**Read as a real refinement of DL's Q1, not a reopening of the DI
+ruling.** Not a city per person, one representative point per time
+zone, sized to the zone count rather than the city count. Rising still
+needs an actual horizon, latitude and longitude, which a time zone
+offset alone cannot supply; his proposal supplies it at far lower cost
+than a real gazetteer, at a real, honest accuracy cost of its own: a
+time zone can span a wide stretch of longitude and more than one
+climate of latitude, so a single representative point inside it is
+closer than Greenwich but is not the same as the person's own exact
+coordinates. Dispatched to build against the IANA time zone
+database's own published representative points, a real reference table
+that exists for exactly this purpose, rather than picked by hand, and
+to report the real byte count measured, not estimated.
+
+## DO. Two prototypes back: the glass control bar for the Field, and
+## the celestial rail redesign, both verified directly. 26 September.
+
+**The glass bar (DK, ask one), verified myself, not only on the
+agent's report.** `proto/glassbar/glassbar.html`, laid over the
+committed build, nothing under `atuned_src/` touched. Looked at the
+screenshots directly: the four depth words and the Wheel/Frames/Dial
+switch are gone from the stage, replaced by one floating bar of ring
+icons matching his reference, five groups, everything independently
+on or off, one press each. Re-ran its own check script myself rather
+than trust the count in the report: 50 checks, 0 failed, at both
+widths, matching exactly. Confirmed by reading, not assumed: threads
+only draw when both ends are on, the old depth ladder now only sets
+how much of the ring the picture reserves, and zoom no longer silently
+adds a layer nobody chose. Thirteen real open questions came back with
+it, each with what it costs to go either way; the three most load
+bearing: does the ring resize as layers switch on or hold its full
+size always; does zoom still add layers or only bring detail closer;
+and does one set of toggles drive Wheel, Frames and Dial together or
+does each keep its own. Screenshots for all thirteen exist and are
+ready to send with the questions, per the house rule that a geometry
+question goes with its picture.
+
+**The celestial rail (part of DK, ask two), also built and verified.**
+`proto/states/states.html`, the same lay-over-the-real-build pattern.
+Sun, Moon, Rising and Year as icon tiles in the rail's own house style,
+each opening a card on the right through the product's existing drill
+shell, and real synthesized text combining all four rather than four
+separate facts, composed from parts rather than a table of every
+chart, since the chart space is roughly a hundred thousand combinations
+against a hundred and one hand written lines. Checked against his own
+two worked examples directly: the water rat and fire horse lines it
+produces read the same as what he said, not close to it. A joint
+system, flush, braced, offset, shear, reads how the four layers agree
+or fight, with a cost line where they fight, tuned against all
+thirteen reference personas after a first version failed its own truth
+test by reading seven of nine cases the same way.
+
+**A real, new engine defect found in passing, distinct from DL's
+timezone fix.** An untimed birth, no clock time entered at all, still
+prints one settled moon sign, though the moon changes sign every two
+and a half days and an untimed birth cannot know which side of that
+change it falls on. Three of the thirteen reference personas read the
+wrong moon under today's shipped engine: James reads Aries where the
+true reading is Taurus, Ana reads Gemini where it is Cancer, Tomas
+reads Leo where it is Cancer. This sits in `astro.js`/`birth.js`,
+which a different seat was mid-edit in during this same window, so it
+was surfaced rather than patched, the same discipline this file
+already followed once tonight for `ui/summary.js`. Queued as a
+priority fix, unblocked, no owner ruling needed.
+
+**Two more shipped defects found in passing, in the drill already
+live today, not the prototype.** `runSpDrill` opens the identical
+"Zodiac sign" card for Sun, Moon and Rising alike, with no word saying
+which of the three is open, so a Capricorn moon reads exactly like a
+Capricorn sun. And the Profile row hands its value to the wrong card,
+the Design type drill, which finds no match and prints a sentence that
+does not belong to what was pressed.
+
+**Nine real open questions on the celestial rail, his call, each with
+its cost, not softened to fewer:** which direction the synthesis loop
+closes, sun back to moon (the mind and body gap) or sun back to the
+year (the world); whether Rising reads his own way or the traditional
+way, since an astrology-literate person may read his way as wrong;
+names under the icons or icons alone; whether the whole joint system
+he did not ask for by name ships, waits for a practitioner's check, or
+is cut; colour by element or one calm accent; whether the twelve
+animal icons ship as built or get commissioned; whether this pattern,
+his own "plays across the entire structure," moves onto Summary and
+the other places these same readings already print; how the phone
+card's position gets fixed, the shelf prototype already proposed
+against it or accepted as is; and one spelling standard for the
+Chinese year, since the file prints both "Wood Ox" and "Metal Horse"
+against the house rule of sentence case.
+
+**Both prototypes ready to send as real files, per the house delivery
+rule:** each is one HTML file with no network, and each is being
+opened for him rather than only described.
+

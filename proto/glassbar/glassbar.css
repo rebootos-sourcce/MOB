@@ -1,0 +1,135 @@
+/* ============================================================
+   THE GLASS BAR, prototype. DK in TASKS.md.
+
+   Glass means: the picture shows through it, blurred, so it reads as a
+   thing lying on the Field rather than a band cut out of it. The ground is
+   the theme's own panel at a little over half strength, so it follows all
+   the themes without a rule per theme. Ring, not fill: a layer that is on
+   wears a ring of the accent, never a solid tile. Punch is the one theme
+   where solid is the ruling, and it gets the solid.
+   ============================================================ */
+
+/* the secondary navigation is gone on the Field, and the switch in the
+   lane has moved into the bar */
+body.gb.tab-field #subbar{display:none!important}
+body.gb #fview{display:none!important}
+/* the strip the bar floats in is kept clear, so the bar lies over the
+   stage's ground and never over a mark. Without it the Frames picture ran
+   up under the bar and its top row of addresses went under the glass. */
+body.gb.tab-field .stage{padding-top:66px}
+@media (max-width:720px){body.gb.tab-field .stage{padding-top:0}}
+body:not(.tab-field) #gb,body:not(.tab-field) #gb-panel,body:not(.tab-field) #gb-menu{display:none!important}
+
+#gb{position:absolute;top:12px;left:12px;z-index:6;display:flex;align-items:center;gap:8px;
+ flex-wrap:nowrap;pointer-events:none}
+#gb>*,#gb .gb-full>*{pointer-events:auto}
+#gb .gb-full{display:flex;gap:8px}
+#gb .gb-foldp{display:none}
+#gb.folded .gb-full{display:none}
+#gb.folded .gb-foldp{display:flex}
+
+.gb-pill,.gb-float{
+ background:color-mix(in srgb,var(--panel,#1A1D26) 58%,transparent);
+ -webkit-backdrop-filter:blur(18px) saturate(1.4);backdrop-filter:blur(18px) saturate(1.4);
+ border:1px solid var(--edge-2,rgba(255,255,255,.14));
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 10px 28px rgba(0,0,0,.28)}
+.gb-pill{display:flex;align-items:center;gap:2px;padding:4px;border-radius:16px}
+
+/* the two glasses. Tokens are redefined on the bar, so every rule below
+   reads the right ink whichever ground it lies on. */
+.gb-dk{--ink:#EFEDE8;--mid:#B4B0A8;--dim:#94908A;--edge-2:rgba(255,255,255,.14);--edge:rgba(255,255,255,.09)}
+.gb-dk .gb-pill,.gb-float.gb-dk{background:rgba(22,24,32,.58)}
+.gb-lt{--ink:#14161C;--mid:#4A4843;--dim:#6E6B65;--edge-2:rgba(20,22,28,.16);--edge:rgba(20,22,28,.10)}
+.gb-lt .gb-pill,.gb-float.gb-lt{background:rgba(252,252,250,.62);box-shadow:inset 0 1px 0 rgba(255,255,255,.6),0 10px 28px rgba(20,22,28,.14)}
+#gb-panel .gb-pill{background:transparent!important;box-shadow:none!important}
+
+/* one target, 44 by 44, the floor */
+.gb-b{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+ min-width:44px;min-height:44px;padding:0;margin:0;border:0;border-radius:12px;background:transparent;
+ color:var(--dim,#94908A);cursor:pointer;font:inherit;
+ transition:color .12s cubic-bezier(.22,1,.36,1),background-color .12s cubic-bezier(.22,1,.36,1)}
+.gb-b:hover{color:var(--ink,#EFEDE8);background:color-mix(in srgb,var(--ink,#EFEDE8) 6%,transparent)}
+.gb-b:focus-visible{outline:2px solid var(--accent,#7EB8D4);outline-offset:1px}
+.gb-ic{position:relative;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+ border:1.5px solid transparent;transition:border-color .12s cubic-bezier(.22,1,.36,1),box-shadow .12s}
+.gb-ic svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.6;
+ stroke-linecap:round;stroke-linejoin:round}
+
+/* ON. The icon comes up to ink and wears the accent's ring. */
+.gb-b.on{color:var(--ink,#EFEDE8)}
+.gb-b.on .gb-ic{border-color:var(--accent,#7EB8D4);
+ box-shadow:0 0 0 3px color-mix(in srgb,var(--accent,#7EB8D4) 16%,transparent)}
+/* BROUGHT IN BY ZOOM, under that option only: drawn, but not by the person */
+.gb-b.zoomed{color:color-mix(in srgb,var(--ink,#EFEDE8) 80%,transparent)}
+.gb-b.zoomed .gb-ic{border-color:var(--accent,#7EB8D4);border-style:dashed}
+/* ON, AND WAITING FOR ZOOM: stories on the wheel at arm's length */
+.gb-b.wait .gb-ic{border-color:color-mix(in srgb,var(--accent,#7EB8D4) 45%,transparent);box-shadow:none}
+.gb-b.wait .gb-ic::after{content:'';position:absolute;right:-2px;top:-2px;width:6px;height:6px;border-radius:50%;
+ background:var(--accent,#7EB8D4)}
+/* the switch between renditions is one of three, so the lit one is marked
+   the same way and the other two stay dim */
+.gb-rend .gb-b.on .gb-ic{box-shadow:none}
+
+body.punch .gb-b.on .gb-ic{background:var(--accent);border-color:var(--accent);box-shadow:none}
+body.punch .gb-b.on .gb-ic svg{stroke:var(--on-accent,#101010)}
+
+/* ---- the folded panel and the depth menu float under their button ---- */
+.gb-float{position:fixed;z-index:40;border-radius:16px;padding:10px;display:none}
+.gb-float.open{display:block}
+#gb-panel .gb-pill{background:transparent;border:0;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none;
+ padding:0;flex-wrap:wrap;gap:4px;margin-bottom:6px}
+#gb-panel .gb-b{min-width:64px;min-height:64px;padding:4px 2px}
+.gb-nm{font-size:12px;line-height:14px;font-weight:500;white-space:nowrap}
+.gb-say{margin:6px 6px 2px;max-width:340px;font-size:13px;line-height:1.45;color:var(--mid,#B4B0A8)}
+.gb-say b{color:var(--ink,#EFEDE8);font-weight:600}
+.gb-ph{font-size:12px;line-height:16px;color:var(--dim,#94908A);margin:4px 6px 4px;font-weight:500}
+
+#gb-menu{padding:6px;width:340px}
+.gb-mi{display:flex;align-items:flex-start;gap:10px;width:100%;min-height:44px;padding:8px 10px 8px 6px;
+ border:0;border-radius:12px;background:transparent;color:var(--mid,#B4B0A8);text-align:left;cursor:pointer;font:inherit}
+.gb-mi:hover{background:color-mix(in srgb,var(--ink,#EFEDE8) 6%,transparent);color:var(--ink,#EFEDE8)}
+.gb-mi .gb-ic{flex:0 0 auto}
+.gb-mt{display:flex;flex-direction:column;gap:2px;font-size:13px;line-height:1.4}
+.gb-mt b{font-size:14px;font-weight:600;color:var(--ink,#EFEDE8)}
+.gb-mi[aria-checked=true] .gb-ic{border-color:var(--accent,#7EB8D4)}
+.gb-mi[aria-checked=true] b{color:var(--accent,#7EB8D4)}
+
+/* ---- the renditions' hidden layers the shipped sheet does not know ---- */
+#frend.gb-off-addr .F-addr,#frend.gb-off-sab .F-sab,#frend.gb-off-cx .F-cx,#frend.gb-off-hy .F-hy,
+#frend.gb-off-cx .T-cx,#frend.gb-off-hy .T-hy,#frend.gb-off-sup .T-sup,
+#frend.gb-off-seats .P-seats,#frend.gb-off-call [data-call=chains]{display:none}
+body.gb.tab-field.gb-off-shadow #bgaura{visibility:hidden}
+
+.gb-done{display:none;min-height:44px;min-width:88px;margin:4px 0 0 auto;padding:0 16px;border-radius:12px;
+ border:1px solid var(--edge-2,rgba(255,255,255,.14));background:transparent;color:var(--ink,#EFEDE8);font:inherit;font-size:14px;cursor:pointer}
+#gb-panel.sheet{left:8px!important;right:8px;bottom:8px;top:auto!important;max-width:none!important;
+ padding:8px 8px 10px;border-radius:18px}
+#gb-panel.sheet .gb-ph{display:none}
+#gb-panel.sheet .gb-pill{flex-wrap:nowrap;justify-content:flex-start;gap:0;margin-bottom:4px;
+ padding-bottom:4px;border-bottom:1px solid var(--edge,rgba(255,255,255,.09))!important;border-radius:0}
+/* six columns on every row, so a name sits under its own icon and the
+   rows line up. Five across left Character and Archetypes running into
+   each other at 390. */
+#gb-panel.sheet .gb-b{min-width:0;flex:0 0 16.66%;min-height:60px}
+#gb-panel.sheet .gb-nm{font-size:11px;line-height:13px;white-space:normal;text-align:center;max-width:58px}
+#gb-panel.sheet .gb-done{display:block}
+#gb-panel.sheet .gb-say{min-height:38px}
+
+/* ---- a phone. The stage is one column there, so the bar takes the row
+   the switch had, above the picture, and does not lie over the ring ---- */
+@media (max-width:720px){
+ #gb{position:relative;top:auto;left:auto;order:0;align-self:flex-start;margin:10px 12px 4px;flex-wrap:wrap}
+}
+
+/* ---- the prototype's own questions. Not part of the product. ---- */
+#gb-opts{position:fixed;left:12px;bottom:12px;z-index:50;font:14px/1.45 Inter,system-ui,sans-serif;color:#EFEDE8}
+#gb-opts .gb-ob{min-height:44px;padding:0 14px;border-radius:12px;border:1px dashed rgba(126,184,212,.7);
+ background:rgba(12,13,18,.86);color:#7EB8D4;font:inherit;cursor:pointer}
+#gb-opts .gb-oc{position:absolute;left:0;bottom:52px;width:min(360px,calc(100vw - 24px));padding:12px 14px;
+ border-radius:14px;background:rgba(12,13,18,.94);border:1px dashed rgba(126,184,212,.55)}
+#gb-opts .gb-oq{margin:4px 0 6px;color:#EFEDE8}
+#gb-opts .gb-on{margin:10px 0 0;color:#94908A;font-size:13px}
+#gb-opts .gb-seg{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+#gb-opts .gb-seg button{min-height:44px;padding:0 12px;border-radius:10px;border:1px solid rgba(255,255,255,.14);
+ background:transparent;color:#B4B0A8;font:inherit;cursor:pointer}
+#gb-opts .gb-seg button[aria-pressed=true]{border-color:#7EB8D4;color:#7EB8D4}
