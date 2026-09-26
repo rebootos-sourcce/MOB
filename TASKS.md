@@ -13134,3 +13134,65 @@ and the nearest neighbouring line can sit as close as 2 pixels away in
 a dense area. Should a tap open the shelf (CY) instead of, or as well
 as, humming, given a finger cannot reliably pick one line there?
 
+## DA. The shelf, designed and built on the real app, not left an
+## idea. 26 September.
+
+**Verified myself.** Only `proto/shelf/` touched. Looked at the real
+result on both surfaces at both widths before trusting the report;
+sent below.
+
+**Not a new panel, the existing rail made to behave.** The product
+already has one place every press is meant to answer, the rail's own
+Selection drill, its own file saying "same panel for all of them, so
+there is one place to look." Its real failure, measured rather than
+assumed: on a phone that answer lands 4,661 pixels below the picture on
+the Field and 4,414 on Body, meaning nothing visibly changes when you
+press something there today. The shelf keeps that same drill, closed
+by default so the picture gets the width back, opens at the top on a
+press, and rises as a bottom sheet on a phone instead of answering off
+the bottom of the world. The rest of the rail becomes its page view,
+his own "table of information for the page." The pressed thing is now
+also ringed on the picture itself in its own seat colour, so pressing
+something and then reading about it in a separate place no longer
+loses which thing is being described.
+
+**A second press swaps rather than stacks, on purpose.** Comparing two
+things means bookmarking both, not two panels open at once, since two
+open panels was measured to bring the same load problem straight back.
+
+**Save and Bookmark both built, doing different jobs.** Bookmark
+follows a thing live. Save keeps what it said on the day, so a later
+look reads "then" beside "now," which is one concrete way his own
+becoming idea (CH) could show on screen. Share only goes as far as it
+honestly can today: it names who has sight ("nobody, no coach is
+connected"), what would go and what never does, reasoned from the tier
+scope already ruled in `DECISIONS.md`, and the send button is off with
+a plain reason rather than pretending to work. The account and coach
+mechanism itself stays out of scope, as asked.
+
+**A real count, not just a picture.** On the same press, the same
+person, before and after: the answer goes from invisible on a phone to
+on screen every time; idle visible controls on the Field drop from 91
+to 82, and to 34 once the picture is also expanded, which is what
+actually clears a busy desktop, not the shelf alone.
+
+**Seven real questions, his to rule on, not softened to fewer.**
+**Q1.** Save and Bookmark as two separate things, or one control doing
+both, fewer choices but no "then against now" list?
+**Q2.** "Share it with your profile person, your coach": one coach, or
+does "profile person" mean another profile on the same device, a
+partner?
+**Q3.** Does sharing copy the item once, or point a coach who already
+has standing sight at it live?
+**Q4.** "I have a button to expand the overlay": built as a new control
+that clears the tools and lets the picture take the screen. Is that
+the button meant, or something on the animation overlay itself?
+**Q5.** The left rail still carries most of what crowds a desktop
+screen. A second shelf on the left, closed until wanted, or leave it
+open and rely on expand?
+**Q6.** The moral integrity sliders are tools sitting inside what is
+now an information surface. Move them to the left rail with the other
+tools, or leave them where people already find them?
+**Q7.** On the Body page, pressing an address now answers as that
+address rather than its seat, a real behaviour change. Keep it?
+
