@@ -105,6 +105,52 @@ for(const w of [[1680,1020],[390,844]]){
   ok(res.over===0,w.join('x')+'/'+people[i]+'/dial: '+res.over+' callouts overlapping');}
  ok(n>0,w.join('x')+'/dial: the dial named nothing on any profile, so nothing was checked');
  console.log('  '+w.join('x')+': '+n+' callout lines over '+people.length+' personas, checked against the ring');}
+/* ============================================================
+   The Compass header clear of the Compass names, and the hint clear
+   of the figure.
+
+   EP in TASKS.md, 26 September. At 390 on Abraham, Flat, Regulation
+   and Layers printed over Illumination and Desire and will on every
+   lighting, and the line under the figure printed over the word
+   Decoherent at both widths. Both were absolute blocks placed for a
+   desk layout: the controls at top 10 of .cone-fig, which is the
+   canvas top only while the rails are absolute too, and the hint at
+   bottom 10, which is where the canvas draws its lowest label. The
+   nameplate checks above never looked at this surface.
+
+   Every lighting is read off LIGHTINGS at run time rather than listed
+   here, and the counts checked have to be more than nought, so a
+   renamed class cannot pass by finding nothing. Run first against the
+   build before the fix: it failed there at 390 on every lighting.
+   ============================================================ */
+console.log('\n=== compass controls clear of the axis names, every lighting ===');
+{const ab=people.indexOf('Abraham');
+ const was=await p.evaluate(()=>S.theme);
+ for(const w of [[1680,1020],[390,844]]){
+  await p.setViewportSize({width:w[0],height:w[1]});await p.waitForTimeout(160);
+  const lights=await p.evaluate(()=>LIGHTINGS.map(t=>t[0]));
+  let nb=0,nr=0;const bad=[];
+  for(const L of lights){
+   await p.evaluate(a=>{loadP(a[0]);setTab(TAB.COMPASS);setLighting(a[1]);render();},[ab<0?0:ab,L]);
+   await p.waitForTimeout(120);
+   const res=await p.evaluate(()=>{
+    const bx=e=>e.getBoundingClientRect();
+    const hit=(a,c)=>a.left<c.right-0.5&&c.left<a.right-0.5&&a.top<c.bottom-0.5&&c.top<a.bottom-0.5;
+    const btn=[...document.querySelectorAll('#cone .cone-ctl .cn-b')];
+    const row=[...document.querySelectorAll('#cone .cn-nr')];
+    const over=[];
+    btn.forEach(x=>row.forEach(y=>{if(hit(bx(x),bx(y)))
+     over.push(x.textContent.trim()+' over '+(y.querySelector('.cn-nq')||y).textContent.trim());}));
+    const h=document.querySelector('#cone .cone-hint'),cv=document.getElementById('conecv');
+    if(h&&cv&&hit(bx(h),bx(cv)))over.push('the hint over the figure');
+    return {b:btn.length,r:row.length,over:over};});
+   nb+=res.b;nr+=res.r;
+   ok(res.over.length===0,w.join('x')+'/'+L+': '+res.over.join(', '));
+   if(res.over.length)bad.push(L);}
+  ok(nb>0&&nr>0,w.join('x')+'/compass: found '+nb+' controls and '+nr+' names, so nothing was checked');
+  console.log('  '+w.join('x')+': '+lights.length+' lightings, '+nb+' controls against '+nr+' names, '
+   +(bad.length?'overlapping on '+bad.join(' '):'none overlapping'));}
+ await p.evaluate(k=>setLighting(k),was);}
 /* the wheel again, which is what every check below is measured on, and a
    stored view outlives the page */
 await p.evaluate(()=>fviewSet('wheel'));

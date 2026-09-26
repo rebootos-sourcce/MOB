@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="f979c59 2026-09-26 18:44"><head><meta charset="utf-8">
+<html lang="en" data-build="8699e52 2026-09-26 19:08"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -360,7 +360,7 @@ body.lumen{
    him and unchanged across both rulings. The tools draw on it, and the vibrant
    hues above were chosen to sit on this as well as on paper. */
 body.lumen .stage,body.lumen #emap,body.lumen #cone,body.lumen #cv,
-body.lumen .cone-cv,body.lumen .pm-well{background:#101010}
+body.lumen .cone-cv,body.lumen .cone-hint,body.lumen .pm-well{background:#101010}
 body.lumen .stage{--ink:#F7F7F7; --mid:#B6B6BC; --dim:#8C8C94;
  --panel:#171717; --panel-2:#1F1F22; --sunk:#0A0A0A;
  --edge:rgba(255,255,255,.14); --edge-2:rgba(255,255,255,.24);
@@ -2321,7 +2321,23 @@ body:not(.tab-field) .keylo{display:none}
  z-index:2;margin:0}
 .cone-info{display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:14px;min-width:0}
 .cone-mid{min-height:0;overflow-y:auto;scrollbar-width:thin}
-.cone-hint{position:absolute;left:12px;bottom:10px;margin:0;font-size:11.5px;
+/* UNDER THE FIGURE MEANS UNDER IT, NOT ON IT. The hint was absolute at bottom
+   10 of .cone-fig, which is the canvas's bottom edge, and the canvas draws
+   "Decoherent" at by+30 (ui/cone.js), the same band. Measured on Abraham,
+   every lighting: at 1600 "Press any name" sat across "Decoherent", and at
+   390 the hint wraps to two lines and both were overprinted with the label.
+   Found beside the header collision above and the same kind of defect: a
+   block pinned over a drawing that was never told it was there. In flow it
+   takes its own line under the canvas at every width.
+
+   And it stays on the well. The first cut put it in flow on the stage, which
+   is the ruled #101010, and under Snow the hint's own --dim measured 2.94 to 1
+   there against the light well it had been sitting on. So the well grows a
+   line instead: the hint carries the canvas's ground and the canvas gives up
+   its lower corners to it, which is the look it had, without the overprint. */
+.cone-cv{border-radius:var(--r-s) var(--r-s) 0 0}
+.cone-hint{margin:0;padding:4px 12px 10px;font-size:11.5px;line-height:1.5;
+ background:var(--sunk);border-radius:0 0 var(--r-s) var(--r-s);
  color:var(--dim);pointer-events:none}
 .cone-txt{display:flex;flex-direction:column;gap:9px}
 .cone-p{margin:0;font-size:13px;line-height:1.6;color:var(--mid);max-width:68ch}
@@ -3853,7 +3869,22 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
   gap:6px 14px;justify-content:center;margin:6px 0}
  .cn-nms-l,.cn-nms-r{align-items:center;text-align:center}
  .cn-nr,.cn-nms-r .cn-nr{border-left:0;border-right:0;border-bottom:2px solid transparent;
-  align-items:center;padding:2px 4px}}
+  align-items:center;padding:2px 4px}
+ /* THE CONTROLS PRINTED OVER THE FIRST ROW OF NAMES. Measured at 390x844 on
+    Abraham, every lighting: .cone-ctl at y 319, the first rail row at y 315,
+    four button and name boxes intersecting, "Flat" standing on Jesus and
+    "Regulation" on Ramakrishna. .cone-ctl is absolute at top 10 of .cone-fig,
+    which is the top of the canvas only while the rails are absolute too. This
+    band puts the rails in flow above the canvas, so the top of .cone-fig
+    became the top of the rails and the controls stayed pinned to it. Desk
+    width was never affected because it clears the rails with top 74 above.
+
+    In flow and first, rather than a padding sized to the cluster: the three
+    buttons wrap on a narrower phone, and a padding typed from their height is
+    a number the controls then grow past. Still upper left of the figure, which
+    is the ruling. */
+ .cone-fig{display:flex;flex-direction:column}
+ .cone-ctl{position:static;order:-1;margin:0 0 6px}}
 .boot-wm{display:flex;flex-direction:column;align-items:center;gap:4px;opacity:0;
  animation:bootWm .92s cubic-bezier(.22,1,.36,1) 3.20s both}
 @keyframes bootWm{0%{opacity:0;transform:translateY(8px)}100%{opacity:1;transform:none}}
@@ -28343,5 +28374,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="001843784"></div>
+<div id="eof" hidden data-len="001845870"></div>
 </body></html>
