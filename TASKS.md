@@ -11839,3 +11839,134 @@ questions 1 and 2 into one drawn board, the same person at three
 moments under each real option, and hold the other nine until that
 comes back, since 1 and 2 decide the shape everything else sits in.
 
+## CD. The twenty one laws now carry their own history, closing BW Q2.
+## 26 September.
+
+**Built and gated myself, not taken on the report alone.** Every saved
+snapshot now carries all 21 law values, not only the summed coherence
+number, so a law can be replayed over time the way he asked. Additive
+only, nothing renamed, an old saved profile with no history loads
+exactly as before with the new field simply absent from its older
+rows. A row checks against itself on every write: its 21 laws summed
+over 210 must equal its own coherence number, or the boundary refuses
+it. Real cost, measured off an actual run rather than estimated: about
+300 to 390 bytes more per saved snapshot, roughly three times the old
+row's size, which comes to about 230 KB across his own 15,000 pattern
+scale and about 430 KB a year for someone running three releases a
+day, against a 5 MB browser limit.
+
+**A real bug found doing this, in the feathers, not in this change.**
+The feathers (`ui/rings.js`) draw from the bare law answer. Coherence
+reads the answer plus what a release has lifted it by, a different
+number, now with its own name in the schema, `lawNow`. So today, right
+now, a release can raise the coherence number while the feather for
+that same law does not move at all. This breaks BW's own claim that
+"feathers shrinking and the number rising are provably the same
+event," which only holds for a profile that has never released
+anything. Queued as a quick fix to `rings.js`, not built in this pass
+since it is another seat's file mid change.
+
+**A gate found flaky under real load, not a regression from this
+change.** Rerun three times solo after this landed: `tests/design.js`
+came back 144/6, then 145/5, then 148/2, always 150 total. The failing
+ones are always inside a single check, gate 13, which measures the
+Field's real frame rate with no lighting selected, a number that
+depends on how much else the machine is doing at the same moment,
+which right now is five other seats running their own browser gates in
+parallel. Confirmed this is not caused by the law history work: that
+work never touches rendering, and the failing check is a frame rate
+measurement, not a structural one. Logged for devops to make the gate
+itself load tolerant, not fixed here.
+
+**Four real questions, his own words carrying the first one.** His
+words: "as the story gets put in, it's going to weigh things down, but
+as you continue to release the patterns you'll continue to go back
+up." Today's maths cannot do the second half of that for the laws
+themselves, a law only rises through a release or moves either way
+when he re-answers the intake, a story never lowers one. Three ways:
+graph the shadow number alongside the laws so a story's weight shows
+on that line instead, change the model so a story really does lower
+the laws at its seat, which moves the number for everyone, or accept
+the law line only ever rises.
+**Q2.** A row is written on every story, release and intake save today,
+at the measured cost above. Keep that cadence, write laws only when
+they changed since the last row, which costs less but means a reader
+must carry the last value forward, or cap it at one row a day, which
+loses seeing a single release on its own?
+**Q3.** An older build that opens a record with this history drops the
+new field on load and the history is lost from that point in that
+build. True of every field ever added to a row, but worth a line in
+the SOURCE compatibility notes, or does it need the version bump he
+has reserved for himself?
+**Q4.** Every record's law history starts on the day this ships,
+earlier rows cannot be recovered. Say so plainly on the eventual graph
+("your record of each law begins on this date"), or let it begin
+quietly with no note?
+
+## CE. Four mockups for round CB, and three corrections to what he was
+## actually looking at. 26 September.
+
+**Built on the real product, not redrawn from memory.** Every picture
+in this round was captured off the live `source.html` for James with
+his five stories, with only the part under discussion redrawn over it.
+Sent below, with the recommendation each pass gave.
+
+**Three corrections, checked rather than assumed.** The names "sticking
+out like a wheel handle" that he objected to are on the Wheel, not on
+Frames, the Dial he liked already centres them the same way Frames
+does, so this is a Wheel change, not a Frames one, and it was mocked
+that way. Coherence and shadow are not two shares of one number, the
+book's own glossary has coherence as the 21 laws alone and states the
+shadow number never lowers it, which rules out drawing them as one
+ring split into two arcs unless the split is allowed to mean nothing.
+The dial's small callouts also carry the old SQ label ("Root, SQ 9.3"),
+caught and rewritten to "Held at 9.3" in every mockup below since it
+is the same reading under its old name.
+
+**Item 1, the centre.** Three options, coherence and shadow at the
+wheel's own core. A, one ring split into two arcs, direct but leaves a
+gap of 22 points on his own profile that means nothing since the two
+numbers are not shares of a whole. B, two rings, honest, costs some
+size. C, the calmest, shadow as a number only, no second ring.
+Recommended: B, with the core grown back about a tenth to recover the
+size it costs. The full Field screen built on B frees 56 pixels by
+retiring the strip, and the right rail becomes a single band with a
+mark at his place and the word "Oscillating," no duplicate numbers.
+
+**Item 2, seat names.** Confirmed a Wheel question. Three options for
+how far its labels reach from centre: as it ships (223px at 1600, 118
+at 390), the seat mark alone brought in as the Dial already does (188
+at 1600, 94 at 390, but frees nothing at 1600 since the pattern names
+reach just as far), or that plus the pattern names brought in too,
+freeing real room at both widths and letting the Wheel draw up to a
+quarter larger in the same box. Recommended: the combined option, the
+seat mark alone does not solve it by itself.
+
+**Item 3, the phone.** Two options for where the numbers sit once
+they're out of the centre: below the figure, which pushes the gates
+past the fold, or staying in a top row, which keeps the reading above
+the fold but changes the desktop's picture first ordering. Recommended:
+numbers in the top row, for the fold.
+
+**Item 4, the six gates.** Three shapes tried against the dial and
+frames: three diameters through the core, three balances stacked under
+it, or six arcs collared around the core's rim reaching the least and
+never crossing the centre's own numbers. The ship today already
+overlaps the centre by 8.5 pixels on a phone, confirming the defect he
+flagged. Recommended: the collar, or the diameters as the plainer
+version.
+
+**Six questions, none foreclosed, sent with the pictures.** Which of
+the three centre options; should the pattern names come inside the
+Wheel with the seat names or stay as they are; should Wheel seat labels
+be the mark or the word; where the phone's numbers sit; which of the
+three gate shapes; and whether one reading (his "44") should hold one
+colour everywhere, since today the compass paints it red while the
+core reads it blue at the same moment.
+
+**Queued, not asked here.** Three Summary section headings read Title
+Case against the house rule of sentence case, and the rail's own
+coherence chip names a seat inside a coherence reading ("Sacral,
+coherence, 44%"), which reads as if the seat were the reading. Small,
+queued as a fix, not a question.
+
