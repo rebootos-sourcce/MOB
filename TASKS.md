@@ -14578,3 +14578,58 @@ does not have to, and the full still-open list sorted by what each
 item actually needs, folded closed by default so nothing is forced
 on him at once.
 
+## DX. Four new root icons and a measured saturation call, back from
+## art direction as a real board. 26 September.
+
+**Four icons drawn from what each root actually says, not from the
+word alone,** checked against all 86 glyphs already in the build so
+none doubles an existing mark: Architect a set square, Engine a flame
+with its own inner tongue, Weaver two streams meeting as one,
+Witness a viewfinder's corners. Verified directly: `panels.js:464`
+does build the four root buttons as bare text, `b.textContent=rn`,
+confirming his complaint was not a perception, there truly is no icon
+there today.
+
+**The dullness measured rather than graded by eye.** Most of it is
+not the palette: every icon in these grids rests at 78 percent
+opacity and only reaches full strength under a pointer, confirmed
+directly at `head.html:1817`, which mixes every stroke a fifth of the
+way into its own dark tile. Three options built: A removes only that
+resting dim, B adds a further 15 percent real saturation, C adds 30.
+Root is held at its shipped strength on every option on purpose,
+since raising it walks the colour toward the product's own alarm red,
+measured in the OKLab colour model as a real distance, not eyeballed.
+
+**A ruling that shipped but never reached these tiles, found in
+passing.** The 19 September ruling that each archetype wears its own
+seat's colour reached the reading rows and never reached the
+Primary and Secondary archetype grid, confirmed directly:
+`panels.js:494` still hardcodes every archetype tile to one flat
+accent colour. Applying it here is why Primary reads flat in every
+option otherwise.
+
+**Two real accessibility failures found on the paper lightings, not
+only Dark.** Snow's domain icons measure 1.34 to 1 against a 3 to 1
+floor, its root names 1.70 against a 4.5 floor; Glass white fails the
+same way and for a second reason, the palette picker treats it as a
+dark lighting when it is not. Both trace to `ROOTCOL` being written
+once as the Dark palette and drawn unchanged everywhere. Fixed inside
+the same options: Snow reaches 4.07, Glass white reaches 5.14. Lumen,
+the owner's own palette, still fails at 2.22 even fixed, since its own
+vivid Root sits closest of any colour in the product to the alarm
+red; not decided here, put to him as question four.
+
+**The whole comparison sent as one board, pictures beside real
+numbers, rather than described:**
+`https://claude.ai/artifact/LZkqTnNoadKQKCQ441WHZK`
+
+**Four real questions, his call.**
+- Which four marks, the recommended set or the alternates shown
+  beside them.
+- How much punch, A, B or C; the team's own recommendation is B.
+- Should Primary and Secondary wear their seat colours, per his own
+  standing ruling, at the cost of the grid no longer grouping by
+  colour the way the domain grid still would.
+- What to do about Lumen, since it is his own palette and still fails
+  the floor even after everything else is fixed.
+
