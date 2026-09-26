@@ -145,7 +145,136 @@ knowing.
 
 ---
 
-## 4. The word heals, and how it was settled
+## 4. His mission, in his own words, and the book it belongs to
+
+Given 26 September as "a note maybe for the marketing funnel about or our
+mission", and quoted verbatim in `TASKS.md` FD. It is his, it is in the first
+person, and its noun is **this book**: the material the product is built from,
+not the product. It is set here with the fewest edits that make the dictation
+read. **Square brackets mark every word that is not his.** Everything else is
+his, in his order, and the only other change is punctuation that joins a
+dictated fragment to its sentence.
+
+> Our ancestors didn't have words like psychology or neuroscience. They used
+> observation over millennia and passed it down in the form of story. As
+> language became more complex and diverse, the story became more complex and
+> diverse. What [began as] observation of self became observation of nature
+> and each other. New identities emerge and enter the zeitgeist. Idealized
+> form and combinations became sacrosanct to our imaginations, forever wired
+> into the zeitgeist. It's a trope that we've unlocked that we will forever
+> follow. The Terminator movie gave rise to AI robots today.
+>
+> We identified with the roles and the experience conditioning us over time
+> to become the roles that we identify with. This is the lie. It's the
+> character that's not real. It's the real you underneath the conditioning,
+> the bracing, the fear, the anxiety, the worry, the sadness, the grief, the
+> depression, the inability to find the moral center or recognize whether
+> [we've] stepped on our path or off.
+>
+> The only way to experience truth is to touch it yourself. That's what this
+> book is. It's a map, it's a practice. It's simple stories at different
+> resolutions and different ways of looking at it. This material reflects as
+> deep as I have currently gone so far, and is [far from] the end of the road.
+> This book is not mystical or magic. It's not unorthodox. It's how I see the
+> nature of God, reality, and myself as a contiguous loop. Just like you. And
+> I hope that within these pages, the lenses that I provide open your
+> awareness.
+
+### Every edit, against the dictation
+
+| Dictated | Set here | Why |
+|---|---|---|
+| Just a note maybe for the marketing funnel about or our mission. Should capture some high level thoughts. | left out | an instruction to us, not part of the statement |
+| What became observation of self became observation of nature and each other | What [began as] observation of self became | became twice in one clause does not parse. The direction he gave, self first and then nature and each other, is kept |
+| New identities emerge. And enter the zeitgeist. | joined, words unchanged | punctuation only |
+| Idealized form and combinations. Became sacrosanct | joined, words unchanged | punctuation only |
+| whether we're stepped on our path or off | whether [we've] stepped | we're stepped does not parse |
+| and is by far the end of the road | and is [far from] the end of the road | **not a grammar fix. It reverses his literal words**, and is held open as the first flag below |
+| a contiguous loop | unchanged | possibly continuous, dictated. His word is kept until he says otherwise |
+
+### Read back for hubris, as he asked
+
+His standing instruction, from `TASKS.md` EN: "if there's any hubris in there,
+obviously it's got to come out, but keep going." Read line by line against
+what the paragraph itself claims, which is a person's view, as deep as he has
+gone so far, not mystical, not unorthodox, just like you. **Nothing was cut.**
+One line oversteps that, most likely in the dictation rather than in him, and
+it is left for him. One is an overclaim of a different kind. Two were checked
+and kept.
+
+1. **"and is by far the end of the road." Open, his call.** Read literally it
+   says this material is final, the one claim to completeness anywhere in the
+   paragraph, and it contradicts *as deep as I have currently gone so far* in
+   the same sentence. The text above carries *far from* in brackets because
+   that is the only reading the rest of the paragraph supports. Three ways it
+   goes:
+   - **far from the end of the road.** Agrees with everything around it.
+     Costs nothing, if it is what he said.
+   - **Cut the clause** and stop at *as deep as I have currently gone so far.*
+     Says the same thing in fewer words and cannot be misheard.
+   - **Keep by far, as dictated.** Then the paragraph claims finality and
+     modesty in one sentence, and a reader believes the stronger half.
+
+   Until he rules, this clause does not go on any page.
+2. **"The Terminator movie gave rise to AI robots today." Open, his call.** Not
+   hubris, an overclaim of fact, and the one sentence in the paragraph a
+   hostile reader disproves in an afternoon, which is the test section 6
+   applies to world's first. His point, read off the sentence before it, is
+   that a story becomes a trope we then follow. Kept as dictated. The ways it
+   goes: keep it; narrow it to what a film can do, which is shape how people
+   picture AI, in words that would be ours rather than his; or drop it and let
+   the trope sentence before it carry the point alone.
+3. **"The only way to experience truth is to touch it yourself." Checked,
+   kept.** A universal claim, but it points away from him: it says the book is
+   not the truth, the touching is. That is the opposite of hubris, and it is
+   the same position as the mirror. A mirror you cannot inspect yourself is
+   not a mirror.
+4. **"It's how I see the nature of God." Checked, kept.** It is not a claim to
+   know, because *how I see* and *just like you* sit on it.
+
+### The four phrases that keep it honest
+
+Named so no later compression cuts them. Each one is what stops a person's
+view from reading as a teaching, and a card, a caption or a subject line that
+drops any of them has changed what he said.
+
+1. **as deep as I have currently gone so far**
+2. **how I see**
+3. **just like you**
+4. **I hope**
+
+Compress around them, never through them.
+
+### Where it sits, and where it does not
+
+- **It agrees with the one sentence.** *You are already the most powerful
+  version of yourself* is this paragraph's *the real you underneath the
+  conditioning*, stated from the other side. The position is subtraction, and
+  so is his mission. Nothing in it needs the product to be anything it is not.
+- **It is signed, and the product is not.** The product never addresses
+  itself, has no I, and speaks in the instrument's register. This speaks in
+  his. It belongs where he is the one talking: the book, a signed note on the
+  about page, his newsletter. Not in the app, and never rewritten so the
+  instrument says it.
+- **The noun stays book.** *It's a map, it's a practice* is right about the
+  book and wrong about the app, which section 7 says is not a practice app,
+  because the practice comes out of your own material. Swap *this book* for
+  *Atüned* and the paragraph walks the product off its shelf.
+- **It is not the about page's Mission section as that page defines one.**
+  `funnel/about.html` holds its sections to a swap test, and Mission there is
+  an intent with the inversion in it: find the limiters, release the limiters.
+  This is a different kind of statement, where the problem came from and what
+  the book is, so under that heading it would fail the page's own test. It
+  fits as a signed note of its own. His call where it goes; the page was not
+  touched.
+- **Refusal gate.** Every sentence of it, run through `marketing/refuse.js` on
+  26 September, passes all nine rules, including the list from fear to
+  depression, because it names what sits over the real you and claims to
+  treat none of it.
+
+---
+
+## 5. The word heals, and how it was settled
 
 **What was on the table.** His earlier positioning line: *"Atuned is a world's
 first neurosomatic tool that heals the mind body connection. Attunes moral
@@ -188,7 +317,7 @@ grows a named exemption instead, the way `NOBODY` does for H18.
 
 ---
 
-## 5. World's first, and the sentence it rests on
+## 6. World's first, and the sentence it rests on
 
 **The claim, stated narrowly enough to check:**
 
@@ -218,7 +347,7 @@ in section 1.
 
 ---
 
-## 6. What we are not
+## 7. What we are not
 
 Says more work than what we are, and it is on `funnel/about.html` as six rows.
 
@@ -235,7 +364,7 @@ both would move the product off the shelf it is on.
 
 ---
 
-## 7. The name, the mark and Source OS
+## 8. The name, the mark and Source OS
 
 **Atüned**, with the umlaut. The mark on a page is the drawn dot pair, sky blue
 wordmark, letters given room, two white dots sitting on the bar rather than on
@@ -273,7 +402,7 @@ Neither file was touched. Both changes are one line each.
 
 ---
 
-## 8. Voice at the brand level
+## 9. Voice at the brand level
 
 The range the copy inside it works in, and it is set by `.claude/skills/
 atuned-voice`, which owns the sentence. This owns the register.
@@ -297,7 +426,7 @@ the pages assume, because it is what the arithmetic supports. His ruling.
 
 ---
 
-## 9. Where the product is off brand, with the surface named
+## 10. Where the product is off brand, with the surface named
 
 Brand reads the first four seconds and then stops, which is this seat's own
 blind spot, so these are named rather than fixed.
@@ -313,17 +442,18 @@ blind spot, so these are named rather than fixed.
    numbered column of four says the fourth one is the end, which is the
    opposite of a loop. The landing is signed off and was not touched. Both
    changes are small and neither is this seat's to make.
-3. **The landing's own `<title>` and the missing Source OS.** Section 7.
+3. **The landing's own `<title>` and the missing Source OS.** Section 8.
 4. **Checkout does not exist**, so the first surface that asks for money cannot
    take it. `buy.html` says so in one line, once, and does not apologise for it.
    The alternative is holding the page until checkout ships, which is his call
-   and is in section 10.
+   and is in section 11.
 
 ---
 
-## 10. Decisions that are his, not mine
+## 11. Decisions that are his, not mine
 
-Five, and none of them was taken quietly.
+None of them was taken quietly. The list is not counted here, because a count
+typed above a list is wrong the day the list grows.
 
 1. **Three of the four prices are not ruled.** `DECISIONS.md` prints the price
    column as open for tiers one to three and carries 12, 29 and 59 as the
@@ -337,16 +467,24 @@ Five, and none of them was taken quietly.
 2. **Whether the buy page ships before checkout does.** It currently states, in
    one line, that nothing on the table can be charged today and points at the
    gift, which is live and needs no card. The alternative is holding the page.
-3. **The word diagnostic, outward.** Section 4. Either the outward copy drops
+3. **The word diagnostic, outward.** Section 5. Either the outward copy drops
    it, which is what the page does, or `refuse.js` grows a named exemption.
-4. **Integrate against release.** Section 8.
+4. **Integrate against release.** Section 9.
 5. **Whether free moves from ten a week to twenty five**, which is exactly one
    run. Open in `DECISIONS.md`. The page states ten and says the grant banks,
    which is the ruling as it stands.
+6. **The end of the road clause in his mission.** Section 4. Dictated as *is
+   by far the end of the road*, set in brackets as *far from*, or cut the
+   clause. It goes on no page until he says which.
+7. **The Terminator sentence.** Section 4. Keep it as dictated, narrow it to
+   what a film can do, or drop it.
+8. **Where the mission sits.** Section 4. A signed note of its own on the about
+   page, the book, his newsletter, or under the about page's Mission heading,
+   which the page's own swap test would refuse.
 
 ---
 
-## 11. What was run, and what it said
+## 12. What was run, and what it said
 
 Read the counts off the run rather than off this file.
 
@@ -364,7 +502,7 @@ Read the counts off the run rather than off this file.
         no outbound request from either page at either width
 
 **One finding the refusal gate produced that was worth having**, and it is in
-section 4: the first cut of the about page's heading was `A somatic diagnostic
+section 5: the first cut of the about page's heading was `A somatic diagnostic
 instrument`, straight out of `CLAUDE.md`, and the gate refused it. A gate that
 only ever agrees with you is not a gate.
 
