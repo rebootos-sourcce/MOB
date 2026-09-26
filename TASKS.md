@@ -15705,3 +15705,40 @@ column still reads the dark palette on paper, and the heat wash's
 figure around it changed. Both visible in the agent's own
 screenshots, neither measured or ruled on.
 
+## EX. Four more arrival styles built, verified directly and a real
+## ruling tension surfaced. 26 September.
+
+Four style variations of the arrival animation (Breath, Orrery, Bloom,
+Ember) built as one switchable file, per EV. `proto/arrival2/`,
+packed to `arrival-styles.html`, commit `b66a500`.
+
+**Checked myself rather than taken on report.** `md5sum` on the
+packed file matches the reported hash to the digit,
+`080bf6b656c4021bf069b630b1ccbc39`, 934,048 bytes. `git diff --stat`
+between this commit and its parent touches only `proto/arrival2/`;
+nothing under `atuned_src/` or `source.html` moved. Opened the packed
+file in a real headless browser at 1600 wide: zero console errors,
+zero page errors, the real product shell and tab bar render
+underneath it, and the boot ring, seat colours and address ticks draw
+as claimed, confirmed by a fresh screenshot I took myself.
+
+**A real tension the agent surfaced, not resolved here, his call.**
+This round asked for all twelve principles including squash and
+stretch. But `BT1` (5 September) already ruled it out of this exact
+animation: "get rid of the squash and stretch from the intro
+animation. Doesn't look good." Both are his own words; `AI3`
+separately has him calling squash and stretch "one of my favourite
+things in animation anyway." The agent's reading: keep it only on
+things in motion (the rising ember, the flying seats, the squeezing
+bud), never on the standing finished figure. Left open rather than
+guessed past, since it is exactly the kind of thing this file is
+built to catch rather than silently re-decide.
+
+**Also open, in the agent's own words, carried forward rather than
+answered for him:** which of the four (or which parts of which) to
+carry forward; whether Orrery's globe is what "it's got a globe, a
+time we get into the center" meant, since that fragment could not be
+built from as a firm spec; and the boot length, still open since ET,
+where a return to the earlier 7.2 seconds moves both the held pose
+and the 5.45 second removal timer.
+
