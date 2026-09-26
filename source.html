@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="f9dc007 2026-09-26 07:03"><head><meta charset="utf-8">
+<html lang="en" data-build="fb3d5af 2026-09-26 12:54"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -25476,8 +25476,28 @@ function renderSpirit(){
   var bn=CURP.who.born;
   sp=spiritualOf({d:bn.date, t:(bn.timeUnknown?'':(bn.time||'')), p:bn.place||''});}
  if(!sp){
+  /* THIS LINE PROMISED A DESIGN TYPE, AND NOTHING COMPUTES ONE. The Type row
+     below says unresolved for every birth there is, because the type needs the
+     full bodygraph, so a person who entered a date to unlock it found the one
+     reading it named still missing. The gene key is what a date does produce.
+
+     And it named what unlocks the section without saying where. Date, time and
+     place are asked on Energetics, which is the Intake integer under its bar
+     name, and nothing on the Field led there. The door carries the words the
+     account page already uses for the same door, and lands on the date field
+     rather than on the top of a long page. A sealed profile has no date field
+     on the page, so it lands on the sealed card and its edit control. */
   el.innerHTML='<div class="sp-none">No birth data. Date, time and place unlock sun, moon, '
-   +'rising, the year animal, life path and design type.</div>';
+   +'rising, the year animal, life path and the gene key.</div>'
+   +'<button class="btn" type="button" id="spgo">Open Energetics</button>';
+  /* The focus waits a frame. setTab puts the page back to the top once now and
+     once more on the next frame, so a focus made straight after it scrolled the
+     date field into view and was then scrolled away from it: measured at 390,
+     the field held focus and sat below the bottom edge. Frame callbacks run in
+     the order they were queued, so this one lands after that reset. */
+  $('spgo').onclick=function(){
+   setTab(TAB.INTAKE);
+   requestAnimationFrame(function(){var d=$('wdate'); if(d)d.focus();});};
   return;}
  function row(k,glyph,v,x,dk,dv){
   return '<button class="sp-row" data-sp="'+dk+'" data-spv="'+esc(dv||v)+'">'
@@ -26776,7 +26796,22 @@ function frDescribe(h,r){
    soul and were open on arrival until the rail split into Spirit and Psyche.
    A split that closed them would have taken two readings off the first rail a
    person sees, and nobody ruled that. */
-var OPENSEC={left:{soul:1,lean:1}, right:{you:1}};
+/* SPIRIT OPENS TOO, BECAUSE A CLOSED STATES READ AS AN EMPTY ONE.
+
+   The owner, 26 September: "the left side of that screen doesn't have the
+   spiritual layer to it yet, where is it, your Eastern Western sign". It did.
+   renderSpirit has filled #spirit on every render since the engine was built,
+   sun, moon, rising, the year animal, life path, the design gates and the gene
+   key, and the functional gate has asserted the text for a real birth date.
+   Measured on the built file: 2263 characters of markup with a birth date on
+   file, 132 without. What nobody measured was whether a person could see it.
+   spirit was never in this set, so the section arrived closed, a header with
+   nothing under it, and a closed header reads as a section with nothing in
+   it, which is how it came to be reported to the team as unwired.
+
+   Only the default moves. A person who closes it keeps it closed, because
+   the header writes this same set. */
+var OPENSEC={left:{soul:1,spirit:1,lean:1}, right:{you:1}};
 /* which surfaces have already had their sections seeded, so a tab opens what
    it is about the first time and never argues with a person who closed it. */
 var SEC_SEEDED={};
@@ -27646,5 +27681,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="001790096"></div>
+<div id="eof" hidden data-len="001792437"></div>
 </body></html>

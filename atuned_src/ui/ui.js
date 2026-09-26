@@ -377,7 +377,22 @@ function frDescribe(h,r){
    soul and were open on arrival until the rail split into Spirit and Psyche.
    A split that closed them would have taken two readings off the first rail a
    person sees, and nobody ruled that. */
-var OPENSEC={left:{soul:1,lean:1}, right:{you:1}};
+/* SPIRIT OPENS TOO, BECAUSE A CLOSED STATES READ AS AN EMPTY ONE.
+
+   The owner, 26 September: "the left side of that screen doesn't have the
+   spiritual layer to it yet, where is it, your Eastern Western sign". It did.
+   renderSpirit has filled #spirit on every render since the engine was built,
+   sun, moon, rising, the year animal, life path, the design gates and the gene
+   key, and the functional gate has asserted the text for a real birth date.
+   Measured on the built file: 2263 characters of markup with a birth date on
+   file, 132 without. What nobody measured was whether a person could see it.
+   spirit was never in this set, so the section arrived closed, a header with
+   nothing under it, and a closed header reads as a section with nothing in
+   it, which is how it came to be reported to the team as unwired.
+
+   Only the default moves. A person who closes it keeps it closed, because
+   the header writes this same set. */
+var OPENSEC={left:{soul:1,spirit:1,lean:1}, right:{you:1}};
 /* which surfaces have already had their sections seeded, so a tab opens what
    it is about the first time and never argues with a person who closed it. */
 var SEC_SEEDED={};

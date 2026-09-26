@@ -44,8 +44,28 @@ function renderSpirit(){
   var bn=CURP.who.born;
   sp=spiritualOf({d:bn.date, t:(bn.timeUnknown?'':(bn.time||'')), p:bn.place||''});}
  if(!sp){
+  /* THIS LINE PROMISED A DESIGN TYPE, AND NOTHING COMPUTES ONE. The Type row
+     below says unresolved for every birth there is, because the type needs the
+     full bodygraph, so a person who entered a date to unlock it found the one
+     reading it named still missing. The gene key is what a date does produce.
+
+     And it named what unlocks the section without saying where. Date, time and
+     place are asked on Energetics, which is the Intake integer under its bar
+     name, and nothing on the Field led there. The door carries the words the
+     account page already uses for the same door, and lands on the date field
+     rather than on the top of a long page. A sealed profile has no date field
+     on the page, so it lands on the sealed card and its edit control. */
   el.innerHTML='<div class="sp-none">No birth data. Date, time and place unlock sun, moon, '
-   +'rising, the year animal, life path and design type.</div>';
+   +'rising, the year animal, life path and the gene key.</div>'
+   +'<button class="btn" type="button" id="spgo">Open Energetics</button>';
+  /* The focus waits a frame. setTab puts the page back to the top once now and
+     once more on the next frame, so a focus made straight after it scrolled the
+     date field into view and was then scrolled away from it: measured at 390,
+     the field held focus and sat below the bottom edge. Frame callbacks run in
+     the order they were queued, so this one lands after that reset. */
+  $('spgo').onclick=function(){
+   setTab(TAB.INTAKE);
+   requestAnimationFrame(function(){var d=$('wdate'); if(d)d.focus();});};
   return;}
  function row(k,glyph,v,x,dk,dv){
   return '<button class="sp-row" data-sp="'+dk+'" data-spv="'+esc(dv||v)+'">'
