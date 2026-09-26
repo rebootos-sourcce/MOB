@@ -59,11 +59,27 @@ H.HOOKS.concat([H.CLEAR]).forEach(h => {
   T(h.floor > 1, '11. ' + h.id + ' has floor ' + h.floor + ', which aims a hook at level 1');
 });
 
-/* ---- 12. LEVEL 1 IS SERVED THE DOOR OUT AND NOTHING ELSE, EVERY TIME. */
-const lvl1 = panel.filter(p => p.grid === 1);
+/* ---- 12. LEVEL 1 IS SERVED THE DOOR OUT AND NOTHING ELSE, EVERY TIME.
+
+   Level 1 on CQ or on expression. Since the fitted CQ of 25 September nobody
+   in the panel reads level 1 on CQ, and this assertion reported that it
+   tested nothing. See match.js gate for why expression, and field.js THE
+   KNOWN ANSWERS for what moved. */
+const lvl1 = panel.filter(p => p.grid === 1 || p.exGrid === 1);
 T(lvl1.length > 0, '12. no level 1 people in the panel, so this assertion tested nothing');
 const wrong = lvl1.filter(p => M.byField(p).served !== H.DOOR_OUT);
 T(wrong.length === 0, '12. ' + wrong.length + ' people at level 1 were served a hook');
+
+/* ---- 12b. THE GATE REACHES EVERYBODY THE ENGINE'S OWN REFERRAL REACHES.
+
+   The engine puts a licensed clinician on the surface through darkRead, and
+   field.js calls it rather than restating it. A person the engine refers and
+   this system markets to would be the worst line in the directory. The first
+   half proves the check is live: with nobody referred it tests nothing. */
+const referred = panel.filter(p => p.refer);
+T(referred.length > 0, '12b. nobody in the panel is referred by the engine, so this tested nothing');
+const sold = referred.filter(p => M.byField(p).served !== H.DOOR_OUT);
+T(sold.length === 0, '12b. ' + sold.length + ' people the engine refers to a clinician were served a hook');
 
 /* ---- 13. THE DOOR OUT IS NOT A HOOK.
 
@@ -161,24 +177,66 @@ H.HOOKS.concat([H.CLEAR, H.DOOR_OUT]).concat(H.DOORS).concat(H.ROLES).forEach(h 
 
    Shelling out to the house gate rather than reimplementing it, because a
    second copy of a rule set is the thing that drifts. If the skill is not
-   present this reports and does not fail: another seat owns that file. */
-const { execFileSync } = require('child_process');
+   present this reports and does not fail: another seat owns that file.
+
+   IT SAID "GATE ERRORED" FOR FIVE DAYS AND WAS HIDING THIRTY FAILURES.
+
+   The first cut joined every line into one --line call and read the result
+   through execFileSync. check.py exits 1 when it finds a hard failure, which
+   is its documented contract and what its other callers rely on, and
+   execFileSync throws on any exit that is not 0. The catch below it printed
+   "gate errored" and failed nothing. Two of his own objection rules, added on
+   21 September, a day after this file was written, fired on sixteen proof
+   lines of the form "Address 31 of 112". Joining the lines also hid the
+   count: an objection fires once per call, so one call reported 2 where the
+   lines held 30, and named no line.
+
+   So the shown copy is written one literal per line into a scratch .js file
+   and the gate reads it in file mode, which is one run of the same rules
+   with a line number on every finding, mapped back to the hook and field.
+   One call per line gives the same thirty and costs thirty seconds, because
+   the gate measures the house baseline on every call. A canary line that
+   breaks both rules rides at the end, so a gate that finds nothing has
+   proved it can find something. Exit 0 is clean, exit 1 with findings is a
+   failure, and anything else is a gate that did not run, which fails too. */
+const { spawnSync } = require('child_process');
+const os = require('os');
 const gatePath = path.resolve(__dirname, '..', '.claude', 'skills', 'atuned-voice', 'check.py');
 let voice = 'not run';
 if (fs.existsSync(gatePath)) {
   const fields = ['pain', 'hook', 'proof', 'objection', 'answered'];
   const lines = [];
-  H.HOOKS.concat([H.CLEAR]).forEach(h => fields.forEach(k => { if (h[k]) lines.push(h[k]); }));
-  H.DOORS.concat(H.ROLES).forEach(d => lines.push(d.hook));
-  lines.push(H.DOOR_OUT.hook);
-  try {
-    const out = execFileSync('python3', [gatePath, '--line', lines.join(' ')],
-      { encoding: 'utf8', cwd: path.resolve(__dirname, '..') });
-    const hard = /(\d+) hard failures/.exec(out);
-    n++;
-    if (hard && Number(hard[1]) > 0) fail.push('19. the voice gate reports ' + hard[1] + ' hard failures');
-    voice = /no hard failures/.test(out) ? 'no hard failures' : (hard ? hard[1] + ' hard failures' : 'unclear');
-  } catch (e) { voice = 'gate errored: ' + e.message.split('\n')[0]; }
+  H.HOOKS.concat([H.CLEAR]).forEach(h => fields.forEach(k => { if (h[k]) lines.push({ id: h.id + '.' + k, text: h[k] }); }));
+  H.DOORS.concat(H.ROLES).forEach(d => lines.push({ id: d.id + '.hook', text: d.hook }));
+  lines.push({ id: H.DOOR_OUT.id + '.hook', text: H.DOOR_OUT.hook });
+  const CANARY = { id: 'canary', text: 'Address 31 of 112 is where the charge sits in your body.' };
+  lines.push(CANARY);
+  const lit = t => "'" + t.replace(/\\/g, '\\\\').replace(/'/g, "\\'") + "',";
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'mkt-voice-'));
+  const tmp = path.join(dir, 'lines.js');
+  fs.writeFileSync(tmp, lines.map(l => lit(l.text)).join('\n') + '\n');
+  const run = spawnSync('python3', [gatePath, tmp], { encoding: 'utf8', cwd: path.resolve(__dirname, '..') });
+  fs.rmSync(dir, { recursive: true, force: true });
+  const out = (run.stdout || '') + (run.stderr || '');
+  const hits = [];
+  const re = /\[([^\]]+)\] \S*lines\.js:(\d+)/g;
+  let m;
+  while ((m = re.exec(out))) hits.push({ rule: m[1], line: lines[Number(m[2]) - 1] });
+  const canaryHit = hits.filter(h => h.line === CANARY).map(h => h.rule);
+  const real = hits.filter(h => h.line !== CANARY);
+  n++;
+  if (run.status !== 0 && run.status !== 1) {
+    voice = 'gate did not run, exit ' + run.status + ': ' + out.split('\n').filter(Boolean).slice(-1)[0];
+    fail.push('19. ' + voice);
+  } else if (canaryHit.indexOf('count-against-total') < 0 || canaryHit.indexOf('serial-to-a-person') < 0) {
+    voice = 'the canary line was not caught, so a clean run proves nothing';
+    fail.push('19. ' + voice);
+  } else if (real.length) {
+    voice = real.length + ' hard failures';
+    real.forEach(h => fail.push('19. voice gate: ' + h.line.id + ' fails ' + h.rule));
+  } else {
+    voice = 'no hard failures on ' + (lines.length - 1) + ' lines, and the canary caught';
+  }
 } else {
   voice = 'skill not present, skipped';
 }

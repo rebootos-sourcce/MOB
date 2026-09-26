@@ -22,26 +22,27 @@ was touched. `marketing/` is the system this reads from and was not edited.
 
 ---
 
-## Read this first. The marketing gate is red today, and it changes how to read every count below.
+## Read this first. The marketing gate was red when this was written, and the counts below are re-measured.
 
-    node marketing/tests.js        26 September. 239 assertions, 17 failures.
-    node marketing/hooksim.js      refuses to report. "VALIDATION FAILED."
+    node marketing/tests.js        26 September, after the fix. 242 assertions,
+                                   0 failures
+    node marketing/hooksim.js      validates and reports
 
-The cause is not the hooks. `field.js` validation group 1 asserts that the nine
-reference people land on the grid level `proto/ritual/losssim.js` records for
-them, and the engine has moved since 20 September. On today's engine every one
-of them reads two to four levels higher: Ana, the reference person in crisis,
-reads CQ 41.1 at grid level 5 where `losssim.js` records level 1, and Gordon
-reads level 2 against 1. So the panel now holds **no level 1 person at all**,
-and assertion 12, which checks that every level 1 person is served the door out
-and never a hook, reports that it tested nothing.
+When this file was first written the gate was red: `field.js` validation group
+1 found every reference person reading two to four levels higher than the
+levels it had recorded on 20 September, and the panel held no level 1 person at
+all. The cause was found and it is not the hooks. The engine's CQ was rebuilt
+on 25 September to the fitted model the owner ruled, the 21 laws summed over
+210, and the recorded levels were the old arithmetic. `marketing/field.js`,
+THE KNOWN ANSWERS, has the evidence. The band gate now reads level 1 on
+expression as well as on CQ, as the engine's own clinician referral does, and
+the panel holds 35 level 1 people who are served the door out.
 
-**So every panel count in this file is the 20 September measurement at seed
-20260920**, read off the `n` field on each row of `marketing/hooks.js` and off
-`marketing/README.md`, and not off a run today. The ranking is used because it
-is the only measured ranking there is. It has to be re-measured before a cent
-of paid spend is placed against it, and the re-measure is the marketing seat's
-job, not this file's.
+**So every panel count in this file is the 26 September measurement at seed
+20260920**, read off a run of `marketing/hooksim.js` after that fix. Where the
+20 September figure differed it is named beside the new one. The `n` on each
+row of `hooks.js` counts the people whose heaviest charge and seat is that
+key; it does not depend on CQ, and none of them moved.
 
 ---
 
@@ -75,8 +76,8 @@ Collapsed band instead.
 
 **Open social strips the second half off.** A post has no field reading behind
 it, so it cannot be matched, and it has no band, so it cannot be refused to
-anybody. Every line posted cold is served to everybody, including the 106 of
-1000 the band gate exists to protect and the 180 of 10,000 `PANEL-10k.md`
+anybody. Every line posted cold is served to everybody, including the 35 of
+1000 the band gate exists to protect (106 on the 20 September arithmetic) and the 180 of 10,000 `PANEL-10k.md`
 names S17, high load, never to be sold to by policy.
 
 **And the word gate does not separate the lines.** Measured 26 September:
@@ -135,10 +136,13 @@ every entry says why.
 | 12 | What if you could see yourself clearly? | His, `TASKS.md` FN6 | The benchmark | One line for everybody by design. It is the part of his benchmark that survives both gates. See 3c for the part that does not |
 
 **The ranking inside `hooks.js`, for completeness.** Served by field, H01 at
-307 of 1000, then H02 at 90, H03 at 82 and H04 at 77. **The first four cover
-556 of 1000**, which is `README.md`'s "more than half the addressable panel",
-and served by field the set names the charge the reader's own reading is
-heaviest at for 872 of 894 eligible. Those are the numbers that make the hook
+307 of 1000, then H02 at 89, H03 at 82 and H04 at 77. **The first four are
+served to 555 of the 965 eligible**, which is `README.md`'s "more than half the
+addressable panel", and served by field the set names the charge the reader's
+own reading is heaviest at for 943 of 965 eligible. The first draft of this
+paragraph gave H02 as 90 and the four as 556, which are the key counts in
+`hooks.js` rather than the people served; on 20 September H02 was served to 70
+and the field named the right charge for 872 of 894. Those are the numbers that make the hook
 set good. Every one of them depends on the lookup, which is why the list above
 is the doors and the roles and not the hooks.
 
@@ -161,7 +165,7 @@ the shape of the risk, not a ruling on it.
 
 | The line | Where | Why it stays in |
 |---|---|---|
-| All seventeen field hooks, H01 to H17, as copy | `hooks.js` | Addressed by `match.js`. Out cold, H01 is right for 307 of 1000 at best and is read by the 106 the band gate refuses. **The four written in the dosed register are the hard no**: H07, the harsh voice at the vagus; H11, nothing tastes like much; H15, flooding; H17, very good at being somewhere else. They were written for the keys nearest collapse, and the dose only works when the reading chose the reader. The open and oblique ones may leave as third person address content, section 6, never as *you* |
+| All seventeen field hooks, H01 to H17, as copy | `hooks.js` | Addressed by `match.js`. Out cold, H01 is right for 307 of 1000 at best and is read by the 35 the band gate refuses. **The four written in the dosed register are the hard no**: H07, the harsh voice at the vagus; H11, nothing tastes like much; H15, flooding; H17, very good at being somewhere else. They were written for the keys nearest collapse, and the dose only works when the reading chose the reader. The open and oblique ones may leave as third person address content, section 6, never as *you* |
 | Your field reads clear and nothing here will relieve you of anything. | `hooks.js` H18 | Sells confirmation to level 10, and only makes sense to somebody whose field was read clear |
 | Weight off, and not alone. | `hooks.js` H00, verbatim from `TIERDEF` Collapsed | Not marketing. It is the engine's direction at the floor and is never used to sell |
 | No one is coming to save you. Do it yourself. The software is the key and the roadmap. You are the door. | His, `TASKS.md` FN2, "not softened". On the landing and on the quiz result | **It stays on the landing, as ruled.** It does not go out cold, because cold reaches the floor, and there is a contradiction already shipping, set out below. His question, section 10 |
@@ -635,11 +639,14 @@ Each one is written open. None has been answered for him by default.
 
 Read the counts off the run. These are dated because they will move.
 
-    node marketing/tests.js            26 September. 239 assertions, 17 failures,
-                                       all from field.js validation group 1 and
-                                       the level 1 assertion it empties. The top
-                                       of this file
-    node marketing/hooksim.js          refused to report on the same run
+    node marketing/tests.js            26 September, when this was written.
+                                       239 assertions, 17 failures, all from
+                                       field.js validation group 1 and the level
+                                       1 assertion it emptied. Fixed the same
+                                       day: 242 assertions, 0 failures
+    node marketing/hooksim.js          refused to report on the first run, and
+                                       reports after the fix. The counts in
+                                       section 3 are from that run
 
     refuse.js check() and check.py --line, on every line quoted in section 3
         52 existing lines   0 refused, 0 hard voice failures

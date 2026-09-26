@@ -114,14 +114,14 @@ function coverage(panel) {
    does not, so it is not free: an uncovered key costs it, which is why the
    field figure is not 1000.
 
-   A person at level 1 is excluded from every scheme's numerator and from the
-   denominator, because the system refuses to aim a line at them and scoring
+   A person the band gate refuses, level 1 on CQ or on expression, is
+   excluded from every scheme's numerator and from the denominator, because the system refuses to aim a line at them and scoring
    a refusal as a hit or a miss would be scoring the wrong thing. The count
    excluded is printed beside every rate.
    ------------------------------------------------------------ */
 function precision(panel, mState, mRole) {
   const out = {};
-  const elig = panel.filter(p => p.grid !== 1);
+  const elig = panel.filter(p => !M.gate(p));
   ['role', 'state', 'field'].forEach(s => {
     let hit = 0, named = 0;
     elig.forEach(p => {
@@ -151,14 +151,20 @@ function precision(panel, mState, mRole) {
 /* ------------------------------------------------------------
    3. THE BAND GATE.
    ------------------------------------------------------------ */
+/* THE FOUR GROUPS ARE DISJOINT AND SUM TO THE PANEL. Since the gate reads
+   level 1 on expression as well as on CQ, a refused person can sit at CQ
+   level 2, so the other three groups are counted among the people the gate
+   lets through, by CQ level. g is the CQ level table and gx the same table
+   read at expression. */
 function bands(panel) {
-  const g = {};
-  panel.forEach(p => { g[p.grid] = (g[p.grid] || 0) + 1; });
-  const refused = panel.filter(p => p.grid === 1).length;
-  const outOfReach = panel.filter(p => p.grid === 2 || p.grid === 3).length;
-  const market = panel.filter(p => p.grid >= 6).length;
-  const hard = panel.filter(p => p.grid === 4 || p.grid === 5).length;
-  return { g, refused, outOfReach, market, hard };
+  const g = {}, gx = {};
+  panel.forEach(p => { g[p.grid] = (g[p.grid] || 0) + 1; gx[p.exGrid] = (gx[p.exGrid] || 0) + 1; });
+  const ok = panel.filter(p => !M.gate(p));
+  const refused = panel.length - ok.length;
+  const outOfReach = ok.filter(p => p.grid === 2 || p.grid === 3).length;
+  const market = ok.filter(p => p.grid >= 6).length;
+  const hard = ok.filter(p => p.grid === 4 || p.grid === 5).length;
+  return { g, gx, refused, outOfReach, market, hard };
 }
 
 /* ------------------------------------------------------------
@@ -329,16 +335,21 @@ function report() {
 
   console.log('## 1. WHO IS IN THE PANEL, BY THE GRID\n');
   const b = bands(panel);
-  console.log('  level  people  BUYERS.md says');
+  console.log('  level  on CQ  on expression  BUYERS.md says');
   const SAYS = { 1: 'nought percent, actively repelled', 2: 'ten percent, too heavy',
     3: 'twenty percent, demands debate', 4: 'forty percent, the work hurts',
     5: 'thirty percent, not mystical enough', 6: 'sixty five percent, the tipping point',
     7: 'eighty five percent, the creative under load', 8: 'ninety percent, the practitioner',
     9: 'ninety five percent, the systems hacker', 10: 'one hundred percent, the liberated' };
-  for (let l = 1; l <= 10; l++) if (b.g[l]) console.log('  ' + String(l).padStart(5) + '  '
-    + String(b.g[l]).padStart(6) + '  ' + SAYS[l]);
+  for (let l = 1; l <= 10; l++) if (b.g[l] || b.gx[l]) console.log('  ' + String(l).padStart(5) + '  '
+    + String(b.g[l] || 0).padStart(5) + '  ' + String(b.gx[l] || 0).padStart(13) + '  ' + SAYS[l]);
+  console.log('');
+  console.log('  The level is the engine\'s band, on CQ, which is where the tier word');
+  console.log('  sits until the owner rules on his open question 1. The harm gate also');
+  console.log('  reads it at expression, as the engine\'s own clinician referral does.');
   console.log('');
   console.log('  refused on harm grounds, level 1        ' + pct(b.refused, N));
+  console.log('    of whom the engine itself refers       ' + pct(panel.filter(p => p.refer).length, N));
   console.log('  out of reach by the grid, levels 2 to 3 ' + pct(b.outOfReach, N));
   console.log('  the hardest sell, levels 4 to 5         ' + pct(b.hard, N));
   console.log('  the actual market, level 6 and above    ' + pct(b.market, N));
@@ -348,7 +359,7 @@ function report() {
   console.log('engine\'s own reading ' + (b.refused + b.outOfReach) + ' of ' + N + ' of it sits at a level BUYERS.md');
   console.log('says is not the market. Coverage of the whole panel is therefore the');
   console.log('wrong target, and a hook set reported as covering a thousand people');
-  console.log('would be counting ' + (b.refused + b.outOfReach) + ' it cannot reach and ' + b.refused + ' it must not aim at.\n');
+  console.log('would be counting ' + b.outOfReach + ' it cannot reach and ' + b.refused + ' it must not aim at.\n');
 
   console.log('## 2. COVERAGE\n');
   const c = coverage(panel);
@@ -390,11 +401,29 @@ function report() {
   console.log('');
   console.log('  This is a measure of naming, not of persuasion. Nobody buys anything');
   console.log('  in this model and nothing here says they would.\n');
+  /* THE GAP BETWEEN STATE AND ROLE, TAKEN APART BY ARCHETYPE. This limit
+     said state led role in 5 of 15 sweep runs and treated them as level.
+     After the fitted CQ of 25 September the gate lets the crisis archetype
+     back into the eligible pool, and state has led in every run since. The
+     reason is one hand assigned pair of labels, not a better key, so the
+     report computes whose people the lead comes from rather than saying it. */
+  const lead = {};
+  panel.filter(x => !M.gate(x)).forEach(x => {
+    const d = ((mS[x.state] && mS[x.state].charge === x.charge) ? 1 : 0)
+      - ((mR[x.role] && mR[x.role].charge === x.charge) ? 1 : 0);
+    lead[x.archetype] = (lead[x.archetype] || 0) + d;
+  });
+  const parts = Object.entries(lead).filter(x => x[1] !== 0).sort((a2, b2) => b2[1] - a2[1])
+    .map(x => x[0] + ' ' + (x[1] > 0 ? '+' : '') + x[1]);
+  const gap = p.state.hit - p.role.hit;
   console.log('  TWO LIMITS ON THIS TABLE, BOTH AGAINST MY OWN CASE.\n');
-  console.log('  1. The gap between role and state is not robust. It survives at this');
-  console.log('     seed and the sweep at the end of this report has state ahead of');
-  console.log('     role in 5 of 15 runs. Treat them as level. The field lead is the');
-  console.log('     finding and it holds in 15 of 15.');
+  console.log('  1. The gap between state and role is ' + gap + ' people at this seed, and it');
+  console.log('     is a sum of whole archetypes moving together, one per hand assigned');
+  console.log('     pair of labels: ' + parts.join(', ') + '.');
+  console.log('     That is limit 2 below at work, not state being the better key, and');
+  console.log('     it moves whenever the gate lets an archetype in or out. Treat them');
+  console.log('     as level. The field lead is the finding, and the sweep has it in');
+  console.log('     every run.');
   console.log('  2. Role and state are not independent here. Each archetype carries');
   console.log('     exactly one of each, assigned by hand in field.js off its role');
   console.log('     string and its says line, so this comparison measures that');

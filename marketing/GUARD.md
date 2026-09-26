@@ -56,7 +56,8 @@ better**, which is the only commercial argument for a hard line that has ever
 worked in a room.
 
 **3. And who pays.** The deduction lands hardest on the **465 of 1000 who
-cannot run a release yet**, who have four of the marks permanently shut to
+cannot run a release yet**, a figure from `PANEL-ritual-1000.md` on the 20
+September arithmetic and not re-measured here, who have four of the marks permanently shut to
 them. A ladder that takes from somebody who cannot earn is a fine, not a game.
 
 **Nothing in point 1 or 2 is a claim about one shot attitude change, and the
@@ -100,21 +101,36 @@ verbatim rather than rewritten here so the product does not grow a second
 voice: *weight off, and not alone. A reading this low is not a thing to manage
 by yourself, and the instrument will not pretend otherwise.*
 
-On the panel that is **106 of 1000 refused**, and `tests.js` assertion 12
-asserts that every one of them is served the door out and not a hook.
+On the panel, measured 26 September at seed 20260920, that is **35 of 1000
+refused**, and `tests.js` assertion 12 asserts that every one of them is served
+the door out and not a hook. Level 1 is read on CQ and on expression. Since the
+fitted CQ model of 25 September, CQ is the laws alone and cannot see load, and
+nobody in the panel reads level 1 on it; expression is CQ with the shadow's
+pull taken off, and it is what the engine's own clinician referral reads for
+the same reason. Assertion 12b asserts the gate reaches every person that
+referral reaches, and on this panel they are the same 35 people.
 
 **Levels 2 and 3 are a weaker and different refusal.** Nothing says a hook
 harms them. The grid says it will not reach them: no bandwidth at 2, and a
-demand for peer reviewed argument rather than personal practice at 3. That is
-**402 more of 1000**, and they are counted apart rather than folded into a
-coverage total, because a system that reports covering a thousand people when
-508 of them are out of reach is overstating itself by half.
+demand for peer reviewed argument rather than personal practice at 3. They are
+counted apart rather than folded into a coverage total, because a system that
+reports reach it does not have is overstating itself. On the same run that is
+**0 more of 1000**: the only people at level 2 on CQ are the 35 already
+refused.
 
-**And the one the grid forced that nobody would choose.** The panel is weighted
-by willingness to pay, and the engine's own reading puts **508 of 1000 of it
-below the level `BUYERS.md` calls a market**. That is the finding. Optimising a
-hook set for coverage of that panel would mean writing for people who will not
-buy and, for a tenth of them, who would be harmed by being written to.
+**The finding this section used to lead with has gone, and it went with the
+arithmetic, not with the people.** On 20 September the engine's own reading put
+**508 of 1000 of the panel at levels 1 to 3, which `BUYERS.md` says is not
+the market**, 106 refused and 402 out of reach, and only 155 at level 6 and
+above. On the fitted CQ it puts 35 at levels 1 to 3 and 647 at level 6 and
+above. The nine people
+behind the panel did not change; the scale did, because every law at 5 now reads
+CQ 50 where it read 25. The `BUYERS.md` level bands were written against the old
+scale, so which of the two pictures describes a buyer is not a measurement this
+directory can make. It is tied to the owner's open question 1, whether the tier
+word names CQ or expression. What still holds either way: 35 of the panel must
+not be written to, and a hook set scored on coverage of all 1000 would count
+them.
 
 ---
 
@@ -146,7 +162,7 @@ preference and these already have numbers.
 |---|---|---|
 | Loss framing | Patel 2016, 0.45 of days against 0.30 control | **3.0 points of 1000 at day 30** on the honest design, and **minus 1.9** once the deduction is modelled |
 | Streak reset to zero | the sharpest version of the lever | **4.4 points**, which is what the halving is worth instead |
-| The asserted affirmation | the standard wellness pattern | **minus 0.2 points.** It costs nothing to refuse, and Wood 2009 has it harming the 800 of 1000 who most need it |
+| The asserted affirmation | the standard wellness pattern | **minus 0.2 points.** It costs nothing to refuse, and Wood 2009 has it harming the 800 of 1000 who most need it. That figure is `losssim.js`'s grid level 4 or below on the 20 September arithmetic, and is not re-measured here |
 | Variable ratio reward | the schedule the gambling literature is about | not modelled, deliberately. Schull, *Addiction by Design* |
 | A scarcity timer | real and measurable | not modelled. Nothing in this product expires |
 | A leaderboard | real, and James says so in his own persona line | not modelled. It ranks people who handed a machine their distress |

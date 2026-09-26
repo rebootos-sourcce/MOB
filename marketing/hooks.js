@@ -31,7 +31,8 @@
 /* ------------------------------------------------------------
    THE TWO GATES EVERY HOOK CARRIES.
 
-   floor is the lowest BUYERS.md grid level this hook may be served to.
+   floor is the lowest BUYERS.md grid level this hook may be served to, read
+   on CQ, which is where the engine's tier word sits.
 
    BUYERS.md level 1 is not a market and marketing at it is unkind: "buying
    this means destroying the trauma identity they rely on to survive". So no
@@ -68,7 +69,7 @@ const HOOKS = [
     floor: 4, register: 'open',
     pain: 'You are the one who holds the room. You have not asked for anything in years and you would not know how.',
     hook: 'Shame does not feel like shame. It feels like being reliable. What if you could see where your body is paying for it?',
-    proof: 'Address 31 of 112, seated at the Iliac branches. The reading names the nerve, the aspect it governs and what the charge costs a week. Every table it runs on is readable inside the product.',
+    proof: 'Seated at the iliac branches. The reading names the nerve, the aspect it governs and what the charge costs a week. Every table it runs on is readable inside the product.',
     objection: 'This is going to tell me I am broken.',
     answered: 'The reading names an address and a load. It does not name a character. The clinical correspondences exist in the data and are deliberately not shown to the person they are about.',
     art: {
@@ -85,7 +86,7 @@ const HOOKS = [
     floor: 4, register: 'oblique',
     pain: 'You made the call. You were right. It cost you people and you still think you were right.',
     hook: 'You were right, and your chest has held it ever since. What if being right had an address you could point to?',
-    proof: 'Address 59 of 112, seated at the thoracic ganglia. The engine separates what you did from where you are carrying it, and shows the second without arguing about the first.',
+    proof: 'Seated at the thoracic ganglia. The engine separates what you did from where you are carrying it, and shows the second without arguing about the first.',
     objection: 'This is a machine telling me I am at fault.',
     answered: 'The lean instrument runs four channels and gates two of them. With no evidence of self agency in what you wrote, the withheld channels stay at zero whatever the word lists hold. A survivor therefore does not read as the person who did harm. tests/engine.js group 31 asserts it in both directions.',
     art: {
@@ -102,7 +103,7 @@ const HOOKS = [
     floor: 4, register: 'oblique',
     pain: 'Somebody else got the thing and it landed in your gut as a cost to you.',
     hook: "Somebody else's good news lands in your gut as a cost. What if that reaction had a location instead of a verdict?",
-    proof: 'Address 19 of 112. The reading gives the seat, the nerve and the load. It has no field for whether you are a good person, and that is a design decision you can check in the data.',
+    proof: 'The reading gives the seat, the nerve and the load. It has no field for whether you are a good person, and that is a design decision you can check in the data.',
     objection: 'You are calling me envious.',
     answered: 'The word envy is the address name in the engine and is never the line. A person is shown where the charge sits and what it costs. The name of the address is available to them and is not put in front of them as a label.',
     art: {
@@ -119,7 +120,7 @@ const HOOKS = [
     floor: 4, register: 'oblique',
     pain: 'You left yourself somewhere to keep the room steady, and you cannot remember when.',
     hook: 'You left yourself somewhere to keep the peace, and you cannot remember when. What if your body still had the address?',
-    proof: 'Address 21 of 112, seated at the pelvic splanchnic nerves. The aspect the engine holds against it is neediness. The distortion is self abandonment. Both are readable in the product.',
+    proof: 'Seated at the pelvic splanchnic nerves. The aspect the engine holds against it is neediness. The distortion is self abandonment. Both are readable in the product.',
     objection: 'I have heard this language before and it came with a workshop.',
     answered: 'The output is a coordinate and a cost, not a programme. The whole address book is open inside the product. Nobody else in this category does that.',
     art: {
@@ -136,7 +137,7 @@ const HOOKS = [
     floor: 4, register: 'open',
     pain: 'Your lower back and your gut go first, before you have worked out what it is about.',
     hook: 'Your lower back knows before you do. What if you could read what it is answering?',
-    proof: 'Address 1 of 112, the lumbar plexus, aspect instinct and threat. The engine puts the charge where the anatomy puts it and shows you the table it used.',
+    proof: 'The lumbar plexus, aspect instinct and threat. The engine puts the charge where the anatomy puts it and shows you the table it used.',
     objection: 'Back pain has a physical cause and this is going to tell me it is emotional.',
     answered: 'The instrument reads self report. It makes no claim about tissue, no diagnosis and no treatment. A coordinate in a model of held charge is not a statement about your spine.',
     art: {
@@ -153,7 +154,7 @@ const HOOKS = [
     floor: 4, register: 'open',
     pain: 'You are in the room and not in the room, and you stopped mentioning it a long time ago.',
     hook: 'You are in the room and not in the room, and you have stopped mentioning it. What if the gap sat at a nerve you could name?',
-    proof: 'Address 107 of 112, aspect belonging. The coherence quotient is intention times integrity over resistance. All three inputs are visible, so the gap is arithmetic you can check.',
+    proof: 'Seated at the superior sagittal sinus, aspect belonging. The coherence quotient is your answers to the twenty one laws, summed onto a scale of a hundred. Every answer is visible, so the number is arithmetic you can check.',
     objection: 'Another number about me that somebody else defines.',
     answered: 'The definition is in the product. Every table the reading runs on is readable inside it. You can disagree with the arithmetic and not only with the result.',
     art: {
@@ -170,7 +171,7 @@ const HOOKS = [
     floor: 4, register: 'dosed',
     pain: 'The voice that goes back over your day is harsher than anything anybody has said to you out loud.',
     hook: 'The voice that goes over your day is harsher than anything anybody said to you. What if you could see which nerve it runs on?',
-    proof: 'Address 51 of 112, seated at the vagus nerve, aspect grace. The nerve is named in the table, not chosen for the sentence.',
+    proof: 'Seated at the vagus nerve, aspect grace. The nerve is named in the table, not chosen for the sentence.',
     objection: 'I do not want to spend an hour with the worst of it.',
     answered: 'A release is one sentence over one address. The instrument is built to be put down, and a person who stops is not marked for stopping anywhere in it.',
     art: {
@@ -187,7 +188,7 @@ const HOOKS = [
     floor: 4, register: 'oblique',
     pain: 'It arrives in your upper abdomen and reaches your mouth about a second later.',
     hook: 'It lands in the upper abdomen first and reaches your mouth second. What if you could catch it between the two?',
-    proof: 'Address 36 of 112, the celiac plexus, aspect power misused. The engine already gives the Corrupt band this exact instruction: name the address while it is running, ahead of the behaviour.',
+    proof: 'The celiac plexus, aspect power misused. The engine already gives the Corrupt band this exact instruction: name the address while it is running, ahead of the behaviour.',
     objection: 'I have tried counting to ten.',
     answered: 'Counting is a delay with nothing to look at. This names the place. Waiting out a charge and reading one are two different things.',
     art: {
@@ -204,7 +205,7 @@ const HOOKS = [
     floor: 4, register: 'open',
     pain: 'You have run the next four moves and none of them have happened yet.',
     hook: 'You have run the next four moves and none of them have happened. What if you could read what the scanning costs, at the nerve where it sits?',
-    proof: 'Address 79 of 112, seated at the optic chiasm, aspect control. The reading gives the load at that address and what the field spends holding it.',
+    proof: 'Seated at the optic chiasm, aspect control. The reading gives the load at that address and what the field spends holding it.',
     objection: 'Thinking ahead is my job and you are calling it a fault.',
     answered: 'The engine measures load, not whether the behaviour is useful. A high reading at this address on somebody whose work requires it is information about cost, not a recommendation to stop.',
     art: {
@@ -221,7 +222,7 @@ const HOOKS = [
     floor: 4, register: 'oblique',
     pain: 'You are holding something and your hips have been doing it for so long you no longer feel the grip.',
     hook: 'You are gripping something and your hips have been at it for years. What if you could see what the grip is for?',
-    proof: 'Address 9 of 112, the gluteal nerve, aspect attachment. The engine seats it there in the table you can open.',
+    proof: 'The gluteal nerve, aspect attachment. The engine seats it there in the table you can open.',
     objection: 'This is going to ask me to let go of something.',
     answered: 'It shows you the address and the load. What moves is your decision, and the product has no mechanic that penalises leaving a charge where it is.',
     art: {
@@ -238,7 +239,7 @@ const HOOKS = [
     floor: 4, register: 'dosed',
     pain: 'Nothing tastes like much and you have stopped saying so out loud.',
     hook: 'Nothing tastes like much and you have stopped saying so. What if flat had a place in your body you could point to?',
-    proof: 'Address 30 of 112, the sacral outflow, aspect joy, distortion self denial. The engine holds the clinical correspondences for the architectures internally and does not print them at the person. The reason is written beside the code.',
+    proof: 'The sacral outflow, aspect joy, distortion self denial. The engine holds the clinical correspondences for the architectures internally and does not print them at the person. The reason is written beside the code.',
     objection: 'I think this is depression and an app should not be reading it.',
     answered: 'It should not and it does not. There is no diagnosis anywhere in the output. A reading at the bottom of the scale is routed to the standing direction for that band: weight off, and not alone.',
     art: {
@@ -255,7 +256,7 @@ const HOOKS = [
     floor: 4, register: 'oblique',
     pain: 'You perform the warmth and you can hear yourself doing it while it happens.',
     hook: 'You perform the warmth and you can hear yourself doing it. What if the seam had a place in your chest you could point to?',
-    proof: 'Address 60 of 112, aspect image. The reading names the address and the seat; it does not rate your sincerity.',
+    proof: 'Seated at the anterior thoracic roots, aspect image. The reading names the address and the seat; it does not rate your sincerity.',
     objection: 'This is going to make me responsible for how I feel about people.',
     answered: 'The four channel lean instrument was built specifically so that empathy withheld and accountability refused are gated, and cannot fire off word matching alone. Eight deliberate breakages of that gate are asserted in the engine tests.',
     art: {
@@ -272,7 +273,7 @@ const HOOKS = [
     floor: 4, register: 'oblique',
     pain: 'You call it standards. It arrives in your gut as a clamp.',
     hook: 'You call it standards. It arrives in your gut as a clamp. What if you could read the clamp and leave the standards alone?',
-    proof: 'Address 40 of 112, the mesenteric plexus, aspect idealism. Fear is the child fetter on it in the engine table. That is a row you can open, and it is why this line says gut.',
+    proof: 'The mesenteric plexus, aspect idealism. Fear is the child fetter on it in the engine table. That is a row you can open, and it is why this line says gut.',
     objection: 'My standards are why I am good at this.',
     answered: 'Nothing in the reading asks you to lower them. It prices what holding them costs, at one address, with the arithmetic shown.',
     art: {
@@ -289,7 +290,7 @@ const HOOKS = [
     floor: 4, register: 'oblique',
     pain: 'You keep a ledger that nobody else agreed to and you are the only one enforcing it.',
     hook: 'You keep a ledger nobody else agreed to. What if you could read the terms you have been enforcing?',
-    proof: 'Address 58 of 112, aspect outcome, distortion contractual love. The engine gives the load at the address and the seat it sits in.',
+    proof: 'Seated at the pulmonary nerve plexus, aspect outcome, distortion contractual love. The engine gives the load at the address and the seat it sits in.',
     objection: 'I am being told my expectations are the problem.',
     answered: 'You are shown a coordinate. Whether the terms are fair is not a thing this instrument has an opinion about, and it has no field for it.',
     art: {
@@ -306,7 +307,7 @@ const HOOKS = [
     floor: 4, register: 'dosed',
     pain: 'It arrives all at once and leaves you tidying up after it for two days.',
     hook: 'It arrives all at once and you spend two days tidying up. What if your body showed you three seconds earlier?',
-    proof: 'Address 32 of 112, aspect drama, distortion flooding. The Corrupt band direction in the engine is exactly this: name the address while it is running, ahead of the behaviour.',
+    proof: 'Seated at the urogenital nerve, aspect drama, distortion flooding. The Corrupt band direction in the engine is exactly this: name the address while it is running, ahead of the behaviour.',
     objection: 'I have been told I am too much before.',
     answered: 'The reading has no scale for too much. It has a load at an address, and the direction it gives is timing, not volume.',
     art: {
@@ -340,7 +341,7 @@ const HOOKS = [
     floor: 4, register: 'dosed',
     pain: 'You are very good at being somewhere else.',
     hook: 'You are very good at being somewhere else. What if you could see the thing your body leaves the room to avoid?',
-    proof: 'Address 14 of 112, the sciatic nerve, aspect facing pain. Named in the table, and the table is open.',
+    proof: 'The sciatic nerve, aspect facing pain. Named in the table, and the table is open.',
     objection: 'I do not want to look at that today.',
     answered: 'Then do not. The product has no streak that resets, no countdown and nothing that expires, and a person who closes it is not behind on anything.',
     art: {
@@ -386,7 +387,8 @@ const CLEAR = {
   src: 'engine, the 112 count and TIERDEF Mastery. panel, 15 of 1000. BUYERS.md level 10.'
 };
 
-/* Grid level 1. Not a hook and not marketing.
+/* Grid level 1, on CQ or on expression. See match.js gate. Not a hook and
+   not marketing.
 
    BUYERS.md: nought percent, actively repelled, because buying this means
    destroying the identity they are using to survive. The words below are
@@ -410,14 +412,22 @@ const DOOR_OUT = {
 
    AND THE SWEEP TOOK A CLAIM OFF THIS FILE. The first version of this comment
    said state is the better of the two pre reading keys, on the headline seed
-   where it names the right charge for 462 of the 894 eligible against 437 for
-   role. Across five seeds and three jitter widths state leads role in 5 of 15
+   where it named the right charge for 462 of the 894 eligible against 437 for
+   role. Across five seeds and three jitter widths state led role in 5 of 15
    runs, by minus 25 to plus 25 people of 1000. That is noise, and a 25 person
    lead quoted off one seed is the kind of number this repository has been
    bitten by seven times.
 
+   AND THEN IT MOVED WITHOUT BECOMING A FINDING. Re-measured 26 September,
+   after the fitted CQ moved the band gate: 530 against 456 of 965 eligible,
+   and state leads in 15 of 15 runs by 26 to 74. hooksim.js takes the gap
+   apart and it is whole archetypes, Diane adding 78, Ana 49 and Sofia taking
+   53 away at the headline seed, because each carries one hand assigned state
+   and one role. Ana's 50 people were refused on 20 September and are
+   eligible now. That is the assignment measured, not state being a key.
+
    So the honest finding is that state and role are indistinguishable here,
-   and the field beats both in 15 of 15 runs by 272 to 460 people of 1000.
+   and the field beats both in 15 of 15 runs by 272 to 494 people of 1000.
    Neither label is a reliable key. That makes the case for the doors sorting
    rather than asserting stronger than it was, and it makes getting a reading
    the only thing the top of the funnel is actually for.

@@ -18,7 +18,7 @@ This directory is that lookup, built and measured. Nothing in it touches
 
 ## Run it
 
-    node marketing/tests.js        the gate. 240 assertions, exits non zero
+    node marketing/tests.js        the gate. Exits non zero on any failure
     node marketing/hooksim.js      the thousand run, with the sweep
     node marketing/hooksim.js --validate    the five validation groups alone
     node marketing/hooksim.js --sweep       the sensitivity tables alone
@@ -91,15 +91,23 @@ rather than a choice.
 `hooksim.js` section 3, and the answer is that **it is by field, and the other
 two are not close.**
 
-On the panel, a line served by field names the charge the person's own reading
-is heaviest at for **872 of the 894 eligible**. By state it is 462. By role,
-437. And the sweep matters more than those three numbers: across five seeds and
-three jitter widths, **field leads in 15 of 15 runs by 272 to 460 people of
-1000**, while state leads role in only **5 of 15**, by minus 25 to plus 25.
+On the panel, measured 26 September at seed 20260920, a line served by field
+names the charge the person's own reading is heaviest at for **943 of the 965
+eligible**. By state it is 530. By role, 456. And the sweep matters more than
+those three numbers: across five seeds and three jitter widths, **field leads
+in 15 of 15 runs by 272 to 494 people of 1000**.
 
-**So the first version of this system claimed state beats role and the sweep
-took the claim off it.** State and role are level. Neither pre reading label is
-a key. That makes the case for the doors sorting rather than asserting stronger
+**State now leads role in 15 of 15 runs too, by 26 to 74, and it is still not
+a key.** On 20 September it led in 5 of 15, by minus 25 to plus 25, and the
+first version of this system had claimed state beats role until the sweep took
+the claim off it. What moved it is who the band gate lets through, not the
+labels getting better. The gap is whole archetypes moving together, one per
+hand assigned pair of labels, and `hooksim.js` prints them: at the headline
+seed Diane adds 78, Ana adds 49 and Sofia takes 53 away. Ana's 50 people were
+refused on 20 September and are eligible now, and 49 of them are named right
+by the grief door and none by the creative door. That is the assignment in
+`field.js`, measured. State and role are level. Neither pre reading label is a
+key. That makes the case for the doors sorting rather than asserting stronger
 than it was, and it makes the intake the only thing the top of the funnel is
 actually for.
 
@@ -138,6 +146,18 @@ Angela came out a level high, because reading the level as a decile of CQ
 disagrees with the engine's own band boundaries on every fractional CQ at the
 top of a band. The level is now the position of the engine's band in `TIERDEF`.
 Eight rows of nine had passed.
+
+**And the same check caught the engine moving, six days later.** On 26
+September all nine rows failed at once, two to four levels high. Bisected over
+every committed `engine.js`: the readings are identical through `fbe941c` and
+change at `dd0bf23`, 25 September, the fitted CQ model the owner ruled, which
+made CQ the 21 laws summed over 210 instead of `It*Ig/Rz`. `TIERDEF` has not
+moved since before this directory existed. So `field.js` was reading the engine
+correctly and the recorded levels were the old arithmetic. They are re-pinned
+from the current engine with that commit named, `losssim.js` keeps its own
+copy for its own model, and the check now also recomputes CQ from the law
+table without calling the engine, so the next time it fails it says which side
+moved.
 
 **And a second defect the same day.** The first jitter applied one draw to all
 nine charges, which moves a vector up and down and never changes which charge is
@@ -182,9 +202,14 @@ purpose is a gate nobody has tested.
 **And the refusal runs on who a line is served to, not only on its words.**
 Level 1 of `BUYERS.md` gets no hook ever, on the grid's own reasoning that
 buying this means dismantling an identity they are using to survive. On the
-panel that is 106 of 1000 refused, and every one of them is served the engine's
-own direction for that band, carried verbatim so the product does not grow a
-second voice.
+panel, measured 26 September, that is 35 of 1000 refused, and every one of them
+is served the engine's own direction for that band, carried verbatim so the
+product does not grow a second voice. It was 106 on 20 September. Level 1 is
+now read on expression as well as on CQ, because since the fitted CQ of 25
+September nobody in the panel reads level 1 on CQ at all; the engine moved its
+own clinician referral to expression for the same reason, and `tests.js` 12b
+asserts the gate reaches everybody that referral reaches. See `field.js`, THE
+KNOWN ANSWERS, for what moved and how it was found.
 
 **The argument does not rest on manipulation being ineffective, because it is
 not.** Fear appeals measure d 0.27 across 248 samples with no identified
@@ -202,9 +227,11 @@ falsifiable rather than doctrinal.
 
 Passes:
 
-    node marketing/tests.js                     240 assertions, 0 failures
+    node marketing/tests.js                     26 September. 242 assertions,
+                                                0 failures
     python3 .claude/skills/atuned-voice/check.py  no hard failures on every
                                                 copy field, run from tests.js
+                                                with a canary that must fail
     node marketing/hooksim.js --validate        5 groups
     node marketing/field.js                     4 groups
 
@@ -213,6 +240,17 @@ largest hook in the set, the one served to 307 of 1000, **named no place in a
 body at all**, and six others did the same. The antithesis rate in the copy
 fields ran at 6.5 percent against a house rate of 2.7 and is now 3.6, and the
 glosses are gone.
+
+**And it then went blind for five days without failing.** `tests.js` joined
+every line into one call, `check.py` exits 1 on a hard failure by design, and
+the call's catch printed "gate errored" and failed nothing. Behind it, sixteen
+proof lines of the form "Address 31 of 112" broke two of his own objection
+rules, the count against a total and the serial read to a person, which landed
+the day after these lines were written. The proofs now lead on the nerve, and
+H06's proof, which still gave the coherence quotient as intention times
+integrity over resistance, states the fitted model. The call now reads a file
+of the shown copy in one run, names every finding by hook and field, and
+carries a canary line that has to be caught.
 
 Not been through, and said rather than left to be discovered:
 
@@ -231,8 +269,8 @@ Not been through, and said rather than left to be discovered:
 ## Three things for him
 
 - **The hook set is not eighteen equal doors.** One hook carries 307 of 1000.
-  The production order follows the distribution and the first four lines cover
-  more than half the addressable panel, so the question is whether to build
+  The production order follows the distribution and the first four lines are
+  served to 555 of the 965 eligible, more than half the addressable panel, so the question is whether to build
   four properly or seventeen thinly.
 - **Seven keys have people and no hook**, 22 of 1000, the largest being
   Surprise at the sacral with 8. They are deliberate holes: a line written
