@@ -1,0 +1,745 @@
+[
+ {
+  "shot": "James-0-1600",
+  "W": 1600,
+  "who": "James",
+  "runs": 0,
+  "ring": true,
+  "sideways": false,
+  "pct": 0,
+  "closed": 0,
+  "centre": "0%",
+  "top": [
+   "Sacral 5.50",
+   "Heart 4.37",
+   "Solar 3.03"
+  ],
+  "expect": [
+   "Sacral",
+   "Heart",
+   "Solar"
+  ],
+  "cards": [
+   "Sacral",
+   "Heart",
+   "Solar"
+  ],
+  "rows": [
+   "Heart:4.37",
+   "Crown:2.90",
+   "Solar:3.03",
+   "Sacral:5.50",
+   "Solar:3.03"
+  ],
+  "small": []
+ },
+ {
+  "shot": "Angela-0-1600",
+  "W": 1600,
+  "who": "Angela",
+  "runs": 0,
+  "ring": true,
+  "sideways": false,
+  "pct": 0,
+  "closed": 0,
+  "centre": "0%",
+  "top": [
+   "Root 1.24",
+   "Solar 0.78",
+   "Heart 0.35"
+  ],
+  "expect": [
+   "Root",
+   "Solar",
+   "Heart"
+  ],
+  "cards": [
+   "Root",
+   "Solar",
+   "Heart"
+  ],
+  "rows": [
+   "unresolved",
+   "Root:1.24",
+   "Solar:0.78",
+   "Heart:0.35"
+  ],
+  "small": []
+ },
+ {
+  "shot": "Derek-0-1600",
+  "W": 1600,
+  "who": "Derek",
+  "runs": 0,
+  "ring": true,
+  "sideways": false,
+  "pct": 0,
+  "closed": 0,
+  "centre": "0%",
+  "top": [
+   "Solar 5.82",
+   "Root 3.90",
+   "Sacral 2.55"
+  ],
+  "expect": [
+   "Solar",
+   "Root",
+   "Sacral"
+  ],
+  "cards": [
+   "Solar",
+   "Root",
+   "Sacral"
+  ],
+  "rows": [
+   "unresolved",
+   "Solar:5.82",
+   "Root:3.90",
+   "Sacral:2.55"
+  ],
+  "small": []
+ },
+ {
+  "shot": "blank-0-1600",
+  "W": 1600,
+  "who": "blank",
+  "runs": 0,
+  "ring": true,
+  "sideways": false,
+  "pct": null,
+  "closed": 0,
+  "centre": "–",
+  "top": [],
+  "expect": [],
+  "cards": [],
+  "rows": [],
+  "small": []
+ },
+ {
+  "shot": "James-0-390",
+  "W": 390,
+  "who": "James",
+  "runs": 0,
+  "ring": true,
+  "sideways": false,
+  "pct": 0,
+  "closed": 0,
+  "centre": "0%",
+  "top": [
+   "Sacral 5.50",
+   "Heart 4.37",
+   "Solar 3.03"
+  ],
+  "expect": [
+   "Sacral",
+   "Heart",
+   "Solar"
+  ],
+  "cards": [
+   "Sacral",
+   "Heart",
+   "Solar"
+  ],
+  "rows": [
+   "Heart:4.37",
+   "Crown:2.90",
+   "Solar:3.03",
+   "Sacral:5.50",
+   "Solar:3.03"
+  ],
+  "small": []
+ },
+ {
+  "shot": "Angela-0-390",
+  "W": 390,
+  "who": "Angela",
+  "runs": 0,
+  "ring": true,
+  "sideways": false,
+  "pct": 0,
+  "closed": 0,
+  "centre": "0%",
+  "top": [
+   "Root 1.24",
+   "Solar 0.78",
+   "Heart 0.35"
+  ],
+  "expect": [
+   "Root",
+   "Solar",
+   "Heart"
+  ],
+  "cards": [
+   "Root",
+   "Solar",
+   "Heart"
+  ],
+  "rows": [
+   "unresolved",
+   "Root:1.24",
+   "Solar:0.78",
+   "Heart:0.35"
+  ],
+  "small": []
+ },
+ {
+  "shot": "Derek-0-390",
+  "W": 390,
+  "who": "Derek",
+  "runs": 0,
+  "ring": true,
+  "sideways": false,
+  "pct": 0,
+  "closed": 0,
+  "centre": "0%",
+  "top": [
+   "Solar 5.82",
+   "Root 3.90",
+   "Sacral 2.55"
+  ],
+  "expect": [
+   "Solar",
+   "Root",
+   "Sacral"
+  ],
+  "cards": [
+   "Solar",
+   "Root",
+   "Sacral"
+  ],
+  "rows": [
+   "unresolved",
+   "Solar:5.82",
+   "Root:3.90",
+   "Sacral:2.55"
+  ],
+  "small": []
+ },
+ {
+  "shot": "blank-0-390",
+  "W": 390,
+  "who": "blank",
+  "runs": 0,
+  "ring": true,
+  "sideways": false,
+  "pct": null,
+  "closed": 0,
+  "centre": "–",
+  "top": [],
+  "expect": [],
+  "cards": [],
+  "rows": [],
+  "small": []
+ },
+ {
+  "shot": "James-5-1600",
+  "W": 1600,
+  "who": "James",
+  "runs": 5,
+  "ring": true,
+  "sideways": false,
+  "pct": 0,
+  "closed": 71,
+  "centre": "0%",
+  "top": [
+   "Heart 1.96",
+   "Sacral 1.62",
+   "Solar 0.72"
+  ],
+  "expect": [
+   "Heart",
+   "Sacral",
+   "Solar"
+  ],
+  "cards": [
+   "Heart",
+   "Sacral",
+   "Solar"
+  ],
+  "rows": [
+   "Heart:1.96",
+   "Crown:0.64",
+   "Solar:0.72",
+   "Sacral:1.62",
+   "Solar:0.72"
+  ],
+  "small": []
+ },
+ {
+  "shot": "James-9-1600",
+  "W": 1600,
+  "who": "James",
+  "runs": 9,
+  "ring": true,
+  "sideways": false,
+  "pct": 20,
+  "closed": 91,
+  "centre": "20%",
+  "top": [
+   "Sacral 0.52",
+   "Solar 0.40",
+   "Heart 0.38"
+  ],
+  "expect": [
+   "Sacral",
+   "Solar",
+   "Heart"
+  ],
+  "cards": [
+   "Sacral",
+   "Solar",
+   "Heart"
+  ],
+  "rows": [
+   "Heart:0.38",
+   "Crown:0.00:clear",
+   "Solar:0.40",
+   "Sacral:0.52",
+   "Solar:0.40"
+  ],
+  "small": []
+ },
+ {
+  "shot": "James-14-1600",
+  "W": 1600,
+  "who": "James",
+  "runs": 14,
+  "ring": true,
+  "sideways": false,
+  "pct": 20,
+  "closed": 97,
+  "centre": "20%",
+  "top": [
+   "Sacral 0.20",
+   "Solar 0.15",
+   "Heart 0.12"
+  ],
+  "expect": [
+   "Sacral",
+   "Solar",
+   "Heart"
+  ],
+  "cards": [
+   "Sacral",
+   "Solar",
+   "Heart"
+  ],
+  "rows": [
+   "Heart:0.12",
+   "Crown:0.00:clear",
+   "Solar:0.15",
+   "Sacral:0.20",
+   "Solar:0.15"
+  ],
+  "small": []
+ },
+ {
+  "shot": "James-5-390",
+  "W": 390,
+  "who": "James",
+  "runs": 5,
+  "ring": true,
+  "sideways": false,
+  "pct": 0,
+  "closed": 71,
+  "centre": "0%",
+  "top": [
+   "Heart 1.96",
+   "Sacral 1.62",
+   "Solar 0.72"
+  ],
+  "expect": [
+   "Heart",
+   "Sacral",
+   "Solar"
+  ],
+  "cards": [
+   "Heart",
+   "Sacral",
+   "Solar"
+  ],
+  "rows": [
+   "Heart:1.96",
+   "Crown:0.64",
+   "Solar:0.72",
+   "Sacral:1.62",
+   "Solar:0.72"
+  ],
+  "small": []
+ },
+ {
+  "shot": "James-9-390",
+  "W": 390,
+  "who": "James",
+  "runs": 9,
+  "ring": true,
+  "sideways": false,
+  "pct": 20,
+  "closed": 91,
+  "centre": "20%",
+  "top": [
+   "Sacral 0.52",
+   "Solar 0.40",
+   "Heart 0.38"
+  ],
+  "expect": [
+   "Sacral",
+   "Solar",
+   "Heart"
+  ],
+  "cards": [
+   "Sacral",
+   "Solar",
+   "Heart"
+  ],
+  "rows": [
+   "Heart:0.38",
+   "Crown:0.00:clear",
+   "Solar:0.40",
+   "Sacral:0.52",
+   "Solar:0.40"
+  ],
+  "small": []
+ },
+ {
+  "shot": "James-14-390",
+  "W": 390,
+  "who": "James",
+  "runs": 14,
+  "ring": true,
+  "sideways": false,
+  "pct": 20,
+  "closed": 97,
+  "centre": "20%",
+  "top": [
+   "Sacral 0.20",
+   "Solar 0.15",
+   "Heart 0.12"
+  ],
+  "expect": [
+   "Sacral",
+   "Solar",
+   "Heart"
+  ],
+  "cards": [
+   "Sacral",
+   "Solar",
+   "Heart"
+  ],
+  "rows": [
+   "Heart:0.12",
+   "Crown:0.00:clear",
+   "Solar:0.15",
+   "Sacral:0.20",
+   "Solar:0.15"
+  ],
+  "small": []
+ },
+ {
+  "shot": "James-9-closed-1600",
+  "W": 1600,
+  "who": "James",
+  "runs": 9,
+  "mode": "closed",
+  "ring": true,
+  "sideways": false,
+  "pct": 20,
+  "closed": 91,
+  "centre": "91%",
+  "top": [
+   "Sacral 0.52",
+   "Solar 0.40",
+   "Heart 0.38"
+  ],
+  "expect": [
+   "Sacral",
+   "Solar",
+   "Heart"
+  ],
+  "cards": [
+   "Sacral",
+   "Solar",
+   "Heart"
+  ],
+  "rows": [
+   "Heart:0.38",
+   "Crown:0.00:clear",
+   "Solar:0.40",
+   "Sacral:0.52",
+   "Solar:0.40"
+  ],
+  "small": []
+ },
+ {
+  "shot": "James-0-closed-1600",
+  "W": 1600,
+  "who": "James",
+  "runs": 0,
+  "mode": "closed",
+  "ring": true,
+  "sideways": false,
+  "pct": 0,
+  "closed": 0,
+  "centre": "0%",
+  "top": [
+   "Sacral 5.50",
+   "Heart 4.37",
+   "Solar 3.03"
+  ],
+  "expect": [
+   "Sacral",
+   "Heart",
+   "Solar"
+  ],
+  "cards": [
+   "Sacral",
+   "Heart",
+   "Solar"
+  ],
+  "rows": [
+   "Heart:4.37",
+   "Crown:2.90",
+   "Solar:3.03",
+   "Sacral:5.50",
+   "Solar:3.03"
+  ],
+  "small": []
+ },
+ {
+  "shot": "Angela-8-1600",
+  "W": 1600,
+  "who": "Angela",
+  "runs": 8,
+  "ring": true,
+  "sideways": false,
+  "pct": 50,
+  "closed": 100,
+  "centre": "50%",
+  "top": [
+   "Root 0.00"
+  ],
+  "expect": [
+   "Root"
+  ],
+  "cards": [
+   "Root"
+  ],
+  "rows": [
+   "unresolved",
+   "Root:0.00",
+   "Solar:0.00:clear",
+   "Heart:0.00:clear"
+  ],
+  "small": []
+ },
+ {
+  "shot": "James-5-journal-1600",
+  "W": 1600,
+  "who": "James",
+  "runs": 5,
+  "station": "journal",
+  "ring": true,
+  "sideways": false,
+  "pct": 0,
+  "closed": 71,
+  "centre": "0%",
+  "top": [
+   "Heart 1.96",
+   "Sacral 1.62",
+   "Solar 0.72"
+  ],
+  "expect": [
+   "Heart",
+   "Sacral",
+   "Solar"
+  ],
+  "cards": [
+   "Heart",
+   "Sacral",
+   "Solar"
+  ],
+  "rows": [
+   "Heart:1.96",
+   "Crown:0.64",
+   "Solar:0.72",
+   "Sacral:1.62",
+   "Solar:0.72"
+  ],
+  "small": []
+ },
+ {
+  "shot": "James-5-ritual-1600",
+  "W": 1600,
+  "who": "James",
+  "runs": 5,
+  "station": "ritual",
+  "ring": true,
+  "sideways": false,
+  "pct": 0,
+  "closed": 71,
+  "centre": "0%",
+  "top": [
+   "Heart 1.96",
+   "Sacral 1.62",
+   "Solar 0.72"
+  ],
+  "expect": [
+   "Heart",
+   "Sacral",
+   "Solar"
+  ],
+  "cards": [
+   "Heart",
+   "Sacral",
+   "Solar"
+  ],
+  "rows": [
+   "Heart:1.96",
+   "Crown:0.64",
+   "Solar:0.72",
+   "Sacral:1.62",
+   "Solar:0.72"
+  ],
+  "small": []
+ },
+ {
+  "shot": "James-5-record-1600",
+  "W": 1600,
+  "who": "James",
+  "runs": 5,
+  "station": "record",
+  "ring": true,
+  "sideways": false,
+  "pct": 0,
+  "closed": 71,
+  "centre": "0%",
+  "top": [
+   "Heart 1.96",
+   "Sacral 1.62",
+   "Solar 0.72"
+  ],
+  "expect": [
+   "Heart",
+   "Sacral",
+   "Solar"
+  ],
+  "cards": [
+   "Heart",
+   "Sacral",
+   "Solar"
+  ],
+  "rows": [
+   "Heart:1.96",
+   "Crown:0.64",
+   "Solar:0.72",
+   "Sacral:1.62",
+   "Solar:0.72"
+  ],
+  "small": []
+ },
+ {
+  "shot": "James-5-record-390",
+  "W": 390,
+  "who": "James",
+  "runs": 5,
+  "station": "record",
+  "ring": true,
+  "sideways": false,
+  "pct": 0,
+  "closed": 71,
+  "centre": "0%",
+  "top": [
+   "Heart 1.96",
+   "Sacral 1.62",
+   "Solar 0.72"
+  ],
+  "expect": [
+   "Heart",
+   "Sacral",
+   "Solar"
+  ],
+  "cards": [
+   "Heart",
+   "Sacral",
+   "Solar"
+  ],
+  "rows": [
+   "Heart:1.96",
+   "Crown:0.64",
+   "Solar:0.72",
+   "Sacral:1.62",
+   "Solar:0.72"
+  ],
+  "small": []
+ },
+ {
+  "shot": "snow-James-0-1600",
+  "W": 1600,
+  "who": "James",
+  "runs": 0,
+  "light": "snow",
+  "ring": true,
+  "sideways": false,
+  "pct": 0,
+  "closed": 0,
+  "centre": "0%",
+  "top": [
+   "Sacral 5.50",
+   "Heart 4.37",
+   "Solar 3.03"
+  ],
+  "expect": [
+   "Sacral",
+   "Heart",
+   "Solar"
+  ],
+  "cards": [
+   "Sacral",
+   "Heart",
+   "Solar"
+  ],
+  "rows": [
+   "Heart:4.37",
+   "Crown:2.90",
+   "Solar:3.03",
+   "Sacral:5.50",
+   "Solar:3.03"
+  ],
+  "small": []
+ },
+ {
+  "shot": "off-0-1600",
+  "W": 1600,
+  "who": "off",
+  "runs": 0,
+  "ring": false,
+  "sideways": false
+ },
+ {
+  "path": true,
+  "before": {
+   "seat": "Sacral",
+   "load": 5.496110342248563
+  },
+  "idle": {
+   "n": 8,
+   "seats": [
+    "Sacral"
+   ],
+   "head": "8 addresses",
+   "sub": "25 patterns of the 100 you have left"
+  },
+  "done": {
+   "load": 3.9487632581961387,
+   "log": 8,
+   "freed": 146,
+   "flash": "The sacral now carries 3.9.",
+   "runs": 1,
+   "saved": 1
+  },
+  "wrote": {
+   "n": 6,
+   "flash": "The second sentence reads to the root, at a weight of 3.3."
+  }
+ }
+]
