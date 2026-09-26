@@ -5,7 +5,9 @@ Dani Sorensen, UI UX architect. 26 September 2026.
 **Status: a storyboard, not a build.** His words, `TASKS.md` FH: "Tutorial
 screens need to all be mapped out. That means they need to be storyboarded."
 Nothing under `atuned_src/` moved for this file and nothing here ships until
-the questions in section 9 are answered. It is the map a build is cut from.
+the questions in section 9 and section 0.10 are answered. It is the map a
+build is cut from. **Read section 0 first**: it is the revision after FK and
+it supersedes parts of what follows.
 
 **Why a new file and not `DESIGN-onboard.md`.** That file is the record of a
 pass stopped on 20 September. Its own first line says nothing in it is a
@@ -30,9 +32,331 @@ Figures are labelled the way `DESIGN-onboard.md` labels them.
 | **measured** | Executed in a build, dated, with the file named |
 | **judgement** | Reasoned estimate with the arithmetic shown |
 
-No figure in this file was produced by running the build this round. Every
-count quoted from an earlier run carries its date and is to be re-measured,
-not repeated.
+Sections 1 to 13 below were written without running the build. Section 0 was
+written after running it: its figures are measured on 26 September at
+`acc8181`, and the evidence is `RESEARCH-firstrun.md`.
+
+---
+
+# 0. Revised 26 September, after FK: the opening is one turn of the loop, performed
+
+**Why this section exists.** FK, his words: "It's discover play flow embody. I
+like the ring with the tune. We want that center ball, Hello Sofia's good."
+Then the order to run the software against the ICPs and research outside what
+pulls people in. Both are done, in `RESEARCH-firstrun.md`. This section is the
+sharpened design they produce. **Where it disagrees with sections 4 to 12, this
+section wins**, and each superseded part below carries a note saying so.
+
+## 0.1 Kept exactly as he confirmed
+
+- **The ring.** The seven colour ring the boot ends on is still the only
+  progress object from the boot to the Field.
+- **F1, the check in, as drawn.** "Hello, Sofia.", the two name fields, the
+  line under them, the box, Next. Not one element changes.
+- **The loop's four words: discover, play, flow, embody.** On every screen in
+  the opening a station shows its own word and nothing else as its name. No
+  station is labelled with a surface or a tool. The earlier draft's mapping to
+  journal, imprints, release and ritual is withdrawn, and Q6 is retired: he
+  answered it.
+- **The signal test, F2 to F6**, as drawn, with one line changed on F6.
+
+## 0.2 What running it and the research changed
+
+Each line: the change, what was measured, and the source.
+
+1. **The loop stops being four cards and becomes the first turn.** The
+   earlier F7 to F10 were four presses of Next, one line each: a deck of
+   cards. NN/g's 70 person test found deck of cards tutorials do not improve
+   task performance (`RESEARCH-firstrun.md` 5.1). Duolingo's first lesson is
+   its onboarding (5.2). AN3 already ruled it: the core loop is the tutorial
+   and day one done is running it once. So each station is **done once, in the
+   real product**, and the ring advances a quarter when it is done.
+2. **That is also the navigation tutorial he asked for.** "The tutorial,
+   navigating them around the software." Four stations are done in four real
+   places, so a person finishes the opening having used the places, with no
+   card describing them. The ring docked on the stage is the only guide.
+3. **The reward goes first, and it is already built.** Measured: the moment a
+   stranger feels seen is the live highlight while a story is typed, her own
+   words lighting in place, about twenty seconds in (Angela, 3). discover is
+   built around that moment.
+4. **The first act is no longer punished.** Measured: the first commit erases
+   what was found and says "nothing reaches the line yet", CQ reads "0%", and
+   the Field does not move; the first visible change costs a second story
+   (`ui/imprints.js:143`, applyStory lands 0.35). WHOOP and Oura show a
+   calibrating state greyed and say when it fills (5.4). So the first turn
+   draws what the story found **faintly at its own addresses, under the line**,
+   and says so. The engine and the line do not change. The render does.
+5. **The turn ends on when and where.** Ritual already has the row, with "after
+   I put the kettle on" as its example. A concrete plan for when and where
+   raised Headspace app opens 7.5 percent (5.3); it is Fogg's anchor and the
+   Hook's investment that loads the next visit (5.6). AN10 says day two is the
+   ritual. This row is what makes day two happen.
+6. **The person lands with one closed circle that they made.** The endowed
+   head start measured 34 against 19 percent completion (5.5), and here none of
+   it is gifted. LD1 already counts a closed circle.
+7. **The landing lights only what their own story touched**, and says the one
+   sentence the Help sheet already holds, once: which zone is which.
+
+## 0.3 The sequence
+
+    boot -> Hello -> signal test -> discover -> play -> flow -> embody -> the Field
+                                    '--------- one turn, the ring closes ---------'
+
+| Step | Where | Time | The one thing a person does |
+|---|---|---|---|
+| boot | shipped | 5.4 s measured | watches |
+| Hello | F1, unchanged | about 8 s | types their name |
+| signal test | F2 to F6, unchanged | about 60 s | moves the marker, twice |
+| discover | the real story surface | 45 to 90 s | writes one thing |
+| play | the real Field | about 15 s | opens one address |
+| flow | the real release | about 30 s | follows it in thought |
+| embody | the real Ritual, the When row | about 15 s | picks when |
+| the Field | landing | | the turn is closed |
+
+**Judgement, from the table.** First act at about 6 seconds, as before. First
+moment about the person, their own words lit, at about 100 to 130 seconds.
+First address on the Field under 3 minutes. The whole opening 3 to 4 minutes,
+against the under five minutes to first value that Amplitude reports for high
+performing products (5.7). About 8 presses and one piece of writing. Every
+step after the name is a doing step; none is a reading step.
+
+## 0.4 The four stations, frame by frame
+
+The station screens are the product's own surfaces, not copies of them. The
+ring docks at the top of the stage (at 390, above the surface, under the bar)
+with the station's word and one line. Everything on the surface except the
+one lit target is dimmed to about a third, not hidden and not covered by a
+sheet (Q9 asks whether that honours OB9). Leave sits in the corner on every
+station, as on the signal test. All lines below passed `check.py --line` on 26
+September with no hard failures, and still owe the voice seat's ten passes.
+
+**F6, the two marks, one line added.** After "A thought moved your body." the
+Next press hands straight into discover. The line under the circle becomes:
+
+    A thought moved your body. Now write one down.
+
+The other two outcome lines stay as drawn.
+
+**T1. discover.** The story surface. Lit: the text box and Commit.
+
+    discover
+    Write one thing from this week that is still on you.
+
+The prompt answers the blank page, which every journaling neighbour solves
+with a question rather than an empty box (`RESEARCH-firstrun.md` 5.11). The
+words light as they are typed, which is built (`ui/storyui.js`, the highlight
+layer). On Commit the ring closes its first quarter, and the panel, instead of
+"nothing reaches the line yet", reads:
+
+    12 found, all under the line for now. What you write next adds to them.
+
+The number is the count the Commit button already carries. It is a count of
+what was found, never set against a total.
+
+**T2. play.** The Field. Its once a session entrance plays now, held from the
+boot for this moment (F0's second defect). Drawn: the addresses the story
+touched, faint where under the line and full where over, and the rest of the
+wheel dimmed. Lit: those addresses.
+
+    play
+    Your words landed here. Open one.
+
+Opening an address is built (the Help sheet: "Open an address, click it").
+Opening one closes the second quarter.
+
+**T3. flow.** The release, over the address they opened. **Measured: on a
+first story the release refuses**, "Nothing is held above the line yet, so
+there is nothing to release." So on the first turn it runs as practice,
+labelled on the release itself:
+
+    flow
+    Run one release over it. Follow each line in thought.
+    Practice. This one writes nothing to your field.
+
+AN5 holds: the opening spends no real charge. The last line of the release
+closes the third quarter. Q10 is whether flow should instead wait until
+something has crossed the line.
+
+**T4. embody.** Ritual, scrolled to the When row. Lit: the row and Save.
+
+    embody
+    Pick when you will come back to it.
+
+Three anchors as chips, drawn from the row's own example and two like it,
+and a field for their own words. Save closes the ring. When the accounts
+product brings push notifications, this is the one place the permission is
+asked, after the value and never before it (`RESEARCH-firstrun.md` 5.6).
+
+**T5. The landing.** The ring sweeps back to discover and lands as the Field's
+core, as F11 drew it. The Field shows the person's own entry. The ring's line
+slot says once, then empties:
+
+    The wheel is your field. Left is what you are made of. Right is what it reads.
+
+That is the Help sheet's own sentence, cut to fit. Root energetics opens if a
+name was given (Q8, unchanged). **The lit first door from F11 is dropped**:
+measured, the four doors vanish once a story exists, and the person has
+already been through them.
+
+## 0.5 Leaving, at any point
+
+- **The box on F1** still goes straight to the Field, unchanged.
+- **Leave on a station** goes to the Field with the quarters already done
+  drawn closed and the rest open. The ring shows real progress and only real
+  progress. The status line is unchanged: "The opening is in Account."
+- **Reload mid turn** resumes at the station after the last closed quarter.
+- **The story stays.** A story written in discover is a real entry, with undo
+  as its net (`engine/undo.js`), because it is the person's own words about
+  their own week. Only flow is practice.
+
+## 0.6 What must be true before this ships, measured, not new asks
+
+The first turn walks a stranger through three surfaces that today state a
+reading on a blank record. A person who has just been greeted by name and is
+then told what is "most shut" in them by a record holding nothing will not
+trust the next thing it says. These are defects already on the backlog or
+found in this run (`RESEARCH-firstrun.md` section 6), named here so they are
+not discovered after the build:
+
+1. AV24: the right rail's archetype and domain percentages and the lit
+   Warrior and Sage on a blank record.
+2. Ritual's "the root is carrying the most" on a blank record.
+3. CQ's "0%" in its largest numeral after a first story.
+4. The calibrating render in T1 and T2, which is new UI over an unchanged
+   engine.
+5. A practice mode on the release for T3, if Q10 lands on practice.
+
+## 0.7 The three walks, and three more
+
+**Angela, level 5.** Hello, her name back. The signal test is her moment. In
+discover she writes about her sister and watches "said yes when" light, and
+the throat reads Self-Silencing. That is the recognition she came for, now at
+about two minutes instead of never. The commit no longer answers her with a
+zero: twelve found, under the line. play shows her where they sit; she opens
+the throat. flow is where she would stop if the release lines read as
+mechanical, which is the voice seat's job, not this file's. embody: "after I
+put the kettle on". **Stops: none forced. Watch flow.**
+
+**Derek, level 7.** Watches the boot, types his name, sees three numbers
+promised. The signal test reads to him as a calibration, which is how he
+reads everything. discover is where he writes the least; a two line entry
+still lights. **His stop is embody**, if the chips read as wellness rather than
+scheduling; the fix is the chip wording, and "before the first run of the day"
+belongs in the set. He leaves with a limiter only after the 63, which the
+opening does not pretend to replace.
+
+**James, level 3.** Ticks the box on F1 and is on the Field in one press, as
+before. **What changes for him is 0.6**: the Field he lands on no longer
+tells a blank record what is shut in it, which is what lost him in this run.
+
+**Marcus.** Stays through the signal test for the instrument, as predicted.
+play is his station: a wheel that answers his own words is the "clearly not a
+template" proof. **His stop is the practice label in flow** if it reads as a
+demo; the label stays, because a release that claims to have moved charge it
+did not move is worse.
+
+**Diane.** Box, or Leave after discover. Either way her first story is
+written and her field is not empty, which is further than any path took her
+in this run.
+
+**Sofia, level 8.** Runs the whole turn, and **embody is her station**: what to
+run and how long, and when. She is also the concierge route: the same opening,
+run beside a client, is her first session with them (`RESEARCH-firstrun.md`
+5.9). Noted for the practitioner design.
+
+## 0.8 What to instrument, replacing section 11
+
+Held on the record as dated flags, nothing sent, as before.
+
+1. Time from first paint to the first lit word in discover.
+2. discover commit rate, and the length of the first entry.
+3. Whether an address was opened in play.
+4. flow practice completion, and where in the lines it was left.
+5. embody: whether a when was set, and which chip or own words.
+6. **Day two return within an hour of the chosen when.** This is the number the
+   whole turn is built to move.
+7. Leave, by station. Box tick rate on F1, as before.
+
+Then five real strangers at 390, watched. Five surface about 85 percent of
+what is wrong.
+
+## 0.9 The grade
+
+**Today, measured this round: D** for a stranger. 102 controls in view on the
+landing at 1600, no instruction in view at 390 and the doors 3,216 px down,
+the first act answered with a zero, and three surfaces asserting a reading on
+a blank record.
+
+**The storyboard as drawn before this section: B minus**, judgement,
+unchanged.
+
+**As revised: B plus**, judgement. The first moment about the person arrives
+at about two minutes and is their own sentence, the first act is rewarded
+rather than refused, and a person leaves the opening having used four real
+places and set a time to come back. Capped by the landing's load, which only
+AN8 and the rail fold move. **A minus** with 0.6 fixed and AN8 behind it.
+
+## 0.10 Questions for him, revised
+
+Q1, Q2, Q4, Q7 and Q8 in section 9 stand unchanged. **Q6 is retired**: he
+answered it in FK. **Q3 and Q5 change**, and three are new.
+
+**Q3, revised. Does a station line say what to do, or what it is for?** 20
+September: "At no point are we talking about results or purpose." 26
+September: "Highest purpose of the product results." The revised lines in 0.4
+name an act ("Write one thing from this week that is still on you") and let
+the result be what happens on the screen. That may settle Q3 by showing
+rather than saying. Or he may still want the purpose said: then each station
+gains one line, and the right column of section 5's table is the draft.
+
+**Q5, revised. The opening now walks through the door.** Section 9 asked
+whether the opening stops at the first story or runs it. The revision runs
+it: the story is real, only flow is practice. Costs AN5's "no real charge" for
+the story, which is the person's own words and carries undo. The other answer
+keeps the story as practice too, and costs the one thing the run showed
+works: their own sentence becoming their own field.
+
+**Q9, new. Is a dimmed product a pop up?** OB9: "No pop ups. One screen, not a
+sheet over the product." The first turn happens in the real surfaces with all
+but one target dimmed.
+- *Dimmed, not covered.* No sheet, nothing drawn over the product, the product
+  is the screen. Costs a spotlight state on four surfaces.
+- *Full screen copies of each station.* Honours OB9 to the letter. Costs the
+  navigation tutorial, because the person never touches the real places.
+
+**Q10, new. What does flow do on a first story, when the release refuses?**
+Measured: nothing crosses the line on a first story.
+- *Practice release, labelled, writes nothing.* The turn closes on day one.
+  Costs a practice mode on the release.
+- *flow waits.* The third quarter stays open until something crosses the line,
+  usually the second story. Costs the closed circle on day one, and it makes
+  day two the day the loop first closes.
+
+**Q11, new, his and explicitly undecided. A few more questions after the
+signal test?** His words in FK: "maybe we can ask them a few more questions
+that kind of turn on, like not turn on, but activates the expression,
+activates certain aspects of the diagnostic. I don't know, maybe we don't do
+that." Not recommended here, and not built. What the research says, both ways:
+Headspace doubled course starts by asking a few questions even when the
+answer changed nothing, and active practice did not rise (5.3). Three ways it
+could go:
+- *None.* The name stays the only question, and it already writes three real
+  numbers.
+- *One law, asked three ways.* Three questions, the smallest set that gives the
+  engine a spread to read, so one spoke of the Field is real on day one. Costs
+  about 40 seconds and places a questionnaire in the opening.
+- *A few that change nothing computed.* Raises starts, per Headspace, and is
+  the one version the house voice cannot allow, because a question that
+  pretends to personalise is a claim the instrument cannot back.
+
+**Q12, new, smaller. Say that the fourteen people in the picker are worked
+examples?** Measured: the picker reads "Custom" and lists "Sofia, 41, somatic
+practitioner" and thirteen more with nothing saying what they are. Marcus is
+the person a worked example serves (5.10).
+- *Name them.* One word in the picker, "Examples", and one line on the
+  landing. Costs a line.
+- *Leave them.* Costs nothing to build, and a stranger reads them as other
+  people's data.
 
 ---
 
@@ -142,7 +466,7 @@ section 9 rather than settled by building one side.
 | OB13 super simple | 0p | Under 25 words on any frame. Prose only inside a wait |
 | OB14 a tour of the tools | 0p | Collides with AN3's mapping. Section 9, Q6 |
 | OB15 no results or purpose | 0p | Collides with FH. Section 9, Q3 |
-| AN3 the core loop is the tutorial | `TASKS.md` AN | Journal, imprints, release, ritual. Day one done is running it once |
+| AN3 the core loop is the tutorial | `TASKS.md` AN | Day one done is running it once. The station names are discover, play, flow, embody, his words in FK, never a surface name. Section 0 |
 | AN5 lives in the profile, replayable, no real charge | AN | The toggle and the replay live in Account. Nothing writes to the axes |
 | AN6 humble and warm | AN | Carried by the name and by silence, never by adjectives |
 | AN7 the signal test is the one thing they do | AN | Frames 2 to 6 |
@@ -156,6 +480,8 @@ section 9 rather than settled by building one side.
 ---
 
 # 4. The sequence, in one line
+
+**Superseded by section 0.3.** Kept as the record of the first draft.
 
     boot  ->  check in  ->  signal test  ->  the loop  ->  landing
     5.24s     one press     about 60s       four presses   the Field
@@ -341,6 +667,12 @@ whether they moved, is Q7.
 
 ## F7 to F10. The loop. One screen, four states.
 
+**Superseded by section 0.4**, which performs the four stations in the real
+product instead of turning a ring through four cards. **The surface mapping
+below is withdrawn in FK**: the stations are discover, play, flow, embody, by
+name, and are not relabelled as journal, imprints, release or ritual. Kept as
+the record of what was proposed and corrected.
+
 Built: prototype stations, `shot-discover-1600.png` is the drawing. **Shows.**
 The ring with four stations at 12, 3, 6 and 9 o'clock, the lit station's name
 and icon, one line, Next. Next turns the ring a quarter (OB24), so the person
@@ -374,6 +706,9 @@ screen opens onto F11. There is no last screen and nothing to count towards.
 The opening flag switches off here, because it has been seen.
 
 ## F11. The landing. "The starting square".
+
+**Revised in section 0.4, T5**: the lit first door is dropped, because the
+doors are gone once a story exists, measured.
 
 **Shows.** The Field, every layer on (FE), drawn as Frames if Q2 lands on
 Frames, and the Field's entrance playing now, held from the boot for exactly
@@ -527,6 +862,8 @@ loading screen in between." FA confirmed "the square" is Frames.
   the landing stays on the Wheel as shipped. Costs nothing to build. It does
   not give him the square if that is what he meant.
 
+**Q3. Revised in section 0.10.** As first asked:
+
 **Q3. Does the loop say what each tool is for?** OB15, 20 September: "At no
 point are we talking about results or purpose." FH, 26 September, in the same
 breath as the storyboard ask: "Highest purpose of the product results." OB25
@@ -544,6 +881,8 @@ has asked this since 20 September and is still open.
   section 3). And: should the Account heading then read the person's name
   instead of "You"?
 
+**Q5. Revised in section 0.10.** As first asked:
+
 **Q5. Does the opening end at the door of the first story, or walk through
 it?** AN5: it "does not spend real charge". M2: "a first session ends in a
 change, not a tour."
@@ -556,7 +895,10 @@ change, not a tour."
   may continue, which is the story surface's refusal rate at the front of the
   product.
 
-**Q6. Which four surfaces are the four stations?**
+**Q6. Retired in FK.** He answered it: "It's discover play flow embody." The
+text below is the record of the question as it was put.
+
+**Q6, as asked. Which four surfaces are the four stations?**
 - *Journal, imprints, release, ritual.* AN3 and the content chain in CLAUDE.md.
   As storyboarded. Costs the Field and Body a named station, and OB14 named
   them.
@@ -590,6 +932,8 @@ storyboard should see this line.
 ---
 
 # 10. Where they stop. Four walks, four levels of the grid
+
+**Superseded by section 0.7**, whose walks follow a build that was run.
 
 `BUYERS.md` peaks at 8 to 10 and collapses through 5 and 4, which are the
 largest population. The engine's own reading of each reference profile has
@@ -630,6 +974,8 @@ claim with no instrument behind it.
 
 # 11. What to instrument, before the build is judged
 
+**Superseded by section 0.8.**
+
 Held on the record as dated flags. Nothing is sent: there is nowhere to send
 it, and the outbox rule applies (`ui/account.js`, obSend).
 
@@ -652,6 +998,8 @@ what is wrong.
 ---
 
 # 12. The grade
+
+**Superseded by section 0.9**, which is measured where this was judged.
 
 **Today, as a stranger:** D, 19 September, `reviews/QUESTIONS-onboarding.md`
 section 8. The opening was off then and is off now, so a stranger lands on the
@@ -683,7 +1031,10 @@ which only AN8 and the rail fold can move. With AN8 built behind it, B plus.
     atuned_src/ui/component.js:694-702   the four doors
     proto/onboard/onboard.html           the ring, the pad, the stations
     proto/onboard/shot-*.png             the drawings for F2 to F10
-    proto/firstrun/storyboard.html       the drawings for all twelve frames,
+    RESEARCH-firstrun.md                 the run, six walks, and the sources
+    proto/firstrun/walk.js               the walk, reproducible on any build
+    proto/firstrun/observed/*.png        what a stranger met, 26 September
+    proto/firstrun/storyboard.html       the drawings for every frame,
                                          published privately at
                                          https://claude.ai/artifact/Kudg5izpXHQAmyVVGNGiXT
     DESIGN-onboard.md                    the stopped pass, and its measurements
