@@ -14139,3 +14139,57 @@ against the house rule of sentence case.
 rule:** each is one HTML file with no network, and each is being
 opened for him rather than only described.
 
+## DP. His reaction to the Energetics screenshot's own domain grid: a
+## new mechanic proposed for masks, a real diagnostic question
+## answered, and a real visual mismatch confirmed. Backlog only, his
+## own words, not dispatched. 26 September.
+
+**The grid he is calling a matrix is `#doms`, the nineteen Blueprint
+domains,** checked directly in `panels.js`: each tile already answers
+a hover with a caption line and already answers a click, though a
+click today only changes which domain is selected rather than opening
+a card. His ask, in his own words: "I want to click on it and have it
+give me information, I want to hover over it and have it give me
+information." Hover already does. Click does not yet, and that is the
+real gap, not a new interaction to invent.
+
+**A new mechanic he proposes, not built now: the same grid pattern for
+masks.** "Every one of these blocks represents a facet of a mask and a
+story that we've created, and the sniffer can identify what's
+childhood and what's from different eras." Masks are six in this
+product's own model, each presumably wanting many facets under it,
+which is a real new data shape, not a relabelling of the domains grid.
+The sniffer functions he means (`sniffStory` and its neighbours in the
+engine) read a story's own signal; whether they carry or could carry
+an era/age marker per fetter is a real, unanswered question, not
+checked here since this round is logged, not built.
+
+**His diagnostic question, checked directly rather than left as a
+mystery.** "It appears the psyche structure is actually within this,
+I can almost see the saboteur combinations and the hyper complex kind
+of outlined by the blocks that are creating them, I don't know if
+that's intentional." Checked: no code ties this domain grid's layout
+or membership to saboteurs or hyper complexes. What is real is that
+domain tiles are coloured by their root cluster (`ROOTCOL`), and
+saboteurs and hyper complexes are also organised by root and seat in
+this product's own model, so the same four or seven colours recur
+across both surfaces because they share one palette, not because one
+is secretly drawn from the other. Told him plainly rather than left
+open, since a real answer existed to check.
+
+**A real visual mismatch, confirmed rather than assumed.** "The
+orientation and balance designs, I don't know why they're different,
+they're symbolic icons left and right with a measurement going centre
+out, but they look dramatically different." Checked both directly,
+`renderBal` (Balance, masculine against feminine) and the `polbar`
+block (Orientation, benign against malignant) in `ui.js`. Both were
+built to the same intent, centre out fill, an icon at each end, and
+the code's own comments show one repeatedly chasing parity with the
+other across earlier rounds. The concrete gap that survives today:
+Balance prints the words "masculine" and "feminine" as visible text
+beside its icons; Orientation prints only the two numbers, with
+"benign" and "malignant" living solely in a hover tooltip, not on the
+screen. A real, confirmed, fixable inconsistency, queued for art
+direction, not dispatched tonight per his own "put this in the
+backlog."
+
