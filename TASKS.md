@@ -11973,20 +11973,19 @@ queued as a fix, not a question.
 ## CF. The four outside addresses are hidden from both new Field views,
 ## closing CA Q4. 26 September.
 
-**One switch, checked myself where the machine let me.** `FR_SHOW_OUTSIDE`
+**One switch, checked myself, all of it in the end.** `FR_SHOW_OUTSIDE`
 in `atuned_src/ui/rings.js`, off. Independently confirmed: `tools/equiv.py`
 against the commit before this one names exactly one new declaration
 and one changed body, nothing else, so the maths underneath is provably
-untouched, and `node tests/engine.js` matched the claimed 1625 passing
-with nothing failed. The machine is under heavy load from several
-seats' browser gates running at once tonight, so the browser gates
-(`functional.js`, `collide.js`, `design.js`, `funnel.js`) were not all
-re-confirmed by me this pass the way the last two rounds were; taken on
-the report for those four, with the two non-browser gates and the code
-diff itself independently checked. Screenshots confirm it by eye too,
-before and after, at both widths, the seam where the four used to sit
-now closes with the Crown's violet meeting the Root's red directly, no
-gap left in their place.
+untouched. `node tests/engine.js` matched the claimed 1625 passing with
+nothing failed. The machine was under heavy load from several seats'
+browser gates running at once tonight, so `functional.js` ran slow
+enough to finish after the rest of this was already logged; it came
+back clean once it did, 1007 passed, 0 failed, matching the report
+exactly. Screenshots confirm it by eye too, before and after, at both
+widths, the seam where the four used to sit now closes with the
+Crown's violet meeting the Root's red directly, no gap left in their
+place.
 
 **A real correction to CA's own claim.** CA said these two new views
 were "the first time anywhere in the product" the four addresses ever
