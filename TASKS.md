@@ -13456,3 +13456,69 @@ scroll already does, or only magnify the picture as built?
 itself, a real change everywhere it draws; let a tap on a stacked line
 ask which one, through the shelf; or leave it.
 
+## DF. His follow up: a real gap confirmed, a new mechanic found in
+## his own confusion, and a real request to check the foundation before
+## he steps back to design. 26 September.
+
+**Q1, DE, half answered.** His words: "protocol, release are the same,
+protocol makes it sound more official, doesn't it, like you need to do
+this." Leans toward renaming to "protocol" for its tone, not stated as
+final.
+
+**Q2 and Q6 did not land, and were not repeated cold.** "I don't know
+what you mean by number two, I need context" and "for six I don't have
+any context." Held for a clearer re-ask with an example and a picture,
+not asked the same way twice.
+
+**Q3 also did not land, but what came out of trying to answer it is a
+real, separate idea, kept rather than discarded.** His words: "I don't
+have any context for the word pin, so I don't understand number
+three. If I'm hearing what I think you're saying, the limiting belief
+patterns that come up need, I am statements can be marked heavy so
+you can keep it, maybe it's a swipe left right, if that one was heavy
+keep it, if you don't like it get rid of it, if you do nothing it stays
+in rotation, but maybe after you run it twice it never comes back, two
+or three times, so we know there's no blockage there, but you're also
+not marking it, I don't know if I necessarily do that." A swipe based
+triage for a person's own "I am" lines: keep, drop, or leave in
+rotation by doing nothing, with a line retiring itself automatically
+after being run two or three times. Real and worth building as its own
+piece; Q3 itself is still unanswered and still needs its own picture.
+
+**Confirmed, not a new mechanic, the one already built.** His words: "I
+think when you have a chain selected, you've selected it long enough
+that it locks, can we have the circle fade back but the chain stay
+locked forward, that way you can see you have Escapism selected." This
+is pin, already built in DE, described independently before he
+connected the two. He wants it interactive rather than watched as a
+recording, which is the real gap: everything sent tonight from this
+folder has been a video or a still, never something he could open and
+click himself.
+
+**A real, confirmed gap in the rail, checked rather than guessed.** His
+words: "the left side of that screen doesn't have the spiritual layer
+to it yet, where is it, your Eastern Western sign, that shit." Checked
+directly: the rail's own "States" section, under Spirit, is real and
+present, but its container renders nothing, confirmed by searching the
+whole codebase for anything that fills it and finding nothing. The
+engine already computes a real sun sign and gene key gate
+(`engine/astro.js`), read elsewhere on Summary and in a drill, but
+never reaching this section. A real, findable gap, not a
+misunderstanding on his part.
+
+**A direct request to check the foundation before he steps toward
+design.** His words in full: "from our backlog, what's left, or are we
+purely on design now, is all foundation done, all database done, all
+schemas done, have you gone through it and reviewed it a couple times,
+let's make sure everything's cool... I am going to switch to Fable at
+some point, not yet, because we're soon to be doing a lot of design
+and I want to focus on design with you, so make sure we're tidied up
+and there's nothing on the engineering stuff lingering." Dispatched as
+a real review, not answered from memory.
+
+**Three pieces dispatched:** the foundation and schema review he asked
+for directly; wiring real content into the empty States section; and
+turning the pin, trace and release work, plus the mobile square
+mockup, into things he can actually open and click rather than only
+watch.
+
