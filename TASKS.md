@@ -12878,3 +12878,44 @@ neither names what is on screen clearly enough to act on, and per his
 own closing line, "I'll drop in the image when it's ready," a picture
 is coming.
 
+## CU. The animation overlay picked and redesigned as a hover
+## interaction, a chart asset ask, and the ring note closed. 26
+## September.
+
+**Not a new muscle reference, the same marma chart again, asked to
+become an asset.** The image he attached is byte identical to the one
+already at `proto/anatomy-ref/refs/marma-points-chart.png`. His words:
+"use this for now, clean it up, remove the text, keep the points, turn
+it into an SVG." Read as: a stopgap asset, the points alone as vector
+art, while the muscle reference he is generating is still on its way.
+Dispatched.
+
+**The overlay redesigned, closing CL's own Q1 and Q2 with a different
+answer than either offered.** His words in full since this changes the
+mechanic rather than just picking one of the three built: "I like
+Pulse and Relay as a combination... actually, even better, if I hover
+over one of the lines, that's the animation it does, it traces the
+entire thing, then holds and hums, and the amount it hums is based on
+the tension of those lines, so if it's a saboteur that's really hot,
+like Victim 92%, you'll see it really vibrating, but Victim 5%, almost
+nothing." Not a toggle that lights several lines at once, as CL built
+it: a hover on one line traces it (Pulse), then holds and vibrates at
+an amplitude set by that line's own tension (Hum), so the two looks
+combine as one interaction rather than two options to choose between.
+
+**A further detail on top of that.** His words: "the color density
+shows the weight of the entire chain. The lighter, the more
+transparent... the darker, the heavier, the entire chain. Subtle, not
+overly." The line or bead's own opacity should also read the whole
+chain's total weight, not only the one line's own tension.
+
+**The ring note closed, and a new count asked for separately.** His
+words: "don't worry about the ring, I think you've got the note on it."
+Closes the "that ring is better, but the word dropped on it" note from
+CT without further action. A different ask followed it, not fully
+resolved: "the version you did with it, the shock was wrapped around
+it, give me four more, I want to see other ways of seeing it." Read as
+wanting four more style variations of the overlay itself, beyond Hum,
+Pulse, Relay and Still already built in CL, "the shock was wrapped
+around it" not confidently identified and not guessed at further.
+
