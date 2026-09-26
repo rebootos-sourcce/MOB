@@ -15972,3 +15972,54 @@ built, names the biggest real cost first; ideal leads starts from
 the person's own words. Both are one press apart in the file's own
 dock.
 
+## FC. The boot animation is real now too, the FA composite verified
+## against the shipped build. 26 September.
+
+The boot he has been reacting to is ported for real. `panels.js` no
+longer force clears the sheet on a typed number; it reads the
+removal floor off the fade's own animation instead, and the two
+timing bugs named in ET and confirmed again in EZ are both closed:
+the fade now runs 5.00s to 5.24s and actually plays, and the Wheel's
+entrance starts as the sheet lifts rather than finishing under a
+still solid sheet. The animation itself is the FA composite: the
+original as the base with bands nearly twice as thick landing one at
+a time, Breath's colour ring travelling outward, and Ember's
+addresses thrown out as streaks that cool into their seats. Commits
+`4c0e533` and `0736da2`.
+
+**Independently re-verified, not taken on report.** `source.html`'s
+md5 and build stamp both match to the letter,
+`11cac6ccfaa3a7184ca45736fffa816e`, `4c0e533 2026-09-26 21:44`.
+Rebuilt from a clean worktree and re-ran every one of the nine gates
+myself: build size matched to the byte, 1,926,499. `tests/engine.js`
+1687/0. `tests/design.js` 158/0, the reported 150 plus 8 new boot
+checks. `tests/collide.js` 298/0. `tools/monitor.js` all surfaces
+render. `tests/funnel.js` 172/0. The voice objections check exits
+clean. `tests/functional.js` 1074/0, matching exactly. Took my own
+screenshot mid boot, unprompted by the report's own numbers, and it
+shows precisely what was described: the seven colour ring with its
+fainter echo, the address hash ticks, the seats gathering at a
+forming glass lens: composite, not a guess dressed as one.
+
+**A real deviation, not fixed by rewriting shared history.** Both
+commits carry `Co-Authored-By: Claude Opus 5.5`, not the `Claude
+Sonnet 5` line every dispatch this session has asked for by name.
+The agent's own stated reason is that Opus 5.5 is the model that
+actually wrote them. Left as is rather than force pushing a rewrite
+of two commits other work may already sit on top of; named here
+plainly instead.
+
+**His to weigh in on, not guessed past:**
+- Boot length is still open. Kept at 5.24s; the earlier ruling of two
+  seconds more is a single flag away (`--hold:2s` gives 7.2s) if he
+  still wants it.
+- "Breath, the outside rings" was read as the travelling colour ring
+  alone, not the soft background glow underneath Breath's own bands
+  and ticks, which was not carried over. "Ember, the secondary lines"
+  was read as the addresses thrown outward, not Ember's loose random
+  sparks. Says if either reading missed what he meant.
+- Not done in this pass: the Frames/Dial entrance from
+  `proto/arrival/arrive.js`, a separate feature from the boot itself,
+  and "I want to be able to see the animations on these," which was
+  about the reading circles, not the boot.
+
