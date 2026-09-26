@@ -426,7 +426,7 @@ LIGHTINGS.forEach(function(t,i){
 /* ---- the icon grids. the icon carries the colour, selection is a ring. ---- */
 DOMAINS.forEach(function(d,i){
  var b=document.createElement('button');b.className='ib';b.type='button';
- b.style.setProperty('--c',ROOTCOL[d.r]);
+ b.style.setProperty('--c',rootCol(d.r));
 /* THE TOOLTIP SAYS WHAT THE THING IS AND WHAT PRESSING IT DOES. It said
     "Justice, Architect. <one line>. Shift-click to add." which names the thing
     and then jumps straight to a keyboard trick, with nothing in between about
@@ -439,9 +439,9 @@ DOMAINS.forEach(function(d,i){
   +'the ones already selected.';
  b.setAttribute('aria-label',d.nm+', '+d.r+' cluster');
  b.innerHTML=svgI('<path d="'+d.ic+'"/>')
-  +'<span class="rt" style="background:'+ROOTCOL[d.r]+'"></span>';
+  +'<span class="rt" style="background:var(--c)"></span>';
  b.addEventListener('mouseenter',function(){
-  $('capD').innerHTML='<b style="color:'+ROOTCOL[d.r]+'">'+d.r+'</b>, '+d.nm+'. '+d.d;});
+  $('capD').innerHTML='<b style="color:'+rootCol(d.r)+'">'+d.r+'</b>, '+d.nm+'. '+d.d;});
  b.addEventListener('mouseleave',capD);
  /* notYours, not toYou. On a worked example this press loaded the blank own
     profile under the person with nothing said. See personas.js. */
@@ -461,16 +461,22 @@ function rootsLit(){
  return out;}
 ROOTD.forEach(function(rn){
  var b=document.createElement('button');b.type='button';b.dataset.r=rn;
- b.className='rootb';b.textContent=rn;b.setAttribute('aria-pressed',false);
+ b.className='rootb';b.setAttribute('aria-pressed',false);
+ /* THE MARK GOES ABOVE THE NAME, NOT INSTEAD OF IT. Four across in the rail
+    leaves each chip about 62 wide and "Architect" takes 50 of that, so a mark
+    beside the name does not fit, and a mark in place of it loses the only
+    place on this surface the four roots are named. The svg carries no text,
+    so the button's name is still the root's name. */
+ b.innerHTML=svgI('<path d="'+ROOTGLYPH[rn]+'"/>')+'<span>'+rn+'</span>';
  /* the colour is a custom property so the three states in the sheet can each
     mix against it. it was an inline style, which meant the sheet could not
     reach it and every state had to be written back in script. */
- b.style.setProperty('--rc',ROOTCOL[rn]);
+ b.style.setProperty('--rc',rootCol(rn));
  var holds=DOMAINS.filter(function(D){return D.r===rn;}).map(function(D){return D.nm;}).join(', ');
  b.title=rn+'. Holds '+holds+'. Affinity 1.3 on '+(AFFIN[rn]||[]).join(', ')
   +'. Filled means you added it. Washed means your selection is already in it.';
  b.addEventListener('mouseenter',function(){
-  $('capD').innerHTML='<b style="color:'+ROOTCOL[rn]+'">'+rn+'</b> root domain. Holds '
+  $('capD').innerHTML='<b style="color:'+rootCol(rn)+'">'+rn+'</b> root domain. Holds '
    +holds+'.';});
  b.addEventListener('mouseleave',capD);
  b.addEventListener('click',function(){if(notYours('change the root domain'))return;
@@ -486,12 +492,17 @@ ROOTD.forEach(function(rn){
  r.parentNode.insertBefore(d,r.nextSibling);})();
 function capD(){
  $('capD').innerHTML=S.doms.map(function(i){
-  return '<b style="color:'+ROOTCOL[DOMAINS[i].r]+'">'+DOMAINS[i].nm+'</b>';}).join(' + ')
+  return '<b style="color:'+rootCol(DOMAINS[i].r)+'">'+DOMAINS[i].nm+'</b>';}).join(' + ')
   +(S.roots.length?'<br>plus all of '+S.roots.join(', '):'');}
 [['ar1','a1'],['ar2','a2']].forEach(function(pair){
  ARCH.forEach(function(a,i){
   var b=document.createElement('button');b.className='ib';b.type='button';
-  b.style.setProperty('--c','var(--gold)');
+  /* EACH ARCHETYPE WEARS ITS SEAT, which was ruled 19 September and reached
+     the reading rows and never these tiles: every one of the twelve was
+     painted the one accent, so the grid showed twelve different things in
+     one colour and Primary read flat on every option the board tried.
+     Carried here on the 26 September ruling of the same board. */
+  b.style.setProperty('--c',icCol(a.b));
   b.title=a.nm+'. '+a.v+'. Shift-click to add.';b.setAttribute('aria-label',a.nm);
   b.innerHTML=svgI('<path d="'+a.ic+'"/>');
   b.addEventListener('mouseenter',function(){$('capA').innerHTML='<b>'+a.nm+'</b>, '+a.v;});
@@ -550,6 +561,20 @@ function capA(){$('capA').innerHTML=S.arcs.map(function(i){
 
    The sheet keeps auto-fill as its declared value, because this runs after
    layout and a grid has to be right before it does.
+
+   AND THEN THE ROW CAME DOWN TO THE FLOOR. The owner, 26 September: "make
+   them a little bit smaller so that they don't eat up so much real estate.
+   Since they're hover over anyway to get information... that way we get more
+   of the icons above the fold." Measured at 1600 with a profile loaded, the
+   second archetype grid ended at 1024 on a 1000 tall screen, so the last row
+   of the rail's icons was below the fold on the owner's own width. The row
+   was the square cell, 48.4 at 1600, and the only floor on it is the tap
+   target, so the row is the tap target now: 44, read off --tap like the
+   column floor above. The columns do not move, because the width is already
+   at the floor on one axis or the other: six across in 266 would be 39 wide.
+   Every cell stays at least 44 by 44, the hover and the caption are
+   untouched, and the rail gets 54 pixels back at 1600 with the tighter row
+   gap in the sheet. At 390 the cell was already 44.3 and barely moves.
    ============================================================ */
 function fitGrid(el){
  if(!el)return;
@@ -566,7 +591,7 @@ function fitGrid(el){
    .getPropertyValue('--tap'))||44;
  var nFit=Math.max(1,Math.floor((w+gap)/(tap+gap)));
  var cols=Math.min(n,Math.ceil(n/Math.ceil(n/nFit)));
- var rowH=(w-(nFit-1)*gap)/nFit;
+ var rowH=tap;
  var sig=n+'/'+cols+'/'+rowH.toFixed(2);
  if(el.dataset.fit===sig)return;
  el.style.gridTemplateColumns='repeat('+cols+',minmax(0,1fr))';
@@ -608,7 +633,12 @@ function syncSoul(){
   +(!S.roots.length&&!nlit?'click a root to add every domain under it':'');
  capD();capA();}
 function rebuildSwatches(){
- $('doms').querySelectorAll('.ib').forEach(function(b,i){b.style.setProperty('--c',ROOTCOL[DOMAINS[i].r]);});
+ /* every colour the rail's grids wear is per lighting now, so all three move
+    here. The domains alone did before, and they moved to the same value. */
+ $('doms').querySelectorAll('.ib').forEach(function(b,i){b.style.setProperty('--c',rootCol(DOMAINS[i].r));});
+ $('roots').querySelectorAll('.rootb').forEach(function(b){b.style.setProperty('--rc',rootCol(b.dataset.r));});
+ ['ar1','ar2'].forEach(function(id){
+  $(id).querySelectorAll('.ib').forEach(function(b,i){b.style.setProperty('--c',icCol(ARCH[i].b));});});
  CHILD.forEach(function(cf){
   var i=CHF[cf.nm].inp.parentElement.querySelector('i');if(i)i.style.background=seatCol(cf.seat);});
  SI.forEach(function(l){

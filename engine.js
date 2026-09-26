@@ -578,6 +578,38 @@ const ANTKEY=/EXPECTATION|ANXIETY|WORRY|HYPERVIGIL|DREAD|ANTICIPAT|OBSESS|COMPUL
 
 const ROOTD=['Architect','Engine','Weaver','Witness'];
 const ROOTCOL={Architect:'#7D93E0',Engine:'#D8924E',Weaver:'#5FD5A6',Witness:'#A77EDB'};
+/* WHICH SEAT EACH ROOT WEARS. ROOTCOL above is these four seats' Dark values
+   written out once, and that is the whole of why the root family failed on
+   paper: Snow's domain icons measured 1.34 to 1 and Glass white's 1.59 against
+   a 3 to 1 floor, because the four colours never learned which lighting they
+   were drawn on. Naming the seat lets the rail ask seatCol, which does know.
+   On Dark the answer is the same four hex values. ROOTCOL stays for the
+   surfaces that still read it and for the export contract. */
+const ROOTSEAT={Architect:'3rd Eye',Engine:'Sacral',Weaver:'Heart',Witness:'Crown'};
+/* THE FOUR ROOTS HAD NO MARK. The owner: "I need icons for Architect, Engine,
+   Weaver, Witness, I don't know why those don't have icons." They were built
+   as bare text, and every other named family in the product wears a glyph.
+   Ruled 26 September from the proto/rooticons board, the recommended set.
+   Same grammar as the other families: 24 box, open stroke, no fill, drawn
+   from what each root says rather than what the word sounds like, and checked
+   against every glyph already in the build so none doubles an existing mark.
+     Architect  a set square with its cut out. The Creator is an equal sided
+                triangle on its base; the right angle and the inner cut keep
+                the two apart at badge size.
+     Engine     a flame with its inner tongue, the one thing that both starts
+                and consumes. The open crown keeps it off the Sacral lens.
+     Weaver     a confluence, two streams meeting and running on as one, which
+                is "joins and dissolves" drawn. Taller than the box's usual
+                6 to 18 on purpose: two lines carry less ink than a flame and
+                read a size smaller beside it at the same height.
+     Witness    a viewfinder's corners around a point: the frame holds the
+                thing and never touches it. The eye was the obvious answer and
+                it is taken twice, by the 3rd Eye seat and the awareness gate. */
+const ROOTGLYPH={
+ Architect:'M4 20V4l16 16z M8 16v-5.4l5.4 5.4z',
+ Engine:'M12 21c-3.8 0-6.4-2.6-6.4-6.1 0-3.9 3-5.9 4-9.9 1.9 1.3 3.3 3.3 3.5 5.7 1-.8 1.7-2 1.8-3.4 2.3 1.9 3.5 4.6 3.5 7.6 0 3.5-2.6 6.1-6.4 6.1z M12 21c-1.5 0-2.5-1-2.5-2.5 0-1.6 1.2-2.6 2.5-4.1 1.3 1.5 2.5 2.5 2.5 4.1 0 1.5-1 2.5-2.5 2.5',
+ Weaver:'M3 4.5c5.5 0 6 7.5 11 7.5h7 M3 19.5c5.5 0 6-7.5 11-7.5',
+ Witness:'M4 9V4h5 M15 4h5v5 M20 15v5h-5 M9 20H4v-5 M12 12m-1.7 0a1.7 1.7 0 1 0 3.4 0a1.7 1.7 0 1 0-3.4 0'};
 /* nineteen named blueprint domains under the four roots. the original header
    comment claimed eighteen with four unnamed; the data has always been
    nineteen named, and DARC divides by nineteen. */

@@ -571,7 +571,6 @@ body.punch .vt,body.punch .btn,body.punch .pm-lb,body.punch .st-mic{background:v
 body.punch .vt[aria-pressed=true]{background:var(--accent);color:var(--on-accent)}
 body.punch .vt[aria-pressed=true] svg{stroke:var(--on-accent)}
 body.punch .ib{background:var(--sunk);border-width:0}
-body.punch .ib svg{opacity:.92}
 /* A pressed icon fills with its own seat colour, --c, which the domain and
    archetype grids already carry. Only a control with no seat takes --seat. */
 body.punch .ib[aria-pressed=true],body.punch .ib[data-r="2"]{background:var(--c,var(--accent));border-color:transparent}
@@ -1789,17 +1788,20 @@ body.punch .rt-cell{box-shadow:none;background:var(--panel-2)}
    away from here. auto-fill with a floor of one tap target fits as many whole
    columns as there is room for and then stops, so the count follows the width
    at every density and every rail size and the overflow cannot come back. */
-.g6{display:grid;grid-template-columns:repeat(auto-fill,minmax(var(--tap),1fr));gap:6px}
+/* the rows sit four apart and the columns six. A row gap is height the rail
+   pays for on every row, and it is spacing between targets rather than part
+   of one, so it is the one to give back; see fitGrid for the rest. */
+.g6{display:grid;grid-template-columns:repeat(auto-fill,minmax(var(--tap),1fr));gap:4px 6px}
 /* nineteen domains on five columns, so each root cluster is one contiguous
    row of one colour. Under high hue quantity, scattered colour delays
    attentional orienting; contiguous blocks of one colour search fastest. */
-.gdom{display:grid;grid-template-columns:repeat(auto-fill,minmax(var(--tap),1fr));gap:6px}
+.gdom{display:grid;grid-template-columns:repeat(auto-fill,minmax(var(--tap),1fr));gap:4px 6px}
 /* THE CELL IS A RECTANGLE ONCE THE GRID HAS BEEN FITTED, AND ONLY THEN.
    .ib is a square, so in the rail's icon grids a column count is also a
    height: dropping the twelve archetypes from five columns to four to close
    the gap he named widened every cell from 48 to 61.5 and made it 61.5 tall
    with it, which put eighty one pixels of new scroll into the rail. fitGrid
-   pins the row to the height the grid already had, and the aspect ratio has
+   pins the row, to the tap floor since 26 September, and the aspect ratio has
    to give way to that or the button overflows its own row and sits on top of
    the next one, which is what the first cut measured: rows of 48 carrying
    buttons of 61.5.
@@ -1813,10 +1815,17 @@ body.punch .rt-cell{box-shadow:none;background:var(--panel-2)}
  transition:all var(--t-micro) var(--ease-out);position:relative}
 /* the icon takes the seat colour and keeps generous inner spacing. narrow
    inner spacing is what actually interferes with icon recognition. */
+/* AND IT RESTS AT FULL STRENGTH. It rested at opacity .78 and went to 1 under
+   a pointer, which mixed every stroke a fifth of the way into its own dark
+   tile until somebody hovered it, and that was most of what the owner called
+   dull. The proto/rooticons board measured it on Dark: the nineteen domain
+   icons drew at an effective OKLCH chroma of 0.103 against 0.125 in the
+   tokens they were given. Ruled off on 26 September, option B. Hover keeps
+   its tile and border change, which is the affordance; the icon stops being
+   the thing that changes. */
 .ib svg{width:46%;height:46%;stroke:var(--c,var(--mid));stroke-width:1.7;fill:none;
- stroke-linecap:round;stroke-linejoin:round;transition:all var(--t-micro) var(--ease-out);opacity:.78}
+ stroke-linecap:round;stroke-linejoin:round;transition:all var(--t-micro) var(--ease-out)}
 .ib:hover{background:var(--panel-2);border-color:var(--edge-2)}
-.ib:hover svg{opacity:1}
 /* SELECTION IS A RING. recognition speed matters most before selection, so a
    fill spends legibility on the one option already found. */
 .ib[aria-pressed=true]{border-color:var(--gold);background:var(--panel-2);
@@ -1838,8 +1847,8 @@ body.punch .rt-cell{box-shadow:none;background:var(--panel-2)}
    and he asked for flat colour, so it is flat colour. The ink on top is a
    fixed dark rather than var(--bg), because all four root colours are light
    and --bg goes light in snow, which would have printed light on light. */
-.rootb{min-height:var(--tap);display:flex;align-items:center;justify-content:center;
- padding:8px 4px;border-radius:var(--r-xs);border:1.5px solid var(--edge);
+.rootb{min-height:var(--tap);display:flex;flex-direction:column;gap:4px;align-items:center;justify-content:center;
+ padding:8px 2px 6px;border-radius:var(--r-xs);border:1.5px solid var(--edge);
  background:transparent;font-family:var(--sans);font-size:11.5px;font-weight:400;
  line-height:1.15;text-align:center;cursor:pointer;transition:all var(--t-micro) var(--ease-out);
  color:var(--rc,var(--mid))}
@@ -1851,6 +1860,23 @@ body.punch .rt-cell{box-shadow:none;background:var(--panel-2)}
 /* added: you clicked it. flat. */
 .rootb[aria-pressed=true]{background:var(--rc);border-color:var(--rc);color:#14151C;
  font-weight:500}
+/* AND ON PAPER THE FOUR ARE NOT LIGHT ANY MORE. Snow and Glass white draw the
+   roots from their own deepened palette, so the fixed dark ink above would
+   sit dark on dark. The ground's own paper was tried first and read 4.35 on
+   Snow and 4.18 on Glass white against the 4.5 text floor, because paper is
+   not white; white is, and it clears it. Fixed for the same reason the dark
+   ink is fixed. */
+body.snow .rootb[aria-pressed=true],body.glasswhite .rootb[aria-pressed=true]{color:#FFFFFF}
+/* THE MARK SITS ABOVE THE NAME, which is why .rootb is a column. The chip
+   was one line of text; stacked, it measures 51.6 tall against 44, which is
+   seven and a half pixels across one row, paid back seven times over by the
+   icon grids below it in the same round. The mark takes currentColor, so off, washed and added each carry it
+   without a rule of their own, and it stays an open stroke on every state,
+   filled chip or not. */
+.rootb svg{width:19px;height:19px;flex:0 0 auto;stroke:currentColor;fill:none;
+ stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.rootb[aria-pressed=true] svg{stroke-width:1.9}
+.rootb span{display:block;line-height:1.1}
 .rootlegend{font-family:var(--num);font-size:11px;color:var(--dim);
  margin:-9px 0 14px;line-height:1.5}
 .rootb[aria-pressed=true]{font-weight:600}

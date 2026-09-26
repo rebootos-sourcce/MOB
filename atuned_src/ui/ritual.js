@@ -8,7 +8,22 @@ var TRACK4BAND={Root:'Body',Sacral:'Somatic',Solar:'Somatic',Heart:'Body',
                 Throat:'Mind','3rd Eye':'Mind',Crown:'Energy'};
 function ritFor(r){
  var band=r.darkB||'Root', track=TRACK4BAND[band]||'Body';
- var tier=r.DQ>=8?1:(r.DQ>=4?2:3);        /* heavy load starts at entry */
+ /* HEAVY LOAD STARTS AT 70, AND IT WAS STARTING AT 8. This read DQ>=8 and
+    DQ>=4, written when the shadow score ran zero to ten, and it never moved
+    when compute() rescaled DQ to zero to a hundred. So a DQ of 8 out of 100,
+    barely any held charge, was treated as heavy load and locked a person to
+    the entry practices. Measured on the roster: nine of fourteen profiles sat
+    in tier 1 at DQ 10.7 to 54.3, and the heaviest person in it, Gordon at
+    54.3, is median on the scale below. The bands are the owner's, ruled 26
+    September on a zero to ten scale: "heavy would be seven eight nine, four
+    five six would be median, one two three would be impaired, zero is
+    flowing, ten is blocked or collapsed." Times ten onto DQ: heavy and
+    collapsed from 70, median from 40, impaired and flowing below.
+    tools/loopsim.js carries a copy of this line and moved with it.
+    tools/ritualsim.js keeps 8 and 4 on purpose: it is the AP2 snapshot, it
+    still calls the first practice rather than the lightest, and it reproduces
+    the numbers that were taken with both. */
+ var tier=r.DQ>=70?1:(r.DQ>=40?2:3);
  var fit=PRACTICE.filter(function(p){return p.tier<=tier;});
  var first=fit.filter(function(p){return p.track===track;});
  /* at tier 1 some tracks hold nothing. say so rather than naming a track and

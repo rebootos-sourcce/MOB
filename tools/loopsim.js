@@ -122,7 +122,9 @@ const TRACK4BAND={Root:'Body',Sacral:'Somatic',Solar:'Somatic',Heart:'Body',
                   Throat:'Mind','3rd Eye':'Mind',Crown:'Energy'};
 function ritFor(r){
  const band=r.darkB||'Root', track=TRACK4BAND[band]||'Body';
- const tier=r.DQ>=8?1:(r.DQ>=4?2:3);
+ /* the owner's bands, ruled 26 September. This copy read 8 and 4 with the
+    product, the zero to ten scale DQ left behind; see ui/ritual.js. */
+ const tier=r.DQ>=70?1:(r.DQ>=40?2:3);
  const fit=PRACTICE.filter(p=>p.tier<=tier);
  const first=fit.filter(p=>p.track===track);
  const lightest=set=>set.slice().sort((a,b)=>(a.min-b.min)||(a.tier-b.tier))[0];

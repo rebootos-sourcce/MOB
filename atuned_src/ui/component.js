@@ -52,11 +52,77 @@ function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'
    readings in the rail were drawn in colours meant for a black panel. Every
    value written by JS rather than by a token had the same fault, which is why
    the rail looked washed while the sheet looked right. */
+/* AND IT KNEW ABOUT TWO OUT OF THREE. Glass white is paper, #E8E7E2 under
+   rails at sixty two percent white, and it fell through to the dark palette,
+   so every seat colour on it was drawn for a black panel: Connection's icon
+   measured 1.59 to 1 against a 3 to 1 floor, and 5.14 after. It takes the
+   Snow palette because it is the same question, a light ground.
+   bc() below is the canvas twin of this ladder and was deliberately not moved
+   with it: it leans on LIGHT() for its ink and its node wash as well, and the
+   Glass white stage is its own piece of work, not a line added here. */
 function seatCol(b){
  var P = S.theme==='lumen' ? PAL_VIVID
-       : S.theme==='snow'  ? PAL_LIGHT
+       : S.theme==='snow'||S.theme==='glasswhite' ? PAL_LIGHT
        : PAL;
  return P[b]||'var(--gold)';}
+/* THE ICON GRIDS, PUNCHED UP FIFTEEN PERCENT. The owner: "all our normal
+   icons under Blueprint Domains, Primary, I think we want those punched up a
+   little more, more saturated, they're just a little dull." Ruled option B
+   from the proto/rooticons board, 26 September. Most of the dullness was the
+   resting opacity in the sheet, which is gone; this is the other part, chroma
+   times 1.15 in OKLCH with hue and lightness held, so a colour gets louder
+   without getting lighter or darker.
+
+   The clamp gives up chroma and never hue or lightness, which is what CSS
+   Color 4 asks of a relative colour and what Chromium does not do yet. That
+   is why this is arithmetic here and not oklch(from ...) in the sheet.
+
+   Two things are held. Root keeps its shipped value, because a chroma
+   multiplier walks it toward ALARM: OKLab distance from #FF2E1F is 0.082 as
+   shipped and 0.060 lifted, and the alarm is reserved for something being
+   wrong. And Lumen is not touched at all, because it is the owner's own
+   palette and whether it moves is his open question on that board. */
+var _lift={};
+function icLift(hex){
+ if(_lift[hex])return _lift[hex];
+ if(!/^#[0-9a-f]{6}$/i.test(hex))return hex;
+ var lin=function(v){return v<=0.04045?v/12.92:Math.pow((v+0.055)/1.055,2.4);};
+ var unlin=function(v){return v<=0.0031308?12.92*v:1.055*Math.pow(v,1/2.4)-0.055;};
+ var c=hx(hex).map(function(v){return lin(v/255);});
+ var l=Math.cbrt(0.4122214708*c[0]+0.5363325363*c[1]+0.0514459929*c[2]);
+ var m=Math.cbrt(0.2119034982*c[0]+0.6806995451*c[1]+0.1073969566*c[2]);
+ var s=Math.cbrt(0.0883024619*c[0]+0.2817188376*c[1]+0.6299787005*c[2]);
+ var L=0.2104542553*l+0.7936177850*m-0.0040720468*s;
+ var A=1.9779984951*l-2.4285922050*m+0.4505937099*s;
+ var B=0.0259040371*l+0.7827717662*m-0.8086757660*s;
+ var toRgb=function(k){
+  var a=A*k,b=B*k;
+  var l3=Math.pow(L+0.3963377774*a+0.2158037573*b,3);
+  var m3=Math.pow(L-0.1055613458*a-0.0638541728*b,3);
+  var s3=Math.pow(L-0.0894841775*a-1.2914855480*b,3);
+  return [4.0767416621*l3-3.3077115913*m3+0.2309699292*s3,
+   -1.2684380046*l3+2.6097574011*m3-0.3413193965*s3,
+   -0.0041960863*l3-0.7034186147*m3+1.7076147010*s3];};
+ var inG=function(v){return v.every(function(x){return x>=-1e-4&&x<=1+1e-4;});};
+ var k=1.15, rgb=toRgb(k);
+ if(!inG(rgb)){var lo=1,hi=k;
+  for(var i=0;i<24;i++){var mid=(lo+hi)/2; if(inG(toRgb(mid)))lo=mid; else hi=mid;}
+  rgb=toRgb(lo);}
+ return (_lift[hex]='#'+rgb.map(function(v){
+  v=Math.round(Math.max(0,Math.min(1,unlin(Math.max(0,v))))*255);
+  return (v<16?'0':'')+v.toString(16);}).join('').toUpperCase());}
+/* the colour an icon in the rail's grids wears, for a seat, and for a root,
+   which is its seat's. LUMEN DRAWS BOTH AS IT SHIPPED. Routed through seatCol
+   it takes the vivid palette, and on its paper that moved the archetype grid
+   from 2.86 to 1 down to 2.22, measured: a change to his own palette that makes
+   it worse, which nobody has ruled. So Lumen keeps ROOTCOL for the roots and
+   the one accent for the archetypes until he does. */
+function icCol(b){
+ if(S.theme==='lumen')return 'var(--gold)';
+ var c=seatCol(b);
+ return b==='Root'?c:icLift(c);}
+function rootCol(rn){
+ return S.theme==='lumen'?ROOTCOL[rn]:icCol(ROOTSEAT[rn]);}
 function cr(band,pct,o){
  o=o||{};
  var size=o.size||'md', G=CRGEO[size]||CRGEO.md;

@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="3a1cde5 2026-09-26 16:14"><head><meta charset="utf-8">
+<html lang="en" data-build="0d5fb9c 2026-09-26 16:24"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -571,7 +571,6 @@ body.punch .vt,body.punch .btn,body.punch .pm-lb,body.punch .st-mic{background:v
 body.punch .vt[aria-pressed=true]{background:var(--accent);color:var(--on-accent)}
 body.punch .vt[aria-pressed=true] svg{stroke:var(--on-accent)}
 body.punch .ib{background:var(--sunk);border-width:0}
-body.punch .ib svg{opacity:.92}
 /* A pressed icon fills with its own seat colour, --c, which the domain and
    archetype grids already carry. Only a control with no seat takes --seat. */
 body.punch .ib[aria-pressed=true],body.punch .ib[data-r="2"]{background:var(--c,var(--accent));border-color:transparent}
@@ -1789,17 +1788,20 @@ body.punch .rt-cell{box-shadow:none;background:var(--panel-2)}
    away from here. auto-fill with a floor of one tap target fits as many whole
    columns as there is room for and then stops, so the count follows the width
    at every density and every rail size and the overflow cannot come back. */
-.g6{display:grid;grid-template-columns:repeat(auto-fill,minmax(var(--tap),1fr));gap:6px}
+/* the rows sit four apart and the columns six. A row gap is height the rail
+   pays for on every row, and it is spacing between targets rather than part
+   of one, so it is the one to give back; see fitGrid for the rest. */
+.g6{display:grid;grid-template-columns:repeat(auto-fill,minmax(var(--tap),1fr));gap:4px 6px}
 /* nineteen domains on five columns, so each root cluster is one contiguous
    row of one colour. Under high hue quantity, scattered colour delays
    attentional orienting; contiguous blocks of one colour search fastest. */
-.gdom{display:grid;grid-template-columns:repeat(auto-fill,minmax(var(--tap),1fr));gap:6px}
+.gdom{display:grid;grid-template-columns:repeat(auto-fill,minmax(var(--tap),1fr));gap:4px 6px}
 /* THE CELL IS A RECTANGLE ONCE THE GRID HAS BEEN FITTED, AND ONLY THEN.
    .ib is a square, so in the rail's icon grids a column count is also a
    height: dropping the twelve archetypes from five columns to four to close
    the gap he named widened every cell from 48 to 61.5 and made it 61.5 tall
    with it, which put eighty one pixels of new scroll into the rail. fitGrid
-   pins the row to the height the grid already had, and the aspect ratio has
+   pins the row, to the tap floor since 26 September, and the aspect ratio has
    to give way to that or the button overflows its own row and sits on top of
    the next one, which is what the first cut measured: rows of 48 carrying
    buttons of 61.5.
@@ -1813,10 +1815,17 @@ body.punch .rt-cell{box-shadow:none;background:var(--panel-2)}
  transition:all var(--t-micro) var(--ease-out);position:relative}
 /* the icon takes the seat colour and keeps generous inner spacing. narrow
    inner spacing is what actually interferes with icon recognition. */
+/* AND IT RESTS AT FULL STRENGTH. It rested at opacity .78 and went to 1 under
+   a pointer, which mixed every stroke a fifth of the way into its own dark
+   tile until somebody hovered it, and that was most of what the owner called
+   dull. The proto/rooticons board measured it on Dark: the nineteen domain
+   icons drew at an effective OKLCH chroma of 0.103 against 0.125 in the
+   tokens they were given. Ruled off on 26 September, option B. Hover keeps
+   its tile and border change, which is the affordance; the icon stops being
+   the thing that changes. */
 .ib svg{width:46%;height:46%;stroke:var(--c,var(--mid));stroke-width:1.7;fill:none;
- stroke-linecap:round;stroke-linejoin:round;transition:all var(--t-micro) var(--ease-out);opacity:.78}
+ stroke-linecap:round;stroke-linejoin:round;transition:all var(--t-micro) var(--ease-out)}
 .ib:hover{background:var(--panel-2);border-color:var(--edge-2)}
-.ib:hover svg{opacity:1}
 /* SELECTION IS A RING. recognition speed matters most before selection, so a
    fill spends legibility on the one option already found. */
 .ib[aria-pressed=true]{border-color:var(--gold);background:var(--panel-2);
@@ -1838,8 +1847,8 @@ body.punch .rt-cell{box-shadow:none;background:var(--panel-2)}
    and he asked for flat colour, so it is flat colour. The ink on top is a
    fixed dark rather than var(--bg), because all four root colours are light
    and --bg goes light in snow, which would have printed light on light. */
-.rootb{min-height:var(--tap);display:flex;align-items:center;justify-content:center;
- padding:8px 4px;border-radius:var(--r-xs);border:1.5px solid var(--edge);
+.rootb{min-height:var(--tap);display:flex;flex-direction:column;gap:4px;align-items:center;justify-content:center;
+ padding:8px 2px 6px;border-radius:var(--r-xs);border:1.5px solid var(--edge);
  background:transparent;font-family:var(--sans);font-size:11.5px;font-weight:400;
  line-height:1.15;text-align:center;cursor:pointer;transition:all var(--t-micro) var(--ease-out);
  color:var(--rc,var(--mid))}
@@ -1851,6 +1860,23 @@ body.punch .rt-cell{box-shadow:none;background:var(--panel-2)}
 /* added: you clicked it. flat. */
 .rootb[aria-pressed=true]{background:var(--rc);border-color:var(--rc);color:#14151C;
  font-weight:500}
+/* AND ON PAPER THE FOUR ARE NOT LIGHT ANY MORE. Snow and Glass white draw the
+   roots from their own deepened palette, so the fixed dark ink above would
+   sit dark on dark. The ground's own paper was tried first and read 4.35 on
+   Snow and 4.18 on Glass white against the 4.5 text floor, because paper is
+   not white; white is, and it clears it. Fixed for the same reason the dark
+   ink is fixed. */
+body.snow .rootb[aria-pressed=true],body.glasswhite .rootb[aria-pressed=true]{color:#FFFFFF}
+/* THE MARK SITS ABOVE THE NAME, which is why .rootb is a column. The chip
+   was one line of text; stacked, it measures 51.6 tall against 44, which is
+   seven and a half pixels across one row, paid back seven times over by the
+   icon grids below it in the same round. The mark takes currentColor, so off, washed and added each carry it
+   without a rule of their own, and it stays an open stroke on every state,
+   filled chip or not. */
+.rootb svg{width:19px;height:19px;flex:0 0 auto;stroke:currentColor;fill:none;
+ stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.rootb[aria-pressed=true] svg{stroke-width:1.9}
+.rootb span{display:block;line-height:1.1}
 .rootlegend{font-family:var(--num);font-size:11px;color:var(--dim);
  margin:-9px 0 14px;line-height:1.5}
 .rootb[aria-pressed=true]{font-weight:600}
@@ -5457,6 +5483,38 @@ const ANTKEY=/EXPECTATION|ANXIETY|WORRY|HYPERVIGIL|DREAD|ANTICIPAT|OBSESS|COMPUL
 
 const ROOTD=['Architect','Engine','Weaver','Witness'];
 const ROOTCOL={Architect:'#7D93E0',Engine:'#D8924E',Weaver:'#5FD5A6',Witness:'#A77EDB'};
+/* WHICH SEAT EACH ROOT WEARS. ROOTCOL above is these four seats' Dark values
+   written out once, and that is the whole of why the root family failed on
+   paper: Snow's domain icons measured 1.34 to 1 and Glass white's 1.59 against
+   a 3 to 1 floor, because the four colours never learned which lighting they
+   were drawn on. Naming the seat lets the rail ask seatCol, which does know.
+   On Dark the answer is the same four hex values. ROOTCOL stays for the
+   surfaces that still read it and for the export contract. */
+const ROOTSEAT={Architect:'3rd Eye',Engine:'Sacral',Weaver:'Heart',Witness:'Crown'};
+/* THE FOUR ROOTS HAD NO MARK. The owner: "I need icons for Architect, Engine,
+   Weaver, Witness, I don't know why those don't have icons." They were built
+   as bare text, and every other named family in the product wears a glyph.
+   Ruled 26 September from the proto/rooticons board, the recommended set.
+   Same grammar as the other families: 24 box, open stroke, no fill, drawn
+   from what each root says rather than what the word sounds like, and checked
+   against every glyph already in the build so none doubles an existing mark.
+     Architect  a set square with its cut out. The Creator is an equal sided
+                triangle on its base; the right angle and the inner cut keep
+                the two apart at badge size.
+     Engine     a flame with its inner tongue, the one thing that both starts
+                and consumes. The open crown keeps it off the Sacral lens.
+     Weaver     a confluence, two streams meeting and running on as one, which
+                is "joins and dissolves" drawn. Taller than the box's usual
+                6 to 18 on purpose: two lines carry less ink than a flame and
+                read a size smaller beside it at the same height.
+     Witness    a viewfinder's corners around a point: the frame holds the
+                thing and never touches it. The eye was the obvious answer and
+                it is taken twice, by the 3rd Eye seat and the awareness gate. */
+const ROOTGLYPH={
+ Architect:'M4 20V4l16 16z M8 16v-5.4l5.4 5.4z',
+ Engine:'M12 21c-3.8 0-6.4-2.6-6.4-6.1 0-3.9 3-5.9 4-9.9 1.9 1.3 3.3 3.3 3.5 5.7 1-.8 1.7-2 1.8-3.4 2.3 1.9 3.5 4.6 3.5 7.6 0 3.5-2.6 6.1-6.4 6.1z M12 21c-1.5 0-2.5-1-2.5-2.5 0-1.6 1.2-2.6 2.5-4.1 1.3 1.5 2.5 2.5 2.5 4.1 0 1.5-1 2.5-2.5 2.5',
+ Weaver:'M3 4.5c5.5 0 6 7.5 11 7.5h7 M3 19.5c5.5 0 6-7.5 11-7.5',
+ Witness:'M4 9V4h5 M15 4h5v5 M20 15v5h-5 M9 20H4v-5 M12 12m-1.7 0a1.7 1.7 0 1 0 3.4 0a1.7 1.7 0 1 0-3.4 0'};
 /* nineteen named blueprint domains under the four roots. the original header
    comment claimed eighteen with four unnamed; the data has always been
    nineteen named, and DARC divides by nineteen. */
@@ -13901,11 +13959,77 @@ function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'
    readings in the rail were drawn in colours meant for a black panel. Every
    value written by JS rather than by a token had the same fault, which is why
    the rail looked washed while the sheet looked right. */
+/* AND IT KNEW ABOUT TWO OUT OF THREE. Glass white is paper, #E8E7E2 under
+   rails at sixty two percent white, and it fell through to the dark palette,
+   so every seat colour on it was drawn for a black panel: Connection's icon
+   measured 1.59 to 1 against a 3 to 1 floor, and 5.14 after. It takes the
+   Snow palette because it is the same question, a light ground.
+   bc() below is the canvas twin of this ladder and was deliberately not moved
+   with it: it leans on LIGHT() for its ink and its node wash as well, and the
+   Glass white stage is its own piece of work, not a line added here. */
 function seatCol(b){
  var P = S.theme==='lumen' ? PAL_VIVID
-       : S.theme==='snow'  ? PAL_LIGHT
+       : S.theme==='snow'||S.theme==='glasswhite' ? PAL_LIGHT
        : PAL;
  return P[b]||'var(--gold)';}
+/* THE ICON GRIDS, PUNCHED UP FIFTEEN PERCENT. The owner: "all our normal
+   icons under Blueprint Domains, Primary, I think we want those punched up a
+   little more, more saturated, they're just a little dull." Ruled option B
+   from the proto/rooticons board, 26 September. Most of the dullness was the
+   resting opacity in the sheet, which is gone; this is the other part, chroma
+   times 1.15 in OKLCH with hue and lightness held, so a colour gets louder
+   without getting lighter or darker.
+
+   The clamp gives up chroma and never hue or lightness, which is what CSS
+   Color 4 asks of a relative colour and what Chromium does not do yet. That
+   is why this is arithmetic here and not oklch(from ...) in the sheet.
+
+   Two things are held. Root keeps its shipped value, because a chroma
+   multiplier walks it toward ALARM: OKLab distance from #FF2E1F is 0.082 as
+   shipped and 0.060 lifted, and the alarm is reserved for something being
+   wrong. And Lumen is not touched at all, because it is the owner's own
+   palette and whether it moves is his open question on that board. */
+var _lift={};
+function icLift(hex){
+ if(_lift[hex])return _lift[hex];
+ if(!/^#[0-9a-f]{6}$/i.test(hex))return hex;
+ var lin=function(v){return v<=0.04045?v/12.92:Math.pow((v+0.055)/1.055,2.4);};
+ var unlin=function(v){return v<=0.0031308?12.92*v:1.055*Math.pow(v,1/2.4)-0.055;};
+ var c=hx(hex).map(function(v){return lin(v/255);});
+ var l=Math.cbrt(0.4122214708*c[0]+0.5363325363*c[1]+0.0514459929*c[2]);
+ var m=Math.cbrt(0.2119034982*c[0]+0.6806995451*c[1]+0.1073969566*c[2]);
+ var s=Math.cbrt(0.0883024619*c[0]+0.2817188376*c[1]+0.6299787005*c[2]);
+ var L=0.2104542553*l+0.7936177850*m-0.0040720468*s;
+ var A=1.9779984951*l-2.4285922050*m+0.4505937099*s;
+ var B=0.0259040371*l+0.7827717662*m-0.8086757660*s;
+ var toRgb=function(k){
+  var a=A*k,b=B*k;
+  var l3=Math.pow(L+0.3963377774*a+0.2158037573*b,3);
+  var m3=Math.pow(L-0.1055613458*a-0.0638541728*b,3);
+  var s3=Math.pow(L-0.0894841775*a-1.2914855480*b,3);
+  return [4.0767416621*l3-3.3077115913*m3+0.2309699292*s3,
+   -1.2684380046*l3+2.6097574011*m3-0.3413193965*s3,
+   -0.0041960863*l3-0.7034186147*m3+1.7076147010*s3];};
+ var inG=function(v){return v.every(function(x){return x>=-1e-4&&x<=1+1e-4;});};
+ var k=1.15, rgb=toRgb(k);
+ if(!inG(rgb)){var lo=1,hi=k;
+  for(var i=0;i<24;i++){var mid=(lo+hi)/2; if(inG(toRgb(mid)))lo=mid; else hi=mid;}
+  rgb=toRgb(lo);}
+ return (_lift[hex]='#'+rgb.map(function(v){
+  v=Math.round(Math.max(0,Math.min(1,unlin(Math.max(0,v))))*255);
+  return (v<16?'0':'')+v.toString(16);}).join('').toUpperCase());}
+/* the colour an icon in the rail's grids wears, for a seat, and for a root,
+   which is its seat's. LUMEN DRAWS BOTH AS IT SHIPPED. Routed through seatCol
+   it takes the vivid palette, and on its paper that moved the archetype grid
+   from 2.86 to 1 down to 2.22, measured: a change to his own palette that makes
+   it worse, which nobody has ruled. So Lumen keeps ROOTCOL for the roots and
+   the one accent for the archetypes until he does. */
+function icCol(b){
+ if(S.theme==='lumen')return 'var(--gold)';
+ var c=seatCol(b);
+ return b==='Root'?c:icLift(c);}
+function rootCol(rn){
+ return S.theme==='lumen'?ROOTCOL[rn]:icCol(ROOTSEAT[rn]);}
 function cr(band,pct,o){
  o=o||{};
  var size=o.size||'md', G=CRGEO[size]||CRGEO.md;
@@ -20846,7 +20970,22 @@ var TRACK4BAND={Root:'Body',Sacral:'Somatic',Solar:'Somatic',Heart:'Body',
                 Throat:'Mind','3rd Eye':'Mind',Crown:'Energy'};
 function ritFor(r){
  var band=r.darkB||'Root', track=TRACK4BAND[band]||'Body';
- var tier=r.DQ>=8?1:(r.DQ>=4?2:3);        /* heavy load starts at entry */
+ /* HEAVY LOAD STARTS AT 70, AND IT WAS STARTING AT 8. This read DQ>=8 and
+    DQ>=4, written when the shadow score ran zero to ten, and it never moved
+    when compute() rescaled DQ to zero to a hundred. So a DQ of 8 out of 100,
+    barely any held charge, was treated as heavy load and locked a person to
+    the entry practices. Measured on the roster: nine of fourteen profiles sat
+    in tier 1 at DQ 10.7 to 54.3, and the heaviest person in it, Gordon at
+    54.3, is median on the scale below. The bands are the owner's, ruled 26
+    September on a zero to ten scale: "heavy would be seven eight nine, four
+    five six would be median, one two three would be impaired, zero is
+    flowing, ten is blocked or collapsed." Times ten onto DQ: heavy and
+    collapsed from 70, median from 40, impaired and flowing below.
+    tools/loopsim.js carries a copy of this line and moved with it.
+    tools/ritualsim.js keeps 8 and 4 on purpose: it is the AP2 snapshot, it
+    still calls the first practice rather than the lightest, and it reproduces
+    the numbers that were taken with both. */
+ var tier=r.DQ>=70?1:(r.DQ>=40?2:3);
  var fit=PRACTICE.filter(function(p){return p.tier<=tier;});
  var first=fit.filter(function(p){return p.track===track;});
  /* at tier 1 some tracks hold nothing. say so rather than naming a track and
@@ -24694,7 +24833,7 @@ LIGHTINGS.forEach(function(t,i){
 /* ---- the icon grids. the icon carries the colour, selection is a ring. ---- */
 DOMAINS.forEach(function(d,i){
  var b=document.createElement('button');b.className='ib';b.type='button';
- b.style.setProperty('--c',ROOTCOL[d.r]);
+ b.style.setProperty('--c',rootCol(d.r));
 /* THE TOOLTIP SAYS WHAT THE THING IS AND WHAT PRESSING IT DOES. It said
     "Justice, Architect. <one line>. Shift-click to add." which names the thing
     and then jumps straight to a keyboard trick, with nothing in between about
@@ -24707,9 +24846,9 @@ DOMAINS.forEach(function(d,i){
   +'the ones already selected.';
  b.setAttribute('aria-label',d.nm+', '+d.r+' cluster');
  b.innerHTML=svgI('<path d="'+d.ic+'"/>')
-  +'<span class="rt" style="background:'+ROOTCOL[d.r]+'"></span>';
+  +'<span class="rt" style="background:var(--c)"></span>';
  b.addEventListener('mouseenter',function(){
-  $('capD').innerHTML='<b style="color:'+ROOTCOL[d.r]+'">'+d.r+'</b>, '+d.nm+'. '+d.d;});
+  $('capD').innerHTML='<b style="color:'+rootCol(d.r)+'">'+d.r+'</b>, '+d.nm+'. '+d.d;});
  b.addEventListener('mouseleave',capD);
  /* notYours, not toYou. On a worked example this press loaded the blank own
     profile under the person with nothing said. See personas.js. */
@@ -24729,16 +24868,22 @@ function rootsLit(){
  return out;}
 ROOTD.forEach(function(rn){
  var b=document.createElement('button');b.type='button';b.dataset.r=rn;
- b.className='rootb';b.textContent=rn;b.setAttribute('aria-pressed',false);
+ b.className='rootb';b.setAttribute('aria-pressed',false);
+ /* THE MARK GOES ABOVE THE NAME, NOT INSTEAD OF IT. Four across in the rail
+    leaves each chip about 62 wide and "Architect" takes 50 of that, so a mark
+    beside the name does not fit, and a mark in place of it loses the only
+    place on this surface the four roots are named. The svg carries no text,
+    so the button's name is still the root's name. */
+ b.innerHTML=svgI('<path d="'+ROOTGLYPH[rn]+'"/>')+'<span>'+rn+'</span>';
  /* the colour is a custom property so the three states in the sheet can each
     mix against it. it was an inline style, which meant the sheet could not
     reach it and every state had to be written back in script. */
- b.style.setProperty('--rc',ROOTCOL[rn]);
+ b.style.setProperty('--rc',rootCol(rn));
  var holds=DOMAINS.filter(function(D){return D.r===rn;}).map(function(D){return D.nm;}).join(', ');
  b.title=rn+'. Holds '+holds+'. Affinity 1.3 on '+(AFFIN[rn]||[]).join(', ')
   +'. Filled means you added it. Washed means your selection is already in it.';
  b.addEventListener('mouseenter',function(){
-  $('capD').innerHTML='<b style="color:'+ROOTCOL[rn]+'">'+rn+'</b> root domain. Holds '
+  $('capD').innerHTML='<b style="color:'+rootCol(rn)+'">'+rn+'</b> root domain. Holds '
    +holds+'.';});
  b.addEventListener('mouseleave',capD);
  b.addEventListener('click',function(){if(notYours('change the root domain'))return;
@@ -24754,12 +24899,17 @@ ROOTD.forEach(function(rn){
  r.parentNode.insertBefore(d,r.nextSibling);})();
 function capD(){
  $('capD').innerHTML=S.doms.map(function(i){
-  return '<b style="color:'+ROOTCOL[DOMAINS[i].r]+'">'+DOMAINS[i].nm+'</b>';}).join(' + ')
+  return '<b style="color:'+rootCol(DOMAINS[i].r)+'">'+DOMAINS[i].nm+'</b>';}).join(' + ')
   +(S.roots.length?'<br>plus all of '+S.roots.join(', '):'');}
 [['ar1','a1'],['ar2','a2']].forEach(function(pair){
  ARCH.forEach(function(a,i){
   var b=document.createElement('button');b.className='ib';b.type='button';
-  b.style.setProperty('--c','var(--gold)');
+  /* EACH ARCHETYPE WEARS ITS SEAT, which was ruled 19 September and reached
+     the reading rows and never these tiles: every one of the twelve was
+     painted the one accent, so the grid showed twelve different things in
+     one colour and Primary read flat on every option the board tried.
+     Carried here on the 26 September ruling of the same board. */
+  b.style.setProperty('--c',icCol(a.b));
   b.title=a.nm+'. '+a.v+'. Shift-click to add.';b.setAttribute('aria-label',a.nm);
   b.innerHTML=svgI('<path d="'+a.ic+'"/>');
   b.addEventListener('mouseenter',function(){$('capA').innerHTML='<b>'+a.nm+'</b>, '+a.v;});
@@ -24818,6 +24968,20 @@ function capA(){$('capA').innerHTML=S.arcs.map(function(i){
 
    The sheet keeps auto-fill as its declared value, because this runs after
    layout and a grid has to be right before it does.
+
+   AND THEN THE ROW CAME DOWN TO THE FLOOR. The owner, 26 September: "make
+   them a little bit smaller so that they don't eat up so much real estate.
+   Since they're hover over anyway to get information... that way we get more
+   of the icons above the fold." Measured at 1600 with a profile loaded, the
+   second archetype grid ended at 1024 on a 1000 tall screen, so the last row
+   of the rail's icons was below the fold on the owner's own width. The row
+   was the square cell, 48.4 at 1600, and the only floor on it is the tap
+   target, so the row is the tap target now: 44, read off --tap like the
+   column floor above. The columns do not move, because the width is already
+   at the floor on one axis or the other: six across in 266 would be 39 wide.
+   Every cell stays at least 44 by 44, the hover and the caption are
+   untouched, and the rail gets 54 pixels back at 1600 with the tighter row
+   gap in the sheet. At 390 the cell was already 44.3 and barely moves.
    ============================================================ */
 function fitGrid(el){
  if(!el)return;
@@ -24834,7 +24998,7 @@ function fitGrid(el){
    .getPropertyValue('--tap'))||44;
  var nFit=Math.max(1,Math.floor((w+gap)/(tap+gap)));
  var cols=Math.min(n,Math.ceil(n/Math.ceil(n/nFit)));
- var rowH=(w-(nFit-1)*gap)/nFit;
+ var rowH=tap;
  var sig=n+'/'+cols+'/'+rowH.toFixed(2);
  if(el.dataset.fit===sig)return;
  el.style.gridTemplateColumns='repeat('+cols+',minmax(0,1fr))';
@@ -24876,7 +25040,12 @@ function syncSoul(){
   +(!S.roots.length&&!nlit?'click a root to add every domain under it':'');
  capD();capA();}
 function rebuildSwatches(){
- $('doms').querySelectorAll('.ib').forEach(function(b,i){b.style.setProperty('--c',ROOTCOL[DOMAINS[i].r]);});
+ /* every colour the rail's grids wear is per lighting now, so all three move
+    here. The domains alone did before, and they moved to the same value. */
+ $('doms').querySelectorAll('.ib').forEach(function(b,i){b.style.setProperty('--c',rootCol(DOMAINS[i].r));});
+ $('roots').querySelectorAll('.rootb').forEach(function(b){b.style.setProperty('--rc',rootCol(b.dataset.r));});
+ ['ar1','ar2'].forEach(function(id){
+  $(id).querySelectorAll('.ib').forEach(function(b,i){b.style.setProperty('--c',icCol(ARCH[i].b));});});
  CHILD.forEach(function(cf){
   var i=CHF[cf.nm].inp.parentElement.querySelector('i');if(i)i.style.background=seatCol(cf.seat);});
  SI.forEach(function(l){
@@ -28128,5 +28297,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="001828946"></div>
+<div id="eof" hidden data-len="001840465"></div>
 </body></html>
