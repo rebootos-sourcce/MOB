@@ -16380,3 +16380,15 @@ session. Not re-dispatched.
   since it is a status roundup of work already done tonight, not new
   work.
 
+**The Terminator trim is done, verified directly.** `BRAND.md`
+section 4, commit `6e1933f`. Read the actual passage myself: the
+sentence now says the film shaped how people picture AI rather than
+caused it, and his own golem example is added as evidence the trope
+is millennia old, exactly his ruling. One real catch worth keeping:
+the agent flagged, without opening a new question, that the bronze
+figure in Jason and the Argonauts is properly named Talos, golem
+being a separate later tradition, and kept his word anyway since the
+point holds either way and a hostile reader checking the reference
+would find the note already there. Zero em dashes, diff touches only
+`BRAND.md`.
+
