@@ -3484,31 +3484,40 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
  const frame=pg=>pg.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));
  const LAYERS=['domains','addresses','stories','masks','archetypes','patterns','chains','laws','gates','shadow'];
 
- /* WHERE IT SITS, on the default. Measured against the canvas and the rail's
-    tier line, which are the two things the ruling placed it by. */
+ /* WHERE IT SITS, on the default. Measured against the stage and the glass
+    bar, which are the two things the ruling placed it by. */
  const place=await fp.evaluate(()=>{loadP(PERSON('James'));setTab(TAB.FIELD);render();
-  const sw=document.getElementById('fview'),cv=document.getElementById('cv'),st=document.getElementById('stage');
-  const b=sw.getBoundingClientRect(),c=cv.getBoundingClientRect(),s=st.getBoundingClientRect();
-  const rt=document.getElementById('railtop').getBoundingClientRect();
+  const sw=document.getElementById('fview'),st=document.getElementById('stage'),fb=document.getElementById('fbar');
+  const b=sw.getBoundingClientRect(),s=st.getBoundingClientRect();
+  const lead=[...fb.querySelectorAll('.fb-b')].filter(x=>x.offsetParent)[0].getBoundingClientRect();
   const btns=[...sw.querySelectorAll('[data-fview]')];
+  const zm=document.getElementById('fzoom').getBoundingClientRect();
   const d=id=>getComputedStyle(document.getElementById(id)).display;
   return {keys:btns.map(x=>x.getAttribute('data-fview')).join(','),
    pressed:btns.filter(x=>x.getAttribute('aria-pressed')==='true').map(x=>x.getAttribute('data-fview')).join(','),
-   left:b.left,top:b.top,stageRight:s.right,railBottom:rt.bottom,words:(sw.innerText||'').trim(),
+   inStage:st.contains(sw),rightGap:s.right-b.right,leftGap:lead.left-s.left,
+   mid:Math.abs((b.top+b.height/2)-(lead.top+lead.height/2)),barRight:fb.getBoundingClientRect().right,swLeft:b.left,
+   folded:fb.classList.contains('folded'),zoomIn:zm.right<=s.right&&zm.bottom<=s.bottom&&zm.width>0,
+   words:(sw.innerText||'').trim(),
    sizes:btns.map(x=>{const r=x.getBoundingClientRect();return [Math.round(r.width),Math.round(r.height)];}),
    cv:d('cv'),fbar:d('fbar'),frend:d('frend'),subbar:d('subbar'),
    retired:['vbar','flay'].filter(id=>document.getElementById(id))};});
  ok(place.keys==='wheel,frames,dial','three positions, wheel, frames and dial, got '+place.keys);
  ok(place.pressed==='wheel','the wheel is the default, so nobody who has not pressed it sees a change, got '+place.pressed);
- /* MOVED TO THE RIGHT RAIL, ruled on DR and settled on DY in TASKS.md: "move
-    that to the secondary nav on the right hand side, and let's just keep
-    those three options there." This held it in the stage's left lane, centre
-    left, on CQ's ruling, which those two reversed; and EV is the owner
-    finding it still there because the move was made in a prototype only. */
- ok(place.left>=place.stageRight,'the switch is off the centre pane, in the right rail, left edge '
-  +Math.round(place.left)+' against the stage\'s right edge at '+Math.round(place.stageRight));
- ok(place.top>=place.railBottom-1&&place.top-place.railBottom<40,'directly under the rail\'s top line, '
-  +Math.round(place.top)+' against its foot at '+Math.round(place.railBottom));
+ /* THE OVERLAY IN THE UPPER RIGHT, EZ in TASKS.md, which reverses DY's right
+    rail: "where are my three fucking styles? On my right hand side overlay
+    ... This should be opposite of the overlay items that you have on the
+    upper left." DY put it under the rail's top line, EV found it only in a
+    prototype, and EZ is the owner looking straight at the rail and asking
+    where it was. So it is held to the mirror: on the picture, the same
+    distance in from the right as the bar's first circle is from the left,
+    and on the bar's own centre line. */
+ ok(place.inStage&&Math.abs(place.rightGap-place.leftGap)<=6,'the switch lies on the stage, as far in from its right edge as the bar is from its left, '
+  +Math.round(place.rightGap)+' against '+Math.round(place.leftGap));
+ ok(place.mid<=2,'and level with the glass bar, centre lines off by '+place.mid.toFixed(1));
+ ok(!place.folded&&place.barRight<=place.swLeft,'at 1600 the bar keeps its full row beside it, bar ends '
+  +Math.round(place.barRight)+', switch starts '+Math.round(place.swLeft));
+ ok(place.zoomIn,'and zoom, which left the bar to make that room, is on the stage');
  ok(place.words==='','icon only: "I don\'t need the text, just make it the icon", got "'+place.words+'"');
  ok(place.sizes.every(s=>s[0]>=44&&s[1]>=44),'every position clears the 44 pixel tap floor, '+JSON.stringify(place.sizes));
  ok(place.cv==='block'&&place.fbar==='flex'&&place.frend==='none'&&place.subbar==='none',
@@ -3792,11 +3801,11 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
   for(let i=0;i<4;i++){await fp.mouse.wheel(0,-100);await fp.waitForTimeout(30);}
   const z=await fp.evaluate(p=>{const fr=document.getElementById('frend'),b=fr.getBoundingClientRect();
    return {s:FZ.s,t:fr.querySelector('.frsvg').style.transform,px:p.x-b.left,py:p.y-b.top,
-    wx:(p.x-b.left-FZ.x)/FZ.s,wy:(p.y-b.top-FZ.y)/FZ.s,pill:(document.querySelector('#fbar [data-fb=zfit] .fb-v')||{}).textContent};},at);
+    wx:(p.x-b.left-FZ.x)/FZ.s,wy:(p.y-b.top-FZ.y)/FZ.s,pill:(document.querySelector('#fzoom [data-fb=zfit] .fb-v')||{}).textContent};},at);
   ok(z.s>1.3&&/scale/.test(z.t),v+': the mouse wheel zooms the picture in, to '+z.s.toFixed(2)+'x');
   ok(Math.abs(z.wx-z.px)<1&&Math.abs(z.wy-z.py)<1,v+': about the pointer, the point under it stays under it, '
    +z.wx.toFixed(1)+','+z.wy.toFixed(1)+' against '+z.px.toFixed(1)+','+z.py.toFixed(1));
-  ok(z.pill===z.s.toFixed(1)+'×',v+': and the reframe circle on the bar says how far in, '+z.pill);
+  ok(z.pill===z.s.toFixed(1)+'×',v+': and the reframe circle says how far in, '+z.pill);
   const d0=await fp.evaluate(()=>({x:FZ.x,y:FZ.y}));
   await fp.mouse.down(); await fp.mouse.move(at.x+60,at.y+40,{steps:8}); await fp.mouse.up();
   await fp.waitForTimeout(60);
@@ -3836,19 +3845,101 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
   'the bar\'s glass follows the stage\'s own ground under every lighting tried, '+JSON.stringify(tone));
  /* THE READINGS, IN THE LEFT RAIL, AS CIRCLES, CQ THE LARGER. "You should go
     on the left hand side" and "I do want the CQ number bigger, so it's in
-    your face." DQ and SQ stand either side of it on one centre line. */
- const dock=await fp.evaluate(()=>{const d=document.getElementById('fdock'),left=document.querySelector('.mid > .col');
+    your face." And EZ in TASKS.md: SQ out of this row, "SQ is a total sum of
+    the DQ anyway", accuracy kept in it, "just make sure there's just two
+    rows." So DQ, CQ and accuracy on one centre line, the four under them, and
+    no SQ in the dock while the bar's Addresses circle still carries it. */
+ const dock=await fp.evaluate(()=>{const d=document.getElementById('fdock'),left=document.getElementById('lcol');
   const q=k=>document.querySelector('#fdock .kb[data-q='+k+'] .cr');
   const bx=k=>q(k).getBoundingClientRect(), fs=k=>parseFloat(getComputedStyle(q(k).querySelector('.v')).fontSize);
+  const ac=document.querySelector('#accbtn .cr').getBoundingClientRect(), mid=r=>r.top+r.height/2;
+  const items=[...d.querySelectorAll('.kb, #accbtn')].map(e=>e.getBoundingClientRect());
+  const rows=[...new Set(items.map(r=>Math.round(mid(r))))].sort((a,b)=>a-b);
   return {inLeft:left.contains(d),inStage:document.getElementById('stage').contains(d),
-   cq:bx('cq').width,dq:bx('dq').width,sq:bx('sq').width,cqFig:fs('cq'),dqFig:fs('dq'),
-   line:Math.abs((bx('dq').top+bx('dq').height/2)-(bx('sq').top+bx('sq').height/2)),
-   mid:bx('dq').right<=bx('cq').left&&bx('cq').right<=bx('sq').left,
+   cq:bx('cq').width,dq:bx('dq').width,cqFig:fs('cq'),dqFig:fs('dq'),
+   line:Math.max(Math.abs(mid(bx('dq'))-mid(bx('cq'))),Math.abs(mid(ac)-mid(bx('cq')))),
+   order:bx('dq').right<=bx('cq').left&&bx('cq').right<=ac.left,
+   sq:!!document.querySelector('#fdock [data-q=sq]'),rows:rows.length,
+   sqElsewhere:/SQ/.test((document.querySelector('#fbar [data-fb=addresses]')||{}).getAttribute('data-tip')||''),
    acc:left.contains(document.getElementById('acc'))&&left.contains(document.getElementById('keylo'))};});
  ok(dock.inLeft&&!dock.inStage&&dock.acc,'the readings sit at the head of the left rail and none of them along the stage\'s foot');
- ok(dock.cq>dock.dq&&dock.cq>dock.sq&&dock.cqFig>dock.dqFig,'CQ is the larger circle and the larger figure, '
+ ok(dock.cq>dock.dq&&dock.cqFig>dock.dqFig,'CQ is the larger circle and the larger figure, '
   +Math.round(dock.cq)+' against '+Math.round(dock.dq)+', figure '+dock.cqFig+' against '+dock.dqFig);
- ok(dock.mid&&dock.line<1,'CQ in the middle, DQ and SQ either side on one centre line, off by '+dock.line.toFixed(2));
+ ok(!dock.sq&&dock.sqElsewhere,'SQ is off the dock and only off the dock: the bar\'s Addresses circle still says SQ');
+ ok(dock.rows===2,'the dock reads as exactly two rows, got '+dock.rows);
+ ok(dock.order&&dock.line<1,'DQ, CQ and accuracy in that order on one centre line, off by '+dock.line.toFixed(2));
+
+ /* THE CIRCLES MOVE INTO A CHANGED VALUE rather than snapping, EZ: "I want to
+    be able to see the animations on these." Sampled a frame after a load that
+    moves CQ: the ring is on its way and not yet at the end. */
+ const mo=await fp.evaluate(async()=>{loadP(PERSON('Marcus'));render();
+  const arc=()=>document.querySelector('#fdock .kb[data-q=cq] svg.arc circle:last-child');
+  await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+  const a=arc(), goal=parseFloat(a.getAttribute('stroke-dashoffset')), now=parseFloat(a.style.strokeDashoffset);
+  const was=goal; loadP(PERSON('James'));render();
+  await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+  const b=arc(), goal2=parseFloat(b.getAttribute('stroke-dashoffset')), mid2=parseFloat(b.style.strokeDashoffset);
+  await new Promise(r=>setTimeout(r,ENTER_SPAN+120));
+  const end=parseFloat(arc().style.strokeDashoffset);
+  return {was,goal2,mid2,end};});
+ ok(Math.abs(mo.goal2-mo.was)>1&&Math.abs(mo.mid2-mo.goal2)>0.5&&Math.abs(mo.mid2-mo.was)>0.01,
+  'a changed CQ sweeps, part way a frame in: from '+mo.was.toFixed(1)+' toward '+mo.goal2.toFixed(1)+', at '+mo.mid2.toFixed(1));
+ ok(Math.abs(mo.end-mo.goal2)<0.05,'and lands exactly on its value, '+mo.end.toFixed(2)+' against '+mo.goal2.toFixed(2));
+
+ /* EVERY LAYER STARTS ON, EZ: "everything should start on." A fresh page on
+    the Field is Blueprint, every switch on the bar is pressed, and so Frames
+    and Dial, which follow the same switches, open with every layer too. */
+
+ /* ROOT ENERGETICS, EZ: States with its Western, Eastern, Number and Design,
+    moved above the readings, renamed, closed on arrival, and carrying the
+    full numerology off numerologyOf. And the block under it says Energy. */
+ const re=await fp.evaluate(()=>{loadP(PERSON('Marcus'));setTab(TAB.FIELD);render();
+  const sec=document.querySelector('#lpanel .lsec[data-sec=energetics]'),dk=document.getElementById('fdock');
+  const N=numerologyOf('Marcus',CURP);
+  const nums=[...document.querySelectorAll('#spirit [data-num]')].map(b=>[b.getAttribute('data-num'),b.querySelector('.sp-v').textContent]);
+  return {name:sec?sec.querySelector('.lsec-hd').textContent.trim():'',closed:sec&&!sec.classList.contains('open'),
+   above:sec&&!!(sec.compareDocumentPosition(dk)&Node.DOCUMENT_POSITION_FOLLOWING),
+   holds:sec&&sec.contains(document.getElementById('spirit')),
+   heads:[...document.querySelectorAll('#spirit .sp-hd')].map(h=>h.textContent).join(','),
+   states:[...document.querySelectorAll('.lsec-hd')].some(h=>h.textContent.trim()==='States'),
+   nums,match:nums.every(x=>String(N[x[0]])===x[1]),
+   blocks:[...document.querySelectorAll('#lpanel .rblk')].map(h=>h.textContent).join(',')};});
+ ok(re.name==='Root energetics'&&re.closed&&re.above&&re.holds,'Root energetics sits above the readings, holds the birth data, and opens closed, '
+  +JSON.stringify({name:re.name,closed:re.closed,above:re.above}));
+ ok(/Western,Eastern,Number,Design/.test(re.heads)&&!re.states,'it is States moved, not beside it: '+re.heads);
+ ok(re.nums.length>=4&&re.match,'and it carries the name\'s numerology, the same figures numerologyOf gives, '+JSON.stringify(re.nums));
+ ok(re.blocks==='Energy,Psyche','the rail\'s first block is called Energy now, got '+re.blocks);
+
+ /* THE ARCHETYPE GRIDS LOSE A ROW, EZ: "shrink them the icon size down so we
+    can collapse the row size down one." Twelve in each, six by two, and every
+    target still clears the tap floor. */
+ const ag=await fp.evaluate(()=>['ar1','ar2'].map(id=>{const bs=[...document.getElementById(id).querySelectorAll('.ib')].map(b=>b.getBoundingClientRect());
+  return {n:bs.length,rows:new Set(bs.map(r=>Math.round(r.top))).size,small:bs.filter(r=>r.width<44||r.height<44).length};}));
+ ok(ag.every(g=>g.n===12&&g.rows===2&&g.small===0),'both archetype grids read twelve in two rows, none under 44, '+JSON.stringify(ag));
+
+ /* THE LEFT COLUMN CLOSES, EZ: "I want to be able to close up that column."
+    Shut, the column is its one control and the stage takes the width; open
+    again, everything is back; and a reload keeps what was chosen. */
+ const fold=await fp.evaluate(async()=>{const st=()=>document.getElementById('stage').getBoundingClientRect().width;
+  const b=document.getElementById('lfold'), w0=st();
+  b.click(); await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+  const shut={w:st(),exp:b.getAttribute('aria-expanded'),seen:[...document.getElementById('lpanel').children].filter(e=>e.offsetParent).map(e=>e.id),
+   tap:b.getBoundingClientRect().width>=44&&b.getBoundingClientRect().height>=44,stored:STORE.get('lcol')};
+  return {w0,shut};});
+ ok(fold.shut.w>fold.w0+150&&fold.shut.exp==='false'&&fold.shut.seen.join()==='lfold'&&fold.shut.tap,
+  'the column shuts to its one control and the stage takes the width, '+Math.round(fold.w0)+' to '+Math.round(fold.shut.w)+', '+JSON.stringify(fold.shut));
+ await fp.reload({waitUntil:'load'}); await booted(fp); await frame(fp);
+ /* measured on this fresh page, because everything above has pressed the bar */
+ const on=await fp.evaluate(()=>{const lays=[...document.querySelectorAll('#fbar .fb-full [data-fb]')];
+  return {view:S.view,custom:LAYSET,off:lays.filter(b=>b.getAttribute('aria-pressed')!=='true').map(b=>b.getAttribute('data-fb')),
+   n:lays.length,want:[].concat(...LAYADD).length};});
+ const fold2=await fp.evaluate(async()=>{const kept=document.body.classList.contains('lshut');
+  document.getElementById('lfold').click(); await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+  return {kept,open:!document.body.classList.contains('lshut')&&!!document.getElementById('fdock').offsetParent,
+   exp:document.getElementById('lfold').getAttribute('aria-expanded'),stored:STORE.get('lcol')};});
+ ok(fold2.kept&&fold2.open&&fold2.exp==='true'&&fold2.stored==='open','a reload keeps it shut, and one press opens it again, '+JSON.stringify(fold2));
+ ok(on.view===3&&on.custom===null&&on.off.length===0&&on.n===on.want,'every layer starts on, Blueprint, nothing off on the bar: '
+  +JSON.stringify(on));
  await fp.evaluate(()=>{layPick(1);render();});
 
  /* THE CHOICE IS KEPT, and a reload opens the Field the way it was left. */

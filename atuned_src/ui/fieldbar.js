@@ -186,7 +186,7 @@ function fbValues(r){
 
 /* ---- the hosts, which are in the markup so the bar cannot vanish with a
    failed script, and the pieces built into them once ---- */
-var FB=null, FB_PANEL=null, FB_MENU=null, FB_FOLD=null, FB_SAY=null;
+var FB=null, FB_PANEL=null, FB_MENU=null, FB_FOLD=null, FB_SAY=null, FB_ZOOM=null, FB_VIEW=null;
 function fbCluster(g,label){
  var c=document.createElement('div'); c.className='fb-grp';
  c.setAttribute('role','group'); c.setAttribute('aria-label',g.nm);
@@ -235,15 +235,19 @@ function fbSay(k){if(!FB_SAY)return;var l=FB_BYK[k],v=FB_VALS[k],on=layerOn(k);
     zoomed by scroll and reframed on F with no control you could see; the
     same three sit at the end of the bar for all three pictures, and the
     reframe circle's ring and pill carry how far in you are. */
- var end=document.createElement('div'); end.className='fb-grp'; end.setAttribute('role','group');
- end.setAttribute('aria-label','Zoom');
+ /* AND THEY LEFT THE BAR FOR #fzoom, EZ in TASKS.md, so that the bar and the
+    Wheel, Frames and Dial overlay can both hold the top of the stage without
+    the bar folding at 1600. Same three circles, same glass, same keys; only
+    the host moved, and #fzoom carries the group's role and name itself. */
+ FB_ZOOM=document.getElementById('fzoom');
+ var end=document.createElement('div'); end.className='fb-grp';
  [['zout','Zoom out',FB_IC.zout,'Move out. Or press minus.',function(){fieldZoomBy(1/1.25);}],
   ['zin','Zoom in',FB_IC.zin,'Move in. Or press plus. Scrolling on the picture does the same, and a drag moves it.',function(){fieldZoomBy(1.25);}],
   ['zfit','Reframe',FB_IC.zfit,'Back to the whole picture. Or press F.',function(){fieldReframe();}]].forEach(function(z){
   var b=fbOrb({k:z[0],nm:z[1],ic:z[2],tip:z[3],val:z[0]==='zfit'});
   b.addEventListener('click',function(e){e.stopPropagation();z[4]();});
   end.appendChild(b);});
- FB.appendChild(end);
+ (FB_ZOOM||FB).appendChild(end);
  /* arrow keys walk the bar, the way a toolbar should */
  FB.addEventListener('keydown',function(e){
   if(e.key!=='ArrowLeft'&&e.key!=='ArrowRight')return;
@@ -273,14 +277,17 @@ function fbSay(k){if(!FB_SAY)return;var l=FB_BYK[k],v=FB_VALS[k],on=layerOn(k);
   m.addEventListener('click',function(e){e.stopPropagation();layPick(i);S.pin=null;fbOpenMenu(false);render();});
   FB_MENU.appendChild(m);});
 
- /* WHEEL, FRAMES, DIAL, IN THE RIGHT RAIL, icon only. Ruled in two steps,
-    DR then DY: "it's taking up too much real estate being on the centre pane
-    ... I don't need the text, just make it the icon," and then "move that to
-    the secondary nav on the right hand side, and let's just keep those three
-    options there and let people play around with it." A rendition has no
-    reading, so it carries no pill, and its ring is whole when it is the one
-    up. fviewPaint in ui/rings.js marks which. */
- var sw=document.getElementById('fview');
+ /* WHEEL, FRAMES, DIAL, icon only. Ruled in two steps, DR then DY: "it's
+    taking up too much real estate being on the centre pane ... I don't need
+    the text, just make it the icon," and then "move that to the secondary
+    nav on the right hand side." It stood in the right rail on that reading,
+    and EZ is him looking straight at it there and asking where it was, "On
+    my right hand side overlay ... opposite of the overlay items that you
+    have on the upper left." So it is the overlay in the stage's upper right
+    now, the glass bar's mirror. A rendition has no reading, so it carries no
+    pill, and its ring is whole when it is the one up. fviewPaint in
+    ui/rings.js marks which. */
+ var sw=FB_VIEW=document.getElementById('fview');
  if(sw)FVIEWS.forEach(function(f){
   var b=fbOrb({nm:f.nm,ic:f.ic,tip:f.tip});
   b.setAttribute('data-fview',f.k); b.setAttribute('aria-pressed',f.k===FVIEW);
@@ -292,6 +299,33 @@ function fbSay(k){if(!FB_SAY)return;var l=FB_BYK[k],v=FB_VALS[k],on=layerOn(k);
  addEventListener('scroll',function(){if(FB_MENU&&!FB_MENU.hidden)fbOpenMenu(false);
   if(FB_PANEL&&!FB_PANEL.hidden&&!FB_PANEL.classList.contains('sheet'))fbOpenPanel(false);},true);
  addEventListener('resize',function(){FB_FIT=-1;fbFit();fbOpenPanel(false);fbOpenMenu(false);});})();
+
+/* ---- THE OVERLAYS ARRIVE WITH THE WHEEL. EZ in TASKS.md: "I want to be able
+   to see the animations on these." The circles on the stage were simply
+   there when the Field opened, while the wheel under them assembled seat by
+   seat. Each one now rises into place and its ring draws round to its value,
+   left to right along the bar, then the switch, then zoom, on the stage's own
+   step, and all of it inside the wheel's ENTER_TOTAL.
+
+   Once a session, on enterStart's ruling: "as a one time event." The class
+   comes off when the last one lands, because a keyframe restarts whenever
+   its element comes back from display:none, and leaving it on would replay
+   the whole entrance on every return to the Field. Reduced motion never adds
+   it; the sheet's own reduced motion rule would stop it anyway. ---- */
+var FB_ENTERED=false;
+const FB_ENTER_STEP=34;
+function fbEnter(){
+ if(FB_ENTERED||REDUCED)return; FB_ENTERED=true;
+ var hosts=[FB,FB_VIEW,FB_ZOOM].filter(function(h){return h&&h.offsetParent;}), n=0;
+ hosts.forEach(function(h){
+  [].slice.call(h.querySelectorAll('.fb-b')).filter(function(b){return b.offsetParent;})
+   .forEach(function(b){b.style.setProperty('--i',n++);});
+  /* held at their first frame while the boot sheet is up, component.js */
+  h.classList.add('fb-enter'); h.classList.toggle('fb-hold',!isBooted());});
+ afterBoot(function(){
+  hosts.forEach(function(h){h.classList.remove('fb-hold');});
+  setTimeout(function(){hosts.forEach(function(h){h.classList.remove('fb-enter');});},
+   n*FB_ENTER_STEP+ENTER_SPAN+120);});}
 
 /* ---- the floats, anchored under their circle inside the stage's width ---- */
 function fbPhone(){return innerWidth<=720;}
@@ -334,7 +368,11 @@ function fbFit(){
     display:none, measured nothing, fitted, and cached that width: at 390 the
     full row then ran off the edge for the rest of the session. */
  if(!FB.offsetParent)return;
- var st=document.getElementById('stage'), avail=st?st.clientWidth-28:0;
+ /* AND THE UPPER RIGHT IS THE SWITCH'S, EZ. The bar fits in what is left
+    beside it, with one bar gap between, or it folds; measured off the switch
+    itself, because its width is the sheet's to decide. */
+ var st=document.getElementById('stage'), vw=FB_VIEW&&FB_VIEW.offsetParent?FB_VIEW.offsetWidth+12:0,
+  avail=st?st.clientWidth-28-vw:0;
  if(avail<=0||avail===FB_FIT)return;
  FB_FIT=avail;
  FB.classList.remove('folded');
@@ -356,7 +394,7 @@ function fbPaint(){
     on the prototype's lighting sweep. stageLight() is the one reading of
     that ground, the one the wheel's domain ring and the renditions use. */
  var lt=stageLight();
- [FB,FB_PANEL,FB_MENU].forEach(function(x){if(x)x.classList.toggle('fb-lt',lt);});
+ [FB,FB_PANEL,FB_MENU,FB_ZOOM,FB_VIEW].forEach(function(x){if(x)x.classList.toggle('fb-lt',lt);});
  document.body.classList.toggle('noshadow',!layerOn('shadow'));
  [FB,FB_PANEL].forEach(function(host){if(!host)return;
   host.querySelectorAll('[data-fb]').forEach(function(b){
@@ -374,7 +412,7 @@ function fbPaint(){
    b.classList.toggle('wait',wait);
    fbTip(b,l.tip+(V?' '+V.m:'')+(wait?' On. They draw once you scroll in on the ring.':'')
     +(z?' Brought in by zoom. Zoom out and it goes again.':''));});});
- var zf=FB.querySelector('[data-fb=zfit]');
+ var zf=(FB_ZOOM||FB).querySelector('[data-fb=zfit]');
  if(zf){var zn=fieldZoom(),zp=(zn.s-1)/(zn.max-1)*100;
   zf.querySelector('.val').setAttribute('stroke-dasharray',Math.max(0,Math.min(100,zp)).toFixed(1)+' 100');
   zf.querySelector('.fb-v').textContent=zn.s.toFixed(1)+'×';

@@ -419,17 +419,51 @@
  <div class="mid">
 
   <!-- ============ LEFT RAIL ============ -->
-  <div class="col"><div class="glass panel sc">
+  <div class="col" id="lcol"><div class="glass panel sc" id="lpanel">
+   <!-- THE COLUMN CLOSES. EZ in TASKS.md, his words: "I want to be able to
+        close up that column." One control at the rail's head, in the corner a
+        section header leaves free, and it stays the one thing in the column
+        when the column is shut so the way back is where the way out was. The
+        state is the person's own and is kept, ui/ui.js, colFold. -->
+   <button class="lfold" id="lfold" type="button" aria-controls="lpanel"
+    aria-expanded="true" aria-label="Close the left column">
+    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+     <rect x="3.5" y="4.5" width="17" height="15" rx="2.5"/><path d="M9 4.5v15"/>
+     <path class="lf-ch" d="M15.6 9.4L13 12l2.6 2.6"/></svg></button>
+   <!-- ROOT ENERGETICS, ABOVE THE READINGS, AND IT OPENS CLOSED. EZ in
+        TASKS.md, his words: "The states Western Eastern number design I need
+        all my numerology stuff ... that is all collapsible and goes above
+        where CQDQ and everything else is. You can change that to root
+        energetics. and I want that one to start closed."
+
+        Those four are the four headings States already carried, so this is
+        States, moved and renamed, and not a second section beside it: two
+        sections printing one life path is two places for it to disagree. It
+        also carries the full numerology now, off numerologyOf in
+        engine/numerology.js, the same call the Summary makes. The renderer
+        still writes #spirit, so every check on the birth data still finds it. -->
+   <div class="lsec" data-sec="energetics">
+    <button class="lsec-hd" type="button"><span>Root energetics</span><i></i></button>
+    <div class="lsec-bd"><div id="spirit"></div></div>
+   </div>
    <!-- THE READINGS, AS CIRCLES, AT THE HEAD OF THE RAIL. ED in TASKS.md. CQ
-        is the one large circle, in the middle of the pair, "so it's in your
-        face"; DQ and SQ stand either side of it on one centre line, the four
-        that move through a person below, and accuracy keeps its word, ruled.
-        The renderers still write #key, #keylo and #acc, so only where they sit
-        and the shape they are drawn in changed. -->
+        is the one large circle, "so it's in your face", the four that move
+        through a person below, and accuracy keeps its word, ruled. The
+        renderers still write #key, #keylo and #acc, so only where they sit
+        and the shape they are drawn in changed.
+
+        TWO ROWS, EXACTLY. EZ, his words: "we don't need SQ in the upper left
+        nav ... Keep [accuracy] in that menu. Uh, just make sure there's just
+        two rows." It was three: DQ, CQ and SQ, the four under them, and
+        accuracy alone on a line of its own. SQ left and accuracy took its
+        place, so the first row is the instrument reading and how far to trust
+        it, and the second is what moves through the person. -->
    <div class="fdock" id="fdock" role="group" aria-label="Readings">
-    <div class="key" id="key" aria-label="What the instrument reads"></div>
+    <div class="fdrow">
+     <div class="key" id="key" aria-label="What the instrument reads"></div>
+     <div class="acc" id="acc"></div>
+    </div>
     <div class="keylo" id="keylo" aria-label="What is moving through you"></div>
-    <div class="acc" id="acc"></div>
    </div>
    <!-- SPIRIT, THEN PSYCHE. Ruled 26 September, CH in TASKS.md: "I want to
         subdivide by spiritual stuff, by spirit, then the next block down would
@@ -453,7 +487,10 @@
         two readings off the rail a person first sees. The numbers run through
         the rail in its new order, which also ends the two sections both
         numbered 4. -->
-   <h2 class="rblk">Spirit</h2>
+   <!-- ENERGY, NOT SPIRIT. EZ in TASKS.md, his words: "change the word
+        spirit to energy." The heading only. The block holds what it held,
+        less States, which went to the head of the rail as Root energetics. -->
+   <h2 class="rblk">Energy</h2>
    <div class="lsec open" data-sec="soul">
     <button class="lsec-hd" type="button"><span>Awareness</span><i></i></button>
     <div class="lsec-bd">
@@ -473,10 +510,6 @@
      <div class="sub ar-sec">Secondary</div>
      <div class="g6" id="ar2"></div><div class="cap" id="capA"></div>
     </div>
-   </div>
-   <div class="lsec" data-sec="spirit">
-    <button class="lsec-hd" type="button"><span>States</span><i></i></button>
-    <div class="lsec-bd"><div id="spirit"></div></div>
    </div>
    <h2 class="rblk">Psyche</h2>
    <div class="lsec open" data-sec="lean">
@@ -563,6 +596,17 @@
         phone, which reads the stage as one column, meets it above the picture
         it changes. ui/fieldbar.js builds it. -->
    <div class="fbar" id="fbar" role="toolbar" aria-label="Field layers"></div>
+   <!-- WHEEL, FRAMES, DIAL, AS THE OVERLAY IN THE UPPER RIGHT. EZ in TASKS.md,
+        his words: "where are my three fucking styles? On my right hand side
+        overlay. Please give that to me and stop making me ask you for it. This
+        should be opposite of the overlay items that you have on the upper
+        left." It sat in the right rail under the top line from DY to EY,
+        which is where "the secondary nav on the right hand side" was read to
+        mean, and there it read as part of a status panel: he was looking at
+        it and asking where it was. It lies on the picture now, in the corner
+        opposite the glass bar, made of the bar's own glass. Icon only, still,
+        on DR: "I don't need the text, just make it the icon." -->
+   <div class="fview" id="fview" role="group" aria-label="How the Field is drawn"></div>
    <!-- THE LEGEND IS GONE. Ruled 25 September (BA9), struck through on a
         screenshot with the worked example notice: "You have unnecessary text,
         I want those removed." It said what the ring is, that a band or a mark
@@ -579,6 +623,14 @@
    <!-- the two renditions draw into the wheel's own cell, so all three are
         compared on the same ground. ui/rings.js writes it. -->
    <div id="frend" role="img" aria-label="The Field, drawn as nested frames. Every element is also listed in the panels either side." style="display:none"></div>
+   <!-- ZOOM, IN THE LOWER RIGHT. The three zoom circles were the tail of the
+        glass bar, and the bar and the switch above cannot both hold the top
+        of the stage with them in it: at 1600 the stage is 922 across, the
+        bar was 868 of it, and the switch is 146 more. Out of it, the bar
+        fits beside the switch without folding. They sit in the lower right,
+        where a map keeps its zoom, and after the picture on a phone. The
+        bar's own glass; ui/fieldbar.js builds them. -->
+   <div class="fzoom" id="fzoom" role="group" aria-label="Zoom"></div>
    <div id="emap" class="emap"></div>
    <div id="iq" class="iq"></div>
    <!-- Knowledge carries Games, and Summary carries Analytics. The owner ruled
@@ -651,11 +703,8 @@
        when the wheel is clicked. -->
   <div class="col"><div class="glass panel sc">
    <div id="railtop" class="railtop"></div>
-   <!-- Wheel, Frames, Dial. Icon only, as circles, directly under the top
-        line. His words: "it's taking up too much real estate being on the
-        centre pane ... I don't need the text, just make it the icon." Then:
-        "move that to the secondary nav on the right hand side." -->
-   <div class="fview" id="fview" role="group" aria-label="How the Field is drawn"></div>
+   <!-- Wheel, Frames and Dial stood here from DY to EY and are the overlay in
+        the stage's upper right now, EZ. -->
 
    <div class="lsec open" data-rail="right" data-sec="you">
     <button class="lsec-hd" type="button"><span>Reading</span><i></i></button>

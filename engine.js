@@ -3733,7 +3733,15 @@ const S={dom:0,doms:[0],arcs:[0,1],roots:[],a1:0,a2:1,charge:{},law:{},
     doors have to be reachable from here, which they are: the rail prints
     them on every tab but Summary, which was written for exactly this case
     and is the reason the change is safe. */
- theme:'dark',hover:null,pin:null,t:0,replace:{},view:1,who:0,tab:TAB.FIELD,
+ /* AND IT OPENS WITH EVERY LAYER ON. view was 1, Patterns, so the glass bar
+    opened with Domains, Masks, Archetypes and the four chain tiers off, and
+    since one set of switches drives all three pictures, Frames and Dial
+    opened with them off as well. EY named that as his to rule and EZ in
+    TASKS.md is the ruling: "the addresses and everything should already be
+    on. Yeah, everything should start on." 3 is Blueprint, the preset that is
+    every layer in LAYADD, so the first frame draws all of it and a press on
+    the bar takes a layer away rather than having to find it. */
+ theme:'dark',hover:null,pin:null,t:0,replace:{},view:3,who:0,tab:TAB.FIELD,
  /* atom: the one story weight being held on the wheel, past the fetter
     layer. {i:node id, ei:entry index}, or null for none held. View state,
     like pin and hover, so it is not persisted and not validated. */

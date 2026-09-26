@@ -175,6 +175,8 @@ function setTab(i){
     renderer, because the renderer runs sixty times a second and arriving is
     something that happens once. */
  if(i===TAB.FIELD&&typeof enterStart==='function')enterStart();
+ /* and the circles lying over it arrive with it, once, ui/fieldbar.js */
+ if(i===TAB.FIELD&&typeof fbEnter==='function')fbEnter();
  /* the Field's sub bar carried the depth row, and the glass bar floating over
     the stage replaced it. His words: "I don't want that secondary
     navigation." So the sub bar is Body's alone. */

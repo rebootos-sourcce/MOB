@@ -1349,15 +1349,34 @@ canvas#cv{display:block;grid-column:2;grid-row:3;width:100%;height:100%;
    right hand side." The layer row that took the depth row's place in the sub
    bar is gone with it, into the glass bar, which drives all three pictures.
    ============================================================ */
-.fview{display:flex;gap:8px;align-items:center;margin:10px 0 4px}
-/* the Field's alone. The rail is on every surface, and three switches for a
+/* THE SWITCH IS THE OVERLAY IN THE UPPER RIGHT NOW, EZ in TASKS.md: "On my
+   right hand side overlay ... This should be opposite of the overlay items
+   that you have on the upper left." The glass bar lies at top 10, left 12;
+   this lies at top 10, right 12, in the same strip the stage keeps clear, so
+   the two read as one pair of overlays across the head of the picture.
+
+   Its three circles are the bar's own, the same size, glass, shade and ring,
+   so it carries the bar's weight, and they sit on a capsule of that glass
+   because they are one control choosing one of three, where the bar's
+   circles are thirteen separate switches. The capsule is what says so. */
+.fview{position:absolute;top:8px;right:12px;z-index:6;display:flex;gap:4px;align-items:center;
+ padding:2px;border-radius:999px;background:var(--fb-glass);border:1px solid var(--edge-2);
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 8px 22px var(--fb-shade)}
+/* the Field's alone. The stage hosts every surface, and three switches for a
    picture that is not there are three dead controls */
-body:not(.tab-field) .fview{display:none}
-/* the rail's own ground and ink, not the glass: this is not lying on the
-   picture. A rendition has no reading, so its ring is whole when it is up. */
-.fview .fb-orb{--c:var(--accent);background:transparent;box-shadow:none}
-.fview .fb-b.on .fb-orb{background:color-mix(in srgb,var(--accent) 12%,transparent)}
+body:not(.tab-field) .fview,body:not(.tab-field) .fzoom{display:none}
+/* a rendition has no reading, so the one that is up carries a whole ring in
+   the accent and a lifted disc, and the two that are not stay glass */
+.fview .fb-orb{--c:var(--accent)}
 .fview .fb-b.on .fb-arc .val{stroke-dasharray:100 100}
+/* and the two that are not up draw no arc at all: a round cap on a dash of
+   nought is a dot, and a dot at twelve o'clock read as a reading of one */
+.fview .fb-b:not(.on) .fb-arc .val{opacity:0}
+/* ZOOM, IN THE LOWER RIGHT, out of the bar for the switch's sake. A column,
+   because the lower right of the stage is the compass's lane on the wheel,
+   128 across, and three circles in a row are 136. */
+.fzoom{position:absolute;right:12px;bottom:12px;z-index:6;display:flex}
+.fzoom .fb-grp{flex-direction:column;gap:6px}
 #frend{grid-column:2;grid-row:3;width:100%;height:100%;min-width:0;min-height:0;
  position:relative;overflow:hidden}
 /* FRAMES TAKES THE EMPTY LEFT LANE. The lane held the renditions switch and
@@ -1419,10 +1438,10 @@ body:not(.tab-field) .fbar,body:not(.tab-field) .fb-float{display:none!important
    because under Snow the theme's tokens are paper ink and the stage stays
    the ruled #101010: the bar needs the ground's ink, which INK() and frMount
    already choose the same way. */
-.fbar,.fb-float{--ink:#EFEDE8;--mid:#B4B0A8;--dim:#94908A;--accent:#7EB8D4;
+.fbar,.fb-float,.fview,.fzoom{--ink:#EFEDE8;--mid:#B4B0A8;--dim:#94908A;--accent:#7EB8D4;
  --edge-2:rgba(255,255,255,.14);--edge:rgba(255,255,255,.09);
  --fb-glass:rgba(22,24,32,.74);--fb-glass-on:rgba(40,44,58,.86);--fb-shade:rgba(0,0,0,.30);--fb-pillbg:#161820}
-.fbar.fb-lt,.fb-float.fb-lt{--ink:#14161C;--mid:#4A4843;--dim:#6E6B65;--accent:#2F6E92;
+.fbar.fb-lt,.fb-float.fb-lt,.fview.fb-lt,.fzoom.fb-lt{--ink:#14161C;--mid:#4A4843;--dim:#6E6B65;--accent:#2F6E92;
  --edge-2:rgba(20,22,28,.16);--edge:rgba(20,22,28,.10);
  --fb-glass:rgba(252,252,250,.80);--fb-glass-on:rgba(255,255,255,.94);--fb-shade:rgba(20,22,28,.14);--fb-pillbg:#FAFAF7}
 /* ---- one layer, one object. 44 by 44, the tap floor ---- */
@@ -1473,6 +1492,19 @@ body:not(.tab-field) .fbar,body:not(.tab-field) .fb-float{display:none!important
 /* ON, AND WAITING FOR ZOOM: stories on the wheel at arm's length */
 .fb-b.wait .fb-orb::after{content:'';position:absolute;right:1px;top:1px;width:7px;height:7px;border-radius:50%;
  background:var(--accent);box-shadow:0 0 0 2px var(--fb-pillbg)}
+/* THE ENTRANCE, once a session, ui/fieldbar.js fbEnter: each disc rises four
+   pixels into place and its ring draws round to its value, on the stage's
+   own curve. The disc and not the button, so every target is its full 44
+   from the first frame and the tap gate never meets one mid rise. The ring
+   keyframe has no end, so it lands on whatever value the circle carries.
+   fb-hold keeps them on their first frame while the boot sheet is up. */
+@keyframes fbIn{from{opacity:0;transform:translateY(4px) scale(.94)}}
+@keyframes fbArc{from{stroke-dasharray:0 100}}
+.fb-enter .fb-orb{animation:fbIn var(--t-surface) var(--ease-out) both;
+ animation-delay:calc(var(--i,0) * 34ms)}
+.fb-enter .fb-arc .val{animation:fbArc 380ms var(--ease-out) both;
+ animation-delay:calc(var(--i,0) * 34ms + 90ms)}
+.fb-hold .fb-orb,.fb-hold .fb-arc .val{animation-play-state:paused}
 body.punch .fb-b.on .fb-orb{background:var(--c)}
 body.punch .fb-b.on .fb-gl svg{stroke:var(--on-flat)}
 body.punch .fb-v{background:var(--c);color:var(--on-flat);border-color:var(--c)}
@@ -1546,12 +1578,26 @@ body.punch .fb-v{background:var(--c);color:var(--on-flat);border-color:var(--c)}
 body:not(.tab-field) .fdock{display:none}
 /* CQ AND DQ, A PAIR. "Line those up so they don't look like a design element
    that's not quite designed right, but has a symmetry, and I do want the CQ
-   number bigger, so it's in your face." CQ is the large circle in the middle,
-   DQ and SQ stand either side of it on one centre line. */
-.fdock .key{display:grid;grid-template-columns:1fr 1fr 1fr;justify-items:center;align-items:center;gap:0}
+   number bigger, so it's in your face." CQ is the large circle, and the row
+   keeps one centre line through every circle on it. */
+/* TWO ROWS, EZ in TASKS.md: "just make sure there's just two rows." SQ left
+   the first row and accuracy took its place, so the first row is DQ, CQ and
+   accuracy and the second the four. #key takes no box of its own here, so
+   its two circles and accuracy are three items on one line, spread to the
+   rail's edges.
+
+   Spread and not centred in three equal thirds, which is what the row did
+   with SQ in it, because accuracy keeps its word to the left of its circle,
+   ruled, and word and circle together are 112 wide against a third of 264.
+   Measured at 1600 with Marcus: DQ's pill ends 4.8 clear of CQ's ring, and
+   CQ's pill, which rides its ring's lower right, reached 0.7 into the word's
+   line box, so the word sits 3 higher than its circle's centre line and the
+   two clear by 2.3. */
+.fdock .fdrow{display:flex;align-items:center;justify-content:space-between;min-width:0}
+.fdock .fdrow .key{display:contents}
 .fdock .key .kb[data-q=dq]{order:1}
 .fdock .key .kb[data-q=cq]{order:2;min-width:72px;min-height:72px}
-.fdock .key .kb[data-q=sq]{order:3}
+.fdock .fdrow .acc{order:3}
 .fdock .keylo{justify-content:center;gap:20px}
 .fdock .kb{min-width:var(--tap);min-height:var(--tap);padding:0;border:0;background:transparent;
  justify-content:center;border-radius:50%}
@@ -1559,7 +1605,8 @@ body:not(.tab-field) .fdock{display:none}
 .fdock .kb:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 /* accuracy keeps its word, to the left of its circle, ruled */
 .fdock .acc{margin:0;padding:0;text-align:center;display:flex;justify-content:center}
-.fdock .acc-b{gap:10px;padding:0 6px;border:0}
+.fdock .acc-b{gap:8px;padding:0;border:0}
+.fdock .acc-l{transform:translateY(-3px)}
 .key{display:flex;flex-wrap:nowrap;gap:4px;align-items:center}
 .kb{display:inline-flex;align-items:center;gap:6px;min-height:var(--tap);padding:2px 4px;
  background:transparent;border:1px solid var(--edge);border-radius:var(--r-xs);
@@ -1840,6 +1887,36 @@ body.punch .rt-cell{box-shadow:none;background:var(--panel-2)}
 .lsec.open .lsec-hd i{transform:rotate(-135deg)}
 .lsec-bd{display:none;padding-bottom:16px}
 .lsec.open .lsec-bd{display:block}
+/* ---- THE LEFT COLUMN'S FOLD. EZ in TASKS.md: "I want to be able to close up
+   that column." ui/ui.js, colFold. The control sits in the top right corner
+   of the rail over Root energetics' header, which gives it the width a
+   section's chevron would otherwise run into, so it costs the rail no row. */
+#lpanel{position:relative}
+.lfold{position:absolute;top:16px;right:8px;z-index:2;width:var(--tap);height:var(--tap);
+ display:flex;align-items:center;justify-content:center;padding:0;border:0;border-radius:var(--r-xs);
+ background:transparent;color:var(--mid);cursor:pointer;
+ transition:background-color var(--t-micro) var(--ease-out),color var(--t-micro) var(--ease-out)}
+.lfold:hover{background:var(--sunk);color:var(--ink)}
+.lfold svg{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.lfold .lf-ch{transform-box:fill-box;transform-origin:center;transition:transform var(--t-element) var(--ease-out)}
+.lsec[data-sec=energetics] .lsec-hd{padding-right:52px}
+/* shut, the column is the control and nothing else. It keeps its panel, so
+   the way back open is a thing on a surface rather than a button floating in
+   the gutter, and the chevron turns to point the way the column will go. */
+body.lshut #lpanel>*:not(.lfold){display:none}
+body.lshut #lpanel{padding:6px;align-items:center}
+/* and the rail's tail goes with the rest. It is a pseudo element, 88vh of
+   room to scroll a header to the top, so the rule above cannot reach it, and
+   left standing it squeezed the one control in a shut column to eighteen
+   pixels, measured, and gave an empty column a scroll. */
+body.lshut #lpanel::after{display:none}
+body.lshut .lfold{position:static;flex:0 0 auto}
+body.lshut .lfold .lf-ch{transform:rotate(180deg)}
+/* the stage takes the width. Settings has no columns at all, so it keeps its
+   own single track and this never reaches it; and below 1180 the columns are
+   stacked, where shut is simply the panel folded to its control. */
+@media (min-width:1181px){
+ body.lshut:not(.tab-settings) .mid{grid-template-columns:58px 1fr 336px}}
 /* SPIRIT AND PSYCHE, the rail's two blocks, ruled 26 September. A block is
    one level above a section, so it is set in ink and a size up from the
    section headers under it, and it is not a control: nothing here opens or
@@ -1921,6 +1998,22 @@ body.punch .rt-cell{box-shadow:none;background:var(--panel-2)}
    measured yet keeps the square it has always drawn rather than collapsing
    to its minimum for a frame. */
 .g6[data-fit]>.ib,.gdom[data-fit]>.ib{aspect-ratio:auto;height:100%}
+/* THE ARCHETYPE ICONS SHRINK AND THE GRID LOSES A ROW. EZ in TASKS.md: "the
+   Jung icons are taking up too much space, so shrink them the icon size down
+   so we can collapse the row size down one." Twelve in each grid sat four by
+   three, 61.5 wide cells in a 264 rail.
+
+   The tap floor is 44 and a measured floor, so the drawn tile shrinks and the
+   target does not. The gaps go to nought, which is what lets fitGrid find six
+   44 wide columns in 264, and the space between tiles is drawn inside each
+   target instead: the ground is clipped to the content box, three pixels in
+   from a border that stays at the target's edge. Twelve read six by two, each
+   tile 35 across with its mark at 16, and selection is still a ring, now one
+   that stands off the tile rather than sitting on its edge. The border width
+   is restated because Punch and Lumen take it to nought on every .ib, and at
+   nought the ground would run to the edge and the tiles would touch. */
+#ar1,#ar2{gap:0}
+#ar1>.ib,#ar2>.ib{padding:3px;background-clip:content-box;border-width:1.5px}
 .ib{aspect-ratio:1;min-height:var(--tap);background:var(--sunk);border:1.5px solid transparent;border-radius:var(--r-xs);
  cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;
  transition:all var(--t-micro) var(--ease-out);position:relative}
@@ -3578,6 +3671,12 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
     the ring, and the strip the stage keeps clear for it on a desktop goes. */
  body.tab-field .stage{padding-top:0}
  .fbar{position:relative;top:auto;left:auto;order:0;align-self:flex-start;margin:10px 12px 4px;flex-wrap:wrap}
+ /* the switch keeps its corner on a phone, level with the folded bar, which
+    is one row of two circles here and leaves the right of that row empty.
+    Zoom follows the picture, right aligned, in a row: under it there is no
+    compass lane to keep clear. */
+ .fzoom{position:static;order:1;align-self:flex-end;margin:8px 22px 0 12px}
+ .fzoom .fb-grp{flex-direction:row}
  /* Five blocks were absolutely positioned against a stage that is 900 wide
     on a desktop. At 390 they all landed on each other at the bottom of the
     wheel. On a phone the stage is a column: the canvas, then each block in

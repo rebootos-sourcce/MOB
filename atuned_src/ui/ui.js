@@ -399,7 +399,15 @@ function frDescribe(h,r){
 
    Only the default moves. A person who closes it keeps it closed, because
    the header writes this same set. */
-var OPENSEC={left:{soul:1,spirit:1,lean:1}, right:{you:1}};
+/* AND NOW IT OPENS CLOSED, ON HIS WORD, WHICH REVERSES THE PARAGRAPH ABOVE.
+   EZ in TASKS.md: States went to the head of the rail as Root energetics,
+   "and I want that one to start closed." The finding above still holds, a
+   closed header can read as an empty one, and it is answered differently
+   now: the section is the first thing in the rail and says what it holds in
+   its own name, where States sat fifth under a word nobody read as birth
+   data. Its key is energetics, not spirit, so nothing that remembered the
+   old section opens the new one by accident. */
+var OPENSEC={left:{soul:1,lean:1}, right:{you:1}};
 /* which surfaces have already had their sections seeded, so a tab opens what
    it is about the first time and never argues with a person who closed it. */
 var SEC_SEEDED={};
@@ -456,6 +464,35 @@ function paintSections(){
   var on=!!OPENSEC[railOf(sec)][sec.dataset.sec];
   sec.classList.toggle('open',on);
   var hd=sec.querySelector('.lsec-hd');if(hd)hd.setAttribute('aria-expanded',on?'true':'false');});}
+/* THE LEFT COLUMN CLOSES, EZ in TASKS.md: "I want to be able to close up that
+   column." A section folds its own body; this folds the whole column to the
+   width of the one control that opens it again, and the stage takes the rest.
+   It is a body class and not a display write, because the grid that places
+   the column is in the sheet and the sheet is the one writer of layout.
+
+   Kept in the store as a convenience and nothing more: a store that cannot be
+   read opens the column, which is the state nobody has to find their way
+   back from. The canvas refits itself off its own ResizeObserver; the icon
+   grids do not, because a grid in a shut column measures nought and fitGrid
+   rightly skips it, so they are refitted on the way back open. */
+function colFoldPaint(shut){
+ document.body.classList.toggle('lshut',shut);
+ var b=$('lfold'); if(!b)return;
+ var say=shut?'Open the left column':'Close the left column';
+ b.setAttribute('aria-expanded',shut?'false':'true');
+ /* fbTip and not data-tip straight: on a phone a tooltip carrier takes its
+    first tap to explain itself, and a fold that has to be pressed twice is
+    the toggle rule ui/fieldbar.js already settled for the glass bar */
+ b.setAttribute('aria-label',say); fbTip(b,say);}
+function colFold(){
+ var shut=false; try{shut=STORE.get('lcol')==='shut';}catch(e){}
+ colFoldPaint(shut);
+ var b=$('lfold'); if(!b)return;
+ b.onclick=function(){
+  var now=!document.body.classList.contains('lshut');
+  colFoldPaint(now);
+  try{STORE.set('lcol',now?'shut':'open');}catch(e){}
+  if(!now&&typeof fitGrids==='function')requestAnimationFrame(fitGrids);};}
 
 /* ============================================================
    RENDER. One truth, five windows. Nothing here holds its own copy
@@ -878,10 +915,13 @@ function render(){
     +cr('Root',r.DQ,{size:'orb',text:'DQ',raw:Math.round(r.DQ)+'%',
       title:'Shadow weight. The weight on all 112 addresses, out of the most '
        +'they can hold.'})+'</button>'
-  +'<button class="kb" data-q="sq">'
-    +cr(r.darkB,r.SQm*10,{size:'orb',text:'SQ',raw:r.SQm.toFixed(1),
-      title:'Segment depth. '+r.SQm.toFixed(1)+' of 10. How deep the held charge '
-       +'sits at the addresses carrying it.'})+'</button>'
+  /* SQ LEFT THIS ROW, AND ONLY THIS ROW. EZ in TASKS.md, his words and his
+     reason: "we don't need SQ in the upper left nav. And the reason why is
+     because SQ is a total sum of the DQ anyway." Its circle stood beside DQ
+     saying the same weight a second way, and its slot is what lets the dock
+     read as two rows with accuracy kept in it. SQ itself is not retired: the
+     glass bar's Addresses circle carries the same figure, and the rail, the
+     drills and the summary still print it. */
   /* THE CONSOLE AVERAGED THREE READINGS AND SHOWED THE AVERAGE.
 
      One pill said Energy and behind it sat vitality, awareness and will,
@@ -1092,6 +1132,10 @@ function render(){
     they did not know is two gestures from being a word they do. */
  wireKbJump();
  renderAcc(r); renderSpirit(); renderPol2(r); syncMx();
+ /* the dock's circles move into their values rather than snapping, and only
+    after all three of its hosts are written, so one stagger runs across the
+    two rows in reading order. ui/component.js, crMotion. */
+ crMotion([$('key'),$('acc'),$('keylo')]);
  $('fire').innerHTML=rows.length
   ? '<div class="pm-eye" style="color:var(--gold);margin-bottom:8px">Running now</div>'
     +rows.slice(0,8).map(function(o,i){
@@ -1194,6 +1238,7 @@ window.__bootFailures=function(){return BOOT_FAILED.slice();};
 step('layout',layout);
 step('matrix key',mxKey);
 step('rail sections',wireSections);
+step('left column fold',colFold);
 step('first profile',function(){loadP(0);});
 /* A saved record is the person's own state, so it wins over the demo "You"
    that loadP(0) just installed. Nothing read the store at boot before, so a

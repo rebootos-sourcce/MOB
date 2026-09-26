@@ -57,7 +57,10 @@ function renderSpirit(){
      on the page, so it lands on the sealed card and its edit control. */
   el.innerHTML='<div class="sp-none">No birth data. Date, time and place unlock sun, moon, '
    +'rising, the year animal, life path and the gene key.</div>'
-   +'<button class="btn" type="button" id="spgo">Open Energetics</button>';
+   +'<button class="btn" type="button" id="spgo">Open Energetics</button>'
+   /* a name is not a birth date, so the name's own numbers still read */
+   +spNumRows(p.nm,false);
+  spNumWire(el);
   /* The focus waits a frame. setTab puts the page back to the top once now and
      once more on the next frame, so a focus made straight after it scrolled the
      date field into view and was then scrolled away from it: measured at 390,
@@ -111,6 +114,7 @@ function renderSpirit(){
   +'<div class="sp-hd">Number</div>'
   +row('Path','',String(sp.lp),sp.lpMean,'lp',String(sp.lp))
   +(sp.master?row('Master','',String(sp.master),'survives reduction','lp',String(sp.master)):'')
+  +spNumRows(p.nm,true)
   +'<div class="sp-hd">Design</div>'
   /* the personality and design gates are real and computed. the type is
      not, and says so, rather than printing one that sounds right. */
@@ -133,7 +137,38 @@ function renderSpirit(){
   +'<div class="sp-row static"><span class="sp-k">Where</span><span class="sp-v">'
   +esc(sp.birth.p)+'</span><span class="sp-x">'+esc(sp.birth.z||'')+'</span></div>';
  el.querySelectorAll('[data-sp]').forEach(function(btn){
-  btn.onclick=function(){runSpDrill(btn.getAttribute('data-sp'),btn.getAttribute('data-spv'));};});}
+  btn.onclick=function(){runSpDrill(btn.getAttribute('data-sp'),btn.getAttribute('data-spv'));};});
+ spNumWire(el);}
+/* ALL HIS NUMEROLOGY, IN ROOT ENERGETICS. EZ in TASKS.md: "I need all my
+   numerology stuff." This section carried the life path and a master and
+   nothing else, while the name's own numbers, expression, soul urge,
+   personality, birthday and maturity, were computed by numerologyOf and read
+   only on the Summary. They read here too, off the same call with the same
+   arguments sumNum makes, so the rail and the Summary cannot disagree, and
+   each row is the door the Summary's row is, runNumDrill.
+
+   ONLY OFF A NAME THAT IS SOMEBODY'S. numerologyOf falls back to the roster
+   name, and a blank profile's roster name is You, so a reading of the word
+   You would print under a header saying these are your numbers. sumNum met
+   the same fallback and guards it on an unread field; here the guard is the
+   name itself, because a person who has typed their name and nothing else has
+   a real expression number and no reading yet. */
+function spNumRows(nm,under){
+ var real=numFullName(CURP)||(typeof FULLNAME!=='undefined'&&FULLNAME[nm]);
+ if(!real)return '';
+ var N=numerologyOf(nm,CURP); if(!N)return '';
+ /* the life path row above is spiritual's own and drills on its own terms, so
+    under it this one would be the same number twice */
+ var K=(under?[]:['lifePath']).concat(['expression','soul','personality','birthday','maturity']);
+ var rows=K.filter(function(k){return N[k]!==null&&N[k]!==undefined;}).map(function(k){
+  return '<button class="sp-row" type="button" data-num="'+k+'">'
+   +'<span class="sp-k">'+esc(NUM_LABEL[k]||k)+'</span>'
+   +'<span class="sp-v">'+esc(String(N[k]))+'</span>'
+   +'<span class="sp-x">'+esc(numSays(k,N[k])||'')+'</span></button>';}).join('');
+ return rows?(under?'':'<div class="sp-hd">Number</div>')+rows:'';}
+function spNumWire(el){
+ el.querySelectorAll('[data-num]').forEach(function(btn){
+  btn.onclick=function(){runNumDrill(btn.getAttribute('data-num'));};});}
 
 /* ---- the compass. where coherence sits, and how far it swings. ---- */
 /* THE OSCILLATING BAND, BUILT ONCE AND MOVED EVERY FRAME.

@@ -183,6 +183,94 @@ function cr(band,pct,o){
           :'<span class="gl"><svg viewBox="0 0 24 24" aria-hidden="true">'+glyph+'</svg></span>')+'</span>'
   +'<span class="v">'+esc(val)+'</span></'+tag+'>';}
 /* ============================================================
+   THE DOCK'S CIRCLES MOVE INTO THEIR VALUES. EZ in TASKS.md, his words:
+   "I want to be able to see the animations on these." They snapped: render
+   writes the dock's whole markup, so every ring arrived at its final arc in
+   the frame it was written and a changed reading jumped from one figure to
+   the next with nothing to watch.
+
+   So each ring sweeps from where it was to where it is and its pill counts
+   with it. The first sight of the dock sweeps from empty, one circle after
+   the next in reading order, on the wheel's own entrance numbers, ENTER_SPAN
+   and ENTER_STAGGER in ui/wheel.js, and the wheel's curve, a cubic out. It
+   is the wheel assembling and the readings filling in the same breath, once
+   a session and not once a visit, which is the ruling enterStart carries.
+   After that a ring moves only when its value does.
+
+   A TWEEN AND NOT A CSS TRANSITION, because the markup is rewritten on every
+   render: a transition lives on an element, and the next render replaced the
+   element mid sweep with one already at the end. The tween is kept by host
+   and position and writes into whichever element is there on each frame, so
+   a render landing mid sweep continues it rather than cutting it.
+
+   A HIDDEN DOCK IS NOT A FIRST SIGHT. The first render at boot runs before
+   the Field's class is on the body, and a sweep started then runs where
+   nobody can see it and is spent by the time anybody can. Hidden, nothing is
+   recorded, so a value changed on another tab moves on the way back.
+   Reduced motion gets the value in the frame it is written. */
+/* UNDER THE BOOT SHEET NOTHING IS SEEN TO MOVE. The Field is the opening
+   surface, so its first render lands while the sheet still covers it, and an
+   entrance started then has finished before the sheet has gone. The wheel
+   learned this first, ET in TASKS.md, and holds its entrance until the sheet
+   starts to lift: ui/panels.js calls enterLift, and ui/wheel.js keeps the
+   answer in BOOT_LIFTED. This reads the same answer rather than keeping a
+   second one, so the wheel and the circles over it start on one frame. No
+   sheet in the document is lifted too, which is the case panels.js already
+   treats that way. One frame check while waiting, none once it has lifted. */
+function isBooted(){
+ return (typeof BOOT_LIFTED!=='undefined'&&BOOT_LIFTED)||!document.getElementById('boot');}
+function afterBoot(fn){if(isBooted()){fn();return;}
+ requestAnimationFrame(function(){afterBoot(fn);});}
+var CRMO={}, CRMO_RAF=0;
+function crMoNum(t){var m=/^(-?\d+(?:\.(\d+))?)(\D*)$/.exec(t||'');
+ return m?{n:+m[1],dp:m[2]?m[2].length:0,suf:m[3]}:null;}
+function crMoAt(m,now){var k=(now-m.t0)/m.dur;
+ return k<=0?0:k>=1?1:1-Math.pow(1-k,3);}
+function crMoPaint(m,now){
+ var h=document.getElementById(m.host), el=h?h.querySelectorAll('.cr')[m.j]:null; if(!el)return;
+ var e=crMoAt(m,now), arc=el.querySelector('svg.arc circle:last-child'), pv=el.querySelector('.v');
+ if(arc)arc.style.strokeDashoffset=(m.a0+(m.a1-m.a0)*e).toFixed(2);
+ if(pv&&m.n0!==null&&m.n1!==null)pv.textContent=(m.n0+(m.n1-m.n0)*e).toFixed(m.dp)+m.suf;}
+function crMoTick(now){
+ CRMO_RAF=0; var live=false;
+ Object.keys(CRMO).forEach(function(k){var m=CRMO[k]; if(m.done)return;
+  crMoPaint(m,now); if(now<m.t0+m.dur)live=true; else m.done=true;});
+ if(live)CRMO_RAF=requestAnimationFrame(crMoTick);}
+function crMotion(hosts){
+ var now=performance.now(), fresh=[];
+ hosts.forEach(function(h){
+  if(!h)return;
+  h.querySelectorAll('.cr').forEach(function(el,j){
+   /* visibility read off the circle and not its host: #key takes no box of
+      its own in the dock, display:contents, and such an element has no
+      offsetParent whether it is on screen or not */
+   if(!el.offsetParent)return;
+   var arc=el.querySelector('svg.arc circle:last-child'), pv=el.querySelector('.v'); if(!arc)return;
+   var key=h.id+':'+j, m=CRMO[key], num=crMoNum(pv?pv.textContent:''),
+    C=parseFloat(arc.getAttribute('stroke-dasharray'))||0,
+    to=parseFloat(arc.getAttribute('stroke-dashoffset'))||0, n1=num?num.n:null;
+   if(m&&Math.abs(m.a1-to)<.05&&m.n1===n1){if(!m.done)crMoPaint(m,now);return;}
+   var nm={host:h.id,j:j,a1:to,n1:n1,dp:num?num.dp:0,suf:num?num.suf:'',dur:ENTER_SPAN,t0:now,done:false};
+   if(REDUCED){nm.a0=to;nm.n0=n1;nm.done=true;}
+   /* from wherever the last one had got to, so a second change mid sweep
+      turns rather than jumping back to where the first began */
+   else if(m){var e=crMoAt(m,now);nm.a0=m.a0+(m.a1-m.a0)*e;
+    nm.n0=(m.n0!==null&&m.n1!==null&&n1!==null&&m.suf===nm.suf)?m.n0+(m.n1-m.n0)*e:null;}
+   else{nm.a0=C;nm.n0=n1===null?null:0;fresh.push({m:nm,r:el.getBoundingClientRect()});}
+   CRMO[key]=nm; crMoPaint(nm,now);});});
+ /* the stagger reads the page and not the markup: CQ is written before DQ
+    and draws after it, and the eye goes along the row that is drawn */
+ fresh.sort(function(a,b){return Math.round(a.r.top/24)-Math.round(b.r.top/24)||a.r.left-b.r.left;});
+ /* under the sheet the rings hold empty, and the sweep starts as it clears */
+ function go(){var t=performance.now();
+  fresh.forEach(function(f,i){f.m.t0=t+i*ENTER_STAGGER; crMoPaint(f.m,t);});
+  if(!CRMO_RAF&&Object.keys(CRMO).some(function(k){return !CRMO[k].done;}))
+   CRMO_RAF=requestAnimationFrame(crMoTick);}
+ if(fresh.length&&!isBooted()){
+  fresh.forEach(function(f){f.m.t0=Infinity; crMoPaint(f.m,now);});
+  afterBoot(go);}
+ else go();}
+/* ============================================================
    THE FOUR THAT MOVE THROUGH A PERSON, DRAWN.
 
    Ruled: the strip becomes a ring with the icon in the centre and a pill
