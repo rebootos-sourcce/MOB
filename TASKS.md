@@ -13072,3 +13072,65 @@ every surface that would use it, touch account and practitioner
 sharing work that has not been designed yet. Queued as a real design
 pass, not guessed into a page tonight.
 
+## CZ. The overlay rebuilt his way, hover one line rather than toggle
+## them all, plus four more looks, all measured. 26 September.
+
+**Verified myself.** Only `proto/field-overlay/` touched, nothing in
+`atuned_src/` or `source.html`. Opened the live page myself before
+sending it on: real, working, real data for Sofia, James and Gordon,
+a look switcher, a reduced motion and a close up toggle, exactly as
+described.
+
+**Built as he redescribed it, not as CL first pitched it.** No button,
+no toggle. Resting the pointer on one connection traces it from the
+address inward, the far end rings, then it holds and hums for as long
+as the pointer stays. How hard it hums is that line's own charge; how
+darkly it is drawn is the whole chain's weight, both checked against
+what the page actually draws, not only claimed: the swing matches its
+intended value within a tenth of a pixel across every line tested on
+two profiles, the density within three thousandths.
+
+**A real, useful mismatch found in his own example.** He described
+"Victim 92%" against "Victim 5%" as the two ends of the effect. Checked
+against the real data: no Victim line on either reference profile
+reaches past 66%, and no line anywhere sits as low as 5%, charges are
+either exactly 0 or at least 27%. Worth knowing since it means the felt
+range he described is wider than what a real profile will actually
+show him.
+
+**Four more looks, each a different reading of trace, hum and
+density.** Coil, charge wound around the line as a double helix.
+Current, crests travelling inward continuously rather than a plucked
+string held in place. Stitch, beads stitched tighter or looser by
+weight, charge read as how hard they shiver. Pressure, no sideways
+motion at all, the line's own width pulsing with charge at a resting
+heart's pace. "The shock was wrapped around it" was not identified;
+three candidates from the existing work are named in the full report
+rather than guessed at as one.
+
+**Real cost, measured the same way as every round tonight.** Because
+only one line or one chain ever moves, the cost is flat regardless of
+how heavy a profile is, cheaper across the board than CL's own toggle.
+The heaviest of the five, Coil, still costs a small fraction of what
+the shipped wheel already costs to draw.
+
+**Five real questions.**
+**Q1.** His "tension" language and the number the wheel already calls
+tension are two different things; built with charge driving how wide a
+line swings and tension driving how fast, since charge is what his own
+example percentage was. Confirm, or should tension drive the swing
+instead?
+**Q2.** Does "traces the entire thing" mean the one line under the
+pointer, or its whole chain hop by hop out to the character? Both are
+built.
+**Q3.** What counts as "the whole chain" for the weight reading: the
+fixed route from address to character (built), the whole tree feeding
+in, or a total rather than an average, which would grow with a longer
+chain?
+**Q4.** Which look: Trace and hum, Coil, Current, Stitch or Pressure,
+or a mix.
+**Q5.** On a phone there is no hover, so a tap holds a line instead,
+and the nearest neighbouring line can sit as close as 2 pixels away in
+a dense area. Should a tap open the shelf (CY) instead of, or as well
+as, humming, given a finger cannot reliably pick one line there?
+
