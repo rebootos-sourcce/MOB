@@ -998,7 +998,7 @@ function render(){
     +'anything was conditioned, so it is not released. The work changes where '
     +'it is pointed.');}).join('');
   var dsh=S.doms.map(function(di,i){var d=DOMAINS[di];
-   return d?prow(T[i]||'Also',d.nm,100/(S.doms.length||1),ROOTCOL[d.r],
+   return d?prow(T[i]||'Also',d.nm,100/(S.doms.length||1),rootPlain(d.r),
     d.ic?'<path d="'+d.ic+'"/>':null,
     d.nm+', '+d.r+' root. '+(d.d||''),
     ['dom',d.nm],

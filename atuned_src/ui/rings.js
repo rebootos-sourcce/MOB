@@ -37,7 +37,9 @@
    ruled #101010 while LIGHT() reports light, and Glass white lays a white
    stage while LIGHT() reports dark. The wheel is drawn off LIGHT() and loses
    its ring under both. Ink and palette here are chosen off the stage's own
-   computed ground, which is the thing the marks actually sit on.
+   computed ground, which is the thing the marks actually sit on. LIGHT()
+   takes Glass white now, 26 September, so Snow is the one left disagreeing,
+   and this reading is still the right one for it.
 
    AND ONE DEFECT IN THE MOCKUP, found in the port and not carried into it.
    Its stories layer read the atom key as a position in the address list,
@@ -340,6 +342,10 @@ function frMount(host,W_,H_,r){
  M.accent=hx(M.light?'#2F6E92':'#7EB8D4');
  var P=S.theme==='lumen'?PAL_VIVID:(M.light?PAL_LIGHT:PAL);
  M.seat=function(b){return hx(P[b]||PAL[b]||'#7EB8D4');};
+ /* a root is its seat, on this same ground. Both pictures drew ROOTCOL, the
+    Dark values, and on Glass white's paper a selected domain's mark measured
+    1.77 to 1 against a 3 to 1 floor. Lumen draws as it shipped. */
+ M.root=function(rn){return S.theme==='lumen'?hx(ROOTCOL[rn]):M.seat(ROOTSEAT[rn]);};
  /* THE SHADOW'S OWN COLOUR, for DQ where it shares the core with coherence.
     The Root washed 45 percent toward slate, which is nodeCol's grammar for a
     light charge and on Dark lands exactly on CE's #B9757B: weight, and not the
@@ -623,7 +629,7 @@ function frFrames(M,r){
  /* domains. nineteen cells in the outer frame, each with its own mark */
  (function(){var o=ring(D.dom0),i=ring(D.dom1),mid=ring((D.dom0+D.dom1)/2);
   DOMAINS.forEach(function(dm,k){var t0=k/19+.0016,t1=(k+1)/19-.0016,sel=S.doms.indexOf(k)>=0,v=+DOMAIN[k]||0;
-   var c=hx(ROOTCOL[dm.r]),h=M.hid({k:'dom',j:k});
+   var c=M.root(dm.r),h=M.hid({k:'dom',j:k});
    M.L.domains.push('<path data-h="'+h+'" d="'+frBandD(o,i,th(t0),th(t1))+'" fill="'+rgba(c,sel?.34:.05+v*.22)+'"'
     +(sel?' stroke="'+rgba(c,.95)+'" stroke-width="1.5"':'')+'/>');
    var q=mid.at(th((k+.5)/19));
@@ -773,7 +779,7 @@ function frDial(M,r){
 
  /* domains, the outer register */
  (function(){var ou=C(Rr.dom0),i=C(Rr.dom1),mid=C((Rr.dom0+Rr.dom1)/2);
-  DOMAINS.forEach(function(dm,k){var c=hx(ROOTCOL[dm.r]),t0=k/19+.0018,t1=(k+1)/19-.0018,sel=S.doms.indexOf(k)>=0,v=+DOMAIN[k]||0;
+  DOMAINS.forEach(function(dm,k){var c=M.root(dm.r),t0=k/19+.0018,t1=(k+1)/19-.0018,sel=S.doms.indexOf(k)>=0,v=+DOMAIN[k]||0;
    var h=M.hid({k:'dom',j:k});
    M.L.domains.push('<path data-h="'+h+'" d="'+frBandD(ou,i,th(t0),th(t1))+'" fill="'+rgba(c,sel?.34:.05+v*.22)+'"'
     +(sel?' stroke="'+rgba(c,.95)+'" stroke-width="1.4"':'')+'/>');

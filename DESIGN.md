@@ -312,13 +312,22 @@ glyphs, and 4 quotient glyphs. `grep -rho "ic:'" atuned_src/ | wc -l`.
 | Gates, 6 | `canon.js:126` | the gate's seat |
 | Quotients, 4 | `component.js:78` | the seat the reading is argued from |
 | Charges, 9 | `canon.js:108`, `CHILD[].ic` | the charge's seat |
-| Domains, 19 | `canon.js:153` | the root, via `ROOTCOL`, `canon.js:149` |
+| Domains, 19 | `DOMAINS[].ic`, `canon.js` | the root's, below |
 | Archetypes, 12 | `canon.js:192` | the archetype's seat `b` |
-| Roots, 4 | `ROOTCOL` | Architect `#8296DB`, Engine `#D19255`, Weaver `#65CFA5`, Witness `#A883D6` |
+| Roots, 4 | `ROOTGLYPH`, `canon.js` | the root's seat, `ROOTSEAT`, for the lighting: `rootCol()` in the rail's grids, `rootPlain()` everywhere else |
 
-`ROOTCOL` is four of the seven seat colours reused, exactly. Architect wears
-3rd Eye, Engine wears Sacral, Weaver wears Heart, Witness wears Crown. The
-family colour is never invented.
+A root wears one of the seven seats, exactly. Architect wears 3rd Eye, Engine
+wears Sacral, Weaver wears Heart, Witness wears Crown, written down as
+`ROOTSEAT` in `canon.js`. The family colour is never invented, and it moves
+with the lighting because the seat does. `ROOTCOL` is the same four seats'
+Dark values, `#7D93E0`, `#D8924E`, `#5FD5A6` and `#A77EDB`, and it stays in
+the engine's export contract and for Lumen, whose colours are still an open
+question. Nothing in `ui/` draws it on another lighting except the Body page's
+domain ring, which draws the whole page in the Dark palette.
+
+On a canvas the answer is the ground and not the lighting's name. The wheel
+and both ring pictures pick the root's palette off the stage, because Snow's
+Field keeps the ruled `#101010` while `LIGHT()` reports paper.
 
 ### Three Things Get Letters Instead Of A Drawing
 

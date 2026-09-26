@@ -643,7 +643,10 @@ function rebuildSwatches(){
   var i=CHF[cf.nm].inp.parentElement.querySelector('i');if(i)i.style.background=seatCol(cf.seat);});
  SI.forEach(function(l){
   var i=LWF[l.nm].inp.parentElement.querySelector('i');if(i)i.style.background=seatCol(l.b);});
- syncMx();}
+ /* the matrix's own key is written once at boot and again only when the
+    pointer leaves the matrix, so its four root swatches kept the lighting
+    the page opened on until somebody happened to hover it. */
+ syncMx();mxKey();}
 
 /* ============================================================
    DENSITY, PROFILE AND HELP. Three controls the product has

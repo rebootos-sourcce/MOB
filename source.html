@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="ecb64d4 2026-09-26 17:51"><head><meta charset="utf-8">
+<html lang="en" data-build="2c05737 2026-09-26 18:20"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -13964,9 +13964,8 @@ function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'
    so every seat colour on it was drawn for a black panel: Connection's icon
    measured 1.59 to 1 against a 3 to 1 floor, and 5.14 after. It takes the
    Snow palette because it is the same question, a light ground.
-   bc() below is the canvas twin of this ladder and was deliberately not moved
-   with it: it leans on LIGHT() for its ink and its node wash as well, and the
-   Glass white stage is its own piece of work, not a line added here. */
+   bc() below is the canvas twin of this ladder and moves through LIGHT(),
+   which is where the Glass white stage was taken on, with its ink and wash. */
 function seatCol(b){
  var P = S.theme==='lumen' ? PAL_VIVID
        : S.theme==='snow'||S.theme==='glasswhite' ? PAL_LIGHT
@@ -14030,6 +14029,19 @@ function icCol(b){
  return b==='Root'?c:icLift(c);}
 function rootCol(rn){
  return S.theme==='lumen'?ROOTCOL[rn]:icCol(ROOTSEAT[rn]);}
+/* A ROOT'S COLOUR EVERYWHERE THAT IS NOT THE RAIL'S GRIDS. rootCol above
+   carries the grids' chroma lift, which was ruled for those icons, so the
+   reading, the codex, the matrix and the domain chips take the plain seat,
+   the value an archetype beside them already takes from seatCol. They drew
+   ROOTCOL, the Dark values, on every lighting: on Snow the root names in the
+   reading measured 2.41 to 1 at worst against a 4.5 text floor, and 4.97
+   after, and the Blueprint chips' icons 1.43 against 3, and 4.09 after. On
+   Dark this is ROOTCOL to the digit. Lumen
+   keeps ROOTCOL for the reason icCol gives, and a name that is not a root
+   comes back empty, as ROOTCOL[name] did, so a caller's fallback still
+   fires rather than a stray word being painted the accent. */
+function rootPlain(rn){
+ return S.theme==='lumen'||!ROOTSEAT[rn]?ROOTCOL[rn]:seatCol(ROOTSEAT[rn]);}
 function cr(band,pct,o){
  o=o||{};
  var size=o.size||'md', G=CRGEO[size]||CRGEO.md;
@@ -14204,7 +14216,25 @@ const hx=h=>{const n=parseInt(String(h).slice(1),16);return[(n>>16)&255,(n>>8)&2
 const rgba=(c,a)=>'rgba('+c[0]+','+c[1]+','+c[2]+','+(+a).toFixed(3)+')';
 const mixc=(a,b,t)=>a.map((v,i)=>Math.round(v+(b[i]-v)*t));
 const lerp=(a,b,t)=>a+(b-a)*t;
-const LIGHT=()=>S.theme==='snow';
+/* GLASS WHITE PAINTS ITS RENDER GROUND LIGHT and this said dark, so the
+   wheel and the compass drew Dark's ink, halo, palette and wash onto
+   #F2F1EC. Measured on the Field with Gordon loaded: ink 1.14 to 1 against
+   its own ground, seat names 1.62 at worst, the accent 2.10. The whole
+   canvas moves together, which is why it is this line and not a Glass white
+   arm in bc() alone: bc() without the halo put dark names in a dark outline.
+   SNOW IS NOT WHAT THIS SAYS. Its Field, Body and Compass keep the ruled
+   #101010, so this answers light over a black ground there, and the wheel's
+   ink reads 1.06 to 1 on Snow, carried by the halo. That is Snow's own
+   question and is left as shipped. Anything that must match the ground and
+   not the lighting reads stageLight() below, as rings.js does. */
+const LIGHT=()=>S.theme==='snow'||S.theme==='glasswhite';
+/* what the Field's canvas actually sits on, read off the stage the way
+   frMount in rings.js reads it. The stage carries no transition, so the
+   answer is settled the moment the lighting's class lands. */
+function stageLight(){
+ var st=document.getElementById('stage'),m=st&&/rgba?\(([^)]+)\)/.exec(getComputedStyle(st).backgroundColor);
+ var c=m?m[1].split(',').map(parseFloat):[16,16,16];
+ return (0.2126*c[0]+0.7152*c[1]+0.0722*c[2])/255>0.5;}
 const INK=()=>LIGHT()?[22,23,28]:[239,237,232];
 /* the accent, for the canvas, which cannot read a custom property. the two
    values are the same two the sheet declares and they move together. */
@@ -15954,9 +15984,16 @@ function drawWheel(r,L){
   if(wd)HIT.push({k:'seat',b:b,cx:CX,cy:CY,a0:wd.a0,a1:wd.a1,r0:wd.r0,r1:wd.r1});});
 
  /* --- domains, D only --- */
- if(L===3){for(let d=0;d<19;d++){
-  const a0=d*(TAU/19)-Math.PI/2,a1=a0+TAU/19,am=a0+TAU/38;
-  const c=hx(ROOTCOL[DOMAINS[d].r]),sel=S.doms.indexOf(d)>=0,v=DOMAIN[d];
+ /* EACH ROOT IN ITS SEAT'S COLOUR FOR THE GROUND UNDER IT, not ROOTCOL, the
+    Dark values, on every lighting: on Glass white's paper the four selected
+    arcs measured 1.72 to 1 at worst against a 3 to 1 floor. Keyed on the
+    stage and not on LIGHT(), because on Snow the two disagree and the stage
+    is right: the ring sits on #101010 there and already read 5.51, which the
+    Snow palette would have taken down. Lumen draws as it shipped. */
+ if(L===3){const rootP=S.theme==='lumen'?null:(stageLight()?PAL_LIGHT:PAL);
+ for(let d=0;d<19;d++){
+  const a0=d*(TAU/19)-Math.PI/2,a1=a0+TAU/19,am=a0+TAU/38,rn=DOMAINS[d].r;
+  const c=hx(rootP?rootP[ROOTSEAT[rn]]:ROOTCOL[rn]),sel=S.doms.indexOf(d)>=0,v=DOMAIN[d];
   arcP(R.dom-U*.012,R.dom,a0+.008,a1-.008);g.fillStyle=rgba(c,sel?.95:.08+v*.45);g.fill();
   /* round its own nineteenth of the ring, just inside it, for the seat
      names' reason. Radially outward from the ring these were the furthest
@@ -16163,7 +16200,9 @@ try{window.__at&&window.__at('ui/wheel.js');}catch(e){}
    ruled #101010 while LIGHT() reports light, and Glass white lays a white
    stage while LIGHT() reports dark. The wheel is drawn off LIGHT() and loses
    its ring under both. Ink and palette here are chosen off the stage's own
-   computed ground, which is the thing the marks actually sit on.
+   computed ground, which is the thing the marks actually sit on. LIGHT()
+   takes Glass white now, 26 September, so Snow is the one left disagreeing,
+   and this reading is still the right one for it.
 
    AND ONE DEFECT IN THE MOCKUP, found in the port and not carried into it.
    Its stories layer read the atom key as a position in the address list,
@@ -16466,6 +16505,10 @@ function frMount(host,W_,H_,r){
  M.accent=hx(M.light?'#2F6E92':'#7EB8D4');
  var P=S.theme==='lumen'?PAL_VIVID:(M.light?PAL_LIGHT:PAL);
  M.seat=function(b){return hx(P[b]||PAL[b]||'#7EB8D4');};
+ /* a root is its seat, on this same ground. Both pictures drew ROOTCOL, the
+    Dark values, and on Glass white's paper a selected domain's mark measured
+    1.77 to 1 against a 3 to 1 floor. Lumen draws as it shipped. */
+ M.root=function(rn){return S.theme==='lumen'?hx(ROOTCOL[rn]):M.seat(ROOTSEAT[rn]);};
  /* THE SHADOW'S OWN COLOUR, for DQ where it shares the core with coherence.
     The Root washed 45 percent toward slate, which is nodeCol's grammar for a
     light charge and on Dark lands exactly on CE's #B9757B: weight, and not the
@@ -16749,7 +16792,7 @@ function frFrames(M,r){
  /* domains. nineteen cells in the outer frame, each with its own mark */
  (function(){var o=ring(D.dom0),i=ring(D.dom1),mid=ring((D.dom0+D.dom1)/2);
   DOMAINS.forEach(function(dm,k){var t0=k/19+.0016,t1=(k+1)/19-.0016,sel=S.doms.indexOf(k)>=0,v=+DOMAIN[k]||0;
-   var c=hx(ROOTCOL[dm.r]),h=M.hid({k:'dom',j:k});
+   var c=M.root(dm.r),h=M.hid({k:'dom',j:k});
    M.L.domains.push('<path data-h="'+h+'" d="'+frBandD(o,i,th(t0),th(t1))+'" fill="'+rgba(c,sel?.34:.05+v*.22)+'"'
     +(sel?' stroke="'+rgba(c,.95)+'" stroke-width="1.5"':'')+'/>');
    var q=mid.at(th((k+.5)/19));
@@ -16899,7 +16942,7 @@ function frDial(M,r){
 
  /* domains, the outer register */
  (function(){var ou=C(Rr.dom0),i=C(Rr.dom1),mid=C((Rr.dom0+Rr.dom1)/2);
-  DOMAINS.forEach(function(dm,k){var c=hx(ROOTCOL[dm.r]),t0=k/19+.0018,t1=(k+1)/19-.0018,sel=S.doms.indexOf(k)>=0,v=+DOMAIN[k]||0;
+  DOMAINS.forEach(function(dm,k){var c=M.root(dm.r),t0=k/19+.0018,t1=(k+1)/19-.0018,sel=S.doms.indexOf(k)>=0,v=+DOMAIN[k]||0;
    var h=M.hid({k:'dom',j:k});
    M.L.domains.push('<path data-h="'+h+'" d="'+frBandD(ou,i,th(t0),th(t1))+'" fill="'+rgba(c,sel?.34:.05+v*.22)+'"'
     +(sel?' stroke="'+rgba(c,.95)+'" stroke-width="1.4"':'')+'/>');
@@ -19095,7 +19138,7 @@ function sumToldHtml(){
    to no seat and no root, so it is not painted. */
 function sumB(text,col){
  return '<b'+(col?' class="s-w" style="--c:'+col+'"':'')+'>'+esc(text)+'</b>';}
-function rootB(nm){return sumB(nm,ROOTCOL[nm]||null);}
+function rootB(nm){return sumB(nm,rootPlain(nm)||null);}
 function archB(nm){
  var a=ARCH.filter(function(x){return x.nm===nm;})[0];
  return sumB(nm,a&&a.b?seatCol(a.b):null);}
@@ -19117,7 +19160,7 @@ function sumStory(r){
  if(e){
   var elRoot=ELEM2ROOT[e.sunEl]||'';
   var num=numerologyOf(nm2,CURP);
-  p.push('The blueprint you were born on reads '+sumB(e.sunEl,ROOTCOL[elRoot]||null)
+  p.push('The blueprint you were born on reads '+sumB(e.sunEl,rootPlain(elRoot)||null)
    +', which is the '+rootB(elRoot)+' root, on life path <b>'+e.lp+'</b>, the one who '
    +esc(e.lpMean||'runs')+'.'
    +(num?' The name carries an expression of <b>'+num.expression+'</b>, '
@@ -19215,10 +19258,10 @@ function sumStruct(r){
     ring on any of them, because a ring is a measurement and this is a choice. */
  var rootNow=(DOMAINS[S.doms[0]]||{}).r||'';
  out+='<div class="pm-eye">Blueprint</div><div class="s-sel">'
-  +'<span class="s-sel-r" style="--rc:'+(ROOTCOL[rootNow]||'var(--accent)')+'">'
+  +'<span class="s-sel-r" style="--rc:'+(rootPlain(rootNow)||'var(--accent)')+'">'
   +esc(rootNow)+'</span>'
   +S.doms.map(function(di){var d=DOMAINS[di]; if(!d)return '';
-   return '<button type="button" class="s-dom" data-dom="'+di+'" style="--rc:'+ROOTCOL[d.r]+'" '
+   return '<button type="button" class="s-dom" data-dom="'+di+'" style="--rc:'+rootPlain(d.r)+'" '
     +'title="'+esc(d.nm+'. '+d.d)+'">'+svgI('<path d="'+d.ic+'"/>')
     +'<span>'+esc(d.nm)+'</span></button>';}).join('')+'</div>';
  /* the archetypes. these ARE measured: aff is a real proportion. */
@@ -19970,9 +20013,9 @@ function anaRender(){
   r.maskRing.map(function(m){return {k:'mask',nm:m.nm,v:m.w,
    c:seatCol((m.bands||['Heart'])[0])};}),300,210);
  out+=anaField('Domains','the blueprint you run. yours are lit, the rest are context',
-  S.doms.map(function(di){var d=DOMAINS[di];return {k:'dom',nm:d.nm,v:9,c:ROOTCOL[d.r]};})
+  S.doms.map(function(di){var d=DOMAINS[di];return {k:'dom',nm:d.nm,v:9,c:rootPlain(d.r)};})
    .concat(DOMAINS.filter(function(d,i){return S.doms.indexOf(i)<0;}).slice(0,9)
-    .map(function(d){return {k:'dom',nm:d.nm,v:2,c:ROOTCOL[d.r]};})),300,210);
+    .map(function(d){return {k:'dom',nm:d.nm,v:2,c:rootPlain(d.r)};})),300,210);
  out+=anaField('Archetypes','how the blueprint expresses. the bigger the mark, the closer the fit',
   (r.aff||[]).map(function(a,i){return {k:'arch',nm:(ARCH[i]||{}).nm||'',
    v:Math.max(0.4,a*10),c:(i===r.pi?GOLD:PAL['3rd Eye'])};}),300,210);
@@ -23598,7 +23641,7 @@ function kbRows(sec){
     strongest lobe, so the percent says so. */
  if(sec==='dom') DOMAINS.forEach(function(d,i){
   out.push(kbRow('dom', d.nm, d.r, 'Heart', kbPct100(DOMAIN[i]), d.ic||null, d,
-   ROOTCOL[d.r]||null));});
+   rootPlain(d.r)||null));});
  /* affinity is normalised to the strongest archetype, so the top one is 100
     by construction and the scale line says what it is a share of. */
  if(sec==='arch') ARCH.forEach(function(a,i){
@@ -25050,7 +25093,10 @@ function rebuildSwatches(){
   var i=CHF[cf.nm].inp.parentElement.querySelector('i');if(i)i.style.background=seatCol(cf.seat);});
  SI.forEach(function(l){
   var i=LWF[l.nm].inp.parentElement.querySelector('i');if(i)i.style.background=seatCol(l.b);});
- syncMx();}
+ /* the matrix's own key is written once at boot and again only when the
+    pointer leaves the matrix, so its four root swatches kept the lighting
+    the page opened on until somebody happened to hover it. */
+ syncMx();mxKey();}
 
 /* ============================================================
    DENSITY, PROFILE AND HELP. Three controls the product has
@@ -26007,13 +26053,13 @@ $('mx').addEventListener('mouseleave',mxKey);
 function mxKey(){$('mxk').innerHTML='Columns are domains, rows are child emotions. '
  +'Brightness is the SQ held in that cell. A gold ring is a <b>1.3× affinity pair</b>. '
  +'Click any cell.<div class="mxrow">'
- +ROOTD.map(function(rd){return '<span><i style="background:'+ROOTCOL[rd]+'"></i>'+rd+'</span>';}).join('')
+ +ROOTD.map(function(rd){return '<span><i style="background:'+rootPlain(rd)+'"></i>'+rd+'</span>';}).join('')
  +'</div>';}
 function syncMx(){MXC.forEach(function(b){
  const c=+b.dataset.c,rw=+b.dataset.rw,cf=CHILD[rw].nm,D=DOMAINS[c];
  const seg=W.filter(function(n){return Math.min(18,Math.floor(n.slot/(108/19)))===c&&n.cf===cf;});
  const held=seg.length?seg.reduce(function(a,n){return a+n.sq;},0)/seg.length/10:0;
- const base=hx(ROOTCOL[D.r]).join(',');
+ const base=hx(rootPlain(D.r)).join(',');
  b.style.background='rgba('+base+','+(seg.length?(0.05+held*0.9).toFixed(2):'0.02')+')';
  b.dataset.sel=S.doms.indexOf(c)>=0?'1':'0';
  b.style.outline=(AFFIN[D.r]||[]).indexOf(cf)>=0
@@ -27998,7 +28044,7 @@ function render(){
     +'anything was conditioned, so it is not released. The work changes where '
     +'it is pointed.');}).join('');
   var dsh=S.doms.map(function(di,i){var d=DOMAINS[di];
-   return d?prow(T[i]||'Also',d.nm,100/(S.doms.length||1),ROOTCOL[d.r],
+   return d?prow(T[i]||'Also',d.nm,100/(S.doms.length||1),rootPlain(d.r),
     d.ic?'<path d="'+d.ic+'"/>':null,
     d.nm+', '+d.r+' root. '+(d.d||''),
     ['dom',d.nm],
@@ -28297,5 +28343,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="001840465"></div>
+<div id="eof" hidden data-len="001843784"></div>
 </body></html>

@@ -211,7 +211,7 @@ function sumToldHtml(){
    to no seat and no root, so it is not painted. */
 function sumB(text,col){
  return '<b'+(col?' class="s-w" style="--c:'+col+'"':'')+'>'+esc(text)+'</b>';}
-function rootB(nm){return sumB(nm,ROOTCOL[nm]||null);}
+function rootB(nm){return sumB(nm,rootPlain(nm)||null);}
 function archB(nm){
  var a=ARCH.filter(function(x){return x.nm===nm;})[0];
  return sumB(nm,a&&a.b?seatCol(a.b):null);}
@@ -233,7 +233,7 @@ function sumStory(r){
  if(e){
   var elRoot=ELEM2ROOT[e.sunEl]||'';
   var num=numerologyOf(nm2,CURP);
-  p.push('The blueprint you were born on reads '+sumB(e.sunEl,ROOTCOL[elRoot]||null)
+  p.push('The blueprint you were born on reads '+sumB(e.sunEl,rootPlain(elRoot)||null)
    +', which is the '+rootB(elRoot)+' root, on life path <b>'+e.lp+'</b>, the one who '
    +esc(e.lpMean||'runs')+'.'
    +(num?' The name carries an expression of <b>'+num.expression+'</b>, '
@@ -331,10 +331,10 @@ function sumStruct(r){
     ring on any of them, because a ring is a measurement and this is a choice. */
  var rootNow=(DOMAINS[S.doms[0]]||{}).r||'';
  out+='<div class="pm-eye">Blueprint</div><div class="s-sel">'
-  +'<span class="s-sel-r" style="--rc:'+(ROOTCOL[rootNow]||'var(--accent)')+'">'
+  +'<span class="s-sel-r" style="--rc:'+(rootPlain(rootNow)||'var(--accent)')+'">'
   +esc(rootNow)+'</span>'
   +S.doms.map(function(di){var d=DOMAINS[di]; if(!d)return '';
-   return '<button type="button" class="s-dom" data-dom="'+di+'" style="--rc:'+ROOTCOL[d.r]+'" '
+   return '<button type="button" class="s-dom" data-dom="'+di+'" style="--rc:'+rootPlain(d.r)+'" '
     +'title="'+esc(d.nm+'. '+d.d)+'">'+svgI('<path d="'+d.ic+'"/>')
     +'<span>'+esc(d.nm)+'</span></button>';}).join('')+'</div>';
  /* the archetypes. these ARE measured: aff is a real proportion. */

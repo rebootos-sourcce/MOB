@@ -57,9 +57,8 @@ function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'
    so every seat colour on it was drawn for a black panel: Connection's icon
    measured 1.59 to 1 against a 3 to 1 floor, and 5.14 after. It takes the
    Snow palette because it is the same question, a light ground.
-   bc() below is the canvas twin of this ladder and was deliberately not moved
-   with it: it leans on LIGHT() for its ink and its node wash as well, and the
-   Glass white stage is its own piece of work, not a line added here. */
+   bc() below is the canvas twin of this ladder and moves through LIGHT(),
+   which is where the Glass white stage was taken on, with its ink and wash. */
 function seatCol(b){
  var P = S.theme==='lumen' ? PAL_VIVID
        : S.theme==='snow'||S.theme==='glasswhite' ? PAL_LIGHT
@@ -123,6 +122,19 @@ function icCol(b){
  return b==='Root'?c:icLift(c);}
 function rootCol(rn){
  return S.theme==='lumen'?ROOTCOL[rn]:icCol(ROOTSEAT[rn]);}
+/* A ROOT'S COLOUR EVERYWHERE THAT IS NOT THE RAIL'S GRIDS. rootCol above
+   carries the grids' chroma lift, which was ruled for those icons, so the
+   reading, the codex, the matrix and the domain chips take the plain seat,
+   the value an archetype beside them already takes from seatCol. They drew
+   ROOTCOL, the Dark values, on every lighting: on Snow the root names in the
+   reading measured 2.41 to 1 at worst against a 4.5 text floor, and 4.97
+   after, and the Blueprint chips' icons 1.43 against 3, and 4.09 after. On
+   Dark this is ROOTCOL to the digit. Lumen
+   keeps ROOTCOL for the reason icCol gives, and a name that is not a root
+   comes back empty, as ROOTCOL[name] did, so a caller's fallback still
+   fires rather than a stray word being painted the accent. */
+function rootPlain(rn){
+ return S.theme==='lumen'||!ROOTSEAT[rn]?ROOTCOL[rn]:seatCol(ROOTSEAT[rn]);}
 function cr(band,pct,o){
  o=o||{};
  var size=o.size||'md', G=CRGEO[size]||CRGEO.md;
@@ -297,7 +309,25 @@ const hx=h=>{const n=parseInt(String(h).slice(1),16);return[(n>>16)&255,(n>>8)&2
 const rgba=(c,a)=>'rgba('+c[0]+','+c[1]+','+c[2]+','+(+a).toFixed(3)+')';
 const mixc=(a,b,t)=>a.map((v,i)=>Math.round(v+(b[i]-v)*t));
 const lerp=(a,b,t)=>a+(b-a)*t;
-const LIGHT=()=>S.theme==='snow';
+/* GLASS WHITE PAINTS ITS RENDER GROUND LIGHT and this said dark, so the
+   wheel and the compass drew Dark's ink, halo, palette and wash onto
+   #F2F1EC. Measured on the Field with Gordon loaded: ink 1.14 to 1 against
+   its own ground, seat names 1.62 at worst, the accent 2.10. The whole
+   canvas moves together, which is why it is this line and not a Glass white
+   arm in bc() alone: bc() without the halo put dark names in a dark outline.
+   SNOW IS NOT WHAT THIS SAYS. Its Field, Body and Compass keep the ruled
+   #101010, so this answers light over a black ground there, and the wheel's
+   ink reads 1.06 to 1 on Snow, carried by the halo. That is Snow's own
+   question and is left as shipped. Anything that must match the ground and
+   not the lighting reads stageLight() below, as rings.js does. */
+const LIGHT=()=>S.theme==='snow'||S.theme==='glasswhite';
+/* what the Field's canvas actually sits on, read off the stage the way
+   frMount in rings.js reads it. The stage carries no transition, so the
+   answer is settled the moment the lighting's class lands. */
+function stageLight(){
+ var st=document.getElementById('stage'),m=st&&/rgba?\(([^)]+)\)/.exec(getComputedStyle(st).backgroundColor);
+ var c=m?m[1].split(',').map(parseFloat):[16,16,16];
+ return (0.2126*c[0]+0.7152*c[1]+0.0722*c[2])/255>0.5;}
 const INK=()=>LIGHT()?[22,23,28]:[239,237,232];
 /* the accent, for the canvas, which cannot read a custom property. the two
    values are the same two the sheet declares and they move together. */

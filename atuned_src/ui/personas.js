@@ -20,13 +20,13 @@ $('mx').addEventListener('mouseleave',mxKey);
 function mxKey(){$('mxk').innerHTML='Columns are domains, rows are child emotions. '
  +'Brightness is the SQ held in that cell. A gold ring is a <b>1.3× affinity pair</b>. '
  +'Click any cell.<div class="mxrow">'
- +ROOTD.map(function(rd){return '<span><i style="background:'+ROOTCOL[rd]+'"></i>'+rd+'</span>';}).join('')
+ +ROOTD.map(function(rd){return '<span><i style="background:'+rootPlain(rd)+'"></i>'+rd+'</span>';}).join('')
  +'</div>';}
 function syncMx(){MXC.forEach(function(b){
  const c=+b.dataset.c,rw=+b.dataset.rw,cf=CHILD[rw].nm,D=DOMAINS[c];
  const seg=W.filter(function(n){return Math.min(18,Math.floor(n.slot/(108/19)))===c&&n.cf===cf;});
  const held=seg.length?seg.reduce(function(a,n){return a+n.sq;},0)/seg.length/10:0;
- const base=hx(ROOTCOL[D.r]).join(',');
+ const base=hx(rootPlain(D.r)).join(',');
  b.style.background='rgba('+base+','+(seg.length?(0.05+held*0.9).toFixed(2):'0.02')+')';
  b.dataset.sel=S.doms.indexOf(c)>=0?'1':'0';
  b.style.outline=(AFFIN[D.r]||[]).indexOf(cf)>=0

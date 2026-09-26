@@ -138,7 +138,7 @@ function kbRows(sec){
     strongest lobe, so the percent says so. */
  if(sec==='dom') DOMAINS.forEach(function(d,i){
   out.push(kbRow('dom', d.nm, d.r, 'Heart', kbPct100(DOMAIN[i]), d.ic||null, d,
-   ROOTCOL[d.r]||null));});
+   rootPlain(d.r)||null));});
  /* affinity is normalised to the strongest archetype, so the top one is 100
     by construction and the scale line says what it is a share of. */
  if(sec==='arch') ARCH.forEach(function(a,i){

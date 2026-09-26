@@ -173,9 +173,9 @@ function anaRender(){
   r.maskRing.map(function(m){return {k:'mask',nm:m.nm,v:m.w,
    c:seatCol((m.bands||['Heart'])[0])};}),300,210);
  out+=anaField('Domains','the blueprint you run. yours are lit, the rest are context',
-  S.doms.map(function(di){var d=DOMAINS[di];return {k:'dom',nm:d.nm,v:9,c:ROOTCOL[d.r]};})
+  S.doms.map(function(di){var d=DOMAINS[di];return {k:'dom',nm:d.nm,v:9,c:rootPlain(d.r)};})
    .concat(DOMAINS.filter(function(d,i){return S.doms.indexOf(i)<0;}).slice(0,9)
-    .map(function(d){return {k:'dom',nm:d.nm,v:2,c:ROOTCOL[d.r]};})),300,210);
+    .map(function(d){return {k:'dom',nm:d.nm,v:2,c:rootPlain(d.r)};})),300,210);
  out+=anaField('Archetypes','how the blueprint expresses. the bigger the mark, the closer the fit',
   (r.aff||[]).map(function(a,i){return {k:'arch',nm:(ARCH[i]||{}).nm||'',
    v:Math.max(0.4,a*10),c:(i===r.pi?GOLD:PAL['3rd Eye'])};}),300,210);

@@ -944,9 +944,16 @@ function drawWheel(r,L){
   if(wd)HIT.push({k:'seat',b:b,cx:CX,cy:CY,a0:wd.a0,a1:wd.a1,r0:wd.r0,r1:wd.r1});});
 
  /* --- domains, D only --- */
- if(L===3){for(let d=0;d<19;d++){
-  const a0=d*(TAU/19)-Math.PI/2,a1=a0+TAU/19,am=a0+TAU/38;
-  const c=hx(ROOTCOL[DOMAINS[d].r]),sel=S.doms.indexOf(d)>=0,v=DOMAIN[d];
+ /* EACH ROOT IN ITS SEAT'S COLOUR FOR THE GROUND UNDER IT, not ROOTCOL, the
+    Dark values, on every lighting: on Glass white's paper the four selected
+    arcs measured 1.72 to 1 at worst against a 3 to 1 floor. Keyed on the
+    stage and not on LIGHT(), because on Snow the two disagree and the stage
+    is right: the ring sits on #101010 there and already read 5.51, which the
+    Snow palette would have taken down. Lumen draws as it shipped. */
+ if(L===3){const rootP=S.theme==='lumen'?null:(stageLight()?PAL_LIGHT:PAL);
+ for(let d=0;d<19;d++){
+  const a0=d*(TAU/19)-Math.PI/2,a1=a0+TAU/19,am=a0+TAU/38,rn=DOMAINS[d].r;
+  const c=hx(rootP?rootP[ROOTSEAT[rn]]:ROOTCOL[rn]),sel=S.doms.indexOf(d)>=0,v=DOMAIN[d];
   arcP(R.dom-U*.012,R.dom,a0+.008,a1-.008);g.fillStyle=rgba(c,sel?.95:.08+v*.45);g.fill();
   /* round its own nineteenth of the ring, just inside it, for the seat
      names' reason. Radially outward from the ring these were the furthest
