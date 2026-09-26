@@ -12422,3 +12422,70 @@ already are, or reset off every time?
 Both draw differently, so each look would need its own carry over, real
 extra work per view rather than automatic.
 
+## CM. His seven CE picks, built for real on the shipped Field. 26
+## September.
+
+**Verified myself.** `tools/equiv.py` against the commit before this
+one names exactly the claimed difference, one declaration retired
+(`frGate`), three new (`FR_GATE_AT`, `FR_GATE_VS`, `frCollar`), eight
+bodies changed, nothing else. `node tests/engine.js` matched the
+claimed 1649, `BUILD-engine.sh` matched 428 exports and host free.
+`functional.js` was still finishing under tonight's load when this was
+written. Screenshots confirm the centre, the rail split and the toggle
+fix by eye, sent below.
+
+**A real terminology check done before building, not after, closing a
+flag CE itself raised.** He said "just put SQ." Checked against the
+product's own glossary: SQ and the shadow number are not the same
+reading, SQ is one address's own charge out of 10, the shadow number
+is the sum across all 112 out of 100, and the strip above the centre
+already prints both side by side. Relabelling the centre "SQ" would
+have put two different numbers under the same two letters inches
+apart. Built instead as "DQ", the strip's own existing name for this
+same number and the word he himself used in the same sentence. Flagged
+back as Q1 rather than silently decided either way.
+
+**The seven, each built as asked.** Accuracy cut to the one word.
+Centre built as his pick, option A, one ring split into two arcs, not
+the round's own recommended B, and said so in the code itself. Labels
+CQ and DQ. The pale highlight arc removed from the Dial and Frames
+centre, the one he was looking at; the Wheel's own separate glossy
+highlight was left alone and asked about rather than assumed same
+thing. The six gates in the collar, percent in a pill at each icon's
+lower right, checked for overlap across all 15 reference profiles at
+both widths and both views in three gate states with zero found. The
+rail split into Spirit and Psyche, with his reasoning read from the
+product's own glossary rather than guessed at. Every toggle that reads
+"off" now dims and drops its box the same way, matched to whichever
+style already read correctly.
+
+**Six real questions.**
+**Q1.** Confirmed above: DQ and SQ are different numbers in this
+product today. Keep the centre labelled DQ, as built and as matches
+the existing strip; rename the whole product's DQ to SQ instead, which
+is a glossary wide change and would need the per-address reading
+renamed too; or he meant a third, different number, which needs
+naming.
+**Q2.** The pale arc he was reacting to is removed from the Dial and
+Frames centre. The Wheel's own core still carries a separate glossy
+highlight and glow, visible in the seat-names sheet from CE. Take that
+one off too, or leave it, since he was never shown it directly?
+**Q3.** The rail split as built: Spirit holds Awareness and States,
+Psyche holds Orientation and balance, Child emotions and Matrix, read
+off the product's own glossary language. Right split? And does
+"Awareness" still fit as a heading now that it only covers domains and
+archetypes, given the glossary's own definition is broader than that?
+**Q4.** The lower-right pill he called a standard is only built that
+way for the six gates so far. Thirty six other places across nine
+files still show a percent inline to the right of an icon instead.
+Move all thirty six to match, or does lower-right apply only where an
+icon sits inside a drawing rather than in a list or a strip?
+**Q5.** The collar is not quite even, the two left-hand gates sit
+further out than the other four so their own pills clear the ring.
+Keep that, or push all six to the same widest radius, tidier but
+further from the centre, the exact thing he first objected to?
+**Q6.** All of this was built on the Dial and Frames. The Wheel itself
+still shows the old single number and two rows of three gates. Bring
+the Wheel in line too, or leave it as the one view that still shows
+the old treatment?
+
