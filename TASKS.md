@@ -13894,3 +13894,89 @@ label, is worth carrying past this one section.
 project's own rule against sending him another static comp: whatever
 comes back has to be something he can open and press, not read about.
 
+## DL. The birthplace timezone fix closed, his ruling built rather
+## than handed back as a question. 26 September.
+
+**Reproduced before the fix, four years of Auckland births at 08:00
+against the true offset.** Moon sign wrong on 349 of 1460 days, gene
+key wrong on 830, sun sign wrong on 26, every one of them printed as
+settled.
+
+**Built exactly as ruled: a named time zone, not a bigger city list
+and not an asked UTC number.** `zoneOffsets()` in `engine/astro.js`
+reads an IANA zone name (for example "Pacific/Auckland") through
+`Intl.DateTimeFormat`, which ships the whole time zone database,
+historical daylight saving included, in every browser and in node
+already. No bytes added for a rule table, and the engine stays host
+free, confirmed by `hostfree.py` directly: `Intl` is part of the
+language, not the host. Verified independently against published
+history rather than against the code's own output: Auckland reads +13
+in January and +12 in July; Britain reads a flat +1 all through 1969,
+the real 1968 to 1971 stretch when it ran on continental time; Nepal's
+1986 move from +5:30 to +5:45; a New York clock reading that happened
+twice, and one that never happened, at a daylight saving change, both
+now read as a window across both real offsets rather than a guessed
+pick. Energetics gets a new "Time zone of birth" field, suggested from
+the browser's own zone list.
+
+**The visibility fix, item one, still holds as the fallback.** A birth
+with a time, no located place and no readable zone now carries a
+window from fourteen hours east of Greenwich to twelve west, rather
+than the old silent zero. A reading only prints if it agrees at both
+ends of that window. Measured over 5,840 such births: zero printed
+wrong. Sun refused on about one in 27 of them, the moon on about half,
+gates and gene key refused on all of them, since a day always moves
+the sun across a line somewhere. The rail's rows now read "needs a
+birth time zone", "needs a time zone the instrument can read", or "the
+clocks changed at that hour", the same static pattern Rising already
+used, rather than a settled looking number.
+
+**A functional test added, run against the real rail, not just the
+engine,** beside the existing cosmological layer test: an Auckland
+birth where the moon is refused too, not only the gates; typing
+`Pacific/Auckland` into the real field and watching it resolve; a bad
+zone name reported and the rail returning to unresolved. Twelve new
+engine assertions check every printed sign hour by hour against the
+raw sky from minus twelve to plus fourteen, plus the historical cases
+above.
+
+**All nine gates green, run twice, once by the fixing agent and once
+independently by me against the same commit, agreeing on every
+number:** 430 exports, one more than before it is nothing new besides
+the timezone read path; 1672 engine tests; 1024 functional, eleven
+more than before it; 282 collide; 150 design; monitor and funnel
+clean; the voice check finds nothing. I additionally checked the
+timezone math myself, independent of the agent's own report: Auckland
+and London both read the historically correct offset for the specific
+dates above, run directly against the committed `astro.js`. Commit
+`45f7203`, pushed.
+
+**What stayed open, correctly, rather than silently changed.** The
+hand written US daylight saving rule (`usDST`) still disagrees with
+the real historical rule for two reference personas born before 1966,
+when US daylight saving was a local, not federal, choice; changing it
+would move already-shipped reference readings, so it was left rather
+than fixed underneath nobody asking. `converge()` on Summary still
+reads only the fixture `BIRTH` table, so a real person's own birth
+still never reaches that comparison; a real wiring gap, not touched
+here, since it was out of scope for this fix. The Chinese year still
+uses the guessed instant when no zone is given, which can flip the
+animal for a birth within about a day of Li Chun, roughly three
+tenths of one percent of births; correct the moment a zone is given.
+
+**Two real open questions, his call, not decided here.**
+- Rising still needs a located city, since a time zone answers what
+  the clock read, not where the horizon was, and the ascendant needs
+  the horizon. Three ways to close that gap, real costs measured: a
+  bigger built-in city table, roughly 8.5 kilobytes for around 300
+  cities and, by rough extrapolation, in the hundreds of kilobytes for
+  a serious gazetteer, real growth for a file that is packed and
+  compressed; asking directly for latitude and longitude, exact but a
+  pair of numbers nobody has memorised; or leaving Rising unresolved
+  for anyone outside the built-in nine, which costs nothing and is
+  what ships today.
+- The saved record now carries a time zone string, `who.born.zone`, an
+  additive field, nothing removed or renamed. Is that acceptable
+  without moving the schema version number, which this file names as
+  the owner's own contract with SOURCE?
+
