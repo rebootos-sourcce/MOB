@@ -452,12 +452,10 @@ function kbOpen(x){
  if(x.k==='harm'){runKbDrill('Harmonic element '+x.o.c, x.o.t, HARM_AX[x.o.a]||x.o.a, x.o.ch); return;}
  if(x.k==='gloss'){runKbDrill('Glossary', x.o.t, '', x.o.d); return;}
  if(x.k==='dom'){runDomDrill(x.o); return;}
- if(x.k==='arch'){runKbDrill('Archetype', x.o.nm, 'how the blueprint expresses', x.o.v||''); return;}
- if(x.k==='mask'){runKbDrill('Mask', x.o.nm, 'worn over the '+(x.o.b||[]).join(' and '),
-   'A mask is not a fault and it is not a stage you failed to leave. It is a '
-   +'shape held in front of the seats it covers, and it costs what holding it '
-   +'costs. This one sits over the '+(x.o.b||[]).join(' and ')+'. Its charge is '
-   +'read from the story, never from a question about your age.'); return;}
+ /* the archetype and the mask drills live in drills.js now, because the
+    Field opens them too and one thing has one wording */
+ if(x.k==='arch'){runArchDrill(x.o); return;}
+ if(x.k==='mask'){runMaskDrill(x.o); return;}
  if(x.k==='seat'){runSeatDrill(x.o); return;}
  if(x.k==='card'){runCardDrill(x.o); return;}
  if(x.k==='axcard'){runAxCardDrill(x.o); return;}

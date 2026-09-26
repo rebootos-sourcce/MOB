@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="2f60b02 2026-09-26 15:12"><head><meta charset="utf-8">
+<html lang="en" data-build="3a1cde5 2026-09-26 16:14"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -22602,6 +22602,47 @@ function runDomDrill(d){
  else h+='<div class="pm-eye">What it is</div><p class="ad-p">'+esc(d.d||'')+'</p>';
  rdShell(h);}
 
+/* THE ARCHETYPE AND THE MASK, one drill each, for Knowledge and the Field.
+
+   Reported by the owner on the shipped Field, 26 September (DY): "I click on
+   Ideological, I get nothing in the information panel. I click on Magician,
+   I get nothing." Reproduced on all three pictures: a press on a mask ran
+   render() and nothing else, and a press on an archetype or a domain changed
+   the selection, or on a worked example refused to, and opened nothing. The
+   drills existed, but only Knowledge called them, inline, so the Field had
+   no door to them. They are lifted out here unchanged, and the Field adds
+   where this person sits, read off the same compute() the wheel draws from. */
+function runArchDrill(a){
+ if(!a)return;
+ var j=ARCH.indexOf(a), r=compute(), at=(S.arcs||[]).indexOf(j);
+ var h='<div class="pm-eye">Archetype</div><div class="ad-nm">'+esc(a.nm)+'</div>'
+  +'<div class="ad-sub">how the blueprint expresses</div>'
+  +(a.v?'<div class="pm-eye">What it is</div><p class="ad-p">'+esc(a.v)+'</p>':'');
+ if(!r.unread&&j>=0&&r.aff)
+  h+='<div class="pm-eye">Where you sit</div><p class="ad-p">Affinity <b>'
+   +Math.round((r.aff[j]||0)*100)+'%</b>.'
+   +(at===0?' Set as your primary.':at>0?' Set as one of yours.':'')+'</p>';
+ rdShell(h);}
+function runMaskDrill(m){
+ if(!m)return;
+ var b=m.b||m.bands||[], seats=b.join(' and ');
+ var h='<div class="pm-eye">Mask</div><div class="ad-nm">'+esc(m.nm)+'</div>'
+  +'<div class="ad-sub">worn over the '+esc(seats)+'</div>'
+  +'<div class="pm-eye">What it is</div><p class="ad-p">'
+  +'A mask is not a fault and it is not a stage you failed to leave. It is a '
+  +'shape held in front of the seats it covers, and it costs what holding it '
+  +'costs. This one sits over the '+esc(seats)+'. Its charge is '
+  +'read from the story, never from a question about your age.</p>';
+ var r=compute(), ring=(r.maskRing||[]).filter(function(x){return x.nm===m.nm;})[0];
+ var hot=W.filter(function(n){return b.indexOf(n.b)>=0&&n.sq>=4;})
+  .sort(function(x,y){return y.sq-x.sq;});
+ if(!r.unread&&ring){
+  h+='<div class="pm-eye">Where you sit</div><p class="ad-p">Load <b>'+ring.w.toFixed(1)
+   +'</b>, the mean charge on the addresses under it.</p>';
+  if(hot.length)h+='<div class="pm-eye">Held here</div><div class="ad-rows">'
+   +hot.slice(0,6).map(addrRow).join('')+'</div>';}
+ rdShell(h);}
+
 /* the definition, the trigger and the interrupt. an interrupt is the only
    part a person can act on in the moment, so it is printed last and plainly. */
 function kbSabBlock(nm){
@@ -23732,12 +23773,10 @@ function kbOpen(x){
  if(x.k==='harm'){runKbDrill('Harmonic element '+x.o.c, x.o.t, HARM_AX[x.o.a]||x.o.a, x.o.ch); return;}
  if(x.k==='gloss'){runKbDrill('Glossary', x.o.t, '', x.o.d); return;}
  if(x.k==='dom'){runDomDrill(x.o); return;}
- if(x.k==='arch'){runKbDrill('Archetype', x.o.nm, 'how the blueprint expresses', x.o.v||''); return;}
- if(x.k==='mask'){runKbDrill('Mask', x.o.nm, 'worn over the '+(x.o.b||[]).join(' and '),
-   'A mask is not a fault and it is not a stage you failed to leave. It is a '
-   +'shape held in front of the seats it covers, and it costs what holding it '
-   +'costs. This one sits over the '+(x.o.b||[]).join(' and ')+'. Its charge is '
-   +'read from the story, never from a question about your age.'); return;}
+ /* the archetype and the mask drills live in drills.js now, because the
+    Field opens them too and one thing has one wording */
+ if(x.k==='arch'){runArchDrill(x.o); return;}
+ if(x.k==='mask'){runMaskDrill(x.o); return;}
  if(x.k==='seat'){runSeatDrill(x.o); return;}
  if(x.k==='card'){runCardDrill(x.o); return;}
  if(x.k==='axcard'){runAxCardDrill(x.o); return;}
@@ -26852,7 +26891,7 @@ function describe(h,r,still){
   return '<u>'+d.r+'</u> <b>'+d.nm+'</b><hr>'+d.d+'<br>weight <b>'+(DOMAIN[h.j]||0).toFixed(2)
    +'</b><hr><b>Click to select, shift-click to add.</b>';}
  if(h.k==='mk')return '<u>mask</u> <b>'+h.o.nm+'</b><hr>speaks from '+(h.o.bands||[]).join(' + ')
-  +'<br>load <b>'+h.o.w.toFixed(1)+'</b>';
+  +'<br>load <b>'+h.o.w.toFixed(1)+'</b><hr><b>Click for detail.</b>';
  var o=h.o; if(!o)return '';
  var f=leaves(o);
  var nm={sab:'saboteur',cx:'complex',hy:'hyper-complex',sup:'character layer'}[h.k];
@@ -26948,18 +26987,31 @@ function hitPress(h,e){
  /* the same setters as the left rail's icons, so the same guard, notYours in
     personas.js: on a worked example a press refuses rather than loading the
     blank own profile under the person. */
- if(h.k==='dom'){if(notYours('change the blueprint domain'))return;
+ /* A DOMAIN, AN ARCHETYPE AND A MASK OPEN THEIR DRILL. DY: the owner
+    pressed a domain, Ideological and Magician on the shipped Field and the
+    Selection panel stayed on "Nothing selected" every time, on all three
+    pictures, because this dispatch sent those three kinds to the setters or
+    to a bare render and never to a drill. The setters still run as they
+    always did, and the drill opens after them so it reads the selection the
+    press just made. On a worked example the setter refuses, and the drill
+    still opens, because reading a thing is not changing it. */
+ var said=function(){S.pin=null;
+  if(h.k==='dom')runDomDrill(DOMAINS[h.j]);
+  else if(h.k==='arch')runArchDrill(ARCH[h.j]);
+  else runMaskDrill(MASKS.filter(function(m){return m.nm===h.o.nm;})[0]||h.o);};
+ if(h.k==='dom'){if(notYours('change the blueprint domain')){said();return;}
   undoPush('changing the blueprint domain');
   if(e.shiftKey){var k=S.doms.indexOf(h.j);
    if(k>=0){if(S.doms.length>1)S.doms.splice(k,1);}else S.doms.push(h.j);}
   else S.doms=[h.j];
-  buildSoul();S.pin=null;syncSoul();saveYou();render();return;}
- if(h.k==='arch'){if(notYours('change the archetype'))return;
+  buildSoul();syncSoul();saveYou();said();render();return;}
+ if(h.k==='arch'){if(notYours('change the archetype')){said();return;}
   undoPush('changing the archetype');
   if(e.shiftKey){var k2=S.arcs.indexOf(h.j);
    if(k2>=0){if(S.arcs.length>1)S.arcs.splice(k2,1);}else S.arcs.push(h.j);}
   else S.arcs=[h.j].concat(S.arcs.filter(function(z){return z!==h.j;}).slice(0,3));
-  buildSoul();S.pin=null;syncSoul();saveYou();render();return;}
+  buildSoul();syncSoul();saveYou();said();render();return;}
+ if(h.k==='mk'){said();render();return;}
  if(h.k==='law'){S.pin=null;runLawDrill(SI[h.j]);render();return;}
  /* a seat band opens the seat. runSeatDrill takes the APC entry rather than a
     name, looked up here rather than passed a string it would have to parse,
@@ -26977,7 +27029,6 @@ function hitPress(h,e){
     opens the reading only if the pointer never moved. Opening it here as well
     meant the drill fired on press and the drag never happened. */
  if(h.k==='gate'){S.pin=null;runGatesDrill(h.v.k);render();return;}
- if(h.k==='mk'){S.pin=null;render();return;}
  var o=h.o||null;
  var same=o&&S.pin&&S.pin.nm===o.nm&&S.pin.kind===o.kind;
  S.pin=same?null:o; runDrill(S.pin); render();}
@@ -28077,5 +28128,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="001826054"></div>
+<div id="eof" hidden data-len="001828946"></div>
 </body></html>

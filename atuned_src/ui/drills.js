@@ -577,6 +577,47 @@ function runDomDrill(d){
  else h+='<div class="pm-eye">What it is</div><p class="ad-p">'+esc(d.d||'')+'</p>';
  rdShell(h);}
 
+/* THE ARCHETYPE AND THE MASK, one drill each, for Knowledge and the Field.
+
+   Reported by the owner on the shipped Field, 26 September (DY): "I click on
+   Ideological, I get nothing in the information panel. I click on Magician,
+   I get nothing." Reproduced on all three pictures: a press on a mask ran
+   render() and nothing else, and a press on an archetype or a domain changed
+   the selection, or on a worked example refused to, and opened nothing. The
+   drills existed, but only Knowledge called them, inline, so the Field had
+   no door to them. They are lifted out here unchanged, and the Field adds
+   where this person sits, read off the same compute() the wheel draws from. */
+function runArchDrill(a){
+ if(!a)return;
+ var j=ARCH.indexOf(a), r=compute(), at=(S.arcs||[]).indexOf(j);
+ var h='<div class="pm-eye">Archetype</div><div class="ad-nm">'+esc(a.nm)+'</div>'
+  +'<div class="ad-sub">how the blueprint expresses</div>'
+  +(a.v?'<div class="pm-eye">What it is</div><p class="ad-p">'+esc(a.v)+'</p>':'');
+ if(!r.unread&&j>=0&&r.aff)
+  h+='<div class="pm-eye">Where you sit</div><p class="ad-p">Affinity <b>'
+   +Math.round((r.aff[j]||0)*100)+'%</b>.'
+   +(at===0?' Set as your primary.':at>0?' Set as one of yours.':'')+'</p>';
+ rdShell(h);}
+function runMaskDrill(m){
+ if(!m)return;
+ var b=m.b||m.bands||[], seats=b.join(' and ');
+ var h='<div class="pm-eye">Mask</div><div class="ad-nm">'+esc(m.nm)+'</div>'
+  +'<div class="ad-sub">worn over the '+esc(seats)+'</div>'
+  +'<div class="pm-eye">What it is</div><p class="ad-p">'
+  +'A mask is not a fault and it is not a stage you failed to leave. It is a '
+  +'shape held in front of the seats it covers, and it costs what holding it '
+  +'costs. This one sits over the '+esc(seats)+'. Its charge is '
+  +'read from the story, never from a question about your age.</p>';
+ var r=compute(), ring=(r.maskRing||[]).filter(function(x){return x.nm===m.nm;})[0];
+ var hot=W.filter(function(n){return b.indexOf(n.b)>=0&&n.sq>=4;})
+  .sort(function(x,y){return y.sq-x.sq;});
+ if(!r.unread&&ring){
+  h+='<div class="pm-eye">Where you sit</div><p class="ad-p">Load <b>'+ring.w.toFixed(1)
+   +'</b>, the mean charge on the addresses under it.</p>';
+  if(hot.length)h+='<div class="pm-eye">Held here</div><div class="ad-rows">'
+   +hot.slice(0,6).map(addrRow).join('')+'</div>';}
+ rdShell(h);}
+
 /* the definition, the trigger and the interrupt. an interrupt is the only
    part a person can act on in the moment, so it is printed last and plainly. */
 function kbSabBlock(nm){

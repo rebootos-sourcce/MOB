@@ -3646,6 +3646,67 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
   ok(dr.indexOf(target.nm)>=0,'pressing it opens the address\'s own drill, '+dr.length+' chars');
   await fp.mouse.move(5,5);}
 
+ /* A DOMAIN, A MASK AND AN ARCHETYPE ANSWER A PRESS, ON ALL THREE PICTURES.
+    DY in TASKS.md, the owner on the shipped Field: "I click on Ideological, I
+    get nothing in the information panel. I click on Magician, I get
+    nothing." Reproduced 9 of 9 dead on James, a worked example, where the
+    setter refuses: the dispatch sent a mask to a bare render and a domain or
+    an archetype to its setter, and none of them to a drill.
+
+    A real pointer, aimed at a pixel whose topmost mark is the one meant and
+    whose 1.5 pixel cross is too. The first cut of this probe aimed at the
+    centre of each mark's box, and the centre of a band's box is not on the
+    band, so it pressed the empty cell and reported nothing opening for a
+    reason that was its own. The saboteur is the control: its drill already
+    opened before the fix, so a probe that cannot see an open panel fails
+    there first. */
+ const presses=[['dom',null],['mk','Ideological'],['arch','Magician'],['sab',null]];
+ await fp.evaluate(()=>{loadP(PERSON('James'));setTab(TAB.FIELD);});
+ for(const view of ['wheel','frames','dial']){
+  await fp.evaluate(v=>{fviewSet(v);if(v==='wheel'){S.view=3;render();paintDepth();}},view);
+  await frame(fp); await fp.waitForTimeout(120);
+  for(const [kind,nm] of presses){
+   const pt=await fp.evaluate(([view,kind,nm])=>{
+    rdClose();
+    const want=h=>h&&h.k===kind&&(kind!=='mk'||h.o.nm===nm)&&(kind!=='arch'||ARCH[h.j].nm===nm)
+     &&(kind!=='dom'||S.doms.indexOf(h.j)>=0);
+    const name=h=>kind==='dom'?DOMAINS[h.j].nm:kind==='arch'?ARCH[h.j].nm:h.o.nm;
+    if(view==='wheel'){
+     const c=document.getElementById('cv').getBoundingClientRect(),w=c.width,ht=c.height;
+     for(let y=2;y<ht;y+=3)for(let x=2;x<w;x+=3){const h=hitTest(x,y);
+      if(!want(h))continue;
+      const all=[[1.5,0],[-1.5,0],[0,1.5],[0,-1.5]].every(d=>hitTest(x+d[0],y+d[1])===h);
+      if(all)return {x:c.left+x,y:c.top+y,nm:name(h)};}
+     return null;}
+    const at=(x,y)=>{const t=document.elementFromPoint(x,y);return t&&t.closest?t.closest('[data-h]'):null;};
+    for(const e of document.querySelectorAll('#frend [data-h]')){
+     const h=FR_HIT[+e.getAttribute('data-h')]; if(!want(h))continue;
+     const r=e.getBoundingClientRect(); if(!r.width)continue;
+     for(let gy=2;gy<=18;gy++)for(let gx=2;gx<=18;gx++){
+      const x=r.left+r.width*gx/20,y=r.top+r.height*gy/20;
+      if([[0,0],[1.5,0],[-1.5,0],[0,1.5],[0,-1.5]].every(d=>at(x+d[0],y+d[1])===e))return {x:x,y:y,nm:name(h)};}}
+    return null;},[view,kind,nm]);
+   ok(!!pt,view+': a '+kind+' mark is there to press on James');
+   if(!pt)continue;
+   await fp.mouse.click(pt.x,pt.y); await fp.waitForTimeout(120);
+   const got=await fp.evaluate(()=>{const d=document.getElementById('rdrill');
+    return {shown:d.style.display!=='none',t:d.textContent||''};});
+   ok(got.shown&&got.t.indexOf(pt.nm)>=0,view+': pressing '+pt.nm+' ('+kind+') opens its drill, '
+    +(got.shown?got.t.length+' chars':'nothing in the panel'));}
+  await fp.mouse.move(5,5);}
+ /* and on the person's own profile the archetype press still sets the
+    primary, and the drill it opens says so, because it reads after the set */
+ const own=await fp.evaluate(async()=>{loadP(0);setTab(TAB.FIELD);fviewSet('frames');
+  await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+  rdClose(); const j=ARCH.findIndex(a=>a.nm==='Magician'), was=S.arcs.slice();
+  hitPress({k:'arch',j:j},{shiftKey:false});
+  const out={primary:S.arcs[0]===j,t:document.getElementById('rdrill').textContent||''};
+  /* put it back, so the blank profile the checks below read is still blank */
+  S.arcs=was; buildSoul(); syncSoul(); saveYou(); rdClose();
+  return out;});
+ ok(own.primary&&own.t.indexOf('Magician')>=0,'on your own profile the press still sets Magician as primary and opens its drill');
+ await fp.evaluate(()=>{rdClose();loadP(PERSON('James'));});
+
  /* NOTHING IS READ OFF THE DEFAULTS. The person's own blank profile: no
     figure anywhere in the picture, and the dial names nothing. */
  const blank=await fp.evaluate(async()=>{loadP(0);setTab(TAB.FIELD);fviewSet('dial');
