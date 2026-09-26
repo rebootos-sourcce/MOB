@@ -597,10 +597,69 @@ const VIEWS=[
    Charge still sees Charge when they zoom back out, and nothing a person
    selected is ever taken off the screen by a gesture. */
 const ZOOM_STEP=[1,2.2,3.2,4.2];
-function effView(){
- var extra=0, z=S.zoom||1;
- for(var i=1;i<ZOOM_STEP.length;i++) if(z>=ZOOM_STEP[i])extra=i;
- return Math.min(VIEWS.length-1,(S.view|0)+extra);}
+/* the ceiling setZoom holds, named here because the glass bar's reframe
+   circle reads how far in the wheel is against it, and a second 7 typed into
+   the bar is a number that drifts from the first */
+const WHEEL_ZOOM_MAX=7;
+/* ============================================================
+   THE LADDER BECOMES LAYERS. Ported from proto/glassbar, DK through ED in
+   TASKS.md, and ported because EV said it plainly: every round of it was
+   reported done while being true only of the prototype, so the Field he
+   opened still carried the depth row it replaced.
+
+   His words: "it can turn everything on and off, and this would be
+   consistent across all the tools, saboteurs, complexes, hyper complexes,
+   turn them all on and off." So every layer is its own switch, on the glass
+   bar in ui/fieldbar.js, and one set of switches drives all three pictures.
+
+   THE FOUR DEPTHS SURVIVE AS PRESETS AND AS GEOMETRY. Each is the one before
+   plus what it adds, read off VIEWS above so the four words keep their four
+   definitions. LAYSET is null while the person is on a preset, and then the
+   set is whatever S.view names, which is why every check that sets S.view and
+   draws still gets exactly the depth it asked for. A press on one switch
+   copies the preset and becomes the person's own set, and a set that lands
+   back on a preset goes back to being that preset, so there is one state and
+   never two that disagree about which depth is up.
+
+   THE RING MAKES ROOM FOR WHAT IS ON. effView was the depth plus what zoom
+   reached, and it is now the depth the visible set needs room for: the
+   saboteurs sit on a ring that does not exist at Charge, and the domains sit
+   outside a shell that has to shrink to let them in. On a preset this is the
+   same number effView always returned.
+
+   ZOOM STILL ADDS, ON THE WHEEL ONLY, as it shipped. The prototype asked him
+   whether it should, with "only closer" as its default, and he has not ruled,
+   so the shipped behaviour stands and the bar marks a layer zoom brought in
+   rather than hiding the fact. It never takes off a layer the person chose. */
+const LAYADD=[['addresses','laws','gates','shadow','stories'],['seats','saboteurs'],
+ ['complexes','hyper','character','archetypes'],['domains','masks']];
+var LAYSET=null;
+function layPreset(i){var s={};for(var j=0;j<=i&&j<LAYADD.length;j++)LAYADD[j].forEach(function(k){s[k]=1;});return s;}
+function layChosen(){return LAYSET||layPreset(S.view|0);}
+function layNeeds(set){for(var i=LAYADD.length-1;i>0;i--)if(LAYADD[i].some(function(k){return set[k];}))return i;return 0;}
+/* which preset a set is, or -1 for a set of the person's own */
+function layWhich(set){for(var i=0;i<LAYADD.length;i++){var p=layPreset(i);
+ if(Object.keys(p).length===Object.keys(set).length&&Object.keys(p).every(function(k){return set[k];}))return i;}
+ return -1;}
+function layReached(){var out={},on=layChosen(),z=S.zoom||1,extra=0;
+ if(typeof FVIEW!=='undefined'&&FVIEW!=='wheel')return out;
+ for(var i=1;i<ZOOM_STEP.length;i++)if(z>=ZOOM_STEP[i])extra=i;
+ /* ONLY THE DEPTHS PAST THE ONE THE SET ALREADY NEEDS. The prototype walked
+    from the first depth, which on a preset changes nothing because every
+    layer below it is on; on a set of the person's own it put back every layer
+    they had switched off below that depth. Measured with Laws off at
+    Blueprint on the wheel: 21 law targets before the press and 21 after. */
+ var from=layNeeds(on), top=Math.min(LAYADD.length-1,from+extra);
+ for(var j=from+1;j<=top;j++)LAYADD[j].forEach(function(k){if(!on[k])out[k]=1;});
+ return out;}
+function layVisible(){var s={},on=layChosen(),rc=layReached(),k;
+ for(k in on)s[k]=1; for(k in rc)s[k]=1; return s;}
+function layerOn(k){return !!layVisible()[k];}
+function layToggle(k){var s={},on=layChosen(),k2;for(k2 in on)s[k2]=1;
+ if(s[k])delete s[k]; else s[k]=1;
+ var i=layWhich(s); if(i>=0){S.view=i;LAYSET=null;} else LAYSET=s;}
+function layPick(i){S.view=i;LAYSET=null;}
+function effView(){return layNeeds(layVisible());}
 function nzAng(a){while(a<-Math.PI)a+=TAU;while(a>Math.PI)a-=TAU;return a;}
 /* ONE GROWN ADDRESS. The glyph of the axis it sits on, then at the deeper
    threshold its name and its two ends. Held reads outward from the ring and
@@ -708,6 +767,12 @@ function enterSeat(b){
 
 function drawWheel(r,L){
  const ink=INK(),p=S.pin,gc=GOLDC();
+ /* WHAT IS DRAWN, read once a frame. Every layer block below asks this and
+    nothing else, so a switch on the glass bar reaches the wheel without the
+    wheel knowing the bar exists. L is still the geometry: it is the depth the
+    visible set needs room for, which is why it can gate the rings a layer
+    sits on without ever disagreeing with V. */
+ const V=layVisible();
  const shellR=[U*.62,U*.68,U*.74,U*.78][L];
  /* the shell radius, published once so the grown address can draw outside it
     without being handed four arguments it would only pass along. */
@@ -790,30 +855,37 @@ function drawWheel(r,L){
      range is opened around them rather than replaced, so a chord at middling
      tension sits where every chord used to. */
   const sag=(base,t)=>base*(1.28-0.62*t);
-  r.sabs.forEach(s=>{const k=w01(s);
-   s.parts.forEach(n=>quad(n.ang,R.shell*.92,s.ang,R.sab,sag(.42,ten01(n)),
+  /* A THREAD IS DRAWN WHEN BOTH ITS ENDS ARE. Measured on the prototype's
+     first pass: complexes on alone, with their threads running out to
+     saboteurs that were not there, read as string cut loose. The bead is the
+     layer and the thread is the relation between two layers, so a tier's
+     threads need the tier and the one outside it. */
+  (V.saboteurs?r.sabs:[]).forEach(s=>{const k=w01(s);
+   (V.addresses?s.parts:[]).forEach(n=>quad(n.ang,R.shell*.92,s.ang,R.sab,sag(.42,ten01(n)),
     rgba(bc(n.b),al(.46*(0.55+k*0.80),s)),wd(1.6*(0.45+k*1.45),s),
     s.unnamed?[3,3]:null));});
-  r.cxs.forEach(c=>{const k=w01(c);
-   c.parts.forEach(s=>quad(s.ang,R.sab,c.ang,R.cx,sag(.44,w01(s)),
+  (V.complexes?r.cxs:[]).forEach(c=>{const k=w01(c);
+   (V.saboteurs?c.parts:[]).forEach(s=>quad(s.ang,R.sab,c.ang,R.cx,sag(.44,w01(s)),
     rgba(bc('Solar'),al(.62*(0.55+k*0.80),c)),wd(2.4*(0.45+k*1.45),c)));});
-  r.hys.forEach(h=>{const k=w01(h);
-   h.parts.forEach(c=>quad(c.ang,R.cx,h.ang,R.hy,sag(.46,w01(c)),
+  (V.hyper?r.hys:[]).forEach(h=>{const k=w01(h);
+   (V.complexes?h.parts:[]).forEach(c=>quad(c.ang,R.cx,h.ang,R.hy,sag(.46,w01(c)),
     rgba(bc('Sacral'),al(.74*(0.60+k*0.70),h)),wd(3.2*(0.50+k*1.30),h)));});
-  r.sups.forEach(u=>{const k=w01(u);
-   u.parts.forEach(h=>quad(h.ang,R.hy,u.ang,R.sup,sag(.48,w01(h)),
+  (V.character?r.sups:[]).forEach(u=>{const k=w01(u);
+   (V.hyper?u.parts:[]).forEach(h=>quad(h.ang,R.hy,u.ang,R.sup,sag(.48,w01(h)),
     rgba(bc('Root'),al(.9*(0.60+k*0.70),u)),wd(4*(0.50+k*1.30),u)));});
- }else if(L===1){
-  r.sabs.forEach(s=>s.parts.forEach(n=>{
+ }else if(L===1&&V.saboteurs){
+  r.sabs.forEach(s=>(V.addresses?s.parts:[]).forEach(n=>{
    g.beginPath();g.moveTo(CX+Math.cos(n.ang)*R.shell*.92,CY+Math.sin(n.ang)*R.shell*.92);
    g.lineTo(CX+Math.cos(s.ang)*R.sab,CY+Math.sin(s.ang)*R.sab);
    g.strokeStyle=rgba(bc(n.b),.24);g.lineWidth=1;g.stroke();}));}
 
  const cr0=solCore(r,coreBase);
- verpArrows(cr0);
+ if(V.gates)verpArrows(cr0);
 
- /* --- the 21 laws. present at every depth: they are the numerator of CQ. --- */
- SI.forEach((l,i)=>{const a=i/21*TAU-Math.PI/2,v=S.law[l.nm]/10,c=bc(l.b);
+ /* --- the 21 laws. present at every depth: they are the numerator of CQ. ---
+    Every depth still carries them. The bar can take them off, and the core
+    keeps the figure they sum to, because the core is not a layer. */
+ if(V.laws)SI.forEach((l,i)=>{const a=i/21*TAU-Math.PI/2,v=S.law[l.nm]/10,c=bc(l.b);
   const r0=[U*.44,U*.40,U*.33,U*.255][L],r1=r0+[U*.13,U*.12,U*.10,U*.085][L]*v;
   g.beginPath();g.moveTo(CX+Math.cos(a)*r0,CY+Math.sin(a)*r0);
   g.lineTo(CX+Math.cos(a)*r1,CY+Math.sin(a)*r1);
@@ -821,12 +893,12 @@ function drawWheel(r,L){
   g.lineCap='round';g.stroke();g.lineCap='butt';
   HIT.push({k:'law',j:i,cx:CX,cy:CY,a0:a-.075,a1:a+.075,r0:r0*.88,r1:r1+U*.03});});
  const lr=[U*.44,U*.40,U*.33,U*.255][L];
- g.beginPath();g.arc(CX,CY,lr,0,TAU);g.strokeStyle=rgba(ink,.12);g.lineWidth=1;g.stroke();
+ if(V.laws){g.beginPath();g.arc(CX,CY,lr,0,TAU);g.strokeStyle=rgba(ink,.12);g.lineWidth=1;g.stroke();}
  /* AND THE WORD CQ AND THE TIER WORD GO WITH IT, for the same two reasons.
     The tier is coherence said as a word, which was the fourth printing. */
 
  /* --- archetypes, C and D --- */
- if(L>=2){for(let j=0;j<12;j++){
+ if(V.archetypes){for(let j=0;j<12;j++){
   const a0=j*30/360*TAU-Math.PI/2,a1=a0+30/360*TAU,v=r.aff[j],am=(a0+a1)/2;
   const lead=j===r.pi,sec=j===r.si;
   arcP(R.arch-U*.016,R.arch,a0+.012,a1-.012);
@@ -839,7 +911,7 @@ function drawWheel(r,L){
 }
 
  /* --- masks, D only --- */
- if(L===3){r.maskRing.forEach((m,i)=>{
+ if(V.masks){r.maskRing.forEach((m,i)=>{
   const a0=i/6*TAU-Math.PI/2,a1=a0+TAU/6,v=clamp(m.w/10,0,1),am=(a0+a1)/2;
   arcP(R.mask-U*.019,R.mask,a0+.01,a1-.01);
   g.fillStyle=rgba(LIGHT()?[110,96,64]:[224,214,186],.06+v*.5);g.fill();
@@ -851,7 +923,7 @@ function drawWheel(r,L){
 
  /* --- THE SHELL. 108 addresses. SQ. present at every depth. --- */
  const fg=fetA(0), fn=fetA(1);
- W.forEach(n=>{
+ (V.addresses?W:[]).forEach(n=>{
   /* its seat's turn to arrive. Nothing is drawn before its turn, which is
      what makes the sweep visible: a band that is merely dim is a band that is
      already there. */
@@ -902,7 +974,7 @@ function drawWheel(r,L){
     whole shell, which also puts the lines over the ring rather than under
     it. */
  {var aa2=atomA();
-  if(aa2>0)W.forEach(n=>{
+  if(aa2>0&&V.stories)W.forEach(n=>{
    const a=n.ang, ld=clamp(n.disp/10,0,1), carrying=n.disp>=4;
    const hw=TAU/108*(.43+fg*.24);
    atomGrow(n,a,hw,R_SHELL+3+(carrying?ld*U*.075*fn:0),nodeCol(n),aa2);});}
@@ -932,7 +1004,7 @@ function drawWheel(r,L){
     target runs down to 0.85 of the shell and the word sits in the outer
     sixteen pixels of it. */
  const seatFs=12, seatR=R.shell-seatFs*0.6-2;
- if(L>=1)BANDS.forEach(b=>{const seg=W.filter(n=>n.b===b);
+ if(V.seats)BANDS.forEach(b=>{const seg=W.filter(n=>n.b===b);
   if(!seg.length)return;
   var am=meanAng(seg.map(n=>n.ang));
   var angs=seg.map(n=>n.ang).sort(function(x,y){return x-y;});
@@ -950,7 +1022,7 @@ function drawWheel(r,L){
     stage and not on LIGHT(), because on Snow the two disagree and the stage
     is right: the ring sits on #101010 there and already read 5.51, which the
     Snow palette would have taken down. Lumen draws as it shipped. */
- if(L===3){const rootP=S.theme==='lumen'?null:(stageLight()?PAL_LIGHT:PAL);
+ if(V.domains){const rootP=S.theme==='lumen'?null:(stageLight()?PAL_LIGHT:PAL);
  for(let d=0;d<19;d++){
   const a0=d*(TAU/19)-Math.PI/2,a1=a0+TAU/19,am=a0+TAU/38,rn=DOMAINS[d].r;
   const c=hx(rootP?rootP[ROOTSEAT[rn]]:ROOTCOL[rn]),sel=S.doms.indexOf(d)>=0,v=DOMAIN[d];
@@ -1066,20 +1138,20 @@ function drawWheel(r,L){
   g.lineTo(lx,ly);g.strokeStyle=rgba(c,.55);g.lineWidth=1;g.stroke();
   radialTxt(o.nm,o.ang,e-4,fs,c,.98,600,true);};
  window.__PLATES=PLATES;
- if(L>=1){r.sabs.forEach(s=>bead(s,R.sab,5.4,bc(s.parts[0].b)));
+ if(L>=1&&V.saboteurs){r.sabs.forEach(s=>bead(s,R.sab,5.4,bc(s.parts[0].b)));
   /* B names the saboteurs, because they are the layer. C and D name only the
      heaviest things: the wheel is showing structure by then, and the right rail
      carries every name in full. */
   if(L===1)r.sabs.slice(0,6).forEach(s=>nameplate(s,R.sab,bc(s.parts[0].b),6.2));
 }
- if(L>=2){r.cxs.forEach(c=>bead(c,R.cx,7.2,bc('Solar')));
-  r.hys.forEach(h=>bead(h,R.hy,10,bc('Sacral')));
-  r.sups.forEach(u=>bead(u,R.sup,13,bc('Root')));
+ if(L>=2){if(V.complexes)r.cxs.forEach(c=>bead(c,R.cx,7.2,bc('Solar')));
+  if(V.hyper)r.hys.forEach(h=>bead(h,R.hy,10,bc('Sacral')));
+  if(V.character)r.sups.forEach(u=>bead(u,R.sup,13,bc('Root')));
   /* the inner rings hold the heaviest, longest names. Radial text has no room
      between the hyper ring and the archetypes, so these set horizontally beside
      the bead, where there is space. */
-  r.hys.slice(0,3).forEach(h=>flatplate(h,R.hy,bc('Sacral'),10));
-  r.sups.slice(0,2).forEach(u=>flatplate(u,R.sup,bc('Root'),13));
+  if(V.hyper)r.hys.slice(0,3).forEach(h=>flatplate(h,R.hy,bc('Sacral'),10));
+  if(V.character)r.sups.slice(0,2).forEach(u=>flatplate(u,R.sup,bc('Root'),13));
 }
 }
 /* Under prefers-reduced-motion the clock is frozen and disp snaps straight to
@@ -1095,7 +1167,9 @@ function drawSig(r){
  if(!REDUCED) return null;                 /* animating, always draw */
  var d=0; for(var i=0;i<W.length;i++)d+=W[i].sq;
  /* effView, not S.view: the cache has to miss when zoom resolves a layer */
- return [effView(),S.tab,S.who,S.hover&&S.hover.k,S.pin&&(S.pin.nm||S.pin.k),
+ /* and the layer set, because two sets can need the same room: Blueprint with
+    the laws off draws at the same effView as Blueprint with them on */
+ return [effView(),Object.keys(layVisible()).sort().join('.'),S.tab,S.who,S.hover&&S.hover.k,S.pin&&(S.pin.nm||S.pin.k),
          LIGHT()?1:0,S.zoom.toFixed(3),S.panx|0,S.pany|0,
          d.toFixed(3),r.CQ.toFixed(3)].join('|');}
 function draw(r){

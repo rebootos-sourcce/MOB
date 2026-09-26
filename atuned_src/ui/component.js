@@ -13,11 +13,30 @@
              instead of a percentage), hot (force the alarm state),
              act (clickable), on (selected), data (data-* attributes)
    ============================================================ */
-var CRGEO={lg:{box:46,r:18,w:3.5},md:{box:34,r:13,w:3},sm:{box:24,r:9,w:2.4},xs:{box:18,r:6.5,w:2}};
+var CRGEO={lg:{box:46,r:18,w:3.5},md:{box:34,r:13,w:3},sm:{box:24,r:9,w:2.4},xs:{box:18,r:6.5,w:2},
+ /* THE READINGS AS CIRCLES, ED in TASKS.md: "a circle and the icon inside of
+    it, and the percent complete ring around it are the primary features, and
+    then there's a pill to the lower right." orb is the tap floor, 44, and
+    hero is CQ alone. The prototype drew these by rewriting the small ring's
+    viewBox after it landed; a size of their own draws them right first. */
+ orb:{box:44,r:16.5,w:2.8},hero:{box:72,r:27,w:4}};
 var HOT_AT=90;                         /* the alarm band. severity gets its own channel. */
 /* one stroked icon, 24 unit box. declared here because this file loads first
    and every renderer after it wants one. */
 const svgI=function(p){return '<svg viewBox="0 0 24 24">'+p+'</svg>';};
+/* THE FOUR TIERS OF A CHAIN, as marks. They were written inline in the
+   rail's stack tabs, railStack in ui/ui.js, and the glass bar needs the same
+   four for its own switches: one concept, one mark, on every surface, which
+   two copies of a path cannot promise. Two locked rings a saboteur, three a
+   complex, a lattice a hyper complex, a ring in a ring the character layer. */
+const CHAINGLYPH={
+ sab:'M8.6 4.8a3.4 3.4 0 013.4 3.4v3.4a3.4 3.4 0 01-6.8 0V8.2a3.4 3.4 0 013.4-3.4'
+  +'M15.4 12.4a3.4 3.4 0 013.4 3.4a3.4 3.4 0 01-6.8 0a3.4 3.4 0 013.4-3.4',
+ cx:'M9 6.6a3 3 0 110 6 3 3 0 010-6M15 6.6a3 3 0 110 6 3 3 0 010-6'
+  +'M12 12.8a3 3 0 110 6 3 3 0 010-6',
+ hy:'M12 3.2l7.6 4.4v8.8L12 20.8 4.4 16.4V7.6zM12 3.2v17.6M4.4 7.6l15.2 8.8'
+  +'M19.6 7.6L4.4 16.4',
+ sup:'M12 3.4a8.6 8.6 0 100 17.2 8.6 8.6 0 000-17.2M12 7.6a4.4 4.4 0 110 8.8 4.4 4.4 0 010-8.8'};
 /* A MARK IS EITHER PATH DATA OR FINISHED MARKUP, and the tables hold both.
    CHILD, SI, HCX_LIB, GATEGLYPH and the nineteen domains carry a bare d
    string. SEATGLYPH carries a finished <path> or <circle>, because a seat's
@@ -303,8 +322,11 @@ let LBL=[];
    about a third larger in the same box at 1600, and its silhouette at the
    Patterns depth lands within a few pixels of where the names used to end. */
 const LBL_R=0.95, LBL_M=10;
-/* what sits over the canvas and therefore bounds the wheel */
-const OVERLAY=['tl','acc','bal','howto'];
+/* what sits over the canvas and therefore bounds the wheel. Accuracy left
+   this list when it left the stage's foot for the left rail, ED in TASKS.md,
+   because a readout that no longer sits over the canvas has no business
+   taking radius from it. */
+const OVERLAY=['tl','bal','howto'];
 const hx=h=>{const n=parseInt(String(h).slice(1),16);return[(n>>16)&255,(n>>8)&255,n&255];};
 const rgba=(c,a)=>'rgba('+c[0]+','+c[1]+','+c[2]+','+(+a).toFixed(3)+')';
 const mixc=(a,b,t)=>a.map((v,i)=>Math.round(v+(b[i]-v)*t));

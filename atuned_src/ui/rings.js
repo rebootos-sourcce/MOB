@@ -83,6 +83,8 @@ function fviewSet(k){
  FVIEW=k;
  try{STORE.set('fview',k);}catch(e){}
  S.pin=null; FR_SIG=null;
+ /* a rendition switch starts that picture whole */
+ FZ={s:1,x:0,y:0};
  fviewPaint(S.tab);
  /* THE CANVAS IS MEASURED THE MOMENT IT IS VISIBLE, setTab's own lesson.
     Hidden behind a rendition it measured nothing, so the first wheel drawn
@@ -91,26 +93,27 @@ function fviewSet(k){
     fviewPaint: called from setTab it would measure a canvas still hidden. */
  if(S.tab===TAB.FIELD&&!fviewOn()&&typeof layout==='function')layout();
  render();}
-/* WHICH PARTS SHOW, decided in one place. The wheel and its depth bar are one
-   pair and a rendition and its layer row are the other, and only one pair is
-   ever up. The depth bar sets how much of the wheel is drawn, and pressed
-   over a picture that already draws every layer it would do nothing, which
-   is a dead control. setTab calls this rather than showing the canvas
-   itself, because two writers for one display is how a surface ends up
-   showing two pictures. */
+/* WHICH PICTURE SHOWS, decided in one place. setTab calls this rather than
+   showing the canvas itself, because two writers for one display is how a
+   surface ends up showing two pictures.
+
+   THE DEPTH ROW AND THE LAYER ROW ARE GONE, and this used to pair each
+   picture with its own. The glass bar in ui/fieldbar.js replaced both, and
+   it drives all three pictures, so there is no second row to swap. */
 function fviewPaint(tab){
  var on=(tab===TAB.FIELD), ring=fviewOn();
  var show=function(id,how){var e=document.getElementById(id); if(e)e.style.display=how;};
  show('cv',on&&!ring?'block':'none');
- show('vbar',on&&!ring?'flex':'none');
  show('frend',on&&ring?'block':'none');
- show('flay',on&&ring?'flex':'none');
  var sw=document.getElementById('fview');
  if(sw)sw.querySelectorAll('[data-fview]').forEach(function(b){
-  b.setAttribute('aria-pressed',b.getAttribute('data-fview')===FVIEW);});
+  var up=b.getAttribute('data-fview')===FVIEW;
+  b.setAttribute('aria-pressed',up); b.classList.toggle('on',up);});
  var fr=document.getElementById('frend');
- if(fr)fr.setAttribute('aria-label','The Field, drawn as '+(FVIEW==='dial'?'a dial':'nested frames')
-  +'. Every element is also listed in the panels either side.');}
+ if(fr){fr.setAttribute('aria-label','The Field, drawn as '+(FVIEW==='dial'?'a dial':'nested frames')
+  +'. Every element is also listed in the panels either side.');
+  /* the frame takes the empty left lane as well, see #frend.flush */
+  fr.classList.toggle('flush',FVIEW==='frames');}}
 
 /* ---- the layers, in the order the rings sit, outside first ----
    One row, so the row is the legend and the legend is the control, which is
@@ -147,43 +150,15 @@ const FLAYS=[
  {sep:true},
  {k:'shadow',nm:'Shadow',d:frCirc(12,12,8.5)+'M7.2 16.6l3.4-3.4M10.2 19.2l6-6M14.6 19.9l4.6-4.6',
   tip:'The weight on all 112 addresses, as a wash behind everything.'}];
-/* hidden layers. View state, like the depth and the pin, so it is not kept:
-   the wheel's depth is not kept either, and a person reloading gets every
-   layer back rather than a picture with pieces missing and no reason shown. */
-var FLAY_OFF={};
+/* THE SWITCH AND THE ROW ARE NO LONGER BUILT HERE. The layer row, #flay, is
+   the glass bar now, and the switch, #fview, moved to the right rail as three
+   circles; ui/fieldbar.js builds both. FLAYS stays, because its marks are the
+   bar's marks: one concept, one mark, on every surface.
 
-/* The switch and the row are built here, once, the way the depth buttons are
-   built in panels.js. getElementById and not $, because $ is a const in
-   panels.js, which loads after this file, and reaching it here would throw
-   at load and take every module after this one with it. */
-(function(){
- var sw=document.getElementById('fview');
- if(sw)FVIEWS.forEach(function(f){
-  var b=document.createElement('button'); b.type='button'; b.className='vt';
-  b.setAttribute('data-fview',f.k); b.setAttribute('aria-pressed',f.k===FVIEW);
-  /* the product's own tooltip, the way the depth buttons carry theirs, so a
-     touch screen reaches the definition and not only a pointer */
-  b.setAttribute('data-tip-t',f.nm); b.setAttribute('data-tip',f.tip);
-  b.innerHTML=svgI(f.ic)+'<span class="n">'+f.nm+'</span>';
-  b.addEventListener('click',function(){fviewSet(f.k);});
-  sw.appendChild(b);});
- var row=document.getElementById('flay');
- if(row)FLAYS.forEach(function(t){
-  if(t.sep){var s=document.createElement('span');s.className='lay-sep';row.appendChild(s);return;}
-  var b=document.createElement('button'); b.type='button'; b.className='lay';
-  b.setAttribute('aria-pressed','true'); b.setAttribute('data-lay',t.k);
-  b.setAttribute('data-tip-t',t.nm); b.setAttribute('data-tip',t.tip);
-  b.innerHTML='<span class="lay-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="'+t.d+'"/></svg></span>'
-   +'<span class="lay-nm">'+t.nm+'</span>';
-  /* A HIDDEN LAYER IS A CLASS ON THE HOST, NOT A REDRAW. Every mark and
-     every word a layer draws sits in a group carrying that layer's class, so
-     the sheet takes both off together and the picture is not rebuilt. */
-  b.addEventListener('click',function(){
-   var on=b.getAttribute('aria-pressed')!=='true';
-   b.setAttribute('aria-pressed',String(on));
-   if(on)delete FLAY_OFF[t.k]; else FLAY_OFF[t.k]=1;
-   var fr=document.getElementById('frend'); if(fr)fr.classList.toggle('off-'+t.k,!on);});
-  row.appendChild(b);});})();
+   A HIDDEN LAYER IS STILL A CLASS ON THE HOST, NOT A REDRAW. Every mark and
+   every word a layer draws sits in a group carrying that layer's class, and
+   frLayers below puts the bar's state on #frend as off-<layer>, so the sheet
+   takes marks and words off together and the picture is not rebuilt. */
 
 /* ---- the geometry, kit.js ----
    Every ring is a superellipse, |x/a|^n + |y/b|^n = 1. n at 2 with a equal to
@@ -191,8 +166,15 @@ var FLAY_OFF={};
    family draws the frame, the dial and everything between. */
 function frRing(cx,cy,a,b,n){
  var N=1440,P=[],i;
- var rAt=function(th){var c=Math.cos(th),s=Math.sin(th);
-  return Math.pow(Math.pow(Math.abs(c/a),n)+Math.pow(Math.abs(s/b),n),-1/n);};
+ /* THE RING HAS TO SURVIVE A SQUARE CORNER. This raised each ratio to the
+    exponent directly, and the flush frame below runs the exponent to 400:
+    (1/300) to the 400th underflows to zero, the sum's -1/n power is then
+    infinite, and the whole Frames picture drew as NaN, measured on the
+    prototype's first cut as every path "MZ", logged by the browser and by
+    nothing else. Same arithmetic, scaled by the larger term first, so every
+    power stays between nought and one at any exponent. */
+ var rAt=function(th){var u=Math.abs(Math.cos(th)/a),v=Math.abs(Math.sin(th)/b),m=Math.max(u,v)||1e-12;
+  return 1/(m*Math.pow(Math.pow(u/m,n)+Math.pow(v/m,n),1/n));};
  for(i=0;i<N;i++){var t0=-Math.PI/2+i/N*TAU,r0=rAt(t0);P.push([cx+Math.cos(t0)*r0,cy+Math.sin(t0)*r0]);}
  var L=[0];for(i=1;i<=N;i++){var p=P[i%N],q=P[i-1];L.push(L[i-1]+Math.hypot(p[0]-q[0],p[1]-q[1]));}
  var R={cx:cx,cy:cy,len:L[N]};
@@ -282,11 +264,11 @@ function frSag(n,base){var t=clamp((((n&&n.susc)||1)-0.45)/0.85,0,1);return base
    and 11.6 pixels of it went under the core on every reference case. */
 const FR_L=['shadow','ground','domains','stories','addresses','masks','archetypes','patterns','chains','laws','core','gates'];
 const FR_T=['domains','addresses','archetypes','patterns','chains','laws','seats'];
-/* a group that answers to a layer toggle takes that layer's class. The three
-   that answer to none, the dial's engraving, the core and the seat marks, are
-   drawn unclassed, because a class no rule mentions is one the design gate
-   refuses by name */
-const FR_CLS={ground:0,core:0,seats:0};
+/* a group that answers to a layer toggle takes that layer's class. The two
+   that answer to none, the dial's engraving and the core, are drawn
+   unclassed, because a class no rule mentions is one the design gate refuses
+   by name. The seat marks were the third and answer to the bar's Seats now. */
+const FR_CLS={ground:0,core:0};
 /* THE FOUR OUTSIDE THE BODY ARE HIDDEN HERE, AND ONLY HERE. Gaia Gateway,
    Earth Star, Sol Star and Stellar Gateway. These two renditions were the
    first surface on which they were ever drawn, as four open rings at the
@@ -308,23 +290,21 @@ const FR_CLS={ground:0,core:0,seats:0};
    this, which is on purpose: a reversal should be a decision someone makes
    and not a side effect nobody sees. */
 const FR_SHOW_OUTSIDE=false;
-/* THE WINDOW'S FOOT. The host's own box, less a margin, and less the strip
-   along the stage's foot where the lower pills and accuracy sit over this
-   cell. The wheel is a circle and never reaches those corners. A frame fills
-   its rectangle, so it would run underneath them. Measured rather than
-   assumed, because on a phone both are in flow and take nothing, and read
-   every frame into the signature, because the picture is built from it:
-   measured on four reference cases, the foot moved after a picture was built
-   and every bearing on the frame's top edge drew a tenth of a pixel off. */
-function frFoot(host,H_,pad){
- var y1=H_-pad,hb=host.getBoundingClientRect();
- ['keylo','acc'].forEach(function(id){var e=document.getElementById(id);if(!e)return;
-  if(getComputedStyle(e).position!=='absolute')return;
-  var b=e.getBoundingClientRect();if(!b.width||!b.height)return;
-  if(b.right<=hb.left||b.left>=hb.right||b.bottom<=hb.top||b.top>=hb.bottom)return;
-  var top=b.top-hb.top;if(top<H_/2)return;
-  y1=Math.min(y1,top-pad);});
- return y1;}
+/* THE WINDOW'S FOOT WAS MEASURED HERE, and is not any more. frFoot cut the
+   window back from the strip along the stage's foot where the lower pills
+   and accuracy sat over this cell. Those readings moved to the left rail with
+   the glass bar, ED in TASKS.md, so nothing sits over the cell and the window
+   is the host's own box. */
+/* THE FRAME RUNS FLUSH, ruled. His words: "I like the frame, but I don't like
+   the beveled edges because I want the entire thing flush to the rectangle of
+   the area." It was drawn eight pixels in from its box and every ring was a
+   superellipse at an exponent of twelve, which rounds a corner by about a
+   tenth of its side. The outer ring now sits on the box's own edge at an
+   exponent of four hundred, square to the pixel at the corner, and the rings
+   inside ease back toward twelve as they go in, so the picture keeps its
+   nested read and only the outside becomes the rectangle. The dial is a
+   circle and keeps its margin. */
+function frNS(d,w){var t=Math.min(1,d/(Math.min(w.a,w.b)*.35));return 12+388*Math.pow(1-t,3);}
 function frMount(host,W_,H_,r){
  var M={W:W_,H:H_,L:{},T:{},defs:[],hit:[]};
  FR_L.forEach(function(k){M.L[k]=[];});
@@ -358,7 +338,7 @@ function frMount(host,W_,H_,r){
     is its seat washed toward slate and takes its full hue as charge comes up */
  M.nodeCol=function(b,sq){var base=M.seat(b),ld=clamp(sq/10,0,1);
   return mixc(mixc(base,M.light?[238,236,230]:[150,160,180],.74),base,Math.pow(ld,.55));};
- var pad=8,w={x0:pad,y0:pad,x1:W_-pad,y1:frFoot(host,H_,pad)};
+ var pad=FVIEW==='frames'?0:8,w={x0:pad,y0:pad,x1:W_-pad,y1:H_-pad};
  w.cx=(w.x0+w.x1)/2;w.cy=(w.y0+w.y1)/2;w.a=(w.x1-w.x0)/2;w.b=(w.y1-w.y0)/2;
  M.win=w;
  /* THE LOOP. 112 places, the seam at twelve o'clock, clockwise from the root
@@ -612,7 +592,7 @@ function frSeatGlyph(M,b,x,y,size){
    rectangle, and coherence is a circle.
    ============================================================ */
 function frFrames(M,r){
- var w=M.win,cx=w.cx,cy=w.cy,NS=12;
+ var w=M.win,cx=w.cx,cy=w.cy;
  /* THE DEPTHS SCALE WITH THE BOX. The mockup's table was drawn for a window
     whose short half was 381, and it is carried over unchanged and multiplied
     by this box's short half over that. Line weights and type do not scale:
@@ -621,7 +601,14 @@ function frFrames(M,r){
  var D={dom0:0,dom1:20,story:25,base:31,barMax:48,seatNm:94,mask0:106,mask1:114,arch0:119,arch1:133,
   pat:147,cx:165,hy:181,sup:197,law0:207,lawIc:214,lawBar:223,lawMax:19,inner:248};
  Object.keys(D).forEach(function(k){D[k]*=sc;});
- var ring=function(d){return frRingC(cx,cy,w.a-d,w.b-d,NS);};
+ /* FLUSH WHEN THE OUTER BAND IS OFF, TOO. The domains are the outermost band,
+    and with them off the frame was flush to a band nobody could see: measured
+    on the prototype, the first visible line sat 33 pixels in from the box at
+    1600. So the frame makes room the way the wheel does. With Domains off on
+    the glass bar every ring moves out by the domain band's depth and the
+    addresses become the edge. */
+ var room=layerOn('domains')?0:D.dom1;
+ var ring=function(d){d=Math.max(0,d-room);return frRingC(cx,cy,w.a-d,w.b-d,frNS(d,w));};
  var lineRing=function(list,d,al){list.push('<path d="'+ring(d).d(2)+'" fill="none" stroke="'+rgba(M.ink,al)+'" stroke-width="1"/>');};
  var base=ring(D.base),th=function(t){return base.thAt(t);};
  frShadow(M,r);
@@ -694,7 +681,7 @@ function frFrames(M,r){
   P.push('<path d="'+tr.d(2)+'" fill="none" stroke="'+rgba(M.ink,.07)+'" stroke-width="1"/>');
   r.sabs.forEach(function(s,k){var p=tr.at(th(M.tSab[k])),kk=w01(s);at.sab[k]=p;
    s.parts.forEach(function(n){var sl=M.slotByI[n.i],q=sl&&tip[sl.s];if(!q)return;
-    P.push('<path d="'+frBowD(q,p,cx,cy,frSag(n,.16))+'" fill="none" stroke="'+rgba(M.seat(n.b),.16+kk*.22)
+    P.push('<path class="F-addr" d="'+frBowD(q,p,cx,cy,frSag(n,.16))+'" fill="none" stroke="'+rgba(M.seat(n.b),.16+kk*.22)
      +'" stroke-width="'+(.7+kk*1).toFixed(2)+'"'+(s.unnamed?' stroke-dasharray="3 3"':'')+'/>');});});
   r.sabs.forEach(function(s,k){var p=at.sab[k],c=M.seat((s.parts[0]&&s.parts[0].b)||'Root'),rb=(2.6+w01(s)*3.4)*Math.max(sc,.6);
    P.push('<circle data-h="'+M.hid({k:'sab',o:s})+'" cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="'+rb.toFixed(1)+'"'
@@ -729,21 +716,26 @@ function frFrames(M,r){
 /* the three tiers of a chain, which both renditions draw the same way and
    only place differently. T: key, list, bearings, ring, seat, bead radius,
    thread width, the tier each part is from, its index, and the pull */
+/* EACH TIER CARRIES ITS OWN CLASS, T-<tier>, and each thread the class of the
+   tier at its far end as well, F-<tier>. The three tiers were one group under
+   one switch, and the glass bar gives complexes, hyper complexes and
+   character a switch each; a thread is drawn when both its ends are, so a
+   thread leaves with either. */
 function frChains(M,r,at,tiers,th,sc,frames){
  tiers.forEach(function(T){var key=T[0],list=T[1],ts=T[2],tr=T[3],c=M.seat(T[4]),rb=T[5],wd=T[6],from=at[T[7]],ixf=T[8],pull=T[9];
   var cx=tr.cx,cy=tr.cy,Cn=M.L.chains;
-  if(frames)Cn.push('<path d="'+tr.d(2)+'" fill="none" stroke="'+rgba(c,.09)+'" stroke-width="1"/>');
+  if(frames)Cn.push('<path class="T-'+key+'" d="'+tr.d(2)+'" fill="none" stroke="'+rgba(c,.09)+'" stroke-width="1"/>');
   list.forEach(function(o,k){at[key][k]=tr.at(th(ts[k]));});
   list.forEach(function(o,k){var p=at[key][k],kk=clamp((o.w-3.5)/3,0,1);
    o.parts.forEach(function(pt){var q=from[ixf.get(pt)];if(!q)return;
-    Cn.push('<path d="'+frBowD(q,p,cx,cy,pull)+'" fill="none" stroke="'+rgba(c,(frames?.18:.16)+kk*.26)
+    Cn.push('<path class="T-'+key+' F-'+T[7]+'" d="'+frBowD(q,p,cx,cy,pull)+'" fill="none" stroke="'+rgba(c,(frames?.18:.16)+kk*.26)
      +'" stroke-width="'+(wd*(.45+kk*.7)).toFixed(2)+'"/>');});});
   /* each bead's hit record is kept beside its position, so a callout that
      names a bead answers to the same readout the bead does */
   at.h=at.h||{};at.h[key]=[];
   list.forEach(function(o,k){var p=at[key][k],kk=clamp((o.w-3.5)/3,0,1),h=M.hid({k:o.kind||key,o:o});
    at.h[key][k]=h;
-   Cn.push('<circle data-h="'+h+'" cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="'
+   Cn.push('<circle class="T-'+key+'" data-h="'+h+'" cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="'
     +((rb+kk*(frames?2.4:2.2))*Math.max(sc,.6)).toFixed(1)+'" fill="'+frRgb(c)+'" stroke="'+frRgb(M.ground)+'" stroke-width="1.5"/>');});});}
 
 /* ============================================================
@@ -839,7 +831,7 @@ function frDial(M,r){
   r.sabs.forEach(function(s,k){at.sab[k]=rp.at(th(M.tSab[k]));});
   r.sabs.forEach(function(s,k){var p=at.sab[k],kk=w01(s);
    s.parts.forEach(function(n){var sl=M.slotByI[n.i],q=sl&&tip[sl.s];if(!q)return;
-    P.push('<path d="'+frBowD(q,p,cx,cy,frSag(n,.10))+'" fill="none" stroke="'+rgba(M.seat(n.b),.15+kk*.2)
+    P.push('<path class="F-addr" d="'+frBowD(q,p,cx,cy,frSag(n,.10))+'" fill="none" stroke="'+rgba(M.seat(n.b),.15+kk*.2)
      +'" stroke-width="'+(.6+kk*.9).toFixed(2)+'"'+(s.unnamed?' stroke-dasharray="2 3"':'')+'/>');});});
   r.sabs.forEach(function(s,k){var p=at.sab[k],c=M.seat((s.parts[0]&&s.parts[0].b)||'Root'),rr=(2.4+w01(s)*3.2)*Math.max(sc,.6),h=M.hid({k:'sab',o:s});
    hitOf['s'+k]=h;
@@ -990,24 +982,94 @@ function frSig(r,W_,H_){
  [r.sabs,r.cxs,r.hys,r.sups].forEach(function(L){a.push(L.length);L.forEach(function(o){a.push(o.nm,(+o.w||0).toFixed(2));});});
  verpRead().forEach(function(v){a.push(v.pct);});
  a.push(((CURP&&CURP.story&&CURP.story.entries)||[]).length,CURP?(CURP.id||CURP.nm||''):'');
+ /* one switch on the glass bar moves the geometry and not only a class: with
+    Domains off the frame makes room, see frFrames */
+ a.push(layerOn('domains')?1:0);
  return a.join('|');}
+/* THE BAR'S STATE ON THE HOST, one class per layer that is off. Written every
+   frame and before the signature test, because a switch is a class and not a
+   rebuild, so a frame that builds nothing still has to carry it. Thirteen
+   class toggles are nothing against the build this saves. */
+function frLayers(host){var V=layVisible();
+ LAYADD.forEach(function(g){g.forEach(function(k){host.classList.toggle('off-'+k,!V[k]);});});}
 function ringsDraw(r){
  var host=document.getElementById('frend');if(!host)return;
  var W_=host.clientWidth,H_=host.clientHeight;
  /* hidden, or not laid out yet: nothing to measure, and a picture built for a
     box of nothing would be cached against the box it is about to get */
  if(W_<60||H_<60)return;
+ frLayers(host);
  /* THE FRAME LOOP HAS NO GUARD OF ITS OWN, so a throw here would stop it and
     take every later frame of the Field with it. The build is guarded and the
     failure is said, once, in the console, where the functional gate reads it
     as a failure: survivable for a person, loud for a test. */
  try{
-  var box=FVIEW+'|'+W_+'x'+H_+'|'+frFoot(host,H_,8).toFixed(1),sig=frSig(r,W_,H_)+'|'+box;
+  var box=FVIEW+'|'+W_+'x'+H_,sig=frSig(r,W_,H_)+'|'+box;
   if(sig===FR_SIG)return;
   FR_SIG=sig;
   if(FR_BOX!==box){FR_BOX=box;FR_RINGS={};}
   var M=frMount(host,W_,H_,r);
   if(FVIEW==='dial')frDial(M,r);else frFrames(M,r);
   host.innerHTML=frSvg(M);
-  FR_HIT=M.hit;}
+  FR_HIT=M.hit;
+  /* the rebuild wrote a new picture, so the zoom goes back on the new one,
+     held inside a box that may have changed under it */
+  fzClamp(); fzApply();}
  catch(e){if(!FR_ERR){FR_ERR=true;try{console.error('[atuned] the '+FVIEW+' rendition failed',e);}catch(e2){}}}}
+
+/* ============================================================
+   ZOOM ON FRAMES AND DIAL. ER in TASKS.md, his words: "With Dial and Frame,
+   I want to be able to use mouse wheel zoom in, and then when I frame it, it
+   just snaps back." Built in proto/glassbar's third revision, ED, and ported
+   here because until now it was true of the prototype and not of the build.
+
+   The picture is one SVG, so it is moved as one thing: a scale and a shift
+   on the element, which keeps every mark's own hit target under the pointer
+   at any zoom and costs no rebuild. Scroll zooms about the pointer, a drag
+   pans once zoomed, and F reframes, the three things the wheel already did.
+
+   Zoom only ever brings it closer: at 1x the picture is whole and cannot be
+   pushed off its own box, and at any zoom its edge stops at the box's edge,
+   so the frame's flush edge is never pulled inward.
+   ============================================================ */
+var FZ={s:1,x:0,y:0}, FZ_MAX=6, FZDRAG=null, FZMOVED=false;
+function fzApply(){var h=document.getElementById('frend');if(!h)return;
+ var sv=h.querySelector('.frsvg');
+ if(sv){sv.style.transformOrigin='0 0';
+  sv.style.transform=(FZ.s===1&&!FZ.x&&!FZ.y)?''
+   :'translate('+FZ.x.toFixed(1)+'px,'+FZ.y.toFixed(1)+'px) scale('+FZ.s.toFixed(4)+')';}
+ h.classList.toggle('zoomed',FZ.s>1.001);}
+function fzClamp(){var h=document.getElementById('frend');if(!h)return;
+ var W_=h.clientWidth,H_=h.clientHeight;
+ FZ.x=Math.min(0,Math.max(W_-W_*FZ.s,FZ.x)); FZ.y=Math.min(0,Math.max(H_-H_*FZ.s,FZ.y));}
+/* to a scale, keeping the point under px,py where it is */
+function fzAt(ns,px,py){ns=Math.max(1,Math.min(FZ_MAX,ns));
+ var wx=(px-FZ.x)/FZ.s, wy=(py-FZ.y)/FZ.s;
+ FZ.x=px-wx*ns; FZ.y=py-wy*ns; FZ.s=ns; fzClamp(); fzApply();
+ if(typeof fbPaint==='function')fbPaint();}
+/* ONE ZOOM FOR THE THREE PICTURES, so the bar's circles and the keys never
+   ask which picture is up. The wheel keeps its own, setZoom in ui/ui.js,
+   because its zoom is a radius and resolves layers, and these two are a
+   picture brought closer. */
+function fieldZoom(){return fviewOn()?{s:FZ.s,max:FZ_MAX}:{s:S.zoom||1,max:WHEEL_ZOOM_MAX};}
+function fieldZoomBy(k){
+ if(fviewOn()){var h=document.getElementById('frend');if(h)fzAt(FZ.s*k,h.clientWidth/2,h.clientHeight/2);}
+ else setZoom(S.zoom*k,CW/2,CH/2);}
+function fieldReframe(){
+ if(fviewOn()){FZ={s:1,x:0,y:0};fzApply();
+  status('Reframed. Scroll on the picture to move in, drag to move it, F to come back.');}
+ else{S.zoom=1;S.panx=0;S.pany=0;reframe();render();status(HOWTO_ZOOM_OUT);}
+ if(typeof fbPaint==='function')fbPaint();}
+(function(){
+ var h=document.getElementById('frend'); if(!h)return;
+ h.addEventListener('wheel',function(e){if(S.tab!==TAB.FIELD||!fviewOn())return;e.preventDefault();
+  var b=h.getBoundingClientRect();fzAt(FZ.s*(e.deltaY<0?1.12:1/1.12),e.clientX-b.left,e.clientY-b.top);},{passive:false});
+ h.addEventListener('pointerdown',function(e){if(!fviewOn()||FZ.s<=1.001||e.button!==0)return;
+  FZDRAG={x:e.clientX,y:e.clientY,fx:FZ.x,fy:FZ.y};FZMOVED=false;});
+ addEventListener('pointermove',function(e){if(!FZDRAG)return;
+  var dx=e.clientX-FZDRAG.x,dy=e.clientY-FZDRAG.y;
+  if(Math.abs(dx)+Math.abs(dy)>4)FZMOVED=true;
+  if(FZMOVED){FZ.x=FZDRAG.fx+dx;FZ.y=FZDRAG.fy+dy;fzClamp();fzApply();h.classList.add('dragging');}});
+ addEventListener('pointerup',function(){FZDRAG=null;h.classList.remove('dragging');});
+ /* a drag that moved the picture is not also a press on whatever it ended on */
+ h.addEventListener('click',function(e){if(FZMOVED){FZMOVED=false;e.stopPropagation();e.preventDefault();}},true);})();

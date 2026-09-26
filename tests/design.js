@@ -40,7 +40,8 @@ ok(realErrs.length===0,'console errors: '+realErrs.slice(0,5).join(' | '));
 console.log('  errors:',errs.length);
 const shell=await page.evaluate(()=>({
  tabs:document.querySelectorAll('.tabtop').length,
- depths:document.querySelectorAll('#vbar .vt').length,
+ depths:document.querySelectorAll('#fbmenu [data-preset]').length,
+ views:VIEWS.length,
  doms:document.querySelectorAll('#doms .ib').length,
  arcs:document.querySelectorAll('#ar1 .ib').length,
  laws:document.querySelectorAll('#laws .nf').length,
@@ -59,7 +60,9 @@ const shell=await page.evaluate(()=>({
    the right list to count and TAB is not. */
 ok(shell.tabs===shell.tabdef,
  shell.tabdef+' tabs declared, '+shell.tabs+' in the bar');
-ok(shell.depths===4,'4 depths, got '+shell.depths);
+/* the four depths are the glass bar's presets now, behind its Depth circle,
+   and they are counted off VIEWS rather than written down */
+ok(shell.depths===shell.views&&shell.views>0,shell.views+' depths declared, '+shell.depths+' presets on the bar');
 ok(shell.doms===19,'19 domains, got '+shell.doms);
 ok(shell.arcs===12,'12 archetypes, got '+shell.arcs);
 ok(shell.laws===21,'21 law fields, got '+shell.laws);
@@ -71,12 +74,16 @@ console.log('  shell:',JSON.stringify(shell));
    four for six days while three of the four sat past the right edge: the depth
    buttons wore the rail's full width row class, so each was as wide as the
    whole bar and Patterns, the depth the Field opens on, began at x 1563 of
-   1600. A count cannot see where a thing is, so this measures it. */
+   1600. A count cannot see where a thing is, so this measures it.
+
+   The depth row became the glass bar's Depth circle, EV in TASKS.md, so the
+   measure moved with it: every circle the bar shows at 1600 is inside the
+   window, and the Depth circle is one of them. */
 const depthsOn=await page.evaluate(()=>{setTab(TAB.FIELD);
- return [...document.querySelectorAll('#vbar .vt')].map(b=>{const r=b.getBoundingClientRect();
-  return {nm:b.textContent.trim(),on:r.width>0&&r.left>=0&&r.right<=innerWidth+0.5};});});
-ok(depthsOn.length===4&&depthsOn.every(d=>d.on),
- 'every depth button is on the screen at 1600, off it: '
+ return [...document.querySelectorAll('#fbar .fb-b')].filter(b=>b.offsetParent).map(b=>{const r=b.getBoundingClientRect();
+  return {nm:b.getAttribute('aria-label'),on:r.width>0&&r.left>=0&&r.right<=innerWidth+0.5};});});
+ok(depthsOn.some(d=>d.nm==='Depth')&&depthsOn.every(d=>d.on),
+ 'every circle on the glass bar is on the screen at 1600, the Depth circle among them, off it: '
  +(depthsOn.filter(d=>!d.on).map(d=>d.nm).join(', ')||'none'));
 
 console.log('\n=== 2 · one tab surface visible, plus whatever it carries ===');

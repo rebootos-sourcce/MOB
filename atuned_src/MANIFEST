@@ -37,6 +37,7 @@ ui/sound.js
 ui/tip.js
 ui/wheel.js
 ui/rings.js
+ui/fieldbar.js
 ui/map.js
 ui/mapshelf.js
 ui/imprints.js

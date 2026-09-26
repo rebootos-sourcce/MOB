@@ -3494,21 +3494,27 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
   const d=id=>getComputedStyle(document.getElementById(id)).display;
   return {keys:btns.map(x=>x.getAttribute('data-fview')).join(','),
    pressed:btns.filter(x=>x.getAttribute('aria-pressed')==='true').map(x=>x.getAttribute('data-fview')).join(','),
-   right:b.right,top:b.top,h:b.height,cvLeft:c.left,cvTop:c.top,cvH:c.height,mid:s.left+s.width/2,rail:rt.left,
+   left:b.left,top:b.top,stageRight:s.right,railBottom:rt.bottom,words:(sw.innerText||'').trim(),
    sizes:btns.map(x=>{const r=x.getBoundingClientRect();return [Math.round(r.width),Math.round(r.height)];}),
-   cv:d('cv'),vbar:d('vbar'),frend:d('frend'),flay:d('flay')};});
+   cv:d('cv'),fbar:d('fbar'),frend:d('frend'),subbar:d('subbar'),
+   retired:['vbar','flay'].filter(id=>document.getElementById(id))};});
  ok(place.keys==='wheel,frames,dial','three positions, wheel, frames and dial, got '+place.keys);
  ok(place.pressed==='wheel','the wheel is the default, so nobody who has not pressed it sees a change, got '+place.pressed);
- ok(place.right<=place.cvLeft+1,'the switch sits in the left lane and clear of the ring, right edge '
-  +Math.round(place.right)+' against the canvas at '+Math.round(place.cvLeft));
- ok(place.right<place.mid&&place.right<place.rail,'and nowhere near the upper right, where the tier line is');
- /* CENTRE LEFT, ruled 26 September, CQ in TASKS.md, reversing BP8's head of
-    the lane. Its middle sits on the canvas's middle. */
- ok(Math.abs(place.top+place.h/2-(place.cvTop+place.cvH/2))<12,'centre left, level with the middle of the ring, '
-  +Math.round(place.top+place.h/2)+' against the canvas middle at '+Math.round(place.cvTop+place.cvH/2));
+ /* MOVED TO THE RIGHT RAIL, ruled on DR and settled on DY in TASKS.md: "move
+    that to the secondary nav on the right hand side, and let's just keep
+    those three options there." This held it in the stage's left lane, centre
+    left, on CQ's ruling, which those two reversed; and EV is the owner
+    finding it still there because the move was made in a prototype only. */
+ ok(place.left>=place.stageRight,'the switch is off the centre pane, in the right rail, left edge '
+  +Math.round(place.left)+' against the stage\'s right edge at '+Math.round(place.stageRight));
+ ok(place.top>=place.railBottom-1&&place.top-place.railBottom<40,'directly under the rail\'s top line, '
+  +Math.round(place.top)+' against its foot at '+Math.round(place.railBottom));
+ ok(place.words==='','icon only: "I don\'t need the text, just make it the icon", got "'+place.words+'"');
  ok(place.sizes.every(s=>s[0]>=44&&s[1]>=44),'every position clears the 44 pixel tap floor, '+JSON.stringify(place.sizes));
- ok(place.cv==='block'&&place.vbar==='flex'&&place.frend==='none'&&place.flay==='none',
-  'on the wheel the canvas and the depth row are up, and no rendition and no layer row');
+ ok(place.cv==='block'&&place.fbar==='flex'&&place.frend==='none'&&place.subbar==='none',
+  'on the wheel the canvas and the glass bar are up, no rendition, and no sub bar: "I don\'t want that secondary navigation"');
+ ok(place.retired.length===0,'the depth row and the layer row the bar replaced are not in the document, found: '
+  +(place.retired.join(', ')||'none'));
  /* THE SWITCH IS THE FIELD'S ALONE. The stage hosts every other surface as
     well, and nothing else in this file or the design gate would notice three
     buttons left in the left lane of the Summary: they clear the tap floor and
@@ -3516,23 +3522,28 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
     are held to the same rule on the way out. */
  const away=await fp.evaluate(()=>{fviewSet('frames');const out=[];
   TABDEF.forEach(T=>{if(T.k===TAB.FIELD)return;setTab(T.k);
-   ['fview','frend','flay'].forEach(id=>{const e=document.getElementById(id),r=e.getBoundingClientRect();
+   ['fview','frend','fbar'].forEach(id=>{const e=document.getElementById(id),r=e.getBoundingClientRect();
     if(getComputedStyle(e).display!=='none'&&r.width>0&&r.height>0)out.push(T.nm+': '+id);});});
   setTab(TAB.FIELD);fviewSet('wheel');return out;});
- ok(away.length===0,'on every other surface the switch, the rendition and its layer row are down, up: '+(away.join(', ')||'none'));
+ ok(away.length===0,'on every other surface the switch, the rendition and the glass bar are down, up: '+(away.join(', ')||'none'));
 
  /* EACH RENDITION, on a loaded profile. Every layer draws, the loop carries
     every body address and none of the four outside it, the core prints the
     reading, and nothing is set under the eleven pixel floor. */
+ /* EVERY LAYER ON, which is the Blueprint preset. One set of switches on the
+    glass bar drives all three pictures now, and the Field opens on
+    Patterns, so the layers past it are off until someone turns them on;
+    what this holds is that every layer draws when it is on. */
  const drawn=async v=>{
-  await fp.evaluate(v=>{loadP(PERSON('James'));setTab(TAB.FIELD);fviewSet(v);},v);
+  await fp.evaluate(v=>{loadP(PERSON('James'));setTab(TAB.FIELD);layPick(3);fviewSet(v);},v);
   await frame(fp);
   return fp.evaluate(L=>{const fr=document.getElementById('frend'),d=id=>getComputedStyle(document.getElementById(id)).display;
    const texts=[...fr.querySelectorAll('text')];
-   const lays=[...document.querySelectorAll('#flay .lay')];
-   return {svg:!!fr.querySelector('svg.frsvg'),cv:d('cv'),vbar:d('vbar'),frend:d('frend'),flay:d('flay'),
+   const lays=[...document.querySelectorAll('#fbar .fb-full [data-fb]')];
+   return {svg:!!fr.querySelector('svg.frsvg'),cv:d('cv'),fbar:d('fbar'),frend:d('frend'),subbar:d('subbar'),
     w:fr.clientWidth,h:fr.clientHeight,
-    lays:lays.map(b=>b.getAttribute('data-lay')).join(','),layOn:lays.every(b=>b.getAttribute('aria-pressed')==='true'),
+    lays:lays.map(b=>b.getAttribute('data-fb')).sort().join(','),want:[].concat(...LAYADD).sort().join(','),
+    layOn:lays.every(b=>b.getAttribute('aria-pressed')==='true'),
     laySizes:lays.map(b=>{const r=b.getBoundingClientRect();return [Math.round(r.width),Math.round(r.height)];}),
     counts:L.map(k=>[k,fr.querySelectorAll('.L-'+k+' [data-h], .L-'+k+' rect, .L-'+k+' path, .L-'+k+' circle').length]),
     nodes:FR_HIT.filter(h=>h.k==='node').length,body:W.length,
@@ -3544,9 +3555,8 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
  for(const v of ['frames','dial']){
   const o=await drawn(v);
   ok(o.svg&&o.frend==='block'&&o.cv==='none','"'+v+'" draws into the wheel\'s own cell and the canvas steps aside, '+o.w+' by '+o.h);
-  ok(o.vbar==='none'&&o.flay==='flex','"'+v+'" puts its layer row up in the depth row\'s place');
-  ok(o.lays==='domains,addresses,stories,masks,archetypes,patterns,chains,laws,gates,shadow'&&o.layOn,
-   '"'+v+'" carries ten layers in ring order, all on, got '+o.lays);
+  ok(o.fbar==='flex'&&o.subbar==='none','"'+v+'" keeps the glass bar up over the picture, the same bar as the wheel\'s');
+  ok(o.lays===o.want&&o.layOn,'"'+v+'": the bar carries a switch for every layer the model has, all on, got '+o.lays);
   ok(o.laySizes.every(s=>s[0]>=44&&s[1]>=44),'"'+v+'": every layer clears the tap floor, '+JSON.stringify(o.laySizes.slice(0,3)));
   /* a worked example carries no story, so its stories layer is empty by right;
      the stories layer is held on a committed story further down */
@@ -3592,11 +3602,14 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
  await drawn('dial');
 
  /* A LAYER TOGGLE HIDES THE LAYER AND ITS WORDS, and brings them back. */
+ /* the switch is on the glass bar now, and a switch is a class the frame loop
+    writes on the host, so each state is read a frame after the press */
  const tog=await fp.evaluate(async()=>{
-  const b=document.querySelector('#flay .lay[data-lay="patterns"]');
+  const fr2=()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+  const b=document.querySelector('#fbar .fb-full [data-fb="saboteurs"]');
   const vis=()=>[...document.querySelectorAll('#frend .L-patterns')].filter(e=>getComputedStyle(e).display!=='none').length;
-  const before=vis(); b.click(); const off=vis(), pressed=b.getAttribute('aria-pressed');
-  b.click(); return {before:before,off:off,pressed:pressed,back:vis(),again:b.getAttribute('aria-pressed')};});
+  const before=vis(); b.click(); await fr2(); const off=vis(), pressed=b.getAttribute('aria-pressed');
+  b.click(); await fr2(); return {before:before,off:off,pressed:pressed,back:vis(),again:b.getAttribute('aria-pressed')};});
  ok(tog.before>0&&tog.off===0&&tog.pressed==='false','a toggle takes its layer off, marks and words, '+tog.before+' groups to '+tog.off);
  ok(tog.back===tog.before&&tog.again==='true','and a second press puts it back');
 
@@ -3663,7 +3676,7 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
  const presses=[['dom',null],['mk','Ideological'],['arch','Magician'],['sab',null]];
  await fp.evaluate(()=>{loadP(PERSON('James'));setTab(TAB.FIELD);});
  for(const view of ['wheel','frames','dial']){
-  await fp.evaluate(v=>{fviewSet(v);if(v==='wheel'){S.view=3;render();paintDepth();}},view);
+  await fp.evaluate(v=>{layPick(3);fviewSet(v);render();},view);
   await frame(fp); await fp.waitForTimeout(120);
   for(const [kind,nm] of presses){
    const pt=await fp.evaluate(([view,kind,nm])=>{
@@ -3738,6 +3751,106 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
  ok(atoms.marks===atoms.total&&atoms.wrong===0,'every one is drawn, at its own address, '+atoms.marks+' drawn, '
   +atoms.wrong+' at the wrong address');
 
+ /* ============================================================
+    THE GLASS BAR, PORTED, AND HELD HERE SO IT STAYS TRUE OF THE BUILD.
+    EV in TASKS.md: every piece of it was reported done while it was true of
+    proto/glassbar alone, and the owner opened the Field and found the depth
+    row, the switch in the centre pane and the readings along the foot. Each
+    check below is one of the things ruled, measured on the shipped file,
+    with a real pointer and real keys where a person would use them.
+    ============================================================ */
+ await fp.evaluate(()=>{rdClose();loadP(PERSON('James'));setTab(TAB.FIELD);layPick(3);fviewSet('frames');});
+ await frame(fp);
+ /* FLUSH. "I want the entire thing flush to the rectangle of the area." The
+    visible marks, taken together, meet the frame's own box on all four
+    sides. And with Domains off the frame makes room: the addresses move out
+    into the band the domains left, rather than sitting where they were
+    inside a band nobody can see. */
+ const edges=()=>fp.evaluate(()=>{const fr=document.getElementById('frend'),hb=fr.getBoundingClientRect();
+  const boxOf=sel=>{const rs=[...fr.querySelectorAll(sel)].map(e=>e.getBoundingClientRect()).filter(r=>r.width>0&&r.height>0);
+   if(!rs.length)return null;
+   return {l:Math.min(...rs.map(r=>r.left))-hb.left,t:Math.min(...rs.map(r=>r.top))-hb.top,
+    r:hb.right-Math.max(...rs.map(r=>r.right)),b:hb.bottom-Math.max(...rs.map(r=>r.bottom))};};
+  return {all:boxOf('.frsvg [data-h]'),addr:boxOf('.L-addresses [data-h]'),w:hb.width,h:hb.height};});
+ const eOn=await edges();
+ ok(eOn.all&&[eOn.all.l,eOn.all.t,eOn.all.r,eOn.all.b].every(g=>g>=-0.5&&g<=1.5),
+  'frames: flush to its own box on all four sides, gaps '+JSON.stringify(eOn.all));
+ await fp.evaluate(()=>{layToggle('domains');render();}); await frame(fp);
+ const eOff=await edges();
+ ok(eOff.addr&&eOn.addr&&eOff.addr.l<eOn.addr.l-4&&eOff.addr.t<eOn.addr.t-4,
+  'frames: with Domains off the addresses move out to the edge the band left, left gap '
+  +(eOn.addr&&eOn.addr.l.toFixed(1))+' to '+(eOff.addr&&eOff.addr.l.toFixed(1)));
+ await fp.evaluate(()=>{layPick(3);render();}); await frame(fp);
+ /* ZOOM. "With Dial and Frame, I want to be able to use mouse wheel zoom in,
+    and then when I frame it, it just snaps back." A real mouse wheel over the
+    picture, a real drag, and the F key, on both renditions and on the wheel. */
+ for(const v of ['frames','dial']){
+  await fp.evaluate(v=>{rdClose();fviewSet(v);},v); await frame(fp);
+  const at=await fp.evaluate(()=>{const b=document.getElementById('frend').getBoundingClientRect();
+   return {x:b.left+b.width*.3,y:b.top+b.height*.4};});
+  await fp.mouse.move(at.x,at.y);
+  for(let i=0;i<4;i++){await fp.mouse.wheel(0,-100);await fp.waitForTimeout(30);}
+  const z=await fp.evaluate(p=>{const fr=document.getElementById('frend'),b=fr.getBoundingClientRect();
+   return {s:FZ.s,t:fr.querySelector('.frsvg').style.transform,px:p.x-b.left,py:p.y-b.top,
+    wx:(p.x-b.left-FZ.x)/FZ.s,wy:(p.y-b.top-FZ.y)/FZ.s,pill:(document.querySelector('#fbar [data-fb=zfit] .fb-v')||{}).textContent};},at);
+  ok(z.s>1.3&&/scale/.test(z.t),v+': the mouse wheel zooms the picture in, to '+z.s.toFixed(2)+'x');
+  ok(Math.abs(z.wx-z.px)<1&&Math.abs(z.wy-z.py)<1,v+': about the pointer, the point under it stays under it, '
+   +z.wx.toFixed(1)+','+z.wy.toFixed(1)+' against '+z.px.toFixed(1)+','+z.py.toFixed(1));
+  ok(z.pill===z.s.toFixed(1)+'×',v+': and the reframe circle on the bar says how far in, '+z.pill);
+  const d0=await fp.evaluate(()=>({x:FZ.x,y:FZ.y}));
+  await fp.mouse.down(); await fp.mouse.move(at.x+60,at.y+40,{steps:8}); await fp.mouse.up();
+  await fp.waitForTimeout(60);
+  const d1=await fp.evaluate(()=>({x:FZ.x,y:FZ.y,drill:document.getElementById('rdrill').style.display}));
+  ok(Math.abs(d1.x-d0.x-60)<1.5&&Math.abs(d1.y-d0.y-40)<1.5,v+': a drag pans it, moved '
+   +(d1.x-d0.x).toFixed(1)+','+(d1.y-d0.y).toFixed(1)+' for a 60,40 drag');
+  ok(d1.drill==='none'||d1.drill==='','and a drag that moved the picture opened nothing on the way, drill '+d1.drill);
+  await fp.keyboard.press('f');
+  const r=await fp.evaluate(()=>({s:FZ.s,x:FZ.x,y:FZ.y,t:document.querySelector('#frend .frsvg').style.transform}));
+  ok(r.s===1&&r.x===0&&r.y===0&&r.t==='',v+': F snaps it back to the whole picture, '+JSON.stringify(r));
+  await fp.mouse.move(5,5);}
+ {await fp.evaluate(()=>{fviewSet('wheel');}); await frame(fp);
+  const c=await fp.evaluate(()=>{const b=document.getElementById('cv').getBoundingClientRect();return {x:b.left+b.width/2,y:b.top+b.height/2};});
+  await fp.mouse.move(c.x,c.y);
+  for(let i=0;i<3;i++){await fp.mouse.wheel(0,-100);await fp.waitForTimeout(30);}
+  const zin=await fp.evaluate(()=>S.zoom);
+  await fp.keyboard.press('f');
+  const zout=await fp.evaluate(()=>({z:S.zoom,x:S.panx,y:S.pany}));
+  ok(zin>1.3&&zout.z===1&&zout.x===0&&zout.y===0,'wheel: the mouse wheel zooms in, to '+zin.toFixed(2)+'x, and F snaps it back, '+JSON.stringify(zout));
+  await fp.mouse.move(5,5);}
+ /* A SWITCH REACHES THE WHEEL. Laws off on the glass bar and the wheel draws
+    no law and offers none to press; on again and they are back. */
+ const lawsGone=await fp.evaluate(async()=>{const fr2=()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+  const b=document.querySelector('#fbar .fb-full [data-fb="laws"]'),n=()=>HIT.filter(h=>h.k==='law').length;
+  const before=n(); b.click(); await fr2(); const off=n(); b.click(); await fr2();
+  return {before:before,off:off,back:n(),custom:LAYSET,view:S.view};});
+ ok(lawsGone.before>0&&lawsGone.off===0&&lawsGone.back===lawsGone.before,
+  'wheel: the Laws switch takes the laws off the wheel and puts them back, '+lawsGone.before+' to '+lawsGone.off+' to '+lawsGone.back);
+ ok(lawsGone.custom===null&&lawsGone.view===3,'and a set that lands back on a preset is that preset again, not a copy of it');
+ /* THE GLASS TAKES THE TONE OF THE GROUND IT LIES ON, read by stageLight().
+    Glass white lays a paper stage; Snow keeps the ruled #101010 under paper
+    rails, so there the glass stays dark. */
+ const tone=await fp.evaluate(()=>{const was=S.theme,o={};
+  ['dark','snow','glasswhite'].forEach(t=>{setLighting(t);o[t]={lt:document.getElementById('fbar').classList.contains('fb-lt'),stage:stageLight()};});
+  setLighting(was);return o;});
+ ok(Object.keys(tone).every(t=>tone[t].lt===tone[t].stage)&&tone.glasswhite.lt&&!tone.snow.lt,
+  'the bar\'s glass follows the stage\'s own ground under every lighting tried, '+JSON.stringify(tone));
+ /* THE READINGS, IN THE LEFT RAIL, AS CIRCLES, CQ THE LARGER. "You should go
+    on the left hand side" and "I do want the CQ number bigger, so it's in
+    your face." DQ and SQ stand either side of it on one centre line. */
+ const dock=await fp.evaluate(()=>{const d=document.getElementById('fdock'),left=document.querySelector('.mid > .col');
+  const q=k=>document.querySelector('#fdock .kb[data-q='+k+'] .cr');
+  const bx=k=>q(k).getBoundingClientRect(), fs=k=>parseFloat(getComputedStyle(q(k).querySelector('.v')).fontSize);
+  return {inLeft:left.contains(d),inStage:document.getElementById('stage').contains(d),
+   cq:bx('cq').width,dq:bx('dq').width,sq:bx('sq').width,cqFig:fs('cq'),dqFig:fs('dq'),
+   line:Math.abs((bx('dq').top+bx('dq').height/2)-(bx('sq').top+bx('sq').height/2)),
+   mid:bx('dq').right<=bx('cq').left&&bx('cq').right<=bx('sq').left,
+   acc:left.contains(document.getElementById('acc'))&&left.contains(document.getElementById('keylo'))};});
+ ok(dock.inLeft&&!dock.inStage&&dock.acc,'the readings sit at the head of the left rail and none of them along the stage\'s foot');
+ ok(dock.cq>dock.dq&&dock.cq>dock.sq&&dock.cqFig>dock.dqFig,'CQ is the larger circle and the larger figure, '
+  +Math.round(dock.cq)+' against '+Math.round(dock.dq)+', figure '+dock.cqFig+' against '+dock.dqFig);
+ ok(dock.mid&&dock.line<1,'CQ in the middle, DQ and SQ either side on one centre line, off by '+dock.line.toFixed(2));
+ await fp.evaluate(()=>{layPick(1);render();});
+
  /* THE CHOICE IS KEPT, and a reload opens the Field the way it was left. */
  await fp.evaluate(()=>fviewSet('dial'));
  await fp.reload({waitUntil:'load'}); await booted(fp); await frame(fp);
@@ -3750,9 +3863,9 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
     rendition it had a box of nothing */
  const back=await fp.evaluate(async()=>{loadP(PERSON('James'));fviewSet('wheel');
   await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
-  return {cv:getComputedStyle(document.getElementById('cv')).display,vbar:getComputedStyle(document.getElementById('vbar')).display,
+  return {cv:getComputedStyle(document.getElementById('cv')).display,fbar:getComputedStyle(document.getElementById('fbar')).display,
    CW:CW,CH:CH,hits:HIT.length,stored:STORE.get('fview')};});
- ok(back.cv==='block'&&back.vbar==='flex'&&back.CW>0&&back.CH>0&&back.hits>0,
+ ok(back.cv==='block'&&back.fbar==='flex'&&back.CW>0&&back.CH>0&&back.hits>0,
   'back on the wheel it is measured and drawn, '+Math.round(back.CW)+' by '+Math.round(back.CH)+', '+back.hits+' targets');
  ok(back.stored==='wheel','and the store says wheel again');
  ok(ferr.length===0,'no errors through any of it: '+ferr.join(' | '));
@@ -3768,17 +3881,17 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
  for(const v of ['frames','dial']){
   await pp.evaluate(v=>{loadP(PERSON('James'));setTab(TAB.FIELD);fviewSet(v);},v);
   await frame(pp);
-  const m=await pp.evaluate(()=>{const sw=document.getElementById('fview').getBoundingClientRect(),
+  const m=await pp.evaluate(()=>{const sw=document.getElementById('fbar').getBoundingClientRect(),
    fr=document.getElementById('frend').getBoundingClientRect();
-   const lays=[...document.querySelectorAll('#flay .lay')].map(b=>b.getBoundingClientRect());
+   const lays=[...document.querySelectorAll('#fbar .fb-b')].filter(b=>b.offsetParent).map(b=>b.getBoundingClientRect());
    return {swBottom:sw.bottom,frTop:fr.top,frH:fr.height,want:Math.min(innerWidth*.86,390),
     body:document.body.scrollWidth,doc:document.documentElement.scrollWidth,
     layOut:lays.filter(b=>b.right>innerWidth+.5||b.left<-.5).length,svg:!!document.querySelector('#frend svg.frsvg'),
     small:[...document.querySelectorAll('#frend text')].filter(t=>parseFloat(getComputedStyle(t).fontSize)<11).length};});
-  ok(m.svg&&m.swBottom<=m.frTop+1,'390, "'+v+'": the switch sits above the picture, '+Math.round(m.swBottom)+' against '+Math.round(m.frTop));
+  ok(m.svg&&m.swBottom<=m.frTop+1,'390, "'+v+'": the glass bar sits above the picture, '+Math.round(m.swBottom)+' against '+Math.round(m.frTop));
   ok(Math.abs(m.frH-m.want)<1,'390, "'+v+'": the picture takes the wheel\'s own square, '+m.frH.toFixed(1)+' against '+m.want.toFixed(1));
   ok(m.body<=390&&m.doc<=390,'390, "'+v+'": nothing runs past the screen, body '+m.body+', document '+m.doc);
-  ok(m.layOut===0,'390, "'+v+'": the layer row wraps rather than hiding a layer off the edge, '+m.layOut+' off screen');
+  ok(m.layOut===0,'390, "'+v+'": the glass bar folds rather than hiding a layer off the edge, '+m.layOut+' off screen');
   ok(m.small===0,'390, "'+v+'": nothing under eleven pixels, '+m.small);
   /* BO2 IN THE RENDITIONS. The wheel keeps its gate pills at 8.5 because at
      11 they sat under the next gate's disc. These are at 11 and are spaced

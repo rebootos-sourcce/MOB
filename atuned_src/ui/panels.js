@@ -175,7 +175,10 @@ function setTab(i){
     renderer, because the renderer runs sixty times a second and arriving is
     something that happens once. */
  if(i===TAB.FIELD&&typeof enterStart==='function')enterStart();
- document.body.classList.toggle('hassub',i===TAB.FIELD||i===TAB.ENERGY);
+ /* the Field's sub bar carried the depth row, and the glass bar floating over
+    the stage replaced it. His words: "I don't want that secondary
+    navigation." So the sub bar is Body's alone. */
+ document.body.classList.toggle('hassub',i===TAB.ENERGY);
  ['probe','howto','key','tier','pol'].forEach(function(id){
   var e=$(id); if(e)e.style.display=(i===TAB.FIELD)?'':'none';});
  /* pressed state read off each button's own integer, never off its position
@@ -292,48 +295,11 @@ function tabTop(i){
 }());
 /* measured once the strip exists, and again whenever the window changes */
 if(typeof paintTabEdge==='function')paintTabEdge();
-const VICON=[
- '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.6"/>',
- '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2"/><path d="M12 5.2v2.6M7.2 15.4l2.2-1.3M16.8 15.4l-2.2-1.3"/>',
- '<circle cx="12" cy="12" r="9.4"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2.4"/>',
- '<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6.4"/><circle cx="12" cy="12" r="2.2"/><path d="M12 2v3.6M12 18.4V22M2 12h3.6M18.4 12H22"/>'];
-VIEWS.forEach(function(v,i){
- var b=document.createElement('button');b.className='vt';b.type='button';
- /* The how to block under the wheel is gone, so its text lives here, on the
-    control it was describing. It reads v.how, declared in wheel.js, because
-    wheel.js loads BEFORE this file. Reaching forward to HOWTO in ui.js threw
-    at parse, which in a concatenated build takes down every module after it.
-    MANIFEST order is the rule and this is what breaking it looks like. */
- b.setAttribute('aria-pressed',i===S.view);
- /* the definition first, then the detail. A person hovering a depth wants to
-    know what it is before they want the four line description of it. */
- b.title=(v.tip?v.tip+'\n\n':'')+(v.how||v.layers);
- /* and the product's own tooltip as well as the native one, because a native
-    title cannot be reached on a touch screen and these four words are the
-    ones the owner could not read. */
- b.setAttribute('data-tip',v.tip||v.layers);
- /* THE NAME, HANDED OVER RATHER THAN GUESSED AT. The old panel looked for a
-    `.tn` child and these buttons carry a `.n`, so it drew an empty bold and a
-    horizontal rule with nothing above it on every one of them. The name is an
-    attribute now, so nothing has to find it in the markup. */
- b.setAttribute('data-tip-t',v.nm);
- /* NOT .kbjump, WHICH PUT THREE OF THE FOUR DEPTHS OFF THE SCREEN.
-
-    The class went on here on 19 September to reach the rail tooltip of the
-    day, which found its carriers by .kbjump. It brought that class's rule
-    with it, and .kbjump is a full width row in the rail: width 100 percent.
-    .vt does not shrink, so every depth took the whole bar, 1552 wide at 1600,
-    and Patterns began at x 1563. The depth the Field opens on was an icon and
-    a P at the edge of the screen, and Chains and Blueprint could not be
-    reached at all. The phone band's scroller was fitted to the same symptom,
-    one depth per screen width at 390. That tooltip was retired on 20
-    September and the one tooltip finds these by data-tip, so the class gave
-    the depths nothing but the wrong width. */
- b.innerHTML=svgI(VICON[i])+'<span class="n">'+v.nm+'</span>';
- b.addEventListener('click',function(){S.view=i;S.pin=null;
-  $('vbar').querySelectorAll('.vt').forEach(function(x,j){x.setAttribute('aria-pressed',j===i);});
-  render();});
- $('vbar').appendChild(b);});
+/* THE DEPTH ROW WAS BUILT HERE, four .vt buttons in #vbar, and is gone. The
+   glass bar replaced it on the owner's ruling, DK through ED in TASKS.md, and
+   the four depths are its presets now, behind its Depth circle. Their icons
+   and their definitions went with them to ui/fieldbar.js, which loads before
+   this file, so nothing here reaches forward for them. */
 /* The three themes were three text buttons and took more width than the
    tab bar. A crescent for dark, a six point flake for snow, and for punch
    a circle with one half solid. Punch is the one place a fill is the

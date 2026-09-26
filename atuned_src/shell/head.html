@@ -822,13 +822,10 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
 .vt[aria-pressed=true]{background:transparent;border-color:transparent;
  color:var(--accent);font-weight:500}
 .vt[aria-pressed=true]:hover{background:transparent;color:var(--accent)}
-.tabtop[aria-pressed=true],#vbar .vt[aria-pressed=true]{position:relative}
+.tabtop[aria-pressed=true]{position:relative}
 .tabtop[aria-pressed=true]::after{
  content:'';position:absolute;left:8px;right:8px;bottom:-1px;height:2px;
  background:var(--accent)}
-#vbar .vt[aria-pressed=true]::after{
- content:'';position:absolute;left:14px;right:14px;bottom:5px;height:1.5px;
- border-radius:2px;background:var(--accent)}
 .vt[aria-pressed=true] svg{stroke:var(--accent)}
 /* FIVE PER CENT DOWN. Ruled: "the navigation icons, can you reduce those down
    by let's say five per cent, it is just kind of large."
@@ -1140,6 +1137,19 @@ body.punch .tp{font-weight:600}
 .cr.sm .v{font-size:11.5px;margin-left:6px}.cr.sm{padding:2px 10px 2px 2px}
 .cr.xs .ring svg.arc{width:18px;height:18px}.cr.xs .ring .gl svg{width:8px;height:8px}
 .cr.xs .v{font-size:11.5px;margin-left:5px}.cr.xs{padding:2px 8px 2px 2px}
+/* THE CIRCLE AND THE HERO, CRGEO's orb and hero in ui/component.js. One
+   object: the ring, the letters or the mark inside, the value on the lower
+   right over the ring, the same object as the glass bar's circles. CQ is the
+   hero, the one larger circle: the object is the same and the weight is not. */
+.cr.orb,.cr.hero{position:relative;padding:0;background:transparent;border:0;border-radius:50%}
+.cr.orb .ring .gl svg{width:18px;height:18px}
+.cr.orb .gl-t{font-size:12px}
+.cr.orb .v,.cr.hero .v{position:absolute;margin:0;text-align:center;
+ background:color-mix(in srgb,var(--c) 30%,var(--panel));border:1px solid color-mix(in srgb,var(--c) 55%,transparent)}
+.cr.orb .v{left:28px;top:30px;height:17px;min-width:20px;padding:0 5px;font-size:11px;line-height:17px}
+.cr.hero .gl-t{font-size:14px;letter-spacing:.02em}
+.cr.hero .v{left:44px;top:46px;height:28px;min-width:44px;padding:0 9px;
+ font-size:20px;line-height:28px;font-weight:600;letter-spacing:-.01em}
 .sum-start{margin-top:20px;max-width:620px}
 
 /* ============================================================
@@ -1314,6 +1324,11 @@ body.tab-field .stage,body.tab-energy .stage,body.tab-compass .stage,
 /* AND A FOURTH, THE DOCK, 26 September. The key strip left row 1 for it, so
    row 1 is empty and zero high like row 2, and the picture keeps the height
    it had: what the strip took at the head, the dock takes at the foot. */
+/* AND THE DOCK LEFT FOR THE LEFT RAIL, ED in TASKS.md, so row 4 is empty and
+   zero high too. The glass bar floats over the stage's head instead, in a
+   strip the stage keeps clear with its own padding, so the bar lies over the
+   stage's ground and never over a mark. */
+body.tab-field .stage{padding-top:64px}
 .stage{--lane:128px;position:relative;display:grid;
  grid-template-columns:var(--lane) minmax(0,1fr) var(--lane);
  grid-template-rows:auto auto minmax(0,1fr) auto;
@@ -1328,45 +1343,32 @@ canvas#cv{display:block;grid-column:2;grid-row:3;width:100%;height:100%;
 /* ============================================================
    THE FIELD DRAWN THREE WAYS. BP8, 25 September.
 
-   The switch sits at the head of the stage's left lane, which is 128 wide and
-   carried nothing on any profile measured, so the ring does not move a pixel
-   for it. A rendition draws into the canvas's own cell. Its layer row takes
-   the depth row's place in the sub bar, and only one of the two is ever up,
-   which ui/rings.js decides in fviewPaint.
+   A rendition draws into the canvas's own cell. The switch between the three
+   sat in the stage's left lane, CQ, and is three circles at the head of the
+   right rail now, ruled on DR and DY: "move that to the secondary nav on the
+   right hand side." The layer row that took the depth row's place in the sub
+   bar is gone with it, into the glass bar, which drives all three pictures.
    ============================================================ */
-/* CENTRE LEFT, ruled 26 September, CQ in TASKS.md, moving it off the head of
-   the lane where BP8 first put it. Same lane and same cell, so the ring still
-   does not move a pixel for it; only its height in the lane changes. */
-.fview{grid-column:1;grid-row:3;align-self:center;z-index:4;min-width:0;
- display:flex;flex-direction:column;gap:4px;padding:0 0 0 12px}
-/* the Field's alone, like the compass lane and the accuracy beside it. The
-   stage hosts every other surface too, and a switch left up at z-index 4
-   would have sat in the left lane of all of them */
+.fview{display:flex;gap:8px;align-items:center;margin:10px 0 4px}
+/* the Field's alone. The rail is on every surface, and three switches for a
+   picture that is not there are three dead controls */
 body:not(.tab-field) .fview{display:none}
-.fview .vt{padding:8px 12px}
-/* OFF READS OFF. Ruled 26 September, CH in TASKS.md: "the circles are very
-   clear, those say off. The ones with the bars, they don't look off ... or
-   maybe those are bright and there's a dim colour where they're off." The
-   circles are the layer row, where off is dim ink with no ring. The bars are
-   this switch and the wheel's depth row, where the one you are on carries a
-   hairline, and the ones you are not on kept the box and the mid ink every
-   .vt wears: measured on James at 1600, Wheel and Frames sat boxed and bright
-   beside a pressed Dial with no box at all, so the two that were off read as
-   the two that were on. They take the layer row's off state now, dim ink and
-   no box, and come up to ink under the pointer so they still read as
-   pressable. Scoped to the two Field switches, which are the screen he was
-   reading: the Body page's layer row is its own pill, .pm-lb, and other .vt
-   rows elsewhere are flagged rather than moved in this pass. */
-.fview .vt[aria-pressed=false],#vbar .vt[aria-pressed=false]{border-color:transparent;color:var(--dim)}
-.fview .vt[aria-pressed=false]:hover,#vbar .vt[aria-pressed=false]:hover{color:var(--ink)}
-/* the navigation rule the depth row keeps: the position you are on loses its
-   box and carries the accent hairline under it. Without the hairline the
-   pressed one differed only by a missing border and a blue icon, and its word
-   stays in ink because .n sets ink, which is the depth row's own markup. */
-.fview .vt[aria-pressed=true]::after{content:'';position:absolute;left:12px;right:12px;bottom:5px;
- height:1.5px;border-radius:2px;background:var(--accent)}
+/* the rail's own ground and ink, not the glass: this is not lying on the
+   picture. A rendition has no reading, so its ring is whole when it is up. */
+.fview .fb-orb{--c:var(--accent);background:transparent;box-shadow:none}
+.fview .fb-b.on .fb-orb{background:color-mix(in srgb,var(--accent) 12%,transparent)}
+.fview .fb-b.on .fb-arc .val{stroke-dasharray:100 100}
 #frend{grid-column:2;grid-row:3;width:100%;height:100%;min-width:0;min-height:0;
  position:relative;overflow:hidden}
+/* FRAMES TAKES THE EMPTY LEFT LANE. The lane held the renditions switch and
+   is empty now, so on a wide screen the frame spans it and runs flush from
+   the stage's left edge to the compass lane. The wheel and the dial are
+   circles and stay in the middle cell. Kept or pulled back is his, ED. */
+@media (min-width:721px){#frend.flush{grid-column:1 / 3}}
+/* zoomed in, the picture can be dragged, and a drag takes no hover on the way */
+#frend.zoomed{cursor:grab}
+#frend.dragging{cursor:grabbing}
+#frend.dragging *{pointer-events:none}
 body:not(.tab-field) #frend{display:none!important}
 /* the picture takes the pointer only where there is something to open. A
    thread, a hairline or the wash is not a target, and drawn over an address
@@ -1374,37 +1376,142 @@ body:not(.tab-field) #frend{display:none!important}
 .frsvg{display:block;pointer-events:none}
 .frsvg [data-h]{pointer-events:auto;cursor:pointer}
 .frsvg text{font-family:var(--sans);font-variant-numeric:tabular-nums}
-/* a hidden layer takes its marks and its words with it */
-#frend.off-domains .L-domains,#frend.off-addresses .L-addresses,#frend.off-stories .L-stories,
-#frend.off-masks .L-masks,#frend.off-archetypes .L-archetypes,#frend.off-patterns .L-patterns,
-#frend.off-chains .L-chains,#frend.off-laws .L-laws,#frend.off-gates .L-gates,
-#frend.off-shadow .L-shadow{display:none}
-/* THE LAYER ROW, from proto/field-rings/kit.css. An icon over one word, in
-   ring order, outside first. On is a ring round the icon in the accent, which
-   is the product's own selection rule, and off is the icon in dim ink with no
-   ring. Forty four tall exactly, where the mockup's was fifty three, because
-   it trades places with the depth row and a taller row would have moved the
-   whole app nine pixels every time the switch was pressed. */
-.lays{flex-wrap:wrap;align-items:flex-start;gap:2px}
-.lay{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
- min-width:62px;min-height:var(--tap);padding:1px 2px 2px;background:transparent;border:0;
- border-radius:var(--r-xs);cursor:pointer;color:var(--dim);font:inherit;
- transition:background var(--t-micro) var(--ease-out)}
-.lay:hover{background:var(--sunk)}
-.lay:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
-.lay-ic{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;
- box-sizing:border-box;border:1.5px solid transparent}
-.lay-ic svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.7;
- stroke-linecap:round;stroke-linejoin:round}
-.lay-nm{font-size:11px;line-height:12px;font-weight:500;letter-spacing:.01em;white-space:nowrap}
-.lay[aria-pressed=true]{color:var(--ink)}
-.lay[aria-pressed=true] .lay-ic{border-color:var(--accent)}
-/* Punch and Lumen rule that anything selected is a solid fill, and the icon
-   grid already obeys it, so a pressed layer does too */
-body.punch .lay[aria-pressed=true] .lay-ic,body.lumen .lay[aria-pressed=true] .lay-ic{
- background:var(--accent);border-color:transparent}
-body.punch .lay[aria-pressed=true] .lay-ic svg,body.lumen .lay[aria-pressed=true] .lay-ic svg{stroke:var(--on-accent)}
-.lay-sep{width:1px;align-self:stretch;margin:6px 8px 8px;background:var(--edge-2)}
+/* a hidden layer takes its marks and its words with it. One class per switch
+   on the glass bar, off-<layer>, written by frLayers in ui/rings.js. A thread
+   carries the class of the tier at its far end, F-<tier>, so it goes with
+   either end: a thread is drawn when both its ends are. */
+#frend.off-addresses .L-addresses,#frend.off-addresses .F-addr,#frend.off-seats .L-seats,
+#frend.off-laws .L-laws,#frend.off-gates .L-gates,#frend.off-shadow .L-shadow,#frend.off-stories .L-stories,
+#frend.off-saboteurs .L-patterns,#frend.off-saboteurs .F-sab,
+#frend.off-complexes .T-cx,#frend.off-complexes .F-cx,#frend.off-hyper .T-hy,#frend.off-hyper .F-hy,
+#frend.off-character .T-sup,#frend.off-character [data-call=chains],
+#frend.off-archetypes .L-archetypes,#frend.off-domains .L-domains,#frend.off-masks .L-masks{display:none}
+/* and the wheel's wash, which is the page's own canvas and not the picture's */
+body.tab-field.noshadow #bgaura{visibility:hidden}
+/* ============================================================
+   THE GLASS BAR. ui/fieldbar.js, ported from proto/glassbar, DK to ED in
+   TASKS.md. It replaced the layer row that stood here and the depth row.
+
+   Glass means the picture shows through it, so it reads as a thing lying on
+   the Field rather than a band cut out of it. NOT BLURRED, which the
+   prototype was: every backdrop-filter over the wheel's canvas is re-read and
+   re-filtered on each frame the wheel repaints, measured at 12 frames a
+   second under Glass, and design gate 13 holds that nothing over the Field
+   carries one. It failed on this bar's circles, seventeen of them, the first
+   time the port met the gate. So the glass is a translucent fill, a shade
+   more opaque than the prototype's, and the blur is not carried. Each layer is one glass
+   circle: "the pills take up a lot of real estate." Ring, not fill: the ring
+   round each circle is a reading, and the only solid thing is the small value
+   pill, which is the product's own pill.
+   ============================================================ */
+.fbar{position:absolute;top:10px;left:12px;z-index:6;display:flex;align-items:center;gap:12px;
+ flex-wrap:nowrap;pointer-events:none}
+body:not(.tab-field) .fbar,body:not(.tab-field) .fb-float{display:none!important}
+.fbar>*,.fb-full>*{pointer-events:auto}
+.fb-full{display:flex;gap:12px}
+.fb-grp{display:flex;align-items:center;gap:6px}
+.fbar .fb-foldp,.fbar.folded .fb-full{display:none}
+.fbar.folded .fb-foldp{display:flex}
+/* THE TWO GLASSES, keyed on the ground and not on the lighting's name. The
+   bar reads stageLight(), the one reading of what the stage is painted, and
+   takes .fb-lt on a light one. The inks are Dark's own and Glass white's own
+   token values and the accent is the pair GOLDC() draws the canvas in,
+   because under Snow the theme's tokens are paper ink and the stage stays
+   the ruled #101010: the bar needs the ground's ink, which INK() and frMount
+   already choose the same way. */
+.fbar,.fb-float{--ink:#EFEDE8;--mid:#B4B0A8;--dim:#94908A;--accent:#7EB8D4;
+ --edge-2:rgba(255,255,255,.14);--edge:rgba(255,255,255,.09);
+ --fb-glass:rgba(22,24,32,.74);--fb-glass-on:rgba(40,44,58,.86);--fb-shade:rgba(0,0,0,.30);--fb-pillbg:#161820}
+.fbar.fb-lt,.fb-float.fb-lt{--ink:#14161C;--mid:#4A4843;--dim:#6E6B65;--accent:#2F6E92;
+ --edge-2:rgba(20,22,28,.16);--edge:rgba(20,22,28,.10);
+ --fb-glass:rgba(252,252,250,.80);--fb-glass-on:rgba(255,255,255,.94);--fb-shade:rgba(20,22,28,.14);--fb-pillbg:#FAFAF7}
+/* ---- one layer, one object. 44 by 44, the tap floor ---- */
+.fb-b{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
+ min-width:var(--tap);min-height:var(--tap);padding:0;margin:0;border:0;border-radius:50%;background:transparent;
+ color:var(--dim);cursor:pointer;font:inherit;
+ /* no double tap zoom on these. Measured on the prototype at 390: zoom in
+    then reframe, two quick taps a thumb's width apart, and the browser held
+    the second tap as the start of a page zoom and the reframe never arrived */
+ touch-action:manipulation}
+.fb-b:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.fb-orb{--c:var(--accent);position:relative;width:40px;height:40px;border-radius:50%;flex:0 0 auto;
+ display:flex;align-items:center;justify-content:center;background:var(--fb-glass);
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 6px 18px var(--fb-shade);
+ transition:background-color var(--t-micro) var(--ease-out)}
+.fb-arc{position:absolute;inset:0;width:40px;height:40px;transform:rotate(-90deg);overflow:visible}
+.fb-arc circle{fill:none;stroke-width:2.6}
+.fb-arc .trk{stroke:color-mix(in srgb,var(--ink) 16%,transparent)}
+.fb-arc .val{stroke:var(--c);stroke-linecap:round;opacity:.3;
+ transition:stroke-dasharray var(--t-surface) var(--ease-out),opacity var(--t-micro) var(--ease-out)}
+.fb-gl{display:flex}
+.fb-gl svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+/* the value rides the lower right, over the ring. Eleven, the type floor:
+   the prototype set it at ten and the design gate holds eleven everywhere */
+.fb-v{position:absolute;left:24px;top:26px;min-width:18px;height:17px;padding:0 4px;border-radius:999px;
+ font:600 11px/17px var(--num);font-variant-numeric:tabular-nums;
+ text-align:center;white-space:nowrap;letter-spacing:.01em;color:var(--ink);
+ background:color-mix(in srgb,var(--c) 30%,var(--fb-pillbg));
+ border:1px solid color-mix(in srgb,var(--c) 55%,transparent);
+ transition:opacity var(--t-micro) var(--ease-out),background-color var(--t-micro) var(--ease-out)}
+/* OFF: the pill keeps its number and loses its fill, the ring keeps its
+   length and loses its colour, the mark drops to dim. Three signals, none of
+   them a hidden value, because an off layer is hidden from the picture and
+   not unread. */
+.fb-b:not(.on) .fb-v{background:var(--fb-pillbg);color:var(--dim);
+ border-color:color-mix(in srgb,var(--ink) 22%,transparent)}
+.fb-b:not(.on) .fb-orb{box-shadow:0 4px 12px var(--fb-shade)}
+.fb-b:hover .fb-orb{background:var(--fb-glass-on)}
+.fb-b:hover{color:var(--ink)}
+/* ON. The disc lifts, the mark comes up to ink, the ring takes its colour at
+   full strength and the value pill with it. */
+.fb-b.on{color:var(--ink)}
+.fb-b.on .fb-orb{background:var(--fb-glass-on)}
+.fb-b.on .fb-arc .val{opacity:1}
+/* BROUGHT IN BY ZOOM on the wheel: drawn, but not by the person */
+.fb-b.zoomed{color:color-mix(in srgb,var(--ink) 80%,transparent)}
+.fb-b.zoomed .fb-arc .trk{stroke:var(--accent);stroke-dasharray:3 3}
+/* ON, AND WAITING FOR ZOOM: stories on the wheel at arm's length */
+.fb-b.wait .fb-orb::after{content:'';position:absolute;right:1px;top:1px;width:7px;height:7px;border-radius:50%;
+ background:var(--accent);box-shadow:0 0 0 2px var(--fb-pillbg)}
+body.punch .fb-b.on .fb-orb{background:var(--c)}
+body.punch .fb-b.on .fb-gl svg{stroke:var(--on-flat)}
+body.punch .fb-v{background:var(--c);color:var(--on-flat);border-color:var(--c)}
+/* ---- the folded panel and the depth menu float under their circle ---- */
+.fb-float{position:fixed;z-index:40;border-radius:16px;padding:10px;color:var(--ink);
+ background:var(--fb-glass-on);
+ border:1px solid var(--edge-2);
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 10px 28px rgba(0,0,0,.28)}
+.fb-float[hidden]{display:none}
+#fbpanel .fb-grp{flex-wrap:wrap;gap:4px;margin-bottom:6px}
+#fbpanel .fb-b{min-width:66px;min-height:70px;padding:4px 2px;border-radius:12px}
+.fb-nm{font-size:12px;line-height:14px;font-weight:500;white-space:nowrap}
+.fb-say{margin:6px 6px 2px;max-width:340px;font-size:13px;line-height:1.45;color:var(--mid)}
+.fb-say b{color:var(--ink);font-weight:600}
+.fb-ph{font-size:12px;line-height:16px;color:var(--dim);margin:4px 6px 4px;font-weight:500}
+#fbmenu{padding:6px;width:340px}
+.fb-mi{display:flex;align-items:flex-start;gap:10px;width:100%;min-height:var(--tap);padding:8px 10px 8px 6px;
+ border:0;border-radius:12px;background:transparent;color:var(--mid);text-align:left;cursor:pointer;font:inherit}
+.fb-mi:hover{background:color-mix(in srgb,var(--ink) 6%,transparent);color:var(--ink)}
+.fb-ic{position:relative;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+ border:1.5px solid transparent;flex:0 0 auto}
+.fb-ic svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.fb-mt{display:flex;flex-direction:column;gap:2px;font-size:13px;line-height:1.4}
+.fb-mt b{font-size:14px;font-weight:600;color:var(--ink)}
+.fb-mi[aria-checked=true] .fb-ic{border-color:var(--accent)}
+.fb-mi[aria-checked=true] b{color:var(--accent)}
+.fb-done{display:none;min-height:var(--tap);min-width:88px;margin:4px 0 0 auto;padding:0 16px;border-radius:12px;
+ border:1px solid var(--edge-2);background:transparent;color:var(--ink);font:inherit;font-size:14px;cursor:pointer}
+#fbpanel.sheet{left:8px!important;right:8px;bottom:8px;top:auto!important;max-width:none!important;
+ padding:8px 8px 10px;border-radius:18px}
+#fbpanel.sheet .fb-ph{display:none}
+#fbpanel.sheet .fb-grp{flex-wrap:nowrap;justify-content:flex-start;gap:0;margin-bottom:4px;
+ padding-bottom:4px;border-bottom:1px solid var(--edge)}
+/* six columns on every row, so a name sits under its own circle and the rows
+   line up */
+#fbpanel.sheet .fb-b{min-width:0;flex:0 0 16.66%;min-height:70px}
+#fbpanel.sheet .fb-nm{font-size:11px;line-height:13px;white-space:normal;text-align:center;max-width:58px}
+#fbpanel.sheet .fb-done{display:block}
+#fbpanel.sheet .fb-say{min-height:38px}
 /* width:max-content because the readout is measured before it is placed
    (ui.js, the pointer move). Sized to fit it shrank to whatever room its last
    position left, so the width read was where it had been and not what it
@@ -1428,28 +1535,32 @@ body.punch .lay[aria-pressed=true] .lay-ic svg,body.lumen .lay[aria-pressed=true
  transition: background var(--t-micro) var(--ease-out)}
 .kbjump:hover{background:var(--panel-2)}
 .kbjump:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
-/* THE DOCK. The readouts in one row along the stage's foot, in its own grid
-   row so nothing in it can sit over the picture. Three groups and each one is
-   a unit that wraps whole: the instrument's own reading (CQ, DQ, SQ), a
-   rule, what is moving through the person (vitality, awareness, will, flow),
-   and accuracy pushed to the far end on its own, which is what "accuracy kept
-   on its own" means when the row is wide enough for it to be anywhere. Each
-   is a button that opens its reading on the right. */
-.fdock{grid-column:1/-1;grid-row:4;position:relative;z-index:4;min-width:0;box-sizing:border-box;
- display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:10px 14px 14px}
+/* THE DOCK, AT THE HEAD OF THE LEFT RAIL, as circles. It was one row along
+   the stage's foot, grouped by kind, and it moved on ED in TASKS.md, his
+   words: "now that we've got the circular one up here, all the buttons on the
+   bottom don't make sense, you should go on the left hand side." Each reading
+   is still a button that opens its reading on the right; only where it sits
+   and the shape it is drawn in changed. */
+.fdock{display:flex;flex-direction:column;align-items:stretch;gap:16px;min-width:0;
+ padding:4px 0 16px;margin:0 0 12px;border-bottom:1px solid var(--edge)}
 body:not(.tab-field) .fdock{display:none}
-/* the gap inside a group is 4 and between groups it is 6 plus this rule, so
-   the break reads as a break. At 1600 the dock needs 894 of the 894 the
-   stage gives it with both rules in, measured on James, and at 8 and 6 accuracy wrapped to a
-   second line and took 64 pixels of height off the picture. Narrower than
-   that it wraps a whole group at a time, never one chip. */
-.fdock-br{width:1px;align-self:stretch;margin:6px 1px;background:var(--edge-2)}
+/* CQ AND DQ, A PAIR. "Line those up so they don't look like a design element
+   that's not quite designed right, but has a symmetry, and I do want the CQ
+   number bigger, so it's in your face." CQ is the large circle in the middle,
+   DQ and SQ stand either side of it on one centre line. */
+.fdock .key{display:grid;grid-template-columns:1fr 1fr 1fr;justify-items:center;align-items:center;gap:0}
+.fdock .key .kb[data-q=dq]{order:1}
+.fdock .key .kb[data-q=cq]{order:2;min-width:72px;min-height:72px}
+.fdock .key .kb[data-q=sq]{order:3}
+.fdock .keylo{justify-content:center;gap:20px}
+.fdock .kb{min-width:var(--tap);min-height:var(--tap);padding:0;border:0;background:transparent;
+ justify-content:center;border-radius:50%}
+.fdock .kb:hover{background:transparent}
+.fdock .kb:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+/* accuracy keeps its word, to the left of its circle, ruled */
+.fdock .acc{margin:0;padding:0;text-align:center;display:flex;justify-content:center}
+.fdock .acc-b{gap:10px;padding:0 6px;border:0}
 .key{display:flex;flex-wrap:nowrap;gap:4px;align-items:center}
-/* ONE SIZE. Every readout in the dock is the same cell: the small ring, the
-   value pill, a box 44 high and 96 wide. They were 98, 98 and 90 across the
-   head and 97 along the foot, which is uniform to nobody, because each box
-   was as wide as its own figure. */
-.fdock .kb{min-width:96px;justify-content:flex-start}
 .kb{display:inline-flex;align-items:center;gap:6px;min-height:var(--tap);padding:2px 4px;
  background:transparent;border:1px solid var(--edge);border-radius:var(--r-xs);
  color:var(--mid);font:inherit;font-size:12px;cursor:pointer;text-align:left;white-space:nowrap}
@@ -2227,11 +2338,6 @@ body.punch .gm-gate{background:var(--panel-2)}
 .gm-chip em{display:block;font-style:normal;font-size:10px;opacity:.7;letter-spacing:.02em}
 /* a card line in the right rail. the release and the truth paired, because a
    release with nothing to install is half the protocol. */
-/* A depth the zoom reached rather than the person. Ringed, not filled, so it
-   reads as reached and not as chosen. */
-.vt.zoomed{border-color:var(--gold);color:var(--ink)}
-.vt.zoomed::after{content:'';position:absolute;right:5px;top:5px;width:4px;height:4px;
- border-radius:50%;background:var(--gold)}
 .vt{position:relative}
 
 /* DENSITY. One variable scales the whole interface, so a person who wants
@@ -3463,21 +3569,15 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
  .mx{grid-template-columns:repeat(19,1fr);gap:1px}
  .sum-cq b,.ab-cq b{font-size:38px}
  /* the key strip wrapped to three rows and pushed the wheel 154px down. It
-    is under the picture now, in the dock, and the dock wraps by group rather
-    than by chip, so a group never splits across two lines on a phone. */
+    is in the left rail now, as circles, which a phone reads as a column of
+    its own, so it takes nothing from the picture. */
  .kb{flex:0 0 auto}
- .fdock{order:2;padding:12px 14px 0;gap:8px 6px}
- /* four to a line, which is the flow group whole. A cell's content was 97
-    wide, four came to 400 against 362 of phone, and 0.39 sat on a line of
-    its own. The box and the pill give up their padding, not their size. */
- .fdock .kb{min-width:0;padding:2px}
- .fdock .cr.sm{padding-right:4px}
- .fdock .cr .v{margin-left:5px;padding:4px 6px}
- .keylo{flex-wrap:wrap}
- .fdock-br{display:none}
- /* the phone rule below that releases .acc from absolute also pads it and
-    sets its order, which in the dock would inset it from the other cells */
- .fdock .acc{padding:0;margin:0 0 0 auto}
+ .fdock{padding-top:10px}
+ /* THE GLASS BAR TAKES A ROW ABOVE THE PICTURE on a phone. The stage is one
+    column here, so the bar is in flow before the canvas and does not lie over
+    the ring, and the strip the stage keeps clear for it on a desktop goes. */
+ body.tab-field .stage{padding-top:0}
+ .fbar{position:relative;top:auto;left:auto;order:0;align-self:flex-start;margin:10px 12px 4px;flex-wrap:wrap}
  /* Five blocks were absolutely positioned against a stage that is 900 wide
     on a desktop. At 390 they all landed on each other at the bottom of the
     wheel. On a phone the stage is a column: the canvas, then each block in
@@ -3503,10 +3603,8 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
     rendered 10 pixels tall on every phone with 106 pixels of content in it. */
  .emap{position:static;inset:auto;overflow:visible;width:100%;min-height:0;order:0}
  canvas#cv{flex:0 0 auto;height:min(86vw,390px);order:1}
- /* no lanes on a phone, so the switch is a row above the picture it changes,
-    and a rendition takes exactly the wheel's square so the three are
-    compared at one size */
- .fview{flex-direction:row;flex-wrap:wrap;padding:10px 14px 0;order:1}
+ /* a rendition takes exactly the wheel's square so the three are compared at
+    one size */
  #frend{flex:0 0 auto;height:min(86vw,390px);order:1}
  /* THE COMPASS RENDERED ENTIRELY OFF SCREEN. Measured at 390x844: #conecv at
     y -612, 338 by 591, onScreen false, with its host #cone 10 pixels tall and
@@ -3537,18 +3635,11 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
     the height here, which is the one thing the phone band never replaced. */
  .emap{position:relative}
  .pm-well{flex:0 0 auto;min-height:min(122vw,470px)}
- /* THE DEPTH LADDER RAN 996 PIXELS PAST THE SCREEN AND NOTHING COULD REACH IT.
-    On the Field, body.scrollWidth measured 1386 against innerWidth 390 while
-    documentElement stayed at 390, so html clipped it and no gesture scrolled
-    to it. #vbar is a flex row of depth buttons with no overflow handling. It
-    gets what #tabbar already has: it scrolls inside itself and gives up width
-    before anything else does. Measuring documentElement alone reports 390 and
-    hides this completely, which is worth stating because it already produced
-    one wrong report. */
- #vbar{flex:1 1 auto;min-width:0;overflow-x:auto;overscroll-behavior-x:contain;
-  scrollbar-width:none}
- #vbar::-webkit-scrollbar{display:none}
- #vbar>*{flex:0 0 auto}
+ /* THE DEPTH LADDER RAN 996 PIXELS PAST THE SCREEN AND NOTHING COULD REACH IT,
+    measured as body.scrollWidth 1386 against innerWidth 390 while
+    documentElement stayed at 390, which hides it completely. The ladder is
+    the glass bar's Depth circle now and the bar folds rather than scrolls,
+    so what stays is the sub bar's own guard, for Body's row. */
  #subbar{min-width:0;overflow:hidden}
  /* .st-mnote is flex:1 1 100% inside .st-hd, which never wrapped, so the row
     held a full width item beside its siblings and forced the writing column to

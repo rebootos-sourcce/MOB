@@ -276,17 +276,22 @@
     <circle cx="12" cy="8" r="3.6"/><path d="M5 20c0-3.6 3.1-5.6 7-5.6s7 2 7 5.6"/></svg></button>
  </div>
  <div class="sheet" id="sheet" hidden><div class="sheet-card" id="sheet-card"></div></div>
- <!-- THE SUB BAR CARRIES WHICHEVER SURFACE NEEDS IT. Field puts its four
-      depths here. Body used to float its seven layers over the figure in a
-      panel pinned to the top left corner, and when those buttons were raised
-      to the 44px tap floor the row wrapped to two lines and covered the head
-      and the throat. A control that hides the thing it controls is not a
-      control. Same bar, same pattern, and the figure gets its whole box. -->
- <div class="glass subbar" id="subbar"><div id="vbar" style="display:flex;gap:5px"></div>
-  <!-- the renditions' ten layers, in ring order. It takes the depth row's
-       place while a rendition is up, because the depth row sets how much of
-       the wheel is drawn and a rendition draws every layer at once. -->
-  <div id="flay" class="lays" role="toolbar" aria-label="Layers" style="display:none"></div>
+ <!-- THE GLASS BAR'S TWO FLOATS, the folded layers panel and the depth menu.
+      They hang off the window and not the stage: the stage clips what it
+      holds, and under Glass it carries a backdrop filter, which makes it the
+      box a fixed child is placed in. ui/fieldbar.js fills and places them. -->
+ <div class="fb-float" id="fbpanel" hidden></div>
+ <div class="fb-float" id="fbmenu" role="menu" aria-label="Depth" hidden></div>
+ <!-- THE SUB BAR CARRIES WHICHEVER SURFACE NEEDS IT, and that is Body alone
+      now. Body used to float its seven layers over the figure in a panel
+      pinned to the top left corner, and when those buttons were raised to
+      the 44px tap floor the row wrapped to two lines and covered the head and
+      the throat. A control that hides the thing it controls is not a
+      control. The Field put its four depths here, and then the renditions'
+      ten layers in their place, and both went to the glass bar that floats
+      over the stage, DK through ED in TASKS.md: "I don't want that secondary
+      navigation." -->
+ <div class="glass subbar" id="subbar">
   <div id="lbar" style="display:none;gap:5px;flex-wrap:wrap"></div>
   <div id="rbar" style="display:none;gap:5px;flex-wrap:wrap"></div>
   <!-- THE LINE UNDER CHARGE IS GONE. Ruled 25 September (BA2), marked NO and
@@ -299,6 +304,17 @@
 
   <!-- ============ LEFT RAIL ============ -->
   <div class="col"><div class="glass panel sc">
+   <!-- THE READINGS, AS CIRCLES, AT THE HEAD OF THE RAIL. ED in TASKS.md. CQ
+        is the one large circle, in the middle of the pair, "so it's in your
+        face"; DQ and SQ stand either side of it on one centre line, the four
+        that move through a person below, and accuracy keeps its word, ruled.
+        The renderers still write #key, #keylo and #acc, so only where they sit
+        and the shape they are drawn in changed. -->
+   <div class="fdock" id="fdock" role="group" aria-label="Readings">
+    <div class="key" id="key" aria-label="What the instrument reads"></div>
+    <div class="keylo" id="keylo" aria-label="What is moving through you"></div>
+    <div class="acc" id="acc"></div>
+   </div>
    <!-- SPIRIT, THEN PSYCHE. Ruled 26 September, CH in TASKS.md: "I want to
         subdivide by spiritual stuff, by spirit, then the next block down would
         be the psyche, because that gives us a full read of the entire field."
@@ -422,25 +438,15 @@
 
   <!-- ============ STAGE ============ -->
   <div class="glass stage" id="stage">
-   <!-- THE READOUTS ARE ONE DOCK AT THE FOOT, grouped by kind. Ruled 26
-        September, CQ in TASKS.md: every dial style readout, "the purple, red,
-        yellow", and accuracy move to the bottom, one uniform size, grouped by
-        type with a break between groups, accuracy on its own. The three were a
-        strip across the head and the four sat absolute over the canvas's lower
-        left corner, so the four could only ever be clear of the wheel's labels
-        by the wheel staying small. The dock is its own grid row, under the
-        picture and never over it. -->
-   <div class="fdock" id="fdock">
-    <div class="key" id="key" aria-label="What the instrument reads"></div>
-    <span class="fdock-br" aria-hidden="true"></span>
-    <!-- the second strip, carrying what moves through the person -->
-    <div class="keylo" id="keylo" aria-label="What is moving through you"></div>
-    <!-- and a break before accuracy, which is its own kind: at 1600 the row
-         is full, so the push to the far end is only the gap, and a gap the
-         size of the gaps inside a group does not say "on its own" -->
-    <span class="fdock-br" aria-hidden="true"></span>
-    <div class="acc" id="acc"></div>
-   </div>
+   <!-- THE DOCK LEFT THE STAGE'S FOOT FOR THE LEFT RAIL, ED in TASKS.md, his
+        words: "now that we've got the circular one up here, all the buttons on
+        the bottom don't make sense, you should go on the left hand side." It
+        is at the head of the left rail now, as circles. -->
+   <!-- THE GLASS BAR. One circle per layer, over the picture, driving the
+        wheel, the frames and the dial alike. It comes before the canvas so a
+        phone, which reads the stage as one column, meets it above the picture
+        it changes. ui/fieldbar.js builds it. -->
+   <div class="fbar" id="fbar" role="toolbar" aria-label="Field layers"></div>
    <!-- THE LEGEND IS GONE. Ruled 25 September (BA9), struck through on a
         screenshot with the worked example notice: "You have unnecessary text,
         I want those removed." It said what the ring is, that a band or a mark
@@ -449,17 +455,10 @@
         band could be opened; the bands still open, and only the sentence went.
         Its row in the stage grid is left in the template, empty and zero high,
         because the canvas and the compass button address row 3 by number. -->
-   <!-- THE FIELD DRAWN THREE WAYS, AND THE SWITCH. BP8, 25 September. He
-        placed it himself: "Or not, not on the upper right, because that's
-        where your like sixty five percent gaining, whatever it is, that's
-        where that goes. ... Or, put it on the far left, because there's
-        nothing there." The upper right is the rail's tier line, which reads
-        64% Gaining on a profile in that band, and the stage's left lane is
-        empty on every profile measured. So the switch sits at the head of
-        that lane, above the ring, and moves nothing. It comes before the
-        canvas so a phone, which reads the stage as one column, meets it
-        above the picture it changes. -->
-   <div class="fview" id="fview" role="group" aria-label="How the Field is drawn"></div>
+   <!-- THE FIELD DRAWN THREE WAYS. BP8, 25 September. The switch between
+        them sat in the stage's left lane and moved to the right rail, ruled:
+        "move that to the secondary nav on the right hand side, and let's just
+        keep those three options there and let people play around with it." -->
    <canvas id="cv" role="img" aria-label="The field wheel. Every element is also listed in the panels either side."></canvas>
    <!-- the two renditions draw into the wheel's own cell, so all three are
         compared on the same ground. ui/rings.js writes it. -->
@@ -536,6 +535,11 @@
        when the wheel is clicked. -->
   <div class="col"><div class="glass panel sc">
    <div id="railtop" class="railtop"></div>
+   <!-- Wheel, Frames, Dial. Icon only, as circles, directly under the top
+        line. His words: "it's taking up too much real estate being on the
+        centre pane ... I don't need the text, just make it the icon." Then:
+        "move that to the secondary nav on the right hand side." -->
+   <div class="fview" id="fview" role="group" aria-label="How the Field is drawn"></div>
 
    <div class="lsec open" data-rail="right" data-sec="you">
     <button class="lsec-hd" type="button"><span>Reading</span><i></i></button>

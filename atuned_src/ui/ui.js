@@ -204,36 +204,26 @@ function hitPress(h,e){
 /* THE FRAME. The wheel is the instrument and a person reads it by moving in.
    The pointer keeps the address under it fixed while the scale changes, so
    zooming toward a segment lands on that segment. F reframes. */
-/* The depth buttons show what the button set. When zoom has resolved further,
-   the reached button is marked so a person can see that the extra detail came
-   from the gesture and not from them, and that zooming out will take it away
-   again. Without this the wheel silently changes what it is drawing. */
-function paintDepth(){
- var bar=$('vbar'); if(!bar)return;
- var eff=effView(), set=S.view|0;
- bar.querySelectorAll('.vt').forEach(function(b,i){
-  b.setAttribute('aria-pressed',i===set);
-  b.classList.toggle('zoomed',i>set&&i<=eff);});
- /* THE LINE UNDER THE BAR IS GONE. Ruled 25 September (BA2): he marked "the
-    core is showing the triad, the shell is showing the fetters" NO on a
-    screenshot and underlined it. It printed what zoom had resolved, on both
-    counts, as a sentence under Charge. What zoom reached is still said, by the
-    ring the loop above puts on the depth button zoom reached, which is the job
-    .zoomed was built for. coreResolved and fetResolved stay in wheel.js: they
-    are the names of the layers, and the functional gate reads them to hold the
-    order the layers arrive in. */}
+/* WHAT ZOOM REACHED IS SAID ON THE GLASS BAR. paintDepth marked the depth
+   button zoom had reached, so a person could see the extra detail came from
+   the gesture and not from them. The depth row is gone, and the bar marks
+   each layer zoom brought in instead, one circle at a time, fbPaint in
+   ui/fieldbar.js. The line under the bar that once said it in words stays
+   gone, ruled 25 September (BA2). coreResolved and fetResolved stay in
+   wheel.js: they are the names of the layers, and the functional gate reads
+   them to hold the order the layers arrive in. */
 function setZoom(z,ax,ay){
  /* THE CEILING HAS TO CLEAR THE DEEPEST LAYER, or the deepest layer does not
     exist. The ceiling was five and the atoms open at 5.20, so the one thing
     past the fetters could not be reached by any gesture and the layer was
     dead code that measured correctly. A threshold above the ceiling is a
     feature nobody can get to. */
- var lo=1, hi=7, nz=Math.max(lo,Math.min(hi,z));
+ var lo=1, hi=WHEEL_ZOOM_MAX, nz=Math.max(lo,Math.min(hi,z));
  if(nz===S.zoom)return;
  var wx=(ax-CX)/U, wy=(ay-CY)/U;
  S.zoom=nz; reframe();
  S.panx += ax-(CX+wx*U); S.pany += ay-(CY+wy*U);
- reframe(); render(); paintDepth();}
+ reframe(); render();}
 /* paintLegend is gone with the legend it wrote. Ruled 25 September (BA9), and
    the reason is at wheelLegend's old place in wheel.js. */
 cv.addEventListener('wheel',function(e){
@@ -245,11 +235,16 @@ addEventListener('keydown',function(e){
  if(S.tab!==TAB.FIELD)return;
  var t=e.target&&e.target.tagName;
  if(t==='INPUT'||t==='TEXTAREA'||t==='SELECT')return;
+ /* a chord is the browser's or the system's, never the Field's: Ctrl F is
+    find, and it reframed the wheel on the way past */
+ if(e.metaKey||e.ctrlKey||e.altKey)return;
+ /* F, plus and minus answer for the picture that is up. They only knew the
+    wheel, so on Frames and Dial F reframed a wheel nobody could see and said
+    so. fieldReframe and fieldZoomBy in ui/rings.js ask which picture is up. */
  var k=e.key.toLowerCase();
- if(k==='f'){S.zoom=1;S.panx=0;S.pany=0;reframe();render();
-  status(HOWTO_ZOOM_OUT);return;}
- if(k==='+'||k==='='){setZoom(S.zoom*1.25,CW/2,CH/2);return;}
- if(k==='-'||k==='_'){setZoom(S.zoom/1.25,CW/2,CH/2);return;}});
+ if(k==='f'){fieldReframe();return;}
+ if(k==='+'||k==='='){fieldZoomBy(1.25);return;}
+ if(k==='-'||k==='_'){fieldZoomBy(1/1.25);return;}});
 const HOWTO_ZOOM_OUT='Reframed. Scroll on the wheel to move in and the core opens as you go, drag to move the frame, F to come back.';
 cv.addEventListener('pointerup',function(){
  cv.style.cursor='';
@@ -489,17 +484,12 @@ function railStack(r){
      never renamed here. The label is what a person reads and it moves. */
   ['fet','Child emotions',CHILD.length,
    'M12 4.5a3.6 3.6 0 013.6 3.6v7.8a3.6 3.6 0 01-7.2 0V8.1A3.6 3.6 0 0112 4.5'],
-  ['sab','Saboteurs',r.sabs.length,
-   'M8.6 4.8a3.4 3.4 0 013.4 3.4v3.4a3.4 3.4 0 01-6.8 0V8.2a3.4 3.4 0 013.4-3.4'
-   +'M15.4 12.4a3.4 3.4 0 013.4 3.4a3.4 3.4 0 01-6.8 0a3.4 3.4 0 013.4-3.4'],
-  ['cx','Complexes',r.cxs.length,
-   'M9 6.6a3 3 0 110 6 3 3 0 010-6M15 6.6a3 3 0 110 6 3 3 0 010-6'
-   +'M12 12.8a3 3 0 110 6 3 3 0 010-6'],
-  ['hy','Hyper',r.hys.length,
-   'M12 3.2l7.6 4.4v8.8L12 20.8 4.4 16.4V7.6zM12 3.2v17.6M4.4 7.6l15.2 8.8'
-   +'M19.6 7.6L4.4 16.4'],
-  ['sup','Character',r.sups.length,
-   'M12 3.4a8.6 8.6 0 100 17.2 8.6 8.6 0 000-17.2M12 7.6a4.4 4.4 0 110 8.8 4.4 4.4 0 010-8.8']];
+  /* the four tiers' marks are CHAINGLYPH in ui/component.js, shared with
+     the glass bar's switches for the same four */
+  ['sab','Saboteurs',r.sabs.length,CHAINGLYPH.sab],
+  ['cx','Complexes',r.cxs.length,CHAINGLYPH.cx],
+  ['hy','Hyper',r.hys.length,CHAINGLYPH.hy],
+  ['sup','Character',r.sups.length,CHAINGLYPH.sup]];
  var h='<div class="stk-tabs" role="tablist">'+TABS.map(function(t){
   return '<button type="button" role="tab" class="stk-t'+(STACK_TAB===t[0]?' on':'')+'" data-st="'+t[0]+'" '
    +'aria-selected="'+(STACK_TAB===t[0])+'" title="'+esc(t[1])+'">'
@@ -866,7 +856,12 @@ function render(){
     /* THE LETTERS GO IN THE RING AND THE WORDS GO TO THE TOOLTIP. Ruled: the
        three letters are essentially an icon, so they sit where an icon sits,
        and the strip loses three labels' worth of width. */
-    +cr('Crown',r.unread?0:r.CQ,{size:'sm',text:'CQ',hot:false,
+    /* AND CQ IS THE HERO, the one larger circle in the rail. DY in TASKS.md,
+       his words: "I do want the CQ number bigger, so it's in your face." The
+       dock left the stage's foot for the left rail as circles, ED, and every
+       other reading in it is the orb size, so the difference is his and not
+       an accident of which figure is wider. */
+    +cr('Crown',r.unread?0:r.CQ,{size:'hero',text:'CQ',hot:false,
       raw:r.unread?'\u2013':Math.round(r.CQ)+'%',
       /* THE PILL ALREADY PRINTS A PERCENT, so the tooltip saying "29 out of
          100" beside it is the number twice and the scale once too often. The
@@ -880,11 +875,11 @@ function render(){
        a guessed 14 and the tooltip had to say "no ceiling". It is the total
        shadow on all 112 addresses over the most they can hold, the same
        scale as CQ, so the ring is the figure and the tail is a percent. */
-    +cr('Root',r.DQ,{size:'sm',text:'DQ',raw:Math.round(r.DQ)+'%',
+    +cr('Root',r.DQ,{size:'orb',text:'DQ',raw:Math.round(r.DQ)+'%',
       title:'Shadow weight. The weight on all 112 addresses, out of the most '
        +'they can hold.'})+'</button>'
   +'<button class="kb" data-q="sq">'
-    +cr(r.darkB,r.SQm*10,{size:'sm',text:'SQ',raw:r.SQm.toFixed(1),
+    +cr(r.darkB,r.SQm*10,{size:'orb',text:'SQ',raw:r.SQm.toFixed(1),
       title:'Segment depth. '+r.SQm.toFixed(1)+' of 10. How deep the held charge '
        +'sits at the addresses carrying it.'})+'</button>'
   /* THE CONSOLE AVERAGED THREE READINGS AND SHOWED THE AVERAGE.
@@ -924,22 +919,22 @@ function render(){
      and a name without its scale is the thing the copy editor rule stops. */
   lo.innerHTML=
    '<button class="kb" data-q="xyz">'
-    +cr('Solar',r.unread?0:r.X*100,{size:'sm',hot:false,glyph:QICON.vitality,
+    +cr('Solar',r.unread?0:r.X*100,{size:'orb',hot:false,glyph:QICON.vitality,
       raw:r.unread?'\u2013':r.X.toFixed(2),
       title:'Vitality. '+(r.unread?'not read yet':r.X.toFixed(2)+' of 1')
        +'. What is left after apathy and the shadow weight.'})+'</button>'
   +'<button class="kb" data-q="xyz">'
-    +cr('3rd Eye',r.unread?0:r.Y*100,{size:'sm',hot:false,glyph:QICON.awareness,
+    +cr('3rd Eye',r.unread?0:r.Y*100,{size:'orb',hot:false,glyph:QICON.awareness,
       raw:r.unread?'\u2013':r.Y.toFixed(2),
       title:'Awareness of the instrument. '+(r.unread?'not read yet':r.Y.toFixed(2)+' of 1')
        +'. Intention read against distortion. Not the rail section of the same name.'})+'</button>'
   +'<button class="kb" data-q="xyz">'
-    +cr('Root',r.unread?0:r.Z*100,{size:'sm',hot:false,glyph:QICON.will,
+    +cr('Root',r.unread?0:r.Z*100,{size:'orb',hot:false,glyph:QICON.will,
       raw:r.unread?'\u2013':r.Z.toFixed(2),
       title:'Will. '+(r.unread?'not read yet':r.Z.toFixed(2)+' of 1')
        +'. Integrity carried through a clear segment.'})+'</button>'
   +'<button class="kb" data-q="flow">'
-    +cr('Heart',r.unread?0:f*100,{size:'sm',hot:false,glyph:QICON.flow,
+    +cr('Heart',r.unread?0:f*100,{size:'orb',hot:false,glyph:QICON.flow,
       raw:r.unread?'\u2013':f.toFixed(2),
       title:'Flow. '+(r.unread?'not read yet':f.toFixed(2)+' of 1')
        +'. What reaches the crown from the root, every seat multiplied by the next.'})
@@ -1107,7 +1102,10 @@ function render(){
   : '<div class="pm-eye" style="color:var(--gold)">Nothing running</div>';
  $('fire').querySelectorAll('.it[data-i]').forEach(function(el){el.addEventListener('click',function(){
   var o=rows[+el.dataset.i];S.pin=(S.pin===o)?null:o;runDrill(S.pin);render();});});
- if(S.tab===TAB.ENERGY)renderMap(r);
+ /* the glass bar's rings read the reading this render just took, not a
+    second one, and only where the bar is */
+ if(S.tab===TAB.FIELD)fbRead(r);
+ else if(S.tab===TAB.ENERGY)renderMap(r);
  else if(S.tab===TAB.SUMMARY)sumRender();
  else if(S.tab===TAB.ANALYTICS)anaRender();}
 
