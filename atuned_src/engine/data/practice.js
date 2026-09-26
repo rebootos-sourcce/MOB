@@ -102,9 +102,16 @@ var PRACTICE=[
 var PTRACK={Mind:'#7B97E2',Body:'#68CBA4',Energy:'#AF89D6',Somatic:'#DBBF68'};
 
 /* ---------- the seven seats, and where they sit on the figure ---------- */
+/* THE THIRD EYE WAS ON THE NOSE. It sat at 12.56, the middle of the drawn ear,
+   and on a real head the middle of the ear is level with the nose. Its own
+   text below says between the eyebrows, and the brow is level with the top of
+   the ear, which this figure draws at 10.5. The head ruler in figure.js
+   (ANATHEAD) puts the brow, halfway between the nasion and the forehead point
+   on Colin27 at z -20.85, at 10.57. Two landmarks, one height. Ruled 26
+   September: always the correct position, not the nose. */
 var PMBANDS=[
  {k:'crown', c:PAL.Crown,     nm:'Crown',     b:'Crown',  yp:4.98, r:9},
- {k:'eye',   c:PAL['3rd Eye'],nm:'Third Eye', b:'3rd Eye',yp:12.56,r:8},
+ {k:'eye',   c:PAL['3rd Eye'],nm:'Third Eye', b:'3rd Eye',yp:10.57,r:8},
  {k:'throat',c:PAL.Throat,    nm:'Throat',    b:'Throat', yp:20.91,r:9},
  {k:'heart', c:PAL.Heart,     nm:'Heart',     b:'Heart',  yp:30.51,r:13},
  {k:'solar', c:PAL.Solar,     nm:'Solar',     b:'Solar',  yp:40.21,r:11},

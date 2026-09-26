@@ -20,8 +20,73 @@
 var PMLAYER='bands', PMPICK=null, PAINPICK=null, _pmpos={}, LOADED=4;
 var PMYP={};PMBANDS.forEach(function(b){PMYP[b.k]=b.yp;});
 var HW=24.2;
+/* THE REAL PLACES, in figure units, once. ANAT (figure.js) holds each place
+   in the units it was sourced in, and this is the only code that turns them
+   into the figure: millimetres through the head ruler, vertebral levels
+   through the spine ruler.
+
+   A PLACE MAY HOLD ANY NUMBER OF ADDRESSES. Ruled: a plexus branches three
+   ways, so three names can sit at one address. Drawn on one point they would
+   be one mark with the rest under it, clickable only on top and silent about
+   the others, which is hiding by stacking. So the ones sharing a point stand
+   round it at an even spacing, which is how a seat's addresses already
+   share a seat, only close, so they still read as one place: a pair side by
+   side, three as a triangle, four as a square, and on from there. */
+var PMSPREAD=1.2, PMGAP=1.45, PMROAM=2.2, _pmanat=null;
+function pmAnat(){
+ if(_pmanat)return _pmanat;
+ var H=ANATHEAD, mm=(H.topZ-H.earZ)/(H.year-H.ytop), out={};
+ var spine=function(lv){
+  var R=ANATSPINE, i=0;
+  while(i<R.length-2&&lv>R[i+1][0])i++;
+  var a=R[i],b=R[i+1];
+  return a[1]+(lv-a[0])*(b[1]-a[1])/(b[0]-a[0]);};
+ ANAT.forEach(function(row){
+  /* the person's right is on the viewer's left, as it is on every front view */
+  var pts=row.h?row.h.map(function(p){return {x:50-p[0]/mm,y:H.ytop+(H.topZ-p[1])/mm};})
+   :row.v?row.v.map(function(p){return {x:50+p[1],y:spine(p[0])};})
+   :[{x:50,y:PMYP[row.at]}];
+  var at=pts.map(function(){return [];});
+  row.ids.forEach(function(id,j){at[j%pts.length].push(id);});
+  at.forEach(function(ids,pi){
+   var c=pts[pi], n=ids.length, a0=(n%2)?-Math.PI/2:Math.PI;
+   ids.forEach(function(id,j){
+    var t=a0+j*2*Math.PI/n, r=(n>1)?PMSPREAD:0;
+    out[id]={x:c.x+Math.cos(t)*r, y:c.y+Math.sin(t)*r, hx:c.x, hy:c.y};});});});
+ /* THE BRAIN IS A KNOT AT THIS SCALE, AND A KNOT HIDES AS WELL AS A CLIP DOES.
+
+    The first cut placed every head address exactly and it was worse to look
+    at than the clip it replaced. The pineal, the hypothalamus, the midbrain,
+    the chiasm and the thalamus are real places within about 25 millimetres of
+    each other, which on this figure is 1.3 units, and a heavy ring is 2.6
+    units across its radius. Measured on Ana: 33 head addresses drawn, and the
+    middle twenty of them one lump of rings nobody could count. Shrinking the
+    rings is not the answer, because every mark is already under the 44 point
+    touch floor.
+
+    So the measured marks push apart until no two centres are closer than
+    PMGAP, and none is ever let further than PMROAM from its own place. That
+    is the ruling's own bar: roughly the right spot, and every one of them
+    findable. Fixed order and fixed count, so the same address lands on the
+    same pixel every time and on every profile. */
+ var ids=Object.keys(out).sort(function(a,b){return a-b;});
+ for(var it=0;it<80;it++){
+  for(var i=0;i<ids.length;i++)for(var j=i+1;j<ids.length;j++){
+   var p=out[ids[i]],q=out[ids[j]],dx=q.x-p.x,dy=q.y-p.y,d=Math.sqrt(dx*dx+dy*dy);
+   if(d>=PMGAP)continue;
+   /* two on one point have no direction between them; give them one */
+   if(d<1e-6){var t0=(+ids[j])*2.399;dx=Math.cos(t0);dy=Math.sin(t0);d=1;}
+   var push=(PMGAP-d)/2/d;
+   p.x-=dx*push;p.y-=dy*push;q.x+=dx*push;q.y+=dy*push;}
+  ids.forEach(function(id){var m=out[id],ox=m.x-m.hx,oy=m.y-m.hy,o=Math.sqrt(ox*ox+oy*oy);
+   if(o>PMROAM){m.x=m.hx+ox*PMROAM/o;m.y=m.hy+oy*PMROAM/o;}});}
+ return (_pmanat=out);}
 function pmNode(id,k){
  if(_pmpos[id])return _pmpos[id];
+ /* measured first. The hash below is what an unmeasured address still gets,
+    kept as it was rather than replaced by a guess. */
+ var an=pmAnat()[id];
+ if(an)return (_pmpos[id]={x:an.x,y:an.y});
  var baseY=(PMYP[k]!=null?PMYP[k]:30),n=0,s=String(id);
  for(var i=0;i<s.length;i++)n=(n*31+s.charCodeAt(i))>>>0;
  var q=(n*2654435761)%1000,ang=(q/1000)*Math.PI*2,rx=6.4+(q%7),ry=2.4+((q>>3)%4);
