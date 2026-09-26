@@ -12671,3 +12671,65 @@ reference charts rather than by eye, with a number attached and a real
 loop, measure, adjust, remeasure, rather than a one time pass.
 Dispatched.
 
+## CR. The Field layout batch, built for real, closing CQ's four
+## confident items. 26 September.
+
+**Verified myself.** `node tests/engine.js` matched the claimed 1649,
+`BUILD-engine.sh` matched 428 exports and host free, `node
+tests/collide.js` matched the claimed 220 passed with the new label
+inside ring check included, `node tests/design.js` matched 150.
+`node tests/functional.js` finished moments later and matched the
+claimed 1013 passed, 0 failed. Screenshots confirm all four items by
+eye at both widths,
+sent below.
+
+**The four confident items, built.** The upper right tier readout now
+shares one cell with its own ring, matched to the same box every other
+dock readout uses. Wheel, Frames, Dial sits centre left. Every dial
+style readout and Accuracy moved into one dock along the foot of the
+stage, one uniform size, grouped with a rule between CQ/DQ/SQ, the
+four readouts he called awareness and energy flow, and Accuracy on its
+own. Seat names, domain names, archetype and pattern names and hover
+labels all now read inward from their own ring on every view, nothing
+outside the shell; a new gate in `tests/collide.js` checks this on all
+15 reference profiles at every depth and both widths, 1137 labels
+checked at wide and 956 at phone width, none outside. Run first against
+the old build to confirm it actually catches the defect: 48 real cases
+failed there, seat names sitting 60 to 90 pixels past the ring.
+
+**Real trade-offs disclosed, not hidden.** With nothing allowed past
+the ring, some pattern names and long domain names no longer draw at
+all on a phone, where the arc is too short to hold them; they stay
+reachable in the right rail and on hover. One label, "Predatory /
+Dysregulation," now sits under the core rather than running out through
+the shell, which reads differently but does not overlap anything else
+measured.
+
+**Five real questions, since two of his notes could not be built on a
+guess.**
+**Q1.** "The angel devil symbol, centre right, a little further out."
+Best guess sent with its own picture: the coherence compass in the
+right lane already has a halo shape at its top and a trident at its
+bottom, angel above and devil below, and already sits centre right.
+Is this it, and does "further out" mean closer to the stage's own
+right edge?
+**Q2.** "The animated pill behind an arrow and a number, remove it."
+Best guess, also pictured: the same compass's own marker, where the
+arrow, the number and a small capsule behind them move together,
+measured drifting 5 to 9.5 pixels over a second and a half. That
+capsule is the range pill ruled in an earlier round. Confirm this is
+the one, which would reverse that earlier ruling.
+**Q3.** No exact quote survives for which "upper right" element he
+meant; built as the rail's tier line per the summary in CQ. The Dial's
+own three stacked callouts also sit in a Field's upper right corner, on
+a different view, sent as an alternate candidate in case that was
+meant instead.
+**Q4.** SQ was kept in the first dock group with CQ and DQ, since on
+James it is the yellow he named alongside purple and red. Confirm that
+grouping.
+**Q5.** The Dial's own corner callouts (Sage, Controller, Envy,
+Jealousy, Blame, Compassion) still sit outside the ring, on his own
+earlier approved mockup, and one hangs below the ring at phone width.
+They are not seat names. Under "nothing sticks out," should they move
+inside, move to hover only, or stay as approved.
+
