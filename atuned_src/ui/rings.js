@@ -285,6 +285,27 @@ const FR_T=['domains','addresses','archetypes','patterns','chains','laws','seats
    drawn unclassed, because a class no rule mentions is one the design gate
    refuses by name */
 const FR_CLS={ground:0,core:0,seats:0};
+/* THE FOUR OUTSIDE THE BODY ARE HIDDEN HERE, AND ONLY HERE. Gaia Gateway,
+   Earth Star, Sol Star and Stellar Gateway. These two renditions were the
+   first surface on which they were ever drawn, as four open rings at the
+   seam, and shown them the owner ruled on 26 September, CB in TASKS.md: "let's
+   just hide it from the system, and if we need to come back to it at some
+   point in time because of calculations aren't working, we will."
+
+   HIDDEN FROM THE PICTURE, NOT FROM THE MATHS. The four stay in NODES and in
+   FIELD, compute() still sets their SQ off the seat each one extends, and
+   nothing that reads a reading changes. What this switches off is the slot
+   each one took on the loop, so the loop closes on the 108 body addresses
+   with no gap at the seam where the four stood. A gap would be the four
+   drawn as an absence, which is still drawing them.
+
+   TO BRING THEM BACK, set this true. The drawing for them was never removed:
+   the s.field branches in frFrames and frDial, the 'anchor' hit record, and
+   its readout in ui/ui.js all still run the moment a slot carries one. And
+   tests/functional.js asserts they are absent, so it has to be turned with
+   this, which is on purpose: a reversal should be a decision someone makes
+   and not a side effect nobody sees. */
+const FR_SHOW_OUTSIDE=false;
 /* THE WINDOW'S FOOT. The host's own box, less a margin, and less the strip
    along the stage's foot where the lower pills and accuracy sit over this
    cell. The wheel is a circle and never reaches those corners. A frame fills
@@ -330,9 +351,11 @@ function frMount(host,W_,H_,r){
     to the crown as the wheel runs. The four outside the body sit at the seam
     because that is where the loop closes: below the root on the root side,
     above the crown on the crown side. Found by name and never by position in
-    FIELD, which is the rule this repository keeps for every table. */
+    FIELD, which is the rule this repository keeps for every table. While
+    FR_SHOW_OUTSIDE is off, fld answers null for all four and the filter that
+    already stood here for a missing name takes them out of the loop. */
  var byK={};FIELD.forEach(function(n){byK[n.k]=n;});
- var fld=function(k){return byK[k]?{field:true,n:byK[k]}:null;};
+ var fld=function(k){return FR_SHOW_OUTSIDE&&byK[k]?{field:true,n:byK[k]}:null;};
  var slots=[fld('Gaia Gateway'),fld('Earth Star')].filter(Boolean)
   .concat(W.map(function(n){return {field:false,n:n};}))
   .concat([fld('Sol Star'),fld('Stellar Gateway')].filter(Boolean));

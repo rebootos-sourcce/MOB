@@ -3400,9 +3400,9 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
   setTab(TAB.FIELD);fviewSet('wheel');return out;});
  ok(away.length===0,'on every other surface the switch, the rendition and its layer row are down, up: '+(away.join(', ')||'none'));
 
- /* EACH RENDITION, on a loaded profile. Every layer draws, the loop has the 112
-    places the product says it has, the core prints the reading, and nothing is
-    set under the eleven pixel floor. */
+ /* EACH RENDITION, on a loaded profile. Every layer draws, the loop carries
+    every body address and none of the four outside it, the core prints the
+    reading, and nothing is set under the eleven pixel floor. */
  const drawn=async v=>{
   await fp.evaluate(v=>{loadP(PERSON('James'));setTab(TAB.FIELD);fviewSet(v);},v);
   await frame(fp);
@@ -3414,7 +3414,9 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
     lays:lays.map(b=>b.getAttribute('data-lay')).join(','),layOn:lays.every(b=>b.getAttribute('aria-pressed')==='true'),
     laySizes:lays.map(b=>{const r=b.getBoundingClientRect();return [Math.round(r.width),Math.round(r.height)];}),
     counts:L.map(k=>[k,fr.querySelectorAll('.L-'+k+' [data-h], .L-'+k+' rect, .L-'+k+' path, .L-'+k+' circle').length]),
-    places:FR_HIT.filter(h=>h.k==='node').length+FR_HIT.filter(h=>h.k==='anchor').length,
+    nodes:FR_HIT.filter(h=>h.k==='node').length,body:W.length,
+    outside:FR_HIT.filter(h=>h.k==='anchor'||(h.n&&FIELD.indexOf(h.n)>=0)).map(h=>h.n.k),
+    kept:FIELD.length+' '+FIELD.every(n=>isFinite(n.sq)),
     figures:texts.map(t=>t.textContent).filter(s=>/^\d+$/.test(s)),cq:Math.round(compute().CQ),
     small:texts.filter(t=>parseFloat(getComputedStyle(t).fontSize)<11).map(t=>t.textContent),
     calls:[...fr.querySelectorAll('[data-call]')].length};},LAYERS);};
@@ -3429,11 +3431,44 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
      the stories layer is held on a committed story further down */
   const empty=o.counts.filter(c=>c[0]!=='stories'&&c[1]===0).map(c=>c[0]);
   ok(empty.length===0,'"'+v+'": every layer draws on James, empty: '+(empty.join(',')||'none'));
-  ok(o.places===112,'"'+v+'": the loop has the 112 places the product counts, got '+o.places);
+  /* CHANGED 26 SEPTEMBER, and changed rather than cut. This asserted 112
+     places, the 108 body addresses and the four outside the body drawn as
+     anchors at the seam. The owner then ruled the four hidden from the
+     picture and kept in the maths, CB in TASKS.md, so the check now holds
+     both halves of that: every body address is on the loop, not one mark
+     or hit record belongs to the four, and the engine still carries all four
+     with a figure each. FR_SHOW_OUTSIDE in ui/rings.js turns them back on,
+     and this is the check that has to be turned with it. */
+  ok(o.nodes===o.body,'"'+v+'": every body address is on the loop, '+o.nodes+' of '+o.body);
+  ok(o.outside.length===0,'"'+v+'": the four outside the body are not drawn, got '+(o.outside.join(', ')||'none'));
+  ok(o.kept==='4 true','"'+v+'": and the engine still carries the four, each with a figure, got '+o.kept);
   ok(o.figures.length===1&&+o.figures[0]===o.cq,'"'+v+'": the core prints the reading, '+o.figures.join(',')+' against CQ '+o.cq);
   ok(o.small.length===0,'"'+v+'": nothing set under eleven pixels, '+JSON.stringify(o.small));
   console.log('  '+v.padEnd(7)+o.w+'x'+o.h+'  '+o.counts.map(c=>c[0].slice(0,4)+' '+c[1]).join('  ')
    +(v==='dial'?'  callouts '+o.calls:''));}
+
+ /* HIDDEN UNDER EVERY LIGHTING AND AT BOTH WIDTHS, because the ruling said
+    gone and not gone on the default. Each lighting reads its own ground off
+    the stage and each width builds its own box, so each is a separate build of
+    the picture, and a build is what this counts, read off FR_HIT after it. */
+ const sweep=await fp.evaluate(async()=>{const was=S.theme,out=[],n=[0];loadP(PERSON('James'));setTab(TAB.FIELD);
+  for(const L of LIGHTINGS)for(const v of ['frames','dial']){setLighting(L[0]);fviewSet(v);
+   await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));n[0]++;
+   const bad=FR_HIT.filter(h=>h.k==='anchor'||(h.n&&FIELD.indexOf(h.n)>=0)).length,
+    nodes=FR_HIT.filter(h=>h.k==='node').length;
+   if(bad||nodes!==W.length)out.push(L[0]+'/'+v+': '+bad+' outside, '+nodes+' body');}
+  setLighting(was);return {builds:n[0],want:LIGHTINGS.length*2,bad:out};});
+ ok(sweep.builds===sweep.want&&sweep.want>2&&sweep.bad.length===0,'the four are drawn under no lighting, '+sweep.builds
+  +' builds at 1600, failing: '+(sweep.bad.join('; ')||'none'));
+ await fp.setViewportSize({width:390,height:844});
+ const narrow=[];
+ for(const v of ['frames','dial']){const o=await drawn(v);
+  if(o.outside.length||o.nodes!==o.body||o.w<60)narrow.push(v+': '+o.outside.length+' outside, '+o.nodes+' body, '+o.w+' wide');}
+ ok(narrow.length===0,'and none at 390 either, failing: '+(narrow.join('; ')||'none'));
+ /* back to the box and the rendition the loop above left, the dial at 1600,
+    which is what the toggle and the callout checks below are measured on */
+ await fp.setViewportSize({width:1600,height:1000});
+ await drawn('dial');
 
  /* A LAYER TOGGLE HIDES THE LAYER AND ITS WORDS, and brings them back. */
  const tog=await fp.evaluate(async()=>{
