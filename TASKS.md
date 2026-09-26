@@ -14290,3 +14290,75 @@ direction. The Reading card's intention question goes up a level
 before any option is drawn. The Flow element's four options go to the
 seat already doing this kind of comparative mockup work tonight.**
 
+## DS. Rising given a real horizon from a time zone, and an untimed
+## birth read honestly as its whole day. Verified myself, not only on
+## the report. 26 September.
+
+**Rising's location, built against the real published table, not
+picked coordinates.** `atuned_src/engine/data/zones.js` is copied
+directly from `/usr/share/zoneinfo/zone.tab`, tzdata 2025b, 418 rows,
+public domain; checked myself against this machine's own copy and it
+matches exactly. A city already in the old nine still wins, so all
+thirteen reference personas read unchanged. Everyone else gets the
+real representative point for their own time zone. Measured: the
+packed build grew by 8,840 bytes for full world coverage, against
+roughly the same cost DL estimated for a few hundred hand picked
+cities. His own worry, "I don't want to build something that weighs
+more than the software we're building," did not happen.
+
+**A real accuracy number, not left unmeasured.** How often a zone's
+point gives the same rising sign as the person's real city, sampled
+across a year, for cities his own example named: Chicago 99.9%,
+Boulder (using Denver's point) 99.0%, Portland (using Los Angeles'
+point, the same point San Diego and San Francisco also get) 79.0%,
+Mumbai (using Kolkata's point) 48.4%, a coin flip. His own "I need
+Portland" is not what a time zone alone can give, since Portland,
+Newport, San Francisco and San Diego all share one Pacific zone point.
+Across nineteen cities tested, 85.8% agreement overall.
+
+**A second, related bug found and closed in the same pass.** A birth
+with both a table city or zone and a clock time, entered right at a
+daylight saving change, used to read Rising at the first possible
+offset and print it as settled; it now checks both ends the same way
+everything else already does, and is capped at a two hour window so
+the one real case that turns the whole sky, Samoa's skipped day in
+2011, correctly gives no Rising rather than a wrong one.
+
+**An untimed birth now reads its whole day, not a guessed noon.**
+Measured first, over 7,300 days, how often each reading actually
+changes within one calendar day: the moon 43.9% of the time, the sun
+3.3%, the personality or design gate number 17.5%, and the gate's line
+100% of the time, since the sun moves further in a day than a line is
+wide. `birthJD` now carries an untimed record as the full day it could
+have happened in, at the correct offset for whatever place or zone is
+known, or across every offset in use, fifty hours of sky, when
+neither is known, and every reading refuses unless it agrees at both
+ends. Reproduced against the three already known wrong reference
+readings (DO): James, Ana and Tomas each read the wrong moon under the
+old noon guess, and now read correctly. Verified against a second,
+independent astronomy library over 1,500 untimed days; the only six
+disagreements were each within the moon formula's own known 0.35
+degree margin, the same margin a timed birth already carries.
+
+**All nine gates, run twice and agreeing.** 432 exports, two more than
+before, `zonePoint` and its supporting table read; 1687 engine tests;
+1027 functional; 282 collide; 150 design; monitor and funnel clean;
+the voice check finds nothing. `equiv.py` reports only the intended
+changes: one dead function removed, five new declarations, six
+changed bodies. Coverage 96.4 percent of named engine functions, no
+new function left with an untested branch. Commit `2f60b02`, pushed.
+
+**Three real open questions, his call.**
+- Should a zone derived Rising be marked as approximate on the rail,
+  given Mumbai's 48% agreement against Chicago's 99.9%? The engine
+  now reports which kind each reading came from, so the rail can show
+  the difference if he wants it shown.
+- Should the zone table grow toward the specific cities he named,
+  Portland kept separate from the rest of its zone, at the cost of one
+  more row per area he cares about, on top of the 418 already there?
+- For an untimed birth, the personality and design gate NUMBER is
+  actually known on 82.5% of days, only the line is not. Keep refusing
+  the whole reading, the smallest honest change and what ships today,
+  or show the gate without its line on the days it is knowable, which
+  needs a new state on the rail?
+
