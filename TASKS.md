@@ -14193,3 +14193,22 @@ screen. A real, confirmed, fixable inconsistency, queued for art
 direction, not dispatched tonight per his own "put this in the
 backlog."
 
+## DQ. A follow-on idea from DP: gamify the journal toward filling in
+## the masks. Backlog only. 26 September.
+
+**His words.** "The cool thing about the masks being filled in is that
+we can gamify the journal prompting to kind of pull out those stories,
+with the intention of a person trying to completely fill in their
+masks. I don't know, you get a bonus of five hundred points if you can
+fill in your masks. It helps you see what is blocking your light."
+
+**Read as a real connection, not a number to build toward.** He is
+tying DP's proposed mask facet grid to the journal itself: prompts
+chosen with the specific aim of surfacing the story that fills the
+next open facet, and a reward, his own example a five hundred point
+bonus, for completing the set. The number itself is illustrative, said
+as "I don't know," not a ruling. This sits in the same points and
+badge ladder this file already names as now in scope for the accounts
+fork, and belongs with that work and with the mask facet grid itself
+once that is real, not before. Logged, not dispatched.
+
